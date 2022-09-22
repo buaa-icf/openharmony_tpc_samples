@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "AhoCorasickETS",
+        "License": "MIT License",
+        "License File": " LICENSE ",
+        "Version Number": "1.0.2",
+        "Owner" : "BrunoRB"
+        "Upstream URL": "https://github.com/BrunoRB/ahocorasick",
+        "Description": "Aho-corasick for javascript."
+    }
+]
