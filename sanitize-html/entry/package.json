@@ -1,0 +1,18 @@
+{
+	"license":"MIT License",
+	"devDependencies":{
+		"@types/sanitize-html":"^2.6.2"
+	},
+	"name":"entry",
+	"ohos":{
+		"org":"huawei",
+		"directoryLevel":"module",
+		"buildTool":"hvigor"
+	},
+	"description":"sanitize_html demo",
+	"repository":{},
+	"version":"1.0.0",
+	"dependencies":{
+		"sanitize-html":"^2.7.1"
+	}
+}
