@@ -1,0 +1,9 @@
+{
+  "src": [
+    "pages/index",
+    "pages/binary",
+    "pages/digest",
+    "pages/language",
+    "pages/urlEncoding"
+  ]
+}

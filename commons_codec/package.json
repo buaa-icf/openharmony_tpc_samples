@@ -1,0 +1,27 @@
+{
+	"license": "ISC",
+	"devDependencies": {},
+	"name": "commons_codec",
+	"ohos": {
+		"org": "huawei",
+		"directoryLevel": "project",
+		"buildTool": "hvigor"
+	},
+	"description": "example description",
+	"repository": {},
+	"version": "1.0.0",
+	"dependencies": {
+		"soundex-code": "^2.0.0",
+		"caverphone": "^1.0.0",
+		"@ohos/hypium": "1.0.2",
+		"js-sha256": "^0.9.0",
+		"hi-base32": "^0.5.1",
+		"@ohos/hvigor-ohos-plugin": "1.2.2",
+		"js-md5": "^0.7.3",
+		"metaphone": "^2.0.0",
+		"@ohos/hvigor": "1.2.2",
+		"js-sha1": "^0.6.0",
+		"js-md2": "^0.2.2",
+		"js-base64": "^3.7.2"
+	}
+}

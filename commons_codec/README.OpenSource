@@ -1,0 +1,11 @@
+[
+  {
+   "Name":"commons-codec",
+   "License":"MIT License",
+   "License File":"LICENSE",
+   "Version Number":"2.0.0",
+   "Owner":"yuxuhao@huawei.com",
+   "Upstream URL":"https://github.com/apache/commons-codec",
+   "Description": " Commons Codec package contains simple encoder and decoders for various formats such as Base64 and Hexadecimal. In addition to these widely used encoders and decoders, the codec package also maintains a collection of phonetic encoding utilities"
+  }
+]
