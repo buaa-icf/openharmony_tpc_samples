@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "eventbusjs",
+        "License": "MIT License",
+        "License File": "LICENSE",
+        "Version Number": " ",
+        "Owner" : "krasimir"
+        "Upstream URL": "https://github.com/krasimir/EventBus",
+        "Description": "Simple JavaScript class for managing events in JavaScript"
+    }
+]

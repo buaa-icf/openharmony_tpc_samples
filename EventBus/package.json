@@ -1,0 +1,19 @@
+{
+	"license": "MIT License",
+	"devDependencies": {},
+	"name": "eventbus",
+	"ohos": {
+		"org": "huawei",
+		"directoryLevel": "project",
+		"buildTool": "hvigor"
+	},
+	"description": "example description",
+	"repository": {},
+	"version": "1.0.0",
+	"dependencies": {
+		"@ohos/hypium": "1.0.1",
+		"@ohos/hvigor-ohos-plugin": "1.1.6",
+		"@ohos/hvigor": "1.1.6",
+		"eventbusjs": "^0.2.0"
+	}
+}
