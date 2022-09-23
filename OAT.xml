@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <oatconfig>
+        <filefilterlist>
+            <filefilter name="copyrightPolicyFilter" desc="Filters for compatibility，license header policies">
+                <filteritem type="filename" name="hvigorfile.js" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filename" name="*.json5" desc="项目工程默认文件，不需要添加版权头"/>
+            </filefilter>
+            <filefilter name="defaultPolicyFilter" desc="Filters for compatibility，license header policies">
+                <filteritem type="filename" name="hvigorfile.js" desc="项目工程默认文件，不需要添加许可证头"/>
+                <filteritem type="filename" name="*.json5" desc="项目工程默认文件，不需要添加许可证头"/>
+            </filefilter>
+        </filefilterlist>
+    </oatconfig>
+</configuration>
