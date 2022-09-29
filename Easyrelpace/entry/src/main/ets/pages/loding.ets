@@ -1,0 +1,42 @@
+/*
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+let datas
+
+export function setData(data: string, that) {
+  datas = data
+  that.dialogController.open()
+}
+
+@CustomDialog
+export struct CustomDialogExample {
+  controller: CustomDialogController
+
+  build() {
+    Column() {
+      Text('自定义').width('70%').fontSize(20).margin({ top: 10, bottom: 10 })
+      Text(datas).fontSize(20).margin({ top: 10, bottom: 10 })
+      Flex({ justifyContent: FlexAlign.SpaceAround }) {
+        Button('取消')
+          .onClick(() => {
+            this.controller.close()
+          }).backgroundColor(0xffffff).fontColor(Color.Black)
+        Button('确定')
+          .onClick(() => {
+            this.controller.close()
+          }).backgroundColor(0xffffff).fontColor(Color.Red)
+      }.margin({ bottom: 10 })
+    }
+  }
+}
