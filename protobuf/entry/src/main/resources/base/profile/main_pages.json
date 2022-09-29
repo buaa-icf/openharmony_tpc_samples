@@ -1,0 +1,9 @@
+{
+  "src": [
+    "pages/index",
+    "pages/serialized",
+    "pages/writer_reader",
+    "pages/rpc",
+    "pages/websocket"
+  ]
+}
