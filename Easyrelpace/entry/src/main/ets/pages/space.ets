@@ -1,0 +1,102 @@
+/*
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+import { er } from 'easy-replace'
+import { setData, CustomDialogExample } from './loding'
+import router from '@system.router';
+
+@Entry
+@Component
+struct Index {
+  @State TextString: string = "zzzz    zzzzz  zzzzz"
+  @State Replace: string= "  "
+  @State StringResults: string = ""
+  @State Text: string= ""
+  @State Outside: string= ""
+  dialogController: CustomDialogController = new CustomDialogController({
+    builder: CustomDialogExample({}),
+    autoCancel: true
+  });
+
+  build() {
+    Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
+      Flex({ justifyContent: FlexAlign.Start, alignItems: ItemAlign.Start }) {
+        Button("返回")
+          .fontSize(16)
+          .height(30)
+          .onClick(() => {
+            router.push({ uri: "pages/HomePage", })
+          })
+      }
+
+      Column() {
+        Text("输入文本").fontSize(18).fontColor("red")
+      }.alignItems(HorizontalAlign.Start).width('90%').margin({ left: "20%" })
+
+      TextInput({ placeholder: "请输入文本", text: this.TextString })
+        .width("70%")
+        .onChange((value) => {
+          this.TextString = value
+        })
+      Column() {
+        Text("输入空格").fontSize(18).fontColor("red")
+      }.alignItems(HorizontalAlign.Start).width('90%').margin({ left: "20%" })
+
+      TextInput({ placeholder: "输入空格", text: this.Replace })
+        .width("70%")
+        .margin({ top: 10, bottom: 10 })
+        .onChange((value) => {
+          this.Replace = value
+        })
+      Column() {
+        Text("请输入替换的字符").fontSize(18).fontColor("red")
+      }.alignItems(HorizontalAlign.Start).width('90%').margin({ left: "20%" })
+
+      TextInput({ placeholder: "请输入替换的字符", text: this.StringResults })
+        .width("70%")
+        .onChange((value) => {
+          this.StringResults = value
+        })
+      Button("周围替换")
+        .margin({ top: 10, bottom: 10 })
+        .onClick(() => {
+          this.Text = er(
+            this.TextString,
+            {
+              leftOutsideNot: "",
+              leftOutside: this.Outside,
+              leftMaybe: "",
+              searchFor: this.Replace,
+              rightMaybe: "",
+              rightOutside: "",
+              rightOutsideNot: "",
+              i: {
+                leftOutsideNot: false,
+                leftOutside: true,
+                leftMaybe: false,
+                searchFor: true,
+                rightMaybe: false,
+                rightOutside: false,
+                rightOutsideNot: false,
+              },
+            },
+            this.StringResults
+          );
+          setData(this.Text, this)
+        })
+    }
+    .width('100%')
+    .height('100%')
+  }
+}

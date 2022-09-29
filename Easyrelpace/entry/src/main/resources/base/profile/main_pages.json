@@ -1,0 +1,11 @@
+{
+  "src": [
+    "pages/HomePage",
+    "pages/completes",
+    "pages/Complicated",
+    "pages/third",
+    "pages/space",
+    "pages/index"
+
+  ]
+}
