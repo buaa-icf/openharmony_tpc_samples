@@ -9,6 +9,12 @@
                 <filteritem type="filepath" name="entry/hvigorfile.js" desc="项目工程默认文件，不需要添加版权头"/>
                 <filteritem type="filepath" name="entry/src/ohosTest/.*" desc="项目工程默认文件，不需要添加版权头"/>
                 <filteritem type="filepath" name="entry/src/main/module.json5" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="entry/src/ohosTest/ets/TestAbility/TestAbility.ets" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="entry/src/ohosTest/ets/TestAbility/pages/index.ets" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="entry/src/ohosTest/ets/test/Ability.test.ets" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="entry/src/ohosTest/ets/test/List.test.ets" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="entry/src/ohosTest/ets/TestRunner/OpenHarmonyTestRunner.ts" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="entry/src/ohosTest/ets/Application/TestAbilityStage.ts" desc="项目工程默认文件，不需要添加版权头"/>
             </filefilter>
             <filefilter name="defaultPolicyFilter" desc="Filters for compatibility，license header policies">
                 <filteritem type="filename" name="build-profile.json5" desc="项目工程默认文件，不需要添加版权头"/>
@@ -17,6 +23,12 @@
                 <filteritem type="filepath" name="entry/build-profile.json5" desc="项目工程默认文件，不需要添加版权头"/>
                 <filteritem type="filepath" name="entry/src/ohosTest/.*" desc="项目工程默认文件，不需要添加版权头"/>
                 <filteritem type="filepath" name="entry/src/main/module.json5" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="entry/src/ohosTest/ets/TestAbility/TestAbility.ets" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="entry/src/ohosTest/ets/TestAbility/pages/index.ets" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="entry/src/ohosTest/ets/test/Ability.test.ets" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="entry/src/ohosTest/ets/test/List.test.ets" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="entry/src/ohosTest/ets/TestRunner/OpenHarmonyTestRunner.ts" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="entry/src/ohosTest/ets/Application/TestAbilityStage.ts" desc="项目工程默认文件，不需要添加版权头"/>
             </filefilter>
             <filefilter name="binaryFileTypePolicyFilter" desc="Filters for copyright header policies">
             </filefilter>
