@@ -25,7 +25,7 @@ function routerfun(url) {
 @Component
 struct Index {
   scroller: Scroller = new Scroller()
-  @State touchableBool: boolean = true
+  @State enabledBool: boolean = true
   @State message: string = 'mathjs test'
   @State crcalc: string = 'crcalc test'
   @State ejmlMatrix: string = 'ejmlMatrix test'
@@ -47,12 +47,12 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             routerfun('crcalc/crcalc')
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 3000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text(this.ejmlMatrix)
           .fontSize(16)
@@ -62,12 +62,12 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             routerfun('ejml/ejml')
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 3000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text(this.ejmlMathjs)
           .fontSize(20)
@@ -77,12 +77,12 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             routerfun('ejml/ejmlMathjs')
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 3000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text(this.jafama)
           .fontSize(16)
@@ -92,15 +92,15 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             routerfun('jafama/jafama')
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 3000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text(this.message)
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
           .fontSize(16)
           .padding(8)
           .margin({ top: 32 })
@@ -108,9 +108,9 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             routerfun('mathjs/mathjs')
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 3000);
           })
 

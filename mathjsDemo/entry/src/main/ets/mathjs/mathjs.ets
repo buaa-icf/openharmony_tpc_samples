@@ -28,7 +28,7 @@ function routerfun(url) {
 struct Index {
   scroller: Scroller = new Scroller()
   zerosStr = '0'
-  @State touchableBool: boolean = true
+  @State enabledBool: boolean = true
   @State message: string = 'mathjs 测试'
   @State mathlsolve: string = this.zerosStr
   @State mathTimelsolve: string = this.zerosStr
@@ -136,12 +136,12 @@ struct Index {
             this.bitwiseMath = math.bitAnd(this.mathBitwise, this.mathnum).toString()
             let time1 = Date.now()
             this.mathTimeBitwise = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.bitwiseMath)
           .fontSize(20)
@@ -167,12 +167,12 @@ struct Index {
             this.mathbitNot = math.bitNot(this.mathapplybitNot).toString()
             let time1 = Date.now()
             this.mathTimebitNot = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathbitNot)
           .fontSize(20)
@@ -206,12 +206,12 @@ struct Index {
             this.mathbitOr = math.bitOr(this.mathapplybitOr, this.mathapplybitOr1).toString()
             let time1 = Date.now()
             this.mathTimebitOr = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathbitOr)
           .fontSize(20)
@@ -245,12 +245,12 @@ struct Index {
             this.mathbitXor = math.bitXor(this.mathapplybitXor, this.mathapplybitXor1).toString()
             let time1 = Date.now()
             this.mathTimebitXor = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathbitXor)
           .fontSize(20)
@@ -276,12 +276,12 @@ struct Index {
             this.mathIsZero = math.isZero(this.mathIsZeroArr).toString()
             let time1 = Date.now()
             this.mathTimeIsZero = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathIsZero)
           .fontSize(20)
@@ -307,12 +307,12 @@ struct Index {
             this.mathIsPrime = math.isPrime(this.mathIsPrimeArr).toString()
             let time1 = Date.now()
             this.mathTimeIsPrime = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathIsPrime)
           .fontSize(20)
@@ -338,12 +338,12 @@ struct Index {
             this.mathIsNumeric = math.isNumeric(this.mathIsNumericArr).toString()
             let time1 = Date.now()
             this.mathTimeIsNumeric = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathIsNumeric)
           .fontSize(20)
@@ -369,12 +369,12 @@ struct Index {
             this.mathIsNaN = math.isNaN(this.mathIsNaNArr).toString()
             let time1 = Date.now()
             this.mathTimeIsNaN = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathIsNaN)
           .fontSize(20)
@@ -400,12 +400,12 @@ struct Index {
             this.mathIsInteger = math.isInteger(this.mathIsIntegerArr).toString()
             let time1 = Date.now()
             this.mathTimeIsInteger = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathIsInteger)
           .fontSize(20)
@@ -431,12 +431,12 @@ struct Index {
             this.mathHasNumericValue = math.hasNumericValue(this.mathHasNumericValueArr).toString()
             let time1 = Date.now()
             this.mathTimeHasNumericValue = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathHasNumericValue)
           .fontSize(20)
@@ -462,12 +462,12 @@ struct Index {
             this.mathVariance = math.variance(this.mathVarianceArr).toString()
             let time1 = Date.now()
             this.mathTimeVariance = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathVariance)
           .fontSize(20)
@@ -493,12 +493,12 @@ struct Index {
             this.mathSum = math.sum(this.mathSumArr).toString()
             let time1 = Date.now()
             this.mathTimeSum = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathSum)
           .fontSize(20)
@@ -524,12 +524,12 @@ struct Index {
             this.mathProd = math.prod(this.mathProdArr).toString()
             let time1 = Date.now()
             this.mathTimeProd = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathProd)
           .fontSize(20)
@@ -563,12 +563,12 @@ struct Index {
             this.mathmean = math.mean(this.mathmeanArr, this.mathmean1).toString()
             let time1 = Date.now()
             this.mathTimemean = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathmean)
           .fontSize(20)
@@ -594,12 +594,12 @@ struct Index {
             this.mathmad = math.mad(this.mathmadArr).toString()
             let time1 = Date.now()
             this.mathTimemad = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathmad)
           .fontSize(20)
@@ -625,12 +625,12 @@ struct Index {
             this.mathcumsum = math.cumsum(this.mathcumsumArr).toString()
             let time1 = Date.now()
             this.mathTimecumsum = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathcumsum)
           .fontSize(20)
@@ -664,12 +664,12 @@ struct Index {
             this.mathusolve = math.usolve(this.mathusolveArr, this.mathnumusolve).toString()
             let time1 = Date.now()
             this.mathTimeusolve = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathusolve)
           .fontSize(20)
@@ -703,12 +703,12 @@ struct Index {
             this.mathsimplifyConstant = math.simplifyConstant(this.mathsimplifyConstantStr, this.mathnumsimplifyConstant).toString()
             let time1 = Date.now()
             this.mathTimesimplifyConstant = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathsimplifyConstant)
           .fontSize(20)
@@ -750,12 +750,12 @@ struct Index {
             this.mathsimplify = math.simplify(this.mathsimplifyStr, this.mathnumsimplify, this.mathnumsimplify1).toString()
             let time1 = Date.now()
             this.mathTimesimplify = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathsimplify)
           .fontSize(20)
@@ -789,12 +789,12 @@ struct Index {
             this.mathlusolve = math.lusolve(this.mathlusolveArr, this.mathnumlusolve).toString()
             let time1 = Date.now()
             this.mathTimelusolve = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathlusolve)
           .fontSize(20)
@@ -829,12 +829,12 @@ struct Index {
             this.mathlsolve = math.lsolve(this.mathlsolveArr, this.mathnumlsolve).toString()
             let time1 = Date.now()
             this.mathTimelsolve = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathlsolve)
           .fontSize(20)

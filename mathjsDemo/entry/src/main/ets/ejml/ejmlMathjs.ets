@@ -27,7 +27,7 @@ function routerfun(url) {
 struct Index {
   scroller: Scroller = new Scroller()
   zerosStr = '0'
-  @State touchableBool: boolean = true
+  @State enabledBool: boolean = true
   @State mathApply: string = this.zerosStr
   @State mathTimeApply: string = this.zerosStr
   @State mathColumn: string = this.zerosStr
@@ -169,12 +169,12 @@ struct Index {
             this.qrMatrix = math.qr(this.SymmetricMatrixQr);
             let time1 = Date.now()
             this.mathTimeQr = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('qr分解: ' + JSON.stringify(this.qrMatrix))
           .fontSize(20)
@@ -216,12 +216,12 @@ struct Index {
             this.mathZeros = math.zeros(this.mathZeros1, this.mathZeros2).toString()
             let time1 = Date.now()
             this.mathTimeZeros = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathZeros)
           .fontSize(20)
@@ -247,12 +247,12 @@ struct Index {
             this.mathTrace = math.trace(this.mathTrace1).toString()
             let time1 = Date.now()
             this.mathTimeTrace = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathTrace)
           .fontSize(20)
@@ -286,12 +286,12 @@ struct Index {
             this.mathSubset = math.subset(this.mathSubset1, this.mathSubset2).toString()
             let time1 = Date.now()
             this.mathTimeSubset = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathSubset)
           .fontSize(20)
@@ -317,12 +317,12 @@ struct Index {
             this.mathSqueeze = math.squeeze(this.mathSqueeze1).toString()
             let time1 = Date.now()
             this.mathTimeSqueeze = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathSqueeze)
           .fontSize(20)
@@ -348,12 +348,12 @@ struct Index {
             this.mathSqrtm = math.sqrtm(this.mathSqrtm1).toString()
             let time1 = Date.now()
             this.mathTimeSqrtm = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathSqrtm)
           .fontSize(20)
@@ -379,12 +379,12 @@ struct Index {
             this.mathSort = math.sort(this.mathSort1, math.compareNatural).toString()
             let time1 = Date.now()
             this.mathTimeSort = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathSort)
           .fontSize(20)
@@ -410,12 +410,12 @@ struct Index {
             this.mathSize = math.size(this.mathSize1).toString()
             let time1 = Date.now()
             this.mathTimeSize = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathSize)
           .fontSize(20)
@@ -449,12 +449,12 @@ struct Index {
             this.mathRow = math.row(this.mathRow1, this.mathRow2).toString()
             let time1 = Date.now()
             this.mathTimeRow = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathRow)
           .fontSize(20)
@@ -505,12 +505,12 @@ struct Index {
             this.mathResize = math.resize(this.mathResize1, this.mathnumResize, this.mathstr).toString()
             let time1 = Date.now()
             this.mathTimeResize = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathResize)
           .fontSize(20)
@@ -552,12 +552,12 @@ struct Index {
             this.mathReshape = math.reshape(this.mathReshape1, this.mathnumReshape).toString()
             let time1 = Date.now()
             this.mathTimeReshape = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathReshape)
           .fontSize(20)
@@ -591,12 +591,12 @@ struct Index {
             this.mathRange = math.range(this.mathRange1, this.mathRange2).toString()
             let time1 = Date.now()
             this.mathTimeRange = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathRange)
           .fontSize(20)
@@ -630,12 +630,12 @@ struct Index {
             this.mathOnes = math.ones(this.mathOnes1, this.mathOnes2).toString()
             let time1 = Date.now()
             this.mathTimeOnes = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathOnes)
           .fontSize(20)
@@ -669,12 +669,12 @@ struct Index {
             this.mathKron = math.kron(math.matrix(this.mathKron1), math.matrix(this.mathkron2)).toString()
             let time1 = Date.now()
             this.mathTimeKron = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathKron)
           .fontSize(20)
@@ -700,12 +700,12 @@ struct Index {
             this.mathInv = math.inv(this.mathInv1).toString()
             let time1 = Date.now()
             this.mathTimeInv = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathInv)
           .fontSize(20)
@@ -739,12 +739,12 @@ struct Index {
             this.mathIdentity = math.identity(this.mathIdentity1, this.mathnumIdentity).toString()
             let time1 = Date.now()
             this.mathTimeIdentity = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathIdentity)
           .fontSize(20)
@@ -770,12 +770,12 @@ struct Index {
             this.mathFlatten = math.flatten(this.mathFlatten1).toString()
             let time1 = Date.now()
             this.mathTimeFlatten = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathFlatten)
           .fontSize(20)
@@ -801,12 +801,12 @@ struct Index {
             this.mathFft = math.fft(this.mathFft1).toString()
             let time1 = Date.now()
             this.mathTimeFft = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathFft)
           .fontSize(20)
@@ -832,12 +832,12 @@ struct Index {
             this.mathExpm = math.expm(math.matrix(this.mathExpm1)).toString()
             let time1 = Date.now()
             this.mathTimeExpm = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathExpm)
           .fontSize(20)
@@ -871,12 +871,12 @@ struct Index {
             this.mathEigs = math.eigs(this.mathEigs1, this.mathnumEigs).toString()
             let time1 = Date.now()
             this.mathTimeEigs = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathEigs)
           .fontSize(20)
@@ -906,12 +906,12 @@ struct Index {
             this.Matrix1 = math.eigs(eigMatrix).vectors
             let time1 = Date.now()
             this.mathTimeEigenvectors = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('values: ' + JSON.stringify(this.Matrix))
           .fontSize(20)
@@ -949,12 +949,12 @@ struct Index {
             this.mathDot = math.dot(this.mathDot1, this.mathnumDot).toString()
             let time1 = Date.now()
             this.mathTimeDot = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathDot)
           .fontSize(20)
@@ -980,12 +980,12 @@ struct Index {
             this.mathDiag = math.diag(this.mathDiag1).toString()
             let time1 = Date.now()
             this.mathTimeDiag = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathDiag)
           .fontSize(20)
@@ -1011,12 +1011,12 @@ struct Index {
             this.mathDet = math.det(this.mathDet1).toString()
             let time1 = Date.now()
             this.mathTimeDet = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathDet)
           .fontSize(20)
@@ -1050,12 +1050,12 @@ struct Index {
             this.mathCross = math.cross(this.mathCross1, this.mathnumCross).toString()
             let time1 = Date.now()
             this.mathTimeCross = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathCross)
           .fontSize(20)
@@ -1081,12 +1081,12 @@ struct Index {
             this.mathCount = math.count(this.mathCount1).toString()
             let time1 = Date.now()
             this.mathTimeCount = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathCount)
           .fontSize(20)
@@ -1120,12 +1120,12 @@ struct Index {
             this.mathConcat = math.concat(this.mathConcat1, this.mathnumConcat).toString()
             let time1 = Date.now()
             this.mathTimeConcat = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathConcat)
           .fontSize(20)
@@ -1159,12 +1159,12 @@ struct Index {
             this.mathColumn = math.column(this.mathColumn1, this.mathnumColumn).toString()
             let time1 = Date.now()
             this.mathTimeColumn = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathColumn)
           .fontSize(20)
@@ -1199,12 +1199,12 @@ struct Index {
             this.mathApply = math.apply(this.mathApply1, this.mathnumApply, math.sum).toString()
             let time1 = Date.now()
             this.mathTimeApply = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathApply)
           .fontSize(20)
@@ -1236,12 +1236,12 @@ struct Index {
             this.sparseMatrix = math.matrix(this.SymmetricMatrixSparse, 'sparse', 'number');
             let time1 = Date.now()
             this.mathTime = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('sparseMatrix: ' + JSON.stringify(this.sparseMatrix.valueOf()))
           .fontSize(20)
@@ -1277,12 +1277,12 @@ struct Index {
             this.SymmetricMatrix2 = this.sparseMatrix.subset(math.index(...this.SymmetricMatrix1));
             let time1 = Date.now()
             this.mathTime = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('获取矩阵的子集: ' + JSON.stringify(this.SymmetricMatrix2.valueOf()))
           .fontSize(20)
@@ -1306,12 +1306,12 @@ struct Index {
             this.getMatrix = this.sparseMatrix.get(this.getMatrix2);
             let time1 = Date.now()
             this.mathTime = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('获取矩阵的子集: ' + JSON.stringify(this.getMatrix.valueOf()))
           .fontSize(20)
@@ -1343,12 +1343,12 @@ struct Index {
             this.setMatrix = this.sparseMatrix.set(this.setMatrix2, this.setMatrixIndex);
             let time1 = Date.now()
             this.mathTime = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('获取矩阵的子集: ' + JSON.stringify(this.setMatrix.valueOf()))
           .fontSize(20)

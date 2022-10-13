@@ -29,7 +29,7 @@ function routerfun(url) {
 struct Index {
   scroller: Scroller = new Scroller()
   zerosStr = '0'
-  @State touchableBool: boolean = true
+  @State enabledBool: boolean = true
   @State message: string = 'jafama 测试'
   @State log2Value: math.BigNumber = math.bignumber(0)
   @State acoshValue: number = 0
@@ -123,12 +123,12 @@ struct Index {
             this.mathPow = math.pow(Number(this.mathPow1), Number(this.mathPow2)).toString()
             let time1 = Date.now()
             this.mathTimePow = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathPow)
           .fontSize(20)
@@ -154,12 +154,12 @@ struct Index {
             this.mathLog10 = math.log10(Number(this.mathLog101)).toString()
             let time1 = Date.now()
             this.mathTimeLog10 = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathLog10)
           .fontSize(20)
@@ -186,12 +186,12 @@ struct Index {
             this.mathLog1p = math.log1p(Number(this.mathLog1p1)).toString()
             let time1 = Date.now()
             this.mathTimeLog1p = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("log1p：" + this.mathLog1p)
           .fontSize(20)
@@ -225,12 +225,12 @@ struct Index {
             this.mathHypot = math.hypot(Number(this.mathHypot1), Number(this.mathHypot2)).toString()
             let time1 = Date.now()
             this.mathTimeHypot = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("hypot：" + this.mathHypot)
           .fontSize(20)
@@ -256,12 +256,12 @@ struct Index {
             this.mathCoshm1 = (math.cosh(Number(this.mathCoshm1)) - 1).toString()
             let time1 = Date.now()
             this.mathTimeCoshm1 = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("coshm1：" + this.mathCoshm1)
           .fontSize(20)
@@ -287,12 +287,12 @@ struct Index {
             this.mathCeil = math.ceil(Number(this.mathCeil1)).toString()
             let time1 = Date.now()
             this.mathTimeCeil = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("ceil：" + this.mathCeil)
           .fontSize(20)
@@ -318,12 +318,12 @@ struct Index {
             this.mathCbrt = math.cbrt(Number(this.mathCbrt1)).toString()
             let time1 = Date.now()
             this.mathTimeCbrt = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("cbrt：" + this.mathCbrt)
           .fontSize(20)
@@ -349,12 +349,12 @@ struct Index {
             this.mathAtanh = math.atanh(Number(this.mathAtanh1)).toString()
             let time1 = Date.now()
             this.mathTimeAtanh = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("atanh：" + this.mathAtanh)
           .fontSize(20)
@@ -380,12 +380,12 @@ struct Index {
             this.mathACosh1p = math.acosh(math.bignumber(this.mathACosh1p1)).toFixed(16)
             let time1 = Date.now()
             this.mathTimeACosh1p = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("acosh1p：" + this.mathACosh1p)
           .fontSize(20)
@@ -411,12 +411,12 @@ struct Index {
             this.mathAbsNeg = math.subtract(0, math.abs(math.bignumber(this.mathAbsNeg1))).toString(10)
             let time1 = Date.now()
             this.mathTimeAbsNeg = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathAbsNeg)
           .fontSize(20)
@@ -444,12 +444,12 @@ struct Index {
             this.oddValue = isEven.isOdd(Number(this.mathodd)).toString()
             let time1 = Date.now()
             this.oddValueTime = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('isOdd:' + this.oddValue)
           .fontSize(20)
@@ -477,12 +477,12 @@ struct Index {
             this.isEvenValue = isEven.isEven(Number(this.mathceil)).toString()
             let time1 = Date.now()
             this.isEvenValueTime = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('isEven:' + this.isEvenValue)
           .fontSize(20)
@@ -510,12 +510,12 @@ struct Index {
             this.log2Value = math.log2(this.mathlog2)
             let time1 = Date.now()
             this.log2ValueTime = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('log2:' + this.log2Value)
           .fontSize(20)
@@ -543,12 +543,12 @@ struct Index {
             this.acoshValue = Number(math.acosh(this.mathacosh))
             let time1 = Date.now()
             this.acoshValueTime = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('acosh:' + this.acoshValue)
           .fontSize(20)
@@ -576,12 +576,12 @@ struct Index {
             this.asinhValue = Number(math.asinh(this.mathasinh))
             let time1 = Date.now()
             this.asinhValueTime = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('asinh:' + this.asinhValue)
           .fontSize(20)
@@ -617,12 +617,12 @@ struct Index {
             this.atan2Value = Number(math.atan2(this.mathatan1, this.mathatan2))
             let time1 = Date.now()
             this.atan2ValueTime = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('atan2:' + this.atan2Value)
           .fontSize(20)
@@ -650,12 +650,12 @@ struct Index {
             this.coshValue = Number(math.cosh(this.mathcosh))
             let time1 = Date.now()
             this.coshValueTime = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('cosh:' + this.coshValue)
           .fontSize(20)
@@ -683,12 +683,12 @@ struct Index {
             this.sinhValue = Number(math.sinh(this.mathsinh))
             let time1 = Date.now()
             this.sinhValueTime = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('sinh:' + this.sinhValue)
           .fontSize(20)
@@ -716,12 +716,12 @@ struct Index {
             this.tanhValue = Number(math.tanh(this.mathtanh))
             let time1 = Date.now()
             this.tanhValueTime = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('tanh:' + this.tanhValue)
           .fontSize(20)

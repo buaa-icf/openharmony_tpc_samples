@@ -33,7 +33,7 @@ function routerfun(url) {
 @Component
 struct Index {
   scroller: Scroller = new Scroller()
-  @State touchableBool: boolean = true
+  @State enabledBool: boolean = true
   @State MyMatrix: Matrix = new Matrix(0, 0)
   @State MyMatrixA: Matrix = new Matrix(0, 0)
   @State MyMatrixB: Matrix = new Matrix(0, 0)
@@ -107,12 +107,12 @@ struct Index {
             this.CholeskyMatrix = l.lowerTriangularMatrix;
             let time1 = Date.now()
             this.mathTimeCholesky = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('Cholesky分解: ' + JSON.stringify(this.CholeskyMatrix))
           .fontSize(20)
@@ -140,12 +140,12 @@ struct Index {
             this.SVDMatrix = new SingularValueDecomposition(this.SymmetricMatrixSVD)
             let time1 = Date.now()
             this.mathTimeSVD = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('SVD diagonalMatrix分解: ' + JSON.stringify(this.SVDMatrix))
           .fontSize(20)
@@ -208,12 +208,12 @@ struct Index {
             this.eigenvalueMatrix2 = l.realEigenvalues;
             let time1 = Date.now()
             this.mathTimeEigenvalue = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('Eigenvalue diagonalMatrix: ' + JSON.stringify(this.eigenvalueMatrix))
           .fontSize(20)
@@ -255,12 +255,12 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             this.MyMatrix = new Matrix(this.nRows, this.nColumns)
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
 
         Text('生成矩阵: ' + JSON.stringify(this.MyMatrix))
@@ -282,12 +282,12 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             this.MyMatrixA = new Matrix(this.MatrixA)
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('生成矩阵A: ' + JSON.stringify(this.MyMatrixA))
           .fontSize(20)
@@ -308,12 +308,12 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             this.MyMatrixB = new Matrix(this.MatrixB)
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('生成矩阵B: ' + JSON.stringify(this.MyMatrixB))
           .fontSize(20)
@@ -326,12 +326,12 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             this.addAB = Matrix.add(this.MyMatrixA, this.MyMatrixB)
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('矩阵A+B: ' + JSON.stringify(this.addAB))
           .fontSize(20)
@@ -344,12 +344,12 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             this.subAB = Matrix.sub(this.MyMatrixA, this.MyMatrixB)
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('矩阵A-B: ' + JSON.stringify(this.subAB))
           .fontSize(20)
@@ -362,12 +362,12 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             this.mulAB = Matrix.mul(this.MyMatrixA, this.MyMatrixB)
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('矩阵A*B: ' + JSON.stringify(this.mulAB))
           .fontSize(20)
@@ -380,12 +380,12 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             this.divAB = Matrix.div(this.MyMatrixA, this.MyMatrixB)
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('矩阵A div B: ' + JSON.stringify(this.divAB))
           .fontSize(20)
@@ -398,12 +398,12 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             this.modAB = Matrix.mod(this.MyMatrixA, this.MyMatrixB)
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('矩阵A mod B: ' + JSON.stringify(this.modAB))
           .fontSize(20)
@@ -416,12 +416,12 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             this.maxAB = Matrix.max(this.MyMatrixA, this.MyMatrixB)
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('矩阵A max B: ' + JSON.stringify(this.maxAB))
           .fontSize(20)
@@ -434,12 +434,12 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             this.minAB = Matrix.min(this.MyMatrixA, this.MyMatrixB)
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('矩阵A min B: ' + JSON.stringify(this.minAB))
           .fontSize(20)
@@ -452,12 +452,12 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             this.expAB = Matrix.exp(this.MyMatrixA)
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('矩阵A exp: ' + JSON.stringify(this.expAB))
           .fontSize(20)
@@ -470,12 +470,12 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             this.cosAB = Matrix.cos(this.MyMatrixA)
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('矩阵A cos: ' + JSON.stringify(this.cosAB))
           .fontSize(20)
@@ -512,12 +512,12 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             this.setAB = this.MyMatrixA.set(this.rowIndex, this.columnIndex, this.setValue)
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('矩阵A set: ' + JSON.stringify(this.setAB))
           .fontSize(20)
@@ -530,12 +530,12 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             this.diagAB = this.MyMatrixA.diag()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('矩阵A diag: ' + JSON.stringify(this.diagAB))
           .fontSize(20)
@@ -548,12 +548,12 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             this.transposeMatrix = this.MyMatrixA.transpose()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('矩阵A transpose: ' + JSON.stringify(this.transposeMatrix))
           .fontSize(20)
@@ -582,12 +582,12 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             this.randMatrix = Matrix.random(this.randnRows, this.randnColumns)
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('随机矩阵: ' + JSON.stringify(this.randMatrix))
           .fontSize(20)
@@ -622,12 +622,12 @@ struct Index {
             this.luMatrix2 = l.pivotPermutationVector;
             let time1 = Date.now()
             this.mathTimeLu = (time1 - time).toString()
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text('lu lowerTriangularMatrix: ' + JSON.stringify(this.luMatrix))
           .fontSize(20)
@@ -660,12 +660,12 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             this.inMatrix = inverse(this.inverseMatrix);
-            this.touchableBool = false
+            this.enabledBool = false
             setTimeout(() => {
-              this.touchableBool = true;
+              this.enabledBool = true;
             }, 1000);
           })
-          .touchable(this.touchableBool)
+          .enabled(this.enabledBool)
 
         Text(' inverse 矩阵: ' + JSON.stringify(this.inMatrix))
           .fontSize(20)
