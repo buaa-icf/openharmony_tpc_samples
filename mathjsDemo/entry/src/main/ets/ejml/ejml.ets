@@ -33,22 +33,23 @@ function routerfun(url) {
 @Component
 struct Index {
   scroller: Scroller = new Scroller()
+  _matrix:Matrix = new Matrix(0, 0)
   @State enabledBool: boolean = true
-  @State MyMatrix: Matrix = new Matrix(0, 0)
-  @State MyMatrixA: Matrix = new Matrix(0, 0)
-  @State MyMatrixB: Matrix = new Matrix(0, 0)
-  @State addAB: Matrix = new Matrix(0, 0)
-  @State subAB: Matrix = new Matrix(0, 0)
-  @State mulAB: Matrix = new Matrix(0, 0)
-  @State divAB: Matrix = new Matrix(0, 0)
-  @State modAB: Matrix = new Matrix(0, 0)
-  @State maxAB: Matrix = new Matrix(0, 0)
-  @State minAB: Matrix = new Matrix(0, 0)
-  @State expAB: Matrix = new Matrix(0, 0)
-  @State cosAB: Matrix = new Matrix(0, 0)
-  @State setAB: Matrix = new Matrix(0, 0)
+  @State MyMatrix: Matrix = this._matrix
+  @State MyMatrixA: Matrix = this._matrix
+  @State MyMatrixB: Matrix = this._matrix
+  @State addAB: Matrix = this._matrix
+  @State subAB: Matrix = this._matrix
+  @State mulAB: Matrix = this._matrix
+  @State divAB: Matrix = this._matrix
+  @State modAB: Matrix = this._matrix
+  @State maxAB: Matrix = this._matrix
+  @State minAB: Matrix = this._matrix
+  @State expAB: Matrix = this._matrix
+  @State cosAB: Matrix = this._matrix
+  @State setAB: Matrix = this._matrix
   @State diagAB: number[] = []
-  @State randMatrix: Matrix = new Matrix(0, 0)
+  @State randMatrix: Matrix = this._matrix
   @State edMatrix: EigenvalueDecomposition = new EigenvalueDecomposition([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
   @State inMatrix: Matrix = new Matrix([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
   @State transposeMatrix: Matrix = new Matrix([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
@@ -64,9 +65,9 @@ struct Index {
   @State mathTimeSVD: string = '0'
   @State mathTimeCholesky: string = '0'
   @State CholeskyMatrix: Matrix = new Matrix([])
-  SymmetricMatrixCholesky: Matrix = new Matrix([[10, 1, 10], [1, 10, 1], [10, 1, 10]])
-  SymmetricMatrixSVD: Matrix = new Matrix([[10, 1, 10], [1, 10, 1], [10, 1, 10]])
-  SymmetricMatrixEigenvalue: Matrix = new Matrix([[10, 1, 10], [1, 10, 1], [10, 1, 10]])
+  SymmetricMatrixCholesky: string = '10,1,10;1,10,1;10,1,10'
+  SymmetricMatrixSVD: string = '10,1,10;1,10,1;10,1,10'
+  SymmetricMatrixEigenvalue: string = '10,1,10;1,10,1;10,1,10'
   nRows: number = 0
   nColumns: number = 0
   randnRows: number = 0
@@ -74,12 +75,11 @@ struct Index {
   rowIndex: number = 0
   columnIndex: number = 0
   setValue: number = 0
-  MatrixA: Array<Array<number>> = [[1, 3, 2, 5, 6], [1, 2, 4, 5, 5], [2, 6, 9, 8, 7]]
-  MatrixB: Array<Array<number>> = [[2, 3, 2, 5, 5], [3, 2, 4, 5, 5], [9, 8, 6, 5, 8]]
-  SymmetricMatrix: Matrix = new Matrix([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
-  digMatrix: Matrix = new Matrix([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
-  ludigMatrix: Matrix = new Matrix([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
-  inverseMatrix: Matrix = new Matrix([[2, 0, 0], [0, 2, 0], [0, 0, 2]])
+  MatrixA: string = '1,3,2,5,6;1,2,4,5,5;2,6,9,8,7'
+  MatrixB: string = '2,3,2,5,5;3,2,4,5,5;9,8,6,5,8'
+  SymmetricMatrix: string = '10,1,10;1,10,1;10,1,10'
+  ludigMatrix: string = '1,0,0;0,1,0;0,0,1'
+  inverseMatrix: string = '1,0,0;0,1,0;0,0,1'
 
   build() {
     Scroll(this.scroller) {
@@ -93,7 +93,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value) => {
-            this.SymmetricMatrixCholesky = new Matrix(this.strTransformationArr(value))
+            this.SymmetricMatrixCholesky = value
           })
 
         Text('Cholesky分解')
@@ -103,7 +103,7 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             let time = Date.now()
-            let l = new CholeskyDecomposition(this.SymmetricMatrixCholesky)
+            let l = new CholeskyDecomposition(new Matrix(this.strTransformationArr(this.SymmetricMatrixCholesky)))
             this.CholeskyMatrix = l.lowerTriangularMatrix;
             let time1 = Date.now()
             this.mathTimeCholesky = (time1 - time).toString()
@@ -127,7 +127,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value) => {
-            this.SymmetricMatrixSVD = new Matrix(this.strTransformationArr(value))
+            this.SymmetricMatrixSVD = value
           })
 
         Text('SVD分解')
@@ -137,7 +137,7 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             let time = Date.now()
-            this.SVDMatrix = new SingularValueDecomposition(this.SymmetricMatrixSVD)
+            this.SVDMatrix = new SingularValueDecomposition(new Matrix(this.strTransformationArr(this.SymmetricMatrixSVD)))
             let time1 = Date.now()
             this.mathTimeSVD = (time1 - time).toString()
             this.enabledBool = false
@@ -192,7 +192,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value) => {
-            this.SymmetricMatrix = new Matrix(this.strTransformationArr(value))
+            this.SymmetricMatrix = value
           })
 
         Text('特征分解')
@@ -202,7 +202,7 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             let time = Date.now()
-            let l = new EigenvalueDecomposition(this.SymmetricMatrix)
+            let l = new EigenvalueDecomposition(new Matrix(this.strTransformationArr(this.SymmetricMatrix)))
             this.eigenvalueMatrix = l.diagonalMatrix;
             this.eigenvalueMatrix1 = l.eigenvectorMatrix;
             this.eigenvalueMatrix2 = l.realEigenvalues;
@@ -272,7 +272,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value) => {
-            this.MatrixA = this.strTransformationArr(value)
+            this.MatrixA = value
           })
 
         Text('生成矩阵A')
@@ -281,7 +281,7 @@ struct Index {
           .padding(8)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            this.MyMatrixA = new Matrix(this.MatrixA)
+            this.MyMatrixA = new Matrix(this.strTransformationArr(this.MatrixA))
             this.enabledBool = false
             setTimeout(() => {
               this.enabledBool = true;
@@ -298,7 +298,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.MatrixB = this.strTransformationArr(value)
+            this.MatrixB = value
           })
 
         Text('生成矩阵B')
@@ -307,7 +307,7 @@ struct Index {
           .padding(8)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            this.MyMatrixB = new Matrix(this.MatrixB)
+            this.MyMatrixB = new Matrix(this.strTransformationArr(this.MatrixB))
             this.enabledBool = false
             setTimeout(() => {
               this.enabledBool = true;
@@ -598,15 +598,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value) => {
-            this.digMatrix = new Matrix(this.strTransformationArr(value))
-          })
-
-        TextInput({ placeholder: '请输入对称矩阵 如： 1,0,0;0,1,0;0,0,1' })
-          .caretColor(Color.Blue)
-          .height(50)
-          .fontSize(30)
-          .onChange((value) => {
-            this.ludigMatrix = new Matrix(this.strTransformationArr(value))
+            this.ludigMatrix = value
           })
 
         Text('LU分解')
@@ -616,7 +608,7 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             let time = Date.now()
-            let l = new LuDecomposition(this.ludigMatrix)
+            let l = new LuDecomposition(new Matrix(this.strTransformationArr(this.ludigMatrix)))
             this.luMatrix = l.lowerTriangularMatrix;
             this.luMatrix1 = l.upperTriangularMatrix;
             this.luMatrix2 = l.pivotPermutationVector;
@@ -650,7 +642,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value) => {
-            this.inverseMatrix = new Matrix(this.strTransformationArr(value))
+            this.inverseMatrix = value
           })
 
         Text('inverse 矩阵 ')
@@ -659,7 +651,7 @@ struct Index {
           .padding(8)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            this.inMatrix = inverse(this.inverseMatrix);
+            this.inMatrix = inverse(new Matrix(this.strTransformationArr(this.inverseMatrix)));
             this.enabledBool = false
             setTimeout(() => {
               this.enabledBool = true;

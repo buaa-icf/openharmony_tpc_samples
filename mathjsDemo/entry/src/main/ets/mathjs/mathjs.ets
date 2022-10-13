@@ -72,16 +72,17 @@ struct Index {
   @State mathTimebitNot: string = this.zerosStr
   @State mathTimebitOr: string = this.zerosStr
   @State mathTimebitXor: string = this.zerosStr
-  arrays = [[10, 1, 10], [1, 10, 1], [10, 1, 10]]
-  mathIsZeroArr = [10, 1, 10]
-  mathIsPrimeArr = [10, 1, 10]
-  mathIsNumericArr = [10, 1, 10]
-  mathIsNaNArr = [10, 1, 10]
-  mathIsIntegerArr = [10, 1, 10]
-  mathHasNumericValueArr = [10, 1, 10]
-  mathVarianceArr = [10, 1, 10]
-  mathSumArr = [10, 1, 10]
-  mathProdArr = [10, 1, 10]
+  arrays = '[[10, 1, 10], [1, 10, 1], [10, 1, 10]]'
+  arrayMath = '[10, 1, 10]'
+  mathIsZeroArr = this.arrayMath
+  mathIsPrimeArr = this.arrayMath
+  mathIsNumericArr = this.arrayMath
+  mathIsNaNArr = this.arrayMath
+  mathIsIntegerArr = this.arrayMath
+  mathHasNumericValueArr = this.arrayMath
+  mathVarianceArr = this.arrayMath
+  mathSumArr = this.arrayMath
+  mathProdArr = this.arrayMath
   mathmeanArr = this.arrays
   mathmean1
   mathmadArr = this.arrays
@@ -97,13 +98,13 @@ struct Index {
   mathnumlsolve = this.arrays
   mathlusolveArr = this.arrays
   mathnumlusolve = this.arrays
-  mathBitwise = 1
-  mathapplybitNot = 1
-  mathapplybitOr = 1
-  mathapplybitOr1 = 1
-  mathapplybitXor = 1
-  mathapplybitXor1 = 1
-  mathnum = 0
+  mathBitwise = '1'
+  mathapplybitNot = '1'
+  mathapplybitOr = '1'
+  mathapplybitOr1 = '1'
+  mathapplybitXor = '1'
+  mathapplybitXor1 = '1'
+  mathnum = '0'
 
   build() {
     Scroll(this.scroller) {
@@ -117,7 +118,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.mathBitwise = Number(value)
+            this.mathBitwise = value
           })
 
         TextInput({ placeholder: '请输入数值' })
@@ -125,7 +126,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.mathnum = Number(value)
+            this.mathnum = value
           })
 
         Text('bitAnd test')
@@ -133,7 +134,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
             let time = Date.now()
-            this.bitwiseMath = math.bitAnd(this.mathBitwise, this.mathnum).toString()
+            this.bitwiseMath = math.bitAnd(math.evaluate(this.mathBitwise), math.evaluate(this.mathnum)).toString()
             let time1 = Date.now()
             this.mathTimeBitwise = (time1 - time).toString()
             this.enabledBool = false
@@ -156,7 +157,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.mathapplybitNot = math.evaluate(value)
+            this.mathapplybitNot = value
           })
 
         Text('bitNot test')
@@ -164,7 +165,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
             let time = Date.now()
-            this.mathbitNot = math.bitNot(this.mathapplybitNot).toString()
+            this.mathbitNot = math.bitNot(math.evaluate(this.mathapplybitNot)).toString()
             let time1 = Date.now()
             this.mathTimebitNot = (time1 - time).toString()
             this.enabledBool = false
@@ -187,7 +188,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.mathapplybitOr = math.evaluate(value)
+            this.mathapplybitOr = value
           })
 
         TextInput({ placeholder: '请输入数值' })
@@ -195,7 +196,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.mathapplybitOr1 = math.evaluate(value)
+            this.mathapplybitOr1 = value
           })
 
         Text('bitOr test')
@@ -203,7 +204,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
             let time = Date.now()
-            this.mathbitOr = math.bitOr(this.mathapplybitOr, this.mathapplybitOr1).toString()
+            this.mathbitOr = math.bitOr(math.evaluate(this.mathapplybitOr), math.evaluate(this.mathapplybitOr1)).toString()
             let time1 = Date.now()
             this.mathTimebitOr = (time1 - time).toString()
             this.enabledBool = false
@@ -226,7 +227,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.mathapplybitXor = math.evaluate(value)
+            this.mathapplybitXor = value
           })
 
         TextInput({ placeholder: '请输入数值' })
@@ -234,7 +235,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.mathapplybitXor1 = math.evaluate(value)
+            this.mathapplybitXor1 = value
           })
 
         Text('bitXor test')
@@ -242,7 +243,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
             let time = Date.now()
-            this.mathbitXor = math.bitXor(this.mathapplybitXor, this.mathapplybitXor1).toString()
+            this.mathbitXor = math.bitXor(math.evaluate(this.mathapplybitXor), math.evaluate(this.mathapplybitXor1)).toString()
             let time1 = Date.now()
             this.mathTimebitXor = (time1 - time).toString()
             this.enabledBool = false
@@ -265,7 +266,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.mathIsZeroArr = math.evaluate(value)
+            this.mathIsZeroArr = value
           })
 
         Text('isZero test')
@@ -273,7 +274,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
             let time = Date.now()
-            this.mathIsZero = math.isZero(this.mathIsZeroArr).toString()
+            this.mathIsZero = math.isZero(math.evaluate(this.mathIsZeroArr)).toString()
             let time1 = Date.now()
             this.mathTimeIsZero = (time1 - time).toString()
             this.enabledBool = false
@@ -296,7 +297,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.mathIsPrimeArr = math.evaluate(value)
+            this.mathIsPrimeArr = value
           })
 
         Text('isPrime test')
@@ -304,7 +305,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
             let time = Date.now()
-            this.mathIsPrime = math.isPrime(this.mathIsPrimeArr).toString()
+            this.mathIsPrime = math.isPrime(math.evaluate(this.mathIsPrimeArr)).toString()
             let time1 = Date.now()
             this.mathTimeIsPrime = (time1 - time).toString()
             this.enabledBool = false
@@ -327,7 +328,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.mathIsNumericArr = math.evaluate(value)
+            this.mathIsNumericArr = value
           })
 
         Text('isNumeric test')
@@ -335,7 +336,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
             let time = Date.now()
-            this.mathIsNumeric = math.isNumeric(this.mathIsNumericArr).toString()
+            this.mathIsNumeric = math.isNumeric(math.evaluate(this.mathIsNumericArr)).toString()
             let time1 = Date.now()
             this.mathTimeIsNumeric = (time1 - time).toString()
             this.enabledBool = false
@@ -358,7 +359,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.mathIsNaNArr = math.evaluate(value)
+            this.mathIsNaNArr = value
           })
 
         Text('isNaN test')
@@ -366,7 +367,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
             let time = Date.now()
-            this.mathIsNaN = math.isNaN(this.mathIsNaNArr).toString()
+            this.mathIsNaN = math.isNaN(math.evaluate(this.mathIsNaNArr)).toString()
             let time1 = Date.now()
             this.mathTimeIsNaN = (time1 - time).toString()
             this.enabledBool = false
@@ -389,7 +390,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.mathIsIntegerArr = math.evaluate(value)
+            this.mathIsIntegerArr = value
           })
 
         Text('isInteger test')
@@ -397,7 +398,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
             let time = Date.now()
-            this.mathIsInteger = math.isInteger(this.mathIsIntegerArr).toString()
+            this.mathIsInteger = math.isInteger(math.evaluate(this.mathIsIntegerArr)).toString()
             let time1 = Date.now()
             this.mathTimeIsInteger = (time1 - time).toString()
             this.enabledBool = false
@@ -420,7 +421,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.mathHasNumericValueArr = math.evaluate(value)
+            this.mathHasNumericValueArr = value
           })
 
         Text('hasNumericValue test')
@@ -428,7 +429,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
             let time = Date.now()
-            this.mathHasNumericValue = math.hasNumericValue(this.mathHasNumericValueArr).toString()
+            this.mathHasNumericValue = math.hasNumericValue(math.evaluate(this.mathHasNumericValueArr)).toString()
             let time1 = Date.now()
             this.mathTimeHasNumericValue = (time1 - time).toString()
             this.enabledBool = false
@@ -451,7 +452,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.mathVarianceArr = math.evaluate(value)
+            this.mathVarianceArr = value
           })
 
         Text('variance test')
@@ -459,7 +460,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
             let time = Date.now()
-            this.mathVariance = math.variance(this.mathVarianceArr).toString()
+            this.mathVariance = math.variance(math.evaluate(this.mathVarianceArr)).toString()
             let time1 = Date.now()
             this.mathTimeVariance = (time1 - time).toString()
             this.enabledBool = false
@@ -482,7 +483,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.mathSumArr = math.evaluate(value)
+            this.mathSumArr = value
           })
 
         Text('sum test')
@@ -490,7 +491,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
             let time = Date.now()
-            this.mathSum = math.sum(this.mathSumArr).toString()
+            this.mathSum = math.sum(math.evaluate(this.mathSumArr)).toString()
             let time1 = Date.now()
             this.mathTimeSum = (time1 - time).toString()
             this.enabledBool = false
@@ -513,7 +514,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.mathProdArr = math.evaluate(value)
+            this.mathProdArr = value
           })
 
         Text('prod test')
@@ -521,7 +522,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
             let time = Date.now()
-            this.mathProd = math.prod(this.mathProdArr).toString()
+            this.mathProd = math.prod(math.evaluate(this.mathProdArr)).toString()
             let time1 = Date.now()
             this.mathTimeProd = (time1 - time).toString()
             this.enabledBool = false
@@ -544,7 +545,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.mathmeanArr = math.evaluate(value)
+            this.mathmeanArr = value
           })
 
         TextInput({ placeholder: '请输入数值或者不输入' })
@@ -552,7 +553,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.mathmean1 = math.evaluate(value)
+            this.mathmean1 = value
           })
 
         Text('mean test')
@@ -560,7 +561,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
             let time = Date.now()
-            this.mathmean = math.mean(this.mathmeanArr, this.mathmean1).toString()
+            this.mathmean = math.mean(math.evaluate(this.mathmeanArr), math.evaluate(this.mathmean1)).toString()
             let time1 = Date.now()
             this.mathTimemean = (time1 - time).toString()
             this.enabledBool = false
@@ -583,7 +584,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.mathmadArr = math.evaluate(value)
+            this.mathmadArr = value
           })
 
         Text('mad test')
@@ -591,7 +592,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
             let time = Date.now()
-            this.mathmad = math.mad(this.mathmadArr).toString()
+            this.mathmad = math.mad(math.evaluate(this.mathmadArr)).toString()
             let time1 = Date.now()
             this.mathTimemad = (time1 - time).toString()
             this.enabledBool = false
@@ -614,7 +615,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.mathcumsumArr = math.evaluate(value)
+            this.mathcumsumArr = value
           })
 
         Text('lusolve test')
@@ -622,7 +623,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
             let time = Date.now()
-            this.mathcumsum = math.cumsum(this.mathcumsumArr).toString()
+            this.mathcumsum = math.cumsum(math.evaluate(this.mathcumsumArr)).toString()
             let time1 = Date.now()
             this.mathTimecumsum = (time1 - time).toString()
             this.enabledBool = false
@@ -645,7 +646,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.mathusolveArr = math.evaluate(value)
+            this.mathusolveArr = value
           })
 
         TextInput({ placeholder: '请输入对称矩阵 如：[[10, 1, 10], [1, 10, 1], [10, 1, 10]]' })
@@ -653,7 +654,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.mathnumusolve = math.evaluate(value)
+            this.mathnumusolve = value
           })
 
         Text('usolve test')
@@ -661,7 +662,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
             let time = Date.now()
-            this.mathusolve = math.usolve(this.mathusolveArr, this.mathnumusolve).toString()
+            this.mathusolve = math.usolve(math.evaluate(this.mathusolveArr), math.evaluate(this.mathnumusolve)).toString()
             let time1 = Date.now()
             this.mathTimeusolve = (time1 - time).toString()
             this.enabledBool = false
@@ -770,7 +771,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.mathlusolveArr = math.evaluate(value)
+            this.mathlusolveArr = value
           })
 
         TextInput({ placeholder: '请输入数组 如：[[10, 1, 10], [1, 10, 1], [10, 1, 10]]' })
@@ -778,7 +779,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.mathnumlusolve = math.evaluate(value)
+            this.mathnumlusolve = value
           })
 
         Text('lusolve test')
@@ -786,7 +787,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
             let time = Date.now()
-            this.mathlusolve = math.lusolve(this.mathlusolveArr, this.mathnumlusolve).toString()
+            this.mathlusolve = math.lusolve(math.evaluate(this.mathlusolveArr), math.evaluate(this.mathnumlusolve)).toString()
             let time1 = Date.now()
             this.mathTimelusolve = (time1 - time).toString()
             this.enabledBool = false
@@ -810,7 +811,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.mathlsolveArr = math.evaluate(value)
+            this.mathlsolveArr = value
           })
 
         TextInput({ placeholder: '请输入数组 如：[[10, 1, 10], [1, 10, 1], [10, 1, 10]]' })
@@ -818,7 +819,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.mathnumlsolve = math.evaluate(value)
+            this.mathnumlsolve = value
           })
 
         Text('lsolve test')
@@ -826,7 +827,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
             let time = Date.now()
-            this.mathlsolve = math.lsolve(this.mathlsolveArr, this.mathnumlsolve).toString()
+            this.mathlsolve = math.lsolve(math.evaluate(this.mathlsolveArr), math.evaluate(this.mathnumlsolve)).toString()
             let time1 = Date.now()
             this.mathTimelsolve = (time1 - time).toString()
             this.enabledBool = false

@@ -32,12 +32,12 @@ struct Index {
   @State enabledBool: boolean = true
   @State message: string = 'jafama 测试'
   @State log2Value: math.BigNumber = math.bignumber(0)
-  @State acoshValue: number = 0
-  @State asinhValue: number = 0
-  @State atan2Value: number = 0
-  @State coshValue: number = 0
-  @State sinhValue: number = 0
-  @State tanhValue: number = 0
+  @State acoshValue: string = this.zerosStr
+  @State asinhValue: string = this.zerosStr
+  @State atan2Value: string = this.zerosStr
+  @State coshValue: string = this.zerosStr
+  @State sinhValue: string = this.zerosStr
+  @State tanhValue: string = this.zerosStr
   @State isEvenValue: string = this.zerosStr
   @State oddValue: string = this.zerosStr
   @State log2ValueTime: string = this.zerosStr
@@ -120,7 +120,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
             let time = Date.now()
-            this.mathPow = math.pow(Number(this.mathPow1), Number(this.mathPow2)).toString()
+            this.mathPow = math.pow(math.evaluate(this.mathPow1), math.evaluate(this.mathPow2)).toString()
             let time1 = Date.now()
             this.mathTimePow = (time1 - time).toString()
             this.enabledBool = false
@@ -151,7 +151,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
             let time = Date.now()
-            this.mathLog10 = math.log10(Number(this.mathLog101)).toString()
+            this.mathLog10 = math.log10(math.evaluate(this.mathLog101)).toString()
             let time1 = Date.now()
             this.mathTimeLog10 = (time1 - time).toString()
             this.enabledBool = false
@@ -183,7 +183,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
             let time = Date.now()
-            this.mathLog1p = math.log1p(Number(this.mathLog1p1)).toString()
+            this.mathLog1p = math.log1p(math.evaluate(this.mathLog1p1)).toString()
             let time1 = Date.now()
             this.mathTimeLog1p = (time1 - time).toString()
             this.enabledBool = false
@@ -222,7 +222,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
             let time = Date.now()
-            this.mathHypot = math.hypot(Number(this.mathHypot1), Number(this.mathHypot2)).toString()
+            this.mathHypot = math.hypot(math.evaluate(this.mathHypot1), math.evaluate(this.mathHypot2)).toString()
             let time1 = Date.now()
             this.mathTimeHypot = (time1 - time).toString()
             this.enabledBool = false
@@ -253,7 +253,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
             let time = Date.now()
-            this.mathCoshm1 = (math.cosh(Number(this.mathCoshm1)) - 1).toString()
+            this.mathCoshm1 = (math.cosh(math.evaluate(this.mathCoshm1)) - 1).toString()
             let time1 = Date.now()
             this.mathTimeCoshm1 = (time1 - time).toString()
             this.enabledBool = false
@@ -284,7 +284,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
             let time = Date.now()
-            this.mathCeil = math.ceil(Number(this.mathCeil1)).toString()
+            this.mathCeil = math.ceil(math.evaluate(this.mathCeil1)).toString()
             let time1 = Date.now()
             this.mathTimeCeil = (time1 - time).toString()
             this.enabledBool = false
@@ -315,7 +315,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
             let time = Date.now()
-            this.mathCbrt = math.cbrt(Number(this.mathCbrt1)).toString()
+            this.mathCbrt = math.cbrt(math.evaluate(this.mathCbrt1)).toString()
             let time1 = Date.now()
             this.mathTimeCbrt = (time1 - time).toString()
             this.enabledBool = false
@@ -346,7 +346,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
             let time = Date.now()
-            this.mathAtanh = math.atanh(Number(this.mathAtanh1)).toString()
+            this.mathAtanh = math.atanh(math.evaluate(this.mathAtanh1)).toString()
             let time1 = Date.now()
             this.mathTimeAtanh = (time1 - time).toString()
             this.enabledBool = false
@@ -377,7 +377,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
             let time = Date.now()
-            this.mathACosh1p = math.acosh(math.bignumber(this.mathACosh1p1)).toFixed(16)
+            this.mathACosh1p = math.acosh(math.bignumber(this.mathACosh1p1 + 1)).toString()
             let time1 = Date.now()
             this.mathTimeACosh1p = (time1 - time).toString()
             this.enabledBool = false
@@ -530,7 +530,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.mathacosh = Number(value)
+            this.mathacosh = math.evaluate(value)
           })
 
         Text('acosh测试')
@@ -540,7 +540,7 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             let time = Date.now()
-            this.acoshValue = Number(math.acosh(this.mathacosh))
+            this.acoshValue = math.acosh(this.mathacosh).toString()
             let time1 = Date.now()
             this.acoshValueTime = (time1 - time).toString()
             this.enabledBool = false
@@ -563,7 +563,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.mathasinh = Number(value)
+            this.mathasinh = value
           })
 
         Text('asinh测试')
@@ -573,7 +573,7 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             let time = Date.now()
-            this.asinhValue = Number(math.asinh(this.mathasinh))
+            this.asinhValue = math.asinh(math.evaluate(this.mathasinh)).toString()
             let time1 = Date.now()
             this.asinhValueTime = (time1 - time).toString()
             this.enabledBool = false
@@ -596,7 +596,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.mathatan1 = Number(value)
+            this.mathatan1 = value
           })
 
         TextInput({ placeholder: '请输入数值' })
@@ -604,7 +604,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.mathatan2 = Number(value)
+            this.mathatan2 = value
           })
 
         Text('atan2测试')
@@ -614,7 +614,7 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             let time = Date.now()
-            this.atan2Value = Number(math.atan2(this.mathatan1, this.mathatan2))
+            this.atan2Value = math.atan2(math.evaluate(this.mathatan1), math.evaluate(this.mathatan2)).toString()
             let time1 = Date.now()
             this.atan2ValueTime = (time1 - time).toString()
             this.enabledBool = false
@@ -637,7 +637,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.mathcosh = Number(value)
+            this.mathcosh = value
           })
 
         Text('cosh测试')
@@ -647,7 +647,7 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             let time = Date.now()
-            this.coshValue = Number(math.cosh(this.mathcosh))
+            this.coshValue = math.cosh(math.evaluate(this.mathcosh)).toString()
             let time1 = Date.now()
             this.coshValueTime = (time1 - time).toString()
             this.enabledBool = false
@@ -670,7 +670,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.mathsinh = Number(value)
+            this.mathsinh = value
           })
 
         Text('sinh测试')
@@ -680,7 +680,7 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             let time = Date.now()
-            this.sinhValue = Number(math.sinh(this.mathsinh))
+            this.sinhValue = math.sinh(math.evaluate(this.mathsinh)).toString()
             let time1 = Date.now()
             this.sinhValueTime = (time1 - time).toString()
             this.enabledBool = false
@@ -703,7 +703,7 @@ struct Index {
           .height(50)
           .fontSize(30)
           .onChange((value: string) => {
-            this.mathtanh = Number(value)
+            this.mathtanh = value
           })
 
         Text('tanh测试')
@@ -713,7 +713,7 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             let time = Date.now()
-            this.tanhValue = Number(math.tanh(this.mathtanh))
+            this.tanhValue = math.tanh(math.evaluate(this.mathtanh)).toString()
             let time1 = Date.now()
             this.tanhValueTime = (time1 - time).toString()
             this.enabledBool = false
