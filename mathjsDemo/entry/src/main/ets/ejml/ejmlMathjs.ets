@@ -44,11 +44,6 @@ struct Index {
   @State mathTimeDiag: string = this.zerosStr
   @State mathDot: string = this.zerosStr
   @State mathTimeDot: string = this.zerosStr
-  @State mathTimeEigenvectors: string = this.zerosStr
-  @State Matrix: math.MathCollection = math.matrix([[0, 0, 0], [0, 0, 0], [0, 0, 0]])
-  @State Matrix1: math.MathCollection = math.matrix([[0, 0, 0], [0, 0, 0], [0, 0, 0]])
-  @State mathEigs: string = this.zerosStr
-  @State mathTimeEigs: string = this.zerosStr
   @State mathExpm: string = this.zerosStr
   @State mathTimeExpm: string = this.zerosStr
   @State mathFft: string = this.zerosStr
@@ -75,8 +70,6 @@ struct Index {
   @State mathTimeSize: string = this.zerosStr
   @State mathSort: string = this.zerosStr
   @State mathTimeSort: string = this.zerosStr
-  @State mathSqrtm: string = this.zerosStr
-  @State mathTimeSqrtm: string = this.zerosStr
   @State mathSqueeze: string = this.zerosStr
   @State mathTimeSqueeze: string = this.zerosStr
   @State mathSubset: string = this.zerosStr
@@ -88,10 +81,10 @@ struct Index {
   @State mathTimeQr: string = this.zerosStr
   @State qrMatrix: math.QRDecomposition = math.qr([[0, 0, 0], [0, 0, 0], [0, 0, 0]])
   @State mathTime: string = this.zerosStr
-  @State sparseMatrix: math.Matrix = math.matrix([[0, 0, 0], [0, 0, 0], [0, 0, 0]])
-  @State SymmetricMatrix2: math.Matrix = math.matrix([[0, 0, 0], [0, 0, 0], [0, 0, 0]])
-  @State getMatrix: math.Matrix = math.matrix([[0, 0, 0], [0, 0, 0], [0, 0, 0]])
-  @State setMatrix: math.Matrix = math.matrix([[0, 0, 0], [0, 0, 0], [0, 0, 0]])
+  @State sparseMatrix: math.Matrix = math.matrix([[1, 2], [3, 4]])
+  @State SymmetricMatrix2: math.Matrix = math.matrix([[10, 1, 10], [1, 10, 1], [10, 1, 10]])
+  @State getMatrix: any = this.sparseMatrix.get([1, 0])
+  @State setMatrix: any = this.sparseMatrix.set([0, 1], 5)
   arrays = '[[10, 1, 10], [1, 10, 1], [10, 1, 10]]'
   SymmetricMatrixQr = this.arrays
   mathZeros1 = '1'
@@ -99,9 +92,9 @@ struct Index {
   mathTrace1 = this.arrays
   mathSubset1 = this.arrays
   mathSubset2 = '0'
+  mathSubset3 = '0'
   mathSqueeze1 = this.arrays
-  mathSqrtm1 = this.arrays
-  mathSort1 = this.arrays
+  mathSort1 = '[5, 10, 1]'
   mathSize1 = this.arrays
   mathRow1 = this.arrays
   mathRow2 = '0'
@@ -111,38 +104,34 @@ struct Index {
   mathReshape1 = this.arrays
   mathnumReshape: number[] = [1, 1]
   mathRange1 = '1'
-  mathRange2 = '0'
+  mathRange2 = '2'
   mathOnes1 = '1'
   mathOnes2 = '0'
   mathKron1 = this.arrays
   mathkron2 = this.arrays
-  mathInv1 = this.arrays
+  mathInv1 = '[[1, 2], [3, 4]]'
   mathIdentity1 = this.arrays
   mathnumIdentity
   mathFlatten1 = this.arrays
-  mathFft1 = this.arrays
+  mathFft1 = '[[1, 0], [1, 0]]'
   mathExpm1 = this.arrays
-  mathEigs1 = this.arrays
-  mathnumEigs
-  SymmetricMatrix = this.arrays
-  mathDot1 = this.arrays
-  mathnumDot = this.arrays
+  mathDot1 = '[2, 4, 1]'
+  mathnumDot = '[2, 2, 3]'
   mathDiag1 = this.arrays
-  mathDet1 = this.arrays
-  mathCross1 = this.arrays
-  mathnumCross = this.arrays
+  mathDet1 = '[[1, 2], [3, 4]]'
+  mathCross1 = '[1, 1, 0]'
+  mathnumCross =  '[0, 1, 1]'
   mathCount1 = this.arrays
   mathConcat1 = this.arrays
   mathnumConcat = this.arrays
   mathColumn1 = this.arrays
-  mathnumColumn
+  mathnumColumn = '1'
   mathApply1 = this.arrays
-  mathnumApply
+  mathnumApply = '1'
   SymmetricMatrixSparse = this.arrays
-  SymmetricMatrix1 = '[0, 2]'
-  getMatrix2 = '[0, 2]'
-  setMatrix2 = '[0, 2]'
-  setMatrixIndex = '[0, 2]'
+  getMatrix2 = [0, 2]
+  setMatrix2 = [0, 2]
+  setMatrixIndex = 5
 
   build() {
     Scroll(this.scroller) {
@@ -278,12 +267,20 @@ struct Index {
             this.mathSubset2 = value
           })
 
+        TextInput({ placeholder: '请输数值' })
+          .caretColor(Color.Blue)
+          .height(50)
+          .fontSize(30)
+          .onChange((value: string) => {
+            this.mathSubset3 = value
+          })
+
         Text('subset test')
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
             let time = Date.now()
-            this.mathSubset = math.subset(math.evaluate(this.mathSubset1), math.evaluate(this.mathSubset2)).toString()
+            this.mathSubset = math.subset(math.evaluate(this.mathSubset1),  math.index(math.evaluate(this.mathSubset2),math.evaluate(this.mathSubset3))).toString()
             let time1 = Date.now()
             this.mathTimeSubset = (time1 - time).toString()
             this.enabledBool = false
@@ -329,37 +326,6 @@ struct Index {
           .fontWeight(FontWeight.Bold)
 
         Text("时间：" + this.mathTimeSqueeze)
-          .fontSize(20)
-          .fontWeight(FontWeight.Bold)
-
-        TextInput({ placeholder: '请输入对称矩阵 如： [[10, 1, 10], [1, 10, 1], [10, 1, 10]]' })
-          .caretColor(Color.Blue)
-          .height(50)
-          .fontSize(30)
-          .onChange((value: string) => {
-            this.mathSqrtm1 = value
-          })
-
-        Text('sqrtm test')
-          .fontSize(50)
-          .fontWeight(FontWeight.Bold)
-          .onClick(() => {
-            let time = Date.now()
-            this.mathSqrtm = math.sqrtm(math.evaluate(this.mathSqrtm1)).toString()
-            let time1 = Date.now()
-            this.mathTimeSqrtm = (time1 - time).toString()
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
-          })
-          .enabled(this.enabledBool)
-
-        Text("结果：" + this.mathSqrtm)
-          .fontSize(20)
-          .fontWeight(FontWeight.Bold)
-
-        Text("时间：" + this.mathTimeSqrtm)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
@@ -847,83 +813,6 @@ struct Index {
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入对称矩阵 如： [[10, 1, 10], [1, 10, 1], [10, 1, 10]]' })
-          .caretColor(Color.Blue)
-          .height(50)
-          .fontSize(30)
-          .onChange((value: string) => {
-            this.mathEigs1 = value
-          })
-
-        TextInput({ placeholder: '输入任意实数或者不输入' })
-          .caretColor(Color.Blue)
-          .height(50)
-          .fontSize(30)
-          .onChange((value: string) => {
-            this.mathnumEigs = value
-          })
-
-        Text('eigs test')
-          .fontSize(50)
-          .fontWeight(FontWeight.Bold)
-          .onClick(() => {
-            let time = Date.now()
-            this.mathEigs = math.eigs(math.evaluate(this.mathEigs1), math.evaluate(this.mathnumEigs)).toString()
-            let time1 = Date.now()
-            this.mathTimeEigs = (time1 - time).toString()
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
-          })
-          .enabled(this.enabledBool)
-
-        Text("结果：" + this.mathEigs)
-          .fontSize(20)
-          .fontWeight(FontWeight.Bold)
-
-        Text("时间：" + this.mathTimeEigs)
-          .fontSize(20)
-          .fontWeight(FontWeight.Bold)
-
-        TextInput({ placeholder: '请输入对称矩阵 如：[[10, 1, 10], [1, 10, 1], [10, 1, 10]]' })
-          .caretColor(Color.Blue)
-          .height(50)
-          .fontSize(30)
-          .onChange((value) => {
-            this.SymmetricMatrix = value
-          })
-
-        Text('eigenvectors')
-          .fontSize(16)
-          .margin({ top: 32 })
-          .padding(8)
-          .border({ width: 2, color: '#535353', radius: 6 })
-          .onClick(() => {
-            let time = Date.now()
-            let eigMatrix = math.matrix(math.evaluate(this.SymmetricMatrix));
-            this.Matrix = math.eigs(eigMatrix).values
-            this.Matrix1 = math.eigs(eigMatrix).vectors
-            let time1 = Date.now()
-            this.mathTimeEigenvectors = (time1 - time).toString()
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
-          })
-          .enabled(this.enabledBool)
-
-        Text('values: ' + JSON.stringify(this.Matrix))
-          .fontSize(20)
-          .fontWeight(FontWeight.Bold)
-
-        Text('vectors: ' + JSON.stringify(this.Matrix1))
-          .fontSize(20)
-          .fontWeight(FontWeight.Bold)
-
-        Text("时间：" + this.mathTimeEigenvectors)
-          .fontSize(20)
-          .fontWeight(FontWeight.Bold)
 
         TextInput({ placeholder: '请输入对称矩阵 如： [[10, 1, 10], [1, 10, 1], [10, 1, 10]]' })
           .caretColor(Color.Blue)
@@ -1259,41 +1148,20 @@ struct Index {
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入对称矩阵 如： [10, 1, 10]' })
+        TextInput({ placeholder: '请输入数值' })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
           .onChange((value) => {
-            this.SymmetricMatrix1 = value
+            this.getMatrix2[0] = Number(value)
           })
 
-        Text('获取矩阵的子集')
-          .fontSize(16)
-          .margin({ top: 32 })
-          .padding(8)
-          .border({ width: 2, color: '#535353', radius: 6 })
-          .onClick(() => {
-            let time = Date.now()
-            this.SymmetricMatrix2 = this.sparseMatrix.subset(math.index(...math.evaluate(this.SymmetricMatrix1)));
-            let time1 = Date.now()
-            this.mathTime = (time1 - time).toString()
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
-          })
-          .enabled(this.enabledBool)
-
-        Text('获取矩阵的子集: ' + JSON.stringify(this.SymmetricMatrix2.valueOf()))
-          .fontSize(20)
-          .fontWeight(FontWeight.Bold)
-
-        TextInput({ placeholder: '请输入对称矩阵 如： [10, 1, 10]' })
+        TextInput({ placeholder: '请输入数值' })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
           .onChange((value) => {
-            this.getMatrix2 = value
+            this.getMatrix2[1] = Number(value)
           })
 
         Text('从矩阵中获取单个元素')
@@ -1303,7 +1171,7 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             let time = Date.now()
-            this.getMatrix = this.sparseMatrix.get(math.evaluate(this.getMatrix2));
+            this.getMatrix = this.sparseMatrix.get(this.getMatrix2);
             let time1 = Date.now()
             this.mathTime = (time1 - time).toString()
             this.enabledBool = false
@@ -1313,24 +1181,32 @@ struct Index {
           })
           .enabled(this.enabledBool)
 
-        Text('获取矩阵的子集: ' + JSON.stringify(this.getMatrix.valueOf()))
+        Text('获取矩阵的单个元素: ' + JSON.stringify(this.getMatrix))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入对称矩阵 如：  [10, 1, 10]' })
+        TextInput({ placeholder: '请输入数值' })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
           .onChange((value) => {
-            this.setMatrix2 = value
+            this.setMatrix2[0] = Number(value)
           })
 
-        TextInput({ placeholder: '请输入对称矩阵 如：  [10, 1, 10]' })
+        TextInput({ placeholder: '请输入数值' })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
           .onChange((value) => {
-            this.setMatrixIndex = value
+            this.setMatrix2[1] = Number(value)
+          })
+
+        TextInput({ placeholder: '请输入数值' })
+          .caretColor(Color.Blue)
+          .height(50)
+          .fontSize(30)
+          .onChange((value) => {
+            this.setMatrixIndex = Number(value)
           })
 
         Text('替换矩阵中的单个元素')
@@ -1340,7 +1216,7 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             let time = Date.now()
-            this.setMatrix = this.sparseMatrix.set(math.evaluate(this.setMatrix2), math.evaluate(this.setMatrixIndex));
+            this.setMatrix = this.sparseMatrix.set(this.setMatrix2, this.setMatrixIndex);
             let time1 = Date.now()
             this.mathTime = (time1 - time).toString()
             this.enabledBool = false
@@ -1350,7 +1226,7 @@ struct Index {
           })
           .enabled(this.enabledBool)
 
-        Text('获取矩阵的子集: ' + JSON.stringify(this.setMatrix.valueOf()))
+        Text('替换后的矩阵: ' + JSON.stringify(this.setMatrix.valueOf()))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
