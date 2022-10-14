@@ -1,0 +1,22 @@
+{
+	"license": "ISC",
+	"devDependencies": {},
+	"name": "entry",
+	"ohos": {
+		"org": "huawei",
+		"directoryLevel": "module",
+		"buildTool": "hvigor"
+	},
+	"description": "example description",
+	"repository": {},
+	"version": "1.0.0",
+	"dependencies": {
+		"@stdlib/math-base-special": "0.0.5",
+		"ml-matrix": "^6.10.2",
+		"@stdlib/math-base-special-fast": "0.0.6",
+		"bignumber.js": "^9.1.0",
+		"mathjs": "^11.2.0",
+		"long": "^5.2.0",
+		"@stdlib/math-base-assert": "0.0.6"
+	}
+}
