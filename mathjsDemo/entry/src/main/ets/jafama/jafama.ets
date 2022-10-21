@@ -253,7 +253,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
             let time = Date.now()
-            this.mathCoshm1 = (math.cosh(math.evaluate(this.mathCoshm1)) - 1).toString()
+            this.mathCoshm1 = (math.cosh(math.evaluate(this.mathCoshm)) - 1).toString()
             let time1 = Date.now()
             this.mathTimeCoshm1 = (time1 - time).toString()
             this.enabledBool = false
