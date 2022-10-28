@@ -1,0 +1,18 @@
+{
+	"license": "MIT license",
+	"devDependencies": {
+		"@types/xml2js": "^0.4.11"
+	},
+	"name": "entry",
+	"ohos": {
+		"org": "huawei",
+		"directoryLevel": "module",
+		"buildTool": "hvigor"
+	},
+	"description": "example description",
+	"repository": {},
+	"version": "1.0.0",
+	"dependencies": {
+		"xml2js": "^0.4.23"
+	}
+}
