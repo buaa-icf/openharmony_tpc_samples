@@ -1,4 +1,4 @@
-# AhoCorasickETS 
+# ahocorasick 
 
 ## 简介
 
@@ -6,21 +6,21 @@
 
 ## 安装
 
-```ets
-`npm install ahocorasick`
+```
+`npm install ahocorasick --save`
 ```
 OpenHarmony npm环境配置等更多内容，请参考 [如何安装OpenHarmony npm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_npm_usage.md) 。
 
 ## 使用说明
 
-```ets
+```
 // @ts-ignore
 var AhoCorasick = require('ahocorasick');
 var ac = new AhoCorasick(['keyword1', 'keyword2', 'etc']);
 var results = ac.search('should find keyword1 at position 19 and keyword2 at position 47.');
 ```
 
-```ets
+```
 运行结果：[ [ 19, [ 'keyword1' ] ], [ 47, [ 'keyword2' ] ] ]
 ```
 
@@ -29,15 +29,14 @@ var results = ac.search('should find keyword1 at position 19 and keyword2 at pos
 
 ## 目录结构
 ````
-|---- AhoCorasickETS  
+|---- ahocorasick  
 |     |---- entry  # 示例代码文件夹
-|     |---- AhoCorasickETS  # AhoCorasickETS库文件夹
 |           |---- index.ets  # 对外接口
-|     |---- README.MD  # 安装使用方法                    
+|     |---- README.md  # 安装使用方法                    
 ````
 
 ## 贡献代码
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/AhoCorasickETS/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/VCard/pulls) 。
+使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
 ## 开源协议
-本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/AhoCorasickETS/blob/master/LICENSE) ，请自由地享受和参与开源。
+本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ahocorasick/LICENSE) ，请自由地享受和参与开源。
