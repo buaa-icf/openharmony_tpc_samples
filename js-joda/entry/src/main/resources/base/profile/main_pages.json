@@ -1,0 +1,10 @@
+{
+  "src": [
+    "pages/index",
+    "pages/second",
+    "pages/third",
+    "pages/fourth",
+    "pages/fifth",
+    "pages/sixth"
+  ]
+}

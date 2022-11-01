@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "js-joda",
+        "License": "BSD License",
+        "License File": "https://github.com/js-joda/js-joda/blob/main/LICENSE",
+        "Version Number": "v2.2.1",
+        "Owner":"js-joda",
+        "Upstream URL": "https://github.com/js-joda/js-joda",
+        "Description": "Immutable date and time library for javascript"
+    }
+]

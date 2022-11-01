@@ -1,0 +1,172 @@
+/**
+ * Copyright (C) 2022 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import { ChronoField, ChronoUnit, DayOfWeek, LocalDate, Month, Period, TemporalAdjusters, } from '@js-joda/core'
+import '@js-joda/timezone'
+import router from '@ohos.router';
+
+@Entry
+@Component
+struct Index {
+  @State message: string = ''
+
+  build() {
+    Row() {
+      Scroll() {
+        Column() {
+          Button('本地日期测试', { type: ButtonType.Capsule, stateEffect: true })
+            .backgroundColor(0x317aff)
+            .width(240)
+            .onClick(() => {
+              this.message = testLocalDate();
+            })
+
+          Text(this.message)
+            .fontSize(20)
+            .margin(10)
+            .fontColor(Color.Blue)
+
+          Button('下一页', { type: ButtonType.Capsule, stateEffect: true })
+            .backgroundColor(0x317aff)
+            .width(240)
+            .onClick(() => {
+              router.push({ url: 'pages/second' })
+            })
+        }
+      }
+      .width('100%')
+    }
+    .height('100%')
+  }
+}
+
+// 测试本地日期
+function testLocalDate(): string {
+  // 获取当前日期
+  console.log(LocalDate.now().toString());
+  // 解析日期2022-07-21
+  var mDate = LocalDate.parse("2022-07-21");
+  console.info(mDate.toString());
+  // 当前日期时半月的第几天:21
+  console.info(mDate.dayOfMonth().toString());
+  // 当前月份:JULY
+  console.info(mDate.month().toString());
+  // 当前月份对应的值:7
+  console.info(mDate.monthValue().toString());
+  // 当前年份:2022
+  console.info(mDate.year().toString());
+  // 当前日期是周几:THURSDAY
+  console.info(mDate.dayOfWeek().toString());
+  // 当前日期是周几对应的值:4
+  console.info(mDate.dayOfWeek().value().toString());
+  // 当前日期是一年中的第几天:202
+  console.info(mDate.dayOfYear().toString());
+  // 当前年根是否为闰年:false
+  console.log(mDate.isLeapYear() + '');
+  // 当前月有多少天:31
+  console.info(mDate.lengthOfMonth().toString());
+  // 当前年有多少天:365
+  console.info(mDate.lengthOfYear().toString());
+  // 当前日期在一年中的第几周：29
+  console.info(mDate.get(ChronoField.ALIGNED_WEEK_OF_YEAR).toString());
+
+
+  // ******************************************日期计算******************************************
+  // 当前日期加上366天:2023-07-22
+  console.info(mDate.plusDays(366).toString());
+  // 当前日期减去366天：2021-7-20
+  console.info(mDate.minusDays(366).toString());
+  // 当前日期添加12个月：2023-07-21
+  console.info(mDate.plusMonths(12).toString());
+  // 当前日期减去12个月：2021-07-21
+  console.info(mDate.minusMonths(12).toString());
+  // 当前日期添加4周：2022-08-18
+  console.info(mDate.plusWeeks(4).toString());
+  // 当前日期减去4周：2022-06-23
+  console.info(mDate.minusWeeks(4).toString());
+  // 当前日期添加一年：2023-07-21
+  console.info(mDate.plusYears(1).toString());
+  // 当前日期减去一年：2021-07-21
+  console.info(mDate.minusYears(1).toString());
+  // 当前日期加上一个月零3天：2022-08-24
+  console.info(mDate.plus(Period.ofMonths(1).plusDays(3)).toString());
+  // 当前日期减去一个月零3天：2022-06-18
+  console.info(mDate.minus(Period.ofMonths(1).plusDays(3)).toString());
+  // 当前日期设置为1号：2022-07-01
+  console.info(mDate.withDayOfMonth(1).toString());
+  // 当前月和日期设置成1：2022-01-01
+  console.info(mDate.withMonth(1).withDayOfMonth(1).toString());
+  // 当前月设置成指定月份，日期设置为1:2022-11-01
+  console.info(mDate.withMonth(Month.NOVEMBER).withDayOfMonth(1).toString());
+  // 当前月份设置为1:0001-07-21
+  console.info(mDate.withYear(1).toString());
+  // 当前月最后一天
+  console.log(LocalDate.now()
+    .plusMonths(1)
+    .withDayOfMonth(1)
+    .minusDays(1)
+    .toString());
+  // 本年的第42天：2022-02-11
+  console.info(mDate.withDayOfYear(42).toString());
+
+  var mDate1 = LocalDate.parse("2022-07-25");
+  var mDate2 = mDate1.plusDays(2);
+  // 判断两个日期前后：false true
+  console.info(mDate1.isAfter(mDate2) + '');
+  console.info(mDate1.isBefore(mDate2) + '');
+  // 判断两个日期是否相等 false
+  console.info(mDate1.equals(mDate2) + '');
+  // 判断两个日期间的间隔时间：P2D
+  console.info(mDate1.until(mDate2).toString());
+  // 判断两个日期间的间隔时间：2
+  console.info(mDate1.until(mDate2, ChronoUnit.DAYS).toString());
+  // 获取测试月的第一天：2022-07-01
+  console.info(mDate1.with(TemporalAdjusters.firstDayOfMonth()).toString());
+  // 获取测试月的最后一天：2022-07-31
+  console.info(mDate1.with(TemporalAdjusters.lastDayOfMonth()).toString());
+  // 获取不小于测试日期的下一个周日日期：2022-07-31
+  console.info(mDate1.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY)).toString());
+  // 获取测试月份最后一个周日的日期：2022-07-31
+  console.info(mDate1.with(TemporalAdjusters.lastInMonth(DayOfWeek.SUNDAY)).toString());
+
+  return "解析给定日期： " + mDate.toString() + '\n' +
+  "给定日期是当月第几天： " + mDate.dayOfMonth().toString() + '\n' +
+  "给定日期月份： " + mDate.month().toString() + '\n' +
+  "给定月份的值： " + mDate.monthValue().toString() + '\n' +
+  "给定日期年份： " + mDate.year().toString() + '\n' +
+  "给定日期是周几: " + mDate.dayOfWeek().toString() + '\n' +
+  "给定日期是周几数字值： " + mDate.dayOfWeek().value().toString() + '\n' +
+  "给定日期是一年中的第几天： " + mDate.dayOfYear().toString() + '\n' +
+  "给定年份是否是闰年： " + mDate.isLeapYear() + '\n' +
+  "给定月份有多少天： " + mDate.lengthOfMonth().toString() + '\n' +
+  "给定年份有多少天： " + mDate.lengthOfYear().toString() + '\n' +
+  "给定日期在一年中的第几周： " + mDate.get(ChronoField.ALIGNED_WEEK_OF_YEAR).toString() + '\n' +
+  "给定日期加366天： " + mDate.plusDays(366).toString() + '\n' +
+  "给定日期减去366天： " + mDate.minusDays(366).toString() + '\n' +
+  "给定日期加上12个月： " + mDate.plusMonths(12).toString() + '\n' +
+  "给定日期减去12个月： " + mDate.minusMonths(12).toString() + '\n' +
+  "给定日期加上4周： " + mDate.plusWeeks(4).toString() + '\n' +
+  "给定日期减去4周： " + mDate.minusWeeks(4).toString() + '\n' +
+  "给定日期加上1年： " + mDate.plusYears(1).toString() + '\n' +
+  "给定日期减去1年： " + mDate.minusYears(1).toString() + '\n' +
+  "给定日期加上一个月零三天： " + mDate.plus(Period.ofMonths(1).plusDays(3)).toString() + '\n' +
+  "给定日期减去一个月零三天： " + mDate.minus(Period.ofMonths(1).plusDays(3)).toString() + '\n' +
+  "给定日期的日期设置成1： " + mDate.withDayOfMonth(1).toString() + '\n' +
+  "给定日期的月份和日期设置成1： " + mDate.withMonth(1).withDayOfMonth(1).toString() + '\n' +
+  "给定年份的第42天： " + mDate.withDayOfYear(42).toString() + '\n' +
+  "给定月份的第一天： " + mDate.with(TemporalAdjusters.firstDayOfMonth()).toString() + '\n' +
+  "获取当前日期： " + LocalDate.now().toString() + '\n' +
+  "获取月份最后一天： " + LocalDate.now().plusMonths(1).withDayOfMonth(1).minusDays(1).toString();
+}
