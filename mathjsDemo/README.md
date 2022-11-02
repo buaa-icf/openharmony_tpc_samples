@@ -110,6 +110,28 @@
 更多使用方法请参照：https://stdlib.io/docs/api/atest
 
 
+## 目录
+
+```
+/mathjsDemo # demo代码
+|—— entry
+├── src     
+│   └── main
+│   	└── ets
+│   	    └── Application
+│   	    └── MainAbility
+│   	    └── crcalc
+│   	        └── crcalc.ets         # mathjs大数据运算界面
+│   	    └── ejml
+│   	        └── ejml.ets           # matrix矩阵界面
+│   	        └── ejmlMathjs.ets     # mathjs矩阵界面
+│   	    └── jafama
+│   	        └── jafama.ets         # mathjs三角函数界面
+│   	    └── mathjs
+│   	        └── mathjs.ets         # mathjs位运算及数值判断界面
+│   	    └── pages
+│       	    └── index.ets          # mathjs示例首页
+```
 
 ## 兼容性
 支持 OpenHarmony API version 9 及以上版本。
