@@ -132,7 +132,7 @@ function (value, name){
 │   	    └── Application
 │   	    └── MainAbility
 │   	    └── pages
-│       	    └── index.ets  # zip压缩/解压实例界面
+│       	    └── index.ets  # 解析 XML示例首页
 │   	        └── processingAttribute.ets  # 简单解析 xml
 │       	    └── promiseUsage.ets  # 使用promiseUsage方法解析
 │       	    └── simpleParseXml.ets  # 构建xml

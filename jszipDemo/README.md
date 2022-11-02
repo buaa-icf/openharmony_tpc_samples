@@ -223,7 +223,7 @@ jsZipUnEncryption(unpassword: string) {
 
 ## 开源协议
 
-本项目基于 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/jszipDemo/LICENSE ) ，请自由地享受和参与开源。
+本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/jszipDemo/LICENSE ) ，请自由地享受和参与开源。
 
 ## 贡献代码
 
