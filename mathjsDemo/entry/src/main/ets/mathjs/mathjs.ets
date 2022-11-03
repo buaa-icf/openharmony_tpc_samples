@@ -28,7 +28,6 @@ function routerfun(url) {
 struct Index {
   scroller: Scroller = new Scroller()
   zerosStr = '0'
-  @State enabledBool: boolean = true
   @State message: string = 'mathjs 测试'
   @State mathlsolve: string = this.zerosStr
   @State mathTimelsolve: string = this.zerosStr
@@ -133,16 +132,15 @@ struct Index {
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
-            let time = Date.now()
-            this.bitwiseMath = math.bitAnd(math.evaluate(this.mathBitwise), math.evaluate(this.mathnum)).toString()
-            let time1 = Date.now()
-            this.mathTimeBitwise = (time1 - time).toString()
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              let time = Date.now()
+              this.bitwiseMath = math.bitAnd(math.evaluate(this.mathBitwise), math.evaluate(this.mathnum)).toString()
+              let time1 = Date.now()
+              this.mathTimeBitwise = (time1 - time).toString()
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text("结果：" + this.bitwiseMath)
           .fontSize(20)
@@ -164,16 +162,15 @@ struct Index {
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
-            let time = Date.now()
-            this.mathbitNot = math.bitNot(math.evaluate(this.mathapplybitNot)).toString()
-            let time1 = Date.now()
-            this.mathTimebitNot = (time1 - time).toString()
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              let time = Date.now()
+              this.mathbitNot = math.bitNot(math.evaluate(this.mathapplybitNot)).toString()
+              let time1 = Date.now()
+              this.mathTimebitNot = (time1 - time).toString()
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathbitNot)
           .fontSize(20)
@@ -203,16 +200,15 @@ struct Index {
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
-            let time = Date.now()
-            this.mathbitOr = math.bitOr(math.evaluate(this.mathapplybitOr), math.evaluate(this.mathapplybitOr1)).toString()
-            let time1 = Date.now()
-            this.mathTimebitOr = (time1 - time).toString()
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              let time = Date.now()
+              this.mathbitOr = math.bitOr(math.evaluate(this.mathapplybitOr), math.evaluate(this.mathapplybitOr1)).toString()
+              let time1 = Date.now()
+              this.mathTimebitOr = (time1 - time).toString()
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathbitOr)
           .fontSize(20)
@@ -242,16 +238,15 @@ struct Index {
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
-            let time = Date.now()
-            this.mathbitXor = math.bitXor(math.evaluate(this.mathapplybitXor), math.evaluate(this.mathapplybitXor1)).toString()
-            let time1 = Date.now()
-            this.mathTimebitXor = (time1 - time).toString()
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              let time = Date.now()
+              this.mathbitXor = math.bitXor(math.evaluate(this.mathapplybitXor), math.evaluate(this.mathapplybitXor1)).toString()
+              let time1 = Date.now()
+              this.mathTimebitXor = (time1 - time).toString()
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathbitXor)
           .fontSize(20)
@@ -273,16 +268,15 @@ struct Index {
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
-            let time = Date.now()
-            this.mathIsZero = math.isZero(math.evaluate(this.mathIsZeroArr)).toString()
-            let time1 = Date.now()
-            this.mathTimeIsZero = (time1 - time).toString()
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              let time = Date.now()
+              this.mathIsZero = math.isZero(math.evaluate(this.mathIsZeroArr)).toString()
+              let time1 = Date.now()
+              this.mathTimeIsZero = (time1 - time).toString()
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathIsZero)
           .fontSize(20)
@@ -304,16 +298,15 @@ struct Index {
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
-            let time = Date.now()
-            this.mathIsPrime = math.isPrime(math.evaluate(this.mathIsPrimeArr)).toString()
-            let time1 = Date.now()
-            this.mathTimeIsPrime = (time1 - time).toString()
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              let time = Date.now()
+              this.mathIsPrime = math.isPrime(math.evaluate(this.mathIsPrimeArr)).toString()
+              let time1 = Date.now()
+              this.mathTimeIsPrime = (time1 - time).toString()
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathIsPrime)
           .fontSize(20)
@@ -335,16 +328,15 @@ struct Index {
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
-            let time = Date.now()
-            this.mathIsNumeric = math.isNumeric(math.evaluate(this.mathIsNumericArr)).toString()
-            let time1 = Date.now()
-            this.mathTimeIsNumeric = (time1 - time).toString()
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              let time = Date.now()
+              this.mathIsNumeric = math.isNumeric(math.evaluate(this.mathIsNumericArr)).toString()
+              let time1 = Date.now()
+              this.mathTimeIsNumeric = (time1 - time).toString()
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathIsNumeric)
           .fontSize(20)
@@ -366,16 +358,15 @@ struct Index {
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
-            let time = Date.now()
-            this.mathIsNaN = math.isNaN(math.evaluate(this.mathIsNaNArr)).toString()
-            let time1 = Date.now()
-            this.mathTimeIsNaN = (time1 - time).toString()
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              let time = Date.now()
+              this.mathIsNaN = math.isNaN(math.evaluate(this.mathIsNaNArr)).toString()
+              let time1 = Date.now()
+              this.mathTimeIsNaN = (time1 - time).toString()
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathIsNaN)
           .fontSize(20)
@@ -397,16 +388,15 @@ struct Index {
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
-            let time = Date.now()
-            this.mathIsInteger = math.isInteger(math.evaluate(this.mathIsIntegerArr)).toString()
-            let time1 = Date.now()
-            this.mathTimeIsInteger = (time1 - time).toString()
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              let time = Date.now()
+              this.mathIsInteger = math.isInteger(math.evaluate(this.mathIsIntegerArr)).toString()
+              let time1 = Date.now()
+              this.mathTimeIsInteger = (time1 - time).toString()
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathIsInteger)
           .fontSize(20)
@@ -428,16 +418,15 @@ struct Index {
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
-            let time = Date.now()
-            this.mathHasNumericValue = math.hasNumericValue(math.evaluate(this.mathHasNumericValueArr)).toString()
-            let time1 = Date.now()
-            this.mathTimeHasNumericValue = (time1 - time).toString()
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              let time = Date.now()
+              this.mathHasNumericValue = math.hasNumericValue(math.evaluate(this.mathHasNumericValueArr)).toString()
+              let time1 = Date.now()
+              this.mathTimeHasNumericValue = (time1 - time).toString()
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathHasNumericValue)
           .fontSize(20)
@@ -459,16 +448,15 @@ struct Index {
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
-            let time = Date.now()
-            this.mathVariance = math.variance(math.evaluate(this.mathVarianceArr)).toString()
-            let time1 = Date.now()
-            this.mathTimeVariance = (time1 - time).toString()
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              let time = Date.now()
+              this.mathVariance = math.variance(math.evaluate(this.mathVarianceArr)).toString()
+              let time1 = Date.now()
+              this.mathTimeVariance = (time1 - time).toString()
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathVariance)
           .fontSize(20)
@@ -490,16 +478,15 @@ struct Index {
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
-            let time = Date.now()
-            this.mathSum = math.sum(math.evaluate(this.mathSumArr)).toString()
-            let time1 = Date.now()
-            this.mathTimeSum = (time1 - time).toString()
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              let time = Date.now()
+              this.mathSum = math.sum(math.evaluate(this.mathSumArr)).toString()
+              let time1 = Date.now()
+              this.mathTimeSum = (time1 - time).toString()
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathSum)
           .fontSize(20)
@@ -521,16 +508,15 @@ struct Index {
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
-            let time = Date.now()
-            this.mathProd = math.prod(math.evaluate(this.mathProdArr)).toString()
-            let time1 = Date.now()
-            this.mathTimeProd = (time1 - time).toString()
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              let time = Date.now()
+              this.mathProd = math.prod(math.evaluate(this.mathProdArr)).toString()
+              let time1 = Date.now()
+              this.mathTimeProd = (time1 - time).toString()
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathProd)
           .fontSize(20)
@@ -560,16 +546,15 @@ struct Index {
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
-            let time = Date.now()
-            this.mathmean = math.mean(math.evaluate(this.mathmeanArr), math.evaluate(this.mathmean1)).toString()
-            let time1 = Date.now()
-            this.mathTimemean = (time1 - time).toString()
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              let time = Date.now()
+              this.mathmean = math.mean(math.evaluate(this.mathmeanArr), math.evaluate(this.mathmean1)).toString()
+              let time1 = Date.now()
+              this.mathTimemean = (time1 - time).toString()
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathmean)
           .fontSize(20)
@@ -591,16 +576,15 @@ struct Index {
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
-            let time = Date.now()
-            this.mathmad = math.mad(math.evaluate(this.mathmadArr)).toString()
-            let time1 = Date.now()
-            this.mathTimemad = (time1 - time).toString()
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              let time = Date.now()
+              this.mathmad = math.mad(math.evaluate(this.mathmadArr)).toString()
+              let time1 = Date.now()
+              this.mathTimemad = (time1 - time).toString()
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathmad)
           .fontSize(20)
@@ -622,16 +606,15 @@ struct Index {
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
-            let time = Date.now()
-            this.mathcumsum = math.cumsum(math.evaluate(this.mathcumsumArr)).toString()
-            let time1 = Date.now()
-            this.mathTimecumsum = (time1 - time).toString()
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              let time = Date.now()
+              this.mathcumsum = math.cumsum(math.evaluate(this.mathcumsumArr)).toString()
+              let time1 = Date.now()
+              this.mathTimecumsum = (time1 - time).toString()
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathcumsum)
           .fontSize(20)
@@ -661,16 +644,15 @@ struct Index {
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
-            let time = Date.now()
-            this.mathusolve = math.usolve(math.evaluate(this.mathusolveArr), math.evaluate(this.mathnumusolve)).toString()
-            let time1 = Date.now()
-            this.mathTimeusolve = (time1 - time).toString()
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              let time = Date.now()
+              this.mathusolve = math.usolve(math.evaluate(this.mathusolveArr), math.evaluate(this.mathnumusolve)).toString()
+              let time1 = Date.now()
+              this.mathTimeusolve = (time1 - time).toString()
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathusolve)
           .fontSize(20)
@@ -700,16 +682,15 @@ struct Index {
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
-            let time = Date.now()
-            this.mathsimplifyConstant = math.simplifyConstant(this.mathsimplifyConstantStr, this.mathnumsimplifyConstant).toString()
-            let time1 = Date.now()
-            this.mathTimesimplifyConstant = (time1 - time).toString()
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              let time = Date.now()
+              this.mathsimplifyConstant = math.simplifyConstant(this.mathsimplifyConstantStr, this.mathnumsimplifyConstant).toString()
+              let time1 = Date.now()
+              this.mathTimesimplifyConstant = (time1 - time).toString()
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathsimplifyConstant)
           .fontSize(20)
@@ -747,16 +728,15 @@ struct Index {
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
-            let time = Date.now()
-            this.mathsimplify = math.simplify(this.mathsimplifyStr, this.mathnumsimplify, this.mathnumsimplify1).toString()
-            let time1 = Date.now()
-            this.mathTimesimplify = (time1 - time).toString()
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              let time = Date.now()
+              this.mathsimplify = math.simplify(this.mathsimplifyStr, this.mathnumsimplify, this.mathnumsimplify1).toString()
+              let time1 = Date.now()
+              this.mathTimesimplify = (time1 - time).toString()
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathsimplify)
           .fontSize(20)
@@ -786,16 +766,15 @@ struct Index {
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
-            let time = Date.now()
-            this.mathlusolve = math.lusolve(math.evaluate(this.mathlusolveArr), math.evaluate(this.mathnumlusolve)).toString()
-            let time1 = Date.now()
-            this.mathTimelusolve = (time1 - time).toString()
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              let time = Date.now()
+              this.mathlusolve = math.lusolve(math.evaluate(this.mathlusolveArr), math.evaluate(this.mathnumlusolve)).toString()
+              let time1 = Date.now()
+              this.mathTimelusolve = (time1 - time).toString()
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathlusolve)
           .fontSize(20)
@@ -826,16 +805,15 @@ struct Index {
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
-            let time = Date.now()
-            this.mathlsolve = math.lsolve(math.evaluate(this.mathlsolveArr), math.evaluate(this.mathnumlsolve)).toString()
-            let time1 = Date.now()
-            this.mathTimelsolve = (time1 - time).toString()
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              let time = Date.now()
+              this.mathlsolve = math.lsolve(math.evaluate(this.mathlsolveArr), math.evaluate(this.mathnumlsolve)).toString()
+              let time1 = Date.now()
+              this.mathTimelsolve = (time1 - time).toString()
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text("结果：" + this.mathlsolve)
           .fontSize(20)
@@ -871,5 +849,8 @@ struct Index {
     .onScrollEnd(() => {
       console.info('Scroll Stop')
     })
+  }
+  onPageHide(): void {
+    console.log('lllllllllllll消失')
   }
 }

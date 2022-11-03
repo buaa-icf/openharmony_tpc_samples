@@ -25,7 +25,6 @@ function routerfun(url) {
 @Component
 struct Index {
   scroller: Scroller = new Scroller()
-  @State enabledBool: boolean = true
   @State message: string = 'mathjs test'
   @State crcalc: string = 'crcalc test'
   @State ejmlMatrix: string = 'ejmlMatrix test'
@@ -46,13 +45,12 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            routerfun('crcalc/crcalc')
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 3000);
+            try {
+              routerfun('crcalc/crcalc')
+            } catch (err) {
+              console.log('errerrcrcalc ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text(this.ejmlMatrix)
           .fontSize(16)
@@ -61,13 +59,12 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            routerfun('ejml/ejml')
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 3000);
+            try {
+              routerfun('ejml/ejml')
+            } catch (err) {
+              console.log('errerrejml ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text(this.ejmlMathjs)
           .fontSize(20)
@@ -76,13 +73,12 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            routerfun('ejml/ejmlMathjs')
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 3000);
+            try {
+              routerfun('ejml/ejmlMathjs')
+            } catch (err) {
+              console.log('errerrejmlMathjs ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text(this.jafama)
           .fontSize(16)
@@ -91,27 +87,25 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            routerfun('jafama/jafama')
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 3000);
+            try {
+              routerfun('jafama/jafama')
+            } catch (err) {
+              console.log('errerrjafama ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text(this.message)
-          .enabled(this.enabledBool)
           .fontSize(16)
           .padding(8)
           .margin({ top: 32 })
           .fontWeight(FontWeight.Bold)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            routerfun('mathjs/mathjs')
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 3000);
+            try {
+              routerfun('mathjs/mathjs')
+            } catch (err) {
+              console.log('errerrmathjs ' + err)
+            }
           })
 
 
