@@ -33,8 +33,7 @@ function routerfun(url) {
 @Component
 struct Index {
   scroller: Scroller = new Scroller()
-  _matrix:Matrix = new Matrix(0, 0)
-  @State enabledBool: boolean = true
+  _matrix: Matrix = new Matrix(0, 0)
   @State MyMatrix: Matrix = this._matrix
   @State MyMatrixA: Matrix = this._matrix
   @State MyMatrixB: Matrix = this._matrix
@@ -102,17 +101,16 @@ struct Index {
           .padding(8)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            let time = Date.now()
-            let l = new CholeskyDecomposition(new Matrix(this.strTransformationArr(this.SymmetricMatrixCholesky)))
-            this.CholeskyMatrix = l.lowerTriangularMatrix;
-            let time1 = Date.now()
-            this.mathTimeCholesky = (time1 - time).toString()
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              let time = Date.now()
+              let l = new CholeskyDecomposition(new Matrix(this.strTransformationArr(this.SymmetricMatrixCholesky)))
+              this.CholeskyMatrix = l.lowerTriangularMatrix;
+              let time1 = Date.now()
+              this.mathTimeCholesky = (time1 - time).toString()
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text('Cholesky分解: ' + JSON.stringify(this.CholeskyMatrix))
           .fontSize(20)
@@ -136,16 +134,15 @@ struct Index {
           .padding(8)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            let time = Date.now()
-            this.SVDMatrix = new SingularValueDecomposition(new Matrix(this.strTransformationArr(this.SymmetricMatrixSVD)))
-            let time1 = Date.now()
-            this.mathTimeSVD = (time1 - time).toString()
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              let time = Date.now()
+              this.SVDMatrix = new SingularValueDecomposition(new Matrix(this.strTransformationArr(this.SymmetricMatrixSVD)))
+              let time1 = Date.now()
+              this.mathTimeSVD = (time1 - time).toString()
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text('SVD diagonalMatrix分解: ' + JSON.stringify(this.SVDMatrix))
           .fontSize(20)
@@ -201,19 +198,18 @@ struct Index {
           .padding(8)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            let time = Date.now()
-            let l = new EigenvalueDecomposition(new Matrix(this.strTransformationArr(this.SymmetricMatrix)))
-            this.eigenvalueMatrix = l.diagonalMatrix;
-            this.eigenvalueMatrix1 = l.eigenvectorMatrix;
-            this.eigenvalueMatrix2 = l.realEigenvalues;
-            let time1 = Date.now()
-            this.mathTimeEigenvalue = (time1 - time).toString()
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              let time = Date.now()
+              let l = new EigenvalueDecomposition(new Matrix(this.strTransformationArr(this.SymmetricMatrix)))
+              this.eigenvalueMatrix = l.diagonalMatrix;
+              this.eigenvalueMatrix1 = l.eigenvectorMatrix;
+              this.eigenvalueMatrix2 = l.realEigenvalues;
+              let time1 = Date.now()
+              this.mathTimeEigenvalue = (time1 - time).toString()
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text('Eigenvalue diagonalMatrix: ' + JSON.stringify(this.eigenvalueMatrix))
           .fontSize(20)
@@ -254,13 +250,12 @@ struct Index {
           .padding(8)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            this.MyMatrix = new Matrix(this.nRows, this.nColumns)
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              this.MyMatrix = new Matrix(this.nRows, this.nColumns)
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
 
         Text('生成矩阵: ' + JSON.stringify(this.MyMatrix))
@@ -281,13 +276,12 @@ struct Index {
           .padding(8)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            this.MyMatrixA = new Matrix(this.strTransformationArr(this.MatrixA))
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              this.MyMatrixA = new Matrix(this.strTransformationArr(this.MatrixA))
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text('生成矩阵A: ' + JSON.stringify(this.MyMatrixA))
           .fontSize(20)
@@ -307,13 +301,12 @@ struct Index {
           .padding(8)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            this.MyMatrixB = new Matrix(this.strTransformationArr(this.MatrixB))
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              this.MyMatrixB = new Matrix(this.strTransformationArr(this.MatrixB))
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text('生成矩阵B: ' + JSON.stringify(this.MyMatrixB))
           .fontSize(20)
@@ -325,13 +318,12 @@ struct Index {
           .padding(8)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            this.addAB = Matrix.add(this.MyMatrixA, this.MyMatrixB)
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              this.addAB = Matrix.add(this.MyMatrixA, this.MyMatrixB)
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text('矩阵A+B: ' + JSON.stringify(this.addAB))
           .fontSize(20)
@@ -343,13 +335,12 @@ struct Index {
           .padding(8)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            this.subAB = Matrix.sub(this.MyMatrixA, this.MyMatrixB)
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              this.subAB = Matrix.sub(this.MyMatrixA, this.MyMatrixB)
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text('矩阵A-B: ' + JSON.stringify(this.subAB))
           .fontSize(20)
@@ -361,13 +352,12 @@ struct Index {
           .padding(8)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            this.mulAB = Matrix.mul(this.MyMatrixA, this.MyMatrixB)
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              this.mulAB = Matrix.mul(this.MyMatrixA, this.MyMatrixB)
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text('矩阵A*B: ' + JSON.stringify(this.mulAB))
           .fontSize(20)
@@ -379,13 +369,12 @@ struct Index {
           .padding(8)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            this.divAB = Matrix.div(this.MyMatrixA, this.MyMatrixB)
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              this.divAB = Matrix.div(this.MyMatrixA, this.MyMatrixB)
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text('矩阵A div B: ' + JSON.stringify(this.divAB))
           .fontSize(20)
@@ -397,13 +386,12 @@ struct Index {
           .padding(8)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            this.modAB = Matrix.mod(this.MyMatrixA, this.MyMatrixB)
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              this.modAB = Matrix.mod(this.MyMatrixA, this.MyMatrixB)
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text('矩阵A mod B: ' + JSON.stringify(this.modAB))
           .fontSize(20)
@@ -415,13 +403,12 @@ struct Index {
           .padding(8)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            this.maxAB = Matrix.max(this.MyMatrixA, this.MyMatrixB)
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              this.maxAB = Matrix.max(this.MyMatrixA, this.MyMatrixB)
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text('矩阵A max B: ' + JSON.stringify(this.maxAB))
           .fontSize(20)
@@ -433,13 +420,12 @@ struct Index {
           .padding(8)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            this.minAB = Matrix.min(this.MyMatrixA, this.MyMatrixB)
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              this.minAB = Matrix.min(this.MyMatrixA, this.MyMatrixB)
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text('矩阵A min B: ' + JSON.stringify(this.minAB))
           .fontSize(20)
@@ -451,13 +437,12 @@ struct Index {
           .padding(8)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            this.expAB = Matrix.exp(this.MyMatrixA)
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              this.expAB = Matrix.exp(this.MyMatrixA)
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text('矩阵A exp: ' + JSON.stringify(this.expAB))
           .fontSize(20)
@@ -469,13 +454,12 @@ struct Index {
           .padding(8)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            this.cosAB = Matrix.cos(this.MyMatrixA)
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              this.cosAB = Matrix.cos(this.MyMatrixA)
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text('矩阵A cos: ' + JSON.stringify(this.cosAB))
           .fontSize(20)
@@ -511,13 +495,12 @@ struct Index {
           .padding(8)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            this.setAB = this.MyMatrixA.set(this.rowIndex, this.columnIndex, this.setValue)
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              this.setAB = this.MyMatrixA.set(this.rowIndex, this.columnIndex, this.setValue)
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text('矩阵A set: ' + JSON.stringify(this.setAB))
           .fontSize(20)
@@ -529,13 +512,12 @@ struct Index {
           .padding(8)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            this.diagAB = this.MyMatrixA.diag()
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              this.diagAB = this.MyMatrixA.diag()
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text('矩阵A diag: ' + JSON.stringify(this.diagAB))
           .fontSize(20)
@@ -547,13 +529,12 @@ struct Index {
           .padding(8)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            this.transposeMatrix = this.MyMatrixA.transpose()
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              this.transposeMatrix = this.MyMatrixA.transpose()
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text('矩阵A transpose: ' + JSON.stringify(this.transposeMatrix))
           .fontSize(20)
@@ -581,13 +562,12 @@ struct Index {
           .padding(8)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            this.randMatrix = Matrix.random(this.randnRows, this.randnColumns)
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              this.randMatrix = Matrix.random(this.randnRows, this.randnColumns)
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text('随机矩阵: ' + JSON.stringify(this.randMatrix))
           .fontSize(20)
@@ -607,19 +587,18 @@ struct Index {
           .padding(8)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            let time = Date.now()
-            let l = new LuDecomposition(new Matrix(this.strTransformationArr(this.ludigMatrix)))
-            this.luMatrix = l.lowerTriangularMatrix;
-            this.luMatrix1 = l.upperTriangularMatrix;
-            this.luMatrix2 = l.pivotPermutationVector;
-            let time1 = Date.now()
-            this.mathTimeLu = (time1 - time).toString()
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              let time = Date.now()
+              let l = new LuDecomposition(new Matrix(this.strTransformationArr(this.ludigMatrix)))
+              this.luMatrix = l.lowerTriangularMatrix;
+              this.luMatrix1 = l.upperTriangularMatrix;
+              this.luMatrix2 = l.pivotPermutationVector;
+              let time1 = Date.now()
+              this.mathTimeLu = (time1 - time).toString()
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text('lu lowerTriangularMatrix: ' + JSON.stringify(this.luMatrix))
           .fontSize(20)
@@ -651,13 +630,12 @@ struct Index {
           .padding(8)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            this.inMatrix = inverse(new Matrix(this.strTransformationArr(this.inverseMatrix)));
-            this.enabledBool = false
-            setTimeout(() => {
-              this.enabledBool = true;
-            }, 1000);
+            try {
+              this.inMatrix = inverse(new Matrix(this.strTransformationArr(this.inverseMatrix)));
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
-          .enabled(this.enabledBool)
 
         Text(' inverse 矩阵: ' + JSON.stringify(this.inMatrix))
           .fontSize(20)
@@ -670,7 +648,11 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
+          try{
             routerfun('ejml/ejmlMathjs')
+            } catch (err) {
+              console.log('errerr ' + err)
+            }
           })
 
         Text('跳转到首页')
