@@ -42,7 +42,7 @@ struct Second {
     Row() {
       Scroll() {
         Column() {
-          Button('本地日期测试', { type: ButtonType.Capsule, stateEffect: true })
+          Button('本地时间测试', { type: ButtonType.Capsule, stateEffect: true })
             .backgroundColor(0x317aff)
             .width(240)
             .onClick(() => {
