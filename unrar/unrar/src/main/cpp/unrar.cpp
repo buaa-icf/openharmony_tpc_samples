@@ -1,3 +1,17 @@
+/*
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 #include "napi/native_api.h"
 #include "rar.hpp"
 #include "dll.hpp"
@@ -86,10 +100,10 @@ static void getExtractFileExecute(napi_env env, void *datas) {
         return;
     }
     if (callback->flag) {
-        char *password = new char[strlen(callback->password.c_str()) + 1];
+        char *passwords = new char[strlen(callback->password.c_str()) + 1];
         ;
-        strcpy(password, callback->password.c_str());
-        RARSetPassword(handle, password); //190512
+        strcpy(passwords, callback->password.c_str());
+        RARSetPassword(handle, passwords); //190512
     } else {
         RARSetCallback(handle, nullptr, (LPARAM) nullptr);
     }
@@ -236,11 +250,11 @@ static napi_value RarFiles_Extract(napi_env env, napi_callback_info info) {
     napi_get_value_string_utf8(env, args[1], dest, sized, &sized);
     callback->dest2 = std::string(dest);
 
-    char password[NM];
+    char passwordss[NM];
     size_t sizes = NM;
-    if (napi_ok == napi_get_value_string_utf8(env, args[2], password, sizes, &sizes)) {
-        char *passwords = password;
-        callback->password = std::string(password);
+    if (napi_ok == napi_get_value_string_utf8(env, args[2], passwordss, sizes, &sizes)) {
+        char *passwords = passwordss;
+        callback->password = std::string(passwordss);
         std::string pw = passwords;
         callback->flag = true;
         LOG(" buf =  加密");
@@ -314,13 +328,13 @@ static napi_value RarFile_Extract(napi_env env, napi_callback_info info) {
         napi_throw_error(env, err_str, "RarException");
         return 0;
     }
-    char password[NM];
+    char passwordss[NM];
     size_t sizes = NM;
 
-    if (napi_ok == napi_get_value_string_utf8(env, args[2], password, sizes, &sizes)) {
-        char *passwords = password;
+    if (napi_ok == napi_get_value_string_utf8(env, args[2], passwordss, sizes, &sizes)) {
+        char *passwords = passwordss;
         RARSetPassword(handle, passwords); //190512
-        LOG(" buf = OpenResult4 password: %{public}s ", password);
+        LOG(" buf = OpenResult4 password: %{public}s ", passwordss);
     } else {
         RARSetCallback(handle, nullptr, (LPARAM) nullptr);
     }
@@ -329,7 +343,7 @@ static napi_value RarFile_Extract(napi_env env, napi_callback_info info) {
     bool tag;
     tag = true;
 
-    if (napi_ok == napi_get_value_string_utf8(env, args[2], password, sizes, &sizes)) {
+    if (napi_ok == napi_get_value_string_utf8(env, args[2], passwordss, sizes, &sizes)) {
         if (RARReadHeaderEx(handle, &header)) {
             results = "密码错误 ";
             tag = false;
