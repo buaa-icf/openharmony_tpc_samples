@@ -1,0 +1,11 @@
+{
+  "module": {
+    "name": "unrar",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ],
+    "uiSyntax": "ets"
+  }
+}
