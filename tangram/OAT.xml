@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+<oatconfig>
+    <filefilterlist>
+        <filefilter name="copyrightPolicyFilter" desc="Filters for compatibility，license header policies">
+            <filteritem type="filename" name="hvigorfile.js" desc="hvigor构建脚本，DevEco Studio自动生成，不手动修改"/>
+            <filteritem type="filename" name="*.json5" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+            <filteritem type="filename" name="NOTICE" desc="NOTICE文件,不用修改"/>
+        </filefilter>
+        <filefilter name="defaultPolicyFilter" desc="Filters for compatibility，license header policies">
+            <filteritem type="filename" name="hvigorfile.js" desc="hvigor构建脚本，DevEco Studio自动生成，不手动修改"/>
+            <filteritem type="filename" name="*.json5" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+            <filteritem type="filename" name="NOTICE" desc="NOTICE文件,不用修改"/>
+        </filefilter>
+        <filefilter name="defaultPolicyFilter" desc="Filters for copyright header policies">
+        </filefilter>
+        <filefilter name="binaryFileTypePolicyFilter" desc="Filters for binary file policies">
+            <filteritem type="filename" name="*.png" desc="icon.png,DevEco Studio自动生成，不手动修改"/>
+            <filteritem type="filename" name="*.gif" desc="gif图片格式文件,用于README.md文件展示示例"/>
+        </filefilter>
+    </filefilterlist>
+</oatconfig>
+</configuration>

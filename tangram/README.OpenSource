@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "Tangram-Android",
+        "License": "MIT License",
+        "License File": "https://github.com/alibaba/Tangram-Android/blob/master/LICENSE",
+        "Version Number": "3.3.6",
+        "Owner" : "alibaba",
+        "Upstream URL": "https://github.com/alibaba/Tangram-Android",
+        "Description": "Tangram is a modular UI solution for building native page dynamically including Tangram for Android, Tangram for iOS and even backend CMS. This project provides the sdk on Android."
+    },
+]
