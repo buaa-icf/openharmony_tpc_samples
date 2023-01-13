@@ -1,0 +1,25 @@
+{
+  "types": "",
+  "keywords": [
+    "OpenHarmony",
+    "Tangram"
+  ],
+  "author": "ohos_tpc",
+  "description": "Tangram是一套动态化构建Native页面的框架。底层依赖vlayout",
+  "ohos": {
+    "org": "opensource"
+  },
+  "main": "index.ets",
+  "repository": "https://gitee.com/openharmony-sig/Tangram",
+  "version": "0.1.0",
+  "dependencies": {},
+  "tags": [
+    "UI",
+    "OpenHarmony",
+    "Tangram"
+  ],
+  "license": "Apache License 2.0",
+  "devDependencies": {},
+  "name": "@ohos/tangram",
+  "type": "module"
+}

@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "Tangram",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}
