@@ -1,0 +1,10 @@
+[
+    {
+        "Name": "appauth-js",
+        "License": "Apache-2.0 License",
+        "License File": " LICENSE ",
+        "Version Number": "master",
+        "Upstream URL": "https://github.com/openid/AppAuth-JS",
+        "Description": "It mainly provides authentication and authorization for applications"
+    }
+]
