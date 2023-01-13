@@ -1,0 +1,23 @@
+[
+  {
+    "type": "1",
+    "msg": "第二页文本1",
+    "style": {
+      "bgColor": "#FFE2C3C3"
+    }
+  },
+  {
+    "type": "redText",
+    "msg": "第二页文本2",
+    "style": {
+      "bgColor": "#FFE2C3C3"
+    }
+  },
+  {
+    "type": "1",
+    "msg": "第二页文本3",
+    "style": {
+      "bgColor": "#FFE2C3C3"
+    }
+  }
+]
