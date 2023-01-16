@@ -272,8 +272,8 @@ aboutToAppear(){
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tangram/issues) ，非常欢迎来提 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tangram/pulls) 。
+使用过程中发现任何问题都可以提 [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) ，非常欢迎来提 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
 ## 开源协议
 
-本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tangram/blob/master/LICENSE) ，请自由的享受和参与开源。
+本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/tangram/LICENSE) ，请自由的享受和参与开源。
