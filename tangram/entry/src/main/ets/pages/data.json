@@ -1,0 +1,261 @@
+[
+  {
+    "type": "container-banner",
+    "style": {
+      "bgColor": "red",
+      "indicatorMargin": 5,
+      "infinite": "true",
+      "indicatorImg2": "https://img.alicdn.com/tps/TB1XRNFNXXXXXXKXXXXXXXXXXXX-32-4.png",
+      "indicatorImg1": "https://img.alicdn.com/tps/TB16i4qNXXXXXbBXFXXXXXXXXXX-32-4.png",
+      "indicatorGap": 8,
+      "indicatorHeight": 20,
+      "indicatorRadius": 2,
+      "itemRatio": 1,
+      "pageRatio": 1,
+      "hGap": 20
+    },
+    "items" : [
+      {
+        "type": "100",
+        "msg": "info1",
+        "style": {
+          "bgColor": "#FF38DB40"
+        }
+      },
+      {
+        "type": "100",
+        "msg": "info2",
+        "style": {
+          "bgColor": "#FF38DB40"
+        }
+      },
+      {
+        "type": "100",
+        "msg": "info3"
+      },
+      {
+        "type": "100",
+        "msg": "info4"
+      },
+      {
+        "type": "100",
+        "msg": "info5"
+      },
+      {
+        "type": "100",
+        "msg": "info6"
+      }
+    ]
+  },
+  {
+    "type": "container-custom",
+    "style": {
+      "bgColor": "#FF48E77C"
+    },
+    "items" : [
+      {
+        "type": "1",
+        "msg": "container-custom"
+      }
+    ]
+  },
+  {
+    "type": "container-onePlusN",
+    "style": {
+      "height": 200,
+      "aspectRatio": "1.778",
+      "bgColor": "#FFF1B879",
+
+      "rows": [
+        1,
+        3
+      ],
+      "margin": [
+        0,
+        10,
+        0,
+        "10%"
+      ],
+      "padding": [
+        10,
+        0,
+        20,
+        0
+      ]
+    },
+    "items" : [
+      {
+        "type": "100",
+        "msg": "aaaaa1",
+        "style": {
+          "bgColor": "#ff0000"
+        }
+      },
+      {
+        "type": "100",
+        "msg": "aaaaa2",
+        "style": {
+          "bgColor": "#FFC426BC"
+        }
+      },
+      {
+        "type": "100",
+        "msg": "aaaaa3",
+        "style": {
+          "bgColor": "#0000ff"
+        }
+      },
+      {
+        "type": "100",
+        "msg": "aaaaa4",
+        "style": {
+          "bgColor": "#ffff00"
+        }
+      },
+      {
+        "type": "100",
+        "msg": "aaaaa5",
+        "style": {
+          "bgColor": "#ff8D8D20"
+        }
+      }
+    ]
+  },
+  {
+    "type": "container-grid",
+    "style": {
+      "column": "3",
+      "bgColor": "#8F729D",
+      "autoExpand": false,
+      "hGap": 0,
+      "vGap": 50,
+      "cols": [
+        20,
+        20,
+        60
+      ],
+      "padding": [
+        20,
+        10,
+        0,
+        0
+      ],
+      "margin": [
+        0,
+        0,
+        50,
+        0
+      ]
+    },
+    "items" : [
+      {
+        "type": "1",
+        "msg": "test1",
+        "style": {
+          "bgColor": "#ff0000"
+        }
+      },
+      {
+        "type": "redText",
+        "msg": "test2",
+        "style": {
+          "bgColor": "#FFC426BC"
+        }
+      },
+      {
+        "type": "1",
+        "msg": "test3",
+        "style": {
+          "bgColor": "#0000ff"
+        }
+      },
+      {
+        "type": "1",
+        "msg": "test4",
+        "style": {
+          "bgColor": "#ffff00"
+        }
+      },
+      {
+        "type": "1",
+        "msg": "test5",
+        "style": {
+          "bgColor": "#00ffff"
+        }
+      },
+      {
+        "type": "one",
+        "msg": "test6",
+        "style": {
+          "bgColor": "#ff00ff"
+        },
+        "items": [
+          {
+            "type": "blueText",
+            "msg": "testaaaa"
+          }
+        ]
+      },
+      {
+        "type": "redText",
+        "msg": "test7-",
+        "style": {
+          "bgColor": "#666666"
+        }
+      },
+      {
+        "type": "redText",
+        "msg": "test8-",
+        "style": {
+          "bgColor": "#FF429CE2"
+        }
+      },
+      {
+        "type": "1",
+        "msg": "test9-",
+        "style": {
+          "bgColor": "#ff0A6262"
+        },
+        "colspan": 2
+      },
+      {
+        "type": "blueText",
+        "msg": "test10-",
+        "style": {
+          "bgColor": "#FFAE5A24"
+        },
+        "colspan": 2
+      },
+      {
+        "type": "1",
+        "msg": "test11-",
+        "style": {
+          "bgColor": "#FF143218"
+        }
+      }
+    ]
+  },
+  {
+    "type": "1",
+    "msg": "测试文本1",
+    "style": {
+      "bgColor": "#FFE2C3C3"
+    }
+  },
+  {
+    "type": "redText",
+    "msg": "测试文本2",
+    "style": {
+      "bgColor": "#FFE2C3C3"
+    }
+  },
+  {
+    "type": "1",
+    "msg": "测试文本3",
+    "style": {
+      "bgColor": "#FFE2C3C3"
+    },
+    "loadType": "-1",
+    "loaded": false
+  }
+]
