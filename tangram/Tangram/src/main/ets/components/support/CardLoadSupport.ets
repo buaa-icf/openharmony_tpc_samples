@@ -12,29 +12,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export class CardLoadSupport{
+export class CardLoadSupport {
   private mAsyncLoader: (loadinfo: string) => void
-  private mAsyncPageLoader?: (page: number,loadinfo: string) => void
+  private mAsyncPageLoader?: (page: number, loadinfo: string) => void
 
-  constructor(asyncLoader?: (loadinfo: string) => void, asyncPageLoader?:(page:number, loadinfo: string) => void){
+  constructor(asyncLoader?: (loadinfo: string) => void, asyncPageLoader?: (page: number, loadinfo: string) => void) {
     this.mAsyncLoader = asyncLoader;
     this.mAsyncPageLoader = asyncPageLoader;
   }
 
-  replaceLoader(asyncLoader?: (loadinfo: string) => void, asyncPageLoader?:(page:number, loadinfo: string) => void){
+  replaceLoader(asyncLoader?: (loadinfo: string) => void, asyncPageLoader?: (page: number, loadinfo: string) => void) {
     this.mAsyncLoader = asyncLoader;
     this.mAsyncPageLoader = asyncPageLoader;
   }
 
-  asyncLoader(loadinfo: string){
-    Promise.resolve().then(res=>{
+  asyncLoader(loadinfo: string) {
+    Promise.resolve().then(res => {
       this.mAsyncLoader(loadinfo);
     })
   }
 
-  asyncPageLoader(page:number, loadinfo: string){
-    Promise.resolve().then(res =>{
-      this.mAsyncPageLoader(page,loadinfo);
+  asyncPageLoader(page: number, loadinfo: string) {
+    Promise.resolve().then(res => {
+      this.mAsyncPageLoader(page, loadinfo);
     })
   }
 }

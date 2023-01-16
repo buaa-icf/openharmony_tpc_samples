@@ -13,9 +13,10 @@
  * limitations under the License.
  */
 import { Style } from './Style'
-export class GridStyle extends Style{
+
+export class GridStyle extends Style {
   column: number // 列数
   autoExpand: boolean // 最后一行条目宽度充满整行（此属性为true时，colspan属性失效，各自合并功能）
-  hGap:number // 水平间距（列与列之间的距离）
-  vGap:number // 数值间距（行与行之间的距离）
+  hGap: number // 水平间距（列与列之间的距离）
+  vGap: number // 数值间距（行与行之间的距离）
 }

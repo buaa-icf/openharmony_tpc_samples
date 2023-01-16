@@ -18,21 +18,21 @@ import { TangramLayout } from './TangramLayout'
 import { CardLoadSupport } from './support/CardLoadSupport'
 
 @Component
-export struct Tangram{
-  private TAG = 'Tangram'
+export struct Tangram {
   cardProperties: CardProperty[]
-  customLayoutType?:string[] = []
-  customViewType?:string[] = []
-  @BuilderParam customLayout?:(cardProperty: CardProperty, child :(any))=> void = null
+  customLayoutType?: string[] = []
+  customViewType?: string[] = []
+  @BuilderParam customLayout?: (cardProperty: CardProperty, child: (any)) => void = null
   @BuilderParam customView?: (cardProperty: CardProperty) => void = null
   cardLoadSupport?: CardLoadSupport
-  onScrollIndex?:(firstIndex: number,lastIndex: number) => void
+  onScrollIndex?: (firstIndex: number, lastIndex: number) => void
+  private TAG = 'Tangram'
   private page = 1
 
-  build(){
-    List(){
-      ForEach(this.cardProperties, (item: CardProperty, position: number)=>{
-        ListItem(){
+  build() {
+    List() {
+      ForEach(this.cardProperties, (item: CardProperty, position: number) => {
+        ListItem() {
           TangramLayout({
             cardProperty: item as any,
             customLayoutType: this.customLayoutType,
@@ -45,17 +45,17 @@ export struct Tangram{
     }
     .height('100%')
     .width('100%')
-    .onScrollIndex((firstIndex: number,lastIndex: number)=>{
-      if(this.onScrollIndex){
+    .onScrollIndex((firstIndex: number, lastIndex: number) => {
+      if (this.onScrollIndex) {
         this.onScrollIndex(firstIndex, lastIndex);
       }
-      if(lastIndex == this.cardProperties.length - 1){
+      if (lastIndex == this.cardProperties.length - 1) {
         let lastCardProperty = this.cardProperties[lastIndex];
         //
-        if(lastCardProperty.loadType == -1 && lastCardProperty.loaded == false){
+        if (lastCardProperty.loadType == -1 && lastCardProperty.loaded == false) {
           this.cardLoadSupport.asyncLoader(lastCardProperty.loadinfo);
           lastCardProperty.loaded = true;
-        }else if(lastCardProperty.loadType == 1 && lastCardProperty.loaded == false){
+        } else if (lastCardProperty.loadType == 1 && lastCardProperty.loaded == false) {
           this.page++;
           this.cardLoadSupport.asyncPageLoader(this.page, lastCardProperty.loadinfo);
           lastCardProperty.loaded = true;
@@ -64,7 +64,7 @@ export struct Tangram{
     })
   }
 
-  log(text: string){
-    console.info('Tangram:' + this.TAG + ':'+ text);
+  log(text: string) {
+    console.info('Tangram:' + this.TAG + ':' + text);
   }
 }

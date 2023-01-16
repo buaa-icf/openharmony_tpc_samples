@@ -15,15 +15,15 @@
 export class ScreenUtil {
   private static TAG = "ScreenUtil"
 
-  public static getSize(id: string):Array<number>{
+  public static getSize(id: string): Array<number> {
     var info = JSON.parse(getInspectorByKey(id))
-    var rectStr = info.$rect.replace('][',',')
-      .replace('[','')
-      .replace(']','')
-      .replace(' ','')
+    var rectStr = info.$rect.replace('][', ',')
+      .replace('[', '')
+      .replace(']', '')
+      .replace(' ', '')
       .split(',');
 
 
-    return [Number(rectStr[2]) - Number(rectStr[0]), Number(rectStr[3])- Number(rectStr[1])]
+    return [Number(rectStr[2]) - Number(rectStr[0]), Number(rectStr[3]) - Number(rectStr[1])]
   }
 }

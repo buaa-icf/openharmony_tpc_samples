@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 import { Style } from './Style'
-export class OnePlusNStyle extends Style{
+
+export class OnePlusNStyle extends Style {
   rows: Array<number> // 行占比的集合
 }

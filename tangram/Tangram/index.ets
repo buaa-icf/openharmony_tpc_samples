@@ -13,7 +13,11 @@
  * limitations under the License.
  */
 export { CardProperty } from './src/main/ets/components/porterties/CardProperty'
+
 export { Tangram } from './src/main/ets/components/Tangram'
+
 export { TangramLayout } from './src/main/ets/components/TangramLayout'
+
 export { CardLoadSupport } from './src/main/ets/components/support/CardLoadSupport'
+
 export { Style } from './src/main/ets/components/porterties/style/Style'
