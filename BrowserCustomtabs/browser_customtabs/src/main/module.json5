@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "browser_customtabs",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}
