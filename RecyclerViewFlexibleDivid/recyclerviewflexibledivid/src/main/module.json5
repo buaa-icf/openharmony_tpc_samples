@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "recyclerviewflexibledivid",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}
