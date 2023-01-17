@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import router from '@system.router';
+import router from '@ohos.router';
 import EventBus from "eventbusjs";
 
 var TAG = "EventBusDemo ";
@@ -23,102 +23,122 @@ var TAG = "EventBusDemo ";
 struct Index {
   @State comeDetailText: string = "全局监听detail页面刷新展示";
   @State changeText: string = "";
-  count:number = 0;
-
+  count: number = 0;
+  scroller: Scroller = new Scroller();
   basicTestCallBack: Function = (event) => {
     this.count++;
     this.changeText = "basicTest监听创建成功 " + this.count;
     console.log(TAG + " basicTest message received " + event.type);
   }
-
   basicEventBusCallBack: Function = (event) => {
+    this.changeText = "basicEventBus监听创建成功 " + this.count;
     console.log(TAG + " basicEventBus message received " + event.type);
   }
 
   build() {
-    Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center }) {
+    Column() {
       Text(this.comeDetailText)
         .fontSize(30)
         .fontWeight(FontWeight.Bold)
-        .margin({ bottom: 20, top: 20 })
 
-      Text(this.changeText)
-        .fontSize(30)
-        .fontWeight(FontWeight.Bold)
-        .margin({ bottom: 20, top: 20 })
+      Scroll(this.scroller) {
+        Text(this.changeText)
+          .fontSize(30)
+          .fontWeight(FontWeight.Bold)
+      }
+      .width("100%")
+      .height("30%")
+      .scrollable(ScrollDirection.Vertical)
+      .scrollBar(BarState.On)
+      .padding(16)
+      .align(Alignment.TopStart)
 
-      Button("订阅basicTest消息")
-        .fontSize(18)
-        .height(80)
-        .onClick(() => {
-          let isHas = EventBus.hasEventListener('basicTest', this.basicTestCallBack);
-          if (!isHas) {
-            EventBus.addEventListener("basicTest", this.basicTestCallBack);
-          }
-        }).margin({ bottom: 20 })
+      Scroll(this.scroller) {
+        Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center }) {
 
-      Button("发送basicTest消息")
-        .fontSize(18)
-        .height(80)
-        .onClick(() => {
-          EventBus.dispatch("basicTest")
-        }).margin({ bottom: 20 })
+          Button("订阅basicTest消息")
+            .fontSize(18)
+            .height(80)
+            .onClick(() => {
+              let isHas = EventBus.hasEventListener('basicTest', this.basicTestCallBack);
+              if (!isHas) {
+                EventBus.addEventListener("basicTest", this.basicTestCallBack);
+              }
+            }).margin({ bottom: 20 })
 
-      Button("订阅basicEventBus消息")
-        .fontSize(18)
-        .height(80)
-        .onClick(() => {
-          let isHas = EventBus.hasEventListener('basicEventBus', this.basicEventBusCallBack);
-          if (!isHas) {
-            EventBus.addEventListener("basicEventBus", this.basicEventBusCallBack);
-          }
-        }).margin({ bottom: 20 })
+          Button("发送basicTest消息")
+            .fontSize(18)
+            .height(80)
+            .onClick(() => {
+              EventBus.dispatch("basicTest")
+            }).margin({ bottom: 20 })
 
-      Button("发送basicEventBus消息")
-        .fontSize(18)
-        .height(80)
-        .onClick(() => {
-          EventBus.dispatch("basicEventBus")
-        }).margin({ bottom: 20 })
+          Button("订阅basicEventBus消息")
+            .fontSize(18)
+            .height(80)
+            .onClick(() => {
+              let isHas = EventBus.hasEventListener('basicEventBus', this.basicEventBusCallBack);
+              if (!isHas) {
+                EventBus.addEventListener("basicEventBus", this.basicEventBusCallBack);
+              }
+            }).margin({ bottom: 20 })
 
-      Button("判断basicTest订阅是否存在")
-        .fontSize(18)
-        .height(80)
-        .onClick(() => {
-          let isHas = EventBus.hasEventListener('basicTest', this.basicTestCallBack);
-          console.log(TAG + " Determine whether the Basictest subscription exists " + isHas)
-        }).margin({ bottom: 20 })
+          Button("发送basicEventBus消息")
+            .fontSize(18)
+            .height(80)
+            .onClick(() => {
+              EventBus.dispatch("basicEventBus")
+            }).margin({ bottom: 20 })
 
-      Button("移除basicTest消息")
-        .fontSize(18)
-        .height(80)
-        .onClick(() => {
-          EventBus.removeEventListener('basicTest', this.basicTestCallBack);
-        }).margin({ bottom: 20 })
+          Button("判断basicTest订阅是否存在")
+            .fontSize(18)
+            .height(80)
+            .onClick(() => {
+              let isHas = EventBus.hasEventListener('basicTest', this.basicTestCallBack);
+              this.changeText = isHas
+              console.log(TAG + " Determine whether the Basictest subscription exists " + isHas)
+            }).margin({ bottom: 20 })
 
-      Button("传递参数测试")
-        .fontSize(18)
-        .height(80)
-        .onClick(() => {
-          testAddParameters()
-        }).margin({ bottom: 20 })
+          Button("移除basicTest消息")
+            .fontSize(18)
+            .height(80)
+            .onClick(() => {
+              EventBus.removeEventListener('basicTest', this.basicTestCallBack);
+              this.changeText = '移除basicTest消息成功'
+            }).margin({ bottom: 20 })
 
-      Button("测试获取有多少事件被注册")
-        .fontSize(18)
-        .height(80)
-        .onClick(() => {
-          testGetEvents()
-        }).margin({ bottom: 20 })
+          Button("传递参数测试")
+            .fontSize(18)
+            .height(80)
+            .onClick(() => {
+              testAddParameters()
+            }).margin({ bottom: 20 })
 
-      Button("GoToDetail")
-        .fontSize(18)
-        .height(80)
-        .onClick(() => {
-          router.push({ uri: "pages/detail" })
-        }).margin({ bottom: 20 })
+          Button("测试获取有多少事件被注册")
+            .fontSize(18)
+            .height(80)
+            .onClick(() => {
+              testGetEvents()
+            }).margin({ bottom: 20 })
+
+          Button("GoToDetail")
+            .fontSize(18)
+            .height(80)
+            .onClick(() => {
+              router.push({ url: "pages/detail" })
+            }).margin({ bottom: 20 })
+        }
+        .width('100%')
+        .height('100%')
+      }
+      .width("100%")
+      .height("55%")
+      .scrollable(ScrollDirection.Vertical)
+      .scrollBar(BarState.On)
+      .padding(16)
+      .align(Alignment.TopStart)
     }
-    .width('100%')
-    .height('100%')
+
   }
 
   aboutToAppear() {
