@@ -15,6 +15,7 @@
     "pages/ProcessPathnamePage",
     "pages/UnnamedParametersPage",
     "pages/WorkingTokensPage",
-    "pages/ZeroPage"
+    "pages/ZeroPage",
+    "pages/CommonResultPage"
   ]
 }
