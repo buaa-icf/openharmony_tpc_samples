@@ -9,5 +9,7 @@
   "description": "example description",
   "repository": {},
   "license": "ISC",
-  "dependencies": {}
+  "dependencies": {
+    "path-to-regexp": "^6.2.1"
+  }
 }
