@@ -1,0 +1,20 @@
+{
+  "src": [
+    "pages/Index",
+    "pages/AlternativePage",
+    "pages/CompilePage",
+    "pages/CustomMatchingParamtersPage",
+    "pages/CustomPrefixSuffixPage",
+    "pages/MatchPage",
+    "pages/ModifiersPage",
+    "pages/NamedParamtersPage",
+    "pages/OnePage",
+    "pages/OptionalPage",
+    "pages/ParsePage",
+    "pages/PathToRegexpPage",
+    "pages/ProcessPathnamePage",
+    "pages/UnnamedParametersPage",
+    "pages/WorkingTokensPage",
+    "pages/ZeroPage"
+  ]
+}
