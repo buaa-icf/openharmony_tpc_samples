@@ -227,7 +227,7 @@ export default class TestApi {
             })
             result.push(number);
             let words = toPath({
-                id: 'cafe'
+                id:  "café"
             })
             result.push(words);
             let symbol = toPath({
@@ -239,14 +239,16 @@ export default class TestApi {
             })
             result.push(doubleSymbol);
 
-            const toPathRaw = compile('/user/:id', {
-                validate: false
-            });
+            const toPathRaw = compile('/user/:id');
             let decode = toPathRaw({
                 id: '%3A%2F'
             })
             result.push(decode);
-            let double = toPathRaw({
+
+            const toPathRaw1 = compile('/user/:id', {
+                validate: false
+            });
+            let double = toPathRaw1({
                 id: ':/'
             })
             result.push(double);
@@ -257,7 +259,7 @@ export default class TestApi {
             })
             result.push(segment);
             let segments = toPathRepeated({
-                segment: ['a', 'b', 'c', 'd']
+                segment: ['a', 'b', 'c']
             })
             result.push(segments);
 
@@ -270,10 +272,6 @@ export default class TestApi {
                 id: '123'
             })
             result.push(wordRegexp);
-            let lettersRegexp = toPathRegexp({
-                id: 'abc'
-            })
-            result.push(lettersRegexp);
 
             const toPathValidateRegexp = compile('/user/:id(\\d+)', {
                 validate: false
@@ -282,9 +280,16 @@ export default class TestApi {
                 id: 'abc'
             })
             result.push(lettersValidateRegexp);
+
+            let lettersRegexp = toPathRegexp({
+                id: 'abc'
+            })
+            result.push(lettersRegexp);
+
+
             return result;
         } catch (err) {
-            result.push(err);
+            result.push('Throws `TypeError`');
             return result
         }
     }

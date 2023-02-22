@@ -41,6 +41,9 @@ struct CompilePage {
           .backgroundColor(Color.Grey)
           .backgroundColor('#66E1E1E1')
           .fontColor(Color.Black)
+          .margin({
+            top:5
+          })
 
         Text(this.message2)
           .fontSize(16)
@@ -49,6 +52,9 @@ struct CompilePage {
           .backgroundColor(Color.Grey)
           .backgroundColor('#66E1E1E1')
           .fontColor(Color.Black)
+          .margin({
+            top:5
+          })
 
         Text(this.message3)
           .fontSize(16)
@@ -57,6 +63,9 @@ struct CompilePage {
           .backgroundColor(Color.Grey)
           .backgroundColor('#66E1E1E1')
           .fontColor(Color.Black)
+          .margin({
+            top:5
+          })
 
         Text(this.message4)
           .fontSize(16)
@@ -65,6 +74,9 @@ struct CompilePage {
           .backgroundColor(Color.Grey)
           .backgroundColor('#66E1E1E1')
           .fontColor(Color.Black)
+          .margin({
+            top:5
+          })
 
 
         Text(this.message5)
@@ -74,6 +86,9 @@ struct CompilePage {
           .backgroundColor(Color.Grey)
           .backgroundColor('#66E1E1E1')
           .fontColor(Color.Black)
+          .margin({
+            top:5
+          })
 
         Text(this.message6)
           .fontSize(16)
@@ -82,6 +97,9 @@ struct CompilePage {
           .backgroundColor(Color.Grey)
           .backgroundColor('#66E1E1E1')
           .fontColor(Color.Black)
+          .margin({
+            top:5
+          })
 
 
         Text(this.message7)
@@ -91,12 +109,109 @@ struct CompilePage {
           .backgroundColor(Color.Grey)
           .backgroundColor('#66E1E1E1')
           .fontColor(Color.Black)
+          .margin({
+            top:5
+          })
+
+        Text(this.message8)
+          .fontSize(16)
+          .textAlign(TextAlign.Center)
+          .fontWeight(FontWeight.Bold)
+          .backgroundColor(Color.Grey)
+          .backgroundColor('#66E1E1E1')
+          .fontColor(Color.Black)
+          .margin({
+            top:5
+          })
+
+        Text(this.message9)
+          .fontSize(16)
+          .textAlign(TextAlign.Center)
+          .fontWeight(FontWeight.Bold)
+          .backgroundColor(Color.Grey)
+          .backgroundColor('#66E1E1E1')
+          .fontColor(Color.Black)
+          .margin({
+            top:5
+          })
+
+        Text(this.message10)
+          .fontSize(16)
+          .textAlign(TextAlign.Center)
+          .fontWeight(FontWeight.Bold)
+          .backgroundColor(Color.Grey)
+          .backgroundColor('#66E1E1E1')
+          .fontColor(Color.Black)
+          .margin({
+            top:5
+          })
+
+
+        Text(this.message11)
+          .fontSize(16)
+          .textAlign(TextAlign.Center)
+          .fontWeight(FontWeight.Bold)
+          .backgroundColor(Color.Grey)
+          .backgroundColor('#66E1E1E1')
+          .fontColor(Color.Black)
+          .margin({
+            top:5
+          })
+
+
+        Text(this.message12)
+          .fontSize(16)
+          .textAlign(TextAlign.Center)
+          .fontWeight(FontWeight.Bold)
+          .backgroundColor(Color.Grey)
+          .backgroundColor('#66E1E1E1')
+          .fontColor(Color.Black)
+          .margin({
+            top:5
+          })
+
+        Text(this.message13)
+          .fontSize(16)
+          .textAlign(TextAlign.Center)
+          .fontWeight(FontWeight.Bold)
+          .backgroundColor(Color.Grey)
+          .backgroundColor('#66E1E1E1')
+          .fontColor(Color.Black)
+          .margin({
+            top:5
+          })
+
+
+        Text(this.message14)
+          .fontSize(16)
+          .textAlign(TextAlign.Center)
+          .fontWeight(FontWeight.Bold)
+          .backgroundColor(Color.Grey)
+          .backgroundColor('#66E1E1E1')
+          .fontColor(Color.Black)
+          .margin({
+            top:5
+          })
+
+        Text(this.message15)
+          .fontSize(16)
+          .textAlign(TextAlign.Center)
+          .fontWeight(FontWeight.Bold)
+          .backgroundColor(Color.Grey)
+          .backgroundColor('#66E1E1E1')
+          .fontColor(Color.Black)
+          .margin({
+            top:5
+          })
 
         Button('开始转换')
           .backgroundColor(Color.Blue)
           .fontColor(Color.White)
           .width('80%')
           .height(100)
+          .margin({
+            top:5
+          })
           .onClick((event) => {
             let api = new TestApi()
             let result = api.compileTest()
@@ -119,8 +234,8 @@ struct CompilePage {
             arrBefore.push('toPathRepeated({ segment: ["a", "b", "c"] }) 期待结果: \r\n ' + `/a/b/c`);
             arrBefore.push('toPathRegexp({ id: 123 }) 期待结果: \r\n ' + `/user/123`);
             arrBefore.push('toPathRegexp({ id: "123" }) 期待结果: \r\n ' + `/user/123`);
-            arrBefore.push('toPathRegexp({ id: "abc" }) 期待结果: \r\n ' + `Throws TypeError`);
             arrBefore.push('toPathRegexp({ id: "abc" }, { validate: false }) 期待结果: \r\n ' + `/user/abc`);
+            arrBefore.push('toPathRegexp({ id: "abc" }) 期待结果: \r\n ' + `Throws TypeError`);
             bean.setBefore(arrBefore);
             let arrAfter = new Array<string>();
             arrAfter.push(JSON.stringify(result[0]));
@@ -145,7 +260,9 @@ struct CompilePage {
           })
       }
       .width('100%')
+      .height('100%')
     }
+    .width('100%')
     .height('100%')
   }
 }
