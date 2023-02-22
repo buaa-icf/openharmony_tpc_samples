@@ -23,7 +23,7 @@ export default class TestApi {
         }
     }
 
-    public customMatchingParametersTest(param: string, keys?: Key[]): Array<object> {
+    public customMatchingParametersTest(param?: string, keys?: Key[]): Array<object> {
         const result = []
         try {
             const regexpNumbers = pathToRegexp('/icon-:foo(\\d+).png');

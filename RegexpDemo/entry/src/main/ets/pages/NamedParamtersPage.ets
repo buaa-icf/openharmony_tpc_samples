@@ -45,7 +45,8 @@ struct NamedParamtersPage {
             }
             let bean = new CommonResultBean();
             let arrBefore = new Array<string>();
-            arrBefore.push('regexp  期待结果: \r\n ' + `[ '/test/route', 'test', 'route', index: 0, input: '/test/route', groups: undefined ]`);
+            // result属性 [ '/test/route', 'test', 'route', index: 0, input: '/test/route', groups: undefined ]
+            arrBefore.push('regexp  期待结果: \r\n ' + `[ '/test/route', 'test', 'route']`);
 //            arrBefore.push('keys   期待结果: \r\n' + `[{ name: 'foo', prefix: '/', ... }, { name: 'bar', prefix: '/', ... }]`);
             bean.setBefore(arrBefore);
             let arrAfter = new Array<string>();
