@@ -164,7 +164,7 @@ export default class TestApi {
         const result = []
         try {
             const fn = match('/cafe', {
-                decode: encodeURI
+                encode: encodeURI
             });
             const number = fn('/caf%c3%A9');
             result.push(number);
