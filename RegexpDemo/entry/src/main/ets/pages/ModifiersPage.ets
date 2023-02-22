@@ -3,7 +3,6 @@ import CommonResultBean from '../CommonResultBean';
 import promptAction from '@ohos.promptAction';
 import router from '@ohos.router';
 
-
 @Entry
 @Component
 struct ModifiersPage {
@@ -55,7 +54,7 @@ struct ModifiersPage {
             }
             let bean = new CommonResultBean();
             let arrBefore = new Array<string>();
-            arrBefore.push('regexp.exec("/test")  期待结果: \r\n ' + `[ '/test', 'test', undefined ]`);
+            arrBefore.push('regexp.exec("/test")  期待结果: \r\n ' + `[ '/test', 'test', null ]`);
             arrBefore.push('regexp.exec("/test/route")  期待结果: \r\n ' + `[ '/test/route', 'test', 'route' ]`);
             bean.setBefore(arrBefore);
             let arrAfter = new Array<string>();
