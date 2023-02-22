@@ -4,7 +4,7 @@ export default class TestApi {
     constructor() {
     }
 
-    public pathToRegexpTest(param: string, keys?: Key[]): object {
+    public pathToRegexpTest(param?: string, keys?: Key[]): object {
         try {
             const regexp = pathToRegexp(param, keys);
             return regexp;
@@ -13,7 +13,7 @@ export default class TestApi {
         }
     }
 
-    public namedParametersTest(param: string): object {
+    public namedParametersTest(param?: string): object {
         try {
             const regexp = pathToRegexp(param);
             const result = regexp.exec('/test/route')
@@ -70,7 +70,7 @@ export default class TestApi {
         }
     }
 
-    public modifiersPageTest(param: string, keys?: Key[]): Array<object> {
+    public modifiersPageTest(param?: string, keys?: Key[]): Array<object> {
         const result = []
         try {
             const regexp = pathToRegexp('/:foo/:bar?');
@@ -85,7 +85,7 @@ export default class TestApi {
         }
     }
 
-    public optionalTest(param: string, keys?: Key[]): Array<object> {
+    public optionalTest(param?: string, keys?: Key[]): Array<object> {
         const result = []
         try {
             const regexp = pathToRegexp('/:foo/:bar?');
@@ -105,7 +105,7 @@ export default class TestApi {
         }
     }
 
-    public zeroTest(param: string, keys?: Key[]): Array<object> {
+    public zeroTest(param?: string, keys?: Key[]): Array<object> {
         const result = []
         try {
             const regexp = pathToRegexp('/:foo*');
@@ -120,7 +120,7 @@ export default class TestApi {
         }
     }
 
-    public oneTest(param: string, keys?: Key[]): Array<object> {
+    public oneTest(param?: string, keys?: Key[]): Array<object> {
         const result = []
         try {
             const regexp = pathToRegexp('/:foo+');
@@ -136,7 +136,7 @@ export default class TestApi {
     }
 
 
-    public matchTest(param: string, keys?: Key[]): Array<object> {
+    public matchTest(param?: string, keys?: Key[]): Array<object> {
         const result = []
         try {
             const fn = match('/user/:id', {
@@ -165,7 +165,7 @@ export default class TestApi {
         }
     }
 
-    public processPathnameTest(param: string, keys?: Key[]): Array<object> {
+    public processPathnameTest(param?: string, keys?: Key[]): Array<object> {
         const result = []
         try {
             const fn = match('/cafe', {
@@ -190,7 +190,7 @@ export default class TestApi {
     }
 
 
-    public alternativeTest(param: string, keys?: Key[]): Array<object> {
+    public alternativeTest(param?: string, keys?: Key[]): Array<object> {
         const result = new Array()
         try {
             const re = pathToRegexp('/caf\u00E9');
@@ -207,7 +207,7 @@ export default class TestApi {
         }
     }
 
-    public parseTest(param: string, keys?: Key[]): Array<object> {
+    public parseTest(param?: string, keys?: Key[]): Array<object> {
         const result = []
         try {
             const tokens = parse('/route/:foo/(.*)');
@@ -221,7 +221,7 @@ export default class TestApi {
         }
     }
 
-    public compileTest(param: string, keys?: Key[]): Array<object> {
+    public compileTest(param?: string, keys?: Key[]): Array<object> {
         const result = []
         try {
             const toPath = compile('/user/:id', {
