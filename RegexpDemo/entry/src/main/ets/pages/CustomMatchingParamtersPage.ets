@@ -76,9 +76,9 @@ struct CustomMatchingParamtersPage {
             let bean = new CommonResultBean();
             let arrBefore = new Array<string>();
             arrBefore.push('exec("/icon-123.png")  期待结果: \r\n ' + `['/icon-123.png', '123']`);
-            arrBefore.push('exec("/icon-abc.png")  期待结果: \r\n ' + `['/icon-123.png', '123']`);
-            arrBefore.push('exec("/u")  期待结果: \r\n ' + `['/icon-123.png', '123']`);
-            arrBefore.push('exec("/users")  期待结果: \r\n ' + `['/icon-123.png', '123']`);
+            arrBefore.push('exec("/icon-abc.png")  期待结果: \r\n ' + `null`);
+            arrBefore.push('exec("/u")  期待结果: \r\n ' + ` ['/u', 'u']`);
+            arrBefore.push('exec("/users")  期待结果: \r\n ' + `null`);
             bean.setBefore(arrBefore);
             let arrAfter = new Array<string>();
             arrAfter.push(JSON.stringify(result[0]));
