@@ -6,8 +6,8 @@ import router from '@ohos.router';
 @Entry
 @Component
 struct AlternativePage {
-  @State message0: string = '原始数据：/caf\u00E9'
-  @State message1: string = '原始数据：cafe\u0301'
+  @State message0: string = '原始数据：const re = pathToRegexp("/caf\u00E9");'
+  @State message1: string = '原始数据：const input = encodeURI("/cafe\u0301");'
 
   build() {
     Row() {
@@ -45,8 +45,8 @@ struct AlternativePage {
             }
             let bean = new CommonResultBean();
             let arrBefore = new Array<string>();
-            arrBefore.push('/caf\u00E9 期待结果:false');
-            arrBefore.push('/cafe\u0301 期待结果:true');
+            arrBefore.push('re.test(input) 期待结果:false');
+            arrBefore.push('re.test(normalizePathname(input)) 期待结果:true');
             bean.setBefore(arrBefore);
             let arrAfter = new Array<string>();
             arrAfter.push(JSON.stringify(result[0]));
