@@ -53,8 +53,8 @@ struct CustomPrefixSuffixPage {
             }
             let bean = new CommonResultBean();
             let arrBefore = new Array<string>();
-            arrBefore.push('regexp.exec("/test")  期待结果: \r\n ' + `['/test', 'test', undefined, undefined]`);
-            arrBefore.push('regexp.exec("/test-test")  期待结果: \r\n ' + `['/test', 'test', 'test', undefined]`);
+            arrBefore.push('regexp.exec("/test")  期待结果: \r\n ' + `['/test', 'test', null, null]`);
+            arrBefore.push('regexp.exec("/test-test")  期待结果: \r\n ' + `['/test', 'test', 'test', null]`);
             bean.setBefore(arrBefore);
             let arrAfter = new Array<string>();
             arrAfter.push(JSON.stringify(result[0]));

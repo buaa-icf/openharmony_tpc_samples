@@ -28,18 +28,18 @@ export default class TestApi {
         try {
             const regexpNumbers = pathToRegexp('/icon-:foo(\\d+).png');
             const firstResult = regexpNumbers.exec('/icon-123.png');
-            result.fill(firstResult);
+            result.push(firstResult);
             const secondResult = regexpNumbers.exec('/icon-abc.png')
-            result.fill(secondResult);
+            result.push(secondResult);
             const regexpWord = pathToRegexp('/(user|u)');
             const thirdResult = regexpWord.exec('/u');
-            result.fill(thirdResult);
+            result.push(thirdResult);
             const fourResult = regexpWord.exec('/users');
-            result.fill(fourResult);
+            result.push(fourResult);
 
             return result;
         } catch (err) {
-            result.fill(err);
+            result.push(err);
             return result
         }
     }
@@ -48,21 +48,21 @@ export default class TestApi {
     public customPrefixSuffixTest(param?: string, keys?: Key[]): Array<object> {
         const result = []
         try {
-            const regexp = pathToRegexp('/:attr1?{-attr2}?{-:attr3}?');
+            const regexp = pathToRegexp("/:attr1?{-:attr2}?{-:attr3}?");
             const single = regexp.exec('/test');
-            result.fill(single);
+            result.push(single);
             const double = regexp.exec('/test-test')
-            result.fill(double);
+            result.push(double);
             return result;
         } catch (err) {
-            result.fill(err);
+            result.push(err);
             return result
         }
     }
 
-    public unNamedParametersTest(param: string, keys?: Key[]): object {
+    public unNamedParametersTest(param?: string, keys?: Key[]): object {
         try {
-            const regexp = pathToRegexp('/foo/(.*)');
+            const regexp = pathToRegexp("/:foo/(.*)");
             const unNamed = regexp.exec('/test/route');
             return unNamed;
         } catch (err) {
@@ -75,12 +75,12 @@ export default class TestApi {
         try {
             const regexp = pathToRegexp('/:foo/:bar?');
             const single = regexp.exec('/test');
-            result.fill(single);
+            result.push(single);
             const double = regexp.exec('/test/route')
-            result.fill(double);
+            result.push(double);
             return result;
         } catch (err) {
-            result.fill(err);
+            result.push(err);
             return result
         }
     }
@@ -90,17 +90,17 @@ export default class TestApi {
         try {
             const regexp = pathToRegexp('/:foo/:bar?');
             const single = regexp.exec('/test');
-            result.fill(single);
+            result.push(single);
             const double = regexp.exec('/test/route')
-            result.fill(double);
+            result.push(double);
             const regexpNew = pathToRegexp('/search/:tableName\\?useIndex=true&term=amazing');
             const positive = regexpNew.exec('/search/people?useIndex=true&term=amazing');
-            result.fill(positive);
+            result.push(positive);
             const reverse = regexpNew.exec('/search/people?term=amazing&useIndex=true');
-            result.fill(reverse);
+            result.push(reverse);
             return result;
         } catch (err) {
-            result.fill(err);
+            result.push(err);
             return result
         }
     }
@@ -110,12 +110,12 @@ export default class TestApi {
         try {
             const regexp = pathToRegexp('/:foo*');
             const single = regexp.exec('/');
-            result.fill(single);
+            result.push(single);
             const double = regexp.exec('/bar/baz')
-            result.fill(double);
+            result.push(double);
             return result;
         } catch (err) {
-            result.fill(err);
+            result.push(err);
             return result
         }
     }
@@ -125,12 +125,12 @@ export default class TestApi {
         try {
             const regexp = pathToRegexp('/:foo+');
             const single = regexp.exec('/');
-            result.fill(single);
+            result.push(single);
             const double = regexp.exec('/bar/baz')
-            result.fill(double);
+            result.push(double);
             return result;
         } catch (err) {
-            result.fill(err);
+            result.push(err);
             return result
         }
     }
@@ -143,24 +143,24 @@ export default class TestApi {
                 decode: decodeURIComponent
             });
             const number = fn('/user/123');
-            result.fill(number);
+            result.push(number);
             const invalid = fn('/invalid')
-            result.fill(invalid);
+            result.push(invalid);
             const decode = fn('/user/caf%c3%A9')
-            result.fill(decode);
+            result.push(decode);
 
             const urlMatch = match('/users/:id/:tab(home|photos|bio)', {
                 decode: decodeURIComponent
             });
             const photos = urlMatch('/users/1234/photos');
-            result.fill(photos);
+            result.push(photos);
             const bio = urlMatch('/users/1234/bio');
-            result.fill(bio);
+            result.push(bio);
             const otherstuff = urlMatch('/users/1234/otherstuff');
-            result.fill(otherstuff);
+            result.push(otherstuff);
             return result;
         } catch (err) {
-            result.fill(err);
+            result.push(err);
             return result
         }
     }
@@ -172,10 +172,10 @@ export default class TestApi {
                 decode: encodeURI
             });
             const number = fn('/caf%c3%A9');
-            result.fill(number);
+            result.push(number);
             return result;
         } catch (err) {
-            result.fill(err);
+            result.push(err);
             return result
         }
     }
@@ -211,12 +211,12 @@ export default class TestApi {
         const result = []
         try {
             const tokens = parse('/route/:foo/(.*)');
-            result.fill(tokens[0]);
-            result.fill(tokens[1]);
-            result.fill(tokens[2]);
+            result.push(tokens[0]);
+            result.push(tokens[1]);
+            result.push(tokens[2]);
             return result;
         } catch (err) {
-            result.fill(err);
+            result.push(err);
             return result
         }
     }
@@ -230,19 +230,19 @@ export default class TestApi {
             let number = toPath({
                 id: 123
             })
-            result.fill(number);
+            result.push(number);
             let words = toPath({
                 id: 'cafe'
             })
-            result.fill(words);
+            result.push(words);
             let symbol = toPath({
                 id: '/'
             })
-            result.fill(symbol);
+            result.push(symbol);
             let doubleSymbol = toPath({
                 id: ':/'
             })
-            result.fill(doubleSymbol);
+            result.push(doubleSymbol);
 
             const toPathRaw = compile('/user/:id', {
                 validate: false
@@ -250,35 +250,35 @@ export default class TestApi {
             let decode = toPathRaw({
                 id: '%3A%2F'
             })
-            result.fill(decode);
+            result.push(decode);
             let double = toPathRaw({
                 id: ':/'
             })
-            result.fill(double);
+            result.push(double);
 
             const toPathRepeated = compile('/:segment+');
             let segment = toPathRepeated({
                 segment: 'foo'
             })
-            result.fill(segment);
+            result.push(segment);
             let segments = toPathRepeated({
                 segment: ['a', 'b', 'c', 'd']
             })
-            result.fill(segments);
+            result.push(segments);
 
             const toPathRegexp = compile('/user/:id(\\d+)');
             let numberRegexp = toPathRegexp({
                 id: 123
             })
-            result.fill(numberRegexp);
+            result.push(numberRegexp);
             let wordRegexp = toPathRegexp({
                 id: '123'
             })
-            result.fill(wordRegexp);
+            result.push(wordRegexp);
             let lettersRegexp = toPathRegexp({
                 id: 'abc'
             })
-            result.fill(lettersRegexp);
+            result.push(lettersRegexp);
 
             const toPathValidateRegexp = compile('/user/:id(\\d+)', {
                 validate: false
@@ -286,10 +286,10 @@ export default class TestApi {
             let lettersValidateRegexp = toPathValidateRegexp({
                 id: 'abc'
             })
-            result.fill(lettersValidateRegexp);
+            result.push(lettersValidateRegexp);
             return result;
         } catch (err) {
-            result.fill(err);
+            result.push(err);
             return result
         }
     }
