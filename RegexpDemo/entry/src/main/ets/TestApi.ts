@@ -88,11 +88,6 @@ export default class TestApi {
     public optionalTest(param?: string, keys?: Key[]): Array<object> {
         const result = []
         try {
-            const regexp = pathToRegexp('/:foo/:bar?');
-            const single = regexp.exec('/test');
-            result.push(single);
-            const double = regexp.exec('/test/route')
-            result.push(double);
             const regexpNew = pathToRegexp('/search/:tableName\\?useIndex=true&term=amazing');
             const positive = regexpNew.exec('/search/people?useIndex=true&term=amazing');
             result.push(positive);
