@@ -44,18 +44,20 @@ struct AlternativePage {
               return;
             }
             let bean = new CommonResultBean();
-            let arrBefore = new Array<string>(2);
-            arrBefore.push('false');
-            arrBefore.push('true');
+            let arrBefore = new Array<string>();
+            arrBefore.push('/caf\u00E9 期待结果:false');
+            arrBefore.push('/cafe\u0301 期待结果:true');
             bean.setBefore(arrBefore);
-            let arrAfter = new Array<string>(2);
+            let arrAfter = new Array<string>();
             arrAfter.push(JSON.stringify(result[0]));
             arrAfter.push(JSON.stringify(result[1]));
             bean.setAfter(arrAfter);
 
             router.pushUrl({
               url: 'pages/CommonResultPage',
-              params: bean
+              params: {
+                dataObj: bean
+              }
             })
           })
       }

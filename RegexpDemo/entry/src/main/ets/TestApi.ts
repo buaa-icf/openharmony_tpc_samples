@@ -191,18 +191,18 @@ export default class TestApi {
 
 
     public alternativeTest(param: string, keys?: Key[]): Array<object> {
-        const result = []
+        const result = new Array()
         try {
             const re = pathToRegexp('/caf\u00E9');
-            const input = encodeURI('cafe\u0301');
+            const input = encodeURI('/cafe\u0301');
 
             const testPath = re.test(input);
-            result.fill(testPath);
+            result.push(testPath);
             const testDiy = re.test(this.normalizePathname(input));
-            result.fill(testDiy);
+            result.push(testDiy);
             return result;
         } catch (err) {
-            result.fill(err);
+            result.push(err);
             return result
         }
     }
@@ -280,8 +280,8 @@ export default class TestApi {
             })
             result.fill(lettersRegexp);
 
-            const toPathValidateRegexp = compile('/user/:id(\\d+)',{
-                validate:false
+            const toPathValidateRegexp = compile('/user/:id(\\d+)', {
+                validate: false
             });
             let lettersValidateRegexp = toPathValidateRegexp({
                 id: 'abc'
