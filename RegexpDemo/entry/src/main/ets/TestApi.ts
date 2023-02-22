@@ -163,10 +163,10 @@ export default class TestApi {
     public processPathnameTest(param?: string, keys?: Key[]): Array<object> {
         const result = []
         try {
-            const fn = match('/cafe', {
+            const fn = match("/café", {
                 encode: encodeURI
             });
-            const number = fn('/caf%c3%A9');
+            const number = fn("/caf%C3%A9");
             result.push(number);
             return result;
         } catch (err) {
