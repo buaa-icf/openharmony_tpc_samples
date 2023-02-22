@@ -103,7 +103,7 @@ export default class TestApi {
     public zeroTest(param?: string, keys?: Key[]): Array<object> {
         const result = []
         try {
-            const regexp = pathToRegexp('/:foo*');
+            const regexp = pathToRegexp("/:foo*");
             const single = regexp.exec('/');
             result.push(single);
             const double = regexp.exec('/bar/baz')

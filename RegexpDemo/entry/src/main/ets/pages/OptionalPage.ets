@@ -54,7 +54,7 @@ struct OptionalPage {
             }
             let bean = new CommonResultBean();
             let arrBefore = new Array<string>();
-            arrBefore.push('期待结果: \r\n ' + `[  '/search/people?useIndex=true&term=amazing', 'people' ]`);
+            arrBefore.push('期待结果: \r\n ' + `[ '/search/people?useIndex=true&term=amazing', 'people' ]`);
             arrBefore.push('期待结果: \r\n ' + `null`);
             bean.setBefore(arrBefore);
             let arrAfter = new Array<string>();
