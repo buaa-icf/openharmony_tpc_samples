@@ -16,7 +16,7 @@ export default class JumpPathConfig {
             this.dataList = new Array<JumpBean>();
         }
         if (this.dataList.length < 1) {
-            let bean14 = new JumpBean('跳转PathToRegexpPage', 'pages/PathToRegexpPage');
+            let bean14 = new JumpBean('跳转AlternativePage', 'pages/AlternativePage');
             this.dataList.push(bean14)
 
             let bean0 = new JumpBean('跳转PathToRegexpPage', 'pages/PathToRegexpPage');

@@ -81,7 +81,7 @@ struct CommonResultPage {
           List({ space: 5, initialIndex: 0 }) {
             ForEach(this.afterIndex, (item) => {
               ListItem() {
-                Text('转换后： ' + this.afterStr[item])
+                Text('转换后： \r\n' + this.afterStr[item])
                   .width('100%')
                   .height(100)
                   .fontSize(16)

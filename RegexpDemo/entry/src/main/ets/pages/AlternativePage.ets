@@ -20,7 +20,7 @@ struct AlternativePage {
           .fontColor(Color.Black)
 
 
-        Text(this.message0)
+        Text(this.message1)
           .fontSize(16)
           .textAlign(TextAlign.Center)
           .fontWeight(FontWeight.Bold)

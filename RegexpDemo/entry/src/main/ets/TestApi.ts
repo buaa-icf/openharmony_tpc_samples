@@ -13,9 +13,9 @@ export default class TestApi {
         }
     }
 
-    public namedParametersTest(param: string, keys?: Key[]): object {
+    public namedParametersTest(param: string): object {
         try {
-            const regexp = pathToRegexp(param, keys);
+            const regexp = pathToRegexp(param);
             const result = regexp.exec('/test/route')
             return result;
         } catch (err) {

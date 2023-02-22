@@ -20,7 +20,7 @@ struct PathToRegexpPage {
           .fontColor(Color.Black)
 
 
-        Text(this.message0)
+        Text(this.message1)
           .fontSize(16)
           .textAlign(TextAlign.Center)
           .fontWeight(FontWeight.Bold)
@@ -37,7 +37,7 @@ struct PathToRegexpPage {
             const keys = [];
             let api = new TestApi()
             let result = api.pathToRegexpTest("/foo/:bar", keys)
-            if (!result ) {
+            if (!result) {
               promptAction.showToast({
                 message: '数据处理结果与预期不符',
                 duration: 6000
@@ -46,8 +46,8 @@ struct PathToRegexpPage {
             }
             let bean = new CommonResultBean();
             let arrBefore = new Array<string>();
-            arrBefore.push('regexp  期待结果: regexp = /^\/foo(?:\/([^\/#\?]+?))[\/#\?]?$/i');
-            arrBefore.push('keys   期待结果: '+"[{ name: 'bar', prefix: '/', suffix: '', pattern: '[^\\/#\\?]+?', modifier: '' }]");
+            arrBefore.push('regexp  期待结果: \r\n ' + `/^\/foo(?:\/([^\/#\?]+?))[\/#\?]?$/i`);
+            arrBefore.push('keys   期待结果: \r\n' + `[{ name: 'bar', prefix: '/', suffix: '', pattern: '[^\\/#\\?]+?', modifier: '' }]`);
             bean.setBefore(arrBefore);
             let arrAfter = new Array<string>();
             arrAfter.push(JSON.stringify(result));
