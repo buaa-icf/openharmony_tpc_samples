@@ -45,7 +45,7 @@ export default class TestApi {
     }
 
 
-    public customPrefixSuffixTest(param: string, keys?: Key[]): Array<object> {
+    public customPrefixSuffixTest(param?: string, keys?: Key[]): Array<object> {
         const result = []
         try {
             const regexp = pathToRegexp('/:attr1?{-attr2}?{-:attr3}?');
