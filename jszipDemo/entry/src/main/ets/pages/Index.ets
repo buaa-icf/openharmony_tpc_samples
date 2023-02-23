@@ -129,12 +129,19 @@ export struct ZipTest {
   }
 
   aboutToAppear() {
+    try {
+      fileio.mkdir(globalThis.context.filesDir + '/' + this.newFolder)
+        .then((err) => {
+        });
+    } catch (error) {
+      console.error('File to obtain the file directory. Cause: ' + error.message);
+    }
   }
 
   generateTextFile(): void {
     try {
       var data = globalThis.context.filesDir
-      const writer = fileio.openSync(data + this.newFolder + '/hello.txt', 0o102, 0o666);
+      const writer = fileio.openSync(data +'/' + this.newFolder + '/hello.txt', 0o102, 0o666);
       fileio.writeSync(writer, "hello, world!  adjasjdakjdakjdkjakjdakjskjasdkjaskjdajksdkjasdkjaksjdkja\n"
       + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
       + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
