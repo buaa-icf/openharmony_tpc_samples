@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import router from '@system.router'
+import router from '@ohos.router'
 
 @Entry
 @Component
@@ -53,31 +53,31 @@ struct Index {
   click(eventType) {
     switch (eventType) {
       case 1:
-        router.push({ uri: 'pages/create' })
+        router.pushUrl({ url: 'pages/create' })
         break;
       case 2:
-        router.push({ uri: 'pages/filter' })
+        router.pushUrl({ url: 'pages/filter' })
         break;
       case 3:
-        router.push({ uri: 'pages/multicast' })
+        router.pushUrl({ url: 'pages/multicast' })
         break;
       case 4:
-        router.push({ uri: 'pages/combine' })
+        router.pushUrl({ url: 'pages/combine' })
         break;
       case 5:
-        router.push({ uri: 'pages/error' })
+        router.pushUrl({ url: 'pages/error' })
         break;
       case 6:
-        router.push({ uri: 'pages/condition' })
+        router.pushUrl({ url: 'pages/condition' })
         break;
       case 7:
-        router.push({ uri: 'pages/convert' })
+        router.pushUrl({ url: 'pages/convert' })
         break;
       case 8:
-        router.push({ uri: 'pages/tool' })
+        router.pushUrl({ url: 'pages/tool' })
         break;
       case 9:
-        router.push({ uri: 'pages/scheduler' })
+        router.pushUrl({ url: 'pages/scheduler' })
         break;
     }
   }
