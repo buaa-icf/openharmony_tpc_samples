@@ -165,6 +165,11 @@ RxJS 操作符的完整列表
 | 错误处理   | catch / catchError、 retry 、  retryWhen                     |
 | 多播       | publish、multicast、share、 shareReplay                      |
 
+# 兼容性
+
+- [DevEco Studio](https://developer.harmonyos.com/cn/develop/deveco-studio#download) 版本：DevEco Studio 3.1 Beta1及以上版本。
+- OpenHarmony SDK版本：API version 9 及以上版本。
+
 ## 目录
 
 ```
@@ -188,3 +193,10 @@ RxJS 操作符的完整列表
  │ │ │ └── module.json5            # hap配置文件
 ```
 
+# 贡献代码
+
+使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+
+# 开源协议
+
+本项目基于 [Apache License 2.0](https://gitee.com/cuijiaojiao1/openharmony_tpc_samples/blob/master/RxJS/LICENSE) 协议，请自由地享受和参与开源。
