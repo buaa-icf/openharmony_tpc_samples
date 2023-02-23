@@ -121,6 +121,11 @@ function (value, name){
 | xml2js.parseStringPromise(xml/*, options*/)| 异步字符串解析 XML 。    |
 | builder.buildObject(obj) | 对象构建 XML。    |
 
+## 兼容性
+
+- [DevEco Studio](https://developer.harmonyos.com/cn/develop/deveco-studio#download) 版本：DevEco Studio 3.1 Beta1及以上版本。
+- OpenHarmony SDK版本：API version 9 及以上版本。
+
 ## 目录
 
 ```
@@ -141,16 +146,12 @@ function (value, name){
 
 ```
 
-## 兼容性
+## 贡献代码
 
-支持 OpenHarmony API version 9 及以上版本。
+使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
+给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
 ## 开源协议
 
 本项目基于 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/xml2jsDemo/LICENSE)
 ，请自由地享受和参与开源。
-
-## 贡献代码
-
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
-给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
