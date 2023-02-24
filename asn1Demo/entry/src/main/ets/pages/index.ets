@@ -13,13 +13,12 @@
  * limitations under the License.
  */
 
-
+import router from '@ohos.router';
 // @ts-nocheck
 import { JSONDeserializer, JSONSerializer, Universal } from '@complycloud/asn1';
 import { DERSerializer, DERDeserializer } from '@complycloud/asn1-der';
 import { btoa, atob } from 'Base64'
 import { encode, decode } from 'hex-encode-decode'
-import { AbilityHandle } from '../util/AbilityHandle'
 
 const { Bool, Integer, Null, PrintableString, Sequence } = Universal;
 const sequence = new Sequence([
@@ -36,19 +35,17 @@ const sequence = new Sequence([
 @Component
 struct Index {
   @State message: string = 'asn1 组装原数据：' + JSON.stringify(sequence);
-  @State strText: string= "";
+  @State strText: string = "";
   @State serializeJsonText: string = "";
   @State deserializeJsonText: string = "";
-  @State deserializeJsonTextBase64: string= "ABCDEFGHIJKLMNOPQRSTUVWXYZabcefghijklmnopqrstuvwxyz1234567890+/AA==!@#$%^&*()_-/][{}?:";
-  @State deserializeJsonTextHex: string= "ABCDEFGHIJKLMNOPQRSTUVWXYZabcefghijklmnopqrstuvwxyz1234567890+/AA==!@#$%^&*()_-/][{}?:";
+  @State deserializeJsonTextBase64: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcefghijklmnopqrstuvwxyz1234567890+/AA==!@#$%^&*()_-/][{}?:";
+  @State deserializeJsonTextHex: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcefghijklmnopqrstuvwxyz1234567890+/AA==!@#$%^&*()_-/][{}?:";
   @State deserializeJsonTextDer: string = "";
   @State deserializeJsonTextDerS: string = "";
   @State deserializeJsonTextDerD: string = "";
   private json: any;
-  private btnDerClicked: Boolean = null;
   private btnBase64Clicked: boolean = false;
   private btnHexClicked: boolean = false;
-  private resultArrayBuffer;
   private scroller: Scroller = new Scroller();
   @State btn64Text: string = "base64 编码";
   @State btnHexText: string = "Hex 编码";
@@ -56,119 +53,125 @@ struct Index {
 
   build() {
     Row() {
-      Column() {
-        Text(this.message)
-          .fontSize(16)
+      Scroll(this.scroller) {
+        Column() {
+          Text(this.message)
+            .fontSize(16)
 
-        Button("asn1 序列化数据")
-          .fontSize(16)
-          .margin({ top: "20px" })
-          .onClick((event) => {
-            const serialize = new JSONSerializer();
-            this.json = serialize(sequence);
-            this.serializeJsonText = JSON.stringify(this.json);
-          })
+          Button("asn1 序列化数据")
+            .fontSize(16)
+            .margin({ top: "20px" })
+            .onClick((event) => {
+              const serialize = new JSONSerializer();
+              this.json = serialize(sequence);
+              this.serializeJsonText = JSON.stringify(this.json);
+            })
 
-        Text(this.serializeJsonText)
-          .margin({ top: "20px" })
-          .fontSize(16)
+          Text(this.serializeJsonText)
+            .margin({ top: "20px" })
+            .fontSize(16)
 
-        Button("asn1 反序列化数据")
-          .fontSize(16)
-          .margin({ top: "20px" })
-          .onClick((event) => {
-            const deserialize = new JSONDeserializer();
-            const asn1ObjectModel = deserialize(this.json);
-            this.deserializeJsonText = JSON.stringify(asn1ObjectModel);
-          })
+          Button("asn1 反序列化数据")
+            .fontSize(16)
+            .margin({ top: "20px" })
+            .onClick((event) => {
+              const deserialize = new JSONDeserializer();
+              const asn1ObjectModel = deserialize(this.json);
+              this.deserializeJsonText = JSON.stringify(asn1ObjectModel);
+            })
 
-        Text(this.deserializeJsonText)
-          .margin({ top: "20px" })
-          .fontSize(16)
+          Text(this.deserializeJsonText)
+            .margin({ top: "20px" })
+            .fontSize(16)
 
-        Text(this.deserializeJsonTextBase64)
-          .margin({ top: "20px" })
-          .fontSize(16)
+          Text(this.deserializeJsonTextBase64)
+            .margin({ top: "20px" })
+            .fontSize(16)
 
 
-        Button(this.btn64Text)
-          .fontSize(16)
-          .margin({ top: "20px" })
-          .onClick((event) => {
-            if (!this.btnBase64Clicked) {
-              this.deserializeJsonTextBase64 = btoa("ABCDEFGHIJKLMNOPQRSTUVWXYZabcefghijklmnopqrstuvwxyz1234567890+/AA==!@#$%^&*()_-/][{}?:");
-              this.btnBase64Clicked = true;
-            } else {
-              this.deserializeJsonTextBase64 = atob(this.deserializeJsonTextBase64);
-              this.btnBase64Clicked = false;
-            }
-            this.btn64Text = this.btnBase64Clicked ? "base64 解码" : "base64 编码";
-          })
+          Button(this.btn64Text)
+            .fontSize(16)
+            .margin({ top: "20px" })
+            .onClick((event) => {
+              if (!this.btnBase64Clicked) {
+                this.deserializeJsonTextBase64 = btoa("ABCDEFGHIJKLMNOPQRSTUVWXYZabcefghijklmnopqrstuvwxyz1234567890+/AA==!@#$%^&*()_-/][{}?:");
+                this.btnBase64Clicked = true;
+              } else {
+                this.deserializeJsonTextBase64 = atob(this.deserializeJsonTextBase64);
+                this.btnBase64Clicked = false;
+              }
+              this.btn64Text = this.btnBase64Clicked ? "base64 解码" : "base64 编码";
+            })
 
-        Text(this.deserializeJsonTextHex)
-          .margin({ top: "20px" })
-          .fontSize(16)
+          Text(this.deserializeJsonTextHex)
+            .margin({ top: "20px" })
+            .fontSize(16)
 
-        Button(this.btnHexText)
-          .fontSize(16)
-          .margin({ top: "20px" })
-          .onClick((event) => {
-            if (!this.btnHexClicked) {
-              this.deserializeJsonTextHex = encode("ABCDEFGHIJKLMNOPQRSTUVWXYZabcefghijklmnopqrstuvwxyz1234567890+/AA==!@#$%^&*()_-/][{}?:");
-              this.btnHexClicked = true;
-            } else {
-              this.deserializeJsonTextHex = decode(this.deserializeJsonTextHex);
-              this.btnHexClicked = false;
-            }
+          Button(this.btnHexText)
+            .fontSize(16)
+            .margin({ top: "20px" })
+            .onClick((event) => {
+              if (!this.btnHexClicked) {
+                this.deserializeJsonTextHex = encode("ABCDEFGHIJKLMNOPQRSTUVWXYZabcefghijklmnopqrstuvwxyz1234567890+/AA==!@#$%^&*()_-/][{}?:");
+                this.btnHexClicked = true;
+              } else {
+                this.deserializeJsonTextHex = decode(this.deserializeJsonTextHex);
+                this.btnHexClicked = false;
+              }
 
-            this.btnHexText = this.btnHexClicked ? "Hex 解码" : "Hex 编码";
-          })
+              this.btnHexText = this.btnHexClicked ? "Hex 解码" : "Hex 编码";
+            })
 
-        Text(this.deserializeJsonTextDer)
-          .margin({ top: "20px" })
-          .fontSize(16)
+          Text(this.deserializeJsonTextDer)
+            .margin({ top: "20px" })
+            .fontSize(16)
 
-        Text(this.deserializeJsonTextDerS)
-          .margin({ top: "20px" })
-          .fontSize(16)
+          Text(this.deserializeJsonTextDerS)
+            .margin({ top: "20px" })
+            .fontSize(16)
 
-        Text(this.deserializeJsonTextDerD)
-          .margin({ top: "20px" })
-          .fontSize(16)
+          Text(this.deserializeJsonTextDerD)
+            .margin({ top: "20px" })
+            .fontSize(16)
 
-        Button(this.btnDerText)
-          .fontSize(16)
-          .margin({ top: "20px" })
-          .onClick((event) => {
-            const serialize = new DERSerializer();
-            const asn1Sequence = new Universal.Sequence([
-              new Universal.Integer(123),
-              new Universal.PrintableString('Hello World'),
-            ]);
+          Button(this.btnDerText)
+            .fontSize(16)
+            .margin({ top: "20px" })
+            .onClick((event) => {
+              const serialize = new DERSerializer();
+              const asn1Sequence = new Universal.Sequence([
+                new Universal.Integer(123),
+                new Universal.PrintableString('Hello World'),
+              ]);
 
-            this.deserializeJsonTextDer = "DER 原抽象数据:" + JSON.stringify(asn1Sequence);
-            const bufferContainingDEREncodedASN1 = serialize(asn1Sequence);
-            this.deserializeJsonTextDerS = "DER 序列化数据：" + JSON.stringify(bufferContainingDEREncodedASN1);
+              this.deserializeJsonTextDer = "DER 原抽象数据:" + JSON.stringify(asn1Sequence);
+              const bufferContainingDEREncodedASN1 = serialize(asn1Sequence);
+              this.deserializeJsonTextDerS = "DER 序列化数据：" + JSON.stringify(bufferContainingDEREncodedASN1);
 
-            const deserialize = new DERDeserializer();
-            const des = deserialize(bufferContainingDEREncodedASN1);
-            this.deserializeJsonTextDerD = "DER 反序列化数据:" + JSON.stringify(des);
-          })
+              const deserialize = new DERDeserializer();
+              const des = deserialize(bufferContainingDEREncodedASN1);
+              this.deserializeJsonTextDerD = "DER 反序列化数据:" + JSON.stringify(des);
+            })
 
-        Button("测试BER")
-          .fontSize(16)
-          .margin({ top: "20px" })
-          .onClick((event) => {
-
-            AbilityHandle.jump("BerTestAbility")
-          })
+          Button("测试BER")
+            .fontSize(16)
+            .margin({ top: "20px" })
+            .onClick((event) => {
+              router.pushUrl({
+                url: "pages/berTest"
+              })
+            })
+        }
+        .width('100%')
       }
+      .scrollable(ScrollDirection.Vertical)
       .width('100%')
+
     }
     .height('100%')
   }
 
-  aboutToAppear(){
+  aboutToAppear() {
     console.log("asnd1 aboutToAppear");
   }
 }
