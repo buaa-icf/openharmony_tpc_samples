@@ -1,13 +1,14 @@
 {
+  "license": "ISC",
+  "types": "",
+  "devDependencies": {},
   "name": "@ohos/browser_customtabs",
   "description": "a npm package which contains arkUI2.0 page",
   "ohos": {
     "org": ""
   },
-  "version": "1.0.0",
   "main": "index.ets",
-  "types": "",
-  "license": "ISC",
   "type": "module",
+  "version": "1.0.0",
   "dependencies": {}
 }

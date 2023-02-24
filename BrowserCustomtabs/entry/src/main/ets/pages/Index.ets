@@ -21,7 +21,7 @@ import rpc from '@ohos.rpc';
 @Component
 struct Index {
   @State message: string = '显示数据'
-  @State want: string = ''
+  @State want: string = '显示数据'
 
   build() {
     Row() {
