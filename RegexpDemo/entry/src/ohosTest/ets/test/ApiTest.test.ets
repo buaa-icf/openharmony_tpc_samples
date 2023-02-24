@@ -29,14 +29,14 @@ export default function ApiTest() {
     it('Named Parameters Test', 0, function () {
       const keys = [];
       const regexp = pathToRegexp("/foo/:bar", keys);
-      let testStr = regexp.exec("/test/route");
+      let testStr = JSON.stringify(regexp.exec("/test/route"));
       let objStr = JSON.stringify(['/test/route', 'test', 'route']);
       expect(testStr).assertEqual(objStr)
     })
 
     it('Custom Matching Parameters Test', 0, function () {
       const regexpNumbers = pathToRegexp("/icon-:foo(\\d+).png");
-      let testStr1 = regexpNumbers.exec("/icon-123.png");
+      let testStr1 = JSON.stringify(regexpNumbers.exec("/icon-123.png"));
       let objStr1 = JSON.stringify(['/icon-123.png', '123']);
       expect(testStr1).assertEqual(objStr1)
 
@@ -46,7 +46,7 @@ export default function ApiTest() {
 
 
       const regexpWord = pathToRegexp("/(user|u)");
-      let testStr3 = regexpWord.exec("/u");
+      let testStr3 = JSON.stringify(regexpWord.exec("/u"));
       let objStr3 = JSON.stringify(['/u', 'u']);
       expect(testStr3).assertEqual(objStr3)
 
@@ -58,36 +58,36 @@ export default function ApiTest() {
 
     it('Custom Prefix and Suffix Test', 0, function () {
       const regexp = pathToRegexp("/:attr1?{-:attr2}?{-:attr3}?");
-      let testStr1 = regexp.exec("/test");
+      let testStr1 = JSON.stringify(regexp.exec("/test"));
       let objStr1 = JSON.stringify(['/test', 'test', null, null]);
       expect(testStr1).assertEqual(objStr1)
 
-      let testStr2 = regexp.exec("/test-test");
+      let testStr2 = JSON.stringify(regexp.exec("/test-test"));
       let objStr2 = JSON.stringify(['/test', 'test', 'test', undefined]);
       expect(testStr2).assertEqual(objStr2)
     })
 
     it('Unnamed Parameters Test', 0, function () {
       const regexp = pathToRegexp("/:foo/(.*)");
-      let testStr1 = regexp.exec("/test/route");
+      let testStr1 = JSON.stringify(regexp.exec("/test/route"));
       let objStr1 = JSON.stringify(['/test/route', 'test', 'route']);
       expect(testStr1).assertEqual(objStr1)
     })
 
     it('Modifiers  Test', 0, function () {
       const regexp = pathToRegexp("/:foo/:bar?");
-      let testStr1 = regexp.exec("/test");
+      let testStr1 = JSON.stringify(regexp.exec("/test"));
       let objStr1 = JSON.stringify(['/test', 'test', null]);
       expect(testStr1).assertEqual(objStr1)
 
-      let testStr2 = regexp.exec("/test/route");
+      let testStr2 = JSON.stringify(regexp.exec("/test/route"));
       let objStr2 = JSON.stringify(['/test/route', 'test', 'route']);
       expect(testStr2).assertEqual(objStr2)
     })
 
     it('optional Test', 0, function () {
       const regexp = pathToRegexp("/search/:tableName\\?useIndex=true&term=amazing");
-      let testStr1 = regexp.exec("/search/people?useIndex=true&term=amazing");
+      let testStr1 = JSON.stringify(regexp.exec("/search/people?useIndex=true&term=amazing"));
       let objStr1 = JSON.stringify(['/search/people?useIndex=true&term=amazing', 'people']);
       expect(testStr1).assertEqual(objStr1)
 
@@ -98,11 +98,11 @@ export default function ApiTest() {
 
     it('Zero or more Test', 0, function () {
       const regexp = pathToRegexp("/:foo*");
-      let testStr1 = regexp.exec("/");
+      let testStr1 = JSON.stringify(regexp.exec("/"));
       let objStr1 = JSON.stringify(['/', undefined]);
       expect(testStr1).assertEqual(objStr1)
 
-      let testStr2 = regexp.exec("/bar/baz");
+      let testStr2 = JSON.stringify(regexp.exec("/bar/baz"));
       let objStr2 = JSON.stringify(['/bar/baz', 'bar/baz']);
       ;
       expect(testStr2).assertEqual(objStr2)
@@ -114,7 +114,7 @@ export default function ApiTest() {
       let objStr1 = null;
       expect(testStr1).assertEqual(objStr1)
 
-      let testStr2 = regexp.exec("/bar/baz");
+      let testStr2 = JSON.stringify(regexp.exec("/bar/baz"));
       let objStr2 = JSON.stringify(['/bar/baz', 'bar/baz']);
       ;
       expect(testStr2).assertEqual(objStr2)
@@ -124,7 +124,7 @@ export default function ApiTest() {
       const fn = match("/user/:id", {
         decode: decodeURIComponent
       });
-      let testStr1 = fn("/user/123");
+      let testStr1 = JSON.stringify(fn("/user/123"));
       let objStr1 = JSON.stringify({
         path: '/user/123', index: 0, params: {
           id: '123'
@@ -142,7 +142,7 @@ export default function ApiTest() {
       const fn = match("/user/:id", {
         decode: decodeURIComponent
       });
-      let testStr1 = fn("/user/123");
+      let testStr1 = JSON.stringify(fn("/user/123"));
       let objStr1 = JSON.stringify({
         path: '/user/123', index: 0, params: {
           id: '123'
@@ -160,7 +160,7 @@ export default function ApiTest() {
       const urlMatch = match("/users/:id/:tab(home|photos|bio)", {
         decode: decodeURIComponent,
       });
-      let testStr1 = urlMatch("/users/1234/photos");
+      let testStr1 = JSON.stringify(urlMatch("/users/1234/photos"));
       let objStr1 = JSON.stringify({
         path: '/users/1234/photos', index: 0, params: {
           id: '1234', tab: 'photos'
@@ -168,7 +168,7 @@ export default function ApiTest() {
       });
       expect(testStr1).assertEqual(objStr1)
 
-      let testStr2 = urlMatch("/users/1234/bio");
+      let testStr2 = JSON.stringify(urlMatch("/users/1234/bio"));
       let objStr2 = JSON.stringify({
         path: '/users/1234/bio', index: 0, params: {
           id: '1234', tab: 'bio'
@@ -186,7 +186,7 @@ export default function ApiTest() {
       const fn = match("/café", {
         encode: encodeURI
       });
-      let testStr1 = fn("/caf%C3%A9");
+      let testStr1 = JSON.stringify(fn("/caf%C3%A9"));
       let objStr1 = JSON.stringify({
         path: '/caf%C3%A9', index: 0, params: {}
       });
