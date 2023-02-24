@@ -2,7 +2,7 @@
   "module": {
     "name": "entry",
     "type": "entry",
-    "srcEntrance": "./ets/Application/MyAbilityStage.ts",
+    "srcEntrance": "./ets/entryability/EntryAbility.ts",
     "description": "$string:entry_desc",
     "mainElement": "MainAbility",
     "deviceTypes": [
@@ -11,11 +11,18 @@
     ],
     "deliveryWithInstall": true,
     "installationFree": false,
+    "uiSyntax": "ets",
+    "metadata": [
+      {
+        "name": "ArkTSPartialUpdate",
+        "value": "true"
+      }
+    ],
     "pages": "$profile:main_pages",
     "abilities": [
       {
         "name": "MainAbility",
-        "srcEntrance": "./ets/MainAbility/MainAbility.ts",
+        "srcEntrance": "./ets/entryability/EntryAbility.ts",
         "description": "$string:MainAbility_desc",
         "icon": "$media:icon",
         "label": "$string:MainAbility_label",
@@ -32,17 +39,6 @@
             ]
           }
         ]
-      },
-      {
-        "name": "BerTestAbility",
-        "srcEntrance": "./ets/MainAbility/BerTestAbility.ts",
-        "launchType": "standard",
-        "description": "$string:MainAbility_desc",
-        "icon": "$media:icon",
-        "label": "$string:MainAbility_label",
-        "startWindowIcon": "$media:icon",
-        "startWindowBackground": "$color:white",
-        "visible": true,
       }
     ]
   }
