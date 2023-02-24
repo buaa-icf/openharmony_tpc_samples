@@ -29,10 +29,10 @@ struct Index {
     Row() {
       Column() {
 
-        Text('On{takenDate,date,short} {name} took {numPhotos,plural, =0 {no photos.}} =1{one photo.} other {# photos}}').fontSize(18)
+        Text('On{takenDate,date,short} {name} took {numPhotos,plural, =0 {no photos.} =1{one photo.} other {# photos}}').fontSize(18)
 
         Button('解析字符串').fontSize(24).onClick(() => {
-          const ast = parse('On{takenDate,date,short} {name} took {numPhotos,plural, =0 {no photos.}} =1{one photo.} other {# photos}}')
+          const ast = parse('On{takenDate,date,short} {name} took {numPhotos,plural, =0 {no photos.} =1{one photo.} other {# photos}}')
           setData(JSON.stringify(ast), this)
         })
 
