@@ -17,7 +17,7 @@ OpenHarmony npm环境配置等更多内容，请参考 [如何安装OpenHarmony 
 ```
 import { parse } from '@f-fjs/intl-messageformat-parser'
 
-const result = parse('On{takenDate,date,short} {name} took {numPhotos,plural, =0 {no photos.}} =1{one photo.} other {# photos}}')
+const result = parse('On{takenDate,date,short} {name} took {numPhotos,plural, =0 {no photos.} =1{one photo.} other {# photos}}')
 
 ```
 
@@ -26,7 +26,8 @@ const result = parse('On{takenDate,date,short} {name} took {numPhotos,plural, =0
 
 ## 兼容性
 
-支持 OpenHarmony API version 9 及以上版本。
+- [DevEco Studio](https://developer.harmonyos.com/cn/develop/deveco-studio#download) 版本：DevEco Studio 3.1 Beta1及以上版本。
+- OpenHarmony SDK版本：API version 9 及以上版本。
 
 ## 目录结构
 
