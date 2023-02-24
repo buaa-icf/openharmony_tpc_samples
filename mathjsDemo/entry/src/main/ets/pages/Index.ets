@@ -18,7 +18,7 @@ function routerfun(url) {
   let options = {
     url: url
   }
-  router.push(options)
+  router.pushUrl(options)
 }
 
 @Entry

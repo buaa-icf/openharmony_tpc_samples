@@ -1,6 +1,6 @@
 {
   "src": [
-    "pages/index",
+    "pages/Index",
     "crcalc/crcalc",
     "ejml/ejml",
     "ejml/ejmlMathjs",
