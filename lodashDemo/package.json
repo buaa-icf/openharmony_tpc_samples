@@ -1,20 +1,18 @@
 {
+  "license": "ISC",
+  "devDependencies": {},
   "name": "lodashdemo",
-  "version": "1.0.0",
   "ohos": {
     "org": "huawei",
-    "buildTool": "hvigor",
-    "directoryLevel": "project"
+    "directoryLevel": "project",
+    "buildTool": "hvigor"
   },
   "description": "example description",
   "repository": {},
-  "license": "ISC",
+  "version": "1.0.0",
   "dependencies": {
-    "@ohos/hvigor": "1.1.5-rc2",
-    "@ohos/hvigor-ohos-plugin": "1.1.5-rc2",
-    "@types/lodash": "^4.14.182",
-    "hypium": "^1.0.0",
-    "lodash": "^4.17.21",
-    "@ohos/hypium": "1.0.0"
+    "@ohos/hypium": "1.0.5",
+    "@ohos/hvigor-ohos-plugin": "1.4.0",
+    "@ohos/hvigor": "1.4.0"
   }
 }
