@@ -63,7 +63,7 @@ export default function ApiTest() {
       expect(testStr1).assertEqual(objStr1)
 
       let testStr2 = JSON.stringify(regexp.exec("/test-test"));
-      let objStr2 = JSON.stringify(['/test', 'test', 'test', null]);
+      let objStr2 = JSON.stringify(['/test-test', 'test', 'test', null]);
       expect(testStr2).assertEqual(objStr2)
     })
 

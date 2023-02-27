@@ -10,7 +10,6 @@ struct CustomPrefixSuffixPage {
   @State message1: string = '原始数据：regexp.exec("/test");'
   @State message2: string = '原始数据：regexp.exec("/test-test");'
 
-
   build() {
     Row() {
       Column() {
@@ -54,7 +53,7 @@ struct CustomPrefixSuffixPage {
             let bean = new CommonResultBean();
             let arrBefore = new Array<string>();
             arrBefore.push('regexp.exec("/test")  期待结果: \r\n ' + `['/test', 'test', null, null]`);
-            arrBefore.push('regexp.exec("/test-test")  期待结果: \r\n ' + `['/test', 'test', 'test', null]`);
+            arrBefore.push('regexp.exec("/test-test")  期待结果: \r\n ' + `['/test-test', 'test', 'test', null]`); // TODO 源库 readme注释错误 显示结果为`['/test', 'test', 'test', null]` 实际结果是 `['/test-test', 'test', 'test', null]`
             bean.setBefore(arrBefore);
             let arrAfter = new Array<string>();
             arrAfter.push(JSON.stringify(result[0]));
