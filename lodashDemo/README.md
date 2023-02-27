@@ -38,8 +38,8 @@ npm install @types/lodash --save
 
 更多模块的使用可参考[官方文档](https://lodash.com/docs/4.17.15)
 ## 兼容性
-
-支持 OpenHarmony API version 9 及以上版本。
+- [DevEco Studio版本](https://developer.harmonyos.com/cn/develop/deveco-studio#download)：DevEco Studio 3.1Beta1及以上版本。
+- OpenHarmony SDK版本：API version 9及以上版本。
 
 ## 贡献代码
 
