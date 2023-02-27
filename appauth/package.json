@@ -1,17 +1,18 @@
 {
+  "license": "ISC",
+  "devDependencies": {},
   "name": "ohos_app_appauth_js",
-  "version": "1.0.0",
   "ohos": {
     "org": "huawei",
-    "buildTool": "hvigor",
-    "directoryLevel": "project"
+    "directoryLevel": "project",
+    "buildTool": "hvigor"
   },
   "description": "example description",
   "repository": {},
-  "license": "ISC",
+  "version": "1.0.0",
   "dependencies": {
-    "@ohos/hypium": "1.0.2",
-    "@ohos/hvigor": "1.2.2",
-    "@ohos/hvigor-ohos-plugin": "1.2.2"
+    "@ohos/hypium": "1.0.5",
+    "@ohos/hvigor-ohos-plugin": "1.4.0",
+    "@ohos/hvigor": "1.4.0"
   }
 }
