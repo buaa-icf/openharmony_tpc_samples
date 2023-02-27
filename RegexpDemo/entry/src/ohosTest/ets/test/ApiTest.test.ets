@@ -28,7 +28,7 @@ export default function ApiTest() {
 
     it('Named Parameters Test', 0, function () {
       const keys = [];
-      const regexp = pathToRegexp("/foo/:bar", keys);
+      const regexp = pathToRegexp("/:foo/:bar", keys);
       let testStr = JSON.stringify(regexp.exec("/test/route"));
       let objStr = JSON.stringify(['/test/route', 'test', 'route']);
       expect(testStr).assertEqual(objStr)
@@ -63,7 +63,7 @@ export default function ApiTest() {
       expect(testStr1).assertEqual(objStr1)
 
       let testStr2 = JSON.stringify(regexp.exec("/test-test"));
-      let objStr2 = JSON.stringify(['/test', 'test', 'test', undefined]);
+      let objStr2 = JSON.stringify(['/test', 'test', 'test', null]);
       expect(testStr2).assertEqual(objStr2)
     })
 
@@ -266,50 +266,58 @@ export default function ApiTest() {
       let objStr3 = "/user/%2F";
       expect(testStr3).assertEqual(objStr3);
 
+      let testStr4 = toPath({
+        id: ":/"
+      });
+      let objStr4 = "/user/%3A%2F";
+      expect(testStr4).assertEqual(objStr4);
+
+
+
       const toPathRaw = compile("/user/:id");
 
-      let testStr4 = toPathRaw({
+      let testStr5 = toPathRaw({
         id: "%3A%2F"
       });
-      let objStr4 = "/user/caf%C3%A9";
-      expect(testStr4).assertEqual(objStr4);
+      let objStr5 = "/user/%3A%2F";
+      expect(testStr5).assertEqual(objStr5);
 
       const toPathRaw1 = compile("/user/:id", {
         validate: false
       });
-      let testStr5 = toPathRaw1({
+      let testStr6 = toPathRaw1({
         id: ":/"
       });
-      let objStr5 = "/user/:/";
-      expect(testStr5).assertEqual(objStr5);
+      let objStr6 = "/user/:/";
+      expect(testStr6).assertEqual(objStr6);
 
       const toPathRepeated = compile("/:segment+");
 
-      let testStr6 = toPathRepeated({
+      let testStr7 = toPathRepeated({
         segment: "foo"
       }); //=> "/foo"
-      let objStr6 = "/foo";
-      expect(testStr6).assertEqual(objStr6);
+      let objStr7 = "/foo";
+      expect(testStr7).assertEqual(objStr7);
 
-      let testStr7 = toPathRepeated({
+      let testStr8 = toPathRepeated({
         segment: ["a", "b", "c"]
       }); //=> "/a/b/c"
-      let objStr7 = "/a/b/c";
-      expect(testStr7).assertEqual(objStr7);
+      let objStr8 = "/a/b/c";
+      expect(testStr8).assertEqual(objStr8);
 
       const toPathRegexp = compile("/user/:id(\\d+)");
 
-      let testStr8 = toPathRegexp({
-        id: 123
-      });
-      let objStr8 = "/user/123";
-      expect(testStr8).assertEqual(objStr8);
-
       let testStr9 = toPathRegexp({
-        id: "123"
+        id: 123
       });
       let objStr9 = "/user/123";
       expect(testStr9).assertEqual(objStr9);
+
+      let testStr10 = toPathRegexp({
+        id: "123"
+      });
+      let objStr10 = "/user/123";
+      expect(testStr10).assertEqual(objStr10);
 
       try {
         toPathRegexp({
@@ -325,11 +333,11 @@ export default function ApiTest() {
 
       const toPathRegexp1 = compile("/user/:id(\\d+)",{ validate: false });
 
-      let testStr10 = toPathRegexp1({
+      let testStr11 = toPathRegexp1({
         id: "abc"
       });
-      let objStr10 = "/user/abc";
-      expect(testStr10).assertEqual(objStr10);
+      let objStr11 = "/user/abc";
+      expect(testStr11).assertEqual(objStr11);
 
     })
 
