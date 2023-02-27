@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {urlEncode, urlDecode}  from '../conversion/binToJson'
+import {urlEncode, urlDecode}  from '../conversion/binToJson.js'
 
 @Extend(Text) function textFancy (fontSize: number, textColor: Color, isBold: Boolean) {
   .fontSize(fontSize)

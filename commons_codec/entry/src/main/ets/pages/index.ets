@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import router from '@system.router'
+import router from '@ohos.router'
 
 @Entry
 @Component
@@ -31,7 +31,7 @@ struct Index {
       .align(Alignment.Center)
       .onClick(() => {
 
-        router.push({ uri: 'pages/binary' })
+        router.pushUrl({ url: 'pages/binary' })
       })
 
       Button() {
@@ -45,7 +45,7 @@ struct Index {
       .margin(5)
       .align(Alignment.Center)
       .onClick(() => {
-        router.push({ uri: 'pages/digest' })
+        router.pushUrl({ url: 'pages/digest' })
       })
 
       Button() {
@@ -59,7 +59,7 @@ struct Index {
       .margin(5)
       .align(Alignment.Center)
       .onClick(() => {
-        router.push({ uri: 'pages/language' })
+        router.pushUrl({ url: 'pages/language' })
       })
 
 
@@ -75,7 +75,7 @@ struct Index {
       .margin(5)
       .align(Alignment.Center)
       .onClick(() => {
-        router.push({ uri: 'pages/urlEncoding' })
+        router.pushUrl({ url: 'pages/urlEncoding' })
       })
 
 //      Image($r('app.media.sm'))

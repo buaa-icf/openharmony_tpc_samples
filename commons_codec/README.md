@@ -62,7 +62,7 @@ strToArr('God is Perspective')
 ```javascript
 export function strToHexCharCode(str) {
     if (str === "")
-    return "";
+        return "";
     var hexCharCode = [];
     hexCharCode.push("0x");
     for (var i = 0; i < str.length; i++) {
@@ -80,12 +80,12 @@ import jsSha256 from 'js-sha256'
 ```
 ```javascript
  sha256('God is Perspective')
- 
+
  sha256.hex('God is Perspective')
 ```
 ```javascript
  sha224('God is Perspective')
- 
+
  sha224.hex('God is Perspective')
 ```
 ### SHA1编码
@@ -94,9 +94,9 @@ import jsSha1 from 'js-sha1'
 ```
 ```javascript
 
- jsSha1('God is Perspective')
- 
- jsSha1.hex('God is Perspective') 
+jsSha1('God is Perspective')
+
+jsSha1.hex('God is Perspective') 
 ```
 ### SHA1编码
 ```javascript
@@ -121,8 +121,8 @@ import {metaphone} from 'metaphone'
 ```
 
 ```javascript
-jsCaverPhone('word') 
-soundex('phonetics') 
+jsCaverPhone('word')
+soundex('phonetics')
 metaphone('michael')
 ```
 ### Url编码
@@ -148,10 +148,11 @@ urlDecode('word%20is%20word')
 
 
 ## 兼容性
-支持 OpenHarmony API version 8 及以上版本。
+- [DevEco Studio版本](https://developer.harmonyos.com/cn/develop/deveco-studio#download)：DevEco Studio 3.1Beta1及以上版本。
+- OpenHarmony SDK版本：API version 9及以上版本。
 
 ## 贡献代码
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/commons-codec/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/commons-codec/pulls) 。
+使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
 ## 开源协议
-本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/commons-codec/blob/master/LICENSE) ，请自由地享受和参与开源。
+本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/commons_codec/LICENSE) ，请自由地享受和参与开源。
