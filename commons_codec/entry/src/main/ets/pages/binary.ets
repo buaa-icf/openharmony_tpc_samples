@@ -14,7 +14,7 @@
  */
 import jsBase64 from 'js-base64'
 import jsBase32 from 'hi-base32'
-import {strToArr, strToHexCharCode}  from '../conversion/binToJson'
+import {strToArr, strToHexCharCode}  from '../conversion/binToJson.js'
 
 @Extend(Divider) function dividerFancy () {
   .strokeWidth(1)

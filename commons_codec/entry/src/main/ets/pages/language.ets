@@ -12,7 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// @ts-ignore
 import jsCaverPhone from 'caverphone'
 import {soundex} from 'soundex-code'
 import {metaphone} from 'metaphone'

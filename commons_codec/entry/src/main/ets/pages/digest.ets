@@ -12,12 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// @ts-ignore
 import jsMd5 from 'js-md5'
-// @ts-ignore
 import jsMd2 from 'js-md2'
 import jsSha256 from 'js-sha256'
-// @ts-ignore
 import jsSha1 from 'js-sha1'
 
 @Extend(Divider) function dividerFancy () {
