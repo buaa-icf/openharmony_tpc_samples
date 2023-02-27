@@ -11,8 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "hypium": "^1.0.0",
-    "@ohos/hvigor": "1.2.2",
-    "@ohos/hvigor-ohos-plugin": "1.2.2",
+    "@ohos/hvigor": "1.4.0",
+    "@ohos/hvigor-ohos-plugin": "1.4.0",
     "@ohos/hypium": "1.0.2"
   }
 }
