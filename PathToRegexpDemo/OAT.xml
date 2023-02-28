@@ -10,6 +10,10 @@
                     name="hvigorfile.js"
                     type="filename"/>
                 <filteritem
+                    desc="hvigor构建脚本，DevEco Studio自动生成，不手动修改"
+                    name="hvigorfile.ts"
+                    type="filename"/>
+                <filteritem
                     desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"
                     name="*.json5"
                     type="filename"/>
@@ -20,6 +24,10 @@
                 <filteritem
                     desc="hvigor构建脚本，DevEco Studio自动生成，不手动修改"
                     name="hvigorfile.js"
+                    type="filename"/>
+                <filteritem
+                    desc="hvigor构建脚本，DevEco Studio自动生成，不手动修改"
+                    name="hvigorfile.ts"
                     type="filename"/>
                 <filteritem
                     desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"
@@ -33,6 +41,10 @@
                 <filteritem
                     desc="hvigor构建脚本，DevEco Studio自动生成，不手动修改"
                     name="hvigorfile.js"
+                    type="filename"/>
+                <filteritem
+                    desc="hvigor构建脚本，DevEco Studio自动生成，不手动修改"
+                    name="hvigorfile.ts"
                     type="filename"/>
                 <filteritem
                     desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"
