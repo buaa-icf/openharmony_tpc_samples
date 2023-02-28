@@ -2,6 +2,7 @@ import TestApi from '../TestApi';
 import CommonResultBean from '../CommonResultBean';
 import promptAction from '@ohos.promptAction';
 import router from '@ohos.router';
+
 @Entry
 @Component
 struct ProcessPathnamePage {
@@ -26,7 +27,6 @@ struct ProcessPathnamePage {
           .backgroundColor(Color.Grey)
           .backgroundColor('#66E1E1E1')
           .fontColor(Color.Black)
-
 
 
         Button('开始转换')

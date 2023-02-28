@@ -11,6 +11,35 @@ class JumpBean {
 export default class JumpPathConfig {
     public  static dataList: Array<JumpBean> ;
 
+    public static getText(): string[] {
+        this.initData();
+        let tempArr: string[] = new Array<string>(this.dataList.length);
+        for (let index = 0; index < this.dataList.length; index++) {
+            tempArr[index] = this.dataList[index].showText;
+        }
+        return tempArr;
+    }
+
+    public static getIndex(): number[] {
+        this.initData();
+        let tempArr: number[] = new Array<number>(this.dataList.length);
+        for (let index = 0; index < this.dataList.length; index++) {
+            tempArr[index] = index;
+        }
+        return tempArr;
+    }
+
+    public static getJumpPath(position: number): string {
+        if (position < 0) {
+            return 'pages/Index';
+        }
+        this.initData();
+        if (position >= this.dataList.length) {
+            return 'pages/Index';
+        }
+        return this.dataList[position].jumpPath;
+    }
+
     private static initData() {
         if (!this.dataList) {
             this.dataList = new Array<JumpBean>();
@@ -61,36 +90,6 @@ export default class JumpPathConfig {
             let bean13 = new JumpBean('跳转WorkingTokensPage', 'pages/WorkingTokensPage');
             this.dataList.push(bean13)
         }
-    }
-
-    public static getText(): string[] {
-        this.initData();
-        let tempArr: string[] = new Array<string>(this.dataList.length);
-        for (let index = 0; index < this.dataList.length; index++) {
-            tempArr[index] = this.dataList[index].showText;
-        }
-        return tempArr;
-    }
-
-    public static getIndex(): number[] {
-        this.initData();
-        let tempArr: number[] = new Array<number>(this.dataList.length);
-        for (let index = 0; index < this.dataList.length; index++) {
-            tempArr[index] = index;
-        }
-        return tempArr;
-    }
-
-
-    public static getJumpPath(position: number): string {
-        if (position < 0) {
-            return 'pages/Index';
-        }
-        this.initData();
-        if (position >= this.dataList.length) {
-            return 'pages/Index';
-        }
-        return this.dataList[position].jumpPath;
     }
 }
 

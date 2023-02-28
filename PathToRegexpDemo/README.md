@@ -33,7 +33,7 @@ const regexp = pathToRegexp("/foo/:bar", keys);
 
 ### Parameters---参数
 
-####  Named Parameters---命名参数
+#### Named Parameters---命名参数
 
 ```typescript
 const regexp = pathToRegexp("/:foo/:bar");
@@ -95,7 +95,7 @@ regexp.exec("/test/route");
 
 与命名参数原理相同，仅由regexp组成，例如(.*)，在生成的Regexp里面被数字索引（{ name: 0, ... }），用以匹配任意参数。
 
-####  Modifiers---修饰器
+#### Modifiers---修饰器
 
 ##### Optional---可选参数
 
@@ -124,8 +124,6 @@ regexp.exec("/search/people?useIndex=true&term=amazing");
 regexp.exec("/search/people?term=amazing&useIndex=true");
 //=> null
 ```
-
-
 
 ##### Zero or more---零个或者多个参数
 
@@ -275,8 +273,6 @@ toPathRegexp({ id: "abc" }); //=> Throws `TypeError`.
 const toPathRegexpVali = compile("/user/:id(\\d+)", { validate: false });
 toPathRegexpVali({ id: "abc" }); //=> "/user/abc"
 ```
-
-
 
 ## 接口说明
 

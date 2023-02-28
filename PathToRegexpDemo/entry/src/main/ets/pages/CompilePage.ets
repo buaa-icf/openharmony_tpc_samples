@@ -42,7 +42,7 @@ struct CompilePage {
           .backgroundColor('#66E1E1E1')
           .fontColor(Color.Black)
           .margin({
-            top:5
+            top: 5
           })
 
         Text(this.message2)
@@ -53,7 +53,7 @@ struct CompilePage {
           .backgroundColor('#66E1E1E1')
           .fontColor(Color.Black)
           .margin({
-            top:5
+            top: 5
           })
 
         Text(this.message3)
@@ -64,7 +64,7 @@ struct CompilePage {
           .backgroundColor('#66E1E1E1')
           .fontColor(Color.Black)
           .margin({
-            top:5
+            top: 5
           })
 
         Text(this.message4)
@@ -75,7 +75,7 @@ struct CompilePage {
           .backgroundColor('#66E1E1E1')
           .fontColor(Color.Black)
           .margin({
-            top:5
+            top: 5
           })
 
 
@@ -87,7 +87,7 @@ struct CompilePage {
           .backgroundColor('#66E1E1E1')
           .fontColor(Color.Black)
           .margin({
-            top:5
+            top: 5
           })
 
         Text(this.message6)
@@ -98,7 +98,7 @@ struct CompilePage {
           .backgroundColor('#66E1E1E1')
           .fontColor(Color.Black)
           .margin({
-            top:5
+            top: 5
           })
 
 
@@ -110,7 +110,7 @@ struct CompilePage {
           .backgroundColor('#66E1E1E1')
           .fontColor(Color.Black)
           .margin({
-            top:5
+            top: 5
           })
 
         Text(this.message8)
@@ -121,7 +121,7 @@ struct CompilePage {
           .backgroundColor('#66E1E1E1')
           .fontColor(Color.Black)
           .margin({
-            top:5
+            top: 5
           })
 
         Text(this.message9)
@@ -132,7 +132,7 @@ struct CompilePage {
           .backgroundColor('#66E1E1E1')
           .fontColor(Color.Black)
           .margin({
-            top:5
+            top: 5
           })
 
         Text(this.message10)
@@ -143,7 +143,7 @@ struct CompilePage {
           .backgroundColor('#66E1E1E1')
           .fontColor(Color.Black)
           .margin({
-            top:5
+            top: 5
           })
 
 
@@ -155,7 +155,7 @@ struct CompilePage {
           .backgroundColor('#66E1E1E1')
           .fontColor(Color.Black)
           .margin({
-            top:5
+            top: 5
           })
 
 
@@ -167,7 +167,7 @@ struct CompilePage {
           .backgroundColor('#66E1E1E1')
           .fontColor(Color.Black)
           .margin({
-            top:5
+            top: 5
           })
 
         Text(this.message13)
@@ -178,7 +178,7 @@ struct CompilePage {
           .backgroundColor('#66E1E1E1')
           .fontColor(Color.Black)
           .margin({
-            top:5
+            top: 5
           })
 
 
@@ -190,7 +190,7 @@ struct CompilePage {
           .backgroundColor('#66E1E1E1')
           .fontColor(Color.Black)
           .margin({
-            top:5
+            top: 5
           })
 
         Text(this.message15)
@@ -201,7 +201,7 @@ struct CompilePage {
           .backgroundColor('#66E1E1E1')
           .fontColor(Color.Black)
           .margin({
-            top:5
+            top: 5
           })
 
         Button('开始转换')
@@ -210,7 +210,7 @@ struct CompilePage {
           .width('80%')
           .height(100)
           .margin({
-            top:5
+            top: 5
           })
           .onClick((event) => {
             let api = new TestApi()

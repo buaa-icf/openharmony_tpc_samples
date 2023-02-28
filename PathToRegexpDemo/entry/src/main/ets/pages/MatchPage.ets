@@ -10,7 +10,7 @@ struct MatchPage {
   @State message1: string = '原始数据：fn("/user/123");'
   @State message2: string = '原始数据：fn("/invalid");'
   @State message3: string = '原始数据：fn("/user/caf%C3%A9");'
-  @State message4: string = '原始数据：'+`const urlMatch = match("/users/:id/:tab(home|photos|bio)", {decode: decodeURIComponent,})`
+  @State message4: string = '原始数据：' + `const urlMatch = match("/users/:id/:tab(home|photos|bio)", {decode: decodeURIComponent,})`
   @State message5: string = '原始数据：urlMatch("/users/1234/photos");'
   @State message6: string = '原始数据：urlMatch("/users/1234/bio");'
   @State message7: string = '原始数据：urlMatch("/users/1234/otherstuff");'

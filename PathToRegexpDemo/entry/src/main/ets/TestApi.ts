@@ -175,16 +175,6 @@ export default class TestApi {
         }
     }
 
-    private normalizePathname(pathname: string): string {
-        try {
-
-            return (decodeURI(pathname).replace(/\/+/g, '/')).normalize();
-        } catch (err) {
-            return JSON.stringify(err)
-        }
-    }
-
-
     public alternativeTest(param?: string, keys?: Key[]): Array<object> {
         const result = new Array()
         try {
@@ -227,7 +217,7 @@ export default class TestApi {
             })
             result.push(number);
             let words = toPath({
-                id:  "café"
+                id: "café"
             })
             result.push(words);
             let symbol = toPath({
@@ -291,6 +281,15 @@ export default class TestApi {
         } catch (err) {
             result.push('Throws `TypeError`');
             return result
+        }
+    }
+
+    private normalizePathname(pathname: string): string {
+        try {
+
+            return (decodeURI(pathname).replace(/\/+/g, '/')).normalize();
+        } catch (err) {
+            return JSON.stringify(err)
         }
     }
 }

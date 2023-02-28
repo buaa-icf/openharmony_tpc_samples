@@ -273,7 +273,6 @@ export default function ApiTest() {
       expect(testStr4).assertEqual(objStr4);
 
 
-
       const toPathRaw = compile("/user/:id");
 
       let testStr5 = toPathRaw({
@@ -331,7 +330,9 @@ export default function ApiTest() {
         expect(isTypeErr).assertTrue();
       }
 
-      const toPathRegexp1 = compile("/user/:id(\\d+)",{ validate: false });
+      const toPathRegexp1 = compile("/user/:id(\\d+)", {
+        validate: false
+      });
 
       let testStr11 = toPathRegexp1({
         id: "abc"

@@ -2,6 +2,7 @@ import TestApi from '../TestApi';
 import CommonResultBean from '../CommonResultBean';
 import promptAction from '@ohos.promptAction';
 import router from '@ohos.router';
+
 @Entry
 @Component
 struct OnePage {
