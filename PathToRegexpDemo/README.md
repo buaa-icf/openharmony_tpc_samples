@@ -304,31 +304,20 @@ toPathRegexpVali({ id: "abc" }); //=> "/user/abc"
 ## 目录结构
 
 ```javascript
-|---- httpclient  
+|---- PathToRegexpDemo  
 |     |---- entry  # 示例代码文件夹
-|     |---- httpclient  # httpclient 库文件夹
-			|---- builders  # 请求体构建者模块 主要用于构建不同类型的请求体，例如文件上传，multipart
-			|---- callback  # 响应回调模块，用于将相应结果解析之后转换为常见的几种类型回调给调用者，例如string,JSON对象，bytestring
-            |---- cookies  # cookie管理模块，主要处理将响应结果解析并根据设置的缓存策略缓存响应头里面的cookie，取出cookie，更新cookie
-            |---- core  # 核心模块，主要是从封装的request里面解析请求参数和相应结果，调用拦截器，处理错误重试和重定向，dns解析，调用系统的@ohos.net.http模块发起请求
-			|---- dispatcher  # 任务管理器模块，用于处理同步和异步任务队列
-			|---- utils  # 工具类，提供dns解析，gzip解压缩，文件名校验，打印日志等功能
-            |---- HttpCall.js  # 一个请求任务，分为同步请求和异步请求，封装了请求参数，请求客户端，请求成功和失败的回调，请求是否取消的标志。
-            |---- HttpClient.js  # 请求客户端，用于生成请求任务用于发起请求，设置请求参数，处理gzip解压缩，取消请求。
-			|---- Request.js  # 请求对象，用于封装请求信息，包含请求头和请求体。 
-            |---- RequestBody.js  # 请求体，用于封装请求体信息。 
-            |---- WebSocket.js  # websocket模块，用于提供websocket支持。 
-            |---- index.ets  # httpclient对外接口
-|     |---- crypto  # 加密库 库文件夹
-			|---- ets  # TS语言的加密库主要逻辑，主要来自于crypto-ts库和crypto-js库，适配于Openharmony
- 			|---- js  # JS语言 提供Base64,十六进制的编解码，MD5加密功能。
+			|---- pages  # 应用页面，根据测试的不同API分为不同页面。
+			|---- CommonResultBean  # 参数包装类，用于组装跳转到公共结果显示界面携带的参数
+            |---- JumpPathConfig  # 页面跳转辅助类，用于首页列表的数据显示以及点击跳转参数获取
+            |---- TestApi  # PathToRegexp的API调用类 返回API调用处理结果
 |     |---- README.MD  # 安装使用方法                   
 ```
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提[Issue](https://gitee.com/openharmony-tpc/httpclient/issues) 给我们，当然，我们也非常欢迎你给我们提[PR](https://gitee.com/openharmony-tpc/httpclient/pulls)。
+使用过程中发现任何问题都可以提[Issue](https://gitee.com/zdy09/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们提[PR](https://gitee.com/zdy09/openharmony_tpc_samples/pulls)。
 
 ## 开源协议
 
-本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/httpclient/blob/master/LICENSE)，请自由地享受和参与开源。
+本项目基于 [MIT License ](https://gitee.com/zdy09/openharmony_tpc_samples/blob/master/PathToRegexpDemo/LICENSE)，请自由地享受和参与开源。
+
