@@ -41,7 +41,7 @@ export default function ApiTest() {
       expect(keyStr).assertEqual(objStr)
     })
 
-    it('Named Parameters Test', 0, function () {
+    it('NamedParametersTest', 0, function () {
       const keys = [];
       const regexp = pathToRegexp("/:foo/:bar", keys);
       let testStr = JSON.stringify(regexp.exec("/test/route"));
@@ -49,7 +49,7 @@ export default function ApiTest() {
       expect(testStr).assertEqual(objStr)
     })
 
-    it('Custom Matching Parameters Test', 0, function () {
+    it('CustomMatchingParametersTest', 0, function () {
       const regexpNumbers = pathToRegexp("/icon-:foo(\\d+).png");
       let testStr1 = JSON.stringify(regexpNumbers.exec("/icon-123.png"));
       let objStr1 = JSON.stringify(['/icon-123.png', '123']);
@@ -71,7 +71,7 @@ export default function ApiTest() {
       expect(testStr4).assertEqual(objStr4)
     })
 
-    it('Custom Prefix and Suffix Test', 0, function () {
+    it('CustomPrefixAndSuffixTest', 0, function () {
       const regexp = pathToRegexp("/:attr1?{-:attr2}?{-:attr3}?");
       let testStr1 = JSON.stringify(regexp.exec("/test"));
       let objStr1 = JSON.stringify(['/test', 'test', null, null]);
@@ -82,14 +82,14 @@ export default function ApiTest() {
       expect(testStr2).assertEqual(objStr2)
     })
 
-    it('Unnamed Parameters Test', 0, function () {
+    it('UnnamedParametersTest', 0, function () {
       const regexp = pathToRegexp("/:foo/(.*)");
       let testStr1 = JSON.stringify(regexp.exec("/test/route"));
       let objStr1 = JSON.stringify(['/test/route', 'test', 'route']);
       expect(testStr1).assertEqual(objStr1)
     })
 
-    it('Modifiers  Test', 0, function () {
+    it('ModifiersTest', 0, function () {
       const regexp = pathToRegexp("/:foo/:bar?");
       let testStr1 = JSON.stringify(regexp.exec("/test"));
       let objStr1 = JSON.stringify(['/test', 'test', null]);
@@ -100,7 +100,7 @@ export default function ApiTest() {
       expect(testStr2).assertEqual(objStr2)
     })
 
-    it('optional Test', 0, function () {
+    it('OptionalTest', 0, function () {
       const regexp = pathToRegexp("/search/:tableName\\?useIndex=true&term=amazing");
       let testStr1 = JSON.stringify(regexp.exec("/search/people?useIndex=true&term=amazing"));
       let objStr1 = JSON.stringify(['/search/people?useIndex=true&term=amazing', 'people']);
@@ -111,7 +111,7 @@ export default function ApiTest() {
       expect(testStr2).assertEqual(objStr2)
     })
 
-    it('Zero or more Test', 0, function () {
+    it('ZeroOrMoreTest', 0, function () {
       const regexp = pathToRegexp("/:foo*");
       let testStr1 = JSON.stringify(regexp.exec("/"));
       let objStr1 = JSON.stringify(['/', undefined]);
@@ -123,7 +123,7 @@ export default function ApiTest() {
       expect(testStr2).assertEqual(objStr2)
     })
 
-    it('One or more Test', 0, function () {
+    it('OneOrMoreTest', 0, function () {
       const regexp = pathToRegexp("/:foo+");
       let testStr1 = regexp.exec("/");
       let objStr1 = null;
@@ -135,7 +135,7 @@ export default function ApiTest() {
       expect(testStr2).assertEqual(objStr2)
     })
 
-    it('Match Test', 0, function () {
+    it('MatchTest', 0, function () {
       const fn = match("/user/:id", {
         decode: decodeURIComponent
       });
@@ -153,7 +153,7 @@ export default function ApiTest() {
       expect(testStr2).assertEqual(objStr2);
     })
 
-    it('Match Test', 0, function () {
+    it('MatchTest', 0, function () {
       const fn = match("/user/:id", {
         decode: decodeURIComponent
       });
@@ -171,7 +171,7 @@ export default function ApiTest() {
       expect(testStr2).assertEqual(objStr2);
     })
 
-    it('urlMatch  Test', 0, function () {
+    it('urlMatchTest', 0, function () {
       const urlMatch = match("/users/:id/:tab(home|photos|bio)", {
         decode: decodeURIComponent,
       });
@@ -197,7 +197,7 @@ export default function ApiTest() {
     })
 
 
-    it('Process Pathname  Test', 0, function () {
+    it('ProcessPathnameTest', 0, function () {
       const fn = match("/café", {
         encode: encodeURI
       });
@@ -216,7 +216,7 @@ export default function ApiTest() {
       );
     }
 
-    it('Alternative Using Normalize Test', 0, function () {
+    it('AlternativeUsingNormalizeTest', 0, function () {
       const re = pathToRegexp("/caf\u00E9");
       const input = encodeURI("/cafe\u0301");
 
@@ -229,7 +229,7 @@ export default function ApiTest() {
       expect(testStr2).assertEqual(objStr2)
     })
 
-    it('Parse  Test', 0, function () {
+    it('ParseTest', 0, function () {
       const tokens = parse("/route/:foo/(.*)");
 
       let testStr1 = tokens[0];
@@ -258,7 +258,7 @@ export default function ApiTest() {
       expect(testStr3).assertEqual(objStr3);
     })
 
-    it('Compile Test', 0, function () {
+    it('CompileTest', 0, function () {
       const toPath = compile("/user/:id", {
         encode: encodeURIComponent
       });
