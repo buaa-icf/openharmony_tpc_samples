@@ -14,7 +14,6 @@
     "pages/PathToRegexpPage",
     "pages/ProcessPathnamePage",
     "pages/UnnamedParametersPage",
-    "pages/WorkingTokensPage",
     "pages/ZeroPage",
     "pages/CommonResultPage"
   ]
