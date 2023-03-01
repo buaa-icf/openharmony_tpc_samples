@@ -73,6 +73,14 @@
                     path="NOTICE"
                     rule="may"
                     type="license"/>
+
+                <policyitem
+                    desc="当前项目兼容此协议"
+                    filefilter="defaultPolicyFilter"
+                    group="defaultGroup"
+                    name="MIT"
+                    path=".*"
+                    type="license"/>
             </policy>
         </policylist>
     </oatconfig>
