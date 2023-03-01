@@ -1,21 +1,14 @@
 {
   "app": {
-    "signingConfigs": [
-      {
-        "name": "default",
-        "material": {
-         
-        }
-      }
-    ],
     "compileSdkVersion": 9,
     "compatibleSdkVersion": 9,
     "products": [
       {
         "name": "default",
-        "signingConfig": "default",
+        "signingConfig": "default"
       }
-    ]
+    ],
+
   },
   "modules": [
     {
