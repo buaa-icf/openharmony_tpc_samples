@@ -1,0 +1,48 @@
+## adler32Demo
+
+### 介绍
+
+adler32Demo是一个在Openharmony系统上验证adler-32（一个在js环境中实现ADLER-32的校验和算法的三方库）校验和算法的能力。
+
+### 下载安装
+1、安装
+```
+$ npm install adler-32
+```
+2、导入
+```
+import adler32 from 'adler-32'
+```
+
+### 接口说明
+| 接口 | 功能描述 |
+| :-----| :------|
+|`buf(data:number[] or Unit8Array, seed?:number)`|`根据字节byte数组或buffer数据，获取校验和值`|
+|`bstr(data:string,seed?:number)` | `根据二进制字符串（ucs-2编码字符）获取校验和值`|
+|`str(data:string, seed?:number)`|`根据标准的js字符串获取校验和值`|
+|`version:string`|`获取adler-32的版本号`|
+
+### 样例说明
+参照该Demo工程
+
+### 软件架构
+```
+|-ets
+|   |-entryability
+|           |-EntryAbility.ts
+|   |-pages
+|           |-Index.ets             #主页demo
+```
+
+### 兼容性
+支持Openharmony API Version 9 及其以上版本
+
+### 贡献代码
+
+使用过程中发现任何问题，都可以提[Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
+给我们，当然，我们也非常欢迎给我们发[PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls)
+
+### 开源协议
+
+本项目基于[Apache License 2.0](),请自由的享受和参与开源
+
