@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "cameraview",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}
