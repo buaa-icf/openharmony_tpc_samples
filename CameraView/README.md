@@ -6,7 +6,7 @@
 
 ## 使用说明
 
-目前该项目无法通过IDE上自带SDK运行，有需要运行，请参考配置[fullSdk](https://gitee.com/openharmony/docs/blob/master/zh-cn/application-dev/quick-start/full-sdk-switch-guide.md])
+目前该项目无法通过IDE上自带SDK运行，有需要运行，请参考配置[fullSdk](https://gitee.com/openharmony/docs/blob/master/zh-cn/application-dev/quick-start/full-sdk-switch-guide.md)
 进行项目运行
 
 ### 相册
