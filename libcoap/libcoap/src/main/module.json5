@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "libcoap",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}
