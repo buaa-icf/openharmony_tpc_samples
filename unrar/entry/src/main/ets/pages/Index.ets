@@ -254,13 +254,11 @@ struct CustomDialogExample {
                   } else {
                     resultss = value;
                   }
-                  this.tag = true;
                   this.showDialog(resultss)
                 }).catch((error) => {
-                  this.tag = true;
                   this.showDialog('解压失败')
                 });
-
+                this.tag = true;
                 /*let value = testNapi.extract(path, globalThis.context.filesDir, passwords);
                 let resultss;
                 if (value == '解压成功') {
