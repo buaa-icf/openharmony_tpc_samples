@@ -15,15 +15,16 @@
 // @ts-ignore
 //var AhoCorasick = require('ahocorasick');
 import AhoCorasick from 'ahocorasick'
+import promptAction from '@ohos.promptAction';
 
 
-@Extend(Text) function textFancy (fontSize: number, textColor: Color, isBold: Boolean) {
+@Extend(Text) function textFancy(fontSize: number, textColor: Color, isBold: Boolean) {
   .fontSize(fontSize)
   .fontColor(textColor)
   .fontWeight(isBold ? FontWeight.Bold : FontWeight.Normal)
 }
 
-@Extend(Button) function buttonFancy () {
+@Extend(Button) function buttonFancy() {
   .type(ButtonType.Capsule)
   .width(90)
   .height(40)
@@ -63,6 +64,14 @@ struct Index {
       }
       .buttonFancy()
       .onClick(() => {
+        if (!this.statement) {
+          promptAction.showToast({ message: "请输入原始段落内容" })
+          return;
+        }
+        if (!this.formulate_statement) {
+          promptAction.showToast({ message: "请输入待搜索关键字" })
+          return;
+        }
 
         var ahoCorasick = new AhoCorasick([this.formulate_statement]);
         var results = ahoCorasick.search(this.statement);
