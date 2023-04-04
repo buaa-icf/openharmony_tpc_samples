@@ -13,9 +13,11 @@ OpenHarmony npm环境配置等更多内容，请参考 [如何安装OpenHarmony 
 
 ## 使用说明
 
+注意事项：构造AhoCorasick搜索算法时，不允许传入空值，构造前需对关键字及原始段落内容进行判空操作
+
 ```
 // @ts-ignore
-var AhoCorasick = require('ahocorasick');
+import AhoCorasick from 'ahocorasick'
 var ac = new AhoCorasick(['keyword1', 'keyword2', 'etc']);
 var results = ac.search('should find keyword1 at position 19 and keyword2 at position 47.');
 ```
