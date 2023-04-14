@@ -121,10 +121,11 @@ function (value, name){
 | xml2js.parseStringPromise(xml/*, options*/)| 异步字符串解析 XML 。    |
 | builder.buildObject(obj) | 对象构建 XML。    |
 
-## 兼容性
+## 约束与限制
+在下述版本验证通过：
 
-- [DevEco Studio](https://developer.harmonyos.com/cn/develop/deveco-studio#download) 版本：DevEco Studio 3.1 Beta1及以上版本。
-- OpenHarmony SDK版本：API version 9 及以上版本。
+DevEco Studio 版本：3.1 Beta1，OpenHarmony SDK:API version 9。
+
 
 ## 目录
 
