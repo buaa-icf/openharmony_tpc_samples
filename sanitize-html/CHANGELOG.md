@@ -1,3 +1,6 @@
+## Version 1.0.1
+1.适配DevEco Studio 3.1 Beta1版本
+
 ## Version 1.0.0
 1.支持默认配置：
 - 标签
