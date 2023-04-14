@@ -217,10 +217,10 @@ jsZipUnEncryption(unpassword: string) {
 
 ```
 
-## 兼容性
+## 约束与限制
+在下述版本验证通过：
 
-- [DevEco Studio](https://developer.harmonyos.com/cn/develop/deveco-studio#download) 版本：DevEco Studio 3.1 Beta1及以上版本。
-- OpenHarmony SDK版本：API version 9 及以上版本。
+DevEco Studio 版本：3.1 Beta1，OpenHarmony SDK:API version 9。
 
 ## 开源协议
 
