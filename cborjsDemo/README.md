@@ -27,9 +27,11 @@ var decoded = CBOR.decode(encoded)
 1. encode()对数据进行简明二进制对象CBOR的编码。
 2. decode()对数据进行简明二进制对象CBOR的解码。
 
-## 兼容性
-- [DevEco Studio](https://developer.harmonyos.com/cn/develop/deveco-studio#download)版本：DevEco Studio 3.1 Beta1及以上版本。
-- OpenHarmony SDK版本：API version 9及以上版本。
+## 约束与限制
+
+在下述版本验证通过：
+
+DevEco Studio 版本：3.1 Beta1(3.1.0.200)，SDK:API9 Beta5(3.2.10.6)
 
 ## 目录结构
 

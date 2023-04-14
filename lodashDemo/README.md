@@ -37,9 +37,11 @@ npm install @types/lodash --save
 | util | 常用工具集，比如转驼峰命名，生成唯一id等操作 |
 
 更多模块的使用可参考[官方文档](https://lodash.com/docs/4.17.15)
-## 兼容性
-- [DevEco Studio版本](https://developer.harmonyos.com/cn/develop/deveco-studio#download)：DevEco Studio 3.1Beta1及以上版本。
-- OpenHarmony SDK版本：API version 9及以上版本。
+## 约束与限制
+
+在下述版本验证通过：
+
+DevEco Studio 版本：3.1 Beta1(3.1.0.200)，SDK:API9 Beta5(3.2.10.6)
 
 ## 贡献代码
 
