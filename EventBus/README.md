@@ -145,10 +145,10 @@ EventBus.dispatch(type, target, args ...)
 EventBus.getEvents()
 ```
 
-## 兼容性
+## 约束与限制
+在下述版本验证通过：
 
-- [DevEco Studio](https://developer.harmonyos.com/cn/develop/deveco-studio#download) 版本：DevEco Studio 3.1 Beta1及以上版本。
-- OpenHarmony SDK版本：API version 9 及以上版本。
+DevEco Studio: 3.1 Beta1(3.1.0.200)，SDK:API9 Beta5(3.2.10.6)
 
 ## 开源协议
 
