@@ -148,7 +148,7 @@ EventBus.getEvents()
 ## 约束与限制
 在下述版本验证通过：
 
-DevEco Studio: 3.1 Beta1(3.1.0.200)，SDK:API9 Beta5(3.2.10.6)
+DevEco Studio: 3.1 Beta1(3.1.0.200)，OpenHarmony SDK:API9(3.2.10.6)
 
 ## 开源协议
 
