@@ -63,9 +63,11 @@ unrar.RarFiles_Extract(path, globalThis.context.filesDir, passwords).then((value
                 });
 ```
 
-## 兼容性
+## 约束与限制
 
-支持 OpenHarmony API version 9 及以上版本
+在下述版本验证通过：
+
+DevEco Studio 版本：3.1 Beta1(3.1.0.200)，OpenHarmony SDK:API9 (3.2.10.6)
 
 ## 目录结构
 ```javascript
