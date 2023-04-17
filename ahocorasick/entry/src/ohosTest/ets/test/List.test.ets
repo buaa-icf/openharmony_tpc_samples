@@ -13,7 +13,9 @@
  * limitations under the License.
  */
 import abilityTest from './Ability.test'
+import ahocorasickTest from  './Ahocorasick.test'
 
 export default function testsuite() {
   abilityTest()
+  ahocorasickTest()
 }

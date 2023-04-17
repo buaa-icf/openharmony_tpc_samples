@@ -66,10 +66,12 @@ struct Index {
       .onClick(() => {
         if (!this.statement) {
           promptAction.showToast({ message: "请输入原始段落内容" })
+          this.resultText = "";
           return;
         }
         if (!this.formulate_statement) {
           promptAction.showToast({ message: "请输入待搜索关键字" })
+          this.resultText = "";
           return;
         }
 

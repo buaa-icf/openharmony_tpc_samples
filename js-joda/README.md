@@ -57,10 +57,10 @@ console.info(mDate.get(ChronoField.ALIGNED_WEEK_OF_YEAR).toString());
 * 9.plusDays()当前日期加上对应天数
 * 10.minusDays()当前日期减去对应天数
 
-## 兼容性
+## 约束与限制
+在下述版本验证通过：
 
-- [DevEco Studio](https://developer.harmonyos.com/cn/develop/deveco-studio#download) 版本：DevEco Studio 3.1 Beta1及以上版本。
-- OpenHarmony SDK版本：API version 9 及以上版本。
+DevEco Studio: 3.1 Beta1(3.1.0.200), SDK: API9 (3.2.10.6)
 
 ## 目录结构
 
