@@ -136,7 +136,7 @@ var fact = {
 
 执行并验证事实。
 
-## 兼容性
+## 约束与限制
 
 在下述版本验证通过：DevEco Studio: 3.1 Beta1(3.1.0.200)，OpenHarmony SDK: API9（3.2.10.6）。
 
