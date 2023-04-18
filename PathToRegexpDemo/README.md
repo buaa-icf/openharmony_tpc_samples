@@ -292,10 +292,10 @@ toPathRegexpVali({ id: "abc" }); //=> "/user/abc"
 | exec   | string: string | RegExpExecArray \| null | 使用正则表达式模式校验字符串，返回包含校验结果的数组。 |
 | test   | string: string | boolean                 | 校验传入的字符串是否符合规则，返回布尔值。             |
 
-## 兼容性
-
-- [DevEco Studio](https://developer.harmonyos.com/cn/develop/deveco-studio#download) 版本：DevEco Studio 3.1 Beta1及以上版本。
-- OpenHarmony SDK版本：API version 9及以上版本。
+## 约束与限制
+在下述版本验证通过：
+DevEco Studio版本:DevEco Studio 3.1 Beta1(3.1.0.200)
+OpenHarmony SDK版本: API9 (3.2.10.6)
 
 ## 目录结构
 
