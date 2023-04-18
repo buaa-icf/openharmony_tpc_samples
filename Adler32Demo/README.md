@@ -34,8 +34,10 @@ import adler32 from 'adler-32'
 |           |-Index.ets             #主页demo
 ```
 
-### 兼容性
-支持Openharmony API Version 9 及其以上版本
+### 约束与限制
+在下述版本验证通过：
+
+DevEco Studio: 3.1Release(3.1.0.200), SDK: API9 Release(3.2.10.6)
 
 ### 贡献代码
 
