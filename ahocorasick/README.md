@@ -7,9 +7,8 @@
 ## 安装
 
 ```
-`npm install ahocorasick --save`
+`ohpm install ahocorasick`
 ```
-OpenHarmony npm环境配置等更多内容，请参考 [如何安装OpenHarmony npm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_npm_usage.md) 。
 
 ## 使用说明
 
@@ -26,9 +25,10 @@ var results = ac.search('should find keyword1 at position 19 and keyword2 at pos
 运行结果：[ [ 19, [ 'keyword1' ] ], [ 47, [ 'keyword2' ] ] ]
 ```
 
-## 兼容性
-- [DevEco Studio](https://developer.harmonyos.com/cn/develop/deveco-studio#download) 版本：DevEco Studio 3.1 Beta1及以上版本。
-- OpenHarmony SDK版本：API version 9 及以上版本。
+## 约束与限制
+在下述版本验证通过：
+
+DevEco Studio: 3.1Release(3.1.3.400), SDK: API9 Release(3.2.11.5)
 
 ## 目录结构
 ````
