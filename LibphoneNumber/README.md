@@ -74,9 +74,10 @@ npm install libphonenumber-js --save
     Log.showInfo(JSON.stringify(findPhoneNumbersInText(findPhoneNumbers, 'US')));
 ```
 
-## 兼容性
+## 约束与限制
 
-支持 OpenHarmony API version 9
+- DevEco Studio 3.1Beta1版本。
+- OpenHarmony SDK版本：API version 9版本。
 
 ## 贡献代码
 

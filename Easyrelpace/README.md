@@ -70,10 +70,11 @@ npm install easy-replace;
     }
 ```
 
-## 兼容性
+## 约束与限制
 
-- [DevEco Studio版本](https://developer.harmonyos.com/cn/develop/deveco-studio#download)：DevEco Studio 3.1Beta1及以上版本。
-- OpenHarmony SDK版本：API version 9及以上版本。
+在下述版本验证通过：
+
+DevEco Studio: 3.1Release(3.1.3.400), SDK: API9 Release(3.2.11.5)
 
 ## 目录结构
 ````

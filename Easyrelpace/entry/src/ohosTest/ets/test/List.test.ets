@@ -13,7 +13,39 @@
  * limitations under the License.
  */
 import abilityTest from './Ability.test'
+import caseinsensitive from './easyreplace/case-insensitive'
+import infiniteloop from './easyreplace/infinite-loop'
+import missingreplacement from './easyreplace/missing-replacement'
+import missingsearchfor from './easyreplace/missing-search-for'
+import onlystringtosearch from './easyreplace/only-string-to-search'
+import outsideNot from './easyreplace/outsideNot'
+import outsides from './easyreplace/outsides'
+import readmecorrectness from './easyreplace/readme-correctness'
+import searchForleftright from './easyreplace/searchFor-left-right'
+import searchForleftMaybe from './easyreplace/searchFor-leftMaybe'
+import searchFormaybesoutsides from './easyreplace/searchFor-maybes-outsides'
+import searchFornomaybesoutsides from './easyreplace/searchFor-no-maybes-outsides'
+import searchForoutsides from './easyreplace/searchFor-outsides'
+import searchForrightMaybe from './easyreplace/searchFor-rightMaybe'
+import various from './easyreplace/various'
+import levenTest from './leven/leven2.js'
 
 export default function testsuite() {
-  abilityTest()
+  abilityTest();
+  caseinsensitive();
+  infiniteloop();
+  missingreplacement();
+  missingsearchfor();
+  onlystringtosearch();
+  outsideNot();
+  outsides();
+  readmecorrectness();
+  searchForleftright();
+  searchForleftMaybe();
+  searchFormaybesoutsides();
+  searchFornomaybesoutsides();
+  searchForoutsides();
+  searchForrightMaybe();
+  various();
+  levenTest();
 }
