@@ -47,4 +47,19 @@ export default function abilityTest() {
       expect(a).assertEqual(a)
     })
   })
+
+  var count = 0;
+  var test = function (name, func){
+    name = name.replace(/[ /d]/g, '');
+    name = name.replace(/-/g,"");
+    it(name,count++,func)
+  }
+
+  var equal = function (src,dst,tag){
+    console.log('tag:'+tag+"  src="+src+ " dst="+dst);
+    expect(src).assertEqual(dst)
+  }
+
+
+
 }
