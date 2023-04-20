@@ -1,0 +1,13 @@
+{
+  "license": "MIT License",
+  "devDependencies": {
+    "@ohos/hypium": "1.0.6"
+  },
+  "name": "eventbus",
+  "description": "example description",
+  "repository": {},
+  "version": "1.0.0",
+  "dependencies": {
+    "eventbusjs": "^0.2.0"
+  }
+}

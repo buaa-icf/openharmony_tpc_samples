@@ -14,7 +14,9 @@
  */
 
 import abilityTest from './Ability.test'
+import eventBusTest from './EventBus.test'
 
 export default function testsuite() {
   abilityTest()
+  eventBusTest()
 }

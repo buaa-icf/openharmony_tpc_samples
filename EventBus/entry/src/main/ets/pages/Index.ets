@@ -23,15 +23,17 @@ var TAG = "EventBusDemo ";
 struct Index {
   @State comeDetailText: string = "全局监听detail页面刷新展示";
   @State changeText: string = "";
-  count: number = 0;
+  testCount: number = 0;
+  eventBusCount: number = 0;
   scroller: Scroller = new Scroller();
   basicTestCallBack: Function = (event) => {
-    this.count++;
-    this.changeText = "basicTest监听创建成功 " + this.count;
+    this.testCount++;
+    this.changeText = "basicTest监听创建成功 " + this.testCount;
     console.log(TAG + " basicTest message received " + event.type);
   }
   basicEventBusCallBack: Function = (event) => {
-    this.changeText = "basicEventBus监听创建成功 " + this.count;
+    this.eventBusCount++;
+    this.changeText = "basicEventBus监听创建成功 " + this.eventBusCount;
     console.log(TAG + " basicEventBus message received " + event.type);
   }
 
@@ -63,6 +65,7 @@ struct Index {
               let isHas = EventBus.hasEventListener('basicTest', this.basicTestCallBack);
               if (!isHas) {
                 EventBus.addEventListener("basicTest", this.basicTestCallBack);
+                console.log(TAG + " basicTest 订阅消息");
               }
             }).margin({ bottom: 20 })
 
@@ -80,6 +83,7 @@ struct Index {
               let isHas = EventBus.hasEventListener('basicEventBus', this.basicEventBusCallBack);
               if (!isHas) {
                 EventBus.addEventListener("basicEventBus", this.basicEventBusCallBack);
+                console.log(TAG + " basicEventBus 订阅消息");
               }
             }).margin({ bottom: 20 })
 
