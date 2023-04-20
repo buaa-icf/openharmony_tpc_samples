@@ -9,11 +9,8 @@
 命令行下载：
 
 ```
-npm i eventbusjs -S
+ohpm i eventbusjs
 ```
-
-OpenHarmony npm环境配置等更多内容，请参考 [如何安装OpenHarmony npm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_npm_usage.md) 。
-
 
 使用组件在您的代码中:
 
@@ -148,7 +145,7 @@ EventBus.getEvents()
 ## 约束与限制
 在下述版本验证通过：
 
-DevEco Studio: 3.1 Beta1(3.1.0.200)，OpenHarmony SDK:API9(3.2.10.6)
+- DevEco Studio 版本：3.1 Release(3.1.3.400)，SDK:API9 Release(3.2.11.5)
 
 ## 开源协议
 
