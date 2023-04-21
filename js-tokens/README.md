@@ -2,13 +2,13 @@
 
 ### 介绍
 
-js-tokens 是一个微型JavaScript的分词器。小巧的、正则表达式驱动的、宽松的、几乎符合规范的 JavaScript 标记器。
+js-tokens 是一个微型JavaScript的分词器。小巧的、正则表达式驱动的、宽松的、几乎符合规范的 JavaScript 标记器
 
 ### 下载安装
 
 1.如果已安装好nodejs后，输入以下命令
 ```
-npm install js-tokens
+ohpm install js-tokens
 ```
 
 2.在需要使用的页面导入js-tokens

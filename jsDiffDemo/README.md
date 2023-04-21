@@ -7,8 +7,7 @@
 ## 下载安装
 
 ```
- npm install diff --save
- npm install @types/diff --save
+ohpm install diff
 ```
 
 ## 使用说明
@@ -63,8 +62,8 @@
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 Issue 给我们，当然，我们也非常欢迎你给我们发 PR 。
+使用过程中发现任何问题都可以提 Issue 给我们，当然，我们也非常欢迎你给我们发 PR 
 
 ## 开源协议
 
-该项目基于 [License](https://github.com/kpdecker/jsdiff/blob/master/LICENSE) ，请自由地享受和参与开源。
+该项目基于 [License](https://github.com/kpdecker/jsdiff/blob/master/LICENSE) ，请自由地享受和参与开源
