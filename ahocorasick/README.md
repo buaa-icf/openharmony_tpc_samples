@@ -7,7 +7,7 @@
 ## 安装
 
 ```
-`ohpm install ahocorasick`
+ohpm install ahocorasick
 ```
 
 ## 使用说明
