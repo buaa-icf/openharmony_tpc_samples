@@ -7,11 +7,8 @@
 ## 下载安装
 
 ```
-npm install cbor-js
+ohpm install cbor-js
 ```
-
-OpenHarmony
-npm环境配置等更多内容，请参考[如何安装OpenHarmony npm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_npm_usage.md)。
 
 ## 使用说明
 
@@ -31,7 +28,7 @@ var decoded = CBOR.decode(encoded)
 
 在下述版本验证通过：
 
-DevEco Studio 版本：3.1 Beta1(3.1.0.200)，SDK:API9 Beta5(3.2.10.6)
+DevEco Studio: 3.1Release(3.1.3.400), SDK: API9 Release(3.2.11.5)
 
 ## 目录结构
 
