@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
+import {describe, expect, it } from '@ohos/hypium'
 
 import AhoCorasick from 'ahocorasick'
 
@@ -81,15 +81,15 @@ export default function ahocorasickTest() {
       ]
     },
     {
-      keywords: ['.com.au','.com'],
+      keywords: ['.com.au', '.com'],
       text: 'www.yahoo.com',
       expected: [
         [12, ['.com']]
       ]
     }
-  ].map(function(ts) {
-    ts.expected = ts.expected.map(function(expected) {
-      if(typeof  expected[1] == "object" && Array.isArray(expected[1])) {
+  ].map(function (ts) {
+    ts.expected = ts.expected.map(function (expected) {
+      if (typeof expected[1] == "object" && Array.isArray(expected[1])) {
         expected[1] = expected[1].sort();
       }
       return expected;
@@ -98,9 +98,9 @@ export default function ahocorasickTest() {
   });
 
   var _s = AhoCorasick.prototype.search;
-  AhoCorasick.prototype.search = function(string) {
-    var results = _s.call(this, string).map(function(result) {
-      if(typeof  result[1] == "object" && Array.isArray(result[1])){
+  AhoCorasick.prototype.searchKeyWord = function (string) {
+    var results = _s.call(this, string).map(function (result) {
+      if (typeof result[1] == "object" && Array.isArray(result[1])) {
         result[1] = result[1].sort();
       }
       return result;
@@ -110,36 +110,39 @@ export default function ahocorasickTest() {
 
   describe('AhocorasickTest', function () {
     it('AhoCorasick_Test', 0, function () {
-      testCases.forEach(function(ts) {
+      var count = 0;
+      testCases.forEach(function (ts) {
         var keys = ts.keywords;
         var text = ts.text;
         var expected = ts.expected;
-        it('should test: ' + keys.join(', '),0, function() {
+
+        it('AhoCorasick_search_keys' + count, 0, function () {
           var aho = new AhoCorasick(keys);
-          expect(expected).assertDeepEquals(aho.search(text));
+          expect(aho.searchKeyWord(text)).assertDeepEquals(expected);
         });
+        count++;
       });
     })
 
-    it('AhoCorasick_emoji', 0, function () {
+    it('AhoCorasick_search_emoji', 0, function () {
       var aho = new AhoCorasick(['bla', '😁', '😀', '😀😁😀']);
-      expect([
-        [5, ['😁']],
-        [9, ['bla']],
-        [12, ['😀']],
-        [17, ['😀']],
-        [22, ['😀']],
-        [24, ['😁']],
-        [26, ['😀', '😀😁😀']],
-      ]).assertDeepEquals(aho.search('Bla 😁 bla 😀 1 😀 - 😀😁😀-'));
+      expect(aho.searchKeyWord('Bla 😁 bla 😀 1 😀 - 😀😁😀-')).assertDeepEquals([
+      [5, ['😁']],
+      [9, ['bla']],
+      [12, ['😀']],
+      [17, ['😀']],
+      [22, ['😀']],
+      [24, ['😁']],
+      [26, ['😀', '😀😁😀']],
+      ]);
     })
 
-    it('AhoCorasick_emoji2', 0, function () {
+    it('AhoCorasick_search_emoji2', 0, function () {
       var aho = new AhoCorasick(['bla', '😁', '😀', '°□°', 'w', '┻━┻']);
-      expect([
-        [7, ['°□°']],
-        [14, ['┻━┻']],
-      ]).assertDeepEquals(aho.search("-  (╯°□°）╯︵ ┻━┻ "));
+      expect(aho.searchKeyWord("-  (╯°□°）╯︵ ┻━┻ ")).assertDeepEquals([
+      [7, ['°□°']],
+      [14, ['┻━┻']],
+      ]);
     })
   })
 }
