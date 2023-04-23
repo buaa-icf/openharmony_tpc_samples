@@ -1,5 +1,5 @@
 ## 2.0.0
-1.适配DevEco Studio:3.1Release(3.1.3.400), SDK:API9 Release(3.2.11.5)
+1.适配DevEco Studio:3.1 Beta2(3.1.0.400), SDK:API9 Release(3.2.11.9)
 2.包管理工具由npm切换成ohpm
 3.补充组件接口XTS测试
 

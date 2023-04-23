@@ -145,7 +145,7 @@ EventBus.getEvents()
 ## 约束与限制
 在下述版本验证通过：
 
-- DevEco Studio 版本：3.1 Release(3.1.3.400)，SDK:API9 Release(3.2.11.5)
+- DevEco Studio 版本：3.1 Beta2(3.1.0.400)，SDK:API9 Release(3.2.11.9)
 
 ## 开源协议
 
