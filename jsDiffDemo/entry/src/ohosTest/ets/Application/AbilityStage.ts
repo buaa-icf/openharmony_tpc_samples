@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 
+// @ts-ignore
 import AbilityStage from "@ohos.application.AbilityStage"
 
 export default class TestAbilityStage extends AbilityStage {
