@@ -14,7 +14,15 @@
  */
 
 import abilityTest from './Ability.test'
+import applyTest from './apply.test'
+import createPathTest from './create.test'
+import mergeTest from './mergeTest.test'
+import parseTest from './parseTest.test'
 
 export default function testsuite() {
-  abilityTest()
+  abilityTest(),
+  applyTest(),
+  createPathTest(),
+  mergeTest(),
+  parseTest()
 }
