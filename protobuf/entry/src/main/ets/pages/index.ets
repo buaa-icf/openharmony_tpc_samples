@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import router from '@system.router';
+import router from '@ohos.router';
 
 @Entry
 @Component
@@ -32,7 +32,7 @@ struct Index {
         })
         .backgroundColor('#0D9FFB')
         .onClick(() => {
-          router.push({uri: 'pages/serialized' })
+          router.pushUrl({url: 'pages/serialized' })
         });
         Button() {
           Text('buffer读写示例')
@@ -44,7 +44,7 @@ struct Index {
         })
         .backgroundColor('#0D9FFB')
         .onClick(() => {
-          router.push({uri: 'pages/writer_reader' })
+          router.pushUrl({url: 'pages/writer_reader' })
         });
         Button() {
           Text('rpc接口样例')
@@ -56,7 +56,7 @@ struct Index {
         })
         .backgroundColor('#0D9FFB')
         .onClick(() => {
-          router.push({uri: 'pages/rpc' })
+          router.pushUrl({url: 'pages/rpc' })
         });
         Button() {
           Text('websocket配合使用样例')
@@ -68,7 +68,7 @@ struct Index {
         })
         .backgroundColor('#0D9FFB')
         .onClick(() => {
-          router.push({uri: 'pages/websocket' })
+          router.pushUrl({url: 'pages/websocket' })
         })
       }
       .width('100%')
