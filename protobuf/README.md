@@ -17,7 +17,7 @@ npm install protobufjs@5.0.3
 2.在需要使用的页面导入protobufjs
 
 ```
-import  protobuf  from 'protobufjs'
+import protobuf from 'protobufjs'
 ```
 
 ## 使用说明
@@ -53,7 +53,7 @@ var builder = protobuf.newBuilder();
     var root = protobuf.loadJson(json, builder, fileName);
 ```
 
-3. 通过builder找到协议名后会产生Message，并创建一个相同协议结构的数据对象，放入已实例的Message
+3.通过builder找到协议名后会产生Message，并创建一个相同协议结构的数据对象，放入已实例的Message
 
 ```
  var UserLoginResponse = root.build("com.user.UserLoginResponse");
@@ -68,13 +68,13 @@ var builder = protobuf.newBuilder();
     var msg = new UserLoginResponse(userLogin);
 ```
 
-4. 将Message序列化,可进行通信传递或存储
+4.将Message序列化,可进行通信传递或存储
 
 ```
 var arrayBuffer = msg.toArrayBuffer();
 ```
 
-5. 对方拿到传递或存储的数据再按照1，2，3步骤拿到UserLoginResponse对象后再进行反序列化即可得到数据
+5.对方拿到传递或存储的数据再按照1，2，3步骤拿到UserLoginResponse对象后再进行反序列化即可得到数据
 
 ```
 var decodeMsg = UserLoginResponse.decode(arrayBuffer);
@@ -82,9 +82,9 @@ var decodeMsg = UserLoginResponse.decode(arrayBuffer);
 
 ### 使用解析File文件方式
 
-1. 在使用以下2个接口前需要注意几点： loadProtoFile接口和loadJsonFile接口
-   引用以下几段代码以适配nodejs，
-   loadProtoFile接口和loadJsonFile接口都需要配置下面这段代码做适配，否则无法使用这两个接口
+1.在使用以下2个接口前需要注意几点： loadProtoFile接口和loadJsonFile接口
+引用以下几段代码以适配nodejs，
+loadProtoFile接口和loadJsonFile接口都需要配置下面这段代码做适配，否则无法使用这两个接口
 
 ```
 import { MyFs } from './MyFs'
@@ -123,8 +123,7 @@ protobuf.Util.fetch = function (path, callback) {
     FileUtils.getInstance().clearFile(path);
 ```
 
-
-4. 通过builder找到协议名后会产生Message，并创建一个相同协议结构的数据对象，放入已实例的Message
+4.通过builder找到协议名后会产生Message，并创建一个相同协议结构的数据对象，放入已实例的Message
 
 ```
  var UserLoginResponse = root.build("com.user.UserLoginResponse");
@@ -139,13 +138,13 @@ protobuf.Util.fetch = function (path, callback) {
     var msg = new UserLoginResponse(userLogin);
 ```
 
-5. 将Message序列化,可进行通信传递或存储
+5.将Message序列化,可进行通信传递或存储
 
 ```
 var arrayBuffer = msg.toArrayBuffer();
 ```
 
-6. 对方拿到传递或存储的数据再按照1，2，3步骤拿到UserLoginResponse对象后再进行反序列化即可得到数据
+6.对方拿到传递或存储的数据再按照1，2，3步骤拿到UserLoginResponse对象后再进行反序列化即可得到数据
 
 ```
 var decodeMsg = UserLoginResponse.decode(arrayBuffer);
