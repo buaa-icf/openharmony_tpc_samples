@@ -8,20 +8,6 @@
         "signingConfig": "default"
       }
     ],
-    "signingConfigs": [
-      {
-        "name": "default",
-        "material": {
-          "certpath": "C:\\Users\\admin\\.ohos\\config\\openharmony\\auto_ohos_default_ohosunrar_com.huawei.ohosunrar.cer",
-          "storePassword": "0000001B9E58E67E784CF136B68E6F816EB928CEC35DE8A9331433E967889704EC70F6A0790D8107A57258",
-          "keyAlias": "debugKey",
-          "keyPassword": "0000001B0A67B65EE6E539E7A7801049602004889795670FAC0DA0264926960F5FBD2C34D09C3C93259DC1",
-          "profile": "C:\\Users\\admin\\.ohos\\config\\openharmony\\auto_ohos_default_ohosunrar_com.huawei.ohosunrar.p7b",
-          "signAlg": "SHA256withECDSA",
-          "storeFile": "C:\\Users\\admin\\.ohos\\config\\openharmony\\auto_ohos_default_ohosunrar_com.huawei.ohosunrar.p12"
-        }
-      }
-    ]
   },
   "modules": [
     {

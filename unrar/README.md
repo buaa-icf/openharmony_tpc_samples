@@ -10,8 +10,12 @@
 
 ![unrar1](./entry/src/main/resources/base/media/unrar1.png)
 
+## 下载安装
 
-OpenHarmony npm 环境配置等更多内容，请参考[如何安装 OpenHarmony npm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_npm_usage.md)
+```
+ohpm install @ohos/unrar
+```
+- OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
 ## 使用说明
 ```javascript
@@ -67,7 +71,7 @@ unrar.RarFiles_Extract(path, globalThis.context.filesDir, passwords).then((value
 
 在下述版本验证通过：
 
-DevEco Studio 版本：3.1 Beta1(3.1.0.200)，OpenHarmony SDK:API9 (3.2.10.6)
+DevEco Studio: 3.1 Beta2(3.1.0.400), SDK: API9 Release(3.2.11.9)
 
 ## 目录结构
 ```javascript

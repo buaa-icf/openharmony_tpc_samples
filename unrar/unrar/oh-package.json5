@@ -1,0 +1,13 @@
+{
+  "license": "ISC",
+  "types": "",
+  "devDependencies": {
+    "@types/libunrar.so": "file:./src/main/cpp/types/libunrar"
+  },
+  "name": "@ohos/unrar",
+  "description": "a npm package which contains arkUI2.0 page",
+  "main": "src/main/ets/components/MainPage/MainPage.ets",
+  "repository": {},
+  "version": "2.0.0",
+  "dependencies": {}
+}
