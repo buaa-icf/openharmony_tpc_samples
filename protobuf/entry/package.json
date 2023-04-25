@@ -11,6 +11,6 @@
 	"repository": {},
 	"version": "1.0.0",
 	"dependencies": {
-		"protobufjs": "^5.0.3"
+		"protobufjs": "5.0.3"
 	}
 }
