@@ -74,7 +74,7 @@ npm install easy-replace;
 
 在下述版本验证通过：
 
-DevEco Studio: 3.1Release(3.1.3.400), SDK: API9 Release(3.2.11.5)
+DevEco Studio: 3.1Beta2(3.1.0.400), SDK: API9 Release(3.2.11.9)
 
 ## 目录结构
 ````

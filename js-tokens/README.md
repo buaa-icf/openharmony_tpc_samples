@@ -242,7 +242,7 @@ CR, LF 和 CRLF, 加上 \u2028 和 \u2029.
 ### 约束与限制
 在下述版本验证通过：
 
-[DevEco Studio](https://developer.harmonyos.com/cn/develop/deveco-studio#download) :3.1 Beta1(3.1.0.200)，SDK:API9 Beta5(3.2.10.6)
+DevEco Studio: 3.1Beta2(3.1.0.400), SDK: API9 Release(3.2.11.9)
 
 ### 软件架构
 
