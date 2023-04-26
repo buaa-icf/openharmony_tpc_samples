@@ -1,5 +1,5 @@
-/node_modules
+/oh_modules
 /.preview
 /build
 /.cxx
-/package-lock.json
+/oh-package-lock.json5
