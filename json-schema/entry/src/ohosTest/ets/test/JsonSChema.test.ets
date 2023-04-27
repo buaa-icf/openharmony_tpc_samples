@@ -16,6 +16,7 @@
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
 import jsonschema from 'jsonschema'
 
+const BASE_COUNT = 1
 const Validator = jsonschema.Validator;
 Validator.prototype.customFormats.myFormat = function (input) {
   return input === 'myFormat';
@@ -32,22 +33,31 @@ export default function jsonSChemaTest() {
     afterAll(function () {
     })
     it('SimpleValidate', 0, function () {
+      let startTime1 = new Date().getTime();
       var v = new Validator();
       var instance = 4;
       var schema = {
         "type": "number"
       };
       let result = v.validate(instance, schema);
+      let endTime1 = new Date().getTime();
+      let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+      console.log("jsconschema : SimpleValidate averageTime : " + averageTime1 + "us")
       expect(result.valid).assertTrue();
     })
     it('VerySimpleValidate', 0, function () {
+      let startTime1 = new Date().getTime();
       var v = new Validator();
       let result = v.validate(4, {
         "type": "number"
       });
+      let endTime1 = new Date().getTime();
+      let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+      console.log("jsconschema : SimpleValidate averageTime : " + averageTime1 + "us")
       expect(result.valid).assertTrue();
     })
     it('ComplicatedValidate', 0, function () {
+      let startTime1 = new Date().getTime();
       var v = new Validator();
       var addressSchema = {
         "id": "/SimpleAddress",
@@ -71,7 +81,6 @@ export default function jsonSChemaTest() {
         },
         "required": ["country"]
       };
-
       // Person
       var schema = {
         "id": "/SimplePerson",
@@ -88,7 +97,6 @@ export default function jsonSChemaTest() {
           }
         }
       };
-
       var p = {
         "name": "Barack Obama",
         "address": {
@@ -99,14 +107,16 @@ export default function jsonSChemaTest() {
         },
         "votes": "lots"
       };
-
       v.addSchema(addressSchema, '/SimpleAddress');
-
       let result = v.validate(p, schema);
+      let endTime1 = new Date().getTime();
+      let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+      console.log("jsconschema : ComplicatedValidate averageTime : " + averageTime1 + "us")
       expect(result.valid).assertFalse();
     })
 
     it('AllValidate', 0, function () {
+      let startTime1 = new Date().getTime();
       var schema = {
         "id": "/All",
         "type": "object",
@@ -330,7 +340,6 @@ export default function jsonSChemaTest() {
         "id": "/ReferencedSchema",
         "type": "string"
       };
-
       var all = {
         "validateType1": "a string",
         "validateType2": true,
@@ -399,43 +408,62 @@ export default function jsonSChemaTest() {
         "validateOneOf": 6,
         "validateReference": "a string"
       };
-
       var v = new Validator();
       v.addSchema(referencedSchema, '/ReferencedSchema');
       // @ts-ignore
       let result = v.validate(all, schema);
+      let endTime1 = new Date().getTime();
+      let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+      console.log("jsconschema : AllValidate averageTime : " + averageTime1 + "us")
+
       expect(result.valid).assertTrue();
     })
 
     it('UnDefinedValidate', 0, function () {
+      let startTime1 = new Date().getTime();
       var v0 = new Validator();
       let result1 = v0.validate(undefined, {
         type: 'string'
       });
+      let endTime1 = new Date().getTime();
+      let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+      console.log("jsconschema : UnDefinedValidate averageTime : " + averageTime1 + "us")
       expect(result1.valid).assertTrue();
-
+      let startTime2 = new Date().getTime();
       var v1 = new Validator();
       let result = v1.validate(undefined, {
         type: 'string'
       }, {
         required: true
       });
+      let endTime2 = new Date().getTime();
+      let averageTime2 = ((endTime2 - startTime2) * 1000) / BASE_COUNT;
+      console.log("jsconschema : UnDefinedValidate averageTime : " + averageTime2 + "us")
+
       expect(result.valid).assertFalse();
     })
     it('FormatValidate', 0, function () {
+      let startTime1 = new Date().getTime();
       var v1 = new Validator();
-      var v2 = new Validator();
-
       let result1 = v1.validate('myFormat', {
         type: 'string', format: 'myFormat'
       });
+      let endTime1 = new Date().getTime();
+      let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+      console.log("jsconschema : FormatValidate averageTime : " + averageTime1 + "us")
+      let startTime2 = new Date().getTime();
+      var v2 = new Validator();
       let result2 = v2.validate('foo', {
         type: 'string', format: 'myFormat'
       });
+      let endTime2 = new Date().getTime();
+      let averageTime2 = ((endTime2 - startTime2) * 1000) / BASE_COUNT;
+      console.log("jsconschema : FormatValidate averageTime : " + averageTime2 + "us")
       expect(result1.valid).assertTrue();
       expect(result2.valid).assertFalse();
     })
     it('NestedErrorsValidate', 0, function () {
+      let startTime1 = new Date().getTime();
       var v = new Validator();
       var schema = {
         oneOf: [
@@ -453,6 +481,9 @@ export default function jsonSChemaTest() {
       let result = v.validate('This string is 28 chars long', schema, {
         nestedErrors: true
       });
+      let endTime1 = new Date().getTime();
+      let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+      console.log("jsconschema : NestedErrorsValidate averageTime : " + averageTime1 + "us")
       expect(result.toString()).assertEqual(`0: instance does not meet minimum length of 32
 1: instance does not meet maximum length of 16
 2: instance is not of a type(s) number
@@ -461,6 +492,7 @@ export default function jsonSChemaTest() {
     })
 
     it('LocalErrorMessage', 0, function () {
+      let startTime1 = new Date().getTime();
       var v = new Validator();
       var schema = {
         oneOf: [
@@ -475,17 +507,20 @@ export default function jsonSChemaTest() {
           },
         ]
       };
-
       let result = v.validate('This string is 28 chars long', schema, {
         nestedErrors: true
       });
       var localized = result.errors.map(function (err) {
         return err.name;
       });
+      let endTime1 = new Date().getTime();
+      let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+      console.log("jsconschema : LocalErrorMessage averageTime : " + averageTime1 + "us")
       expect(localized.toString()).assertEqual(`minLength,maxLength,type,oneOf`);
     })
 
     it('DiyKeyWordValidate', 0, function () {
+      let startTime1 = new Date().getTime();
       var v = new Validator();
       v.attributes.contains = function validateContains(instance, schema, options, ctx) {
         if (typeof instance !== 'string') return;
@@ -507,38 +542,13 @@ export default function jsonSChemaTest() {
         // @ts-ignore
         type: "string", contains: "I am"
       });
+      let endTime1 = new Date().getTime();
+      let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+      console.log("jsconschema : DiyKeyWordValidate averageTime : " + averageTime1 + "us")
       expect(result.valid).assertTrue();
     })
     it('DiyAnotherValidate', 0, function () {
-      var v = new Validator();
-      v.attributes.contains = function validateContains(instance, schema, options, ctx) {
-        var result = new jsonschema.ValidatorResult(instance, schema, options, ctx);
-
-        if (typeof instance !== 'string') {
-          result.addError('fails some validation test')
-        };
-        // @ts-ignore
-        if (typeof schema.contains !== 'string') {
-          result.addError('fails some validation test')
-        };
-        // @ts-ignore
-        if (instance.indexOf(schema.contains) > 0) {
-          result.addError('fails some validation test')
-        };
-        // @ts-ignore
-        if (schema.contains.length > 0) {
-          result.addError('fails some validation test')
-        }
-        return result;
-      }
-
-      let resultValidate = v.validate("I am an instance", {
-        // @ts-ignore
-        type: "string", contains: "I am"
-      });
-      expect(resultValidate.valid).assertFalse();
-    })
-    it('DiyAnotherValidate', 0, function () {
+      let startTime1 = new Date().getTime();
       var v = new Validator();
       v.attributes.contains = function validateContains(instance, schema, options, ctx) {
         var result = new jsonschema.ValidatorResult(instance, schema, options, ctx);
@@ -568,10 +578,14 @@ export default function jsonSChemaTest() {
         // @ts-ignore
         type: "string", contains: "I am"
       });
+      let endTime1 = new Date().getTime();
+      let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+      console.log("jsconschema : DiyAnotherValidate averageTime : " + averageTime1 + "us")
       expect(resultValidate.valid).assertFalse();
     })
 
     it('DereferencingSchema', 0, function () {
+      let startTime1 = new Date().getTime();
       var initSchema = {
         "id": "/SimplePerson",
         "type": "object",
@@ -640,10 +654,14 @@ export default function jsonSChemaTest() {
       }
 
       importNextSchema(v)
+      let endTime1 = new Date().getTime();
+      let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+      console.log("jsconschema : DereferencingSchema averageTime : " + averageTime1 + "us")
       expect(cacheSchemaNum).assertLarger(0);
     })
 
     it('DefaultBaseUri', 0, function () {
+      let startTime1 = new Date().getTime();
       const Validator = jsonschema.Validator;
       var v = new Validator();
       let result = v.validate(["Name"], {
@@ -660,10 +678,13 @@ export default function jsonSChemaTest() {
       }, {
         base: 'http://example.com/'
       });
+      let endTime1 = new Date().getTime();
+      let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+      console.log("jsconschema : DefaultBaseUri averageTime : " + averageTime1 + "us")
       expect(result.valid).assertTrue();
     })
     it('ReWrite', 0, function () {
-
+      let startTime1 = new Date().getTime();
       function unmarshall(instance, schema) {
         if (schema.id === 'http://example.com/date') {
           return new Date(instance);
@@ -688,13 +709,16 @@ export default function jsonSChemaTest() {
         rewrite: unmarshall
       });
       let resultDate = result.instance.date instanceof Date;
+      let endTime1 = new Date().getTime();
+      let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+      console.log("jsconschema : ReWrite averageTime : " + averageTime1 + "us")
       expect(result.valid).assertTrue();
       expect(resultDate).assertTrue();
     })
 
     it('PrePropertyValidate', 0, function () {
+      let startTime1 = new Date().getTime();
       const v0 = new Validator();
-
       function preValidate(object, key, schema, options, ctx) {
         var value = object[key];
         if (typeof value === 'undefined') return;
@@ -713,7 +737,6 @@ export default function jsonSChemaTest() {
           }
         }
       };
-
       const schema = {
         'properties': {
           'name': {
@@ -728,14 +751,17 @@ export default function jsonSChemaTest() {
         name: 123,
         quantity: '2'
       }
-
       let result = v0.validate(instance, schema, {
         preValidateProperty: preValidate
       });
+      let endTime1 = new Date().getTime();
+      let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+      console.log("jsconschema : PrePropertyValidate averageTime : " + averageTime1 + "us")
       expect(result.valid).assertTrue();
     })
 
     it('AllowUnknownValidate', 0, function () {
+      let startTime1 = new Date().getTime();
       var v0 = new Validator();
       var schema = {
         type: "string",
@@ -745,11 +771,15 @@ export default function jsonSChemaTest() {
       let result = v0.validate("Name", schema, {
         allowUnknownAttributes: true
       });
+      let endTime1 = new Date().getTime();
+      let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+      console.log("jsconschema : AllowUnknownValidate averageTime : " + averageTime1 + "us")
       expect(result.valid).assertFalse();
 
     })
 
     it('SkipAttributes', 0, function () {
+      let startTime1 = new Date().getTime();
       var schema = {
         "id": "/SimplePerson",
         "type": "object",
@@ -777,6 +807,9 @@ export default function jsonSChemaTest() {
       let result = v0.validate(p, schema, {
         skipAttributes: ["minimum"]
       })
+      let endTime1 = new Date().getTime();
+      let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+      console.log("jsconschema : SkipAttributes averageTime : " + averageTime1 + "us")
       expect(result.valid).assertTrue();
 
     })
