@@ -69,7 +69,7 @@ struct ZeroPage {
             }
             let bean = new CommonResultBean();
             let arrBefore = new Array<string>();
-            arrBefore.push('regexp.exec("/") 期待结果: \r\n ' + `['/', undefined]`);
+            arrBefore.push('regexp.exec("/") 期待结果: \r\n ' + `['/', null]`);
             arrBefore.push('regexp.exec("/bar/baz") 期待结果: \r\n ' + `['/bar/baz', 'bar/baz']`);
             bean.setBefore(arrBefore);
             let arrAfter = new Array<string>();

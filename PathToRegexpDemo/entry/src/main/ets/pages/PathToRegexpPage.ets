@@ -61,11 +61,13 @@ struct PathToRegexpPage {
             }
             let bean = new CommonResultBean();
             let arrBefore = new Array<string>();
-            arrBefore.push('regexp  期待结果: \r\n ' + `/^\/foo(?:\/([^\/#\?]+?))[\/#\?]?$/i`);
-            arrBefore.push('keys   期待结果: \r\n' + `[{ name: 'bar', prefix: '/', suffix: '', pattern: '[^\\/#\\?]+?', modifier: '' }]`);
+            arrBefore.push(`regexp  期待结果: ${'\r\n'} ${`/^\/foo(?:\/([^\/#\?]+?))[\/#\?]?$/i`}` );
+            arrBefore.push(`keys   期待结果: ${'\r\n'}  ${`[{ name: 'bar', prefix: '/', suffix: '', pattern: '[^\\/#\\?]+?', modifier: '' }]`}`);
             bean.setBefore(arrBefore);
             let arrAfter = new Array<string>();
-            arrAfter.push(JSON.stringify(result));
+            if (result.source) {
+              arrAfter.push(result.source);
+            }
             arrAfter.push(JSON.stringify(keys));
             bean.setAfter(arrAfter);
 
