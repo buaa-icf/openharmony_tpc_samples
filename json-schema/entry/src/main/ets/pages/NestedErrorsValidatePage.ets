@@ -96,10 +96,10 @@ var result = validator.validate('This string is 28 chars long', schema, {nestedE
   validate() {
     const ctx = this;
     ctx.message2 = `期待结果：
-// 0: instance does not meet minimum length of 32
-// 1: instance does not meet maximum length of 16
-// 2: instance is not of a type(s) number
-// 3: instance is not exactly one from [subschema 0],[subschema 1],[subschema 2]`
+0: instance does not meet minimum length of 32
+1: instance does not meet maximum length of 16
+2: instance is not of a type(s) number
+3: instance is not exactly one from [subschema 0],[subschema 1],[subschema 2]`
     try {
       const Validator = jsonschema.Validator;
       var v = new Validator();

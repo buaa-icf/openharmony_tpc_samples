@@ -19,12 +19,12 @@ export default class TestApi {
     constructor() {
     }
 
-    public pathToRegexpTest(param?: string, keys?: Key[]): object {
+    public pathToRegexpTest(param?: string, keys?: Key[]): RegExp {
         try {
             const regexp = pathToRegexp(param, keys);
             return regexp;
         } catch (err) {
-            return err
+            throw err
         }
     }
 

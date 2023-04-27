@@ -82,7 +82,7 @@ struct ParsePage {
             arrBefore.push('console.log(tokens[0]) 期待结果: \r\n ' + `/route`);
             arrBefore.push('console.log(tokens[1]) 期待结果: \r\n ' + `{ name: 'foo', prefix: '/', suffix: '', pattern: '[^\\/#\\?]+?', modifier: '' }`);
             arrBefore.push('console.log(tokens[2]) 期待结果: \r\n ' + `{ name: 0, prefix: '/', suffix: '', pattern: '.*', modifier: '' }`);
-
+            bean.setBefore(arrBefore);
             let arrAfter = new Array<string>();
             arrAfter.push(JSON.stringify(result[0]));
             arrAfter.push(JSON.stringify(result[1]));
