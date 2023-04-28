@@ -53,7 +53,7 @@ ohpm install diff
 | diffJson(oldObj, newObj[, options]) |   比较两个 JSON 对象，比较每个对象上定义的字段 |
 | diffArrays(oldArr, newArr[, options]) |  区分两个数组，比较每个项目是否严格相等 (===) |
 
-更多模块的使用可参考[官方文档](https://github.com/kpdecker/jsdiff/blob/master/README.md)
+更多模块的使用可参考[官方文档](https://github.com/kpdecker/jsdiff/blob/master/README.md)，[单元测试用例](https://gitee.com/tybrave/openharmony_tpc_samples/tree/master/jsDiffDemo/TEST.md)详情可参考
 
 ## 约束与限制
 在下述版本验证通过：
