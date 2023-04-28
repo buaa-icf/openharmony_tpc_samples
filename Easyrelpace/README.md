@@ -9,8 +9,8 @@
 
 ## 下载安装
 ```shell
-npm install leven;
-npm install easy-replace;
+ohpm install leven;
+ohpm install easy-replace;
 ```
 
 ## 使用说明
