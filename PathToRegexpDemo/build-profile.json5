@@ -22,6 +22,10 @@
           ]
         }
       ]
+    },
+    {
+      "name": "regexp",
+      "srcPath": "./regexp"
     }
   ]
 }

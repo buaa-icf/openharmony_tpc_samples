@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "regexp",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}

@@ -13,11 +13,24 @@
  * limitations under the License.
  */
 
-import abilityTest from './Ability.test'
-import ApiTest from './ApiTest.test'
-import OriginLibraryTest from './OriginLibraryTest.test'
 
-export default function testsuite() {
-  ApiTest();
-  OriginLibraryTest();
-}
+export {
+  parse,
+  compile,
+  tokensToFunction,
+  match,
+  regexpToFunction,
+  tokensToRegexp,
+  pathToRegexp
+} from './src/main/ets/index'
+
+export type {
+  ParseOptions,
+  Key,
+  Path as MyPath,
+  Token,
+  Match,
+  TokensToFunctionOptions,
+  RegexpToFunctionOptions,
+  MatchResult,
+  TokensToRegexpOptions } from './src/main/ets/index'
