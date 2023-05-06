@@ -17,6 +17,10 @@
                     desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"
                     name="*.json5"
                     type="filename"/>
+                <filteritem
+                    desc="path-to-regexp原代码，遵循原库版权"
+                    name="regexp/src/main/ets/index.ts"
+                    type="filepath"/>
             </filefilter>
             <filefilter
                 desc="Filters for compatibility，license header policies"
@@ -33,6 +37,10 @@
                     desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"
                     name="*.json5"
                     type="filename"/>
+                <filteritem
+                    desc="path-to-regexp原代码，遵循原库版权"
+                    name="regexp/src/main/ets/index.ts"
+                    type="filepath"/>
             </filefilter>
 
             <filefilter
@@ -50,6 +58,10 @@
                     desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"
                     name="*.json5"
                     type="filename"/>
+                <filteritem
+                    desc="path-to-regexp原代码，遵循原库版权"
+                    name="regexp/src/main/ets/index.ts"
+                    type="filepath"/>
             </filefilter>
 
         </filefilterlist>
