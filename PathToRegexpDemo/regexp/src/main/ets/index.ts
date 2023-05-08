@@ -3,7 +3,7 @@
  */
 interface LexToken {
   type:
-    | "OPEN"
+  | "OPEN"
     | "CLOSE"
     | "PATTERN"
     | "NAME"
@@ -53,7 +53,7 @@ function lexer(str: string): LexToken[] {
         const code = str.charCodeAt(j);
 
         if (
-          // `0-9`
+        // `0-9`
           (code >= 48 && code <= 57) ||
           // `A-Z`
           (code >= 65 && code <= 90) ||
@@ -249,8 +249,8 @@ export interface TokensToFunctionOptions {
  * Compile a string to a template function for the path.
  */
 export function compile<P extends object = object>(
-  str: string,
-  options?: ParseOptions & TokensToFunctionOptions
+    str: string,
+    options?: ParseOptions & TokensToFunctionOptions
 ) {
   return tokensToFunction<P>(parse(str, options), options);
 }
@@ -261,8 +261,8 @@ export type PathFunction<P extends object = object> = (data?: P) => string;
  * Expose a method for transforming tokens into the path function.
  */
 export function tokensToFunction<P extends object = object>(
-  tokens: Token[],
-  options: TokensToFunctionOptions = {}
+    tokens: Token[],
+    options: TokensToFunctionOptions = {}
 ): PathFunction<P> {
   const reFlags = flags(options);
   const { encode = (x: string) => x, validate = true } = options;
@@ -372,8 +372,8 @@ export type MatchFunction<P extends object = object> = (
  * Create path match function from `path-to-regexp` spec.
  */
 export function match<P extends object = object>(
-  str: Path,
-  options?: ParseOptions & TokensToRegexpOptions & RegexpToFunctionOptions
+    str: Path,
+    options?: ParseOptions & TokensToRegexpOptions & RegexpToFunctionOptions
 ) {
   const keys: Key[] = [];
   const re = pathToRegexp(str, keys, options);
@@ -384,9 +384,9 @@ export function match<P extends object = object>(
  * Create a path match function from `path-to-regexp` output.
  */
 export function regexpToFunction<P extends object = object>(
-  re: RegExp,
-  keys: Key[],
-  options: RegexpToFunctionOptions = {}
+    re: RegExp,
+    keys: Key[],
+    options: RegexpToFunctionOptions = {}
 ): MatchFunction<P> {
   const { decode = (x: string) => x } = options;
 
@@ -474,9 +474,9 @@ function regexpToRegexp(path: RegExp, keys?: Key[]): RegExp {
  * Transform an array into a regexp.
  */
 function arrayToRegexp(
-  paths: Array<string | RegExp>,
-  keys?: Key[],
-  options?: TokensToRegexpOptions & ParseOptions
+    paths: Array<string | RegExp>,
+    keys?: Key[],
+    options?: TokensToRegexpOptions & ParseOptions
 ): RegExp {
   const parts = paths.map((path) => pathToRegexp(path, keys, options).source);
   return new RegExp(`(?:${parts.join("|")})`, flags(options));
@@ -486,9 +486,9 @@ function arrayToRegexp(
  * Create a path regexp from string input.
  */
 function stringToRegexp(
-  path: string,
-  keys?: Key[],
-  options?: TokensToRegexpOptions & ParseOptions
+    path: string,
+    keys?: Key[],
+    options?: TokensToRegexpOptions & ParseOptions
 ) {
   return tokensToRegexp(parse(path, options), keys, options);
 }
@@ -528,9 +528,9 @@ export interface TokensToRegexpOptions {
  * Expose a function for taking tokens and returning a RegExp.
  */
 export function tokensToRegexp(
-  tokens: Token[],
-  keys?: Key[],
-  options: TokensToRegexpOptions = {}
+    tokens: Token[],
+    keys?: Key[],
+    options: TokensToRegexpOptions = {}
 ) {
   const {
     strict = false,
@@ -582,7 +582,7 @@ export function tokensToRegexp(
   } else {
     const endToken = tokens[tokens.length - 1];
     const isEndDelimited =
-      typeof endToken === "string"
+        typeof endToken === "string"
         ? delimiterRe.indexOf(endToken[endToken.length - 1]) > -1
         : endToken === undefined;
 
@@ -611,9 +611,9 @@ export type Path = string | RegExp | Array<string | RegExp>;
  * contain `[{ name: 'id', delimiter: '/', optional: false, repeat: false }]`.
  */
 export function pathToRegexp(
-  path: Path,
-  keys?: Key[],
-  options?: TokensToRegexpOptions & ParseOptions
+    path: Path,
+    keys?: Key[],
+    options?: TokensToRegexpOptions & ParseOptions
 ) {
   if (path instanceof RegExp) return regexpToRegexp(path, keys);
   if (Array.isArray(path)) return arrayToRegexp(path, keys, options);
