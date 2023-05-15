@@ -122,32 +122,30 @@ export default function snappyJSTest() {
       var compressed = snappyJS.compress(stringToUint8Array(textrandomInputString))
       var uncompressed = snappyJS.uncompress(compressed)
       let compressedstr = arrayBufferToString(bufferToArrayBuffer(uncompressed))
-      expect(compressed.toString() == compresseduin.toString()).assertTrue()
-      expect(compressedstr == textrandomInputString).assertTrue()
+      expect(compressed.toString()).assertEqual(compresseduin.toString())
+      expect(compressedstr).assertEqual(textrandomInputString)
     })
 
     it('compressArrayBuffer', 4, function () {
       var compressed = snappyJS.compress(stringToArrayBuffer(textrandomInputString))
       var uncompressed = snappyJS.uncompress(compressed)
       let compressedstr = arrayBufferToString(uncompressed)
-      expect(new Uint8Array(compressed).toString() == compresseduin.toString()).assertTrue()
-      expect(compressedstr == textrandomInputString).assertTrue()
+      expect(new Uint8Array(compressed).toString()).assertEqual(compresseduin.toString())
+      expect(compressedstr).assertEqual(textrandomInputString)
     })
 
     it('compress100000Uint8Array', 5, function () {
-      var randomInputString = randomString(100000)
-      var compressed = snappyJS.compress(stringToUint8Array(randomInputString))
+      var randomInputUint8Array = stringToUint8Array(randomString(100000))
+      var compressed = snappyJS.compress(randomInputUint8Array)
       var uncompressed = snappyJS.uncompress(compressed)
-      var uncompressedString = arrayBufferToString(bufferToArrayBuffer(uncompressed))
-      expect(uncompressedString == randomInputString).assertTrue()
+      expect(randomInputUint8Array.toString()).assertEqual(uncompressed.toString());
     })
 
     it('compress100000ArrayBuffer', 5, function () {
-      var randomInputString = randomString(100000)
-      var compressed = snappyJS.compress(stringToArrayBuffer(randomInputString))
+      var randomInputArrayBuffer = stringToArrayBuffer(randomString(100000))
+      var compressed = snappyJS.compress(randomInputArrayBuffer)
       var uncompressed = snappyJS.uncompress(compressed)
-      var uncompressedString = arrayBufferToString(uncompressed)
-      expect(uncompressedString == randomInputString).assertTrue()
+      expect(randomInputArrayBuffer.toString()).assertEqual(uncompressed.toString());
     })
 
     it('compress100Uint8Array', 8, function () {
@@ -169,7 +167,8 @@ export default function snappyJSTest() {
     it('uncompressmaxLength', 10, function (t) {
       var randomInputString = randomString(100000)
       var compressed = snappyJS.compress(stringToArrayBuffer(randomInputString))
-      expect(snappyJS.uncompress(compressed, 99999)).assertThrowError('The uncompressed length of 200000 is too big, expect at most 99999') //
+      expect(snappyJS.uncompress(compressed, 99999))
+        .assertThrowError('The uncompressed length of 200000 is too big, expect at most 99999') //
     })
   })
 }
