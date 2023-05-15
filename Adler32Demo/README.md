@@ -22,6 +22,8 @@ import adler32 from 'adler-32'
 |`str(data:string, seed?:number)`|`根据标准的js字符串获取校验和值`|
 |`version:string`|`获取adler-32的版本号`|
 
+单元测试用例详情见[TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Adler32Demo/TEST.md])
+
 ### 样例说明
 参照该Demo工程
 
@@ -46,5 +48,5 @@ DevEco Studio: 3.1Release(3.1.0.200), SDK: API9 Release(3.2.10.6)
 
 ### 开源协议
 
-本项目基于[Apache License 2.0](),请自由的享受和参与开源
+本项目基于[Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Adler32Demo/LICENSE),请自由的享受和参与开源
 

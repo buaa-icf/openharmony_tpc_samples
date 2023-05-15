@@ -13,8 +13,33 @@
  * limitations under the License.
  */
 
+//@ts-nocheck
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 import adler32 from 'adler-32'
+
+var o = "foo bar baz٪☃🍣";
+var m = "foobar";
+for (var i = 0; i != 11; ++i) m += m;
+var m1 = m + m, m2 = m1 + m1, m3 = m2 + m2, m4 = m3 + m3;
+var M1 = m + "𝑹" + m, M2 = M1 + "𝐀" + M1, M3 = M2 + "𝓜" + M2, M4 = M3 + "𝙖" + M3;
+var bits = [
+  ["Wikipedia", 300286872, 1],
+  ["foo bar baz", 398066679, 1],
+  ["foo bar baz٪", 570688890],
+  ["foo bar baz٪☃", 919275383],
+  [m, -747910882, 1],
+  [m1, 1286443594, 1],
+  [m2, 812328098, 1],
+  [m3, -1124316861, 1],
+  [m4, -357657979, 1],
+  [M1, -792947423],
+  [M2, -1841877779],
+  [M3, 869751957],
+  [M4, -1344947227],
+  [o, 1543572022],
+  [o + o, -2076896149],
+  [o + o + o, 2023497376]
+];
 
 export default function abilityTest() {
   describe('adler32Test', function () {
@@ -26,36 +51,69 @@ export default function abilityTest() {
     })
     afterAll(function () {
     })
-    it('buf_function_test',0, function () {
+
+    it('buf_function_test', 0, function () {
       let pam = [
-        1,23,56,2,43,98,15,87,56,120
+        1, 23, 56, 2, 43, 98, 15, 87, 56, 120
       ];
       let result = 130417142;
       let adler32Result = adler32.buf(pam)
       expect(result).assertEqual(adler32Result)
     })
-    it('bstr_function_test',0, function () {
+    it('bstr_function_test', 0, function () {
       let pam = "SheetJS";
       let result = 176947863;
       let adler32Result = adler32.bstr(pam)
       expect(result).assertEqual(adler32Result)
     })
-    it('bstr_ucs_2function_test',0, function () {
+    it('bstr_ucs_2function_test', 0, function () {
       let pam = "\u2603";
       let result = 262148;
       let adler32Result = adler32.bstr(pam)
       expect(result).assertEqual(adler32Result)
     })
-    it('str_function_test',0, function () {
+    it('str_function_test', 0, function () {
       let pam = "foo bar baz٪☃🍣";
       let result = 1543572022;
       let adler32Result = adler32.str(pam)
       expect(result).assertEqual(adler32Result)
     })
-    it('version_function_test',0, function () {
+    it('version_function_test', 0, function () {
       let result = "1.3.1";
       let adler32Result = adler32.version
       expect(result).assertEqual(adler32Result)
     })
   })
+
+  describe('adler32Test_example', function () {
+
+    for (let p = 0; p < bits.length; p++) {
+      let i = bits[p];
+      var msg = i[0], l = i[0].length;
+      if (l > 20) {
+        msg = i[0].substr(0, 5) + "...(" + l + ")..." + i[0].substr(-5);
+      }
+      ;
+      if (l > 100) {
+        return;
+      }
+      it(msg, 0, function () {
+        if (i[2] === 1) {
+          expect(i[1] | 0).assertEqual(adler32.bstr(i[0]))
+        }
+        expect(i[1] | 0).assertEqual(adler32.str(i[0]))
+        var len = i[0].length, step = len < 20000 ? 1 : len < 50000 ? Math.ceil(len / 20000) : Math.ceil(len / 2000);
+        for (var x = 0; x < len; x += step) {
+          if (i[0].charCodeAt(x) >= 0xD800 && i[0].charCodeAt(x) < 0xE000) continue;
+          if (i[2] === 1) {
+            var bstradl = adler32.bstr(i[0].substr(x), adler32.bstr(i[0].substr(0, x)));
+            expect(i[1] | 0).assertEqual(bstradl)
+          }
+          var stradl = adler32.str(i[0].substr(x), adler32.str(i[0].substr(0, x)));
+          expect(i[1] | 0).assertEqual(stradl)
+        }
+      });
+    }
+
+  });
 }
