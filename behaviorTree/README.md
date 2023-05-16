@@ -1,26 +1,26 @@
-behaviortree
+# behaviortree
 
 ## 介绍
 
-行为树 javascript 版实现
+[behaviortree](https://github.com/Calamari/BehaviorTree.js)，是行为树 javascript 版实现，可以运行 node.js 和浏览器中，本库基于 [behaviortree](https://github.com/Calamari/BehaviorTree.js)原库 v2.1.0 版本进行验证。
 
 ## 下载安装
 
-1.如果已经安装好 nodejs 之后，输入以下命令。
-
-```
-ohpm install behaviortree --save
+```javascript
+ohpm install behaviortree
 ```
 
-2.在需要使用的页面导入 behaviortree。
-
-```
-import { BehaviorTree } from "behaviortree"
-```
+OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
 ## 使用说明
 
-1. 创建一个简单的任务
+```javascript
+import { BehaviorTree } from "behaviortree";
+```
+
+## 示例
+
+### 1.创建一个简单的任务
 
 ```javascript
 import { Task, SUCCESS } from "behaviortree";
@@ -52,7 +52,7 @@ const myTask = new Task({
 - end - 在调用运行后调用。但如果任务以 this.running()结束则不会
 - run - 包含你希望任务做的事情
 
-2. 创建序列
+### 2.创建序列
 
 ```javascript
 import { Sequence } from "behaviortree";
@@ -65,7 +65,7 @@ const mySequence = new Sequence({
 });
 ```
 
-3. 创建优先级选择器
+### 3.创建优先级选择器
 
 ```javascript
 import { Selector } from "behaviortree";
@@ -78,7 +78,7 @@ const mySelector = new Selector({
 });
 ```
 
-4. 创建随机选择器
+### 4.创建随机选择器
 
 ```javascript
 import { Random } from "behaviortree";
@@ -91,7 +91,7 @@ const mySelector = new Random({
 });
 ```
 
-5. 创建行为树实例
+### 5.创建行为树实例
 
 ```javascript
 import { BehaviorTree } from "behaviortree";
@@ -102,16 +102,17 @@ var bTree = new BehaviorTree({
 });
 ```
 
-6. 遍历行为树
+### 6.遍历行为树
 
 ```javascript
 bTree.step();
 ```
 
+[单元测试用例](https://gitee.com/tybrave/openharmony_tpc_samples/tree/master/behaviortree/TEST.md)详情可参考
+
 ## 约束与限制
 
 在下述版本验证通过：DevEco Studio: 3.1 Beta1(3.1.0.400)，OpenHarmony SDK: API9（3.2.11.9）。
-
 
 ## 贡献代码
 
