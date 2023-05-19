@@ -19,7 +19,7 @@ import { compile, Key, match, parse, pathToRegexp } from 'path-to-regexp';
 const BASE_COUNT = 1
 
 export default function ApiTest() {
-  describe('PathToRegexpTest', function () {
+  describe('ApiTest', function () {
     beforeAll(function () {
     })
     beforeEach(function () {
