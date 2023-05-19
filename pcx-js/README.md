@@ -53,6 +53,8 @@ DevEco Studio: 3.1 Beta2(3.1.0.400), SDK: API9 Release(3.2.11.9)
        - index.ets                    	# 测试解析PCX图片格式
 ```
 
+单元测试用例详情见[TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/pcx-js/TEST.md)
+
 ## 贡献代码
 
 使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
