@@ -65,9 +65,7 @@ struct PathToRegexpPage {
             arrBefore.push(`keys   期待结果: ${'\r\n'}  ${`[{ name: 'bar', prefix: '/', suffix: '', pattern: '[^\\/#\\?]+?', modifier: '' }]`}`);
             bean.setBefore(arrBefore);
             let arrAfter = new Array<string>();
-            if (result.source) {
-              arrAfter.push(result.source);
-            }
+            arrAfter.push(result.toString());
             arrAfter.push(JSON.stringify(keys));
             bean.setAfter(arrAfter);
 
