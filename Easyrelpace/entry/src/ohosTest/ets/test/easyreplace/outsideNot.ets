@@ -70,6 +70,7 @@ test("01 - rightOutsideNot satisfied thus not replaced", () => {
   equal(
     er(
       "🐴a",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -87,6 +88,7 @@ test("01 - rightOutsideNot satisfied thus not replaced", () => {
   equal(
     er(
       "🐴a",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -107,6 +109,7 @@ test("02 - outsideNot left satisfied thus not replaced", () => {
   equal(
     er(
       "a🐴",
+      // @ts-ignore
       {
         leftOutsideNot: "a",
         leftOutside: "",
@@ -124,6 +127,7 @@ test("02 - outsideNot left satisfied thus not replaced", () => {
   equal(
     er(
       "a🐴",
+      // @ts-ignore
       {
         leftOutsideNot: ["a"],
         leftOutside: "",
@@ -144,6 +148,7 @@ test("03 - outsideNot's satisfied thus not replaced", () => {
   equal(
     er(
       "a🐴a",
+      // @ts-ignore
       {
         leftOutsideNot: "a",
         leftOutside: "",
@@ -164,6 +169,7 @@ test("04 - outsideNot's not satisfied, with 1 maybe replaced", () => {
   equal(
     er(
       "zb🐴y",
+      // @ts-ignore
       {
         leftOutsideNot: "a",
         leftOutside: "",
@@ -184,6 +190,7 @@ test("05 - leftOutsideNot blocked positive leftMaybe", () => {
   equal(
     er(
       "zb🐴y",
+      // @ts-ignore
       {
         leftOutsideNot: "z",
         leftOutside: "",
@@ -204,6 +211,7 @@ test("06 - rightOutsideNot blocked both L-R maybes", () => {
   equal(
     er(
       "zb🐴cy",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -224,6 +232,7 @@ test("07 - rightOutsideNot last char goes outside", () => {
   equal(
     er(
       "cccccccca",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -244,6 +253,7 @@ test("08 - right maybe is last char, outsideNot satisfied", () => {
   equal(
     er(
       "cccccccca",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -264,6 +274,7 @@ test("09 - real life scenario, missing semicol on nbsp #1", () => {
   equal(
     er(
       "&nbsp; &nbsp &nbsp",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -284,6 +295,7 @@ test("10 - real life scenario, missing semicol on nbsp #2", () => {
   equal(
     er(
       "&nbsp;&nbsp&nbsp",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -304,6 +316,7 @@ test("11 - real life scenario, missing ampersand, text", () => {
   equal(
     er(
       "tralalalanbsp;nbsp;&nbsp;",
+      // @ts-ignore
       {
         leftOutsideNot: "&",
         leftOutside: "",
@@ -324,6 +337,7 @@ test("12 - as before but with emoji instead", () => {
   equal(
     er(
       "🍺🍺👌🍺",
+      // @ts-ignore
       {
         leftOutsideNot: "👌",
         leftOutside: "",
@@ -344,6 +358,7 @@ test("13 - rightOutsideNot with L-R maybes", () => {
   equal(
     er(
       "zb🐴cy",
+      // @ts-ignore
       {
         leftOutsideNot: ["a"],
         leftOutside: "",
@@ -364,6 +379,7 @@ test("14 - all of 'em #1", () => {
   equal(
     er(
       "zb🐴cy",
+      // @ts-ignore
       {
         leftOutsideNot: ["c", "b"],
         leftOutside: ["z", "y"],
@@ -384,6 +400,7 @@ test("15 - all of 'em #2", () => {
   equal(
     er(
       "zb🐴cy",
+      // @ts-ignore
       {
         leftOutsideNot: ["", "", ""],
         leftOutside: ["z", "y"],

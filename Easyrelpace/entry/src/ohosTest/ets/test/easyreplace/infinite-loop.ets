@@ -18,8 +18,8 @@ import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from
 
 import { er } from "easy-replace";
 
-export default function missingsearchfor() {
-  describe('missingsearchfor', function () {
+export default function infiniteloop() {
+  describe('infiniteloop', function () {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
     beforeAll(function () {
       // Presets an action, which is performed only once before all test cases of the test suite start.
@@ -61,35 +61,141 @@ export default function missingsearchfor() {
       console.log('tag:'+tag+"  src="+src+ " dst="+dst);
       expect(src).assertEqual(dst)
     }
-
 // ==============================
-// missing searchFor value
+// infinite loop cases
 // ==============================
 
-test("01 - source present, missing searchFor", () => {
+test("01 - infinite loop, no maybes, emoji", () => {
   equal(
     er(
-      "aaa",
+      "🐴🦄🐴🦄🐴",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
         leftMaybe: "",
-        searchFor: "",
+        searchFor: "🐴",
         rightMaybe: "",
         rightOutside: "",
         rightOutsideNot: "",
       },
-      ""
+      "🐴"
     ),
-    "aaa",
-    "test 9.1"
+    "🐴🦄🐴🦄🐴",
+    "test 8.1"
   );
 });
 
-test("02 - everything is missing", () => {
+test("02 - infinite loop, maybes, multiple findings, emoji", () => {
+  equal(
+    er(
+      "🐴🦄🐴🦄🐴",
+      // @ts-ignore
+      {
+        leftOutsideNot: "",
+        leftOutside: "",
+        leftMaybe: "",
+        searchFor: "🐴",
+        rightMaybe: "🦄",
+        rightOutside: "",
+        rightOutsideNot: "",
+      },
+      "🐴"
+    ),
+    "🐴🐴🐴",
+    "test 8.2"
+  );
+});
+
+test("03 - infinite loop protection, emoji replaced with itself", () => {
+  equal(
+    er(
+      "🐴",
+      // @ts-ignore
+      {
+        leftOutsideNot: "",
+        leftOutside: "",
+        leftMaybe: "",
+        searchFor: "🐴",
+        rightMaybe: "",
+        rightOutside: "",
+        rightOutsideNot: "",
+      },
+      "🐴"
+    ),
+    "🐴",
+    "test 8.3"
+  );
+});
+
+test("04 - infinite loop protection, right outside", () => {
+  equal(
+    er(
+      "🐴🦄🐴🦄🐴",
+      // @ts-ignore
+      {
+        leftOutsideNot: "",
+        leftOutside: "",
+        leftMaybe: "",
+        searchFor: "🐴",
+        rightMaybe: "",
+        rightOutside: "🦄",
+        rightOutsideNot: "",
+      },
+      "🐴"
+    ),
+    "🐴🦄🐴🦄🐴",
+    "test 8.4"
+  );
+});
+
+test("05 - infinite loop protection, multiples", () => {
+  equal(
+    er(
+      "🦄🦄🦄🦄zaaaaaaaaa🦄🦄🦄🦄🦄🦄",
+      // @ts-ignore
+      {
+        leftOutsideNot: "a",
+        leftOutside: "🦄🦄🦄",
+        leftMaybe: "",
+        searchFor: "🦄",
+        rightMaybe: "🦄",
+        rightOutside: "🦄",
+        rightOutsideNot: "",
+      },
+      "🌟"
+    ),
+    "🦄🦄🦄🦄zaaaaaaaaa🦄🦄🦄🌟🦄",
+    "test 8.5"
+  );
+});
+
+test("06 - simple infinite loop case", () => {
+  equal(
+    er(
+      "a",
+      // @ts-ignore
+      {
+        leftOutsideNot: "",
+        leftOutside: "",
+        leftMaybe: "",
+        searchFor: "a",
+        rightMaybe: "",
+        rightOutside: "",
+        rightOutsideNot: "",
+      },
+      "a"
+    ),
+    "a",
+    "test 8.6"
+  );
+});
+
+test("07 - infinite loop, not found", () => {
   equal(
     er(
       "",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -99,87 +205,13 @@ test("02 - everything is missing", () => {
         rightOutside: "",
         rightOutsideNot: "",
       },
-      ""
+      "a"
     ),
     "",
-    "test 9.2"
+    "test 8.7"
   );
 });
-
-test("03 - everything seriously missing", () => {
-  equal(er("", {}, ""), "", "test 9.3");
-});
-
-test("04 - everything extremely seriously missing", () => {
-  equal(er("", {}), "", "test 9.4");
-});
-
-test("05 - everything truly extremely seriously missing", () => {
-  equal(er(""), "", "test 9.5");
-});
-
-test("06 - everything really truly extremely seriously missing", () => {
-  equal(er(), "", "test 9.6");
-});
-
-test("07 - leftOutsideNot blocking rightOutsideNot being empty", () => {
-  equal(
-    er(
-      "ab a",
-      {
-        leftOutsideNot: [""],
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "a",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "b",
-      },
-      "x"
-    ),
-    "ab x",
-    "test 9.7"
-  );
-});
-
-test("08 - leftOutsideNot is blank array", () => {
-  equal(
-    er(
-      "ab a",
-      {
-        leftOutsideNot: [],
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "a",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "b",
-      },
-      "x"
-    ),
-    "ab x",
-    "test 9.8"
-  );
-});
-
-test("09 - missing key in properties obj", () => {
-  equal(
-    er(
-      "ab a",
-      {
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "a",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "b",
-      },
-      "x"
-    ),
-    "ab x",
-    "test 9.9"
-  );
-});
-
   })
 }
+
+

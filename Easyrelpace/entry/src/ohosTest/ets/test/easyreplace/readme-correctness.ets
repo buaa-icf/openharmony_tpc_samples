@@ -69,6 +69,7 @@ test("01 - readme example #1", () => {
   equal(
     er(
       "a x c x d",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -89,6 +90,7 @@ test("02 - readme example #2", () => {
   equal(
     er(
       "🐴i🦄 🐴i i🦄 i",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -109,6 +111,7 @@ test("03 - readme example #3", () => {
   equal(
     er(
       "a🦄c x🦄x",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -129,6 +132,7 @@ test("04 - readme example #4", () => {
   equal(
     er(
       "zzzzz  zzzzzz zzzzzz",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: " ",
@@ -149,6 +153,7 @@ test("05 - readme example #5", () => {
   equal(
     er(
       "<br /><br/><br />",
+      // @ts-ignore
       {
         leftOutsideNot: " ",
         leftOutside: "",
@@ -169,6 +174,7 @@ test("06 - readme example #6", () => {
   equal(
     er(
       "&nbsp; nbsp &nbsp nbsp;",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",

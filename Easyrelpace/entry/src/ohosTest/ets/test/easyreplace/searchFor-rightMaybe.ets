@@ -67,6 +67,7 @@ test("01 - right maybe found", () => {
   equal(
     er(
       "a🦄🐴🦄c",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -84,6 +85,7 @@ test("01 - right maybe found", () => {
   equal(
     er(
       "a🦄🐴🦄c",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -104,6 +106,7 @@ test("02 - two replacements with one rightmaybe, nearby", () => {
   equal(
     er(
       "ab🐴🦄🐴c",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -121,6 +124,7 @@ test("02 - two replacements with one rightmaybe, nearby", () => {
   equal(
     er(
       "ab🐴🦄🐴c",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -141,6 +145,7 @@ test("03 - two consecutive right maybes", () => {
   equal(
     er(
       "ab🦄🐴🦄🐴c",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -158,6 +163,7 @@ test("03 - two consecutive right maybes", () => {
   equal(
     er(
       "ab🦄🐴🦄🐴c",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -178,6 +184,7 @@ test("04 - futile right maybe", () => {
   equal(
     er(
       "'🐴",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -195,6 +202,7 @@ test("04 - futile right maybe", () => {
   equal(
     er(
       "'🐴",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -215,6 +223,7 @@ test("05 - \\n as search string plus right maybe", () => {
   equal(
     er(
       "\na\n\n",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -232,6 +241,7 @@ test("05 - \\n as search string plus right maybe", () => {
   equal(
     er(
       "\na\n\n",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -252,6 +262,7 @@ test("06 - \\n as both searchFor and right maybe, replaced", () => {
   equal(
     er(
       "\n\n\n",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -269,6 +280,7 @@ test("06 - \\n as both searchFor and right maybe, replaced", () => {
   equal(
     er(
       "\n\n\n",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -289,6 +301,7 @@ test("07 - rightMaybe with line breaks", () => {
   equal(
     er(
       "a\n\na",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -306,6 +319,7 @@ test("07 - rightMaybe with line breaks", () => {
   equal(
     er(
       "a\n\na",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -326,6 +340,7 @@ test("08 - specific case of semi infinite loop with maybe", () => {
   equal(
     er(
       "aaaaab",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -343,6 +358,7 @@ test("08 - specific case of semi infinite loop with maybe", () => {
   equal(
     er(
       "aaaaab",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -363,6 +379,7 @@ test("09 - three right maybes (some found)", () => {
   equal(
     er(
       "a🦄🐴🦄c",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -383,6 +400,7 @@ test("10 - three right maybes (searchFor not found)", () => {
   equal(
     er(
       "a🦄🐴🦄c",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -403,6 +421,7 @@ test("11 - three right maybes (maybes not found)", () => {
   equal(
     er(
       "🍺🦄🐴🦄c",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -423,6 +442,7 @@ test("12 - three right maybes (multiple hungry finds)", () => {
   equal(
     er(
       "🐴 ",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -443,6 +463,7 @@ test("13 - three right maybes (multiple hungry finds)", () => {
   equal(
     er(
       "a🦄🐴🦄🍺c",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -463,6 +484,7 @@ test("14 - three right maybes (multiple hungry finds)", () => {
   equal(
     er(
       "a🦄🐴🍺🦄c",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -483,6 +505,7 @@ test("15 - three right maybes (multiple hungry finds)", () => {
   equal(
     er(
       "a🦄🐴🦄c",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -503,6 +526,7 @@ test("16 - three right maybes (multiple hungry finds)", () => {
   equal(
     er(
       "a🦄🐴🦄🍺c a🦄🐴🍺🦄c a🦄🐴🦄c 🐴",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -523,6 +547,7 @@ test("17 - three right maybes (multiple hungry finds)", () => {
   equal(
     er(
       "🦄y🦄 🦄y🦄 🦄y🦄 y",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -543,6 +568,7 @@ test("18 - three right maybes (multiple hungry finds)", () => {
   equal(
     er(
       "🦄y🦄 🦄y🦄 🦄y🦄 y",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -566,6 +592,7 @@ test("19 - sneaky array conversion situation", () => {
   equal(
     er(
       "a🦄🐴🦄c",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -583,6 +610,7 @@ test("19 - sneaky array conversion situation", () => {
   equal(
     er(
       "a🦄🐴🦄c",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -603,6 +631,7 @@ test("20 - normal words, few of them, rightMaybe as array", () => {
   equal(
     er(
       "this protection is promoting the proper propaganda",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -623,6 +652,7 @@ test("21 - rightMaybe is array, but with only 1 null value", () => {
   equal(
     er(
       "some text",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -647,7 +677,9 @@ test("22 - rightMaybe is couple integers in an array", () => {
         leftOutsideNot: "",
         leftOutside: "",
         leftMaybe: "",
+        // @ts-ignore
         searchFor: 2,
+        // @ts-ignore
         rightMaybe: [3, 4],
         rightOutside: "",
         rightOutsideNot: "",
@@ -663,6 +695,7 @@ test("23 - sneaky case of overlapping rightMaybes", () => {
   equal(
     er(
       "this is a word to be searched for",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -691,6 +724,7 @@ test("24 - case-insensitive flag", () => {
         rightMaybe: ["x", "y", "z"],
         rightOutside: "",
         rightOutsideNot: "",
+        // @ts-ignore
         i: {
           rightMaybe: true,
         },

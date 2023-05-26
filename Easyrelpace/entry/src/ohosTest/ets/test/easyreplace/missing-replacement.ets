@@ -65,6 +65,7 @@ test("01 - empty string as replacement = deletion mode", () => {
   equal(
     er(
       "a🦄🐴🦄a",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -85,6 +86,7 @@ test("02 - null as replacement = deletion mode", () => {
   equal(
     er(
       "a🦄🐴🦄a",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -105,6 +107,7 @@ test("03 - replacement bool, nothing left", () => {
   equal(
     er(
       "🐴",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -129,6 +132,7 @@ test("04 - replacement Bool, nothing left, searchFor Integer", () => {
         leftOutsideNot: "",
         leftOutside: "",
         leftMaybe: "",
+        // @ts-ignore
         searchFor: 2,
         rightMaybe: "",
         rightOutside: "",
@@ -145,6 +149,7 @@ test("05 - nothing left, replacement undefined", () => {
   equal(
     er(
       "fljlh fdlg ldfhgl abc aldjsdlflkjd ljfl fgklh fl",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -165,6 +170,7 @@ test("06 - nothing left - more undefined", () => {
   equal(
     er(
       "zzz",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -185,6 +191,7 @@ test("07 - emoji, null replacement, both outsides found", () => {
   equal(
     er(
       "a🦄🐴🦄a",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "🦄",
@@ -204,6 +211,7 @@ test("07 - emoji, null replacement, both outsides found", () => {
 test("08 - raw integers everywhere must work too", () => {
   equal(
     er(
+      // @ts-ignore
       6,
       {
         leftOutsideNot: "",
@@ -225,6 +233,7 @@ test("09 - searchFor is an array of 1 element", () => {
   equal(
     er(
       "a b c",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -245,6 +254,7 @@ test("10 - searchFor is an array of few elements (no find)", () => {
   equal(
     er(
       "a b c",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -265,6 +275,7 @@ test("11 - searchFor is an array of few elements (won't work)", () => {
   equal(
     er(
       "a bx c",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",

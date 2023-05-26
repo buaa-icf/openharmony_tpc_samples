@@ -69,6 +69,7 @@ test("01 - special case #1", () => {
   equal(
     er(
       "&fnof;",
+      // @ts-ignore
       {
         leftOutsideNot: "e",
         leftOutside: "",
@@ -89,6 +90,7 @@ test("02 - special case #2", () => {
   equal(
     er(
       "🐴 a🦄🐴🦄🍺c a🦄🐴🍺🦄c a🦄🐴🦄c a🐴🍺c 🐴",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",

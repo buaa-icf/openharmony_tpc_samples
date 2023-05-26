@@ -1,3 +1,4 @@
+
 /*
  * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,8 +19,8 @@ import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from
 
 import { er } from "easy-replace";
 
-export default function infiniteloop() {
-  describe('infiniteloop', function () {
+export default function searchFornomaybesoutsides() {
+  describe('searchFornomaybesoutsides', function () {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
     beforeAll(function () {
       // Presets an action, which is performed only once before all test cases of the test suite start.
@@ -61,150 +62,104 @@ export default function infiniteloop() {
       console.log('tag:'+tag+"  src="+src+ " dst="+dst);
       expect(src).assertEqual(dst)
     }
+
 // ==============================
-// infinite loop cases
+// no searchFor + no maybes + outsides
 // ==============================
 
-test("01 - infinite loop, no maybes, emoji", () => {
+test("01 - one rightOutside, not found", () => {
   equal(
     er(
-      "🐴🦄🐴🦄🐴",
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "🐴",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "🐴"
-    ),
-    "🐴🦄🐴🦄🐴",
-    "test 8.1"
-  );
-});
-
-test("02 - infinite loop, maybes, multiple findings, emoji", () => {
-  equal(
-    er(
-      "🐴🦄🐴🦄🐴",
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "🐴",
-        rightMaybe: "🦄",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "🐴"
-    ),
-    "🐴🐴🐴",
-    "test 8.2"
-  );
-});
-
-test("03 - infinite loop protection, emoji replaced with itself", () => {
-  equal(
-    er(
-      "🐴",
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "🐴",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "🐴"
-    ),
-    "🐴",
-    "test 8.3"
-  );
-});
-
-test("04 - infinite loop protection, right outside", () => {
-  equal(
-    er(
-      "🐴🦄🐴🦄🐴",
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "🐴",
-        rightMaybe: "",
-        rightOutside: "🦄",
-        rightOutsideNot: "",
-      },
-      "🐴"
-    ),
-    "🐴🦄🐴🦄🐴",
-    "test 8.4"
-  );
-});
-
-test("05 - infinite loop protection, multiples", () => {
-  equal(
-    er(
-      "🦄🦄🦄🦄zaaaaaaaaa🦄🦄🦄🦄🦄🦄",
-      {
-        leftOutsideNot: "a",
-        leftOutside: "🦄🦄🦄",
-        leftMaybe: "",
-        searchFor: "🦄",
-        rightMaybe: "🦄",
-        rightOutside: "🦄",
-        rightOutsideNot: "",
-      },
-      "🌟"
-    ),
-    "🦄🦄🦄🦄zaaaaaaaaa🦄🦄🦄🌟🦄",
-    "test 8.5"
-  );
-});
-
-test("06 - simple infinite loop case", () => {
-  equal(
-    er(
-      "a",
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "a",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "a"
-    ),
-    "a",
-    "test 8.6"
-  );
-});
-
-test("07 - infinite loop, not found", () => {
-  equal(
-    er(
-      "",
+      "aaa🦄a bbbb🦄 cccc🦄",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
         leftMaybe: "",
         searchFor: "",
         rightMaybe: "",
+        rightOutside: "🦄",
+        rightOutsideNot: "",
+      },
+      "🌟"
+    ),
+    "aaa🦄a bbbb🦄 cccc🦄",
+    "test 7.1"
+  );
+});
+
+test("02 - one leftOutside, not found", () => {
+  equal(
+    er(
+      "🦄aaaa 🦄bbbb 🦄cccc",
+      // @ts-ignore
+      {
+        leftOutsideNot: "",
+        leftOutside: "🦄",
+        leftMaybe: "",
+        searchFor: "",
+        rightMaybe: "",
         rightOutside: "",
         rightOutsideNot: "",
       },
-      "a"
+      "🌟"
     ),
-    "",
-    "test 8.7"
+    "🦄aaaa 🦄bbbb 🦄cccc",
+    "test 7.2"
   );
 });
+
+test("03 - one leftOutside, not found + null replacement", () => {
+  equal(
+    er(
+      "aa🦄aa bb🦄bb cc🦄cc",
+      // @ts-ignore
+      {
+        leftOutsideNot: "",
+        leftOutside: "🦄",
+        leftMaybe: "",
+        searchFor: "",
+        rightMaybe: "",
+        rightOutside: "",
+        rightOutsideNot: "",
+      },
+      null
+    ),
+    "aa🦄aa bb🦄bb cc🦄cc",
+    "test 7.3"
+  );
+});
+
+test("04 - leftOutside and replacement are null", () => {
+  equal(
+    er(
+      "aaaa bbbb cccc",
+      // @ts-ignore
+      {
+        leftOutside: null,
+      },
+      null
+    ),
+    "aaaa bbbb cccc",
+    "test 7.4"
+  );
+});
+
+test("05 - left outside and replacement are undefined", () => {
+  equal(
+    er(
+      "aaaa bbbb cccc",
+      // @ts-ignore
+      {
+        leftOutside: undefined,
+      },
+      undefined
+    ),
+    "aaaa bbbb cccc",
+    "test 7.5"
+  );
+});
+
+
   })
 }
-
-

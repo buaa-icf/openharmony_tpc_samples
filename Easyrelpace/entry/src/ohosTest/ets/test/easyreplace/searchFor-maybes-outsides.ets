@@ -1,4 +1,3 @@
-
 /*
  * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,8 +18,8 @@ import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from
 
 import { er } from "easy-replace";
 
-export default function searchFornomaybesoutsides() {
-  describe('searchFornomaybesoutsides', function () {
+export default function searchFormaybesoutsides() {
+  describe('searchFormaybesoutsides', function () {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
     beforeAll(function () {
       // Presets an action, which is performed only once before all test cases of the test suite start.
@@ -62,96 +61,154 @@ export default function searchFornomaybesoutsides() {
       console.log('tag:'+tag+"  src="+src+ " dst="+dst);
       expect(src).assertEqual(dst)
     }
-
 // ==============================
-// no searchFor + no maybes + outsides
+// searchFor + maybes + outsides
 // ==============================
 
-test("01 - one rightOutside, not found", () => {
+test("01 - maybes and outsides, emoji - full set", () => {
   equal(
     er(
-      "aaa🦄a bbbb🦄 cccc🦄",
+      "a🦄🐴💘b",
+      // @ts-ignore
       {
         leftOutsideNot: "",
+        leftOutside: "a",
+        leftMaybe: "🦄",
+        searchFor: "🐴",
+        rightMaybe: "💘",
+        rightOutside: "b",
+        rightOutsideNot: "",
+      },
+      "🌟"
+    ),
+    "a🌟b",
+    "test 6.1"
+  );
+});
+
+test("02 - maybes + outsides - 1 of maybes not found #1", () => {
+  equal(
+    er(
+      "a🦄🐴b",
+      // @ts-ignore
+      {
+        leftOutsideNot: "",
+        leftOutside: "a",
+        leftMaybe: "🦄",
+        searchFor: "🐴",
+        rightMaybe: "💘",
+        rightOutside: "b",
+        rightOutsideNot: "",
+      },
+      "🌟"
+    ),
+    "a🌟b",
+    "test 6.2"
+  );
+});
+
+test("03 - maybes + outsides - 1 of maybes not found #2", () => {
+  equal(
+    er(
+      "a🐴💘b",
+      // @ts-ignore
+      {
+        leftOutsideNot: "",
+        leftOutside: "a",
+        leftMaybe: "🦄",
+        searchFor: "🐴",
+        rightMaybe: "💘",
+        rightOutside: "b",
+        rightOutsideNot: "",
+      },
+      "🌟"
+    ),
+    "a🌟b",
+    "test 6.3"
+  );
+});
+
+test("04 - maybes and outsides, emoji - neither of maybes", () => {
+  equal(
+    er(
+      "a🐴b",
+      // @ts-ignore
+      {
+        leftOutsideNot: "",
+        leftOutside: "a",
+        leftMaybe: "🦄",
+        searchFor: "🐴",
+        rightMaybe: "💘",
+        rightOutside: "b",
+        rightOutsideNot: "",
+      },
+      "🌟"
+    ),
+    "a🌟b",
+    "test 6.4"
+  );
+});
+
+test("05 - multiple findings with maybes and outsides", () => {
+  equal(
+    er(
+      "a🦄🐴💘b a🦄🐴💘b a🦄🐴💘b",
+      // @ts-ignore
+      {
+        leftOutsideNot: "",
+        leftOutside: "a",
+        leftMaybe: "🦄",
+        searchFor: "🐴",
+        rightMaybe: "💘",
+        rightOutside: "b",
+        rightOutsideNot: "",
+      },
+      "🌟"
+    ),
+    "a🌟b a🌟b a🌟b",
+    "test 6.5"
+  );
+});
+
+test("06 - multiple findings with maybes and not-outsides", () => {
+  equal(
+    er(
+      "z🦄🐴💘b a🦄🐴💘z a🦄🐴💘b z🦄🐴💘z",
+      // @ts-ignore
+      {
+        leftOutsideNot: "a",
         leftOutside: "",
-        leftMaybe: "",
-        searchFor: "",
-        rightMaybe: "",
-        rightOutside: "🦄",
+        leftMaybe: "🦄",
+        searchFor: "🐴",
+        rightMaybe: "💘",
+        rightOutside: "",
+        rightOutsideNot: "b",
+      },
+      "🌟"
+    ),
+    "z🦄🐴💘b a🦄🐴💘z a🦄🐴💘b z🌟z",
+    "test 6.6"
+  );
+});
+
+test("07 - maybes and outsides, arrays", () => {
+  equal(
+    er(
+      "a🦄🐴💘b a💘🐴🦄b a🦄🐴🦄b a💘🐴💘b",
+      // @ts-ignore
+      {
+        leftOutsideNot: "",
+        leftOutside: "a",
+        leftMaybe: ["🦄", "💘", "a", "b"],
+        searchFor: "🐴",
+        rightMaybe: ["🦄", "💘", "a", "b"],
+        rightOutside: "b",
         rightOutsideNot: "",
       },
       "🌟"
     ),
-    "aaa🦄a bbbb🦄 cccc🦄",
-    "test 7.1"
-  );
-});
-
-test("02 - one leftOutside, not found", () => {
-  equal(
-    er(
-      "🦄aaaa 🦄bbbb 🦄cccc",
-      {
-        leftOutsideNot: "",
-        leftOutside: "🦄",
-        leftMaybe: "",
-        searchFor: "",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "🌟"
-    ),
-    "🦄aaaa 🦄bbbb 🦄cccc",
-    "test 7.2"
-  );
-});
-
-test("03 - one leftOutside, not found + null replacement", () => {
-  equal(
-    er(
-      "aa🦄aa bb🦄bb cc🦄cc",
-      {
-        leftOutsideNot: "",
-        leftOutside: "🦄",
-        leftMaybe: "",
-        searchFor: "",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      null
-    ),
-    "aa🦄aa bb🦄bb cc🦄cc",
-    "test 7.3"
-  );
-});
-
-test("04 - leftOutside and replacement are null", () => {
-  equal(
-    er(
-      "aaaa bbbb cccc",
-      {
-        leftOutside: null,
-      },
-      null
-    ),
-    "aaaa bbbb cccc",
-    "test 7.4"
-  );
-});
-
-test("05 - left outside and replacement are undefined", () => {
-  equal(
-    er(
-      "aaaa bbbb cccc",
-      {
-        leftOutside: undefined,
-      },
-      undefined
-    ),
-    "aaaa bbbb cccc",
-    "test 7.5"
+    "a🌟b a🌟b a🌟b a🌟b",
+    "test 6.7"
   );
 });
 

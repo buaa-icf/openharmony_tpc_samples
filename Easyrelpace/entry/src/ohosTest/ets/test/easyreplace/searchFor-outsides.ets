@@ -70,6 +70,7 @@ test("01 - both outsides only, emoji, found", () => {
   equal(
     er(
       "🦄 🐴 🦄",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "🦄 ",
@@ -87,6 +88,7 @@ test("01 - both outsides only, emoji, found", () => {
   equal(
     er(
       "🦄 🐴 🦄",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: ["🦄 "],
@@ -107,6 +109,7 @@ test("02 - both outsides only, emoji, not found", () => {
   equal(
     er(
       "a 🐴 a",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "🦄",
@@ -127,6 +130,7 @@ test("03 - both outsides, emoji, not found", () => {
   equal(
     er(
       "🦄 🐴 a",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "🦄",
@@ -147,6 +151,7 @@ test("04 - both outsides, emoji, not found #1", () => {
   equal(
     er(
       "a 🐴 a🦄",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "🦄",
@@ -167,6 +172,7 @@ test("05 - both outsides, emoji, not found #2", () => {
   equal(
     er(
       "kgldfj lkfjkl jfk \ng \t;lgkh a 🐴 a🦄 slkgj fhjf jkghljk",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "🦄",
@@ -187,6 +193,7 @@ test("06 - line break as rightOutside, found", () => {
   equal(
     er(
       "aaab\n",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -207,6 +214,7 @@ test("07 - line breaks as both outsides", () => {
   equal(
     er(
       "aaa\nb\n",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "\n",
@@ -227,6 +235,7 @@ test("08 - \\n as outsides, replacement = undefined", () => {
   equal(
     er(
       "aaa\nb\n",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "\n",
@@ -247,6 +256,7 @@ test("09 - line breaks as outsides, replacement = Bool", () => {
   equal(
     er(
       "aaa\nb\n",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "\n",
@@ -267,6 +277,7 @@ test("10 - line breaks as outsides, replacement = null", () => {
   equal(
     er(
       "aaa\nb\n",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "\n",
@@ -285,6 +296,7 @@ test("10 - line breaks as outsides, replacement = null", () => {
 
 test("11 - left outside requirement not satisfied for replacement to happen", () => {
   equal(
+    // @ts-ignore
     er("aaaBBBccc", {
       leftOutsideNot: "",
       leftOutside: "x",
@@ -305,6 +317,7 @@ test("11 - left outside requirement not satisfied for replacement to happen", ()
 
 test("12 - right outside requirement not satisfied for replacement to happen", () => {
   equal(
+    // @ts-ignore
     er("aaaBBBccc", {
       leftOutsideNot: "",
       leftOutside: "x",

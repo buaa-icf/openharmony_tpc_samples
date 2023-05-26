@@ -28,7 +28,7 @@ import searchFornomaybesoutsides from './easyreplace/searchFor-no-maybes-outside
 import searchForoutsides from './easyreplace/searchFor-outsides'
 import searchForrightMaybe from './easyreplace/searchFor-rightMaybe'
 import various from './easyreplace/various'
-import levenTest from './leven/leven2.js'
+import levenTest from './leven/leven2'
 
 export default function testsuite() {
   abilityTest();
