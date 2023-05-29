@@ -19,6 +19,7 @@ struct EncodeDecodePage {
 
   @State message:string = "编码后的数据展示"
   @State message2:string = "解码后的数据展示"
+  @State message3:string = "解码后的数据展示"
 
   encodedUint8: Uint8Array = undefined;
 
@@ -34,8 +35,12 @@ struct EncodeDecodePage {
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
         Button('点击解码').onClick(()=>{
-          let decodeObj = decode(this.encodedUint8);
-          this.message2 = "解码后的数据="+JSON.stringify(decodeObj);
+          if(this.encodedUint8) {
+            let decodeObj = decode(this.encodedUint8);
+            this.message2 = "解码后的数据=" + JSON.stringify(decodeObj);
+          }else{
+            this.message3 = '解码数据为undefined, 请先点击编码'
+          }
         })
         Text(this.message2)
           .fontSize(50)
