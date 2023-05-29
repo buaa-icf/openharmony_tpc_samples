@@ -49,7 +49,9 @@ export default function localNameTest() {
       '<span>test4</span>' +
       '</root>';
 
-      const outXmlString = xsltProcess(xmlParse(xmlString), xmlParse(xsltString));
+      let xml1 = xmlParse(xmlString);
+      let xml2 = xmlParse(xsltString);
+      const outXmlString = xsltProcess(xml1, xml2);
       expect(outXmlString).assertEqual(expectedOutString);
     })
 
@@ -82,8 +84,9 @@ export default function localNameTest() {
       '<span>test3</span>' +
       '<span>test4</span>' +
       '</root>';
-
-      const outXmlString = xsltProcess(xmlParse(xmlString), xmlParse(xsltString));
+      let xml1 = xmlParse(xmlString);
+      let xml2 = xmlParse(xsltString);
+      const outXmlString = xsltProcess(xml1, xml2);
       expect(outXmlString).assertEqual(expectedOutString);
     })
   })

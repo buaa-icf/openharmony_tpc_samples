@@ -10,7 +10,7 @@
     },
     {
       "name": "TestAbility_label",
-      "value": "test xslt"
+      "value": "xslt-processor-test"
     }
   ]
 }

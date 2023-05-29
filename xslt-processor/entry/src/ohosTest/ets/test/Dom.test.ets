@@ -15,8 +15,8 @@
 
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
 import { xmlParse } from 'xslt-processor/src/dom.js'
-import he from "he"
-import { xmlText } from "xslt-processor/src/util.js"
+import he from 'he'
+import { xmlText } from 'xslt-processor/src/util.js'
 
 export default function domTest() {
   describe('DomTest', function () {
@@ -42,7 +42,8 @@ export default function domTest() {
       expect(dom1.firstChild.childNodes.length).assertEqual(dom2.firstChild.childNodes.length);
       expect(dom1.firstChild.childNodes.length).assertEqual(dom2.firstChild.childNodes.length);
 
-      expect(dom1.firstChild.childNodes[1].attributes.length).assertEqual(dom2.firstChild.childNodes[1].attributes.length);
+      expect(dom1.firstChild.childNodes[1].attributes.length)
+        .assertEqual(dom2.firstChild.childNodes[1].attributes.length);
       expect(dom1.firstChild.childNodes[1].attributes.length).assertEqual(2);
 
     }

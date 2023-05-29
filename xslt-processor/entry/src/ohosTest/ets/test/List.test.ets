@@ -22,6 +22,7 @@ import simpleTest from  './Simple.test'
 import xmlToJson from './XmlToJson.test';
 import xmlToken from './XmlToken.test'
 import variablesAsParametersTest from './VariablesAsParameters.test'
+import heTest from './he.test'
 
 export default function testsuite() {
   xsltTest();
@@ -33,4 +34,5 @@ export default function testsuite() {
   xmlToJson();
   xmlToken();
   variablesAsParametersTest();
+  heTest();
 }

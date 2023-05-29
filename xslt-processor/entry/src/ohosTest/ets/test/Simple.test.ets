@@ -46,7 +46,9 @@ export default function simpleTest() {
       '<span>test4</span>' +
       '</div>';
 
-      const outXmlString = xsltProcess(xmlParse(xmlString), xmlParse(xsltString));
+      let xml1 = xmlParse(xmlString);
+      let xml2 = xmlParse(xsltString);
+      const outXmlString = xsltProcess(xml1, xml2);
       expect(outXmlString).assertEqual(expectedOutString);
     })
   })
