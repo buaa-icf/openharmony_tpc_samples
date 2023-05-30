@@ -25,8 +25,24 @@ import adler32 from 'adler-32'
 单元测试用例详情见[TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Adler32Demo/TEST.md)
 
 ### 样例说明
-参照该Demo工程
+参照该Demo工程[Index](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Adler32Demo/entry/src/main/ets/pages/Index.ets)页面
 
+如：
+```
+  Text(this.strBtn)
+    .width('90%')
+    .height(50)
+    .backgroundColor(0xEEEEEE)
+    .borderRadius(15)
+    .fontSize(13)
+    .textAlign(TextAlign.Center)
+    .margin({ top: 10 })
+    .onClick(() => {
+      let par = "foo bar baz٪☃🍣";
+      let result = adler32.str(par);
+      this.message = result + "";
+    })
+```
 ### 软件架构
 ```
 |-ets
