@@ -7,7 +7,7 @@ adler32Demo是一个在Openharmony系统上验证adler-32（一个在js环境中
 ### 下载安装
 1、安装
 ```
-$ npm install adler-32
+$ ohpm install adler-32
 ```
 2、导入
 ```
@@ -22,11 +22,27 @@ import adler32 from 'adler-32'
 |`str(data:string, seed?:number)`|`根据标准的js字符串获取校验和值`|
 |`version:string`|`获取adler-32的版本号`|
 
-单元测试用例详情见[TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Adler32Demo/TEST.md])
+单元测试用例详情见[TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Adler32Demo/TEST.md)
 
 ### 样例说明
-参照该Demo工程
+参照该Demo工程[Index](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Adler32Demo/entry/src/main/ets/pages/Index.ets)页面
 
+如：
+```
+  Text(this.strBtn)
+    .width('90%')
+    .height(50)
+    .backgroundColor(0xEEEEEE)
+    .borderRadius(15)
+    .fontSize(13)
+    .textAlign(TextAlign.Center)
+    .margin({ top: 10 })
+    .onClick(() => {
+      let par = "foo bar baz٪☃🍣";
+      let result = adler32.str(par);
+      this.message = result + "";
+    })
+```
 ### 软件架构
 ```
 |-ets
@@ -39,7 +55,7 @@ import adler32 from 'adler-32'
 ### 约束与限制
 在下述版本验证通过：
 
-DevEco Studio: 3.1Release(3.1.0.200), SDK: API9 Release(3.2.10.6)
+DevEco Studio: 3.1 Beta2(3.1.0.400), SDK: API9 Release(3.2.11.9)
 
 ### 贡献代码
 
