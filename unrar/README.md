@@ -27,7 +27,7 @@ import unrar from '@ohos/libunrar.so'
 ### isEncrypted 判断压缩包名是否加密方法示例
 
 ```
-// path:文件所在路径
+// path:文件所在路径 path目前只支持沙箱路径
 unrar.isEncrypted(path)
 
 ```
