@@ -301,8 +301,8 @@ export default function miscTest() {
         ]))).assertEqual('\u1E3F\uE7C7');
     });
 
-    ['utf-16le', 'utf-16be'].forEach(function (encoding) {
-      it('NONSTANDARD', 11, function () {
+    ['utf-16le', 'utf-16be'].forEach(function (encoding,index) {
+      it(`NONSTANDARD${index}`, 11, function () {
         var encoder = new TextEncoder(encoding, {
           NONSTANDARD_allowLegacyEncoding: true
         });
