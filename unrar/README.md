@@ -71,7 +71,7 @@ unrar.RarFiles_Extract(path, globalThis.context.filesDir, passwords).then((value
 
 在下述版本验证通过：
 
-DevEco Studio: 3.1 Beta2(3.1.0.400), SDK: API9 Release(3.2.11.9)
+DevEco Studio: 4.0 Canary1(4.0.0.112), SDK: API10 (4.0.7.2)
 
 ## 目录结构
 ```javascript
