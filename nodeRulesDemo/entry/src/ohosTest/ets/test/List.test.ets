@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-import abilityTest from './Ability.test'
+import NodeRulesTest from './NodeRules.test'
 
 export default function testsuite() {
-  abilityTest()
+  NodeRulesTest()
 }
