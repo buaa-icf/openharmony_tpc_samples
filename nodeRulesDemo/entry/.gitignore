@@ -2,3 +2,5 @@
 /.preview
 /build
 /.cxx
+node_modules
+package-lock.json

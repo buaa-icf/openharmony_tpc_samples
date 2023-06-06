@@ -3,3 +3,7 @@
 /.idea
 **/build
 /.hvigor
+node_modules
+package-lock.json
+.hvigor
+.idea
