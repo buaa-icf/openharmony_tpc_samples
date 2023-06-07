@@ -104,6 +104,105 @@ struct Index {
   build() {
     Row() {
       Column({ space: 5 }) {
+        Button('xmlParse:null')
+          .width('90%')
+          .height('100px')
+          .onClick(() => {
+            try {
+              xmlParse(null);
+            } catch (error) {
+              this.printLog('请检查输入字符，捕捉到异常： ' + error);
+            }
+          })
+
+        Button('xmlParse:undefined')
+          .width('90%')
+          .height('100px')
+          .onClick(() => {
+            try {
+              xmlParse(undefined);
+            } catch (error) {
+              this.printLog('请检查输入字符，捕捉到异常： ' + error);
+            }
+          })
+
+        Button('xmlParse:特殊字符')
+          .width('90%')
+          .height('100px')
+          .onClick(() => {
+            try {
+              xmlParse('<xml>内容包含特殊字符：<></xml>');
+            } catch (error) {
+              this.printLog('请检查输入字符，捕捉到异常： ' + error);
+            }
+          })
+
+        Button('xsltProcess:null')
+          .width('90%')
+          .height('100px')
+          .onClick(() => {
+            try {
+              xsltProcess(null);
+            } catch (error) {
+              this.printLog('请检查输入参数，捕捉到异常： ' + error);
+            }
+          })
+
+        Button('xsltProcess:undefined')
+          .width('90%')
+          .height('100px')
+          .onClick(() => {
+            try {
+              xsltProcess(undefined);
+            } catch (error) {
+              this.printLog('请检查输入参数，捕捉到异常： ' + error);
+            }
+          })
+
+        Button('xsltProcess:特殊字符')
+          .width('90%')
+          .height('100px')
+          .onClick(() => {
+            try {
+              xsltProcess('<xml>内容包含特殊字符：<></xml>');
+            } catch (error) {
+              this.printLog('请检查输入参数，捕捉到异常： ' + error);
+            }
+          })
+
+        Button('xpathParse:null')
+          .width('90%')
+          .height('100px')
+          .onClick(() => {
+            try {
+              xpathParse(null);
+            } catch (error) {
+              this.printLog('请检查输入字符，捕捉到异常： ' + error);
+            }
+          })
+
+        Button('xpathParse:undefined')
+          .width('90%')
+          .height('100px')
+          .onClick(() => {
+            try {
+              xpathParse(undefined);
+            } catch (error) {
+              this.printLog('请检查输入字符，捕捉到异常： ' + error);
+            }
+          })
+
+        Button('xpathParse:特殊字符')
+          .width('90%')
+          .height('100px')
+          .onClick(() => {
+            try {
+              xpathParse('内容包含特殊字符<>');
+            } catch (error) {
+              this.printLog('请检查输入字符，捕捉到异常： ' + error);
+            }
+          })
+
         Button('解析XML')
           .width('90%')
           .height('100px')
