@@ -14,7 +14,7 @@
  */
 
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
-import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from 'jsonschema'
+import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
 
 const BASE_COUNT = 1
 Validator.prototype.customFormats.myFormat = function (input) {

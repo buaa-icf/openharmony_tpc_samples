@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from 'jsonschema'
+import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
 import { it as _it, afterAll, afterEach, beforeAll, beforeEach, describe, expect } from '@ohos/hypium'
 import JsonFileArray from '../JsonFileArray'
 import draft03Schema from '../../json-metaschema/draft-03-schema.json'

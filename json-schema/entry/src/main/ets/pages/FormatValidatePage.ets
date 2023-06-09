@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from 'jsonschema'
+import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
 
 Validator.prototype.customFormats.myFormat = function (input) {
   return input === 'myFormat';

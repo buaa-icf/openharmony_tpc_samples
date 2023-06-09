@@ -13,13 +13,22 @@
  * limitations under the License.
  */
 
-import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from 'jsonschema'
-import AllFuntionString from '../AllFuntionString'
+import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
 
 @Entry
 @Component
 struct AllValidatePage {
-  @State message0: string = AllFuntionString.getFuntionString();
+  @State message0: string = `var referencedSchema = {
+  "id": "/ReferencedSchema",
+  "type": "string"
+};
+var all ={
+...
+}
+var v = new Validator();
+v.addSchema(referencedSchema, '/ReferencedSchema');
+v.validate(all, schema);
+`;
   @State message1: string = `验证对象：--`
   @State message2: string = `期待结果：暂无`
   @State message3: string = `实际结果：--`

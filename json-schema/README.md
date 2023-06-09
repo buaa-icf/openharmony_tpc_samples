@@ -5,7 +5,7 @@ jsonschema是一个轻便易用的JSON模式验证器，它全量支持到draft-
 
 ## 下载安装
 ```shell
-ohpm install jsonschema 
+ohpm install @ohos/jsonschema 
 ```
 OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
@@ -13,7 +13,7 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 安装jsonschema之后，在需要使用的界面先导入jsonschema并初始化
 
  ```typescript
-import { Validator, ValidatorResult, ValidationError, SchemaError, validate } from 'jsonschema'
+import { Validator, ValidatorResult, ValidationError, SchemaError, validate } from '@ohos/jsonschema'
 var v = new Validator();
  ```
 
@@ -118,7 +118,7 @@ v.attributes.contains = function validateContains(instance, schema, options, ctx
   if(typeof instance !== 'string') return;
   // @ts-ignore   自定义关键字类型判断
   if(typeof schema.contains !== 'string'){
-     throw new jsonschema.SchemaError('"contains" expects a string', schema);
+     throw new SchemaError('"contains" expects a string', schema);
   }
   // @ts-ignore  判断是否包含自定义关键字
   if(instance.indexOf(schema.contains)<0){
@@ -188,7 +188,7 @@ let result = v.validate("I am an instance", { type:"string", contains: "I am" })
 ```
 
 ```typescript
-  importNextSchema(v: jsonschema.Validator) {
+  importNextSchema(v: Validator) {
     var nextSchema = v.unresolvedRefs.shift(); // 移除校验规则
     if (this.cacheSchemaNum >= this.schemaArr.length) {
       this.isFinish = true;

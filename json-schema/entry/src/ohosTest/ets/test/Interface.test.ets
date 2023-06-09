@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import { scan, SchemaError, SchemaScanResult, validate, ValidationError, Validator, ValidatorResult } from 'jsonschema'
+import { scan, SchemaError, SchemaScanResult, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
 
 // @ts-ignore

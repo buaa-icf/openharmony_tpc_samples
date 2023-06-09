@@ -14,14 +14,14 @@
   "main": "index.ts",
   "type": "module",
   "repository": "https://gitee.com/zdy09/openharmony_tpc_samples/tree/master/json-schema",
-  "version": "1.4.1",
+  "version": "2.0.0",
   "dependencies": {},
   "tags": [
     "Tool"
   ],
   "license": "MIT",
   "devDependencies": {},
-  "name": "jsonschema",
+  "name": "@ohos/jsonschema",
   "scripts": {
     "test": "echo \"Error: no test specified\" \u0026\u0026 exit 1"
   }
