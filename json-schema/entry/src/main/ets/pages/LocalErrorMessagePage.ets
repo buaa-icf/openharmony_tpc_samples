@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import jsonschema from 'jsonschema'
+import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from 'jsonschema'
 
 @Entry
 @Component
@@ -91,7 +91,6 @@ struct LocalErrorMessagePage {
     const ctx = this;
     ctx.message2 = `期待结果：minLength,maxLength,type,oneOf`
     try {
-      const Validator = jsonschema.Validator;
       var v = new Validator();
       var schema = {
         oneOf: [

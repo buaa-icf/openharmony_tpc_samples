@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import jsonschema from 'jsonschema'
+import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from 'jsonschema'
 
 @Entry
 @Component
@@ -93,22 +93,25 @@ struct DiyAnotherPage {
     const ctx = this;
     ctx.message2 = `期待结果：${false}`
     try {
-      const Validator = jsonschema.Validator;
+
       var v = new Validator();
       v.attributes.contains = function validateContains(instance, schema, options, ctx) {
-        var result = new jsonschema.ValidatorResult(instance, schema, options, ctx);
+        var result = new ValidatorResult(instance, schema, options, ctx);
 
         if (typeof instance !== 'string') {
           result.addError('fails some validation test')
-        };
+        }
+        ;
         // @ts-ignore
         if (typeof schema.contains !== 'string') {
           result.addError('fails some validation test')
-        };
+        }
+        ;
         // @ts-ignore
         if (instance.indexOf(schema.contains) > 0) {
           result.addError('fails some validation test')
-        };
+        }
+        ;
         // @ts-ignore
         if (schema.contains.length > 0) {
           result.addError('fails some validation test')

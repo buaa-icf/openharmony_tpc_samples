@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import jsonschema from 'jsonschema'
+import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from 'jsonschema'
 
 @Entry
 @Component
@@ -90,7 +90,6 @@ res.valid`
     const ctx = this;
     ctx.message2 = `不设置required期待结果：${true}，设置required期待结果：${false}`
     try {
-      const Validator = jsonschema.Validator;
       var v = new Validator();
       let result = v.validate(undefined, { type: 'string' });
       let str = JSON.stringify(result);

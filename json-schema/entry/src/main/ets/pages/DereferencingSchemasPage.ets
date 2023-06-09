@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import jsonschema from 'jsonschema'
+import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from 'jsonschema'
 
 @Entry
 @Component
@@ -135,7 +135,6 @@ importNextSchema();`
           "votes": { "type": "integer", "minimum": 1 }
         }
       }
-      const Validator = jsonschema.Validator;
       var v = new Validator();
       v.addSchema(initSchema)
       ctx.importNextSchema(v);
@@ -150,7 +149,7 @@ importNextSchema();`
     }
   }
 
-  importNextSchema(v: jsonschema.Validator) {
+  importNextSchema(v: Validator) {
     var nextSchema = v.unresolvedRefs.shift();
     if (this.cacheSchemaNum >= this.schemaArr.length) {
       this.isFinish = true;

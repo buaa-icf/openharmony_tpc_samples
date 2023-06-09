@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import jsonschema from 'jsonschema'
+import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from 'jsonschema'
 
 @Entry
 @Component
@@ -101,7 +101,6 @@ var result = validator.validate('This string is 28 chars long', schema, {nestedE
 2: instance is not of a type(s) number
 3: instance is not exactly one from [subschema 0],[subschema 1],[subschema 2]`
     try {
-      const Validator = jsonschema.Validator;
       var v = new Validator();
       var schema = {
         oneOf: [

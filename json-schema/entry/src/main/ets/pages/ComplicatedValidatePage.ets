@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import jsonschema from 'jsonschema'
+import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from 'jsonschema'
 
 @Entry
 @Component
@@ -131,7 +131,6 @@ v.validate(p, schema);`
     const ctx = this;
     ctx.message2 = `期待结果：${false}`
     try {
-      const Validator = jsonschema.Validator;
       var v = new Validator();
       // Address, to be embedded on Person
       var addressSchema = {

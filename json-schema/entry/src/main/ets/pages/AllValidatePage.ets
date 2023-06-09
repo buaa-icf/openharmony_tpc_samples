@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import jsonschema from 'jsonschema'
+import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from 'jsonschema'
 import AllFuntionString from '../AllFuntionString'
 
 @Entry
@@ -90,7 +90,6 @@ struct AllValidatePage {
     const ctx = this;
     ctx.message2 = `期待结果：${true}`
     try {
-      const Validator = jsonschema.Validator;
       var v = new Validator();
       // This schema includes all of the possible validation tests.
       var schema = {

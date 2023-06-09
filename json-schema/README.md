@@ -5,24 +5,21 @@ jsonschema是一个轻便易用的JSON模式验证器，它全量支持到draft-
 
 ## 下载安装
 ```shell
-npm install jsonschema --save
+ohpm install jsonschema 
 ```
-OpenHarmony npm环境配置等更多内容，请参考 [如何安装OpenHarmony npm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_npm_usage.md) 。
+OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
 ## 使用说明
 安装jsonschema之后，在需要使用的界面先导入jsonschema并初始化
 
  ```typescript
-  import jsonschema from 'jsonschema'
-  const Validator = jsonschema.Validator;
+import { Validator, ValidatorResult, ValidationError, SchemaError, validate } from 'jsonschema'
+var v = new Validator();
  ```
-**为了保证项目能成功编译，还需要下载安装polyfill，具体操作步骤见[ openharmony-polyfill](https://gitee.com/openharmony-sig/openharmony-polyfill#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8)。**
 
 ### 简单对象验证
 
 ```typescript
-  const Validator = jsonschema.Validator;
-  var v = new Validator();
   var instance = 4;
   var schema = { "type": "number" }; // 设置规则
   let result = v.validate(instance, schema).valid;  // 启动验证并获取结果
@@ -33,7 +30,6 @@ OpenHarmony npm环境配置等更多内容，请参考 [如何安装OpenHarmony 
 ### 复杂验证---带有自规则和规则引用
 
 ```typescript
- var v = new Validator();
       // Address, to be embedded on Person
  var addressSchema = {
         "id": "/SimpleAddress",
@@ -81,7 +77,6 @@ OpenHarmony npm环境配置等更多内容，请参考 [如何安装OpenHarmony 
 
 ```typescript
 // 添加自定义的格式函数 
-const Validator = jsonschema.Validator;
 Validator.prototype.customFormats.myFormat = function (input) {
   return input === 'myFormat';
 };
@@ -99,8 +94,6 @@ let result2 = v1.validate('foo', { type: 'string', format: 'myFormat' }).valid;
 ### 嵌套错误
 
 ```typescript
-const Validator = jsonschema.Validator;
-   var v = new Validator();
    var schema = {
      oneOf: [
        { type: 'string', minLength: 32, maxLength: 32 },
@@ -121,7 +114,6 @@ const Validator = jsonschema.Validator;
 ### 自定义关键词
 
 ```typescript
-var v = new Validator();
 v.attributes.contains = function validateContains(instance, schema, options, ctx) {
   if(typeof instance !== 'string') return;
   // @ts-ignore   自定义关键字类型判断
@@ -190,8 +182,6 @@ let result = v.validate("I am an instance", { type:"string", contains: "I am" })
           "votes": { "type": "integer", "minimum": 1 }
         }
       }
-  const Validator = jsonschema.Validator;
-  var v = new Validator();
   v.addSchema(initSchema); // 添加初始化规则
   this.importNextSchema(v); // 启动递归方法 开始移除/添加校验规则
   let result = this.cacheSchemaNum >= 0; // 通过cacheSchemaNum数量变动来检测移除添加过程是否执行
@@ -255,6 +245,8 @@ preValidate(object, key, schema, options, ctx) {
    name: 123,
    quantity: '2'
  }
+ var v0 = new Validator();
+ var v1 = new Validator();
 // 属性不预处理
  let result0 = v0.validate(instance, schema).valid;
 // 属性预处理
@@ -307,18 +299,28 @@ let result1 = v1.validate("Name", schema, { allowUnknownAttributes: false });
 
 ## 接口说明
 
-| 接口名          | 参数                                                         | 返回值          | 说明                     |
-| --------------- | ------------------------------------------------------------ | --------------- | ------------------------ |
-| new Validator() | 暂无                                                         | Validator       | 生成校验器对象           |
-| shift()         | 暂无                                                         | T \| undefined  | 移除并返回添加的验证规则 |
-| validate()      | instance: any, schema: Schema, options?: Options, ctx?: SchemaContext | ValidatorResult | 验证schema               |
-| addSchema       | schema?: Schema, uri?: string                                | Schema\|void    | 添加schema到校验器       |
+| 接口名                     | 参数                                                         | 返回值                  | 说明                                |
+| -------------------------- | ------------------------------------------------------------ | ----------------------- | ----------------------------------- |
+| new Validator()            | 暂无                                                         | Validator               | 生成校验器对象                      |
+| Validator.validate()       | instance: any,<br/>schema: Schema,<br/>options?: Options,<br/>ctx?: SchemaContext | ValidatorResult         | 验证schema                          |
+| Validator.addSchema()      | schema?: Schema,<br/>uri?: string                            | Schema\|void            | 添加schema到校验器                  |
+| validate()                 | instance: any,<br/> schema: any,<br/>options?: Options       | ValidatorResult         | 验证schema                          |
+| rewrite()                  | instance: any,<br/> schema: Schema, <br/>options: Options,<br/> ctx: SchemaContext | any                     | 在成功验证实例后更改实例的值        |
+| preValidateProperty()      | instance: any, <br/>key: string, <br/>schema: Schema, <br/>options: Options, <br/>ctx: SchemaContext | any                     | 在验证之前需要对属性进行一些处理    |
+| customFormats()            | input: any                                                   | boolean                 | 添加自己的自定义格式函数            |
+| attributes()               | instance: any, schema: Schema, options: Options, ctx: SchemaContext | string\|ValidatorResult | 指定关键字                          |
+| ValidatorResult.addError() | detail: string\|ErrorDetail                                  | ValidationError         | ValidatorResult对象添加错误信息错误 |
+| ValidatorResult.toString() | 暂无                                                         | string                  | ValidatorResult对象转化为字符串     |
+| ValidationError.toString() | 暂无                                                         | string                  | ValidationError对象转化为字符串     |
+| shift()                    | 暂无                                                         | T \| undefined          | 移除并返回添加的验证规则            |
 
-
+更多模块的使用可参考[官方文档](https://github.com/tdegrunt/jsonschema/blob/master/README.md)，[单元测试用例](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/json-schema/TEST.md)详情可参考
 
 ## 约束与限制
-- [DevEco Studio](https://developer.harmonyos.com/cn/develop/deveco-studio#download) 版本：DevEco Studio 3.1 Beta1。
-- OpenHarmony SDK版本：API version 9。
+在下述版本验证通过：
+
+-DevEco Studio: 3.1 Beta2(3.1.0.400) 
+-SDK: API9 Release(3.2.11.9)
 
 ## 目录结构
 ````

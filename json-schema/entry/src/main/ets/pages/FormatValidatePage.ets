@@ -13,9 +13,8 @@
  * limitations under the License.
  */
 
-import jsonschema from 'jsonschema'
+import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from 'jsonschema'
 
-const Validator = jsonschema.Validator;
 Validator.prototype.customFormats.myFormat = function (input) {
   return input === 'myFormat';
 };
