@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "jsonschema",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}

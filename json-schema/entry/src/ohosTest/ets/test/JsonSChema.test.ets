@@ -14,10 +14,9 @@
  */
 
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
-import jsonschema from 'jsonschema'
+import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
 
 const BASE_COUNT = 1
-const Validator = jsonschema.Validator;
 Validator.prototype.customFormats.myFormat = function (input) {
   return input === 'myFormat';
 };
@@ -526,7 +525,7 @@ export default function jsonSChemaTest() {
         if (typeof instance !== 'string') return;
         // @ts-ignore
         if (typeof schema.contains !== 'string') {
-          throw new jsonschema.SchemaError('"contains" expects a string', schema);
+          throw new SchemaError('"contains" expects a string', schema);
         }
         // @ts-ignore
         if (instance.indexOf(schema.contains) < 0) {
@@ -551,24 +550,28 @@ export default function jsonSChemaTest() {
       let startTime1 = new Date().getTime();
       var v = new Validator();
       v.attributes.contains = function validateContains(instance, schema, options, ctx) {
-        var result = new jsonschema.ValidatorResult(instance, schema, options, ctx);
+        var result = new ValidatorResult(instance, schema, options, ctx);
 
         if (typeof instance !== 'string') {
+          // @ts-ignore
           result.addError('fails some validation test')
         }
-        ;
-        // @ts-ignore
+
+
         if (typeof schema.contains !== 'string') {
+          // @ts-ignore
           result.addError('fails some validation test')
         }
-        ;
-        // @ts-ignore
+
+
         if (instance.indexOf(schema.contains) > 0) {
+          // @ts-ignore
           result.addError('fails some validation test')
         }
-        ;
-        // @ts-ignore
+
+
         if (schema.contains.length > 0) {
+          // @ts-ignore
           result.addError('fails some validation test')
         }
         return result;
@@ -639,7 +642,8 @@ export default function jsonSChemaTest() {
       ]
       var cacheSchemaNum: number = 0;
 
-      function importNextSchema(v: jsonschema.Validator) {
+      // @ts-ignore
+      function importNextSchema(v: Validator) {
         var nextSchema = v.unresolvedRefs.shift();
         if (cacheSchemaNum >= schemaArr.length) {
           return
@@ -662,7 +666,6 @@ export default function jsonSChemaTest() {
 
     it('DefaultBaseUri', 0, function () {
       let startTime1 = new Date().getTime();
-      const Validator = jsonschema.Validator;
       var v = new Validator();
       let result = v.validate(["Name"], {
         id: "/schema.json",
@@ -685,6 +688,7 @@ export default function jsonSChemaTest() {
     })
     it('ReWrite', 0, function () {
       let startTime1 = new Date().getTime();
+
       function unmarshall(instance, schema) {
         if (schema.id === 'http://example.com/date') {
           return new Date(instance);
@@ -719,6 +723,7 @@ export default function jsonSChemaTest() {
     it('PrePropertyValidate', 0, function () {
       let startTime1 = new Date().getTime();
       const v0 = new Validator();
+
       function preValidate(object, key, schema, options, ctx) {
         var value = object[key];
         if (typeof value === 'undefined') return;

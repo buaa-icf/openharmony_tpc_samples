@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import jsonschema from 'jsonschema'
+import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
 
 @Entry
 @Component
@@ -97,13 +97,13 @@ var result = validator.validate("I am an instance", { type:"string", contains: "
     const ctx = this;
     ctx.message2 = `期待结果：${true}`
     try {
-      const Validator = jsonschema.Validator;
+
       var v = new Validator();
       v.attributes.contains = function validateContains(instance, schema, options, ctx) {
         if (typeof instance !== 'string') return;
         // @ts-ignore
         if (typeof schema.contains !== 'string') {
-          throw new jsonschema.SchemaError('"contains" expects a string', schema);
+          throw new SchemaError('"contains" expects a string', schema);
         }
         // @ts-ignore
         if (instance.indexOf(schema.contains) < 0) {

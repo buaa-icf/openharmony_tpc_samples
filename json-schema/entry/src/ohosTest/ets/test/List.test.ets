@@ -13,7 +13,40 @@
  * limitations under the License.
  */
 import jsonSChemaTest from './JsonSChema.test'
+import arraysTest from './Arrays.test'
+import attributesTest from './Attributes.test'
+import combinatorsTest from './Combinators.test'
+import constTest from './Const.test'
+import formatsTest from './Formats.test'
+import i18nTest from './I18n.test'
+import interfaceTest from './Interface.test'
+import loadingTest from './Loading.test'
+import metaschemaTest from './Metaschema.test'
+import mixedTest from './Mixed.test'
+import objectsTest from './Objects.test'
+import pureTest from './Pure.test'
+import requiredWithRefTest from './RequiredWithRef.test'
+import suiteTest from './Suite.test'
+import unionTest from './Union.test'
+import validatorTest from './Validator.test'
 
 export default function testsuite() {
-  jsonSChemaTest()
+  jsonSChemaTest();
+  arraysTest();
+  attributesTest();
+  combinatorsTest();
+  constTest();
+  formatsTest();
+  i18nTest();
+  interfaceTest();
+  loadingTest();
+  metaschemaTest();
+  mixedTest();
+  objectsTest();
+  pureTest();
+  requiredWithRefTest();
+
+  unionTest();
+  validatorTest();
+  suiteTest();
 }

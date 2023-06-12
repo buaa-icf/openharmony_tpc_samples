@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import jsonschema from 'jsonschema'
+import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
 
 @Entry
 @Component
@@ -96,7 +96,6 @@ struct DefaultBaseUriPage {
     const ctx = this;
     ctx.message2 = `期待结果：${true}`
     try {
-      const Validator = jsonschema.Validator;
       var v = new Validator();
       let result = v.validate(["Name"], {
         id: "/schema.json",

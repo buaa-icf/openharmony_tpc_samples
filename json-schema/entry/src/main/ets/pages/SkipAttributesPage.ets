@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import jsonschema from 'jsonschema'
+import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
 
 @Entry
 @Component
@@ -122,8 +122,6 @@ let result = v.validate(p, schema,{skipAttributes:["minimum"]});`
         "votes": 22
       };
 
-
-      const Validator = jsonschema.Validator;
       var v0 = new Validator();
       let result0 = v0.validate(p, schema, { skipAttributes: ["minimum"] })
 

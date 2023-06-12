@@ -13,9 +13,8 @@
  * limitations under the License.
  */
 
-import jsonschema from 'jsonschema'
+import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
 
-const Validator = jsonschema.Validator;
 const v0 = new Validator();
 const v1 = new Validator();
 

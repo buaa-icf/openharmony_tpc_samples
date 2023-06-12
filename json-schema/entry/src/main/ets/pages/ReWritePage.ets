@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import jsonschema from 'jsonschema'
+import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
 
 @Entry
 @Component
@@ -119,7 +119,6 @@ const res = v.validate(value, schema, {rewrite: unmarshall});`
       const value = {
         date: '2020-09-30T23:39:27.060Z',
       };
-      const Validator = jsonschema.Validator;
       var v0 = new Validator();
       let result00 = v0.validate(value, schema);
       let result01 = result00.instance.date instanceof Date;

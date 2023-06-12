@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import jsonschema from 'jsonschema'
+import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
 
 @Entry
 @Component
@@ -96,7 +96,6 @@ var result = validate("Name", schema, { allowUnknownAttributes: false });`
         允许未知关键字 ${false}  ${'\r\n'}`
     var allowResult;
     try {
-      const Validator = jsonschema.Validator;
       var v0 = new Validator();
       var schema = {
         type: "string",
@@ -116,7 +115,6 @@ var result = validate("Name", schema, { allowUnknownAttributes: false });`
     }
     var notAllowResult;
     try {
-      const Validator = jsonschema.Validator;
       var v1 = new Validator();
       var schema = {
         type: "string",
@@ -132,8 +130,8 @@ var result = validate("Name", schema, { allowUnknownAttributes: false });`
     } catch (err) {
       let str = JSON.stringify(err);
       console.log(`jsonschema ------> 验证出错：${str}`);
-      ctx.message3 = `允许未知关键字 ${allowResult}  ${'\r\n'}
-      不允许未知关键字验证出错：${str}`
+      ctx.message3 = `不允许未知关键字 验证出错：{} ${'\r\n'}
+      允许未知关键字 ${allowResult}  `
     }
 
   }

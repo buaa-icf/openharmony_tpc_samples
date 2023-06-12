@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import jsonschema from 'jsonschema'
+import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
 
 @Entry
 @Component
@@ -93,7 +93,6 @@ v.validate(instance, schema)`
     const ctx = this;
     ctx.message2 = `期待结果：${true}`
     try {
-      const Validator = jsonschema.Validator;
       var v = new Validator();
       var instance = 4;
       var schema = { "type": "number" };
