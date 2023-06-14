@@ -12,5 +12,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export { UnrarApi } from './src/main/ets/components/MainPage/UnrarApi'
-export type { ICallBack } from './src/main/ets/components/MainPage/ICallBack'
+
+/**
+ * unrar operation callback interface
+ */
+export interface ICallBack {
+  callBackResult(value: string);
+}
