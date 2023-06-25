@@ -5,23 +5,9 @@
     products: [
       {
         name: "default",
-        signingConfig: "debug_default"
-      }
+        signingConfig: "debug_default",
+      },
     ],
-    "signingConfigs": [
-      {
-        "name": "default",
-        "material": {
-          "certpath": "C:\\Users\\admin\\.ohos\\config\\openharmony\\auto_ohos_default_utilCode_com.teamx.utilcode.cer",
-          "storePassword": "0000001B0054F6E6559B880788474A3632F6C81A856F7549A394186F16CE8B889BF48299A6BDE2544F3374",
-          "keyAlias": "debugKey",
-          "keyPassword": "0000001B810EFEC91CC6042F38F0158B83E4737BE068ADB411CEB3F18518D013487FAB9FC3841EFA2FD2DE",
-          "profile": "C:\\Users\\admin\\.ohos\\config\\openharmony\\auto_ohos_default_utilCode_com.teamx.utilcode.p7b",
-          "signAlg": "SHA256withECDSA",
-          "storeFile": "C:\\Users\\admin\\.ohos\\config\\openharmony\\auto_ohos_default_utilCode_com.teamx.utilcode.p12"
-        }
-      }
-    ]
   },
   modules: [
     {
@@ -30,9 +16,7 @@
       targets: [
         {
           name: "default",
-          applyToProducts: [
-            "default"
-          ],
+          applyToProducts: ["default"],
         },
       ],
     },
