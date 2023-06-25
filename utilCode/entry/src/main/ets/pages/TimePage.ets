@@ -16,59 +16,98 @@
 // @ts-ignore
 import { get12, get24 } from 'time-ampm';
 import isLeapYear from 'leap-year';
+import prompt from '@ohos.promptAction';
 
 @Entry
 @Component
 struct TimePage {
+  private select: number = 1
+  time24: string[] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"];
+  time12: string[] = ["12 am", "1 am", "2 am", "3 am", "4 am", "5 am", "6 am", "7 am", "8 am", "9 am", "10 am", "11 am", "12 pm", "1 pm", "2 pm", "3 pm", "4 pm", "5 pm", "6 pm", "7 pm", "8 pm", "9 pm", "10 pm", "11 pm", "11.59 pm"];
+  @State year: number = 2014
 
-  @State time12: string = '';
-  @State time24: string = '';
-
+  scroller: Scroller = new Scroller()
   build() {
-    Column() {
-      Row() {
-        Button('get12()')
-          .fontSize(18)
-          .margin({ left: 18 })
-          .onClick(() => {
-            this.time12 = get12(0)
-          })
-        Text('get12(0)为：'+this.time12)
-          .fontSize(18)
-      }
-      .padding({ top: 18, bottom: 18 })
-      Row() {
-        Button('get24()')
-          .fontSize(18)
-          .margin({ left: 18 })
-          .onClick(() => {
-            this.time24 = get24('10 pm')
-          })
-        Text('get24(10 pm)为：'+this.time24)
-          .fontSize(18)
-      }
-      .padding({ top: 18, bottom: 18 })
 
-      Row() {
-        Button('2016是否闰年'+isLeapYear(2016))
-          .fontSize(18)
-          .margin({ left: 18 })
-        Button('2018是否闰年'+isLeapYear(2018))
-          .fontSize(18)
-          .margin({ left: 18 })
-      }
-      .padding({ top: 18, bottom: 18 })
 
-      Row() {
-        Button('2020是否闰年'+isLeapYear(2020))
-          .fontSize(18)
-          .margin({ left: 18 })
-        Button('2022是否闰年'+isLeapYear(2022))
-          .fontSize(18)
-          .margin({ left: 18 })
-      }
-      .padding({ top: 18, bottom: 18 })
+    Scroll(this.scroller) {
+      Column() {
 
+
+        Column({ space: 12 }) {
+          Text('闰年测试，点击按钮判断是否为闰年')
+            .margin({ top: 5 })
+            .fontSize(16)
+          TextInput({ text: this.year.toString(), placeholder: '请输入年份,年份范围，大于1581' })
+            .height(60)
+            .fontSize(18)
+            .type(InputType.Number)
+            .margin(18)
+            .maxLength(4)
+            .onChange((value: string) => {
+              if (value.length > 0 && parseInt(value) > 1581  ) {
+                this.year = parseInt(value)
+              } else {
+                prompt.showToast({ message: '请输入大于1581的年份', duration: 3000 })
+              }
+            })
+
+          Button(this.year+'年是否闰年判断'+isLeapYear(this.year), { type: ButtonType.Normal })
+            .fontSize(18)
+            .fontColor('#000')
+            .height(60)
+            .width(300)
+            .margin({ top: 20 })
+            .backgroundColor('#12939f')
+            .onClick(() => {
+
+              if ( this.year == 0){
+                prompt.showToast({ message: '请输入大于1581的年份', duration: 3000 })
+              }
+
+              if (isLeapYear(this.year)) {
+                prompt.showToast({ message: this.year+'是闰年', duration: 3000 })
+              }else {
+                prompt.showToast({ message: this.year+'不是闰年', duration: 3000 })
+              }
+
+            })
+
+          Column() {
+
+            Text('上下午测试，判断对应时间为上午或下午')
+              .margin({ top: 5 })
+              .fontSize(16)
+            ForEach(this.time24, (item, index: number) => {
+              Row() {
+                Text(item + '点为：' + get12(item))
+                  .margin({ top: 5 })
+                  .fontSize(16)
+              }
+            })
+            ForEach(this.time12, (item, index: number) => {
+              Row() {
+                Text(item + '点为：' + get24(item))
+                  .margin({ top: 5 })
+                  .fontSize(16)
+              }
+            })
+
+          }
+
+          Divider().strokeWidth(2).color('#F1F3F5').margin({ top: 8, bottom: 8 })
+        }.margin({ top: 10 })
+
+      }
     }
+    .scrollable(ScrollDirection.Vertical)
+    .scrollBar(BarState.Off)
+    .scrollBarColor(Color.Gray)
+    .scrollBarWidth(1)
+
+  }
+
+  init() {
+
   }
 }

@@ -1,48 +1,68 @@
-import {CountryUtils} from 'util_code'
+/*
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+import { CountryUtils } from '@ohos/util_code'
 
 @Entry
 @Component
 struct CountryPage {
-
-
-
   @State message: string = ''
   @State err: string = ''
+  private simKey: string[] = [];
+  private simValue: string[] = [];
 
+  scroller: Scroller = new Scroller()
   build() {
-    Column() {
-      Row() {
-        Button('地区获取拨号字冠'+CountryUtils.getCountryCode('CN'))
+    Scroll(this.scroller){
+      Column() {
+        Text('当前系统地区获取拨号字冠' + CountryUtils.getCountryCodeByLanguage())
           .fontSize(18)
-          .margin({ left: 18 })
+          .margin({ left: 18, top: 18 })
 
-        Button('系统地区获取拨号字冠'+CountryUtils.getCountryCodeByLanguage())
+
+        Divider().strokeWidth(2).color('#F1F3F5').margin({ top: 8, bottom: 8 })
+
+
+        Text('sim卡获取拨号字冠模拟测试，模拟测试项目')
           .fontSize(18)
-          .margin({ left: 18 })
+          .margin({ left: 18, top: 18 })
 
-
+        ForEach(this.simKey, (item, index: number) => {
+          Row() {
+            Text(item + '拨号字冠为：' + CountryUtils.getCountryCode(item))
+              .margin({ top: 5 })
+              .fontSize(16)
+          }
+        })
 
       }
-
-      Row() {
-
-        Button('sim卡获取拨号字冠:'+ this.message)
-          .fontSize(18)
-          .margin({ left: 18 })
-          .onClick(()=>{
-            CountryUtils.getCountryCodeBySim((err,data)=>{
-              this.err = err;
-              this.message = data;
-            })
-          })
-
-
-
-      }
-      .margin({ top: 18 })
-
-      Text('sim卡获取拨号字冠err:'+this.err)
+      .padding({ top: 18, bottom: 18 })
     }
-    .padding({ top: 18, bottom: 18 })
+    .scrollable(ScrollDirection.Vertical)
+    .scrollBar(BarState.Off)
+    .scrollBarColor(Color.Gray)
+    .scrollBarWidth(1)
+
+
   }
+
+  aboutToAppear() {
+    for (let [key, value] of CountryUtils.getCountryCodeFromMap().entries()) {
+      this.simKey.push(key)
+      this.simValue.push(value)
+    }
+
+  }
+
 }

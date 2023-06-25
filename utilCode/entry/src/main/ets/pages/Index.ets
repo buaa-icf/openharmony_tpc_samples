@@ -14,7 +14,6 @@
  */
 
 import router from '@ohos.router';
-
 @Entry
 @Component
 struct Index {
@@ -43,6 +42,7 @@ struct Index {
           .onClick(() => {
             router.pushUrl({ url: 'pages/ColorDemo' })
           })
+
       }
 
       Row() {
@@ -70,7 +70,18 @@ struct Index {
 
       }
       .margin({ top: 18 })
+
+
+      Button('温度测试')
+        .fontSize(18)
+        .margin({ left: 18 })
+        .onClick(() => {
+          router.pushUrl({ url: 'pages/TempPage' })
+        })
+        .margin({ top: 18 })
+
     }
     .padding({ top: 18, bottom: 18 })
   }
+
 }

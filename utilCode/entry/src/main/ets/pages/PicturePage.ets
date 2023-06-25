@@ -14,7 +14,7 @@
  */
 
 // @ts-ignore
-import imtype from 'imagetype';
+import imtype from 'imtype';
 
 @Entry
 @Component
@@ -29,53 +29,55 @@ struct PicturePage {
 
     Column() {
 
-      Row() {
 
-        Button('是否jpg:' + this.jpg)
-          .fontSize(18)
-          .margin({ left: 18 })
-          .onClick(() => {
-            this.jpgTest()
-          })
+      Button('是否jpg:' + this.jpg)
+        .fontSize(18)
+        .margin({ left: 18 })
+        .onClick(() => {
+          this.jpgTest()
+        })
+        .margin({ top: 18 })
 
-        Button('是否png:' + this.png)
-          .fontSize(18)
-          .margin({ left: 18 })
-          .onClick(() => {
-            this.pngTest()
-          })
+      Button('是否png:' + this.png)
+        .fontSize(18)
+        .margin({ left: 18 })
+        .onClick(() => {
+          this.pngTest()
+        })
+        .margin({ top: 18 })
 
-        Button('是否gif:' + this.gif)
-          .fontSize(18)
-          .margin({ left: 18 })
-          .onClick(() => {
-            this.gifTest()
-          })
-      }
 
-      Row() {
-        Button('是否tif:' + this.tif)
-          .fontSize(18)
-          .margin({ left: 18 })
-          .onClick(() => {
-            this.tifTest()
-          })
+      Button('是否gif:' + this.gif)
+        .fontSize(18)
+        .margin({ left: 18 })
+        .onClick(() => {
+          this.gifTest()
+        })
+        .margin({ top: 18 })
 
-        Button('是否bmp:' + this.bmp)
-          .fontSize(18)
-          .margin({ left: 18 })
-          .onClick(() => {
-            this.bmpTest()
-          })
+      Button('是否tif:' + this.tif)
+        .fontSize(18)
+        .margin({ left: 18 })
+        .onClick(() => {
+          this.tifTest()
+        })
+        .margin({ top: 18 })
 
-        Button('文本测试')
-          .fontSize(18)
-          .margin({ left: 18 })
-          .onClick(() => {
-            this.textTest()
-          })
-      }
-      .margin({ top: 18 })
+      Button('是否bmp:' + this.bmp)
+        .fontSize(18)
+        .margin({ left: 18 })
+        .onClick(() => {
+          this.bmpTest()
+        })
+        .margin({ top: 18 })
+
+      Button('文本测试')
+        .fontSize(18)
+        .margin({ left: 18 })
+        .onClick(() => {
+          this.textTest()
+        })
+        .margin({ top: 18 })
 
     }
     .margin({ top: 18 })
@@ -89,7 +91,6 @@ struct PicturePage {
       .catch(err => {
         console.log('addFileToDisk err=' + err)
       })
-
   }
 
   pngTest() {

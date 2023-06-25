@@ -1162,10 +1162,10 @@ DevEco Studio 版本：3.1 Beta1（3.1.0.200），OpenHarmony SDK:API9（3.2.10.
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/rockbye/utilCod/issues)
-给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/rockbye/utilCod/pulls) 。
+使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
+给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
 ## 开源协议
 
-本项目基于 [Apache License 2.0](https://gitee.com/rockbye/utilCod/blob/master/LICENSE)
+本项目基于 [Apache License 2.0](https://gitee.com/zdy09/openharmony_tpc_samples/blob/master/utilCode/LICENSE)
 ，请自由地享受和参与开源。

@@ -1,52 +1,40 @@
 {
-  "app": {
+  app: {
+    compileSdkVersion: 9,
+    compatibleSdkVersion: 9,
+    products: [
+      {
+        name: "default",
+        signingConfig: "debug_default"
+      }
+    ],
     "signingConfigs": [
       {
         "name": "default",
         "material": {
-          "certpath": "C:\\Users\\admin\\.ohos\\config\\openharmony\\auto_ohos_default_utilCod_com.teamx.utilcode.cer",
-          "storePassword": "0000001A607FF37AC07176EF4C45EC1B9A7794840388D43926F0A33B20DF24E3004807A0504F946AFD29",
+          "certpath": "C:\\Users\\admin\\.ohos\\config\\openharmony\\auto_ohos_default_utilCode_com.teamx.utilcode.cer",
+          "storePassword": "0000001B0054F6E6559B880788474A3632F6C81A856F7549A394186F16CE8B889BF48299A6BDE2544F3374",
           "keyAlias": "debugKey",
-          "keyPassword": "0000001A172BB4650FC473E92D702CF8743F9D6FCB41D435F12561A37BC038C6421C07E45777966476EC",
-          "profile": "C:\\Users\\admin\\.ohos\\config\\openharmony\\auto_ohos_default_utilCod_com.teamx.utilcode.p7b",
+          "keyPassword": "0000001B810EFEC91CC6042F38F0158B83E4737BE068ADB411CEB3F18518D013487FAB9FC3841EFA2FD2DE",
+          "profile": "C:\\Users\\admin\\.ohos\\config\\openharmony\\auto_ohos_default_utilCode_com.teamx.utilcode.p7b",
           "signAlg": "SHA256withECDSA",
-          "storeFile": "C:\\Users\\admin\\.ohos\\config\\openharmony\\auto_ohos_default_utilCod_com.teamx.utilcode.p12"
+          "storeFile": "C:\\Users\\admin\\.ohos\\config\\openharmony\\auto_ohos_default_utilCode_com.teamx.utilcode.p12"
         }
-      },
-      {
-        "name": "debug_default",
-        "material": {
-          "certpath": "C:\\Users\\admin\\.ohos\\config\\openharmony\\auto_ohos_debug_default_utilCod_com.teamx.utilcode.cer",
-          "storePassword": "0000001A05BB58F8E32CCEB4AC4B2CD0A9C2ABA3579A2E382BF8C6C48349C24DCF9D79104577673395D7",
-          "keyAlias": "debugKey",
-          "keyPassword": "0000001AB2CA8A8ECD8111BD109CB9C9D5FDD4A8BCC4C7F942BCED12FCF18E82F7AF2D78C77A1109103D",
-          "profile": "C:\\Users\\admin\\.ohos\\config\\openharmony\\auto_ohos_debug_default_utilCod_com.teamx.utilcode.p7b",
-          "signAlg": "SHA256withECDSA",
-          "storeFile": "C:\\Users\\admin\\.ohos\\config\\openharmony\\auto_ohos_debug_default_utilCod_com.teamx.utilcode.p12"
-        }
-      }
-    ],
-    "compileSdkVersion": 9,
-    "compatibleSdkVersion": 9,
-    "products": [
-      {
-        "name": "default",
-        "signingConfig": "debug_default"
       }
     ]
   },
-  "modules": [
+  modules: [
     {
-      "name": "entry",
-      "srcPath": "./entry",
-      "targets": [
+      name: "entry",
+      srcPath: "./entry",
+      targets: [
         {
-          "name": "default",
-          "applyToProducts": [
+          name: "default",
+          applyToProducts: [
             "default"
-          ]
-        }
-      ]
-    }
-  ]
+          ],
+        },
+      ],
+    },
+  ],
 }
