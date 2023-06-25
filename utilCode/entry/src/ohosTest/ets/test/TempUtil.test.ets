@@ -1,0 +1,50 @@
+import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
+import { TempUtils } from '@ohos/util_code'
+
+export default function TempUtilsTest() {
+  describe('ActsTempUtilsTest', function () {
+    it('F2C', 0, function () { //第一个参数自定义
+      // Defines a variety of assertion methods, which are used to declare expected boolean conditions.
+      expect(TempUtils.F2C(89.6)).assertEqual(32)
+
+    })
+    it('F2C_min', 0, function () { //第一个参数自定义
+      // Defines a variety of assertion methods, which are used to declare expected boolean conditions.
+      expect(TempUtils.F2C(-459.4)).assertEqual(-273)
+
+    })
+    it('F2C_big', 0, function () { //第一个参数自定义
+      // Defines a variety of assertion methods, which are used to declare expected boolean conditions.
+      expect(TempUtils.F2C(1830.200)).assertEqual(999.0000000000001)
+    })
+    it('F2C_hex', 0, function () { //第一个参数自定义
+      // Defines a variety of assertion methods, which are used to declare expected boolean conditions.
+      expect(TempUtils.F2C(0x64)).assertEqual(37.77777777777778)
+    })
+    it('F2C_percent', 0, function () { //第一个参数自定义
+      // Defines a variety of assertion methods, which are used to declare expected boolean conditions.
+      expect(TempUtils.F2C(12 / 50)).assertEqual(-17.644444444444446)
+    })
+    it('C2F', 0, function () { //第一个参数自定义
+      // Defines a variety of assertion methods, which are used to declare expected boolean conditions.
+      expect(TempUtils.C2F(32)).assertEqual(89.6)
+    })
+    it('C2F_min', 0, function () { //第一个参数自定义
+      // Defines a variety of assertion methods, which are used to declare expected boolean conditions.
+      expect(TempUtils.C2F(-273)).assertEqual(-459.40000000000003)
+    })
+    it('C2F_big', 0, function () { //第一个参数自定义
+      // Defines a variety of assertion methods, which are used to declare expected boolean conditions.
+      expect(TempUtils.C2F(999)).assertEqual(1830.200)
+    })
+    it('C2F_hex', 0, function () { //第一个参数自定义
+      // Defines a variety of assertion methods, which are used to declare expected boolean conditions.
+      expect(TempUtils.C2F(0x64)).assertEqual(212)
+    })
+    it('C2F_percent', 0, function () { //第一个参数自定义
+      // Defines a variety of assertion methods, which are used to declare expected boolean conditions.
+      expect(TempUtils.C2F(12 / 50)).assertEqual(32.43200)
+    })
+
+  })
+}
