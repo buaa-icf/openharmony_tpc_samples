@@ -1,52 +1,24 @@
 {
-  "app": {
-    "signingConfigs": [
+  app: {
+    compileSdkVersion: 9,
+    compatibleSdkVersion: 9,
+    products: [
       {
-        "name": "default",
-        "material": {
-          "certpath": "C:\\Users\\admin\\.ohos\\config\\openharmony\\auto_ohos_default_utilCod_com.teamx.utilcode.cer",
-          "storePassword": "0000001A607FF37AC07176EF4C45EC1B9A7794840388D43926F0A33B20DF24E3004807A0504F946AFD29",
-          "keyAlias": "debugKey",
-          "keyPassword": "0000001A172BB4650FC473E92D702CF8743F9D6FCB41D435F12561A37BC038C6421C07E45777966476EC",
-          "profile": "C:\\Users\\admin\\.ohos\\config\\openharmony\\auto_ohos_default_utilCod_com.teamx.utilcode.p7b",
-          "signAlg": "SHA256withECDSA",
-          "storeFile": "C:\\Users\\admin\\.ohos\\config\\openharmony\\auto_ohos_default_utilCod_com.teamx.utilcode.p12"
-        }
+        name: "default",
+        signingConfig: "debug_default",
       },
-      {
-        "name": "debug_default",
-        "material": {
-          "certpath": "C:\\Users\\admin\\.ohos\\config\\openharmony\\auto_ohos_debug_default_utilCod_com.teamx.utilcode.cer",
-          "storePassword": "0000001A05BB58F8E32CCEB4AC4B2CD0A9C2ABA3579A2E382BF8C6C48349C24DCF9D79104577673395D7",
-          "keyAlias": "debugKey",
-          "keyPassword": "0000001AB2CA8A8ECD8111BD109CB9C9D5FDD4A8BCC4C7F942BCED12FCF18E82F7AF2D78C77A1109103D",
-          "profile": "C:\\Users\\admin\\.ohos\\config\\openharmony\\auto_ohos_debug_default_utilCod_com.teamx.utilcode.p7b",
-          "signAlg": "SHA256withECDSA",
-          "storeFile": "C:\\Users\\admin\\.ohos\\config\\openharmony\\auto_ohos_debug_default_utilCod_com.teamx.utilcode.p12"
-        }
-      }
     ],
-    "compileSdkVersion": 9,
-    "compatibleSdkVersion": 9,
-    "products": [
-      {
-        "name": "default",
-        "signingConfig": "debug_default"
-      }
-    ]
   },
-  "modules": [
+  modules: [
     {
-      "name": "entry",
-      "srcPath": "./entry",
-      "targets": [
+      name: "entry",
+      srcPath: "./entry",
+      targets: [
         {
-          "name": "default",
-          "applyToProducts": [
-            "default"
-          ]
-        }
-      ]
-    }
-  ]
+          name: "default",
+          applyToProducts: ["default"],
+        },
+      ],
+    },
+  ],
 }
