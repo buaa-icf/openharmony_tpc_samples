@@ -26,86 +26,86 @@ export default function NodeCacheTest() {
       cache.debug(false);
       cache.clear();
     });
-    it('shouldallowaddinganewitemtothecache', 0, function () {
+    it('shouldAllowAddingANewItemToTheCache', 0, function () {
       expect(
         cache.put('key', 'value')).not().assertFail();
     });
 
-    it('shouldallowaddinganewitemtothecachewithatimeout', 0, function () {
+    it('shouldAllowAddingANewItemToTheCacheWithATimeout', 0, function () {
       expect(function () {
         cache.put('key', 'value', 100);
       }).not().assertFail();
     });
 
-    it('shouldallowaddinganewitemtothecachewithatimeoutcallback', 0, function () {
+    it('shouldAllowAddingANewItemToTheCacheWithATimeoutCallback', 0, function () {
       expect(function () {
         cache.put('key', 'value', 100, function () {
         });
       }).not().assertFail();
     });
 
-    it('shouldthrowanerrorgivenanonnumerictimeout', 0, function () {
+    it('shouldThrowAnErrorGivenANonNumericTimeout', 0, function () {
       expect(function () {
         cache.put('key', 'value', 'foo');
       }).not().assertFail();
     });
 
-    it('shouldthrowanerrorgivenatimeoutofNaN', 0, function () {
+    it('shouldThrowAnErrorGivenATimeoutOfNaN', 0, function () {
       expect(function () {
         cache.put('key', 'value', NaN);
       }).not().assertFail();
     });
 
-    it('shouldthrowanerrorgivenatimeoutof0', 0, function () {
+    it('shouldThrowAnErrorGivenATimeoutOf0', 0, function () {
       expect(function () {
         cache.put('key', 'value', 0);
       }).not().assertFail();
     });
 
-    it('shouldthrowanerrorgivenanegativetimeout', 0, function () {
+    it('shouldThrowAnErrorGivenANegativeTimeout', 0, function () {
       expect(function () {
         cache.put('key', 'value', -100);
       }).not().assertFail();
     });
 
-    it('shouldthrowanerrorgivenanonfunctiontimeoutcallback', 0, function () {
+    it('shouldThrowAnErrorGivenANonFunctionTimeoutCallback', 0, function () {
       expect(function () {
         cache.put('key', 'value', 100, 'foo');
       }).not().assertFail();
     });
 
-    it('shouldreturnthecachedvalue', 0, function () {
+    it('shouldReturnTheCachedValue', 0, function () {
       expect(cache.put('key', 'value')).assertEqual('value');
     });
-    it('shouldreturnfalsegivenakeyforanemptycache', 0, function () {
+    it('shouldReturnFalseGivenAKeyForAnEmptyCache', 0, function () {
       expect(cache.del('miss')).assertFalse();
     });
 
-    it('shouldreturnfalsegivenakeynotinanonemptycache', 0, function () {
+    it('shouldReturnFalseGivenAKeyNotInANonEmptyCache', 0, function () {
       cache.put('key', 'value');
       expect(cache.del('miss')).assertFalse();
     });
 
-    it('shouldreturntruegivenakeyinthecache', 0, function () {
+    it('shouldReturnTrueGivenAKeyInTheCache', 0, function () {
       cache.put('key', 'value');
       expect(cache.del('key')).assertTrue();
     });
 
-    it('shouldremovetheprovidedkeyfromthecache', 0, function () {
+    it('shouldRemoveTheProvidedKeyFromTheCache', 0, function () {
       cache.put('key', 'value');
       expect(cache.get('key')).assertEqual('value');
       expect(cache.del('key')).assertTrue();
       expect(cache.get('key')).assertNull();
     });
 
-    it('shoulddecrementthecachesizeby1', 0, function () {
+    it('shouldDecrementTheCacheSizeBy1', 0, function () {
       cache.put('key', 'value');
       expect(cache.size()).assertEqual(1);
       expect(cache.del('key')).assertTrue();
       expect(cache.size()).assertEqual(0);
     });
 
-    it('shouldnotremoveotherkeysinthecache', 0, function () {
+    it('shouldNotRemoveOtherKeysInTheCache', 0, function () {
       cache.put('key1', 'value1');
       cache.put('key2', 'value2');
       cache.put('key3', 'value3');
@@ -118,8 +118,7 @@ export default function NodeCacheTest() {
       expect(cache.get('key3')).assertEqual('value3');
     });
 
-    it('shouldonlydeleteakeyfromthecacheonceevenifcalledmultipletimesinarow'.split('')
-      .join('_'), 0, function () {
+    it('shouldOnlyDeleteAKeyFromTheCacheOnceEvenIfCalledMultipleTimesInARow', 0, function () {
       cache.put('key1', 'value1');
       cache.put('key2', 'value2');
       cache.put('key3', 'value3');
@@ -130,8 +129,7 @@ export default function NodeCacheTest() {
       expect(cache.size()).assertEqual(2);
     });
 
-    it('shouldhandledeletingkeyswhichwerepreviouslydeletedandthenreaddedtothecache'.split('')
-      .join('_'), 0, function () {
+    it('shouldHandleDeletingKeysWhichWerePreviouslyDeletedAndThenReAddedToTheCache', 0, function () {
       cache.put('key', 'value');
       expect(cache.get('key')).assertEqual('value');
       cache.del('key');
@@ -142,7 +140,7 @@ export default function NodeCacheTest() {
       expect(cache.get('key')).assertNull;
     });
 
-    it('shouldreturntruegivenannonexpiredkey', 0, function () {
+    it('shouldReturnTrueGivenAnNonExpiredKey', 0, function () {
       cache.put('key', 'value', 1000);
       expect(cache.del('key')).assertTrue();
     });
@@ -242,54 +240,52 @@ export default function NodeCacheTest() {
       });
     });
 
-    it('shouldreturnnullgivenakeywhichisapropertyontheObjectprototype'.split('')
-      .join('_'), 0, function () {
+    it('shouldreturnnullgivenakeywhichisapropertyontheObjectprototype', 0, function () {
       expect(cache.get('toString')).assertNull();
     });
 
-    it('shouldallowreadingthevalueforakeywhichisapropertyontheObjectprototype'.split('')
-      .join('_'), 0, function () {
+    it('shouldallowreadingthevalueforakeywhichisapropertyontheObjectprototype', 0, function () {
       cache.put('toString', 'value');
       expect(cache.get('toString')).assertEqual('value');
     });
-    it('shouldreturn0givenafreshcache', 0, function () {
+    it('shouldreturn0givenafreshcache1', 0, function () {
       expect(cache.size()).assertEqual(0);
     });
-    it('shouldreturn1afteraddingasingleitemtothecache', 0, function () {
+    it('shouldreturn1afteraddingasingleitemtothecache2', 0, function () {
       cache.put('key', 'value');
       expect(cache.size()).assertEqual(1);
     });
-    it('shouldreturn3afteraddingthreeitemstothecache', 0, function () {
+    it('shouldreturn3afteraddingthreeitemstothecache1', 0, function () {
       cache.clear();
       cache.put('key1', 'value1');
       cache.put('key2', 'value2');
       cache.put('key3', 'value3');
       expect(cache.size()).assertEqual(3);
     });
-    it('shouldnotmulticountduplicateitemsaddedtothecache', 0, function () {
+    it('shouldnotmulticountduplicateitemsaddedtothecache1', 0, function () {
       cache.clear();
       cache.put('key', 'value1');
       expect(cache.size()).assertEqual(1);
       cache.put('key', 'value2');
       expect(cache.size()).assertEqual(1);
     });
-    it('shouldreturn0givenafreshcache', 0, function () {
+    it('shouldreturn0givenafreshcache2', 0, function () {
       expect(cache.memsize()).assertEqual(0);
     });
 
-    it('shouldreturn1afteraddingasingleitemtothecache', 0, function () {
+    it('shouldreturn1afteraddingasingleitemtothecache1', 0, function () {
       cache.put('key', 'value');
       expect(cache.memsize()).assertEqual(1);
     });
 
-    it('shouldreturn3afteraddingthreeitemstothecache', 0, function () {
+    it('shouldreturn3afteraddingthreeitemstothecache2', 0, function () {
       cache.put('key1', 'value1');
       cache.put('key2', 'value2');
       cache.put('key3', 'value3');
       expect(cache.memsize()).assertEqual(3);
     });
 
-    it('shouldnotmulticountduplicateitemsaddedtothecache', 0, function () {
+    it('shouldnotmulticountduplicateitemsaddedtothecache2', 0, function () {
       cache.put('key', 'value1');
       expect(cache.memsize()).assertEqual(1);
       cache.put('key', 'value2');
@@ -358,7 +354,7 @@ export default function NodeCacheTest() {
       expect(cache.keys()).assertDeepEquals(['key1', 'key2', 'key3']);
     });
 
-    it('shouldnotmulticountduplicateitemsaddedtothecache', 0, function () {
+    it('shouldnotmulticountduplicateitemsaddedtothecache3', 0, function () {
       cache.put('key', 'value1');
       expect(cache.keys()).assertDeepEquals(['key']);
       cache.put('key', 'value2');
