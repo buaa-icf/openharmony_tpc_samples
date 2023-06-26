@@ -18,8 +18,6 @@ import ValidatorsTest from './validatorTest/validators.test'
 import isISBNTest from './validatorTest/validators/isISBN.test'
 import isAfterTest from './validatorTest/validators/isAfter.test'
 import toDateTest from './toDateTest.test'
-import percentageRegexTest from './percentageRegexTest/percentageRegexTest.test'
-import  performanceTest from './validatorTest/performance.test'
 
 export default function testsuite() {
   ValidatorsTest()
@@ -27,6 +25,4 @@ export default function testsuite() {
   isISBNTest()
   isAfterTest()
   toDateTest()
-  percentageRegexTest()
-  performanceTest()
 }

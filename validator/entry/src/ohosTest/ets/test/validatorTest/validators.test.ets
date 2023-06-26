@@ -2122,7 +2122,7 @@ export default function ValidatorsTest() {
       });
     });
 
-    it('should_error_on_invalid_locale', 0, () => {
+    it('should_error_on_invalid_locale_1', 0, () => {
       test({
         validator: 'isAlpha',
         args: ['is-NOT'],
@@ -2794,7 +2794,7 @@ export default function ValidatorsTest() {
       });
     });
 
-    it('should_error_on_invalid_locale', 0, () => {
+    it('should_error_on_invalid_locale_2', 0, () => {
       test({
         validator: 'isAlphanumeric',
         args: ['is-NOT'],
@@ -2850,7 +2850,7 @@ export default function ValidatorsTest() {
       });
     });
 
-    it('should_validate_numeric_strings_with_locale', 0, () => {
+    it('should_validate_numeric_strings_with_locale_1', 0, () => {
       test({
         validator: 'isNumeric',
         args: [{
@@ -2874,7 +2874,7 @@ export default function ValidatorsTest() {
       });
     });
 
-    it('should_validate_numeric_strings_with_locale', 0, () => {
+    it('should_validate_numeric_strings_with_locale_2', 0, () => {
       test({
         validator: 'isNumeric',
         args: [{
@@ -4022,7 +4022,7 @@ export default function ValidatorsTest() {
       });
     });
 
-    it('should_error_on_invalid_locale', 0, () => {
+    it('should_error_on_invalid_locale_3', 0, () => {
       test({
         validator: 'isDecimal',
         args: [{
@@ -6133,7 +6133,7 @@ export default function ValidatorsTest() {
       });
     });
 
-    it('should_error_on_invalid_locale', 0, () => {
+    it('should_error_on_invalid_locale_4', 0, () => {
       test({
         validator: 'isIdentityCard',
         args: ['is-NOT'],
@@ -9971,7 +9971,7 @@ export default function ValidatorsTest() {
     });
 
 
-    it('should_error_on_invalid_locale', 0, () => {
+    it('should_error_on_invalid_locale_5', 0, () => {
       test({
         validator: 'isMobilePhone',
         args: [{
@@ -11101,7 +11101,7 @@ export default function ValidatorsTest() {
       });
     });
 
-    it('should_validate_ISO_8601_dates_with_strict_true', 0, () => {
+    it('should_validate_ISO_8601_dates_with_strict_true_1', 0, () => {
       test({
         validator: 'isISO8601',
         args: [
@@ -11114,7 +11114,7 @@ export default function ValidatorsTest() {
       });
     });
 
-    it('should_validate_ISO_8601_dates_with_strict_true', 0, () => {
+    it('should_validate_ISO_8601_dates_with_strict_true_2', 0, () => {
       test({
         validator: 'isISO8601',
         args: [
@@ -12087,7 +12087,7 @@ export default function ValidatorsTest() {
       });
     });
 
-    it('should_error_on_invalid_locale', 0, () => {
+    it('should_error_on_invalid_locale_6', 0, () => {
       test({
         validator: 'isPostalCode',
         args: ['is-NOT'],

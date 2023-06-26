@@ -481,9 +481,6 @@ struct Index {
       }
       result = true
     }
-    if (item.mode == "percentageRegex") {
-      result = percentageRegex({ exact: true }).test(item.str)
-    }
     prompt.showToast({ message: JSON.stringify(result), duration: 3000 })
   }
 }
