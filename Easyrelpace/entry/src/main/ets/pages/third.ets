@@ -15,7 +15,9 @@
 import { er } from 'easy-replace'
 import { setData, CustomDialogExample } from './loding'
 import router from '@system.router';
-
+interface T {
+  data:string|string[]
+}
 @Entry
 @Component
 struct Index {
@@ -23,8 +25,8 @@ struct Index {
   @State Replace: string= "i"
   @State StringResults: string = "x"
   @State Text: string= ""
-  @State leftMy: any= ["马", "心"]
-  @State rightMy: any= ["马", "心"]
+  @State leftMy: T= { data:["马", "心"]}
+  @State rightMy: T = {data:["马", "心"]}
   dialogController: CustomDialogController = new CustomDialogController({
     builder: CustomDialogExample({}),
     autoCancel: true
@@ -54,19 +56,23 @@ struct Index {
         Text("输入到数组，左侧过滤").fontSize(18).fontColor("red")
       }.alignItems(HorizontalAlign.Start).width('90%').margin({ left: "20%" })
 
-      TextInput({ placeholder: "请输入文本", text: this.leftMy + "" })
+      TextInput({ placeholder: "请输入文本", text: this.leftMy.data + "" })
         .width("70%")
         .onChange((value) => {
-          this.leftMy = value
+          this.leftMy = {
+            data:value
+          }
         })
       Column() {
         Text("输入到数组，右侧过滤").fontSize(18).fontColor("red")
       }.alignItems(HorizontalAlign.Start).width('90%').margin({ left: "20%" })
 
-      TextInput({ placeholder: "请输入文本", text: this.rightMy + "" })
+      TextInput({ placeholder: "请输入文本", text: this.rightMy.data + "" })
         .width("70%")
         .onChange((value) => {
-          this.rightMy = value
+          this.rightMy = {
+            data:value
+          }
         })
       Column() {
         Text("请输入文本中需要替换的字符").fontSize(18).fontColor("red")
@@ -95,9 +101,9 @@ struct Index {
             {
               leftOutsideNot: "",
               leftOutside: "",
-              leftMaybe: this.leftMy, //["马","心"]
+              leftMaybe: this.leftMy.data, //["马","心"]
               searchFor: this.Replace,
-              rightMaybe: this.rightMy, //["马","心"]
+              rightMaybe: this.rightMy.data, //["马","心"]
               rightOutside: "",
               rightOutsideNot: "",
               i: {
