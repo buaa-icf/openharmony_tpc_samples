@@ -20,9 +20,9 @@ import mergeTest from './mergeTest.test'
 import parseTest from './parseTest.test'
 
 export default function testsuite() {
-  abilityTest(),
-  applyTest(),
-  createPathTest(),
-  mergeTest(),
+  abilityTest()
+  applyTest()
+  createPathTest()
+  mergeTest()
   parseTest()
 }
