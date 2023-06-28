@@ -70,6 +70,7 @@ test("01 - left and right maybes as emoji", () => {
   equal(
     er(
       "a🦄🐴🦄a",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -87,6 +88,7 @@ test("01 - left and right maybes as emoji", () => {
   equal(
     er(
       "a🦄🐴🦄a",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -107,6 +109,7 @@ test("02 - left and right maybes as text", () => {
   equal(
     er(
       "abc abc abc",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -124,6 +127,7 @@ test("02 - left and right maybes as text", () => {
   equal(
     er(
       "abc abc abc",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -144,6 +148,7 @@ test("03 - left+right maybes, middle & end of word #1", () => {
   equal(
     er(
       "zzzabc zzzzabczzz abczzzz",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -164,6 +169,7 @@ test("04 - left+right maybes, middle & end of word #2", () => {
   equal(
     er(
       "zzz🦄🐴🦄 zzzz🦄🐴🦄zzz 🦄🐴🦄zzzz",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -184,6 +190,7 @@ test("05 - normal words", () => {
   equal(
     er(
       "aaa some test text testing for somebody",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",

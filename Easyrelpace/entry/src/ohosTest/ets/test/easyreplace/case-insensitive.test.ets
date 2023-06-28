@@ -71,6 +71,7 @@ export default function caseinsensitive() {
       equal(
         er(
           "zzz abbb zzz",
+          // @ts-ignore
           {
             leftOutsideNot: "",
             leftOutside: "",
@@ -88,6 +89,7 @@ export default function caseinsensitive() {
       equal(
         er(
           "zzz aBBB zzz",
+          // @ts-ignore
           {
             leftOutsideNot: "",
             leftOutside: "",
@@ -113,6 +115,7 @@ export default function caseinsensitive() {
             rightMaybe: "c",
             rightOutside: "",
             rightOutsideNot: "",
+            // @ts-ignore
             i: {
               searchFor: true,
             },
@@ -133,6 +136,7 @@ export default function caseinsensitive() {
             rightMaybe: "c",
             rightOutside: "",
             rightOutsideNot: "",
+            // @ts-ignore
             i: {
               searchFor: true,
             },
@@ -148,6 +152,7 @@ export default function caseinsensitive() {
       equal(
         er(
           "zzz Abbb zzz",
+          // @ts-ignore
           {
             leftOutsideNot: "",
             leftOutside: "",
@@ -173,6 +178,7 @@ export default function caseinsensitive() {
             rightMaybe: "c",
             rightOutside: "",
             rightOutsideNot: "",
+            // @ts-ignore
             i: {
               leftMaybe: true,
             },
@@ -193,6 +199,7 @@ export default function caseinsensitive() {
             rightMaybe: "c",
             rightOutside: "",
             rightOutsideNot: "",
+            // @ts-ignore
             i: {
               leftMaybe: true,
             },
@@ -213,6 +220,7 @@ export default function caseinsensitive() {
             rightMaybe: "c",
             rightOutside: "",
             rightOutsideNot: "",
+            // @ts-ignore
             i: {
               leftMaybe: true,
               searchFor: true,
@@ -229,6 +237,7 @@ export default function caseinsensitive() {
       equal(
         er(
           "zzz bbbC zzz",
+          // @ts-ignore
           {
             leftOutsideNot: "",
             leftOutside: "",
@@ -254,6 +263,7 @@ export default function caseinsensitive() {
             rightMaybe: "c",
             rightOutside: "",
             rightOutsideNot: "",
+            // @ts-ignore
             i: {
               rightMaybe: true,
             },
@@ -274,6 +284,7 @@ export default function caseinsensitive() {
             rightMaybe: "c",
             rightOutside: "",
             rightOutsideNot: "",
+            // @ts-ignore
             i: {
               rightMaybe: true,
             },
@@ -294,6 +305,7 @@ export default function caseinsensitive() {
             rightMaybe: "c",
             rightOutside: "",
             rightOutsideNot: "",
+            // @ts-ignore
             i: {
               rightMaybe: true,
               searchFor: true,
@@ -310,6 +322,7 @@ export default function caseinsensitive() {
       equal(
         er(
           "zzz Abbb zzz",
+          // @ts-ignore
           {
             leftOutsideNot: "",
             leftOutside: "a",
@@ -335,6 +348,7 @@ export default function caseinsensitive() {
             rightMaybe: "",
             rightOutside: "",
             rightOutsideNot: "",
+            // @ts-ignore
             i: {
               leftOutside: true,
             },
@@ -355,6 +369,7 @@ export default function caseinsensitive() {
             rightMaybe: "",
             rightOutside: "",
             rightOutsideNot: "",
+            // @ts-ignore
             i: {
               leftOutside: true,
             },
@@ -375,6 +390,7 @@ export default function caseinsensitive() {
             rightMaybe: "",
             rightOutside: "",
             rightOutsideNot: "",
+            // @ts-ignore
             i: {
               leftOutside: true,
               searchFor: true,
@@ -391,6 +407,7 @@ export default function caseinsensitive() {
       equal(
         er(
           "zzz bbbC zzz",
+          // @ts-ignore
           {
             leftOutsideNot: "",
             leftOutside: "",
@@ -416,6 +433,7 @@ export default function caseinsensitive() {
             rightMaybe: "",
             rightOutside: "c",
             rightOutsideNot: "",
+            // @ts-ignore
             i: {
               rightOutside: true,
             },
@@ -436,6 +454,7 @@ export default function caseinsensitive() {
             rightMaybe: "",
             rightOutside: "c",
             rightOutsideNot: "",
+            // @ts-ignore
             i: {
               rightOutside: true,
             },
@@ -456,6 +475,7 @@ export default function caseinsensitive() {
             rightMaybe: "",
             rightOutside: "c",
             rightOutsideNot: "",
+            // @ts-ignore
             i: {
               rightOutside: true,
               searchFor: true,
@@ -472,6 +492,7 @@ export default function caseinsensitive() {
       equal(
         er(
           "zzz Abbb zzz",
+          // @ts-ignore
           {
             leftOutsideNot: "a",
             leftOutside: "",
@@ -497,6 +518,7 @@ export default function caseinsensitive() {
             rightMaybe: "",
             rightOutside: "",
             rightOutsideNot: "",
+            // @ts-ignore
             i: {
               leftOutsideNot: true,
             },
@@ -517,6 +539,7 @@ export default function caseinsensitive() {
             rightMaybe: "",
             rightOutside: "",
             rightOutsideNot: "",
+            // @ts-ignore
             i: {
               leftOutsideNot: true,
             },
@@ -537,6 +560,7 @@ export default function caseinsensitive() {
             rightMaybe: "",
             rightOutside: "",
             rightOutsideNot: "",
+            // @ts-ignore
             i: {
               leftOutsideNot: true,
               searchFor: true,
@@ -558,6 +582,7 @@ export default function caseinsensitive() {
             rightMaybe: "",
             rightOutside: "",
             rightOutsideNot: "",
+            // @ts-ignore
             i: {
               leftOutsideNot: false,
               searchFor: true,
@@ -574,6 +599,7 @@ export default function caseinsensitive() {
       equal(
         er(
           "zzz bbbC zzz",
+          // @ts-ignore
           {
             leftOutsideNot: "",
             leftOutside: "",
@@ -599,6 +625,7 @@ export default function caseinsensitive() {
             rightMaybe: "",
             rightOutside: "",
             rightOutsideNot: "c",
+            // @ts-ignore
             i: {
               rightOutsideNot: true,
             },
@@ -619,6 +646,7 @@ export default function caseinsensitive() {
             rightMaybe: "",
             rightOutside: "",
             rightOutsideNot: "c",
+            // @ts-ignore
             i: {
               rightOutsideNot: true,
             },
@@ -639,6 +667,7 @@ export default function caseinsensitive() {
             rightMaybe: "",
             rightOutside: "",
             rightOutsideNot: "c",
+            // @ts-ignore
             i: {
               rightOutsideNot: true,
               searchFor: true,
@@ -660,6 +689,7 @@ export default function caseinsensitive() {
             rightMaybe: "",
             rightOutside: "",
             rightOutsideNot: "c",
+            // @ts-ignore
             i: {
               rightOutsideNot: false,
               searchFor: true,

@@ -69,6 +69,7 @@ test("01 - left maybe found", () => {
   equal(
     er(
       "a🦄🐴🦄c",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -86,6 +87,7 @@ test("01 - left maybe found", () => {
   equal(
     er(
       "a🦄🐴🦄c",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -106,6 +108,7 @@ test("02 - two replacements with one leftmaybe, nearby", () => {
   equal(
     er(
       "ab🐴🦄🐴c",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -123,6 +126,7 @@ test("02 - two replacements with one leftmaybe, nearby", () => {
   equal(
     er(
       "ab🐴🦄🐴c",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -143,6 +147,7 @@ test("03 - two consecutive maybes found/replaced", () => {
   equal(
     er(
       "ab🦄🐴🦄🐴c",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -160,6 +165,7 @@ test("03 - two consecutive maybes found/replaced", () => {
   equal(
     er(
       "ab🦄🐴🦄🐴c",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -180,6 +186,7 @@ test("04 - futile left maybe", () => {
   equal(
     er(
       "'🐴",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -197,6 +204,7 @@ test("04 - futile left maybe", () => {
   equal(
     er(
       "'🐴",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -217,6 +225,7 @@ test("05 - line break as search string", () => {
   equal(
     er(
       "\n\n\n",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -237,6 +246,7 @@ test("06 - line break as both searchFor and maybe replaced", () => {
   equal(
     er(
       "\n\n\n",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -254,6 +264,7 @@ test("06 - line break as both searchFor and maybe replaced", () => {
   equal(
     er(
       "\n\n\n",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -274,6 +285,7 @@ test("07 - operations on line breaks only", () => {
   equal(
     er(
       "\n\n",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -294,6 +306,7 @@ test("08 - three left maybes (found)", () => {
   equal(
     er(
       "a🦄🐴🦄c",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -314,6 +327,7 @@ test("09 - three left maybes (not found)", () => {
   equal(
     er(
       "a🦄🐴🦄c",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -334,6 +348,7 @@ test("10 - three left maybes (multiple hungry finds)", () => {
   equal(
     er(
       "🐴 a🍺🦄🐴🦄c a🦄🍺🐴🦄c a🦄🐴🦄c a🍺🐴🦄c 🐴",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -351,6 +366,7 @@ test("10 - three left maybes (multiple hungry finds)", () => {
   equal(
     er(
       "🐴 a🍺🦄🐴🦄c a🦄🍺🐴🦄c a🦄🐴🦄c a🍺🐴🦄c 🐴",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -368,6 +384,7 @@ test("10 - three left maybes (multiple hungry finds)", () => {
   equal(
     er(
       "🐴 a🍺🦄🐴🦄c a🦄🍺🐴🦄c a🦄🐴🦄c a🍺🐴🦄c 🐴",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -391,6 +408,7 @@ test("11 - sneaky array conversion situation", () => {
   equal(
     er(
       "a🦄🐴🦄c",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -411,6 +429,7 @@ test("12 - sneaky array conversion situation", () => {
   equal(
     er(
       "a🦄🐴🦄c",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -431,6 +450,7 @@ test("13 - normal words, few of them, leftMaybe as array", () => {
   equal(
     er(
       "this emotion is really a promotion in motion",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -451,6 +471,7 @@ test("14 - normal words, few of them, leftMaybe as array", () => {
   equal(
     er(
       "this emotion is really a promotion in motion",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -471,6 +492,7 @@ test("15 - leftMaybe is array, but with only 1 null value", () => {
   equal(
     er(
       "some text",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -491,6 +513,7 @@ test("16 - leftMaybe is array, but with only 1 null value", () => {
   equal(
     er(
       "some text",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -514,7 +537,9 @@ test("17 - leftMaybe is couple integers in an array", () => {
       {
         leftOutsideNot: "",
         leftOutside: "",
+        // @ts-ignore
         leftMaybe: [2, 3],
+        // @ts-ignore
         searchFor: 4,
         rightMaybe: "",
         rightOutside: "",
@@ -534,7 +559,9 @@ test("18 - leftMaybe is couple integers in an array", () => {
       {
         leftOutsideNot: "",
         leftOutside: "",
+        // @ts-ignore
         leftMaybe: [3, 2],
+        // @ts-ignore
         searchFor: 4,
         rightMaybe: "",
         rightOutside: "",
@@ -551,6 +578,7 @@ test("19 - sneaky case of overlapping leftMaybes", () => {
   equal(
     er(
       "this is a word to be searched for",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -576,6 +604,7 @@ test("19 - sneaky case of overlapping leftMaybes", () => {
         rightMaybe: "",
         rightOutside: "",
         rightOutsideNot: "",
+        // @ts-ignore
         i: {
           leftMaybe: true,
         },
@@ -596,6 +625,7 @@ test("19 - sneaky case of overlapping leftMaybes", () => {
         rightMaybe: "",
         rightOutside: "",
         rightOutsideNot: "",
+        // @ts-ignore
         i: {
           leftMaybe: true,
         },

@@ -70,6 +70,7 @@ test("01 - replace letter with letter", () => {
   equal(
     er(
       "a b c",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -87,6 +88,7 @@ test("01 - replace letter with letter", () => {
   equal(
     er(
       "a b c",
+      // @ts-ignore
       {
         searchFor: "b",
       },
@@ -101,6 +103,7 @@ test("02 - replace 1 emoji with 1 emoji", () => {
   equal(
     er(
       "🐴 🦄 🐴",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -121,6 +124,7 @@ test("03 - replace 3 consecutive emoji with emoji", () => {
   equal(
     er(
       "a 🦄🦄🦄 a",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -141,6 +145,7 @@ test("04 - gorilla emoji - in escaped JS", () => {
   equal(
     er(
       "ljghdfjkgzh\ud83e\udd8dlkgljd",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -161,6 +166,7 @@ test("05 - gorilla emoji - in raw", () => {
   equal(
     er(
       "ljghdfjkgzh🦍lkgljd",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -181,6 +187,7 @@ test("06 - won't find a letter", () => {
   equal(
     er(
       "a b c",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -201,6 +208,7 @@ test("07 - won't find emoji, with new lines", () => {
   equal(
     er(
       "a\nb\nc",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -221,6 +229,7 @@ test("08 - replacement with new lines", () => {
   equal(
     er(
       "a\nb",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -241,6 +250,7 @@ test("09 - multiple letter findings", () => {
   equal(
     er(
       "a a a a a b",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -261,6 +271,7 @@ test("10 - single digit of string type replaced", () => {
   equal(
     er(
       "0",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -280,6 +291,7 @@ test("10 - single digit of string type replaced", () => {
 test("11 - single digit of integer type replaced", () => {
   equal(
     er(
+      // @ts-ignore
       0,
       {
         leftOutsideNot: "",
@@ -300,6 +312,7 @@ test("11 - single digit of integer type replaced", () => {
 test("12 - source and replacement are of integer type", () => {
   equal(
     er(
+      // @ts-ignore
       0,
       {
         leftOutsideNot: "",
@@ -320,6 +333,7 @@ test("12 - source and replacement are of integer type", () => {
 test("13 - all raw integers: source, replacement and searchFor", () => {
   equal(
     er(
+      // @ts-ignore
       0,
       {
         leftOutsideNot: "",
@@ -341,6 +355,7 @@ test("14 - multiple consecutive letter replacements", () => {
   equal(
     er(
       "aaavvvvccccc",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",

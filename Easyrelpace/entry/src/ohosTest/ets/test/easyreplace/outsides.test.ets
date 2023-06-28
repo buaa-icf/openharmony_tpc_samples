@@ -69,6 +69,7 @@ test("01 - left and right outsides as arrays (majority found)", () => {
   equal(
     er(
       "🐴 a🦄🐴💘a a💘🐴🦄a a💘🐴💘a a🦄🐴🦄a 🐴",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: ["🦄", "💘", "doesn't exist", "this one too"],
@@ -89,6 +90,7 @@ test("02 - left and right outsides as arrays (one found)", () => {
   equal(
     er(
       "🐴 a🦄🐴💘a a💘🐴🦄a a💘🐴💘a a🦄🐴🦄a 🐴",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: ["🦄", "doesn't exist", "this one too"],
@@ -109,6 +111,7 @@ test("03 - outsides as arrays, beyond found maybes", () => {
   equal(
     er(
       "🦄🐴 a🦄🐴💘a a💘🐴🦄a a💘🐴💘a a🦄🐴🦄a 🐴🦄",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: ["a"],
@@ -129,6 +132,7 @@ test("04 - outsides as arrays blocking maybes", () => {
   equal(
     er(
       "🦄🐴 a🦄🐴💘a a💘🐴🦄a a💘🐴💘a a🦄🐴🦄a 🐴🦄",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: ["b"],
@@ -149,6 +153,7 @@ test("05 - maybes matching outsides, blocking them", () => {
   equal(
     er(
       "🦄🐴 a🦄🐴💘a a💘🐴🦄a a💘🐴💘a a🦄🐴🦄a 🐴🦄",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: ["🦄", "💘"],
@@ -169,6 +174,7 @@ test("06 - maybes matching outsides, blocking them", () => {
   equal(
     er(
       "🦄🐴 a🦄🐴💘a a💘🐴🦄a a💘🐴💘a a🦄🐴🦄a 🐴🦄",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: ["🦄", "💘"],
@@ -189,6 +195,7 @@ test("07 - maybes matching outsides, found", () => {
   equal(
     er(
       "🦄🐴🦄 a💘🦄🐴💘🦄a a🦄💘🐴🦄💘a a💘💘🐴💘💘a a🦄🦄🐴🦄🦄a 🦄🐴🦄",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: ["🦄", "💘"],
@@ -209,6 +216,7 @@ test("08 - maybes matching outsides, mismatching", () => {
   equal(
     er(
       "🍺🐴🍺 a💘🍺🐴🌟🦄a a🦄🌟🐴🍺💘a a💘🌟🐴🌟💘a a🦄🍺🐴🍺🦄a 🌟🐴🌟",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: ["🦄", "💘"],
@@ -229,6 +237,7 @@ test("09 - rightOutside & with case-insensitive flag", () => {
   equal(
     er(
       "aaaBBBccc aaazzzCCC aaaCCC",
+      // @ts-ignore
       {
         leftOutsideNot: "",
         leftOutside: "",
@@ -254,6 +263,7 @@ test("09 - rightOutside & with case-insensitive flag", () => {
         rightMaybe: "",
         rightOutside: "u",
         rightOutsideNot: "",
+        // @ts-ignore
         i: {
           rightOutside: true,
         },
@@ -274,6 +284,7 @@ test("09 - rightOutside & with case-insensitive flag", () => {
         rightMaybe: "",
         rightOutside: "c",
         rightOutsideNot: "",
+        // @ts-ignore
         i: {
           rightOutside: true,
         },

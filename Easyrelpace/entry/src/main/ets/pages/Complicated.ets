@@ -16,6 +16,10 @@ import { er } from 'easy-replace'
 import { setData, CustomDialogExample } from './loding'
 import router from '@system.router';
 
+interface T {
+  data:string|string[]
+}
+
 @Entry
 @Component
 struct Index {
@@ -23,7 +27,7 @@ struct Index {
   @State Replace: string= "马"
   @State StringResults: string = "心"
   @State Text: string= ""
-  @State rightOutside: any= ['c', 'd']
+  @State rightOutside: T= {data: ['c', 'd']}
   dialogController: CustomDialogController = new CustomDialogController({
     builder: CustomDialogExample({}),
     autoCancel: true
@@ -55,10 +59,12 @@ struct Index {
         Text("输入到数组，左侧有i做替换").fontSize(18).fontColor("red")
       }.alignItems(HorizontalAlign.Start).width('90%').margin({ left: "20%" })
 
-      TextInput({ placeholder: "请输入文本", text: this.rightOutside + "" })
+      TextInput({ placeholder: "请输入文本", text: this.rightOutside.data + "" })
         .width("70%")
         .onChange((value) => {
-          this.rightOutside = value
+          this.rightOutside = {
+            data:value
+          }
         })
       Column() {
         Text("请输入文本中需要替换的字符").fontSize(18).fontColor("red")
@@ -94,7 +100,7 @@ struct Index {
               searchFor: this.Replace,
               rightMaybe: "",
               rightOutside: "",
-              rightOutsideNot: this.rightOutside,
+              rightOutsideNot: this.rightOutside.data,
               i: {
                 leftOutsideNot: false,
                 leftOutside: false,

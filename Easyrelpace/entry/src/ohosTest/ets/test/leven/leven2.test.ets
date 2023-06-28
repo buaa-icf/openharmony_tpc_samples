@@ -55,7 +55,7 @@ export default function levenTest() {
             it(name,count++,func)
         }
 
-        var equal = function (src,dst,tag){
+        var equal = function (src,dst,tag?){
             console.log('tag:'+tag+"  src="+src+ " dst="+dst);
             expect(src).assertEqual(dst)
         }

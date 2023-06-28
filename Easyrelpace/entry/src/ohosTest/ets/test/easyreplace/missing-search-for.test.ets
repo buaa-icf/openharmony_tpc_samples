@@ -18,8 +18,8 @@ import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from
 
 import { er } from "easy-replace";
 
-export default function searchFormaybesoutsides() {
-  describe('searchFormaybesoutsides', function () {
+export default function missingsearchfor() {
+  describe('missingsearchfor', function () {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
     beforeAll(function () {
       // Presets an action, which is performed only once before all test cases of the test suite start.
@@ -61,150 +61,134 @@ export default function searchFormaybesoutsides() {
       console.log('tag:'+tag+"  src="+src+ " dst="+dst);
       expect(src).assertEqual(dst)
     }
+
 // ==============================
-// searchFor + maybes + outsides
+// missing searchFor value
 // ==============================
 
-test("01 - maybes and outsides, emoji - full set", () => {
+test("01 - source present, missing searchFor", () => {
   equal(
     er(
-      "a🦄🐴💘b",
+      "aaa",
+      // @ts-ignore
       {
         leftOutsideNot: "",
-        leftOutside: "a",
-        leftMaybe: "🦄",
-        searchFor: "🐴",
-        rightMaybe: "💘",
-        rightOutside: "b",
-        rightOutsideNot: "",
-      },
-      "🌟"
-    ),
-    "a🌟b",
-    "test 6.1"
-  );
-});
-
-test("02 - maybes + outsides - 1 of maybes not found #1", () => {
-  equal(
-    er(
-      "a🦄🐴b",
-      {
-        leftOutsideNot: "",
-        leftOutside: "a",
-        leftMaybe: "🦄",
-        searchFor: "🐴",
-        rightMaybe: "💘",
-        rightOutside: "b",
-        rightOutsideNot: "",
-      },
-      "🌟"
-    ),
-    "a🌟b",
-    "test 6.2"
-  );
-});
-
-test("03 - maybes + outsides - 1 of maybes not found #2", () => {
-  equal(
-    er(
-      "a🐴💘b",
-      {
-        leftOutsideNot: "",
-        leftOutside: "a",
-        leftMaybe: "🦄",
-        searchFor: "🐴",
-        rightMaybe: "💘",
-        rightOutside: "b",
-        rightOutsideNot: "",
-      },
-      "🌟"
-    ),
-    "a🌟b",
-    "test 6.3"
-  );
-});
-
-test("04 - maybes and outsides, emoji - neither of maybes", () => {
-  equal(
-    er(
-      "a🐴b",
-      {
-        leftOutsideNot: "",
-        leftOutside: "a",
-        leftMaybe: "🦄",
-        searchFor: "🐴",
-        rightMaybe: "💘",
-        rightOutside: "b",
-        rightOutsideNot: "",
-      },
-      "🌟"
-    ),
-    "a🌟b",
-    "test 6.4"
-  );
-});
-
-test("05 - multiple findings with maybes and outsides", () => {
-  equal(
-    er(
-      "a🦄🐴💘b a🦄🐴💘b a🦄🐴💘b",
-      {
-        leftOutsideNot: "",
-        leftOutside: "a",
-        leftMaybe: "🦄",
-        searchFor: "🐴",
-        rightMaybe: "💘",
-        rightOutside: "b",
-        rightOutsideNot: "",
-      },
-      "🌟"
-    ),
-    "a🌟b a🌟b a🌟b",
-    "test 6.5"
-  );
-});
-
-test("06 - multiple findings with maybes and not-outsides", () => {
-  equal(
-    er(
-      "z🦄🐴💘b a🦄🐴💘z a🦄🐴💘b z🦄🐴💘z",
-      {
-        leftOutsideNot: "a",
         leftOutside: "",
-        leftMaybe: "🦄",
-        searchFor: "🐴",
-        rightMaybe: "💘",
+        leftMaybe: "",
+        searchFor: "",
+        rightMaybe: "",
+        rightOutside: "",
+        rightOutsideNot: "",
+      },
+      ""
+    ),
+    "aaa",
+    "test 9.1"
+  );
+});
+
+test("02 - everything is missing", () => {
+  equal(
+    er(
+      "",
+      // @ts-ignore
+      {
+        leftOutsideNot: "",
+        leftOutside: "",
+        leftMaybe: "",
+        searchFor: "",
+        rightMaybe: "",
+        rightOutside: "",
+        rightOutsideNot: "",
+      },
+      ""
+    ),
+    "",
+    "test 9.2"
+  );
+});
+
+test("03 - everything seriously missing", () => {
+  // @ts-ignore
+  equal(er("", {}, ""), "", "test 9.3");
+});
+
+test("04 - everything extremely seriously missing", () => {
+  // @ts-ignore
+  equal(er("", {}), "", "test 9.4");
+});
+
+test("05 - everything truly extremely seriously missing", () => {
+  // @ts-ignore
+  equal(er(""), "", "test 9.5");
+});
+
+test("06 - everything really truly extremely seriously missing", () => {
+  // @ts-ignore
+  equal(er(), "", "test 9.6");
+});
+
+test("07 - leftOutsideNot blocking rightOutsideNot being empty", () => {
+  equal(
+    er(
+      "ab a",
+      // @ts-ignore
+      {
+        leftOutsideNot: [""],
+        leftOutside: "",
+        leftMaybe: "",
+        searchFor: "a",
+        rightMaybe: "",
         rightOutside: "",
         rightOutsideNot: "b",
       },
-      "🌟"
+      "x"
     ),
-    "z🦄🐴💘b a🦄🐴💘z a🦄🐴💘b z🌟z",
-    "test 6.6"
+    "ab x",
+    "test 9.7"
   );
 });
 
-test("07 - maybes and outsides, arrays", () => {
+test("08 - leftOutsideNot is blank array", () => {
   equal(
     er(
-      "a🦄🐴💘b a💘🐴🦄b a🦄🐴🦄b a💘🐴💘b",
+      "ab a",
+      // @ts-ignore
       {
-        leftOutsideNot: "",
-        leftOutside: "a",
-        leftMaybe: ["🦄", "💘", "a", "b"],
-        searchFor: "🐴",
-        rightMaybe: ["🦄", "💘", "a", "b"],
-        rightOutside: "b",
-        rightOutsideNot: "",
+        leftOutsideNot: [],
+        leftOutside: "",
+        leftMaybe: "",
+        searchFor: "a",
+        rightMaybe: "",
+        rightOutside: "",
+        rightOutsideNot: "b",
       },
-      "🌟"
+      "x"
     ),
-    "a🌟b a🌟b a🌟b a🌟b",
-    "test 6.7"
+    "ab x",
+    "test 9.8"
   );
 });
 
+test("09 - missing key in properties obj", () => {
+  equal(
+    er(
+      "ab a",
+      // @ts-ignore
+      {
+        leftOutside: "",
+        leftMaybe: "",
+        searchFor: "a",
+        rightMaybe: "",
+        rightOutside: "",
+        rightOutsideNot: "b",
+      },
+      "x"
+    ),
+    "ab x",
+    "test 9.9"
+  );
+});
 
   })
 }
