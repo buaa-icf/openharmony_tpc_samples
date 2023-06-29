@@ -15,234 +15,87 @@ ohpm install js-tokens
 
 ```
 import jsTokens from 'js-tokens'
+var tokens = jsTokens.default
+var matchToToken = jsTokens.matchToToken
 ```
 
 ### 使用说明
 
-1. 简单使用
+### `jsTokens` ###
 
-按照已约定的规则进行分词，分完词后会给出类型和值，Key-Value形式存在
+A regex with the `g` flag that matches JavaScript tokens.
 
-```
-const jsString = '(1，23@45%6789)'
-var tokenStr = Array.from(jsTokens(jsString));
+The regex _always_ matches, even invalid JavaScript and the empty string.
 
-```
+The next match is always directly after the previous.
 
-还可以给字符串添加分歌词或分割线
+### `var token = matchToToken(match)` ###
 
-```
-const jsString = '(1，23@45%6789)'
-var tokenStr = Array.from(jsTokens(jsString),(token) => token.value).join("|");
-结果:(|1|， |23|@|45|%6789|)
+```js
+import {matchToToken} from "js-tokens"
 ```
 
-2.介绍分词类型规则
+Takes a `match` returned by `jsTokens.exec(string)`, and returns a `{type:
+String, value: String}` object. The following types are available:
 
-##### 字符串字面量
+- string
+- comment
+- regex
+- number
+- name
+- punctuator
+- whitespace
+- invalid
 
-规范：StringLiteral
+Multi-line comments and strings also have a `closed` property indicating if the
+token was closed or not (see below).
 
-例子：
+Comments and strings both come in several flavors. To distinguish them, check if
+the token starts with `//`, `/*`, `'`, `"` or `` ` ``.
 
+Names are ECMAScript IdentifierNames, that is, including both identifiers and
+keywords. You may use [is-keyword-js] to tell them apart.
+
+Whitespace includes both line terminators and other whitespace.
+
+### 限制描述
+1、Tokenizing JavaScript using regexes—in fact, _one single regex_—won’t be
+perfect. But that’s not the point either.
+
+You may compare jsTokens with [esprima] by using `esprima-compare.js`.
+See `npm run esprima-compare`!
+
+2、Template strings are matched as single tokens, from the starting `` ` `` to the
+ending `` ` ``, including interpolations (whose tokens are not matched
+individually).
+
+Matching template string interpolations requires recursive balancing of `{` and
+`}`—something that JavaScript regexes cannot do. Only one level of nesting is
+supported.
+
+3、Division and regex literals collision
+
+Consider this example:
+
+```js
+var g = 9.82
+var number = bar / 2/g
+
+var regex = / 2/g
 ```
-"string"
-'string'
-""
-''
-"\"
-'\''
-"valid: \u00a0, invalid: \u"
-'valid: \u00a0, invalid: \u'
-"multi-\
-line"
-'multi-\
-line'
-" unclosed
-' unclosed
-```
-
-##### NoSubstitutionTemplate / TemplateHead / TemplateMiddle / TemplateTail
-
-规范: NoSubstitutionTemplate / TemplateHead / TemplateMiddle / TemplateTail
-
-没有插值的模板按原样匹配。例如：
-
-`abc`：  无替代模板
-
-`abc: NoSubstitutionTemplate withclosed: false
-
-带有插值的模板匹配尽可能的标记。例如，`head${1}middle${2}tail`匹配如下（除了两个 NumericLiterals）：
-
-`head${: 模板头 }middle${: 模板中间 }tail`:模板尾
-
-TemplateMiddle 是可选的，TemplateTail 可以不关闭。例如，`head${1}tail (注意缺少的结尾)`:
-
-`head${:模板头 }tail: TemplateTail 与closed: false 模板可以包含未转义的换行符，因此未闭合的模板继续到输末尾。
-
-就像 StringLiteral 一样，模板也可以包含无效的转义。`\u` 匹配为NoSubstitutionTemplate 即使它包含无效的转义。另请注意，在标记模板中，无效模板中，无效转义不是语法错误:x`\u`是语法上有效的
-JavaScript。
-
-##### 正则表达式
-
-规范：RegularExpressionLiteral
-
-例子：
-
-```
-/a/
-/a/gimsuy
-/a/Inva1id
-/+/
-/[/]\//
-```
-
-##### 多行注释
-
-规范：MultiLineComment
-
-例子：
-
-```
-/* comment */
-/* console.log(
-    "commented", out + code);
-    */
-/**/
-/* unclosed
-```
-
-##### 单行注释
-
-规范：SingleLineComment
-例子：
-```
-// comment
-// console.log("commented", out + code);
-//
-```
-
-##### 标识符名称
-
-规范:IdentifierName
-
-例子：
-
-```
-if
-for
-var
-instanceof
-package
-null
-true
-false
-Infinity
-undefined
-NaN
-$variab1e_name
-π
-℮
-ಠ_ಠ
-\u006C\u006F\u006C\u0077\u0061\u0074
-```
-
-##### 私有标识符
-
-规范：PrivateIdentifier
-
-Examples:
-
-```
-#if
-#for
-#var
-#instanceof
-#package
-#null
-#true
-#false
-#Infinity
-#undefined
-#NaN
-#$variab1e_name
-#π
-#℮
-#ಠ_ಠ
-#\u006C\u006F\u006C\u0077\u0061\u0074
-```
-
-##### 
-规范：NumericLiteral
-
-例子：
-```
-0
-1.5
-1
-1_000
-12e9
-0.123e-32
-0xDead_beef
-0b110
-12n
-07
-09.5
-```
-
-##### 标点符号
-
-规范：Punctuator + DivPunctuator + RightBracePunctuator
-
-例子：
-```
-&&  ||  ??
---  ++
-.   ?.
-<   <=   >   >=
-!=  !==  ==  ===
-   +   -   %   &   |   ^   /   *   **   <<   >>   >>>
-=  +=  -=  %=  &=  |=  ^=  /=  *=  **=  <<=  >>=  >>>=
-(  )  [  ]  {  }
-!  ?  :  ;  ,  ~  ...  =>
-```
-
-##### 空格
-
-规范: WhiteSpace
-
-例子： 空格
-```
-
-```
-
-##### Invalid
-
-规范: Invalid
-
-例子：
-```
-#
-@
-💩
-```
-
-##### LineTerminatorSequence
-
-规范：LineTerminatorSequence
-
-CR, LF 和 CRLF, 加上 \u2028 和 \u2029.
 
 ### 接口说明
 
-1，jsTokens(jsString);
+1、jsTokens.default; // 正在匹配表达式
 
-将需要字符串或标识符等传入
+2、jsTokens.matchToToken // 分词器 function
+
+单元测试用例详情见[TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/js-tokens/TEST.md)
 
 ### 约束与限制
 在下述版本验证通过：
 
-DevEco Studio: 3.1Beta2(3.1.0.400), SDK: API9 Release(3.2.11.9)
+DevEco Studio: 3.1.1 Release(3.1.0.501), SDK: API9 Release(3.2.12.5)
 
 ### 软件架构
 
