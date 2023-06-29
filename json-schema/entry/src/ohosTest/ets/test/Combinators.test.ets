@@ -70,7 +70,7 @@ export default function combinatorsTest() {
       expect(result).assertFalse();
     });
 
-    it('ShouldNotThrowIfValidWhenThrowErrorIsSet', 0, function () {
+    it('ShouldNotThrowIfValidWhenThrowErrorIsSet1', 0, function () {
       var isThrow = false;
       try {
         validator.validate({
@@ -84,7 +84,7 @@ export default function combinatorsTest() {
       expect(isThrow).assertFalse();
     });
 
-    it('ShouldThrowIfInvalidWhenThrowErrorIsSet', 0, function () {
+    it('ShouldThrowIfInvalidWhenThrowErrorIsSet1', 0, function () {
       var isThrow = false;
       try {
         validator.validate({
@@ -113,7 +113,7 @@ export default function combinatorsTest() {
       expect(result).assertFalse();
     });
 
-    it('ShouldNotThrowIfValidWhenThrowErrorIsSet', 0, function () {
+    it('ShouldNotThrowIfValidWhenThrowErrorIsSet2', 0, function () {
       var isThrow = false;
       try {
         validator.validate({
@@ -127,7 +127,7 @@ export default function combinatorsTest() {
       expect(isThrow).assertFalse();
     });
 
-    it('ShouldThrowIfInvalidWhenThrowErrorIsSet', 0, function () {
+    it('ShouldThrowIfInvalidWhenThrowErrorIsSet2', 0, function () {
       var isThrow = false;
       try {
         validator.validate({

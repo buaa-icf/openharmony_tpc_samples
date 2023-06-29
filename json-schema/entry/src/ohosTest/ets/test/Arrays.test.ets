@@ -73,7 +73,7 @@ export default function arrayTest() {
       }).valid;
       expect(result).assertFalse();
     })
-    it('ShouldValidateIfArrayHasALengthEqualToMinItems', 0, function () {
+    it('ShouldValidateIfArrayHasALengthEqualToMinItems1', 0, function () {
       let result = validator.validate([1, 2, 3], {
         'type': 'array', 'items': {
           'type': 'number'
@@ -81,7 +81,7 @@ export default function arrayTest() {
       }).valid;
       expect(result).assertTrue();
     })
-    it('ShouldValidateIfArrayHasALengthEqualToMinItems', 0, function () {
+    it('ShouldValidateIfArrayHasALengthEqualToMinItems2', 0, function () {
       let result = validator.validate([1, 2], {
         'type': 'array', 'items': {
           'type': 'number'

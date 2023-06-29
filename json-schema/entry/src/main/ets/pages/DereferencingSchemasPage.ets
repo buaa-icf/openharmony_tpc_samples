@@ -149,6 +149,7 @@ importNextSchema();`
     }
   }
 
+  // @ts-ignore
   importNextSchema(v: Validator) {
     var nextSchema = v.unresolvedRefs.shift();
     if (this.cacheSchemaNum >= this.schemaArr.length) {
