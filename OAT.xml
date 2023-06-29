@@ -21,7 +21,9 @@
                 <filteritem type="filename" name="*.json5" desc="IDE生成的构建配置文件，格式为JSON，不支持注释方式添加许可头"/>
                 <filteritem type="filepath" name="jsDiffDemo/LICENSE" desc="原开源库的LICENSE文件，维持原样"/>
                 <filteritem type="filepath" name="ForgeDemo/LICENSE" desc="原开源库的LICENSE文件，维持原样"/>
-                <filteritem type="filename" name="NOTICE" desc="NOTICE文件，不添加版权头"/>
+                <filteritem type="filepath" name="CaverPhone/LICENSE" desc="原开源库的LICENSE文件，维持原样"/>
+                <filteritem type="filename" name="*.LICENSE" desc="LICENSE文件，不添加许可头"/>
+                <filteritem type="filename" name="NOTICE" desc="NOTICE文件，不添加许可头"/>
                 <filteritem type="filename" name="userjson" desc="JSON数据文件，不支持注释方式添加许可头"/>
                 <filteritem type="filename" name="*.proto" desc="protobuf文件，不支持注释方式添加许可头"/>
                 <filteritem type="filename" name="hvigorw" desc="工程构建文件，不支持注释方式添加许可头"/>
@@ -42,6 +44,7 @@
         <policylist>
             <policy name="projectPolicy" desc="配置兼容的协议等，需要指定具体的path和通过desc说明原因">
 			    <policyitem type="license" name="ISC" path="msgpack-javascript/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+				<policyitem type="license" name="ISC" path="CaverPhone/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="pcx-js/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="json-schema/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="PathToRegexpDemo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
