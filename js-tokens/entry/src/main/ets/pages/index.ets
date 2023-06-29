@@ -13,7 +13,10 @@
  * limitations under the License.
  */
 
-import jsTokens from 'js-tokens'
+import tokens from 'js-tokens'
+
+var jsTokens = tokens.default
+var matchToToken = tokens.matchToToken
 
 @Entry
 @Component
@@ -23,38 +26,14 @@ struct Index {
   controller: TextAreaController = new TextAreaController();
   @State setValue: string = '';
   @State resultStr: string = '';
-  tos: string = '';
-  arr1: Array<string> = new Array();
-  regular: string = "/[1-9][0-9]?/";
-  ifInIf: string = `
 
-if(
-  \`\${
-      (()=>{
-            if(x) /r/i
-            return Math.random()
-      })()
-  }\` > 0.5
-) /a/g
-`.trim();
-
-  partChar(code: string) {
-    var forStrResult = "";
-    for (var element of jsTokens(code)) {
-      forStrResult = forStrResult + "类型:" + element.type + "-值:" + element.value;
+  exclResult(content: string) {
+    let regexResult = jsTokens.exec(content);
+    if (regexResult === null || regexResult === undefined || regexResult.length === 0) {
+      return;
     }
-    console.log(forStrResult);
-    this.resultStr = forStrResult;
-  }
-
-  joinChar(char: string) {
-    const jsString = '(1，23@45%6789)'
-    for (var element of jsTokens(jsString)) {
-      this.arr1.push(element.value);
-    }
-    var tok = this.arr1.join(char);
-    console.log(tok);
-    this.resultStr = tok;
+    let result = matchToToken(regexResult)
+    this.resultStr = JSON.stringify(result);
   }
 
   build() {
@@ -79,13 +58,14 @@ if(
           TextArea({ placeholder: "输入任意类型字符", controller: this.controller })
             .height(50)
             .width('100%')
+            .visibility(Visibility.None)
             .margin({ top: 5, bottom: 5, left: 5, right: 5 })
             .onChange((value: string) => {
               this.setValue = value;
               this.controller.caretPosition(-1);
             })
 
-          Text("开始分词")
+          Text("type string")
             .width('90%')
             .height(50)
             .backgroundColor(0xEEEEEE)
@@ -94,10 +74,10 @@ if(
             .textAlign(TextAlign.Center)
             .margin({ top: 10 })
             .onClick(event => {
-              this.partChar(this.setValue);
+              this.exclResult('"string content"')
             })
 
-          Text("给(1，23@45%6789)加入分界线")
+          Text("type comment")
             .width('90%')
             .height(50)
             .backgroundColor(0xEEEEEE)
@@ -106,10 +86,10 @@ if(
             .textAlign(TextAlign.Center)
             .margin({ top: 10 })
             .onClick(event => {
-              this.joinChar("|");
+              this.exclResult("//comment\u2028")
             })
 
-          Text("正则表达式分词")
+          Text("type regex")
             .width('90%')
             .height(50)
             .backgroundColor(0xEEEEEE)
@@ -118,10 +98,10 @@ if(
             .textAlign(TextAlign.Center)
             .margin({ top: 10 })
             .onClick(event => {
-              this.partChar(this.regular);
+              this.exclResult("/[\\\\]/]/")
             })
 
-          Text("特殊字符分词1")
+          Text("type number")
             .width('90%')
             .height(50)
             .backgroundColor(0xEEEEEE)
@@ -130,10 +110,10 @@ if(
             .textAlign(TextAlign.Center)
             .margin({ top: 10 })
             .onClick(event => {
-              this.partChar("`a ${ {c:d } e`.length");
+              this.exclResult("1e+1")
             })
 
-          Text("标识符混合2")
+          Text("type name")
             .width('90%')
             .height(50)
             .backgroundColor(0xEEEEEE)
@@ -142,10 +122,10 @@ if(
             .textAlign(TextAlign.Center)
             .margin({ top: 10 })
             .onClick(event => {
-              this.partChar(this.ifInIf);
+              this.exclResult("a_56åπABCDEDFIGKLPUILLLZMKK")
             })
 
-          Text("注释")
+          Text("type punctuator")
             .width('90%')
             .height(50)
             .backgroundColor(0xEEEEEE)
@@ -154,10 +134,10 @@ if(
             .textAlign(TextAlign.Center)
             .margin({ top: 10 })
             .onClick(event => {
-              this.partChar("/* common */ &&& /** conono */");
+              this.exclResult("!===||>>?)(*&^%$#@!")
             })
 
-          Text("私有标识和数字")
+          Text("type whitespace")
             .width('90%')
             .height(50)
             .backgroundColor(0xEEEEEE)
@@ -166,10 +146,10 @@ if(
             .textAlign(TextAlign.Center)
             .margin({ top: 10 })
             .onClick(event => {
-              this.partChar("#undefined #\u006C\u006F\u006C\u0077\u0061\u0074 #if 1.5 ob110");
+              this.exclResult("    ")
             })
 
-          Text("字符表情分词（💩表情在os貌似不支持显示）")
+          Text("type invalid")
             .width('90%')
             .height(50)
             .backgroundColor(0xEEEEEE)
@@ -178,7 +158,19 @@ if(
             .textAlign(TextAlign.Center)
             .margin({ top: 10 })
             .onClick(event => {
-              this.partChar("`${💩}`");
+              this.exclResult("@")
+            })
+
+          Text("type 字符表情分词含表情符")
+            .width('90%')
+            .height(50)
+            .backgroundColor(0xEEEEEE)
+            .borderRadius(15)
+            .fontSize(13)
+            .textAlign(TextAlign.Center)
+            .margin({ top: 10 })
+            .onClick(event => {
+              this.exclResult("Iñtërnâtiônàlizætiøn☃💩")
             })
         }.width('100%')
       }

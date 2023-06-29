@@ -6,6 +6,6 @@
   "repository": {},
   "version": "1.0.0",
   "dependencies": {
-    "js-tokens": "^8.0.0"
+    "js-tokens": "^5.0.0"
   }
 }
