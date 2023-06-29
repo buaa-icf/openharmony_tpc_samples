@@ -123,10 +123,10 @@ export default function InflateCoverPortedTest() {
     it('invalidcodelengthsset', 17, () => {
       testInflate('4 0 fe ff', -15, c.Z_DATA_ERROR);
     });
-    it('invalidbitlengthrepeat', 18, () => {
+    it('invalidbitlengthrepeat1', 18, () => {
       testInflate('4 0 24 49 0', -15, c.Z_DATA_ERROR);
     });
-    it('invalidbitlengthrepeat', 19, () => {
+    it('invalidbitlengthrepeat2', 19, () => {
       testInflate('4 0 24 e9 ff ff', -15, c.Z_DATA_ERROR);
     });
     it('invalidcodemissingendofblock', 20, () => {

@@ -12,4 +12,5 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export { MainPage } from './src/main/ets/components/MainPage/MainPage'
+export { UnrarApi } from './src/main/ets/components/MainPage/UnrarApi'
+export type { ICallBack } from './src/main/ets/components/MainPage/ICallBack'

@@ -6,15 +6,13 @@
 
 支持Xpath路径表达式解析及计算。
 
-
-
 ## 下载安裝
 
 ```
- npm install xslt-processor --save
+ ohpm install xslt-processor
 ```
 
-OpenHarmony npm环境配置等更多内容，请参考 [如何安装OpenHarmony npm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_npm_usage.md) 。
+OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
 ## 使用说明
 
@@ -25,7 +23,7 @@ OpenHarmony npm环境配置等更多内容，请参考 [如何安装OpenHarmony 
    let originXMLStr = ""; // 将要被转换的XML字符串 
    const originXMLObj = xmlParse(originXMLStr);
    ```
-   
+
 2. XSLT转换
 
    ```
@@ -74,18 +72,20 @@ OpenHarmony npm环境配置等更多内容，请参考 [如何安装OpenHarmony 
 
 ## 接口说明
 
-| 方法                                                         | 相关描述            |
-| ------------------------------------------------------------ | ------------------- |
-| xmlParse(xml:string):XDocument                               | 解析xml为可操作对象 |
-| xsltProcess(xmlDoc:XDocument, stylesheet:XDocument,parameters:object) | 进行XML的XSLT转换   |
-| new ExprContext( node: XDocument,  <br />opt_position:number,   // 默认值为0  <br />opt_nodelist:[XDocument], // 节点列表，xpath计算结果集合，默认为传入的node对应的数组,[node]     <br />opt_parent: ExprContext,  //  父上下文，默认null  <br />opt_caseInsensitive: boolean,  // 设置节点名称是否区分大小写,默认 false <br />opt_ignoreAttributesWithoutValue:boolean,  //  是否忽略没有值的属性，默认false<br />opt_returnOnFirstMatch:boolean, // 是否返回第一个匹配值，默认false     <br />opt_ignoreNonElementNodesForNTA:boolean // 是否忽略非元素节点，默认为false) | 构建xpath计算上下文 |
-| evaluate(ctx:ExprContext):                                   | 计算xpath表达式     |
-| xpathParse(expr:ExprContext, xpathLog=()=>{})                | xpath表达式解析     |
+| 方法                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | 相关描述            |
+|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| ------------------- |
+| xmlParse(xml:string):XDocument                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | 解析xml为可操作对象 |
+| xsltProcess(xmlDoc:XDocument, stylesheet:XDocument,parameters:object):string                                                                                                                                                                                                                                                                                                                                                                                                                     | 进行XML的XSLT转换   |
+| xpathParse(expr:string, xpathLog=()=>{})                                                                                                                                                                                                                                                                                                                                                                                                                                                         | 解析xpath表达式     |
+| new ExprContext( node: XDocument,  <br />opt_position:number,   // 默认值为0  <br />opt_nodelist:[XDocument], // 节点列表，xpath计算结果集合，默认为传入的node对应的数组,[node]     <br />opt_parent: ExprContext,  //  父上下文，默认null  <br />opt_caseInsensitive: boolean,  // 设置节点名称是否区分大小写,默认 false <br />opt_ignoreAttributesWithoutValue:boolean,  //  是否忽略没有值的属性，默认false<br />opt_returnOnFirstMatch:boolean, // 是否返回第一个匹配值，默认false     <br />opt_ignoreNonElementNodesForNTA:boolean // 是否忽略非元素节点，默认为false):ExprContext | 构建xpath计算上下文 |
+| evaluate(ctx:ExprContext):NodeSetValue&#124;StringValue&#124;BooleanValue&#124;NumberValue                                                                                                                                                                                                                                                                                                                                                                                                       | 计算xpath表达式     |
 
 ## 约束与限制
 在下述版本验证通过：
 
-DevEco Studio: 3.1 Beta1(3.1.0.200), SDK: API9 (3.2.10.6)
+DevEco Studio: 4.0 Canary1(4.0.0.112), SDK: API10 (4.0.7.2)
+
+[单元测试用例](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/xslt-processor/TEST.md)详情可参考
 
 ## 目录结构
 
@@ -93,7 +93,8 @@ DevEco Studio: 3.1 Beta1(3.1.0.200), SDK: API9 (3.2.10.6)
 /xsltprocessor-demo        # 项目根目录
 ├── entry     # 示例代码文件夹
 │    └─ src/main/ets
-│       └─ pages/index.ets // xslt-processor 示例代码                   
+│       └─ pages/index.ets // xslt-processor 示例代码
+│       └─ pages/TestTimePage.ets // 测试接口时长的页面              
 ├── README.md  # 安装使用方法                    
 ````
 

@@ -39,10 +39,10 @@ export default class TestAbility extends UIAbility {
     onWindowStageCreate(windowStage: window.WindowStage) {
         hilog.info(0x0000, 'testTag', '%{public}s', 'TestAbility onWindowStageCreate');
 
-        globalThis.Ctx = this.context;
-        globalThis.fileDir = this.context.filesDir;
-        globalThis.cacheDir = this.context.cacheDir;
-        globalThis.resourceManager = this.context.resourceManager;
+        globalThis.Ctx = this.context.createModuleContext('entry_test');
+        globalThis.fileDir = this.context.createModuleContext('entry_test').filesDir;
+        globalThis.cacheDir = this.context.createModuleContext('entry_test').cacheDir;
+        globalThis.resourceManager = this.context.createModuleContext('entry_test').resourceManager;
 
         windowStage.loadContent('testability/pages/Index', (err, data) => {
             if (err.code) {

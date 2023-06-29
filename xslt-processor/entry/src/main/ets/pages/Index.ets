@@ -23,9 +23,9 @@ struct Index {
   private tag: string = 'xslt-processor demo';
   private originTextXML: string =
     '<all>' +
-    '<item pos="2">A</item>' +
-    '<item pos="3">B</item>' +
-    '<item pos="1">C</item>' +
+    '<item pos="2">A 三方库组件 Ba bộ phận thư viện</item>' +
+    '<item pos="3">B مكونات مستودع ثلاثية</item>' +
+    '<item pos="1">C ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789</item>' +
     '</all>';
   private originTextXSL: string =
     '<xsl:stylesheet>' +
@@ -41,8 +41,8 @@ struct Index {
      <?xml-stylesheet type="text/xsl" href="cdcatalog.xsl"?>
      <catalog>
      <cd>
-     <title>Empire Burlesque</title>
-     <artist>Bob Dylan</artist>
+     <title>Empire Burlesque 三方库组件 Ba bộ phận thư viện</title>
+     <artist>Bob Dylan مكونات مستودع ثلاثية ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789</artist>
      <country>USA</country>
      <company>Columbia</company>
      <price>10.90</price>
@@ -104,6 +104,105 @@ struct Index {
   build() {
     Row() {
       Column({ space: 5 }) {
+        Button('xmlParse:null')
+          .width('90%')
+          .height('100px')
+          .onClick(() => {
+            try {
+              xmlParse(null);
+            } catch (error) {
+              this.printLog('请检查输入字符，捕捉到异常： ' + error);
+            }
+          })
+
+        Button('xmlParse:undefined')
+          .width('90%')
+          .height('100px')
+          .onClick(() => {
+            try {
+              xmlParse(undefined);
+            } catch (error) {
+              this.printLog('请检查输入字符，捕捉到异常： ' + error);
+            }
+          })
+
+        Button('xmlParse:特殊字符')
+          .width('90%')
+          .height('100px')
+          .onClick(() => {
+            try {
+              xmlParse('<xml>内容包含特殊字符：<></xml>');
+            } catch (error) {
+              this.printLog('请检查输入字符，捕捉到异常： ' + error);
+            }
+          })
+
+        Button('xsltProcess:null')
+          .width('90%')
+          .height('100px')
+          .onClick(() => {
+            try {
+              xsltProcess(null);
+            } catch (error) {
+              this.printLog('请检查输入参数，捕捉到异常： ' + error);
+            }
+          })
+
+        Button('xsltProcess:undefined')
+          .width('90%')
+          .height('100px')
+          .onClick(() => {
+            try {
+              xsltProcess(undefined);
+            } catch (error) {
+              this.printLog('请检查输入参数，捕捉到异常： ' + error);
+            }
+          })
+
+        Button('xsltProcess:特殊字符')
+          .width('90%')
+          .height('100px')
+          .onClick(() => {
+            try {
+              xsltProcess('<xml>内容包含特殊字符：<></xml>');
+            } catch (error) {
+              this.printLog('请检查输入参数，捕捉到异常： ' + error);
+            }
+          })
+
+        Button('xpathParse:null')
+          .width('90%')
+          .height('100px')
+          .onClick(() => {
+            try {
+              xpathParse(null);
+            } catch (error) {
+              this.printLog('请检查输入字符，捕捉到异常： ' + error);
+            }
+          })
+
+        Button('xpathParse:undefined')
+          .width('90%')
+          .height('100px')
+          .onClick(() => {
+            try {
+              xpathParse(undefined);
+            } catch (error) {
+              this.printLog('请检查输入字符，捕捉到异常： ' + error);
+            }
+          })
+
+        Button('xpathParse:特殊字符')
+          .width('90%')
+          .height('100px')
+          .onClick(() => {
+            try {
+              xpathParse('内容包含特殊字符<>');
+            } catch (error) {
+              this.printLog('请检查输入字符，捕捉到异常： ' + error);
+            }
+          })
+
         Button('解析XML')
           .width('90%')
           .height('100px')
@@ -140,8 +239,9 @@ struct Index {
               `<root>
                 <test name="test1"/>
                </root> `;
-
-            const outXmlString = xsltProcess(xmlParse(xmlString), xmlParse(this.variablesXSLTString),
+            const xml1 = xmlParse(xmlString);
+            const xml2 = xmlParse(this.variablesXSLTString);
+            const outXmlString = xsltProcess(xml1, xml2,
               {
                 test: "hugo"
               }

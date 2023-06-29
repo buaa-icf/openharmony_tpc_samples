@@ -20,6 +20,7 @@ struct EncodeDecodeConstructorPage {
 
   @State message:string = "编码后的数据展示"
   @State message2:string = "解码后的数据展示"
+  @State message3:string = "错误提示"
 
   encodedUint8: Uint8Array = undefined;
 
@@ -38,9 +39,13 @@ struct EncodeDecodeConstructorPage {
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
         Button('点击构造器解码').onClick(()=>{
-          let decodeletructor = new Decoder();
-          let decodeObj = decodeletructor.decode(this.encodedUint8)
-          this.message2 = "解码后的数据="+JSON.stringify(decodeObj);
+          if(this.encodedUint8) {
+            let decodeletructor = new Decoder();
+            let decodeObj = decodeletructor.decode(this.encodedUint8)
+            this.message2 = "解码后的数据=" + JSON.stringify(decodeObj);
+          }else{
+            this.message3 = '解码数据为undefined, 请先点击编码'
+          }
         })
         Text(this.message2)
           .fontSize(50)

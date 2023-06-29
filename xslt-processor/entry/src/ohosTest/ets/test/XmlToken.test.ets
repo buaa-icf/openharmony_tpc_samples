@@ -14,8 +14,6 @@
  */
 
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
-import { xmlParse } from 'xslt-processor/src/dom'
-import { xsltProcess } from 'xslt-processor/src/xslt'
 import {
   XML10_ATT_VALUE,
   XML10_ENTITY_REF,
@@ -70,14 +68,14 @@ export default function xmlTokenTest() {
         let j = i % ngSecondChars.length;
         assertOk(`${comment} with ok #${i} + ng #${j}`, regexp,
           okFirstChars[i] + ngSecondChars[j],
-        okFirstChars[i]);
+          okFirstChars[i]);
         assertOk(`${comment} with ok #${i} + oks + ng #${j}`, regexp,
           okFirstChars[i] + okSecondString + ngSecondChars[j],
           okFirstChars[i] + okSecondString);
       }
       for (let i = 0; i < ngFirstChars.length; i++) {
         assertNg(`${comment} with ng #${i}`, regexp,
-        ngFirstChars[i]);
+          ngFirstChars[i]);
         // It doesn't make sense to test with ngFirstChars[i] + okSecondChars[j].
         for (let j = 0; j < ngSecondChars.length; j++) {
           assertNg(`${comment} with ng #${i} + ng #${j}`, regexp,

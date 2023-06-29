@@ -1,7 +1,6 @@
 ## V2.0.0
 
 1.适配DevEco Studio: 4.0 Canary1(4.0.0.112), SDK: API10 (4.0.7.2)
-2.包管理工具由npm切换成ohpm
 
 
 ## v1.0.0
