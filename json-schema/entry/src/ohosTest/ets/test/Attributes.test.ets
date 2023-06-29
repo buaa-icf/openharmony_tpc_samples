@@ -57,19 +57,19 @@ export default function attributesTest() {
       }).valid;
       expect(result).assertFalse();
     })
-    it('ShouldNotValidateInfinity', 0, function () {
+    it('ShouldNotValidateInfinity1', 0, function () {
       let result = validator.validate(Infinity, {
         'type': 'number'
       }).valid;
       expect(result).assertFalse();
     })
-    it('ShouldNotValidateInfinity', 0, function () {
+    it('ShouldNotValidateInfinity2', 0, function () {
       let result = validator.validate(-Infinity, {
         'type': 'number'
       }).valid;
       expect(result).assertFalse();
     })
-    it('ShouldNotValidateAnUndefinedInstance', 0, function () {
+    it('ShouldNotValidateAnUndefinedInstance1', 0, function () {
       let result = validator.validate(undefined, {
         'type': 'number', 'required': true
       }).valid;
@@ -81,13 +81,13 @@ export default function attributesTest() {
       }).valid;
       expect(result).assertTrue();
     })
-    it('ShouldNotValidateNoNull', 0, function () {
+    it('ShouldNotValidateNoNull1', 0, function () {
       let result = validator.validate("0", {
         type: "null"
       }).valid;
       expect(result).assertFalse();
     })
-    it('ShouldNotValidateAnUndefinedInstance', 0, function () {
+    it('ShouldNotValidateAnUndefinedInstance2', 0, function () {
       let result = validator.validate(undefined, {
         'type': 'date', 'required': true
       }).valid;
@@ -99,13 +99,13 @@ export default function attributesTest() {
       }).valid;
       expect(result).assertTrue();
     })
-    it('ShouldNotValidateNoNull', 0, function () {
+    it('ShouldNotValidateNoNull2', 0, function () {
       let result = validator.validate('0', {
         'type': 'date'
       }).valid;
       expect(result).assertFalse();
     })
-    it('ShouldNotValidateAnUndefinedInstance', 0, function () {
+    it('ShouldNotValidateAnUndefinedInstance3', 0, function () {
       let result = validator.validate(undefined, {
         'type': 'date', 'required': true
       }).valid;
@@ -123,7 +123,7 @@ export default function attributesTest() {
       }).valid;
       expect(result).assertFalse();
     })
-    it('ShouldNotValidateAnUndefinedInstance', 0, function () {
+    it('ShouldNotValidateAnUndefinedInstance4', 0, function () {
       let result = validator.validate(undefined, {
         'type': 'integer', 'required': true
       }).valid;
@@ -147,7 +147,7 @@ export default function attributesTest() {
       }).valid;
       expect(result).assertFalse();
     })
-    it('ShouldNotValidateAnUndefinedInstance', 0, function () {
+    it('ShouldNotValidateAnUndefinedInstance5', 0, function () {
       let result = validator.validate(undefined, {
         'type': 'boolean', 'required': true
       }).valid;
@@ -177,7 +177,7 @@ export default function attributesTest() {
       }).valid;
       expect(result).assertTrue();
     })
-    it('ShouldNotValidateAnUndefinedInstance', 0, function () {
+    it('ShouldNotValidateAnUndefinedInstance6', 0, function () {
       let result = validator.validate(undefined, {
         'type': 'any', 'required': true
       }).valid;
@@ -313,19 +313,19 @@ export default function attributesTest() {
       }).valid;
       expect(result).assertFalse();
     })
-    it('ShouldValidateIf0IsEven', 0, function () {
+    it('ShouldValidateIf0IsEven1', 0, function () {
       let result = validator.validate(2, {
         'type': 'number', 'divisibleBy': 2
       }).valid;
       expect(result).assertTrue();
     });
-    it('ShouldValidateIf2IsEven', 0, function () {
+    it('ShouldValidateIf2IsEven1', 0, function () {
       let result = validator.validate(-2, {
         'type': 'number', 'divisibleBy': 2
       }).valid;
       expect(result).assertTrue();
     });
-    it('ShouldNotValidate1IsEven', 0, function () {
+    it('ShouldNotValidate1IsEven1', 0, function () {
       let result = validator.validate(1, {
         'type': 'number', 'divisibleBy': 2
       }).valid;
@@ -337,19 +337,19 @@ export default function attributesTest() {
       }).valid;
       expect(result).assertTrue();
     });
-    it('ShouldValidateIf0IsEven', 0, function () {
+    it('ShouldValidateIf0IsEven2', 0, function () {
       let result = validator.validate(2, {
         'type': 'number', 'multipleOf': 2
       }).valid;
       expect(result).assertTrue();
     });
-    it('ShouldValidateIf2IsEven', 0, function () {
+    it('ShouldValidateIf2IsEven2', 0, function () {
       let result = validator.validate(-2, {
         'type': 'number', 'multipleOf': 2
       }).valid;
       expect(result).assertTrue();
     });
-    it('ShouldNotValidate1IsEven', 0, function () {
+    it('ShouldNotValidate1IsEven2', 0, function () {
       let result = validator.validate(1, {
         'type': 'number', 'multipleOf': 2
       }).valid;

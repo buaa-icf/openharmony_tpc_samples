@@ -87,59 +87,59 @@ export default function unionTest() {
       }).valid
       expect(result).assertTrue();
     });
-    it('ShouldValidateForString', 0, function () {
+    it('ShouldValidateForString1', 0, function () {
       let result = validator.validate('1', {
         'type': ['number', 'string']
       }).valid;
       expect(result).assertTrue();
     });
 
-    it('ShouldNotValidateIfNoStringOrNumber', 0, function () {
+    it('ShouldNotValidateIfNoStringOrNumber1', 0, function () {
       let result = validator.validate(true, {
         'type': ['number', 'string']
       }).valid;
       expect(result).assertFalse();
     });
 
-    it('shouldValidateForNull', 0, function () {
+    it('shouldValidateForNull1', 0, function () {
       let result = validator.validate(null, {
         'type': ['null', 'string']
       }).valid;
       expect(result).assertTrue();
     });
-    it('ShouldValidateForString', 0, function () {
+    it('ShouldValidateForString2', 0, function () {
       let result = validator.validate('1', {
         'type': ['null', 'string']
       }).valid;
       expect(result).assertTrue();
     });
 
-    it('ShouldNotValidateIfNoStringOrNumber', 0, function () {
+    it('ShouldNotValidateIfNoStringOrNumber2', 0, function () {
       let result = validator.validate(true, {
         'type': ['null', 'string']
       }).valid;
       expect(result).assertFalse();
     });
-    it('ShouldValidateForNull', 0, function () {
+    it('ShouldValidateForNull2', 0, function () {
       let result = validator.validate(null, {
         'type': ['null', 'string']
       }).valid;
       expect(result).assertTrue();
     });
-    it('ShouldValidateForString', 0, function () {
+    it('ShouldValidateForString3', 0, function () {
       let result = validator.validate('1', {
         'type': ['null', 'string']
       }).valid;
       expect(result).assertTrue();
     });
 
-    it('ShouldNotValidateIfNoStringOrNumber', 0, function () {
+    it('ShouldNotValidateIfNoStringOrNumber3', 0, function () {
       let result = validator.validate(true, {
         'type': ['null', 'string']
       }).valid;
       expect(result).assertFalse();
     });
-    it('ShouldValidateForNull', 0, function () {
+    it('ShouldValidateForNull3', 0, function () {
       let result = validator.validate(null, {
         'type': ['null', {
           '$ref': 'Test#Simple'
@@ -148,7 +148,7 @@ export default function unionTest() {
       expect(result).assertTrue();
     });
 
-    it('ShouldValidateForString', 0, function () {
+    it('ShouldValidateForString4', 0, function () {
       let result = validator.validate('test', {
         'type': ['null', {
           '$ref': 'Test#Simple'
@@ -157,7 +157,7 @@ export default function unionTest() {
       expect(result).assertTrue();
     });
 
-    it('ShouldNotValidateIfNoStringOrNumber', 0, function () {
+    it('ShouldNotValidateIfNoStringOrNumber4', 0, function () {
       let result = validator.validate(true, {
         'type': ['null', {
           '$ref': 'Test#Simple'

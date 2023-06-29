@@ -17,8 +17,11 @@ import { SchemaError, validate, ValidationError, Validator, ValidatorResult } fr
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
 import buffer from '@ohos.buffer';
 
+// @ts-ignore
 import schema from '../../json-metaschema/data_schema.json'
+// @ts-ignore
 import types from '../../json-metaschema/types.json'
+// @ts-ignore
 import data from '../../json-metaschema/data.json'
 
 // @ts-ignore

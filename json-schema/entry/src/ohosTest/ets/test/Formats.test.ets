@@ -231,14 +231,14 @@ export default function formatsTest() {
       expect(result).assertTrue();
     });
 
-    it('ShouldValidateAValidComplexStyle', 0, function () {
+    it('ShouldValidateAValidComplexStyle1', 0, function () {
       let result = validator.validate("color: red; position: absolute; background-color: rgb(204, 204, 204); max-width: 150px;", {
         'type': 'string', 'format': 'style'
       }).valid;
       expect(result).assertTrue();
     });
 
-    it('ShouldValidateAValidComplexStyle', 0, function () {
+    it('ShouldValidateAValidComplexStyle2', 0, function () {
       let result = validator.validate("color:red;position:absolute; background-color:     rgb(204, 204, 204); max-width: 150px;", {
         'type': 'string', 'format': 'style'
       }).valid;
@@ -419,7 +419,7 @@ export default function formatsTest() {
       expect(result).assertTrue();
     });
 
-    it('ShouldNotValidate1test', 0, function () {
+    it('ShouldNotValidate1test1', 0, function () {
       let result = validator.validate("www.-hi-.com", {
         'type': 'string', 'format': 'alpha'
       }).valid;
@@ -447,7 +447,7 @@ export default function formatsTest() {
       expect(result).assertTrue();
     });
 
-    it('ShouldNotValidate1test', 0, function () {
+    it('ShouldNotValidate1test2', 0, function () {
       let result = validator.validate("1test!", {
         'type': 'string', 'format': 'alphanumeric'
       }).valid;
