@@ -22,60 +22,60 @@ struct TempPage {
   @State F:number = 0;
 
   build() {
-      Column() {
+    Column() {
 
-        Column({ space: 12 }) {
-          Text('摄氏度转华氏度')
-            .margin({ top: 5 })
-            .fontSize(16)
-          TextInput({ placeholder: '请输入摄氏度' })
-            .height(60)
-            .fontSize(18)
-            .maxLength(5)
-            .type(InputType.Number)
-            .onChange((value: string) => {
-              if (value.length>0) {
-                this.C =parseInt(value)
-              }else {
-                this.C = 0
-              }
-            })
-          Text('摄氏度：'+this.C+'为华氏度：'+TempUtils.C2F(this.C),)
-            .fontSize(18)
-            .fontColor('#000')
-            .margin({ top: 20 })
-            .backgroundColor('#12939f')
+      Column({ space: 12 }) {
+        Text('摄氏度转华氏度')
+          .margin({ top: 5 })
+          .fontSize(16)
+        TextInput({ placeholder: '请输入摄氏度' })
+          .height(60)
+          .fontSize(18)
+          .maxLength(5)
+          .type(InputType.Number)
+          .onChange((value: string) => {
+            if (value.length>0) {
+              this.C =parseInt(value)
+            }else {
+              this.C = 0
+            }
+          })
+        Text('摄氏度：'+this.C+'为华氏度：'+TempUtils.C2F(this.C),)
+          .fontSize(18)
+          .fontColor('#000')
+          .margin({ top: 20 })
+          .backgroundColor('#12939f')
 
-          Divider().strokeWidth(2).color('#F1F3F5').margin({ top: 8, bottom: 8 })
-        }.margin({ top: 10 })
+        Divider().strokeWidth(2).color('#F1F3F5').margin({ top: 8, bottom: 8 })
+      }.margin({ top: 10 })
 
 
 
-        Column({ space: 12 }) {
-          Text('华氏度转摄氏度')
-            .margin({ top: 5 })
-            .fontSize(16)
-          TextInput({ placeholder: '请输入华氏度' })
-            .height(60)
-            .fontSize(18)
-            .maxLength(5)
-            .type(InputType.Number)
-            .onChange((value: string) => {
-              if (value.length>0) {
-                this.F =parseInt(value)
-              }else {
-                this.F = 0
-              }
-            })
-          Text('华氏度：'+this.F+'为摄氏度：'+TempUtils.F2C(this.F),)
-            .fontSize(18)
-            .fontColor('#000')
-            .margin({ top: 20 })
-            .backgroundColor('#12939f')
+      Column({ space: 12 }) {
+        Text('华氏度转摄氏度')
+          .margin({ top: 5 })
+          .fontSize(16)
+        TextInput({ placeholder: '请输入华氏度' })
+          .height(60)
+          .fontSize(18)
+          .maxLength(5)
+          .type(InputType.Number)
+          .onChange((value: string) => {
+            if (value.length>0) {
+              this.F =parseInt(value)
+            }else {
+              this.F = 0
+            }
+          })
+        Text('华氏度：'+this.F+'为摄氏度：'+TempUtils.F2C(this.F),)
+          .fontSize(18)
+          .fontColor('#000')
+          .margin({ top: 20 })
+          .backgroundColor('#12939f')
 
-          Divider().strokeWidth(2).color('#F1F3F5').margin({ top: 8, bottom: 8 })
-        }.margin({ top: 10 })
+        Divider().strokeWidth(2).color('#F1F3F5').margin({ top: 8, bottom: 8 })
+      }.margin({ top: 10 })
 
-      }
+    }
   }
 }

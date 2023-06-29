@@ -6,6 +6,7 @@
     "pages/GcoordPage",
     "pages/TimePage",
     "pages/PicturePage",
-    "pages/CountryPage"
+    "pages/CountryPage",
+    "pages/TempPage"
   ]
 }

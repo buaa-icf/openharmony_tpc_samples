@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "util_code",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}

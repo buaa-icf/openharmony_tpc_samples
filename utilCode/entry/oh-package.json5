@@ -7,11 +7,11 @@
   "version": "1.0.0",
   "dependencies": {
     "leap-year": "^4.0.0",
-    "imagetype": "^0.3.0",
     "randomcolor": "^0.6.2",
     "gcoord": "^1.0.5",
     "memory-cache": "^0.2.0",
-    "util_code": "^1.0.0",
+    "@ohos/util_code": "file:../util_code",
+    "imtype": "^1.0.0",
     "time-ampm": "^2.0.0"
   }
 }
