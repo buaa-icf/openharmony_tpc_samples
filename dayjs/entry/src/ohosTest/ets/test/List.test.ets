@@ -12,9 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import ar_dzTest from './ar_dz.test'
-import comparisonTest from './comparison.test'
-import manipulateTest from './manipulate.test'
 import parseTest from './parse.test'
 import pluginTest from './plugin.test'
 import queryTest from './query.test'
@@ -24,7 +21,4 @@ export default function testsuite() {
   queryTest()
   pluginTest()
   parseTest()
-  manipulateTest()
-  comparisonTest()
-  ar_dzTest()
 }

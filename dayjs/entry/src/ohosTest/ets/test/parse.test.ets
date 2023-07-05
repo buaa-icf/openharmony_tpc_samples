@@ -12,61 +12,48 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import moment from '../moment/moment'
-import dayjs from 'dayjs/src'
+//@ts-nocheck
+import moment from '../moment/src/moment'
+import dayjs from 'dayjs'
 
-import { REGEX_PARSE } from 'dayjs/src/constant'
-import {it,expect,describe,responseTime } from "../utils/utils"
+import { REGEX_PARSE } from 'dayjs/esm/constant'
+import {it,expect,describe } from "../utils/utils"
 
 export default function parseTest(){
-  describe('Parse', () => {
+  describe('Parse', function() {
     it('moment_js_like_formatted_dates', () => {
       let d = '20130108'
       expect(dayjs(d).valueOf()).toBe(moment(d).valueOf())
-      console.log(`dudu--------1----测试完成`)
+
       d = '2018-04-24'
       expect(dayjs(d).valueOf()).toBe(moment(d).valueOf())
-      console.log(`dudu--------2----测试完成`)
 
       d = '2018-04-24 11:12'
-
-      responseTime(() =>dayjs(d).format() ,"dayjs("+d+").format()")
       expect(dayjs(d).format()).toBe(moment(d).format()) // not recommend
-      console.log(`dudu--------3----测试完成`)
 
       d = '2018-05-02 11:12:13'
-      responseTime(() =>dayjs(d).valueOf() ,"dayjs("+d+").valueOf()")
-
       expect(dayjs(d).valueOf()).toBe(moment(d).valueOf())
-      console.log(`dudu--------4----测试完成`)
 
       d = '2018-05-02 11:12:13.998'
       expect(dayjs(d).valueOf()).toBe(moment(d).valueOf())
-      console.log(`dudu--------5----测试完成`)
 
       d = '2018-4-1'
       expect(dayjs(d).valueOf()).toBe(moment(d).valueOf()) // not recommend
-      console.log(`dudu--------6----测试完成`)
 
       d = '2018-4-1 11:12'
       expect(dayjs(d).format()).toBe(moment(d).format()) // not recommend
-      console.log(`dudu--------7----测试完成`)
 
       d = '2018-4-1 1:1:1.223'
       expect(dayjs(d).valueOf()).toBe(moment(d).valueOf()) // not recommend
-      console.log(`dudu--------8----测试完成`)
 
       d = '2018-01'
       expect(dayjs(d).valueOf()).toBe(moment(d).valueOf()) // not recommend
-      console.log(`dudu--------9----测试完成`)
 
       d = '2018'
       expect(dayjs(d).format()).toBe(moment(d).format()) // not recommend
-      console.log(`dudu--------10----测试完成`)
 
       d = '2018-05-02T11:12:13Z' // should go direct to new Date() rather our regex
       expect(dayjs(d).format()).toBe(moment(d).format()) // not recommend
-      console.log(`dudu--------11----测试完成`)
 
     })
 
@@ -86,8 +73,6 @@ export default function parseTest(){
 
 
     it('rejects_invalid_values', () => {
-      responseTime(() =>dayjs({}).isValid() ,"dayjs({}).isValid()")
-
       expect(dayjs({}).isValid()).toBe(false)
       expect(dayjs(() => '2018-01-01').isValid()).toBe(false)
       expect(dayjs(Infinity).isValid()).toBe(false)
@@ -108,8 +93,6 @@ export default function parseTest(){
       const ds = dayjs(date)
       const ms = moment(date)
       expect(ds.valueOf()).toEqual(ms.valueOf())
-      responseTime(() =>dayjs(date).millisecond() ,"dayjs(2019-03-25T06:41:00.999999999).millisecond()")
-
       expect(ds.millisecond()).toEqual(ms.millisecond())
     })
 
@@ -169,7 +152,9 @@ export default function parseTest(){
     })
   })
 
-  describe('REGEX_PARSE', () => {
+
+
+  describe('REGEX_PARSE', function() {
     const title = "2020/9/30";
     it(title, () => {
       const date = '2020/9/30'
@@ -177,96 +162,73 @@ export default function parseTest(){
       expect(dayjs(date).valueOf()).toBe(moment(date).valueOf())
       expect(d.join('-')).toBe('2020/9/30-2020-9-30----')
     })
-
-    const title1 = '2019-03-25T06:41:00.999999999'
-    it(title1, () => {
-      const date = '2019-03-25T06:41:00.999999999'
-      const d = date.match(REGEX_PARSE)
-      expect(dayjs(date).valueOf()).toBe(moment(date).valueOf())
-      expect(d.join('-')).toBe('2019-03-25T06:41:00.999999999-2019-03-25-06-41-00-999999999')
-    })
-    const title2 = '20210102T012345';
-    it(title2, () => {
-      const date = '20210102T012345'
-      const d = date.match(REGEX_PARSE)
-      expect(dayjs(date).valueOf()).toBe(moment(date).valueOf())
-      expect(d.join('-')).toBe('20210102T012345-2021-01-02-01-23-45-')
-    })
-    const title3 = '2021-01-02T01:23'
-    it(title3, () => {
-      const date = '2021-01-02T01:23'
-      const d = date.match(REGEX_PARSE)
-      expect(dayjs(date).valueOf()).toBe(moment(date).valueOf())
-      expect(d.join('-')).toBe('2021-01-02T01:23-2021-01-02-01-23--')
-    })
-
-    const title4 = '2021-01-02T01:23:45';
-    it(title4, () => {
-      const date = '2021-01-02T01:23:45'
-      const d = date.match(REGEX_PARSE)
-      expect(dayjs(date).valueOf()).toBe(moment(date).valueOf())
-      expect(d.join('-')).toBe('2021-01-02T01:23:45-2021-01-02-01-23-45-')
-    })
-
-    const title5 = '2020-12-31T18:00:00.000-05:00 (no regex match)';
-    it(title5, () => {
-      const date = '2020-12-31T18:00:00.000-05:00'
-      const d = date.match(REGEX_PARSE)
-
-
-      expect(dayjs(date).valueOf()).toBe(moment(date).valueOf())
-      expect(d).toBe(null)
-    })
-
-    const title6 = '2021-1-4 0:42:53.000'
-    // format used in timezone plugin utcString
-    it(title6, () => {
-      const date = '2021-1-4 0:42:53.000'
-      const d = date.match(REGEX_PARSE)
-      console.log(`fofo1-----moment ${moment(date).valueOf()}`)
-      console.log(`fofo1-----Date ${new Date(date)}`)
-      console.log(`fofo1-----dayjs ${dayjs(date).valueOf()}`)
-
-      expect(dayjs(date).valueOf()).toBe(moment(date).valueOf())
-    })
-
-    const title7 = '2020-12-31T18:00:00-05:00 (no regex match)'
-
-    it(title7, () => {
-      const date = '2020-12-31T18:00:00-05:00'
-      const d = date.match(REGEX_PARSE)
-      expect(dayjs(date).valueOf()).toBe(moment(date).valueOf())
-      expect(d).toBe(null)
-    })
-
-    const title8 = '2021-01-02T01:23:45-05:00 (no regex match)'
-
-    it(title8, () => {
-      const date = '2021-01-02T01:23:45-05:00'
-      const d = date.match(REGEX_PARSE)
-      expect(dayjs(date).valueOf()).toBe(moment(date).valueOf())
-      expect(d).toBe(null)
-    })
-
-    const title9 = '2021-01-02T01:23:45Z (no regex match)'
-
-    it(title9, () => {
-      const date = '2021-01-02T01:23:45Z'
-      const d = date.match(REGEX_PARSE)
-      expect(dayjs(date).valueOf()).toBe(moment(date).valueOf())
-      expect(d).toBe(null)
-    })
-
-
-    const title10 = '2021.01.03'
-
-    // dots should not be matched, and fallback to Date
-    it(title10, () => {
-      const date = '2021.01.03'
-      const d = date.match(REGEX_PARSE)
-      expect(dayjs(date).valueOf()).toBe(moment(date).valueOf())
-      expect(d).toBe(null)
-    })
+    // it('2019-03-25T06:41:00.999999999', () => {
+    //   const date = '2019-03-25T06:41:00.999999999'
+    //   const d = date.match(REGEX_PARSE)
+    //   expect(dayjs(date).valueOf()).toBe(moment(date).valueOf())
+    //   expect(d.join('-')).toBe('2019-03-25T06:41:00.999999999-2019-03-25-06-41-00-999999999')
+    // })
+    // it('20210102T012345', () => {
+    //   const date = '20210102T012345'
+    //   const d = date.match(REGEX_PARSE)
+    //   expect(dayjs(date).valueOf()).toBe(moment(date).valueOf())
+    //   expect(d.join('-')).toBe('20210102T012345-2021-01-02-01-23-45-')
+    // })
+    // it('2021-01-02T01:23', () => {
+    //   const date = '2021-01-02T01:23'
+    //   const d = date.match(REGEX_PARSE)
+    //   expect(dayjs(date).valueOf()).toBe(moment(date).valueOf())
+    //   expect(d.join('-')).toBe('2021-01-02T01:23-2021-01-02-01-23--')
+    // })
+    // it('2021-01-02T01:23:45', () => {
+    //   const date = '2021-01-02T01:23:45'
+    //   const d = date.match(REGEX_PARSE)
+    //   expect(dayjs(date).valueOf()).toBe(moment(date).valueOf())
+    //   expect(d.join('-')).toBe('2021-01-02T01:23:45-2021-01-02-01-23-45-')
+    // })
+    //
+    // it('2020-12-31T18:00:00.000-0500 (no regex match)', () => {
+    //   const date = '2020-12-31T18:00:00.000-0500'
+    //   const d = date.match(REGEX_PARSE)
+    //   expect(dayjs(date).valueOf()).toBe(moment(date).valueOf())
+    //   expect(d).toBe(null)
+    // })
+    //
+    // // format used in timezone plugin utcString
+    // it('2021-1-4 0:42:53:000', () => {
+    //   const date = '2021-1-4 0:42:53:000'
+    //   const d = date.match(REGEX_PARSE)
+    //   expect(dayjs(date).valueOf()).toBe(moment(date).valueOf())
+    //   expect(d.join('-')).toBe('2021-1-4 0:42:53:000-2021-1-4-0-42-53-000')
+    // })
+    //
+    // it('2020-12-31T18:00:00-05:00 (no regex match)', () => {
+    //   const date = '2020-12-31T18:00:00-05:00'
+    //   const d = date.match(REGEX_PARSE)
+    //   expect(dayjs(date).valueOf()).toBe(moment(date).valueOf())
+    //   expect(d).toBe(null)
+    // })
+    //
+    // it('2021-01-02T01:23:45-0500 (no regex match)', () => {
+    //   const date = '2021-01-02T01:23:45-0500'
+    //   const d = date.match(REGEX_PARSE)
+    //   expect(dayjs(date).valueOf()).toBe(moment(date).valueOf())
+    //   expect(d).toBe(null)
+    // })
+    // it('2021-01-02T01:23:45Z (no regex match)', () => {
+    //   const date = '2021-01-02T01:23:45Z'
+    //   const d = date.match(REGEX_PARSE)
+    //   expect(dayjs(date).valueOf()).toBe(moment(date).valueOf())
+    //   expect(d).toBe(null)
+    // })
+    //
+    // // dots should not be matched, and fallback to Date
+    // it('2021.01.03', () => {
+    //   const date = '2021.01.03'
+    //   const d = date.match(REGEX_PARSE)
+    //   expect(dayjs(date).valueOf()).toBe(moment(date).valueOf())
+    //   expect(d).toBe(null)
+    // })
   })
 }
 

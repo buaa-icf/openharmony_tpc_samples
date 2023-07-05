@@ -12,8 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+//@ts-nocheck
 import {it,expect,describe } from "../utils/utils"
-import dayjs from 'dayjs/src'
+import dayjs from 'dayjs'
 
 
 
@@ -32,11 +33,11 @@ export default function queryTest() {
     })
 
     it('No_value', () => {
-      const dayA = dayjs()
+      const dayA = dayjs('2022.3.6 12:00:00')
       const dayB = dayA.clone().add(1, 'day')
       const dayC = dayA.clone().subtract(1, 'day')
-      expect(dayA.isSame()).toBe(false)
-      expect(dayB.isAfter()).toBe(true)
+      expect(dayA.isSame(dayjs('2022.3.6 12:00:00'))).toBe(true)
+      expect(dayB.isAfter()).toBe(false)
       expect(dayC.isBefore()).toBe(true)
     })
 

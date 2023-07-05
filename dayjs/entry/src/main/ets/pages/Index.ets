@@ -15,8 +15,8 @@
 import prompt from '@ohos.prompt';
 import dayjs from "dayjs";
 
-import customParseFormat from "dayjs/src/main/ets/dayjs/src/plugin/customParseFormat"
-import 'dayjs/src/main/ets/dayjs/src/locale/zh-cn';
+import customParseFormat from "dayjs/plugin/customParseFormat"
+import 'dayjs/locale/zh-cn';
 
 dayjs.extend(customParseFormat)
 

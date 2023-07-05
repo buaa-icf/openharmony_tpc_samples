@@ -24,10 +24,6 @@
           ]
         }
       ]
-    },
-    {
-      "name": "library",
-      "srcPath": "./library"
     }
   ]
 }

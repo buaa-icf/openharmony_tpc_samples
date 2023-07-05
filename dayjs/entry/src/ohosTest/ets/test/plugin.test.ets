@@ -12,8 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {it,expect,describe,responseTime } from "../utils/utils"
-import dayjs from 'dayjs/src'
+//@ts-nocheck
+import {it,expect,describe } from "../utils/utils"
+import dayjs from 'dayjs'
 
 
 export default function pluginTest() {
@@ -26,8 +27,6 @@ export default function pluginTest() {
     const testPluginWithConfig = (o, c) => {
       c.prototype.newApiWithConfig = () => (`hello world ${o || ''}`)
     }
-
-    responseTime(() =>dayjs.extend(testPlugin) ,"dayjs.extend(testPlugin)")
 
     dayjs.extend(testPlugin)
     dayjs.extend(testPluginWithConfig, 'good')

@@ -12,8 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import Utils from 'dayjs/src/utils'
-import { it,expect,describe,responseTime } from "../utils/utils"
+//@ts-nocheck
+import Utils from 'dayjs/esm/utils'
+import { it,expect,describe } from "../utils/utils"
 const prettyUnit = Utils.p
 const padStart = Utils.s
 const padZoneStr = Utils.z
@@ -22,7 +23,6 @@ export default function utilsTest() {
   describe('utilsTest', function () {
 
     it('PrettyUnit_abc', () => {
-      responseTime(() =>prettyUnit('Days') ,"prettyUnit('Days')")
       expect(prettyUnit('Days')).toBe('day')
       expect(prettyUnit('days')).toBe('day')
       expect(prettyUnit('day')).toBe('day')
@@ -44,8 +44,6 @@ export default function utilsTest() {
       const instance: any = {}
 
       instance.utcOffset = () => 0 * -1
-      responseTime(() =>padZoneStr(instance) ,"padZoneStr(instance)")
-
       expect(padZoneStr(instance)).toBe('+00:00')
       instance.utcOffset = () => 1 * 60 * -1
       expect(padZoneStr(instance)).toBe('-01:00')
@@ -60,7 +58,6 @@ export default function utilsTest() {
     })
 
     it('PadStart', () => {
-      responseTime(() =>padStart(1, 2, '0') ,"padStart(1, 2, '0')")
       expect(padStart(1, 2, '0')).toBe('01')
       expect(padStart(0, 2, '0')).toBe('00')
     })
