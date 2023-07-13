@@ -73,7 +73,7 @@ export default function CodecFloatTest() {
               const expected = ieee754.read(buf, 0, false, 23, 4);
 
               let startTime1 = new Date().getTime();
-              assert.deepStrictEqual(decode([FLOAT32_TYPE, ...buf]), expected, "matched sign");
+              assert.strictEqual(decode([FLOAT32_TYPE, ...buf]), expected, "matched sign");
               assert.notDeepStrictEqual(decode([FLOAT32_TYPE, ...buf]), -expected, "unmatched sign");
               let endTime1 = new Date().getTime();
               let averageTime1 = ((endTime1 - startTime1) * 1000) / 2;
@@ -106,7 +106,7 @@ export default function CodecFloatTest() {
           ieee754.write(buf, value, 0, false, 52, 8);
           const expected = ieee754.read(buf, 0, false, 52, 8);
           let startTime1 = new Date().getTime();
-          assert.deepStrictEqual(decode([FLOAT64_TYPE, ...buf]), expected, "matched sign");
+          assert.strictEqual(decode([FLOAT64_TYPE, ...buf]), expected, "matched sign");
           assert.notDeepStrictEqual(decode([FLOAT64_TYPE, ...buf]), -expected, "unmatched sign");
           let endTime1 = new Date().getTime();
           let averageTime1 = ((endTime1 - startTime1) * 1000) / 2;
