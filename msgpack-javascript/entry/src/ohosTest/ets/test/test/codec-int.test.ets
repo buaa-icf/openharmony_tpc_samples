@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 import assert from "./assert2hypium";
-import { setInt64, getInt64, getUint64, setUint64 } from "@msgpack/msgpack/src/utils/int";
+import { setInt64, getInt64, getUint64, setUint64 } from "@msgpack/msgpack/dist/utils/int";
 import hilog from '@ohos.hilog';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 

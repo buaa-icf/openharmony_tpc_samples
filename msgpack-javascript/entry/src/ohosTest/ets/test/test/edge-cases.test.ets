@@ -16,7 +16,7 @@
 // any errors should not break Encoder/Decoder instance states
 
 import { encode, decodeAsync, decode, Encoder, Decoder, decodeMulti, decodeMultiStream } from "@msgpack/msgpack";
-import { DataViewIndexOutOfBoundsError } from "../src/Decoder";
+import { DataViewIndexOutOfBoundsError } from "@msgpack/msgpack/dist/Decoder";
 
 import assert from "./assert2hypium";
 

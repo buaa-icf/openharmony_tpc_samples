@@ -14,8 +14,8 @@
  */
 import hilog from '@ohos.hilog';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-import { CachedKeyDecoder, KeyDecoder } from "@msgpack/msgpack/src/CachedKeyDecoder";
-import { utf8EncodeJs, utf8Count } from "@msgpack/msgpack/src/utils/utf8";
+import { CachedKeyDecoder, KeyDecoder } from "@msgpack/msgpack/dist/CachedKeyDecoder";
+import { utf8EncodeJs, utf8Count } from "@msgpack/msgpack/dist/utils/utf8";
 
 
 export default function CachedKeyDecoderTest() {

@@ -14,7 +14,7 @@
  */
 import assert from "./assert2hypium";
 import { encode, decode, decodeAsync } from "@msgpack/msgpack";
-import type { DecodeOptions } from "@msgpack/msgpack/src/decode";
+import type { DecodeOptions } from "@msgpack/msgpack/dist/decode";
 
 import hilog from '@ohos.hilog';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'

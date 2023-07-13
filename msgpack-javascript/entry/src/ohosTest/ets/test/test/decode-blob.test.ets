@@ -62,14 +62,14 @@ export default function DecodeBlobTest() {
 
     });
 
-    it("decodes_it_with_decodeAsync_", 0, async function () {
+    it("decodes_it_with_decodeAsync_1", 0, async function () {
       let startTime1 = new Date().getTime();
 
       const blob = new MyBlob([encode("Hello!")]);
 
       let endTime1 = new Date().getTime();
       let averageTime1 = ((endTime1 - startTime1) * 1000) / 1;
-      console.log(`msgpack-javascript:decodes_it_with_decodeAsync_ averageTime = ${averageTime1}`)
+      console.log(`msgpack-javascript:decodes_it_with_decodeAsync_1 averageTime = ${averageTime1}`)
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       // use any because the type of Blob#stream() in @types/node does not make sense here.
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
@@ -79,14 +79,14 @@ export default function DecodeBlobTest() {
 
     });
 
-    it("decodes_it_with_decodeAsync_", 0, async function () {
+    it("decodes_it_with_decodeAsync_2", 0, async function () {
       let startTime1 = new Date().getTime();
 
       const blob = new MyBlob([encode("Hello!")]);
 
       let endTime1 = new Date().getTime();
       let averageTime1 = ((endTime1 - startTime1) * 1000) / 1;
-      console.log(`msgpack-javascript:decodes_it_with_decodeAsync_ averageTime = ${averageTime1}`)
+      console.log(`msgpack-javascript:decodes_it_with_decodeAsync_2 averageTime = ${averageTime1}`)
 
       blob.arrayBuffer().then(buffer => {
         decodeAsync(buffer as any).then((result) => {
