@@ -75,6 +75,7 @@
                 <policyitem type="license" name="ThirdPartyNotice" path=".*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="误报，非协议名称" />
                 <policyitem type="copyright" name="Copyright (c) 2009-2016 Stuart Knightley, David Duponchel, Franz Buchinger, António Afonso" path="jszipDemo/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="jszip 原开源库的版权头，保留以符合开源要求"/>
                 <policyitem type="license" name="MIT" path="levenDemo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="JsSha1Demo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
             </policy>
         </policylist>
     </oatconfig>
