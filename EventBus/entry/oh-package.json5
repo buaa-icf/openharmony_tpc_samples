@@ -1,0 +1,11 @@
+{
+  "license": "MIT license",
+  "devDependencies": {},
+  "author": "ohos_tpc",
+  "name": "entry",
+  "description": "Simple JavaScript class for managing events",
+  "main": "",
+  "version": "1.0.0",
+  "dependencies": {
+  }
+}
