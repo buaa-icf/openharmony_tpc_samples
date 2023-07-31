@@ -12,14 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { RUNNING, SUCCESS, FAILURE } from 'behaviortree/src/constants'
-import BehaviorTree from 'behaviortree/src/BehaviorTree'
-import Task from 'behaviortree/src/Task'
-import InvertDecorator from 'behaviortree/src/decorators/InvertDecorator'
-import Introspector from 'behaviortree/src/Introspector'
-import Selector from 'behaviortree/src/Selector'
-import Sequence from 'behaviortree/src/Sequence'
-import Random from 'behaviortree/src/Random'
+
+import { RUNNING, SUCCESS, FAILURE,Sequence,Selector,Task,Random,Decorator,Introspector,BehaviorTree } from 'behaviortree'
+import InvertDecorator from 'behaviortree/lib/decorators/InvertDecorator'
 import { describe , beforeAll, beforeEach, afterEach, afterAll, it as _it, expect,diff } from '../utils/utils'
 
 export default function IntrospectorTest() {
@@ -86,13 +81,13 @@ export default function IntrospectorTest() {
     _it('is empty initially', () => {
       expect(introspector.lastResult).toEqual(null)
 
-      expect(JSON.stringify(introspector.results)).toEqual([])
+      expect(introspector.results.length).toEqual(0)
 
     })
   })
 
   // 通过
-  describe('with_the_simplest_tree_possible', () => {
+  describe('with_the_simplest_tree_possible', function() {
     beforeEach(() => {
 
       bTree = new BehaviorTree({ tree: 'simpleTask', blackboard })
@@ -147,7 +142,7 @@ export default function IntrospectorTest() {
   })
 
   // 通过
-  describe('with_nameless_tasks', () => {
+  describe('with_nameless_tasks', function() {
     beforeEach(() => {
       blackboard = {
         start: 0,
@@ -157,6 +152,7 @@ export default function IntrospectorTest() {
       }
 
       bTree = new BehaviorTree({ tree: new Task({ run: () => RUNNING }), blackboard })
+      introspector = new Introspector()
     })
 
     _it('does not print a name', () => {
@@ -172,7 +168,7 @@ export default function IntrospectorTest() {
   })
 
   // 通过
-  describe('with_nameless_branching_nodes', () => {
+  describe('with_nameless_branching_nodes', function() {
     beforeEach(() => {
       blackboard = {
         start: 0,
@@ -182,6 +178,7 @@ export default function IntrospectorTest() {
       }
 
       bTree = new BehaviorTree({ tree: new Sequence({ nodes: ['simpleTask'] }), blackboard })
+      introspector = new Introspector()
     })
 
     _it('does not print a name', () => {
@@ -203,7 +200,7 @@ export default function IntrospectorTest() {
   })
 
   // 通过
-  describe('with_a_decorator', () => {
+  describe('with_a_decorator', function() {
     beforeEach(() => {
       blackboard = {
         start: 0,
@@ -211,8 +208,10 @@ export default function IntrospectorTest() {
         end: 0,
         result: SUCCESS
       }
-      const tree = new InvertDecorator({ name: 'inverter', node: 'simpleTask' })
+      // @ts-ignore
+      const tree = new InvertDecorator.default({ name: 'inverter', node: 'simpleTask' })
       bTree = new BehaviorTree({ tree, blackboard })
+      introspector = new Introspector()
     })
 
     _it('shows Task and Decorator', () => {
@@ -238,7 +237,7 @@ export default function IntrospectorTest() {
   })
 
   // 通过
-  describe('with_a_selector', () => {
+  describe('with_a_selector', function() {
     beforeEach(() => {
       blackboard = {
         start: 0,
@@ -246,6 +245,7 @@ export default function IntrospectorTest() {
         end: 0,
         result: SUCCESS
       }
+      introspector = new Introspector()
     })
 
     _it('does not show task that did not run', () => {
@@ -326,7 +326,7 @@ export default function IntrospectorTest() {
   })
 
   // 通过
-  describe('a_full_scale_tree', () => {
+  describe('a_full_scale_tree', function() {
     beforeEach(() => {
       blackboard = {
         start: 0,
@@ -334,10 +334,12 @@ export default function IntrospectorTest() {
         end: 0,
         result: SUCCESS
       }
+      introspector = new Introspector()
     })
 
     _it('shows all that did run', () => {
-      const invertedSimple = new InvertDecorator({ node: 'simpleTask' })
+      // @ts-ignore
+      const invertedSimple = new InvertDecorator.default({ node: 'simpleTask' })
       const selector1 = new Selector({ name: 'select1', nodes: ['failingTask', 'simpleTask'] })
       const selector2 = new Selector({ name: 'select2', nodes: [invertedSimple, 'simpleTask', 'failingTask'] })
 
@@ -394,7 +396,7 @@ export default function IntrospectorTest() {
   })
 
   // 通过
-  describe('with_a_Random_node', () => {
+  describe('with_a_Random_node', function() {
     beforeEach(() => {
       blackboard = {
         start: 0,
@@ -403,6 +405,7 @@ export default function IntrospectorTest() {
         result: SUCCESS
       }
       bTree = new BehaviorTree({ tree: new Random({ nodes: ['simpleTask', 'failingTask'] }), blackboard })
+      introspector = new Introspector()
     })
 
     _it('cleans the results', () => {
@@ -414,7 +417,7 @@ export default function IntrospectorTest() {
   })
 
   // 通过
-  describe('reset_method', () => {
+  describe('reset_method', function() {
     _it('cleans the results', () => {
       bTree = new BehaviorTree({ tree: 'simpleTask', blackboard: {} })
       bTree.step({ introspector })
@@ -427,7 +430,7 @@ export default function IntrospectorTest() {
   })
 
   // 通过
-  describe('having_a_custom_introspector_module', () => {
+  describe('having_a_custom_introspector_module', function() {
     class BlackboardChangesIntrospector extends Introspector {
       start(tree) {
         //@ts-ignore

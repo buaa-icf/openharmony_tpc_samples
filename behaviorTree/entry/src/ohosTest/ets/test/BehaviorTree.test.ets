@@ -12,13 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { RUNNING, SUCCESS, FAILURE } from 'behaviortree/src/constants'
-import BehaviorTree from 'behaviortree/src/BehaviorTree'
-import Sequence from 'behaviortree/src/Sequence'
-import Selector from 'behaviortree/src/Selector'
-import Task from 'behaviortree/src/Task'
-import InvertDecorator from 'behaviortree/src/decorators/InvertDecorator'
-import Decorator from 'behaviortree/src/Decorator'
+
+import { RUNNING, SUCCESS, FAILURE,Sequence,Selector,Task,Decorator,BehaviorTree } from 'behaviortree'
+import InvertDecorator from 'behaviortree/lib/decorators/InvertDecorator'
 import { describe  , beforeAll, beforeEach, afterEach, afterAll, it as test, expect } from '../utils/utils'
 
 
@@ -28,7 +24,7 @@ let blackboard
 export default function BehaviorTreedescribe() {
 
   // 通过
-  describe('with_a_medium_complex_tree', () => {
+  describe('with_a_medium_complex_tree', function() {
     const aTask = new Task({
       run: function (blackboard) {
         ++blackboard.aCounter
@@ -111,7 +107,7 @@ export default function BehaviorTreedescribe() {
   })
 
   // 通过
-  describe('with_the_simplest_tree_possible', () => {
+  describe('with_the_simplest_tree_possible1', function() {
     beforeEach(() => {
       blackboard = {
         start: 0,
@@ -164,7 +160,7 @@ export default function BehaviorTreedescribe() {
   })
 
   // 通过
-  describe('with_the_simplest_tree_possible', () => {
+  describe('with_the_simplest_tree_possible2', function() {
     beforeEach(() => {
       blackboard = {
         start: 0,
@@ -217,7 +213,7 @@ export default function BehaviorTreedescribe() {
   })
 
   // 通过
-  describe('registering_of_tasks', () => {
+  describe('registering_of_tasks', function() {
     beforeEach(() => {
       blackboard = {
         taskA: 0,
@@ -338,7 +334,8 @@ export default function BehaviorTreedescribe() {
       bTree = new BehaviorTree({
         blackboard,
         tree: new Selector({
-          nodes: [new InvertDecorator({ node: 'taskA' }), 'taskB']
+          // @ts-ignore
+          nodes: [new InvertDecorator.default({ node: 'taskA' }), 'taskB']
         })
       })
       bTree.step()
@@ -349,7 +346,7 @@ export default function BehaviorTreedescribe() {
   })
 
   // 通过
-  describe('behavior_with_running_nodes', () => {
+  describe('behavior_with_running_nodes', function() {
     test('calls start of all task where appropriate', () => {
       const task1 = new Task({
         start: function (blackboard) {
@@ -468,7 +465,7 @@ export default function BehaviorTreedescribe() {
       expect(blackboard.start3).toEqual(0)
       expect(blackboard.run3).toEqual(0)
       expect(blackboard.end3).toEqual(0)
-
+      // @ts-ignore
       blackboard.task2Result = SUCCESS
 
       bTree.step()
@@ -494,7 +491,7 @@ export default function BehaviorTreedescribe() {
   })
 
   // 通过
-  describe('some_curious_edge_cases', () => {
+  describe('some_curious_edge_cases', function() {
     function createTask(name) {
       return new Task({
         name,

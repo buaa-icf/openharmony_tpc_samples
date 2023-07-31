@@ -12,9 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { SUCCESS, FAILURE, RUNNING } from 'behaviortree/src/constants'
-import Decorator from 'behaviortree/src/Decorator'
-import Task from 'behaviortree/src/Task'
+import { RUNNING, SUCCESS, FAILURE,Task,Decorator } from 'behaviortree'
 import { describe , beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/utils'
 
 export default function DecoratorTest() {
@@ -61,6 +59,7 @@ export default function DecoratorTest() {
       expect(blackboard.start).toEqual(1)
       expect(blackboard.end).toEqual(0)
 
+      // @ts-ignore
       blackboard.result = FAILURE
 
       decoratedTask.run(blackboard, { rerun: true })
