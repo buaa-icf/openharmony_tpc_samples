@@ -208,10 +208,8 @@ export default class util {
             let prefix = "\\u";
             if (charCode < 0x10) {
               prefix = "\\u000";
-            } else if (charCode < 0x100) {
+            } else {
               prefix = "\\u00";
-            } else if (charCode < 0x1000) {
-              prefix = "\\u0";
             }
             let result = '';
             result += prefix;

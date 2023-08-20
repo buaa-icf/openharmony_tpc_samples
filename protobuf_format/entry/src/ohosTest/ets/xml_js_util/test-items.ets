@@ -307,7 +307,7 @@ var tests = function (direction, options) {
         tests[i].xml = tests[i].xml.replace(/>\n\v*/gm, '>');
       }
       if ('spaces' in options && options.spaces !== 0 && typeof options.spaces === 'number') {
-        var whitespaces =''
+        var whitespaces = ''
         for (let i = 0; i < options.spaces; i++) {
           whitespaces += ' ';
         }

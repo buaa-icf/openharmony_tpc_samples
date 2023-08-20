@@ -1,7 +1,7 @@
 {
-  "license": "",
+  "license": "Apache-2.0 License",
   "devDependencies": {},
-  "author": "",
+  "author": "ohos_tpc",
   "name": "entry",
   "description": "Please describe the basic information.",
   "main": "",
