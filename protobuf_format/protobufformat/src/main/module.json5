@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "protobufformat",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}
