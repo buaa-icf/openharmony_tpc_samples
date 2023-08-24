@@ -2,7 +2,7 @@
 
 ## 介绍
 
-基于xml-js@1.6.11版本移植，提供Xml文本与JavaScript 对象与Json之间转换的工具类。
+基于xml-js@1.6.11版本移植，提供Xml文本与JavaScript对象与Json之间转换的工具类。
 
 ## 下载安装
 

@@ -1,6 +1,6 @@
 {
   "name": "@ohos/sax",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A sax style parser for JS，A very simple tool to parse through an XML string。",
   "main": "index.ets",
   "dependencies": {

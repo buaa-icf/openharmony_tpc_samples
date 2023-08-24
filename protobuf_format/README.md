@@ -2,7 +2,7 @@
 
 ## 介绍
 
-基于@ohos/protobufjs 1.0.0版本的Message，提供不同格式的序列化与反序列化。允许将默认（字节数组）输出重写为基本文本格式，如xml,json,html。
+基于@ohos/protobufjs 1.0.0版本的Message，提供格式转换能力，允许将Message输出重写为基本文本格式，如xml,json,html。
 
 ## 下载安装
 
