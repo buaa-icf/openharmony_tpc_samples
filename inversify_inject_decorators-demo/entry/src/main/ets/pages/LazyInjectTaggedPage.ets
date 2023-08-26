@@ -95,9 +95,9 @@ struct LazyInjectTaggedPage {
 
     let warrior = new Warrior();
     console.log((warrior.primaryWeapon instanceof Sword)+""); // true
-    console.log((warrior.primaryWeapon instanceof Shuriken)+""); // true
+    console.log((warrior.secondaryWeapon instanceof Shuriken)+""); // true
     this.message=(warrior.primaryWeapon instanceof Sword)+"";
-    this.message2=(warrior.primaryWeapon instanceof Shuriken)+"";
+    this.message2=(warrior.secondaryWeapon instanceof Shuriken)+"";
   }
 
 
