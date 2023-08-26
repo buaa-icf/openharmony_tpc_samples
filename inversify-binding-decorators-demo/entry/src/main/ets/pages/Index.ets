@@ -171,8 +171,8 @@ struct Index {
     this.message=(ninja instanceof Ninja)+"";
     this.message2=(ninja.primary instanceof Katana)+"";
     this.message3=(ninja.secondary instanceof Shuriken)+"";
-    this.message4=(ninja.fight.toString()=="Hit by Katana!")+"";
-    this.message5=(ninja.sneak.toString()=="Hit by Shuriken!")+"";
+    this.message4=(ninja.fight().toString()=="Hit by Katana!")+"";
+    this.message5=(ninja.sneak().toString()=="Hit by Shuriken!")+"";
   }
   
   provideSample(){
@@ -181,8 +181,8 @@ struct Index {
     this.message=(ninja instanceof NinjaProvide)+"";
     this.message2=(ninja.katana instanceof KatanaProvide)+"";
     this.message3=(ninja.shuriken instanceof ShurikenProvide)+"";
-    this.message4=(ninja.fight.toString()=="cut!")+"";
-    this.message5=(ninja.sneak.toString()=="hit!")+"";
+    this.message4=(ninja.fight().toString()=="cut!")+"";
+    this.message5=(ninja.sneak().toString()=="hit!")+"";
   }
 
 
