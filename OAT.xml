@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <oatconfig>
         <filefilterlist>
@@ -80,6 +80,7 @@
                 <policyitem type="license" name="MIT" path="JsSha1Demo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="protobuf_format/sax/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="protobuf_format/xml-js/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="ThreeJs360Demo/source/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配源码协议，符合开源要求"/>
             </policy>
         </policylist>
     </oatconfig>
