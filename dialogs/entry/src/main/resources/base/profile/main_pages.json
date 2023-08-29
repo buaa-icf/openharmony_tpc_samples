@@ -18,7 +18,6 @@
     "pages/BottomTextDialogExample",
     "pages/BottomListDialogExample",
     "pages/AnimateInputContent",
-    "pages/AnimateContent",
-    "pages/Attach"
+    "pages/AnimateContent"
   ]
 }
