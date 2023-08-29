@@ -1,0 +1,151 @@
+import { AnimateInputDialog,AnimateEffect,AnimateDialogOptions } from '@ohos/dialogs'
+import { LVLineWithTextController,LVLineWithText } from '@ohos/dialogs'
+import { LVCircularRing,LVCircularRingController,AnimateManager,Switch } from '@ohos/dialogs'
+import animator from "@ohos.animator";
+@CustomDialog
+struct CustomDialogExample {
+  @Link percentValue: number
+  @State lvLineWithTextController: LVLineWithTextController = new LVLineWithTextController()
+    .setViewColor("rgb(33,66,77)").setTextColor("rgb(233, 166, 177)")
+  controller: CustomDialogController
+  // 若尝试在CustomDialog中传入多个其他的Controller，以实现在CustomDialog中打开另一个或另一些CustomDialog，那么此处需要将指向自己的controller放在最后
+  cancel: () => void
+  confirm: () => void
+
+  build() {
+    Stack(){
+      LVLineWithText({controller: $lvLineWithTextController, percentValue: $percentValue})
+        .width('100%')
+        .height('100%')
+    }
+    .width(300)
+    .height(50)
+    .backgroundColor('#33000000')
+  }
+}
+@CustomDialog
+struct CustomDialogExample2 {
+
+  @State ringController: LVCircularRingController = new LVCircularRingController()
+    .setViewColor("#64ffffff").setBarColor("#FFFF00")
+  @State ringAnimatedManager: AnimateManager = {
+    animatedSwitch: Switch.CLOSE
+  }
+  controller: CustomDialogController
+  // 若尝试在CustomDialog中传入多个其他的Controller，以实现在CustomDialog中打开另一个或另一些CustomDialog，那么此处需要将指向自己的controller放在最后
+  cancel: () => void
+  confirm: () => void
+
+  build() {
+    Column(){
+      LVCircularRing({controller: $ringController, animateManager: $ringAnimatedManager})
+        .width(100)
+        .height(100)
+      Row(){
+        Button('时间0.5s').onClick(()=>{
+          this.ringAnimatedManager = {
+            animatedSwitch: Switch.OPEN
+          }
+        })
+        Button('时间5s').onClick(()=>{
+          this.ringAnimatedManager = {
+            animatedSwitch: Switch.OPEN,
+            duration: 5000
+          }
+        })
+        Button('关闭').onClick(()=>{
+          this.ringAnimatedManager = {
+            animatedSwitch: Switch.CLOSE
+          }
+        })
+      }
+      .margin({top:50})
+    }
+    .alignItems(HorizontalAlign.Center)
+    .justifyContent(FlexAlign.Center)
+    .width(300)
+    .height(300)
+    .backgroundColor('#33000000')
+  }
+}
+
+@Entry
+@Component
+struct AnimateContent {
+  @State inputValue: string = '点击展示数字百分比'
+  @State inputValue2: string = '点击展示圆环'
+  dialogProgressNumberController: CustomDialogController = new CustomDialogController({
+    builder: CustomDialogExample({
+      percentValue: $percentValue
+    }),
+    autoCancel: true,
+    alignment: DialogAlignment.Center,
+    customStyle: true
+  })
+  dialogRingController: CustomDialogController = new CustomDialogController({
+    builder: CustomDialogExample2({
+    }),
+    autoCancel: true,
+    alignment: DialogAlignment.Center,
+    customStyle: true
+  })
+
+  // 在自定义组件即将析构销毁时将dialogControlle删除和置空
+  aboutToDisappear() {
+    delete this.dialogProgressNumberController, // 删除dialogProgressNumberController
+    this.dialogProgressNumberController = undefined // 将dialogProgressNumberController置空
+    delete this.dialogRingController, // 删除dialogRingController
+    this.dialogRingController = undefined // 将dialogRingController置空
+  }
+
+  onCancel() {
+    console.info('Callback when the first button is clicked')
+  }
+
+  onAccept() {
+    console.info('Callback when the second button is clicked')
+  }
+
+  existApp() {
+    console.info('Click the callback in the blank area')
+  }
+
+  animator1
+  @State percentValue: number = 0
+
+
+  build() {
+    Column() {
+      Button(this.inputValue)
+        .onClick(() => {
+          if (this.dialogProgressNumberController != undefined) {
+            this.dialogProgressNumberController.open()
+
+            this.animator1 = animator.create({
+              duration:5000,
+              easing:'linear',
+              iterations: 1,
+              begin:0,
+              end:100,
+              fill:'none',
+              delay:0,
+              direction: 'normal'
+            })
+            this.animator1.onframe = (inputValue) => {
+              console.log('dodo value = '+ inputValue)
+              this.percentValue = Math.floor(inputValue);
+            }
+            this.animator1.play()
+          }
+        }).backgroundColor(0x317aff)
+
+      Button(this.inputValue2)
+        .onClick(()=>{
+          if(this.dialogRingController != undefined){
+            this.dialogRingController.open()
+          }
+        }).margin({top:20})
+
+    }.width('100%').margin({ top: 5 })
+  }
+}

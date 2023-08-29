@@ -1,0 +1,129 @@
+import { BaseMode } from '../model/BaseModel'
+import inspector from '@ohos.arkui.inspector'
+// @ts-ignore
+import componentUtils from '@ohos.arkui.componentUtils'
+
+const TAG = 'BottomScrollDialog'
+@CustomDialog
+export struct BottomScrollDialog {
+  scroller: Scroller = new Scroller()
+  model: BaseMode = new BaseMode()
+  @Link arr: string[]   // 列表数据
+  @Prop dialogTitle: string = "全部评论" // 列表标题
+  @Prop inputTextPlaceholder: string = "请输入" // 输入框的提示语句
+  @State dialogTitleFontSize: number = 20 // 标题字体大小
+  @State scrollEmptyHeight: number = 20  // 控件内部使用，滑动控制
+  scrollMinHeight: Length = '10%'
+  scrollMaxHeight: Length = '78%'
+  private closeDialogHeight = 78 // 控件内部使用，关闭界限
+  private parentScrollHeight: number = 80 // 控件内部使用，scroll的高度
+  @State init: boolean = true // 控件内部使用，用于初始化走手势逻辑
+  @BuilderParam customComponent: (item, itemIndex) => void // 列表中的自定义控件
+  private panOption: PanGestureOptions = new PanGestureOptions({ direction: PanDirection.Up | PanDirection.Down }) // 手势定义
+  dialogInput: CustomDialogController // 输入框的控制对象
+  controller: CustomDialogController  // 当选dialog控制对象
+  listenerScrollColumn= inspector.createComponentObserver('scrollColumnId');
+  aboutToDisappear() {
+    this.listenerScrollColumn.off("draw")
+    if (this.model.customCallback && this.model.customCallback.beforeDisappear) {
+      this.model.customCallback.beforeDisappear();
+    }
+    if (this.model.isDeleteOnDisappear) {
+      delete this.controller
+      this.controller = undefined
+    }
+  }
+  aboutToAppear() {
+    this.listenerScrollColumn.on("draw",() => {
+      let scrollIdPosition = componentUtils.getRectangleById("scrollId");
+      let scrollColumnIdPosition = componentUtils.getRectangleById("scrollColumnId");
+      let scrollColumnHeight = scrollColumnIdPosition.size.height;
+      let Scroll_01_height= scrollIdPosition.size.height;
+      if (scrollColumnHeight < Scroll_01_height) {
+        console.log(TAG, "this.init: " + this.init )
+        this.init = true
+      }
+    })
+
+    if (this.model.customCallback && this.model.customCallback.beforeAppear) {
+      this.model.customCallback.beforeAppear();
+    }
+  }
+
+  build() {
+    Column(){
+      Column().width('100%').height((100 - this.parentScrollHeight) + '%').onClick(() => {
+        this.controller.close()
+      })
+      Scroll(this.scroller){
+        Column(){
+          Column(){
+          }.width('100%').height(this.scrollEmptyHeight + '%').backgroundColor(Color.Transparent).onClick(() => {
+            this.controller.close()
+          }).id("scrollEmpty")
+
+          Column(){
+            Text(this.dialogTitle).width('100%').fontSize(this.dialogTitleFontSize).height('100%').padding(20)
+              .borderRadius({ topLeft:'20vp',topRight:'20vp' })
+          }.width('100%').height('10%').backgroundColor(Color.White).id("Scroll_title")
+          Scroll() {
+            Column({space:20}) {
+              if (this.arr) {
+                ForEach(this.arr, (item, itemIndex) => {
+                  if (this.customComponent != undefined) {
+                    this.customComponent(item, itemIndex);
+                  }
+                }, item => item)
+              }
+            }.width('100%').margin({"top":"5.00vp","right":"0.00vp","bottom":"5.00vp","left":"0.00vp"}).id("scrollColumnId")
+          }.width('100%').constraintSize({minHeight: this.scrollMinHeight, maxHeight: this.scrollMaxHeight})
+          .id("scrollId")
+          .scrollable(ScrollDirection.Vertical)  // 滚动方向纵向
+          .scrollBar(BarState.Off)  // 滚动条常驻显示
+          .edgeEffect(EdgeEffect.None)
+          .nestedScroll({scrollForward:NestedScrollMode.PARENT_FIRST, scrollBackward:NestedScrollMode.SELF_FIRST})
+          if (this.dialogInput) {
+            Column(){
+              Text(this.inputTextPlaceholder).width('100%').fontSize(14).height('100%').backgroundColor(Color.White).padding(10).onClick(() => {
+                this.dialogInput.open();
+              }).margin({bottom:10})
+            }.width('100%').height('12%').backgroundColor(Color.Green).padding(15)
+          }
+        }.width('100%').margin({bottom:40})
+      }.parallelGesture( PanGesture(this.panOption)
+        .onActionUpdate((event: GestureEvent) => {
+          console.info(TAG, "eventy: " + event.offsetY + " scrollEmptyHeight: " + this.scrollEmptyHeight + " isInit: " + this.init)
+          if (this.init) {
+            if ((event.offsetY > 0) && (this.scrollEmptyHeight < this.closeDialogHeight)) {
+              this.scrollEmptyHeight += 4
+            } else if (event.offsetY < 0 && this.scrollEmptyHeight > 0) {
+              let tmp = this.scrollEmptyHeight - 4;
+              this.scrollEmptyHeight = tmp < 0 ? 0 : tmp
+            }
+            if ((this.scrollEmptyHeight > this.closeDialogHeight) ||
+              (this.scrollEmptyHeight == this.closeDialogHeight)) {
+              this.controller.close()
+            }
+          }
+
+        }), GestureMask.Normal)
+      .onScroll((xOffset: number, yOffset: number) => {
+        this.init = false
+        console.info(TAG, "parent: " + xOffset + ' ' + yOffset + ' scrollEmptyHeight: ' + this.scrollEmptyHeight)
+        if ((yOffset < 0) && (this.scrollEmptyHeight < this.closeDialogHeight)) {
+          this.scrollEmptyHeight += 2
+        }
+      }).onScrollEdge((side: Edge) => {
+        console.info(TAG,'To the edge side: ' + side)
+        if (side == 0) {
+          this.controller.close()
+        }
+      })
+      .width('100%').height(this.parentScrollHeight + '%')
+      .scrollable(ScrollDirection.Vertical)
+      .scrollBar(BarState.Off)
+      .align(Alignment.Bottom)
+    }.width('100%').height('100%')
+    .backgroundColor(Color.Transparent)
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "app": {
+    "signingConfigs": [
+      {
+        "name": "default",
+        "material": {
+          "certpath": "C:\\Users\\issuser\\.ohos\\config\\openharmony\\auto_ohos_default_dialogs_com.openharmony.dialogs.cer",
+          "storePassword": "0000001A512A0DA5AEDB4C6255C77F0B1A56D482282AE3914359F20CC33E4A184E73ED35ACD6F088C52A",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001AC825B9A53DAF60A60B54C8342DB07C50C45C28E8B2ABF1A264D5AF02C26CBE7ED3A3813D511D",
+          "profile": "C:\\Users\\issuser\\.ohos\\config\\openharmony\\auto_ohos_default_dialogs_com.openharmony.dialogs.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "C:\\Users\\issuser\\.ohos\\config\\openharmony\\auto_ohos_default_dialogs_com.openharmony.dialogs.p12"
+        }
+      }
+    ],
+    "products": [
+      {
+        "name": "default",
+        "signingConfig": "default",
+        "compatibleSdkVersion": 10,
+        "compileSdkVersion": 10,
+        "targetSdkVersion": 10,
+        "runtimeOS": "OpenHarmony"
+      }
+    ],
+    "buildModeSet": [
+      {
+        "name": "debug",
+      },
+      {
+        "name": "release"
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Dialogs",
+      "srcPath": "./Dialogs"
+    }
+  ]
+}

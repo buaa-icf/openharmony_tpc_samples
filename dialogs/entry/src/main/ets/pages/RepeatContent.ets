@@ -1,0 +1,92 @@
+import { RepeatDialog,BaseCenterMode } from '@ohos/dialogs'
+import { AnimateEffect,AnimateDialogOptions } from '@ohos/dialogs'
+@Entry
+@Component
+struct RepeatDialogExample {
+  scroller: Scroller = new Scroller()
+  @State model:BaseCenterMode = new BaseCenterMode()
+  @State inputValue: string = 'click me'
+  @State animateOption: AnimateDialogOptions = { animate:AnimateEffect.TranslateFromTop}
+  aboutToAppear(){
+    this.model.dialogPadding={left:10,right:10}
+    this.model.dialogBgColor = '#F0A0CA'
+    this.model.title='复用项目已有组件'
+    this.model.titleFontColor = Color.Red
+    this.model.contentHeight = 100
+    this.model.titleMargin = { top: 10, bottom: 10 }
+    this.model.contentMargin = { left:10,right:10, bottom: 0 }
+    this.model.btnContentBorder = {
+      width: {top: 1},
+      color:{top: Color.Yellow},
+      style:{top:BorderStyle.Solid},
+    }
+    this.model.cancelBtnTitle = 'cancel'
+    this.model.cancelBtnFontColor = '#6E495D'
+    this.model.confirmBtnFontColor = '#6E495D'
+    this.model.cancelBtnBgColor = '#F0A0CA'
+    this.model.confirmBtnBgColor = '#F0A0CA'
+    this.model.confirmBtnTitle = 'OK'
+    this.model.titleBorder = {
+      width: {bottom: 1},
+      color:{bottom: Color.Yellow},
+      style:{bottom:BorderStyle.Solid},
+    }
+  }
+
+  @Builder componentBuilder() {
+    Stack({ alignContent: Alignment.TopStart }) {
+      Scroll(this.scroller){
+        Column(){
+          Text( '你可以为弹窗选择任意一种动画，但这并不必要，因为我已经默认给每种弹窗设定了最佳动画！对于你自定义的弹窗，可以随心选中心仪的动画方案。')
+            .fontColor(Color.Black)
+            .fontSize(20)
+        }
+      }
+    }.height('100%').padding(10)
+
+  }
+  dialogController: CustomDialogController = new CustomDialogController({
+    builder: RepeatDialog({
+      slotContent: () => {
+        this.componentBuilder()
+      },
+      model:this.model,
+      cancel: this.onCancel,
+      confirm: this.onAccept,
+    }),
+    cancel: this.existApp,
+    autoCancel: true,
+    alignment: DialogAlignment.Center,
+    offset: { dx: 0, dy: 0 },
+    gridCount: 4,
+    customStyle: true
+  })
+
+  // 在自定义组件即将析构销毁时将dialogControlle删除和置空
+  aboutToDisappear() {
+    delete this.dialogController, // 删除dialogController
+    this.dialogController = undefined // 将dialogController置空
+  }
+
+  onCancel() {
+    console.info('Callback when the first button is clicked')
+  }
+
+  onAccept() {
+    console.info('Callback when the second button is clicked')
+  }
+
+  existApp() {
+    console.info('Click the callback in the blank area')
+  }
+
+  build() {
+    Column() {
+      Flex({direction:FlexDirection.Row,alignItems: ItemAlign.Center}){
+        Button('使用内置弹窗绑定项目已有布局').onClick(()=>{
+          this.dialogController.open()
+        })
+      }
+    }.width('100%').margin({ top: 5 }).backdropBlur(20)
+  }
+}

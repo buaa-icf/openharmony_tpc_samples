@@ -1,0 +1,19 @@
+export enum  AnimateEffect{
+  ScaleLeftTop,
+  ScaleLeftBottom,
+  ScaleRightTop,
+  ScaleRightBottom,
+  ScaleCenterLeft,
+  ScaleCenterTop,
+  ScaleCenterRight,
+  ScaleCenterBottom,
+  Center,
+  TranslateFromTop,
+  TranslateFromBottom,
+  TranslateFromLeft,
+  TranslateFromRight,
+  TranslateFromLeftTop,
+  TranslateRightTop,
+  TranslateFromLeftBottom,
+  TranslateFromRightBottom
+}
