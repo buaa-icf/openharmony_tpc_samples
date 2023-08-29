@@ -22,6 +22,7 @@
         </filefilter>
         <filefilter name="binaryFileTypePolicyFilter" desc="Filters for binary file policies">
             <filteritem type="filename" name="*.png" desc="png图片格式文件,用于展示示例"/>
+            <filteritem type="filename" name="*.PNG" desc="PNG图片格式文件,用于展示示例"/>
         </filefilter>
     </filefilterlist>
 </oatconfig>

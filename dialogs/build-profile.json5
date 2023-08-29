@@ -1,19 +1,6 @@
 {
   "app": {
-    "signingConfigs": [
-      {
-        "name": "default",
-        "material": {
-          "certpath": "C:\\Users\\Administrator\\.ohos\\config\\openharmony\\auto_ohos_default_dialogs_com.openharmony.dialogs.cer",
-          "storePassword": "0000001B2F57F22D8D3D5FED15B824681583A0460775466440C40EB3EA0B1287936C9EB04D81196DE603FB",
-          "keyAlias": "debugKey",
-          "keyPassword": "0000001B06A64A73B896E0FBAACD541499FF09C9A8E5BD43086714356CA1E56566C856C4FCE82A5DF018AF",
-          "profile": "C:\\Users\\Administrator\\.ohos\\config\\openharmony\\auto_ohos_default_dialogs_com.openharmony.dialogs.p7b",
-          "signAlg": "SHA256withECDSA",
-          "storeFile": "C:\\Users\\Administrator\\.ohos\\config\\openharmony\\auto_ohos_default_dialogs_com.openharmony.dialogs.p12"
-        }
-      }
-    ],
+    "signingConfigs": [],
     "products": [
       {
         "name": "default",

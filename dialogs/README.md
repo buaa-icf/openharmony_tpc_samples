@@ -1,7 +1,7 @@
-# xpopup
+# ohso_dialogs
 
 #### 介绍
-使用ets实现xpopup功能
+使用ets实现通用的弹窗组件封装和拓展
 本项目时OpenHarmony系统的一款dialog库，基于CustomDialog进行封装能力如下：
 1.支持内容提示弹窗
 2.支持input弹窗
@@ -12,16 +12,31 @@
 
 #### 软件架构
 软件架构说明
+```
 
 |---- Xpopup 
-    |----Dialog  #组件文件夹
+|    |----Dialog  #组件文件夹
         |----src #组件入口文件夹
             |----main
                 |----ets
                     |----components #组件库
+                        |----confirmDialog #显示confirm弹窗
+                        |----InputDialog  #显示带输入框的弹窗
+                        |----listSelectDialog  #显示列表弹窗
+                        |----loadingDialog  #显示loading弹窗
+                        |----bottonDialog 
+                            |----BottomListDialog #显示bottom类型的列表弹窗
+                            |----BottomScrollDialog #显示bottom类型的自定义弹窗 #复杂交互的bottom弹窗
+                        |----popupBottom  #显示气泡类弹窗
+                        |----fullScreenDialog  #显示自定义全屏弹窗
+                        |----messageDialog  #显示消息类弹窗
+                        |----topDialog   #显示顶部打开弹窗
+                        |----realtimeInputPopup  #显示联想类弹窗
+                        |----sliderdialog   #显示抽屉类弹窗  #大图浏览类弹窗
+                        |----positionDialog   #显示自定义动画弹窗
         |----resource
         |----index   #组件向外暴露组件
-    |----entry  #页面入口文件夹
+|    |----entry  #页面入口文件夹
         |----src #组件入口文件夹
             |----main
                 |----ets
@@ -34,11 +49,7 @@
                         |----profile 
                             |----main_pages.json #页面路由配置文件
 
-
-#### 安装教程
-1.  xxxx
-2.  xxxx
-3.  xxxx
+```
 
 #### 使用说明
 1.  提供了多种弹窗和自定义动画弹窗 'SideBarContainerExample','Confirm','InputContent','ListSelect','Loading','PositionContent','FullScreen',
@@ -126,8 +137,6 @@ struct ConfirmExample {
   }
 }
 ```
-    
-3.  xxxx
 
 ### 全局属性说明
 | 属性名                 | 属性类型             | 属性描述                           |
@@ -141,19 +150,4 @@ struct ConfirmExample {
 | customCallback      | CustomCallback   | 设置弹窗build前和build后的回调                       |
 
 
-#### 参与贡献
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
-
-
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
