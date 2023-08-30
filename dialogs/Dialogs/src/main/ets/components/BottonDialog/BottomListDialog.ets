@@ -199,13 +199,13 @@ struct BottomListDialogComponent {
 export struct BottomListDialog {
   private mOpenAnimator: AnimatorResult;
   @Link @Watch("showDialog") openDialog: boolean;
-  @State mDialogBackgroundColor: number | string = Color.Black;
+  @State mDialogBackgroundColor: number | string = Color.White;
   @State mDialogMaskColor: number | string = Color.Transparent;
   @State mDialogTitleHeight: number = 60;
   @State mDialogHeight: number = 0;
   @State mDialogItemHeight: number = 30;
   @State mDialogItemTextSize: number = 20;
-  @State mDialogItemTextColor: number | string = Color.White;
+  @State mDialogItemTextColor: number | string = Color.Black;
   @State mDialogItemDividerBackgroundColor: number | string = Color.Gray;
   @State mDialogItemDividerStrokeWidth: number = 1;
   @State mDialogCancelDividerBackgroundColor: number | string = Color.Gray;

@@ -60,13 +60,13 @@ struct InputDialogExample {
       style:{top:BorderStyle.Solid}
    },
     this.model.titleFontColor = '#ffffff'
+    this.model.cancel = this.onCancel
+    this.model.cancel = this.confirm
   }
 
   InputController: CustomDialogController = new CustomDialogController({
     builder: InputDialog({
       model: this.model,
-      cancel: this.onCancel,
-      confirm: this.confirm,
       inputValue: this.inputValue
     }),
     customStyle: true,

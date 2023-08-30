@@ -3,12 +3,21 @@
 #### 介绍
 使用ets实现通用的弹窗组件封装和拓展
 本项目时OpenHarmony系统的一款dialog库，基于CustomDialog进行封装能力如下：
-1.支持内容提示弹窗
+1.支持内容确认弹窗
 2.支持input弹窗
 3.支持列表list弹窗
-4.支持自定义动画弹窗
-5.支持loading动画弹窗
-6.支持各种复杂交互弹窗
+4.支持loading动画弹窗
+5.支持bottom列表互弹窗
+6.支持bottom自定义弹窗
+7.支持bottom复杂交互弹窗
+8.支持气泡类弹窗
+9.支持自定义全屏弹窗
+10.支持消息类弹窗
+11.支持顶部弹窗
+12.支持联想类弹窗
+13.支持抽屉类弹窗
+14.支持自定义动画弹窗
+15.支持大图浏览弹窗
 
 #### 软件架构
 软件架构说明
@@ -34,6 +43,7 @@
                         |----realtimeInputPopup  #显示联想类弹窗
                         |----sliderdialog   #显示抽屉类弹窗  #大图浏览类弹窗
                         |----positionDialog   #显示自定义动画弹窗
+                        |----imageBrowser   #显示大图浏览弹窗
         |----resource
         |----index   #组件向外暴露组件
 |    |----entry  #页面入口文件夹
@@ -149,5 +159,150 @@ struct ConfirmExample {
 | isDeleteOnDisappear | boolean          | 是否在弹框退出时，删除对象，释放资源                       |
 | customCallback      | CustomCallback   | 设置弹窗build前和build后的回调                       |
 
+###组件属性说明
+**confirmDialog**
+确认弹窗
+参数：
+
+| 参数名             | 类型                          | 必填 | 说明                |
+| ------------------ | ----------------------------- | ---- |-------------------|
+| slotContent | @Builder                      | 是   | confirm组件的内容布局插槽。 |
+
+**inputDialog**
+带输入框弹窗
+参数：
+
+| 参数名 | 类型                          | 必填 | 说明                |
+|--| ----------------------------- | ---- |-------------------|
+| inputValue | string                      | 是   |  弹窗输入框值 |
+
+**listSelectDialog**
+列表弹窗，支持单选、多选
+参数：
+
+| 参数名             | 类型            | 必填 | 说明   |
+| ------------------ |---------------| ---- |------|
+| arrList | object[]      | 是   | 列表数据 |
+
+**loadingDialog**
+加载动画弹窗
+参数：
+
+| 参数名             | 类型     | 必填 | 说明   |
+| ------------------ |--------| ---- |------|
+| loadingTitle | string | 是   | 加载标题 |
+
+**bottom自定义**
+底部自定义弹窗
+参数：
+
+| 参数名             | 类型     | 必填 | 说明                 |
+| ------------------ |--------| ---- |--------------------|
+| customComponent | function | 是   | 返回一个Builder，用做内容插槽 |
+| arr | string[] | 是   | 列表内容描述             |
+| dialogInput | CustomDialog | 是   | 用来做二次弹窗            |
 
 
+customComponent参数：
+
+| 方法名    | 参数                            | 说明     |
+| --------- |-------------------------------|--------|
+| customComponent  | item：string, itemIndex：number | 插槽内容显示 |
+
+返回值：
+
+| 类型                  | 说明          |
+| --------------------- |-------------|
+|  @Builder   | 返回一个自定义插槽内容 |
+
+
+**复杂交互bottom**
+参数：
+
+| 参数名             | 类型       | 必填  | 说明                 |
+| ------------------ |----------|-----|--------------------|
+| customComponent | function | 是   | 返回一个Builder，用做内容插槽 |
+| arr | string[] | 是   | 列表内容描述             |
+| dialogTitle | string   | 是   | 弹窗标题               |
+| scrollEmptyHeight | number   | 否   | 控件内部使用，滑动控制，默认值20  |
+
+
+**popopDialog**
+气泡类型弹窗
+参数：
+
+| 参数名             | 类型        | 必填 | 说明    |
+| ------------------ |-----------| ---- |-------|
+| placement | Placement | 是   | 消息弹出位置 |
+| firstText | string    | 是   | 左侧文字  |
+| secondText | string    | 是   | 右侧文字  |
+
+**fullScreen**
+全屏弹窗
+参数：
+
+| 参数名             | 类型                        | 必填    | 说明           |
+| ------------------ | --------------------------- |-------|--------------|
+| slotContent | @Builder                    | 是     | 全屏组件的内容布局插槽。 |
+| slotBgColor | string | 否            | 弹窗背景色，默认为白色  |
+
+**message**
+消息弹出
+参数：
+
+| 参数名             | 类型     | 必填  | 说明                           |
+| ------------------ |--------|-----|------------------------------|
+| positionDialog | string | 是   | 消息显示位置 top-left-right-bottom |
+| blurValue | number | 是   | 背景模糊值                        |
+
+**topDialog**
+顶部弹窗
+参数：
+
+| 参数名             | 类型       | 必填  | 说明                           |
+| ------------------ |----------|-----|------------------------------|
+| slotContent | @Builder | 是   | 顶部组件的内容布局插槽。                 |
+| isAnimation | boolean  | 是   | 是否动画显示弹窗，true不显示动画，false显示动画 |
+
+**realtimeInput**
+联想类型弹窗
+参数：
+
+| 参数名             | 类型     | 必填  | 说明    |
+| ------------------ |--------|-----|-------|
+| inputVal | string | 是   | 输入值   |
+
+**sideBarCustomDialog**
+抽屉类弹窗
+参数：
+
+| 参数名             | 类型     | 必填  | 说明   |
+| ------------------ |--------|-----|------|
+| customComponent | @Builder | 是   | 内容插槽 |
+
+
+**positionDialog**
+自定义动画弹窗
+参数：
+
+| 参数名             | 类型                  | 必填  | 说明     |
+| ------------------ |---------------------|-----|--------|
+| slotContent | @Builder            | 是   | 内容插槽   |
+| animateOptions | AnimateDialogOptions | 是   | 默认弹窗动画 |
+| duration | number              | 是   | 动画时长   |
+| curve | Curve              | 是   | 动画方式   |
+
+**imageBrowser**
+大图浏览弹窗
+参数：
+
+| 参数名       | 类型    | 必填  | 说明     |
+|-----------|-------|-----|--------|
+| imageList | Resource[] | 是   | 图片列表资源 |
+| index     | number              | 是   | 显示图片下标 |
+
+## 约束与限制
+
+在下述版本验证通过：
+
+DevEco Studio: 4.0 Beta1(4.0.3.413), SDK: API10 (4.0.10.3)

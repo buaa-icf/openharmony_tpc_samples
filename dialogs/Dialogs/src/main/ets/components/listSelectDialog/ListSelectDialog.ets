@@ -33,17 +33,7 @@ export struct ListSelectDialog {
    *
    */
   @State changeData:object[]=[]
-  /**
-   * 弹窗关闭
-   *
-   */
-  cancel: () => void
-  /**
-   * 弹窗确认
-   * @param data
-   * @return
-   */
-  confirm: (data) => void
+
   scroller: Scroller = new Scroller()
 
   aboutToAppear(){
@@ -82,7 +72,7 @@ export struct ListSelectDialog {
                   .onChange((isChecked: boolean) => {
                     this.changeData = [item]
                     this.controller.close()
-                    this.confirm(this.changeData)
+                    this.model.confirm(this.changeData)
                   })
               }
               if(this.model.selectMode == 'checkbox'){
@@ -129,7 +119,7 @@ export struct ListSelectDialog {
               .border(this.model.btnBorder)
               .onClick(() =>{
                 this.controller.close()
-                this.cancel()
+                this.model.cancel()
               })
               .borderRadius(this.model.cancelBtnBorderRadius)
             Button(this.model.confirmBtnTitle,{ type: this.model.btnType })
@@ -140,7 +130,7 @@ export struct ListSelectDialog {
               .height(this.model.btnHeight)
               .onClick(() =>{
                 this.controller.close()
-                this.confirm(this.changeData)
+                this.model.confirm(this.changeData)
               })
               .borderRadius(this.model.confirmBtnBorderRadius)
           }

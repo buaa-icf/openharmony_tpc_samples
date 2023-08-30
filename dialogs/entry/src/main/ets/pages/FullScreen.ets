@@ -67,21 +67,7 @@ struct SlotExample {
             Text('我是全屏弹窗，可以设置任意的动画器。我看起来就像一个从底部弹出的Actvity，可以用来做一些登录，选择界面').fontSize(20)
           }.margin({left:10,right:10})
           BlockContent({placeholder: this.placeholder,inputValue: this.inputValue})
-          // TextInput({placeholder: this.placeholder,text: this.inputValue})
-          //   .placeholderFont({
-          //     size: 20
-          //   })
-          //   .margin({left:5,right:5,top:20})
-          //   .padding(0)
-          //   .fontColor('#000000')
-          //   .backgroundColor('#ffffff')
-          //   .borderRadius(0)
-          //   .fontSize(20)
-          //   .border({
-          //     width: {bottom: 1},
-          //     color:{bottom:'#D81B60'},
-          //     style:{top:BorderStyle.Solid}
-          //   })
+
           Column(){}.width('100%').height(400).backgroundColor('#CCCCCC').margin({ top: 20 })
           TextInput({placeholder: this.placeholder,text: this.inputValue})
             .placeholderFont({

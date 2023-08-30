@@ -57,10 +57,10 @@ export class LoadingDialogModel {
   // 绘制终点的X轴坐标
   endX: number = 0;
 
-  //绘制终点的Y轴坐标
+  // 绘制终点的Y轴坐标
   endY: number = 0;
 
-  //起始位置
+  // 起始位置
   startX: number = 0;
   startY: number = 0;
 
@@ -73,7 +73,7 @@ export class LoadingDialogModel {
   // 起始角度
   progress: number = 0
 
-  //轮圈颜色
+  // 轮圈颜色
   rimColor: number = Color.White
 
   // 近似闭合的坐标

@@ -64,6 +64,8 @@ struct CheckComp {
     this.model.btnWidth = '50%',
     this.model.btnHeight = 60,
     this.model.btnContentMargin = {top: 30}
+    this.model.cancel = this.cancel
+    this.model.confirm = this.confirm
   }
 
   @State list: obj[] = [
@@ -122,12 +124,8 @@ struct CheckComp {
 
   CheckDialogController: CustomDialogController = new CustomDialogController({
     builder: ListSelectDialog({
-      confirm: (data) => {
-        this.confirm(data)
-      },
       model: this.model,
       arrList: this.list,
-      cancel:this.cancel
     }),
     alignment: DialogAlignment.Center,
     customStyle: true
