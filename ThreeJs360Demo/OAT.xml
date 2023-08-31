@@ -35,6 +35,7 @@
                 <filteritem type="filepath" name="entry/src/main/resources/base/media/icon.png" desc="项目工程默认图片文件"/>
                 <filteritem type="filepath" name="entry/src/ohosTest/resources/base/media/icon.png" desc="项目工程默认图片文件"/>
                 <filteritem type="filepath" name="AppScope/resources/base/media/app_icon.png" desc="项目工程默认图片文件"/>
+                <filteritem type="filepath" name="gif/surface_360.gif" desc="项目效果展示图"/>
                 <filteritem type="filepath" name="source/.*" desc="服务器上html5的代码"/>
             </filefilter>
             <filefilter name="defaultFilter" desc="Files not to check">
