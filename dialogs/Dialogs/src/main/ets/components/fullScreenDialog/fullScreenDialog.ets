@@ -18,7 +18,7 @@ export struct fullScreenDialog {
   controller: CustomDialogController
   @Prop slotBgColor:string = '#ffffff'
 
-  @BuilderParam slotContent?: () => any;
+  @BuilderParam slotContent?: () => void;
 
   build() {
     Column() {

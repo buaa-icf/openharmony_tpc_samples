@@ -15,8 +15,8 @@
 
 import { BaseMode } from '../model/BaseModel'
 import inspector from '@ohos.arkui.inspector'
-// @ts-ignore
-import componentUtils from '@ohos.arkui.componentUtils'
+
+import componentUtils from '@ohos.componentUtils'
 
 const TAG = 'BottomScrollDialog'
 @CustomDialog

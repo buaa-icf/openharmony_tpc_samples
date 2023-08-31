@@ -3,20 +3,6 @@
 #### 介绍
 本项目是基于OpenHarmony的弹框基础能力和自定义能力，针对通用的弹框业务场景进行封装组合，提供一款OpenHarmony版的三方UI库
 
-#### 下载安装
-
-1.安装
-
-```
-ohpm install @ohos/dialog
-```
-
-2.在需要使用的页面导入需要的组件，如ConfirmDialog.ets:
-
-```
-import { ConfirmDialog } from '@ohos/dialog'
-```
-
 #### demo样例
 
 1.支持内容确认弹窗
@@ -80,46 +66,18 @@ import { ConfirmDialog } from '@ohos/dialog'
 <img src="screenshot/imageBrowser.gif" width="50%"/>
 
 
-#### 软件架构
-软件架构说明
+#### 下载安装
+
+1.安装
+
+```
+ohpm install @ohos/dialog
 ```
 
-|---- Xpopup 
-|    |----Dialog  #组件文件夹
-        |----src #组件入口文件夹
-            |----main
-                |----ets
-                    |----components #组件库
-                        |----confirmDialog #显示confirm弹窗
-                        |----InputDialog  #显示带输入框的弹窗
-                        |----listSelectDialog  #显示列表弹窗
-                        |----loadingDialog  #显示loading弹窗
-                        |----bottonDialog 
-                            |----BottomListDialog #显示bottom类型的列表弹窗
-                            |----BottomScrollDialog #显示bottom类型的自定义弹窗 #复杂交互的bottom弹窗
-                        |----popupBottom  #显示气泡类弹窗
-                        |----fullScreenDialog  #显示自定义全屏弹窗
-                        |----messageDialog  #显示消息类弹窗
-                        |----topDialog   #显示顶部打开弹窗
-                        |----realtimeInputPopup  #显示联想类弹窗
-                        |----sliderdialog   #显示抽屉类弹窗  #大图浏览类弹窗
-                        |----positionDialog   #显示自定义动画弹窗
-                        |----imageBrowser   #显示大图浏览弹窗
-        |----resource
-        |----index   #组件向外暴露组件
-|    |----entry  #页面入口文件夹
-        |----src #组件入口文件夹
-            |----main
-                |----ets
-                    |----components #页面公用组件文件夹
-                    |----entryability #组件页面配置
-                    |----pages  #页面入口文件夹
-                    |----utils #页面公用方法文件夹
-                |----resource #项目资源配置
-                    |----base
-                        |----profile 
-                            |----main_pages.json #页面路由配置文件
+2.在需要使用的页面导入需要的组件，如ConfirmDialog.ets:
 
+```
+import { ConfirmDialog } from '@ohos/dialog'
 ```
 
 #### 使用说明
@@ -392,6 +350,50 @@ customComponent参数：
 在下述版本验证通过：
 
 DevEco Studio: 4.0 Beta1(4.0.3.413), SDK: API10 (4.0.10.3)
+
+
+#### 软件架构
+软件架构说明
+```
+
+|---- Xpopup 
+|    |----Dialog  #组件文件夹
+        |----src #组件入口文件夹
+            |----main
+                |----ets
+                    |----components #组件库
+                        |----confirmDialog #显示confirm弹窗
+                        |----InputDialog  #显示带输入框的弹窗
+                        |----listSelectDialog  #显示列表弹窗
+                        |----loadingDialog  #显示loading弹窗
+                        |----bottonDialog 
+                            |----BottomListDialog #显示bottom类型的列表弹窗
+                            |----BottomScrollDialog #显示bottom类型的自定义弹窗 #复杂交互的bottom弹窗
+                        |----popupBottom  #显示气泡类弹窗
+                        |----fullScreenDialog  #显示自定义全屏弹窗
+                        |----messageDialog  #显示消息类弹窗
+                        |----topDialog   #显示顶部打开弹窗
+                        |----realtimeInputPopup  #显示联想类弹窗
+                        |----sliderdialog   #显示抽屉类弹窗  #大图浏览类弹窗
+                        |----positionDialog   #显示自定义动画弹窗
+                        |----imageBrowser   #显示大图浏览弹窗
+        |----resource
+        |----index   #组件向外暴露组件
+|    |----entry  #页面入口文件夹
+        |----src #组件入口文件夹
+            |----main
+                |----ets
+                    |----components #页面公用组件文件夹
+                    |----entryability #组件页面配置
+                    |----pages  #页面入口文件夹
+                    |----utils #页面公用方法文件夹
+                |----resource #项目资源配置
+                    |----base
+                        |----profile 
+                            |----main_pages.json #页面路由配置文件
+
+```
+
 
 ## 贡献代码
 

@@ -136,8 +136,7 @@ struct LoadingComponent {
 
   private rgbaToHex(color: string) {
     let values = color.replace(/rgba?\(/, '').replace(/\)/, '').replace(/[\s+]/g, '').split(',');
-    //@ts-ignore
-    let a = parseFloat(values[3] || 1),
+    let a = parseFloat(values[3] || '1'),
       r = Math.floor(a * parseInt(values[0]) + (1 - a) * 225),
       g = Math.floor(a * parseInt(values[1]) + (1 - a) * 225),
       b = Math.floor(a * parseInt(values[2]) + (1 - a) * 225);
