@@ -4,6 +4,10 @@
 
 ThreeJs360Demo,使用系统提供的Web组件，加载threeJs，实现360度的全景渲染功能
 
+### 效果展示
+
+![效果展示](gif/surface_360.gif)
+
 ### 样例说明
 
 参照该Demo工程[Index](./entry/src/main/ets/pages/Index.ets)页面
