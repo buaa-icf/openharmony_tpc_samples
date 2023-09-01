@@ -1,12 +1,38 @@
+//{
+//  "license": "Apache License 2.0",
+//  "devDependencies": {},
+//  "author": "",
+//  "name": "@ohos/dialogs",
+//  "description": "基于OpenHarmony的弹框基础能力和自定义能力，针对通用的弹框业务场景进行封装组合，提供一款OpenHarmony版的三方UI库。",
+//  "main": "index.ets",
+//  "version": "1.0.0",
+//  "dependencies": {
+//    "@ohos/subsampling-scale-image-view": "2.0.0"
+//  }
+//}
 {
-  "license": "Apache License 2.0",
-  "devDependencies": {},
-  "author": "",
   "name": "@ohos/dialogs",
+  "version": "1.0.0",
   "description": "基于OpenHarmony的弹框基础能力和自定义能力，针对通用的弹框业务场景进行封装组合，提供一款OpenHarmony版的三方UI库。",
   "main": "index.ets",
-  "version": "1.0.0",
   "dependencies": {
     "@ohos/subsampling-scale-image-view": "2.0.0"
-  }
+  },
+  "devDependencies": {},
+  "types": "",
+  "keywords": [
+    "OpenHarmony",
+    "HarmonyOS",
+    "XPopup"
+  ],
+  "author": "ohos_tpc",
+  "ohos": {
+    "org": "opensource"
+  },
+  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/dialogs",
+  "type": "module",
+  "tags": [
+    "UI"
+  ],
+  "license": "Apache License 2.0"
 }
