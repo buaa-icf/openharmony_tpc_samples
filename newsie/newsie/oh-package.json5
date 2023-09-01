@@ -1,0 +1,16 @@
+{
+  keywords: ["OpenHarmony", "NNTP","HarmonyOS"],
+  author: "ohos_tpc",
+  description: "适用于openharmony的NNTP客户端协议",
+  ohos: {
+    org: "opensource",
+  },
+  main: "index.ets",
+  repository: "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/newsie",
+  type: "module",
+  version: "2.0",
+  tags: ["Tool"],
+  license: "GNU AFFERO GENERAL",
+  devDependencies: {},
+  name: "@ohos/newsie",
+}
