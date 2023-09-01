@@ -2,7 +2,7 @@
 
 ## 介绍
 
-基于@ohos/protobufjs 1.0.0版本的Message，提供格式转换能力，允许将Message输出重写为基本文本格式，如xml,json,html。
+基于@ohos/protobufjs 1.0.1版本的Message，提供格式转换能力，允许将Message输出重写为基本文本格式，如xml,json,html。
 
 ## 下载安装
 
@@ -23,7 +23,7 @@ import ProtobufFormat from '@ohos/protobuf_format'
 
 **输入说明：**
 
-本组件基于@ohos/protobufjs 1.0.0版本，以下简称Protobuf。实现Protobuf.Message转换为xml,json,html格式，需要先构建Protobuf.Message。
+本组件基于@ohos/protobufjs 1.0.1版本，以下简称Protobuf。实现Protobuf.Message转换为xml,json,html格式，需要先构建Protobuf.Message。
 
 Protobuf支持加载解析proto字符串，proto json字符串，proto文件，proto json 文件；
 
@@ -285,7 +285,7 @@ static messageToHtml(message: Protobuf.Builder.Message): string;
 ## 约束与限制
 在下述版本验证通过：
 
-DevEco Studio: 4.0 Canary2(4.0.1.300), SDK: API10 (4.0.8.6)
+DevEco Studio: 4.0 Release(4.0.3.413), SDK: API10 (4.0.10.3)
 
 ## 目录结构
 

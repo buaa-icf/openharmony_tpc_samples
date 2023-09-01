@@ -165,7 +165,7 @@ function flush(): void;
 
 在下述版本验证通过：
 
-DevEco Studio: 4.0 Canary2(4.0.1.300), SDK: API10 (4.0.8.6)
+DevEco Studio: 4.0 Release(4.0.3.413), SDK: API10 (4.0.10.3)
 
 ## 目录结构
 
