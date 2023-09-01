@@ -1,4 +1,4 @@
-### 2.0.0
+### 1.0.0
 1.基于@ohos/protobufjs@1.0.1版本进行protobuf.Message的格式转换。
 
 2.支持protobuf中基础类型：int32,uint32,bool,double,float,string。
