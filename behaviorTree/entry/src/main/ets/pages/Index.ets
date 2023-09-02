@@ -12,14 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { BehaviorTree,Selector,Task,SUCCESS,Random,RUNNING,FAILURE,BehaviorTreeImporter } from "behaviorTree";
+import { BehaviorTree,Selector,Task,SUCCESS,Random,RUNNING,FAILURE,BehaviorTreeImporter } from "behaviortree";
 import { JSONData } from "./model";
 @Entry
 @Component
 struct Index {
   @State message: string = 'Hello World'
   bTree:BehaviorTree;
-  timerId:any;
+  timerId:number = 0;
+  flag:Boolean = true;
   aboutToAppear(){
     this.init(BehaviorTree);
     const behaviorTreeImporter = new BehaviorTreeImporter();
@@ -112,11 +113,17 @@ struct Index {
     Row() {
       Column() {
         Button("启动行为树实例").onClick(() => {
-          this.timerId = setInterval(() => {
-            this.bTree.step();
-          },1000)
+          //防止多次设置重复调用行为树启动
+          if(this.flag){
+            this.flag = false;
+            this.timerId = setInterval(() => {
+              this.bTree.step();
+            },1000)
+          }
+
         })
         Button("关闭行为树实例").onClick(() => {
+          this.flag = true;
           clearInterval(this.timerId);
         })
       }
