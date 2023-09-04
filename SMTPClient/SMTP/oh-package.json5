@@ -1,0 +1,28 @@
+{
+  "name": "@ohos/emailjs",
+  "version": "1.0.0",
+  "type": "module",
+  "types": "",
+  "description": "send text/html emails and attachments (files, streams and strings) from node.js to any smtp server",
+  "main": "index.ets",
+  "author": "ohos_tpc",
+  "ohos": {
+    "org": "opensource"
+  },
+  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/SMTPClient",
+  "license": "MIT",
+  "dependencies": {},
+  "keywords": [
+    "SMTP Protocol",
+    "send email",
+    "OpenHarmony",
+    "HarmonyOS"
+  ],
+  "tags": [
+    "Network",
+    "Tool"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
