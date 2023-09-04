@@ -9,6 +9,8 @@
                 <filteritem type="filename" name="userjson" desc="JSON数据文件，不支持注释方式添加版权头"/>
                 <filteritem type="filename" name="*.proto" desc="protobuf文件，不支持注释方式添加版权头"/>
                 <filteritem type="filename" name="hvigorw" desc="工程构建文件，不支持注释方式添加版权头"/>
+                <filteritem type="filename" name="LICENSE" desc="版权文件，不添加版权头"/>
+                <filteritem type="filepath" name="newsie/src/main/ets" desc="此文件夹第三方开源软件源码"/>
                 <filteritem type="filename" name="hvigorw.bat" desc="工程构建文件，不支持注释方式添加版权头"/>
                 <filteritem type="filepath" name="unrar/unrar/src/main/cpp/libunrar/.*" desc="第三方开源库libunrar源码，维持原样，以防版权许可头篡改"/>
                 <filteritem type="filepath" name="libcoap/libcoap/src/main/cpp/src/.*" desc="第三方开源软件libcoap源码，维持原样，以防版权许可头篡改"/>
@@ -31,6 +33,8 @@
                 <filteritem type="filename" name="userjson" desc="JSON数据文件，不支持注释方式添加许可头"/>
                 <filteritem type="filename" name="*.proto" desc="protobuf文件，不支持注释方式添加许可头"/>
                 <filteritem type="filename" name="hvigorw" desc="工程构建文件，不支持注释方式添加许可头"/>
+                <filteritem type="filepath" name="newsie/src/main/ets" desc="此文件夹第三方开源软件源码"/>
+                <filteritem type="filename" name="LICENSE" desc="版权文件，不添加版权头"/>
                 <filteritem type="filename" name="hvigorw.bat" desc="工程构建文件，不支持注释方式添加许可头"/>
                 <filteritem type="filepath" name="unrar/unrar/src/main/cpp/libunrar/.*" desc="第三方开源库libunrar源码，维持原样，以防版权许可头篡改"/>
                 <filteritem type="filepath" name="libcoap/libcoap/src/main/cpp/src/.*" desc="第三方开源软件libocap源码，维持原样，以防版权许可头篡改"/>
@@ -68,6 +72,7 @@
                 <policyitem type="license" name="MIT" path="jszipDemo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="BSD-3-Clause" path="libcoap/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="LibphoneNumber/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="GNU AFFERO GENERAL PUBLIC LICENSE" path="newsie/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="lodashDemo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="sanitize-html/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="xml2jsDemo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>

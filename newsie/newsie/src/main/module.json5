@@ -1,0 +1,9 @@
+{
+  "module": {
+    "name": "newsie",
+    "type": "har",
+    "deviceTypes": [
+      "default"
+    ]
+  }
+}
