@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "Dialogs",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}

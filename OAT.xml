@@ -50,6 +50,7 @@
                 <filteritem type="filename" name="app_icon.png" desc="应用icon，文件较小，不建议使用git lfs"/>
                 <filteritem type="filename" name=".*.d.ts" desc="typescript源码问题，误报"/>
                 <filteritem type="filename" name="*.json5" desc="工程配置文件"/>
+                <filteritem type="filename" name="*.PNG" desc="PNG图片格式文件，用于展示示例"/>
                 <filteritem type="filepath" name="unrar/entry/src/main/resources/base/media/.*.png" desc="测试用途的小图片，亦不会变化"/>
 				<filteritem type="filepath" name="pakoDemo/entry/src/ohosTest/resources/base/media/.*" desc="第三方开源软件资源文件，不进行侵入式修改，只用于单元测试文件，忽略"/>
                 <filteritem type="filepath" name="ThreeJs360Demo/source/.*" desc="第三方开源软件，不做修改"/>
