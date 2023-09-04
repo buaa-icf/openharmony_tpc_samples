@@ -1,2 +1,2 @@
 ### 2.0
-1.支持NNTP客户端协议指令,适配OpenHarmony
+1.适配OpenHarmony环境的NNTP网络新闻协议客户端指令

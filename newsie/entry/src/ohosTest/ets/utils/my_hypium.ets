@@ -71,7 +71,6 @@ export const expect = function(value){
       },
       equal(source){
         _expect(value).assertEqual(source);
-
       },
 
     },
@@ -89,8 +88,8 @@ export function diff(obj1, obj2) {
   if (!o1 || !o2) {
     return obj1 === obj2;
   }
-  //Object.keys() 返回一个由对象的自身可枚举属性(key值)组成的数组,
-  //例如：数组返回下表：let arr = ["a", "b", "c"];console.log(Object.keys(arr))->0,1,2;
+  // Object.keys() 返回一个由对象的自身可枚举属性(key值)组成的数组,
+  // 例如：数组返回下表：let arr = ["a", "b", "c"];console.log(Object.keys(arr))->0,1,2;
   if (Object.keys(obj1).length !== Object.keys(obj2).length) {
     return false;
   }

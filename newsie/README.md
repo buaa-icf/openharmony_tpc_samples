@@ -11,6 +11,7 @@ newsie 是一款实现了 NNTP 客户端协议的三方库，适用于openharmon
 ```
     ohpm install @ohos/newsie
 ```
+OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
 2 丶导入
 
@@ -22,6 +23,8 @@ newsie 是一款实现了 NNTP 客户端协议的三方库，适用于openharmon
 
 connect
 
+描述：连接服务器
+
 ```js
 this.client = new Client({
   host: "124.221.182.182",
@@ -32,11 +35,15 @@ await this.client.connect();
 
 list
 
+描述：获取新闻组列表
+
 ```js
 await this.client.list();
 ```
 
 group
+
+描述：获取指定新闻组信息，并选中
 
 ```js
 await this.client.group(this.select_group);
@@ -44,11 +51,14 @@ await this.client.group(this.select_group);
 
 newgroups
 
+描述：获取某个时间后的新闻组
 ```js
 await this.client.newgroups(new Date());
 ```
 
 date
+
+描述：获取服务器日期
 
 ```js
 await this.client.date();
