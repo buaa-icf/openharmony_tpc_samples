@@ -1,0 +1,9 @@
+{
+  "module": {
+    "name": "SMTP",
+    "type": "har",
+    "deviceTypes": [
+      "default"
+    ]
+  }
+}
