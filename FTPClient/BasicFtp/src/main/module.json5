@@ -1,0 +1,9 @@
+{
+  "module": {
+    "name": "BasicFtp",
+    "type": "har",
+    "deviceTypes": [
+      "default"
+    ]
+  }
+}
