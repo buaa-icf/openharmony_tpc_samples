@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/util'
+import "reflect-metadata"
 import { inject } from 'inversify';
 import { injectable } from 'inversify';
 import { multiInject } from 'inversify';
