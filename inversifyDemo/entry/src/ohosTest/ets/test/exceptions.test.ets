@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/util'
+import "reflect-metadata"
 import * as ERROR_MSGS from 'inversify/lib/constants/error_msgs';
 import { Container, inject, injectable } from 'inversify';
 
