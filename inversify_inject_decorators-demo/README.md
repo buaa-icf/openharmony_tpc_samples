@@ -376,5 +376,5 @@ DevEco Studio: 4.0 Beta1(4.0.3.400) SDK API10(4.0.9.6)
 
 ### 开源协议
 
-本项目基于 [ Apache License 2.0 ](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/inversify-inject-decorators-demo/LICENSE) ，请自由地享受和参与开源。
+本项目基于 [ Apache License 2.0 ](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/inversify_inject_decorators-demo/LICENSE) ，请自由地享受和参与开源。
 
