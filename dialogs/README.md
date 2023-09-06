@@ -402,4 +402,4 @@ DevEco Studio: 4.0 Beta1(4.0.3.413), SDK: API10 (4.0.10.3)
 
 ## 开源协议
 
-本项目基于 [Apache-2.0 License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/dialog/LICENSE) ，请自由地享受和参与开源。
+本项目基于 [Apache-2.0 License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/dialogs/LICENSE) ，请自由地享受和参与开源。
