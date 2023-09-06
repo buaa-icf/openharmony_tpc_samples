@@ -65,7 +65,9 @@ struct CheckComp {
     this.model.btnHeight = 60,
     this.model.btnContentMargin = {top: 30}
     this.model.cancel = this.cancel
-    this.model.confirm = this.confirm
+    this.model.confirm = (data) => {
+      this.confirm(data)
+    }
   }
 
   @State list: obj[] = [
@@ -115,7 +117,7 @@ struct CheckComp {
           })
      })
     }
-    console.log('confirm' + JSON.stringify(data))
+
     console.info('Callback when the confirm button is clicked')
   }
   cancel() {

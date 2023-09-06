@@ -61,7 +61,7 @@ struct InputDialogExample {
    },
     this.model.titleFontColor = '#ffffff'
     this.model.cancel = this.onCancel
-    this.model.cancel = this.confirm
+    this.model.confirm = this.confirm
   }
 
   InputController: CustomDialogController = new CustomDialogController({

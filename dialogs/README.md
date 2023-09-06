@@ -1,10 +1,10 @@
 # dialogs
 
-#### 介绍
+## 介绍
 本项目是基于OpenHarmony的弹框基础能力和自定义能力，针对通用的弹框业务场景进行封装组合，实现了确认输入弹窗、列表展示选择弹窗、自定义底部、顶部弹窗、自定义动画弹窗、自定义全屏弹窗、
 消息类弹窗、抽屉类弹、联想类弹窗、图片浏览弹窗等相关组件弹窗功能，提供一款OpenHarmony版的三方UI库。
 
-#### demo样例
+## demo样例
 
 1.支持内容确认弹窗
 
@@ -67,7 +67,7 @@
 <img src="screenshot/imageBrowser.gif" width="50%"/>
 
 
-#### 下载安装
+## 下载安装
 
 1.安装
 
@@ -81,7 +81,7 @@ ohpm install @ohos/dialog
 import { ConfirmDialog } from '@ohos/dialog'
 ```
 
-#### 使用说明
+## 使用说明
 
 以Confirm为例
    ```typescript
@@ -165,7 +165,7 @@ build() {
 }
 ```
 
-### 全局属性说明
+## 全局属性说明
 | 属性名                 | 属性类型             | 属性描述                           |
 |---------------------|------------------|--------------------------------|
 | autoClose           | function         | 是否允许操作后关闭弹窗，用于确认，选择按钮场景        |
@@ -175,7 +175,7 @@ build() {
 | isDeleteOnDisappear | boolean          | 是否在弹框退出时，删除对象，释放资源                       |
 | customCallback      | CustomCallback   | 设置弹窗build前和build后的回调                       |
 
-###组件属性说明
+#### 组件属性说明
 
 **confirmDialog**
 
@@ -353,7 +353,7 @@ customComponent参数：
 DevEco Studio: 4.0 Beta1(4.0.3.413), SDK: API10 (4.0.10.3)
 
 
-#### 软件架构
+## 软件架构
 软件架构说明
 ```
 
