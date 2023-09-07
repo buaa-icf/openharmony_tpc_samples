@@ -1,9 +1,0 @@
-{
-  "module": {
-    "name": "POP3",
-    "type": "har",
-    "deviceTypes": [
-      "default"
-    ]
-  }
-}
