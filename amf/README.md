@@ -40,7 +40,7 @@ var decodeData2 = AMF.deserialize(data, Spec.AMF3_OBJECT)
 
 在下述版本验证通过：
 
-DevEco Studio版本: 4.0Canary1(4.0.3.212), SDK: API10(4.0.8.3)
+DevEco Studio版本: 4.0Canary2(4.0.1.300), SDK: API10(4.0.9.6)
 
 ## 贡献代码
 

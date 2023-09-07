@@ -32,9 +32,9 @@ struct Index {
         Column() {
           Column() {
             Text(`源输入data = { any: 'data', you: 'like!'};`).width('100%').height(50)
-            Text(`经过AMF.stringify和AMF.parse转换后:${this.changedMsg}`).width('100%').height(50)
-            Text(this.message)
-              .fontSize(20)
+            Text(`经过AMF.stringify和AMF.parse转换后:${this.changedMsg}`).width('100%').height(100)
+            Button(this.message)
+              .fontSize(12)
               .fontWeight(FontWeight.Bold)
               .onClick(() => {
                 var data = {
@@ -47,18 +47,17 @@ struct Index {
                 let str = JSON.stringify(obj);
                 this.changedMsg = str;
                 console.log(str);
-              })
+              }).height(40)
           }.width('100%')
-          .height(300)
+          .height(190)
           .backgroundColor(Color.Orange)
 
 
           Column() {
-            Text(`源输入data = {"array": [99, 100, 101,{"nesting": "of objects", "yeah?": true, ref: [1, 2, 3]}],"reference": [1, 2, 3]
-        };`).width('100%').height(50)
-            Text(`经过AMF.serialize和AMF.deserialize转换后:${this.changedMsg2}`).width('100%').height(60)
-            Text(this.message2)
-              .fontSize(20)
+            Text(`源输入data = {"array": [99, 100, 101,{"nesting": "of objects", "yeah?": true, ref: [1, 2, 3]}],"reference": [1, 2, 3]};`).width('100%').height(70)
+            Text(`经过AMF.serialize和AMF.deserialize转换后:${this.changedMsg2}`).width('100%').height(140)
+            Button(this.message2)
+              .fontSize(12)
               .fontWeight(FontWeight.Bold)
               .onClick(() => {
                 var data = {
@@ -73,9 +72,9 @@ struct Index {
                 let str = JSON.stringify(obj);
                 this.changedMsg2 = str;
                 console.log(str);
-              })
+              }).height(40)
           }.width('100%')
-          .height(300)
+          .height(250)
           .backgroundColor(Color.Orange)
 
 
@@ -132,7 +131,7 @@ struct Index {
                 var encodedData = AMF.serialize(this.data2);
                 let obj = AMF.deserialize(encodedData);
                 let str = JSON.stringify(obj);
-                this.hint1 ='转换后数据:'+ str;
+                this.hint2 ='转换后数据:'+ str;
               })
 
           }.width('100%')
