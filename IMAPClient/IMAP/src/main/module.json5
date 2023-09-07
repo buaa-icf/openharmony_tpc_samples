@@ -1,9 +1,0 @@
-{
-  "module": {
-    "name": "IMAP",
-    "type": "har",
-    "deviceTypes": [
-      "default"
-    ]
-  }
-}
