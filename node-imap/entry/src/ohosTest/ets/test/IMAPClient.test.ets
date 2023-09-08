@@ -34,9 +34,9 @@ export default function IMAPClientTest() {
       try {
         if (!globalThis.client) {
           globalThis.client = new Imap({
-            user: '479868299@qq.com',
-            password: 'prcryvqwfbspbhhi',
-            host: 'imap.qq.com',
+            user: 'xxx@xx.com',
+            password: 'xxxx',
+            host: 'imap.xx.com',
             port: 143,
             tls: false,
             tlsOptions: undefined,
@@ -1576,10 +1576,10 @@ export default function IMAPClientTest() {
                     }
                     let msg = {
                       text: 'IMAP协议测试上传的邮件',
-                      from: `${'鸿蒙搬砖工'} <${'479868299@qq.com'}>`,
-                      to: '479868299@qq.com',
-                      cc: 'zdy_cz_jk@163.com',
-                      bcc: '15861159219@139.com',
+                      from: `${'鸿蒙搬砖工'} <${'xxx@xxx.com'}>`,
+                      to: 'xxx@xxxx.com',
+                      cc: 'xxx@xxx.com',
+                      bcc: 'xxx@xxx.com',
                       subject: '鸿蒙客户端IMAP协议的主题'
                     }
                     let data = JSON.stringify(msg);
@@ -1626,10 +1626,10 @@ export default function IMAPClientTest() {
                 }
                 let msg = {
                   text: 'IMAP协议测试上传的邮件',
-                  from: `${'鸿蒙搬砖工'} <${'479868299@qq.com'}>`,
-                  to: '479868299@qq.com',
-                  cc: 'zdy_cz_jk@163.com',
-                  bcc: '15861159219@139.com',
+                  from: `${'鸿蒙搬砖工'} <${'xxx@xx.com'}>`,
+                  to: 'xxx@xx.com',
+                  cc: 'xxx@xxx.com',
+                  bcc: 'xxx@xxx.com',
                   subject: '鸿蒙客户端IMAP协议的主题'
                 }
                 let data = JSON.stringify(msg);

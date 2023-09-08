@@ -115,7 +115,7 @@ struct SendMailPage {
 
               TextInput({
                 placeholder: '格式为：xx <xx@yxx.com>, xx <xx@yxx.com>，多个账号以英文逗号,连接。',
-                text: '479868299@qq.com'
+                text: 'xxxxx@qq.com'
               })
                 .layoutWeight(1)
                 .fontSize(20)

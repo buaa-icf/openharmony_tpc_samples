@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 import Imap, { inspect } from '@ohos/node_imap'
 import promptAction from '@ohos.promptAction'
 import router from '@ohos.router'
@@ -62,8 +62,8 @@ struct CustomDialogDiy {
 @Component
 struct LoginPage {
   @State message: string = 'Hello World'
-  @State account: string = '479868299'
-  @State password: string = 'bfxeualuaxambged'
+  @State account: string = ''
+  @State password: string = ''
   @State mailType: string = '@qq.com'
   @State textValue: string = ''
   @State inputValue: string = 'click me'
@@ -73,7 +73,7 @@ struct LoginPage {
   private option: socket.TLSConnectOptions = {
     ALPNProtocols: ["spdy/1", "http/1.1"],
     address: {
-      address: 'imap.qq.com',
+      address: 'imap.xx.com',
       port: 993,
       family: 1
     },
@@ -258,7 +258,6 @@ struct LoginPage {
     }
   }
 
-
   build() {
     Row() {
       Flex({
@@ -287,7 +286,7 @@ struct LoginPage {
             .textAlign(TextAlign.Center)
             .margin({ right: 5 })
 
-          TextInput({ placeholder: '请输入账号', text: '479868299' })
+          TextInput({ placeholder: '请输入账号', text: '' })
             .layoutWeight(1)
             .fontSize(20)
             .height(50)
@@ -375,7 +374,7 @@ struct LoginPage {
             .margin(20)
             .width('80%')
             .height(50)
-            .visibility(this.isLogin?Visibility.Visible:Visibility.Hidden)
+            .visibility(this.isLogin ? Visibility.Visible : Visibility.Hidden)
             .backgroundColor(Color.Blue)
             .fontColor(Color.White)
             .onClick(() => {
@@ -389,7 +388,7 @@ struct LoginPage {
             .margin(20)
             .width('80%')
             .height(50)
-            .visibility(this.isLogin?Visibility.Visible:Visibility.Hidden)
+            .visibility(this.isLogin ? Visibility.Visible : Visibility.Hidden)
             .backgroundColor(Color.Blue)
             .fontColor(Color.White)
             .bindMenu(this.MailMenu)
@@ -399,7 +398,7 @@ struct LoginPage {
             .margin(20)
             .width('80%')
             .height(50)
-            .visibility(this.isLogin?Visibility.Visible:Visibility.Hidden)
+            .visibility(this.isLogin ? Visibility.Visible : Visibility.Hidden)
             .backgroundColor(Color.Blue)
             .fontColor(Color.White)
             .onClick(() => {
@@ -440,7 +439,8 @@ struct LoginPage {
           }
           // @ts-ignore
           option.secureOptions.ca[1] = ca1;
-
+          option.address.address = `imap.${hostParam}.com`;
+          option.address.port = 993;
           globalThis.client = new Imap({
             user: ctx.account + ctx.mailType,
             password: ctx.password,
@@ -456,9 +456,9 @@ struct LoginPage {
           });
         } else {
           globalThis.client = new Imap({
-            user: '479868299@qq.com',
-            password: 'bfxeualuaxambged',
-            host: 'imap.qq.com',
+            user: ctx.account + ctx.mailType,
+            password: ctx.password,
+            host: `imap.${hostParam}.com`,
             port: 143,
             tls: false,
             tlsOptions: undefined,
@@ -499,7 +499,7 @@ struct LoginPage {
     try {
       ctx.showToast('开始退出登录,请稍等', 'loginOut-imap')
       if (globalThis.client) {
-        globalThis.client.end(()=>{
+        globalThis.client.end(() => {
           ctx.showToast('退出登录成功', 'loginOut-imap')
           router.clear()
           router.pushUrl({

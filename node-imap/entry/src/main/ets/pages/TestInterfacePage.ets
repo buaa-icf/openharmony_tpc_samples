@@ -43,7 +43,7 @@ struct TestInterfacePage {
   private option: socket.TLSConnectOptions = {
     ALPNProtocols: ["spdy/1", "http/1.1"],
     address: {
-      address: 'imap.qq.com',
+      address: 'imap.xxx.com',
       port: 993,
       family: 1
     },
@@ -414,8 +414,9 @@ struct TestInterfacePage {
             ca1 += item;
           }
           // @ts-ignore
-          option.secureOptions.ca[1] = ca1;
-
+          ctx.option.secureOptions.ca[1] = ca1;
+          ctx.option.address.address = `imap.${hostParam}.com`;
+          ctx.option.address.port = 993;
           globalThis.client = new Imap({
             user: ctx.account,
             password: ctx.password,

@@ -167,7 +167,7 @@ struct Index {
             .textAlign(TextAlign.Center)
             .margin({ right: 5 })
 
-          TextInput({ placeholder: '请输入账号', text: '479868299' })
+          TextInput({ placeholder: '请输入账号', text: this.account })
             .layoutWeight(1)
             .fontSize(20)
             .height(50)
@@ -201,7 +201,7 @@ struct Index {
             .textAlign(TextAlign.Center)
             .margin({ right: 5 })
 
-          TextInput({ placeholder: '请输入密码/授权码', text: 'bfxeualuaxambged' })
+          TextInput({ placeholder: '请输入密码/授权码', text: this.password })
             .layoutWeight(1)
             .fontSize(20)
             .height(50)

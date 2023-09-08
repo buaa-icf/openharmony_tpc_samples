@@ -31,7 +31,7 @@ export default function IMAPPress() {
             globalThis.client = new Imap({
               user: 'xx@qq.com',
               password: 'xxx',
-              host: 'imap.qq.com',
+              host: 'imap.xx.com',
               port: 143,
               tls: false,
               tlsOptions: undefined,

@@ -40,12 +40,12 @@ export default function POP3PressTest() {
     for (let i = 1;i <= BASE_COUNT; i++) {
       it('LIST', 0, function () {
         let option = {
-          host: 'pop.qq.com',
+          host: 'pop.xxx.com',
           port: 110,
           user: account + mailType,
           password: password,
           timeout: 30000,
-          servername: 'pop.qq.com',
+          servername: 'pop.xxx.com',
           tls: false,
           tlsOptions: undefined
         }
@@ -55,12 +55,12 @@ export default function POP3PressTest() {
 
       it('STAT', 0, function () {
         let option = {
-          host: 'pop.qq.com',
+          host: 'pop.xxx.com',
           port: 110,
           user: account + mailType,
           password: password,
           timeout: 30000,
-          servername: 'pop.qq.com',
+          servername: 'pop.xxx.com',
           tls: false,
           tlsOptions: undefined
         }
@@ -70,12 +70,12 @@ export default function POP3PressTest() {
 
       it('NOOP', 0, function () {
         let option = {
-          host: 'pop.qq.com',
+          host: 'pop.xxxx.com',
           port: 110,
           user: account + mailType,
           password: password,
           timeout: 30000,
-          servername: 'pop.qq.com',
+          servername: 'pop.xxx.com',
           tls: false,
           tlsOptions: undefined
         }
@@ -85,12 +85,12 @@ export default function POP3PressTest() {
 
       it('UIDL', 0, function () {
         let option = {
-          host: 'pop.qq.com',
+          host: 'pop.xxx.com',
           port: 110,
           user: account + mailType,
           password: password,
           timeout: 30000,
-          servername: 'pop.qq.com',
+          servername: 'pop.xxx.com',
           tls: false,
           tlsOptions: undefined
         }
@@ -100,12 +100,12 @@ export default function POP3PressTest() {
 
       it('RSET', 0, function () {
         let option = {
-          host: 'pop.qq.com',
+          host: 'pop.xxx.com',
           port: 110,
           user: account + mailType,
           password: password,
           timeout: 30000,
-          servername: 'pop.qq.com',
+          servername: 'pop.xxx.com',
           tls: false,
           tlsOptions: undefined
         }
@@ -115,12 +115,12 @@ export default function POP3PressTest() {
 
       it('RETR', 0, function () {
         let option = {
-          host: 'pop.qq.com',
+          host: 'pop.xxx.com',
           port: 110,
           user: account + mailType,
           password: password,
           timeout: 30000,
-          servername: 'pop.qq.com',
+          servername: 'pop.xxx.com',
           tls: false,
           tlsOptions: undefined
         }
@@ -130,12 +130,12 @@ export default function POP3PressTest() {
 
       it('DELE', 0, function () {
         let option = {
-          host: 'pop.qq.com',
+          host: 'pop.xxx.com',
           port: 110,
           user: account + mailType,
           password: password,
           timeout: 30000,
-          servername: 'pop.qq.com',
+          servername: 'pop.xxx.com',
           tls: false,
           tlsOptions: undefined
         }
@@ -145,12 +145,12 @@ export default function POP3PressTest() {
 
       it('QUIT', 0, function () {
         let option = {
-          host: 'pop.qq.com',
+          host: 'pop.xxx.com',
           port: 110,
           user: account + mailType,
           password: password,
           timeout: 30000,
-          servername: 'pop.qq.com',
+          servername: 'pop.xxxx.com',
           tls: false,
           tlsOptions: undefined
         }
@@ -160,12 +160,12 @@ export default function POP3PressTest() {
 
       it('connect', 0, function () {
         let option = {
-          host: 'pop.qq.com',
+          host: 'pop.xxx.com',
           port: 110,
           user: account + mailType,
           password: password,
           timeout: 30000,
-          servername: 'pop.qq.com',
+          servername: 'pop.xxx.com',
           tls: false,
           tlsOptions: undefined
         }
@@ -175,12 +175,12 @@ export default function POP3PressTest() {
 
       it('TOP', 0, function () {
         let option = {
-          host: 'pop.qq.com',
+          host: 'pop.xxx.com',
           port: 110,
           user: account + mailType,
           password: password,
           timeout: 30000,
-          servername: 'pop.qq.com',
+          servername: 'pop.xxx.com',
           tls: false,
           tlsOptions: undefined
         }
@@ -191,12 +191,12 @@ export default function POP3PressTest() {
 
       it('command', 0, function (done) {
         let option = {
-          host: 'pop.qq.com',
+          host: 'pop.xxx.com',
           port: 110,
           user: account + mailType,
           password: password,
           timeout: 30000,
-          servername: 'pop.qq.com',
+          servername: 'pop.xxx.com',
           tls: false,
           tlsOptions: undefined
         }

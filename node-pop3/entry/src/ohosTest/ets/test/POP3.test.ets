@@ -25,8 +25,8 @@ import MsgBean from '../../../../../entry/src/main/ets/MsgBean'
 export default function POP3Test() {
 
   let message = 'Hello World'
-  let account = '479868299'
-  let password = 'bfxeualuaxambged'
+  let account = 'xxxx'
+  let password = 'xxxxx'
   let mailType = '@qq.com'
   let textValue = ''
   let inputValue = 'click me'
@@ -79,23 +79,23 @@ export default function POP3Test() {
           // @ts-ignore
           option.secureOptions.ca[1] = ca1;
           jumpOption = {
-            host: 'pop.qq.com',
+            host: 'pop.xxx.com',
             port: 995,
             user: account + mailType,
             password: password,
             timeout: 30000,
-            servername: 'pop.qq.com',
+            servername: 'pop.xxx.com',
             tls: true,
             tlsOptions: option
           }
         } else {
           jumpOption = {
-            host: 'pop.qq.com',
+            host: 'pop.xxx.com',
             port: 110,
             user: account + mailType,
             password: password,
             timeout: 30000,
-            servername: 'pop.qq.com',
+            servername: 'pop.xxx.com',
             tls: false,
             tlsOptions: undefined
           }

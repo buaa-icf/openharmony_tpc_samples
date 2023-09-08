@@ -71,7 +71,7 @@ struct CustomDialogDiy {
 struct SamplePage {
   @State message: string = 'Hello World'
   @State secure: boolean = false;
-  @State user: string = 'zhaodongyang';
+  @State user: string = 'xxxx';
   @State password: string = '';
   @State host: string = '';
   @State port: number = 21;

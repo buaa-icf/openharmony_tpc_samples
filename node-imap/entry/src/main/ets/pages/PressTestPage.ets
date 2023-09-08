@@ -40,7 +40,7 @@ struct PressTestPage {
   private option: socket.TLSConnectOptions = {
     ALPNProtocols: ["spdy/1", "http/1.1"],
     address: {
-      address: 'imap.qq.com',
+      address: 'imap.xxx.com',
       port: 993,
       family: 1
     },
@@ -297,7 +297,7 @@ struct PressTestPage {
           globalThis.client = new Imap({
             user: ctx.account,
             password: ctx.password,
-            host: 'imap.qq.com',
+            host: 'imap.xxx.com',
             port: 993,
             tls: true,
             tlsOptions: ctx.option,
@@ -311,7 +311,7 @@ struct PressTestPage {
           globalThis.client = new Imap({
             user: ctx.account,
             password: ctx.password,
-            host: 'imap.qq.com',
+            host: 'imap.xxx.com',
             port: 143,
             tls: false,
             tlsOptions: undefined,

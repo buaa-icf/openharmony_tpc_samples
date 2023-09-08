@@ -232,7 +232,7 @@ struct PressPage {
       if (ctx.secure) {
         loginInfo = {
           host: '',
-          user: 'zhaodongyang',
+          user: 'xxxx',
           password: '',
           secure: 'implicit',
           secureOptions: ctx.option
@@ -240,7 +240,7 @@ struct PressPage {
       } else {
         loginInfo = {
           host: '',
-          user: 'zhaodongyang',
+          user: 'xxxx',
           password: '',
           secure: false,
           secureOptions: undefined

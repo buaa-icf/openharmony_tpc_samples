@@ -593,10 +593,10 @@ struct MsgListPage {
   createMailData() {
     let msg = {
       text: 'IMAP协议测试上传的邮件',
-      from: `${'鸿蒙搬砖工'} <${'479868299@qq.com'}>`,
-      to: '479868299@qq.com',
-      cc: 'zdy_cz_jk@163.com',
-      bcc: '15861159219@139.com',
+      from: `${'鸿蒙搬砖工'} <${'xxxx@xxxx.com'}>`,
+      to: 'xxxx@xxxx.com',
+      cc: 'xxxx@xxx.com',
+      bcc: 'xxx@xxx.com',
       subject: '鸿蒙客户端IMAP协议的主题'
     }
     return JSON.stringify(msg);

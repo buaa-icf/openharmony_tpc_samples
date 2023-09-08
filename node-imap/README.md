@@ -63,9 +63,9 @@ async login() {
           });
         } else {
           globalThis.client = new Imap({
-            user: '479868299@qq.com',
-            password: 'bfxeualuaxambged',
-            host: 'imap.qq.com',
+            user: 'xxx@xx.com',
+            password: 'xxxxx',
+            host: 'imap.xx.com',
             port: 143,
             tls: false,
             tlsOptions: undefined,
