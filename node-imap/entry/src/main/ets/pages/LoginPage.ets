@@ -438,9 +438,9 @@ struct LoginPage {
             ca1 += item;
           }
           // @ts-ignore
-          option.secureOptions.ca[1] = ca1;
-          option.address.address = `imap.${hostParam}.com`;
-          option.address.port = 993;
+          ctx.option.secureOptions.ca[1] = ca1;
+          ctx.option.address.address = `imap.${hostParam}.com`;
+          ctx.option.address.port = 993;
           globalThis.client = new Imap({
             user: ctx.account + ctx.mailType,
             password: ctx.password,

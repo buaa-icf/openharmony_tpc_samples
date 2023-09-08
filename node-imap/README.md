@@ -1061,9 +1061,6 @@ aboutToAppear() {
 | 使用方法                                                     | 入参                                                         | 接口描述                                                     |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | end()                                                        |                                                              | 发送队列中的所有请求后，关闭与服务器的连接                   |
-| emit(event: string, ...args:any[])                           | event: string, ...args:any[]                                 | 发送事件                                                     |
-| _tryread                                                     |                                                              | 内部调用，用于获取服务器返回的答复                           |
-| state                                                        |                                                              | 内部调用，通过state获取状态                                  |
 | on(event:stringm listener:Function)                          |                                                              | 绑定事件监听器                                               |
 | append(msgdata:any, options:Connection.AppendOption, callback:(err:Error) =>void) | msgdata:any, options:Connection.AppendOption, callback:(err:Error) =>void | 将消息附加到选定的邮箱，msgData是包含RFC-822兼容MIME消息的字符串或缓冲区 |
 | serverSupports(capability: string)                           | capability: string                                           | 检查服务器是否支持指定的功能                                 |
@@ -1074,22 +1071,12 @@ aboutToAppear() {
 | fetch(source:any, options:Connection.FetchOptions)           | source:any, options:Connection.FetchOptions                  | 获取当前打开的邮箱中的邮件                                   |
 | connect()                                                    |                                                              | 尝试与IMAP服务器连接和身份验证                               |
 | getSubscribedBoxes(nsPrefix:string, callback:(error:Error, mailboxes:Connection.MailBoxes)=>void) | nsPrefix:string, callback:(error:Error, mailboxes:Connection.MailBoxes)=>void | 获取订阅邮箱的完整列表。如果未指定nsPrefix,则使用主个人命名空间 |
-| doKeepaliveTimer(immediate)                                  | immediate                                                    | 不断轮训服务器，通过服务器支持状态决定发送NOOP还是IDLE       |
-| setIndicatorSpace(indicatorSpace: number)                    | indicatorSpace: number                                       | 设置指示器间距                                               |
 | renameBox(oldMailboxName: string, newMailboxName:string, callback:(error:Error,mailbox:Connection.Box)=>void) | oldMailboxName: string, newMailboxName:string, callback:(error:Error,mailbox:Connection.Box)=>void | 重命名服务器上存在的特定邮箱。oldMailBoxName和newMailBoxName都应包括任何必要的前缀/路径。注意:重命名“收件箱”邮箱将导致“收件箱”中的所有邮件都移动到新邮箱 |
 | search(criteria:any[], callback:(error:Error, uids:number[])) | criteria:any[], callback:(error:Error, uids:number[])        | 使用给定条件在当前打开的邮箱中搜索邮件。条件是描述要查找的内容的列表。对于需要参数的条件类型，请使用数组而不仅仅是字符串条件类型名称(例如【‘From’,'foo@bar.com'】)。在条件类型前面加上要否定的“!” |
 | openBox()                                                    |                                                              | openBox的时候自动调用，选择当前文件夹                        |
 | status(mailboxName:string, callback:(error:Error, mailbox:Connection.Box) => void) | mailboxName:string, callback:(error:Error, mailbox:Connection.Box) => void | 获取有关当前打开的邮箱以外的邮箱的信息。注意：不能保证这将是服务器上的快速操作。此外，不要在当前打开的邮箱上调用此功能 |
 | subscribeBox(mailboxName: string, callback:(error: Error)=>void) | mailboxName: string, callback:(error: Error)=>void           | 订阅服务器上存在的特定邮箱。邮箱名称应包括任何必要的前缀/路径 |
 | unsubscribeBox(mailboxName: string, callback:(error: Error)=>void) | mailboxName: string, callback:(error: Error)=>void           | 取消订阅服务器上存在的特定邮箱。邮箱名称应包括任何必要的前缀/路径 |
-| addListener(event:string, listener:Function)                 | event:string, listener:Function                              | 添加事件监听器                                               |
-| once(event:string, listener:Function)                        | event:string, listener:Function                              | 绑定一次性事件监听器                                         |
-| removeListener(event:string, listener: Function)             | event:string, listener: Function                             | 解除某事件的某个监听器                                       |
-| removeAllListeners(events?:string)                           | events?:string                                               | 移除某事件的所有监听器                                       |
-| setMaxListeners(n:number)                                    | n:number                                                     | 设置最大监听器数量                                           |
-| getMaxListeners()                                            |                                                              | 获取最大监听器数量                                           |
-| listener(event:string)                                       | event:string                                                 | 获取某个事件的所有监听器                                     |
-| listenerCount(type:string)                                   | type:string                                                  | 获取某个事件的监听器个数                                     |
 | sort(sortCriteria:Connection.SortCriteria[], searchCriteria: any[], callback:(error:Error, uid:number[])=>void) | sortCriteria:Connection.SortCriteria[], searchCriteria: any[], callback:(error:Error, uid:number[])=>void | 使用给定的排序标准对当前打开的邮件邮箱进行排序。此方法首先在邮箱中搜索与给定搜索条件匹配的邮件，然后按给定的排序条件排序。（这是RFC5256的规范） |
 | move(source:any, flags:any, callback:(error:Error)=>void)    | source:any, flags:any, callback:(error:Error)=>void          | 将当前打开的邮箱中的邮件移动到另一个邮箱。注意：目标邮箱中的邮件将具有新的邮件UID. |
 | addFlags(source:any, flags:any,callback:(error:Error)=>void) | source:any, flags:any,callback:(error:Error)=>void           | 向消息(s)添加标志(s)                                         |
@@ -1098,17 +1085,21 @@ aboutToAppear() {
 | addKeywords(source:any,keywords:any,callback:(error:Error)=>void) | source:any,keywords:any,callback:(error:Error)=>void         | 将关键字(s)添加到消息(s)中。关键字是单个关键字或关键字数组。 |
 | delKeywords(source:any,keywords:any,callback:(error:Error)=>void) | source:any,keywords:any,callback:(error:Error)=>void         | 从消息(s)中删除到消息关键字(s)。关键字是单个关键字或关键字数组。 |
 | setKeywords(source:any,keywords:any,callback:(error:Error)=>void) | source:any,keywords:any,callback:(error:Error)=>void         | 设置消息(s)中的消息关键字(s)。关键字是单个关键字或关键字数组。 |
-| parseHeader(rawHeaderLstring, disableAutoDecode?:boolean)    | rawHeaderLstring, disableAutoDecode?:boolean                 | 解析原始标头并返回一个在标头字段上键控的对象，值是标头字段值的数组。将disableAutoDecode设置为true,以禁用头域值中可能存在的MIME编码字的自动解码 |
 | openBox(mailboxName:string, openReadOnly:boolean, modifiers: Object, callback:(error:Error, mailbox: Connection.Box)=>void) | mailboxName:string, openReadOnly:boolean, modifiers: Object, callback:(error:Error, mailbox: Connection.Box)=>void | 打开服务器上存在的特定邮箱。邮箱名称应包括任何必要的前缀/路径。IMAP扩展使用修饰符 |
 | closeBox(autoExpunge:boolean, callback:(error: Error)=>void) | autoExpunge:boolean, callback:(error: Error)=>void           | 关闭当前打开的邮箱。如果autoExpunge为true,则如果邮箱未以只读模式打开，则当前打开的邮箱中标记为已删除的任何邮件都将被删除。如果autoExpunge为false,您将断开连接或者打开另一个邮箱，则标记为已删除的邮件将不会从当前打开的邮箱中删除。 |
 | delBox(mailboxName:string,callback:(error:Error)=>void)      | mailboxName:string,callback:(error:Error)=>void              | 删除服务器上存在的特定邮箱。邮箱名称应包括任何必要的前缀/路径。 |
 | getBoxes(nsPrefix:string,callback:(error:Error,maiboxes:Connection.MailBoxes)=>void) | nsPrefix:string,callback:(error:Error,maiboxes:Connection.MailBoxes)=>void | 获取邮箱的完整列表。如果未指定nsPrefix,则使用主个人命名空间  |
 | append(msgData:any,options:Connection.AppendOptions,callback:(error:Error)=>void) | msgData:any,options:Connection.AppendOptions,callback:(error:Error)=>void | 将消息附加到选定的邮箱。msgData是包含RFC-822兼容MIME消息的字符串或者缓冲区 |
 
+更多模块的使用可参考[官方文档](https://github.com/mscdex/node-imap/blob/master/README.md)，[单元测试用例](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/node-imap/TEST.md)详情可参考
+
 ## 约束与限制
+
 在下述版本验证通过：
 
 DevEco Studio: 4.0 Release(4.0.3.413), SDK: API10 (4.0.10.3)
+
+支持的邮箱类型：QQ邮箱、新浪邮箱、搜狐邮箱、126邮箱。
 
 ## 目录结构
 

@@ -107,13 +107,15 @@ const options = {
 };
 ```
 
+更多模块的使用可参考[官方文档](https://github.com/eleith/emailjs/blob/main/README.md)，[单元测试用例](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/emailjs/TEST.md)详情可参考
+
 ### 约束与限制
 
 在下述版本验证通过：
 
 DevEco Studio: 4.0 Release(4.0.3.413), SDK: API10 (4.0.10.3)
 
-### 单元测试用例详情[TEST.md](./TEST.md)
+支持的邮箱类型：QQ邮箱、163邮箱、126邮箱、新浪邮箱、搜狐邮箱。
 
 ### 目录结构
 

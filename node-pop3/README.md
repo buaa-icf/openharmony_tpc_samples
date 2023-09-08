@@ -30,10 +30,10 @@ API
 
 | 参数                 | 可选  | 描述                                                                      |
 |--------------------|-----|-------------------------------------------------------------------------|
-| options.user       | no  | String                                                                  |
-| options.password   | no  | String                                                                  |
+| listify | str | String                                                                  |
 | options.host       | no  | String                                                                  |
 | options.port       | yes | Number. Defaults to 110                                                 |
+| QUIT    | no  | 发送QUIT命令，自动断开连接                                                   |
 | options.servername | yes | String. Defaults to host value. Same as servername for Node TLS option. |
 | options.tls        | yes | Boolean. Defaults to false                                              |
 | options.timeout    | yes | Number. Defaults to undefined                                           |
@@ -45,12 +45,15 @@ API
 | TOP(msgNumber, numLines = 0) |  |                                                           |
 | QUIT()             |  |                                                          |
 
+更多模块的使用可参考[官方文档](https://github.com/node-pop3/node-pop3/blob/master/README.md)，[单元测试用例](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/node-pop3/TEST.md)详情可参考
 
 ### 约束与限制
 
 在下述版本验证通过：
 
 DevEco Studio: 4.0 Release(4.0.3.413), SDK: API10 (4.0.10.3)
+
+支持的邮箱类型：QQ邮箱、163邮箱、126邮箱。
 
 ### 软件架构
 

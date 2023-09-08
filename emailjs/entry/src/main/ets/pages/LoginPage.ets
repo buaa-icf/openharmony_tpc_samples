@@ -398,7 +398,7 @@ struct LoginPage {
           let option: socket.TLSConnectOptions = {
             ALPNProtocols: ["spdy/1", "http/1.1"],
             address: {
-              address: 'smtp.qq.com',
+              address: `smtp.${hostParam}.com`,
               port: 465,
               family: 1
             },
