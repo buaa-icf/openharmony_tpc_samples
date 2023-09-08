@@ -206,4 +206,7 @@ export function animateAfterStartStatus(val) {
       centerY: '100%',
     }
   }
+  else {
+    return {x: 0, y: 0}
+  }
 }

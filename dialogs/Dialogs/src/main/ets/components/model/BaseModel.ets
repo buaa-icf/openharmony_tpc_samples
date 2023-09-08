@@ -26,7 +26,7 @@ export class BaseMode {
   onBackClose?: boolean = true
 
   // 是否允许操作后关闭弹窗，用于确认，选择按钮场景
-  autoClose?: () => {}
+  autoClose?: boolean = true
 
   // 弹窗动画器，支持自定义能力
   popupAnimation?:TransitionEffect
@@ -35,12 +35,24 @@ export class BaseMode {
   positionDialog?: string
 
   // 是否支持手势拖拽
-  isSupportGesture: boolean = true
+  isSupportGesture?: boolean = true
 
   // 是否在弹框退出时，删除对象，释放资源
-  isDeleteOnDisappear: boolean = false
+  isDeleteOnDisappear?: boolean = false
 
   // 设置弹窗build前和build后的回调
   customCallback?: CustomCallback
+
+  // 是否允许点击遮罩层退出
+  autoCancel?: boolean = true
+
+  // 背景模糊效果设置
+  backdropBlur?: number = 0
+
+  // 圆角弧度
+  borderRadius?: Length | BorderRadiuses
+
+  // 是否默认打开输入法， 带弹框的场景
+  isDisplayInput?: boolean = true
 }
 
