@@ -481,7 +481,7 @@ struct PressTestPage {
           console.log(prefix + 'Finished');
         });
       });
-      f.once('error', function (err) {
+      f.on('error', function (err) {
 
       });
       f.once('end', function () {

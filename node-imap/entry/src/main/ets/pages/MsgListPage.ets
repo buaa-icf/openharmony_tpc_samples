@@ -276,7 +276,7 @@ struct MsgListPage {
         console.log(prefix + 'Finished');
       });
     });
-    f.once('error', function (err) {
+    f.on('error', function (err) {
       console.log('Fetch error: ' + err);
     });
     f.once('end', function () {

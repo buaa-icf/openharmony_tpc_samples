@@ -454,7 +454,7 @@ struct TestInterfacePage {
           // globalThis.client._doKeepaliveTimer(true) //登陆成功之后通过noop命令不断的轮训服务器 防止断开连接 原库已封装了该命令不断调用 无需用户手动调用
         });
 
-        globalThis.client.once('error', function (err) {
+        globalThis.client.on('error', function (err) {
           console.log(err);
         });
 
