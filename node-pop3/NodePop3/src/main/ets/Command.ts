@@ -4,6 +4,7 @@ import Pop3Connection from '../ets/Connection';
 
 import { listify, stream2String } from '../ets/helper';
 import to, { to } from './await-to-js';
+
 const BASE_COUNT = 1
 /**
  * @typedef {number} Integer
@@ -188,8 +189,9 @@ class Pop3Command extends Pop3Connection {
     this._socket.off('connect')
     this._socket.off('message')
     this._socket.off('error')
-    // await this._socket.close() //TODO 镜像有bug导致闪退 暂时注释
     this._socket.off('close')
+    await this._socket.close()
+    this._socket = null;
     this._PASSInfo = info || '';
     return this._PASSInfo;
   }

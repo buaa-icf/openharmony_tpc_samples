@@ -33,13 +33,13 @@ export default function POP3Test() {
   let secure = false
   let listData: Array<string> = []
   let client: Pop3Command = undefined
-  let selectMsgNum: number = -1
+  let selectMsgNum: string = ''
   let isListShow: boolean = false
   const BASE_COUNT = 1
 
   describe('POP3Test', function () {
 
-    async function login() {
+    async function login(done) {
       globalThis.client = undefined;
       let jumpOption = undefined;
       try {
@@ -101,27 +101,42 @@ export default function POP3Test() {
           }
         }
         client = new Pop3Command(jumpOption);
+        done()
       } catch (err) {
         expect(0).assertEqual(1)
+        done()
       }
     }
 
-    beforeAll(function () {
-      login()
-      sendList()
+    beforeAll(function (done) {
+      login(done)
     })
 
-    async function sendList() {
+    it('sendList', 0, async function (done) {
       try {
         if (client) {
+          let startTime1 = new Date().getTime();
           let result = await client.LIST()
+          let endTime1 = new Date().getTime();
+          let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+          console.log("POP3Test : sendList averageTime : " + averageTime1 + "us")
           if (result && result.toString() && result.toString().length > 0) {
             listData = result.toString().split(',')
+            if (listData && listData.length > 0 && listData[0]) {
+              selectMsgNum = listData[0]
+            }
           }
+          expect(0).assertEqual(0)
+          done()
+        } else {
+          expect(0).assertEqual(1)
+          done()
         }
       } catch (err) {
+        expect(0).assertEqual(1)
+        done()
       }
-    }
+    })
 
     it('sendSTAT', 0, async function (done) {
       try {
@@ -163,20 +178,13 @@ export default function POP3Test() {
 
     it('sendUIDL', 0, async function (done) {
       try {
-        if (listData.length > 0) {
-          selectMsgNum = 1;
-        }
-        else {
-          done()
-          return
-        }
-        if (selectMsgNum === -1) {
+        if (!selectMsgNum || selectMsgNum.length < 1) {
           expect(0).assertEqual(1)
-          return
+          done()
         }
         if (client) {
           let startTime1 = new Date().getTime();
-          let result = await client.UIDL(selectMsgNum + '')
+          let result = await client.UIDL(selectMsgNum)
           let endTime1 = new Date().getTime();
           let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
           console.log("POP3Test : sendUIDL averageTime : " + averageTime1 + "us")
@@ -192,53 +200,17 @@ export default function POP3Test() {
       }
     })
 
-    it('sendRSET', 0, async function (done) {
-      try {
-        if (listData.length > 0) {
-          selectMsgNum = 1;
-        }
-        else {
-          done()
-          return
-        }
-        if (selectMsgNum === -1) {
-          return
-        }
-        if (client) {
-          let startTime1 = new Date().getTime();
-          let delResult = client.DELE(selectMsgNum + '')
-          let result = await client.RSET() // 用于撤销DELE命令 所以不需要等DELE命令返回
-          let endTime1 = new Date().getTime();
-          let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
-          console.log("POP3Test : sendRSET averageTime : " + averageTime1 + "us")
-          done()
-        } else {
-          expect(0).assertEqual(1)
-          done()
-        }
 
-      } catch (err) {
-        expect(0).assertEqual(1)
-        done()
-      }
-    })
 
     it('sendRETR', 0, async function (done) {
       try {
-        if (listData.length > 0) {
-          selectMsgNum = 1;
-        }
-        else {
-          done()
-          return
-        }
-        if (selectMsgNum === -1) {
+        if (!selectMsgNum || selectMsgNum.length < 1) {
           expect(0).assertEqual(1)
-          return
+          done()
         }
         if (client) {
           let startTime1 = new Date().getTime();
-          let result = await client.RETR(selectMsgNum + '')
+          let result = await client.RETR(selectMsgNum)
           let endTime1 = new Date().getTime();
           let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
           console.log("POP3Test : sendRETR averageTime : " + averageTime1 + "us")
@@ -252,27 +224,18 @@ export default function POP3Test() {
         expect(0).assertEqual(1)
         done()
       }
-      selectMsgNum = -1;
     })
 
 
     it('sendDELE', 0, async function (done) {
       try {
-        if (listData.length > 0) {
-          selectMsgNum = 1;
-        }
-        else {
-          done()
-          return
-        }
-        if (selectMsgNum === -1) {
+        if (!selectMsgNum || selectMsgNum.length < 1) {
           expect(0).assertEqual(1)
           done()
-          return
         }
         if (client) {
           let startTime1 = new Date().getTime();
-          let result = await client.DELE(selectMsgNum + '')
+          let result = await client.DELE(selectMsgNum)
           let endTime1 = new Date().getTime();
           let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
           console.log("POP3Test : sendDELE averageTime : " + averageTime1 + "us")
@@ -288,7 +251,29 @@ export default function POP3Test() {
         done()
       }
     })
+    it('sendRSET', 0, async function (done) {
+      try {
+        if (!selectMsgNum || selectMsgNum.length < 1) {
+          expect(0).assertEqual(1)
+          done()
+        }
+        if (client) {
+          let startTime1 = new Date().getTime();
+          let result = await client.RSET() // 用于撤销DELE命令 所以不需要等DELE命令返回
+          let endTime1 = new Date().getTime();
+          let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+          console.log("POP3Test : sendRSET averageTime : " + averageTime1 + "us")
+          done()
+        } else {
+          expect(0).assertEqual(1)
+          done()
+        }
 
+      } catch (err) {
+        expect(0).assertEqual(1)
+        done()
+      }
+    })
 
     it('sendQUIT', 0, async function (done) {
       try {
