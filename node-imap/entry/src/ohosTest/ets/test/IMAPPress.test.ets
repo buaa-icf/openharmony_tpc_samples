@@ -14,7 +14,7 @@
  */
 
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
-import Imap, { inspect } from '@ohos/node_imap'
+import Imap, { inspect } from '@ohos/node-imap'
 
 export default function IMAPPress() {
   let count = 1;

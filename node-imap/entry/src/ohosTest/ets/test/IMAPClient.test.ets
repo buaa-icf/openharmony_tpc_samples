@@ -16,7 +16,7 @@
 import hilog from '@ohos.hilog';
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
 import promptAction from '@ohos.promptAction'
-import Imap, { inspect } from '@ohos/node_imap'
+import Imap, { inspect } from '@ohos/node-imap'
 import socket from '@ohos.net.socket'
 import StatusBean from '../../../main/ets/bean/StatusBean'
 import MsgListBean, { MsgListFootBean, MsgListHeadBean } from '../../../main/ets/bean/MsgListBean'

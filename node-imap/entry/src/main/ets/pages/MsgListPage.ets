@@ -14,11 +14,11 @@
  */
  
 import promptAction from '@ohos.promptAction'
-import Imap, { inspect } from '@ohos/node_imap'
+import Imap, { inspect } from '@ohos/node-imap'
 import router from '@ohos.router'
 import StatusBean from '../bean/StatusBean'
 import MsgListBean, { MsgListFootBean, MsgListHeadBean } from '../bean/MsgListBean'
-import { Buffer } from '@ohos/node_imap/src/main/polyfill/buffer'
+import { Buffer } from '@ohos/node-imap/src/main/polyfill/buffer'
 import buffer from '@ohos.buffer'
 
 const searchCommand = ['ALL', 'ANSWERED', 'DELETED', 'DRAFT',

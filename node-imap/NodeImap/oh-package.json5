@@ -1,9 +1,9 @@
 {
-  "name": "@ohos/node_imap",
+  "name": "@ohos/node-imap",
   "version": "1.0.0",
   "type": "module",
   "types": "",
-  "description": "@ohos/node_imap is an IMAP client module for OpenHarmony",
+  "description": "@ohos/node-imap is an IMAP client module for OpenHarmony",
   "main": "index.ts",
   "author": "ohos_tpc",
   "ohos": {
