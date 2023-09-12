@@ -6,7 +6,7 @@
   "author": "ohos_tpc",
   "license": "MIT",
   "dependencies": {
-    "@ohos/node_pop3": "file:../NodePop3"
+    "@ohos/node-pop3": "file:../NodePop3"
   }
 }
 

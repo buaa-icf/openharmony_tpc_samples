@@ -9,13 +9,13 @@
 1丶安装
 
 ```
-ohpm install @ohos/node_pop3
+ohpm install @ohos/node-pop3
 ```
 OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 2丶导入
 
 ```
-import Pop3Command from '@ohos/node_pop3'
+import Pop3Command from '@ohos/node-pop3'
 ```
 
 ### Demo样例
