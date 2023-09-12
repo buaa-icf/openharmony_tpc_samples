@@ -14,7 +14,7 @@
  */
 
 import promptAction from '@ohos.promptAction'
-import Imap, { inspect } from '@ohos/node_imap'
+import Imap, { inspect } from '@ohos/node-imap'
 import socket from '@ohos.net.socket'
 import StatusBean from '../bean/StatusBean'
 import MsgListBean, { MsgListFootBean, MsgListHeadBean } from '../bean/MsgListBean'

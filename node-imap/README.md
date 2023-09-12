@@ -12,7 +12,7 @@
 ## 下载安装
 
 ```
-ohpm install @ohos/node_imap
+ohpm install @ohos/node-imap
 ```
 OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 

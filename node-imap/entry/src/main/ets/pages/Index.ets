@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import Imap, { inspect } from '@ohos/node_imap'
+import Imap, { inspect } from '@ohos/node-imap'
 import promptAction from '@ohos.promptAction'
 import router from '@ohos.router'
 import socket from '@ohos.net.socket'

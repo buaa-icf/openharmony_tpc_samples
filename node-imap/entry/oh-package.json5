@@ -6,7 +6,7 @@
   "author": "ohos_tpc",
   "license": "MIT",
   "dependencies": {
-    "@ohos/node_imap": 'file:../NodeImap'
+    "@ohos/node-imap": 'file:../NodeImap'
   }
 }
 
