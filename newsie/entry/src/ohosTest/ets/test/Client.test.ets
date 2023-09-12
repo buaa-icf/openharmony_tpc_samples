@@ -20,7 +20,7 @@ import Client from "ohos_newsie"
 export default function ClientTest() {
   var client:Client;
   var greeting;
-  describe('ClientTest', async function () {
+  describe('ClientTest', function () {
     beforeAll(async () => {
       client = new Client({ host:config.host, port:config.port })
       greeting = await client.connect()
