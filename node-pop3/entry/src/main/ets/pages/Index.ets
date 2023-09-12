@@ -16,7 +16,7 @@
 import promptAction from '@ohos.promptAction'
 import router from '@ohos.router'
 import socket from '@ohos.net.socket'
-import Pop3Command from '@ohos/node_pop3'
+import Pop3Command from '@ohos/node-pop3'
 
 @CustomDialog
 struct CustomDialogDiy {

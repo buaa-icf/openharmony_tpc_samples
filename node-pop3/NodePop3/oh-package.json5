@@ -9,7 +9,7 @@
   "ohos": {
     "org": "opensource"
   },
-  "name": "@ohos/node_pop3",
+  "name": "@ohos/node-pop3",
   "version": "1.0.0",
   "description": "pop3 command support for node. Supports Promise and stream.",
   "main": "index.ts",

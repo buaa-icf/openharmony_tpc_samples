@@ -15,7 +15,7 @@
 
 import promptAction from '@ohos.promptAction'
 import router from '@ohos.router'
-import Pop3Command from '@ohos/node_pop3'
+import Pop3Command from '@ohos/node-pop3'
 import MsgBean from '../MsgBean'
 const BASE_COUNT = 1
 @Entry
