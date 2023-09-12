@@ -1,10 +1,10 @@
-## newsie
+# newsie
 
-### 介绍
+## 介绍
 
 newsie 是一款实现了 NNTP 客户端协议的三方库，适用于openharmony。
 
-### 下载
+## 下载
 
 1 丶安装
 
@@ -19,9 +19,9 @@ OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装 OpenHarmo
     import Client from '@ohos/newsie'
 ```
 
-### Demo 样例
+## Demo 样例
 
-connect
+API：connect
 
 描述：连接服务器
 
@@ -33,7 +33,7 @@ this.client = new Client({
 await this.client.connect();
 ```
 
-list
+API：list
 
 描述：获取新闻组列表
 
@@ -41,7 +41,7 @@ list
 await this.client.list();
 ```
 
-group
+API：group
 
 描述：获取指定新闻组信息，并选中
 
@@ -49,14 +49,14 @@ group
 await this.client.group(this.select_group);
 ```
 
-newgroups
+API：newgroups
 
 描述：获取某个时间后的新闻组
 ```js
 await this.client.newgroups(new Date());
 ```
 
-date
+API：date
 
 描述：获取服务器日期
 

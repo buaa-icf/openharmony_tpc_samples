@@ -1,7 +1,7 @@
 {
   keywords: ["OpenHarmony", "NNTP","HarmonyOS"],
   author: "ohos_tpc",
-  description: "适用于openharmony的NNTP客户端协议",
+  description: "NNTP client protocol for openharmony environments",
   ohos: {
     org: "opensource",
   },
