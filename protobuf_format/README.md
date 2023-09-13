@@ -13,7 +13,7 @@ ohpm install @ohos/protobuf_format
 ```
 OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
-2.在需要使用的页面导入protobuf,如Index.ets:
+2.在需要使用的页面导入protobuf_format库,如Index.ets:
 
 ```
 import ProtobufFormat from '@ohos/protobuf_format'
