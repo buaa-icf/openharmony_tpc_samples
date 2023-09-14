@@ -15,64 +15,106 @@
 
 import { describe, it, expect } from '@ohos/hypium'
 import { parsePatch } from 'diff'
+import { Patch } from './interface'
 
 export default function parseTest() {
-  describe('parseTest', function () {
-    it('parsePatch_should_parse_basic_patches', 0, function () {
+  describe('parseTest', () => {
+    it('parsePatch_should_parse_basic_patches', 0, () => {
+      let expected: Patch[] = [{
+        hunks: [
+          {
+            oldStart: 1,
+            oldLines: 3,
+            newStart: 1,
+            newLines: 4,
+            lines: [
+              ' line2',
+              ' line3',
+              '+line4',
+              ' line5'
+            ],
+            linedelimiters: [
+              '\n',
+              '\n',
+              '\n',
+              '\n'
+            ]
+          }
+        ]
+      }]
       expect(parsePatch(
         `@@ -1,3 +1,4 @@
  line2
  line3
 +line4
- line5`))
-        .assertDeepEquals([{
-          hunks: [
-            {
-              oldStart: 1,
-              oldLines: 3,
-              newStart: 1,
-              newLines: 4,
-              lines: [
-                ' line2',
-                ' line3',
-                '+line4',
-                ' line5'
-              ],
-              linedelimiters: [
-                '\n',
-                '\n',
-                '\n',
-                '\n'
-              ]
-            }
-          ]
-        }]);
+ line5`)).assertDeepEquals(expected);
     });
-    it('parsePatch_should_parse_single_line_hunks', 0, function () {
+    it('parsePatch_should_parse_single_line_hunks', 0, () => {
+      let expected: Patch[] = [{
+        hunks: [
+          {
+            oldStart: 1,
+            oldLines: 1,
+            newStart: 1,
+            newLines: 1,
+            lines: [
+              '-line3',
+              '+line4'
+            ],
+            linedelimiters: [
+              '\n',
+              '\n'
+            ]
+          }
+        ]
+      }]
       expect(parsePatch(
         `@@ -1 +1 @@
 -line3
 +line4`))
-        .assertDeepEquals([{
-          hunks: [
-            {
-              oldStart: 1,
-              oldLines: 1,
-              newStart: 1,
-              newLines: 1,
-              lines: [
-                '-line3',
-                '+line4'
-              ],
-              linedelimiters: [
-                '\n',
-                '\n'
-              ]
-            }
-          ]
-        }]);
+        .assertDeepEquals(expected);
     });
-    it('parsePatch_should_parse_multiple_hunks', 0, function () {
+    it('parsePatch_should_parse_multiple_hunks', 0, () => {
+      let expected: Patch[] = [{
+        hunks: [
+          {
+            oldStart: 1,
+            oldLines: 3,
+            newStart: 1,
+            newLines: 4,
+            lines: [
+              ' line2',
+              ' line3',
+              '+line4',
+              ' line5'
+            ],
+            linedelimiters: [
+              '\n',
+              '\n',
+              '\n',
+              '\n'
+            ]
+          },
+          {
+            oldStart: 4,
+            oldLines: 3,
+            newStart: 1,
+            newLines: 4,
+            lines: [
+              ' line2',
+              ' line3',
+              '-line4',
+              ' line5'
+            ],
+            linedelimiters: [
+              '\n',
+              '\n',
+              '\n',
+              '\n'
+            ]
+          }
+        ]
+      }]
       expect(parsePatch(
         `@@ -1,3 +1,4 @@
  line2
@@ -84,46 +126,7 @@ export default function parseTest() {
  line3
 -line4
  line5`))
-        .assertDeepEquals([{
-          hunks: [
-            {
-              oldStart: 1,
-              oldLines: 3,
-              newStart: 1,
-              newLines: 4,
-              lines: [
-                ' line2',
-                ' line3',
-                '+line4',
-                ' line5'
-              ],
-              linedelimiters: [
-                '\n',
-                '\n',
-                '\n',
-                '\n'
-              ]
-            },
-            {
-              oldStart: 4,
-              oldLines: 3,
-              newStart: 1,
-              newLines: 4,
-              lines: [
-                ' line2',
-                ' line3',
-                '-line4',
-                ' line5'
-              ],
-              linedelimiters: [
-                '\n',
-                '\n',
-                '\n',
-                '\n'
-              ]
-            }
-          ]
-        }]);
+        .assertDeepEquals(expected);
     });
   })
 }
