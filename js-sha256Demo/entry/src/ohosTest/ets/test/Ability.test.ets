@@ -16,28 +16,28 @@ import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from
 import { sha256, sha224 } from 'js-sha256';
 
 export default function abilityTest() {
-  describe('ActsAbilityTest', function () {
+  describe('ActsAbilityTest', () => {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(() => {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(() => {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(() => {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(() => {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
 
-    it('sha256',0, function () {
+    it('sha256',0, () => {
 
       let s1 = sha256(''); // e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
       let s2 = sha256('The quick brown fox jumps over the lazy dog'); // d7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592
@@ -57,7 +57,7 @@ export default function abilityTest() {
       expect(s5).assertEqual('e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855')
       expect(s6).assertEqual('182889f925ae4e5cc37118ded6ed87f7bdc7cab5ec5e78faef2e50048999473f')
     })
-    it('sha224',0, function () {
+    it('sha224',0, () => {
       let s1 = sha224(''); // d14a028c2a3a2bc9476102bb288234c415a2b01f828ea62ac5b3e42f
       let s2 = sha224('The quick brown fox jumps over the lazy dog'); // 730e109bd7a8a32b1cb9d9a09aa2325d2430587ddbc0c38bad911525
       let s3 = sha224('The quick brown fox jumps over the lazy dog.'); // 619cba8e8e05826e9b8c519c0a5c68f4fb653e8a3d8aa04bb2c8cd4c
@@ -68,17 +68,17 @@ export default function abilityTest() {
       expect(s3).assertEqual('619cba8e8e05826e9b8c519c0a5c68f4fb653e8a3d8aa04bb2c8cd4c')
       expect(s4).assertEqual('dfbab71afdf54388af4d55f8bd3de8c9b15e0eb916bf9125f4a959d4')
     })
-    it('ha256.hex',0, function () {
+    it('ha256.hex',0, () => {
       let s1 = sha256.hex(''); // e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
       expect(s1).assertEqual('e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855')
     })
-    it('sha256.array',0, function () {
+    it('sha256.array',0, () => {
       let expected:string = '227,176,196,66,152,252,28,20,154,251,244,200,153,111,185,36,39,174,65,228,100,155,147,76,164,149,153,27,120,82,184,85'
       let s1 = sha256.array('')+""; // [227, 176, 196, 66, 152, 252, 28, 20, 154, 251, 244, 200, 153, 111, 185, 36, 39, 174, 65, 228, 100, 155, 147, 76, 164, 149, 153, 27, 120, 82, 184, 85]
 
       expect(s1).assertEqual(expected)
     })
-    it('sha256.digest',0, function () {
+    it('sha256.digest',0, () => {
       let expected:string = '227,176,196,66,152,252,28,20,154,251,244,200,153,111,185,36,39,174,65,228,100,155,147,76,164,149,153,27,120,82,184,85'
       let s1 = sha256.digest('')+""; // [227, 176, 196, 66, 152, 252, 28, 20, 154, 251, 244, 200, 153, 111, 185, 36, 39, 174, 65, 228, 100, 155, 147, 76, 164, 149, 153, 27, 120, 82, 184, 85]
 
