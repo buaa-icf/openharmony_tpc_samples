@@ -1,4 +1,3 @@
-
 /*
  * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,27 +15,26 @@
 import hilog from '@ohos.hilog';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 
-
-import { er } from "easy-replace";
+import { er,Opts } from "easy-replace";
 
 export default function searchFornomaybesoutsides() {
-  describe('searchFornomaybesoutsides', function () {
+  describe('searchFornomaybesoutsides', () => {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(() => {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(() => {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(() => {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(() => {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
@@ -51,115 +49,95 @@ export default function searchFornomaybesoutsides() {
     //   expect(a).assertEqual(a)
     // })
 
-    var count = 0;
-    var test = function (name, func){
-      name = name.replace(/[ /d]/g, '');
-      name = name.replace(/-/g,"");
-      it(name,count++,func)
+    let count = 0;
+    let test = (name: string, func: Function) => {
+      name = name.replace(new RegExp("/[ /d]/g"), '');
+      name = name.replace(new RegExp("/-/g"), "");
+      it(name, count++, func)
     }
 
-    var equal = function (src,dst,tag){
-      console.log('tag:'+tag+"  src="+src+ " dst="+dst);
+    let equal = (src: string, dst: string, tag: string) => {
+      console.log('tag:' + tag + "  src=" + src + " dst=" + dst);
       expect(src).assertEqual(dst)
     }
 
-// ==============================
-// no searchFor + no maybes + outsides
-// ==============================
+    // ==============================
+    // no searchFor + no maybes + outsides
+    // ==============================
+    let optsFunc = (leftOutsideNot: string | string[] = "",
+                    leftOutside: string | string[] = "",
+                    leftMaybe: string | string[] = "",
+                    searchFor: string | string[] = "",
+                    rightMaybe: string | string[] = "",
+                    rightOutside: string | string[] = "",
+                    rightOutsideNot: string | string[] = ""): Opts => {
+      return {
+        leftOutsideNot,
+        leftOutside,
+        leftMaybe,
+        searchFor,
+        rightMaybe,
+        rightOutside,
+        rightOutsideNot,
+        i: {
+          leftOutsideNot: false,
+          leftOutside: false,
+          leftMaybe: false,
+          searchFor: false,
+          rightMaybe: false,
+          rightOutside: false,
+          rightOutsideNot: false
+        }
+      }
+    }
+    test("01 - one rightOutside, not found", () => {
+      equal(
+        er(
+          "aaa🦄a bbbb🦄 cccc🦄",optsFunc("","","","","","🦄",""), "🌟"
+        ),
+        "aaa🦄a bbbb🦄 cccc🦄",
+        "test 7.1"
+      );
+    });
 
-test("01 - one rightOutside, not found", () => {
-  equal(
-    er(
-      "aaa🦄a bbbb🦄 cccc🦄",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "",
-        rightMaybe: "",
-        rightOutside: "🦄",
-        rightOutsideNot: "",
-      },
-      "🌟"
-    ),
-    "aaa🦄a bbbb🦄 cccc🦄",
-    "test 7.1"
-  );
-});
+    test("02 - one leftOutside, not found", () => {
+      equal(
+        er(
+          "🦄aaaa 🦄bbbb 🦄cccc",optsFunc("","🦄","","","","",""), "🌟"
+        ),
+        "🦄aaaa 🦄bbbb 🦄cccc",
+        "test 7.2"
+      );
+    });
 
-test("02 - one leftOutside, not found", () => {
-  equal(
-    er(
-      "🦄aaaa 🦄bbbb 🦄cccc",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "🦄",
-        leftMaybe: "",
-        searchFor: "",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "🌟"
-    ),
-    "🦄aaaa 🦄bbbb 🦄cccc",
-    "test 7.2"
-  );
-});
+    test("03 - one leftOutside, not found + null replacement", () => {
+      equal(
+        er(
+          "aa🦄aa bb🦄bb cc🦄cc",optsFunc("","🦄","","","","",""), null
+        ),
+        "aa🦄aa bb🦄bb cc🦄cc",
+        "test 7.3"
+      );
+    });
 
-test("03 - one leftOutside, not found + null replacement", () => {
-  equal(
-    er(
-      "aa🦄aa bb🦄bb cc🦄cc",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "🦄",
-        leftMaybe: "",
-        searchFor: "",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      null
-    ),
-    "aa🦄aa bb🦄bb cc🦄cc",
-    "test 7.3"
-  );
-});
+    test("04 - leftOutside and replacement are null", () => {
+      equal(
+        er(
+          "aaaa bbbb cccc",optsFunc("",null,"","","","",""), null
+        ),
+        "aaaa bbbb cccc",
+        "test 7.4"
+      );
+    });
 
-test("04 - leftOutside and replacement are null", () => {
-  equal(
-    er(
-      "aaaa bbbb cccc",
-      // @ts-ignore
-      {
-        leftOutside: null,
-      },
-      null
-    ),
-    "aaaa bbbb cccc",
-    "test 7.4"
-  );
-});
-
-test("05 - left outside and replacement are undefined", () => {
-  equal(
-    er(
-      "aaaa bbbb cccc",
-      // @ts-ignore
-      {
-        leftOutside: undefined,
-      },
-      undefined
-    ),
-    "aaaa bbbb cccc",
-    "test 7.5"
-  );
-});
-
-
+    test("05 - left outside and replacement are undefined", () => {
+      equal(
+        er(
+          "aaaa bbbb cccc",optsFunc("",undefined,"","","","",""), undefined
+        ),
+        "aaaa bbbb cccc",
+        "test 7.5"
+      );
+    });
   })
 }
