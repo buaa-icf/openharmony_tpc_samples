@@ -12,13 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import {TextDecoder,TextEncoder} from '@zxing/text-encoding'
 @Entry
 @Component
 struct Index {
   @State message: string = 'zxing/text-encoding的编码与解码'
   @State inputText: string = ''
-  @State encoded: Uint8Array=null
+  @State encoded: Uint8Array|null=null
 
   build() {
     Row() {
