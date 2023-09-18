@@ -26,8 +26,6 @@ struct Index {
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
 
-
-
         TextInput({ placeholder: 'input your word', text: this.inputText })
           .height(60)
           .border({ width: 5, color: Color.Red })
@@ -57,8 +55,8 @@ struct Index {
         Button('解码').fontSize(25).width(300).margin(20)
           .onClick(()=>{
             let content:string = 'ABCDEFGHIJKabcdefj123456+/AA==!@';
-            let encodes =encode(content) ;
-            let decodes = decode(this.encodes)
+            let encodes:string =encode(content) ;
+            let decodes:string = decode(this.encodes)
             AlertDialog.show({
               title:'',
               message:decodes,
