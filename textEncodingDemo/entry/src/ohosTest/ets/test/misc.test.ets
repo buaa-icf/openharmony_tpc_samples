@@ -14,13 +14,37 @@
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 import { TextEncoder, TextDecoder } from 'text-encoding';
+interface fatalObjType{
+  fatal:boolean
+}
+interface ignoreBOMType{
+  ignoreBOM:boolean
+}
+interface  badStringsType{
+   input: string
+   expected: string
+}
+interface  encodingsType {
+  label: string
+  encoding: string
+}
+interface  streamType{
+  stream:boolean
+}
+interface casesType {
+  encoding: string
+  encoded: number[]
+}
+interface NONSTANDARD_allowLegacyEncodingType{
+  NONSTANDARD_allowLegacyEncoding:boolean
+}
 
 
 export default function miscTest() {
-  describe('miscTest', function () {
-    var THE_ENCODING = ['utf-8'];
+  describe('miscTest', ()=>{
+    let THE_ENCODING = ['utf-8'];
 
-    var LEGACY_ENCODINGS = [
+    let LEGACY_ENCODINGS = [
       'ibm866', 'iso-8859-2', 'iso-8859-3', 'iso-8859-4', 'iso-8859-5',
       'iso-8859-6', 'iso-8859-7', 'iso-8859-8', 'iso-8859-10',
       'iso-8859-13', 'iso-8859-14', 'iso-8859-15', 'iso-8859-16', 'koi8-r',
@@ -31,58 +55,62 @@ export default function miscTest() {
       'euc-kr', 'utf-16le', 'utf-16be'
     ];
 
-    var ASCII_SUPERSETS = THE_ENCODING.concat(LEGACY_ENCODINGS)
-      .filter(function (e) {
+    let ASCII_SUPERSETS = THE_ENCODING.concat(LEGACY_ENCODINGS)
+      .filter( (e)=> {
         return e !== 'utf-16le' && e !== 'utf-16be';
       });
 
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(()=> {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(()=> {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(()=> {
 
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(()=> {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
 
 
-    it('misctest', 0, function () {
-      expect(/\[native code\]/.test(String(TextDecoder))).assertFalse()
+    it('misctest', 0, ()=> {
+      expect(new RegExp("/\[native code\]/").test(String(TextDecoder))).assertFalse()
     })
 
-    it('Attributes', 1, function () {
-      expect('encoding' in new TextEncoder()).assertTrue();
+    it('Attributes', 1, ()=> {
+      let textEncoder:TextEncoder= new TextEncoder()
+      let textDecoder:TextDecoder= new TextDecoder()
+      let fatalObj:fatalObjType= {
+      fatal: true
+      }
+     let ignoreBOM:ignoreBOMType={
+       ignoreBOM: true
+     }
+      expect(textEncoder.encoding!==undefined).assertTrue();
       expect(new TextEncoder().encoding).assertEqual('utf-8');
 
-      expect('encoding' in new TextDecoder()).assertTrue();
+      expect(textDecoder.encoding !==undefined).assertTrue();
       expect(new TextDecoder().encoding).assertEqual('utf-8');
       expect(new TextDecoder('utf-16le').encoding).assertEqual('utf-16le');
-      expect('fatal' in new TextDecoder()).assertTrue();
+      expect(textDecoder.fatal !==undefined).assertTrue();
       expect(new TextDecoder('utf-8').fatal).assertFalse();
-      expect(new TextDecoder('utf-8', {
-        fatal: true
-      }).fatal).assertTrue();
-      expect('ignoreBOM' in new TextDecoder()).assertTrue();
+      expect(new TextDecoder('utf-8', fatalObj).fatal).assertTrue();
+      expect(textDecoder.ignoreBOM !==undefined).assertTrue();
       expect(new TextDecoder('utf-8').ignoreBOM).assertFalse();
-      expect(new TextDecoder('utf-8', {
-        ignoreBOM: true
-      }).ignoreBOM).assertTrue();
+      expect(new TextDecoder('utf-8', ignoreBOM).ignoreBOM).assertTrue();
     });
 
-    it('baddata', 2, function () {
-      var badStrings = [
+    it('baddata', 2, ()=> {
+      let badStrings:Array<badStringsType> = [
         {
           input: '\ud800', expected: '\ufffd'
         }, // Surrogate half
@@ -101,16 +129,16 @@ export default function miscTest() {
       ];
 
       badStrings.forEach(
-        function (t) {
-          var encoded = new TextEncoder().encode(t.input);
-          var decoded = new TextDecoder().decode(encoded);
+        (t)=> {
+          let encoded:Uint8Array = new TextEncoder().encode(t.input);
+          let decoded:string = new TextDecoder().decode(encoded);
           expect(t.expected).assertEqual(decoded);
         });
     });
 
 
-    it('EncodingNamesAreCaseInsensitive', 3, function () {
-      var encodings = [
+    it('EncodingNamesAreCaseInsensitive', 3, ()=> {
+      let encodings:Array<encodingsType> = [
         {
           label: 'utf-8', encoding: 'utf-8'
         },
@@ -132,23 +160,23 @@ export default function miscTest() {
       ];
 
       encodings.forEach(
-        function (test) {
+         (test)=> {
           expect(new TextDecoder(test.label.toLowerCase()).encoding).assertEqual(test.encoding);
           expect(new TextDecoder(test.label.toUpperCase()).encoding).assertEqual(test.encoding);
         });
     });
 
-    it('ByteOrderMarks', 4, function () {
-      var utf8_bom = [0xEF, 0xBB, 0xBF];
-      var utf8 = [0x7A, 0xC2, 0xA2, 0xE6, 0xB0, 0xB4, 0xF0, 0x9D, 0x84, 0x9E, 0xF4, 0x8F, 0xBF, 0xBD];
+    it('ByteOrderMarks', 4, ()=> {
+      let utf8_bom = [0xEF, 0xBB, 0xBF];
+      let utf8 = [0x7A, 0xC2, 0xA2, 0xE6, 0xB0, 0xB4, 0xF0, 0x9D, 0x84, 0x9E, 0xF4, 0x8F, 0xBF, 0xBD];
 
-      var utf16le_bom = [0xff, 0xfe];
-      var utf16le = [0x7A, 0x00, 0xA2, 0x00, 0x34, 0x6C, 0x34, 0xD8, 0x1E, 0xDD, 0xFF, 0xDB, 0xFD, 0xDF];
+      let utf16le_bom = [0xff, 0xfe];
+      let utf16le = [0x7A, 0x00, 0xA2, 0x00, 0x34, 0x6C, 0x34, 0xD8, 0x1E, 0xDD, 0xFF, 0xDB, 0xFD, 0xDF];
 
-      var utf16be_bom = [0xfe, 0xff];
-      var utf16be = [0x00, 0x7A, 0x00, 0xA2, 0x6C, 0x34, 0xD8, 0x34, 0xDD, 0x1E, 0xDB, 0xFF, 0xDF, 0xFD];
+      let utf16be_bom = [0xfe, 0xff];
+      let utf16be = [0x00, 0x7A, 0x00, 0xA2, 0x6C, 0x34, 0xD8, 0x34, 0xDD, 0x1E, 0xDB, 0xFF, 0xDF, 0xFD];
 
-      var string = 'z\xA2\u6C34\uD834\uDD1E\uDBFF\uDFFD'; // z, cent, CJK water, G-Clef, Private-use character
+      let string = 'z\xA2\u6C34\uD834\uDD1E\uDBFF\uDFFD'; // z, cent, CJK water, G-Clef, Private-use character
 
       // missing BOMs
       expect(new TextDecoder('utf-8').decode(new Uint8Array(utf8))).assertEqual(string);
@@ -161,24 +189,17 @@ export default function miscTest() {
       expect(new TextDecoder('utf-16be').decode(new Uint8Array(utf16be_bom.concat(utf16be)))).assertEqual(string);
 
       // matching BOMs split
-      var decoder8 = new TextDecoder('utf-8');
-      expect(decoder8.decode(new Uint8Array(utf8_bom.slice(0, 1)), {
-        stream: true
-      })).assertEqual('');
+      let decoder8:TextDecoder = new TextDecoder('utf-8');
+      let stream:streamType={stream: true}
+      expect(decoder8.decode(new Uint8Array(utf8_bom.slice(0, 1)), stream)).assertEqual('');
       expect(decoder8.decode(new Uint8Array(utf8_bom.slice(1).concat(utf8)))).assertEqual(string);
-      expect(decoder8.decode(new Uint8Array(utf8_bom.slice(0, 2)), {
-        stream: true
-      })).assertEqual('');
+      expect(decoder8.decode(new Uint8Array(utf8_bom.slice(0, 2)),stream)).assertEqual('');
       expect(decoder8.decode(new Uint8Array(utf8_bom.slice(2).concat(utf8)))).assertEqual(string);
-      var decoder16le = new TextDecoder('utf-16le');
-      expect(decoder16le.decode(new Uint8Array(utf16le_bom.slice(0, 1)), {
-        stream: true
-      })).assertEqual('');
+      let decoder16le:TextDecoder = new TextDecoder('utf-16le');
+      expect(decoder16le.decode(new Uint8Array(utf16le_bom.slice(0, 1)), stream)).assertEqual('');
       expect(decoder16le.decode(new Uint8Array(utf16le_bom.slice(1).concat(utf16le)))).assertEqual(string);
-      var decoder16be = new TextDecoder('utf-16be');
-      expect(decoder16be.decode(new Uint8Array(utf16be_bom.slice(0, 1)), {
-        stream: true
-      })).assertEqual('');
+      let decoder16be:TextDecoder = new TextDecoder('utf-16be');
+      expect(decoder16be.decode(new Uint8Array(utf16be_bom.slice(0, 1)), stream)).assertEqual('');
       expect(decoder16be.decode(new Uint8Array(utf16be_bom.slice(1).concat(utf16be)))).assertEqual(string);
 
       // mismatching BOMs
@@ -195,24 +216,21 @@ export default function miscTest() {
       // assert_not_equals(new TextDecoder('utf-16be').decode(new Uint8Array(utf16le_bom.concat(utf16be))), string);
 
       // ignore BOMs
-      expect(new TextDecoder('utf-8', {
+      let ignoreBOM:ignoreBOMType={
         ignoreBOM: true
-      })
+      }
+      expect(new TextDecoder('utf-8', ignoreBOM)
         .decode(new Uint8Array(utf8_bom.concat(utf8)))
       ).assertEqual('\uFEFF' + string);
-      expect(new TextDecoder('utf-16le', {
-        ignoreBOM: true
-      })
+      expect(new TextDecoder('utf-16le', ignoreBOM)
         .decode(new Uint8Array(utf16le_bom.concat(utf16le)))
       ).assertEqual('\uFEFF' + string);
-      expect(new TextDecoder('utf-16be', {
-        ignoreBOM: true
-      })
+      expect(new TextDecoder('utf-16be', ignoreBOM)
         .decode(new Uint8Array(utf16be_bom.concat(utf16be)))
       ).assertEqual('\uFEFF' + string);
     });
 
-    it('EncodingNames', 5, function () {
+    it('EncodingNames', 5, ()=> {
       expect(new TextDecoder('utf-8').encoding).assertEqual('utf-8'); // canonical case
       expect(new TextDecoder('UTF-16').encoding).assertEqual('utf-16le'); // canonical case and name
       expect(new TextDecoder('UTF-16BE').encoding).assertEqual('utf-16be'); // canonical case and name
@@ -220,9 +238,9 @@ export default function miscTest() {
       expect(new TextDecoder('iso-8859-1').encoding).assertEqual('windows-1252'); // canonical case and name
     });
 
-    it('StreamingDecode', 6, function () {
-      var string = '\x00123ABCabc\x80\xFF\u0100\u1000\uFFFD\uD800\uDC00\uDBFF\uDFFF';
-      var cases = [
+    it('StreamingDecode', 6, ()=> {
+      let string: string = '\x00123ABCabc\x80\xFF\u0100\u1000\uFFFD\uD800\uDC00\uDBFF\uDFFF';
+      let cases:Array<casesType> = [
         {
           encoding: 'utf-8',
           encoded: [0, 49, 50, 51, 65, 66, 67, 97, 98, 99, 194, 128, 195, 191, 196,
@@ -242,18 +260,16 @@ export default function miscTest() {
             255, 223, 255]
         }
       ];
-
-      cases.forEach(function (c) {
-        for (var len = 1; len <= 5; ++len) {
-          var out = '', decoder = new TextDecoder(c.encoding);
-          for (var i = 0; i < c.encoded.length; i += len) {
-            var sub = [];
-            for (var j = i; j < c.encoded.length && j < i + len; ++j) {
+      let stream:streamType={stream: true}
+      cases.forEach( (c)=> {
+        for (let len = 1; len <= 5; ++len) {
+          let out:string = '', decoder:TextDecoder = new TextDecoder(c.encoding);
+          for (let i = 0; i < c.encoded.length; i += len) {
+            let sub:Array<number> = [];
+            for (let j = i; j < c.encoded.length && j < i + len; ++j) {
               sub.push(c.encoded[j]);
             }
-            out += decoder.decode(new Uint8Array(sub), {
-              stream: true
-            });
+            out += decoder.decode(new Uint8Array(sub), stream);
           }
           out += decoder.decode();
           expect(out).assertEqual(string);
@@ -261,16 +277,16 @@ export default function miscTest() {
       });
     });
 
-    it('ShiftJISDecode', 7, function () {
-      var jis = [0x82, 0xC9, 0x82, 0xD9, 0x82, 0xF1];
-      var expected = '\u306B\u307B\u3093'; // Nihon
+    it('ShiftJISDecode', 7, ()=> {
+      let jis: number[] = [0x82, 0xC9, 0x82, 0xD9, 0x82, 0xF1];
+      let expected:string = '\u306B\u307B\u3093'; // Nihon
       expect(new TextDecoder('shift_jis').decode(new Uint8Array(jis))).assertEqual(expected);
     });
 
-    it('SupersetsOfASCIIdecodeASCIIcorrectly', 8, function () {
-      ASCII_SUPERSETS.forEach(function (encoding) {
-        var string = '', bytes = [];
-        for (var i = 0; i < 128; ++i) {
+    it('SupersetsOfASCIIdecodeASCIIcorrectly', 8, ()=> {
+      ASCII_SUPERSETS.forEach( (encoding)=> {
+        let string: string = '', bytes:Array<number> = [];
+        for (let i = 0; i < 128; ++i) {
 
           // Encodings that have escape codes in 0x00-0x7F
           if (encoding === 'iso-2022-jp' &&
@@ -280,19 +296,19 @@ export default function miscTest() {
           string += String.fromCharCode(i);
           bytes.push(i);
         }
-        var ascii_encoded = new TextEncoder().encode(string);
+        let ascii_encoded:Uint8Array = new TextEncoder().encode(string);
         expect(new TextDecoder(encoding).decode(ascii_encoded)).assertEqual(string);
       });
     });
 
-    it('notEncode', 9, function () {
-      LEGACY_ENCODINGS.forEach(function (encoding) {
+    it('notEncode', 9, ()=> {
+      LEGACY_ENCODINGS.forEach( (encoding)=> {
         expect(new TextDecoder(encoding).encoding).assertEqual(encoding);
         expect(new TextEncoder(encoding).encoding).assertEqual('utf-8');
       });
     });
 
-    it('GB180302000', 10, function () {
+    it('GB180302000', 10, ()=> {
       // Regression test for https://github.com/whatwg/encoding/issues/22
       expect(
         new TextDecoder('gb18030').decode(new Uint8Array([
@@ -300,15 +316,13 @@ export default function miscTest() {
           0x81, 0x35, 0xF4, 0x37
         ]))).assertEqual('\u1E3F\uE7C7');
     });
+let NONSTANDARD_allowLegacyEncoding:NONSTANDARD_allowLegacyEncodingType={NONSTANDARD_allowLegacyEncoding: true};
+    ['utf-16le', 'utf-16be'].forEach( (encoding,index)=> {
+      it(`NONSTANDARD${index}`, 11, ()=> {
+        let encoder:TextEncoder = new TextEncoder(encoding, NONSTANDARD_allowLegacyEncoding);
+        let decoder:TextDecoder = new TextDecoder(encoding);
 
-    ['utf-16le', 'utf-16be'].forEach(function (encoding,index) {
-      it(`NONSTANDARD${index}`, 11, function () {
-        var encoder = new TextEncoder(encoding, {
-          NONSTANDARD_allowLegacyEncoding: true
-        });
-        var decoder = new TextDecoder(encoding);
-
-        var sample = "z\xA2\u6C34\uD834\uDD1E\uDBFF\uDFFD";
+        let sample: string = "z\xA2\u6C34\uD834\uDD1E\uDBFF\uDFFD";
 
         expect(decoder.decode(encoder.encode(sample))).assertEqual(sample);
 
