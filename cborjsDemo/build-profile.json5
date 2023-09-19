@@ -1,13 +1,28 @@
 {
   "app": {
-    "compileSdkVersion": 9,
-    "compatibleSdkVersion": 9,
     "products": [
       {
         "name": "default",
-        "signingConfig": "default"
+        "signingConfig": "default",
+        "compileSdkVersion": 10,
+        "compatibleSdkVersion": 10,
+        "runtimeOS": "OpenHarmony"
       }
     ],
+    "signingConfigs": [
+      {
+        "name": "default",
+        "material": {
+          "certpath": "C:\\Users\\lenovo\\.ohos\\config\\openharmony\\auto_ohos_default_cborjsDemo_com.ohos.cborjs.cer",
+          "storePassword": "0000001BC6BD53F26BF0A240EC79FAFBD28D0B5C60602D452778B13EB6A8012ACDFA7603DEA9F80F2928AD",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001B8AFF537C2C1A1F877090CBDD0CC976974ABF43D7BC68367F3059642983A24FDD3FF855D9345027",
+          "profile": "C:\\Users\\lenovo\\.ohos\\config\\openharmony\\auto_ohos_default_cborjsDemo_com.ohos.cborjs.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "C:\\Users\\lenovo\\.ohos\\config\\openharmony\\auto_ohos_default_cborjsDemo_com.ohos.cborjs.p12"
+        }
+      }
+    ]
   },
   "modules": [
     {

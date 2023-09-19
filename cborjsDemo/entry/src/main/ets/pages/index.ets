@@ -12,9 +12,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// @ts-ignore
+
 import CBOR from 'cbor-js';
 import prompt from '@ohos.prompt';
+
 
 @Entry
 @Component
@@ -59,13 +60,13 @@ struct Index {
   }
 }
 
-function testCbor(initial) {
-  var encoded = CBOR.encode(initial)
-  var decoded = CBOR.decode(encoded)
+function testCbor(initial:string) {
+  let encoded:string = CBOR.encode(initial)
+  let decoded:string = CBOR.decode(encoded)
   if (initial.toString() == decoded) {
     console.log('解码值和原值相同');
     prompt.showToast({ message: '解码值和原值相同', duration: 200 })
-  } else if (isObjectValueEqualNew(initial, decoded)) {
+  } else if (initial === decoded) {
     console.log('解码值和原值相同');
     prompt.showToast({ message: '解码值和原值相同', duration: 200 })
   } else {
@@ -74,28 +75,3 @@ function testCbor(initial) {
   }
 }
 
-function isObjectValueEqualNew(a, b) {
-  var aProps = Object.getOwnPropertyNames(a);
-  var bProps = Object.getOwnPropertyNames(b);
-  if (aProps.length != bProps.length) {
-    return false
-  }
-  for (var i = 0;i < aProps.length; i++) {
-    var propName = aProps[i]
-    var propA = a[propName]
-    var propB = b[propName]
-    if (typeof (propA) === 'object') {
-      if (this.isObjectValueEqualNew(propA, propB)) {
-        return true
-      } else {
-        return false
-      }
-    } else if (propA !== propB) {
-      return false
-    } else {
-      console.log('index:' + i);
-    }
-  }
-
-  return true
-}
