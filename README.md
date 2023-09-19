@@ -19,7 +19,7 @@
 
 [返回目录](#目录)
 
-## <a name="三方组件simble"></a>三方组件simble
+## <a name="三方组件sample"></a>三方组件sample
 
 ### <a name="文件数据"></a>文件数据
 
