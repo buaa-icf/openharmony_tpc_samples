@@ -15,13 +15,30 @@
 import validator from 'validator';
 import prompt from '@ohos.promptAction';
 import { data } from './data';
+import {dataType} from './data';
+// import { Options } from './options'
 
 const TAG: string = "TAG validator"
-
+ interface itemType{
+   mode:string
+   text:string
+   str:string
+   str1:string
+   min:number
+   max:number
+   IPVersion:number
+   values:string[]
+   default?:string
+   local:SelectOption[]
+ }
+interface  minMaxType{
+  min:number
+  max:number
+}
 @Entry
 @Component
 struct Index {
-  @State data: Array<any> = data
+  @State data: Array<dataType> = data
   private array: Array<SelectOption> = [
     { value: 'crc32' }, { value: 'crc32b' }, { value: 'md4' }, { value: 'md5' }, { value: 'ripemd128' },
     { value: 'ripemd160' }, { value: 'sha1' }, { value: 'sha256' }, { value: 'sha384' }, { value: 'sha512' },
@@ -48,7 +65,7 @@ struct Index {
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start }) {
       List({ space: 20, initialIndex: 0 }) {
-        ForEach(this.data, (item, index: number) => {
+        ForEach(this.data, (item:itemType) => {
           ListItem() {
             Column({ space: 12 }) {
               Text(item.text)
@@ -103,12 +120,12 @@ struct Index {
               if (item.local) {
                 Select(item.local)
                   .selected(0)
-                  .value(item.default)
+                  .value(item.default!)
                   .font({ size: 18, weight: 300 })
                   .fontColor('#182431')
                   .selectedOptionFont({ size: 18, weight: 200 })
                   .optionFont({ size: 18, weight: 200 })
-                  .onSelect((index: number, value: string) => {
+                  .onSelect((index: number, value?: string) => {
                     item.default = value
                   })
               }
@@ -134,8 +151,8 @@ struct Index {
     }
   }
 
-  Validator(item) {
-    let result = null
+  Validator(item:itemType) {
+    let result:Boolean|string = true
     if (item.mode == "isBase32") {
       result = validator.isBase32(item.str)
     }
@@ -254,11 +271,13 @@ struct Index {
       result = validator.isByteLength(item.str, item.min, item.max)
     }
     if (item.mode == "isFloat") {
-      result = validator.isFloat(item.str, { min:item.min, max:item.max })
+      let minMax:minMaxType={ min:item.min, max:item.max }
+      result = validator.isFloat(item.str, minMax)
     }
     if (item.mode == "isInt") {
       if(validator.isInt(item.min.toString()) && validator.isInt(item.max.toString())){
-        result = validator.isInt(item.str, { min:item.min, max:item.max })
+        let minMax:minMaxType={ min:item.min, max:item.max }
+        result = validator.isInt(item.str,minMax)
       }else {
         result = "请输入整数"
       }
@@ -473,7 +492,7 @@ struct Index {
       result = true
     }
     if (item.mode == "toDate") {
-      let result1 = validator.toDate(item.str)
+      let result1:Date|null= validator.toDate(item.str)
       if(result1 == null){
         this.data1 = 'null'
       }else {
