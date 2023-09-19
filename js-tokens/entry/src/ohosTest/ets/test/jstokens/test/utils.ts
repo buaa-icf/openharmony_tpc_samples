@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Huawei Device Co., Ltd.
+ * Copyright (C) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,10 +13,7 @@
  * limitations under the License.
  */
 
-import abilityTest from './Ability.test'
-import JSTOKENTest from './jstokens/test/index.test'
-
-export default function testsuite() {
-  abilityTest()
-  JSTOKENTest()
+export function getKeys(obj: Object): string[] {
+    let keys: string[] = Object.keys(obj);
+    return keys;
 }
