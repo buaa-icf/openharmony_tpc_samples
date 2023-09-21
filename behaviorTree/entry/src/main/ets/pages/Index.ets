@@ -12,55 +12,60 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { BehaviorTree,Selector,Task,SUCCESS,Random,RUNNING,FAILURE,BehaviorTreeImporter } from "behaviortree";
+import { BehaviorTree, Selector, Task, SUCCESS, Random, RUNNING, FAILURE, BehaviorTreeImporter } from "behaviortree";
 import { JSONData } from "./model";
+
 @Entry
 @Component
 struct Index {
   @State message: string = 'Hello World'
-  bTree:BehaviorTree;
-  timerId:number = 0;
-  flag:Boolean = true;
-  aboutToAppear(){
-    this.init(BehaviorTree);
-    const behaviorTreeImporter = new BehaviorTreeImporter();
-    // @ts-ignore
-    this.bTree = new BehaviorTree({tree:behaviorTreeImporter.parse(JSONData)})
+  behaviorTreeImporter = new BehaviorTreeImporter();
+  mySelector = new Random({
+    nodes: []
+  })
+  bTree: BehaviorTree = new BehaviorTree({ tree: this.mySelector, blackboard: {} });
+  timerId: number = 0;
+  flag: Boolean = true;
+
+  aboutToAppear() {
+    this.init();
+    this.bTree = new BehaviorTree({ tree: this.behaviorTreeImporter.parse(JSONData), blackboard: {} })
   }
 
-  init(_BehaviorTree){
-    _BehaviorTree.register(
+  init() {
+    let myTree = BehaviorTree
+    myTree.register(
       "computer",
       new Task({
-        run(blackboard) {
+        run(): undefined {
           console.log("小明选择了计算机专业");
           return undefined;
         },
       })
     );
-    _BehaviorTree.register(
+    myTree.register(
       "accountant",
       new Task({
-        run(blackboard) {
+        run(): undefined {
           console.log("小明选择了会计专业");
           return undefined;
         },
       })
     );
-    _BehaviorTree.register(
+    myTree.register(
       "teacher",
       new Task({
-        run(blackboard) {
+        run(): undefined {
           console.log("小明选择了教师专业");
           return undefined;
         },
       })
     );
 
-    _BehaviorTree.register(
+    myTree.register(
       "Huawei",
       new Task({
-        run(blackboard) {
+        run() {
           const value = Math.random() * 10;
           console.log(`Huawei Value ${value}`);
           if (value >= 5) {
@@ -74,10 +79,10 @@ struct Index {
       })
     );
 
-    _BehaviorTree.register(
+    myTree.register(
       "Tencent",
       new Task({
-        run(blackboard) {
+        run() {
           const value = Math.random() * 10;
           console.log(`Tencent Value ${value}`);
           if (value >= 5) {
@@ -91,10 +96,10 @@ struct Index {
       })
     );
 
-    _BehaviorTree.register(
+    myTree.register(
       "Google",
       new Task({
-        run(blackboard) {
+        run() {
           const value = Math.random() * 10;
           console.log(`Google Value ${value}`);
           if (value >= 5) {
@@ -114,11 +119,11 @@ struct Index {
       Column() {
         Button("启动行为树实例").onClick(() => {
           //防止多次设置重复调用行为树启动
-          if(this.flag){
+          if (this.flag) {
             this.flag = false;
             this.timerId = setInterval(() => {
               this.bTree.step();
-            },1000)
+            }, 1000)
           }
 
         })
