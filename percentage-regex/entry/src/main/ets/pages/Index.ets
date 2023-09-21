@@ -15,11 +15,24 @@
 import percentageRegex from 'percentage-regex';
 import prompt from '@ohos.promptAction';
 
+interface dataType {
+  str: string,
+  str1: string,
+  mode: number
+}
+
+interface exactType {
+  exact: boolean
+}
+
+let exactData1: exactType = { exact: true }
+let exactData2: exactType = { exact: false }
+
 @Entry
 @Component
 struct Index {
-  @State strArray: Array<string> = []
-  @State data: Array<Object> = [
+  @State strArray: Array<string> | null = []
+  @State data: Array<dataType> = [
     { str: "检查字符串是否是百分数", str1: "80%", mode: 1 },
     { str: "匹配字符串中的百分数", str1: "weafdz 80% dawedafa", mode: 2 }
   ]
@@ -27,7 +40,7 @@ struct Index {
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start }) {
       List({ space: 20, initialIndex: 0 }) {
-        ForEach(this.data, (item, index) => {
+        ForEach(this.data, (item: dataType, index?: number) => {
           ListItem() {
             Column() {
               Text(item.str)
@@ -48,10 +61,10 @@ struct Index {
                 .backgroundColor('#12939f')
                 .onClick(() => {
                   if (item.mode == 1) {
-                    let result: boolean = percentageRegex({ exact: true }).test(item.str1)
+                    let result: boolean = percentageRegex(exactData1).test(item.str1)
                     prompt.showToast({ message: result.toString(), duration: 3000 })
                   } else {
-                    this.strArray = item.str1.match(percentageRegex({ exact: false }))
+                    this.strArray = item.str1.match(percentageRegex(exactData2))
                   }
                 })
               if (item.mode == 2) {
