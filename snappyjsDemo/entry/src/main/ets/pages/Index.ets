@@ -14,7 +14,7 @@
  */
 import snappyJS from 'snappyjs'
 import fileio from '@ohos.fileio';
-
+import { GlobalContext } from '../entryability/GlobalContext'
 @Entry
 @Component
 export struct SnappyTest {
@@ -24,7 +24,6 @@ export struct SnappyTest {
   @State isCompressSnappyFileShow: boolean = false;
   @State isDeCompressSnappyShow: boolean = false;
   preTimestamp: number = 0;
-
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center }) {
 
@@ -79,9 +78,10 @@ export struct SnappyTest {
   }
 
   createFolder() {
+    let context:Context = GlobalContext.getContext().getObject("context") as Context
     try {
       try {
-        fileio.mkdirSync(globalThis.context.filesDir + '/' + this.newfolder)
+        fileio.mkdirSync(context.filesDir + '/' + this.newfolder)
       } catch (err) {
       }
     } catch (error) {
@@ -90,8 +90,9 @@ export struct SnappyTest {
   }
 
   createFile() {
+    let context:Context = GlobalContext.getContext().getObject("context") as Context
     try {
-      var data = globalThis.context.filesDir
+      let data = context.filesDir
       let fd = fileio.openSync(data + '/' + this.newfolder + '/' + this.newfile, 0o102, 0o666);
       fileio.writeSync(fd, "hello, world!  adjasjdakjdakjdkjakjdakjskjasdkjaskjdajksdkjasdkjaksjdkja\n"
       + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
@@ -119,9 +120,10 @@ export struct SnappyTest {
     }
   }
 
-  snappyJsTest(value) {
+  snappyJsTest(value:Boolean) {
+    let context:Context = GlobalContext.getContext().getObject("context") as Context
     try {
-      var data = globalThis.context.filesDir
+      let data = context.filesDir
       if (value) {
         let path = data + '/' + this.newfolder
         console.log('snappyCompress');
@@ -151,7 +153,7 @@ export struct SnappyTest {
   }
 
   isFastClick(): boolean {
-    var timestamp = Date.parse(new Date().toString());
+    let timestamp = Date.parse(new Date().toString());
     if ((timestamp - this.preTimestamp) > 1500) {
       this.preTimestamp = timestamp;
       return false;
@@ -163,27 +165,27 @@ export struct SnappyTest {
 
 
 
-export async function snappyCompress(path, newfile) {
+export async function snappyCompress(path:string, newfile:string) {
   let newpath = path + '/' + newfile
   let buf = getFileBuf(newpath)
   /* 压缩文件*/
-  var compressed = snappyJS.compress(buf)
+  let compressed:string = snappyJS.compress(buf)
   let fd = fileio.openSync(path + '/' + newfile + '.sz', 0o102, 0o666);
   let num = await fileio.write(fd, compressed);
   fileio.closeSync(fd);
 }
 
 /* 解压文件*/
-export async function snappyUncompress(path, newfolder, newfile, newfile1) {
+export async function snappyUncompress(path:string, newfolder:string, newfile:string, newfile1:string) {
   let newpath = path + '/' + newfolder + '/' + newfile + '.sz'
   let buf = getFileBuf(newpath)
-  var uncompressed = snappyJS.uncompress(buf)
+  let uncompressed:string = snappyJS.uncompress(buf)
   let fd = fileio.openSync(path + '/' + newfile1, 0o102, 0o666);
   let num = await fileio.write(fd, uncompressed);
   fileio.closeSync(fd);
 }
 
-function getFileBuf(Bufpath): ArrayBuffer {
+function getFileBuf(Bufpath:string): ArrayBuffer {
   let stat = fileio.statSync(Bufpath);
   const reader = fileio.openSync(Bufpath);
   let buf = new ArrayBuffer(stat.size);
