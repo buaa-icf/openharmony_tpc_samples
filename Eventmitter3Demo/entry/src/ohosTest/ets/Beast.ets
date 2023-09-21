@@ -14,14 +14,16 @@
  */
 
 import EventEmitter from 'eventemitter3'
+import Utils from './test/Utils'
+
 /**
  * 原库的单元测试 require('util').inherits(Beast, EventEmitter);对象间原型继承的函数
  * OpenHarmony暂未有对应的API 采用class extends的形式实现
  *
  */
-export default class Beast extends EventEmitter {
+export default class Beast<T extends string, P extends Object> extends EventEmitter<string, Object> {
   constructor() {
     super()
-    EventEmitter.call(this);
+    Utils.call(EventEmitter, this);
   }
 }

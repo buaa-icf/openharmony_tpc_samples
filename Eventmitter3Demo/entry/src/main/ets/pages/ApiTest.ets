@@ -21,10 +21,10 @@ import buffer from '@ohos.buffer'
 struct ApiTest {
   @State message: string = '对于EventEmitter公开的API进行测试并显示结果'
   @State state: string = '状态信息：\r\n'
-  @State emitter: EventEmitter = undefined
+  @State emitter: EventEmitter<string, Object> | undefined = undefined;
 
   aboutToAppear() {
-    this.emitter = new EventEmitter();
+    this.emitter = new EventEmitter<string, Object>();
     this.state = this.state + "\r\n" + `测试初始化接口：new EventEmitter，看是否成功：${(this.emitter != undefined && this.emitter != null)}`
     this.state = this.state + "\r\n" + `<--------------------------------------------->`
   }
@@ -64,50 +64,54 @@ struct ApiTest {
     .height('100%')
   }
 
-  testApi() {
+  testApi(): void {
     const ctx = this
     ctx.state = ctx.state + "\r\n" + `测试先订阅事件event,然后发送事件event，看是否收到event事件回调`
-    ctx.emitter.on('event', (data) => {
+    let emitterInstance: EventEmitter<string, Object> | undefined = ctx.emitter;
+    if (!emitterInstance) {
+      return;
+    }
+    emitterInstance.on('event', (data: Object) => {
       ctx.state = ctx.state + "\r\n" + `收到事件event回调，数据为：${data}`
     });
-    ctx.emitter.emit('event', "这是原始信息");
+    emitterInstance.emit('event', "这是原始信息");
     this.state = this.state + "\r\n" + `<--------------------------------------------->`
     ctx.state = ctx.state + "\r\n" + `测试先发送事件before,然后订阅事件before，看是否收到before事件回调`
-    ctx.emitter.emit('before', "在绑定之前先发送事件");
-    ctx.emitter.on('before', (data) => {
+    emitterInstance.emit('before', "在绑定之前先发送事件");
+    emitterInstance.on('before', (data: Object) => {
       ctx.state = ctx.state + "\r\n" + `收到事件before回调，数据为：${data}`
     });
 
 
     this.state = this.state + "\r\n" + `<--------------------------------------------->`
     ctx.state = ctx.state + "\r\n" + `测试先订阅事件multi,然后多次发送事件multi，看是否收到多次multi事件回调`
-    ctx.emitter.on('multi', (data) => {
+    emitterInstance.on('multi', (data: Object) => {
       ctx.state = ctx.state + "\r\n" + `收到事件multi回调，数据为：${data}`
     });
-    ctx.emitter.emit('multi', "这是multi第一次发送");
-    ctx.emitter.emit('multi', "这是multi第二次发送");
-    ctx.emitter.emit('multi', "这是multi第三次发送");
+    emitterInstance.emit('multi', "这是multi第一次发送");
+    emitterInstance.emit('multi', "这是multi第二次发送");
+    emitterInstance.emit('multi', "这是multi第三次发送");
     this.state = this.state + "\r\n" + `<--------------------------------------------->`
     ctx.state = ctx.state + "\r\n" + `测试先once订阅事件single,然后多次发送事件single，看是否收到多次single事件回调`
-    ctx.emitter.once('single', (data) => {
+    emitterInstance.once('single', (data: Object) => {
       ctx.state = ctx.state + "\r\n" + `收到事件single回调，数据为：${data}`
     });
-    ctx.emitter.emit('single', "这是single第一次发送");
-    ctx.emitter.emit('single', "这是single第二次发送");
-    ctx.emitter.emit('single', "这是single第三次发送");
+    emitterInstance.emit('single', "这是single第一次发送");
+    emitterInstance.emit('single', "这是single第二次发送");
+    emitterInstance.emit('single', "这是single第三次发送");
     this.state = this.state + "\r\n" + `<--------------------------------------------->`
     ctx.state = ctx.state + "\r\n" + `测试获取某个事件listeners数组的API---listeners，看看on绑定和once绑定是否都计数了`
-    let listener1 = (data) => {
+    let listener1 = () => {
     }
-    let listener2 = (data) => {
+    let listener2 = () => {
     }
-    let listener3 = (data) => {
+    let listener3 = () => {
     }
-    ctx.emitter.on('listenNum', listener1);
-    ctx.emitter.on('listenNum', listener2);
-    ctx.emitter.once('listenNum', listener3);
-    const listeners = ctx.emitter.listeners('event');
-    const listenerListenNum = ctx.emitter.listeners('listenNum');
+    emitterInstance.on('listenNum', listener1);
+    emitterInstance.on('listenNum', listener2);
+    emitterInstance.once('listenNum', listener3);
+    const listeners = emitterInstance.listeners('event');
+    const listenerListenNum = emitterInstance.listeners('listenNum');
     ctx.state = ctx.state + "\r\n" + `event事件计数个数，预期为1个，实际为${listeners.length}`
     if (listenerListenNum.length === 3) {
       ctx.state = ctx.state + "\r\n" + `listenNum事件计数个数，预期为3个，实际为${listenerListenNum.length},on和once绑定的listener都计数`
@@ -119,15 +123,15 @@ struct ApiTest {
       ctx.state = ctx.state + "\r\n" + `listenNum事件计数个数，预期为3个，实际为${listenerListenNum.length},计数错误`
     }
     this.state = this.state + "\r\n" + `<--------------------------------------------->`
-    const count = ctx.emitter.listenerCount('listenNum');
+    const count = emitterInstance.listenerCount('listenNum');
     ctx.state = ctx.state + "\r\n" + `测试获取某个事件listeners个数API---listenerCount，预期为3个，实际为${count}`
 
     this.state = this.state + "\r\n" + `<--------------------------------------------->`
-    ctx.emitter.off('listenNum', listener1);
-    ctx.emitter.off('listenNum', listener2);
-    ctx.emitter.off('listenNum', listener3);
+    emitterInstance.off('listenNum', listener1);
+    emitterInstance.off('listenNum', listener2);
+    emitterInstance.off('listenNum', listener3);
 
-    const count1 = ctx.emitter.listenerCount('listenNum');
+    const count1 = emitterInstance.listenerCount('listenNum');
     if (count1 === 0) {
       ctx.state = ctx.state + "\r\n" + `测试解除事件绑定API---off，原有绑定接口为3个，解绑后预期为0个，实际为${count1},once绑定的监听器也可解绑`
     } else if (count1 === 1) {
@@ -137,56 +141,56 @@ struct ApiTest {
     }
     this.state = this.state + "\r\n" + `<--------------------------------------------->`
     ctx.state = ctx.state + "\r\n" + `测试添加事件绑定API---addListener,先添加addListener 然后发送事件addListener，看是否收到addListener事件回调`
-    ctx.emitter.addListener('addListener', () => {
+    emitterInstance.addListener('addListener', () => {
       ctx.state = ctx.state + "\r\n" + `收到事件addListener回调`
     });
-    ctx.emitter.emit("addListener")
+    emitterInstance.emit("addListener")
     this.state = this.state + "\r\n" + `<--------------------------------------------->`
     ctx.state = ctx.state + "\r\n" + `测试添加事件绑定API---callback,先发送事件callback,然后添加callback，看是否收到callback事件回调`
-    ctx.emitter.emit("callback")
-    let callback = (data) => {
+    emitterInstance.emit("callback")
+    let callback = (data: Object) => {
       ctx.state = ctx.state + "\r\n" + `收到事件callback回调，数据为：${data}`
     }
-    ctx.emitter.addListener('callback', callback);
+    emitterInstance.addListener('callback', callback);
     this.state = this.state + "\r\n" + `<--------------------------------------------->`
 
 
-    const count2 = ctx.emitter.listeners('event').length;
-    const count3 = ctx.emitter.listeners('before').length;
-    const count4 = ctx.emitter.listeners('multi').length;
-    const count5 = ctx.emitter.listeners('single').length; // once使用过后即会删除，这里的个数为0
-    const count6 = ctx.emitter.listeners('listenNum').length;
-    const count7 = ctx.emitter.listeners('addListener').length;
-    const count8 = ctx.emitter.listeners('callback').length;
+    const count2: number = emitterInstance.listeners('event').length;
+    const count3: number = emitterInstance.listeners('before').length;
+    const count4: number = emitterInstance.listeners('multi').length;
+    const count5: number = emitterInstance.listeners('single').length; // once使用过后即会删除，这里的个数为0
+    const count6: number = emitterInstance.listeners('listenNum').length;
+    const count7: number = emitterInstance.listeners('addListener').length;
+    const count8: number = emitterInstance.listeners('callback').length;
     let total = count2 + count3 + count4 + count5 + count6 + count7 + count8;
     ctx.state = ctx.state + "\r\n" + `测试解除事件绑定API---off，解除所有绑定的事件之前事件个数${total}`
     this.state = this.state + "\r\n" + `<--------------------------------------------->`
 
-    const names = ctx.emitter.eventNames();
+    const names: string[] = emitterInstance.eventNames();
 
     ctx.state = ctx.state + "\r\n" + `测试获取所有事件绑定API---eventNames，解除所有绑定的事件之前所有事件名称是：${JSON.stringify(names)}`
     this.state = this.state + "\r\n" + `<--------------------------------------------->`
 
-    ctx.emitter.removeAllListeners();
-    const count22 = ctx.emitter.listeners('event').length;
-    const count33 = ctx.emitter.listeners('before').length;
-    const count44 = ctx.emitter.listeners('multi').length;
-    const count55 = ctx.emitter.listeners('single').length;
-    const count66 = ctx.emitter.listeners('listenNum').length;
-    const count77 = ctx.emitter.listeners('addListener').length;
-    const count88 = ctx.emitter.listeners('callback').length;
+    emitterInstance.removeAllListeners();
+    const count22: number = emitterInstance.listeners('event').length;
+    const count33: number = emitterInstance.listeners('before').length;
+    const count44: number = emitterInstance.listeners('multi').length;
+    const count55: number = emitterInstance.listeners('single').length;
+    const count66: number = emitterInstance.listeners('listenNum').length;
+    const count77: number = emitterInstance.listeners('addListener').length;
+    const count88: number = emitterInstance.listeners('callback').length;
     let total1 = count22 + count33 + count44 + count55 + count66 + count77 + count88;
     ctx.state = ctx.state + "\r\n" + `测试解除所有事件绑定API---removeAllListeners，解除所有绑定的事件之后事件个数${total1}`
     this.state = this.state + "\r\n" + `<--------------------------------------------->${'\r\n'}`
 
 
-    ctx.emitter.addListener('newListener', (data) => {
+    emitterInstance.addListener('newListener', (data: Object) => {
       ctx.state = ctx.state + "\r\n" + `收到事件newListener回调，数据为：${JSON.stringify(data)}`
     });
-    const beforeCount = ctx.emitter.listenerCount('newListener');
-    const nameBefore = ctx.emitter.eventNames();
+    const beforeCount = emitterInstance.listenerCount('newListener');
+    const nameBefore = emitterInstance.eventNames();
     ctx.state = ctx.state + "\r\n" + `测试解除事件绑定API---removeListener，解除绑定的事件之前事件个数${beforeCount}，事件名称${JSON.stringify(nameBefore)}}`
-    ctx.emitter.emit('newListener', {
+    emitterInstance.emit('newListener', {
       name: "张三",
       age: 21,
       isMan: true,
@@ -196,45 +200,45 @@ struct ApiTest {
         list: [1, 2, 3, 4]
       }
     })
-    ctx.emitter.removeListener('newListener');
-    const afterCount = ctx.emitter.listenerCount('newListener');
-    const nameAfter = ctx.emitter.eventNames();
+    emitterInstance.removeListener('newListener');
+    const afterCount = emitterInstance.listenerCount('newListener');
+    const nameAfter = emitterInstance.eventNames();
     ctx.state = ctx.state + "\r\n" + `测试解除事件绑定API---removeListener，解除绑定的事件之后事件个数${afterCount}，事件名称${JSON.stringify(nameAfter)}}`
     this.state = this.state + "\r\n" + `<--------------------------------------------->${'\r\n'}`
-    ctx.emitter.on('newListener', (data) => {
+    emitterInstance.on('newListener', () => {
     });
-    ctx.emitter.on('newListener', (data) => {
+    emitterInstance.on('newListener', () => {
     });
-    ctx.emitter.on('newListener', (data) => {
+    emitterInstance.on('newListener', () => {
     });
-    ctx.emitter.on('newListener', (data) => {
+    emitterInstance.on('newListener', () => {
     });
-    const beforeCount1 = ctx.emitter.listenerCount('newListener');
-    const nameBefore1 = ctx.emitter.eventNames();
+    const beforeCount1 = emitterInstance.listenerCount('newListener');
+    const nameBefore1 = emitterInstance.eventNames();
     ctx.state = ctx.state + "\r\n" + `测试解除事件绑定API---removeListener，一次性添加多个同名事件不指定解除某一个监听器回调接口，解除绑定的事件之前事件个数${beforeCount1}，事件名称${JSON.stringify(nameBefore1)}}`
-    ctx.emitter.removeListener('newListener');
-    const afterCount1 = ctx.emitter.listenerCount('newListener');
-    const nameAfter1 = ctx.emitter.eventNames();
+    emitterInstance.removeListener('newListener');
+    const afterCount1 = emitterInstance.listenerCount('newListener');
+    const nameAfter1 = emitterInstance.eventNames();
     ctx.state = ctx.state + "\r\n" + `测试解除事件绑定API---removeListener，一次性添加多个同名事件不指定解除某一个监听器回调接口，解除绑定的事件之后事件个数${afterCount1}，事件名称${JSON.stringify(nameAfter1)}}`
     this.state = this.state + "\r\n" + `<--------------------------------------------->${'\r\n'}`
-    let obj1 = (data) => {
+    let obj1 = () => {
     }
-    let obj2 = (data) => {
+    let obj2 = () => {
     }
-    let obj3 = (data) => {
+    let obj3 = () => {
     }
-    let obj4 = (data) => {
+    let obj4 = () => {
     }
-    ctx.emitter.on('newListener', obj1);
-    ctx.emitter.on('newListener', obj2);
-    ctx.emitter.on('newListener', obj3);
-    ctx.emitter.on('newListener', obj4);
-    const beforeCount2 = ctx.emitter.listenerCount('newListener');
-    const nameBefore3 = ctx.emitter.eventNames();
+    emitterInstance.on('newListener', obj1);
+    emitterInstance.on('newListener', obj2);
+    emitterInstance.on('newListener', obj3);
+    emitterInstance.on('newListener', obj4);
+    const beforeCount2 = emitterInstance.listenerCount('newListener');
+    const nameBefore3 = emitterInstance.eventNames();
     ctx.state = ctx.state + "\r\n" + `测试解除事件绑定API---removeListener，一次性添加多个同名事件指定解除某一个监听器回调接口，解除绑定的事件之前事件个数${beforeCount2}，事件名称${JSON.stringify(nameBefore3)}}`
-    ctx.emitter.removeListener('newListener', obj3);
-    const afterCount2 = ctx.emitter.listenerCount('newListener');
-    const nameAfter2 = ctx.emitter.eventNames();
+    emitterInstance.removeListener('newListener', obj3);
+    const afterCount2 = emitterInstance.listenerCount('newListener');
+    const nameAfter2 = emitterInstance.eventNames();
     ctx.state = ctx.state + "\r\n" + `测试解除事件绑定API---removeListener，一次性添加多个同名事件指定解除某一个监听器回调接口，解除绑定的事件之后事件个数${afterCount2}，事件名称${JSON.stringify(nameAfter2)}}`
     this.state = this.state + "\r\n" + `<--------------------------------------------->${'\r\n'}`
   }

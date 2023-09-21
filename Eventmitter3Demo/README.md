@@ -288,9 +288,7 @@ struct EventSequencing {
 ## 约束与限制
 
 在下述版本验证通过：
-DevEco Studio: 3.1 Beta2(3.1.0.400),
-
- SDK: API9 Release(3.2.11.9)
+DevEco Studio: 4.0 Beta2(4.0.3.501), SDK: API10 Beta3(4.0.10.8)
 
 ## 目录结构
 

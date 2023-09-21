@@ -14,15 +14,16 @@
  */
 import router from '@ohos.router'
 import EventEmitter from 'eventemitter3'
+import { GlobalContext } from './GlobalContext'
 
 @Entry
 @Component
 struct Index {
   @State message: string = '常用场景举例'
-  @State emitter: EventEmitter = undefined
+  @State emitter: EventEmitter<string, Object> | undefined = undefined;
 
   aboutToAppear() {
-    this.emitter = new EventEmitter();
+    this.emitter = new EventEmitter<string, Object>();
   }
 
   build() {
@@ -59,8 +60,10 @@ struct Index {
           router.pushUrl({
             url: 'pages/JumpOne'
           }).then(() => {
-            if (globalThis.emitter) {
-              globalThis.emitter.emit('pageOne', '这是首页发给第一个页面的信息');
+            let emitterInstance: EventEmitter<string, Object> | undefined = GlobalContext.getContext()
+              .getObject(GlobalContext.KEY_EMITTER) as EventEmitter<string, Object>;
+            if (emitterInstance) {
+              emitterInstance.emit('pageOne', '这是首页发给第一个页面的信息');
             }
           })
 

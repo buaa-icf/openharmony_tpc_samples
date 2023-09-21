@@ -17,6 +17,7 @@ import UIAbility from '@ohos.app.ability.UIAbility';
 import hilog from '@ohos.hilog';
 import window from '@ohos.window';
 import EventEmitter from 'eventemitter3'
+import { GlobalContext } from '../pages/GlobalContext'
 
 export default class EntryAbility extends UIAbility {
   onCreate(want, launchParam) {
@@ -30,11 +31,11 @@ export default class EntryAbility extends UIAbility {
   onWindowStageCreate(windowStage: window.WindowStage) {
     // Main window is created, set main page for this ability
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
-    globalThis.context = this.context;
-    globalThis.cacheDir = this.context.cacheDir;
-    globalThis.filesDir = this.context.filesDir;
-    const emitter = new EventEmitter();
-    globalThis.emitter = emitter
+    GlobalContext.getContext().setObject(GlobalContext.KEY_CONTEXT, this.context);
+    GlobalContext.getContext().setObject(GlobalContext.KEY_CACHE_DIR, this.context.cacheDir);
+    GlobalContext.getContext().setObject(GlobalContext.KEY_FILES_DIR, this.context.filesDir);
+    const emitter: EventEmitter<string, Object> = new EventEmitter<string, Object>();
+    GlobalContext.getContext().setObject(GlobalContext.KEY_EMITTER, emitter);
     windowStage.loadContent('pages/Index', (err, data) => {
       if (err.code) {
         hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');

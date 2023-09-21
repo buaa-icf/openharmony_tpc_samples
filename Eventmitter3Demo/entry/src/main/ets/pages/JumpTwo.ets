@@ -14,6 +14,7 @@
  */
 import EventEmitter from 'eventemitter3'
 import router from '@ohos.router';
+import { GlobalContext } from './GlobalContext'
 
 @Entry
 @Component
@@ -21,12 +22,15 @@ struct JumpTwo {
   @State message: string = 'Hello World'
 
   aboutToAppear() {
-    const emitter = new EventEmitter();
     const ctx = this
-    globalThis.emitter.on('pageTwo', (data) => {
-      console.log(`componentB Data: ${data}`);
-      ctx.message = data
-    });
+    let emitter: EventEmitter<string, Object> | undefined = GlobalContext.getContext()
+      .getObject(GlobalContext.KEY_EMITTER) as EventEmitter<string, Object>;
+    if (emitter) {
+      emitter.on('pageTwo', (data: string) => {
+        console.log(`componentB Data: ${data}`);
+        ctx.message = data
+      });
+    }
   }
 
   onPageShow() {

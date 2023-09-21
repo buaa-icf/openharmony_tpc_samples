@@ -20,12 +20,12 @@ import EventEmitter from 'eventemitter3'
 struct EventSequencing {
   @State message: string = '对同一个事件多次监听，看是否是按照队列中事件的先后顺序来进行处理。经测试发现，emitter.on多次监听同一个事件，按照添加顺序，每一个监听都会执行，在监听里修改回调数据不改变其他监听器里的数据，不可在监听器里再次发送同名的事件'
   @State state: string = '状态信息：\r\n'
-  @State emitter: EventEmitter = undefined
+  @State emitter: EventEmitter<string, Object> | undefined = undefined;
 
   aboutToAppear() {
     const ctx = this
-    ctx.emitter = new EventEmitter();
-    ctx.emitter.on('event', (name, age, message) => {
+    ctx.emitter = new EventEmitter<string, Object>();
+    ctx.emitter.on('event', (name: string, age: number, message: string) => {
       console.log(`Listener 1: ${name} is ${age} years old`);
       ctx.state = ctx.state + "\r\n" + `aboutToAppear监听器收到信息,name:${name},age:${age},message:${message}`
     });
@@ -35,10 +35,13 @@ struct EventSequencing {
 
   onPageShow() {
     const ctx = this
-    this.emitter.on('event', (name, age, message) => {
-      console.log(`Listener 2: ${name} is ${age} years old`);
-      ctx.state = ctx.state + "\r\n" + `onPageShow监听器收到信息,name:${name},age:${age},message:${message}`
-    });
+    let emitterInstance = this.emitter;
+    if (emitterInstance) {
+      emitterInstance.on('event', (name: string, age: number, message: string) => {
+        console.log(`Listener 2: ${name} is ${age} years old`);
+        ctx.state = ctx.state + "\r\n" + `onPageShow监听器收到信息,name:${name},age:${age},message:${message}`
+      });
+    }
   }
 
   build() {
@@ -76,18 +79,22 @@ struct EventSequencing {
 
   startSendEvent() {
     const ctx = this
-    ctx.emitter.on('event', (name, age, message) => {
+    let emitterInstance = ctx.emitter;
+    if (!emitterInstance) {
+      return;
+    }
+    emitterInstance.on('event', (name: string, age: number, message: string) => {
       console.log(`Listener 3: ${name} is ${age} years old`);
       ctx.state = ctx.state + "\r\n" + `startSendEvent---1---监听器收到信息,name:${name},age:${age},message:${message}`
       name = "张三"
-      age = age + 30
+      age = Number(age) + 30;
       message = '111112222333'
       // ctx.emitter.emit('event', '张三', 64, "这是倒数第二个监听器，修改信息试试");
     });
-    ctx.emitter.on('event', (name, age, message) => {
+    emitterInstance.on('event', (name: string, age: number, message: string) => {
       console.log(`Listener 4: ${name} is ${age} years old`);
       ctx.state = ctx.state + "\r\n" + `startSendEvent---2---监听器收到信息,name:${name},age:${age},message:${message}`
     });
-    ctx.emitter.emit('event', 'Tom', 18, "这是原始信息");
+    emitterInstance.emit('event', 'Tom', 18, "这是原始信息");
   }
 }

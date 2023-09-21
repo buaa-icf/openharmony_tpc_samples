@@ -16,26 +16,30 @@
 import EventEmitter from 'eventemitter3'
 import fs from '@ohos.file.fs';
 import buffer from '@ohos.buffer';
+import { GlobalContext } from './GlobalContext'
 
 @Entry
 @Component
 struct FileRead {
   @State message: string = '监听文件读取'
-  @State filePath: string = undefined
+  @State filePath: string | undefined = undefined;
   @State state: string = '状态信息：'
-  @State emitter: EventEmitter = undefined
+  @State emitter: EventEmitter<string, Object> | undefined = undefined;
   @State isCreateFinish: boolean = false
 
   aboutToAppear() {
-    this.filePath = globalThis.cacheDir + "/test.txt"
+    let cacheDir = GlobalContext.getContext().getObject(GlobalContext.KEY_CACHE_DIR) as string;
+    if (cacheDir) {
+      this.filePath = cacheDir + "/test.txt"
+    }
     console.log('zdy------>' + 'this.filePath  ' + this.filePath);
-    this.emitter = new EventEmitter();
-    this.emitter.on('finish', (data) => {
+    this.emitter = new EventEmitter<string, Object>();
+    this.emitter.on('finish', (data: Object) => {
       this.state = this.state + "\r\n" + "读取文件内容成功：\r\n" + data
       console.log('zdy------>' + 'file read finished');
       this.isCreateFinish = false;
     });
-    this.emitter.on('create file', (data) => {
+    this.emitter.on('create file', (data: Object) => {
       this.state = this.state + "\r\n" + "文件生成成功：\r\n" + data
       this.isCreateFinish = true;
       console.log('zdy------>' + 'file read finished');
@@ -98,7 +102,7 @@ struct FileRead {
     .height('100%')
   }
 
-  createFile() {
+  createFile() :void {
     try {
       if (!this.emitter) {
         this.state = this.state + "\r\n" + "emitter尚未初始化，请检查是否初始化失败"
@@ -118,10 +122,11 @@ struct FileRead {
       } else {
         this.emitter.emit('create err');
       }
-
     } catch (err) {
-      console.log('zdy------>' + 'createFile err ' + err);
-      this.emitter.emit('create err');
+      if (this.emitter) {
+        console.log('zdy------>' + 'createFile err ' + err);
+        this.emitter.emit('create err');
+      }
     }
   }
 
@@ -150,8 +155,10 @@ struct FileRead {
       }
 
     } catch (err) {
-      console.log('zdy------>' + 'readFile err ' + err);
-      this.emitter.emit('read err');
+      if (this.emitter) {
+        console.log('zdy------>' + 'readFile err ' + err);
+        this.emitter.emit('read err');
+      }
     }
   }
 }
