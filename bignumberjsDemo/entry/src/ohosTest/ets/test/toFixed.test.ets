@@ -13,38 +13,43 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-import BigNumber from 'bignumber.js';
+import { BigNumber } from './BigNumber';
 import Test from './tester';
+import Utils from './Utils';
 
 export default function toFixed() {
-  describe('toFixedtest', function () {
+  describe('toFixedtest', ()=> {
 
-    function t(expected, value, decimalPlaces){
-      new Test().areEqual(String(expected), new BigNumber(value).toFixed(decimalPlaces));
+    let t = (expected:string, value: BigNumber.Value, decimalPlaces?: number)=>{
+      if(decimalPlaces !== undefined){
+        new Test().areEqual(String(expected), new BigNumber(value).toFixed(decimalPlaces));
+      }else {
+        new Test().areEqual(String(expected), new BigNumber(value).toFixed());
+      }
     }
 
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(()=> {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(()=> {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(()=> {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(()=> {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    it('toFixed', 0, function () {
-      var u;
-      var MAX = 1e9;
+    it('toFixed', 0, ()=> {
+      let u:number | undefined =undefined;
+      let MAX = 1e9;
 
       
 
@@ -66,7 +71,7 @@ export default function toFixed() {
       t('0.10', 0.09906, 2);
       t('0.010', 0.0098034, 3);
 
-      t('NaN', NaN, 2);
+      t('NaN', Number.NaN, 2);
       t('Infinity', 1/0, 2);
       t('-Infinity', -1/0, 2);
 
@@ -1346,52 +1351,52 @@ export default function toFixed() {
 
       t('123.45000000000', '12.345e1', 11);
       t('123.450', '12.345e1', 3);
-      t('123.45', '12.345e1', null);
+      t('123.45', '12.345e1', undefined);
       t('123.45', '12.345e1', u);
       t('123', '12.345e1', 0);
       t('123', '12.345e1', -0);
 
-      new Test().isException(function () {new BigNumber(1.23).toFixed(NaN)}, "(1.23).toFixed(NaN)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber(1.23).toFixed('NaN')}, "(1.23).toFixed('NaN')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber(1.23).toFixed([])}, "(1.23).toFixed([])");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber(1.23).toFixed({})}, "(1.23).toFixed({})");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber(1.23).toFixed('')}, "(1.23).toFixed('')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber(1.23).toFixed(' ')}, "(1.23).toFixed(' ')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber(1.23).toFixed('hello')}, "(1.23).toFixed('hello')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber(1.23).toFixed('\t')}, "(1.23).toFixed('\t')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber(1.23).toFixed(new Date)}, "(1.23).toFixed(new Date)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber(1.23).toFixed(new RegExp)}, "(1.23).toFixed(new RegExp)");
-      new Test().isException(function () {new BigNumber(1.23).toFixed(2.01)}, "(1.23).toFixed(2.01)");
-      new Test().isException(function () {new BigNumber(1.23).toFixed(10.5)}, "(1.23).toFixed(10.5)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber(1.23).toFixed('-1.1e1')}, "(1.23).toFixed('-1.1e1')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber(1.23).toFixed(true)}, "(1.23).toFixed(true)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber(1.23).toFixed(false)}, "(1.23).toFixed(false)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber(1.23).toFixed(function (){})}, "(1.23).toFixed(function (){})");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345e1').toFixed('-1')}, ".toFixed('-1')");
-      new Test().isException(function () {new BigNumber('12.345e1').toFixed(-23)}, ".toFixed(-23)");
-      new Test().isException(function () {new BigNumber('12.345e1').toFixed(MAX + 1)}, ".toFixed(MAX + 1)");
-      new Test().isException(function () {new BigNumber('12.345e1').toFixed(MAX + 0.1)}, ".toFixed(MAX + 1)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345e1').toFixed('-0.01')}, ".toFixed('-0.01')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345e1').toFixed('-1e-1')}, ".toFixed('-1e-1')");
-      new Test().isException(function () {new BigNumber('12.345e1').toFixed(Infinity)}, ".toFixed(Infinity)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345e1').toFixed('-Infinity')}, ".toFixed('-Infinity')");
+      new Test().isException(()=> {new BigNumber(1.23).toFixed(Number.NaN)}, "(1.23).toFixed(NaN)");
+
+      new Test().isException(()=> {Utils.toFixed(1.23,'NaN')}, "(1.23).toFixed('NaN')");
+
+      new Test().isException(()=> {Utils.toFixed(1.23,[])}, "(1.23).toFixed([])");
+
+      new Test().isException(()=> {Utils.toFixed(1.23,{})}, "(1.23).toFixed({})");
+
+      new Test().isException(()=> {Utils.toFixed(1.23,'')}, "(1.23).toFixed('')");
+
+      new Test().isException(()=> {Utils.toFixed(1.23,' ')}, "(1.23).toFixed(' ')");
+
+      new Test().isException(()=> {Utils.toFixed(1.23,'hello')}, "(1.23).toFixed('hello')");
+
+      new Test().isException(()=> {Utils.toFixed(1.23,'\t')}, "(1.23).toFixed('\t')");
+
+      new Test().isException(()=> {Utils.toFixed(1.23,new Date)}, "(1.23).toFixed(new Date)");
+
+      new Test().isException(()=> {Utils.toFixed(1.23,new RegExp(''))}, "(1.23).toFixed(new RegExp(')");
+      new Test().isException(()=> {new BigNumber(1.23).toFixed(2.01)}, "(1.23).toFixed(2.01)");
+      new Test().isException(()=> {new BigNumber(1.23).toFixed(10.5)}, "(1.23).toFixed(10.5)");
+
+      new Test().isException(()=> {Utils.toFixed(1.23,'-1.1e1')}, "(1.23).toFixed('-1.1e1')");
+
+      new Test().isException(()=> {Utils.toFixed(1.23,true)}, "(1.23).toFixed(true)");
+
+      new Test().isException(()=> {Utils.toFixed(1.23,false)}, "(1.23).toFixed(false)");
+
+      new Test().isException(()=> {Utils.toFixed(1.23,()=>{})}, "(1.23).toFixed(()=>{})");
+
+      new Test().isException(()=> {Utils.toFixed('12.345e1','-1')}, ".toFixed('-1')");
+      new Test().isException(()=> {new BigNumber('12.345e1').toFixed(-23)}, ".toFixed(-23)");
+      new Test().isException(()=> {new BigNumber('12.345e1').toFixed(MAX + 1)}, ".toFixed(MAX + 1)");
+      new Test().isException(()=> {new BigNumber('12.345e1').toFixed(MAX + 0.1)}, ".toFixed(MAX + 1)");
+
+      new Test().isException(()=> {Utils.toFixed('12.345e1','-0.01')}, ".toFixed('-0.01')");
+
+      new Test().isException(()=> {Utils.toFixed('12.345e1','-1e-1')}, ".toFixed('-1e-1')");
+      new Test().isException(()=> {new BigNumber('12.345e1').toFixed(Number.POSITIVE_INFINITY)}, ".toFixed(Infinity)");
+
+      new Test().isException(()=> {Utils.toFixed('12.345e1','-Infinity')}, ".toFixed('-Infinity')");
 
       // ROUND_HALF_CEIL
       // Rounds towards nearest neighbour. If equidistant, rounds towards Infinity

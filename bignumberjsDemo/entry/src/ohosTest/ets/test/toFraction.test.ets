@@ -13,37 +13,38 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-import BigNumber from 'bignumber.js';
+import { BigNumber } from './BigNumber';
 import Test from './tester';
+import Utils from './Utils';
 
 export default function toFraction() {
-  describe('toFractiontest', function () {
+  describe('toFractiontest', ()=> {
 
-    function t(expected, value, maxDenominator?){
+    let t = (expected:string | boolean |(() => BigNumber)|number|BigNumber|Function, value: BigNumber.Value, maxDenominator?:BigNumber.Value) =>{
       new Test().areEqual(expected, new BigNumber(value).toFraction(maxDenominator).toString());
     }
 
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(()=> {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(()=> {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(()=> {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(()=> {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    it('toFraction', 0, function () {
-      var u;
+    it('toFraction', 0, ()=> {
+      let u:number|undefined = undefined;
       
 
       BigNumber.config({
@@ -54,9 +55,9 @@ export default function toFraction() {
       });
 
       t('Infinity', 'Infinity', u);
-      t('-Infinity', -Infinity, u);
+      t('-Infinity', Number.NEGATIVE_INFINITY, u);
       t('NaN', 'NaN', u);
-      t('NaN', NaN, u);
+      t('NaN', Number.NaN, u);
 
       // Tests generated using Python's fraction module.
 
@@ -1653,38 +1654,38 @@ export default function toFraction() {
       t('1111,9',  '12.345e1', new BigNumber(10));
       t('2469,20', '12.345e1', new BigNumber('123e399'));
 
-      new Test().isException(function () {new BigNumber('12.3e1').toFraction('')}, ".toFraction('')");
-      new Test().isException(function () {new BigNumber('12.3e1').toFraction(' ')}, ".toFraction(' ')");
-      new Test().isException(function () {new BigNumber('12.3e1').toFraction('\t')}, ".toFraction('\t')");
-      new Test().isException(function () {new BigNumber('12.3e1').toFraction(NaN)}, ".toFraction(NaN)");
-      new Test().isException(function () {new BigNumber('12.3e1').toFraction('NaN')}, ".toFraction('NaN')");
-      new Test().isException(function () {new BigNumber('12.3e1').toFraction('hello')}, ".toFraction('hello')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.3e1').toFraction([])}, ".toFraction([])");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.3e1').toFraction({})}, ".toFraction({})");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.3e1').toFraction(true)}, ".toFraction(true)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.3e1').toFraction(false)}, ".toFraction(false)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.3e1').toFraction(function (){})}, ".toFraction(function (){})");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.3e1').toFraction(new Number)}, ".toFraction(new Number)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.3e1').toFraction(new String)}, ".toFraction(new String)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.3e1').toFraction(new Date)},".toFraction(new Date)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.3e1').toFraction(new RegExp)}, ".toFraction(new RegExp)");
+      new Test().isException(()=> {new BigNumber('12.3e1').toFraction('')}, ".toFraction('')");
+      new Test().isException(()=> {new BigNumber('12.3e1').toFraction(' ')}, ".toFraction(' ')");
+      new Test().isException(()=> {new BigNumber('12.3e1').toFraction('\t')}, ".toFraction('\t')");
+      new Test().isException(()=> {new BigNumber('12.3e1').toFraction(Number.NaN)}, ".toFraction(NaN)");
+      new Test().isException(()=> {new BigNumber('12.3e1').toFraction('NaN')}, ".toFraction('NaN')");
+      new Test().isException(()=> {new BigNumber('12.3e1').toFraction('hello')}, ".toFraction('hello')");
 
-      new Test().isException(function () {new BigNumber('12.3e1').toFraction(7.5)}, ".toFraction(7.5)");
-      new Test().isException(function () {new BigNumber('12.3e1').toFraction(new BigNumber('225.435435'))}, ".toFraction(new BigNumber('225.435435'))");
-      new Test().isException(function () {new BigNumber('12.3e1').toFraction(0)}, ".toFraction(0)");
-      new Test().isException(function () {new BigNumber('12.3e1').toFraction('0.99')}, ".toFraction('0.99')");
-      new Test().isException(function () {new BigNumber('12.3e1').toFraction(-1)}, ".toFraction(-1)");
-      new Test().isException(function () {new BigNumber('12.3e1').toFraction(-23)}, ".toFraction(-23)");
-      new Test().isException(function () {new BigNumber('12.3e1').toFraction('-Infinity')}, ".toFraction('-Infinity')");
+      new Test().isException(()=> {Utils.toFraction('12.3e1',[])}, ".toFraction([])");
+
+      new Test().isException(()=> {Utils.toFraction('12.3e1',{})}, ".toFraction({})");
+
+      new Test().isException(()=> {Utils.toFraction('12.3e1',true)}, ".toFraction(true)");
+
+      new Test().isException(()=> {Utils.toFraction('12.3e1',false)}, ".toFraction(false)");
+
+      new Test().isException(()=> {Utils.toFraction('12.3e1',()=>{})}, ".toFraction(()=>{})");
+
+      new Test().isException(()=> {Utils.toFraction('12.3e1',new Number)}, ".toFraction(new Number)");
+
+      new Test().isException(()=> {Utils.toFraction('12.3e1',new String)}, ".toFraction(new String)");
+
+      new Test().isException(()=> {Utils.toFraction('12.3e1',new Date)},".toFraction(new Date)");
+
+      new Test().isException(()=> {Utils.toFraction('12.3e1',new RegExp(''))}, ".toFraction(new RegExp(')");
+
+      new Test().isException(()=> {new BigNumber('12.3e1').toFraction(7.5)}, ".toFraction(7.5)");
+      new Test().isException(()=> {new BigNumber('12.3e1').toFraction(new BigNumber('225.435435'))}, ".toFraction(new BigNumber('225.435435'))");
+      new Test().isException(()=> {new BigNumber('12.3e1').toFraction(0)}, ".toFraction(0)");
+      new Test().isException(()=> {new BigNumber('12.3e1').toFraction('0.99')}, ".toFraction('0.99')");
+      new Test().isException(()=> {new BigNumber('12.3e1').toFraction(-1)}, ".toFraction(-1)");
+      new Test().isException(()=> {new BigNumber('12.3e1').toFraction(-23)}, ".toFraction(-23)");
+      new Test().isException(()=> {new BigNumber('12.3e1').toFraction('-Infinity')}, ".toFraction('-Infinity')");
     })
   })
 }

@@ -13,46 +13,51 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-import BigNumber from 'bignumber.js';
+import { BigNumber } from './BigNumber';
+import Utils from './Utils';
 import Test from './tester';
 
 export default function decimalPlaces() {
-  describe('decimalPlacestest', function () {
+  describe('decimalPlacestest', ()=> {
 
-    function t(value, count){
+    let t = (value:BigNumber.Value, count:string|Function |(() => BigNumber)|BigNumber.Format| boolean | number | null)=>{
       new Test().areEqual(new BigNumber(value).decimalPlaces(), count);
     }
 
-    function tb(expected, value, dp, rm?) {
-      new Test().areEqual(String(expected), new BigNumber(value).decimalPlaces(dp, rm).valueOf());
+    let tb = (expected:string, value:BigNumber.Value, dp:number, rm?: BigNumber.RoundingMode| null) =>{
+      if(rm !== null){
+        new Test().areEqual(String(expected), new BigNumber(value).decimalPlaces(dp, rm).valueOf());
+      }else{
+        new Test().areEqual(String(expected), Utils.bigDecimalPlaces(value, dp, rm));
+      }
     }
 
-    function tx(fn, msg){
-      new Test().isException(fn, msg);
+    let tx = (func:Function, msg:string) =>{
+      new Test().isException(func, msg);
     }
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(()=> {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(()=> {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(()=> {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(()=> {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    it('decimalPlaces', 0, function () {
-      var MAX = 1e9;
+    it('decimalPlaces', 0, ()=> {
+      let MAX = 1e9;
 
-      new Test().areEqual(BigNumber.prototype.decimalPlaces, BigNumber.prototype.dp);
+      new Test().areEqual(Utils.decimalPlaces, Utils.bigBp);
 
       BigNumber.config({
         DECIMAL_PLACES: 20,
@@ -85,10 +90,10 @@ export default function decimalPlaces() {
       t(-1000.001, 3);
       t('-1000.001', 3);
 
-      t(NaN, null);
+      t(Number.NaN, null);
       t('NaN', null);
-      t(Infinity, null);
-      t(-Infinity, null);
+      t(Number.POSITIVE_INFINITY, null);
+      t(Number.NEGATIVE_INFINITY, null);
       t('Infinity', null);
       t('-Infinity', null);
 
@@ -162,9 +167,9 @@ export default function decimalPlaces() {
       tb('-862419646909', '-862419646909', 0);
       tb('3269018763090', '3269018763089.5711045989917554', 0);
 
-      tb('Infinity', Infinity, 0);
-      tb('-Infinity', -Infinity, 0);
-      tb('NaN', NaN, 0);
+      tb('Infinity', Number.POSITIVE_INFINITY, 0);
+      tb('-Infinity', Number.NEGATIVE_INFINITY, 0);
+      tb('NaN', Number.NaN, 0);
 
       tb('1', 0.5, 0);
       tb('1', 0.7, 0);
@@ -2010,88 +2015,86 @@ export default function decimalPlaces() {
 
 
 
-      tx(function () {new BigNumber('12.345').dp(NaN)}, ".dp(NaN)");
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp('NaN')}, ".dp('NaN')");
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp([])}, ".dp([])");
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp({})}, ".dp({})");
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp('')}, ".dp('')");
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp(' ')}, ".dp(' ')");
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp('hello')}, ".dp('hello')");
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp('\t')}, ".dp('\t')")
-      // @ts-ignore;
-      tx(function () {new BigNumber('12.345').dp(new Date)}, ".dp(new Date)");
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp(new RegExp)}, ".dp(new RegExp)");
-      tx(function () {new BigNumber('12.345').dp(7.5)}, ".dp(7.5)");
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp('-1.1e1')}, ".dp('-1.1e1')");
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp('-1')}, ".dp('-1')");
-      tx(function () {new BigNumber('12.345').dp(-23)}, ".dp(-23)");
-      tx(function () {new BigNumber('12.345').dp(MAX + 1)}, ".dp(MAX + 1)");
-      tx(function () {new BigNumber('12.345').dp(MAX + 0.1)}, ".dp(MAX + 1)");
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp('-0.01')}, ".dp('-0.01')");
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp('-1e-1')}, ".dp('-1e-1')");
-      tx(function () {new BigNumber('12.345').dp(Infinity)}, ".dp(Infinity)");
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp('-Infinity')}, ".dp('-Infinity')");
+      tx(()=> {new BigNumber('12.345').dp(Number.NaN)}, ".dp(NaN)");
+
+      tx(()=> {Utils.dp('NaN')}, ".dp('NaN')");
+
+      tx(()=> {Utils.dp([])}, ".dp([])");
+
+      tx(()=> {Utils.dp({})}, ".dp({})");
+
+      tx(()=> {Utils.dp('')}, ".dp('')");
+
+      tx(()=> {Utils.dp(' ')}, ".dp(' ')");
+
+      tx(()=> {Utils.dp('hello')}, ".dp('hello')");
+      tx(()=> {Utils.dp('\t')}, ".dp('\t')")
+
+      tx(()=> {Utils.dp(new Date)}, ".dp(new Date)");
+
+      tx(()=> {Utils.dp(new RegExp(''))}, ".dp(new RegExp(''))");
+      tx(()=> {new BigNumber('12.345').dp(7.5)}, ".dp(7.5)");
+
+      tx(()=> {Utils.dp('-1.1e1')}, ".dp('-1.1e1')");
+
+      tx(()=> {Utils.dp('-1')}, ".dp('-1')");
+      tx(()=> {new BigNumber('12.345').dp(-23)}, ".dp(-23)");
+      tx(()=> {new BigNumber('12.345').dp(MAX + 1)}, ".dp(MAX + 1)");
+      tx(()=> {new BigNumber('12.345').dp(MAX + 0.1)}, ".dp(MAX + 1)");
+
+      tx(()=> {Utils.dp('-0.01')}, ".dp('-0.01')");
+
+      tx(()=> {Utils.dp('-1e-1')}, ".dp('-1e-1')");
+      tx(()=> {new BigNumber('12.345').dp(Number.POSITIVE_INFINITY)}, ".dp(Infinity)");
+      tx(()=> {Utils.dp('-Infinity')}, ".dp('-Infinity')");
 
       tb('13', '12.345', 0, 2);
       tb('12', '12.345', 0, null);
       tb('12', '12.345', 0);
       tb('13', '12.345', 0, 0);
       tb('13', '12.345', 0, -0);
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp(0, NaN)}, ".dp(0, NaN)");
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp(0, 'NaN')}, ".dp(0, 'NaN')");
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp(0, [])}, ".dp(0, [])");
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp(0, {})}, ".dp(0, {})");
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp(0, '')}, ".dp(0, '')");
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp(0, ' ')}, ".dp(0, ' ')");
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp(0, 'hello')}, ".dp(0, 'hello')");
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp(0, '\t')}, ".dp(0, '\t')");
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp(0, new Date)}, ".dp(0, new Date)");
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp(0, new RegExp)}, ".dp(0, new RegExp)");
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp(0, 7.5)}, ".dp(0, 7.5)");
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp(0, '-1.1e1')}, ".dp(0, '-1.1e1')");
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp(0, '-1')}, ".dp(0, -1')");
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp(0, -23)}, ".dp(0, -23)");
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp(0, 8.01)}, ".dp(0, 8.01)");
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp(0, 9)}, ".dp(0, 9)");
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp(0, -1)}, ".dp(0, -1)");
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp(0, '-0.01')}, ".dp(0, '-0.01')");
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp(0, '-1e-1')}, ".dp(0, '-1e-1')");
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp(0, Infinity)}, ".dp(0, Infinity)");
-      // @ts-ignore
-      tx(function () {new BigNumber('12.345').dp(0, '-Infinity')}, ".dp(0, '-Infinity')");
+
+      tx(()=> {Utils.dp(Number.NaN)}, ".dp(0, NaN)");
+
+      tx(()=> {Utils.dp('NaN')}, ".dp(0, 'NaN')");
+
+      tx(()=> {Utils.dp([])}, ".dp(0, [])");
+
+      tx(()=> {Utils.dp({})}, ".dp(0, {})");
+
+      tx(()=> {Utils.dp('')}, ".dp(0, '')");
+
+      tx(()=> {Utils.dp(' ')}, ".dp(0, ' ')");
+
+      tx(()=> {Utils.dp('hello')}, ".dp(0, 'hello')");
+
+      tx(()=> {Utils.dp('\t')}, ".dp(0, '\t')");
+
+      tx(()=> {Utils.dp(new Date)}, ".dp(0, new Date)");
+
+      tx(()=> {Utils.dp((new RegExp('')))}, ".dp(0, new RegExp(''))");
+
+      tx(()=> {Utils.dp( 7.5)}, ".dp(0, 7.5)");
+
+      tx(()=> {Utils.dp('-1.1e1')}, ".dp(0, '-1.1e1')");
+
+      tx(()=> {Utils.dp('-1')}, ".dp(0, -1')");
+
+      tx(()=> {Utils.dp(-23)}, ".dp(0, -23)");
+
+      tx(()=> {Utils.dp(8.01)}, ".dp(0, 8.01)");
+
+      tx(()=> {Utils.dp(9)}, ".dp(0, 9)");
+
+      tx(()=> {Utils.dp(-1)}, ".dp(0, -1)");
+
+      tx(()=> {Utils.dp('-0.01')}, ".dp(0, '-0.01')");
+
+      tx(()=> {Utils.dp('-1e-1')}, ".dp(0, '-1e-1')");
+
+      tx(()=> {Utils.dp(Number.POSITIVE_INFINITY)}, ".dp(0, Infinity)");
+
+      tx(()=> {Utils.dp('-Infinity')}, ".dp(0, '-Infinity')");
     })
   })
 }

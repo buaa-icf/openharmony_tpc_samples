@@ -13,36 +13,36 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-import BigNumber from 'bignumber.js';
+import { BigNumber } from './BigNumber';
 import Test from './tester';
 
 export default function negated() {
-  describe('negatedtest', function () {
+  describe('negatedtest', ()=> {
 
-    function t(expected, value){
+    let t = (expected:string|number, value: BigNumber.Value)=>{
       new Test().areEqual(String(expected), new BigNumber(value).negated().toString());
     }
 
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(()=> {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(()=> {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(()=> {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(()=> {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    it('negated', 0, function () {
+    it('negated', 0, ()=> {
       BigNumber.config({
         DECIMAL_PLACES: 20,
         ROUNDING_MODE: 4,
@@ -57,11 +57,11 @@ export default function negated() {
       t(-1, 1);
       t(1, -1);
       t(0, 0);
-      t(NaN, NaN);
-      t(-Infinity, Infinity);
-      t(-Infinity, +Infinity);
-      t(Infinity, -Infinity);
-      t(+Infinity, -Infinity);
+      t(Number.NaN, Number.NaN);
+      t(Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY);
+      t(Number.NEGATIVE_INFINITY, +Number.POSITIVE_INFINITY);
+      t(Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY);
+      t(+Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY);
 
       t('0', '0');
       t('-238', '238');
@@ -516,20 +516,20 @@ export default function negated() {
       t('-2.9e+0', '2.9e+0');
       t('-1.764e+3', '1.764e+3');
       t('9.3418332730097368870513138581415704704611459349313e+49', '-9.3418332730097368870513138581415704704611459349313e+49');
-      t('-Infinity', Infinity);
+      t('-Infinity', Number.POSITIVE_INFINITY);
       t('-Infinity', 'Infinity');
-      t('Infinity', -Infinity);
+      t('Infinity', Number.NEGATIVE_INFINITY);
       t('Infinity', '-Infinity');
-      t('NaN', NaN);
+      t('NaN', Number.NaN);
       t('NaN', 'NaN');
 
       BigNumber.config({EXPONENTIAL_AT: 1e+9});
 
       new Test().areEqual(-1, new BigNumber(2).negated().s);
       new Test().areEqual(1, new BigNumber(-2).negated().s);
-      new Test().areEqual(null, new BigNumber(NaN).negated().s);
+      new Test().areEqual(null, new BigNumber(Number.NaN).negated().s);
       new Test().areEqual(null, new BigNumber('-NaN').negated().s);
-      new Test().areEqual(-1, new BigNumber(Infinity).negated().s);
+      new Test().areEqual(-1, new BigNumber(Number.POSITIVE_INFINITY).negated().s);
       new Test().areEqual(1, new BigNumber('-Infinity').negated().s);
 
       new Test().areEqual('-1', new BigNumber(1).negated().valueOf());

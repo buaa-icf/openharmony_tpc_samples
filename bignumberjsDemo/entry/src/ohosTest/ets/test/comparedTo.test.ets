@@ -13,44 +13,44 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-import BigNumber from 'bignumber.js';
+import { BigNumber } from './BigNumber';
 import Test from './tester';
 
 export default function comparedTo() {
-  describe('comparedTotest', function () {
+  describe('comparedTotest', ()=> {
 
-    var n = 'null',
+    let n = 'null',
       N = 'NaN',
       I = 'Infinity';
 
-    function isMinusZero(n) {
-      return n === 0 ? 1 / n === -Infinity : null
+    let isMinusZero = (n: number)=> {
+      return n === 0 ? 1 / n === Number.NEGATIVE_INFINITY : null
     }
 
-    function t(a, b, expected) {
+    let t = (a: BigNumber.Value, b: BigNumber.Value, expected:number |string)=> {
       new Test().areEqual(String(expected), String(new BigNumber(a).comparedTo(b)));
     }
 
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(()=> {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(()=> {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(()=> {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(()=> {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    it('comparedTo', 0, function () {
+    it('comparedTo', 0, ()=> {
       BigNumber.config({
         DECIMAL_PLACES: 20,
         ROUNDING_MODE: 4,
@@ -65,9 +65,9 @@ export default function comparedTo() {
       t(1, N, n);
       t(-1, N, n);
       t(1, I, -1);
-      t(1, -I, 1);
+      t(1, -Number(I), 1);
       t(-1, I, -1);
-      t(-1, -I, 1);
+      t(-1, -Number(I), 1);
       t(0, 1, -1);
       t(0, -1, 1);
       t(-0, 1, -1);
@@ -79,30 +79,30 @@ export default function comparedTo() {
       t(0, N, n);
       t(-0, N, n);
       t(0, I, -1);
-      t(0, -I, 1);
+      t(0, -Number(I), 1);
       t(-0, I, -1);
-      t(-0, -I, 1);
+      t(-0, -Number(I), 1);
       t(N, 1, n);
       t(N, -1, n);
       t(N, 0, n);
       t(N, -0, n);
       t(N, N, n);
       t(N, I, n);
-      t(N, -I, n);
+      t(N, -Number(I), n);
       t(I, 1, 1);
       t(I, -1, 1);
-      t(-I, 1, -1);
-      t(-I, -1, -1);
+      t(-Number(I), 1, -1);
+      t(-Number(I), -1, -1);
       t(I, 0, 1);
       t(I, -0, 1);
-      t(-I, 0, -1);
-      t(-I, -0, -1);
+      t(-Number(I), 0, -1);
+      t(-Number(I), -0, -1);
       t(I, N, n);
-      t(-I, N, n);
+      t(-Number(I), N, n);
       new Test().areEqual(false, isMinusZero(new BigNumber(I).comparedTo(I)));
-      t(I, -I, 1);
-      t(-I, I, -1);
-      new Test().areEqual(false, isMinusZero(new BigNumber(-I).comparedTo(-I)));
+      t(I, -Number(I), 1);
+      t(-Number(I), I, -1);
+      new Test().areEqual(false, isMinusZero(new BigNumber(-Number(I)).comparedTo(-Number(I))));
 
       t(0, '0.1', '-1');
       t(0, '-0.1', '1');
@@ -159,20 +159,20 @@ export default function comparedTo() {
       t(54, -54, '1');
       t(9.99, '-9.99', '1');
       t('0.0000023432495704937', '-0.0000023432495704937', '1');
-      t(NaN, NaN, n);
-      t(NaN, N, n);
-      t(N, NaN, n);
+      t(Number.NaN, Number.NaN, n);
+      t(Number.NaN, N, n);
+      t(N, Number.NaN, n);
       t(N, 4, n);
       t(N, '4534534.45435435', n);
       t(N, 99999.999, n);
-      t(Infinity, '354.345341', '1');
-      t(3, -I, '1');
-      t(-Infinity, -I, '0');
-      t(-I, -Infinity, '0');
+      t(Number.POSITIVE_INFINITY, '354.345341', '1');
+      t(3, -Number(I), '1');
+      t(Number.NEGATIVE_INFINITY, -Number(I), '0');
+      t(-Number(I), Number.NEGATIVE_INFINITY, '0');
       t(I, '-999e999', '1');
-      t(1.21123e43, -I, '1');
+      t(1.21123e43, -Number(I), '1');
       t('-999.0', I, '-1');
-      t('657.342e-45', -I, '1');
+      t('657.342e-45', -Number(I), '1');
       t(I, 123, '1');
       t(-0, I, '-1');
       t(100, 100, '0');
@@ -4091,7 +4091,7 @@ export default function comparedTo() {
       t('-0.10021507', '-2049541544645617700923988306', 1);
       t('6609143733354158875894', '-6609143733354158875894', 1);
 
-      new Test().isException(function () {new BigNumber(1).comparedTo('one')}, "new BigNumber(1).comparedTo('one')");
+      new Test().isException(()=> {new BigNumber(1).comparedTo('one')}, "new BigNumber(1).comparedTo('one')");
     })
   })
 }

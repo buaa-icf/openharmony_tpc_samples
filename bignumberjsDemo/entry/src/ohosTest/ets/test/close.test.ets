@@ -13,40 +13,40 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-import BigNumber from 'bignumber.js';
+import { BigNumber } from './BigNumber';
 import Test from './tester';
 
 export default function close() {
-  describe('closetest', function () {
-    function t(value) {
+  describe('closetest', ()=> {
+    let t = (value:boolean) =>{
       new Test().isTrue(value);
     }
 
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(()=> {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(()=> {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(()=> {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(()=> {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    it('close', 0, function () {
+    it('close', 0, ()=> {
 
-      var Big = BigNumber.clone();
+      let Big = BigNumber.clone();
 
-      var x = new Big(0);
-      var y = new Big('1');
+      let x = new Big(0);
+      let y = new Big('1');
 
       t(x instanceof Big);
       t(y instanceof Big);
@@ -59,7 +59,7 @@ export default function close() {
       t(Big.isBigNumber(x));
       t(Big.isBigNumber(y));
 
-      var z = new BigNumber(x);
+      let z = new BigNumber(x);
 
       t(z instanceof BigNumber);
       t(!(z instanceof Big));
