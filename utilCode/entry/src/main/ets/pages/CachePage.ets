@@ -13,9 +13,18 @@
  * limitations under the License.
  */
 
-// @ts-ignore
 import cache from 'memory-cache';
 import prompt from '@ohos.promptAction';
+interface skipDuplicatesType{
+  skipDuplicates:boolean
+}
+
+let skipFn = (data: boolean): skipDuplicatesType => {
+  const skipDuplicatesData: skipDuplicatesType = {
+    skipDuplicates: data
+  }
+  return skipDuplicatesData
+}
 
 @Entry
 @Component
@@ -100,7 +109,7 @@ struct CachePage {
                   prompt.showToast({ message: '键不能为空', duration: 3000 })
                   return
                 }
-                let value = cache.put(this.putKey, this.putValue);
+                let value:number = cache.put(this.putKey, this.putValue);
                 prompt.showToast({ message: '写入值' + value + '成功', duration: 3000 })
               } catch (err) {
                 prompt.showToast({ message: '写入失败', duration: 3000 })
@@ -158,7 +167,7 @@ struct CachePage {
             .margin({ top: 20 })
             .backgroundColor('#12939f')
             .onClick(() => {
-              let is = cache.del(this.delKey)
+              let is:boolean = cache.del(this.delKey)
               prompt.showToast({ message: '删除结果' + is, duration: 3000 })
 
             })
@@ -352,7 +361,7 @@ struct CachePage {
             .backgroundColor('#12939f')
             .onClick(() => {
               try {
-                this.cacheImportJsonSize = cache.importJson(this.cacheImportJson, { skipDuplicates: false });
+                this.cacheImportJsonSize = cache.importJson(this.cacheImportJson,skipFn(false));
                 prompt.showToast({ message: '写入成功', duration: 3000 })
               } catch (err) {
                 prompt.showToast({ message: '请输入json格式数据', duration: 3000 })
@@ -389,7 +398,7 @@ struct CachePage {
             .backgroundColor('#12939f')
             .onClick(() => {
               try {
-                this.cacheImportJsonSize = cache.importJson(this.cacheImportJson, { skipDuplicates: true });
+                this.cacheImportJsonSize = cache.importJson(this.cacheImportJson, skipFn(true));
                 prompt.showToast({ message: '写入成功', duration: 3000 })
               } catch (err) {
                 prompt.showToast({ message: '请输入json格式数据', duration: 3000 })

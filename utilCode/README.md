@@ -1158,7 +1158,8 @@ img.getComponent(4, (err, component) => {
 
 在下述版本验证通过：
 
-DevEco Studio 版本：3.1 Beta1（3.1.0.200），OpenHarmony SDK:API9（3.2.10.6）。
+DevEco Studio 版本：3.1 Beta1（3.1.0.200），OpenHarmony SDK:API9（3.2.10.6）
+DevEco Studio: 4.0(4.0.3.512),SDK: API10（4.0.10.9）
 
 ## 贡献代码
 
