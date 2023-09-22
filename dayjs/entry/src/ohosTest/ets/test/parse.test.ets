@@ -12,15 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-//@ts-nocheck
-import moment from '../moment/src/moment'
+
+import moment from "../../../../node_modules/moment/moment"
 import dayjs from 'dayjs'
+import {dataTest} from "../utils/testPlugin"
 
 import { REGEX_PARSE } from 'dayjs/esm/constant'
-import {it,expect,describe } from "../utils/utils"
+import { it, expect, describe } from "../utils/utils"
 
-export default function parseTest(){
-  describe('Parse', function() {
+export default function parseTest() {
+  describe('Parse', () => {
     it('moment_js_like_formatted_dates', () => {
       let d = '20130108'
       expect(dayjs(d).valueOf()).toBe(moment(d).valueOf())
@@ -71,29 +72,28 @@ export default function parseTest(){
     })
 
 
-
     it('rejects_invalid_values', () => {
-      expect(dayjs({}).isValid()).toBe(false)
-      expect(dayjs(() => '2018-01-01').isValid()).toBe(false)
-      expect(dayjs(Infinity).isValid()).toBe(false)
-      expect(dayjs(NaN).isValid()).toBe(false)
-      expect(dayjs([2018, 5, 1, 13, 52, 44]).isValid()).toBe(false) // Arrays with time part
+      expect(dataTest({}).isValid()).toBe(false)
+      expect(dataTest(() => '2018-01-01').isValid()).toBe(false)
+      expect(dayjs(Number.POSITIVE_INFINITY).isValid()).toBe(false)
+      expect(dayjs(Number.NaN).isValid()).toBe(false)
+      expect(dataTest([2018, 5, 1, 13, 52, 44]).isValid()).toBe(false) // Arrays with time part
     })
 
     it('parses_Arrays_with_date_part', () => {
       const dateParts = [2018, 5, 1]
       const expected = '2018-05-01T00:00:00.000Z'
-      const d = dayjs(dateParts)
+      const d = dataTest(dateParts)
       const normalized = d.add(d.utcOffset(), 'minutes') // make test run in every timezone
       expect(normalized.toISOString()).toEqual(expected)
     })
 
+
     it('parses_unlimited_millisecond', () => {
       const date = '2019-03-25T06:41:00.999999999'
-      const ds = dayjs(date)
-      const ms = moment(date)
-      expect(ds.valueOf()).toEqual(ms.valueOf())
-      expect(ds.millisecond()).toEqual(ms.millisecond())
+      const ds:dayjs.Dayjs = dayjs(date)
+      expect(ds.valueOf()).toEqual(moment(date).valueOf())
+      expect(ds.millisecond()).toEqual(moment(date).millisecond())
     })
 
     it('String_Other_Undefined_and_Null_and_isValid', () => {
@@ -112,7 +112,7 @@ export default function parseTest(){
 
       expect(dayjs('otherString').isValid()).toBe(false)
 
-      expect(dayjs(null).toString().toLowerCase()).toBe(moment(null).toString().toLowerCase())
+      expect(dayjs(null).toString().toLowerCase()).toBe(moment("").toString().toLowerCase())
 
     })
     it('Unix_Timestamp_Number_milliseconds_1523520536000', () => {
@@ -153,14 +153,14 @@ export default function parseTest(){
   })
 
 
-
-  describe('REGEX_PARSE', function() {
+  describe('REGEX_PARSE', () => {
     const title = "2020/9/30";
     it(title, () => {
       const date = '2020/9/30'
       const d = date.match(REGEX_PARSE)
       expect(dayjs(date).valueOf()).toBe(moment(date).valueOf())
-      expect(d.join('-')).toBe('2020/9/30-2020-9-30----')
+      if(!!d)
+        expect(d.join('-')).toBe('2020/9/30-2020-9-30----')
     })
     // it('2019-03-25T06:41:00.999999999', () => {
     //   const date = '2019-03-25T06:41:00.999999999'

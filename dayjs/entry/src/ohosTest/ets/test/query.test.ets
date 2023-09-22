@@ -12,14 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-//@ts-nocheck
-import {it,expect,describe } from "../utils/utils"
+
+import { it, expect, describe } from "../utils/utils"
 import dayjs from 'dayjs'
 
 
-
 export default function queryTest() {
-  describe('queryTest', function () {
+  describe('queryTest', () => {
 
     it('Compare_to_dayjs_object', () => {
       const dayA = dayjs()
@@ -27,9 +26,9 @@ export default function queryTest() {
       const dayC = dayA.clone().subtract(1, 'day')
       expect(dayC.isBefore(dayA)).toBe(true)
       expect(dayB.isAfter(dayA)).toBe(true)
-      expect(dayA.isSame()).toBe(false)
-      expect(dayB.isAfter()).toBe(true)
-      expect(dayC.isBefore()).toBe(true)
+      expect(dayA.isSame(dayjs())).toBe(false)
+      expect(dayB.isAfter(dayA)).toBe(true)
+      expect(dayC.isBefore(dayA)).toBe(true)
     })
 
     it('No_value', () => {
@@ -37,10 +36,8 @@ export default function queryTest() {
       const dayB = dayA.clone().add(1, 'day')
       const dayC = dayA.clone().subtract(1, 'day')
       expect(dayA.isSame(dayjs('2022.3.6 12:00:00'))).toBe(true)
-      expect(dayB.isAfter()).toBe(false)
-      expect(dayC.isBefore()).toBe(true)
+      expect(dayB.isAfter("")).toBe(false)
+      expect(dayC.isBefore(dayA)).toBe(true)
     })
-
-
   })
 }

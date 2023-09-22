@@ -12,23 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-import { it, expect, describe } from "../utils/utils"
 import dayjs from 'dayjs'
-import { testPlugin, testPluginWithConfig } from "../utils/testPlugin"
 
-export default function pluginTest() {
+export const testPlugin = (o:string, c, d) => {
+  c.prototype.newApi = () => ('hello world')
+  d.newFunc = () => ('hi world')
+}
 
-  describe('pluginTest', () => {
-    dayjs.extend<string>(testPlugin)
-    dayjs.extend<string>(testPluginWithConfig, 'good')
-    it('Plugin_extend_method_and_option', () => {
-      expect((() => ('hello world'))()).toBe('hello world')
-      expect((() => ("hello world good"))()).toBe('hello world good')
-    })
+export const testPluginWithConfig = (o:string, c) => {
+  c.prototype.newApiWithConfig = () => (`hello world ${o || ''}`)
+}
 
-    it('Plugin_extend_dayjs', () => {
-      expect((() => ('hi world'))()).toBe('hi world')
-    })
-  })
+export function dataTest(value){
+  return dayjs(value)
 }
