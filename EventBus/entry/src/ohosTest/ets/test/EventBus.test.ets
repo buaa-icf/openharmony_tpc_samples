@@ -16,13 +16,22 @@
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 import EventBus from 'eventbusjs'
 
-var TAG = 'EventBusDemo '
+let TAG: string = 'EventBusDemo '
+
+interface TargetType {
+  className: string
+}
+
+interface Event {
+  type: string,
+  target: TargetType
+}
 
 export default function eventBusTest() {
-  describe('ActsEventBusTest', function () {
+  describe('ActsEventBusTest', () => {
     it('addEventListener', 0, () => {
       console.info("addEventListener begin")
-      let basicTestCallBack = (event) => {
+      let basicTestCallBack = (event: Event) => {
         console.log(TAG + " basicTest message received " + event.type)
       }
       expect(EventBus.hasEventListener('basicTest', basicTestCallBack)).assertFalse()
@@ -33,7 +42,7 @@ export default function eventBusTest() {
 
     it('removeEventListener', 1, () => {
       console.info("removeEventListener begin")
-      let basicTestCallBack = (event) => {
+      let basicTestCallBack = (event:Event) => {
         console.log(TAG + " basicTest message received " + event.type)
       }
       EventBus.addEventListener("basicTest", basicTestCallBack)
@@ -45,20 +54,20 @@ export default function eventBusTest() {
 
     it('hasEventListener', 2, () => {
       console.info("hasEventListener begin")
-      let basicEventBusCallBack = (event) => {
+      let basicEventBusCallBack = (event:Event) => {
         console.log(TAG + " basicEventBus message received " + event.type)
       }
-      let isHasFirst = EventBus.hasEventListener('basicEventBus', basicEventBusCallBack)
+      let isHasFirst:boolean = EventBus.hasEventListener('basicEventBus', basicEventBusCallBack)
       expect(isHasFirst).assertFalse()
       EventBus.addEventListener("basicEventBus", basicEventBusCallBack)
-      let isHasSecond = EventBus.hasEventListener('basicEventBus', basicEventBusCallBack)
+      let isHasSecond:boolean = EventBus.hasEventListener('basicEventBus', basicEventBusCallBack)
       expect(isHasSecond).assertTrue()
       console.info("hasEventListener end")
     })
 
     it('dispatch', 3, () => {
       console.info("dispatch begin")
-      let basicEventBusCallBack = (event) => {
+      let basicEventBusCallBack = (event:Event) => {
         console.log(TAG + " basicEventBus message received " + event.type)
         expect(event.type).assertEqual("basicEventBus")
         console.info("dispatch end")
@@ -69,9 +78,9 @@ export default function eventBusTest() {
 
     it('getEvents', 4, () => {
       console.info("getEvents begin")
-      let abcCallBack = (event) => {
+      let abcCallBack = (event:Event) => {
       }
-      let cbdCallBack = (event) => {
+      let cbdCallBack = (event:Event) => {
       }
       EventBus.addEventListener("abc", abcCallBack)
       EventBus.addEventListener("cbd", cbdCallBack)

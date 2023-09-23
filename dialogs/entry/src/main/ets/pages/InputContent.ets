@@ -13,15 +13,17 @@
  * limitations under the License.
  */
 
-import { InputDialog,inputModel } from '@ohos/dialogs'
-
+import { InputDialog, inputModel } from '@ohos/dialogs'
+import { SelectParam } from '../components/SelectParam'
+import { SelectInput } from '../components/SelectInput'
 @Entry
 @Component
 struct InputDialogExample {
   @State inputValue: string = ''
   @State title: string = '标题'
   @State placeholder: string = '请输入'
-  @State model:inputModel = new inputModel()
+  @State model: inputModel = new inputModel()
+  @State select: SelectParam = new SelectParam()
   aboutToAppear() {
     this.model.titleFontColor = '#ffffff'
     this.model.titleHeight = 60,
@@ -58,20 +60,23 @@ struct InputDialogExample {
       width: {bottom: 1},
       color:{bottom:'#008577'},
       style:{top:BorderStyle.Solid}
-   },
+    },
     this.model.titleFontColor = '#ffffff'
+    this.model.isDisplayInput = true
     this.model.cancel = this.onCancel
     this.model.confirm = this.confirm
+    this.model.customCallback = {
+      beforeAppear: () => {
+        console.log('inputContent', 'beforeAppear回调')
+      },
+      beforeDisappear: () => {
+        console.log('inputContent', 'beforeDisappear回调')
+      }
+    }
+    this.model.dialogWidth = '80%'
   }
 
-  InputController: CustomDialogController = new CustomDialogController({
-    builder: InputDialog({
-      model: this.model,
-      inputValue: this.inputValue
-    }),
-    customStyle: true,
-    alignment: DialogAlignment.Center,
-  })
+  InputController: CustomDialogController
   onCancel() {
     console.info('Callback when the first button is clicked')
   }
@@ -83,7 +88,27 @@ struct InputDialogExample {
   build() {
     Column(){
       Button('input弹窗').onClick(() => {
+        this.InputController = new CustomDialogController({
+          builder: InputDialog({
+            model: this.model,
+            inputValue: this.inputValue
+          }),
+          customStyle: true,
+          autoCancel: this.select.autoCancel,
+          alignment: DialogAlignment.Center,
+          maskColor: this.select.maskColor,
+          offset: { dx: this.select.dx, dy: this.select.dy }
+        })
+        this.model.isDisplayInput = this.select.isDisplayInput
+        this.model.dialogBorderRadius = this.select.borderRadius
+        this.model.confirmBtnBorderRadius = { bottomRight: this.select.borderRadius }
+        this.model.cancelBtnBorderRadius = { bottomLeft: this.select.borderRadius }
+        this.model.isSupportGesture = this.select.isSupportGesture
+        this.model.autoCancel = this.select.autoCancel
         this.InputController.open()
+      })
+      SelectInput({
+        select: this.select
       })
     }
   }

@@ -12,9 +12,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import EventBus from "eventbusjs";
 
-var TAG = "EventBusDemo ";
-var EventBus = globalThis.eventBus
+let TAG:string = "EventBusDemo ";
+
 
 @Entry
 @Component
@@ -28,18 +29,22 @@ struct Detail {
     .width('100%')
     .height('100%')
   }
-
   aboutToAppear()  {
     console.log(TAG + "aboutToAppear")
-
-    var TestClass2 = function () {
-      this.className = "TestClass2";
-      this.ready = function () {
+    class  TestA{
+      className:string=''
+      ready:Function=()=>{}
+    }
+    let TestClass2 =  ():TestA=> {
+      let TestClass = new TestA()
+      TestClass.className = "TestClass2";
+      TestClass.ready =  () =>{
         console.log(TAG + "发送刷新refreshComeFromDetail事件----------");
-        EventBus.dispatch("refreshComeFromDetail", this, "javascript events", " come from detail params");
+        EventBus.dispatch("refreshComeFromDetail", TestClass, "javascript events", " come from detail params");
       }
+      return {className:TestClass.className,ready:TestClass.ready }
     };
-    var t2 = new TestClass2();
+    let t2:TestA = TestClass2();
     t2.ready();
   }
 }

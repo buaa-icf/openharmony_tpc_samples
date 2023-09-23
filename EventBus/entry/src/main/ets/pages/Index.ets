@@ -16,7 +16,22 @@
 import router from '@ohos.router';
 import EventBus from "eventbusjs";
 
-var TAG = "EventBusDemo ";
+let TAG: string = "EventBusDemo ";
+
+
+
+interface TargetType {
+  className: string
+}
+
+interface Event {
+  type: string
+  target: TargetType
+}
+
+interface ThatType {
+  comeDetailText: string
+}
 
 @Entry
 @Component
@@ -26,12 +41,12 @@ struct Index {
   testCount: number = 0;
   eventBusCount: number = 0;
   scroller: Scroller = new Scroller();
-  basicTestCallBack: Function = (event) => {
+  basicTestCallBack: Function = (event: Event) => {
     this.testCount++;
     this.changeText = "basicTest监听创建成功 " + this.testCount;
     console.log(TAG + " basicTest message received " + event.type);
   }
-  basicEventBusCallBack: Function = (event) => {
+  basicEventBusCallBack: Function = (event: Event) => {
     this.eventBusCount++;
     this.changeText = "basicEventBus监听创建成功 " + this.eventBusCount;
     console.log(TAG + " basicEventBus message received " + event.type);
@@ -62,7 +77,7 @@ struct Index {
             .fontSize(18)
             .height(80)
             .onClick(() => {
-              let isHas = EventBus.hasEventListener('basicTest', this.basicTestCallBack);
+              let isHas: boolean = EventBus.hasEventListener('basicTest', this.basicTestCallBack);
               if (!isHas) {
                 EventBus.addEventListener("basicTest", this.basicTestCallBack);
                 console.log(TAG + " basicTest 订阅消息");
@@ -80,7 +95,7 @@ struct Index {
             .fontSize(18)
             .height(80)
             .onClick(() => {
-              let isHas = EventBus.hasEventListener('basicEventBus', this.basicEventBusCallBack);
+              let isHas: boolean = EventBus.hasEventListener('basicEventBus', this.basicEventBusCallBack);
               if (!isHas) {
                 EventBus.addEventListener("basicEventBus", this.basicEventBusCallBack);
                 console.log(TAG + " basicEventBus 订阅消息");
@@ -98,7 +113,7 @@ struct Index {
             .fontSize(18)
             .height(80)
             .onClick(() => {
-              let isHas = EventBus.hasEventListener('basicTest', this.basicTestCallBack);
+              let isHas: string = EventBus.hasEventListener('basicTest', this.basicTestCallBack);
               this.changeText = isHas
               console.log(TAG + " Determine whether the Basictest subscription exists " + isHas)
             }).margin({ bottom: 20 })
@@ -156,46 +171,68 @@ struct Index {
 
 
 function testAddParameters() {
+  class TestA {
+    className: string = ''
+    doSomething: Function = (): void => {
+    }
+  }
+
+  class TestB {
+    className: string = ''
+    ready: Function = () => {
+    }
+  }
+
   // 传递参数测试开始
-  var TestClass1 = function () {
-    this.className = "TestClass1";
-    this.doSomething = function (event, param1, param2) {
-      console.log(TAG + this.className + ".doSomething");
+  let TestClass1 = (): TestA => {
+    let TestClass = new TestA()
+    TestClass.className = "TestClass1";
+    TestClass.doSomething = (event: Event, param1: string, param2: string) => {
+      console.log(TAG + TestClass.className + ".doSomething");
       console.log(TAG + "type=" + event.type);
       console.log(TAG + "params=" + param1 + param2);
       console.log(TAG + "coming from=" + event.target.className);
     }
+    return { className: TestClass.className, doSomething: TestClass.doSomething }
   };
-  var TestClass2 = function () {
-    this.className = "TestClass2";
-    this.ready = function () {
-      EventBus.dispatch("testAddParameters", this, "javascript events", " are really useful");
+  let TestClass2 = (): TestB => {
+    let TestClass = new TestB()
+    TestClass.className = "TestClass2";
+    TestClass.ready = () => {
+      EventBus.dispatch("testAddParameters", TestClass, "javascript events", " are really useful");
     }
+    return { className: TestClass.className, ready: TestClass.ready }
   };
 
-  var t1 = new TestClass1();
-  var t2 = new TestClass2();
+  let t1: TestA = TestClass1();
+  let t2: TestB = TestClass2();
 
   EventBus.addEventListener("testAddParameters", t1.doSomething, t1);
   t2.ready();
 }
 
-function refreshComeFromDetail(that) {
+function refreshComeFromDetail(that: ThatType) {
+  interface formDetailA {
+    className: string
+    doSomething: Function
+  }
+
   // 刷新来自Detail测试开始
-  var refreshComeFromDetail = function () {
-    this.className = "refreshComeFromDetail";
-    this.doSomething = function (event, param1, param2) {
-      console.log(TAG + this.className + ".doSomething");
+  let refreshComeFromDetail = (): formDetailA => {
+    let className = "refreshComeFromDetail";
+    let doSomething = (event: Event, param1: string, param2: string) => {
+      console.log(TAG + className + ".doSomething");
       console.log(TAG + "type=" + event.type);
       console.log(TAG + "params=" + param1 + param2);
       console.log(TAG + "coming from=" + event.target.className);
       that.comeDetailText = param1 + "***" + param2
     }
+    return { className, doSomething }
   };
 
-  var t1 = new refreshComeFromDetail();
+  let t1: formDetailA = refreshComeFromDetail();
   // 有参数传递的
-  globalThis.eventBus.addEventListener("refreshComeFromDetail", t1.doSomething, t1);
+  EventBus.addEventListener("refreshComeFromDetail", t1.doSomething, t1);
 }
 
 

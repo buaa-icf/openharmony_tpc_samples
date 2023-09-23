@@ -1,0 +1,11 @@
+{
+  "src": [
+    "pages/Index",
+    "pages/LoginPage",
+    "pages/MsgListPage",
+    "pages/MsgDetailPage",
+    "pages/FolderPage",
+    "pages/TestInterfacePage",
+    "pages/PressTestPage"
+  ]
+}

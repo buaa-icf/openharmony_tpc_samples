@@ -1,0 +1,9 @@
+{
+  "module": {
+    "name": "email",
+    "type": "har",
+    "deviceTypes": [
+      "default"
+    ]
+  }
+}

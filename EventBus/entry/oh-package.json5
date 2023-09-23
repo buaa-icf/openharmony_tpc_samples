@@ -6,6 +6,5 @@
   "description": "Simple JavaScript class for managing events",
   "main": "",
   "version": "1.0.0",
-  "dependencies": {
-  }
+  "dependencies": {}
 }

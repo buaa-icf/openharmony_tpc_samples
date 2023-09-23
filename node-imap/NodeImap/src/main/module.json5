@@ -1,0 +1,9 @@
+{
+  "module": {
+    "name": "NodeImap",
+    "type": "har",
+    "deviceTypes": [
+      "default"
+    ]
+  }
+}
