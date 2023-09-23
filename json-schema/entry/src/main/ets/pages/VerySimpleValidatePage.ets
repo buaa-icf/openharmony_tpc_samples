@@ -18,7 +18,7 @@ import { SchemaError, validate, ValidationError, Validator, ValidatorResult } fr
 @Entry
 @Component
 struct VerySimpleValidatePage {
-  @State message0: string = `var validate = require('jsonschema').validate;
+  @State message0: string = `let validate = require('jsonschema').validate;
 validate(4, {"type": "number"})`
   @State message1: string = `验证对象：--`
   @State message2: string = `期待结果：暂无`
@@ -89,12 +89,12 @@ validate(4, {"type": "number"})`
     const ctx = this;
     ctx.message2 = `期待结果：${true}`
     try {
-      var v = new Validator();
-      let result = v.validate(4, { "type": "number" });
-      let str = JSON.stringify(result);
+
+
+      let str = JSON.stringify(new Validator().validate(4, { "type": "number" }));
       console.log(`jsonschema ------> 测试结果是：${str}`);
       ctx.message1 = `验证对象： ${str}`;
-      ctx.message3 = `实际结果：${result.valid}`
+      ctx.message3 = `实际结果：${new Validator().validate(4, { "type": "number" }).valid}`
     } catch (err) {
       let str = JSON.stringify(err);
       console.log(`jsonschema ------> 验证出错：${str}`);

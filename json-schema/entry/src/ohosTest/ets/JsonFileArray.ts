@@ -458,7 +458,7 @@ import ArrayList from '@ohos.util.ArrayList'
 // 3.需排除文件名为zeroTerminatedFloats.json，refRemote.json，ecmascript-regex.json，content.json，bignum.json，jsregex.json的文件
 // 4.需添加draft7/optional/format/uri-reference.json
 // 排除之后最终同原库一样共测试138个json文件
-var paths = [
+let paths = [
   "draft3",
   "draft3/optional",
   "draft4",
@@ -469,7 +469,7 @@ var paths = [
   "draft7/optional",
 ];
 
-var ignoredFiles = [
+let ignoredFiles = [
   "optional", // 用于排除基础路径+optional的文件夹，避免当做文件 例如文件名不是 ../tests/draft-next/optional而是../tests/draft-next/optional/bignum.json
   "format", // 用于排除基础路径+format，避免当做文件 例如文件名不是 ../tests/draft-next/optional/format而是../tests/draft-next/optional/format/date.json
   "zeroTerminatedFloats.json",

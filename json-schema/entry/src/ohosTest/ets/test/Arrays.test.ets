@@ -15,151 +15,89 @@
 
 import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
+import { ANonArray, DuplicateItem, DuplicateObjects, EqualToMinItems, NotAnArray, Validate } from './IntertfaceData';
 
-// @ts-ignore
-var validator: Validator;
+let validator: Validator;
 const BASE_COUNT = 1
 
 export default function arrayTest() {
-  describe('arrayTest', function () {
-    beforeAll(function () {
+  describe('arrayTest', () => {
+    beforeAll(() => {
     })
-    beforeEach(function () {
+    beforeEach(() => {
       validator = new Validator();
     })
-    afterEach(function () {
+    afterEach(() => {
     })
-    afterAll(function () {
+    afterAll(() => {
     })
-    it('ShouldValidateAnEmptyArray', 0, function () {
-      let result = validator.validate([], {
-        'type': 'array', 'items': {
-          'type': 'string'
-        }
-      }).valid;
+    it('ShouldValidateAnEmptyArray', 0, () => {
+      let result:boolean  = validator.validate([], Validate).valid;
       expect(result).assertTrue();
     })
-    it('ShouldValidateAnUndefinedArray', 0, function () {
-      let result = validator.validate(undefined, {
-        'type': 'array', 'items': {
-          'type': 'string'
-        }
-      }).valid;
+    it('ShouldValidateAnUndefinedArray', 0, () => {
+      let result:boolean  = validator.validate(undefined, Validate).valid;
       expect(result).assertTrue();
     })
-    it('ShouldValidateAnArrayWithStrings', 0, function () {
-      let result = validator.validate(['1', '2', '3'], {
-        'type': 'array', 'items': {
-          'type': 'string'
-        }
-      }).valid;
+    it('ShouldValidateAnArrayWithStrings', 0, () => {
+      let result:boolean  = validator.validate(['1', '2', '3'], Validate).valid;
       expect(result).assertTrue();
     })
-    it('shouldNotValidateAnArrayNotAllStrings', 0, function () {
-      let result = validate(['1', '2', '3', 4], {
-        'type': 'array', 'items': {
-          'type': 'string'
-        }
-      });
-      expect(result.valid).assertFalse();
-      expect(result.errors.length).assertEqual(1);
-      expect(result.errors[0].property).assertEqual('instance[3]');
-      expect(result.errors[0].path.length).assertEqual(1);
-      expect(result.errors[0].path[0]).assertEqual(3);
+    it('shouldNotValidateAnArrayNotAllStrings', 0, () => {
+      expect(validate(['1', '2', '3', 4], Validate).valid).assertFalse();
+      expect(validate(['1', '2', '3', 4], Validate).errors.length).assertEqual(1);
+      expect(validate(['1', '2', '3', 4], Validate).errors[0].property).assertEqual('instance[3]');
+      expect(validate(['1', '2', '3', 4], Validate).errors[0].path.length).assertEqual(1);
+      expect(validate(['1', '2', '3', 4], Validate).errors[0].path[0]).assertEqual(3);
     })
-    it('shouldNotValidateANonArray', 0, function () {
-      let result = validator.validate(0, {
-        'type': 'array'
-      }).valid;
+    it('shouldNotValidateANonArray', 0, () => {
+      let result:boolean  = validator.validate(0, ANonArray).valid;
       expect(result).assertFalse();
     })
-    it('ShouldValidateIfArrayHasALengthEqualToMinItems1', 0, function () {
-      let result = validator.validate([1, 2, 3], {
-        'type': 'array', 'items': {
-          'type': 'number'
-        }, 'minItems': 2
-      }).valid;
+    it('ShouldValidateIfArrayHasALengthEqualToMinItems1', 0, () => {
+      let result:boolean  = validator.validate([1, 2, 3], EqualToMinItems).valid;
       expect(result).assertTrue();
     })
-    it('ShouldValidateIfArrayHasALengthEqualToMinItems2', 0, function () {
-      let result = validator.validate([1, 2], {
-        'type': 'array', 'items': {
-          'type': 'number'
-        }, 'minItems': 2
-      }).valid;
+    it('ShouldValidateIfArrayHasALengthEqualToMinItems2', 0, () => {
+      let result:boolean  = validator.validate([1, 2], EqualToMinItems).valid;
       expect(result).assertTrue();
     })
-    it('ShouldNotValidateIfArrayHasALengthLessThanMinItems', 0, function () {
-      let result = validator.validate([1], {
-        'type': 'array', 'items': {
-          'type': 'number'
-        }, 'minItems': 2
-      });
-      expect(result.valid).assertFalse();
-      expect(result.errors[0].name).assertEqual('minItems');
-      expect(result.errors[0].property).assertEqual('instance');
-      expect(result.errors[0].path.length).assertEqual(0);
+    it('ShouldNotValidateIfArrayHasALengthLessThanMinItems', 0, () => {
+      expect(validator.validate([1], EqualToMinItems).valid).assertFalse();
+      expect(validator.validate([1], EqualToMinItems).errors[0].name).assertEqual('minItems');
+      expect(validator.validate([1], EqualToMinItems).errors[0].property).assertEqual('instance');
+      expect(validator.validate([1], EqualToMinItems).errors[0].path.length).assertEqual(0);
     })
-    it('ShouldValidateIfArrayHasALengthLessThanMaxItems', 0, function () {
-      let result = validator.validate([1], {
-        'type': 'array', 'items': {
-          'type': 'number'
-        }, 'maxItems': 2
-      }).valid;
+    it('ShouldValidateIfArrayHasALengthLessThanMaxItems', 0, () => {
+      let result:boolean  = validator.validate([1], EqualToMinItems).valid;
       expect(result).assertTrue();
     })
-    it('ShouldValidateIfArrayHasALengthEqualToMaxItems', 0, function () {
-      let result = validator.validate([1], {
-        'type': 'array', 'items': {
-          'type': 'number'
-        }, 'maxItems': 2
-      }).valid;
+    it('ShouldValidateIfArrayHasALengthEqualToMaxItems', 0, () => {
+      let result:boolean  = validator.validate([1], EqualToMinItems).valid;
       expect(result).assertTrue();
     })
-    it('ShouldValidateIfArrayHasALengthLargerThanMaxItems', 0, function () {
-      let result = validator.validate([1, 2, 3], {
-        'type': 'array', 'items': {
-          'type': 'number'
-        }, 'maxItems': 2
-      }).valid;
+    it('ShouldValidateIfArrayHasALengthLargerThanMaxItems', 0, () => {
+      let result:boolean  = validator.validate([1, 2, 3], EqualToMinItems).valid;
       expect(result).assertFalse();
     })
-    it('ShouldValidateIfArrayHasNoDuplicateItems', 0, function () {
-      let result = validator.validate([1], {
-        'type': 'array', 'uniqueItems': true
-      }).valid;
+    it('ShouldValidateIfArrayHasNoDuplicateItems', 0, () => {
+      let result :boolean = validator.validate([1],DuplicateItem ).valid;
       expect(result).assertTrue();
     })
-    it('ShouldValidateIfArrayHasNoDuplicateObjects', 0, function () {
-      let result = validator.validate([1, 2, "1", "2", {
-        a: 1
-      }, {
-        a: 1, b: 1
-      }], {
-        'type': 'array', 'uniqueItems': true
-      }).valid;
+    it('ShouldValidateIfArrayHasNoDuplicateObjects', 0, () => {
+      let result:boolean = validator.validate([1, 2, "1", "2", DuplicateObjects,DuplicateObjects,NotAnArray]).valid;
       expect(result).assertTrue();
     })
-    it('ShouldNotValidateIfArrayHasDuplicateNumbers', 0, function () {
-      let result = validator.validate([1, 2, 4, 1, 3, 5], {
-        'type': 'array', 'uniqueItems': true
-      }).valid;
+    it('ShouldNotValidateIfArrayHasDuplicateNumbers', 0, () => {
+      let result:boolean = validator.validate([1, 2, 4, 1, 3, 5], DuplicateItem).valid;
       expect(result).assertFalse();
     })
-    it('ShouldNotValidateIfArrayHasDuplicateObjects', 0, function () {
-      let result = validator.validate([{
-        a: 1
-      }, {
-        a: 1
-      }], {
-        'type': 'array', 'uniqueItems': true
-      }).valid;
+    it('ShouldNotValidateIfArrayHasDuplicateObjects', 0, () => {
+      let result :boolean= validator.validate([DuplicateObjects,DuplicateObjects], NotAnArray).valid;
       expect(result).assertFalse();
     })
-    it('ShouldValidateIfNotAnArray', 0, function () {
-      let result = validator.validate(null, {
-        'type': 'any', 'uniqueItems': true
-      }).valid;
+    it('ShouldValidateIfNotAnArray', 0, () => {
+      let result:boolean = validator.validate(null,NotAnArray ).valid;
       expect(result).assertTrue();
     })
   })

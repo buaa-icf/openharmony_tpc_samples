@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
+import { Schema, SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
 
 @Entry
 @Component
@@ -25,7 +25,7 @@ struct DiyKeyWordValidatePage {
     return 'does not contain the string ' + JSON.stringify(schema.contains);
   }
 }
-var result = validator.validate("I am an instance", { type:"string", contains: "I am" });
+let result = validator.validate("I am an instance", { type:"string", contains: "I am" });
 // result.valid === true;`
   @State message1: string = `验证对象：--`
   @State message2: string = `期待结果：暂无`
@@ -98,30 +98,30 @@ var result = validator.validate("I am an instance", { type:"string", contains: "
     ctx.message2 = `期待结果：${true}`
     try {
 
-      var v = new Validator();
-      v.attributes.contains = function validateContains(instance, schema, options, ctx) {
+
+      new Validator().attributes.contains = Validator.validateContains=(instance:string, schema:Schema, options:string, ctx:string) :string|void=>{
         if (typeof instance !== 'string') return;
-        // @ts-ignore
+
         if (typeof schema.contains !== 'string') {
-          throw new SchemaError('"contains" expects a string', schema);
+           new SchemaError('"contains" expects a string', schema);
         }
-        // @ts-ignore
+
         if (instance.indexOf(schema.contains) < 0) {
-          // @ts-ignore
+
           return 'does not contain the string ' + JSON.stringify(schema.contains);
         }
-        // @ts-ignore
+
         if (schema.contains.length < 2) {
           return '"contains" length must more than 2 ';
         }
       }
 
-      // @ts-ignore
-      let result = v.validate("I am an instance", { type: "string", contains: "I am" });
-      let str = JSON.stringify(result);
+
+
+      let str = JSON.stringify(new Validator().validate("I am an instance", { type: "string", contains: "I am" }));
       console.log(`jsonschema ------> 测试结果是：${str}`);
       ctx.message1 = `验证对象： ${str}`;
-      ctx.message3 = `实际结果：${result.valid}`
+      ctx.message3 = `实际结果：${new Validator().validate("I am an instance", { type: "string", contains: "I am" }).valid}`
     } catch (err) {
       let str = JSON.stringify(err);
       console.log(`jsonschema ------> 验证出错：${str}`);

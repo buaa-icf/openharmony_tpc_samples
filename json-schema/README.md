@@ -14,14 +14,14 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 
  ```typescript
 import { Validator, ValidatorResult, ValidationError, SchemaError, validate } from '@ohos/jsonschema'
-var v = new Validator();
+let v = new Validator();
  ```
 
 ### 简单对象验证
 
 ```typescript
-  var instance = 4;
-  var schema = { "type": "number" }; // 设置规则
+  let instance = 4;
+  let schema = { "type": "number" }; // 设置规则
   let result = v.validate(instance, schema).valid;  // 启动验证并获取结果
 ```
 
@@ -31,7 +31,7 @@ var v = new Validator();
 
 ```typescript
       // Address, to be embedded on Person
- var addressSchema = {
+ let addressSchema = {
         "id": "/SimpleAddress",
         "type": "object",
         "properties": {
@@ -47,7 +47,7 @@ var v = new Validator();
   };
 
   // Person
-  var schema = {
+  let schema = {
         "id": "/SimplePerson",
         "type": "object",
         "properties": {
@@ -57,7 +57,7 @@ var v = new Validator();
         }
    };
 
-  var p = {
+  let p = {
         "name": "Barack Obama",
         "address": {
           "lines": [ "1600 Pennsylvania Avenue Northwest" ],
@@ -81,7 +81,7 @@ Validator.prototype.customFormats.myFormat = function (input) {
   return input === 'myFormat';
 };
 
-var v1 = new Validator();
+let v1 = new Validator();
 
 // 验证格式名myFormat 结果为true
 let result1 = v1.validate('myFormat', { type: 'string', format: 'myFormat' }).valid;
@@ -94,7 +94,7 @@ let result2 = v1.validate('foo', { type: 'string', format: 'myFormat' }).valid;
 ### 嵌套错误
 
 ```typescript
-   var schema = {
+   let schema = {
      oneOf: [
        { type: 'string', minLength: 32, maxLength: 32 },
        { type: 'string', maxLength: 16 },
@@ -173,7 +173,7 @@ let result = v.validate("I am an instance", { type:"string", contains: "I am" })
 开始添加/移除规则
 
 ```typescript
-  var initSchema = {
+  let initSchema = {
         "id": "/SimplePerson",
         "type": "object",
         "properties": {
@@ -189,7 +189,7 @@ let result = v.validate("I am an instance", { type:"string", contains: "I am" })
 
 ```typescript
   importNextSchema(v: Validator) {
-    var nextSchema = v.unresolvedRefs.shift(); // 移除校验规则
+    let nextSchema = v.unresolvedRefs.shift(); // 移除校验规则
     if (this.cacheSchemaNum >= this.schemaArr.length) {
       this.isFinish = true;
       return
@@ -213,7 +213,7 @@ let result = v.validate("I am an instance", { type:"string", contains: "I am" })
 
 ```typescript
 preValidate(object, key, schema, options, ctx) {
-  var value = object[key];
+  let value = object[key];
   if (typeof value === 'undefined') return;
     // Test if the schema declares a type, but the type keyword fails validation
   if (schema.type
@@ -245,8 +245,8 @@ preValidate(object, key, schema, options, ctx) {
    name: 123,
    quantity: '2'
  }
- var v0 = new Validator();
- var v1 = new Validator();
+ let v0 = new Validator();
+ let v1 = new Validator();
 // 属性不预处理
  let result0 = v0.validate(instance, schema).valid;
 // 属性预处理
@@ -258,7 +258,7 @@ preValidate(object, key, schema, options, ctx) {
 ### 跳过关键字验证
 
 ```typescript
-var schema = {
+let schema = {
    "id": "/SimplePerson",
    "type": "object",
    "properties": {
@@ -268,12 +268,12 @@ var schema = {
    }
 };
 
- var p = {
+ let p = {
    "name": "张三",
    "sex": 45,
    "votes": 22
  };
- var v0 = new Validator();
+ let v0 = new Validator();
  let result0 = v0.validate(p, schema, { skipAttributes: ["minimum"] }).valid;
 ```
 
@@ -282,14 +282,14 @@ var schema = {
 ### 允许未知关键字失败
 
 ```typescript
-var v0 = new Validator();
-var schema = {
+let v0 = new Validator();
+let schema = {
   type: "string",
   format: "email",
   example: "foo",
 };
 let result0 = v0.validate("Name", schema, { allowUnknownAttributes: true }).valid;
-var v1 = new Validator();
+let v1 = new Validator();
 let result1 = v1.validate("Name", schema, { allowUnknownAttributes: false });
 // result0  false
 // result1  throw err

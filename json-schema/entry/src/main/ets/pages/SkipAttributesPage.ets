@@ -14,11 +14,12 @@
  */
 
 import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
+import { skipp, skipschema } from './IntereceTest'
 
 @Entry
 @Component
 struct SkipAttributesPage {
-  @State message0: string = `var schema = {
+  @State message0: string = `let schema = {
   "id": "/SimplePerson",
   "type": "object",
   "properties": {
@@ -28,7 +29,7 @@ struct SkipAttributesPage {
   }
 };
 
-var p = {
+let p = {
   "name": "张三",
   "sex": 45,
   "votes": 22
@@ -106,33 +107,11 @@ let result = v.validate(p, schema,{skipAttributes:["minimum"]});`
     ctx.message2 = `期待结果：跳过关键字${true} ${'\r\n'}
         不跳过关键字${false}`
     try {
-      var schema = {
-        "id": "/SimplePerson",
-        "type": "object",
-        "properties": {
-          "name": { "type": "string" },
-          "sex": { "type": "number", "minimum": 50 },
-          "votes": { "type": "integer", "minimum": 1 }
-        }
-      };
-
-      var p = {
-        "name": "张三",
-        "sex": 45,
-        "votes": 22
-      };
-
-      var v0 = new Validator();
-      let result0 = v0.validate(p, schema, { skipAttributes: ["minimum"] })
-
-      var v1 = new Validator();
-      let result1 = v1.validate(p, schema)
-
-      let str = JSON.stringify(result0);
+      let str = JSON.stringify(new Validator().validate(skipp, skipschema, { skipAttributes: ["minimum"] }));
       console.log(`jsonschema ------> 测试结果是：${str}`);
       ctx.message1 = `验证对象： ${str}`;
-      ctx.message3 = `实际结果：跳过关键字${result0.valid} ${'\r\n'}
-        不跳过关键字${result1.valid}`
+      ctx.message3 = `实际结果：跳过关键字${new Validator().validate(skipp, skipschema, { skipAttributes: ["minimum"] }).valid} ${'\r\n'}
+        不跳过关键字${new Validator().validate(skipp, skipschema).valid}`
     } catch (err) {
       let str = JSON.stringify(err);
       console.log(`jsonschema ------> 验证出错：${str}`);

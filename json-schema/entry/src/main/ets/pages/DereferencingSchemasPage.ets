@@ -13,7 +13,8 @@
  * limitations under the License.
  */
 
-import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
+import { Validator } from '@ohos/jsonschema'
+import { dereferaddress, dereferdapro, dereferdata, initSchema } from './IntereceTest'
 
 @Entry
 @Component
@@ -33,30 +34,7 @@ importNextSchema();`
   @State message1: string = `验证对象：--`
   @State message2: string = `期待结果：暂无`
   @State message3: string = `实际结果：--`
-  schemaArr: object[] = [
-    {
-      "type": "number"
-    },
-    {
-      "id": "/simplePerson",
-      "type": "object",
-      "properties": {
-        "name": { "type": "string" },
-        "address": { "$ref": "/SimpleAddress" },
-        "votes": { "type": "integer", "minimum": 1 }
-      }
-    },
-    {
-      "type": "array",
-      "items": {
-        "properties": {
-          "name": { "type": "string" },
-          "lastname": { "type": "string" }
-        },
-        "required": ["name", "lastname"]
-      }
-    },
-  ]
+  schemaArr: object[] = [dereferdata, dereferdapro, dereferaddress,]
   @State cacheSchemaNum: number = 0;
   @State isFinish: boolean = false;
 
@@ -126,19 +104,9 @@ importNextSchema();`
     const ctx = this;
     ctx.message2 = `期待结果：${true}`
     try {
-      var initSchema = {
-        "id": "/SimplePerson",
-        "type": "object",
-        "properties": {
-          "name": { "type": "string" },
-          "address": { "$ref": "/SimpleAddress" },
-          "votes": { "type": "integer", "minimum": 1 }
-        }
-      }
-      var v = new Validator();
-      v.addSchema(initSchema)
-      ctx.importNextSchema(v);
-      let str = JSON.stringify(v);
+      new Validator().addSchema(initSchema)
+      ctx.importNextSchema( new Validator());
+      let str = JSON.stringify( new Validator());
       console.log(`jsonschema ------> 测试结果是：${str}`);
       ctx.message1 = `验证对象： ${str}`;
       ctx.message3 = `实际结果：${(ctx.cacheSchemaNum >= 0)}`
@@ -149,19 +117,17 @@ importNextSchema();`
     }
   }
 
-  // @ts-ignore
   importNextSchema(v: Validator) {
-    var nextSchema = v.unresolvedRefs.shift();
     if (this.cacheSchemaNum >= this.schemaArr.length) {
       this.isFinish = true;
       return
     }
     this.message1 = `验证对象： ${JSON.stringify(v)}`
-    if (!nextSchema) {
+    if (!v.unresolvedRefs.shift()) {
       this.isFinish = true;
       return;
     }
-    console.log(`jsonschema ------> 被移除的规则：${JSON.stringify(nextSchema)}`)
+    console.log(`jsonschema ------> 被移除的规则：${JSON.stringify(v.unresolvedRefs.shift())}`)
     v.addSchema(this.schemaArr[this.cacheSchemaNum]);
     this.cacheSchemaNum++;
     this.importNextSchema(v);

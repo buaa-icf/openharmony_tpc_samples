@@ -15,70 +15,32 @@
 
 import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
 import { it as _it, afterAll, afterEach, beforeAll, beforeEach, describe, expect } from '@ohos/hypium'
+import { ouldva, ouldvadata } from './IntertfaceData';
 
-// @ts-ignore
-var validator: Validator;
+let validator: Validator;
 const BASE_COUNT = 1
 
 export default function mixedTest() {
-  describe('mixedTest', function () {
-    beforeAll(function () {
+  describe('mixedTest', () => {
+    beforeAll(() => {
     })
-    beforeEach(function () {
+    beforeEach(() => {
       validator = new Validator();
     })
-    afterEach(function () {
+    afterEach(() => {
     })
-    afterAll(function () {
+    afterAll(() => {
     })
-    _it('should validate', 0, function () {
-      let result = validator.validate(
-        {
-          'name': 'test', 'lines': ['1']
-        },
-        {
-          'type': 'object',
-          'properties': {
-            'name': {
-              'type': 'string'
-            },
-            'lines': {
-              'type': 'array',
-              'items': {
-                'type': 'string'
-              },
-            },
-          },
-        }
-      ).valid;
+    _it('should validate', 0, () => {
+      let result:boolean  = validator.validate(ouldva, ouldvadata).valid;
       expect(result).assertTrue()
     });
 
-    _it('should not validate', 0, function () {
-      var result = validator.validate(
-        {
-          'name': 'test', 'lines': [1]
-        },
-        {
-          'type': 'object',
-          'properties': {
-            'name': {
-              'type': 'string'
-            },
-            'lines': {
-              'type': 'array',
-              'items': {
-                'type': 'string'
-              },
-            },
-          },
-        }
-      );
-      expect(result.errors.length).assertEqual(1)
-      let msgProperty = result.errors[0]['message']
-      expect(msgProperty).assertEqual('is not of a type(s) string')
-      let instanceProperty = result.errors[0]['property']
-      expect(instanceProperty).assertEqual('instance.lines[0]')
+    _it('should not validate', 0, () => {
+
+      expect( validator.validate(ouldva,ouldvadata).errors.length).assertEqual(1)
+      expect(validator.validate(ouldva,ouldvadata).errors[0]['message']).assertEqual('is not of a type(s) string')
+      expect(validator.validate(ouldva,ouldvadata).errors[0]['property']).assertEqual('instance.lines[0]')
     });
   })
 }

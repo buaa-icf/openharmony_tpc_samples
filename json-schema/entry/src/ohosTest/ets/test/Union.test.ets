@@ -15,309 +15,152 @@
 
 import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
+import {
+  alidate,
+  alidateFo,
+  Emptyschema,
+  excdata, ForNull, ForNumber,
+  mptysc,
+  nullinstance,
+  objectIdSchemadata,
+  orArra,
+  schemaunion, typeFn, unionschema,
+  unitonschema,
+  wildcard,
+  wildcarschema,
+  worldinstance
+} from './IntertfaceData';
 
-// @ts-ignore
-var validator: Validator;
+
+let validator: Validator;
 const BASE_COUNT = 1
-var testSchema = {
-  "type": "string",
-};
+let testSchema = typeFn('string');
 
-var numSchema = {
-  "type": "number",
-};
+let numSchema = typeFn('number');
 
-var objectIdSchema = {
-  "type": "object",
-  "id": "MongoDb#ObjectId",
-  "description": "MongoDB ObjectID",
-  "properties": {
-    "id": { "type": "string" },
-    "_bsontype": { "type": "string" },
-  },
-};
-var schema = {
-  type: 'object',
-  required: true,
-  properties: {
-    frames: {
-      type: 'array',
-      required: true,
-      items: {
-        type: 'object',
-        properties: {
-          filename: { type: 'string', required: true },
-          lineno: { type: ['integer', 'null'] },
-          method: { type: ['string', 'null'] },
-        },
-      },
-    },
-    exception: {
-      type: 'object',
-      required: true,
-      properties: {
-        class: { type: 'string', required: true },
-        message: { type: 'string' },
-      },
-    },
-  },
-};
+
+
 
 export default function unionTest() {
-  describe('unionTest', function () {
-    beforeAll(function () {
+  describe('unionTest', () => {
+    beforeAll(() => {
     })
-    beforeEach(function () {
+    beforeEach(() => {
       validator = new Validator();
       validator.addSchema(testSchema, '/Test#Simple');
       validator.addSchema(numSchema, '/Test#Num');
-      validator.addSchema(objectIdSchema, '/MongoDb#ObjectId');
+      validator.addSchema(objectIdSchemadata, '/MongoDb#ObjectId');
     })
-    afterEach(function () {
+    afterEach(() => {
     })
-    afterAll(function () {
+    afterAll(() => {
     })
-    var exc = {
-      class: 'testing...', message: 'this is only a test'
-    };
 
-    it('ShouldValidateForNumber', 0, function () {
-      let result = validator.validate(1, {
-        'type': ['number', 'string']
-      }).valid
+
+    it('ShouldValidateForNumber', 0, () => {
+      let result:boolean  = validator.validate(1, ForNumber).valid
       expect(result).assertTrue();
     });
-    it('ShouldValidateForString1', 0, function () {
-      let result = validator.validate('1', {
-        'type': ['number', 'string']
-      }).valid;
+    it('ShouldValidateForString1', 0, () => {
+      let result :boolean = validator.validate('1', ForNumber).valid;
       expect(result).assertTrue();
     });
 
-    it('ShouldNotValidateIfNoStringOrNumber1', 0, function () {
-      let result = validator.validate(true, {
-        'type': ['number', 'string']
-      }).valid;
+    it('ShouldNotValidateIfNoStringOrNumber1', 0, () => {
+      let result:boolean  = validator.validate(true, ForNumber).valid;
       expect(result).assertFalse();
     });
 
-    it('shouldValidateForNull1', 0, function () {
-      let result = validator.validate(null, {
-        'type': ['null', 'string']
-      }).valid;
+    it('shouldValidateForNull1', 0, () => {
+      let result :boolean = validator.validate(null,ForNull ).valid;
       expect(result).assertTrue();
     });
-    it('ShouldValidateForString2', 0, function () {
-      let result = validator.validate('1', {
-        'type': ['null', 'string']
-      }).valid;
+    it('ShouldValidateForString2', 0, () => {
+      let result:boolean  = validator.validate('1', ForNull).valid;
       expect(result).assertTrue();
     });
 
-    it('ShouldNotValidateIfNoStringOrNumber2', 0, function () {
-      let result = validator.validate(true, {
-        'type': ['null', 'string']
-      }).valid;
+    it('ShouldNotValidateIfNoStringOrNumber2', 0, () => {
+      let result :boolean = validator.validate(true, ForNull).valid;
       expect(result).assertFalse();
     });
-    it('ShouldValidateForNull2', 0, function () {
-      let result = validator.validate(null, {
-        'type': ['null', 'string']
-      }).valid;
+    it('ShouldValidateForNull2', 0, () => {
+      let result :boolean = validator.validate(null,ForNull).valid;
       expect(result).assertTrue();
     });
-    it('ShouldValidateForString3', 0, function () {
-      let result = validator.validate('1', {
-        'type': ['null', 'string']
-      }).valid;
+    it('ShouldValidateForString3', 0, () => {
+      let result :boolean = validator.validate('1', ForNull).valid;
       expect(result).assertTrue();
     });
 
-    it('ShouldNotValidateIfNoStringOrNumber3', 0, function () {
-      let result = validator.validate(true, {
-        'type': ['null', 'string']
-      }).valid;
+    it('ShouldNotValidateIfNoStringOrNumber3', 0, () => {
+      let result :boolean = validator.validate(true, ForNull).valid;
       expect(result).assertFalse();
     });
-    it('ShouldValidateForNull3', 0, function () {
-      let result = validator.validate(null, {
-        'type': ['null', {
-          '$ref': 'Test#Simple'
-        }]
-      }).valid;
+    it('ShouldValidateForNull3', 0, () => {
+      let result:boolean  = validator.validate(null,alidateFo ).valid;
       expect(result).assertTrue();
     });
 
-    it('ShouldValidateForString4', 0, function () {
-      let result = validator.validate('test', {
-        'type': ['null', {
-          '$ref': 'Test#Simple'
-        }]
-      }).valid;
+    it('ShouldValidateForString4', 0, () => {
+      let result :boolean = validator.validate('test', alidateFo).valid;
       expect(result).assertTrue();
     });
 
-    it('ShouldNotValidateIfNoStringOrNumber4', 0, function () {
-      let result = validator.validate(true, {
-        'type': ['null', {
-          '$ref': 'Test#Simple'
-        }]
-      }).valid;
+    it('ShouldNotValidateIfNoStringOrNumber4', 0, () => {
+      let result :boolean = validator.validate(true, alidateFo).valid;
       expect(result).assertFalse();
     });
 
-    it('ShouldValidateFor', 0, function () {
-      let result = validator.validate('*', {
-        'type': [{
-          type: 'string', pattern: '^\\*$'
-        }, {
-          '$ref': 'Test#Num'
-        }]
-      }).valid;
+    it('ShouldValidateFor', 0, () => {
+      let result :boolean = validator.validate('*', alidate).valid;
       expect(result).assertTrue();
     });
 
-    it('ShouldValidateFor1', 0, function () {
-      let result = validator.validate(1, {
-        'type': [{
-          type: 'string', pattern: '^\\*$'
-        }, {
-          '$ref': 'Test#Num'
-        }]
-      }).valid;
+    it('ShouldValidateFor1', 0, () => {
+      let result:boolean  = validator.validate(1, alidate).valid;
       expect(result).assertTrue();
     });
 
-    it('ShouldNotValidateFor', 0, function () {
-      var result = validator.validate('-', {
-        'type': [{
-          type: 'string', pattern: '^\\*$'
-        }, {
-          '$ref': 'Test#Num'
-        }]
-      }).valid;
+    it('ShouldNotValidateFor', 0, () => {
+      let result:boolean  = validator.validate('-', alidate).valid;
       expect(result).assertFalse();
     });
 
-    it('ShouldValidateForArrayOr', 0, function () {
-      var schema = {
-        "type": "object",
-        "properties": {
-          "wildcards": {
-            "type": "array",
-            "items": {
-              "type": [{
-                "$ref": "MongoDb#ObjectId"
-              }, {
-                "type": "string", "pattern": "^\\*$"
-              }]
-            },
-          },
-        },
-      };
-      var result = validator.validate({
-        'wildcards': ['*']
-      }, schema).valid;
+    it('ShouldValidateForArrayOr', 0, () => {
+
+      let result :boolean = validator.validate(orArra, unitonschema).valid;
       expect(result).assertTrue();
     });
 
-    it('ShouldValidateFoEmptyArray', 0, function () {
-      var schema = {
-        "type": "object",
-        "properties": {
-          "wildcards": {
-            "type": "array",
-            "items": {
-              "type": [{
-                "$ref": "MongoDb#ObjectId"
-              }, {
-                "type": "string", "pattern": "^\\*$"
-              }]
-            },
-          },
-        },
-      };
-      var result = validator.validate({
-        'wildcards': []
-      }, schema).valid;
+    it('ShouldValidateFoEmptyArray', 0, () => {
+
+      let result:boolean  = validator.validate(mptysc, Emptyschema ).valid;
       expect(result).assertTrue();
     });
 
-    it('ShouldValidateForObjectId', 0, function () {
-      var schema = {
-        "type": "object",
-        "properties": {
-          "wildcards": {
-            "type": "array",
-            "items": {
-              "type": [{
-                "$ref": "MongoDb#ObjectId"
-              }, {
-                "type": "string", "pattern": "^\\*$"
-              }]
-            },
-          },
-        },
-      };
-      var result = validator.validate({
-        'wildcards': [{
-          "id": "1234", "_bsontype": "test"
-        }, '*']
-      }, schema).valid;
+    it('ShouldValidateForObjectId', 0, () => {
+      let result :boolean = validator.validate(wildcard, wildcarschema).valid;
       expect(result).assertTrue();
     });
 
-    it('ShouldValidateForObjectidAndIgnoreTitleAndDescription', 0, function () {
-      var schema = {
-        "type": "object",
-        "properties": {
-          "wildcards": {
-            "type": "array",
-            "items": {
-              "type": [{
-                "$ref": "MongoDb#ObjectId", "title": "test", "description": "test"
-              }, {
-                "type": "string", "pattern": "^\\*$"
-              }]
-            },
-          },
-        },
-      };
-      var result = validator.validate({
-        'wildcards': [{
-          "id": "1234", "_bsontype": "test"
-        }, '*']
-      }, schema).valid;
+    it('ShouldValidateForObjectidAndIgnoreTitleAndDescription', 0, () => {
+      let result :boolean = validator.validate(wildcard, schemaunion).valid;
       expect(result).assertTrue();
     });
 
-    it('ShouldValidateForNulls', 0, function () {
-      var instance = {
-        frames: [{
-          filename: 'somefile.js', lineno: null
-        }], exception: exc
-      };
-      var result = validator.validate(instance, schema).valid;
+    it('ShouldValidateForNulls', 0, () => {
+      let result:boolean  = validator.validate(nullinstance, unionschema).valid;
       expect(result).assertTrue();
     });
-    it('ShouldValidateForNullAndString', 0, function () {
-      var instance = {
-        frames: [{
-          filename: 'somefile.js', lineno: null
-        }], exception: exc
-      };
-      var result = validator.validate(instance, schema).valid;
+    it('ShouldValidateForNullAndString', 0, () => {
+
+      let result :boolean = validator.validate(nullinstance, unionschema).valid;
       expect(result).assertTrue();
     });
-    it('ShouldNotValidateForStringAndString', 0, function () {
-      var instance = {
-        frames: [{
-          filename: 'somefile.js', lineno: {
-            hello: 'world'
-          }
-        }], exception: exc
-      };
-      var result = validator.validate(instance, schema).valid;
+    it('ShouldNotValidateForStringAndString', 0, () => {
+
+      let result :boolean = validator.validate(worldinstance, unionschema).valid;
       expect(result).assertFalse();
     });
   })

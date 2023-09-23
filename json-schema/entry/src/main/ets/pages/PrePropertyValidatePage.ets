@@ -13,17 +13,16 @@
  * limitations under the License.
  */
 
-import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
+import { Schema, SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
+import { preproinstance, preproschema } from './IntereceTest'
 
-const v0 = new Validator();
-const v1 = new Validator();
 
 @Entry
 @Component
 struct PrePropertyValidatePage {
   @State message0: string = `// See examples/coercion.js
 function preValidateProperty(object, key, schema, options, ctx) {
-  var value = object[key];
+  let value = object[key];
   if (typeof value === 'undefined') return;
 
   // Test if the schema declares a type, but the type keyword fails validation
@@ -114,23 +113,15 @@ v.validate(instance, schema, { preValidateProperty });`
     ctx.message2 = `期待结果：使用预处理 ${true} ${'\r\n'}
         不使用预处理 ${false} ${'\r\n'}`
     try {
-      const schema = { 'properties': {
-        'name': { 'type': 'string' },
-        'quantity': { 'type': 'number' }
-      } };
-      const instance = {
-        name: 123,
-        quantity: '2'
-      }
 
-      let result0 = v0.validate(instance, schema);
 
-      let result1 = v1.validate(instance, schema, { preValidateProperty: ctx.preValidate });
-      let str = JSON.stringify(result1);
+
+
+      let str = JSON.stringify(new Validator().validate(preproinstance, preproschema, { preValidateProperty: ctx.preValidate }));
       console.log(`jsonschema ------> 测试结果是：${str}`);
       ctx.message1 = `验证对象： ${str}`;
-      ctx.message3 = `实际结果：使用预处理 ${result1.valid} ${'\r\n'}
-        不使用预处理 ${result0.valid} ${'\r\n'}`
+      ctx.message3 = `实际结果：使用预处理 ${new Validator().validate(preproinstance, preproschema, { preValidateProperty: ctx.preValidate }).valid} ${'\r\n'}
+        不使用预处理 ${ new Validator().validate(preproinstance, preproschema).valid} ${'\r\n'}`
     } catch (err) {
       let str = JSON.stringify(err);
       console.log(`jsonschema ------> 验证出错：${str}`);
@@ -138,20 +129,20 @@ v.validate(instance, schema, { preValidateProperty });`
     }
   }
   // See examples/coercion.js
-  preValidate(object, key, schema, options, ctx) {
-    var value = object[key];
-    if (typeof value === 'undefined') return;
+  preValidate(object:object, key:number, schema:Schema, options:string, ctx:Schema) {
+
+    if (typeof object[key] === 'undefined') return;
 
     // Test if the schema declares a type, but the type keyword fails validation
-    if (schema.type && v1.attributes.type.call(v1, value, schema, options, ctx.makeChild(schema, key))) {
+    if (schema.type as number && new Validator().attributes.type.call(new Validator(), object[key], schema, options, ctx.makeChild(schema, key))) {
       // If the type is "number" but the instance is not a number, cast it
-      if (schema.type === 'number' && typeof value !== 'number') {
-        object[key] = parseFloat(value);
+      if (schema.type === 'number' && typeof object[key] !== 'number') {
+        object[key] = Number(object[key]);
         return;
       }
       // If the type is "string" but the instance is not a string, cast it
-      if (schema.type === 'string' && typeof value !== 'string') {
-        object[key] = String(value).toString();
+      if (schema.type === 'string' && typeof object[key] !== 'string') {
+        object[key] = String(object[key]).toString();
         return;
       }
     }

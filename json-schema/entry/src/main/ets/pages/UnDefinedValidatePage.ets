@@ -18,7 +18,7 @@ import { SchemaError, validate, ValidationError, Validator, ValidatorResult } fr
 @Entry
 @Component
 struct UnDefinedValidatePage {
-  @State message0: string = `var res = validate(undefined, {type: 'string'});
+  @State message0: string = `let res = validate(undefined, {type: 'string'});
 res.valid`
   @State message1: string = `验证对象：--`
   @State message2: string = `期待结果：暂无`
@@ -90,19 +90,16 @@ res.valid`
     const ctx = this;
     ctx.message2 = `不设置required期待结果：${true}，设置required期待结果：${false}`
     try {
-      var v = new Validator();
-      let result = v.validate(undefined, { type: 'string' });
-      let str = JSON.stringify(result);
+      let str = JSON.stringify(new Validator().validate(undefined, { type: 'string' }));
       console.log(`jsonschema ------> 不设置required测试结果是：${str}`);
 
-      var v1 = new Validator();
-      let result1 = v1.validate(undefined, { type: 'string' }, { required: true });
-      let str1 = JSON.stringify(result1);
+
+      let str1 = JSON.stringify(new Validator().validate(undefined, { type: 'string' }, { required: true }));
       console.log(`jsonschema ------> 设置required测试结果是：${str1}`);
 
 
       ctx.message1 = `验证对象： 不设置required ${str},设置required ${str1}`;
-      ctx.message3 = `实际结果：不设置required ${result.valid},设置required ${result1.valid}`
+      ctx.message3 = `实际结果：不设置required ${new Validator().validate(undefined, { type: 'string' }).valid},设置required ${new Validator().validate(undefined, { type: 'string' }, { required: true }).valid}`
     } catch (err) {
       let str = JSON.stringify(err);
       console.log(`jsonschema ------> 验证出错：${str}`);

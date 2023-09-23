@@ -4,9 +4,9 @@
       {
         "name": "default",
         "signingConfig": "default",
-        "compileSdkVersion": "4.0.0(10)",
-        "compatibleSdkVersion": "4.0.0(10)",
-        "runtimeOS": "HarmonyOS"
+        "compileSdkVersion": 10,
+        "compatibleSdkVersion": 10,
+        "runtimeOS": "OpenHarmony"
       }
     ],
     "buildModeSet": [
@@ -15,6 +15,20 @@
       },
       {
         "name": "release"
+      }
+    ],
+    "signingConfigs": [
+      {
+        "name": "default",
+        "material": {
+          "certpath": "C:\\Users\\lenovo\\.ohos\\config\\openharmony\\auto_ohos_default_json-schema_com.openharmony.jsonschemavalidator.cer",
+          "storePassword": "0000001A93CF5A6552490D3F58D0C4D778F13C872350C1196EB690724761A7FF17C934F598802F908A10",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001AF87C3020F97581CAED5235FCF4801C0083983079D9E507DA48BB769C0847D3C8D06F7D13912F",
+          "profile": "C:\\Users\\lenovo\\.ohos\\config\\openharmony\\auto_ohos_default_json-schema_com.openharmony.jsonschemavalidator.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "C:\\Users\\lenovo\\.ohos\\config\\openharmony\\auto_ohos_default_json-schema_com.openharmony.jsonschemavalidator.p12"
+        }
       }
     ]
   },

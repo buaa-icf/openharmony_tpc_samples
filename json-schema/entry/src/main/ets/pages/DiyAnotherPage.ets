@@ -1,3 +1,4 @@
+
 /*
  * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,7 +14,7 @@
  * limitations under the License.
  */
 
-import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
+import { SchemaError, validate, ValidationError, Validator, ValidatorResult,Schema } from '@ohos/jsonschema'
 
 @Entry
 @Component
@@ -94,37 +95,35 @@ struct DiyAnotherPage {
     ctx.message2 = `期待结果：${false}`
     try {
 
-      var v = new Validator();
-      v.attributes.contains = function validateContains(instance, schema, options, ctx) {
-        var result = new ValidatorResult(instance, schema, options, ctx);
+      new Validator().attributes.contains = Validator.validateContains=(instance:string, schema:Schema, options:string, ctx:string):string =>{
+
 
         if (typeof instance !== 'string') {
-          result.addError('fails some validation test')
+          new ValidatorResult(instance, schema, options, ctx).addError('fails some validation test')
         }
         ;
-        // @ts-ignore
+
         if (typeof schema.contains !== 'string') {
-          result.addError('fails some validation test')
+          new ValidatorResult(instance, schema, options, ctx).addError('fails some validation test')
         }
         ;
-        // @ts-ignore
+
         if (instance.indexOf(schema.contains) > 0) {
-          result.addError('fails some validation test')
+          new ValidatorResult(instance, schema, options, ctx).addError('fails some validation test')
         }
         ;
-        // @ts-ignore
+
         if (schema.contains.length > 0) {
-          result.addError('fails some validation test')
+          new ValidatorResult(instance, schema, options, ctx).addError('fails some validation test')
         }
-        return result;
+        return new ValidatorResult(instance, schema, options, ctx);
       }
 
-      // @ts-ignore
-      let resultValidate = v.validate("I am an instance", { type: "string", contains: "I am" });
-      let str = JSON.stringify(resultValidate);
+
+      let str = JSON.stringify(new Validator().validate("I am an instance", { type: "string", contains: "I am" }));
       console.log(`jsonschema ------> 测试结果是：${str}`);
       ctx.message1 = `验证对象： ${str}`;
-      ctx.message3 = `实际结果：${resultValidate.valid}`
+      ctx.message3 = `实际结果：${new Validator().validate("I am an instance", { type: "string", contains: "I am" }).valid}`
     } catch (err) {
       let str = JSON.stringify(err);
       console.log(`jsonschema ------> 验证出错：${str}`);

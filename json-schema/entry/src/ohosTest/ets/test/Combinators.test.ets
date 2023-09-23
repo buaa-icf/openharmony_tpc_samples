@@ -15,83 +15,45 @@
 
 import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
+import { ErrorFlag, initSchema, name, namedata, nametest, oneOfSchema } from './IntertfaceData';
 
-// @ts-ignore
-var validator: Validator;
+let validator: Validator;
 const BASE_COUNT = 1
-const initSchema = {
-  'type': 'object',
-  'anyOf': [{
-    'properties': {
-      'name': { 'type': 'string', 'enum': ['test1'] },
-    },
-  }, {
-    'properties': {
-      'name': { 'type': 'string', 'enum': ['test2'] },
-    },
-  }],
-};
-const oneOfSchema = {
-  'type': 'object',
-  'oneOf': [{
-    'properties': {
-      'name1': { 'type': 'string', 'enum': ['test1'] },
-    },
-    'additionalProperties': false,
-  }, {
-    'properties': {
-      'name2': { 'type': 'string', 'enum': ['test2'] },
-    },
-    'additionalProperties': false,
-  }],
-};
 
 export default function combinatorsTest() {
-  describe('combinatorsTest', function () {
-    beforeAll(function () {
+  describe('combinatorsTest', () => {
+    beforeAll(() => {
     })
-    beforeEach(function () {
+    beforeEach(() => {
       validator = new Validator();
     })
-    afterEach(function () {
+    afterEach(() => {
     })
-    afterAll(function () {
+    afterAll(() => {
     })
-    it('ShouldValidateIfMatchesAnyOf', 0, function () {
-      let result = validator.validate({
-        'name': 'test2'
-      }, initSchema).valid;
+    it('ShouldValidateIfMatchesAnyOf', 0, () => {
+      let result:boolean  = validator.validate(name, initSchema).valid;
       expect(result).assertTrue();
     });
-    it('ShouldNotValidateIfNotMatchAnyOf', 0, function () {
-      let result = validator.validate({
-        'name': 'test3'
-      }, initSchema).valid;
+    it('ShouldNotValidateIfNotMatchAnyOf', 0, () => {
+      let result:boolean  = validator.validate(namedata, initSchema).valid;
       expect(result).assertFalse();
     });
 
-    it('ShouldNotThrowIfValidWhenThrowErrorIsSet1', 0, function () {
-      var isThrow = false;
+    it('ShouldNotThrowIfValidWhenThrowErrorIsSet1', 0, () => {
+      let isThrow = false;
       try {
-        validator.validate({
-          'name': 'test2'
-        }, initSchema, {
-          throwError: true
-        });
+        validator.validate(name, initSchema, ErrorFlag);
       } catch (err) {
         isThrow = true;
       }
       expect(isThrow).assertFalse();
     });
 
-    it('ShouldThrowIfInvalidWhenThrowErrorIsSet1', 0, function () {
-      var isThrow = false;
+    it('ShouldThrowIfInvalidWhenThrowErrorIsSet1', 0, () => {
+      let isThrow = false;
       try {
-        validator.validate({
-          'name': 'test3'
-        }, initSchema, {
-          throwError: true
-        });
+        validator.validate(namedata, initSchema, ErrorFlag);
       } catch (err) {
         isThrow = true;
       }
@@ -99,42 +61,30 @@ export default function combinatorsTest() {
     });
 
 
-    it('ShouldValidateIfMatchesExactlyOneOf', 0, function () {
-      let result = validator.validate({
-        'name2': 'test2'
-      }, oneOfSchema).valid;
+    it('ShouldValidateIfMatchesExactlyOneOf', 0, () => {
+      let result :boolean = validator.validate(name, oneOfSchema).valid;
       expect(result).assertTrue();
     });
 
-    it('ShouldNotValidateIfNotMatchExactlyOneOf', 0, function () {
-      let result = validator.validate({
-        'name1': 'test1', 'name2': 'test2'
-      }, oneOfSchema).valid;
+    it('ShouldNotValidateIfNotMatchExactlyOneOf', 0, () => {
+      let result:boolean  = validator.validate(nametest, oneOfSchema).valid;
       expect(result).assertFalse();
     });
 
-    it('ShouldNotThrowIfValidWhenThrowErrorIsSet2', 0, function () {
-      var isThrow = false;
+    it('ShouldNotThrowIfValidWhenThrowErrorIsSet2', 0, () => {
+      let isThrow = false;
       try {
-        validator.validate({
-          'name2': 'test2'
-        }, oneOfSchema, {
-          throwError: true
-        });
+        validator.validate(name, oneOfSchema, ErrorFlag);
       } catch (err) {
         isThrow = true;
       }
       expect(isThrow).assertFalse();
     });
 
-    it('ShouldThrowIfInvalidWhenThrowErrorIsSet2', 0, function () {
-      var isThrow = false;
+    it('ShouldThrowIfInvalidWhenThrowErrorIsSet2', 0, () => {
+      let isThrow = false;
       try {
-        validator.validate({
-          'name1': 'test1', 'name2': 'test2'
-        }, oneOfSchema, {
-          throwError: true
-        });
+        validator.validate(nametest, oneOfSchema, ErrorFlag);
       } catch (err) {
         isThrow = true;
       }

@@ -15,9 +15,7 @@
 
 import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
 
-Validator.prototype.customFormats.myFormat = function (input) {
-  return input === 'myFormat';
-};
+
 
 @Entry
 @Component
@@ -26,7 +24,7 @@ struct FormatValidatePage {
   return input === 'myFormat';
 };
 
-var validator = new Validator();
+let validator = new Validator();
 validator.validate('myFormat', {type: 'string', format: 'myFormat'}).valid; // true
 validator.validate('foo', {type: 'string', format: 'myFormat'}).valid; // false`
   @State message1: string = `验证对象：--`
@@ -100,16 +98,11 @@ validator.validate('foo', {type: 'string', format: 'myFormat'}).valid; // false`
     ctx.message2 = `myFormat期待结果：${true}，foo期待结果：${false}`
     try {
 
-      var v1 = new Validator();
-      var v2 = new Validator();
-
-      let result1 = v1.validate('myFormat', { type: 'string', format: 'myFormat' });
-      let result2 = v2.validate('foo', { type: 'string', format: 'myFormat' });
-      let str1 = JSON.stringify(result1);
-      let str2 = JSON.stringify(result2);
+      let str1 = JSON.stringify(new Validator().validate('myFormat', { type: 'string', format: 'myFormat' }));
+      let str2 = JSON.stringify(new Validator().validate('foo', { type: 'string', format: 'myFormat' }));
       console.log(`jsonschema ------> myFormat 测试结果是：${str1}，foo 测试结果是：${str2}`);
       ctx.message1 = `myFormat 验证对象： ${str1}，foo 验证对象： ${str2}`;
-      ctx.message3 = `myFormat 实际结果：${result1.valid}，foo 实际结果：${result2.valid}`
+      ctx.message3 = `myFormat 实际结果：${new Validator().validate('myFormat', { type: 'string', format: 'myFormat' }).valid}，foo 实际结果：${new Validator().validate('foo', { type: 'string', format: 'myFormat' }).valid}`
     } catch (err) {
       let str = JSON.stringify(err);
       console.log(`jsonschema ------> 验证出错：${str}`);

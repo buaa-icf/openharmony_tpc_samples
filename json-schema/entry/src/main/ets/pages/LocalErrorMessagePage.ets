@@ -14,6 +14,7 @@
  */
 
 import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
+import { localschema } from './IntereceTest'
 
 @Entry
 @Component
@@ -91,20 +92,10 @@ struct LocalErrorMessagePage {
     const ctx = this;
     ctx.message2 = `期待结果：minLength,maxLength,type,oneOf`
     try {
-      var v = new Validator();
-      var schema = {
-        oneOf: [
-          { type: 'string', minLength: 32, maxLength: 32 },
-          { type: 'string', maxLength: 16 },
-          { type: 'number' },
-        ]
-      };
 
-      let result = v.validate('This string is 28 chars long', schema, { nestedErrors: true });
-      var localized = result.errors.map(function (err) {
-        return err.name;
-      });
-      let str = JSON.stringify(result);
+
+      let localized :string= new Validator().validate('This string is 28 chars long', localschema, { nestedErrors: true }).errors.map((err:Error):string=> {return err.name;});
+      let str = JSON.stringify(new Validator().validate('This string is 28 chars long', localschema, { nestedErrors: true }));
       console.log(`jsonschema ------> 测试结果是：${localized}`);
       ctx.message1 = `验证对象： ${str}`;
       ctx.message3 = `实际结果：${localized}`

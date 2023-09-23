@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 /*
  * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,20 +26,20 @@ import draft06HyperSchema from '../../json-metaschema/draft-06-hyper-schema.json
 import draft07Schema from '../../json-metaschema/draft-07-schema.json'
 import draft07HyperSchema from '../../json-metaschema/draft-07-hyper-schema.json'
 
-var ignoredTests = [
+let ignoredTests = [
 // TODO fix these tests for the next major release
   "additionalItems should not look in applicators/items defined in extends are not examined",
   "additionalProperties should not look in applicators/properties defined in extends are not examined",
 ];
 
-var validator: Validator;
+let validator: Validator;
 
 
 export default function suiteTest() {
-  describe('suiteTest', function () {
-    beforeAll(function () {
+  describe('suiteTest', () => {
+    beforeAll(() => {
     })
-    beforeEach(function () {
+    beforeEach(() => {
       validator = new Validator();
       validator.addSchema(draft03Schema);
       validator.addSchema(draft03HyperSchema);
@@ -50,19 +50,19 @@ export default function suiteTest() {
       validator.addSchema(draft07Schema);
       validator.addSchema(draft07HyperSchema);
     })
-    afterEach(function () {
+    afterEach(() => {
     })
-    afterAll(function () {
+    afterAll(() => {
     })
 
     let list = JsonFileArray.loadAllJsonFiles()
     for (let i = 0; i < list.length; i++) {
 
-      const fileObj = list[i];
+      const fileObj:string = list[i];
       if (!fileObj) {
         continue;
       }
-      let belongTo = fileObj['belongTo']
+      let belongTo:string = fileObj['belongTo']
       let fileData = fileObj['data']
       if (!belongTo || !fileData || fileData.length < 1) {
         continue;
@@ -100,10 +100,10 @@ export default function suiteTest() {
           console.log(`zdy---suiteTest err --->${err}`)
         }
         for (let k = 0; k < jsonTests.length; k++) {
-          const obj = jsonTests[k];
-          const jsonDescription = obj.description
-          const jsonData = obj.data
-          const jsonValid = obj.valid
+          const obj= jsonTests[k];
+          const jsonDescription:string= obj.description
+          const jsonData :undefined= obj.data
+          const jsonValid:undefined = obj.valid
           if (jsonDescription === undefined || jsonDescription === null || jsonDescription.length < 1) {
             continue;
           }
@@ -114,8 +114,8 @@ export default function suiteTest() {
             continue;
           }
 
-          let indexItem = belongTo.toString().search('additionalItems')
-          let indexProperties = belongTo.toString().search('additionalProperties')
+          let indexItem :Number= belongTo.toString().search('additionalItems')
+          let indexProperties:Number= belongTo.toString().search('additionalProperties')
           if (indexItem != -1 && jsonDescription === "items defined in extends are not examined") {
             // 根据原库ignoredTests规则additionalItems.json里面的description数值是items defined in extends are not examined不做校验
             continue;
@@ -124,17 +124,17 @@ export default function suiteTest() {
             continue;
           }
           let name = `${belongTo}/${suiteDescription}/${jsonDescription}`
-          _it(name, 0, function () {
-            var searchIndex = -1;
+          _it(name, 0, () => {
+            let searchIndex = -1;
             try {
               let schemaStr = JSON.stringify(jsonSchema);
               searchIndex = schemaStr.indexOf("🐲")
             } catch (err) {
               console.log(`zdy---suiteTest validate err --->${err}`)
             }
-            var isAdditionNeedIgnore: boolean = false
+            let isAdditionNeedIgnore: boolean = false
             try {
-              let indexItem = belongTo.toString().search('additionalProperties')
+              let indexItem :Number= belongTo.toString().search('additionalProperties')
               if (indexItem != -1 && jsonDescription === "matching the pattern is valid") {
                 //  TODO 当前系统差异导致的ármányos校验失败 暂且跳过验证
                 isAdditionNeedIgnore = true;
@@ -143,9 +143,9 @@ export default function suiteTest() {
               console.log(`zdy---additionalProperties validate err --->${err}`)
               console.log(`zdy---=======================================`)
             }
-            var isFloatOverflowNeedIgnore: boolean = false
+            let isFloatOverflowNeedIgnore: boolean = false
             try {
-              let indexItem = belongTo.toString().search('float-overflow')
+              let indexItem :Number= belongTo.toString().search('float-overflow')
               if (indexItem != -1 && jsonDescription === "valid if optional overflow handling is implemented") {
                 //  原库该用例也是全部失败 本处不做校验 暂时设定为全部成功处理
                 isFloatOverflowNeedIgnore = true;
@@ -162,17 +162,16 @@ export default function suiteTest() {
               } else if (isFloatOverflowNeedIgnore) {
                 expect(1).assertEqual(1)
               } else {
-                var result = validator.validate(jsonData, jsonSchema);
-                if (jsonValid != result.valid) {
+                if (jsonValid != validator.validate(jsonData, jsonSchema).valid) {
                   console.log(`zdy---searchIndex --->${searchIndex}`)
                   console.log(`zdy---describe name --->${name}`)
                   console.log(`zdy---jsonData --->${jsonData}`)
                   console.log(`zdy---jsonSchema --->${JSON.stringify(jsonSchema)}`)
                   console.log(`zdy---jsonValid --->${jsonValid}`)
-                  console.log(`zdy---result.valid --->${result.valid}`)
+                  console.log(`zdy---result.valid --->${validator.validate(jsonData, jsonSchema).valid}`)
                   console.log(`zdy---=======================================`)
                 }
-                expect(jsonValid).assertEqual(result.valid)
+                expect(jsonValid).assertEqual(validator.validate(jsonData, jsonSchema).valid)
 
               }
             } catch (err) {

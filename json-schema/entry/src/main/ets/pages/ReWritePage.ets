@@ -13,7 +13,8 @@
  * limitations under the License.
  */
 
-import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
+import { Schema, SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
+import { rewrischema, rewrivalue } from './IntereceTest'
 
 @Entry
 @Component
@@ -110,31 +111,15 @@ const res = v.validate(value, schema, {rewrite: unmarshall});`
        使用rewrite res.instance.date 是否是Date类型：${true}
        不使用rewrite res.instance.date 是否是Date类型：${false} `
     try {
-      const schema = {
-        properties: {
-          date: { id: 'http://example.com/date', type: 'string' },
-        },
-      };
-
-      const value = {
-        date: '2020-09-30T23:39:27.060Z',
-      };
-      var v0 = new Validator();
-      let result00 = v0.validate(value, schema);
-      let result01 = result00.instance.date instanceof Date;
-
-      var v1 = new Validator();
-      let result10 = v1.validate(value, schema, { rewrite: ctx.unmarshall });
-      let result11 = result10.instance.date instanceof Date;
 
 
-      let str = JSON.stringify(result10);
+      let str = JSON.stringify(new Validator().validate(rewrivalue, rewrischema, { rewrite: ctx.unmarshall }));
       console.log(`jsonschema ------> 测试结果是：${str}`);
       ctx.message1 = `验证对象： ${str}`;
-      ctx.message3 = `实际结果：使用rewrite：${result10.valid} ${'\r\n'}
-          不使用rewrite：${result00.valid} ${'\r\n'}
-          使用rewrite res.instance.date 是否是Date类型：${result11}
-          不使用rewrite res.instance.date 是否是Date类型：${result01}`
+      ctx.message3 = `实际结果：使用rewrite：${new Validator().validate(rewrivalue, rewrischema, { rewrite: ctx.unmarshall }).valid} ${'\r\n'}
+          不使用rewrite：${new Validator().validate(rewrivalue, rewrischema).valid} ${'\r\n'}
+          使用rewrite res.instance.date 是否是Date类型：${new Validator().validate(rewrivalue, rewrischema, { rewrite: ctx.unmarshall }).instance.date instanceof Date}
+          不使用rewrite res.instance.date 是否是Date类型：${new Validator().validate(rewrivalue, rewrischema).instance.date instanceof Date}`
     } catch (err) {
       let str = JSON.stringify(err);
       console.log(`jsonschema ------> 验证出错：${str}`);
@@ -142,7 +127,7 @@ const res = v.validate(value, schema, {rewrite: unmarshall});`
     }
   }
 
-  unmarshall(instance, schema) {
+  unmarshall(instance:string, schema:Schema) :Object{
     if (schema.id === 'http://example.com/date') {
       return new Date(instance);
     }
