@@ -36,7 +36,7 @@ struct Index {
           .padding({ left: 10 })
           .width('150')
           .height('50')
-          .onClick((event: ClickEvent) => {
+          .onClick((event?: ClickEvent) => {
             router.pushUrl({ url: "pages/Gzip" })
           })
 
@@ -49,7 +49,7 @@ struct Index {
           .padding({ left: 10 })
           .width('150')
           .height('50')
-          .onClick((event: ClickEvent) => {
+          .onClick((event?: ClickEvent) => {
             router.pushUrl({ url: "pages/DeflateDemo" })
           })
 
@@ -62,7 +62,7 @@ struct Index {
           .padding({ left: 10 })
           .width('150')
           .height('50')
-          .onClick((event: ClickEvent) => {
+          .onClick((event?: ClickEvent) => {
             router.pushUrl({ url: "pages/PakoTest" })
           })
       }
