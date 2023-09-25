@@ -23,17 +23,13 @@ struct Index {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
       Button('点击返回新的有上限的函数')
         .onClick(() => {
-          let timestampStart = Date.now();
           //[6,8,10]
           let arry = map(['6', '8', '10'], ary(parseInt, 1))
           console.log('返回新的有上限的函数' + JSON.stringify(arry));
-          let timestampEnd = Date.now();
-          console.log('ary 时间戳：',  (timestampEnd - timestampStart)/1000 + 's' );
         }).margin(10);
 
       Button('点击返回新的柯里化（curry）函数')
         .onClick(() => {
-          let timestampStart = Date.now();
           let abc = function(a, b, c) {
             return [a, b, c];
           };
@@ -41,30 +37,22 @@ struct Index {
           //[1,2,3]
           let curryFunction = curried(1)(2)(3);
           console.log('返回新的柯里化（curry）函数' + JSON.stringify(curryFunction));
-          let timestampEnd = Date.now();
-          console.log('curry 时间戳：',  (timestampEnd - timestampStart)/1000 + 's' );
         }).margin(10)
 
       Button('点击返回新的去抖动函数')
         .onClick(() => {
-          let timestampStart = Date.now();
           let debounce_fun = debounce(function () {
             console.log('Function debounced after 1000ms!');
           }, 1000);
           console.log('返回新的去抖动函数' + debounce_fun);
-          let timestampEnd = Date.now();
-          console.log('debounce 时间戳：',  (timestampEnd - timestampStart)/1000 + 's' );
         }).margin(10)
 
       Button('点击延迟wait毫秒后调用 func,返回计时器id')
         .onClick(() => {
-          let timestampStart = Date.now();
           let delayId = delay(function(text) {
             console.log('一秒后输出参数: '+text);
           }, 1000, 'later');
           console.log('延迟wait毫秒后调用func,返回计时器id: ' + delayId);
-          let timestampEnd = Date.now();
-          console.log('delay 时间戳：',  (timestampEnd - timestampStart)/1000 + 's' );
         }).margin(10)
     }
     .width('100%')

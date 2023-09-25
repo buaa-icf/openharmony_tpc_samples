@@ -26,7 +26,6 @@ struct Index {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
       Button('点击遍历集合中的每个元素')
         .onClick(() => {
-          let timestampStart = Date.now();
            function Foo() {
                this.a = 1;
            }
@@ -38,31 +37,23 @@ struct Index {
           forEach([1, 2, 'a', 'b'], value =>
           console.log("forEach:" + value)
           )
-          let timestampEnd = Date.now();
-          console.log('forEach 时间戳：',  (timestampEnd - timestampStart)/1000 + 's' );
         }).margin(10)
 
       Text("显示集合中一个随机元素:" + JSON.stringify(this.sampleArray))
       Button('点击将获得集合中一个随机元素')
         .onClick(() => {
-          let timestampStart = Date.now();
           this.sampleArray = sample([0, undefined, 1, false, 2, 'string', 3, true, null])
           console.log('sample:' + JSON.stringify(this.sampleArray))
-          let timestampEnd = Date.now();
-          console.log('sample 时间戳：',  (timestampEnd - timestampStart)/1000 + 's' );
         }).margin(10)
 
       Text("显示新扁平化数组:" + JSON.stringify(this.resultArray))
       Button('点击展示新扁平化数组')
         .onClick(() => {
-          let timestampStart = Date.now();
           function duplicate(n) {
              return [n, n]
           }
           this.resultArray = flatMap([1, 2], duplicate)
           console.log('flatMap:' + JSON.stringify(this.resultArray))
-          let timestampEnd = Date.now();
-          console.log('flatMap 时间戳：',  (timestampEnd - timestampStart)/1000 + 's' );
         }).margin(10)
     }
     .width('100%')

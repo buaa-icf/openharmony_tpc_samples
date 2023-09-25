@@ -73,11 +73,8 @@ struct Index {
         })
         Button('设置好加数和被加数后，点击进行运算')
           .onClick(() => {
-            let timestampStart = Date.now();
             let additionCount = add(this.augend, this.addend);
             console.log('additionCount:' + additionCount)
-            let timestampEnd = Date.now();
-            console.log('add 时间戳：',  (timestampEnd - timestampStart)/1000 + 's' );
           })
       }.width('100%')
        .margin(5)
@@ -127,11 +124,8 @@ struct Index {
           })
         Button('设置四舍五入的数字后，点击进行运算')
           .onClick(() => {
-            let timestampStart = Date.now();
             let ceilCount = ceil(this.ceilNumber, this.precision);
             console.log('ceil number:' + ceilCount)
-            let timestampEnd = Date.now();
-            console.log('ceil 时间戳：',  (timestampEnd - timestampStart)/1000 + 's' );
           })
       }.width('100%')
        .margin(5)
@@ -140,11 +134,8 @@ struct Index {
         Text("数组平均值：" + this.mean)
         Button('点击求数组平均值')
           .onClick(() => {
-            let timestampStart = Date.now();
             this.mean = meanBy(this.sampleObjects, ({ n }) => n)
             console.log('mean:' + this.mean)
-            let timestampEnd = Date.now();
-            console.log('meanBy 时间戳：',  (timestampEnd - timestampStart)/1000 + 's' );
           })
       }.width('100%')
       .margin(5)

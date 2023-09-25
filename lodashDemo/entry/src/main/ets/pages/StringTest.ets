@@ -23,62 +23,44 @@ struct Index {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
       Button('点击转换字符串为驼峰写法')
         .onClick(() => {
-          let timestampStart = Date.now();
           let camelCaseString = camelCase('__FOO_BAR__');
           // => 'fooBar'
           console.log('转换字符串为驼峰写法为：' + JSON.stringify(camelCaseString));
-          let timestampEnd = Date.now();
-          console.log('camelCase 时间戳：',  (timestampEnd - timestampStart)/1000 + 's' );
         }).margin(10);
 
       Button('点击转换字符串首字母为大写，剩下为小写')
         .onClick(() => {
-          let timestampStart = Date.now();
           let capitalizeString = capitalize('FRED');
           // => 'Fred'
           console.log('转换字符串首字母为大写，剩下为小写为：' + JSON.stringify(capitalizeString));
-          let timestampEnd = Date.now();
-          console.log('capitalize 时间戳：',  (timestampEnd - timestampStart)/1000 + 's' );
         }).margin(10)
 
       Button('点击将给定字符串的字符“&”，“ <”，“>”，“”和“‘”转换为它们相应的HTML实体')
         .onClick(() => {
-          let timestampStart = Date.now();
           let escapeString = escape('fred, barney, & pebbles');
           // => 'fred, barney, &amp; pebbles'
           console.log('转换为:' + JSON.stringify(escapeString));
-          let timestampEnd = Date.now();
-          console.log('escape 时间戳：',  (timestampEnd - timestampStart)/1000 + 's' );
         }).margin(10)
 
       Button('点击转换字符串为kebab case')
         .onClick(() => {
-          let timestampStart = Date.now();
           let kebabCaseString = kebabCase('__FOO_BAR__');
           // => 'foo-bar'
           console.log('转换字符串为kebab case为:' + JSON.stringify(kebabCaseString));
-          let timestampEnd = Date.now();
-          console.log('kebabCase 时间戳：',  (timestampEnd - timestampStart)/1000 + 's' );
         }).margin(10)
 
       Button('点击从左侧和右侧填充字符')
         .onClick(() => {
-          let timestampStart = Date.now();
           let paddingString = pad('abc', 8, '_-');
           // => '_-abc_-_'
           console.log('如果字符串长度小于length则从左侧和右侧填充字符为:' + JSON.stringify(paddingString));
-          let timestampEnd = Date.now();
-          console.log('pad 时间戳：',  (timestampEnd - timestampStart)/1000 + 's' );
         }).margin(10)
 
       Button('点击转换字符串为指定基数的整数')
         .onClick(() => {
-          let timestampStart = Date.now();
           let array = map(['6', '08', '10'], parseInt);
           // => [6, 8, 10]
           console.log('转换字符串为指定基数的整为:' + JSON.stringify(array));
-          let timestampEnd = Date.now();
-          console.log('parseInt 时间戳：',  (timestampEnd - timestampStart)/1000 + 's' );
         }).margin(10)
     }
     .width('100%')

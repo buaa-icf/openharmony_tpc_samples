@@ -25,11 +25,8 @@ struct Index {
       Text('Unix 纪元 (1 January 1970 00:00:00 UTC) 直到现在的毫秒数: '+ this.date);
       Button('点击获得 Unix 纪元 (1 January 1970 00:00:00 UTC) 直到现在的毫秒数')
         .onClick(() => {
-          let timestampStart = Date.now();
           this.date = now();
           console.log('获得 Unix 纪元 (1 January 1970 00:00:00 UTC) 直到现在的毫秒数:' + this.date)
-          let timestampEnd = Date.now();
-          console.log('flatMap 时间戳：',  (timestampEnd - timestampStart)/1000 + 's' );
         }).margin(10)
     }
     .width('100%')
