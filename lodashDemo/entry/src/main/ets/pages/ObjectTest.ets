@@ -51,8 +51,6 @@ struct Index {
             return o.salary < 40000;
           });
           console.log('访问集合的每个值,在一定条件下获取匹配的元素为：' + found_elem);
-          let timestampEnd = Date.now();
-          console.log('findKey 时间戳：',  (timestampEnd - timestampStart)/1000 + 's' );
         }).margin(10)
 
       Button('点击遍历对象')

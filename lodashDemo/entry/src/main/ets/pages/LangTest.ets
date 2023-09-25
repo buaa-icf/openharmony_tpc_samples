@@ -29,8 +29,6 @@ struct Index {
           let arry2 = castArray('abc');
           // => ['abc']
           console.log('强制转化后的型数组:' + JSON.stringify(arry1)+ ' ' + JSON.stringify(arry2));
-          let timestampEnd = Date.now();
-          console.log('castArray 时间戳：',  (timestampEnd - timestampStart)/1000 + 's' );
         }).margin(10);
 
       Button('点击获取拷贝后的值')
@@ -38,8 +36,6 @@ struct Index {
           var objects = [{ 'a': 1 }, { 'b': 2 }];
           var shallow = clone(objects);
           console.log('拷贝后的值：' + JSON.stringify(shallow));
-          let timestampEnd = Date.now();
-          console.log('clone 时间戳：',  (timestampEnd - timestampStart)/1000 + 's' );
         }).margin(10)
 
       Button('点击比较两者的值')
