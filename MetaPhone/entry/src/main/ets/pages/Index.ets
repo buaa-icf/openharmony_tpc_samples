@@ -32,21 +32,21 @@ struct Index {
           .height('100px')
           .onClick(() => {
             let result = metaphone(undefined);
-            hilog.info(0x0000, 'metaPhone', '%{public}s', "result: 1234 " + result)
+            hilog.info(0x0000, 'metaPhone', '%{public}s', "result: " + result)
           })
         Button('获取发音代码:null')
           .width('80%')
           .height('100px')
           .onClick(() => {
             let result = metaphone(null);
-            hilog.info(0x0000, 'metaPhone', '%{public}s', "result: 1234 " + result)
+            hilog.info(0x0000, 'metaPhone', '%{public}s', "result: " + result)
           })
         Button("获取发音代码：''")
           .width('80%')
           .height('100px')
           .onClick(() => {
             let result = metaphone('');
-            hilog.info(0x0000, 'metaPhone', '%{public}s', "result: 1234 " + result)
+            hilog.info(0x0000, 'metaPhone', '%{public}s', "result: " + result)
           })
 
         Button('获取发音代码：0 1 2')
@@ -54,7 +54,7 @@ struct Index {
           .height('100px')
           .onClick(() => {
             let result = metaphone('0 1 2');
-            hilog.info(0x0000, 'metaPhone', '%{public}s', "result: 1234 " + result)
+            hilog.info(0x0000, 'metaPhone', '%{public}s', "result: " + result)
           })
 
         Button('获取发音代码： f o ')
@@ -62,7 +62,7 @@ struct Index {
           .height('100px')
           .onClick(() => {
             let result = metaphone(' f o ');
-            hilog.info(0x0000, 'metaPhone', '%{public}s', "result: 1234 " + result)
+            hilog.info(0x0000, 'metaPhone', '%{public}s', "result: " + result)
           })
 
         Button('获取发音代码:0f1o2')
@@ -70,7 +70,7 @@ struct Index {
           .height('100px')
           .onClick(() => {
             let result = metaphone('0f1o2');
-            hilog.info(0x0000, 'metaPhone', '%{public}s', "result: 1234 " + result)
+            hilog.info(0x0000, 'metaPhone', '%{public}s', "result: " + result)
           })
 
         Button('获取发音代码:Agrippa')
@@ -78,7 +78,7 @@ struct Index {
           .height('100px')
           .onClick(() => {
             let result = metaphone('Agrippa');
-            hilog.info(0x0000, 'metaPhone', '%{public}s', "result: 1234 " + result)
+            hilog.info(0x0000, 'metaPhone', '%{public}s', "result: " + result)
           })
       }
       .width('100%')
