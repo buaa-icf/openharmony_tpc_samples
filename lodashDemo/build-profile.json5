@@ -1,19 +1,6 @@
 {
   "app": {
-    "signingConfigs": [
-      {
-        "name": "debug_default",
-        "material": {
-          "certpath": "C:\\Users\\He_Jiao\\.ohos\\config\\openharmony\\auto_ohos_debug_default_lodashDemo_cn.openharmony.lodashdemo.cer",
-          "storePassword": "0000001B88C845D2D2ECA438ECD9155967853F2A6646B1706BC2E746528AA872499D30A94B2D0E220D83E2",
-          "keyAlias": "debugKey",
-          "keyPassword": "0000001B271EE1E62DF1ADFA1179E42A6A93FA555E2E83ADB8347DFD9943E78B2A6629B3036A3336AE1F29",
-          "profile": "C:\\Users\\He_Jiao\\.ohos\\config\\openharmony\\auto_ohos_debug_default_lodashDemo_cn.openharmony.lodashdemo.p7b",
-          "signAlg": "SHA256withECDSA",
-          "storeFile": "C:\\Users\\He_Jiao\\.ohos\\config\\openharmony\\auto_ohos_debug_default_lodashDemo_cn.openharmony.lodashdemo.p12"
-        }
-      }
-    ],
+    "signingConfigs": [],
     "products": [
       {
         "name": "default",
