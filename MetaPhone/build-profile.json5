@@ -17,20 +17,6 @@
         "name": "release"
       }
     ],
-    "signingConfigs": [
-      {
-        "name": "default",
-        "material": {
-          "certpath": "C:\\Users\\lenovo\\.ohos\\config\\openharmony\\auto_ohos_default_MetaPhone_com.openharmony.metaphone.cer",
-          "storePassword": "0000001A9BBF976DAF02F2EE5E26C3D7EAEF23AF1BCB46BEA636369ED56B0A517F08AA929BD4D91CE5BC",
-          "keyAlias": "debugKey",
-          "keyPassword": "0000001AD928524C639887D351EDEB68F2346A1B479D1A7542ACCF0BCC33EE8204853247EA1C697E1EF0",
-          "profile": "C:\\Users\\lenovo\\.ohos\\config\\openharmony\\auto_ohos_default_MetaPhone_com.openharmony.metaphone.p7b",
-          "signAlg": "SHA256withECDSA",
-          "storeFile": "C:\\Users\\lenovo\\.ohos\\config\\openharmony\\auto_ohos_default_MetaPhone_com.openharmony.metaphone.p12"
-        }
-      }
-    ]
   },
   "modules": [
     {
