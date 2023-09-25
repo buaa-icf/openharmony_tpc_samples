@@ -38,7 +38,7 @@ struct CountryPage {
           .fontSize(18)
           .margin({ left: 18, top: 18 })
 
-        ForEach(this.simKey, (item, index: number) => {
+        ForEach(this.simKey, (item:string, index?: number) => {
           Row() {
             Text(item + '拨号字冠为：' + CountryUtils.getCountryCode(item))
               .margin({ top: 5 })
@@ -58,11 +58,10 @@ struct CountryPage {
   }
 
   aboutToAppear() {
-    for (let [key, value] of CountryUtils.getCountryCodeFromMap().entries()) {
+    CountryUtils.getCountryCodeFromMap().forEach((value , key) => {
       this.simKey.push(key)
       this.simValue.push(value)
-    }
-
+    });
   }
 
 }

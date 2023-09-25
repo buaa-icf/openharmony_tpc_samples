@@ -14,6 +14,7 @@
  */
 
 import gcoord from 'gcoord'
+import { Position } from 'gcoord'
 
 @Entry
 @Component
@@ -46,7 +47,7 @@ struct GcoordPage {
             .maxLength(3)
             .onChange((value: string) => {
               if (value.length > 0) {
-                this.lon = parseFloat(value)
+                this.lon = Number.parseFloat(value)
               }else {
                 this.lon = 0
               }
@@ -59,7 +60,7 @@ struct GcoordPage {
             .maxLength(2)
             .onChange((value: string) => {
               if (value.length>0) {
-                this.lat = parseFloat(value)
+                this.lat = Number.parseFloat(value)
               }else {
                 this.lat = 0
               }
@@ -69,33 +70,34 @@ struct GcoordPage {
           Button('全部转换')
             .fontSize(18)
             .onClick(() => {
-              this.BD092GCJ02 = gcoord.transform(
+
+              this.BD092GCJ02 = gcoord.transform<Position>(
                 [this.lon, this.lat], // 经纬度坐标
                 gcoord.BD09, // 当前坐标系
                 gcoord.GCJ02 // 目标坐标系
               );
 
-              this.GCJ022BD09 = gcoord.transform(
+              this.GCJ022BD09 = gcoord.transform<Position>(
                 [this.lon, this.lat], // 经纬度坐标
                 gcoord.GCJ02, // 当前坐标系
                 gcoord.BD09 // 目标坐标系
               );
-              this.GCJ022WGS84 = gcoord.transform(
+              this.GCJ022WGS84 = gcoord.transform<Position>(
                 [this.lon, this.lat], // 经纬度坐标
                 gcoord.GCJ02, // 当前坐标系
                 gcoord.WGS84 // 目标坐标系
               );
-              this.WGS842GCJ02 = gcoord.transform(
+              this.WGS842GCJ02 = gcoord.transform<Position>(
                 [this.lon, this.lat], // 经纬度坐标
                 gcoord.WGS84, // 当前坐标系
                 gcoord.GCJ02 // 目标坐标系
               );
-              this.BD092WGS84 = gcoord.transform(
+              this.BD092WGS84 = gcoord.transform<Position>(
                 [this.lon, this.lat], // 经纬度坐标
                 gcoord.BD09, // 当前坐标系
                 gcoord.WGS84 // 目标坐标系
               );
-              this.WGS842BD09 = gcoord.transform(
+              this.WGS842BD09 = gcoord.transform<Position>(
                 [this.lon, this.lat], // 经纬度坐标
                 gcoord.WGS84, // 当前坐标系
                 gcoord.BD09 // 目标坐标系
@@ -109,7 +111,7 @@ struct GcoordPage {
           Button('BD09 坐标转 GCJ02 坐标')
             .fontSize(18)
             .onClick(() => {
-              this.BD092GCJ02 = gcoord.transform(
+              this.BD092GCJ02 = gcoord.transform<Position>(
                 [this.lon, this.lat], // 经纬度坐标
                 gcoord.BD09, // 当前坐标系
                 gcoord.GCJ02 // 目标坐标系
@@ -125,7 +127,7 @@ struct GcoordPage {
           Button('GCJ02 坐标转 BD09 坐标')
             .fontSize(18)
             .onClick(() => {
-              this.GCJ022BD09 = gcoord.transform(
+              this.GCJ022BD09 = gcoord.transform<Position>(
                 [this.lon, this.lat], // 经纬度坐标
                 gcoord.GCJ02, // 当前坐标系
                 gcoord.BD09 // 目标坐标系
@@ -141,7 +143,7 @@ struct GcoordPage {
           Button('GCJ02  坐标转 WGS84  坐标')
             .fontSize(18)
             .onClick(() => {
-              this.GCJ022WGS84 = gcoord.transform(
+              this.GCJ022WGS84 = gcoord.transform<Position>(
                 [this.lon, this.lat], // 经纬度坐标
                 gcoord.GCJ02, // 当前坐标系
                 gcoord.WGS84 // 目标坐标系
@@ -157,7 +159,7 @@ struct GcoordPage {
           Button('WGS84  坐标转 GCJ02  坐标')
             .fontSize(18)
             .onClick(() => {
-              this.WGS842GCJ02 = gcoord.transform(
+              this.WGS842GCJ02 = gcoord.transform<Position>(
                 [this.lon, this.lat], // 经纬度坐标
                 gcoord.WGS84, // 当前坐标系
                 gcoord.GCJ02 // 目标坐标系
@@ -173,7 +175,7 @@ struct GcoordPage {
           Button('BD09  坐标转 WGS84  坐标')
             .fontSize(18)
             .onClick(() => {
-              this.BD092WGS84 = gcoord.transform(
+              this.BD092WGS84 = gcoord.transform<Position>(
                 [this.lon, this.lat], // 经纬度坐标
                 gcoord.BD09, // 当前坐标系
                 gcoord.WGS84 // 目标坐标系
@@ -189,7 +191,7 @@ struct GcoordPage {
           Button('WGS84  坐标转 BD09  坐标')
             .fontSize(18)
             .onClick(() => {
-              this.WGS842BD09 = gcoord.transform(
+              this.WGS842BD09 = gcoord.transform<Position>(
                 [this.lon, this.lat], // 经纬度坐标
                 gcoord.WGS84, // 当前坐标系
                 gcoord.BD09 // 目标坐标系

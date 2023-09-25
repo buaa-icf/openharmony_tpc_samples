@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-// @ts-ignore
 import imtype from 'imtype';
+import { GlobalContext } from '../entryability/GlobalContext';
 
 @Entry
 @Component
@@ -84,65 +84,71 @@ struct PicturePage {
   }
 
   jpgTest() {
-    globalThis.context.resourceManager.getMedia($r("app.media.jpg"))
-      .then(data => {
+    let context:Context = GlobalContext.getContext().getObject("context") as Context
+    context.resourceManager.getMediaContent( $r("app.media.jpg").id)
+      .then((data:Iterable<number>) => {
         this.jpg = imtype.isJPG(new Uint8Array(data))
       })
-      .catch(err => {
+      .catch((err:Error) => {
         console.log('addFileToDisk err=' + err)
       })
   }
 
   pngTest() {
-    globalThis.context.resourceManager.getMedia($r("app.media.png"))
-      .then(data => {
+    let context:Context = GlobalContext.getContext().getObject("context") as Context
+    context.resourceManager.getMediaContent($r("app.media.png").id)
+      .then((data:Iterable<number>) => {
         this.png = imtype.isPNG(new Uint8Array(data))
       })
-      .catch(err => {
+      .catch((err:Error) => {
         console.log('addFileToDisk err=' + err)
       })
   }
 
   gifTest() {
-    globalThis.context.resourceManager.getMedia($r("app.media.gif"))
-      .then(data => {
+    let context:Context = GlobalContext.getContext().getObject("context") as Context
+    context.resourceManager.getMediaContent($r("app.media.gif").id)
+      .then((data:Iterable<number>) => {
         this.gif = imtype.isGIF(new Uint8Array(data))
       })
-      .catch(err => {
+      .catch((err:Error) => {
         console.log('addFileToDisk err=' + err)
       })
   }
 
   bmpTest() {
-    globalThis.context.resourceManager.getMedia($r("app.media.bmp"))
-      .then(data => {
+    let context:Context = GlobalContext.getContext().getObject("context") as Context
+    context.resourceManager.getMediaContent($r("app.media.bmp").id)
+      .then((data:Iterable<number>) => {
         this.bmp = imtype.isBMP(new Uint8Array(data))
       })
-      .catch(err => {
+      .catch((err:Error) => {
         console.log('addFileToDisk err=' + err)
       })
   }
 
   tifTest() {
-    globalThis.context.resourceManager.getMedia($r("app.media.tif"))
-      .then(data => {
+    let context:Context = GlobalContext.getContext().getObject("context") as Context
+    context.resourceManager.getMediaContent($r("app.media.tif").id)
+      .then((data:Iterable<number>) => {
         this.tif = imtype.isTIF(new Uint8Array(data))
       })
-      .catch(err => {
+      .catch((err:Error) => {
         console.log('addFileToDisk err=' + err)
       })
   }
 
   textTest() {
-    globalThis.context.resourceManager.getMedia($r("app.media.text"))
-      .then(data => {
+    let context:Context = GlobalContext.getContext().getObject("context") as Context
+    context.resourceManager.getMediaContent($r("app.media.text").id)
+      .then((data:Iterable<number>) => {
         console.log('是否jpg:' + imtype.isJPG(new Uint8Array(data)));
         console.log('是否png:' + imtype.isPNG(new Uint8Array(data)));
         console.log('是否gif:' + imtype.isGIF(new Uint8Array(data)));
         console.log('是否bmp:' + imtype.isBMP(new Uint8Array(data)));
         console.log('是否tif:' + imtype.isTIF(new Uint8Array(data)));
       })
-      .catch(err => {
+      .catch((err:Error) => {
         console.log('addFileToDisk err=' + err)
       })
 

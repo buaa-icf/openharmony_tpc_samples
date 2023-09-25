@@ -1,3 +1,6 @@
+## v1.0.1
+ArkTs 语法规则整改
+适配DevEco Studio: 4.0(4.0.3.512),SDK: API10（4.0.10.9）
 ## v1.0.0
 
 utilCode是一个OpenHarmony系统下使用通用工具的类, 目前示例的功能有如下
