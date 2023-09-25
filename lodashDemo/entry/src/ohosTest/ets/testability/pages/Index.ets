@@ -12,13 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import router from '@ohos.router';
+
+import hilog from '@ohos.hilog';
 
 @Entry
 @Component
 struct Index {
   aboutToAppear() {
-    console.info('TestAbility index aboutToAppear')
+    hilog.info(0x0000, 'testTag', '%{public}s', 'TestAbility index aboutToAppear');
   }
  @State message: string = 'Hello World'
    build() {
