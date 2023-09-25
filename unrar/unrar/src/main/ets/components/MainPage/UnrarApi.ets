@@ -46,7 +46,7 @@ export class UnrarApi {
    * @param password 密码.
    */
   static RarFiles_Extract(path: string, dest: string, callBack: ICallBack, password?: string): void {
-    unrar_napi.RarFiles_Extract(path, dest, password).then(function (value) {
+    unrar_napi.RarFiles_Extract(path, dest, password).then( (value:string)=> {
       callBack.callBackResult(value)
     });
 

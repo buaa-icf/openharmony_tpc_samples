@@ -13,4 +13,4 @@
  * limitations under the License.
  */
 export { UnrarApi } from './src/main/ets/components/MainPage/UnrarApi'
-export type { ICallBack } from './src/main/ets/components/MainPage/ICallBack'
+export { ICallBack } from './src/main/ets/components/MainPage/ICallBack'
