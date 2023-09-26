@@ -27,7 +27,6 @@ import {
 } from 'diff'
 
 
-
 @Entry
 @Component
 struct Index {
@@ -55,7 +54,7 @@ struct Index {
             .onClick((event) => {
               const one = 'beep boop   afff测试样本one1';
               const other = 'beepboob 2022真热样本 e ';
-              const diff = diffChars(one, other);
+              const diff: Change[] = diffChars(one, other);
               this.drawText(diff);
               this.objectToString(one, other, diff);
             }).margin({ bottom: "20vp", left: "20vp" })
@@ -66,7 +65,7 @@ struct Index {
             .onClick((event) => {
               const one = 'beep boop   afff测试样本one1';
               const other = 'beepboob 2022真热样本 e ';
-              const diff = diffWords(one, other);
+              const diff: Change[] = diffWords(one, other);
               this.drawText(diff);
               this.objectToString(one, other, diff);
             }).margin({ bottom: "20vp", left: "20vp" })
@@ -77,7 +76,7 @@ struct Index {
             .onClick((event) => {
               const one = 'beep boop   afff测 试样本one1';
               const other = 'beepboob 2022真热样本 e ';
-              const diff = diffWordsWithSpace(one, other);
+              const diff: Change[] = diffWordsWithSpace(one, other);
               this.drawText(diff);
               this.objectToString(one, other, diff);
             }).margin({ bottom: "20vp", left: "20vp" })
@@ -87,7 +86,7 @@ struct Index {
             .onClick((event) => {
               const one = 'beep boop   afff测 试样本one1 爱啥啥啥来着';
               const other = 'beepboob 2022真热样本 e 案发飒飒afffff';
-              const diff = diffLines(one, other);
+              const diff: Change[] = diffLines(one, other);
               this.drawText(diff);
               this.objectToString(one, other, diff);
             }).margin({ bottom: "20vp", left: "20vp" })
@@ -97,7 +96,7 @@ struct Index {
             .onClick((event) => {
               const one = ' beep boop   aff哈哈  是是技术/n 撒谎还会啥杀害 ';
               const other = 'beepboob 2022真热样本 e ';
-              const diff = diffTrimmedLines(one, other);
+              const diff: Change[] = diffTrimmedLines(one, other);
               this.drawText(diff);
               this.objectToString(one, other, diff);
             }).margin({ bottom: "20vp", left: "20vp" })
@@ -107,7 +106,7 @@ struct Index {
             .onClick((event) => {
               const one = 'beep boop,afff哈哈,是是技术/n 撒谎还会啥杀害';
               const other = 'beepboob 2022真热样本,e? ';
-              const diff = diffSentences(one, other);
+              const diff: Change[] = diffSentences(one, other);
               this.drawText(diff);
               this.objectToString(one, other, diff);
             }).margin({ bottom: "20vp", left: "20vp" })
@@ -117,7 +116,7 @@ struct Index {
             .onClick((event) => {
               const one = '.{ width: 960px; padding: 0;}';
               const other = '#container { width: 960px; margin: auto;}';
-              const diff = diffCss(one, other);
+              const diff: Change[] = diffCss(one, other);
               this.drawText(diff);
               this.objectToString(one, other, diff);
             }).margin({ bottom: "20vp", left: "20vp" })
@@ -127,7 +126,7 @@ struct Index {
             .onClick((event) => {
               const one = '[{"name":"josn1","account":1,"firstIndex":1}]';
               const other = '[{"name":"josn2","accountTwo":2,"scoundIndex":2}]';
-              const diff = diffJson(one, other);
+              const diff: Change[] = diffJson(one, other);
               this.objectToString(one, other, diff);
               this.visible = Visibility.Hidden;
             }).margin({ bottom: "20vp", left: "20vp" })
@@ -137,7 +136,7 @@ struct Index {
             .onClick((event) => {
               const one = [1, 2, 3, 4, 5, 5, 7, 8];
               const other = [1, 2, 3, 12, 5, 5, 7, 8, 9, 10];
-              const diff = diffArrays(one, other);
+              const diff: Change[] = diffArrays(one, other);
               this.objectToString(one, other, diff);
               this.visible = Visibility.Hidden;
             }).margin({ bottom: "20vp", left: "20vp" })
@@ -177,25 +176,26 @@ struct Index {
     let x: number = 10;
     let y: number = 10;
     this.offContext.clearRect(10, 10, this.canvasWidth, this.canvasHeight);
-    diff.forEach((part) => {
+    diff.forEach((part: Change) => {
+      let item: Data = part as Data
       let str = new String();
       this.offContext.beginPath();
       this.offContext.font = '50px sans-serif'
-      if (part.added) {
+      if (item.added) {
         this.offContext.fillStyle = "#00FF00"
-      } else if (part.removed) {
+      } else if (item.removed) {
         this.offContext.fillStyle = "#FF0000"
       } else {
         this.offContext.fillStyle = "#CCCCCC"
       }
-      str = part.value;
+      str = item.value;
       let measure = this.offContext.measureText(str.valueOf())
       y = measure.height;
       this.offContext.fillText(str.valueOf(), x, y);
       x = x + measure.width / 2;
 
     });
-    var image = this.offContext.transferToImageBitmap();
+    let image = this.offContext.transferToImageBitmap();
     this.offContext.closePath();
     this.canvasContext.beginPath();
     this.canvasContext.transferFromImageBitmap(image);
@@ -204,9 +204,16 @@ struct Index {
     this.canvasWidth = x + 20;
   }
 
-  objectToString(oldNtr: any, newNtr: any, result: any) {
+  objectToString(oldNtr: string | number[], newNtr: string | number[], result: Change[]) {
     this.oldStr = "oldStr>>>>:" + JSON.stringify(oldNtr);
     this.newStr = "newStr>>>>>:" + JSON.stringify(newNtr);
     this.resultData = "resultData>>>>>:" + JSON.stringify(result);
   }
+}
+
+interface Data {
+  added?: undefined | boolean
+  count: number
+  removed?: undefined | boolean
+  value: string
 }

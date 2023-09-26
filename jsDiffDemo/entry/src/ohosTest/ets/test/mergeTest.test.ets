@@ -15,33 +15,34 @@
 
 import { describe, it, expect } from '@ohos/hypium'
 import { merge } from 'diff'
+import { Patch } from './interface'
 
 export default function mergeTest() {
-  describe('mergeTest', function () {
+  describe('mergeTest', () => {
 
-    it('merge_should_update_line_numbers_for_no_conflicts', 0, function () {
+    it('merge_should_update_line_numbers_for_no_conflicts', 0, () => {
       const mine =
         'Index: test\n'
-        + '===================================================================\n'
-        + '--- test\theader1\n'
-        + '+++ test\theader2\n'
-        + '@@ -1,3 +1,4 @@\n'
-        + ' line2\n'
-        + ' line3\n'
-        + '+line4\n'
-        + ' line5\n';
+          + '===================================================================\n'
+          + '--- test\theader1\n'
+          + '+++ test\theader2\n'
+          + '@@ -1,3 +1,4 @@\n'
+          + ' line2\n'
+          + ' line3\n'
+          + '+line4\n'
+          + ' line5\n';
       const theirs =
         'Index: test\n'
-        + '===================================================================\n'
-        + '--- test\theader1\n'
-        + '+++ test\theader2\n'
-        + '@@ -25,3 +25,4 @@\n'
-        + ' foo2\n'
-        + ' foo3\n'
-        + '+foo4\n'
-        + ' foo5\n';
+          + '===================================================================\n'
+          + '--- test\theader1\n'
+          + '+++ test\theader2\n'
+          + '@@ -25,3 +25,4 @@\n'
+          + ' foo2\n'
+          + ' foo3\n'
+          + '+foo4\n'
+          + ' foo5\n';
 
-      const expected = {
+      const expected: Patch = {
         index: 'test',
         oldFileName: 'test',
         oldHeader: 'header1',
@@ -78,30 +79,30 @@ export default function mergeTest() {
       expect(merge(theirs, mine, undefined)).assertDeepEquals(expected);
     });
 
-    it('merge_should_merge_adjacent_additions_with_context_removal', 0, function () {
+    it('merge_should_merge_adjacent_additions_with_context_removal', 0, () => {
       const mine =
         'Index: test\n'
-        + '===================================================================\n'
-        + '--- test\theader1\n'
-        + '+++ test\theader2\n'
-        + '@@ -1,3 +1,4 @@\n'
-        + ' line2\n'
-        + ' line3\n'
-        + '+line4-1\n'
-        + '+line4-2\n'
-        + '+line4-3\n'
-        + '-line5\n';
+          + '===================================================================\n'
+          + '--- test\theader1\n'
+          + '+++ test\theader2\n'
+          + '@@ -1,3 +1,4 @@\n'
+          + ' line2\n'
+          + ' line3\n'
+          + '+line4-1\n'
+          + '+line4-2\n'
+          + '+line4-3\n'
+          + '-line5\n';
       const theirs =
         'Index: test\n'
-        + '===================================================================\n'
-        + '--- test\theader1\n'
-        + '+++ test\theader2\n'
-        + '@@ -2,2 +2,3 @@\n'
-        + ' line3\n'
-        + ' line5\n'
-        + '+line4-4\n';
+          + '===================================================================\n'
+          + '--- test\theader1\n'
+          + '+++ test\theader2\n'
+          + '@@ -2,2 +2,3 @@\n'
+          + ' line3\n'
+          + ' line5\n'
+          + '+line4-4\n';
 
-      const expected = {
+      const expected: Patch = {
         index: 'test',
         oldFileName: 'test',
         oldHeader: 'header1',
@@ -129,23 +130,23 @@ export default function mergeTest() {
       expect(merge(theirs, mine, undefined)).assertDeepEquals(expected);
     });
 
-    it('merge_should_merge_removal_supersets', 0, function () {
+    it('merge_should_merge_removal_supersets', 0, () => {
       const mine =
         '@@ -1,3 +1,4 @@\n'
-        + ' line2\n'
-        + ' line3\n'
-        + '-line4\n'
-        + '-line4\n'
-        + ' line5\n';
+          + ' line2\n'
+          + ' line3\n'
+          + '-line4\n'
+          + '-line4\n'
+          + ' line5\n';
       const theirs =
         '@@ -1,3 +1,4 @@\n'
-        + ' line2\n'
-        + ' line3\n'
-        + '-line4\n'
-        + ' line4\n'
-        + ' line5\n';
+          + ' line2\n'
+          + ' line3\n'
+          + '-line4\n'
+          + ' line4\n'
+          + ' line5\n';
 
-      const expected = {
+      const expected: Patch = {
         hunks: [
           {
             oldStart: 1,

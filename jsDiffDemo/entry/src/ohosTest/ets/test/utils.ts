@@ -12,12 +12,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { Params } from './interface'
 
-// @ts-ignore
-import AbilityStage from "@ohos.application.AbilityStage"
-
-export default class TestAbilityStage extends AbilityStage {
-    onCreate() {
-        console.log("[Demo] TestAbilityStage onCreate")
-    }
+export function getKeys(obj: Params): string[] {
+  let keys: string[] = Object.keys(obj);
+  return keys;
 }
+
+export function getResult() {
+  return result
+}
+
+const result = [
+  {
+    "index": "test",
+    "oldFileName": "test",
+    "oldHeader": "header1",
+    "newFileName": "test",
+    "newHeader": "header2",
+    "hunks":
+    [
+      {
+        "oldStart": 1,
+        "oldLines": 3,
+        "newStart": 1,
+        "newLines": 4,
+        "lines":
+        [" line2", " line3", "+line4", " line5"],
+        "linedelimiters": ["\n", "\n", "\n", "\n"
+        ]
+      }
+    ]
+  }
+]
