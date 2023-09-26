@@ -1,3 +1,10 @@
+## V2.0.1
+
+1.适配DevEco Studio: 4.0 (4.0.3.512), SDK: API10 (4.0.10.9)
+
+2.ArkTS语法整改
+
+
 ## V2.0.0
 
 1.适配DevEco Studio: 4.0 Canary1(4.0.0.112), SDK: API10 (4.0.7.2)

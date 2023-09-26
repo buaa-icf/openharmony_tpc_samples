@@ -18,19 +18,19 @@ import hilog from '@ohos.hilog';
 import { Hypium } from '@ohos/hypium';
 import testsuite from '../test/List.test';
 import window from '@ohos.window';
-
+import Want from '@ohos.app.ability.Want';
+import AbilityConstant from '@ohos.app.ability.AbilityConstant';
+import { GlobalContext } from './pages/GlobalContextTest'
 export default class TestAbility extends UIAbility {
-    onCreate(want, launchParam) {
+    onCreate(want:Want, launchParam:AbilityConstant.LaunchParam) {
         hilog.info(0x0000, 'testTag', '%{public}s', 'TestAbility onCreate');
         hilog.info(0x0000, 'testTag', '%{public}s', 'want param:' + JSON.stringify(want) ?? '');
         hilog.info(0x0000, 'testTag', '%{public}s', 'launchParam:'+ JSON.stringify(launchParam) ?? '');
-        var abilityDelegator: any
-        abilityDelegator = AbilityDelegatorRegistry.getAbilityDelegator()
-        var abilityDelegatorArguments: any
-        globalThis.context = this.context;
-        abilityDelegatorArguments = AbilityDelegatorRegistry.getArguments()
+        // globalThis.context = this.context;
+        GlobalContext.getContext().setObject('context',this.context)
+
         hilog.info(0x0000, 'testTag', '%{public}s', 'start run testcase!!!');
-        Hypium.hypiumTest(abilityDelegator, abilityDelegatorArguments, testsuite)
+        Hypium.hypiumTest(AbilityDelegatorRegistry.getAbilityDelegator(),AbilityDelegatorRegistry.getArguments(), testsuite)
     }
 
     onDestroy() {

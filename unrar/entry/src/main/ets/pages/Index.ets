@@ -16,6 +16,10 @@ import { ICallBack, UnrarApi } from "@ohos/unrar";
 import fileio from '@ohos.fileio'
 import { testRarData } from './dataTestRar5'
 import { nameEncryptData } from './dataNameEncrypt'
+import { GlobalContext } from './GlobalContext'
+
+// import  common from'@ohos.app.ability.common'
+let context: Context = GlobalContext.getContext().getObject('context') as Context
 
 @Entry
 @Component
@@ -66,11 +70,15 @@ struct Index {
               return;
             }
             //hdc_std file send C:\Users\admin\Desktop\鸿蒙openharmony.rar /data/app/el2/100/base/com.huawei.ohosunrar/haps/entry/files
-            let path: string = globalThis.context.filesDir + "/name_encrypted.rar";
+            let path: string = context.filesDir + "/name_encrypted.rar";
+            // const path: string = (() => {
+            //   return this.context.filesDir + "/name_encrypted.rar";
+            // })();
+
             try {
               fileio.accessSync(path, 0);
               let tag: number = UnrarApi.isEncrypted(path);
-              let encrypted
+              let encrypted: string = ''
               if (tag == 1) {
                 encrypted = "name_encrypted.rar是加密文件！"
               } else {
@@ -93,11 +101,11 @@ struct Index {
               this.showDialog("正在解压中，请稍等...")
               return;
             }
-            let path: string = globalThis.context.filesDir + "/testRar5.rar";
+            let path: string = context.filesDir + "/testRar5.rar";
             try {
               fileio.accessSync(path, 0);
               let tag: number = UnrarApi.isEncrypted(path);
-              let encrypted
+              let encrypted: string = ''
               if (tag == 1) {
                 encrypted = "testRar5.rar是加密文件！"
               } else {
@@ -143,25 +151,25 @@ struct Index {
       this.showDialog("正在解压中，请稍等...")
       return;
     }
-    let path: string = globalThis.context.filesDir + "/testRar5.rar";
+    let path: string = context.filesDir + "/testRar5.rar";
     try {
       fileio.accessSync(path, 0);
       this.tag = false;
       let that = this;
-      var callBack: ICallBack = {
+      let callBack: ICallBack = {
         callBackResult(value: string) {
-          let resultss;
+          let results: string = '';
           that.tag = true;
           if (value == '解压成功') {
-            resultss = '解压testRar5.rar文件解压成功,解压文件在:' + globalThis.context.filesDir;
+            results = '解压testRar5.rar文件解压成功,解压文件在:' + context.filesDir;
           } else {
-            resultss = value;
+            results = value;
           }
           that.tag = true;
-          that.showDialog(resultss)
+          that.showDialog(results)
         }
       }
-      UnrarApi.RarFiles_Extract(path, globalThis.context.filesDir, callBack)
+      UnrarApi.RarFiles_Extract(path, context.filesDir, callBack)
     } catch (err) {
       this.tag = true;
       this.showDialog('文件不存在')
@@ -169,7 +177,7 @@ struct Index {
   }
 
   aboutToAppear() {
-    let path: string = globalThis.context.filesDir;
+    let path: string = context.filesDir;
     this.generateTextFile(path, '/testRar5.rar', testRarData);
     this.generateTextFile(path, '/name_encrypted.rar', nameEncryptData);
   }
@@ -201,14 +209,17 @@ struct Index {
   }
 }
 
+
 @CustomDialog
 struct CustomDialogExample {
   @Link password: string
   @Link tag: boolean
-  passwords: string
-  controller: CustomDialogController
-  cancel: () => void
-  confirm: () => void
+  passwords: string = ''
+  controller?: CustomDialogController
+  cancel: () => void = () => {
+  }
+  confirm: () => void = () => {
+  }
 
   build() {
     Column() {
@@ -221,7 +232,7 @@ struct CustomDialogExample {
       Flex({ justifyContent: FlexAlign.SpaceAround }) {
         Button('取消')
           .onClick(() => {
-            this.controller.close()
+            this.controller!.close()
             this.cancel()
           }).backgroundColor(0xffffff).fontColor(Color.Black)
         Button('确认')
@@ -232,31 +243,31 @@ struct CustomDialogExample {
     }.width('100%').height('30%')
   }
 
-  private rarFiles_Extract(){
+  private rarFiles_Extract() {
     if (this.passwords == null || this.passwords == "") {
       this.passwords = ""
       this.showDialog("请输入密码")
     } else {
       this.passwords = ""
       let passwords = this.password;
-      let path: string = globalThis.context.filesDir + "/name_encrypted.rar";
+      let path: string = context.filesDir + "/name_encrypted.rar";
       try {
-        var tags = fileio.accessSync(path, 0);
+        let tags = fileio.accessSync(path, 0);
         let that = this;
         that.tag = false;
 
-        var callBack: ICallBack = {
+        let callBack: ICallBack = {
           callBackResult(value: string) {
-            let resultss;
+            let results: string = '';
             if (value == '解压成功') {
-              resultss = 'name_encrypted.rar文件解压成功,解压文件在:' + globalThis.context.filesDir;
+              results = 'name_encrypted.rar文件解压成功,解压文件在:' + context.filesDir;
             } else {
-              resultss = value;
+              results = value;
             }
-            that.showDialog(resultss)
+            that.showDialog(results)
           }
         }
-        UnrarApi.RarFiles_Extract(path, globalThis.context.filesDir, callBack, passwords);
+        UnrarApi.RarFiles_Extract(path, context.filesDir, callBack, passwords);
         this.tag = true;
         console.info('accessSync .rar文件+path：' + tags)
       } catch (err) {
@@ -264,7 +275,7 @@ struct CustomDialogExample {
         console.info("accessSync failed with error:" + err);
         this.showDialog('文件不存在')
       }
-      this.controller.close()
+      this.controller!.close()
       this.confirm()
     }
   }
