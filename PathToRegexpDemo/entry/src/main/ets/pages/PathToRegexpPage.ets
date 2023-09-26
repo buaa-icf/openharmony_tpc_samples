@@ -17,6 +17,7 @@ import TestApi from '../TestApi';
 import CommonResultBean from '../CommonResultBean';
 import promptAction from '@ohos.promptAction';
 import router from '@ohos.router';
+import {  Key } from 'path-to-regexp';
 
 @Entry
 @Component
@@ -49,7 +50,7 @@ struct PathToRegexpPage {
           .width('80%')
           .height(100)
           .onClick((event) => {
-            const keys = [];
+            const keys:Key[] = [];
             let api = new TestApi()
             let result = api.pathToRegexpTest("/foo/:bar", keys)
             if (!result) {
