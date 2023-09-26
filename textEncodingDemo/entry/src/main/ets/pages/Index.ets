@@ -30,9 +30,9 @@ struct Index {
           .onClick(()=>{
             let content:string = 'ABCDEFGHIJKabcdefj123456+/AA==!@';
 
-            this.encode =new TextEncoder().encode(content) ;
-
-            this.deco = new TextDecoder().decode( this.encode)
+            let uInt8:Uint8Array = new TextEncoder().encode(content)
+            this.encode = uInt8.toString()
+            this.deco = new TextDecoder().decode(uInt8)
           })
 
         Text("TextEncoder: "+ this.encode)
