@@ -66,7 +66,7 @@ import { AnUndefined,
   WithDecimals } from './IntertfaceData';
 
 
-let validator: Validator;
+let validator: ESObject;
 const BASE_COUNT = 1
 
 export default function attributesTest() {
@@ -89,15 +89,15 @@ export default function attributesTest() {
       expect(result).assertFalse();
     })
     it('ShouldNotValidateNaN', 0, () => {
-      let result:boolean  = validator.validate(NaN, ValidNumber).valid;
+      let result:boolean  = validator.validate(Number.NaN, ValidNumber).valid;
       expect(result).assertFalse();
     })
     it('ShouldNotValidateInfinity1', 0, () => {
-      let result :boolean = validator.validate(Infinity, ValidNumber).valid;
+      let result :boolean = validator.validate(Number.POSITIVE_INFINITY, ValidNumber).valid;
       expect(result).assertFalse();
     })
     it('ShouldNotValidateInfinity2', 0, () => {
-      let result:boolean  = validator.validate(-Infinity,ValidNumber).valid;
+      let result:boolean  = validator.validate(Number.POSITIVE_INFINITY,ValidNumber).valid;
       expect(result).assertFalse();
     })
     it('ShouldNotValidateAnUndefinedInstance1', 0, () => {

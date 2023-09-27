@@ -1,11 +1,12 @@
 import buffer from '@ohos.buffer';
+import { Validator } from '@ohos/jsonschema';
 
 
-interface addressSchema1 {
+interface AddressSchema1 {
   type: string
 }
 
-interface addressSchema2 {
+interface AddressSchema2 {
   id: string;
   type: string;
   properties: {
@@ -237,8 +238,8 @@ interface alldata{
 }
 
 
-let typeFn = (type: string): addressSchema1 => {
-  const typeData: addressSchema1 = {
+let typeFn = (type: string): AddressSchema1 => {
+  const typeData: AddressSchema1 = {
     type: type,
   }
   return typeData
@@ -252,8 +253,8 @@ let typeresult =(type:string,format: string):resulttada =>{
   return typedata9
 }
 
-let typelines = (id: string, type1: string, type2: string, type3: string, type4: string, type5: string, type6: string, required: string[]): addressSchema2 => {
-  const typeData2: addressSchema2 = {
+let typelines = (id: string, type1: string, type2: string, type3: string, type4: string, type5: string, type6: string, required: string[]): AddressSchema2 => {
+  const typeData2: AddressSchema2 = {
     id: id,
     type: type1,
     properties: {
@@ -1166,11 +1167,11 @@ export  let houldThrowAn={
   },
 }
 
-export let ouldva={
+export let ouldva= {
   name: 'test', lines: ['1']
 }
 
-export let ouldvadata={
+export let ouldvadata= {
   type: 'object',
   properties: {
     name: {
@@ -1510,3 +1511,7 @@ export let wildcard={
     id: "1234", _bsontype: "test"
   }, '*']
 }
+export let rege :RegExp=new RegExp(/^\d+(?:\.\d+)?$/)
+
+export let types = typeof Validator.prototype.customFormats.boo
+export let format = Validator.prototype.customFormats.boo;

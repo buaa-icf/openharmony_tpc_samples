@@ -101,11 +101,13 @@ v.validate(all, schema);
     try {
       // This schema includes all of the possible validation tests.
 
-      new Validator().addSchema(referencedSchema, '/ReferencedSchema');
-      let str = JSON.stringify(new Validator().validate(all, validschema));
+      let v :ESObject = new Validator();
+      v.addSchema(referencedSchema, '/ReferencedSchema');
+      let result:ESObject = v.validate(all, validschema);
+      let str = JSON.stringify(result);
       console.log(`jsonschema ------> 测试结果是：${str}`);
       ctx.message1 = `验证对象： ${str}`;
-      ctx.message3 = `实际结果：${new Validator().validate(all, validschema).valid}`
+      ctx.message3 = `实际结果：${result.valid}`
     } catch (err) {
       let str = JSON.stringify(err);
       console.log(`jsonschema ------> 验证出错：${str}`);

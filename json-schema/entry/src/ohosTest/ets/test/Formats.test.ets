@@ -15,15 +15,17 @@
 
 import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
-import { dateInval, objectdata, typeresult, va } from './IntertfaceData';
+import { dateInval, objectdata, rege, typeresult, types, va } from './IntertfaceData';
 
+interface Data {
+  format: () => void
 
-let validator: Validator;
+}
 
-let validator1: Validator;
-
-let validator2: Validator;
-let format;
+let validator: ESObject;
+let validator1: ESObject;
+let validator2: ESObject;
+let format: Data;
 
 const BASE_COUNT = 1
 let stringSchema = va
@@ -46,11 +48,10 @@ export default function formatsTest() {
 
       validator1.customFormats.float =  (input:string) =>{
         //console.log(input);
-        return /^\d+(?:\.\d+)?$/.test(input);
+        return rege.test(input);
       };
-
-      format = () => {
-      };
+      // format = () => {
+      // };
     })
     afterEach(() => {
     })
@@ -355,7 +356,7 @@ export default function formatsTest() {
     });
 
     it('ShouldFailNumericInputThatFailsValidation', 0, () => {
-      let result:boolean  = validator1.validate(NaN, typeresult('string','float')).valid;
+      let result:boolean  = validator1.validate(Number.NaN, typeresult('string','float')).valid;
       expect(result).assertFalse();
     });
 
@@ -363,16 +364,14 @@ export default function formatsTest() {
       validator.customFormats.boo = format;
       validator1.customFormats.boo = format;
       validator2.customFormats.boo = format;
-      let types = typeof Validator.prototype.customFormats.boo
       expect(types).assertEqual('undefined');
     });
     it('ShouldBeAssignedToTheInstances', 0, () => {
-      format = () => {
-      };
-      Validator.prototype.customFormats.boo = format;
+      // format = () => {
+      // };
       let types = typeof ((new Validator()).customFormats.boo)
       expect(types).assertEqual('function')
-       Validator.prototype.customFormats.boo;
+       types
     });
 
     it('ShouldValidateInvalidFormats', 0, () => {

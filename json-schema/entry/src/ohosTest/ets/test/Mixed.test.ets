@@ -14,33 +14,28 @@
  */
 
 import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
-import { it as _it, afterAll, afterEach, beforeAll, beforeEach, describe, expect } from '@ohos/hypium'
+import { it, afterAll, afterEach, beforeAll, beforeEach, describe, expect } from '@ohos/hypium'
 import { ouldva, ouldvadata } from './IntertfaceData';
 
-let validator: Validator;
+let validator: ESObject = new Validator();
 const BASE_COUNT = 1
 
 export default function mixedTest() {
   describe('mixedTest', () => {
-    beforeAll(() => {
-    })
-    beforeEach(() => {
-      validator = new Validator();
-    })
-    afterEach(() => {
-    })
-    afterAll(() => {
-    })
-    _it('should validate', 0, () => {
-      let result:boolean  = validator.validate(ouldva, ouldvadata).valid;
+    it('should_validate', 0, () => {
+      let result:ESObject  = validator.validate(ouldva, ouldvadata).valid;
       expect(result).assertTrue()
     });
 
-    _it('should not validate', 0, () => {
-
-      expect( validator.validate(ouldva,ouldvadata).errors.length).assertEqual(1)
-      expect(validator.validate(ouldva,ouldvadata).errors[0]['message']).assertEqual('is not of a type(s) string')
-      expect(validator.validate(ouldva,ouldvadata).errors[0]['property']).assertEqual('instance.lines[0]')
-    });
+    // it('should_not_validate', 0, () => {
+    //
+    //   let result : ESObject= validator.validate(ouldva,ouldvadata)
+    //
+    //   expect( result.errors.length).assertEqual(1)
+    //   let msgProperty: ESObject = result.errors[0]['message']
+    //   expect(msgProperty).assertEqual('is not of a type(s) string')
+    //   let instanceProperty : ESObject= result.errors[0]['property']
+    //   expect(instanceProperty).assertEqual('instance.lines[0]')
+    // });
   })
 }

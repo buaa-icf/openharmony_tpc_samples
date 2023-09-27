@@ -18,7 +18,7 @@ import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from
 import { bjectValid, ectInvali, objectdata, va } from './IntertfaceData';
 
 
-let validator: Validator;
+let validator: ESObject;
 const BASE_COUNT = 1
 let stringSchema =va
 let objectSchema =objectdata

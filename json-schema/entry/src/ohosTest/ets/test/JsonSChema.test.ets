@@ -147,7 +147,7 @@ export default function jsonSChemaTest() {
 
     it('DiyKeyWordValidate', 0, () => {
       let startTime1 = new Date().getTime();
-      new Validator().attributes.contains = Validator.validateContains = (instance:string, schema:Schema, options:string, ctx:string)=> {
+      new Validator().attributes.contains = Validator.validateContains = (instance:string, schema:Schema, options:string, ctx:string):ESObject=> {
         if (typeof instance !== 'string') return;
         if (typeof schema.contains !== 'string') {
           new SchemaError('"contains" expects a string', schema);
@@ -210,15 +210,15 @@ export default function jsonSChemaTest() {
       let cacheSchemaNum: number = 0;
 
 
-      function importNextSchema(v) {
-        let nextSchema = v.unresolvedRefs.shift();
+      let importNextSchema=(v:ESObject)=> {
+
         if (cacheSchemaNum >= schemaArr.length) {
           return
         }
-        if (!nextSchema) {
+        if (!v.unresolvedRefs.shift()) {
           return;
         }
-        console.log(`jsonschema ------> 被移除的规则：${JSON.stringify(nextSchema)}`)
+        console.log(`jsonschema ------> 被移除的规则：${JSON.stringify(v.unresolvedRefs.shift())}`)
         v.addSchema(schemaArr[cacheSchemaNum]);
         cacheSchemaNum++;
         importNextSchema(v);
@@ -260,14 +260,14 @@ export default function jsonSChemaTest() {
       let startTime1 = new Date().getTime();
 
 
-      function preValidate(object:string, key:string, schema:Schema, options:string, ctx:Schema) {
+      let  preValidate=(object:string, key:string, schema:Schema, options:string, ctx:Schema)=> {
         if (typeof value === 'undefined') return;
 
         // Test if the schema declares a type, but the type keyword fails validation
         if (schema.type as Number&& new Validator().attributes.type.call(new Validator(), value, schema, options, ctx.makeChild(schema, key))) {
           // If the type is "number" but the instance is not a number, cast it
           if (schema.type === 'number' && typeof value !== 'number') {
-            object[key] = parseFloat(object[key]);
+            object[key] = Number.parseFloat(object[key]);
             return;
           }
           // If the type is "string" but the instance is not a string, cast it

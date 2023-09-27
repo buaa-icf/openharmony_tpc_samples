@@ -103,7 +103,6 @@ let result = validator.validate('This string is 28 chars long', schema, {nestedE
 3: instance is not exactly one from [subschema 0],[subschema 1],[subschema 2]`
     try {
 
-
       let str = JSON.stringify(new Validator().validate('This string is 28 chars long', nesteschema, { nestedErrors: true }));
       console.log(`jsonschema ------> 测试结果是：${str}`);
       ctx.message1 = `验证对象： ${str}`;

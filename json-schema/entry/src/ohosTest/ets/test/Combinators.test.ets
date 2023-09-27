@@ -17,7 +17,7 @@ import { SchemaError, validate, ValidationError, Validator, ValidatorResult } fr
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
 import { ErrorFlag, initSchema, name, namedata, nametest, oneOfSchema } from './IntertfaceData';
 
-let validator: Validator;
+let validator: ESObject;
 const BASE_COUNT = 1
 
 export default function combinatorsTest() {

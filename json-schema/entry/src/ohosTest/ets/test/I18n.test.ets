@@ -44,7 +44,7 @@ import {
   ValidateNull, ValidNumber } from './IntertfaceData';
 
 
-let validator: Validator;
+let validator: ESObject;
 const BASE_COUNT = 1
 const mixedSchema =mixed
 
@@ -67,8 +67,7 @@ export default function i18nTest() {
     });
 
     _it('number should provide an error argument', 0, () => {
-      let result :Validator = validator.validate('not-number', ValidNumber).errors[0].argument;
-      expect(result).not().assertNull()
+      expect(validator.validate('not-number', ValidNumber).errors[0].argument).not().assertNull()
     });
 
     _it('required should provide an error name', 0, () => {
@@ -87,8 +86,7 @@ export default function i18nTest() {
     });
 
     _it('should provide an error argument', 0, () => {
-      let result :Validator = validator.validate('0', AnUndefineddata).errors[0].argument
-      expect(result).not().assertNull()
+      expect(validator.validate('0', AnUndefineddata).errors[0].argument).not().assertNull()
     });
     _it('integer should provide an error name', 0, () => {
       let result :string = validator.validate(0.25, NonInteger).errors[0].name
@@ -96,8 +94,7 @@ export default function i18nTest() {
     });
 
     _it('integer should provide an error argument', 0, () => {
-      let result:Validator  = validator.validate(0.25, NonInteger).errors[0].argument
-      expect(result).not().assertNull()
+      expect(validator.validate(0.25, NonInteger).errors[0].argument).not().assertNull()
     });
     _it('boolean should provide an error name', 0, () => {
       let result :string = validator.validate('true', dateTrue).errors[0].name
@@ -105,8 +102,7 @@ export default function i18nTest() {
     });
 
     _it('boolean should provide an error argument', 0, () => {
-      let result :Validator = validator.validate('true', dateTrue).errors[0].argument
-      expect(result).not().assertNull()
+      expect(validator.validate('true', dateTrue).errors[0].argument).not().assertNull()
     });
     _it('any should provide an error name', 0, () => {
       let result :string = validator.validate(undefined, TrueAsAnydata).errors[0].name
@@ -118,8 +114,7 @@ export default function i18nTest() {
     });
 
     _it('minimum should provide an error argument', 0, () => {
-      let result:Validator  = validator.validate(1, TheMinimum).errors[0].argument
-      expect(result).not().assertNull()
+      expect(validator.validate(1, TheMinimum).errors[0].argument).not().assertNull()
     });
     _it('exclusiveMinimum should provide an error name', 0, () => {
       let result:string  = validator.validate(1, TheMinimumdata)
@@ -129,8 +124,7 @@ export default function i18nTest() {
     });
 
     _it('exclusiveMinimum should provide an error argument', 0, () => {
-      let result :Validator = validator.validate(1,TheMinimumdata).errors[0].argument
-      expect(result).not().assertNull()
+      expect(validator.validate(1,TheMinimumdata).errors[0].argument).not().assertNull()
     });
 
     _it('maximum should provide an error name', 0, () => {
@@ -139,8 +133,7 @@ export default function i18nTest() {
     });
 
     _it('maximum should provide an error argument', 0, () => {
-      let result:Validator  = validator.validate(3, TheMaximumda).errors[0].argument
-      expect(result).not().assertNull()
+      expect(validator.validate(3, TheMaximumda).errors[0].argument).not().assertNull()
     });
 
     _it('exclusiveMaximum should provide an error name', 0, () => {
@@ -149,8 +142,7 @@ export default function i18nTest() {
     });
 
     _it('exclusiveMaximum should provide an error argument', 0, () => {
-      let result:Validator  = validator.validate(2, TheMaximumtext).errors[0].argument
-      expect(result).not().assertNull()
+      expect(validator.validate(2, TheMaximumtext).errors[0].argument).not().assertNull()
     });
 
     _it('divisibleBy should provide an error name', 0, () => {
@@ -159,8 +151,7 @@ export default function i18nTest() {
     });
 
     _it('divisibleBy should provide an error argument', 0, () => {
-      let result:Validator  = validator.validate(1, IsEven).errors[0].argument;
-      expect(result).not().assertNull()
+      expect(validator.validate(1, IsEven).errors[0].argument).not().assertNull()
     });
     _it('pattern should provide an error name', 0, () => {
       let result:string  = validator.validate('abac', Pattern).errors[0].name;
@@ -168,8 +159,7 @@ export default function i18nTest() {
     });
 
     _it('pattern should provide an error argument', 0, () => {
-      let result :Validator = validator.validate('abac', Pattern).errors[0].argument;
-      expect(result).not().assertNull()
+      expect(validator.validate('abac', Pattern).errors[0].argument).not().assertNull()
     });
 
     _it('minLength should provide an error name', 0, () => {
@@ -178,8 +168,7 @@ export default function i18nTest() {
     });
 
     _it('minLength should provide an error argument', 0, () => {
-      let result :Validator = validator.validate('abcde', engthed).errors[0].argument;
-      expect(result).not().assertNull()
+      expect(validator.validate('abcde', engthed).errors[0].argument).not().assertNull()
     });
 
     _it('maxLength should provide an error name', 0, () => {
@@ -190,8 +179,7 @@ export default function i18nTest() {
     });
 
     _it('maxLength should provide an error argument', 0, () => {
-      let result:Validator  = validator.validate('abcde', engthfourdata).errors[0].argument;
-      expect(result).not().assertNull()
+      expect(validator.validate('abcde', engthfourdata).errors[0].argument).not().assertNull()
     });
 
     _it('enum should provide an error name', 0, () => {
@@ -200,8 +188,8 @@ export default function i18nTest() {
     });
 
     _it('enum should provide an error argument', 0, () => {
-      let result:Validator  = validator.validate('abcde', oneofdad).errors[0].argument;
-      expect(result).not().assertNull()
+
+      expect(validator.validate('abcde', oneofdad).errors[0].argument).not().assertNull()
     });
 
     _it('not should provide an error name', 0, () => {
@@ -210,8 +198,7 @@ export default function i18nTest() {
     });
 
     _it('not should provide an error argument', 0, () => {
-      let result:Validator  = validator.validate([1], disallow).errors[0].argument;
-      expect(result).not().assertNull()
+      expect(validator.validate([1], disallow).errors[0].argument).not().assertNull()
     });
 
     _it('not should prohibit specified types', 0, () => {
@@ -226,8 +213,8 @@ export default function i18nTest() {
     });
 
     _it('disallow should provide an error argument', 0, () => {
-      let result :Validator = validator.validate([1], disallow).errors[0].argument;
-      expect(result).not().assertNull()
+
+      expect(validator.validate([1], disallow).errors[0].argument).not().assertNull()
     });
 
     _it('disallow should prohibit specified types', 0, () => {
@@ -241,8 +228,7 @@ export default function i18nTest() {
     });
 
     _it('dependencies should provide an error argument', 0, () => {
-      let result :Validator = validator.validate(footest, quux).errors[0].argument;
-      expect(result).not().assertNull()
+      expect(validator.validate(footest, quux).errors[0].argument).not().assertNull()
     });
     _it('DateTime should provide an error name', 0, () => {
       let result:string  = validator.validate("2012-07-08", typeresult('string','date-time'))
@@ -252,8 +238,7 @@ export default function i18nTest() {
     });
 
     _it('DateTime should provide an error argument', 0, () => {
-      let result:Validator  = validator.validate("2012-07-08", typeresult('string','date-time')).errors[0].argument
-      expect(result).assertEqual('date-time');
+      expect(validator.validate("2012-07-08", typeresult('string','date-time')).errors[0].argument).assertEqual('date-time');
     });
     _it('date should provide an error name', 0, () => {
       let result:string  = validator.validate("TEST2012-07-08", typeresult('string','date')).errors[0].name
@@ -261,10 +246,7 @@ export default function i18nTest() {
     });
 
     _it('date should provide an error argument', 0, () => {
-      let result:Validator  = validator.validate("TEST2012-07-08", typeresult('string','date'))
-        .errors[0]
-        .argument
-      expect(result).assertEqual('date');
+      expect(validator.validate("TEST2012-07-08", typeresult('string','date')).errors[0].argument).assertEqual('date');
     });
 
     _it('time should provide an error name', 0, () => {
@@ -273,8 +255,7 @@ export default function i18nTest() {
     });
 
     _it('time should provide an error argument', 0, () => {
-      let result:Validator  = validator.validate("16:41:41.532Z", typeresult('string','time')).errors[0].argument
-      expect(result).assertEqual('time');
+      expect(validator.validate("16:41:41.532Z", typeresult('string','time')).errors[0].argument).assertEqual('time');
     });
     _it('UtcMillisec should provide an error name', 0, () => {
       let result :string = validator.validate("16:41:41.532Z", typeresult('string','utc-millisec')).errors[0].name
@@ -282,8 +263,7 @@ export default function i18nTest() {
     });
 
     _it('UtcMillisec should provide an error argument', 0, () => {
-      let result :Validator = validator.validate("16:41:41.532Z", typeresult('string','utc-millisec')).errors[0].argument
-      expect(result).assertEqual('utc-millisec');
+      expect(validator.validate("16:41:41.532Z", typeresult('string','utc-millisec')).errors[0].argument).assertEqual('utc-millisec');
     });
     _it('regex should provide an error name', 0, () => {
       let result :string = validator.validate("/^(abc]/", typeresult('string','regex')).errors[0].name
@@ -291,8 +271,7 @@ export default function i18nTest() {
     });
 
     _it('regex should provide an error argument', 0, () => {
-      let result:Validator  = validator.validate("/^(abc]/", typeresult('string','regex')).errors[0].argument
-      expect(result).assertEqual('regex');
+      expect(validator.validate("/^(abc]/", typeresult('string','regex')).errors[0].argument).assertEqual('regex');
     });
     _it('color should provide an error name', 0, () => {
       let result :string = validator.validate("json", typeresult('string','color')).errors[0].name
@@ -300,8 +279,7 @@ export default function i18nTest() {
     });
 
     _it('color should provide an error argument', 0, () => {
-      let result:Validator  = validator.validate("json", typeresult('string','color')).errors[0].argument
-      expect(result).assertEqual('color');
+      expect(validator.validate("json", typeresult('string','color')).errors[0].argument).assertEqual('color');
     });
     _it('style should provide an error name', 0, () => {
       let result :string = validator.validate("0", typeresult('string','style')).errors[0].name
@@ -309,8 +287,7 @@ export default function i18nTest() {
     });
 
     _it('style should provide an error argument', 0, () => {
-      let result :Validator = validator.validate("0",  typeresult('string','style')).errors[0].argument
-      expect(result).assertEqual('style');
+      expect(validator.validate("0",  typeresult('string','style')).errors[0].argument).assertEqual('style');
     });
     _it('phone should provide an error name', 0, () => {
       let result :string = validator.validate("31 42 123 4567",  typeresult('string','phone')).errors[0].name
@@ -318,8 +295,7 @@ export default function i18nTest() {
     });
 
     _it('phone should provide an error argument', 0, () => {
-      let result :Validator = validator.validate("31 42 123 4567",  typeresult('string','phone')).errors[0].argument
-      expect(result).assertEqual('phone');
+      expect(validator.validate("31 42 123 4567",  typeresult('string','phone')).errors[0].argument).assertEqual('phone');
     });
     _it('uri should provide an error name', 0, () => {
       let result :string = validator.validate("tdegrunt", typeresult('string','uri')).errors[0].name
@@ -328,8 +304,7 @@ export default function i18nTest() {
     });
 
     _it('uri should provide an error argument', 0, () => {
-      let result :Validator = validator.validate("tdegrunt",  typeresult('string','uri')).errors[0].argument
-      expect(result).assertEqual('uri');
+      expect(validator.validate("tdegrunt",  typeresult('string','uri')).errors[0].argument).assertEqual('uri');
     });
 
     _it('email should provide an error name', 0, () => {
@@ -338,8 +313,7 @@ export default function i18nTest() {
     });
 
     _it('email should provide an error argument', 0, () => {
-      let result :Validator = validator.validate("obama@", typeresult('string','email')).errors[0].argument
-      expect(result).assertEqual('email');
+      expect(validator.validate("obama@", typeresult('string','email')).errors[0].argument).assertEqual('email');
     });
     _it('IpAddress should provide an error name', 0, () => {
       let result :string = validator.validate("192.168.0", typeresult('string','ip-address')).errors[0].name
@@ -347,8 +321,7 @@ export default function i18nTest() {
     });
 
     _it('IpAddress should provide an error argument', 0, () => {
-      let result :Validator = validator.validate("192.168.0", typeresult('string','ip-address')).errors[0].argument
-      expect(result).assertEqual('ip-address');
+      expect(validator.validate("192.168.0", typeresult('string','ip-address')).errors[0].argument).assertEqual('ip-address');
     });
     _it('ipv6 should provide an error name', 0, () => {
       let result :string = validator.validate("127.0.0.1", typeresult('string','ipv6')).errors[0].name
@@ -356,8 +329,7 @@ export default function i18nTest() {
     });
 
     _it('ipv6 should provide an error argument', 0, () => {
-      let result :Validator = validator.validate("127.0.0.1", typeresult('string','ipv6')).errors[0].argument
-      expect(result).assertEqual('ipv6');
+      expect(validator.validate("127.0.0.1", typeresult('string','ipv6')).errors[0].argument).assertEqual('ipv6');
     });
     _it('HostName should provide an error name', 0, () => {
       let result :string = validator.validate("www.-hi-.com", typeresult('string','host-name')).errors[0].name
@@ -365,8 +337,7 @@ export default function i18nTest() {
     });
 
     _it('HostName should provide an error argument', 0, () => {
-      let result :Validator = validator.validate("www.-hi-.com", typeresult('string','host-name')).errors[0].argument
-      expect(result).assertEqual('host-name');
+      expect(validator.validate("www.-hi-.com", typeresult('string','host-name')).errors[0].argument).assertEqual('host-name');
     });
 
     _it('alpha should provide an error name', 0, () => {
@@ -375,8 +346,7 @@ export default function i18nTest() {
     });
 
     _it('alpha should provide an error argument', 0, () => {
-      let result :Validator = validator.validate("www.-hi-.com", typeresult('string','alpha')).errors[0].argument
-      expect(result).assertEqual('alpha');
+      expect(validator.validate("www.-hi-.com", typeresult('string','alpha')).errors[0].argument).assertEqual('alpha');
     });
 
     _it('alphanumeric should provide an error name', 0, () => {
@@ -385,8 +355,7 @@ export default function i18nTest() {
     });
 
     _it('alphanumeric should provide an error argument', 0, () => {
-      let result :Validator = validator.validate("1test!", typeresult('string','alphanumeric')).errors[0].argument
-      expect(result).assertEqual('alphanumeric');
+      expect(validator.validate("1test!", typeresult('string','alphanumeric')).errors[0].argument).assertEqual('alphanumeric');
     });
 
     _it('simple array should provide an error name', 0, () => {
@@ -395,8 +364,7 @@ export default function i18nTest() {
     });
 
     _it('simple array should provide an error argument', 0, () => {
-      let result:Validator  = validator.validate(0, ANonArray).errors[0].argument;
-      expect(result).not().assertNull()
+      expect(validator.validate(0, ANonArray).errors[0].argument).not().assertNull()
     });
     _it('attribute on array items should provide an error name', 0, () => {
       let result:string  = validator.validate(['1', '2', '3', 4], Validate).errors[0].name
@@ -405,8 +373,7 @@ export default function i18nTest() {
     });
 
     _it('attribute on array items should provide an error argument', 0, () => {
-      let result :Validator = validator.validate(['1', '2', '3', '4$'],argument ).errors[0].argument
-      expect(result).assertEqual('alphanumeric');
+      expect(validator.validate(['1', '2', '3', '4$'],argument ).errors[0].argument).assertEqual('alphanumeric');
     });
     _it('minItems should provide an error name', 0, () => {
       let result:string  = validator.validate([1], EqualToMinItems ).errors[0].name
@@ -414,8 +381,7 @@ export default function i18nTest() {
     });
 
     _it('minItems should provide an error argument', 0, () => {
-      let result:Validator  = validator.validate([1], EqualToMinItems ).errors[0].argument;
-      expect(result).not().assertNull()
+      expect(validator.validate([1], EqualToMinItems ).errors[0].argument).not().assertNull()
     });
     _it('maxItems should provide an error name', 0, () => {
       let result :string = validator.validate([1, 2, 3], EqualToMinItems ).errors[0].name
@@ -423,8 +389,7 @@ export default function i18nTest() {
     });
 
     _it('maxItems should provide an error argument', 0, () => {
-      let result :Validator = validator.validate([1, 2, 3], EqualToMinItems ).errors[0].argument;
-      expect(result).not().assertNull()
+      expect(validator.validate([1, 2, 3], EqualToMinItems ).errors[0].argument).not().assertNull()
     });
 
     _it('uniqueItems should provide an error name', 0, () => {
@@ -437,8 +402,7 @@ export default function i18nTest() {
     });
 
     _it('Mixed should provide an error argument', 0, () => {
-      let result:Validator  = validator.validate(provide, mixedSchema).errors[0].argument
-      expect(result).assertEqual('alphanumeric');
+      expect(validator.validate(provide, mixedSchema).errors[0].argument).assertEqual('alphanumeric');
     });
   })
 }

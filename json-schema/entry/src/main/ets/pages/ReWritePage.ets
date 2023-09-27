@@ -112,14 +112,21 @@ const res = v.validate(value, schema, {rewrite: unmarshall});`
        不使用rewrite res.instance.date 是否是Date类型：${false} `
     try {
 
+      let v0 :ESObject=new Validator();
+      let result00 :ESObject= v0.validate(rewrivalue, rewrischema)
+      let result01 = result00.instance.date instanceof Date;
 
-      let str = JSON.stringify(new Validator().validate(rewrivalue, rewrischema, { rewrite: ctx.unmarshall }));
+      let v1:ESObject = new Validator();
+      let result10 :ESObject= v1.validate(rewrivalue, rewrischema, { rewrite: ctx.unmarshall })
+      let result11 = result10.instance.date instanceof Date;
+
+      let str = JSON.stringify(result10);
       console.log(`jsonschema ------> 测试结果是：${str}`);
       ctx.message1 = `验证对象： ${str}`;
-      ctx.message3 = `实际结果：使用rewrite：${new Validator().validate(rewrivalue, rewrischema, { rewrite: ctx.unmarshall }).valid} ${'\r\n'}
-          不使用rewrite：${new Validator().validate(rewrivalue, rewrischema).valid} ${'\r\n'}
-          使用rewrite res.instance.date 是否是Date类型：${new Validator().validate(rewrivalue, rewrischema, { rewrite: ctx.unmarshall }).instance.date instanceof Date}
-          不使用rewrite res.instance.date 是否是Date类型：${new Validator().validate(rewrivalue, rewrischema).instance.date instanceof Date}`
+      ctx.message3 = `实际结果：使用rewrite：${result10.valid} ${'\r\n'}
+          不使用rewrite：${result00.valid} ${'\r\n'}
+          使用rewrite res.instance.date 是否是Date类型：${result11}
+          不使用rewrite res.instance.date 是否是Date类型：${result01}`
     } catch (err) {
       let str = JSON.stringify(err);
       console.log(`jsonschema ------> 验证出错：${str}`);

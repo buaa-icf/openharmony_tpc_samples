@@ -132,7 +132,7 @@ v.validate(p, schema);`
     const ctx = this;
     ctx.message2 = `期待结果：${false}`
     try {
-      let v = new Validator();
+      let v :ESObject = new Validator();
       // Address, to be embedded on Person
       // Person
 

@@ -15,7 +15,8 @@
 
 import { Schema, SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
 import { preproinstance, preproschema } from './IntereceTest'
-
+const v0:ESObject = new Validator();
+const v1:ESObject = new Validator();
 
 @Entry
 @Component
@@ -115,13 +116,14 @@ v.validate(instance, schema, { preValidateProperty });`
     try {
 
 
+      let result0:ESObject=v0.validate(preproinstance, preproschema)
+      let result1:ESObject=v1.validate(preproinstance, preproschema, { preValidateProperty: ctx.preValidate })
 
-
-      let str = JSON.stringify(new Validator().validate(preproinstance, preproschema, { preValidateProperty: ctx.preValidate }));
+      let str = JSON.stringify(result1);
       console.log(`jsonschema ------> 测试结果是：${str}`);
       ctx.message1 = `验证对象： ${str}`;
-      ctx.message3 = `实际结果：使用预处理 ${new Validator().validate(preproinstance, preproschema, { preValidateProperty: ctx.preValidate }).valid} ${'\r\n'}
-        不使用预处理 ${ new Validator().validate(preproinstance, preproschema).valid} ${'\r\n'}`
+      ctx.message3 = `实际结果：使用预处理 ${result1.valid} ${'\r\n'}
+        不使用预处理 ${ result0.valid} ${'\r\n'}`
     } catch (err) {
       let str = JSON.stringify(err);
       console.log(`jsonschema ------> 验证出错：${str}`);

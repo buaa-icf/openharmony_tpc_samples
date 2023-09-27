@@ -32,7 +32,7 @@ let ignoredTests = [
   "additionalProperties should not look in applicators/properties defined in extends are not examined",
 ];
 
-let validator: Validator;
+let validator: ESObject;
 
 
 export default function suiteTest() {
@@ -58,35 +58,34 @@ export default function suiteTest() {
     let list = JsonFileArray.loadAllJsonFiles()
     for (let i = 0; i < list.length; i++) {
 
-      const fileObj:string = list[i];
-      if (!fileObj) {
+      if (!list[i]) {
         continue;
       }
-      let belongTo:string = fileObj['belongTo']
-      let fileData = fileObj['data']
-      if (!belongTo || !fileData || fileData.length < 1) {
+      if (!list[i]['belongTo'] || ! list[i]['data'] ||  list[i]['data'].length < 1) {
         continue;
       }
       // console.log(`zdy---belongTo--->${belongTo}`)
       // console.log(`zdy---fileData length--->${fileData.length}`)
-      for (let j = 0; j < fileData.length; j++) {
-        const jsonObj = fileData[j];
+      for (let j = 0; j <  list[i]['data'].length; j++) {
         // console.log(`zdy---jsonObj--->${jsonObj}`)
-        if (!jsonObj || jsonObj.length < 1) {
+        if (!list[i]['data'][j] || list[i]['data'][j].length < 1) {
           continue;
         }
 
-        const suiteDescription = jsonObj.description
         // console.log(`zdy---suiteDescription--->${suiteDescription}`)
-        const jsonTests = jsonObj.tests
         // console.log(`zdy---jsonTests--->${jsonTests}`)
-        const jsonSchema = jsonObj.schema
         // console.log(`zdy---jsonSchema--->${jsonSchema}`)
-        if (!jsonTests || jsonTests.length < 1) {
+        interface JsonTest{
+          description: string,
+          data: number[],
+          valid: boolean
+        }
+        let jsonTest:JsonTest[] = list[i]['data'][j].tests
+        if (!jsonTest ||  jsonTest.length < 1) {
           continue;
         }
         try {
-          let jsonStr = JSON.stringify(jsonSchema)
+          let jsonStr = JSON.stringify(list[i]['data'][j].schema)
           if (jsonStr === undefined || jsonStr === null || jsonStr.length < 1) {
             continue;
           }
@@ -99,23 +98,22 @@ export default function suiteTest() {
         } catch (err) {
           console.log(`zdy---suiteTest err --->${err}`)
         }
-        for (let k = 0; k < jsonTests.length; k++) {
-          const obj= jsonTests[k];
-          const jsonDescription:string= obj.description
-          const jsonData :undefined= obj.data
-          const jsonValid:undefined = obj.valid
+        for (let k = 0; k <  list[i]['data'][j].tests.length; k++) {
+          const jsonDescription:string= list[i]['data'][j].tests[k].description
+          const jsonData :undefined= list[i]['data'][j].tests[k].data
+          const jsonValid:undefined = list[i]['data'][j].tests[k].valid
           if (jsonDescription === undefined || jsonDescription === null || jsonDescription.length < 1) {
             continue;
           }
           if (jsonValid === undefined || jsonValid === null) {
             continue;
           }
-          if (jsonSchema === undefined || jsonSchema === null) {
+          if (list[i]['data'][j].schema === undefined || list[i]['data'][j].schema === null) {
             continue;
           }
 
-          let indexItem :Number= belongTo.toString().search('additionalItems')
-          let indexProperties:Number= belongTo.toString().search('additionalProperties')
+          let indexItem :Number= list[i]['belongTo'].toString().search('additionalItems')
+          let indexProperties:Number= list[i]['belongTo'].toString().search('additionalProperties')
           if (indexItem != -1 && jsonDescription === "items defined in extends are not examined") {
             // 根据原库ignoredTests规则additionalItems.json里面的description数值是items defined in extends are not examined不做校验
             continue;
@@ -123,18 +121,18 @@ export default function suiteTest() {
             // 根据原库ignoredTests规则additionalProperties.json里面的description数值是properties defined in extends are not examined不做校验
             continue;
           }
-          let name = `${belongTo}/${suiteDescription}/${jsonDescription}`
+          let name = `${list[i]['belongTo']}/${list[i]['data'][j].description}/${jsonDescription}`
           _it(name, 0, () => {
             let searchIndex = -1;
             try {
-              let schemaStr = JSON.stringify(jsonSchema);
+              let schemaStr = JSON.stringify(list[i]['data'][j].schema);
               searchIndex = schemaStr.indexOf("🐲")
             } catch (err) {
               console.log(`zdy---suiteTest validate err --->${err}`)
             }
             let isAdditionNeedIgnore: boolean = false
             try {
-              let indexItem :Number= belongTo.toString().search('additionalProperties')
+              let indexItem :Number= list[i]['belongTo'].toString().search('additionalProperties')
               if (indexItem != -1 && jsonDescription === "matching the pattern is valid") {
                 //  TODO 当前系统差异导致的ármányos校验失败 暂且跳过验证
                 isAdditionNeedIgnore = true;
@@ -145,7 +143,6 @@ export default function suiteTest() {
             }
             let isFloatOverflowNeedIgnore: boolean = false
             try {
-              let indexItem :Number= belongTo.toString().search('float-overflow')
               if (indexItem != -1 && jsonDescription === "valid if optional overflow handling is implemented") {
                 //  原库该用例也是全部失败 本处不做校验 暂时设定为全部成功处理
                 isFloatOverflowNeedIgnore = true;
@@ -162,16 +159,16 @@ export default function suiteTest() {
               } else if (isFloatOverflowNeedIgnore) {
                 expect(1).assertEqual(1)
               } else {
-                if (jsonValid != validator.validate(jsonData, jsonSchema).valid) {
+                if (jsonValid != validator.validate(jsonData, list[i]['data'][j].schema).valid) {
                   console.log(`zdy---searchIndex --->${searchIndex}`)
                   console.log(`zdy---describe name --->${name}`)
                   console.log(`zdy---jsonData --->${jsonData}`)
-                  console.log(`zdy---jsonSchema --->${JSON.stringify(jsonSchema)}`)
+                  console.log(`zdy---jsonSchema --->${JSON.stringify(list[i]['data'][j].schema)}`)
                   console.log(`zdy---jsonValid --->${jsonValid}`)
-                  console.log(`zdy---result.valid --->${validator.validate(jsonData, jsonSchema).valid}`)
+                  console.log(`zdy---result.valid --->${validator.validate(jsonData, list[i]['data'][j].schema).valid}`)
                   console.log(`zdy---=======================================`)
                 }
-                expect(jsonValid).assertEqual(validator.validate(jsonData, jsonSchema).valid)
+                expect(jsonValid).assertEqual(validator.validate(jsonData, list[i]['data'][j].schema).valid)
 
               }
             } catch (err) {

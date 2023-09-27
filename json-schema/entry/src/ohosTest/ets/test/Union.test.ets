@@ -32,7 +32,7 @@ import {
 } from './IntertfaceData';
 
 
-let validator: Validator;
+let validator: ESObject;
 const BASE_COUNT = 1
 let testSchema = typeFn('string');
 

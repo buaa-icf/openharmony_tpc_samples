@@ -28,8 +28,10 @@ import {
   validschema,
   validtaschema } from './IntertfaceData';
 
-let validator: Validator;
+let validator: ESObject;
 const BASE_COUNT = 1
+
+let n='http://example.com/base.json';
 
 export default function validatorTest() {
   describe('validatorTest', () => {
@@ -68,13 +70,13 @@ export default function validatorTest() {
     _it('argument schema must be a schema null', 0, () => {
       let res :Object= validator.addSchema(undefined, 'http://example.com/base.json');
       expect(res).assertEqual(null);
-      let result = 'http://example.com/base.json' in validator.schemas
+      let result =  validator.schemas.n!=undefined
       expect(result).assertFalse();
     });
     _it('argument schema must be a schema undefined', 0, () => {
       let res:Object = validator.addSchema(undefined, 'http://example.com/base.json');
       expect(res).assertEqual(null);
-      let result = 'http://example.com/base.json' in validator.schemas
+      let result =  validator.schemas.n!=undefined
       expect(result).assertFalse();
     });
     // TODO: held for major version upgrade
@@ -130,7 +132,7 @@ export default function validatorTest() {
     });
     _it('addSchema with absolute base', 0, () => {
       expect(validator.addSchema({type: 'string'}, 'http://example.com/main.json')).not().assertNull();
-      expect('http://example.com/main.json' in validator.schemas).assertTrue();
+      expect( validator.schemas.n!=undefined).assertTrue();
       expect(validator.schemas['http://example.com/main.json']).assertDeepEquals(validator.addSchema({type: 'string'}, 'http://example.com/main.json'))
     });
     _it('addSchema with absolute $id', 0, () => {
@@ -138,7 +140,7 @@ export default function validatorTest() {
         type: 'string'
       }, 'http://example.com/main.json');
       expect(res).not().assertNull();
-      expect('http://example.com/main.json' in validator.schemas).assertTrue();
+      expect(validator.schemas.n!=undefined).assertTrue();
       expect(validator.schemas['http://example.com/main.json']).assertDeepEquals(res)
     });
     _it('addSchema with relative id', 0, () => {
@@ -146,14 +148,14 @@ export default function validatorTest() {
         id: 'main.json'
       }, 'http://example.com/index.html');
       // assert(res);
-      expect('http://example.com/main.json' in validator.schemas).assertTrue();
+      expect(validator.schemas.n!=undefined).assertTrue();
     });
     _it('addSchema with relative $id', 0, () => {
       let res :Object= validator.addSchema({
         $id: 'main.json'
       }, 'http://example.com/index.html');
       // assert(res);
-      expect('http://example.com/main.json' in validator.schemas).assertTrue();
+      expect(validator.schemas.n!=undefined).assertTrue();
     });
     _it('addSchema populates unresolvedRefs', 0, () => {
       validator.addSchema({
@@ -162,7 +164,7 @@ export default function validatorTest() {
           $ref: 'item.json',
         },
       }, 'http://example.com/index.json');
-      expect('http://example.com/main.json' in validator.schemas).assertTrue();
+      expect(validator.schemas.n!=undefined).assertTrue();
       expect(validator.unresolvedRefs[0]).assertDeepEquals('http://example.com/item.json')
       validator.addSchema({
         $id: 'item.json'

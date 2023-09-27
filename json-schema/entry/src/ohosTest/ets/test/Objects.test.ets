@@ -36,7 +36,7 @@ import {
   ternProperschema,
   typeFn } from './IntertfaceData';
 
-let validator: Validator;
+let validator: ESObject;
 const BASE_COUNT = 1
 let initSchema =onstructor
 
@@ -81,15 +81,15 @@ export default function objectsTest() {
     });
 
     _it('should validate a valid property', 0, () => {
-      expect(validator.validate(Object.create(constru), initSchema).valid).assertDeepEquals(true)
+      expect(validator.validate({constru}, initSchema).valid).assertDeepEquals(true)
     });
     _it('should not validate an invalid property', 0, () => {
-      expect(validator.validate(Object.create(construdata), initSchema).valid).assertDeepEquals(false)
-      expect(validator.validate(Object.create(construdata), initSchema).errors[0].name).assertEqual('type')
+      expect(validator.validate({construdata}, initSchema).valid).assertDeepEquals(false)
+      expect(validator.validate({construdata}, initSchema).errors[0].name).assertEqual('type')
     });
     _it('should not validate a missing property', 0, () => {
-      expect(validator.validate(Object.create(new Object), initSchema).valid).assertDeepEquals(false)
-      expect(validator.validate(Object.create(new Object), initSchema).errors[0].name).assertEqual('required')
+      expect(validator.validate({}, initSchema).valid).assertDeepEquals(false)
+      expect(validator.validate({}, initSchema).errors[0].name).assertEqual('required')
     });
     _it('should validate a valid object with multiple properties', 0, () => {
       let result :boolean = validator.validate(objectaddress, objectproper).valid;

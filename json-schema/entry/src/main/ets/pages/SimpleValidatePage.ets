@@ -94,7 +94,6 @@ v.validate(instance, schema)`
     const ctx = this;
     ctx.message2 = `期待结果：${true}`
     try {
-
       let instance = 4;
 
       let str = JSON.stringify(new Validator().validate(instance, simpleschema));

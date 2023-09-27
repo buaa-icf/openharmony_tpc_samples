@@ -117,7 +117,7 @@ importNextSchema();`
     }
   }
 
-  importNextSchema(v: Validator) {
+  importNextSchema(v: ESObject) {
     if (this.cacheSchemaNum >= this.schemaArr.length) {
       this.isFinish = true;
       return

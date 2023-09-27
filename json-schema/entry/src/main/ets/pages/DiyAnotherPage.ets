@@ -94,36 +94,36 @@ struct DiyAnotherPage {
     const ctx = this;
     ctx.message2 = `期待结果：${false}`
     try {
-
-      new Validator().attributes.contains = Validator.validateContains=(instance:string, schema:Schema, options:string, ctx:string):string =>{
-
+      let v :Validator= new Validator()
+       v.attributes.contains = Validator.validateContains=(instance:string, schema:Schema, options:string, ctx:string):string =>{
+       let  result :Validator= new ValidatorResult(instance, schema, options, ctx);
 
         if (typeof instance !== 'string') {
-          new ValidatorResult(instance, schema, options, ctx).addError('fails some validation test')
+          result.addError('fails some validation test')
         }
         ;
 
         if (typeof schema.contains !== 'string') {
-          new ValidatorResult(instance, schema, options, ctx).addError('fails some validation test')
+          result.addError('fails some validation test')
         }
         ;
 
         if (instance.indexOf(schema.contains) > 0) {
-          new ValidatorResult(instance, schema, options, ctx).addError('fails some validation test')
+          result.addError('fails some validation test')
         }
         ;
 
         if (schema.contains.length > 0) {
-          new ValidatorResult(instance, schema, options, ctx).addError('fails some validation test')
+          result.addError('fails some validation test')
         }
-        return new ValidatorResult(instance, schema, options, ctx);
+        return result
       }
 
-
-      let str = JSON.stringify(new Validator().validate("I am an instance", { type: "string", contains: "I am" }));
+      let resultValidate:Validator = v.validate("I am an instance", { type: "string", contains: "I am" })
+      let str = JSON.stringify(resultValidate);
       console.log(`jsonschema ------> 测试结果是：${str}`);
       ctx.message1 = `验证对象： ${str}`;
-      ctx.message3 = `实际结果：${new Validator().validate("I am an instance", { type: "string", contains: "I am" }).valid}`
+      ctx.message3 = `实际结果：${resultValidate.valid}`
     } catch (err) {
       let str = JSON.stringify(err);
       console.log(`jsonschema ------> 验证出错：${str}`);
