@@ -80,7 +80,7 @@ emitter.emit('event', "这是原始信息");
 emitter.emit('event', 'Tom', 18, "这是原始信息");
 ```
 
-EventEmitter3通过emit发送事件，支持同时携带多个参数。其中首个参数为事件名称，其他参数为该事件携带的数据。
+EventEmitter3通过emit发送事件，支持同时携带多个参数。其中首个参数为事件名称，其余参数为该事件携带的数据。
 
 如果用户是通过on或者addListener来绑定的事件，那么emit发送多次事件，回调接口可以接收到多次回调。
 
@@ -117,7 +117,7 @@ emitter.on('newListener', obj4);
 emitter.removeListener('newListener');
 ```
 
-一次性绑定多个同名的事件回调接口，指定移除某一个回调接口，那么通过事件名移除回调接口的时候，只会移除该回调接口，同时保留同名的其他回调接口。
+一次性绑定多个同名的事件回调接口，指定移除某一个回调接口，那么通过事件名移除回调接口的时候，只会移除该回调接口，同时保留同名的剩余回调接口。
 
 ```typescript
 let obj1 = (data) => {}
@@ -165,13 +165,16 @@ emitter.removeAllListeners() //移除绑定的所有事件
 EntryAbility.ts
 
 ```typescript
-import EventEmitter from 'eventemitter3' 
+import EventEmitter from 'eventemitter3'
+import { GlobalContext } from '../pages/GlobalContext'
 export default class EntryAbility extends UIAbility {
     
     onWindowStageCreate(windowStage: window.WindowStage) {
-    const emitter = new EventEmitter();
-    // 需要在EntryAbility里面初始化一个全局的EventEmitter对象，如果是不同页面分别初始化的EventEmitter对象，则接收不到事件
-    globalThis.emitter = emitter 
+      GlobalContext.getContext().setObject(GlobalContext.KEY_CONTEXT, this.context);
+      GlobalContext.getContext().setObject(GlobalContext.KEY_CACHE_DIR, this.context.cacheDir);
+      GlobalContext.getContext().setObject(GlobalContext.KEY_FILES_DIR, this.context.filesDir);
+      const emitter: EventEmitter<string, Object> = new EventEmitter<string, Object>();
+      GlobalContext.getContext().setObject(GlobalContext.KEY_EMITTER, emitter);
     windowStage.loadContent('pages/Index', (err, data) => {
     });
   }
@@ -182,6 +185,8 @@ export default class EntryAbility extends UIAbility {
 Index.ets
 
 ```typescript
+import { GlobalContext } from './GlobalContext'
+        
         Button('页面之间的通信') 
         .width('100%')
         .backgroundColor(Color.Blue)
@@ -193,8 +198,10 @@ Index.ets
             url: 'pages/JumpOne'
           }).then(() => {
               // 需要在跳转发起之后发出事件，否则下个页面的事件监听还没有绑定则无法接收到发出的事件
-            if (globalThis.emitter) {
-              globalThis.emitter.emit('pageOne', '这是首页发给第一个页面的信息');
+            let emitterInstance: EventEmitter<string, Object> | undefined = GlobalContext.getContext()
+              .getObject(GlobalContext.KEY_EMITTER) as EventEmitter<string, Object>;
+            if (emitterInstance) {
+              emitterInstance.emit('pageOne', '这是首页发给页面1的信息');
             }
           })
 
@@ -204,13 +211,19 @@ Index.ets
 JumpOne.ets
 
 ```typescript
+import { GlobalContext } from './GlobalContext'
+        
   aboutToAppear() {
     const ctx = this
     // 页面初始化的时候绑定事件，一定要保证使用全局的EventEmitter对象，以及绑定事件发生在发出事件之前
-    globalThis.emitter.on('pageOne', (data) => {
-      console.log(`componentB Data: ${data}`);
-      ctx.message = data
-    });
+    let emitter: EventEmitter<string, Object> | undefined = GlobalContext.getContext()
+      .getObject(GlobalContext.KEY_EMITTER) as EventEmitter<string, Object>;
+    if (emitter) {
+        emitter.on('pageOne', (data: string) => {
+          console.log(`componentB Data: ${data}`);
+          ctx.message = data
+        });
+    }
   }
 ```
 
@@ -254,7 +267,7 @@ struct EventSequencing {
 
   startSendEvent() {
     const ctx = this
-    //点击按钮之后第一次添加同名的event事件
+    //点击按钮之后首次添加同名的event事件
     ctx.emitter.on('event', (name, age, message) => {});
     //点击按钮之后第二次添加同名的event事件
     ctx.emitter.on('event', (name, age, message) => { });
@@ -283,7 +296,7 @@ struct EventSequencing {
 | off                | event: T,<br/>fn?: EventEmitter.EventListener<EventTypes, T>, <br/>context?: Context,<br/>once?: boolean | EventEmitter                                     | 移除事件                     |
 | removeAllListeners | event?: EventEmitter.EventNames<EventTypes>                  | EventEmitter                                     | 移除绑定的所有事件           |
 
-更多模块的使用可参考[官方文档](https://github.com/primus/eventemitter3/blob/master/README.md)，[单元测试用例](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Eventmitter3Demo/TEST.md)详情可参考
+更多模块的使用可参考[官方文档](https://github.com/primus/eventemitter3/blob/master/README.md)，[单元测试用例](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/EventEmitter3Demo/TEST.md)详情可参考
 
 ## 约束与限制
 
@@ -293,15 +306,15 @@ DevEco Studio: 4.0 Beta2(4.0.3.501), SDK: API10 Beta3(4.0.10.8)
 ## 目录结构
 
 ```typescript
-|---- Eventmitter3Demo  
+|---- EventEmitter3Demo  
 |     |---- entry  # 示例代码文件夹
 			|---- pages  # 应用页面，根据测试场景的不同分为不同页面。
 			    |---- ApiTest.ets  # 全量API测试示例
                 |---- EventSequencing.ets  # 事件处理排序示例
                 |---- FileRead.ets  # 监听文件读取完成的事件示例
                 |---- Index.ets  # 首页
-                |---- JumpOne.ets  # 页面跳转第一个页面示例
-                |---- JumpTwo.ets  # 页面跳转第一个页面示例
+                |---- JumpOne.ets  # 页面跳转页面1示例
+                |---- JumpTwo.ets  # 页面跳转页面2示例
 |     |---- README.MD  # 安装使用方法                   
 ```
 
@@ -311,5 +324,5 @@ DevEco Studio: 4.0 Beta2(4.0.3.501), SDK: API10 Beta3(4.0.10.8)
 
 ## 开源协议
 
-本项目基于 [MIT License ](https://gitee.com/zdy09/openharmony_tpc_samples/blob/master/Eventmitter3Demo/LICENSE)，请自由地享受和参与开源。
+本项目基于 [MIT License ](https://gitee.com/zdy09/openharmony_tpc_samples/blob/master/EventEmitter3Demo/LICENSE)，请自由地享受和参与开源。
 
