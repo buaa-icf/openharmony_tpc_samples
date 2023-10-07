@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-import { RUNNING, SUCCESS, FAILURE, Sequence, Selector, Task, Decorator, BehaviorTree, Blackboard } from 'behaviortree'
-import InvertDecorator from 'behaviortree/lib/decorators/InvertDecorator'
+import { RUNNING, SUCCESS, FAILURE, Sequence, Selector, Task, Decorator, BehaviorTree, Blackboard,
+  RunResult } from 'behaviortree'
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 import { createTask, Utils } from '../utils/Utils'
 
@@ -25,19 +25,19 @@ export default function BehaviorTreedescribe() {
   // 通过
   describe('with_a_medium_complex_tree', () => {
     const aTask = new Task({
-      run: (blackboard: Blackboard) => {
+      run: (blackboard: Blackboard):boolean => {
         ++blackboard.aCounter
         return SUCCESS
       }
     })
     const bTask = new Task({
-      run: (blackboard: Blackboard) => {
+      run: (blackboard: Blackboard):boolean => {
         ++blackboard.bCounter
         return FAILURE
       }
     })
     const switchTask = new Task({
-      run: (blackboard: Blackboard) => {
+      run: (blackboard: Blackboard):RunResult => {
         ++blackboard.switchCounter
         return blackboard.switchResult
       }
@@ -120,7 +120,7 @@ export default function BehaviorTreedescribe() {
         start: (blackboard: Blackboard) => {
           ++blackboard.start
         },
-        run: (blackboard: Blackboard) => {
+        run: (blackboard: Blackboard):RunResult => {
           ++blackboard.run
           return blackboard.result
         },
@@ -175,7 +175,7 @@ export default function BehaviorTreedescribe() {
         start: (blackboard: Blackboard) => {
           ++blackboard.start
         },
-        run: (blackboard: Blackboard) => {
+        run: (blackboard: Blackboard):RunResult => {
           ++blackboard.run
           return blackboard.result
         },
@@ -229,7 +229,7 @@ export default function BehaviorTreedescribe() {
       BehaviorTree.register(
         'taskA',
         new Task({
-          run: (blackboard: Blackboard) => {
+          run: (blackboard: Blackboard):boolean => {
             ++blackboard.taskA
             return SUCCESS
           }
@@ -238,7 +238,7 @@ export default function BehaviorTreedescribe() {
       BehaviorTree.register(
         'taskB',
         new Task({
-          run: (blackboard: Blackboard) => {
+          run: (blackboard: Blackboard):boolean => {
             ++blackboard.taskB
             return FAILURE
           }
@@ -362,7 +362,7 @@ export default function BehaviorTreedescribe() {
         end: (blackboard: Blackboard) => {
           ++blackboard.end1
         },
-        run: (blackboard: Blackboard) => {
+        run: (blackboard: Blackboard):boolean => {
           ++blackboard.run1
           return SUCCESS
         }
@@ -374,7 +374,7 @@ export default function BehaviorTreedescribe() {
         end: (blackboard: Blackboard) => {
           ++blackboard.end2
         },
-        run: (blackboard: Blackboard) => {
+        run: (blackboard: Blackboard):RunResult => {
           ++blackboard.run2
           return blackboard.task2Result
         }
@@ -386,7 +386,7 @@ export default function BehaviorTreedescribe() {
         end: (blackboard: Blackboard) => {
           ++blackboard.end3
         },
-        run: (blackboard: Blackboard) => {
+        run: (blackboard: Blackboard):boolean => {
           ++blackboard.run3
           return SUCCESS
         }

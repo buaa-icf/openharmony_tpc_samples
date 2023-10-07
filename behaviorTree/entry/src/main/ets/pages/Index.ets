@@ -33,8 +33,7 @@ struct Index {
   }
 
   init() {
-    let myTree = BehaviorTree
-    myTree.register(
+    BehaviorTree.register(
       "computer",
       new Task({
         run(): undefined {
@@ -43,7 +42,7 @@ struct Index {
         },
       })
     );
-    myTree.register(
+    BehaviorTree.register(
       "accountant",
       new Task({
         run(): undefined {
@@ -52,7 +51,7 @@ struct Index {
         },
       })
     );
-    myTree.register(
+    BehaviorTree.register(
       "teacher",
       new Task({
         run(): undefined {
@@ -62,7 +61,7 @@ struct Index {
       })
     );
 
-    myTree.register(
+    BehaviorTree.register(
       "Huawei",
       new Task({
         run() {
@@ -79,7 +78,7 @@ struct Index {
       })
     );
 
-    myTree.register(
+    BehaviorTree.register(
       "Tencent",
       new Task({
         run() {
@@ -96,7 +95,7 @@ struct Index {
       })
     );
 
-    myTree.register(
+    BehaviorTree.register(
       "Google",
       new Task({
         run() {
