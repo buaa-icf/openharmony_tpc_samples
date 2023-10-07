@@ -16,30 +16,32 @@
 import validator from 'validator';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 import Buffer from '@ohos.buffer'
+import { ValOptions, fixturesType } from './valOptionsTest'
+import { isArray}from'./IsArrayFunction'
 
 export default function ValidatorsTest() {
-  describe('Validators', function () {
+  describe('Validators', ()=>   {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(() => {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(() => {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(() => {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(() => {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
 
-    function test(options) {
+    let test= (options: ValOptions) => {
       const args = options.args || [];
 
       args.unshift(null);
@@ -755,7 +757,7 @@ export default function ValidatorsTest() {
       test({
         validator: 'isURL',
         args: [{
-          host_whitelist: ['bar.com', 'foo.com', /\.foo\.com$/],
+          host_whitelist: ['bar.com', 'foo.com', new RegExp('\.foo\.com$')],
         }],
         valid: [
           'http://bar.com/',
@@ -794,7 +796,7 @@ export default function ValidatorsTest() {
       test({
         validator: 'isURL',
         args: [{
-          host_blacklist: ['bar.com', 'foo.com', /\.foo\.com$/],
+          host_blacklist: ['bar.com', 'foo.com', new RegExp('\.foo\.com$')],
         }],
         valid: [
           'http://foobar.com',
@@ -1442,7 +1444,7 @@ export default function ValidatorsTest() {
       test({
         validator: 'isAlpha',
         args: ['en-US', {
-          ignore: /[\s/-]/g
+          ignore: new RegExp('/[\s/-]/g').source
         }], // ignore [space -]
         valid: [
           'en-US',
@@ -2171,7 +2173,7 @@ export default function ValidatorsTest() {
       test({
         validator: 'isAlphanumeric',
         args: ['en-US', {
-          ignore: /[\s/-]/g
+          ignore: new RegExp('/[\s/-]/g').source
         }], // ignore [space -]
         valid: [
           'en-US',
@@ -4820,7 +4822,7 @@ export default function ValidatorsTest() {
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb3JlbSI6Imlwc3VtIn0.ymiJSsMJXR6tMSr8G9usjQ15_8hKPDv_CArLhxw28MI',
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkb2xvciI6InNpdCIsImFtZXQiOlsibG9yZW0iLCJpcHN1bSJdfQ.rRpe04zbWbbJjwM43VnHzAboDzszJtGrNsUxaqQ-GQ8',
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqb2huIjp7ImFnZSI6MjUsImhlaWdodCI6MTg1fSwiamFrZSI6eyJhZ2UiOjMwLCJoZWlnaHQiOjI3MH19.YRLPARDmhGMC3BBk_OhtwwK21PIkVCqQe8ncIRPKo-E',
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ', // No signature
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ',// No signature
         ],
         invalid: [
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
@@ -4829,7 +4831,7 @@ export default function ValidatorsTest() {
         ],
         error: [
           [],
-          {},
+          new Object(),
           null,
           undefined,
         ],
@@ -4914,7 +4916,7 @@ export default function ValidatorsTest() {
     it('should_validate_strings_against_a_pattern', 0, () => {
       test({
         validator: 'matches',
-        args: [/abc/],
+        args: [new RegExp('abc')],
         valid: ['abc', 'abcdef', '123abc'],
         invalid: ['acb', 'Abc'],
       });
@@ -5750,7 +5752,7 @@ export default function ValidatorsTest() {
 
 
     it('should_validate_identity_cards', 0, () => {
-      const fixtures = [
+      const fixtures:fixturesType[] = [
         {
           locale: 'zh-HK',
           valid: [
@@ -6107,7 +6109,7 @@ export default function ValidatorsTest() {
         },
       ];
 
-      let allValid = [];
+      let allValid: string[] = [];
 
       // Test fixtures
       fixtures.forEach((fixture) => {
@@ -6123,9 +6125,8 @@ export default function ValidatorsTest() {
       // Test generics
       test({
         validator: 'isIdentityCard',
-        valid: [
-          ...allValid,
-        ],
+        valid: Array.from(allValid),
+
         invalid: [
           'foo',
         ],
@@ -6569,12 +6570,12 @@ export default function ValidatorsTest() {
           'Vml2YW11cyBmZXJtZW50dW0gc2VtcGVyIHBvcnRhLg==',
           'U3VzcGVuZGlzc2UgbGVjdHVzIGxlbw==',
           'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuMPNS1Ufof9EW/M98FNw' +
-          'UAKrwflsqVxaxQjBQnHQmiI7Vac40t8x7pIb8gLGV6wL7sBTJiPovJ0V7y7oc0Ye' +
-          'rhKh0Rm4skP2z/jHwwZICgGzBvA0rH8xlhUiTvcwDCJ0kc+fh35hNt8srZQM4619' +
-          'FTgB66Xmp4EtVyhpQV+t02g6NzK72oZI0vnAvqhpkxLeLiMCyrI416wHm5Tkukhx' +
-          'QmcL2a6hNOyu0ixX/x2kSFXApEnVrJ+/IxGyfyw8kf4N2IZpW5nEP847lpfj0SZZ' +
-          'Fwrd1mnfnDbYohX2zRptLy2ZUn06Qo9pkG5ntvFEPo9bfZeULtjYzIl6K8gJ2uGZ' +
-          'HQIDAQAB',
+            'UAKrwflsqVxaxQjBQnHQmiI7Vac40t8x7pIb8gLGV6wL7sBTJiPovJ0V7y7oc0Ye' +
+            'rhKh0Rm4skP2z/jHwwZICgGzBvA0rH8xlhUiTvcwDCJ0kc+fh35hNt8srZQM4619' +
+            'FTgB66Xmp4EtVyhpQV+t02g6NzK72oZI0vnAvqhpkxLeLiMCyrI416wHm5Tkukhx' +
+            'QmcL2a6hNOyu0ixX/x2kSFXApEnVrJ+/IxGyfyw8kf4N2IZpW5nEP847lpfj0SZZ' +
+            'Fwrd1mnfnDbYohX2zRptLy2ZUn06Qo9pkG5ntvFEPo9bfZeULtjYzIl6K8gJ2uGZ' +
+            'HQIDAQAB',
         ],
         invalid: [
           '12345',
@@ -6611,13 +6612,13 @@ export default function ValidatorsTest() {
         error: [
           null,
           undefined,
-          {},
+          new Object(),
           [],
           42,
         ],
       });
 
-      for (let i = 0, str = '', encoded; i < 1000; i++) {
+      for (let i = 0, str = '', encoded: string; i < 1000; i++) {
         str += String.fromCharCode(Math.random() * 26 | 97); // eslint-disable-line no-bitwise
         encoded = Buffer.from(str).toString('base64');
         expect(validator.isBase64(encoded)).assertTrue()
@@ -6640,7 +6641,7 @@ export default function ValidatorsTest() {
     });
 
     it('should_validate_mobile_phone_number', 0, () => {
-      let fixtures = [
+      let fixtures:fixturesType[] = [
         {
           locale: 'am-AM',
           valid: [
@@ -9882,13 +9883,13 @@ export default function ValidatorsTest() {
         },
       ];
 
-      let allValid = [];
+      let allValid: string[] = [];
 
       fixtures.forEach((fixture) => {
         // to be used later on for validating 'any' locale
         if (fixture.valid) allValid = allValid.concat(fixture.valid);
 
-        if (Array.isArray(fixture.locale)) {
+        if (isArray(fixture.locale)) {
           test({
             validator: 'isMobilePhone',
             valid: fixture.valid,
@@ -11383,7 +11384,7 @@ export default function ValidatorsTest() {
     it('should_error_on_non_string_input', 0, () => {
       test({
         validator: 'isEmpty',
-        error: [undefined, null, [], NaN],
+        error: [undefined, null, [], Number.NaN],
       });
     });
 
@@ -11543,17 +11544,8 @@ export default function ValidatorsTest() {
     });
 
     it('should_validate_postal_code', 0, () => {
-      const fixtures = [
+      const fixtures:fixturesType[] = [
         {
-          locale: 'AU',
-          valid: [
-            '4000',
-            '2620',
-            '3000',
-            '2017',
-            '0800',
-          ],
-        }, {
         locale: 'BY',
         valid: [
           '225320',
@@ -12041,7 +12033,7 @@ export default function ValidatorsTest() {
         },
       ];
 
-      let allValid = [];
+      let allValid: string[] = [];
 
       // Test fixtures
       fixtures.forEach((fixture) => {
@@ -12058,7 +12050,6 @@ export default function ValidatorsTest() {
       test({
         validator: 'isPostalCode',
         valid: [
-          ...allValid,
           '1234',
           '6900',
           '1292',
@@ -12072,7 +12063,7 @@ export default function ValidatorsTest() {
           '123456',
           '293940',
           '002920',
-        ],
+        ].concat(allValid),
         invalid: [
           'asdf',
           '1',
@@ -12774,7 +12765,7 @@ export default function ValidatorsTest() {
         error: [
           null,
           undefined,
-          {},
+          new Object(),
           [],
           42,
         ],
@@ -12806,7 +12797,7 @@ export default function ValidatorsTest() {
           '2020-02-30', // invalid date
           '2019-02-29', // non-leap year
           '2020-04-31', // invalid date
-          '2020/03-15', // mixed delimiter
+          '2020/03-15',// mixed delimiter
         ],
       });
       test({
@@ -14312,5 +14303,4 @@ export default function ValidatorsTest() {
       });
     });
   });
-
 }

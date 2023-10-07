@@ -12,15 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-//@ts-nocheck
 import Utils from 'dayjs/esm/utils'
-import { it,expect,describe } from "../utils/utils"
-const prettyUnit = Utils.p
-const padStart = Utils.s
-const padZoneStr = Utils.z
+import { it, expect, describe } from "../utils/utils"
+declare class Instance {
+  utcOffset:()=>string|number;
+}
+const prettyUnit:(u:string)=>string = Utils.p
+const padStart:(string:number,length:number,pad:string)=>string|number = Utils.s
+const padZoneStr:(instance:Instance)=>string = Utils.z
 
 export default function utilsTest() {
-  describe('utilsTest', function () {
+  describe('utilsTest', () => {
 
     it('PrettyUnit_abc', () => {
       expect(prettyUnit('Days')).toBe('day')
@@ -37,12 +39,11 @@ export default function utilsTest() {
       expect(prettyUnit('s')).toBe('second')
       expect(prettyUnit('ms')).toBe('millisecond')
       expect(prettyUnit('Q')).toBe('quarter')
-      expect(prettyUnit()).toBe('')
+      expect(prettyUnit('')).toBe('')
     })
 
     it('PadZoneStr', () => {
-      const instance: any = {}
-
+      const instance:Instance={utcOffset:()=>''}
       instance.utcOffset = () => 0 * -1
       expect(padZoneStr(instance)).toBe('+00:00')
       instance.utcOffset = () => 1 * 60 * -1

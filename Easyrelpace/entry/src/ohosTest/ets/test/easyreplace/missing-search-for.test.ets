@@ -15,27 +15,26 @@
 import hilog from '@ohos.hilog';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 
-
-import { er } from "easy-replace";
+import { er,Opts } from "easy-replace";
 
 export default function missingsearchfor() {
-  describe('missingsearchfor', function () {
+  describe('missingsearchfor', () => {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(() => {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(() => {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(() => {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(() => {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
@@ -50,145 +49,111 @@ export default function missingsearchfor() {
     //   expect(a).assertEqual(a)
     // })
 
-    var count = 0;
-    var test = function (name, func){
-      name = name.replace(/[ /d]/g, '');
-      name = name.replace(/-/g,"");
-      it(name,count++,func)
+    let count = 0;
+    let test = (name: string, func: Function) => {
+      name = name.replace(new RegExp("/[ /d]/g"), '');
+      name = name.replace(new RegExp("/-/g"), "");
+      it(name, count++, func)
     }
 
-    var equal = function (src,dst,tag){
-      console.log('tag:'+tag+"  src="+src+ " dst="+dst);
+    let equal = (src: string, dst: string, tag: string) => {
+      console.log('tag:' + tag + "  src=" + src + " dst=" + dst);
       expect(src).assertEqual(dst)
     }
 
-// ==============================
-// missing searchFor value
-// ==============================
+    // ==============================
+    // missing searchFor value
+    // ==============================
+    let optsFunc = (leftOutsideNot: string | string[] = "",
+                    leftOutside: string | string[] = "",
+                    leftMaybe: string | string[] = "",
+                    searchFor: string | string[] = "",
+                    rightMaybe: string | string[] = "",
+                    rightOutside: string | string[] = "",
+                    rightOutsideNot: string | string[] = ""): Opts => {
+      return {
+        leftOutsideNot,
+        leftOutside,
+        leftMaybe,
+        searchFor,
+        rightMaybe,
+        rightOutside,
+        rightOutsideNot,
+        i: {
+          leftOutsideNot: false,
+          leftOutside: false,
+          leftMaybe: false,
+          searchFor: false,
+          rightMaybe: false,
+          rightOutside: false,
+          rightOutsideNot: false
+        }
+      }
+    }
+    test("01 - source present, missing searchFor", () => {
+      equal(
+        er(
+          "aaa",optsFunc(), ""
+        ),
+        "aaa",
+        "test 9.1"
+      );
+    });
 
-test("01 - source present, missing searchFor", () => {
-  equal(
-    er(
-      "aaa",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      ""
-    ),
-    "aaa",
-    "test 9.1"
-  );
-});
+    test("02 - everything is missing", () => {
+      equal(
+        er(
+          "",optsFunc(), ""
+        ),
+        "",
+        "test 9.2"
+      );
+    });
 
-test("02 - everything is missing", () => {
-  equal(
-    er(
-      "",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      ""
-    ),
-    "",
-    "test 9.2"
-  );
-});
+    test("03 - everything seriously missing", () => {
+      equal(er("", optsFunc(), ""), "", "test 9.3");
+    });
+    test("04 - everything extremely seriously missing", () => {
+      equal(er("", optsFunc(),""), "", "test 9.4");
+    });
 
-test("03 - everything seriously missing", () => {
-  // @ts-ignore
-  equal(er("", {}, ""), "", "test 9.3");
-});
+    test("05 - everything truly extremely seriously missing", () => {
+      equal(er("",optsFunc(),""), "", "test 9.5");
+    });
 
-test("04 - everything extremely seriously missing", () => {
-  // @ts-ignore
-  equal(er("", {}), "", "test 9.4");
-});
+    test("06 - everything really truly extremely seriously missing", () => {
+      equal(er("",optsFunc(),""), "", "test 9.6");
+    });
 
-test("05 - everything truly extremely seriously missing", () => {
-  // @ts-ignore
-  equal(er(""), "", "test 9.5");
-});
+    test("07 - leftOutsideNot blocking rightOutsideNot being empty", () => {
+      equal(
+        er(
+          "ab a",optsFunc([""],"","","a","","","b"), "x"
+        ),
+        "ab x",
+        "test 9.7"
+      );
+    });
 
-test("06 - everything really truly extremely seriously missing", () => {
-  // @ts-ignore
-  equal(er(), "", "test 9.6");
-});
+    test("08 - leftOutsideNot is blank array", () => {
+      equal(
+        er(
+          "ab a",optsFunc([],"","","a","","","b"), "x"
+        ),
+        "ab x",
+        "test 9.8"
+      );
+    });
 
-test("07 - leftOutsideNot blocking rightOutsideNot being empty", () => {
-  equal(
-    er(
-      "ab a",
-      // @ts-ignore
-      {
-        leftOutsideNot: [""],
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "a",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "b",
-      },
-      "x"
-    ),
-    "ab x",
-    "test 9.7"
-  );
-});
-
-test("08 - leftOutsideNot is blank array", () => {
-  equal(
-    er(
-      "ab a",
-      // @ts-ignore
-      {
-        leftOutsideNot: [],
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "a",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "b",
-      },
-      "x"
-    ),
-    "ab x",
-    "test 9.8"
-  );
-});
-
-test("09 - missing key in properties obj", () => {
-  equal(
-    er(
-      "ab a",
-      // @ts-ignore
-      {
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "a",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "b",
-      },
-      "x"
-    ),
-    "ab x",
-    "test 9.9"
-  );
-});
+    test("09 - missing key in properties obj", () => {
+      equal(
+        er(
+          "ab a",optsFunc("","","","a","","","b"), "x"
+        ),
+        "ab x",
+        "test 9.9"
+      );
+    });
 
   })
 }

@@ -15,10 +15,10 @@
 
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
 import { xsltProcess } from 'xslt-processor/src/xslt'
-import { xmlParse } from 'xslt-processor/src/dom.js'
+import { XDocument, xmlParse } from 'xslt-processor/src/dom'
 
 export default function xsltTest() {
-  describe('XSLTTest', function () {
+  describe('XSLTTest', () => {
     const xmlString =
       '<all>' +
       '<item pos="2">A</item>' +
@@ -26,7 +26,7 @@ export default function xsltTest() {
       '<item pos="1">C</item>' +
       '</all>';
 
-    it('handles_foreach_sort', 0, function () {
+    it('handles_foreach_sort', 0, () => {
       const xsltForEachSort =
         '<xsl:stylesheet>' +
         '<xsl:template match="/">' +
@@ -37,13 +37,13 @@ export default function xsltTest() {
         '</xsl:template>' +
         '</xsl:stylesheet>';
 
-      const xml = xmlParse(xmlString);
-      const xslt = xmlParse(xsltForEachSort);
-      const html = xsltProcess(xml, xslt);
+      const xml: XDocument = xmlParse(xmlString);
+      const xslt: XDocument = xmlParse(xsltForEachSort);
+      const html: string = xsltProcess(xml, xslt);
       expect("CAB").assertEqual(html);
     })
 
-    it('handles_foreach_sort_ascending', 0, function () {
+    it('handles_foreach_sort_ascending', 0, () => {
       const xsltForEachSortAscending =
         '<xsl:stylesheet>' +
         '<xsl:template match="/">' +
@@ -54,13 +54,13 @@ export default function xsltTest() {
         '</xsl:template>' +
         '</xsl:stylesheet>';
 
-      const xml = xmlParse(xmlString);
-      const xslt = xmlParse(xsltForEachSortAscending);
-      const html = xsltProcess(xml, xslt);
+      const xml: XDocument = xmlParse(xmlString);
+      const xslt: XDocument = xmlParse(xsltForEachSortAscending);
+      const html: string = xsltProcess(xml, xslt);
       expect("ABC").assertEqual(html);
     })
 
-    it('handles_foreach_sort_descending', 0, function () {
+    it('handles_foreach_sort_descending', 0, () => {
       const xsltForEachSortDescending =
         `<xsl:stylesheet>
             <xsl:template match="/">
@@ -71,14 +71,14 @@ export default function xsltTest() {
           </xsl:template>
         </xsl:stylesheet>`;
 
-      const xml = xmlParse(xmlString);
-      const xslt = xmlParse(xsltForEachSortDescending);
-      const html = xsltProcess(xml, xslt);
+      const xml: XDocument = xmlParse(xmlString);
+      const xslt: XDocument = xmlParse(xsltForEachSortDescending);
+      const html: string = xsltProcess(xml, xslt);
       expect("CBA").assertEqual(html);
     })
 
 
-    it('applies_templates', 0, function () {
+    it('applies_templates', 0, () => {
       const xmlApplyTemplates = `<all>
           <item type="X">A</item>
           <item type="Y">B</item>
@@ -97,14 +97,14 @@ export default function xsltTest() {
           </xsl:template>
         </xsl:stylesheet>`;
 
-      const xml = xmlParse(xmlApplyTemplates);
-      const xslt = xmlParse(xsltApplyTemplates);
-      const html = xsltProcess(xml, xslt);
+      const xml: XDocument = xmlParse(xmlApplyTemplates);
+      const xslt: XDocument = xmlParse(xsltApplyTemplates);
+      const html: string = xsltProcess(xml, xslt);
       expect("ABC").assertEqual(html);
     })
 
 
-    it('handles_global_variables', 0, function () {
+    it('handles_global_variables', 0, () => {
       const xsltGlobalVariables = `<xsl:stylesheet>
           <xsl:variable name="x" select="'x'"/>
           <xsl:variable name="y" select="'y'"/>
@@ -120,13 +120,13 @@ export default function xsltTest() {
           </xsl:template>
         </xsl:stylesheet>`;
 
-      const xml = xmlParse(xmlString);
-      const xslt = xmlParse(xsltGlobalVariables);
-      const html = xsltProcess(xml, xslt);
+      const xml: XDocument = xmlParse(xmlString);
+      const xslt: XDocument = xmlParse(xsltGlobalVariables);
+      const html: string = xsltProcess(xml, xslt);
       expect("xzyyy").assertEqual(html);
     })
 
-    it('handles_top_level_output', 0, function () {
+    it('handles_top_level_output', 0, () => {
       const xsltTopLevelOutput = `<xsl:stylesheet>
           <xsl:template match="/">
             <xsl:element name="x">
@@ -138,13 +138,13 @@ export default function xsltTest() {
           </xsl:template>
         </xsl:stylesheet>`;
 
-      const xml = xmlParse(xmlString);
-      const xslt = xmlParse(xsltTopLevelOutput);
-      const html = xsltProcess(xml, xslt);
+      const xml: XDocument = xmlParse(xmlString);
+      const xslt: XDocument = xmlParse(xsltTopLevelOutput);
+      const html: string = xsltProcess(xml, xslt);
       expect('<x y="z">k</x>').assertEqual(html);
     })
 
-    it('handles_copy', 0, function () {
+    it('handles_copy', 0, () => {
       const xsltCopy = `<xsl:stylesheet>
           <xsl:template match="/">
             <xsl:for-each select="//item">
@@ -157,9 +157,9 @@ export default function xsltTest() {
           </xsl:template>
         </xsl:stylesheet>`;
 
-      const xml = xmlParse(xmlString);
-      const xslt = xmlParse(xsltCopy);
-      const html = xsltProcess(xml, xslt);
+      const xml: XDocument = xmlParse(xmlString);
+      const xslt: XDocument = xmlParse(xsltCopy);
+      const html: string = xsltProcess(xml, xslt);
       expect('<item pos="2">A</item>' +
       '<item pos="3">B</item>' +
       '<item pos="1">C</item>').assertEqual(html);

@@ -16,117 +16,91 @@ import hilog from '@ohos.hilog';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 
 import pako from 'pako';
-import { deflateInit, deflateSetHeader, deflate, deflateEnd, } from 'pako/lib/zlib/deflate.js';
-import ZStream from 'pako/lib/zlib/zstream.js';
+import { deflateInit, deflateSetHeader, deflate, deflateEnd } from './utils';
+import { ZStream } from './utils';
+import { GlobalContext } from './GlobalContext';
+import { onTypeOf13, onTypeOf14, onTypeOf15, onTypeOf5 } from './IntertfaceData';
 
 
 export default function BeflateCoverTest() {
   // fromCharCode, but understands right > 0xffff values
 
-  describe('BeflateCoverTest', function () {
+  describe('BeflateCoverTest',  () =>{
 
-    var long_sample;
-    let c = pako.constants
-    beforeAll(function () {
+    let long_sample: string | Uint8Array;
+    let c:pako.constants = pako.constants
+    beforeAll(() =>{
 
     })
-    beforeEach(function () {
+    beforeEach(() => {
       // globalThis.resourceManager.getMediaContent($r('app.media.lorem_en_100k').id).then((uint8:Uint8Array)=>{
       //   console.log("dodoTag= uint8 length"+uint8.byteLength);
       //   long_sample  = uint8
       // });
     })
-    afterEach(function () {
+    afterEach(() => {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(() => {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    var short_sample = 'hello world';
+    let short_sample = 'hello world';
 
-
-    function testDeflate(data, opts, flush) {
-      let deflator = new pako.Deflate(opts);
-      deflator.push(data, flush);
-      deflator.push(data, true);
-      let errcode = deflator.err;
-
-      expect(errcode).assertEqual(0)
-    }
 
     it('stored', 0, () => {
-      testDeflate(short_sample, {
-        level: 0, chunkSize: 200
-      }, 0);
-      testDeflate(short_sample, {
-        level: 0, chunkSize: 10
-      }, 5);
+      testDeflate(short_sample, onTypeOf13(0,200), 0);
+      testDeflate(short_sample, onTypeOf13(0,10), 5);
     });
     it('fast', 1, () => {
-      testDeflate(short_sample, {
-        level: 1, chunkSize: 10
-      }, 5);
-      globalThis.resourceManager.getMediaContent($r('app.media.lorem_en_100k').id).then((uint8: Uint8Array) => {
+      let context:Context = GlobalContext.getContext().getObject("context") as Context
+      testDeflate(short_sample, onTypeOf13(1,10), 5);
+      context.createModuleContext('entry_test').resourceManager.getMediaContent($r('app.media.lorem_en_100k').id).then((uint8: Uint8Array) => {
         long_sample = uint8
-        testDeflate(long_sample, {
-          level: 1, memLevel: 1, chunkSize: 10
-        }, 0);
+        testDeflate(long_sample, onTypeOf14(1,1,10), 0);
       });
 
     });
     it('slow', 2, () => {
-      testDeflate(short_sample, {
-        level: 4, chunkSize: 10
-      }, 5);
-      globalThis.resourceManager.getMediaContent($r('app.media.lorem_en_100k').id).then((uint8: Uint8Array) => {
+      let context:Context = GlobalContext.getContext().getObject("context") as Context
+      testDeflate(short_sample, onTypeOf13(4,10), 5);
+      context.createModuleContext('entry_test').resourceManager.getMediaContent($r('app.media.lorem_en_100k').id).then((uint8: Uint8Array) => {
         long_sample = uint8
-        testDeflate(long_sample, {
-          level: 9, memLevel: 1, chunkSize: 10
-        }, 0);
+        testDeflate(long_sample, onTypeOf14(9,1,10), 0);
       });
     });
     it('rle', 3, () => {
-      testDeflate(short_sample, {
-        strategy: 3
-      }, 0);
-      testDeflate(short_sample, {
-        strategy: 3, chunkSize: 10
-      }, 5);
+      let context:Context = GlobalContext.getContext().getObject("context") as Context
+      testDeflate(short_sample, onTypeOf5(3), 0);
+      testDeflate(short_sample, onTypeOf15(3,10), 5);
 
-      globalThis.resourceManager.getMediaContent($r('app.media.lorem_en_100k').id).then((uint8: Uint8Array) => {
+      context.createModuleContext('entry_test').resourceManager.getMediaContent($r('app.media.lorem_en_100k').id).then((uint8: Uint8Array) => {
         long_sample = uint8
-        testDeflate(long_sample, {
-          strategy: 3, chunkSize: 10
-        }, 0);
+        testDeflate(long_sample,onTypeOf15(3,10), 0);
       });
     });
     it('huffman', 4, () => {
-      testDeflate(short_sample, {
-        strategy: 2
-      }, 0);
-      testDeflate(short_sample, {
-        strategy: 2, chunkSize: 10
-      }, 5);
-      globalThis.resourceManager.getMediaContent($r('app.media.lorem_en_100k').id).then((uint8: Uint8Array) => {
+      let context:Context = GlobalContext.getContext().getObject("context") as Context
+      testDeflate(short_sample, onTypeOf5(2), 0);
+      testDeflate(short_sample, onTypeOf15(2,10), 5);
+      context.createModuleContext('entry_test').resourceManager.getMediaContent($r('app.media.lorem_en_100k').id).then((uint8: Uint8Array) => {
         long_sample = uint8
-        testDeflate(long_sample, {
-          strategy: 2, chunkSize: 10
-        }, 0);
+        testDeflate(long_sample, onTypeOf15(2,10), 0);
       });
     });
 
     //in port checking input parameters was removed
-    it('inflatebadparameters1', 5, () => {
-      let ret, strm;
+    it('inflatebadparameters', 5, () => {
+      let ret:string;
 
+      let deflate1: Object = deflate
       ret = deflate(null, 0);
       expect(ret).assertDeepEquals(c.Z_STREAM_ERROR)
 
 
-      strm = new ZStream();
+      let strm:ZStream = new ZStream();
       //
       ret = deflateInit(null);
 
@@ -157,6 +131,15 @@ export default function BeflateCoverTest() {
     });
 
   })
+}
+
+function testDeflate(data:string | Uint8Array, opts:object, flush:number): void {
+  let deflator:pako.Deflate = new pako.Deflate(opts);
+  deflator.push(data, flush);
+  deflator.push(data, true);
+  let errcode:Error = deflator.err;
+
+  expect(errcode).assertEqual(0)
 }
 
 

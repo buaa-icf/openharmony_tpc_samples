@@ -13,40 +13,40 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-import BigNumber from 'bignumber.js';
+import { BigNumber } from './BigNumber';
 import Test from './tester';
 
 export default function toNumber() {
-  describe('toNumbertest', function () {
+  describe('toNumbertest', ()=> {
 
-    function isMinusZero(n) {
-      return n === 0 ? 1 / n === -Infinity : null
+    let isMinusZero = (n:number)=>  {
+      return n === 0 ? 1 / n === Number.NEGATIVE_INFINITY : null
     }
 
-    function t(value, n) {
+    let t = (value:BigNumber.Value, n:string | boolean |(() => BigNumber)|number|BigNumber|Function)=> {
       new Test().areEqual(n, new BigNumber(value).toNumber());
     }
 
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(()=> {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(()=> {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(()=> {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(()=> {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    it('toNumber', 0, function () {
+    it('toNumber', 0, ()=> {
       BigNumber.config({
         DECIMAL_PLACES: 20,
         ROUNDING_MODE: 4,
@@ -81,12 +81,12 @@ export default function toNumber() {
       t('-1e+0', -1);
       t('-1e-0', -1);
 
-      t(Infinity, 1 / 0);
+      t(Number.POSITIVE_INFINITY, 1 / 0);
       t('Infinity', 1 / 0);
-      t(-Infinity, -1 / 0);
+      t(Number.NEGATIVE_INFINITY, -1 / 0);
       t('-Infinity', -1 / 0);
-      t(NaN, NaN);
-      t('NaN', NaN);
+      t(Number.NaN, Number.NaN);
+      t('NaN', Number.NaN);
 
       t('9.999999e+1000000000', 1 / 0);
       t('-9.999999e+1000000000', -1 / 0);

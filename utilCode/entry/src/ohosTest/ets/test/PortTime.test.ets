@@ -14,25 +14,27 @@
  */
 
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect, TestType } from '@ohos/hypium'
-// @ts-ignore
+
 import randomColor from 'randomcolor';
 import { CountryUtils, TempUtils } from '@ohos/util_code'
 import gcoord from 'gcoord'
-// @ts-ignore
+
 import imtype from 'imtype';
-// @ts-ignore
+
 import { get12, get24 } from 'time-ampm';
 import isLeapYear from 'leap-year';
-// @ts-ignore
+
 import cache from 'memory-cache';
+import { Position } from 'gcoord'
+import { GlobalContext } from './GlobalContext';
 
 export default function PortTimeTest() {
-  describe('PortTimeTest', function () {
+  describe('PortTimeTest', () => {
 
     const BASE_COUNT = 2000 //循环次数，测试普通接口性能
     const BASELINE_HASSIMECASR = 300 //性能基线
     const TAG = "PortTimeTestTAG_";
-    it('randomColorFormat_rgb', TestType.PERFORMANCE, async function (done) { //第一个参数自定义
+    it('randomColorFormat_rgb', TestType.PERFORMANCE, async (done:Function) => { //第一个参数自定义
       let startTime = new Date().getTime() //毫秒值
       for (let index = 0; index < BASE_COUNT; index++) {
         randomColor.randomColor()
@@ -45,7 +47,7 @@ export default function PortTimeTest() {
       done()
     })
 
-    it('getCountryCodeByLanguage', TestType.PERFORMANCE, async function (done) { //第一个参数自定义
+    it('getCountryCodeByLanguage', TestType.PERFORMANCE, async (done:Function) => { //第一个参数自定义
       let startTime = new Date().getTime() //毫秒值
       for (let index = 0; index < BASE_COUNT; index++) {
         CountryUtils.getCountryCodeByLanguage()
@@ -58,7 +60,7 @@ export default function PortTimeTest() {
       done()
     })
 
-    it('getCountryCode', TestType.PERFORMANCE, async function (done) { //第一个参数自定义
+    it('getCountryCode', TestType.PERFORMANCE, async (done:Function) => { //第一个参数自定义
       let startTime = new Date().getTime() //毫秒值
       for (let index = 0; index < BASE_COUNT; index++) {
         CountryUtils.getCountryCode("AL")
@@ -71,10 +73,10 @@ export default function PortTimeTest() {
       done()
     })
 
-    it('gcoordTransform', TestType.PERFORMANCE, async function (done) { //第一个参数自定义
+    it('gcoordTransform', TestType.PERFORMANCE, async (done:Function) => { //第一个参数自定义
       let startTime = new Date().getTime() //毫秒值
       for (let index = 0; index < BASE_COUNT; index++) {
-        gcoord.transform(
+        gcoord.transform<Position>(
           [116.403988, 39.914266], // 经纬度坐标
           gcoord.GCJ02, // 当前坐标系
           gcoord.BD09 // 目标坐标系
@@ -89,16 +91,17 @@ export default function PortTimeTest() {
     })
 
 
-    it('isJpg', TestType.PERFORMANCE, async function (done) { //第一个参数自定义
+    it('isJpg', TestType.PERFORMANCE, async (done:Function) => { //第一个参数自定义
       let startTime = new Date().getTime() //毫秒值
 
-      globalThis.context.resourceManager.getMedia($r('app.media.jpg'))
+      let context:Context = GlobalContext.getContext().getObject("context") as Context
+      context.resourceManager.getMediaContent( $r("app.media.jpg").id)
         .then(data => {
           for (let index = 0; index < BASE_COUNT; index++) {
             imtype.isJPG(new Uint8Array(data))
           }
         })
-        .catch(err => {
+        .catch((err:Error) => {
           console.log('addFileToDisk err=' + err)
         })
 
@@ -111,16 +114,17 @@ export default function PortTimeTest() {
     })
 
 
-    it('isPNG', TestType.PERFORMANCE, async function (done) { //第一个参数自定义
+    it('isPNG', TestType.PERFORMANCE, async (done:Function) => { //第一个参数自定义
       let startTime = new Date().getTime() //毫秒值
 
-      globalThis.context.resourceManager.getMedia($r('app.media.png'))
+      let context:Context = GlobalContext.getContext().getObject("context") as Context
+      context.resourceManager.getMediaContent($r("app.media.png").id)
         .then(data => {
           for (let index = 0; index < BASE_COUNT; index++) {
             imtype.isPNG(new Uint8Array(data))
           }
         })
-        .catch(err => {
+        .catch((err:Error) => {
           console.log('addFileToDisk err=' + err)
         })
 
@@ -132,16 +136,17 @@ export default function PortTimeTest() {
       done()
     })
 
-    it('isGIF', TestType.PERFORMANCE, async function (done) { //第一个参数自定义
+    it('isGIF', TestType.PERFORMANCE, async (done:Function) => { //第一个参数自定义
       let startTime = new Date().getTime() //毫秒值
 
-      globalThis.context.resourceManager.getMedia($r('app.media.gif'))
+      let context:Context = GlobalContext.getContext().getObject("context") as Context
+      context.resourceManager.getMediaContent($r("app.media.gif").id)
         .then(data => {
           for (let index = 0; index < BASE_COUNT; index++) {
             imtype.isGIF(new Uint8Array(data))
           }
         })
-        .catch(err => {
+        .catch((err:Error) => {
           console.log('addFileToDisk err=' + err)
         })
 
@@ -154,16 +159,17 @@ export default function PortTimeTest() {
     })
 
 
-    it('isBMP', TestType.PERFORMANCE, async function (done) { //第一个参数自定义
+    it('isBMP', TestType.PERFORMANCE, async (done:Function) => { //第一个参数自定义
       let startTime = new Date().getTime() //毫秒值
-      globalThis.context.resourceManager.getMedia($r('app.media.bmp'))
+      let context:Context = GlobalContext.getContext().getObject("context") as Context
+      context.resourceManager.getMediaContent($r("app.media.bmp").id)
         .then(data => {
           for (let index = 0; index < BASE_COUNT; index++) {
             imtype.isBMP(new Uint8Array(data))
           }
 
         })
-        .catch(err => {
+        .catch((err:Error) => {
           console.log('addFileToDisk err=' + err)
         })
 
@@ -176,16 +182,17 @@ export default function PortTimeTest() {
     })
 
 
-    it('isTIF', TestType.PERFORMANCE, async function (done) { //第一个参数自定义
+    it('isTIF', TestType.PERFORMANCE, async (done:Function) => { //第一个参数自定义
       let startTime = new Date().getTime() //毫秒值
 
-      globalThis.context.resourceManager.getMedia($r('app.media.tif'))
+      let context:Context = GlobalContext.getContext().getObject("context") as Context
+      context.resourceManager.getMediaContent($r("app.media.tif").id)
         .then(data => {
           for (let index = 0; index < BASE_COUNT; index++) {
             imtype.isTIF(new Uint8Array(data))
           }
         })
-        .catch(err => {
+        .catch((err:Error) => {
           console.log('addFileToDisk err=' + err)
         })
 
@@ -197,7 +204,7 @@ export default function PortTimeTest() {
       done()
     })
 
-    it('F2C', TestType.PERFORMANCE, async function (done) { //第一个参数自定义
+    it('F2C', TestType.PERFORMANCE, async (done:Function) => { //第一个参数自定义
       let startTime = new Date().getTime() //毫秒值
       for (let index = 0; index < BASE_COUNT; index++) {
         TempUtils.F2C(89.6)
@@ -210,7 +217,7 @@ export default function PortTimeTest() {
       done()
     })
 
-    it('C2F', TestType.PERFORMANCE, async function (done) { //第一个参数自定义
+    it('C2F', TestType.PERFORMANCE, async (done:Function) => { //第一个参数自定义
       let startTime = new Date().getTime() //毫秒值
       for (let index = 0; index < BASE_COUNT; index++) {
         TempUtils.C2F(89.6)
@@ -223,7 +230,7 @@ export default function PortTimeTest() {
       done()
     })
 
-    it('get12', TestType.PERFORMANCE, async function (done) { //第一个参数自定义
+    it('get12', TestType.PERFORMANCE, async (done:Function) => { //第一个参数自定义
       let startTime = new Date().getTime() //毫秒值
       for (let index = 0; index < BASE_COUNT; index++) {
         get12(0)
@@ -236,7 +243,7 @@ export default function PortTimeTest() {
       done()
     })
 
-    it('get24', TestType.PERFORMANCE, async function (done) { //第一个参数自定义
+    it('get24', TestType.PERFORMANCE, async (done:Function) => { //第一个参数自定义
       let startTime = new Date().getTime() //毫秒值
       for (let index = 0; index < BASE_COUNT; index++) {
         get24('10 pm')
@@ -250,7 +257,7 @@ export default function PortTimeTest() {
     })
 
 
-    it('isLeapYear', TestType.PERFORMANCE, async function (done) { //第一个参数自定义
+    it('isLeapYear', TestType.PERFORMANCE, async (done:Function) => { //第一个参数自定义
       let startTime = new Date().getTime() //毫秒值
       for (let index = 0; index < BASE_COUNT; index++) {
         isLeapYear(2016)
@@ -264,7 +271,7 @@ export default function PortTimeTest() {
 
     })
 
-    it('cachePut', TestType.PERFORMANCE, async function (done) { //第一个参数自定义
+    it('cachePut', TestType.PERFORMANCE, async (done:Function) => { //第一个参数自定义
       let startTime = new Date().getTime() //毫秒值
       for (let index = 0; index < BASE_COUNT; index++) {
         cache.put('foo', 'bar');
@@ -277,7 +284,7 @@ export default function PortTimeTest() {
       done()
     })
 
-    it('cacheGet', TestType.PERFORMANCE, async function (done) { //第一个参数自定义
+    it('cacheGet', TestType.PERFORMANCE, async (done:Function) => { //第一个参数自定义
       let startTime = new Date().getTime() //毫秒值
       for (let index = 0; index < BASE_COUNT; index++) {
         cache.get('foo');
@@ -290,7 +297,7 @@ export default function PortTimeTest() {
       done()
     })
 
-    it('cacheDet', TestType.PERFORMANCE, async function (done) { //第一个参数自定义
+    it('cacheDet', TestType.PERFORMANCE, async (done:Function) => { //第一个参数自定义
       let startTime = new Date().getTime() //毫秒值
       for (let index = 0; index < BASE_COUNT; index++) {
         cache.del('foo');
@@ -304,7 +311,7 @@ export default function PortTimeTest() {
     })
 
 
-    it('cacheClear', TestType.PERFORMANCE, async function (done) { //第一个参数自定义
+    it('cacheClear', TestType.PERFORMANCE, async (done:Function) => { //第一个参数自定义
       let startTime = new Date().getTime() //毫秒值
       for (let index = 0; index < BASE_COUNT; index++) {
         cache.clear();
@@ -318,7 +325,7 @@ export default function PortTimeTest() {
     })
 
 
-    it('cacheSize', TestType.PERFORMANCE, async function (done) { //第一个参数自定义
+    it('cacheSize', TestType.PERFORMANCE, async (done:Function) => { //第一个参数自定义
       let startTime = new Date().getTime() //毫秒值
       for (let index = 0; index < BASE_COUNT; index++) {
         cache.size();
@@ -332,7 +339,7 @@ export default function PortTimeTest() {
     })
 
 
-    it('cacheMemsize', TestType.PERFORMANCE, async function (done) { //第一个参数自定义
+    it('cacheMemsize', TestType.PERFORMANCE, async (done:Function) => { //第一个参数自定义
       let startTime = new Date().getTime() //毫秒值
       for (let index = 0; index < BASE_COUNT; index++) {
         cache.memsize();
@@ -345,7 +352,7 @@ export default function PortTimeTest() {
       done()
     })
 
-    it('cacheDebug', TestType.PERFORMANCE, async function (done) { //第一个参数自定义
+    it('cacheDebug', TestType.PERFORMANCE, async (done:Function) => { //第一个参数自定义
       let startTime = new Date().getTime() //毫秒值
       for (let index = 0; index < BASE_COUNT; index++) {
         cache.debug(true)
@@ -358,7 +365,7 @@ export default function PortTimeTest() {
       done()
     })
 
-    it('cacheHits', TestType.PERFORMANCE, async function (done) { //第一个参数自定义
+    it('cacheHits', TestType.PERFORMANCE, async (done:Function) => { //第一个参数自定义
       let startTime = new Date().getTime() //毫秒值
       cache.debug(true)
       for (let index = 0; index < BASE_COUNT; index++) {
@@ -373,7 +380,7 @@ export default function PortTimeTest() {
     })
 
 
-    it('cacheMisses', TestType.PERFORMANCE, async function (done) { //第一个参数自定义
+    it('cacheMisses', TestType.PERFORMANCE, async (done:Function) => { //第一个参数自定义
       let startTime = new Date().getTime() //毫秒值
       cache.debug(true)
       for (let index = 0; index < BASE_COUNT; index++) {
@@ -387,7 +394,7 @@ export default function PortTimeTest() {
       done()
     })
 
-    it('cacheKeys', TestType.PERFORMANCE, async function (done) { //第一个参数自定义
+    it('cacheKeys', TestType.PERFORMANCE, async  (done:Function) => { //第一个参数自定义
       let startTime = new Date().getTime() //毫秒值
 
       for (let index = 0; index < BASE_COUNT; index++) {
@@ -401,7 +408,7 @@ export default function PortTimeTest() {
       done()
     })
 
-    it('cacheExportJson', TestType.PERFORMANCE, async function (done) { //第一个参数自定义
+    it('cacheExportJson', TestType.PERFORMANCE, async (done:Function) => { //第一个参数自定义
       let startTime = new Date().getTime() //毫秒值
 
       for (let index = 0; index < BASE_COUNT; index++) {
@@ -415,7 +422,7 @@ export default function PortTimeTest() {
       done()
     })
 
-    it('cacheImportJson', TestType.PERFORMANCE, async function (done) { //第一个参数自定义
+    it('cacheImportJson', TestType.PERFORMANCE, async (done:Function) => { //第一个参数自定义
       let startTime = new Date().getTime() //毫秒值
 
       for (let index = 0; index < BASE_COUNT; index++) {

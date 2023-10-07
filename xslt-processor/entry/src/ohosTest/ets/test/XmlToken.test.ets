@@ -28,26 +28,26 @@ import {
 } from 'xslt-processor/src/xmltoken.js'
 
 export default function xmlTokenTest() {
-  describe('XmlTokenTest', function () {
+  describe('XmlTokenTest', () => {
 
     // Test if regexp matches the str and RegExp.exec returns exactly the match.
-    const assertOk = (comment, regexp, str, match) => {
+    const assertOk = (comment: string, regexp: RegExp, str?: string, match?: string) => {
       //      assert.notEqual(regexp.exec(str), null, comment);
-      expect(regexp.exec(str)[0]).assertEqual(match);
-      expect(regexp.test(str)).assertTrue();
+        expect(regexp.exec(str)![0]).assertEqual(match);
+        expect(regexp.test(str)).assertTrue();
     }
 
     // Test if regexp doesn't match the str.
-    const assertNg = (comment, regexp, str) => {
+    const assertNg = (comment: string, regexp: RegExp, str?: string) => {
       expect(regexp.exec(str)).assertEqual(null);
       expect(!regexp.test(str)).assertTrue();
     }
 
     // Concat chars in various way and test them with regexp.
-    const doTestXmlName = (comment, regexp,
-                           okFirstChars, ngFirstChars,
-                           okSecondChars, ngSecondChars) => {
-      const okSecondString = okSecondChars.join('');
+    const doTestXmlName = (comment: string, regexp: RegExp,
+                           okFirstChars: string[], ngFirstChars: string[],
+                           okSecondChars: string[], ngSecondChars: string[]) => {
+      const okSecondString: string = okSecondChars.join('');
       for (let i = 0; i < okFirstChars.length; i++) {
         assertOk(`${comment} with ok #${i}`, regexp, okFirstChars[i], okFirstChars[i]);
         assertOk(`${comment} with ok #${i} + oks`, regexp,

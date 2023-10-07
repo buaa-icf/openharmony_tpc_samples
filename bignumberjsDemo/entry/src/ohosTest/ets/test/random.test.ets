@@ -13,33 +13,34 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-import BigNumber from 'bignumber.js';
+import { BigNumber } from './BigNumber';
 import Test from './tester';
+import Utils from './Utils';
 
 export default function random() {
-  describe('randomtest', function () {
+  describe('randomtest', ()=> {
 
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(()=> {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(()=> {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(()=> {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(()=> {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    it('random', 0, function () {
-      var dp, i, msg, r;
+    it('random', 0, ()=> {
+      let dp:number = 0, i:number, msg:string|undefined, r: BigNumber =BigNumber.random();
 
       BigNumber.config({ CRYPTO: false });
 
@@ -57,7 +58,8 @@ export default function random() {
         //new Test().write('\n  dp: ' + dp + '  r: ' + r.toString());
 
         // Check that the random number r has a maximum of dp decimal places.
-        if ( r.dp() > dp ) {
+        let rdp = r.dp()
+        if (rdp !== null && rdp > dp ) {
           msg = 'r.dp() > dp';
 
           // Check 0 <= r < 1
@@ -84,19 +86,17 @@ export default function random() {
       }
 
       BigNumber.random(undefined);
-      BigNumber.random(null);
+      Utils.random(null);
       BigNumber.random(3);
       BigNumber.random(0);
 
-      new Test().isException(function () { BigNumber.random(Infinity) }, 'Infinity');
-      // @ts-ignore
-      new Test().isException(function () { BigNumber.random('-Infinity') }, "'-Infinity'");
-      new Test().isException(function () { BigNumber.random(NaN) }, 'NaN');
-      // @ts-ignore
-      new Test().isException(function () { BigNumber.random('ugh') }, "'ugh'");
-      new Test().isException(function () { BigNumber.random(-1) }, "-1");
-      // @ts-ignore
-      new Test().isException(function () { BigNumber.random({}) }, "{}");
+      new Test().isException(()=> { BigNumber.random(Number.POSITIVE_INFINITY) }, 'Infinity');
+      new Test().isException(()=> { Utils.random('-Infinity') }, "'-Infinity'");
+      new Test().isException(()=> { BigNumber.random(Number.NaN) }, 'NaN');
+
+      new Test().isException(()=> { Utils.random('ugh') }, "'ugh'");
+      new Test().isException(()=> { BigNumber.random(-1) }, "-1");
+      new Test().isException(()=> { Utils.random({}) }, "{}");
     })
   })
 }

@@ -17,27 +17,27 @@ import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from
 import base32 from 'hi-base32'
 
 export default function abilityTest() {
-  describe('ActsAbilityTest', function () {
+  describe('ActsAbilityTest', ()=> {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(()=> {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(()=> {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(()=> {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(()=> {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    it('encode',0, function () {
+    it('encode',0, ()=> {
       const expected = '4S4K3ZUWQ4======';
       let encd = base32.encode('中文');
       expect(expected).assertEqual(encd)
@@ -47,7 +47,7 @@ export default function abilityTest() {
       expect(expected2).assertEqual(encdString)
     })
 
-    it('decode',0, function () {
+    it('decode',0, ()=> {
       const expected = 'Hello';
       let deco:string = base32.decode('JBSWY3DP');
       expect(deco).assertEqual(expected)

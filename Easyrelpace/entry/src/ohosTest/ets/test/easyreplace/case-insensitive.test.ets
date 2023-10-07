@@ -15,27 +15,26 @@
 import hilog from '@ohos.hilog';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 
-
-import { er } from "easy-replace";
+import { er, Opts } from "easy-replace";
 
 export default function caseinsensitive() {
-  describe('caseinsensitive', function () {
+  describe('caseinsensitive', () => {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(() => {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(() => {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(() => {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(() => {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
@@ -50,97 +49,87 @@ export default function caseinsensitive() {
     //   expect(a).assertEqual(a)
     // })
 
-    var count = 0;
-    var test = function (name, func){
-     name = name.replace(/[ /d]/g, '');
-     name = name.replace(/-/g,"");
-      it(name,count++,func)
+    let count: number = 0;
+    let test = (name: string, func: Function) => {
+      name = name.replace(new RegExp("/[ /d]/g"), '');
+      name = name.replace(new RegExp("/-/g"), "");
+      it(name, count++, func)
     }
 
-    var equal = function (src,dst,tag){
-      console.log('tag:'+tag+"  src="+src+ " dst="+dst);
+    let equal = (src: string, dst: string, tag: string) => {
+      console.log('tag:' + tag + "  src=" + src + " dst=" + dst);
       expect(src).assertEqual(dst)
     }
-
 
     // ==============================
     // case-insensitive opts flag
     // ==============================
-
+    let optsFunc = (leftOutsideNot:boolean = false,
+                    leftOutside:boolean = false,
+                    leftMaybe:boolean = false,
+                    searchFor:boolean = false,
+                    rightMaybe:boolean = false,
+                    rightOutside:boolean = false,
+                    rightOutsideNot:boolean = false,
+                    searchForText:string|string[]="bbb",
+                    leftOutsideNotText:string|string[]="",
+                    leftOutsideText:string|string[]="",
+                    leftMaybeText:string|string[]="a",
+                    rightMaybeText:string|string[]="c",
+                    rightOutsideText:string|string[]="",
+                    rightOutsideNotText:string|string[]=""): Opts => {
+      return {
+        leftOutsideNot: leftOutsideNotText,
+        leftOutside: leftOutsideText,
+        leftMaybe: leftMaybeText,
+        searchFor: searchForText,
+        rightMaybe: rightMaybeText,
+        rightOutside:rightOutsideText,
+        rightOutsideNot:rightOutsideNotText,
+        i: {
+          leftOutsideNot,
+          leftOutside,
+          leftMaybe,
+          searchFor,
+          rightMaybe,
+          rightOutside,
+          rightOutsideNot
+        }
+      }
+    }
     test("01 - case-insensitive flag works", () => {
       equal(
-        er(
-          "zzz abbb zzz",
-          // @ts-ignore
-          {
-            leftOutsideNot: "",
-            leftOutside: "",
-            leftMaybe: "a",
-            searchFor: "bbb",
-            rightMaybe: "c",
-            rightOutside: "",
-            rightOutsideNot: "",
-          },
-          "yyy"
-        ),
+        er("zzz abbb zzz", optsFunc(), "yyy"),
         "zzz yyy zzz",
         "test 15.1.1 - all ok, flag off"
       );
       equal(
         er(
-          "zzz aBBB zzz",
-          // @ts-ignore
-          {
-            leftOutsideNot: "",
-            leftOutside: "",
-            leftMaybe: "a",
-            searchFor: "bbb",
-            rightMaybe: "c",
-            rightOutside: "",
-            rightOutsideNot: "",
-          },
-          "yyy"
+          "zzz aBBB zzz", optsFunc(), "yyy"
         ),
         "zzz aBBB zzz",
         "test 15.1.2 - case mismatch, nothing replaced because flag's off"
       );
       equal(
-        er(
-          "zzz aBBB zzz",
-          {
-            leftOutsideNot: "",
-            leftOutside: "",
-            leftMaybe: "a",
-            searchFor: "bbb",
-            rightMaybe: "c",
-            rightOutside: "",
-            rightOutsideNot: "",
-            // @ts-ignore
-            i: {
-              searchFor: true,
-            },
-          },
-          "yyy"
-        ),
+        er("zzz aBBB zzz", optsFunc(false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false), "yyy"),
         "zzz yyy zzz",
         "test 15.1.3 - case mismatch, but flag allows it, so replace happens"
       );
       equal(
-        er(
-          "zzz aBBB zzz bbB zzz aBbBc zzz",
-          {
-            leftOutsideNot: "",
-            leftOutside: "",
-            leftMaybe: "a",
-            searchFor: "bbb",
-            rightMaybe: "c",
-            rightOutside: "",
-            rightOutsideNot: "",
-            // @ts-ignore
-            i: {
-              searchFor: true,
-            },
-          },
+        er("zzz aBBB zzz bbB zzz aBbBc zzz", optsFunc(false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false)
+          ,
           "yyy"
         ),
         "zzz yyy zzz yyy zzz yyy zzz",
@@ -151,18 +140,7 @@ export default function caseinsensitive() {
     test("02 - case-insensitive leftMaybe", () => {
       equal(
         er(
-          "zzz Abbb zzz",
-          // @ts-ignore
-          {
-            leftOutsideNot: "",
-            leftOutside: "",
-            leftMaybe: "a",
-            searchFor: "bbb",
-            rightMaybe: "c",
-            rightOutside: "",
-            rightOutsideNot: "",
-          },
-          "yyy"
+          "zzz Abbb zzz",optsFunc() , "yyy"
         ),
         "zzz Ayyy zzz",
         "02.01"
@@ -170,19 +148,13 @@ export default function caseinsensitive() {
       equal(
         er(
           "zzz Abbb zzz",
-          {
-            leftOutsideNot: "",
-            leftOutside: "",
-            leftMaybe: "a",
-            searchFor: "bbb",
-            rightMaybe: "c",
-            rightOutside: "",
-            rightOutsideNot: "",
-            // @ts-ignore
-            i: {
-              leftMaybe: true,
-            },
-          },
+          optsFunc(false,
+            false,
+            true,
+            false,
+            false,
+            false,
+            false),
           "yyy"
         ),
         "zzz yyy zzz",
@@ -191,19 +163,13 @@ export default function caseinsensitive() {
       equal(
         er(
           "zzz Abbb zzz",
-          {
-            leftOutsideNot: "",
-            leftOutside: "",
-            leftMaybe: "a",
-            searchFor: "bBb",
-            rightMaybe: "c",
-            rightOutside: "",
-            rightOutsideNot: "",
-            // @ts-ignore
-            i: {
-              leftMaybe: true,
-            },
-          },
+          optsFunc(false,
+            false,
+            true,
+            false,
+            false,
+            false,
+            false,"bBb"),
           "yyy"
         ),
         "zzz Abbb zzz",
@@ -212,20 +178,13 @@ export default function caseinsensitive() {
       equal(
         er(
           "zzz Abbb zzz",
-          {
-            leftOutsideNot: "",
-            leftOutside: "",
-            leftMaybe: "a",
-            searchFor: "bBb",
-            rightMaybe: "c",
-            rightOutside: "",
-            rightOutsideNot: "",
-            // @ts-ignore
-            i: {
-              leftMaybe: true,
-              searchFor: true,
-            },
-          },
+          optsFunc(false,
+            false,
+            true,
+            true,
+            false,
+            false,
+            false,"bBb"),
           "yyy"
         ),
         "zzz yyy zzz",
@@ -237,16 +196,7 @@ export default function caseinsensitive() {
       equal(
         er(
           "zzz bbbC zzz",
-          // @ts-ignore
-          {
-            leftOutsideNot: "",
-            leftOutside: "",
-            leftMaybe: "a",
-            searchFor: "bbb",
-            rightMaybe: "c",
-            rightOutside: "",
-            rightOutsideNot: "",
-          },
+          optsFunc(),
           "yyy"
         ),
         "zzz yyyC zzz",
@@ -255,19 +205,13 @@ export default function caseinsensitive() {
       equal(
         er(
           "zzz bbbC zzz",
-          {
-            leftOutsideNot: "",
-            leftOutside: "",
-            leftMaybe: "a",
-            searchFor: "bbb",
-            rightMaybe: "c",
-            rightOutside: "",
-            rightOutsideNot: "",
-            // @ts-ignore
-            i: {
-              rightMaybe: true,
-            },
-          },
+          optsFunc(false,
+            false,
+            false,
+            false,
+            true,
+            false,
+            false),
           "yyy"
         ),
         "zzz yyy zzz",
@@ -276,19 +220,13 @@ export default function caseinsensitive() {
       equal(
         er(
           "zzz bbbC zzz",
-          {
-            leftOutsideNot: "",
-            leftOutside: "",
-            leftMaybe: "a",
-            searchFor: "bBb",
-            rightMaybe: "c",
-            rightOutside: "",
-            rightOutsideNot: "",
-            // @ts-ignore
-            i: {
-              rightMaybe: true,
-            },
-          },
+          optsFunc(false,
+            false,
+            false,
+            false,
+            true,
+            false,
+            false,"bBb"),
           "yyy"
         ),
         "zzz bbbC zzz",
@@ -297,20 +235,13 @@ export default function caseinsensitive() {
       equal(
         er(
           "zzz bbbC zzz",
-          {
-            leftOutsideNot: "",
-            leftOutside: "",
-            leftMaybe: "a",
-            searchFor: "bBb",
-            rightMaybe: "c",
-            rightOutside: "",
-            rightOutsideNot: "",
-            // @ts-ignore
-            i: {
-              rightMaybe: true,
-              searchFor: true,
-            },
-          },
+          optsFunc(false,
+            false,
+            false,
+            true,
+            true,
+            false,
+            false,"bBb"),
           "yyy"
         ),
         "zzz yyy zzz",
@@ -322,16 +253,7 @@ export default function caseinsensitive() {
       equal(
         er(
           "zzz Abbb zzz",
-          // @ts-ignore
-          {
-            leftOutsideNot: "",
-            leftOutside: "a",
-            leftMaybe: "",
-            searchFor: "bbb",
-            rightMaybe: "",
-            rightOutside: "",
-            rightOutsideNot: "",
-          },
+          optsFunc(false,false,false,false,false,false,false,"bbb","","a","",""),
           "yyy"
         ),
         "zzz Abbb zzz",
@@ -340,19 +262,13 @@ export default function caseinsensitive() {
       equal(
         er(
           "zzz Abbb zzz",
-          {
-            leftOutsideNot: "",
-            leftOutside: "a",
-            leftMaybe: "",
-            searchFor: "bbb",
-            rightMaybe: "",
-            rightOutside: "",
-            rightOutsideNot: "",
-            // @ts-ignore
-            i: {
-              leftOutside: true,
-            },
-          },
+          optsFunc(false,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,"bbb","","a","",""),
           "yyy"
         ),
         "zzz Ayyy zzz",
@@ -361,19 +277,13 @@ export default function caseinsensitive() {
       equal(
         er(
           "zzz Abbb zzz",
-          {
-            leftOutsideNot: "",
-            leftOutside: "a",
-            leftMaybe: "",
-            searchFor: "bBb",
-            rightMaybe: "",
-            rightOutside: "",
-            rightOutsideNot: "",
-            // @ts-ignore
-            i: {
-              leftOutside: true,
-            },
-          },
+          optsFunc(false,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,"bBb","","a","",""),
           "yyy"
         ),
         "zzz Abbb zzz",
@@ -382,20 +292,13 @@ export default function caseinsensitive() {
       equal(
         er(
           "zzz Abbb zzz",
-          {
-            leftOutsideNot: "",
-            leftOutside: "a",
-            leftMaybe: "",
-            searchFor: "bBb",
-            rightMaybe: "",
-            rightOutside: "",
-            rightOutsideNot: "",
-            // @ts-ignore
-            i: {
-              leftOutside: true,
-              searchFor: true,
-            },
-          },
+          optsFunc(false,
+            true,
+            false,
+            true,
+            false,
+            false,
+            false,"bBb","","a","",""),
           "yyy"
         ),
         "zzz Ayyy zzz",
@@ -407,16 +310,7 @@ export default function caseinsensitive() {
       equal(
         er(
           "zzz bbbC zzz",
-          // @ts-ignore
-          {
-            leftOutsideNot: "",
-            leftOutside: "",
-            leftMaybe: "",
-            searchFor: "bbb",
-            rightMaybe: "",
-            rightOutside: "c",
-            rightOutsideNot: "",
-          },
+          optsFunc(false,false,false,false,false,false,false,"bbb","","","","","c"),
           "yyy"
         ),
         "zzz bbbC zzz",
@@ -425,19 +319,13 @@ export default function caseinsensitive() {
       equal(
         er(
           "zzz bbbC zzz",
-          {
-            leftOutsideNot: "",
-            leftOutside: "",
-            leftMaybe: "",
-            searchFor: "bbb",
-            rightMaybe: "",
-            rightOutside: "c",
-            rightOutsideNot: "",
-            // @ts-ignore
-            i: {
-              rightOutside: true,
-            },
-          },
+          optsFunc(false,
+            false,
+            false,
+            false,
+            false,
+            true,
+            false,"bbb","","","","","c"),
           "yyy"
         ),
         "zzz yyyC zzz",
@@ -445,20 +333,13 @@ export default function caseinsensitive() {
       );
       equal(
         er(
-          "zzz bbbC zzz",
-          {
-            leftOutsideNot: "",
-            leftOutside: "",
-            leftMaybe: "",
-            searchFor: "bBb",
-            rightMaybe: "",
-            rightOutside: "c",
-            rightOutsideNot: "",
-            // @ts-ignore
-            i: {
-              rightOutside: true,
-            },
-          },
+          "zzz bbbC zzz", optsFunc(false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,"bBb","","","","","c"),
           "yyy"
         ),
         "zzz bbbC zzz",
@@ -466,21 +347,13 @@ export default function caseinsensitive() {
       );
       equal(
         er(
-          "zzz bbbC zzz",
-          {
-            leftOutsideNot: "",
-            leftOutside: "",
-            leftMaybe: "",
-            searchFor: "bBb",
-            rightMaybe: "",
-            rightOutside: "c",
-            rightOutsideNot: "",
-            // @ts-ignore
-            i: {
-              rightOutside: true,
-              searchFor: true,
-            },
-          },
+          "zzz bbbC zzz", optsFunc(false,
+          false,
+          false,
+          true,
+          false,
+          true,
+          false,"bBb","","","","","c"),
           "yyy"
         ),
         "zzz yyyC zzz",
@@ -492,16 +365,13 @@ export default function caseinsensitive() {
       equal(
         er(
           "zzz Abbb zzz",
-          // @ts-ignore
-          {
-            leftOutsideNot: "a",
-            leftOutside: "",
-            leftMaybe: "",
-            searchFor: "bbb",
-            rightMaybe: "",
-            rightOutside: "",
-            rightOutsideNot: "",
-          },
+          optsFunc(false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,"bbb","a","","",""),
           "yyy"
         ),
         "zzz Ayyy zzz",
@@ -510,19 +380,13 @@ export default function caseinsensitive() {
       equal(
         er(
           "zzz Abbb zzz",
-          {
-            leftOutsideNot: "a",
-            leftOutside: "",
-            leftMaybe: "",
-            searchFor: "bbb",
-            rightMaybe: "",
-            rightOutside: "",
-            rightOutsideNot: "",
-            // @ts-ignore
-            i: {
-              leftOutsideNot: true,
-            },
-          },
+          optsFunc(true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,"bbb","a","","",""),
           "yyy"
         ),
         "zzz Abbb zzz",
@@ -531,19 +395,13 @@ export default function caseinsensitive() {
       equal(
         er(
           "zzz Abbb zzz",
-          {
-            leftOutsideNot: "a",
-            leftOutside: "",
-            leftMaybe: "",
-            searchFor: "bBb",
-            rightMaybe: "",
-            rightOutside: "",
-            rightOutsideNot: "",
-            // @ts-ignore
-            i: {
-              leftOutsideNot: true,
-            },
-          },
+          optsFunc(true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,"bBb","a","","",""),
           "yyy"
         ),
         "zzz Abbb zzz",
@@ -551,21 +409,13 @@ export default function caseinsensitive() {
       );
       equal(
         er(
-          "zzz Abbb zzz",
-          {
-            leftOutsideNot: "a",
-            leftOutside: "",
-            leftMaybe: "",
-            searchFor: "bBb",
-            rightMaybe: "",
-            rightOutside: "",
-            rightOutsideNot: "",
-            // @ts-ignore
-            i: {
-              leftOutsideNot: true,
-              searchFor: true,
-            },
-          },
+          "zzz Abbb zzz", optsFunc(true,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,"bBb","a","","",""),
           "yyy"
         ),
         "zzz Abbb zzz",
@@ -574,20 +424,13 @@ export default function caseinsensitive() {
       equal(
         er(
           "zzz Abbb zzz",
-          {
-            leftOutsideNot: "a",
-            leftOutside: "",
-            leftMaybe: "",
-            searchFor: "bBb",
-            rightMaybe: "",
-            rightOutside: "",
-            rightOutsideNot: "",
-            // @ts-ignore
-            i: {
-              leftOutsideNot: false,
-              searchFor: true,
-            },
-          },
+          optsFunc(false,
+            false,
+            false,
+            true,
+            false,
+            false,
+            false,"bBb","a","","",""),
           "yyy"
         ),
         "zzz Ayyy zzz",
@@ -599,16 +442,13 @@ export default function caseinsensitive() {
       equal(
         er(
           "zzz bbbC zzz",
-          // @ts-ignore
-          {
-            leftOutsideNot: "",
-            leftOutside: "",
-            leftMaybe: "",
-            searchFor: "bbb",
-            rightMaybe: "",
-            rightOutside: "",
-            rightOutsideNot: "c",
-          },
+          optsFunc(false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,"bbb","","","","","","c"),
           "yyy"
         ),
         "zzz yyyC zzz",
@@ -617,19 +457,13 @@ export default function caseinsensitive() {
       equal(
         er(
           "zzz bbbC zzz",
-          {
-            leftOutsideNot: "",
-            leftOutside: "",
-            leftMaybe: "",
-            searchFor: "bbb",
-            rightMaybe: "",
-            rightOutside: "",
-            rightOutsideNot: "c",
-            // @ts-ignore
-            i: {
-              rightOutsideNot: true,
-            },
-          },
+          optsFunc(false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true,"bbb","","","","","","c"),
           "yyy"
         ),
         "zzz bbbC zzz",
@@ -638,19 +472,13 @@ export default function caseinsensitive() {
       equal(
         er(
           "zzz bbbC zzz",
-          {
-            leftOutsideNot: "",
-            leftOutside: "",
-            leftMaybe: "",
-            searchFor: "bBb",
-            rightMaybe: "",
-            rightOutside: "",
-            rightOutsideNot: "c",
-            // @ts-ignore
-            i: {
-              rightOutsideNot: true,
-            },
-          },
+          optsFunc(false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true,"bBb","","","","","","c"),
           "yyy"
         ),
         "zzz bbbC zzz",
@@ -659,20 +487,13 @@ export default function caseinsensitive() {
       equal(
         er(
           "zzz bbbC zzz",
-          {
-            leftOutsideNot: "",
-            leftOutside: "",
-            leftMaybe: "",
-            searchFor: "bBb",
-            rightMaybe: "",
-            rightOutside: "",
-            rightOutsideNot: "c",
-            // @ts-ignore
-            i: {
-              rightOutsideNot: true,
-              searchFor: true,
-            },
-          },
+          optsFunc(false,
+            false,
+            false,
+            true,
+            false,
+            false,
+            true,"bBb","","","","","","c"),
           "yyy"
         ),
         "zzz bbbC zzz",
@@ -681,28 +502,19 @@ export default function caseinsensitive() {
       equal(
         er(
           "zzz bbbC zzz",
-          {
-            leftOutsideNot: "",
-            leftOutside: "",
-            leftMaybe: "",
-            searchFor: "bBb",
-            rightMaybe: "",
-            rightOutside: "",
-            rightOutsideNot: "c",
-            // @ts-ignore
-            i: {
-              rightOutsideNot: false,
-              searchFor: true,
-            },
-          },
+          optsFunc(false,
+            false,
+            false,
+            true,
+            false,
+            false,
+            false,"bBb","","","","","","c"),
           "yyy"
         ),
         "zzz yyyC zzz",
         "07.05"
       );
     });
-
-
   })
 }
 

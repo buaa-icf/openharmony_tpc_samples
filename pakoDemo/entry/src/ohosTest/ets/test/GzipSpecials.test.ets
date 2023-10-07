@@ -15,36 +15,38 @@
 
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 import pako  from 'pako';
-
+import { GlobalContext } from './GlobalContext';
+import { onTypeOf8,onTypeOf10,onTypeOf11 } from "./IntertfaceData"
 export default function GzipSpecialsTest() {
   // fromCharCode, but understands right > 0xffff values
-  function a2s(array) {
-    return String.fromCharCode.apply(null, array);
+  let a2s = (array: Uint8Array):string => {
+    return String.fromCharCode(...array);
   }
 
-  var Z_SYNC_FLUSH = pako.constants.Z_SYNC_FLUSH;
-  describe('gzipspecialsTest', function () {
-    beforeAll(function () {
+  let Z_SYNC_FLUSH:pako.constants = pako.constants.Z_SYNC_FLUSH;
+  describe('gzipspecialsTest', () => {
+    beforeAll(() => {
 
     })
-    beforeEach(function () {
+    beforeEach(() => {
 
     })
-    afterEach(function () {
+    afterEach(() => {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(() => {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
 
     it('Readcustomheaders',0, () => {
 
-      globalThis.resourceManager.getMediaContent($r('app.media.gzip_headers').id).then(data=>{
+        let context:Context = GlobalContext.getContext().getObject("context") as Context
+        context.createModuleContext('entry_test').resourceManager.getMediaContent($r('app.media.gzip_headers').id).then(data=>{
 
-        const inflator = new pako.Inflate();
+        const inflator:pako.Inflate = new pako.Inflate();
         inflator.push(data);
         expect(inflator.header.name).assertEqual('test name');
         expect(inflator.header.comment).assertEqual('test comment');
@@ -55,26 +57,16 @@ export default function GzipSpecialsTest() {
     it('Writecustomheaders', 1, () => {
       const data = '           ';
 
-      const deflator = new pako.Deflate({
-        gzip: true,
-        header: {
-          hcrc: true,
-          time: 1234567,
-          os: 15,
-          name: 'test name',
-          comment: 'test comment',
-          extra: [ 4, 5, 6 ]
-        }
-      });
+      const deflator:pako.Deflate = new pako.Deflate(onTypeOf11(true,true,1234567,15,'test name','test comment', [ 4, 5, 6 ]));
       deflator.push(data, true);
 
-      const inflator = new pako.Inflate({ to: 'string' });
+      const inflator:pako.Inflate = new pako.Inflate(onTypeOf10('string'));
       inflator.push(deflator.result);
 
       expect(inflator.err).assertEqual(0);
       expect(inflator.result).assertEqual(data);
 
-      const header = inflator.header;
+      const header: pako.Inflate = inflator.header;
       expect(header.time).assertEqual(1234567);
       expect(header.os).assertEqual(15);
       expect(header.name).assertEqual('test name');
@@ -98,18 +90,17 @@ export default function GzipSpecialsTest() {
     //     new Uint8Array(zlib.gunzipSync(data))
     //   );
     // });
-
     it('WritewithZ_SYNC_FLUSH',2, () => {
-      const deflator = new pako.Deflate({ gzip: true });
+      const deflator:pako.Deflate = new pako.Deflate(onTypeOf8(true));
       let count = 0;
-      deflator.onData = function (chunk) {
-        this.chunks.push(chunk);
+      deflator.onData =  (chunk:Uint8Array) => {
+        deflator.chunks.push(chunk);
         count++;
       };
       deflator.push('12345', Z_SYNC_FLUSH);
       deflator.push('67890', true);
-      const flushed = deflator.result;
-      const normal = pako.gzip('1234567890');
+      const flushed:pako.deflator = deflator.result;
+      const normal:string = pako.gzip('1234567890');
       expect(count).assertEqual(2);
       expect(pako.ungzip(flushed)).assertDeepEquals(pako.ungzip(normal))
       expect(flushed.length > normal.length).assertTrue()

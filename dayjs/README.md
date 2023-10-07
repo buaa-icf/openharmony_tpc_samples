@@ -74,7 +74,9 @@ dayjs().format("Q Do k kk X x"); // 使用扩展后的API
 
 ## 约束与限制
 
-在下述版本验证通过：DevEco Studio: 3.2Release(3.1.3.400)，OpenHarmony SDK: API9 Release（3.2.11.5）。
+在下述版本验证通过：
+- DevEco Studio: 4.0(4.0.3.512), SDK: API10(4.0.10.9)
+- DevEco Studio: 3.2Release(3.1.3.400)，OpenHarmony SDK: API9 Release（3.2.11.5）。
 
 ## 贡献代码
 

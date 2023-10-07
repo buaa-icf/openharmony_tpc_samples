@@ -18,7 +18,7 @@ import { xmlParse } from 'xslt-processor/src/dom'
 import { xsltProcess } from 'xslt-processor/src/xslt'
 
 export default function variablesAsParametersTest() {
-  describe('VariablesAsParametersTest', function () {
+  describe('VariablesAsParametersTest', () => {
     it('variables_as_parameters_1', 0, () => {
       const xmlString = `<root>
       <test name="test1"/>
@@ -40,13 +40,12 @@ export default function variablesAsParametersTest() {
       </xsl:stylesheet>`;
 
       const expectedOutString = `<root><span>hugo</span></root>`;
-      const outXmlString = xsltProcess(xmlParse(xmlString), xmlParse(xsltString),
+
+      expect(xsltProcess(xmlParse(xmlString), xmlParse(xsltString),
         {
           test: "hugo"
         }
-      );
-
-      expect(outXmlString).assertEqual(expectedOutString);
+      )).assertEqual(expectedOutString);
     })
 
   })

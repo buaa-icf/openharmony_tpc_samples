@@ -12,16 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-let datas
+let datas:string=""
 
-export function setData(data: string, that) {
+export function setData(data: string) {
   datas = data
-  that.dialogController.open()
 }
 
 @CustomDialog
 export struct CustomDialogExample {
-  controller: CustomDialogController
+  controller?: CustomDialogController
 
   build() {
     Column() {
@@ -30,11 +29,13 @@ export struct CustomDialogExample {
       Flex({ justifyContent: FlexAlign.SpaceAround }) {
         Button('取消')
           .onClick(() => {
-            this.controller.close()
+            if(!!this.controller)
+              this.controller.close()
           }).backgroundColor(0xffffff).fontColor(Color.Black)
         Button('确定')
           .onClick(() => {
-            this.controller.close()
+            if(!!this.controller)
+              this.controller.close()
           }).backgroundColor(0xffffff).fontColor(Color.Red)
       }.margin({ bottom: 10 })
     }

@@ -118,7 +118,8 @@ struct Index {
             },
             this.StringResults
           );
-          setData(this.Text, this)
+          setData(this.Text)
+          this.dialogController.open()
         })
     }
     .width('100%')

@@ -45,8 +45,8 @@ var decompressed = lz4.decompress(compressed);
 
 ## 约束与限制
 在下述版本验证通过：
-
-DevEco Studio: 3.1 Beta2(3.1.0.400), SDK: API9 Release(3.2.11.9) 。
+- DevEco Studio: 4.0 (4.0.3.512), SDK: API10 (4.0.10.9)
+- DevEco Studio: 3.1 Beta2(3.1.0.400), SDK: API9 Release(3.2.11.9) 。
 
 ## 开源协议
 

@@ -11,9 +11,8 @@
   "main": "index.ts",
   "repository": "https://gitee.com/openharmony-sig/util_code",
   "type": "module",
-  "version": "1.0.0",
-  "dependencies": {
-  },
+  "version": "1.0.1",
+  "dependencies": {},
   "tags": [
     "Tool"
   ],

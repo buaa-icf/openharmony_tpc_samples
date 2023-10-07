@@ -13,42 +13,43 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-import BigNumber from 'bignumber.js';
+import { BigNumber } from './BigNumber';
 import Test from './tester';
+import Utils from './Utils';
 
 export default function exponentiatedBy() {
-  describe('exponentiatedBytest', function () {
+  describe('exponentiatedBytest', ()=> {
 
-    function t(expected, n, exp) {
+    let t = (expected:string |BigNumber.Format| boolean |(() => BigNumber)|number|BigNumber|Function, n: BigNumber.Value, exp:number|BigNumber.Value|string)=> {
       new Test().areEqual(expected, new BigNumber(n).exponentiatedBy(exp).valueOf());
     };
 
-    function tb(expected, n, exp, mod) {
+    let tb = (expected:string |BigNumber.Format| boolean |(() => BigNumber)|number|BigNumber|Function, n: BigNumber.Value, exp:number|BigNumber.Value|string, mod: BigNumber.Value)=> {
       new Test().areEqual(expected, new BigNumber(n).exponentiatedBy(exp, mod).valueOf());
     };
 
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(()=> {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(()=> {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(()=> {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(()=> {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    it('exponentiatedBy', 0, function () {
+    it('exponentiatedBy', 0, ()=> {
 
-      new Test().areEqual(BigNumber.prototype.exponentiatedBy, BigNumber.prototype.pow);
+      new Test().areEqual(Utils.exponentiatedBy, Utils.pow);
 
       BigNumber.config({
         POW_PRECISION: 0,
@@ -79,9 +80,9 @@ export default function exponentiatedBy() {
       t('0', 0, 2);
       t('Infinity', 0, -1);
       t('Infinity', 0, -2);
-      t('NaN', 0, NaN);
-      t('0', 0, Infinity);
-      t('Infinity', 0, -Infinity);
+      t('NaN', 0, Number.NaN);
+      t('0', 0, Number.POSITIVE_INFINITY);
+      t('Infinity', 0, Number.NEGATIVE_INFINITY);
       t('Infinity', 0, '-123456789012345');
       t('0', 0, '-12345678901234567890123456789012345678901234567890');
 
@@ -92,9 +93,9 @@ export default function exponentiatedBy() {
       t('0', -0, 2);
       t('-Infinity', -0, -1);
       t('Infinity', -0, -2);
-      t('NaN', -0, NaN);
-      t('0', -0, Infinity);
-      t('Infinity', -0, -Infinity);
+      t('NaN', -0, Number.NaN);
+      t('0', -0, Number.POSITIVE_INFINITY);
+      t('Infinity', -0, Number.NEGATIVE_INFINITY);
       t('-Infinity', -0, '-123456789012345');
       t('0', -0, '-12345678901234567890123456789012345678901234567890');
 
@@ -105,9 +106,9 @@ export default function exponentiatedBy() {
       t('1', 1, 2);
       t('1', 1, -1);
       t('1', 1, -2);
-      t('NaN', 1, NaN);
-      t('NaN', 1, Infinity);
-      t('NaN', 1, -Infinity);
+      t('NaN', 1, Number.NaN);
+      t('NaN', 1, Number.POSITIVE_INFINITY);
+      t('NaN', 1, Number.NEGATIVE_INFINITY);
 
       // 2
       t('1', 2, +0);
@@ -116,9 +117,9 @@ export default function exponentiatedBy() {
       t('4', 2, 2);
       t('0.5', 2, -1);
       t('0.25', 2, -2);
-      t('NaN', 2, NaN);
-      t('Infinity', 2, Infinity);
-      t('0', 2, -Infinity);
+      t('NaN', 2, Number.NaN);
+      t('Infinity', 2, Number.POSITIVE_INFINITY);
+      t('0', 2, Number.NEGATIVE_INFINITY);
 
       // -1
       t('1', -1, +0);
@@ -127,9 +128,9 @@ export default function exponentiatedBy() {
       t('1', -1, 2);
       t('-1', -1, -1);
       t('1', -1, -2);
-      t('NaN', -1, NaN);
-      t('NaN', -1, Infinity);
-      t('NaN', -1, -Infinity);
+      t('NaN', -1, Number.NaN);
+      t('NaN', -1, Number.POSITIVE_INFINITY);
+      t('NaN', -1, Number.NEGATIVE_INFINITY);
 
       // -2
       t('1', -2, +0);
@@ -138,42 +139,42 @@ export default function exponentiatedBy() {
       t('4', -2, 2);
       t('-0.5', -2, -1);
       t('0.25', -2, -2);
-      t('NaN', -2, NaN);
-      t('Infinity', -2, Infinity);
-      t('0', -2, -Infinity);
+      t('NaN', -2, Number.NaN);
+      t('Infinity', -2, Number.POSITIVE_INFINITY);
+      t('0', -2, Number.NEGATIVE_INFINITY);
 
-      // NaN
-      t('1', NaN, +0);
-      t('1', NaN, -0);
-      t('NaN', NaN, 1);
-      t('NaN', NaN, 2);
-      t('NaN', NaN, -1);
-      t('NaN', NaN, -2);
-      t('NaN', NaN, NaN);
-      t('NaN', NaN, Infinity);
-      t('NaN', NaN, -Infinity);
+      // Number.NaN
+      t('1', Number.NaN, +0);
+      t('1', Number.NaN, -0);
+      t('NaN', Number.NaN, 1);
+      t('NaN', Number.NaN, 2);
+      t('NaN', Number.NaN, -1);
+      t('NaN', Number.NaN, -2);
+      t('NaN', Number.NaN, Number.NaN);
+      t('NaN', Number.NaN, Number.POSITIVE_INFINITY);
+      t('NaN', Number.NaN, Number.NEGATIVE_INFINITY);
 
-      // Infinity
-      t('1', Infinity, +0);
-      t('1', Infinity, -0);
-      t('Infinity', Infinity, 1);
-      t('Infinity', Infinity, 2);
-      t('0', Infinity, -1);
-      t('0', Infinity, -2);
-      t('NaN', Infinity, NaN);
-      t('Infinity', Infinity, Infinity);
-      t('0', Infinity, -Infinity);
+      // Number.POSITIVE_INFINITY
+      t('1', Number.POSITIVE_INFINITY, +0);
+      t('1', Number.POSITIVE_INFINITY, -0);
+      t('Infinity', Number.POSITIVE_INFINITY, 1);
+      t('Infinity', Number.POSITIVE_INFINITY, 2);
+      t('0', Number.POSITIVE_INFINITY, -1);
+      t('0', Number.POSITIVE_INFINITY, -2);
+      t('NaN', Number.POSITIVE_INFINITY, Number.NaN);
+      t('Infinity', Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY);
+      t('0', Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY);
 
-      // -Infinity
-      t('1', -Infinity, +0);
-      t('1', -Infinity, -0);
-      t('-Infinity', -Infinity, 1);
-      t('Infinity', -Infinity, 2);
-      t('-0', -Infinity, -1);
-      t('0', -Infinity, -2);
-      t('NaN', -Infinity, NaN);
-      t('Infinity', -Infinity, Infinity);
-      t('0', -Infinity, -Infinity);
+      // Number.NEGATIVE_INFINITY
+      t('1', Number.NEGATIVE_INFINITY, +0);
+      t('1', Number.NEGATIVE_INFINITY, -0);
+      t('-Infinity', Number.NEGATIVE_INFINITY, 1);
+      t('Infinity', Number.NEGATIVE_INFINITY, 2);
+      t('-0', Number.NEGATIVE_INFINITY, -1);
+      t('0', Number.NEGATIVE_INFINITY, -2);
+      t('NaN', Number.NEGATIVE_INFINITY, Number.NaN);
+      t('Infinity', Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY);
+      t('0', Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY);
 
       t('4096', '8', 4);
       t('-1.331', '-1.1', 3);
@@ -601,39 +602,39 @@ export default function exponentiatedBy() {
 
       t('179769313486231590772930519078902473361797697894230657273430081157732675805500963132708477322407536021120113879871393357658789768814416622492847430639474124377767893424865485276302219601246094119453082952085005768838150682342462881473913110540827237163350510684586298239947245938479716304835356329624224137216', 2, 1024);
 
-      new Test().isException(function () {new BigNumber(2).pow(4.4)}, ".pow(4.4)");
-      new Test().isException(function () {new BigNumber(2).pow('5.5')}, ".pow('5.5')");
-      new Test().isException(function () {new BigNumber(2).pow(-2.1)}, ".pow(-2.1)");
-      new Test().isException(function () {new BigNumber(2).pow('-11.5')}, ".pow('-11.5')");
-      new Test().isException(function () {new BigNumber(2).pow(0.99)}, ".pow(0.99)");
-      new Test().isException(function () {new BigNumber(2).pow('-0.044e2')}, ".pow('-0.044e2')");
+      new Test().isException(()=> {new BigNumber(2).pow(4.4)}, ".pow(4.4)");
+      new Test().isException(()=> {new BigNumber(2).pow('5.5')}, ".pow('5.5')");
+      new Test().isException(()=> {new BigNumber(2).pow(-2.1)}, ".pow(-2.1)");
+      new Test().isException(()=> {new BigNumber(2).pow('-11.5')}, ".pow('-11.5')");
+      new Test().isException(()=> {new BigNumber(2).pow(0.99)}, ".pow(0.99)");
+      new Test().isException(()=> {new BigNumber(2).pow('-0.044e2')}, ".pow('-0.044e2')");
 
-      new Test().isException(function () {new BigNumber('12.345').pow(undefined)}, ".pow(undefined)");
-      new Test().isException(function () {new BigNumber('12.345').pow(null)}, ".pow(null)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').pow(true)}, ".pow(true)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').pow(false)}, ".pow(false)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').pow([])}, ".pow([])");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').pow({})}, ".pow({})");
-      new Test().isException(function () {new BigNumber('12.345').pow('')}, ".pow('')");
-      new Test().isException(function () {new BigNumber('12.345').pow(' ')}, ".pow(' ')");
-      new Test().isException(function () {new BigNumber('12.345').pow('2.66e+1')}, ".pow('2.66e+1')");
-      new Test().isException(function () {new BigNumber('12.345').pow('4e')}, ".pow('4e')");
-      new Test().isException(function () {new BigNumber('12.345').pow('hello')}, ".pow('hello')");
-      new Test().isException(function () {new BigNumber('12.345').pow('\t')}, ".pow('\t')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').pow(new Date)}, ".pow(new Date)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').pow(new RegExp)}, ".pow(new RegExp)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').pow(function (){})}, ".pow(function (){})");
-      new Test().isException(function () {new BigNumber('12.345').pow(7.5)}, ".pow(7.5)");
-      new Test().isException(function () {new BigNumber('12.345').pow('-1.123e1')}, ".pow('-1.123e1')");
-      new Test().isException(function () {new BigNumber('12.345').pow('-0.01')}, ".pow('-0.01')");
-      new Test().isException(function () {new BigNumber('12.345').pow('-1e-1')}, ".pow('-1e-1')");
+      new Test().isException(()=> {Utils.bigPow(undefined)}, ".pow(undefined)");
+      new Test().isException(()=> {Utils.bigPow(null)}, ".pow(null)");
+
+      new Test().isException(()=> {Utils.bigPow(true)}, ".pow(true)");
+
+      new Test().isException(()=> {Utils.bigPow(false)}, ".pow(false)");
+
+      new Test().isException(()=> {Utils.bigPow([])}, ".pow([])");
+
+      new Test().isException(()=> {Utils.bigPow({})}, ".pow({})");
+      new Test().isException(()=> {new BigNumber('12.345').pow('')}, ".pow('')");
+      new Test().isException(()=> {new BigNumber('12.345').pow(' ')}, ".pow(' ')");
+      new Test().isException(()=> {new BigNumber('12.345').pow('2.66e+1')}, ".pow('2.66e+1')");
+      new Test().isException(()=> {new BigNumber('12.345').pow('4e')}, ".pow('4e')");
+      new Test().isException(()=> {new BigNumber('12.345').pow('hello')}, ".pow('hello')");
+      new Test().isException(()=> {new BigNumber('12.345').pow('\t')}, ".pow('\t')");
+
+      new Test().isException(()=> {Utils.powFun('12.345',new Date)}, ".pow(new Date)");
+
+      new Test().isException(()=> {Utils.powFun('12.345',new RegExp(''))}, ".pow(new RegExp(''))");
+
+      new Test().isException(()=> {Utils.powFun('12.345',()=>{})}, ".pow(()=>{})");
+      new Test().isException(()=> {new BigNumber('12.345').pow(7.5)}, ".pow(7.5)");
+      new Test().isException(()=> {new BigNumber('12.345').pow('-1.123e1')}, ".pow('-1.123e1')");
+      new Test().isException(()=> {new BigNumber('12.345').pow('-0.01')}, ".pow('-0.01')");
+      new Test().isException(()=> {new BigNumber('12.345').pow('-1e-1')}, ".pow('-1e-1')");
 
       // As negative exponents involve a division, the result depends on the decimal places and rounding mode specified:
 
@@ -1331,9 +1332,9 @@ export default function exponentiatedBy() {
       tb('NaN', 0, 2, 0);
       tb('NaN', 0, -1, 0);
       tb('NaN', 0, -2, 0);
-      tb('NaN', 0, NaN, 0);
-      tb('NaN', 0, Infinity, 0);
-      tb('NaN', 0, -Infinity, 0);
+      tb('NaN', 0, Number.NaN, 0);
+      tb('NaN', 0, Number.POSITIVE_INFINITY, 0);
+      tb('NaN', 0, Number.NEGATIVE_INFINITY, 0);
 
       //-0
       tb('NaN', -0, +0, 0);
@@ -1342,9 +1343,9 @@ export default function exponentiatedBy() {
       tb('NaN', -0, 2, 0);
       tb('NaN', -0, -1, 0);
       tb('NaN', -0, -2, 0);
-      tb('NaN', -0, NaN, 0);
-      tb('NaN', -0, Infinity, 0);
-      tb('NaN', -0, -Infinity, 0);
+      tb('NaN', -0, Number.NaN, 0);
+      tb('NaN', -0, Number.POSITIVE_INFINITY, 0);
+      tb('NaN', -0, Number.NEGATIVE_INFINITY, 0);
 
       // 1
       tb('NaN', 1, +0, 0);
@@ -1353,9 +1354,9 @@ export default function exponentiatedBy() {
       tb('NaN', 1, 2, 0);
       tb('NaN', 1, -1, 0);
       tb('NaN', 1, -2, 0);
-      tb('NaN', 1, NaN, 0);
-      tb('NaN', 1, Infinity, 0);
-      tb('NaN', 1, -Infinity, 0);
+      tb('NaN', 1, Number.NaN, 0);
+      tb('NaN', 1, Number.POSITIVE_INFINITY, 0);
+      tb('NaN', 1, Number.NEGATIVE_INFINITY, 0);
 
       // 2
       tb('NaN', 2, +0, 0);
@@ -1364,9 +1365,9 @@ export default function exponentiatedBy() {
       tb('NaN', 2, 2, 0);
       tb('NaN', 2, -1, 0);
       tb('NaN', 2, -2, 0);
-      tb('NaN', 2, NaN, 0);
-      tb('NaN', 2, Infinity, 0);
-      tb('NaN', 2, -Infinity, 0);
+      tb('NaN', 2, Number.NaN, 0);
+      tb('NaN', 2, Number.POSITIVE_INFINITY, 0);
+      tb('NaN', 2, Number.NEGATIVE_INFINITY, 0);
 
       // -1
       tb('NaN', -1, +0, 0);
@@ -1375,9 +1376,9 @@ export default function exponentiatedBy() {
       tb('NaN', -1, 2, 0);
       tb('NaN', -1, -1, 0);
       tb('NaN', -1, -2, 0);
-      tb('NaN', -1, NaN, 0);
-      tb('NaN', -1, Infinity, 0);
-      tb('NaN', -1, -Infinity, 0);
+      tb('NaN', -1, Number.NaN, 0);
+      tb('NaN', -1, Number.POSITIVE_INFINITY, 0);
+      tb('NaN', -1, Number.NEGATIVE_INFINITY, 0);
 
       // -2
       tb('NaN', -2, +0, 0);
@@ -1386,42 +1387,42 @@ export default function exponentiatedBy() {
       tb('NaN', -2, 2, 0);
       tb('NaN', -2, -1, 0);
       tb('NaN', -2, -2, 0);
-      tb('NaN', -2, NaN, 0);
-      tb('NaN', -2, Infinity, 0);
-      tb('NaN', -2, -Infinity, 0);
+      tb('NaN', -2, Number.NaN, 0);
+      tb('NaN', -2, Number.POSITIVE_INFINITY, 0);
+      tb('NaN', -2, Number.NEGATIVE_INFINITY, 0);
 
-      // NaN
-      tb('NaN', NaN, +0, 0);
-      tb('NaN', NaN, -0, 0);
-      tb('NaN', NaN, 1, 0);
-      tb('NaN', NaN, 2, 0);
-      tb('NaN', NaN, -1, 0);
-      tb('NaN', NaN, -2, 0);
-      tb('NaN', NaN, NaN, 0);
-      tb('NaN', NaN, Infinity, 0);
-      tb('NaN', NaN, -Infinity, 0);
+      // Number.NaN
+      tb('NaN', Number.NaN, +0, 0);
+      tb('NaN', Number.NaN, -0, 0);
+      tb('NaN', Number.NaN, 1, 0);
+      tb('NaN', Number.NaN, 2, 0);
+      tb('NaN', Number.NaN, -1, 0);
+      tb('NaN', Number.NaN, -2, 0);
+      tb('NaN', Number.NaN, Number.NaN, 0);
+      tb('NaN', Number.NaN, Number.POSITIVE_INFINITY, 0);
+      tb('NaN', Number.NaN, Number.NEGATIVE_INFINITY, 0);
 
-      // Infinity
-      tb('NaN', Infinity, +0, 0);
-      tb('NaN', Infinity, -0, 0);
-      tb('NaN', Infinity, 1, 0);
-      tb('NaN', Infinity, 2, 0);
-      tb('NaN', Infinity, -1, 0);
-      tb('NaN', Infinity, -2, 0);
-      tb('NaN', Infinity, NaN, 0);
-      tb('NaN', Infinity, Infinity, 0);
-      tb('NaN', Infinity, -Infinity, 0);
+      // Number.POSITIVE_INFINITY
+      tb('NaN', Number.POSITIVE_INFINITY, +0, 0);
+      tb('NaN', Number.POSITIVE_INFINITY, -0, 0);
+      tb('NaN', Number.POSITIVE_INFINITY, 1, 0);
+      tb('NaN', Number.POSITIVE_INFINITY, 2, 0);
+      tb('NaN', Number.POSITIVE_INFINITY, -1, 0);
+      tb('NaN', Number.POSITIVE_INFINITY, -2, 0);
+      tb('NaN', Number.POSITIVE_INFINITY, Number.NaN, 0);
+      tb('NaN', Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, 0);
+      tb('NaN', Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, 0);
 
-      // -Infinity
-      tb('NaN', -Infinity, +0, 0);
-      tb('NaN', -Infinity, -0, 0);
-      tb('NaN', -Infinity, 1, 0);
-      tb('NaN', -Infinity, 2, 0);
-      tb('NaN', -Infinity, -1, 0);
-      tb('NaN', -Infinity, -2, 0);
-      tb('NaN', -Infinity, NaN, 0);
-      tb('NaN', -Infinity, Infinity, 0);
-      tb('NaN', -Infinity, -Infinity, 0);
+      // Number.NEGATIVE_INFINITY
+      tb('NaN', Number.NEGATIVE_INFINITY, +0, 0);
+      tb('NaN', Number.NEGATIVE_INFINITY, -0, 0);
+      tb('NaN', Number.NEGATIVE_INFINITY, 1, 0);
+      tb('NaN', Number.NEGATIVE_INFINITY, 2, 0);
+      tb('NaN', Number.NEGATIVE_INFINITY, -1, 0);
+      tb('NaN', Number.NEGATIVE_INFINITY, -2, 0);
+      tb('NaN', Number.NEGATIVE_INFINITY, Number.NaN, 0);
+      tb('NaN', Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, 0);
+      tb('NaN', Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, 0);
 
       // % -0
 
@@ -1432,9 +1433,9 @@ export default function exponentiatedBy() {
       tb('NaN', 0, 2, -0);
       tb('NaN', 0, -1, -0);
       tb('NaN', 0, -2, -0);
-      tb('NaN', 0, NaN, -0);
-      tb('NaN', 0, Infinity, -0);
-      tb('NaN', 0, -Infinity, -0);
+      tb('NaN', 0, Number.NaN, -0);
+      tb('NaN', 0, Number.POSITIVE_INFINITY, -0);
+      tb('NaN', 0, Number.NEGATIVE_INFINITY, -0);
 
       //-0
       tb('NaN', -0, +0, -0);
@@ -1443,9 +1444,9 @@ export default function exponentiatedBy() {
       tb('NaN', -0, 2, -0);
       tb('NaN', -0, -1, -0);
       tb('NaN', -0, -2, -0);
-      tb('NaN', -0, NaN, -0);
-      tb('NaN', -0, Infinity, -0);
-      tb('NaN', -0, -Infinity, -0);
+      tb('NaN', -0, Number.NaN, -0);
+      tb('NaN', -0, Number.POSITIVE_INFINITY, -0);
+      tb('NaN', -0, Number.NEGATIVE_INFINITY, -0);
 
       // 1
       tb('NaN', 1, +0, -0);
@@ -1454,9 +1455,9 @@ export default function exponentiatedBy() {
       tb('NaN', 1, 2, -0);
       tb('NaN', 1, -1, -0);
       tb('NaN', 1, -2, -0);
-      tb('NaN', 1, NaN, -0);
-      tb('NaN', 1, Infinity, -0);
-      tb('NaN', 1, -Infinity, -0);
+      tb('NaN', 1, Number.NaN, -0);
+      tb('NaN', 1, Number.POSITIVE_INFINITY, -0);
+      tb('NaN', 1, Number.NEGATIVE_INFINITY, -0);
 
       // 2
       tb('NaN', 2, +0, -0);
@@ -1465,9 +1466,9 @@ export default function exponentiatedBy() {
       tb('NaN', 2, 2, -0);
       tb('NaN', 2, -1, -0);
       tb('NaN', 2, -2, -0);
-      tb('NaN', 2, NaN, -0);
-      tb('NaN', 2, Infinity, -0);
-      tb('NaN', 2, -Infinity, -0);
+      tb('NaN', 2, Number.NaN, -0);
+      tb('NaN', 2, Number.POSITIVE_INFINITY, -0);
+      tb('NaN', 2, Number.NEGATIVE_INFINITY, -0);
 
       // -1
       tb('NaN', -1, +0, -0);
@@ -1476,9 +1477,9 @@ export default function exponentiatedBy() {
       tb('NaN', -1, 2, -0);
       tb('NaN', -1, -1, -0);
       tb('NaN', -1, -2, -0);
-      tb('NaN', -1, NaN, -0);
-      tb('NaN', -1, Infinity, -0);
-      tb('NaN', -1, -Infinity, -0);
+      tb('NaN', -1, Number.NaN, -0);
+      tb('NaN', -1, Number.POSITIVE_INFINITY, -0);
+      tb('NaN', -1, Number.NEGATIVE_INFINITY, -0);
 
       // -2
       tb('NaN', -2, +0, -0);
@@ -1487,42 +1488,42 @@ export default function exponentiatedBy() {
       tb('NaN', -2, 2, -0);
       tb('NaN', -2, -1, -0);
       tb('NaN', -2, -2, -0);
-      tb('NaN', -2, NaN, -0);
-      tb('NaN', -2, Infinity, -0);
-      tb('NaN', -2, -Infinity, -0);
+      tb('NaN', -2, Number.NaN, -0);
+      tb('NaN', -2, Number.POSITIVE_INFINITY, -0);
+      tb('NaN', -2, Number.NEGATIVE_INFINITY, -0);
 
-      // NaN
-      tb('NaN', NaN, +0, -0);
-      tb('NaN', NaN, -0, -0);
-      tb('NaN', NaN, 1, -0);
-      tb('NaN', NaN, 2, -0);
-      tb('NaN', NaN, -1, -0);
-      tb('NaN', NaN, -2, -0);
-      tb('NaN', NaN, NaN, -0);
-      tb('NaN', NaN, Infinity, -0);
-      tb('NaN', NaN, -Infinity, -0);
+      // Number.NaN
+      tb('NaN', Number.NaN, +0, -0);
+      tb('NaN', Number.NaN, -0, -0);
+      tb('NaN', Number.NaN, 1, -0);
+      tb('NaN', Number.NaN, 2, -0);
+      tb('NaN', Number.NaN, -1, -0);
+      tb('NaN', Number.NaN, -2, -0);
+      tb('NaN', Number.NaN, Number.NaN, -0);
+      tb('NaN', Number.NaN, Number.POSITIVE_INFINITY, -0);
+      tb('NaN', Number.NaN, Number.NEGATIVE_INFINITY, -0);
 
-      // Infinity
-      tb('NaN', Infinity, +0, -0);
-      tb('NaN', Infinity, -0, -0);
-      tb('NaN', Infinity, 1, -0);
-      tb('NaN', Infinity, 2, -0);
-      tb('NaN', Infinity, -1, -0);
-      tb('NaN', Infinity, -2, -0);
-      tb('NaN', Infinity, NaN, -0);
-      tb('NaN', Infinity, Infinity, -0);
-      tb('NaN', Infinity, -Infinity, -0);
+      // Number.POSITIVE_INFINITY
+      tb('NaN', Number.POSITIVE_INFINITY, +0, -0);
+      tb('NaN', Number.POSITIVE_INFINITY, -0, -0);
+      tb('NaN', Number.POSITIVE_INFINITY, 1, -0);
+      tb('NaN', Number.POSITIVE_INFINITY, 2, -0);
+      tb('NaN', Number.POSITIVE_INFINITY, -1, -0);
+      tb('NaN', Number.POSITIVE_INFINITY, -2, -0);
+      tb('NaN', Number.POSITIVE_INFINITY, Number.NaN, -0);
+      tb('NaN', Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, -0);
+      tb('NaN', Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, -0);
 
-      // -Infinity
-      tb('NaN', -Infinity, +0, -0);
-      tb('NaN', -Infinity, -0, -0);
-      tb('NaN', -Infinity, 1, -0);
-      tb('NaN', -Infinity, 2, -0);
-      tb('NaN', -Infinity, -1, -0);
-      tb('NaN', -Infinity, -2, -0);
-      tb('NaN', -Infinity, NaN, -0);
-      tb('NaN', -Infinity, Infinity, -0);
-      tb('NaN', -Infinity, -Infinity, -0);
+      // Number.NEGATIVE_INFINITY
+      tb('NaN', Number.NEGATIVE_INFINITY, +0, -0);
+      tb('NaN', Number.NEGATIVE_INFINITY, -0, -0);
+      tb('NaN', Number.NEGATIVE_INFINITY, 1, -0);
+      tb('NaN', Number.NEGATIVE_INFINITY, 2, -0);
+      tb('NaN', Number.NEGATIVE_INFINITY, -1, -0);
+      tb('NaN', Number.NEGATIVE_INFINITY, -2, -0);
+      tb('NaN', Number.NEGATIVE_INFINITY, Number.NaN, -0);
+      tb('NaN', Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, -0);
+      tb('NaN', Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, -0);
 
       // % 1
 
@@ -1533,9 +1534,9 @@ export default function exponentiatedBy() {
       tb('0', 0, 2, 1);
       tb('NaN', 0, -1, 1);
       tb('NaN', 0, -2, 1);
-      tb('NaN', 0, NaN, 1);
-      tb('0', 0, Infinity, 1);
-      tb('NaN', 0, -Infinity, 1);
+      tb('NaN', 0, Number.NaN, 1);
+      tb('0', 0, Number.POSITIVE_INFINITY, 1);
+      tb('NaN', 0, Number.NEGATIVE_INFINITY, 1);
 
       //-0
       tb('0', -0, +0, 1);
@@ -1544,9 +1545,9 @@ export default function exponentiatedBy() {
       tb('0', -0, 2, 1);
       tb('NaN', -0, -1, 1);
       tb('NaN', -0, -2, 1);
-      tb('NaN', -0, NaN, 1);
-      tb('0', -0, Infinity, 1);
-      tb('NaN', -0, -Infinity, 1);
+      tb('NaN', -0, Number.NaN, 1);
+      tb('0', -0, Number.POSITIVE_INFINITY, 1);
+      tb('NaN', -0, Number.NEGATIVE_INFINITY, 1);
 
       // 1
       tb('0', 1, +0, 1);
@@ -1555,9 +1556,9 @@ export default function exponentiatedBy() {
       tb('0', 1, 2, 1);
       tb('0', 1, -1, 1);
       tb('0', 1, -2, 1);
-      tb('NaN', 1, NaN, 1);
-      tb('NaN', 1, Infinity, 1);
-      tb('NaN', 1, -Infinity, 1);
+      tb('NaN', 1, Number.NaN, 1);
+      tb('NaN', 1, Number.POSITIVE_INFINITY, 1);
+      tb('NaN', 1, Number.NEGATIVE_INFINITY, 1);
 
       // 2
       tb('0', 2, +0, 1);
@@ -1566,9 +1567,9 @@ export default function exponentiatedBy() {
       tb('0', 2, 2, 1);
       tb('0.5', 2, -1, 1);
       tb('0.25', 2, -2, 1);
-      tb('NaN', 2, NaN, 1);
-      tb('NaN', 2, Infinity, 1);
-      tb('0', 2, -Infinity, 1);
+      tb('NaN', 2, Number.NaN, 1);
+      tb('NaN', 2, Number.POSITIVE_INFINITY, 1);
+      tb('0', 2, Number.NEGATIVE_INFINITY, 1);
 
       // -1
       tb('0', -1, +0, 1);
@@ -1577,9 +1578,9 @@ export default function exponentiatedBy() {
       tb('0', -1, 2, 1);
       tb('-0', -1, -1, 1);
       tb('0', -1, -2, 1);
-      tb('NaN', -1, NaN, 1);
-      tb('NaN', -1, Infinity, 1);
-      tb('NaN', -1, -Infinity, 1);
+      tb('NaN', -1, Number.NaN, 1);
+      tb('NaN', -1, Number.POSITIVE_INFINITY, 1);
+      tb('NaN', -1, Number.NEGATIVE_INFINITY, 1);
 
       // -2
       tb('0', -2, +0, 1);
@@ -1588,42 +1589,42 @@ export default function exponentiatedBy() {
       tb('0', -2, 2, 1);
       tb('-0.5', -2, -1, 1);
       tb('0.25', -2, -2, 1);
-      tb('NaN', -2, NaN, 1);
-      tb('NaN', -2, Infinity, 1);
-      tb('0', -2, -Infinity, 1);
+      tb('NaN', -2, Number.NaN, 1);
+      tb('NaN', -2, Number.POSITIVE_INFINITY, 1);
+      tb('0', -2, Number.NEGATIVE_INFINITY, 1);
 
-      // NaN
-      tb('0', NaN, +0, 1);
-      tb('0', NaN, -0, 1);
-      tb('NaN', NaN, 1, 1);
-      tb('NaN', NaN, 2, 1);
-      tb('NaN', NaN, -1, 1);
-      tb('NaN', NaN, -2, 1);
-      tb('NaN', NaN, NaN, 1);
-      tb('NaN', NaN, Infinity, 1);
-      tb('NaN', NaN, -Infinity, 1);
+      // Number.NaN
+      tb('0', Number.NaN, +0, 1);
+      tb('0', Number.NaN, -0, 1);
+      tb('NaN', Number.NaN, 1, 1);
+      tb('NaN', Number.NaN, 2, 1);
+      tb('NaN', Number.NaN, -1, 1);
+      tb('NaN', Number.NaN, -2, 1);
+      tb('NaN', Number.NaN, Number.NaN, 1);
+      tb('NaN', Number.NaN, Number.POSITIVE_INFINITY, 1);
+      tb('NaN', Number.NaN, Number.NEGATIVE_INFINITY, 1);
 
-      // Infinity
-      tb('0', Infinity, +0, 1);
-      tb('0', Infinity, -0, 1);
-      tb('NaN', Infinity, 1, 1);
-      tb('NaN', Infinity, 2, 1);
-      tb('0', Infinity, -1, 1);
-      tb('0', Infinity, -2, 1);
-      tb('NaN', Infinity, NaN, 1);
-      tb('NaN', Infinity, Infinity, 1);
-      tb('0', Infinity, -Infinity, 1);
+      // Number.POSITIVE_INFINITY
+      tb('0', Number.POSITIVE_INFINITY, +0, 1);
+      tb('0', Number.POSITIVE_INFINITY, -0, 1);
+      tb('NaN', Number.POSITIVE_INFINITY, 1, 1);
+      tb('NaN', Number.POSITIVE_INFINITY, 2, 1);
+      tb('0', Number.POSITIVE_INFINITY, -1, 1);
+      tb('0', Number.POSITIVE_INFINITY, -2, 1);
+      tb('NaN', Number.POSITIVE_INFINITY, Number.NaN, 1);
+      tb('NaN', Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, 1);
+      tb('0', Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, 1);
 
-      // -Infinity
-      tb('0', -Infinity, +0, 1);
-      tb('0', -Infinity, -0, 1);
-      tb('NaN', -Infinity, 1, 1);
-      tb('NaN', -Infinity, 2, 1);
-      tb('-0', -Infinity, -1, 1);
-      tb('0', -Infinity, -2, 1);
-      tb('NaN', -Infinity, NaN, 1);
-      tb('NaN', -Infinity, Infinity, 1);
-      tb('0', -Infinity, -Infinity, 1);
+      // Number.NEGATIVE_INFINITY
+      tb('0', Number.NEGATIVE_INFINITY, +0, 1);
+      tb('0', Number.NEGATIVE_INFINITY, -0, 1);
+      tb('NaN', Number.NEGATIVE_INFINITY, 1, 1);
+      tb('NaN', Number.NEGATIVE_INFINITY, 2, 1);
+      tb('-0', Number.NEGATIVE_INFINITY, -1, 1);
+      tb('0', Number.NEGATIVE_INFINITY, -2, 1);
+      tb('NaN', Number.NEGATIVE_INFINITY, Number.NaN, 1);
+      tb('NaN', Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, 1);
+      tb('0', Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, 1);
 
       // % 2
 
@@ -1634,9 +1635,9 @@ export default function exponentiatedBy() {
       tb('0', 0, 2, 2);
       tb('NaN', 0, -1, 2);
       tb('NaN', 0, -2, 2);
-      tb('NaN', 0, NaN, 2);
-      tb('0', 0, Infinity, 2);
-      tb('NaN', 0, -Infinity, 2);
+      tb('NaN', 0, Number.NaN, 2);
+      tb('0', 0, Number.POSITIVE_INFINITY, 2);
+      tb('NaN', 0, Number.NEGATIVE_INFINITY, 2);
 
       //-0
       tb('1', -0, +0, 2);
@@ -1645,9 +1646,9 @@ export default function exponentiatedBy() {
       tb('0', -0, 2, 2);
       tb('NaN', -0, -1, 2);
       tb('NaN', -0, -2, 2);
-      tb('NaN', -0, NaN, 2);
-      tb('0', -0, Infinity, 2);
-      tb('NaN', -0, -Infinity, 2);
+      tb('NaN', -0, Number.NaN, 2);
+      tb('0', -0, Number.POSITIVE_INFINITY, 2);
+      tb('NaN', -0, Number.NEGATIVE_INFINITY, 2);
 
       // 1
       tb('1', 1, +0, 2);
@@ -1656,9 +1657,9 @@ export default function exponentiatedBy() {
       tb('1', 1, 2, 2);
       tb('1', 1, -1, 2);
       tb('1', 1, -2, 2);
-      tb('NaN', 1, NaN, 2);
-      tb('NaN', 1, Infinity, 2);
-      tb('NaN', 1, -Infinity, 2);
+      tb('NaN', 1, Number.NaN, 2);
+      tb('NaN', 1, Number.POSITIVE_INFINITY, 2);
+      tb('NaN', 1, Number.NEGATIVE_INFINITY, 2);
 
       // 2
       tb('1', 2, +0, 2);
@@ -1667,9 +1668,9 @@ export default function exponentiatedBy() {
       tb('0', 2, 2, 2);
       tb('0.5', 2, -1, 2);
       tb('0.25', 2, -2, 2);
-      tb('NaN', 2, NaN, 2);
-      tb('NaN', 2, Infinity, 2);
-      tb('0', 2, -Infinity, 2);
+      tb('NaN', 2, Number.NaN, 2);
+      tb('NaN', 2, Number.POSITIVE_INFINITY, 2);
+      tb('0', 2, Number.NEGATIVE_INFINITY, 2);
 
       // -1
       tb('1', -1, +0, 2);
@@ -1678,9 +1679,9 @@ export default function exponentiatedBy() {
       tb('1', -1, 2, 2);
       tb('-1', -1, -1, 2);
       tb('1', -1, -2, 2);
-      tb('NaN', -1, NaN, 2);
-      tb('NaN', -1, Infinity, 2);
-      tb('NaN', -1, -Infinity, 2);
+      tb('NaN', -1, Number.NaN, 2);
+      tb('NaN', -1, Number.POSITIVE_INFINITY, 2);
+      tb('NaN', -1, Number.NEGATIVE_INFINITY, 2);
 
       // -2
       tb('1', -2, +0, 2);
@@ -1689,42 +1690,42 @@ export default function exponentiatedBy() {
       tb('0', -2, 2, 2);
       tb('-0.5', -2, -1, 2);
       tb('0.25', -2, -2, 2);
-      tb('NaN', -2, NaN, 2);
-      tb('NaN', -2, Infinity, 2);
-      tb('0', -2, -Infinity, 2);
+      tb('NaN', -2, Number.NaN, 2);
+      tb('NaN', -2, Number.POSITIVE_INFINITY, 2);
+      tb('0', -2, Number.NEGATIVE_INFINITY, 2);
 
-      // NaN
-      tb('1', NaN, +0, 2);
-      tb('1', NaN, -0, 2);
-      tb('NaN', NaN, 1, 2);
-      tb('NaN', NaN, 2, 2);
-      tb('NaN', NaN, -1, 2);
-      tb('NaN', NaN, -2, 2);
-      tb('NaN', NaN, NaN, 2);
-      tb('NaN', NaN, Infinity, 2);
-      tb('NaN', NaN, -Infinity, 2);
+      // Number.NaN
+      tb('1', Number.NaN, +0, 2);
+      tb('1', Number.NaN, -0, 2);
+      tb('NaN', Number.NaN, 1, 2);
+      tb('NaN', Number.NaN, 2, 2);
+      tb('NaN', Number.NaN, -1, 2);
+      tb('NaN', Number.NaN, -2, 2);
+      tb('NaN', Number.NaN, Number.NaN, 2);
+      tb('NaN', Number.NaN, Number.POSITIVE_INFINITY, 2);
+      tb('NaN', Number.NaN, Number.NEGATIVE_INFINITY, 2);
 
-      // Infinity
-      tb('1', Infinity, +0, 2);
-      tb('1', Infinity, -0, 2);
-      tb('NaN', Infinity, 1, 2);
-      tb('NaN', Infinity, 2, 2);
-      tb('0', Infinity, -1, 2);
-      tb('0', Infinity, -2, 2);
-      tb('NaN', Infinity, NaN, 2);
-      tb('NaN', Infinity, Infinity, 2);
-      tb('0', Infinity, -Infinity, 2);
+      // Number.POSITIVE_INFINITY
+      tb('1', Number.POSITIVE_INFINITY, +0, 2);
+      tb('1', Number.POSITIVE_INFINITY, -0, 2);
+      tb('NaN', Number.POSITIVE_INFINITY, 1, 2);
+      tb('NaN', Number.POSITIVE_INFINITY, 2, 2);
+      tb('0', Number.POSITIVE_INFINITY, -1, 2);
+      tb('0', Number.POSITIVE_INFINITY, -2, 2);
+      tb('NaN', Number.POSITIVE_INFINITY, Number.NaN, 2);
+      tb('NaN', Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, 2);
+      tb('0', Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, 2);
 
-      // -Infinity
-      tb('1', -Infinity, +0, 2);
-      tb('1', -Infinity, -0, 2);
-      tb('NaN', -Infinity, 1, 2);
-      tb('NaN', -Infinity, 2, 2);
-      tb('-0', -Infinity, -1, 2);
-      tb('0', -Infinity, -2, 2);
-      tb('NaN', -Infinity, NaN, 2);
-      tb('NaN', -Infinity, Infinity, 2);
-      tb('0', -Infinity, -Infinity, 2);
+      // Number.NEGATIVE_INFINITY
+      tb('1', Number.NEGATIVE_INFINITY, +0, 2);
+      tb('1', Number.NEGATIVE_INFINITY, -0, 2);
+      tb('NaN', Number.NEGATIVE_INFINITY, 1, 2);
+      tb('NaN', Number.NEGATIVE_INFINITY, 2, 2);
+      tb('-0', Number.NEGATIVE_INFINITY, -1, 2);
+      tb('0', Number.NEGATIVE_INFINITY, -2, 2);
+      tb('NaN', Number.NEGATIVE_INFINITY, Number.NaN, 2);
+      tb('NaN', Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, 2);
+      tb('0', Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, 2);
 
       // % -1
 
@@ -1735,9 +1736,9 @@ export default function exponentiatedBy() {
       tb('0', 0, 2, -1);
       tb('NaN', 0, -1, -1);
       tb('NaN', 0, -2, -1);
-      tb('NaN', 0, NaN, -1);
-      tb('0', 0, Infinity, -1);
-      tb('NaN', 0, -Infinity, -1);
+      tb('NaN', 0, Number.NaN, -1);
+      tb('0', 0, Number.POSITIVE_INFINITY, -1);
+      tb('NaN', 0, Number.NEGATIVE_INFINITY, -1);
 
       //-0
       tb('0', -0, +0, -1);
@@ -1746,9 +1747,9 @@ export default function exponentiatedBy() {
       tb('0', -0, 2, -1);
       tb('NaN', -0, -1, -1);
       tb('NaN', -0, -2, -1);
-      tb('NaN', -0, NaN, -1);
-      tb('0', -0, Infinity, -1);
-      tb('NaN', -0, -Infinity, -1);
+      tb('NaN', -0, Number.NaN, -1);
+      tb('0', -0, Number.POSITIVE_INFINITY, -1);
+      tb('NaN', -0, Number.NEGATIVE_INFINITY, -1);
 
       // 1
       tb('0', 1, +0, -1);
@@ -1757,9 +1758,9 @@ export default function exponentiatedBy() {
       tb('0', 1, 2, -1);
       tb('0', 1, -1, -1);
       tb('0', 1, -2, -1);
-      tb('NaN', 1, NaN, -1);
-      tb('NaN', 1, Infinity, -1);
-      tb('NaN', 1, -Infinity, -1);
+      tb('NaN', 1, Number.NaN, -1);
+      tb('NaN', 1, Number.POSITIVE_INFINITY, -1);
+      tb('NaN', 1, Number.NEGATIVE_INFINITY, -1);
 
       // 2
       tb('0', 2, +0, -1);
@@ -1768,9 +1769,9 @@ export default function exponentiatedBy() {
       tb('0', 2, 2, -1);
       tb('0.5', 2, -1, -1);
       tb('0.25', 2, -2, -1);
-      tb('NaN', 2, NaN, -1);
-      tb('NaN', 2, Infinity, -1);
-      tb('0', 2, -Infinity, -1);
+      tb('NaN', 2, Number.NaN, -1);
+      tb('NaN', 2, Number.POSITIVE_INFINITY, -1);
+      tb('0', 2, Number.NEGATIVE_INFINITY, -1);
 
       // -1
       tb('0', -1, +0, -1);
@@ -1779,9 +1780,9 @@ export default function exponentiatedBy() {
       tb('0', -1, 2, -1);
       tb('-0', -1, -1, -1);
       tb('0', -1, -2, -1);
-      tb('NaN', -1, NaN, -1);
-      tb('NaN', -1, Infinity, -1);
-      tb('NaN', -1, -Infinity, -1);
+      tb('NaN', -1, Number.NaN, -1);
+      tb('NaN', -1, Number.POSITIVE_INFINITY, -1);
+      tb('NaN', -1, Number.NEGATIVE_INFINITY, -1);
 
       // -2
       tb('0', -2, +0, -1);
@@ -1790,42 +1791,42 @@ export default function exponentiatedBy() {
       tb('0', -2, 2, -1);
       tb('-0.5', -2, -1, -1);
       tb('0.25', -2, -2, -1);
-      tb('NaN', -2, NaN, -1);
-      tb('NaN', -2, Infinity, -1);
-      tb('0', -2, -Infinity, -1);
+      tb('NaN', -2, Number.NaN, -1);
+      tb('NaN', -2, Number.POSITIVE_INFINITY, -1);
+      tb('0', -2, Number.NEGATIVE_INFINITY, -1);
 
-      // NaN
-      tb('0', NaN, +0, -1);
-      tb('0', NaN, -0, -1);
-      tb('NaN', NaN, 1, -1);
-      tb('NaN', NaN, 2, -1);
-      tb('NaN', NaN, -1, -1);
-      tb('NaN', NaN, -2, -1);
-      tb('NaN', NaN, NaN, -1);
-      tb('NaN', NaN, Infinity, -1);
-      tb('NaN', NaN, -Infinity, -1);
+      // Number.NaN
+      tb('0', Number.NaN, +0, -1);
+      tb('0', Number.NaN, -0, -1);
+      tb('NaN', Number.NaN, 1, -1);
+      tb('NaN', Number.NaN, 2, -1);
+      tb('NaN', Number.NaN, -1, -1);
+      tb('NaN', Number.NaN, -2, -1);
+      tb('NaN', Number.NaN, Number.NaN, -1);
+      tb('NaN', Number.NaN, Number.POSITIVE_INFINITY, -1);
+      tb('NaN', Number.NaN, Number.NEGATIVE_INFINITY, -1);
 
-      // Infinity
-      tb('0', Infinity, +0, -1);
-      tb('0', Infinity, -0, -1);
-      tb('NaN', Infinity, 1, -1);
-      tb('NaN', Infinity, 2, -1);
-      tb('0', Infinity, -1, -1);
-      tb('0', Infinity, -2, -1);
-      tb('NaN', Infinity, NaN, -1);
-      tb('NaN', Infinity, Infinity, -1);
-      tb('0', Infinity, -Infinity, -1);
+      // Number.POSITIVE_INFINITY
+      tb('0', Number.POSITIVE_INFINITY, +0, -1);
+      tb('0', Number.POSITIVE_INFINITY, -0, -1);
+      tb('NaN', Number.POSITIVE_INFINITY, 1, -1);
+      tb('NaN', Number.POSITIVE_INFINITY, 2, -1);
+      tb('0', Number.POSITIVE_INFINITY, -1, -1);
+      tb('0', Number.POSITIVE_INFINITY, -2, -1);
+      tb('NaN', Number.POSITIVE_INFINITY, Number.NaN, -1);
+      tb('NaN', Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, -1);
+      tb('0', Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, -1);
 
-      // -Infinity
-      tb('0', -Infinity, +0, -1);
-      tb('0', -Infinity, -0, -1);
-      tb('NaN', -Infinity, 1, -1);
-      tb('NaN', -Infinity, 2, -1);
-      tb('-0', -Infinity, -1, -1);
-      tb('0', -Infinity, -2, -1);
-      tb('NaN', -Infinity, NaN, -1);
-      tb('NaN', -Infinity, Infinity, -1);
-      tb('0', -Infinity, -Infinity, -1);
+      // Number.NEGATIVE_INFINITY
+      tb('0', Number.NEGATIVE_INFINITY, +0, -1);
+      tb('0', Number.NEGATIVE_INFINITY, -0, -1);
+      tb('NaN', Number.NEGATIVE_INFINITY, 1, -1);
+      tb('NaN', Number.NEGATIVE_INFINITY, 2, -1);
+      tb('-0', Number.NEGATIVE_INFINITY, -1, -1);
+      tb('0', Number.NEGATIVE_INFINITY, -2, -1);
+      tb('NaN', Number.NEGATIVE_INFINITY, Number.NaN, -1);
+      tb('NaN', Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, -1);
+      tb('0', Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, -1);
 
       // % -2
 
@@ -1836,9 +1837,9 @@ export default function exponentiatedBy() {
       tb('0', 0, 2, -2);
       tb('NaN', 0, -1, -2);
       tb('NaN', 0, -2, -2);
-      tb('NaN', 0, NaN, -2);
-      tb('0', 0, Infinity, -2);
-      tb('NaN', 0, -Infinity, -2);
+      tb('NaN', 0, Number.NaN, -2);
+      tb('0', 0, Number.POSITIVE_INFINITY, -2);
+      tb('NaN', 0, Number.NEGATIVE_INFINITY, -2);
 
       //-0
       tb('1', -0, +0, -2);
@@ -1847,9 +1848,9 @@ export default function exponentiatedBy() {
       tb('0', -0, 2, -2);
       tb('NaN', -0, -1, -2);
       tb('NaN', -0, -2, -2);
-      tb('NaN', -0, NaN, -2);
-      tb('0', -0, Infinity, -2);
-      tb('NaN', -0, -Infinity, -2);
+      tb('NaN', -0, Number.NaN, -2);
+      tb('0', -0, Number.POSITIVE_INFINITY, -2);
+      tb('NaN', -0, Number.NEGATIVE_INFINITY, -2);
 
       // 1
       tb('1', 1, +0, -2);
@@ -1858,9 +1859,9 @@ export default function exponentiatedBy() {
       tb('1', 1, 2, -2);
       tb('1', 1, -1, -2);
       tb('1', 1, -2, -2);
-      tb('NaN', 1, NaN, -2);
-      tb('NaN', 1, Infinity, -2);
-      tb('NaN', 1, -Infinity, -2);
+      tb('NaN', 1, Number.NaN, -2);
+      tb('NaN', 1, Number.POSITIVE_INFINITY, -2);
+      tb('NaN', 1, Number.NEGATIVE_INFINITY, -2);
 
       // 2
       tb('1', 2, +0, -2);
@@ -1869,9 +1870,9 @@ export default function exponentiatedBy() {
       tb('0', 2, 2, -2);
       tb('0.5', 2, -1, -2);
       tb('0.25', 2, -2, -2);
-      tb('NaN', 2, NaN, -2);
-      tb('NaN', 2, Infinity, -2);
-      tb('0', 2, -Infinity, -2);
+      tb('NaN', 2, Number.NaN, -2);
+      tb('NaN', 2, Number.POSITIVE_INFINITY, -2);
+      tb('0', 2, Number.NEGATIVE_INFINITY, -2);
 
       // -1
       tb('1', -1, +0, -2);
@@ -1880,9 +1881,9 @@ export default function exponentiatedBy() {
       tb('1', -1, 2, -2);
       tb('-1', -1, -1, -2);
       tb('1', -1, -2, -2);
-      tb('NaN', -1, NaN, -2);
-      tb('NaN', -1, Infinity, -2);
-      tb('NaN', -1, -Infinity, -2);
+      tb('NaN', -1, Number.NaN, -2);
+      tb('NaN', -1, Number.POSITIVE_INFINITY, -2);
+      tb('NaN', -1, Number.NEGATIVE_INFINITY, -2);
 
       // -2
       tb('1', -2, +0, -2);
@@ -1891,345 +1892,345 @@ export default function exponentiatedBy() {
       tb('0', -2, 2, -2);
       tb('-0.5', -2, -1, -2);
       tb('0.25', -2, -2, -2);
-      tb('NaN', -2, NaN, -2);
-      tb('NaN', -2, Infinity, -2);
-      tb('0', -2, -Infinity, -2);
+      tb('NaN', -2, Number.NaN, -2);
+      tb('NaN', -2, Number.POSITIVE_INFINITY, -2);
+      tb('0', -2, Number.NEGATIVE_INFINITY, -2);
 
-      // NaN
-      tb('1', NaN, +0, -2);
-      tb('1', NaN, -0, -2);
-      tb('NaN', NaN, 1, -2);
-      tb('NaN', NaN, 2, -2);
-      tb('NaN', NaN, -1, -2);
-      tb('NaN', NaN, -2, -2);
-      tb('NaN', NaN, NaN, -2);
-      tb('NaN', NaN, Infinity, -2);
-      tb('NaN', NaN, -Infinity, -2);
+      // Number.NaN
+      tb('1', Number.NaN, +0, -2);
+      tb('1', Number.NaN, -0, -2);
+      tb('NaN', Number.NaN, 1, -2);
+      tb('NaN', Number.NaN, 2, -2);
+      tb('NaN', Number.NaN, -1, -2);
+      tb('NaN', Number.NaN, -2, -2);
+      tb('NaN', Number.NaN, Number.NaN, -2);
+      tb('NaN', Number.NaN, Number.POSITIVE_INFINITY, -2);
+      tb('NaN', Number.NaN, Number.NEGATIVE_INFINITY, -2);
 
-      // Infinity
-      tb('1', Infinity, +0, -2);
-      tb('1', Infinity, -0, -2);
-      tb('NaN', Infinity, 1, -2);
-      tb('NaN', Infinity, 2, -2);
-      tb('0', Infinity, -1, -2);
-      tb('0', Infinity, -2, -2);
-      tb('NaN', Infinity, NaN, -2);
-      tb('NaN', Infinity, Infinity, -2);
-      tb('0', Infinity, -Infinity, -2);
+      // Number.POSITIVE_INFINITY
+      tb('1', Number.POSITIVE_INFINITY, +0, -2);
+      tb('1', Number.POSITIVE_INFINITY, -0, -2);
+      tb('NaN', Number.POSITIVE_INFINITY, 1, -2);
+      tb('NaN', Number.POSITIVE_INFINITY, 2, -2);
+      tb('0', Number.POSITIVE_INFINITY, -1, -2);
+      tb('0', Number.POSITIVE_INFINITY, -2, -2);
+      tb('NaN', Number.POSITIVE_INFINITY, Number.NaN, -2);
+      tb('NaN', Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, -2);
+      tb('0', Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, -2);
 
-      // -Infinity
-      tb('1', -Infinity, +0, -2);
-      tb('1', -Infinity, -0, -2);
-      tb('NaN', -Infinity, 1, -2);
-      tb('NaN', -Infinity, 2, -2);
-      tb('-0', -Infinity, -1, -2);
-      tb('0', -Infinity, -2, -2);
-      tb('NaN', -Infinity, NaN, -2);
-      tb('NaN', -Infinity, Infinity, -2);
-      tb('0', -Infinity, -Infinity, -2);
+      // Number.NEGATIVE_INFINITY
+      tb('1', Number.NEGATIVE_INFINITY, +0, -2);
+      tb('1', Number.NEGATIVE_INFINITY, -0, -2);
+      tb('NaN', Number.NEGATIVE_INFINITY, 1, -2);
+      tb('NaN', Number.NEGATIVE_INFINITY, 2, -2);
+      tb('-0', Number.NEGATIVE_INFINITY, -1, -2);
+      tb('0', Number.NEGATIVE_INFINITY, -2, -2);
+      tb('NaN', Number.NEGATIVE_INFINITY, Number.NaN, -2);
+      tb('NaN', Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, -2);
+      tb('0', Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, -2);
 
-      // % NaN
-
-      // 0
-      tb('NaN', 0, +0, NaN);
-      tb('NaN', 0, -0, NaN);
-      tb('NaN', 0, 1, NaN);
-      tb('NaN', 0, 2, NaN);
-      tb('NaN', 0, -1, NaN);
-      tb('NaN', 0, -2, NaN);
-      tb('NaN', 0, NaN, NaN);
-      tb('NaN', 0, Infinity, NaN);
-      tb('NaN', 0, -Infinity, NaN);
-
-      //-0
-      tb('NaN', -0, +0, NaN);
-      tb('NaN', -0, -0, NaN);
-      tb('NaN', -0, 1, NaN);
-      tb('NaN', -0, 2, NaN);
-      tb('NaN', -0, -1, NaN);
-      tb('NaN', -0, -2, NaN);
-      tb('NaN', -0, NaN, NaN);
-      tb('NaN', -0, Infinity, NaN);
-      tb('NaN', -0, -Infinity, NaN);
-
-      // 1
-      tb('NaN', 1, +0, NaN);
-      tb('NaN', 1, -0, NaN);
-      tb('NaN', 1, 1, NaN);
-      tb('NaN', 1, 2, NaN);
-      tb('NaN', 1, -1, NaN);
-      tb('NaN', 1, -2, NaN);
-      tb('NaN', 1, NaN, NaN);
-      tb('NaN', 1, Infinity, NaN);
-      tb('NaN', 1, -Infinity, NaN);
-
-      // 2
-      tb('NaN', 2, +0, NaN);
-      tb('NaN', 2, -0, NaN);
-      tb('NaN', 2, 1, NaN);
-      tb('NaN', 2, 2, NaN);
-      tb('NaN', 2, -1, NaN);
-      tb('NaN', 2, -2, NaN);
-      tb('NaN', 2, NaN, NaN);
-      tb('NaN', 2, Infinity, NaN);
-      tb('NaN', 2, -Infinity, NaN);
-
-      // -1
-      tb('NaN', -1, +0, NaN);
-      tb('NaN', -1, -0, NaN);
-      tb('NaN', -1, 1, NaN);
-      tb('NaN', -1, 2, NaN);
-      tb('NaN', -1, -1, NaN);
-      tb('NaN', -1, -2, NaN);
-      tb('NaN', -1, NaN, NaN);
-      tb('NaN', -1, Infinity, NaN);
-      tb('NaN', -1, -Infinity, NaN);
-
-      // -2
-      tb('NaN', -2, +0, NaN);
-      tb('NaN', -2, -0, NaN);
-      tb('NaN', -2, 1, NaN);
-      tb('NaN', -2, 2, NaN);
-      tb('NaN', -2, -1, NaN);
-      tb('NaN', -2, -2, NaN);
-      tb('NaN', -2, NaN, NaN);
-      tb('NaN', -2, Infinity, NaN);
-      tb('NaN', -2, -Infinity, NaN);
-
-      // NaN
-      tb('NaN', NaN, +0, NaN);
-      tb('NaN', NaN, -0, NaN);
-      tb('NaN', NaN, 1, NaN);
-      tb('NaN', NaN, 2, NaN);
-      tb('NaN', NaN, -1, NaN);
-      tb('NaN', NaN, -2, NaN);
-      tb('NaN', NaN, NaN, NaN);
-      tb('NaN', NaN, Infinity, NaN);
-      tb('NaN', NaN, -Infinity, NaN);
-
-      // Infinity
-      tb('NaN', Infinity, +0, NaN);
-      tb('NaN', Infinity, -0, NaN);
-      tb('NaN', Infinity, 1, NaN);
-      tb('NaN', Infinity, 2, NaN);
-      tb('NaN', Infinity, -1, NaN);
-      tb('NaN', Infinity, -2, NaN);
-      tb('NaN', Infinity, NaN, NaN);
-      tb('NaN', Infinity, Infinity, NaN);
-      tb('NaN', Infinity, -Infinity, NaN);
-
-      // -Infinity
-      tb('NaN', -Infinity, +0, NaN);
-      tb('NaN', -Infinity, -0, NaN);
-      tb('NaN', -Infinity, 1, NaN);
-      tb('NaN', -Infinity, 2, NaN);
-      tb('NaN', -Infinity, -1, NaN);
-      tb('NaN', -Infinity, -2, NaN);
-      tb('NaN', -Infinity, NaN, NaN);
-      tb('NaN', -Infinity, Infinity, NaN);
-      tb('NaN', -Infinity, -Infinity, NaN);
-
-      // % Infinity
+      // % Number.NaN
 
       // 0
-      tb('1', 0, +0, Infinity);
-      tb('1', 0, -0, Infinity);
-      tb('0', 0, 1, Infinity);
-      tb('0', 0, 2, Infinity);
-      tb('NaN', 0, -1, Infinity);
-      tb('NaN', 0, -2, Infinity);
-      tb('NaN', 0, NaN, Infinity);
-      tb('0', 0, Infinity, Infinity);
-      tb('NaN', 0, -Infinity, Infinity);
+      tb('NaN', 0, +0, Number.NaN);
+      tb('NaN', 0, -0, Number.NaN);
+      tb('NaN', 0, 1, Number.NaN);
+      tb('NaN', 0, 2, Number.NaN);
+      tb('NaN', 0, -1, Number.NaN);
+      tb('NaN', 0, -2, Number.NaN);
+      tb('NaN', 0, Number.NaN, Number.NaN);
+      tb('NaN', 0, Number.POSITIVE_INFINITY, Number.NaN);
+      tb('NaN', 0, Number.NEGATIVE_INFINITY, Number.NaN);
 
       //-0
-      tb('1', -0, +0, Infinity);
-      tb('1', -0, -0, Infinity);
-      tb('-0', -0, 1, Infinity);
-      tb('0', -0, 2, Infinity);
-      tb('NaN', -0, -1, Infinity);
-      tb('NaN', -0, -2, Infinity);
-      tb('NaN', -0, NaN, Infinity);
-      tb('0', -0, Infinity, Infinity);
-      tb('NaN', -0, -Infinity, Infinity);
+      tb('NaN', -0, +0, Number.NaN);
+      tb('NaN', -0, -0, Number.NaN);
+      tb('NaN', -0, 1, Number.NaN);
+      tb('NaN', -0, 2, Number.NaN);
+      tb('NaN', -0, -1, Number.NaN);
+      tb('NaN', -0, -2, Number.NaN);
+      tb('NaN', -0, Number.NaN, Number.NaN);
+      tb('NaN', -0, Number.POSITIVE_INFINITY, Number.NaN);
+      tb('NaN', -0, Number.NEGATIVE_INFINITY, Number.NaN);
 
       // 1
-      tb('1', 1, +0, Infinity);
-      tb('1', 1, -0, Infinity);
-      tb('1', 1, 1, Infinity);
-      tb('1', 1, 2, Infinity);
-      tb('1', 1, -1, Infinity);
-      tb('1', 1, -2, Infinity);
-      tb('NaN', 1, NaN, Infinity);
-      tb('NaN', 1, Infinity, Infinity);
-      tb('NaN', 1, -Infinity, Infinity);
+      tb('NaN', 1, +0, Number.NaN);
+      tb('NaN', 1, -0, Number.NaN);
+      tb('NaN', 1, 1, Number.NaN);
+      tb('NaN', 1, 2, Number.NaN);
+      tb('NaN', 1, -1, Number.NaN);
+      tb('NaN', 1, -2, Number.NaN);
+      tb('NaN', 1, Number.NaN, Number.NaN);
+      tb('NaN', 1, Number.POSITIVE_INFINITY, Number.NaN);
+      tb('NaN', 1, Number.NEGATIVE_INFINITY, Number.NaN);
 
       // 2
-      tb('1', 2, +0, Infinity);
-      tb('1', 2, -0, Infinity);
-      tb('2', 2, 1, Infinity);
-      tb('4', 2, 2, Infinity);
-      tb('0.5', 2, -1, Infinity);
-      tb('0.25', 2, -2, Infinity);
-      tb('NaN', 2, NaN, Infinity);
-      tb('NaN', 2, Infinity, Infinity);
-      tb('0', 2, -Infinity, Infinity);
+      tb('NaN', 2, +0, Number.NaN);
+      tb('NaN', 2, -0, Number.NaN);
+      tb('NaN', 2, 1, Number.NaN);
+      tb('NaN', 2, 2, Number.NaN);
+      tb('NaN', 2, -1, Number.NaN);
+      tb('NaN', 2, -2, Number.NaN);
+      tb('NaN', 2, Number.NaN, Number.NaN);
+      tb('NaN', 2, Number.POSITIVE_INFINITY, Number.NaN);
+      tb('NaN', 2, Number.NEGATIVE_INFINITY, Number.NaN);
 
       // -1
-      tb('1', -1, +0, Infinity);
-      tb('1', -1, -0, Infinity);
-      tb('-1', -1, 1, Infinity);
-      tb('1', -1, 2, Infinity);
-      tb('-1', -1, -1, Infinity);
-      tb('1', -1, -2, Infinity);
-      tb('NaN', -1, NaN, Infinity);
-      tb('NaN', -1, Infinity, Infinity);
-      tb('NaN', -1, -Infinity, Infinity);
+      tb('NaN', -1, +0, Number.NaN);
+      tb('NaN', -1, -0, Number.NaN);
+      tb('NaN', -1, 1, Number.NaN);
+      tb('NaN', -1, 2, Number.NaN);
+      tb('NaN', -1, -1, Number.NaN);
+      tb('NaN', -1, -2, Number.NaN);
+      tb('NaN', -1, Number.NaN, Number.NaN);
+      tb('NaN', -1, Number.POSITIVE_INFINITY, Number.NaN);
+      tb('NaN', -1, Number.NEGATIVE_INFINITY, Number.NaN);
 
       // -2
-      tb('1', -2, +0, Infinity);
-      tb('1', -2, -0, Infinity);
-      tb('-2', -2, 1, Infinity);
-      tb('4', -2, 2, Infinity);
-      tb('-0.5', -2, -1, Infinity);
-      tb('0.25', -2, -2, Infinity);
-      tb('NaN', -2, NaN, Infinity);
-      tb('NaN', -2, Infinity, Infinity);
-      tb('0', -2, -Infinity, Infinity);
+      tb('NaN', -2, +0, Number.NaN);
+      tb('NaN', -2, -0, Number.NaN);
+      tb('NaN', -2, 1, Number.NaN);
+      tb('NaN', -2, 2, Number.NaN);
+      tb('NaN', -2, -1, Number.NaN);
+      tb('NaN', -2, -2, Number.NaN);
+      tb('NaN', -2, Number.NaN, Number.NaN);
+      tb('NaN', -2, Number.POSITIVE_INFINITY, Number.NaN);
+      tb('NaN', -2, Number.NEGATIVE_INFINITY, Number.NaN);
 
-      // NaN
-      tb('1', NaN, +0, Infinity);
-      tb('1', NaN, -0, Infinity);
-      tb('NaN', NaN, 1, Infinity);
-      tb('NaN', NaN, 2, Infinity);
-      tb('NaN', NaN, -1, Infinity);
-      tb('NaN', NaN, -2, Infinity);
-      tb('NaN', NaN, NaN, Infinity);
-      tb('NaN', NaN, Infinity, Infinity);
-      tb('NaN', NaN, -Infinity, Infinity);
+      // Number.NaN
+      tb('NaN', Number.NaN, +0, Number.NaN);
+      tb('NaN', Number.NaN, -0, Number.NaN);
+      tb('NaN', Number.NaN, 1, Number.NaN);
+      tb('NaN', Number.NaN, 2, Number.NaN);
+      tb('NaN', Number.NaN, -1, Number.NaN);
+      tb('NaN', Number.NaN, -2, Number.NaN);
+      tb('NaN', Number.NaN, Number.NaN, Number.NaN);
+      tb('NaN', Number.NaN, Number.POSITIVE_INFINITY, Number.NaN);
+      tb('NaN', Number.NaN, Number.NEGATIVE_INFINITY, Number.NaN);
 
-      // Infinity
-      tb('1', Infinity, +0, Infinity);
-      tb('1', Infinity, -0, Infinity);
-      tb('NaN', Infinity, 1, Infinity);
-      tb('NaN', Infinity, 2, Infinity);
-      tb('0', Infinity, -1, Infinity);
-      tb('0', Infinity, -2, Infinity);
-      tb('NaN', Infinity, NaN, Infinity);
-      tb('NaN', Infinity, Infinity, Infinity);
-      tb('0', Infinity, -Infinity, Infinity);
+      // Number.POSITIVE_INFINITY
+      tb('NaN', Number.POSITIVE_INFINITY, +0, Number.NaN);
+      tb('NaN', Number.POSITIVE_INFINITY, -0, Number.NaN);
+      tb('NaN', Number.POSITIVE_INFINITY, 1, Number.NaN);
+      tb('NaN', Number.POSITIVE_INFINITY, 2, Number.NaN);
+      tb('NaN', Number.POSITIVE_INFINITY, -1, Number.NaN);
+      tb('NaN', Number.POSITIVE_INFINITY, -2, Number.NaN);
+      tb('NaN', Number.POSITIVE_INFINITY, Number.NaN, Number.NaN);
+      tb('NaN', Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.NaN);
+      tb('NaN', Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NaN);
 
-      // -Infinity
-      tb('1', -Infinity, +0, Infinity);
-      tb('1', -Infinity, -0, Infinity);
-      tb('NaN', -Infinity, 1, Infinity);
-      tb('NaN', -Infinity, 2, Infinity);
-      tb('-0', -Infinity, -1, Infinity);
-      tb('0', -Infinity, -2, Infinity);
-      tb('NaN', -Infinity, NaN, Infinity);
-      tb('NaN', -Infinity, Infinity, Infinity);
-      tb('0', -Infinity, -Infinity, Infinity);
+      // Number.NEGATIVE_INFINITY
+      tb('NaN', Number.NEGATIVE_INFINITY, +0, Number.NaN);
+      tb('NaN', Number.NEGATIVE_INFINITY, -0, Number.NaN);
+      tb('NaN', Number.NEGATIVE_INFINITY, 1, Number.NaN);
+      tb('NaN', Number.NEGATIVE_INFINITY, 2, Number.NaN);
+      tb('NaN', Number.NEGATIVE_INFINITY, -1, Number.NaN);
+      tb('NaN', Number.NEGATIVE_INFINITY, -2, Number.NaN);
+      tb('NaN', Number.NEGATIVE_INFINITY, Number.NaN, Number.NaN);
+      tb('NaN', Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, Number.NaN);
+      tb('NaN', Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NaN);
 
-      // % -Infinity
+      // % Number.POSITIVE_INFINITY
 
       // 0
-      tb('1', 0, +0, -Infinity);
-      tb('1', 0, -0, -Infinity);
-      tb('0', 0, 1, -Infinity);
-      tb('0', 0, 2, -Infinity);
-      tb('NaN', 0, -1, -Infinity);
-      tb('NaN', 0, -2, -Infinity);
-      tb('NaN', 0, NaN, -Infinity);
-      tb('0', 0, Infinity, -Infinity);
-      tb('NaN', 0, -Infinity, -Infinity);
+      tb('1', 0, +0, Number.POSITIVE_INFINITY);
+      tb('1', 0, -0, Number.POSITIVE_INFINITY);
+      tb('0', 0, 1, Number.POSITIVE_INFINITY);
+      tb('0', 0, 2, Number.POSITIVE_INFINITY);
+      tb('NaN', 0, -1, Number.POSITIVE_INFINITY);
+      tb('NaN', 0, -2, Number.POSITIVE_INFINITY);
+      tb('NaN', 0, Number.NaN, Number.POSITIVE_INFINITY);
+      tb('0', 0, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY);
+      tb('NaN', 0, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY);
 
       //-0
-      tb('1', -0, +0, -Infinity);
-      tb('1', -0, -0, -Infinity);
-      tb('-0', -0, 1, -Infinity);
-      tb('0', -0, 2, -Infinity);
-      tb('NaN', -0, -1, -Infinity);
-      tb('NaN', -0, -2, -Infinity);
-      tb('NaN', -0, NaN, -Infinity);
-      tb('0', -0, Infinity, -Infinity);
-      tb('NaN', -0, -Infinity, -Infinity);
+      tb('1', -0, +0, Number.POSITIVE_INFINITY);
+      tb('1', -0, -0, Number.POSITIVE_INFINITY);
+      tb('-0', -0, 1, Number.POSITIVE_INFINITY);
+      tb('0', -0, 2, Number.POSITIVE_INFINITY);
+      tb('NaN', -0, -1, Number.POSITIVE_INFINITY);
+      tb('NaN', -0, -2, Number.POSITIVE_INFINITY);
+      tb('NaN', -0, Number.NaN, Number.POSITIVE_INFINITY);
+      tb('0', -0, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY);
+      tb('NaN', -0, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY);
 
       // 1
-      tb('1', 1, +0, -Infinity);
-      tb('1', 1, -0, -Infinity);
-      tb('1', 1, 1, -Infinity);
-      tb('1', 1, 2, -Infinity);
-      tb('1', 1, -1, -Infinity);
-      tb('1', 1, -2, -Infinity);
-      tb('NaN', 1, NaN, -Infinity);
-      tb('NaN', 1, Infinity, -Infinity);
-      tb('NaN', 1, -Infinity, -Infinity);
+      tb('1', 1, +0, Number.POSITIVE_INFINITY);
+      tb('1', 1, -0, Number.POSITIVE_INFINITY);
+      tb('1', 1, 1, Number.POSITIVE_INFINITY);
+      tb('1', 1, 2, Number.POSITIVE_INFINITY);
+      tb('1', 1, -1, Number.POSITIVE_INFINITY);
+      tb('1', 1, -2, Number.POSITIVE_INFINITY);
+      tb('NaN', 1, Number.NaN, Number.POSITIVE_INFINITY);
+      tb('NaN', 1, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY);
+      tb('NaN', 1, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY);
 
       // 2
-      tb('1', 2, +0, -Infinity);
-      tb('1', 2, -0, -Infinity);
-      tb('2', 2, 1, -Infinity);
-      tb('4', 2, 2, -Infinity);
-      tb('0.5', 2, -1, -Infinity);
-      tb('0.25', 2, -2, -Infinity);
-      tb('NaN', 2, NaN, -Infinity);
-      tb('NaN', 2, Infinity, -Infinity);
-      tb('0', 2, -Infinity, -Infinity);
+      tb('1', 2, +0, Number.POSITIVE_INFINITY);
+      tb('1', 2, -0, Number.POSITIVE_INFINITY);
+      tb('2', 2, 1, Number.POSITIVE_INFINITY);
+      tb('4', 2, 2, Number.POSITIVE_INFINITY);
+      tb('0.5', 2, -1, Number.POSITIVE_INFINITY);
+      tb('0.25', 2, -2, Number.POSITIVE_INFINITY);
+      tb('NaN', 2, Number.NaN, Number.POSITIVE_INFINITY);
+      tb('NaN', 2, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY);
+      tb('0', 2, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY);
 
       // -1
-      tb('1', -1, +0, -Infinity);
-      tb('1', -1, -0, -Infinity);
-      tb('-1', -1, 1, -Infinity);
-      tb('1', -1, 2, -Infinity);
-      tb('-1', -1, -1, -Infinity);
-      tb('1', -1, -2, -Infinity);
-      tb('NaN', -1, NaN, -Infinity);
-      tb('NaN', -1, Infinity, -Infinity);
-      tb('NaN', -1, -Infinity, -Infinity);
+      tb('1', -1, +0, Number.POSITIVE_INFINITY);
+      tb('1', -1, -0, Number.POSITIVE_INFINITY);
+      tb('-1', -1, 1, Number.POSITIVE_INFINITY);
+      tb('1', -1, 2, Number.POSITIVE_INFINITY);
+      tb('-1', -1, -1, Number.POSITIVE_INFINITY);
+      tb('1', -1, -2, Number.POSITIVE_INFINITY);
+      tb('NaN', -1, Number.NaN, Number.POSITIVE_INFINITY);
+      tb('NaN', -1, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY);
+      tb('NaN', -1, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY);
 
       // -2
-      tb('1', -2, +0, -Infinity);
-      tb('1', -2, -0, -Infinity);
-      tb('-2', -2, 1, -Infinity);
-      tb('4', -2, 2, -Infinity);
-      tb('-0.5', -2, -1, -Infinity);
-      tb('0.25', -2, -2, -Infinity);
-      tb('NaN', -2, NaN, -Infinity);
-      tb('NaN', -2, Infinity, -Infinity);
-      tb('0', -2, -Infinity, -Infinity);
+      tb('1', -2, +0, Number.POSITIVE_INFINITY);
+      tb('1', -2, -0, Number.POSITIVE_INFINITY);
+      tb('-2', -2, 1, Number.POSITIVE_INFINITY);
+      tb('4', -2, 2, Number.POSITIVE_INFINITY);
+      tb('-0.5', -2, -1, Number.POSITIVE_INFINITY);
+      tb('0.25', -2, -2, Number.POSITIVE_INFINITY);
+      tb('NaN', -2, Number.NaN, Number.POSITIVE_INFINITY);
+      tb('NaN', -2, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY);
+      tb('0', -2, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY);
 
-      // NaN
-      tb('1', NaN, +0, -Infinity);
-      tb('1', NaN, -0, -Infinity);
-      tb('NaN', NaN, 1, -Infinity);
-      tb('NaN', NaN, 2, -Infinity);
-      tb('NaN', NaN, -1, -Infinity);
-      tb('NaN', NaN, -2, -Infinity);
-      tb('NaN', NaN, NaN, -Infinity);
-      tb('NaN', NaN, Infinity, -Infinity);
-      tb('NaN', NaN, -Infinity, -Infinity);
+      // Number.NaN
+      tb('1', Number.NaN, +0, Number.POSITIVE_INFINITY);
+      tb('1', Number.NaN, -0, Number.POSITIVE_INFINITY);
+      tb('NaN', Number.NaN, 1, Number.POSITIVE_INFINITY);
+      tb('NaN', Number.NaN, 2, Number.POSITIVE_INFINITY);
+      tb('NaN', Number.NaN, -1, Number.POSITIVE_INFINITY);
+      tb('NaN', Number.NaN, -2, Number.POSITIVE_INFINITY);
+      tb('NaN', Number.NaN, Number.NaN, Number.POSITIVE_INFINITY);
+      tb('NaN', Number.NaN, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY);
+      tb('NaN', Number.NaN, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY);
 
-      // Infinity
-      tb('1', Infinity, +0, -Infinity);
-      tb('1', Infinity, -0, -Infinity);
-      tb('NaN', Infinity, 1, -Infinity);
-      tb('NaN', Infinity, 2, -Infinity);
-      tb('0', Infinity, -1, -Infinity);
-      tb('0', Infinity, -2, -Infinity);
-      tb('NaN', Infinity, NaN, -Infinity);
-      tb('NaN', Infinity, Infinity, -Infinity);
-      tb('0', Infinity, -Infinity, -Infinity);
+      // Number.POSITIVE_INFINITY
+      tb('1', Number.POSITIVE_INFINITY, +0, Number.POSITIVE_INFINITY);
+      tb('1', Number.POSITIVE_INFINITY, -0, Number.POSITIVE_INFINITY);
+      tb('NaN', Number.POSITIVE_INFINITY, 1, Number.POSITIVE_INFINITY);
+      tb('NaN', Number.POSITIVE_INFINITY, 2, Number.POSITIVE_INFINITY);
+      tb('0', Number.POSITIVE_INFINITY, -1, Number.POSITIVE_INFINITY);
+      tb('0', Number.POSITIVE_INFINITY, -2, Number.POSITIVE_INFINITY);
+      tb('NaN', Number.POSITIVE_INFINITY, Number.NaN, Number.POSITIVE_INFINITY);
+      tb('NaN', Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY);
+      tb('0', Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY);
 
-      // -Infinity
-      tb('1', -Infinity, +0, -Infinity);
-      tb('1', -Infinity, -0, -Infinity);
-      tb('NaN', -Infinity, 1, -Infinity);
-      tb('NaN', -Infinity, 2, -Infinity);
-      tb('-0', -Infinity, -1, -Infinity);
-      tb('0', -Infinity, -2, -Infinity);
-      tb('NaN', -Infinity, NaN, -Infinity);
-      tb('NaN', -Infinity, Infinity, -Infinity);
-      tb('0', -Infinity, -Infinity, -Infinity);
+      // Number.NEGATIVE_INFINITY
+      tb('1', Number.NEGATIVE_INFINITY, +0, Number.POSITIVE_INFINITY);
+      tb('1', Number.NEGATIVE_INFINITY, -0, Number.POSITIVE_INFINITY);
+      tb('NaN', Number.NEGATIVE_INFINITY, 1, Number.POSITIVE_INFINITY);
+      tb('NaN', Number.NEGATIVE_INFINITY, 2, Number.POSITIVE_INFINITY);
+      tb('-0', Number.NEGATIVE_INFINITY, -1, Number.POSITIVE_INFINITY);
+      tb('0', Number.NEGATIVE_INFINITY, -2, Number.POSITIVE_INFINITY);
+      tb('NaN', Number.NEGATIVE_INFINITY, Number.NaN, Number.POSITIVE_INFINITY);
+      tb('NaN', Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY);
+      tb('0', Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY);
+
+      // % Number.NEGATIVE_INFINITY
+
+      // 0
+      tb('1', 0, +0, Number.NEGATIVE_INFINITY);
+      tb('1', 0, -0, Number.NEGATIVE_INFINITY);
+      tb('0', 0, 1, Number.NEGATIVE_INFINITY);
+      tb('0', 0, 2, Number.NEGATIVE_INFINITY);
+      tb('NaN', 0, -1, Number.NEGATIVE_INFINITY);
+      tb('NaN', 0, -2, Number.NEGATIVE_INFINITY);
+      tb('NaN', 0, Number.NaN, Number.NEGATIVE_INFINITY);
+      tb('0', 0, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY);
+      tb('NaN', 0, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY);
+
+      //-0
+      tb('1', -0, +0, Number.NEGATIVE_INFINITY);
+      tb('1', -0, -0, Number.NEGATIVE_INFINITY);
+      tb('-0', -0, 1, Number.NEGATIVE_INFINITY);
+      tb('0', -0, 2, Number.NEGATIVE_INFINITY);
+      tb('NaN', -0, -1, Number.NEGATIVE_INFINITY);
+      tb('NaN', -0, -2, Number.NEGATIVE_INFINITY);
+      tb('NaN', -0, Number.NaN, Number.NEGATIVE_INFINITY);
+      tb('0', -0, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY);
+      tb('NaN', -0, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY);
+
+      // 1
+      tb('1', 1, +0, Number.NEGATIVE_INFINITY);
+      tb('1', 1, -0, Number.NEGATIVE_INFINITY);
+      tb('1', 1, 1, Number.NEGATIVE_INFINITY);
+      tb('1', 1, 2, Number.NEGATIVE_INFINITY);
+      tb('1', 1, -1, Number.NEGATIVE_INFINITY);
+      tb('1', 1, -2, Number.NEGATIVE_INFINITY);
+      tb('NaN', 1, Number.NaN, Number.NEGATIVE_INFINITY);
+      tb('NaN', 1, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY);
+      tb('NaN', 1, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY);
+
+      // 2
+      tb('1', 2, +0, Number.NEGATIVE_INFINITY);
+      tb('1', 2, -0, Number.NEGATIVE_INFINITY);
+      tb('2', 2, 1, Number.NEGATIVE_INFINITY);
+      tb('4', 2, 2, Number.NEGATIVE_INFINITY);
+      tb('0.5', 2, -1, Number.NEGATIVE_INFINITY);
+      tb('0.25', 2, -2, Number.NEGATIVE_INFINITY);
+      tb('NaN', 2, Number.NaN, Number.NEGATIVE_INFINITY);
+      tb('NaN', 2, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY);
+      tb('0', 2, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY);
+
+      // -1
+      tb('1', -1, +0, Number.NEGATIVE_INFINITY);
+      tb('1', -1, -0, Number.NEGATIVE_INFINITY);
+      tb('-1', -1, 1, Number.NEGATIVE_INFINITY);
+      tb('1', -1, 2, Number.NEGATIVE_INFINITY);
+      tb('-1', -1, -1, Number.NEGATIVE_INFINITY);
+      tb('1', -1, -2, Number.NEGATIVE_INFINITY);
+      tb('NaN', -1, Number.NaN, Number.NEGATIVE_INFINITY);
+      tb('NaN', -1, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY);
+      tb('NaN', -1, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY);
+
+      // -2
+      tb('1', -2, +0, Number.NEGATIVE_INFINITY);
+      tb('1', -2, -0, Number.NEGATIVE_INFINITY);
+      tb('-2', -2, 1, Number.NEGATIVE_INFINITY);
+      tb('4', -2, 2, Number.NEGATIVE_INFINITY);
+      tb('-0.5', -2, -1, Number.NEGATIVE_INFINITY);
+      tb('0.25', -2, -2, Number.NEGATIVE_INFINITY);
+      tb('NaN', -2, Number.NaN, Number.NEGATIVE_INFINITY);
+      tb('NaN', -2, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY);
+      tb('0', -2, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY);
+
+      // Number.NaN
+      tb('1', Number.NaN, +0, Number.NEGATIVE_INFINITY);
+      tb('1', Number.NaN, -0, Number.NEGATIVE_INFINITY);
+      tb('NaN', Number.NaN, 1, Number.NEGATIVE_INFINITY);
+      tb('NaN', Number.NaN, 2, Number.NEGATIVE_INFINITY);
+      tb('NaN', Number.NaN, -1, Number.NEGATIVE_INFINITY);
+      tb('NaN', Number.NaN, -2, Number.NEGATIVE_INFINITY);
+      tb('NaN', Number.NaN, Number.NaN, Number.NEGATIVE_INFINITY);
+      tb('NaN', Number.NaN, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY);
+      tb('NaN', Number.NaN, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY);
+
+      // Number.POSITIVE_INFINITY
+      tb('1', Number.POSITIVE_INFINITY, +0, Number.NEGATIVE_INFINITY);
+      tb('1', Number.POSITIVE_INFINITY, -0, Number.NEGATIVE_INFINITY);
+      tb('NaN', Number.POSITIVE_INFINITY, 1, Number.NEGATIVE_INFINITY);
+      tb('NaN', Number.POSITIVE_INFINITY, 2, Number.NEGATIVE_INFINITY);
+      tb('0', Number.POSITIVE_INFINITY, -1, Number.NEGATIVE_INFINITY);
+      tb('0', Number.POSITIVE_INFINITY, -2, Number.NEGATIVE_INFINITY);
+      tb('NaN', Number.POSITIVE_INFINITY, Number.NaN, Number.NEGATIVE_INFINITY);
+      tb('NaN', Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY);
+      tb('0', Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY);
+
+      // Number.NEGATIVE_INFINITY
+      tb('1', Number.NEGATIVE_INFINITY, +0, Number.NEGATIVE_INFINITY);
+      tb('1', Number.NEGATIVE_INFINITY, -0, Number.NEGATIVE_INFINITY);
+      tb('NaN', Number.NEGATIVE_INFINITY, 1, Number.NEGATIVE_INFINITY);
+      tb('NaN', Number.NEGATIVE_INFINITY, 2, Number.NEGATIVE_INFINITY);
+      tb('-0', Number.NEGATIVE_INFINITY, -1, Number.NEGATIVE_INFINITY);
+      tb('0', Number.NEGATIVE_INFINITY, -2, Number.NEGATIVE_INFINITY);
+      tb('NaN', Number.NEGATIVE_INFINITY, Number.NaN, Number.NEGATIVE_INFINITY);
+      tb('NaN', Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY);
+      tb('0', Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY);
     })
   })
 }

@@ -13,59 +13,41 @@
  * limitations under the License.
  */
 import { RUNNING, SUCCESS, FAILURE,Task,Decorator } from 'behaviortree'
-import { describe , beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/utils'
-
+import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
+import { Utils } from '../utils/Utils'
 export default function DecoratorTest() {
   // 通过
-  describe('DecoratorTest', function () {
-    _it('does nothing by itself', () => {
-      const task = new Task({
-        run(blackboard) {
-          return blackboard.result
-        }
-      })
-      console.log(`dudu2`)
-      expect(task.run({ result: SUCCESS })).toEqual(SUCCESS)
+  describe('DecoratorTest', ()=> {
+    it('does_nothing_by_itself',0, () => {
+      const task = Utils.TaskRun
 
-      expect(task.run({ result: FAILURE })).toEqual(FAILURE)
+      expect(task.run({ result: SUCCESS })).assertEqual(SUCCESS)
+
+      expect(task.run({ result: FAILURE })).assertEqual(FAILURE)
 
 
       const decoratedTask = new Decorator({ node: task })
-      expect(decoratedTask.run({ result: SUCCESS })).toEqual(SUCCESS)
+      expect(decoratedTask.run({ result: SUCCESS })).assertEqual(SUCCESS)
 
-      expect(decoratedTask.run({ result: FAILURE })).toEqual(FAILURE)
+      expect(decoratedTask.run({ result: FAILURE })).assertEqual(FAILURE)
 
     })
 
-    _it('can have a start and end callback', () => {
-      const blackboard = { start: 0, end: 0, result: RUNNING }
-      const task = new Task({
-        run(blackboard) {
-          return blackboard.result
-        }
-      })
-      const decoratedTask = new Decorator({
-        start: function (b) {
-          ++b.start
-        },
-        end: function (b) {
-          ++b.end
-        },
-        node: task
-      })
+    it('can_have_a_start_and_end_callback',0, () => {
+      let blackboard = Utils.DecoratorBlackboard
+      const decoratedTask =Utils.DecoratorDecoratedTask
 
       decoratedTask.run(blackboard)
 
-      expect(blackboard.start).toEqual(1)
-      expect(blackboard.end).toEqual(0)
+      expect(blackboard.start).assertEqual(1)
+      expect(blackboard.end).assertEqual(0)
 
-      // @ts-ignore
-      blackboard.result = FAILURE
+      Utils.setDecoratorResult(FAILURE)
 
       decoratedTask.run(blackboard, { rerun: true })
 
-      expect(blackboard.start).toEqual(1)
-      expect(blackboard.end).toEqual(1)
+      expect(blackboard.start).assertEqual(1)
+      expect(blackboard.end).assertEqual(1)
     })
   })
 }

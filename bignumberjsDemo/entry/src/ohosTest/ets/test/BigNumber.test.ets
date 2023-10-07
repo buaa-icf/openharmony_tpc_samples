@@ -13,42 +13,48 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-import BigNumber from 'bignumber.js';
+import { BigNumber } from './BigNumber';
 import Test from './tester';
+import Utils from './Utils';
 
 export default function BigNumberJs() {
-  describe('BigNumberTest', function () {
-    var t = function (expected, value) {
+  describe('BigNumberTest', ()=> {
+    let t =  (expected:string | boolean |(() => BigNumber)|number|BigNumber|Function, value:BigNumber)=> {
       new Test().areEqual(expected, String(value));
     }
 
-    var tx = function (func, msg) {
+    let tx = (func:Function, msg:string)=> {
       new Test().isException(func, msg);
     }
 
-    var tb = function (expected, value, base) {
-      new Test().areEqual(expected, new BigNumber(value, base).toString())
+    let tb =  (expected:string | boolean |(() => BigNumber)|number|BigNumber|Function, value:(BigNumber.Value), base?: number|null)=> {
+      if(base !== null){
+        new Test().areEqual(expected, new BigNumber(value, base).toString())
+      }else{
+        new Test().areEqual(expected, Utils.bigNumberString(value, base))
+      }
+
     }
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(()=> {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(()=> {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(()=> {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(()=> {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    it('bignumber', 0, function () {
+    it('bignumber', 0, ()=> {
 
       // Defines a test case. This API supports three parameters: test case name, filter parameter, and test case function.
       BigNumber.config({
@@ -64,9 +70,9 @@ export default function BigNumberJs() {
       t('0', new BigNumber('1e-10000000000'));
       t('0', new BigNumber('-1e-10000000000'));
 
-      t('NaN', new BigNumber(NaN));
-      t('NaN', new BigNumber(-NaN));
-      t('NaN', new BigNumber(+NaN));
+      t('NaN', new BigNumber(Number.NaN));
+      t('NaN', new BigNumber(-Number.NaN));
+      t('NaN', new BigNumber(+Number.NaN));
       t('NaN', new BigNumber('NaN'));
       t('NaN', new BigNumber(' NaN'));
       t('NaN', new BigNumber('NaN '));
@@ -80,37 +86,37 @@ export default function BigNumberJs() {
       t('NaN', new BigNumber('-NaN '));
       t('NaN', new BigNumber(' -NaN '));
 
-      tx(function () {
+      tx(()=> {
         new BigNumber('+ NaN')
       }, "+ NaN");
-      tx(function () {
+      tx(()=> {
         new BigNumber('- NaN')
       }, "- NaN");
-      tx(function () {
+      tx(()=> {
         new BigNumber(' + NaN')
       }, " + NaN");
-      tx(function () {
+      tx(()=> {
         new BigNumber(' - NaN')
       }, " - NaN");
-      tx(function () {
+      tx(()=> {
         new BigNumber('. NaN')
       }, ". NaN");
-      tx(function () {
+      tx(()=> {
         new BigNumber('.-NaN')
       }, ".-NaN");
-      tx(function () {
+      tx(()=> {
         new BigNumber('.+NaN')
       }, ".+NaN");
-      tx(function () {
+      tx(()=> {
         new BigNumber('-.NaN')
       }, "-.NaN");
-      tx(function () {
+      tx(()=> {
         new BigNumber('+.NaN')
       }, "+.NaN");
 
-      t('Infinity', new BigNumber(Infinity));
-      t('-Infinity', new BigNumber(-Infinity));
-      t('Infinity', new BigNumber(+Infinity));
+      t('Infinity', new BigNumber(Number.POSITIVE_INFINITY));
+      t('-Infinity', new BigNumber(Number.NEGATIVE_INFINITY));
+      t('Infinity', new BigNumber(+Number.POSITIVE_INFINITY));
       t('Infinity', new BigNumber('Infinity'));
       t('Infinity', new BigNumber(' Infinity'));
       t('Infinity', new BigNumber('Infinity '));
@@ -124,34 +130,34 @@ export default function BigNumberJs() {
       t('-Infinity', new BigNumber('-Infinity '));
       t('-Infinity', new BigNumber(' -Infinity '));
 
-      tx(function () {
+      tx(()=> {
         new BigNumber('+ Infinity')
       }, "+ Infinity");
-      tx(function () {
+      tx(()=> {
         new BigNumber(' + Infinity')
       }, " + Infinity");
-      tx(function () {
+      tx(()=> {
         new BigNumber('- Infinity')
       }, "- Infinity");
-      tx(function () {
+      tx(()=> {
         new BigNumber(' - Infinity')
       }, " - Infinity");
-      tx(function () {
+      tx(()=> {
         new BigNumber('.Infinity')
       }, ".Infinity");
-      tx(function () {
+      tx(()=> {
         new BigNumber('. Infinity')
       }, ". Infinity");
-      tx(function () {
+      tx(()=> {
         new BigNumber('.-Infinity')
       }, ".-Infinity");
-      tx(function () {
+      tx(()=> {
         new BigNumber('.+Infinity')
       }, ".+Infinity");
-      tx(function () {
+      tx(()=> {
         new BigNumber('-.Infinity')
       }, "-.Infinity");
-      tx(function () {
+      tx(()=> {
         new BigNumber('+.Infinity')
       }, "+.Infinity");
 
@@ -174,43 +180,43 @@ export default function BigNumberJs() {
       t('0', new BigNumber(' +.0 '));
       t('0', new BigNumber(' -.0 '));
 
-      tx(function () {
+      tx(()=> {
         new BigNumber('+-0')
       }, "+-0");
-      tx(function () {
+      tx(()=> {
         new BigNumber('-+0')
       }, "-+0");
-      tx(function () {
+      tx(()=> {
         new BigNumber('--0')
       }, "--0");
-      tx(function () {
+      tx(()=> {
         new BigNumber('++0')
       }, "++0");
-      tx(function () {
+      tx(()=> {
         new BigNumber('.-0')
       }, ".-0");
-      tx(function () {
+      tx(()=> {
         new BigNumber('.+0')
       }, ".+0");
-      tx(function () {
+      tx(()=> {
         new BigNumber('0 .')
       }, "0 .");
-      tx(function () {
+      tx(()=> {
         new BigNumber('. 0')
       }, ". 0");
-      tx(function () {
+      tx(()=> {
         new BigNumber('..0')
       }, "..0");
-      tx(function () {
+      tx(()=> {
         new BigNumber('+.-0')
       }, "+.-0");
-      tx(function () {
+      tx(()=> {
         new BigNumber('-.+0')
       }, "-.+0");
-      tx(function () {
+      tx(()=> {
         new BigNumber('+. 0')
       }, "+. 0");
-      tx(function () {
+      tx(()=> {
         new BigNumber('-. 0')
       }, "-. 0");
 
@@ -231,159 +237,159 @@ export default function BigNumberJs() {
       t('0.2', new BigNumber(' +.2 '));
       t('-0.2', new BigNumber(' -.2 '));
 
-      tx(function () {
+      tx(()=> {
         new BigNumber('+-2')
       }, "+-2");
-      tx(function () {
+      tx(()=> {
         new BigNumber('-+2')
       }, "-+2");
-      tx(function () {
+      tx(()=> {
         new BigNumber('--2')
       }, "--2");
-      tx(function () {
+      tx(()=> {
         new BigNumber('++2')
       }, "++2");
-      tx(function () {
+      tx(()=> {
         new BigNumber('.-2')
       }, ".-2");
-      tx(function () {
+      tx(()=> {
         new BigNumber('.+2')
       }, ".+2");
-      tx(function () {
+      tx(()=> {
         new BigNumber('2 .')
       }, "2 .");
-      tx(function () {
+      tx(()=> {
         new BigNumber('. 2')
       }, ". 2");
-      tx(function () {
+      tx(()=> {
         new BigNumber('..2')
       }, "..2");
-      tx(function () {
+      tx(()=> {
         new BigNumber('+.-2')
       }, "+.-2");
-      tx(function () {
+      tx(()=> {
         new BigNumber('-.+2')
       }, "-.+2");
-      tx(function () {
+      tx(()=> {
         new BigNumber('+. 2')
       }, "+. 2");
-      tx(function () {
+      tx(()=> {
         new BigNumber('-. 2')
       }, "-. 2");
 
-      tx(function () {
+      tx(()=> {
         new BigNumber('+2..')
       }, "+2..");
-      tx(function () {
+      tx(()=> {
         new BigNumber('-2..')
       }, "-2..");
-      tx(function () {
+      tx(()=> {
         new BigNumber('-.2.')
       }, "-.2.");
-      tx(function () {
+      tx(()=> {
         new BigNumber('+.2.')
       }, "+.2.");
-      tx(function () {
+      tx(()=> {
         new BigNumber('.-20.')
       }, ".-20.");
-      tx(function () {
+      tx(()=> {
         new BigNumber('.+20.')
       }, ".+20.");
-      tx(function () {
+      tx(()=> {
         new BigNumber('. 20.')
       }, ". 20.");
 
-      tx(function () {
-        new BigNumber(undefined)
+      tx(()=> {
+        Utils.bigNumber(undefined)
       }, "undefined");
-      tx(function () {
+      tx(()=> {
         new BigNumber('')
       }, "''");
-      tx(function () {
-        new BigNumber(null)
+      tx(()=> {
+        Utils.bigNumber(null)
       }, "null");
-      tx(function () {
+      tx(()=> {
         new BigNumber(' ')
       }, "' '");
-      tx(function () {
+      tx(()=> {
         new BigNumber('nan')
       }, "nan");
-      tx(function () {
+      tx(()=> {
         new BigNumber('23er')
       }, "23er");
-      tx(function () {
+      tx(()=> {
         new BigNumber('e4')
       }, "e4");
-      tx(function () {
+      tx(()=> {
         new BigNumber('0x')
       }, "0x");
-      tx(function () {
+      tx(()=> {
         new BigNumber('0x.')
       }, "0x.");
-      tx(function () {
+      tx(()=> {
         new BigNumber('+0x')
       }, "+0x");
-      tx(function () {
+      tx(()=> {
         new BigNumber('.0x1')
       }, ".0x1");
-      tx(function () {
+      tx(()=> {
         new BigNumber('.0x1', 16)
       }, ".0x1, 16");
-      tx(function () {
+      tx(()=> {
         new BigNumber('. 0x1')
       }, ". 0x1");
-      tx(function () {
+      tx(()=> {
         new BigNumber('0x1', 15)
       }, "0x1, 15");
-      tx(function () {
+      tx(()=> {
         new BigNumber('0b')
       }, "0b");
-      tx(function () {
+      tx(()=> {
         new BigNumber('+0b')
       }, "+0b");
-      tx(function () {
+      tx(()=> {
         new BigNumber('0b.')
       }, "0b.");
-      tx(function () {
+      tx(()=> {
         new BigNumber('.0b1')
       }, ".0b1");
-      tx(function () {
+      tx(()=> {
         new BigNumber('. 0b1 ')
       }, ". 0b1 ");
-      tx(function () {
+      tx(()=> {
         new BigNumber('0b1', 3)
       }, "0b1, 3");
-      tx(function () {
+      tx(()=> {
         new BigNumber('0o')
       }, "0o");
-      tx(function () {
+      tx(()=> {
         new BigNumber('0o.')
       }, "0o.");
-      tx(function () {
+      tx(()=> {
         new BigNumber('.0o1')
       }, ".0o1");
-      tx(function () {
+      tx(()=> {
         new BigNumber('.0o1')
       }, ".0o1");
-      tx(function () {
+      tx(()=> {
         new BigNumber('0 o1')
       }, "0 o1");
-      tx(function () {
+      tx(()=> {
         new BigNumber('0o 1')
       }, "0o 1");
-      tx(function () {
+      tx(()=> {
         new BigNumber('0-o1')
       }, "0o-1");
-      tx(function () {
+      tx(()=> {
         new BigNumber('0o1', 16)
       }, "0o1, 16");
-      tx(function () {
+      tx(()=> {
         new BigNumber('--45')
       }, "--45");
-      tx(function () {
+      tx(()=> {
         new BigNumber('+-2')
       }, "+-2");
-      tx(function () {
+      tx(()=> {
         new BigNumber('0 0')
       }, "0 0");
 
@@ -550,10 +556,10 @@ export default function BigNumberJs() {
       }))
 
       // Test integers of all bases against Number.toString(base).
-      for (var i = 2; i < 37; i++) {
-        for (var j = -100; j < 101; j++) {
+      for (let i = 2; i < 37; i++) {
+        for (let j = -100; j < 101; j++) {
           tb(j.toString(), j.toString(i), i);
-          var k = Math.floor(Math.random() * Math.pow(2, Math.floor(Math.random() * 52) + 1));
+          let k = Math.floor(Math.random() * Math.pow(2, Math.floor(Math.random() * 52) + 1));
           tb(k.toString(), k.toString(i), i);
         }
       }
@@ -939,24 +945,24 @@ export default function BigNumberJs() {
         DECIMAL_PLACES: 20
       });
 
-      tx(function () {
+      tx(()=> {
         new BigNumber(1010101010101010, 2).toString()
       }, "(1010101010101010, 2)");
-      tx(function () {
+      tx(()=> {
         new BigNumber('2', 2).toString()
       }, "('2', 2)");
-      tx(function () {
+      tx(()=> {
         new BigNumber('0.000g', 16).toString()
       }, "('0.000g', 16)");
-      tx(function () {
+      tx(()=> {
         new BigNumber('453.43', 4).toString()
       }, "('453.43', 4)");
 
       tb('NaN', 'NaN', undefined);
       tb('NaN', 'NaN', null);
-      tb('NaN', NaN, 2);
+      tb('NaN', Number.NaN, 2);
       tb('NaN', '-NaN', 2);
-      tb('NaN', -NaN, 10);
+      tb('NaN', -Number.NaN, 10);
       tb('NaN', 'NaN', 10);
       tb('12.345', 12.345, null);
       tb('12.345', 12.345, undefined);
@@ -991,7 +997,7 @@ export default function BigNumberJs() {
       tb('5', 'yxy', 2); // 101
 
       tb('2', 'YX', 2); // 10
-      tx(function () {
+      tx(()=> {
         new BigNumber('xX', 2).toString()
       }, "('xX', 2)");
 

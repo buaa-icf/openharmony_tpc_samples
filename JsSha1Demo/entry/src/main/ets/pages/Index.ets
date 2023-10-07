@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 
-// @ts-ignore
 import sha1 from 'js-sha1';
 
 @Extend(Text) function textFancy(fontSize: number, textColor: Color, isBold: Boolean) {
@@ -54,10 +53,10 @@ struct Index {
         let hexResults = "sha1.hex: " + sha1.hex(this.statement);
         let arrayResults = "sha1.array: " + JSON.stringify(sha1.array(this.statement));
         let digestResults = "sha1.digest: " + JSON.stringify(sha1.digest(this.statement));
-        let arrayBuffer = sha1.arrayBuffer(this.statement);
-        let arrayBufferResults = "sha1.arrayBuffer: ";
+        let arrayBuffer:number[] = sha1.arrayBuffer(this.statement);
+        let arrayBufferResults :string = "sha1.arrayBuffer: ";
         if (arrayBuffer instanceof ArrayBuffer) {
-          arrayBufferResults = arrayBufferResults + JSON.stringify(Array.prototype.slice.call(new Uint8Array(arrayBuffer)));
+          arrayBufferResults = arrayBufferResults + JSON.stringify((new Uint8Array(arrayBuffer)).slice());
         }
         let results = sha1Results + "\n\n\n" + hexResults + "\n\n\n" + arrayResults + "\n\n\n" + digestResults + "\n\n\n" + arrayBufferResults;
         this.resultText = results;

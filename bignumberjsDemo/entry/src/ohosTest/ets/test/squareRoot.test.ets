@@ -13,41 +13,42 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-import BigNumber from 'bignumber.js';
+import { BigNumber } from './BigNumber';
 import Test from './tester';
+import Utils from './Utils';
 
 export default function squareRootb() {
-  describe('squareRoottest', function () {
+  describe('squareRoottest', ()=> {
 
-    function t(root, value) {
+    let t = (root:string |BigNumber.Format| boolean |(() => BigNumber)|number|BigNumber|Function, value: BigNumber.Value)=> {
       new Test().areEqual(root, new BigNumber(value).squareRoot().toString())
     }
     
-    function tb(root, value, dp, rm) {
+    let tb = (root:string |BigNumber.Format| boolean |(() => BigNumber)|number|BigNumber|Function, value: BigNumber.Value, dp:number, rm:BigNumber.RoundingMode)=>  {
       BigNumber.config({ DECIMAL_PLACES: dp, ROUNDING_MODE: rm });
       new Test().areEqual(root, new BigNumber(value).sqrt().valueOf());
     };
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(()=> {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(()=> {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(()=> {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(()=> {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    it('squareRoot', 0, function () {
-      new Test().areEqual(BigNumber.prototype.squareRoot, BigNumber.prototype.sqrt);
+    it('squareRoot', 0, ()=> {
+      new Test().areEqual(Utils.squareRoot, Utils.sqrt);
 
       BigNumber.config({
         DECIMAL_PLACES: 20,
@@ -59,7 +60,7 @@ export default function squareRootb() {
       // Note: Some of the longer tests are commented-out.
 
       // Test the special cases specified by ES 15.8.2.17
-      t('NaN', NaN);
+      t('NaN', Number.NaN);
       t('2', 4);
       t('0.1', 0.01);
 
@@ -68,15 +69,15 @@ export default function squareRootb() {
       new Test().areEqual('-0', new BigNumber(-0).sqrt().valueOf());
       new Test().areEqual('-0', new BigNumber('-0').sqrt().valueOf());
 
-      t('Infinity', Infinity);
-      t('NaN', -Infinity);
+      t('Infinity', Number.POSITIVE_INFINITY);
+      t('NaN', Number.NEGATIVE_INFINITY);
       t('NaN', -1);
       t('NaN', -35.999);
       t('NaN', '-0.00000000000001');
 
       // Test against Math.sqrt of squared integers.
-      for (var i = 0; i < 1e4; i++) {
-        var j = Math.floor(Math.random() * Math.pow(2, Math.floor(Math.random() * 26) + 1));
+      for (let i = 0; i < 1e4; i++) {
+        let j = Math.floor(Math.random() * Math.pow(2, Math.floor(Math.random() * 26) + 1));
         j = Math.pow(j, 2);
         t(Math.sqrt(j).toString(), j.toString());
       }
@@ -332,7 +333,7 @@ export default function squareRootb() {
       tb('0', '1e-324', 0, 4);
       tb('1', '1e-324', 0, 0);
 
-      var x = new BigNumber('0.000000009');
+      let x = new BigNumber('0.000000009');
       BigNumber.config({ RANGE: [-4, 1e9] });
       // sqrtb(0.000000009) = 0.00009486...
       tb('0', x, 5, 4);

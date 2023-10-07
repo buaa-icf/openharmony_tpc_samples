@@ -13,3 +13,4 @@ export const isEncrypted: (path: string) => number;
  * string:返回值，解压成功则返回解压成功，否则返回失败
  */
 export const extract: (path: string, dest: string, password?: string) => string;
+export function RarFiles_Extract(path: string, dest: string, password?: string);

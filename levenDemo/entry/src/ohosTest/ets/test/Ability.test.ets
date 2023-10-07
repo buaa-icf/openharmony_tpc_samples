@@ -17,27 +17,27 @@ import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from
 import leven from 'leven'
 
 export default function abilityTest() {
-  describe('LevenTest', function () {
+  describe('LevenTest', () => {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(() => {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(() => {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(() => {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(() => {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    it('leven',0, function () {
+    it('leven',0, () => {
       let test1:string = "ABCDEF";
       let test2:string = "ABCDGH";
       let s:number = leven(test1,test2);

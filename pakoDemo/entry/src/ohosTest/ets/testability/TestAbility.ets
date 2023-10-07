@@ -18,18 +18,16 @@ import hilog from '@ohos.hilog';
 import { Hypium } from '@ohos/hypium';
 import testsuite from '../test/List.test';
 import window from '@ohos.window';
-
+import { GlobalContext } from '../test/GlobalContext'
+import Want from '@ohos.app.ability.Want';
+import AbilityConstant from '@ohos.app.ability.AbilityConstant';
 export default class TestAbility extends UIAbility {
-    onCreate(want, launchParam) {
+    onCreate(want:Want, launchParam:AbilityConstant.LaunchParam) {
         hilog.info(0x0000, 'testTag', '%{public}s', 'TestAbility onCreate');
         hilog.info(0x0000, 'testTag', '%{public}s', 'want param:' + JSON.stringify(want) ?? '');
         hilog.info(0x0000, 'testTag', '%{public}s', 'launchParam:'+ JSON.stringify(launchParam) ?? '');
-        var abilityDelegator: any
-        abilityDelegator = AbilityDelegatorRegistry.getAbilityDelegator()
-        var abilityDelegatorArguments: any
-        abilityDelegatorArguments = AbilityDelegatorRegistry.getArguments()
         hilog.info(0x0000, 'testTag', '%{public}s', 'start run testcase!!!');
-        Hypium.hypiumTest(abilityDelegator, abilityDelegatorArguments, testsuite)
+        Hypium.hypiumTest(AbilityDelegatorRegistry.getAbilityDelegator(), AbilityDelegatorRegistry.getArguments(), testsuite)
     }
 
     onDestroy() {
@@ -38,11 +36,11 @@ export default class TestAbility extends UIAbility {
 
     onWindowStageCreate(windowStage: window.WindowStage) {
         hilog.info(0x0000, 'testTag', '%{public}s', 'TestAbility onWindowStageCreate');
-
-        globalThis.Ctx = this.context.createModuleContext('entry_test');
-        globalThis.fileDir = this.context.createModuleContext('entry_test').filesDir;
-        globalThis.cacheDir = this.context.createModuleContext('entry_test').cacheDir;
-        globalThis.resourceManager = this.context.createModuleContext('entry_test').resourceManager;
+        GlobalContext.getContext().setObject("Ctx", this.context.createModuleContext('entry_test'));
+        GlobalContext.getContext().setObject("fileDir", this.context.createModuleContext('entry_test').filesDir);
+        GlobalContext.getContext().setObject("cacheDir", this.context.createModuleContext('entry_test').cacheDir);
+        GlobalContext.getContext().setObject("resourceManager", this.context.createModuleContext('entry_test').resourceManager);
+        GlobalContext.getContext().setObject("context", this.context);
 
         windowStage.loadContent('testability/pages/Index', (err, data) => {
             if (err.code) {

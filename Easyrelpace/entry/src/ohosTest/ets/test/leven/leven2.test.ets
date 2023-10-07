@@ -17,66 +17,66 @@ import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from
 import leven1 from 'leven';
 
 export default function levenTest() {
-    describe('levenTest', function () {
-        // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-        beforeAll(function () {
-            // Presets an action, which is performed only once before all test cases of the test suite start.
-            // This API supports only one parameter: preset action function.
-        })
-        beforeEach(function () {
-            // Presets an action, which is performed before each unit test case starts.
-            // The number of execution times is the same as the number of test cases defined by **it**.
-            // This API supports only one parameter: preset action function.
-        })
-        afterEach(function () {
-            // Presets a clear action, which is performed after each unit test case ends.
-            // The number of execution times is the same as the number of test cases defined by **it**.
-            // This API supports only one parameter: clear action function.
-        })
-        afterAll(function () {
-            // Presets a clear action, which is performed after all test cases of the test suite end.
-            // This API supports only one parameter: clear action function.
-        })
-        // it('assertContain',0, function () {
-        //   // Defines a test case. This API supports three parameters: test case name, filter parameter, and test case function.
-        //   hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);
-        //   hilog.info(0x0000, 'testTag', '%{public}s', 'it begin');
-        //   let a = 'abc'
-        //   let b = 'b'
-        //   // Defines a variety of assertion methods, which are used to declare expected boolean conditions.
-        //   expect(a).assertContain(b)
-        //   expect(a).assertEqual(a)
-        // })
+  describe('levenTest', () => {
+    // Defines a test suite. Two parameters are supported: test suite name and test suite function.
+    beforeAll(() => {
+      // Presets an action, which is performed only once before all test cases of the test suite start.
+      // This API supports only one parameter: preset action function.
+    })
+    beforeEach(() => {
+      // Presets an action, which is performed before each unit test case starts.
+      // The number of execution times is the same as the number of test cases defined by **it**.
+      // This API supports only one parameter: preset action function.
+    })
+    afterEach(() => {
+      // Presets a clear action, which is performed after each unit test case ends.
+      // The number of execution times is the same as the number of test cases defined by **it**.
+      // This API supports only one parameter: clear action function.
+    })
+    afterAll(() => {
+      // Presets a clear action, which is performed after all test cases of the test suite end.
+      // This API supports only one parameter: clear action function.
+    })
+    // it('assertContain',0, function () {
+    //   // Defines a test case. This API supports three parameters: test case name, filter parameter, and test case function.
+    //   hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);
+    //   hilog.info(0x0000, 'testTag', '%{public}s', 'it begin');
+    //   let a = 'abc'
+    //   let b = 'b'
+    //   // Defines a variety of assertion methods, which are used to declare expected boolean conditions.
+    //   expect(a).assertContain(b)
+    //   expect(a).assertEqual(a)
+    // })
 
-        var count = 0;
-        var test = function (name, func){
-            name = name.replace(/[ /d]/g, '');
-            name = name.replace(/-/g,"");
-            it(name,count++,func)
-        }
+    let count = 0;
+    let test =  (name:string, func:Function)=>{
+      name = name.replace(new RegExp("/[ /d]/g"), '');
+      name = name.replace(new RegExp("/-/g"),"");
+      it(name,count++,func)
+    }
 
-        var equal = function (src,dst,tag?){
-            console.log('tag:'+tag+"  src="+src+ " dst="+dst);
-            expect(src).assertEqual(dst)
-        }
+    let equal =  (src:number, dst:number, tag?:string) =>{
+      console.log('tag:' + tag + "  src=" + src + " dst=" + dst);
+      expect(src).assertEqual(dst)
+    }
 
 
-test('leven', ()=> {
-	equal(leven1('a', 'b'), 1);
-	equal(leven1('ab', 'ac'), 1);
-	equal(leven1('ac', 'bc'), 1);
-	equal(leven1('abc', 'axc'), 1);
-	equal(leven1('kitten', 'sitting'), 3);
-	equal(leven1('xabxcdxxefxgx', '1ab2cd34ef5g6'), 6);
-	equal(leven1('cat', 'cow'), 2);
-	equal(leven1('xabxcdxxefxgx', 'abcdefg'), 6);
-	equal(leven1('javawasneat', 'scalaisgreat'), 7);
-	equal(leven1('example', 'samples'), 3);
-	equal(leven1('sturgeon', 'urgently'), 6);
-	equal(leven1('levenshtein', 'frankenstein'), 6);
-	equal(leven1('distance', 'difference'), 5);
-	equal(leven1('因為我是中國人所以我會說中文', '因為我是英國人所以我會說英文'), 2);
-})
+    test('leven', () => {
+      equal(leven1('a', 'b'), 1);
+      equal(leven1('ab', 'ac'), 1);
+      equal(leven1('ac', 'bc'), 1);
+      equal(leven1('abc', 'axc'), 1);
+      equal(leven1('kitten', 'sitting'), 3);
+      equal(leven1('xabxcdxxefxgx', '1ab2cd34ef5g6'), 6);
+      equal(leven1('cat', 'cow'), 2);
+      equal(leven1('xabxcdxxefxgx', 'abcdefg'), 6);
+      equal(leven1('javawasneat', 'scalaisgreat'), 7);
+      equal(leven1('example', 'samples'), 3);
+      equal(leven1('sturgeon', 'urgently'), 6);
+      equal(leven1('levenshtein', 'frankenstein'), 6);
+      equal(leven1('distance', 'difference'), 5);
+      equal(leven1('因為我是中國人所以我會說中文', '因為我是英國人所以我會說英文'), 2);
+    })
 
-	})
+  })
 }

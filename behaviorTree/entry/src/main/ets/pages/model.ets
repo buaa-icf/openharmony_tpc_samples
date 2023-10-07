@@ -12,8 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-export const JSONData = {
+import { ImportableJson } from "behaviortree";
+export const JSONData:ImportableJson = {
   type: "random",
   name: "random",
   nodes: [
