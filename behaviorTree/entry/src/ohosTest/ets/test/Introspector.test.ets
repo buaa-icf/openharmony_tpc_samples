@@ -14,7 +14,9 @@
  */
 
 import { RUNNING, SUCCESS, FAILURE,Sequence,Selector,Task,Random,Decorator,Introspector,BehaviorTree,
-  Blackboard } from 'behaviortree'
+  Blackboard,
+  RunResult
+} from 'behaviortree'
 import InvertDecorator from 'behaviortree/lib/decorators/InvertDecorator'
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 import { diff, Utils,BlackboardChangesIntrospector } from '../utils/Utils'
@@ -35,7 +37,7 @@ export default function IntrospectorTest() {
       start:  (blackboard:Blackboard)=> {
         ++blackboard.start
       },
-      run:  (blackboard:Blackboard)=> {
+      run:  (blackboard:Blackboard):RunResult=> {
         ++blackboard.run
         return blackboard.result
       },
@@ -48,7 +50,7 @@ export default function IntrospectorTest() {
     'failingTask',
     new Task({
       name: 'Bumm',
-      run: (blackboard:Blackboard)=> {
+      run: (blackboard:Blackboard):boolean => {
         return FAILURE
       }
     })
@@ -57,7 +59,7 @@ export default function IntrospectorTest() {
     'runningTask',
     new Task({
       name: 'Forest',
-      run: (blackboard:Blackboard)=> {
+      run: (blackboard:Blackboard):RunResult=> {
         return RUNNING
       }
     })
