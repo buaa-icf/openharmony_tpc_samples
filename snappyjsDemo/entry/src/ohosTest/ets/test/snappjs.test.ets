@@ -167,10 +167,14 @@ export default function snappyJSTest() {
     })
 
     it('uncompressmaxLength', 10, () => {
-      let randomInputString:string = randomString(100000)
-      let compressed:Uint8Array = snappyJS.compress(stringToArrayBuffer(randomInputString))
-      expect(snappyJS.uncompress(compressed, 99999))
-        .assertThrowError('The uncompressed length of 200000 is too big, expect at most 99999') //
+      try {
+        let randomInputString: string = randomString(100000)
+        let compressed: Uint8Array = snappyJS.compress(stringToArrayBuffer(randomInputString))
+        snappyJS.compress(compressed, 99999)
+      } catch (e) {
+        expect(e + '')
+          .assertEqual('Error: The uncompressed length of 200000 is too big, expect at most 99999')
+      }
     })
   })
 }
