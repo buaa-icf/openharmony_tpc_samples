@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import { it as _it, afterAll, afterEach, beforeAll, beforeEach, describe, expect } from '@ohos/hypium'
+import { it as _it, describe, expect } from '@ohos/hypium'
 import EventEmitter from 'eventemitter3'
 import Beast from '../Beast'
 import Utils from './Utils'
@@ -27,7 +27,7 @@ export default function originTest() {
     });
 
     _it('exposes a module namespace object', 0, () => {
-      expect(EventEmitter.EventEmitter).assertEqual(EventEmitter)
+      Utils.exposesNamespace(expect);
     });
 
     _it('inherits when used with `require("util").inherits`', 0, () => {
@@ -98,7 +98,7 @@ export default function originTest() {
         bar: 'baz'
       }, e = new EventEmitter<string, Object>();
 
-      Utils.emitsContext(e, context, done);
+      Utils.emitsContext(e, context, expect, done);
     });
 
     _it('emits with context, multiple arguments (force apply)', 0, (done: Function) => {
@@ -110,7 +110,7 @@ export default function originTest() {
         bar: 'baz'
       }, e = new EventEmitter<string, Object>();
 
-      Utils.emitsContextArguments(e, context, done);
+      Utils.emitsContextArguments(e, context, expect, done);
     });
 
     _it('can emit the function with multiple arguments', 0, () => {
@@ -122,7 +122,7 @@ export default function originTest() {
           for (let i = 0; i < j; i++) {
             args.push(String(j));
           }
-          Utils.emitsFunctionArguments(e, args);
+          Utils.emitsFunctionArguments(e, args, expect);
         })(i);
       }
     });
@@ -136,7 +136,7 @@ export default function originTest() {
           for (let i = 0; i < j; i++) {
             args.push(String(j));
           }
-          Utils.emitsFunctionArgumentsListeners(e, args);
+          Utils.emitsFunctionArgumentsListeners(e, args, expect);
         })(i);
       }
     });
@@ -144,13 +144,13 @@ export default function originTest() {
     _it('emits with context, multiple listeners (force loop)', 0, () => {
       let e = new EventEmitter<string, Object>();
 
-      Utils.emitsContextListeners(e);
+      Utils.emitsContextListeners(e, expect);
 
       e.emit('foo', 'bar');
     });
 
     _it('emits with different contexts', 0, () => {
-      Utils.emitsDifferentContext();
+      Utils.emitsDifferentContext(expect);
     });
 
     _it('should return true when there are events to emit', 0, () => {
@@ -166,7 +166,7 @@ export default function originTest() {
     });
 
     _it('receives the emitted events', 0, (done: Function) => {
-      Utils.receivesEmitsEvents(done);
+      Utils.receivesEmitsEvents(expect, done);
     });
 
     _it('emits to all event listeners', 0, () => {
@@ -238,7 +238,7 @@ export default function originTest() {
     });
 
     _it('is not vulnerable to modifications', 0, () => {
-      let e = new EventEmitter<string,Object>();
+      let e = new EventEmitter<string, Object>();
 
       let foo: () => void = () => {
       }
@@ -251,11 +251,11 @@ export default function originTest() {
     });
 
     _it('returns the number of listeners for a given event', 0, () => {
-      Utils.returnsListenersCount();
+      Utils.returnsListenersCount(expect);
     });
 
     _it('throws an error if the listener is not a function', 0, () => {
-      Utils.throwError();
+      Utils.throwError(expect);
     });
 
     _it('only emits it once', 0, () => {
@@ -328,7 +328,7 @@ export default function originTest() {
       }
         , e = new EventEmitter<string, Object>();
 
-      Utils.emitsOnce(e, context, done);
+      Utils.emitsOnce(e, context, expect, done);
     });
     _it('removes all listeners when the listener is not specified', 0, () => {
       let e = new EventEmitter<string, Object>();
@@ -343,19 +343,19 @@ export default function originTest() {
     });
 
     _it('removes only the listeners matching the specified listener', 0, () => {
-      Utils.removesMatchListeners();
+      Utils.removesMatchListeners(expect);
     });
 
     _it('removes only the once listeners when using the once flag', 0, () => {
-      Utils.removesOnceListener();
+      Utils.removesOnceListener(expect);
     });
 
     _it('removes only the listeners matching the correct context', 0, () => {
-      Utils.removesMatchContext();
+      Utils.removesMatchContext(expect);
     });
 
     _it('removes all events for the specified events', 0, () => {
-      Utils.removesAllEvents();
+      Utils.removesAllEvents(expect);
     });
 
     _it('just nukes the fuck out of everything', 0, () => {
@@ -377,7 +377,7 @@ export default function originTest() {
       expect(e.listeners('foo').length).assertEqual(0)
       expect(e.listeners('bar').length).assertEqual(0)
       expect(e.listeners('aaa').length).assertEqual(0)
-      Utils.nukes(e);
+      Utils.nukes(e, expect);
 
       expect(e.emit('foo')).assertFalse()
       expect(e.emit('bar')).assertFalse()
@@ -397,13 +397,13 @@ export default function originTest() {
     });
 
     _it('returns an array listing the events that have listeners', 0, () => {
-      Utils.listenerArray();
+      Utils.listenerArray(expect);
     });
 
     _it('does not return inherited property identifiers', 0, () => {
       let e = new EventEmitter<string, Object>();
 
-      Utils.identifiers(e);
+      Utils.identifiers(e, expect);
       let resutl0 = Utils.comparisonObject(e.eventNames(), [])
       expect(resutl0).assertTrue()
     });
@@ -427,7 +427,5 @@ export default function originTest() {
         expect(resutl1).assertTrue()
       });
     }
-
-
   })
 }

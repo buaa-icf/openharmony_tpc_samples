@@ -13,8 +13,7 @@
  * limitations under the License.
  */
 
-import { it as _it, expect } from '@ohos/hypium'
-import EventEmitter from 'eventemitter3'
+import EventEmitter from 'eventemitter3';
 
 export default class Utils {
   /**
@@ -76,7 +75,11 @@ export default class Utils {
     thisFunc.call(thisArg);
   }
 
-  public static emitsContext(emitter: EventEmitter<string, Object>, context: Object, done: Function): void {
+  public static exposesNamespace(expect: Function): void {
+    expect(EventEmitter.EventEmitter).assertEqual(EventEmitter);
+  }
+
+  public static emitsContext(emitter: EventEmitter<string, Object>, context: Object, expect: Function, done: Function): void {
     emitter.on('foo', function (bar: string) {
       expect(bar).assertEqual('bar')
       expect(JSON.stringify(this)).assertEqual(JSON.stringify(context));
@@ -84,7 +87,7 @@ export default class Utils {
     }, context).emit('foo', 'bar');
   }
 
-  public static emitsContextArguments(emitter: EventEmitter<string, Object>, context: Object, done: Function): void {
+  public static emitsContextArguments(emitter: EventEmitter<string, Object>, context: Object, expect: Function, done: Function): void {
     emitter.on('foo', function (bar: string) {
       expect(bar).assertEqual('bar')
       expect(JSON.stringify(this)).assertEqual(JSON.stringify(context));
@@ -92,7 +95,7 @@ export default class Utils {
     }, context).emit('foo', 'bar', 1, 2, 3, 4, 5, 6, 7, 8, 9, 0);
   }
 
-  public static emitsFunctionArguments(emitter: EventEmitter<string, Object>, args: string[]): void {
+  public static emitsFunctionArguments(emitter: EventEmitter<string, Object>, args: string[], expect: Function): void {
     emitter.once('args', function () {
       expect(arguments.length).assertEqual(args.length)
     });
@@ -100,7 +103,7 @@ export default class Utils {
     emitter.emit.apply(emitter, ['args'].concat(args));
   }
 
-  public static emitsFunctionArgumentsListeners(emitter: EventEmitter<string, Object>, args: string[]): void {
+  public static emitsFunctionArgumentsListeners(emitter: EventEmitter<string, Object>, args: string[], expect: Function): void {
     emitter.once('args', function () {
       expect(arguments.length).assertEqual(args.length)
     });
@@ -120,7 +123,7 @@ export default class Utils {
     emitter.emit.apply(emitter, ['args'].concat(args));
   }
 
-  public static emitsContextListeners(emitter: EventEmitter<string, Object>): void {
+  public static emitsContextListeners(emitter: EventEmitter<string, Object>, expect: Function): void {
     emitter.on('foo', function (bar: string) {
       let result = Utils.comparisonObject(this, {
         foo: 'bar'
@@ -142,7 +145,7 @@ export default class Utils {
     });
   }
 
-  public static emitsDifferentContext(): void {
+  public static emitsDifferentContext(expect: Function): void {
     let emitter = new EventEmitter<string, Object>()
       , pattern: string = '';
 
@@ -159,7 +162,7 @@ export default class Utils {
     expect(pattern).assertEqual('foobazbarbanana')
   }
 
-  public static receivesEmitsEvents(done: Function): void {
+  public static receivesEmitsEvents(expect: Function, done: Function): void {
     let e = new EventEmitter<string, Object>();
 
     e.on('data', function (a: string, b: EventEmitter<string, Object>, c: Date, d: Object, undef: undefined) {
@@ -175,7 +178,7 @@ export default class Utils {
     e.emit('data', 'foo', e, new Date());
   }
 
-  public static returnsListenersCount(): void {
+  public static returnsListenersCount(expect: Function): void {
     let e = new EventEmitter<string, Object>();
     // @ts-ignore
     expect(e.listenerCount()).assertEqual(0)
@@ -189,7 +192,7 @@ export default class Utils {
     expect(e.listenerCount('foo')).assertEqual(2)
   }
 
-  public static throwError(): void {
+  public static throwError(expect: Function): void {
     let e = new EventEmitter<string, string>();
 
     try {
@@ -205,7 +208,7 @@ export default class Utils {
     throw new Error('oops');
   }
 
-  public static emitsOnce(emitter: EventEmitter<string, Object>, context: Object, done: Function): void {
+  public static emitsOnce(emitter: EventEmitter<string, Object>, context: Object, expect: Function, done: Function): void {
     emitter.once('foo', function (bar) {
       expect(this).assertEqual(context)
       expect(bar).assertEqual('bar')
@@ -214,7 +217,7 @@ export default class Utils {
     }, context).emit('foo', 'bar');
   }
 
-  public static removesMatchListeners() {
+  public static removesMatchListeners(expect: Function) {
     let e = new EventEmitter<string, Object>();
 
     let foo: () => void = () => {
@@ -273,7 +276,7 @@ export default class Utils {
     expect(e._eventsCount).assertEqual(1)
   }
 
-  public static removesOnceListener(): void {
+  public static removesOnceListener(expect: Function): void {
     let e = new EventEmitter<string, Object>();
 
     let foo: () => void = () => {
@@ -325,7 +328,7 @@ export default class Utils {
     expect(e._eventsCount).assertEqual(0)
   }
 
-  public static removesMatchContext(): void {
+  public static removesMatchContext(expect: Function): void {
 
     class ContextClass {
       foo: string = '';
@@ -390,12 +393,12 @@ export default class Utils {
     expect(e._eventsCount).assertEqual(0)
   }
 
-  public static nukes(e: EventEmitter<string, Object>): void {
+  public static nukes(e: EventEmitter<string, Object>, expect: Function): void {
     // @ts-ignore
     expect(e._eventsCount).assertEqual(0)
   }
 
-  public static removesAllEvents(): void {
+  public static removesAllEvents(expect: Function): void {
     let e = new EventEmitter<string, Object>();
 
     e.on('foo', () => {
@@ -429,7 +432,7 @@ export default class Utils {
     expect(e.emit('aaa')).assertFalse()
   }
 
-  public static listenerArray(): void {
+  public static listenerArray(expect: Function): void {
     var e = new EventEmitter<string, Object>()
       , original;
 
@@ -463,7 +466,7 @@ export default class Utils {
     }
   }
 
-  public static identifiers(e: EventEmitter<string, Object>): void {
+  public static identifiers(e: EventEmitter<string, Object>, expect: Function): void {
     class Collection {
       foo = () => {
         return 'foo';
