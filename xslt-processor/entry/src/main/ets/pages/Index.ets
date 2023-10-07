@@ -207,7 +207,7 @@ struct Index {
           .width('90%')
           .height('100px')
           .onClick(() => {
-            const originXMLObj = xmlParse(this.originTextXML);
+            const originXMLObj:xmlParse = xmlParse(this.originTextXML);
             this.printLog('原始XML根节点内有' + originXMLObj.childNodes[0].childNodes.length + '个子节点');
           })
 
@@ -215,9 +215,9 @@ struct Index {
           .width('90%')
           .height('100px')
           .onClick(() => {
-            const originXMLObj = xmlParse(this.originTextXML);
-            const originXSLObj = xmlParse(this.originTextXSL);
-            const text = xsltProcess(originXMLObj, originXSLObj);
+            const originXMLObj:xmlParse = xmlParse(this.originTextXML);
+            const originXSLObj:xmlParse = xmlParse(this.originTextXSL);
+            const text:xsltProcess = xsltProcess(originXMLObj, originXSLObj);
             this.printLog(text);
           })
 
@@ -225,9 +225,9 @@ struct Index {
           .width('90%')
           .height('100px')
           .onClick(() => {
-            const originXMLObj = xmlParse(this.originHTMLXML);
-            const originXSLObj = xmlParse(this.originHTMLXSL);
-            const html = xsltProcess(originXMLObj, originXSLObj);
+            const originXMLObj:xmlParse = xmlParse(this.originHTMLXML);
+            const originXSLObj:xmlParse = xmlParse(this.originHTMLXSL);
+            const html:xsltProcess = xsltProcess(originXMLObj, originXSLObj);
             this.printLog(html);
           })
 
@@ -239,9 +239,9 @@ struct Index {
               `<root>
                 <test name="test1"/>
                </root> `;
-            const xml1 = xmlParse(xmlString);
-            const xml2 = xmlParse(this.variablesXSLTString);
-            const outXmlString = xsltProcess(xml1, xml2,
+            const xml1:xmlParse = xmlParse(xmlString);
+            const xml2:xmlParse = xmlParse(this.variablesXSLTString);
+            const outXmlString:xsltProcess = xsltProcess(xml1, xml2,
               {
                 test: "hugo"
               }
@@ -254,10 +254,10 @@ struct Index {
           .height('100px')
           .onClick(() => {
             const xpathExpr = '/page'
-            const expr1 = xpathParse(xpathExpr);
-            const ctx = new ExprContext(xmlParse(this.xpathXML));
-            const e = expr1.evaluate(ctx);
-            const nodeSet = e.nodeSetValue();
+            const expr1:xpathParse = xpathParse(xpathExpr);
+            const ctx:ExprContext = new ExprContext(xmlParse(this.xpathXML));
+            const e:xpathParse = expr1.evaluate(ctx);
+            const nodeSet:xpathParse = e.nodeSetValue();
             this.printLog('XML文档中的page节点数为：' + nodeSet.length);
           })
 
@@ -268,10 +268,10 @@ struct Index {
             const locationParam = 'location'
             const latParam = 'lat'
             const xpathExpr = `/page/${locationParam}/@${latParam}`
-            const expr1 = xpathParse(xpathExpr);
-            const ctx = new ExprContext(xmlParse(this.xpathXML));
-            const result = expr1.evaluate(ctx);
-            const nodeSet = result.nodeSetValue();
+            const expr1:xpathParse = xpathParse(xpathExpr);
+            const ctx:ExprContext = new ExprContext(xmlParse(this.xpathXML));
+            const result:xpathParse = expr1.evaluate(ctx);
+            const nodeSet:xpathParse = result.nodeSetValue();
             this.printLog('当前节点属性为：' + nodeSet[0].nodeName + "=" + nodeSet[0].nodeValue);
           })
       }
