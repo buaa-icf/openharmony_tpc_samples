@@ -29,7 +29,6 @@ export default class TestAbility extends UIAbility {
     hilog.info(0x0000, 'testTag', '%{public}s', 'start run testcase!!!');
     Hypium.hypiumTest(AbilityDelegatorRegistry.getAbilityDelegator(), AbilityDelegatorRegistry.getArguments(), testsuite)
   }
-
   onDestroy() {
     hilog.info(0x0000, 'testTag', '%{public}s', 'TestAbility onDestroy');
   }
