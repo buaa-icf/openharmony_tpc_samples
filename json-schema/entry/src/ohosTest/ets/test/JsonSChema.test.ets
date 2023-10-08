@@ -649,16 +649,16 @@ export default function jsonSChemaTest() {
       let endTime1 = new Date().getTime();
       let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
       console.log("jsconschema : FormatValidate averageTime : " + averageTime1 + "us")
-      // let startTime2 = new Date().getTime();
-      // let v2 : ESObject = new Validator();
-      // let result2: ESObject = v2.validate('foo', {
-      //   type: 'string', format: 'myFormat'
-      // });
-      // let endTime2 = new Date().getTime();
-      // let averageTime2 = ((endTime2 - startTime2) * 1000) / BASE_COUNT;
-      // console.log("jsconschema : FormatValidate averageTime : " + averageTime2 + "us")
+      let startTime2 = new Date().getTime();
+      let v2 : ESObject = new Validator();
+      let result2: ESObject = v2.validate('foo', {
+        type: 'string', format: 'myFormat'
+      });
+      let endTime2 = new Date().getTime();
+      let averageTime2 = ((endTime2 - startTime2) * 1000) / BASE_COUNT;
+      console.log("jsconschema : FormatValidate averageTime : " + averageTime2 + "us")
       expect(result1.valid).assertTrue();
-      // expect(result2.valid).assertFalse();
+      expect(result2.valid).assertFalse();
     })
     it('NestedErrorsValidate', 0, () => {
       let startTime1 = new Date().getTime();

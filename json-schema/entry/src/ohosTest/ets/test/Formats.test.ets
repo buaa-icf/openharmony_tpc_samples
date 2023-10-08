@@ -441,12 +441,12 @@ export default function formatsTest() {
       expect(result).assertTrue();
     });
 
-    // it('ShouldValidateNumericInput', 0, () => {
-    //   let result: boolean = validator1.validate(32.45, {
-    //     'type': 'number', 'format': 'float'
-    //   }).valid;
-    //   expect(result).assertTrue();
-    // });
+    it('ShouldValidateNumericInput', 0, () => {
+      let result: boolean = validator1.validate(32.45, {
+        'type': 'number', 'format': 'float'
+      }).valid;
+      expect(result).assertTrue();
+    });
     it('ShouldFailInputThatFailsValidation', 0, () => {
       let result: boolean = validator1.validate("boo", {
         'type': 'string', 'format': 'foo'
