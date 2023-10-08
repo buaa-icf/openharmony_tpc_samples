@@ -20,10 +20,9 @@ import dataSchema from '../../fixtures/data_schema.json';
 import dataCollectionSchema from '../../fixtures/data_collection_schema.json';
 import typesSchema from '../../fixtures/types.json';
 import dataCollection from '../../fixtures/data_collection.json';
-import { dataCollec, houldThrowAn } from './IntertfaceData';
 
 
-let validator: Validator;
+let validator: ESObject;
 const BASE_COUNT = 1
 
 export default function loadingTest() {
@@ -55,13 +54,24 @@ export default function loadingTest() {
       validator.addSchema(dataSchema, '/data_schema.json');
       validator.addSchema(dataCollectionSchema, '/data_collection_schema.json');
       validator.addSchema(typesSchema, '/types.json');
-      let result :boolean = validator.validate(dataCollection, dataCollec).valid;
+      let result :boolean = validator.validate(dataCollection, {
+        $ref: '/data_collection_schema.json'
+      }).valid;
       expect(result).assertTrue()
     });
 
     it('MultipleSchemasWithTheSameIdShouldThrowAnError', 0, () => {
       try {
-        validator.addSchema(houldThrowAn);
+        validator.addSchema({
+          properties: {
+            a: {
+              id: 'http://example.com/schema.json', type: 'string'
+            },
+            b: {
+              $id: 'http://example.com/schema.json', type: 'number'
+            },
+          },
+        });
       } catch (err) {
         // This may be changed as necessary
         expect(err.message)

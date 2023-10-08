@@ -135,9 +135,7 @@ v.validate(p, schema);`
       let v :ESObject = new Validator();
       // Address, to be embedded on Person
       // Person
-
       new Validator().addSchema(addressSchema, '/SimpleAddress');
-
 
       // let result = v.validate(p, addressSchema);
       let str = JSON.stringify(v.validate(p, addressSchema));

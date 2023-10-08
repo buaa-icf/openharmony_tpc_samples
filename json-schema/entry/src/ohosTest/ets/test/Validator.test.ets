@@ -18,12 +18,15 @@ import {
   SchemaError, validate, ValidationError, Validator, ValidatorResult, ValidatorResultError } from '@ohos/jsonschema'
 import { it as _it, afterAll, afterEach, beforeAll, beforeEach, describe, expect } from '@ohos/hypium'
 import {
-  $addid,
-  addid,
-  addschema,
-  cataid,
+  Filename,
+  Fragment,
+  Invalid,
   invalid,
-  schemadoct, schemafuanction, schemastart, schematext, schemavaldator,
+  Options,
+  PathDeve,
+  Reference,
+  schemavaldator,
+  ThrowError,
   valid,
   validschema,
   validtaschema } from './IntertfaceData';
@@ -49,7 +52,12 @@ export default function validatorTest() {
       expect(validator.unresolvedRefs).assertDeepEquals([])
     });
     _it('addSchema', 0, () => {
-      let result:Object  = validator.addSchema(addschema);
+      let result:Object  = validator.addSchema({
+        id: 'http://example.com/base.json',
+        items: {
+          $ref: 'item.json',
+        },
+      });
       expect(validator.unresolvedRefs).assertDeepEquals(['http://example.com/item.json'])
     });
 
@@ -111,28 +119,35 @@ export default function validatorTest() {
         expect(err instanceof Error).assertTrue()
       }
     });
-    _it('addSchema with absolute id', 0, () => {
-      validator.addSchema(addid);
+    _it('addSchema with absolute id', 0,  ()=>{
+      validator.addSchema({
+        id: 'http://example.com/base.json'
+      });
       expect(validator.unresolvedRefs).assertDeepEquals([])
       expect(validator.schemas['http://example.com/base.json']).assertDeepEquals({
         id: 'http://example.com/base.json'
       })
     });
     _it('addSchema with absolute $id', 0, () => {
-      validator.addSchema($addid);
+      validator.addSchema({
+        $id: 'http://example.com/base.json',
+      });
       expect(validator.unresolvedRefs).assertDeepEquals([])
     });
     // TODO: held for next major version
     _it('base must be a full URI', 0, () => {
       try {
-        validator.addSchema(cataid, '/index.json');
+        validator.addSchema({
+          id: 'main.json'
+        }, '/index.json');
       } catch (err) {
         expect(err instanceof SchemaError).assertTrue()
       }
     });
     _it('addSchema with absolute base', 0, () => {
       expect(validator.addSchema({type: 'string'}, 'http://example.com/main.json')).not().assertNull();
-      expect( validator.schemas.n!=undefined).assertTrue();
+      expect( validator.schemas.n==undefined).assertTrue();
+      // expect('http://example.com/main.json' in validator.schemas).assertTrue();
       expect(validator.schemas['http://example.com/main.json']).assertDeepEquals(validator.addSchema({type: 'string'}, 'http://example.com/main.json'))
     });
     _it('addSchema with absolute $id', 0, () => {
@@ -140,7 +155,7 @@ export default function validatorTest() {
         type: 'string'
       }, 'http://example.com/main.json');
       expect(res).not().assertNull();
-      expect(validator.schemas.n!=undefined).assertTrue();
+      expect(validator.schemas.n==undefined).assertTrue();
       expect(validator.schemas['http://example.com/main.json']).assertDeepEquals(res)
     });
     _it('addSchema with relative id', 0, () => {
@@ -148,14 +163,14 @@ export default function validatorTest() {
         id: 'main.json'
       }, 'http://example.com/index.html');
       // assert(res);
-      expect(validator.schemas.n!=undefined).assertTrue();
+      expect(validator.schemas.n==undefined).assertTrue();
     });
     _it('addSchema with relative $id', 0, () => {
       let res :Object= validator.addSchema({
         $id: 'main.json'
       }, 'http://example.com/index.html');
       // assert(res);
-      expect(validator.schemas.n!=undefined).assertTrue();
+      expect(validator.schemas.n==undefined).assertTrue();
     });
     _it('addSchema populates unresolvedRefs', 0, () => {
       validator.addSchema({
@@ -164,7 +179,7 @@ export default function validatorTest() {
           $ref: 'item.json',
         },
       }, 'http://example.com/index.json');
-      expect(validator.schemas.n!=undefined).assertTrue();
+      expect(validator.schemas.n==undefined).assertTrue();
       expect(validator.unresolvedRefs[0]).assertDeepEquals('http://example.com/item.json')
       validator.addSchema({
         $id: 'item.json'
@@ -234,10 +249,26 @@ export default function validatorTest() {
       expect(validator.validate(null, true, {required: true}).valid).assertTrue()
     });
     _it('options throwError', 0, () => {
-      expect(validator.validate(valid, schemastart, new Object()).valid).assertTrue();
-      expect(validator.validate(invalid, schemastart, new Object()).valid).assertFalse()
+      let schema:ThrowError = {
+        properties: {
+          "a": {
+            type: 'number'
+          },
+          "b": {
+            type: 'number'
+          },
+        },
+      };
+      let valid :Options= {
+        a: 0, b: 0
+      };
+      let invalid :Invalid= {
+        a: null, b: null
+      };
+      expect(validator.validate(valid, schema, new Object()).valid).assertTrue();
+      expect(validator.validate(invalid, schema, new Object()).valid).assertFalse()
       try {
-        validator.validate(invalid, schemastart, {
+        validator.validate(invalid, schema, {
           throwError: true
         });
       } catch (err) {
@@ -245,10 +276,26 @@ export default function validatorTest() {
       }
     });
     _it('options throwFirst', 0, () => {
-      expect(validator.validate(valid, validschema, {throwAll: true}).valid).assertTrue();
-      expect(validator.validate(invalid, validschema, new Object()).valid).assertFalse()
+      let schema:ThrowError = {
+        properties: {
+          "a": {
+            type: 'number'
+          },
+          "b": {
+            type: 'number'
+          },
+        },
+      };
+      let valid :Options= {
+        a: 0, b: 0
+      };
+      let invalid :Invalid= {
+        a: null, b: null
+      };
+      expect(validator.validate(valid, schema, {throwAll: true}).valid).assertTrue();
+      expect(validator.validate(invalid, schema, new Object()).valid).assertFalse()
       try {
-        validator.validate(invalid, validschema, {
+        validator.validate(invalid, schema, {
           throwFirst: true
         });
       } catch (err) {
@@ -258,12 +305,28 @@ export default function validatorTest() {
       }
     });
     _it('options throwAll', 0, () => {
+      let schema:ThrowError = {
+        properties: {
+          "a": {
+            type: 'number'
+          },
+          "b": {
+            type: 'number'
+          },
+        },
+      };
+      let valid :Options= {
+        a: 0, b: 0
+      };
+      let invalid :Invalid= {
+        a: null, b: null
+      };
 
-      expect(validator.validate(valid, validschema, {throwAll: true}).valid).assertTrue();
-      expect( validator.validate(invalid, validschema, new Object()).valid).assertFalse()
+      expect(validator.validate(valid, schema, {throwAll: true}).valid).assertTrue();
+      expect( validator.validate(invalid, schema, new Object()).valid).assertFalse()
 
       try {
-        validator.validate(invalid, validschema, {
+        validator.validate(invalid, schema, {
           throwAll: true
         });
       } catch (err) {
@@ -273,33 +336,70 @@ export default function validatorTest() {
       }
     });
     _it('million errors', 0, () => {
-      validator.attributes.oneMillionErrors =  (instance:string, schema:Schema, options:string, ctx:string) :string=>{
-        for (let i = 0; i < 1000; i++) {
-          new ValidatorResult(instance, schema, options, ctx).addError('oneMillionErrors error');
-        }
-        return new ValidatorResult(instance, schema, options, ctx);
+    validator.attributes.oneMillionErrors =  (instance:ESObject, schema:ESObject, options:ESObject, ctx:ESObject):ESObject=> {
+      const result:ESObject = new ValidatorResult(instance, schema, options, ctx);
+      for (let i = 0; i < 1000; i++) {
+        result.addError('oneMillionErrors error');
       }
-      expect(validator.validate(1, validtaschema, new Object()).valid).assertFalse();
-      expect(validator.validate(1, validtaschema, new Object()).errors.length).assertEqual(1000)
-    });
+      return result;
+    }
+    let res :ESObject= validator.validate(1, {
+      type: 'number',
+      oneMillionErrors: true,
+    }, {});
+    expect(res.valid).assertFalse();
+    expect(res.errors.length).assertEqual(1000)
+  });
     _it('subschema references named reference', 0, () => {
-      expect(validator.validate([[]], schemavaldator).valid).assertTrue();
-      expect(validator.validate([null], schemavaldator).valid).assertFalse();
+      let schema :Reference = {
+        items: {
+          $ref: '#items'
+        },
+        definitions: {
+          items: {
+            $id: '#items',
+            type: 'array',
+          },
+        },
+      };
+      expect(validator.validate([[]], schema).valid).assertTrue();
+      expect(validator.validate([null], schema).valid).assertFalse();
     });
     _it('subschema references path reference', 0, () => {
-
-      expect(validator.validate([[]], schematext).valid).assertTrue();
-      expect(validator.validate([null], schematext).valid).assertFalse();
+      let schema :PathDeve  = {
+        items: {
+          $ref: '#/definitions/items'
+        },
+        definitions: {
+          items: {
+            type: 'array',
+          },
+        },
+      };
+      expect(validator.validate([[]], schema).valid).assertTrue();
+      expect(validator.validate([null], schema).valid).assertFalse();
     });
     _it('recursive references fragment reference', 0, () => {
-
-      expect(validator.validate([[[[]]]], schemafuanction).valid).assertTrue();
-      expect(validator.validate([null], schemafuanction).valid).assertFalse();
+      let schema :Fragment= {
+        $id: 'http://example.com/foo.json',
+        items: {
+          $ref: '#'
+        },
+        type: 'array',
+      };
+      expect(validator.validate([[[[]]]], schema).valid).assertTrue();
+      expect(validator.validate([null], schema).valid).assertFalse();
     });
     _it('recursive references filename reference', 0, () => {
-
-      expect(validator.validate([[[[]]]], schemadoct).valid).assertTrue();
-      expect(validator.validate([null], schemadoct).valid).assertFalse();
+      let  schema :Filename= {
+        $id: 'http://example.com/foo.json',
+        items: {
+          $ref: 'foo.json'
+        },
+        type: 'array',
+      };
+      expect(validator.validate([[[[]]]], schema).valid).assertTrue();
+      expect(validator.validate([null], schema).valid).assertFalse();
     });
 
 

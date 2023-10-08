@@ -17,20 +17,6 @@
         "name": "release"
       }
     ],
-    "signingConfigs": [
-      {
-        "name": "default",
-        "material": {
-          "certpath": "C:\\Users\\lenovo\\.ohos\\config\\openharmony\\auto_ohos_default_json-schema_com.openharmony.jsonschemavalidator.cer",
-          "storePassword": "0000001AEEB17235A14434EF59596F8C8F70F10264BF113EFE2777870764D1A6C00D669449B3351D8B4E",
-          "keyAlias": "debugKey",
-          "keyPassword": "0000001A1489CC13A5D5855E892953A6FBE328A41D061ECF6E038F96CD9006CA5DA8677EDCBCEDE6BA8F",
-          "profile": "C:\\Users\\lenovo\\.ohos\\config\\openharmony\\auto_ohos_default_json-schema_com.openharmony.jsonschemavalidator.p7b",
-          "signAlg": "SHA256withECDSA",
-          "storeFile": "C:\\Users\\lenovo\\.ohos\\config\\openharmony\\auto_ohos_default_json-schema_com.openharmony.jsonschemavalidator.p12"
-        }
-      }
-    ]
   },
   "modules": [
     {

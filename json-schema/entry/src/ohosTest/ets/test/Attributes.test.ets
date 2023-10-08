@@ -13,62 +13,157 @@
  * limitations under the License.
  */
 
-import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
+import {  SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
-import { AnUndefined,
-  AnUndefineddata,
-  arsing,
-  asOmmite,
-  chesThe,
-  clusiveMinimum,
-  clusiveMinimumdata,
-  dateIf0Is,
-  dateTrue,
-  datetruedata,
-  defalut,
-  disallow,
-  ength,
-  engthad,
-  engthed,
-  engthfour,
-  eprecated,
-  ErrorFlag,
-  fild,
-  filed,
-  finedInstance,
-  foobar,
-  foodata,
-  footest,
-  IsBelow,
-  IsEven,
-  MeetsMinimum,
-  nestedErrorstext,
-  NonInteger,
-  NonIntegerdata,
-  oneofdad,
-  oneOfSchemadata,
-  OneOfThe,
-  Pattern,
-  proper,
-  quux,
-  schemaErrorOnNull,
-  schemaIgnore,
-  scrison,
-  Success,
-  Successdata,
-  TheMaximum,
-  TheMaximumdata,
-  TrueAsAny,
-  TrueAsAnydata,
-  ValidateIf,
-  ValidateIfNum,
-  ValidateNull, ValidNumber,
-  WithDecimals } from './IntertfaceData';
+import {
+  DeciData,
+  NullType,
+  OneOfSchema,
+  Options,
+  TheEnum,
+  TypeData, UnderType,  } from './IntertfaceData';
 
 
 let validator: ESObject;
 const BASE_COUNT = 1
+ let oneOfSchema :OneOfSchema= {
+  oneOf: [
+    { type: 'string' },
+    { enum: [0, 1] },
+    { type: 'object', required: ['type'] },
+    { type: 'object', required: ['name'] },
+  ],
+};
 
+let validnumber:Options={
+  'type': 'number'
+}
+let finedInstance:Options = {
+  'type': 'number', 'required': true
+}
+let validnull:Options = {
+  'type': 'null'
+}
+
+let anundefind:Options = {
+  'type': 'date', 'required': true
+}
+
+let anundefineddata:Options ={
+  'type': 'date'
+}
+let validinteger:Options={
+  'type': 'integer'
+}
+
+let integerdata:Options={
+  'type': 'integer', 'required': true
+}
+
+let datetrue:Options={
+  'type': 'boolean'
+}
+let daterequid:Options = {
+  'type': 'boolean', 'required': true
+}
+let validany:Options = {
+  'type': 'any'
+}
+let anydata:Options ={
+  'type': 'any', 'required': true
+}
+let schemaIgnore:UnderType ={
+  type: [undefined, "string"],
+}
+let schemaerrornull:NullType={
+  type: [null, "string"],
+}
+let success:TypeData={
+  type: true
+}
+let successdata:TypeData={
+  type: true, name: true
+}
+let nested:TypeData={
+  nestedErrors: true
+}
+let errorflag:TypeData={
+  throwError: true
+}
+let meetsminimum:Options={
+  'type': 'number', 'minimum': '1'
+}
+let clusivemeetsminimum:Options ={
+  'type': 'number', 'minimum': '0', 'exclusiveMinimum': true
+}
+let clusivemeetsminimumdata:Options ={
+  'type': 'number', 'minimum': '1', 'exclusiveMinimum': true
+}
+let meetsmaximum :Options ={
+  'type': 'number', 'maximum': '2'
+}
+let clusivemeetsmaximum:Options ={
+  'type': 'number', 'maximum': '2', 'exclusiveMaximum': true
+}
+
+let maximin:Options={
+  'type': 'number', 'minimum': '1', 'maximum': '2'
+}
+let iseven:Options={
+  'type': 'number', 'divisibleBy': 2
+}
+let withDdiv : Options={
+  'type': 'number', 'divisibleBy': 0.1
+}
+let validisda: Options={
+  'type': 'number', 'multipleOf': 2
+}
+let withisd : Options={
+  'type': 'number', 'multipleOf': 0.1
+}
+let deci:Options={
+  'type': 'string', 'pattern': 'ab+c'
+}
+let decidata:DeciData={
+  'type': 'string', 'pattern': new RegExp("[ab+c]")
+}
+let  deciarsing:DeciData={
+  'type': 'string', 'pattern': new RegExp("^a+$")
+}
+let  deprec:DeciData={
+  'type': 'string',  'pattern':new RegExp("0{1.3}")
+}
+let deprecdata:Options={
+  'type': 'string', 'pattern': "0{1.3}"
+}
+
+let fixenqu:Options={
+  'type': 'string', 'minLength': 5
+}
+let sixenqu:Options={
+  'type': 'string', 'minLength': 6
+}
+let fixmaenqu:Options={
+  'type': 'string', 'maxLength': 5
+}
+let fourenqu:Options={
+  'type': 'string', 'maxLength': 4
+}
+let onenum :Options={
+  'type': 'string', 'enum': ['abcdf', 'abcde']
+}
+let onenumdata :Options={
+  'type': 'string', 'enum': ['abcdf', 'abcdd']
+}
+let theenum:TheEnum={
+  'type': 'number', 'enum': [1, 2]
+}
+let validtaif:Options={
+  'enum': ['foo', 'bar', 'baz'], 'default': 'baz'
+}
+let validtaifdata:Options={
+  'enum': ['foo', 'bar', 'baz'], 'required': true, 'default': 'baz'
+}
 export default function attributesTest() {
   describe('attributesTest', () => {
     beforeAll(() => {
@@ -81,23 +176,23 @@ export default function attributesTest() {
     afterAll(() => {
     })
     it('ShouldValidateAValidNumber', 0, () => {
-      let result:boolean  = validator.validate(0,ValidNumber ).valid;
+      let result:boolean  = validator.validate(0,validnumber ).valid;
       expect(result).assertTrue();
     })
     it('ShouldNotValidateAnInvalidNumber', 0, () => {
-      let result:boolean  = validator.validate('0', ValidNumber).valid;
+      let result:boolean  = validator.validate('0', validnumber).valid;
       expect(result).assertFalse();
     })
     it('ShouldNotValidateNaN', 0, () => {
-      let result:boolean  = validator.validate(Number.NaN, ValidNumber).valid;
+      let result:boolean  = validator.validate(Number.NaN, validnumber).valid;
       expect(result).assertFalse();
     })
     it('ShouldNotValidateInfinity1', 0, () => {
-      let result :boolean = validator.validate(Number.POSITIVE_INFINITY, ValidNumber).valid;
+      let result :boolean = validator.validate(Number.POSITIVE_INFINITY, validnumber).valid;
       expect(result).assertFalse();
     })
     it('ShouldNotValidateInfinity2', 0, () => {
-      let result:boolean  = validator.validate(Number.POSITIVE_INFINITY,ValidNumber).valid;
+      let result:boolean  = validator.validate(Number.POSITIVE_INFINITY,validnumber).valid;
       expect(result).assertFalse();
     })
     it('ShouldNotValidateAnUndefinedInstance1', 0, () => {
@@ -105,75 +200,75 @@ export default function attributesTest() {
       expect(result).assertFalse();
     })
     it('ShouldValidateNull', 0, () => {
-      let result:boolean  = validator.validate(null, ValidateNull).valid;
+      let result:boolean  = validator.validate(null, validnull).valid;
       expect(result).assertTrue();
     })
     it('ShouldNotValidateNoNull1', 0, () => {
-      let result :boolean = validator.validate("0", ValidateNull).valid;
+      let result :boolean = validator.validate("0", validnull).valid;
       expect(result).assertFalse();
     })
     it('ShouldNotValidateAnUndefinedInstance2', 0, () => {
-      let result :boolean = validator.validate(undefined, AnUndefined).valid;
+      let result :boolean = validator.validate(undefined, anundefind).valid;
       expect(result).assertFalse();
     })
     it('ShouldValidateDate', 0, () => {
-      let result :boolean = validator.validate(new Date(), AnUndefineddata).valid;
+      let result :boolean = validator.validate(new Date(), anundefineddata).valid;
       expect(result).assertTrue();
     })
     it('ShouldNotValidateNoNull2', 0, () => {
-      let result :boolean = validator.validate('0', AnUndefineddata).valid;
+      let result :boolean = validator.validate('0', anundefineddata).valid;
       expect(result).assertFalse();
     })
     it('ShouldNotValidateAnUndefinedInstance3', 0, () => {
-      let result:boolean  = validator.validate(undefined, AnUndefined).valid;
+      let result:boolean  = validator.validate(undefined, anundefind).valid;
       expect(result).assertFalse();
     })
     it('ShouldValidateInteger', 0, () => {
-      let result:boolean  = validator.validate(12, NonInteger).valid;
+      let result:boolean  = validator.validate(12, validinteger).valid;
       expect(result).assertTrue();
     })
     it('ShouldNotValidateNonInteger', 0, () => {
-      let result:boolean  = validator.validate(0.25, NonInteger).valid;
+      let result:boolean  = validator.validate(0.25, validinteger).valid;
       expect(result).assertFalse();
     })
     it('ShouldNotValidateAnUndefinedInstance4', 0, () => {
-      let result :boolean = validator.validate(undefined, NonIntegerdata).valid;
+      let result :boolean = validator.validate(undefined, integerdata).valid;
       expect(result).assertFalse();
     })
     it('ShouldValidateTrue', 0, () => {
-      let result:boolean  = validator.validate(true,dateTrue ).valid;
+      let result:boolean  = validator.validate(true,datetrue ).valid;
       expect(result).assertTrue();
     })
     it('ShouldValidateFalse', 0, () => {
-      let result :boolean = validator.validate(false, dateTrue).valid;
+      let result :boolean = validator.validate(false, datetrue).valid;
       expect(result).assertTrue();
     })
     it('ShouldNotValidateNonBoolean', 0, () => {
-      let result :boolean = validator.validate('true', dateTrue).valid;
+      let result :boolean = validator.validate('true', datetrue).valid;
       expect(result).assertFalse();
     })
     it('ShouldNotValidateAnUndefinedInstance5', 0, () => {
-      let result:boolean  = validator.validate(undefined,datetruedata).valid;
+      let result:boolean  = validator.validate(undefined,daterequid).valid;
       expect(result).assertFalse();
     })
     it('ShouldValidateTrueAsAny', 0, () => {
-      let result:boolean  = validator.validate(true, TrueAsAny).valid;
+      let result:boolean  = validator.validate(true, validany).valid;
       expect(result).assertTrue();
     })
     it('ShouldValidatetruestrAsAny', 0, () => {
-      let result:boolean  = validator.validate('true', TrueAsAny).valid;
+      let result:boolean  = validator.validate('true', validany).valid;
       expect(result).assertTrue();
     })
     it('ShouldValidate0AsAny', 0, () => {
-      let result:boolean  = validator.validate(0, TrueAsAny).valid;
+      let result:boolean  = validator.validate(0, validany).valid;
       expect(result).assertTrue();
     })
     it('ShouldValidateDateAsAny', 0, () => {
-      let result :boolean = validator.validate(new Date(), TrueAsAny).valid;
+      let result :boolean = validator.validate(new Date(), validany).valid;
       expect(result).assertTrue();
     })
     it('ShouldNotValidateAnUndefinedInstance6', 0, () => {
-      let result :boolean = validator.validate(undefined, TrueAsAnydata).valid;
+      let result :boolean = validator.validate(undefined, anydata).valid;
       expect(result).assertFalse();
     })
     it('ShouldIgnoreUndefined', 0, () => {
@@ -185,7 +280,7 @@ export default function attributesTest() {
     })
     it('ShouldErrorOnNull', 0, () => {
       try {
-        validator.validate("foo", schemaErrorOnNull);
+        validator.validate("foo", schemaerrornull);
       } catch (err) {
         let types = (err instanceof SchemaError)
         expect(types).assertTrue()
@@ -193,30 +288,30 @@ export default function attributesTest() {
       }
     })
     it('doesNotValidateZeroSuccesses', 0, () => {
-      let result:boolean  = validator.validate(true, oneOfSchemadata).valid
+      let result:boolean  = validator.validate(true, oneOfSchema).valid
       expect(result).assertFalse();
     })
     it('validatesOneSuccess', 0, () => {
-      let result:boolean  = validator.validate( Success,oneOfSchemadata).valid;
+      let result:boolean  = validator.validate( success,oneOfSchema).valid;
       expect(result).assertTrue();
     })
     it('doesNotValidateTwoSuccesses', 0, () => {
-      let result:boolean  = validator.validate(Successdata, oneOfSchemadata).valid;
+      let result:boolean  = validator.validate(successdata, oneOfSchema).valid;
       expect(result).assertFalse();
     })
     it('ReportsInnerErrorsWithNestedErrorsFlag', 0, () => {
-      expect(validator.validate(Successdata, oneOfSchemadata, nestedErrorstext(true)).errors.length).assertEqual(3);
+      expect(validator.validate(successdata, oneOfSchema, nested).errors.length).assertEqual(3);
     })
 
     it('FunctionsWithThrowErrorFlag', 0, () => {
       try {
-        validator.validate(Successdata, oneOfSchemadata,ErrorFlag );
+        validator.validate(successdata ,oneOfSchema,errorflag );
       } catch (err) {
         expect(err.message).assertContain('exactly one')
       }
       let isThrow = false;
       try {
-        validator.validate(Success, oneOfSchemadata, ErrorFlag);
+        validator.validate(success, oneOfSchema, errorflag);
       } catch (err) {
         isThrow = true;
       }
@@ -224,191 +319,244 @@ export default function attributesTest() {
     })
 
     it('ShouldValidateIfNumberMeetsMinimum', 0, () => {
-      let result :boolean = validator.validate(1, MeetsMinimum).valid;
+      let result :boolean = validator.validate(1, meetsminimum).valid;
       expect(result).assertTrue();
     })
     it('ShouldNotValidateIfNumberIsBelowMinimum', 0, () => {
-      let result:boolean  = validator.validate(0, MeetsMinimum).valid;
+      let result:boolean  = validator.validate(0, meetsminimum).valid;
       expect(result).assertFalse();
     })
     it('ShouldValidateIfNumberIsAboveMinimumUsingExclusiveMinimum', 0, () => {
-      let result :boolean = validator.validate(1, clusiveMinimum).valid;
+      let result :boolean = validator.validate(1, clusivemeetsminimum).valid;
       expect(result).assertTrue();
     })
     it('ShouldNotValidateIfNumberIsTheMinimumUsingExclusiveMinimum', 0, () => {
-      let result:boolean  = validator.validate(1,clusiveMinimumdata).valid;
+      let result:boolean  = validator.validate(1,clusivemeetsminimumdata).valid;
       expect(result).assertFalse();
     })
 
     it('ShouldValidateIfNumberIsBelowTheMaximum', 0, () => {
-      let result:boolean  = validator.validate(1, TheMaximum).valid;
+      let result:boolean  = validator.validate(1, meetsmaximum).valid;
       expect(result).assertTrue();
     })
     it('ShouldNotValidateIfNumberIsAboveMaximum', 0, () => {
-      let result :boolean = validator.validate(3, TheMaximum).valid;
+      let result :boolean = validator.validate(3, meetsmaximum).valid;
       expect(result).assertFalse();
     })
     it('ShouldValidateIfNumberIsBelowMaximumUsingExclusiveMinimum', 0, () => {
-      let result:boolean  = validator.validate(1,TheMaximumdata).valid;
+      let result:boolean  = validator.validate(1,clusivemeetsmaximum).valid;
       expect(result).assertTrue();
     })
     it('ShouldNotValidateIfNumberIsTheMaximumUsingExclusiveMinimum', 0, () => {
-      let result :boolean = validator.validate(2, TheMaximumdata).valid;
+      let result :boolean = validator.validate(2, clusivemeetsmaximum).valid;
       expect(result).assertFalse();
     })
     it('ShouldValidateIfNumberIsBelowThMaximum', 0, () => {
-      let result :boolean = validator.validate(1,IsBelow ).valid;
+      let result :boolean = validator.validate(1,maximin ).valid;
       expect(result).assertTrue();
     })
     it('ShouldNotValidateIfNumberIsAboveMinumum', 0, () => {
-      let result :boolean = validator.validate(3, IsBelow).valid;
+      let result :boolean = validator.validate(3, maximin).valid;
       expect(result).assertFalse();
     })
     it('ShouldValidateIf0IsEven1', 0, () => {
-      let result:boolean  = validator.validate(2,IsEven ).valid;
+      let result:boolean  = validator.validate(2,iseven ).valid;
       expect(result).assertTrue();
     });
     it('ShouldValidateIf2IsEven1', 0, () => {
-      let result:boolean  = validator.validate(-2, IsEven).valid;
+      let result:boolean  = validator.validate(-2, iseven).valid;
       expect(result).assertTrue();
     });
     it('ShouldNotValidate1IsEven1', 0, () => {
-      let result:boolean  = validator.validate(1, IsEven).valid;
+      let result:boolean  = validator.validate(1, iseven).valid;
       expect(result).assertFalse();
     });
     it('ShouldValidateDivisibleByWithDecimals', 0, () => {
-      let result:boolean  = validator.validate(2.4,WithDecimals ).valid;
+      let result:boolean  = validator.validate(2.4,withDdiv ).valid;
       expect(result).assertTrue();
     });
     it('ShouldValidateIf0IsEven2', 0, () => {
-      let result:boolean  = validator.validate(2,dateIf0Is ).valid;
+      let result:boolean  = validator.validate(2,validisda ).valid;
       expect(result).assertTrue();
     });
     it('ShouldValidateIf2IsEven2', 0, () => {
-      let result :boolean = validator.validate(-2, dateIf0Is).valid;
+      let result :boolean = validator.validate(-2, validisda).valid;
       expect(result).assertTrue();
     });
     it('ShouldNotValidate1IsEven2', 0, () => {
-      let result:boolean  = validator.validate(1, dateIf0Is).valid;
+      let result:boolean  = validator.validate(1, validisda).valid;
       expect(result).assertFalse();
     });
     it('ShouldValidateMutlipleOfWithDecimals', 0, () => {
-      let result :boolean = validator.validate(2.4, WithDecimals).valid;
+      let result :boolean = validator.validate(2.4, withisd).valid;
       expect(result).assertTrue();
     });
     it('ShouldValidateIfStringMatchesTheStringPattern', 0, () => {
-      let result :boolean = validator.validate('abbbc',Pattern ).valid;
+      let result :boolean = validator.validate('abbbc',deci ).valid;
       expect(result).assertTrue();
     });
     it('ShouldValidateIfStringMatchesTheRegexpPattern', 0, () => {
-      let result :boolean = validator.validate('abbbc',chesThe ).valid;
+      let result :boolean = validator.validate('abbbc',decidata ).valid;
       expect(result).assertTrue();
     });
     it('ShouldValidateIfStringDoesNotMatchTheStringPattern', 0, () => {
-      let result:boolean  = validator.validate('abac',Pattern).valid;
+      let result:boolean  = validator.validate('abac',deci).valid;
       expect(result).assertFalse();
     });
     it('ShouldReturnCorrectErrorMessageWhenParsingRegularExpression', 0, () => {
-      let result:boolean  = validator.validate('abac',arsing ).errors[0].stack;
+      let result:boolean  = validator.validate('abac',deciarsing ).errors[0].stack;
       expect(result).assertContain("/^a+$/");
     });
     it('SupportsInvalidNonUnicodePatternsDeprecated', 0, () => {
-      let result1:boolean  = validator.validate('0{012}',eprecated ).valid;
-      let result2:boolean  = validator.validate('0{123}', eprecated).valid;
-      let result3:boolean  = validator.validate('0{012}', eprecated).valid;
-      let result4:boolean  = validator.validate('0{123}', eprecated).valid;
+      let result1:boolean  = validator.validate('0{012}',deprec ).valid;
+      let result2:boolean  = validator.validate('0{123}', deprec).valid;
+      let result3:boolean  = validator.validate('0{012}', deprecdata).valid;
+      let result4:boolean  = validator.validate('0{123}', deprecdata).valid;
       expect(result1).assertFalse();
       expect(result2).assertTrue();
       expect(result3).assertFalse();
       expect(result4).assertTrue();
     });
     it('ShouldValidateIfStringHasALengthLargerThanMinLength', 0, () => {
-      let result :boolean = validator.validate('abcde',ength ).valid;
+      let result :boolean = validator.validate('abcde',fixenqu ).valid;
       expect(result).assertTrue();
     });
     it('ShouldNotValidateIfStringDoesHasALengthLessThanMinLength', 0, () => {
-      let result :boolean = validator.validate('abcde', engthed).valid;
+      let result :boolean = validator.validate('abcde', sixenqu).valid;
       expect(result).assertFalse();
     });
     it('ShouldValidateIfStringHasALengthEqualToMaxLength', 0, () => {
-      let result:boolean  = validator.validate('abcde',engthad).valid;
+      let result:boolean  = validator.validate('abcde',fixmaenqu).valid;
       expect(result).assertTrue();
     });
     it('ShouldNotValidateIfStringDoesHasALengthLargerThanMaxLength', 0, () => {
-      let result:boolean  = validator.validate('abcde', engthfour).valid;
+      let result:boolean  = validator.validate('abcde', fourenqu).valid;
       expect(result).assertFalse();
     });
     it('ShouldValidateIfStringIsOneOfTheEnumValues', 0, () => {
-      let result :boolean = validator.validate('abcde',OneOfThe ).valid;
+      let result :boolean = validator.validate('abcde',onenum ).valid;
       expect(result).assertTrue();
     });
 
     it('ShouldNotValidateIfStringIsNotOneOfTheEnumValues', 0, () => {
-      let result:boolean  = validator.validate('abcde', oneofdad).valid;
+      let result:boolean  = validator.validate('abcde', onenumdata).valid;
       expect(result).assertFalse();
     });
     it('ShouldValidateIfNumberIsOneOfTheEnumValues', 0, () => {
-      let result :boolean = validator.validate(1, ValidateIfNum).valid;
+      let result :boolean = validator.validate(1, theenum).valid;
       expect(result).assertTrue();
     });
     it('ShouldNotValidateIfNumberIsNotOneOfTheEnumValues', 0, () => {
-      let result :boolean = validator.validate(3, ValidateIfNum).valid;
+      let result :boolean = validator.validate(3, theenum).valid;
       expect(result).assertFalse();
     });
     it('ShouldValidateIfValueIsUndefinedButDefaultsToOneOfTheEnumValues', 0, () => {
-      let result:boolean  = validator.validate(undefined, ValidateIf).valid;
+      let result:boolean  = validator.validate(undefined, validtaif).valid;
       expect(result).assertTrue();
     });
     it('ShouldNotValidateIfValueIsUndefinedAndRequiredEvenIfADefaultIsGiven', 0, () => {
-      let result :boolean = validator.validate(undefined, defalut).valid;
+      let result :boolean = validator.validate(undefined, validtaifdata).valid;
       expect(result).assertFalse();
     });
     it('ShouldNotValidateIfARequiredFieldIsOmmited', 0, () => {
-      let result :boolean = validator.validate(new Object(),asOmmite ).valid;
+      let result : ESObject= validator.validate({}, {
+        'type': 'object', 'properties': {
+          'the_field': {
+            'enum': ['foo', 'bar', 'baz'], 'required': true
+          }
+        }
+      }).valid;
       expect(result).assertFalse();
     });
     it('ShouldNotValidateIfARequiredFieldIsUndefined', 0, () => {
-      let result:boolean  = validator.validate().valid;
+      let result: ESObject = validator.validate({
+        'the_field': undefined
+      }, {
+        'type': 'object', 'properties': {
+          'the_field': {
+            'enum': ['foo', 'bar', 'baz'], 'required': true
+          }
+        }
+      }).valid;
+      expect(result).assertFalse();
+    });
+    it('ShouldNotValidateIfAFieldInRequiredArrayIsUndefined', 0, () =>  {
+      let result :boolean= validator.validate({
+        'the_field': undefined
+      }, {
+        'type': 'object', 'properties': {
+          'the_field': {
+            'enum': ['foo', 'bar', 'baz']
+          }
+        }, required: ['the_field']
+      }).valid;
       expect(result).assertFalse();
     });
 
-    it('ShouldNotValidateIfAFieldInRequiredArrayIsUndefined', 0, () => {
-      let result:boolean  = validator.validate(filed, proper).valid;
+    it('ShouldValidateIfARequiredFieldHasAValueOutOfEnum', 0, () =>  {
+      let result :boolean= validator.validate({
+        'the_field': 'bar'
+      }, {
+        'type': 'object', 'properties': {
+          'the_field': {
+            'enum': ['foo', 'bar', 'baz'], 'required': true
+          }
+        }
+      }).valid;
+      expect(result).assertTrue();
+    });
+
+    it('ShouldBeIgnored', 0, () =>  {
+      let result:boolean = validator.validate(1, {
+        'description': 'some text'
+      }).valid;
+      expect(result).assertTrue();
+    });
+
+    it('ShouldProhibitSpecifiedTypes', 0, () =>  {
+      let result:boolean = validator.validate(1, {
+        'type': 'any', 'disallow': 'array'
+      }).valid;
+      expect(result).assertTrue();
+    });
+
+    it('ShouldNotProhibitUnprohibitedTypes', 0, () =>  {
+      let result :boolean= validator.validate(1, {
+        'type': 'any', 'disallow': 'array'
+      }).valid;
+      expect(result).assertTrue();
+    });
+
+    it('ShouldValidateWithMissingNonDependedProperties', 0, () =>  {
+      let result :boolean= validator.validate({
+        foo: 1
+      }, {
+        'dependencies': {
+          'quux': ['foo', 'bar']
+        }
+      }).valid;
+      expect(result).assertTrue();
+    });
+
+    it('ShouldNotValidateWithMissingDependencies', 0, () =>  {
+      let result:boolean = validator.validate({
+        quux: 1, foo: 1
+      }, {
+        'dependencies': {
+          'quux': ['foo', 'bar']
+        }
+      }).valid;
       expect(result).assertFalse();
     });
 
-    it('ShouldValidateIfARequiredFieldHasAValueOutOfEnum', 0, () => {
-      let result:boolean  = validator.validate(fild, asOmmite).valid;
-      expect(result).assertTrue();
-    });
-
-    it('ShouldBeIgnored', 0, () => {
-      let result:boolean  = validator.validate(1, scrison).valid;
-      expect(result).assertTrue();
-    });
-
-    it('ShouldProhibitSpecifiedTypes', 0, () => {
-      let result :boolean = validator.validate(1, disallow).valid;
-      expect(result).assertTrue();
-    });
-
-    it('ShouldNotProhibitUnprohibitedTypes', 0, () => {
-      let result:boolean  = validator.validate(1, disallow).valid;
-      expect(result).assertTrue();
-    });
-
-    it('ShouldValidateWithMissingNonDependedProperties', 0, () => {
-      let result :boolean = validator.validate(foodata,quux).valid;
-      expect(result).assertTrue();
-    });
-
-    it('ShouldNotValidateWithMissingDependencies', 0, () => {
-      let result:boolean  = validator.validate(footest, quux).valid;
-      expect(result).assertFalse();
-    });
-
-    it('ShouldValidateWithSatisfiedDependencies', 0, () => {
-      let result:boolean  = validator.validate(foobar, quux).valid;
+    it('ShouldValidateWithSatisfiedDependencies', 0, () =>  {
+      let result:boolean = validator.validate({
+        quux: 1, foo: 1, bar: 1
+      }, {
+        'dependencies': {
+          'quux': ['foo', 'bar']
+        }
+      }).valid;
       expect(result).assertTrue();
     });
 

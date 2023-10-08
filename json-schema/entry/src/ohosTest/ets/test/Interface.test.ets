@@ -15,12 +15,12 @@
 
 import { scan, SchemaError, SchemaScanResult, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
-import { objectdata, va } from './IntertfaceData';
+import { Options,ObjectSchema } from './IntertfaceData';
 
 let validator: Validator;
 const BASE_COUNT = 1
-let stringSchema = va
-let objectSchema =objectdata
+let stringSchema:Options ={ 'const': 'value' };
+let objectSchema:ObjectSchema ={ 'const': { "some key": [null, "1", 2, true] } };
 
 export default function interfaceTest() {
   describe('interfaceTest', () => {

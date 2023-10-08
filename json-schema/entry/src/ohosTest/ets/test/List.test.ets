@@ -31,22 +31,22 @@ import unionTest from './Union.test'
 import validatorTest from './Validator.test'
 
 export default function testsuite() {
- //  jsonSChemaTest();
- //  arraysTest();
- //  attributesTest();
- //  combinatorsTest();
- //  constTest();
- //  formatsTest();
- //  i18nTest();
- //  interfaceTest();
- //  loadingTest();
- // metaschemaTest();//
-  mixedTest();
- //  objectsTest();
- //  pureTest();
- //  requiredWithRefTest();
- //
- //  unionTest();
- //  validatorTest();
- //  suiteTest();
+  jsonSChemaTest();//一个
+ arraysTest();//
+  attributesTest();//
+  combinatorsTest();//
+  constTest();//
+  formatsTest();//一个
+  i18nTest();
+  interfaceTest();//
+  loadingTest();//
+ metaschemaTest();//
+  mixedTest();//
+  objectsTest();//
+  pureTest();//
+  requiredWithRefTest();//
+
+  unionTest();//
+  validatorTest();//
+  suiteTest();//
 }

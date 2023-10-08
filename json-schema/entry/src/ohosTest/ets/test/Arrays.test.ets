@@ -15,10 +15,47 @@
 
 import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
-import { ANonArray, DuplicateItem, DuplicateObjects, EqualToMinItems, NotAnArray, Validate } from './IntertfaceData';
+import { Options } from './IntertfaceData';
 
 let validator: ESObject;
 const BASE_COUNT = 1
+
+let  Validate: Options= {
+  type: 'array', items: {
+    type: 'string'
+  }
+}
+let ANonArray: Options= {
+  type: 'array'
+}
+let EqualToMinItems: Options = {
+  'type': 'array', 'items': {
+    'type': 'number'
+  }, 'minItems': 2
+}
+
+let EqualToMaxItems: Options = {
+  'type': 'array', 'items': {
+    'type': 'number'
+  }, 'maxItems': 2
+}
+
+let DuplicateItem: Options = {
+  type: 'array', uniqueItems: true
+}
+
+let NotAnArray: Options = {
+  'type': 'any', 'uniqueItems': true
+}
+
+let  DuplicateObjects: Options= {
+  a: 1
+}
+
+let  DuplicateObjects1: Options= {
+  a: 1,
+  b: 1
+}
 
 export default function arrayTest() {
   describe('arrayTest', () => {
@@ -69,23 +106,23 @@ export default function arrayTest() {
       expect(validator.validate([1], EqualToMinItems).errors[0].path.length).assertEqual(0);
     })
     it('ShouldValidateIfArrayHasALengthLessThanMaxItems', 0, () => {
-      let result:boolean  = validator.validate([1], EqualToMinItems).valid;
+      let result:boolean  = validator.validate([1], EqualToMaxItems).valid;
       expect(result).assertTrue();
     })
     it('ShouldValidateIfArrayHasALengthEqualToMaxItems', 0, () => {
-      let result:boolean  = validator.validate([1], EqualToMinItems).valid;
+      let result:boolean  = validator.validate([1], EqualToMaxItems).valid;
       expect(result).assertTrue();
     })
     it('ShouldValidateIfArrayHasALengthLargerThanMaxItems', 0, () => {
-      let result:boolean  = validator.validate([1, 2, 3], EqualToMinItems).valid;
+      let result:boolean  = validator.validate([1, 2, 3], EqualToMaxItems).valid;
       expect(result).assertFalse();
     })
     it('ShouldValidateIfArrayHasNoDuplicateItems', 0, () => {
-      let result :boolean = validator.validate([1],DuplicateItem ).valid;
+      let result :boolean = validator.validate([1], DuplicateItem ).valid;
       expect(result).assertTrue();
     })
     it('ShouldValidateIfArrayHasNoDuplicateObjects', 0, () => {
-      let result:boolean = validator.validate([1, 2, "1", "2", DuplicateObjects,DuplicateObjects,NotAnArray]).valid;
+      let result:boolean = validator.validate([1, 2, "1", "2", DuplicateObjects, DuplicateObjects1], DuplicateItem).valid;
       expect(result).assertTrue();
     })
     it('ShouldNotValidateIfArrayHasDuplicateNumbers', 0, () => {
@@ -93,11 +130,11 @@ export default function arrayTest() {
       expect(result).assertFalse();
     })
     it('ShouldNotValidateIfArrayHasDuplicateObjects', 0, () => {
-      let result :boolean= validator.validate([DuplicateObjects,DuplicateObjects], NotAnArray).valid;
+      let result :boolean= validator.validate([DuplicateObjects,DuplicateObjects], DuplicateItem).valid;
       expect(result).assertFalse();
     })
     it('ShouldValidateIfNotAnArray', 0, () => {
-      let result:boolean = validator.validate(null,NotAnArray ).valid;
+      let result:boolean = validator.validate(null, NotAnArray ).valid;
       expect(result).assertTrue();
     })
   })

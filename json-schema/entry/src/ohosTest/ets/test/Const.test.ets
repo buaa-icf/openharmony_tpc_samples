@@ -15,13 +15,13 @@
 
 import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
-import { bjectValid, ectInvali, objectdata, va } from './IntertfaceData';
+import {  ObjectSchema, Options, } from './IntertfaceData';
 
 
 let validator: ESObject;
 const BASE_COUNT = 1
-let stringSchema =va
-let objectSchema =objectdata
+let stringSchema:Options ={ 'const': 'value' };
+let objectSchema:ObjectSchema ={ 'const': { "some key": [null, "1", 2, true] } };
 
 export default function constTest() {
   describe('constTest', () => {
@@ -48,7 +48,9 @@ export default function constTest() {
     });
 
     it('ObjectValid', 0, () => {
-      let result:boolean  = validator.validate(bjectValid, objectSchema).valid;
+      let result:boolean  = validator.validate({
+        "some key": [null, "1", 2, true]
+      }, objectSchema).valid;
       expect(result).assertTrue();
     });
     it('ObjectInvalid1', 0, () => {
@@ -56,7 +58,9 @@ export default function constTest() {
       expect(result).assertFalse();
     });
     it('ObjectInvalid2', 0, () => {
-      let result :boolean = validator.validate(ectInvali, objectSchema).valid;
+      let result :boolean = validator.validate({
+        "some key": [false, "1", 2, true]
+      }, objectSchema).valid;
       expect(result).assertFalse();
     });
     it('ObjectInvalid3', 0, () => {

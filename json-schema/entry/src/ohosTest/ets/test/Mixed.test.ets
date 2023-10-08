@@ -15,7 +15,7 @@
 
 import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
 import { it, afterAll, afterEach, beforeAll, beforeEach, describe, expect } from '@ohos/hypium'
-import { ouldva, ouldvadata } from './IntertfaceData';
+import { } from './IntertfaceData';
 
 let validator: ESObject = new Validator();
 const BASE_COUNT = 1
@@ -23,19 +23,51 @@ const BASE_COUNT = 1
 export default function mixedTest() {
   describe('mixedTest', () => {
     it('should_validate', 0, () => {
-      let result:ESObject  = validator.validate(ouldva, ouldvadata).valid;
+      let result:ESObject  = validator.validate({
+        'name': 'test', 'lines': ['1']
+      },
+        {
+          'type': 'object',
+          'properties': {
+            'name': {
+              'type': 'string'
+            },
+            'lines': {
+              'type': 'array',
+              'items': {
+                'type': 'string'
+              },
+            },
+          },
+        }).valid;
       expect(result).assertTrue()
     });
 
-    // it('should_not_validate', 0, () => {
-    //
-    //   let result : ESObject= validator.validate(ouldva,ouldvadata)
-    //
-    //   expect( result.errors.length).assertEqual(1)
-    //   let msgProperty: ESObject = result.errors[0]['message']
-    //   expect(msgProperty).assertEqual('is not of a type(s) string')
-    //   let instanceProperty : ESObject= result.errors[0]['property']
-    //   expect(instanceProperty).assertEqual('instance.lines[0]')
-    // });
+    it('should_not_validate', 0, () => {
+
+      let result : ESObject= validator.validate({
+        'name': 'test', 'lines': [1]
+      },
+        {
+          'type': 'object',
+          'properties': {
+            'name': {
+              'type': 'string'
+            },
+            'lines': {
+              'type': 'array',
+              'items': {
+                'type': 'string'
+              },
+            },
+          },
+        })
+
+      expect( result.errors.length).assertEqual(1)
+      let msgProperty: ESObject = result.errors[0]['message']
+      expect(msgProperty).assertEqual('is not of a type(s) string')
+      let instanceProperty : ESObject= result.errors[0]['property']
+      expect(instanceProperty).assertEqual('instance.lines[0]')
+    });
   })
 }

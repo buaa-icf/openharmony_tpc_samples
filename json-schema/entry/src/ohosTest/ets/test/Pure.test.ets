@@ -15,7 +15,8 @@
 
 import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
-import { data, freeze, schema } from './IntertfaceData';
+import { Constra, Options, schema } from './IntertfaceData';
+import { free } from './DataFormat'
 
 let validator: ESObject;
 const BASE_COUNT = 1
@@ -32,31 +33,30 @@ export default function pureTest() {
     afterAll(() => {
     })
     it('DependenciesConstraint', 0, () => {
-      // let data = {
-      //   foo: [1, 2, 3],
-      //   bar: 2,
-      // };
-      // let schema = {
-      //   dependencies: {
-      //     bar: {
-      //       properties: {
-      //         foo: {
-      //           type: "array",
-      //           items: {
-      //             type: "integer"
-      //           },
-      //         },
-      //         bar: {
-      //           type: "integer"
-      //         },
-      //       },
-      //       required: ["foo", "bar"],
-      //     },
-      //   },
-      // };
-      // Object.freeze(data.foo);
-      // Object.freeze(data);
-      freeze();
+      let data :Options= {
+        foo: [1, 2, 3],
+        bar: 2,
+      };
+      let schema :Constra= {
+        dependencies: {
+          bar: {
+            properties: {
+              foo: {
+                type: "array",
+                items: {
+                  type: "integer"
+                },
+              },
+              bar: {
+                type: "integer"
+              },
+            },
+            required: ["foo", "bar"],
+          },
+        },
+      };
+      free(data.foo);
+      free(data);
       let result:boolean  = validator.validate(data, schema).valid;
       expect(result).assertTrue();
     });

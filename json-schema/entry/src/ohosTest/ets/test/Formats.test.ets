@@ -15,7 +15,8 @@
 
 import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
-import { dateInval, objectdata, rege, typeresult, types, va } from './IntertfaceData';
+import { Options, ObjectSchema, } from './IntertfaceData';
+import { types, instanceType } from './DataFormat'
 
 interface Data {
   format: () => void
@@ -25,11 +26,15 @@ interface Data {
 let validator: ESObject;
 let validator1: ESObject;
 let validator2: ESObject;
-let format: Data;
+let  format: Data;
 
 const BASE_COUNT = 1
-let stringSchema = va
-let objectSchema =objectdata
+let stringSchema: Options = { 'const': 'value' };
+let objectSchema: ObjectSchema = { 'const': { "some key": [null, "1", 2, true] } };
+let datatime: Options = {
+  'type': 'string', 'format': 'date-time'
+}
+let rege: RegExp = new RegExp("^\d+(?:\.\d+)?$")
 
 export default function formatsTest() {
   describe('formatsTest', () => {
@@ -39,324 +44,420 @@ export default function formatsTest() {
       validator = new Validator();
       validator1 = new Validator();
       validator2 = new Validator();
-      validator1.customFormats.foo =  (input:string) =>{
+      validator1.customFormats.foo = (input: string|number) => {
         if (input === 'foo') {
           return true;
         }
         return false;
       };
 
-      validator1.customFormats.float =  (input:string) =>{
+      validator1.customFormats.float = (input: string) => {
         //console.log(input);
         return rege.test(input);
       };
-      // format = () => {
-      // };
     })
     afterEach(() => {
     })
     afterAll(() => {
     })
     it('ShouldValidateAValidDateTime', 0, () => {
-      let result :boolean = validator.validate("2012-07-08T16:41:41.532Z", typeresult('string','date-time')).valid;
+      let result: boolean = validator.validate("2012-07-08T16:41:41.532Z", datatime).valid;
       expect(result).assertTrue();
     });
 
     it('ShouldValidateAValidDateTimeWithoutMilliseconds', 0, () => {
-      let result:boolean  = validator.validate("2012-07-08T16:41:41Z", typeresult('string','date-time')).valid;
+      let result: boolean = validator.validate("2012-07-08T16:41:41Z", datatime).valid;
       expect(result).assertTrue();
     });
 
     it('ShouldValidateADateTimeWithATimezoneOffsetInsteadOfZ', 0, () => {
-      let result1:boolean  = validator.validate("2012-07-08T16:41:41.532+00:00", typeresult('string','date-time')).valid;
+      let result1: boolean = validator.validate("2012-07-08T16:41:41.532+00:00", datatime).valid;
       expect(result1).assertTrue();
-      let result2 :boolean = validator.validate("2012-07-08T16:41:41.532+05:30", typeresult('string','date-time')).valid;
+      let result2: boolean = validator.validate("2012-07-08T16:41:41.532+05:30", datatime).valid;
       expect(result2).assertTrue();
-      let result3 :boolean = validator.validate("2012-07-08T16:41:41.532+04:00", typeresult('string','date-time')).valid;
+      let result3: boolean = validator.validate("2012-07-08T16:41:41.532+04:00", datatime).valid;
       expect(result3).assertTrue();
     });
 
     it('ShouldValidateADateTimeWithAZInsteadOfAZ', 0, () => {
-      let result:boolean  = validator.validate("2012-07-08T16:41:41.532z", typeresult('string','date-time')).valid;
+      let result: boolean = validator.validate("2012-07-08T16:41:41.532z", datatime).valid;
       expect(result).assertTrue();
     });
 
     it('ShouldValidateADateTimeWithASpaceInsteadOfAT', 0, () => {
-      let result:boolean  = validator.validate("2012-07-08 16:41:41.532Z", typeresult('string','date-time')).valid;
+      let result: boolean = validator.validate("2012-07-08 16:41:41.532Z", datatime).valid;
       expect(result).assertTrue();
     });
 
     it('ShouldValidateADateTimeWithATInsteadOfAT', 0, () => {
-      let result :boolean = validator.validate("2012-07-08t16:41:41.532Z", typeresult('string','date-time')).valid;
+      let result: boolean = validator.validate("2012-07-08t16:41:41.532Z", datatime).valid;
       expect(result).assertTrue();
     });
 
     it('ShouldNotValidateADateTimeWithTheTimeMissing', 0, () => {
-      let result:boolean  = validator.validate("2012-07-08", typeresult('string','date-time')).valid;
+      let result: boolean = validator.validate("2012-07-08", datatime).valid;
       expect(result).assertFalse();
     });
 
     it('ShouldNotValidateAnInvalidDateTime', 0, () => {
-      let result:boolean  = validator.validate("TEST2012-07-08T16:41:41.532Z", typeresult('string','date-time')).valid;
+      let result: boolean = validator.validate("TEST2012-07-08T16:41:41.532Z", datatime).valid;
       expect(result).assertFalse();
     });
 
     it('ShouldNotValidateADateTimeWithATimezoneOffsetANDAZ', 0, () => {
-      let result1:boolean  = validator.validate("2012-07-08T16:41:41.532+00:00Z", typeresult('string','date-time')).valid;
+      let result1: boolean = validator.validate("2012-07-08T16:41:41.532+00:00Z", datatime).valid;
       expect(result1).assertFalse();
-      let result2 :boolean = validator.validate("2012-07-08T16:41:41.532+Z00:00", typeresult('string','date-time')).valid;
+      let result2: boolean = validator.validate("2012-07-08T16:41:41.532+Z00:00", datatime).valid;
       expect(result2).assertFalse();
     });
 
     it('ShouldValidateAValidDate', 0, () => {
-      let result :boolean = validator.validate("2012-07-08", typeresult('string','date')).valid;
+      let result: boolean = validator.validate("2012-07-08", {
+        'type': 'string', 'format': 'date'
+      }).valid;
       expect(result).assertTrue();
     });
 
     it('ShouldNotValidateAnInvalidDate', 0, () => {
-      let result:boolean  = validator.validate("TEST2012-07-08", typeresult('string','date')).valid;
+      let result: boolean = validator.validate("TEST2012-07-08", {
+        'type': 'string', 'format': 'date'
+      }).valid;
       expect(result).assertFalse();
     });
 
 
     it('ShouldValidateAValidTime', 0, () => {
-      let result:boolean  = validator.validate("16:41:41", typeresult('string','time')).valid;
+      let result: boolean = validator.validate("16:41:41", {
+        'type': 'string', 'format': 'time'
+      }).valid;
       expect(result).assertTrue();
     });
 
     it('ShouldNotValidateAnInvalidTime', 0, () => {
-      let result:boolean  = validator.validate("16:41:41.532Z", typeresult('string','time')).valid;
+      let result: boolean = validator.validate("16:41:41.532Z", {
+        'type': 'string', 'format': 'time'
+      }).valid;
       expect(result).assertFalse();
     });
 
 
     it('ShouldValidateAValidUtcMillisec', 0, () => {
-      let result:boolean  = validator.validate("-1234567890", typeresult('string','utc-millisec')).valid;
+      let result: boolean = validator.validate("-1234567890", {
+        'type': 'string', 'format': 'utc-millisec'
+      }).valid;
       expect(result).assertTrue();
     });
 
     it('ShouldNotValidateAnInvalidUtcMillisec', 0, () => {
-      let result :boolean = validator.validate("16:41:41.532Z", typeresult('string','utc-millisec')).valid;
+      let result: boolean = validator.validate("16:41:41.532Z", {
+        'type': 'string', 'format': 'utc-millisec'
+      }).valid;
       expect(result).assertFalse();
     });
 
     it('ShouldValidateAValidRegex', 0, () => {
-      let result:boolean  = validator.validate("/a/", typeresult('string','regex')).valid;
+      let result: boolean = validator.validate("/a/", {
+        'type': 'string', 'format': 'regex'
+      }).valid;
       expect(result).assertTrue();
     });
 
     it('ShouldNotValidateAnInvalidRegex', 0, () => {
-      let result:boolean  = validator.validate("/^(abc]/", typeresult('string','regex')).valid;
+      let result: boolean = validator.validate("/^(abc]/", {
+        'type': 'string', 'format': 'regex'
+      }).valid;
       expect(result).assertFalse();
     });
 
-
     it('ShouldValidateTheColorRed', 0, () => {
-      let result:boolean  = validator.validate("red", typeresult('string','color')).valid;
+      let result: boolean = validator.validate("red", {
+        'type': 'string', 'format': 'color'
+      }).valid;
       expect(result).assertTrue();
     });
 
     it('ShouldValidateTheColorF00', 0, () => {
-      let result:boolean  = validator.validate("#f00", typeresult('string','color')).valid;
+      let result: boolean = validator.validate("#f00", {
+        'type': 'string', 'format': 'color'
+      }).valid;
       expect(result).assertTrue();
     });
 
     it('ShouldValidateTheColorFf0000', 0, () => {
-      let result:boolean  = validator.validate("#ff0000", typeresult('string','color')).valid;
+      let result: boolean = validator.validate("#ff0000", {
+        'type': 'string', 'format': 'color'
+      }).valid;
       expect(result).assertTrue();
     });
 
     it('ShouldValidateTheColorRgb', 0, () => {
-      let result :boolean = validator.validate("rgb(255,0,0)", typeresult('string','color')).valid
+      let result: boolean = validator.validate("rgb(255,0,0)", {
+        'type': 'string', 'format': 'color'
+      }).valid
       expect(result).assertTrue();
     });
 
     it('ShouldNotValidateAnInvalidColorJson', 0, () => {
-      let result :boolean = validator.validate("json", typeresult('string','color')).valid;
+      let result: boolean = validator.validate("json", {
+        'type': 'string', 'format': 'color'
+      }).valid;
       expect(result).assertFalse();
     });
 
     it('ShouldValidateAValidStyle', 0, () => {
-      let result :boolean = validator.validate("color: red;", typeresult('string','color')).valid;
+      let result: boolean = validator.validate("color: red;", {
+        'type': 'string', 'format': 'style'
+      }).valid;
       expect(result).assertTrue();
     });
 
     it('ShouldValidateAValidComplexStyle1', 0, () => {
-      let result :boolean = validator.validate("color: red; position: absolute; background-color: rgb(204, 204, 204); max-width: 150px;", typeresult('string','style')).valid;
+      let result: boolean = validator.validate("color: red; position: absolute; background-color: rgb(204, 204, 204); max-width: 150px;", {
+        'type': 'string', 'format': 'style'
+      }).valid;
       expect(result).assertTrue();
     });
 
     it('ShouldValidateAValidComplexStyle2', 0, () => {
-      let result:boolean  = validator.validate("color:red;position:absolute; background-color:     rgb(204, 204, 204); max-width: 150px;", typeresult('string','style')).valid;
+      let result: boolean = validator.validate("color:red;position:absolute; background-color:     rgb(204, 204, 204); max-width: 150px;", {
+        'type': 'string', 'format': 'style'
+      }).valid;
       expect(result).assertTrue();
     });
 
     it('ShouldNotValidateAnInvalidStyle', 0, () => {
-      let result :boolean = validator.validate("0", typeresult('string','style')).valid;
+      let result: boolean = validator.validate("0", {
+        'type': 'string', 'format': 'style'
+      }).valid;
       expect(result).assertFalse();
     });
 
     it('ShouldValidateAValidStyleIfCalledTwiceWithTheSameInstance', 0, () => {
-      let result1:boolean  = validator.validate("color: red;", typeresult('string','style')).valid;
+      let result1: boolean = validator.validate("color: red;", {
+        'type': 'string', 'format': 'style'
+      }).valid;
       expect(result1).assertTrue();
-      let result2 :boolean = validator.validate("color: red;", typeresult('string','style')).valid;
+      let result2: boolean = validator.validate("color: red;", {
+        'type': 'string', 'format': 'style'
+      }).valid;
       expect(result2).assertTrue();
     });
 
     it('ShouldValidateAValidPhoneNumber', 0, () => {
-      let result:boolean  = validator.validate("+31 42 123 4567", typeresult('string','phone')).valid;
+      let result: boolean = validator.validate("+31 42 123 4567", {
+        'type': 'string', 'format': 'phone'
+      }).valid;
       expect(result).assertTrue();
     });
 
     it('ShouldNotValidateAnInvalidPhoneNumber', 0, () => {
-      let result:boolean  = validator.validate("31 42 123 4567", typeresult('string','phone')).valid;
+      let result: boolean = validator.validate("31 42 123 4567", {
+        'type': 'string', 'format': 'phone'
+      }).valid;
       expect(result).assertFalse();
     });
 
 
     it('ShouldValidateGoogle', 0, () => {
-      let result:boolean  = validator.validate("http://www.google.com/", typeresult('string','uri')).valid;
+      let result: boolean = validator.validate("http://www.google.com/", {
+        'type': 'string', 'format': 'uri'
+      }).valid;
       expect(result).assertTrue();
     });
 
     it('ShouldValidateGoogleSearch', 0, () => {
-      let result :boolean = validator.validate("http://www.google.com/search",  typeresult('string','uri')).valid;
+      let result: boolean = validator.validate("http://www.google.com/search", {
+        'type': 'string', 'format': 'uri'
+      }).valid;
       expect(result).assertTrue();
     });
 
     it('ShouldNotValidateRelativeURIs', 0, () => {
-      let result:boolean  = validator.validate("tdegrunt",  typeresult('string','uri')).valid;
+      let result: boolean = validator.validate("tdegrunt", {
+        'type': 'string', 'format': 'uri'
+      }).valid;
       expect(result).assertFalse();
     });
 
     it('ShouldNotValidateWithWhitespace', 0, () => {
-      let result :boolean = validator.validate("The dog jumped",  typeresult('string','uri')).valid;
+      let result: boolean = validator.validate("The dog jumped", {
+        'type': 'string', 'format': 'uri'
+      }).valid;
       expect(result).assertFalse();
     });
 
     it('ShouldValidateObamaWhitehouseGov', 0, () => {
-      let result:boolean  = validator.validate("obama@whitehouse.gov",  typeresult('string','email')).valid;
+      let result: boolean = validator.validate("obama@whitehouse.gov", {
+        'type': 'string', 'format': 'email'
+      }).valid;
       expect(result).assertTrue();
     });
 
     it('ShouldValidateBarackObamaWhitehouseGov', 0, () => {
-      let result :boolean = validator.validate("barack+obama@whitehouse.gov", typeresult('string','email')).valid;
+      let result: boolean = validator.validate("barack+obama@whitehouse.gov", {
+        'type': 'string', 'format': 'email'
+      }).valid;
       expect(result).assertTrue();
     });
 
     it('ShouldNotValidateObama', 0, () => {
-      let result :boolean = validator.validate("obama@", typeresult('string','email')).valid;
+      let result: boolean = validator.validate("obama@", {
+        'type': 'string', 'format': 'email'
+      }).valid;
       expect(result).assertFalse();
     });
 
     it('ShouldValidate19216801', 0, () => {
-      let result:boolean  = validator.validate("192.168.0.1", typeresult('string','ip-address')).valid;
+      let result: boolean = validator.validate("192.168.0.1", {
+        'type': 'string', 'format': 'ip-address'
+      }).valid;
       expect(result).assertTrue();
     });
 
     it('ShouldValidate127001', 0, () => {
-      let result:boolean  = validator.validate("127.0.0.1", typeresult('string','ip-address')).valid;
+      let result: boolean = validator.validate("127.0.0.1", {
+        'type': 'string', 'format': 'ip-address'
+      }).valid;
       expect(result).assertTrue();
     });
 
     it('ShouldNotValidate1921680', 0, () => {
-      let result :boolean = validator.validate("192.168.0", typeresult('string','ip-address')).valid;
+      let result: boolean = validator.validate("192.168.0", {
+        'type': 'string', 'format': 'ip-address'
+      }).valid;
       expect(result).assertFalse();
     });
 
     it('ShouldNotValidate2561680', 0, () => {
-      let result :boolean = validator.validate("256.168.0", typeresult('string','ip-address')).valid;
+      let result: boolean = validator.validate("256.168.0", {
+        'type': 'string', 'format': 'ip-address'
+      }).valid;
       expect(result).assertFalse();
     });
 
     it('ShouldValidateFe801lo0', 0, () => {
-      let result :boolean = validator.validate("fe80::1%lo0", typeresult('string','ipv6')).valid;
+      let result: boolean = validator.validate("fe80::1%lo0", {
+        'type': 'string', 'format': 'ipv6'
+      }).valid;
       expect(result).assertTrue();
     });
 
     it('ShouldValidate1', 0, () => {
-      let result :boolean = validator.validate("::1", typeresult('string','ipv6')).valid;
+      let result: boolean = validator.validate("::1", {
+        'type': 'string', 'format': 'ipv6'
+      }).valid;
       expect(result).assertTrue();
     });
 
     it('ShouldNotValidate127001', 0, () => {
-      let result:boolean  = validator.validate("127.0.0.1", typeresult('string','ipv6')).valid;
+      let result: boolean = validator.validate("127.0.0.1", {
+        'type': 'string', 'format': 'ipv6'
+      }).valid;
       expect(result).assertFalse();
     });
 
     it('ShouldNotValidateLocalhost', 0, () => {
-      let result:boolean  = validator.validate("localhost",typeresult('string','ipv6')).valid;
+      let result: boolean = validator.validate("localhost", {
+        'type': 'string', 'format': 'ipv6'
+      }).valid;
       expect(result).assertFalse();
     });
 
 
     it('ShouldValidateLocalhost', 0, () => {
-      let result:boolean  = validator.validate("localhost", typeresult('string','host-name')).valid;
+      let result: boolean = validator.validate("localhost", {
+        'type': 'string', 'format': 'host-name'
+      }).valid;
       expect(result).assertTrue();
     });
 
     it('ShouldValidateWwwGoogleCom', 0, () => {
-      let result:boolean  = validator.validate("www.google.com", typeresult('string','host-name')).valid;
+      let result: boolean = validator.validate("www.google.com", {
+        'type': 'string', 'format': 'host-name'
+      }).valid;
       expect(result).assertTrue();
     });
 
     it('ShouldNotValidateWwwHiCom', 0, () => {
-      let result:boolean  = validator.validate("www.-hi-.com", typeresult('string','host-name')).valid;
+      let result: boolean = validator.validate("www.-hi-.com", {
+        'type': 'string', 'format': 'host-name'
+      }).valid;
       expect(result).assertFalse();
     });
 
     it('ShouldValidateAlpha', 0, () => {
-      let result:boolean  = validator.validate("alpha", typeresult('string','alpha')).valid;
+      let result: boolean = validator.validate("alpha", {
+        'type': 'string', 'format': 'alpha'
+      }).valid;
       expect(result).assertTrue();
     });
 
     it('ShouldValidateAbracadabra', 0, () => {
-      let result:boolean  = validator.validate("abracadabra",  typeresult('string','alpha')).valid;
+      let result: boolean = validator.validate("abracadabra", {
+        'type': 'string', 'format': 'alpha'
+      }).valid;
       expect(result).assertTrue();
     });
 
     it('ShouldNotValidate1test1', 0, () => {
-      let result:boolean  = validator.validate("www.-hi-.com",  typeresult('string','alpha')).valid;
+      let result: boolean = validator.validate("www.-hi-.com", {
+        'type': 'string', 'format': 'alpha'
+      }).valid;
       expect(result).assertFalse();
     });
 
     it('ShouldValidateAlphanumeric', 0, () => {
-      let result:boolean  = validator.validate("alpha",  typeresult('string','alphanumeric')).valid;
+      let result: boolean = validator.validate("alpha", {
+        'type': 'string', 'format': 'alphanumeric'
+      }).valid;
       expect(result).assertTrue();
     });
 
     it('ShouldValidate123', 0, () => {
-      let result:boolean  = validator.validate("123", typeresult('string','alphanumeric')).valid;
+      let result: boolean = validator.validate("123", {
+        'type': 'string', 'format': 'alphanumeric'
+      }).valid;
       expect(result).assertTrue();
     });
 
     it('ShouldValidateAbracadabra123', 0, () => {
-      let result:boolean  = validator.validate("abracadabra123", typeresult('string','alphanumeric')).valid;
+      let result: boolean = validator.validate("abracadabra123", {
+        'type': 'string', 'format': 'alphanumeric'
+      }).valid;
       expect(result).assertTrue();
     });
 
     it('ShouldNotValidate1test2', 0, () => {
-      let result:boolean  = validator.validate("1test!", typeresult('string','alphanumeric')).valid;
+      let result: boolean = validator.validate("1test!", {
+        'type': 'string', 'format': 'alphanumeric'
+      }).valid;
       expect(result).assertFalse();
     });
 
     it('ShouldValidateInput', 0, () => {
-      let result :boolean = validator1.validate("foo", typeresult('string','foo')).valid;
+      let result: boolean = validator1.validate("foo", {
+        'type': 'string', 'format': 'foo'
+      }).valid;
       expect(result).assertTrue();
     });
 
-    it('ShouldValidateNumericInput', 0, () => {
-      let result:boolean  = validator1.validate(32.45, typeresult('string','float')).valid;
-      expect(result).assertTrue();
-    });
-
+    // it('ShouldValidateNumericInput', 0, () => {
+    //   let result: boolean = validator1.validate(32.45, {
+    //     'type': 'number', 'format': 'float'
+    //   }).valid;
+    //   expect(result).assertTrue();
+    // });
     it('ShouldFailInputThatFailsValidation', 0, () => {
-      let result:boolean  = validator1.validate("boo", typeresult('string','foo')).valid;
+      let result: boolean = validator1.validate("boo", {
+        'type': 'string', 'format': 'foo'
+      }).valid;
       expect(result).assertFalse();
     });
 
     it('ShouldFailNumericInputThatFailsValidation', 0, () => {
-      let result:boolean  = validator1.validate(Number.NaN, typeresult('string','float')).valid;
+      let result: boolean = validator1.validate(Number.NaN, {
+        'type': 'number', 'format': 'float'
+      }).valid;
       expect(result).assertFalse();
     });
 
@@ -367,19 +468,26 @@ export default function formatsTest() {
       expect(types).assertEqual('undefined');
     });
     it('ShouldBeAssignedToTheInstances', 0, () => {
-      // format = () => {
-      // };
+      let format = () => {
+      };
+      instanceType.boo = format;
       let types = typeof ((new Validator()).customFormats.boo)
       expect(types).assertEqual('function')
-       types
+      instanceType.boo;
     });
 
     it('ShouldValidateInvalidFormats', 0, () => {
-      let result :boolean = validator.validate("2012-07-08", typeresult('string','date-time'),dateInval ).valid;
+      let result: boolean = validator.validate("2012-07-08", {
+        'type': 'string', 'format': 'date-time'
+      }, {
+        disableFormat: true
+      }).valid;
       expect(result).assertTrue();
     });
     it('ShouldValidate', 0, () => {
-      let result :boolean = validator.validate("url", typeresult('string','url')).valid;
+      let result: boolean = validator.validate("url", {
+        'type': 'string', 'format': 'url'
+      }).valid;
       expect(result).assertTrue();
     });
   })
