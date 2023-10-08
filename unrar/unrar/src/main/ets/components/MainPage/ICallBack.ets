@@ -17,5 +17,5 @@
  * unrar operation callback interface
  */
 export interface ICallBack {
-  callBackResult(value: string);
+  callBackResult:(value: string)=>void
 }

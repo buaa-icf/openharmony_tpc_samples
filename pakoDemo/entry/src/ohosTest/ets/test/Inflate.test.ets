@@ -15,21 +15,35 @@
 import hilog from '@ohos.hilog';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 import pako  from 'pako';
+import { GlobalContext } from './GlobalContext';
+import {
+  onTypeOf1,
+  onTypeOf2,
+  onTypeOf3,
+  onTypeOf4,
+  onTypeOf5,
+  onTypeOf6,
+  onTypeOf7,
+  onTypeOf8
+} from './IntertfaceData';
 import {testInflate} from './pako/helpers'
+import {Sample} from "./Sample"
+
 
 
 
 export default function InflateTest() {
   // fromCharCode, but understands right > 0xffff values
 
-  describe('inflateTest', function () {
-    beforeAll(function () {
+  describe('inflateTest', () =>{
+    beforeAll(() =>{
 
     })
 
-    var samples = {}
 
-    beforeEach(function () {
+    let samples = new Sample()
+
+    beforeEach(() => {
       let name =[
         'blank',
         'lorem',
@@ -47,26 +61,27 @@ export default function InflateTest() {
       $r('app.media.lorem_utf_100k'),
       ]
       for (let i=0; i<nameRes.length; i++){
-        globalThis.resourceManager.getMediaContent(nameRes[i].id).then(uint8=>{
+        let context:Context = GlobalContext.getContext().getObject("context") as Context
+        context.createModuleContext('entry_test').resourceManager.getMediaContent(nameRes[i].id).then(uint8=>{
           samples[name[i]] = uint8;
         });
       }
 
     })
-    afterEach(function () {
+    afterEach(() => {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(() => {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
     it('Forceusemaxwindowsizebydefault',0, () => {
+      let context:Context = GlobalContext.getContext().getObject("context") as Context
+      context.createModuleContext('entry_test').resourceManager.getMediaContent($r('app.media.bad_wbits1').id).then(uint81=>{
 
-      globalThis.resourceManager.getMediaContent($r('app.media.bad_wbits1').id).then(uint81=>{
-
-        globalThis.resourceManager.getMediaContent($r('app.media.bad_wbits').id).then(uint82=>{
+        context.createModuleContext('entry_test').resourceManager.getMediaContent($r('app.media.bad_wbits').id).then(uint82=>{
 
           expect(pako.inflate(uint81)).assertDeepEquals(new Uint8Array(uint82));
         })
@@ -95,30 +110,34 @@ export default function InflateTest() {
         // });
 
         it('trivialdictionary',2, () => {
-          const dict = 'abcdefghijklmnoprstuvwxyz';
+          const dict:string = 'abcdefghijklmnoprstuvwxyz';
 
-          testInflate(samples, { dictionary: dict }, { dictionary: dict });
+          interface dictionaryType { dictionary: string }
+          let dictionaryData: dictionaryType = { dictionary: dict }
+          testInflate(samples, dictionaryData, dictionaryData);
         });
 
         it('spdydictionary',3, () => {
+          let context:Context = GlobalContext.getContext().getObject("context") as Context
+          context.createModuleContext('entry_test').resourceManager.getMediaContent($r('app.media.spdy_dict').id).then(uint8=>{
+          let spdyDict:Uint8Array = uint8;
 
-          globalThis.resourceManager.getMediaContent($r('app.media.spdy_dict').id).then(uint8=>{
-          let spdyDict = uint8;
-          testInflate(samples, { dictionary: spdyDict }, { dictionary: spdyDict });
+          testInflate(samples, onTypeOf1(spdyDict), onTypeOf1(spdyDict));
             })
         });
 
         // it('shouldthrowifdirectoryisnotsuppliedtorawinflate',4, () => {
         //   const dict = 'abcdefghijklmnoprstuvwxyz';
         //   assert.throws(function () {
-        //     testInflate(samples, { raw: true }, { raw: true, dictionary: dict });
+        //     testInflate(samples, onTypeOf3(true), { raw: true, dictionary: dict });
         //   });
         // });
 
         it('testsrawinflatewithspdydictionary',5, () => {
-          globalThis.resourceManager.getMediaContent($r('app.media.spdy_dict').id).then(uint8=>{
-            let spdyDict = uint8;
-            testInflate(samples, { raw: true, dictionary: spdyDict }, { raw: true, dictionary: spdyDict });
+            let context:Context = GlobalContext.getContext().getObject("context") as Context
+            context.createModuleContext('entry_test').resourceManager.getMediaContent($r('app.media.spdy_dict').id).then(uint8=>{
+            let spdyDict:Uint8Array = uint8;
+            testInflate(samples, onTypeOf2(true,spdyDict), onTypeOf2(true,spdyDict));
           })
 
         });
@@ -126,136 +145,136 @@ export default function InflateTest() {
         it('testsdictionaryasUint8Array',6, () => {
           const dict = new Uint8Array(100);
           for (let i = 0; i < 100; i++) dict[i] = Math.random() * 256;
-          testInflate(samples, { dictionary: dict }, { dictionary: dict });
+          testInflate(samples,onTypeOf1(dict), onTypeOf1(dict));
         });
 
         it('testsdictionaryasArrayBuffer',7, () => {
           const dict = new Uint8Array(100);
           for (let i = 0; i < 100; i++) dict[i] = Math.random() * 256;
-          testInflate(samples, { dictionary: dict.buffer }, { dictionary: dict });
+          testInflate(samples, onTypeOf1(dict.buffer), onTypeOf1(dict));
         });
 
 
         // Since difference is only in rwapper, test for store/fast/slow methods are enough
         it('level9',8, () => {
-          testInflate(samples, { raw: true }, { level: 9, raw: true });
+          testInflate(samples, onTypeOf3(true), onTypeOf4(9,true));
         });
         it('level8',9, () => {
-          testInflate(samples, { raw: true }, { level: 8, raw: true });
+          testInflate(samples, onTypeOf3(true), onTypeOf4(8,true));
         });
         it('level7',10, () => {
-          testInflate(samples, { raw: true }, { level: 7, raw: true });
+          testInflate(samples, onTypeOf3(true),  onTypeOf4(7,true));
         });
         it('level6',11, () => {
-          testInflate(samples, { raw: true }, { level: 6, raw: true });
+          testInflate(samples, onTypeOf3(true), onTypeOf4(6,true));
         });
         it('level5',12, () => {
-          testInflate(samples, { raw: true }, { level: 5, raw: true });
+          testInflate(samples, onTypeOf3(true),  onTypeOf4(5,true));
         });
         it('level4',13, () => {
-          testInflate(samples, { raw: true }, { level: 4, raw: true });
+          testInflate(samples, onTypeOf3(true),  onTypeOf4(4,true));
         });
         it('level3', 14,() => {
-          testInflate(samples, { raw: true }, { level: 3, raw: true });
+          testInflate(samples, onTypeOf3(true),  onTypeOf4(3,true));
         });
         it('level2', 15,() => {
-          testInflate(samples, { raw: true }, { level: 2, raw: true });
+          testInflate(samples, onTypeOf3(true),  onTypeOf4(2,true));
         });
         it('level1', 16,() => {
-          testInflate(samples, { raw: true }, { level: 1, raw: true });
+          testInflate(samples, onTypeOf3(true),  onTypeOf4(1,true));
         });
         it('level0', 17,() => {
-          testInflate(samples, { raw: true }, { level: 0, raw: true });
+          testInflate(samples, onTypeOf3(true),  onTypeOf4(0,true));
         });
 
 
         it('Z_DEFAULT_STRATEGY', 18, () => {
-          testInflate(samples, {}, { strategy: 0 });
+          testInflate(samples, new Object(), onTypeOf5(0));
         });
         it('Z_FILTERED', 19, () => {
-          testInflate(samples, {}, { strategy: 1 });
+          testInflate(samples, new Object(), onTypeOf5(1));
         });
         it('Z_HUFFMAN_ONLY', 20, () => {
-          testInflate(samples, {}, { strategy: 2 });
+          testInflate(samples, new Object(), onTypeOf5(2));
         });
         it('Z_RLE', 21, () => {
-          testInflate(samples, {}, { strategy: 3 });
+          testInflate(samples, new Object(),onTypeOf5(3));
         });
         it('Z_FIXED', 22, () => {
-          testInflate(samples, {}, { strategy: 4 });
+          testInflate(samples, new Object(), onTypeOf5(4));
         });
 
 
         it('windowBits15',23, () => {
-          testInflate(samples, {}, { windowBits: 15 });
+          testInflate(samples, new Object(), onTypeOf6(15));
         });
         it('windowBits14',24, () => {
-          testInflate(samples, {}, { windowBits: 14 });
+          testInflate(samples, new Object(), onTypeOf6(14));
         });
         it('windowBits13',25, () => {
-          testInflate(samples, {}, { windowBits: 13 });
+          testInflate(samples, new Object(), onTypeOf6(13));
         });
         it('windowBits12', 26, () => {
-          testInflate(samples, {}, { windowBits: 12 });
+          testInflate(samples, new Object(), onTypeOf6(12));
         });
         it('windowBits11', 27, () => {
-          testInflate(samples, {}, { windowBits: 11 });
+          testInflate(samples, new Object(), onTypeOf6(11));
         });
         it('windowBits10', 28 , () => {
-          testInflate(samples, {}, { windowBits: 10 });
+          testInflate(samples, new Object(),onTypeOf6(10));
         });
         it('windowBits9' , 29, () => {
-          testInflate(samples, {}, { windowBits: 9 });
+          testInflate(samples, new Object(), onTypeOf6(9));
         });
         it('windowBits8', 30, () => {
-          testInflate(samples, {}, { windowBits: 8 });
+          testInflate(samples, new Object(), onTypeOf6(8));
         });
 
 
         it('level9',31, () => {
-          testInflate(samples, {}, { level: 9 });
+          testInflate(samples, new Object(), onTypeOf7(9));
         });
         it('level8',32, () => {
-          testInflate(samples, {}, { level: 8 });
+          testInflate(samples, new Object(), onTypeOf7(8));
         });
         it('level7',33, () => {
-          testInflate(samples, {}, { level: 7 });
+          testInflate(samples, new Object(), onTypeOf7(7));
         });
         it('level6',34, () => {
-          testInflate(samples, {}, { level: 6 });
+          testInflate(samples, new Object(), onTypeOf7(6));
         });
         it('level5',35, () => {
-          testInflate(samples, {}, { level: 5 });
+          testInflate(samples, new Object(), onTypeOf7(5));
         });
         it('level4',36, () => {
-          testInflate(samples, {}, { level: 4 });
+          testInflate(samples, new Object(),onTypeOf7(4));
         });
         it('level3',37, () => {
-          testInflate(samples, {}, { level: 3 });
+          testInflate(samples, new Object(), onTypeOf7(3));
         });
         it('level2',38, () => {
-          testInflate(samples, {}, { level: 2 });
+          testInflate(samples, new Object(), onTypeOf7(2));
         });
         it('level1',39, () => {
-          testInflate(samples, {}, { level: 1 });
+          testInflate(samples, new Object(), onTypeOf7(1));
         });
         it('level0',40, () => {
-          testInflate(samples, {}, { level: 0 });
+          testInflate(samples, new Object(), onTypeOf7(0));
         });
         it('withautodetect',41, () => {
-          testInflate(samples, {}, { gzip: true });
+          testInflate(samples, new Object(), onTypeOf8(true));
         });
 
         it('withmethodsetdirectly',42, () => {
-          testInflate(samples, { windowBits: 16 }, { gzip: true });
+          testInflate(samples,onTypeOf6(16), onTypeOf8(true));
         });
 
         it('inflatenooptions',43, () => {
-          testInflate(samples, {}, {});
+          testInflate(samples, new Object(), new Object());
         });
 
         it('inflaterawnooptions',44, () => {
-          testInflate(samples, { raw: true }, { raw: true });
+          testInflate(samples,onTypeOf3(true) , onTypeOf3(true));
         });
 
         // it('inflaterawfromcompressedsamples',45, () => {
@@ -277,7 +296,7 @@ export default function InflateTest() {
         //   $r('app.media.sheet4'),
         //   ]
         //
-        //   var sampleTemp = {};
+        //   var sampleTemp = new Object();
         //   for (let i=0; i<nameRes.length; i++){
         //     globalThis.resourceManager.getMediaContent(nameRes[i].id).then(uint8=>{
         //       sampleTemp[name[i]] = uint8;

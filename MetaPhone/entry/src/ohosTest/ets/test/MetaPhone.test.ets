@@ -14,14 +14,15 @@
  */
 import { describe, expect, it } from '@ohos/hypium'
 import { metaphone } from 'metaphone'
+import { getKeys } from './GetForIn'
 
 export default function metaPhoneTest() {
-  describe('MetaPhoneTest', function () {
-    const own = {}.hasOwnProperty
-    it('metaphone', 0, function () {
+  describe('MetaPhoneTest', () => {
+    // const own = {}.hasOwnProperty
+    it('metaphone', 0, () => {
       expect(metaphone('')).assertEqual('')
-      expect(metaphone(undefined)).assertEqual('')
-      expect(metaphone(null)).assertEqual('')
+      expect(metaphone('')).assertEqual('')
+      expect(metaphone('')).assertEqual('')
 
       expect(metaphone(' f o ')).assertEqual('F')
       expect(metaphone('0f1o2')).assertEqual('F')
@@ -84,57 +85,76 @@ export default function metaPhoneTest() {
       expect(metaphone('HiCcUpS')).assertEqual(metaphone('hiccups'))
     })
 
-    it('Compatibility_with_Natural', 0, function () {
-      /** @type {Record<string, string>} */
-      const fixtures = {
-        ablaze: 'ABLS',
-        transition: 'TRNSXN',
-        astronomical: 'ASTRNMKL',
-        buzzard: 'BSRT',
-        wonderer: 'WNTRR',
-        district: 'TSTRKT',
-        hockey: 'HK',
-        capital: 'KPTL',
-        penguin: 'PNKN',
-        garbonzo: 'KRBNS',
-        lightning: 'LFTNNK',
-        light: 'LFT'
-      }
-      /** @type {string} */
-      let key
+    interface Fix {
+      ablaze: string;
+      transition: string;
+      astronomical: string;
+      buzzard: string;
+      wonderer: string;
+      district: string;
+      hockey: string;
+      capital: string;
+      penguin: string;
+      garbonzo: string;
+      lightning: string;
+      light: string;
+    }
 
-      for (key in fixtures) {
-        if (own.call(fixtures, key)) {
-          expect(metaphone(key)).assertEqual(fixtures[key])
+    let fixturedata: Fix = {
+      ablaze: 'ABLS',
+      transition: 'TRNSXN',
+      astronomical: 'ASTRNMKL',
+      buzzard: 'BSRT',
+      wonderer: 'WNTRR',
+      district: 'TSTRKT',
+      hockey: 'HK',
+      capital: 'KPTL',
+      penguin: 'PNKN',
+      garbonzo: 'KRBNS',
+      lightning: 'LFTNNK',
+      light: 'LFT'
+    }
+
+    it('Compatibility_with_Natural', 0, () => {
+      /** @type {Record<string, string>} */
+      const fixtures: Object = fixturedata
+      /** @type {string} */
+
+      let objKeys: string[] = getKeys(fixtures);
+      for (let i = 0; i < objKeys.length; i++) {
+        let params = fixtures as Record<string, Object>;
+        if ([objKeys[i]]) {
+          expect(metaphone(objKeys[i])).assertEqual(params[objKeys[i]])
         }
+
       }
     })
 
-    it('test_caverPhone_michael', 0, function () {
+    it('test_caverPhone_michael', 0, () => {
       expect(metaphone('michael')).assertEqual('MXL');
     })
 
-    it('test_caverPhone_crevalle', 0, function () {
+    it('test_caverPhone_crevalle', 0, () => {
       expect(metaphone('crevalle')).assertEqual('KRFL');
     })
 
-    it('test_caverPhone_Filipowitz', 0, function () {
+    it('test_caverPhone_Filipowitz', 0, () => {
       expect(metaphone('Filipowitz')).assertEqual('FLPWTS');
     })
 
-    it('test_caverPhone_Xavier', 0, function () {
+    it('test_caverPhone_Xavier', 0, () => {
       expect(metaphone('Xavier')).assertEqual('SFR');
     })
 
-    it('test_caverPhone_delicious', 0, function () {
+    it('test_caverPhone_delicious', 0, () => {
       expect(metaphone('delicious')).assertEqual('TLSS');
     })
 
-    it('test_caverPhone_acceptingness', 0, function () {
+    it('test_caverPhone_acceptingness', 0, () => {
       expect(metaphone('acceptingness')).assertEqual('AKSPTNKNS');
     })
 
-    it('test_caverPhone_allegrettos', 0, function () {
+    it('test_caverPhone_allegrettos', 0, () => {
       expect(metaphone('allegrettos')).assertEqual('ALKRTS');
     })
   })

@@ -14,11 +14,11 @@
  */
 
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
-import { xmlParse } from 'xslt-processor/src/dom'
+import { XDocument, xmlParse } from 'xslt-processor/src/dom'
 import { xsltProcess } from 'xslt-processor/src/xslt'
 
 export default function localNameTest() {
-  describe('LocalNameTest', function () {
+  describe('LocalNameTest', () => {
     it('localname_without_namespace_test', 0, () => {
       const xmlString = `<root>
       <test name="test1" />
@@ -49,9 +49,9 @@ export default function localNameTest() {
       '<span>test4</span>' +
       '</root>';
 
-      let xml1 = xmlParse(xmlString);
-      let xml2 = xmlParse(xsltString);
-      const outXmlString = xsltProcess(xml1, xml2);
+      let xml1: XDocument = xmlParse(xmlString);
+      let xml2: XDocument = xmlParse(xsltString);
+      const outXmlString: string = xsltProcess(xml1, xml2);
       expect(outXmlString).assertEqual(expectedOutString);
     })
 
@@ -84,9 +84,9 @@ export default function localNameTest() {
       '<span>test3</span>' +
       '<span>test4</span>' +
       '</root>';
-      let xml1 = xmlParse(xmlString);
-      let xml2 = xmlParse(xsltString);
-      const outXmlString = xsltProcess(xml1, xml2);
+      let xml1: XDocument = xmlParse(xmlString);
+      let xml2: XDocument = xmlParse(xsltString);
+      const outXmlString: string = xsltProcess(xml1, xml2);
       expect(outXmlString).assertEqual(expectedOutString);
     })
   })

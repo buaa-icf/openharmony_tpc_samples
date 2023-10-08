@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 
-// @ts-ignore
 import { get12, get24 } from 'time-ampm';
 import isLeapYear from 'leap-year';
 import prompt from '@ohos.promptAction';
@@ -45,8 +44,8 @@ struct TimePage {
             .margin(18)
             .maxLength(4)
             .onChange((value: string) => {
-              if (value.length > 0 && parseInt(value) > 1581  ) {
-                this.year = parseInt(value)
+              if (value.length > 0 && Number.parseInt(value) > 1581  ) {
+                this.year = Number.parseInt(value)
               } else {
                 prompt.showToast({ message: '请输入大于1581的年份', duration: 3000 })
               }
@@ -78,14 +77,14 @@ struct TimePage {
             Text('上下午测试，判断对应时间为上午或下午')
               .margin({ top: 5 })
               .fontSize(16)
-            ForEach(this.time24, (item, index: number) => {
+            ForEach(this.time24, (item:string, index?: number) => {
               Row() {
                 Text(item + '点为：' + get12(item))
                   .margin({ top: 5 })
                   .fontSize(16)
               }
             })
-            ForEach(this.time12, (item, index: number) => {
+            ForEach(this.time12, (item:string, index?: number) => {
               Row() {
                 Text(item + '点为：' + get24(item))
                   .margin({ top: 5 })

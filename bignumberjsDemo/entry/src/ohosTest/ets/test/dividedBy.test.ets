@@ -13,43 +13,44 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-import BigNumber from 'bignumber.js';
+import { BigNumber } from './BigNumber';
 import Test from './tester';
+import Utils from './Utils';
 
 export default function dividedBy() {
-  describe('dividedBytest', function () {
+  describe('dividedBytest', ()=> {
 
-    function t(dividend, divisor, expected, dp?, rm?) {
+    let t = (dividend: BigNumber.Value, divisor: BigNumber.Value, expected:number | string, dp?: number, rm?: BigNumber.RoundingMode)=> {
       if (dp != null) BigNumber.config({ DECIMAL_PLACES: dp, ROUNDING_MODE: rm });
       new Test().areEqual(String(expected), String(new BigNumber(dividend).dividedBy(divisor)));
       //new Test().areEqual(String(expected), String(new BigNumber(dividend).dividedBy(new BigNumber(divisor))));
     }
 
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(()=> {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(()=> {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(()=> {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(()=> {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    it('dividedBy', 0, function () {
-      var n = 'null',
+    it('dividedBy', 0, ()=> {
+      let n = 'null',
         N = 'NaN',
         I = 'Infinity';
 
-      new Test().areEqual(BigNumber.prototype.dividedBy, BigNumber.prototype.div);
+      new Test().areEqual(Utils.dividedBy, Utils.div);
 
       BigNumber.config({
         DECIMAL_PLACES: 40,
@@ -59,15 +60,15 @@ export default function dividedBy() {
       });
 
       t(1, 0, I);
-      t(1, -0, -I);
-      t(-1, 0, -I);
+      t(1, -0, -Number(I));
+      t(-1, 0, -Number(I));
       t(-1, -0, I);
       t(1, N, N);
       t(-1, N, N);
       new Test().areEqual('0', new BigNumber(1).div(I).valueOf());
-      new Test().areEqual('-0', new BigNumber(1).div(-I).valueOf());
+      new Test().areEqual('-0', new BigNumber(1).div(-Number(I)).valueOf());
       new Test().areEqual('-0', new BigNumber(-1).div(I).valueOf());
-      new Test().areEqual('0', new BigNumber(-1).div(-I).valueOf());
+      new Test().areEqual('0', new BigNumber(-1).div(-Number(I)).valueOf());
       new Test().areEqual('0', new BigNumber(0).div(1).valueOf());
       new Test().areEqual('-0', new BigNumber(0).div(-1).valueOf());
       new Test().areEqual('-0', new BigNumber(-0).div(1).valueOf());
@@ -79,30 +80,30 @@ export default function dividedBy() {
       t(0, N, N);
       t(-0, N, N);
       new Test().areEqual('0', new BigNumber(0).div(I).valueOf());
-      new Test().areEqual('-0', new BigNumber(0).div(-I).valueOf());
+      new Test().areEqual('-0', new BigNumber(0).div(-Number(I)).valueOf());
       new Test().areEqual('-0', new BigNumber(-0).div(I).valueOf());
-      new Test().areEqual('0', new BigNumber(-0).div(-I).valueOf());
+      new Test().areEqual('0', new BigNumber(-0).div(-Number(I)).valueOf());
       t(N, 1, N);
       t(N, -1, N);
       t(N, 0, N);
       t(N, -0, N);
       t(N, N, N);
       t(N, I, N);
-      t(N, -I, N);
+      t(N, -Number(I), N);
       t(I, 1, I);
-      t(I, -1, -I);
-      t(-I, 1, -I);
-      t(-I, -1, I);
+      t(I, -1, -Number(I));
+      t(-Number(I), 1, -Number(I));
+      t(-Number(I), -1, I);
       t(I, 0, I);
-      t(I, -0, -I);
-      t(-I, 0, -I);
-      t(-I, -0, I);
+      t(I, -0, -Number(I));
+      t(-Number(I), 0, -Number(I));
+      t(-Number(I), -0, I);
       t(I, N, N);
-      t(-I, N, N);
+      t(-Number(I), N, N);
       t(I, I, N);
-      t(I, -I, N);
-      t(-I, I, N);
-      t(-I, -I, N);
+      t(I, -Number(I), N);
+      t(-Number(I), I, N);
+      t(-Number(I), -Number(I), N);
 
       t(1, '1', '1');
       t(1, '-45', '-0.0222222222222222222222222222222222222222');
@@ -122,13 +123,13 @@ export default function dividedBy() {
       t(1, ' 4.001', '0.2499375156210947263184203949012746813297');
       t(1, '4.001 ', '0.2499375156210947263184203949012746813297');
       t(1, I, '0');
-      t(1, -I, '0');
+      t(1, -Number(I), '0');
       t(1, Number.POSITIVE_INFINITY, '0');
       t(1, Number.NEGATIVE_INFINITY, '0');
       t('0', 0, N);
       t(0, '+0', N);
       t('0', '0', N);
-      t(3, -0, -I);
+      t(3, -0, -Number(I));
       t(9.654, 0, I);
       t(0, '0.001', '0');
       t(0, '111.1111111110000', '0');
@@ -140,20 +141,20 @@ export default function dividedBy() {
       t(54, -54, '-1');
       t(9.99, '-9.99', '-1');
       t('0.0000023432495704937', '-0.0000023432495704937', '-1');
-      t(NaN, NaN, N);
-      t(NaN, N, N);
-      t(N, NaN, N);
+      t(Number.NaN, Number.NaN, N);
+      t(Number.NaN, N, N);
+      t(N, Number.NaN, N);
       t(N, 4, N);
       t(N, '4534534.45435435', N);
       t(N, 99999.999, N);
-      t(Infinity, '354.345341', I);
-      t(3, -I, '0');              // 78
-      t(-Infinity, -I, N);
-      t(-I, -Infinity, N);
-      t(I, '-999e999', -I);
-      t(1.21123e43, -I, '0');
+      t(Number.POSITIVE_INFINITY, '354.345341', I);
+      t(3, -Number(I), '0');              // 78
+      t(Number.NEGATIVE_INFINITY, -Number(I), N);
+      t(-Number(I), Number.NEGATIVE_INFINITY, N);
+      t(I, '-999e999', -Number(I));
+      t(1.21123e43, -Number(I), '0');
       t('-999.0', I, '0');
-      t('657.342e-45', -I, '0');
+      t('657.342e-45', -Number(I), '0');
       t(I, 123, I);
       t(-0, I, '0');
       t(100, 100, '1');
@@ -1986,7 +1987,7 @@ export default function dividedBy() {
       t('10', '1e+1000000000', '0', 0, 4);
       t('1', '1e-1000000000', '1e+1000000000');
       t('10', '1e-1000000000', 'Infinity');
-      var x = new BigNumber(1e-9);
+      let x = new BigNumber(1e-9);
       BigNumber.config({ RANGE: [-8, 1e9] });
       t(x, 1, '0', 9, 4);
 

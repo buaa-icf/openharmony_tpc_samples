@@ -13,28 +13,35 @@
  * limitations under the License.
  */
 
-import { RUNNING, SUCCESS, FAILURE,Sequence,Selector,Task,Random,Decorator,Introspector,BehaviorTree } from 'behaviortree'
+import { RUNNING, SUCCESS, FAILURE,Sequence,Selector,Task,Random,Decorator,Introspector,BehaviorTree,
+  Blackboard,
+  RunResult
+} from 'behaviortree'
 import InvertDecorator from 'behaviortree/lib/decorators/InvertDecorator'
-import { describe , beforeAll, beforeEach, afterEach, afterAll, it as _it, expect,diff } from '../utils/utils'
+import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
+import { diff, Utils,BlackboardChangesIntrospector } from '../utils/Utils'
+class result {
+  name: string = ''
+  result:Boolean  = true
+}
 
 export default function IntrospectorTest() {
 
-  let bTree
-  let blackboard
-  let introspector
+  let bTree:BehaviorTree
+  let introspector:Introspector
 
   BehaviorTree.register(
     'simpleTask',
     new Task({
       name: 'The Task',
-      start: function (blackboard) {
+      start:  (blackboard:Blackboard)=> {
         ++blackboard.start
       },
-      run: function (blackboard) {
+      run:  (blackboard:Blackboard):RunResult=> {
         ++blackboard.run
         return blackboard.result
       },
-      end: function (blackboard) {
+      end: (blackboard:Blackboard)=> {
         ++blackboard.end
       }
     })
@@ -43,7 +50,7 @@ export default function IntrospectorTest() {
     'failingTask',
     new Task({
       name: 'Bumm',
-      run: function (blackboard) {
+      run: (blackboard:Blackboard):boolean => {
         return FAILURE
       }
     })
@@ -52,244 +59,162 @@ export default function IntrospectorTest() {
     'runningTask',
     new Task({
       name: 'Forest',
-      run: function (blackboard) {
+      run: (blackboard:Blackboard):RunResult=> {
         return RUNNING
       }
     })
   )
 
-  blackboard = {
-    start: 0,
-    run: 0,
-    end: 0,
-    result: SUCCESS
-  }
+  let blackboard = Utils.IntBlackboard
 
   introspector = new Introspector()
   // 通过
-  describe('IntrospectorTest', function () {
+  describe('IntrospectorTest', ()=> {
     beforeEach(() => {
-      blackboard = {
-        start: 0,
-        run: 0,
-        end: 0,
-        result: SUCCESS
-      }
+      blackboard = Utils.IntBlackboard
 
       introspector = new Introspector()
     })
-    _it('is empty initially', () => {
-      expect(introspector.lastResult).toEqual(null)
+    it('is_empty_initially',0, () => {
+      expect(introspector.lastResult).assertEqual(null)
 
-      expect(introspector.results.length).toEqual(0)
+      expect(introspector.results.length).assertEqual(0)
 
     })
   })
 
   // 通过
-  describe('with_the_simplest_tree_possible', function() {
+  describe('with_the_simplest_tree_possible', ()=> {
     beforeEach(() => {
 
       bTree = new BehaviorTree({ tree: 'simpleTask', blackboard })
     })
 
-    _it('puts in the result of the last run', () => {
+    it('puts_in_the_result_of_the_last_run',0, () => {
       console.log(`dudu-------开始测试`)
 
       bTree.step({ introspector })
 
-      const resultFirstRun = {
-        name: 'The Task',
-        result: SUCCESS
-      }
+      const resultFirstRun  = Utils.resultRun(SUCCESS)
 
-      expect(JSON.stringify(introspector.lastResult)).toEqual(JSON.stringify(resultFirstRun))
+      expect(JSON.stringify(introspector.lastResult)).assertEqual(JSON.stringify(resultFirstRun))
       console.log(`dudu-------开始测试1`)
 
-      expect(JSON.stringify(introspector.results)).toEqual(JSON.stringify([resultFirstRun]))
+      expect(JSON.stringify(introspector.results)).assertEqual(JSON.stringify([resultFirstRun]))
       console.log(`dudu-------开始测试2`)
 
       blackboard.result = FAILURE
 
       bTree.step({ introspector })
 
-      const resultSecondRun = {
-        name: 'The Task',
-        result: FAILURE
-      }
-      expect(JSON.stringify(introspector.lastResult)).toEqual(JSON.stringify(resultSecondRun))
+      const resultSecondRun = Utils.resultRun(FAILURE)
+
+      expect(JSON.stringify(introspector.lastResult)).assertEqual(JSON.stringify(resultSecondRun))
       console.log(`dudu-------开始测试3`)
-      expect(JSON.stringify(introspector.results)).toEqual(JSON.stringify([resultFirstRun, resultSecondRun]))
+      expect(JSON.stringify(introspector.results)).assertEqual(JSON.stringify([resultFirstRun, resultSecondRun]))
       console.log(`dudu-------开始测试4`)
 
-
-      blackboard.result = RUNNING
+      Utils.setIntBlackboard(RUNNING)
 
       bTree.step({ introspector })
 
-      const resultThirdRun = {
-        name: 'The Task',
-        result: RUNNING
-      }
+      const resultThirdRun = Utils.resultRun(RUNNING)
 
-      expect(JSON.stringify(introspector.lastResult)).toEqual(JSON.stringify(resultThirdRun)   )
-      console.log(`dudu-------开始测试5`)
+      expect(JSON.stringify(introspector.lastResult)).assertEqual(JSON.stringify(resultThirdRun)   )
 
-      expect(JSON.stringify(introspector.results)).toEqual(JSON.stringify([resultFirstRun, resultSecondRun, resultThirdRun]))
-      console.log(`dudu-------开始测试6`)
+      expect(JSON.stringify(introspector.results)).assertEqual(JSON.stringify([resultFirstRun, resultSecondRun, resultThirdRun]))
 
     })
   })
 
   // 通过
-  describe('with_nameless_tasks', function() {
+  describe('with_nameless_tasks', ()=> {
     beforeEach(() => {
-      blackboard = {
-        start: 0,
-        run: 0,
-        end: 0,
-        result: SUCCESS
-      }
+      blackboard = Utils.IntBlackboard
 
       bTree = new BehaviorTree({ tree: new Task({ run: () => RUNNING }), blackboard })
       introspector = new Introspector()
     })
 
-    _it('does not print a name', () => {
+    it('does_not_print_a_name', 0,() => {
       bTree.step({ introspector })
 
-      const resultFirstRun = {
-        result: RUNNING
-      }
+      const resultFirstRun = Utils.ResultFirstRun
 
-      expect(diff(introspector.lastResult,resultFirstRun)).toEqual(true)
-      expect(diff(introspector.results,[resultFirstRun])).toEqual(true)
+      expect(diff(introspector.lastResult,resultFirstRun)).assertEqual(true)
+      expect(diff(introspector.results,[resultFirstRun])).assertEqual(true)
     })
   })
 
   // 通过
-  describe('with_nameless_branching_nodes', function() {
+  describe('with_nameless_branching_nodes', ()=> {
     beforeEach(() => {
-      blackboard = {
-        start: 0,
-        run: 0,
-        end: 0,
-        result: SUCCESS
-      }
+      blackboard = Utils.IntBlackboard
 
       bTree = new BehaviorTree({ tree: new Sequence({ nodes: ['simpleTask'] }), blackboard })
       introspector = new Introspector()
     })
 
-    _it('does not print a name', () => {
+    it('does_not_print_a_name', 0, () => {
       bTree.step({ introspector })
 
-      const resultFirstRun = {
-        children: [
-          {
-            name: 'The Task',
-            result: SUCCESS
-          }
-        ],
-        result: SUCCESS
-      }
+      const resultFirstRun = Utils.resultChildren
 
-      expect(diff(introspector.lastResult,resultFirstRun)).toEqual(true)
-      expect(diff(introspector.results,[resultFirstRun])).toEqual(true)
+      expect(diff(introspector.lastResult,resultFirstRun)).assertEqual(true)
+      expect(diff(introspector.results,[resultFirstRun])).assertEqual(true)
     })
   })
 
   // 通过
-  describe('with_a_decorator', function() {
+  describe('with_a_decorator', ()=> {
     beforeEach(() => {
-      blackboard = {
-        start: 0,
-        run: 0,
-        end: 0,
-        result: SUCCESS
-      }
-      // @ts-ignore
-      const tree = new InvertDecorator.default({ name: 'inverter', node: 'simpleTask' })
+      blackboard = Utils.IntBlackboard
+
+      const tree:InvertDecorator = Utils.InvertDecorator({ name: 'inverter', node: 'simpleTask' })
       bTree = new BehaviorTree({ tree, blackboard })
       introspector = new Introspector()
     })
 
-    _it('shows Task and Decorator', () => {
+    it('shows_Task_and_Decorator', 0, () => {
       bTree.step({ introspector })
 
-      const result = {
-        name: 'inverter',
-        result: FAILURE,
-        children: [
-          {
-            name: 'The Task',
-            result: SUCCESS
-          }
-        ]
-      }
+      const result = Utils.result('inverter',FAILURE,'The Task',SUCCESS)
 
-
-
-
-      expect(diff(introspector.lastResult,result)).toEqual(true)
-      expect(diff(introspector.results,[result])).toEqual(true)
+      expect(diff(introspector.lastResult,result)).assertEqual(true)
+      expect(diff(introspector.results,[result])).assertEqual(true)
     })
   })
 
   // 通过
-  describe('with_a_selector', function() {
+  describe('with_a_selector', ()=> {
     beforeEach(() => {
-      blackboard = {
-        start: 0,
-        run: 0,
-        end: 0,
-        result: SUCCESS
-      }
+      blackboard = Utils.IntBlackboard
       introspector = new Introspector()
     })
 
-    _it('does not show task that did not run', () => {
+    it('does_not_show_task_that_did_not_run',0, () => {
       const tree = new Selector({ name: 'select', nodes: ['simpleTask', 'failingTask'] })
       bTree = new BehaviorTree({ tree, blackboard })
 
       bTree.step({ introspector })
 
-      const result = {
-        name: 'select',
-        result: SUCCESS,
-        children: [
-          {
-            name: 'The Task',
-            result: SUCCESS
-          }
-        ]
-      }
+      const result =Utils.result('select',SUCCESS,'The Task',SUCCESS)
 
-      expect(diff(introspector.lastResult,result)).toEqual(true)
+      expect(diff(introspector.lastResult,result)).assertEqual(true)
 
-      expect(diff(introspector.results,[result])).toEqual(true)
+      expect(diff(introspector.results,[result])).assertEqual(true)
     })
 
-    _it('show all tasks if all did run', () => {
+    it('show_all_tasks_if_all_did_run', 0,() => {
       const tree = new Selector({ name: 'select', nodes: ['failingTask', 'simpleTask'] })
       bTree = new BehaviorTree({ tree, blackboard })
 
       bTree.step({ introspector })
 
-      const result = {
-        name: 'select',
-        result: SUCCESS,
-        children: [
-          {
-            name: 'Bumm',
-            result: FAILURE
-          },
-          {
+      const result = Utils.result('select',SUCCESS,'Bumm',FAILURE,{
             name: 'The Task',
             result: SUCCESS
-          }
-        ]
-      }
+          })
 
       // console.log(`dudu1 -------- ${JSON.stringify(introspector.lastResult) === JSON.stringify(result)}  ${JSON.stringify(result)}`)
       console.log(`dudu1 -------- ${JSON.stringify(introspector.results,null,"\t")}  ${JSON.stringify([result],null,"\t")}`)
@@ -297,168 +222,88 @@ export default function IntrospectorTest() {
 
       console.log(`dudu1 ------ ${diff(introspector.results,[result])}`)
 
-      expect(diff(introspector.lastResult,result)).toEqual(true)
+      expect(diff(introspector.lastResult,result)).assertEqual(true)
 
 
     })
 
-    _it('does not show more then was running', () => {
+    it('does_not_show_more_then_was_running', 0,() => {
       const tree = new Selector({ name: 'select', nodes: ['runningTask', 'simpleTask'] })
       bTree = new BehaviorTree({ tree, blackboard })
 
       bTree.step({ introspector })
 
-      const result = {
-        name: 'select',
-        result: RUNNING,
-        children: [
-          {
-            name: 'Forest',
-            result: RUNNING
-          }
-        ]
-      }
+      const result =Utils.result('select',RUNNING,'Forest',RUNNING)
 
 
 
-      expect(diff(introspector.lastResult,result)).toEqual(true)
+      expect(diff(introspector.lastResult,result)).assertEqual(true)
     })
   })
 
   // 通过
-  describe('a_full_scale_tree', function() {
+  describe('a_full_scale_tree', ()=> {
     beforeEach(() => {
-      blackboard = {
-        start: 0,
-        run: 0,
-        end: 0,
-        result: SUCCESS
-      }
+      blackboard = Utils.IntBlackboard
       introspector = new Introspector()
     })
 
-    _it('shows all that did run', () => {
-      // @ts-ignore
-      const invertedSimple = new InvertDecorator.default({ node: 'simpleTask' })
-      const selector1 = new Selector({ name: 'select1', nodes: ['failingTask', 'simpleTask'] })
-      const selector2 = new Selector({ name: 'select2', nodes: [invertedSimple, 'simpleTask', 'failingTask'] })
+    it('shows_all_that_did_run', 0, () => {
+      const invertedSimple:InvertDecorator = Utils.InvertDecorator({ node: 'simpleTask' })
+      const selector1:Selector = new Selector({ name: 'select1', nodes: ['failingTask', 'simpleTask'] })
+      const selector2:Selector = new Selector({ name: 'select2', nodes: [invertedSimple, 'simpleTask', 'failingTask'] })
 
       const tree = new Sequence({ name: 'sequence', nodes: [selector1, selector2] })
       bTree = new BehaviorTree({ tree, blackboard })
 
       bTree.step({ introspector })
 
-      const result = {
-        name: 'sequence',
-        result: SUCCESS,
-        children: [
-          {
-            name: 'select1',
-            result: SUCCESS,
-            children: [
-              {
-                name: 'Bumm',
-                result: FAILURE
-              },
-              {
-                name: 'The Task',
-                result: SUCCESS
-              }
-            ]
-          },
-          {
-            name: 'select2',
-            result: SUCCESS,
-            children: [
-              {
-                result: FAILURE,
-                children: [
-                  {
-                    name: 'The Task',
-                    result: SUCCESS
-                  }
-                ]
-              },
-              {
-                name: 'The Task',
-                result: SUCCESS
-              }
-            ]
-          }
-        ]
-      }
+      const result = Utils.WithResult
 
-
-
-      expect(diff(introspector.lastResult,result)).toEqual(true)
-      expect(diff(introspector.results,[result])).toEqual(true)
+      expect(diff(introspector.lastResult,result)).assertEqual(true)
+      expect(diff(introspector.results,[result])).assertEqual(true)
     })
   })
 
   // 通过
-  describe('with_a_Random_node', function() {
+  describe('with_a_Random_node', ()=> {
     beforeEach(() => {
-      blackboard = {
-        start: 0,
-        run: 0,
-        end: 0,
-        result: SUCCESS
-      }
+      blackboard = Utils.IntBlackboard
       bTree = new BehaviorTree({ tree: new Random({ nodes: ['simpleTask', 'failingTask'] }), blackboard })
       introspector = new Introspector()
     })
 
-    _it('cleans the results', () => {
+    it('cleans_the_results', 0,() => {
       for (let i = 10; i--; ) {
         bTree.step({ introspector })
       }
-      expect(introspector.results.length).toEqual(10)
+      expect(introspector.results.length).assertEqual(10)
     })
   })
 
   // 通过
-  describe('reset_method', function() {
-    _it('cleans the results', () => {
+  describe('reset_method', ()=> {
+    it('cleans_the_results', 0,() => {
       bTree = new BehaviorTree({ tree: 'simpleTask', blackboard: {} })
       bTree.step({ introspector })
 
       introspector.reset()
 
-      expect(diff(introspector.lastResult,null)).toEqual(true)
-      expect(diff(introspector.results,[])).toEqual(true)
+      expect(diff(introspector.lastResult,null)).assertEqual(true)
+      expect(diff(introspector.results,[])).assertEqual(true)
     })
   })
 
   // 通过
-  describe('having_a_custom_introspector_module', function() {
-    class BlackboardChangesIntrospector extends Introspector {
-      start(tree) {
-        //@ts-ignore
-        this.blackboardSnap = JSON.stringify(tree.blackboard)
-        super.start(tree)
-      }
-
-      _toResult(node, result, blackboard) {
-        const newSnap = JSON.stringify(blackboard)
-        //@ts-ignore
-        const blackboardChanged = newSnap !== this.blackboardSnap
-        //@ts-ignore
-        this.blackboardSnap = newSnap
-        return {
-          ...(node.name ? { name: node.name } : {}),
-          result,
-          blackboardChanged
-        }
-      }
-    }
+  describe('having_a_custom_introspector_module', ()=> {
     beforeEach(() => {
       introspector = new BlackboardChangesIntrospector()
     })
-
-    _it('also has the blackboard available', () => {
+     let also= 'also has the blackboard available'
+    it(also, 0,() => {
       bTree = new BehaviorTree({ tree: new Sequence({ nodes: ['simpleTask', 'failingTask'] }), blackboard })
       bTree.step({ introspector })
-      expect(diff(introspector.lastResult.children.map((x) => x.blackboardChanged),[true, false])).toEqual(true)
+      expect(diff(Utils.getInt(introspector),[true, false])).assertEqual(true)
     })
   })
 }

@@ -13,7 +13,9 @@
  * limitations under the License.
  */
 import fileio from '@ohos.fileio';
-import pako from 'pako'
+import pako from 'pako';
+import { GlobalContext } from '../entryability/GlobalContext'
+
 /**
  * 指定文件路径压缩文件gz方法
  *
@@ -23,6 +25,11 @@ import pako from 'pako'
  * @param {string} dest -path and file name after the .gz file is generated.
  * @returns {void | Promise<boolean>} callback return Promise otherwise return true or false.
  */
+interface optionsType {
+  gzip: boolean,
+  level: number
+}
+
 export async function gzipFile(src: string, dest: string): Promise<boolean> {
   try {
     let stat = fileio.statSync(src);
@@ -30,7 +37,7 @@ export async function gzipFile(src: string, dest: string): Promise<boolean> {
     const reader = fileio.openSync(src, 0o2);
     fileio.readSync(reader, buf);
     const writer = fileio.openSync(dest, 0o102, 0o666);
-    const options = { gzip: true, level: 9 };
+    const options: optionsType = { gzip: true, level: 9 };
     fileio.writeSync(writer, pako.gzip(new Uint8Array(buf), options).buffer);
     fileio.closeSync(reader);
     fileio.closeSync(writer);
@@ -55,8 +62,8 @@ export async function unGzipFile(src: string, target: string): Promise<boolean> 
     const stat = fileio.statSync(src);
     const buf = new ArrayBuffer(stat.size);
     const res = await fileio.read(reader, buf);
-    const options = { gzip: true, level: 9 };
-    const data = pako.inflate(new Uint8Array(res.buffer), options);
+    const options: optionsType = { gzip: true, level: 9 };
+    const data: Uint8Array = pako.inflate(new Uint8Array(res.buffer), options);
     const writer = fileio.openSync(target, 0o102, 0o666);
     fileio.writeSync(writer, data.buffer);
     fileio.closeSync(writer);
@@ -122,8 +129,9 @@ export struct GzipTest {
   }
 
   generateTextFile(): void {
+    let context: Context = GlobalContext.getContext().getObject("context") as Context
     try {
-      var data = globalThis.context.filesDir
+      let data = context.filesDir
       const writer = fileio.openSync(data + '/hello.txt', 0o102, 0o666);
       fileio.writeSync(writer, "hello, world! 你好你是什么认为呢 打烂打烂大龙胆大大家记得那几年的 adjasjdakjdakjdkjakjdakjskjasdkjaskjdajksdkjasdkjaksjdkja\n"
       + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
@@ -152,8 +160,9 @@ export struct GzipTest {
   }
 
   gzipFileTest(): void {
+    let context: Context = GlobalContext.getContext().getObject("context") as Context
     try {
-      var data = globalThis.context.filesDir
+      let data = context.filesDir
       console.info('directory obtained. Data:' + data);
       gzipFile(data + '/hello.txt', data + '/test.txt.gz')
         .then((isSuccess) => {
@@ -172,8 +181,9 @@ export struct GzipTest {
   }
 
   unGzipFileTest(): void {
+    let context: Context = GlobalContext.getContext().getObject("context") as Context
     try {
-      var data = globalThis.context.filesDir
+      let data = context.filesDir
       unGzipFile(data + '/test.txt.gz', data + '/test.txt')
         .then((isSuccess) => {
           if (isSuccess) {
@@ -190,7 +200,7 @@ export struct GzipTest {
   }
 
   isFastClick(): boolean {
-    var timestamp = Date.parse(new Date().toString());
+    let timestamp = Date.parse(new Date().toString());
     if ((timestamp - this.preTimestamp) > 1500) {
       this.preTimestamp = timestamp;
       return false;

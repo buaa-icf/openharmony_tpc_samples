@@ -17,22 +17,22 @@ import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from
 import AhoCorasick from 'ahocorasick'
 
 export default function abilityTest() {
-  describe('ActsAbilityTest', function () {
-    it('AhoCorasick_Search_1', 0, function () {
-      var keys = ['keyword1', 'keyword2', 'etc'];
-      var text = 'should find keyword1 at position 19 and keyword2 at position 30.'
-      var expected = [[19, ['keyword1']],[47,["keyword2"]]]
-      var aho = new AhoCorasick(keys);
-      var result = aho.search(text)
+  describe('ActsAbilityTest', ()=> {
+    it('AhoCorasick_Search_1', 0, ()=> {
+      let keys = ['keyword1', 'keyword2', 'etc'];
+      let text = 'should find keyword1 at position 19 and keyword2 at position 30.'
+      let expected = [[19, ['keyword1']],[47,["keyword2"]]]
+      let aho:AhoCorasick = new AhoCorasick(keys);
+      let result:Object = aho.search(text)
       expect(JSON.stringify(expected)).assertEqual(JSON.stringify(result))
     })
 
-    it('AhoCorasick_Search_2', 0, function () {
-      var keys = ['hero', 'heroic'];
-      var text = 'hero'
-      var expected = [[3, ['hero']]]
-      var aho = new AhoCorasick(keys);
-      var result = aho.search(text)
+    it('AhoCorasick_Search_2', 0, ()=> {
+      let keys = ['hero', 'heroic'];
+      let text = 'hero'
+      let expected = [[3, ['hero']]]
+      let aho:AhoCorasick = new AhoCorasick(keys);
+      let result:Object[] = aho.search(text)
       expect(JSON.stringify(expected)).assertEqual(JSON.stringify(result))
     })
   })

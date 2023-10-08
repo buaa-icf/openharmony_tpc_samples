@@ -15,32 +15,65 @@
 import hilog from '@ohos.hilog';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 import { soundex } from 'soundex-code'
+import { getKeys } from './GetObject'
 export default function soundexTest() {
-  describe('soundexTest', function () {
+  interface runDataType1 {
+    blackberry: string ;
+    calculate: string ;
+    fox: string ;
+    jump: string ;
+    phonetics: string;
+  }
+  interface  runDataType2 {
+    Euler: string,
+    Gauss: string,
+    Hilbert: string,
+    Knuth: string,
+    Lloyd: string,
+    Lukasiewicz: string,
+    Ellery: string,
+    Ghosh: string,
+    Heilbronn: string,
+    Kant: string,
+    Ladd: string,
+    Lissajous: string
+  }
+  interface  runDataType3 {
+    Washington: string,
+    Lee: string,
+    Gutierrez:string,
+    Pfister: string,
+    Jackson: string,
+    Tymczak: string,
+    VanDeusen: string,
+    Deusen: string,
+    Ashcraft: string,
+  }
+  describe('soundexTest', () => {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(() => {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(() => {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(() => {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(() => {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
 
 
 
-    var tag = "soundecode:"
-    var equal = function (src,dst,info?){
+    let tag = "soundecode:"
+    let equal =(src:string,dst:string,info?:string) =>{
 
       expect(src).assertEqual(dst)
 
@@ -49,27 +82,31 @@ export default function soundexTest() {
         console.log(tag+info)
       }
     }
-
-    var assert = {
+    interface equalType{
+        equal: (src: string, dst: string, info?: string) => void,
+    }
+    let assert:equalType = {
       equal:equal
     }
 
-    const own = {}.hasOwnProperty
+    const own:Function = Object.hasOwnProperty
     /**
      * @param {Record<string, string>} tests
      */
-    function run(tests) {
+
+
+    let run: (tests:Object) => void = (tests:Object) => {
       let index = 0
       /** @type {string} */
-      let key
-
-      for (key in tests) {
-        if (own.call(tests, key)) {
-          assert.equal(soundex(key), tests[key], String(++index))
+      // let key
+      let objKeys: string[] = getKeys(tests);
+      for (let i = 0; i < objKeys.length; i++) {
+        if (own(objKeys[i])) {
+          assert.equal(soundex(objKeys[i]), (tests as Record<string,string>).objKeys[i], String(++index))
         }
       }
     }
-    it('api', 1,  function () {
+    it('api', 1,   () => {
       assert.equal(soundex('PHONETICS'), soundex('phonetics'), 'case insensitive')
       assert.equal(
         soundex('PhoNeTicS'),
@@ -101,47 +138,50 @@ export default function soundexTest() {
 
       // Natural provides several unit tests. See:
       // <https://github.com/NaturalNode/natural>
-
-        run({
-          blackberry: 'B421',
-          calculate: 'C424',
-          fox: 'F200',
-          jump: 'J510',
-          phonetics: 'P532'
-        })
+      let runData:runDataType1 = {
+        blackberry: 'B421',
+        calculate: 'C424',
+        fox: 'F200',
+        jump: 'J510',
+        phonetics: 'P532'
+      }
+        run(runData)
 
       
       // The PHP implementation, based on Knuths, gives several examples. See:
       // <https://php.net/manual/en/function.soundex.php>
 
-        run({
-          Euler: 'E460',
-          Gauss: 'G200',
-          Hilbert: 'H416',
-          Knuth: 'K530',
-          Lloyd: 'L300',
-          Lukasiewicz: 'L222',
-          Ellery: 'E460',
-          Ghosh: 'G200',
-          Heilbronn: 'H416',
-          Kant: 'K530',
-          Ladd: 'L300',
-          Lissajous: 'L222'
-        })
+      let runData2:runDataType2 = {
+        Euler: 'E460',
+        Gauss: 'G200',
+        Hilbert: 'H416',
+        Knuth: 'K530',
+        Lloyd: 'L300',
+        Lukasiewicz: 'L222',
+        Ellery: 'E460',
+        Ghosh: 'G200',
+        Heilbronn: 'H416',
+        Kant: 'K530',
+        Ladd: 'L300',
+        Lissajous: 'L222'
+      }
+      run(runData2)
 
       // The original implementation gives several examples. See:
       // <https://www.archives.gov/research/census/soundex.html>
-        run({
-          Washington: 'W252',
-          Lee: 'L000',
-          Gutierrez: 'G362',
-          Pfister: 'P236',
-          Jackson: 'J250',
-          Tymczak: 'T522',
-          VanDeusen: 'V532',
-          Deusen: 'D250',
-          Ashcraft: 'A261'
-        })
+
+      let runData3:runDataType3 = {
+        Washington: 'W252',
+        Lee: 'L000',
+        Gutierrez: 'G362',
+        Pfister: 'P236',
+        Jackson: 'J250',
+        Tymczak: 'T522',
+        VanDeusen: 'V532',
+        Deusen: 'D250',
+        Ashcraft: 'A261'
+      }
+      run(runData3)
 
     })
 

@@ -15,7 +15,14 @@
 import lz4 from "lz4js"
 import fs from '@ohos.file.fs';
 import prompt from '@ohos.promptAction';
+import {GlobalContext} from "./GlobalContext"
+import common from '@ohos.app.ability.common';
 
+interface  errs{
+  message:string,
+  code:number
+}
+let context = GlobalContext.getContext().getfindex('context' )
 @Entry
 @Component
 export default  struct lz4jsDemo {
@@ -69,41 +76,41 @@ export default  struct lz4jsDemo {
   }
   creatTxt(){
     const str:string = 'DevEco Studio V3.1 Canary1版本兼容性配套关系如下表所示'
-    let path = globalThis.context.filesDir + '/test.txt'
+    let path = (context as common.UIAbilityContext).filesDir + '/test.txt'
     let file = fs.openSync(path, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
     let writeLen = fs.writeSync(file.fd, str);
     prompt.showToast({ message: '创建txt文件成功', duration: 4000 })
   }
   compressTxt(){
-    let path = globalThis.context.filesDir + '/test.txt'
-    fs.stat(path).then(function (stat) {
+    let path = (context as common.UIAbilityContext).filesDir+ '/test.txt'
+    fs.stat(path).then( (stat)=> {
       let file = fs.openSync(path, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
       let buf = new ArrayBuffer(stat.size);
       fs.readSync(file.fd, buf);
       let unitArray = new Uint8Array(buf)
-      let compressed = lz4.compress(unitArray)
-      let path1 = globalThis.context.filesDir + '/test.lz4'
+      let compressed :Uint8Array= lz4.compress(unitArray)
+      let path1 = (context as common.UIAbilityContext).filesDir + '/test.lz4'
       let file1 = fs.openSync(path1, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
       let writeLen = fs.writeSync(file1.fd, compressed.buffer);
       prompt.showToast({ message: '压缩txt文件成功', duration: 4000 })
-    }).catch(function (err) {
+    }).catch((err:errs)=> {
       console.info("get file info failed with error message: " + err.message + ", error code: " + err.code);
       prompt.showToast({ message: '压缩txt文件失败', duration: 4000 })
     });
   }
   deCompressTxt(){
-    let path = globalThis.context.filesDir + '/test.lz4'
-    fs.stat(path).then(function (stat) {
+    let path = (context as common.UIAbilityContext).filesDir+ '/test.lz4'
+    fs.stat(path).then( (stat)=> {
       let file = fs.openSync(path, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
       let buf = new ArrayBuffer(stat.size);
       fs.readSync(file.fd, buf);
       let unitArray = new Uint8Array(buf)
-      let deCompressed = lz4.decompress(unitArray)
-      let path1 = globalThis.context.filesDir + '/test1.txt'
+      let deCompressed :Uint8Array= lz4.decompress(unitArray)
+      let path1 = (context as common.UIAbilityContext).filesDir + '/test1.txt'
       let file1 = fs.openSync(path1, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
       let writeLen = fs.writeSync(file1.fd, deCompressed.buffer);
       prompt.showToast({ message: '解压缩txt文件成功', duration: 4000 })
-    }).catch(function (err) {
+    }).catch( (err:errs)=> {
       console.info("get file info failed with error message: " + err.message + ", error code: " + err.code);
       prompt.showToast({ message: '解压缩txt文件失败', duration: 4000 })
     });

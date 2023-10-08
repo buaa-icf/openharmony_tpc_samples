@@ -13,42 +13,43 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-import BigNumber from 'bignumber.js';
+import { BigNumber } from './BigNumber';
 import Test from './tester';
+import Utils from './Utils';
 
 export default function modulo() {
-  describe('modulotest', function () {
+  describe('modulotest', ()=> {
     
-    function t(a, b, expected) {
+    let t = (a: BigNumber.Value, b: BigNumber.Value, expected:string|number)=> {
       new Test().areEqual(String(expected), String(new BigNumber(a).modulo(new BigNumber(b))));
     }
 
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(()=> {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(()=> {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(()=> {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(()=> {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    it('modulo', 0, function () {
-      var n = 'null',
+    it('modulo', 0, ()=> {
+      let n = 'null',
         N = 'NaN',
         I = 'Infinity';
 
 
-      new Test().areEqual(BigNumber.prototype.modulo, BigNumber.prototype.mod);
+      new Test().areEqual(Utils.modulo, Utils.mod);
 
       BigNumber.config({
         DECIMAL_PLACES: 20,
@@ -64,9 +65,9 @@ export default function modulo() {
       t(1, N, N);
       t(-1, N, N);
       t(1, I, 1);
-      t(1, -I, 1);
+      t(1, -Number(I), 1);
       t(-1, I, -1);
-      t(-1, -I, -1);
+      t(-1, -Number(I), -1);
       new Test().areEqual('0', new BigNumber(0).mod(1).valueOf());
       new Test().areEqual('0', new BigNumber(0).mod(-1).valueOf());
       new Test().areEqual('-0', new BigNumber(-0).mod(1).valueOf());
@@ -78,30 +79,30 @@ export default function modulo() {
       t(0, N, N);
       t(-0, N, N);
       new Test().areEqual('0', new BigNumber(0).mod(I).valueOf());
-      new Test().areEqual('0', new BigNumber(0).mod(-I).valueOf());
+      new Test().areEqual('0', new BigNumber(0).mod(-Number(I)).valueOf());
       new Test().areEqual('-0', new BigNumber(-0).mod(I).valueOf());
-      new Test().areEqual('-0', new BigNumber(-0).mod(-I).valueOf());
+      new Test().areEqual('-0', new BigNumber(-0).mod(-Number(I)).valueOf());
       t(N, 1, N);
       t(N, -1, N);
       t(N, 0, N);
       t(N, -0, N);
       t(N, N, N);
       t(N, I, N);
-      t(N, -I, N);
+      t(N, -Number(I), N);
       t(I, 1, N);
       t(I, -1, N);
-      t(-I, 1, N);
-      t(-I, -1, N);
+      t(-Number(I), 1, N);
+      t(-Number(I), -1, N);
       t(I, 0, N);
       t(I, -0, N);
-      t(-I, 0, N);
-      t(-I, -0, N);
+      t(-Number(I), 0, N);
+      t(-Number(I), -0, N);
       t(I, N, N);
-      t(-I, N, N);
+      t(-Number(I), N, N);
       t(I, I, N);
-      t(I, -I, N);
-      t(-I, I, N);
-      t(-I, -I, N);
+      t(I, -Number(I), N);
+      t(-Number(I), I, N);
+      t(-Number(I), -Number(I), N);
 
       t(1, '0', N);
       new Test().areEqual('0', new BigNumber(1).mod(1).valueOf());
@@ -142,7 +143,7 @@ export default function modulo() {
       new Test().areEqual('-0', new BigNumber(-0).mod(1).valueOf());
       new Test().areEqual('-0', new BigNumber(-0).mod(0.1).valueOf());
       new Test().areEqual('-0', new BigNumber('-0').mod('-1').valueOf());
-      new Test().areEqual('-0', new BigNumber('-0').mod(Infinity).valueOf());
+      new Test().areEqual('-0', new BigNumber('-0').mod(Number.POSITIVE_INFINITY).valueOf());
       t(1, '8e5', '1');
       t(1, '9E12', '1');
       new Test().areEqual('0', new BigNumber(1).mod('1e-14').valueOf());
@@ -166,20 +167,20 @@ export default function modulo() {
       t(54, -54, '0');
       t(9.99, '-9.99', '0');
       t('0.0000023432495704937', '-0.0000023432495704937', '0');
-      t(NaN, NaN, N);
-      t(NaN, N, N);
-      t(N, NaN, N);
+      t(Number.NaN, Number.NaN, N);
+      t(Number.NaN, N, N);
+      t(N, Number.NaN, N);
       t(N, 4, N);
       t(N, '4534534.45435435', N);
       t(N, 99999.999, N);
-      t(Infinity, '354.345341', N);
-      t(3, -I, '3');
-      t(-Infinity, -I, N);
-      t(-I, -Infinity, N);
+      t(Number.POSITIVE_INFINITY, '354.345341', N);
+      t(3, -Number(I), '3');
+      t(Number.NEGATIVE_INFINITY, -Number(I), N);
+      t(-Number(I), Number.NEGATIVE_INFINITY, N);
       t(I, '-999e999', N);
-      t('1.21123e43', -I, '1.21123e+43');
+      t('1.21123e43', -Number(I), '1.21123e+43');
       t('-999.0', I, '-999');
-      t('657.342e-45', -I, '6.57342e-43');
+      t('657.342e-45', -Number(I), '6.57342e-43');
       t(I, 123, N);
       t(-0, I, '0');
       t(100, 100, '0');

@@ -53,7 +53,19 @@ const PostalCodeArray: Array<SelectOption> = [
   { value: 'DZ' }, { value: 'EE' }, { value: 'ES' }, { value: 'FI' }, { value: 'FR' },
   { value: 'GB' }, { value: 'GR' }, { value: 'HR' }, { value: 'HU' },{ value: 'any' },
 ]
-var data = [
+export  interface  dataType{
+  text:string
+  str:string
+  str1?:string
+  default?:string
+  local?: SelectOption[]
+  min?:number
+  max?:number
+  values?: string[]
+  IPVersion?: number
+  mode:string
+}
+let  data:dataType[] = [
   { text:"1.检查字符串是否为 base32 编码", str:"ZG======",mode:"isBase32" },
   { text:"2.检查字符串是否为 Base58 编码", str:"91GHkLMNtyo98",mode:"isBase58" },
   { text:"3.检查字符串是否为 Base64 编码", str:"Zm9vYmFy",mode:"isBase64" },

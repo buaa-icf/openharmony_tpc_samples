@@ -1,4 +1,3 @@
-// @ts-nocheck
 /*
  * Copyright (C) 2023 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,37 +13,41 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-import BigNumber from 'bignumber.js';
+import { BigNumber } from './BigNumber';
 import Test from './tester';
+import Utils from './Utils';
 
 export default function toString() {
-  describe('toStringtest', function () {
+  describe('toStringtest', ()=> {
 
-    function t(expected, value, base?) {
-      //if (base) BigNumber.config({ ALPHABET: alphabet.slice(0, base) });
-      new Test().areEqual(expected, new BigNumber(value).toString(base))
+    let t = (expected:string | boolean |(() => BigNumber)|number|BigNumber|Function, value:(BigNumber.Value), base?: number|null)=> {
+      if(base === null){
+        new Test().areEqual(expected, Utils.toString(value,base));
+      }else{
+        new Test().areEqual(expected, new BigNumber(value).toString(base));
+      }
     }
 
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(()=> {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(()=> {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(()=> {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(()=> {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    it('toString', 0, function () {
+    it('toString', 0, ()=> {
       BigNumber.config({
         DECIMAL_PLACES: 20,
         ROUNDING_MODE: 4,
@@ -53,7 +56,7 @@ export default function toString() {
         ALPHABET: '0123456789abcdefghijklmnopqrstuvwxyz'
       });
 
-      t('NaN', NaN);
+      t('NaN', Number.NaN);
       t('Infinity', 1/0);
       t('-Infinity', -1/0);
       t('0', 0);
@@ -99,7 +102,7 @@ export default function toString() {
       t('-0.00001', -0.00001);
       t('-0.000001', -0.000001);
 
-      t('NaN', NaN, 16);
+      t('NaN', Number.NaN, 16);
       t('Infinity', 1/0, 16);
       t('-Infinity', -1/0, 16);
       t('0', 0, 16);
@@ -11770,34 +11773,34 @@ export default function toString() {
 
       BigNumber.config({DECIMAL_PLACES: 20});
 
-      new Test().isException(function () {new BigNumber('2').toString(0)}, "('2').toString(0)");
-      new Test().isException(function () {new BigNumber('2').toString(1)}, "('2').toString(1)");
-      new Test().isException(function () {new BigNumber('1').toString('-2')}, "('1').toString('-2')");
-      new Test().isException(function () {new BigNumber('1').toString('1.9')}, "('1').toString('1.9')");
-      new Test().isException(function () {new BigNumber('1.23').toString(36.01)}, "('1.23').toString(36.01)");
-      new Test().isException(function () {new BigNumber('1.23').toString(65)}, "('1.23').toString(65)");
+      new Test().isException(()=> {new BigNumber('2').toString(0)}, "('2').toString(0)");
+      new Test().isException(()=> {new BigNumber('2').toString(1)}, "('2').toString(1)");
+      new Test().isException(()=> {Utils.toString('1','-2')}, "('1').toString('-2')");
+      new Test().isException(()=> {Utils.toString('1','1.9')}, "('1').toString('1.9')");
+      new Test().isException(()=> {new BigNumber('1.23').toString(36.01)}, "('1.23').toString(36.01)");
+      new Test().isException(()=> {new BigNumber('1.23').toString(65)}, "('1.23').toString(65)");
 
-      new Test().isException(function () {new BigNumber('1.23').toString(NaN)}, "('1.23').toString(NaN)");
-      new Test().isException(function () {new BigNumber('1.23').toString('NaN')}, "('1.23').toString('NaN')");
-      new Test().isException(function () {new BigNumber('1.23').toString([])}, "('1.23').toString([])");
-      new Test().isException(function () {new BigNumber('1.23').toString({})}, "('1.23').toString({})");
-      new Test().isException(function () {new BigNumber('1.23').toString('')}, "('1.23').toString('')");
-      new Test().isException(function () {new BigNumber('1.23').toString(' ')}, "('1.23').toString(' ')");
-      new Test().isException(function () {new BigNumber('1.23').toString('hello')}, "('1.23').toString('hello')");
-      new Test().isException(function () {new BigNumber('1.23').toString('\t')}, "('1.23').toString('\t')");
-      new Test().isException(function () {new BigNumber('1.23').toString(new Date)}, "('1.23').toString(new Date)");
-      new Test().isException(function () {new BigNumber('1.23').toString(new RegExp)}, "('1.23').toString(new RegExp)");
-      new Test().isException(function () {new BigNumber('1.23').toString(2.01)}, "('1.23').toString(2.01)");
-      new Test().isException(function () {new BigNumber('1.23').toString(10.5)}, "('1.23').toString(10.5)");
-      new Test().isException(function () {new BigNumber('1.23').toString(true)}, "('1.23').toString(true)");
-      new Test().isException(function () {new BigNumber('1.23').toString(false)}, "('1.23').toString(false)");
-      new Test().isException(function () {new BigNumber('1.23').toString(function (){})}, "('1.23').toString(function (){})");
+      new Test().isException(()=> {new BigNumber('1.23').toString(Number.NaN)}, "('1.23').toString(NaN)");
+      new Test().isException(()=> {Utils.toString('1.23','NaN')}, "('1.23').toString('NaN')");
+      new Test().isException(()=> {Utils.toString('1.23',[])}, "('1.23').toString([])");
+      new Test().isException(()=> {Utils.toString('1.23',{})}, "('1.23').toString({})");
+      new Test().isException(()=> {Utils.toString('1.23','')}, "('1.23').toString('')");
+      new Test().isException(()=> {Utils.toString('1.23',' ')}, "('1.23').toString(' ')");
+      new Test().isException(()=> {Utils.toString('1.23','hello')}, "('1.23').toString('hello')");
+      new Test().isException(()=> {Utils.toString('1.23','\t')}, "('1.23').toString('\t')");
+      new Test().isException(()=> {Utils.toString('1.23',new Date)}, "('1.23').toString(new Date)");
+      new Test().isException(()=> {Utils.toString('1.23',new RegExp(''))}, "('1.23').toString(new RegExp(')");
+      new Test().isException(()=> {new BigNumber('1.23').toString(2.01)}, "('1.23').toString(2.01)");
+      new Test().isException(()=> {new BigNumber('1.23').toString(10.5)}, "('1.23').toString(10.5)");
+      new Test().isException(()=> {Utils.toString('1.23',true)}, "('1.23').toString(true)");
+      new Test().isException(()=> {Utils.toString('1.23',false)}, "('1.23').toString(false)");
+      new Test().isException(()=> {Utils.toString('1.23',()=>{})}, "('1.23').toString(()=>{})");
 
       t('NaN', 'NaN', undefined);
       t('NaN', 'NaN', null);
-      t('NaN', NaN, 2);
+      t('NaN', Number.NaN, 2);
       t('NaN', '-NaN', 2);
-      t('NaN', -NaN, 10);
+      t('NaN', -Number.NaN, 10);
       t('NaN', 'NaN', 10);
       t('12.345', 12.345, null);
       t('12.345', 12.345, undefined);

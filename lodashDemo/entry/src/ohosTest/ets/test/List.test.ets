@@ -12,8 +12,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import abilityTest from './Ability.test'
+import arrayTest from './Array.test'
+import collectionTest from './Collection.test'
+import functionTest from './Function.test';
+import langTest from './Lang.test';
+import mathTest from './Math.test';
+import numberTest from './Number.test';
+import objectTest from './Object.test';
+import stringTest from './String.test';
+import utilTest from './Util.test';
 
 export default function testsuite() {
-  abilityTest()
+  abilityTest();
+  arrayTest();
+  collectionTest();
+  functionTest();
+  langTest();
+  mathTest();
+  numberTest();
+  objectTest();
+  stringTest();
+  utilTest();
 }

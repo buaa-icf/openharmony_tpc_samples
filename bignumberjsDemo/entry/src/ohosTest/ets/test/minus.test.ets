@@ -13,37 +13,37 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-import BigNumber from 'bignumber.js';
+import { BigNumber } from './BigNumber';
 import Test from './tester';
 
 export default function minus() {
-  describe('minustest', function () {
+  describe('minustest', ()=> {
     
-    function t(minuend, subtrahend, expected) {
+    let t = (minuend: BigNumber.Value, subtrahend: BigNumber.Value, expected:string|number)=> {
       new Test().areEqual(String(expected), String(new BigNumber(minuend).minus(subtrahend)));
       //new Test().areEqual(String(expected), String(new BigNumber(minuend).minus(new BigNumber(subtrahend))));
     }
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(()=> {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(()=> {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(()=> {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(()=> {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    it('minus', 0, function () {
-      var n = 'null',
+    it('minus', 0, ()=> {
+      let n = 'null',
         N = 'NaN',
         I = 'Infinity';
 
@@ -61,10 +61,10 @@ export default function minus() {
       t(-1, -0, -1);
       t(1, N, N);
       t(-1, N, N);
-      t(1, I, -I);
-      t(1, -I, I);
-      t(-1, I, -I);
-      t(-1, -I, I);
+      t(1, I, -Number(I));
+      t(1, -Number(I), I);
+      t(-1, I, -Number(I));
+      t(-1, -Number(I), I);
       t(0, 1, -1);
       t(0, -1, 1);
       t(-0, 1, -1);
@@ -94,31 +94,31 @@ export default function minus() {
 
       t(0, N, N);
       t(-0, N, N);
-      t(0, I, -I);
-      t(0, -I, I);
-      t(-0, I, -I);
-      t(-0, -I, I);
+      t(0, I, -Number(I));
+      t(0, -Number(I), I);
+      t(-0, I, -Number(I));
+      t(-0, -Number(I), I);
       t(N, 1, N);
       t(N, -1, N);
       t(N, 0, N);
       t(N, -0, N);
       t(N, N, N);
       t(N, I, N);
-      t(N, -I, N);
+      t(N, -Number(I), N);
       t(I, 1, I);
       t(I, -1, I);
-      t(-I, 1, -I);
-      t(-I, -1, -I);
+      t(-Number(I), 1, -Number(I));
+      t(-Number(I), -1, -Number(I));
       t(I, 0, I);
       t(I, -0, I);
-      t(-I, 0, -I);
-      t(-I, -0, -I);
+      t(-Number(I), 0, -Number(I));
+      t(-Number(I), -0, -Number(I));
       t(I, N, N);
-      t(-I, N, N);
+      t(-Number(I), N, N);
       t(I, I, N);
-      t(I, -I, I);
-      t(-I, I, -I);
-      t(-I, -I, N);
+      t(I, -Number(I), I);
+      t(-Number(I), I, -Number(I));
+      t(-Number(I), -Number(I), N);
 
       t(1, '0', '1');
       t(1, '1', '0');
@@ -138,7 +138,7 @@ export default function minus() {
       t(1, '-94.12E+0', '95.12');
       t(1, ' 4.001', '-3.001');
       t(1, '4.001 ', '-3.001');
-      t(1, Number.POSITIVE_INFINITY, -I);
+      t(1, Number.POSITIVE_INFINITY, -Number(I));
       t(1, Number.NEGATIVE_INFINITY, I);
       t('0', 0, '0');
       t(0, '+0', '0');
@@ -152,22 +152,22 @@ export default function minus() {
       t(54, -54, '108');
       t(9.99, '-9.99', '19.98');
       t('0.0000023432495704937', '-0.0000023432495704937', '0.0000046864991409874');
-      t(NaN, NaN, N);
-      t(NaN, N, N);
-      t(N, NaN, N);
+      t(Number.NaN, Number.NaN, N);
+      t(Number.NaN, N, N);
+      t(N, Number.NaN, N);
       t(N, 4, N);
       t(N, '4534534.45435435', N);
       t(N, 99999.999, N);
-      t(Infinity, '354.345341', I);
-      t(3, -I, I);
-      t(-Infinity, -I, N);
-      t(-I, -Infinity, N);
+      t(Number.POSITIVE_INFINITY, '354.345341', I);
+      t(3, -Number(I), I);
+      t(Number.NEGATIVE_INFINITY, -Number(I), N);
+      t(-Number(I), Number.NEGATIVE_INFINITY, N);
       t(I, '-999e999', I);
-      t('1.21123e43', -I, I);
-      t('-999.0', I, -I);
-      t('657.342e-45', -I, I);
+      t('1.21123e43', -Number(I), I);
+      t('-999.0', I, -Number(I));
+      t('657.342e-45', -Number(I), I);
       t(I, 123, I);
-      t(-0, I, -I);
+      t(-0, I, -Number(I));
       t(100, 100, '0');
       t(-999.99, '0.01', '-1000');
       t('10 ', 4, '6');

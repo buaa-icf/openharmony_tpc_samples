@@ -13,42 +13,43 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-import BigNumber from 'bignumber.js';
+import { BigNumber } from './BigNumber';
 import Test from './tester';
+import Utils from './Utils';
 
 export default function precision() {
-  describe('precisiontest', function () {
+  describe('precisiontest', ()=> {
 
-    function t(value, count, includeZeros?) {
+    let t = (value: BigNumber.Value, count:string |null|BigNumber.Format| boolean |(() => BigNumber)|number|BigNumber|Function, includeZeros?:boolean) =>{
       new Test().areEqual(count, new BigNumber(value).precision(includeZeros));
     }
     
-    function tb(expected, value, sd, rm?) {
+    let tb = (expected:string |BigNumber.Format| boolean |(() => BigNumber)|number|BigNumber|Function, value: BigNumber.Value, sd: number, rm?: BigNumber.RoundingMode)=> {
       new Test().areEqual(expected, new BigNumber(value).precision(sd, rm).valueOf());
     }
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(()=> {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(()=> {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(()=> {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(()=> {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    it('precision', 0, function () {
-      var MAX = 1e9;
+    it('precision', 0, ()=> {
+      let MAX = 1e9;
 
-      new Test().areEqual(BigNumber.prototype.sd, BigNumber.prototype.precision);
+      new Test().areEqual(Utils.sd, Utils.precision);
 
       BigNumber.config({
         DECIMAL_PLACES: 20,
@@ -59,9 +60,9 @@ export default function precision() {
 
       // Return significant digit count
 
-      t(NaN, null);
-      t(Infinity, null, true);
-      t(-Infinity, null);
+      t(Number.NaN, null);
+      t(Number.POSITIVE_INFINITY, null, true);
+      t(Number.NEGATIVE_INFINITY, null);
 
       t(0, 1);
       t(-0, 1);
@@ -110,9 +111,9 @@ export default function precision() {
       tb('0.5', 0.5, 1);
       tb('1', 1, 1);
       tb('-1', -1, 1);
-      tb('Infinity', Infinity, 1);
-      tb('-Infinity', -Infinity, 1);
-      tb('NaN', NaN, 1);
+      tb('Infinity', Number.POSITIVE_INFINITY, 1);
+      tb('-Infinity', Number.NEGATIVE_INFINITY, 1);
+      tb('NaN', Number.NaN, 1);
 
       tb('0', '0', 1);
       tb('-0', '-0', 1);
@@ -3734,89 +3735,53 @@ export default function precision() {
       tb('366763985061296627375995000000000000000000000000000000000000000', '366763985061296627375994988520498401354427141647683539962362297.823510352274776652694253563878392985469220455118158824859937764475089228072088702703863070436530913536177584336650185707427759022894822571', 24, 5);
       tb('7483978023392620879223025348065115057653025858013483463606682807652114675009756211425640344986476725604422263784508630866327980720727327697183007274924845457864758981447718084335691255091414929451655538943143277846.270484986861', '7483978023392620879223025348065115057653025858013483463606682807652114675009756211425640344986476725604422263784508630866327980720727327697183007274924845457864758981447718084335691255091414929451655538943143277846.270484986861458493444574936108272', 226, 5);
 
-      new Test().isException(function () {new BigNumber('12.345').precision(NaN)}, ".precision(NaN)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision('NaN')}, ".precision('NaN')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision([])}, ".precision([])");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision({})}, ".precision({})");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision('')}, ".precision('')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision(' ')}, ".precision(' ')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision('hello')}, ".precision('hello')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision('\t')}, ".precision('\t')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision(new Date)}, ".precision(new Date)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision(new RegExp)}, ".precision(new RegExp)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision(7.5)}, ".precision(7.5)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision('-1.1e1')}, ".precision('-1.1e1')");
-      new Test().isException(function () {new BigNumber('12.345').precision(0, 1)}, ".precision(0, 1)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision('0')}, ".precision('0')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision('-1')}, ".precision('-1')");
-      new Test().isException(function () {new BigNumber('12.345').precision(-23)}, ".precision(-23)");
-      new Test().isException(function () {new BigNumber('12.345').precision(MAX + 1)}, ".precision(MAX + 1)");
-      new Test().isException(function () {new BigNumber('12.345').precision(MAX + 0.1)}, ".precision(MAX + 0.1)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision('-0.01')}, ".precision('-0.01')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision('-1e-1')}, ".precision('-1e-1')");
-      new Test().isException(function () {new BigNumber('12.345').precision(Infinity)}, ".precision(Infinity)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision('-Infinity')}, ".precision('-Infinity')");
+      new Test().isException(()=> {new BigNumber('12.345').precision(Number.NaN)}, ".precision(NaN)");
+      new Test().isException(()=> {Utils.bigPrecision('12.345','NaN')}, ".precision('NaN')");
+      new Test().isException(()=> {Utils.bigPrecision('12.345',[])}, ".precision([])");
+      new Test().isException(()=> {Utils.bigPrecision('12.345',{})}, ".precision({})");
+      new Test().isException(()=> {Utils.bigPrecision('12.345','')}, ".precision('')");
+      new Test().isException(()=> {Utils.bigPrecision('12.345',' ')}, ".precision(' ')");
+      new Test().isException(()=> {Utils.bigPrecision('12.345','hello')}, ".precision('hello')");
+      new Test().isException(()=> {Utils.bigPrecision('12.345','\t')}, ".precision('\t')");
+      new Test().isException(()=> {Utils.bigPrecision('12.345',new Date)}, ".precision(new Date)");
+      new Test().isException(()=> {Utils.bigPrecision('12.345',new RegExp(''))}, ".precision(new RegExp(''))");
+      new Test().isException(()=> {new BigNumber('12.345').precision(7.5)}, ".precision(7.5)");
+      new Test().isException(()=> {Utils.bigPrecision('12.345','-1.1e1')}, ".precision('-1.1e1')");
+      new Test().isException(()=> {new BigNumber('12.345').precision(0, 1)}, ".precision(0, 1)");
+      new Test().isException(()=> {Utils.bigPrecision('12.345','0')}, ".precision('0')");
+      new Test().isException(()=> {Utils.bigPrecision('12.345','-1')}, ".precision('-1')");
+      new Test().isException(()=> {new BigNumber('12.345').precision(-23)}, ".precision(-23)");
+      new Test().isException(()=> {new BigNumber('12.345').precision(MAX + 1)}, ".precision(MAX + 1)");
+      new Test().isException(()=> {new BigNumber('12.345').precision(MAX + 0.1)}, ".precision(MAX + 0.1)");
+      new Test().isException(()=> {Utils.bigPrecision('12.345','-0.01')}, ".precision('-0.01')");
+      new Test().isException(()=> {Utils.bigPrecision('12.345','-1e-1')}, ".precision('-1e-1')");
+      new Test().isException(()=> {new BigNumber('12.345').precision(Number.POSITIVE_INFINITY)}, ".precision(Infinity)");
+      new Test().isException(()=> {Utils.bigPrecision('12.345','-Infinity')}, ".precision('-Infinity')");
 
       tb('12.3', '12.345', 3);
       tb('12.34567891', '12.3456789123456789', 10);
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision(1, NaN)}, ".precision(1, NaN)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision(1, 'NaN')}, ".precision(1, 'NaN')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision(1, [])}, ".precision(1, [])");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision(1, {})}, ".precision(1, {})");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision(1, '')}, ".precision(1, '')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision(1, ' ')}, ".precision(1, ' ')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision(1, 'hello')}, ".precision(1, 'hello')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision(1, '\t')}, ".precision(1, '\t')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision(1, new Date)}, ".precision(1, new Date)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision(1, new RegExp)}, ".precision(1, new RegExp)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision(1, 7.5)}, ".precision(1, 7.5)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision(1, 9)}, ".precision(1, 9)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision(1, '-1.1e1')}, ".precision(1, '-1.1e1')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision(1, '-1')}, ".precision(1, '-1')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision(1, -23)}, ".precision(1, -23)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision(1, MAX + 1)}, ".precision(1, MAX + 1)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision(1, MAX + 0.1)}, ".precision(1, MAX + 0.1)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision(1, '-0.01')}, ".precision(1, '-0.01')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision(1, '-1e-1')}, ".precision(1, '-1e-1')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision(1, Infinity)}, ".precision(1, Infinity)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').precision(1, '-Infinity')}, ".precision(1, '-Infinity')");
+
+      new Test().isException(()=> {Utils.bigPrecision('12.345',1, Number.NaN)}, ".precision(1, NaN)");
+      new Test().isException(()=> {Utils.bigPrecision('12.345',1, 'NaN')}, ".precision(1, 'NaN')");
+      new Test().isException(()=> {Utils.bigPrecision('12.345',1, [])}, ".precision(1, [])");
+      new Test().isException(()=> {Utils.bigPrecision('12.345',1, {})}, ".precision(1, {})");
+      new Test().isException(()=> {Utils.bigPrecision('12.345',1, '')}, ".precision(1, '')");
+      new Test().isException(()=> {Utils.bigPrecision('12.345',1, ' ')}, ".precision(1, ' ')");
+      new Test().isException(()=> {Utils.bigPrecision('12.345',1, 'hello')}, ".precision(1, 'hello')");
+      new Test().isException(()=> {Utils.bigPrecision('12.345',1, '\t')}, ".precision(1, '\t')");
+      new Test().isException(()=> {Utils.bigPrecision('12.345',1, new Date)}, ".precision(1, new Date)");
+      new Test().isException(()=> {Utils.bigPrecision('12.345',1, new RegExp(''))}, ".precision(1, new RegExp(''))");
+      new Test().isException(()=> {Utils.bigPrecision('12.345',1, 7.5)}, ".precision(1, 7.5)");
+      new Test().isException(()=> {Utils.bigPrecision('12.345',1, 9)}, ".precision(1, 9)");
+      new Test().isException(()=> {Utils.bigPrecision('12.345',1, '-1.1e1')}, ".precision(1, '-1.1e1')");
+      new Test().isException(()=> {Utils.bigPrecision('12.345',1, '-1')}, ".precision(1, '-1')");
+      new Test().isException(()=> {Utils.bigPrecision('12.345',1, -23)}, ".precision(1, -23)");
+      new Test().isException(()=> {Utils.bigPrecision('12.345',1, MAX + 1)}, ".precision(1, MAX + 1)");
+      new Test().isException(()=> {Utils.bigPrecision('12.345',1, MAX + 0.1)}, ".precision(1, MAX + 0.1)");
+      new Test().isException(()=> {Utils.bigPrecision('12.345',1, '-0.01')}, ".precision(1, '-0.01')");
+      new Test().isException(()=> {Utils.bigPrecision('12.345',1, '-1e-1')}, ".precision(1, '-1e-1')");
+      new Test().isException(()=> {Utils.bigPrecision('12.345',1, Number.POSITIVE_INFINITY)}, ".precision(1, Infinity)");
+      new Test().isException(()=> {Utils.bigPrecision('12.345',1, '-Infinity')}, ".precision(1, '-Infinity')");
 
       BigNumber.config({ EXPONENTIAL_AT: 0});
 

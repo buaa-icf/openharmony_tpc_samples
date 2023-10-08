@@ -13,28 +13,28 @@
  * limitations under the License.
  */
 
-import { er } from "easy-replace";
+import { er,Opts } from "easy-replace";
 import hilog from '@ohos.hilog';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 
 export default function various() {
-  describe('various', function () {
+  describe('various', ()=> {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(()=> {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(()=> {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(()=> {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(()=> {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
@@ -49,14 +49,14 @@ export default function various() {
     //   expect(a).assertEqual(a)
     // })
 
-    var count = 0;
-    var test = function (name, func){
-      name = name.replace(/[ /d]/g, '');
-      name = name.replace(/-/g,"");
+    let count = 0;
+    let test =  (name:string, func:Function)=>{
+      name = name.replace(new RegExp("/[ /d]/g"), '');
+      name = name.replace(new RegExp("/-/g"),"");
       it(name,count++,func)
     }
 
-    var equal = function (src,dst,tag){
+    let equal =  (src:string,dst:string,tag:string)=>{
       console.log('tag:'+tag+"  src="+src+ " dst="+dst);
       expect(src).assertEqual(dst)
     }
@@ -64,22 +64,36 @@ export default function various() {
 // ==============================
 // random tests from the front lines
 // ==============================
-
+    let optsFunc = (leftOutsideNot: string | string[] = "",
+                    leftOutside: string | string[] = "",
+                    leftMaybe: string | string[] = "",
+                    searchFor: string | string[] = "",
+                    rightMaybe: string | string[] = "",
+                    rightOutside: string | string[] = "",
+                    rightOutsideNot: string | string[] = ""): Opts => {
+      return {
+        leftOutsideNot,
+        leftOutside,
+        leftMaybe,
+        searchFor,
+        rightMaybe,
+        rightOutside,
+        rightOutsideNot,
+        i: {
+          leftOutsideNot: false,
+          leftOutside: false,
+          leftMaybe: false,
+          searchFor: false,
+          rightMaybe: false,
+          rightOutside: false,
+          rightOutsideNot: false
+        }
+      }
+    }
 test("01 - special case #1", () => {
   equal(
     er(
-      "&fnof;",
-      // @ts-ignore
-      {
-        leftOutsideNot: "e",
-        leftOutside: "",
-        leftMaybe: "&",
-        searchFor: "nsp;",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "&nbsp;"
+      "&fnof;",optsFunc("e","","&","nsp;","","",""), "&nbsp;"
     ),
     "&fnof;",
     "test 14.1"
@@ -89,18 +103,7 @@ test("01 - special case #1", () => {
 test("02 - special case #2", () => {
   equal(
     er(
-      "🐴 a🦄🐴🦄🍺c a🦄🐴🍺🦄c a🦄🐴🦄c a🐴🍺c 🐴",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "🐴",
-        rightMaybe: ["🦄", "🍺", "c"],
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "b"
+      "🐴 a🦄🐴🦄🍺c a🦄🐴🍺🦄c a🦄🐴🦄c a🐴🍺c 🐴",optsFunc("","","","🐴",["🦄", "🍺", "c"],"",""), "b"
     ),
     "b a🦄b🍺c a🦄b🦄c a🦄bc abc b",
     "test 14.1"

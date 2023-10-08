@@ -28,6 +28,7 @@ soundex('A', 6) // => 'A000'
 在下述版本验证通过：
 
 DevEco Studio: 4.0 Canary1(4.0.3.212), SDK: API10(4.0.8.3)
+DevEco Studio: 4.0(4.0.3.512),SDK: API10（4.0.10.9）
 
 
 ## 目录结构

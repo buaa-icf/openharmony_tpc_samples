@@ -16,49 +16,50 @@
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 import pako  from 'pako';
 import buffer from '@ohos.buffer';
-
+import { GlobalContext } from './GlobalContext';
+import { onTypeOf1, onTypeOf12 } from './IntertfaceData';
 
 
 export default function DeflateTest() {
   // fromCharCode, but understands right > 0xffff values
 
-  describe('deflateTest', function () {
-    beforeAll(function () {
+  describe('deflateTest', () => {
+    beforeAll(() => {
 
     })
-    beforeEach(function () {
+    beforeEach(() => {
 
     })
-    afterEach(function () {
+    afterEach(() => {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(() => {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
 
     it('handlesmultiplepushes', 0, () => {
       const dict = buffer.from('abcd');
-      const deflate = new pako.Deflate({ dictionary: dict });
+      const deflate: pako.Deflate= new pako.Deflate(onTypeOf1(dict));
 
       deflate.push(buffer.from('hello').buffer, false);
       deflate.push(buffer.from('hello').buffer, false);
       deflate.push(buffer.from(' world').buffer, true);
 
-      const uncompressed = pako.inflate(buffer.from(deflate.result), { dictionary: dict });
+      const uncompressed:string = pako.inflate(buffer.from(deflate.result), onTypeOf1(dict));
       expect(new Uint8Array(buffer.from('hellohello world').buffer)).assertDeepEquals(uncompressed)
 
     });
 
 
     it('issue78',1, () => {
+        let context:Context = GlobalContext.getContext().getObject("context") as Context
+        context.createModuleContext('entry_test').resourceManager.getMediaContent($r('app.media.issue_78').id).then(data=>{
 
-      globalThis.resourceManager.getMediaContent($r('app.media.issue_78').id).then(data=>{
-
-        const deflatedPakoData = pako.deflate(data, { memLevel: 1 });
-        const inflatedPakoData = pako.inflate(deflatedPakoData);
+        const deflatedPakoData:string = pako.deflate(data,  onTypeOf12(1));
+        const inflatedPakoData:string = pako.inflate(deflatedPakoData);
         expect(data.length).assertEqual(inflatedPakoData.length);
       });
 

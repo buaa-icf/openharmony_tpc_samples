@@ -65,7 +65,8 @@ struct Index {
       Button("比较字符串")
         .onClick(() => {
           this.messagevl = `字符串相差${leven(this.TextString, this.messaged)}个`
-          setData(this.messagevl, this)
+          setData(this.messagevl)
+          this.dialogController.open()
         })
       Column() {
         Text("请输入文本中需要替换的字符").fontSize(18).fontColor("red")
@@ -112,7 +113,8 @@ struct Index {
             },
             this.StringResults
           );
-          setData(this.Text, this)
+          setData(this.Text)
+          this.dialogController.open()
         })
     }
     .width('100%')

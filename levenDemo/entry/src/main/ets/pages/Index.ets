@@ -33,7 +33,6 @@ struct Index {
             confirm:{
                 value:'OK',
                 action:() => {
-
                 }
             }
           })

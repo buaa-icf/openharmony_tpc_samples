@@ -12,8 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// @ts-ignore
-//var AhoCorasick = require('ahocorasick');
 import AhoCorasick from 'ahocorasick'
 import promptAction from '@ohos.promptAction';
 
@@ -75,8 +73,8 @@ struct Index {
           return;
         }
 
-        var ahoCorasick = new AhoCorasick([this.formulate_statement]);
-        var results = ahoCorasick.search(this.statement);
+        let ahoCorasick:AhoCorasick = new AhoCorasick([this.formulate_statement]);
+        let results:Object[] = ahoCorasick.search(this.statement);
         this.resultText = JSON.stringify(results);
 
       }).width(200)

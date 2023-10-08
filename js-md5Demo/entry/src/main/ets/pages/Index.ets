@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 import md5 from 'js-md5'
+
 @Entry
 @Component
 struct Index {
@@ -37,16 +38,16 @@ struct Index {
             this.inputText = value
           })
 
-        Button('md5').width(300).margin(20).fontSize(25).onClick(()=>{
-          let mess = md5 (this.inputText);
+        Button('md5').width(300).margin(20).fontSize(25).onClick(() => {
+          let mess: string = md5(this.inputText);
           this.showDialog(mess)
         })
-        Button('md5.hex').width(300).margin(20).fontSize(25).onClick(()=>{
-          let mess = md5.hex (this.inputText);
+        Button('md5.hex').width(300).margin(20).fontSize(25).onClick(() => {
+          let mess: string = md5.hex(this.inputText);
           this.showDialog(mess)
         })
-        Button('md5.base64').width(300).margin(20).fontSize(25).onClick(()=>{
-          let mess = md5.base64 (this.inputText);
+        Button('md5.base64').width(300).margin(20).fontSize(25).onClick(() => {
+          let mess: string = md5.base64(this.inputText);
           this.showDialog(mess)
         })
 
@@ -56,17 +57,17 @@ struct Index {
     }
     .height('100%')
   }
-  showDialog(message:string){
+
+  showDialog(message: string) {
     AlertDialog.show({
       title: '',
       message: message,
       confirm: {
         value: 'OK',
-        action:()=>{
+        action: () => {
 
         }
       }
     })
   }
-
 }

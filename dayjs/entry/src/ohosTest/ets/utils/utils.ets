@@ -25,22 +25,33 @@ import {
   Level
 } from '@ohos/hypium'
 
-export function describe(testSuiteName: string, callback: Function) {
+export function describe(testSuiteName: string, callback: Function): void {
   return _describe(testSuiteName, callback)
 }
 
-export function it(testCaseName: string, callback: Function) {
+export function it(testCaseName: string, callback: Function): void {
   testCaseName = testCaseName.split("_").join("__")
   return _it(testCaseName, TestType.FUNCTION, callback)
 }
 
-export function expect(actualValue?: any) {
-  const temp = _expect(actualValue);
-  return {
-    toBe: (value: any, tValue?: any) => temp.assertEqual(value),
-    toBeInstanceOf: temp.assertInstanceOf,
-    toEqual: (value: any, tValue?: any) => temp.assertEqual(value)
+export function expect(actualValue?: boolean | string | number) {
+
+  interface ReType {
+    toBe: (value: boolean | string | number, tValue?: boolean | string | number) => void
+    toBeInstanceOf: (expectValue: string) => void
+    toEqual: (value: string | number, tValue?: string | number) => void
   }
+
+  let instant: (expectValue: string) => void = _expect(actualValue).assertInstanceOf
+
+  let result: ReType = {
+    toBe: (value: boolean | string | number, tValue?: boolean | string | number): void => _expect(actualValue)
+      .assertEqual(value),
+    toBeInstanceOf: instant,
+    toEqual: (value: string | number, tValue?: string | number): void => _expect(actualValue).assertEqual(value)
+  }
+
+  return result
 }
 
 export function responseTime(fn: Function, name: string) {

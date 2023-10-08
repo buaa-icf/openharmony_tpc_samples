@@ -17,27 +17,27 @@ import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from
 import md2 from 'js-md2'
 
 export default function abilityTest() {
-  describe('ActsAbilityTest', function () {
+  describe('ActsAbilityTest', () => {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(() => {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(() => {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(() => {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(() => {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    it('md2', 0, function () {
+    it('md2', 0, () => {
       // Defines a test case. This API supports three parameters: test case name, filter parameter, and test case function.
       /* hilog.info(0x0000, 'testTag', '%{public}s', 'it begin');
        let a = 'abc'
@@ -45,7 +45,7 @@ export default function abilityTest() {
        // Defines a variety of assertion methods, which are used to declare expected boolean conditions.
        expect(a).assertContain(b)
        expect(a).assertEqual(a)*/
-      let s1 = md2(''); // 8350e5a3e24c153df2275c9f80692773
+      let s1: string = md2(''); // 8350e5a3e24c153df2275c9f80692773
       console.log("md2==========" + s1)
       let s2: string = md2('The quick brown fox jumps over the lazy dog'); // 03d85a0d629d2c442e987525319fc471
       let s3: string = md2('The quick brown fox jumps over the lazy dog.'); // 71eaa7e440b611e41a6f0d97384b342a

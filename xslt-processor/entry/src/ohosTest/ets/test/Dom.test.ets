@@ -14,13 +14,13 @@
  */
 
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
-import { xmlParse } from 'xslt-processor/src/dom.js'
+import { XDocument, xmlParse, XNode } from 'xslt-processor/src/dom'
 import he from 'he'
-import { xmlText } from 'xslt-processor/src/util.js'
+import { xmlText } from 'xslt-processor/src/util'
 
 export default function domTest() {
-  describe('DomTest', function () {
-    const doTestXmlParse = (dom1, dom2) => {
+  describe('DomTest', () => {
+    const doTestXmlParse = (dom1: XNode, dom2: XNode) => {
 
       expect(xmlText(dom1)).assertEqual(xmlText(dom2))
 
@@ -55,18 +55,17 @@ export default function domTest() {
       '<location lat="100" lon="200"/>' +
       '</page>';
 
-      const dom1 = xmlParse(`<?xml version="1.0"?>${xml}`);
-      const dom2 = xmlParse(`<?xml version='1.1'?>${xml}`);
+      const dom1: XDocument = xmlParse(`<?xml version="1.0"?>${xml}`);
+      const dom2: XDocument = xmlParse(`<?xml version='1.1'?>${xml}`);
       doTestXmlParse(dom1, dom2);
 
       const tag = 'q';
-      const byTag = dom1.getElementsByTagName(tag);
-      expect(1).assertEqual(byTag.length);
-      expect(tag).assertEqual(byTag[0].nodeName);
+      expect(1).assertEqual(dom1.getElementsByTagName(tag).length);
+      expect(tag).assertEqual(dom1.getElementsByTagName(tag)[0].nodeName);
 
-      const id = 'q';
-      const byId = dom1.getElementById(id);
-      expect(id).assertEqual(byId.getAttribute('id'));
+
+
+      expect('q').assertEqual(dom1.getElementById('q').getAttribute('id'));
 
     })
 
@@ -80,8 +79,8 @@ export default function domTest() {
         '</_>'
       ].join('');
 
-      const dom1 = xmlParse(`<?xml version="1.0"?>${xml}`);
-      const dom2 = xmlParse(`<?xml version='1.1'?>${xml}`);
+      const dom1: XDocument = xmlParse(`<?xml version="1.0"?>${xml}`);
+      const dom2: XDocument = xmlParse(`<?xml version='1.1'?>${xml}`);
       doTestXmlParse(dom1, dom2);
     })
 
@@ -96,8 +95,8 @@ export default function domTest() {
         '</\u30da\u30fc\u30b8>'
       ].join('');
 
-      const dom1 = xmlParse(`<?xml version="1.0"?>${xml}`);
-      const dom2 = xmlParse(`<?xml version='1.1'?>${xml}`);
+      const dom1: XDocument = xmlParse(`<?xml version="1.0"?>${xml}`);
+      const dom2: XDocument = xmlParse(`<?xml version='1.1'?>${xml}`);
       doTestXmlParse(dom1, dom2);
     })
 

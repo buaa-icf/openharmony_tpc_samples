@@ -13,17 +13,22 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
+import { BigNumber } from './BigNumber';
+
 export default class Test{
 
-  public passed
-  public testNumber
-  public write;
+  public passed:number = 0;
+  public testNumber:number = 0
 
   public constructor() {
     this.passed =  this.testNumber = 0;
   }
 
-  public isTrue(actual) {
+  public write(str:string) {
+    console.log( '  Test number ' + str)
+  }
+
+  public isTrue(actual:boolean) {
     ++this.testNumber;
     if (actual === true) {
       ++this.passed;
@@ -38,7 +43,7 @@ export default class Test{
     }
   };
 
-  public areEqual(expected, actual) {
+  public areEqual(expected:null |string |BigNumber.Format| boolean |(() => BigNumber)|number|BigNumber|Function|undefined, actual:string|Function |(() => BigNumber)|BigNumber.Format| boolean | number | null|undefined) {
     ++this.testNumber;
     // If expected and actual are both NaN, consider them equal.
     if (expected === actual || expected !== expected && actual !== actual) {
@@ -54,15 +59,15 @@ export default class Test{
     }
   };
 
-  public isException(func, msg) {
-    var actual;
+  public isException(func:Function, msg:string) {
+    let actual:Error|null = null;
     ++this.testNumber;
     try {
       func();
     } catch (e) {
       actual = e;
     }
-    if (actual instanceof Error && /BigNumber Error/.test(actual.message)) {
+    if (actual instanceof Error && new RegExp("BigNumber Error").test(actual.message)) {
       ++this.passed;
       expect(true).assertTrue()
     } else if((actual || 'no exception') === 'no exception') {

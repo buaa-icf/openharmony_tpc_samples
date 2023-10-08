@@ -13,23 +13,24 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect, TestType } from '@ohos/hypium'
-// @ts-ignore
+
 import randomColor from 'randomcolor';
 
 export default function PictureTest() {
-  describe('randomColor', function () {
+  describe('randomColor', () => {
 
     const BASE_COUNT = 2000 //循环次数，测试普通接口性能
     const BASELINE_HASSIMECASR = 300 //性能基线
-
-    it('randomColorFormat_rgb1', 0, function () { //第一个参数自定义
-      expect(randomColor.randomColor({
-        format:'hex'
-      })).not().assertNull()
+    interface formatType {
+      format:string
+    }
+    let formatData:formatType = {format:'hex'}
+    it('randomColorFormat_rgb1', 0, () => { //第一个参数自定义
+      expect(randomColor.randomColor(formatData)).not().assertNull()
     })
 
 
-    it('randomColorFormat_rgb2', TestType.PERFORMANCE, async function (done) { //第一个参数自定义
+    it('randomColorFormat_rgb2', TestType.PERFORMANCE, async  (done:Function) => { //第一个参数自定义
       let startTime = new Date().getTime() //毫秒值
       for (let index = 0; index < BASE_COUNT; index++) {
         randomColor.randomColor()

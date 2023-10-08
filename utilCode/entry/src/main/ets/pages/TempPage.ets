@@ -35,7 +35,7 @@ struct TempPage {
           .type(InputType.Number)
           .onChange((value: string) => {
             if (value.length>0) {
-              this.C =parseInt(value)
+              this.C = Number.parseInt(value)
             }else {
               this.C = 0
             }
@@ -62,7 +62,7 @@ struct TempPage {
           .type(InputType.Number)
           .onChange((value: string) => {
             if (value.length>0) {
-              this.F =parseInt(value)
+              this.F = Number.parseInt(value)
             }else {
               this.F = 0
             }
