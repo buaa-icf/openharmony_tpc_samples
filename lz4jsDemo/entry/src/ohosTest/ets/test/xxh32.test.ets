@@ -13,34 +13,34 @@
  * limitations under the License.
  */
 /* eslint-env node, mocha */
-import xxh32 from 'lz4js/xxh32.js';
+import xxh32 from 'lz4js/xxh32';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 
 export default function xxh32Test() {
   // fromCharCode, but understands right > 0xffff values
-  function a2s(array) {
-    return String.fromCharCode.apply(null, array);
+   let a2s=(array:number)=> {
+    return String.fromCharCode(0,array);
   }
 
-  describe('xxh32Test', function () {
-    beforeAll(function () {
+  describe('xxh32Test',  () => {
+    beforeAll( () => {
 
     })
-    beforeEach(function () {
+    beforeEach( () => {
 
     })
-    afterEach(function () {
+    afterEach( () => {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll( () => {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
 
     it('passesTheXxHashTests', 0, () => {
-      var tests = [
+      let tests = [
         [0x02cc5d05, []],
         [0x550d7456, [0x61]],
         [0x4999fc53, [0x61, 0x62]],
@@ -119,11 +119,11 @@ export default function xxh32Test() {
           0x6f, 0x72, 0x75, 0x6d, 0x2e]]
       ];
 
-      for (var i = 0; i < tests.length; ++i) {
-        var expected = tests[i][0];
-        var vector = tests[i][1];
-        // @ts-ignore
-        expect(xxh32.hash(0, vector, 0, vector.length)).assertEqual(expected);
+      for (let i = 0; i < tests.length; ++i) {
+        let expected = tests[i][0];
+        let vector= tests[i][1];
+        let a=vector as Array<number>
+          expect(xxh32.hash(0, vector, 0, a.length)).assertEqual(expected);
       }
     });
   })

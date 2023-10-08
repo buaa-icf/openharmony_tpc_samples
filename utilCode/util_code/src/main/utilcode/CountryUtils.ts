@@ -40,7 +40,7 @@ export class CountryUtils {
         return this.getCountryCodeFromMap().get(ISOCode)
     }
 
-    public static getCountryCodeFromMap() {
+    public static getCountryCodeFromMap(): Map<string, string> {
         if (this.countryCodeMap == null) {
             this.countryCodeMap = new Map();
             this.countryCodeMap.set("AL", "+355");

@@ -40,7 +40,7 @@ struct Index {
       Column() {
         Flex({ alignItems: ItemAlign.Center, alignContent: FlexAlign.Center, justifyContent: FlexAlign.Center }) {
           List({ space: 20, initialIndex: 0 }) {
-            ForEach(this.arrIndex, (item) => {
+            ForEach(this.arrIndex, (item:string) => {
               ListItem() {
                 Text(this.arrStr[item])
                   .width('100%')
@@ -50,9 +50,9 @@ struct Index {
                   .borderRadius(10)
                   .backgroundColor(0xFFFFFF)
               }.onClick((event) => {
-                routePage(parseInt(item))
+                routePage(Number.parseInt(item))
               })
-            }, item => item)
+            }, (item:string) => item)
           }.listDirection(Axis.Vertical)
           .divider({ strokeWidth: 2, startMargin: 20, endMargin: 20 })
           .edgeEffect(EdgeEffect.None)

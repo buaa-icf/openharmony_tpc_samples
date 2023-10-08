@@ -13,43 +13,44 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-import BigNumber from 'bignumber.js';
+import { BigNumber } from './BigNumber';
 import Test from './tester';
+import Utils from './Utils';
 
 export default function isMethods() {
-  describe('isMethodstest', function () {
+  describe('isMethodstest', ()=> {
 
-    function t(expected, value) {
+    let t= (expected:string |BigNumber.Format| boolean |(() => BigNumber)|number|BigNumber|Function, value:string|Function |(() => BigNumber)|BigNumber.Format| boolean | number | null)=> {
       new Test().areEqual(expected, value);
     }
 
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(()=> {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(()=> {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(()=> {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(()=> {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    it('isMethods', 0, function () {
-      var n;
+    it('isMethods', 0, ()=> {
+      let n: BigNumber;
 
-      t(BigNumber.prototype.isEqualTo, BigNumber.prototype.eq);
-      t(BigNumber.prototype.isGreaterThan, BigNumber.prototype.gt);
-      t(BigNumber.prototype.isGreaterThanOrEqualTo, BigNumber.prototype.gte);
-      t(BigNumber.prototype.isLessThan,BigNumber.prototype.lt);
-      t(BigNumber.prototype.isLessThanOrEqualTo, BigNumber.prototype.lte);
+      t(Utils.isEqualTo, Utils.eq);
+      t(Utils.isGreaterThan, Utils.gt);
+      t(Utils.isGreaterThanOrEqualTo, Utils.gte);
+      t(Utils.isLessThan,Utils.lt);
+      t(Utils.isLessThanOrEqualTo, Utils.lte);
 
       BigNumber.config({
         DECIMAL_PLACES: 20,
@@ -121,7 +122,7 @@ export default function isMethods() {
       t(false, n.isLessThanOrEqualTo(-1));
       t(true, n.toString() === n.valueOf());
 
-      n = new BigNumber(Infinity);
+      n = new BigNumber(Number.POSITIVE_INFINITY);
       t(false, n.isFinite());
       t(false, n.isInteger());
       t(false, n.isNaN());
@@ -131,9 +132,9 @@ export default function isMethods() {
       t(true, n.eq('Infinity'));
       t(true, n.eq(1/0));
       t(true, n.gt('9e999'));
-      t(true, n.gte(Infinity));
-      t(false, n.lt(Infinity));
-      t(true, n.lte(Infinity));
+      t(true, n.gte(Number.POSITIVE_INFINITY));
+      t(false, n.lt(Number.POSITIVE_INFINITY));
+      t(true, n.lte(Number.POSITIVE_INFINITY));
       t(true, n.toString() === n.valueOf());
 
       n = new BigNumber('-Infinity');
@@ -143,12 +144,12 @@ export default function isMethods() {
       t(true, n.isNegative());
       t(false, n.isPositive());
       t(false, n.isZero());
-      t(false, n.isEqualTo(Infinity));
+      t(false, n.isEqualTo(Number.POSITIVE_INFINITY));
       t(true, n.isEqualTo(-1/0));
-      t(false, n.isGreaterThan(-Infinity));
+      t(false, n.isGreaterThan(Number.NEGATIVE_INFINITY));
       t(true, n.isGreaterThanOrEqualTo('-Infinity', 8));
       t(true, n.isLessThan(0));
-      t(true, n.isLessThanOrEqualTo(Infinity));
+      t(true, n.isLessThanOrEqualTo(Number.POSITIVE_INFINITY));
       t(true, n.toString() === n.valueOf());
 
       n = new BigNumber('0.0000000');
@@ -190,8 +191,8 @@ export default function isMethods() {
       t(false, n.isNegative());
       t(false, n.isPositive());
       t(false, n.isZero());
-      t(false, n.eq(NaN));
-      t(false, n.eq(Infinity));
+      t(false, n.eq(Number.NaN));
+      t(false, n.eq(Number.POSITIVE_INFINITY));
       t(false, n.gt(0));
       t(false, n.gte(0));
       t(false, n.lt(1));
@@ -265,26 +266,26 @@ export default function isMethods() {
       t(true, new BigNumber(10).isLessThan(10, 34));
       t(true, new BigNumber(10).isLessThan(10, 35));
       t(true, new BigNumber(10).isLessThan(10, 36));
-      t(false, new BigNumber(NaN).isLessThan(NaN));
-      t(false, new BigNumber(Infinity).isLessThan(-Infinity));
-      t(false, new BigNumber(Infinity).isLessThan(Infinity));
-      t(true, new BigNumber(Infinity, 10).isLessThanOrEqualTo(Infinity, 2));
-      t(false, new BigNumber(NaN).isGreaterThanOrEqualTo(NaN));
-      t(true, new BigNumber(Infinity).isGreaterThanOrEqualTo(Infinity));
-      t(true, new BigNumber(Infinity).isGreaterThanOrEqualTo(-Infinity));
-      t(false, new BigNumber(NaN).isGreaterThanOrEqualTo(-Infinity));
-      t(true, new BigNumber(-Infinity).isGreaterThanOrEqualTo(-Infinity));
+      t(false, new BigNumber(Number.NaN).isLessThan(Number.NaN));
+      t(false, new BigNumber(Number.POSITIVE_INFINITY).isLessThan(Number.NEGATIVE_INFINITY));
+      t(false, new BigNumber(Number.POSITIVE_INFINITY).isLessThan(Number.POSITIVE_INFINITY));
+      t(true, new BigNumber(Number.POSITIVE_INFINITY, 10).isLessThanOrEqualTo(Number.POSITIVE_INFINITY, 2));
+      t(false, new BigNumber(Number.NaN).isGreaterThanOrEqualTo(Number.NaN));
+      t(true, new BigNumber(Number.POSITIVE_INFINITY).isGreaterThanOrEqualTo(Number.POSITIVE_INFINITY));
+      t(true, new BigNumber(Number.POSITIVE_INFINITY).isGreaterThanOrEqualTo(Number.NEGATIVE_INFINITY));
+      t(false, new BigNumber(Number.NaN).isGreaterThanOrEqualTo(Number.NEGATIVE_INFINITY));
+      t(true, new BigNumber(Number.NEGATIVE_INFINITY).isGreaterThanOrEqualTo(Number.NEGATIVE_INFINITY));
 
       t(false, new BigNumber(2, 10).isGreaterThan(10, 2));
       t(false, new BigNumber(10, 2).isLessThan(2, 10));
       t(true, new BigNumber(255).isLessThanOrEqualTo('ff', 16));
       t(true, new BigNumber('a', 16).isGreaterThanOrEqualTo(9, 16));
       t(false, new BigNumber(0).isLessThanOrEqualTo('NaN'));
-      t(false, new BigNumber(0).isGreaterThanOrEqualTo(NaN));
-      t(false, new BigNumber(NaN, 2).isLessThanOrEqualTo('NaN', 36));
-      t(false, new BigNumber(NaN, 36).isGreaterThanOrEqualTo(NaN, 2));
-      t(false, new BigNumber(0).isLessThanOrEqualTo(-Infinity));
-      t(true, new BigNumber(0).isGreaterThanOrEqualTo(-Infinity));
+      t(false, new BigNumber(0).isGreaterThanOrEqualTo(Number.NaN));
+      t(false, new BigNumber(Number.NaN, 2).isLessThanOrEqualTo('NaN', 36));
+      t(false, new BigNumber(Number.NaN, 36).isGreaterThanOrEqualTo(Number.NaN, 2));
+      t(false, new BigNumber(0).isLessThanOrEqualTo(Number.NEGATIVE_INFINITY));
+      t(true, new BigNumber(0).isGreaterThanOrEqualTo(Number.NEGATIVE_INFINITY));
       t(true, new BigNumber(0).isLessThanOrEqualTo('Infinity', 36));
       t(false, new BigNumber(0).isGreaterThanOrEqualTo('Infinity', 36));
       t(false, new BigNumber(10).isLessThanOrEqualTo(20, 4));
@@ -331,9 +332,9 @@ export default function isMethods() {
       t(false, new BigNumber(9.999999e+2).isGreaterThanOrEqualTo(1e+3));
       t(true, new BigNumber(1e+3).gte(9.9999999e+2));
 
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber(1).lt(true, null)}, "new BigNumber(1).lt(true, null)");
-      new Test().isException(function () {new BigNumber(1).gt('one')}, "new BigNumber(1).gt('one')");
+
+      new Test().isException(()=> {Utils.bigLt(true)}, "new BigNumber(1).lt(true, null)");
+      new Test().isException(()=> {new BigNumber(1).gt('one')}, "new BigNumber(1).gt('one')");
     })
   })
 }

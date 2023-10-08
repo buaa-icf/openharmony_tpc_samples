@@ -15,27 +15,26 @@
 import hilog from '@ohos.hilog';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 
-
-import { er } from "easy-replace";
+import { er, Opts } from "easy-replace";
 
 export default function infiniteloop() {
-  describe('infiniteloop', function () {
+  describe('infiniteloop', () => {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(() => {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(() => {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(() => {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(() => {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
@@ -50,168 +49,107 @@ export default function infiniteloop() {
     //   expect(a).assertEqual(a)
     // })
 
-    var count = 0;
-    var test = function (name, func){
-      name = name.replace(/[ /d]/g, '');
-      name = name.replace(/-/g,"");
-      it(name,count++,func)
+    let count = 0;
+    let test = (name: string, func: Function) => {
+      name = name.replace(new RegExp("/[ /d]/g"), '');
+      name = name.replace(new RegExp("/-/g"), "");
+      it(name, count++, func)
     }
 
-    var equal = function (src,dst,tag){
-      console.log('tag:'+tag+"  src="+src+ " dst="+dst);
+    let equal = (src: string, dst: string, tag: string) => {
+      console.log('tag:' + tag + "  src=" + src + " dst=" + dst);
       expect(src).assertEqual(dst)
     }
-// ==============================
-// infinite loop cases
-// ==============================
+    // ==============================
+    // infinite loop cases
+    // ==============================
+    let optsFunc = (leftOutsideNot: string | string[] = "",
+                    leftOutside: string | string[] = "",
+                    leftMaybe: string | string[] = "",
+                    searchFor: string | string[] = "",
+                    rightMaybe: string | string[] = "",
+                    rightOutside: string | string[] = "",
+                    rightOutsideNot: string | string[] = ""): Opts => {
+      return {
+        leftOutsideNot,
+        leftOutside,
+        leftMaybe,
+        searchFor,
+        rightMaybe,
+        rightOutside,
+        rightOutsideNot,
+        i: {
+          leftOutsideNot: false,
+          leftOutside: false,
+          leftMaybe: false,
+          searchFor: false,
+          rightMaybe: false,
+          rightOutside: false,
+          rightOutsideNot: false
+        }
+      }
+    }
+    test("01 - infinite loop, no maybes, emoji", () => {
+      equal(
+        er("🐴🦄🐴🦄🐴", optsFunc("", "", "", "🐴", "", "", ""), "🐴"),
+        "🐴🦄🐴🦄🐴",
+        "test 8.1"
+      );
+    });
 
-test("01 - infinite loop, no maybes, emoji", () => {
-  equal(
-    er(
-      "🐴🦄🐴🦄🐴",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "🐴",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "🐴"
-    ),
-    "🐴🦄🐴🦄🐴",
-    "test 8.1"
-  );
-});
+    test("02 - infinite loop, maybes, multiple findings, emoji", () => {
+      equal(
+        er("🐴🦄🐴🦄🐴", optsFunc("", "", "", "🐴", "🦄", "", ""), "🐴"),
+        "🐴🐴🐴",
+        "test 8.2"
+      );
+    });
 
-test("02 - infinite loop, maybes, multiple findings, emoji", () => {
-  equal(
-    er(
-      "🐴🦄🐴🦄🐴",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "🐴",
-        rightMaybe: "🦄",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "🐴"
-    ),
-    "🐴🐴🐴",
-    "test 8.2"
-  );
-});
+    test("03 - infinite loop protection, emoji replaced with itself", () => {
+      equal(
+        er(
+          "🐴", optsFunc("", "", "", "🐴", "", "", ""),
+          "🐴"
+        ),
+        "🐴",
+        "test 8.3"
+      );
+    });
 
-test("03 - infinite loop protection, emoji replaced with itself", () => {
-  equal(
-    er(
-      "🐴",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "🐴",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "🐴"
-    ),
-    "🐴",
-    "test 8.3"
-  );
-});
+    test("04 - infinite loop protection, right outside", () => {
+      equal(
+        er("🐴🦄🐴🦄🐴", optsFunc("", "", "", "🐴", "", "🦄", ""), "🐴"),
+        "🐴🦄🐴🦄🐴",
+        "test 8.4"
+      );
+    });
 
-test("04 - infinite loop protection, right outside", () => {
-  equal(
-    er(
-      "🐴🦄🐴🦄🐴",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "🐴",
-        rightMaybe: "",
-        rightOutside: "🦄",
-        rightOutsideNot: "",
-      },
-      "🐴"
-    ),
-    "🐴🦄🐴🦄🐴",
-    "test 8.4"
-  );
-});
+    test("05 - infinite loop protection, multiples", () => {
+      equal(
+        er("🦄🦄🦄🦄zaaaaaaaaa🦄🦄🦄🦄🦄🦄", optsFunc("", "🦄🦄🦄", "", "🦄", "🦄", "🦄", ""), "🌟"),
+        "🦄🦄🦄🦄zaaaaaaaaa🦄🦄🦄🌟🦄",
+        "test 8.5"
+      );
+    });
 
-test("05 - infinite loop protection, multiples", () => {
-  equal(
-    er(
-      "🦄🦄🦄🦄zaaaaaaaaa🦄🦄🦄🦄🦄🦄",
-      // @ts-ignore
-      {
-        leftOutsideNot: "a",
-        leftOutside: "🦄🦄🦄",
-        leftMaybe: "",
-        searchFor: "🦄",
-        rightMaybe: "🦄",
-        rightOutside: "🦄",
-        rightOutsideNot: "",
-      },
-      "🌟"
-    ),
-    "🦄🦄🦄🦄zaaaaaaaaa🦄🦄🦄🌟🦄",
-    "test 8.5"
-  );
-});
+    test("06 - simple infinite loop case", () => {
+      equal(
+        er("a", optsFunc("", "", "", "", "", "", ""), "a"),
+        "a",
+        "test 8.6"
+      );
+    });
 
-test("06 - simple infinite loop case", () => {
-  equal(
-    er(
-      "a",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "a",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "a"
-    ),
-    "a",
-    "test 8.6"
-  );
-});
-
-test("07 - infinite loop, not found", () => {
-  equal(
-    er(
-      "",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "a"
-    ),
-    "",
-    "test 8.7"
-  );
-});
+    test("07 - infinite loop, not found", () => {
+      equal(
+        er(
+          "",
+          optsFunc("", "", "", "", "", "", ""),
+          "a"
+        ),
+        "",
+        "test 8.7"
+      );
+    });
   })
 }
-
-

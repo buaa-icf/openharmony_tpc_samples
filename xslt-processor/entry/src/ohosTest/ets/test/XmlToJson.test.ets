@@ -18,7 +18,7 @@ import { xmlParse } from 'xslt-processor/src/dom'
 import { xsltProcess } from 'xslt-processor/src/xslt'
 
 export default function xmlToJsonTest() {
-  describe('XmlToJsonTest', function () {
+  describe('XmlToJsonTest', () => {
     it('xml_to_json_without_namespace_test', 0, () => {
       const xmlString = `<root>
       <test name="test1" >test</test>
@@ -43,7 +43,7 @@ export default function xmlToJsonTest() {
       </xsl:stylesheet>`;
 
       const expectedOutString = `<root><span>"test"</span><span>"123"</span><span>"{hugo}"</span><span>""</span></root>`;
-      const outXmlString = xsltProcess(xmlParse(xmlString), xmlParse(xsltString));
+      const outXmlString: string = xsltProcess(xmlParse(xmlString), xmlParse(xsltString));
       expect(outXmlString).assertEqual(expectedOutString);
     })
 

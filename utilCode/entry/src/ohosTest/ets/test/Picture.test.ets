@@ -13,63 +13,70 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-// @ts-ignore
+
 import imtype from 'imtype';
+import { GlobalContext } from './GlobalContext';
 
 export default function PictureTest() {
 
 
-  describe('PictureTest', function () {
+  describe('PictureTest', () => {
 
-    it('isJpg', 0, function () {
-      globalThis.context.resourceManager.getMedia($r('app.media.jpg'))
+    it('isJpg', 0, () => {
+      let context:Context = GlobalContext.getContext().getObject("context") as Context
+      context.resourceManager.getMediaContent( $r("app.media.jpg").id)
         .then(data => {
           expect(imtype.isJPG(new Uint8Array(data))).assertTrue()
         })
-        .catch(err => {
+        .catch((err:Error) => {
           console.log('addFileToDisk err=' + err)
         })
     })
 
-    it('isPNG', 0, function () {
-      globalThis.context.resourceManager.getMedia($r('app.media.png'))
+    it('isPNG', 0, () => {
+      let context:Context = GlobalContext.getContext().getObject("context") as Context
+      context.resourceManager.getMediaContent($r("app.media.png").id)
         .then(data => {
           expect(imtype.isPNG(new Uint8Array(data))).assertTrue()
         })
-        .catch(err => {
+        .catch((err:Error) => {
           console.log('addFileToDisk err=' + err)
         })
     })
-    it('isGIF', 0, function () {
-      globalThis.context.resourceManager.getMedia($r('app.media.gif'))
+    it('isGIF', 0, () => {
+      let context:Context = GlobalContext.getContext().getObject("context") as Context
+      context.resourceManager.getMediaContent($r("app.media.gif").id)
         .then(data => {
           expect(imtype.isGIF(new Uint8Array(data))).assertTrue()
         })
-        .catch(err => {
+        .catch((err:Error) => {
           console.log('addFileToDisk err=' + err)
         })
     })
-    it('isBMP', 0, function () {
-      globalThis.context.resourceManager.getMedia($r('app.media.bmp'))
+    it('isBMP', 0, () => {
+      let context:Context = GlobalContext.getContext().getObject("context") as Context
+      context.resourceManager.getMediaContent($r("app.media.bmp").id)
         .then(data => {
           expect(imtype.isBMP(new Uint8Array(data))).assertTrue()
         })
-        .catch(err => {
+        .catch((err:Error) => {
           console.log('addFileToDisk err=' + err)
         })
     })
-    it('isTIF', 0, function () {
-      globalThis.context.resourceManager.getMedia($r('app.media.tif'))
+    it('isTIF', 0, () => {
+      let context:Context = GlobalContext.getContext().getObject("context") as Context
+      context.resourceManager.getMediaContent($r("app.media.tif").id)
         .then(data => {
           expect(imtype.isTIF(new Uint8Array(data))).assertTrue()
         })
-        .catch(err => {
+        .catch((err:Error) => {
           console.log('addFileToDisk err=' + err)
         })
     })
 
-    it('textTest', 0, function () {
-      globalThis.context.resourceManager.getMedia($r('app.media.text'))
+    it('textTest', 0, () => {
+      let context:Context = GlobalContext.getContext().getObject("context") as Context
+      context.resourceManager.getMediaContent($r("app.media.text").id)
         .then(data => {
           expect(imtype.isJPG(new Uint8Array(data))).assertFalse()
           expect(imtype.isPNG(new Uint8Array(data))).assertFalse()
@@ -77,7 +84,7 @@ export default function PictureTest() {
           expect(imtype.isBMP(new Uint8Array(data))).assertFalse()
           expect(imtype.isTIF(new Uint8Array(data))).assertFalse()
         })
-        .catch(err => {
+        .catch((err:Error) => {
           console.log('addFileToDisk err=' + err)
         })
     })

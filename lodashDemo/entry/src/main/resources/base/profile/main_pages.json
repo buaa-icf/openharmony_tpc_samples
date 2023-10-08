@@ -1,5 +1,15 @@
 {
   "src": [
-    "pages/index"
+    "pages/Index",
+    "pages/MathTest",
+    "pages/ArrayTest",
+    "pages/CollectionTest",
+    "pages/DateTest",
+    "pages/FunctionTest",
+    "pages/LangTest",
+    "pages/NumberTest",
+    "pages/ObjectTest",
+    "pages/StringTest",
+    "pages/UtilTest"
   ]
 }

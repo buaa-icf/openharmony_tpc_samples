@@ -14,47 +14,45 @@
  */
 
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-import { inflate, inflateEnd } from 'pako/lib/zlib/inflate.js';
-import inflate_table from 'pako/lib/zlib/inftrees.js';
+import { inflate, inflateEnd } from './utils';
+import { inflate_table } from './utils';
 import pako from 'pako';
-
+import { onTypeOf6, onTypeOf9} from './IntertfaceData';
 export default function InflateCoverPortedTest() {
   // fromCharCode, but understands right > 0xffff values
 
-  describe('inflatecoverportedTest', function () {
+  describe('inflatecoverportedTest', () => {
 
-    let c = pako.constants
-    beforeAll(function () {
-
-    })
-    beforeEach(function () {
+    let c:pako.constants = pako.constants
+    beforeAll(() => {
 
     })
-    afterEach(function () {
+    beforeEach(() => {
+
+    })
+    afterEach(() => {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(() => {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
 
-    function h2b(hex) {
-      return hex.split(' ').map(function (hx) {
-        return parseInt(hx, 16);
+    let h2b = (hex:string) => {
+      return hex.split(' ').map( (hx) => {
+        return Number.parseInt(hx, 16);
       });
     }
 
 
     //step argument from original tests is missing because it have no effect
     //we have similar behavior in chunks.js tests
-    function testInflate(hex, wbits, status) {
-      let inflator;
+    let testInflate = (hex:string, wbits:number, status:number) => {
+      let inflator: pako.Inflate;
       try {
-        inflator = new pako.Inflate({
-          windowBits: wbits
-        });
+        inflator = new pako.Inflate(onTypeOf6(wbits));
       } catch (e) {
         return;
       }
@@ -65,7 +63,7 @@ export default function InflateCoverPortedTest() {
 
     it('inflatebadparameters', 0, () => {
 
-      let ret = inflate(null, 0);
+      let ret: number = inflate(null, 0);
       expect(ret).assertDeepEquals(c.Z_STREAM_ERROR)
       ret = inflateEnd(null);
       expect(ret).assertDeepEquals(c.Z_STREAM_ERROR)
@@ -174,7 +172,7 @@ export default function InflateCoverPortedTest() {
     });
 
     it('inflatetablenotenougherrors', 33, () => {
-      let ret, bits, next, table = [], lens = [], work = [];
+      let ret:Function, bits:number, next:Array<number>, table:Array<number> = [], lens:Array<number> = [], work:Array<number | string> = [];
       const DISTS = 2;
       /* we need to call inflate_table() directly in order to manifest not-
        enough errors, since zlib insures that enough is always enough */
@@ -184,14 +182,10 @@ export default function InflateCoverPortedTest() {
       lens[15] = 15;
       next = table;
 
-      ret = inflate_table(DISTS, lens, 0, 16, next, 0, work, {
-        bits: 15
-      });
+      ret = inflate_table(DISTS, lens, 0, 16, next, 0, work, onTypeOf9(15));
       expect(ret).assertDeepEquals(1)
       next = table;
-      ret = inflate_table(DISTS, lens, 0, 16, next, 0, work, {
-        bits: 1
-      });
+      ret = inflate_table(DISTS, lens, 0, 16, next, 0, work,onTypeOf9(1));
       expect(ret).assertDeepEquals(1)
     });
 

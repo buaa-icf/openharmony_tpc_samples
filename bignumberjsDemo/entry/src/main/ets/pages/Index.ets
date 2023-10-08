@@ -12,13 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import BigNumber from 'bignumber.js';
+import { BigNumber } from './BigNumber';
 
 @Entry
 @Component
 struct Index {
   scroller: Scroller = new Scroller()
-  zerosStr = '0'
+  zerosStr: string = '0'
   @State message: string = 'bignumber test'
   @State mathAbs: string = this.zerosStr
   @State mathTimeAbs: string = this.zerosStr
@@ -75,52 +75,52 @@ struct Index {
   @State mathposSignum: number = 0
   @State mathTimeSignum: string = this.zerosStr
   @State mathTimeSignum1: string = this.zerosStr
-  mathatanSignum: string
-  mathatanSignum1: string
-  mathatanSignum2: string
-  mathUnaryMinus1: string
-  mathUnaryMinus2: string
-  mathTan1: string
-  mathTan2: string
-  mathSubtract1: string
-  mathSubtract2: string
-  mathSqrt1: string
-  mathSqrt2: string
-  mathSin1: string
-  mathRound1: string
-  mathRound2: string
-  mathRightArithShift1: string
-  mathRightArithShift2: string
-  mathRadix1: string
-  mathRadix2: number
-  mathMultiply1: string
-  mathMultiply2: string
-  mathMin1: string
-  mathMin2: string
-  mathMax1: string
-  mathMax2: string
-  mathLongValue1: string
-  mathLog1: string
-  mathLog2: string
-  mathLeftShift1: string
-  mathLeftShift2: string
-  mathIntValue1: string
-  mathFormat1: string
-  mathExp1: string
-  mathExp2: string
-  mathDivide1: string
-  mathDivide2: string
-  mathCos1: string
-  mathCompare1: string
-  mathCompare2: string
-  mathByteValue1: string
-  mathAtan1: string
-  mathAtan2: string
-  mathAsin1: string
-  mathAdd1: string
-  mathAdd2: string
-  mathAcosStr: string
-  mathAbsStr: string
+  mathatanSignum: string = ""
+  mathatanSignum1: string = ""
+  mathatanSignum2: string = ""
+  mathUnaryMinus1: string = ""
+  mathUnaryMinus2: string = ""
+  mathTan1: string = ""
+  mathTan2: string = ""
+  mathSubtract1: string = ""
+  mathSubtract2: string = ""
+  mathSqrt1: string = ""
+  mathSqrt2: string = ""
+  mathSin1: string = ""
+  mathRound1: string = ""
+  mathRound2: string = ""
+  mathRightArithShift1: string = ""
+  mathRightArithShift2: string = ""
+  mathRadix1: string = ""
+  mathRadix2: number = 0
+  mathMultiply1: string = ""
+  mathMultiply2: string = ""
+  mathMin1: string = ""
+  mathMin2: string = ""
+  mathMax1: string = ""
+  mathMax2: string = ""
+  mathLongValue1: string = ""
+  mathLog1: string = ""
+  mathLog2: string = ""
+  mathLeftShift1: string = ""
+  mathLeftShift2: string = ""
+  mathIntValue1: string = ""
+  mathFormat1: string = ""
+  mathExp1: string = ""
+  mathExp2: string = ""
+  mathDivide1: string = ""
+  mathDivide2: string = ""
+  mathCos1: string = ""
+  mathCompare1: string = ""
+  mathCompare2: string = ""
+  mathByteValue1: string = ""
+  mathAtan1: string = ""
+  mathAtan2: string = ""
+  mathAsin1: string = ""
+  mathAdd1: string = ""
+  mathAdd2: string = ""
+  mathAcosStr: string = ""
+  mathAbsStr: string = ""
 
   build() {
     Scroll(this.scroller) {
@@ -1111,7 +1111,7 @@ struct Index {
   }
 }
 
-function tb(root, value, dp, rm) {
+function tb(root:string, value:string, dp:number, rm: BigNumber.RoundingMode) {
   BigNumber.config({ DECIMAL_PLACES: dp, ROUNDING_MODE: rm });
   let actual = areEqual(root, new BigNumber(value).sqrt().valueOf());
   if (actual) {
@@ -1120,7 +1120,7 @@ function tb(root, value, dp, rm) {
   // throw new Error(' failed areEqual test' + root);
 };
 
-function areEqual(expected, actual) {
+function areEqual(expected:string, actual:string) {
   // If expected and actual are both NaN, consider them equal.
   if (expected === actual || expected !== expected && actual !== actual) {
     return true

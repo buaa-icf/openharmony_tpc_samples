@@ -27,11 +27,15 @@ struct CommonResultPage {
   @State afterStr: Array<string> = new Array<string>();
 
   aboutToAppear() {
-    let data: CommonResultBean = null;
-    if (router.getParams() && router.getParams()['dataObj']) {
-      data = router.getParams()['dataObj'];
-      this.beforeStr = data.beforeStr ? data.beforeStr : [];
-      this.afterStr = data.afterStr ? data.afterStr : [];
+    interface RouterParams{
+      dataObj:CommonResultBean
+    }
+    let data: CommonResultBean | null = null;
+    // let dataObj:string='dataObj'
+    if (router.getParams() &&(router.getParams() as RouterParams).dataObj) {
+      data = (router.getParams() as RouterParams).dataObj;
+      this.beforeStr = data?.beforeStr ? data?.beforeStr : [];
+      this.afterStr = data?.afterStr ? data?.afterStr : [];
       this.beforeIndex = new Array<number>()
       this.afterIndex = new Array<number>()
       for (let index = 0; index < this.beforeStr.length; index++) {
@@ -76,7 +80,7 @@ struct CommonResultPage {
       Column() {
         Flex({ direction: FlexDirection.Row }) {
           List({ space: 5, initialIndex: 0 }) {
-            ForEach(this.beforeIndex, (item) => {
+            ForEach(this.beforeIndex, (item:string) => {
               ListItem() {
                 Text(this.beforeStr[item])
                   .width('100%')
@@ -84,7 +88,7 @@ struct CommonResultPage {
                   .fontSize(16)
                   .textAlign(TextAlign.Center)
               }
-            }, item => item)
+            }, (item:string) => item)
           }
           .listDirection(Axis.Vertical)
           .divider({ strokeWidth: 2 })
@@ -94,7 +98,7 @@ struct CommonResultPage {
           .height('100%')
 
           List({ space: 5, initialIndex: 0 }) {
-            ForEach(this.afterIndex, (item) => {
+            ForEach(this.afterIndex, (item:string) => {
               ListItem() {
                 Text('转换后： \r\n' + this.afterStr[item])
                   .width('100%')
@@ -103,7 +107,7 @@ struct CommonResultPage {
                   .textAlign(TextAlign.Center)
                   .borderRadius(10)
               }
-            }, item => item)
+            }, (item:string) => item)
           }
           .listDirection(Axis.Vertical)
           .divider({ strokeWidth: 2 })

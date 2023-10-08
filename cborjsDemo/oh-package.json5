@@ -7,5 +7,8 @@
   "description": "example description",
   "repository": {},
   "version": "2.0.0",
-  "dependencies": {}
+  "dependencies": {
+    "cbor-js": "^0.1.0"
+  },
+  "compileOnlyDependencies": {}
 }

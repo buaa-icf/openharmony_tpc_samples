@@ -15,27 +15,26 @@
 import hilog from '@ohos.hilog';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 
-
-import { er } from "easy-replace";
+import { er,Opts } from "easy-replace";
 
 export default function searchForleftright() {
-  describe('searchForleftright', function () {
+  describe('searchForleftright', () => {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(() => {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(() => {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(() => {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(() => {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
@@ -50,162 +49,96 @@ export default function searchForleftright() {
     //   expect(a).assertEqual(a)
     // })
 
-    var count = 0;
-    var test = function (name, func){
-      name = name.replace(/[ /d]/g, '');
-      name = name.replace(/-/g,"");
-      it(name,count++,func)
+    let count = 0;
+    let test = (name: string, func: Function) => {
+      name = name.replace(new RegExp("/[ /d]/g"), '');
+      name = name.replace(new RegExp("/-/g"), "");
+      it(name, count++, func)
     }
 
-    var equal = function (src,dst,tag){
-      console.log('tag:'+tag+"  src="+src+ " dst="+dst);
+    let equal = (src: string, dst: string, tag: string) => {
+      console.log('tag:' + tag + "  src=" + src + " dst=" + dst);
       expect(src).assertEqual(dst)
     }
 
-// ==============================
-// searchFor + both left and right
-// ==============================
+    // ==============================
+    // searchFor + both left and right
+    // ==============================
+    let optsFunc = (leftOutsideNot: string | string[] = "",
+                    leftOutside: string | string[] = "",
+                    leftMaybe: string | string[] = "",
+                    searchFor: string | string[] = "",
+                    rightMaybe: string | string[] = "",
+                    rightOutside: string | string[] = "",
+                    rightOutsideNot: string | string[] = ""): Opts => {
+      return {
+        leftOutsideNot,
+        leftOutside,
+        leftMaybe,
+        searchFor,
+        rightMaybe,
+        rightOutside,
+        rightOutsideNot,
+        i: {
+          leftOutsideNot: false,
+          leftOutside: false,
+          leftMaybe: false,
+          searchFor: false,
+          rightMaybe: false,
+          rightOutside: false,
+          rightOutsideNot: false
+        }
+      }
+    }
+    test("01 - left and right maybes as emoji", () => {
+      equal(
+        er("a🦄🐴🦄a",optsFunc("","","🦄","🐴","🦄","",""), "z"),
+        "aza",
+        "test 4.1.1"
+      );
+      equal(
+        er("a🦄🐴🦄a",optsFunc("","",["🦄"],"🐴",["🦄"],"",""), "z"),
+        "aza",
+        "test 4.1.2"
+      );
+    });
 
-test("01 - left and right maybes as emoji", () => {
-  equal(
-    er(
-      "a🦄🐴🦄a",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "🦄",
-        searchFor: "🐴",
-        rightMaybe: "🦄",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "z"
-    ),
-    "aza",
-    "test 4.1.1"
-  );
-  equal(
-    er(
-      "a🦄🐴🦄a",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: ["🦄"],
-        searchFor: "🐴",
-        rightMaybe: ["🦄"],
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "z"
-    ),
-    "aza",
-    "test 4.1.2"
-  );
-});
+    test("02 - left and right maybes as text", () => {
+      equal(
+        er("abc abc abc",optsFunc("","","a","b","c","",""), "z"),
+        "z z z",
+        "test 4.2.1"
+      );
+      equal(
+        er("abc abc abc",optsFunc("","",["a", "c"],"b",["a", "c"],"",""), "z"),
+        "z z z",
+        "test 4.2.2"
+      );
+    });
 
-test("02 - left and right maybes as text", () => {
-  equal(
-    er(
-      "abc abc abc",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "a",
-        searchFor: "b",
-        rightMaybe: "c",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "z"
-    ),
-    "z z z",
-    "test 4.2.1"
-  );
-  equal(
-    er(
-      "abc abc abc",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: ["a", "c"],
-        searchFor: "b",
-        rightMaybe: ["a", "c"],
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "z"
-    ),
-    "z z z",
-    "test 4.2.2"
-  );
-});
+    test("03 - left+right maybes, middle & end of word #1", () => {
+      equal(
+        er("zzzabc zzzzabczzz abczzzz",optsFunc("","","a","b","c","",""), "z"),
+        "zzzz zzzzzzzz zzzzz",
+        "test 4.3"
+      );
+    });
 
-test("03 - left+right maybes, middle & end of word #1", () => {
-  equal(
-    er(
-      "zzzabc zzzzabczzz abczzzz",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "a",
-        searchFor: "b",
-        rightMaybe: "c",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "z"
-    ),
-    "zzzz zzzzzzzz zzzzz",
-    "test 4.3"
-  );
-});
+    test("04 - left+right maybes, middle & end of word #2", () => {
+      equal(
+        er("zzz🦄🐴🦄 zzzz🦄🐴🦄zzz 🦄🐴🦄zzzz",optsFunc("","","🦄","🐴","🦄","",""), "z"),
+        "zzzz zzzzzzzz zzzzz",
+        "test 4.4"
+      );
+    });
 
-test("04 - left+right maybes, middle & end of word #2", () => {
-  equal(
-    er(
-      "zzz🦄🐴🦄 zzzz🦄🐴🦄zzz 🦄🐴🦄zzzz",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "🦄",
-        searchFor: "🐴",
-        rightMaybe: "🦄",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "z"
-    ),
-    "zzzz zzzzzzzz zzzzz",
-    "test 4.4"
-  );
-});
-
-test("05 - normal words", () => {
-  equal(
-    er(
-      "aaa some test text testing for somebody",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: ["some "],
-        searchFor: "te",
-        rightMaybe: ["st", "xt", "sting"],
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "check"
-    ),
-    "aaa check check check for somebody",
-    "test 4.5"
-  );
-});
+    test("05 - normal words", () => {
+      equal(
+        er("aaa some test text testing for somebody",optsFunc("","",["some "],"te",["st", "xt", "sting"],"",""), "check"),
+        "aaa check check check for somebody",
+        "test 4.5"
+      );
+    });
 
   })
 }

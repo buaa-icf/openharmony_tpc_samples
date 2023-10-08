@@ -13,9 +13,17 @@
  * limitations under the License.
  */
 
-// @ts-ignore
-import randomColor from 'randomcolor';
 
+import randomColor from 'randomcolor';
+interface formatType{
+  format:string
+}
+let formatFn = (data:string):formatType => {
+  const  formatData:formatType= {
+    format:data
+  }
+  return formatData
+}
 @Entry
 @Component
 struct ColorDemo {
@@ -28,9 +36,7 @@ struct ColorDemo {
         Button('随机颜色测试')
           .margin({ left: 18 })
           .onClick(() => {
-             this.color = randomColor({
-               format:'hex'
-             });
+             this.color = randomColor(formatFn('hex'));
             console.log('颜色' +  this.color); // '22';
           })
         Text()

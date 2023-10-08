@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 import md2 from 'js-md2'
+
 @Entry
 @Component
 struct Index {
@@ -37,8 +38,8 @@ struct Index {
             this.inputText = value
           })
 
-        Button('md2').width(300).margin(20).fontSize(25).onClick(()=>{
-          let mess = md2 (this.inputText);
+        Button('md2').width(300).margin(20).fontSize(25).onClick(() => {
+          let mess: string = md2(this.inputText);
           this.showDialog(mess)
         })
 
@@ -47,17 +48,17 @@ struct Index {
     }
     .height('100%')
   }
-  showDialog(message:string){
+
+  showDialog(message: string) {
     AlertDialog.show({
       title: '',
       message: message,
       confirm: {
         value: 'OK',
-        action:()=>{
+        action: () => {
 
         }
       }
     })
   }
-
 }

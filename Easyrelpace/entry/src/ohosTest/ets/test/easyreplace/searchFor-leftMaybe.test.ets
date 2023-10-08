@@ -16,26 +16,26 @@ import hilog from '@ohos.hilog';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 
 
-import { er } from "easy-replace";
+import { er,Opts } from "easy-replace";
 
 export default function searchForleftMaybe() {
-  describe('searchForleftMaybe', function () {
+  describe('searchForleftMaybe', ()=> {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(()=> {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(()=> {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(()=> {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(()=> {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
@@ -50,55 +50,54 @@ export default function searchForleftMaybe() {
     //   expect(a).assertEqual(a)
     // })
 
-    var count = 0;
-    var test = function (name, func){
-      name = name.replace(/[ /d]/g, '');
-      name = name.replace(/-/g,"");
+    let count = 0;
+    let test =  (name:string, func:Function)=>{
+      name = name.replace(new RegExp("/[ /d]/g"), '');
+      name = name.replace(new RegExp("/-/g"),"");
       it(name,count++,func)
     }
 
-    var equal = function (src,dst,tag){
+    let equal =  (src:string,dst:string,tag:string)=>{
       console.log('tag:'+tag+"  src="+src+ " dst="+dst);
       expect(src).assertEqual(dst)
     }
 // ==============================
 // searchFor + leftMaybe
 // ==============================
-
+    let optsFunc = (leftOutsideNot: string | string[] = "",
+                    leftOutside: string | string[] = "",
+                    leftMaybe: string | string[] = "",
+                    searchFor: string | string[] = "",
+                    rightMaybe: string | string[] = "",
+                    rightOutside: string | string[] = "",
+                    rightOutsideNot: string | string[] = "",leftMaybeBool:boolean=false): Opts => {
+      return {
+        leftOutsideNot,
+        leftOutside,
+        leftMaybe,
+        searchFor,
+        rightMaybe,
+        rightOutside,
+        rightOutsideNot,
+        i: {
+          leftOutsideNot: false,
+          leftOutside: false,
+          leftMaybe: leftMaybeBool,
+          searchFor: false,
+          rightMaybe: false,
+          rightOutside: false,
+          rightOutsideNot: false
+        }
+      }
+    }
 test("01 - left maybe found", () => {
   equal(
-    er(
-      "a🦄🐴🦄c",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "🦄",
-        searchFor: "🐴",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "b"
-    ),
+    er("a🦄🐴🦄c",optsFunc("","","🦄","🐴","","",""), "b"),
     "ab🦄c",
     "test 2.1"
   );
   equal(
-    er(
-      "a🦄🐴🦄c",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: ["🦄"],
-        searchFor: "🐴",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "b"
-    ),
+    er("a🦄🐴🦄c",optsFunc("","",["🦄"],"🐴","","",""), "b"),
     "ab🦄c",
     "test 2.1"
   );
@@ -106,38 +105,12 @@ test("01 - left maybe found", () => {
 
 test("02 - two replacements with one leftmaybe, nearby", () => {
   equal(
-    er(
-      "ab🐴🦄🐴c",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "🦄",
-        searchFor: "🐴",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "d"
-    ),
+    er("ab🐴🦄🐴c",optsFunc("","","🦄","🐴","","",""), "d"),
     "abddc",
     "test 2.2"
   );
   equal(
-    er(
-      "ab🐴🦄🐴c",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: ["🦄"],
-        searchFor: "🐴",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "d"
-    ),
+    er("ab🐴🦄🐴c",optsFunc("","",["🦄"],"🐴","","",""), "d"),
     "abddc",
     "test 2.2"
   );
@@ -145,38 +118,12 @@ test("02 - two replacements with one leftmaybe, nearby", () => {
 
 test("03 - two consecutive maybes found/replaced", () => {
   equal(
-    er(
-      "ab🦄🐴🦄🐴c",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "🦄",
-        searchFor: "🐴",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "d"
-    ),
+    er("ab🦄🐴🦄🐴c",optsFunc("","","🦄","🐴","","",""), "d"),
     "abddc",
     "test 2.3"
   );
   equal(
-    er(
-      "ab🦄🐴🦄🐴c",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: ["🦄"],
-        searchFor: "🐴",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "d"
-    ),
+    er("ab🦄🐴🦄🐴c",optsFunc("","",["🦄"],"🐴","","",""), "d"),
     "abddc",
     "test 2.3"
   );
@@ -184,38 +131,12 @@ test("03 - two consecutive maybes found/replaced", () => {
 
 test("04 - futile left maybe", () => {
   equal(
-    er(
-      "'🐴",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "🦄",
-        searchFor: "🐴",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "d"
-    ),
+    er("'🐴",optsFunc("","","🦄","🐴","","",""), "d"),
     "'d",
     "test 2.4"
   );
   equal(
-    er(
-      "'🐴",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: ["🦄"],
-        searchFor: "🐴",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "d"
-    ),
+    er("'🐴",optsFunc("","",["🦄"],"🐴","","",""), "d"),
     "'d",
     "test 2.4"
   );
@@ -223,20 +144,7 @@ test("04 - futile left maybe", () => {
 
 test("05 - line break as search string", () => {
   equal(
-    er(
-      "\n\n\n",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "\n",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "a"
-    ),
+    er("\n\n\n",optsFunc("","","","\n","","",""), "a"),
     "aaa",
     "test 2.5"
   );
@@ -244,38 +152,12 @@ test("05 - line break as search string", () => {
 
 test("06 - line break as both searchFor and maybe replaced", () => {
   equal(
-    er(
-      "\n\n\n",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "\n",
-        searchFor: "\n",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "a"
-    ),
+    er("\n\n\n",optsFunc("","","\n","\n","","",""), "a"),
     "aaa",
     "test 2.6"
   );
   equal(
-    er(
-      "\n\n\n",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: ["\n"],
-        searchFor: "\n",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "a"
-    ),
+    er("\n\n\n",optsFunc("","",["\n"],"\n","","",""), "a"),
     "aaa",
     "test 2.6"
   );
@@ -283,20 +165,7 @@ test("06 - line break as both searchFor and maybe replaced", () => {
 
 test("07 - operations on line breaks only", () => {
   equal(
-    er(
-      "\n\n",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "\n\n",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "\n"
-    ),
+    er("\n\n",optsFunc("","","","\n\n","","",""), "\n"),
     "\n",
     "test 2.7"
   );
@@ -304,20 +173,7 @@ test("07 - operations on line breaks only", () => {
 
 test("08 - three left maybes (found)", () => {
   equal(
-    er(
-      "a🦄🐴🦄c",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: ["🦄", "a", "x"],
-        searchFor: "🐴",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "b"
-    ),
+    er("a🦄🐴🦄c",optsFunc("","",["🦄", "a", "x"],"🐴","","",""), "b"),
     "ab🦄c",
     "test 2.8"
   );
@@ -325,20 +181,7 @@ test("08 - three left maybes (found)", () => {
 
 test("09 - three left maybes (not found)", () => {
   equal(
-    er(
-      "a🦄🐴🦄c",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: ["🦄", "🐴", "c"],
-        searchFor: "🍺",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "b"
-    ),
+    er("a🦄🐴🦄c",optsFunc("","",["🦄", "🐴", "c"],"🍺","","",""), "b"),
     "a🦄🐴🦄c",
     "test 2.9"
   );
@@ -346,56 +189,17 @@ test("09 - three left maybes (not found)", () => {
 
 test("10 - three left maybes (multiple hungry finds)", () => {
   equal(
-    er(
-      "🐴 a🍺🦄🐴🦄c a🦄🍺🐴🦄c a🦄🐴🦄c a🍺🐴🦄c 🐴",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: ["🦄", "🍺", "c"],
-        searchFor: "🐴",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "b"
-    ),
+    er("🐴 a🍺🦄🐴🦄c a🦄🍺🐴🦄c a🦄🐴🦄c a🍺🐴🦄c 🐴",optsFunc("","",["🦄", "🍺", "c"],"🐴","","",""), "b"),
     "b a🍺b🦄c a🦄b🦄c ab🦄c ab🦄c b",
     "test 2.10.1"
   );
   equal(
-    er(
-      "🐴 a🍺🦄🐴🦄c a🦄🍺🐴🦄c a🦄🐴🦄c a🍺🐴🦄c 🐴",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: ["c", "🦄", "🍺"],
-        searchFor: "🐴",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "b"
-    ),
+    er("🐴 a🍺🦄🐴🦄c a🦄🍺🐴🦄c a🦄🐴🦄c a🍺🐴🦄c 🐴",optsFunc("","",["c", "🦄", "🍺"],"🐴","","",""), "b"),
     "b a🍺b🦄c a🦄b🦄c ab🦄c ab🦄c b",
     "test 2.10.2"
   );
   equal(
-    er(
-      "🐴 a🍺🦄🐴🦄c a🦄🍺🐴🦄c a🦄🐴🦄c a🍺🐴🦄c 🐴",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: ["🍺", "c", "🦄"],
-        searchFor: "🐴",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "b"
-    ),
+    er("🐴 a🍺🦄🐴🦄c a🦄🍺🐴🦄c a🦄🐴🦄c a🍺🐴🦄c 🐴",optsFunc("","",["🍺", "c", "🦄"],"🐴","","",""), "b"),
     "b a🍺b🦄c a🦄b🦄c ab🦄c ab🦄c b",
     "test 2.10.3"
   );
@@ -406,20 +210,7 @@ test("10 - three left maybes (multiple hungry finds)", () => {
 
 test("11 - sneaky array conversion situation", () => {
   equal(
-    er(
-      "a🦄🐴🦄c",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: ["a", "🦄"],
-        searchFor: "🐴",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "b"
-    ),
+    er("a🦄🐴🦄c",optsFunc("","",["a", "🦄"],"🐴","","",""), "b"),
     "ab🦄c",
     "test 2.11"
   );
@@ -427,20 +218,7 @@ test("11 - sneaky array conversion situation", () => {
 
 test("12 - sneaky array conversion situation", () => {
   equal(
-    er(
-      "a🦄🐴🦄c",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: ["🦄", "a"],
-        searchFor: "🐴",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "b"
-    ),
+    er("a🦄🐴🦄c",optsFunc("","",["🦄", "a"],"🐴","","",""), "b"),
     "ab🦄c",
     "test 2.12"
   );
@@ -448,20 +226,7 @@ test("12 - sneaky array conversion situation", () => {
 
 test("13 - normal words, few of them, leftMaybe as array", () => {
   equal(
-    er(
-      "this emotion is really a promotion in motion",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: ["e", "pro"],
-        searchFor: "motion",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "test"
-    ),
+    er("this emotion is really a promotion in motion",optsFunc("","",["e", "pro"],"motion","","",""), "test"),
     "this test is really a test in test",
     "test 2.13"
   );
@@ -469,20 +234,7 @@ test("13 - normal words, few of them, leftMaybe as array", () => {
 
 test("14 - normal words, few of them, leftMaybe as array", () => {
   equal(
-    er(
-      "this emotion is really a promotion in motion",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: ["pro", "e"],
-        searchFor: "motion",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "test"
-    ),
+    er("this emotion is really a promotion in motion",optsFunc("","",["pro", "e"],"motion","","",""), "test"),
     "this test is really a test in test",
     "test 2.14"
   );
@@ -491,18 +243,7 @@ test("14 - normal words, few of them, leftMaybe as array", () => {
 test("15 - leftMaybe is array, but with only 1 null value", () => {
   equal(
     er(
-      "some text",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: [null],
-        searchFor: "look for me",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "replace with me"
+      "some text",optsFunc("","",[""],"look for me","","",""), "replace with me"
     ),
     "some text",
     "test 2.15"
@@ -512,18 +253,7 @@ test("15 - leftMaybe is array, but with only 1 null value", () => {
 test("16 - leftMaybe is array, but with only 1 null value", () => {
   equal(
     er(
-      "some text",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: [null, null, null],
-        searchFor: "look for me",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "replace with me"
+      "some text",optsFunc("","",["", "", ""],"look for me","","",""), "replace with me"
     ),
     "some text",
     "test 2.16"
@@ -533,19 +263,7 @@ test("16 - leftMaybe is array, but with only 1 null value", () => {
 test("17 - leftMaybe is couple integers in an array", () => {
   equal(
     er(
-      "1234",
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        // @ts-ignore
-        leftMaybe: [2, 3],
-        // @ts-ignore
-        searchFor: 4,
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      9
+      "1234",optsFunc("","",["2", "3"],"4","","",""), "9"
     ),
     "129",
     "test 2.17"
@@ -555,19 +273,7 @@ test("17 - leftMaybe is couple integers in an array", () => {
 test("18 - leftMaybe is couple integers in an array", () => {
   equal(
     er(
-      "1234",
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        // @ts-ignore
-        leftMaybe: [3, 2],
-        // @ts-ignore
-        searchFor: 4,
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      9
+      "1234",optsFunc("","",["3", "2"],"4","","",""), "9"
     ),
     "129",
     "test 2.18"
@@ -577,60 +283,21 @@ test("18 - leftMaybe is couple integers in an array", () => {
 test("19 - sneaky case of overlapping leftMaybes", () => {
   equal(
     er(
-      "this is a word to be searched for",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: ["be ", "to be ", "this not exists"],
-        searchFor: "searched",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "we look"
+      "this is a word to be searched for",optsFunc("","",["be ", "to be ", "this not exists"],"searched","","",""), "we look"
     ),
     "this is a word we look for",
     "test 2.19.1 - no flag"
   );
   equal(
     er(
-      "this is a word To Be searched for",
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: ["be ", "to be ", "this not exists"],
-        searchFor: "searched",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-        // @ts-ignore
-        i: {
-          leftMaybe: true,
-        },
-      },
-      "we look"
+      "this is a word To Be searched for",optsFunc("","",["to be ", "this not exists"],"searched","","","",true), "we look"
     ),
     "this is a word we look for",
     "test 2.19.2 - varying case"
   );
   equal(
     er(
-      "this is a word To Be searched for",
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: ["this not exists", "zzz"],
-        searchFor: "searched",
-        rightMaybe: "",
-        rightOutside: "",
-        rightOutsideNot: "",
-        // @ts-ignore
-        i: {
-          leftMaybe: true,
-        },
-      },
-      "we look"
+      "this is a word To Be searched for",optsFunc("","",["this not exists", "zzz"],"searched","","","",true), "we look"
     ),
     "this is a word To Be we look for",
     "test 2.19.3"

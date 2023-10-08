@@ -13,38 +13,39 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-import BigNumber from 'bignumber.js';
+import { BigNumber } from './BigNumber';
 import Test from './tester';
+import Utils from './Utils';
 
 export default function integerValue() {
-  describe('integerValuetest', function () {
+  describe('integerValuetest', ()=> {
 
 
-    function t(expected, value, roundingMode?) {
-      new Test().areEqual(String(expected), new BigNumber(String(value)).integerValue(roundingMode).toString());
+    let t = (expected:number|string, value:number|string|null, roundingMode?:BigNumber.RoundingMode|null)=> {
+      new Test().areEqual(String(expected), Utils.integerValue(value,roundingMode));
     }
 
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(()=> {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(()=> {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(()=> {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(()=> {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    it('integerValue', 0, function () {
-      var MAX = 1e9;
+    it('integerValue', 0, ()=> {
+      let MAX = 1e9;
 
 
       BigNumber.config({
@@ -107,9 +108,9 @@ export default function integerValue() {
 
       t(0, 0);
       t(0, -0);
-      t(Infinity, Infinity);
-      t(-Infinity, -Infinity);
-      t(NaN, NaN);
+      t(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY);
+      t(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY);
+      t(Number.NaN, Number.NaN);
 
       t(1, 0.5);
       t(1, 0.7);
@@ -178,20 +179,20 @@ export default function integerValue() {
       t(-9007199254740990, -9007199254740990);
       t(-9007199254740991, -9007199254740991);
       t(-1.7976931348623157e+308, -1.7976931348623157e+308);
-      t(Infinity, Infinity);
-      t(-Infinity, -Infinity);
+      t(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY);
+      t(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY);
 
-      var ulp = Math.pow(2, -1022 - 52);
-      var max_denormal = (Math.pow(2, 52) - 1) * ulp;
-      var min_normal = Math.pow(2, -1022);
-      var max_fraction = Math.pow(2, 52) - 0.5;
-      var min_nonfraction = Math.pow(2, 52);
-      var max_non_infinite = Number.MAX_VALUE;
+      let ulp = Math.pow(2, -1022 - 52);
+      let max_denormal = (Math.pow(2, 52) - 1) * ulp;
+      let min_normal = Math.pow(2, -1022);
+      let max_fraction = Math.pow(2, 52) - 0.5;
+      let min_nonfraction = Math.pow(2, 52);
+      let max_non_infinite = Number.MAX_VALUE;
 
-      var max_smi31 = Math.pow(2,30) - 1;
-      var min_smi31 = -Math.pow(2,30);
-      var max_smi32 = Math.pow(2,31) - 1;
-      var min_smi32 = -Math.pow(2,31);
+      let max_smi31 = Math.pow(2,30) - 1;
+      let min_smi31 = -Math.pow(2,30);
+      let max_smi32 = Math.pow(2,31) - 1;
+      let min_smi32 = -Math.pow(2,31);
 
       t(0, ulp);
       t(0, max_denormal);
@@ -682,48 +683,28 @@ export default function integerValue() {
       t('13', '12.345', -0);
 
 
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').integerValue(NaN)}, ".integerValue(NaN)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').integerValue('NaN')}, ".integerValue('NaN')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').integerValue([])}, ".integerValue([])");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').integerValue({})}, ".integerValue({})");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').integerValue('')}, ".integerValue('')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').integerValue(' ')}, ".integerValue(' ')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').integerValue('hello')}, ".integerValue('hello')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').integerValue('\t')}, ".integerValue('\t')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').integerValue(new Date)}, ".integerValue(new Date)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').integerValue(new RegExp)}, ".integerValue(new RegExp)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').integerValue(7.5)}, ".integerValue(7.5)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').integerValue('-1.1e1')}, ".integerValue('-1.1e1')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').integerValue('-1')}, ".integerValue(-1')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').integerValue(-23)}, ".integerValue(-23)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').integerValue(8.01)}, ".integerValue(8.01)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').integerValue(9)}, ".integerValue(9)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').integerValue(-1)}, ".integerValue(-1)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').integerValue('-0.01')}, ".integerValue('-0.01')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').integerValue('-1e-1')}, ".integerValue('-1e-1')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').integerValue(Infinity)}, ".integerValue(Infinity)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('12.345').integerValue('-Infinity')}, ".integerValue('-Infinity')");
+
+      new Test().isException(()=> {Utils.bigIntegerValue('12.345',Number.NaN)}, ".integerValue(NaN)");
+      new Test().isException(()=> {Utils.bigIntegerValue('12.345','NaN')}, ".integerValue('NaN')");
+      new Test().isException(()=> {Utils.bigIntegerValue('12.345',[])}, ".integerValue([])");
+      new Test().isException(()=> {Utils.bigIntegerValue('12.345',{})}, ".integerValue({})");
+      new Test().isException(()=> {Utils.bigIntegerValue('12.345','')}, ".integerValue('')");
+      new Test().isException(()=> {Utils.bigIntegerValue('12.345',' ')}, ".integerValue(' ')");
+      new Test().isException(()=> {Utils.bigIntegerValue('12.345','hello')}, ".integerValue('hello')");
+      new Test().isException(()=> {Utils.bigIntegerValue('12.345','\t')}, ".integerValue('\t')");
+      new Test().isException(()=> {Utils.bigIntegerValue('12.345',new Date)}, ".integerValue(new Date)");
+      new Test().isException(()=> {Utils.bigIntegerValue('12.345',new RegExp(''))}, ".integerValue(new RegExp(''))");
+      new Test().isException(()=> {Utils.bigIntegerValue('12.345',7.5)}, ".integerValue(7.5)");
+      new Test().isException(()=> {Utils.bigIntegerValue('12.345','-1.1e1')}, ".integerValue('-1.1e1')");
+      new Test().isException(()=> {Utils.bigIntegerValue('12.345','-1')}, ".integerValue(-1')");
+      new Test().isException(()=> {Utils.bigIntegerValue('12.345',-23)}, ".integerValue(-23)");
+      new Test().isException(()=> {Utils.bigIntegerValue('12.345',8.01)}, ".integerValue(8.01)");
+      new Test().isException(()=> {Utils.bigIntegerValue('12.345',9)}, ".integerValue(9)");
+      new Test().isException(()=> {Utils.bigIntegerValue('12.345',-1)}, ".integerValue(-1)");
+      new Test().isException(()=> {Utils.bigIntegerValue('12.345','-0.01')}, ".integerValue('-0.01')");
+      new Test().isException(()=> {Utils.bigIntegerValue('12.345','-1e-1')}, ".integerValue('-1e-1')");
+      new Test().isException(()=> {Utils.bigIntegerValue('12.345',Number.POSITIVE_INFINITY)}, ".integerValue(Infinity)");
+      new Test().isException(()=> {Utils.bigIntegerValue('12.345','-Infinity')}, ".integerValue('-Infinity')");
     })
   })
 }

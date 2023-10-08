@@ -16,13 +16,13 @@ import prompt from '@ohos.prompt';
 import dayjs from "dayjs";
 
 import customParseFormat from "dayjs/plugin/customParseFormat"
-import 'dayjs/locale/zh-cn';
+import * as ns from  'dayjs/locale/zh-cn';
 
 dayjs.extend(customParseFormat)
 
 interface ApiItem {
   apiName: string;
-  func: (context) => void;
+  func: () => void;
   des?:string;
 }
 
@@ -30,158 +30,151 @@ interface ModuleItem {
   moduleName: string;
   examples: Array<ApiItem>
 }
+let apisIndex:Array<ModuleItem>=[
+  {
+    moduleName: "Parse",
+    examples: [
+      {
+        apiName: "dayjs('20130108').valueOf()",
+        des:"解析无分隔符的时间，得到时间戳",
+        func: () => {
+          showMessage(dayjs('20130108').valueOf().toString())
+        }
+      },
+      {
+        apiName: "dayjs( '2018-04-24').valueOf()",
+        des:"解析带-的时间，得到时间戳",
+        func: () => {
+          showMessage(dayjs( '2018-04-24').valueOf().toString())
+        }
+      },
+      {
+        apiName: "dayjs('2018-04-24 11:12').format()",
+        des:"解析带时分的时间",
+        func: () => {
+          showMessage(dayjs('2018-04-24 11:12').format())
+        }
+      },
 
+      {
+        apiName: "dayjs( '2018-05-02 11:12:13').valueOf()",
+        des:"解析带时分秒的时间",
+        func: () => {
+          showMessage(dayjs( '2018-05-02 11:12:13').valueOf().toString())
+        }
+      },
+
+      {
+        apiName: "dayjs('2018-05-02 11:12:13.998').valueOf()",
+        des:"解析带时分秒毫秒的时间",
+        func: () => {
+          showMessage(dayjs('2018-05-02 11:12:13.998').valueOf().toString())
+
+        }
+      },
+      {
+        apiName: "dayjs( '2018-4-1').valueOf()",
+        des:"获取时间戳",
+        func: () => {
+          showMessage(dayjs( '2018-4-1').valueOf().toString())
+        }
+      },
+      {
+        apiName: "dayjs().second()",
+        des:"获取当前秒",
+        func: () => {
+          showMessage(dayjs().second() + "")
+        }
+      },
+      {
+        apiName: "dayjs().minute()",
+        des:"获取当前分",
+        func: () => {
+          showMessage(dayjs().minute() + "")
+        }
+      },
+      {
+        apiName: "dayjs().hour()",
+        des:"获取当前时",
+        func: () => {
+          showMessage(dayjs().hour() + "")
+        }
+      },
+      {
+        apiName: "dayjs().date()",
+        des:"获取当前日",
+        func: () => {
+          showMessage(dayjs().date().toString())
+        }
+      },
+      {
+        apiName: "dayjs().day()",
+        des:"获取当前周",
+        func: () => {
+          showMessage(dayjs().day() + "")
+        }
+      },
+      {
+        apiName: "dayjs().month()",
+        des:"获取当前月",
+        func: () => {
+          showMessage(dayjs().month() + "")
+        }
+      },
+      {
+        apiName: "dayjs().year()",
+        des:"获取当前年",
+        func: () => {
+          showMessage(dayjs().year() + "")
+        }
+      },
+      {
+        apiName: "dayjs().get('year');",
+        des:"通过get方式获取当前年",
+        func: () => {
+          showMessage(dayjs().get('year') + "")
+        }
+      },
+      {
+        apiName: "dayjs().set('year', 2013);",
+        des:"通过set方式设置当前年",
+        func: () => {
+          showMessage(dayjs().set('year', 2013).format())
+        }
+      },
+      {
+        apiName: "dayjs().subtract(1, 'day')",
+        des:"当前日期往前一天",
+        func: () => {
+          showMessage(dayjs().subtract(1, 'day').format())
+        }
+      },
+      {
+        apiName: "dayjs().add(1, 'day')",
+        des:"当前日期往后一天",
+        func: () => {
+          showMessage(dayjs().add(1, 'day').format())
+        }
+      },
+    ],
+  }]
+function showMessage(text: string) {
+  prompt.showToast({ message: text + "" || "没有任何信息..." });
+}
 @Entry
 @Component
 struct Index {
   private arr: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
   @State message: string = 'Hello World'
-  @State apis: Array<ModuleItem> = [
-    {
-      moduleName: "Parse",
-      examples: [
-        {
-          apiName: "dayjs('20130108').valueOf()",
-          des:"解析无分隔符的时间，得到时间戳",
-          func: (that) => {
-            that.showMessage(dayjs('20130108').valueOf())
-          }
-        },
-        {
-          apiName: "dayjs( '2018-04-24').valueOf()",
-          des:"解析带-的时间，得到时间戳",
-          func: (that) => {
-            that.showMessage(dayjs( '2018-04-24').valueOf())
-          }
-        },
-        {
-          apiName: "dayjs('2018-04-24 11:12').format()",
-          des:"解析带时分的时间",
-          func: (that) => {
-            that.showMessage(dayjs('2018-04-24 11:12').format())
-          }
-        },
-
-        {
-          apiName: "dayjs( '2018-05-02 11:12:13').valueOf()",
-          des:"解析带时分秒的时间",
-          func: (that) => {
-            that.showMessage(dayjs( '2018-05-02 11:12:13').valueOf())
-          }
-        },
-
-        {
-          apiName: "dayjs('2018-05-02 11:12:13.998').valueOf()",
-          des:"解析带时分秒毫秒的时间",
-          func: (that) => {
-            that.showMessage(dayjs('2018-05-02 11:12:13.998').valueOf())
-
-          }
-        },
-        {
-          apiName: "dayjs( '2018-4-1').valueOf()",
-          des:"获取时间戳",
-          func: (that) => {
-            that.showMessage(dayjs( '2018-4-1').valueOf())
-
-          }
-        },
-        {
-          apiName: "dayjs().second()",
-          des:"获取当前秒",
-          func: (that) => {
-            that.showMessage(dayjs().second() + "")
-          }
-        },
-        {
-          apiName: "dayjs().minute()",
-          des:"获取当前分",
-          func: (that) => {
-            that.showMessage(dayjs().minute() + "")
-          }
-        },
-        {
-          apiName: "dayjs().hour()",
-          des:"获取当前时",
-          func: (that) => {
-            that.showMessage(dayjs().hour() + "")
-          }
-        },
-        {
-          apiName: "dayjs().date()",
-          des:"获取当前日",
-          func: (that) => {
-            that.showMessage(dayjs().date())
-          }
-        },
-        {
-          apiName: "dayjs().day()",
-          des:"获取当前周",
-          func: (that) => {
-            that.showMessage(dayjs().day() + "")
-          }
-        },
-
-        {
-          apiName: "dayjs().month()",
-          des:"获取当前月",
-          func: (that) => {
-            that.showMessage(dayjs().month() + "")
-          }
-        },
-
-        {
-          apiName: "dayjs().year()",
-          des:"获取当前年",
-          func: (that) => {
-            that.showMessage(dayjs().year() + "")
-          }
-        },
-
-        {
-          apiName: "dayjs().get('year');",
-          des:"通过get方式获取当前年",
-          func: (that) => {
-            that.showMessage(dayjs().get('year') + "")
-          }
-        },
+  @State apis: Array<ModuleItem> = apisIndex
 
 
-        {
-          apiName: "dayjs().set('year', 2013);",
-          des:"通过set方式设置当前年",
-          func: (that) => {
-            that.showMessage(dayjs().set('year', 2013).format())
-          }
-        },
-        {
-          apiName: "dayjs().subtract(1, 'day')",
-          des:"当前日期往前一天",
-          func: (that) => {
-            that.showMessage(dayjs().subtract(1, 'day').format())
-          }
-        },
-        {
-          apiName: "dayjs().add(1, 'day')",
-          des:"当前日期往后一天",
-          func: (that) => {
-            that.showMessage(dayjs().add(1, 'day').format())
-          }
-        },
-
-
-      ],
-    }]
-
-  showMessage(text: string) {
-    prompt.showToast({ message: text + "" || "没有任何信息..." });
-  }
 
   @Builder BuildItemForAPI(param: ModuleItem) {
     Column() {
       Text(param.moduleName).fontSize(30)
 
-      ForEach(param.examples, (item, index) => {
+      ForEach(param.examples, (item:ApiItem, index) => {
         Flex({ alignItems: ItemAlign.Start ,direction:FlexDirection.Column}) {
           Column(){
             Text(`${item.apiName}`).fontSize(20).margin({ bottom: 8 }).width("100%")
@@ -189,7 +182,7 @@ struct Index {
           }
 
 
-          Button("运行").onClick(() => item.func(this)).width("100%");
+          Button("运行").onClick(() => item.func()).width("100%");
         }.padding(10).margin({ bottom: 10 }).width("100%")
       })
     }
@@ -198,8 +191,6 @@ struct Index {
 
   build() {
     Column() {
-
-
       List() {
         ForEach(this.apis, (v: ModuleItem, index) => {
           ListItem() {

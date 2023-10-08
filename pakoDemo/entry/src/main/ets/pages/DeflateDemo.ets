@@ -14,7 +14,13 @@
  */
 
 import fileio from '@ohos.fileio';
-import pako from 'pako'
+import pako from 'pako' ;
+import { GlobalContext } from '../entryability/GlobalContext'
+
+interface optionsType {
+  deflate: boolean,
+  level: number
+}
 
 export async function DeflateFile(src: string, dest: string): Promise<boolean> {
   try {
@@ -23,7 +29,7 @@ export async function DeflateFile(src: string, dest: string): Promise<boolean> {
     const reader = fileio.openSync(src, 0o2);
     fileio.readSync(reader, buf);
     const writer = fileio.openSync(dest, 0o102, 0o666);
-    const options = { deflate: true, level: 9 };
+    const options: optionsType = { deflate: true, level: 9 };
     fileio.writeSync(writer, pako.deflate(new Uint8Array(buf), options).buffer);
     fileio.closeSync(reader);
     fileio.closeSync(writer);
@@ -40,8 +46,8 @@ export async function InflateFile(src: string, target: string): Promise<boolean>
     const stat = fileio.statSync(src);
     const buf = new ArrayBuffer(stat.size);
     const res = await fileio.read(reader, buf);
-    const options = { deflate: true, level: 9 };
-    const data = pako.inflate(new Uint8Array(res.buffer), options);
+    const options: optionsType = { deflate: true, level: 9 };
+    const data: Uint8Array = pako.inflate(new Uint8Array(res.buffer), options);
     const writer = fileio.openSync(target, 0o102, 0o666);
     fileio.writeSync(writer, data.buffer);
     fileio.closeSync(writer);
@@ -105,8 +111,9 @@ export struct DeflateTest {
   }
 
   InflateFileTest(): void {
+    let context:Context = GlobalContext.getContext().getObject("context") as Context
     try {
-      var data = globalThis.context.filesDir
+      let data = context.filesDir
       InflateFile(data + "/hello.txt.deflate", data + '/test.txt')
         .then(() => {
           AlertDialog.show({ title: '解缩成功',
@@ -121,8 +128,9 @@ export struct DeflateTest {
   }
 
   DeflateFileTest(): void {
+    let context:Context = GlobalContext.getContext().getObject("context") as Context
     try {
-      var data = globalThis.context.filesDir
+      let data = context.filesDir
       console.info('directory obtained. Data:' + data);
       DeflateFile(data + '/hello.txt', data + '/hello.txt.deflate')
         .then((isSuccess) => {
@@ -141,8 +149,9 @@ export struct DeflateTest {
   }
 
   generateTextFile(): void {
+    let context:Context = GlobalContext.getContext().getObject("context") as Context
     try {
-      var data = globalThis.context.filesDir
+      let data = context.filesDir
       const writer = fileio.openSync(data + '/hello.txt', 0o102, 0o666);
       fileio.writeSync(writer, "hello, world!  adjasjdakjdakjdkjakjdakjskjasdkjaskjdajksdkjasdkjaksjdkja\n"
       + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
@@ -171,7 +180,7 @@ export struct DeflateTest {
   }
 
   isFastClick(): boolean {
-    var timestamp = Date.parse(new Date().toString());
+    let timestamp = Date.parse(new Date().toString());
     if ((timestamp - this.preTimestamp) > 1500) {
       this.preTimestamp = timestamp;
       return false;

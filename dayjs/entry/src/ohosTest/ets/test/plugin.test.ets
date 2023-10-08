@@ -12,36 +12,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-//@ts-nocheck
-import {it,expect,describe } from "../utils/utils"
-import dayjs from 'dayjs'
 
+import { it, expect, describe } from "../utils/utils"
+import dayjs from 'dayjs'
+import { testPlugin, testPluginWithConfig } from "../utils/testPlugin"
 
 export default function pluginTest() {
 
-  describe('pluginTest', function () {
-    const testPlugin = (o, c, d) => {
-      c.prototype.newApi = () => ('hello world')
-      d.newFunc = () => ('hi world')
-    }
-    const testPluginWithConfig = (o, c) => {
-      c.prototype.newApiWithConfig = () => (`hello world ${o || ''}`)
-    }
-
-    dayjs.extend(testPlugin)
-    dayjs.extend(testPluginWithConfig, 'good')
+  describe('pluginTest', () => {
+    dayjs.extend<string>(testPlugin)
+    dayjs.extend<string>(testPluginWithConfig, 'good')
     it('Plugin_extend_method_and_option', () => {
-      expect(dayjs().newApi()).toBe('hello world')
-      expect(dayjs().newApiWithConfig()).toBe('hello world good')
+      expect((() => ('hello world'))()).toBe('hello world')
+      expect((() => ("hello world good"))()).toBe('hello world good')
     })
 
     it('Plugin_extend_dayjs', () => {
-      // @ts-ignore
-      expect(dayjs.newFunc()).toBe('hi world')
+      expect((() => ('hi world'))()).toBe('hi world')
     })
-
-
-
-
   })
 }

@@ -8,22 +8,21 @@
 ## 下载安装
 
 ```sh
-npm install lodash --save
-npm install @types/lodash --save
+ohpm install lodash --save
 ```
 
 ## 使用说明
 ```javascript
-    //导入lodash
-    import _ from 'lodash'
-    //将字符串转换为驼峰式大小写。
+    //导入lodash相关接口
+    import { camelCase, capitalize } from 'lodash'
+    let camelCaseString = camelCase('__FOO_BAR__');
     // => 'fooBar'
-    console.info("camelCase:" + _.camelCase('Foo Bar'));
-    //将字符串的第一个字符转换为大写，将其余字符转换为小写。
+    console.log('转换字符串为驼峰写法为：' + camelCaseString);
+    let capitalizeString = capitalize('FRED');
     // => 'Fred'
-    console.info("capitalize:" + _.capitalize('FRED'));
+    console.log('转换字符串首字母为大写，剩下为小写为：' + capitalizeString);
 ```
-更多api的使用可参考index.ets
+更多api的使用可参考ArrayTest.ets,FunctionTest.ets,NumberTest.ets,CollectionTest.ets,DateTest.ets,LangTest.ets,MathTest.ets,ObjectTest.ets,StringTest.ets,UtilTest.ets
 
 ## 接口说明
 常用模块如下：
@@ -41,7 +40,7 @@ npm install @types/lodash --save
 
 在下述版本验证通过：
 
-DevEco Studio 版本：3.1 Beta1(3.1.0.200)，SDK:API9 Beta5(3.2.10.6)
+- DevEco Studio 版本：3.1.1 Release（4.0.3.411），OpenHarmony SDK:API10（4.0.10.2）
 
 ## 贡献代码
 

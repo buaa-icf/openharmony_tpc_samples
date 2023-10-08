@@ -1,25 +1,14 @@
 {
   "app": {
     "signingConfigs": [
-      {
-        "name": "default",
-        "material": {
-          "certpath": "C:\\Users\\admin\\.ohos\\config\\openharmony\\auto_ohos_default_percentage-regex_com.example.percentageregex.cer",
-          "storePassword": "0000001AC9ADAC93AA761AA8F296AD0DE3988CA995C4A5E2EEC91FB89EC5D3686DB20BB6F908BCF23C1C",
-          "keyAlias": "debugKey",
-          "keyPassword": "0000001AA5B5A1FEA5F6CC019B8B15CA2500468D7F0FCD1E157DD6B40755748573C910B3754D2DD2702F",
-          "profile": "C:\\Users\\admin\\.ohos\\config\\openharmony\\auto_ohos_default_percentage-regex_com.example.percentageregex.p7b",
-          "signAlg": "SHA256withECDSA",
-          "storeFile": "C:\\Users\\admin\\.ohos\\config\\openharmony\\auto_ohos_default_percentage-regex_com.example.percentageregex.p12"
-        }
-      }
     ],
-    "compileSdkVersion": 9,
-    "compatibleSdkVersion": 9,
     "products": [
       {
         "name": "default",
         "signingConfig": "default",
+        "compileSdkVersion": 10,
+        "compatibleSdkVersion": 10,
+        "runtimeOS": "OpenHarmony"
       }
     ]
   },

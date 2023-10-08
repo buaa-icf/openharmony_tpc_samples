@@ -95,6 +95,8 @@ var regex = / 2/g
 ### 约束与限制
 在下述版本验证通过：
 
+DevEco Studio: 4.0 Beta2(4.0.3.512), SDK: API10 (4.0.10.9)
+
 DevEco Studio: 3.1.1 Release(3.1.0.501), SDK: API9 Release(3.2.12.5)
 
 ### 软件架构

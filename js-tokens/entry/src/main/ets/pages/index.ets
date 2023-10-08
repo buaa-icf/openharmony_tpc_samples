@@ -15,8 +15,13 @@
 
 import tokens from 'js-tokens'
 
-var jsTokens = tokens.default
-var matchToToken = tokens.matchToToken
+let jsTokens: RegExp = tokens.default
+
+interface Result {
+  closed: boolean
+  type: string
+  value: string
+}
 
 @Entry
 @Component
@@ -32,7 +37,7 @@ struct Index {
     if (regexResult === null || regexResult === undefined || regexResult.length === 0) {
       return;
     }
-    let result = matchToToken(regexResult)
+    let result: Result = tokens.matchToToken(regexResult)
     this.resultStr = JSON.stringify(result);
   }
 

@@ -13,37 +13,42 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-import BigNumber from 'bignumber.js';
+import { BigNumber } from './BigNumber';
 import Test from './tester';
+import Utils from './Utils';
 
 export default function toExponential() {
-  describe('toExponentialtest', function () {
+  describe('toExponentialtest', ()=> {
 
-    function t(expected, value, decimalPlaces){
-      new Test().areEqual(String(expected), new BigNumber(value).toExponential(decimalPlaces));
+    let t = (expected:string, value: BigNumber.Value, decimalPlaces?: number)=>{
+      if(decimalPlaces !== undefined){
+        new Test().areEqual(String(expected), new BigNumber(value).toExponential(decimalPlaces));
+      }else {
+        new Test().areEqual(String(expected), new BigNumber(value).toExponential());
+      }
     }
 
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(()=> {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(()=> {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(()=> {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(()=> {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    it('toExponential', 0, function () {
-      var MAX = 1e9;
+    it('toExponential', 0, ()=> {
+      let MAX = 1e9;
       BigNumber.config({
         DECIMAL_PLACES: 20,
         ROUNDING_MODE: 4,
@@ -114,12 +119,12 @@ export default function toExponential() {
       t('-1.100e-1', -0.11, 3);
       t('-1.120e-1', -0.112, 3);
 
-      t('NaN', NaN, undefined);
-      t('NaN', -NaN, 2);
-      t('Infinity', Infinity, undefined);
-      t('Infinity', Infinity, 10);
-      t('-Infinity', -Infinity, 0);
-      t('-Infinity', -Infinity, 1);
+      t('NaN', Number.NaN, undefined);
+      t('NaN', -Number.NaN, 2);
+      t('Infinity', Number.POSITIVE_INFINITY, undefined);
+      t('Infinity', Number.POSITIVE_INFINITY, 10);
+      t('-Infinity', Number.NEGATIVE_INFINITY, 0);
+      t('-Infinity', Number.NEGATIVE_INFINITY, 1);
       t('0e+0', 0, undefined);
       t('0e+0', -0, undefined);
       t('-5.0e-1', -0.5, 1);
@@ -749,51 +754,51 @@ export default function toExponential() {
       t('1.23000000000e+2', '12.3e1', 11);
       t('1.230e+2', '12.3e1', 3);
       t('1.230e+2', '12.3e1', 3);
-      t('1.23e+2', '12.3e1', null);
+      t('1.23e+2', '12.3e1', undefined);
       t('1.23e+2', '12.3e1', undefined);
       t('1e+2', '12.3e1', 0);
       t('1e+2', '12.3e1', -0);
 
-      new Test().isException(function () {new BigNumber('1.23').toExponential(NaN)}, "('1.23').toExponential(NaN)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('1.23').toExponential('NaN')}, "('1.23').toExponential('NaN')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('1.23').toExponential([])}, "('1.23').toExponential([])");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('1.23').toExponential({})}, "('1.23').toExponential({})");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('1.23').toExponential('')}, "('1.23').toExponential('')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('1.23').toExponential(' ')}, "('1.23').toExponential(' ')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('1.23').toExponential('hello')}, "('1.23').toExponential('hello')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('1.23').toExponential('\t')}, "('1.23').toExponential('\t')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('1.23').toExponential(new Date)}, "('1.23').toExponential(new Date)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('1.23').toExponential(new RegExp)}, "('1.23').toExponential(new RegExp)");
-      new Test().isException(function () {new BigNumber('1.23').toExponential(2.01)}, "('1.23').toExponential(2.01)");
-      new Test().isException(function () {new BigNumber('1.23').toExponential(10.5)}, "('1.23').toExponential(10.5)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('1.23').toExponential('-1.1e1')}, "('1.23').toExponential('-1.1e1')");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('1.23').toExponential(true)}, "('1.23').toExponential(true)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('1.23').toExponential(false)}, "('1.23').toExponential(false)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber('1.23').toExponential(function (){})}, "('1.23').toExponential(function (){})");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber(12.3).toExponential('-1')}, ".toExponential('-1')");
-      new Test().isException(function () {new BigNumber(12.3).toExponential(-23)}, ".toExponential(-23)");
-      new Test().isException(function () {new BigNumber(12.3).toExponential(MAX + 1)}, ".toExponential(MAX + 1)");
-      new Test().isException(function () {new BigNumber(12.3).toExponential(MAX + 0.1)}, ".toExponential(MAX + 0.1)");
-      new Test().isException(function () {new BigNumber(12.3).toExponential(-0.01)}, ".toExponential(-0.01)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber(12.3).toExponential('-1e-1')}, ".toExponential('-1e-1')");
-      new Test().isException(function () {new BigNumber(12.3).toExponential(Infinity)}, ".toExponential(Infinity)");
-      // @ts-ignore
-      new Test().isException(function () {new BigNumber(12.3).toExponential('-Infinity')}, ".toExponential('-Infinity')");
+      new Test().isException(()=> {Utils.toExponential('1.23',Number.NaN)}, "('1.23').toExponential(NaN)");
+
+      new Test().isException(()=> {Utils.toExponential('1.23','NaN')}, "('1.23').toExponential('NaN')");
+
+      new Test().isException(()=> {Utils.toExponential('1.23',[])}, "('1.23').toExponential([])");
+
+      new Test().isException(()=> {Utils.toExponential('1.23',{})}, "('1.23').toExponential({})");
+
+      new Test().isException(()=> {Utils.toExponential('1.23','')}, "('1.23').toExponential('')");
+
+      new Test().isException(()=> {Utils.toExponential('1.23',' ')}, "('1.23').toExponential(' ')");
+
+      new Test().isException(()=> {Utils.toExponential('1.23','hello')}, "('1.23').toExponential('hello')");
+
+      new Test().isException(()=> {Utils.toExponential('1.23','\t')}, "('1.23').toExponential('\t')");
+
+      new Test().isException(()=> {Utils.toExponential('1.23',new Date)}, "('1.23').toExponential(new Date)");
+
+      new Test().isException(()=> {Utils.toExponential('1.23',new RegExp(''))}, "('1.23').toExponential(new RegExp(''))");
+      new Test().isException(()=> {new BigNumber('1.23').toExponential(2.01)}, "('1.23').toExponential(2.01)");
+      new Test().isException(()=> {new BigNumber('1.23').toExponential(10.5)}, "('1.23').toExponential(10.5)");
+
+      new Test().isException(()=> {Utils.toExponential('1.23','-1.1e1')}, "('1.23').toExponential('-1.1e1')");
+
+      new Test().isException(()=> {Utils.toExponential('1.23',true)}, "('1.23').toExponential(true)");
+
+      new Test().isException(()=> {Utils.toExponential('1.23',false)}, "('1.23').toExponential(false)");
+
+      new Test().isException(()=> {Utils.toExponential('1.23',()=>{})}, "('1.23').toExponential(()=>{})");
+
+      new Test().isException(()=> {Utils.toExponential(12.3,'-1')}, ".toExponential('-1')");
+      new Test().isException(()=> {new BigNumber(12.3).toExponential(-23)}, ".toExponential(-23)");
+      new Test().isException(()=> {new BigNumber(12.3).toExponential(MAX + 1)}, ".toExponential(MAX + 1)");
+      new Test().isException(()=> {new BigNumber(12.3).toExponential(MAX + 0.1)}, ".toExponential(MAX + 0.1)");
+      new Test().isException(()=> {new BigNumber(12.3).toExponential(-0.01)}, ".toExponential(-0.01)");
+
+      new Test().isException(()=> {Utils.toExponential('1.23','-1e-1')}, ".toExponential('-1e-1')");
+      new Test().isException(()=> {new BigNumber(12.3).toExponential(Number.POSITIVE_INFINITY)}, ".toExponential(Infinity)");
+
+      new Test().isException(()=> {Utils.toExponential('1.23','-Infinity')}, ".toExponential('-Infinity')");
     })
   })
 }

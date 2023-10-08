@@ -21,6 +21,18 @@
                     desc="path-to-regexp原代码，遵循原库版权"
                     name="regexp/src/main/ets/index.ts"
                     type="filepath"/>
+                <filteritem
+                    type="filename"
+                    name="hvigorw"
+                    desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem
+                    type="filename"
+                    name="hvigorw.bat"
+                    desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem
+                    type="filename"
+                    name="hvigor-wrapper.js"
+                    desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
             </filefilter>
             <filefilter
                 desc="Filters for compatibility，license header policies"
@@ -41,6 +53,18 @@
                     desc="path-to-regexp原代码，遵循原库版权"
                     name="regexp/src/main/ets/index.ts"
                     type="filepath"/>
+                <filteritem
+                    type="filename"
+                    name="hvigorw"
+                    desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem
+                    type="filename"
+                    name="hvigorw.bat"
+                    desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem
+                    type="filename"
+                    name="hvigor-wrapper.js"
+                    desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
             </filefilter>
 
             <filefilter
@@ -62,6 +86,18 @@
                     desc="path-to-regexp原代码，遵循原库版权"
                     name="regexp/src/main/ets/index.ts"
                     type="filepath"/>
+                <filteritem
+                    type="filename"
+                    name="hvigorw"
+                    desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem
+                    type="filename"
+                    name="hvigorw.bat"
+                    desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem
+                    type="filename"
+                    name="hvigor-wrapper.js"
+                    desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
             </filefilter>
 
         </filefilterlist>

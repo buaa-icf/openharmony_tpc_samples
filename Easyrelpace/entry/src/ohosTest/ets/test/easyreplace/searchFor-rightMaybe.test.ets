@@ -14,25 +14,26 @@
  */
 import hilog from '@ohos.hilog';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-import { er } from "easy-replace";
+import { er, Opts } from "easy-replace";
+
 export default function searchForrightMaybe() {
-  describe('searchForrightMaybe', function () {
+  describe('searchForrightMaybe', () => {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(() => {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(() => {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(() => {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(() => {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
@@ -47,694 +48,350 @@ export default function searchForrightMaybe() {
     //   expect(a).assertEqual(a)
     // })
 
-    var count = 0;
-    var test = function (name, func){
-      name = name.replace(/[ /d]/g, '');
-      name = name.replace(/-/g,"");
-      it(name,count++,func)
+    let count = 0;
+    let test = (name: string, func: Function) => {
+      name = name.replace(new RegExp("/[ /d]/g"), '');
+      name = name.replace(new RegExp("/-/g"), "");
+      it(name, count++, func)
     }
 
-    var equal = function (src,dst,tag){
-      console.log('tag:'+tag+"  src="+src+ " dst="+dst);
+    let equal = (src: string, dst: string, tag: string) => {
+      console.log('tag:' + tag + "  src=" + src + " dst=" + dst);
       expect(src).assertEqual(dst)
     }
 
-// ==============================
-// searchFor + rightMaybe
-// ==============================
-
-test("01 - right maybe found", () => {
-  equal(
-    er(
-      "a🦄🐴🦄c",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "🐴",
-        rightMaybe: "🦄",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "b"
-    ),
-    "a🦄bc",
-    "test 3.1.1"
-  );
-  equal(
-    er(
-      "a🦄🐴🦄c",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "🐴",
-        rightMaybe: ["🦄"],
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "b"
-    ),
-    "a🦄bc",
-    "test 3.1.2"
-  );
-});
-
-test("02 - two replacements with one rightmaybe, nearby", () => {
-  equal(
-    er(
-      "ab🐴🦄🐴c",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "🐴",
-        rightMaybe: "🦄",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "d"
-    ),
-    "abddc",
-    "test 3.2.1"
-  );
-  equal(
-    er(
-      "ab🐴🦄🐴c",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "🐴",
-        rightMaybe: ["🦄"],
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "d"
-    ),
-    "abddc",
-    "test 3.2.2"
-  );
-});
-
-test("03 - two consecutive right maybes", () => {
-  equal(
-    er(
-      "ab🦄🐴🦄🐴c",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "🦄",
-        rightMaybe: "🐴",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "d"
-    ),
-    "abddc",
-    "test 3.3.1"
-  );
-  equal(
-    er(
-      "ab🦄🐴🦄🐴c",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "🦄",
-        rightMaybe: ["🐴"],
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "d"
-    ),
-    "abddc",
-    "test 3.3.2"
-  );
-});
-
-test("04 - futile right maybe", () => {
-  equal(
-    er(
-      "'🐴",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "🐴",
-        rightMaybe: "🦄",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "d"
-    ),
-    "'d",
-    "test 3.4.1"
-  );
-  equal(
-    er(
-      "'🐴",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "🐴",
-        rightMaybe: ["🦄"],
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "d"
-    ),
-    "'d",
-    "test 3.4.2"
-  );
-});
-
-test("05 - \\n as search string plus right maybe", () => {
-  equal(
-    er(
-      "\na\n\n",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "\n",
-        rightMaybe: "a",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "a"
-    ),
-    "aaa",
-    "test 3.5.1"
-  );
-  equal(
-    er(
-      "\na\n\n",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "\n",
-        rightMaybe: ["a"],
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "a"
-    ),
-    "aaa",
-    "test 3.5.2"
-  );
-});
-
-test("06 - \\n as both searchFor and right maybe, replaced", () => {
-  equal(
-    er(
-      "\n\n\n",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "\n",
-        rightMaybe: "\n",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "a"
-    ),
-    "aa",
-    "test 3.6.1"
-  );
-  equal(
-    er(
-      "\n\n\n",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "\n",
-        rightMaybe: ["\n"],
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "a"
-    ),
-    "aa",
-    "test 3.6.2"
-  );
-});
-
-test("07 - rightMaybe with line breaks", () => {
-  equal(
-    er(
-      "a\n\na",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "a",
-        rightMaybe: "\n\na",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "b"
-    ),
-    "b",
-    "test 3.7.1"
-  );
-  equal(
-    er(
-      "a\n\na",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "a",
-        rightMaybe: ["\n\na"],
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "b"
-    ),
-    "b",
-    "test 3.7.2"
-  );
-});
-
-test("08 - specific case of semi infinite loop with maybe", () => {
-  equal(
-    er(
-      "aaaaab",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "a",
-        rightMaybe: "b",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "a"
-    ),
-    "aaaaa",
-    "test 3.8.1"
-  );
-  equal(
-    er(
-      "aaaaab",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "a",
-        rightMaybe: ["b"],
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "a"
-    ),
-    "aaaaa",
-    "test 3.8.2"
-  );
-});
-
-test("09 - three right maybes (some found)", () => {
-  equal(
-    er(
-      "a🦄🐴🦄c",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "🐴",
-        rightMaybe: ["x", "c", "🦄"],
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "b"
-    ),
-    "a🦄bc",
-    "test 3.9"
-  );
-});
-
-test("10 - three right maybes (searchFor not found)", () => {
-  equal(
-    er(
-      "a🦄🐴🦄c",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "🍺",
-        rightMaybe: ["🦄", "🐴", "c"],
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "b"
-    ),
-    "a🦄🐴🦄c",
-    "test 3.10"
-  );
-});
-
-test("11 - three right maybes (maybes not found)", () => {
-  equal(
-    er(
-      "🍺🦄🐴🦄c",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "🍺",
-        rightMaybe: ["x", "y", "z"],
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      1
-    ),
-    "1🦄🐴🦄c",
-    "test 3.11"
-  );
-});
-
-test("12 - three right maybes (multiple hungry finds)", () => {
-  equal(
-    er(
-      "🐴 ",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "🐴",
-        rightMaybe: ["🦄", "🍺", "c"],
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "b"
-    ),
-    "b ",
-    "test 3.12.1"
-  );
-});
-
-test("13 - three right maybes (multiple hungry finds)", () => {
-  equal(
-    er(
-      "a🦄🐴🦄🍺c",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "🐴",
-        rightMaybe: ["🦄", "🍺", "c"],
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "b"
-    ),
-    "a🦄b🍺c",
-    "test 3.13"
-  );
-});
-
-test("14 - three right maybes (multiple hungry finds)", () => {
-  equal(
-    er(
-      "a🦄🐴🍺🦄c",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "🐴",
-        rightMaybe: ["🦄", "🍺", "c"],
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "b"
-    ),
-    "a🦄b🦄c",
-    "test 3.14"
-  );
-});
-
-test("15 - three right maybes (multiple hungry finds)", () => {
-  equal(
-    er(
-      "a🦄🐴🦄c",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "🐴",
-        rightMaybe: ["🦄", "🍺", "c"],
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "b"
-    ),
-    "a🦄bc",
-    "test 3.15"
-  );
-});
-
-test("16 - three right maybes (multiple hungry finds)", () => {
-  equal(
-    er(
-      "a🦄🐴🦄🍺c a🦄🐴🍺🦄c a🦄🐴🦄c 🐴",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "🐴",
-        rightMaybe: ["🦄", "🍺", "c"],
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "b"
-    ),
-    "a🦄b🍺c a🦄b🦄c a🦄bc b",
-    "test 3.16"
-  );
-});
-
-test("17 - three right maybes (multiple hungry finds)", () => {
-  equal(
-    er(
-      "🦄y🦄 🦄y🦄 🦄y🦄 y",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "y",
-        rightMaybe: ["🦄"],
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "b"
-    ),
-    "🦄b 🦄b 🦄b b",
-    "test 3.17"
-  );
-});
-
-test("18 - three right maybes (multiple hungry finds)", () => {
-  equal(
-    er(
-      "🦄y🦄 🦄y🦄 🦄y🦄 y",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "y",
-        rightMaybe: "🦄",
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "b"
-    ),
-    "🦄b 🦄b 🦄b b",
-    "test 3.18"
-  );
-});
-// if leftMaybe is simply merged and not iterated, and is queried to exist
-// explicitly as string on the right side of the searchFor, it will not be
-// found if the order of array is wrong, yet characters are all the same.
-
-test("19 - sneaky array conversion situation", () => {
-  equal(
-    er(
-      "a🦄🐴🦄c",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "🐴",
-        rightMaybe: ["c", "🦄"],
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "b"
-    ),
-    "a🦄bc",
-    "test 3.19-1"
-  );
-  equal(
-    er(
-      "a🦄🐴🦄c",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "🐴",
-        rightMaybe: ["🦄", "c"],
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "b"
-    ),
-    "a🦄bc",
-    "test 3.19-2"
-  );
-});
-
-test("20 - normal words, few of them, rightMaybe as array", () => {
-  equal(
-    er(
-      "this protection is promoting the proper propaganda",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "pro",
-        rightMaybe: ["tection", "mot", "p", "paganda"],
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "test"
-    ),
-    "this test is testing the tester test",
-    "test 3.20"
-  );
-});
-
-test("21 - rightMaybe is array, but with only 1 null value", () => {
-  equal(
-    er(
-      "some text",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "look for me",
-        rightMaybe: [null],
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "replace with me"
-    ),
-    "some text",
-    "test 3.21"
-  );
-});
-
-test("22 - rightMaybe is couple integers in an array", () => {
-  equal(
-    er(
-      "1234",
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        // @ts-ignore
-        searchFor: 2,
-        // @ts-ignore
-        rightMaybe: [3, 4],
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      9
-    ),
-    "194",
-    "test 3.22"
-  );
-});
-
-test("23 - sneaky case of overlapping rightMaybes", () => {
-  equal(
-    er(
-      "this is a word to be searched for",
-      // @ts-ignore
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "word",
-        rightMaybe: [" to", " to be", "word to be"],
-        rightOutside: "",
-        rightOutsideNot: "",
-      },
-      "x"
-    ),
-    "this is a x searched for",
-    "test 3.23"
-  );
-});
-
-test("24 - case-insensitive flag", () => {
-  equal(
-    er(
-      "aaaC",
-      {
-        leftOutsideNot: "",
-        leftOutside: "",
-        leftMaybe: "",
-        searchFor: "aaa",
-        rightMaybe: ["x", "y", "z"],
-        rightOutside: "",
-        rightOutsideNot: "",
-        // @ts-ignore
+    // ==============================
+    // searchFor + rightMaybe
+    // ==============================
+    let optsFunc = (leftOutsideNot: string | string[] = "",
+                    leftOutside: string | string[] = "",
+                    leftMaybe: string | string[] = "",
+                    searchFor: string | string[] = "",
+                    rightMaybe: string | string[] = "",
+                    rightOutside: string | string[] = "",
+                    rightOutsideNot: string | string[] = "",rightMaybeBool:boolean=false): Opts => {
+      return {
+        leftOutsideNot,
+        leftOutside,
+        leftMaybe,
+        searchFor,
+        rightMaybe,
+        rightOutside,
+        rightOutsideNot,
         i: {
-          rightMaybe: true,
-        },
-      },
-      "x"
-    ),
-    "xC",
-    "test 3.24"
-  );
-});
+          leftOutsideNot: false,
+          leftOutside: false,
+          leftMaybe: false,
+          searchFor: false,
+          rightMaybe: rightMaybeBool,
+          rightOutside: false,
+          rightOutsideNot: false
+        }
+      }
+    }
+    test("01 - right maybe found", () => {
+      equal(
+        er(
+          "a🦄🐴🦄c",optsFunc("","","","🐴","🦄","",""), "b"
+        ),
+        "a🦄bc",
+        "test 3.1.1"
+      );
+      equal(
+        er(
+          "a🦄🐴🦄c",optsFunc("","","","🐴",["🦄"],"",""), "b"
+        ),
+        "a🦄bc",
+        "test 3.1.2"
+      );
+    });
+
+    test("02 - two replacements with one rightmaybe, nearby", () => {
+      equal(
+        er(
+          "ab🐴🦄🐴c",optsFunc("","","","🐴","🦄","",""), "d"
+        ),
+        "abddc",
+        "test 3.2.1"
+      );
+      equal(
+        er(
+          "ab🐴🦄🐴c",optsFunc("","","","🐴",["🦄"],"",""), "d"
+        ),
+        "abddc",
+        "test 3.2.2"
+      );
+    });
+
+    test("03 - two consecutive right maybes", () => {
+      equal(
+        er(
+          "ab🦄🐴🦄🐴c",optsFunc("","","","🦄","🐴","",""), "d"
+        ),
+        "abddc",
+        "test 3.3.1"
+      );
+      equal(
+        er(
+          "ab🦄🐴🦄🐴c",optsFunc("","","","🦄",["🐴"],"",""),"d"
+        ),
+        "abddc",
+        "test 3.3.2"
+      );
+    });
+
+    test("04 - futile right maybe", () => {
+      equal(
+        er("'🐴",optsFunc("","","","🐴","🦄","",""),"d"),
+        "'d",
+        "test 3.4.1"
+      );
+      equal(
+        er(
+          "'🐴",optsFunc("","","","🐴",["🦄"],"",""), "d"
+        ),
+        "'d",
+        "test 3.4.2"
+      );
+    });
+
+    test("05 - \\n as search string plus right maybe", () => {
+      equal(
+        er(
+          "\na\n\n",optsFunc("","","","\n","a","",""), "a"
+        ),
+        "aaa",
+        "test 3.5.1"
+      );
+      equal(
+        er(
+          "\na\n\n",optsFunc("","","","\n",["a"],"",""), "a"
+        ),
+        "aaa",
+        "test 3.5.2"
+      );
+    });
+
+    test("06 - \\n as both searchFor and right maybe, replaced", () => {
+      equal(
+        er(
+          "\n\n\n",optsFunc("","","","\n","\n","",""), "a"
+        ),
+        "aa",
+        "test 3.6.1"
+      );
+      equal(
+        er(
+          "\n\n\n",optsFunc("","","","\n",["\n"],"",""), "a"
+        ),
+        "aa",
+        "test 3.6.2"
+      );
+    });
+
+    test("07 - rightMaybe with line breaks", () => {
+      equal(
+        er(
+          "a\n\na",optsFunc("","","","a","\n\na","",""), "b"
+        ),
+        "b",
+        "test 3.7.1"
+      );
+      equal(
+        er(
+          "a\n\na",optsFunc("","","","a",["\n\na"],"",""), "b"
+        ),
+        "b",
+        "test 3.7.2"
+      );
+    });
+
+    test("08 - specific case of semi infinite loop with maybe", () => {
+      equal(
+        er(
+          "aaaaab",optsFunc("","","","a","b","",""), "a"
+        ),
+        "aaaaa",
+        "test 3.8.1"
+      );
+      equal(
+        er(
+          "aaaaab",optsFunc("","","","a",["b"],"",""), "a"
+        ),
+        "aaaaa",
+        "test 3.8.2"
+      );
+    });
+
+    test("09 - three right maybes (some found)", () => {
+      equal(
+        er(
+          "a🦄🐴🦄c",optsFunc("","","","🐴",["x", "c", "🦄"],"",""), "b"
+        ),
+        "a🦄bc",
+        "test 3.9"
+      );
+    });
+
+    test("10 - three right maybes (searchFor not found)", () => {
+      equal(
+        er(
+          "a🦄🐴🦄c",optsFunc("","","","🍺",["🦄", "🐴", "c"],"",""), "b"
+        ),
+        "a🦄🐴🦄c",
+        "test 3.10"
+      );
+    });
+
+    test("11 - three right maybes (maybes not found)", () => {
+      equal(
+        er(
+          "🍺🦄🐴🦄c",optsFunc("","","","🍺",["x", "y", "z"],"",""), "1"
+        ),
+        "1🦄🐴🦄c",
+        "test 3.11"
+      );
+    });
+
+    test("12 - three right maybes (multiple hungry finds)", () => {
+      equal(
+        er(
+          "🐴 ",optsFunc("","","","🐴",["🦄", "🍺", "c"],"",""), "b"
+        ),
+        "b ",
+        "test 3.12.1"
+      );
+    });
+
+    test("13 - three right maybes (multiple hungry finds)", () => {
+      equal(
+        er(
+          "a🦄🐴🦄🍺c",optsFunc("","","","🐴",["🦄", "🍺", "c"],"",""), "b"
+        ),
+        "a🦄b🍺c",
+        "test 3.13"
+      );
+    });
+
+    test("14 - three right maybes (multiple hungry finds)", () => {
+      equal(
+        er(
+          "a🦄🐴🍺🦄c",optsFunc("","","","🐴",["🦄", "🍺", "c"],"",""), "b"
+        ),
+        "a🦄b🦄c",
+        "test 3.14"
+      );
+    });
+
+    test("15 - three right maybes (multiple hungry finds)", () => {
+      equal(
+        er(
+          "a🦄🐴🦄c",optsFunc("","","","🐴",["🦄", "🍺", "c"],"",""), "b"
+        ),
+        "a🦄bc",
+        "test 3.15"
+      );
+    });
+
+    test("16 - three right maybes (multiple hungry finds)", () => {
+      equal(
+        er(
+          "a🦄🐴🦄🍺c a🦄🐴🍺🦄c a🦄🐴🦄c 🐴",optsFunc("","","","🐴",["🦄", "🍺", "c"],"",""), "b"
+        ),
+        "a🦄b🍺c a🦄b🦄c a🦄bc b",
+        "test 3.16"
+      );
+    });
+
+    test("17 - three right maybes (multiple hungry finds)", () => {
+      equal(
+        er(
+          "🦄y🦄 🦄y🦄 🦄y🦄 y",optsFunc("","","","y",["🦄"],"",""),"b"
+        ),
+        "🦄b 🦄b 🦄b b",
+        "test 3.17"
+      );
+    });
+
+    test("18 - three right maybes (multiple hungry finds)", () => {
+      equal(
+        er(
+          "🦄y🦄 🦄y🦄 🦄y🦄 y",optsFunc("","","","y","🦄","",""), "b"
+        ),
+        "🦄b 🦄b 🦄b b",
+        "test 3.18"
+      );
+    });
+    // if leftMaybe is simply merged and not iterated, and is queried to exist
+    // explicitly as string on the right side of the searchFor, it will not be
+    // found if the order of array is wrong, yet characters are all the same.
+
+    test("19 - sneaky array conversion situation", () => {
+      equal(
+        er(
+          "a🦄🐴🦄c",optsFunc("","","","🐴",["c","🦄"],"",""), "b"
+        ),
+        "a🦄bc",
+        "test 3.19-1"
+      );
+      equal(
+        er(
+          "a🦄🐴🦄c",optsFunc("","","","🐴",["🦄","c"],"",""), "b"
+        ),
+        "a🦄bc",
+        "test 3.19-2"
+      );
+    });
+
+    test("20 - normal words, few of them, rightMaybe as array", () => {
+      equal(
+        er(
+          "this protection is promoting the proper propaganda",optsFunc("","","","pro",["tection", "mot", "p", "paganda"],"",""), "test"
+        ),
+        "this test is testing the tester test",
+        "test 3.20"
+      );
+    });
+
+    test("21 - rightMaybe is array, but with only 1 null value", () => {
+      equal(
+        er(
+          "some text",optsFunc("","","","look for me",[""],"",""), "replace with me"
+        ),
+        "some text",
+        "test 3.21"
+      );
+    });
+
+    test("22 - rightMaybe is couple integers in an array", () => {
+      equal(
+        er(
+          "1234",optsFunc("","","","2",["3","4"],"",""), "9"
+        ),
+        "194",
+        "test 3.22"
+      );
+    });
+
+    test("23 - sneaky case of overlapping rightMaybes", () => {
+      equal(
+        er(
+          "this is a word to be searched for",optsFunc("","","","word",[" to", " to be", "word to be"],"",""), "x"
+        ),
+        "this is a x searched for",
+        "test 3.23"
+      );
+    });
+
+    test("24 - case-insensitive flag", () => {
+      equal(
+        er(
+          "aaaC",optsFunc("","","","aaa",["x", "y", "z"],"","",true), "x"
+        ),
+        "xC",
+        "test 3.24"
+      );
+    });
 
   })
 }

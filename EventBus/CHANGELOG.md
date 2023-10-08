@@ -1,3 +1,7 @@
+## 2.0.1
+1.适配DevEco Studio 版本: 4.0(4.0.3.512),SDK: API10（4.0.10.9）
+2.适配ArkTs语法
+
 ## 2.0.0
 1.适配DevEco Studio:3.1 Beta2(3.1.0.400), SDK:API9 Release(3.2.11.9)
 2.包管理工具由npm切换成ohpm

@@ -13,37 +13,44 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-import BigNumber from 'bignumber.js';
+import { BigNumber } from './BigNumber';
 import Test from './tester';
-
+interface Format {
+  decimalSeparator:string
+  groupSeparator: string
+  groupSize:number
+  secondaryGroupSize: number|null
+  fractionGroupSeparator:string
+  fractionGroupSize: number
+}
 export default function toFormat() {
-  describe('toFormattest', function () {
+  describe('toFormattest', ()=> {
 
-    function t(expected, value, dp?){
+    let t = (expected:string | boolean |(() => BigNumber)|number|BigNumber|Function, value: BigNumber.Value, dp?:number)=>{
       new Test().areEqual(expected, new BigNumber(value).toFormat(dp));
     }
 
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(()=> {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(()=> {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(()=> {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(()=> {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    it('toFormat', 0, function () {
-      var format = {
+    it('toFormat', 0, ()=> {
+      let format:BigNumber.Format = {
         decimalSeparator: '.',
         groupSeparator: ',',
         groupSize: 3,
@@ -64,15 +71,15 @@ export default function toFormat() {
       t('1', 1);
       t('-1', -1);
       t('123.456', 123.456);
-      t('NaN', NaN);
+      t('NaN', Number.NaN);
       t('Infinity', 1/0);
       t('-Infinity', -1/0);
 
-      t('0', 0, null);
+      t('0', 0, undefined);
       t('1', 1, undefined);
       t('-1', -1, 0);
       t('123.456', 123.456, 3);
-      t('NaN', NaN, 0);
+      t('NaN', Number.NaN, 0);
       t('Infinity', 1/0, 3);
       t('-Infinity', -1/0, 0);
 
@@ -80,7 +87,7 @@ export default function toFormat() {
       t('1.00', 1, 2);
       t('-1.000', -1, 3);
       t('123.4560', 123.456, 4);
-      t('NaN', NaN, 5);
+      t('NaN', Number.NaN, 5);
       t('Infinity', 1/0, 6);
       t('-Infinity', -1/0, 7);
 
@@ -221,7 +228,7 @@ export default function toFormat() {
 
       format.fractionGroupSize = 2;
       format.fractionGroupSeparator = ':';
-      format.secondaryGroupSize = null;
+      format.secondaryGroupSize = undefined;
 
       t('4 6 5 8 0 7 3 4 6 5 0 9 8 3 4 7 6 5 8 0 3 6 4 5 0,59:76:49:85:76:34:89:56:98:75:65:98:76:45:9', '4658073465098347658036450.59764985763489569875659876459' );
     })

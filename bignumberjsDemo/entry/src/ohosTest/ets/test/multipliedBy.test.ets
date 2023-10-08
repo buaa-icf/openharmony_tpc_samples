@@ -13,43 +13,44 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-import BigNumber from 'bignumber.js';
+import { BigNumber } from './BigNumber';
 import Test from './tester';
+import Utils from './Utils';
 
 export default function multipliedBy() {
-  describe('multipliedBytest', function () {
+  describe('multipliedBytest', ()=> {
 
-    function t(multiplicand, multiplier, expected) {
+    let t = (multiplicand: BigNumber.Value, multiplier: BigNumber.Value, expected:string|number)=> {
       new Test().areEqual(String(expected), String(new BigNumber(multiplicand).multipliedBy(multiplier)));
     }
 
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(()=> {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(()=> {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(()=> {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(()=> {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    it('multipliedBy', 0, function () {
-      var n = 'null',
+    it('multipliedBy', 0, ()=> {
+      let n = 'null',
         N = 'NaN',
         I = 'Infinity';
 
       
 
-      new Test().areEqual(BigNumber.prototype.multipliedBy, BigNumber.prototype.times);
+      new Test().areEqual(Utils.multipliedBy, Utils.times);
 
       BigNumber.config({
         DECIMAL_PLACES: 20,
@@ -65,9 +66,9 @@ export default function multipliedBy() {
       t(1, N, N);
       t(-1, N, N);
       t(1, I, I);
-      t(1, -I, -I);
-      t(-1, I, -I);
-      t(-1, -I, I);
+      t(1, -Number(I), -Number(I));
+      t(-1, I, -Number(I));
+      t(-1, -Number(I), I);
       new Test().areEqual('0', new BigNumber(0).times(1).valueOf());
       new Test().areEqual('-0', new BigNumber(0).times(-1).valueOf());
       new Test().areEqual('-0', new BigNumber(-0).times(1).valueOf());
@@ -79,34 +80,34 @@ export default function multipliedBy() {
       t(0, N, N);
       t(-0, N, N);
       t(0, I, N);
-      t(0, -I, N);
+      t(0, -Number(I), N);
       t(-0, I, N);
-      t(-0, -I, N);
+      t(-0, -Number(I), N);
       t(N, 1, N);
       t(N, -1, N);
       t(N, 0, N);
       t(N, -0, N);
       t(N, N, N);
       t(N, I, N);
-      t(N, -I, N);
+      t(N, -Number(I), N);
       t(I, 1, I);
-      t(I, -1, -I);
-      t(-I, 1, -I);
-      t(-I, -1, I);
+      t(I, -1, -Number(I));
+      t(-Number(I), 1, -Number(I));
+      t(-Number(I), -1, I);
       t(I, 0, N);
       t(I, -0, N);
-      t(-I, 0, N);
-      t(-I, -0, N);
+      t(-Number(I), 0, N);
+      t(-Number(I), -0, N);
       t(I, N, N);
-      t(-I, N, N);
+      t(-Number(I), N, N);
       t(I, I, I);
-      t(I, -I, -I);
-      t(-I, I, -I);
-      t(-I, -I, I);
+      t(I, -Number(I), -Number(I));
+      t(-Number(I), I, -Number(I));
+      t(-Number(I), -Number(I), I);
       t('1e1000000000', 10, I);
       t('5e500000000', '2e500000000', I);
-      t('-1e1000000000', 10, -I);
-      t('5e500000000', '-2e500000000', -I);
+      t('-1e1000000000', 10, -Number(I));
+      t('5e500000000', '-2e500000000', -Number(I));
       t('1e-1000000000', 0.1, 0);
       t('-1e-1000000000', 0.1, 0);
 
@@ -128,7 +129,7 @@ export default function multipliedBy() {
       t(1, ' 4.001', '4.001');
       t(1, '4.001 ', '4.001');
       t(1, Number.POSITIVE_INFINITY, I);
-      t(1, Number.NEGATIVE_INFINITY, -I);
+      t(1, Number.NEGATIVE_INFINITY, -Number(I));
       t('0', 0, '0');
       t(0, '+0', '0');
       t('0', '0', '0');
@@ -142,20 +143,20 @@ export default function multipliedBy() {
       t(54, -54, '-2916');
       t(9.99, '-9.99', '-99.8001');
       t('0.0000023432495704937', '-0.0000023432495704937', '-5.49081854961890952566173969e-12');
-      t(NaN, NaN, N);
-      t(NaN, N, N);
-      t(N, NaN, N);
+      t(Number.NaN, Number.NaN, N);
+      t(Number.NaN, N, N);
+      t(N, Number.NaN, N);
       t(N, 4, N);
       t(N, '4534534.45435435', N);
       t(N, 99999.999, N);
-      t(Infinity, '354.345341', I);
-      t(3, -I, -I);
-      t(-Infinity, -I, I);
-      t(-I, -Infinity, I);
-      t(I, '-999e999', -I);
-      t(1.21123e43, -I, -I);
-      t('-999.0', I, -I);
-      t('657.342e-45', -I, -I);
+      t(Number.POSITIVE_INFINITY, '354.345341', I);
+      t(3, -Number(I), -Number(I));
+      t(Number.NEGATIVE_INFINITY, -Number(I), I);
+      t(-Number(I), Number.NEGATIVE_INFINITY, I);
+      t(I, '-999e999', -Number(I));
+      t(1.21123e43, -Number(I), -Number(I));
+      t('-999.0', I, -Number(I));
+      t('657.342e-45', -Number(I), -Number(I));
       t(I, 123, I);
       t(-0, I, N);
       t(100, 100, '10000');
