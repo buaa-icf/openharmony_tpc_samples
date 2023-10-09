@@ -16,7 +16,7 @@ import validator from 'validator';
 import prompt from '@ohos.promptAction';
 import { data } from './data';
 import {dataType} from './data';
-// import { Options } from './options'
+
 
 const TAG: string = "TAG validator"
  interface itemType{
