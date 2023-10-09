@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import abilityTest from './Ability.test'
+
 import CachedKeyDecoderTest from './test/CachedKeyDecoder.test'
 import CodecBigintTest from './test/codec-bigint.test'
 import CodecFloatTest from './test/codec-float.test'
@@ -38,7 +38,6 @@ import reuseInstancesTest from './test/reuse-instances.test'
 
 
 export default function testsuite() {
-  abilityTest()
   CachedKeyDecoderTest()
   CodecBigintTest()
   CodecFloatTest()

@@ -12,125 +12,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Exam } from "./msgpacksuit/exam";
-import { MsgTimestamp } from "./msg/msg-timestamp";
-
-import ohBuffer from '@ohos.buffer';
-
-import assert from "./assert2hypium";
-import { encode, decode, ExtensionCodec, EXT_TIMESTAMP, encodeTimeSpecToTimestamp } from "@msgpack/msgpack";
-import hilog from '@ohos.hilog';
-import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
+import MsgpackTestSuite2 from "../test/stdlib/MsgpackTestSuite2";
+import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium';
 
 
 export default function nmsgpackTestSuiteTest2() {
-  describe('msgpackTestSuiteTest2', function () {
+  describe('msgpackTestSuiteTest2', () => {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(() => {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(() => {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(() => {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(() => {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-
-
-    const extensionCodec = new ExtensionCodec();
-    extensionCodec.register({
-      type: EXT_TIMESTAMP,
-      encode: (input) => {
-        if (input instanceof MsgTimestamp) {
-          return encodeTimeSpecToTimestamp({
-            sec: input.getTime(),
-            nsec: input.getNano(),
-          });
-        } else {
-          return null;
-        }
-      },
-      decode: (data: Uint8Array) => {
-        return MsgTimestamp.parse(ohBuffer.from(data));
-      },
-    });
-
-    const TEST_TYPES = {
-      array: 1,
-      bignum: 0, // TODO
-      binary: 1,
-      bool: 1,
-      map: 1,
-      nil: 1,
-      number: 1,
-      string: 1,
-      timestamp: 1,
-    };
-
-    Exam.getExams(TEST_TYPES).forEach((exam) => {
-      const types = exam.getTypes(TEST_TYPES);
-      const first = types[0]!;
-      const title = `${first}: ${exam.stringify(first)}`;
-      let result = `${exam.stringify(first)}`
-      it(`encodes_${title}`,0, () => {
-        types.forEach((type) => {
-          const value = exam.getValue(type);
-          let startTime1 = new Date().getTime();
-          const u8 = encode(value, { extensionCodec });
-          let endTime1 = new Date().getTime();
-          let averageTime1 = ((endTime1 - startTime1) * 1000) / 1;
-          console.log(`msgpack-javascript:encodes_${title} averageTime = ${averageTime1}`)
-          if (exam.matchMsgpack(u8)) {
-            expect(exam.stringify(type)+"").assertContain(result)
-          } else {
-          }
-        });
-      });
-      it(`decodes_${title}`,0, () => {
-        const msgpacks = exam.getMsgpacks();
-
-        msgpacks.forEach((encoded, idx) => {
-
-          let startTime1 = new Date().getTime();
-
-          const value = decode(encoded.buffer, { extensionCodec });
-
-          let endTime1 = new Date().getTime();
-          let averageTime1 = ((endTime1 - startTime1) * 1000) / 1;
-          console.log(`msgpack-javascript:encodes_${title} averageTime = ${averageTime1}`)
-
-          let bufferStr = exam.stringify(idx);
-
-          if (exam.matchValue(value)) {
-              // 源库判断当前idx的数据内容是否存在，此处我们替换为
-              // assert(true, exam.stringify(idx));
-            let bufStrs = bufferStr.split('-')
-            let hexs = []
-            let buf = [];
-            for (let i = 0; i < bufStrs.length; i++) {
-              let uin8Str = '0x'+bufStrs[i];
-              hexs.push(uin8Str)
-              let radix10 = parseInt(uin8Str)
-              buf.push(radix10)
-            }
-            for (let i = 0; i < buf.length; i++) {
-              expect(buf[i]).assertEqual(encoded[i])
-            }
-          }
-        });
-      });
-    });
-
-
+    MsgpackTestSuite2.msgpackTestSuiteTest2(it, expect)
   })
 }
 

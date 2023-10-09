@@ -13,77 +13,54 @@
  * limitations under the License.
  */
 import assert from "./assert2hypium";
-import { encode, decodeArrayStream } from "@msgpack/msgpack";
-
-import hilog from '@ohos.hilog';
+import Util from "../test/stdlib/Util";
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 
 
 export default function DecodeArrayStreamTest() {
-  describe('DecodeArrayStreamTest', function () {
+  describe('DecodeArrayStreamTest', () => {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(() => {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(() => {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(() => {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(() => {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
     const generateSampleObject = () => {
-      return {
+      let value: SampleObject = {
         id: Math.random(),
         name: "test",
       };
+      return value;
     };
 
-    const createStream = async function* (object: any) {
-      for (const byte of encode(object)) {
-        yield [byte];
-      }
-    };
-
-    it("decodes_numbers_array_array8",0, async () => {
+    it("decodes_numbers_array_array8", 0, async () => {
       const object = [1, 2, 3, 4, 5];
-
-      const result: Array<unknown> = [];
+      const result: Array<Object> = [];
       let startTime1 = new Date().getTime();
-      for await (const item of decodeArrayStream(createStream(object))) {
-        result.push(item);
-      }
+      await Util.decodeArrayStreamsSetResult(await Util.createStreams(object), result)
       let endTime1 = new Date().getTime();
       let averageTime1 = ((endTime1 - startTime1) * 1000) / 1;
       console.log(`msgpack-javascript:decodes_numbers_array_array8 averageTime = ${averageTime1}`)
-
       assert.deepStrictEqual(object, result);
     });
 
-    it("decodes_numbers_of_array_array16",0, async () => {
-      const createStream = async function* () {
-        yield [0xdc, 0, 3];
-        yield encode(1);
-        yield encode(2);
-        yield encode(3);
-      };
-
-      const result: Array<unknown> = [];
-      
+    it("decodes_numbers_of_array_array16", 0, async () => {
+      const result: Array<Object> = [];
       let startTime1 = new Date().getTime();
-      
-      for await (const item of decodeArrayStream(createStream())) {
-        result.push(item);
-      }
-
+      await Util.decodeArrayStreamsSetResult(await Util.array16CreateStream(), result)
       let endTime1 = new Date().getTime();
       let averageTime1 = ((endTime1 - startTime1) * 1000) / 1;
       console.log(`msgpack-javascript:decodes_numbers_of_array_array16 averageTime = ${averageTime1}`)
@@ -92,42 +69,23 @@ export default function DecodeArrayStreamTest() {
     });
 
     it("decodes_numbers_of_array_array32", 0, async () => {
-      const createStream = async function* () {
-        yield [0xdd, 0, 0, 0, 3];
-        yield encode(1);
-        yield encode(2);
-        yield encode(3);
-      };
-
-      const result: Array<unknown> = [];
-      
+      const result: Array<Object> = [];
       let startTime1 = new Date().getTime();
-      
-      for await (const item of decodeArrayStream(createStream())) {
-        result.push(item);
-      }
-
+      await Util.decodeArrayStreamsSetResult(await Util.array32CreateStream(), result)
       let endTime1 = new Date().getTime();
       let averageTime1 = ((endTime1 - startTime1) * 1000) / 1;
       console.log(`msgpack-javascript:decodes_numbers_of_array_array32 averageTime = ${averageTime1}`)
-
       assert.deepStrictEqual(result, [1, 2, 3]);
     });
 
-    it("decodes_objects_array",0, async () => {
-      const objectsArrays: Array<any> = [];
-
+    it("decodes_objects_array", 0, async () => {
+      const objectsArrays: Array<Object> = [];
       for (let i = 0; i < 10; i++) {
         objectsArrays.push(generateSampleObject());
       }
-
-      const result: Array<unknown> = [];
-
+      const result: Array<Object> = [];
       let startTime1 = new Date().getTime();
-      
-      for await (const item of decodeArrayStream(createStream(objectsArrays))) {
-        result.push(item);
-      }
+      await Util.decodeArrayStreamsSetResult(await Util.createStreams(objectsArrays), result);
       let endTime1 = new Date().getTime();
       let averageTime1 = ((endTime1 - startTime1) * 1000) / 1;
       console.log(`msgpack-javascript:decodes_objects_array averageTime = ${averageTime1}`)
@@ -135,19 +93,16 @@ export default function DecodeArrayStreamTest() {
       assert.deepStrictEqual(objectsArrays, result);
     });
 
-    it("fails_for_non_array_input",0, async () => {
+    it("fails_for_non_array_input", 0, async () => {
       const object = "demo";
 
-      const result: Array<unknown> = [];
+      const result: Array<Object> = [];
       let startTime1 = new Date().getTime();
       try {
-      for await (const item of decodeArrayStream(createStream(object))) {
-        result.push(item);
-      }
-      
-    }catch (err){
-      expect(err.message).assertContain('Unrecognized array type byte')
-    } finally {
+        await Util.decodeArrayStreamsSetResult(await Util.createStreams(object), result);
+      } catch (err) {
+        expect(err.message).assertContain('Unrecognized array type byte')
+      } finally {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / 1;
         console.log(`msgpack-javascript:fails_for_non_array_input averageTime = ${averageTime1}`)
@@ -159,5 +114,8 @@ export default function DecodeArrayStreamTest() {
 }
 
 
-
+interface SampleObject {
+  id: number,
+  name: string,
+}
 
