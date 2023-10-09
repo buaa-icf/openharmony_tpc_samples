@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 /*
  * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,45 +22,45 @@ import typesSchema from '../../fixtures/types.json';
 import dataCollection from '../../fixtures/data_collection.json';
 
 
-var validator: Validator;
+let validator: ESObject;
 const BASE_COUNT = 1
 
 export default function loadingTest() {
-  describe('loadingTest', function () {
-    beforeAll(function () {
+  describe('loadingTest', () => {
+    beforeAll(() => {
     })
-    beforeEach(function () {
+    beforeEach(() => {
       validator = new Validator();
     })
-    afterEach(function () {
+    afterEach(() => {
     })
-    afterAll(function () {
+    afterAll(() => {
     })
-    it('TheFirstShouldNotBeRemovedIfReferencedByTheSecond', 0, function () {
+    it('TheFirstShouldNotBeRemovedIfReferencedByTheSecond', 0, () => {
       validator.addSchema(dataSchema, '/data_schema.json');
       validator.addSchema(dataCollectionSchema, '/data_collection_schema.json');
-      let propertySchema = validator.schemas['/data_schema.json']
+      let propertySchema:object  = validator.schemas['/data_schema.json']
       expect(propertySchema).not().assertNull()
     });
 
-    it('ASchemaShouldNotBeAddedToUnresolvedRefsIfItExists', 0, function () {
+    it('ASchemaShouldNotBeAddedToUnresolvedRefsIfItExists', 0, () => {
       validator.addSchema(dataSchema, '/data_schema.json');
       validator.addSchema(dataCollectionSchema, '/data_collection_schema.json');
-      let isHas = validator.unresolvedRefs.indexOf('/data_schema.json');
+      let isHas :object  = validator.unresolvedRefs.indexOf('/data_schema.json');
       expect(isHas).assertEqual(-1);
     });
 
-    it('TheSecondSchemaShouldBeAbleToUseAReferenceToTheFirst', 0, function () {
+    it('TheSecondSchemaShouldBeAbleToUseAReferenceToTheFirst', 0, () => {
       validator.addSchema(dataSchema, '/data_schema.json');
       validator.addSchema(dataCollectionSchema, '/data_collection_schema.json');
       validator.addSchema(typesSchema, '/types.json');
-      let result = validator.validate(dataCollection, {
+      let result :boolean = validator.validate(dataCollection, {
         $ref: '/data_collection_schema.json'
       }).valid;
       expect(result).assertTrue()
     });
 
-    it('MultipleSchemasWithTheSameIdShouldThrowAnError', 0, function () {
+    it('MultipleSchemasWithTheSameIdShouldThrowAnError', 0, () => {
       try {
         validator.addSchema({
           properties: {

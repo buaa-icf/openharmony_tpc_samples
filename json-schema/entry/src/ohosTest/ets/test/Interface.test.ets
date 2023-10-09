@@ -15,49 +15,49 @@
 
 import { scan, SchemaError, SchemaScanResult, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
+import { Options,ObjectSchema } from './IntertfaceData';
 
-// @ts-ignore
-var validator: Validator;
+let validator: ESObject;
 const BASE_COUNT = 1
-var stringSchema = { 'const': 'value' };
-var objectSchema = { 'const': { "some key": [null, "1", 2, true] } };
+let stringSchema:Options ={ 'const': 'value' };
+let objectSchema:ObjectSchema ={ 'const': { "some key": [null, "1", 2, true] } };
 
 export default function interfaceTest() {
-  describe('interfaceTest', function () {
-    beforeAll(function () {
+  describe('interfaceTest', () => {
+    beforeAll(() => {
     })
-    beforeEach(function () {
+    beforeEach(() => {
       validator = new Validator();
     })
-    afterEach(function () {
+    afterEach(() => {
     })
-    afterAll(function () {
+    afterAll(() => {
     })
-    it('Validator', 0, function () {
+    it('Validator', 0, () => {
       expect(typeof Validator).assertEqual('function')
     });
 
-    it('ValidatorResult', 0, function () {
+    it('ValidatorResult', 0, () => {
       expect(typeof ValidatorResult).assertEqual('function')
     });
 
-    it('ValidationError', 0, function () {
+    it('ValidationError', 0, () => {
       expect(typeof ValidationError).assertEqual('function')
     });
 
-    it('SchemaError', 0, function () {
+    it('SchemaError', 0, () => {
       expect(typeof SchemaError).assertEqual('function')
     });
 
-    it('SchemaScanResult', 0, function () {
+    it('SchemaScanResult', 0, () => {
       expect(typeof SchemaScanResult).assertEqual('function')
     });
 
-    it('scan', 0, function () {
+    it('scan', 0, () => {
       expect(typeof scan).assertEqual('function')
     });
 
-    it('validate', 0, function () {
+    it('validate', 0, () => {
       expect(typeof validate).assertEqual('function')
     });
   })

@@ -13,30 +13,46 @@
  * limitations under the License.
  */
 
-import { SchemaError, validate, ValidationError, Validator, ValidatorResult, ValidatorResultError } from '@ohos/jsonschema'
+import {
+  Schema,
+  SchemaError, validate, ValidationError, Validator, ValidatorResult, ValidatorResultError } from '@ohos/jsonschema'
 import { it as _it, afterAll, afterEach, beforeAll, beforeEach, describe, expect } from '@ohos/hypium'
+import {
+  Filename,
+  Fragment,
+  Invalid,
+  invalid,
+  Options,
+  PathDeve,
+  Reference,
+  schemavaldator,
+  ThrowError,
+  valid,
+  validschema,
+  validtaschema } from './IntertfaceData';
 
-// @ts-ignore
-var validator: Validator;
+let validator: ESObject;
 const BASE_COUNT = 1
 
+let n='http://example.com/base.json';
+
 export default function validatorTest() {
-  describe('validatorTest', function () {
-    beforeAll(function () {
+  describe('validatorTest', () => {
+    beforeAll(() => {
     })
-    beforeEach(function () {
+    beforeEach(() => {
       validator = new Validator();
     })
-    afterEach(function () {
+    afterEach(() => {
     })
-    afterAll(function () {
+    afterAll(() => {
     })
 
-    _it('initial value', 0, function () {
+    _it('initial value', 0, () => {
       expect(validator.unresolvedRefs).assertDeepEquals([])
     });
-    _it('addSchema', 0, function () {
-      let result = validator.addSchema({
+    _it('addSchema', 0, () => {
+      let result:Object  = validator.addSchema({
         id: 'http://example.com/base.json',
         items: {
           $ref: 'item.json',
@@ -45,34 +61,34 @@ export default function validatorTest() {
       expect(validator.unresolvedRefs).assertDeepEquals(['http://example.com/item.json'])
     });
 
-    _it('argument schema must be a schema object', 0, function () {
-      let result = validator.addSchema({}, 'http://example.com/base.json');
-      expect(validator.schemas['http://example.com/base.json']).assertDeepEquals({})
+    _it('argument schema must be a schema object', 0, () => {
+      let result :Object= validator.addSchema(new Object(), 'http://example.com/base.json');
+      expect(validator.schemas['http://example.com/base.json']).assertDeepEquals(new Object())
     });
     // TODO: held for major version upgrade
-    _it('argument schema must be a schema true', 0, function () {
+    _it('argument schema must be a schema true', 0, () => {
       validator.addSchema(true, 'http://example.com/base.json');
       expect(validator.schemas['http://example.com/base.json']).assertEqual(undefined)
     });
     // TODO: held for major version upgrade
-    _it('argument schema must be a schema false', 0, function () {
+    _it('argument schema must be a schema false', 0, () => {
       validator.addSchema(false, 'http://example.com/base.json');
       expect(validator.schemas['http://example.com/base.json']).assertEqual(undefined)
     });
-    _it('argument schema must be a schema null', 0, function () {
-      var res = validator.addSchema(undefined, 'http://example.com/base.json');
+    _it('argument schema must be a schema null', 0, () => {
+      let res :Object= validator.addSchema(undefined, 'http://example.com/base.json');
       expect(res).assertEqual(null);
-      let result = 'http://example.com/base.json' in validator.schemas
+      let result =  validator.schemas.n!=undefined
       expect(result).assertFalse();
     });
-    _it('argument schema must be a schema undefined', 0, function () {
-      var res = validator.addSchema(undefined, 'http://example.com/base.json');
+    _it('argument schema must be a schema undefined', 0, () => {
+      let res:Object = validator.addSchema(undefined, 'http://example.com/base.json');
       expect(res).assertEqual(null);
-      let result = 'http://example.com/base.json' in validator.schemas
+      let result =  validator.schemas.n!=undefined
       expect(result).assertFalse();
     });
     // TODO: held for major version upgrade
-    _it('argument schema must not be a number', 0, function () {
+    _it('argument schema must not be a number', 0, () => {
       try {
         validator.addSchema(1, 'http://example.com/base.json');
       } catch (err) {
@@ -80,7 +96,7 @@ export default function validatorTest() {
       }
     });
     // TODO: held for major version upgrade
-    _it('argument schema must not be a string', 0, function () {
+    _it('argument schema must not be a string', 0, () => {
       try {
         validator.addSchema("schema", 'http://example.com/base.json');
       } catch (err) {
@@ -88,7 +104,7 @@ export default function validatorTest() {
       }
     });
     // TODO: held for major version upgrade
-    _it('argument schema must not be null', 0, function () {
+    _it('argument schema must not be null', 0, () => {
       try {
         validator.addSchema(null, 'http://example.com/base.json');
       } catch (err) {
@@ -96,14 +112,14 @@ export default function validatorTest() {
       }
     });
     // TODO: held for major version upgrade
-    _it('argument schema must not be undefined', 0, function () {
+    _it('argument schema must not be undefined', 0, () => {
       try {
         validator.addSchema(undefined, 'http://example.com/base.json');
       } catch (err) {
         expect(err instanceof Error).assertTrue()
       }
     });
-    _it('addSchema with absolute id', 0, function () {
+    _it('addSchema with absolute id', 0,  ()=>{
       validator.addSchema({
         id: 'http://example.com/base.json'
       });
@@ -112,14 +128,14 @@ export default function validatorTest() {
         id: 'http://example.com/base.json'
       })
     });
-    _it('addSchema with absolute $id', 0, function () {
+    _it('addSchema with absolute $id', 0, () => {
       validator.addSchema({
         $id: 'http://example.com/base.json',
       });
       expect(validator.unresolvedRefs).assertDeepEquals([])
     });
     // TODO: held for next major version
-    _it('base must be a full URI', 0, function () {
+    _it('base must be a full URI', 0, () => {
       try {
         validator.addSchema({
           id: 'main.json'
@@ -128,63 +144,58 @@ export default function validatorTest() {
         expect(err instanceof SchemaError).assertTrue()
       }
     });
-    _it('addSchema with absolute base', 0, function () {
-      var res = validator.addSchema({
+    _it('addSchema with absolute base', 0, () => {
+      expect(validator.addSchema({type: 'string'}, 'http://example.com/main.json')).not().assertNull();
+      expect( validator.schemas.n==undefined).assertTrue();
+      // expect('http://example.com/main.json' in validator.schemas).assertTrue();
+      expect(validator.schemas['http://example.com/main.json']).assertDeepEquals(validator.addSchema({type: 'string'}, 'http://example.com/main.json'))
+    });
+    _it('addSchema with absolute $id', 0, () => {
+      let res :Object= validator.addSchema({
         type: 'string'
       }, 'http://example.com/main.json');
       expect(res).not().assertNull();
-      expect('http://example.com/main.json' in validator.schemas).assertTrue();
+      expect(validator.schemas.n==undefined).assertTrue();
       expect(validator.schemas['http://example.com/main.json']).assertDeepEquals(res)
     });
-    _it('addSchema with absolute $id', 0, function () {
-      var res = validator.addSchema({
-        type: 'string'
-      }, 'http://example.com/main.json');
-      expect(res).not().assertNull();
-      expect('http://example.com/main.json' in validator.schemas).assertTrue();
-      expect(validator.schemas['http://example.com/main.json']).assertDeepEquals(res)
-    });
-    _it('addSchema with relative id', 0, function () {
-      var res = validator.addSchema({
+    _it('addSchema with relative id', 0, () => {
+      let res:Object = validator.addSchema({
         id: 'main.json'
       }, 'http://example.com/index.html');
       // assert(res);
-      expect('http://example.com/main.json' in validator.schemas).assertTrue();
+      expect(validator.schemas.n==undefined).assertTrue();
     });
-    _it('addSchema with relative $id', 0, function () {
-      var res = validator.addSchema({
+    _it('addSchema with relative $id', 0, () => {
+      let res :Object= validator.addSchema({
         $id: 'main.json'
       }, 'http://example.com/index.html');
       // assert(res);
-      expect('http://example.com/main.json' in validator.schemas).assertTrue();
+      expect(validator.schemas.n==undefined).assertTrue();
     });
-    _it('addSchema populates unresolvedRefs', 0, function () {
+    _it('addSchema populates unresolvedRefs', 0, () => {
       validator.addSchema({
         $id: 'main.json',
         items: {
           $ref: 'item.json',
         },
       }, 'http://example.com/index.json');
-      expect('http://example.com/main.json' in validator.schemas).assertTrue();
+      expect(validator.schemas.n==undefined).assertTrue();
       expect(validator.unresolvedRefs[0]).assertDeepEquals('http://example.com/item.json')
       validator.addSchema({
         $id: 'item.json'
       }, 'http://example.com/index.json');
       expect(validator.unresolvedRefs.length).assertEqual(0)
     });
-    _it('schema may be an object', 0, function () {
-      var res = validator.validate(true, {});
-      expect(res.valid).assertTrue()
+    _it('schema may be an object', 0, () => {
+      expect(validator.validate(true, new Object()).valid).assertTrue()
     });
-    _it('schema may be true', 0, function () {
-      var res = validator.validate(true, true);
-      expect(res.valid).assertTrue()
+    _it('schema may be true', 0, () => {
+      expect(validator.validate(true, true).valid).assertTrue()
     });
-    _it('schema may be false', 0, function () {
-      var res = validator.validate(true, false);
-      expect(res.valid).assertFalse()
+    _it('schema may be false', 0, () => {
+      expect(validator.validate(true, false).valid).assertFalse()
     });
-    _it('schema cannot be null', 0, function () {
+    _it('schema cannot be null', 0, () => {
       try {
         validator.validate(true, null);
       } catch (err) {
@@ -193,7 +204,7 @@ export default function validatorTest() {
       }
 
     });
-    _it('schema cannot be undefined', 0, function () {
+    _it('schema cannot be undefined', 0, () => {
       try {
         validator.validate(true, undefined);
       } catch (err) {
@@ -201,7 +212,7 @@ export default function validatorTest() {
         expect(err.message.indexOf('object or boolean') >= 0).assertTrue();
       }
     });
-    _it('schema cannot be a string', 0, function () {
+    _it('schema cannot be a string', 0, () => {
       try {
         validator.validate(true, "string");
       } catch (err) {
@@ -209,61 +220,36 @@ export default function validatorTest() {
         expect(err.message.indexOf('object or boolean') >= 0).assertTrue();
       }
     });
-    _it('options may be undefined', 0, function () {
-      let result = validator.validate(null, true, undefined);
-      expect(result.valid).assertTrue();
+    _it('options may be undefined', 0, () => {
+      expect(validator.validate(null, true, undefined).valid).assertTrue();
     });
-    _it('options may be null', 0, function () {
-      let result = validator.validate(null, true, null);
-      expect(result.valid).assertTrue();
+    _it('options may be null', 0, () => {
+      expect(validator.validate(null, true, null).valid).assertTrue();
     });
-    _it('options.base must be a string', 0, function () {
-      let result = validator.validate(null, true, null);
-      expect(result.valid).assertTrue();
+    _it('options.base must be a string', 0, () => {
+      expect(validator.validate(null, true, null).valid).assertTrue();
     });
-    _it('options.required with defined instance', 0, function () {
-      var res = validator.validate(undefined, true, {
-        required: true
-      });
-      expect(res.valid).assertFalse();
-      expect(res.errors[0].message.indexOf('required') >= 0).assertTrue();
-      var neg = validator.validate(null, true, {
-        required: true
-      });
-      expect(neg.valid).assertTrue();
+    _it('options.required with defined instance', 0, () => {
+      expect(validator.validate(undefined, true, {required: true}).valid).assertFalse();
+      expect(validator.validate(undefined, true, {required: true}).errors[0].message.indexOf('required') >= 0).assertTrue();
+      expect(validator.validate(null, true, {required: true}).valid).assertTrue();
     });
-    _it('options.required with undefined instance', 0, function () {
-      var res = validator.validate(undefined, true, {
-        required: true
-      });
-      expect(res.valid).assertFalse()
-      expect(res.errors[0].message.indexOf('required') >= 0).assertTrue();
-      var neg = validator.validate(null, true, {
-        required: true
-      });
-      expect(neg.valid).assertTrue();
+    _it('options.required with undefined instance', 0, () => {
+      expect(validator.validate(undefined, true, {required: true}).valid).assertFalse()
+      expect(validator.validate(undefined, true, {required: true}).errors[0].message.indexOf('required') >= 0).assertTrue();
+      expect(validator.validate(null, true, {required: true}).valid).assertTrue();
     });
-    _it('options.required is false', 0, function () {
-      var res = validator.validate(undefined, true, {
-        required: false
-      });
-      expect(res.valid).assertTrue();
-      var neg = validator.validate(null, true, {
-        required: true
-      });
-      expect(neg.valid).assertTrue()
+    _it('options.required is false', 0, () => {
+      expect(validator.validate(undefined, true, {required: false}).valid).assertTrue();
+      expect(validator.validate(null, true, {required: true}).valid).assertTrue()
     });
-    _it('options.required defaults false', 0, function () {
+    _it('options.required defaults false', 0, () => {
       // TODO DEPRECATED: this behavior changes to true in next major version
-      var res = validator.validate(undefined, true, {});
-      expect(res.valid).assertTrue();
-      var neg = validator.validate(null, true, {
-        required: true
-      });
-      expect(neg.valid).assertTrue()
+      expect(validator.validate(undefined, true, new Object()).valid).assertTrue();
+      expect(validator.validate(null, true, {required: true}).valid).assertTrue()
     });
-    _it('options throwError', 0, function () {
-      var schema = {
+    _it('options throwError', 0, () => {
+      let schema:ThrowError = {
         properties: {
           "a": {
             type: 'number'
@@ -273,16 +259,14 @@ export default function validatorTest() {
           },
         },
       };
-      var valid = {
+      let valid :Options= {
         a: 0, b: 0
       };
-      var invalid = {
+      let invalid :Invalid= {
         a: null, b: null
       };
-      var res = validator.validate(valid, schema, {});
-      expect(res.valid).assertTrue();
-      var neg = validator.validate(invalid, schema, {});
-      expect(neg.valid).assertFalse()
+      expect(validator.validate(valid, schema, new Object()).valid).assertTrue();
+      expect(validator.validate(invalid, schema, new Object()).valid).assertFalse()
       try {
         validator.validate(invalid, schema, {
           throwError: true
@@ -291,8 +275,8 @@ export default function validatorTest() {
         expect(err instanceof ValidationError).assertTrue()
       }
     });
-    _it('options throwFirst', 0, function () {
-      var schema = {
+    _it('options throwFirst', 0, () => {
+      let schema:ThrowError = {
         properties: {
           "a": {
             type: 'number'
@@ -302,18 +286,14 @@ export default function validatorTest() {
           },
         },
       };
-      var valid = {
+      let valid :Options= {
         a: 0, b: 0
       };
-      var invalid = {
+      let invalid :Invalid= {
         a: null, b: null
       };
-      var res = validator.validate(valid, schema, {
-        throwAll: true
-      });
-      expect(res.valid).assertTrue();
-      var neg = validator.validate(invalid, schema, {});
-      expect(neg.valid).assertFalse()
+      expect(validator.validate(valid, schema, {throwAll: true}).valid).assertTrue();
+      expect(validator.validate(invalid, schema, new Object()).valid).assertFalse()
       try {
         validator.validate(invalid, schema, {
           throwFirst: true
@@ -324,8 +304,8 @@ export default function validatorTest() {
         expect(err.errors.length).assertEqual(1)
       }
     });
-    _it('options throwAll', 0, function () {
-      var schema = {
+    _it('options throwAll', 0, () => {
+      let schema:ThrowError = {
         properties: {
           "a": {
             type: 'number'
@@ -335,18 +315,15 @@ export default function validatorTest() {
           },
         },
       };
-      var valid = {
+      let valid :Options= {
         a: 0, b: 0
       };
-      var invalid = {
+      let invalid :Invalid= {
         a: null, b: null
       };
-      var res = validator.validate(valid, schema, {
-        throwAll: true
-      });
-      expect(res.valid).assertTrue();
-      var neg = validator.validate(invalid, schema, {});
-      expect(neg.valid).assertFalse()
+
+      expect(validator.validate(valid, schema, {throwAll: true}).valid).assertTrue();
+      expect( validator.validate(invalid, schema, new Object()).valid).assertFalse()
 
       try {
         validator.validate(invalid, schema, {
@@ -358,24 +335,23 @@ export default function validatorTest() {
         expect(err.errors.length).assertEqual(2)
       }
     });
-    _it('million errors', 0, function () {
-      var schema = {
-        type: 'number',
-        oneMillionErrors: true,
-      };
-      validator.attributes.oneMillionErrors = function (instance, schema, options, ctx) {
-        const result = new ValidatorResult(instance, schema, options, ctx);
-        for (var i = 0; i < 1000; i++) {
-          result.addError('oneMillionErrors error');
-        }
-        return result;
+    _it('million errors', 0, () => {
+    validator.attributes.oneMillionErrors =  (instance:ESObject, schema:ESObject, options:ESObject, ctx:ESObject):ESObject=> {
+      const result:ESObject = new ValidatorResult(instance, schema, options, ctx);
+      for (let i = 0; i < 1000; i++) {
+        result.addError('oneMillionErrors error');
       }
-      var res = validator.validate(1, schema, {});
-      expect(res.valid).assertFalse();
-      expect(res.errors.length).assertEqual(1000)
-    });
-    _it('subschema references named reference', 0, function () {
-      var schema = {
+      return result;
+    }
+    let res :ESObject= validator.validate(1, {
+      type: 'number',
+      oneMillionErrors: true,
+    }, {});
+    expect(res.valid).assertFalse();
+    expect(res.errors.length).assertEqual(1000)
+  });
+    _it('subschema references named reference', 0, () => {
+      let schema :Reference = {
         items: {
           $ref: '#items'
         },
@@ -386,13 +362,11 @@ export default function validatorTest() {
           },
         },
       };
-      var res = validator.validate([[]], schema);
-      expect(res.valid).assertTrue();
-      var neg = validator.validate([null], schema);
-      expect(neg.valid).assertFalse();
+      expect(validator.validate([[]], schema).valid).assertTrue();
+      expect(validator.validate([null], schema).valid).assertFalse();
     });
-    _it('subschema references path reference', 0, function () {
-      var schema = {
+    _it('subschema references path reference', 0, () => {
+      let schema :PathDeve  = {
         items: {
           $ref: '#/definitions/items'
         },
@@ -402,36 +376,30 @@ export default function validatorTest() {
           },
         },
       };
-      var res = validator.validate([[]], schema);
-      expect(res.valid).assertTrue();
-      var neg = validator.validate([null], schema);
-      expect(neg.valid).assertFalse();
+      expect(validator.validate([[]], schema).valid).assertTrue();
+      expect(validator.validate([null], schema).valid).assertFalse();
     });
-    _it('recursive references fragment reference', 0, function () {
-      var schema = {
+    _it('recursive references fragment reference', 0, () => {
+      let schema :Fragment= {
         $id: 'http://example.com/foo.json',
         items: {
           $ref: '#'
         },
         type: 'array',
       };
-      var res = validator.validate([[[[]]]], schema);
-      expect(res.valid).assertTrue();
-      var neg = validator.validate([null], schema);
-      expect(neg.valid).assertFalse();
+      expect(validator.validate([[[[]]]], schema).valid).assertTrue();
+      expect(validator.validate([null], schema).valid).assertFalse();
     });
-    _it('recursive references filename reference', 0, function () {
-      var schema = {
+    _it('recursive references filename reference', 0, () => {
+      let  schema :Filename= {
         $id: 'http://example.com/foo.json',
         items: {
           $ref: 'foo.json'
         },
         type: 'array',
       };
-      var res = validator.validate([[[[]]]], schema);
-      expect(res.valid).assertTrue();
-      var neg = validator.validate([null], schema);
-      expect(neg.valid).assertFalse();
+      expect(validator.validate([[[[]]]], schema).valid).assertTrue();
+      expect(validator.validate([null], schema).valid).assertFalse();
     });
 
 

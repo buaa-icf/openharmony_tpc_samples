@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 /*
  * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,23 +18,23 @@ import { SchemaError, validate, ValidationError, Validator, ValidatorResult } fr
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
 import metaschema from '../../json-metaschema/draft-04-schema.json';
 
-var validator: Validator;
+let validator: ESObject;
 const BASE_COUNT = 1
 
 export default function metaschemaTest() {
-  describe('metaschemaTest', function () {
-    beforeAll(function () {
+  describe('metaschemaTest', () => {
+    beforeAll(() => {
     })
-    beforeEach(function () {
+    beforeEach(() => {
       validator = new Validator();
     })
-    afterEach(function () {
+    afterEach(() => {
     })
-    afterAll(function () {
+    afterAll(() => {
     })
-    it('ValidatesItself', 0, function () {
+    it('ValidatesItself', 0, () => {
       expect(metaschema).not().assertNull();
-      let result = validator.validate(metaschema, metaschema).valid;
+      let result:boolean  = validator.validate(metaschema, metaschema).valid;
       expect(result).assertTrue();
     });
   })

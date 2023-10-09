@@ -1,3 +1,4 @@
+
 /*
  * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,7 +14,7 @@
  * limitations under the License.
  */
 
-import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
+import { SchemaError, validate, ValidationError, Validator, ValidatorResult,Schema } from '@ohos/jsonschema'
 
 @Entry
 @Component
@@ -93,34 +94,32 @@ struct DiyAnotherPage {
     const ctx = this;
     ctx.message2 = `期待结果：${false}`
     try {
-
-      var v = new Validator();
-      v.attributes.contains = function validateContains(instance, schema, options, ctx) {
-        var result = new ValidatorResult(instance, schema, options, ctx);
+      let v :ESObject= new Validator()
+       v.attributes.contains = Validator.validateContains=(instance:string, schema:Schema, options:string, ctx:string):string =>{
+       let  result :ESObject= new ValidatorResult(instance, schema, options, ctx);
 
         if (typeof instance !== 'string') {
           result.addError('fails some validation test')
         }
         ;
-        // @ts-ignore
+
         if (typeof schema.contains !== 'string') {
           result.addError('fails some validation test')
         }
         ;
-        // @ts-ignore
+
         if (instance.indexOf(schema.contains) > 0) {
           result.addError('fails some validation test')
         }
         ;
-        // @ts-ignore
+
         if (schema.contains.length > 0) {
           result.addError('fails some validation test')
         }
-        return result;
+        return result
       }
 
-      // @ts-ignore
-      let resultValidate = v.validate("I am an instance", { type: "string", contains: "I am" });
+      let resultValidate:ESObject = v.validate("I am an instance", { type: "string", contains: "I am" })
       let str = JSON.stringify(resultValidate);
       console.log(`jsonschema ------> 测试结果是：${str}`);
       ctx.message1 = `验证对象： ${str}`;

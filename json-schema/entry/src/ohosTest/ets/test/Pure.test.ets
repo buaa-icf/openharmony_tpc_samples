@@ -15,48 +15,49 @@
 
 import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
+import { Constra, Options, schema } from './IntertfaceData';
+import { free } from './DataFormat'
 
-// @ts-ignore
-var validator: Validator;
+let validator: ESObject;
 const BASE_COUNT = 1
 
 export default function pureTest() {
-  describe('pureTest', function () {
-    beforeAll(function () {
+  describe('pureTest', () => {
+    beforeAll(() => {
     })
-    beforeEach(function () {
+    beforeEach(() => {
       validator = new Validator();
     })
-    afterEach(function () {
+    afterEach(() => {
     })
-    afterAll(function () {
+    afterAll(() => {
     })
-    it('DependenciesConstraint', 0, function () {
-      var data = {
-        "foo": [1, 2, 3],
-        "bar": 2,
+    it('DependenciesConstraint', 0, () => {
+      let data :Options= {
+        foo: [1, 2, 3],
+        bar: 2,
       };
-      var schema = {
-        "dependencies": {
-          "bar": {
-            "properties": {
-              "foo": {
-                "type": "array",
-                "items": {
-                  "type": "integer"
+      let schema :Constra= {
+        dependencies: {
+          bar: {
+            properties: {
+              foo: {
+                type: "array",
+                items: {
+                  type: "integer"
                 },
               },
-              "bar": {
-                "type": "integer"
+              bar: {
+                type: "integer"
               },
             },
-            "required": ["foo", "bar"],
+            required: ["foo", "bar"],
           },
         },
       };
-      Object.freeze(data.foo);
-      Object.freeze(data);
-      let result = validator.validate(data, schema).valid;
+      free(data.foo);
+      free(data);
+      let result:boolean  = validator.validate(data, schema).valid;
       expect(result).assertTrue();
     });
   })

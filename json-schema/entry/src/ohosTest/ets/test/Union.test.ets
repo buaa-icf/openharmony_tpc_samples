@@ -15,19 +15,27 @@
 
 import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
+import {
+  AndDescription,
+  EmptyArray,
+  ForArrayOr,
+  ForObjectId,
+  ObjectIdSchema,
+  Options, UnionSchema,
+} from './IntertfaceData';
 
-// @ts-ignore
-var validator: Validator;
+
+let validator: ESObject;
 const BASE_COUNT = 1
-var testSchema = {
+let testSchema :Options = {
   "type": "string",
 };
 
-var numSchema = {
+let numSchema :Options= {
   "type": "number",
 };
 
-var objectIdSchema = {
+let objectIdSchema :ObjectIdSchema= {
   "type": "object",
   "id": "MongoDb#ObjectId",
   "description": "MongoDB ObjectID",
@@ -36,7 +44,7 @@ var objectIdSchema = {
     "_bsontype": { "type": "string" },
   },
 };
-var schema = {
+let schema :UnionSchema = {
   type: 'object',
   required: true,
   properties: {
@@ -64,83 +72,92 @@ var schema = {
 };
 
 export default function unionTest() {
-  describe('unionTest', function () {
-    beforeAll(function () {
+  describe('unionTest', () => {
+    beforeAll(() => {
     })
-    beforeEach(function () {
+    beforeEach(() => {
       validator = new Validator();
       validator.addSchema(testSchema, '/Test#Simple');
       validator.addSchema(numSchema, '/Test#Num');
       validator.addSchema(objectIdSchema, '/MongoDb#ObjectId');
     })
-    afterEach(function () {
+    afterEach(() => {
     })
-    afterAll(function () {
+    afterAll(() => {
     })
-    var exc = {
+    let exc :Options= {
       class: 'testing...', message: 'this is only a test'
     };
 
-    it('ShouldValidateForNumber', 0, function () {
-      let result = validator.validate(1, {
+    it('ShouldValidateForNumber', 0, () => {
+      let result:boolean  = validator.validate(1, {
         'type': ['number', 'string']
       }).valid
       expect(result).assertTrue();
     });
-    it('ShouldValidateForString1', 0, function () {
-      let result = validator.validate('1', {
+    it('ShouldValidateForString1', 0, () => {
+      let result :boolean = validator.validate('1', {
         'type': ['number', 'string']
       }).valid;
       expect(result).assertTrue();
     });
 
-    it('ShouldNotValidateIfNoStringOrNumber1', 0, function () {
-      let result = validator.validate(true, {
+    it('ShouldNotValidateIfNoStringOrNumber1', 0, () => {
+      let result:boolean  = validator.validate(true, {
         'type': ['number', 'string']
       }).valid;
       expect(result).assertFalse();
     });
 
-    it('shouldValidateForNull1', 0, function () {
-      let result = validator.validate(null, {
+    it('shouldValidateForNull1', 0, () => {
+      let result :boolean = validator.validate(null,{
         'type': ['null', 'string']
-      }).valid;
+      } ).valid;
       expect(result).assertTrue();
     });
-    it('ShouldValidateForString2', 0, function () {
-      let result = validator.validate('1', {
-        'type': ['null', 'string']
-      }).valid;
-      expect(result).assertTrue();
-    });
-
-    it('ShouldNotValidateIfNoStringOrNumber2', 0, function () {
-      let result = validator.validate(true, {
-        'type': ['null', 'string']
-      }).valid;
-      expect(result).assertFalse();
-    });
-    it('ShouldValidateForNull2', 0, function () {
-      let result = validator.validate(null, {
-        'type': ['null', 'string']
-      }).valid;
-      expect(result).assertTrue();
-    });
-    it('ShouldValidateForString3', 0, function () {
-      let result = validator.validate('1', {
+    it('ShouldValidateForString2', 0, () => {
+      let result:boolean  = validator.validate('1', {
         'type': ['null', 'string']
       }).valid;
       expect(result).assertTrue();
     });
 
-    it('ShouldNotValidateIfNoStringOrNumber3', 0, function () {
-      let result = validator.validate(true, {
+    it('ShouldNotValidateIfNoStringOrNumber2', 0, () => {
+      let result :boolean = validator.validate(true, {
         'type': ['null', 'string']
       }).valid;
       expect(result).assertFalse();
     });
-    it('ShouldValidateForNull3', 0, function () {
-      let result = validator.validate(null, {
+    it('ShouldValidateForNull2', 0, () => {
+      let result :boolean = validator.validate(null,{
+        'type': ['null', 'string']
+      }).valid;
+      expect(result).assertTrue();
+    });
+    it('ShouldValidateForString3', 0, () => {
+      let result :boolean = validator.validate('1', {
+        'type': ['null', 'string']
+      }).valid;
+      expect(result).assertTrue();
+    });
+
+    it('ShouldNotValidateIfNoStringOrNumber3', 0, () => {
+      let result :boolean = validator.validate(true, {
+        'type': ['null', 'string']
+      }).valid;
+      expect(result).assertFalse();
+    });
+    it('ShouldValidateForNull3', 0, () => {
+      let result:boolean  = validator.validate(null,{
+        'type': ['null', {
+          '$ref': 'Test#Simple'
+        }]
+      } ).valid;
+      expect(result).assertTrue();
+    });
+
+    it('ShouldValidateForString4', 0, () => {
+      let result :boolean = validator.validate('test', {
         'type': ['null', {
           '$ref': 'Test#Simple'
         }]
@@ -148,17 +165,8 @@ export default function unionTest() {
       expect(result).assertTrue();
     });
 
-    it('ShouldValidateForString4', 0, function () {
-      let result = validator.validate('test', {
-        'type': ['null', {
-          '$ref': 'Test#Simple'
-        }]
-      }).valid;
-      expect(result).assertTrue();
-    });
-
-    it('ShouldNotValidateIfNoStringOrNumber4', 0, function () {
-      let result = validator.validate(true, {
+    it('ShouldNotValidateIfNoStringOrNumber4', 0, () => {
+      let result :boolean = validator.validate(true, {
         'type': ['null', {
           '$ref': 'Test#Simple'
         }]
@@ -166,8 +174,8 @@ export default function unionTest() {
       expect(result).assertFalse();
     });
 
-    it('ShouldValidateFor', 0, function () {
-      let result = validator.validate('*', {
+    it('ShouldValidateFor', 0, () => {
+      let result :boolean = validator.validate('*', {
         'type': [{
           type: 'string', pattern: '^\\*$'
         }, {
@@ -177,8 +185,8 @@ export default function unionTest() {
       expect(result).assertTrue();
     });
 
-    it('ShouldValidateFor1', 0, function () {
-      let result = validator.validate(1, {
+    it('ShouldValidateFor1', 0, () => {
+      let result:boolean  = validator.validate(1, {
         'type': [{
           type: 'string', pattern: '^\\*$'
         }, {
@@ -188,8 +196,8 @@ export default function unionTest() {
       expect(result).assertTrue();
     });
 
-    it('ShouldNotValidateFor', 0, function () {
-      var result = validator.validate('-', {
+    it('ShouldNotValidateFor', 0, () => {
+      let result:boolean  = validator.validate('-', {
         'type': [{
           type: 'string', pattern: '^\\*$'
         }, {
@@ -199,8 +207,8 @@ export default function unionTest() {
       expect(result).assertFalse();
     });
 
-    it('ShouldValidateForArrayOr', 0, function () {
-      var schema = {
+    it('ShouldValidateForArrayOr', 0, () => {
+      let schema :ForArrayOr= {
         "type": "object",
         "properties": {
           "wildcards": {
@@ -215,14 +223,14 @@ export default function unionTest() {
           },
         },
       };
-      var result = validator.validate({
+      let result :boolean = validator.validate({
         'wildcards': ['*']
       }, schema).valid;
       expect(result).assertTrue();
     });
 
-    it('ShouldValidateFoEmptyArray', 0, function () {
-      var schema = {
+    it('ShouldValidateFoEmptyArray', 0, () => {
+      let schema :EmptyArray= {
         "type": "object",
         "properties": {
           "wildcards": {
@@ -237,14 +245,15 @@ export default function unionTest() {
           },
         },
       };
-      var result = validator.validate({
+
+      let result:boolean  = validator.validate({
         'wildcards': []
-      }, schema).valid;
+      }, schema ).valid;
       expect(result).assertTrue();
     });
 
-    it('ShouldValidateForObjectId', 0, function () {
-      var schema = {
+    it('ShouldValidateForObjectId', 0, () => {
+      let schema :ForObjectId= {
         "type": "object",
         "properties": {
           "wildcards": {
@@ -259,7 +268,7 @@ export default function unionTest() {
           },
         },
       };
-      var result = validator.validate({
+      let result :boolean = validator.validate({
         'wildcards': [{
           "id": "1234", "_bsontype": "test"
         }, '*']
@@ -267,8 +276,8 @@ export default function unionTest() {
       expect(result).assertTrue();
     });
 
-    it('ShouldValidateForObjectidAndIgnoreTitleAndDescription', 0, function () {
-      var schema = {
+    it('ShouldValidateForObjectidAndIgnoreTitleAndDescription', 0, () => {
+      let schema:AndDescription = {
         "type": "object",
         "properties": {
           "wildcards": {
@@ -283,7 +292,7 @@ export default function unionTest() {
           },
         },
       };
-      var result = validator.validate({
+      let result :boolean = validator.validate({
         'wildcards': [{
           "id": "1234", "_bsontype": "test"
         }, '*']
@@ -291,33 +300,32 @@ export default function unionTest() {
       expect(result).assertTrue();
     });
 
-    it('ShouldValidateForNulls', 0, function () {
-      var instance = {
+    it('ShouldValidateForNulls', 0, () => {
+      let result:boolean  = validator.validate({
         frames: [{
           filename: 'somefile.js', lineno: null
         }], exception: exc
-      };
-      var result = validator.validate(instance, schema).valid;
+      }, schema).valid;
       expect(result).assertTrue();
     });
-    it('ShouldValidateForNullAndString', 0, function () {
-      var instance = {
+    it('ShouldValidateForNullAndString', 0, () => {
+
+      let result :boolean = validator.validate({
         frames: [{
           filename: 'somefile.js', lineno: null
         }], exception: exc
-      };
-      var result = validator.validate(instance, schema).valid;
+      }, schema).valid;
       expect(result).assertTrue();
     });
-    it('ShouldNotValidateForStringAndString', 0, function () {
-      var instance = {
+    it('ShouldNotValidateForStringAndString', 0, () => {
+
+      let result :boolean = validator.validate({
         frames: [{
           filename: 'somefile.js', lineno: {
             hello: 'world'
           }
         }], exception: exc
-      };
-      var result = validator.validate(instance, schema).valid;
+      }, schema).valid;
       expect(result).assertFalse();
     });
   })

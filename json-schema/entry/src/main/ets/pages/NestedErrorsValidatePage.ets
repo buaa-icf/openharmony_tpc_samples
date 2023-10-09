@@ -14,19 +14,20 @@
  */
 
 import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
+import { nesteschema } from './IntereceTest'
 
 @Entry
 @Component
 struct NestedErrorsValidatePage {
-  @State message0: string = `var schema = {
+  @State message0: string = `let schema = {
   oneOf: [
     { type: 'string', minLength: 32, maxLength: 32 },
     { type: 'string', maxLength: 16 },
     { type: 'number' },
   ]
 };
-var validator = new Validator();
-var result = validator.validate('This string is 28 chars long', schema, {nestedErrors: true});`
+let validator = new Validator();
+let result = validator.validate('This string is 28 chars long', schema, {nestedErrors: true});`
   @State message1: string = `验证对象：--`
   @State message2: string = `期待结果：暂无`
   @State message3: string = `实际结果：--`
@@ -101,19 +102,11 @@ var result = validator.validate('This string is 28 chars long', schema, {nestedE
 2: instance is not of a type(s) number
 3: instance is not exactly one from [subschema 0],[subschema 1],[subschema 2]`
     try {
-      var v = new Validator();
-      var schema = {
-        oneOf: [
-          { type: 'string', minLength: 32, maxLength: 32 },
-          { type: 'string', maxLength: 16 },
-          { type: 'number' },
-        ]
-      };
-      let result = v.validate('This string is 28 chars long', schema, { nestedErrors: true });
-      let str = JSON.stringify(result);
+
+      let str = JSON.stringify(new Validator().validate('This string is 28 chars long', nesteschema, { nestedErrors: true }));
       console.log(`jsonschema ------> 测试结果是：${str}`);
       ctx.message1 = `验证对象： ${str}`;
-      ctx.message3 = `实际结果：${'\r\n'} ${result.toString()}`
+      ctx.message3 = `实际结果：${'\r\n'} ${new Validator().validate('This string is 28 chars long', nesteschema, { nestedErrors: true }).toString()}`
     } catch (err) {
       let str = JSON.stringify(err);
       console.log(`jsonschema ------> 验证出错：${str}`);

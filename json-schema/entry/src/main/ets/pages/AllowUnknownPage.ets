@@ -14,6 +14,7 @@
  */
 
 import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
+import { allowschema } from './IntereceTest'
 
 @Entry
 @Component
@@ -94,37 +95,24 @@ var result = validate("Name", schema, { allowUnknownAttributes: false });`
     const ctx = this;
     ctx.message2 = `期待结果：不允许未知关键字 ${'验证出错：{}'}  ${'\r\n'}
         允许未知关键字 ${false}  ${'\r\n'}`
-    var allowResult;
+    let allowResult:string='';
     try {
-      var v0 = new Validator();
-      var schema = {
-        type: "string",
-        format: "email",
-        example: "foo",
-      };
-      let result0 = v0.validate("Name", schema, { allowUnknownAttributes: true });
-      let str = JSON.stringify(result0);
+
+      let str = JSON.stringify(new Validator().validate("Name", allowschema, { allowUnknownAttributes: true }));
       console.log(`jsonschema ------> 测试结果是：${str}`);
       ctx.message1 = `验证对象： ${str}`;
-      allowResult = result0.valid
+      allowResult = new Validator().validate("Name", allowschema, { allowUnknownAttributes: true }).valid
       //      ctx.message3 = `实际结果：${result0.valid}`
     } catch (err) {
       let str = JSON.stringify(err);
       console.log(`jsonschema ------> 验证出错：${str}`);
       ctx.message3 = `验证出错：${str}`
     }
-    var notAllowResult;
+    let notAllowResult:string;
     try {
-      var v1 = new Validator();
-      var schema = {
-        type: "string",
-        format: "email",
-        example: "foo",
-      };
-      let result1 = v1.validate("Name", schema, { allowUnknownAttributes: false });
-      let str1 = JSON.stringify(result1);
+      let str1 = JSON.stringify(new Validator().validate("Name", allowschema, { allowUnknownAttributes: false }));
       console.log(`jsonschema ------> 测试结果是：${str1}`);
-      notAllowResult = result1.valid
+      notAllowResult = new Validator().validate("Name", allowschema, { allowUnknownAttributes: false }).valid
       ctx.message3 = `实际结果：不允许未知关键字 ${notAllowResult}  ${'\r\n'}
         允许未知关键字 ${allowResult}  ${'\r\n'}`
     } catch (err) {

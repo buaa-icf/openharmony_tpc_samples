@@ -44,7 +44,7 @@
                 "valid": false
             },
             {
-                "description": "a valid uri-template without variables",
+                "description": "a valid uri-template without letiables",
                 "data": "http://example.com/dictionary",
                 "valid": true
             },

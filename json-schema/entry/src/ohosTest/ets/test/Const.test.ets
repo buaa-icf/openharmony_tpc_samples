@@ -15,55 +15,56 @@
 
 import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
+import {  ObjectSchema, Options, } from './IntertfaceData';
 
-// @ts-ignore
-var validator: Validator;
+
+let validator: ESObject;
 const BASE_COUNT = 1
-var stringSchema = { 'const': 'value' };
-var objectSchema = { 'const': { "some key": [null, "1", 2, true] } };
+let stringSchema:Options ={ 'const': 'value' };
+let objectSchema:ObjectSchema ={ 'const': { "some key": [null, "1", 2, true] } };
 
 export default function constTest() {
-  describe('constTest', function () {
-    beforeAll(function () {
+  describe('constTest', () => {
+    beforeAll(() => {
     })
-    beforeEach(function () {
+    beforeEach(() => {
       validator = new Validator();
     })
-    afterEach(function () {
+    afterEach(() => {
     })
-    afterAll(function () {
+    afterAll(() => {
     })
-    it('StringValid', 0, function () {
-      let result = validator.validate("value", stringSchema).valid;
+    it('StringValid', 0, () => {
+      let result:boolean  = validator.validate("value", stringSchema).valid;
       expect(result).assertTrue();
     });
-    it('StringInvalid1', 0, function () {
-      let result = validator.validate("invalid 1", stringSchema).valid;
+    it('StringInvalid1', 0, () => {
+      let result:boolean  = validator.validate("invalid 1", stringSchema).valid;
       expect(result).assertFalse();
     });
-    it('StringInvalid2', 0, function () {
-      let result = validator.validate("", stringSchema).valid;
+    it('StringInvalid2', 0, () => {
+      let result:boolean  = validator.validate("", stringSchema).valid;
       expect(result).assertFalse();
     });
 
-    it('ObjectValid', 0, function () {
-      let result = validator.validate({
+    it('ObjectValid', 0, () => {
+      let result:boolean  = validator.validate({
         "some key": [null, "1", 2, true]
       }, objectSchema).valid;
       expect(result).assertTrue();
     });
-    it('ObjectInvalid1', 0, function () {
-      let result = validator.validate([null], objectSchema).valid;
+    it('ObjectInvalid1', 0, () => {
+      let result:boolean  = validator.validate([null], objectSchema).valid;
       expect(result).assertFalse();
     });
-    it('ObjectInvalid2', 0, function () {
-      let result = validator.validate({
+    it('ObjectInvalid2', 0, () => {
+      let result :boolean = validator.validate({
         "some key": [false, "1", 2, true]
       }, objectSchema).valid;
       expect(result).assertFalse();
     });
-    it('ObjectInvalid3', 0, function () {
-      let result = validator.validate(true, objectSchema).valid;
+    it('ObjectInvalid3', 0, () => {
+      let result:boolean  = validator.validate(true, objectSchema).valid;
       expect(result).assertFalse();
     });
   })

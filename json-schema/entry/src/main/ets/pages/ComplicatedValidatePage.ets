@@ -14,6 +14,7 @@
  */
 
 import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
+import { addressSchema, complicschema, p } from './IntereceTest'
 
 @Entry
 @Component
@@ -131,52 +132,16 @@ v.validate(p, schema);`
     const ctx = this;
     ctx.message2 = `期待结果：${false}`
     try {
-      var v = new Validator();
+      let v :ESObject = new Validator();
       // Address, to be embedded on Person
-      var addressSchema = {
-        "id": "/SimpleAddress",
-        "type": "object",
-        "properties": {
-          "lines": {
-            "type": "array",
-            "items": { "type": "string" }
-          },
-          "zip": { "type": "string" },
-          "city": { "type": "string" },
-          "country": { "type": "string" }
-        },
-        "required": ["country"]
-      };
-
       // Person
-      var schema = {
-        "id": "/SimplePerson",
-        "type": "object",
-        "properties": {
-          "name": { "type": "string" },
-          "address": { "$ref": "/SimpleAddress" },
-          "votes": { "type": "integer", "minimum": 1 }
-        }
-      };
+      new Validator().addSchema(addressSchema, '/SimpleAddress');
 
-      var p = {
-        "name": "Barack Obama",
-        "address": {
-          "lines": ["1600 Pennsylvania Avenue Northwest"],
-          "zip": "DC 20500",
-          "city": "Washington",
-          "country": "USA"
-        },
-        "votes": "lots"
-      };
-
-      v.addSchema(addressSchema, '/SimpleAddress');
-
-      let result = v.validate(p, schema);
-      let str = JSON.stringify(result);
+      // let result = v.validate(p, addressSchema);
+      let str = JSON.stringify(v.validate(p, addressSchema));
       console.log(`jsonschema ------> 测试结果是：${str}`);
       ctx.message1 = `验证对象： ${str}`;
-      ctx.message3 = `实际结果：${result.valid}`
+      ctx.message3 = `实际结果：${v.validate(p, addressSchema).valid}`
     } catch (err) {
       let str = JSON.stringify(err);
       console.log(`jsonschema ------> 验证出错：${str}`);

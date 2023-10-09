@@ -17,83 +17,93 @@ import { SchemaError, validate, ValidationError, Validator, ValidatorResult } fr
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
 import buffer from '@ohos.buffer';
 
-// @ts-ignore
 import schema from '../../json-metaschema/data_schema.json'
-// @ts-ignore
-import types from '../../json-metaschema/types.json'
-// @ts-ignore
-import data from '../../json-metaschema/data.json'
 
-// @ts-ignore
-var validator: Validator;
+import types from '../../json-metaschema/types.json'
+
+import data from '../../json-metaschema/data.json'
+import { wrong } from './IntertfaceData';
+import { amou } from './DataFormat';
+
+
+let validator: ESObject
 const BASE_COUNT = 1
-var payment;
+
+interface Payam {
+  amout?: String | Number
+  amount?: number;
+  other_amount: number;
+  usage: string;
+
+}
+
+let payment: Payam
 
 export default function requiredWithRefTest() {
-  describe('requiredWithRefTest', function () {
+  describe('requiredWithRefTest', () => {
 
 
-    beforeAll(function () {
+    beforeAll(() => {
     })
-    beforeEach(async function () {
+    beforeEach(async () => {
       validator = new Validator();
       validator.addSchema(types, '/types.json');
       payment = data.payment;
     })
-    afterEach(function () {
+    afterEach(() => {
     })
-    afterAll(function () {
+    afterAll(() => {
     })
 
 
-    it('ShouldValidate', 0, async function () {
-      let result = validator.validate(data, schema).valid
+    it('ShouldValidate', 0, async () => {
+      let result: boolean = validator.validate(data, schema).valid
       expect(result).assertTrue();
     });
-    it('WithWrongRootNodeSchouldNotBeValid', 0, async function () {
-      let result = validator.validate({
+    it('WithWrongRootNodeSchouldNotBeValid', 0, async () => {
+      let result: boolean = validator.validate({
         wrong_root: payment
       }, schema).valid
       expect(result).assertFalse();
     });
-    it('Test1', 0, async function () {
+    it('Test1', 0, async () => {
       payment.amount = 1;
-      let result = validator.validate(data, schema).valid
+      let result: boolean = validator.validate(data, schema).valid
       expect(result).assertTrue();
     });
-    it('Test1000000000', 0, async function () {
+    it('Test1000000000', 0, async () => {
       payment.amount = 1000000000;
-      let result = validator.validate(data, schema).valid
+      let result: boolean = validator.validate(data, schema).valid
       expect(result).assertTrue();
     });
-    it('Missing', 0, async function () {
-      delete (payment.amount);
-      let result = validator.validate(data, schema).valid
+    it('Missing', 0, async () => {
+      amou(payment)
+      let result: boolean = validator.validate(data, schema).valid
       expect(result).assertFalse();
     });
-    it('Test1.2', 0, async function () {
-      payment.amount = 1.2;
-      let result = validator.validate(data, schema).valid
+    it('Test1.2', 0, async () => {
+      payment.amout = 1.2;
+      let result: boolean = validator.validate(data, schema).valid
       expect(result).assertFalse();
     });
-    it('Test0', 0, async function () {
-      payment.amount = 0;
-      let result = validator.validate(data, schema).valid
+    it('Test0', 0, async () => {
+      payment.amout = 0;
+      let result: boolean = validator.validate(data, schema).valid
       expect(result).assertFalse();
     });
-    it('TestMinus1', 0, async function () {
-      payment.amount = -1;
-      let result = validator.validate(data, schema).valid
+    it('TestMinus1', 0, async () => {
+      payment.amout = -1;
+      let result: boolean = validator.validate(data, schema).valid
       expect(result).assertFalse();
     });
-    it('TestMinus1.2', 0, async function () {
-      payment.amount = -1.2;
-      let result = validator.validate(data, schema).valid
+    it('TestMinus1.2', 0, async () => {
+      payment.amout = -1.2;
+      let result: boolean = validator.validate(data, schema).valid
       expect(result).assertFalse();
     });
-    it('Foo', 0, async function () {
-      payment.amount = 'foo';
-      let result = validator.validate(data, schema).valid
+    it('Foo', 0, async () => {
+      payment.amout = 'foo';
+      let result: boolean = validator.validate(data, schema).valid
       expect(result).assertFalse();
     });
   })

@@ -18,7 +18,7 @@ import { SchemaError, validate, ValidationError, Validator, ValidatorResult } fr
 @Entry
 @Component
 struct DefaultBaseUriPage {
-  @State message0: string = `var result = validate(["Name"], {
+  @State message0: string = `let result = validate(["Name"], {
   id: "/schema.json",
   type: "array",
   items: { $ref: "http://example.com/schema.json#/definitions/item" },
@@ -96,19 +96,20 @@ struct DefaultBaseUriPage {
     const ctx = this;
     ctx.message2 = `期待结果：${true}`
     try {
-      var v = new Validator();
-      let result = v.validate(["Name"], {
+      let str = JSON.stringify(new Validator().validate(["Name"], {
         id: "/schema.json",
         type: "array",
         items: { $ref: "http://example.com/schema.json#/definitions/item" },
-        definitions: {
-          item: { type: "string" },
-        },
-      }, { base: 'http://example.com/' });
-      let str = JSON.stringify(result);
+        definitions: { item: { type: "string" }, },
+      }, { base: 'http://example.com/' }));
       console.log(`jsonschema ------> 测试结果是：${str}`);
       ctx.message1 = `验证对象： ${str}`;
-      ctx.message3 = `实际结果：${result.valid}`
+      ctx.message3 = `实际结果：${new Validator().validate(["Name"], {
+        id: "/schema.json",
+        type: "array",
+        items: { $ref: "http://example.com/schema.json#/definitions/item" },
+        definitions: { item: { type: "string" }, },
+      }, { base: 'http://example.com/' }).valid}`
     } catch (err) {
       let str = JSON.stringify(err);
       console.log(`jsonschema ------> 验证出错：${str}`);

@@ -14,14 +14,15 @@
  */
 
 import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
+import { simpleschema } from './IntereceTest'
 
 @Entry
 @Component
 struct SimpleValidatePage {
-  @State message0: string = `var Validator = require('jsonschema').Validator;
-var v = new Validator();
-var instance = 4;
-var schema = {"type": "number"};
+  @State message0: string = `let Validator = require('jsonschema').Validator;
+let v = new Validator();
+let instance = 4;
+let schema = {"type": "number"};
 v.validate(instance, schema)`
   @State message1: string = `验证对象：--`
   @State message2: string = `期待结果：暂无`
@@ -93,14 +94,12 @@ v.validate(instance, schema)`
     const ctx = this;
     ctx.message2 = `期待结果：${true}`
     try {
-      var v = new Validator();
-      var instance = 4;
-      var schema = { "type": "number" };
-      let result = v.validate(instance, schema);
-      let str = JSON.stringify(result);
+      let instance = 4;
+
+      let str = JSON.stringify(new Validator().validate(instance, simpleschema));
       console.log(`jsonschema ------> 测试结果是：${str}`);
       ctx.message1 = `验证对象： ${str}`;
-      ctx.message3 = `实际结果：${result.valid}`
+      ctx.message3 = `实际结果：${new Validator().validate(instance, simpleschema).valid}`
     } catch (err) {
       let str = JSON.stringify(err);
       console.log(`jsonschema ------> 验证出错：${str}`);

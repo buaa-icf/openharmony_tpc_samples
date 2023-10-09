@@ -15,11 +15,11 @@
 
 import { SchemaError, validate, ValidationError, Validator, ValidatorResult } from '@ohos/jsonschema'
 import { it as _it, afterAll, afterEach, beforeAll, beforeEach, describe, expect } from '@ohos/hypium'
+import { Exising, ExsiUndefit, ObjectTest, } from './IntertfaceData';
 
-// @ts-ignore
-var validator: Validator;
+let validator: ESObject;
 const BASE_COUNT = 1
-var initSchema = {
+let initSchema :ObjectTest ={
   required: ['constructor'],
   properties: {
     constructor: { type: 'string' },
@@ -27,48 +27,47 @@ var initSchema = {
 };
 
 export default function objectsTest() {
-  describe('objectsTest', function () {
-    beforeAll(function () {
+  describe('objectsTest', () => {
+    beforeAll(() => {
     })
-    beforeEach(function () {
+    beforeEach(() => {
       validator = new Validator();
     })
-    afterEach(function () {
+    afterEach(() => {
     })
-    afterAll(function () {
+    afterAll(() => {
     })
-    _it('should validate a valid object', 0, function () {
-      let result = validator.validate({}, {
+    _it('should validate a valid object', 0, () => {
+      let result :boolean = validator.validate(new Object, {
         'type': 'object'
       }).valid;
       expect(result).assertTrue();
     });
 
-    _it('should validate an undefined object', 0, function () {
-      let result = validator.validate(undefined, {
+    _it('should validate an undefined object', 0, () => {
+      let result:boolean  = validator.validate(undefined, {
         'type': 'object'
       }).valid;
       expect(result).assertTrue();
     });
 
-    _it('should not validate a number', 0, function () {
-      let result = validator.validate(0, {
+    _it('should not validate a number', 0, () => {
+      let result:boolean  = validator.validate(0,{
         'type': 'object'
       }).valid;
       expect(result).assertFalse();
     });
 
-    _it('should not validate an array', 0, function () {
-      let result = validator.validate([0], {
+    _it('should not validate an array', 0, () => {
+      let result:boolean  = validator.validate([0], {
         'type': 'object'
       }).valid;
       expect(result).assertFalse();
     });
-    _it('should validate a valid object', 0, function () {
-      let result = validator.validate(
-        {
-          'name': 'test'
-        },
+    _it('should validate a valid object', 0, () => {
+      let result:boolean  = validator.validate( {
+        'name': 'test'
+      },
         {
           'type': 'object',
           'properties': {
@@ -76,41 +75,34 @@ export default function objectsTest() {
               'type': 'string'
             },
           },
-        }
-      ).valid;
+        }).valid;
       expect(result).assertTrue();
     });
 
-    _it('should not validate an invalid object', 0, function () {
-      let result = validator.validate(0, {
+    _it('should not validate an invalid object', 0, () => {
+      let result :boolean = validator.validate(0,{
         'type': 'object'
       }).valid;
       expect(result).assertFalse();
     });
 
-    _it('should validate a valid property', 0, function () {
-      var res = validator.validate(Object.create({
+    _it('should validate a valid property', 0, () => {
+      expect(validator.validate({
         constructor: 'string'
-      }), initSchema);
-      expect(res.valid).assertDeepEquals(true)
+      }, initSchema).valid).assertDeepEquals(true)
     });
-    _it('should not validate an invalid property', 0, function () {
-      var res = validator.validate(Object.create({
-        constructor: true
-      }), initSchema);
-      expect(res.valid).assertDeepEquals(false)
-      expect(res.errors[0].name).assertEqual('type')
+    _it('should not validate an invalid property', 0, () => {
+      expect(validator.validate({constructor: true}, initSchema).valid).assertDeepEquals(false)
+      expect(validator.validate({constructor: true}, initSchema).errors[0].name).assertEqual('type')
     });
-    _it('should not validate a missing property', 0, function () {
-      var res = validator.validate(Object.create({}), initSchema);
-      expect(res.valid).assertDeepEquals(false)
-      expect(res.errors[0].name).assertEqual('required')
+    _it('should not validate a missing property', 0, () => {
+      expect(validator.validate({}, initSchema).valid).assertDeepEquals(false)
+      expect(validator.validate({}, initSchema).errors[0].name).assertEqual('required')
     });
-    _it('should validate a valid object with multiple properties', 0, function () {
-      let result = validator.validate(
-        {
-          'name': 'test', 'address': 'someplace'
-        },
+    _it('should validate a valid object with multiple properties', 0, () => {
+      let result :boolean = validator.validate( {
+        'name': 'test', 'address': 'someplace'
+      },
         {
           'type': 'object',
           'properties': {
@@ -121,16 +113,14 @@ export default function objectsTest() {
               'type': 'string'
             },
           },
-        }
-      ).valid;
+        }).valid;
       expect(result).assertTrue();
     });
 
-    _it('should validate a valid object with undefined property', 0, function () {
-      let result = validator.validate(
-        {
-          'name': 'test'
-        },
+    _it('should validate a valid object with undefined property', 0, () => {
+      let result :boolean = validator.validate( {
+        'name': 'test'
+      },
         {
           'type': 'object',
           'properties': {
@@ -141,30 +131,25 @@ export default function objectsTest() {
               'type': 'string'
             },
           },
-        }
-      ).valid;
+        }).valid;
       expect(result).assertTrue();
     });
 
-    _it('should not throw when checking properties on a non-object', 0, function () {
-      let result = validator.validate(
-        null,
-        {
-          'type': 'object',
-          'properties': {
-            'name': {
-              'type': 'string'
-            },
+    _it('should not throw when checking properties on a non-object', 0, () => {
+      let result :boolean = validator.validate(null,  {
+        'type': 'object',
+        'properties': {
+          'name': {
+            'type': 'string'
           },
-        }
-      ).valid;
+        },
+      }).valid;
       expect(result).assertFalse();
     });
-    _it('should NOT validate a valid object', 0, function () {
-      let result = validator.validate(
-        {
-          'name': 'test', 'nested': 'test2'
-        },
+    _it('should NOT validate a valid object', 0, () => {
+      let result:boolean  = validator.validate({
+        'name': 'test', 'nested': 'test2'
+      },
         {
           'type': 'object',
           'properties': {
@@ -175,16 +160,14 @@ export default function objectsTest() {
               'type': 'object'
             },
           },
-        }
-      ).valid;
+        }).valid;
       expect(result).assertFalse();
     });
 
-    _it('should validate a valid object', 0, function () {
-      let result = validator.validate(
-        {
-          'name': 'test', 'nested': 'test2'
-        },
+    _it('should validate a valid object', 0, () => {
+      let result:boolean  = validator.validate( {
+        'name': 'test', 'nested': 'test2'
+      },
         {
           'type': 'object',
           'properties': {
@@ -195,17 +178,15 @@ export default function objectsTest() {
               'type': 'string'
             },
           },
-        }
-      ).valid;
+        }).valid;
       expect(result).assertTrue();
     });
-    _it('should NOT validate an undefined object', 0, function () {
-      var ret = validator.validate(
-        {
-          'foo': {
-            'baz': 1
-          }
-        },
+    _it('should NOT validate an undefined object', 0, () => {
+      let ret :boolean = validator.validate( {
+        'foo': {
+          'baz': 1
+        }
+      },
         {
           'type': 'object',
           'required': true,
@@ -223,16 +204,14 @@ export default function objectsTest() {
               },
             },
           },
-        }
-      ).valid;
+        }).valid;
       expect(ret).assertFalse();
     });
 
-    _it('should validate if there are no additionalProperties', 0, function () {
-      let result = validator.validate(
-        {
-          'name': 'test', 'nested': 'test2'
-        },
+    _it('should validate if there are no additionalProperties', 0, () => {
+      let result:boolean  = validator.validate({
+        'name': 'test', 'nested': 'test2'
+      },
         {
           'type': 'object',
           'properties': {
@@ -244,16 +223,14 @@ export default function objectsTest() {
             },
           },
           'additionalProperties': false,
-        }
-      ).valid;
+        }).valid;
       expect(result).assertTrue();
     });
 
-    _it('should not validate if there are additionalProperties', 0, function () {
-      let result = validator.validate(
-        {
-          'name': 'test', 'nested': 'test2', 'extraProp': 1
-        },
+    _it('should not validate if there are additionalProperties', 0, () => {
+      let result:boolean  = validator.validate({
+        'name': 'test', 'nested': 'test2', 'extraProp': 1
+      },
         {
           'type': 'object',
           'properties': {
@@ -265,16 +242,14 @@ export default function objectsTest() {
             },
           },
           'additionalProperties': false,
-        }
-      ).valid;
+        }).valid;
       expect(result).assertFalse();
     });
 
-    _it('should validate if the additionalProperties are compliant with additionalProperties', 0, function () {
-      let result = validator.validate(
-        {
-          'name': 'test', 'nested': 'test2', 'extraProp': 1
-        },
+    _it('should validate if the additionalProperties are compliant with additionalProperties', 0, () => {
+      let result:boolean  = validator.validate( {
+        'name': 'test', 'nested': 'test2', 'extraProp': 1
+      },
         {
           'type': 'object',
           'properties': {
@@ -288,13 +263,12 @@ export default function objectsTest() {
           'additionalProperties': {
             'type': 'number'
           },
-        }
-      ).valid;
+        }).valid;
       expect(result).assertTrue();
     });
 
-    _it('should not validate if the additionalProperties are not compliant with additionalProperties', 0, function () {
-      let result = validator.validate(
+    _it('should not validate if the additionalProperties are not compliant with additionalProperties', 0, () => {
+      let result:boolean  = validator.validate(
         {
           'name': 'test', 'nested': 'test2', 'extraProp': '1'
         },
@@ -315,8 +289,8 @@ export default function objectsTest() {
       ).valid;
       expect(result).assertFalse();
     });
-    _it('should treat undefined property schema as not existing', 0, function () {
-      var schema = {
+    _it('should treat undefined property schema as not existing', 0, () => {
+      let schema :Exising= {
         'type': 'object',
         'properties': {
           'name': {
@@ -328,24 +302,18 @@ export default function objectsTest() {
           'type': 'number'
         },
       };
-      let result1 = validator.validate(
-        {
-          'name': 'test', 'nested': 2
-        },
-        schema
-      ).valid;
+      let result1:boolean  = validator.validate({
+        'name': 'test', 'nested': 2
+      }, schema).valid;
       expect(result1).assertTrue();
-      let result2 = validator.validate(
-        {
-          'name': 'test', 'nested': 'test2'
-        },
-        schema
-      ).valid;
+      let result2 :boolean = validator.validate({
+        'name': 'test', 'nested': 'test2'
+      }, schema).valid;
       expect(result2).assertFalse();
     });
 
-    _it('should not permit null as a schema', 0, function () {
-      var schema = {
+    _it('should not permit null as a schema', 0, () => {
+     let nullschema:Exising = {
         'type': 'object',
         'properties': {
           'name': {
@@ -358,12 +326,9 @@ export default function objectsTest() {
         },
       };
       try {
-        validator.validate(
-          {
-            'name': 'test', 'nested': 2
-          },
-          schema
-        );
+        validator.validate(  {
+          'name': 'test', 'nested': 2
+        }, nullschema);
       } catch (err) {
         let types = (err instanceof SchemaError)
         expect(types).assertTrue();
@@ -372,8 +337,8 @@ export default function objectsTest() {
     });
 
 
-    _it('should treat undefined property schema as not existing', 0, function () {
-      var schema = {
+    _it('should treat undefined property schema as not existing', 0, () => {
+     let schema :ExsiUndefit= {
         'type': 'object',
         'patternProperties': {
           'name': {
@@ -385,15 +350,15 @@ export default function objectsTest() {
           'type': 'number'
         },
       };
-      let result1 = validator.validate(
+      let result1:boolean  = validator.validate(
         {
           'name': 'test', 'nested': 2
-        },
+        }   ,
         schema
       ).valid;
       expect(result1).assertTrue()
 
-      let result2 = validator.validate(
+      let result2 :boolean = validator.validate(
         {
           'name': 'test', 'nested': 'test2'
         },
@@ -402,8 +367,8 @@ export default function objectsTest() {
       expect(result2).assertFalse()
     });
 
-    _it('should not permit null as a schema', 0, function () {
-      var schema = {
+    _it('should not permit null as a schema', 0, () => {
+      let schema :ExsiUndefit= {
         'type': 'object',
         'patternProperties': {
           'name': {
