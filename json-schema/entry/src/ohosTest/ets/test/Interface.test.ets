@@ -17,7 +17,7 @@ import { scan, SchemaError, SchemaScanResult, validate, ValidationError, Validat
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
 import { Options,ObjectSchema } from './IntertfaceData';
 
-let validator: Validator;
+let validator: ESObject;
 const BASE_COUNT = 1
 let stringSchema:Options ={ 'const': 'value' };
 let objectSchema:ObjectSchema ={ 'const': { "some key": [null, "1", 2, true] } };

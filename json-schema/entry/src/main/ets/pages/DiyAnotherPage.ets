@@ -94,9 +94,9 @@ struct DiyAnotherPage {
     const ctx = this;
     ctx.message2 = `期待结果：${false}`
     try {
-      let v :Validator= new Validator()
+      let v :ESObject= new Validator()
        v.attributes.contains = Validator.validateContains=(instance:string, schema:Schema, options:string, ctx:string):string =>{
-       let  result :Validator= new ValidatorResult(instance, schema, options, ctx);
+       let  result :ESObject= new ValidatorResult(instance, schema, options, ctx);
 
         if (typeof instance !== 'string') {
           result.addError('fails some validation test')
@@ -119,7 +119,7 @@ struct DiyAnotherPage {
         return result
       }
 
-      let resultValidate:Validator = v.validate("I am an instance", { type: "string", contains: "I am" })
+      let resultValidate:ESObject = v.validate("I am an instance", { type: "string", contains: "I am" })
       let str = JSON.stringify(resultValidate);
       console.log(`jsonschema ------> 测试结果是：${str}`);
       ctx.message1 = `验证对象： ${str}`;
