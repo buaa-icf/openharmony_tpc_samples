@@ -1,26 +1,27 @@
-  /*
- * Copyright (C) 2023 Huawei Device Co., Ltd.
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+* Copyright (C) 2023 Huawei Device Co., Ltd.
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
 
 import hilog from '@ohos.hilog';
 import { describe, expect, it } from '@ohos/hypium'
 import { BooleanValue, ExprContext, NumberValue, StringValue, xpathParse } from 'xslt-processor/src/xpath.js'
 import { xmlValue, } from 'xslt-processor/src/util.js'
 import { xmlParse } from 'xslt-processor/src/dom.js'
+import { getKeys, numExpr } from './Stdlib';
 
 export default function xpathTest() {
-  describe('XPathTest', function () {
+  describe('XPathTest', () => {
     const expr = [
       "@*",
       "@*|node()",
@@ -321,114 +322,22 @@ export default function xpathTest() {
       "visibleurl"
     ];
 
-    const numExpr = [
-    /* number expressions */
-      ["1+1", 2],
-      ["floor( -3.1415 )", -4],
-      ["-5 mod -2", -1],
-      ["-5 mod 2", -1],
-      ["5 mod -2", 1],
-      ["5 mod 2", 1],
-      ["ceiling( 3.1415 )", 4.0],
-      ["floor( 3.1415 )", 3.0],
-      ["ceiling( -3.1415 )", -3.0],
-      /* string expressions */
-      ["normalize-space( '  qwerty ' )", "qwerty"],
-      ["contains('1234567890','9')", true],
-      ["contains('1234567890','1')", true],
-      ["'Hello World!'", 'Hello World!'],
-      ["substring('12345', 1.5, 2.6)", "234"],
-      ["substring('12345', 0, 3)", "12"],
-      ["ends-with('foo', '')", true],
-      ["ends-with('', 'foo')", false],
-      ["ends-with('foo', 'foo')", true],
-      ["ends-with('bar', 'foo')", false],
-      ["ends-with('foobar', 'foo')", false],
-      ["ends-with('barfoo', 'foo')", true],
-      ["ends-with('foo\\$+', '\\$+')", true],
-      ["matches('ajaxslt', 'xsl')", true],
-      ["matches('ajaxslt', 'lt$')", true],
-      ["matches('ajaxslt', '[pqr]')", false],
-      ["matches('ajaxslt', '^AJAX')", false],
-      ["matches('ajaxslt', '^AJAX', 'i')", true],
-      ["matches('ajaxslt', 'a', 'z')", 'Invalid regular expression syntax: z'],
-      ["matches('ajaxslt', '?')", 'Invalid matches argument: ?'],
-      ["normalize-space( '  \u3044\u308d\u306f\u306b\u307b\u3078\u3068 ' )",
-        "\u3044\u308d\u306f\u306b\u307b\u3078\u3068"
-      ],
-      ["contains('\u5357\u7121\u5999\u6cd5\u9023\u83ef\u7d4c','\u7d4c')",
-        true
-      ],
-      ["contains('\u5357\u7121\u5999\u6cd5\u9023\u83ef\u7d4c','\u5357')",
-        true
-      ],
-      ["'\u3053\u3093\u306b\u3061\u306f\u3001\u4e16\u754c\uff01'",
-        '\u3053\u3093\u306b\u3061\u306f\u3001\u4e16\u754c\uff01'
-      ],
-      ["substring('\uff11\uff12\uff13\uff14\uff15', 1.5, 2.6)",
-        "\uff12\uff13\uff14"
-      ],
-      ["substring('\uff11\uff12\uff13\uff14\uff15', 0, 3)",
-        "\uff11\uff12"
-      ],
-      /* selenium bug SEL-347, AJAXSLT issue 19 */
-      ["count(//a[@href=\"javascript:doFoo('a', 'b')\"])", 1],
-      /* variables */
-      ["$foo", 'bar', {
-        foo: 'bar'
-      }],
-      ["$foo", 100, {
-        foo: 100
-      }],
-      ["$foo", true, {
-        foo: true
-      }],
-      ["$foo + 1", 101, {
-        foo: 100
-      }],
-      /* variables (Japanese) */
-      ["$\u307b\u3052", '\u307b\u3048', {
-        \u307b\u3052: '\u307b\u3048'
-      }],
-      ["$\u307b\u3052", 100, {
-        \u307b\u3052: 100
-      }],
-      ["$\u307b\u3052", true, {
-        \u307b\u3052: true
-      }],
-      ["$\u307b\u3052 + 1", 101, {
-        \u307b\u3052: 100
-      }],
-      /* functions */
-      // function id() with string argument
-      ["count(id('test1'))", 1],
-      // function id() with node-set argument
-      ["count(id(//*[@id='testid']))", 1],
-      /* union expressions */
-      ["count(//*[@id='u1'])", 1],
-      ["count(//*[@class='u'])", 3],
-      ["count(//*[@id='u1']|//*[@id='u2'])", 2],
-      ["count(//*[@id='u1']|//*[@class='u'])", 3],
-      ["count(//*[@class='u']|//*[@class='u'])", 3],
-      ["count(//*[@class='u']|//*[@id='u1'])", 3],
-      ["count(//*[contains(@style, 'visible')])", 1]
-    ];
 
     // eval an xpath expression to a single node
-    const evalNodeSet = (expr, ctx) => {
-      const expr1 = xpathParse(expr);
-      const e = expr1.evaluate(ctx);
+    const evalNodeSet = (expr: ESObject, ctx: ESObject): ESObject => {
+      const expr1: ESObject = xpathParse(expr);
+      const e: ESObject = expr1.evaluate(ctx);
       return e.nodeSetValue();
     }
 
-    const doTestEvalDom = (xml, page, location, lat, latValue, lon, lonValue) => {
+    const doTestEvalDom = (xml: ESObject, page: ESObject, location: ESObject, lat: ESObject, latValue: ESObject, lon: ESObject, lonValue: ESObject) => {
       const slashPage = `/${page}`;
       const slashPageLocationAtLat = `/${page}/${location}/@${lat}`;
       const slashPageLocationAtLon = `/${page}/${location}/@${lon}`;
 
-      const ctx = new ExprContext(xmlParse(xml));
+      const ctx: ESObject = new ExprContext(xmlParse(xml));
 
-      let ns = evalNodeSet(page, ctx);
+      let ns: ESObject = evalNodeSet(page, ctx);
       expect(ns.length).assertEqual(1);
 
       ns = evalNodeSet(slashPage, ctx);
@@ -440,7 +349,7 @@ export default function xpathTest() {
 
       expect(evalNodeSet(slashPage, ctx)[0].nodeName).assertEqual(page);
 
-      let n = evalNodeSet(slashPageLocationAtLat, ctx)[0];
+      let n: ESObject = evalNodeSet(slashPageLocationAtLat, ctx)[0];
       expect(n.nodeName).assertEqual(lat);
       expect(n.nodeValue).assertEqual(latValue);
 
@@ -457,7 +366,7 @@ export default function xpathTest() {
     })
 
     it('can_evaluate_variables_on_a_HTML_context', 0, () => {
-      const bodyEl = xmlParse(
+      const bodyEl: ESObject = xmlParse(
         `<body>
               <div id="test1"></div>
               <div id="testid">test1</div>
@@ -469,22 +378,23 @@ export default function xpathTest() {
             </body>`);
 
       for (const e of numExpr) {
-        let ctx = new ExprContext(bodyEl);
+        let ctx: ESObject = new ExprContext(bodyEl);
         ctx.setCaseInsensitive(true);
         if (e[2] && typeof e[2] == 'object') {
-          for (const k in e[2]) {
-            const v = e[2][k];
+          let keys = getKeys(e[2])
+          for(let i = 0;i < keys.length; i++){
+            const v: ESObject = e[2][keys[i]];
             if (typeof v == 'number') {
-              ctx.setVariable(k, new NumberValue(v));
+              ctx.setVariable(keys[i], new NumberValue(v));
             } else if (typeof v == 'string') {
-              ctx.setVariable(k, new StringValue(v));
+              ctx.setVariable(keys[i], new StringValue(v));
             } else if (typeof v == 'boolean') {
-              ctx.setVariable(k, new BooleanValue(v));
+              ctx.setVariable(keys[i], new BooleanValue(v));
             }
           }
         }
         // allow exceptions to be caught and asserted upon
-        let result;
+        let result: ESObject;
         try {
           result = xpathParse(e[0]).evaluate(ctx);
         } catch (ex) {
@@ -540,10 +450,10 @@ export default function xpathTest() {
         ' <f></f>',
         '</page>'
       ].join("");
-      const ctx = new ExprContext(xmlParse(xml));
+      const ctx: ESObject = new ExprContext(xmlParse(xml));
 
       for (const e of axisTests) {
-        const result = xpathParse(e[0]).evaluate(ctx);
+        const result: ESObject = xpathParse(e[0]).evaluate(ctx);
         if (typeof e[1] == 'number') {
           expect(e[1]).assertEqual(result.numberValue());
         } else if (typeof e[1] == 'string') {
@@ -556,8 +466,8 @@ export default function xpathTest() {
     })
 
     it('can_handle_attribute_asterisk', 0, () => {
-      const ctx = new ExprContext(xmlParse('<x a="1" b="1"><y><z></z></y></x>'));
-      const expr = xpathParse("count(/x/@*)");
+      const ctx: ESObject = new ExprContext(xmlParse('<x a="1" b="1"><y><z></z></y></x>'));
+      const expr: ESObject = xpathParse("count(/x/@*)");
       expect(2).assertEqual(expr.evaluate(ctx).numberValue());
     })
 
@@ -592,8 +502,8 @@ export default function xpathTest() {
 
     it('can_handle_whitespace', 0, () => {
       const xmlString = '<div><p> Here is some <strong>funky </strong> text' +
-      '<ul> <li>that contains</li> <li> spaces and stuff</li> </ul></p></div>';
-      const value = xmlValue(xmlParse(xmlString));
+        '<ul> <li>that contains</li> <li> spaces and stuff</li> </ul></p></div>';
+      const value: ESObject = xmlValue(xmlParse(xmlString));
       expect(' Here is some funky  text that contains  spaces and stuff ').assertEqual(value);
     })
 
@@ -642,25 +552,25 @@ export default function xpathTest() {
         ["(//a)[2]", 1]
       ];
 
-      const parsedXML = xmlParse(xml);
-      const ctx = new ExprContext(parsedXML);
+      const parsedXML: ESObject = xmlParse(xml);
+      const ctx: ESObject = new ExprContext(parsedXML);
 
       for (const test of tests) {
-        const expr = xpathParse(test[0]);
+        const expr: ESObject = xpathParse(test[0]);
 
         ctx.setReturnOnFirstMatch(false);
-        const normalResults = expr.evaluate(ctx);
+        const normalResults: ESObject = expr.evaluate(ctx);
         expect(test[1]).assertEqual(normalResults.value.length);
 
         ctx.setReturnOnFirstMatch(true);
-        const firstMatchResults = expr.evaluate(ctx);
+        const firstMatchResults: ESObject = expr.evaluate(ctx);
         expect(1).assertEqual(firstMatchResults.value.length);
 
         expect(normalResults.value[0]).assertEqual(firstMatchResults.value[0]);
       }
     })
 
-    it('assertContain', 0, function () {
+    it('assertContain', 0, () => {
       // Defines a test case. This API supports three parameters: test case name, filter parameter, and test case function.
       hilog.info(0x0000, 'testTag', '%{public}s', 'it begin');
       let a = 'abc'

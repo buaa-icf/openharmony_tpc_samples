@@ -83,7 +83,7 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 ## 约束与限制
 在下述版本验证通过：
 
-DevEco Studio: 4.0 Canary1(4.0.3.512), SDK: API10 (4.0.10.9)
+DevEco Studio: 4.0 Canary1(4.0.3.512), SDK: API10 (4.0.10.10)
 
 [单元测试用例](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/xslt-processor/TEST.md)详情可参考
 

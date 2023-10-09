@@ -31,14 +31,14 @@ export default function xmlTokenTest() {
   describe('XmlTokenTest', () => {
 
     // Test if regexp matches the str and RegExp.exec returns exactly the match.
-    const assertOk = (comment: string, regexp: RegExp, str?: string, match?: string) => {
+    const assertOk = (comment: ESObject, regexp: ESObject, str?: ESObject, match?: ESObject) => {
       //      assert.notEqual(regexp.exec(str), null, comment);
-        expect(regexp.exec(str)![0]).assertEqual(match);
-        expect(regexp.test(str)).assertTrue();
+      expect(regexp.exec(str)![0]).assertEqual(match);
+      expect(regexp.test(str)).assertTrue();
     }
 
     // Test if regexp doesn't match the str.
-    const assertNg = (comment: string, regexp: RegExp, str?: string) => {
+    const assertNg = (comment: ESObject, regexp: ESObject, str?: ESObject) => {
       expect(regexp.exec(str)).assertEqual(null);
       expect(!regexp.test(str)).assertTrue();
     }
