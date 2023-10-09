@@ -21,14 +21,14 @@ struct EncodeDecodePage {
   @State message2:string = "解码后的数据展示"
   @State message3:string = "解码后的数据展示"
 
-  encodedUint8: Uint8Array = undefined;
+  encodedUint8?: Uint8Array = undefined;
 
   build() {
     Row() {
       Column() {
         Button('点击对象编码').onClick(()=>{
           console.log("dodo click on!")
-          this.encodedUint8 = encode({ foo: "bar" });
+          this.encodedUint8 = encode<string>(data);
           this.message = "编码后的数据="+this.encodedUint8;
         })
         Text(this.message)
@@ -36,8 +36,7 @@ struct EncodeDecodePage {
           .fontWeight(FontWeight.Bold)
         Button('点击解码').onClick(()=>{
           if(this.encodedUint8) {
-            let decodeObj = decode(this.encodedUint8);
-            this.message2 = "解码后的数据=" + JSON.stringify(decodeObj);
+            this.message2 = "解码后的数据=" + JSON.stringify(decode<string[]>(this.encodedUint8));
           }else{
             this.message3 = '解码数据为undefined, 请先点击编码'
           }
@@ -53,6 +52,10 @@ struct EncodeDecodePage {
   aboutToAppear(){
 
   }
-
-
 }
+
+class Data{
+  foo: string = ""
+}
+
+let data: Data = { foo: "bar" }

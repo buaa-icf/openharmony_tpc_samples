@@ -22,17 +22,15 @@ struct EncodeDecodeConstructorPage {
   @State message2:string = "解码后的数据展示"
   @State message3:string = "错误提示"
 
-  encodedUint8: Uint8Array = undefined;
+  encodedUint8?: Uint8Array = undefined;
 
   build() {
     Row() {
       Column() {
         Button('点击构造器编码').onClick(()=>{
           console.log("dodo click on!")
-          let encodeletructor = new Encoder();
-          this.encodedUint8 = encodeletructor.encode({
-            foo: "bar"
-          })
+          let encodeletructor = new Encoder<Encoder>();
+          this.encodedUint8 = encodeletructor.encode(data)
           this.message = "编码后的数据="+this.encodedUint8;
         })
         Text(this.message)
@@ -40,9 +38,9 @@ struct EncodeDecodeConstructorPage {
           .fontWeight(FontWeight.Bold)
         Button('点击构造器解码').onClick(()=>{
           if(this.encodedUint8) {
-            let decodeletructor = new Decoder();
-            let decodeObj = decodeletructor.decode(this.encodedUint8)
-            this.message2 = "解码后的数据=" + JSON.stringify(decodeObj);
+            let decodeletructor = new Decoder<Decoder>();
+            //let decodeObj = decodeletructor.decode(this.encodedUint8)
+            this.message2 = "解码后的数据=" + JSON.stringify(decodeletructor.decode(this.encodedUint8));
           }else{
             this.message3 = '解码数据为undefined, 请先点击编码'
           }
@@ -58,6 +56,10 @@ struct EncodeDecodeConstructorPage {
   aboutToAppear(){
 
   }
-
-
 }
+
+class Data{
+  foo: string = ""
+}
+
+let data: Data = { foo: "bar" }

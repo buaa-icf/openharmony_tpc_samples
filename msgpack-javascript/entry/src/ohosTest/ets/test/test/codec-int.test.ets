@@ -16,38 +16,27 @@ import assert from "./assert2hypium";
 import { setInt64, getInt64, getUint64, setUint64 } from "@msgpack/msgpack/dist/utils/int";
 import hilog from '@ohos.hilog';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
+import { INT64SPECS } from './stdlib/StdlibData';
 
-
-const INT64SPECS = {
-  ZERO: 0,
-  ONE: 1,
-  MINUS_ONE: -1,
-  X_FF: 0xff,
-  MINUS_X_FF: -0xff,
-  INT32_MAX: 0x7fffffff,
-  INT32_MIN: -0x7fffffff - 1,
-  MAX_SAFE_INTEGER: Number.MAX_SAFE_INTEGER,
-  MIN_SAFE_INTEGER: Number.MIN_SAFE_INTEGER,
-} as Record<string, number>;
 
 export default function CodecIntTest() {
-  describe('CodecIntTest', function () {
+  describe('CodecIntTest', () => {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(() => {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(() => {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(() => {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(() => {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })

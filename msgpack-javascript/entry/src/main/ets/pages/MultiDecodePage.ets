@@ -21,7 +21,8 @@ struct MultiDecodePage {
   @State message:string = "展示原数据"
   @State message2:string = "decodeMulti解码后的数据展示"
 
-  encodedUint8: Uint8Array = undefined;
+  encodedUint8?: Uint8Array = undefined;
+  bn: ButtonName = {name: "bar"};
 
   build() {
     Row() {
@@ -31,26 +32,22 @@ struct MultiDecodePage {
           this.message = JSON.stringify([
             "foo",
             10,
-            {
-              name: "bar",
-            },
+            this.bn,
             [1, 2, 3],
           ])
         })
         Text(this.message)
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
-        Button('点击MultiDecode').onClick(()=>{
+        Button('点击MultiDecode').onClick(() => {
           let items = [
             "foo",
             10,
-            {
-              name: "bar",
-            },
+          this.bn,
             [1, 2, 3],
           ];
 
-          let encodedItems = items.map((item) => encode(item));
+          let encodedItems = items.map((item) => encode<string>(item));
           let encoded = new Uint8Array(encodedItems.reduce((p, c) => p + c.byteLength, 0));
           let offset = 0;
           for (let encodedItem of encodedItems) {
@@ -58,13 +55,18 @@ struct MultiDecodePage {
             offset += encodedItem.byteLength;
           }
 
-          let result: Array<unknown> = [];
+          let result: Array<Object> = [];
 
-          for (let item of decodeMulti(encoded)) {
-            result.push(item);
+          // for (let item of decodeMulti<number[]>(encoded)) {
+          //   result.push(item);
+          // }
+          let numbers: Array<Object> = Array<Object>(decodeMulti<number[]>(encoded))
+          for (let item = 0; item < numbers.length; item++) {
+            result.push(numbers[item]);
           }
+
           let retStr1 = JSON.stringify(result);
-        this.message2 = retStr1;
+          this.message2 = retStr1;
 
         })
         Text(this.message2)
@@ -80,4 +82,8 @@ struct MultiDecodePage {
   }
 
 
+}
+
+class ButtonName {
+  name:string = "";
 }

@@ -17,6 +17,7 @@
 
 import { encode, decodeAsync, decode, Encoder, Decoder, decodeMulti, decodeMultiStream } from "@msgpack/msgpack";
 import { DataViewIndexOutOfBoundsError } from "@msgpack/msgpack/dist/Decoder";
+import Util from "../test/stdlib/Util";
 
 import assert from "./assert2hypium";
 
@@ -24,88 +25,69 @@ import hilog from '@ohos.hilog';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 
 export default function edgeCasesTest() {
-  describe('edgeCasesTest', function () {
+  describe('edgeCasesTest', () => {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(() => {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(() => {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(() => {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(() => {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
 
-    function testEncoder(encoder: Encoder): void {
-      const object = {
-        foo: 1,
-        bar: 2,
-        baz: ["one", "two", "three"],
-      };
-      assert.deepStrictEqual(decode(encoder.encode(object)), object);
-    }
-
-    function testDecoder(decoder: Decoder): void {
-      const object = {
-        foo: 1,
-        bar: 2,
-        baz: ["one", "two", "three"],
-      };
-      assert.deepStrictEqual(decoder.decode(encode(object)), object);
-    }
     assert.context("try to encode cyclic refs", () => {
-      it("throws_errors_on_arrays",0, () => {
-        const encoder = new Encoder();
-        const cyclicRefs: Array<any> = [];
+      it("throws_errors_on_arrays", 0, () => {
+        const encoder = new Encoder<undefined>();
+        const cyclicRefs: Array<Object> = [];
         cyclicRefs.push(cyclicRefs);
+        let regex: RegExp = new RegExp('too deep', 'i')
         assert.throws(() => {
           encoder.encode(cyclicRefs);
-        }, /too deep/i);
+        }, regex);
         testEncoder(encoder);
       });
 
-      it("throws_errors_on_objects",0, () => {
-        const encoder = new Encoder();
-        const cyclicRefs: Record<string, any> = {};
+      it("throws_errors_on_objects", 0, () => {
+        const encoder = new Encoder<undefined>();
+        const cyclicRefs: Record<string, Object> = {};
         cyclicRefs["foo"] = cyclicRefs;
+        let regex: RegExp = new RegExp('too deep', 'i')
         assert.throws(() => {
           encoder.encode(cyclicRefs);
-        }, /too deep/i);
+        }, regex);
         testEncoder(encoder);
       });
     });
 
     assert.context("try_to_encode_unrecognized_objects", () => {
-      it("throws_errors",0, () => {
-        const encoder = new Encoder();
+      it("throws_errors", 0, () => {
+        const encoder = new Encoder<undefined>();
+        let regex: RegExp = new RegExp('unrecognized object', 'i')
         assert.throws(() => {
-          encode(() => {});
-        }, /unrecognized object/i);
+          encode<undefined>(() => {
+          });
+        }, regex);
         testEncoder(encoder);
       });
     });
 
     assert.context("try_to_decode_a_map_with_non_string_keys_asynchronous", () => {
-      it("throws_errors",0, async () => {
-        const decoder = new Decoder();
-        const createStream = async function* () {
-          yield [0x81]; // fixmap size=1
-          yield encode(null);
-          yield encode(null);
-        };
+      it("throws_errors", 0, async () => {
+        const decoder = new Decoder<undefined>();
         try {
-          await decoder.decodeAsync(createStream());
-        }catch (err){
-
+          await decoder.decodeAsync(await Util.throwsErrorsCreateStream());
+        } catch (err) {
         }
         // await assert.rejects(async () => {
         //   await decoder.decodeAsync(createStream());
@@ -115,39 +97,35 @@ export default function edgeCasesTest() {
     });
 
     assert.context("try to decode invalid MessagePack binary", () => {
-      it("throws_errors",0, () => {
-        const decoder = new Decoder();
+      it("throws_errors", 0, () => {
+        const decoder = new Decoder<undefined>();
         const TYPE_NEVER_USED = 0xc1;
-
+        let regex: RegExp = new RegExp('unrecognized type byte', 'i')
         assert.throws(() => {
           decoder.decode([TYPE_NEVER_USED]);
-        }, /unrecognized type byte/i);
+        }, regex);
         testDecoder(decoder);
       });
     });
 
     assert.context("try to decode insufficient data", () => {
-      it("throws_errors_synchronous",0, () => {
-        const decoder = new Decoder();
+      it("throws_errors_synchronous1", 0, () => {
+        const decoder = new Decoder<undefined>();
         assert.throws(() => {
           decoder.decode([
             0x92, // fixarray size=2
-            0xc0, // nil
+            0xc0,// nil
           ]);
           // [IE11] A raw error thrown by DataView
         }, DataViewIndexOutOfBoundsError);
         testDecoder(decoder);
       });
 
-      it("throws_errors_asynchronous",0, async () => {
-        const decoder = new Decoder();
-        const createStream = async function* () {
-          yield [0x92]; // fixarray size=2
-          yield encode(null);
-        };
+      it("throws_errors_asynchronous1", 0, async () => {
+        const decoder = new Decoder<undefined>();
         try {
-          await decoder.decodeAsync(createStream());
-        }catch (err){
+          await decoder.decodeAsync(await Util.asynchronous1CreateStream());
+        } catch (err) {
 
         }
 
@@ -159,26 +137,22 @@ export default function edgeCasesTest() {
     });
 
     assert.context("try to decode data with extra bytes", () => {
-      it("throws_errors_synchronous",0, () => {
-        const decoder = new Decoder();
+      it("throws_errors_synchronous2", 0, () => {
+        const decoder = new Decoder<undefined>();
         assert.throws(() => {
           decoder.decode([
             0x90, // fixarray size=0
-            ...encode(null),
+            ...encode<undefined>(null),
           ]);
         }, RangeError);
         testDecoder(decoder);
       });
 
-      it("throws_errors_asynchronous",0, async () => {
-        const decoder = new Decoder();
-        const createStream = async function* () {
-          yield [0x90]; // fixarray size=0
-          yield encode(null);
-        };
+      it("throws_errors_asynchronous2", 0, async () => {
+        const decoder = new Decoder<undefined>();
         try {
-          await decoder.decodeAsync(createStream());
-        }catch (err){
+          await decoder.decodeAsync(await Util.asynchronous2CreateStream());
+        } catch (err) {
 
         }
         // await assert.rejects(async () => {
@@ -187,17 +161,13 @@ export default function edgeCasesTest() {
         testDecoder(decoder);
       });
 
-      it("throws_errors_asynchronous",0, async () => {
-        const decoder = new Decoder();
-        const createStream = async function* () {
-          yield [0x90, ...encode(null)]; // fixarray size=0 + nil
-        };
+      it("throws_errors_asynchronous3", 0, async () => {
+        const decoder = new Decoder<undefined>();
         try {
-          await decoder.decodeAsync(createStream());
-        }catch (err){
-
+          await decoder.decodeAsync(await Util.asynchronous3CreateStream());
+        } catch (err) {
         }
-          // await assert.rejects(async () => {
+        // await assert.rejects(async () => {
         //   await decoder.decodeAsync(createStream());
         // }, RangeError);
         testDecoder(decoder);
@@ -205,63 +175,60 @@ export default function edgeCasesTest() {
     });
 
     assert.context("try to decode an empty input", () => {
-      it("throws_RangeError_synchronous",0, () => {
+      it("throws_RangeError_synchronous", 0, () => {
         assert.throws(() => {
-          decode([]);
+          decode<undefined>([]);
         }, RangeError);
       });
 
-      it("decodes_an_empty_array_with_decodeMulti",0, () => {
-        assert.deepStrictEqual([...decodeMulti([])], []);
+      it("decodes_an_empty_array_with_decodeMulti", 0, () => {
+        assert.deepStrictEqual(Util.expandDecodeMulti(), []);
       });
 
-      it("throws_RangeError_asynchronous",0, async () => {
-        const createStream = async function* () {
-          yield [];
-        };
+      it("throws_RangeError_asynchronous", 0, async () => {
         try {
-          await decodeAsync(createStream());
-        }catch (err){
+          await decodeAsync<undefined>(await Util.decodeMultiCreateStream());
+        } catch (err) {
           expect(err.message).assertContain("Insufficient")
         }
-          // assert.rejects(async () => {
+        // assert.rejects(async () => {
         //   await decodeAsync(createStream());
         // }, RangeError);
       });
 
-      it("decodes_an_empty_array_with_decodeMultiStream",0,async () => {
-        const createStream = async function* () {
-          yield [];
-        };
-
-        const results = [];
-
+      it("decodes_an_empty_array_with_decodeMultiStream", 0, async () => {
+        const results: Array<Object> = [];
         let startTime1 = new Date().getTime();
-
-        for await (const item of decodeMultiStream(createStream())) {
-          results.push(item);
-        }
-
-
+        await Util.decodeMultiStreamsSetResult(await Util.decodeMultiCreateStream(), results)
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / 1;
         console.log(`msgpack-javascript:decodes_an_empty_array_with_decodeMultiStream averageTime = ${averageTime1}`)
-
         assert.deepStrictEqual(results, []);
       });
     });
   })
 }
 
+interface FooBarBaz {
+  foo: number,
+  bar: number,
+  baz: string[],
+}
 
+let testEncoder: Function = (encoder: Encoder): void => {
+  const object: FooBarBaz = {
+    foo: 1,
+    bar: 2,
+    baz: ["one", "two", "three"],
+  };
+  assert.deepStrictEqual(decode<undefined>(encoder.encode(object)), object);
+}
 
-
-
-
-
-
-
-
-
-
-
+let testDecoder: Function = (decoder: Decoder): void => {
+  const object: FooBarBaz = {
+    foo: 1,
+    bar: 2,
+    baz: ["one", "two", "three"],
+  };
+  assert.deepStrictEqual(decoder.decode(encode<undefined>(object)), object);
+}

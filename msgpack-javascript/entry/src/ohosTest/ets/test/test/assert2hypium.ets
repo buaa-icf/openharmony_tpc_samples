@@ -12,48 +12,48 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 
-var strictEqual = function(src,dst,info?){
+import { expect } from '@ohos/hypium'
+
+
+namespace assert {
+  export let strictEqual: Function = (src: Object, dst: Object, info?: string) => {
     expect(src).assertEqual(dst)
-    if(info){
-        console.log(info)
+    if (info) {
+      console.log(info)
     }
-}
+  }
 
-var deepStrictEqual = function(src,dst,info?){
+  export let deepStrictEqual: Function = (src: Object, dst: Object, info?: string) => {
     expect(src).assertDeepEquals(dst)
-    if(info){
-        console.log(info)
+    if (info) {
+      console.log(info)
     }
-}
-var notDeepStrictEqual = function(src,dst,info?){
+  }
+
+  export let notDeepStrictEqual: Function = (src: Object, dst: Object, info?: string) => {
     expect(src).not().assertDeepEquals(dst)
-    if(info){
-        console.log(info)
+    if (info) {
+      console.log(info)
     }
-}
+  }
 
-var context = function (string,callback){
+  export let context: Function = (str: string, callback: Function) => {
     callback();
-}
+  }
 
-var throws = function (srcCallback, dstInfo){
-    try{
-        srcCallback();
-        // 如果不报错就是用例失败
-        expect(false).assertTrue()
-    }catch (err){
-        // 报错
-        expect(true).assertTrue()
-        console.log("err.msg="+err.message)
-        console.log("dstInfo="+dstInfo)
+  export let throws: Function = (srcCallback: Function, dstInfo: Object) => {
+    try {
+      srcCallback();
+      // 如果不报错就是用例失败
+      expect(false).assertTrue()
+    } catch (err) {
+      // 报错
+      expect(true).assertTrue()
+      console.log("err.msg=" + err.message)
+      console.log("dstInfo=" + dstInfo)
     }
+  }
 }
-
-
-
-
-var assert = {strictEqual,deepStrictEqual,notDeepStrictEqual,context,throws }
 
 export default assert;

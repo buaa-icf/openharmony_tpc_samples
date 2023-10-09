@@ -13,102 +13,79 @@
  * limitations under the License.
  */
 import assert from "./assert2hypium";
-import { encode, decodeMultiStream } from "@msgpack/msgpack";
-import hilog from '@ohos.hilog';
+import { encode } from "@msgpack/msgpack";
+import Util from "../test/stdlib/Util";
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 
 export default function decodeMultiStreamTest() {
-  describe('decodeMultiStreamTest', function () {
+  describe('decodeMultiStreamTest', () => {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(() => {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(() => {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(() => {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(() => {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    it("decodes_stream",0, async () => {
+    it("decodes_stream", 0, async () => {
+      let bar: Bar = {
+        name: "bar",
+      }
       const items = [
         "foo",
         10,
-        {
-          name: "bar",
-        },
+        bar,
         [1, 2, 3],
       ];
-
-      const createStream = async function* (): AsyncGenerator<Uint8Array> {
-        for (const item of items) {
-          yield encode(item);
-        }
-      };
-
-      const result: Array<unknown> = [];
-
+      const result: Array<Object> = [];
       let startTime1 = new Date().getTime();
-
-      for await (const item of decodeMultiStream(createStream())) {
-        result.push(item);
-      }
-
+      await Util.decodeMultiStreamsSetResult(await Util.decodesCreateStream(items), result)
       let endTime1 = new Date().getTime();
       let averageTime1 = ((endTime1 - startTime1) * 1000) / 1;
       console.log(`msgpack-javascript:decodes_stream averageTime = ${averageTime1}`)
-
       assert.deepStrictEqual(result, items);
     });
 
-    it("decodes_multiple_objects_in_a_single_binary_stream",0, async () => {
+    it("decodes_multiple_objects_in_a_single_binary_stream", 0, async () => {
+      let bar: Bar = {
+        name: "bar",
+      }
       const items = [
         "foo",
         10,
-        {
-          name: "bar",
-        },
+        bar,
         [1, 2, 3],
       ];
-
-      const encodedItems = items.map((item) => encode(item));
+      const encodedItems = items.map((item) => encode<undefined>(item));
       const encoded = new Uint8Array(encodedItems.reduce((p, c) => p + c.byteLength, 0));
       let offset = 0;
       for (const encodedItem of encodedItems) {
         encoded.set(encodedItem, offset);
         offset += encodedItem.byteLength;
       }
-
-      const createStream = async function* (): AsyncGenerator<Uint8Array> {
-        yield encoded;
-      };
-
-      const result: Array<unknown> = [];
-
+      const result: Array<Object> = [];
       let startTime1 = new Date().getTime();
-
-      for await (const item of decodeMultiStream(createStream())) {
-        result.push(item);
-      }
-
+      await Util.decodeMultiStreamsSetResult(await Util.Uint8ArrayCreateStreams(encoded), result)
       let endTime1 = new Date().getTime();
       let averageTime1 = ((endTime1 - startTime1) * 1000) / 1;
       console.log(`msgpack-javascript:decodes_multiple_objects_in_a_single_binary_stream averageTime = ${averageTime1}`)
-
       assert.deepStrictEqual(result, items);
     });
 
   })
 }
 
-
-
-
+interface Bar {
+  name: string,
+}
