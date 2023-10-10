@@ -14,7 +14,7 @@
  */
 
 import { MsgTimestamp } from "../../../ohosTest/ets/test/test/msg/msg-timestamp";
-import { EXT_TIMESTAMP, encodeTimeSpecToTimestamp, } from "@msgpack/msgpack";
+import { EXT_TIMESTAMP, encodeTimeSpecToTimestamp, decodeMulti } from "@msgpack/msgpack";
 import ohBuffer from '@ohos.buffer';
 
 namespace Util {
@@ -34,6 +34,13 @@ namespace Util {
       return MsgTimestamp.parse(ohBuffer.from(data));
     },
   }
+
+  export function decodeMultiSetResult(encoded: Uint8Array, result: Array<Object>): void {
+    for (let item of decodeMulti(encoded)) {
+      result.push(item);
+    }
+  }
+
 }
 
 export default Util;

@@ -13,26 +13,27 @@
  * limitations under the License.
  */
 import { encode } from "@msgpack/msgpack";
-import { decode,decodeMulti } from "@msgpack/msgpack";
+import Util from './Util';
+
 @Entry
 @Component
 struct MultiDecodePage {
-
-  @State message:string = "展示原数据"
-  @State message2:string = "decodeMulti解码后的数据展示"
-
-  encodedUint8?: Uint8Array = undefined;
-  bn: ButtonName = {name: "bar"};
+  @State message: string = "展示原数据"
+  @State message2: string = "decodeMulti解码后的数据展示"
+  encodedUint8: Uint8Array | undefined = undefined;
 
   build() {
     Row() {
       Column() {
-        Button('对象展示').onClick(()=>{
+        Button('对象展示').onClick(() => {
           console.log('dodo click on!')
+          let bar: Bar = {
+            name: "bar",
+          }
           this.message = JSON.stringify([
             "foo",
             10,
-            this.bn,
+            bar,
             [1, 2, 3],
           ])
         })
@@ -40,34 +41,26 @@ struct MultiDecodePage {
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
         Button('点击MultiDecode').onClick(() => {
+          let bar: Bar = {
+            name: "bar",
+          }
           let items = [
             "foo",
             10,
-          this.bn,
+            bar,
             [1, 2, 3],
-          ];
-
-          let encodedItems = items.map((item) => encode<string>(item));
+          ]
+          let encodedItems = items.map((item) => encode<undefined>(item));
           let encoded = new Uint8Array(encodedItems.reduce((p, c) => p + c.byteLength, 0));
           let offset = 0;
           for (let encodedItem of encodedItems) {
             encoded.set(encodedItem, offset);
             offset += encodedItem.byteLength;
           }
-
           let result: Array<Object> = [];
-
-          // for (let item of decodeMulti<number[]>(encoded)) {
-          //   result.push(item);
-          // }
-          let numbers: Array<Object> = Array<Object>(decodeMulti<number[]>(encoded))
-          for (let item = 0; item < numbers.length; item++) {
-            result.push(numbers[item]);
-          }
-
+          Util.decodeMultiSetResult(encoded, result)
           let retStr1 = JSON.stringify(result);
           this.message2 = retStr1;
-
         })
         Text(this.message2)
           .fontSize(50)
@@ -77,13 +70,8 @@ struct MultiDecodePage {
     }
     .height('100%')
   }
-  aboutToAppear(){
-
-  }
-
-
 }
 
-class ButtonName {
-  name:string = "";
+interface Bar {
+  name: string;
 }
