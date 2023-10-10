@@ -57,6 +57,7 @@ ohpm install diff
 
 ## 约束与限制
 在下述版本验证通过：
+DevEco Studio: 4.0 Release(4.0.3.600), SDK: API10 (4.0.10.11)
 
 DevEco Studio: 4.0 Beta2(4.0.3.512), SDK: API10 (4.0.10.9)
 
