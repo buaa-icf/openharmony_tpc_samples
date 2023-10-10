@@ -1,7 +1,6 @@
 {
   "license": "ISC",
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "name": "entry",
   "description": "example description",
   "repository": {},

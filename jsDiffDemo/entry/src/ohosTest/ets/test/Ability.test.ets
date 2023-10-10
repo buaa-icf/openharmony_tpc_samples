@@ -32,7 +32,6 @@ import {
   canonicalize,
   merge,
   convertChangesToDMP,
-  Change
 } from 'diff'
 
 import { Options, Data, Params, Patch } from './interface'
@@ -42,35 +41,35 @@ export default function abilityTest() {
   describe('jsDiffTest', () => {
     //-----------------------------------diffChars-------------------------------------------------
     it('diffChars_should_diff_chars', 0, () => {
-      const diffResult: Change[] = diffChars('New Value.', 'New ValueMoreData.');
+      const diffResult: Data[] = diffChars('New Value.', 'New ValueMoreData.');
       expect(convertChangesToXML(diffResult)).assertEqual('New Value<ins>MoreData</ins>.');
     })
     it('diffChars_is_considered_when_there_is_no_difference', 0, () => {
       let options: Options = {
         ignoreCase: true
       }
-      const diffResult: Change[] = diffChars('New Value.', 'New value.', options);
+      const diffResult: Data[] = diffChars('New Value.', 'New value.', options);
       expect(convertChangesToXML(diffResult)).assertEqual('New value.');
     })
     it('diffChars_is_considered_when_there_is_a_difference', 0, () => {
       let options: Options = {
         ignoreCase: true
       }
-      const diffResult: Change[] = diffChars('New Values.', 'New value.', options);
+      const diffResult: Data[] = diffChars('New Values.', 'New value.', options);
       expect(convertChangesToXML(diffResult)).assertEqual('New value<del>s</del>.');
     })
 
     //-----------------------------------diffWords-------------------------------------------------
     it('diffWords_width_whitespace', 0, () => {
-      const diffResult: Change[] = diffWords('New Value', 'New  ValueMoreData');
+      const diffResult: Data[] = diffWords('New Value', 'New  ValueMoreData');
       expect(convertChangesToXML(diffResult)).assertEqual('New  <del>Value</del><ins>ValueMoreData</ins>');
     })
     it('diffWords_multiple_whitespace_value', 0, () => {
-      const diffResult: Change[] = diffWords('New Value  ', 'New  ValueMoreData ');
+      const diffResult: Data[] = diffWords('New Value  ', 'New  ValueMoreData ');
       expect(convertChangesToXML(diffResult)).assertEqual('New  <del>Value</del><ins>ValueMoreData</ins> ');
     })
     it('diffWords_on_word_boundaries', 0, () => {
-      let diffResult: Change[] = diffWords('New :Value:Test', 'New  ValueMoreData ');
+      let diffResult: Data[] = diffWords('New :Value:Test', 'New  ValueMoreData ');
       expect(convertChangesToXML(diffResult)).assertEqual('New  <del>:Value:Test</del><ins>ValueMoreData </ins>');
 
       diffResult = diffWords('New Value:Test', 'New  Value:MoreData ');
@@ -83,21 +82,21 @@ export default function abilityTest() {
       expect(convertChangesToXML(diffResult)).assertEqual('New  Value<ins>:MoreData </ins>');
     })
     it('diffWords_identity_or_empty_or_identical_content', 0, () => {
-      const diffResult: Change[] = diffWords('New Value', 'New Value');
+      const diffResult: Data[] = diffWords('New Value', 'New Value');
       expect(convertChangesToXML(diffResult)).assertEqual('New Value');
-      const diffResult_empty: Change[] = diffWords('', '');
+      const diffResult_empty: Data[] = diffWords('', '');
       expect(convertChangesToXML(diffResult_empty)).assertEqual('');
-      const diffResult_identical: Change[] = diffWords('New Value', 'New  Value');
+      const diffResult_identical: Data[] = diffWords('New Value', 'New  Value');
       expect(convertChangesToXML(diffResult_identical)).assertEqual('New  Value');
 
     })
     it('diffWords_Empty_diffs', 0, () => {
-      const diffResult: Change[] = diffWords('New Value', '');
+      const diffResult: Data[] = diffWords('New Value', '');
       expect(diffResult.length).assertEqual(1);
       expect(convertChangesToXML(diffResult)).assertEqual('<del>New Value</del>');
-      const diffResult_old_content: Change[] = diffWords('', 'New Value');
+      const diffResult_old_content: Data[] = diffWords('', 'New Value');
       expect(convertChangesToXML(diffResult_old_content)).assertEqual('<ins>New Value</ins>');
-      const diffResult_anchor_value: Change[] = diffWords('New Value New Value', 'Value Value New New');
+      const diffResult_anchor_value: Data[] = diffWords('New Value New Value', 'Value Value New New');
       expect(convertChangesToXML(diffResult_anchor_value))
         .assertEqual('<del>New</del><ins>Value</ins> Value New <del>Value</del><ins>New</ins>');
     })
@@ -161,65 +160,65 @@ export default function abilityTest() {
       let options: Options = {
         ignoreWhitespace: false
       }
-      const diffResult: Change[] = diffWords('New Value', 'New  ValueMoreData', options);
+      const diffResult: Data[] = diffWords('New Value', 'New  ValueMoreData', options);
       expect(convertChangesToXML(diffResult)).assertEqual('New<del> Value</del><ins>  ValueMoreData</ins>');
     })
     it('diffWords_with_only_whitespace', 0, () => {
-      let diffResult: Change[] = diffWords('', ' ');
+      let diffResult: Data[] = diffWords('', ' ');
       expect(convertChangesToXML(diffResult)).assertEqual('<ins> </ins>');
       diffResult = diffWords(' ', '');
       expect(convertChangesToXML(diffResult)).assertEqual('<del> </del>');
     })
     it('diffWords_async_whitespace', 0, () => {
-      diffWords('New Value', 'New  ValueMoreData', (err: string | undefined, diffResult: Change[]) => {
+      diffWords('New Value', 'New  ValueMoreData', (err: string | undefined, diffResult: Data[]) => {
         expect(err).assertUndefined();
         expect(convertChangesToXML(diffResult)).assertEqual('New  <del>Value</del><ins>ValueMoreData</ins>');
       });
     })
 
     it('diffWords_async_multiple_whitespace_values', 0, () => {
-      diffWords('New Value  ', 'New  ValueMoreData ', (err: string | undefined, diffResult: Change[]) => {
+      diffWords('New Value  ', 'New  ValueMoreData ', (err: string | undefined, diffResult: Data[]) => {
         expect(err).assertUndefined();
         expect(convertChangesToXML(diffResult)).assertEqual('New  <del>Value</del><ins>ValueMoreData</ins> ');
       });
     })
 
     it('diffWords_async_boundary', 0, () => {
-      diffWords('New :Value:Test', 'New  ValueMoreData ', (err: string | undefined, diffResult: Change[]) => {
+      diffWords('New :Value:Test', 'New  ValueMoreData ', (err: string | undefined, diffResult: Data[]) => {
         expect(err).assertUndefined();
         expect(convertChangesToXML(diffResult)).assertEqual('New  <del>:Value:Test</del><ins>ValueMoreData </ins>');
       });
     })
 
     it('diffWords_async_handle_empty', 0, () => {
-      diffWords('', '', (err: string | undefined, diffResult: Change[]) => {
+      diffWords('', '', (err: string | undefined, diffResult: Data[]) => {
         expect(err).assertUndefined();
         expect(convertChangesToXML(diffResult)).assertEqual('');
       });
     })
 
     it('diffWords_async_identical_content', 0, () => {
-      diffWords('New Value', '', (err: string | undefined, diffResult: Change[]) => {
+      diffWords('New Value', '', (err: string | undefined, diffResult: Data[]) => {
         expect(err).assertUndefined();
         expect(convertChangesToXML(diffResult)).assertEqual('<del>New Value</del>');
       });
     })
 
     it('diffWords_async_empty_new_content', 0, () => {
-      diffWords('New Value', 'New  Value', (err: string | undefined, diffResult: Change[]) => {
+      diffWords('New Value', 'New  Value', (err: string | undefined, diffResult: Data[]) => {
         expect(err).assertUndefined();
         expect(convertChangesToXML(diffResult)).assertEqual('New  Value');
       });
     })
 
     it('diffWords_async_empty_old_content', 0, () => {
-      diffWords('', 'New Value', (err: string | undefined, diffResult: Change[]) => {
+      diffWords('', 'New Value', (err: string | undefined, diffResult: Data[]) => {
         expect(convertChangesToXML(diffResult)).assertEqual('<ins>New Value</ins>');
       });
     })
 
     it('diffWords_async_no_anchor_value', 0, () => {
-      diffWords('New Value New Value', 'Value Value New New', (err: string | undefined, diffResult: Change[]) => {
+      diffWords('New Value New Value', 'Value Value New New', (err: string | undefined, diffResult: Data[]) => {
         expect(convertChangesToXML(diffResult))
           .assertEqual('<del>New</del><ins>Value</ins> Value New <del>Value</del><ins>New</ins>');
       });
@@ -227,48 +226,48 @@ export default function abilityTest() {
 
     //-----------------------------------diffWordsWithSpace-------------------------------------------------
     it('diffWordsWithSpace_diff_whitespace', 0, () => {
-      const diffResult: Change[] = diffWordsWithSpace('New Value', 'New  ValueMoreData');
+      const diffResult: Data[] = diffWordsWithSpace('New Value', 'New  ValueMoreData');
       expect(convertChangesToXML(diffResult)).assertEqual('New<del> Value</del><ins>  ValueMoreData</ins>');
     })
 
     it('diffWordsWithSpace_multiple_whitespace_values', 0, () => {
-      const diffResult: Change[] = diffWordsWithSpace('New Value  ', 'New  ValueMoreData ');
+      const diffResult: Data[] = diffWordsWithSpace('New Value  ', 'New  ValueMoreData ');
       expect(convertChangesToXML(diffResult)).assertEqual('New<ins>  ValueMoreData</ins> <del>Value  </del>');
     })
 
     it('diffWordsWithSpace_inserts_values_in_parenthesis', 0, () => {
-      const diffResult: Change[] = diffWordsWithSpace('()', '(word)');
+      const diffResult: Data[] = diffWordsWithSpace('()', '(word)');
       expect(convertChangesToXML(diffResult)).assertEqual('(<ins>word</ins>)')
     })
 
     it('diffWordsWithSpace_inserts_values_in_brackets', 0, () => {
-      const diffResult: Change[] = diffWordsWithSpace('[]', '[word]');
+      const diffResult: Data[] = diffWordsWithSpace('[]', '[word]');
       expect(convertChangesToXML(diffResult)).assertEqual('[<ins>word</ins>]');
     })
     it('diffWordsWithSpace_inserts_values_in_curly_braces', 0, () => {
-      const diffResult: Change[] = diffWordsWithSpace('{}', '{word}');
+      const diffResult: Data[] = diffWordsWithSpace('{}', '{word}');
       expect(convertChangesToXML(diffResult)).assertEqual('{<ins>word</ins>}');
     })
 
     it('diffWordsWithSpace_inserts_values_in_quotes', 0, () => {
-      const diffResult: Change[] = diffWordsWithSpace("''", "'word'");
+      const diffResult: Data[] = diffWordsWithSpace("''", "'word'");
       expect(convertChangesToXML(diffResult)).assertEqual("'<ins>word</ins>'");
     })
     it('diffWordsWithSpace_inserts_values_in_double_quotes', 0, () => {
-      const diffResult: Change[] = diffWordsWithSpace('""', '"word"');
+      const diffResult: Data[] = diffWordsWithSpace('""', '"word"');
       expect(convertChangesToXML(diffResult)).assertEqual('&quot;<ins>word</ins>&quot;');
     })
     it('diffWordsWithSpace_threat_newline_as_separate_token', 0, () => {
       // #180
-      const diffResult1: Change[] = diffWordsWithSpace('foo\nbar', 'foo\n\n\nbar');
+      const diffResult1: Data[] = diffWordsWithSpace('foo\nbar', 'foo\n\n\nbar');
       expect(convertChangesToXML(diffResult1)).assertEqual('foo\n<ins>\n\n</ins>bar');
       // #211
-      const diffResult2: Change[] = diffWordsWithSpace('A\n\nB\n', 'A\nB\n');
+      const diffResult2: Data[] = diffWordsWithSpace('A\n\nB\n', 'A\nB\n');
       expect(convertChangesToXML(diffResult2)).assertEqual('A\n<del>\n</del>B\n');
     })
 
     it('diffWordsWithSpace_async_operations', 0, () => {
-      diffWordsWithSpace('New Value  ', 'New  ValueMoreData ', (err: string | undefined, diffResult: Change[]) => {
+      diffWordsWithSpace('New Value  ', 'New  ValueMoreData ', (err: string | undefined, diffResult: Data[]) => {
         expect(convertChangesToXML(diffResult)).assertEqual('New<ins>  ValueMoreData</ins> <del>Value  </del>');
       });
     })
@@ -276,36 +275,36 @@ export default function abilityTest() {
       let options: Options = {
         ignoreCase: true
       }
-      const diffResult: Change[] = diffWordsWithSpace('new value', 'New  ValueMoreData', options);
+      const diffResult: Data[] = diffWordsWithSpace('new value', 'New  ValueMoreData', options);
       expect(convertChangesToXML(diffResult)).assertEqual('New<del> value</del><ins>  ValueMoreData</ins>');
-      const diffResult_no_difference: Change[] = diffWordsWithSpace('new value', 'New Value', options);
+      const diffResult_no_difference: Data[] = diffWordsWithSpace('new value', 'New Value', options);
       expect(convertChangesToXML(diffResult_no_difference)).assertEqual('New Value');
     })
     //-----------------------------------diffLines-------------------------------------------------
     it('diffLines_should_diff_lines', 0, () => {
-      const diffResult: Change[] = diffLines(
+      const diffResult: Data[] = diffLines(
         'line\nold value\nline',
         'line\nnew value\nline');
       expect(convertChangesToXML(diffResult)).assertEqual('line\n<del>old value\n</del><ins>new value\n</ins>line');
-      const diffResult1: Change[] = diffLines(
+      const diffResult1: Data[] = diffLines(
         'line\nvalue\nline',
         'line\nvalue\nline');
       expect(convertChangesToXML(diffResult1)).assertEqual('line\nvalue\nline');
-      const diffResult2: Change[] = diffLines(
+      const diffResult2: Data[] = diffLines(
         'line\nvalue \nline',
         'line\nvalue\nline');
       expect(convertChangesToXML(diffResult2)).assertEqual('line\n<del>value \n</del><ins>value\n</ins>line');
-      const diffResult3: Change[] = diffLines(
+      const diffResult3: Data[] = diffLines(
         'line\r\nold value \r\nline',
         'line\r\nnew value\r\nline');
       expect(convertChangesToXML(diffResult3))
         .assertEqual('line\r\n<del>old value \r\n</del><ins>new value\r\n</ins>line');
-      const diffResult4: Change[] = diffLines(
+      const diffResult4: Data[] = diffLines(
         'line\n\nold value \n\nline',
         'line\n\nnew value\n\nline');
       expect(convertChangesToXML(diffResult4))
         .assertEqual('line\n\n<del>old value \n</del><ins>new value\n</ins>\nline');
-      const diffResult5: Change[] = diffLines(
+      const diffResult5: Data[] = diffLines(
         'line\n\nold value \n\nline',
         '');
       expect(convertChangesToXML(diffResult5)).assertEqual('<del>line\n\nold value \n\nline</del>');
@@ -330,19 +329,19 @@ export default function abilityTest() {
 
     //-----------------------------------diffTrimmedLines-------------------------------------------------
     it('diffTrimmedLines', 0, () => {
-      const diffResult: Change[] = diffTrimmedLines(
+      const diffResult: Data[] = diffTrimmedLines(
         'line\nold value\nline',
         'line\nnew value\nline');
       expect(convertChangesToXML(diffResult)).assertEqual('line\n<del>old value\n</del><ins>new value\n</ins>line');
-      const diffResult1: Change[] = diffTrimmedLines(
+      const diffResult1: Data[] = diffTrimmedLines(
         'line\nvalue\nline',
         'line\nvalue\nline');
       expect(convertChangesToXML(diffResult1)).assertEqual('line\nvalue\nline');
-      const diffResult2: Change[] = diffTrimmedLines(
+      const diffResult2: Data[] = diffTrimmedLines(
         'line\nvalue \nline',
         'line\nvalue\nline');
       expect(convertChangesToXML(diffResult2)).assertEqual('line\nvalue\nline');
-      const diffResult3: Change[] = diffTrimmedLines(
+      const diffResult3: Data[] = diffTrimmedLines(
         'line\r\nold value \r\nline',
         'line\r\nnew value\r\nline');
       expect(convertChangesToXML(diffResult3))
@@ -351,16 +350,16 @@ export default function abilityTest() {
 
     //-----------------------------------diffSentences-------------------------------------------------
     it('diffSentences', 0, () => {
-      const diffResult: Change[] = diffSentences('New Value.', 'New ValueMoreData.');
+      const diffResult: Data[] = diffSentences('New Value.', 'New ValueMoreData.');
       expect(convertChangesToXML(diffResult)).assertEqual('<del>New Value.</del><ins>New ValueMoreData.</ins>');
-      const diffResult1: Change[] = diffSentences('Here im. Rock you like old man.', 'Here im. Rock you like hurricane.');
+      const diffResult1: Data[] = diffSentences('Here im. Rock you like old man.', 'Here im. Rock you like hurricane.');
       expect(convertChangesToXML(diffResult1))
         .assertEqual('Here im. <del>Rock you like old man.</del><ins>Rock you like hurricane.</ins>');
     })
 
     //-----------------------------------diffCss-------------------------------------------------
     it('diffCss_should_diff_css', 0, () => {
-      const diffResult: Change[] = diffCss(
+      const diffResult: Data[] = diffCss(
         '.test,#value .test{margin-left:50px;margin-right:-40px}',
         '.test2, #value2 .test {\nmargin-top:50px;\nmargin-right:-400px;\n}');
       expect(convertChangesToXML(diffResult)).assertEqual(
@@ -526,7 +525,7 @@ export default function abilityTest() {
       let param2: Params = {
         a: 123, b: 456
       }
-      const diffResult: Change[] = diffJson(param1, param2);
+      const diffResult: Data[] = diffJson(param1, param2);
       expect(convertChangesToXML(diffResult))
         .assertDeepEquals('{\n  &quot;a&quot;: 123,\n  &quot;b&quot;: 456,\n<del>  &quot;c&quot;: 789\n</del>}');
     })
@@ -538,7 +537,7 @@ export default function abilityTest() {
       let param2: Params = {
         a: 123, b: 456
       }
-      const diffResult: Change[] = diffJson(param2, param1);
+      const diffResult: Data[] = diffJson(param2, param1);
       expect(convertChangesToXML(diffResult))
         .assertEqual('{\n  &quot;a&quot;: 123,\n  &quot;b&quot;: 456,\n<ins>  &quot;c&quot;: 789\n</ins>}');
     })
@@ -590,7 +589,7 @@ export default function abilityTest() {
       let options2: Options = {
         stringifyReplacer: (k: Params, v: Params) => v instanceof Error ? `${v.name}: ${v.message}` : v
       }
-      let s: Change[] = diffJson(params1, params2);
+      let s: Data[] = diffJson(params1, params2);
       expect(s).assertDeepEquals([diff1, diff2, diff3, diff4]);
 
       expect(diffJson(params1, params3, options1)).assertDeepEquals([diff1, diff2, diff5, diff4]);
@@ -622,7 +621,7 @@ export default function abilityTest() {
         count: 1, value: [c], removed: true
       }
       diff4.added = undefined
-      const diffResult: Change[] = diffArrays([a, b, c], [a, c, b]);
+      const diffResult: Data[] = diffArrays([a, b, c], [a, c, b]);
       let result = [diff1, diff2, diff3, diff4]
       expect(result).assertDeepEquals(diffResult)
     })
@@ -633,7 +632,7 @@ export default function abilityTest() {
       const c: string = '';
       const arrayA: Array<boolean | number | string> = [c, b, a, b, a, c];
       const arrayB: Array<boolean | number | string> = [a, b, c, a, b, b, a];
-      const diffResult: Change[] = diffArrays(arrayA, arrayB)
+      const diffResult: Data[] = diffArrays(arrayA, arrayB)
 
       let diff1: Data = {
         count: 2, value: [a, b], added: true
@@ -678,7 +677,7 @@ export default function abilityTest() {
       let options: Options = {
         comparator: comparator
       }
-      const diffResult: Change[] = diffArrays([a, b, c], [a, b, d], options);
+      const diffResult: Data[] = diffArrays([a, b, c], [a, b, d], options);
 
       let diff1: Data = {
         count: 2, value: [a, b]
@@ -702,7 +701,7 @@ export default function abilityTest() {
       }
       const expected = [diff];
       const input = value.slice();
-      const diffResult: Change[] = diffArrays(input, input);
+      const diffResult: Data[] = diffArrays(input, input);
       expect(diffResult).assertDeepEquals(expected);
     })
 
@@ -729,7 +728,7 @@ export default function abilityTest() {
     })
 
     it('structuredPatch', 0, () => {
-      const res: Patch = structuredPatch(
+      const res: Patch | undefined = structuredPatch(
         'oldfile', 'newfile',
         'line2\nline3\nline4\n', 'line2\nline3\nline5',
         'header1', 'header2'
@@ -752,7 +751,7 @@ export default function abilityTest() {
 
     it('parsePatch', 0, () => {
       let result = getResult()
-      const patch: Patch = parsePatch(
+      const patch: Patch[] = parsePatch(
         'Index: test\n'
           + '===================================================================\n'
           + '--- test\theader1\n'
@@ -769,13 +768,13 @@ export default function abilityTest() {
       const result = "<del>beep</del><ins>beepboob</ins> <del>boop   afff测试</del><ins>2022真热</ins>样本<del>one1</del><ins> e </ins>"
       const one = 'beep boop   afff测试样本one1';
       const other = 'beepboob 2022真热样本 e ';
-      const diff: Change[] = diffWords(one, other);
-      const patch: Patch = convertChangesToXML(diff);
+      const diff: Data[] = diffWords(one, other);
+      const patch: string = convertChangesToXML(diff);
       expect(result).assertEqual(patch)
     })
 
     it('convertChangesToDMP', 0, () => {
-      const diffResult: Change[] = diffWords('New Value  ', 'New  ValueMoreData ');
+      const diffResult: Data[] = diffWords('New Value  ', 'New  ValueMoreData ');
       expect(JSON.stringify(convertChangesToDMP(diffResult)))
         .assertEqual(JSON.stringify([[0, 'New  '], [-1, 'Value'], [1, 'ValueMoreData'], [0, ' ']]));
     })
@@ -827,8 +826,10 @@ export default function abilityTest() {
       let param2: Params = {
         b: 456, a: [789, param1]
       }
-      const canonicalObj: Change = canonicalize(param2, null, null);
-      expect(getKeys(canonicalObj.a[1] as Params)).assertDeepEquals(['c', 'd']);
+      const canonicalObj: Params = canonicalize(param2, null, null);
+      if(canonicalObj.a !== undefined) {
+        expect(getKeys(canonicalObj.a[1] as Params)).assertDeepEquals(['c', 'd']);
+      }
     })
     it('canonicalize_should_handle_circular_references_correctly', 0, () => {
       const obj: Params = {
