@@ -319,10 +319,8 @@ let result1 = v1.validate("Name", schema, { allowUnknownAttributes: false });
 ## 约束与限制
 在下述版本验证通过：
 
-- DevEco Studio: 3.1 Beta2(3.1.0.400) 
-  SDK: API9 Release(3.2.11.9)
-- DevEco Studio:  4.0 Canary1(4.0.3.212)
-  SDK: API 10 Release(4.0.8.3)
+- DevEco Studio: 4.0 (4.0.3.513), SDK: API10 (4.0.10.10)
+
 
 ## 目录结构
 ````

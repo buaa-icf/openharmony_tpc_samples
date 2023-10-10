@@ -7,14 +7,9 @@
 /.clangd
 /.clang-format
 /.clang-tidy
-.hvigor
-.idea
 package-lock.json
 oh_modules
 oh-package-lock.json5
-hvigor
-hvigorw
-hvigorw.bat
 .hvigor
 .idea
 

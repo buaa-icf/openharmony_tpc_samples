@@ -15,18 +15,10 @@
 
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
 import { SchemaError, validate, ValidationError, Validator, ValidatorResult, Schema, } from '@ohos/jsonschema'
+import { protoType } from './DataFormat'
 import {
 
   Deful,
-  initSchemajson,
-  instancejson,
-  pjson,
-  pre,
-  rewi,
-  schemajsonpro,
-  schemavalue,
-  skipAttribute,
-  value,
   Options,
   Optiress,
   Depro,
@@ -48,6 +40,9 @@ import {
 
 
 const BASE_COUNT = 1
+protoType.myFormat = (input: string) => {
+  return input === 'myFormat';
+};
 let allowAttributes: Options = {
   allowUnknownAttributes: true
 }
