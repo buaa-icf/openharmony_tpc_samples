@@ -40,14 +40,14 @@ struct CachePage {
   @State getKey: string = ''
   @State getValue: string = ''
   @State delKey: string = ''
-  @State cacheSize: string = ''
-  @State cacheMemsize: string = ''
-  @State cacheHits: string = '';
-  @State cacheMisses: string = '';
-  @State cacheKeys: string = '';
+  @State cacheSize: number = 0
+  @State cacheMemsize: number = 0
+  @State cacheHits: number = 0;
+  @State cacheMisses: number = 0;
+  @State cacheKeys: string[] = [];
   @State cacheExportJson: string = '';
   @State cacheImportJson: string = '';
-  @State cacheImportJsonSize: string = '';
+  @State cacheImportJsonSize: number = 0;
   private default: string = " {\"0\":{\"value\":\"测试数据\",\"expire\":\"NaN\"}}"
   scroller: Scroller = new Scroller()
 
