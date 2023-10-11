@@ -34,7 +34,7 @@ let objectSchema: ObjectSchema = { 'const': { "some key": [null, "1", 2, true] }
 let datatime: Options = {
   'type': 'string', 'format': 'date-time'
 }
-let rege: RegExp = new RegExp("^\d+(?:\.\d+)?$")
+let rege: RegExp = new RegExp("[^\d+(?:\.\d+)?$]")
 
 export default function formatsTest() {
   describe('formatsTest', () => {

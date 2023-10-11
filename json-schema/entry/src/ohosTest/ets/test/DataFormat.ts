@@ -27,3 +27,4 @@ export function free(data) {
 export function amou(payment){
   delete (payment.amount);
 }
+export let protoType = Validator.prototype.customFormats
