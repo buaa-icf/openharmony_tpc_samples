@@ -96,14 +96,21 @@ struct Index {
       Button("周围替换")
         .margin({ top: 10, bottom: 10 })
         .onClick(() => {
+          let dataArrFunc = (str:string)=>{
+            let dataArr:string[] = []
+            for(let i =0;i<str.length;i++){
+              dataArr.push(str.charAt(i))
+            }
+            return dataArr
+          }
           this.Text = er(
             this.TextString,
             {
               leftOutsideNot: "",
               leftOutside: "",
-              leftMaybe: this.leftMy.data, //["马","心"]
+              leftMaybe: dataArrFunc(this.leftMy.data as string), //["马","心"]
               searchFor: this.Replace,
-              rightMaybe: this.rightMy.data, //["马","心"]
+              rightMaybe: dataArrFunc(this.rightMy.data as string), //["马","心"]
               rightOutside: "",
               rightOutsideNot: "",
               i: {
