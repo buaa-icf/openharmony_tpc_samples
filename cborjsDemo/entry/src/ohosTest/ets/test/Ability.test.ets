@@ -41,7 +41,7 @@ export default function abilityTest() {
 
       let content:string = 'ABCDEFGHIJKabcdefj123456+/AA==!@';
 
-      let encodes:string =CBOR.encode(content) ;
+      let encodes:ArrayBuffer =CBOR.encode(content) ;
 
       let deco:string = CBOR.decode(encodes)
 

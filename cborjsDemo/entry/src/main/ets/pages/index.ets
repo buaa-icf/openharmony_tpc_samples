@@ -61,12 +61,12 @@ struct Index {
 }
 
 function testCbor(initial:string) {
-  let encoded:string = CBOR.encode(initial)
-  let decoded:string = CBOR.decode(encoded)
-  if (initial.toString() == decoded) {
+  let encoded:ArrayBuffer = CBOR.encode(initial)
+  let decoded:ArrayBuffer = CBOR.decode(encoded)
+  if (initial.toString() == decoded.toString()) {
     console.log('解码值和原值相同');
     prompt.showToast({ message: '解码值和原值相同', duration: 200 })
-  } else if (initial === decoded) {
+  } else if (initial === decoded.toString()) {
     console.log('解码值和原值相同');
     prompt.showToast({ message: '解码值和原值相同', duration: 200 })
   } else {
