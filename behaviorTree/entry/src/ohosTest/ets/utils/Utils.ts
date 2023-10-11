@@ -223,6 +223,19 @@ export class Utils {
       ]
     }
   }
+
+  static result2(name, result, childrenName, childrenResult) {
+    return {
+      name: name,
+      result: result,
+      children: [
+        {
+          name: childrenName,
+          result: childrenResult
+        }
+      ]
+    }
+  }
 }
 
 export class BlackboardChangesIntrospector extends Introspector {

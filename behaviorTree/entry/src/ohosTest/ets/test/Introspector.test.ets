@@ -69,7 +69,7 @@ export default function IntrospectorTest() {
 
   introspector = new Introspector()
   // 通过
-  describe('IntrospectorTest', ()=> {
+  describe('IntrospectorTestOne', ()=> {
     beforeEach(() => {
       blackboard = Utils.IntBlackboard
 
@@ -123,7 +123,7 @@ export default function IntrospectorTest() {
       expect(JSON.stringify(introspector.lastResult)).assertEqual(JSON.stringify(resultThirdRun)   )
 
       expect(JSON.stringify(introspector.results)).assertEqual(JSON.stringify([resultFirstRun, resultSecondRun, resultThirdRun]))
-
+      Utils.setIntBlackboard(SUCCESS)
     })
   })
 
@@ -178,7 +178,7 @@ export default function IntrospectorTest() {
     it('shows_Task_and_Decorator', 0, () => {
       bTree.step({ introspector })
 
-      const result = Utils.result('inverter',FAILURE,'The Task',SUCCESS)
+      const result = Utils.result2('inverter',FAILURE,'The Task',SUCCESS)
 
       expect(diff(introspector.lastResult,result)).assertEqual(true)
       expect(diff(introspector.results,[result])).assertEqual(true)
@@ -198,7 +198,7 @@ export default function IntrospectorTest() {
 
       bTree.step({ introspector })
 
-      const result =Utils.result('select',SUCCESS,'The Task',SUCCESS)
+      const result =Utils.result2('select',SUCCESS,'The Task',SUCCESS)
 
       expect(diff(introspector.lastResult,result)).assertEqual(true)
 
@@ -233,7 +233,7 @@ export default function IntrospectorTest() {
 
       bTree.step({ introspector })
 
-      const result =Utils.result('select',RUNNING,'Forest',RUNNING)
+      const result =Utils.result2('select',RUNNING,'Forest',RUNNING)
 
 
 
