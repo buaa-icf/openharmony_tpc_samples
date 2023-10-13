@@ -1,6 +1,6 @@
 {
   "name": "@ohos/emailjs",
-  "version": "1.0.0",
+  "version": "1.0.1-rc.0",
   "type": "module",
   "types": "",
   "description": "send text/html emails and attachments (files, streams and strings) from node.js to any smtp server",

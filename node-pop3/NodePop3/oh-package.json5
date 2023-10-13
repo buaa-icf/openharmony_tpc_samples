@@ -10,7 +10,7 @@
     "org": "opensource"
   },
   "name": "@ohos/node-pop3",
-  "version": "1.0.0",
+  "version": "1.0.1-rc.0",
   "description": "pop3 command support for node. Supports Promise and stream.",
   "main": "index.ts",
   "type": "module",
