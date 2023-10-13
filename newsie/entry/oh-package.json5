@@ -5,7 +5,7 @@
   "name": "entry",
   "description": "Please describe the basic information.",
   "main": "",
-  "version": "1.0.0",
+  "version": "1.0.1-rc.0",
   "dependencies": {
     "ohos_newsie": "file:../newsie"
   }
