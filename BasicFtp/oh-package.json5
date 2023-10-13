@@ -1,6 +1,6 @@
 {
   "name": "BasicFtp",
-  "version": "1.0.0",
+  "version": "1.0.1-rc.0",
   "description": "This is an FTP client library for Node.js. It supports FTPS over TLS, Passive Mode over IPv6, has a Promise-based API, and offers methods to operate on whole directories.",
   "main": "",
   "author": "",
