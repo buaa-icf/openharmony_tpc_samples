@@ -93,7 +93,8 @@
                 <policyitem type="license" name="MIT" path="protobuf_format/xml-js/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
                 <policyitem type="copyright" name="Copyright 2010-2023 Three.js Authors" path="ThreeJs360Demo/source/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="匹配源码协议，符合开源要求"/>
                 <policyitem type="license" name="SPDX:MIT" path="ThreeJs360Demo/source/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
-                <policyitem type="license" name="MIT" path="SMTPClient/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>				
+                <policyitem type="license" name="MIT" path="SMTPClient/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>		
+                <policyitem type="license" name="MIT" path="class-transformer/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>						
             </policy>
         </policylist>
     </oatconfig>
