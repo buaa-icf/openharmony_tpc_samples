@@ -14,13 +14,13 @@
                 <filteritem type="filename" name="hvigorw.bat" desc="工程构建文件，不支持注释方式添加版权头"/>
                 <filteritem type="filepath" name="unrar/unrar/src/main/cpp/libunrar/.*" desc="第三方开源库libunrar源码，维持原样，以防版权许可头篡改"/>
                 <filteritem type="filepath" name="libcoap/libcoap/src/main/cpp/src/.*" desc="第三方开源软件libcoap源码，维持原样，以防版权许可头篡改"/>
-                <filteritem type="filepath" name="pakoDemo/entry/src/ohosTest/ets/test/pako/helpers.js" desc="此文件第三方开源软件源码，只用于单元测试，不修改版权头，以防有修改版权风险"/>
+				<filteritem type="filepath" name="pakoDemo/entry/src/ohosTest/ets/test/pako/helpers.js" desc="此文件第三方开源软件源码，只用于单元测试，不修改版权头，以防有修改版权风险"/>
                 <filteritem type="filepath" name="pakoDemo/entry/src/ohosTest/resources/base/media/issue_78.bin" desc="第三方开源软件资源文件，不进行侵入式修改，只用于单元测试文件，忽略"/>
-                <filteritem type="filepath" name="js-tokens/entry/src/ohosTest/resources/base/media/base64.js" desc="此文件第三方开源软件源码，只用于单元测试，不修改版权头，以防有修改版权风险"/>
-                <filteritem type="filepath" name="js-tokens/entry/src/ohosTest/resources/base/media/division.js" desc="此文件第三方开源软件源码，只用于单元测试，不修改版权头，以防有修改版权风险"/>
-                <filteritem type="filepath" name="js-tokens/entry/src/ohosTest/resources/base/media/errors.js" desc="此文件第三方开源软件源码，只用于单元测试，不修改版权头，以防有修改版权风险"/>
-                <filteritem type="filepath" name="js-tokens/entry/src/ohosTest/resources/base/media/regex.js" desc="此文件第三方开源软件源码，只用于单元测试，不修改版权头，以防有修改版权风险"/>
-                <filteritem type="filename" name="SMTPClient/LICENSE" desc="原库版权，不修改"/>
+				<filteritem type="filepath" name="js-tokens/entry/src/ohosTest/resources/base/media/base64.js" desc="此文件第三方开源软件源码，只用于单元测试，不修改版权头，以防有修改版权风险"/>
+				<filteritem type="filepath" name="js-tokens/entry/src/ohosTest/resources/base/media/division.js" desc="此文件第三方开源软件源码，只用于单元测试，不修改版权头，以防有修改版权风险"/>
+				<filteritem type="filepath" name="js-tokens/entry/src/ohosTest/resources/base/media/errors.js" desc="此文件第三方开源软件源码，只用于单元测试，不修改版权头，以防有修改版权风险"/>
+				<filteritem type="filepath" name="js-tokens/entry/src/ohosTest/resources/base/media/regex.js" desc="此文件第三方开源软件源码，只用于单元测试，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filename" name="SMTPClient/LICENSE" desc="原库版权，不修改"/>				
             </filefilter>
             <filefilter name="defaultPolicyFilter" desc="许可头过滤器，按文件名或路径屏蔽无需检查的文件，需要通过desc备注说明原因">
                 <filteritem type="filename" name="hvigorfile.js" desc="IDE生成的默认构建脚本文件，建议无需手动修改"/>
@@ -39,13 +39,13 @@
                 <filteritem type="filename" name="hvigorw.bat" desc="工程构建文件，不支持注释方式添加许可头"/>
                 <filteritem type="filepath" name="unrar/unrar/src/main/cpp/libunrar/.*" desc="第三方开源库libunrar源码，维持原样，以防版权许可头篡改"/>
                 <filteritem type="filepath" name="libcoap/libcoap/src/main/cpp/src/.*" desc="第三方开源软件libocap源码，维持原样，以防版权许可头篡改"/>
-                <filteritem type="filepath" name="pakoDemo/entry/src/ohosTest/ets/test/pako/helpers.js" desc="此文件第三方开源软件源码，只用于单元测试，不修改版权头，以防有修改版权风险"/>
+				<filteritem type="filepath" name="pakoDemo/entry/src/ohosTest/ets/test/pako/helpers.js" desc="此文件第三方开源软件源码，只用于单元测试，不修改版权头，以防有修改版权风险"/>
                 <filteritem type="filepath" name="pakoDemo/entry/src/ohosTest/resources/base/media/issue_78.bin" desc="第三方开源软件资源文件，不进行侵入式修改，只用于单元测试文件，忽略"/>
-                <filteritem type="filepath" name="js-tokens/entry/src/ohosTest/resources/base/media/base64.js" desc="此文件第三方开源软件源码，只用于单元测试，不修改版权头，以防有修改版权风险"/>
-                <filteritem type="filepath" name="js-tokens/entry/src/ohosTest/resources/base/media/division.js" desc="此文件第三方开源软件源码，只用于单元测试，不修改版权头，以防有修改版权风险"/>
-                <filteritem type="filepath" name="js-tokens/entry/src/ohosTest/resources/base/media/errors.js" desc="此文件第三方开源软件源码，只用于单元测试，不修改版权头，以防有修改版权风险"/>
-                <filteritem type="filepath" name="js-tokens/entry/src/ohosTest/resources/base/media/regex.js" desc="此文件第三方开源软件源码，只用于单元测试，不修改版权头，以防有修改版权风险"/>
-                <filteritem type="filename" name="SMTPClient/LICENSE" desc="原库版权，不修改"/>
+				<filteritem type="filepath" name="js-tokens/entry/src/ohosTest/resources/base/media/base64.js" desc="此文件第三方开源软件源码，只用于单元测试，不修改版权头，以防有修改版权风险"/>
+				<filteritem type="filepath" name="js-tokens/entry/src/ohosTest/resources/base/media/division.js" desc="此文件第三方开源软件源码，只用于单元测试，不修改版权头，以防有修改版权风险"/>
+				<filteritem type="filepath" name="js-tokens/entry/src/ohosTest/resources/base/media/errors.js" desc="此文件第三方开源软件源码，只用于单元测试，不修改版权头，以防有修改版权风险"/>
+				<filteritem type="filepath" name="js-tokens/entry/src/ohosTest/resources/base/media/regex.js" desc="此文件第三方开源软件源码，只用于单元测试，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filename" name="SMTPClient/LICENSE" desc="原库版权，不修改"/>				
             </filefilter>
             <filefilter name="binaryFileTypePolicyFilter" desc="二进制文件过滤器，按文件名或路径屏蔽无需检查的文件，需要通过desc备注说明原因">
                 <filteritem type="filename" name="icon.png" desc="应用icon，文件较小，不建议使用git lfs"/>
@@ -54,22 +54,22 @@
                 <filteritem type="filename" name="*.json5" desc="工程配置文件"/>
                 <filteritem type="filename" name="*.PNG" desc="PNG图片格式文件，用于展示示例"/>
                 <filteritem type="filepath" name="unrar/entry/src/main/resources/base/media/.*.png" desc="测试用途的小图片，亦不会变化"/>
-                <filteritem type="filepath" name="pakoDemo/entry/src/ohosTest/resources/base/media/.*" desc="第三方开源软件资源文件，不进行侵入式修改，只用于单元测试文件，忽略"/>
+				<filteritem type="filepath" name="pakoDemo/entry/src/ohosTest/resources/base/media/.*" desc="第三方开源软件资源文件，不进行侵入式修改，只用于单元测试文件，忽略"/>
                 <filteritem type="filepath" name="ThreeJs360Demo/source/.*" desc="第三方开源软件，不做修改"/>
-                <filteritem type="filepath" name="SMTPClient/entry/src/main/resources/rawfile/.*" desc="测试文件"/>
+                <filteritem type="filepath" name="SMTPClient/entry/src/main/resources/rawfile/.*" desc="测试文件"/>				
             </filefilter>
         </filefilterlist>
         <policylist>
             <policy name="projectPolicy" desc="配置兼容的协议等，需要指定具体的path和通过desc说明原因">
-                <policyitem type="license" name="MIT" path="utf8/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+				<policyitem type="license" name="MIT" path="utf8/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="mime/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
-                <policyitem type="license" name="ISC" path="msgpack-javascript/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
-                <policyitem type="license" name="ISC" path="CaverPhone/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+			    <policyitem type="license" name="ISC" path="msgpack-javascript/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+				<policyitem type="license" name="ISC" path="CaverPhone/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="pcx-js/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
-                <policyitem type="license" name="MIT" path="compare-versions/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+				<policyitem type="license" name="MIT" path="compare-versions/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>					
                 <policyitem type="license" name="MIT" path="amf/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
-                <policyitem type="license" name="MIT" path="Eventmitter3Demo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
-                <policyitem type="license" name="MIT" path="soundex-code/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+				<policyitem type="license" name="MIT" path="Eventmitter3Demo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+				<policyitem type="license" name="MIT" path="soundex-code/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="json-schema/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="PathToRegexpDemo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="ahocorasick/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
@@ -83,7 +83,7 @@
                 <policyitem type="license" name="MIT" path="lodashDemo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="sanitize-html/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="xml2jsDemo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
-                <policyitem type="license" name="MIT" path="MetaPhone/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+				<policyitem type="license" name="MIT" path="MetaPhone/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="unrar/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="js-tokens/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="BSD-3-Clause" path="protobuf/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
@@ -95,8 +95,8 @@
                 <policyitem type="license" name="MIT" path="protobuf_format/xml-js/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
                 <policyitem type="copyright" name="Copyright 2010-2023 Three.js Authors" path="ThreeJs360Demo/source/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="匹配源码协议，符合开源要求"/>
                 <policyitem type="license" name="SPDX:MIT" path="ThreeJs360Demo/source/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
-                <policyitem type="license" name="MIT" path="SMTPClient/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
-                <policyitem type="license" name="MIT" path="class-transformer/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="SMTPClient/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>		
+                <policyitem type="license" name="MIT" path="class-transformer/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>						
             </policy>
         </policylist>
     </oatconfig>
