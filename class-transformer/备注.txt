@@ -1,0 +1,1 @@
+1.XTS用例 implicit_type_declarations.test.ets 涉及到参数类型转换，需要在SDK/tsconfig.json里面开启emitDecotarMetaData配置
