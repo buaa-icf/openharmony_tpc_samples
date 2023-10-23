@@ -1,0 +1,13 @@
+{
+  "name": "mime",
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "main": "",
+  "author": "ohos_tpc",
+  "license": "MIT License",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@ohos/hypium": "1.0.6"
+  }
+}
