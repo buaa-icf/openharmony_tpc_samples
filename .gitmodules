@@ -18,7 +18,7 @@
 [submodule "mime/mime"]
 	path = mime/mime
 	url = https://gitee.com/cuijiaojiao1/mime.git
-[submodule "class-transformer"]
+[submodule "class-transformer/class-transformer"]
 	path = class-transformer/class-transformer
 	url = https://gitee.com/cuijiaojiao1/class-transformer.git
 [submodule "compare-versions"]
