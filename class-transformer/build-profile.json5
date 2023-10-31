@@ -32,8 +32,8 @@
       ]
     },
     {
-      "name": "class-transformer",
-      "srcPath": "./class-transformer"
+      "name": "class_transformer",
+      "srcPath": "./class_transformer"
     }
   ]
 }

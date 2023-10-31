@@ -14,9 +14,7 @@
  */
 import mime from "mime"
 import promptAction from '@ohos.promptAction';
-
 let tag = "MIME----"
-
 @Entry
 @Component
 struct Index {
@@ -75,7 +73,7 @@ struct Index {
 
       Button("getType(通过文件类型获取MIME类型)").onClick(() => {
         this.showMessage(mime.getType(this.file) || "不支持的媒体类型")
-      }).width("80%").margin({ top: 20, bottom: 20 })
+      }).width("80%").margin({ top:20,bottom: 20 })
 
 
       Row() {
@@ -95,22 +93,19 @@ struct Index {
           }).padding(8)
         })
       }
-
       Button("getExtension(通过MIME类型获取文件拓展名)").onClick(() => {
         this.showMessage(mime.getExtension(this.mime) || "不支持的媒体类型")
-      }).width("80%").margin({ top: 20, bottom: 20 })
+      }).width("80%").margin({ top:20,bottom: 20 })
 
-      Button("getExtension(通过MIME类型获取文件拓展名)").onClick(() => {
-        if (!this.mime) {
-          this.showMessage("不支持的媒体类型")
-          return;
-        }
-        this.showMessage(JSON.stringify(Array.from(mime.getAllExtensions(this.mime) as Set<string>)) || "不支持的媒体类型")
-      }).width("80%").margin({ top: 10, bottom: 20 })
+      Button("getExtensions(通过MIME类型获取文件拓展名集合)").onClick(() => {
+        const value = Array.from(mime.getAllExtensions(this.mime) as Set<string> || [])
+        this.showMessage(value.length?JSON.stringify(value) : "不支持的媒体类型")
+      }).width("80%").margin({ top:10,bottom: 20 })
     }
     .justifyContent(FlexAlign.Start)
     .width('100%')
     .height("100%")
     .padding({ top: 30, left: 10, right: 10 })
+
   }
 }
