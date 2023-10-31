@@ -12,8 +12,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import transformer_orderTest from './transformer_order.test'
+import transformation_optionSpecTest from './transformation_option.spec.test'
+import sen_deserializationTest from './sen_deserialization.test'
+import promise_fieldTest from './promise_field.test'
+import prevent_array_bombTest from './prevent_array_bomb.test'
+import inheritenceTest from './inheritence.test'
+import implicit_type_declarationsTest from './implicit_type_declarations.test'
+import ignore_decoratorsTest from './ignore_decorators.test'
+import es6_data_typesTest from './es6_data_types.test'
+import circular_reference_problemTest from './circular_reference_problem.test'
 import abilityTest from './Ability.test'
-
+import basic_functionalityTest from "./basic_functionality.test"
 export default function testsuite() {
   abilityTest()
+  circular_reference_problemTest()
+  es6_data_typesTest()
+  ignore_decoratorsTest()
+  implicit_type_declarationsTest()
+  inheritenceTest()
+  basic_functionalityTest()
+  prevent_array_bombTest()
+  promise_fieldTest()
+  sen_deserializationTest()
+  transformation_optionSpecTest()
+  transformer_orderTest()
 }

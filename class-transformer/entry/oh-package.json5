@@ -6,7 +6,8 @@
   "author": "",
   "license": "",
   "dependencies": {
-    "class-transformer": "file:../class-transformer"
+    "class_transformer": "file:../class_transformer",
+    "reflect-metadata":"*"
   }
 }
 
