@@ -24,7 +24,7 @@ export default class Log {
    *
    * @param {string} log - Log needs to be printed
    */
-  static showInfo(log, ...ms) {
+  static showInfo(log: string, ...ms: string[]) {
     console.info(log, ms);
   }
 
@@ -33,7 +33,7 @@ export default class Log {
    *
    * @param {string} log - Log needs to be printed
    */
-  static showDebug(log, ...ms) {
+  static showDebug(log: string, ...ms: string[]) {
     console.debug(log, ms);
   }
 
@@ -42,7 +42,7 @@ export default class Log {
    *
    * @param {string} log - Log needs to be printed
    */
-  static showError(log, ...ms) {
+  static showError(log: string, ...ms: string[]) {
     console.error(log, ms);
   }
 }
