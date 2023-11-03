@@ -1,0 +1,105 @@
+/*
+ * Copyright (C) 2022 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+import { SmartRefreshForTaurus } from "@ohos/smartrefreshlayout"
+import { Taurus } from "@ohos/smartrefreshlayout"
+import { TaurusBottomRefresh } from "@ohos/smartrefreshlayout"
+@Entry
+@Component
+struct TaurusSample {
+  @State model: SmartRefreshForTaurus.Model = new SmartRefreshForTaurus.Model()
+  private arr: Array<any> = [
+    { name: '折叠', color: '1' },
+    { name: '展开', color: '2' },
+    { name: '橙色主题', color: '#ffbb33' },
+    { name: '红色主题', color: '#ff4444' },
+    { name: '绿色主题', color: '#99cc00' },
+    { name: '蓝色主题', color: '#2299ee' },
+  ]
+  private arrNumberOfCycles: Array<any> = [1,2]
+
+  aboutToAppear() {
+    this.model.setBackgroundColor('#ffbb33')
+    this.model.setExpand(true)
+    this.model.setTitleName('冲上云霄')
+  }
+
+  @Builder testHeader() {
+    Taurus({ model: this.model })
+  }
+
+  @Builder testMain() {
+    Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
+      ForEach(this.arrNumberOfCycles, (item) => {
+          ForEach(this.arr, (item2) => {
+            Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
+              Text(item2.name)
+                .fontSize(30)
+                .fontColor('#282828')
+                .padding({ left: 10, top: 10 })
+
+              Text(
+                  item2.color == '1' ? '折叠AppBarLayout，变成正常的列表页面' :
+                    item2.color == '2' ? '展开AppBarLayout，变成可伸展头部的页面' :
+                    '更改为' + item2.name + '颜色')
+                .fontSize(25)
+                .fontColor('#8c8c8c')
+                .padding({ left: 10, top: 5 })
+
+              Text('')
+                .backgroundColor('#ececec')
+                .height(0.5)
+                .width('100%')
+                .margin({ top: 10, bottom: 5 })
+            }
+            .onClick(e => {
+              if (item2.color == '1') {
+                this.model.setExpand(false)
+              } else if (item2.color == '2') {
+                this.model.setExpand(true)
+              } else {
+                this.model.setBackgroundColor(item2.color)
+              }
+            })
+
+        }, item => item.toString())
+      }, item => item.toString())
+    }
+    .width("100%")
+    .backgroundColor("#ffffff")
+  }
+
+  @Builder testFooter() {
+    Column() {
+      TaurusBottomRefresh({ model: this.model })
+    }.width("100%")
+  }
+
+  build() {
+    Column() {
+      SmartRefreshForTaurus({
+        model: this.model,
+        header: () => {
+          this.testHeader()
+        },
+        main: () => {
+          this.testMain()
+        },
+        footer: () => {
+          this.testFooter()
+        }
+      })
+    }.backgroundColor("#dddddd")
+  }
+}
