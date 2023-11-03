@@ -129,7 +129,7 @@ export class FileUtils {
       let stat = fs.statSync(path)
       return stat.isFile()
     } catch (e) {
-      console.debug("FileUtils - fileutils exsit e" + e)
+      console.debug("FileUtils - fileutils exist e" + e)
       console.log("path=>" + path)
       return false
     }
@@ -238,7 +238,7 @@ export class FileUtils {
       let stat = fs.statSync(path)
       return stat.isDirectory()
     } catch (e) {
-      console.debug("fileutils folder exsit error=" + e)
+      console.debug("fileutils folder exist error=" + e)
       return false
     }
   }
