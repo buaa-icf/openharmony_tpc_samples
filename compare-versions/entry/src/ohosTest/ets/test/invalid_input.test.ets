@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 import { it as _it, describe, expect } from '../utils/utils';
-import { compareVersions } from 'compare_versions';
+import { compareVersions } from 'compare-versions';
 import { data } from '../utils/module';
 
 export default function compareTest() {

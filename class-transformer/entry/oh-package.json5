@@ -1,13 +1,13 @@
 {
+  "license": "",
+  "devDependencies": {},
+  "author": "",
   "name": "entry",
-  "version": "1.0.0",
   "description": "Please describe the basic information.",
   "main": "",
-  "author": "",
-  "license": "",
+  "version": "1.0.0",
   "dependencies": {
-    "class_transformer": "file:../class_transformer",
-    "reflect-metadata":"*"
+    "reflect-metadata": "*",
+    "class-transformer": "^0.5.1"
   }
 }
-

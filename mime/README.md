@@ -27,7 +27,7 @@ DevEco Studio: 4.0 Release(4.0.3.601), SDK: API10 Release(4.0.10.11)
 
 ## 目录结构
 ```
-|---- class-transformer  
+|---- mime  
 |     |---- entry  # 示例代码文件夹
 |     |---- README.md  # 安装使用方法                    
 ```

@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 import { it as _it, describe, diff, expect } from '../utils/utils';
-import { compareVersions } from 'compare_versions';
+import { compareVersions } from 'compare-versions';
 
 export default function sortTest() {
   describe('sortTest', () => {

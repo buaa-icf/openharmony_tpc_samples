@@ -16,9 +16,10 @@ import * as rm from 'reflect-metadata';
 
 import {
   plainToInstance,
-} from 'class_transformer';
-import { defaultMetadataStorage } from 'class_transformer';
-import {  Type, Transform } from 'class_transformer';
+} from 'class-transformer';
+import { defaultMetadataStorage } from 'class-transformer/esm2015/storage';
+
+import {  Type, Transform } from 'class-transformer';
 import { describe,it as _it,expect } from "../utils/utils";
 
 export default function inheritenceTest() {

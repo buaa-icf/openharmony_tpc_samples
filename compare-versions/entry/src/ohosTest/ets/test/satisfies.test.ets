@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 import { it as _it, describe, expect } from '../utils/utils';
-import { satisfies } from 'compare_versions';
+import { satisfies } from 'compare-versions';
 
 export default function satisfiesTest() {
   describe('satisfiesTest', () => {

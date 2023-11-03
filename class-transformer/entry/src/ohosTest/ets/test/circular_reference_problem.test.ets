@@ -17,8 +17,9 @@ import * as rm from 'reflect-metadata';
 import {
   instanceToInstance,
   instanceToPlain,
-} from 'class_transformer';
-import { defaultMetadataStorage } from 'class_transformer';
+} from 'class-transformer';
+import { defaultMetadataStorage } from 'class-transformer/esm2015/storage';
+
 import { describe,it as _it,expect } from "../utils/utils";
 import {model1} from "../utils/model"
 export default function circular_reference_problemTest() {
@@ -70,7 +71,7 @@ export default function circular_reference_problemTest() {
       photo1.caption = caption;
       photo2.caption = caption;
 
-      const plainUser:User = instanceToPlain(user, { enableCircularCheck: true });
+      const plainUser:User = instanceToPlain(user, { enableCircularCheck: true }) as User;
       console.log("aaa---plainUser" + JSON.stringify(plainUser) )
       console.log("aaa---plainUser" + JSON.stringify(model1))
 

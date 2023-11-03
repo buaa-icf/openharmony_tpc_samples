@@ -1,3 +1,5 @@
+import DBTest from './DB.test'
+import classMIMETest from './classMIME.test'
 /*
  * Copyright (C) 2023 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,12 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import vendorTest from './vendor.test'
-import mimeTest from './mime.test'
+
 import abilityTest from './Ability.test'
 
 export default function testsuite() {
   abilityTest()
-  mimeTest()
-  vendorTest()
+  classMIMETest()
+  DBTest()
 }
