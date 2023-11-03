@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { compareVersions, compare, CompareOperator, satisfies, validate, validateStrict } from "compare_versions";
+import { compareVersions, compare, CompareOperator, satisfies, validate, validateStrict } from "compare-versions";
 import promptAction from '@ohos.promptAction';
 
 let tag = "COMPARE_VERSIONS----"

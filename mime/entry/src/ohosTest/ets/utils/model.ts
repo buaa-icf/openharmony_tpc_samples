@@ -1,5 +1,5 @@
 export const MDN = {
-  aac: 'audio/aac',
+  aac: 'audio/x-aac',
   abw: 'application/x-abiword',
   arc: 'application/x-freearc',
   avi: 'video/x-msvideo',
@@ -192,3 +192,34 @@ export const getExtensionData = [
     input: "{}", expected: null
   },
 ]
+
+export const result1 = {
+  a: 'text/a',
+  a1: 'text/a',
+  b: 'text/b',
+  b1: 'text/b',
+}
+
+export const result2 = {
+  'text/a': 'a',
+  'text/b': 'b',
+}
+
+export const result3 = {
+  a: 'text/a',
+  b: 'text/b',
+}
+
+export  const result4  = {
+  'text/a': 'a',
+  'text/b': 'b',
+  'text/c': 'b',
+}
+
+export  const result5 = {
+  b: 'text/b',
+}
+export   const result6 = {
+  'text/a': 'b',
+  'text/b': 'b',
+}

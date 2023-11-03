@@ -1,12 +1,13 @@
 {
   "app": {
-    "signingConfigs": [],
+    "signingConfigs": [
+    ],
+    "compileSdkVersion": 9,
+    "compatibleSdkVersion": 9,
     "products": [
       {
         "name": "default",
         "signingConfig": "default",
-        "compileSdkVersion": 10,
-        "compatibleSdkVersion": 10
       }
     ],
     "buildModeSet": [
@@ -30,10 +31,6 @@
           ]
         }
       ]
-    },
-    {
-      "name": "class_transformer",
-      "srcPath": "./class_transformer"
     }
   ]
 }

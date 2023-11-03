@@ -21,9 +21,10 @@ import {
   classToPlainFromExist,
   plainToInstance,
   plainToClassFromExist,
-} from 'class_transformer';
-import { defaultMetadataStorage } from 'class_transformer';
-import { Exclude, Expose, Type, Transform } from 'class_transformer';
+} from 'class-transformer';
+import { defaultMetadataStorage } from 'class-transformer/esm2015/storage';
+
+import { Exclude, Expose, Type, Transform } from 'class-transformer';
 import { describe,it as _it,expect } from "../utils/utils";
 import { model3, model7, model8,model2 } from '../utils/model';
 interface PlainedUser {
@@ -135,7 +136,7 @@ export default function transformation_optionSpecTest() {
       expect(classedUser).toEqual(value);
 
 
-      const plainedUser:PlainedUser = instanceToPlain(user);
+      const plainedUser:PlainedUser = instanceToPlain(user) as PlainedUser;
       expect(plainedUser).toEqual(model2);
     });
 
@@ -179,7 +180,7 @@ export default function transformation_optionSpecTest() {
         firstName : 'Umed',
         lastName :'Khudoiberdiev',
       }
-      const plainedUser:PlainedUserOne = instanceToPlain(user);
+      const plainedUser:PlainedUserOne = instanceToPlain(user) as PlainedUserOne;
 
       expect(plainedUser).toEqual(obj1);
 
@@ -223,7 +224,7 @@ export default function transformation_optionSpecTest() {
       };
 
 
-      const plainedUser:PlainedUser = instanceToPlain(user);
+      const plainedUser:PlainedUser = instanceToPlain(user) as PlainedUser;
 
       expect(plainedUser).toEqual(plainUser);
 

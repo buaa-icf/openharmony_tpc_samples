@@ -31,9 +31,6 @@
         }
       ]
     },
-    {
-      "name": "compare_versions",
-      "srcPath": "./compare-versions"
-    }
+
   ]
 }

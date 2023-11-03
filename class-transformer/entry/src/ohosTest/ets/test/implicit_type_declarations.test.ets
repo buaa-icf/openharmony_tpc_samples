@@ -21,9 +21,10 @@ import {
   classToPlainFromExist,
   plainToInstance,
   plainToClassFromExist,
-} from 'class_transformer';
-import { defaultMetadataStorage } from 'class_transformer';
-import { Exclude, Expose, Type, Transform } from 'class_transformer';
+} from 'class-transformer';
+import { defaultMetadataStorage } from 'class-transformer/esm2015/storage';
+
+import { Exclude, Expose, Type, Transform } from 'class-transformer';
 import { describe,it as _it,expect } from "../utils/utils";
 import { model4, model5 } from '../utils/model';
 rm

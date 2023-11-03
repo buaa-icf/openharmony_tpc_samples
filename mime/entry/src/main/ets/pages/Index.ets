@@ -97,10 +97,6 @@ struct Index {
         this.showMessage(mime.getExtension(this.mime) || "不支持的媒体类型")
       }).width("80%").margin({ top:20,bottom: 20 })
 
-      Button("getExtensions(通过MIME类型获取文件拓展名集合)").onClick(() => {
-        const value = Array.from(mime.getAllExtensions(this.mime) as Set<string> || [])
-        this.showMessage(value.length?JSON.stringify(value) : "不支持的媒体类型")
-      }).width("80%").margin({ top:10,bottom: 20 })
     }
     .justifyContent(FlexAlign.Start)
     .width('100%')

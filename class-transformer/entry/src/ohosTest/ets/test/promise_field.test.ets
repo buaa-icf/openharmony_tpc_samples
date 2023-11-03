@@ -17,9 +17,10 @@ import * as rm from 'reflect-metadata';
 import {
   instanceToPlain,
   plainToInstance,
-} from 'class_transformer';
-import { defaultMetadataStorage } from 'class_transformer';
-import { Type } from 'class_transformer';
+} from 'class-transformer';
+import { defaultMetadataStorage } from 'class-transformer/esm2015/storage';
+
+import { Type } from 'class-transformer';
 import { describe,it as _it,expect } from "../utils/utils";
 
 export default function promise_fieldTest() {
@@ -54,7 +55,7 @@ export default function promise_fieldTest() {
       }
 
       const instance:PromiseClass = new PromiseClass(Promise.resolve('hi'));
-      const plain:PromiseClass = instanceToPlain(instance);
+      const plain:PromiseClass = instanceToPlain(instance) as PromiseClass;
       expect(plain).toHaveProperty('promise');
       const value:string = await plain.promise;
       expect(value).toBe('hi');

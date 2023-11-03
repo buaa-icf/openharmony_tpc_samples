@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 import { it as _it, describe, expect } from '../utils/utils';
-import { validate, validateStrict } from 'compare_versions';
+import { validate, validateStrict } from 'compare-versions';
 import { maps } from '../utils/module';
 
 export default function validateTest() {

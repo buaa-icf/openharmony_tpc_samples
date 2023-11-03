@@ -21,9 +21,9 @@ import {
   classToPlainFromExist,
   plainToInstance,
   plainToClassFromExist,
-} from 'class_transformer';
-import { defaultMetadataStorage } from 'class_transformer';
-import { Exclude, Expose, Type, Transform } from 'class_transformer';
+} from 'class-transformer';
+import { defaultMetadataStorage } from 'class-transformer/esm2015/storage';
+import { Exclude, Expose, Type, Transform } from 'class-transformer';
 import { describe,it as _it,expect } from "../utils/utils";
 import { model10, model11, model12, model13, model14, model15, model16,
   model17,
@@ -78,7 +78,7 @@ export default function basic_functionalityTest() {
       const fromExistUser:User = new User();
       fromExistUser.id = 1;
       
-      const plainUser:User = instanceToPlain(user);
+      const plainUser:User = instanceToPlain(user) as User;
 
       expect(plainUser instanceof User).toBe(false);
       
@@ -86,7 +86,7 @@ export default function basic_functionalityTest() {
       expect(plainUser).toEqual(model2);
       
 
-      const plainUser2:User = classToPlainFromExist(user, { id: 1, age: 27 });
+      const plainUser2:User = classToPlainFromExist(user, { id: 1, age: 27 }) as User;
       
 
       expect(plainUser2 instanceof User).toBe(false);
@@ -197,7 +197,7 @@ export default function basic_functionalityTest() {
       const fromExistUser = new User();
       fromExistUser.id = 1;
 
-      const plainUser: User = instanceToPlain(user);
+      const plainUser: User = instanceToPlain(user) as User;
       expect(plainUser instanceof User).toBe(false);
 
       expect(plainUser).toEqual(model42);
@@ -240,7 +240,7 @@ export default function basic_functionalityTest() {
       const fromExistUser = new User();
       fromExistUser.id = 1;
 
-      const plainUser: User = instanceToPlain(user);
+      const plainUser: User = instanceToPlain(user) as User;
       expect(plainUser instanceof User).toBe(false);
 
       expect(plainUser).toEqual(model8);
@@ -251,7 +251,7 @@ export default function basic_functionalityTest() {
 
       interface ExistUser { id: number, age: number }
       const existUser:ExistUser = { id: 1, age: 27 };
-      const plainUser2:User = classToPlainFromExist(user, existUser);
+      const plainUser2:User = classToPlainFromExist(user, existUser) as User;
       expect(plainUser2 instanceof User ).toBe(false);
       expect(plainUser2).toEqual(model21);
       expect(plainUser2).toEqual(existUser);
@@ -299,7 +299,7 @@ export default function basic_functionalityTest() {
 
       interface ExistUser { id: number, age: number }
       const existUser:ExistUser = { id: 1, age: 27 };
-      const plainUser2:User = classToPlainFromExist(user, existUser);
+      const plainUser2:User = classToPlainFromExist(user, existUser) as User;
       expect(plainUser2 instanceof User).toBe(false);
       expect(plainUser2).toEqual(model23);
       expect(plainUser2).toEqual(existUser);
@@ -369,13 +369,13 @@ export default function basic_functionalityTest() {
       const fromExistUser = new User();
       fromExistUser.id = 1;
 
-      const plainUser:User = instanceToPlain(user, { strategy: 'exposeAll' });
+      const plainUser:User = instanceToPlain(user, { strategy: 'exposeAll' }) as User;
       expect(plainUser instanceof User).toBe(false);
       expect(plainUser.lastName).toBeUndefined();
       expect(plainUser.password).toBeUndefined();
 
 
-      const plainUser2:User = classToPlainFromExist(user, { id: 1, age: 27 }, { strategy: 'exposeAll' });
+      const plainUser2:User = classToPlainFromExist(user, { id: 1, age: 27 }, { strategy: 'exposeAll' }) as User;
       expect(plainUser2 instanceof User).toBe(false);
 
 
@@ -612,7 +612,7 @@ export default function basic_functionalityTest() {
       user.password = 'imnosuperman';
       user.photo = photo;
 
-      const plainUser:User = instanceToPlain(user, { strategy: 'exposeAll' });
+      const plainUser:User = instanceToPlain(user, { strategy: 'exposeAll' }) as User;
 
       expect(plainUser instanceof User).toBe(false);
 
@@ -626,7 +626,7 @@ export default function basic_functionalityTest() {
 
 
 
-      const plainUser2:User = classToPlainFromExist(user, { id: 1, age: 27, photo: { id: 2, description: 'photo' } }, { strategy: 'exposeAll' });
+      const plainUser2:User = classToPlainFromExist(user, { id: 1, age: 27, photo: { id: 2, description: 'photo' } }, { strategy: 'exposeAll' }) as User;
 
       expect(plainUser2 instanceof User).toBe(false);
       expect(plainUser2.photo instanceof Photo).toBe(false);
@@ -680,7 +680,7 @@ export default function basic_functionalityTest() {
       user.password = 'imnosuperman';
       user.photo = photo;
 
-      const plainUser: User = instanceToPlain(user);
+      const plainUser: User = instanceToPlain(user) as User;
 
 
       expect(plainUser instanceof User).toBe(false);
@@ -845,7 +845,7 @@ export default function basic_functionalityTest() {
       fromExistUser.photo = new Photo();
       fromExistUser.photo.metadata = 'taken by Camera';
 
-      const plainUser1:User = instanceToPlain(user);
+      const plainUser1:User = instanceToPlain(user) as User;
       
 
       expect(plainUser1 instanceof User).toBe(false);
@@ -856,7 +856,7 @@ export default function basic_functionalityTest() {
       
       expect(plainUser1.isActive).toBeUndefined();
 
-      const plainUser2:User = instanceToPlain(user, { groups: ['user'] });
+      const plainUser2:User = instanceToPlain(user, { groups: ['user'] }) as User;
       
       expect(plainUser2 instanceof User).toBe(false);
       
@@ -933,7 +933,7 @@ export default function basic_functionalityTest() {
       expect(classToClassFromExistUser).toEqual(fromExistUser);
       
 
-      const plainUser3:User = instanceToPlain(user, { groups: ['guest'] });
+      const plainUser3:User = instanceToPlain(user, { groups: ['guest'] }) as User;
       
       expect(plainUser3 instanceof User).toBe(false);
       
@@ -964,7 +964,7 @@ export default function basic_functionalityTest() {
       expect(transformedUser3.photo instanceof Photo).toBe(true);
       
 
-      const plainUser4:User = instanceToPlain(user, { groups: ['admin'] });
+      const plainUser4:User = instanceToPlain(user, { groups: ['admin'] }) as User;
       
       expect(plainUser4 instanceof User).toBe(false);
       
@@ -998,7 +998,7 @@ export default function basic_functionalityTest() {
       expect(transformedUser4.photos[0] instanceof Photo).toBe(true);
       
 
-      const plainUser5:User = instanceToPlain(user, { groups: ['admin', 'user'] });
+      const plainUser5:User = instanceToPlain(user, { groups: ['admin', 'user'] }) as User;
       
       expect(plainUser5 instanceof User).toBe(false);
       
@@ -1078,7 +1078,7 @@ export default function basic_functionalityTest() {
 
 
 
-      const plainUser1: User = instanceToPlain(user);
+      const plainUser1: User = instanceToPlain(user) as User;
       
       expect(plainUser1 instanceof User).toBe(false);
       
@@ -1111,7 +1111,7 @@ export default function basic_functionalityTest() {
       expect(transformedUser1.photos[0] instanceof Photo).toBe(true);
       
 
-      const plainUser2: User = instanceToPlain(user, { version: 0.3 });
+      const plainUser2: User = instanceToPlain(user, { version: 0.3 }) as User;
       
       expect(plainUser2 instanceof User).toBe(false);
       
@@ -1124,7 +1124,7 @@ export default function basic_functionalityTest() {
       expect(transformedUser2.photo instanceof Photo).toBe(true);
       
 
-      const plainUser3: User = instanceToPlain(user, { version: 0.5 });
+      const plainUser3: User = instanceToPlain(user, { version: 0.5 }) as User;
       
       expect(plainUser3 instanceof User).toBe(false);
       
@@ -1153,7 +1153,7 @@ export default function basic_functionalityTest() {
       expect(transformedUser3.photo instanceof Photo).toBe(true);
       
 
-      const plainUser4: User = instanceToPlain(user, { version: 1 });
+      const plainUser4: User = instanceToPlain(user, { version: 1 }) as User;
       
       expect(plainUser4 instanceof User).toBe(false);
       
@@ -1182,7 +1182,7 @@ export default function basic_functionalityTest() {
       expect(transformedUser4.photo instanceof Photo).toBe(true);
       
 
-      const plainUser5: User = instanceToPlain(user, { version: 1.5 });
+      const plainUser5: User = instanceToPlain(user, { version: 1.5 }) as User;
       expect(plainUser5 instanceof User).toBe(false);
       
       expect(plainUser5).toEqual(model38);
@@ -1210,7 +1210,7 @@ export default function basic_functionalityTest() {
       expect(transformedUser5.photo instanceof Photo).toBe(true);
       
 
-      const plainUser6:User = instanceToPlain(user, { version: 2 });
+      const plainUser6:User = instanceToPlain(user, { version: 2 }) as User;
       
       expect(plainUser6 instanceof User).toBe(false);
       
@@ -1239,7 +1239,7 @@ export default function basic_functionalityTest() {
       expect(transformedUser6.photo instanceof Photo).toBe(true);
       
 
-      const plainUser7:User = instanceToPlain(user, { version: 3 });
+      const plainUser7:User = instanceToPlain(user, { version: 3 }) as User;
       
       expect(plainUser7 instanceof User).toBe(false);
       
@@ -1309,7 +1309,7 @@ export default function basic_functionalityTest() {
         password: 'imnosuperman',
       };
 
-      const plainUser: User = instanceToPlain(user);
+      const plainUser: User = instanceToPlain(user) as User;
       expect(plainUser instanceof User).toBe(false);
 
       const transformedUser:User = plainToInstance(User, fromPlainUser);
@@ -1360,7 +1360,7 @@ export default function basic_functionalityTest() {
         password: 'imnosuperman',
       };
 
-      const plainUser: User = instanceToPlain(user);
+      const plainUser: User = instanceToPlain(user)  as User;
       expect(plainUser instanceof User).toBe(false);
       expect(plainUser).toEqual(model19);
 
@@ -1432,7 +1432,7 @@ export default function basic_functionalityTest() {
         },
       };
 
-      const plainUser: User = instanceToPlain(user, { excludePrefixes: ['_', '$'] });
+      const plainUser: User = instanceToPlain(user, { excludePrefixes: ['_', '$'] }) as User;
       expect(plainUser instanceof User).toBe(false);
       expect(plainUser).toEqual(model18);
 
@@ -1474,7 +1474,7 @@ export default function basic_functionalityTest() {
 
       const users = [user1, user2];
 
-      const plainUsers: User = instanceToPlain(users);
+      const plainUsers: User = instanceToPlain(users)as User;
       
 
 
@@ -1484,7 +1484,7 @@ export default function basic_functionalityTest() {
       const plainUser2:Array<User> = classToPlainFromExist(users, [
         { id: 1, age: 27 },
         { id: 2, age: 30 },
-      ]);
+      ])as Array<User>;
       
       expect(plainUser2).toEqual(model9);
 

@@ -1,12 +1,12 @@
 {
+  "license": "MIT License",
+  "devDependencies": {},
+  "author": "ohos_tpc",
   "name": "entry",
-  "version": "1.0.0",
   "description": "Please describe the basic information.",
   "main": "",
-  "author": "ohos_tpc",
-  "license": "MIT License",
+  "version": "1.0.0",
   "dependencies": {
-    "mime": "file:../mime"
+    "mime": "^3.0.0"
   }
 }
-

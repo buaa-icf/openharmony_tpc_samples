@@ -21,7 +21,8 @@ import {
   it as _it,
   expect as _expect
 } from '@ohos/hypium'
-import { Mime } from 'mime';
+import Mime from "mime/Mime";
+
 
 export const it: (testSuiteName: string, callback: Function) => void = (testSuiteName: string, callback: Function) => {
   _it(testSuiteName, 0, callback);
@@ -37,7 +38,7 @@ export const afterEach: (callback: Function) => void = _afterEach
 
 export const afterAll: (callback: Function) => void = _afterAll
 
-type Fn = (...args: Array<object | string | boolean>) => void
+type Fn = (...args: Array<object | string | boolean|null>) => void
 
 interface MyExpectReturnToBe {
   a: Fn,
