@@ -15,6 +15,9 @@
 import {plainToClassFromExist } from "class-transformer"
 import {log} from "./log";
 
+interface CompareValue {
+  role:string;
+}
 class User {
   role:string;
 
@@ -30,7 +33,8 @@ const defaultUser:User = new User();
 defaultUser.role = 'user';
 
 export function plainToClassFromExistDemo (){
-  let mixedUser:User = plainToClassFromExist(defaultUser, {role:"superUser"});
+  const compareValue:CompareValue = {role:"superUser"}
+  let mixedUser:User = plainToClassFromExist(defaultUser, compareValue);
   log(mixedUser.getRole())
 }
 

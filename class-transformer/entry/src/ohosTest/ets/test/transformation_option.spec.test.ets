@@ -184,9 +184,7 @@ export default function transformation_optionSpecTest() {
 
       expect(plainedUser).toEqual(obj1);
 
-      const classedUser:PlainedUser = plainToInstance(User, plainUser);
-
-      expect(classedUser instanceof User ).toBe(true);
+      expect(plainToInstance(User, plainUser) instanceof User ).toBe(true);
 
 
     });
@@ -228,9 +226,8 @@ export default function transformation_optionSpecTest() {
 
       expect(plainedUser).toEqual(plainUser);
 
-      const classedUser:PlainedUserOne = plainToInstance(User, plainUser);
-      expect(classedUser instanceof User ).toBe(true);
-      expect(classedUser).toEqual(model3);
+      expect(plainToInstance(User, plainUser) instanceof User ).toBe(true);
+      expect(plainToInstance(User, plainUser)).toEqual(model3);
     });
 
     _it('should ignore undefined properties when exposeUnsetFields is set to false during class to plain', () => {
@@ -254,11 +251,13 @@ export default function transformation_optionSpecTest() {
 
       expect(instanceToPlain(new User(), { exposeUnsetFields: true })).toEqual(model7);
 
-      const classedUser:PlainedUserOne = plainToInstance(User, { exposeUnsetFields: false });
+      interface ExposeUnset {
+        exposeUnsetFields:boolean
+      }
+      const exposeUnset:ExposeUnset =  { exposeUnsetFields: false }
+      expect(plainToInstance(User, exposeUnset) instanceof User).toBe(true);
 
-      expect(classedUser instanceof User).toBe(true);
-
-      expect(classedUser).toEqual(model7);
+      expect(plainToInstance(User, exposeUnset)).toEqual(model7);
     });
   })
 }

@@ -23,6 +23,10 @@ import { defaultMetadataStorage } from 'class-transformer/esm2015/storage';
 import { Type } from 'class-transformer';
 import { describe,it as _it,expect } from "../utils/utils";
 
+interface SourceValue<T> {
+  promise: Promise<T>;
+}
+
 export default function promise_fieldTest() {
   describe('promise_fieldTest', () =>  {
     _it('should transform plan to class with promise field', async () => {
@@ -36,10 +40,8 @@ export default function promise_fieldTest() {
         }
       }
 
-
-      const instance:PromiseClass = plainToInstance(PromiseClass, {
-        promise: Promise.resolve('hi'),
-      });
+      const sourceValue:SourceValue<string> = {promise:Promise.resolve("hi")};
+      const instance:PromiseClass = plainToInstance(PromiseClass, sourceValue);
       expect(instance.promise instanceof Promise).toBe(true);
       const value:string = await instance.promise;
       expect(value).toBe('hi');
@@ -73,9 +75,10 @@ export default function promise_fieldTest() {
 
       const array:Array<string> = ['hi', 'my', 'name'];
 
-      const instance:PromiseClass = plainToInstance(PromiseClass, {
+      const sourceValue:SourceValue<Array<string>> = {
         promise: Promise.resolve(array),
-      });
+      }
+      const instance:PromiseClass = plainToInstance(PromiseClass, sourceValue);
       const value:Array<string> = await instance.promise;
       expect(value).toEqual(array);
 
@@ -102,9 +105,10 @@ export default function promise_fieldTest() {
       }
 
 
-      const instance:PromiseClass = plainToInstance(PromiseClass, {
+      const sourceValue:SourceValue<InnerClass> = {
         promise: Promise.resolve(new InnerClass('developer')),
-      });
+      }
+      const instance:PromiseClass = plainToInstance(PromiseClass, sourceValue);
       const value:InnerClass = await instance.promise;
       expect(value instanceof InnerClass).toBe(true);
       expect(value.position).toBe('developer');

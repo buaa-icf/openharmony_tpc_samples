@@ -158,16 +158,15 @@ export default function sen_deserializationTest() {
         normalProp: string = 'Hello!';
       }
 
-      interface Result{
-        getterOnlyProp: string,
-        normalProp: string,
-      }
-      const result:Result = deserialize(TestObject, JSON.stringify({
+   
+      expect(deserialize(TestObject, JSON.stringify({
         getterOnlyProp: 'I CAN write!',
         normalProp: 'Goodbye!',
-      }));
-      expect(result.getterOnlyProp).toEqual('I cannot write!');
-      expect(result.normalProp).toEqual('Goodbye!');
+      })).getterOnlyProp).toEqual('I cannot write!');
+      expect(deserialize(TestObject, JSON.stringify({
+        getterOnlyProp: 'I CAN write!',
+        normalProp: 'Goodbye!',
+      })).normalProp).toEqual('Goodbye!');
     });
   })
 }

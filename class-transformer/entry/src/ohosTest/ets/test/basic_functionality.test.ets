@@ -94,24 +94,20 @@ export default function basic_functionalityTest() {
 
       expect(plainUser2).toEqual(model10);
       
+      const sourceValue:Record<string,string> = {
+        "firstName": 'Umed',
+        "lastName": 'Khudoiberdiev',
+        "password": 'imnosuperman',
+      }
 
 
 
-
-      const transformedUser:User = plainToInstance(User, {
-        firstName: 'Umed',
-        lastName: 'Khudoiberdiev',
-        password: 'imnosuperman',
-      });
+      const transformedUser:User = plainToInstance(User, sourceValue);
       expect(transformedUser instanceof User).toBe(true);
       expect(transformedUser).toEqual(model2);
       
 
-      const fromExistTransformedUser:User = plainToClassFromExist(fromExistUser, {
-        firstName: 'Umed',
-        lastName: 'Khudoiberdiev',
-        password: 'imnosuperman',
-      });
+      const fromExistTransformedUser:User = plainToClassFromExist(fromExistUser, sourceValue);
       expect(fromExistTransformedUser instanceof User).toBe(true);
       expect(fromExistTransformedUser).toEqual(model12);
       
@@ -160,10 +156,10 @@ export default function basic_functionalityTest() {
       }
 
 
-
+      const sourceValue:Record<string,number|boolean> = { "valueOne": 42, "valueTwo": 42, "extra": true, "_otherExtra": true }
       const instance:ExampleClass = plainToInstance(
         ExampleClass,
-        { valueOne: 42, valueTwo: 42, extra: true, _otherExtra: true },
+        sourceValue,
         {
           ignoreDecorators: true,
           excludeExtraneousValues: true,
@@ -732,34 +728,27 @@ export default function basic_functionalityTest() {
       fromExistPhoto.metadata = 'taken by Camera';
       fromExistUser.photo = fromExistPhoto;
 
-      const transformedUser:User = plainToInstance(User, {
-        firstName: 'Umed',
-        lastName: 'Khudoiberdiev',
-        password: 'imnosuperman',
-        photo: {
-          id: 1,
-          name: 'Me',
-          filename: 'iam.jpg',
-          uploadDate: new Date(),
-        },
-      });
+
+      const photo:Record<string,string|number|Date> = {
+          "id": 1,
+          "name": 'Me',
+          "filename": 'iam.jpg',
+          "uploadDate": new Date(),
+        }
+      const sourceValue:Record<string,string|Record<string,string|number|Date>> = {
+        "firstName": 'Umed',
+        "lastName": 'Khudoiberdiev',
+        "password": 'imnosuperman',
+        "photo": photo,
+      }
+      const transformedUser:User = plainToInstance(User, sourceValue);
 
       expect(transformedUser instanceof User).toBe(true);
 
       expect(transformedUser.photo instanceof Photo).toBe(true);
 
 
-      const fromExistTransformedUser:User = plainToClassFromExist(fromExistUser, {
-        firstName: 'Umed',
-        lastName: 'Khudoiberdiev',
-        password: 'imnosuperman',
-        photo: {
-          id: 1,
-          name: 'Me',
-          filename: 'iam.jpg',
-          uploadDate: new Date(),
-        },
-      });
+      const fromExistTransformedUser:User = plainToClassFromExist(fromExistUser,sourceValue);
       expect(fromExistTransformedUser).toEqual(fromExistUser);
 
       expect(fromExistTransformedUser.photo).toEqual(fromExistPhoto);
@@ -862,47 +851,35 @@ export default function basic_functionalityTest() {
       
       expect(plainUser2.isActive).toBeUndefined();
 
-      const transformedUser2:User = plainToInstance(User, {
-        firstName: 'Umed',
-        lastName: 'Khudoiberdiev',
-        password: 'imnosuperman',
-        isActive: false,
-        photo: {
-          id: 1,
-          filename: 'myphoto.jpg',
-          status: 1,
-        },
-        photos: [
+      const photo:Record<string,string|number> = {
+          "id": 1,
+          "filename": 'myphoto.jpg',
+          "status": 1,
+        }
+
+      const photos:Array<Record<string,string|number>> = [
           {
-            id: 1,
-            filename: 'myphoto.jpg',
-            status: 1,
+            "id": 1,
+            "filename": 'myphoto.jpg',
+            "status": 1,
           },
-        ],
-      }, { groups: ['user'] });
+        ]
+
+      const sourceValue:Record<string,string|boolean|Array<Record<string,string|number>>|Record<string,string|number>> = {
+        "firstName": 'Umed',
+        "lastName": 'Khudoiberdiev',
+        "password": 'imnosuperman',
+        "isActive": false,
+        "photo": photo,
+        "photos": photos,
+      }
+      const transformedUser2:User = plainToInstance(User, sourceValue , { groups: ['user'] });
       expect(transformedUser2 instanceof User).toBe(true);
       
       expect(transformedUser2.photo instanceof Photo).toBe(true);
       
 
-      const fromExistTransformedUser:User = plainToClassFromExist(fromExistUser, {
-        firstName: 'Umed',
-        lastName: 'Khudoiberdiev',
-        password: 'imnosuperman',
-        isActive: false,
-        photo: {
-          id: 1,
-          filename: 'myphoto.jpg',
-          status: 1,
-        },
-        photos: [
-          {
-            id: 1,
-            filename: 'myphoto.jpg',
-            status: 1,
-          },
-        ],
-      }, { groups: ['user'] });
+      const fromExistTransformedUser:User = plainToClassFromExist(fromExistUser, sourceValue, { groups: ['user'] });
       
       expect(fromExistTransformedUser).toEqual(fromExistUser);
       
@@ -941,24 +918,7 @@ export default function basic_functionalityTest() {
       
       expect(plainUser3.isActive).toBeUndefined();
 
-      const transformedUser3:User = plainToInstance(User, {
-        firstName: 'Umed',
-        lastName: 'Khudoiberdiev',
-        password: 'imnosuperman',
-        isActive: false,
-        photo: {
-          id: 1,
-          filename: 'myphoto.jpg',
-          status: 1,
-        },
-        photos: [
-          {
-            id: 1,
-            filename: 'myphoto.jpg',
-            status: 1,
-          },
-        ],
-      }, { groups: ['guest'] });
+      const transformedUser3:User = plainToInstance(User, sourceValue, { groups: ['guest'] });
       expect(transformedUser3 instanceof User).toBe(true);
       
       expect(transformedUser3.photo instanceof Photo).toBe(true);
@@ -972,24 +932,7 @@ export default function basic_functionalityTest() {
       
       expect(plainUser4.password).toBeUndefined();
 
-      const transformedUser4:User = plainToInstance(User, {
-        firstName: 'Umed',
-        lastName: 'Khudoiberdiev',
-        password: 'imnosuperman',
-        isActive: false,
-        photo: {
-          id: 1,
-          filename: 'myphoto.jpg',
-          status: 1,
-        },
-        photos: [
-          {
-            id: 1,
-            filename: 'myphoto.jpg',
-            status: 1,
-          },
-        ],
-      }, { groups: ['admin'] });
+      const transformedUser4:User = plainToInstance(User, sourceValue, { groups: ['admin'] });
       
       expect(transformedUser4 instanceof User).toBe(true);
       
@@ -1003,24 +946,7 @@ export default function basic_functionalityTest() {
       expect(plainUser5 instanceof User).toBe(false);
       
 
-      const transformedUser5:User = plainToInstance(User, {
-        firstName: 'Umed',
-        lastName: 'Khudoiberdiev',
-        password: 'imnosuperman',
-        isActive: false,
-        photo: {
-          id: 1,
-          filename: 'myphoto.jpg',
-          status: 1,
-        },
-        photos: [
-          {
-            id: 1,
-            filename: 'myphoto.jpg',
-            status: 1,
-          },
-        ],
-      }, { groups: ['admin', 'user'] });
+      const transformedUser5:User = plainToInstance(User, sourceValue, { groups: ['admin', 'user'] });
       expect(transformedUser5 instanceof User).toBe(true);
 
     _it('should expose only properties that match given version', () => {
@@ -1086,23 +1012,7 @@ export default function basic_functionalityTest() {
       expect(plainUser1).toEqual(model36);
       
 
-      const transformedUser1:User = plainToInstance(User, {
-        firstName: 'Umed',
-        lastName: 'Khudoiberdiev',
-        password: 'imnosuperman',
-        photo: {
-          id: 1,
-          filename: 'myphoto.jpg',
-          status: 1,
-        },
-        photos: [
-          {
-            id: 1,
-            filename: 'myphoto.jpg',
-            status: 1,
-          },
-        ],
-      });
+      const transformedUser1:User = plainToInstance(User, sourceValue);
       
       expect(transformedUser1 instanceof User).toBe(true);
       
@@ -1130,23 +1040,7 @@ export default function basic_functionalityTest() {
       
       expect(plainUser3).toEqual(model35);
 
-      const transformedUser3:User = plainToInstance(User, {
-        firstName: 'Umed',
-        lastName: 'Khudoiberdiev',
-        password: 'imnosuperman',
-        photo: {
-          id: 1,
-          filename: 'myphoto.jpg',
-          status: 1,
-        },
-        photos: [
-          {
-            id: 1,
-            filename: 'myphoto.jpg',
-            status: 1,
-          },
-        ],
-      }, { version: 0.5 });
+      const transformedUser3:User = plainToInstance(User, sourceValue, { version: 0.5 });
       
       expect(transformedUser3 instanceof User).toBe(true);
       
@@ -1159,23 +1053,7 @@ export default function basic_functionalityTest() {
       
       expect(plainUser4).toEqual(model37);
 
-      const transformedUser4:User = plainToInstance(User, {
-        firstName: 'Umed',
-        lastName: 'Khudoiberdiev',
-        password: 'imnosuperman',
-        photo: {
-          id: 1,
-          filename: 'myphoto.jpg',
-          status: 1,
-        },
-        photos: [
-          {
-            id: 1,
-            filename: 'myphoto.jpg',
-            status: 1,
-          },
-        ],
-      }, { version: 1 });
+      const transformedUser4:User = plainToInstance(User, sourceValue, { version: 1 });
       
       expect(transformedUser4 instanceof User).toBe(true);
       
@@ -1187,23 +1065,7 @@ export default function basic_functionalityTest() {
       
       expect(plainUser5).toEqual(model38);
 
-      const transformedUser5:User = plainToInstance(User, {
-        firstName: 'Umed',
-        lastName: 'Khudoiberdiev',
-        password: 'imnosuperman',
-        photo: {
-          id: 1,
-          filename: 'myphoto.jpg',
-          status: 1,
-        },
-        photos: [
-          {
-            id: 1,
-            filename: 'myphoto.jpg',
-            status: 1,
-          },
-        ],
-      }, { version: 1.5 });
+      const transformedUser5:User = plainToInstance(User, sourceValue, { version: 1.5 });
       
       expect(transformedUser5 instanceof User).toBe(true);
       
@@ -1216,23 +1078,7 @@ export default function basic_functionalityTest() {
       
       expect(plainUser6).toEqual(model39);
 
-      const transformedUser6:User = plainToInstance(User, {
-        firstName: 'Umed',
-        lastName: 'Khudoiberdiev',
-        password: 'imnosuperman',
-        photo: {
-          id: 1,
-          filename: 'myphoto.jpg',
-          status: 1,
-        },
-        photos: [
-          {
-            id: 1,
-            filename: 'myphoto.jpg',
-            status: 1,
-          },
-        ],
-      }, { version: 2 });
+      const transformedUser6:User = plainToInstance(User,sourceValue, { version: 2 });
       
       expect(transformedUser6 instanceof User).toBe(true);
       
@@ -1245,23 +1091,7 @@ export default function basic_functionalityTest() {
       
       expect(plainUser7).toEqual(model40);
 
-      const transformedUser7:User = plainToInstance(User, {
-        firstName: 'Umed',
-        lastName: 'Khudoiberdiev',
-        password: 'imnosuperman',
-        photo: {
-          id: 1,
-          filename: 'myphoto.jpg',
-          status: 1,
-        },
-        photos: [
-          {
-            id: 1,
-            filename: 'myphoto.jpg',
-            status: 1,
-          },
-        ],
-      }, { version: 3 });
+      const transformedUser7:User = plainToInstance(User, sourceValue, { version: 3 });
       
       expect(transformedUser7 instanceof User).toBe(true);
       
@@ -1488,18 +1318,20 @@ export default function basic_functionalityTest() {
       
       expect(plainUser2).toEqual(model9);
 
-      const transformedUser:Array<User> = plainToInstance(User, [
+
+      const sourceValue:Array<Record<string,string>> = [
         {
-          firstName: 'Umed',
-          lastName: 'Khudoiberdiev',
-          name: 'Umed Khudoiberdiev',
+          "firstName": 'Umed',
+          "lastName": 'Khudoiberdiev',
+          "name": 'Umed Khudoiberdiev',
         },
         {
-          firstName: 'Dima',
-          lastName: 'Zotov',
-          name: 'Dima Zotov',
+          "firstName": 'Dima',
+          "lastName": 'Zotov',
+          "name": 'Dima Zotov',
         },
-      ]);
+      ]
+      const transformedUser:Array<User> = plainToInstance(User, sourceValue);
 
       
       expect(transformedUser[0] instanceof User).toBe(true);
