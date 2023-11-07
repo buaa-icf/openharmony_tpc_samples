@@ -14,6 +14,19 @@
  */
 import AMF from 'amf-convert'
 import router from '@ohos.router';
+export interface TestData{
+  any:string,
+  you:string
+}
+export interface TestData2{
+  array:Array<Object>,
+  reference:Array<Object>
+}
+export interface TestData3{
+  nesting:"of objects",
+  yeah:boolean,
+  ref: Array<number>
+}
 @Entry
 @Component
 struct Index {
@@ -37,12 +50,12 @@ struct Index {
               .fontSize(12)
               .fontWeight(FontWeight.Bold)
               .onClick(() => {
-                var data = {
+                let data:TestData = {
                   any: 'data',
                   you: 'like!'
                 };
 
-                var encodedData = AMF.stringify(data);
+                let encodedData:Object = AMF.stringify(data);
                 let obj = AMF.parse(encodedData);
                 let str = JSON.stringify(obj);
                 this.changedMsg = str;
@@ -60,14 +73,15 @@ struct Index {
               .fontSize(12)
               .fontWeight(FontWeight.Bold)
               .onClick(() => {
-                var data = {
-                  "array": [99, 100, 101,
-                    { "nesting": "of objects", "yeah?": true, ref: [1, 2, 3] }
+                let dataInner:TestData3 = { nesting: "of objects", yeah: true, ref: [1, 2, 3] }
+                let data:TestData2 = {
+                  array: [99, 100, 101,
+                    dataInner
                   ],
-                  "reference": [1, 2, 3]
+                  reference: [1, 2, 3]
                 }
 
-                var encodedData = AMF.serialize(data);
+                let encodedData:Object = AMF.serialize(data);
                 let obj = AMF.deserialize(encodedData);
                 let str = JSON.stringify(obj);
                 this.changedMsg2 = str;
@@ -98,8 +112,8 @@ struct Index {
               })
             Button('填入数据后,点击此处查看amf stringify parse后数据')
               .onClick(()=>{
-                //@ts-ignore
-                var encodedData = AMF.stringify(this.data1);
+
+                let encodedData:Object = AMF.stringify(this.data1 as Object);
                 let obj = AMF.parse(encodedData);
                 let str = JSON.stringify(obj);
                 this.hint1 ='转换后数据:'+ str;
@@ -127,8 +141,7 @@ struct Index {
               })
             Button('填入数据后,点击此处查看amf serialize deserialize后数据')
               .onClick(()=>{
-                //@ts-ignore
-                var encodedData = AMF.serialize(this.data2);
+                let encodedData:Object = AMF.serialize(this.data2 as Object);
                 let obj = AMF.deserialize(encodedData);
                 let str = JSON.stringify(obj);
                 this.hint2 ='转换后数据:'+ str;

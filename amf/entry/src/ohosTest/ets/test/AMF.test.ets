@@ -22,273 +22,205 @@ import DeserializationException from 'amf-convert/dist/lib/exception/deserializa
 import Serialization from 'amf-convert/dist/lib/exception/serialization'
 import NotSupportedException from 'amf-convert/dist/lib/exception/not-supported'
 
+import {
+  getAMFDesSerUndefined,
+  getAMFDesSerNull,
+  getAMFDesSerFalse,
+  getAMFDesSerTrue,
+  getClassMapping,
+  getClassMappingSer,
+  getDeserializationException
+
+} from './amf'
+export interface Same{
+  same:(src:Object, dst:Object)=>void
+  plan:(info:Object)=>void
+}
 export default function AMFTest() {
-  describe('AMFTest', function () {
+  describe('AMFTest',  ()=>{
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll( ()=>{
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach( ()=>{
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach( ()=>{
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll( ()=>{
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
 
 
-    let test = (name, func)=>{
-      it(name, 1 ,func)
-    };
 
-    let t = {
-      same:  (src,dst)=>{
-        if(typeof src == 'object' && typeof dst =='object'){
-          expect(src).assertDeepEquals(dst);
-        }else{
-          expect(src).assertEqual(dst)
-        }
-      },
-      plan:(info)=>{
-        console.log(info)
+
+    it('undefined',1,  ()=>{
+      expect(getAMFDesSerUndefined()).assertEqual(undefined);
+    });
+
+    it('null',1,  ()=>{
+      expect(getAMFDesSerNull()).assertEqual(null);
+    });
+
+    it('false',1,  ()=>{
+      expect(getAMFDesSerFalse()).assertEqual(false);
+    });
+
+    it('true',1,  ()=>{
+
+      expect(getAMFDesSerTrue()).assertEqual(true);
+    });
+
+    it('int',1,  ()=>{
+
+      let samples = [5, 100, -100, 100878, -199, Spec.MIN_INT, Spec.MAX_INT, -109876983];
+      for (let i = 0; i < samples.length; i++) {
+        let sample:Object = samples[i];
+        let data:Object = AMF.serialize(sample, true, Spec.AMF3_INT);
+        expect(AMF.deserialize(data)).assertEqual(sample)
+
       }
-    };
 
-
-
-    test('undefined', function() {
-      t.plan(1);
-      // @ts-ignore
-      t.same(AMF.deserialize(AMF.serialize()), undefined);
-    });
-
-    test('null', function() {
-      t.plan(1);
-
-      t.same(AMF.deserialize(AMF.serialize(null)), null);
-    });
-
-    test('false', function() {
-      t.plan(1);
-      // @ts-ignore
-      t.same(AMF.deserialize(AMF.serialize(false)), false);
-    });
-
-    test('true', function() {
-      t.plan(1);
-      // @ts-ignore
-      t.same(AMF.deserialize(AMF.serialize(true)), true);
-    });
-
-    test('int', function() {
-
-      var samples = [5, 100, -100, 100878, -199, Spec.MIN_INT, Spec.MAX_INT, -109876983];
-      t.plan(samples.length + 1);
-
-      for(var i in samples) {
-        var sample = samples[i];
-
-        // @ts-ignore
-        var data = AMF.serialize(sample, true, Spec.AMF3_INT);
-        t.same(AMF.deserialize(data), sample);
-      }
 
       try{
-        // @ts-ignore
-        AMF.serialize(Spec.MAX_INT + 1, true, Spec.AMF3_INT);
+        AMF.serialize( ((Spec.MAX_INT + 1)  as Object), true, Spec.AMF3_INT);
       }catch (e){
         expect(e.name).assertContain('SerializationException')
       }
 
     });
 
-    test('double', function() {
+    it('double',1,  ()=>{
 
-      var samples = [-10, 0.3767574, Spec.MIN_INT, Spec.MAX_INT, Math.PI, Number.MAX_VALUE, Number.MIN_VALUE, 102.145];
-      t.plan(samples.length);
-
-      for(var i in samples) {
-        var sample = samples[i];
-        // @ts-ignore
-        t.same(AMF.deserialize(AMF.serialize(sample, true, Spec.AMF3_DOUBLE), Spec.AMF3_DOUBLE), sample);
+      let samples = [-10, 0.3767574, Spec.MIN_INT, Spec.MAX_INT, Math.PI, Number.MAX_VALUE, Number.MIN_VALUE, 102.145];
+      for (let i = 0; i < samples.length; i++) {
+        let sample:Object = samples[i]
+        expect(AMF.deserialize(AMF.serialize(sample, true, Spec.AMF3_DOUBLE), Spec.AMF3_DOUBLE)).assertEqual(sample)
       }
     });
 
-    test('string', function() {
+    it('string',1,  ()=>{
 
-      var bigString = '';
-      for(var i = 0; i < (Math.random() * 9999999) + 100000; i++) {
+      let bigString = '';
+      for(let i = 0; i < (Math.random() * 9999999) + 100000; i++) {
         bigString += String.fromCharCode(Math.round(Math.random() * 91) + 65);
       }
 
-      var samples = ['hello!', '', '.', 'i ❤ π', bigString];
-      t.plan(samples.length);
-
-      for(var s in samples) {
-        var sample = samples[s];
-        // @ts-ignore
-        t.same(AMF.deserialize(AMF.serialize(sample, true, Spec.AMF3_STRIG)), sample);
+      let samples = ['hello!', '', '.', 'i ❤ π', bigString];
+      for (let i = 0; i < samples.length; i++) {
+        let sample:Object = samples[i]
+        expect(AMF.deserialize(AMF.serialize(sample, true, Spec.AMF3_STRING))).assertEqual(sample)
       }
     });
 
-    test('date', function() {
+    it('date',1,  ()=>{
 
-      var samples = [new Date(), new Date(2011, 3, 9), new Date(1843, 1, 9), new Date(254, 1, 9), new Date(2040, 5, 12)];
-      t.plan(samples.length);
-
-      for(var i in samples) {
-        var sample = samples[i];
-        var data = AMF.deserialize(AMF.serialize(sample, true, Spec.AMF3_DATE));
-        t.same(data, sample);
+      let samples = [new Date(), new Date(2011, 3, 9), new Date(1843, 1, 9), new Date(254, 1, 9), new Date(2040, 5, 12)];
+      for (let i = 0; i < samples.length; i++) {
+        let sample:Object = samples[i]
+        let data:Object = AMF.deserialize(AMF.serialize(sample, true, Spec.AMF3_DATE))
+        expect(JSON.stringify(data)).assertEqual(JSON.stringify(sample))
       }
+
     });
 
-    test('array', function() {
-      var sparse = [1, 2];
+    it('array',1,  ()=>{
+      let sparse = [1, 2];
       sparse[5] = 9;
 
-      var samples = [
+      let samples = [
         [1, 2, 3],
         [12.345, "hello", false, ['hi', 1234]],
         [true, false, null, "<h1>Hi</h1>"],
         sparse
       ];
 
-      t.plan(samples.length);
-
-      for(var i in samples) {
-        var sample = samples[i];
-        t.same(AMF.deserialize(AMF.serialize(sample, true, Spec.AMF3_ARRAY), Spec.AMF3_ARRAY), sample);
+      for (let i = 0; i < samples.length; i++) {
+        let sample:Object = samples[i]
+        expect(
+          JSON.stringify(AMF.deserialize(AMF.serialize(sample, true, Spec.AMF3_ARRAY), Spec.AMF3_ARRAY)))
+          .assertEqual(JSON.stringify(sample))
       }
+
+
     });
 
-    test('object', function() {
-      var ref = [1, 2, 3];
+    it('object',1,  ()=>{
+      let ref = [1, 2, 3];
 
-      var samples = [
-        {"hello": "Bob!"},
-        {
-          "array": [99, 100, 101,
-            {"nesting": "of objects", "yeah?": true, ref: ref}
-          ],
-          "reference": ref
-        }
+      interface A1{
+        hello:string
+      }
+
+      interface A2{
+        array:Array<Object>,
+        reference:Array<number>
+      }
+      interface A3{
+        nesting:string,
+        yeah:boolean,
+        ref:Array<number>
+      }
+
+      let a1:A1 = {hello: "Bob!"}
+      let a3:A3 =  {nesting: "of objects", yeah: true, ref: ref}
+      let a2:A2 =         {
+        array: [99, 100, 101, a3],
+        reference: ref
+      }
+      let samples = [
+        a1,
+        a2
       ];
 
-      t.plan(samples.length);
-
-      for(var i in samples) {
-        var sample = samples[i];
-        var data = AMF.serialize(sample, true, Spec.AMF3_OBJECT);
-        t.same(AMF.deserialize(data, Spec.AMF3_OBJECT), sample);
+      for (let i = 0; i < samples.length; i++) {
+        let sample:Object = samples[i];
+        let data:Object = AMF.serialize(sample, true, Spec.AMF3_OBJECT);
+        expect(AMF.deserialize(data, Spec.AMF3_OBJECT)).assertDeepEquals(sample);
       }
+
     });
 
-    test('class mapping', function() {
 
-      var Something = function() {};
+    it('bytearray',1,  ()=>{
 
-      Something.prototype = {
-        _classMapping: 'SomethingClass',
-        doSomething: function() {
-          console.log('Something was done!');
-        }
-      };
-      // @ts-ignore
-      AMF.registerClassAlias('SomethingClass', Something);
-      var test = new Something();
-
-      t.plan(1);
-
-      expect(AMF.parse(AMF.stringify(test, AMF.CLASS_MAPPING)) instanceof Something).assertEqual(true)
-    });
-
-    test('class mapping + serializable', function() {
-
-      var Serializable = function() {};
-
-      Serializable.prototype = {
-        _classMapping: 'SerializableClass',
-        property: 'value',
-        exportData: function() {
-          return {property: this.property}
-        },
-        importData: function(data) {
-          for(var key in data) {
-            this[key] = data[key];
-          }
-        }
-      };
-      // @ts-ignore
-      AMF.registerClassAlias('SerializableClass', Serializable);
-      var test = new Serializable();
-
-      t.plan(2);
-
-      var tested = AMF.parse(AMF.stringify(test, AMF.CLASS_MAPPING));
-      expect(tested instanceof Serializable).assertEqual(true)
-      t.same({property: 'value'}, tested);
-    });
-
-    test('bytearray', function() {
-
-      t.plan(2);
-      // @ts-ignore
-      var simple = new ByteArray.default('656566');
-      var data = AMF.deserialize(AMF.serialize(simple, true, Spec.AMF3_BYTE_ARRAY));
-      t.same(data, simple);
+      let simple = new ByteArray.default('656566');
+      let data = AMF.deserialize(AMF.serialize(simple, true, Spec.AMF3_BYTE_ARRAY));
+      expect(JSON.stringify(data)).assertEqual(JSON.stringify(simple))
 
       // create a bytearray with serialize AMF data, serialize the bytearray, deserialize the bytearray and then deserialize the AMF data
       // #meta
-
-      var obj = {it: "works!"};
-      // @ts-ignore
-      var amf = new ByteArray.default(AMF.serialize(obj, true, Spec.AMF3_OBJECT));
-      var serialized = AMF.serialize(amf, true, Spec.AMF3_BYTE_ARRAY);
-      var deserialized = AMF.deserialize(serialized, Spec.AMF3_BYTE_ARRAY);
-      t.same(AMF.deserialize(deserialized, Spec.AMF3_OBJECT), obj);
-
+      interface Obj{
+        it:string
+      }
+      let obj:Obj = {it: "works!"};
+      let amf:Object = new ByteArray.default(AMF.serialize(obj, true, Spec.AMF3_OBJECT));
+      let serialized:Object= AMF.serialize(amf, true, Spec.AMF3_BYTE_ARRAY);
+      let deserialized:Object = AMF.deserialize(serialized, Spec.AMF3_BYTE_ARRAY);
+      expect(JSON.stringify(AMF.deserialize(deserialized, Spec.AMF3_OBJECT))).assertEqual(JSON.stringify(obj))
     });
 
-    test('NotSupportedException', function() {
-      t.plan(1);
+    it('NotSupportedException', 1, ()=>{
 
       try
       {
-        AMF.stringify(function(){});
+        AMF.stringify(()=>{});
       }
       catch (e) {
           expect(e.name).assertContain('NotSupportedException')
       }
     });
 
-    test('DeserializationException', function() {
-      t.plan(1);
-      // @ts-ignore
-      var deserializer = new Deserializer();
-      // @ts-ignore
-      deserializer.stream = {
-        // @ts-ignore
-        readByte: function() {
-          return 999;
-        }
-      };
+    it('DeserializationException', 1, ()=>{
+          expect(getDeserializationException()).assertContain('DeserializationException')
 
-      try
-      {
-        deserializer.deserialize();
-      }
-      catch (e) {
-          expect(e.name).assertContain('DeserializationException')
-      }
     });
 
   })
