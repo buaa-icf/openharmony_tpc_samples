@@ -6,11 +6,22 @@
 ## 下载安装
 
 ```sh
-npm install libphonenumber-js --save
+ohpm install libphonenumber-js@1.9.53
 ```
+
+OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
 ## 使用说明
 ```javascript
+    import { parsePhoneNumber, AsYouType, findPhoneNumbersInText, ParseError } from "libphonenumber-js";
+    import customData from "./customData.json"; // 自定义元数据
+    import Log from './../util/Log';
+    import {
+        parsePhoneNumberWithError,
+        parsePhoneNumber as coreParsePhoneNumber,
+        AsYouType as coreAsYouType
+    } from 'libphonenumber-js/core'
+
     const number = '213-373-4253';
     const phoneNumber = parsePhoneNumber(number, 'US');
     const asYouType = new AsYouType('US');
@@ -49,8 +60,10 @@ npm install libphonenumber-js --save
     // 根据你键入的数字,解析模板，譬如 (xxx) xxx-xxxx
     Log.showInfo('template：' + asYouType.getTemplate());
 
+    const phoneNumberValue = asYouType.getNumber();
+    if (phoneNumberValue != undefined) {
     // 根据你键入的数字,解析数字，譬如 +12133734253
-    Log.showInfo('number：' + asYouType.getNumber());
+    Log.showInfo('number：' + JSON.stringify(asYouType.getNumber()));
 
     // 根据你键入的数字,解析国内的号码样式，譬如 (213) 373-4253
     Log.showInfo('national：' + asYouType.getNumber().formatNational());
@@ -63,6 +76,9 @@ npm install libphonenumber-js --save
 
     // 根据你键入的数字,解析类型，譬如 FIXED_LINE_OR_MOBILE
     Log.showInfo('type：' + asYouType.getNumber().getType());
+    } else {
+    Log.showInfo(TAG + "getNumber() is undefined");
+    }
 
     // 根据你键入的数字,解析是否可能是号码，从数字个数上进行判断
     Log.showInfo('isPossible：' + asYouType.isPossible());
@@ -72,12 +88,37 @@ npm install libphonenumber-js --save
 
     //从一段文本中查找出电话号码
     Log.showInfo(JSON.stringify(findPhoneNumbersInText(findPhoneNumbers, 'US')));
+
+
+    /**
+     *
+     * 使用自定义元数据,引入libphonenumber-js/core
+     * 使用场景：
+     * 1、在某个工程中，可能只需要处理几个特定的国家的号码
+     * 2、所谓自定义元数据，就是只包含几个特定的国家的元数据，比如CN和US
+     *
+     */
+
+    const number: string[] = ['+8618717452985', '+12133734253', '+78005553535'];
+    // 这里只列举使用自定义元数据接口的几个示例,其它接口和使用普通元数据用法相同
+    const type = new coreAsYouType('CN', customData).input(number[0]);
+    Log.showInfo(TAG + ' libphonenumber-js/core AsYouType : ' + type);
+    Log.showInfo(TAG + ' libphonenumber-js/core parsePhoneNumber : ' + JSON.stringify(coreParsePhoneNumber(number[0], customData)));
+    Log.showInfo(TAG + ' libphonenumber-js/core parsePhoneNumber : ' + JSON.stringify(coreParsePhoneNumber(number[1], customData)));
+    try {
+        parsePhoneNumberWithError(number[2], customData);
+    } catch (error) {
+        if (error instanceof ParseError) {
+            Log.showInfo(TAG + " Phone number parsing exception ,customData does not contain this country，error msg :  " + error.message);
+        }
+    }
+
 ```
 
 ## 约束与限制
 
-- DevEco Studio 3.1Beta1版本。
-- OpenHarmony SDK版本：API version 9版本。
+- DevEco Studio版本： 4.0 Beta2(4.0.3.600)
+- OpenHarmony SDK版本： API10(4.0.10.11)
 
 ## 贡献代码
 
