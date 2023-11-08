@@ -21,6 +21,7 @@ import { defaultMetadataStorage } from 'class-transformer/esm2015/storage';
 
 import { describe,it as _it,expect } from "../utils/utils";
 import { model6 } from '../utils/model';
+import { BasicTypes } from "../utils/type";
 
 export default function prevent_array_bombTest() {
   describe('prevent_array_bombTest', () =>  {
@@ -61,7 +62,8 @@ export default function prevent_array_bombTest() {
        * Iterating over this array would take significant time and cause the server to become unresponsive.
        */
 
-      const result:TestClass = plainToInstance(TestClass, { categories: { '100000000': '100000000', __proto__: [] } });
+      const sourceValue:Record<string,Record<string,string|Array<BasicTypes>>> = { "categories": { '100000000': '100000000', "__proto__": [] } }
+      const result:TestClass = plainToInstance(TestClass, sourceValue);
       console.log("ddd--" + JSON.stringify(result.categories) + Array.isArray(result.categories) + "")
       console.log("ddd--" + JSON.stringify(model6))
       expect(Array.isArray(result.categories)).toBe(false);

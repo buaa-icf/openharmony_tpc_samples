@@ -50,15 +50,19 @@ export default function es6_data_typesTest() {
       user.name = 'Max Pain';
       user.weapons = weapons;
 
-      const classedUser:User = plainToInstance(User, {
-        id: 1,
-        name: 'Max Pain',
-        weapons: {
-          firstWeapon: 'knife',
-          secondWeapon: 'eagle',
-          thirdWeapon: 'ak-47',
-        },
-      });
+
+      const weapons1:Record<string,string> =  {
+          "firstWeapon": 'knife',
+          "secondWeapon": 'eagle',
+          "thirdWeapon": 'ak-47',
+        }
+
+      const sourceValue:Record<string,number|string|Record<string,string>> = {
+        "id": 1,
+        "name": 'Max Pain',
+        "weapons":weapons1,
+      }
+      const classedUser:User = plainToInstance(User, sourceValue);
       expect(classedUser instanceof User).toBe(true);
       console.log(`aa---1`)
       expect(classedUser.id).toEqual(1);
@@ -90,14 +94,13 @@ export default function es6_data_typesTest() {
       user.name = 'Max Pain';
       user.weapons = weapons;
 
-      const classedUser:User = plainToInstance(User, {
-        id: 1,
-        name: 'Max Pain',
-        weapons: ['knife', 'eagle', 'ak-47'],
-      });
+      const sourceValue:Record<string,number|string|Array<string>> = {
+        "id": 1,
+        "name": 'Max Pain',
+        "weapons": ['knife', 'eagle', 'ak-47'],
+      }
+      const classedUser:User = plainToInstance(User, sourceValue);
       expect(classedUser instanceof User).toBe(true);
-
-
     });
 
   })

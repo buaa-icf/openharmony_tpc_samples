@@ -41,21 +41,19 @@ export default function implicit_type_declarationsTest() {
         readonly implicitTypeString: string = "";
       }
 
+      const sourceValue:Record<string,string|number> =  {
+          "implicitTypeNumber": '100',
+          "implicitTypeString": 133123,
+        }
       const result1: SimpleExample = plainToInstance(
         SimpleExample,
-        {
-          implicitTypeNumber: '100',
-          implicitTypeString: 133123,
-        },
+        sourceValue,
         { enableImplicitConversion: true }
       );
 
       const result2: SimpleExample = plainToInstance(
         SimpleExample,
-        {
-          implicitTypeNumber: '100',
-          implicitTypeString: 133123,
-        },
+        sourceValue,
         { enableImplicitConversion: false }
       );
 
@@ -77,13 +75,14 @@ export default function implicit_type_declarationsTest() {
         readonly explicitType: string = "";
       }
 
+      const sourceValue:Record<string,string|number> = {
+          "implicitTypeViaOtherDecorator": '2018-12-24T12:00:00Z',
+          "implicitTypeViaEmptyTypeDecorator": '100',
+          "explicitType": 100,
+        }
       const result: Example = plainToInstance(
         Example,
-        {
-          implicitTypeViaOtherDecorator: '2018-12-24T12:00:00Z',
-          implicitTypeViaEmptyTypeDecorator: '100',
-          explicitType: 100,
-        },
+        sourceValue,
         { enableImplicitConversion: true }
       );
 
@@ -128,17 +127,18 @@ export default function implicit_type_declarationsTest() {
         boolean2: boolean = true;
       }
 
+      const sourceValue:Record<string,string|number> = {
+          "date": '2018-12-24T12:00:00Z',
+          "string": '100',
+          "string2": 100,
+          "number": '100',
+          "number2": 100,
+          "boolean": 1,
+          "boolean2": 0,
+        }
       const result: Example = plainToInstance(
         Example,
-        {
-          date: '2018-12-24T12:00:00Z',
-          string: '100',
-          string2: 100,
-          number: '100',
-          number2: 100,
-          boolean: 1,
-          boolean2: 0,
-        },
+        sourceValue,
         { enableImplicitConversion: true }
       );
 

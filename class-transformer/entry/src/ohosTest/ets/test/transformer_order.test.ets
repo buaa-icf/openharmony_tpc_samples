@@ -40,14 +40,15 @@ export default function transformer_orderTest() {
         }
       }
 
-      const firstUser:User = plainToInstance(User, { name: 'Joe' });
+      const sourceValue:Record<string,string> = { "name": 'Joe' }
+      const firstUser:User = plainToInstance(User, sourceValue);
       expect(firstUser.name).toEqual('John');
 
       // Prior to this pull request [#355](https://github.com/typestack/class-transformer/pull/355)
       // the order of the transformations was reversed after every `plainToInstance()` call
       // So after consecutive calls `User#name` would be "John" - "Jonathan" - "John" - "Jonathan"...
       // This test ensures the last transformation is always the last one to be applied
-      const secondUser:User = plainToInstance(User, { name: 'Joe' });
+      const secondUser:User = plainToInstance(User, sourceValue);
       expect(secondUser.name).toEqual('John');
     });
   })
