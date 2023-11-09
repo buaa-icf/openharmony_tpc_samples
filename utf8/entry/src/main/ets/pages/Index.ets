@@ -23,28 +23,28 @@ struct Index {
     Row() {
       Column() {
         Button("编码(encode) '\xA9'").onClick(() => {
-          let src = utf8.encode('\xA9')
+          let src:string = utf8.encode('\xA9')
           let dst = '\xC2\xA9'
           console.log('dodo encode1='+ src);
           console.log('dodo encode2 ='+dst)
           this.showMessage('src='+src + '  ===||===  dst='+dst);
         }).margin(10)
         Button("编码(encode) '\uD800\uDC01'").onClick(() => {
-          let src = utf8.encode('\uD800\uDC01')
+          let src:string = utf8.encode('\uD800\uDC01')
           let dst = '\xF0\x90\x80\x81'
           console.log('dodo encode1='+ src);
           console.log('dodo encode2 ='+dst)
           this.showMessage('src='+src + '  ===||===  dst='+dst);
         }).margin(10)
         Button("解码(decoded) '\xC2\xA9'").onClick(() => {
-          let src = utf8.decode('\xC2\xA9')
+          let src:string = utf8.decode('\xC2\xA9')
           let dst = '\xA9'
           console.log('dodo decoded1='+ src);
           console.log('dodo decoded2 ='+dst)
           this.showMessage('src='+src + '  ===||===  dst='+dst);
         }).margin(10)
         Button("解码(decoded) '\xF0\x90\x80\x81'").onClick(() => {
-          let src = utf8.decode('\xF0\x90\x80\x81')
+          let src:string = utf8.decode('\xF0\x90\x80\x81')
           let dst = '\uD800\uDC01'
           console.log('dodo decoded1='+ src);
           console.log('dodo decoded2 ='+dst)

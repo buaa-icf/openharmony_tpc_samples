@@ -13,46 +13,45 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-import {data,raises,equal} from "../utils/data";
+import {data} from "../utils/data";
 import utf8 from "utf8";
 export default function IndexTest() {
-  describe('IndexTest', function () {
+  describe('IndexTest', ()=>{
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(()=>{
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(()=>{
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(()=>{
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(()=>{
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    it('encode', 0, function () {
-        data.forEach(object => {
-          var description = object.description || 'U+' + object.codePoint.toString(16).toUpperCase();
-          ;
-          if (object.error) {
+    it('encode', 0, ()=>{
+        data.forEach( (object:Object) => {
+          let description = (object as Record<string,Object>).description || 'U+' + ((object as Record<string,Object>).codePoint as number).toString(16).toUpperCase();
+          if ((object as Record<string,Object>).error) {
 
             raises(
-              function() {
-                utf8.encode(object.decoded);
+              ()=> {
+                utf8.encode((object as Record<string,Object>).decoded);
               },
               Error,
               'Error: non-scalar value detected'
             );
           } else {
             equal(
-              object.encoded,
-              utf8.encode(object.decoded),
+              (object as Record<string,Object>).encoded,
+              utf8.encode((object as Record<string,Object>).decoded),
               'Encoding: ' + description
             );
 
@@ -60,14 +59,14 @@ export default function IndexTest() {
         })
     })
 
-    it("decode",0,function(){
-      data.forEach(object => {
-        var description = object.description || 'U+' + object.codePoint.toString(16).toUpperCase();
-        ;
-        if (object.error) {
+    it("decode",0,()=>{
+      data.forEach((object:Object )=> {
+        let description = (object as Record<string,Object>).description || 'U+' + ((object as Record<string,Object>).codePoint as number).toString(16).toUpperCase();
+
+        if ((object as Record<string,Object>).error) {
           raises(
-            function() {
-              utf8.decode(object.encoded);
+            ()=> {
+              utf8.decode((object as Record<string,Object>).encoded);
             },
             Error,
             'Error: non-scalar value detected'
@@ -76,12 +75,25 @@ export default function IndexTest() {
         } else {
 
           equal(
-            object.decoded,
-            utf8.decode(object.encoded),
+            (object as Record<string,Object>).decoded,
+            utf8.decode((object as Record<string,Object>).encoded),
             'Decoding: ' + description
           );
         }
       })
     })
   })
+}
+
+
+export function raises(func:()=>void,error:Object,message:Object){
+  try{
+    func();
+    expect(1).assertEqual(2)
+  }catch(err){
+  }
+}
+
+export function equal(source:Object,dest:Object,message:Object){
+  expect(source).assertEqual(dest);
 }

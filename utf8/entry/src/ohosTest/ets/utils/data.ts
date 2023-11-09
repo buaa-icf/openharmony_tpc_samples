@@ -12,7 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 export const data =  [
 // 1-byte
   {
@@ -157,15 +156,3 @@ export const data =  [
     'encoded': '\xF4\x8F\xBF\xBF'
   }
 ];
-
-export function raises(func,error,message){
-  try{
-    func();
-    expect(1).assertEqual(2)
-  }catch(err){
-  }
-}
-
-export function equal(source,dest,message){
-  expect(source).assertEqual(dest);
-}
