@@ -20,11 +20,11 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *  SOFTWARE.
  */
-const { RateLimiter } = require('limiter');
+import { RateLimiter } from 'limiter';
 
 export function rateLimitWrapper(client, { jwksRequestsPerMinute = 5 }) {
     const getSigningKey = client.getSigningKey.bind(client);
-    const limiter = new RateLimiter(jwksRequestsPerMinute, 'minute', true);
+    const limiter = new RateLimiter({tokensPerInterval:jwksRequestsPerMinute, interval:'minute', fireImmediately:true});
     console.info(`Configured rate limiting to JWKS endpoint at ${jwksRequestsPerMinute}/minute`);
 
     return async (kid) => {

@@ -1,88 +1,77 @@
-/**
- *  The MIT License (MIT)
+/*
+ * Copyright (C) 2022 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *  Copyright (c) 2022 HUAWEI
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
- *
- *  The above copyright notice and this permission notice shall be included in all
- *  copies or substantial portions of the Software.
- *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- *  SOFTWARE.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-import Jwks from '@ohos/jwks_rsa'
+import {JwksClient} from "@ohos/jwks_rsa"
+import Option from './Option'
 
-var jwksClient: Jwks.JwksClient;
-var signingKey;
+let jwksClient: JwksClient;
+let signingKey:ESObject;
+
 export default function JwksClientTest() {
-  describe('JwksClientTest', function () {
-    beforeAll(function () {
-      // Presets an action, which is performed only once before all test cases of the test suite start.
-      // This API supports only one parameter: preset action function.
-      console.info("===== beforeAll ======")
-      jwksClient = new Jwks.JwksClient({
-        jwksUri: 'https://sandrino.auth0.com/.well-known/jwks.json',
-        requestHeaders: {}, // Optional
-        timeout: 5000, // Defaults to 30s
-        cache: false,
-        rateLimit: true
-      });
-      expect(jwksClient != null).assertTrue()
-    })
+  describe('ArtsJwksClientTest', ()=> {
+      beforeAll(() => {
 
-    it('JwksClient_Test_getKeys',0, async function () {
-      // Defines a test case. This API supports three parameters: test case name, filter parameter, and test case function.
-      expect(await jwksClient.getKeys() != null).assertTrue()
-    })
+        console.info("===== beforeAll ======")
+        let option: Option = new Option('https://sandrino.auth0.com/.well-known/jwks.json',null,5000,false,true)
+        jwksClient = new JwksClient(option);
+        expect(jwksClient != null).assertTrue()
+      })
+      afterAll(()=>{
+        jwksClient == null;
+      })
+      it('JwksClient_Test_getKeys',0, async () => {
 
-    it('JwksClient_Test_getSigningKeys',0, async function () {
-      // Defines a test case. This API supports three parameters: test case name, filter parameter, and test case function.
-      expect(await jwksClient.getSigningKeys() != null).assertTrue()
-    })
+        expect(await jwksClient.getKeys() != null).assertTrue()
+      })
 
-    it('JwksClient_Test_signingKey',0, async function () {
-      // Defines a test case. This API supports three parameters: test case name, filter parameter, and test case function.
-      const kid = 'RkI5MjI5OUY5ODc1N0Q4QzM0OUYzNkVGMTJDOUEzQkFCOTU3NjE2Rg';
-      signingKey = await jwksClient.getSigningKey(kid);
-      expect(signingKey != null).assertTrue()
-    })
+      it('JwksClient_Test_getSigningKeys',0, async () => {
 
-    it('JwksClient_Test_kid',0, async function () {
-      // Defines a test case. This API supports three parameters: test case name, filter parameter, and test case function.
-      expect(signingKey.kid != null).assertTrue()
-    })
+        expect(await jwksClient.getSigningKeys() != null).assertTrue()
+      })
 
-    it('JwksClient_Test_algorithm',0, function () {
-      // Defines a test case. This API supports three parameters: test case name, filter parameter, and test case function.
-      expect(signingKey.algorithm != null).assertTrue()
-    })
+      it('JwksClient_Test_signingKey',0, async () => {
 
-    it('JwksClient_Test_type',0, function () {
-      // Defines a test case. This API supports three parameters: test case name, filter parameter, and test case function.
-      expect(signingKey.type != null).assertTrue()
-    })
+        const kid = 'RkI5MjI5OUY5ODc1N0Q4QzM0OUYzNkVGMTJDOUEzQkFCOTU3NjE2Rg';
+        signingKey = await jwksClient.getSigningKey(kid);
+        expect(signingKey != null).assertTrue()
+      })
 
-    it('JwksClient_Test_usage',0, function () {
-      // Defines a test case. This API supports three parameters: test case name, filter parameter, and test case function.
-      expect(signingKey.usage != null).assertTrue()
-    })
+      it('JwksClient_Test_kid',0, async () =>{
 
-    it('JwksClient_Test_getPublicKey',0, async function () {
-      // Defines a test case. This API supports three parameters: test case name, filter parameter, and test case function.
-      let publicKey = await signingKey.getPublicKey()
-      expect(publicKey != null).assertTrue()
-    })
+        expect(signingKey.kid != null).assertTrue()
+      })
+
+      it('JwksClient_Test_algorithm',0, () => {
+
+        expect(signingKey.algorithm != null).assertTrue()
+      })
+
+      it('JwksClient_Test_type',0, () => {
+
+        expect(signingKey.type != null).assertTrue()
+      })
+
+      it('JwksClient_Test_usage',0, () => {
+
+        expect(signingKey.usage != null).assertTrue()
+      })
+
+      it('JwksClient_Test_getPublicKey',0, async () => {
+
+        let publicKey:ESObject = await signingKey.getPublicKey()
+        expect(publicKey != null).assertTrue()
+      })
   })
 }

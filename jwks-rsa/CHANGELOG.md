@@ -1,3 +1,8 @@
+## 2.0.0
+- 适配DevEcoStudio 4.0.3.600
+- 适配OpenHarmony SDK  4.0.10.11(API 10)
+- ArkTS新语法适配
+
 ### v1.0.0
 
 - 已实现功能

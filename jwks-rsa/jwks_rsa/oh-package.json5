@@ -1,5 +1,4 @@
 {
-  "types": "",
   "keywords": [
     "Tool",
     "OpenHarmony",
@@ -11,19 +10,17 @@
   "ohos": {
     "org": "opensource"
   },
-  "main": "index.ts",
+  "main": "index.ets",
   "repository": "https://gitee.com/hihopeorg/jwks-rsa",
   "type": "module",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "dependencies": {
-    "limiter": "2.1.0"
+    "limiter": "^1.1.5"
   },
   "tags": [
-    "Tool",
-    "OpenHarmony",
-    "rsa",
-    "jwks"
+    "Tool"
   ],
+  "compileOnlyDependencies": {},
   "license": "MIT License",
   "devDependencies": {},
   "name": "@ohos/jwks_rsa"

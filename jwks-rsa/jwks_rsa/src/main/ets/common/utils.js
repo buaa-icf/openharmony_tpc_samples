@@ -22,8 +22,9 @@
  *  SOFTWARE.
  */
 import cryptoFramework from '@ohos.security.cryptoFramework';
-import util from '@ohos.util';
 import SigningKeyNotFoundError from '../common/errors/SigningKeyNotFoundError'
+
+import buffer from '@ohos.buffer';
 
 const ALGORITHM_RSA = "RSA";
 const ALGORITHM_RSA2048 = "RSA2048";
@@ -52,79 +53,107 @@ export function retrieveSigningKeys(keys) {
         };
     });
     return keys
+};
+
+function base64ToBigNum(value){
+ const buf = buffer.from(value,'base64');
+ return "0x"+ buf.toString('hex')
+}
+// Compare the RSA public key specifications with the expected values.
+function compareRsaPubKeyBySpec(rsaKeySpec, n, e) {
+    if (typeof n === 'string' || typeof e === 'string') {
+        console.error('type is string');
+        return false;
+    }
+    if (typeof n === 'number' || typeof e === 'number') {
+        console.error('type is number');
+        return false;
+    }
+    if (rsaKeySpec.params.n != n) {
+        return false;
+    }
+    if (rsaKeySpec.pk != e) {
+        return false;
+    }
+    return true;
+}
+function genEccCommonSpec(p,x,y,a,b,n) {
+  let fieldFp = {
+    fieldType: "Fp",
+    p: BigInt(p)
+  }
+
+let G = {
+    x: BigInt(x),
+    y: BigInt(y)
+}
+
+let eccCommonSpec= {
+    algName: "ECC",
+    specType: cryptoFramework.AsyKeySpecType.COMMON_PARAMS_SPEC,
+    field: fieldFp,
+    a: BigInt(a),
+    b: BigInt(b),
+    g: G,
+    n: BigInt(n),
+    h: 1
+}
+return eccCommonSpec;
 }
 
 async function convertKey(key) {
-    let base64 = new util.Base64();
-    let asyKeyGenerator, pubKeyBlob;
+    console.info("jwks_rsa converkey:"+JSON.stringify(key))
+    var asyKeyGenerator;
     switch(key.kty) {
         case ALGORITHM_RSA:
-            let n = base64.decodeSync(key.n)
-            let e = base64.decodeSync(key.e)
-            pubKeyBlob = getRsaPubData(n, e) //根据n(模值)和e(指数)生成公钥材料
-            asyKeyGenerator = cryptoFramework.createAsyKeyGenerator(ALGORITHM_RSA2048);
-            break;
-        case ALGORITHM_ELLIPTIC_CURVE:
-            let x = base64.decodeSync(key.x);
-            let y = base64.decodeSync(key.y);
-            pubKeyBlob = new Uint8Array(x.length + y.length + 1)
-            pubKeyBlob.set([0x04]);
-            pubKeyBlob.set(x, 1);
-            pubKeyBlob.set(y, x.length + 1)
-            switch(key.crv) {
-                case ELLIPTIC_CURVE_TYPE_P256:
-                    asyKeyGenerator = cryptoFramework.createAsyKeyGenerator(ALGORITHM_ECC256);
-                    break;
-                case ELLIPTIC_CURVE_TYPE_P384:
-                    asyKeyGenerator = cryptoFramework.createAsyKeyGenerator(ALGORITHM_ECC384);
-                    break;
-                case ELLIPTIC_CURVE_TYPE_P512:
-                    asyKeyGenerator = cryptoFramework.createAsyKeyGenerator(ALGORITHM_ECC512);
-                    break;
-                default:
-                    throw new SigningKeyNotFoundError("Invalid or unsupported curve type " + key.crv);
-                    break;
+            let n = buffer.from(key.n,'base64')
+            let e = buffer.from(key.e,'base64')
+            let bN = base64ToBigNum(n);
+            let eN = base64ToBigNum(e);
+            var commonSpec = {
+                algName:"RSA",
+                specType:cryptoFramework.AsyKeySpecType.COMMON_PARAMS_SPEC,
+                n:BigInt(bN)
+            }
+            var rsaSpec = {
+                algName:"RSA",
+                specType:cryptoFramework.AsyKeySpecType.PUBLIC_KEY_SPEC,
+                params : commonSpec,
+                pk :BigInt(eN),
+            }
+            asyKeyGenerator = cryptoFramework.createAsyKeyGeneratorBySpec(rsaSpec);
+            const  pubKey = await asyKeyGenerator.generatePubKey()
+            let nBN = pubKey.getAsyKeySpec(cryptoFramework.AsyKeySpecItem.RSA_N_BN);
+            let eBN = pubKey.getAsyKeySpec(cryptoFramework.AsyKeySpecItem.RSA_PK_BN);
+            if (compareRsaPubKeyBySpec(rsaSpec, nBN, eBN) != true) {
+                console.error("jwks_rsa error pub key big number")
+            } else {
+                console.info("jwks_rsa n, e in the pubKey are same as the spec.");
+                return pubKey;
             }
             break;
+        case ALGORITHM_ELLIPTIC_CURVE:
+            let x = buffer.from(key.x,'base64');
+            let y = buffer.from(key.y,'base64');
+            let p = buffer.from(key.p,'base64');
+            let a = buffer.from(key.a,'base64');
+            let b = buffer.from(key.b,'base64');
+            let cn = buffer.from(key.n,'base64');
+
+            let xN = base64ToBigNum(x);
+            let yN = base64ToBigNum(y);
+            let pN = base64ToBigNum(p);
+            let aN = base64ToBigNum(a);
+            let cbN = base64ToBigNum(b);
+            let nN = base64ToBigNum(cn);
+            var eccSpec = genEccCommonSpec(pN,xN,yN,aN,cbN,nN);
+            asyKeyGenerator = cryptoFramework.createAsyKeyGeneratorBySpec(eccSpec);
+            const  eccPubKey = await asyKeyGenerator.generatePubKey();
+            return eccPubKey;
         default:
             throw new SigningKeyNotFoundError("The key type of " + key.kty + " is not supported");
-            break;
     }
-    try {
-        //根据秘钥材料生成秘钥
-        let keyPair = await asyKeyGenerator.convertKey({ data: pubKeyBlob }, { data: pubKeyBlob });
-        let publicKey = keyPair.pubKey;
-        return publicKey;
-    } catch (err) {
-        throw new SigningKeyNotFoundError("convert key err = " + err);
-    }
-
 }
 
-function getRsaPubData(nVal, eVal) {
-    let eLen = eVal.length;
-    let nLen = nVal.length;
-    let keySize = 2048;
-    let result = new Uint8Array(nLen + eLen + 16)
-    let offset = 0;
-    result.set(number2Uint8Array(keySize), offset)
-    offset += 4;
-    result.set(number2Uint8Array(nLen), offset)
-    offset += 4
-    result.set(number2Uint8Array(eLen), offset)
-    offset += 4
-    result.set(number2Uint8Array(0), offset)
-    offset += 4
-    result.set(nVal, offset)
-    offset += nLen
-    result.set(eVal, offset)
-    console.info('length = ' + result.length + '; result = ' + result)
-    return result;
-}
-
-function number2Uint8Array(val) {
-    //return new Uint8Array([(val >> 24) & 0xff, (val >> 16) & 0xff, (val >> 8) & 0xff, val & 0xff]); //big endian
-    return new Uint8Array([val & 0xff, (val >> 8) & 0xff, (val >> 16) & 0xff, (val >> 24) & 0xff]); //little endian
-}
 
 
