@@ -22,10 +22,6 @@ class Spine {
     private tocResource: EpubResource;
     private spineReferences: Array<SpineReference> = [];
 
-    //	public Spine() {
-    //		this(new ArrayList<SpineReference>());
-    //	}
-
     /**
      * Creates a spine out of all the resources in the table of contents.
      *

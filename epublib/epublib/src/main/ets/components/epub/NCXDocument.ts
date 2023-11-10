@@ -119,31 +119,6 @@ class NCXDocument {
         return DOMUtil.getTextChildrenContent(DOMUtil.getFirstElementByTagNameNS(navLabel, NCXDocument.NAMESPACE_NCX, NCXTags.text));
     }
 
-
-    //  unused function
-    //	public static  write( epubWriter:EpubWriter,  book:Book,  resultStream:ZipOutputStream) :void {
-    //    resultStream.putNextEntry(new ZipEntry(book.getSpine().getTocResource().getHref()));
-    //    let out: XmlSerializer = EpubProcessorSupport.createXmlSerializer(resultStream);
-    //    NCXDocument.writeXml(out, book);
-    //    out.flush();
-    //	}
-
-    //  unused function
-    /*
-         * Generates a resource containing an xml document containing the table of contents of the book in ncx format.
-         *
-         * @param xmlSerializer the serializer used
-         * @param book the book to serialize
-         *
-         * @throws FactoryConfigurationError
-         * @throws IOException
-         * @throws IllegalStateException
-         * @throws IllegalArgumentException
-    */
-    //	public static  writeXml( xmlSerializer:Document,  book:Book) :void {
-    //		this.writeInner(xmlSerializer, book.getMetadata().getIdentifiers(), book.getTitle(), book.getMetadata().getAuthors(), book.getTableOfContents());
-    //	}
-
     public static createNCXResource(book: Book, rootPath: string): EpubResource {
         return NCXDocument.createNCXResourceInner(book.getMetadata().getIdentifiers(), book.getTitle(), book.getMetadata().getAuthors(), book.getTableOfContents(), rootPath);
     }
@@ -207,7 +182,7 @@ class NCXDocument {
 
         document.appendChild(root);
 
-        //write document to file
+        // write document to file
         let xmlSerializer = new XMLSerializer();
         let xmlDocument: string = xmlSerializer.serializeToString(document);
         let num = fs.writeSync(fd, xmlDocument);

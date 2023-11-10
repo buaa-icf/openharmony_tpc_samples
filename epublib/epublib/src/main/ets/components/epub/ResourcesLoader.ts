@@ -31,13 +31,13 @@ class ResourcesLoader {
         return this.readerOutZipFiles(inZipPath, defaultHtmlEncoding, lazyLoadedTypes);
     }
 
-    public static loadResourcesZip(inZipPath: string): Promise<string>{
+    public static loadResourcesZip(inZipPath: string): Promise<string> | null{
         if (inZipPath == "" || !inZipPath.toLowerCase().endsWith(".epub")||!fs.accessSync(inZipPath)) {
             return null;
         }
         return new Promise(result => {
             let newPath = inZipPath.replace(".epub", ".zip")
-            fs.rename(inZipPath, newPath).then(function () {
+            fs.rename(inZipPath, newPath).then(()=> {
                 console.info("rename succeed");
                 let outFile = inZipPath.substring(0, newPath.length - ".zip".length)
                 fs.mkdir(outFile).then(() => {
@@ -47,7 +47,7 @@ class ResourcesLoader {
                         strategy: Zlib.CompressStrategy.COMPRESS_STRATEGY_DEFAULT_STRATEGY
                     };
                     Zlib.decompressFile(newPath, outFile, options).then((data) => {
-                        console.log("unzipFile result£º" + data);
+                        console.log("unzipFile resultï¿½ï¿½" + data);
                         result(outFile)
                     }).catch((err) => {
                         console.log("catch((err)=>" + err);

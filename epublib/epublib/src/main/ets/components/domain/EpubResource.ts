@@ -54,19 +54,6 @@ class EpubResource {
     }
 
     /**
-         * Gets the contents of the Resource as an InputStream.
-         *
-         * @return The contents of the Resource.
-         *
-         * @throws IOException
-         */
-    //  public getInputStream(): object  {
-    //    //todo
-    //    //return new ByteArrayInputStream(this.getData());
-    //    return null;
-    //  }
-
-    /**
          * The contents of the resource as a byte[]
          *
          * @return The contents of the resource
@@ -184,8 +171,6 @@ class EpubResource {
          * @throws IOException
          */
     public getReader(): object {
-        //return new XmlStreamReader(new ByteArrayInputStream(getData()), getInputEncoding());
-        // todo
         return null;
     }
 

@@ -2,9 +2,9 @@
     {
         "Name": "epublib",
         "License": "GPL",
-        "License File": "",
+        "License File": "LICENSE",
         "Version Number": "master",
-        "Owner" : "Paul Siegmann"
+        "Owner" : "xiafeng@huawei.com"
         "Upstream URL": "https://github.com/psiegman/epublib",
         "Description": "Epublib is a library for reading/writing/manipulating EPUB files."
     }

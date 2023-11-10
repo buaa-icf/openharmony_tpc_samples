@@ -16,14 +16,6 @@
 import ManifestProperties from "./ManifestProperties"
 
 class ManifestItemProperties implements ManifestProperties {
-    //	COVER_IMAGE("cover-image"),
-    //	MATHML("mathml"),
-    //	NAV("nav"),
-    //	REMOTE_RESOURCES("remote-resources"),
-    //	SCRIPTED("scripted"),
-    //	SVG("svg"),
-    //	SWITCH("switch");
-
     private name: string;
 
     constructor(name: string) {

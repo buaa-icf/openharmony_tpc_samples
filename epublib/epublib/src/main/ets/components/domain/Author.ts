@@ -18,7 +18,7 @@ import StringUtil from "../util/StringUtil"
 import Relator from "./Relator"
 
 class Author {
-    private static readonly serialVersionUID: number = 6663408501416574200;
+    private static readonly serialVersionUID: BigInt = BigInt( 6663408501416574200);
     private firstname: string;
     private lastname: string;
     private relator: Relator = Relator.AUTHOR;

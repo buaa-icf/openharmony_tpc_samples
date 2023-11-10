@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 
-//@ts-nocheck
 import PackageDocumentMetadataWriter from './PackageDocumentMetadataWriter';
 import OPFAttributes from './OPFAttributes';
 import OPFTags from './OPFTags';
@@ -54,7 +53,7 @@ class PackageDocumentWriter extends PackageDocumentBase {
 
             document.appendChild(root);
 
-            //write document to file
+            // write document to file
             let xmlSerializer = new XMLSerializer();
             let xmlDocument: string = xmlSerializer.serializeToString(document);
             let num = fs.writeSync(fd, xmlDocument);
@@ -79,7 +78,7 @@ class PackageDocumentWriter extends PackageDocumentBase {
     private static writeSpine(book: Book, parentElement: Element, document: Document): void {
 
         let spineElement = document.createElementNS(PackageDocumentBase.NAMESPACE_OPF, OPFTags.spine);
-        //todo
+        // todo
         let res = book.getSpine().getTocResource();
         let resId: string = res === undefined ? NCXDocument.NCX_ITEM_ID : res.getId();
         spineElement.setAttributeNS(EpubWriter.EMPTY_NAMESPACE_PREFIX, OPFAttributes.toc, resId);
@@ -113,7 +112,7 @@ class PackageDocumentWriter extends PackageDocumentBase {
         parentElement.appendChild(manifestElement);
     }
 
-    private static getAllResourcesSortById(book: Book): List<EpubResource> {
+    private static getAllResourcesSortById(book: Book): Array<EpubResource> {
         let allResources = Array.from(book.getResources().getAll());
 
         let sortResources = allResources.sort((resource1: EpubResource, resource2: EpubResource) => {

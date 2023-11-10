@@ -13,9 +13,9 @@
  * limitations under the License.
  */
 
-//First source file.
-//todo FileWriter
-//class NoCloseWriter extends FileWriter
+// First source file.
+// todo FileWriter
+// class NoCloseWriter extends FileWriter
 class NoCloseWriter {
 }
 

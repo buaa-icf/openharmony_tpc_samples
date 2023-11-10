@@ -16,7 +16,7 @@
 import StringUtil from '../util/StringUtil';
 
 class MediaType {
-    private static readonly serialVersionUID: number = -7256091153727506788;
+    private static readonly serialVersionUID: BigInt = BigInt(-7256091153727506788);
     private name: string;
     private defaultExtension: string;
     private extensions: Array<string>;

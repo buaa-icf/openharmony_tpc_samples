@@ -21,8 +21,7 @@ import {
   Author,
   EpubResource,
   MediaType,
-  Metadata,
-  MediatypeService
+  Metadata
 } from "@ohos/epublib"
 import util from '@ohos.util';
 import prompt from '@ohos.promptAction';
@@ -37,60 +36,55 @@ struct Index {
   '<rootfile full-path="content.opf" media-type="application/oebps-package+xml"/>' +
   '</rootfiles>' +
   '</container>';
-  @State text: string = '-Epub-'
-  result: any
-  @State Compressbg: Color = Color.Blue
-  @State Clickbg: Color = Color.Blue
+  @State text: string | undefined  = '-Epub-'
+  @State compressEnabled: boolean = true
+  @State clickEnabled: boolean = true
+  private context: Context = getContext()
+  filePath: string = this.context.filesDir
 
   build() {
     Column() {
 
       Button('Compress')
-        .backgroundColor(this.Compressbg)
         .width(150)
         .height(60)
+        .enabled(this.compressEnabled)
         .onClick(() => {
           console.info("- St -");
-          this.funcUnEpub(globalThis.filePath + "/epub-book.epub");
-        })
-        .onTouch(() => {
-          this.Compressbg = Color.Orange
+          this.funcUnEpub(this.filePath + "/epub-book.epub");
         })
       Button('Click')
-        .backgroundColor(this.Clickbg)
         .width(150)
+        .enabled(this.clickEnabled)
         .height(60)
         .onClick(() => {
           console.info("- St -");
-          this.funcStart(globalThis.filePath + "/epub-book.epub");
-        })
-        .onTouch(() => {
-          this.Clickbg = Color.Orange
+          this.funcStart(this.filePath + "/epub-book.epub");
         })
         .margin({ top: 10 })
-
-      TextArea({ placeholder: this.text })
-        .height('100%')
+      TextArea({ text: this.text })
+        .height('60%')
         .padding(15)
-        .fontSize(50)
+        .fontSize(px2fp(25))
+        .focusable(false)
         .fontColor("#070707")
         .margin({ top: 30 })
-    }.height(800).width('100%').padding(35).margin({ top: 30 })
+        .align(Alignment.TopStart)
+    }.height('90%').width('100%').padding(35).margin({ top: 30 })
   }
 
   test() {
     console.info("- Test to unit system lib.dow.d.ts of  getElementsByTagNameNS(namespaceURI: string, localName: string)-");
-    let dataStr = this.readerFile(globalThis.filePath + "/test", "mimetype");
-    let domParser = new DOMParser();
-    this.result = domParser.parseFromString(dataStr + "");
-    //       this.result = domParser.parseFromString(this.srcStr);
-
-    this.text = this.result.toString();
+    let dataStr = this.readerFile(this.filePath + "/test", "mimetype");
+    let domParser: DOMParser = new DOMParser();
+    let result: Document= domParser.parseFromString(dataStr + "");
+    this.text = result.toString();
   }
 
   funcUnEpub(input: string) {
     try {
       EpubReader.unEpub(input).then((data) => {
+        this.compressEnabled= !this.compressEnabled
         console.log("----unEpub----successful-----------" + data)
       });
     } catch (err) {
@@ -103,12 +97,13 @@ struct Index {
   funcStart(epubFile: string) {
     let book = EpubReader.readEpubFile(EpubReader.outFile(epubFile))
 
-    if (book != undefined) {
+    if (book) {
       this.text = book.getResources()
-        .getResourceMap()
-        .get("chapter_446465249.xhtml")
-        .getStrData()
-        .toString();
+        ?.getResourceMap()
+        ?.get("chapter_446465249.xhtml")
+        ?.getStrData()
+        ?.toString();
+      this.clickEnabled = !this.clickEnabled
       console.error("----index-result-------" + this.text)
       this.testEpubWriter(book)
     }
@@ -140,18 +135,18 @@ struct Index {
 
   private testFileIO2() {
     console.log('test start')
-    console.info("------------getFilesDir dir: " + globalThis.filePath);
+    console.info("------------getFilesDir dir: " + this.filePath);
     //      此处返回为："/data/storage/el2/base/haps/entry/files"
     //      真实路径为（带包名）："/data/app/el2/100/base/com.example.epublib.hmservice/haps/entry/files"
     //      push时需要使用真实路径（带包名）
     //      注意：push后文件owner属性为root，需修改为与files相同的owner
-    let fullPath = globalThis.filePath + "/test/chapter_446465249.xhtml";
+    let fullPath = this.filePath + "/test/chapter_446465249.xhtml";
     let fileFD = fs.openSync(fullPath, 0o2);
     console.info("------openSync fileFD:" + fileFD);
     let buf = new ArrayBuffer(4096);
     let num = fs.readSync(fileFD.fd, buf);
     let fileRet = this.a2s(buf);
-    var textDecoder = util.TextDecoder.create('utf-8', { ignoreBOM: true });
+    let textDecoder = util.TextDecoder.create('utf-8', { ignoreBOM: true });
     let strData = textDecoder.decodeWithStream(new Uint8Array(buf));
     let testStr = fs.readTextSync(fullPath, { encoding: 'utf-8' })
     console.info("----------readSync num:" + num + ", testStr:" + testStr)
@@ -159,7 +154,9 @@ struct Index {
   }
 
   private a2s(buf: ArrayBuffer): string {
-    return String.fromCharCode.apply(null, new Uint8Array(buf));
+    let intArray: Int32Array = new Int32Array(buf)
+    let numberArray: number[] = Array.from(intArray)
+    return String.fromCharCode(...numberArray);
   }
 
   private readerFile(dirPath: string, nameFile: string): string {

@@ -97,10 +97,8 @@ class Resources {
         let counter: number = this.lastId;
         if (counter == Number.MAX_VALUE) {
             // TODO: Integer.MAX_VALUE
-            // if (this.resources.size == Integer.MAX_VALUE) {
             if (this.resources.size == Number.MAX_VALUE) {
                 // TODO IllegalArgumentException
-                // throw new IllegalArgumentException("Resources contains " + Integer.MAX_VALUE + " elements: no new elements can be added");
             } else {
                 counter = 1;
             }
@@ -172,8 +170,7 @@ class Resources {
         }
         if (StringUtil.isBlank(resource.getHref())) {
             if (resource.getMediaType() == null) {
-                //TODO IllegalArgumentException
-                //throw new IllegalArgumentException("Resource must have either a MediaType or a href");
+                // TODO IllegalArgumentException
                 console.error("Resource must have either a MediaType or a hre");
                 throw new Error("Resource must have either a MediaType or a hre");
             }
@@ -230,7 +227,6 @@ class Resources {
             return false;
         }
         // TODO Constants.FRAGMENT_SEPARATOR_CHAR
-        // return this.resources.has(href.substring(0, href.indexOf(Constants.FRAGMENT_SEPARATOR_CHAR)));
         return this.resources.has(StringUtil.substringBefore(href, Constants.FRAGMENT_SEPARATOR_CHAR));
     }
 
@@ -255,15 +251,6 @@ class Resources {
             this.resources.set(resource.getHref(), resource);
         }
     }
-
-    /**
-     * Sets the collection of Resources to the given collection of resources
-     *
-     * @param resources A map with as keys the resources href and as values the Resources
-     */
-    //	public set(resources:Map<string, EpubResource> ):void {
-    //		this.resources = new Map<string, EpubResource>(resources);
-    //	}
 
     /**
      * First tries to find a resource with as id the given idOrHref, if that
@@ -296,18 +283,6 @@ class Resources {
         let result: EpubResource = this.resources.get(href);
         return result;
     }
-
-    /**
-     * Gets the first resource (random order) with the give mediatype.
-     *
-     * Useful for looking up the table of contents as it's supposed to be the only resource with NCX mediatype.
-     *
-     * @param mediaType
-     * @return the first resource (random order) with the give mediatype.
-     */
-    //	public findFirstResourceByMediaType(mediaType:MediaType):EpubResource {
-    //		return this.findFirstResourceByMediaType(this.resources.values(), mediaType);
-    //	}
 
     /**
      * Gets the first resource (random order) with the give mediatype.

@@ -19,34 +19,11 @@ import EpubResource from "./EpubResource"
 
 class TOCReference extends TitledResourceReference {
     private children: Array<TOCReference> = new Array<TOCReference>();
-    //	private static readonly COMPARATOR_BY_TITLE_IGNORE_CASE:Array<TOCReference> = new Comparator<TOCReference>() {
-    //
-    //    @Override
-    //    public int compare(TOCReference tocReference1, TOCReference tocReference2) {
-    //      return String.CASE_INSENSITIVE_ORDER.compare(tocReference1.getTitle(), tocReference2.getTitle());
-    //    }
-    //	};
-    //
-    //	public TOCReference() {
-    //		this(null, null, null);
-    //	}
-    //
-    //	public TOCReference(String name, Resource resource) {
-    //		this(name, resource, null);
-    //	}
-    //
-    //	public TOCReference(String name, Resource resource, String fragmentId) {
-    //		this(name, resource, fragmentId, new ArrayList<TOCReference>());
-    //	}
 
     constructor(title: string, resource?: EpubResource, fragmentId?: string, children?: Array<TOCReference>) {
         super(resource, title, fragmentId);
         this.children = children;
     }
-
-    //	public static Comparator<TOCReference> getComparatorByTitleIgnoreCase() {
-    //		return COMPARATOR_BY_TITLE_IGNORE_CASE;
-    //	}
 
     public getChildren(): Array<TOCReference> {
         return this.children;

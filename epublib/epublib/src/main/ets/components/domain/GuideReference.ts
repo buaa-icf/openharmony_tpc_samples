@@ -18,7 +18,7 @@ import TitledResourceReference from './TitledResourceReference';
 
 
 class GuideReference extends TitledResourceReference {
-    private static serialVersionUID: number = -316179702440631834;
+    private static serialVersionUID: BigInt = BigInt(-316179702440631834);
 
     /**
       * the book cover(s), jacket information, etc.
@@ -75,7 +75,7 @@ class GuideReference extends TitledResourceReference {
 
     constructor(resourceNew: EpubResource, typeNew?: string, title?: string, fragmentId?: string) {
         super(resourceNew, title, fragmentId);
-        //todo  StringUtil  this.type = StringUtil.isNotBlank(type) ? type.toLowerCase() : null;
+        // todo  StringUtil  this.type = StringUtil.isNotBlank(type) ? type.toLowerCase() : null;
         if (null == typeNew || "" == typeNew) {
             this.typeNew = null;
         } else {

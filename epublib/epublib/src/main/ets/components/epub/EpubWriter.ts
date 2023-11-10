@@ -23,6 +23,7 @@ import ResourceUtil from "../util/ResourceUtil"
 import fs from '@ohos.file.fs';
 import PackageDocumentWriter from "./PackageDocumentWriter";
 import Zlib from "@ohos.zlib"
+import { GlobalContext } from '../util/GlobalContext'
 
 class EpubWriter {
 
@@ -42,7 +43,7 @@ class EpubWriter {
             return null;
         }
         let outFile = fileName.substring(0, fileName.length - ".epub".length)
-        let dirPath = globalThis.filePath + "/" + outFile
+        let dirPath = GlobalContext.getContext().getValue('filePath') + "/" + outFile
         fs.mkdir(dirPath).then(() => {
             this.writeMimeType(dirPath);
             this.writeContainer(dirPath);
@@ -67,7 +68,7 @@ class EpubWriter {
             strategy: Zlib.CompressStrategy.COMPRESS_STRATEGY_DEFAULT_STRATEGY
         };
         Zlib.compressFile(dirPath, outFile, options).then((data) => {
-            console.log("zipFile result£º" + data);
+            console.log("zipFile resultï¿½ï¿½" + data);
             fs.rename(outFile, dirPath + ".epub")
         }).then(() => {
         }).catch((err) => {

@@ -1,15 +1,11 @@
 {
   "license": "Apache-2.0",
   "devDependencies": {},
+  "author": "",
   "name": "entry",
-  "ohos": {
-    "org": "huawei",
-    "directoryLevel": "module",
-    "buildTool": "hvigor"
-  },
   "description": "example description",
-  "repository": {},
-  "version": "1.0.2",
+  "main": "",
+  "version": "2.0.0",
   "dependencies": {
     "@ohos/epublib": "file:../epublib"
   }

@@ -22,5 +22,6 @@ export {default as MediatypeService} from './src/main/ets/components/service/Med
 export {default as ResourcesLoader} from './src/main/ets/components/epub/ResourcesLoader'
 export {default as MediaType} from './src/main/ets/components/domain/MediaType'
 export {default as Metadata} from './src/main/ets/components/domain/Metadata'
+export { GlobalContext } from './src/main/ets/components/util/GlobalContext';
 export { DOMParser } from '@xmldom/xmldom';
 

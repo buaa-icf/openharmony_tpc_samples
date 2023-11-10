@@ -25,25 +25,6 @@ import Book from '../domain/Book';
 
 class BookProcessor {
 
-    //TODO
-    //	/**
-    //	 * A BookProcessor that returns the input book unchanged.
-    //	 */
-    //	public BookProcessor IDENTITY_BOOKPROCESSOR = new BookProcessor() {
-    //
-    //		@Override
-    //		public Book processBook(Book book) {
-    //			return book;
-    //		}
-    //	};
-    //
-    //	Book processBook(Book book);
-
-    /**
-      * A BookProcessor that returns the input book unchanged.
-      */
-    //  public IDENTITY_BOOKPROCESSOR: BookProcessor = new BookProcessor();
-
     public processBook(book: Book): Book {
         return book;
     }

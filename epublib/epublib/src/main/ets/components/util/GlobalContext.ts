@@ -13,27 +13,29 @@
  * limitations under the License.
  */
 
-import BookProcessor from "./BookProcessor"
-/**
- * A book processor that combines several other bookprocessors
- * 
- * Fixes coverpage/coverimage.
- * Cleans up the XHTML.
- * 
- * @author paul.siegmann
- *
- */
-class BookProcessorPipeline {
+export class GlobalContext {
+  private constructor() {
+  }
 
-    private bookProcessors: Array<BookProcessor>;
+  private static instance: GlobalContext;
+  private _objects = new Map<string, Object>();
 
-    constructor() {
-        this.bookProcessors = null;
+  public static getContext(): GlobalContext {
+    if (!GlobalContext.instance) {
+      GlobalContext.instance = new GlobalContext();
     }
+    return GlobalContext.instance;
+  }
 
-    public BookProcessorPipeline(bookProcessingPipeline: Array<BookProcessor>): void {
-        this.bookProcessors = bookProcessingPipeline;
+  getValue(value: string): Object {
+    let result = this._objects.get(value);
+    if (!result) {
+      throw new Error("this value undefined")
     }
+    return result;
+  }
+
+  setValue(key: string, objectClass: Object): void {
+    this._objects.set(key, objectClass);
+  }
 }
-
-export default BookProcessorPipeline

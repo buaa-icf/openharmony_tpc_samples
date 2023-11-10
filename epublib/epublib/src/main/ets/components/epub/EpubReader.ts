@@ -39,13 +39,13 @@ class EpubReader {
         });
     }
 
-    public  static unEpub(epubPath: string): Promise<string> {
+    public static unEpub(epubPath: string): Promise<string>  {
         return ResourcesLoader.loadResourcesZip(epubPath)
 
     }
 
 
-    public  static outFile(inZipPath: string): string {
+    public static outFile(inZipPath: string): string {
         return inZipPath.substring(0, inZipPath.length - ".epub".length)
     }
 

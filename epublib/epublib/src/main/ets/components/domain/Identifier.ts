@@ -31,14 +31,6 @@ class Identifier {
     private scheme: string;
     private value: string;
 
-    /**
-     * Creates an Identifier with as value a random UUID and scheme "UUID"
-     */
-    //TODO
-    //	public Identifier() {
-    //		this(UUID, UUID.randomUUID().toString());
-    //	}
-
     public constructor(scheme ?: string, value ?: string) {
         this.scheme = scheme ? scheme : this.UUID;
         this.value = value ? value : this.UUID;

@@ -28,12 +28,6 @@ class ResourceInputStream {
         this.super(input);
         this.zipFile = zipFile;
     }
-    //TODO
-    //  @Override
-    //	public void close() throws IOException {
-    //		super.close();
-    //		zipFile.close();
-    //	}
 
 }
 

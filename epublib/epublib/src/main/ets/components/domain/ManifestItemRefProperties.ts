@@ -17,8 +17,6 @@
 import ManifestProperties from "./ManifestProperties"
 
 class ManifestItemRefProperties implements ManifestProperties {
-    //	PAGE_SPREAD_LEFT("page-spread-left"),
-    //	PAGE_SPREAD_RIGHT("page-spread-right");
 
     private name: string;
 

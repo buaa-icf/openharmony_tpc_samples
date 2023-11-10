@@ -58,12 +58,7 @@ class MediatypeService {
         MediatypeService.JAVASCRIPT, MediatypeService.MP3, MediatypeService.MP4, MediatypeService.OGG
     ];
     public static mediaTypesByName: Map<string, MediaType> = new Map<string, MediaType>();
-    //TODO
-    //	static {
-    //		for(int i = 0; i < mediatypes.length; i++) {
-    //			mediaTypesByName.put(mediatypes[i].getName(), mediatypes[i]);
-    //		}
-    //	}
+
     constructor() {
     }
 
