@@ -1,108 +1,81 @@
 /*
- * (The MIT License)
-
- * Copyright (c) 2021 Huawei Device Co., Ltd.
-
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * 'Software'), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
-
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
-
- * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
- * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
- * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
- * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
-import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
+
+import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 import { SMB2} from '@ohos/smbj'
+import Option from './Option'
 
-
+let client:SMB2;
 export default function abilityTest() {
-  var client;
-  describe('SmbjTest', function () {
-    // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
-      // Presets an action, which is performed only once before all test cases of the test suite start.
-      // This API supports only one parameter: preset action function.
-      client = new SMB2(
-        {
-          share: '\\\\10.50.40.44\\test_smbj',
-          domain:'DOMAIN',
-          username: 'Administrator',
-          password: 'ck123321ck',
-          clientIP:'10.50.40.52'
-        }
-      )
-    })
-    beforeEach(function () {
-      // Presets an action, which is performed before each unit test case starts.
-      // The number of execution times is the same as the number of test cases defined by **it**.
-      // This API supports only one parameter: preset action function.
-    })
-    afterEach(function () {
-      // Presets a clear action, which is performed after each unit test case ends.
-      // The number of execution times is the same as the number of test cases defined by **it**.
-      // This API supports only one parameter: clear action function.
 
+
+  describe('SmbjTest', ()=>  {
+
+    beforeAll(()=>  {
+      /** 测试用例仅供参考
+       * 配置自己要分享文件的主机IP和文件夹  如：10.50.40.22，test_smbj
+       * 分享给指定用户的 用户名和密码
+       * 配置自己要测试的客户端IP RK3568上  可参考RK3568手动设置IP.bat
+       * */
+      let option:Option = new Option('\\\\10.50.40.26\\test_smbj','DOMAIN','test','test1234','10.50.40.33')
+      client = new SMB2(option)
     })
-    afterAll(function () {
-      // Presets a clear action, which is performed after all test cases of the test suite end.
-      // This API supports only one parameter: clear action function.
-    })
-    it('exists', 0, function () {
-      client.exists('test.txt', function (err, exit) {
+
+    it('exists', 0, ()=>  {
+      client.exists('test.txt',  (err:ESObject, exit:boolean) =>{
         if (err) {
           console.log('smb erro:' + err.message)
           expect().assertFail()
-          throw err;
-
         }
         expect(exit).assertTrue()
       })
     })
-    it('mkdir', 0, function () {
-      client.exists('chen', function (err) {
+    it('mkdir', 0, ()=>  {
+      client.exists('test',  (err:ESObject)=> {
 
         expect(err).assertNull()
       })
     })
-    it('readdir', 0, function () {
-      client.readdir('songy', function (err,fileNames) {
+    it('readdir', 0, ()=>  {
+      client.readdir('test', (err:ESObject,fileNames:ESObject)=> {
         expect(fileNames.length).assertEqual(1)
       })
     })
-    it('readFile', 0, function () {
-      client.readFile('ss.txt' , null, (err,result) => {
+    it('readFile', 0, ()=>  {
+      client.readFile('ss.txt' , null, (err:ESObject,result:ESObject)  => {
         expect(result).assertEqual('1234567')
       })
     })
-    it('rename', 0, function () {
-      client.rename('test','retest', function (err) {
+    it('rename', 0, ()=>  {
+      client.rename('test','retest', (err:ESObject)=>  {
         expect(err).assertNull()
       })
     })
-    it('writeFile', 0, function () {
-      client.writeFile('chen.txt','1234455','UTF-8', function (err) {
+    it('writeFile', 0, ()=>  {
+      client.writeFile('test.txt','1234455','UTF-8',(err:ESObject)=>  {
         expect(err).assertNull()
       })
     })
-    it('rmdir', 0, function () {
-      client.rmdir('test1',(err,files)=> {
+    it('rmdir', 0, ()=>  {
+      client.rmdir('test',(err:ESObject,files:ESObject)=> {
         expect(err).assertNull()
       })
     })
-    it('unlink', 0, function () {
-      client.unlink('songy\\st.txt',(err,result) =>{
+    it('unlink', 0, ()=>  {
+      client.unlink('test\\11.txt',(err:ESObject,result:ESObject) =>{
         expect(err).assertNull()
       })
     })

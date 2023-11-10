@@ -1,41 +1,30 @@
 /*
- * (The MIT License)
-
- * Copyright (c) 2021 Huawei Device Co., Ltd.
-
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * 'Software'), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
-
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
-
- * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
- * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
- * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
- * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 import { SMB2} from '@ohos/smbj'
 import prompt from '@ohos.promptAction';
 
-
 @Entry
 @Component
 struct Index {
   @State message: string = 'test'
-  @State serverIP: string = '10.50.40.44'
-  @State clientIP: string = '10.50.40.103'
-  @State userName: string = 'Administrator'
+  @State serverIP: string = '10.50.40.26'
+  @State clientIP: string = '10.50.40.51'
   @State basePath :string = 'test_smbj'
-  @State password: string = 'ck123321ck'
+  @State userName: string = 'test'
+  @State password: string = 'test123'
   @State foldName: string = ''
   @State newFoldName: string = ''
   @State content: string = ''
@@ -43,6 +32,7 @@ struct Index {
   @State log: string = 'log'
   @State readResult:string = ''
   @State handlePopup: boolean = false
+
   build() {
     Column() {
       TextInput({ placeholder: '服务器ip', text: this.serverIP })
@@ -164,74 +154,97 @@ struct Index {
         .onChange((value: string) => {
           this.content = value
         })
-
-
-
-
       Flex({ direction: FlexDirection.Row, alignItems: ItemAlign.Start, justifyContent: FlexAlign.SpaceAround }) {
         Button('exit', {
           type: ButtonType.Capsule,
           stateEffect: true
         }).backgroundColor(0x317aff).width(90).onClick(() => {
-          var smbClient=this.getClient();
-          var check = this.foldName||this.fileName
-          smbClient.exists(check, function (err, exit) {
-            if (err) {
-              console.log('smb erro:' + err.message)
-              prompt.showToast({message:err.message,duration:5000})
-              throw err;
+          let smbClient=this.getClient();
+          let check = this.foldName||this.fileName
+          if(!!smbClient) {
+            smbClient.exists(check,  (err:ESObject, exit:boolean) =>{
+              if (err) {
+                console.log('smb erro:' + err.message)
+                prompt.showToast({message:err.message,duration:5000})
 
-            }
-            prompt.showToast({message:"文件夹或文件是否存在:"+exit,duration:5000})
-            console.log("smb exit:" + exit);
-          })
+              }else{
+                prompt.showToast({message:"文件夹或文件是否存在:"+exit,duration:5000})
+                console.log("smb exit:" + exit);
+              }
+
+            })
+          }
+
         })
 
         Button('mkdir', {
           type: ButtonType.Capsule,
           stateEffect: true
         }).backgroundColor(0x317aff).width(90).onClick(() => {
-          var smbClient=this.getClient();
-           smbClient.mkdir(this.foldName, function (err) {
-            if (err) {
-              console.log('smb erro:' + err.message)
-              prompt.showToast({message:err.message,duration:5000})
-              throw err;
+          let smbClient=this.getClient();
+          if(!!smbClient){
+            smbClient.mkdir(this.foldName,  (err:ESObject) =>{
+              if (err) {
+                console.log('smb erro:' + err.message)
+                prompt.showToast({message:err.message,duration:5000})
 
-            }
-             prompt.showToast({message:"make dir success",duration:5000})
-          })
+              }else{
+                prompt.showToast({message:"make dir success",duration:5000})
+              }
+
+            })
+          }
 
         })
         Button('readdir', {
           type: ButtonType.Capsule,
           stateEffect: true
         }).backgroundColor(0x317aff).width(90).onClick(() => {
-          var smbClient=this.getClient();
-          smbClient.readdir(this.foldName, function (err,fileNames) {
-            if (err) {
-              console.log('smb erro:' + err.message)
-              prompt.showToast({message:err.message,duration:5000})
-              throw err;
+          let smbClient=this.getClient();
+          try{
+            if(!!smbClient) {
+              smbClient.readdir(this.foldName,  (err:ESObject,fileNames:ESObject)=> {
+                if (err) {
+                  console.log('smb erro:' + err.message)
+                  prompt.showToast({message:err.message,duration:5000})
+                }else{
+                  if(!!!fileNames){
+                    prompt.showToast({message:JSON.stringify(fileNames),duration:5000})
+                  }
+                }
 
+              })
             }
-            prompt.showToast({message:JSON.stringify(fileNames),duration:5000})
-          })
+          }catch (e){
+            console.log('smb readdir erro:')
+          }
+
+
         })
         Button('readFile', {
           type: ButtonType.Capsule,
           stateEffect: true
         }).backgroundColor(0x317aff).width(120).onClick(() => {
-          var smbClient=this.getClient();
-          smbClient.readFile(this.fileName , null, (err,result) => {
-            if (err) {
-              console.log('smb erro:' + err.message)
-              prompt.showToast({message:err.message,duration:5000})
-              throw err;
+          let smbClient=this.getClient();
+          if(!!smbClient){
+            try{
+              smbClient.readFile(this.fileName , null, (err:ESObject,result:ESObject) => {
+                if (err) {
+                  console.log('smb erro:' + err.message)
+                  prompt.showToast({message:err.message,duration:5000})
+                }else{
+                   if(!!!result){
+                     prompt.showToast({message:JSON.stringify(result),duration:5000})
+                   }
+                }
 
+              })
+            }catch (e){
+              console.log('smb readFile erro:')
             }
-            prompt.showToast({message:JSON.stringify(result),duration:5000})
-          })
+
+          }
+
 
         })
       }.margin({ top: 10 }).height(80)
@@ -240,106 +253,120 @@ struct Index {
           type: ButtonType.Capsule,
           stateEffect: true
         }).backgroundColor(0x317aff).width(90).onClick(() => {
-          var smbClient=this.getClient();
-          smbClient.rename(this.foldName,this.newFoldName, function (err) {
-            if (err) {
-              console.log('smb erro:' + err.message)
-              prompt.showToast({message:err.message,duration:5000})
-              throw err;
+          let smbClient=this.getClient();
+          if(!!smbClient){
+            smbClient.rename(this.foldName,this.newFoldName,  (err:ESObject)=> {
+              if (err) {
+                console.log('smb erro:' + err.message)
+                prompt.showToast({message:err.message,duration:5000})
 
-            }
-            prompt.showToast({message:"rename success",duration:5000})
-          })
+              }else{
+                prompt.showToast({message:"rename success",duration:5000})
+              }
+
+            })
+          }
+
         })
 
         Button('writeFile', {
           type: ButtonType.Capsule,
           stateEffect: true
         }).backgroundColor(0x317aff).width(120).onClick(() => {
-          var smbClient=this.getClient();
-          smbClient.writeFile(this.fileName,this.content,'UTF-8', function (err) {
-            if (err) {
-              console.log('smb erro:' + err.message)
-              prompt.showToast({message:err.message,duration:5000})
-              throw err;
+          let smbClient=this.getClient();
+          if(!!smbClient){
+            try{
+              smbClient.writeFile(this.fileName,this.content,'UTF-8',  (err:ESObject)=> {
+                if (err) {
+                  console.log('smb erro:' + err.message)
+                  prompt.showToast({message:err.message,duration:5000})
+                }else{
+                  prompt.showToast({message:"writeFile success",duration:5000})
+                }
 
+              })
+            }catch (e){
+              console.log('smb writeFile erro:' )
             }
-            prompt.showToast({message:"writeFile success",duration:5000})
-          })
+
+          }
+
 
         })
         Button('rmdir', {
           type: ButtonType.Capsule,
           stateEffect: true
         }).backgroundColor(0x317aff).width(90).onClick(() => {
-          var smbClient=this.getClient();
-           smbClient.rmdir(this.foldName,(err,files)=> {
-            if (err) {
-              console.log('smb erro:' + err.message)
-              prompt.showToast({message:err.message,duration:5000})
-              throw err;
-
+          let smbClient=this.getClient();
+          if(!!smbClient){
+            try {
+              smbClient.rmdir(this.foldName,(err:ESObject,files:ESObject)=> {
+                if (err) {
+                  console.log('smb erro:' + err.message)
+                  prompt.showToast({message:err.message,duration:5000})
+                }
+                prompt.showToast({message:"rmdir success",duration:5000})
+              })
+            }catch (e){
+              console.log('smb rmdir erro:')
             }
-             prompt.showToast({message:"rmdir success",duration:5000})
-          })
+          }
+
         })
         Button('rmfile', {
           type: ButtonType.Capsule,
           stateEffect: true
         }).backgroundColor(0x317aff).width(90).onClick(() => {
-          var smbClient=this.getClient();
-         // test\\st.txt
-          smbClient.unlink(this.fileName,(err,result) =>{
-            if (err) {
-              console.log('smb erro:' + err.message)
-              prompt.showToast({message:err.message,duration:5000})
-              throw err;
-
+          let smbClient=this.getClient();
+          if(!!smbClient){
+            try {
+              smbClient.unlink(this.fileName,(err:ESObject,result:ESObject) =>{
+                if (err) {
+                  console.log('smb erro:' + err.message)
+                  prompt.showToast({message:err.message,duration:5000})
+                }
+                prompt.showToast({message:"rmfile success",duration:5000})
+              })
+            }catch (e){
+              console.log('smb unlink erro:' )
             }
-            prompt.showToast({message:"rmfile success",duration:5000})
-          })
-
+          }
         })
 
         Button('分享', {
           type: ButtonType.Capsule,
           stateEffect: true
         }).backgroundColor(0x317aff).width(90).onClick(() => {
-          var context: Context = getContext(this) as Context
+          let context: Context = getContext(this) as Context
           let that = this; //可以的有 xlsx,png,zip,txt,
-          var fileName = "epub-book.epub"
-          context.resourceManager.getRawFileContent(fileName).then(value => {
-            var smbClient = this.getClient();
+          let fileName = "epub-book.epub"
+          context.resourceManager.getRawFileContent(fileName).then((value:Uint8Array) => {
+            let smbClient = this.getClient();
             console.info("----" + fileName + "---size---" + value.length)
-
-            smbClient.sendFile(fileName, value, (callResult) => {
-              console.log("-------sendfile--err------" + callResult.err)
-              if (callResult.err) {
-                console.log('smb sendWrite erro:' + callResult.err.message)
-                throw callResult.err.message;
-              }
-              console.log('smb sendWrite progress :' + callResult.progress + "%" + "---send file size " + (callResult.sendFileSize / 1024) + "KB")
-            });
-
-
-          }).catch(error => {
+            if(!!smbClient){
+              smbClient.sendFile(fileName, value, (callResult:ESObject) => {
+                console.log("-------sendfile--err------" + callResult.err)
+                if (callResult) {
+                  console.log('smb sendWrite erro:' + callResult.err.message)
+                  prompt.showToast({message:callResult.err.message,duration:5000})
+                }
+                console.log('smb sendWrite progress :' + callResult.progress + "%" + "---send file size " + (callResult.sendFileSize / 1024) + "KB")
+              });
+            }
+          }).catch((error:Error) => {
             console.log("getRawFile promise error is " + error);
           });
-
-
         })
-
-
       }.margin({ top: 10 }).height(80)
     }
     .height('100%')
   }
 
   public getClient(){
-   if(!this.serverIP){
-     prompt.showToast({message:'请输入服务器ip',duration:2000})
-     return
-   }
+    if(!this.serverIP){
+      prompt.showToast({message:'请输入服务器ip',duration:2000})
+      return
+    }
     if(!this.clientIP){
       prompt.showToast({message:'请输入客户端ip',duration:2000})
       return
@@ -356,14 +383,23 @@ struct Index {
       prompt.showToast({message:'请输入密码',duration:2000})
       return
     }
-    return new SMB2(
-      {
-        share: '\\\\'+this.serverIP+'\\'+this.basePath,
-        domain:'DOMAIN',
-        username: this.userName,
-        password: this.password,
-        clientIP:this.clientIP
-      }
-    );
+    let option:Options = new Options('\\\\'+this.serverIP+'\\'+this.basePath,'DOMAIN',this.userName,this.password,this.clientIP)
+    return new SMB2(option);
+  }
+}
+
+class Options{
+  share: string;
+  domain:string;
+  username: string;
+  password: string;
+  clientIP:string;
+
+  constructor(share:string,domain:string,username:string,password:string,clientIP:string) {
+    this.share = share;
+    this.domain = domain;
+    this.username = username;
+    this.password = password;
+    this.clientIP = clientIP;
   }
 }

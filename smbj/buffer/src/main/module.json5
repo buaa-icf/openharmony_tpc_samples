@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "buffer",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}
