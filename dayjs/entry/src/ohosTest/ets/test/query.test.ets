@@ -16,14 +16,23 @@
 import { it, expect, describe } from "../utils/utils"
 import dayjs from 'dayjs'
 
+async function sleep(count:number) :Promise<number>{
+  return new Promise((res)=>{
+    let timeId = setTimeout(()=>{
+      res(count)
+      clearTimeout(timeId)
+    },1000)
+  })
+}
 
 export default function queryTest() {
   describe('queryTest', () => {
 
-    it('Compare_to_dayjs_object', () => {
+    it('Compare_to_dayjs_object', async() => {
       const dayA = dayjs()
       const dayB = dayA.clone().add(1, 'day')
       const dayC = dayA.clone().subtract(1, 'day')
+      await sleep(10)
       expect(dayC.isBefore(dayA)).toBe(true)
       expect(dayB.isAfter(dayA)).toBe(true)
       expect(dayA.isSame(dayjs())).toBe(false)
