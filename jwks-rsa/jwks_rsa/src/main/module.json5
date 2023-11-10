@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "jwks_rsa",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}

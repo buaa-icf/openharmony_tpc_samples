@@ -1,0 +1,28 @@
+{
+  "string": [
+    {
+      "name": "entry_desc",
+      "value": "description"
+    },
+    {
+      "name": "MainAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "MainAbility_label",
+      "value": "label"
+    },
+    {
+      "name": "button_font_size",
+      "value": "35fp"
+    },
+    {
+      "name": "font_size",
+      "value": "30fp"
+    },
+    {
+      "name": "margin",
+      "value": "5vp"
+    }
+  ]
+}
