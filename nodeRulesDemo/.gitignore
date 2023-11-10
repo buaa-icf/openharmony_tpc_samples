@@ -3,7 +3,10 @@
 /.idea
 **/build
 /.hvigor
-node_modules
-package-lock.json
-.hvigor
-.idea
+.cxx
+/.clangd
+/.clang-format
+/.clang-tidy
+**/package-lock.json
+**/oh-package-lock.json5
+**/oh_modules

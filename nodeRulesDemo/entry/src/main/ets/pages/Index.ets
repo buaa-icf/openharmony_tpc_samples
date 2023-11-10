@@ -1,13 +1,13 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
- * Licensed under the Apache License, Version 2.0 (the 'License');
+ * Copyright (C) 2022 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an 'AS IS' BASIS,
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -15,10 +15,15 @@
 
 import router from '@ohos.router';
 
+interface Item{
+  name:string
+  path:string
+}
+
 @Entry
 @Component
 struct Index {
-  public datas = [
+  public datas: Item[] = [
     { name: "SimpleRule", path: "pages/SimpleRule" },
     { name: "MultipleRules", path: "pages/MultipleRules" },
     { name: "CascadingRules", path: "pages/CascadingRules" },
@@ -27,7 +32,8 @@ struct Index {
     { name: "MoreRulesAndFacts", path: "pages/MoreRulesAndFacts" }
   ]
 
-  @Builder BuildEntryItem(item) {
+  @Builder
+  BuildEntryItem(item: Item) {
     Text(item.name)
       .width("90%")
       .height(50)
@@ -37,14 +43,14 @@ struct Index {
       .textAlign(TextAlign.Center)
       .margin({ top: 10 })
       .onClick(() => {
-        router.push({ url: item.path })
+        router.pushUrl({ url: item.path })
       })
   }
 
   build() {
     Row() {
       Column() {
-        ForEach(this.datas, (v) => {
+        ForEach(this.datas, (v: Item) => {
           this.BuildEntryItem(v);
         })
       }

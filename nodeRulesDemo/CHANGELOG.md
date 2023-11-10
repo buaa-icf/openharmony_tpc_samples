@@ -1,3 +1,7 @@
+### 2.0.0
+
+1.适配DevEco Studio:4.0 release Beta2(4.0.3.600) OpenHarmony SDK:API10(4.0.10.11)
+
 ### 1.0.0
 
 1. 样例适配的系统版本是 OpenHarmony API 9.
