@@ -17,7 +17,9 @@ limitations under the License.
 
 import {Metadata} from '@ohos/metadata-extractor';
 import {ImageMetadataReader} from '@ohos/metadata-extractor'
+import {GlobalContext} from './GlobalContext'
 
+let fileDir:string;
 @Entry
 @Component
 struct Mp3Sample {
@@ -26,32 +28,19 @@ struct Mp3Sample {
 
   private getMetaData() {
     this.data.splice(0,this.data.length)
-    let argList: Set<string> = new Set<string>()
-    let pathMp4 = globalThis.fileDir.concat("/test.mp3")
-    argList.add(pathMp4)
-    for (let arg of argList) {
-      var metadata: Metadata = null
-      try{
-        metadata = ImageMetadataReader.readMetadata(arg)
-      }catch(error){
-        console.info("Mp3Sample error:"+error)
-      }
 
-      // iterate over the metadata and print to System.out
-      for (let directory of metadata.getDirectories()) {
-        let directoryName = directory.getName()
-        for (let tag of directory.getTags()) {
-          let tagName = tag.getTagName()
-          let description = tag.getDescription()
+    fileDir = GlobalContext.getContext().getValue("filesDir") as string;
+    let pathMp4 = fileDir.concat("/test.mp3")
 
-          // truncate the description if it's too longzg zg
-          if (description != null && description.length > 1024) {
-            description = description.substring(0, 1024) + "..."
-          }
-          this.data.push("\n" + "[" + directoryName + "] " + tagName + " = " + description)
-        }
-      }
-    }
+    let metadata: Metadata =  ImageMetadataReader.readMetadata(pathMp4);
+    metadata.getDirectories().forEach((value:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
+      let directoryName:string = value.getName()
+      value.getTags().forEach((tag:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
+        let tagName:string = tag.getTagName()
+        let description:string = tag.getDescription()
+        this.data.push("[" + directoryName + "] " + tagName + " = " + description)
+      })
+    })
   }
 
   build() {
@@ -68,7 +57,7 @@ struct Mp3Sample {
         Column() {
           Text("元数据:" ).fontSize(20).width('100%')
             .textAlign(TextAlign.Start)
-          Text("" + this.data).fontSize(20).width('100%')
+          Text("" + JSON.stringify(this.data)).fontSize(20).width('100%')
             .textAlign(TextAlign.Start)
             .visibility(this.isVisibility)
         }.height("80%").padding({ bottom: 10 })

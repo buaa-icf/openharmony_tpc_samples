@@ -1,40 +1,46 @@
 /*
-* Copyright (c) 2022 Huawei Device Co., Ltd.
-
-* Permission to use, copy, modify, and/or distribute this software for any purpose
-* with or without fee is hereby granted, provided that the above copyright notice
-* and this permission notice appear in all copies.
-
-* THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-* REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
-* FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-* INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS
-* OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
-* TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
-* THIS SOFTWARE.
-*/
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 
 import {Metadata} from '@ohos/metadata-extractor';
 import {ImageMetadataReader} from '@ohos/metadata-extractor'
+import {GlobalContext} from './GlobalContext'
+
+let fileDir:string;
 @Entry
 @Component
 struct BmpSample {
   @State isVisibility: Visibility = Visibility.Hidden
-  @State data: Array<string> = [""]
+  @State data: Array<string> = []
 
   private getMetaData() {
     this.data.splice(0,this.data.length)
-    let pathAvi = globalThis.fileDir.concat("/adobeJpeg1.eps")
+    fileDir = GlobalContext.getContext().getValue("filesDir") as string;
+    let pathAvi = fileDir.concat("/adobeJpeg1.eps")
     let metadata: Metadata  = ImageMetadataReader.readMetadata(pathAvi)
     // iterate over the metadata and print to System.out
-    for (let directory of metadata.getDirectories()) {
-      for (let tag of directory.getTags()) {
-        let tagName = tag.getTagName()
-        let description = tag.getDescription()
-        this.data.push("\n" + "[" + tagName + "] " + tagName + " = " + description)
-      }
-    }
+
+    metadata.getDirectories().forEach((value:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
+      let directoryName:string = value.getName()
+      value.getTags().forEach((tag:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
+        let tagName:string = tag.getTagName()
+        let description:string = tag.getDescription()
+        this.data.push("[" + directoryName + "] " + tagName + " = " + description)
+      })
+    })
+    console.debug("metadata esp data:"+JSON.stringify(this.data))
   }
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
@@ -50,7 +56,7 @@ struct BmpSample {
         Column() {
           Text("元数据:" ).fontSize(20).width('100%')
             .textAlign(TextAlign.Start)
-          Text("" + this.data).fontSize(20).width('100%')
+          Text("" + JSON.stringify(this.data)).fontSize(20).width('100%')
             .textAlign(TextAlign.Start)
             .visibility(this.isVisibility)
         }.height("80%").padding({ bottom: 10 })

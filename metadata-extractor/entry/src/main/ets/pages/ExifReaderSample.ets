@@ -17,6 +17,9 @@ import { Metadata } from '@ohos/metadata-extractor';
 import { ExifReader } from '@ohos/metadata-extractor'
 import { ByteArrayReader } from '@ohos/metadata-extractor'
 import { FileUtil } from '@ohos/metadata-extractor'
+import {GlobalContext} from './GlobalContext'
+
+let fileDir:string;
 
 @Entry
 @Component
@@ -26,18 +29,19 @@ struct ExifReaderSample {
 
   private getMetaData() {
     this.data.splice(0,this.data.length)
-    let path = globalThis.fileDir.concat("/manuallyAddedThumbnail.jpg.app1")
-    let metadata = new  Metadata()
+    fileDir = GlobalContext.getContext().getValue("filesDir") as string;
+    let path = fileDir.concat("/manuallyAddedThumbnail.jpg.app1")
+    let metadata:Metadata = new  Metadata()
     new ExifReader().extract(new ByteArrayReader(FileUtil.readBytes(path)), metadata, ExifReader.JPEG_SEGMENT_PREAMBLE.length, null);
-    for (let directory of metadata.getDirectories()) {
-      for (let tag of directory.getTags()) {
-        let tagName = tag.getTagName()
-        let description = tag.getDescription()
-        if(tagName != undefined){
-          this.data.push("\n" + "[" + tagName + "] " + tagName + " = " + description)
-        }
-      }
-    }
+
+    metadata.getDirectories().forEach((value:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
+      let directoryName:string = value.getName()
+      value.getTags().forEach((tag:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
+        let tagName:string = tag.getTagName()
+        let description:string = tag.getDescription()
+        this.data.push("[" + directoryName + "] " + tagName + " = " + description)
+      })
+    })
   }
 
   build() {
@@ -57,7 +61,7 @@ struct ExifReaderSample {
         Column() {
           Text("元数据:").fontSize(20).width('100%')
             .textAlign(TextAlign.Start)
-          Text("" + this.data).fontSize(20).width('100%')
+          Text("" + JSON.stringify(this.data)).fontSize(20).width('100%')
             .textAlign(TextAlign.Start)
             .visibility(this.isVisibility)
         }.height("70%").padding({ bottom: 10 })

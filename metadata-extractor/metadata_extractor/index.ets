@@ -18,7 +18,7 @@ export {default as ImageMetadataReader} from './src/main/ets/com/drew/imaging/Im
 export { BmpHeaderDirectory } from './src/main/ets/com/drew/metadata/bmp/BmpHeaderDirectory';
 export {default as Age} from './src/main/ets/com/drew/metadata/Age';
 export {default as Directory} from './src/main/ets/com/drew/metadata/Directory';
-//
+
 //// lang
 export { default as ByteArrayReader} from './src/main/ets/com/drew/lang/ByteArrayReader'
 export { default as GeoLocation} from './src/main/ets/com/drew/lang/GeoLocation'
@@ -33,10 +33,13 @@ export { default as SequentialByteArrayReader} from './src/main/ets/com/drew/lan
 export { default as SequentialReader} from './src/main/ets/com/drew/lang/SequentialReader'
 export { default as StreamReader} from './src/main/ets/com/drew/lang/StreamReader'
 export { default as StringUtil} from './src/main/ets/com/drew/lang/StringUtil'
-//
+
 ////image
 export { default as PngMetadataReader} from './src/main/ets/com/drew/imaging/png/PngMetadataReader'
 export { default as PngChunkType} from './src/main/ets/com/drew/imaging/png/PngChunkType'
+export {default as PngDirectory} from './src/main/ets/com/drew/metadata/png/PngDirectory';
+export {default as PngDescriptor} from './src/main/ets/com/drew/metadata/png/PngDescriptor';
+
 export { default as PngChunkReader} from './src/main/ets/com/drew/imaging/png/PngChunkReader'
 export { default as JpegSegmentReader} from './src/main/ets/com/drew/imaging/jpeg/JpegSegmentReader'
 export { default as JpegSegmentData} from './src/main/ets/com/drew/imaging/jpeg/JpegSegmentData'
@@ -65,8 +68,17 @@ export { default as TiffMetadataReader} from './src/main/ets/com/drew/imaging/ti
 export { default as AdobeJpegReader} from './src/main/ets/com/drew/metadata/adobe/AdobeJpegReader'
 export { default as AdobeJpegDirectory} from './src/main/ets/com/drew/metadata/adobe/AdobeJpegDirectory'
 export { default as FileUtil} from './src/main/ets/com/drew/tools/FileUtil'
-//export { default as AppleRunTimeReader} from './src/main/ets/com/drew/metadata/apple/AppleRunTimeReader'
 export { default as ExifReader} from './src/main/ets/com/drew/metadata/exif/ExifReader'
+export { default as KeyValuePair} from './src/main/ets/com/drew/lang/KeyValuePair'
+export { default as StringValue} from './src/main/ets/com/drew/metadata/StringValue'
+export { default as ExifSubIFDDirectory} from './src/main/ets/com/drew/metadata/exif/ExifSubIFDDirectory'
+export { default as ExifIFD0Directory} from './src/main/ets/com/drew/metadata/exif/ExifIFD0Directory'
+export { default as JpegDirectory} from './src/main/ets/com/drew/metadata/jpeg/JpegDirectory'
+export { default as JpegDescriptor} from './src/main/ets/com/drew/metadata/jpeg/JpegDescriptor'
+export { default as JpegDhtReader} from './src/main/ets/com/drew/metadata/jpeg/JpegDhtReader'
+export { default as JpegDnlReader} from './src/main/ets/com/drew/metadata/jpeg/JpegDnlReader'
+export { default as JpegComponent} from './src/main/ets/com/drew/metadata/jpeg/JpegComponent'
+
 
 
 

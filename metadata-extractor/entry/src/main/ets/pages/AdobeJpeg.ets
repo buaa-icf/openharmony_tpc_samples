@@ -17,7 +17,9 @@ import { Metadata } from '@ohos/metadata-extractor';
 import { AdobeJpegReader } from '@ohos/metadata-extractor'
 import { SequentialByteArrayReader } from '@ohos/metadata-extractor'
 import { FileUtil } from '@ohos/metadata-extractor'
+import {GlobalContext} from './GlobalContext'
 
+let fileDir:string;
 
 @Entry
 @Component
@@ -26,15 +28,15 @@ struct AdobeJpeg {
   @State data: Array<string> = []
 
   private getMetaData() {
-
-    let path = globalThis.fileDir.concat("/adobeJpeg1.jpg.appe")
+    fileDir = GlobalContext.getContext().getValue("filesDir") as string;
+    let path = fileDir.concat("/adobeJpeg1.jpg.appe")
     let metadata = new  Metadata()
     new AdobeJpegReader().extract(new SequentialByteArrayReader(FileUtil.readBytes(path)), metadata);
     for (let directory of metadata.getDirectories()) {
       for (let tag of directory.getTags()) {
         let tagName = tag.getTagName()
         let description = tag.getDescription()
-        this.data.push("\n" + "[" + tagName + "] " + tagName + " = " + description)
+        this.data.push("[" + tagName + "] " + tagName + " = " + description)
       }
     }
   }
@@ -56,7 +58,7 @@ struct AdobeJpeg {
         Column() {
           Text("元数据:").fontSize(20).width('100%')
             .textAlign(TextAlign.Start)
-          Text("" + this.data).fontSize(20).width('100%')
+          Text("" + JSON.stringify(this.data)).fontSize(20).width('100%')
             .textAlign(TextAlign.Start)
             .visibility(this.isVisibility)
         }.height("80%").padding({ bottom: 10 })

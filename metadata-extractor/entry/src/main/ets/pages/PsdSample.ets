@@ -15,7 +15,9 @@ limitations under the License.
 
 import {Metadata} from '@ohos/metadata-extractor';
 import {ImageMetadataReader} from '@ohos/metadata-extractor'
+import {GlobalContext} from './GlobalContext'
 
+let fileDir:string;
 @Entry
 @Component
 struct PsdSample{
@@ -24,19 +26,21 @@ struct PsdSample{
   scroller: Scroller = new Scroller()
 
   private getMetaData() {
-    let path = globalThis.fileDir.concat("/8x4x8bit-Grayscale.psd")
+    fileDir = GlobalContext.getContext().getValue("filesDir") as string;
+    let path = fileDir.concat("/8x4x8bit-Grayscale.psd")
       this.data.splice(0,this.data.length)
       let metadata: Metadata = ImageMetadataReader.readMetadata(path)
      console.info("psd sample meta:"+JSON.stringify(metadata))
       // iterate over the metadata and print to System.out
-      for (let directory of metadata.getDirectories()) {
-        console.info("psd sample meta directory:"+directory.getName())
-        for (let tag of directory.getTags()) {
-          console.info("psd sample meta tag:"+tag.getTagName()+",descrp:"+tag.getDescription())
 
-          this.data.push("\n" + "[" + directory.getName()+ "] " + tag.getTagName() + " = " + tag.getDescription())
-        }
-      }
+    metadata.getDirectories().forEach((value:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
+      let directoryName:string = value.getName()
+      value.getTags().forEach((tag:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
+        let tagName:string = tag.getTagName()
+        let description:string = tag.getDescription()
+        this.data.push("[" + directoryName + "] " + tagName + " = " + description)
+      })
+    })
     console.info("psd sample meta all:"+JSON.stringify(this.data))
 
   }
@@ -54,7 +58,7 @@ struct PsdSample{
         .textAlign(TextAlign.Start)
       Scroll(this.scroller) {
         Column() {
-          Text("" + this.data).fontSize(20).width('100%')
+          Text("" + JSON.stringify(this.data)).fontSize(20).width('100%')
             .textAlign(TextAlign.Start)
             .visibility(this.isVisibility)
         }

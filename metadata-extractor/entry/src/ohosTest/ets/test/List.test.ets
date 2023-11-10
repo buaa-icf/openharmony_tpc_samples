@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,8 +13,28 @@
  * limitations under the License.
  */
 
-import abilityTest from './Ability.test'
+import PngTest from './PngDescriptor.test'
+import AgeTest from './Age.test'
+import MetadataTest from './Metadata.test'
+import DirectoryTest from './Directory.test'
+import JpegDirectoryTest from './JpegDirectory.test'
+import JpegDescriptorTest from './JpegDescriptor.test'
+import JpegComponentTest from './JpegComponent.test'
+import ByteConvertTest from './ByteConvert.test'
+import ByteUtilTest from './ByteUtil.test'
+import SequentialAccessTest from './SequentialAccess.test'
+
 
 export default function testsuite() {
-  abilityTest()
+  PngTest()
+  AgeTest()
+  MetadataTest()
+  DirectoryTest()
+  JpegDirectoryTest()
+  JpegDescriptorTest()
+  JpegComponentTest()
+  ByteConvertTest()
+  ByteUtilTest()
+  SequentialAccessTest()
+
 }

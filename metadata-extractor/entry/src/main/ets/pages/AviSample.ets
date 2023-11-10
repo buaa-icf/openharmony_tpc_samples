@@ -15,7 +15,9 @@ limitations under the License.
 
 import {Metadata } from '@ohos/metadata-extractor';
 import { ImageMetadataReader } from '@ohos/metadata-extractor';
+import {GlobalContext} from './GlobalContext'
 
+let fileDir:string;
 @Entry
 @Component
 struct AviSample {
@@ -24,17 +26,18 @@ struct AviSample {
 
   private getMetaData() {
     this.data.splice(0,this.data.length)
-    let pathAvi = globalThis.fileDir.concat("/AVITest.avi")
+    fileDir = GlobalContext.getContext().getValue("filesDir") as string;
+    let pathAvi = fileDir.concat("/AVITest.avi")
      let metadata: Metadata = ImageMetadataReader.readMetadata(pathAvi)
       // iterate over the metadata and print to System.out
-      for (let directory of metadata.getDirectories()) {
-        let directoryName = directory.getName()
-        for (let tag of directory.getTags()) {
-          let tagName = tag.getTagName()
-          let description = tag.getDescription()
-          this.data.push("\n" + "[" + directoryName + "] " + tagName + " = " + description)
-        }
-      }
+      metadata.getDirectories().forEach((value:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
+        let directoryName:string = value.getName()
+        value.getTags().forEach((tag:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
+          let tagName:string = tag.getTagName()
+          let description:string = tag.getDescription()
+          this.data.push("[" + directoryName + "] " + tagName + " = " + description)
+        })
+      })
   }
 
   build() {
@@ -51,7 +54,7 @@ struct AviSample {
         Column() {
           Text("元数据:" ).fontSize(20).width('100%')
             .textAlign(TextAlign.Start)
-          Text("" + this.data).fontSize(20).width('100%')
+          Text("" + JSON.stringify(this.data)).fontSize(20).width('100%')
             .textAlign(TextAlign.Start)
             .visibility(this.isVisibility)
         }.height("80%").padding({ bottom: 10 })

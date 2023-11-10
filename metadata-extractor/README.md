@@ -9,9 +9,9 @@
 
 ## 下载安装
 ```shell
-npm install @ohos/metadata-extractor --save
+ohpm install @ohos/metadata-extractor
 ```
-OpenHarmony npm环境配置等更多内容，请参考 [如何安装OpenHarmony npm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_npm_usage.md) 。
+OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
 ## 使用说明
 1. 引入文件及代码依赖
@@ -76,7 +76,7 @@ Column() {
 
 在下述版本验证通过：
 
-- DevEco Studio 版本：3.1 Beta1（3.1.0.200），OpenHarmony SDK:API9（3.2.10.6）
+- DevEco Studio 版本：4.0.3.600，OpenHarmony SDK:API10（4.0.10.11）
 
 ## 目录结构
 ````
@@ -116,7 +116,7 @@ Column() {
 ````
 
 ## 贡献代码
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/hihopeorg/metadata-extractor/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/hihopeorg/Hamcrest/pulls) 。
+使用过程中发现任何问题都可以提 [Issue](https://gitee.com/hihopeorg/metadata-extractor/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/hihopeorg/metadata-extractor/pulls) 。
 
 ## 开源协议
 本项目基于 [Apache-2.0 License](https://gitee.com/hihopeorg/metadata-extractor/blob/master/LICENSE) ，请自由地享受和参与开源。

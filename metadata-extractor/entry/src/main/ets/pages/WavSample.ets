@@ -17,7 +17,9 @@ limitations under the License.
 
 import {Metadata} from '@ohos/metadata-extractor';
 import {ImageMetadataReader} from '@ohos/metadata-extractor'
+import {GlobalContext} from './GlobalContext'
 
+let fileDir:string;
 @Entry
 @Component
 struct WavSample {
@@ -26,31 +28,18 @@ struct WavSample {
 
   private getMetaData() {
     this.data.splice(0,this.data.length)
-    let path = globalThis.fileDir.concat("/test.wav")
+    fileDir = GlobalContext.getContext().getValue("filesDir") as string;
+    let path = fileDir.concat("/test.wav")
 
-      var metadata: Metadata = null
-      try{
-        metadata = ImageMetadataReader.readMetadata(path)
-      }catch(error){
-        console.info("WavSample error:"+error)
-      }
-      console.info("wav sample meta:"+metadata.getDirectories().size)
-      // iterate over the metadata and print to System.out
-      for (let directory of metadata.getDirectories()) {
-
-        console.info("wav sample meta:"+directory.getName())
-        console.info("wav sample meta:"+directory.getName())
-        directory.getTags().forEach((value,value2,SET)=>{
-          if(value != undefined && value != null){
-            console.info("wav sample getTagName:"+value.getTagName())
-            console.info("wav sample getDescription:"+value.getTagType())
-            let description = value.getDescription()
-//            console.info("wav sample getDescription:"+value.getDescription())
-//            this.data.push("\n" + "[" + directory.getName() + "] " + value.getTagName() + " = " + value)
-            this.data.push("\n" + "[" + directory.getName() + "] " + value.getTagName() + " = " + description)
-          }
-        })
-      }
+    let metadata: Metadata =  ImageMetadataReader.readMetadata(path);
+    metadata.getDirectories().forEach((value:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
+      let directoryName:string = value.getName()
+      value.getTags().forEach((tag:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
+        let tagName:string = tag.getTagName()
+        let description:string = tag.getDescription()
+        this.data.push("[" + directoryName + "] " + tagName + " = " + description)
+      })
+    })
   }
 
   build() {
@@ -67,7 +56,7 @@ struct WavSample {
         Column() {
           Text("元数据:" ).fontSize(20).width('100%')
             .textAlign(TextAlign.Start)
-          Text("" + this.data).fontSize(20).width('100%')
+          Text("" + JSON.stringify(this.data)).fontSize(20).width('100%')
             .textAlign(TextAlign.Start)
             .visibility(this.isVisibility)
         }.height("80%").padding({ bottom: 10 })

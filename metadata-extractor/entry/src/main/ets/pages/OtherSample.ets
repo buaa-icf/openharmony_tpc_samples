@@ -24,7 +24,7 @@ struct OtherSample {
         Button("AdobeJpegReader", { type: ButtonType.Normal, stateEffect: true })
           .borderRadius(8).width("70%").height("8%").margin("2%")
           .onClick(() => {
-            router.push({
+            router.pushUrl({
               url: "pages/AdobeJpeg"
             })
           })
@@ -32,7 +32,7 @@ struct OtherSample {
         Button("ExifReader", { type: ButtonType.Normal, stateEffect: true })
           .borderRadius(8).width("70%").height("8%").margin("2%")
           .onClick(() => {
-            router.push({
+            router.pushUrl({
               url: "pages/ExifReaderSample"
             })
           })
