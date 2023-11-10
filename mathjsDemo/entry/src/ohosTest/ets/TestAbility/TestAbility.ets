@@ -12,14 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import hilog from '@ohos.hilog';
-import Ability from '@ohos.application.Ability'
-import AbilityDelegatorRegistry from '@ohos.application.abilityDelegatorRegistry'
-import { Hypium } from '@ohos/hypium'
-import testsuite from '../test/List.test'
-import Window from '@ohos.window'
 
-export default class TestAbility extends Ability {
+import UIAbility from '@ohos.app.ability.UIAbility';
+import AbilityDelegatorRegistry from '@ohos.app.ability.abilityDelegatorRegistry';
+import hilog from '@ohos.hilog';
+import { Hypium } from '@ohos/hypium';
+import testsuite from '../test/List.test';
+import window from '@ohos.window';
+
+export default class TestAbility extends UIAbility {
     onCreate(want, launchParam) {
         hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);
         hilog.info(0x0000, 'testTag', '%{public}s', 'TestAbility onCreate');
@@ -39,8 +40,7 @@ export default class TestAbility extends Ability {
         hilog.info(0x0000, 'testTag', '%{public}s', 'TestAbility onDestroy');
     }
 
-    onWindowStageCreate(windowStage: Window.WindowStage) {
-        hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);
+    onWindowStageCreate(windowStage: window.WindowStage) {
         hilog.info(0x0000, 'testTag', '%{public}s', 'TestAbility onWindowStageCreate');
         windowStage.loadContent('TestAbility/pages/index', (err, data) => {
             if (err.code) {
@@ -48,26 +48,20 @@ export default class TestAbility extends Ability {
                 hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');
                 return;
             }
-            hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);
             hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s',
                 JSON.stringify(data) ?? '');
         });
-
-        globalThis.abilityContext = this.context;
     }
 
     onWindowStageDestroy() {
-        hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);
         hilog.info(0x0000, 'testTag', '%{public}s', 'TestAbility onWindowStageDestroy');
     }
 
     onForeground() {
-        hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);
         hilog.info(0x0000, 'testTag', '%{public}s', 'TestAbility onForeground');
     }
 
     onBackground() {
-        hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);
         hilog.info(0x0000, 'testTag', '%{public}s', 'TestAbility onBackground');
     }
 }

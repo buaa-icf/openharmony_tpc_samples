@@ -14,7 +14,6 @@
  */
 import * as math from 'mathjs';
 import router from '@ohos.router';
-import isEven from '@stdlib/math-base-assert';
 
 
 function routerfun(url) {
@@ -431,7 +430,7 @@ struct Index {
           .onClick(() => {
             try {
               let time = Date.now()
-              this.oddValue = isEven.isOdd(Number(this.mathodd)).toString()
+              this.oddValue = isOdd(Number(this.mathodd)).toString()
               let time1 = Date.now()
               this.oddValueTime = (time1 - time).toString()
             } catch (err) {
@@ -463,7 +462,7 @@ struct Index {
           .onClick(() => {
             try {
               let time = Date.now()
-              this.isEvenValue = isEven.isEven(Number(this.mathceil)).toString()
+              this.isEvenValue = isEven(Number(this.mathceil)).toString()
               let time1 = Date.now()
               this.isEvenValueTime = (time1 - time).toString()
             } catch (err) {
@@ -739,3 +738,21 @@ struct Index {
     console.log('lllllllllllll消失')
   }
 }
+
+function isEven( x ) {
+  return isInteger( x/2.0 );
+}
+
+function isOdd( x ) {
+  // Check sign to prevent overflow...
+  if ( x > 0.0 ) {
+    return isEven( x-1.0 );
+  }
+  return isEven( x+1.0 );
+}
+
+function isInteger( x ) {
+  return (floor(x) === x);
+}
+
+const floor = Math.floor;
