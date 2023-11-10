@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "epublib",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}

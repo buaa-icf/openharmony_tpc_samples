@@ -1,0 +1,218 @@
+/*
+ * Copyright (C) 2022 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+//@ts-nocheck
+import PackageDocumentMetadataWriter from './PackageDocumentMetadataWriter';
+import OPFAttributes from './OPFAttributes';
+import OPFTags from './OPFTags';
+import NCXDocument from './NCXDocument';
+import Book from '../domain/Book';
+import Guide from '../domain/Guide';
+import { Constants } from '../Constants';
+import EpubWriter from './EpubWriter';
+import PackageDocumentBase from './PackageDocumentBase'
+import Spine from '../domain/Spine'
+import GuideReference from '../domain/GuideReference'
+import EpubResource from "../domain/EpubResource"
+import MediatypeService from '../service/MediatypeService';
+import StringUtil from '../util/StringUtil';
+import { DOMParser } from '@xmldom/xmldom';
+import { XMLSerializer } from '@xmldom/xmldom';
+import fs from '@ohos.file.fs';
+import OPFValues from './OPFValues';
+
+class PackageDocumentWriter extends PackageDocumentBase {
+    public static write(fd: number, book: Book): void {
+        try {
+            let domParser = new DOMParser();
+            let document: Document = domParser.parseFromString("<?xml encoding='" + Constants.CHARACTER_ENCODING + "'?>");
+
+            let root: Element = document.createElementNS(PackageDocumentBase.NAMESPACE_OPF, OPFTags.packageTag);
+            root.setAttribute("xmlns:" + PackageDocumentBase.PREFIX_OPF, PackageDocumentBase.NAMESPACE_OPF);
+            root.setAttribute("xmlns:" + PackageDocumentBase.PREFIX_DUBLIN_CORE, PackageDocumentBase.NAMESPACE_DUBLIN_CORE);
+
+            root.setAttributeNS(EpubWriter.EMPTY_NAMESPACE_PREFIX, OPFAttributes.version, "2.0");
+            root.setAttributeNS(EpubWriter.EMPTY_NAMESPACE_PREFIX, OPFAttributes.uniqueIdentifier, PackageDocumentBase.BOOK_ID_ID);
+
+            PackageDocumentMetadataWriter.writeMetaData(book, root, document);
+
+            this.writeManifest(book, root, document);
+            this.writeSpine(book, root, document);
+            this.writeGuide(book, root, document);
+
+            document.appendChild(root);
+
+            //write document to file
+            let xmlSerializer = new XMLSerializer();
+            let xmlDocument: string = xmlSerializer.serializeToString(document);
+            let num = fs.writeSync(fd, xmlDocument);
+            console.error("file content.+++++++++++ /xmlDocument:" + xmlDocument);
+        } catch (e) {
+            // TODO Auto-generated catch block
+            console.error(e);
+            console.error("--------PackageDocumentWriter-------write--------" + e);
+        }
+    }
+
+    /**
+     * Writes the package's spine.
+     *
+     * @param book
+     * @param serializer
+     * @throws IOException
+     * @throws IllegalStateException
+     * @throws IllegalArgumentException
+     * @throws XMLStreamException
+     */
+    private static writeSpine(book: Book, parentElement: Element, document: Document): void {
+
+        let spineElement = document.createElementNS(PackageDocumentBase.NAMESPACE_OPF, OPFTags.spine);
+        //todo
+        let res = book.getSpine().getTocResource();
+        let resId: string = res === undefined ? NCXDocument.NCX_ITEM_ID : res.getId();
+        spineElement.setAttributeNS(EpubWriter.EMPTY_NAMESPACE_PREFIX, OPFAttributes.toc, resId);
+
+        if (book.getCoverPage() != null // there is a cover page
+        && book.getSpine().findFirstResourceById(book.getCoverPage().getId()) < 0) { // cover page is not already in the spine
+            // write the cover html file
+            let itemrefElement = document.createElementNS(PackageDocumentBase.NAMESPACE_OPF, OPFTags.itemref);
+            itemrefElement.setAttributeNS(EpubWriter.EMPTY_NAMESPACE_PREFIX, OPFAttributes.idref, book.getCoverPage().getId());
+            itemrefElement.setAttributeNS(EpubWriter.EMPTY_NAMESPACE_PREFIX, OPFAttributes.linear, "no");
+            spineElement.appendChild(itemrefElement);
+        }
+        PackageDocumentWriter.writeSpineItems(book.getSpine(), spineElement, document);
+        parentElement.appendChild(spineElement);
+    }
+
+    private static writeManifest(book: Book, parentElement: Element, document: Document): void {
+
+        let manifestElement = document.createElementNS(PackageDocumentBase.NAMESPACE_OPF, OPFTags.manifest);
+
+        let itemElement = document.createElementNS(PackageDocumentBase.NAMESPACE_OPF, OPFTags.item);
+        itemElement.setAttributeNS(EpubWriter.EMPTY_NAMESPACE_PREFIX, OPFAttributes.id, EpubWriter.getNcxId());
+        itemElement.setAttributeNS(EpubWriter.EMPTY_NAMESPACE_PREFIX, OPFAttributes.href, EpubWriter.getNcxHref());
+        itemElement.setAttributeNS(EpubWriter.EMPTY_NAMESPACE_PREFIX, OPFAttributes.media_type, EpubWriter.getNcxMediaType());
+        manifestElement.appendChild(itemElement);
+
+        for (let resource of PackageDocumentWriter.getAllResourcesSortById(book)) {
+            PackageDocumentWriter.writeItem(book, resource, manifestElement, document);
+        }
+
+        parentElement.appendChild(manifestElement);
+    }
+
+    private static getAllResourcesSortById(book: Book): List<EpubResource> {
+        let allResources = Array.from(book.getResources().getAll());
+
+        let sortResources = allResources.sort((resource1: EpubResource, resource2: EpubResource) => {
+            return StringUtil.compareToIgnoreCase(resource1.getId(), resource2.getId());
+        });
+
+        return sortResources;
+    }
+
+    /**
+     * Writes a resources as an item element
+     * @param resource
+     * @param serializer
+     * @throws IOException
+     * @throws IllegalStateException
+     * @throws IllegalArgumentException
+     * @throws XMLStreamException
+     */
+    private static writeItem(book: Book, resource: EpubResource, parentElement: Element, document: Document): void {
+        if (resource == null ||
+        (resource.getMediaType() == MediatypeService.NCX
+        && book.getSpine().getTocResource() != null)) {
+            return;
+        }
+        if (StringUtil.isBlank(resource.getId())) {
+            console.error("resource id must not be empty (href: " + resource.getHref() + ", mediatype:" + resource.getMediaType() + ")");
+            return;
+        }
+        if (StringUtil.isBlank(resource.getHref())) {
+            console.error("resource href must not be empty (id: " + resource.getId() + ", mediatype:" + resource.getMediaType() + ")");
+            return;
+        }
+        if (resource.getMediaType() == null) {
+            console.error("resource mediatype must not be empty (id: " + resource.getId() + ", href:" + resource.getHref() + ")");
+            return;
+        }
+
+        let itemElement = document.createElementNS(PackageDocumentBase.NAMESPACE_OPF, OPFTags.item);
+        itemElement.setAttributeNS(EpubWriter.EMPTY_NAMESPACE_PREFIX, OPFAttributes.id, resource.getId());
+        itemElement.setAttributeNS(EpubWriter.EMPTY_NAMESPACE_PREFIX, OPFAttributes.href, resource.getHref());
+        itemElement.setAttributeNS(EpubWriter.EMPTY_NAMESPACE_PREFIX, OPFAttributes.media_type, resource.getMediaType().getName());
+        parentElement.appendChild(itemElement);
+    }
+
+    /**
+     * List all spine references
+     * @throws IOException
+     * @throws IllegalStateException
+     * @throws IllegalArgumentException
+     */
+
+    private static writeSpineItems(spine: Spine, parentElement: Element, document: Document): void {
+
+        for (let spineReference of spine.getSpineReferences()) {
+            let itemrefElement = document.createElementNS(PackageDocumentBase.NAMESPACE_OPF, OPFTags.itemref);
+            itemrefElement.setAttributeNS(EpubWriter.EMPTY_NAMESPACE_PREFIX, OPFAttributes.idref, spineReference.getResourceId());
+
+            if (!spineReference.isLinear()) {
+                itemrefElement.setAttributeNS(EpubWriter.EMPTY_NAMESPACE_PREFIX, OPFAttributes.linear, OPFValues.no);
+            }
+            parentElement.appendChild(itemrefElement);
+        }
+    }
+
+    private static writeGuide(book: Book, parentElement: Element, document: Document): void {
+
+        let guideElement = document.createElementNS(PackageDocumentBase.NAMESPACE_OPF, OPFTags.guide);
+
+        PackageDocumentWriter.ensureCoverPageGuideReferenceWritten(book.getGuide(), guideElement, document);
+        for (let reference of book.getGuide().getReferences()) {
+            PackageDocumentWriter.writeGuideReference(reference, guideElement, document);
+        }
+
+        parentElement.appendChild(guideElement);
+    }
+
+    private static ensureCoverPageGuideReferenceWritten(guide: Guide, parentElement: Element, document: Document): void{
+        if (!(guide.getGuideReferencesByType(GuideReference.COVER).length == 0)) {
+            return;
+        }
+        let coverPage: EpubResource = guide.getCoverPage();
+        if (coverPage != null) {
+            PackageDocumentWriter.writeGuideReference(new GuideReference(guide.getCoverPage(), GuideReference.COVER, GuideReference.COVER), parentElement, document);
+        }
+    }
+
+    private static writeGuideReference(reference: GuideReference, parentElement: Element, document: Document): void {
+        if (reference == null) {
+            return;
+        }
+
+        let ele = document.createElementNS(PackageDocumentBase.NAMESPACE_OPF, OPFTags.reference);
+        ele.setAttributeNS(EpubWriter.EMPTY_NAMESPACE_PREFIX, OPFAttributes.type, reference.getType());
+        ele.setAttributeNS(EpubWriter.EMPTY_NAMESPACE_PREFIX, OPFAttributes.href, reference.getCompleteHref());
+        if (StringUtil.isNotBlank(reference.getTitle())) {
+            ele.setAttributeNS(EpubWriter.EMPTY_NAMESPACE_PREFIX, OPFAttributes.title, reference.getTitle());
+        }
+        parentElement.appendChild(ele);
+    }
+}
+
+export default PackageDocumentWriter
