@@ -1,0 +1,24 @@
+{
+  "string": [
+    {
+      "name": "entry_desc",
+      "value": "description"
+    },
+    {
+      "name": "MainAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "MainAbility_label",
+      "value": "smbj"
+    },
+    {
+      "name": "internet_permission",
+      "value": "get internet permission"
+    },
+    {
+      "name": "get_wifi_info_permission",
+      "value": "get internet permission"
+    }
+  ]
+}
