@@ -8,17 +8,23 @@
       "default",
       "tablet"
     ],
+    "metadata": [
+      {
+        "name":"ArkTSPartialUpdate",
+        "value": "true"
+      }
+    ],
     "deliveryWithInstall": true,
     "installationFree": false,
     "pages": "$profile:test_pages",
     "abilities": [
       {
         "name": "TestAbility",
-        "srcEntrance": "./ets/testability/TestAbility.ets",
+        "srcEntry": "./ets/testability/TestAbility.ets",
         "description": "$string:TestAbility_desc",
         "icon": "$media:icon",
         "label": "$string:TestAbility_label",
-        "visible": true,
+        "exported": true,
         "startWindowIcon": "$media:icon",
         "startWindowBackground": "$color:start_window_background",
         "skills": [

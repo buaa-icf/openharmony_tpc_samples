@@ -15,23 +15,21 @@
  
 import hilog from '@ohos.hilog';
 
+import abilityTest from '../../test/Ability.test'
 @Entry
 @Component
 struct Index {
+  @State message: string = 'Hello World'
   aboutToAppear() {
     hilog.info(0x0000, 'testTag', '%{public}s', 'TestAbility index aboutToAppear');
   }
- @State message: string = 'Hello World'
+
    build() {
          Row() {
            Column() {
-             Text(this.message)
-               .fontSize(50)
-               .fontWeight(FontWeight.Bold)
+
              Button() {
-               Text('next page')
-                 .fontSize(20)
-                 .fontWeight(FontWeight.Bold)
+
              }.type(ButtonType.Capsule)
              .margin({
                top: 20
