@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "metadata_extractor",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}

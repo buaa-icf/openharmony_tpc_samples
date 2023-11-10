@@ -1,0 +1,16 @@
+{
+	"license": "Apache License 2.0",
+	"devDependencies": {},
+	"name": "entry",
+	"ohos": {
+		"org": "huawei",
+		"directoryLevel": "module",
+		"buildTool": "hvigor"
+	},
+	"description": "example description",
+	"repository": {},
+	"version": "1.0.3",
+	"dependencies": {
+		"@ohos/metadata-extractor": "file:../metadata_extractor"
+	}
+}

@@ -1,0 +1,28 @@
+{
+  "types": "",
+  "keywords": [
+    "OpenHarmony",
+    "metadata",
+    "extractor",
+    "HarmonyOS"
+  ],
+  "author": "hihope",
+  "description": "Extracts Exif, IPTC, XMP, ICC and other metadata from image, video and audio files",
+  "ohos": {
+    "org": "opensource"
+  },
+  "main": "index.ets",
+  "repository": "https://gitee.com/hihopeorg/metadata-extractor",
+  "type": "module",
+  "version": "1.0.3",
+  "tags": [
+    "OpenHarmony",
+    "metadata",
+    "extractor",
+    "HarmonyOS"
+  ],
+  "dependencies": {},
+  "license": "Apache-2.0",
+  "devDependencies": {},
+  "name": "@ohos/metadata-extractor"
+}

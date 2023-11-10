@@ -1,0 +1,129 @@
+/*
+* Copyright (c) 2022 Huawei Device Co., Ltd.
+
+* Permission to use, copy, modify, and/or distribute this software for any purpose
+* with or without fee is hereby granted, provided that the above copyright notice
+* and this permission notice appear in all copies.
+
+* THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+* REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
+* FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+* INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS
+* OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
+* TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
+* THIS SOFTWARE.
+*/
+
+import router from '@ohos.router'
+
+@Entry
+@Component
+struct Picture {
+  build() {
+    Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
+      Column() {
+        Text("GIF")
+          .fontSize(25)
+          .padding(10)
+          .width("100%")
+          .textAlign(TextAlign.Center)
+          .border({ width: "2px", color: "#000000" })
+          .onClick(() => {
+            router.push({
+              url: "pages/GifSample"
+            })
+          })
+        Text("ICO")
+          .fontSize(25)
+          .padding(10)
+          .width("100%")
+          .textAlign(TextAlign.Center)
+          .border({ width: "2px", color: "#000000" })
+          .onClick(() => {
+            router.push({
+              url: "pages/IcoSample"
+            })
+          })
+        Text("PCX")
+          .fontSize(25)
+          .padding(10)
+          .width("100%")
+          .textAlign(TextAlign.Center)
+          .border({ width: "2px", color: "#000000" })
+          .onClick(() => {
+            router.push({
+              url: "pages/PcxSample"
+            })
+          })
+        Text("PNG")
+          .fontSize(25)
+          .padding(10)
+          .width("100%")
+          .textAlign(TextAlign.Center)
+          .border({ width: "2px", color: "#000000" })
+          .onClick(() => {
+            router.push({
+              url: "pages/PngSample"
+            })
+          })
+        Text("Bmp")
+          .fontSize(25)
+          .padding(10)
+          .width("100%")
+          .textAlign(TextAlign.Center)
+          .border({ width: "2px", color: "#000000" })
+          .onClick(() => {
+            router.push({
+              url: "pages/BmpSample"
+            })
+          })
+        Text("Eps")
+          .fontSize(25)
+          .padding(10)
+          .width("100%")
+          .textAlign(TextAlign.Center)
+          .border({ width: "2px", color: "#000000" })
+          .onClick(() => {
+            router.push({
+              url: "pages/EpsSample"
+            })
+          })
+        Text("WEBP")
+          .fontSize(25)
+          .padding(10)
+          .width("100%")
+          .textAlign(TextAlign.Center)
+          .border({ width: "2px", color: "#000000" })
+          .onClick(() => {
+            router.push({
+              url: "pages/WebpSample" })
+          })
+        Text("JPG")
+          .fontSize(25)
+          .padding(10)
+          .width("100%")
+          .textAlign(TextAlign.Center)
+          .border({ width: "2px", color: "#000000" })
+          .onClick(() => {
+            router.push({
+              url: "pages/JpgSample"
+            })
+          })
+        Text("PSD")
+          .fontSize(25)
+          .padding(10)
+          .width("100%")
+          .textAlign(TextAlign.Center)
+          .border({ width: "2px", color: "#000000" })
+          .onClick(() => {
+            router.push({
+              url: "pages/PsdSample"
+            })
+          })
+      }
+
+    }
+    .width('100%')
+    .height('100%')
+  }
+}

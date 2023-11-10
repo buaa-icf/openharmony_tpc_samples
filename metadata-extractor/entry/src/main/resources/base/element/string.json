@@ -1,0 +1,16 @@
+{
+  "string": [
+    {
+      "name": "metadata",
+      "value": "metadata"
+    },
+    {
+      "name": "MainAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "MainAbility_label",
+      "value": "metadata-extractor"
+    }
+  ]
+}
