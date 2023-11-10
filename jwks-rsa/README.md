@@ -7,8 +7,9 @@
 ## 安装教程
 
 ```shell
-npm install @ohos/jwks-rsa --save
+ohpm install @ohos/jwks-rsa 
 ```
+OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
 ## 使用说明
 
@@ -37,10 +38,9 @@ this.publicKey = await signingKey.getPublicKey()
 ```
 
 ## 约束与限制
-
 在下述版本验证通过：
-
-DevEco Studio 版本：3.1 Beta1(3.1.0.200)，SDK:API9 Beta5(3.2.10.6)
+- DevEcoStudio 4.0.3.600
+- OpenHarmony SDK  4.0.10.11(API 10)
 
 ## 目录结构
 

@@ -1,82 +1,65 @@
-/**
- *  The MIT License (MIT)
+/*
+ * Copyright (C) 2022 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *  Copyright (c) 2022 HUAWEI
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
- *
- *  The above copyright notice and this permission notice shall be included in all
- *  copies or substantial portions of the Software.
- *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- *  SOFTWARE.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-import hilog from '@ohos.hilog';
-import Ability from '@ohos.application.Ability'
-import AbilityDelegatorRegistry from '@ohos.application.abilityDelegatorRegistry'
-import { Hypium } from '@ohos/hypium'
-import testsuite from '../test/List.test'
-import Window from '@ohos.window'
 
-export default class TestAbility extends Ability {
-    onCreate(want, launchParam) {
-        hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);
+import UIAbility from '@ohos.app.ability.UIAbility';
+import AbilityDelegatorRegistry from '@ohos.app.ability.abilityDelegatorRegistry';
+import hilog from '@ohos.hilog';
+import { Hypium } from '@ohos/hypium';
+import testsuite from '../test/List.test';
+import window from '@ohos.window';
+import Want from '@ohos.app.ability.Want';
+import AbilityConstant from '@ohos.app.ability.AbilityConstant';
+
+export default class TestAbility extends UIAbility {
+    onCreate(want: Want, launchParam: AbilityConstant.LaunchParam) {
         hilog.info(0x0000, 'testTag', '%{public}s', 'TestAbility onCreate');
         hilog.info(0x0000, 'testTag', '%{public}s', 'want param:' + JSON.stringify(want) ?? '');
         hilog.info(0x0000, 'testTag', '%{public}s', 'launchParam:'+ JSON.stringify(launchParam) ?? '');
-        var abilityDelegator: any
+        let abilityDelegator:ESObject
         abilityDelegator = AbilityDelegatorRegistry.getAbilityDelegator()
-        var abilityDelegatorArguments: any
+        let abilityDelegatorArguments:ESObject
         abilityDelegatorArguments = AbilityDelegatorRegistry.getArguments()
-        hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);
         hilog.info(0x0000, 'testTag', '%{public}s', 'start run testcase!!!');
         Hypium.hypiumTest(abilityDelegator, abilityDelegatorArguments, testsuite)
     }
 
     onDestroy() {
-        hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);
         hilog.info(0x0000, 'testTag', '%{public}s', 'TestAbility onDestroy');
     }
 
-    onWindowStageCreate(windowStage: Window.WindowStage) {
-        hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);
+    onWindowStageCreate(windowStage: window.WindowStage) {
         hilog.info(0x0000, 'testTag', '%{public}s', 'TestAbility onWindowStageCreate');
-        windowStage.loadContent('TestAbility/pages/index', (err, data) => {
+        windowStage.loadContent('testability/pages/Index', (err, data) => {
             if (err.code) {
-                hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.ERROR);
                 hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');
                 return;
             }
-            hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);
             hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s',
                 JSON.stringify(data) ?? '');
         });
-
-        globalThis.abilityContext = this.context;
     }
 
     onWindowStageDestroy() {
-        hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);
         hilog.info(0x0000, 'testTag', '%{public}s', 'TestAbility onWindowStageDestroy');
     }
 
     onForeground() {
-        hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);
         hilog.info(0x0000, 'testTag', '%{public}s', 'TestAbility onForeground');
     }
 
     onBackground() {
-        hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);
         hilog.info(0x0000, 'testTag', '%{public}s', 'TestAbility onBackground');
     }
 }

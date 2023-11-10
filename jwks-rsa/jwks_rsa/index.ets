@@ -21,15 +21,5 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *  SOFTWARE.
  */
-const { JwksClient } = require('./src/main/ets/common/JwksClient');
-const errors = require('./src/main/ets/common/errors');
 
-module.exports = (options) => {
-  return new JwksClient(options);
-};
-module.exports.JwksClient = JwksClient;
-
-module.exports.ArgumentError = errors.ArgumentError;
-module.exports.JwksError = errors.JwksError;
-module.exports.JwksRateLimitError = errors.JwksRateLimitError;
-module.exports.SigningKeyNotFoundError = errors.SigningKeyNotFoundError;
+export {JwksClient} from './src/main/ets/common/JwksClient'

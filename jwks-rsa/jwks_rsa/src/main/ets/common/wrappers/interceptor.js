@@ -20,7 +20,7 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *  SOFTWARE.
  */
-const retrieveSigningKeys = require('../utils').retrieveSigningKeys;
+import {retrieveSigningKeys} from '../utils';
 
 /**
  * Uses getKeysInterceptor to allow users to retrieve keys from a file,external cache, or provided object before falling back to the jwksUri endpoint
