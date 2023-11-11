@@ -2,15 +2,15 @@
   "string": [
     {
       "name": "module_desc",
-      "value": "icu4j"
+      "value": "模块描述"
     },
     {
       "name": "EntryAbility_desc",
-      "value": "icu4j"
+      "value": "description"
     },
     {
       "name": "EntryAbility_label",
-      "value": "icu4j"
+      "value": "label"
     }
   ]
 }
