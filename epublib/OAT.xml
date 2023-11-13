@@ -95,6 +95,10 @@
                     type="filepath"/>
                 <filteritem
                     desc="测试资源文件"
+                    name="entry/src/main/resources/rawfile/.*"
+                    type="filepath"/>
+                <filteritem
+                    desc="测试资源文件"
                     name="电子书/epub-book.epub"
                     type="filepath"/>
             </filefilter>
