@@ -33,7 +33,6 @@ import { after, ary, before, bind, bindKey, curry, curryRight, debounce, defer, 
   slice,
   spread,
   throttle,
-  toArray,
   unary,
   wrap,
   escape
@@ -60,6 +59,18 @@ export default function functionTest() {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
+    class User {
+      Name: string = ''
+      Address: string = ''
+    }
+    class users {
+      user: string = ''
+    }
+    class Greet{
+      user: string = ''
+      greet: (a: string, b: string) => string = (a: string, b: string) => {return ''}
+    }
+
     it('afterTest01',0, () => {
       let saves = ['profile', 'settings'];
       let done: () => void = after(saves.length, ()=> {
@@ -97,49 +108,77 @@ export default function functionTest() {
       expect(befores()).assertUndefined();
     })
 
-    // it('bindTest01',0, () => {
-    //   let greet = (greeting: string, punctuation: string)=> {
-    //     return greeting + ' ' + this.user + punctuation;
-    //   };
-    //   let object = { 'user': 'fred' };
-    //   let bound: (n: string) => void = bind(greet, object, 'hi');
-    //   expect(JSON.stringify(bound('!'))).assertEqual('"hi fred!"');
-    // })
-    //
-    // it('bindTest02',0, () => {
-    //   let greet = function(greeting, punctuation) {
-    //     return greeting + ' ' + this.user + punctuation;
-    //   };
-    //   let object = { 'user': 'fred' };
-    //   let bound = bind(greet, object, '!');
-    //   expect(JSON.stringify(bound('hi'))).assertEqual('"! fredhi"');
-    // })
-    //
-    // it('bindKeyTest01',0, () => {
-    //   let object = {
-    //     'user': 'fred',
-    //     'greet': function(greeting, punctuation) {
-    //       return greeting + ' ' + this.user + punctuation;
-    //     }
-    //   };
-    //   let bound = bindKey(object, 'greet', 'hi');
-    //   bound('!');
-    //   expect(bound('!')).assertEqual('hi fred!');
-    // })
-    //
-    // it('bindKeyTest02',0, () => {
-    //   let object = {
-    //     'user': 'fred',
-    //     'greet': function(greeting, punctuation) {
-    //       return greeting + ' ' + this.user + punctuation;
-    //     }
-    //   };
-    //   let bound = bindKey(object, 'greet', 'hi');
-    //   object.greet = function(greeting, punctuation) {
-    //     return greeting + 'ya ' + this.user + punctuation;
-    //   };
-    //   expect(bound('!')).assertEqual('hiya fred!');
-    // })
+    it('bindTest01',0, () => {
+      let obj: User = {
+        Name:"NJ",
+        Address:"NONE"
+      };
+      let fun: () => string = () => {
+        return 'Welcome to ' + obj.Name + ' '
+          + 'Address:' + obj.Address
+      };
+      let bound: () => void = bind(fun, obj);
+      expect(JSON.stringify(bound())).assertEqual('"Welcome to NJ Address:NONE"');
+    })
+
+    it('bindTest02',0, () => {
+      let object: users = { user: 'fred' };
+      let greet: (a: string, b: string) => string = (greeting: string, punctuation: string)=> {
+        return greeting + ' ' + object.user + punctuation;
+      };
+      let bound: (a: string) => void = bind(greet, object, '!');
+      expect(JSON.stringify(bound('hi'))).assertEqual('"! fredhi"');
+    })
+
+    it('bindKeyTest01',0, () => {
+      let object: Greet = {
+        user: 'fred',
+        greet: (greeting: string, punctuation: string)=> {
+          return greeting + ' ' + object.user + punctuation;
+        }
+      };
+      let bound: (a: string) => void = bindKey(object, 'greet', 'hi');
+      bound('!');
+      expect(bound('!')).assertEqual('hi fred!');
+    })
+
+    it('bindKeyTest02',0, () => {
+      let object: Greet = {
+        user: 'fred',
+        greet: (greeting: string, punctuation: string)=> {
+          return greeting + ' ' + object.user + punctuation;
+        }
+      };
+      let bound: (a: string) => void = bindKey(object, 'greet', 'hi');
+      object.greet = (greeting: string, punctuation: string)=> {
+        return greeting + 'ya ' + object.user + punctuation;
+      };
+      expect(bound('!')).assertEqual('hiya fred!');
+    })
+
+    it('curryTest01',0, () => {
+      let abc = (a: number, b: number, c: number)=> {
+        return [a, b, c];
+      };
+      let curried: ESObject = curry(abc);
+      expect(JSON.stringify(curried(1)(2)(3))).assertEqual('[1,2,3]');
+    })
+
+    it('curryTest02',0, () => {
+      let abc = (a: number, b: number, c: number)=> {
+        return [a, b, c];
+      };
+      let curried: ESObject = curry(abc);
+      expect(JSON.stringify(curried(1, 2)(3))).assertEqual('[1,2,3]');
+    })
+
+    it('curryRightTest01',0, () => {
+      let abc = (a: number, b: number, c: number)=> {
+        return [a, b, c];
+      };
+      let curried: ESObject = curryRight(abc);
+      expect(JSON.stringify(curried(1)(2)(3))).assertEqual('[3,2,1]');
+    })
 
     it('curryTest01',0, () => {
       let abc = (a: number, b: number, c: number)=> {
@@ -191,14 +230,14 @@ export default function functionTest() {
       let deferString: number = defer((text: string)=> {
         console.log(text);
       }, 'deferred');
-      expect(deferString).assertEqual(40);
+      expect(deferString).assertEqual(61);
     })
 
     it('deferTest02',0, () => {
       let deferString: number = defer((content: string)=> {
         console.log(content);
       }, 'GeeksforGeeks!');
-      expect(deferString).assertEqual(44);
+      expect(deferString).assertEqual(65);
     })
 
     it('delayTest',0, () => {

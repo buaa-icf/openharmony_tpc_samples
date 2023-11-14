@@ -7,7 +7,7 @@
 
 ## 下载安装
 
-```sh
+```shell
 ohpm install lodash
 ```
 OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
@@ -41,11 +41,11 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
 
 在下述版本验证通过：
 
-- DevEco Studio 版本：3.1.1 Release（4.0.3.411），OpenHarmony SDK:API10（4.0.10.2）
+- DevEco Studio 版本：4.0.3.600，OpenHarmony SDK:API10（4.0.10.11）
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 Issue 给我们，当然，我们也非常欢迎你给我们发 PR 。
+使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
 ## 开源协议
 
