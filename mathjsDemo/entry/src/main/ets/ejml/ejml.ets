@@ -22,11 +22,11 @@ import {
 } from 'ml-matrix';
 import router from '@ohos.router';
 
-function routerfun(url) {
-  let options = {
+function routerfun(url: string) {
+  let options: router.RouterOptions = {
     url: url
   }
-  router.push(options)
+  router.pushUrl(options)
 }
 
 @Entry
@@ -103,7 +103,7 @@ struct Index {
           .onClick(() => {
             try {
               let time = Date.now()
-              let l = new CholeskyDecomposition(new Matrix(this.strTransformationArr(this.SymmetricMatrixCholesky)))
+              let l: CholeskyDecomposition = new CholeskyDecomposition(new Matrix(this.strTransformationArr(this.SymmetricMatrixCholesky)))
               this.CholeskyMatrix = l.lowerTriangularMatrix;
               let time1 = Date.now()
               this.mathTimeCholesky = (time1 - time).toString()
@@ -200,7 +200,7 @@ struct Index {
           .onClick(() => {
             try {
               let time = Date.now()
-              let l = new EigenvalueDecomposition(new Matrix(this.strTransformationArr(this.SymmetricMatrix)))
+              let l: EigenvalueDecomposition = new EigenvalueDecomposition(new Matrix(this.strTransformationArr(this.SymmetricMatrix)))
               this.eigenvalueMatrix = l.diagonalMatrix;
               this.eigenvalueMatrix1 = l.eigenvectorMatrix;
               this.eigenvalueMatrix2 = l.realEigenvalues;
@@ -589,7 +589,7 @@ struct Index {
           .onClick(() => {
             try {
               let time = Date.now()
-              let l = new LuDecomposition(new Matrix(this.strTransformationArr(this.ludigMatrix)))
+              let l: LuDecomposition = new LuDecomposition(new Matrix(this.strTransformationArr(this.ludigMatrix)))
               this.luMatrix = l.lowerTriangularMatrix;
               this.luMatrix1 = l.upperTriangularMatrix;
               this.luMatrix2 = l.pivotPermutationVector;
@@ -683,16 +683,16 @@ struct Index {
   }
 
   strTransformationArr(str: string): Array<Array<number>> {
-    var arr = str.split(";");
+    let arr: Array<string> = str.split(";");
 
-    var array = new Array(arr.length);
+    let array: Array<Array<number>> = new Array(arr.length);
 
-    for (var i = 0; i < arr.length; i++) {
-      var temp = new Array(2);
+    for (let i = 0; i < arr.length; i++) {
+      let temp: Array<string> = new Array(2);
       temp = arr[i].split(",");
       array[i] = new Array(temp.length);
 
-      for (var j = 0; j < temp.length; j++) {
+      for (let j = 0; j < temp.length; j++) {
         array[i][j] = Number(temp[j]);
       }
     }

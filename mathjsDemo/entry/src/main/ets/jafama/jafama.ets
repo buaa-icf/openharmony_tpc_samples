@@ -16,11 +16,11 @@ import * as math from 'mathjs';
 import router from '@ohos.router';
 
 
-function routerfun(url) {
-  let options = {
+function routerfun(url: string) {
+  let options: router.RouterOptions = {
     url: url
   }
-  router.push(options)
+  router.pushUrl(options)
 }
 
 @Entry
@@ -67,28 +67,28 @@ struct Index {
   @State mathTimeLog10: string = this.zerosStr
   @State mathPow: string = this.zerosStr
   @State mathTimePow: string = this.zerosStr
-  mathPow1: string
-  mathPow2: string
-  mathLog101: string
-  mathLog1p1: string
-  mathHypot1: string
-  mathHypot2: string
-  mathCoshm: string
-  mathCeil1: string
-  mathCbrt1: string
-  mathAtanh1: string
-  mathACosh1p1: string
-  mathAbsNeg1: string
-  mathlog2: string
-  mathacosh
-  mathasinh
-  mathatan1
-  mathatan2
-  mathcosh
-  mathsinh
-  mathtanh
-  mathceil
-  mathodd
+  mathPow1: string = ''
+  mathPow2: string = ''
+  mathLog101: string = ''
+  mathLog1p1: string = ''
+  mathHypot1: string = ''
+  mathHypot2: string = ''
+  mathCoshm: string = ''
+  mathCeil1: string = ''
+  mathCbrt1: string = ''
+  mathAtanh1: string = ''
+  mathACosh1p1: string = ''
+  mathAbsNeg1: string = ''
+  mathlog2: string = ''
+  mathacosh: string = ''
+  mathasinh: string = ''
+  mathatan1: string = ''
+  mathatan2: string = ''
+  mathcosh: string = ''
+  mathsinh: string = ''
+  mathtanh: string = ''
+  mathceil: string = ''
+  mathodd: string = ''
 
   build() {
     Scroll(this.scroller) {
@@ -739,11 +739,11 @@ struct Index {
   }
 }
 
-function isEven( x ) {
+function isEven( x: number ): boolean {
   return isInteger( x/2.0 );
 }
 
-function isOdd( x ) {
+function isOdd( x: number ): boolean {
   // Check sign to prevent overflow...
   if ( x > 0.0 ) {
     return isEven( x-1.0 );
@@ -751,7 +751,7 @@ function isOdd( x ) {
   return isEven( x+1.0 );
 }
 
-function isInteger( x ) {
+function isInteger( x: number ): boolean {
   return (floor(x) === x);
 }
 

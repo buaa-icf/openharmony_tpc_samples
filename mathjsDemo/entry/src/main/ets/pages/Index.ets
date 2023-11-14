@@ -14,8 +14,8 @@
  */
 import router from '@ohos.router';
 
-function routerfun(url) {
-  let options = {
+function routerfun(url: string) {
+  let options: router.RouterOptions = {
     url: url
   }
   router.pushUrl(options)

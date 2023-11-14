@@ -15,11 +15,11 @@
 import * as math from 'mathjs';
 import router from '@ohos.router';
 
-function routerfun(url) {
-  let options = {
+function routerfun(url: string) {
+  let options: router.RouterOptions = {
     url: url
   }
-  router.push(options)
+  router.pushUrl(options)
 }
 
 @Entry

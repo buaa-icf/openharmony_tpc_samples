@@ -20,6 +20,8 @@
 | bignumber.js |https://github.com/MikeMcl/bignumber.js       |       ohpm install bignumber.js       |
 | matrix | https://github.com/mljs/matrix |        ohpm install ml-matrix         |
 
+OpenHarmony ohpm环境配置等更多内容，请参考[如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+
 ## 使用说明
 
 ### mathjs 使用功能
@@ -82,9 +84,9 @@
 ``` javascript
 	import { Matrix } from 'ml-matrix'
 
-	var A = new Matrix([[1, 1],[2, 2]]);
+	let A = new Matrix([[1, 1],[2, 2]]);
 
-	var B = new Matrix([[3, 3],[1, 1]]);
+	let B = new Matrix([[3, 3],[1, 1]]);
 
 	const addition = Matrix.add(A, B);//[[4, 4], [3, 3], rows: 2, columns: 2]
 
@@ -119,7 +121,7 @@
 ## 约束与限制
 在下述版本验证通过：
 
-DevEco Studio 版本：4.0 Beta2（4.0.3.411），OpenHarmony SDK:API10（4.0.10.2）。
+DevEco Studio 版本：4.0 Beta2（4.0.3.600），OpenHarmony SDK:API10（4.0.10.11）。
 
 ## 贡献代码
 使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
