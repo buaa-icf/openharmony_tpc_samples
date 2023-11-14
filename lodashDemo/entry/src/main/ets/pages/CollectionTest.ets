@@ -24,32 +24,24 @@ struct Index {
 
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
-      Button('点击遍历集合中的每个元素')
+      Button('遍历集合中的每个元素')
         .onClick(() => {
-           function Foo() {
-               this.a = 1;
-           }
-          function Bar() {
-              this.c = 3;
-          }
-          Foo.prototype.b = 2;
-          Bar.prototype.d = 4;
-          forEach([1, 2, 'a', 'b'], value =>
+          forEach([1, 2, 'a', 'b'], (value: number) =>
           console.log("forEach:" + value)
           )
         }).margin(10)
 
       Text("显示集合中一个随机元素:" + JSON.stringify(this.sampleArray))
-      Button('点击将获得集合中一个随机元素')
+      Button('将获得集合中一个随机元素')
         .onClick(() => {
           this.sampleArray = sample([0, undefined, 1, false, 2, 'string', 3, true, null])
           console.log('sample:' + JSON.stringify(this.sampleArray))
         }).margin(10)
 
       Text("显示新扁平化数组:" + JSON.stringify(this.resultArray))
-      Button('点击展示新扁平化数组')
+      Button('展示新扁平化数组')
         .onClick(() => {
-          function duplicate(n) {
+          let duplicate: (n: number) => void = (n: number): number[] => {
              return [n, n]
           }
           this.resultArray = flatMap([1, 2], duplicate)

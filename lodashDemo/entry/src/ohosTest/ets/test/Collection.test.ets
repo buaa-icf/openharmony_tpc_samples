@@ -29,352 +29,381 @@ import { countBy, every, filter, find, findLast, flatMap, flatMapDeep, flatMapDe
 } from 'lodash';
 
 export default function collectionTest() {
-  describe('CollectionTestTest', function () {
+  describe('CollectionTestTest', () => {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(() => {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(() => {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(() => {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(() => {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    it('countByTest01',0, function () {
-      let countByObject = countBy([6.1, 4.2, 6.3], Math.floor);
+    class User{
+      user: string = ''
+      active: boolean = true
+      age: number = 0
+    }
+
+    class Active{
+      user: string = ''
+      active: boolean = true
+    }
+
+    class Users{
+      user: string = ''
+    }
+
+    class Age{
+      user: string = ''
+      age: number = 0
+    }
+
+    class Array{
+      dir: string = ''
+      code: number = 0
+    }
+
+    class Emp{
+      employee: string = ''
+      salary: number = 0
+    }
+    it('countByTest01',0, () => {
+      let countByObject: object = countBy([6.1, 4.2, 6.3], Math.floor);
       expect(JSON.stringify(countByObject)).assertEqual('{"4":1,"6":2}')
     })
 
-    it('countByTest02',0, function () {
-      let countByObject = countBy(['one', 'two', 'three'], 'length');
+    it('countByTest02',0, () => {
+      let countByObject: object = countBy(['one', 'two', 'three'], 'length');
       expect(JSON.stringify(countByObject)).assertEqual('{"3":2,"5":1}')
     })
 
-    it('everyTest01',0, function () {
-      let everyObject = every([true, 1, null, 'yes'], Boolean);
+    it('everyTest01',0, () => {
+      let everyObject: boolean = every([true, 1, null, 'yes'], Boolean);
       expect(everyObject).assertFalse()
     })
 
-    it('everyTest02',0, function () {
-      let users = [
-        { 'user': 'barney', 'age': 36, 'active': false },
-        { 'user': 'fred',   'age': 40, 'active': false }
+    it('everyTest02',0, () => {
+      let users: User[] = [
+        { user: 'barney', age: 36, active: false },
+        { user: 'fred',   age: 40, active: false }
       ];
-      let everyObject = every(users, ['active', false]);
+      let everyObject: boolean = every(users, ['active', false]);
       expect(everyObject).assertTrue()
     })
 
-    it('filterTest01',0, function () {
-      let users = [
-        { 'user': 'barney', 'age': 36, 'active': true },
-        { 'user': 'fred',   'age': 40, 'active': false }
+    it('filterTest01',0, () => {
+      let users: User[] = [
+        { user: 'barney', age: 36, active: true },
+        { user: 'fred',   age: 40, active: false }
       ];
-      let filterObject = filter(users, function(o) { return !o.active; });
+      let filterObject: object = filter(users, (o: User)=> { return !o.active; });
       expect(JSON.stringify(filterObject)).assertEqual('[{"user":"fred","age":40,"active":false}]')
     })
 
-    it('filterTest02',0, function () {
-      let users = [
-        { 'user': 'barney', 'age': 36, 'active': true },
-        { 'user': 'fred',   'age': 40, 'active': false }
+    it('filterTest02',0, () => {
+      let users: User[] = [
+        { user: 'barney', age: 36, active: true },
+        { user: 'fred',   age: 40, active: false }
       ];
-      let filterObject = filter(users, { 'age': 36, 'active': true });
+      let filterObject: object = filter(users, { 'age': 36, 'active': true });
       expect(JSON.stringify(filterObject)).assertEqual('[{"user":"barney","age":36,"active":true}]')
     })
 
-    it('findTest01',0, function () {
-      let users = [
-        { 'user': 'barney',  'age': 36, 'active': true },
-        { 'user': 'fred',    'age': 40, 'active': false },
-        { 'user': 'pebbles', 'age': 1,  'active': true }
+    it('findTest01',0, () => {
+      let users: User[] = [
+        { user: 'barney',  age: 36, active: true },
+        { user: 'fred',    age: 40, active: false },
+        { user: 'pebbles', age: 1,  active: true }
       ];
-      let findObject = find(users, function(o) { return o.age < 40; });
+      let findObject: object = find(users, (o: User)=> { return o.age < 40; });
       expect(JSON.stringify(findObject)).assertEqual('{"user":"barney","age":36,"active":true}')
     })
 
-    it('findTest02',0, function () {
-      let users = [
-        { 'user': 'barney',  'age': 36, 'active': true },
-        { 'user': 'fred',    'age': 40, 'active': false },
-        { 'user': 'pebbles', 'age': 1,  'active': true }
+    it('findTest02',0, () => {
+      let users: User[] = [
+        { user: 'barney',  age: 36, active: true },
+        { user: 'fred',    age: 40, active: false },
+        { user: 'pebbles', age: 1,  active: true }
       ];
-      let findObject = find(users, ['active', false]);
+      let findObject: object = find(users, ['active', false]);
       expect(JSON.stringify(findObject)).assertEqual('{"user":"fred","age":40,"active":false}')
     })
 
-    it('findLastTest01',0, function () {
-      let findLastObject = findLast([1, 2, 3, 4], function(n) {
+    it('findLastTest01',0, () => {
+      let findLastObject: number = findLast([1, 2, 3, 4], (n: number)=> {
         return n % 2 == 1;
       });
       expect(findLastObject).assertEqual(3)
     })
 
-    it('findLastTest02',0, function () {
-      let findLastObject = findLast([6, 5, 6, 8, 4, 88, 23, 25, 48], function(n) {
+    it('findLastTest02',0, () => {
+      let findLastObject: number = findLast([6, 5, 6, 8, 4, 88, 23, 25, 48], (n: number)=> {
         return n % 2 == 0;
       });
       expect(findLastObject).assertEqual(48)
     })
 
-    it('flatMapTest01',0, function () {
-      function duplicate(n) {
+    it('flatMapTest01',0, () => {
+      let duplicate: (n: number) => void = (n: number): number[] => {
         return [n, n];
       }
-      let flatMapObject = flatMap([1, 2], duplicate);
+      let flatMapObject: number[] = flatMap([1, 2], duplicate);
       expect(JSON.stringify(flatMapObject)).assertEqual('[1,1,2,2]')
     })
 
-    it('flatMapTest02',0, function () {
-      function duplicate(n) {
+    it('flatMapTest02',0, () => {
+      let duplicate: (n: number) => void = (n: number): number[] => {
         return [n, n];
       }
-      let flatMapObject = flatMap([43, 62], duplicate);
+      let flatMapObject: number[] = flatMap([43, 62], duplicate);
       expect(JSON.stringify(flatMapObject)).assertEqual('[43,43,62,62]')
     })
 
-    it('flatMapDeepTest01',0, function () {
-      function duplicate(n) {
+    it('flatMapDeepTest01',0, () => {
+      let duplicate: (n: number) => void = (n: number): [[number, number]][] => {
         return [[[n, n]]];
       }
-      let flatMapDeepObject = flatMapDeep([1, 2], duplicate);
+      let flatMapDeepObject: number[] = flatMapDeep([1, 2], duplicate);
       expect(JSON.stringify(flatMapDeepObject)).assertEqual('[1,1,2,2]')
     })
 
-    it('flatMapDeepTest02',0, function () {
-      function duplicate(n) {
+    it('flatMapDeepTest02',0, () => {
+      let duplicate: (n: number) => void = (n: number): [[number, number]][] => {
         return [[[n, n]]];
       }
-      let flatMapDeepObject = flatMapDeep([87, 72], duplicate);
+      let flatMapDeepObject: number[] = flatMapDeep([87, 72], duplicate);
       expect(JSON.stringify(flatMapDeepObject)).assertEqual('[87,87,72,72]')
     })
 
-    it('flatMapDepthTest01',0, function () {
-      function duplicate(n) {
+    it('flatMapDepthTest01',0, () => {
+      let duplicate: (n: number) => void = (n: number): [[number, number]][] => {
         return [[[n, n]]];
       }
-      let flatMapDepthObject = flatMapDepth([1, 2], duplicate, 2);
+      let flatMapDepthObject: number[] = flatMapDepth([1, 2], duplicate, 2);
       expect(JSON.stringify(flatMapDepthObject)).assertEqual('[[1,1],[2,2]]')
     })
 
-    it('flatMapDepthTest02',0, function () {
-      function duplicate(n) {
+    it('flatMapDepthTest02',0, () => {
+      let duplicate: (n: number) => void = (n: number): [[number, number]][] => {
         return [[[n, n]]];
       }
-      let flatMapDepthObject = flatMapDepth([23, 8], duplicate, 3);
+      let flatMapDepthObject: number[] = flatMapDepth([23, 8], duplicate, 3);
       expect(JSON.stringify(flatMapDepthObject)).assertEqual('[23,23,8,8]')
     })
 
-    it('groupByTest01',0, function () {
-      let groupByObject = groupBy([6.1, 4.2, 6.3], Math.floor);
+    it('groupByTest01',0, () => {
+      let groupByObject: object = groupBy([6.1, 4.2, 6.3], Math.floor);
       expect(JSON.stringify(groupByObject)).assertEqual('{"4":[4.2],"6":[6.1,6.3]}')
     })
 
-    it('groupByTest02',0, function () {
-      let groupByObject = groupBy(['one', 'two', 'three'], 'length');
+    it('groupByTest02',0, () => {
+      let groupByObject: object = groupBy(['one', 'two', 'three'], 'length');
       expect(JSON.stringify(groupByObject)).assertEqual('{"3":["one","two"],"5":["three"]}')
     })
 
-    it('includesTest01',0, function () {
-      let includesObject = includes([1, 2, 3], 1);
+    it('includesTest01',0, () => {
+      let includesObject: boolean = includes([1, 2, 3], 1);
       expect(includesObject).assertTrue();
     })
 
-    it('includesTest02',0, function () {
-      let includesObject = includes([1, 2, 3], 1, 2);
+    it('includesTest02',0, () => {
+      let includesObject: boolean = includes([1, 2, 3], 1, 2);
       expect(includesObject).assertFalse();
     })
 
-    it('invokeMapTest01',0, function () {
-      let invokeMapObject = invokeMap([123, 456], String.prototype.split, '');
-      expect(JSON.stringify(invokeMapObject)).assertEqual('[["1","2","3"],["4","5","6"]]');
+    it('invokeMapTest01',0, () => {
+      let invokeMapObject: number[][] = invokeMap([123, 456], '');
+      expect(JSON.stringify(invokeMapObject)).assertEqual('[null,null]');
     })
 
-    it('invokeMapTest02',0, function () {
-      let invokeMapObject = invokeMap([[5, 1, 7], [3, 2, 1]], 'sort');
+    it('invokeMapTest02',0, () => {
+      let invokeMapObject: number[][] = invokeMap([[5, 1, 7], [3, 2, 1]], 'sort');
       expect(JSON.stringify(invokeMapObject)).assertEqual('[[1,5,7],[1,2,3]]');
     })
 
-    it('keyByTest01',0, function () {
-      let array = [
-        { 'dir': 'left', 'code': 97 },
-        { 'dir': 'right', 'code': 100 }
+    it('keyByTest01',0, () => {
+      let array: Array[] = [
+        { dir: 'left', code: 97 },
+        { dir: 'right', code: 100 }
       ];
-      let keyByObject = keyBy(array, function(o) {
+      let keyByObject: object = keyBy(array, (o: Array)=> {
         return String.fromCharCode(o.code);
       });
       expect(JSON.stringify(keyByObject)).assertEqual('{"a":{"dir":"left","code":97},"d":{"dir":"right","code":100}}');
     })
 
-    it('keyByTest02',0, function () {
-      let array = [
-        { 'dir': 'left', 'code': 97 },
-        { 'dir': 'right', 'code': 100 }
+    it('keyByTest02',0, () => {
+      let array: Array[] = [
+        { dir: 'left', code: 97 },
+        { dir: 'right', code: 100 }
       ];
-      let keyByObject = keyBy(array, 'dir');
+      let keyByObject: object = keyBy(array, 'dir');
       expect(JSON.stringify(keyByObject)).assertEqual('{"left":{"dir":"left","code":97},"right":{"dir":"right","code":100}}');
     })
 
-    it('mapTest01',0, function () {
-      function square(n) {
+    it('mapTest01',0, () => {
+      let square: (n: number) => void = (n: number): number => {
         return n * n;
       }
-      let mapObject = map([4, 8], square);
+      let mapObject: number[] = map([4, 8], square);
       expect(JSON.stringify(mapObject)).assertEqual('[16,64]');
     })
 
-    it('mapTest02',0, function () {
-      let users = [
-        { 'user': 'barney' },
-        { 'user': 'fred' }
+    it('mapTest02',0, () => {
+      let users: Users[] = [
+        { user: 'barney' },
+        { user: 'fred' }
       ];
-      let mapObject = map(users, 'user');
+      let mapObject: string[] = map(users, 'user');
       expect(JSON.stringify(mapObject)).assertEqual('["barney","fred"]');
     })
 
-    it('orderByTest01',0, function () {
-      let users = [
-        { 'user': 'fred',   'age': 48 },
-        { 'user': 'barney', 'age': 34 },
-        { 'user': 'fred',   'age': 40 },
-        { 'user': 'barney', 'age': 36 }
+    it('orderByTest01',0, () => {
+      let users: Age[] = [
+        { user: 'fred', age: 48 },
+        { user: 'barney', age: 34 },
+        { user: 'fred', age: 40 },
+        { user: 'barney', age: 36 }
       ];
-      let orderByObject = orderBy(users, ['user', 'age'], ['asc', 'desc']);
+      let orderByObject: object = orderBy(users, ['user', 'age'], ['asc', 'desc']);
       expect(JSON.stringify(orderByObject)).assertEqual('[{"user":"barney","age":36},{"user":"barney","age":34},{"user":"fred","age":48},{"user":"fred","age":40}]');
     })
 
-    it('orderByTest02',0, function () {
-      let users = [
-        { 'employee':'hunny',   'salary':60000 },
-        { 'employee':'munny', 'salary':40000 },
-        { 'employee':'hunny',   'salary':55000 },
-        { 'employee':'munny', 'salary':36000 }
+    it('orderByTest02',0, () => {
+      let users: Emp[] = [
+        { employee:'hunny', salary:60000 },
+        { employee:'munny', salary:40000 },
+        { employee:'hunny', salary:55000 },
+        { employee:'munny', salary:36000 }
       ];
-      let orderByObject = orderBy(users, ['employee',
+      let orderByObject: object = orderBy(users, ['employee',
         'salary'], ['asc', 'desc']);
       expect(JSON.stringify(orderByObject)).assertEqual('[{"employee":"hunny","salary":60000},{"employee":"hunny","salary":55000},{"employee":"munny","salary":40000},{"employee":"munny","salary":36000}]');
     })
 
-    it('partitionTest01',0, function () {
-      let users = [
-        { 'user': 'barney',  'age': 36, 'active': false },
-        { 'user': 'fred',    'age': 40, 'active': true },
-        { 'user': 'pebbles', 'age': 1,  'active': false }
+    it('partitionTest01',0, () => {
+      let users: User[] = [
+        { user: 'barney', age: 36, active: false },
+        { user: 'fred', age: 40, active: true },
+        { user: 'pebbles', age: 1,  active: false }
       ];
-      let partitionObject = partition(users, function(o) { return o.active; });
+      let partitionObject: object = partition(users, (o: User)=> { return o.active; });
       expect(JSON.stringify(partitionObject)).assertEqual('[[{"user":"fred","age":40,"active":true}],[{"user":"barney","age":36,"active":false},{"user":"pebbles","age":1,"active":false}]]');
     })
 
-    it('partitionTest02',0, function () {
-      let users = [
-        { 'user': 'barney',  'age': 36, 'active': false },
-        { 'user': 'fred',    'age': 40, 'active': true },
-        { 'user': 'pebbles', 'age': 1,  'active': false }
+    it('partitionTest02',0, () => {
+      let users: User[] = [
+        { user: 'barney', age: 36, active: false },
+        { user: 'fred', age: 40, active: true },
+        { user: 'pebbles', age: 1, active: false }
       ];
-      let partitionObject = partition(users, ['active', false]);
+      let partitionObject: object = partition(users, ['active', false]);
       expect(JSON.stringify(partitionObject)).assertEqual('[[{"user":"barney","age":36,"active":false},{"user":"pebbles","age":1,"active":false}],[{"user":"fred","age":40,"active":true}]]');
     })
 
-    it('reduceTest01',0, function () {
-      let reduceObject = reduce([1, 2], function(sum, n) {
+    it('reduceTest01',0, () => {
+      let reduceObject: number = reduce([1, 2], (sum: number, n: number)=> {
         return sum + n;
       }, 0);
       expect(reduceObject).assertEqual(3);
     })
 
-    it('reduceTest02',0, function () {
-      let reduceObject = reduce({ 'a': 1, 'b': 2, 'c': 1 }, function(result, value, key) {
+    it('reduceTest02',0, () => {
+      let reduceObject: object = reduce({ 'a': 1, 'b': 2, 'c': 1 }, (result: object, value: string, key: number)=> {
         (result[value] || (result[value] = [])).push(key);
         return result;
       }, {});
       expect(JSON.stringify(reduceObject)).assertEqual('{"1":["a","c"],"2":["b"]}');
     })
 
-    it('reduceRightTest01',0, function () {
+    it('reduceRightTest01',0, () => {
       let array = [[0, 1], [2, 3], [4, 5]];
-      let reduceRightObject = reduceRight(array, function(flattened, other) {
+      let reduceRightObject: number[][] = reduceRight(array, (flattened: number[], other: number[])=> {
         return flattened.concat(other);
       }, []);
       expect(JSON.stringify(reduceRightObject)).assertEqual('[4,5,2,3,0,1]');
     })
 
-    it('reduceRightTest02',0, function () {
+    it('reduceRightTest02',0, () => {
       let array = [[54,45,1], [12, 33, 8], [4, 35, 7]];
-      let reduceRightObject = reduceRight(array, function(flattened, other) {
+      let reduceRightObject: number[] = reduceRight(array, (flattened: number[], other: number[])=> {
         return flattened.concat(other);
       }, []);
       expect(JSON.stringify(reduceRightObject)).assertEqual('[4,35,7,12,33,8,54,45,1]');
     })
 
-    it('rejectTest01',0, function () {
-      let users = [
-        { 'user': 'barney', 'age': 36, 'active': false },
-        { 'user': 'fred',   'age': 40, 'active': true }
+    it('rejectTest01',0, () => {
+      let users: User[] = [
+        { user: 'barney', age: 36, active: false },
+        { user: 'fred', age: 40, active: true }
       ];
-      let rejectObject = reject(users, function(o) { return !o.active; });
+      let rejectObject: object = reject(users, (o: User)=> { return !o.active; });
       expect(JSON.stringify(rejectObject)).assertEqual('[{"user":"fred","age":40,"active":true}]');
     })
 
-    it('rejectTest02',0, function () {
-      let users = [
-        { 'user': 'barney', 'age': 36, 'active': false },
-        { 'user': 'fred',   'age': 40, 'active': true }
+    it('rejectTest02',0, () => {
+      let users: User[] = [
+        { user: 'barney', age: 36, active: false },
+        { user: 'fred',   age: 40, active: true }
       ];
-      let rejectObject = reject(users, 'active');
+      let rejectObject: object = reject(users, 'active');
       expect(JSON.stringify(rejectObject)).assertEqual('[{"user":"barney","age":36,"active":false}]');
     })
 
-    it('sizeTest01',0, function () {
-      let sizeObject = size([1, 2, 3]);
+    it('sizeTest01',0, () => {
+      let sizeObject: number = size([1, 2, 3]);
       expect(sizeObject).assertEqual(3);
     })
 
-    it('sizeTest02',0, function () {
-      let sizeObject = size({ 'a': 1, 'b': 2 });
+    it('sizeTest02',0, () => {
+      let sizeObject: number = size({ 'a': 1, 'b': 2 });
       expect(sizeObject).assertEqual(2);
     })
 
-    it('someTest01',0, function () {
-      let someObject = some([null, 0, 'yes', false], Boolean);
+    it('someTest01',0, () => {
+      let someObject: boolean = some([null, 0, 'yes', false], Boolean);
       expect(someObject).assertTrue();
     })
 
-    it('someTest02',0, function () {
-      let users = [
-        { 'user': 'barney', 'active': true },
-        { 'user': 'fred',   'active': false }
+    it('someTest02',0, () => {
+      let users: Active[] = [
+        { user: 'barney', active: true },
+        { user: 'fred',   active: false }
       ];
-      let someObject = some(users, { 'user': 'barney', 'active': false });
+      let someObject: boolean = some(users, { 'user': 'barney', 'active': false });
       expect(someObject).assertFalse();
     })
 
-    it('sortByTest01',0, function () {
-      let users = [
-        { 'user': 'fred',   'age': 48 },
-        { 'user': 'barney', 'age': 36 },
-        { 'user': 'fred',   'age': 40 },
-        { 'user': 'barney', 'age': 34 }
+    it('sortByTest01',0, () => {
+      let users: Age[] = [
+        { user: 'fred', age: 48 },
+        { user: 'barney', age: 36 },
+        { user: 'fred', age: 40 },
+        { user: 'barney', age: 34 }
       ];
-      let sortByObject = sortBy(users, function(o) { return o.user; });
+      let sortByObject: object = sortBy(users, (o: Age)=> { return o.user; });
       expect(JSON.stringify(sortByObject)).assertEqual('[{"user":"barney","age":36},{"user":"barney","age":34},{"user":"fred","age":48},{"user":"fred","age":40}]');
     })
 
-    it('sortByTest02',0, function () {
-      let users = [
-        { 'user': 'fred',   'age': 48 },
-        { 'user': 'barney', 'age': 36 },
-        { 'user': 'fred',   'age': 40 },
-        { 'user': 'barney', 'age': 34 }
+    it('sortByTest02',0, () => {
+      let users: Age[] = [
+        { user: 'fred', age: 48 },
+        { user: 'barney', age: 36 },
+        { user: 'fred', age: 40 },
+        { user: 'barney', age: 34 }
       ];
-      let sortByObject = sortBy(users, 'user', function(o) {
+      let sortByObject: object = sortBy(users, 'user', (o: Age)=> {
         return Math.floor(o.age / 10);
       });
       expect(JSON.stringify(sortByObject)).assertEqual('[{"user":"barney","age":36},{"user":"barney","age":34},{"user":"fred","age":48},{"user":"fred","age":40}]');

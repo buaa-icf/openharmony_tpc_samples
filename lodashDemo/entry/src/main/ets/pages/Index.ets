@@ -28,6 +28,26 @@ import {add,camelCase,capitalize,ceil,chunk, compact,countBy,deburr,difference,d
 } from 'lodash'
 import router from '@ohos.router'
 
+class finds {
+  user: string = ''
+  active: boolean = true
+}
+
+class User {
+  user: string = ''
+  age: number = 0
+  active: boolean = true
+}
+
+class array {
+  dir: string = ''
+  code: number = 0
+}
+
+class order {
+  user: string = ''
+  age: number = 0
+}
 @Entry
 @Component
 struct Index {
@@ -143,20 +163,20 @@ struct Index {
     console.info("fill:" + fill([4, 6, 8, 10], '*', 1, 3));
     //此方法与 find 类似，只是它返回第一个元素的索引，谓词返回truthy for 而不是元素本身
     // => 0
-    var users = [
-      { 'user': 'barney',  'active': false },
-      { 'user': 'fred',    'active': false },
-      { 'user': 'pebbles', 'active': true }
+    let users: finds[] = [
+      { user: 'barney',  active: false },
+      { user: 'fred',    active: false },
+      { user: 'pebbles', active: true }
     ];
-    console.info("findIndex:" + findIndex(users, function(o) { return o.user == 'barney'; }));
+    console.info("findIndex:" + findIndex(users, (o: ESObject) => { return o.user == 'barney'; }));
     //将阵列展平单层深度。
     // => [1, 2, [3, [4]], 5]
     console.info("flatten:" + flatten([1, [2, [3, [4]], 5]]));
     //toPairs 的倒数；此方法返回一个由键值对组成的对象。
     // => { 'a': 1, 'b': 2 }
     //由于循环打印对象键值对不在本功能测试范畴，以下出现打印有object的可以自己编写循环打印代码验证，本人就不再赘述了
-    var obj = fromPairs([['a', 1], ['b', 2]]);
-    for(let key in obj) {
+    let obj: ESObject = fromPairs([['a', 1], ['b', 2]]);
+    for (let key = 0; key < obj.length; ++key) {
       console.info("fromPairs:" + key + ":" + obj[key]);
     }
     //获取数组的第一个元素
@@ -185,7 +205,7 @@ struct Index {
     console.info("pull:" + pull(['a', 'b', 'c', 'a', 'b', 'c'], 'a', 'c'));
     //从数组中删除所有谓词返回真值的元素，并返回已删除元素的数组。
     // => [2, 4]
-    console.info("remove:" + remove([1, 2, 3, 4], function(n) {
+    console.info("remove:" + remove([1, 2, 3, 4], (n: number) => {
       return n % 2 == 0;
     }));
     //反转数组，使第一个元素成为最后一个元素，第二个元素成为倒数第二个元素，依此类推。
@@ -228,28 +248,28 @@ struct Index {
     console.info("every:" + every([true, 1, null, 'yes'], Boolean));
     //遍历集合的元素，返回一个包含所有元素的数组，谓词返回真值。谓词使用三个参数调用：（值、索引|键、集合）。
     // => objects for ['fred']
-    var users1 = [
-      { 'user': 'barney', 'age': 36, 'active': true },
-      { 'user': 'fred',   'age': 40, 'active': false }
+    let users1: User[] = [
+      { user: 'barney', age: 36, active: true },
+      { user: 'fred',   age: 40, active: false }
     ];
-    console.info("filter:" + filter(users1, function(o) { return !o.active; }));
+    console.info("filter:" + filter(users1, (o: User): boolean => { return !o.active; }));
     //迭代集合的元素，返回第一个元素谓词返回truthy for。谓词使用三个参数调用：（值、索引|键、集合）。
     // => object for 'barney'
-    var users2 = [
-      { 'user': 'barney',  'age': 36, 'active': true },
-      { 'user': 'fred',    'age': 40, 'active': false },
-      { 'user': 'pebbles', 'age': 1,  'active': true }
+    let users2: User[] = [
+      { user: 'barney',  age: 36, active: true },
+      { user: 'fred',    age: 40, active: false },
+      { user: 'pebbles', age: 1,  active: true }
     ];
-    console.info("find:" + find(users2, function(o) { return o.age < 40; }));
+    console.info("find:" + find(users2, (o: User) => { return !o.active; }));
     //通过通过 iteratee 运行集合中的每个元素并展平映射的结果来创建展平的值数组。使用三个参数调用迭代对象：（值、索引|键、集合）。
     // => [1, 1, 2, 2]
-    function duplicate(n) {
+    let duplicate: (n: number) => void = (n: number): number[] => {
       return [n, n];
     }
     console.info("flatMap:" + flatMap([1, 2], duplicate));
     //迭代集合的元素并为每个元素调用 iteratee。使用三个参数调用迭代对象：（值、索引|键、集合）。 Iteratee 函数可以通过显式返回 false 提前退出迭代。
     // => Logs `1` then `2`.
-    forEach([1, 2], function(value) {
+    forEach([1, 2], (value: number) => {
       console.info("forEach:" + value);
     });
     //创建一个由通过 iteratee 运行集合的每个元素的结果生成的键组成的对象。分组值的顺序由它们在集合中出现的顺序决定。每个键对应的值是负责生成键的元素数组。使用一个参数调用迭代对象：（值）。
@@ -263,48 +283,48 @@ struct Index {
     console.info("invokeMap:" + invokeMap([[5, 1, 7], [3, 2, 1]], 'sort'));
     //创建一个由通过 iteratee 运行集合的每个元素的结果生成的键组成的对象。每个键对应的值是负责生成键的最后一个元素。使用一个参数调用迭代对象：（值）。
     // => { 'a': { 'dir': 'left', 'code': 97 }, 'd': { 'dir': 'right', 'code': 100 } }
-    var array1 = [
-      { 'dir': 'left', 'code': 97 },
-      { 'dir': 'right', 'code': 100 }
+    let array1: array[] = [
+      { dir: 'left', code: 97 },
+      { dir: 'right', code: 100 }
     ];
-    console.info("keyBy:" + keyBy(array1, function(o) {
+    console.info("keyBy:" + keyBy(array1, (o: array) => {
       return String.fromCharCode(o.code);
     }));
     //通过 iteratee 运行集合中的每个元素来创建一个值数组。使用三个参数调用 iteratee：（值，索引|键，集合）。
     // => [16, 64]
-    function square(n) {
+    let square: (n: number) => void = (n: number): number => {
       return n * n;
     }
     console.info("map:" + map([4, 8], square));
     //此方法类似于 sortBy ，不同之处在于它允许指定要排序的迭代对象的排序顺序。如果未指定 orders，则所有值都按升序排序。否则，为相应值的降序指定“desc”或“asc”为升序排序。
     // => objects for [['barney', 36], ['barney', 34], ['fred', 48], ['fred', 40]]
-    var users3 = [
-      { 'user': 'fred',   'age': 48 },
-      { 'user': 'barney', 'age': 34 },
-      { 'user': 'fred',   'age': 40 },
-      { 'user': 'barney', 'age': 36 }
+    let users3: order[] = [
+      { user: 'fred',   age: 48 },
+      { user: 'barney', age: 34 },
+      { user: 'fred',   age: 40 },
+      { user: 'barney', age: 36 }
     ];
     console.info("orderBy:" + orderBy(users3, ['user', 'age'], ['asc', 'desc']));
     //创建一个元素数组，分成两组，第一组包含元素谓词返回真值，第二组包含元素谓词返回假值。谓词使用一个参数调用：（值）。
     // => objects for [['fred'], ['barney', 'pebbles']]
-    var users4 = [
-      { 'user': 'barney',  'age': 36, 'active': false },
-      { 'user': 'fred',    'age': 40, 'active': true },
-      { 'user': 'pebbles', 'age': 1,  'active': false }
+    let users4: User[] = [
+      { user: 'barney',  age: 36, active: false },
+      { user: 'fred',    age: 40, active: true },
+      { user: 'pebbles', age: 1,  active: false }
     ];
-    console.info("partition:" + partition(users4, function(o) { return o.active; }));
+    console.info("partition:" + partition(users4, (o: User) => { return !o.active; }));
     //将集合减少到一个值，该值是通过 iteratee 运行集合中每个元素的累积结果，其中每个连续调用都提供前一个的返回值。如果没有给出累加器，则将集合的第一个元素用作初始值。使用四个参数调用 iteratee：（累加器、值、索引|键、集合）。
     // => 3
-    console.info("reduce:" + reduce([1, 2], function(sum, n) {
+    console.info("reduce:" + reduce([1, 2], (sum: number, n: number) => {
       return sum + n;
     }, 0));
     //filter 的反义词；此方法返回谓词不返回真值的集合元素。
     // => objects for ['fred']
-    var users5 = [
-      { 'user': 'barney', 'age': 36, 'active': false },
-      { 'user': 'fred',   'age': 40, 'active': true }
+    let users5: User[] = [
+      { user: 'barney', age: 36, active: false },
+      { user: 'fred',   age: 40, active: true }
     ];
-    console.info("reject:" + reject(users5, function(o) { return !o.active; }));
+    console.info("reject:" + reject(users5, (o: User) => { return !o.active; }));
     //从集合中获取随机元素。
     // => 2
     console.info("sample:" + sample([1, 2, 3, 4]));
@@ -319,13 +339,13 @@ struct Index {
     console.info("some:" + some([null, 0, 'yes', false], Boolean));
     //创建一个元素数组，按通过每个迭代器运行集合中的每个元素的结果按升序排序。此方法执行稳定排序，即保留相等元素的原始排序顺序。使用一个参数调用迭代器：（值）。
     // => objects for [['barney', 36], ['barney', 34], ['fred', 48], ['fred', 40]]
-    var users6 = [
-      { 'user': 'fred',   'age': 48 },
-      { 'user': 'barney', 'age': 36 },
-      { 'user': 'fred',   'age': 40 },
-      { 'user': 'barney', 'age': 34 }
+    let users6: order[] = [
+      { user: 'fred',   age: 48 },
+      { user: 'barney', age: 36 },
+      { user: 'fred',   age: 40 },
+      { user: 'barney', age: 34 }
     ];
-    console.info("sortBy:" + sortBy(users6, [function(o) { return o.user; }]));
+    console.info("sortBy:" + sortBy(users6, [(o: order) => { return o.user; }]));
 
     //数学[Math]拓展模块
     //两个数字相加
@@ -387,9 +407,6 @@ struct Index {
     //如果长度短于长度，则在左侧和右侧填充字符串。如果填充字符不能按长度均匀划分，则填充字符将被截断。
     // => '  abc   '
     console.info("pad:" + pad('abc', 8));
-    //将字符串转换为指定基数的整数。如果 radix 未定义或为 0，则使用 10 的基数，除非 value 是十六进制，在这种情况下使用 16 的基数。
-    // => 8
-    console.info("parseInt:" + parseInt('08'));
     //重复给定的字符串 n 次。
     // => '***'
     console.info("repeat:" + repeat('*', 3));
@@ -433,7 +450,7 @@ struct Index {
     console.info("defaultTo:" + defaultTo(1, 10));
     //创建一个函数，该函数使用它接收的参数调用迭代器并返回它们的结果。
     // => [4, 1]
-    var func = over([Math.max, Math.min]);
+    let func: ESObject = over([Math.max, Math.min]);
     console.info("over:" + func(1, 2, 3, 4));
     //创建一个数字数组（正数和/或负数），从开始到结束，但不包括结束。如果指定负开始而没有结束或步骤，则使用 -1 的步骤。如果未指定 end，则设置为从 start 开始，然后设置为 0。
     // => [0, 1, 2, 3]

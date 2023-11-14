@@ -21,23 +21,23 @@ struct Index {
 
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
-      Button('点击获取限制在一个区间之间的值')
+      Button('获取限制在一个区间之间的值')
         .onClick(() => {
-          let numberClamp = clamp(10, -5, 5);
+          let numberClamp: number = clamp(10, -5, 5);
           // => 5
           console.log('限制在一个区间之间的值：' + numberClamp);
         }).margin(10);
 
-      Button('点击检查一个数值是否在某一区间之内')
+      Button('检查一个数值是否在某一区间之内')
         .onClick(() => {
-          let isRange = inRange(3, 2, 4);
+          let isRange: boolean = inRange(3, 2, 4);
           // => true
           console.log('检查一个数值是否在某一区间之内：' + isRange);
         }).margin(10)
 
-      Button('点击产生一个包括某一区间之间的数')
+      Button('产生一个包括某一区间之间的数')
         .onClick(() => {
-          let randomNumber = random(0, 5);
+          let randomNumber: number = random(0, 5);
           // => an integer between 0 and 5
           console.log('产生一个包括某一区间之间的数:' + randomNumber);
         }).margin(10)

@@ -24,26 +24,26 @@ struct Index {
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
       Text("显示运行结果:" + JSON.stringify(this.resultArray))
-      Button('点击将数组拆分成多个长度的区块，组成一个新数组')
+      Button('将数组拆分成多个长度的区块，组成一个新数组')
          .onClick(() => {
           this.resultArray = chunk(this.sampleArray, 5)
           console.log('chunk:' + JSON.stringify(this.resultArray))
         }).margin(10)
 
       //false, null,0, "", undefined, 和 NaN 都是被认为是“假值”
-      Button('点击将数组过滤掉假值組成新数组')
+      Button('将数组过滤掉假值組成新数组')
         .onClick(() => {
           this.resultArray = compact([0, undefined, 1, false, 2, '', 3, true, null])
           console.log('compact:' + JSON.stringify(this.resultArray))
         }).margin(10)
 
-      Button('点击展示去重后的数组')
+      Button('展示去重后的数组')
         .onClick(() => {
           this.resultArray = uniq([12,2,3,2,1,2,2,1,1,3,4])
           console.log('[12,2,3,2,1,2,2,1,1,3,4] uniq:' + JSON.stringify(this.resultArray));
         }).margin(10)
 
-      Button('点击展示合并多个数组后新生成的数组')
+      Button('展示合并多个数组后新生成的数组')
         .onClick(() => {
           this.resultArray = union([12,2,6,1],[3,2,1,3,4,6,2],[2,1])
           console.log('[12,2,6,1],[3,2,1,3,4,6,2],[2,1] union:' + JSON.stringify(this.resultArray))
