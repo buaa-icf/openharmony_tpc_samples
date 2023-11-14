@@ -16,23 +16,32 @@
 import { Index } from '../Index';
 import { Logger } from '../lib/Logger';
 import util from '@ohos.util';
+import { Server } from '../lib/Server';
 
+class Default {
+  host: string = ''
+  port: string = ''
+}
+class defaults{
+  primary: Default | ESObject
+  secondary: Default | ESObject
+}
 export interface OnServerMessageListener {
   onMessageChanged(serverMessage: string): void;
 }
 
 export class StunServer {
-  private onServerMessageListener: OnServerMessageListener;
+  private onServerMessageListener: OnServerMessageListener | undefined = undefined;
 
   public setServerMessageListener(onServerMessageListener: OnServerMessageListener): void {
     this.onServerMessageListener = onServerMessageListener;
   }
 
   constructor() {
-    var self = this;
+    let self = this;
     // Set log event handler
-    Logger.getInstance().emitterOn({ eventId: Logger.serverEventId }, function (log) {
-      var serverMessage = util.printf('%s : [%s] %s', new Date(), log.data.level, log.data.message);
+    Logger.getInstance().emitterOn({ eventId: Logger.serverEventId }, (log: ESObject)=> {
+      let serverMessage = util.printf('%s : [%s] %s', new Date(), log.data.level, log.data.message);
       console.log(serverMessage);
       if (self.onServerMessageListener) {
         self.onServerMessageListener.onMessageChanged(serverMessage);
@@ -40,10 +49,10 @@ export class StunServer {
     });
   }
 
-  createServer(newDefaults?: any) {
+createServer(newDefaults?: defaults) {
     // Load config (ini) file.
-    var config = (function () {
-      var defaults
+    let config: () => void = ((): ESObject=> {
+      let defaults: defaults
       if (newDefaults) {
         defaults = newDefaults
       } else {
@@ -60,7 +69,8 @@ export class StunServer {
       }
       return defaults;
     })();
-    var server = Index.prototype.createServer(config);
+    let index: Index = new Index()
+    let server = index.createServer(config);
     server.listen();
   }
 }

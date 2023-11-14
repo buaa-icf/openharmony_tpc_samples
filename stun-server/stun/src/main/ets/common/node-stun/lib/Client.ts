@@ -64,7 +64,7 @@ export class Client {
   private _soc1;
   private _breq0: Message; // Binding request 0 of type Message.
   private _breq1: Message; // Binding request 1 of type Message.
-  private _state = State.IDLE;
+  private _state: number = State.IDLE;
   private _mapped = [
     { addr: 0, port: 0 }, // mapped addr from DaDp
     { addr: 0, port: 0 }, // mapped addr from DaCp

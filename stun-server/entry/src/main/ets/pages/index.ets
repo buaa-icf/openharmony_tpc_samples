@@ -16,19 +16,29 @@
 import { StunServer, StunClient } from '@ohos/stun';
 import prompt from '@system.prompt';
 
+class Address {
+  host: string = ''
+  port: string = ''
+}
+
+class Defaults {
+  primary: Address | ESObject
+  secondary: Address | ESObject
+}
+
 @Entry
 @Component
 struct Index {
   @State serverMessage: string = "Tip: Click 'node-stun-server' to display the server log";
   @State clientMessage: string = "Tip: Click 'node-stun-client' to display the client log";
-  stunServer: StunServer = null;
-  stunClient: StunClient = null;
+  stunServer: StunServer | ESObject = null;
+  stunClient: StunClient | ESObject = null;
   clientAddress: string = ''
-  serverInfo = {
+  serverInfo: Address = {
     host: '127.0.0.1',
     port: '3478'
   }
-  newDefaults = {
+  newDefaults: Defaults = {
     primary: {
       host: '127.0.0.1',
       port: '3478'
@@ -40,7 +50,7 @@ struct Index {
   };
 
   private createServer() {
-    var self = this;
+    let self = this;
     if (self.stunServer) {
       return;
     }
@@ -54,20 +64,22 @@ struct Index {
   }
 
   private createClient() {
-    var self = this;
-    self.clientMessage = "";
-    prompt.showToast({ message: "node-stun-client", duration: 3000 });
+    let self = this;
+     self.clientMessage = "";
+     prompt.showToast({ message: "node-stun-client", duration: 3000 });
     if (this.clientAddress == '') {
       prompt.showToast({ message: "Please input client ip address", duration: 3000 });
       return
     }
-    if (!self.stunClient) {
+     if (!self.stunClient) {
       self.stunClient = new StunClient();
-      self.stunClient.setClientMessageListener({ onMessageChanged(clientMessage: string) {
-        self.clientMessage += clientMessage + "\n";
-      } });
-    }
-    self.stunClient.createClient(this.clientAddress, this.serverInfo);
+      self.stunClient.setClientMessageListener({
+        onMessageChanged(clientMessage: string) {
+          self.clientMessage += clientMessage + "\n";
+        }
+      });
+     }
+     self.stunClient.createClient(this.clientAddress, this.serverInfo);
   }
 
   build() {
@@ -115,8 +127,8 @@ struct Index {
         }
 
         Button('node-stun-server', { type: ButtonType.Normal })
-          .size({ width: 1000, height: 100 })
-          .fontSize(50)
+          .size({ width: '100%', height: 100 })
+          .fontSize(38)
           .fontColor('#FFFFFF')
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
@@ -167,8 +179,8 @@ struct Index {
           })
 
         Button('node-stun-client', { type: ButtonType.Normal })
-          .size({ width: 1000, height: 100 })
-          .fontSize(50)
+          .size({ width: '100%', height: 100 })
+          .fontSize(40)
           .fontColor('#FFFFFF')
           .fontWeight(FontWeight.Bold)
           .onClick(() => {

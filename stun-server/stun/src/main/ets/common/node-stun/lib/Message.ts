@@ -17,7 +17,7 @@ import { Utils } from './Utils';
 import { Const } from './Const';
 
 export class Message {
-  _type = Const.MesgTypes.breq;
+  _type: number = Const.MesgTypes.breq;
   _tid: Uint8Array;
   _attrs = [];
 

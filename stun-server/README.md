@@ -8,9 +8,9 @@
 
 ## 下载安装
 ```shell
-npm install @ohos/stun --save
+npm install @ohos/stun
 ```
-OpenHarmony npm环境配置等更多内容，请参考 [如何安装OpenHarmony npm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_npm_usage.md) 。
+OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
 ## 使用说明
 
@@ -105,7 +105,7 @@ private createClient() {
 
 在下述版本验证通过：
 
-- DevEco Studio 版本：3.1 Beta1（3.1.0.200），OpenHarmony SDK:API9（3.2.10.6）
+- DevEco Studio 版本：4.0.3.600，OpenHarmony SDK:API10（4.0.10.11）
 
 ## 目录结构
 ````

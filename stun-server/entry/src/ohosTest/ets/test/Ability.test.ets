@@ -18,20 +18,20 @@ import { StunServer, StunClient } from '@ohos/stun';
 import { Utils } from '../../../../../stun/src/main/ets/common/node-stun/lib/Utils';
 export default function abilityTest() {
 
-  describe('ActsAbilityTest', function () {
-    it('assertinetAton', 0, function () {
+  describe('ActsAbilityTest', ()=> {
+    it('assertinetAton', 0, ()=> {
       let num=Utils.inetAton("2.2")
       expect(num==1536).assertFalse()
     })
-    it('assertBufferCompare', 0, function () {
-      let flag=Utils.bufferCompare("CQ","CQ")
+    it('assertBufferCompare', 0, ()=> {
+      let flag: boolean=Utils.bufferCompare("CQ","CQ")
       expect(flag).assertTrue()
     })
-    it('asserteInetNtoa', 0, function () {
+    it('asserteInetNtoa', 0, ()=> {
       let d=Utils.inetNtoa(100)
       expect(d=="200").assertFalse()
     })
-    it('assertBuffer', 0, function () {
+    it('assertBuffer', 0, ()=> {
       let Buffer=new ArrayBuffer(100)
       let teststring=Utils.buffer2String(Buffer)
       expect(teststring=="str").assertFalse()

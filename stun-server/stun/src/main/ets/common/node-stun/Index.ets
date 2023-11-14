@@ -17,7 +17,7 @@ import { Server } from './lib/Server'
 import { Client } from './lib/Client'
 
 export class Index {
-  createServer(config) {
+  createServer(config: () => void): Server {
     return new Server(config);
   };
 

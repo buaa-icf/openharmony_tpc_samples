@@ -22,17 +22,17 @@ export interface OnClientMessageListener {
 }
 
 export class StunClient {
-  private onClientMessageListener: OnClientMessageListener;
+  private onClientMessageListener: OnClientMessageListener | undefined = undefined;
 
   public setClientMessageListener(onClientMessageListener: OnClientMessageListener): void {
     this.onClientMessageListener = onClientMessageListener;
   }
 
   constructor() {
-    var self = this;
+    let self = this;
     // Set log event handler
-    Logger.getInstance().emitterOn({ eventId: Logger.clientEventId }, function (log) {
-      var clientMessage = util.printf('%s', log.data.message);
+    Logger.getInstance().emitterOn({ eventId: Logger.clientEventId }, (log: ESObject) => {
+      let clientMessage = util.printf('%s', log.data.message);
       console.log(clientMessage);
       if (self.onClientMessageListener) {
         self.onClientMessageListener.onMessageChanged(clientMessage);
@@ -40,21 +40,22 @@ export class StunClient {
     });
   }
 
-  createClient(address: string, serverInfo?: any) {
-    var serverHost
-    var serverPort
+  createClient(address: string, serverInfo?: ESObject) {
+    let serverHost: ESObject;
+    let serverPort: number;
     if (serverInfo) {
       serverHost = serverInfo.host
-      serverPort = parseInt(serverInfo.port)
+      serverPort = Number(serverInfo.port)
     } else {
       serverHost = "127.0.0.1";
       serverPort = 3478;
     }
-    var client = Index.prototype.createClient(address);
+    let index: Index = new Index();
+    let client = index.createClient(address);
     client.setServerAddress(serverHost, serverPort);
-    client.start({}, function (result) {
-      var mapped = client.getMappedAddr();
-      var CompleteInfo = [
+    client.start({}, (result: ESObject) => {
+      let mapped = client.getMappedAddr();
+      let CompleteInfo = [
         "Complete(" + result + "): ",
         (client.isNatted() ? "Natted" : "Open"),
         " NB=" + client.getNB(),
@@ -64,7 +65,7 @@ export class StunClient {
         " rtt=" + client.getRtt()
       ].join('')
       Logger.getInstance().info(Logger.clientEventId, CompleteInfo);
-      client.close(function () {
+      client.close(() => {
         Logger.getInstance().info(Logger.clientEventId, "All sockets closed.");
       });
     });
