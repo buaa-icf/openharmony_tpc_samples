@@ -13,48 +13,40 @@
  * limitations under the License.
  */
 
-import ProvideInWhenOnSyntax from 'inversify-binding-decorators/es/syntax/provide_in_when_on_syntax';
-import ProvideInSyntax from 'inversify-binding-decorators/es/syntax/provide_in_syntax';
-import ProvideWhenSyntax from 'inversify-binding-decorators/es/syntax/provide_when_syntax';
-import ProvideOnSyntax from 'inversify-binding-decorators/es/syntax/provide_on_syntax';
-import ProvideDoneSyntax from 'inversify-binding-decorators/es/syntax/provide_done_syntax';
-import { METADATA_KEY } from 'inversify-binding-decorators/es/constants';
-import { interfaces as inversifyInterfaces } from 'inversify';
-import { it as _it, afterAll, afterEach, beforeAll, beforeEach, describe, expect } from '../util'
-import "reflect-metadata";
+// import { it as _it, afterAll, afterEach, beforeAll, beforeEach, describe, expect } from '../util'
+import {
+    describe,
+    beforeAll,
+    beforeEach,
+    afterEach,
+    afterAll,
+    it,
+    expect
+} from '@ohos/hypium'
 
+import { DeleteMetadata, provideInSyntax, provideWhenSyntax, provideOnSyntax, getProvideInSyntax, getProvideWhenSyntax, getProvideOnSyntax } from '../interface'
 
 export default function provideInWhenOnSyntaxTest() {
 
-    describe("ProvideInWhenOnSyntax", function () {
-
+    describe("ProvideInWhenOnSyntax", () => {
 
         beforeEach(() => {
-            Reflect.deleteMetadata(METADATA_KEY.provide, Reflect);
+            DeleteMetadata()
         });
 
         afterEach(() => {
         });
 
-        class Ninja {
-        }
+        it("Should_set_its_on_properties_correctly",0, () => {
 
-        class Game {
-        }
+            // expect(getProvideInSyntax()).eql(provideInSyntax);
+            expect(getProvideInSyntax()).assertEqual(provideInSyntax);
 
-        let bindingInSyntaxFunction =
-            (bind: inversifyInterfaces.Bind, target: any) => bind<Ninja>("Ninja").to(<any> null);
-        let provideDoneSyntax = new ProvideDoneSyntax(bindingInSyntaxFunction);
-        let provideInSyntax = new ProvideInSyntax(bindingInSyntaxFunction, provideDoneSyntax);
-        let provideWhenSyntax = new ProvideWhenSyntax(bindingInSyntaxFunction, provideDoneSyntax);
-        let provideOnSyntax = new ProvideOnSyntax(bindingInSyntaxFunction, provideDoneSyntax);
-        let provideInWhenOnSyntax = new ProvideInWhenOnSyntax(provideInSyntax, provideWhenSyntax, provideOnSyntax);
+            // expect(getProvideWhenSyntax()).eql(provideWhenSyntax);
+            expect(getProvideWhenSyntax()).assertEqual(provideWhenSyntax);
 
-        _it("Should set its on properties correctly", () => {
-
-            expect((<any> provideInWhenOnSyntax)._provideInSyntax).eql(provideInSyntax);
-            expect((<any> provideInWhenOnSyntax)._provideWhenSyntax).eql(provideWhenSyntax);
-            expect((<any> provideInWhenOnSyntax)._provideOnSyntax).eql(provideOnSyntax);
+            // expect(getProvideOnSyntax()).eql(provideOnSyntax);
+            expect(getProvideOnSyntax()).assertEqual(provideOnSyntax);
 
         });
 
