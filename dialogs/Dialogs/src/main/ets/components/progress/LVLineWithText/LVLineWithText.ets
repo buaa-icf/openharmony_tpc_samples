@@ -29,7 +29,7 @@ export struct LVLineWithText {
     textSize:number = 30
 
     private canvasHasReady: boolean = false;
-    private onReadyNext: () => void = undefined
+    private onReadyNext: (() => void) | undefined = undefined
 
 
     aboutToAppear(){
@@ -59,7 +59,7 @@ export struct LVLineWithText {
         Canvas(this.context2D)
             .onReady(() => {
                 this.canvasHasReady = true;
-                if (this.onReadyNext) {
+                if (this.onReadyNext != undefined) {
                     this.onReadyNext()
                     this.onReadyNext = undefined;
                 }
@@ -92,10 +92,10 @@ export struct LVLineWithText {
 
 
     drawExecute() {
-        this.runNextFunction(this.draw.bind(this));
+        this.runNextFunction(this.draw);
     }
 
-    draw() {
+    draw =()=>{
         this.context2D.globalCompositeOperation = 'copy';
         this.context2D.strokeStyle = this.controller.getViewColor()
         this.context2D.fillStyle = this.controller.getTextColor();
@@ -122,11 +122,11 @@ export struct LVLineWithText {
             let width = this.compWidth - 2 * this.pad - textWidth;
             this.context2D.beginPath()
             this.context2D.moveTo(this.pad, this.compHeight / 2);
-            this.context2D.lineTo(parseInt(this.pad+'') + parseInt(width * this.percentValue / 100+''), this.compHeight / 2);
-            this.context2D.moveTo(parseInt(this.pad+'') + parseInt(width * this.percentValue / 100 +'') + textWidth, this.compHeight / 2);
+            this.context2D.lineTo(Number.parseInt(this.pad+'') + Number.parseInt(width * this.percentValue / 100+''), this.compHeight / 2);
+            this.context2D.moveTo(Number.parseInt(this.pad+'') + Number.parseInt(width * this.percentValue / 100 +'') + textWidth, this.compHeight / 2);
             this.context2D.lineTo(this.compWidth - this.pad, this.compHeight / 2);
             this.context2D.stroke();
-            this.context2D.fillText(text, parseInt(this.pad+'') + parseInt(width * this.percentValue / 100 +''), this.compHeight / 2);
+            this.context2D.fillText(text, Number.parseInt(this.pad+'') + Number(width * this.percentValue / 100 +''), this.compHeight / 2);
         }
 
     }

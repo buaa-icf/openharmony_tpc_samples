@@ -15,6 +15,7 @@
 
 import { ConfirmDialog } from '@ohos/dialogs'
 import { BaseCenterMode } from '@ohos/dialogs'
+import { BtnContentBorder } from '@ohos/dialogs'
 import { TestType } from '@ohos/hypium'
 
 @Entry
@@ -28,7 +29,7 @@ struct ConfirmExample {
   @State model:BaseCenterMode = new BaseCenterMode()
 
   aboutToAppear(){
-    this.model.title = '我是标题',
+    this.model.title = '我是标题'
     this.model.contentValue = '床前明月光，疑是地上霜，举头望明月，低头思故乡。床前明月光，疑是地上霜，举头望明月，低头思故乡。'
     // this.model.contentMargin = 20
     this.model.titleMargin = { top: 30,bottom: 10 }
@@ -39,14 +40,18 @@ struct ConfirmExample {
     this.model.confirm = this.onAccept
     this.model.btnContentHeight = 60
     this.model.btnContentMargin = { top: 20 }
-    this.model.btnContentBorder = {
+    let btnContentBorder:BtnContentBorder =     {
       width: { top: 1 },
       color:{ top:'#F0F0F0' },
       style:{ top:BorderStyle.Solid },
     }
+
+    this.model.btnContentBorder =btnContentBorder
+
+
   }
 
-  dialogController: CustomDialogController = new CustomDialogController({
+  dialogController: CustomDialogController | undefined = new CustomDialogController({
     builder: ConfirmDialog({
       slotContent: () => {
         this.componentBuilder()
@@ -63,7 +68,7 @@ struct ConfirmExample {
 
   // 在自定义组件即将析构销毁时将dialogControlle删除和置空
   aboutToDisappear() {
-    delete this.dialogController, // 删除dialogController
+
     this.dialogController = undefined // 将dialogController置空
   }
 
@@ -86,7 +91,9 @@ struct ConfirmExample {
   build() {
     Column() {
       Button('显示confirm弹窗').onClick(() => {
-        this.dialogController.open()
+        if(this.dialogController != undefined) {
+          this.dialogController.open()
+        }
       })
     }
   }

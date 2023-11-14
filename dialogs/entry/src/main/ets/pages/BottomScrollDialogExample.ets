@@ -26,7 +26,7 @@ struct BottomScrollDialogExample {
     "这是一个自定义Bottom类型的评论弹框！",
     "这是一个自定义Bottom类型的评论弹框！",
     "这是一个自定义Bottom类型的评论弹框！"]
-  @Builder ListDataComponent(item, itemIndex) {
+  @Builder ListDataComponent(item:Object, itemIndex:number) {
     Column() {
       RelativeContainer(){
         Image($r("app.media.test1"))
@@ -73,7 +73,7 @@ struct BottomScrollDialogExample {
 
   dialogController:CustomDialogController = new CustomDialogController({
     builder: BottomScrollDialog({
-      customComponent: (item, itemIndex) => {
+      customComponent: (item:Object, itemIndex:number) => {
         this.ListDataComponent(item, itemIndex);
       },
       arr: this.arr,

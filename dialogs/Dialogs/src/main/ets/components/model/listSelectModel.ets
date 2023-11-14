@@ -19,9 +19,9 @@ export class listSelectModel extends BaseCenterMode {
 
   /* ---------------------------弹窗列表设置--------------------------- */
 
-  selectMode:string    // 列表选中模式  normal-正常,radio-单选,checkbox-多选
+  selectMode:string ='normal'    // 列表选中模式  normal-正常,radio-单选,checkbox-多选
 
-  listPadding: Padding | number   // 列表内边距
+  listPadding: Padding | number =  0  // 列表内边距
 
   listTextWidth?: number|string = '100%'    // 列表文本宽度
 
@@ -39,12 +39,7 @@ export class listSelectModel extends BaseCenterMode {
 
   listItemPadding?: Padding | number    // 列表item内边距
 
-  listItemBorder?:{                                    // 列表item边框
-    width?: Length | EdgeWidths,
-    color?:  ResourceColor | EdgeColors,
-    radius?:  Length | BorderRadiuses,
-    style?: BorderStyle | EdgeStyles
-  }
+  listItemBorder?:ListItemBorder
 
   listHeight?: string|number = 200    // 列表高度
 
@@ -55,4 +50,10 @@ export class listSelectModel extends BaseCenterMode {
   listEdgeEffect?: EdgeEffect = EdgeEffect.Spring // 列表滑动边缘效果，默认无效果
 
   boxSelectedColor?: Color|string = '#007DFF'     // 选中后选择框颜色
+}
+export interface ListItemBorder{                                    // 列表item边框
+  width?: Length | EdgeWidths,
+  color?:  ResourceColor | EdgeColors,
+  radius?:  Length | BorderRadiuses,
+  style?: BorderStyle | EdgeStyles
 }

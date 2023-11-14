@@ -17,7 +17,7 @@ import { BaseCenterMode } from '../model/BaseCenterModel'
 
 @CustomDialog
 export struct ConfirmDialog {
-  @BuilderParam slotContent?: () => any;
+  @BuilderParam slotContent?: () => void;
   @State model: BaseCenterMode = new BaseCenterMode();
   controller: CustomDialogController
   // 若尝试在CustomDialog中传入多个其他的Controller，以实现在CustomDialog中打开另一个或另一些CustomDialog，那么此处需要将指向自己的controller放在最后
@@ -26,7 +26,9 @@ export struct ConfirmDialog {
     Column() {
       Text(this.model.title).fontSize(this.model.titleFontSize).margin(this.model.titleMargin).textAlign(this.model.titleTextAlign)
       Column(){
-        this.slotContent()
+        if(this.slotContent != undefined) {
+          this.slotContent()
+        }
       }
       if(this.model.isDisplayBtn) {
         Column(){
@@ -37,8 +39,11 @@ export struct ConfirmDialog {
             .width(this.model.btnWidth)
             .height(this.model.btnHeight)
             .onClick(() =>{
+
               this.controller.close()
-              this.model.confirm()
+              if(this.model.confirm != undefined) {
+                this.model.confirm()
+              }
 
             })
             .borderRadius(this.model.confirmBtnBorderRadius)

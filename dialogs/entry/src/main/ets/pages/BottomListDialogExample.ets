@@ -63,7 +63,7 @@ struct BottomListDialogExample {
           cancel: () => {
             console.log("dialog cancel")
           },
-          onItemClick: (data, index) => {
+          onItemClick: (data:string, index:number) => {
             console.log("dialog onItem data:" + data + ";index:" + index)
             this.selectIndex = index;
           }
@@ -106,7 +106,7 @@ struct BottomListDialogExample {
           cancel: () => {
             console.log("dialog cancel")
           },
-          onItemClick: (data, index) => {
+          onItemClick: (data:string, index:number) => {
             console.log("dialog onItem data:" + data + ";index:" + index)
             this.selectIndex1 = index;
           }

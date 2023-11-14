@@ -15,6 +15,7 @@
 
 import { RepeatDialog,BaseCenterMode } from '@ohos/dialogs'
 import { AnimateEffect,AnimateDialogOptions } from '@ohos/dialogs'
+import { TitleBorder,BtnContentBorder } from '@ohos/dialogs'
 @Entry
 @Component
 struct RepeatDialogExample {
@@ -30,22 +31,24 @@ struct RepeatDialogExample {
     this.model.contentHeight = 100
     this.model.titleMargin = { top: 10, bottom: 10 }
     this.model.contentMargin = { left:10,right:10, bottom: 0 }
-    this.model.btnContentBorder = {
+    let btnContentBorder:BtnContentBorder = {
       width: {top: 1},
       color:{top: Color.Yellow},
       style:{top:BorderStyle.Solid},
     }
+    this.model.btnContentBorder = btnContentBorder
     this.model.cancelBtnTitle = 'cancel'
     this.model.cancelBtnFontColor = '#6E495D'
     this.model.confirmBtnFontColor = '#6E495D'
     this.model.cancelBtnBgColor = '#F0A0CA'
     this.model.confirmBtnBgColor = '#F0A0CA'
     this.model.confirmBtnTitle = 'OK'
-    this.model.titleBorder = {
+    let titleBorder:TitleBorder = {
       width: {bottom: 1},
       color:{bottom: Color.Yellow},
       style:{bottom:BorderStyle.Solid},
     }
+    this.model.titleBorder = titleBorder
   }
 
   @Builder componentBuilder() {
@@ -60,7 +63,7 @@ struct RepeatDialogExample {
     }.height('100%').padding(10)
 
   }
-  dialogController: CustomDialogController = new CustomDialogController({
+  dialogController: CustomDialogController|undefined = new CustomDialogController({
     builder: RepeatDialog({
       slotContent: () => {
         this.componentBuilder()
@@ -79,7 +82,7 @@ struct RepeatDialogExample {
 
   // 在自定义组件即将析构销毁时将dialogControlle删除和置空
   aboutToDisappear() {
-    delete this.dialogController, // 删除dialogController
+
     this.dialogController = undefined // 将dialogController置空
   }
 
@@ -99,7 +102,9 @@ struct RepeatDialogExample {
     Column() {
       Flex({direction:FlexDirection.Row,alignItems: ItemAlign.Center}){
         Button('使用内置弹窗绑定项目已有布局').onClick(()=>{
-          this.dialogController.open()
+          if(this.dialogController!= undefined) {
+            this.dialogController.open()
+          }
         })
       }
     }.width('100%').margin({ top: 5 }).backdropBlur(20)

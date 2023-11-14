@@ -1,6 +1,6 @@
 {
   "name": "@ohos/dialogs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "基于OpenHarmony的弹框基础能力和自定义能力，针对通用的弹框业务场景进行封装组合，提供一款OpenHarmony版的三方UI库。",
   "main": "index.ets",
   "dependencies": {

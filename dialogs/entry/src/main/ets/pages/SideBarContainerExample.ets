@@ -61,7 +61,7 @@ struct SideBarContainerExample {
 
       Tabs({ barPosition: BarPosition.Start, controller: this.controller }) {
 
-        ForEach(this.leftTitles, (item, index) => {
+        ForEach(this.leftTitles, (item:Object, index:number) => {
           TabContent() {
             Column() {
               Text(`当前界面是：${item}`)
@@ -120,7 +120,7 @@ struct SideBarContainerExample {
         })
 
       List({ space: 20, initialIndex: 0 }) {
-        ForEach(this.arrRight, (item) => {
+        ForEach(this.arrRight, (item:number) => {
           ListItem() {
             Text('' + item)
               .width('100%')
@@ -130,7 +130,7 @@ struct SideBarContainerExample {
               .borderRadius(10)
               .backgroundColor(0xFFFFFF)
           }
-        }, item => item)
+        }, (item:number )=> item.toString())
       }
       .listDirection(Axis.Vertical) // 排列方向
       .scrollBar(BarState.Off)

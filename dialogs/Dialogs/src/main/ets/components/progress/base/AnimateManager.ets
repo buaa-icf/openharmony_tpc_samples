@@ -19,6 +19,6 @@ export enum Switch {
 }
 
 export class AnimateManager {
-  animatedSwitch: Switch;
-  duration?: number;
+  animatedSwitch: Switch = Switch.CLOSE;
+  duration?: number = 500;
 }

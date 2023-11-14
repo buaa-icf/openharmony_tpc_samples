@@ -53,7 +53,9 @@ export struct  InputDialog {
                .border(this.model.btnBorder)
                .onClick(() =>{
                  this.controller.close()
-                 this.model.cancel()
+                 if(this.model.cancel != undefined) {
+                   this.model.cancel()
+                 }
                })
                .borderRadius(this.model.cancelBtnBorderRadius)
              Button(this.model.confirmBtnTitle,{ type: this.model.btnType })
@@ -64,7 +66,9 @@ export struct  InputDialog {
                .height(this.model.btnHeight)
                .onClick(() =>{
                  this.controller.close()
-                 this.model.confirm()
+                 if(this.model.confirm != undefined) {
+                   this.model.confirm()
+                 }
                })
                .borderRadius(this.model.confirmBtnBorderRadius)
          }

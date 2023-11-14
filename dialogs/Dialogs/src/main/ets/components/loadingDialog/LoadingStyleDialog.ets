@@ -21,7 +21,7 @@ struct LoadingComponent {
   private canvasCtx: CanvasRenderingContext2D = new CanvasRenderingContext2D({ antialias: true })
   private lineCount: number = 10;
   private time: number = 0;
-  private intervalTime: number;
+  private intervalTime: number = 0;
 
   build() {
     Stack() {
@@ -122,9 +122,9 @@ struct LoadingComponent {
   }
 
   private parseColor(colorString: string): number {
-    let color;
+    let color:number = 0;
     if (colorString.charAt(0) == '#') {
-      color = parseInt(colorString.substring(1), 16)
+      color = Number('0x'+ colorString.substring(1))
       if (colorString.length == 7) {
         color |= 0x00000000ff000000;
       } else if (colorString.length != 9) {
@@ -135,11 +135,11 @@ struct LoadingComponent {
   }
 
   private rgbaToHex(color: string) {
-    let values = color.replace(/rgba?\(/, '').replace(/\)/, '').replace(/[\s+]/g, '').split(',');
-    let a = parseFloat(values[3] || '1'),
-      r = Math.floor(a * parseInt(values[0]) + (1 - a) * 225),
-      g = Math.floor(a * parseInt(values[1]) + (1 - a) * 225),
-      b = Math.floor(a * parseInt(values[2]) + (1 - a) * 225);
+    let values = color.replace(new RegExp('/rgba?\\(', 'g'),'').replace(new RegExp('\\)', 'g'), '').replace(new RegExp('[\\s+]', 'g'), '').split(',');
+    let a = Number.parseFloat(values[3] || 1 +''),
+      r = Math.floor(a * Number.parseInt(values[0]) + (1 - a) * 225),
+      g = Math.floor(a * Number.parseInt(values[1]) + (1 - a) * 225),
+      b = Math.floor(a * Number.parseInt(values[2]) + (1 - a) * 225);
 
     return "#" + ("0" + r.toString(16)).slice(-2) + ("0" + g.toString(16)).slice(-2) + ("0" + b.toString(16)).slice(-2)
   }

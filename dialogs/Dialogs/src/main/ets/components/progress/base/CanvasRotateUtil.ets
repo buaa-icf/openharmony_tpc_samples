@@ -21,18 +21,18 @@ export class CanvasRotateUtil {
     hasTranslateX= 0
     hasTranslateY= 0
 
-    constructor(ctxWidth, ctxHeight) {
+    constructor(ctxWidth:number, ctxHeight:number) {
         this.radius = Math.sqrt(ctxWidth * ctxWidth / 4 + ctxHeight * ctxHeight / 4)
         this.startAngled = Math.atan(ctxHeight / ctxWidth) * 180 / Math.PI
         this.startCenterX = this.getCoordinatesX(-this.startAngled, this.radius) // 初始位置中心点X坐标
         this.startCenterY = this.getCoordinatesY(-this.startAngled, this.radius) // 初始位置中心点Y坐标
     }
 
-    rotate(ctx, rotate) {
-        var newX = this.getCoordinatesX(-this.startAngled - rotate, this.radius) // 旋转后位置中心点X坐标
-        var newY = this.getCoordinatesY(-this.startAngled - rotate, this.radius) // 旋转后位置中心点Y坐标
-        var translateX = this.startCenterX - newX // 需要位移的X距离
-        var translateY = newY - this.startCenterY // 需要位移的Y距离
+    rotate(ctx:CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D, rotate:number) {
+        let newX = this.getCoordinatesX(-this.startAngled - rotate, this.radius) // 旋转后位置中心点X坐标
+        let newY = this.getCoordinatesY(-this.startAngled - rotate, this.radius) // 旋转后位置中心点Y坐标
+        let translateX = this.startCenterX - newX // 需要位移的X距离
+        let translateY = newY - this.startCenterY // 需要位移的Y距离
         ctx.rotate((-this.hasRotate) * Math.PI / 180); // 先将画布旋转恢复为原样
         ctx.translate(translateX - this.hasTranslateX, translateY - this.hasTranslateY); // 将画布中心点位移到初始位置的中心点
         ctx.rotate(rotate * Math.PI / 180); // 最后再旋转画布到最新的旋转角度
@@ -42,11 +42,11 @@ export class CanvasRotateUtil {
         this.hasRotate = rotate
     }
 
-    getCoordinatesX(angled, radius) {
+    getCoordinatesX(angled:number, radius:number) {
         return Math.cos(angled * Math.PI / 180) * radius
     }
 
-    getCoordinatesY(angled, radius) {
+    getCoordinatesY(angled:number, radius:number) {
         return Math.sin(angled * Math.PI / 180) * radius
     }
 }

@@ -22,7 +22,9 @@ export struct fullScreenDialog {
 
   build() {
     Column() {
-      this.slotContent()
+      if(this.slotContent != undefined) {
+        this.slotContent()
+      }
     }.width('100%').height('100%').backgroundColor(this.slotBgColor)
   }
 }

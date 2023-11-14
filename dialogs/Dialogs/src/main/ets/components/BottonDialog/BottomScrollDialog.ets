@@ -16,7 +16,7 @@
 import { BaseMode } from '../model/BaseModel'
 import inspector from '@ohos.arkui.inspector'
 
-import componentUtils from '@ohos.componentUtils'
+import componentUtils from '@ohos.arkui.componentUtils'
 
 const TAG = 'BottomScrollDialog'
 @CustomDialog
@@ -33,10 +33,10 @@ export struct BottomScrollDialog {
   private closeDialogHeight = 78 // 控件内部使用，关闭界限
   private parentScrollHeight: number = 80 // 控件内部使用，scroll的高度
   @State init: boolean = true // 控件内部使用，用于初始化走手势逻辑
-  @BuilderParam customComponent: (item, itemIndex) => void // 列表中的自定义控件
+  @BuilderParam customComponent: (item:Object, itemIndex:number) => void // 列表中的自定义控件
   private panOption: PanGestureOptions = new PanGestureOptions({ direction: PanDirection.Up | PanDirection.Down }) // 手势定义
   dialogInput: CustomDialogController // 输入框的控制对象
-  controller: CustomDialogController  // 当选dialog控制对象
+  controller: CustomDialogController|undefined = undefined  // 当选dialog控制对象
   listenerScrollColumn= inspector.createComponentObserver('scrollColumnId');
   aboutToDisappear() {
     this.listenerScrollColumn.off("draw")
@@ -44,16 +44,16 @@ export struct BottomScrollDialog {
       this.model.customCallback.beforeDisappear();
     }
     if (this.model.isDeleteOnDisappear) {
-      delete this.controller
+
       this.controller = undefined
     }
   }
   aboutToAppear() {
     this.listenerScrollColumn.on("draw",() => {
-      let scrollIdPosition = componentUtils.getRectangleById("scrollId");
-      let scrollColumnIdPosition = componentUtils.getRectangleById("scrollColumnId");
-      let scrollColumnHeight = scrollColumnIdPosition.size.height;
-      let Scroll_01_height= scrollIdPosition.size.height;
+      let scrollIdPosition:componentUtils.ComponentInfo = componentUtils.getRectangleById("scrollId");
+      let scrollColumnIdPosition:componentUtils.ComponentInfo = componentUtils.getRectangleById("scrollColumnId");
+      let scrollColumnHeight:number = scrollColumnIdPosition.size.height;
+      let Scroll_01_height:number = scrollIdPosition.size.height;
       if (scrollColumnHeight < Scroll_01_height) {
         console.log(TAG, "this.init: " + this.init )
         this.init = true
@@ -68,13 +68,17 @@ export struct BottomScrollDialog {
   build() {
     Column(){
       Column().width('100%').height((100 - this.parentScrollHeight) + '%').onClick(() => {
-        this.controller.close()
+        if(this.controller != undefined) {
+          this.controller.close()
+        }
       })
       Scroll(this.scroller){
         Column(){
           Column(){
           }.width('100%').height(this.scrollEmptyHeight + '%').backgroundColor(Color.Transparent).onClick(() => {
-            this.controller.close()
+            if(this.controller != undefined) {
+              this.controller.close()
+            }
           }).id("scrollEmpty")
 
           Column(){
@@ -84,11 +88,11 @@ export struct BottomScrollDialog {
           Scroll() {
             Column({space:20}) {
               if (this.arr) {
-                ForEach(this.arr, (item, itemIndex) => {
+                ForEach(this.arr, (item:string, itemIndex:number) => {
                   if (this.customComponent != undefined) {
                     this.customComponent(item, itemIndex);
                   }
-                }, item => item)
+                }, (item:string)=> item)
               }
             }.width('100%').margin({"top":"5.00vp","right":"0.00vp","bottom":"5.00vp","left":"0.00vp"}).id("scrollColumnId")
           }.width('100%').constraintSize({minHeight: this.scrollMinHeight, maxHeight: this.scrollMaxHeight})
@@ -117,7 +121,9 @@ export struct BottomScrollDialog {
             }
             if ((this.scrollEmptyHeight > this.closeDialogHeight) ||
               (this.scrollEmptyHeight == this.closeDialogHeight)) {
-              this.controller.close()
+              if(this.controller != undefined) {
+                this.controller.close()
+              }
             }
           }
 
@@ -131,7 +137,9 @@ export struct BottomScrollDialog {
       }).onScrollEdge((side: Edge) => {
         console.info(TAG,'To the edge side: ' + side)
         if (side == 0) {
-          this.controller.close()
+          if(this.controller != undefined) {
+            this.controller.close()
+          }
         }
       })
       .width('100%').height(this.parentScrollHeight + '%')

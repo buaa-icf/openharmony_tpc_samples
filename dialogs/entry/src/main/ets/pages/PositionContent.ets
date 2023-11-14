@@ -15,6 +15,7 @@
 
 import { PositionDialog,BaseCenterMode } from '@ohos/dialogs'
 import { AnimateEffect,AnimateDialogOptions } from '@ohos/dialogs'
+import { BtnBorder,BtnContentBorder } from '@ohos/dialogs'
 
 @Entry
 @Component
@@ -24,24 +25,27 @@ struct CustomDialogExample2 {
   @State inputValue: string = 'click me'
   @State isFixPosition: boolean = true
   @State positionDialog: string = 'center'
-  @State popupAnimation:TransitionEffect = undefined
+  @State popupAnimation:TransitionEffect | undefined = undefined
   @State animateOption: AnimateDialogOptions = { animate:AnimateEffect.ScaleCenterBottom}
   @State curve:Curve = Curve.EaseIn  //动画曲线
-
+  customDialogController?: CustomDialogController = undefined
   aboutToAppear(){
     this.model.title='标题'
     this.model.titleMargin = { top: 10, bottom: 10 }
     this.model.contentMargin = { left:10,right:10, bottom: 30 }
-    this.model.btnContentBorder = {
+    let btnContentBorder:BtnContentBorder = {
       width: {top: 1},
       color:{top:'#F6F6F6'},
       style:{top:BorderStyle.Solid},
     }
-    this.model.btnBorder = {
+    this.model.btnContentBorder = btnContentBorder
+
+    let btnBorder:BtnBorder = {
       width: {right: 1},
       color:{right:'#F6F6F6'},
       style:{right:BorderStyle.Solid}
     }
+    this.model.btnBorder = btnBorder
   }
 
   @Builder componentBuilder() {
@@ -57,7 +61,7 @@ struct CustomDialogExample2 {
     }.height('100%').padding(10)
 
   }
-  dialogController: CustomDialogController = new CustomDialogController({
+  dialogController: CustomDialogController | undefined = new CustomDialogController({
     builder: PositionDialog({
       slotContent: () => {
         this.componentBuilder()
@@ -83,7 +87,7 @@ struct CustomDialogExample2 {
 
   // 在自定义组件即将析构销毁时将dialogControlle删除和置空
   aboutToDisappear() {
-    delete this.dialogController, // 删除dialogController
+
     this.dialogController = undefined // 将dialogController置空
   }
 
@@ -134,8 +138,12 @@ struct CustomDialogExample2 {
          .space(this.space)
          .arrowPosition(this.arrowPosition)
          .onSelect((index:number, text: string)=>{
-           this.animateOption = { animate:AnimateEffect[text]}
-           this.dialogController.open()
+           let option = new AnimateDialogOptions()
+           option.animate = AnimateEffect[text]
+           this.animateOption = option
+           if(this.dialogController != undefined) {
+             this.dialogController.open()
+           }
            this.text = text;
          })
      }

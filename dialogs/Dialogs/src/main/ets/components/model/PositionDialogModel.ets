@@ -34,5 +34,5 @@ export class PositionDialogModel extends BaseMode {
 
   isDisplayBtn?: Boolean = true                  // 是否显示按钮
 
-  popupAnimation:TransitionEffect = undefined       // 弹窗动画
+  popupAnimation:TransitionEffect | undefined = undefined       // 弹窗动画
 }
