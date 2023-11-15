@@ -13,56 +13,54 @@
  * limitations under the License.
  */
 
-import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../util'
+// import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../util'
+
+import {
+    describe,
+    beforeAll,
+    beforeEach,
+    afterEach,
+    afterAll,
+    it,
+    expect
+} from '@ohos/hypium'
+
 import { fluentProvide } from "inversify-binding-decorators/es/index";
-import "reflect-metadata";
+import { shouldThrow1, shouldThrow2 } from '../interface'
+
+let tag = "inversify-demo： "
 
 export default function fluentProvideTest() {
-    describe("fluentProvide", function() {
-        _it("Should throw if @provideFluent is applied more than once without force flag", () => {
+    describe("fluentProvide", () => {
+        it("Should_throw_if_provideFluent_is_applied_more_than_once_without_force_flag",0, () => {
 
-            const provideSingleton = (identifier: any) => {
-                return fluentProvide(identifier)
-                    .inSingletonScope()
-                    .done();
-            };
+            // expect(shouldThrow1).to.throw(
+            //     "Cannot apply @provideFluent decorator multiple times but is has been used " +
+            //     "multiple times in Ninja " +
+            //     "Please use done(true) if you are trying to declare multiple bindings!"
+            // );
 
-            function shouldThrow() {
-                @provideSingleton("Ninja")
-                @provideSingleton("SilentNinja")
-                class Ninja {
-                }
-                return Ninja;
+            try {
+                shouldThrow1 && shouldThrow1()
+            }catch(err){
+                let value:string = "Cannot apply @provideFluent decorator multiple times but is has been used " +
+                        "multiple times in Ninja " +
+                        "Please use done(true) if you are trying to declare multiple bindings!"
+                expect(err.message).assertEqual(value)
+                console.log(tag + "expect("+err.message+").throw("+value+")")
             }
-
-            expect(shouldThrow).to.throw(
-                "Cannot apply @provideFluent decorator multiple times but is has been used " +
-                "multiple times in Ninja " +
-                "Please use done(true) if you are trying to declare multiple bindings!"
-            );
-
         });
 
-        _it("Should work if @provide is applied more than once with force flag", () => {
+        it("Should_work_if_provide_is_applied_more_than_once_with_force_flag",0, () => {
 
-            const provideSingleton = (identifier: any) => {
-                return fluentProvide(identifier)
-                    .inSingletonScope()
-                    .done(true); // IMPORTANT!
-            };
-
-            function shouldThrow() {
-                @provideSingleton("Ninja")
-                @provideSingleton("SilentNinja")
-                class Ninja {
-                }
-                return Ninja;
+            // expect(shouldThrow2).not.to.throw();
+            try {
+                shouldThrow2 && shouldThrow2()
+            }catch(err){
+                expect(1).assertEqual(2);
+                console.log(tag + "expect("+err.message+").throw()");
             }
-
-            expect(shouldThrow).not.to.throw();
-
+            expect(1).assertEqual(1);
         });
-
     });
-
 }

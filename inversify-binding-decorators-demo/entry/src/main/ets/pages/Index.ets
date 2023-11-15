@@ -13,97 +13,10 @@
  * limitations under the License.
  */
 
-import {Container,inject,named,tagged } from 'inversify';
-import { provide } from 'inversify-binding-decorators/es/index';
-import { fluentProvide } from 'inversify-binding-decorators/es/index';
+import {Container } from 'inversify';
 import { buildProviderModule } from 'inversify-binding-decorators/es/index';
-import "reflect-metadata";
-import {Warrior,Weapon,ThrowableWeapon,WeaponProvide,WarriorProvide} from '../interface/Warrior'
+import {Warrior, WarriorProvide, TYPE, Ninja, Katana, Shuriken, NinjaProvide, KatanaProvide, ShurikenProvide} from '../interface/Warrior'
 let container=new Container();
-let provideThrowable=function(serviceIdentifier:string,isThrowable:boolean){
-   return fluentProvide(serviceIdentifier).whenTargetTagged("throwable",isThrowable).done();
-};
-
-let TYPE={
-  ThrowableWeapon:"ThrowableWeapon",
-  Warrior:"Warrior",
-  Weapon:"Weapon",
-  WarriorProvide:"WarriorProvide",
-  WeaponProvide:"WeaponProvide"
-}
-
-@provideThrowable(TYPE.Weapon,false)
-class Katana implements Weapon{
-  public hit(){
-   return "Hit by Katana!";
- }
-}
-
-
-
-@provideThrowable(TYPE.Weapon,true)
-class Shuriken implements Weapon{
-public hit(){
-   return "Hit by Shuriken!";
- }
-}
-
-
-@fluentProvide(TYPE.Warrior).done()
-class Ninja implements Warrior{
-  public primary:Weapon;
-  public secondary:Weapon;
-  public constructor(@inject(TYPE.Weapon) @tagged("throwable",false) primary:Weapon,
-  @inject(TYPE.Weapon) @tagged("throwable",true) secondary:Weapon
-  ){
-  this.primary=primary;
-  this.secondary=secondary;
-  }
-  
-  public fight(){
-  return this.primary.hit(); 
-  }
-  
-  public sneak(){
-  return this.secondary.hit();
-  }
-}
-
-@provide(TYPE.WeaponProvide)
-class KatanaProvide implements WeaponProvide{
-  public hit(){
-  return "cut!";
- }
-}
-
-@provide(TYPE.ThrowableWeapon)
-class ShurikenProvide implements ThrowableWeapon{
-  public throw(){
-  return "hit!";
-  }
-}
-
-
-
-@provide(TYPE.WarriorProvide)
-class NinjaProvide implements WarriorProvide {
-public katana:Weapon;
-public shuriken:ThrowableWeapon;
-public constructor(@inject(TYPE.WeaponProvide) katana:Weapon,
-@inject(TYPE.ThrowableWeapon) shuriken: ThrowableWeapon
-){
-  this.katana=katana;
-  this.shuriken=shuriken;
-  }
-
-  public fight(){
-  return this.katana.hit();
-  }
-
-  public sneak(){
-  return this.shuriken.throw();
-  }
-}
 
 @Entry
 @Component
@@ -184,7 +97,4 @@ struct Index {
     this.message4=(ninja.fight().toString()=="cut!")+"";
     this.message5=(ninja.sneak().toString()=="hit!")+"";
   }
-
-
-
 }
