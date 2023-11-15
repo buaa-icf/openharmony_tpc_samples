@@ -1,7 +1,7 @@
 [
     {
         "Name": "epublib",
-        "License": "GPL",
+        "License": "Apache License 2.0",
         "License File": "LICENSE",
         "Version Number": "master",
         "Owner" : "xiafeng@huawei.com"

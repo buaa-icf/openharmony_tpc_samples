@@ -90,6 +90,10 @@
                     name="AppScope/resources/base/media/app_icon.png"
                     type="filepath"/>
                 <filteritem
+                    desc="自研图片资源文件"
+                    name="epublib.jpeg"
+                    type="filepath"/>
+                <filteritem
                     desc="测试资源文件"
                     name="entry/src/main/resources/rawfile/abc.epub"
                     type="filepath"/>
