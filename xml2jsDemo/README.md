@@ -6,21 +6,23 @@
 本工程基于开源库[node-xml2js](https://github.com/Leonidas-from-XIV/node-xml2js)
 开发OpenHarmony的demo例子。
 
-## 配置PolyFill 插件
-
-参照 [PolyFill](https://gitee.com/openharmony-sig/openharmony-polyfill ) 的配置规则，进行插件的配置。
+![gif](preview/xml2js.gif)
 
 ## 安装模块
 
-使用npm install 安装
+使用ohpm install 安装
 
 ```
-  npm install xml2js --save
-  
-  npm install @types/xml2js --save-dev
+  ohpm install xml2js@0.4.23
 ```
 
-OpenHarmony npm环境配置等更多内容，请参照 [如何安装OpenHarmony npm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_npm_usage.md) 。
+2点需要补充修改点
+
+1.需要将依赖库xmlbuilder的oh-package.json5文件里把向外导出的"main": "./lib/index"语句改为"main": "./lib/index.js"
+
+2.需要修改本地hivgor rollup打包配置,具体步骤参考require rollup问题临时修改方案文件
+
+OpenHarmony ohpm环境配置等更多内容，请参照 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
 ## 使用说明
 
@@ -124,7 +126,7 @@ function (value, name){
 ## 约束与限制
 在下述版本验证通过：
 
-DevEco Studio 版本：3.1 Beta1，OpenHarmony SDK:API version 9。
+DevEco Studio 版本：4.0 Release Beta2(4.0.3.600)，OpenHarmony SDK:API version 10 (4.0.10.11)。
 
 
 ## 目录

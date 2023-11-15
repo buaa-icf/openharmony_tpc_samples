@@ -18,7 +18,7 @@ import xml2js from 'xml2js';
 @Component
 struct processingAttribute {
   @State message: string = ""
-  xml: string = '<root><text>Hello xml2js!</text><foo:Bar/><test1>123.123</test1><test2>true</test2></root>'
+  xml: string = '<root><text>Hello xml2js!</text><Foo:Bar/><test1>123.123</test1><test2>true</test2></root>'
   controller: TextAreaController = new TextAreaController()
 
   build() {
@@ -89,7 +89,7 @@ struct processingAttribute {
       tagNameProcessors: [this.nameToUpperCase],
       attrNameProcessors: [this.nameToUpperCase],
       valueProcessors: [this.nameToUpperCase],
-      attrValueProcessors: [this.nameToUpperCase] }, (err, result) => {
+      attrValueProcessors: [this.nameToUpperCase] }, (err:ESObject, result:ESObject) => {
       this.message = JSON.stringify(result)
     });
   }
@@ -100,7 +100,7 @@ struct processingAttribute {
       tagNameProcessors: [xml2js.processors.normalize],
       attrNameProcessors: [xml2js.processors.normalize],
       valueProcessors: [xml2js.processors.normalize],
-      attrValueProcessors: [xml2js.processors.normalize] }, (err, result) => {
+      attrValueProcessors: [xml2js.processors.normalize] }, (err:ESObject, result:ESObject) => {
       this.message = JSON.stringify(result)
     });
   }
@@ -111,7 +111,7 @@ struct processingAttribute {
       tagNameProcessors: [xml2js.processors.firstCharLowerCase],
       attrNameProcessors: [xml2js.processors.firstCharLowerCase],
       valueProcessors: [xml2js.processors.firstCharLowerCase],
-      attrValueProcessors: [xml2js.processors.firstCharLowerCase] }, (err, result) => {
+      attrValueProcessors: [xml2js.processors.firstCharLowerCase] }, (err:ESObject, result:ESObject) => {
       this.message = JSON.stringify(result)
     });
   }
@@ -122,7 +122,7 @@ struct processingAttribute {
       tagNameProcessors: [xml2js.processors.stripPrefix],
       attrNameProcessors: [xml2js.processors.stripPrefix],
       valueProcessors: [xml2js.processors.stripPrefix],
-      attrValueProcessors: [xml2js.processors.stripPrefix] }, (err, result) => {
+      attrValueProcessors: [xml2js.processors.stripPrefix] }, (err:ESObject, result:ESObject) => {
       this.message = JSON.stringify(result)
     });
   }
@@ -133,7 +133,7 @@ struct processingAttribute {
       tagNameProcessors: [xml2js.processors.parseNumbers],
       attrNameProcessors: [xml2js.processors.parseNumbers],
       valueProcessors: [xml2js.processors.parseNumbers],
-      attrValueProcessors: [xml2js.processors.parseNumbers] }, (err, result) => {
+      attrValueProcessors: [xml2js.processors.parseNumbers] }, (err:ESObject, result:ESObject) => {
       this.message = JSON.stringify(result)
     });
   }
@@ -144,7 +144,7 @@ struct processingAttribute {
       tagNameProcessors: [xml2js.processors.parseBooleans],
       attrNameProcessors: [xml2js.processors.parseBooleans],
       valueProcessors: [xml2js.processors.parseBooleans],
-      attrValueProcessors: [xml2js.processors.parseBooleans] }, (err, result) => {
+      attrValueProcessors: [xml2js.processors.parseBooleans] }, (err:ESObject, result:ESObject) => {
       this.message = JSON.stringify(result)
     });
   }

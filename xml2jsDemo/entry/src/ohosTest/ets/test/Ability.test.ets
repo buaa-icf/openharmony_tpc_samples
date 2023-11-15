@@ -12,39 +12,150 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import hilog from '@ohos.hilog';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
+import xml2js from 'xml2js'
+
 
 export default function abilityTest() {
-  describe('ActsAbilityTest', function () {
-    // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
-      // Presets an action, which is performed only once before all test cases of the test suite start.
-      // This API supports only one parameter: preset action function.
+  describe('Xml2jsTest', () => {
+
+    it('parseString_1', 0, () => {
+      let xmlString: string = '<root>Hello xml2js!</root>'
+      xml2js.parseString(xmlString, (err: ESObject, result: ESObject) => {
+        expect('Hello xml2js!').assertEqual(result.root)
+      })
     })
-    beforeEach(function () {
-      // Presets an action, which is performed before each unit test case starts.
-      // The number of execution times is the same as the number of test cases defined by **it**.
-      // This API supports only one parameter: preset action function.
+
+    it('parseString_2', 0, () => {
+      let xmlString: string = ''
+      xml2js.parseString(xmlString, (err: ESObject, result: ESObject) => {
+        expect(result).assertNull()
+      })
     })
-    afterEach(function () {
-      // Presets a clear action, which is performed after each unit test case ends.
-      // The number of execution times is the same as the number of test cases defined by **it**.
-      // This API supports only one parameter: clear action function.
+
+    it('parseString_3', 0, () => {
+      let xmlString: string = '1'
+      xml2js.parseString(xmlString, (err: ESObject, result: ESObject) => {
+        expect(result).assertUndefined()
+      })
     })
-    afterAll(function () {
-      // Presets a clear action, which is performed after all test cases of the test suite end.
-      // This API supports only one parameter: clear action function.
+
+    it('parseString_4', 0, () => {
+      let xmlString: string = '<root>Hello xml2js!<root>'
+      xml2js.parseString(xmlString, (err: ESObject, result: ESObject) => {
+        expect(result).assertUndefined()
+      })
     })
-    it('assertContain',0, function () {
-      // Defines a test case. This API supports three parameters: test case name, filter parameter, and test case function.
-      hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);
-      hilog.info(0x0000, 'testTag', '%{public}s', 'it begin');
-      let a = 'abc'
-      let b = 'b'
-      // Defines a variety of assertion methods, which are used to declare expected boolean conditions.
-      expect(a).assertContain(b)
-      expect(a).assertEqual(a)
+
+
+    it('parseString_5', 0, () => {
+      let xmlString: string = '<root><text>Hello xml2js!</text><Foo:Bar/><test1>123.123</test1><test2>true</test2></root>'
+
+      let nameToUpperCase = (name: string) => {
+        return name.toLocaleUpperCase();
+      }
+
+      xml2js.parseString(xmlString, {
+        tagNameProcessors: [nameToUpperCase],
+        attrNameProcessors: [nameToUpperCase],
+        valueProcessors: [nameToUpperCase],
+        attrValueProcessors: [nameToUpperCase]
+      }, (err: ESObject, result: ESObject) => {
+        expect(result.ROOT.TEXT.length).assertEqual(1)
+      })
     })
+
+    it('parseString_6', 0, () => {
+      let xmlString: string = '<root><text>Hello xml2js!</text><Foo:Bar/><test1>123.123</test1><test2>true</test2></root>'
+
+      xml2js.parseString(xmlString, {
+        tagNameProcessors: [xml2js.processors.normalize],
+        attrNameProcessors: [xml2js.processors.normalize],
+        valueProcessors: [xml2js.processors.normalize],
+        attrValueProcessors: [xml2js.processors.normalize]
+      }, (err: ESObject, result: ESObject) => {
+        expect(result.root.text.length).assertEqual(1)
+      })
+    })
+
+
+    it('parseStringPromise_1', 0, () => {
+      let xmlString: string = '<root>Hello xml2js!</root>'
+      xml2js.parseStringPromise(xmlString).then((result: ESObject) => {
+        expect('Hello xml2js!').assertEqual(result.root)
+      })
+    })
+
+    it('parseStringPromise_2', 0, () => {
+      let xmlString: string = ''
+      xml2js.parseStringPromise(xmlString).then((result: ESObject) => {
+        expect(result).assertNull()
+      })
+    })
+
+    it('parseStringPromise_3', 0, () => {
+      let xmlString: string = '1'
+      xml2js.parseStringPromise(xmlString).then((result: ESObject) => {
+        expect(result).assertUndefined()
+      })
+    })
+
+    it('parseStringPromise_4', 0, () => {
+      let xmlString: string = '<root>Hello xml2js!<root>'
+      xml2js.parseStringPromise(xmlString).then((result: ESObject) => {
+        expect(result).assertUndefined()
+      })
+    })
+
+    it('xmlBuilder_1', 0, () => {
+      let obj: ESObject = {
+        name: "Super", Surname: "Man", age: 23
+      } as ESObject;
+      let builder: ESObject = new xml2js.Builder();
+      expect(builder.buildObject(obj)).assertContain('name')
+    })
+
+    it('xmlBuilder_2', 0, () => {
+      let obj: ESObject = {
+        root: {
+          $: {
+            id: "my id"
+          } as ESObject, _: "my inner text"
+        } as ESObject
+      } as ESObject;
+      let builder: ESObject = new xml2js.Builder();
+      expect(builder.buildObject(obj)).assertContain('id')
+    })
+
+    it('xmlBuilder_3', 0, () => {
+      let obj: ESObject = {
+        Foo: {
+          $: {
+            xmlns: "http://foo.com"
+          } as ESObject
+        } as ESObject
+      } as ESObject;
+      let builder: ESObject = new xml2js.Builder();
+      expect(builder.buildObject(obj)).assertContain('Foo')
+    })
+
+    it('xmlBuilder_4', 0, () => {
+      let obj: ESObject = {
+        foo: {
+          $: {
+            foo: 'http://foo.com'
+          } as ESObject,
+          bar: {
+            $: {
+              bar: 'http://bar.com'
+            } as ESObject
+          } as ESObject
+        } as ESObject
+      } as ESObject
+      let builder: ESObject = new xml2js.Builder();
+      expect(builder.buildObject(obj)).assertContain('bar')
+    })
+
+
   })
 }
