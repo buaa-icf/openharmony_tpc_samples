@@ -57,6 +57,7 @@
 				<filteritem type="filepath" name="pakoDemo/entry/src/ohosTest/resources/base/media/.*" desc="第三方开源软件资源文件，不进行侵入式修改，只用于单元测试文件，忽略"/>
                 <filteritem type="filepath" name="ThreeJs360Demo/source/.*" desc="第三方开源软件，不做修改"/>
                 <filteritem type="filepath" name="SMTPClient/entry/src/main/resources/rawfile/.*" desc="测试文件"/>				
+                <filteritem type="filepath" name="metadata-extractor/resources/.*" desc="测试文件"/>		
             </filefilter>
         </filefilterlist>
         <policylist>
