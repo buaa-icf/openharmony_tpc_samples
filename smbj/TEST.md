@@ -1,7 +1,6 @@
 # smbj单元测试用例
 
-该测试用例基于OpenHarmony系统下，采用[原库测试用例](https://gitee.com/hihopeorg/smbj/tree/master/entry/src/ohosTest/ets/test)
-进行单元测试
+该测试用例基于OpenHarmony系统下，导出的接口进行单元测试
 
 单元测试用例覆盖情况
 
