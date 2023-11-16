@@ -19,7 +19,7 @@ import { Const } from './Const';
 import { Message } from './Message';
 import { Logger } from './Logger';
 import { Utils } from './Utils';
-import { Md5 } from 'ts-md5/src/md5'
+import { Md5 } from './Md5'
 
 const State = Object.freeze({
   //                src   dst  chIp chPort  breq
