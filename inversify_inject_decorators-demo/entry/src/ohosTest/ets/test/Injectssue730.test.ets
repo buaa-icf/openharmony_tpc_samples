@@ -23,7 +23,6 @@ import {
   expect
 } from '@ohos/hypium'
 
-import "reflect-metadata"
 import { injectssue730Function, should_resolve_from_container_directly } from './Injectssue730';
 import { Bar, BAR, FOO, Foo, FooBarBase, mBar, mFoo, NamedFoo, SingletonFoo, TaggedFoo, throws } from './inject';
 
@@ -31,7 +30,7 @@ let tag:string = "inversify-demo："
 
 export default function injectssue730Test() {
 
-  describe("when_bindingunbinding", function(){
+  describe("when_bindingunbinding", ()=>{
 
     it("Should_resolve_from_container_directly1",0, () => {
       let obj = injectssue730Function();

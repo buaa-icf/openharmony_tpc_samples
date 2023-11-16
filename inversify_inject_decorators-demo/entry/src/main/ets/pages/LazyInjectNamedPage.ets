@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 
-import "reflect-metadata"
 import { LazyInjectNamedFunction } from './lazyInjectInterface';
 
 @Entry
