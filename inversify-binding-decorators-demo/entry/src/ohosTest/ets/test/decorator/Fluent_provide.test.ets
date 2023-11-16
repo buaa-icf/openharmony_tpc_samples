@@ -13,8 +13,6 @@
  * limitations under the License.
  */
 
-// import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../util'
-
 import {
     describe,
     beforeAll,
@@ -25,7 +23,6 @@ import {
     expect
 } from '@ohos/hypium'
 
-import { fluentProvide } from "inversify-binding-decorators/es/index";
 import { shouldThrow1, shouldThrow2 } from '../interface'
 
 let tag = "inversify-demo： "
@@ -33,12 +30,6 @@ let tag = "inversify-demo： "
 export default function fluentProvideTest() {
     describe("fluentProvide", () => {
         it("Should_throw_if_provideFluent_is_applied_more_than_once_without_force_flag",0, () => {
-
-            // expect(shouldThrow1).to.throw(
-            //     "Cannot apply @provideFluent decorator multiple times but is has been used " +
-            //     "multiple times in Ninja " +
-            //     "Please use done(true) if you are trying to declare multiple bindings!"
-            // );
 
             try {
                 shouldThrow1 && shouldThrow1()
@@ -52,8 +43,6 @@ export default function fluentProvideTest() {
         });
 
         it("Should_work_if_provide_is_applied_more_than_once_with_force_flag",0, () => {
-
-            // expect(shouldThrow2).not.to.throw();
             try {
                 shouldThrow2 && shouldThrow2()
             }catch(err){

@@ -45,20 +45,12 @@ export default function provideTest() {
 
             let ninja:Ninja = new Ninja();
 
-            const provided = provide(ninja);
-            // expect(typeof provided).eqls("function");
+            const provided:ESObject = provide(ninja);
             expect(typeof provided).assertEqual("function");
         });
 
 
         it("Should_throw_if_provide_is_applied_more_than_once_without_force_flag",0, () => {
-
-            // expect(shouldThrow0).to.throw(
-            //     "Cannot apply @provide decorator multiple times but is has been used " +
-            //     "multiple times in Ninja " +
-            //     "Please use @provide(ID, true) if you are trying to declare multiple bindings!"
-            // );
-
             try {
                 shouldThrow0 && shouldThrow0()
             }catch(err){
@@ -71,15 +63,9 @@ export default function provideTest() {
         });
 
         it("Should_work_if_provide_is_applied_more_than_once_with_force_flag",0, () => {
-
-            // expect(shouldThrow).not.to.throws();
             try {
                 shouldThrow && shouldThrow()
             }catch(err){
-                // let value:string = "Cannot apply @provide decorator multiple times but is has been used " +
-                //     "multiple times in Ninja " +
-                //     "Please use @provide(ID, true) if you are trying to declare multiple bindings!";
-                // expect(1).assertEqual(2);
                 console.log(tag + "expect("+err.message+").throw()")
             }
         });
