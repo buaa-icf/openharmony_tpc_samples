@@ -22,7 +22,6 @@ export { BezierCircle } from './src/main/ets/components/topRefresh/BezierCircleR
 export { Classics } from './src/main/ets/components/topRefresh/ClassicsRefresh'
 
 export { Material } from './src/main/ets/components/topRefresh/MaterialRefresh'
-export { MaterialTwo } from './src/main/ets/components/topRefresh/MaterialRefreshTwo'
 export { MaterialBottom } from './src/main/ets/components/bottomRefresh/MaterialRefreshBottomRefresh'
 
 export { WaterSwipe } from './src/main/ets/components/topRefresh/WaterSwipeRefresh'
