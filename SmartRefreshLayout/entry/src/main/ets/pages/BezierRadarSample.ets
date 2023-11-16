@@ -12,66 +12,82 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { SmartRefresh } from "@ohos/smartrefreshlayout"
+import { SmartRefreshForBezierRadarSample } from "@ohos/smartrefreshlayout"
 import { BezierRadar } from "@ohos/smartrefreshlayout"
+
+class arrParam{
+  index:number = 0;
+  content:string = "";
+}
 
 @Entry
 @Component
 struct BezierRadarSample {
-  @State model: SmartRefresh.Model = new SmartRefresh.Model()
-  @State bezierRadarModel: BezierRadar.BezierRadarModel = new BezierRadar.BezierRadarModel();
-  arr: string[] = ['打开左右拖动', '关闭左右拖动', '内容不偏移', '内容跟随偏移', '蓝色主题', '绿色主题', '红色主题', '橙色主题', '打开左右拖动', '关闭左右拖动', '内容不偏移', '内容跟随偏移', '蓝色主题', '绿色主题', '红色主题', '橙色主题', '内容不偏移', '内容跟随偏移', '蓝色主题', '绿色主题', '红色主题', '橙色主题',]
-
-  @Builder testHeader() {
-    BezierRadar({ model: $model, bezierRadarModel: $bezierRadarModel })
-  }
+  @State model: SmartRefreshForBezierRadarSample.Model = new SmartRefreshForBezierRadarSample.Model()
+  arr: arrParam[] = [{index:0,content:'打开左右拖动'}, {index:1,content:'关闭左右拖动'}, {index:2,content:'蓝色主题'}, {index:3,content:'绿色主题'}, {index:4,content:'红色主题'},
+    {index:5,content:'橙色主题'}, {index:6,content:'打开左右拖动'}, {index:7,content:'关闭左右拖动'}, {index:8,content:'蓝色主题'}, {index:9,content:'绿色主题'},
+    {index:10,content:'红色主题'},{index:11,content:'橙色主题'}, {index:12,content:'蓝色主题'}, {index:13,content:'绿色主题'}, {index:14,content:'红色主题'}, {index:15,content:'橙色主题'}]
 
   @Builder testMain() {
     Column() {
-      ForEach(this.arr, (item) => {
+      ForEach(this.arr, (item:arrParam) => {
         Column() {
-          Text(item).fontSize("60lpx")
+          Text(item.content).fontSize("60lpx")
         }.width("100%").alignItems(HorizontalAlign.Start)
         .height("150lpx").onClick(() => {
-          if (this.model.refreshState == SmartRefresh.REFRESHSTATE.REFRESHING) { //松开过后的刷新样式
-          } else if (this.model.refreshState == SmartRefresh.REFRESHSTATE.TOREFRESH) { //拖住过程中的样式
+          if (this.model.refreshState == SmartRefreshForBezierRadarSample.REFRESHSTATE.REFRESHING) { //松开过后的刷新样式
+          } else if (this.model.refreshState == SmartRefreshForBezierRadarSample.REFRESHSTATE.TOREFRESH) { //拖住过程中的样式
           } else {
-            if (item == "打开左右拖动") {
-              this.bezierRadarModel.setMEnableHorizontalDrag(true)
-            } else if (item == "关闭左右拖动") {
-              this.bezierRadarModel.setMEnableHorizontalDrag(false)
-            } else if (item == "内容不偏移") {
-              //this.model.setFixedContent(false)
-            } else if (item == "内容跟随偏移") {
-              //this.model.setFixedContent(true)
-            } else if (item == "蓝色主题") {
-              this.bezierRadarModel.setMPrimaryColor("#0000FF")
-              this.bezierRadarModel.setMRadarFillColor("#ADD8E6")
-            } else if (item == "绿色主题") {
-              this.bezierRadarModel.setMPrimaryColor("#00785D")
-              this.bezierRadarModel.setMRadarFillColor("#90EE90")
-            } else if (item == "红色主题") {
-              this.bezierRadarModel.setMPrimaryColor("#FF0000")
-              this.bezierRadarModel.setMRadarFillColor("#FFB6C1")
-            } else if (item == "橙色主题") {
-              this.bezierRadarModel.setMPrimaryColor("#FF8000")
-              this.bezierRadarModel.setMRadarFillColor("#F5DEB3")
+            if (item.content == "打开左右拖动") {
+              this.model.setEnableHorizontalDrag(true)
+            } else if (item.content == "关闭左右拖动") {
+              this.model.setEnableHorizontalDrag(false)
+            } else if (item.content == "蓝色主题") {
+              this.model.setPrimaryColor("#0000FF")
+              this.model.setRadarFillColor("#ADD8E6")
+            } else if (item.content == "绿色主题") {
+              this.model.setPrimaryColor("#00785D")
+              this.model.setRadarFillColor("#90EE90")
+            } else if (item.content == "红色主题") {
+              this.model.setPrimaryColor("#FF0000")
+              this.model.setRadarFillColor("#FFB6C1")
+            } else if (item.content == "橙色主题") {
+              this.model.setPrimaryColor("#FF8000")
+              this.model.setRadarFillColor("#F5DEB3")
+            } else if (item.content == "绿色主题") {
+              this.model.setPrimaryColor("#00785D")
+              this.model.setRadarFillColor("#90EE90")
+            } else if (item.content == "红色主题") {
+              this.model.setPrimaryColor("#FF0000")
+              this.model.setRadarFillColor("#FFB6C1")
+            } else if (item.content == "橙色主题") {
+              this.model.setPrimaryColor("#FF8000")
+              this.model.setRadarFillColor("#F5DEB3")
             }
           }
         })
 
         Divider().strokeWidth(2).color(Color.Grey)
-      }, item => item)
+      }, (item:arrParam) => item.index.toString())
     }.width("100%").padding("20lpx").backgroundColor(Color.White)
+  }
+
+  @Builder testHeader() {
+    BezierRadar({ model: $model})
   }
 
   build() {
     Column() {
-      SmartRefresh({ model: $model, header: () => {
-        this.testHeader()
-      }, main: () => {
-        this.testMain()
-      } })
+      SmartRefreshForBezierRadarSample({
+        modelBezierRadar: $model,
+        header: () => {
+          this.testHeader()
+        },
+        main: () => {
+          this.testMain()
+        },
+        footer: ()=> {}
+      })
     }.backgroundColor("#ffffff")
   }
 }

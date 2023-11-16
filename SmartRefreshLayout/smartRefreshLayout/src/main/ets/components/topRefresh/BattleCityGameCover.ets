@@ -17,17 +17,16 @@ import SmartRefreshForGame from './SmartRefreshForGame'
 
 @Component
 export struct AirplaneGameCover {
-  @State model: SmartRefreshForGame.Model = new SmartRefreshForGame.Model()
+  @Link model: SmartRefreshForGame.Model
   @State @Watch('onGameChange') gameState: boolean = false
   maxHeight: number = 0
-  @State @Watch('onYChange')
-  downY: number = 0
+  @Prop @Watch('onYChange') downY: number = 0
   textColor: Color | string | number = ''
   @State private topAnimY: number = 1
   @State private bottomAnimY: number = 1
   @State private tipText: string  = this.model.maskTextTopPull
 
-  private onGameChange(value) {
+  private onGameChange(value:ESObject) {
     if (this.gameState) {
       this.bottomAnimY = 0
       this.topAnimY = 0

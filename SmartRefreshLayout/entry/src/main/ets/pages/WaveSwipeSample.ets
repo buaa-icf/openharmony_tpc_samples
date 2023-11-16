@@ -20,7 +20,7 @@ import {SmartRefresh} from "@ohos/smartrefreshlayout"
 struct WaterSwipeSample {
   @State model: SmartRefresh.Model = new SmartRefresh.Model()
   @State needScroller: boolean = false
-  private arr: string[] = ['内容不偏移 ', '内容跟随偏移', '默认主题', '橙色主题', '红色主题', '绿色主题', '蓝色主题', '内容不偏移', '内容跟随偏移', '默认主题', '橙色主题', '红色主题', '绿色主题', '蓝色主题']
+  private arr: string[] = ['默认主题', '橙色主题', '红色主题', '绿色主题', '蓝色主题', '默认主题', '橙色主题', '红色主题', '绿色主题', '蓝色主题']
 
   @Builder testHeader() {
       WaveSwipe({ model: $model})
@@ -28,27 +28,27 @@ struct WaterSwipeSample {
 
   pickColor(SelectColorParam: string) {
     let SelectColor = SelectColorParam.trim()
+    // if (SelectColor == this.arr[0].trim()) {
+    //   this.model.setFixedContent(false)
+    //   this.needScroller = true
+    // }
+    // if (SelectColor == this.arr[1].trim()) {
+    //   this.model.setFixedContent(true)
+    //   this.needScroller = true
+    // }
     if (SelectColor == this.arr[0].trim()) {
-      this.model.setFixedContent(false)
-      this.needScroller = true
-    }
-    if (SelectColor == this.arr[1].trim()) {
-      this.model.setFixedContent(true)
-      this.needScroller = true
-    }
-    if (SelectColor == this.arr[2].trim()) {
       this.model.setBackgroundColor(Color.Black)
     }
-    if (SelectColor == this.arr[3].trim()) {
+    if (SelectColor == this.arr[1].trim()) {
       this.model.setBackgroundColor(Color.Orange)
     }
-    if (SelectColor == this.arr[4].trim()) {
+    if (SelectColor == this.arr[2].trim()) {
       this.model.setBackgroundColor(Color.Red)
     }
-    if (SelectColor == this.arr[5].trim()) {
+    if (SelectColor == this.arr[3].trim()) {
       this.model.setBackgroundColor(Color.Green)
     }
-    if (SelectColor == this.arr[6].trim()) {
+    if (SelectColor == this.arr[4].trim()) {
       this.model.setBackgroundColor(Color.Blue)
     }
   }
@@ -69,12 +69,17 @@ struct WaterSwipeSample {
     Column() {
       ForEach(this.arr, (item:string) => {
         this.card(item)
-      }, item => item)
+      }, (item:string) => item)
     }.width("100%").padding("20lpx")
   }
   build() {
     Column() {
-      SmartRefresh({ model: $model, header:()=> {this.testHeader()}, main:()=> {this.testMain()},footer: () => {} })
+      SmartRefresh({
+        model: $model,
+        header:()=> {this.testHeader()},
+        main:()=> {this.testMain()},
+        footer: () => {}
+      })
     }.backgroundColor("#dddddd")
   }
 

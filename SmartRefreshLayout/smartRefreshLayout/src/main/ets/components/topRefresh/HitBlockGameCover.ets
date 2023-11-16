@@ -17,17 +17,16 @@ import SmartRefreshForGame from './SmartRefreshForGame'
 
 @Component
 export struct HitBlockGameCover {
-  @State model: SmartRefreshForGame.Model = new SmartRefreshForGame.Model()
+  @Link modelCover: SmartRefreshForGame.Model
   @State @Watch('onGameChange') gameState: boolean = false
   maxHeight: number = 0
-  @State @Watch('onYChange')
-  downY: number = 0
+  @Prop @Watch('onYChange') downY: number
   textColor: Color | string | number = ''
   @State private topAnimY: number = 1
   @State private bottomAnimY: number = 1
-  @State private tipText: string = this.model.maskTextTopPull
+  @State private tipText: string = this.modelCover.maskTextTopPull
 
-  private onGameChange(value) {
+  private onGameChange(value:ESObject) {
     if (this.gameState) {
       this.bottomAnimY = 0
       this.topAnimY = 0
@@ -39,9 +38,9 @@ export struct HitBlockGameCover {
 
   private onYChange() {
     if (this.downY < this.maxHeight) {
-      this.tipText = this.model.maskTextTopPull
+      this.tipText = this.modelCover.maskTextTopPull
     } else {
-      this.tipText = this.model.maskTextTopRelease
+      this.tipText = this.modelCover.maskTextTopRelease
     }
   }
 
@@ -49,7 +48,7 @@ export struct HitBlockGameCover {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
       Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.End }) {
         Text(this.tipText)
-          .fontSize(px2fp(this.model.maskTextSizeTop))
+          .fontSize(px2fp(this.modelCover.maskTextSizeTop))
           .fontColor(this.textColor)
       }
       .width('100%')
@@ -69,8 +68,8 @@ export struct HitBlockGameCover {
       })
 
       Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Start }) {
-        Text(this.model.maskTextBottom)
-          .fontSize(px2fp(this.model.maskTextSizeBottom))
+        Text(this.modelCover.maskTextBottom)
+          .fontSize(px2fp(this.modelCover.maskTextSizeBottom))
           .fontColor(this.textColor)
       }
       .width('100%')

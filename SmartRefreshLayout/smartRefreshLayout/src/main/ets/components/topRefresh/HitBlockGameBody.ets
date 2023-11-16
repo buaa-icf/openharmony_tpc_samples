@@ -15,6 +15,17 @@
 
 import SmartRefreshForGame from './SmartRefreshForGame'
 
+class RectParam {
+  index: number = 0;
+  x: number = 0;
+  y: number = 0
+}
+
+class TouchBlock {
+  x: number = 0;
+  y: number = 0;
+}
+
 @Component
 export struct HitBlockGameBody {
   @State model: SmartRefreshForGame.Model = new SmartRefreshForGame.Model()
@@ -29,11 +40,11 @@ export struct HitBlockGameBody {
   protected blockLeft: number = 0;
   @State cx: number = 0;
   @State cy: number = 0;
-  protected pointList: Array<any> = [];
+  protected pointList: Array<TouchBlock> = [];
   protected isLeft: boolean = true;
   protected angle: number = 30;
   protected speed: number = this.model.ballSpeed; // 球球移动速度
-  private rectList: Array<any> = [] // 绘制的砖块
+  @State private rectList: Array<RectParam> = [] // 绘制的砖块
   private controllerSize: number = 40 //挡板长度
   private mOffsetY: number = 55 // 挡板上下移动的位置
   private isGameOver: boolean = false // 游戏时是否结束
@@ -46,8 +57,8 @@ export struct HitBlockGameBody {
   @State private slideOffset: number = 0
   mScreenHeight: number = 0
   initBackgroundColor: Color | string | number = ''
-  @State @Watch('onYStateChange') downY: number = 0
-  @State @Watch('onFinishChange') isNotifyFinish: boolean = false
+  @Prop @Watch('onYStateChange') downY: number
+  @Prop @Watch('onFinishChange') isNotifyFinish: boolean
 
   private onFinishChange() {
     if (this.isNotifyFinish) {
@@ -86,10 +97,10 @@ export struct HitBlockGameBody {
     columnX = columnX == this.blockHorizontalNum ? columnX - 1 : columnX;
     let rowY: number = Math.floor(y / this.blockHeight);
     rowY = rowY == this.blockVerticalNum ? rowY - 1 : rowY;
-    let p: Array<any> = []
+    let p: Array<TouchBlock> = []
     p.push({ x: columnX, y: rowY })
     let flag: boolean = false;
-    for (var index = 0; index < this.pointList.length; index++) {
+    for (let index = 0; index < this.pointList.length; index++) {
       if (this.pointList[index].x == p[0].x && this.pointList[index].y == p[0].y) {
         flag = true
         break;
@@ -121,7 +132,7 @@ export struct HitBlockGameBody {
       row = Math.floor(i / this.blockHorizontalNum);
       column = i % this.blockHorizontalNum;
       let flag: boolean = false;
-      for (var index = 0; index < this.pointList.length; index++) {
+      for (let index = 0; index < this.pointList.length; index++) {
         if (this.pointList[index].x == column && this.pointList[index].y == row) {
           flag = true;
           break;
@@ -130,7 +141,8 @@ export struct HitBlockGameBody {
       if (flag) {
         continue;
       }
-      let temp = {
+      let temp:RectParam = {
+        index: i,
         x: column,
         y: row
       }
@@ -185,7 +197,7 @@ export struct HitBlockGameBody {
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
       Stack({ alignContent: Alignment.TopStart }) {
-        ForEach(this.rectList, item => {
+        ForEach(this.rectList, (item:RectParam) => {
           Path() //砖块
             .commands("M0 0 L" + fp2px(this.blockWidth) + " 0 L" + fp2px(this.blockWidth) + " " + fp2px(this.mScreenHeight / 5) + " L0 " + fp2px(this.mScreenHeight / 5) + "z")
               //            .stroke(0xff11bbff)
@@ -193,9 +205,10 @@ export struct HitBlockGameBody {
             .strokeWidth(this.blockBorderWidth)
             .translate({
               x: item.x * this.blockWidth + this.blockLeft,
-              y: item.y * (this.mScreenHeight - 1) / this.blockVerticalNum
+              y: item.y * (this.mScreenHeight - 1) / this.blockVerticalNum,
+              z: 0
             })
-        }, item => item.toString())
+        }, (item:RectParam) => item.index.toString())
         Circle({ width: this.mCircle, height: this.mCircle }) //球
           .fill(this.drawColor(this.initBackgroundColor == '#ffffff' ? 0x000000 : 0xffffff, 230))
           .translate({

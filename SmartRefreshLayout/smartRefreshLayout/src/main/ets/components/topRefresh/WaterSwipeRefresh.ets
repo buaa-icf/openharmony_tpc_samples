@@ -28,7 +28,8 @@ export struct WaterSwipe {
   private sunSingleSecondLinePth: string = ''
   private sunRefreshIndex: number = 0
   private intervalId: number = 0
-  private sunRefreshID : number = 0
+  private sunRefreshID : number = -1
+  private sunRefreshIDClearFlag: boolean = true
   private bottomCircleRadius: number = 0
   private offsetIncrement: number = 0
   private sunXOffset: number = 300
@@ -75,7 +76,18 @@ export struct WaterSwipe {
   }
 
   ondraw() : void {
+    this.refreshSunFunction()
     this.model.headerRefreshId = setInterval(() => {
+      if(this.model.refreshState == SmartRefresh.REFRESHSTATE.REFRESHFINISH) {
+        if(this.sunRefreshIDClearFlag) {
+          this.sunRefreshIDClearFlag = false
+          setTimeout(() => {//关闭刷新定时器
+            clearInterval(this.sunRefreshID)
+            this.sunRefreshIDClearFlag = true
+            this.sunRefreshID = -1
+          }, this.model.refreshDuration);
+        }
+      }
       let initStartX: number = 250
       let topCircleRadius: number = 80
       let initStartY: number = this.model.headerHeight - this.model.initHeaderHeight < 100 ? (this.model.headerHeight - this.model.initHeaderHeight) : 100
@@ -88,8 +100,7 @@ export struct WaterSwipe {
         let bottomCircleStartX = initStartX + topCircleRadius - this.bottomCircleRadius // 450 + 100
         let getOffset = this.model.getOffset() * this.model.initHeaderHeight
         //let bottomCircleStartY = getOffset > this.model.initHeaderHeight ? (getOffset - 50): (initStartY - 20)
-        let bottomCircleStartY = this.model.headerHeight > this.model.initHeaderHeight ? (this.model.headerHeight - this.model.initHeaderHeight + initStartY)
-                                                                                       : (initStartY - 20)
+        let bottomCircleStartY = this.model.headerHeight > this.model.initHeaderHeight ? (this.model.headerHeight - this.model.initHeaderHeight + initStartY) : (initStartY - 20)
         let leftMiddleX = (initStartX + bottomCircleStartX) / 2 + 20
         let leftMiddleY = (initStartY + bottomCircleStartY) / 2
         let rightMiddleX = (initStartX + 2 * topCircleRadius  + bottomCircleStartX + 2 * this.bottomCircleRadius) / 2 - 20
@@ -97,11 +108,11 @@ export struct WaterSwipe {
         let topCircleEndX = initStartX + 2 * topCircleRadius
         this.bottomWaterCmd = ` M `+ bottomCircleStartX + " " + bottomCircleStartY + ` a ${this.bottomCircleRadius} ${this.bottomCircleRadius} 90 1 1 0 1 Z`
         this.middleWaterCmd = `M ${initStartX} ${initStartY} `
-                            + `C ${initStartX} ${initStartY} ` + leftMiddleX + " " + leftMiddleY + " " + bottomCircleStartX + " " + bottomCircleStartY
+                            + ` C ${initStartX} ${initStartY} ` + leftMiddleX + " " + leftMiddleY + " " + bottomCircleStartX + " " + bottomCircleStartY
                             + " M" + bottomCircleStartX + " " + bottomCircleStartY
                             + " L" + bottomCircleEndX + " " + bottomCircleStartY
                             + " C" + bottomCircleEndX + " " + bottomCircleStartY + " " + rightMiddleX + " " + leftMiddleY + " " +`${topCircleEndX}` + ` ${initStartY}`
-                            + `L${initStartX} ${initStartY} Z`
+                            + ` L${initStartX} ${initStartY} `
 
         //顶部圆形中的刷新
         let increase_distanceToAngle : number = 360 * (this.model.headerHeight - this.model.initHeaderHeight) / 200
@@ -163,8 +174,16 @@ export struct WaterSwipe {
   aboutToAppear() {
     this.model.setInitHeaderHeight(200).setHeaderHeight(200).setZHeaderIndex(99).setZMainIndex(-1).setBackgroundShadowColor(Color.White)
     this.model.setRefreshHeaderCallback(() => this.ondraw())
-    this.refreshSunFunction()
-    this.caculateSunOffset(this.sunXOffset , this.sunYOffset)
+    if(this.model.initRefreshing) {
+      this.model.refreshHeaderCallback()
+      this.model.initRefreshing = false
+    }
+    //this.caculateSunOffset(this.sunXOffset , this.sunYOffset)
+  }
+
+  aboutToDisappear(){
+    clearInterval(this.model.headerRefreshId)
+    clearInterval(this.sunRefreshID)
   }
 
   build() {
@@ -185,28 +204,28 @@ export struct WaterSwipe {
       } else if (this.model.refreshState == SmartRefresh.REFRESHSTATE.TOREFRESH) { //拖住过程中的样式
         Stack({ alignContent : Alignment.Center }) {
           if (this.model.latestYOffset < 300 && this.model.latestYOffset > 75) {
-            Stack() {
-              Path().width("100%").height(this.model.headerHeight).commands(this.waterTopPathCmd).fill(this.model.backgroundColor)
-              Path().width("100%").height(this.model.headerHeight)
-                .commands(this.dragPathCmd)
-                .strokeWidth(3)
-                .stroke(Color.White)
-                .fill(this.model.backgroundColor)
-              if (this.arrowAngleFlag == 1) {
-                Path() //圆的轨道
-                  .width("100%")
-                  .height(this.model.headerHeight)
-                  .strokeWidth(3)
-                  .fillOpacity(0)
-                  //.stroke(Color.White)
-                  .stroke(Color.White)
-                  .height(this.model.headerHeight)
-                  .commands(this.arrowPathCmd)
-                  //.margin({top:0,left:160})
-                  .zIndex(2)
-                  .opacity(1)
-              }
-            }
+            // Stack() {
+            //   Path().width("100%").height(this.model.headerHeight).commands(this.waterTopPathCmd).fill(this.model.backgroundColor)
+            //   Path().width("100%").height(this.model.headerHeight)
+            //     .commands(this.dragPathCmd)
+            //     .strokeWidth(3)
+            //     .stroke(Color.White)
+            //     .fill(this.model.backgroundColor)
+            //   if (this.arrowAngleFlag == 1) {
+            //     Path() //圆的轨道
+            //       .width("100%")
+            //       .height(this.model.headerHeight)
+            //       .strokeWidth(3)
+            //       .fillOpacity(0)
+            //       //.stroke(Color.White)
+            //       .stroke(Color.White)
+            //       .height(this.model.headerHeight)
+            //       .commands(this.arrowPathCmd)
+            //       //.margin({top:0,left:160})
+            //       .zIndex(2)
+            //       .opacity(1)
+            //   }
+            // }
           } else {
             Stack({ alignContent : Alignment.Center }) {
               Path().width("100%").height(this.model.headerHeight).commands(this.bottomWaterCmd).fill(this.model.backgroundColor)
@@ -218,7 +237,7 @@ export struct WaterSwipe {
                 .strokeWidth(3)
                 .fill(this.model.backgroundColor)
                 .stroke(Color.White)
-                //.margin({top:0,left:160})
+                .margin({top:0,left:0})
               if (this.arrowAngleFlag == 1) {
                 Path() //圆的轨道
                   .width("100%")
@@ -229,7 +248,6 @@ export struct WaterSwipe {
                   .commands(this.arrowPathCmd)
                   .zIndex(2)
                   .opacity(1)
-                  //.margin({top:0,left:160})
               }
             }
           }

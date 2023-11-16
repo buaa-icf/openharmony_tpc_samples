@@ -15,7 +15,6 @@
 import {SmartRefresh} from "@ohos/smartrefreshlayout"
 import {Classics} from "@ohos/smartrefreshlayout"
 import {ClassicsBottom} from "@ohos/smartrefreshlayout"
-import {SmartRefreshEntry} from "@ohos/smartrefreshlayout"
 @Entry
 @Component
 struct ClassicsSample {
@@ -27,15 +26,7 @@ struct ClassicsSample {
 
   pickColor(SelectColorParam: string) {
     let SelectColor = SelectColorParam.trim()
-//    if (SelectColor == this.arr[0].trim()) {
-//      this.model.setRefreshPosition(SmartRefresh.RefreshPositionEnum.CENTER)
-//    }
-//    if (SelectColor == this.arr[1].trim()) {
-//      this.model.setRefreshPosition(SmartRefresh.RefreshPositionEnum.BOOTOM)
-//    }
-//    if (SelectColor == this.arr[2].trim()) {
-//      this.model.setRefreshPosition(SmartRefresh.RefreshPositionEnum.TOP)
-//    }
+
     if (SelectColor == this.arr[0].trim()) {
       this.model.setTimeShowState(true)
     }
@@ -80,16 +71,13 @@ struct ClassicsSample {
   }
   @Builder testMain() {
     Column() {
-//       ForEach(this.arr, (item:string) => {
-//         this.card(item)
-//      }, item => item)
 
       List({ space: 20, initialIndex: 0 }) {
         ForEach(this.arr, (item:string) => {
            ListItem() {
             this.card(item)
            }
-        }, item => item)
+        }, (item:string) => item)
       }
 //      Grid() {
 //        ForEach(this.arr, (item:string) => {
@@ -110,7 +98,7 @@ struct ClassicsSample {
 
   @Builder testFooter() {
     Column() {
-      ClassicsBottom({ model: $model})
+       ClassicsBottom({ model: $model})
     }.width("100%").padding("20lpx")
   }
 
@@ -120,8 +108,8 @@ struct ClassicsSample {
         model: $model,
         header:()=> {this.testHeader()},
         main:()=> {this.testMain()},
-        footer: ()=> {this.testFooter()}  })
+        footer: ()=> {this.testFooter()}
+      })
     }.backgroundColor("#dddddd")
   }
 }
-export default ClassicsSample;

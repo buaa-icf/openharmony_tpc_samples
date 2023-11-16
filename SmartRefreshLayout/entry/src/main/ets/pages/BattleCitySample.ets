@@ -16,53 +16,43 @@
 import { SmartRefreshForGame } from "@ohos/smartrefreshlayout"
 import { BattleCity } from "@ohos/smartrefreshlayout"
 
+class themeParam{
+  color:string = "";
+  name:string = "";
+  index:number = 0;
+}
+
 @Entry
 @Component
 struct BattleCitySample {
-  arr: Array<any> = [
-    { name: '默认主题', color: '#ffffff' },
-    { name: '蓝色主题', color: '#2299ee' },
-    { name: '绿色主题', color: '#99cc00' },
-    { name: '红色主题', color: '#ff4444' },
-    { name: '橙色主题', color: '#ffbb33' },
+  arr: Array<themeParam> = [
+    {index: 1, name: '默认主题', color: '#ffffff' },
+    {index: 2, name: '蓝色主题', color: '#2299ee' },
+    {index: 3, name: '绿色主题', color: '#99cc00' },
+    {index: 4, name: '红色主题', color: '#ff4444' },
+    {index: 5, name: '橙色主题', color: '#ffbb33' },
+    {index: 6, name: '橙色主题', color: '#ffbb33' },
+    {index: 7, name: '橙色主题', color: '#ffbb33' },
+    {index: 8, name: '橙色主题', color: '#ffbb33' },
+    {index: 9, name: '橙色主题', color: '#ffbb33' },
+    {index: 10, name: '橙色主题', color: '#ffbb33' },
+    {index: 11, name: '橙色主题', color: '#ffbb33' },
   ]
   @State model: SmartRefreshForGame.Model = new SmartRefreshForGame.Model()
-  private isClick: boolean = false
 
   public aboutToAppear() {
     this.model.setBackgroundColor('#ffffff')
-    this.model.setRefreshCallback(() => {
-      if (!this.isClick) {
-        this.isClick = true
-        setTimeout(() => {
-          this.isClick = false
-          this.model.finishRefresh(true)
-        }, 3000)
-      }
-    })
-    setTimeout(() => {
-      this.model.autoRefresh()
-    }, 100)
   }
 
-  build() {
-    Column() {
-      SmartRefreshForGame({
-        model: this.model,
-        header: () => {
-          this.testHeader()
-        },
-        main: () => {
-          this.testMain()
-        }
-      })
-    }
+
+
+  @Builder testHeader() {
+    BattleCity({ model: $model })
   }
 
   @Builder testMain() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
-      ForEach(this.arr, (item) => {
-        ForEach(this.arr, (item2) => {
+        ForEach(this.arr, (item2:themeParam) => {
           Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
             Text(item2.name)
               .fontSize(30)
@@ -84,15 +74,24 @@ struct BattleCitySample {
             this.model.setBackgroundColor(item2.color)
             this.model.autoRefresh()
           })
-
-        }, item => item.toString())
-      }, item => item.toString())
+        }, (item:themeParam) => item.index.toString())
     }
     .width("100%")
     .backgroundColor("#ffffff")
   }
 
-  @Builder testHeader() {
-    BattleCity({ model: this.model })
+  build() {
+    Column() {
+      SmartRefreshForGame({
+        modelGame: $model,
+        header: () => {
+          this.testHeader()
+        },
+        main: () => {
+          this.testMain()
+        },
+        footer: ()=>{}
+      })
+    }
   }
 }

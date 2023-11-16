@@ -19,12 +19,12 @@ import {HitBlockGameBody} from './HitBlockGameBody'
 
 @Component
 export struct HitBlock {
-  @State model: SmartRefreshForGame.Model = new SmartRefreshForGame.Model()
+  @Link hitBlockModel: SmartRefreshForGame.Model
   @State private welcomeIsStart: boolean = false
   @State private gameIsStart: boolean = false
 
-  private changeState(state) {
-    if (state == SmartRefreshForGame.REFRESHSTATE.TOREFRESH) { // 下拉中
+  private changeState(state:ESObject) {
+    if (state == SmartRefreshForGame.REFRESHSTATE.TOREFRESH ) { // 下拉中
 
     } else if (state == SmartRefreshForGame.REFRESHSTATE.REFRESHING) { // 刷新中
       if (!this.welcomeIsStart) {
@@ -42,24 +42,26 @@ export struct HitBlock {
 
   build() {
     Stack({ alignContent: Alignment.TopStart }) {
-      Text('' + this.changeState(this.model.refreshState)).visibility(Visibility.None)
+      Text(this.hitBlockModel.downY + this.changeState(this.hitBlockModel.refreshState)).visibility(Visibility.None)
       if (this.gameIsStart) {
         // 游戏主体界面
         HitBlockGameBody({
-          downY: this.model.downY,
-          mScreenHeight: this.model.initHeaderHeight,
-          initBackgroundColor: this.model.backgroundColor,
-          isNotifyFinish: this.model.isNotifyFinish
+          downY: this.hitBlockModel.downY,
+          mScreenHeight:this.hitBlockModel.initHeaderHeight,
+          initBackgroundColor: this.hitBlockModel.backgroundColor,
+          isNotifyFinish: this.hitBlockModel.isNotifyFinish
+        })
+      } else {
+        // 游戏欢迎界面
+        HitBlockGameCover({
+          modelCover:$hitBlockModel,
+          gameState: this.welcomeIsStart,
+          maxHeight: this.hitBlockModel.initHeaderHeight,
+          downY: this.hitBlockModel.downY,
+          textColor: this.hitBlockModel.backgroundColor
         })
       }
-      // 游戏欢迎界面
-      HitBlockGameCover({
-        gameState: this.welcomeIsStart,
-        maxHeight: this.model.initHeaderHeight,
-        downY: this.model.downY,
-        textColor: this.model.backgroundColor
-      })
     }
-    .height(this.model.initHeaderHeight)
+    .height(this.hitBlockModel.initHeaderHeight)
   }
 }

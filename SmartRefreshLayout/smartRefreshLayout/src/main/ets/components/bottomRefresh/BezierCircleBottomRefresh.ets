@@ -12,17 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import smartRefreshSecond from "../topRefresh/smartRefreshSecond"
+import smartRefreshSecond from "../topRefresh/SmartRefreshSecond"
 
 @Component
-struct BezierCircleBottom {
+export struct BezierCircleBottom {
   scroller: Scroller = new Scroller()
   @Link model: smartRefreshSecond.Model
-  @State classicsSimple: BezierCircleBottom.Model = new BezierCircleBottom.Model()
-  private arr: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+  @State classicsSimple: BezierCircleBottomModel.Model = new BezierCircleBottomModel.Model()
   //控制超过最大偏移量
-  private smoothPathCmd: string = '';
-  private rectPathCmd: string = ''
+  @State private smoothPathCmd: string = '';
+  @State private rectPathCmd: string = ''
   @State refresh: boolean  = false
   private bounceCount: number = 0
   private bounceMaxOffset : number = 100
@@ -100,11 +99,10 @@ struct BezierCircleBottom {
   }
   draw() : void {
       this.model.headerRefreshId = setInterval(() => {
-
-        let topHeight = this.model.initFooterHeight
+        let topHeight = this.model.initFooterHeight * 1.5
         if (smartRefreshSecond.REFRESHSTATE.TOREFRESH == this.model.refreshState) {
           this.bounceCount = 0
-          let bottomCircleStartY = this.model.headerHeight
+          let bottomCircleStartY = this.model.headerHeight * 1.5
           this.smoothPathCmd = `M0 0 L0 ${topHeight} S360 ${bottomCircleStartY} 720 ${topHeight} L720 0 Z`;
         }
         if (smartRefreshSecond.REFRESHSTATE.REFRESHING == this.model.refreshState) {
@@ -115,11 +113,11 @@ struct BezierCircleBottom {
               if (this.bounceMaxOffset <= 0) {
                 this.bounceMaxOffset = 100 - this.bounceCount * 5 //第二次在50位置开始
               }
-              bottomCircleStartY = this.model.initHeaderHeight - this.bounceMaxOffset
+              bottomCircleStartY = (this.model.initHeaderHeight - this.bounceMaxOffset) * 1.5
               this.bounceMaxOffset -= 10
             }
           } else {
-            bottomCircleStartY = this.model.initHeaderHeight
+            bottomCircleStartY = this.model.initHeaderHeight * 1.5
           }
           this.smoothPathCmd = `M0 0 L0 ${topHeight} S360 ${bottomCircleStartY} 720 ${topHeight} L720 0 Z`;
           this.onDraw()
@@ -169,7 +167,7 @@ struct BezierCircleBottom {
   }
 }
 
-namespace BezierCircleBottom {
+namespace BezierCircleBottomModel {
   export class Model {
     //画笔宽度
     barWidth: number = 5;
@@ -399,4 +397,4 @@ namespace BezierCircleBottom {
     }
   }
 }
-export default BezierCircleBottom;
+export default BezierCircleBottomModel;

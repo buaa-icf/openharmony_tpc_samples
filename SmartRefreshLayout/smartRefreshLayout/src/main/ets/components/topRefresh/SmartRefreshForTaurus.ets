@@ -15,15 +15,21 @@
 
 @Component
 struct SmartRefreshForTaurus {
-  @State model: SmartRefreshForTaurus.Model = new SmartRefreshForTaurus.Model()
-  @BuilderParam header?: () => any
-  @BuilderParam main?: () => any
+  @Link model: SmartRefreshForTaurus.Model
+  @BuilderParam header?: () => void
+  @BuilderParam main?: () => void
   @State needScroller: boolean = false
-  @BuilderParam footer?: () => any
+  @BuilderParam footer?: () => void
   @State headerIsVisibleLoadMore :boolean = true
   @State footerIsVisibleLoadMore :boolean = false
 
-  refreshClose(location) { //重置Scroller
+  aboutToAppear(){
+    if (this.model.initRefreshing) { //初始化刷新  头部允许刷新
+      this.scrollerInit()
+    }
+  }
+
+  refreshClose() { //重置Scroller
     this.needScroller = true
     this.model.refreshState = SmartRefreshForTaurus.REFRESHSTATE.NONE
   }
@@ -97,10 +103,7 @@ struct SmartRefreshForTaurus {
             this.model.oldFixedContent = this.model.fixedContent
           }
           this.model.latestYOffset = this.model.scroller.currentOffset().yOffset
-          if (this.model.initRrefrehing) { //初始化刷新
-            this.scrollerInit()
-          }
-          this.scrollerEventFunction()
+          //this.scrollerEventFunction()
         })
         .onScrollEnd(() => {
           if (this.model.scrollerEndState) {
@@ -118,7 +121,6 @@ struct SmartRefreshForTaurus {
   }
 
   scrollerInit() {
-    this.model.initRrefrehing = false
     this.headerIsVisibleLoadMore = true
     this.model.headerHeight = this.model.initHeaderHeight
     this.model.refreshState = SmartRefreshForTaurus.REFRESHSTATE.REFRESHING
@@ -132,7 +134,8 @@ struct SmartRefreshForTaurus {
     }
     this.model.refreshTimeOut = setTimeout(() => {
       this.headerIsVisibleLoadMore = false
-      this.refreshClose(SmartRefreshForTaurus.LOCATION.HEAD)
+      this.refreshClose()
+      this.closeHeaderRefresh()//关闭头部刷新效果
       this.model.refreshTimeOut = 0
     }, this.model.refreshDuration);
   }
@@ -166,12 +169,14 @@ struct SmartRefreshForTaurus {
     this.model.refreshHeaderCallbackState = true
     this.model.refreshBottomCallbackState = false
     clearInterval(this.model.headerRefreshId)
+    this.model.headerRefreshId = -1
   }
 
   closeFooterRefresh() {
     this.model.refreshHeaderCallbackState = false
     this.model.refreshBottomCallbackState = true
-    clearInterval(this.model.headerRefreshId)
+    clearInterval(this.model.bottomRefreshId)
+    this.model.bottomRefreshId = -1
   }
 
   // touch事件
@@ -249,7 +254,8 @@ struct SmartRefreshForTaurus {
       if (this.model.refreshState == SmartRefreshForTaurus.REFRESHSTATE.TOREFRESH) {
         if (downYOffsetParam <= this.model.initFooterHeight / 2) { //未下滑到指定位置则不刷新
           this.footerIsVisibleLoadMore = false  //小于尾部固定高度时，则隐藏尾部
-          this.refreshClose(SmartRefreshForTaurus.LOCATION.HEAD)
+          this.refreshClose()
+          this.closeFooterRefresh()
         } else if (!this.model.dragArriveBottomEdgeState){
           this.model.footerHeight = this.model.initFooterHeight //重置尾部高度
           // this.model.scroller.scrollEdge(Edge.Bottom)
@@ -264,9 +270,9 @@ struct SmartRefreshForTaurus {
           if (this.model.refreshTimeOut == 0) {
             this.model.refreshTimeOut = setTimeout(() => {
               this.footerIsVisibleLoadMore = false
-              this.refreshClose(SmartRefreshForTaurus.LOCATION.HEAD)
+              this.refreshClose()
+              this.closeFooterRefresh()
               this.model.refreshTimeOut = 0
-              this.model.lastRefreshTime = new Date()
             }, this.model.refreshDuration);
           }
         }
@@ -306,7 +312,7 @@ struct SmartRefreshForTaurus {
       if (this.model.refreshState == SmartRefreshForTaurus.REFRESHSTATE.TOREFRESH) {
         if (this.model.headerHeight < this.model.initHeaderHeight) { //未下滑到指定位置则不刷新(头部高度小于默认高度)
           this.headerIsVisibleLoadMore = false  //小于头部固定高度时，则隐藏头部
-          this.refreshClose(SmartRefreshForTaurus.LOCATION.HEAD)
+          this.refreshClose()
         } else {
           this.model.headerHeight = this.model.initHeaderHeight //重置头部高度
           this.model.scroller.scrollEdge(Edge.Start) //刷新，滑动至头部
@@ -316,9 +322,9 @@ struct SmartRefreshForTaurus {
           if (this.model.refreshTimeOut == 0) {
             this.model.refreshTimeOut = setTimeout(() => {
               this.headerIsVisibleLoadMore = false
-              this.refreshClose(SmartRefreshForTaurus.LOCATION.HEAD)
+              this.refreshClose()
+              this.closeHeaderRefresh()
               this.model.refreshTimeOut = 0
-              this.model.lastRefreshTime = new Date()
             }, this.model.refreshDuration);
           }
         }
@@ -348,7 +354,7 @@ namespace SmartRefreshForTaurus {
 
   export class Model {
     scroller: Scroller = new Scroller()
-    headerHeight: number = 10 //实际头部高度
+    headerHeight: number = 1 //实际头部高度
     initHeaderHeight: number = 210 //标准头部高度
 
     downY: number= 0
@@ -358,7 +364,7 @@ namespace SmartRefreshForTaurus {
     toRefreshDuration: number = 250 //
     refreshTimeOut: number= 0
     refreshInterval: number= 0
-    initRrefrehing: boolean = true
+    initRefreshing: boolean = true
     latestYOffset: number = 0
     refreshState: REFRESHSTATE = REFRESHSTATE.NONE //刷新状态
     zHeaderIndex: number = 2 //首部zIndex
@@ -366,10 +372,10 @@ namespace SmartRefreshForTaurus {
     zFooterIndex: number = 2;
     backgroundColor: Color | string | number= Color.Gray //主题色
     lastRefreshTime: Date = new Date() //上次刷新时间
-    refreshCallback: () => void //刷新时的回调
-    refreshHeaderCallback: () => void //刷新时的回调
+    refreshCallback: () => void  = ()=>{} //刷新时的回调
+    refreshHeaderCallback: () => void  = ()=>{} //刷新时的回调
     refreshHeaderCallbackState: boolean = true
-    refreshBottomCallback: () => void //刷新时的回调
+    refreshBottomCallback: () => void = ()=>{} //刷新时的回调
     refreshBottomCallbackState: boolean = false
     //waveSwipe
     downYOffset = 0
@@ -381,6 +387,7 @@ namespace SmartRefreshForTaurus {
     //class
     timeShowState: boolean = true
     headerRefreshId: number = 0
+    bottomRefreshId:number = 0
     backgroundShadowColor: Color = Color.Gray
 
     //bottom
@@ -545,8 +552,8 @@ namespace SmartRefreshForTaurus {
       return this.backgroundColor
     }
 
-    setNoInit(initRrefrehing: boolean): Model {
-      this.initRrefrehing = initRrefrehing
+    setNoInit(initRefreshing: boolean): Model {
+      this.initRefreshing = initRefreshing
       return this
     }
 

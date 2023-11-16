@@ -15,9 +15,10 @@
 
 @Component
 struct SmartRefreshForGame {
+  @Link modelGame: SmartRefreshForGame.Model
   @BuilderParam header?: () => void
   @BuilderParam main?: () => void
-  @State model: SmartRefreshForGame.Model = new SmartRefreshForGame.Model()
+  @BuilderParam footer?: () => void
   private intervalId: number = 0
   private intervalId2: number = 0
   private intervalId3: number = 0
@@ -25,29 +26,51 @@ struct SmartRefreshForGame {
   private touchDownY: number = 0
   private isMoveTopEnd: boolean = true
   @State private marginTop: number = 0
+  private isClick: boolean = false
 
   public aboutToAppear() {
     if (this.header) {
-      this.marginTop = -this.model.initHeaderHeight
+      this.marginTop = -this.modelGame.initHeaderHeight
     } else {
       this.marginTop = 0
     }
-    this.model.finishRefresh1 = this.finishRefresh.bind(this)
-    this.model.autoRefresh1 = this.autoRefresh.bind(this)
+    //this.modelGame.finishRefresh1 = this.finishRefreshFunction
+   // this.modelGame.autoRefresh1 = this.autoRefresh.bind(this)
+    this.modelGame.setRefreshCallback(() => {
+      let that = this
+      if (!this.isClick) {
+        this.isClick = true
+        setTimeout(() => {
+          this.isClick = false
+          //this.modelGame.finishRefresh(true)
+
+          this.modelGame.isFinishSuccess = true
+          this.modelGame.isNotifyFinish = true
+          if (!this.modelGame.isTouchMove) {
+            that.finishRefreshFunction()
+          }
+        }, 3000)
+      }
+    })
+
+    setTimeout(() => {
+      this.autoRefresh()
+    }, 100)
   }
 
   private autoRefresh() {
-    if (this.marginTop <= -this.model.initHeaderHeight) {
+
+    if (this.marginTop <= -this.modelGame.initHeaderHeight) {
       this.intervalId4 = setInterval(() => {
         if (this.marginTop <= 0) {
           this.marginTop += 20
-          this.model.refreshState = SmartRefreshForGame.REFRESHSTATE.TOREFRESH
+          this.modelGame.refreshState = SmartRefreshForGame.REFRESHSTATE.TOREFRESH
         } else {
           this.marginTop = 0
-          this.model.refreshState = SmartRefreshForGame.REFRESHSTATE.REFRESHING
-          if (this.model.refreshCallback) {
-            if (!this.model.isNotifyFinish) {
-              this.model.refreshCallback()
+          this.modelGame.refreshState = SmartRefreshForGame.REFRESHSTATE.REFRESHING
+          if (this.modelGame.refreshCallback) {
+            if (!this.modelGame.isNotifyFinish) {
+              this.modelGame.refreshCallback()
             }
           }
           clearInterval(this.intervalId4)
@@ -56,21 +79,21 @@ struct SmartRefreshForGame {
     }
   }
 
-  private finishRefresh() {
-    if (this.model.refreshState == SmartRefreshForGame.REFRESHSTATE.NONE) {
+  private finishRefreshFunction() {
+    if (this.modelGame.refreshState == SmartRefreshForGame.REFRESHSTATE.NONE) {
       return
     }
     if (this.marginTop < 0) {
       return
     }
     this.intervalId = setInterval(() => {
-      if (this.marginTop > -this.model.initHeaderHeight) {
+      if (this.marginTop > -this.modelGame.initHeaderHeight) {
         this.marginTop -= 20
-        this.model.refreshState = SmartRefreshForGame.REFRESHSTATE.TOREFRESH
+        this.modelGame.refreshState = SmartRefreshForGame.REFRESHSTATE.TOREFRESH
       } else {
-        this.model.refreshState = SmartRefreshForGame.REFRESHSTATE.NONE
-        this.marginTop = -this.model.initHeaderHeight
-        this.model.isNotifyFinish = false
+        this.modelGame.refreshState = SmartRefreshForGame.REFRESHSTATE.NONE
+        this.marginTop = -this.modelGame.initHeaderHeight
+        this.modelGame.isNotifyFinish = false
         clearInterval(this.intervalId)
       }
     }, 1)
@@ -84,7 +107,9 @@ struct SmartRefreshForGame {
         }
         Scroll() {
           Column() {
-            this.main()
+            if(this.main) {
+              this.main()
+            }
           }
         }
         .onScrollEdge((side: Edge) => {
@@ -93,58 +118,60 @@ struct SmartRefreshForGame {
           }
         })
         .onTouch(event => {
-          let that = this
-          let moveY = event.touches[0].y
-          switch (event.type) {
-            case TouchType.Down:
-              that.touchDownY = moveY
-            case TouchType.Move:
-              let moveDistance = moveY - that.touchDownY
-              that.model.downY = moveDistance
-              that.model.isTouchMove = true
-              if (that.marginTop != 0) {
-                if (moveDistance >= 0 && that.isMoveTopEnd) { // 向下滑动
-                  that.marginTop = -(that.model.initHeaderHeight - moveDistance)
-                  that.model.refreshState = SmartRefreshForGame.REFRESHSTATE.TOREFRESH
-                } else {
-                  that.isMoveTopEnd = false
-                }
-              }
-              break
-            case TouchType.Up:
-              if (that.marginTop < 0) {
-                that.intervalId3 = setInterval(() => {
-                  if (that.marginTop > -that.model.initHeaderHeight) {
-                    that.marginTop -= 20
+          if(event) {
+            let that = this
+            let moveY = event.touches[0].y
+            switch (event.type) {
+              case TouchType.Down:
+                that.touchDownY = moveY
+              case TouchType.Move:
+                let moveDistance = moveY - that.touchDownY
+                that.modelGame.downY = moveDistance
+                that.modelGame.isTouchMove = true
+                if (that.marginTop != 0) {
+                  if (moveDistance >= 0 && that.isMoveTopEnd) { // 向下滑动
+                    that.marginTop = -(that.modelGame.initHeaderHeight - moveDistance)
+                    that.modelGame.refreshState = SmartRefreshForGame.REFRESHSTATE.TOREFRESH
                   } else {
-                    that.marginTop = -that.model.initHeaderHeight
-                    that.model.refreshState = SmartRefreshForGame.REFRESHSTATE.NONE
-                    clearInterval(that.intervalId3)
+                    that.isMoveTopEnd = false
                   }
-                }, 1)
-              } else {
-                that.model.isTouchMove = false
-                if (that.model.isNotifyFinish) {
-                  that.finishRefresh()
                 }
-                if (that.marginTop >= 0) {
-                  that.intervalId2 = setInterval(() => {
-                    if (that.marginTop > 0) {
+                break
+              case TouchType.Up:
+                if (that.marginTop < 0) {
+                  that.intervalId3 = setInterval(() => {
+                    if (that.marginTop > -that.modelGame.initHeaderHeight) {
                       that.marginTop -= 20
                     } else {
-                      that.marginTop = 0
-                      that.model.refreshState = SmartRefreshForGame.REFRESHSTATE.REFRESHING
-                      if (this.model.refreshCallback) {
-                        if (!this.model.isNotifyFinish) {
-                          this.model.refreshCallback()
-                        }
-                      }
-                      clearInterval(that.intervalId2)
+                      that.marginTop = -that.modelGame.initHeaderHeight
+                      that.modelGame.refreshState = SmartRefreshForGame.REFRESHSTATE.NONE
+                      clearInterval(that.intervalId3)
                     }
                   }, 1)
+                } else {
+                  that.modelGame.isTouchMove = false
+                  if (that.modelGame.isNotifyFinish) {
+                    that.finishRefreshFunction()
+                  }
+                  if (that.marginTop >= 0) {
+                    that.intervalId2 = setInterval(() => {
+                      if (that.marginTop > 0) {
+                        that.marginTop -= 20
+                      } else {
+                        that.marginTop = 0
+                        that.modelGame.refreshState = SmartRefreshForGame.REFRESHSTATE.REFRESHING
+                        if (this.modelGame.refreshCallback) {
+                          if (!this.modelGame.isNotifyFinish) {
+                            this.modelGame.refreshCallback()
+                          }
+                        }
+                        clearInterval(that.intervalId2)
+                      }
+                    }, 1)
+                  }
                 }
-              }
-              break
+                break
+            }
           }
         })
       }
@@ -168,15 +195,15 @@ namespace SmartRefreshForGame {
   }
 
   export class Model {
-    finishRefresh1: () => void
-    autoRefresh1: () => void
+    finishRefresh1: () => void = () => {}
+    autoRefresh1: () => void = () => {}
     isTouchMove: boolean = false // 当前手指是否在移动
     isNotifyFinish: boolean = false // 是否通知了要停止刷新
 
     downY: number = 0 // 偏移量
     backgroundColor: Color | string | number = Color.Gray // 主题色
     initHeaderHeight: number = 200 // 头部高度
-    refreshCallback: () => void // 刷新监听器
+    refreshCallback: () => void = ()=>{}// 刷新监听器
     refreshState: SmartRefreshForGame.REFRESHSTATE = SmartRefreshForGame.REFRESHSTATE.NONE // 刷新状态
     textGameOver: string = '游戏结束'
     textLoading: string = '玩个游戏解解闷'

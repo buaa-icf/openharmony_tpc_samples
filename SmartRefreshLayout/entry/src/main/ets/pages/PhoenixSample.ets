@@ -16,20 +16,25 @@ import { SmartRefreshForTaurus } from "@ohos/smartrefreshlayout"
 import { Phoenix } from "@ohos/smartrefreshlayout"
 import { PhoenixBottomRefresh } from "@ohos/smartrefreshlayout"
 
+class ArrParam {
+  index:number = 0;
+  name:string = "";
+  color:string = "";
+}
 @Entry
 @Component
 struct PhoenixSample {
   @State model: SmartRefreshForTaurus.Model = new SmartRefreshForTaurus.Model()
-  private arr: Array<any> = [
-    { name: '折叠', color: '1' },
-    { name: '展开', color: '2' },
-    { name: '橙色主题', color: '#ffbb33' },
-    { name: '红色主题', color: '#ff4444' },
-    { name: '绿色主题', color: '#99cc00' },
-    { name: '蓝色主题', color: '#2299ee' },
+  private arr: Array<ArrParam> = [
+    {index:11, name: '折叠', color: '1' },
+    {index:22, name: '展开', color: '2' },
+    {index:33, name: '橙色主题', color: '#ffbb33' },
+    {index:44, name: '红色主题', color: '#ff4444' },
+    {index:55, name: '绿色主题', color: '#99cc00' },
+    {index:66, name: '蓝色主题', color: '#2299ee' },
 
   ]
-  private arrNumberOfCycles: Array<any> = [1,2]
+  private arrNumberOfCycles: Array<number> = [1,2]
   aboutToAppear() {
     this.model.setBackgroundColor('#ffbb33')
     this.model.setExpand(true)
@@ -37,13 +42,13 @@ struct PhoenixSample {
   }
 
   @Builder testHeader() {
-    Phoenix({ model: this.model })
+    Phoenix({ model: $model })
   }
 
   @Builder testMain() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
-      ForEach(this.arrNumberOfCycles, (item) => {
-        ForEach(this.arr, (item2) => {
+      ForEach(this.arrNumberOfCycles, (item:ArrParam) => {
+        ForEach(this.arr, (item2:ArrParam) => {
           Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
             Text(item2.name)
               .fontSize(30)
@@ -74,8 +79,8 @@ struct PhoenixSample {
             }
           })
 
-        }, item => item.toString())
-      }, item => item.toString())
+        }, (item:ArrParam) => item.index.toString())
+      }, (item:number) => item.toString())
     }
     .width("100%")
     .backgroundColor("#ffffff")
@@ -83,14 +88,14 @@ struct PhoenixSample {
 
   @Builder testFooter() {
     Column() {
-      PhoenixBottomRefresh({ model: this.model })
+      PhoenixBottomRefresh({ model: $model })
     }.width("100%")
   }
 
   build() {
     Column() {
       SmartRefreshForTaurus({
-        model: this.model,
+        model: $model,
         header: () => {
           this.testHeader()
         },

@@ -18,15 +18,15 @@ import SmartRefreshForTaurus from "../topRefresh/SmartRefreshForTaurus"
 
 @Component
 export struct TaurusBottomRefresh {
-  @State model: SmartRefreshForTaurus.Model = new SmartRefreshForTaurus.Model()
+  @Link model: SmartRefreshForTaurus.Model
   @State angle: number= 0
   @State refresh: boolean= true
   private aircraftState: boolean = true
   private mScale: number= 0
   private mUpDown: number= 0
-  private flyAway: boolean = false
-  private x: number= 0
-  private y: number= 0
+  @State private flyAway: boolean = false
+  @State private x: number= 0
+  @State private y: number= 0
   public airplanePaths: Array<string> = ["m23 81c0 0 0 -1 0 -1 0 -0.5 0 -1 1.5 -1 2 -1 2.6 -2 2 -2.5 -0.5 -1 -2 -1 -11.6 -2.5 -5 -1 -10 -1 -11 -1.5l-1 0 1 -1c1 -1 1 -1 2 -1 0.6 0 6 0 13 1 6 0 12 1 12.6 0.6l1 0 -1 -2C30 67 16 42 15 40.6l-0.5 -1 4 -1c2 -0.6 4 -1 4 -1 0 0 6 4 13 8.5 14.6 10 17 11 20 12 4.6 2 6 1.6 13 -0.6 13 -5 25 -9 26 -9 0.6 0 3.6 1 -24 -14L51 23 47 16 43 10 43.6 9c1 -1 1 -1 1 -0.5 0 0 4 3 7.5 6 4 3 7 6 7.5 6 0 0 13.6 3 29.5 6 16 3 32 6 35 7l6 1 3 -1c41.6 -14.6 68 -23 85 -28 15 -4 24 -5 32 -2.5 7 2 10 5 8 8 -1.6 2.5 -4.6 4.6 -10.6 7.5 -6 3 -10 4 -25 9 -8 2.6 -16.6 6 -39 14 -67 25 -88 31 -121.6 36 -14.5 2 -24 3 -34 3 -5 0 -5.5 0 -6 -0.5z"]
   public airplaneColors: Array<number>  = [0xffffffff]
   public cloudPaths: Array<string> = [
@@ -41,7 +41,7 @@ export struct TaurusBottomRefresh {
   public cloudColors: Array<number> = [0xaac7dcf1, 0xdde8f3fd, 0xfffdfdfd, 0xeee8f3fd]
 
   @Builder
-  Clouds(path: string, color: number, xPosition) {
+  Clouds(path: string, color: number, xPosition: number) {
     Path()
       .commands(path)
       .fill(color)
@@ -59,7 +59,7 @@ export struct TaurusBottomRefresh {
   }
 
   @Builder
-  drawWind(index) {
+  drawWind(index:number) {
     Path()
       .commands(this.windPath[index])
       .fill(0x6fffffff)
@@ -74,8 +74,15 @@ export struct TaurusBottomRefresh {
     this.model.setRefreshBottomCallback(() => this.startDraw())
   }
 
+  aboutToDisappear(): void {
+    if (this.model.bottomRefreshId > 0) {
+      clearInterval(this.model.bottomRefreshId)
+      this.model.bottomRefreshId = -1
+    }
+  }
+
   startDraw() : void{
-    this.model.headerRefreshId = setInterval(() => {
+    this.model.bottomRefreshId = setInterval(() => {
       this.angle = (this.angle + 1) % 65535
       if (this.model.refreshState == SmartRefreshForTaurus.REFRESHSTATE.REFRESHING) {
         if (Math.floor(this.angle / 30) % 2 == 0) {
@@ -106,13 +113,8 @@ export struct TaurusBottomRefresh {
   }
   build() {
     Flex() {
-      if (this.refresh) {
-        Text("0").visibility(Visibility.None)
-      } else {
-        Text("1").visibility(Visibility.None)
-      }
       if (this.model.refreshState == SmartRefreshForTaurus.REFRESHSTATE.REFRESHING) { //松开过后的刷新样式
-        //      Text("替换头部刷新格式 ").fontColor(Color.Red).fontSize(20).backgroundColor(Color.Yellow)
+        //Text("替换头部刷新格式 ").fontColor(Color.Red).fontSize(20).backgroundColor(Color.Yellow)
         Stack({ alignContent: Alignment.TopStart }) {
           this.drawWind(0)
           this.drawWind(1)
@@ -127,7 +129,7 @@ export struct TaurusBottomRefresh {
             .width("100%")
             .height(this.model.headerHeight)
             .position({
-              x: 250 + this.x,
+              x: 100 + this.x,
               y: 70 + this.mUpDown + this.y
             })
             .commands(this.airplanePaths[0])
@@ -162,7 +164,7 @@ export struct TaurusBottomRefresh {
             .width("100%")
             .height(this.model.headerHeight)
             .position({
-              x: -20+(this.model.getOffset() <= 1 ?this.model.getOffset()*250:250) ,
+              x: -170+(this.model.getOffset() <= 1 ?this.model.getOffset()*250:250) ,
               y: 220-(this.model.getOffset() <= 1 ?this.model.getOffset()*150:150)
             })
             .scale({

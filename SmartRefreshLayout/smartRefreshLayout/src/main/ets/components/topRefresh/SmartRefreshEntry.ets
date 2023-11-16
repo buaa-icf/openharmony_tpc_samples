@@ -32,7 +32,7 @@ export class SmartRefreshEntry {
     zIndex: number = 2 //首部zIndex
     backgroundColor: Color | string | number= Color.Gray //主题色
     lastRefreshTime: Date = new Date() //上次刷新时间
-    refreshCallback: () => void //刷新时的回调
+    refreshCallback: () => void = () => {}//刷新时的回调
 
     //waveSwipe
     downYOffset = 0

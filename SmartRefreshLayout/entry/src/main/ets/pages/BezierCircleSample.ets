@@ -12,22 +12,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {SmartRefresh} from "@ohos/smartrefreshlayout"
-import {smartRefreshSecond} from "@ohos/smartrefreshlayout"
+import {SmartRefreshSecond} from "@ohos/smartrefreshlayout"
 import {BezierCircleBottom} from "@ohos/smartrefreshlayout"
 import {BezierCircle} from "@ohos/smartrefreshlayout"
 @Entry
 @Component
 struct ABottomBezierCircleSample {
-  @State model: smartRefreshSecond.Model = new smartRefreshSecond.Model()
+  @State model: SmartRefreshSecond.Model = new SmartRefreshSecond.Model()
   arr: string[] = ['内容不偏移 ', '内容跟随偏移', '橙色主题', '红色主题', '绿色主题', '蓝色主题', '蓝色主题', '蓝色主题', '蓝色主题']
 
   pickColor(SelectColorParam: string) {
+    this.model.setBackgroundShadowColor(Color.Gray)
     let SelectColor = SelectColorParam.trim()
     if (SelectColor == this.arr[0].trim()) {
-      this.model.setFixedContent(false)
-    } else if (SelectColor == this.arr[1].trim()) {
       this.model.setFixedContent(true)
+      this.model.setBackgroundShadowColor(Color.White)
+      this.model.setBackgroundColor(Color.Gray)
+    } else if (SelectColor == this.arr[1].trim()) {
+      this.model.setFixedContent(false)
+      this.model.setBackgroundShadowColor(Color.White)
+      this.model.setBackgroundColor(Color.Gray)
     } else if (SelectColor == this.arr[2].trim()) {
       this.model.setBackgroundShadowColor(Color.White)
       this.model.setBackgroundColor(Color.Orange)
@@ -63,22 +67,38 @@ struct ABottomBezierCircleSample {
   }
   @Builder testMain() {
     Column() {
-      ForEach(this.arr, (item) => {
+      ForEach(this.arr, (item:string) => {
         this.card(item)
-      }, item => item)
+      }, (item:string) => item)
     }.width("100%").padding("20lpx")
   }
 
   @Builder testFooter() {
     Column() {
-      BezierCircleBottom({ model: $model})
+       BezierCircleBottom({ model: $model})
     }.width("100%").padding("20lpx")
   }
 
   build() {
     Column() {
-      smartRefreshSecond({ model: $model, header:()=>{ this.testHeader()}, main:()=>{this.testMain()},footer: ()=> {this.testFooter()}  })
+      if (this.model.fixedContent) {
+        SmartRefreshSecond({
+          model: $model,
+          header:()=> {this.testHeader()},
+          main:()=> {this.testMain()},
+          footer: ()=> {this.testFooter()}
+        })
+      }
+      if (!this.model.fixedContent){
+        SmartRefreshSecond({
+          model: $model,
+          header:()=> {this.testHeader()},
+          main:()=> {this.testMain()},
+          footer: ()=> {this.testFooter()}
+        })
+      }
+
     }.backgroundColor("#dddddd")
   }
 }
-export default ABottomBezierCircleSample;
+

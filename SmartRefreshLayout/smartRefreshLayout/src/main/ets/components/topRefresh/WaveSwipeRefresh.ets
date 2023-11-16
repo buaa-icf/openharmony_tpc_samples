@@ -19,9 +19,11 @@ import SmartRefresh from "./SmartRefresh"
 export struct WaveSwipe {
   @State refresh: boolean  = false
   @Link model: SmartRefresh.Model
-  private refreshData: ComWheel.Model = new ComWheel.Model();
+  @State refreshData: ComWheel.Model = new ComWheel.Model();
   private touchMoveHeight: number = 0
-  private pathCmd: string = ""
+  @State pathCmd: string = ""
+  @State dragPathCmd: string = ''
+  @State private dragUpFlag: boolean = true
   private dragBottomCirclePathCmd: string = ''
   private lastYOffset: number = 0
   private maxRangeHeight : number = 0
@@ -49,11 +51,11 @@ export struct WaveSwipe {
   private onlyInsert: boolean = false
   private stopIntervalID: number = 0
   private drawIntervalId: number = 0
-  private dragUpFlag: boolean = true
+
   private dragBottomCircleRadius: number = 50
   //下拉刷新时的箭头
   private dragRefreshData: ComWheel.Model = new ComWheel.Model()
-  private dragPathCmd: string = ''
+
   private ArrowRadius : number = 30
   private arrowAngle: number = 45
   private arrowPathCmd: string = ''
@@ -203,7 +205,7 @@ export struct WaveSwipe {
           }, this.model.refreshDuration);
         }
       }
-      this.refresh = !this.refresh
+       this.refresh = !this.refresh
     }, 30)
   }
 
@@ -212,6 +214,10 @@ export struct WaveSwipe {
     this.model.setHeaderHeight(200)
     this.refreshData.setBarColor(Color.Black).setCircleRadius(50).init()
     this.model.setRefreshHeaderCallback(() => this.dropMoveDraw())
+    if(this.model.initRefreshing) {
+      this.model.refreshHeaderCallback()
+      this.model.initRefreshing = false
+    }
   }
 
   build() {
@@ -308,8 +314,8 @@ export struct WaveSwipe {
       if (this.refreshData.targetAngle > 360) {
         this.refreshData.targetAngle = this.refreshData.targetAngle - 360
       }
-      this.refreshData.svgPath = "M" + (this.refreshData.startX + 310) + " " + (this.refreshData.startY + 570)+ " " + "A " + this.refreshData.radius + " " +
-      this.refreshData.radius + ", 0, " + this.refreshData.angleFlag + ", " + this.refreshData.directionFlag + ", " + (this.refreshData.endX + 310) + " " + (this.refreshData.endY + 570)
+      this.refreshData.svgPath = "M" + (this.refreshData.startX + 310) + " " + (this.refreshData.startY + 570)+ " " + "A " + this.refreshData.radius + " " + this.refreshData.radius + ", 0, " + this.refreshData.angleFlag + ", " + this.refreshData.directionFlag + ", " + (this.refreshData.endX + 310) + " " + (this.refreshData.endY + 570)
+
       this.refreshData.mProgress = "Progress:"
     }
   }

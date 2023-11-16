@@ -19,11 +19,11 @@ import {AirplaneGameBody} from './BattleCityGameBody'
 
 @Component
 export struct BattleCity {
-  @State model: SmartRefreshForGame.Model = new SmartRefreshForGame.Model()
+  @Link model: SmartRefreshForGame.Model
   @State private welcomeIsStart: boolean = false
   @State private gameIsStart: boolean = false
 
-  private changeState(state) {
+  private changeState(state:ESObject) {
     if (state == SmartRefreshForGame.REFRESHSTATE.TOREFRESH) { // 下拉中
 
     } else if (state == SmartRefreshForGame.REFRESHSTATE.REFRESHING) { // 刷新中
@@ -42,24 +42,27 @@ export struct BattleCity {
 
   build() {
     Stack({alignContent: Alignment.TopStart}) {
-      Text('' + this.changeState(this.model.refreshState)).visibility(Visibility.None)
-      // 游戏主体界面
-      AirplaneGameBody({
-        gameIsStart: this.gameIsStart,
-        downY: this.model.downY,
-        maxHeight: this.model.initHeaderHeight,
-        initBackgroundColor: this.model.backgroundColor,
-        isNotifyFinish: this.model.isNotifyFinish,
-        model: this.model
-      })
-      // 游戏欢迎界面
-      AirplaneGameCover({
-        gameState: this.welcomeIsStart,
-        maxHeight: this.model.initHeaderHeight,
-        downY: this.model.downY,
-        textColor: this.model.backgroundColor,
-        model: this.model
-      })
+      Text(this.model.downY + this.changeState(this.model.refreshState)).visibility(Visibility.None)
+      if (this.gameIsStart) {
+        // 游戏主体界面
+        AirplaneGameBody({
+          gameIsStart: this.gameIsStart,
+          downY: this.model.downY,
+          maxHeight: this.model.initHeaderHeight,
+          initBackgroundColor: this.model.backgroundColor,
+          isNotifyFinish: this.model.isNotifyFinish,
+          model: this.model
+        })
+      } else {
+        // 游戏欢迎界面
+        AirplaneGameCover({
+          gameState: this.welcomeIsStart,
+          maxHeight: this.model.initHeaderHeight,
+          downY: this.model.downY,
+          textColor: this.model.backgroundColor,
+          model: this.model
+        })
+      }
     }
     .height(this.model.initHeaderHeight)
   }

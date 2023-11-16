@@ -63,13 +63,17 @@ struct WaterSwipeSample {
     Column() {
       ForEach(this.arr, (item:string) => {
         this.card(item)
-      }, item => item)
+      }, (item:string) => item)
     }.width("100%").padding("20lpx")
   }
 
   build() {
     Column() {
-      SmartRefresh({ model: $model, header:()=> {this.testHeader()}, main:()=> {this.testMain()},footer: ()=> {} })
+      SmartRefresh({
+        model: $model,
+        header:()=> {this.testHeader()},
+        main:()=> {this.testMain()},
+        footer: ()=> {} })
     }.backgroundColor("#dddddd")
   }
 }

@@ -13,34 +13,37 @@
  * limitations under the License.
  */
 
-import router from '@system.router'
-
+import router from '@ohos.router'
+class RefreshTypeMapParam{
+  id:number = 0;
+  name: string = "";
+  url:string = ""
+}
 @Entry
 @Component
 struct Index {
   scroller: Scroller = new Scroller()
-  private refreshTypeMap: Array<any> = [
-    { name: "Classics", url: "pages/ClassicsSample" },
-    { name: "WaterSwipe", url: "pages/WaterSwipeSample" },
-    { name: "BezierCircle", url: "pages/BezierCircleSample" },
-    { name: "Material", url: "pages/MaterialSample" },
-    { name: "WaveSwipe", url: "pages/WaveSwipeSample" },
-    { name: "BezierRadar", url: "pages/BezierRadarSample" },
-    { name: "StoreHouse", url: "pages/StoreHouseSample" },
-    { name: "Delivery", url: "pages/DeliverySample" },
-    { name: "DropBox", url: "pages/DropBoxSample" },
-    { name: "FlyRefreshHeader", url: "pages/FlyRefreshStylePage" },
-    { name: "BattleCity", url: "pages/BattleCitySample" },
-    { name: "HitBlock", url: "pages/HitBlockSample" },
-    { name: "Phoenix", url: "pages/PhoenixSample" },
-    { name: "Taurus", url: "pages/TaurusSample" },
+  private refreshTypeMap: Array<RefreshTypeMapParam> = [
+    {id:1, name: "Classics", url: "pages/ClassicsSample" },
+    {id:2, name: "WaterSwipe", url: "pages/WaterSwipeSample" },
+    {id:3, name: "BezierCircle", url: "pages/BezierCircleSample" },
+    {id:4, name: "Material", url: "pages/MaterialSample" },
+    {id:5, name: "WaveSwipe", url: "pages/WaveSwipeSample" },
+    {id:6, name: "BezierRadar", url: "pages/BezierRadarSample" },
+    {id:7, name: "StoreHouse", url: "pages/StoreHouseSample" },
+    {id:8, name: "Delivery", url: "pages/DeliverySample" },
+    {id:9, name: "DropBox", url: "pages/DropBoxSample" },
+    {id:10, name: "FlyRefreshHeader", url: "pages/FlyRefreshStylePage" },
+    {id:11, name: "BattleCity", url: "pages/BattleCitySample" },
+    {id:12, name: "HitBlock", url: "pages/HitBlockSample" },
+    {id:13, name: "Phoenix", url: "pages/PhoenixSample" },
+    {id:14, name: "Taurus", url: "pages/TaurusSample" },
   ]
-  private index: number = 0
   build() {
     Stack() {
       Scroll(this.scroller) {
         Column({ space: 20 }) {
-          ForEach(this.refreshTypeMap, item => {
+          ForEach(this.refreshTypeMap, (item:RefreshTypeMapParam) => {
             Text(item.name)
               .height(50)
               .fontSize(40)
@@ -49,10 +52,9 @@ struct Index {
               .width("100%")
               .textAlign(TextAlign.Center)
               .onClick(() => {
-                router.push({ uri: item.url,
-                  params: {} })
+                 router.push({ url: item.url})
               })
-          }, item => item.toString())
+          }, (item:RefreshTypeMapParam) => item.id.toString())
         }
       }
     }

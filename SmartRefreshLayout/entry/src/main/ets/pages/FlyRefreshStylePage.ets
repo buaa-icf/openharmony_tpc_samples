@@ -18,55 +18,52 @@ import {FlyRefreshHeader} from "@ohos/smartrefreshlayout"
 @Entry
 @Component
 struct FlyRefreshStylePage {
-  model: SmartRefreshForFlyRefresh.Model = new SmartRefreshForFlyRefresh.Model().setBackgroundColor('white').setNoInit(true)
+  @State model: SmartRefreshForFlyRefresh.Model = new SmartRefreshForFlyRefresh.Model().setBackgroundColor('white').setNoInit(true)
   @State mDataSet: Array<ItemData> = []
-
+  private index:number = 10;
   aboutToAppear() {
-    this.mDataSet.push(new ItemData(0xFF76A9FC, $r('app.media.ic_public_file'), "Meeting Minutes", new Date()))
-    this.mDataSet.push(new ItemData(Color.Gray, $r('app.media.ic_public_folder'), "Meeting Minutes", new Date()))
-    this.mDataSet.push(new ItemData(Color.Gray, $r('app.media.ic_public_folder'), "Meeting Minutes", new Date()))
+    this.mDataSet.push(new ItemData(1,0xFF76A9FC, $r('app.media.ic_public_file'), "Meeting Minutes", new Date()))
+    this.mDataSet.push(new ItemData(2,Color.Gray, $r('app.media.ic_public_folder'), "Meeting Minutes", new Date()))
+    this.mDataSet.push(new ItemData(3,Color.Gray, $r('app.media.ic_public_folder'), "Meeting Minutes", new Date()))
     this.model.setRefreshCallback(() => {
       setTimeout(() => {
-        this.mDataSet.unshift(new ItemData(0xFFFFC970, $r('app.media.ic_public_devices_phone'), "Meeting Minutes", new Date()))
+        this.index = this.index + 1;
+        this.mDataSet.unshift(new ItemData(this.index,0xFFFFC970, $r('app.media.ic_public_devices_phone'), "Meeting Minutes", new Date()));
       }, 3000)
     })
   }
 
   @Builder header() {
-    FlyRefreshHeader({ model: this.model })
-  }
-
-  @Builder items(item:ItemData) {
-    Row() {
-      Row() {
-        Image(item.icon).width(45).height(45)
-      }
-      .backgroundColor(item.color)
-      .borderRadius(40)
-      .width(80)
-      .height(80)
-      .margin(15)
-      .justifyContent(FlexAlign.Center)
-
-      Column({ space: 10 }) {
-        Text(item.title).fontSize(24)
-        Text(item.time.toDateString()).fontSize(22)
-      }.alignItems(HorizontalAlign.Start).layoutWeight(1)
-    }.backgroundColor("white")
+    FlyRefreshHeader({ model: $model })
   }
 
   @Builder content() {
     Column() {
-      ForEach(this.mDataSet, (item) => {
-        this.items(item)
-      }, item => item.toString())
+      ForEach(this.mDataSet, (item:ItemData) => {
+        Row() {
+          Row() {
+            Image(item.icon).width(45).height(45)
+          }
+          .backgroundColor(item.color)
+          .borderRadius(40)
+          .width(80)
+          .height(80)
+          .margin(15)
+          .justifyContent(FlexAlign.Center)
+
+          Column({ space: 10 }) {
+            Text(item.title).fontSize(24)
+            Text(item.time.toDateString()).fontSize(22)
+          }.alignItems(HorizontalAlign.Start).layoutWeight(1)
+        }.backgroundColor("white")
+      }, (item:ItemData) => item.i.toString())
     }.margin({top: 45}).width("100%")
   }
 
   build() {
     Column() {
       SmartRefreshForFlyRefresh({
-        model: this.model,
+        modelFly: $model,
         header: () => {
           this.header()
         },
@@ -80,12 +77,14 @@ struct FlyRefreshStylePage {
 }
 
 export class ItemData {
+  i:number;
   color: number;
   icon: Resource;
   title: string;
   time: Date;
 
-  constructor(color: number, icon: Resource, title: string, time: Date) {
+  constructor(i:number,color: number, icon: Resource, title: string, time: Date) {
+    this.i = i;
     this.color = color
     this.icon = icon
     this.time = time

@@ -12,35 +12,87 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import SmartRefresh from "./SmartRefresh"
+import SmartRefreshForStoreHouseSample from "./SmartRefreshForStoreHouseSample"
 
 @Component
-struct StoreHouse {
-  @Link model: SmartRefresh.Model;
-  @Link storeHouseModel: StoreHouse.StoreHouseModel;
+export struct StoreHouse {
+  @Link model: SmartRefreshForStoreHouseSample.Model;
+  @State storeHouseModel: StoreHouseClassModel.StoreHouseModel = new StoreHouseClassModel.StoreHouseModel();
   @State refresh: boolean  = false;
-  private whiteIndex: number = -4;
-  private status;
+  @State whiteIndex: number = -4;
+  private status = SmartRefreshForStoreHouseSample.REFRESHSTATE.NONE;
+  private beforeDemand:string = "E"
+  private beforeColor:string = "#000000";
+  @State whiteIndexCommandStr:string = "M24.5 1 L1 1";
+  @State whiteIndexCommandStrOne:string = "M24.5 1 L1 1";
+  @State whiteIndexCommandStrTwo:string = "M24.5 1 L1 1";
+  @State whiteIndexCommandStrThree:string = "M24.5 1 L1 1";
 
   aboutToAppear() {
     this.storeHouseModel.change();
-    this.model.setRefreshHeaderCallback(() => this.setRefreshInterval());
+    this.model.setRefreshHeaderCallback(():void => this.setRefreshInterval());
+    if(this.model.initRefreshing) {
+      this.model.refreshHeaderCallback()
+      this.model.initRefreshing = false
+    }
+  }
+
+  init() {
+    if(this.beforeColor != this.model.getColor()) {
+      this.storeHouseModel.setColor(this.model.getColor())
+    }
+    if(this.beforeDemand != this.model.getDemand()) {
+      if (this.model.getDemand() == "显示中文") {
+        this.storeHouseModel.setDemand("C")
+        this.storeHouseModel.setMargin(25)
+        this.storeHouseModel.setScale(4)
+        this.storeHouseModel.change()
+      } else if (this.model.getDemand() == "显示英文") {
+        this.storeHouseModel.setDemand("E")
+        this.storeHouseModel.setEnglish("StoreHouse")
+        this.storeHouseModel.setMargin(35)
+        this.storeHouseModel.setScale(1.5)
+        this.storeHouseModel.change()
+      } else if (this.model.getDemand() == "显示图标") {
+        this.storeHouseModel.setDemand("I")
+        this.storeHouseModel.setMargin(15)
+        this.storeHouseModel.setScale(7)
+        this.storeHouseModel.change()
+      } else if (this.model.getDemand() == "显示商标") {
+        this.storeHouseModel.setDemand("T")
+        this.storeHouseModel.setMargin(33)
+        this.storeHouseModel.setScale(4)
+        this.storeHouseModel.change()
+      } else if (this.model.getDemand() == "显示数字") {
+        this.storeHouseModel.setDemand("N")
+        this.storeHouseModel.setNumber(3.1415926)
+        this.storeHouseModel.setMargin(33)
+        this.storeHouseModel.setScale(1.5)
+        this.storeHouseModel.change()
+      }
+    }
   }
 
   setRefreshInterval() {
-    this.model.headerRefreshId =  setInterval(() => {
-      if (this.status == SmartRefresh.REFRESHSTATE.TOREFRESH || this.whiteIndex > this.storeHouseModel.Arr.length) {
+    this.model.headerRefreshId = setInterval(() => {
+      if (this.status == SmartRefreshForStoreHouseSample.REFRESHSTATE.TOREFRESH || this.whiteIndex > this.storeHouseModel.Arr.length) {
         this.whiteIndex = -4;
       }
       this.whiteIndex++;
+      this.whiteIndexCommandStr = this.storeHouseModel.Arr[this.whiteIndex]
+      this.whiteIndexCommandStrOne = this.storeHouseModel.Arr[this.whiteIndex + 1]
+      this.whiteIndexCommandStrTwo = this.storeHouseModel.Arr[this.whiteIndex + 2]
+      this.whiteIndexCommandStrThree = this.storeHouseModel.Arr[this.whiteIndex + 3]
+      console.info("StoreHouse =======" + this.whiteIndex + "===this.whiteIndexCommandStr===" + this.whiteIndexCommandStr)
       this.refresh = !this.refresh;
       this.status = this.model.refreshState;
+      this.init()
     }, 50);
   }
 
-  @Builder buildWhitePath(i: number) {
+  @Builder buildWhitePath(commandStr:string) {
     Path()
-      .commands(this.storeHouseModel.Arr[i])
+      .commands(commandStr)
       .stroke(Color.White)
       .strokeWidth(3)
   }
@@ -53,22 +105,38 @@ struct StoreHouse {
         Text("1").visibility(Visibility.None)
       }
       Row() {
-        if (this.model.refreshState == SmartRefresh.REFRESHSTATE.REFRESHING) { //松开过后的刷新样式
+        if (this.model.refreshState == SmartRefreshForStoreHouseSample.REFRESHSTATE.REFRESHING) { //松开过后的刷新样式
           Stack({ alignContent: Alignment.TopStart }) {
-            ForEach(this.storeHouseModel.Arr, (item) => {
+            ForEach(this.storeHouseModel.Arr, (item:string) => {
               Path()
                 .commands(item)
                 .stroke(this.model.textColor)
                 .strokeWidth(3)
-            }, item => item)
-            this.buildWhitePath(this.whiteIndex);
-            this.buildWhitePath(this.whiteIndex + 1);
-            this.buildWhitePath(this.whiteIndex + 2);
-            this.buildWhitePath(this.whiteIndex + 3);
+            }, (item:string) => item)
+            Path()
+              .commands(this.whiteIndexCommandStr)
+              .stroke(Color.White)
+              .strokeWidth(3)
+            Path()
+              .commands(this.whiteIndexCommandStrOne)
+              .stroke(Color.White)
+              .strokeWidth(3)
+            Path()
+              .commands(this.whiteIndexCommandStrTwo)
+              .stroke(Color.White)
+              .strokeWidth(3)
+            Path()
+              .commands(this.whiteIndexCommandStrThree)
+              .stroke(Color.White)
+              .strokeWidth(3)
+            //this.buildWhitePath(this.whiteIndexCommandStr);
+            // this.buildWhitePath(this.whiteIndex + 1);
+            // this.buildWhitePath(this.whiteIndex + 2);
+            // this.buildWhitePath(this.whiteIndex + 3);
           }
-        } else if (this.model.refreshState == SmartRefresh.REFRESHSTATE.TOREFRESH) { //拖住过程中的样式
+        } else if (this.model.refreshState == SmartRefreshForStoreHouseSample.REFRESHSTATE.TOREFRESH) { //拖住过程中的样式
           Stack({ alignContent: Alignment.TopStart }) {
-            ForEach(this.storeHouseModel.ArrNumber, (item) => {
+            ForEach(this.storeHouseModel.ArrNumber, (item:number) => {
               Path()
                 .commands(this.storeHouseModel.Arr[item])
                 .stroke(Color.Grey)
@@ -85,7 +153,7 @@ struct StoreHouse {
                   x: 0,
                   y: -320 + this.model.getOffset() * 400 + (80 - (4 * item)) >= 0 ? 0 : -320 + this.model.getOffset() * 400 + (80 - (4 * item))
                 })
-            }, item => item)
+            }, (item:number) => item.toString())
           }
         }
       }.margin({ top: this.storeHouseModel.margin })
@@ -96,7 +164,7 @@ struct StoreHouse {
   }
 }
 
-namespace StoreHouse {
+namespace StoreHouseClassModel {
   export class StoreHouseModel {
     sourceArrays: Array<Array<number>> = [
       [
@@ -457,7 +525,7 @@ namespace StoreHouse {
       24, 7, 12, 0,
       0, 7, 12, 0,
     ]
-    map = new Map<any, any>();
+    map:Map<string, Array<number>> = new Map<string, Array<number>>();
     ArrNumber: Array<number> = [];
     Arr: Array<string> = [];
     interval: number = 66;
@@ -466,7 +534,7 @@ namespace StoreHouse {
     English: string = 'StoreHouse';
     margin: number = 35; //顶部间隔
     scale: number = 0.5;
-    Number: number;
+    Number: number = 0;
 
     change() {
       this.Arr.length = this.ArrNumber.length = 0;
@@ -489,7 +557,7 @@ namespace StoreHouse {
       let n: number = -1;
       for (let i = 0; i < s.length; i++) {
         let x: string = s.charAt(i);
-        let arr: Array<number> = this.map.get(x);
+        let arr: Array<number> = this.map.get(x) as Array<number>;
         for (let j = 0; j < arr.length / 4; j++) {
           let x1: number = arr[j*4] + this.interval * i;
           let y1: number = arr[j * 4 + 1];
@@ -615,4 +683,4 @@ namespace StoreHouse {
   }
 }
 
-export default StoreHouse
+export default StoreHouseClassModel

@@ -15,16 +15,16 @@
 import SmartRefresh from "../topRefresh/SmartRefresh"
 
 @Component
-struct ClassicsBottom {
+export struct ClassicsBottom {
   @Link model: SmartRefresh.Model
-  @State classicsSimple: ClassicsBottom.Model = new ClassicsBottom.Model()
+  @State classicsSimple: ClassicsBottomModel.Model = new ClassicsBottomModel.Model()
   @State refresh: boolean  = false
   @State refreshState: boolean = false
 
   private init: boolean = false
   private lastYOffset: number = 0
   private intervalID : number = 0
-  private infomation: string = ''
+  private information: string = ''
   private arrowDown: string = 'M 25 20 L25 120 L0 85 L25 120 L50 85 L25 120'
   private arrowUp : string = 'M 25 100  L25 -20 L0 15 L25 -20 L50 15 L25 -20'
   private EnglishMonth: string[] = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec']
@@ -35,6 +35,13 @@ struct ClassicsBottom {
     }
     this.model.setRefreshBottomCallback(() => this.draw())
     this.classicsSimple.init()
+  }
+
+  aboutToDisappear(): void {
+    if (this.model.bottomRefreshId > 0) {
+      clearInterval(this.model.bottomRefreshId)
+      this.model.bottomRefreshId = -1
+    }
   }
 
   calculationArrowSize() {
@@ -51,17 +58,15 @@ struct ClassicsBottom {
   }
 
   draw() : void {
-    this.caculateTime()
-    if (this.model.bottomRefreshId == 0) {
-      this.model.bottomRefreshId = setInterval(() => {
-        // 刷新数据
-        this.onDraw()
-      }, 20)
-    }
+    this.calculateTime()
+    this.model.bottomRefreshId = setInterval(() => {
+      // 刷新数据
+      this.onDraw()
+    }, 20)
   }
-  caculateTime() : void {
+  calculateTime() : void {
     let index = 0
-    this.infomation = ''
+    this.information = ''
     let month: string = this.model.lastRefreshTime.toString().split(" ")[1]
     let day: string = this.model.lastRefreshTime.toString().split(" ")[2]
     let hour: string = this.model.lastRefreshTime.toString().split(" ")[4]
@@ -69,16 +74,16 @@ struct ClassicsBottom {
     this.EnglishMonth.forEach((item: string) => {
       index += 1
       if (item == month) {
-        this.infomation = '更新于 ' + index + "月" + day + "日"
+        this.information = '更新于 ' + index + "月" + day + "日"
       }
     })
-    let morningOrAfternoon = (parseInt(str[0]) + 8) > 24 ? (parseInt(str[0]) + 8) - 24 : (parseInt(str[0]) + 8)
+    let morningOrAfternoon = (Number.parseInt(str[0]) + 8) > 24 ? (Number.parseInt(str[0]) + 8) - 24 : (Number.parseInt(str[0]) + 8)
     if (morningOrAfternoon < 12) {
-      this.infomation = this.infomation + "上午"
+      this.information = this.information + "上午"
     } else if(morningOrAfternoon > 12 ){
-      this.infomation = this.infomation + "下午"
+      this.information = this.information + "下午"
     }
-    this.infomation = this.infomation + morningOrAfternoon + ":" + str[1]
+    this.information = this.information + morningOrAfternoon + ":" + str[1]
   }
 
   private onDraw(): void {
@@ -192,7 +197,7 @@ struct ClassicsBottom {
             }
             if (this.model.getTimeShowState()) {
               Row() {
-                Text("更新于" + this.infomation)
+                Text("更新于" + this.information)
                   .fontSize(this.model.classicsBottomTextSizeTime)
                   .height(50)
                   .align(Alignment.Center)
@@ -219,7 +224,7 @@ struct ClassicsBottom {
             }
             if (this.model.getTimeShowState()) {
               Row() {
-                Text("更新于" + this.infomation)
+                Text("更新于" + this.information)
                   .fontSize(this.model.classicsBottomTextSizeTime)
                   .fontColor(this.model.getClassicsBottomAccentColor())
                   .height(50)
@@ -240,7 +245,7 @@ struct ClassicsBottom {
   }
 }
 
-namespace ClassicsBottom {
+namespace ClassicsBottomModel {
   export class Model {
     //画笔宽度
     barWidth: number = 5;
@@ -467,4 +472,4 @@ namespace ClassicsBottom {
     }
   }
 }
-export default ClassicsBottom;
+export default ClassicsBottomModel;

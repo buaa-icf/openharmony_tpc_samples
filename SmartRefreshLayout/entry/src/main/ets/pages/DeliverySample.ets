@@ -13,12 +13,22 @@
  * limitations under the License.
  */
 import { Delivery } from "@ohos/smartrefreshlayout"
-import { SmartRefresh } from "@ohos/smartrefreshlayout"
+import { SmartRefreshForDeliverySample } from "@ohos/smartrefreshlayout"
+class arrParam{
+  index:number = 0;
+  content:string = "";
+}
 
+class themeParam{
+  text:string = "";
+  label:string = "";
+  boxColor:number[] = [];
+  backgroundColor:number = 0;
+}
 @Entry
 @Component
 struct DeliverySample {
-  theme = [
+  theme:themeParam[] = [
     { text: "默认主题颜色", label: "更改为默认主题颜色", boxColor: [0xff4169E1, 0xff6ea9ff], backgroundColor: 0xff283645 },
     { text: "橙色主题颜色", label: "更改为橙色主题颜色", boxColor: [0xffffe4b5, 0xfffffafa], backgroundColor: 0xffffbb33 },
     { text: "红色主题颜色", label: "更改为红色主题颜色", boxColor: [0xfff08080, 0xfffffafa], backgroundColor: 0xffff4444 },
@@ -29,14 +39,15 @@ struct DeliverySample {
     { text: "绿色主题颜色", label: "更改为绿色主题颜色", boxColor: [0xff90ee90, 0xfffffafa], backgroundColor: 0xff99cc00 },
     { text: "蓝色主题颜色", label: "更改为蓝色主题颜色", boxColor: [0xffafeeee, 0xfffffafa], backgroundColor: 0xff33aaff }
   ]
-  @State model: SmartRefresh.Model = new SmartRefresh.Model().setZMainIndex(999)
-  arr: string[] = ['内容不偏移', '内容跟随偏移', '默认主题', '橙色主题', '红色主题', '绿色主题', '蓝色主题', '蓝色主题', '蓝色主题', '蓝色主题']
+  @State modelDelivery: SmartRefreshForDeliverySample.Model = new SmartRefreshForDeliverySample.Model().setZMainIndex(999)
+  arr: arrParam[] = [{index:0,content:'内容不偏移'}, {index:1,content:'内容跟随偏移'}, {index:2,content:'默认主题'}, {index:3,content:'橙色主题'},
+    {index:4,content:'红色主题'}, {index:5,content:'绿色主题'}, {index:6,content:'蓝色主题'}, {index:7,content:'蓝色主题'}, {index:8,content:'蓝色主题'}, {index:9,content:'蓝色主题'}]
 
   @Builder deliveryHeader() {
-    Delivery({ model: $model })
+    Delivery({ model: $modelDelivery })
   }
 
-  @Builder card(index) {
+  @Builder card(index:number) {
     Row() {
       Flex() {
       }.backgroundColor("#dddddd").height("240lpx").width("240lpx")
@@ -55,31 +66,32 @@ struct DeliverySample {
     .alignItems(VerticalAlign.Top)
     .border({ width: "2lpx", color: "#aaaaaa", style: BorderStyle.Solid })
     .onClick(() => {
-      this.model.setBackgroundShadowColor(this.theme[index%this.theme.length].backgroundColor)
+      this.modelDelivery.setBackgroundShadowColor(this.theme[index%this.theme.length].backgroundColor)
     })
   }
 
   @Builder deliveryMain() {
     Column() {
-      ForEach(this.arr, (item, index) => {
-        this.card(index)
-      }, item => item)
+      ForEach(this.arr, (item:arrParam) => {
+        this.card(item.index)
+      }, (item:arrParam) => item.index.toString())
     }.width("100%").padding("20lpx")
   }
 
   @Builder deliveryFooter() {
     Column() {
-      Delivery({ model: $model })
+      Delivery({ model: $modelDelivery })
     }.width("100%").padding("20lpx")
   }
 
   aboutToAppear() {
-    this.model.backgroundColor = "#dddddd"
+    this.modelDelivery.backgroundColor = "#dddddd"
   }
 
   build() {
     Column() {
-      SmartRefresh({ model: $model,
+      SmartRefreshForDeliverySample({
+        modelDelivery: $modelDelivery,
         header: () => {
           this.deliveryHeader()
         }, main: () => {

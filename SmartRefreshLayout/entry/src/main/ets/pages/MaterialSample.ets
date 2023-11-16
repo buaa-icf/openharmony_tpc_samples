@@ -14,14 +14,14 @@
  */
 import {SmartRefresh} from "@ohos/smartrefreshlayout"
 import {Material} from "@ohos/smartrefreshlayout"
-import {MaterialRefreshBottom} from "@ohos/smartrefreshlayout"
+import {MaterialBottom} from "@ohos/smartrefreshlayout"
 
 @Entry
 @Component
 struct MaterialRefreshSample {
   @State model: SmartRefresh.Model = new SmartRefresh.Model()
 
-  arr: string[] = ['橙色主题', '红色主题', '绿色主题', '蓝色主题', '内容不偏移', '内容跟随偏移', '默认主题', '橙色主题', '红色主题', '绿色主题', '蓝色主题']
+  arr: string[] = ['橙色主题', '红色主题', '绿色主题', '蓝色主题', '橙色主题', '红色主题', '默认主题', '橙色主题', '红色主题', '绿色主题', '蓝色主题']
 
   pickColor(SelectColorParam: string) {
     let SelectColor = SelectColorParam.trim()
@@ -63,13 +63,13 @@ struct MaterialRefreshSample {
     Column() {
       ForEach(this.arr, (item:string) => {
         this.card(item)
-      }, item => item)
+      }, (item:string) => item)
     }.width("100%").padding("20lpx")
   }
 
   @Builder testFooter() {
     Column() {
-      MaterialRefreshBottom({ model: $model})
+      MaterialBottom({ model: $model})
     }.width("100%").padding("20lpx")
   }
 

@@ -17,7 +17,7 @@ import SmartRefreshForFlyRefresh from "./SmartRefreshForFlyRefresh"
 import FlyRefreshHeaderAircraft from "./FlyRefreshHeaderAircraft"
 @Component
 export struct FlyRefreshHeader {
-  model: SmartRefreshForFlyRefresh.Model = new SmartRefreshForFlyRefresh.Model()
+  @Link model: SmartRefreshForFlyRefresh.Model
   private settings: RenderingContextSettings = new RenderingContextSettings(true)
   private context: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.settings)
   @State ready: boolean = false
@@ -31,7 +31,7 @@ export struct FlyRefreshHeader {
   @State angle: number = 0
   @State isClick: boolean = true
   @State isAdd: boolean = false
-  initHeight = this.model.initHeaderHeight
+  @State initHeight: number = this.model.initHeaderHeight
   aboutToAppear(){ //当独走头部刷新
     this.model.flyRefreshHeaderIsShow = true
   }
@@ -69,7 +69,7 @@ export struct FlyRefreshHeader {
             .position({ x: 440, y: -45 })
           Image($r("app.media.bg3")).width('100%').height('100%').objectFit(ImageFit.Fill)
         }.width('100%').height((80 + ((this.model.getOffset() > 1 ? this.model.getOffset() : 1) - 1) * 10))
-        FlyRefreshHeaderAircraft({modelParam : this.model})
+        FlyRefreshHeaderAircraft({modelParam : $model})
       }
       .alignContent(Alignment.Bottom)
       .width('100%')

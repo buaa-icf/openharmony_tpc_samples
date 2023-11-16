@@ -15,19 +15,19 @@
 import SmartRefresh from "../topRefresh/SmartRefresh"
 
 @Component
-struct MaterialBottom {
+export struct MaterialBottom {
   @Link model: SmartRefresh.Model
-  @State refreshData: MaterialBottom.Model = new MaterialBottom.Model()
+  @State refreshData: MaterialBottomSimple.Model = new MaterialBottomSimple.Model()
 
   @State refresh: boolean  = false
   @State refreshState: boolean = false
   //拖拽变量
-  private dragRefreshData: MaterialBottom.Model = new MaterialBottom.Model()
+  private dragRefreshData: MaterialBottomSimple.Model = new MaterialBottomSimple.Model()
   private dragPathCmd: string = ''
   private init: boolean = false
   private lastYOffset: number = 0
   private intervalID : number = 0
-  private infomation: string = ''
+  private information: string = ''
   private EnglishMonth: string[] = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Oct','Dec']
   // 刷新条的颜色
   private refreshColor: Color[] = [Color.Blue, Color.Red, Color.Green]
@@ -251,7 +251,7 @@ struct MaterialBottom {
   }
 }
 
-namespace MaterialBottom {
+namespace MaterialBottomSimple {
   export class Model {
     //画笔宽度
     barWidth: number = 5;
@@ -481,4 +481,4 @@ namespace MaterialBottom {
     }
   }
 }
-export default MaterialBottom;
+export default MaterialBottomSimple;

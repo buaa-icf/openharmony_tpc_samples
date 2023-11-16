@@ -12,14 +12,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {SmartRefresh} from "@ohos/smartrefreshlayout"
+import {SmartRefreshForDropBoxSample} from "@ohos/smartrefreshlayout"
 import {DropBox} from "@ohos/smartrefreshlayout"
 import {DropBoxBottomRefresh} from "@ohos/smartrefreshlayout"
+
+class arrParam{
+  index:number = 0;
+  content:string = "";
+}
+
+class themeParam{
+  text:string = "";
+  label:string = "";
+  boxColor:number[] = [];
+  backgroundColor:number = 0;
+}
 @Entry
 @Component
 struct DropBoxSample {
-  @State model: SmartRefresh.Model = new SmartRefresh.Model()
-  theme = [
+  @State model: SmartRefreshForDropBoxSample.Model = new SmartRefreshForDropBoxSample.Model()
+  theme:themeParam[] = [
     {text:"默认主题颜色",label:"更改为默认主题颜色",boxColor:[0xff4169E1,0xff6ea9ff],backgroundColor:0xff283645},
     {text:"橙色主题颜色",label:"更改为橙色主题颜色",boxColor:[0xffffe4b5,0xfffffafa],backgroundColor:0xffffbb33},
     {text:"红色主题颜色",label:"更改为红色主题颜色",boxColor:[0xfff08080,0xfffffafa],backgroundColor:0xffff4444},
@@ -28,11 +40,12 @@ struct DropBoxSample {
   ]
   boxColor?: Array<number> = [0xff6ea9ff,0xff6ea9ff];
 
-  arr: string[] = ['内容不偏移', '内容跟随偏移', '默认主题', '橙色主题', '红色主题', '绿色主题', '蓝色主题', '蓝色主题', '蓝色主题', '蓝色主题']
+  arr: arrParam[] = [{index:0,content:'内容不偏移'}, {index:1,content:'内容跟随偏移'}, {index:2,content:'默认主题'},{index:3,content:'橙色主题'},
+    {index:4,content:'红色主题'}, {index:5,content:'绿色主题'}, {index:6,content:'蓝色主题'}, {index:7,content:'蓝色主题'}, {index:8,content:'蓝色主题'}, {index:9,content:'蓝色主题'}]
   @Builder dropBoxHeader() {
-    DropBox({ model: $model,boxColor:this.boxColor})
+    DropBox({ model: $model, boxColor:this.boxColor})
   }
-  @Builder card(i) {
+  @Builder card(i:number) {
     Row() {
       Flex() {
       }.backgroundColor(this.theme[i%this.theme.length].backgroundColor).height("240lpx").width("240lpx")
@@ -58,14 +71,14 @@ struct DropBoxSample {
   }
   @Builder dropBoxMain() {
     Column() {
-      ForEach(this.arr.map((item1, index1) => { return { i: index1, data: item1 }; }), (item) => {
-        this.card(item.i)
-      }, item => item.i)
+      ForEach(this.arr, (item:arrParam) => {
+        this.card(item.index)
+      }, (item:arrParam) => item.index.toString())
     }.width("100%").padding("20lpx")
   }
   @Builder dropBoxFooter() {
     Column() {
-      DropBoxBottomRefresh({ model: $model })
+      DropBoxBottomRefresh({ model: $model ,boxColor:this.boxColor})
     }.width("100%").padding("20lpx")
   }
 
@@ -75,13 +88,16 @@ struct DropBoxSample {
 
   build() {
     Column() {
-      SmartRefresh({ model: $model, header: () => {
-        this.dropBoxHeader()
-      }, main: () => {
-        this.dropBoxMain()
-      }, footer: () => {
-        this.dropBoxFooter()
-      } })
+      SmartRefreshForDropBoxSample({
+        modelDropBox: $model,
+        header: () => {
+          this.dropBoxHeader()
+        }, main: () => {
+          this.dropBoxMain()
+        }, footer: () => {
+          this.dropBoxFooter()
+        }
+      })
     }
   }
 }

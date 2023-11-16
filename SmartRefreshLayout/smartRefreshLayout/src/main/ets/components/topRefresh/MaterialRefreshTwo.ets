@@ -12,14 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-//import SmartRefresh from "./SmartRefresh"
 import smartRefreshSecond from "./SmartRefreshSecond"
 
 @Component
-export struct BezierCircle {
+export struct MaterialTwo {
   scroller: Scroller = new Scroller()
   @Link model: smartRefreshSecond.Model
-  @State classicsSimple: ClassicsSimple.Model = new ClassicsSimple.Model()
+  @State classicsSimple: MaterialSimpleTwo.Model = new MaterialSimpleTwo.Model()
   private arr: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
   //控制超过最大偏移量
   @State private smoothPathCmd: string = '';
@@ -100,33 +99,33 @@ export struct BezierCircle {
     }
   }
   draw() : void {
-      this.model.headerRefreshId = setInterval(() => {
-        let initTopHeight = (this.model.headerHeight < this.model.initHeaderHeight ? this.model.headerHeight : this.model.initHeaderHeight) * 1.5
-        if (smartRefreshSecond.REFRESHSTATE.TOREFRESH == this.model.refreshState) {
-          this.bounceCount = 0
-          let bottomCircleStartY = this.model.headerHeight * 1.5
-          this.smoothPathCmd = `M0 0 L0 ${initTopHeight} S360 ${bottomCircleStartY} 720 ${initTopHeight} L720 0 Z`;
-        }
-        if (smartRefreshSecond.REFRESHSTATE.REFRESHING == this.model.refreshState) {
-          let bottomCircleStartY = 0
-          if (this.bounceCount < 20 ) { // 1000/30 约等于66
-            this.bounceCount += 1
-            if (this.bounceDirection) {
-              if (this.bounceMaxOffset <= 0) {
-                this.bounceMaxOffset = 100 - this.bounceCount * 5 //第二次在50位置开始
-              }
-              bottomCircleStartY = (this.model.initHeaderHeight - this.bounceMaxOffset) * 1.5
-              this.bounceMaxOffset -= 10
+    this.model.headerRefreshId = setInterval(() => {
+      let initTopHeight = (this.model.headerHeight < this.model.initHeaderHeight ? this.model.headerHeight : this.model.initHeaderHeight) * 1.5
+      if (smartRefreshSecond.REFRESHSTATE.TOREFRESH == this.model.refreshState) {
+        this.bounceCount = 0
+        let bottomCircleStartY = this.model.headerHeight * 1.5
+        this.smoothPathCmd = `M0 0 L0 ${initTopHeight} S360 ${bottomCircleStartY} 720 ${initTopHeight} L720 0 Z`;
+      }
+      if (smartRefreshSecond.REFRESHSTATE.REFRESHING == this.model.refreshState) {
+        let bottomCircleStartY = 0
+        if (this.bounceCount < 20 ) { // 1000/30 约等于66
+          this.bounceCount += 1
+          if (this.bounceDirection) {
+            if (this.bounceMaxOffset <= 0) {
+              this.bounceMaxOffset = 100 - this.bounceCount * 5 //第二次在50位置开始
             }
-          } else {
-            bottomCircleStartY = this.model.initHeaderHeight * 1.5
+            bottomCircleStartY = (this.model.initHeaderHeight - this.bounceMaxOffset) * 1.5
+            this.bounceMaxOffset -= 10
           }
-          this.smoothPathCmd = `M0 0 L0 ${initTopHeight} S360 ${bottomCircleStartY} 720 ${initTopHeight} L1100 0 Z`;
+        } else {
+          bottomCircleStartY = this.model.initHeaderHeight * 1.5
         }
+        this.smoothPathCmd = `M0 0 L0 ${initTopHeight} S360 ${bottomCircleStartY} 720 ${initTopHeight} L1100 0 Z`;
+      }
 
-        this.onDraw()
-        this.refresh = !this.refresh
-      }, 30)
+      this.onDraw()
+      this.refresh = !this.refresh
+    }, 30)
   }
 
   aboutToAppear() {
@@ -147,36 +146,36 @@ export struct BezierCircle {
         Text("1").visibility(Visibility.None)
       }
       if (this.model.refreshState == smartRefreshSecond.REFRESHSTATE.REFRESHING) {//松开过后的刷新样式
-          Stack( { alignContent: Alignment.Center }) {
-            Path().width("100%").height(this.model.headerHeight).commands(this.smoothPathCmd).backgroundColor(Color.White).fill(this.model.getBackgroundColor())
-            Path() //圆的轨道
-              .strokeWidth(3)
-              .stroke(Color.White)
-              .commands("M360 50 A 40 40, 0, 1, 1, 360 49.99")
-              .width("100%")
-              .height("100%")
-              .margin({top: (this.model.headerHeight - 40) / 2 * 1.5})
-              .fill(Color.White)
-            Path() //圆的轨道
-              .strokeWidth(8)
-              .fillOpacity(0)
-              .stroke(this.classicsSimple.barColor)
-              .commands(this.classicsSimple.svgPath)
-              .width("100%")
-              .height("100%")
-              .zIndex(2)
-              .margin({left: 335, top: (this.model.headerHeight - 80) / 2 * 1.5})
-              .opacity(1)
-         }.width("100%").height("100%")
+        Stack( { alignContent: Alignment.Center }) {
+          Path().width("100%").height(this.model.headerHeight).commands(this.smoothPathCmd).backgroundColor(Color.White).fill(this.model.getBackgroundColor())
+          Path() //圆的轨道
+            .strokeWidth(3)
+            .stroke(Color.White)
+            .commands("M360 50 A 40 40, 0, 1, 1, 360 49.99")
+            .width("100%")
+            .height("100%")
+            .margin({top: (this.model.headerHeight - 40) / 2 * 1.5})
+            .fill(Color.White)
+          Path() //圆的轨道
+            .strokeWidth(8)
+            .fillOpacity(0)
+            .stroke(this.classicsSimple.barColor)
+            .commands(this.classicsSimple.svgPath)
+            .width("100%")
+            .height("100%")
+            .zIndex(2)
+            .margin({left: 335, top: (this.model.headerHeight - 80) / 2 * 1.5})
+            .opacity(1)
+        }.width("100%").height("100%")
       } else if (this.model.refreshState == smartRefreshSecond.REFRESHSTATE.TOREFRESH) {//拖住过程中的样式
         Path().width("100%").height(this.model.headerHeight).commands(this.smoothPathCmd).backgroundColor(Color.White).fill(this.model.getBackgroundColor())
-       // Path().width("100%").height(this.dragAndDropOverMaxRangeHeight).commands(this.rectPathCmd).backgroundColor(Color.White).fill(Color.Blue)
+        // Path().width("100%").height(this.dragAndDropOverMaxRangeHeight).commands(this.rectPathCmd).backgroundColor(Color.White).fill(Color.Blue)
       }
     }
   }
 }
 
-namespace ClassicsSimple {
+namespace MaterialSimpleTwo {
   export class Model {
     //画笔宽度
     barWidth: number = 5;
@@ -406,4 +405,4 @@ namespace ClassicsSimple {
     }
   }
 }
-export default ClassicsSimple;
+export default MaterialSimpleTwo;

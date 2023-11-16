@@ -27,10 +27,9 @@ export struct Material {
   private init: boolean = false
   private lastYOffset: number = 0
   private intervalID : number = 0
-  private infomation: string = ''
   private EnglishMonth: string[] = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Oct','Dec']
   // 刷新条的颜色
-  private refreshColor: Color[]
+  private refreshColor: Color[] = []
   private latestIndex: number = 0
   private latestAngle: number = 0
   private flag: boolean = false
@@ -39,14 +38,19 @@ export struct Material {
   private arrowAngle: number = 45
   private arrowPathCmd: string = ''
   private arrowAngleFlag: number = 0
-  private shadowCommands: string = ''
+  @State shadowCommands: string = ''
   private screenWidth: number = 730
 
   aboutToAppear() {
+    this.model.headerHeight = this.model.initHeaderHeight
     this.refreshColor = this.model.progressBackgroundColorSchemeResource
     this.model.setRefreshHeaderCallback(() => this.draw())
     this.refreshData.setBarColor(Color.Black).setCircleRadius(45).init()
     this.dragRefreshData.setCircleRadius(45)
+    if(this.model.initRefreshing) {
+      this.model.refreshHeaderCallback()
+      this.model.initRefreshing = false
+    }
   }
 
   shadowCommand() {
@@ -218,66 +222,69 @@ export struct Material {
           Path()
             .commands(this.shadowCommands)
             .fill(this.model.accentColor)
-          Path() //圆的轨道
+          Path() //外圆的轨道
             .strokeWidth(3)
             .stroke(this.model.backgroundColor)
             .commands("M405 50 A 60 60, 0, 1, 1, 405 49.99")
-            .width(50)
-            .height(50)
+            .width("100%")
+            .height("100%")
             .fill(Color.White)
-          Path() //圆的轨道
+            .margin({top: (this.model.headerHeight - 50) / 2 * 1.5})
+          Path() //内圆的轨道
             .strokeWidth(5)
             .fillOpacity(0)
             .stroke(this.refreshData.barColor)
             .commands(this.refreshData.svgPath)
-            .width(50)
-            .height(50)
+            .width("100%")
+            .height("100%")
             .zIndex(2)
-            .margin({left: 200})
+            .margin({left: 200,top: (this.model.headerHeight - 40) / 2 * 1.5})
             .opacity(1)
         }
       } else if (this.model.refreshState == SmartRefresh.REFRESHSTATE.TOREFRESH) { //拖住过程中的样式
-        Stack({ alignContent: Alignment.Start}) {
-          Path()
-            .commands(this.shadowCommands)
-            .fill(this.model.accentColor)
-          Path() //圆的轨道
-            .strokeWidth(3)
-            .stroke(4)
-            .commands("M400 50 A 60 60, 0, 1, 1, 400 49.99")
-            .width(50)
-            .height(50)
-            .margin({top: this.model.headerHeight < this.model.initHeaderHeight ? this.model.headerHeight - this.model.initHeaderHeight
-                          : ((this.model.headerHeight - this.model.initHeaderHeight) < 48 ? (this.model.headerHeight - this.model.initHeaderHeight)
-                                                                                                                         :48)})
-            .fill(Color.White)
-          Path() //圆的轨道
-            .strokeWidth(this.refreshData.barWidth)
-            .fillOpacity(0)
-            .stroke(Color.Blue)
-            .commands(this.dragPathCmd)
-            .width(50)
-            .height(50)
-            .zIndex(2)
-            .margin({top:  this.model.headerHeight < this.model.initHeaderHeight ? this.model.headerHeight - this.model.initHeaderHeight - 10
-                                                         : ((this.model.headerHeight - this.model.initHeaderHeight - 15) < 30 ? (this.model.headerHeight - this.model.initHeaderHeight - 15)
-                                                                                                                              :30),
-              left: 185})
-            .opacity(1)
-          if (this.arrowAngleFlag == 1) {
-            Path() //圆的轨道
+        if (this.model.headerHeight > (this.model.initHeaderHeight * 3 / 4)) {
+          Stack({ alignContent: Alignment.Start}) {
+            Path()
+              .commands(this.shadowCommands)
+              .fill(this.model.accentColor)
+            Path() //外圆的轨道
               .strokeWidth(3)
+              .stroke(4)
+              .commands("M400 50 A 60 60, 0, 1, 1, 400 49.99")
+              .width(50)
+              .height(50)
+              .margin({top: this.model.headerHeight < this.model.initHeaderHeight ? this.model.headerHeight - this.model.initHeaderHeight
+                : ((this.model.headerHeight - this.model.initHeaderHeight) < 48 ? (this.model.headerHeight - this.model.initHeaderHeight)
+                  :48)})
+              .fill(Color.White)
+            Path() //内圆的轨道
+              .strokeWidth(this.refreshData.barWidth)
               .fillOpacity(0)
               .stroke(Color.Blue)
-              .commands(this.arrowPathCmd)
+              .commands(this.dragPathCmd)
               .width(50)
               .height(50)
               .zIndex(2)
-              .margin({top:  this.model.headerHeight < 200 ? this.model.headerHeight - this.model.initHeaderHeight - 10
-                                                           : ((this.model.headerHeight - this.model.initHeaderHeight - 15) < 30 ? (this.model.headerHeight - this.model.initHeaderHeight - 15)
-                                                                                                                                :30),
+              .margin({top:  this.model.headerHeight < this.model.initHeaderHeight ? this.model.headerHeight - this.model.initHeaderHeight - 10
+                : ((this.model.headerHeight - this.model.initHeaderHeight - 15) < 30 ? (this.model.headerHeight - this.model.initHeaderHeight - 15)
+                  :30),
                 left: 185})
               .opacity(1)
+            if (this.arrowAngleFlag == 1) {
+              Path() //圆的轨道
+                .strokeWidth(3)
+                .fillOpacity(0)
+                .stroke(Color.Blue)
+                .commands(this.arrowPathCmd)
+                .width(50)
+                .height(50)
+                .zIndex(2)
+                .margin({top:  this.model.headerHeight < 200 ? this.model.headerHeight - this.model.initHeaderHeight - 10
+                  : ((this.model.headerHeight - this.model.initHeaderHeight - 15) < 30 ? (this.model.headerHeight - this.model.initHeaderHeight - 15)
+                    :30),
+                  left: 185})
+                .opacity(1)
+            }
           }
         }
       }

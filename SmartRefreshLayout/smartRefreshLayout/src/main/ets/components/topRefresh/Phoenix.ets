@@ -18,7 +18,7 @@ import SmartRefreshForTaurus from "./SmartRefreshForTaurus"
 
 @Component
 export struct Phoenix {
-  @State model: SmartRefreshForTaurus.Model = new SmartRefreshForTaurus.Model()
+  @Link model: SmartRefreshForTaurus.Model
   @State angle: number= 0
   @State refresh: boolean= true
   @State mYCenter: number= 140
@@ -26,6 +26,10 @@ export struct Phoenix {
   aboutToAppear() {
     this.model.setZFooterHeight(-1)
     this.model.setRefreshHeaderCallback(() => this.startDraw())
+    if(this.model.initRefreshing) {
+      this.model.refreshHeaderCallback()
+      this.model.initRefreshing = false
+    }
   }
 
   startDraw() : void{

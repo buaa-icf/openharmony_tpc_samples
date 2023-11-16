@@ -34,14 +34,19 @@ export struct Classics {
   @State pullRefreshImageAngle: number = 0
 
   aboutToAppear() {
+    console.log('liqi 66666666666666666666666666666666===' + "classicsRefresh -1");
     this.model.setRefreshHeaderCallback(() => this.draw())
+    if(this.model.initRefreshing) {
+      this.model.refreshHeaderCallback()
+      this.model.initRefreshing = false
+    }
     this.classicsSimple.init()
   }
 
   aboutToDisappear(): void {
-    if (this.pullRefreshIntervalId > 0) {
-      clearInterval(this.pullRefreshIntervalId)
-      this.pullRefreshIntervalId = -1
+    if (this.model.headerRefreshId > 0) {
+      clearInterval(this.model.headerRefreshId)
+      this.model.headerRefreshId = -1
     }
   }
 
@@ -59,11 +64,12 @@ export struct Classics {
   }
 
   draw() : void {//刷新样式
-    this.caculateTime()
-    if (this.model.getDrawableArrow()) {// 计算箭头的长度
-      this.calculationArrowSize()
-    }
-    if (this.model.headerRefreshId == 0) {
+
+
+      this.calculateTime()
+      if (this.model.getDrawableArrow()) {// 计算箭头的长度
+        this.calculationArrowSize()
+      }
       if (this.model.getDrawableProgress()) {
         this.refreshingFunction()
       } else {
@@ -72,22 +78,21 @@ export struct Classics {
           this.onDraw()
         }, 20)
       }
-    }
   }
 
   refreshingFunction() : void {
     this.pullRefreshImage = $r("app.media.classicsRefreshing")
-    if(this.pullRefreshIntervalId == -1) {
-      this.pullRefreshIntervalId = setInterval(() => {
-        if(this.pullRefreshImageAngle > 360) {
-          this.pullRefreshImageAngle = this.pullRefreshImageAngle - 360
-        }
-        this.pullRefreshImageAngle = this.pullRefreshImageAngle + 10
-      }, 50)
-    }
+    console.log('liqi 222222222222222222222222222222222222222222===' + "classicsRefresh 2");
+    this.model.headerRefreshId = setInterval(() => {
+      if(this.pullRefreshImageAngle > 360) {
+        this.pullRefreshImageAngle = this.pullRefreshImageAngle - 360
+      }
+      this.pullRefreshImageAngle = this.pullRefreshImageAngle + 10
+      console.log('liqi 222222222222222222222222222222222222222222');
+    }, 50)
   }
 
-  caculateTime() : void {
+  calculateTime() : void {
     let index = 0
     this.information = ''
     let month: string = this.model.lastRefreshTime.toString().split(" ")[1]
@@ -100,7 +105,7 @@ export struct Classics {
         this.information = index + "月" + day + "日"
       }
     })
-    let morningOrAfternoon = (parseInt(str[0]) + 8) > 24 ? (parseInt(str[0]) + 8) - 24 : (parseInt(str[0]) + 8)
+    let morningOrAfternoon = (Number.parseInt(str[0]) + 8) > 24 ? (Number.parseInt(str[0]) + 8) - 24 : (Number.parseInt(str[0]) + 8)
     if (morningOrAfternoon < 12) {
       this.information = this.information + "上午"
     } else if(morningOrAfternoon > 12 ) {
@@ -249,31 +254,34 @@ export struct Classics {
           }.width("70%").alignItems(HorizontalAlign.Center).margin({left:80, top :(this.model.headerHeight - 150) / 2})
         }.width("100%").height("100%")
       } else if (this.model.refreshState == SmartRefresh.REFRESHSTATE.TOREFRESH) { //拖住过程中的样式
-        Stack({ alignContent: Alignment.Start }) {
-          Path().commands(this.model.headerHeight < this.model.initHeaderHeight ? this.arrowDown : this.arrowUp)
-            .strokeWidth(this.classicsSimple.barWidth)
-            .fillOpacity(0)
-            .stroke(this.model.getAccentColor())
-            .margin({left: 80, top: this.calculateTopPosition()})
-          Column() {
-            Row() {
-              Text(this.model.headerHeight < this.model.initHeaderHeight ? this.model.refreshHeaderPullDown : this.model.refreshHeaderRelease)
-                .fontSize(this.model.textSizeTitle)
-                .height(50)
-                .fontColor(this.model.getAccentColor())
-                .margin({top: this.calculateTopPosition(), left : this.model.drawableMarginRight})
-            }
-            if (this.model.getTimeShowState()) {
+        if (this.model.headerHeight > (this.model.initHeaderHeight / 2)) {
+          Stack({ alignContent: Alignment.Start }) {
+            Path().commands(this.model.headerHeight < this.model.initHeaderHeight ? this.arrowDown : this.arrowUp)
+              .strokeWidth(this.classicsSimple.barWidth)
+              .fillOpacity(0)
+              .stroke(this.model.getAccentColor())
+              .margin({left: 80, top: this.calculateTopPosition()})
+            Column() {
               Row() {
-                Text("更新于" + this.information)
-                  .fontSize(this.model.textSizeTime)
-                  .fontColor(this.model.getAccentColor())
+                Text(this.model.headerHeight < this.model.initHeaderHeight ? this.model.refreshHeaderPullDown : this.model.refreshHeaderRelease)
+                  .fontSize(this.model.textSizeTitle)
                   .height(50)
-                  .margin({ top: this.calculateTopPosition(), left : this.model.drawableMarginRight})
+                  .fontColor(this.model.getAccentColor())
+                  .margin({top: this.calculateTopPosition(), left : this.model.drawableMarginRight})
               }
-            }
-          }.width("70%").alignItems(HorizontalAlign.Center).margin({left:80, top :(this.model.headerHeight - 150) / 2})
-        }.width("100%").height("100%")
+              if (this.model.getTimeShowState()) {
+                Row() {
+                  Text("更新于" + this.information)
+                    .fontSize(this.model.textSizeTime)
+                    .fontColor(this.model.getAccentColor())
+                    .height(50)
+                    .margin({ top: this.calculateTopPosition(), left : this.model.drawableMarginRight})
+                }
+              }
+            }.width("70%").alignItems(HorizontalAlign.Center).margin({left:80, top :(this.model.headerHeight - 150) / 2})
+          }.width("100%").height("100%")
+        }
+
       } else if (this.model.refreshState == SmartRefresh.REFRESHSTATE.REFRESHFINISH){
         Row() {
           Text(this.model.refreshHeaderRefreshFinish)

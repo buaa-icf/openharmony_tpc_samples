@@ -18,7 +18,7 @@ import SmartRefreshForTaurus from "../topRefresh/SmartRefreshForTaurus"
 
 @Component
 export struct PhoenixBottomRefresh {
-  @State model: SmartRefreshForTaurus.Model = new SmartRefreshForTaurus.Model()
+  @Link model: SmartRefreshForTaurus.Model
   @State angle: number= 0
   @State refresh: boolean= true
   @State mYCenter: number= 140

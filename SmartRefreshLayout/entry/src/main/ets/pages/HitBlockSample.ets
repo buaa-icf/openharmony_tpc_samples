@@ -16,43 +16,41 @@
 import { SmartRefreshForGame } from "@ohos/smartrefreshlayout"
 import {HitBlock} from "@ohos/smartrefreshlayout"
 
+class themeParam{
+  index:number = 0;
+  name:string = "";
+  color:string = "";
+}
+
 @Entry
 @Component
 struct HitBlockSample {
-  private arr: Array<any> = [
-    { name: '默认主题', color: '#ffffff' },
-    { name: '橙色主题', color: '#ffbb33' },
-    { name: '红色主题', color: '#ff4444' },
-    { name: '绿色主题', color: '#99cc00' },
-    { name: '蓝色主题', color: '#2299ee' },
+  private arr: Array<themeParam> = [
+    {index:1, name: '默认主题', color: '#ffffff' },
+    {index:2, name: '橙色主题', color: '#ffbb33' },
+    {index:3, name: '红色主题', color: '#ff4444' },
+    {index:4, name: '绿色主题', color: '#99cc00' },
+    {index:5, name: '蓝色主题', color: '#2299ee' },
+    {index:6, name: '蓝色主题', color: '#2299ee' },
+    {index:7, name: '蓝色主题', color: '#2299ee' },
+    {index:8, name: '蓝色主题', color: '#2299ee' },
+    {index:9, name: '蓝色主题', color: '#2299ee' },
+    { index:10,name: '蓝色主题', color: '#2299ee' },
   ]
-  @State model: SmartRefreshForGame.Model = new SmartRefreshForGame.Model()
-  private isClick: boolean = false
+  @State modelGame: SmartRefreshForGame.Model = new SmartRefreshForGame.Model()
 
   public aboutToAppear() {
-    this.model.setBackgroundColor('#ffffff')
-    this.model.setRefreshCallback(() => {
-      if (!this.isClick) {
-        this.isClick = true
-        setTimeout(() => {
-          this.isClick = false
-          this.model.finishRefresh(true)
-        }, 3000)
-      }
-    })
-    setTimeout(() => {
-      this.model.autoRefresh()
-    }, 100)
+    this.modelGame.setBackgroundColor('#ffbb33')
+    this.modelGame.autoRefresh()
   }
 
   @Builder testHeader() {
-    HitBlock({ model: this.model })
+    HitBlock({ hitBlockModel: $modelGame })
   }
 
   @Builder testMain() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
-      ForEach(this.arr, (item) => {
-        ForEach(this.arr, (item2) => {
+        ForEach(this.arr, (item2:themeParam) => {
           Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
             Text(item2.name)
               .fontSize(30)
@@ -71,12 +69,10 @@ struct HitBlockSample {
               .margin({ top: 10, bottom: 5 })
           }
           .onClick(e => {
-            this.model.setBackgroundColor(item2.color)
-            this.model.autoRefresh()
+            this.modelGame.setBackgroundColor(item2.color)
+            this.modelGame.autoRefresh()
           })
-
-        }, item => item.toString())
-      }, item => item.toString())
+        }, (item:themeParam) => item.index.toString())
     }
     .width("100%")
     .backgroundColor("#ffffff")
@@ -85,13 +81,12 @@ struct HitBlockSample {
   build() {
     Column() {
       SmartRefreshForGame({
-        model: this.model,
-        header: () => {
-          this.testHeader()
-        },
+        modelGame: $modelGame,
+        header: () => {this.testHeader()},
         main: () => {
           this.testMain()
-        }
+        },
+        footer: ()=>{}
       })
     }
   }

@@ -12,37 +12,65 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import SmartRefresh from "./SmartRefresh"
+import SmartRefreshForBezierRadarSample from "./SmartRefreshForBezierRadarSample"
 
 @Component
-struct BezierRadar {
-  @Link model: SmartRefresh.Model
-  @Link bezierRadarModel: BezierRadar.BezierRadarModel
+export struct BezierRadar {
+  @Link model: SmartRefreshForBezierRadarSample.Model
+  @State bezierRadarModel: BezierRadarModel.BezierRadarModel = new BezierRadarModel.BezierRadarModel()
   @State refresh: boolean  = false;
   @State refreshGenerationId: number= 0;
   private context: CanvasRenderingContext2D = new CanvasRenderingContext2D(new RenderingContextSettings(true));
   private ready: boolean = false;
-  private status; //当前的状态
+  private status = SmartRefreshForBezierRadarSample.REFRESHSTATE.NONE; //当前的状态
   private index: number = 0; //数组下标
+  @State beforeEnableHorizontalDrag: boolean = false
+  @State beforePrimaryColor:string = "#0000FF"
+  @State beforeRadarFillColor:string = "#ADD8E6"
 
   aboutToAppear() {
     this.bezierRadarModel.init();
     this.model.setRefreshHeaderCallback(() => this.draw())
+    if(this.model.initRefreshing) {
+      this.model.refreshHeaderCallback()
+      this.model.initRefreshing = false
+    }
+  }
+
+  aboutToDisappear(): void {
+    if (this.model.headerRefreshId > 0) {
+      clearInterval(this.model.headerRefreshId)
+      console.log('liqi 66666666666666666666666666666666===' + "classicsRefresh 0");
+      this.model.headerRefreshId = -1
+    }
   }
 
   draw() : void {
-    if (this.model.headerRefreshId == 0) {
       this.model.headerRefreshId = setInterval(() => {
         // 刷新数据
         this.invalidate();
+        this.init();
+        console.info("BezierRadarRefresh==================" +this.model.refreshState)
       }, 20)
+  }
+
+  init() {
+    if(this.beforeEnableHorizontalDrag != this.model.getEnableHorizontalDrag()) {
+      this.bezierRadarModel.setMEnableHorizontalDrag(this.model.getEnableHorizontalDrag())
+      this.beforeEnableHorizontalDrag = this.model.getEnableHorizontalDrag()
+    }
+    if(this.beforePrimaryColor != this.model.getPrimaryColor()) {
+      this.bezierRadarModel.setMPrimaryColor(this.model.getPrimaryColor());
+      this.bezierRadarModel.setMRadarFillColor(this.model.getRadarFillColor())
+      this.beforePrimaryColor = this.model.getPrimaryColor();
+      this.beforeRadarFillColor = this.model.getRadarFillColor()
     }
   }
 
   invalidate() {
     this.refreshGenerationId++;
     //雷达刷新
-    if (this.status == SmartRefresh.REFRESHSTATE.TOREFRESH || this.bezierRadarModel.mRadarAngle >= 360) {
+    if (this.status == SmartRefreshForBezierRadarSample.REFRESHSTATE.TOREFRESH || this.bezierRadarModel.mRadarAngle >= 360) {
       this.bezierRadarModel.mRadarAngle = 0;
     }
     if (this.bezierRadarModel.lastTime - this.bezierRadarModel.firstTime > 800) {
@@ -58,7 +86,7 @@ struct BezierRadar {
       } else {
         Text("1").visibility(Visibility.None)
       }
-      if (this.model.refreshState == SmartRefresh.REFRESHSTATE.REFRESHING) {
+      if (this.model.refreshState == SmartRefreshForBezierRadarSample.REFRESHSTATE.REFRESHING) {
         Stack() {
           Text(this.refreshGenerationId + "" + this.onDraw(this.context)).visibility(Visibility.None)
           Canvas(this.context).onReady(() => {
@@ -66,7 +94,7 @@ struct BezierRadar {
             this.context.lineWidth = 3
           }).width("100%").height("100%")
         }.height(this.bezierRadarModel.mHeight + "px").width(this.bezierRadarModel.mWidth + "px")
-      } else if (this.model.refreshState == SmartRefresh.REFRESHSTATE.TOREFRESH) {
+      } else if (this.model.refreshState == SmartRefreshForBezierRadarSample.REFRESHSTATE.TOREFRESH) {
         Stack() {
           Text(this.refreshGenerationId + "" + this.onDraw(this.context)).visibility(Visibility.None)
           Canvas(this.context).onReady(() => {
@@ -87,7 +115,7 @@ struct BezierRadar {
     }
     let width = this.bezierRadarModel.mWidth;
     let height = this.bezierRadarModel.mHeight;
-    if (this.model.refreshState == SmartRefresh.REFRESHSTATE.REFRESHING) {
+    if (this.model.refreshState == SmartRefreshForBezierRadarSample.REFRESHSTATE.REFRESHING) {
       this.bezierRadarModel.mWaveOffsetX = -1;
       if (this.bezierRadarModel.isFirstGetTime) {
         this.bezierRadarModel.firstTime = new Date().getTime();
@@ -104,7 +132,7 @@ struct BezierRadar {
         this.bezierRadarModel.mRippleRadius += this.bezierRadarModel.mRippleRadiusAdd;
         this.bezierRadarModel.drawRipple(canvas, width, height);
       }
-    } else if (this.model.refreshState == SmartRefresh.REFRESHSTATE.TOREFRESH) {
+    } else if (this.model.refreshState == SmartRefreshForBezierRadarSample.REFRESHSTATE.TOREFRESH) {
       this.bezierRadarModel.isFirstGetTime = true;
       this.bezierRadarModel.mWaveHeight = 0;
       this.bezierRadarModel.firstTime = this.bezierRadarModel.lastTime = 0;
@@ -128,14 +156,14 @@ struct BezierRadar {
   }
 }
 
-namespace BezierRadar {
+namespace BezierRadarModel {
   export class BezierRadarModel {
     mWidth: number = 720
     mHeight: number = 1280
     //<editor-fold desc="属性字段">
-    mAccentColor: string; //背景的颜色（白球内部，雷达内部）
-    mPrimaryColor: string; //背景波形的颜色
-    mRadarFillColor: string; //雷达填充的颜色
+    mAccentColor: string = ""; //背景的颜色（白球内部，雷达内部）
+    mPrimaryColor: string = ""; //背景波形的颜色
+    mRadarFillColor: string = ""; //雷达填充的颜色
     mWavePulling: boolean= true; //背景波形是否可拉动
     mEnableHorizontalDrag: boolean  = false; //水平拖拽
     isSupportHorizontalDrag: boolean = true;//是否支持水平拖拽
@@ -152,8 +180,8 @@ namespace BezierRadar {
     mRadarRadius: number = 0; //雷达半径
     mRadarCircle: number = 0; //圆环宽度
     mRadarScale: number = 0; //雷达比例
-    firstTime: number ; //第一次获取的时间
-    lastTime: number ; //最后一次获取的时间
+    firstTime: number = 0; //第一次获取的时间
+    lastTime: number = 0; //最后一次获取的时间
     isFirstGetTime: boolean = true
     location: number = 17; //表示绘制中心在整个高度的位置，height / location
     Arr: Array<number> = [-30, -60, -80, -100, -120, -130, -20, -80, -60, -40, -20,];
@@ -443,4 +471,4 @@ namespace BezierRadar {
   }
 }
 
-export default BezierRadar
+export default BezierRadarModel

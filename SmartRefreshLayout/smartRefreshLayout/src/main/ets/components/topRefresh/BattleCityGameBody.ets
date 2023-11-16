@@ -15,15 +15,23 @@
 
 import SmartRefreshForGame from './SmartRefreshForGame'
 
+class BulletModel {
+  public index: number = 0;
+  public x: number = 0;
+  public y: number = 0;
+
+}
+
 @Component
 export struct AirplaneGameBody {
   @State model: SmartRefreshForGame.Model = new SmartRefreshForGame.Model()
   @State private i: number = 0
-  @State private enemyPlainList: Array<any> = [] // 敌机的数组
-  @State private bulletList: Array<any> = [] // 存放子弹
+  @State private enemyPlainList: Array<BulletModel> = [] // 敌机的数组
+  @State private bulletList: Array<BulletModel> = [] // 存放子弹
   @State private myPlainY: number = 0 // 自己飞机的y位置
   @State private isGameOver: boolean = false // 游戏时是否结束
   @State private tipText: string = this.model.textLoading
+
   private flySpeed: number = 3 // 敌机速度
   private bulletSpeed: number = 8 // 子弹速度
   private enemyShowTime: number = 1000 // 敌机刷新时间
@@ -31,15 +39,16 @@ export struct AirplaneGameBody {
   private enemyPlainSize: number = 50 // 敌机大小
   private myPlainSize: number = 60 // 自己飞机的大小
   private bulletSize: number = 20 // 子弹大小
-
   private timeOutPlain: number = -1
   private timeOutBullet: number = -1
   private screenWidth: number = px2vp(720)
-  @State @Watch('onGameStateChange') gameIsStart: boolean = false
-  @State @Watch('onYStateChange') downY: number = 0
+  private bulletIndex: number = 1
+  private enemyIndex: number = 0
+  @Prop @Watch('onGameStateChange') gameIsStart: boolean = false
+  @Prop @Watch('onYStateChange') downY: number = 0
   initBackgroundColor: Color | string | number = ''
   maxHeight: number = px2vp(150)
-  @State @Watch('onFinishChange') isNotifyFinish: boolean = false
+  @Prop @Watch('onFinishChange') isNotifyFinish: boolean = false
 
   private onFinishChange() {
     if (this.isNotifyFinish) {
@@ -85,7 +94,7 @@ export struct AirplaneGameBody {
     setInterval(() => {
       if (this.gameIsStart) {
         if (!this.isGameOver) {
-          this.i++
+           this.i++
         } else {
           clearTimeout(this.timeOutBullet)
           clearTimeout(this.timeOutPlain)
@@ -100,22 +109,23 @@ export struct AirplaneGameBody {
   }
 
 // 主入口  绘制
-  private onDraw() {
+  private onDraw(indexParam:number) {
     if (!this.gameIsStart) {
       return
     }
-    this.drawEnemyPlain() // 画敌机
-    this.drawBullet() // 画子弹
+    this.drawEnemyPlain(indexParam) // 画敌机
+    this.drawBullet(indexParam) // 画子弹
     this.enemyPlainCollision() // 判断敌机是否被子弹击中
     this.isDie() // 判断自己是否死亡
     return ''
   }
 
 // 绘制敌机且让敌机移动
-  private drawEnemyPlain() {
+  private drawEnemyPlain(enemyIndex:number) {
     if (this.timeOutPlain == -1) {
       this.timeOutPlain = setTimeout(() => {
-        let temp = {
+        let temp:BulletModel = {
+          index: enemyIndex,
           x: -(this.enemyPlainSize),
           y: Math.random() * (130 - this.enemyPlainSize)
         }
@@ -126,21 +136,24 @@ export struct AirplaneGameBody {
     }
 
     this.enemyPlainList.forEach((item, index) => {
-      item.x = item.x + (this.flySpeed)
+      item.x = item.x + this.flySpeed
       if (item.x > this.screenWidth) {
         this.enemyPlainList.splice(index, 1)
       }
     })
+    return ""
   }
 
 // 绘制子弹
-  private drawBullet() {
+  private drawBullet(bulletIndex:number) {
     if (this.timeOutBullet == -1) {
       this.timeOutBullet = setTimeout(() => {
-        let temp = {
+        let temp:BulletModel = {
+          index: bulletIndex,
           x: this.screenWidth - this.myPlainSize,
           y: this.myPlainY + (this.myPlainSize / 2) - (this.bulletSize / 2),
         }
+
         this.bulletList.push(temp)
         clearTimeout(this.timeOutBullet)
         this.timeOutBullet = -1
@@ -179,10 +192,10 @@ export struct AirplaneGameBody {
 // 判断自己是否死亡
   private isDie() {
     this.enemyPlainList.forEach(item => {
-      let a1 = this.screenWidth - (this.myPlainSize / 2)
-      let b1 = this.myPlainY + (this.myPlainSize / 2)
-      let a2 = item.x + (this.enemyPlainSize / 2)
-      let b2 = item.y + (this.enemyPlainSize / 2)
+      let a1:number = this.screenWidth - (this.myPlainSize / 2)
+      let b1:number = this.myPlainY + (this.myPlainSize / 2)
+      let a2:number = item.x + (this.enemyPlainSize / 2)
+      let b2:number = item.y + (this.enemyPlainSize / 2)
 
       let centerDistance = Math.sqrt(Math.pow((a1 - a2), 2) + Math.pow((b1 - b2), 2))
       if (centerDistance <= (this.myPlainSize / 2 + this.enemyPlainSize / 5)) {
@@ -198,36 +211,38 @@ export struct AirplaneGameBody {
 
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
-      Text(this.i + this.onDraw() + '').visibility(Visibility.None)
+      Text(this.onDraw(this.i ) + '').visibility(Visibility.None)
       Stack({ alignContent: Alignment.TopStart }) {
-        ForEach(this.enemyPlainList, item => {
-          Image(this.initBackgroundColor == '#ffffff' ? $r("app.media.plan_diren_b") : $r("app.media.plan_diren"))
-            .width(this.enemyPlainSize)
-            .height(this.enemyPlainSize)
+        ForEach(this.enemyPlainList, (item:BulletModel) => {//绘制敌方坦克
+          Image($r("app.media.plan_diren_b"))
+            .width(50)
+            .height(50)
             .translate({
               x: item.x,
-              y: item.y
+              y: item.y,
+              z: this.i - this.i
             })
-        }, item => item.toString())
+        }, (item:BulletModel) => item.index.toString())
 
-        ForEach(this.bulletList, item => {
-          Image(this.initBackgroundColor == '#ffffff' ? $r("app.media.zidan_b") : $r("app.media.zidan"))
+        ForEach(this.bulletList, (item:BulletModel) => {//绘制子弹
+          Image($r("app.media.zidan_b"))
             .width(this.bulletSize)
             .height(this.bulletSize)
             .translate({
               x: item.x,
-              y: item.y
+              y: item.y,
+              z: this.i - this.i
             })
-        })
+        }, (item:BulletModel) => item.index.toString())
 
-        Image(this.initBackgroundColor == '#ffffff' ? $r("app.media.plan_me_b") : $r("app.media.plan_me"))
+        Image($r("app.media.plan_me_b"))
           .width(this.myPlainSize)
           .height(this.myPlainSize)
           .translate({
             x: this.screenWidth - this.myPlainSize,
             y: this.myPlainY
           })
-
+        //
         Text(this.tipText)
           .width('100%')
           .height('100%')
