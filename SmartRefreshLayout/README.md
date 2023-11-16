@@ -61,7 +61,7 @@ import {Material} from "@ohos/smartrefreshlayout"
    `model.setTimeShowState()`
 
 ## 兼容性
-支持 OpenHarmony API version 9 版本。
+DevEco Studio 版本：4.0Beta2（4.0.3.600），OpenHarmony SDK:API10 Release（4.0.10.11）
 
 ## 目录结构
 ````

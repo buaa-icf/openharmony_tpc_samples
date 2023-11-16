@@ -1,19 +1,19 @@
 {
   "src": [
-    "pages/index",
-    "pages/WaveSwipeSample",
-    "pages/WaterSwipeSample",
+    "pages/Index",
     "pages/ClassicsSample",
-    "pages/MaterialSample",
     "pages/BezierCircleSample",
-    "pages/BezierRadarSample",
-    "pages/StoreHouseSample",
     "pages/BattleCitySample",
+    "pages/BezierRadarSample",
+    "pages/HitBlockSample",
+    "pages/DeliverySample",
+    "pages/DropBoxSample",
+    "pages/StoreHouseSample",
+    "pages/FlyRefreshStylePage",
+    "pages/MaterialSample",
     "pages/PhoenixSample",
     "pages/TaurusSample",
-    "pages/HitBlockSample",
-    "pages/FlyRefreshStylePage",
-    "pages/DeliverySample",
-    "pages/DropBoxSample"
+    "pages/WaterSwipeSample",
+    "pages/WaveSwipeSample"
   ]
 }
