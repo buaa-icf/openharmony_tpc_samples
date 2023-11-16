@@ -13,9 +13,9 @@
  * limitations under the License.
  */
 
-import getDecorators from "inversify-inject-decorators/es/index";
-import { Container, injectable, tagged, named } from "inversify";
 import "reflect-metadata"
+import { LazyInjectFunction } from './lazyInjectInterface';
+
 @Entry
 @Component
 struct LazyInjectPage {
@@ -38,39 +38,10 @@ struct LazyInjectPage {
   }
 
   sample(){
-    let container = new Container();
-    let { lazyInject } = getDecorators(container);
-    let TYPES = { Weapon: "Weapon" };
 
-    interface Weapon {
-      name: string;
-      durability: number;
-      use(): void;
-    }
-
-    @injectable()
-    class Sword implements Weapon {
-      public name: string;
-      public durability: number;
-      public constructor() {
-        this.durability = 100;
-        this.name = "Sword";
-      }
-      public use() {
-        this.durability = this.durability - 10;
-      }
-    }
-
-    class Warrior {
-      @lazyInject(TYPES.Weapon)
-      public weapon: Weapon;
-    }
-
-    container.bind<Weapon>(TYPES.Weapon).to(Sword);
-
-    let warrior = new Warrior();
-    console.log((warrior.weapon instanceof Sword)+""); // true
-    this.message=(warrior.weapon instanceof Sword)+"";
+    let sword = LazyInjectFunction();
+    console.log(sword); // true
+    this.message=sword;
   }
 
 
