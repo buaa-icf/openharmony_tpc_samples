@@ -13,190 +13,109 @@
  * limitations under the License.
  */
 
-import hilog from '@ohos.hilog';
-import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from './util'
-import getDecorators from "inversify-inject-decorators/es/index";
-import { interfaces, Container, ContainerModule, injectable, named, tagged } from 'inversify';
+import {
+  describe,
+  beforeAll,
+  beforeEach,
+  afterEach,
+  afterAll,
+  it,
+  expect
+} from '@ohos/hypium'
+
 import "reflect-metadata"
+import { injectssue730Function, should_resolve_from_container_directly } from './Injectssue730';
+import { Bar, BAR, FOO, Foo, FooBarBase, mBar, mFoo, NamedFoo, SingletonFoo, TaggedFoo, throws } from './inject';
+
+let tag:string = "inversify-demo："
+
 export default function injectssue730Test() {
-
-
 
   describe("when_bindingunbinding", function(){
 
-    _it("Should resolve from container directly", () => {
+    it("Should_resolve_from_container_directly1",0, () => {
+      let obj = injectssue730Function();
+      expect(JSON.stringify(obj.actual("foo"))).assertEqual(JSON.stringify(new Foo()));
+      expect(JSON.stringify(obj.actual("foos")[0])).assertEqual(JSON.stringify(new Foo()));
+      expect(JSON.stringify(obj.actual("namedFoo"))).assertEqual(JSON.stringify(new NamedFoo()));
+      expect(JSON.stringify(obj.actual("taggedFoo"))).assertEqual(JSON.stringify(new TaggedFoo()));
 
-      const container = new Container();
-      const {
-        lazyInject,
-        lazyInjectNamed,
-        lazyInjectTagged,
-        lazyMultiInject
-      } = getDecorators(container, false);
+      obj.container.unbind(FOO);
+      obj.container.unbind(BAR);
 
-      const FOO = "FOO";
-      const BAR = "BAR";
-
-      @injectable()
-      class Foo {
+      try {
+        throws && throws("foo")
+      }catch(err){
+        let value:string = "No matching bindings found for serviceIdentifier: FOO";
+        console.log(tag + "expect("+err.message+").throw("+value+")")
       }
 
-      @injectable()
-      class NamedFoo {
+      try {
+        throws && throws("foos")
+      }catch(err){
+        let value:string = "No matching bindings found for serviceIdentifier: FOO";
+        console.log(tag + "expect("+err.message+").throw("+value+")")
       }
 
-      @injectable()
-      class TaggedFoo {
+      try {
+        throws && throws("namedFoo")
+      }catch(err){
+        let value:string = "No matching bindings found for serviceIdentifier: BAR";
+        console.log(tag + "expect("+err.message+").throw("+value+")")
       }
 
-      container.bind<Foo>(FOO).to(Foo);
-      container.bind<NamedFoo>(BAR).to(NamedFoo).whenTargetNamed("bar");
-      container.bind<TaggedFoo>(BAR).to(TaggedFoo).whenTargetTagged("bar", true);
-
-      @injectable()
-      class Test {
-        @lazyInject(FOO) public foo: Foo;
-        @lazyMultiInject(FOO) public foos: Foo[];
-        @lazyInjectNamed(BAR, "bar") @named("bar") public namedFoo: Foo;
-        @lazyInjectTagged(BAR, "bar", true) @tagged("bar", true) public taggedFoo: Foo;
+      try {
+        throws && throws("taggedFoo")
+      }catch(err){
+        let value:string = "No matching bindings found for serviceIdentifier: BAR";
+        console.log(tag + "expect("+err.message+").throw("+value+")")
       }
-
-      const sut: any = new Test();
-
-      function actual(key: string): any {
-        return sut[key];
-      }
-
-      expect(actual("foo")).to.be.instanceof(Foo);
-      expect(actual("foos")[0]).to.be.instanceof(Foo);
-      expect(actual("namedFoo")).to.be.instanceof(NamedFoo);
-      expect(actual("taggedFoo")).to.be.instanceof(TaggedFoo);
-
-      function throws(key: string): () => any {
-        return () => {
-          return sut[key];
-        };
-      }
-
-      container.unbind(FOO);
-      container.unbind(BAR);
-
-      expect(throws("foo")).to.throw(
-        "No matching bindings found for serviceIdentifier: FOO"
-      );
-      expect(throws("foos")).to.throw(
-        "No matching bindings found for serviceIdentifier: FOO"
-      );
-      expect(throws("namedFoo")).to.throw(
-        "No matching bindings found for serviceIdentifier: BAR"
-      );
-      expect(throws("taggedFoo")).to.throw(
-        "No matching bindings found for serviceIdentifier: BAR"
-      );
     });
 
-  // });
+    it("Should_resolve_from_container_directly",0, () => {
 
-  // describe("when_loadingunloading_container_modules", () => {
+      let  obj = should_resolve_from_container_directly();
+      expect(JSON.stringify(obj.actual("singletonFoo"))).assertEqual(JSON.stringify(new SingletonFoo()));
+      let foos: FooBarBase[] = obj.actual("foos");
+      expect(foos.length).assertEqual(2);
+      expect(JSON.stringify(foos[0])).assertEqual(JSON.stringify(new Foo()));
+      expect(JSON.stringify(foos[1])).assertEqual(JSON.stringify(new Bar()));
+      obj.container.unload(mBar);
 
-    _it("Should resolve from container directly", () => {
+      expect(JSON.stringify(obj.actual("singletonFoo"))).assertEqual(JSON.stringify(new SingletonFoo()));
+      foos = obj.actual("foos");
+      expect(foos.length).assertEqual(2);
+      expect(JSON.stringify(foos[0])).assertEqual(JSON.stringify(new Foo()));
+      obj.container.unload(mFoo);
 
-      const container = new Container();
-      const {
-        lazyInject,
-        lazyInjectNamed,
-        lazyInjectTagged,
-        lazyMultiInject
-      } = getDecorators(container, false);
-
-      const SINGLETON_FOO = "SINGLETON_FOO";
-      const FOO = "FOO";
-      const BAR = "BAR";
-
-      @injectable()
-      class FooBarBase {
+      try {
+        throws && throws("namedFoo")
+      }catch(err){
+        let value:string = "No matching bindings found for serviceIdentifier: BAR"
+        console.log(tag + "expect("+err.message+").throw("+value+")")
       }
 
-      @injectable()
-      class SingletonFoo extends FooBarBase {
+      try {
+        throws && throws("taggedFoo")
+      }catch(err){
+        let value:string = "No matching bindings found for serviceIdentifier: BAR"
+        console.log(tag + "expect("+err.message+").throw("+value+")")
+      }
+      obj.container.unload(mFoo);
+
+      try {
+        throws && throws("singletonFoo")
+      }catch(err){
+        let value:string = "No matching bindings found for serviceIdentifier: SINGLETON_FOO"
+        console.log(tag + "expect("+err.message+").throw("+value+")")
       }
 
-      @injectable()
-      class Foo extends FooBarBase {
+      try {
+        throws && throws("foos")
+      }catch(err){
+        let value:string = "No matching bindings found for serviceIdentifier: FOO"
+        console.log(tag + "expect("+err.message+").throw("+value+")")
       }
-
-      @injectable()
-      class Bar extends FooBarBase {
-      }
-
-      @injectable()
-      class NamedBar extends FooBarBase {
-      }
-
-      @injectable()
-      class TaggedBar extends FooBarBase {
-      }
-
-      const mFoo = new ContainerModule((bind: interfaces.Bind) => {
-        bind<FooBarBase>(SINGLETON_FOO).to(SingletonFoo);
-        bind<FooBarBase>(FOO).to(Foo);
-      });
-      const mBar = new ContainerModule((bind: interfaces.Bind) => {
-        bind<FooBarBase>(FOO).to(Bar);
-        bind<FooBarBase>(BAR).to(NamedBar).whenTargetNamed("bar");
-        bind<FooBarBase>(BAR).to(TaggedBar).whenTargetTagged("bar", true);
-      });
-
-      container.load(mFoo, mBar);
-
-      @injectable()
-      class Test {
-        @lazyInject(SINGLETON_FOO) public singletonFoo: FooBarBase;
-        @lazyMultiInject(FOO) public foos: FooBarBase[];
-        @lazyInjectNamed(BAR, "bar") @named("bar") public namedFoo: FooBarBase;
-        @lazyInjectTagged(BAR, "bar", true) @tagged("bar", true) public taggedFoo: FooBarBase;
-      }
-
-      const sut: any = new Test();
-
-      function actual(key: string): any {
-        return sut[key];
-      }
-
-      expect(actual("singletonFoo")).to.be.instanceof(SingletonFoo);
-      let foos: FooBarBase[] = actual("foos");
-      expect(foos.length).to.equal(2);
-      expect(foos[0]).to.be.instanceof(Foo);
-      expect(foos[1]).to.be.instanceof(Bar);
-
-      container.unload(mBar);
-
-      expect(actual("singletonFoo")).to.be.instanceof(SingletonFoo);
-      foos = actual("foos");
-      expect(foos.length).to.equal(1);
-      expect(foos[0]).to.be.instanceof(Foo);
-
-      function throws(key: string): () => any {
-        return () => {
-          return sut[key];
-        };
-      }
-
-      expect(throws("namedFoo")).to.throw(
-        "No matching bindings found for serviceIdentifier: BAR"
-      );
-      expect(throws("taggedFoo")).to.throw(
-        "No matching bindings found for serviceIdentifier: BAR"
-      );
-
-      container.unload(mFoo);
-
-      expect(throws("singletonFoo")).to.throw(
-        "No matching bindings found for serviceIdentifier: SINGLETON_FOO"
-      );
-      expect(throws("foos")).to.throw(
-        "No matching bindings found for serviceIdentifier: FOO"
-      );
     });
 
   });
