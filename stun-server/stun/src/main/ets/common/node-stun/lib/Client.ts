@@ -330,7 +330,7 @@ export class Client {
       this._mapped[0].addr = val.addr;
       this._mapped[0].port = val.port;
 
-      // Check if the mappped address is a local or not (natted)
+      // Check if the mapped address is a local or not (natted)
       if (this._local.addr !== '') {
         Client._isLocalAddr(this._mapped[0].addr, function (err, isLocal) {
           if (!err) {
@@ -623,7 +623,7 @@ export class Client {
   /**
    * Starts NAT discovery.
    * @param {object} [option]. Options.
-   * @param {boolean} [option.bindingOnly] Perform NAT binding only. Otheriwse
+   * @param {boolean} [option.bindingOnly] Perform NAT binding only. Otherwise
    * perform full NAT discovery process.
    * @param {function} cb Callback made when NAT discovery is complete.
    * The callback function takes an argument, a result code of type {number}

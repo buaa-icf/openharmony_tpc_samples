@@ -15,9 +15,9 @@
 
 import { describe, it, expect } from '@ohos/hypium'
 import { StunServer, StunClient } from '@ohos/stun';
-import { Utils } from '../../../../../stun/src/main/ets/common/node-stun/lib/Utils';
-import { OnClientMessageListener } from '../../../../../stun/src/main/ets/common/node-stun/bin/StunClient';
-import { OnServerMessageListener } from '../../../../../stun/src/main/ets/common/node-stun/bin/StunServer';
+import { Utils } from '@ohos/stun/src/main/ets/common/node-stun/lib/Utils';
+import { OnClientMessageListener } from '@ohos/stun/src/main/ets/common/node-stun/bin/StunClient';
+import { OnServerMessageListener } from '@ohos/stun/src/main/ets/common/node-stun/bin/StunServer';
 
 export default function abilityTest() {
 
