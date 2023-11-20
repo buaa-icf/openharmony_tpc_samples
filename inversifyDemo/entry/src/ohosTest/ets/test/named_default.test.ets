@@ -14,17 +14,27 @@
  */
 import { Container, inject, injectable, named } from "inversify";
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/util'
+import * as ns from "reflect-metadata"
+ns
 
 export default function named_defaultTest() {
-  describe('named_defaultTest', function () {
+  describe('named_defaultTest',  ()=> {
     _it("Should_be_able_to_inject_a_default_to_avoid_ambiguous_binding_exceptions", () => {
-
-      const TYPES = {
+      interface TYPE{
+        Warrior: string;
+        Weapon: string;
+      }
+      interface  TAG1 {
+        chinese: string;
+        japanese: string;
+        throwable: string;
+      }
+      const TYPES:TYPE = {
         Warrior: "Warrior",
         Weapon: "Weapon"
       };
 
-      const TAG = {
+      const TAG:TAG1 = {
         chinese: "chinese",
         japanese: "japanese",
         throwable: "throwable"
@@ -96,12 +106,17 @@ export default function named_defaultTest() {
     });
 
     _it("Should_be_able_to_select_a_default_to_avoid_ambiguous_binding_exceptions", () => {
-
-      const TYPES = {
+      interface TYPE{
+        Weapon: string;
+      }
+      interface  TAG1 {
+        throwable: string;
+      }
+      const TYPES:TYPE = {
         Weapon: "Weapon"
       };
 
-      const TAG = {
+      const TAG:TAG1 = {
         throwable: "throwable"
       };
 

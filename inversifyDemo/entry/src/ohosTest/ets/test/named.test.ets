@@ -20,6 +20,7 @@ import { interfaces } from 'inversify';
 
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/util'
 import multiInjectTest from './multiInject.test';
+import { namedA } from '../tools/tools';
 
 export default function namedTest() {
   interface Weapon { }
@@ -38,10 +39,15 @@ export default function namedTest() {
     }
 
     public debug() {
-      return {
+      interface result1{
+        primaryWeapon: Weapon;
+        secondaryWeapon: Weapon;
+      }
+      let results1:result1= {
         primaryWeapon: this._primaryWeapon,
         secondaryWeapon: this._secondaryWeapon
       };
+      return results1
     }
   }
 
@@ -62,17 +68,22 @@ export default function namedTest() {
     public test(a: string) { /*...*/ }
 
     public debug() {
-      return {
+      interface result2{
+        primaryWeapon: Weapon;
+        secondaryWeapon: Weapon;
+      }
+      let results2:result2= {
         primaryWeapon: this._primaryWeapon,
         secondaryWeapon: this._secondaryWeapon
       };
+      return results2
     }
   }
-  describe('namedTest', function () {
+  describe('namedTest',  ()=> {
     _it('Should_generate_metadata_for_named_parameters', () => {
 
       const metadataKey = METADATA_KEY.TAGGED;
-      const paramsMetadata = Reflect.getMetadata(metadataKey, NamedWarrior);
+      const paramsMetadata:ESObject = Reflect.getMetadata(metadataKey, NamedWarrior);
       expect(paramsMetadata).to.be.an('object');
 
       // assert metadata for first argument
@@ -102,9 +113,9 @@ export default function namedTest() {
       }
 
       const metadataKey = METADATA_KEY.TAGGED_PROP;
-      const metadata = Reflect.getMetadata(metadataKey, Warrior);
+      const metadata:ESObject = Reflect.getMetadata(metadataKey, Warrior);
 
-      const m1 = metadata.weapon[0];
+      const m1:ESObject = metadata.weapon[0];
       expect(m1.key).to.be.eql(METADATA_KEY.NAMED_TAG);
       expect(m1.value).to.be.eql('throwable');
       expect(metadata.weapon[1]).to.eq(undefined);
@@ -113,11 +124,11 @@ export default function namedTest() {
 
     _it('Should_throw_when_applied_multiple_times', () => {
 
-      const useDecoratorMoreThanOnce = function () {
+      const useDecoratorMoreThanOnce =  ()=> {
         let a = named('a')
         let b = named('b')
-        a(InvalidDecoratorUsageWarrior, undefined, 0)
-        b(InvalidDecoratorUsageWarrior, undefined, 0)
+        a<ESObject>(InvalidDecoratorUsageWarrior, undefined, 0)
+        b<ESObject>(InvalidDecoratorUsageWarrior, undefined, 0)
       };
 
       const msg = `${ERROR_MSGS.DUPLICATED_METADATA} ${METADATA_KEY.NAMED_TAG}`;
@@ -127,9 +138,8 @@ export default function namedTest() {
 
     _it('Should_throw_when_not_applied_to_a_constructor', () => {
 
-      const useDecoratorOnMethodThatIsNotAConstructor = function () {
-        let a = named('a')
-        a(InvalidDecoratorUsageWarrior.prototype, "test", 0)
+      const useDecoratorOnMethodThatIsNotAConstructor =  ()=> {
+        namedA()
       };
 
       const msg = `${ERROR_MSGS.INVALID_DECORATOR_OPERATION}`;
@@ -142,8 +152,8 @@ export default function namedTest() {
       interface Katana { }
       interface Shurien { }
 
-      const VanillaJSWarrior = (function () {
-        function NamedVanillaJSWarrior(primary: Katana, secondary: Shurien) {
+      const VanillaJSWarrior = ( ()=> {
+        let NamedVanillaJSWarrior=(primary: Katana, secondary: Shurien)=> {
           // ...
         }
         return NamedVanillaJSWarrior;
@@ -153,7 +163,7 @@ export default function namedTest() {
       decorate(named('less_powerful'), VanillaJSWarrior, 1);
 
       const metadataKey = METADATA_KEY.TAGGED;
-      const paramsMetadata = Reflect.getMetadata(metadataKey, VanillaJSWarrior);
+      const paramsMetadata:ESObject = Reflect.getMetadata(metadataKey, VanillaJSWarrior);
       expect(paramsMetadata).to.be.an('object');
 
       // assert metadata for first argument

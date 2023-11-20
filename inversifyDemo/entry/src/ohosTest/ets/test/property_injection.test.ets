@@ -19,11 +19,16 @@ import {
   multiInject, named, optional,
   tagged, unmanaged
 } from "inversify";
+import * as ns from "reflect-metadata"
+ns
 export default function property_injectionTest() {
-  describe('property_injectionTest', function () {
+  describe('property_injectionTest',  ()=> {
     _it("Should_be_able_to_inject_a_property", () => {
-
-      const TYPES = {
+      interface  TYPE{
+        Warrior: string;
+        Weapon: string;
+      }
+      const TYPES:TYPE= {
         Warrior: "Warrior",
         Weapon: "Weapon"
       };
@@ -67,13 +72,20 @@ export default function property_injectionTest() {
     });
 
     _it("Should_be_able_to_inject_a_property_combined_with_constructor_injection", () => {
-
-      const TYPES = {
+      interface  TYPE1{
+        Warrior: string;
+        Weapon: string;
+      }
+      interface  TAGS2{
+        Primary: string;
+        Secondary: string;
+      }
+      const TYPES:TYPE1 = {
         Warrior: "Warrior",
         Weapon: "Weapon"
       };
 
-      const TAGS = {
+      const TAGS:TAGS2 = {
         Primary: "Primary",
         Secondary: "Secondary"
       };
@@ -137,13 +149,20 @@ export default function property_injectionTest() {
     });
 
     _it("Should_be_able_to_inject_a_named_property", () => {
-
-      const TYPES = {
+      interface  TYPE1{
+        Warrior: string;
+        Weapon: string;
+      }
+      interface  TAGS2{
+        Primary: string;
+        Secondary: string;
+      }
+      const TYPES:TYPE1 = {
         Warrior: "Warrior",
         Weapon: "Weapon"
       };
 
-      const TAGS = {
+      const TAGS:TAGS2 = {
         Primary: "Primary",
         Secondary: "Secondary"
       };
@@ -207,13 +226,21 @@ export default function property_injectionTest() {
     });
 
     _it("Should_be_able_to_inject_a_tagged_property", () => {
-
-      const TYPES = {
+      interface  TYPE1{
+        Warrior: string;
+        Weapon: string;
+      }
+      interface  TAGS2{
+        Primary: string;
+        Priority: string;
+        Secondary: string
+      }
+      const TYPES:TYPE1 = {
         Warrior: "Warrior",
         Weapon: "Weapon"
       };
 
-      const TAGS = {
+      const TAGS:TAGS2 = {
         Primary: "Primary",
         Priority: "Priority",
         Secondary: "Secondary"
@@ -278,8 +305,11 @@ export default function property_injectionTest() {
     });
 
     _it("Should_be_able_to_multi-inject_a_property", () => {
-
-      const TYPES = {
+      interface  TYPE1{
+        Warrior: string;
+        Weapon: string;
+      }
+      const TYPES:TYPE1 = {
         Warrior: "Warrior",
         Weapon: "Weapon"
       };
@@ -337,13 +367,21 @@ export default function property_injectionTest() {
     });
 
     _it("Should_be_able_to_inject_a_property_in_a_base_class", () => {
-
-      const TYPES = {
+      interface  TYPE1{
+        Warrior: string;
+        Weapon: string;
+      }
+      interface  TAGS2{
+        Primary: string;
+        Priority: string;
+        Secondary: string
+      }
+      const TYPES:TYPE1 = {
         Warrior: "Warrior",
         Weapon: "Weapon"
       };
 
-      const TAGS = {
+      const TAGS:TAGS2 = {
         Primary: "Primary",
         Priority: "Priority",
         Secondary: "Secondary"
@@ -415,8 +453,12 @@ export default function property_injectionTest() {
     });
 
     _it("Should_be_able_to_flag_a_property_injection_as_optional", () => {
+      interface  TYPE1{
+        Route: string;
+        Router: string;
+      }
 
-      const TYPES = {
+      const TYPES:TYPE1 = {
         Route: "Route",
         Router: "Router"
       };

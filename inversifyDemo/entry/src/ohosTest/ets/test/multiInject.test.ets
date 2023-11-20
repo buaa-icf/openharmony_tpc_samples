@@ -18,6 +18,9 @@ import * as ERROR_MSGS from 'inversify/lib/constants/error_msgs';
 import * as METADATA_KEY from 'inversify/lib/constants/metadata_keys';
 import { interfaces } from 'inversify';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/util'
+import { multiInjectA } from '../tools/tools';
+import * as ns from "reflect-metadata"
+ns
 
 export default function multiInjectTest() {
   interface Weapon { }
@@ -56,17 +59,22 @@ export default function multiInjectTest() {
     public test(a: string) { /*...*/ }
 
     public debug() {
-      return {
+      interface result1{
+        primaryWeapon: Weapon;
+        secondaryWeapon: Weapon;
+      }
+      let results1:result1= {
         primaryWeapon: this._primaryWeapon,
         secondaryWeapon: this._secondaryWeapon
       };
+      return results1
     }
 
   }
-  describe('multiInjectTest', function () {
+  describe('multiInjectTest',  ()=> {
     _it('Should_generate_metadata_for_named_parameters', () => {
       const metadataKey = METADATA_KEY.TAGGED;
-      const paramsMetadata = Reflect.getMetadata(metadataKey, DecoratedWarrior);
+      const paramsMetadata:ESObject= Reflect.getMetadata(metadataKey, DecoratedWarrior);
       expect(paramsMetadata).to.be.an('object');
 
       // assert metadata for first argument
@@ -83,7 +91,7 @@ export default function multiInjectTest() {
 
     _it('Should_throw_when_applied_multiple_times', () => {
 
-      const useDecoratorMoreThanOnce = function () {
+      const useDecoratorMoreThanOnce =  ()=> {
         let a = multiInject('Weapon')
         let b =multiInject('Weapon')
         a(InvalidDecoratorUsageWarrior, undefined, 0)
@@ -97,9 +105,8 @@ export default function multiInjectTest() {
 
     _it('Should_throw_when_not_applied_to_a_constructor', () => {
 
-      const useDecoratorOnMethodThatIsNotAConstructor = function () {
-        let a = multiInject('Weapon')
-        a(InvalidDecoratorUsageWarrior.prototype, "test", 0)
+      const useDecoratorOnMethodThatIsNotAConstructor =  ()=> {
+        multiInjectA()
       };
 
       const msg = `${ERROR_MSGS.INVALID_DECORATOR_OPERATION}`;
@@ -112,17 +119,16 @@ export default function multiInjectTest() {
       interface Katana { }
       interface Shurien { }
 
-      const VanillaJSWarrior = (function () {
-        function Warrior(primary: Katana, secondary: Shurien) {
+      const VanillaJSWarrior = ( ()=> {
+        let Warrior=(primary: Katana, secondary: Shurien)=> {
           // ...
         }
         return Warrior;
       })();
 
       decorate(multiInject('Weapon'), VanillaJSWarrior, 0);
-
       const metadataKey = METADATA_KEY.TAGGED;
-      const paramsMetadata = Reflect.getMetadata(metadataKey, VanillaJSWarrior);
+      const paramsMetadata:ESObject =Reflect.getMetadata(metadataKey, VanillaJSWarrior);;
       expect(paramsMetadata).to.be.an('object');
 
       // assert metadata for first argument

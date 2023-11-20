@@ -20,14 +20,21 @@ import { Context } from 'inversify/lib/planning/context';
 import { Request } from 'inversify/lib/planning/request';
 import { Target } from 'inversify/lib/planning/target';
 export default function requestTest() {
-  const identifiers = {
+  interface identifier
+  {     Katana: string;
+        KatanaBlade: string;
+        KatanaHandler: string;
+        Ninja: string;
+        Shuriken: string;
+  }
+  const identifiers:identifier = {
     Katana: 'Katana',
     KatanaBlade: 'KatanaBlade',
     KatanaHandler: 'KatanaHandler',
     Ninja: 'Ninja',
     Shuriken: 'Shuriken',
   };
-  describe('requestTest', function () {
+  describe('requestTest',  ()=> {
     _it('Should_set_its_own_properties_correctly', () => {
 
       const container = new Container();

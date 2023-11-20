@@ -18,9 +18,11 @@ import { targetName } from 'inversify';
 import * as METADATA_KEY from 'inversify/lib/constants/metadata_keys';
 import * as Stubs from '../utils/stubs';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/util'
+import * as ns from "reflect-metadata"
+ns
 
 export default function target_nameTest() {
-  describe('target_nameTest', function () {
+  describe('target_nameTest',  ()=> {
     _it('Should_generate_metadata_if_declared_parameter_names', () => {
 
       @injectable()
@@ -38,7 +40,7 @@ export default function target_nameTest() {
         }
       }
 
-      const metadata = Reflect.getMetadata(METADATA_KEY.TAGGED, Warrior);
+      const metadata:ESObject = Reflect.getMetadata(METADATA_KEY.TAGGED, Warrior);
       expect(metadata['0']).to.be.instanceof(Array);
       expect(metadata['1']).to.be.instanceof(Array);
       expect(metadata['2']).to.eql(undefined);
@@ -56,14 +58,14 @@ export default function target_nameTest() {
 
       interface Shuriken {}
 
-      const VanillaJSWarrior = function (primary: Katana, secondary: Shuriken) {
+      const VanillaJSWarrior =  (primary: Katana, secondary: Shuriken)=> {
         // ...
       };
 
       decorate(targetName('primary'), VanillaJSWarrior, 0);
       decorate(targetName('secondary'), VanillaJSWarrior, 1);
 
-      const metadata = Reflect.getMetadata(METADATA_KEY.TAGGED, VanillaJSWarrior);
+      const metadata:ESObject = Reflect.getMetadata(METADATA_KEY.TAGGED, VanillaJSWarrior);
       expect(metadata['0']).to.be.instanceof(Array);
       expect(metadata['1']).to.be.instanceof(Array);
       expect(metadata['2']).to.eql(undefined);

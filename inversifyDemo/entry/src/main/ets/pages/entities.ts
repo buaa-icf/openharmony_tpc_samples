@@ -13,9 +13,10 @@
  * limitations under the License.
  */
 import { injectable, inject } from "inversify";
-import "reflect-metadata";
-import type { Weapon, ThrowableWeapon, Warrior } from "./interfaces";
+import  { Weapon, ThrowableWeapon, Warrior } from "./interfaces";
 import { TYPES } from "./types";
+import * as ns from "reflect-metadata"
+ns
 
 @injectable()
 class Katana implements Weapon {

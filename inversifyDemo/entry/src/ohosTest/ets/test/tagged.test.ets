@@ -18,7 +18,9 @@ import * as ERRORS_MSGS from 'inversify/lib/constants/error_msgs';
 import * as METADATA_KEY from 'inversify/lib/constants/metadata_keys';
 import { interfaces } from 'inversify';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/util'
-
+import { taggedA } from '../tools/tools';
+import * as ns from "reflect-metadata"
+ns
 export default function taggedTest() {
   interface Weapon { }
 
@@ -35,10 +37,15 @@ export default function taggedTest() {
       this._secondaryWeapon = secondary;
     }
     public debug() {
-      return {
+      interface result1{
+        primaryWeapon: Weapon;
+        secondaryWeapon: Weapon;
+      }
+      let results1:result1= {
         primaryWeapon: this._primaryWeapon,
         secondaryWeapon: this._secondaryWeapon
       };
+      return results1
     }
   }
 
@@ -55,10 +62,15 @@ export default function taggedTest() {
       this._secondaryWeapon = secondary;
     }
     public debug() {
-      return {
+      interface result2{
+        primaryWeapon: Weapon;
+        secondaryWeapon: Weapon;
+      }
+      let results2:result2= {
         primaryWeapon: this._primaryWeapon,
         secondaryWeapon: this._secondaryWeapon
       };
+      return results2
     }
   }
 
@@ -78,18 +90,23 @@ export default function taggedTest() {
     public test(a: string) { /*...*/ }
 
     public debug() {
-      return {
+      interface result3{
+        primaryWeapon: Weapon;
+        secondaryWeapon: Weapon;
+      }
+      let results3:result3= {
         primaryWeapon: this._primaryWeapon,
         secondaryWeapon: this._secondaryWeapon
       };
+      return results3
     }
   }
 
-  describe('taggedTest', function () {
+  describe('taggedTest',  ()=> {
     _it('Should_generate_metadata_for_tagged_parameters', () => {
 
       const metadataKey = METADATA_KEY.TAGGED;
-      const paramsMetadata = Reflect.getMetadata(metadataKey, TaggedWarrior);
+      const paramsMetadata:ESObject = Reflect.getMetadata(metadataKey, TaggedWarrior);
       expect(paramsMetadata).to.be.an('object');
 
       // assert metadata for first argument
@@ -122,8 +139,8 @@ export default function taggedTest() {
       }
 
       const metadataKey = METADATA_KEY.TAGGED_PROP;
-      const metadata = Reflect.getMetadata(metadataKey, Warrior);
-      const m1 = metadata.weapon[0];
+      const metadata:ESObject = Reflect.getMetadata(metadataKey, Warrior);
+      const m1:ESObject = metadata.weapon[0];
       expect(m1.key).to.be.eql('throwable');
       expect(m1.value).to.be.eql(false);
       expect(metadata.weapon[1]).to.eq(undefined);
@@ -132,7 +149,7 @@ export default function taggedTest() {
 
     _it('Should_generate_metadata_for_parameters_tagged_multiple_times', () => {
       const metadataKey = METADATA_KEY.TAGGED;
-      const paramsMetadata = Reflect.getMetadata(metadataKey, DoubleTaggedWarrior);
+      const paramsMetadata:ESObject = Reflect.getMetadata(metadataKey, DoubleTaggedWarrior);
       expect(paramsMetadata).to.be.an('object');
 
       // assert metadata for argument at index 0
@@ -170,11 +187,11 @@ export default function taggedTest() {
 
       const metadataKey = 'a';
 
-      const useDecoratorMoreThanOnce = function () {
+      const useDecoratorMoreThanOnce =  ()=> {
         let a = tagged(metadataKey, 1)
         let b = tagged(metadataKey, 2)
-        a(InvalidDecoratorUsageWarrior, undefined, 0)
-        b(InvalidDecoratorUsageWarrior, undefined, 0)
+        a<ESObject>(InvalidDecoratorUsageWarrior, undefined, 0)
+        b<ESObject>(InvalidDecoratorUsageWarrior, undefined, 0)
       };
 
       const msg = `${ERRORS_MSGS.DUPLICATED_METADATA} ${metadataKey}`;
@@ -184,9 +201,8 @@ export default function taggedTest() {
 
     _it('Should_throw_when_not_applied_to_a_constructor', () => {
 
-      const useDecoratorOnMethodThatIsNotAConstructor = function () {
-        let a = tagged('a', 1)
-        a(InvalidDecoratorUsageWarrior.prototype, "test", 0)
+      const useDecoratorOnMethodThatIsNotAConstructor =  ()=> {
+        taggedA();
       };
 
       const msg = ERRORS_MSGS.INVALID_DECORATOR_OPERATION;
@@ -199,18 +215,18 @@ export default function taggedTest() {
       interface Katana { }
       interface Shuriken { }
 
-      const VanillaJSWarrior = (function () {
-        function TaggedVanillaJSWarrior(primary: Katana, secondary: Shuriken) {
+      const VanillaJSWarrior = ( ()=> {
+        let  TaggedVanillaJSWarrior=(primary: Katana, secondary: Shuriken)=> {
           // ...
         }
         return TaggedVanillaJSWarrior;
-      })();
+      });
 
       decorate(tagged('power', 1), VanillaJSWarrior, 0);
       decorate(tagged('power', 2), VanillaJSWarrior, 1);
 
       const metadataKey = METADATA_KEY.TAGGED;
-      const paramsMetadata = Reflect.getMetadata(metadataKey, VanillaJSWarrior);
+      const paramsMetadata:ESObject = Reflect.getMetadata(metadataKey, VanillaJSWarrior);
       expect(paramsMetadata).to.be.an('object');
 
       // assert metadata for first argument

@@ -16,7 +16,7 @@ import { QueryableString } from 'inversify/lib/planning/queryable_string';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/util'
 
 export default function queryable_stringTest() {
-  describe('queryable_stringTest', function () {
+  describe('queryable_stringTest',  ()=> {
     _it('Should_be_able_to_set_its_own_properties', () => {
       const queryableString = new QueryableString('some_text');
       expect(queryableString.value()).to.eql('some_text');

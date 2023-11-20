@@ -18,6 +18,7 @@ import * as ERROR_MSGS from 'inversify/lib/constants/error_msgs';
 import { BindingScopeEnum } from 'inversify';
 import { Lookup } from 'inversify/lib/container/lookup';
 import { interfaces } from 'inversify';
+import { symbolFor } from '../tools/symbol';
 
 export default function lookupTest() {
   class ClonableValue<T> implements interfaces.Clonable<ClonableValue<T>> {
@@ -32,11 +33,11 @@ export default function lookupTest() {
     }
   }
 
-  const invalid = null as unknown as interfaces.ServiceIdentifier<unknown>;
+  const invalid = null as ESObject as interfaces.ServiceIdentifier<ESObject>;
 
-  describe('lookupTest', function () {
+  describe('lookupTest',  ()=> {
     _it('Should_throw_when_invoking_get_remove_or_hasKey_with_a_null_key', () => {
-      const lookup = new Lookup();
+      const lookup:ESObject = new Lookup<ESObject>();
       expect(() => {
         lookup.get(invalid);
       }).to.throw(ERROR_MSGS.NULL_ARGUMENT);
@@ -49,39 +50,39 @@ export default function lookupTest() {
     });
 
     _it('Should_throw_when_attempting_to_add_a_null_key', () => {
-      const lookup = new Lookup<unknown>();
+      const lookup:ESObject = new Lookup<ESObject>();
       expect(() => {
         lookup.add(invalid, new ClonableValue<number>(1));
       }).to.throw(ERROR_MSGS.NULL_ARGUMENT);
     });
 
     _it('Should_throw_when_attempting_to_add_a_null_value', () => {
-      const lookup = new Lookup<unknown>();
+      const lookup:ESObject = new Lookup<ESObject>();
       expect(() => {
         lookup.add('TEST_KEY', null);
       }).to.throw(ERROR_MSGS.NULL_ARGUMENT);
     });
 
     _it('Should_be_able_to_link_multiple_values_to_a_string_key', () => {
-      const lookup = new Lookup<unknown>();
+      const lookup:ESObject = new Lookup<ESObject>();
       const key = 'TEST_KEY';
       lookup.add(key, new ClonableValue<number>(1));
       lookup.add(key, new ClonableValue<number>(2));
-      const result = lookup.get(key);
+      const result:ESObject = lookup.get(key);
       expect(result.length).to.eql(2);
     });
 
     _it('Should_be_able_to_link_multiple_values_a_symbol_key', () => {
-      const lookup = new Lookup<unknown>();
-      const key = Symbol.for('TEST_KEY');
+      const lookup:ESObject = new Lookup<ESObject>();
+      const key = symbolFor('TEST_KEY');
       lookup.add(key, new ClonableValue<number>(1));
       lookup.add(key, new ClonableValue<number>(2));
-      const result = lookup.get(key);
+      const result:ESObject = lookup.get(key);
       expect(result.length).to.eql(2);
     });
 
     _it('Should_throws_when_key_not_found', () => {
-      const lookup = new Lookup<unknown>();
+      const lookup:ESObject = new Lookup<ESObject>();
       expect(() => {
         lookup.get('THIS_KEY_IS_NOT_AVAILABLE');
       }).to.throw(ERROR_MSGS.KEY_NOT_FOUND);
@@ -92,8 +93,8 @@ export default function lookupTest() {
 
     _it('Should_be_clonable', () => {
 
-      const lookup = new Lookup<interfaces.Clonable<unknown>>();
-      const key1 = Symbol.for('TEST_KEY');
+      const lookup:ESObject = new Lookup<interfaces.Clonable<ESObject>>();
+      const key1 = symbolFor('TEST_KEY');
 
       class Warrior {
         public kind: string;
@@ -110,7 +111,7 @@ export default function lookupTest() {
       lookup.add(key1, new Warrior('ninja'));
       lookup.add(key1, new Warrior('samurai'));
 
-      const copy = lookup.clone();
+      const copy:ESObject = lookup.clone();
       expect(copy.hasKey(key1)).to.eql(true);
 
       lookup.remove(key1);
@@ -119,8 +120,8 @@ export default function lookupTest() {
     });
 
     _it('Should_use_use_the_original_non_clonable_entry_if_it_is_not_clonable', () => {
-      const lookup = new Lookup<unknown>();
-      const key1 = Symbol.for('TEST_KEY');
+      const lookup:ESObject = new Lookup<ESObject>();
+      const key1 = symbolFor('TEST_KEY');
 
       class Warrior {
         public kind: string;
@@ -133,7 +134,7 @@ export default function lookupTest() {
       const warrior = new Warrior('ninja')
       lookup.add(key1, warrior);
 
-      const copy = lookup.clone();
+      const copy:ESObject = lookup.clone();
       expect(copy.get(key1)[0] === warrior).to.eql(true);
 
     })
@@ -152,15 +153,15 @@ export default function lookupTest() {
         class Ninja implements Warrior {
         }
 
-        const ninjaBinding = new Binding(warriorId, BindingScopeEnum.Transient);
-        ninjaBinding.implementationType = Ninja;
+        const ninjaBinding:ESObject = new Binding<ESObject>(warriorId, BindingScopeEnum.Transient);
+        ninjaBinding.implementationType = new Ninja();
         ninjaBinding.moduleId = moduleId1;
 
         class Samurai implements Warrior {
         }
 
-        const samuraiBinding = new Binding(warriorId, BindingScopeEnum.Transient);
-        samuraiBinding.implementationType = Samurai;
+        const samuraiBinding:ESObject = new Binding<ESObject>(warriorId, BindingScopeEnum.Transient);
+        samuraiBinding.implementationType =new Samurai();
         samuraiBinding.moduleId = moduleId2;
 
         interface Weapon {}
@@ -168,18 +169,18 @@ export default function lookupTest() {
         class Shuriken implements Weapon {
         }
 
-        const shurikenBinding = new Binding(weaponId, BindingScopeEnum.Transient);
-        shurikenBinding.implementationType = Shuriken;
+        const shurikenBinding:ESObject = new Binding<ESObject>(weaponId, BindingScopeEnum.Transient);
+        shurikenBinding.implementationType =new Shuriken();
         shurikenBinding.moduleId = moduleId1;
 
         class Katana implements Weapon {
         }
 
-        const katanaBinding = new Binding(weaponId, BindingScopeEnum.Transient);
-        katanaBinding.implementationType = Katana;
+        const katanaBinding:ESObject = new Binding<ESObject>(weaponId, BindingScopeEnum.Transient);
+        katanaBinding.implementationType = new Katana();
         katanaBinding.moduleId = moduleId2;
 
-        const lookup = new Lookup<Binding<unknown>>();
+        const lookup: Lookup<Binding<ESObject>> = new Lookup<Binding<ESObject>>();
         lookup.add(warriorId, ninjaBinding);
         lookup.add(warriorId, samuraiBinding);
         lookup.add(weaponId, shurikenBinding);
@@ -189,10 +190,10 @@ export default function lookupTest() {
 
       };
 
-      const removeByModule = (expected: unknown) => (item: interfaces.Binding<unknown>): boolean =>
+      const removeByModule = (expected: ESObject) => (item: interfaces.Binding<ESObject>): boolean =>
       item.moduleId === expected;
 
-      const lookup1 = getLookup();
+      const lookup1:ESObject = getLookup();
       expect(lookup1.hasKey(warriorId)).to.eql(true);
       expect(lookup1.hasKey(weaponId)).to.eql(true);
       expect(lookup1.get(warriorId).length).to.eql(2);
@@ -205,7 +206,7 @@ export default function lookupTest() {
       expect(lookup1.get(warriorId).length).to.eql(1);
       expect(lookup1.get(weaponId).length).to.eql(1);
 
-      const lookup2 = getLookup();
+      const lookup2:ESObject = getLookup();
       expect(lookup2.hasKey(warriorId)).to.eql(true);
       expect(lookup2.hasKey(weaponId)).to.eql(true);
       expect(lookup2.get(warriorId).length).to.eql(2);
@@ -220,7 +221,7 @@ export default function lookupTest() {
     });
 
     _it('should_be_able_to_remove_the_intersection_with_another_lookup', () => {
-      const lookup = new Lookup<unknown>();
+      const lookup: Lookup<ESObject> = new Lookup<ESObject>();
 
       const serviceIdentifier1 = 'service-identifier-1';
       const serviceIdentifier2 = 'service-identifier-2';
@@ -236,7 +237,7 @@ export default function lookupTest() {
         lookup.add(serviceIdentifier2, value);
       }
 
-      const lookupToIntersect = new Lookup<unknown>();
+      const lookupToIntersect: Lookup<ESObject> = new Lookup<ESObject>();
 
       const lookupToIntersectServiceIdentifier2Values = [23, 24, 25, 26];
 

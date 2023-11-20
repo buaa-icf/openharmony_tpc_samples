@@ -18,15 +18,17 @@ import { injectable } from 'inversify';
 import * as ERROR_MSGS from 'inversify/lib/constants/error_msgs';
 import { Container } from 'inversify';
 import { interfaces } from 'inversify';
+import * as ns from "reflect-metadata"
+ns
 export default function middlewareTest() {
-  describe('middlewareTest', function () {
+  describe('middlewareTest',  ()=> {
     _it('Should_be_able_to_use_middleware_as_Container_configuration', () => {
 
       const container = new Container();
 
       const log: string[] = [];
 
-      function middleware1(planAndResolve: interfaces.Next): interfaces.Next {
+      let middleware1=(planAndResolve: interfaces.Next): interfaces.Next=> {
         return (args: interfaces.NextArgs) => {
           log.push(`Middleware1: ${args.serviceIdentifier.toString()}`);
           return planAndResolve(args);
@@ -35,29 +37,30 @@ export default function middlewareTest() {
 
       container.applyMiddleware(middleware1);
       const _container = container;
-      expect((_container as unknown as { _middleware: unknown })._middleware).not.to.eql(null);
+      interface _middleware{ _middleware: ESObject }
+      expect((_container as ESObject as _middleware)._middleware).not.to.eql(null);
 
     });
 
     _it('Should_support_middleware', () => {
 
-      interface Ninja { }
+      interface Ninja1 { }
 
       @injectable()
-      class Ninja implements Ninja { }
+      class Ninja implements Ninja1 { }
 
       const container = new Container();
 
       const log: string[] = [];
 
-      function middleware1(planAndResolve: interfaces.Next): interfaces.Next {
+      let middleware1=(planAndResolve: interfaces.Next): interfaces.Next=> {
         return (args: interfaces.NextArgs) => {
           log.push(`Middleware1: ${args.serviceIdentifier.toString()}`);
           return planAndResolve(args);
         };
       }
 
-      function middleware2(planAndResolve: interfaces.Next): interfaces.Next {
+      let  middleware2=(planAndResolve: interfaces.Next): interfaces.Next=> {
         return (args: interfaces.NextArgs) => {
           log.push(`Middleware2: ${args.serviceIdentifier.toString()}`);
           return planAndResolve(args);
@@ -80,23 +83,23 @@ export default function middlewareTest() {
 
     _it('Should_allow_applyMiddleware_at_multiple_points_in_time', () => {
 
-      interface Ninja { }
+      interface Ninja1 { }
 
       @injectable()
-      class Ninja implements Ninja { }
+      class Ninja implements Ninja1 { }
 
       const container = new Container();
 
       const log: string[] = [];
 
-      function middleware1(planAndResolve: interfaces.Next): interfaces.Next {
+      let middleware1=(planAndResolve: interfaces.Next): interfaces.Next=> {
         return (args: interfaces.NextArgs) => {
           log.push(`Middleware1: ${args.serviceIdentifier.toString()}`);
           return planAndResolve(args);
         };
       }
 
-      function middleware2(planAndResolve: interfaces.Next): interfaces.Next {
+      let  middleware2=(planAndResolve: interfaces.Next): interfaces.Next=> {
         return (args: interfaces.NextArgs) => {
           log.push(`Middleware2: ${args.serviceIdentifier.toString()}`);
           return planAndResolve(args);
@@ -118,23 +121,23 @@ export default function middlewareTest() {
 
     _it('Should_use_middleware', () => {
 
-      interface Ninja { }
+      interface Ninja1 { }
 
       @injectable()
-      class Ninja implements Ninja { }
+      class Ninja implements Ninja1 { }
 
       const container = new Container();
 
       const log: string[] = [];
 
-      function middleware1(planAndResolve: interfaces.Next): interfaces.Next {
+      let middleware1=(planAndResolve: interfaces.Next): interfaces.Next=> {
         return (args: interfaces.NextArgs) => {
           log.push(`Middleware1: ${args.serviceIdentifier.toString()}`);
           return planAndResolve(args);
         };
       }
 
-      function middleware2(planAndResolve: interfaces.Next): interfaces.Next {
+      let middleware2=(planAndResolve: interfaces.Next): interfaces.Next=> {
         return (args: interfaces.NextArgs) => {
           log.push(`Middleware2: ${args.serviceIdentifier.toString()}`);
           return planAndResolve(args);
@@ -155,16 +158,16 @@ export default function middlewareTest() {
 
     _it('Should_be_able_to_use_middleware_to_catch_errors_during_pre_planning_phase', () => {
 
-      interface Ninja { }
+      interface Ninja1 { }
 
       @injectable()
-      class Ninja implements Ninja { }
+      class Ninja implements Ninja1 { }
 
       const container = new Container();
 
       const log: string[] = [];
 
-      function middleware(planAndResolve: interfaces.Next): interfaces.Next {
+      let middleware=(planAndResolve: interfaces.Next): interfaces.Next=> {
         return (args: interfaces.NextArgs) => {
           try {
             return planAndResolve(args);
@@ -197,7 +200,7 @@ export default function middlewareTest() {
 
       const log: string[] = [];
 
-      function middleware(planAndResolve: interfaces.Next): interfaces.Next {
+      let middleware=(planAndResolve: interfaces.Next): interfaces.Next=> {
         return (args: interfaces.NextArgs) => {
           try {
             return planAndResolve(args);
@@ -226,7 +229,7 @@ export default function middlewareTest() {
 
       const log: string[] = [];
 
-      function middleware(planAndResolve: interfaces.Next): interfaces.Next {
+      let middleware=(planAndResolve: interfaces.Next): interfaces.Next=> {
         return (args: interfaces.NextArgs) => {
           try {
             return planAndResolve(args);
@@ -250,7 +253,7 @@ export default function middlewareTest() {
 
       const container = new Container();
 
-      function middleware(planAndResolve: interfaces.Next): interfaces.Next {
+      let middleware=(planAndResolve: interfaces.Next): interfaces.Next=> {
         return (args: interfaces.NextArgs) => {
           try {
             return planAndResolve(args);
@@ -268,16 +271,16 @@ export default function middlewareTest() {
 
     _it('Should_allow_users_to_intercept_a_resolution_context', () => {
 
-      interface Ninja { }
+      interface Ninja1 { }
 
       @injectable()
-      class Ninja implements Ninja { }
+      class Ninja implements Ninja1 { }
 
       const container = new Container();
 
       const log: string[] = [];
 
-      function middleware1(planAndResolve: interfaces.Next): interfaces.Next {
+      let middleware1=(planAndResolve: interfaces.Next): interfaces.Next=> {
         return (args: interfaces.NextArgs) => {
           const nextContextInterceptor = args.contextInterceptor;
           args.contextInterceptor = (context: interfaces.Context) => {
@@ -288,7 +291,7 @@ export default function middlewareTest() {
         };
       }
 
-      function middleware2(planAndResolve: interfaces.Next): interfaces.Next {
+      let middleware2=(planAndResolve: interfaces.Next): interfaces.Next=> {
         return (args: interfaces.NextArgs) => {
           const nextContextInterceptor = args.contextInterceptor;
           args.contextInterceptor = (context: interfaces.Context) => {

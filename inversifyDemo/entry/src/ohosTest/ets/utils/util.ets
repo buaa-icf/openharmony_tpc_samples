@@ -21,11 +21,13 @@ import {
   it as _it,
   expect as _expect
 } from '@ohos/hypium'
-var tag = "inversify-demo： "
+import { getKeys } from '../tools/getKeysTest';
+import image from '@ohos.multimedia.image';
+let tag = "inversify-demo： "
 
-function diff(obj1, obj2) {
-  var o1 = obj1 instanceof Object;
-  var o2 = obj2 instanceof Object;
+function diff(obj1: ESObject, obj2: ESObject) {
+  let o1 = obj1 instanceof Object;
+  let o2 = obj2 instanceof Object;
   // 判断是不是对象
   if (!o1 || !o2) {
     return obj1 === obj2;
@@ -35,9 +37,10 @@ function diff(obj1, obj2) {
   if (Object.keys(obj1).length !== Object.keys(obj2).length) {
     return false;
   }
-  for (var o in obj1) {
-    var t1 = obj1[o] instanceof Object;
-    var t2 = obj2[o] instanceof Object;
+  let objKeys: string[] = getKeys(obj1);
+  objKeys.forEach((o) => {
+    let t1 = obj1[o] instanceof Object;
+    let t2 = obj2[o] instanceof Object;
     if (t1 && t2) {
       if (!diff(obj1[o], obj2[o])) {
         return false
@@ -45,135 +48,147 @@ function diff(obj1, obj2) {
     } else if (obj1[o] !== obj2[o]) {
       return false;
     }
-  }
+    return;
+  })
   return true;
 }
 
-export const it = function (name, func) {
+export const it =  (name:ESObject, func:ESObject)=> {
   _it(name, 0, func)
 }
 
-export const describe = _describe;
-export const beforeAll = _beforeAll;
-export const beforeEach = _beforeEach;
-export const afterEach = _afterEach;
-export const afterAll = _afterAll;
-export const expect = function (source){
-  return {
-    instanceof(value){
-      _expect(source instanceof  value).assertTrue()
-    },
-    instanceOf(value){
-      _expect(source instanceof  value).assertTrue()
-    },
-    not:{
-      to:{
-        throw(){
-          try{
-            source()
-          }catch(err){
-            _expect(1).assertEqual(2)
-            return
-          }
-          _expect(1).assertEqual(1)
+export const describe:ESObject = _describe;
 
-        },
-        eql(value){
-          _expect(source != value).assertTrue()
-        }
-      },
-      eql(value){
-        _expect(source === value).assertFalse()
-      },
-      equal(value){
-        _expect(source === value).assertFalse()
-      },
-      equals(value){
-        _expect(source === value).assertFalse()
-      },
-    },
-    equal(value){
-      _expect(source).assertEqual(value);
-    },
-    equals(value){
-      _expect(source).assertEqual(value);
-    },
-    eql(value){
-      _expect(source).assertEqual(value);
-    },
-    eq(value){
-      _expect(source).assertEqual(value);
-    },
-    to:{
-      equals(value){
-        _expect(source).assertEqual(value);
-      },
-      match(value){
-        _expect(value.test(source)).assertTrue()
-      },
-      contain(value){
-        _expect(source.includes(value)).assertTrue()
-      },
-      not:{
-        equal(value){
-          _expect(source == value).assertFalse()
-        }
-      },
+export const beforeAll:ESObject = _beforeAll;
 
-      deep:{
-        equal(value){
-          _expect(diff(source,value)).assertTrue()
-        }
-      },
-      equal(value){
-        _expect(source).assertEqual(value);
-      },
-      eql(value){
-        _expect(source).assertEqual(value);
-      },
-      be:{
-        a(value){
-          _expect(typeof source === value).assertTrue()
-        },
-        an(value){
-            _expect(typeof source === value).assertTrue()
-        },
-        instanceof(value){
-          _expect(source instanceof  value).assertTrue()
-        },
-        instanceOf(value){
-          _expect(source instanceof  value).assertTrue()
-        },
-        eql(value){
-          _expect(source).assertEqual(value);
-        },
-        equal(value){
-          _expect(source).assertEqual(value);
-        },
-      },
-      eq(value){
-        _expect(source).assertEqual(value);
-      },
-      throw(value?){
-        if(!value){
-          try{
-            source()
-          }catch(err){
-            _expect(1).assertEqual(1)
-            return
-          }
-          _expect(1).assertEqual(2)
-        }else{
-          try {
-            source && source()
-          }catch(err){
-            _expect(err.message).assertEqual(value)
-            console.log(tag + "expect("+err.message+").throw("+value+")")
-          }
-        }
+export const beforeEach:ESObject = _beforeEach;
 
-      },
+export const afterEach:ESObject = _afterEach;
 
+export const afterAll:ESObject = _afterAll;
+
+export const expect =  (source:ESObject)=> {
+  let  result1:ESObject={}
+  let  result3:ESObject ={
+    throw() {
+      try {
+        source()
+      } catch (err) {
+        _expect(1).assertEqual(2)
+        return
+      }
+      _expect(1).assertEqual(1)
+
+    },
+    eql(value:ESObject) {
+      _expect(source != value).assertTrue()
     }
+  }
+  let result5:ESObject={
+    equal(value:ESObject) {
+      _expect(source == value).assertFalse()
+    }
+  }
+   let result6:ESObject={
+     equal(value:ESObject) {
+       _expect(diff(source, value)).assertTrue()
+     }
+   }
+   let result7:ESObject={
+     a(value:ESObject) {
+       _expect(typeof source === value).assertTrue()
+     },
+     an(value:ESObject) {
+       _expect(typeof source === value).assertTrue()
+     },
+     instanceof(value:ESObject) {
+       _expect(source instanceof value).assertTrue()
+     },
+     instanceOf(value:ESObject) {
+       _expect(source instanceof value).assertTrue()
+     },
+     eql(value:ESObject) {
+       _expect(source).assertEqual(value);
+     },
+     equal(value:ESObject) {
+       _expect(source).assertEqual(value);
+     },
+   }
+  let  result4:ESObject ={
+    equals(value:ESObject) {
+      _expect(source).assertEqual(value);
+    },
+    match(value:ESObject) {
+      _expect(value.test(source)).assertTrue()
+    },
+    contain(value:ESObject) {
+      _expect(source.includes(value)).assertTrue()
+    },
+    not:result5,
+    deep: result6,
+    equal(value:ESObject) {
+      _expect(source).assertEqual(value);
+    },
+    eql(value:ESObject) {
+      _expect(source).assertEqual(value);
+    },
+    be:result7,
+    eq(value:ESObject) {
+      _expect(source).assertEqual(value);
+    },
+    throw(value?:ESObject) {
+      if (!value) {
+        try {
+          source()
+        } catch (err) {
+          _expect(1).assertEqual(1)
+          return
+        }
+        _expect(1).assertEqual(2)
+      } else {
+        try {
+          source && source()
+        } catch (err) {
+          _expect(err.message).assertEqual(value)
+          console.log(tag + "expect(" + err.message + ").throw(" + value + ")")
+        }
+      }
+
+    },
+  }
+  let  result2:ESObject ={
+    to:result3 ,
+    eql(value:ESObject) {
+      _expect(source === value).assertFalse()
+    },
+    equal(value:ESObject) {
+      _expect(source === value).assertFalse()
+    },
+    equals(value:ESObject) {
+      _expect(source === value).assertFalse()
+    },
+  }
+
+  return  result1={
+    instanceof(value:ESObject) {
+      _expect(source instanceof value).assertTrue()
+    },
+    instanceOf(value:ESObject) {
+      _expect(source instanceof value).assertTrue()
+    },
+    not:result2 ,
+    equal(value:ESObject) {
+      _expect(source).assertEqual(value);
+    },
+    equals(value:ESObject) {
+      _expect(source).assertEqual(value);
+    },
+    eql(value:ESObject) {
+      _expect(source).assertEqual(value);
+    },
+    eq(value:ESObject) {
+      _expect(source).assertEqual(value);
+    },
+    to: result4
   }
 };

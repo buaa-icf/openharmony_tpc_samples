@@ -13,12 +13,14 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/util'
-import "reflect-metadata"
 import { interfaces } from 'inversify';
 import { Container, inject, injectable } from 'inversify';
+import {weapon1}from'../tools/tools'
+import * as ns from  "reflect-metadata"
+ns
 
 export default function proxiesTest() {
-  describe('proxiesTest', function () {
+  describe('proxiesTest',  ()=> {
     _it('Should_support_the_injection_of_proxied_objects', () => {
 
       const weaponId = 'Weapon';
@@ -30,7 +32,7 @@ export default function proxiesTest() {
 
       @injectable()
       class Katana implements Weapon {
-        public use() {
+        public use: () => string = () =>  {
           return 'Used Katana!';
         }
       }
@@ -53,15 +55,7 @@ export default function proxiesTest() {
       const log: string[] = [];
 
       container.bind<Weapon>(weaponId).to(Katana).onActivation((context: interfaces.Context, weapon: Weapon) => {
-        const handler = {
-          apply(target: any, thisArgument: any, argumentsList: any[]) {
-            log.push(`Starting: ${new Date().getTime()}`);
-            const result = target.apply(thisArgument, argumentsList);
-            log.push(`Finished: ${new Date().getTime()}`);
-            return result;
-          }
-        };
-        weapon.use = new Proxy(weapon.use, handler);
+        weapon1(weapon,log)
         return weapon;
       });
 

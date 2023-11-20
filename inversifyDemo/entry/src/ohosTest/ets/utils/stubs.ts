@@ -98,6 +98,31 @@ export class InvalidDecoratorUsageWarrior {
   }
 }
 
+// export class InvalidDecoratorUsageWarrior1 {
+//
+//   private _primaryWeapon: Katana;
+//   private _secondaryWeapon: Shuriken;
+//
+//   public constructor(
+//     primary: Katana,
+//     secondary: Shuriken
+//   ) {
+//
+//     this._primaryWeapon = primary;
+//     this._secondaryWeapon = secondary;
+//   }
+//
+//   public test(a: string) { /*...*/ }
+//
+//   public debug() {
+//     return {
+//       primaryWeapon: this._primaryWeapon,
+//       secondaryWeapon: this._secondaryWeapon
+//     };
+//   }
+//
+// }
+
 export class MissingInjectionWarrior {
   public constructor(
     primary: Weapon,

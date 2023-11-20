@@ -16,12 +16,14 @@ import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect
 import { TargetTypeEnum } from 'inversify';
 import { Target } from 'inversify/lib/planning/target';
 import { getFunctionName, getSymbolDescription, listMetadataForTarget } from 'inversify/lib/utils/serialization';
+import * as ns from "reflect-metadata"
+import { symbol, symbolStr } from '../tools/symbol';
 
+ns
 export default function serializationTest() {
-  describe('serializationTest', function () {
+  describe('serializationTest', ()=> {
     _it('Should_return_a_good_function_name', () => {
-
-      function testFunction() {
+      let testFunction: () => boolean = (): boolean =>{
         return false;
       }
 
@@ -30,8 +32,8 @@ export default function serializationTest() {
     });
 
     _it('Should_return_a_good_function_name_by_using_the_regex', () => {
-
-      const testFunction = { name: null };
+      let obj:ESObject={ name: null }
+      const testFunction:ESObject =obj ;
       testFunction.toString = () =>
       'function testFunction';
 
@@ -47,10 +49,10 @@ export default function serializationTest() {
     });
 
     _it('Should_extract_symbol_description', () => {
-      const symbolWithDescription = Symbol('description');
+      const symbolWithDescription:ESObject = symbolStr('description');
       expect(getSymbolDescription(symbolWithDescription)).to.equal('description');
 
-      const symbolWithoutDescription = Symbol();
+      const symbolWithoutDescription:ESObject = symbol();
       expect(getSymbolDescription(symbolWithoutDescription)).to.equal('');
     });
   })
