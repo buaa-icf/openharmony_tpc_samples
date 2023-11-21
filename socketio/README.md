@@ -202,12 +202,9 @@ emit(name: string, message: string, on_emit_callback?: (emit_callback_json: stri
 ```
 
 ## 约束与限制
-
 在下述版本验证通过：
 
-DevEco Studio: 4.0 Beta2(4.0.3.411)
-
-SDK: API10 Beta2( 4.0.10.2)
+DevEco Studio: 4.0.3.600, SDK: API10(4.0.10.11)
 
 ## 目录结构
 ````
@@ -223,10 +220,12 @@ SDK: API10 Beta2( 4.0.10.2)
 ````
 
 ## 贡献代码
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/hihopeorg/socketio/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/hihopeorg/socketio/pulls) 。
+## 贡献代码
+使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然也非常欢迎您
+发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 给我们。
 
 ## 开源协议
-本项目基于 [MIT LICENSE](https://gitee.com/hihopeorg/socketio/blob/master/LICENSE) ，请自由地享受和参与开源。
+本项目基于 [MIT LICENSE](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/socketio/LICENSE) ，请自由地享受和参与开源。
 
   
 

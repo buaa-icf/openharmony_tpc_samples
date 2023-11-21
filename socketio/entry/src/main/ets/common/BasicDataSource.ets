@@ -26,8 +26,8 @@ export abstract class BasicDataSource implements IDataSource {
 
   public abstract totalCount()
 
-  public getData(index: number): any {
-    return undefined
+  public getData(index: number): number {
+    return 0
   }
 
   registerDataChangeListener(listener: DataChangeListener): void {

@@ -22,6 +22,7 @@
  */
 
 import { BasicDataSource } from '../common/BasicDataSource';
+// import { ServiceMessage, ClientMessage, UserCall } from './MessageInfo';
 import prompt from '@ohos.promptAction';
 import { client_socket } from '@ohos/socketio';
 import router from '@ohos.router';
@@ -29,7 +30,7 @@ import router from '@ohos.router';
 @Entry
 @Component
 struct Index {
-  @State uri: string = "http://10.50.40.37:3000";
+  @State uri: string = "http://10.50.80.27:3000";
   @State username: string = "";
   @State message: string = "";
   @State connect_finish: boolean = false;
@@ -70,33 +71,36 @@ struct Index {
   }
 
   on_login_listener(event_json: string): void {
-    console.log("SOCKET_IO_INDEX on_login_listener: " + event_json);
-    let loginCall = JSON.parse(event_json);
+    console.log("jk SOCKET_IO_INDEX on_login_listener event_json: " + event_json);
+    let loginCall: ESObject = JSON.parse(event_json);
+    console.log("jk ===============");
     let notice = "Welcome to Socket.IO Chat,there " + (loginCall.numUsers != 1 ? " are " : "\'s ") + loginCall.numUsers + (loginCall.numUsers != 1 ? " participants" : " participant");
-    let serviceMessage = { message: notice, id: 0 };
+    let serviceMessage: ESObject = { message: notice, id: 0 };
+    console.log("jk SOCKET_IO_INDEX on_login_listener pushData start");
     this.pushData(serviceMessage);
+    console.log("jk SOCKET_IO_INDEX on_login_listener pushData stop");
   }
 
   on_new_message_listener(event_json: string): void {
     console.log("SOCKET_IO_INDEX on_new_message_listener: " + event_json);
-    let messageCall = JSON.parse(event_json);
-    let serviceMessage = { username: messageCall.username, message: messageCall.message, id: 1 };
+    let messageCall: ESObject = JSON.parse(event_json);
+    let serviceMessage: ESObject = { username: messageCall.username, message: messageCall.message, id: 1 };
     this.pushData(serviceMessage);
   }
 
   on_user_joined_listener(event_json: string): void {
     console.log("SOCKET_IO_INDEX on_user_joined_listener: " + event_json);
-    let userJoinCall = JSON.parse(event_json);
+    let userJoinCall: ESObject = JSON.parse(event_json);
     let notice = userJoinCall.username + " joined" + ",there" + (userJoinCall.numUsers != 1 ? " are " : "\'s ") + userJoinCall.numUsers + (userJoinCall.numUsers != 1 ? " participants" : " participant");
-    let serviceMessage = { message: notice, id: 0 };
+    let serviceMessage: ESObject = { message: notice, id: 0 };
     this.pushData(serviceMessage);
   }
 
   on_user_left_listener(event_json: string): void {
     console.log("SOCKET_IO_INDEX on_user_left_listener: " + event_json);
-    let userLeftCall = JSON.parse(event_json);
+    let userLeftCall: ESObject = JSON.parse(event_json);
     let notice = userLeftCall.username + " left" + ",there" + (userLeftCall.numUsers != 1 ? "are " : "\'s ") + userLeftCall.numUsers + (userLeftCall.numUsers != 1 ? " participants" : " participant");
-    let serviceMessage = { message: notice, id: 0 };
+    let serviceMessage: ESObject = { message: notice, id: 0 };
     this.pushData(serviceMessage);
   }
 
@@ -104,32 +108,60 @@ struct Index {
     console.log("SOCKET_IO_INDEX on_emit_callback： " + emit_callback_json);
   }
 
-  pushData(any) {
-    setTimeout(() => {
-      this.chatDetailData.pushData(any);
-    }, 300);
+  pushData(any: ESObject) {
+    this.chatDetailData.pushData(any);
+    // setTimeout(() => {
+    //   console.log("jk pushData start");
+    //   this.chatDetailData.pushData(any);
+    //   console.log("jk pushData stop");
+    // }, 10);
   }
 
   //配置client
   initClient(uri: string) {
     console.log("SOCKET_IO_INDEX initClient");
-    this.client.set_open_listener(this.on_open.bind(this));
-    this.client.set_fail_listener(this.on_fail.bind(this));
-    this.client.set_reconnecting_listener(this.on_reconnecting.bind(this));
-    this.client.set_reconnect_listener(this.on_reconnect.bind(this));
-    this.client.set_close_listener(this.on_close.bind(this));
-    this.client.set_socket_open_listener(this.on_socket_open.bind(this));
-    this.client.set_socket_close_listener(this.on_socket_close.bind(this));
+    this.client.set_open_listener(()=> {
+      this.on_open();
+    });
+    this.client.set_fail_listener(()=>{
+      this.on_fail();
+    });
+    this.client.set_reconnecting_listener(()=>{
+      this.on_reconnecting();
+    });
+    this.client.set_reconnect_listener(()=>{
+      this.on_reconnect();
+    });
+    this.client.set_close_listener((reason: string)=>{
+      this.on_close(reason);
+    });
+    this.client.set_socket_open_listener((nsp: string)=>{
+      this.on_socket_open(nsp);
+    });
+    this.client.set_socket_close_listener((nsp: string)=>{
+      this.on_socket_close(nsp);
+    });
     this.client.connect(uri);
   }
 
   //配置socket
   initSocket() {
     console.log("SOCKET_IO_INDEX initSocket");
-    this.client.on("new message", this.on_new_message_listener.bind(this));
-    this.client.on("user joined", this.on_user_joined_listener.bind(this));
-    this.client.on("user left", this.on_user_left_listener.bind(this));
-    this.client.on("login", this.on_login_listener.bind(this));
+    this.client.on("new message", (event_json: string)=>{
+      this.on_new_message_listener(event_json);
+    });
+    this.client.on("user joined", (event_json: string)=>{
+      this.on_user_joined_listener(event_json);
+    });
+    this.client.on("user left", (event_json: string)=>{
+      this.on_user_left_listener(event_json);
+    });
+    this.client.on("login", (event_json: string)=>{
+
+      console.log("jk login start");
+      this.on_login_listener(event_json);
+      console.log("jk login stop");
+    });
   }
 
   //登录
@@ -139,9 +171,10 @@ struct Index {
       prompt.showToast({ message: "暂未连接服务器" });
       return;
     }
+    console.log("jk SOCKET_IO_INDEX login start");
     this.client.emit("add user", username);
     this.login_finish = !this.login_finish;
-    console.log("SOCKET_IO_INDEX login login_finish: " + this.login_finish);
+    console.log("jk SOCKET_IO_INDEX login login_finish: " + this.login_finish);
   }
 
   //发送消息
@@ -161,8 +194,11 @@ struct Index {
       console.log("SOCKET_IO_INDEX 暂未连接服务器");
       return;
     }
+    console.log("SOCKET_IO_INDEX close start 1");
     this.client.socket_close();
+    console.log("SOCKET_IO_INDEX close start 2");
     this.client.close();
+    console.log("SOCKET_IO_INDEX close stop");
   }
 
   build() {
@@ -170,7 +206,7 @@ struct Index {
       Column() {
         if (this.login_finish) {
           List({ scroller: this.scroller }) {
-            LazyForEach(this.chatDetailData, (message) => {
+            LazyForEach(this.chatDetailData, (message: ESObject) => {
               ListItem() {
                 ChatItemView({ message: message })
               }
@@ -196,7 +232,7 @@ struct Index {
                   prompt.showToast({ message: "请输入消息" });
                 } else {
                   this.sendMessage(this.message)
-                  let clientMessage = { username: this.username, message: this.message, id: 2 }
+                  let clientMessage: ESObject = { username: this.username, message: this.message, id: 2 }
                   this.pushData(clientMessage)
                   this.message = ""
                 }
@@ -243,7 +279,7 @@ struct Index {
 
 @Component
 struct ChatItemView {
-  private message: any
+  private message: ESObject
 
   build() {
     Column() {
@@ -281,22 +317,22 @@ struct ChatItemView {
 
 
 class ChatDetailData extends BasicDataSource {
-  private msgList: Array<any> = [];
+  private msgList: Array<ESObject> = [];
 
   public totalCount(): number {
     return this.msgList.length;
   }
 
-  public getData(index: number): any {
+  public getData(index: number): number {
     return this.msgList[index];
   }
 
-  public addData(index: number, data: any): void {
+  public addData(index: number, data: ESObject): void {
     this.msgList.splice(index, 0, data);
     this.notifyDataAdd(index);
   }
 
-  public pushData(data: any): void {
+  public pushData(data: ESObject): void {
     this.msgList.push(data);
     this.notifyDataAdd(this.msgList.length - 1);
   }

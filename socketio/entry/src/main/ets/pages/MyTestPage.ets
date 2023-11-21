@@ -31,7 +31,7 @@ import { client_socket } from '@ohos/socketio';
 struct MyTestPage {
   @State message: string = 'Hello World';
   private chatDetailData = new ChatDetailData();
-  @State uri: string = 'http://10.50.40.37:3000';
+  @State uri: string = 'http://10.50.80.27:3000';
   @State connect_finish: boolean = false;
   @State login_finish: boolean = false;
   private client: client_socket = new client_socket();
@@ -78,7 +78,7 @@ struct MyTestPage {
             .backgroundColor(Color.Pink)
 
           List({ scroller: this.scroller }) {
-            LazyForEach(this.chatDetailData, (message) => {
+            LazyForEach(this.chatDetailData, (message: ESObject) => {
               ListItem() {
                 Text(message)
                   .width("100%")
@@ -121,7 +121,7 @@ struct MyTestPage {
   on_reconnect(): void {
     console.log("on_reconnect");
   }
-  pushData(any) {
+  pushData(any: ESObject) {
     if (!any || (typeof any === 'string' && any.length < 1)) {
       return
     }
@@ -153,7 +153,7 @@ struct MyTestPage {
     this.client.emit("join test room", "王二麻子")
   }
 
-  on_new_message_listener(event_json: any): void {
+  on_new_message_listener(event_json: ESObject): void {
     console.log("on_new_message_listener: " + event_json);
     let messageCall = JSON.stringify(event_json);
     this.pushData(messageCall);
@@ -176,7 +176,7 @@ struct MyTestPage {
     }
   }
 
-  on_emit_callback(data): void {
+  on_emit_callback(data: ESObject): void {
     console.log("on_emit_callback: " + data);
     if (data) {
       let emitCallBack = JSON.stringify(data);
@@ -184,28 +184,28 @@ struct MyTestPage {
     }
   }
 
-  on_user_joined_callback(data): void {
+  on_user_joined_callback(data: ESObject): void {
     console.log("on_user_joined_callback: " + data);
     if (data) {
       this.pushData(JSON.stringify(data));
     }
   }
 
-  on_msg_callback(data): void {
+  on_msg_callback(data: ESObject): void {
     console.log("on_msg_callback: " + data);
     if (data) {
       this.pushData(JSON.stringify(data));
     }
   }
 
-  on_leave_callback(data): void {
+  on_leave_callback(data: ESObject): void {
     console.log("on_leave_callback: " + data);
     if (data) {
       this.pushData(JSON.stringify(data));
     }
   }
 
-  on_local_callback(data): void {
+  on_local_callback(data: ESObject): void {
     console.log("on_local_callback: " + data);
     if (data) {
       this.pushData(JSON.stringify(data));
@@ -216,7 +216,7 @@ struct MyTestPage {
     const ctx = this;
     ctx.initClient(ctx.uri);
     ctx.initSocket();
-    setTimeout(function () {
+    setTimeout(() => {
       ctx.login("测试用户007")
     }, 2000)
   }
@@ -224,26 +224,52 @@ struct MyTestPage {
   initClient(uri: string) {
     console.log("initClient: ");
     console.log("this.client: " + this.client);
-    this.client.set_open_listener(this.on_open.bind(this));
-    this.client.set_fail_listener(this.on_fail.bind(this));
-    this.client.set_reconnecting_listener(this.on_reconnecting.bind(this));
-    this.client.set_reconnect_listener(this.on_reconnect.bind(this));
-    this.client.set_close_listener(this.on_close.bind(this));
-    this.client.set_socket_open_listener(this.on_socket_open.bind(this));
-    this.client.set_socket_close_listener(this.on_socket_close.bind(this));
+    this.client.set_open_listener(()=>{
+      this.on_open();
+    });
+    this.client.set_fail_listener(()=>{
+      this.on_fail();
+    });
+    this.client.set_reconnecting_listener(()=>{
+      this.on_reconnecting();
+    });
+    this.client.set_reconnect_listener(()=>{
+      this.on_reconnect();
+    });
+    this.client.set_close_listener((reason: string)=>{
+      this.on_close(reason);
+    });
+    this.client.set_socket_open_listener((nsp: string)=>{
+      this.on_socket_open(nsp);
+    });
+    this.client.set_socket_close_listener((nsp: string)=>{
+      this.on_socket_close(nsp);
+    });
     this.client.connect(uri);
   }
 
   // 配置Socket
   initSocket() {
     console.log("initSocket: ");
-    this.client.on("new message", this.on_new_message_listener.bind(this));
-    this.client.on("user joined", this.on_user_joined_listener.bind(this));
-    this.client.on("user left", this.on_user_left_listener.bind(this));
-    this.client.on("localmsg", this.on_local_callback.bind(this));
-    // this.client.on("msg",this.on_msg_callback.bind(this));
-    this.client.on("leavecall", this.on_leave_callback.bind(this));
-    this.client.on("login", this.on_login_listener.bind(this));
+    this.client.on("new message", (event_json: ESObject)=>{
+      this.on_new_message_listener(event_json);
+    });
+    this.client.on("user joined", (event_json: string)=>{
+      this.on_user_joined_listener(event_json);
+    });
+    this.client.on("user left", (event_json: string)=>{
+      this.on_user_left_listener(event_json);
+    });
+    this.client.on("localmsg", (data: ESObject)=>{
+      this.on_local_callback(data);
+    });
+    // this.client.on("msg",this.on_msg_callback);
+    this.client.on("leavecall", (data: ESObject)=>{
+      this.on_leave_callback(data);
+    });
+    this.client.on("login", (event_json: string)=>{
+      this.on_login_listener(event_json);
+    });
 
   }
 
@@ -267,7 +293,9 @@ struct MyTestPage {
       })
       return;
     }
-    this.client.emit("get message", message, this.on_emit_callback.bind(this));
+    this.client.emit("get message", message, (data: ESObject)=>{
+      this.on_emit_callback(data);
+    });
     this.client.emit("new message", message);
     this.client.emit("obj callback", {
       name: '张三',
@@ -294,22 +322,22 @@ struct MyTestPage {
 }
 
 class ChatDetailData extends BasicDataSource {
-  private msgList: Array<any> = [];
+  private msgList: Array<ESObject> = [];
 
   public totalCount(): number {
     return this.msgList.length;
   }
 
-  public getData(index: number): any {
+  public getData(index: number): ESObject {
     return this.msgList[index];
   }
 
-  public addData(index: number, data: any): void {
+  public addData(index: number, data: ESObject): void {
     this.msgList.splice(index, 0, data);
     this.notifyDataAdd(index);
   }
 
-  public pushData(data: any): void {
+  public pushData(data: ESObject): void {
     this.msgList.push(data);
     this.notifyDataAdd(this.msgList.length - 1);
   }

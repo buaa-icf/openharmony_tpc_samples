@@ -148,7 +148,7 @@ export class client_socket {
     client_socket_c.off_error();
   }
 
-  public emit(name: string, message: any, on_emit_callback?: (emit_callback_json: string) => void) {
+  public emit(name: string, message: ESObject, on_emit_callback?: (emit_callback_json: string) => void) {
     if (message instanceof Uint8Array) {
       client_socket_c.emit(name, buffer_util.uint8ArrayToString(message), true, on_emit_callback);
     } else {

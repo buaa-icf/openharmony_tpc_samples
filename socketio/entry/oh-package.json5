@@ -3,6 +3,11 @@
   "devDependencies": {},
   "author": "",
   "name": "entry",
+  "ohos": {
+    "org": "huawei",
+    "directoryLevel": "module",
+    "buildTool": "hvigor"
+  },
   "description": "example description",
   "main": "",
   "version": "2.0.1",

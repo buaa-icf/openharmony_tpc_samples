@@ -1,3 +1,9 @@
+## v2.0.2
+
+- 适配DevEco Studio: 4.0.3.600
+- 适配SDK: API10(4.0.10.11)
+- ArkTs语法适配
+
 ## v2.0.1
 
 - 适配DevEco Studio 4.0 Beta2(4.0.3.411)。

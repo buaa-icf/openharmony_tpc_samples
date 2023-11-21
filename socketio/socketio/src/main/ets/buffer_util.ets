@@ -24,15 +24,15 @@
 export class buffer_util {
   public static uint8ArrayToString(uint8Array: Uint8Array): string {
     let dataString = "";
-    for (var i = 0; i < uint8Array.length; i++) {
+    for (let i = 0; i < uint8Array.length; i++) {
       dataString += String.fromCharCode(uint8Array[i]);
     }
     return dataString
   }
 
   public static stringToUint8Array(message_string: string): Uint8Array {
-    let array = [];
-    for (var i = 0, j = message_string.length; i < j; ++i) {
+    let array: number[] = [];
+    for (let i = 0, j = message_string.length; i < j; ++i) {
       array.push(message_string.charCodeAt(i));
     }
     let uint8Array = new Uint8Array(array);
