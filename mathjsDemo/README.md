@@ -10,17 +10,17 @@
 | [long](https://github.com/dcodeIO/long.js) | 字符串转long类型，number转long类型,long算术函数,long按位函数,long逻辑函数，long类型转换为 32 位整数。 |
 | [bignumber.js](https://mikemcl.github.io/bignumber.js) | 进制的转换函数 |
 | [matrix](https://mljs.github.io/matrix) |矩阵操作和计算函数    |
-| [math-base-assert](https://stdlib.io/docs/api/atest) |判断奇偶函数     |
 
 ## 下载安装
 
-| 库名 | URL地址  |   npm安装   |
-| :-----------: |:---------------:| :----:|
-| mathjs     | https://github.com/josdejong/mathjs | npm install mathjs |
-| long      | https://github.com/dcodeIO/long.js | npm install long |
-| bignumber.js |https://github.com/MikeMcl/bignumber.js       | npm install bignumber.js |
-| matrix | https://github.com/mljs/matrix | npm install ml-matrix |
-| math-base-assert | https://github.com/stdlib-js/math-base-assert | npm install @stdlib/math-base-assert |
+| 库名 | URL地址  |                ohpm安装                 |
+| :-----------: |:---------------:|:------------------------------------:|
+| mathjs     | https://github.com/josdejong/mathjs |         ohpm install mathjs          |
+| long      | https://github.com/dcodeIO/long.js |           ohpm install long           |
+| bignumber.js |https://github.com/MikeMcl/bignumber.js       |       ohpm install bignumber.js       |
+| matrix | https://github.com/mljs/matrix |        ohpm install ml-matrix         |
+
+OpenHarmony ohpm环境配置等更多内容，请参考[如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
 ## 使用说明
 
@@ -84,9 +84,9 @@
 ``` javascript
 	import { Matrix } from 'ml-matrix'
 
-	var A = new Matrix([[1, 1],[2, 2]]);
+	let A = new Matrix([[1, 1],[2, 2]]);
 
-	var B = new Matrix([[3, 3],[1, 1]]);
+	let B = new Matrix([[3, 3],[1, 1]]);
 
 	const addition = Matrix.add(A, B);//[[4, 4], [3, 3], rows: 2, columns: 2]
 
@@ -94,20 +94,6 @@
 
 更多使用方法请参照：https://mljs.github.io/matrix
 
-
-
-### math-base-assert 使用功能
-
-``` javascript
-	import isEven from '@stdlib/math-base-assert';
-
-	let oddValue = isEven.isOdd(1) //true
-
-	let isEvenValue = isEven.isEven(1)// false
-
-```
-
-更多使用方法请参照：https://stdlib.io/docs/api/atest
 
 
 ## 目录
@@ -118,8 +104,7 @@
 ├── src     
 │   └── main
 │   	└── ets
-│   	    └── Application
-│   	    └── MainAbility
+│   	    └── entryability
 │   	    └── crcalc
 │   	        └── crcalc.ets         # mathjs大数据运算界面
 │   	    └── ejml
@@ -130,13 +115,13 @@
 │   	    └── mathjs
 │   	        └── mathjs.ets         # mathjs位运算及数值判断界面
 │   	    └── pages
-│       	    └── index.ets          # mathjs示例首页
+│       	    └── Index.ets          # mathjs示例首页
 ```
 
 ## 约束与限制
 在下述版本验证通过：
 
-DevEco Studio 版本：3.1 Beta1（3.1.0.200），OpenHarmony SDK:API9（3.2.10.6）。
+DevEco Studio 版本：4.0 Beta2（4.0.3.600），OpenHarmony SDK:API10（4.0.10.11）。
 
 ## 贡献代码
 使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。

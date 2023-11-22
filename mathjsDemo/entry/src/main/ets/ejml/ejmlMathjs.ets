@@ -15,11 +15,11 @@
 import * as math from 'mathjs';
 import router from '@ohos.router';
 
-function routerfun(url) {
-  let options = {
+function routerfun(url: string) {
+  let options: router.RouterOptions = {
     url: url
   }
-  router.push(options)
+  router.pushUrl(options)
 }
 
 @Entry
@@ -59,7 +59,7 @@ struct Index {
   @State mathTimeOnes: string = this.zerosStr
   @State mathRange: string = this.zerosStr
   @State mathTimeRange: string = this.zerosStr
-  @State mathReshape: any = [1, 2]
+  @State mathReshape: number[] = [1, 2]
   @State mathTimeReshape: string = this.zerosStr
   @State mathResize: string = this.zerosStr
   @State mathTimeResize: string = this.zerosStr
@@ -83,7 +83,7 @@ struct Index {
   @State sparseMatrix: math.Matrix = math.matrix([[1, 2], [3, 4]])
   @State SymmetricMatrix2: math.Matrix = math.matrix([[10, 1, 10], [1, 10, 1], [10, 1, 10]])
   @State getMatrix: string = '0'
-  @State setMatrix: any = this.sparseMatrix.set([0, 1], 5)
+  @State setMatrix: math.Matrix = this.sparseMatrix.set([0, 1], 5)
   arrays = '[[10, 1, 10], [1, 10, 1], [10, 1, 10]]'
   SymmetricMatrixQr = this.arrays
   mathZeros1 = '1'

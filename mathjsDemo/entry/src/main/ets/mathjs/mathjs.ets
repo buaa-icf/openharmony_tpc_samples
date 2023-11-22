@@ -16,11 +16,11 @@ import * as math from 'mathjs';
 import router from '@ohos.router';
 
 
-function routerfun(url) {
-  let options = {
+function routerfun(url: string) {
+  let options: router.RouterOptions = {
     url: url
   }
-  router.push(options)
+  router.pushUrl(options)
 }
 
 @Entry
@@ -83,16 +83,16 @@ struct Index {
   mathSumArr = this.arrayMath
   mathProdArr = this.arrayMath
   mathmeanArr = this.arrays
-  mathmean1
+  mathmean1: string = ''
   mathmadArr = this.arrays
   mathcumsumArr = this.arrays
   mathusolveArr = this.arrays
   mathnumusolve = this.arrays
   mathsimplifyConstantStr = '2 * 2^ (2 - 1)'
-  mathnumsimplifyConstant = { exactFractions: true }
+  mathnumsimplifyConstant: math.SimplifyOptions = { exactFractions: true }
   mathsimplifyStr = '2 * 1 * x ^ (2 - 1)'
-  mathnumsimplify = { x: 4 }
-  mathnumsimplify1 = { exactFractions: true }
+  mathnumsimplify: ESObject = { x: 4 }
+  mathnumsimplify1: math.SimplifyOptions = { exactFractions: true }
   mathlsolveArr = this.arrays
   mathnumlsolve = this.arrays
   mathlusolveArr = this.arrays
