@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "SmartRefreshLayout",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}
