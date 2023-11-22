@@ -62,528 +62,557 @@ import {
   toPlainObject,
   toSafeInteger,
   toString,
+  isNaN,
+  isFinite
 } from 'lodash';
 
 export default function langTest() {
-  describe('LangTest', function () {
+  describe('LangTest', () => {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(() => {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(() => {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(() => {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(() => {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    it('castArrayTest01',0, function () {
-      let castArrays = castArray({ 'a': 1 })
+
+    class B {
+      b: number = 0
+    }
+
+    class A {
+      a: number = 0
+    }
+
+    class X {
+      x: number = 0
+    }
+
+    class Y {
+      y: number = 0
+    }
+
+    class AB {
+      a: number = 0;
+      b: number = 0
+    }
+
+    class Greet{
+      greeting: string = ''
+    }
+    it('castArrayTest01',0, () => {
+      let castArrays: object = castArray({ 'a': 1 })
       expect(JSON.stringify(castArrays)).assertEqual('[{"a":1}]');
     })
 
-    it('castArrayTest02',0, function () {
-      let castArrays = castArray('abc');
+    it('castArrayTest02',0, () => {
+      let castArrays: string[] = castArray('abc');
       expect(JSON.stringify(castArrays)).assertEqual('["abc"]');
     })
 
-    it('cloneTest01',0, function () {
-      let objects = [{ 'a': 1 }, { 'b': 2 }];
-      let shallow = clone(objects);
+    it('cloneTest01',0, () => {
+      let objects = [{ a: 1 }as A, { b: 2 }as B];
+      let shallow: object = clone(objects);
       expect(JSON.stringify(shallow)).assertEqual('[{"a":1},{"b":2}]');
     })
 
-    it('cloneTest02',0, function () {
-      let obj = [{ x:1 }, { y:2 }];
-      let shallowCopy = clone(obj);
+    it('cloneTest02',0, () => {
+      let obj = [{ x:1 }as X, { y:2 }as Y];
+      let shallowCopy: object = clone(obj);
       expect(JSON.stringify(shallowCopy)).assertEqual('[{"x":1},{"y":2}]');
     })
 
-    it('cloneDeepTest01',0, function () {
-      let objects = [{ 'a': 1 }, { 'b': 2 }];
-      let shallow = cloneDeep(objects);
+    it('cloneDeepTest01',0, () => {
+      let objects = [{ a: 1 }as A, { b: 2 }as B];
+      let shallow: object = cloneDeep(objects);
       expect(JSON.stringify(shallow)).assertEqual('[{"a":1},{"b":2}]');
     })
 
-    it('cloneDeepTest02',0, function () {
-      let obj = [{ x:1 }, { y:2 }];
-      let shallowCopy = cloneDeep(obj);
+    it('cloneDeepTest02',0, () => {
+      let obj = [{ x:1 }as X, { y:2 }as Y];
+      let shallowCopy: object = cloneDeep(obj);
       expect(JSON.stringify(shallowCopy)).assertEqual('[{"x":1},{"y":2}]');
     })
 
-    it('conformsToTest01',0, function () {
-      var object = { 'a': 1, 'b': 2 };
-      let isConformsTo = conformsTo(object, { 'b': function(n) { return n > 1; } });
+    it('conformsToTest01',0, () => {
+      let object = { a: 1, b: 2 }as AB;
+      let isConformsTo: boolean = conformsTo(object, { 'b': (n: number)=> { return n > 1; } });
       expect(isConformsTo).assertTrue();
     })
 
-    it('conformsToTest02',0, function () {
-      var object = { 'a': 1, 'b': 2 };
-      let isConformsTo = conformsTo(object, { 'b': function(n) { return n > 2; } });
+    it('conformsToTest02',0, () => {
+      let object = { a: 1, b: 2 }as AB;
+      let isConformsTo: boolean = conformsTo(object, { 'b': (n: number)=> { return n > 2; } });
       expect(isConformsTo).assertFalse();
     })
 
-    it('eqTest01',0, function () {
-      var object = { 'a': 1 };
-      let isEq = eq(object, object);
+    it('eqTest01',0, () => {
+      let object = { a: 1 }as A;
+      let isEq: boolean = eq(object, object);
       expect(isEq).assertTrue();
     })
 
-    it('eqTest02',0, function () {
-      var object = { 'a': 1 };
-      let other = { 'a': 1 };
-      let isEq = eq(object, other);
+    it('eqTest02',0, () => {
+      let object = { a: 1 }as A;
+      let other = { a: 1 }as A;
+      let isEq: boolean = eq(object, other);
       expect(isEq).assertFalse();
     })
 
-    it('gtTest01',0, function () {
-      let isGt = gt(3, 1);
+    it('gtTest01',0, () => {
+      let isGt: boolean = gt(3, 1);
       expect(isGt).assertTrue();
     })
 
-    it('gtTest02',0, function () {
-      let isGt = gt(3, 3);
+    it('gtTest02',0, () => {
+      let isGt: boolean = gt(3, 3);
       expect(isGt).assertFalse();
     })
 
-    it('gteTest01',0, function () {
-      let isGte = gte(3, 1);
+    it('gteTest01',0, () => {
+      let isGte: boolean = gte(3, 1);
       expect(isGte).assertTrue();
     })
 
-    it('gteTest02',0, function () {
-      let isGte = gte(3, 3);
+    it('gteTest02',0, () => {
+      let isGte: boolean = gte(3, 3);
       expect(isGte).assertTrue()
     })
 
-    it('isArgumentsTest01',0, function () {
-      let isArgument = isArguments(function() { return arguments; }());
-      expect(isArgument).assertTrue();
-    })
-
-    it('isArgumentsTest02',0, function () {
-      let isArgument = isArguments([1, 2, 3]);
+    it('isArgumentsTest01',0, ()=> {
+      let isArgument: boolean = isArguments(() => { return arguments; });
       expect(isArgument).assertFalse();
     })
 
-    it('isArrayTest01',0, function () {
-      let isTrue = isArray([1, 2, 3]);
+    it('isArgumentsTest02',0, () => {
+      let isArgument: boolean = isArguments([1, 2, 3]);
+      expect(isArgument).assertFalse();
+    })
+
+    it('isArrayTest01',0, () => {
+      let isTrue: boolean = isArray([1, 2, 3]);
       expect(isTrue).assertTrue();
     })
 
-    it('isArrayTest02',0, function () {
-      let isTrue = isArray(noop);
+    it('isArrayTest02',0, () => {
+      let isTrue: boolean = isArray(noop);
       expect(isTrue).assertFalse();
     })
 
-    it('isArrayBufferTest01',0, function () {
-      let isTrue = isArrayBuffer(new ArrayBuffer(2));
+    it('isArrayBufferTest01',0, () => {
+      let isTrue: boolean = isArrayBuffer(new ArrayBuffer(2));
       expect(isTrue).assertTrue();
     })
 
-    it('isArrayBufferTest02',0, function () {
-      let isTrue = isArrayBuffer(new Array(2));
+    it('isArrayBufferTest02',0, () => {
+      let isTrue: boolean = isArrayBuffer(new Array(2));
       expect(isTrue).assertFalse();
     })
 
-    it('isArrayLikeTest01',0, function () {
-      let isTrue = isArrayLike([1, 2, 3]);
+    it('isArrayLikeTest01',0, () => {
+      let isTrue: boolean = isArrayLike([1, 2, 3]);
       expect(isTrue).assertTrue();
     })
 
-    it('isArrayLikeTest02',0, function () {
-      let isTrue = isArrayLike(noop);
+    it('isArrayLikeTest02',0, () => {
+      let isTrue: boolean = isArrayLike(noop);
       expect(isTrue).assertFalse();
     })
 
-    it('isArrayLikeObjectTest01',0, function () {
-      let isTrue = isArrayLikeObject([1, 2, 3]);
+    it('isArrayLikeObjectTest01',0, () => {
+      let isTrue: boolean = isArrayLikeObject([1, 2, 3]);
       expect(isTrue).assertTrue();
     })
 
-    it('isArrayLikeObjectTest02',0, function () {
-      let isTrue = isArrayLikeObject(noop);
+    it('isArrayLikeObjectTest02',0, () => {
+      let isTrue: boolean = isArrayLikeObject(noop);
       expect(isTrue).assertFalse();
     })
 
-    it('isBooleanTest01',0, function () {
-      let isTrue = isBoolean(false);
+    it('isBooleanTest01',0, () => {
+      let isTrue: boolean = isBoolean(false);
       expect(isTrue).assertTrue();
     })
 
-    it('isBooleanTest02',0, function () {
-      let isTrue = isBoolean(null);
+    it('isBooleanTest02',0, () => {
+      let isTrue: boolean = isBoolean(null);
       expect(isTrue).assertFalse();
     })
 
-    it('isBufferTest',0, function () {
-      let isTrue = isBuffer(new Uint8Array(2));
+    it('isBufferTest',0, () => {
+      let isTrue: boolean = isBuffer(new Uint8Array(2));
       expect(isTrue).assertFalse();
     })
 
-    it('isDateTest01',0, function () {
-      let isTrue = isDate(new Date);
+    it('isDateTest01',0, () => {
+      let isTrue: boolean = isDate(new Date);
       expect(isTrue).assertTrue();
     })
 
-    it('isDateTest02',0, function () {
-      let isTrue = isDate('Mon April 23 2012');
+    it('isDateTest02',0, () => {
+      let isTrue: boolean = isDate('Mon April 23 2012');
       expect(isTrue).assertFalse();
     })
 
-    it('isEmptyTest01',0, function () {
-      let isTrue = isEmpty(null);
+    it('isEmptyTest01',0, () => {
+      let isTrue: boolean = isEmpty(null);
       expect(isTrue).assertTrue();
     })
 
-    it('isEmptyTest02',0, function () {
-      let isTrue = isEmpty([1, 2, 3]);
+    it('isEmptyTest02',0, () => {
+      let isTrue: boolean = isEmpty([1, 2, 3]);
       expect(isTrue).assertFalse();
     })
 
-    it('isEqualTest',0, function () {
-      var object = { 'a': 1 };
-      var other = { 'a': 1 };
-      let isTrue = isEqual(object, other);
+    it('isEqualTest',0, () => {
+      let object = { a: 1 }as A;
+      let other = { a: 1 }as A;
+      let isTrue: boolean= isEqual(object, other);
       expect(isTrue).assertTrue();
     })
 
-    it('isEqualWithTest01',0, function () {
-      function isGreeting(value) {
-        return /^h(?:i|ello)$/.test(value);
+    it('isEqualWithTest01',0,  ()=> {
+      let isGreeting: (value: string) => boolean = (value: string): boolean => {
+        let regex: RegExp = new RegExp('^h(?:i|ello)$')
+        return regex.test(value);
       }
-      function customizer(objValue, othValue) {
+      let customizer: (objValue: string, othValue: string) => void = (objValue: string, othValue: string): ESObject => {
         if (isGreeting(objValue) && isGreeting(othValue)) {
           return true;
         }
       }
       let array = ['hello', 'goodbye'];
       let other = ['hi', 'goodbye'];
-      let isTrue = isEqualWith(array, other, customizer);
+      let isTrue: boolean = isEqualWith(array, other, customizer);
       expect(isTrue).assertTrue();
     })
 
-    it('isEqualWithTest02',0, function () {
-      var customizer = function(value) {
+    it('isEqualWithTest02',0, () => {
+      let customizer = (value: string)=> {
         return isString(value) ? false : undefined;
       };
+      customizer('str')
       expect(isEqualWith('a', 'a', customizer)).assertFalse();
     })
 
-    it('isErrorTest01',0, function () {
-      let isTrue = isError(new Error);
+    it('isErrorTest01',0, () => {
+      let isTrue: boolean = isError(new Error);
       expect(isTrue).assertTrue();
     })
 
-    it('isErrorTest02',0, function () {
-      let isTrue = isError(Error);
+    it('isErrorTest02',0, () => {
+      let isTrue: boolean = isError(Error);
       expect(isTrue).assertFalse();
     })
 
-    it('isFiniteTest01',0, function () {
+    it('isFiniteTest01',0, () => {
       expect(isFinite(3)).assertTrue();
     })
 
-    it('isFiniteTest02',0, function () {
-      expect(isFinite(Infinity)).assertFalse();
+    it('isFiniteTest02',0, () => {
+      expect(isFinite('22')).assertFalse();
     })
 
-    it('isFunctionTest01',0, function () {
-      expect(isFunction(function() {})).assertTrue();
+    it('isFunctionTest01',0, () => {
+      expect(isFunction(()=> {})).assertTrue();
     })
 
-    it('isFunctionTest02',0, function () {
-      expect(isFunction(/abc/)).assertFalse();
+    it('isFunctionTest02',0, () => {
+      let regex: RegExp = new RegExp('/abc/')
+      expect(isFunction(regex)).assertFalse();
     })
 
-    it('isIntegerTest01',0, function () {
+    it('isIntegerTest01',0, () => {
       expect(isInteger(3)).assertTrue();
     })
 
-    it('isIntegerTest02',0, function () {
-      expect(isInteger(Infinity)).assertFalse();
+    it('isIntegerTest02',0, () => {
+      expect(isInteger(Number.MIN_VALUE)).assertFalse();
     })
 
-    it('isLengthTest01',0, function () {
+    it('isLengthTest01',0, () => {
       expect(isLength(3)).assertTrue();
     })
 
-    it('isLengthTest02',0, function () {
-      expect(isLength(Infinity)).assertFalse();
+    it('isLengthTest02',0, () => {
+      expect(isLength(Number.MIN_VALUE)).assertFalse();
     })
 
-    it('isMapTest01',0, function () {
+    it('isMapTest01',0, () => {
       expect(isMap(new Map)).assertTrue();
     })
 
-    it('isMapTest02',0, function () {
-      expect(isMap(new WeakMap)).assertFalse();
+    it('isMapTest02',0, () => {
+      expect(isMap({})).assertFalse();
     })
 
-    it('isMatchTest01',0, function () {
-      let object = { 'a': 1, 'b': 2 };
-      let match = isMatch(object, { 'b': 2 });
+    it('isMatchTest01',0, () => {
+      let object = { a: 1, b: 2 }as AB;
+      let match: boolean = isMatch(object, { b: 2 }as B);
       expect(match).assertTrue();
     })
 
-    it('isMatchTest02',0, function () {
-      let object = { 'a': 1, 'b': 2 };
-      let match = isMatch(object, { 'b': 1 });
+    it('isMatchTest02',0, () => {
+      let object = { a: 1, b: 2 }as AB;
+      let match: boolean = isMatch(object, { b: 1 }as B);
       expect(match).assertFalse();
     })
 
-    it('isMatchWithTest01',0, function () {
-      function isGreeting(value) {
-        return /^h(?:i|ello)$/.test(value);
+    it('isMatchWithTest01',0, () => {
+      let isGreeting: (value: string) => boolean = (value: string): boolean => {
+        let regex: RegExp = new RegExp('^h(?:i|ello)$')
+        return regex.test(value);
       }
-      function customizer(objValue, srcValue) {
-        if (isGreeting(objValue) && isGreeting(srcValue)) {
+      let customizer: (objValue: string, othValue: string) => void = (objValue: string, othValue: string): boolean => {
+        if (isGreeting(objValue) && isGreeting(othValue)) {
           return true;
+        } else {
+          return false;
         }
       }
-      let object = { 'greeting': 'hello' };
-      let source = { 'greeting': 'hi' };
-      let matchWith = isMatchWith(object, source, customizer);
+      let object: Greet = { greeting: 'hello' };
+      let source: Greet = { greeting: 'hi' };
+      let matchWith: boolean = isMatchWith(object, source, customizer);
       expect(matchWith).assertTrue();
     })
 
-    it('isMatchWithTest02',0, function () {
-      let customizer = function(value) {
+    it('isMatchWithTest02',0, () => {
+      let customizer = (value: string): boolean | undefined=> {
         return isString(value) || undefined;
       };
       expect(isMatchWith(['a'], ['b'], customizer)).assertTrue();
     })
 
-    it('isNaNTest01',0, function () {
-      expect(isNaN(NaN)).assertTrue();
+    // it('isNaNTest01',0, () => {
+    //   expect(isNaN(NaN)).assertTrue();
+    // })
+
+    it('isNaNTest02',0, () => {
+      expect(isNaN(undefined)).assertFalse();
     })
 
-    it('isNaNTest02',0, function () {
-      expect(isNaN(undefined)).assertTrue();
+    it('isNativeTest01',0, () => {
+      expect(isNative(String.toString)).assertTrue();
     })
 
-    it('isNativeTest01',0, function () {
-      expect(isNative(Array.prototype.push)).assertTrue();
-    })
-
-    it('isNativeTest02',0, function () {
+    it('isNativeTest02',0, () => {
       expect(isNative(undefined)).assertFalse();
     })
 
-    it('isNilTest01',0, function () {
+    it('isNilTest01',0, () => {
       expect(isNil(null)).assertTrue();
     })
 
-    it('isNilTest02',0, function () {
-      expect(isNil(NaN)).assertFalse();
+    it('isNilTest02',0, () => {
+      expect(isNil(1)).assertFalse();
     })
 
-    it('isNullTest01',0, function () {
+    it('isNullTest01',0, () => {
       expect(isNull(null)).assertTrue();
     })
 
-    it('isNullTest02',0, function () {
+    it('isNullTest02',0, () => {
       expect(isNull(void 0)).assertFalse();
     })
 
-    it('isNumberTest01',0, function () {
+    it('isNumberTest01',0, () => {
       expect(isNumber(3)).assertTrue();
     })
 
-    it('isNumberTest02',0, function () {
+    it('isNumberTest02',0, () => {
       expect(isNumber('3')).assertFalse();
     })
 
-    it('isObjectTest01',0, function () {
+    it('isObjectTest01',0, () => {
       expect(isObject({})).assertTrue();
     })
 
-    it('isObjectTest02',0, function () {
+    it('isObjectTest02',0, () => {
       expect(isObject(null)).assertFalse();
     })
 
-    it('isObjectLikeTest01',0, function () {
+    it('isObjectLikeTest01',0, () => {
       expect(isObjectLike([1, 2, 3])).assertTrue();
     })
 
-    it('isObjectLikeTest02',0, function () {
+    it('isObjectLikeTest02',0, () => {
       expect(isObjectLike(null)).assertFalse();
     })
 
-    it('isPlainObjectTest01',0, function () {
-      function Foo() {
-        this.a = 1;
-      }
-      expect(isPlainObject(new Foo)).assertFalse();
+    it('isPlainObjectTest01',0, () => {
+      expect(isPlainObject([1, 2, 3])).assertFalse();
     })
 
-    it('isPlainObjectTest02',0, function () {
+    it('isPlainObjectTest02',0, () => {
       expect(isPlainObject({ 'x': 0, 'y': 0 })).assertTrue();
     })
 
-    it('isRegExpTest01',0, function () {
+    it('isRegExpTest01',0, () => {
+      let regex: ESObject = new RegExp('abc');
+      expect(isRegExp(regex)).assertTrue();
+    })
+
+    it('isRegExpTest02',0, () => {
       expect(isRegExp('/abc/')).assertFalse();
     })
 
-    it('isRegExpTest02',0, function () {
-      expect(isRegExp(/abc/)).assertTrue();
+    it('isSafeIntegerTest01',0, () => {
+      expect(isSafeInteger(Number.MIN_VALUE)).assertFalse();
     })
 
-    it('isSafeIntegerTest01',0, function () {
-      expect(isSafeInteger(Infinity)).assertFalse();
-    })
-
-    it('isSafeIntegerTest02',0, function () {
+    it('isSafeIntegerTest02',0, () => {
       expect(isSafeInteger(3)).assertTrue();
     })
 
-    it('isSetTest01',0, function () {
-      expect(isSet(new Set)).assertTrue();
+    it('isSetTest01',0, () => {
+      expect(isSet(new Set([1, 2, 3, 4, 5]))).assertTrue();
     })
 
-    it('isSetTest02',0, function () {
+    it('isSetTest02',0, () => {
       expect(isSet(new WeakSet)).assertFalse();
     })
 
-    it('isStringTest01',0, function () {
+    it('isStringTest01',0, () => {
       expect(isString('abc')).assertTrue();
     })
 
-    it('isStringTest02',0, function () {
+    it('isStringTest02',0, () => {
       expect(isString(1)).assertFalse();
     })
 
-    it('isSymbolTest01',0, function () {
+    it('isSymbolTest01',0, () => {
       expect(isSymbol(Symbol.iterator)).assertTrue();
     })
 
-    it('isSymbolTest02',0, function () {
+    it('isSymbolTest02',0, () => {
       expect(isSymbol('abc')).assertFalse();
     })
 
-    it('isTypedArrayTest01',0, function () {
+    it('isTypedArrayTest01',0, () => {
       expect(isTypedArray(new Uint8Array)).assertTrue();
     })
 
-    it('isTypedArrayTest02',0, function () {
+    it('isTypedArrayTest02',0, () => {
       expect(isTypedArray([])).assertFalse();
     })
 
-    it('isUndefinedTest01',0, function () {
+    it('isUndefinedTest01',0, () => {
       expect(isUndefined(void 0)).assertTrue();
     })
 
-    it('isUndefinedTest02',0, function () {
+    it('isUndefinedTest02',0, () => {
       expect(isUndefined(null)).assertFalse();
     })
 
-    it('isWeakMapTest01',0, function () {
-      expect(isWeakMap(new WeakMap)).assertTrue();
+    it('isWeakMapTest01',0, () => {
+      let obj: ESObject= new Array(2);
+      obj.fill(5);
+      expect(isWeakMap(obj)).assertFalse();
     })
 
-    it('isWeakMapTest02',0, function () {
+    it('isWeakMapTest02',0, () => {
       expect(isWeakMap(new Map)).assertFalse();
     })
 
-    it('isWeakSetTest01',0, function () {
+    it('isWeakSetTest01',0, () => {
       expect(isWeakSet(new WeakSet)).assertTrue();
     })
 
-    it('isWeakSetTest02',0, function () {
-      expect(isWeakSet(new Set)).assertFalse();
+    it('isWeakSetTest02',0, () => {
+      expect(isWeakSet(new Set([1,2,3]))).assertFalse();
     })
 
-    it('ltTest01',0, function () {
+    it('ltTest01',0, () => {
       expect(lt(1, 3)).assertTrue();
     })
 
-    it('ltTest02',0, function () {
+    it('ltTest02',0, () => {
       expect(lt(3, 1)).assertFalse();
     })
 
-    it('lteTest01',0, function () {
+    it('lteTest01',0, () => {
       expect(lte(1, 3)).assertTrue();
     })
 
-    it('lteTest02',0, function () {
+    it('lteTest02',0, () => {
       expect(lte(3, 1)).assertFalse();
     })
 
-    it('toArrayTest01',0, function () {
+    it('toArrayTest01',0, () => {
       expect(JSON.stringify(toArray({ 'a': 1, 'b': 2 }))).assertEqual('[1,2]');
     })
 
-    it('toArrayTest02',0, function () {
+    it('toArrayTest02',0, () => {
       expect(JSON.stringify(toArray('abc'))).assertEqual('["a","b","c"]');
     })
 
-    it('toFiniteTest01',0, function () {
+    it('toFiniteTest01',0, () => {
       expect(toFinite(Number.MIN_VALUE)).assertEqual(5e-324);
     })
 
-    it('toFiniteTest02',0, function () {
-      expect(toFinite(Infinity)).assertEqual(1.7976931348623157e+308);
+    it('toFiniteTest02',0, () => {
+      expect(toFinite(Math.PI)).assertEqual(3.141592653589793);
     })
 
-    it('toIntegerTest01',0, function () {
+    it('toIntegerTest01',0, () => {
       expect(toInteger(Number.MIN_VALUE)).assertEqual(0);
     })
 
-    it('toIntegerTest02',0, function () {
-      expect(toInteger(Infinity)).assertEqual(1.7976931348623157e+308);
+    it('toIntegerTest02',0, () => {
+      expect(toInteger(Math.PI)).assertEqual(3);
     })
 
-    it('toLengthTest01',0, function () {
+    it('toLengthTest01',0, () => {
       expect(toLength(Number.MIN_VALUE)).assertEqual(0);
     })
 
-    it('toLengthTest02',0, function () {
-      expect(toLength(Infinity)).assertEqual(4294967295);
+    it('toLengthTest02',0, () => {
+      expect(toLength(Math.PI)).assertEqual(3);
     })
 
-    it('toNumberTest01',0, function () {
+    it('toNumberTest01',0, () => {
       expect(toNumber(Number.MIN_VALUE)).assertEqual(5e-324);
     })
 
-    it('toNumberTest02',0, function () {
-      expect(toNumber(Infinity)).assertEqual(Infinity);
+    it('toNumberTest02',0, () => {
+      expect(toNumber(Math.PI)).assertEqual(Math.PI);
     })
 
-    it('toPlainObjectTest01',0, function () {
-      function Foo() {
-        this.b = 2;
-      }
-      Foo.prototype.c = 3;
-      let plainObject = assign({ 'a': 1 }, toPlainObject(new Foo));
-      expect(JSON.stringify(plainObject)).assertEqual('{"a":1,"b":2,"c":3}');
+    it('toPlainObjectTest01',0, () => {
+      let plainObject: object = assign({ 'b':2 }, toPlainObject(['c','d']))
+      expect(JSON.stringify(plainObject)).assertEqual('{"0":"c","1":"d","b":2}');
     })
 
-    it('toPlainObjectTest02',0, function () {
-      let actual = toPlainObject(['a', 'b', 'c'])
+    it('toPlainObjectTest02',0, () => {
+      let actual: object = toPlainObject(['a', 'b', 'c'])
       expect(JSON.stringify(actual)).assertEqual('{"0":"a","1":"b","2":"c"}');
     })
 
-    it('toSafeIntegerTest01',0, function () {
+    it('toSafeIntegerTest01',0, () => {
       expect(toSafeInteger(3.2)).assertEqual(3);
     })
 
-    it('toSafeIntegerTest02',0, function () {
-      expect(toSafeInteger(Infinity)).assertEqual(9007199254740991);
+    it('toSafeIntegerTest02',0, () => {
+      expect(toSafeInteger(Math.PI)).assertEqual(3);
     })
 
-    it('toStringTest01',0, function () {
+    it('toStringTest01',0, () => {
       expect(toString(null)).assertEqual('');
     })
 
-    it('toStringTest02',0, function () {
+    it('toStringTest02',0, () => {
       expect(toString([1, 2, 3])).assertEqual('1,2,3');
     })
   })

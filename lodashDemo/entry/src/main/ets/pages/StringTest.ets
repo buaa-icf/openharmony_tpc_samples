@@ -21,44 +21,44 @@ struct Index {
 
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
-      Button('点击转换字符串为驼峰写法')
+      Button('转换字符串为驼峰写法')
         .onClick(() => {
-          let camelCaseString = camelCase('__FOO_BAR__');
+          let camelCaseString: string = camelCase('__FOO_BAR__');
           // => 'fooBar'
           console.log('转换字符串为驼峰写法为：' + JSON.stringify(camelCaseString));
         }).margin(10);
 
-      Button('点击转换字符串首字母为大写，剩下为小写')
+      Button('转换字符串首字母为大写，剩下为小写')
         .onClick(() => {
-          let capitalizeString = capitalize('FRED');
+          let capitalizeString: string = capitalize('FRED');
           // => 'Fred'
           console.log('转换字符串首字母为大写，剩下为小写为：' + JSON.stringify(capitalizeString));
         }).margin(10)
 
-      Button('点击将给定字符串的字符“&”，“ <”，“>”，“”和“‘”转换为它们相应的HTML实体')
+      Button('将给定字符串的字符“&”，“ <”，“>”，“”和“‘”转换为它们相应的HTML实体')
         .onClick(() => {
-          let escapeString = escape('fred, barney, & pebbles');
+          let escapeString: string = escape('fred, barney, & pebbles');
           // => 'fred, barney, &amp; pebbles'
           console.log('转换为:' + JSON.stringify(escapeString));
         }).margin(10)
 
-      Button('点击转换字符串为kebab case')
+      Button('转换字符串为kebab case')
         .onClick(() => {
-          let kebabCaseString = kebabCase('__FOO_BAR__');
+          let kebabCaseString: string = kebabCase('__FOO_BAR__');
           // => 'foo-bar'
           console.log('转换字符串为kebab case为:' + JSON.stringify(kebabCaseString));
         }).margin(10)
 
-      Button('点击从左侧和右侧填充字符')
+      Button('从左侧和右侧填充字符')
         .onClick(() => {
-          let paddingString = pad('abc', 8, '_-');
+          let paddingString: string = pad('abc', 8, '_-');
           // => '_-abc_-_'
           console.log('如果字符串长度小于length则从左侧和右侧填充字符为:' + JSON.stringify(paddingString));
         }).margin(10)
 
-      Button('点击转换字符串为指定基数的整数')
+      Button('转换字符串为指定基数的整数')
         .onClick(() => {
-          let array = map(['6', '08', '10'], parseInt);
+          let array: number[] = map(['6', '08', '10'], parseInt);
           // => [6, 8, 10]
           console.log('转换字符串为指定基数的整为:' + JSON.stringify(array));
         }).margin(10)

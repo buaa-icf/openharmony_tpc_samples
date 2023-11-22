@@ -15,54 +15,65 @@
 
 import { castArray, clone, eq, isArrayBuffer, isNumber } from "lodash"
 
+class cloneObject {
+  a: number = 0
+}
+
+class bObject {
+  b: number = 0
+}
+
+class A {
+  a: number = 0
+}
 @Entry
 @Component
 struct Index {
 
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
-      Button('点击将非数组数组强制转为数组')
+      Button('将非数组数组强制转为数组')
         .onClick(() => {
-          let arry1 = castArray({ 'a': 1 });
+          let arry1: number[] = castArray({ 'a': 1 });
           // => [{ 'a': 1 }]
 
-          let arry2 = castArray('abc');
+          let arry2: number[] = castArray('abc');
           // => ['abc']
           console.log('强制转化后的型数组:' + JSON.stringify(arry1)+ ' ' + JSON.stringify(arry2));
         }).margin(10);
 
-      Button('点击获取拷贝后的值')
+      Button('获取拷贝后的值')
         .onClick(() => {
-          var objects = [{ 'a': 1 }, { 'b': 2 }];
-          var shallow = clone(objects);
+          let objects = [{ a: 1 } as cloneObject, { b: 2 } as bObject];
+          let shallow: ESObject = clone(objects);
           console.log('拷贝后的值：' + JSON.stringify(shallow));
         }).margin(10)
 
-      Button('点击比较两者的值')
+      Button('比较两者的值')
         .onClick(() => {
-          let object = { 'a': 1 };
-          let other = { 'a': 1 };
-          let eqs1 = eq(object, object);
+          let object: A = { a: 1 };
+          let other: A = { a: 1 };
+          let eqs1: boolean = eq(object, object);
           // => true
 
-          let eqs2 = eq(object, other);
+          let eqs2: boolean = eq(object, other);
           // => false
           console.log('比较两者的值,两个值相等返回true,否则返回false: ' + eqs1+ ' ' + eqs2);
         }).margin(10)
 
-      Button('点击检查值是否是ArrayBuffer对象')
+      Button('检查值是否是ArrayBuffer对象')
         .onClick(() => {
-          let arrayBuffer = isArrayBuffer(new ArrayBuffer(2));
+          let arrayBuffer: boolean = isArrayBuffer(new ArrayBuffer(2));
           // => true
           console.log('检查值是否是ArrayBuffer对象: ' + arrayBuffer);
         }).margin(10)
 
-      Button('点击检查值是否是原始Number数值型或者对象')
+      Button('检查值是否是原始Number数值型或者对象')
         .onClick(() => {
-          let isNumber1 = isNumber(3);
+          let isNumber1: boolean = isNumber(3);
           // => true
 
-          let isNumber2 = isNumber('3');
+          let isNumber2: boolean = isNumber('3');
           // => false
           console.log('检查值是否是原始Number数值型或者对象: ' + isNumber1+ ' ' + isNumber2);
         }).margin(10)
