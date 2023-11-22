@@ -17,6 +17,10 @@ import * as box2d from '@ohos/box2d'
 import { Settings } from '../Testbed/Framework/Test'
 import { g_testEntries } from '../Testbed/Tests/TestEntries'
 
+class ArrayItem {
+  value: string = '';
+}
+
 @Entry
 @Component
 struct Index {
@@ -26,7 +30,7 @@ struct Index {
   private commonFontSize = 14;
   private fontColor = Color.Grey;
   private zindexRevers: boolean = false;
-  private selectArr = [];
+  private selectArr: Array<ArrayItem> = [];
   private selectIndex = 0;
   @State title: string = "Box2D Testbed version " + box2d.b2_version + "<br>(branch: " + box2d.b2_branch + " commit: " + box2d.b2_commit + ")";
   @State controlZindex: number = 99;
@@ -41,15 +45,15 @@ struct Index {
 
   aboutToAppear() {
     for (let i: number = 0; i < g_testEntries.length; ++i) {
-      let o = {};
-      o['value'] = g_testEntries[i].name;
+      let o: ArrayItem = new ArrayItem();
+      o.value = g_testEntries[i].name;
       this.selectArr[i] = o;
     }
 
     const loop = () => {
-      var tt = new Date().getTime()
+      let tt = new Date().getTime()
       this.app.SimulationLoop(tt)
-      var image = this.offContext.transferToImageBitmap()
+      let image = this.offContext.transferToImageBitmap()
       if (this.isLoad) {
         this.context.transferFromImageBitmap(image)
       }
@@ -205,13 +209,13 @@ struct Index {
       .height('100%')
       .position({ x: 0, y: 0 })
       .zIndex(this.canvasZindex)
-      .onClick((event?: ClickEvent) => {
+      .onClick((event: ClickEvent) => {
 
       })
-      .onHover((isHover?: boolean) => {
+      .onHover((isHover: boolean) => {
 
       })
-      .onMouse((e?: MouseEvent) => {
+      .onMouse((e: MouseEvent) => {
         switch (e.action) {
           case MouseAction.Press:
             this.app.HandleMouseDown(e);
@@ -227,7 +231,7 @@ struct Index {
             break;
         }
       })
-      .onTouch((e?: TouchEvent) => {
+      .onTouch((e: TouchEvent) => {
         switch (e.type) {
           case TouchType.Down:
             this.app.HandleTouchStart(e);
@@ -249,7 +253,7 @@ struct Index {
           .margin({ left: '10', top: '10' })
           .padding({ left: 20, right: 20, bottom: 10, top: 10 })
           .fontSize(this.commonFontSize)
-          .onClick((event?: ClickEvent) => {
+          .onClick((event: ClickEvent) => {
             this.zindexRevers = !this.zindexRevers;
             if (!this.zindexRevers) {
               this.controlZindex = 99;
@@ -266,7 +270,7 @@ struct Index {
       .position({ x: -10, y: 70 })
       .zIndex(999)
 
-    }.onKeyEvent((e?: KeyEvent) => {
+    }.onKeyEvent((e: KeyEvent) => {
       switch (e.type) {
         case KeyType.Down:
           this.app.HandleKeyDown(e);
@@ -297,7 +301,7 @@ struct Index {
         .fontColor(this.fontColor)
         .fontSize(this.commonFontSize)
         .onChange((value: string) => {
-          update(parseInt(value, 10));
+          update(Number.parseInt(value, 10));
         });
     }
   }

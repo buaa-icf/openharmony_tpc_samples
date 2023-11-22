@@ -83,14 +83,14 @@ export class Segway extends testbed.Test {
     fd.friction = 10;
     this.wheelBody.CreateFixture(fd);
 
-    // var wheelJoint = new p2.RevoluteConstraint(wheelBody, pendulumBody, {
+    // let wheelJoint = new p2.RevoluteConstraint(wheelBody, pendulumBody, {
     //     localPivotA: [0, 0],
     //     localPivotB: [0, -0.5 * PENDULUM_LENGTH],
     //     collideConnected: false
     // });
     // world.addConstraint(wheelJoint);
     // wheelJoint.motorEnabled = true;
-    // var m = 40;
+    // let m = 40;
     // wheelJoint.motorEquation.maxForce = m;
     // wheelJoint.motorEquation.minForce = -m;
     const jd: box2d.b2RevoluteJointDef = new box2d.b2RevoluteJointDef();
@@ -103,8 +103,8 @@ export class Segway extends testbed.Test {
     this.wheelJoint = this.m_world.CreateJoint(jd);
 
     // Create ground
-    // var groundShape = new p2.Plane();
-    // var groundBody = new p2.Body({
+    // let groundShape = new p2.Plane();
+    // let groundBody = new p2.Body({
     //     position:[0,0],
     // });
     // groundBody.addShape(groundShape);
@@ -151,7 +151,7 @@ export class Segway extends testbed.Test {
       // targetAngle = clamp(targetAngle, -15 * DEGTORAD, 15 * DEGTORAD);
       targetAngle = box2d.b2Clamp(targetAngle, box2d.b2DegToRad(-15), box2d.b2DegToRad(15));
     }
-    // var currentAngle = pendulumBody.angle;
+    // letcurrentAngle = pendulumBody.angle;
     let currentAngle: number = this.pendulumBody.GetAngle();
     currentAngle = normalizeAngle(currentAngle);
     this.angleController.currentError = targetAngle - currentAngle;
@@ -163,7 +163,7 @@ export class Segway extends testbed.Test {
       targetSpeed = 0;
     }
     // this is the only output
-    // var targetAngularVelocity = -targetSpeed / (2 * Math.PI * wheelBody.shapes[0].radius); // wheel circumference = 2*pi*r
+    // let targetAngularVelocity = -targetSpeed / (2 * Math.PI * wheelBody.shapes[0].radius); // wheel circumference = 2*pi*r
     const targetAngularVelocity: number = targetSpeed / (2 * Math.PI * 0.6); // wheel circumference = 2*pi*r
     // wheelJoint.motorSpeed = targetAngularVelocity;
     this.wheelJoint.SetMotorSpeed(targetAngularVelocity);
@@ -195,27 +195,27 @@ class PIDController {
   }
 }
 
-// var DEGTORAD = 0.0174532925199432957;
-// var RADTODEG = 57.295779513082320876;
-// var PENDULUM_LENGTH = 10;
-// var targetPosition = 0;
-// var targetPositionInterval = setInterval(changeTargetPos, 8000);
+// let DEGTORAD = 0.0174532925199432957;
+// let RADTODEG = 57.295779513082320876;
+// let PENDULUM_LENGTH = 10;
+// let targetPosition = 0;
+// let targetPositionInterval = setInterval(changeTargetPos, 8000);
 // function changeTargetPos(){
 //     targetPosition = targetPosition===0 ? 10 : 0;
 // }
 // changeTargetPos();
-// var posAvg = 0;
-// var angleController = new PIDController();
+// let posAvg = 0;
+// let angleController = new PIDController();
 // angleController.gainP = 1000;
 // angleController.gainI = 0;
 // angleController.gainD = 250;
-// var positionController = new PIDController();
+// let positionController = new PIDController();
 // positionController.gainP = 0.5;
 // positionController.gainI = 0;
 // positionController.gainD = 1.5;
 // // Create demo application
-// var app = new p2.WebGLRenderer(function(){
-//     var world = new p2.World({
+// let app = new p2.WebGLRenderer(function(){
+//     let world = new p2.World({
 //         gravity : [0,-30]
 //     });
 //     this.setWorld(world);
@@ -232,45 +232,45 @@ class PIDController {
 //     });
 //     wheelBody.addShape(new p2.Circle({ radius: 0.6 }));
 //     world.addBody(wheelBody);
-//     var wheelJoint = new p2.RevoluteConstraint(wheelBody, pendulumBody, {
+//     let wheelJoint = new p2.RevoluteConstraint(wheelBody, pendulumBody, {
 //         localPivotA: [0, 0],
 //         localPivotB: [0, -0.5 * PENDULUM_LENGTH],
 //         collideConnected: false
 //     });
 //     world.addConstraint(wheelJoint);
 //     wheelJoint.motorEnabled = true;
-//     var m = 40;
+//     let m = 40;
 //     wheelJoint.motorEquation.maxForce = m;
 //     wheelJoint.motorEquation.minForce = -m;
 //     // Create ground
-//     var groundShape = new p2.Plane();
-//     var groundBody = new p2.Body({
+//     let groundShape = new p2.Plane();
+//     let groundBody = new p2.Body({
 //         position:[0,0],
 //     });
 //     groundBody.addShape(groundShape);
 //     world.addBody(groundBody);
 //     world.on('postStep', function(){
-//         var targetAngle = 0;
+//         let targetAngle = 0;
 //         if ( true ) {
-//             var alpha = 0.4;
+//             let alpha = 0.4;
 //             posAvg = (1 - alpha) * posAvg + alpha * pendulumBody.position[0];
 //             positionController.currentError = targetPosition - posAvg;
 //             positionController.step(world.lastTimeStep);
-//             var targetLinAccel = positionController.output;
+//             let targetLinAccel = positionController.output;
 //             targetLinAccel = clamp(targetLinAccel, -10.0, 10.0);
 //             targetAngle = targetLinAccel / world.gravity[1];
 //             targetAngle = clamp(targetAngle, -15 * DEGTORAD, 15 * DEGTORAD);
 //         }
-//         var currentAngle = pendulumBody.angle;
+//         let currentAngle = pendulumBody.angle;
 //         currentAngle = normalizeAngle(currentAngle);
 //         angleController.currentError = ( targetAngle - currentAngle );
 //         angleController.step(world.lastTimeStep);
-//         var targetSpeed = angleController.output;
+//         let targetSpeed = angleController.output;
 //         // give up if speed required is really high
 //         if ( Math.abs(targetSpeed) > 1000 )
 //             targetSpeed = 0;
 //         // this is the only output
-//         var targetAngularVelocity = -targetSpeed / (2 * Math.PI * wheelBody.shapes[0].radius); // wheel circumference = 2*pi*r
+//         let targetAngularVelocity = -targetSpeed / (2 * Math.PI * wheelBody.shapes[0].radius); // wheel circumference = 2*pi*r
 //         wheelJoint.motorSpeed = targetAngularVelocity;
 //     });
 //     app.frame(3,5,16,16);
@@ -290,7 +290,7 @@ class PIDController {
 // }
 // PIDController.prototype.step = function(dt) {
 //     this.integral = dt * (this.integral + this.currentError);
-//     var derivative = (1 / dt) * (this.currentError - this.previousError);
+//     let derivative = (1 / dt) * (this.currentError - this.previousError);
 //     this.output = this.gainP * this.currentError + this.gainI * this.integral + this.gainD * derivative;
 //     this.previousError = this.currentError;
 // };

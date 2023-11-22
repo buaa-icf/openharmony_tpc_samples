@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2012 Erin Catto http://www.box2d.org
+* Copyright (C) 2023 Huawei Device Co., Ltd.
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -44,7 +44,7 @@ export class Main {
   private densityPixels: number = 1.5;
 
 
-  constructor(time: number, ctx) {
+  constructor(time: number, ctx: OffscreenCanvasRenderingContext2D) {
     display.getAllDisplays((err, data) => {
       if (err.code) {
         console.error(' Main Failed to obtain all the display objects. Code: ' + JSON.stringify(err));
@@ -153,7 +153,6 @@ export class Main {
     if (this.m_test) {
       this.m_test.MouseMove(world);
     }
-    e.stopPropagation();
   }
 
   public HandleTouchStart(e: TouchEvent): void {
@@ -164,14 +163,12 @@ export class Main {
     if (this.m_test) {
       this.m_test.MouseDown(world);
     }
-    e.stopPropagation();
   }
 
   public HandleTouchEnd(e: TouchEvent): void {
     if (this.m_test) {
       this.m_test.MouseUp(this.m_test.m_mouseWorld);
     }
-    e.stopPropagation();
   }
 
   public HandleMouseWheel(e: MouseEvent): void {

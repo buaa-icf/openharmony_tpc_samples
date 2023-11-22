@@ -4570,7 +4570,7 @@
       // manifold.points[0].id.cf = cf;
       manifold.points[0].localPoint.Copy(circleB.m_p);
   }
-  var b2EPAxisType;
+  let b2EPAxisType;
   (function (b2EPAxisType) {
       b2EPAxisType[b2EPAxisType["e_unknown"] = 0] = "e_unknown";
       b2EPAxisType[b2EPAxisType["e_edgeA"] = 1] = "e_edgeA";
@@ -4603,7 +4603,7 @@
           this.sideOffset2 = 0;
       }
   }
-  var b2EPColliderVertexType;
+  let b2EPColliderVertexType;
   (function (b2EPColliderVertexType) {
       b2EPColliderVertexType[b2EPColliderVertexType["e_isolated"] = 0] = "e_isolated";
       b2EPColliderVertexType[b2EPColliderVertexType["e_concave"] = 1] = "e_concave";

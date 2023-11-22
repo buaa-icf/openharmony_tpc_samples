@@ -17,46 +17,45 @@ import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from
 import * as box2d from '@ohos/box2d'
 
 export default function abilityTest() {
-  describe('box2d_est', function () {
+  describe('box2d_est', () => {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(() => {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(() => {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(() => {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(() => {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    it('b2ChainShape_test_001', 0, function () {
+    it('b2ChainShape_test_001', 0, () => {
       let shape = new box2d.b2ChainShape();
       expect(shape.m_type).assertEqual(box2d.b2ShapeType.e_chainShape)
     })
 
-    it('b2ChainShape_test_002', 0, function () {
+    it('b2ChainShape_test_002', 0, () => {
       let shape = new box2d.b2ChainShape();
-      box2d.b2Vec2
       let sp = shape.CreateChain([1, 2])
       expect(sp.m_type).assertEqual(box2d.b2ShapeType.e_chainShape)
     })
 
-    it('b2Collision_test_003', 0, function () {
+    it('b2Collision_test_003', 0, () => {
       let aabb = new box2d.b2AABB();
       let vec2 = aabb.GetCenter()
       expect(0).assertEqual(vec2.x)
       expect(0).assertEqual(vec2.y)
     })
 
-    it('b2Math_test_004', 0, function () {
+    it('b2Math_test_004', 0, () => {
       let v1 = new box2d.b2Vec2();
       v1.x = 0;
       v1.y = 1;
@@ -70,7 +69,7 @@ export default function abilityTest() {
       expect(v1).assertEqual(v2)
     })
 
-    it('b2Math_test_005', 0, function () {
+    it('b2Math_test_005', 0, () => {
       let v1 = new box2d.b2Vec2();
       v1.x = 0;
       v1.y = 1;
@@ -84,7 +83,7 @@ export default function abilityTest() {
       expect(v1).assertEqual(v2)
     })
 
-    it('b2Math_test_006', 0, function () {
+    it('b2Math_test_006', 0, () => {
       let v1 = new box2d.b2Vec2(10, -1.3);
       let m1 = box2d.b2Mat22.FromSSSS(1, 34, -3, 3);
       let m2 = box2d.b2Mat22.FromSSSS(2, -1, 4.1, -4);
@@ -95,7 +94,7 @@ export default function abilityTest() {
       expect(v1.x).assertEqual(10)
     })
 
-    it('b2TestCCD_test_024', 0, function () {
+    it('b2TestCCD_test_024', 0, () => {
       const fd = new box2d.b2FixtureDef();
       fd.density = 4.0;
       fd.restitution = 1.4;
@@ -111,7 +110,7 @@ export default function abilityTest() {
       expect(15).assertEqual(bd.position.x);
     })
 
-    it('b2PyramidTopple_test_025', 0, function () {
+    it('b2PyramidTopple_test_025', 0, () => {
       const shape = new box2d.b2EdgeShape();
       shape.Set(new box2d.b2Vec2(-600, -240), new box2d.b2Vec2(600, -240));
       const fd = new box2d.b2FixtureDef();
@@ -121,7 +120,7 @@ export default function abilityTest() {
       expect(fd.shape.m_type).assertEqual(box2d.b2ShapeType.e_edgeShape)
     })
 
-    it('b2TopdownCar_test_026', 0, function () {
+    it('b2TopdownCar_test_026', 0, () => {
       const DEGTORAD = 0.0174532925199432957;
       const polygonShape = new box2d.b2PolygonShape();
       const fixtureDef = new box2d.b2FixtureDef();
@@ -132,12 +131,12 @@ export default function abilityTest() {
       expect(4).assertEqual(polygonShape.m_count)
     })
 
-    it('b2ChainShape_test_027', 0, function () {
+    it('b2ChainShape_test_027', 0, () => {
       let shape = new box2d.b2ChainShape();
       expect(shape.m_type).assertEqual(box2d.b2ShapeType.e_chainShape)
     })
 
-    it('b2BuoyancyTest_test_028', 0, function () {
+    it('b2BuoyancyTest_test_028', 0, () => {
       const bc = new box2d.b2BuoyancyController();
       bc.normal.Set(0.0, 1.0);
       bc.offset = 20.0;
@@ -147,14 +146,14 @@ export default function abilityTest() {
       expect(0).assertEqual(bc.normal.x)
     })
 
-    it('b2Sandbox_test_029', 0, function () {
+    it('b2Sandbox_test_029', 0, () => {
       const m_killFieldTransform = new box2d.b2Transform();
       const loc = new box2d.b2Vec2(-20, 1);
       m_killFieldTransform.SetPositionAngle(loc, 0);
       expect(-20).assertEqual(loc.x);
     })
 
-    it('b2DamBreak_test_030', 0, function () {
+    it('b2DamBreak_test_030', 0, () => {
       const shape = new box2d.b2PolygonShape();
       shape.SetAsBox(0.8, 1.0, new box2d.b2Vec2(-1.2, 1.01), 0);
       const pd = new box2d.b2ParticleGroupDef();
@@ -162,7 +161,7 @@ export default function abilityTest() {
       expect(pd.shape.m_type).assertEqual(box2d.b2ShapeType.e_polygonShape)
     })
 
-    it('b2LiquidTimer_test_031', 0, function () {
+    it('b2LiquidTimer_test_031', 0, () => {
       const shape = new box2d.b2EdgeShape();
       let b1 = new box2d.b2Vec2(1.2, 0.8);
       let b2 = new box2d.b2Vec2(1.2, 0)
@@ -170,7 +169,7 @@ export default function abilityTest() {
       expect(shape.m_type).assertEqual(box2d.b2ShapeType.e_edgeShape)
     })
 
-    it('b2WaveMachine_test_032', 0, function () {
+    it('b2WaveMachine_test_032', 0, () => {
       const bd = new box2d.b2BodyDef();
       bd.type = box2d.b2BodyType.b2_dynamicBody;
       bd.allowSleep = false;
@@ -178,12 +177,12 @@ export default function abilityTest() {
       expect(1).assertEqual(bd.position.y)
     })
 
-    it('b2ChainShape_test_033', 0, function () {
+    it('b2ChainShape_test_033', 0, () => {
       let shape = new box2d.b2ChainShape();
       expect(shape.m_type).assertEqual(box2d.b2ShapeType.e_chainShape)
     })
 
-    it('b2Particles_test_034', 0, function () {
+    it('b2Particles_test_034', 0, () => {
       const shape = new box2d.b2CircleShape();
       shape.m_p.Set(0, 3);
       shape.m_radius = 2;
@@ -192,7 +191,7 @@ export default function abilityTest() {
       expect(pd.shape.m_type).assertEqual(box2d.b2ShapeType.e_circleShape)
     })
 
-    it('b2Faucet_test_035', 0, function () {
+    it('b2Faucet_test_035', 0, () => {
       const shape = new box2d.b2PolygonShape();
       const k_containerWidth = 1.0;
       const k_containerThickness = 0.05;
@@ -201,7 +200,7 @@ export default function abilityTest() {
       expect(shape.m_type).assertEqual(box2d.b2ShapeType.e_polygonShape)
     })
 
-    it('b2DrawingParticles_test_036', 0, function () {
+    it('b2DrawingParticles_test_036', 0, () => {
       const shape = new box2d.b2PolygonShape();
 
       const vertices = [
@@ -214,7 +213,7 @@ export default function abilityTest() {
       expect(4).assertEqual(shape.m_vertices[1].x)
     })
 
-    it('b2Soup_test_037', 0, function () {
+    it('b2Soup_test_037', 0, () => {
       const bd = new box2d.b2BodyDef();
       bd.type = box2d.b2BodyType.b2_dynamicBody;
       const shape = new box2d.b2CircleShape();
@@ -224,13 +223,13 @@ export default function abilityTest() {
       expect(shape.m_type).assertEqual(box2d.b2ShapeType.e_circleShape)
     })
 
-    it('b2Impulse_test_038', 0, function () {
+    it('b2Impulse_test_038', 0, () => {
       const shape = new box2d.b2PolygonShape();
       shape.SetAsBox(0.8, 1.0, new box2d.b2Vec2(0.0, 1.01), 0);
       expect(shape.m_type).assertEqual(box2d.b2ShapeType.e_polygonShape)
     })
 
-    it('b2SoupStirrer_test_039', 0, function () {
+    it('b2SoupStirrer_test_039', 0, () => {
       const bd = new box2d.b2BodyDef();
       bd.type = box2d.b2BodyType.b2_dynamicBody;
       const shape = new box2d.b2CircleShape();
@@ -238,18 +237,18 @@ export default function abilityTest() {
       expect(shape.m_type).assertEqual(box2d.b2ShapeType.e_circleShape)
     })
 
-    it('b2Maxwell_test_040', 0, function () {
+    it('b2Maxwell_test_040', 0, () => {
       const shape = new box2d.b2ChainShape();
       expect(shape.m_type).assertEqual(box2d.b2ShapeType.e_chainShape)
     })
 
-    it('b2Ramp_test_041', 0, function () {
+    it('b2Ramp_test_041', 0, () => {
       const shape = new box2d.b2CircleShape();
       shape.m_p.Set(-20, 33);
       expect(33).assertEqual(shape.m_p.y)
     })
 
-    it('b2Pointy_test_042', 0, function () {
+    it('b2Pointy_test_042', 0, () => {
       const m_killfieldShape = new box2d.b2PolygonShape();
       m_killfieldShape.SetAsBox(50.0, 1.0);
       const m_killfieldTransform = new box2d.b2Transform();
@@ -259,7 +258,7 @@ export default function abilityTest() {
       expect(0).assertEqual(m_killfieldTransform.GetAngle());
     })
 
-    it('b2Corner_test_043', 0, function () {
+    it('b2Corner_test_043', 0, () => {
       const shape = new box2d.b2CircleShape();
       shape.m_p.Set(0, 35);
       expect(35).assertEqual(shape.m_p.y)
@@ -273,7 +272,7 @@ export default function abilityTest() {
       expect(25).assertEqual(shape1.m_vertices[0].x)
     })
 
-    it('b2EyeCandy_test_044', 0, function () {
+    it('b2EyeCandy_test_044', 0, () => {
       const bd = new box2d.b2BodyDef();
       bd.type = box2d.b2BodyType.b2_staticBody;
       expect(bd.type).assertEqual(box2d.b2BodyType.b2_staticBody);
@@ -284,7 +283,7 @@ export default function abilityTest() {
       expect(5).assertEqual(jd.localAnchorB.y);
     })
 
-    it('b2Segway_test_045', 0, function () {
+    it('b2Segway_test_045', 0, () => {
       const PENDULUM_LENGTH = 10
       const bd: box2d.b2BodyDef = new box2d.b2BodyDef();
       bd.position.x = 0;
