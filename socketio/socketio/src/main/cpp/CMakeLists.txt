@@ -21,11 +21,11 @@ message(STATUS ">>>>> '${CMAKE_CURRENT_LIST_DIR}' ")
 
 # 查找当前目录下的所有源文件
 # 并将文件保存到 ALL_SRC 变量
-aux_source_directory(${CMAKE_CURRENT_LIST_DIR}/src ALL_SRC)
-aux_source_directory(${CMAKE_CURRENT_LIST_DIR}/src/internal ALL_SRC)
+aux_source_directory(${CMAKE_CURRENT_LIST_DIR}/socketio/src ALL_SRC)
+aux_source_directory(${CMAKE_CURRENT_LIST_DIR}/socketio/src/internal ALL_SRC)
 
 #file GLOB命令主要用于匹配规则在指定的目录内匹配到所需要的文件
-file(GLOB ALL_HEADERS ${CMAKE_CURRENT_LIST_DIR}/src/*.h)
+file(GLOB ALL_HEADERS ${CMAKE_CURRENT_LIST_DIR}/socketio/src/*.h)
 
 # 添加cmake编译参数
 add_definitions(
@@ -47,9 +47,9 @@ add_library(sioclient ${ALL_SRC})
 
 if(USE_SUBMODULES)
     set(MODULE_INCLUDE_DIRS
-        ${CMAKE_CURRENT_LIST_DIR}/lib/websocketpp
-        ${CMAKE_CURRENT_LIST_DIR}/lib/rapidjson/include
-        ${CMAKE_CURRENT_LIST_DIR}/lib/asio/asio/include
+        ${CMAKE_CURRENT_LIST_DIR}/socketio/lib/websocketpp
+        ${CMAKE_CURRENT_LIST_DIR}/socketio/lib/rapidjson/include
+        ${CMAKE_CURRENT_LIST_DIR}/socketio/lib/asio/asio/include
     )
 else()
     find_package(websocketpp CONFIG REQUIRED)
@@ -130,8 +130,8 @@ install(
 
 include_directories(${NATIVERENDER_ROOT_PATH}
                     ${NATIVERENDER_ROOT_PATH}/include
-                    ${NATIVERENDER_ROOT_PATH}/src
-                    ${NATIVERENDER_ROOT_PATH}/src/internal
+                    ${NATIVERENDER_ROOT_PATH}/socketio/src
+                    ${NATIVERENDER_ROOT_PATH}/socketio/src/internal
                     )
 
 add_library(client_socket_c SHARED client_socket.cpp)
