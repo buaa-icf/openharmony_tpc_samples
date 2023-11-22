@@ -13,12 +13,13 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/util'
-import "reflect-metadata"
 import * as ERROR_MSGS from 'inversify/lib/constants/error_msgs';
 import { Container, inject, injectable } from 'inversify';
+import * as ns from "reflect-metadata"
+ns
 
 export default function exceptionsTest() {
-  describe('exceptionsTest', function () {
+  describe('exceptionsTest',  ()=> {
     _it('Should_throw_if_circular_dependencies_found', () => {
 
       interface IA { }
@@ -64,7 +65,7 @@ export default function exceptionsTest() {
       container.bind<C>('C').to(C);
       container.bind<D>('D').to(D);
 
-      function willThrow() {
+      let willThrow=()=> {
         const a = container.get<A>('A');
         return a;
       }

@@ -13,9 +13,9 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/util'
-
+import * as ns from "reflect-metadata"
 import { Container, injectable } from 'inversify';
-
+ns
 export default function node_error_messagesTest() {
   interface Weapon { }
 
@@ -27,7 +27,7 @@ export default function node_error_messagesTest() {
 
   @injectable()
   class Bokken implements Weapon { }
-  describe('node_error_messagesTest', function () {
+  describe('node_error_messagesTest',  ()=>{
     _it('Should_contain_correct_message_and_the_serviceIdentifier_in_error_message', () => {
       const container = new Container();
 
@@ -50,7 +50,16 @@ export default function node_error_messagesTest() {
 
 
     _it('Should_list_all_possible_bindings_in_error_message_if_no_matching_binding_found', () => {
+      interface Weapon { }
 
+      @injectable()
+      class Katana implements Weapon { }
+
+      @injectable()
+      class Shuriken implements Weapon { }
+
+      @injectable()
+      class Bokken implements Weapon { }
       const container = new Container();
       container.bind<Weapon>('Weapon').to(Katana).whenTargetNamed('strong');
       container.bind<Weapon>('Weapon').to(Shuriken).whenTargetTagged('canThrow', true);
@@ -59,14 +68,23 @@ export default function node_error_messagesTest() {
       try {
         container.getNamed('Weapon', 'superior');
       } catch (error) {
-        expect((error as Error).message).to.match(/.*\bKatana\b.*\bnamed\b.*\bstrong\b/);
-        expect((error as Error).message).to.match(/.*\bBokken\b.*\bnamed\b.*\bweak\b/);
-        expect((error as Error).message).to.match(/.*\bShuriken\b.*\btagged\b.*\bcanThrow\b.*\btrue\b/);
+        expect((error as Error).message).to.match(new RegExp(".*\\bKatana\\b.*\\bnamed\\b.*\\bstrong\\b"));
+        expect((error as Error).message).to.match(new RegExp(".*\\bBokken\\b.*\\bnamed\\b.*\\bweak\\b"));
+        expect((error as Error).message).to.match(new RegExp(".*\\bShuriken\\b.*\\btagged\\b.*\\bcanThrow\\b.*\\btrue\\b"));
       }
     });
 
     _it('Should_list_all_possible_bindings_in_error_message_if_ambiguous_matching_binding_found', () => {
+      interface Weapon { }
 
+      @injectable()
+      class Katana implements Weapon { }
+
+      @injectable()
+      class Shuriken implements Weapon { }
+
+      @injectable()
+      class Bokken implements Weapon { }
       const container = new Container();
       container.bind<Weapon>('Weapon').to(Katana).whenTargetNamed('strong');
       container.bind<Weapon>('Weapon').to(Shuriken).whenTargetTagged('canThrow', true);
@@ -75,9 +93,9 @@ export default function node_error_messagesTest() {
       try {
         container.get('Weapon');
       } catch (error) {
-        expect((error as Error).message).to.match(/.*\bKatana\b.*\bnamed\b.*\bstrong\b/);
-        expect((error as Error).message).to.match(/.*\bBokken\b.*\bnamed\b.*\bweak\b/);
-        expect((error as Error).message).to.match(/.*\bShuriken\b.*\btagged\b.*\bcanThrow\b.*\btrue\b/);
+        expect((error as Error).message).to.match(new RegExp(".*\\bKatana\\b.*\\bnamed\\b.*\\bstrong\\b"));
+        expect((error as Error).message).to.match(new RegExp(".*\\bBokken\\b.*\\bnamed\\b.*\\bweak\\b"));
+        expect((error as Error).message).to.match(new RegExp(".*\\bShuriken\\b.*\\btagged\\b.*\\bcanThrow\\b.*\\btrue\\b"));
       }
 
     });

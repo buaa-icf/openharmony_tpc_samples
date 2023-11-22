@@ -15,9 +15,10 @@
 
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/util'
 import { Container, injectable, multiBindToService } from "inversify";
-
+import * as ns from "reflect-metadata"
+ns
 export default function transitive_bindingsTest() {
-  describe('transitive_bindingsTest', function () {
+  describe('transitive_bindingsTest',  ()=> {
     _it("Should_be_able_to_bind_to_a_service", () => {
 
       @injectable()

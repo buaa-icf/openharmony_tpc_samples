@@ -13,45 +13,57 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/util'
-import "reflect-metadata"
 import * as ERROR_MSGS from 'inversify/lib/constants/error_msgs';
 import { interfaces } from 'inversify';
+import {  arrayConversion } from '../tools/utilFun';
 import { Container, ContainerModule, decorate, inject, injectable, LazyServiceIdentifer, multiInject, named, tagged, targetName, typeConstraint, unmanaged } from 'inversify';
+import * as ns from "reflect-metadata"
+import {
+  SYMBOL,
+  invertPrototype,
+  SYMBOLSSymbol2,
+  SYMBOLSSymbol4, TYPESSymbol2, TYPESSymbol3, TYPESSymbol4 } from '../tools/tools';
+import {
+  symbolFor,
+   } from '../tools/symbol';
+import { ninjaFun } from '../tools/reflectMetadata';
 
+
+ns
 export default function inversifyTest() {
-  describe('inversifyTest', function () {
+  describe('inversifyTest',  ()=> {
 
     _it('Should_be_able_to_resolve_and_inject_dependencies', () => {
-
-      interface Ninja {
+      interface Ninja1 {
         fight(): string;
         sneak(): string;
       }
 
-      interface Katana {
+      interface Katana1 {
         h_it(): string;
       }
 
-      interface Shuriken {
+      interface Shuriken1 {
         throw(): string;
       }
 
+
       @injectable()
-      class Katana implements Katana {
+      class Katana implements Katana1 {
         public h_it() {
           return 'cut!';
         }
       }
 
       @injectable()
-      class Shuriken implements Shuriken {
+      class Shuriken implements Shuriken1 {
         public throw() {
           return 'hit!';
         }
       }
 
       @injectable()
-      class Ninja implements Ninja {
+      class Ninja implements Ninja1 {
 
         private _katana: Katana;
         private _shuriken: Shuriken;
@@ -64,8 +76,8 @@ export default function inversifyTest() {
           this._shuriken = shuriken;
         }
 
-        public fight() { return this._katana.h_it(); }
-        public sneak() { return this._shuriken.throw(); }
+        public fight():string { return this._katana.h_it(); }
+        public sneak():string { return this._shuriken.throw(); }
 
       }
 
@@ -82,6 +94,11 @@ export default function inversifyTest() {
     });
 
     _it('Should_be_able_to_do_setter_injection_and_property_injection', () => {
+
+      interface Katana1 {
+        h_it(): string;
+      }
+
       @injectable()
       class Shuriken {
         public throw() {
@@ -89,7 +106,7 @@ export default function inversifyTest() {
         }
       }
       @injectable()
-      class Katana implements Katana {
+      class Katana implements Katana1 {
         public h_it() {
           return 'cut!';
         }
@@ -105,8 +122,8 @@ export default function inversifyTest() {
         }
         @inject(Katana)
         public katana!: Katana;
-        public sneak() { return this._shuriken.throw(); }
-        public fight() { return this.katana.h_it(); }
+        public sneak():string  { return this._shuriken.throw(); }
+        public fight():string  { return this.katana.h_it(); }
 
       }
 
@@ -121,8 +138,13 @@ export default function inversifyTest() {
     });
 
     _it('Should_be_able_to_resolve_and_inject_dependencies_in_VanillaJS', () => {
-
-      const TYPES = {
+      interface  typs{
+        Katana: string;
+        Ninja: string;
+        Shuriken: string;
+        Blowgun: string;
+      }
+      const TYPES:typs = {
         Katana: 'Katana',
         Ninja: 'Ninja',
         Shuriken: 'Shuriken',
@@ -157,22 +179,22 @@ export default function inversifyTest() {
           this._katana = katana;
           this._shuriken = shuriken;
         }
-        public fight() { return this._katana.h_it(); }
-        public sneak() { return this._shuriken.throw(); }
-        public poisonDart() { return this._blowgun.blow(); }
+        public fight():string { return this._katana.h_it(); }
+        public sneak():string { return this._shuriken.throw(); }
+        public poisonDart(): string { return this._blowgun.blow(); }
 
         public set blowgun(blowgun: Blowgun) {
           this._blowgun = blowgun;
         }
       }
-
+      let Prototype:ESObject=invertPrototype(Ninja)
       decorate(injectable(), Katana);
       decorate(injectable(), Shuriken);
       decorate(injectable(), Ninja);
       decorate(injectable(), Blowgun);
       decorate(inject(TYPES.Katana), Ninja, 0);
       decorate(inject(TYPES.Shuriken), Ninja, 1);
-      decorate(inject(TYPES.Blowgun), Ninja.prototype, 'blowgun');
+      decorate(inject(TYPES.Blowgun), Prototype, 'blowgun');
 
       const container = new Container();
       container.bind<Ninja>(TYPES.Ninja).to(Ninja);
@@ -190,44 +212,43 @@ export default function inversifyTest() {
 
     _it('Should_be_able_to_use_classes_as_runtime_identifiers', () => {
 
-      @injectable()
-      class Katana {
-        public h_it() {
-          return 'cut!';
-        }
-      }
-
-      @injectable()
-      class Shuriken {
-        public throw() {
-          return 'hit!';
-        }
-      }
-
-      @injectable()
-      @Reflect.metadata("design:paramtypes",[Katana,Shuriken])
-      class Ninja {
-
-        private _katana: Katana;
-        private _shuriken: Shuriken;
-
-        public constructor(katana: Katana, shuriken: Shuriken) {
-          this._katana = katana;
-          this._shuriken = shuriken;
-        }
-
-        public fight() { return this._katana.h_it(); }
-        public sneak() { return this._shuriken.throw(); }
-
-      }
-
-      const container = new Container();
-      container.bind<Ninja>(Ninja).to(Ninja);
-      container.bind<Katana>(Katana).to(Katana);
-      container.bind<Shuriken>(Shuriken).to(Shuriken);
-
-      const ninja = container.get<Ninja>(Ninja);
-
+      // @injectable()
+      // class Katana {
+      //   public h_it() {
+      //     return 'cut!';
+      //   }
+      // }
+      //
+      // @injectable()
+      // class Shuriken {
+      //   public throw() {
+      //     return 'hit!';
+      //   }
+      // }
+      //
+      // @injectable()
+      // @Reflect.metadata("design:paramtypes",[Katana,Shuriken])
+      // class Ninja {
+      //
+      //   private _katana: Katana;
+      //   private _shuriken: Shuriken;
+      //
+      //   public constructor(katana: Katana, shuriken: Shuriken) {
+      //     this._katana = katana;
+      //     this._shuriken = shuriken;
+      //   }
+      //
+      //   public fight():string { return this._katana.h_it(); }
+      //   public sneak():string { return this._shuriken.throw(); }
+      //
+      // }
+      //
+      // const container = new Container();
+      // container.bind<Ninja>(Ninja).to(Ninja);
+      // container.bind<Katana>(Katana).to(Katana);
+      // container.bind<Shuriken>(Shuriken).to(Shuriken);
+      //
+      const ninja:ESObject= ninjaFun()
       expect(ninja.fight()).eql('cut!');
       expect(ninja.sneak()).eql('hit!');
 
@@ -235,41 +256,37 @@ export default function inversifyTest() {
 
     _it('Should_be_able_to_use_Symbols_as_runtime_identifiers', () => {
 
-      interface Ninja {
+      interface Ninja2 {
         fight(): string;
         sneak(): string;
       }
 
-      interface Katana {
+      interface Katana2 {
         h_it(): string;
       }
 
-      interface Shuriken {
+      interface Shuriken2 {
         throw(): string;
       }
 
       @injectable()
-      class Katana implements Katana {
+      class Katana implements Katana2 {
         public h_it() {
           return 'cut!';
         }
       }
 
       @injectable()
-      class Shuriken implements Shuriken {
+      class Shuriken implements Shuriken2 {
         public throw() {
           return 'hit!';
         }
       }
 
-      const TYPES = {
-        Katana: Symbol.for('Katana'),
-        Ninja: Symbol.for('Ninja'),
-        Shuriken: Symbol.for('Shuriken')
-      };
+      const TYPES =TYPESSymbol3()
 
       @injectable()
-      class Ninja implements Ninja {
+      class Ninja implements Ninja2 {
 
         private _katana: Katana;
         private _shuriken: Shuriken;
@@ -282,8 +299,8 @@ export default function inversifyTest() {
           this._shuriken = shuriken;
         }
 
-        public fight() { return this._katana.h_it(); }
-        public sneak() { return this._shuriken.throw(); }
+        public fight():string { return this._katana.h_it(); }
+        public sneak():string { return this._shuriken.throw(); }
 
       }
 
@@ -301,55 +318,51 @@ export default function inversifyTest() {
 
     _it('Should_be_able_to_wrap_Symbols_with_LazyServiceIdentifer', () => {
 
-      interface Ninja {
+      interface Ninja3 {
         fight(): string;
         sneak(): string;
       }
 
-      interface Katana {
+      interface Katana3 {
         h_it(): string;
       }
 
-      interface Shuriken {
+      interface Shuriken3 {
         throw(): string;
       }
 
       @injectable()
-      class Katana implements Katana {
+      class Katana implements Katana3 {
         public h_it() {
           return 'cut!';
         }
       }
 
       @injectable()
-      class Shuriken implements Shuriken {
+      class Shuriken implements Shuriken3 {
         public throw() {
           return 'hit!';
         }
       }
 
-      const TYPES = {
-        Katana: Symbol.for('Katana'),
-        Ninja: Symbol.for('Ninja'),
-        Shuriken: Symbol.for('Shuriken')
-      };
+      const TYPES = TYPESSymbol3()
 
       @injectable()
-      class Ninja implements Ninja {
+      class Ninja implements Ninja3 {
 
         private _katana: Katana;
         private _shuriken: Shuriken;
 
         public constructor(
-          @inject(new LazyServiceIdentifer(() => TYPES.Katana)) katana: Katana,
-          @inject(new LazyServiceIdentifer(() => TYPES.Shuriken)) shuriken: Shuriken
+          @inject(new LazyServiceIdentifer<string>(() => TYPES.Katana)) katana: Katana,
+          @inject(new LazyServiceIdentifer<string>(() => TYPES.Shuriken)) shuriken: Shuriken
         ) {
           this._katana = katana;
           this._shuriken = shuriken;
         }
 
-        public fight() { return this._katana.h_it(); }
-        public sneak() { return this._shuriken.throw(); }
+        public fight():string { return this._katana.h_it(); }
+        public sneak():string{ return this._shuriken.throw(); }
 
       }
 
@@ -367,35 +380,35 @@ export default function inversifyTest() {
 
     _it('Should_support_Container_modules', () => {
 
-      interface Ninja {
+      interface Ninja4 {
         fight(): string;
         sneak(): string;
       }
 
-      interface Katana {
+      interface Katana4 {
         h_it(): string;
       }
 
-      interface Shuriken {
+      interface Shuriken4 {
         throw(): string;
       }
 
       @injectable()
-      class Katana implements Katana {
+      class Katana implements Katana4 {
         public h_it() {
           return 'cut!';
         }
       }
 
       @injectable()
-      class Shuriken implements Shuriken {
+      class Shuriken implements Shuriken4 {
         public throw() {
           return 'hit!';
         }
       }
 
       @injectable()
-      class Ninja implements Ninja {
+      class Ninja implements Ninja4 {
 
         private _katana: Katana;
         private _shuriken: Shuriken;
@@ -405,8 +418,8 @@ export default function inversifyTest() {
           this._shuriken = shuriken;
         }
 
-        public fight() { return this._katana.h_it(); }
-        public sneak() { return this._shuriken.throw(); }
+        public fight():string { return this._katana.h_it(); }
+        public sneak():string { return this._shuriken.throw(); }
 
       }
 
@@ -443,21 +456,21 @@ export default function inversifyTest() {
 
     _it('Should_support_control_over_the_scope_of_the_dependencies', () => {
 
-      interface Ninja {
+      interface Ninja5 {
         fight(): string;
         sneak(): string;
       }
 
-      interface Katana {
+      interface Katana5 {
         h_it(): string;
       }
 
-      interface Shuriken {
+      interface Shuriken5 {
         throw(): string;
       }
 
       @injectable()
-      class Katana implements Katana {
+      class Katana implements Katana5 {
         private _usageCount: number;
         public constructor() {
           this._usageCount = 0;
@@ -469,7 +482,7 @@ export default function inversifyTest() {
       }
 
       @injectable()
-      class Shuriken implements Shuriken {
+      class Shuriken implements Shuriken5 {
         private _shurikenCount: number;
         public constructor() {
           this._shurikenCount = 10;
@@ -481,7 +494,7 @@ export default function inversifyTest() {
       }
 
       @injectable()
-      class Ninja implements Ninja {
+      class Ninja implements Ninja5 {
 
         private _katana: Katana;
         private _shuriken: Shuriken;
@@ -494,8 +507,8 @@ export default function inversifyTest() {
           this._shuriken = shuriken;
         }
 
-        public fight() { return this._katana.h_it(); }
-        public sneak() { return this._shuriken.throw(); }
+        public fight():string { return this._katana.h_it(); }
+        public sneak():string { return this._shuriken.throw(); }
 
       }
 
@@ -541,8 +554,10 @@ export default function inversifyTest() {
       interface Warrior {
         name: string;
       }
-
-      const TYPES = {
+      interface types {
+        Warrior: string;
+      }
+      const TYPES:types = {
         Warrior: 'Warrior'
       };
 
@@ -566,12 +581,12 @@ export default function inversifyTest() {
 
     _it('Should_support_the_injection_of_dynamic_values', () => {
 
-      interface UseDate {
+      interface UseDate1 {
         doSomething(): Date;
       }
 
       @injectable()
-      class UseDate implements UseDate {
+      class UseDate implements UseDate1 {
         public currentDate: Date;
         public constructor(@inject('Date') currentDate: Date) {
           this.currentDate = currentDate;
@@ -582,18 +597,18 @@ export default function inversifyTest() {
       }
 
       const container = new Container();
-      container.bind<UseDate>('UseDate').to(UseDate);
+      container.bind<UseDate1>('UseDate').to(UseDate);
       container.bind<Date>('Date').toDynamicValue((context: interfaces.Context) => new Date());
 
-      const subject1 = container.get<UseDate>('UseDate');
-      const subject2 = container.get<UseDate>('UseDate');
+      const subject1 = container.get<UseDate1>('UseDate');
+      const subject2 = container.get<UseDate1>('UseDate');
       expect(subject1.doSomething() === subject2.doSomething()).eql(false);
 
       container.unbind('Date');
       container.bind<Date>('Date').toConstantValue(new Date());
 
-      const subject3 = container.get<UseDate>('UseDate');
-      const subject4 = container.get<UseDate>('UseDate');
+      const subject3 = container.get<UseDate1>('UseDate');
+      const subject4 = container.get<UseDate1>('UseDate');
       expect(subject3.doSomething() === subject4.doSomething()).eql(true);
 
     });
@@ -606,26 +621,26 @@ export default function inversifyTest() {
 
       type ShortDistanceWeaponFactory = () => ShortDistanceWeapon;
 
-      interface KatanaBlade { }
+      interface KatanaBlade1 { }
 
       @injectable()
-      class KatanaBlade implements KatanaBlade { }
+      class KatanaBlade implements KatanaBlade1 { }
 
-      interface KatanaHandler { }
+      interface KatanaHandler1 { }
 
       @injectable()
-      class KatanaHandler implements KatanaHandler { }
+      class KatanaHandler implements KatanaHandler1 { }
 
       interface ShortDistanceWeapon {
-        handler: KatanaHandler;
-        blade: KatanaBlade;
+        handler: KatanaHandler1;
+        blade: KatanaBlade1;
       }
 
       @injectable()
       class Katana implements ShortDistanceWeapon {
-        public handler: KatanaHandler;
-        public blade: KatanaBlade;
-        public constructor(handler: KatanaHandler, blade: KatanaBlade) {
+        public handler: KatanaHandler1;
+        public blade: KatanaBlade1;
+        public constructor(handler: KatanaHandler1, blade: KatanaBlade1) {
           this.handler = handler;
           this.blade = blade;
         }
@@ -655,10 +670,10 @@ export default function inversifyTest() {
       }
 
       const container = new Container();
-      container.bind<Ninja>(ninjaId).to(Ninja);
+      container.bind<Warrior>(ninjaId).to(Ninja);
       container.bind<LongDistanceWeapon>(longDistanceWeaponId).to(Shuriken);
 
-      const katanaFactory = function () {
+      const katanaFactory =  ()=> {
         return new Katana(new KatanaHandler(), new KatanaBlade());
       };
 
@@ -676,12 +691,12 @@ export default function inversifyTest() {
 
     _it('Should_support_the_injection_of_class_constructors', () => {
 
-      interface Katana {
+      interface Katana1 {
         h_it(): string;
       }
 
       @injectable()
-      class Katana implements Katana {
+      class Katana implements Katana1 {
         public h_it() {
           return 'cut!';
         }
@@ -690,10 +705,10 @@ export default function inversifyTest() {
       @injectable()
       class Ninja {
 
-        private _katana: Katana;
+        private _katana: Katana1;
 
         public constructor(
-          @inject('Newable<Katana>') katana: interfaces.Newable<Katana>
+          @inject('Newable<Katana>') katana: interfaces.Newable<Katana1>
         ) {
           this._katana = new katana();
         }
@@ -703,7 +718,7 @@ export default function inversifyTest() {
 
       const container = new Container();
       container.bind<Ninja>('Ninja').to(Ninja);
-      container.bind<interfaces.Newable<Katana>>('Newable<Katana>').toConstructor<Katana>(Katana);
+      container.bind<interfaces.Newable<Katana1>>('Newable<Katana>').toConstructor<Katana1>(Katana);
 
       const ninja = container.get<Ninja>('Ninja');
 
@@ -718,23 +733,23 @@ export default function inversifyTest() {
         sneak(): string;
       }
 
-      interface Katana {
+      interface Katana1 {
         h_it(): string;
       }
 
-      interface Shuriken {
+      interface Shuriken1 {
         throw(): string;
       }
 
       @injectable()
-      class Katana implements Katana {
+      class Katana implements Katana1 {
         public h_it() {
           return 'cut!';
         }
       }
 
       @injectable()
-      class Shuriken implements Shuriken {
+      class Shuriken implements Shuriken1 {
         public throw() {
           return 'hit!';
         }
@@ -754,8 +769,8 @@ export default function inversifyTest() {
           this._shuriken = shuriken;
         }
 
-        public fight() { return this._katana.h_it(); }
-        public sneak() { return this._shuriken.throw(); }
+        public fight():string { return this._katana.h_it(); }
+        public sneak():string { return this._shuriken.throw(); }
 
       }
 
@@ -835,18 +850,18 @@ export default function inversifyTest() {
 
     _it('Should_support_the_injection_of_user_defined_factories_with_partial_application', () => {
 
-      interface InjectorPump { }
+      interface InjectorPump1 { }
 
       @injectable()
-      class InjectorPump implements InjectorPump { }
+      class InjectorPump implements InjectorPump1 { }
 
-      interface SparkPlugs { }
+      interface SparkPlugs1 { }
 
       @injectable()
-      class SparkPlugs implements SparkPlugs { }
+      class SparkPlugs implements SparkPlugs1 { }
 
-      class Engine {
-        public displacement!: number | null;
+      interface Engine {
+       displacement: number | null;
       }
 
       @injectable()
@@ -926,23 +941,23 @@ export default function inversifyTest() {
         sneak(): string;
       }
 
-      interface Katana {
+      interface Katana1 {
         h_it(): string;
       }
 
-      interface Shuriken {
+      interface Shuriken1 {
         throw(): string;
       }
 
       @injectable()
-      class Katana implements Katana {
+      class Katana implements Katana1 {
         public h_it() {
           return 'cut!';
         }
       }
 
       @injectable()
-      class Shuriken implements Shuriken {
+      class Shuriken implements Shuriken1 {
         public throw() {
           return 'hit!';
         }
@@ -962,8 +977,8 @@ export default function inversifyTest() {
           this._shuriken = shuriken;
         }
 
-        public fight() { return this._katana.h_it(); }
-        public sneak() { return this._shuriken.throw(); }
+        public fight():string { return this._katana.h_it(); }
+        public sneak():string { return this._shuriken.throw(); }
 
       }
 
@@ -988,23 +1003,23 @@ export default function inversifyTest() {
       }
       interface Weapon { }
 
-      interface Katana extends Weapon {
+      interface Katana1 extends Weapon {
         h_it(): string;
       }
 
-      interface Shuriken extends Weapon {
+      interface Shuriken1 extends Weapon {
         throw(): string;
       }
 
       @injectable()
-      class Katana implements Katana {
+      class Katana implements Katana1 {
         public h_it() {
           return 'cut!';
         }
       }
 
       @injectable()
-      class Shuriken implements Shuriken {
+      class Shuriken implements Shuriken1 {
         public throw() {
           return 'hit!';
         }
@@ -1023,8 +1038,8 @@ export default function inversifyTest() {
           this._shuriken = weaponFactory<Shuriken>('shuriken');
         }
 
-        public fight() { return this._katana.h_it(); }
-        public sneak() { return this._shuriken.throw(); }
+        public fight():string { return this._katana.h_it(); }
+        public sneak():string { return this._shuriken.throw(); }
 
       }
 
@@ -1043,7 +1058,7 @@ export default function inversifyTest() {
 
     });
 
-    _it('Should_support_the_injection_of_providers', (done) => {
+    _it('Should_support_the_injection_of_providers', (done:ESObject) => {
 
       type KatanaProvider = () => Promise<Katana>;
 
@@ -1052,12 +1067,12 @@ export default function inversifyTest() {
         katanaProvider: KatanaProvider;
       }
 
-      interface Katana {
+      interface Katana1 {
         h_it(): string;
       }
 
       @injectable()
-      class Katana implements Katana {
+      class Katana implements Katana1 {
         public h_it() {
           return 'cut!';
         }
@@ -1097,7 +1112,7 @@ export default function inversifyTest() {
           expect(ninja.katana.h_it()).eql('cut!');
           done();
         })
-        .catch((e) => { /* do nothing */ });
+        .catch(( ) => { /* do nothing */ });
 
     });
     _it('Should_support_the_injection_of_multiple_values', () => {
@@ -1155,35 +1170,35 @@ export default function inversifyTest() {
 
     _it('Should_support_the_injection_of_multiple_values_with_nested_inject', () => {
 
-      interface Ninja {
+      interface Ninja1 {
         fight(): string;
         sneak(): string;
       }
 
-      interface Katana {
+      interface Katana1 {
         h_it(): string;
       }
 
-      interface Shuriken {
+      interface Shuriken1 {
         throw(): string;
       }
 
       @injectable()
-      class Katana implements Katana {
+      class Katana implements Katana1 {
         public h_it() {
           return 'cut!';
         }
       }
 
       @injectable()
-      class Shuriken implements Shuriken {
+      class Shuriken implements Shuriken1 {
         public throw() {
           return 'hit!';
         }
       }
 
       @injectable()
-      class Ninja implements Ninja {
+      class Ninja implements Ninja1 {
 
         private _katana: Katana;
         private _shuriken: Shuriken;
@@ -1196,8 +1211,8 @@ export default function inversifyTest() {
           this._shuriken = shuriken;
         }
 
-        public fight() { return this._katana.h_it(); }
-        public sneak() { return this._shuriken.throw(); }
+        public fight():string { return this._katana.h_it(); }
+        public sneak():string  { return this._shuriken.throw(); }
 
       }
 
@@ -1252,7 +1267,7 @@ export default function inversifyTest() {
         h_it(): string;
       }
 
-      interface Shuriken {
+      interface Shuriken1 {
         throw(): string;
       }
 
@@ -1264,7 +1279,7 @@ export default function inversifyTest() {
       }
 
       @injectable()
-      class Shuriken implements Shuriken {
+      class Shuriken implements Shuriken1 {
         public throw() {
           return 'hit!';
         }
@@ -1284,8 +1299,8 @@ export default function inversifyTest() {
           this._shuriken = shuriken;
         }
 
-        public fight() { return this._katana.h_it(); }
-        public sneak() { return this._shuriken.throw(); }
+        public fight():string { return this._katana.h_it(); }
+        public sneak():string { return this._shuriken.throw(); }
 
       }
 
@@ -1415,7 +1430,7 @@ export default function inversifyTest() {
       }
 
       @injectable()
-      @Reflect.metadata("design:paramtypes",[Katana,Shuriken])
+      @Reflect.metadata("design:paramtypes",arrayConversion(Katana,Shuriken))
       class Ninja {
 
         private _katana: Katana;
@@ -1429,13 +1444,13 @@ export default function inversifyTest() {
           this._shuriken = shuriken;
         }
 
-        public fight() { return this._katana.h_it(); }
-        public sneak() { return this._shuriken.throw(); }
+        public fight():string { return this._katana.h_it(); }
+        public sneak():string { return this._shuriken.throw(); }
 
       }
 
       @injectable()
-      @Reflect.metadata("design:paramtypes",[Ninja])
+      @Reflect.metadata("design:paramtypes",Ninja)
       class NinjaSchool {
         public ninjaMaster: Ninja;
         public student: Ninja;
@@ -1481,7 +1496,7 @@ export default function inversifyTest() {
       }
 
       @injectable()
-      @Reflect.metadata("design:paramtypes",[Katana,Shuriken])
+      @Reflect.metadata("design:paramtypes", arrayConversion(Katana,Shuriken))
       class Ninja {
 
         private _katana: Katana;
@@ -1495,13 +1510,13 @@ export default function inversifyTest() {
           this._shuriken = shuriken;
         }
 
-        public fight() { return this._katana.h_it(); }
-        public sneak() { return this._shuriken.throw(); }
+        public fight():string { return this._katana.h_it(); }
+        public sneak():string { return this._shuriken.throw(); }
 
       }
 
       @injectable()
-      @Reflect.metadata("design:paramtypes",[Ninja])
+      @Reflect.metadata("design:paramtypes",Ninja)
       class NinjaSchool {
         public ninjaMaster: Ninja;
         public student: Ninja;
@@ -1515,7 +1530,7 @@ export default function inversifyTest() {
       }
 
       @injectable()
-      @Reflect.metadata("design:paramtypes",[NinjaSchool])
+      @Reflect.metadata("design:paramtypes",NinjaSchool)
       class NinjaOrganisation {
         public schools: NinjaSchool[];
 
@@ -1550,11 +1565,7 @@ export default function inversifyTest() {
 
     _it('Should_support_the_injection_of_multiple_values_when_using_Symbols_as_keys', () => {
 
-      const TYPES = {
-        Warrior: Symbol.for('Warrior'),
-        Weapon: Symbol.for('Weapon')
-      };
-
+      const TYPES = TYPESSymbol2();
       interface Weapon {
         name: string;
       }
@@ -1605,42 +1616,36 @@ export default function inversifyTest() {
 
     _it('Should_support_the_injection_of_multiple_values_with_nested_inject', () => {
 
-      const TYPES = {
-        Katana: Symbol.for('Katana'),
-        Ninja: Symbol.for('Ninja'),
-        School: Symbol.for('School'),
-        Shuriken: Symbol.for('Shuriken'),
-      };
-
-      interface Ninja {
+      const TYPES = TYPESSymbol4()
+      interface Ninja1 {
         fight(): string;
         sneak(): string;
       }
 
-      interface Katana {
+      interface Katana1 {
         h_it(): string;
       }
 
-      interface Shuriken {
+      interface Shuriken1 {
         throw(): string;
       }
 
       @injectable()
-      class Katana implements Katana {
+      class Katana implements Katana1 {
         public h_it() {
           return 'cut!';
         }
       }
 
       @injectable()
-      class Shuriken implements Shuriken {
+      class Shuriken implements Shuriken1 {
         public throw() {
           return 'hit!';
         }
       }
 
       @injectable()
-      class Ninja implements Ninja {
+      class Ninja implements Ninja1{
 
         private _katana: Katana;
         private _shuriken: Shuriken;
@@ -1653,8 +1658,8 @@ export default function inversifyTest() {
           this._shuriken = shuriken;
         }
 
-        public fight() { return this._katana.h_it(); }
-        public sneak() { return this._shuriken.throw(); }
+        public fight():string { return this._katana.h_it(); }
+        public sneak():string { return this._shuriken.throw(); }
 
       }
 
@@ -1694,43 +1699,37 @@ export default function inversifyTest() {
 
     _it('Should_support_the_injection_of_multiple_values_with_nested_multiInject', () => {
 
-      const TYPES = {
-        Katana: Symbol.for('Katana'),
-        Ninja: Symbol.for('Ninja'),
-        Organisation: Symbol.for('Organisation'),
-        School: Symbol.for('School'),
-        Shuriken: Symbol.for('Shuriken'),
-      };
+      const TYPES = TYPESSymbol4()
 
-      interface Ninja {
+      interface Ninja1 {
         fight(): string;
         sneak(): string;
       }
 
-      interface Katana {
+      interface Katana1 {
         h_it(): string;
       }
 
-      interface Shuriken {
+      interface Shuriken1 {
         throw(): string;
       }
 
       @injectable()
-      class Katana implements Katana {
+      class Katana implements Katana1 {
         public h_it() {
           return 'cut!';
         }
       }
 
       @injectable()
-      class Shuriken implements Shuriken {
+      class Shuriken implements Shuriken1 {
         public throw() {
           return 'hit!';
         }
       }
 
       @injectable()
-      class Ninja implements Ninja {
+      class Ninja implements Ninja1 {
 
         private _katana: Katana;
         private _shuriken: Shuriken;
@@ -1743,8 +1742,8 @@ export default function inversifyTest() {
           this._shuriken = shuriken;
         }
 
-        public fight() { return this._katana.h_it(); }
-        public sneak() { return this._shuriken.throw(); }
+        public fight():string { return this._katana.h_it(); }
+        public sneak():string { return this._shuriken.throw(); }
 
       }
 
@@ -1888,7 +1887,7 @@ export default function inversifyTest() {
 
     _it('Should_support_named_bindings', () => {
 
-      const name: symbol = Symbol.for('Weak');
+      const name= symbolFor('Weak');
 
       interface Weapon { }
 
@@ -2040,12 +2039,7 @@ export default function inversifyTest() {
 
     _it('Should_be_able_to_inject_into_a_super_constructor', () => {
 
-      const SYMBOLS = {
-        Samurai: Symbol.for('Samurai'),
-        SamuraiMaster: Symbol.for('SamuraiMaster'),
-        SamuraiMaster2: Symbol.for('SamuraiMaster2'),
-        Weapon: Symbol.for('Weapon')
-      };
+      const SYMBOLS = SYMBOLSSymbol4()
 
       interface Weapon {
         name: string;
@@ -2187,8 +2181,11 @@ export default function inversifyTest() {
     });
 
     _it('Should_support_a_whenInjectedInto_contextual_bindings_constraint', () => {
-
-      const TYPES = {
+      interface types{
+        Ninja: string;
+        Weapon: string;
+      }
+      const TYPES:types = {
         Ninja: 'Ninja',
         Weapon: 'Weapon'
       };
@@ -2259,8 +2256,12 @@ export default function inversifyTest() {
     });
 
     _it('Should_support_a_whenParentNamed_contextual_bindings_constraint', () => {
-
-      const TYPES = {
+      interface  types{
+        Material: string;
+        Ninja: string;
+        Weapon: string;
+       }
+      const TYPES:types = {
         Material: 'Material',
         Ninja: 'Ninja',
         Weapon: 'Weapon'
@@ -2342,8 +2343,12 @@ export default function inversifyTest() {
     });
 
     _it('Should_support_a_whenParentTagged_contextual_bindings_constraint', () => {
-
-      const TYPES = {
+       interface types{
+         Material: string;
+         Ninja: string;
+         Weapon: string;
+       }
+      const TYPES:types = {
         Material: 'Material',
         Ninja: 'Ninja',
         Weapon: 'Weapon'
@@ -2425,8 +2430,12 @@ export default function inversifyTest() {
     });
 
     _it('Should_support_a_whenAnyAncestorIs_and_whenNoAncestorIs_contextual_bindings_constraint', () => {
-
-      const TYPES = {
+       interface types{
+         Material: string;
+         Ninja: string;
+         Weapon: string;
+       }
+      const TYPES:types = {
         Material: 'Material',
         Ninja: 'Ninja',
         Weapon: 'Weapon'
@@ -2523,8 +2532,12 @@ export default function inversifyTest() {
     });
 
     _it('Should_support_a_whenAnyAncestorNamed_and_whenNoAncestorNamed_contextual_bindings_constraint', () => {
-
-      const TYPES = {
+      interface types{
+        Material: string;
+        Ninja: string;
+        Weapon: string;
+      }
+      const TYPES:types = {
         Material: 'Material',
         Ninja: 'Ninja',
         Weapon: 'Weapon'
@@ -2621,8 +2634,12 @@ export default function inversifyTest() {
     });
 
     _it('Should_support_a_whenAnyAncestorTagged_and_whenNoAncestorTaggedcontextual_bindings_constraint', () => {
-
-      const TYPES = {
+      interface  types{
+        Material: string;
+        Ninja: string;
+        Weapon: string;
+      }
+      const TYPES:types = {
         Material: 'Material',
         Ninja: 'Ninja',
         Weapon: 'Weapon'
@@ -2719,8 +2736,12 @@ export default function inversifyTest() {
     });
 
     _it('Should_support_a_whenAnyAncestorMatches_and_whenNoAncestorMatches_contextual_bindings_constraint', () => {
-
-      const TYPES = {
+      interface types{
+        Material: string;
+        Ninja: string;
+        Weapon: string;
+      }
+      const TYPES:types = {
         Material: 'Material',
         Ninja: 'Ninja',
         Weapon: 'Weapon'
@@ -2822,10 +2843,7 @@ export default function inversifyTest() {
 
     _it('Should_be_able_to_inject_a_regular_derived_class', () => {
 
-      const SYMBOLS = {
-        RANK: Symbol.for('RANK'),
-        SamuraiMaster: Symbol.for('SamuraiMaster')
-      };
+      const SYMBOLS = SYMBOLSSymbol2()
 
       interface Warrior {
         rank: string;
@@ -2859,9 +2877,7 @@ export default function inversifyTest() {
 
     _it('Should_be_able_to_identify_missing_injectable_in_a_base_class', () => {
 
-      const SYMBOLS = {
-        SamuraiMaster: Symbol.for('SamuraiMaster')
-      };
+      const SYMBOLS = SYMBOL()
 
       interface Warrior {
         rank: string;
@@ -2887,7 +2903,7 @@ export default function inversifyTest() {
       const container = new Container();
       container.bind<Warrior>(SYMBOLS.SamuraiMaster).to(SamuraiMaster);
 
-      function throws() {
+       throws:()=> {
         return container.get<Warrior>(SYMBOLS.SamuraiMaster);
       }
 

@@ -14,11 +14,12 @@
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/util'
 import { Container, injectable } from 'inversify';
+import  {valueOrDefault}from '../tools/tools'
 
 
 export default function providerTest() {
-  describe('providerTest', function () {
-    _it('Should_support_complex_asynchronous_initialization_processes', (done) => {
+  describe('providerTest',  ()=> {
+    _it('Should_support_complex_asynchronous_initialization_processes', (done:ESObject) => {
 
       @injectable()
       class Ninja {
@@ -67,28 +68,20 @@ export default function providerTest() {
       const ninjaMasterProvider = container.get<NinjaMasterProvider>('Provider<NinjaMaster>');
 
       // helper
-      function valueOrDefault<T>(provider: () => Promise<T>, defaultValue: T) {
-        return new Promise<T>((resolve, reject) => {
-          provider().then((value) => {
-            resolve(value);
-          }).catch(() => {
-            resolve(defaultValue);
-          });
-        });
-      }
 
-      valueOrDefault(ninjaMasterProvider, { rank: 'DefaultNinjaMaster' }).then((ninjaMaster) => {
+
+      valueOrDefault<ESObject>(ninjaMasterProvider, { rank: 'DefaultNinjaMaster' }).then((ninjaMaster:ESObject) => {
         expect(ninjaMaster.rank).to.eql('DefaultNinjaMaster');
       });
 
-      valueOrDefault(ninjaMasterProvider, { rank: 'DefaultNinjaMaster' }).then((ninjaMaster) => {
+      valueOrDefault<ESObject>(ninjaMasterProvider, { rank: 'DefaultNinjaMaster' }).then((ninjaMaster:ESObject) => {
         expect(ninjaMaster.rank).to.eql('NinjaMaster');
         done();
       });
 
     });
 
-    _it('Should_support_custom_arguments', (done) => {
+    _it('Should_support_custom_arguments', (done:ESObject) => {
 
       const container = new Container();
 
@@ -135,7 +128,7 @@ export default function providerTest() {
 
     });
 
-    _it('Should_support_partial_application_of_custom_arguments', (done) => {
+    _it('Should_support_partial_application_of_custom_arguments', (done:ESObject) => {
 
       const container = new Container();
 
@@ -184,7 +177,7 @@ export default function providerTest() {
 
     });
 
-    _it('Should_support_the_declaration_of_singletons', (done) => {
+    _it('Should_support_the_declaration_of_singletons', (done:ESObject) => {
 
       const container = new Container();
 

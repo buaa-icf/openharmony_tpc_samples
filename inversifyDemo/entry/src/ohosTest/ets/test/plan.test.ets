@@ -21,7 +21,7 @@ import { Request } from 'inversify/lib/planning/request';
 import { Target } from 'inversify/lib/planning/target';
 
 export default function planTest() {
-  describe('planTest', function () {
+  describe('planTest',  ()=> {
     _it('Should_set_its_own_properties_correctly', () => {
 
       const container = new Container();

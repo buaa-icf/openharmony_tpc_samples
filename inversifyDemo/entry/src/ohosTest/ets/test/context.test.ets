@@ -20,13 +20,13 @@ import { Plan } from 'inversify/lib/planning/plan';
 import { Request } from 'inversify/lib/planning/request';
 import { Target } from 'inversify/lib/planning/target';
 export default function contextTest() {
-  describe('contextTest', function () {
+  describe('contextTest',  ()=> {
     _it('Should_set_its_own_properties_correctly', () => {
 
       const container = new Container();
       const context1 = new Context(container);
-      const invalid = null;
-      const context2: Context = new (Context)(invalid as unknown as Container);
+      const invalid:ESObject = null;
+      const context2: Context = new Context(invalid as ESObject as Container);
 
       expect(context1.container).not.to.eql(null);
       expect(context2.container).eql(null);

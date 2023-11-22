@@ -18,16 +18,16 @@ import { BindingScopeEnum } from 'inversify';
 import { BindingInSyntax } from 'inversify/lib/syntax/binding_in_syntax';
 
 export default function binding_in_syntaxTest() {
-  describe('binding_in_syntaxTest', function () {
+  describe('binding_in_syntaxTest',  ()=> {
     _it('Should_set_its_own_properties_correctly', () => {
 
       interface Ninja {}
 
       const ninjaIdentifier = 'Ninja';
-
+      interface _binding { _binding: Binding<ESObject> }
       const binding = new Binding<Ninja>(ninjaIdentifier, BindingScopeEnum.Transient);
       const bindingInSyntax = new BindingInSyntax<Ninja>(binding);
-      const _bindingInSyntax = bindingInSyntax as unknown as { _binding: Binding<unknown> };
+      const _bindingInSyntax = bindingInSyntax as ESObject as _binding;
 
       expect(_bindingInSyntax._binding.serviceIdentifier).eql(ninjaIdentifier);
 

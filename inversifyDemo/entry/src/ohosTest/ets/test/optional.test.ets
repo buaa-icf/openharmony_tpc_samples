@@ -14,10 +14,11 @@
  */
 import { Container, inject, injectable, optional } from 'inversify';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/util'
-
+import * as ns from "reflect-metadata"
+ns
 
 export default function optionalTest() {
-  describe('optionalTest', function () {
+  describe('optionalTest',  ()=> {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
     _it('Should_allow_to_flag_dependencies_as_optional', () => {
 

@@ -13,23 +13,24 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/util'
-import "reflect-metadata"
 import { injectable } from 'inversify';
 import { Binding } from 'inversify/lib/bindings/binding';
 import * as ERROR_MSGS from 'inversify/lib/constants/error_msgs';
 import { BindingScopeEnum, BindingTypeEnum } from 'inversify';
 import { interfaces } from 'inversify';
 import { BindingToSyntax } from 'inversify/lib/syntax/binding_to_syntax';
+import * as ns from "reflect-metadata"
+ns
 export default function binding_to_syntaxTest() {
-  describe('binding_to_syntaxTest', function () {
+  describe('binding_to_syntaxTest',  ()=> {
     _it('Should_set_its_own_properties_correctly', () => {
 
       interface Ninja { }
       const ninjaIdentifier = 'Ninja';
-
+      interface _binding{ _binding: interfaces.Binding<Ninja> }
       const binding = new Binding<Ninja>(ninjaIdentifier, BindingScopeEnum.Transient);
       const bindingToSyntax = new BindingToSyntax<Ninja>(binding);
-      const _bindingToSyntax = bindingToSyntax as unknown as { _binding: interfaces.Binding<Ninja> }
+      const _bindingToSyntax = bindingToSyntax as ESObject as _binding
 
       expect(_bindingToSyntax._binding.serviceIdentifier).eql(ninjaIdentifier);
 
@@ -37,10 +38,10 @@ export default function binding_to_syntaxTest() {
 
     _it('Should_be_able_to_configure_the_type_of_a_binding', () => {
 
-      interface Ninja { }
+      interface Ninja1 { }
 
       @injectable()
-      class Ninja implements Ninja { }
+      class Ninja implements Ninja1 { }
       const ninjaIdentifier = 'Ninja';
 
       const binding = new Binding<Ninja>(ninjaIdentifier, BindingScopeEnum.Transient);
@@ -53,7 +54,7 @@ export default function binding_to_syntaxTest() {
       expect(binding.type).eql(BindingTypeEnum.Instance);
       expect(binding.implementationType).not.to.eql(null);
 
-      (bindingToSyntax as any)._binding = binding;
+      (bindingToSyntax as ESObject)._binding = binding;
       bindingToSyntax.toConstantValue(new Ninja());
       expect(binding.type).eql(BindingTypeEnum.ConstantValue);
       expect(binding.cache instanceof Ninja).eql(true);
@@ -62,7 +63,7 @@ export default function binding_to_syntaxTest() {
       expect(binding.type).eql(BindingTypeEnum.DynamicValue);
       expect(typeof binding.dynamicValue).eql('function');
 
-      const dynamicValueFactory: any = binding.dynamicValue;
+      const dynamicValueFactory: ESObject = binding.dynamicValue;
       expect(dynamicValueFactory(null) instanceof Ninja).eql(true);
 
       bindingToSyntax.toConstructor<Ninja>(Ninja);
@@ -97,16 +98,16 @@ export default function binding_to_syntaxTest() {
 
     _it('Should_prevent_invalid_function_bindings', () => {
 
-      interface Ninja { }
+      interface Ninja1 { }
 
       @injectable()
-      class Ninja implements Ninja { }
+      class Ninja implements Ninja1 { }
       const ninjaIdentifier = 'Ninja';
 
       const binding = new Binding<Ninja>(ninjaIdentifier, BindingScopeEnum.Transient);
       const bindingToSyntax = new BindingToSyntax<Ninja>(binding);
 
-      const f = function () {
+      const f =  ()=> {
         bindingToSyntax.toFunction(5);
       };
 

@@ -18,7 +18,7 @@ import * as Stubs from '../utils/stubs';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/util'
 
 export default function bindingTest() {
-  describe('bindingTest', function () {
+  describe('bindingTest', ()=> {
     _it('Should_set_its_own_properties_correctly', () => {
 
       const fooIdentifier = 'FooInterface';
