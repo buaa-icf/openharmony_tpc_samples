@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "stun",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}
