@@ -2,7 +2,7 @@
   "string": [
     {
       "name": "app_name",
-      "value": "icu4j"
+      "value": "OHOS_APP_icu4j"
     }
   ]
 }
