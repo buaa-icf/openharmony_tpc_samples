@@ -1,4 +1,4 @@
-# nodee-rules
+# node-rules
 
 ## 介绍
 
@@ -9,8 +9,11 @@ node-rules 是一个轻量级的正向链接规则引擎。
 1.如果已经安装好 nodejs 之后，输入以下命令。
 
 ```
-npm install node-rules
+ohpm install node-rules@7.2.0
 ```
+
+OpenHarmony
+ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony har包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
 2.在需要使用的页面导入 node-rules。
 
@@ -24,72 +27,77 @@ import RuleEngine from "node-rules"
 规则将有条件及其相应的结果组成。
 
 ```
- {
-    "condition":function(R){
-        R.when(this.application === "mob");
-    },
-    "consequence":function(R){
-        this["isMobile"] = true;
-        R.next();
+    class Rule {
+      condition(R: ESObject) {
+        console.debug('lzdebug simple condition start:' + (this as ESObject).transactionTotal)
+        R.when((this as ESObject).transactionTotal < 500);
+      }
+
+      consequence(R: ESObject) {
+        (this as ESObject).result = false;
+        (this as ESObject).reason = "The transaction was blocked as it was less than 500";
+        R.stop();
+      }
     }
- },
+
+
+    let rule = new Rule()
 ```
 
-这里的优先级是一个可选参数，当有多个规则运行时，它将用于指定一个规则相对于其他规则的优先级。在上面的规则中，R.when 计算条件表达式并 R.stop 用于停止对事实的进一步处理，因为我们已经得到了一个结果。
+这里的优先级是一个可选参数，当有多个规则运行时，它将用于指定一个规则相对于其他规则的优先级。在上面的规则中，R.when 计算条件表达式并
+R.stop 用于停止对事实的进一步处理，因为我们已经得到了一个结果。
 
-函数 <span style="color:#ff6700">R.stop</span> <span style="color:#ff6700">R.when</span> <span style="color:#ff6700">R.next</span> <span style="color:#ff6700">R.restart</span> 是流量控制 API 的一部分，允许用户控制引擎流量。
+函数 <span style="color:#ff6700">R.stop</span> <span style="color:#ff6700">R.when</span> <span style="color:#ff6700">
+R.next</span> <span style="color:#ff6700">R.restart</span> 是流量控制 API 的一部分，允许用户控制引擎流量。
 
 2.定义一个事实
 事实是规则引擎应用其规则以获得结果的那些输入 json 值。根据您的决定，一个事实可以具有多个属性。
 
 ```
-var fact = {
-    "name":"user4",
-    "application":this.appValue,
-    "transactionTotal":600,
-    "cardType":this.typeValue
-}
+    let fact: ESObject = {
+      name: "user4",
+      application: "MOB2",
+      transactionTotal: Number.parseInt(this.setValue),
+      cardType: "Credit Card"
+    }
 ```
 
 3.使用规则引擎
 下面的示例显示了如何使用规则引擎将示例规则应用于特定事实。规则可以作为规则数组或单个规则对象输入到规则引擎当中。
 
 ```
-   var ruleEngine = new RuleEngine();
-    var rules = [
-      {
-        "prirority": 4,
-        "condition": function (R) {
-          R.when(this.transactionTotal === "mob");
-        },
-        "consequence": function (R) {
-          this.result = false;
-          this["reason"] = "The transaction was blocked as it was less than 500";
-          R.stop();
-        }
-      },
-      {
-        "priority": 10,
-        "condition": function (R) {
-          R.when(this.cardType === "debit");
-        },
-        "consequence": function (R) {
-          this.result = false;
-          this["reason"] = "The transaction was blocked as debit cards are not allowed"
-          R.stop();
-        }
+   let ruleEngine = new RuleEngine();
+
+    class Rule {
+      condition(ruleEngine: ESObject) {
+        console.debug('lzdebug simple condition start:' + (this as ESObject).transactionTotal)
+        ruleEngine.when((this as ESObject).transactionTotal < 500);
       }
-    ]
-    ruleEngine.register(rules);
-    var fact = {
-      "name": "user4",
-      "application": "MOB2",
-      "transactionTotal": Number.parseInt(this.setValue),
-      "cardType": this.typeValue
+
+      consequence(ruleEngine: ESObject) {
+        (this as ESObject).result = false;
+        (this as ESObject).reason = "The transaction was blocked as it was less than 500";
+        ruleEngine.stop();
+      }
     }
 
 
-    ruleEngine.execute(fact, (data) => {
+    let rule = new Rule()
+
+
+    ruleEngine.register(rule);
+
+
+    let fact: ESObject = {
+      name: "user4",
+      application: "MOB2",
+      transactionTotal: Number.parseInt(this.setValue),
+      cardType: "Credit Card"
+    }
+
+    console.log("------" + this.setValue);
+
+    ruleEngine.execute(fact, (data: ESObject) => {
       if (data.result) {
         console.log("Valid transaction:" + data.result); //满足规则
         this.resultStr = "Valid transaction:" + data.result;
@@ -116,7 +124,8 @@ var fact = {
 
 #### R.When
 
-此函数用于传递我们要评估的条件表达式。在上面的表达式中，我们通过表达式来检查上下文中事实的 transactionTotal 属性是否低于 500.如果传递给的表达式 R.when 计算结果为真，则条件将执行。否则，规则引擎将移至下一条规则，或者如果没有规则可应用，则可能终止。
+此函数用于传递我们要评估的条件表达式。在上面的表达式中，我们通过表达式来检查上下文中事实的 transactionTotal 属性是否低于
+500.如果传递给的表达式 R.when 计算结果为真，则条件将执行。否则，规则引擎将移至下一条规则，或者如果没有规则可应用，则可能终止。
 
 #### R.stop
 
@@ -130,7 +139,8 @@ var fact = {
 
 #### R.restart
 
-该函数用于结果函数内部，以指示规则引擎从头开始对事实应用规则。当事实对象被结果函数修改并且需要再次遍历所有的规则时，规则引擎也会在内部使用此函数。在初始化新规则引擎时使用该 ignoreFactChanges:true 选项将关闭此功能。
+该函数用于结果函数内部，以指示规则引擎从头开始对事实应用规则。当事实对象被结果函数修改并且需要再次遍历所有的规则时，规则引擎也会在内部使用此函数。在初始化新规则引擎时使用该
+ignoreFactChanges:true 选项将关闭此功能。
 
 #### R.execute
 
@@ -138,12 +148,14 @@ var fact = {
 
 ## 约束与限制
 
-在下述版本验证通过：DevEco Studio: 3.1 Beta1(3.1.0.200)，OpenHarmony SDK: API9（3.2.10.6）。
+在下述版本验证通过：适配DevEco Studio:4.0 release Beta2(4.0.3.600) OpenHarmony SDK:API10(4.0.10.11).
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
+给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
 ## 开源协议
 
-本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/nodeRulesDemo/LICENSE) ，请自由地享受和参与开源。
+本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/nodeRulesDemo/LICENSE)
+，请自由地享受和参与开源。
