@@ -15,7 +15,7 @@
 * misrepresented as being the original software.
 * 3. This notice may not be removed or altered from any source distribution.
 */
-import * as box2d from '@flyover/box2d';
+import * as box2d from '@ohos/box2d';
 import { g_debugDraw } from './DebugDraw';
 // #if B2_ENABLE_PARTICLE
 import { FullScreenUI } from './FullscreenUI';

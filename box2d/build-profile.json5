@@ -1,14 +1,23 @@
 {
   "app": {
-    "compileSdkVersion": 9,
-    "compatibleSdkVersion": 9,
+    "signingConfigs": [],
     "products": [
       {
         "name": "default",
-        "signingConfig": "default"
+        "signingConfig": "default",
+        "compileSdkVersion": 10,
+        "compatibleSdkVersion": 10,
+        "targetSdkVersion": 10,
+        "runtimeOS": "OpenHarmony"
       }
     ],
-    "signingConfigs": [
+    "buildModeSet": [
+      {
+        "name": "debug",
+      },
+      {
+        "name": "release"
+      }
     ]
   },
   "modules": [
@@ -23,6 +32,10 @@
           ]
         }
       ]
+    },
+    {
+      "name": "box2d",
+      "srcPath": "./box2d"
     }
   ]
 }

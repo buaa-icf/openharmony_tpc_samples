@@ -12,8 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
-import * as box2d from '@flyover/box2d'
+
+import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
+import * as box2d from '@ohos/box2d'
 
 export default function abilityTest() {
   describe('box2d_est', function () {
@@ -36,7 +37,6 @@ export default function abilityTest() {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-
     it('b2ChainShape_test_001', 0, function () {
       let shape = new box2d.b2ChainShape();
       expect(shape.m_type).assertEqual(box2d.b2ShapeType.e_chainShape)
@@ -76,11 +76,11 @@ export default function abilityTest() {
       v1.y = 1;
       v1.SelfSubXY(v1.x, v1.y)
       expect(0).assertEqual(v1.x)
-      expect(-9).assertEqual(v1.y)
+      expect(0).assertEqual(v1.y)
 
       let v2 = v1.SelfAdd(new box2d.b2Vec2(1, 1))
-      expect(-9).assertEqual(v2.x)
-      expect(-8).assertEqual(v2.y)
+      expect(1).assertEqual(v2.x)
+      expect(1).assertEqual(v2.y)
       expect(v1).assertEqual(v2)
     })
 

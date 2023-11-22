@@ -15,10 +15,11 @@
 * misrepresented as being the original software.
 * 3. This notice may not be removed or altered from any source distribution.
 */
-import * as box2d from '@flyover/box2d';
+import * as box2d from '@ohos/box2d';
 import { Settings, Test } from './Test';
 import { g_camera, g_debugDraw } from './DebugDraw';
 import { g_testEntries } from '../Tests/TestEntries';
+import display from '@ohos.display';
 
 export class Main {
   public m_time_last: number = 0;
@@ -38,8 +39,22 @@ export class Main {
   public m_demo_time: number = 0;
   public m_max_demo_time: number = 1000 * 10;
   public m_ctx: OffscreenCanvasRenderingContext2D | null = null;
+  private width: number = 480;
+  private height: number = 750;
+  private densityPixels: number = 1.5;
+
 
   constructor(time: number, ctx) {
+    display.getAllDisplays((err, data) => {
+      if (err.code) {
+        console.error(' Main Failed to obtain all the display objects. Code: ' + JSON.stringify(err));
+        return;
+      }
+      console.info('Main Succeeded in obtaining all the display objects. Data: ' + JSON.stringify(data));
+      this.width = data[0].width;
+      this.height = data[0].height;
+      this.densityPixels = data[0].densityPixels;
+    });
 
     g_debugDraw.m_ctx = this.m_ctx = ctx;
     this.LoadTest();
@@ -71,7 +86,7 @@ export class Main {
   private m_mouse = new box2d.b2Vec2();
 
   public HandleMouseMove(e: MouseEvent): void {
-    const element: box2d.b2Vec2 = new box2d.b2Vec2(e.screenX, e.screenY);
+    const element: box2d.b2Vec2 = new box2d.b2Vec2(e.windowX, e.windowY);
     const world: box2d.b2Vec2 = g_camera.ConvertScreenToWorld(element, new box2d.b2Vec2());
     this.m_mouse.Copy(element);
 
@@ -90,11 +105,9 @@ export class Main {
   }
 
   public HandleMouseDown(e: MouseEvent): void {
-    //g_camera.m_width = this.m_ctx.width;
-    g_camera.m_width = 480
-    //g_camera.m_height = this.m_ctx.height;
-    g_camera.m_height = 750
-    const element: box2d.b2Vec2 = new box2d.b2Vec2(e.screenX, e.screenY);
+    g_camera.m_width = this.width/this.densityPixels;
+    g_camera.m_height = this.height/this.densityPixels;
+    const element: box2d.b2Vec2 = new box2d.b2Vec2(e.windowX, e.windowY);
     const world: box2d.b2Vec2 = g_camera.ConvertScreenToWorld(element, new box2d.b2Vec2());
     switch (e.button) {
       case 1: // left mouse button
@@ -119,7 +132,7 @@ export class Main {
   }
 
   public HandleMouseUp(e: MouseEvent): void {
-    const element: box2d.b2Vec2 = new box2d.b2Vec2(e.screenX, e.screenY);
+    const element: box2d.b2Vec2 = new box2d.b2Vec2(e.windowX, e.windowY);
     const world: box2d.b2Vec2 = g_camera.ConvertScreenToWorld(element, new box2d.b2Vec2());
     switch (e.button) {
       case 1: // left mouse button
@@ -135,7 +148,7 @@ export class Main {
   }
 
   public HandleTouchMove(e: TouchEvent): void {
-    const element: box2d.b2Vec2 = new box2d.b2Vec2(e.touches[0].screenX, e.touches[0].screenY);
+    const element: box2d.b2Vec2 = new box2d.b2Vec2(e.touches[0].windowX, e.touches[0].windowY);
     const world: box2d.b2Vec2 = g_camera.ConvertScreenToWorld(element, new box2d.b2Vec2());
     if (this.m_test) {
       this.m_test.MouseMove(world);
@@ -144,11 +157,9 @@ export class Main {
   }
 
   public HandleTouchStart(e: TouchEvent): void {
-    //g_camera.m_width = this.m_ctx.width;
-    g_camera.m_width = 480
-    //g_camera.m_height = this.m_ctx.height;
-    g_camera.m_height = 750
-    const element: box2d.b2Vec2 = new box2d.b2Vec2(e.touches[0].screenX, e.touches[0].screenY);
+    g_camera.m_width = this.width/this.densityPixels;
+    g_camera.m_height = this.height/this.densityPixels;
+    const element: box2d.b2Vec2 = new box2d.b2Vec2(e.touches[0].windowX, e.touches[0].windowY);
     const world: box2d.b2Vec2 = g_camera.ConvertScreenToWorld(element, new box2d.b2Vec2());
     if (this.m_test) {
       this.m_test.MouseDown(world);
@@ -354,8 +365,7 @@ export class Main {
 
       const restartTest = [false];
       if (ctx) {
-        //ctx.clearRect(0, 0, ctx.width, ctx.height);
-        ctx.clearRect(0, 0, 480, 750);
+        ctx.clearRect(0, 0, this.width/this.densityPixels, this.height/this.densityPixels);
         ctx.save();
         ctx.translate(0.5 * 480, 0.5 * 750);
         ctx.scale(1, -1);

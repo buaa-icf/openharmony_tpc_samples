@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 import { Main } from '../Testbed/Framework/Main'
-import * as box2d from '@flyover/box2d'
+import * as box2d from '@ohos/box2d'
 import { Settings } from '../Testbed/Framework/Test'
 import { g_testEntries } from '../Testbed/Tests/TestEntries'
 
@@ -37,6 +37,7 @@ struct Index {
   @State fps: string = this.app ? this.app.m_fps.toFixed(1).toString() : "FPS"
   @State index: number = this.app ? this.app.m_test_index : this.selectIndex
   private isLoad: boolean = false
+  @State visibile: Visibility = Visibility.Visible;
 
   aboutToAppear() {
     for (let i: number = 0; i < g_testEntries.length; ++i) {
@@ -78,7 +79,7 @@ struct Index {
               .fontColor(Color.Grey)
 
             Select(this.selectArr)
-              .padding(20)
+              .space(8)
               .selected(this.index)
               .value(this.selectArr[this.index].value)
               .font({ size: 20, weight: 200, family: 'serif', style: FontStyle.Normal })
@@ -189,15 +190,18 @@ struct Index {
         }
 
       }.zIndex(this.controlZindex)
+      .visibility(this.visibile)
 
       Flex() {
         Canvas(this.context)
           .width('100%')
+          .height('100%')
           .backgroundColor('#ffff00')
           .onReady(() => {
             this.isLoad = true
           })
       }
+      .width('100%')
       .height('100%')
       .position({ x: 0, y: 0 })
       .zIndex(this.canvasZindex)
@@ -250,13 +254,15 @@ struct Index {
             if (!this.zindexRevers) {
               this.controlZindex = 99;
               this.canvasZindex = 1;
+              this.visibile = Visibility.Visible;
             } else {
               this.controlZindex = 1;
               this.canvasZindex = 99;
+              this.visibile = Visibility.None;
             }
 
           });
-      }
+      }.width("30%")
       .position({ x: -10, y: 70 })
       .zIndex(999)
 

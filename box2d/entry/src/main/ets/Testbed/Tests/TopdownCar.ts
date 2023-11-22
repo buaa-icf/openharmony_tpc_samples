@@ -18,7 +18,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-import * as box2d from '@flyover/box2d';
+import * as box2d from '@ohos/box2d';
 import * as testbed from '../Testbed';
 
 const DEGTORAD = 0.0174532925199432957;
