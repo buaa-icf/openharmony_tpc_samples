@@ -151,7 +151,7 @@ export default function NodeRulesTest() {
       //          // @ts-ignore
       //                expect(R.activeRules).not().assertEqual(R.rules);
     });
-    _it("should sort the rules accroding to priority, if priority is present", 0, () => {
+    _it("should sort the rules according to priority, if priority is present", 0, () => {
       let rules: ESObject[] = [
         {
           priority: 8,
@@ -719,7 +719,7 @@ export default function NodeRulesTest() {
         cardType: "Cash Card"
       };
 
-      /** example of a chaned up rule. will take two iterations. ****/
+      /** example of a caned up rule. will take two iterations. ****/
       let chainedFact: ESObject = {
         name: "chainedFact",
         userCredibility: 2,
