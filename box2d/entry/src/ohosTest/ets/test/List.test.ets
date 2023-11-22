@@ -14,7 +14,23 @@
  */
 
 import abilityTest from './Ability.test'
+import bodyTest1 from './Body1.test'
+import bodyTest2 from './Body2.test'
+import bodyTest3 from './Body3.test'
+import contactTest from './Contact.test'
+import jointTest from './Joint.test'
+import shapeTest from './Shape.test'
+import worldTest1 from './World1.test'
+import worldTest2 from './World2.test'
 
 export default function testsuite() {
   abilityTest()
+  bodyTest1()
+  bodyTest2()
+  bodyTest3()
+  contactTest()
+  jointTest()
+  shapeTest()
+  worldTest1()
+  worldTest2()
 }
