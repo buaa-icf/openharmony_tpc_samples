@@ -24,11 +24,12 @@
 import UIAbility from '@ohos.app.ability.UIAbility';
 import hilog from '@ohos.hilog';
 import window from '@ohos.window';
+import { GlobalContext } from '../common/GlobalContext';
 
 export default class EntryAbility extends UIAbility {
   onCreate(want, launchParam) {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
-    globalThis.abilityWant = want;
+    GlobalContext.getContext().setValue('abilityWant',want);
   }
 
   onDestroy() {

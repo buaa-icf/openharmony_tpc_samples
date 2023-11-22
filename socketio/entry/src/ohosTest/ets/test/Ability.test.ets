@@ -26,33 +26,33 @@ import { client_socket ,buffer_util} from '@ohos/socketio';
 import hilog from '@ohos.hilog';
 
 export default function abilityTest() {
-  describe('client_socket_test', function () {
+  describe('client_socket_test', () => {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    beforeAll(function () {
+    beforeAll(() => {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
     })
-    beforeEach(function () {
+    beforeEach(() => {
       // Presets an action, which is performed before each unit test case starts.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: preset action function.
     })
-    afterEach(function () {
+    afterEach(() => {
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
     })
-    afterAll(function () {
+    afterAll(() => {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    it('client_socket_test_connect_open', 0, function () {
+    it('client_socket_test_connect_open', 0, () => {
       let connect_finish: boolean = false;
       let client: client_socket = new client_socket();
-      client.set_open_listener(function on_open(): void {
+      client.set_open_listener(() => {
         connect_finish = true;
       });
-      client.set_fail_listener(function on_fail(): void {
+      client.set_fail_listener(() => {
         connect_finish = false;
       });
       let uri: string = "http://10.50.40.37:3000"
@@ -63,13 +63,13 @@ export default function abilityTest() {
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_connect_open finished');
     })
 
-    it('client_socket_test_connect_fail', 0, function () {
+    it('client_socket_test_connect_fail', 0, () => {
       let connect_finish: boolean = false;
       let client: client_socket = new client_socket();
-      client.set_open_listener(function on_open(): void {
+      client.set_open_listener(() => {
         connect_finish = true;
       });
-      client.set_fail_listener(function on_fail(): void {
+      client.set_fail_listener(() => {
         connect_finish = false;
       });
       let uri: string = ""
@@ -80,14 +80,14 @@ export default function abilityTest() {
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_connect_fail finished');
     })
 
-    it('client_socket_test_login', 0, function () {
+    it('client_socket_test_login', 0, () => {
       let connect_finish: boolean = false;
       let login_finish: boolean = false;
       let client: client_socket = new client_socket();
-      client.set_open_listener(function on_open(): void {
+      client.set_open_listener(() => {
         connect_finish = true;
       });
-      client.on("login", function on_login_listener(): void {
+      client.on("login", () => {
         login_finish = true;
       });
       let uri: string = "http://10.50.40.37:3000";
@@ -102,18 +102,18 @@ export default function abilityTest() {
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_login finished');
     })
 
-    it('client_socket_test_emit', 0, function () {
+    it('client_socket_test_emit', 0, () => {
       let connect_finish: boolean = false;
       let login_finish: boolean = false;
       let message: string = "";
       let client: client_socket = new client_socket();
-      client.set_open_listener(function on_open(): void {
+      client.set_open_listener(() => {
         connect_finish = true;
       });
-      client.on("login", function on_login_listener(): void {
+      client.on("login", () => {
         login_finish = true;
       });
-      client.on("new message", function on_new_message_listener(event_json: string): void {
+      client.on("new message", (event_json: string) => {
         message = event_json;
       });
       let uri: string = "http://10.50.40.37:3000";
@@ -133,11 +133,11 @@ export default function abilityTest() {
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_emit finished');
     })
 
-    it('client_socket_test_clear_listener', 0, function () {
+    it('client_socket_test_clear_listener', 0, () => {
       let is_call_open_listener: boolean = false;
       let client: client_socket = new client_socket();
       client.clear_con_listeners();
-      client.set_open_listener(function on_open(): void {
+      client.set_open_listener(() => {
         is_call_open_listener = true;
       });
       let uri: string = "http://10.50.40.37:3000";
@@ -150,13 +150,13 @@ export default function abilityTest() {
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_clear_listener finished');
     })
 
-    it('client_socket_test_socket_open_close', 0, function () {
+    it('client_socket_test_socket_open_close', 0, () => {
       let socket_status: boolean = false;
       let client: client_socket = new client_socket();
-      client.set_socket_open_listener(function on_socket_open(nsp: string): void {
+      client.set_socket_open_listener((nsp: string) => {
         socket_status = true;
       });
-      client.set_socket_close_listener(function on_socket_close(nsp: string): void {
+      client.set_socket_close_listener((nsp: string) => {
         socket_status = false;
       });
       let uri: string = "http://10.50.40.37:3000";
@@ -171,10 +171,10 @@ export default function abilityTest() {
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_socket_open_close finished');
     })
 
-    it('client_socket_test_close', 0, function () {
+    it('client_socket_test_close', 0, () => {
       let connect_close: boolean = false;
       let client: client_socket = new client_socket();
-      client.set_close_listener(function on_close(reason: string): void {
+      client.set_close_listener((reason: string) => {
         connect_close = true;
       });
       let uri: string = "http://10.50.40.37:3000";
@@ -188,10 +188,10 @@ export default function abilityTest() {
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_close finished');
     })
 
-    it('client_socket_test_sync_close', 0, function () {
+    it('client_socket_test_sync_close', 0, () => {
       let connect_sync_close: boolean = false;
       let client: client_socket = new client_socket();
-      client.set_close_listener(function on_close(reason: string): void {
+      client.set_close_listener((reason: string) => {
         connect_sync_close = true;
       });
       let uri: string = "http://10.50.40.37:3000";
@@ -205,7 +205,7 @@ export default function abilityTest() {
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_sync_close finished');
     })
 
-    it('client_socket_test_opened', 0, function () {
+    it('client_socket_test_opened', 0, () => {
       let client: client_socket = new client_socket();
       let uri: string = "http://10.50.40.37:3000";
       client.connect(uri);
@@ -215,7 +215,7 @@ export default function abilityTest() {
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_opened finished');
     })
 
-    it('client_socket_test_get_sessionid', 0, function () {
+    it('client_socket_test_get_sessionid', 0, () => {
       let client: client_socket = new client_socket();
       let uri: string = "http://10.50.40.37:3000";
       client.connect(uri);
@@ -228,10 +228,10 @@ export default function abilityTest() {
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_get_sessionid finished');
     })
 
-    it('client_socket_test_off', 0, function () {
+    it('client_socket_test_off', 0, () => {
       let is_call_login_listener: boolean = false;
       let client: client_socket = new client_socket();
-      client.on("login", function on_login_listener(): void {
+      client.on("login", () => {
         is_call_login_listener = true;
       });
       let uri: string = "http://10.50.40.37:3000";
@@ -246,14 +246,14 @@ export default function abilityTest() {
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_off finished');
     })
 
-    it('client_socket_test_off_all', 0, function () {
+    it('client_socket_test_off_all', 0, () => {
       let is_call_login_listener: boolean = false;
       let is_error :boolean = false;
       let client: client_socket = new client_socket();
-      client.on("login", function on_login_listener(): void {
+      client.on("login", () => {
         is_call_login_listener = true;
       });
-      client.on_error(function on_error_listener(reason: string): void {
+      client.on_error(() => {
         is_error = true;
       })
       let uri: string = "http://10.50.40.37:3000";
@@ -269,16 +269,16 @@ export default function abilityTest() {
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_off_all finished');
     })
 
-    it('client_socket_test_reconnect_attempts', 0, function () {
+    it('client_socket_test_reconnect_attempts', 0, () => {
       let reconnect_num: number = 0;
       let connect_fail: boolean = false;
       let client: client_socket = new client_socket();
       client.set_reconnect_delay(1000);
       client.set_reconnect_attempts(1);
-      client.set_reconnect_listener(function on_reconnect(): void {
+      client.set_reconnect_listener(() => {
         reconnect_num++;
       });
-      client.set_fail_listener(function on_fail(): void {
+      client.set_fail_listener(() => {
         connect_fail = true;
       });
       let uri: string = ""
@@ -289,16 +289,16 @@ export default function abilityTest() {
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_reconnect_attempts finished');
     })
 
-    it('client_socket_test_reconnecting', 0, function () {
+    it('client_socket_test_reconnecting', 0, () => {
       let reconnect_num: number = 0;
       let reconnecting_num: number = 0;
       let client: client_socket = new client_socket();
       client.set_reconnect_delay(1000);
       client.set_reconnect_delay_max(1000);
-      client.set_reconnect_listener(function on_reconnect(): void {
+      client.set_reconnect_listener(() => {
         reconnect_num++;
       });
-      client.set_reconnecting_listener(function on_reconnecting(): void {
+      client.set_reconnecting_listener(() => {
         reconnecting_num++;
       });
       let uri: string = ""
@@ -309,11 +309,11 @@ export default function abilityTest() {
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_reconnecting finished');
     })
 
-    it('client_socket_test_clear_socket_listeners', 0, function () {
+    it('client_socket_test_clear_socket_listeners', 0, () => {
       let is_call_open_listener: boolean = false;
       let client: client_socket = new client_socket();
       client.clear_socket_listeners();
-      client.set_socket_open_listener(function on_socket_open(nsp: string): void  {
+      client.set_socket_open_listener((nsp: string) => {
         is_call_open_listener = true;
       });
       let uri: string = "http://10.50.40.37:3000";
@@ -326,11 +326,11 @@ export default function abilityTest() {
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_clear_socket_listeners finished');
     })
 
-    it('client_socket_test_nsp', 0, function () {
-      var chat: string = '';
+    it('client_socket_test_nsp', 0, () => {
+      let chat: string = '';
       let client: client_socket = new client_socket();
       client.set_nsp("chat")
-      client.set_socket_open_listener(function on_socket_open(nsp: string): void  {
+      client.set_socket_open_listener((nsp: string) => {
         chat = nsp;
       });
       let uri: string = "http://10.50.40.37:3000";
@@ -343,12 +343,12 @@ export default function abilityTest() {
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_nsp finished');
     })
 
-    it('client_socket_test_once', 0, function () {
+    it('client_socket_test_once', 0, () => {
       let once: boolean = false;
       let client: client_socket = new client_socket();
-      client.on("login", function on_login_listener(): void {
+      client.on("login", () => {
       });
-      client.once("login",function  on_event_listener(event_json:string):void {
+      client.once("login",(event_json:string) => {
         once = true;
       })
       let uri: string = "http://10.50.40.37:3000";
@@ -365,7 +365,7 @@ export default function abilityTest() {
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_once finished');
     })
 
-    it('test_buffer_util', 0, function () {
+    it('test_buffer_util', 0, () => {
       let uArray =  Uint8Array.from([1234])
       let bufString = buffer_util.uint8ArrayToString(uArray)
       expect(bufString).not().assertEqual('')

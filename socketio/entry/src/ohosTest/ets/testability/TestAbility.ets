@@ -25,6 +25,7 @@ import UIAbility from '@ohos.app.ability.UIAbility'
 import AbilityDelegatorRegistry from '@ohos.app.ability.abilityDelegatorRegistry';
 import { Hypium } from '@ohos/hypium'
 import testsuite from '../test/List.test'
+import { GlobalContext } from '../../../main/ets/common/GlobalContext';
 
 export default class TestAbility extends UIAbility {
     onCreate(want, launchParam) {
@@ -50,7 +51,7 @@ export default class TestAbility extends UIAbility {
             console.info('Succeeded in loading the content. Data: ' + JSON.stringify(data))
         });
 
-        globalThis.abilityContext = this.context;
+        GlobalContext.getContext().setValue('abilityContext',this.context);
     }
 
     onWindowStageDestroy() {
