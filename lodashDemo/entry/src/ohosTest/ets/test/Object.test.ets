@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Huawei Device Co., Ltd.
+ * Copyright (C) 2023 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -72,6 +72,7 @@ export default function objectTest() {
       // This API supports only one parameter: preset action function.
     })
     afterEach(() => {
+
       // Presets a clear action, which is performed after each unit test case ends.
       // The number of execution times is the same as the number of test cases defined by **it**.
       // This API supports only one parameter: clear action function.
@@ -240,7 +241,7 @@ export default function objectTest() {
     })
 
     it('defaultsDeepTest01',0, () => {
-      let defaultsObject: object = defaultsDeep({ 'a': { 'b': 2 } }, { 'a': { 'b': 1, 'c': 3 } });
+      let defaultsObject: object = defaultsDeep({ a: { b: 2 } }, { a: { b: 1, c: 3 } });
       expect(JSON.stringify(defaultsObject)).assertEqual('{"a":{"b":2,"c":3}}');
     })
 
@@ -307,15 +308,15 @@ export default function objectTest() {
     })
 
     it('getTest01',0, () => {
-      expect(get({ 'a': [{ 'b': { 'c': 3 } }] }, 'a[0].b.c')).assertEqual(3);
+      expect(get({ a: [{ b: { c: 3 } }] }, 'a[0].b.c')).assertEqual(3);
     })
 
     it('getTest02',0, () => {
-      expect(get({ 'a': [{ 'b': { 'c': 3 } }] }, 'a.b.c', 'default')).assertEqual('default');
+      expect(get({ a: [{ b: { c: 3 } }] }, 'a.b.c', 'default')).assertEqual('default');
     })
 
     it('hasTest01',0, () => {
-      expect(has({ 'a': { 'b': 2 } }, 'a')).assertTrue();
+      expect(has({ a: { b: 2 } }, a)).assertTrue();
     })
 
     it('hasTest02',0, () => {
@@ -355,11 +356,11 @@ export default function objectTest() {
     })
 
     it('invokeTest01',0, () => {
-      expect(JSON.stringify(invoke({ 'a': [{ 'b': { 'c': [1, 2, 3, 4] } }] }, 'a[0].b.c.slice', 1, 3))).assertEqual('[2,3]');
+      expect(JSON.stringify(invoke({ a: [{ b: { c: [1, 2, 3, 4] } }] }, 'a[0].b.c.slice', 1, 3))).assertEqual('[2,3]');
     })
 
     it('invokeTest02',0, () => {
-      let invokeObject: object = invoke({'p':[{ 'q':{ 'r':{ 's':[ 2, 4, 6, 8, 10 ]} } }]}, 'p[0].q.r.s.slice', 2, 5);
+      let invokeObject: object = invoke({p:[{ q:{ r:{ s:[ 2, 4, 6, 8, 10 ]} } }]}, 'p[0].q.r.s.slice', 2, 5);
       expect(JSON.stringify(invertBy(invokeObject))).assertEqual('{"6":["0"],"8":["1"],"10":["2"]}');
     })
 
