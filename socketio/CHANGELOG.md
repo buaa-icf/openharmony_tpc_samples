@@ -1,19 +1,8 @@
-## v2.0.2
-
-- 适配DevEco Studio: 4.0.3.600
-- 适配SDK: API10(4.0.10.11)
-- ArkTs语法适配
-
-## v2.0.1
-
-- 适配DevEco Studio 4.0 Beta2(4.0.3.411)。
-- 适配SDK: API10 Beta2( 4.0.10.2)
-
 ## v2.0.0
 
-包管理工具由npm切换为ohpm
-适配DevEco Studio:  3.1 Beta2(3.1.0.400)
-适配SDK: API9 Release(3.2.11.9)
+- 包管理工具由npm切换为ohpm
+- 适配DevEco Studio: 4.0.3.600
+- 适配SDK: API10(4.0.10.11)
 
 ## v1.0.1
 

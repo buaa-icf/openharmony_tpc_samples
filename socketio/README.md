@@ -220,7 +220,6 @@ DevEco Studio: 4.0.3.600, SDK: API10(4.0.10.11)
 ````
 
 ## 贡献代码
-## 贡献代码
 使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然也非常欢迎您
 发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 给我们。
 
