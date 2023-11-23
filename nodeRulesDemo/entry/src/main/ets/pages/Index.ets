@@ -23,7 +23,7 @@ interface Item{
 @Entry
 @Component
 struct Index {
-  public datas: Item[] = [
+  public data: Item[] = [
     { name: "SimpleRule", path: "pages/SimpleRule" },
     { name: "MultipleRules", path: "pages/MultipleRules" },
     { name: "CascadingRules", path: "pages/CascadingRules" },
@@ -50,7 +50,7 @@ struct Index {
   build() {
     Row() {
       Column() {
-        ForEach(this.datas, (v: Item) => {
+        ForEach(this.data, (v: Item) => {
           this.BuildEntryItem(v);
         })
       }

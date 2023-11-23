@@ -40,7 +40,7 @@ struct MultipleRules {
 
       consequence(R: ESObject) {
         (this as ESObject).result = false;
-        (this as ESObject).reason = "The transaction was blocked as it was less thar 500";
+        (this as ESObject).reason = "The transaction was blocked as it was less than 500";
         R.stop();
       }
     }
