@@ -35,8 +35,8 @@ export class ButtonAttributeModel {
   firstText: ResourceStr = '第一段文字'               // 第一段文字内容
   firstFontSize: Length = 12                        // 第一段字体大小,默认20
   firstFontColor: ResourceColor = Color.Black       // 第一段字体颜色,默认黑色
-  firstWidth: Length                                // 第一段文字宽度,默认占满父容器
-  firstHeight: Length                               // 第一段文字高度,默认跟随字体
+  firstWidth: Length = 0                               // 第一段文字宽度,默认占满父容器
+  firstHeight: Length = 0                               // 第一段文字高度,默认跟随字体
   firstAction: () => void = () => {}                // 第一个事件
 
   /* ---------------------------分隔符设置--------------------------- */
@@ -54,7 +54,7 @@ export class ButtonAttributeModel {
   secondText: ResourceStr = '第二段文字'             // 第二段文字内容
   secondFontSize: Length = 12                      // 第二段字体大小,默认20
   secondFontColor: ResourceColor = Color.Black     // 第二段字体颜色,默认黑色
-  secondWidth: Length                              // 第二段文字宽度,默认占满父容器
-  secondHeight: Length                             // 第二段文字高度,默认跟随字体
+  secondWidth: Length = 0                             // 第二段文字宽度,默认占满父容器
+  secondHeight: Length = 0                             // 第二段文字高度,默认跟随字体
   secondAction: () => void = () => {}              // 第二个事件
 }

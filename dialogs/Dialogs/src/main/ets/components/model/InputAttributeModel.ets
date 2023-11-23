@@ -20,7 +20,7 @@ export class InputAttributeModel {
   inputFontColor: Color = Color.Black       // 字体颜色,默认黑色
   inputRadius: Length = 5                   // 输入框圆角,默认5
   inputWidth: Length = '100%'       // 输入框宽度,默认占满父容器
-  inputHeight: Length                       // 输入框高度,默认跟随字体
+  inputHeight: Length = '100%'                      // 输入框高度,默认跟随字体
 
   /* ---------------------------弹出框设置--------------------------- */
   dataList: string[] = []                   // 弹出框内容列表,默认为空
@@ -40,7 +40,7 @@ export class InputAttributeModel {
   }
   popupScrollBar: BarState = BarState.Off   // 弹出列表滚动条,默认不显示
   hasDivider: boolean = true                // 弹出框是否需要分割线
-  divider = {                               // 弹出框列表分隔线,默认宽度1,灰色,前后边距10
+  divider:Divider = {                               // 弹出框列表分隔线,默认宽度1,灰色,前后边距10
     strokeWidth: 1,
     color: '#CECECE',
     startMargin: 10,
@@ -51,4 +51,10 @@ export class InputAttributeModel {
     this.inputWidth = width
     this.popupMaxWidth = width
   }
+}
+export interface Divider{
+  strokeWidth:number ,
+  color:string,
+  startMargin:number,
+  endMargin:number
 }

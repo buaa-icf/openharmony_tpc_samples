@@ -14,10 +14,11 @@
  */
 
 import  { listSelectModel, ListSelectDialog, BaseMode } from '@ohos/dialogs'
+import  { TitleBorder,BtnContentBorder,ListItemBorder,BtnBorder} from '@ohos/dialogs'
 class obj  {
-  name: string
-  id: number
-  isSelect: boolean
+  name: string =''
+  id: number = 0
+  isSelect: boolean = false
 }
 @Entry
 @Component
@@ -38,35 +39,38 @@ struct CheckComp {
     this.model.listPadding = {left: 5,right: 5}
     this.model.listTextFontColor = '#ffffff'
     this.model.listItemPadding = {left:5}
-    this.model.btnContentBorder ={
+    let btnContentBorder:BtnContentBorder = {
       width: {top: 1},
       color:{top:'#ffffff'},
       style:{top:BorderStyle.Solid},
-    },
-    this.model.listItemBorder = {
+    }
+    this.model.btnContentBorder = btnContentBorder
+    let listItemBorder:ListItemBorder= {
       width: {bottom: 1},
       color:{bottom: '#ffffff'},
       style:{top:BorderStyle.Solid}
     }
+    this.model.listItemBorder = listItemBorder
     this.model.selectMode = 'normal'
     this.model.isDisplayBtn = true
-    this.model.cancelBtnFontColor = '#ffffff',
-    this.model.cancelBtnBgColor = '#232323',
-    this.model.cancelBtnTitle = 'Cancel',
-    this.model.btnBorder = {
+    this.model.cancelBtnFontColor = '#ffffff'
+    this.model.cancelBtnBgColor = '#232323'
+    this.model.cancelBtnTitle = 'Cancel'
+    let btnBorder:BtnBorder = {
       width: {right: 1},
       color:{right:'#ffffff'},
       style:{top:BorderStyle.Solid}
-    },
-    this.model.confirmBtnFontColor = '#ffffff',
-    this.model.confirmBtnBgColor = '#232323',
-    this.model.confirmBtnTitle = 'OK',
-    this.model.btnWidth = '50%',
-    this.model.btnHeight = 60,
+    }
+    this.model.btnBorder = btnBorder
+    this.model.confirmBtnFontColor = '#ffffff'
+    this.model.confirmBtnBgColor = '#232323'
+    this.model.confirmBtnTitle = 'OK'
+    this.model.btnWidth = '50%'
+    this.model.btnHeight = 60
     this.model.btnContentMargin = {top: 30}
     this.model.cancel = this.cancel
-    this.model.confirm = (data) => {
-      this.confirm(data)
+    this.model.confirm = (data?:object) => {
+      this.confirm(data as obj[])
     }
   }
 
@@ -99,7 +103,7 @@ struct CheckComp {
 
   ]
 
-  confirm(data) {
+  confirm(data:obj[]) {
     if(data) {
      data.forEach(item => {
           this.list.forEach(obj => {

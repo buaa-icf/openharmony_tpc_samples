@@ -12,19 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import animator from "@ohos.animator";
+import animator, { AnimatorResult } from "@ohos.animator";
 
 export class LVBase {
-    padding = -1
-    baseAnimator = null
-    animing = false
-    animStartValue= 0
-    animEndValue= 1
-    lastAnimValue= 0
-    isRestart = false
-    animDrawTime = 0
-    animRepeatMode = false
-    isBack = false
+    padding:number = -1
+    baseAnimator:AnimatorResult|null = null
+    animing:boolean = false
+    animStartValue:number= 0
+    animEndValue:number= 1
+    lastAnimValue:number= 0
+    isRestart:boolean = false
+    animDrawTime:number = 0
+    animRepeatMode:boolean = false
+    isBack:boolean = false
 
     constructor() {
     }
@@ -36,7 +36,7 @@ export class LVBase {
     /**
      * 设置内间距，有的组件不生效
      */
-    setPadding(padding) {
+    setPadding(padding:number) {
         this.padding = padding;
         return this;
     }
@@ -44,7 +44,7 @@ export class LVBase {
     /**
      * 设置动画的开始值和结束值
      */
-    setAnimValue(start, end) {
+    setAnimValue(start:number, end:number) {
         this.animStartValue = start
         this.animEndValue = end
     }
@@ -54,7 +54,7 @@ export class LVBase {
      * 为true时动画值会一次由start变为end，一次由end变为start
      * 为end时动画值每次都是由start变为end
      */
-    setAnimRepeatMode(animRepeatMode) {
+    setAnimRepeatMode(animRepeatMode:boolean) {
         this.animRepeatMode = animRepeatMode
     }
 
@@ -63,7 +63,7 @@ export class LVBase {
      * 为true时，动画第一次是由start变为end
      * 为end时，动画第一次是由end变为start
      */
-    setIsBack(isBack) {
+    setIsBack(isBack:boolean) {
         this.isBack = isBack
     }
 
@@ -98,7 +98,7 @@ export class LVBase {
     /**
      * 开启动画
      */
-    startViewAnim(time, callback) {
+    startViewAnim(time:number, callback:()=>void) {
         this.stopViewAnim(callback)
         this.baseAnimator = animator.create({
             duration: time as number,
@@ -110,38 +110,40 @@ export class LVBase {
             direction:'normal',
             delay:0
         });
-        var that = this
-        this.baseAnimator.onframe = function (value) {
-            if (that.animing) {
-                if (value < that.lastAnimValue) {
-                    that.isRestart = true
-                    that.isBack = !that.isBack;
-                    that.OnAnimationRepeat();
-                } else {
-                    that.isRestart = false
-                }
-                that.lastAnimValue = value
-                that.animDrawTime++
-                if (that.animRepeatMode) {
-                    if (that.isBack) {
-                        that.OnAnimationUpdate(that.animEndValue - value)
+        if(this.baseAnimator != null) {
+            this.baseAnimator.onframe = (value) => {
+                if (this.animing) {
+                    if (value < this.lastAnimValue) {
+                        this.isRestart = true
+                        this.isBack = !this.isBack;
+                        this.OnAnimationRepeat();
                     } else {
-                        that.OnAnimationUpdate(value)
+                        this.isRestart = false
                     }
-                } else {
-                    that.OnAnimationUpdate(value)
+                    this.lastAnimValue = value
+                    this.animDrawTime++
+                    if (this.animRepeatMode) {
+                        if (this.isBack) {
+                            this.OnAnimationUpdate(this.animEndValue - value)
+                        } else {
+                            this.OnAnimationUpdate(value)
+                        }
+                    } else {
+                        this.OnAnimationUpdate(value)
+                    }
+                    callback()
                 }
-                callback()
-            }
-        };
-        this.animing = true
-        this.baseAnimator.play();
+            };
+            this.animing = true
+            this.baseAnimator.play();
+        }
+
     }
 
     /**
      * 停止动画
      */
-    stopViewAnim(callback) {
+    stopViewAnim(callback:()=>void) {
         if (this.baseAnimator != null && this.animing) {
             this.animing = false
             this.baseAnimator.pause()
@@ -160,7 +162,7 @@ export class LVBase {
 
     }
 
-    OnAnimationUpdate(value) {
+    OnAnimationUpdate(value:Object) {
 
     }
 

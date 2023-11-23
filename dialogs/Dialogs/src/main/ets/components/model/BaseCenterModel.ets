@@ -14,6 +14,28 @@
  */
 
 import { BaseMode } from './BaseModel'
+export interface  TitleBorder {                                   // 标题边框
+  width?: Length | EdgeWidths,
+  color?:  ResourceColor | EdgeColors,
+  radius?:  Length | BorderRadiuses,
+  style?: BorderStyle | EdgeStyles
+}
+
+export interface BtnContentBorder{
+  width?: Length | EdgeWidths,
+  color?:  ResourceColor | EdgeColors,
+  radius?:  Length | BorderRadiuses,
+  style?: BorderStyle | EdgeStyles
+}
+
+
+export interface BtnBorder{                                     // 按钮边框
+  width?: Length | EdgeWidths,
+  color?:  ResourceColor | EdgeColors,
+  radius?:  Length | BorderRadiuses,
+  style?: BorderStyle | EdgeStyles
+}
+
 export class BaseCenterMode extends BaseMode {
 
   // 基本属性
@@ -32,12 +54,7 @@ export class BaseCenterMode extends BaseMode {
 
   titleMargin?: Margin | number                    // 标题外边距
 
-  titleBorder?:{                                   // 标题边框
-    width?: Length | EdgeWidths,
-    color?:  ResourceColor | EdgeColors,
-    radius?:  Length | BorderRadiuses,
-    style?: BorderStyle | EdgeStyles
-  }
+  titleBorder?:TitleBorder = undefined
 
   contentHeight?: string | number = 200             // 内容高度
 
@@ -79,23 +96,13 @@ export class BaseCenterMode extends BaseMode {
 
   btnContentMargin?: Margin | number               // 按钮块外边距
 
-  btnContentBorder?:{                              // 按钮块边框
-    width?: Length | EdgeWidths,
-    color?:  ResourceColor | EdgeColors,
-    radius?:  Length | BorderRadiuses,
-    style?: BorderStyle | EdgeStyles
-  }
+  btnContentBorder?:BtnContentBorder = undefined
 
   btnWidth?: number|string = '50%'                 // 按钮宽度
 
   btnHeight?: number|string = 60                   // 按钮高度
 
-  btnBorder?:{                                     // 按钮边框
-    width?: Length | EdgeWidths,
-    color?:  ResourceColor | EdgeColors,
-    radius?:  Length | BorderRadiuses,
-    style?: BorderStyle | EdgeStyles
-  }
+  btnBorder?:BtnBorder = undefined
 
   btnFontSize?:number = 20                         // 按钮文字大小
 
@@ -104,7 +111,7 @@ export class BaseCenterMode extends BaseMode {
 
   /* ---------------------------弹窗函数设置--------------------------- */
 
-  confirm?: (val?:any) => void                  // 确认函数
+  confirm?: (val?:Object) => void                  // 确认函数
 
   cancel?: () => void                           // 取消函数
 

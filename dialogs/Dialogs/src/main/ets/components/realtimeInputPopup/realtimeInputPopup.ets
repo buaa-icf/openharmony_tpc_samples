@@ -25,7 +25,7 @@ export struct RealtimeInputPopup {
   @Builder popupBuilder() {
     if (this.model.dataList.length != 0) {
       List() {
-        ForEach(this.model.dataList, data => {
+        ForEach(this.model.dataList, (data:string) => {
           ListItem() {
             Button(data)
               .fontSize(this.model.popupFontSize)
@@ -48,6 +48,7 @@ export struct RealtimeInputPopup {
       .divider(this.model.hasDivider ? this.model.divider : null)
       .constraintSize({ maxWidth: this.model.popupMaxWidth, maxHeight: this.model.popupMaxWidth })
       .width(this.model.popupWidth)
+      .height('100%')
       .border(this.model.popupBorder)
     }
   }

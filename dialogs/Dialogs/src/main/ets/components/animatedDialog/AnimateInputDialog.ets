@@ -25,8 +25,8 @@ export struct AnimateInputDialog {
 
   isDisplay: boolean = true
 
-  cancel: () => void
-  confirm: () => void
+  cancel: () => void = ()=>{}
+  confirm: () => void = ()=>{}
   @State showDialog: boolean = true
   duration: number = 1000; // 这个值是动画执行时长,
 

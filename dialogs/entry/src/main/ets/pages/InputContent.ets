@@ -14,6 +14,7 @@
  */
 
 import { InputDialog, inputModel } from '@ohos/dialogs'
+import {  BtnBorder,BtnContentBorder,InputBorder } from '@ohos/dialogs'
 import { SelectParam } from '../components/SelectParam'
 import { SelectInput } from '../components/SelectInput'
 @Entry
@@ -26,41 +27,44 @@ struct InputDialogExample {
   @State select: SelectParam = new SelectParam()
   aboutToAppear() {
     this.model.titleFontColor = '#ffffff'
-    this.model.titleHeight = 60,
-    this.model.contentFontColor = '#ffffff',
-    this.model.cancelBtnFontColor = '#ffffff',
-    this.model.cancelBtnBgColor = '#232323',
-    this.model.cancelBtnTitle = 'cancel',
-    this.model.btnBorder = {
-      width: {right: 1},
-      color:{right:'#ffffff'},
-      style:{top:BorderStyle.Solid}
-    },
-    this.model.confirmBtnFontColor = '#ffffff',
-    this.model.confirmBtnBgColor = '#232323',
-    this.model.confirmBtnTitle = 'OK',
-    this.model.isDisplayBtn = true,
-    this.model.btnWidth = '50%',
-    this.model.btnHeight = 60,
-    this.model.btnContentMargin = {top: 30},
-    this.model.placeholderColor = '#ffffff',
-    this.model.dialogBgColor = '#232323',
-    this.model.dialogPadding = {top: 10},
-    this.model.inputBgColor =  '#232323',
-    this.model.inputPadding = 0,
-    this.model.inputMargin ={left:20,right:20},
-    this.model.inputMargin = {left:20,right:20},
-    this.model.inputBorderRadius = 0,
-    this.model.btnContentBorder ={
+    this.model.titleHeight = 60
+    this.model.contentFontColor = '#ffffff'
+    this.model.cancelBtnFontColor = '#ffffff'
+    this.model.cancelBtnBgColor = '#232323'
+    this.model.cancelBtnTitle = 'cancel'
+    let btnBorder:BtnBorder = {
+    width: {right: 1},
+    color:{right:'#ffffff'},
+    style:{top:BorderStyle.Solid}
+    }
+    this.model.btnBorder = btnBorder
+    this.model.confirmBtnFontColor = '#ffffff'
+    this.model.confirmBtnBgColor = '#232323'
+    this.model.confirmBtnTitle = 'OK'
+    this.model.isDisplayBtn = true
+    this.model.btnWidth = '50%'
+    this.model.btnHeight = 60
+    this.model.btnContentMargin = {top: 30}
+    this.model.placeholderColor = '#ffffff'
+    this.model.dialogBgColor = '#232323'
+    this.model.dialogPadding = {top: 10}
+    this.model.inputBgColor =  '#232323'
+    this.model.inputPadding = 0
+    this.model.inputMargin ={left:20,right:20}
+    this.model.inputMargin = {left:20,right:20}
+    this.model.inputBorderRadius = 0
+    let btnContentBorder:BtnContentBorder = {
       width: {top: 1},
       color:{top:'#ffffff'},
-      style:{top:BorderStyle.Solid},
-    },
-    this.model.inputBorder ={
+      style:{top:BorderStyle.Solid}
+    }
+    this.model.btnContentBorder = btnContentBorder
+    let inputBorder:InputBorder={
       width: {bottom: 1},
       color:{bottom:'#008577'},
       style:{top:BorderStyle.Solid}
-    },
+    }
+    this.model.inputBorder = inputBorder;
     this.model.titleFontColor = '#ffffff'
     this.model.isDisplayInput = true
     this.model.cancel = this.onCancel
@@ -76,7 +80,7 @@ struct InputDialogExample {
     this.model.dialogWidth = '80%'
   }
 
-  InputController: CustomDialogController
+  InputController: CustomDialogController | undefined = undefined
   onCancel() {
     console.info('Callback when the first button is clicked')
   }
@@ -105,7 +109,9 @@ struct InputDialogExample {
         this.model.cancelBtnBorderRadius = { bottomLeft: this.select.borderRadius }
         this.model.isSupportGesture = this.select.isSupportGesture
         this.model.autoCancel = this.select.autoCancel
-        this.InputController.open()
+        if(this.InputController != undefined) {
+          this.InputController.open()
+        }
       })
       SelectInput({
         select: this.select

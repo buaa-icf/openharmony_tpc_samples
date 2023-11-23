@@ -39,7 +39,7 @@ export { RealtimeInputPopup } from './src/main/ets/components/realtimeInputPopup
 
 export { MessageDialog } from './src/main/ets/components/messageDialog/MessageDialog'
 
-export { listSelectModel } from './src/main/ets/components/model/listSelectModel'
+export { listSelectModel,ListItemBorder } from './src/main/ets/components/model/listSelectModel'
 
 export { ButtonAttributeModel } from './src/main/ets/components/model/ButtonAttributeModel'
 
@@ -51,9 +51,9 @@ export { BaseMode, CustomCallback } from './src/main/ets/components/model/BaseMo
 
 export { TopDialog } from './src/main/ets/components/topDialog/TopDialog'
 
-export { inputModel } from './src/main/ets/components/model/inputModel'
+export { inputModel,InputBorder } from './src/main/ets/components/model/inputModel'
 
-export { BaseCenterMode } from './src/main/ets/components/model/BaseCenterModel'
+export { BaseCenterMode,TitleBorder,BtnContentBorder,BtnBorder } from './src/main/ets/components/model/BaseCenterModel'
 
 export { BottomScrollDialog } from './src/main/ets/components/BottonDialog/BottomScrollDialog'
 

@@ -14,12 +14,12 @@
  */
 
 export class LVLineWithTextController {
-    padding = -1;
-    lineWidth = -1;
-    textSize = -1;
-    viewColor = '#FFFFFF';
-    textColor = '#FFFFFF';
-    animValue = 0;
+    padding:number = -1;
+    lineWidth:number = -1;
+    textSize:number = -1;
+    viewColor:string = '#FFFFFF';
+    textColor:string = '#FFFFFF';
+    animValue:number = 0;
 
     constructor() {
     }
@@ -28,7 +28,7 @@ export class LVLineWithTextController {
         return this.padding;
     }
 
-    setPadding(padding) {
+    setPadding(padding:number) {
         this.padding = padding;
         return this;
     }
@@ -37,7 +37,7 @@ export class LVLineWithTextController {
         return this.lineWidth;
     }
 
-    setLineWidth(lineWidth) {
+    setLineWidth(lineWidth:number) {
         this.lineWidth = lineWidth;
         return this;
     }
@@ -46,7 +46,7 @@ export class LVLineWithTextController {
         return this.textSize;
     }
 
-    setTextSize(textSize) {
+    setTextSize(textSize:number) {
         this.textSize = textSize;
         return this;
     }
@@ -55,7 +55,7 @@ export class LVLineWithTextController {
         return this.viewColor;
     }
 
-    setViewColor(viewColor) {
+    setViewColor(viewColor:string) {
         this.viewColor = viewColor;
         return this;
     }
@@ -64,7 +64,7 @@ export class LVLineWithTextController {
         return this.textColor;
     }
 
-    setTextColor(textColor) {
+    setTextColor(textColor:string) {
         this.textColor = textColor;
         return this;
     }

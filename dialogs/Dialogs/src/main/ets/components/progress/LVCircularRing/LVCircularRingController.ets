@@ -16,9 +16,9 @@
 import {LVBase} from '../base/LVBase'
 
 export class LVCircularRingController extends LVBase {
-    animValue = 0;
-    viewColor = '#A0FFFFFF';
-    barColor = '#FFFFFF';
+    animValue:number = 0;
+    viewColor:string = '#A0FFFFFF';
+    barColor:string = '#FFFFFF';
 
     getAnimValue() {
         return this.animValue;
@@ -28,7 +28,7 @@ export class LVCircularRingController extends LVBase {
         return this.viewColor;
     }
 
-    setViewColor(viewColor) {
+    setViewColor(viewColor:string) {
         this.viewColor = viewColor;
         return this;
     }
@@ -37,12 +37,12 @@ export class LVCircularRingController extends LVBase {
         return this.barColor;
     }
 
-    setBarColor(barColor) {
+    setBarColor(barColor:string) {
         this.barColor = barColor;
         return this;
     }
 
-    OnAnimationUpdate(value) {
+    OnAnimationUpdate(value:number) {
         this.animValue = 360 * value;
     }
 }

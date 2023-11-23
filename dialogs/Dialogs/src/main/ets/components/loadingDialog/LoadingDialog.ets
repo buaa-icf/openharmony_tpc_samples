@@ -22,7 +22,7 @@ export struct LoadingDialog {
   @State data: LoadingDialogModel = new LoadingDialogModel();
   @State interpolatedProgress: string = ''
   @State linearProgress: string = ''
-  @Prop popupAnimation:TransitionEffect = undefined
+  @Prop popupAnimation:TransitionEffect|undefined = undefined
   // 控制执行一次
   interpolatedFlag: boolean = false
   linearFlag: boolean = false
@@ -32,14 +32,14 @@ export struct LoadingDialog {
   //监测进度值的改变
   @State @Watch("linearUpdated") linearData: LoadingDialogModel = new LoadingDialogModel();
 
-  interpolatedUpdated(value: any): void {
+  interpolatedUpdated(value: Object): void {
     this.interpolatedProgress = this.interpolatedData.getProgress()
     if (AppStorage.Get('state') == 1) {
       this.interpolatedRunCallback()
     }
   }
 
-  linearUpdated(value: any): void {
+  linearUpdated(value: Object): void {
     this.interpolatedProgress = this.interpolatedData.getProgress()
     this.linearProgress = this.linearData.getProgress()
     if (AppStorage.Get('state') == 1) {
@@ -104,7 +104,7 @@ export struct LoadingDialog {
           Text(this.loadingTitle).fontSize(15).fontColor(0x7A7A7A).textAlign(TextAlign.Center)
         }
       }
-    }.height(100).width(100).backgroundColor(Color.White).borderRadius(10).transition(this.popupAnimation)
+    }.height(100).width(100).backgroundColor(Color.White).borderRadius(10).transition(this.popupAnimation != undefined ? this.popupAnimation:undefined)
   }
 
   aboutToAppear() {

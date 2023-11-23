@@ -33,10 +33,11 @@ export class inputModel extends BaseCenterMode {
 
   inputPadding?: Padding|number                  // 输入框内边距
 
-  inputBorder?:{                                    // 输入框边框设置
-    width?: Length | EdgeWidths,
-    color?:  ResourceColor | EdgeColors,
-    radius?:  Length | BorderRadiuses,
-    style?: BorderStyle | EdgeStyles
-  }
+  inputBorder?:InputBorder
+}
+export interface  InputBorder{
+  width?: Length | EdgeWidths,
+  color?:  ResourceColor | EdgeColors,
+  radius?:  Length | BorderRadiuses,
+  style?: BorderStyle | EdgeStyles
 }
