@@ -22,8 +22,6 @@ let signingKey:ESObject;
 export default function JwksClientTest() {
   describe('ArtsJwksClientTest', ()=> {
       beforeAll(() => {
-        // Presets an action, which is performed only once before all test cases of the test suite start.
-        // This API supports only one parameter: preset action function.
         console.info("===== beforeAll ======")
         let option: Option = new Option('https://sandrino.auth0.com/.well-known/jwks.json',null,5000,false,true)
         jwksClient = new JwksClient(option);
@@ -33,44 +31,36 @@ export default function JwksClientTest() {
         jwksClient == null;
       })
       it('JwksClient_Test_getKeys',0, async () => {
-        // Defines a test case. This API supports three parameters: test case name, filter parameter, and test case function.
         expect(await jwksClient.getKeys() != null).assertTrue()
       })
 
       it('JwksClient_Test_getSigningKeys',0, async () => {
-        // Defines a test case. This API supports three parameters: test case name, filter parameter, and test case function.
         expect(await jwksClient.getSigningKeys() != null).assertTrue()
       })
 
       it('JwksClient_Test_signingKey',0, async () => {
-        // Defines a test case. This API supports three parameters: test case name, filter parameter, and test case function.
         const kid = 'RkI5MjI5OUY5ODc1N0Q4QzM0OUYzNkVGMTJDOUEzQkFCOTU3NjE2Rg';
         signingKey = await jwksClient.getSigningKey(kid);
         expect(signingKey != null).assertTrue()
       })
 
       it('JwksClient_Test_kid',0, async () =>{
-        // Defines a test case. This API supports three parameters: test case name, filter parameter, and test case function.
         expect(signingKey.kid != null).assertTrue()
       })
 
       it('JwksClient_Test_algorithm',0, () => {
-        // Defines a test case. This API supports three parameters: test case name, filter parameter, and test case function.
         expect(signingKey.algorithm != null).assertTrue()
       })
 
       it('JwksClient_Test_type',0, () => {
-        // Defines a test case. This API supports three parameters: test case name, filter parameter, and test case function.
         expect(signingKey.type != null).assertTrue()
       })
 
       it('JwksClient_Test_usage',0, () => {
-        // Defines a test case. This API supports three parameters: test case name, filter parameter, and test case function.
         expect(signingKey.usage != null).assertTrue()
       })
 
       it('JwksClient_Test_getPublicKey',0, async () => {
-        // Defines a test case. This API supports three parameters: test case name, filter parameter, and test case function.
         let publicKey:ESObject = await signingKey.getPublicKey()
         expect(publicKey != null).assertTrue()
       })
