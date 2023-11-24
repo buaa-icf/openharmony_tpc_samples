@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-export type DividerAttribute = {
+export interface DividerAttribute {
   strokeWidth: Length;
   color?: ResourceColor;
   startMargin?: Length;

@@ -39,13 +39,13 @@ struct BottomListDialogComponent {
   @Link mIsShowSelect: boolean;
   @Link mSelectIndex: number;
   @Link mSelectTextColor: number | string;
-  mDialogPrimitiveHeight: number; // 记录dialog的原始高度
+  mDialogPrimitiveHeight: number = 0; // 记录dialog的原始高度
   controller: CustomDialogController;
   showOrClose?: (currentHeight: number, isOpen: boolean) => void
   itemOnClick?: (data: string, index: number) => void
-  private mStartY: number;
-  private mEndY: number;
-  private mInitiallyY: number;
+  private mStartY: number = 0;
+  private mEndY: number = 0;
+  private mInitiallyY: number = 0;
   private isTouchEvent: boolean = false;
 
   @Builder
@@ -63,7 +63,9 @@ struct BottomListDialogComponent {
           return;
         }
         this.isTouchEvent = false;
-        this.itemOnClick(data, index);
+        if(this.itemOnClick != undefined) {
+          this.itemOnClick(data, index);
+        }
       })
   }
 
@@ -91,7 +93,9 @@ struct BottomListDialogComponent {
         return;
       }
       this.isTouchEvent = false;
-      this.itemOnClick(data, index);
+      if(this.itemOnClick != undefined) {
+        this.itemOnClick(data, index);
+      }
       this.mSelectIndex = index;
     })
   }
@@ -108,7 +112,7 @@ struct BottomListDialogComponent {
           .textAlign(TextAlign.Center)
           .visibility(this.mDialogTitleText ? Visibility.Visible : Visibility.None)
 
-        ForEach(this.mItemListData, (data, index) => {
+        ForEach(this.mItemListData, (data:string, index:number) => {
           if (this.mIsShowSelect) {
             this.buildSelectPage(data, index)
           } else {
@@ -132,7 +136,9 @@ struct BottomListDialogComponent {
               return;
             }
             this.isTouchEvent = false;
-            this.showOrClose(this.mDialogComponentHeight, false);
+            if(this.showOrClose != undefined) {
+              this.showOrClose(this.mDialogComponentHeight, false);
+            }
           })
       }
       .width('100%')
@@ -169,9 +175,13 @@ struct BottomListDialogComponent {
             return
           }
           if (moveSpace > this.mDialogPrimitiveHeight / 2) {
-            this.showOrClose(this.mDialogComponentHeight, false);
+            if(this.showOrClose != undefined) {
+              this.showOrClose(this.mDialogComponentHeight, false);
+            }
           } else {
-            this.showOrClose(this.mDialogComponentHeight, true);
+            if(this.showOrClose != undefined) {
+              this.showOrClose(this.mDialogComponentHeight, true);
+            }
           }
           this.isTouchEvent = true;
         }
@@ -186,7 +196,9 @@ struct BottomListDialogComponent {
         return;
       }
       this.isTouchEvent = false;
-      this.showOrClose(this.mDialogComponentHeight, false);
+      if(this.showOrClose != undefined) {
+        this.showOrClose(this.mDialogComponentHeight, false);
+      }
     })
   }
 
@@ -197,7 +209,16 @@ struct BottomListDialogComponent {
 
 @Component
 export struct BottomListDialog {
-  private mOpenAnimator: AnimatorResult;
+  private mOpenAnimator: AnimatorResult = animator.create({
+    duration: 500,
+    easing: "friction",
+    delay: 0,
+    fill: "forwards",
+    direction: "normal",
+    iterations: 1,
+    begin: 0,
+    end: 0
+  });
   @Link @Watch("showDialog") openDialog: boolean;
   @State mDialogBackgroundColor: number | string = Color.White;
   @State mDialogMaskColor: number | string = Color.Transparent;
@@ -210,14 +231,14 @@ export struct BottomListDialog {
   @State mDialogItemDividerStrokeWidth: number = 1;
   @State mDialogCancelDividerBackgroundColor: number | string = Color.Gray;
   @State mDialogCancelDividerStrokeWidth: number = 10;
-  @State mListData: Array<string> = null;
+  @State mListData: Array<string> = new Array();
   @State dialogTitle: string = "";
   @State dialogTitleSize: number = 25;
   @State dialogTitleColor: number | string = Color.White;
   @State dialogCancel: string = "";
   @State dialogCancelSize: number = 25;
   @State dialogCancelColor: number | string = Color.White;
-  @State mDialogSelectIcon: Resource = null;
+  @State mDialogSelectIcon: Resource|null = null;
   @State isShowSelect: boolean = false;
   @State mDialogItemSelectIndex: number = 0;
   @State mDialogItemSelectTextColor: number | string = Color.Transparent;
@@ -225,8 +246,8 @@ export struct BottomListDialog {
   onItemClick?: (data: string, index: number) => void
   dialogController: CustomDialogController = new CustomDialogController({
     builder: BottomListDialogComponent({
-      showOrClose: (currentHeight, isOpen) => this.onShowOrClose(currentHeight, isOpen),
-      itemOnClick: (data, index) => this.onItem(data, index),
+      showOrClose: (currentHeight, isOpen) => {this.onShowOrClose(currentHeight, isOpen)},
+      itemOnClick: (data, index) => {this.onItem(data, index)},
       mDialogComponentHeight: $mDialogHeight,
       mDialogComponentMastColor: $mDialogMaskColor,
       mDialogComponentTitleHeight: $mDialogTitleHeight,
@@ -276,18 +297,22 @@ export struct BottomListDialog {
       this.mOpenAnimator.play();
     } else {
       this.closeDialog(currentHeight);
-      this.cancel();
+      if(this.cancel != undefined) {
+        this.cancel();
+      }
     }
   }
 
-  onItem(data: string, index) {
-    this.onItemClick(data, index);
+  onItem(data: string, index:number) {
+    if(this.onItemClick != undefined) {
+      this.onItemClick(data, index);
+    }
     this.closeDialog(this.mDialogHeight);
   }
 
   private createOpenAnimator(isShow: boolean, currentHeight: number) {
-    let beginHeight;
-    let endHeight;
+    let beginHeight:number = 0;
+    let endHeight:number = 0;
     if (isShow) {
       beginHeight = currentHeight;
       endHeight = this.mDialogItemHeight * this.mListData.length + this.mDialogTitleHeight * (this.dialogTitle ? 2 : 1)
@@ -306,14 +331,14 @@ export struct BottomListDialog {
       begin: beginHeight,
       end: endHeight
     };
-    var that = this;
+
     this.mOpenAnimator = animator.create(options)
-    this.mOpenAnimator.onframe = function (value) {
-      that.mDialogHeight = value
+    this.mOpenAnimator.onframe =  (value)=> {
+      this.mDialogHeight = value
     }
-    this.mOpenAnimator.onfinish = function () {
+    this.mOpenAnimator.onfinish =  ()=> {
       if (!isShow) {
-        that.dialogController.close();
+        this.dialogController.close();
       }
     }
   }

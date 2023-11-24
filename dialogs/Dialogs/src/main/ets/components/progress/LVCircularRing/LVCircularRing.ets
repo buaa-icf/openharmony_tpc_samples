@@ -29,7 +29,7 @@ export struct LVCircularRing {
   pad: number = 5
   lineWidth: number = 8
   private canvasHasReady: boolean = false;
-  private onReadyNext: () => void = undefined
+  private onReadyNext: (() => void) | undefined = undefined
 
   aboutToAppear() {
     this.userConfigs();
@@ -65,7 +65,7 @@ export struct LVCircularRing {
     Canvas(this.context2D)
       .onReady(() => {
         this.canvasHasReady = true;
-        if (this.onReadyNext) {
+        if (this.onReadyNext != undefined) {
           this.onReadyNext()
           this.onReadyNext = undefined;
         }
@@ -95,10 +95,10 @@ export struct LVCircularRing {
   }
 
   drawExecute() {
-    this.runNextFunction(this.draw.bind(this));
+    this.runNextFunction(this.draw);
   }
 
-  draw() {
+  draw = ()=>{
     // 忽略上一次的绘制结果，只显示下面绘制的内容
     this.context2D.globalCompositeOperation = 'copy';
     this.context2D.beginPath();
@@ -121,15 +121,15 @@ export struct LVCircularRing {
   }
 
   startAnim() {
-    this.controller.startViewAnim(500, this.draw.bind(this))
+    this.controller.startViewAnim(500, this.draw)
   }
 
-  startAnimWithTime(time) {
-    this.controller.startViewAnim(time, this.draw.bind(this))
+  startAnimWithTime(time:number) {
+    this.controller.startViewAnim(time, this.draw)
   }
 
   stopAnim() {
-    this.controller.stopViewAnim(this.draw.bind(this))
+    this.controller.stopViewAnim(this.draw)
   }
 }
 

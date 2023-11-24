@@ -16,10 +16,11 @@ import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect
 import { Binding } from 'inversify/lib/bindings/binding';
 import { getFactoryDetails } from 'inversify/lib/utils/binding_utils';
 
+
 export default function binding_utilsTest() {
-  describe('binding_utilsTest', function () {
+  describe('binding_utilsTest',  ()=> {
     _it('should_thrown_an_exception_non_factory_binding_type', () => {
-      const binding = new Binding('', 'Singleton');
+      const binding:Binding<string> = new Binding('', 'Singleton');
       binding.type = 'Instance';
       expect(() => getFactoryDetails(binding)).to.throw('Unexpected factory type Instance');
     });

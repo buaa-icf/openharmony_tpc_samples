@@ -1,18 +1,18 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
- * Licensed under the Apache License, Version 2.0 (the 'License');
+ * Copyright (C) 2022 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an 'AS IS' BASIS,
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// @ts-ignore
+
 import RuleEngine from "node-rules";
 
 @Entry
@@ -25,31 +25,35 @@ struct RecurssionWithRules {
   controller: TextAreaController = new TextAreaController();
 
   ruleEngineExecute(): void {
-    var ruleEngine = new RuleEngine();
-    var that = this;
-    var rule =
-      {
-        "condition": function (R) {
-          R.when(this.someval < 10);
-        },
-        "consequence": function (R) {
-          this.someval = ++this.someval
-          console.log(this.someval + ": incrementing again till 10")
-          that.arrayStr.push(this.someval + " ：incrementing again till 10");
-          console.log(that.resultStr);
-          R.restart();
-        }
+    let ruleEngine: RuleEngine = new RuleEngine();
+    let that = this;
+
+    class Rule {
+      condition(R: ESObject) {
+        R.when((this as ESObject).someval < 10);
       }
+
+      consequence(R: ESObject) {
+        (this as ESObject).someval = ++(this as ESObject).someval
+        console.log((this as ESObject).someval + ": incrementing again till 10")
+        that.arrayStr.push((this as ESObject).someval + " ：incrementing again till 10");
+        console.log(that.resultStr);
+        R.restart();
+      }
+    }
+
+    let rule: Rule = new Rule();
+
 
     ruleEngine.register(rule);
 
-    var fact = {
-      "someval": parseInt(this.setValue)
+    let fact: ESObject = {
+      someval: Number.parseInt(this.setValue)
     };
 
     console.log("-------" + this.setValue);
 
-    ruleEngine.execute(fact, (data) => {
+    ruleEngine.execute(fact, (data: ESObject) => {
       that.resultStr = "Finished with value:" + data.someval;
     })
   }
@@ -72,7 +76,7 @@ struct RecurssionWithRules {
         .onChange((value: string) => {
           this.setValue = value;
           this.arrayStr = [];
-          this.controller.caretPosition(-1);
+
 
         })
 
@@ -80,7 +84,7 @@ struct RecurssionWithRules {
         this.ruleEngineExecute();
       })
 
-      ForEach(this.arrayStr, (item, index) => {
+      ForEach(this.arrayStr, (item: string, index: number) => {
         Text("测试结果：" + item)
           .width("90%")
           .height(30)

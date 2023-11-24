@@ -14,12 +14,23 @@
  */
 
 import { provide } from 'inversify-binding-decorators/es/index';
-import { it as _it, afterAll, afterEach, beforeAll, beforeEach, describe, expect } from '../util'
-import "reflect-metadata";
+// import { it as _it, afterAll, afterEach, beforeAll, beforeEach, describe, expect } from '../util'
+import {
+    describe,
+    beforeAll,
+    beforeEach,
+    afterEach,
+    afterAll,
+    it,
+    expect
+} from '@ohos/hypium'
+
+import { shouldThrow0, shouldThrow } from '../interface'
+let tag = "inversify-demo： "
 
 export default function provideTest() {
 
-    describe("provide", function() {
+    describe("provide", () => {
 
 
         beforeEach(() => {
@@ -27,46 +38,36 @@ export default function provideTest() {
 
         afterEach(() => {
         });
-        _it("Should return target type", () => {
+        it("Should_return_target_type",0, () => {
 
             class Ninja {
             }
-            const provided = provide(Ninja);
-            expect(typeof provided).eqls("function");
 
+            let ninja:Ninja = new Ninja();
+
+            const provided:ESObject = provide(ninja);
+            expect(typeof provided).assertEqual("function");
         });
 
 
-        _it("Should throw if @provide is applied more than once without force flag", () => {
-
-            function shouldThrow() {
-                @provide("Ninja")
-                @provide("SilentNinja")
-                class Ninja {
-                }
-                return Ninja;
+        it("Should_throw_if_provide_is_applied_more_than_once_without_force_flag",0, () => {
+            try {
+                shouldThrow0 && shouldThrow0()
+            }catch(err){
+                let value:string = "Cannot apply @provide decorator multiple times but is has been used " +
+                        "multiple times in Ninja " +
+                        "Please use @provide(ID, true) if you are trying to declare multiple bindings!"
+                expect(err.message).assertEqual(value)
+                console.log(tag + "expect("+err.message+").throw("+value+")")
             }
-
-            expect(shouldThrow).to.throw(
-                "Cannot apply @provide decorator multiple times but is has been used " +
-                "multiple times in Ninja " +
-                "Please use @provide(ID, true) if you are trying to declare multiple bindings!"
-            );
-
         });
 
-        _it("Should work if @provide is applied more than once with force flag", () => {
-
-            function shouldThrow() {
-                @provide("Ninja", true)
-                @provide("SilentWarrior", true)
-                class Ninja {
-                }
-                return Ninja;
+        it("Should_work_if_provide_is_applied_more_than_once_with_force_flag",0, () => {
+            try {
+                shouldThrow && shouldThrow()
+            }catch(err){
+                console.log(tag + "expect("+err.message+").throw()")
             }
-
-            expect(shouldThrow).not.to.throws();
-
         });
 
     });

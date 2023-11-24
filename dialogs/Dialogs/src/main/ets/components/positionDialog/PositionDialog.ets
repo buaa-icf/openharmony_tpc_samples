@@ -26,12 +26,12 @@ export struct PositionDialog {
   @Prop positionDialog: string = 'center';
   @State positionX: number = 0;
   @State positionY: number = 0;
-  @Prop popupAnimation:TransitionEffect = undefined
-  @BuilderParam slotContent?: () => any;
+  @Prop popupAnimation:TransitionEffect|undefined = undefined
+  @BuilderParam slotContent?: () => void;
   controller: CustomDialogController
   // 若尝试在CustomDialog中传入多个其他的Controller，以实现在CustomDialog中打开另一个或另一些CustomDialog，那么此处需要将指向自己的controller放在最后
-  cancel: () => void
-  confirm: () => void
+  cancel: () => void = ()=>{}
+  confirm: () => void = ()=>{}
   @Link animateOptions: AnimateDialogOptions;
   @State scaleOptions: ScaleOptions = {
     x: 1,
@@ -75,12 +75,20 @@ export struct PositionDialog {
     }
   }
   executeStartAnimate() {
-    this.scaleOptions = animateBeforeStartStatus(this.animateOptions.animate);
+    let options = animateBeforeStartStatus(this.animateOptions.animate);
+    if(options != undefined){
+      this.scaleOptions = options as ScaleOptions
+    }
+
     this.useScale = true
     animateTo({ duration: this.duration, curve: this.curve, onFinish: () => {
       this.useScale = false;
     } }, () => {
-      this.scaleOptions =  animateAfterStartStatus(this.animateOptions.animate)
+
+      let options = animateAfterStartStatus(this.animateOptions.animate);
+      if(options != undefined){
+        this.scaleOptions = options as ScaleOptions
+      }
     })
     this.showStatus = Visibility.Visible
   }
@@ -96,11 +104,17 @@ export struct PositionDialog {
   }
 
   animateBeforeEndStatus() {
-    this.scaleOptions = animateAfterStartStatus(this.animateOptions.animate)
+    let options = animateAfterStartStatus(this.animateOptions.animate);
+    if(options != undefined){
+      this.scaleOptions = options as ScaleOptions
+    }
   }
 
   animateAfterEndStatus() {
-    this.scaleOptions = animateBeforeStartStatus(this.animateOptions.animate)
+    let options = animateBeforeStartStatus(this.animateOptions.animate);
+    if(options != undefined){
+      this.scaleOptions = options as ScaleOptions
+    }
   }
 
   closeDialog(){
@@ -110,7 +124,7 @@ export struct PositionDialog {
 
   aboutToDisappear() {
     if(this.model.isDeleteOnDisappear) {
-      delete this.controller
+
     }
   }
 
@@ -126,7 +140,9 @@ export struct PositionDialog {
             .border(this.model.titleBorder)
             .width(this.model.titleWight)
           Column(){
-            this.slotContent()
+            if(this.slotContent != undefined) {
+              this.slotContent()
+            }
           }
           .height(this.model.contentHeight)
           .margin(this.model.contentMargin)

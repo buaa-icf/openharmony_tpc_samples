@@ -54,7 +54,7 @@ export struct SelectInput {
 
       Flex({ justifyContent: FlexAlign.Center, alignItems: ItemAlign.Center }) {
         TextInput().onChange((value: string) => {
-          this.select.borderRadius = parseInt(value)
+          this.select.borderRadius = Number.parseInt(value)
         }).backgroundColor(Color.White).margin({ right: 20 })
         Text('圆角弧度').fontSize(20)
       }.backgroundColor('#ffcfcccc')
@@ -76,7 +76,7 @@ export struct SelectInput {
           Text('offsetX:').fontSize(16).padding(10)
           TextInput()
             .onChange((value: string) => {
-              this.select.dx = parseInt(value)
+              this.select.dx = Number.parseInt(value)
             })
             .backgroundColor(Color.White)
             .margin({ right: 20 })
@@ -85,7 +85,7 @@ export struct SelectInput {
           Text('offsetY:').fontSize(16).padding(10)
           TextInput()
             .onChange((value: string) => {
-              this.select.dy = parseInt(value)
+              this.select.dy = Number.parseInt(value)
             })
             .backgroundColor(Color.White)
             .margin({ right: 20 })

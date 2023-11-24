@@ -13,32 +13,36 @@
  * limitations under the License.
  */
 
-import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../util'
+import {
+  describe,
+  beforeAll,
+  beforeEach,
+  afterEach,
+  afterAll,
+  it,
+  expect
+} from '@ohos/hypium'
+
 import { Container } from 'inversify';
 import { buildProviderModule } from "inversify-binding-decorators/es/index";
-import "reflect-metadata";
 import { autoProvide } from "inversify-binding-decorators/es/index";
-import { METADATA_KEY } from "inversify-binding-decorators/es/constants";
 import * as entites from "../stubs/entities";
-
+import { DeleteMetadata } from '../interface'
 
 export default function autoWireTest() {
 
-  describe("autoProvide", function () {
+  describe("autoProvide", () => {
 
     beforeEach(() => {
-      Reflect.deleteMetadata(METADATA_KEY.provide, Reflect);
+      DeleteMetadata()
     });
-    _it("Should be able to auto-wire binding declarations", () => {
+    it("Should_be_able_to_auto_wire_binding_declarations",0, () => {
 
       let container = new Container();
-      // Note @inject annotations are required autoProvide
-      // even when using classes are used as identifiers
-      // See declaration of Warrior for more details
       autoProvide(container, entites);
       container.load(buildProviderModule());
       let warrior = container.get(entites.Warrior);
-      expect(warrior.fight()).eql("Using Katana...");
+      expect(warrior.fight()).assertEqual("Using_Katana...".replace('_',' '));
 
     });
 

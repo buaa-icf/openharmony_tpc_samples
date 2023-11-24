@@ -13,9 +13,8 @@
  * limitations under the License.
  */
 
-import getDecorators from "inversify-inject-decorators/es/index";
-import { Container, injectable, tagged, named } from "inversify";
-import "reflect-metadata"
+import { LazyMultiInjectFunction } from './lazyInjectInterface';
+
 @Entry
 @Component
 struct LazyMultiInjectPage {
@@ -42,57 +41,12 @@ struct LazyMultiInjectPage {
   }
 
   sample(){
-    let container = new Container();
-    let { lazyMultiInject } = getDecorators(container);
-    let TYPES = { Weapon: "Weapon" };
 
-    interface Weapon {
-      name: string;
-      durability: number;
-      use(): void;
-    }
-
-    @injectable()
-    class Sword implements Weapon {
-      public name: string;
-      public durability: number;
-      public constructor() {
-        this.durability = 100;
-        this.name = "Sword";
-      }
-      public use() {
-        this.durability = this.durability - 10;
-      }
-    }
-
-    @injectable()
-    class Shuriken implements Weapon {
-      public name: string;
-      public durability: number;
-      public constructor() {
-        this.durability = 100;
-        this.name = "Shuriken";
-      }
-      public use() {
-        this.durability = this.durability - 10;
-      }
-    }
-
-    class Warrior {
-
-      @lazyMultiInject(TYPES.Weapon)
-      public weapons: Weapon[];
-
-    }
-
-    container.bind<Weapon>(TYPES.Weapon).to(Sword);
-    container.bind<Weapon>(TYPES.Weapon).to(Shuriken);
-
-    let warrior = new Warrior();
-    console.log((warrior.weapons[0] instanceof Sword)+""); // true
-    console.log((warrior.weapons[1] instanceof Shuriken)+""); // true
-    this.message=(warrior.weapons[0] instanceof Sword)+"";
-    this.message2=(warrior.weapons[1] instanceof Shuriken)+"";
+    let obj = LazyMultiInjectFunction();
+    console.log(obj.sword); // true
+    console.log(obj.shuriken); // true
+    this.message=obj.sword;
+    this.message2=obj.shuriken;
   }
 
 

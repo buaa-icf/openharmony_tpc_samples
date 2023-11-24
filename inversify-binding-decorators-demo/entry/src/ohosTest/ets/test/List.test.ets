@@ -15,9 +15,12 @@
 
 import indexTest from './Index.test'
 import autoWireTest from './utils/Auto_wire.test'
+
 import provideDoneSyntaxTest from './syntax/Provide_done_syntax.test'
+
 import provideInWhenOnSyntaxTest from './syntax/Provide_in_when_on_syntax.test'
 import provideWhenOnSyntaxTest from './syntax/Provide_when_on_syntax.test'
+
 import fluentProvideTest from './decorator/Fluent_provide.test'
 import provideTest from './decorator/Provide.test'
 

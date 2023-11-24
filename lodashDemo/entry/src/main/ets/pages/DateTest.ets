@@ -23,7 +23,7 @@ struct Index {
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
       Text('Unix 纪元 (1 January 1970 00:00:00 UTC) 直到现在的毫秒数: '+ this.date);
-      Button('点击获得 Unix 纪元 (1 January 1970 00:00:00 UTC) 直到现在的毫秒数')
+      Button('获得 Unix 纪元 (1 January 1970 00:00:00 UTC) 直到现在的毫秒数')
         .onClick(() => {
           this.date = now();
           console.log('获得 Unix 纪元 (1 January 1970 00:00:00 UTC) 直到现在的毫秒数:' + this.date)

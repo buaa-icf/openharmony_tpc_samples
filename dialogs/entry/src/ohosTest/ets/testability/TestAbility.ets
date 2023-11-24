@@ -24,14 +24,8 @@ import AbilityConstant from '@ohos.app.ability.AbilityConstant';
 
 export default class TestAbility extends UIAbility {
     onCreate(want: Want, launchParam: AbilityConstant.LaunchParam) {
-        hilog.info(0x0000, 'testTag', '%{public}s', 'TestAbility onCreate');
-        hilog.info(0x0000, 'testTag', '%{public}s', 'want param:' + JSON.stringify(want) ?? '');
-        hilog.info(0x0000, 'testTag', '%{public}s', 'launchParam:'+ JSON.stringify(launchParam) ?? '');
-        var abilityDelegator: any
-        abilityDelegator = AbilityDelegatorRegistry.getAbilityDelegator()
-        var abilityDelegatorArguments: any
-        abilityDelegatorArguments = AbilityDelegatorRegistry.getArguments()
-        hilog.info(0x0000, 'testTag', '%{public}s', 'start run testcase!!!');
+        let abilityDelegator:AbilityDelegatorRegistry.AbilityDelegator = AbilityDelegatorRegistry.getAbilityDelegator()
+        let abilityDelegatorArguments: AbilityDelegatorRegistry.AbilityDelegatorArgs = AbilityDelegatorRegistry.getArguments()
         Hypium.hypiumTest(abilityDelegator, abilityDelegatorArguments, testsuite)
     }
 

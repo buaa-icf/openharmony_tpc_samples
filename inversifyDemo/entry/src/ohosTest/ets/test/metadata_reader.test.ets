@@ -13,13 +13,17 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/util'
-
 import * as METADATA_KEY from "inversify/lib/constants/metadata_keys";
 import { interfaces } from "inversify";
 import { Container, inject, injectable, MetadataReader } from "inversify";
 import { Metadata } from "inversify/lib/planning/metadata";
+import * as ns from "reflect-metadata"
+import { arrayConversion, compilerGeneratedMetadataTest } from '../tools/utilFun';
+
+ns
+
 export default function metadata_readerTest() {
-  describe('metadata_readerTest', function () {
+  describe('metadata_readerTest',  ()=> {
     interface FunctionWithMetadata extends NewableFunction {
       constructorInjections: interfaces.ServiceIdentifier[];
       propertyInjections: PropertyInjectionMetadata[];
@@ -96,39 +100,39 @@ export default function metadata_readerTest() {
 
     _it("Should_be_able_to_use_custom_constructor_injection_metadata", () => {
 
-      interface Ninja {
+      interface Ninja1 {
         fight(): string;
         sneak(): string;
       }
 
-      interface Katana {
+      interface Katana1 {
         hit(): string;
       }
 
-      interface Shuriken {
+      interface Shuriken1{
         throw(): string;
       }
 
-      class Katana implements Katana {
-        public static readonly constructorInjections = [];
-        public static readonly propertyInjections = [];
+      class Katana implements Katana1 {
+        public static readonly constructorInjections:ESObject = [];
+        public static readonly propertyInjections:ESObject = [];
         public hit() {
           return "cut!";
         }
       }
 
-      class Shuriken implements Shuriken {
-        public static readonly constructorInjections = [];
-        public static readonly propertyInjections = [];
+      class Shuriken implements Shuriken1 {
+        public static readonly constructorInjections:ESObject = [];
+        public static readonly propertyInjections:ESObject = [];
         public throw() {
           return "hit!";
         }
       }
 
-      class Ninja implements Ninja {
+      class Ninja implements Ninja1 {
 
         public static readonly constructorInjections = ["Katana", "Shuriken"];
-        public static readonly propertyInjections = [];
+        public static readonly propertyInjections :ESObject= [];
 
         private _katana: Katana;
         private _shuriken: Shuriken;
@@ -141,8 +145,8 @@ export default function metadata_readerTest() {
           this._shuriken = shuriken;
         }
 
-        public fight() { return this._katana.hit(); }
-        public sneak() { return this._shuriken.throw(); }
+        public fight():string { return this._katana.hit(); }
+        public sneak():string { return this._shuriken.throw(); }
 
       }
 
@@ -162,42 +166,42 @@ export default function metadata_readerTest() {
 
     _it("Should_be_able_to_use_custom_prop_injection_metadata", () => {
 
-      interface Ninja {
+      interface Ninja1 {
         fight(): string;
         sneak(): string;
       }
 
-      interface Katana {
+      interface Katana1 {
         hit(): string;
       }
 
-      interface Shuriken {
+      interface Shuriken1 {
         throw(): string;
       }
 
-      class Katana implements Katana {
-        public static readonly constructorInjections = [];
-        public static readonly propertyInjections = [];
+      class Katana implements Katana1 {
+        public static readonly constructorInjections:ESObject = [];
+        public static readonly propertyInjections:ESObject = [];
         public static readonly __brk = 1; // TEMP
         public hit() {
           return "cut!";
         }
       }
 
-      class Shuriken implements Shuriken {
-        public static readonly constructorInjections = [];
-        public static readonly propertyInjections = [];
+      class Shuriken implements Shuriken1 {
+        public static readonly constructorInjections:ESObject = [];
+        public static readonly propertyInjections:ESObject = [];
         public static readonly __brk = 1; // TEMP
         public throw() {
           return "hit!";
         }
       }
 
-      class Ninja implements Ninja {
+      class Ninja implements Ninja1 {
 
-        public static readonly constructorInjections = [];
+        public static readonly constructorInjections:ESObject = [];
 
-        public static readonly propertyInjections = [
+        public static readonly propertyInjections:ESObject = [
           { propName: "_katana", injection: "Katana" },
           { propName: "_shuriken", injection: "Shuriken" }
         ];
@@ -206,8 +210,8 @@ export default function metadata_readerTest() {
 
         private _katana!: Katana;
         private _shuriken!: Shuriken;
-        public fight() { return this._katana.hit(); }
-        public sneak() { return this._shuriken.throw(); }
+        public fight():string { return this._katana.hit(); }
+        public sneak() :string{ return this._shuriken.throw(); }
 
       }
 
@@ -242,36 +246,35 @@ export default function metadata_readerTest() {
         }
       }
 
-      interface Ninja {
+      interface Ninja1 {
         fight(): string;
         sneak(): string;
       }
 
-      interface Katana {
+      interface Katana1 {
         hit(): string;
       }
 
-      interface Shuriken {
+      interface Shuriken1 {
         throw(): string;
       }
 
       @injectable()
-      class Katana implements Katana {
+      class Katana implements Katana1 {
         public hit() {
           return "cut!";
         }
       }
 
       @injectable()
-      class Shuriken implements Shuriken {
+      class Shuriken implements Shuriken1 {
         public throw() {
           return "hit!";
         }
       }
-
       @injectable()
-      @Reflect.metadata("design:paramtypes",[Katana,Shuriken])
-      class Ninja implements Ninja {
+      @Reflect.metadata("design:paramtypes",arrayConversion(Katana,Shuriken))
+      class Ninja implements Ninja1 {
 
         private _katana: Katana;
         private _shuriken: Shuriken;
@@ -284,8 +287,8 @@ export default function metadata_readerTest() {
           this._shuriken = shuriken;
         }
 
-        public fight() { return this._katana.hit(); }
-        public sneak() { return this._shuriken.throw(); }
+        public fight():string { return this._katana.hit(); }
+        public sneak():string { return this._shuriken.throw(); }
 
       }
 
@@ -311,14 +314,14 @@ export default function metadata_readerTest() {
       const compilerGeneratedMetadata0 = constructorMetadataLogFirstElement.compilerGeneratedMetadata;
 
       if (compilerGeneratedMetadata0) {
-        expect(compilerGeneratedMetadata0[0]).eq(Katana);
-        expect(compilerGeneratedMetadata0[1]).eq(Shuriken);
+        expect(compilerGeneratedMetadataTest(compilerGeneratedMetadata0[0],Katana)).eq(true);
+        expect(compilerGeneratedMetadataTest(compilerGeneratedMetadata0[1],Shuriken)).eq(true);
       }
 
-      const userGeneratedMetadataFirstElement =
+      const userGeneratedMetadataFirstElement:ESObject =
         constructorMetadataLogFirstElement.userGeneratedMetadata["0"] as interfaces.Metadata[];
 
-      const userGeneratedMetadataSecondElement =
+      const userGeneratedMetadataSecondElement:ESObject =
         constructorMetadataLogFirstElement.userGeneratedMetadata["1"] as interfaces.Metadata[];
 
       expect((userGeneratedMetadataFirstElement[0] as interfaces.Metadata).key).eq("inject");
@@ -332,9 +335,9 @@ export default function metadata_readerTest() {
       expect(JSON.stringify(constructorMetadataLogThirdElement.userGeneratedMetadata)).eq(JSON.stringify({}));
 
       expect(propertyMetadataLog.length).eq(3);
-
+      interface  length{ length: number }
       const getLength = (metadata: interfaces.MetadataMap) => {
-        return (metadata as unknown as { length: number }).length
+        return (metadata as ESObject as length).length
       }
 
       expect(getLength(propertyMetadataLog[0] as interfaces.MetadataMap)).eq(0);

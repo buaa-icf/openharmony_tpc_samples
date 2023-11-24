@@ -30,7 +30,7 @@ export struct ImageBrowserDialog {
 
   aboutToAppear() {
     let dialog = this
-    this.imageList.forEach((image, index, modelList) => {
+    this.imageList.forEach((image:string | Resource | PixelMap, index:number, modelList:string[] | Resource[] | PixelMap[]) => {
       this.modelList.push(new SubsamplingScaleImageView.Model()
         .setImage(image)
         .setSingleTapListener({
@@ -48,7 +48,7 @@ export struct ImageBrowserDialog {
   build() {
     Stack({ alignContent: Alignment.Bottom }) {
       Swiper(this.swiperController) {
-        ForEach(this.modelList, (model) => {
+        ForEach(this.modelList, (model:SubsamplingScaleImageView.Model) => {
           SubsamplingScaleImageView({ model: model })
             .parallelGesture(
               PanGesture({ direction: PanDirection.Horizontal })

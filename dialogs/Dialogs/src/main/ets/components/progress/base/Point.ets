@@ -13,10 +13,10 @@
  * limitations under the License.
  */
 export class Point {
-    x = 0;
-    y = 0;
+    x:number = 0;
+    y:number = 0;
 
-    constructor(x, y) {
+    constructor(x:number, y:number) {
         this.x = x
         this.y = y
     }

@@ -350,7 +350,7 @@ customComponent参数：
 
 在下述版本验证通过：
 
-DevEco Studio: 4.0 Beta1(4.0.3.413), SDK: API10 (4.0.10.3)
+DevEco Studio: 4.0 Release(4.0.3.614), SDK: API10 (4.0.10.15)
 
 
 ## 软件架构

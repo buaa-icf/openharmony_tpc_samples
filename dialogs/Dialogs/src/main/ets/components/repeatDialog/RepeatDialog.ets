@@ -21,17 +21,17 @@ export struct RepeatDialog {
   @State offsetY: number = 0;
   @State positionX: number = 0;
   @State positionY: number = 0;
-  @Prop popupAnimation:TransitionEffect = undefined
-  @BuilderParam slotContent?: () => any;
+  @Prop popupAnimation:TransitionEffect | undefined = undefined
+  @BuilderParam slotContent?: () => void;
 
-  controller: CustomDialogController
+  controller?: CustomDialogController= undefined
   // 若尝试在CustomDialog中传入多个其他的Controller，以实现在CustomDialog中打开另一个或另一些CustomDialog，那么此处需要将指向自己的controller放在最后
-  cancel: () => void
-  confirm: () => void
+  cancel: () => void =()=>{}
+  confirm: () => void =()=>{}
 
   aboutToDisappear() {
     if(this.model.isDeleteOnDisappear) {
-      delete this.controller
+      this.controller = undefined;
     }
   }
 
@@ -46,7 +46,9 @@ export struct RepeatDialog {
         .border(this.model.titleBorder)
         .width(this.model.titleWight)
       Column(){
-        this.slotContent()
+        if(this.slotContent != undefined) {
+          this.slotContent()
+        }
       }
       .height(this.model.contentHeight)
       .margin(this.model.contentMargin)
@@ -61,7 +63,9 @@ export struct RepeatDialog {
               .height(this.model.btnHeight)
               .border(this.model.btnBorder)
               .onClick(() =>{
-                this.controller.close()
+                if(this.controller != undefined) {
+                  this.controller.close()
+                }
                 this.cancel()
               })
               .borderRadius(this.model.cancelBtnBorderRadius)
@@ -72,7 +76,9 @@ export struct RepeatDialog {
               .width(this.model.btnWidth)
               .height(this.model.btnHeight)
               .onClick(() =>{
-                this.controller.close()
+                if(this.controller!= undefined) {
+                  this.controller.close()
+                }
                 this.confirm()
               })
               .borderRadius(this.model.confirmBtnBorderRadius)

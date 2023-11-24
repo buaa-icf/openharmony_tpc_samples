@@ -29,7 +29,7 @@ struct BottomTextDialogExample {
 
   dialogController:CustomDialogController = new CustomDialogController({
     builder: BottomScrollDialog({
-      customComponent: (item, itemIndex) => {
+      customComponent: (item:Object, itemIndex:number) => {
         this.TextCustom();
       },
       arr:this.arr,

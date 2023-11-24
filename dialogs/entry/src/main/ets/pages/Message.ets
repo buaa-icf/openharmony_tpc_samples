@@ -32,7 +32,7 @@ struct Message {
     this.model.dialogBgColor = Color.Pink
   }
 
-  dialogController: CustomDialogController = new CustomDialogController({
+  dialogController: CustomDialogController | undefined = new CustomDialogController({
     builder: MessageDialog({
       model:this.model,
       isFixPosition: this.isFixPosition,
@@ -48,7 +48,7 @@ struct Message {
   })
   // 在自定义组件即将析构销毁时将dialogControlle删除和置空
   aboutToDisappear() {
-    delete this.dialogController, // 删除dialogController
+
     this.dialogController = undefined // 将dialogController置空
   }
 

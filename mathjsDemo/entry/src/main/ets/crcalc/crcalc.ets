@@ -17,11 +17,11 @@ import * as math from 'mathjs';
 import BigNumber from 'bignumber.js';
 import long from 'long';
 
-function routerfun(url) {
-  let options = {
+function routerfun(url: string) {
+  let options: router.RouterOptions = {
     url: url
   }
-  router.push(options)
+  router.pushUrl(options)
 }
 
 @Entry
@@ -86,44 +86,44 @@ struct Index {
   @State mathposSignum: boolean = true
   @State mathTimeSignum: string = this.zerosStr
   @State mathTimeSignum1: string = this.zerosStr
-  mathatanSignum: string
-  mathatanSignum1: string
-  mathUnaryMinus1: string
-  mathTan1: string
-  mathSubtract1: string
-  mathSubtract2: string
-  mathSqrt1: string
-  mathSin1: string
-  mathRound1: string
-  mathRightArithShift1: string
-  mathRightArithShift2: string
-  mathRadix1: string
-  mathRadix2: number
-  mathMultiply1: string
-  mathMultiply2: string
-  mathMin1: string
-  mathMin2: string
-  mathMax1: string
-  mathMax2: string
-  mathLongValue1: string
-  mathLog1: string
-  mathLeftShift1: string
-  mathLeftShift2: string
-  mathIntValue1: string
-  mathFormat1: string
-  mathExp1: string
-  mathDivide1: string
-  mathDivide2: string
-  mathCos1: string
-  mathCompare1: string
-  mathCompare2: string
-  mathByteValue1: string
-  mathAtan1: string
-  mathAsin1: string
-  mathAdd1: string
-  mathAdd2: string
-  mathAcosStr: string
-  mathAbsStr: string
+  mathatanSignum: string = ''
+  mathatanSignum1: string = ''
+  mathUnaryMinus1: string = ''
+  mathTan1: string = ''
+  mathSubtract1: string = ''
+  mathSubtract2: string = ''
+  mathSqrt1: string = ''
+  mathSin1: string = ''
+  mathRound1: string = ''
+  mathRightArithShift1: string = ''
+  mathRightArithShift2: string = ''
+  mathRadix1: string = ''
+  mathRadix2: number = 0
+  mathMultiply1: string = ''
+  mathMultiply2: string = ''
+  mathMin1: string = ''
+  mathMin2: string = ''
+  mathMax1: string = ''
+  mathMax2: string = ''
+  mathLongValue1: string = ''
+  mathLog1: string = ''
+  mathLeftShift1: string = ''
+  mathLeftShift2: string = ''
+  mathIntValue1: string = ''
+  mathFormat1: string = ''
+  mathExp1: string = ''
+  mathDivide1: string = ''
+  mathDivide2: string = ''
+  mathCos1: string = ''
+  mathCompare1: string = ''
+  mathCompare2: string = ''
+  mathByteValue1: string = ''
+  mathAtan1: string = ''
+  mathAsin1: string = ''
+  mathAdd1: string = ''
+  mathAdd2: string = ''
+  mathAcosStr: string = ''
+  mathAbsStr: string = ''
 
   build() {
     Scroll(this.scroller) {
@@ -446,7 +446,8 @@ struct Index {
           .onClick(() => {
             try {
               let time = Date.now()
-              this.mathRadix = BigNumber(this.mathRadix1).toString(this.mathRadix2)
+              let n: BigNumber = new BigNumber(this.mathRadix1)
+              this.mathRadix = n.toString(this.mathRadix2)
               let time1 = Date.now()
               this.mathTimeRadix = (time1 - time).toString()
             } catch (err) {

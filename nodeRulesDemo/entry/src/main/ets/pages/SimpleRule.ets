@@ -1,19 +1,19 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
- * Licensed under the Apache License, Version 2.0 (the 'License');
+ * Copyright (C) 2022 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an 'AS IS' BASIS,
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-//@ts-ignore
 import RuleEngine from "node-rules";
+import hilog from '@ohos.hilog';
 
 @Entry
 @Component
@@ -24,31 +24,38 @@ struct SimpleRule {
   controller: TextAreaController = new TextAreaController();
 
   ruleEngineExecute(): void {
-    var ruleEngine = new RuleEngine();
-    var rule =
-      {
-        "condition": function (ruleEngine) {
-          ruleEngine.when(this.transactionTotal < 500);
-        },
-        "consequence": function (ruleEngine) {
-          this.result = false;
-          this["reason"] = "The transaction was blocked as it was less than 500";
-          ruleEngine.stop();
-        }
+
+    let ruleEngine: ESObject = new RuleEngine();
+
+    class Rule {
+      condition(ruleEngine: ESObject) {
+        console.debug('lzdebug simple condition start:' + (this as ESObject).transactionTotal)
+        ruleEngine.when((this as ESObject).transactionTotal < 500);
       }
+
+      consequence(ruleEngine: ESObject) {
+        (this as ESObject).result = false;
+        (this as ESObject).reason = "The transaction was blocked as it was less than 500";
+        ruleEngine.stop();
+      }
+    }
+
+
+    let rule = new Rule()
 
 
     ruleEngine.register(rule);
 
-    var fact = {
-      "name": "user4",
-      "application": "MOB2",
-      "transactionTotal": Number.parseInt(this.setValue),
-      "cardType": "Credit Card"
+
+    let fact: ESObject = {
+      name: "user4",
+      application: "MOB2",
+      transactionTotal: Number.parseInt(this.setValue),
+      cardType: "Credit Card"
     }
     console.log("------" + this.setValue);
 
-    ruleEngine.execute(fact, (data) => {
+    ruleEngine.execute(fact, (data: ESObject) => {
       if (data.result) {
         console.log("Valid transaction:" + data.result); //满足规则
         this.resultStr = "Valid transaction:" + data.result;
@@ -71,14 +78,12 @@ struct SimpleRule {
         .textAlign(TextAlign.Center)
         .margin({ top: 10 });
 
-      TextArea({ placeholder: "任意数值：", controller: this.controller })
+      TextArea({ placeholder: "任意整数值：", controller: this.controller })
         .height(50)
         .width("100%")
         .margin({ top: 5, bottom: 5, left: 5, right: 5 })
         .onChange((value: string) => {
           this.setValue = value;
-          this.controller.caretPosition(-1);
-
         })
 
       Button("点击查看是否满足规则").onClick(() => {

@@ -13,15 +13,16 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/util'
-
-import { postConstruct } from 'inversify';
+import { decorate, postConstruct } from 'inversify';
 import * as ERRORS_MSGS from 'inversify/lib/constants/error_msgs';
 import * as METADATA_KEY from 'inversify/lib/constants/metadata_keys';
-import { decorate } from 'inversify';
 import { Metadata } from 'inversify/lib/planning/metadata';
+import * as ns from "reflect-metadata"
+import { VanillaJSWarrior1 } from '../tools/utilFun';
 
+ns
 export default function post_constructTest() {
-  describe('post_constructTest', function () {
+  describe('post_constructTest',  ()=> {
     _it('Should_generate_metadata_for_the_decorated_method', () => {
       class Katana {
         private useMessage!: string;
@@ -46,7 +47,7 @@ export default function post_constructTest() {
 
     _it('Should_throw_when_applied_multiple_times', () => {
 
-      function setup() {
+      let setup=()=> {
         class Katana {
           @postConstruct()
           public testMethod1() { /* ... */
@@ -64,18 +65,7 @@ export default function post_constructTest() {
     });
 
     _it('Should_be_usable_in_VanillaJS_applications', () => {
-
-      const VanillaJSWarrior = function () {
-        // ...
-      };
-      VanillaJSWarrior.prototype.testMethod = function () {
-        // ...
-      };
-
-      decorate(postConstruct(), VanillaJSWarrior.prototype, 'testMethod');
-
-      const metadata: Metadata = Reflect.getMetadata(METADATA_KEY.POST_CONSTRUCT, VanillaJSWarrior);
-      expect(metadata.value).to.be.equal('testMethod');
+      expect(VanillaJSWarrior1()).to.be.equal('testMethod');
     });
   })
 }

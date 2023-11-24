@@ -26,8 +26,8 @@ struct AnimateInputContent {
   InputController: CustomDialogController = new CustomDialogController({
     builder: AnimateInputDialog({
       animateOptions:$animateOption,
-      cancel: () => this.onCancel(),
-      confirm: () => this.confirm()
+      cancel: () => {this.onCancel()},
+      confirm: () => {this.confirm()}
     }),
     customStyle: true,
     alignment: DialogAlignment.Center,

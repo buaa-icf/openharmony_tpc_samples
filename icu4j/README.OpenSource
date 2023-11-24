@@ -1,10 +1,10 @@
 [
     {
-        "Name": "formatjs",
-        "License": "Apache License, Version 2.0",
-        "License File": "https://github.com/formatjs/intl-messageformat/blob/master/LICENSE",
+        "Name": "intl_messageformat_parser",
+        "License": "Apache license",
+        "License File": "LICENSE ",
         "Version Number": "4.1.2",
-        "Owner":"formatjs",
+        "Owner" : "xiafeng@huawei.com"
         "Upstream URL": "https://github.com/formatjs/intl-messageformat",
         "Description": "Format a string with placeholders, including plural and select support to create localized messages.  "
     }

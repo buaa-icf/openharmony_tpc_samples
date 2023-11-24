@@ -1,0 +1,12 @@
+{
+  "license": "Apache-2.0",
+  "types": "src/main/buffer/index.d.ts",
+  "devDependencies": {},
+  "author": "",
+  "name": "@ohos/Buffer",
+  "description": "Please describe the basic information.",
+  "main": "src/main/buffer/index",
+  "type": "module",
+  "version": "1.0.0",
+  "dependencies": {}
+}

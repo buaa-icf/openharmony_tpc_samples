@@ -17,7 +17,7 @@
 export struct InputCustomDialog {
   text:string = ""
   controller: CustomDialogController
-  onButtonClick: (value:string) => void;
+  onButtonClick: (value:string) => void = (value:string)=>{};
 
   build() {
     Column() {

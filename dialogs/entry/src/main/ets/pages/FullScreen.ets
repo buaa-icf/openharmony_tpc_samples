@@ -16,8 +16,8 @@
 import { fullScreenDialog } from '@ohos/dialogs'
 @Component
 struct BlockContent {
-  placeholder: string
-  inputValue: string
+  placeholder: string = ''
+  inputValue: string = ''
   build() {
     Column(){
       TextInput({placeholder: this.placeholder,text: this.inputValue})

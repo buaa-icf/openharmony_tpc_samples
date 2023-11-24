@@ -15,9 +15,9 @@
 
 import { listSelectModel } from '../model/listSelectModel'
 class obj  {
-  name: string
-  id: number
-  isSelect: boolean
+  name: string =''
+  id: number = 0
+  isSelect: boolean = false
 }
 @CustomDialog
 export struct ListSelectDialog {
@@ -57,7 +57,7 @@ export struct ListSelectDialog {
         .border(this.model.titleBorder)
         .textAlign(this.model.titleTextAlign)
       List({ initialIndex:0 }){
-        ForEach(this.arrList,(item,index) => {
+        ForEach(this.arrList,(item:obj,index:number) => {
           ListItem() {
             Flex({justifyContent: FlexAlign.SpaceBetween,alignItems:ItemAlign.Center}){
               Text(item.name)
@@ -72,7 +72,9 @@ export struct ListSelectDialog {
                   .onChange((isChecked: boolean) => {
                     this.changeData = [item]
                     this.controller.close()
-                    this.model.confirm(this.changeData)
+                    if(this.model.confirm != undefined) {
+                      this.model.confirm(this.changeData)
+                    }
                   })
               }
               if(this.model.selectMode == 'checkbox'){
@@ -100,6 +102,7 @@ export struct ListSelectDialog {
           .border(this.model.listItemBorder)
         })
       }
+      .width('100%')
       .height(this.model.listHeight)
       .listDirection(this.model.listDirection) // 排列方向
       .scrollBar(this.model.listScrollBar)
@@ -119,7 +122,9 @@ export struct ListSelectDialog {
               .border(this.model.btnBorder)
               .onClick(() =>{
                 this.controller.close()
-                this.model.cancel()
+                if(this.model.cancel != undefined) {
+                  this.model.cancel()
+                }
               })
               .borderRadius(this.model.cancelBtnBorderRadius)
             Button(this.model.confirmBtnTitle,{ type: this.model.btnType })
@@ -130,7 +135,9 @@ export struct ListSelectDialog {
               .height(this.model.btnHeight)
               .onClick(() =>{
                 this.controller.close()
-                this.model.confirm(this.changeData)
+                if(this.model.confirm != undefined) {
+                  this.model.confirm(this.changeData)
+                }
               })
               .borderRadius(this.model.confirmBtnBorderRadius)
           }

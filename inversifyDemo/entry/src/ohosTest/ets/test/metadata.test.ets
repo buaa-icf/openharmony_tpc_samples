@@ -16,7 +16,7 @@ import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect
 import { Metadata } from 'inversify/lib/planning/metadata';
 
 export default function metadataTest() {
-  describe('metadataTest', function () {
+  describe('metadataTest',  ()=> {
     _it('Should_set_its_own_properties_correctly', () => {
       const m = new Metadata('power', 5);
       expect(m.key).to.equals('power');

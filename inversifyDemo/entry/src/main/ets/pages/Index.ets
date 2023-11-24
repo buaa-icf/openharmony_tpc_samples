@@ -14,7 +14,7 @@
  */
 import { myContainer } from "./inversify.config";
 import { TYPES } from "./types";
-import type { Warrior } from "./interfaces";
+import  { Warrior } from "./interfaces";
 import prompt from '@ohos.prompt';
 //
 // expect(ninja.fight()).eql("cut!"); // true

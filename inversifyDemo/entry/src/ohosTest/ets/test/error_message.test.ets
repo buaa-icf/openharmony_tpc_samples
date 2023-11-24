@@ -16,7 +16,7 @@ import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect
 import * as ERROR_MSGS from 'inversify/lib/constants/error_msgs';
 
 export default function error_messageTest() {
-  describe('error_messageTest', function () {
+  describe('error_messageTest',  ()=> {
 
     _it('Should_be_able_to_customize_POST_CONSTRUCT_ERROR', () => {
       const error = ERROR_MSGS.POST_CONSTRUCT_ERROR('a', 'b');

@@ -22,10 +22,10 @@ struct CustomDialogExample {
   @Link percentValue: number
   @State lvLineWithTextController: LVLineWithTextController = new LVLineWithTextController()
     .setViewColor("rgb(33,66,77)").setTextColor("rgb(233, 166, 177)")
-  controller: CustomDialogController
+  controller?: CustomDialogController = undefined
   // 若尝试在CustomDialog中传入多个其他的Controller，以实现在CustomDialog中打开另一个或另一些CustomDialog，那么此处需要将指向自己的controller放在最后
-  cancel: () => void
-  confirm: () => void
+  cancel: () => void = ()=>{}
+  confirm: () => void = ()=>{}
 
   build() {
     Stack(){
@@ -48,8 +48,8 @@ struct CustomDialogExample2 {
   }
   controller: CustomDialogController
   // 若尝试在CustomDialog中传入多个其他的Controller，以实现在CustomDialog中打开另一个或另一些CustomDialog，那么此处需要将指向自己的controller放在最后
-  cancel: () => void
-  confirm: () => void
+  cancel: () => void = ()=>{}
+  confirm: () => void = ()=>{}
 
   build() {
     Column(){
@@ -107,10 +107,11 @@ struct AnimateContent {
 
   // 在自定义组件即将析构销毁时将dialogControlle删除和置空
   aboutToDisappear() {
-    delete this.dialogProgressNumberController, // 删除dialogProgressNumberController
-    this.dialogProgressNumberController = undefined // 将dialogProgressNumberController置空
-    delete this.dialogRingController, // 删除dialogRingController
-    this.dialogRingController = undefined // 将dialogRingController置空
+
+
+
+
+
   }
 
   onCancel() {
@@ -125,7 +126,6 @@ struct AnimateContent {
     console.info('Click the callback in the blank area')
   }
 
-  animator1
   @State percentValue: number = 0
 
 
@@ -136,7 +136,7 @@ struct AnimateContent {
           if (this.dialogProgressNumberController != undefined) {
             this.dialogProgressNumberController.open()
 
-            this.animator1 = animator.create({
+            let animator1 = animator.create({
               duration:5000,
               easing:'linear',
               iterations: 1,
@@ -146,11 +146,11 @@ struct AnimateContent {
               delay:0,
               direction: 'normal'
             })
-            this.animator1.onframe = (inputValue) => {
+            animator1.onframe = (inputValue:number) => {
               console.log('dodo value = '+ inputValue)
               this.percentValue = Math.floor(inputValue);
             }
-            this.animator1.play()
+           animator1.play()
           }
         }).backgroundColor(0x317aff)
 

@@ -18,15 +18,15 @@ import { BindingScopeEnum } from 'inversify';
 import { interfaces } from 'inversify';
 import { BindingOnSyntax } from 'inversify/lib/syntax/binding_on_syntax';
 export default function binding_on_syntaxTest() {
-  describe('binding_on_syntaxTest', function () {
+  describe('binding_on_syntaxTest', () =>{
     _it('Should_set_its_own_properties_correctly', () => {
 
       interface Ninja { }
       const ninjaIdentifier = 'Ninja';
-
+      interface _binding{ _binding: Binding<ESObject> }
       const binding = new Binding<Ninja>(ninjaIdentifier, BindingScopeEnum.Transient);
       const bindingOnSyntax = new BindingOnSyntax<Ninja>(binding);
-      const _bindingOnSyntax = bindingOnSyntax as unknown as { _binding: Binding<unknown> };
+      const _bindingOnSyntax = bindingOnSyntax as ESObject as _binding ;
 
       expect(_bindingOnSyntax._binding.serviceIdentifier).eql(ninjaIdentifier);
 
@@ -41,7 +41,7 @@ export default function binding_on_syntaxTest() {
       const bindingOnSyntax = new BindingOnSyntax<Ninja>(binding);
 
       bindingOnSyntax.onActivation((context: interfaces.Context, ninja: Ninja) => {
-        const handler = {};
+        const handler:ESObject = { };
         return new Proxy<Ninja>(ninja, handler);
       });
 

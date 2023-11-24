@@ -13,29 +13,31 @@
  * limitations under the License.
  */
 
-let tempValue
+let tempValue:string
 
-export function setData(value: string, that) {
-  tempValue = value;
-  that.dialogController.open()
+export function setData(value: string, controller: CustomDialogController) {
+  tempValue = value
+  controller.open()
 }
 
 @CustomDialog
 export struct CustomDialogExample {
-  controller: CustomDialogController
+  controller?: CustomDialogController
 
   build() {
     Column() {
-      Text('自定义').width('70%').fontSize(20).margin({ top: 10, bottom: 10 })
+      Text('测试结果').fontSize(20).margin({ top: 10, bottom: 10 })
       Text(tempValue).fontSize(20).margin({ top: 10, bottom: 10 })
-      Flex({ justifyContent: FlexAlign.SpaceAround }) {
-        Button('取消').onClick(() => {
-          this.controller.close()
-        }).backgroundColor(0xffffff).fontColor(Color.Black)
-        Button('确定').onClick(() => {
-          this.controller.close()
-        }).backgroundColor(0xffffff).fontColor(Color.Red)
-      }.margin({ bottom: 10 })
+      Button('确定')
+        .onClick(() => {
+          if (this.controller != undefined) {
+            this.controller.close()
+          }
+        })
+        .backgroundColor(0xffffff)
+        .fontSize(20)
+        .fontColor(Color.Red)
+        .margin({ bottom: 10 })
     }
   }
 }

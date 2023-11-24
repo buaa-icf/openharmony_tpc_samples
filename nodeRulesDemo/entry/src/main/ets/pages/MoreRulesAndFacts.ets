@@ -1,19 +1,19 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
- * Licensed under the Apache License, Version 2.0 (the 'License');
+ * Copyright (C) 2022 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an 'AS IS' BASIS,
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
 
-// @ts-ignore
+
 import RuleEngine from "node-rules";
 
 @Entry
@@ -25,161 +25,210 @@ struct MoreRulesAndFacts {
   @State arrayStr: Array<string> = [];
 
   ruleEngineExecute(): void {
-    var ruleEngine = new RuleEngine();
-    var rules = [
-      /**** Rule 1 ****/
-      {
-        "name": "transaction minimum 500",
-        "priority": 3,
-        "on": true,
-        "condition": function (R) {
-          R.when(this.transactionTotal < 500);
-        },
-        "consequence": function (R) {
-          console.log("Rule 1 matched - blocks transactions below value 500. Rejecting payment.");
-          this.result = false;
-          R.stop();
-        }
-      },
+    let ruleEngine: ESObject = new RuleEngine();
+
+    abstract class Rule {
+      abstract condition(R: ESObject)
+
+      abstract consequence(R: ESObject)
+    }
+
+    class Rule1 extends Rule {
+      name: string = "transaction minimum 500"
+      priority: number = 3
+      on: boolean = true
+
+      condition(R: ESObject) {
+        R.when((this as ESObject).transactionTotal < 500);
+      }
+
+      consequence(R: ESObject) {
+        console.log("Rule 1 matched - blocks transactions below value 500. Rejecting payment.");
+        (this as ESObject).result = false;
+        R.stop();
+      }
+    }
+
+    class Rule2 extends Rule {
+      name: string = "high credibility customer - avoid checks and bypass"
+      priority: number = 2
+      on: boolean = true
+
+      condition(R: ESObject) {
+        R.when((this as ESObject).userCredibility && (this as ESObject).userCredibility > 5);
+      }
+
+      consequence(R: ESObject) {
+        console.log("Rule 2 matched - user credibility is more, then avoid further check. Accepting payment.");
+        (this as ESObject).result = true;
+        R.stop();
+      }
+    }
+
+    class Rule3 extends Rule {
+      name: string = "block AME > 10000"
+      priority: number = 4
+      on: boolean = true
+
+      condition(R: ESObject) {
+        R.when((this as ESObject).cardType == "Credit Card" && (this as ESObject).cardIssuer == "American Express" && (this as ESObject).transactionTotal > 1000);
+      }
+
+      consequence(R: ESObject) {
+        console.log("Rule 3 matched - filter American Express payment above 10000. Rejecting payment.");
+        (this as ESObject).result = false;
+        R.stop();
+      }
+    }
+
+    class Rule4 extends Rule {
+      name: string = "block Cashcard Payment"
+      priority: number = 8
+      on: boolean = true
+
+      condition(R: ESObject) {
+        R.when((this as ESObject).cardType == "Cash Card");
+      }
+
+      consequence(R: ESObject) {
+        console.log("Rule 4 matched - reject the payment if cash card. Rejecting payment.");
+        (this as ESObject).result = false;
+        R.stop();
+      }
+    }
+
+    class Rule5 extends Rule {
+      name: string = "block guest payment above 10000"
+      priority: number = 6
+      on: boolean = true
+
+      condition(R: ESObject) {
+        R.when((this as ESObject).customerType && (this as ESObject).transactionTotal > 10000 && (this as ESObject).customerType == "guest");
+      }
+
+      consequence(R: ESObject) {
+        console.log("Rule 5 matched - reject if above 10000 and customer type is guest. Rejecting payment.");
+        (this as ESObject).result = false;
+        R.stop();
+      }
+    }
+
+    class Rule6 extends Rule {
+      name: string = "is customer guest?"
+      priority: number = 7
+      on: boolean = true
+
+      condition(R: ESObject) {
+        R.when(!(this as ESObject).userLoggedIn);
+      }
+
+      consequence(R: ESObject) {
+        console.log("Rule 6 matched - support rule written for blocking payment above 10000 from guests.");
+        console.log("Process left to chain with rule 5.");
+        (this as ESObject).customerType = "guest";
+        R.stop(); // this fact has been altered, so all rules will run again. No need to restart.
+      }
+    }
+
+    class Rule7 extends Rule {
+      name: string = "block payment from specific app"
+      priority: number = 5
+      on: boolean = true
+
+      condition(R: ESObject) {
+        R.when((this as ESObject).appCode && (this as ESObject).appCode === "MOBI4");
+      }
+
+      consequence(R: ESObject) {
+        console.log("Rule 7 matched - block payment from Mobile. Reject Payment");
+        (this as ESObject).result = false;
+        R.stop();
+      }
+    }
+
+    class Rule8 extends Rule {
+      name: string = "event risk score"
+      priority: number = 2
+      on: boolean = true
+
+      condition(R: ESObject) {
+        R.when((this as ESObject).eventRiskFactor && (this as ESObject).eventRiskFactor < 5);
+      }
+
+      consequence(R: ESObject) {
+        console.log("Rule 8 matched - the event is not critical, so accept.");
+        (this as ESObject).result = true;
+        R.stop();
+      }
+    }
+
+    class Rule9 extends Rule {
+      name: string = "block ip range set"
+      priority: number = 3
+      on: boolean = true
+
+      condition(R: ESObject) {
+        let ipList = ["10.X.X.X", "12.122.X.X", "12.211.X.X", "64.X.X.X", "64.23.X.X", "74.23.211.92"]
+        let allowedRegexp = new RegExp("^(?:" + ipList.join("|")
+          .replace(new RegExp('\\.', 'g'), "\\.")
+          .replace(new RegExp('X', 'g'), "[^.]+") + ")$");
+        R.when((this as ESObject).userIP && (this as ESObject).userIP.match(allowedRegexp));
+      }
+
+      consequence(R: ESObject) {
+        console.log("Rule 9 matched - ip falls in the given List, then block. Rejecting payment.");
+        (this as ESObject).result = false;
+        R.stop();
+      }
+    }
+
+    class Rule10 extends Rule {
+      name: string = "check if user's name is blacklisted"
+      priority: number = 1
+      on: boolean = true
+
+      condition(R: ESObject) {
+        let blacklist = ["user4"]
+        R.when(this && blacklist.indexOf(this.name) > -1);
+      }
+
+      consequence(R: ESObject) {
+        console.log("Rule 10 matched - the user is malicious, then block. Rejecting payment.");
+        (this as ESObject).result = false;
+        R.stop();
+      }
+    }
+
+    let rules: Rule[] = [
+    /**** Rule 1 ****/
+      new Rule1(),
 
       /**** Rule 2 ****/
-      {
-        "name": "high credibility customer - avoid checks and bypass",
-        "priority": 2,
-        "on": true,
-        "condition": function (R) {
-          R.when(this.userCredibility && this.userCredibility > 5);
-        },
-        "consequence": function (R) {
-          console.log("Rule 2 matched - user credibility is more, then avoid further check. Accepting payment.");
-          this.result = true;
-          R.stop();
-        }
-      },
+      new Rule2(),
 
       /**** Rule 3 ****/
-      {
-        "name": "block AME > 10000",
-        "priority": 4,
-        "on": true,
-        "condition": function (R) {
-          R.when(this.cardType == "Credit Card" && this.cardIssuer == "American Express" && this.transactionTotal > 1000);
-        },
-        "consequence": function (R) {
-          console.log("Rule 3 matched - filter American Express payment above 10000. Rejecting payment.");
-          this.result = false;
-          R.stop();
-        }
-      },
+      new Rule3(),
 
       /**** Rule 4 ****/
-      {
-        "name": "block Cashcard Payment",
-        "priority": 8,
-        "on": true,
-        "condition": function (R) {
-          R.when(this.cardType == "Cash Card");
-        },
-        "consequence": function (R) {
-          console.log("Rule 4 matched - reject the payment if cash card. Rejecting payment.");
-          this.result = false;
-          R.stop();
-        }
-      },
+      new Rule4(),
 
       /**** Rule 5 ****/
-      {
-        "name": "block guest payment above 10000",
-        "priority": 6,
-        "on": true,
-        "condition": function (R) {
-          R.when(this.customerType && this.transactionTotal > 10000 && this.customerType == "guest");
-        },
-        "consequence": function (R) {
-          console.log("Rule 5 matched - reject if above 10000 and customer type is guest. Rejecting payment.");
-          this.result = false;
-          R.stop();
-        }
-      },
+      new Rule5(),
 
       /**** Rule 6 ****/
-      {
-        "name": "is customer guest?",
-        "priority": 7,
-        "on": true,
-        "condition": function (R) {
-          R.when(!this.userLoggedIn);
-        },
-        "consequence": function (R) {
-          console.log("Rule 6 matched - support rule written for blocking payment above 10000 from guests.");
-          console.log("Process left to chain with rule 5.")
-          this.customerType = "guest";
-          R.stop(); // this fact has been altered, so all rules will run again. No need to restart.
-        }
-      },
+      new Rule6(),
 
       /**** Rule 7 ****/
-      {
-        "name": "block payment from specific app",
-        "priority": 5,
-        "on": true,
-        "condition": function (R) {
-          R.when(this.appCode && this.appCode === "MOBI4");
-        },
-        "consequence": function (R) {
-          console.log("Rule 7 matched - block payment from Mobile. Reject Payment");
-          this.result = false;
-          R.stop();
-        }
-      },
+      new Rule7(),
 
       /**** Rule 8 ****/
-      {
-        "name": "event risk score",
-        "priority": 2,
-        "on": true,
-        "condition": function (R) {
-          R.when(this.eventRiskFactor && this.eventRiskFactor < 5);
-        },
-        "consequence": function (R) {
-          console.log("Rule 8 matched - the event is not critical, so accept.");
-          this.result = true;
-          R.stop();
-        }
-      },
+      new Rule8(),
 
       /**** Rule 9 ****/
-      {
-        "name": "block ip range set",
-        "priority": 3,
-        "on": true,
-        "condition": function (R) {
-          var ipList = ["10.X.X.X", "12.122.X.X", "12.211.X.X", "64.X.X.X", "64.23.X.X", "74.23.211.92"]
-          var allowedRegexp = new RegExp("^(?:" + ipList.join("|").replace(/\./g, "\\.").replace(/X/g, "[^.]+") + ")$");
-          R.when(this.userIP && this.userIP.match(allowedRegexp));
-        },
-        "consequence": function (R) {
-          console.log("Rule 9 matched - ip falls in the given List, then block. Rejecting payment.");
-          this.result = false;
-          R.stop();
-        }
-      },
+      new Rule9(),
 
       /**** Rule 10 ****/
-      {
-        "name": "check if user's name is blacklisted",
-        "priority": 1,
-        "on": true,
-        "condition": function (R) {
-          var blacklist = ["user4"]
-          R.when(this && blacklist.indexOf(this.name) > -1);
-        },
-        "consequence": function (R) {
-          console.log("Rule 10 matched - the user is malicious, then block. Rejecting payment.");
-          this.result = false;
-          R.stop();
-        }
-      },
+      new Rule10(),
 
 
     ]
@@ -187,100 +236,100 @@ struct MoreRulesAndFacts {
     ruleEngine.register(rules);
 
     /** example of cash card user, so payment blocked. ****/
-    var user1 = {
-      "userIP": "10.3.4.5",
-      "name": "user1",
-      "eventRiskFactor": 6,
-      "userCredibility": 1,
-      "appCode": "WEB1",
-      "userLoggedIn": false,
-      "transactionTotal": 12000,
-      "cardType": "Cash Card",
-      "cardIssuer": "OXI"
+    let user1: ESObject = {
+      userIP: "10.3.4.5",
+      name: "user1",
+      eventRiskFactor: 6,
+      userCredibility: 1,
+      appCode: "WEB1",
+      userLoggedIn: false,
+      transactionTotal: 12000,
+      cardType: "Cash Card",
+      cardIssuer: "OXI"
     }
 
-    var user2 = {
-      "userIP": "27.3.4.5",
-      "name": "user2",
-      "eventRiskFactor": 2,
-      "userCredibility": 2,
-      "appCode": "MOBI4",
-      "userLoggedIn": true,
-      "transactionTotal": 500,
-      "cardType": "Credit Card",
-      "cardIssuer": "VISA"
+    let user2: ESObject = {
+      userIP: "27.3.4.5",
+      name: "user2",
+      eventRiskFactor: 2,
+      userCredibility: 2,
+      appCode: "MOBI4",
+      userLoggedIn: true,
+      transactionTotal: 500,
+      cardType: "Credit Card",
+      cardIssuer: "VISA"
     }
 
-    var user3 = {
-      "userIP": "27.3.4.5",
-      "name": "user3",
-      "eventRiskFactor": 2,
-      "userCredibility": 2,
-      "appCode": "WEB1",
-      "userLoggedIn": true,
-      "transactionTotal": 500,
-      "cardType": "Credit Card",
-      "cardIssuer": "VISA"
+    let user3: ESObject = {
+      userIP: "27.3.4.5",
+      name: "user3",
+      eventRiskFactor: 2,
+      userCredibility: 2,
+      appCode: "WEB1",
+      userLoggedIn: true,
+      transactionTotal: 500,
+      cardType: "Credit Card",
+      cardIssuer: "VISA"
     }
 
-    var user4 = {
-      "userIP": "27.3.4.5",
-      "name": "user4",
-      "eventRiskFactor": 8,
-      "userCredibility": 2,
-      "appCode": "WEB1",
-      "userLoggedIn": true,
-      "transactionTotal": 500,
-      "cardType": "Credit Card",
-      "cardIssuer": "VISA"
+    let user4: ESObject = {
+      userIP: "27.3.4.5",
+      name: "user4",
+      eventRiskFactor: 8,
+      userCredibility: 2,
+      appCode: "WEB1",
+      userLoggedIn: true,
+      transactionTotal: 500,
+      cardType: "Credit Card",
+      cardIssuer: "VISA"
     }
 
-    var user5 = {
-      "userIP": "27.3.4.5",
-      "name": "user5",
-      "eventRiskFactor": 8,
-      "userCredibility": 8,
-      "appCode": "WEB1",
-      "userLoggedIn": true,
-      "transactionTotal": 500,
-      "cardType": "Credit Card",
-      "cardIssuer": "VISA"
+    let user5: ESObject = {
+      userIP: "27.3.4.5",
+      name: "user5",
+      eventRiskFactor: 8,
+      userCredibility: 8,
+      appCode: "WEB1",
+      userLoggedIn: true,
+      transactionTotal: 500,
+      cardType: "Credit Card",
+      cardIssuer: "VISA"
     }
 
-    var user6 = {
-      "userIP": "10.3.4.5",
-      "name": "user6",
-      "eventRiskFactor": 8,
-      "userCredibility": 2,
-      "appCode": "WEB1",
-      "userLoggedIn": true,
-      "transactionTotal": 500,
-      "cardType": "Credit Card",
-      "cardIssuer": "VISA"
+    let user6: ESObject = {
+      userIP: "10.3.4.5",
+      name: "user6",
+      eventRiskFactor: 8,
+      userCredibility: 2,
+      appCode: "WEB1",
+      userLoggedIn: true,
+      transactionTotal: 500,
+      cardType: "Credit Card",
+      cardIssuer: "VISA"
     }
 
-    var user7 = {
-      "userIP": "27.3.4.5",
-      "name": "user7",
-      "eventRiskFactor": 2,
-      "userCredibility": 2,
-      "appCode": "WEB1",
-      "userLoggedIn": false,
-      "transactionTotal": 100000,
-      "cardType": "Credit Card",
-      "cardIssuer": "VISA"
+    let user7: ESObject = {
+      userIP: "27.3.4.5",
+      name: "user7",
+      eventRiskFactor: 2,
+      userCredibility: 2,
+      appCode: "WEB1",
+      userLoggedIn: false,
+      transactionTotal: 100000,
+      cardType: "Credit Card",
+      cardIssuer: "VISA"
     }
 
-    var user8 = {
-      "userIP": "27.3.4.5",
-      "name": "user8",
-      "eventRiskFactor": 8,
-      "userCredibility": 2,
-      "appCode": "WEB1",
-      "userLoggedIn": true,
-      "transactionTotal": 500,
-      "cardType": "Credit Card",
-      "cardIssuer": "VISA"
+    let user8: ESObject = {
+      userIP: "27.3.4.5",
+      name: "user8",
+      eventRiskFactor: 8,
+      userCredibility: 2,
+      appCode: "WEB1",
+      userLoggedIn: true,
+      transactionTotal: 500,
+      cardType: "Credit Card",
+      cardIssuer: "VISA"
     }
 
 
@@ -289,7 +338,7 @@ struct MoreRulesAndFacts {
     this.arrayStr.push("start execution of rules")
     console.log("-----------");
 
-    ruleEngine.execute(user7, (result) => {
+    ruleEngine.execute(user7, (result: ESObject) => {
       if (result.result) {
         console.log("Completed " + "User7 Accepted");
         this.arrayStr.push("Completed " + "User7 Accepted");
@@ -299,7 +348,7 @@ struct MoreRulesAndFacts {
       }
     })
 
-    ruleEngine.execute(user1, (result) => {
+    ruleEngine.execute(user1, (result: ESObject) => {
       if (result.result) {
         console.log("Completed " + "User1 Accepted");
         this.arrayStr.push("Completed " + "User1 Accepted");
@@ -309,7 +358,7 @@ struct MoreRulesAndFacts {
       }
     })
 
-    ruleEngine.execute(user2, (result) => {
+    ruleEngine.execute(user2, (result: ESObject) => {
       if (result.result) {
         console.log("Completed " + "User2 Accepted");
         this.arrayStr.push("Completed " + "User2 Accepted");
@@ -320,7 +369,7 @@ struct MoreRulesAndFacts {
 
     })
 
-    ruleEngine.execute(user3, (result) => {
+    ruleEngine.execute(user3, (result: ESObject) => {
       if (result.result) {
         console.log("Completed " + "User3 Accepted");
         this.arrayStr.push("Completed " + "User3 Accepted");
@@ -330,7 +379,7 @@ struct MoreRulesAndFacts {
       }
     })
 
-    ruleEngine.execute(user4, (result) => {
+    ruleEngine.execute(user4, (result: ESObject) => {
       if (result.result) {
         console.log("Completed " + "User4 Accepted");
         this.arrayStr.push("Completed " + "User4 Accepted");
@@ -341,7 +390,7 @@ struct MoreRulesAndFacts {
 
     })
 
-    ruleEngine.execute(user5, (result) => {
+    ruleEngine.execute(user5, (result: ESObject) => {
       if (result.result) {
         console.log("Completed " + " User5 Accepted");
         this.arrayStr.push("Completed " + "User5 Accepted");
@@ -351,7 +400,7 @@ struct MoreRulesAndFacts {
       }
     })
 
-    ruleEngine.execute(user6, (result) => {
+    ruleEngine.execute(user6, (result: ESObject) => {
       if (result.result) {
         console.log("Completed " + "User6 Accepted");
         this.arrayStr.push("Completed " + "User6 Accepted");
@@ -362,7 +411,7 @@ struct MoreRulesAndFacts {
 
     })
 
-    ruleEngine.execute(user8, (result) => {
+    ruleEngine.execute(user8, (result: ESObject) => {
       if (result.result) {
         console.log("Completed " + "User8 Accepted");
         this.arrayStr.push("Completed " + "User8 Accepted");
@@ -391,7 +440,7 @@ struct MoreRulesAndFacts {
           this.ruleEngineExecute();
         })
 
-      ForEach(this.arrayStr, (item, index) => {
+      ForEach(this.arrayStr, (item: string, index: number) => {
         Text("测试结果：" + item)
           .width("90%")
           .height(30)

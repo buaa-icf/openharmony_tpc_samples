@@ -16,7 +16,7 @@ import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect
 import { typeConstraint } from 'inversify';
 
 export default function constraint_helpersTest() {
-  describe('constraint_helpersTest', function () {
+  describe('constraint_helpersTest',  ()=> {
 
     _it('Should_be_return_false_when_a_request_object_is_not_provided', () => {
 

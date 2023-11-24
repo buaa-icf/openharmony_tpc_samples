@@ -13,32 +13,27 @@
  * limitations under the License.
  */
 
-import { METADATA_KEY } from "inversify-binding-decorators/es/constants";
-import ProvideDoneSyntax from "inversify-binding-decorators/es/syntax/provide_done_syntax";
-import interfaces from "inversify-binding-decorators/dts/interfaces/interfaces";
-import { interfaces as inversifyInterfaces } from "inversify";
-import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../util'
-import "reflect-metadata";
+import {
+    describe,
+    beforeAll,
+    beforeEach,
+    afterEach,
+    afterAll,
+    it,
+    expect
+} from '@ohos/hypium'
+
+import {Ninja,provideDoneSyntaxInterface } from '../Syntax_interface';
 
 export default function provideDoneSyntaxTest() {
 
-    describe("ProvideDoneSyntax",function() {
+    describe("ProvideDoneSyntax",() => {
+        it("Should_be_able_to_apply_a_fluent_decorator",0, () => {
 
-        _it("Should be able to apply a fluent decorator", () => {
+            expect(typeof provideDoneSyntaxInterface.decorator).assertEqual("function");
 
-            class Ninja {
-            }
-
-            let bindingInSyntax = (bind: inversifyInterfaces.Bind, target: any) => bind<Ninja>("Ninja").to(target);
-            let binding: interfaces.BindConstraint = (bind: inversifyInterfaces.Bind, target: any) =>
-            (<any> bindingInSyntax(bind, target))._binding;
-            let provideDoneSyntax = new ProvideDoneSyntax(binding);
-
-            let decorator = provideDoneSyntax.done();
-            expect(typeof decorator).eql("function");
-
-            decorator(Ninja);
-            expect(Reflect.getMetadata(METADATA_KEY.provide, Reflect)[0].implementationType).eql(Ninja);
+            provideDoneSyntaxInterface.getNinja(Ninja)
+            expect(JSON.stringify(provideDoneSyntaxInterface.getReflect())).assertEqual(JSON.stringify(provideDoneSyntaxInterface.ninja));
 
         });
 

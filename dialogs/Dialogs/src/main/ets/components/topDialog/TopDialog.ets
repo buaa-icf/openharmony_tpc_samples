@@ -18,7 +18,7 @@ import { BaseCenterMode } from  '../model/BaseCenterModel'
 export struct TopDialog {
   @Link isAnimation:boolean
   @State model: BaseCenterMode = new BaseCenterMode()
-  @BuilderParam slotContent?: () => any
+  @BuilderParam slotContent?: () => void
   controller: CustomDialogController
 
   aboutToAppear() {
@@ -32,7 +32,9 @@ export struct TopDialog {
     Stack(){
       if(this.isAnimation) {
         Column(){
-          this.slotContent()
+          if(this.slotContent != undefined) {
+            this.slotContent()
+          }
         }
         .position({x:0,y:0})
         .width(this.model.dialogWidth)

@@ -23,6 +23,11 @@ import { Request } from 'inversify/lib/planning/request';
 import { Target } from 'inversify/es/planning/target';
 import { BindingWhenSyntax } from 'inversify/lib/syntax/binding_when_syntax';
 import { typeConstraint } from 'inversify/lib/syntax/constraint_helpers';
+import { NULL_ARGUMENT } from 'inversify/lib/constants/error_msgs';
+import { getKatanaBindingWhenSyntax } from '../tools/bindingWhen';
+import { getBindingWhenSyntax } from '../tools/bindingWhenShould';
+
+
 export default function binding_when_syntaxTest() {
   interface Material {
     name: string;
@@ -48,6 +53,7 @@ export default function binding_when_syntaxTest() {
       this.material = material;
     }
   }
+
 
   interface Samurai {
     katana: Weapon;
@@ -89,50 +95,50 @@ export default function binding_when_syntaxTest() {
 
   // Samurai
   const samuraiMasterBinding = new Binding<Samurai>('Samurai', BindingScopeEnum.Transient);
-  samuraiMasterBinding.implementationType = SamuraiMaster;
+  samuraiMasterBinding.implementationType = new SamuraiMaster(Object(null));
 
   const samuraiStudentBinding = new Binding<Samurai>('Samurai', BindingScopeEnum.Transient);
-  samuraiStudentBinding.implementationType = SamuraiStudent;
+  samuraiStudentBinding.implementationType = new SamuraiStudent(Object(null));
 
-  const samuraiTarget = new Target(TargetTypeEnum.ConstructorArgument, '', 'Samurai', new Metadata('sneaky', false));
+  const samuraiTarget:ESObject = new Target(TargetTypeEnum.ConstructorArgument, '', 'Samurai', new Metadata('sneaky', false));
   const samuraiMasterRequest = new Request('Samurai', context, null, samuraiMasterBinding, samuraiTarget);
   const samuraiStudentRequest = new Request('Samurai', context, null, samuraiStudentBinding, samuraiTarget);
 
   // Ninja
   const ninjaMasterBinding = new Binding<Ninja>('Ninja', BindingScopeEnum.Transient);
-  ninjaMasterBinding.implementationType = NinjaMaster;
+  ninjaMasterBinding.implementationType = new NinjaMaster(Object(null));
 
   const ninjaStudentBinding = new Binding<Ninja>('Ninja', BindingScopeEnum.Transient);
-  ninjaStudentBinding.implementationType = NinjaStudent;
+  ninjaStudentBinding.implementationType =  new NinjaStudent(Object(null));
 
-  const ninjaTarget = new Target(TargetTypeEnum.ConstructorArgument, '', 'Ninja', new Metadata('sneaky', true));
+  const ninjaTarget:ESObject = new Target(TargetTypeEnum.ConstructorArgument, '', 'Ninja', new Metadata('sneaky', true));
   const ninjaMasterRequest = new Request('Ninja', context, null, ninjaMasterBinding, ninjaTarget);
   const ninjaStudentRequest = new Request('Ninja', context, null, ninjaStudentBinding, ninjaTarget);
 
   // Katana
   const katanaBinding = new Binding<Weapon>('Weapon', BindingScopeEnum.Transient);
-  katanaBinding.implementationType = Katana;
+  katanaBinding.implementationType = new Katana(Object(null));
   const katanaBindingWhenSyntax = new BindingWhenSyntax<Weapon>(katanaBinding);
-  const katanaTarget = new Target(TargetTypeEnum.ConstructorArgument, 'katana', 'Weapon');
+  const katanaTarget:ESObject = new Target(TargetTypeEnum.ConstructorArgument, 'katana', 'Weapon');
   const ironKatanaRequest = new Request('Weapon', context, samuraiMasterRequest, katanaBinding, katanaTarget);
   const woodKatanaRequest = new Request('Weapon', context, samuraiStudentRequest, katanaBinding, katanaTarget);
 
   // Shuriken
   const shurikenBinding = new Binding<Weapon>('Weapon', BindingScopeEnum.Transient);
-  shurikenBinding.implementationType = Shuriken;
-  const shurikenBindingWhenSyntax = new BindingWhenSyntax<Weapon>(shurikenBinding);
-  const shurikenTarget = new Target(TargetTypeEnum.ConstructorArgument, 'shuriken', 'Weapon');
+  shurikenBinding.implementationType = new Shuriken(Object(null));
+  const shurikenBindingWhenSyntax:ESObject = new BindingWhenSyntax<Weapon>(shurikenBinding);
+  const shurikenTarget:ESObject = new Target(TargetTypeEnum.ConstructorArgument, 'shuriken', 'Weapon');
   const ironShurikenRequest = new Request('Weapon', context, ninjaMasterRequest, shurikenBinding, shurikenTarget);
   const woodShurikenRequest = new Request('Weapon', context, ninjaStudentRequest, shurikenBinding, shurikenTarget);
-  describe('binding_when_syntaxTest', function () {
+  describe('binding_when_syntaxTest',  ()=> {
     _it('Should_set_its_own_properties_correctly', () => {
 
       interface Ninja { }
       const ninjaIdentifier = 'Ninja';
-
+   interface _binding{ _binding: Binding<ESObject> }
       const binding = new Binding<Ninja>(ninjaIdentifier, BindingScopeEnum.Transient);
       const bindingWhenSyntax = new BindingWhenSyntax<Ninja>(binding);
-      const _bindingWhenSyntax = bindingWhenSyntax as unknown as { _binding: Binding<unknown> };
+      const _bindingWhenSyntax = bindingWhenSyntax as ESObject as _binding;
 
       expect(_bindingWhenSyntax._binding.serviceIdentifier).eql(ninjaIdentifier);
 
@@ -149,7 +155,7 @@ export default function binding_when_syntaxTest() {
       bindingWhenSyntax.when((theRequest: interfaces.Request) =>
       theRequest.target.name.equals('ninja'));
 
-      const target = new Target(TargetTypeEnum.ConstructorArgument, 'ninja', ninjaIdentifier);
+      const target:ESObject = new Target(TargetTypeEnum.ConstructorArgument, 'ninja', ninjaIdentifier);
       const context = new Context(new Container());
       const request = new Request(ninjaIdentifier, context, null, binding, target);
       expect(binding.constraint(request)).eql(true);
@@ -185,11 +191,11 @@ export default function binding_when_syntaxTest() {
 
       const context = new Context(new Container());
 
-      const target = new Target(TargetTypeEnum.ConstructorArgument, 'ninja', ninjaIdentifier, named);
+      const target:ESObject = new Target(TargetTypeEnum.ConstructorArgument, 'ninja', ninjaIdentifier, named);
       const request = new Request(ninjaIdentifier, context, null, binding, target);
       expect(binding.constraint(request)).eql(true);
 
-      const target2 = new Target(TargetTypeEnum.ConstructorArgument, 'ninja', ninjaIdentifier);
+      const target2:ESObject = new Target(TargetTypeEnum.ConstructorArgument, 'ninja', ninjaIdentifier);
       const request2 = new Request(ninjaIdentifier, context, null, binding, target2);
       expect(binding.constraint(request2)).eql(false);
 
@@ -208,11 +214,11 @@ export default function binding_when_syntaxTest() {
 
       const context = new Context(new Container());
 
-      const target = new Target(TargetTypeEnum.ConstructorArgument, 'ninja', ninjaIdentifier, new Metadata('canSwim', true));
+      const target:ESObject = new Target(TargetTypeEnum.ConstructorArgument, 'ninja', ninjaIdentifier, new Metadata('canSwim', true));
       const request = new Request(ninjaIdentifier, context, null, binding, target);
       expect(binding.constraint(request)).eql(true);
 
-      const target2 = new Target(TargetTypeEnum.ConstructorArgument, 'ninja', ninjaIdentifier, new Metadata('canSwim', false));
+      const target2:ESObject = new Target(TargetTypeEnum.ConstructorArgument, 'ninja', ninjaIdentifier, new Metadata('canSwim', false));
       const request2 = new Request(ninjaIdentifier, context, null, binding, target2);
       expect(binding.constraint(request2)).eql(false);
 
@@ -220,85 +226,93 @@ export default function binding_when_syntaxTest() {
 
     _it('Should_be_able_to_constraint_a_binding_to_its_parent', () => {
 
-      interface Weapon {
-        name: string;
-      }
+      // interface Weapon {
+      //   name: string;
+      // }
+      //
+      // interface JaponeseWarrior {
+      //   katana: Weapon;
+      // }
+      //
+      // interface ChineseWarrior {
+      //   shuriken: Weapon;
+      // }
+      //
+      // class Ninja implements ChineseWarrior {
+      //   public shuriken: Weapon;
+      //   public constructor(shuriken: Weapon) {
+      //     this.shuriken = shuriken;
+      //   }
+      // }
+      //
+      // class Samurai implements JaponeseWarrior {
+      //   public katana: Weapon;
+      //   public constructor(katana: Weapon) {
+      //     this.katana = katana;
+      //   }
+      // }
+      //
+      // const context = new Context(new Container());
+      //
+      // const samuraiBinding = new Binding<Samurai>('Samurai', BindingScopeEnum.Transient);
+      // samuraiBinding.implementationType = new Samurai(Object(null));
+      // const samuraiTarget:ESObject = new Target(TargetTypeEnum.Variable, '', 'Samurai');
+      // const samuraiRequest = new Request('Samurai', context, null, samuraiBinding, samuraiTarget);
+      //
+      // const ninjaBinding = new Binding<Ninja>('Ninja', BindingScopeEnum.Transient);
+      // ninjaBinding.implementationType =  new Ninja(Object(null));
+      // const ninjaTarget:ESObject = new Target(TargetTypeEnum.Variable, '', 'Ninja');
+      // const ninjaRequest = new Request('Ninja', context, null, ninjaBinding, ninjaTarget);
+      //
+      // const katanaBinding = new Binding<Weapon>('Weapon', BindingScopeEnum.Transient);
+      // const katanaBindingWhenSyntax = new BindingWhenSyntax<Weapon>(katanaBinding);
+      // const katanaTarget:ESObject = new Target(TargetTypeEnum.ConstructorArgument, 'katana', 'Weapon');
+      // const katanaRequest = new Request('Weapon', context, samuraiRequest, katanaBinding, katanaTarget);
+      //
+      // const shurikenBinding = new Binding<Weapon>('Weapon', BindingScopeEnum.Transient);
+      // const shurikenBindingWhenSyntax = new BindingWhenSyntax<Weapon>(shurikenBinding);
+      // const shurikenTarget:ESObject = new Target(TargetTypeEnum.ConstructorArgument, 'shuriken', 'Weapon');
+      // const shurikenRequest = new Request('Weapon', context, ninjaRequest, shurikenBinding, shurikenTarget);
 
-      interface JaponeseWarrior {
-        katana: Weapon;
-      }
+      let katanaBindingWhenSyntaxSamurai = getKatanaBindingWhenSyntax("katanaBindingWhenSyntaxSamurai")
 
-      interface ChineseWarrior {
-        shuriken: Weapon;
-      }
+      expect(katanaBindingWhenSyntaxSamurai.katanaBinding.constraint(katanaBindingWhenSyntaxSamurai.katanaRequest)).eql(true);
+      expect(katanaBindingWhenSyntaxSamurai.katanaBinding.constraint(katanaBindingWhenSyntaxSamurai.shurikenRequest)).eql(false);
 
-      class Ninja implements ChineseWarrior {
-        public shuriken: Weapon;
-        public constructor(shuriken: Weapon) {
-          this.shuriken = shuriken;
-        }
-      }
+      let katanaBindingWhenSyntaxNinja = getKatanaBindingWhenSyntax("katanaBindingWhenSyntaxNinja")
 
-      class Samurai implements JaponeseWarrior {
-        public katana: Weapon;
-        public constructor(katana: Weapon) {
-          this.katana = katana;
-        }
-      }
+      expect(katanaBindingWhenSyntaxNinja.katanaBinding.constraint(katanaBindingWhenSyntaxNinja.katanaRequest)).eql(false);
+      expect(katanaBindingWhenSyntaxNinja.katanaBinding.constraint(katanaBindingWhenSyntaxNinja.shurikenRequest)).eql(true);
 
-      const context = new Context(new Container());
+      let shurikenBindingWhenSyntaxSamurai = getKatanaBindingWhenSyntax("shurikenBindingWhenSyntaxSamurai")
 
-      const samuraiBinding = new Binding<Samurai>('Samurai', BindingScopeEnum.Transient);
-      samuraiBinding.implementationType = Samurai;
-      const samuraiTarget = new Target(TargetTypeEnum.Variable, '', 'Samurai');
-      const samuraiRequest = new Request('Samurai', context, null, samuraiBinding, samuraiTarget);
+      expect(shurikenBindingWhenSyntaxSamurai.shurikenBinding.constraint(shurikenBindingWhenSyntaxSamurai.katanaRequest)).eql(true);
+      expect(shurikenBindingWhenSyntaxSamurai.shurikenBinding.constraint(shurikenBindingWhenSyntaxSamurai.shurikenRequest)).eql(false);
 
-      const ninjaBinding = new Binding<Ninja>('Ninja', BindingScopeEnum.Transient);
-      ninjaBinding.implementationType = Ninja;
-      const ninjaTarget = new Target(TargetTypeEnum.Variable, '', 'Ninja');
-      const ninjaRequest = new Request('Ninja', context, null, ninjaBinding, ninjaTarget);
+      let shurikenBindingWhenSyntaxNinja = getKatanaBindingWhenSyntax("shurikenBindingWhenSyntaxNinja")
 
-      const katanaBinding = new Binding<Weapon>('Weapon', BindingScopeEnum.Transient);
-      const katanaBindingWhenSyntax = new BindingWhenSyntax<Weapon>(katanaBinding);
-      const katanaTarget = new Target(TargetTypeEnum.ConstructorArgument, 'katana', 'Weapon');
-      const katanaRequest = new Request('Weapon', context, samuraiRequest, katanaBinding, katanaTarget);
+      expect(shurikenBindingWhenSyntaxNinja.shurikenBinding.constraint(shurikenBindingWhenSyntaxNinja.katanaRequest)).eql(false);
+      expect(shurikenBindingWhenSyntaxNinja.shurikenBinding.constraint(shurikenBindingWhenSyntaxNinja.shurikenRequest)).eql(true);
 
-      const shurikenBinding = new Binding<Weapon>('Weapon', BindingScopeEnum.Transient);
-      const shurikenBindingWhenSyntax = new BindingWhenSyntax<Weapon>(shurikenBinding);
-      const shurikenTarget = new Target(TargetTypeEnum.ConstructorArgument, 'shuriken', 'Weapon');
-      const shurikenRequest = new Request('Weapon', context, ninjaRequest, shurikenBinding, shurikenTarget);
+      let katanaBindingWhenSyntaxSamuraiStr = getKatanaBindingWhenSyntax("katanaBindingWhenSyntaxSamuraiStr")
 
-      katanaBindingWhenSyntax.whenInjectedInto(Samurai);
-      expect(katanaBinding.constraint(katanaRequest)).eql(true);
-      expect(katanaBinding.constraint(shurikenRequest)).eql(false);
+      expect(katanaBindingWhenSyntaxSamuraiStr.katanaBinding.constraint(katanaBindingWhenSyntaxSamuraiStr.katanaRequest)).eql(true);
+      expect(katanaBindingWhenSyntaxSamuraiStr.katanaBinding.constraint(katanaBindingWhenSyntaxSamuraiStr.shurikenRequest)).eql(false);
 
-      katanaBindingWhenSyntax.whenInjectedInto(Ninja);
-      expect(katanaBinding.constraint(katanaRequest)).eql(false);
-      expect(katanaBinding.constraint(shurikenRequest)).eql(true);
+      let katanaBindingWhenSyntaxNinjaStr = getKatanaBindingWhenSyntax("katanaBindingWhenSyntaxNinjaStr")
 
-      shurikenBindingWhenSyntax.whenInjectedInto(Samurai);
-      expect(shurikenBinding.constraint(katanaRequest)).eql(true);
-      expect(shurikenBinding.constraint(shurikenRequest)).eql(false);
+      expect(katanaBindingWhenSyntaxNinjaStr.katanaBinding.constraint(katanaBindingWhenSyntaxNinjaStr.katanaRequest)).eql(false);
+      expect(katanaBindingWhenSyntaxNinjaStr.katanaBinding.constraint(katanaBindingWhenSyntaxNinjaStr.shurikenRequest)).eql(true);
 
-      shurikenBindingWhenSyntax.whenInjectedInto(Ninja);
-      expect(shurikenBinding.constraint(katanaRequest)).eql(false);
-      expect(shurikenBinding.constraint(shurikenRequest)).eql(true);
+      let shurikenBindingWhenSyntaxSamuraiStr = getKatanaBindingWhenSyntax("shurikenBindingWhenSyntaxSamuraiStr")
 
-      katanaBindingWhenSyntax.whenInjectedInto('Samurai');
-      expect(katanaBinding.constraint(katanaRequest)).eql(true);
-      expect(katanaBinding.constraint(shurikenRequest)).eql(false);
+      expect(shurikenBindingWhenSyntaxSamuraiStr.shurikenBinding.constraint(shurikenBindingWhenSyntaxSamuraiStr.katanaRequest)).eql(true);
+      expect(shurikenBindingWhenSyntaxSamuraiStr.shurikenBinding.constraint(shurikenBindingWhenSyntaxSamuraiStr.shurikenRequest)).eql(false);
 
-      katanaBindingWhenSyntax.whenInjectedInto('Ninja');
-      expect(katanaBinding.constraint(katanaRequest)).eql(false);
-      expect(katanaBinding.constraint(shurikenRequest)).eql(true);
+      let shurikenBindingWhenSyntaxNinjaStr = getKatanaBindingWhenSyntax("shurikenBindingWhenSyntaxNinjaStr")
 
-      shurikenBindingWhenSyntax.whenInjectedInto('Samurai');
-      expect(shurikenBinding.constraint(katanaRequest)).eql(true);
-      expect(shurikenBinding.constraint(shurikenRequest)).eql(false);
-
-      shurikenBindingWhenSyntax.whenInjectedInto('Ninja');
-      expect(shurikenBinding.constraint(katanaRequest)).eql(false);
-      expect(shurikenBinding.constraint(shurikenRequest)).eql(true);
+      expect(shurikenBindingWhenSyntaxNinjaStr.shurikenBinding.constraint(shurikenBindingWhenSyntaxNinjaStr.katanaRequest)).eql(false);
+      expect(shurikenBindingWhenSyntaxNinjaStr.shurikenBinding.constraint(shurikenBindingWhenSyntaxNinjaStr.shurikenRequest)).eql(true);
 
     });
 
@@ -331,27 +345,27 @@ export default function binding_when_syntaxTest() {
       }
 
       const samuraiBinding = new Binding<Samurai>('Samurai', BindingScopeEnum.Transient);
-      samuraiBinding.implementationType = Samurai;
+      samuraiBinding.implementationType = new Samurai(Object(null));
 
       const context = new Context(new Container());
 
-      const samuraiTarget = new Target(TargetTypeEnum.ConstructorArgument, '', 'Samurai', 'japonese');
+      const samuraiTarget:ESObject = new Target(TargetTypeEnum.ConstructorArgument, '', 'Samurai', 'japonese');
       const samuraiRequest = new Request('Samurai', context, null, samuraiBinding, samuraiTarget);
       const ninjaBinding = new Binding<Ninja>('Ninja', BindingScopeEnum.Transient);
 
-      ninjaBinding.implementationType = Ninja;
+      ninjaBinding.implementationType =  new Ninja(Object(null));
 
-      const ninjaTarget = new Target(TargetTypeEnum.ConstructorArgument, '', 'Ninja', 'chinese');
+      const ninjaTarget:ESObject = new Target(TargetTypeEnum.ConstructorArgument, '', 'Ninja', 'chinese');
       const ninjaRequest = new Request('Ninja', context, null, ninjaBinding, ninjaTarget);
 
       const katanaBinding = new Binding<Weapon>('Weapon', BindingScopeEnum.Transient);
       const katanaBindingWhenSyntax = new BindingWhenSyntax<Weapon>(katanaBinding);
-      const katanaTarget = new Target(TargetTypeEnum.ConstructorArgument, 'katana', 'Weapon');
+      const katanaTarget:ESObject = new Target(TargetTypeEnum.ConstructorArgument, 'katana', 'Weapon');
       const katanaRequest = new Request('Weapon', context, samuraiRequest, katanaBinding, katanaTarget);
 
       const shurikenBinding = new Binding<Weapon>('Weapon', BindingScopeEnum.Transient);
       const shurikenBindingWhenSyntax = new BindingWhenSyntax<Weapon>(shurikenBinding);
-      const shurikenTarget = new Target(TargetTypeEnum.ConstructorArgument, 'shuriken', 'Weapon');
+      const shurikenTarget:ESObject = new Target(TargetTypeEnum.ConstructorArgument, 'shuriken', 'Weapon');
       const shurikenRequest = new Request('Weapon', context, ninjaRequest, shurikenBinding, shurikenTarget);
 
       katanaBindingWhenSyntax.whenParentNamed('chinese');
@@ -397,24 +411,24 @@ export default function binding_when_syntaxTest() {
       const context = new Context(new Container());
 
       const samuraiBinding = new Binding<Samurai>('Samurai', BindingScopeEnum.Transient);
-      samuraiBinding.implementationType = Samurai;
+      samuraiBinding.implementationType =  new Samurai(Object(null));
 
-      const samuraiTarget = new Target(TargetTypeEnum.ConstructorArgument, '', 'Samurai', new Metadata('sneaky', false));
+      const samuraiTarget:ESObject = new Target(TargetTypeEnum.ConstructorArgument, '', 'Samurai', new Metadata('sneaky', false));
       const samuraiRequest = new Request('Samurai', context, null, samuraiBinding, samuraiTarget);
 
       const ninjaBinding = new Binding<Ninja>('Ninja', BindingScopeEnum.Transient);
-      ninjaBinding.implementationType = Ninja;
-      const ninjaTarget = new Target(TargetTypeEnum.ConstructorArgument, '', 'Ninja', new Metadata('sneaky', true));
+      ninjaBinding.implementationType =  new Ninja(Object(null));
+      const ninjaTarget:ESObject = new Target(TargetTypeEnum.ConstructorArgument, '', 'Ninja', new Metadata('sneaky', true));
       const ninjaRequest = new Request('Ninja', context, null, ninjaBinding, ninjaTarget);
 
       const katanaBinding = new Binding<Weapon>('Weapon', BindingScopeEnum.Transient);
       const katanaBindingWhenSyntax = new BindingWhenSyntax<Weapon>(katanaBinding);
-      const katanaTarget = new Target(TargetTypeEnum.ConstructorArgument, 'katana', 'Weapon');
+      const katanaTarget:ESObject = new Target(TargetTypeEnum.ConstructorArgument, 'katana', 'Weapon');
       const katanaRequest = new Request('Weapon', context, samuraiRequest, katanaBinding, katanaTarget);
 
       const shurikenBinding = new Binding<Weapon>('Weapon', BindingScopeEnum.Transient);
       const shurikenBindingWhenSyntax = new BindingWhenSyntax<Weapon>(shurikenBinding);
-      const shurikenTarget = new Target(TargetTypeEnum.ConstructorArgument, 'shuriken', 'Weapon');
+      const shurikenTarget:ESObject = new Target(TargetTypeEnum.ConstructorArgument, 'shuriken', 'Weapon');
       const shurikenRequest = new Request('Weapon', context, ninjaRequest, shurikenBinding, shurikenTarget);
 
       katanaBindingWhenSyntax.whenParentTagged('sneaky', true);
@@ -433,41 +447,41 @@ export default function binding_when_syntaxTest() {
 
     _it('Should_be_able_to_apply_a_type_constraint_to_some_of_its_ancestors', () => {
 
-      shurikenBindingWhenSyntax.whenAnyAncestorIs(NinjaMaster);
-      expect(shurikenBinding.constraint(woodShurikenRequest)).eql(false);
-      expect(shurikenBinding.constraint(ironShurikenRequest)).eql(true);
+      let  shurikenBindingWhenSyntaxNinjaMaster = getBindingWhenSyntax("shurikenBindingWhenSyntaxNinjaMaster")
+      expect(shurikenBindingWhenSyntaxNinjaMaster.shurikenBinding.constraint(shurikenBindingWhenSyntaxNinjaMaster.woodShurikenRequest)).eql(false);
+      expect(shurikenBindingWhenSyntaxNinjaMaster.shurikenBinding.constraint(shurikenBindingWhenSyntaxNinjaMaster.ironShurikenRequest)).eql(true);
 
-      shurikenBindingWhenSyntax.whenAnyAncestorIs(NinjaStudent);
-      expect(shurikenBinding.constraint(woodShurikenRequest)).eql(true);
-      expect(shurikenBinding.constraint(ironShurikenRequest)).eql(false);
+      let  shurikenBindingWhenSyntaxNinjaStudent = getBindingWhenSyntax("shurikenBindingWhenSyntaxNinjaStudent")
+      expect(shurikenBindingWhenSyntaxNinjaStudent.shurikenBinding.constraint(shurikenBindingWhenSyntaxNinjaStudent.woodShurikenRequest)).eql(true);
+      expect(shurikenBindingWhenSyntaxNinjaStudent.shurikenBinding.constraint(shurikenBindingWhenSyntaxNinjaStudent.ironShurikenRequest)).eql(false);
 
-      katanaBindingWhenSyntax.whenAnyAncestorIs(SamuraiMaster);
-      expect(katanaBinding.constraint(woodKatanaRequest)).eql(false);
-      expect(katanaBinding.constraint(ironKatanaRequest)).eql(true);
+      let  katanaBindingWhenSyntaxSamuraiMaster = getBindingWhenSyntax("katanaBindingWhenSyntaxSamuraiMaster")
+      expect(katanaBindingWhenSyntaxSamuraiMaster.katanaBinding.constraint(katanaBindingWhenSyntaxSamuraiMaster.woodKatanaRequest)).eql(false);
+      expect(katanaBindingWhenSyntaxSamuraiMaster.katanaBinding.constraint(katanaBindingWhenSyntaxSamuraiMaster.ironKatanaRequest)).eql(true);
 
-      katanaBindingWhenSyntax.whenAnyAncestorIs(SamuraiStudent);
-      expect(katanaBinding.constraint(woodKatanaRequest)).eql(true);
-      expect(katanaBinding.constraint(ironKatanaRequest)).eql(false);
+      let  katanaBindingWhenSyntaxSamuraiStudent = getBindingWhenSyntax("katanaBindingWhenSyntaxSamuraiStudent")
+      expect(katanaBindingWhenSyntaxSamuraiStudent.katanaBinding.constraint(katanaBindingWhenSyntaxSamuraiStudent.woodKatanaRequest)).eql(true);
+      expect(katanaBindingWhenSyntaxSamuraiStudent.katanaBinding.constraint(katanaBindingWhenSyntaxSamuraiStudent.ironKatanaRequest)).eql(false);
 
     });
 
     _it('Should_be_able_to_apply_a_type_constraint_to_none_of_its_ancestors', () => {
 
-      shurikenBindingWhenSyntax.whenNoAncestorIs(NinjaMaster);
-      expect(shurikenBinding.constraint(woodShurikenRequest)).eql(true);
-      expect(shurikenBinding.constraint(ironShurikenRequest)).eql(false);
+      let  shurikenBindingWhenSyntaxIsNinjaMaster = getBindingWhenSyntax("shurikenBindingWhenSyntaxIsNinjaMaster")
+      expect(shurikenBindingWhenSyntaxIsNinjaMaster.shurikenBinding.constraint(shurikenBindingWhenSyntaxIsNinjaMaster.woodShurikenRequest)).eql(true);
+      expect(shurikenBindingWhenSyntaxIsNinjaMaster.shurikenBinding.constraint(shurikenBindingWhenSyntaxIsNinjaMaster.ironShurikenRequest)).eql(false);
 
-      shurikenBindingWhenSyntax.whenNoAncestorIs(NinjaStudent);
-      expect(shurikenBinding.constraint(woodShurikenRequest)).eql(false);
-      expect(shurikenBinding.constraint(ironShurikenRequest)).eql(true);
+      let  shurikenBindingWhenSyntaxIsNinjaStudent = getBindingWhenSyntax("shurikenBindingWhenSyntaxIsNinjaStudent")
+      expect(shurikenBindingWhenSyntaxIsNinjaStudent.shurikenBinding.constraint(shurikenBindingWhenSyntaxIsNinjaStudent.woodShurikenRequest)).eql(false);
+      expect(shurikenBindingWhenSyntaxIsNinjaStudent.shurikenBinding.constraint(shurikenBindingWhenSyntaxIsNinjaStudent.ironShurikenRequest)).eql(true);
 
-      katanaBindingWhenSyntax.whenNoAncestorIs(SamuraiMaster);
-      expect(katanaBinding.constraint(woodKatanaRequest)).eql(true);
-      expect(katanaBinding.constraint(ironKatanaRequest)).eql(false);
+      let  katanaBindingWhenSyntaxIsSamuraiMaster = getBindingWhenSyntax("katanaBindingWhenSyntaxIsSamuraiMaster")
+      expect(katanaBindingWhenSyntaxIsSamuraiMaster.katanaBinding.constraint(katanaBindingWhenSyntaxIsSamuraiMaster.woodKatanaRequest)).eql(true);
+      expect(katanaBindingWhenSyntaxIsSamuraiMaster.katanaBinding.constraint(katanaBindingWhenSyntaxIsSamuraiMaster.ironKatanaRequest)).eql(false);
 
-      katanaBindingWhenSyntax.whenNoAncestorIs(SamuraiStudent);
-      expect(katanaBinding.constraint(woodKatanaRequest)).eql(false);
-      expect(katanaBinding.constraint(ironKatanaRequest)).eql(true);
+      let  katanaBindingWhenSyntaxIsSamuraiStudent = getBindingWhenSyntax("katanaBindingWhenSyntaxIsSamuraiStudent")
+      expect(katanaBindingWhenSyntaxIsSamuraiStudent.katanaBinding.constraint(katanaBindingWhenSyntaxIsSamuraiStudent.woodKatanaRequest)).eql(false);
+      expect(katanaBindingWhenSyntaxIsSamuraiStudent.katanaBinding.constraint(katanaBindingWhenSyntaxIsSamuraiStudent.ironKatanaRequest)).eql(true);
 
     });
 
@@ -552,54 +566,43 @@ export default function binding_when_syntaxTest() {
     });
 
     _it('Should_be_able_to_apply_a_custom_constraint_to_some_of_its_ancestors', () => {
+      // 要改
 
-      const anyAncestorIsNinjaMasterConstraint = typeConstraint(NinjaMaster);
-      const anyAncestorIsNinjaStudentConstraint = typeConstraint(NinjaStudent);
+      let  shurikenBindingWhenSyntaxNinjaMasterConstraint = getBindingWhenSyntax("shurikenBindingWhenSyntaxNinjaMasterConstraint")
+      expect(shurikenBindingWhenSyntaxNinjaMasterConstraint.shurikenBinding.constraint(shurikenBindingWhenSyntaxNinjaMasterConstraint.woodShurikenRequest)).eql(false);
+      expect(shurikenBindingWhenSyntaxNinjaMasterConstraint.shurikenBinding.constraint(shurikenBindingWhenSyntaxNinjaMasterConstraint.ironShurikenRequest)).eql(true);
 
-      shurikenBindingWhenSyntax.whenAnyAncestorMatches(anyAncestorIsNinjaMasterConstraint);
-      expect(shurikenBinding.constraint(woodShurikenRequest)).eql(false);
-      expect(shurikenBinding.constraint(ironShurikenRequest)).eql(true);
+      let  shurikenBindingWhenSyntaxNinjaStudentConstraint = getBindingWhenSyntax("shurikenBindingWhenSyntaxNinjaStudentConstraint")
+      expect(shurikenBindingWhenSyntaxNinjaStudentConstraint.shurikenBinding.constraint(shurikenBindingWhenSyntaxNinjaStudentConstraint.woodShurikenRequest)).eql(true);
+      expect(shurikenBindingWhenSyntaxNinjaStudentConstraint.shurikenBinding.constraint(shurikenBindingWhenSyntaxNinjaStudentConstraint.ironShurikenRequest)).eql(false);
 
-      shurikenBindingWhenSyntax.whenAnyAncestorMatches(anyAncestorIsNinjaStudentConstraint);
-      expect(shurikenBinding.constraint(woodShurikenRequest)).eql(true);
-      expect(shurikenBinding.constraint(ironShurikenRequest)).eql(false);
+      let  katanaBindingWhenSyntaxSamuraiMasterConstraint = getBindingWhenSyntax("katanaBindingWhenSyntaxSamuraiMasterConstraint")
+      expect(katanaBindingWhenSyntaxSamuraiMasterConstraint.katanaBinding.constraint(katanaBindingWhenSyntaxSamuraiMasterConstraint.woodKatanaRequest)).eql(false);
+      expect(katanaBindingWhenSyntaxSamuraiMasterConstraint.katanaBinding.constraint(katanaBindingWhenSyntaxSamuraiMasterConstraint.ironKatanaRequest)).eql(true);
 
-      const anyAncestorIsSamuraiMasterConstraint = typeConstraint(SamuraiMaster);
-      const anyAncestorIsSamuraiStudentConstraint = typeConstraint(SamuraiStudent);
-
-      katanaBindingWhenSyntax.whenAnyAncestorMatches(anyAncestorIsSamuraiMasterConstraint);
-      expect(katanaBinding.constraint(woodKatanaRequest)).eql(false);
-      expect(katanaBinding.constraint(ironKatanaRequest)).eql(true);
-
-      katanaBindingWhenSyntax.whenAnyAncestorMatches(anyAncestorIsSamuraiStudentConstraint);
-      expect(katanaBinding.constraint(woodKatanaRequest)).eql(true);
-      expect(katanaBinding.constraint(ironKatanaRequest)).eql(false);
+      let  katanaBindingWhenSyntaxSamuraiStudentConstraint = getBindingWhenSyntax("katanaBindingWhenSyntaxSamuraiStudentConstraint")
+      expect(katanaBindingWhenSyntaxSamuraiStudentConstraint.katanaBinding.constraint(katanaBindingWhenSyntaxSamuraiStudentConstraint.woodKatanaRequest)).eql(true);
+      expect(katanaBindingWhenSyntaxSamuraiStudentConstraint.katanaBinding.constraint(katanaBindingWhenSyntaxSamuraiStudentConstraint.ironKatanaRequest)).eql(false);
 
     });
 
     _it('Should_be_able_to_apply_a_custom_constraint_to_none_of_its_ancestors', () => {
 
-      const anyAncestorIsNinjaMasterConstraint = typeConstraint(NinjaMaster);
-      const anyAncestorIsNinjaStudentConstraint = typeConstraint(NinjaStudent);
+      let  shurikenBindingWhenSyntaxNoneNinjaMasterConstraint = getBindingWhenSyntax("shurikenBindingWhenSyntaxNoneNinjaMasterConstraint")
+      expect(shurikenBindingWhenSyntaxNoneNinjaMasterConstraint.shurikenBinding.constraint(shurikenBindingWhenSyntaxNoneNinjaMasterConstraint.woodShurikenRequest)).eql(true);
+      expect(shurikenBindingWhenSyntaxNoneNinjaMasterConstraint.shurikenBinding.constraint(shurikenBindingWhenSyntaxNoneNinjaMasterConstraint.ironShurikenRequest)).eql(false);
 
-      shurikenBindingWhenSyntax.whenNoAncestorMatches(anyAncestorIsNinjaMasterConstraint);
-      expect(shurikenBinding.constraint(woodShurikenRequest)).eql(true);
-      expect(shurikenBinding.constraint(ironShurikenRequest)).eql(false);
+      let  shurikenBindingWhenSyntaxNoneNinjaStudentConstraint = getBindingWhenSyntax("shurikenBindingWhenSyntaxNoneNinjaStudentConstraint")
+      expect(shurikenBindingWhenSyntaxNoneNinjaStudentConstraint.shurikenBinding.constraint(shurikenBindingWhenSyntaxNoneNinjaStudentConstraint.woodShurikenRequest)).eql(false);
+      expect(shurikenBindingWhenSyntaxNoneNinjaStudentConstraint.shurikenBinding.constraint(shurikenBindingWhenSyntaxNoneNinjaStudentConstraint.ironShurikenRequest)).eql(true);
 
-      shurikenBindingWhenSyntax.whenNoAncestorMatches(anyAncestorIsNinjaStudentConstraint);
-      expect(shurikenBinding.constraint(woodShurikenRequest)).eql(false);
-      expect(shurikenBinding.constraint(ironShurikenRequest)).eql(true);
+      let  katanaBindingWhenSyntaxNoneSamuraiMasterConstraint = getBindingWhenSyntax("katanaBindingWhenSyntaxNoneSamuraiMasterConstraint")
+      expect(katanaBindingWhenSyntaxNoneSamuraiMasterConstraint.katanaBinding.constraint(katanaBindingWhenSyntaxNoneSamuraiMasterConstraint.woodKatanaRequest)).eql(true);
+      expect(katanaBindingWhenSyntaxNoneSamuraiMasterConstraint.katanaBinding.constraint(katanaBindingWhenSyntaxNoneSamuraiMasterConstraint.ironKatanaRequest)).eql(false);
 
-      const anyAncestorIsSamuraiMasterConstraint = typeConstraint(SamuraiMaster);
-      const anyAncestorIsSamuraiStudentConstraint = typeConstraint(SamuraiStudent);
-
-      katanaBindingWhenSyntax.whenNoAncestorMatches(anyAncestorIsSamuraiMasterConstraint);
-      expect(katanaBinding.constraint(woodKatanaRequest)).eql(true);
-      expect(katanaBinding.constraint(ironKatanaRequest)).eql(false);
-
-      katanaBindingWhenSyntax.whenNoAncestorMatches(anyAncestorIsSamuraiStudentConstraint);
-      expect(katanaBinding.constraint(woodKatanaRequest)).eql(false);
-      expect(katanaBinding.constraint(ironKatanaRequest)).eql(true);
+      let  katanaBindingWhenSyntaxNoneSamuraiStudentConstraint = getBindingWhenSyntax("katanaBindingWhenSyntaxNoneSamuraiStudentConstraint")
+      expect(katanaBindingWhenSyntaxNoneSamuraiStudentConstraint.katanaBinding.constraint(katanaBindingWhenSyntaxNoneSamuraiStudentConstraint.woodKatanaRequest)).eql(false);
+      expect(katanaBindingWhenSyntaxNoneSamuraiStudentConstraint.katanaBinding.constraint(katanaBindingWhenSyntaxNoneSamuraiStudentConstraint.ironKatanaRequest)).eql(true);
     });
   })
 }

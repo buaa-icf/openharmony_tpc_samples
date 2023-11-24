@@ -1,0 +1,32 @@
+{
+  "types": "module",
+  "keywords": [
+    "Tool",
+    "OpenHarmony",
+    "SMBJ",
+    "JCIFS",
+    "HamonyOs"
+  ],
+  "author": "ohos_tpc",
+  "description": "SMBJ Client",
+  "ohos": {
+    "org": "opensource"
+  },
+  "main": "index.ts",
+  "repository": "https://gitee.com/hihopeorg/smbj",
+  "type": "module",
+  "version": "2.0.0",
+  "dependencies": {
+    "@ohos/Buffer": "file:../buffer"
+  },
+  "tags": [
+    "Tool",
+    "OpenHarmony",
+    "SMBJ",
+    "JCIFS",
+    "HamonyOs"
+  ],
+  "license": "MIT License",
+  "devDependencies": {},
+  "name": "@ohos/smbj"
+}

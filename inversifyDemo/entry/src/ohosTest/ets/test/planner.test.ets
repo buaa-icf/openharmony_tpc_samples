@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/util'
-import "reflect-metadata"
 import { inject } from 'inversify';
 import { injectable } from 'inversify';
 import { multiInject } from 'inversify';
@@ -26,27 +25,29 @@ import { interfaces } from 'inversify';
 import { named } from 'inversify';
 import { MetadataReader } from 'inversify';
 import { plan } from 'inversify/lib/planning/planner';
+import * as ns from  "reflect-metadata"
+ns
 
 export default function plannerTest() {
-  describe('plannerTest', function () {
+  describe('plannerTest',  ()=> {
     _it('Should_be_able_to_create_a_basic_plan', () => {
 
-      interface KatanaBlade {}
+      interface KatanaBlade1 {}
 
       @injectable()
-      class KatanaBlade implements KatanaBlade {
+      class KatanaBlade implements KatanaBlade1 {
       }
 
-      interface KatanaHandler {}
+      interface KatanaHandler1 {}
 
       @injectable()
-      class KatanaHandler implements KatanaHandler {
+      class KatanaHandler implements KatanaHandler1 {
       }
 
-      interface Katana {}
+      interface Katana1 {}
 
       @injectable()
-      class Katana implements Katana {
+      class Katana implements Katana1 {
         public handler: KatanaHandler;
         public blade: KatanaBlade;
 
@@ -59,16 +60,16 @@ export default function plannerTest() {
         }
       }
 
-      interface Shuriken {}
+      interface Shuriken1 {}
 
       @injectable()
-      class Shuriken implements Shuriken {
+      class Shuriken implements Shuriken1 {
       }
 
-      interface Ninja {}
+      interface Ninja1 {}
 
       @injectable()
-      class Ninja implements Ninja {
+      class Ninja implements Ninja1 {
         public katana: Katana;
         public shuriken: Shuriken;
 
@@ -201,22 +202,22 @@ export default function plannerTest() {
 
     _it('Should_only_plan_sub_dependencies_when_binding_type_is_BindingType_Instance', () => {
 
-      interface KatanaBlade {}
+      interface KatanaBlade1 {}
 
       @injectable()
-      class KatanaBlade implements KatanaBlade {
+      class KatanaBlade implements KatanaBlade1 {
       }
 
-      interface KatanaHandler {}
+      interface KatanaHandler1 {}
 
       @injectable()
-      class KatanaHandler implements KatanaHandler {
+      class KatanaHandler implements KatanaHandler1 {
       }
 
-      interface Katana {}
+      interface Katana1 {}
 
       @injectable()
-      class Katana implements Katana {
+      class Katana implements Katana1 {
         public handler: KatanaHandler;
         public blade: KatanaBlade;
 
@@ -229,16 +230,16 @@ export default function plannerTest() {
         }
       }
 
-      interface Shuriken {}
+      interface Shuriken1 {}
 
       @injectable()
-      class Shuriken implements Shuriken {
+      class Shuriken implements Shuriken1 {
       }
 
-      interface Ninja {}
+      interface Ninja1 {}
 
       @injectable()
-      class Ninja implements Ninja {
+      class Ninja implements Ninja1 {
         public katanaFactory: interfaces.Factory<Katana>;
         public shuriken: Shuriken;
 
@@ -291,10 +292,10 @@ export default function plannerTest() {
       class Shuriken implements Weapon {
       }
 
-      interface Ninja {}
+      interface Ninja1 {}
 
       @injectable()
-      class Ninja implements Ninja {
+      class Ninja implements Ninja1 {
         public katana: Weapon;
         public shuriken: Weapon;
 
@@ -337,8 +338,10 @@ export default function plannerTest() {
       expect(actualPlan.rootRequest.childRequests[0]?.childRequests[0]?.target.isArray()).eql(true);
       expect(actualPlan.rootRequest.childRequests[0]?.childRequests[0]?.serviceIdentifier).eql('Weapon');
       expect(actualPlan.rootRequest.childRequests[0]?.childRequests[0]?.bindings[0]?.serviceIdentifier).eql('Weapon');
+      interface nameobjs { name: string }
+
       const shurikenImplementationType = actualPlan.rootRequest.childRequests[0]?.childRequests[0]?.bindings[0]?.implementationType as
-      { name: string };
+      nameobjs;
       expect(shurikenImplementationType.name).eql('Shuriken');
 
       expect(actualPlan.rootRequest.childRequests[0]?.childRequests[1]?.serviceIdentifier).eql(weaponId);
@@ -348,29 +351,29 @@ export default function plannerTest() {
       expect(actualPlan.rootRequest.childRequests[0]?.childRequests[1]?.serviceIdentifier).eql('Weapon');
       expect(actualPlan.rootRequest.childRequests[0]?.childRequests[1]?.bindings[0]?.serviceIdentifier).eql('Weapon');
       const katanaImplementationType = actualPlan.rootRequest.childRequests[0]?.childRequests[1]?.bindings[0]?.implementationType as
-      { name: string };
+      nameobjs;
       expect(katanaImplementationType.name).eql('Katana');
 
     });
 
     _it('Should_throw_when_no_matching_bindings_are_found', () => {
 
-      interface Katana {}
+      interface Katana1 {}
 
       @injectable()
-      class Katana implements Katana {
+      class Katana implements Katana1 {
       }
 
-      interface Shuriken {}
+      interface Shuriken1 {}
 
       @injectable()
-      class Shuriken implements Shuriken {
+      class Shuriken implements Shuriken1 {
       }
 
-      interface Ninja {}
+      interface Ninja1 {}
 
       @injectable()
-      class Ninja implements Ninja {
+      class Ninja implements Ninja1 {
         public katana: Katana;
         public shuriken: Shuriken;
 
@@ -411,13 +414,13 @@ export default function plannerTest() {
       class Shuriken implements Weapon {
       }
 
-      interface Ninja {}
+      interface Ninja1 {}
 
       const ninjaId = 'Ninja';
       const weaponId = 'Weapon';
 
       @injectable()
-      class Ninja implements Ninja {
+      class Ninja implements Ninja1 {
         public katana: Weapon;
         public shuriken: Weapon;
 
@@ -545,7 +548,7 @@ export default function plannerTest() {
         public constructor(
           katana: Sword
         ) {
-          this.katana = katana;
+          this.katana = katana as Katana;
         }
       }
 
@@ -563,16 +566,16 @@ export default function plannerTest() {
 
     _it('Should_throw_when_a_function_has_a_missing_injectable_annotation', () => {
 
-      interface Katana {}
+      interface Katana1 {}
 
       @injectable()
-      class Katana implements Katana {
+      class Katana implements Katana1 {
       }
 
-      interface Ninja {}
+      interface Ninja1 {}
 
       @injectable()
-      class Ninja implements Ninja {
+      class Ninja implements Ninja1 {
         public katana: Katana;
 
         public constructor(

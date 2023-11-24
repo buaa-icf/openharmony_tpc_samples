@@ -12,44 +12,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import "reflect-metadata"
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/util'
 import * as ERRORS_MSGS from 'inversify/lib/constants/error_msgs';
 import * as METADATA_KEY from 'inversify/lib/constants/metadata_keys';
 import { decorate, injectable } from 'inversify';
+import * as ns from "reflect-metadata"
+import { metadataFun } from '../tools/reflectMetadata';
+ns
 export default function injectableTest() {
-  describe('injectableTest', function () {
+  describe('injectableTest',  ()=> {
     _it('Should_generate_metadata_if_declared_injections', () => {
 
-      class Katana { }
-
-      interface Weapon { }
-
-      @injectable()
-      @Reflect.metadata("design:paramtypes",[Katana,Object])
-      class Warrior {
-
-        private _primaryWeapon: Katana;
-        private _secondaryWeapon: Weapon;
-
-        public constructor(primaryWeapon: Katana, secondaryWeapon: Weapon) {
-          this._primaryWeapon = primaryWeapon;
-          this._secondaryWeapon = secondaryWeapon;
-        }
-
-        public debug() {
-          return {
-            primaryWeapon: this._primaryWeapon,
-            secondaryWeapon: this._secondaryWeapon
-          };
-        }
-
-      }
-
-      const metadata = Reflect.getMetadata(METADATA_KEY.PARAM_TYPES, Warrior);
+      class Katana{ }
+      const metadata:ESObject= metadataFun()
+      let Katana3=()=>{return new Katana()}
       expect(metadata).to.be.instanceof(Array);
       expect(metadata.length).to.be.eql(2)
-      expect(metadata[0]).to.be.eql(Katana);
+      expect(JSON.stringify(new metadata[0]())).to.be.eql(JSON.stringify(Katana3()));
       expect(metadata[1]).to.be.eql(Object);
       expect(metadata[2]).to.eq(undefined);
     });
@@ -59,7 +38,7 @@ export default function injectableTest() {
       @injectable()
       class Test { }
 
-      const useDecoratorMoreThanOnce = function () {
+      const useDecoratorMoreThanOnce =  ()=> {
         decorate(injectable(), Test);
         decorate(injectable(), Test);
       };
@@ -72,13 +51,13 @@ export default function injectableTest() {
       interface Katana { }
       interface Shuriken { }
 
-      const VanillaJSWarrior = function (primary: Katana, secondary: Shuriken) {
+      const VanillaJSWarrior =  (primary: Katana, secondary: Shuriken)=> {
         // ...
       };
 
       decorate(injectable(), VanillaJSWarrior);
 
-      const metadata = Reflect.getMetadata(METADATA_KEY.PARAM_TYPES, VanillaJSWarrior);
+      const metadata:ESObject = Reflect.getMetadata(METADATA_KEY.PARAM_TYPES, VanillaJSWarrior);
       expect(metadata).to.be.instanceof(Array);
       expect(metadata.length).to.eql(0);
 

@@ -13,9 +13,8 @@
  * limitations under the License.
  */
 
-import getDecorators from "inversify-inject-decorators/es/index";
-import { Container, injectable, tagged, named } from "inversify";
-import "reflect-metadata"
+import { LazyInjectNamedFunction } from './lazyInjectInterface';
+
 @Entry
 @Component
 struct LazyInjectNamedPage {
@@ -42,62 +41,12 @@ struct LazyInjectNamedPage {
   }
 
   sample(){
-    let container = new Container();
-    let { lazyInjectNamed } = getDecorators(container);
-    let TYPES = { Weapon: "Weapon" };
 
-    interface Weapon {
-      name: string;
-      durability: number;
-      use(): void;
-    }
-
-    @injectable()
-    class Sword implements Weapon {
-      public name: string;
-      public durability: number;
-      public constructor() {
-        this.durability = 100;
-        this.name = "Sword";
-      }
-      public use() {
-        this.durability = this.durability - 10;
-      }
-    }
-
-    @injectable()
-    class Shuriken implements Weapon {
-      public name: string;
-      public durability: number;
-      public constructor() {
-        this.durability = 100;
-        this.name = "Shuriken";
-      }
-      public use() {
-        this.durability = this.durability - 10;
-      }
-    }
-
-    class Warrior {
-
-      @lazyInjectNamed(TYPES.Weapon, "not-throwable")
-      @named("not-throwable")
-      public primaryWeapon: Weapon;
-
-      @lazyInjectNamed(TYPES.Weapon, "throwable")
-      @named("throwable")
-      public secondaryWeapon: Weapon;
-
-    }
-
-    container.bind<Weapon>(TYPES.Weapon).to(Sword).whenTargetNamed("not-throwable");
-    container.bind<Weapon>(TYPES.Weapon).to(Shuriken).whenTargetNamed("throwable");
-
-    let warrior = new Warrior();
-    console.log((warrior.primaryWeapon instanceof Sword)+""); // true
-    console.log((warrior.secondaryWeapon instanceof Shuriken)+""); // true
-    this.message=(warrior.primaryWeapon instanceof Sword)+"";
-    this.message2=(warrior.secondaryWeapon instanceof Shuriken)+"";
+    let obj = LazyInjectNamedFunction();
+    console.log(obj.sword); // true
+    console.log(obj.sword); // true
+    this.message=obj.sword;
+    this.message2=obj.sword;
   }
 
 

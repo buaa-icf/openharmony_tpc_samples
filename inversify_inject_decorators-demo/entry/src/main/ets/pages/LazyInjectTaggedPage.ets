@@ -13,9 +13,8 @@
  * limitations under the License.
  */
 
-import getDecorators from "inversify-inject-decorators/es/index";
-import { Container, injectable, tagged, named } from "inversify";
-import "reflect-metadata"
+import { LazyInjectTaggedFunction } from './lazyInjectInterface';
+
 @Entry
 @Component
 struct LazyInjectTaggedPage {
@@ -42,62 +41,12 @@ struct LazyInjectTaggedPage {
   }
 
   sample(){
-    let container = new Container();
-    let { lazyInjectTagged } = getDecorators(container);
-    let TYPES = { Weapon: "Weapon" };
 
-    interface Weapon {
-      name: string;
-      durability: number;
-      use(): void;
-    }
-
-    @injectable()
-    class Sword implements Weapon {
-      public name: string;
-      public durability: number;
-      public constructor() {
-        this.durability = 100;
-        this.name = "Sword";
-      }
-      public use() {
-        this.durability = this.durability - 10;
-      }
-    }
-
-    @injectable()
-    class Shuriken implements Weapon {
-      public name: string;
-      public durability: number;
-      public constructor() {
-        this.durability = 100;
-        this.name = "Shuriken";
-      }
-      public use() {
-        this.durability = this.durability - 10;
-      }
-    }
-
-    class Warrior {
-
-      @lazyInjectTagged(TYPES.Weapon, "throwable", false)
-      @tagged("throwwable", false)
-      public primaryWeapon: Weapon;
-
-      @lazyInjectTagged(TYPES.Weapon, "throwable", true)
-      @tagged("throwwable", true)
-      public secondaryWeapon: Weapon;
-
-    }
-
-    container.bind<Weapon>(TYPES.Weapon).to(Sword).whenTargetTagged("throwable", false);
-    container.bind<Weapon>(TYPES.Weapon).to(Shuriken).whenTargetTagged("throwable", true);
-
-    let warrior = new Warrior();
-    console.log((warrior.primaryWeapon instanceof Sword)+""); // true
-    console.log((warrior.secondaryWeapon instanceof Shuriken)+""); // true
-    this.message=(warrior.primaryWeapon instanceof Sword)+"";
-    this.message2=(warrior.secondaryWeapon instanceof Shuriken)+"";
+    let obj = LazyInjectTaggedFunction();
+    console.log(obj.sword); // true
+    console.log(obj.shuriken); // true
+    this.message=obj.sword;
+    this.message2=obj.shuriken;
   }
 
 
