@@ -35,6 +35,7 @@ struct processingAttribute {
           .fontStyle(FontStyle.Normal)
           .fontColor(Color.Red)
           .margin(10)
+          .enabled(false)
 
         Button("解析XML，转大写")
           .fontSize(30)

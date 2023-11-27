@@ -35,6 +35,7 @@ struct promiseUsage {
           .fontStyle(FontStyle.Normal)
           .fontColor(Color.Red)
           .margin(10)
+          .enabled(false)
 
         Button(" start ")
           .fontSize(30)
