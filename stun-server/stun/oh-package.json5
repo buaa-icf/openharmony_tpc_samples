@@ -19,6 +19,7 @@
     "stun",
     "HarmonyOS"
   ],
+  "dependencies": {},
   "license": "Apache-2.0",
   "devDependencies": {},
   "name": "@ohos/stun"

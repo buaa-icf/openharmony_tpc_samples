@@ -105,7 +105,7 @@ private createClient() {
 
 在下述版本验证通过：
 
-- DevEco Studio 版本：4.0.3.600，OpenHarmony SDK:API10（4.0.10.11）
+- DevEco Studio 版本：4.0.3.600，OpenHarmony SDK:API10（4.0.10.15）
 
 ## 目录结构
 ````
