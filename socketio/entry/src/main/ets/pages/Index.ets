@@ -1,24 +1,12 @@
-/*
- * Copyright (C) 2022 Huawei Device Co., Ltd.
- * All rights reserved.
+/**
+ * Copyright (C) 2023 Huawei Device Co., Ltd.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to all conditions.
+ * This software is distributed under a license. The full license
+ * agreement can be found in the file LICENSE in this distribution.
+ * This software may not be copied, modified, sold or distributed
+ * other than expressed in the named license agreement.
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * This software is distributed without any warranty.
  */
 
 import { BasicDataSource } from '../common/BasicDataSource';
@@ -30,7 +18,7 @@ import router from '@ohos.router';
 @Entry
 @Component
 struct Index {
-  @State uri: string = "http://10.50.80.27:3000";
+  @State uri: string = "";
   @State username: string = "";
   @State message: string = "";
   @State connect_finish: boolean = false;
@@ -71,14 +59,10 @@ struct Index {
   }
 
   on_login_listener(event_json: string): void {
-    console.log("jk SOCKET_IO_INDEX on_login_listener event_json: " + event_json);
     let loginCall: ESObject = JSON.parse(event_json);
-    console.log("jk ===============");
     let notice = "Welcome to Socket.IO Chat,there " + (loginCall.numUsers != 1 ? " are " : "\'s ") + loginCall.numUsers + (loginCall.numUsers != 1 ? " participants" : " participant");
     let serviceMessage: ESObject = { message: notice, id: 0 };
-    console.log("jk SOCKET_IO_INDEX on_login_listener pushData start");
     this.pushData(serviceMessage);
-    console.log("jk SOCKET_IO_INDEX on_login_listener pushData stop");
   }
 
   on_new_message_listener(event_json: string): void {
@@ -111,9 +95,7 @@ struct Index {
   pushData(any: ESObject) {
     this.chatDetailData.pushData(any);
     // setTimeout(() => {
-    //   console.log("jk pushData start");
     //   this.chatDetailData.pushData(any);
-    //   console.log("jk pushData stop");
     // }, 10);
   }
 
@@ -157,10 +139,7 @@ struct Index {
       this.on_user_left_listener(event_json);
     });
     this.client.on("login", (event_json: string)=>{
-
-      console.log("jk login start");
       this.on_login_listener(event_json);
-      console.log("jk login stop");
     });
   }
 
@@ -171,10 +150,8 @@ struct Index {
       prompt.showToast({ message: "暂未连接服务器" });
       return;
     }
-    console.log("jk SOCKET_IO_INDEX login start");
     this.client.emit("add user", username);
     this.login_finish = !this.login_finish;
-    console.log("jk SOCKET_IO_INDEX login login_finish: " + this.login_finish);
   }
 
   //发送消息

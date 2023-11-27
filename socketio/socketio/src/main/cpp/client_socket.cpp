@@ -1,19 +1,12 @@
-/*
- * MIT License
+/**
+ * Copyright (C) 2023 Huawei Device Co., Ltd.
  *
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * This software is distributed under a license. The full license
+ * agreement can be found in the file LICENSE in this distribution.
+ * This software may not be copied, modified, sold or distributed
+ * other than expressed in the named license agreement.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * This software is distributed without any warranty.
  */
 
 #include <cstring>
@@ -81,8 +74,8 @@ static std::string get_message_value(sio::message::ptr const &message)
     }
 }
 
-static void handler_event_listener_aux(bool is_once, const std::string &name, sio::message::ptr const &message,
-    bool need_ack, sio::message::list &ack_message)
+static void handler_event_listener_aux(bool isOnce, const std::string &name, sio::message::ptr const &message,
+    bool needAck, sio::message::list &ack_message)
 {
     napi_ref on_event_listener_call_aux_ref = on_event_listener_call_aux_ref_map[name.c_str()];
     if (on_event_listener_call_aux_ref != nullptr) {
@@ -102,17 +95,17 @@ static void handler_event_listener_aux(bool is_once, const std::string &name, si
         napi_get_reference_value(env_global, on_event_listener_call_aux_ref, &on_event_listener_call_aux);
         napi_call_function(env_global, nullptr, on_event_listener_call_aux, 1,
             &message_json_result, &napi_result_void);
-        if (is_once) {
+        if (isOnce) {
             on_event_listener_call_aux_ref_map[name.c_str()] = nullptr;
         }
     }
 }
 
-class client_socket {
+class ClientSocket {
 public:
-    client_socket() noexcept {}
+    ClientSocket() noexcept {}
 
-    void on_open()
+    void OnOpen()
     {
         if (on_open_call_ref != nullptr) {
             napi_value on_open_call;
@@ -121,7 +114,7 @@ public:
         }
     }
 
-    void on_fail()
+    void OnFail()
     {
         if (on_fail_call_ref != nullptr) {
             napi_value on_fail_call;
@@ -130,7 +123,7 @@ public:
         }
     }
 
-    void on_reconnecting()
+    void OnReconnecting()
     {
         if (on_reconnecting_call_ref != nullptr) {
             napi_value on_reconnecting_call;
@@ -140,7 +133,7 @@ public:
     }
 
     // 待回传unsigned两个参数
-    void on_reconnect(unsigned, unsigned)
+    void OnReconnect(unsigned, unsigned)
     {
         if (on_reconnect_call_ref != nullptr) {
             napi_value on_reconnect_call;
@@ -188,16 +181,16 @@ public:
         }
     }
 
-    void on_event_listener_aux(const std::string &name, sio::message::ptr const &message, bool need_ack,
+    void on_event_listener_aux(const std::string &name, sio::message::ptr const &message, bool needAck,
         sio::message::list &ack_message)
     {
-        handler_event_listener_aux(false, name, message, need_ack, ack_message);
+        handler_event_listener_aux(false, name, message, needAck, ack_message);
     }
 
-    void once_event_listener_aux(const std::string &name, sio::message::ptr const &message, bool need_ack,
+    void once_event_listener_aux(const std::string &name, sio::message::ptr const &message, bool needAck,
         sio::message::list &ack_message)
     {
-        handler_event_listener_aux(true, name, message, need_ack,
+        handler_event_listener_aux(true, name, message, needAck,
             ack_message);
     }
 
@@ -240,7 +233,7 @@ public:
     }
 };
 
-static client_socket l;
+static ClientSocket g_clientSocket;
 
 static sio::client clientInstance;
 
@@ -271,7 +264,7 @@ static napi_value set_open_listener(napi_env env, napi_callback_info info)
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     napi_value on_open_call = args[0];
     napi_create_reference(env_global, on_open_call, 1, &on_open_call_ref);
-    clientInstance.set_open_listener(std::bind(&client_socket::on_open, &l));
+    clientInstance.set_open_listener(std::bind(&ClientSocket::OnOpen, &g_clientSocket));
     return 0;
 }
 
@@ -283,7 +276,7 @@ static napi_value set_fail_listener(napi_env env, napi_callback_info info)
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     napi_value on_fail_call = args[0];
     napi_create_reference(env_global, on_fail_call, 1, &on_fail_call_ref);
-    clientInstance.set_fail_listener(std::bind(&client_socket::on_fail, &l));
+    clientInstance.set_fail_listener(std::bind(&ClientSocket::OnFail, &g_clientSocket));
     return 0;
 }
 
@@ -295,7 +288,7 @@ static napi_value set_reconnecting_listener(napi_env env, napi_callback_info inf
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     napi_value on_reconnecting_call = args[0];
     napi_create_reference(env_global, on_reconnecting_call, 1, &on_reconnecting_call_ref);
-    clientInstance.set_reconnecting_listener(std::bind(&client_socket::on_reconnecting, &l));
+    clientInstance.set_reconnecting_listener(std::bind(&ClientSocket::OnReconnecting, &g_clientSocket));
     return 0;
 }
 
@@ -307,7 +300,7 @@ static napi_value set_reconnect_listener(napi_env env, napi_callback_info info)
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     napi_value on_reconnect_call = args[0];
     napi_create_reference(env_global, on_reconnect_call, 1, &on_reconnect_call_ref);
-    clientInstance.set_reconnect_listener(std::bind(&client_socket::on_reconnect, &l,
+    clientInstance.set_reconnect_listener(std::bind(&ClientSocket::OnReconnect, &g_clientSocket,
         std::placeholders::_1, std::placeholders::_2));
     return 0;
 }
@@ -320,7 +313,7 @@ static napi_value set_close_listener(napi_env env, napi_callback_info info)
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     napi_value on_close_call = args[0];
     napi_create_reference(env_global, on_close_call, 1, &on_close_call_ref);
-    clientInstance.set_close_listener(std::bind(&client_socket::on_close, &l, std::placeholders::_1));
+    clientInstance.set_close_listener(std::bind(&ClientSocket::on_close, &g_clientSocket, std::placeholders::_1));
     return 0;
 }
 
@@ -332,7 +325,7 @@ static napi_value set_socket_open_listener(napi_env env, napi_callback_info info
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     napi_value on_socket_open_call = args[0];
     napi_create_reference(env_global, on_socket_open_call, 1, &on_socket_open_call_ref);
-    clientInstance.set_socket_open_listener(std::bind(&client_socket::on_socket_open, &l,
+    clientInstance.set_socket_open_listener(std::bind(&ClientSocket::on_socket_open, &g_clientSocket,
         std::placeholders::_1));
     return 0;
 }
@@ -345,7 +338,7 @@ static napi_value set_socket_close_listener(napi_env env, napi_callback_info inf
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     napi_value on_socket_close_call = args[0];
     napi_create_reference(env_global, on_socket_close_call, 1, &on_socket_close_call_ref);
-    clientInstance.set_socket_close_listener(std::bind(&client_socket::on_socket_close, &l,
+    clientInstance.set_socket_close_listener(std::bind(&ClientSocket::on_socket_close, &g_clientSocket,
         std::placeholders::_1));
     return 0;
 }
@@ -473,9 +466,9 @@ static napi_value set_nsp(napi_env env, napi_callback_info info)
     size_t argc = 1;
     napi_value args[1] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
-    char char_nsp[MAX_BUF_SIZE];
-    napi_get_value_string_utf8(env, args[0], char_nsp, MAX_BUF_SIZE, &result);
-    nsp = char_nsp;
+    char charNsp[MAX_BUF_SIZE];
+    napi_get_value_string_utf8(env, args[0], charNsp, MAX_BUF_SIZE, &result);
+    nsp = charNsp;
     return 0;
 }
 
@@ -485,14 +478,14 @@ static napi_value on(napi_env env, napi_callback_info info)
     size_t argc = 2;
     napi_value args[ARG_INDEX_2] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
-    char event_name[MAX_BUF_SIZE];
-    napi_get_value_string_utf8(env, args[0], event_name, MAX_BUF_SIZE, &result);
+    char eventName[MAX_BUF_SIZE];
+    napi_get_value_string_utf8(env, args[0], eventName, MAX_BUF_SIZE, &result);
     napi_value on_event_listener_call_aux = args[1];
     napi_ref on_event_listener_call_aux_ref;
     napi_create_reference(env_global, on_event_listener_call_aux, 1, &on_event_listener_call_aux_ref);
     on_event_listener_call_aux_ref_map.insert(
-        {event_name, on_event_listener_call_aux_ref});
-    get_socket()->on(event_name, std::bind(&client_socket::on_event_listener_aux, &l,
+        {eventName, on_event_listener_call_aux_ref});
+    get_socket()->on(eventName, std::bind(&ClientSocket::on_event_listener_aux, &g_clientSocket,
         std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
     return 0;
 }
@@ -503,14 +496,14 @@ static napi_value once(napi_env env, napi_callback_info info)
     size_t argc = 2;
     napi_value args[ARG_INDEX_2] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
-    char event_name[MAX_BUF_SIZE];
-    napi_get_value_string_utf8(env, args[0], event_name, MAX_BUF_SIZE, &result);
+    char eventName[MAX_BUF_SIZE];
+    napi_get_value_string_utf8(env, args[0], eventName, MAX_BUF_SIZE, &result);
     napi_value on_event_listener_call_aux = args[1];
     napi_ref on_event_listener_call_aux_ref;
     napi_create_reference(env_global, on_event_listener_call_aux, 1, &on_event_listener_call_aux_ref);
     on_event_listener_call_aux_ref_map.insert(
-        {event_name, on_event_listener_call_aux_ref});
-    get_socket()->on(event_name, std::bind(&client_socket::once_event_listener_aux, &l,
+        {eventName, on_event_listener_call_aux_ref});
+    get_socket()->on(eventName, std::bind(&ClientSocket::once_event_listener_aux, &g_clientSocket,
         std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
     return 0;
 }
@@ -520,9 +513,9 @@ static napi_value off(napi_env env, napi_callback_info info)
     size_t argc = 1;
     napi_value args[1] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
-    char event_name[MAX_BUF_SIZE];
-    napi_get_value_string_utf8(env, args[0], event_name, MAX_BUF_SIZE, &result);
-    get_socket()->off(event_name);
+    char eventName[MAX_BUF_SIZE];
+    napi_get_value_string_utf8(env, args[0], eventName, MAX_BUF_SIZE, &result);
+    get_socket()->off(eventName);
     return 0;
 }
 
@@ -545,7 +538,7 @@ static napi_value on_error(napi_env env, napi_callback_info info)
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     napi_value on_error_listener_call = args[0];
     napi_create_reference(env_global, on_error_listener_call, 1, &on_error_listener_call_ref);
-    get_socket()->on_error(std::bind(&client_socket::on_error_listener, &l, std::placeholders::_1));
+    get_socket()->on_error(std::bind(&ClientSocket::on_error_listener, &g_clientSocket, std::placeholders::_1));
     return 0;
 }
 
@@ -605,22 +598,22 @@ static napi_value emit(napi_env env, napi_callback_info info)
     size_t argc = 4;
     napi_value args[4] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
-    char event_name[MAX_BUF_SIZE];
-    napi_get_value_string_utf8(env, args[0], event_name, MAX_BUF_SIZE, &result);
+    char eventName[MAX_BUF_SIZE];
+    napi_get_value_string_utf8(env, args[0], eventName, MAX_BUF_SIZE, &result);
     napi_valuetype messageType;
     napi_typeof(env, args[1], &messageType);
     napi_value on_emit_listener_call = args[3];
     napi_ref on_emit_listener_call_ref;
     napi_create_reference(env_global, on_emit_listener_call, 1, &on_emit_listener_call_ref);
     on_emit_listener_call_ref_map.insert(
-        {event_name, on_emit_listener_call_ref});
+        {eventName, on_emit_listener_call_ref});
     sio::message::list *messageList = new sio::message::list();
     if (messageType == napi_string) {
         char message[MAX_BUF_SIZE];
         napi_get_value_string_utf8(env, args[1], message, MAX_BUF_SIZE, &result);
-        bool is_arraybuffer;
-        napi_get_value_bool(env, args[ARG_INDEX_2], &is_arraybuffer);
-        if (is_arraybuffer) {
+        bool isArraybuffer;
+        napi_get_value_bool(env, args[ARG_INDEX_2], &isArraybuffer);
+        if (isArraybuffer) {
             std::shared_ptr<std::string> message_binary = std::make_shared<std::string>(message);
             messageList->push(message_binary);
             message_binary = nullptr;
@@ -632,7 +625,7 @@ static napi_value emit(napi_env env, napi_callback_info info)
         messageList->push(message_item);
         message_item = nullptr;
     }
-    get_socket()->emit(event_name, *messageList, std::bind(&client_socket::on_emit_callback, &l,
+    get_socket()->emit(eventName, *messageList, std::bind(&ClientSocket::on_emit_callback, &g_clientSocket,
         std::placeholders::_1, std::placeholders::_2));
     delete messageList;
     messageList = nullptr;

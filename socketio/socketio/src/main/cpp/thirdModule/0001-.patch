@@ -1,12 +1,3 @@
-From ca87c86a8fb73c585bbd4277c43b6dc10bbe320e Mon Sep 17 00:00:00 2001
-From: song_yu <songyu50@h-partners.com>
-Date: Wed, 22 Nov 2023 10:22:19 +0800
-Subject: [PATCH] =?UTF-8?q?=E4=BE=B5=E5=85=A5=E5=BC=8F=E4=BF=AE=E6=94=B9?=
- =?UTF-8?q?=E5=86=85=E5=AE=B9?=
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
 ---
  src/sio_message.h  | 10 ++++++++++
  src/sio_socket.cpp | 30 ++++++++++++++++++++----------

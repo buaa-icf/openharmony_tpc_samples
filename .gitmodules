@@ -24,6 +24,3 @@
 [submodule "class-transformer/class_transformer"]
 	path = class-transformer/class_transformer
 	url = https://gitee.com/Young-zhiqiang/class_transformer.git
-[submodule "socketio/socketio/src/main/cpp/socketio"]
-	path = socketio/socketio/src/main/cpp/socketio
-	url = https://github.com/socketio/socket.io-client-cpp.git
