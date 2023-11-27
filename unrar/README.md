@@ -19,7 +19,7 @@ ohpm install @ohos/unrar
 
 ## 使用说明
 ```javascript
-import unrar from '@ohos/libunrar.so'
+import unrar from '@ohos/unrar'
 ```
 
 
