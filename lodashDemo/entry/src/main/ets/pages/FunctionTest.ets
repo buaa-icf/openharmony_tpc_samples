@@ -24,8 +24,8 @@ struct Index {
       Button('返回新的有上限的函数')
         .onClick(() => {
           //[6,8,10]
-          let arry: number[] = map(['6', '8', '10'], ary(parseInt, 1))
-          console.log('返回新的有上限的函数' + JSON.stringify(arry));
+          let array: number[] = map(['6', '8', '10'], ary(parseInt, 1))
+          console.log('返回新的有上限的函数' + JSON.stringify(array));
         }).margin(10);
 
       Button('返回新的柯里化（curry）函数')

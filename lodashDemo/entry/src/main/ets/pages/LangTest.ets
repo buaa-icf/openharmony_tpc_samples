@@ -34,12 +34,12 @@ struct Index {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
       Button('将非数组数组强制转为数组')
         .onClick(() => {
-          let arry1: number[] = castArray({ 'a': 1 });
+          let array1: number[] = castArray({ 'a': 1 });
           // => [{ 'a': 1 }]
 
-          let arry2: number[] = castArray('abc');
+          let array2: number[] = castArray('abc');
           // => ['abc']
-          console.log('强制转化后的型数组:' + JSON.stringify(arry1)+ ' ' + JSON.stringify(arry2));
+          console.log('强制转化后的型数组:' + JSON.stringify(array1)+ ' ' + JSON.stringify(array2));
         }).margin(10);
 
       Button('获取拷贝后的值')
