@@ -14,22 +14,29 @@
  */
 import RuleEngine from "node-rules";
 import hilog from '@ohos.hilog';
+import Prompt from '@system.prompt';
 
 @Entry
 @Component
 struct SimpleRule {
   @State message: string = 'Hello World'
-  @State setValue: string = "0";
+  @State setValue: string = "";
   @State resultStr: string = "";
   controller: TextAreaController = new TextAreaController();
 
   ruleEngineExecute(): void {
 
+    if (this.setValue === '' || Number.isNaN(Number(this.setValue))) {
+      Prompt.showToast({
+        message: '请输入整数值'
+      })
+      return
+    }
+
     let ruleEngine: ESObject = new RuleEngine();
 
     class Rule {
       condition(ruleEngine: ESObject) {
-        console.debug('lzdebug simple condition start:' + (this as ESObject).transactionTotal)
         ruleEngine.when((this as ESObject).transactionTotal < 500);
       }
 

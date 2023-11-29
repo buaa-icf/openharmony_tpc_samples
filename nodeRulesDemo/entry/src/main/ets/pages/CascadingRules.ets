@@ -21,7 +21,7 @@ import RuleEngine from "node-rules";
 @Component
 struct CascadingRules {
   @State message: string = 'Hello World'
-  @State appValue: string = "0";
+  @State appValue: string = "";
   @State typeValue: string = "other";
   @State resultStr: string = "";
   controller: TextAreaController = new TextAreaController()
@@ -118,8 +118,7 @@ struct CascadingRules {
 
       Text("测试结果：当前页面规则不是组合验证，结果只对Card类型有影响" + this.resultStr)
         .width("90%")
-        .height(50)
-        .borderRadius(15)
+        .height(150)
         .fontSize(13)
         .textAlign(TextAlign.Center)
         .margin({ top: 10 })
