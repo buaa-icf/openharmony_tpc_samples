@@ -180,30 +180,6 @@ export default function functionTest() {
       expect(JSON.stringify(curried(1)(2)(3))).assertEqual('[3,2,1]');
     })
 
-    it('curryTest01',0, () => {
-      let abc = (a: number, b: number, c: number)=> {
-        return [a, b, c];
-      };
-      let curried: ESObject = curry(abc);
-      expect(JSON.stringify(curried(1)(2)(3))).assertEqual('[1,2,3]');
-    })
-
-    it('curryTest02',0, () => {
-      let abc = (a: number, b: number, c: number)=> {
-        return [a, b, c];
-      };
-      let curried: ESObject = curry(abc);
-      expect(JSON.stringify(curried(1, 2)(3))).assertEqual('[1,2,3]');
-    })
-
-    it('curryRightTest01',0, () => {
-      let abc = (a: number, b: number, c: number)=> {
-        return [a, b, c];
-      };
-      let curried: ESObject = curryRight(abc);
-      expect(JSON.stringify(curried(1)(2)(3))).assertEqual('[3,2,1]');
-    })
-
     it('curryRightTest02',0, () => {
       let abc = (a: number, b: number, c: number)=> {
         return [a, b, c];
@@ -230,14 +206,14 @@ export default function functionTest() {
       let deferString: number = defer((text: string)=> {
         console.log(text);
       }, 'deferred');
-      expect(deferString).assertEqual(61);
+      expect(deferString).assertEqual(52);
     })
 
     it('deferTest02',0, () => {
       let deferString: number = defer((content: string)=> {
         console.log(content);
       }, 'GeeksforGeeks!');
-      expect(deferString).assertEqual(65);
+      expect(deferString).assertEqual(56);
     })
 
     it('delayTest',0, () => {

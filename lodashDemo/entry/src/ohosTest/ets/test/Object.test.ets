@@ -316,7 +316,7 @@ export default function objectTest() {
     })
 
     it('hasTest01',0, () => {
-      expect(has({ a: { b: 2 } }, a)).assertTrue();
+      expect(has({ a: { b: 2 } }, 'a')).assertTrue();
     })
 
     it('hasTest02',0, () => {

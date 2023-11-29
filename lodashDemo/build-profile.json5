@@ -4,7 +4,7 @@
     "products": [
       {
         "name": "default",
-        "signingConfig": "debug_default",
+        "signingConfig": "default",
         "compileSdkVersion": 10,
         "compatibleSdkVersion": 10,
         "targetSdkVersion": 10

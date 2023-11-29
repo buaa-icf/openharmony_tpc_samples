@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import { assignIn, findKey, forIn, functions, constant, get, invert } from "lodash";
+import { assignIn, findKey, forIn, keys, get, invert } from "lodash";
 
 class C {
   c: number = 0
@@ -23,6 +23,17 @@ class B {
 }
 class Objects {
   a: B[] = []
+}
+class ABC {
+  a: string = ''
+  b: string = ''
+  c: string = ''
+}
+
+class Info{
+  Name: string = ''
+  password: string = ''
+  username: string = ''
 }
 @Entry
 @Component
@@ -36,18 +47,8 @@ struct Index {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
       Button('遍历并继承分配来源对象的可枚举属性到目标对象上')
         .onClick(() => {
-          let Foo: () => void = (): void => {
-            this.a = 1;
-            this.b = 2;
-          }
-
-          let Bar: () => void = (): void => {
-            this.c = 3;
-            this.d = 4;
-          }
-
-          let object: object = assignIn({ 'a': 0 }, new Foo, new Bar);
-          // => { 'a': 1, 'b': 2, 'c': 3, 'd': 4 }
+          let object: object = assignIn( { a:4 }, {b: 1}, {c: 3});
+          // => {"a":4,"b":1,"c":3}
           console.log('遍历并继承分配来源对象的可枚举属性到目标对象上：' + JSON.stringify(object));
         }).margin(10);
 
@@ -76,27 +77,22 @@ struct Index {
 
       Button('遍历对象')
         .onClick(() => {
-          let Foo: () => void = (): void => {
-            this.a = 1;
-            this.b = 2;
-            this.c = 3;
-          }
-          let item: string = forIn(new Foo, (value: ESObject, key: ESObject) => {
+          let object: ABC = {a: 'a', b: 'b', c: 'c'}
+          let item: string = forIn(object, (value: ESObject, key: ESObject) => {
             console.log(key);
           });
           console.log('遍历的对象:' + JSON.stringify(item));
         }).margin(10)
 
-      Button('创建一个函数属性名称的数组')
+      Button('创建一个object自身和继承的可枚举属性名为数组')
         .onClick(() => {
-          let Foo: () => void = (): void => {
-            this.a = constant('a');
-            this.b = constant('b');
-            this.c = constant('c');
+          let obj: Info = {
+            Name:"Geeks for Geeks",
+            password:"@1234",
+            username:"your_geeks"
           }
-          functions(new Foo);
-          // => ['a', 'b']
-          console.log('创建一个函数属性名称的数组:' + JSON.stringify(functions(new Foo)));
+          // => ["Name","password","username"]
+          console.log('创建一个object自身和继承的可枚举属性名为数组:' + JSON.stringify(keys(obj)));
         }).margin(10)
 
       Button('根据对象的path路径获取值')
