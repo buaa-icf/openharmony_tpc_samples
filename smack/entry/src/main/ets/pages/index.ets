@@ -9,6 +9,7 @@
 */
 
 import router from '@ohos.router';
+import { Smack } from '@ohos/smack'
 
 @Entry
 @Component
@@ -19,7 +20,7 @@ struct Index {
 
   //todo 初始化
   private init() {
-    let isLogin = globalThis.Smack.onLogin()
+    let isLogin:boolean = Smack.onLogin();
     setTimeout(() => {
       if (isLogin) {
         router.replace({

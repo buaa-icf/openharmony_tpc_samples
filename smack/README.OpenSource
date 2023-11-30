@@ -3,7 +3,7 @@
         "Name": "smack",
         "License": "GPL License",
         "Version Number": "1.0.13",
-        "Owner" : "Jakob Schröter"
+        "Owner" : "xiafeng@huawei.com"
         "Upstream URL": "https://github.com/igniterealtime/Smack",
         "Description": "一个基于XMPP协议的一个聊天客户端."
     }

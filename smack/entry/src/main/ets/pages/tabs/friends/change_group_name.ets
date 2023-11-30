@@ -11,6 +11,7 @@
 import { Toolbar } from '../../base/toolbar'
 import router from '@ohos.router';
 import prompt from '@ohos.prompt';
+import { Smack } from '@ohos/smack'
 
 @Entry
 @Component
@@ -19,8 +20,7 @@ struct Change_group_name {
   @State newName: string = ''
 
   aboutToAppear() {
-    // @ts-ignore
-    this.oldName = router.getParams().name
+    this.oldName = (router.getParams() as Record<string, Object>)['name'] as string
   }
 
   build() {
@@ -60,7 +60,7 @@ struct Change_group_name {
         message: '请输入完整'
       })
     } else {
-      globalThis.Smack.changeGroup(this.oldName, this.newName);
+      Smack.changeGroup(this.oldName, this.newName);
       prompt.showToast({
         message: '已修改'
       })

@@ -12,14 +12,16 @@ import { Toolbar } from '../../base/toolbar'
 import router from '@ohos.router';
 import { ChatContentEntity } from '../../../entity/ChatContentEntity'
 import { Constant } from '../../../entity/Constant'
+import { Smack } from '@ohos/smack'
+import { GlobalContext } from '../../../entity/GlobalContext';
 
-var jid: string = ''
-var service: string = ''
-var domain: string = ''
-var users: string = ''
-var roomName: string = ''
-var vInfo: string = ''
-var vPassword: string = ''
+let jid: string = ''
+let service: string = ''
+let domain: string = ''
+let users: string = ''
+let roomName: string = ''
+let vInfo: string = ''
+let vPassword: string = ''
 
 @Entry
 @Component
@@ -30,13 +32,15 @@ struct One_chat_main {
   @State message: string = '请把我加入会议中'
   beInviteDialog: CustomDialogController = new CustomDialogController({
     builder: BeInvitedDialog({ user: users,
-      Message: $message, accept: () => {
-        globalThis.Smack.createRoom(jid, roomName, domain, service)
-          if (vPassword != '') {
-            globalThis.Smack.setPassword(vPassword)
-          }
+      Message: this.message, accept: () => {
         setTimeout(() => {
-          globalThis.Smack.join();
+          Smack.createRoom(jid, roomName, domain, service)
+            if (vPassword != '') {
+              Smack.setPassword(vPassword)
+            }
+        }, 100)
+        setTimeout(() => {
+          Smack.join();
           router.push({
             url: "pages/chat/group_chat/group_chat_main",
             params: { roomData: roomName }
@@ -44,7 +48,7 @@ struct One_chat_main {
         }, 500)
 
       }, refuse: () => {
-        globalThis.Smack.declineInvitation(vInfo, users, "room inviation refuesd");
+        Smack.declineInvitation(vInfo, users, "room inviation refuesd");
       } }),
     customStyle: true,
     alignment: DialogAlignment.Center,
@@ -52,15 +56,14 @@ struct One_chat_main {
 
   aboutToAppear() {
     console.log('解析参数');
-    // @ts-ignore
-    this.userName = router.getParams().userName
-    var that = this
-    globalThis.Smack.registerInvitationListener((v0) => {
-      let info = JSON.parse(v0)
+    this.userName =(router.getParams() as Record<string, Object>)['userName'] as string
+    let that = this
+    Smack.registerInvitationListener((v0:string) => {
+      let info :ESObject= JSON.parse(v0)
       roomName = info.room.substring(0, info.room.indexOf("@"))
       service = info.room.substring(info.room.indexOf("@") + 1, info.room.indexOf("."))
       domain = info.room.substring(info.room.indexOf(".") + 1, info.room.length)
-      jid = globalThis.userName
+      jid = GlobalContext.getContext().getValue('userName') as string;
       users = info.from
       vInfo = info.room
       vPassword = info.password
@@ -69,6 +72,10 @@ struct One_chat_main {
       }, 500)
     })
   }
+  aboutToDisappear() {
+    Smack.registerInvitationListener(null)
+  }
+
 
   build() {
     Flex({ direction: FlexDirection.Column }) {
@@ -88,7 +95,7 @@ struct One_chat_main {
 
       Stack({ alignContent: Alignment.Bottom }) {
         List() {
-          ForEach(this.chatContentList, item => {
+          ForEach(this.chatContentList, (item:ChatContentEntity)=> {
             ListItem() {
               Flex({ direction: FlexDirection.Column }) {
                 if (item.isTip) {
@@ -125,7 +132,7 @@ struct One_chat_main {
               }
             }
             .padding(10)
-          }, item => item.toString())
+          }, (item :ChatContentEntity)=> JSON.stringify(item))
         }
         .padding({ bottom: 130 })
         .height('100%')
@@ -161,18 +168,21 @@ struct One_chat_main {
   // todo 发送单聊信息
   onSendSingleMessage() {
     if (this.inputMessage !== '') {
-      globalThis.Smack.send(this.userName + "@" + Constant.HOST_DOMAIN, this.inputMessage)
+      Smack.send(this.userName + "@" + Constant.HOST_DOMAIN, this.inputMessage)
       this.chatContentList.push(new ChatContentEntity('我', this.inputMessage))
       this.inputMessage = ''
     }
   }
 
   onPageShow() {
-    globalThis.Smack.registerMessageCallback((id, msg) => {
+    Smack.registerMessageCallback((id, msg) => {
+      console.info('msg test '+ msg)
       let id_name = id.toString().split("@")[0]
       let id_msg = msg.toString().trim();
       if (id_name == this.userName && id_msg !== "") {
-        this.chatContentList.push(new ChatContentEntity(id_name, msg))
+        setTimeout(() => {
+          this.chatContentList.push(new ChatContentEntity(id_name, msg))
+          }, 100)
       }
     })
   }
@@ -180,11 +190,11 @@ struct One_chat_main {
 
 @CustomDialog
 struct BeInvitedDialog {
-  controller: CustomDialogController
-  user: string
-  Message: string
-  accept: () => void
-  refuse: () => void
+  controller: CustomDialogController = {} as CustomDialogController
+  user: string = ''
+  Message: string = ''
+  accept: () => void = () => {}
+  refuse: () => void = () => {}
 
   build() {
     Flex({ direction: FlexDirection.Column }) {

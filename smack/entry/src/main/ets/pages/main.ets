@@ -13,6 +13,8 @@ import { Group_list } from './tabs/group/group_list'
 import { Meeting_list } from './tabs/meeting/meeting_list'
 import { Setting } from './tabs/setting'
 import {Constant} from '../entity/Constant'
+import { Smack } from '@ohos/smack'
+
 @Entry
 @Component
 struct Main {
@@ -31,16 +33,19 @@ struct Main {
   })
 
   aboutToAppear() {
-
-    globalThis.Smack.handleSubscriptionRequestListener((json) => {
+    Smack.handleSubscriptionRequestListener((json) => {
       console.info("收到好友添加申请"+json)
-       let obj=JSON.parse(json)
-       this.mbare = obj.jid
-       this.musername = obj.name
-       this.mmsg = obj.msg
-       let that=this
+       // let obj=JSON.parse(json)
+       // this.mbare = obj.jid
+       // this.musername = obj.name
+       // this.mmsg = obj.msg
+       // let that=this
        setTimeout(()=>{
-        that.addFriendsDialog.open()
+         let obj:ESObject=JSON.parse(json)
+         this.mbare = obj.jid
+         this.musername = obj.name
+         this.mmsg = obj.msg
+         this.addFriendsDialog.open()
        },500)
 
     })
@@ -80,13 +85,13 @@ struct Main {
 
 @CustomDialog
 struct AddFriendsDialog {
-  controller: CustomDialogController
+  controller: CustomDialogController ={} as CustomDialogController;
   @Link bare:string
   @Link user: string
   @Link Message: string
   @State groupName:string=""
-  accept: () => void
-  refuse: () => void
+  accept: () => void = () => {}
+  refuse: () => void = () => {}
 
   build() {
    Column() {
@@ -112,7 +117,7 @@ struct AddFriendsDialog {
           .fontColor(Color.Green)
           .fontSize(fp2px(14))
           .onClick(v => {
-            globalThis.Smack.receiveFriends(this.bare, this.groupName, "receive request");
+            Smack.receiveFriends(this.bare, this.groupName, "receive request");
             this.controller.close()
           })
           .textAlign(TextAlign.Center)
@@ -121,7 +126,7 @@ struct AddFriendsDialog {
           .fontColor(Color.Red)
           .fontSize(fp2px(14))
           .onClick(v => {
-            globalThis.Smack.rejectFriends(this.bare, "reject request");
+            Smack.rejectFriends(this.bare, "reject request");
             this.controller.close()
           })
           .textAlign(TextAlign.Center)

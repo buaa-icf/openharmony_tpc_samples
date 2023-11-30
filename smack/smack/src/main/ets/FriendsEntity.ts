@@ -11,8 +11,11 @@
 export class
 FriendsEntity {
   groupName: string = ''
-  names: Array<{
-    userName: string,
-    userId: string
-  }> = []
+  names: Array<UserEntity> = []
+}
+
+export class
+UserEntity {
+  userName: string ;
+  userId: string ;
 }

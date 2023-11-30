@@ -12,6 +12,7 @@ import router from '@ohos.router';
 import { Toolbar } from '../base/toolbar'
 import { Constant } from '../../entity/Constant'
 import prompt from '@ohos.prompt';
+import { Smack } from '@ohos/smack'
 
 @Entry
 @Component
@@ -27,7 +28,7 @@ struct Register {
         Column() {
           TextInput({ placeholder: '请输入用户名' })
             .margin({ bottom: 20 })
-            .height(px2vp(80))
+            .height(px2vp(100))
             .fontSize(px2fp(30))
             .type(InputType.Normal)
             .onChange(v => {
@@ -35,7 +36,7 @@ struct Register {
             })
           TextInput({ placeholder: '请输入密码' })
             .margin({ bottom: 20 })
-            .height(px2vp(80))
+            .height(px2vp(100))
             .fontSize(px2fp(30))
             .type(InputType.Normal)
             .onChange(v => {
@@ -73,7 +74,7 @@ struct Register {
         message: '请输入完整'
       })
     } else {
-      let result: number = globalThis.Smack.registers(Constant.HOST_IP, this.userName, this.passWord)
+      let result: number = Smack.registers(Constant.HOST_IP, this.userName, this.passWord)
       if(result == 1){
         router.back();
       }else{

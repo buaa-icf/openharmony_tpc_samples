@@ -13,6 +13,8 @@ import router from '@ohos.router';
 import prompt from '@ohos.prompt';
 import { ItemText } from '../../base/ItemText';
 import { Constant } from '../../../entity/Constant';
+import { Smack } from '@ohos/smack'
+import { GlobalContext } from '../../../entity/GlobalContext';
 
 @Entry
 @Component
@@ -34,7 +36,7 @@ struct Group_chat_setting {
     alignment: DialogAlignment.Center,
   })
   aboutToAppear(){
-    this.name = globalThis.Smack.nick();
+    this.name = Smack.nick();
   }
 
   build() {
@@ -97,12 +99,12 @@ struct Group_chat_setting {
   // todo 退出群聊
   onExitGroup() {
     //销毁房间,群主可调用
-    globalThis.Smack.destroy(globalThis.userName, "123");
+    Smack.destroy(GlobalContext.getContext().getValue('userName') as string, "123");
   }
 }
 @CustomDialog
 struct UpdateThemeDialog {
-  controller: CustomDialogController
+  controller: CustomDialogController = {} as CustomDialogController;
   @State theme: string = ''
 
   // todo 修改主题
@@ -130,7 +132,7 @@ struct UpdateThemeDialog {
         .height(40)
         .fontSize(15)
         .onClick(e => {
-          globalThis.Smack.setSubject("subject");
+          Smack.setSubject("subject");
           //          this.onChangTheme()
           this.controller.close()
 
@@ -145,7 +147,7 @@ struct UpdateThemeDialog {
 }
 @CustomDialog
 struct UpdateNickDialog {
-  controller: CustomDialogController
+  controller: CustomDialogController  = {} as CustomDialogController;
    nickStr: string=''
   @Link nick: string
   // todo 修改昵称
@@ -173,7 +175,7 @@ struct UpdateNickDialog {
         .height(40)
         .fontSize(15)
         .onClick(e => {
-          globalThis.Smack.setNick(this.nickStr)
+          Smack.setNick(this.nickStr)
           this.nick=this.nickStr
           this.controller.close()
         }).margin({ top: 20 })
@@ -188,7 +190,7 @@ struct UpdateNickDialog {
 
 @CustomDialog
 struct InviteDialog {
-  controller: CustomDialogController
+  controller: CustomDialogController = {} as CustomDialogController
   @State invite: string = ''
 
   // todo 邀请新用户
@@ -216,7 +218,7 @@ struct InviteDialog {
         .height(40)
         .fontSize(15)
         .onClick(e => {
-          globalThis.Smack.invite(this.invite+"@"+Constant.HOST_DOMAIN+Constant.HOST_RES, "invite");
+          Smack.invite(this.invite+"@"+Constant.HOST_DOMAIN+Constant.HOST_RES, "invite");
           //          this.onChangTheme()
           this.controller.close()
 

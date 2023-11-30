@@ -12,6 +12,9 @@ import { Toolbar } from '../../base/toolbar'
 import prompt from '@ohos.prompt';
 import { Constant } from '../../../entity/Constant'
 import router from '@ohos.router';
+import { Smack } from '@ohos/smack'
+import { GlobalContext } from '../../../entity/GlobalContext';
+
 
 @Entry
 @Component
@@ -24,8 +27,7 @@ struct One_chat_setting {
   @State userName: string = ''
 
   aboutToAppear() {
-    // @ts-ignore
-    this.userName = router.getParams().userName
+    this.userName = (router.getParams() as Record<string, Object>)['userName'] as string
   }
 
   RandomStr(length: number, firstToUpper?: boolean) {
@@ -62,16 +64,17 @@ struct One_chat_setting {
       Line().width('100%').height(1).backgroundColor('#ececec').margin({ left: 20 })
       Text('邀请到会议').padding(15).fontSize(18).backgroundColor('#ffffff')
         .onClick(e => {
-          let roomName = globalThis.userName+ this.RandomStr(3)
-          globalThis.Smack.createRoom(globalThis.userName, roomName,  Constant.HOST_DOMAIN, Constant.SERVICE_NAME);
+          let usreNameResult:string=GlobalContext.getContext().getValue('userName') as string;
+          let roomName:string = Smack.username()+ this.RandomStr(3)
+          Smack.createRoom(usreNameResult, roomName,  Constant.HOST_DOMAIN, Constant.SERVICE_NAME);
           setTimeout(() => {
-            globalThis.Smack.join();
+            Smack.invite(this.userName+"@"+Constant.HOST_DOMAIN+Constant.HOST_RES, "invite");
+          }, 3000)
+          setTimeout(() => {
             router.push({
-              url: "pages/chat/group_chat/group_chat_main",
-              params: { roomData: roomName }
+              url: 'pages/chat/group_chat/group_chat_main'
             })
-            globalThis.Smack.invite("333@"+Constant.HOST_DOMAIN+Constant.HOST_RES, "invite");
-          }, 500)
+          }, 1000)
         })
       Line().width('100%').height(1).backgroundColor('#ececec').margin({ left: 20 })
       Text('查看会话历史记录').padding(15).fontSize(18).backgroundColor('#ffffff')
@@ -95,7 +98,7 @@ struct One_chat_setting {
 
   // todo 删除好友
   onDeleteFriend() {
-    globalThis.Smack.delfriend(this.userName + "@" + Constant.HOST_DOMAIN);
+    Smack.delfriend(this.userName + "@" + Constant.HOST_DOMAIN);
 
     prompt.showToast({
       message: '删除完成'
@@ -110,7 +113,7 @@ struct One_chat_setting {
 
 @CustomDialog
 struct TextDialog {
-  controller: CustomDialogController
+  controller: CustomDialogController ={} as CustomDialogController
   @State newGroup: string = ''
 
   build() {
@@ -145,9 +148,8 @@ struct TextDialog {
         message: '请输入完整'
       })
     } else {
-      // @ts-ignore
-      let name: string = router.getParams().userName
-      globalThis.Smack.changeFriendGroup(name + "@" + Constant.HOST_DOMAIN, this.newGroup);
+      let name: string = (router.getParams() as Record<string, Object>)['userName'] as string
+      Smack.changeFriendGroup(name + "@" + Constant.HOST_DOMAIN, this.newGroup);
 
       prompt.showToast({
         message: '更改完成'

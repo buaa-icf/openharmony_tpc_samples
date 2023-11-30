@@ -12,6 +12,7 @@ import { Toolbar } from '../../base/toolbar'
 import router from '@ohos.router';
 import prompt from '@ohos.prompt';
 import { Constant } from '../../../entity/Constant'
+import { Smack } from '@ohos/smack'
 
 @Entry
 @Component
@@ -60,7 +61,7 @@ struct Add_friends {
         message: '请输入完整'
       })
     } else {
-      globalThis.Smack.addFriends(this.name + "@" + Constant.HOST_DOMAIN, this.name, this.group)
+      Smack.addFriends(this.name + "@" + Constant.HOST_DOMAIN, this.name, this.group)
       prompt.showToast({
         message: '已发送好友请求'
       })

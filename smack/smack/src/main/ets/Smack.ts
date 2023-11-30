@@ -13,7 +13,6 @@ import { FriendsEntity } from './FriendsEntity'
 import convertxml from '@ohos.convertxml';
 import { RoomInfo } from './RoomInfo';
 import { RoomConfig } from './RoomConfig';
-
 export class Smack {
 
     /**

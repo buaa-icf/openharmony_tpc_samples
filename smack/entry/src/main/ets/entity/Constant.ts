@@ -9,8 +9,8 @@
 */
 
 export class Constant {
-  static HOST_IP: string = "10.50.40.43"
-  static HOST_DOMAIN: string = "he-202101111234"
+  static HOST_IP: string = "10.50.80.27"
+  static HOST_DOMAIN: string = "PC210060"
   static SERVICE_NAME: string = "conference"
   static HOST_RES: string = "/gloox"
   static HOST_PORT: number = 5222

@@ -2,9 +2,11 @@
 /local.properties
 /.idea
 **/build
-smack/.cxx
-/.clang-format
-/.clangd
 /.hvigor
+.cxx
+/.clangd
+/.clang-format
 /.clang-tidy
 **/package-lock.json
+**/oh-package-lock.json5
+**/oh_modules

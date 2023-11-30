@@ -8,10 +8,12 @@
   This software is distributed without any warranty.
 */
 
-import AbilityStage from "@ohos.application.AbilityStage"
-
-export default class MyAbilityStage extends AbilityStage {
-    onCreate() {
-        console.log("[Demo] MyAbilityStage onCreate")
-    }
+export class GroupUserEntity {
+  name: string;
+  isCheck: number
 }
+
+
+
+
+

@@ -11,6 +11,8 @@
 import { Toolbar } from '../../base/toolbar'
 import router from '@ohos.router';
 import {Constant} from '../../../entity/Constant'
+import { Smack } from '@ohos/smack'
+import { GlobalContext } from '../../../entity/GlobalContext';
 
 @Entry
 @Component
@@ -29,7 +31,7 @@ export struct Group_list {
 
   // todo 获取所有群聊列表
   getAllGroup() {
-    for (var i = 0; i < 10; i++) {
+    for (let i = 0; i < 10; i++) {
       this.groupList.push('群聊名称 ' + (i + 1))
     }
   }
@@ -64,13 +66,15 @@ export struct Group_list {
 //      }
     }
     .width('100%')
-    .backgroundColor('#ececec')
+    .height('100%')
+    .backgroundColor('#ffffff')
+
   }
 }
 
 @CustomDialog
 struct CustomDialogExample {
-  controller: CustomDialogController
+  controller: CustomDialogController = {} as CustomDialogController
 
   build() {
     Column() {
@@ -81,7 +85,9 @@ struct CustomDialogExample {
           router.push({
             url: 'pages/tabs/group/create_group_chat'
           })
-          this.controller.close()
+          if(this.controller != null){
+            this.controller.close()
+          }
         })
 
       Text('')
@@ -96,13 +102,17 @@ struct CustomDialogExample {
           router.push({
             url: 'pages/tabs/group/Join_in_group'
           })
-          this.controller.close()
+          if(this.controller != null) {
+            this.controller.close()
+          }
         })
       Text('加入加密群聊')
         .fontSize(36)
         .padding(10)
         .onClick(() => {
-          this.controller.close()
+          if(this.controller != null) {
+            this.controller.close()
+          }
         })
     }
     .backgroundColor('#ffffff')
@@ -112,7 +122,8 @@ struct CustomDialogExample {
   }
   // todo 创建群聊
   onCreateGroupChat() {
-    globalThis.Smack.createRoom(globalThis.userName, "room", Constant.HOST_DOMAIN, Constant.SERVICE_NAME);
+    let usrName:string =GlobalContext.getContext().getValue('userName') as string;
+    Smack.createRoom(usrName, "room", Constant.HOST_DOMAIN, Constant.SERVICE_NAME);
 
   }
 }

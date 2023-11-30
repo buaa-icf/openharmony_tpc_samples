@@ -12,7 +12,7 @@ import { Toolbar } from '../base/toolbar'
 import { PresenceType } from '@ohos/smack'
 import prompt from '@ohos.prompt';
 import router from '@ohos.router';
-import { PresenceRoomType } from '@ohos/smack'
+import { PresenceRoomType, Smack } from '@ohos/smack'
 @Entry
 @Component
 export struct Setting {
@@ -50,8 +50,12 @@ export struct Setting {
               range: this.states,
               selected: this.select,
               onAccept: (value: TextPickerResult) => {
-                this.select = value.index
-                this.onSetOnLineState()
+                if(typeof value.index == 'number')
+                {
+                  this.select = value.index as number;
+                  this.onSetOnLineState()
+                }
+
               }
             })
 
@@ -102,12 +106,13 @@ export struct Setting {
       }
     }
     .width('100%')
-    .backgroundColor('#ececec')
+    .height('100%')
+    .backgroundColor('#ffffff')
   }
 
   // todo 退出登录
   private onExitAccount() {
-    globalThis.Smack.loginout();
+    Smack.loginout();
     router.clear()
     router.replace({
       url: 'pages/user/login'
@@ -116,7 +121,7 @@ export struct Setting {
 
   // todo 账号删除
   private onDeleteAccount() {
-    globalThis.Smack.unregister()
+    Smack.unregister()
     router.replace({
       url: 'pages/user/login'
     })
@@ -136,13 +141,13 @@ export struct Setting {
     } else if (this.select == 4) {
       presenceType = PresenceType.Dnd
     }
-    globalThis.Smack.changePresence(presenceType, this.states[this.select])
+    Smack.changePresence(presenceType, this.states[this.select])
   }
 }
 
 @CustomDialog
 struct CustomDialogExample {
-  controller: CustomDialogController
+  controller: CustomDialogController ={} as CustomDialogController;
   @State pass1: string = ''
   @State pass2: string = ''
 
@@ -157,7 +162,7 @@ struct CustomDialogExample {
         message: "密码不一致"
       })
     } else {
-      globalThis.Smack.changPwd(this.pass1)
+      Smack.changPwd(this.pass1)
       prompt.showToast({
         message: "修改成功"
       })
@@ -191,7 +196,9 @@ struct CustomDialogExample {
         .fontSize(px2fp(30))
         .onClick(e => {
           this.onChangPassword()
-          this.controller.close()
+          if(this.controller != null){
+            this.controller.close()
+          }
         }).margin({ top: 20 })
     }
     .padding(20)

@@ -1,9 +1,22 @@
+/*
+  Copyright (C) 2022 Huawei Device Co., Ltd.
+
+  This software is distributed under a license. The full license
+  agreement can be found in the file LICENSE in this distribution.
+  This software may not be copied, modified, sold or distributed
+  other than expressed in the named license agreement.
+  This software is distributed without any warranty.
+*/
+
+
 import { Toolbar } from '../../base/toolbar'
 import { ItemText } from '../../base/ItemText'
 
 import { MUCRoomAffiliation, MUCRoomRole } from '@ohos/smack'
 import { PresenceRoomType } from '@ohos/smack'
 import router from '@ohos.router';
+import { GroupUserEntity } from '../../../entity/GroupUserEntity'
+import { Smack } from '@ohos/smack'
 
 @Entry
 @Component
@@ -15,10 +28,7 @@ struct group_all_member {
   @State isCompere: boolean = false //是否为主持人
   private states: string[] = ['在线', '空闲', '离开', '请勿打扰', '长时间离开', '离线']
   @State select: number = 0
-  @State users: Array<{
-    name: string,
-    isCheck: number
-  }> = []
+  @State users: Array<GroupUserEntity> = []
 
   // todo 设置用户在线状态
   private onSetOnLineState() {
@@ -43,16 +53,16 @@ struct group_all_member {
       state = 'Unavailable'
       presenceType = PresenceRoomType.Unavailable
     }
-    globalThis.Smack.setPresence(presenceType, state)
+    Smack.setPresence(presenceType, state)
   }
 
   public aboutToAppear() {
-    this.users = router.getParams()['userData']
+    this.users = (router.getParams() as Record<string, Object>)['userData'] as Array<GroupUserEntity>
   }
 
   public getUsers(): string{
     let str = ""
-    for (var i = 0;i < this.users.length; i++) {
+    for (let i = 0;i < this.users.length; i++) {
       let item = this.users[i]
       str = str.concat(item.name)
       if (i != this.users.length - 1)
@@ -69,7 +79,7 @@ struct group_all_member {
       })
       Row() {
         List({}) {
-          ForEach(this.users, (item) => {
+          ForEach(this.users, (item : GroupUserEntity) => {
             ListItem() {
               Row() {
                 Image($r('app.media.app_icon')).height(60).width(60).borderRadius(10)
@@ -79,7 +89,7 @@ struct group_all_member {
                   .fontSize(18)
               }
             }.editable(true)
-          }, item => item.name)
+          }, (item : GroupUserEntity) => item.name)
         }.width('100%')
         .listDirection(Axis.Horizontal) // 排列方向
 
@@ -87,15 +97,15 @@ struct group_all_member {
 
       ItemText({ title: "踢出群聊", clickEvent: () => {
         if (this.users.length == 1) {
-          globalThis.Smack.kick(this.users[0].name, "kick");
+          Smack.kick(this.users[0].name, "kick");
         } else {
-          globalThis.Smack.bans(this.getUsers(), "bans");
+          Smack.bans(this.getUsers(), "bans");
         }
         router.back()
       } })
 
       ItemText({ title: "加入黑名单", clickEvent: () => {
-        globalThis.Smack.ban(this.users[0].name, "ban");
+        Smack.ban(this.users[0].name, "ban");
       } })
 
       if (this.isCompere) {
@@ -103,9 +113,9 @@ struct group_all_member {
         ItemText({ title: "撤销设为主持人", clickEvent: () => {
           this.isCompere = !this.isCompere
           if (this.users.length > 1) {
-            globalThis.Smack.setRoles(this.getUsers(), MUCRoomRole.RoleParticipant, "RoleParticipant");
+            Smack.setRoles(this.getUsers(), MUCRoomRole.RoleParticipant, "RoleParticipant");
           } else {
-            globalThis.Smack.setRole(this.users[0].name, MUCRoomRole.RoleParticipant, "RoleParticipant");
+            Smack.setRole(this.users[0].name, MUCRoomRole.RoleParticipant, "RoleParticipant");
           }
         } })
 
@@ -113,9 +123,9 @@ struct group_all_member {
         ItemText({ title: "设为主持人", clickEvent: () => {
           this.isCompere = !this.isCompere
           if (this.users.length > 1) {
-            globalThis.Smack.setRoles(this.getUsers(), MUCRoomRole.RoleModerator, "RoleModerator");
+            Smack.setRoles(this.getUsers(), MUCRoomRole.RoleModerator, "RoleModerator");
           } else {
-            globalThis.Smack.setRole(this.users[0].name, MUCRoomRole.RoleModerator, "RoleModerator");
+            Smack.setRole(this.users[0].name, MUCRoomRole.RoleModerator, "RoleModerator");
           }
         } })
       }
@@ -124,8 +134,11 @@ struct group_all_member {
           range: this.states,
           selected: this.select,
           onAccept: (value: TextPickerResult) => {
-            this.select = value.index
-            this.onSetOnLineState()
+            if(typeof value.index == 'number'){
+              this.select = (value.index as number);
+              this.onSetOnLineState()
+            }
+
           }
         })
       } })
@@ -135,9 +148,9 @@ struct group_all_member {
         ItemText({ title: "撤销管理员身份", clickEvent: () => {
           this.isAdministrator = !this.isAdministrator
           if (this.users.length > 1) {
-            globalThis.Smack.setAffiliations(this.getUsers(), MUCRoomAffiliation.AffiliationNone, "AffiliationNone");
+            Smack.setAffiliations(this.getUsers(), MUCRoomAffiliation.AffiliationNone, "AffiliationNone");
           } else {
-            globalThis.Smack.setAffiliation(this.users[0].name, MUCRoomAffiliation.AffiliationNone, "AffiliationNone");
+            Smack.setAffiliation(this.users[0].name, MUCRoomAffiliation.AffiliationNone, "AffiliationNone");
           }
         } })
 
@@ -145,9 +158,9 @@ struct group_all_member {
         ItemText({ title: "设置为群管理员", clickEvent: () => {
           this.isAdministrator = !this.isAdministrator
           if (this.users.length > 1) {
-            globalThis.Smack.setAffiliations(this.getUsers(), MUCRoomAffiliation.AffiliationAdmin, "AffiliationAdmin");
+            Smack.setAffiliations(this.getUsers(), MUCRoomAffiliation.AffiliationAdmin, "AffiliationAdmin");
           } else {
-            globalThis.Smack.setAffiliation(this.users[0].name, MUCRoomAffiliation.AffiliationAdmin, "AffiliationAdmin");
+            Smack.setAffiliation(this.users[0].name, MUCRoomAffiliation.AffiliationAdmin, "AffiliationAdmin");
           }
         } })
 
@@ -156,9 +169,9 @@ struct group_all_member {
         ItemText({ title: "取消会员身份", clickEvent: () => {
           this.isMember = !this.isMember
           if (this.users.length > 1) {
-            globalThis.Smack.setAffiliations(this.getUsers(), MUCRoomAffiliation.AffiliationNone, "AffiliationNone");
+            Smack.setAffiliations(this.getUsers(), MUCRoomAffiliation.AffiliationNone, "AffiliationNone");
           } else {
-            globalThis.Smack.setAffiliation(this.users[0].name, MUCRoomAffiliation.AffiliationNone, "AffiliationNone");
+            Smack.setAffiliation(this.users[0].name, MUCRoomAffiliation.AffiliationNone, "AffiliationNone");
           }
         } })
 
@@ -166,9 +179,9 @@ struct group_all_member {
         ItemText({ title: "设为会员", clickEvent: () => {
           this.isMember = !this.isMember
           if (this.users.length > 1) {
-            globalThis.Smack.setAffiliations(this.getUsers(), MUCRoomAffiliation.AffiliationMember, "AffiliationMember");
+            Smack.setAffiliations(this.getUsers(), MUCRoomAffiliation.AffiliationMember, "AffiliationMember");
           } else {
-            globalThis.Smack.setAffiliation(this.users[0].name, MUCRoomAffiliation.AffiliationMember, "AffiliationMember");
+            Smack.setAffiliation(this.users[0].name, MUCRoomAffiliation.AffiliationMember, "AffiliationMember");
           }
         } })
       }
@@ -176,18 +189,18 @@ struct group_all_member {
         ItemText({ title: "撤销设为群主", clickEvent: () => {
           this.isOwner = !this.isOwner
           if (this.users.length > 1) {
-            globalThis.Smack.setAffiliations(this.getUsers(), MUCRoomAffiliation.AffiliationNone, "AffiliationNone");
+            Smack.setAffiliations(this.getUsers(), MUCRoomAffiliation.AffiliationNone, "AffiliationNone");
           } else {
-            globalThis.Smack.setAffiliation(this.users[0].name, MUCRoomAffiliation.AffiliationNone, "AffiliationNone");
+            Smack.setAffiliation(this.users[0].name, MUCRoomAffiliation.AffiliationNone, "AffiliationNone");
           }
         } })
       } else {
         ItemText({ title: "设为群主", clickEvent: () => {
           this.isOwner = !this.isOwner
           if (this.users.length > 1) {
-            globalThis.Smack.setAffiliations(this.getUsers(), MUCRoomAffiliation.AffiliationOwner, "AffiliationOwner");
+            Smack.setAffiliations(this.getUsers(), MUCRoomAffiliation.AffiliationOwner, "AffiliationOwner");
           } else {
-            globalThis.Smack.setAffiliation(this.users[0].name, MUCRoomAffiliation.AffiliationOwner, "AffiliationOwner");
+            Smack.setAffiliation(this.users[0].name, MUCRoomAffiliation.AffiliationOwner, "AffiliationOwner");
           }
         } })
 
@@ -196,9 +209,9 @@ struct group_all_member {
         ItemText({ title: "取消禁言", clickEvent: () => {
           this.isBanned = !this.isBanned
           if (this.users.length > 1) {
-            globalThis.Smack.grantVoices(this.getUsers(), "grantVoices");
+            Smack.grantVoices(this.getUsers(), "grantVoices");
           } else {
-            globalThis.Smack.grantVoice(this.users[0].name, "grantVoice");
+            Smack.grantVoice(this.users[0].name, "grantVoice");
           }
         }
         })
@@ -207,9 +220,9 @@ struct group_all_member {
         ItemText({ title: "禁言", clickEvent: () => {
           this.isBanned = !this.isBanned
           if (this.users.length > 1) {
-            globalThis.Smack.revokeVoices(this.getUsers(), "revokeVoices");
+            Smack.revokeVoices(this.getUsers(), "revokeVoices");
           } else {
-            globalThis.Smack.revokeVoice(this.users[0].name, "revokeVoice");
+            Smack.revokeVoice(this.users[0].name, "revokeVoice");
           }
         } })
       }

@@ -11,7 +11,8 @@
 import { Toolbar } from '../../base/toolbar'
 import router from '@ohos.router';
 import prompt from '@ohos.prompt';
-import { FriendsEntity } from "@ohos/smack"
+import { FriendsEntity,UserEntity,Smack } from "@ohos/smack"
+import { GlobalContext } from '../../../entity/GlobalContext';
 
 @Entry
 @Component
@@ -62,7 +63,7 @@ export struct Friends_list {
       // 好友列表
       Stack({ alignContent: Alignment.BottomEnd }) {
         List() {
-          ForEach(this.myFriendList, item => {
+          ForEach(this.myFriendList, (item:FriendsEntity) => {
             ListItem() {
               Column() {
                 Flex({ direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
@@ -87,7 +88,7 @@ export struct Friends_list {
                 }
                 .backgroundColor('#fff1f1f1')
 
-                ForEach(item.names, item2 => {
+                ForEach(item.names, (item2:UserEntity) => {
                   Text(item2.userName)
                     .fontSize(13)
                     .width('100%')
@@ -103,10 +104,10 @@ export struct Friends_list {
                     .height(1)
                     .width('100%')
                     .backgroundColor('#ececec')
-                }, item2 => item2.toString())
+                }, (item2: UserEntity) => JSON.stringify(item2))
               }
             }
-          }, item => item.toString())
+          }, (item:FriendsEntity) => JSON.stringify(item))
         }
         .height('100%')
         .width('100%')
@@ -130,24 +131,25 @@ export struct Friends_list {
 
   // todo 获取所有好友及其分组信息
   getMyAllFriends() {
-    let res: Array<FriendsEntity> = globalThis.Smack.getFriendList()
-    this.myFriendList = res
-    let groups=[]
-    for (var i = 0; i < this.myFriendList.length; i++) {
-      groups.push( this.myFriendList[i].groupName);
+    let res: Array<FriendsEntity> = Smack.getFriendList()
+    setTimeout(() => {
+      this.myFriendList = res
+      let groups:string[]=[]
+      for (let i = 0; i < this.myFriendList.length; i++) {
+        groups.push( this.myFriendList[i].groupName);
 
-    }
-    globalThis.groupList=JSON.stringify(groups)
-    prompt.showToast({
-      message: '刷新完成'
-    })
-
+      }
+      GlobalContext.getContext().setValue('groupList',JSON.stringify(groups));
+      prompt.showToast({
+        message: '刷新完成'
+      })
+    }, 100)
   }
 }
 
 @CustomDialog
 struct MenuDialog {
-  controller: CustomDialogController
+  controller: CustomDialogController = {} as CustomDialogController;
 
   build() {
     Column() {

@@ -33,7 +33,7 @@ export struct Meeting_list {
 
   // todo 获取所有会议列表
   getAllMeetings() {
-    for (var i = 0; i < 10; i++) {
+    for (let i = 0; i < 10; i++) {
       this.meetingsList.push('线上会议名称 ' + (i + 1))
     }
   }
@@ -48,7 +48,7 @@ export struct Meeting_list {
         }
       })
       List() {
-        ForEach(this.meetingsList, item => {
+        ForEach(this.meetingsList, (item:string) => {
           ListItem() {
             Column() {
               Text(item)
@@ -63,7 +63,7 @@ export struct Meeting_list {
           .onClick(e => {
             this.textDialogController.open()
           })
-        }, item => item.toString())
+        }, (item:string) => item.toString())
       }
     }
     .width('100%')
@@ -73,7 +73,7 @@ export struct Meeting_list {
 
 @CustomDialog
 struct TextDialog {
-  controller: CustomDialogController
+  controller: CustomDialogController ={} as CustomDialogController;
 
   build() {
     Flex({ direction: FlexDirection.Column }) {
@@ -104,7 +104,7 @@ struct TextDialog {
 
 @CustomDialog
 struct CustomDialogExample {
-  controller: CustomDialogController
+  controller: CustomDialogController = {} as CustomDialogController;
 
   build() {
     Column() {
@@ -115,7 +115,10 @@ struct CustomDialogExample {
           router.push({
             url: 'pages/tabs/meeting/create_meeting'
           })
-          this.controller.close()
+          if(this.controller != null)
+          {
+            this.controller.close()
+          }
         })
 
       Text('')
@@ -130,7 +133,10 @@ struct CustomDialogExample {
           router.push({
             url: 'pages/tabs/meeting/Join_in_meeting'
           })
-          this.controller.close()
+          if(this.controller != null)
+          {
+            this.controller.close()
+          }
         })
     }
     .backgroundColor('#ffffff')

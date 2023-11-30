@@ -15,6 +15,9 @@ import { Switches } from '../../base/Switches';
 import { ItemInput } from '../../base/ItemInput';
 import { RoomConfig } from '@ohos/smack'
 import { SelectDialog } from '../../base/SelectDialog'
+import { Smack } from '@ohos/smack'
+import { SelectOptionsEntity } from '../../../entity/SelectOptionsEntity';
+import { GlobalContext } from '../../../entity/GlobalContext';
 
 @Entry
 @Component
@@ -29,10 +32,7 @@ struct Group_chat_edit {
   @State roomAdmins: string = ''
   @State roomOwners: string = ''
   @State roomPresencebroadcast: Array<string> = []
-  @State whois_options: Array<{
-    label: string,
-    value: string
-  }> = [
+  @State whois_options: Array<SelectOptionsEntity> = [
     {
       "label": "任何人",
       "value": "anyone"
@@ -42,10 +42,7 @@ struct Group_chat_edit {
       "value": "moderators"
     }
   ]
-  @State allowpm_options: Array<{
-    label: string,
-    value: string
-  }> = [
+  @State allowpm_options: Array<SelectOptionsEntity> = [
     {
       "label": "任何人",
       "value": "anyone"
@@ -63,7 +60,7 @@ struct Group_chat_edit {
       "value": "none"
     }
   ]
-  public roomConfig: RoomConfig
+  public roomConfig: RoomConfig =new RoomConfig();
   scroller: Scroller = new Scroller()
   allowpm_selectDialog: CustomDialogController = new CustomDialogController({
     builder: SelectDialog({
@@ -123,7 +120,7 @@ struct Group_chat_edit {
   }
 
   public getRoomConfig() {
-    this.roomConfig = JSON.parse(globalThis.Smack.getRoomConfig());
+    this.roomConfig= JSON.parse(Smack.getRoomConfig()) as RoomConfig;
     this.JidVal = this.roomConfig.whois == "anyone" ? "任何人" : "审核者"
     this.switchAllowpm(this.roomConfig.allowpm)
     this.roomName = this.roomConfig.roomname
@@ -148,7 +145,7 @@ struct Group_chat_edit {
     this.roomConfig.roomowners = this.roomOwners
     this.roomConfig.presencebroadcast = this.roomPresencebroadcast
     this.roomConfig.passwordprotectedroom = this.roomPassword != '' ? '0' : '1'
-    globalThis.Smack.setRoomConfig(JSON.stringify(this.roomConfig))
+    Smack.setRoomConfig(JSON.stringify(this.roomConfig))
     prompt.showToast({ message: "更新成功" })
     setTimeout(() => {
       router.back()
@@ -234,8 +231,7 @@ struct Group_chat_edit {
                 .onChange((value: boolean) => {
                   let that = this
                   console.info('Checkbox1 change is' + value)
-                  // @ts-ignore
-                  this.roomPresencebroadcast[0] = value == 1 ? 'moderator' : ''
+                  this.roomPresencebroadcast[0] = (value ? 'moderator' : '')
 
                 })
               Text("审核者").fontSize(16)
@@ -244,8 +240,7 @@ struct Group_chat_edit {
                 .selectedColor(0x39a2db)
                 .onChange((value: boolean) => {
                   console.info('Checkbox2 change is' + value)
-                  // @ts-ignore
-                  this.roomPresencebroadcast[1] = value == 1 ? 'participant' : ''
+                  this.roomPresencebroadcast[1] = (value  ? 'participant' : '')
                 })
               Text("参与者").fontSize(16)
               Checkbox({ name: 'checkbox3', group: 'checkboxGroup' })
@@ -253,8 +248,7 @@ struct Group_chat_edit {
                 .selectedColor(0x39a2db)
                 .onChange((value: boolean) => {
                   console.info('Checkbox3 change is' + value)
-                  // @ts-ignore
-                  this.roomPresencebroadcast[2] = value == 1 ? 'visitor' : ''
+                  this.roomPresencebroadcast[2] = (value ? 'visitor' : '')
                 })
               Text("访客").fontSize(16)
             }.width('55%').justifyContent(FlexAlign.End)
@@ -265,34 +259,34 @@ struct Group_chat_edit {
           .margin({ top: 1 })
           .width('100%')
 
-          Switches({ isOn: this.roomConfig.publicroom, title: '在目录中列出房间', onToggleChange: (HisOn) => {
+          Switches({ isOn: this.roomConfig.publicroom, title: '在目录中列出房间', onToggleChange: (HisOn:string) => {
             this.roomConfig.publicroom = HisOn
           } })
-          Switches({ isOn: this.roomConfig.persistentroom, title: '永久房间', onToggleChange: (HisOn) => {
+          Switches({ isOn: this.roomConfig.persistentroom, title: '永久房间', onToggleChange: (HisOn:string) => {
             this.roomConfig.persistentroom = HisOn
           } })
-          Switches({ isOn: this.roomConfig.membersonly, title: '房间仅对成员开放', onToggleChange: (HisOn) => {
+          Switches({ isOn: this.roomConfig.membersonly, title: '房间仅对成员开放', onToggleChange: (HisOn:string) => {
             this.roomConfig.membersonly = HisOn
           } })
-          Switches({ isOn: this.roomConfig.moderatedroom, title: '房间需要审核', onToggleChange: (HisOn) => {
+          Switches({ isOn: this.roomConfig.moderatedroom, title: '房间需要审核', onToggleChange: (HisOn:string) => {
             this.roomConfig.moderatedroom = HisOn
           } })
-          Switches({ isOn: this.roomConfig.allowinvites, title: '允许成员邀请其他人进群', onToggleChange: (HisOn) => {
+          Switches({ isOn: this.roomConfig.allowinvites, title: '允许成员邀请其他人进群', onToggleChange: (HisOn:string) => {
             this.roomConfig.allowinvites = HisOn
           } })
-          Switches({ isOn: this.roomConfig.changesubject, title: '允许成员更改主题', onToggleChange: (HisOn) => {
+          Switches({ isOn: this.roomConfig.changesubject, title: '允许成员更改主题', onToggleChange: (HisOn:string) => {
             this.roomConfig.changesubject = HisOn
           } })
-          Switches({ isOn: this.roomConfig.reservednick, title: '仅允许注册昵称登陆', onToggleChange: (HisOn) => {
+          Switches({ isOn: this.roomConfig.reservednick, title: '仅允许注册昵称登陆', onToggleChange: (HisOn:string) => {
             this.roomConfig.reservednick = HisOn
           } })
-          Switches({ isOn: this.roomConfig.canchangenick, title: '允许成员修改昵称', onToggleChange: (HisOn) => {
+          Switches({ isOn: this.roomConfig.canchangenick, title: '允许成员修改昵称', onToggleChange: (HisOn:string) => {
             this.roomConfig.canchangenick = HisOn
           } })
-          Switches({ isOn: this.roomConfig.canchangenick, title: '允许成员注册房间', onToggleChange: (HisOn) => {
+          Switches({ isOn: this.roomConfig.canchangenick, title: '允许成员注册房间', onToggleChange: (HisOn:string) => {
             this.roomConfig.canchangenick = HisOn
           } })
-          Switches({ isOn: this.roomConfig.enablelogging, title: '记录房间聊天', onToggleChange: (HisOn) => {
+          Switches({ isOn: this.roomConfig.enablelogging, title: '记录房间聊天', onToggleChange: (HisOn:string) => {
             this.roomConfig.enablelogging = HisOn
           } })
 
@@ -307,7 +301,7 @@ struct Group_chat_edit {
   // todo 退出群聊
   onExitGroup() {
     //销毁房间,群主可调用
-    globalThis.Smack.destroy(globalThis.userName, "123");
+    Smack.destroy(GlobalContext.getContext().getValue('userName') as string, "123");
   }
 }
 

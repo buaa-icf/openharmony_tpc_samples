@@ -15,9 +15,9 @@ import router from '@ohos.router';
 export struct Toolbar {
   title: string = 'title'
   isBack: boolean = false
-  rightText: string
+  rightText: string = '';
   rightIcon: Resource | string = ''
-  rightClickCallBack: () => void
+  rightClickCallBack: () => void = () => {}
 
   build() {
     Flex({ direction: FlexDirection.Row, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {

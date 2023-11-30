@@ -12,6 +12,7 @@ import { Toolbar } from '../../base/toolbar'
 import router from '@ohos.router';
 import prompt from '@ohos.prompt';
 import { Constant } from '../../../entity/Constant'
+import { Smack } from '@ohos/smack'
 
 @Entry
 @Component
@@ -52,7 +53,7 @@ struct Add_group {
         message: '请输入完整'
       })
     } else {
-      globalThis.Smack.createGroup(this.groupName + '@' + Constant.HOST_IP)
+      Smack.createGroup(this.groupName + '@' + Constant.HOST_IP)
 
       prompt.showToast({
         message: '已创建'

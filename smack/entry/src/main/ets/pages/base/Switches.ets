@@ -1,10 +1,21 @@
+/*
+  Copyright (C) 2022 Huawei Device Co., Ltd.
+
+  This software is distributed under a license. The full license
+  agreement can be found in the file LICENSE in this distribution.
+  This software may not be copied, modified, sold or distributed
+  other than expressed in the named license agreement.
+  This software is distributed without any warranty.
+*/
+
+
 @Component
 @Preview
 export struct Switches {
-  isOn: string
+  isOn: string = ''
   title: string | Resource = ""
   isEnable: boolean = true
-  onToggleChange: (isOn: string) => void
+  onToggleChange: (isOn: string) => void = (isOn: string) => {}
 
   build() {
     Column() {
@@ -27,8 +38,7 @@ export struct Switches {
           .size({ width: px2vp(36), height: px2vp(20) })
           .onChange((isOn: boolean) => {
             if (this.isEnable) {
-              //@ts-ignore
-              this.isOn = isOn == "1" ? "1" :"0"
+              this.isOn = (isOn ? "1" :"0")
               this.onToggleChange(this.isOn)
             }
           })

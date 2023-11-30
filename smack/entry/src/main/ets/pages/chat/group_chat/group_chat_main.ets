@@ -11,6 +11,8 @@
 import { Toolbar } from '../../base/toolbar'
 import router from '@ohos.router';
 import { ChatContentEntity } from '../../../entity/ChatContentEntity'
+import { Smack } from '@ohos/smack'
+import { GlobalContext } from '../../../entity/GlobalContext';
 
 @Entry
 @Component
@@ -20,26 +22,32 @@ struct Group_chat_main {
   @State roomName: string = ''
   @State isJoin: number = 0 //0-false,1-true
   aboutToAppear() {
-    globalThis.Smack.registerGroupMessageCallback((id, msg) => {
-      this.chatContentList.push(new ChatContentEntity(id == '222' ? '1' : id, msg, 1))
-    })
-    globalThis.Smack.registerMUCParticipantPresenceListener((name:string,jsonStr: string) => {
-      let obj=JSON.parse(jsonStr)
-      switch (obj.flags) {
-        case '1':
-          this.chatContentList.push(new ChatContentEntity(name, name + "操作成功", 1, true))
-             break;
-        case '2':
-          this.chatContentList.push(new ChatContentEntity(name, name + "修改了昵称", 1, true))
-          break;
-        case '3':
-          this.chatContentList.push(new ChatContentEntity(name, name + "被踢出了群聊", 1, true))
-          break;
-        case '4':
-          this.chatContentList.push(new ChatContentEntity(name, name + "被群聊屏蔽了", 1, true))
-          break;
+    Smack.registerGroupMessageCallback((id:number, msg:string) => {
+      setTimeout(() => {
+        console.info('msg test:'+msg)
+        this.chatContentList.push(new ChatContentEntity(String(id) == '222' ? '1' : String(id), msg, 1))
+      }, 100)
 
-      }
+    })
+    Smack.registerMUCParticipantPresenceListener((name:string,jsonStr: string) => {
+      let obj:ESObject=JSON.parse(jsonStr)
+      setTimeout(() => {
+        switch (obj.flags) {
+          case '1':
+            this.chatContentList.push(new ChatContentEntity(name, name + "操作成功", 1, true))
+            break;
+          case '2':
+            this.chatContentList.push(new ChatContentEntity(name, name + "修改了昵称", 1, true))
+            break;
+          case '3':
+            this.chatContentList.push(new ChatContentEntity(name, name + "被踢出了群聊", 1, true))
+            break;
+          case '4':
+            this.chatContentList.push(new ChatContentEntity(name, name + "被群聊屏蔽了", 1, true))
+            break;
+
+        }
+      }, 100)
       //      switch (presenceType) {
       //        case "0":
       //          this.chatContentList.push(new ChatContentEntity(name, name + "进入了房间", 1, true))
@@ -64,17 +72,17 @@ struct Group_chat_main {
       //          break
       //      }
     })
-    this.isJoin = globalThis.Smack.isJoined()
+    this.isJoin = Number(Smack.isJoined())
     if (this.isJoin == 0) {
-      globalThis.Smack.join();
+      Smack.join();
     }
-    globalThis.roomInfo = globalThis.Smack.parseXML()
-    let roominfo = JSON.parse(globalThis.roomInfo)
+    GlobalContext.getContext().setValue('roomInfo', Smack.parseXML())
+    let roominfo: ESObject = JSON.parse(GlobalContext.getContext().getValue('roomInfo') as string)
     this.roomName = roominfo.description
   }
 
   aboutToDisappear() {
-    globalThis.Smack.leave("leave msg");
+    Smack.leave("leave msg");
   }
 
   onPageShow() {
@@ -96,7 +104,7 @@ struct Group_chat_main {
 
       Stack({ alignContent: Alignment.Bottom }) {
         List() {
-          ForEach(this.chatContentList, item => {
+          ForEach(this.chatContentList, (item : ChatContentEntity) => {
             ListItem() {
               Flex({ direction: FlexDirection.Column }) {
                 if (item.isTip) {
@@ -133,9 +141,9 @@ struct Group_chat_main {
               }
             }
             .padding(10)
-          }, item => item.toString())
+          }, (item : ChatContentEntity) => JSON.stringify(item))
         }
-        .margin({ bottom: px2vp(60) })
+        .padding({ bottom: 130 })
         .height('100%')
 
         Flex({ direction: FlexDirection.Row, justifyContent: FlexAlign.Center, alignItems: ItemAlign.Center }) {
@@ -147,7 +155,7 @@ struct Group_chat_main {
               this.onSendGroupMessage()
             })
         }
-        .height(px2vp(100))
+        .height(px2vp(120))
         .width('100%')
         .padding({ left: 15, right: 15 })
         .backgroundColor('#ffffff')
@@ -159,7 +167,7 @@ struct Group_chat_main {
 
   // todo 发送群聊信息
   onSendGroupMessage() {
-    globalThis.Smack.sendGroupMessage(this.inputMessage);
+    Smack.sendGroupMessage(this.inputMessage);
     this.inputMessage = ""
   }
 }

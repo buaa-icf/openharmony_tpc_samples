@@ -1,3 +1,13 @@
+/*
+  Copyright (C) 2022 Huawei Device Co., Ltd.
+
+  This software is distributed under a license. The full license
+  agreement can be found in the file LICENSE in this distribution.
+  This software may not be copied, modified, sold or distributed
+  other than expressed in the named license agreement.
+  This software is distributed without any warranty.
+*/
+
 @Component
 export struct ItemInput {
   title: string | Resource = ""
@@ -7,7 +17,8 @@ export struct ItemInput {
   widthStr: string = '30%'
   widthInput: string = '65%'
   @Link val: string
-  selectDialog: () => void
+  selectDialog: () => void = () => {}
+
 
   build() {
     Column() {

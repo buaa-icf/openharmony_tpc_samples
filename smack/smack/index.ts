@@ -13,7 +13,7 @@ export { RoomConfig } from './src/main/ets/RoomConfig'
 
 export { PresenceType } from './src/main/ets/PresenceType'
 
-export { FriendsEntity } from './src/main/ets/FriendsEntity'
+export { FriendsEntity,UserEntity } from './src/main/ets/FriendsEntity'
 
 export { MUCRoomAffiliation } from './src/main/ets/MUCRoomAffiliation'
 

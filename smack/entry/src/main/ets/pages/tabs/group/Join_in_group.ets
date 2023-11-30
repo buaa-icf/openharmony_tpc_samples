@@ -10,6 +10,7 @@
 
 import { Toolbar } from '../../base/toolbar'
 import router from '@ohos.router';
+import { Smack } from '@ohos/smack'
 
 @Entry
 @Component
@@ -37,6 +38,6 @@ struct Join_in_group {
 
   // todo 加入群聊
   onJoinInGroup() {
-    globalThis.Smack.join();
+    Smack.join();
   }
 }

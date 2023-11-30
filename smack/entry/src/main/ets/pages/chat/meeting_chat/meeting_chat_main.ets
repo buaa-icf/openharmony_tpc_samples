@@ -36,7 +36,7 @@ struct Meeting_chat_main {
 
       Stack({ alignContent: Alignment.Bottom }) {
         List() {
-          ForEach(this.chatContentList, item => {
+          ForEach(this.chatContentList, (item : ChatContentEntity) => {
             ListItem() {
               Flex({ direction: FlexDirection.Column }) {
                 if (item.isTip) {
@@ -73,7 +73,7 @@ struct Meeting_chat_main {
               }
             }
             .padding(10)
-          }, item => item.toString())
+          }, (item : ChatContentEntity) => JSON.stringify(item))
         }
         .margin({ bottom: 60 })
 

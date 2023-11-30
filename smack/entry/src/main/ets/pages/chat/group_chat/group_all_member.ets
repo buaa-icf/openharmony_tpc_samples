@@ -11,13 +11,13 @@
 import { Toolbar } from '../../base/toolbar'
 import router from '@ohos.router';
 import { MUCOperation } from '@ohos/smack'
+import { GroupUserEntity } from '../../../entity/GroupUserEntity';
+import { Smack } from '@ohos/smack'
+
 @Entry
 @Component
 struct Group_all_member {
-  @State allList: Array<{
-    name: string,
-    isCheck: number
-  }> = []
+  @State allList: Array<GroupUserEntity> = []
   @State adminList: Array<string> = []
   @State roomName: string = ''
   @State memberNumber:number=0
@@ -32,9 +32,9 @@ struct Group_all_member {
   // todo 查看所有群成员
   onGetAllMemberFriends() {
     this.allList = []
-    let roomitems: Array<any> = JSON.parse(globalThis.Smack.getRoomItems())
-    for (var index = 0; index < roomitems.length; index++) {
-      let str = roomitems[index].room.replace(" ", "")
+    let roomitems: Array<ESObject> = JSON.parse(Smack.getRoomItems())
+    for (let index = 0; index < roomitems.length; index++) {
+      let str :string= roomitems[index].room.replace(" ", "")
       str = str.substr(str.lastIndexOf("/") + 1, str.length - 1)
       this.allList.push({ name: str, isCheck: 0 });
       this.memberNumber=this.allList.length
@@ -43,17 +43,17 @@ struct Group_all_member {
   // todo 查看所有群管理
   onGetAllAdminFriends() {
     this.adminList = []
-    let roomitems = globalThis.Smack.requestList(MUCOperation.RequestAdminList)
-    let items=JSON.parse(roomitems)
-    for (var index = 0; index < items.length; index++) {
-      let str = items[index].jid.replace(" ", "")
+    let roomitems = Smack.requestList(MUCOperation.RequestAdminList)
+    let items:Array<ESObject>=JSON.parse(roomitems)
+    for (let index = 0; index < items.length; index++) {
+      let str :string= items[index].jid.replace(" ", "")
       this.adminList.push(str);
     }
   }
 
-  onGetOperations(): Array<any>{
-    let users = []
-    for (var index = 0; index < this.allList.length; index++) {
+  onGetOperations(): Array<GroupUserEntity>{
+    let users : Array<GroupUserEntity> =[]
+    for (let index = 0; index < this.allList.length; index++) {
       const element = this.allList[index];
       if (element.isCheck == 1) {
         users.push(element)
@@ -77,7 +77,7 @@ struct Group_all_member {
         .height(40)
         .padding({ left: 20 })
       List() {
-        ForEach(this.adminList, item => {
+        ForEach(this.adminList, (item:string) => {
           ListItem() {
             Text(item)
               .padding(13)
@@ -92,7 +92,7 @@ struct Group_all_member {
                 })
               })
           }
-        }, item => item.toString())
+        }, (item:string) => JSON.stringify(item))
       }
 
       Row() {
@@ -124,7 +124,7 @@ struct Group_all_member {
       }
 
       List() {
-        ForEach(this.allList, item => {
+        ForEach(this.allList, (item :GroupUserEntity) => {
           ListItem() {
             Row() {
               if (this.IsBatch) {
@@ -133,7 +133,7 @@ struct Group_all_member {
                   .selectedColor(0x39a2db)
                   .onChange((value: boolean) => {
                     console.info('Checkbox2 change is' + value)
-                    item.isCheck = value
+                    item.isCheck = value ? 1 : 0;
                   })
               }
               Text(item.name)
@@ -150,7 +150,7 @@ struct Group_all_member {
             }
 
           }.backgroundColor('#ffffff')
-        }, item => item.name)
+        }, (item :GroupUserEntity) => JSON.stringify(item))
       }
     }
     .backgroundColor('#ececec')

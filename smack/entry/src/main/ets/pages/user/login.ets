@@ -12,6 +12,8 @@ import router from '@ohos.router';
 import { Toolbar } from '../base/toolbar'
 import prompt from '@ohos.prompt';
 import { Constant } from '../../entity/Constant'
+import { Smack } from '@ohos/smack'
+import { GlobalContext } from '../../entity/GlobalContext';
 
 @Entry
 @Component
@@ -35,16 +37,18 @@ struct Login {
         Column() {
           TextInput({ placeholder: '请输入用户名', text: this.userName })
             .margin({ bottom: 20 })
-            .height(px2vp(50))
+            .height(px2vp(100))
             .fontSize(px2fp(20))
+            .placeholderFont({size: px2vp(36)})
             .type(InputType.Normal)
             .onChange(v => {
               this.userName = v
             })
           TextInput({ placeholder: '请输入密码', text: this.passWord })
             .type(InputType.Password)
-            .height(px2vp(50))
+            .height(px2vp(100))
             .fontSize(px2fp(20))
+            .placeholderFont({size: px2vp(36)})
             .onChange(v => {
               this.passWord = v
             })
@@ -105,42 +109,47 @@ struct Login {
   }
 
   public connectService() {
-    globalThis.Smack.setServer(Constant.HOST_IP)
-    globalThis.Smack.setServer(Constant.SERVICE_NAME)
-    globalThis.Smack.setResource(Constant.HOST_RES.replace("/", ""))
-    globalThis.Smack.setPort(Constant.HOST_PORT);
-    globalThis.Smack.setUsernameAndPassword(this.userName, this.passWord)
-    globalThis.Smack.connect()
-    this.uName = globalThis.Smack.username()
-    this.uPassword = globalThis.Smack.password()
-    this.resource = globalThis.Smack.resource()
-    this.ip = globalThis.Smack.server()
-    this.port = globalThis.Smack.port()
-    this.compression = globalThis.Smack.compression()
-    this.authed = globalThis.Smack.authed()
+    Smack.setServer(Constant.HOST_IP)
+    Smack.setServer(Constant.SERVICE_NAME)
+    Smack.setResource(Constant.HOST_RES.replace("/", ""))
+    Smack.setPort(Constant.HOST_PORT);
+    Smack.setUsernameAndPassword(this.userName, this.passWord);
+    Smack.connect();
+    this.uName = Smack.username()
+    this.uPassword = Smack.password()
+    this.resource = Smack.resource()
+    this.ip = Smack.server()
+    this.port = String(Smack.port());
+    this.compression = Smack.compression()
+    this.authed = Smack.authed()
   }
 
   // todo 登录
   private onLogin() {
     let result: number
     if (this.check()) {
-      this.connectService()
-      try {
-        let LoginName = this.uName + '@' + Constant.HOST_IP
-        globalThis.userName = this.uName + '@' + Constant.HOST_IP + Constant.HOST_RES
-        result = globalThis.Smack.Login(LoginName, this.uPassword);
-      } catch (e) {
-        console.log("onLogin err  " + e.message)
-      }
-      if (result == 1) {
-        router.replace({
-          url: 'pages/main'
-        })
-      } else {
-        prompt.showToast({
-          message: "登录失败"
-        })
-      }
+      prompt.showToast({
+        message: '登陆中..'
+      })
+      setTimeout(()=>{
+        this.connectService()
+        try {
+          let LoginName = this.uName + '@' + Constant.HOST_IP
+          GlobalContext.getContext().setValue('userName',this.uName + '@' + Constant.HOST_IP + Constant.HOST_RES)
+          result = Smack.Login(LoginName, this.uPassword);
+        } catch (e) {
+          console.log("onLogin err  " + e.message)
+        }
+        if (result == 1) {
+          router.replace({
+            url: 'pages/main'
+          })
+        } else {
+          prompt.showToast({
+            message: "登录失败"
+          })
+        }
+      },100)
     }
 
   }

@@ -38,7 +38,7 @@ struct Meeting_chat_setting {
       })
 
       List() {
-        ForEach(this.allList, item => {
+        ForEach(this.allList, (item : string) => {
           ListItem() {
             Text(item)
               .padding(13)
@@ -48,7 +48,7 @@ struct Meeting_chat_setting {
               .margin({ bottom: 1 })
 
           }
-        }, item => item.toString())
+        }, (item : string) => JSON.stringify(item))
       }
     }
     .backgroundColor('#ececec')

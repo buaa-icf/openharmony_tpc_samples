@@ -43,7 +43,7 @@ struct Search_friends {
       .backgroundColor('#ffffff')
 
       List() {
-        ForEach(this.resultList, item => {
+        ForEach(this.resultList, (item:string) => {
           ListItem() {
             Flex({ direction: FlexDirection.Column }) {
               Text(item)
@@ -54,7 +54,7 @@ struct Search_friends {
                 .backgroundColor('#ffffff')
             }
           }
-        }, item => item)
+        }, (item:string) => JSON.stringify(item))
       }
     }
     .width('100%')
@@ -63,7 +63,7 @@ struct Search_friends {
 
   // 搜索好友
   private onSearch() {
-    for (var i = 0; i < 20; i++) {
+    for (let i = 0; i < 20; i++) {
       this.resultList.push('我是搜索之后的结果')
     }
   }

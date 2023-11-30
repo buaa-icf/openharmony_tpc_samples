@@ -12,6 +12,8 @@ import { Toolbar } from '../../base/toolbar'
 import router from '@ohos.router';
 import prompt from '@ohos.prompt';
 import { Constant } from '../../../entity/Constant'
+import { Smack } from '@ohos/smack'
+import { GlobalContext } from '../../../entity/GlobalContext';
 
 
 @Entry
@@ -48,7 +50,8 @@ struct Create_group_chat {
           }
         }).margin({ top: 20 })
         Button('加入密码房').onClick(e => {
-          globalThis.Smack.createRoom("555@" + Constant.HOST_IP + Constant.HOST_RES, "room", Constant.HOST_DOMAIN, Constant.SERVICE_NAME);
+
+          Smack.createRoom("555@" + Constant.HOST_IP + Constant.HOST_RES, "room", Constant.HOST_DOMAIN, Constant.SERVICE_NAME);
           this.passWordDialog.open()
         }).margin({ top: 20 })
       }
@@ -60,7 +63,7 @@ struct Create_group_chat {
 
   // todo 创建群聊
   onCreateGroupChat(input: string) {
-    globalThis.Smack.createRoom(globalThis.userName, input, Constant.HOST_DOMAIN, Constant.SERVICE_NAME);
+    Smack.createRoom(GlobalContext.getContext().getValue('userName') as string, input, Constant.HOST_DOMAIN, Constant.SERVICE_NAME);
     prompt.showToast({
       message: '房间创建成功'
     })
@@ -74,7 +77,7 @@ struct Create_group_chat {
 
 @CustomDialog
 struct PassWordDialog {
-  controller: CustomDialogController
+  controller: CustomDialogController = {} as CustomDialogController;
   inputStr: string = ''
 
   build() {
@@ -84,9 +87,12 @@ struct PassWordDialog {
         this.inputStr = v
       })
       Button('确 定').onClick(e => {
-        globalThis.Smack.setPassword(this.inputStr)
+        Smack.setPassword(this.inputStr)
         this.onJoinInMeeting()
-        this.controller.close()
+        if(this.controller != null)
+        {
+          this.controller.close()
+        }
       }).margin({ top: 20 })
     }
     .padding(20)
@@ -99,8 +105,11 @@ struct PassWordDialog {
   // todo 从会议列表里进入会议
   onJoinInMeeting() {
     setTimeout(() => {
-      globalThis.Smack.join();
-      this.controller.close()
+      Smack.join();
+      if(this.controller != null)
+      {
+        this.controller.close()
+      }
     }, 500)
   }
 }

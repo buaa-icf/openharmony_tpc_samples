@@ -1,0 +1,26 @@
+{
+  "types": "",
+  "keywords": [
+    "OpenHarmony",
+    "smack"
+  ],
+  "author": "hihope",
+  "description": "A client based on XMPP protocol",
+  "ohos": {
+    "org": "opensource"
+  },
+  "main": "index.ts",
+  "repository": "https://gitee.com/hihopeorg/smack",
+  "version": "2.0.0",
+  "tags": [
+    "OpenHarmony",
+    "smack",
+    "Tool"
+  ],
+  "dependencies": {},
+  "license": "GPL-3.0-or-later",
+  "devDependencies": {
+    "@types/libentry.so": "file:./src/main/cpp/types/libentry"
+  },
+  "name": "@ohos/smack"
+}
