@@ -14,102 +14,18 @@
  */
 import test from '../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import { openTagStartTestData1, openTagStartTestData2 } from './SaxData'
 
 export default function openTagStartTest() {
 
-  describe('OpenTagStartTest', function () {
+  describe('OpenTagStartTest', () => {
 
-    it('openTagStartTest_1', 0, function () {
-      let data = {
-        xml: "<root length='12345'></root>",
-        expect: [
-          [
-            'opentagstart',
-            {
-              name: 'root',
-              attributes: {},
-              ns: {}
-            }
-          ],
-          [
-            'attribute',
-            {
-              name: 'length',
-              value: '12345',
-              prefix: '',
-              local: 'length',
-              uri: ''
-            }
-          ],
-          [
-            'opentag',
-            {
-              name: 'root',
-              attributes: {
-                length: {
-                  name: 'length',
-                  value: '12345',
-                  prefix: '',
-                  local: 'length',
-                  uri: ''
-                }
-              },
-              ns: {},
-              prefix: '',
-              local: 'root',
-              uri: '',
-              isSelfClosing: false
-            }
-          ],
-          [
-            'closetag',
-            'root'
-          ]
-        ],
-        strict: true,
-        opt: {
-          xmlns: true
-        }
-      }
-      test(data, expect);
+    it('openTagStartTest_1', 0, () => {
+      test(openTagStartTestData1, expect);
     })
 
-    it('openTagStartTest_2', 0, function () {
-      let data = {
-        xml: "<root length='12345'></root>",
-        expect: [
-          [
-            'opentagstart',
-            {
-              name: 'root',
-              attributes: {}
-            }
-          ],
-          [
-            'attribute',
-            {
-              name: 'length',
-              value: '12345'
-            }
-          ],
-          [
-            'opentag',
-            {
-              name: 'root',
-              attributes: {
-                length: '12345'
-              },
-              isSelfClosing: false
-            }
-          ],
-          [
-            'closetag',
-            'root'
-          ]
-        ],
-        strict: true
-      }
-      test(data, expect);
+    it('openTagStartTest_2', 0, () => {
+      test(openTagStartTestData2, expect);
     })
   })
 }

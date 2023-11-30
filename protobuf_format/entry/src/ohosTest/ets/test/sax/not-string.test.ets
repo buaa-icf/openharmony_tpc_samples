@@ -18,18 +18,27 @@ import sax from '@ohos/sax'
 
 export default function notStringTest() {
 
-  describe('NotStringTest', function () {
+  describe('NotStringTest', () => {
 
-    it('notStringTest', 0, function () {
-      var parser = sax.parser(true)
+    it('notStringTest', 0, () => {
 
-      parser.onopentag = function (node) {
-        expect(JSON.stringify(node)).assertEqual(JSON.stringify(
-          {
-            name: 'x', attributes: {}, isSelfClosing: false
-          }))
+      let parser: ESObject = sax.parser(true)
+
+      interface Obj {}
+
+      class ValueType {
+        name: string = 'x';
+        attributes: Obj = {};
+        isSelfClosing: boolean = false;
       }
-      var xml = buffer.from('<x>y</x>')
+
+      let value: ValueType = {
+        name: 'x', attributes: {}, isSelfClosing: false
+      }
+      parser.onopentag = (node: ESObject) => {
+        expect(JSON.stringify(node)).assertEqual(JSON.stringify(value))
+      }
+      let xml = buffer.from('<x>y</x>')
       parser.write(xml).close()
     })
   })

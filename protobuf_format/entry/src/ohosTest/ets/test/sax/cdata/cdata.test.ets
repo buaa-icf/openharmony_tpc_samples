@@ -14,29 +14,14 @@
  */
 import test from '../../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import { cdataTestData } from '../SaxData'
 
 export default function cdataTest() {
 
-  describe('CDataTest', function () {
+  describe('CDataTest', () => {
 
-    it('cdataTest', 0, function () {
-      let data = {
-        xml: '<r><![CDATA[ this is character data  ]]></r>',
-        expect: [
-          ['opentagstart', {
-            'name': 'R', 'attributes': {}
-          }],
-          ['opentag', {
-            'name': 'R', 'attributes': {}, 'isSelfClosing': false
-          }],
-          ['opencdata', undefined],
-          ['cdata', ' this is character data  '],
-          ['closecdata', undefined],
-          ['closetag', 'R']
-        ]
-      }
-      test(data, expect);
-
+    it('cdataTest', 0, () => {
+      test(cdataTestData, expect);
     })
   })
 }

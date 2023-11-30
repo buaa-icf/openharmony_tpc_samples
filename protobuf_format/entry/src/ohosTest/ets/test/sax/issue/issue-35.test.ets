@@ -14,28 +14,14 @@
  */
 import test from '../../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import { issue35TestData } from '../SaxData'
 
 export default function issue_35Test() {
 
-  describe('Issue_35Test', function () {
+  describe('Issue_35Test', () => {
 
-    it('issue_35Test', 0, function () {
-      let data = {
-        xml: '<xml>&#Xd;&#X0d;\n</xml>',
-        expect: [
-          ['opentagstart', {
-            name: 'xml', attributes: {}
-          }],
-          ['opentag', {
-            name: 'xml', attributes: {}, isSelfClosing: false
-          }],
-          ['text', '\r\r\n'],
-          ['closetag', 'xml']
-        ],
-        strict: true,
-        opt: {}
-      }
-      test(data, expect);
+    it('issue_35Test', 0, () => {
+      test(issue35TestData, expect);
     })
   })
 }

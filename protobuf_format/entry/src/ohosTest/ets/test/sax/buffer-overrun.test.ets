@@ -15,33 +15,18 @@
 import sax from '@ohos/sax'
 import test from '../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import { bufferOverrunTestData } from './SaxData'
 
 export default function bufferOverrunTest() {
 
-  describe('BufferOverrunTest', function () {
+  describe('BufferOverrunTest', () => {
 
-    it('bufferOverrunTest', 0, function () {
-      var bl = sax.MAX_BUFFER_LENGTH
+    it('bufferOverrunTest', 0, () => {
+
+      let bl: ESObject = sax.MAX_BUFFER_LENGTH
       sax.MAX_BUFFER_LENGTH = 5
-      let data = {
-        expect: [
-          ['error', 'Max buffer length exceeded: tagName\nLine: 0\nColumn: 15\nChar: '],
-          ['error', 'Max buffer length exceeded: tagName\nLine: 0\nColumn: 30\nChar: '],
-          ['error', 'Max buffer length exceeded: tagName\nLine: 0\nColumn: 45\nChar: '],
-          ['opentagstart', {
-            'name': 'ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ',
-            'attributes': {}
-          }],
-          ['opentag', {
-            'name': 'ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ',
-            'attributes': {},
-            'isSelfClosing': false
-          }],
-          ['text', 'yo'],
-          ['closetag', 'ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ']
-        ]
-      }
-      test(data, expect)
+
+      test(bufferOverrunTestData, expect)
         .write('<abcdefghijklmn')
         .write('opqrstuvwxyzABC')
         .write('DEFGHIJKLMNOPQR')

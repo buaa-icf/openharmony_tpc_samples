@@ -14,62 +14,14 @@
  */
 import test from '../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import { strayEndingTestData } from './SaxData'
 
 export default function strayEndingTest() {
 
-  describe('StrayEndingTest', function () {
+  describe('StrayEndingTest', () => {
 
-    it('strayEndingTest', 0, function () {
-      let data = {
-        xml: '<a><b></c></b></a>',
-        expect: [
-          [
-            'opentagstart',
-            {
-              name: 'A',
-              attributes: {}
-            }
-          ],
-          [
-            'opentag',
-            {
-              name: 'A',
-              attributes: {},
-              isSelfClosing: false
-            }
-          ],
-          [
-            'opentagstart',
-            {
-              name: 'B',
-              attributes: {}
-            }
-          ],
-          [
-            'opentag',
-            {
-              name: 'B',
-              attributes: {},
-              isSelfClosing: false
-            }
-          ],
-          [
-            'text',
-            '</c>'
-          ],
-          [
-            'closetag',
-            'B'
-          ],
-          [
-            'closetag',
-            'A'
-          ]
-        ],
-        strict: false,
-        opt: {}
-      }
-      test(data, expect);
+    it('strayEndingTest', 0, () => {
+      test(strayEndingTestData, expect);
     })
   })
 }

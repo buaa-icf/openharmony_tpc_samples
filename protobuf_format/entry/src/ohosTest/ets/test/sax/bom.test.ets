@@ -14,89 +14,26 @@
  */
 import test from '../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import { bomTestData1, bomTestData2, bomTestData3, bomTestData4 } from './SaxData'
 
 export default function bomTest() {
 
-  describe('BomTest', function () {
+  describe('BomTest', () => {
 
-    it('bomTest_1', 0, function () {
-      let data = {
-        xml: '\uFEFF<P></P>',
-        expect: [
-          ['opentagstart', {
-            'name': 'P', attributes: {}
-          }],
-          ['opentag', {
-            'name': 'P', attributes: {}, isSelfClosing: false
-          }],
-          ['closetag', 'P']
-        ]
-      }
-      test(data, expect);
-
+    it('bomTest_1', 0, () => {
+      test(bomTestData1, expect);
     })
 
-    it('bomTest_2', 0, function () {
-      let data = {
-        xml: '\uFEFF<P BOM="\uFEFF">\uFEFFStarts and ends with BOM\uFEFF</P>',
-        expect: [
-          ['opentagstart', {
-            'name': 'P', attributes: {}
-          }],
-          ['attribute', {
-            'name': 'BOM', 'value': '\uFEFF'
-          }],
-          ['opentag', {
-            'name': 'P', attributes: {
-              'BOM': '\uFEFF'
-            }, isSelfClosing: false
-          }],
-          ['text', '\uFEFFStarts and ends with BOM\uFEFF'],
-          ['closetag', 'P']
-        ]
-      }
-      test(data, expect);
-
+    it('bomTest_2', 0, () => {
+      test(bomTestData2, expect);
     })
 
-    it('bomTest_3', 0, function () {
-      let data = {
-        xml: ' \uFEFF<P></P>',
-        expect: [
-          ['error', 'Non-whitespace before first tag.\nLine: 0\nColumn: 2\nChar: \uFEFF'],
-          ['text', '\uFEFF'],
-          ['opentagstart', {
-            'name': 'P', attributes: {}
-          }],
-          ['opentag', {
-            'name': 'P', attributes: {}, isSelfClosing: false
-          }],
-          ['closetag', 'P']
-        ],
-        strict: true
-      }
-      test(data, expect);
-
+    it('bomTest_3', 0, () => {
+      test(bomTestData3, expect);
     })
 
-    it('bomTest_4', 0, function () {
-      let data = {
-        xml: '\uFEFF\uFEFF<P></P>',
-        expect: [
-          ['error', 'Non-whitespace before first tag.\nLine: 0\nColumn: 2\nChar: \uFEFF'],
-          ['text', '\uFEFF'],
-          ['opentagstart', {
-            'name': 'P', attributes: {}
-          }],
-          ['opentag', {
-            'name': 'P', attributes: {}, isSelfClosing: false
-          }],
-          ['closetag', 'P']
-        ],
-        strict: true
-      }
-      test(data, expect);
-
+    it('bomTest_4', 0, () => {
+      test(bomTestData4, expect);
     })
   })
 }

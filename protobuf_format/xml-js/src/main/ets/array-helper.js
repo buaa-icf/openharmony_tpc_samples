@@ -1,4 +1,4 @@
-var isArray = function (value) {
+let isArray = function (value) {
   if (Array.isArray) {
     return Array.isArray(value);
   }

@@ -15,34 +15,14 @@
 import sax from '@ohos/sax'
 import test from '../../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import { entityMegaTestData } from '../SaxData'
 
 export default function entityMegaTest() {
 
-  describe('EntityMegaTest', function () {
+  describe('EntityMegaTest', () => {
 
-    it('entityMegaTest', 0, function () {
-      var xml = '<r>'
-      var text = ''
-      for (var i in sax.ENTITIES) {
-        xml += '&' + i + ';'
-        text += sax.ENTITIES[i]
-      }
-      xml += '</r>'
-
-      let data = {
-        xml: xml,
-        expect: [
-          ['opentagstart', {
-            'name': 'R', attributes: {}
-          }],
-          ['opentag', {
-            'name': 'R', attributes: {}, isSelfClosing: false
-          }],
-          ['text', text],
-          ['closetag', 'R']
-        ]
-      }
-      test(data, expect)
+    it('entityMegaTest', 0, () => {
+      test(entityMegaTestData, expect)
     })
   })
 }

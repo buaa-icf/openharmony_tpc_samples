@@ -1,7 +1,7 @@
 import js2xml from './js2xml';
 
-var json2xml = function (json, options) {
-  var js = null;
+let json2xml = function (json, options) {
+  let js = null;
   if (typeof (json) === 'string') {
     try {
       js = JSON.parse(json);

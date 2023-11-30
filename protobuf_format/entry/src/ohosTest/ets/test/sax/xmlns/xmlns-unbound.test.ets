@@ -14,67 +14,14 @@
  */
 import test from '../../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import { xmlnsUnboundTestData } from '../SaxData'
 
 export default function xmlnsUnboundTest() {
 
-  describe('xmlnsUnboundTest', function () {
+  describe('xmlnsUnboundTest', () => {
 
-    it('xmlns_unbound_test', 0, function () {
-      let data = {
-        strict: true,
-        opt: {
-          xmlns: true
-        },
-        expect: [
-          [
-            'opentagstart',
-            {
-              name: 'root',
-              attributes: {},
-              ns: {}
-            }
-          ],
-          [
-            'error',
-            'Unbound namespace prefix: "unbound"\nLine: 0\nColumn: 28\nChar: >'
-          ],
-          [
-            'attribute',
-            {
-              name: 'unbound:attr',
-              value: 'value',
-              uri: 'unbound',
-              prefix: 'unbound',
-              local: 'attr'
-            }
-          ],
-          [
-            'opentag',
-            {
-              name: 'root',
-              uri: '',
-              prefix: '',
-              local: 'root',
-              attributes: {
-                'unbound:attr': {
-                  name: 'unbound:attr',
-                  value: 'value',
-                  uri: 'unbound',
-                  prefix: 'unbound',
-                  local: 'attr'
-                }
-              },
-              ns: {},
-              isSelfClosing: true
-            }
-          ],
-          [
-            'closetag',
-            'root'
-          ]
-        ]
-      }
-      test(data, expect).write("<root unbound:attr='value'/>");
+    it('xmlns_unbound_test', 0, () => {
+      test(xmlnsUnboundTestData, expect).write("<root unbound:attr='value'/>");
     })
   })
 }

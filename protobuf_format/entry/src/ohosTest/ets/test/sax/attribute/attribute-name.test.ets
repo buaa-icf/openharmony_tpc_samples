@@ -14,60 +14,14 @@
  */
 import test from '../../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import { attributeNameTestData } from '../SaxData'
 
 export default function attributeNameTest() {
 
-  describe('AttributeNameTest', function () {
+  describe('AttributeNameTest', () => {
 
-    it('attributeNameTest', 0, function () {
-      let data = {
-        xml: "<root length='12345'></root>",
-        expect: [
-          ['opentagstart', {
-            name: 'root', attributes: {}, ns: {}
-          }],
-          [
-            'attribute',
-            {
-              name: 'length',
-              value: '12345',
-              prefix: '',
-              local: 'length',
-              uri: ''
-            }
-          ],
-          [
-            'opentag',
-            {
-              name: 'root',
-              attributes: {
-                length: {
-                  name: 'length',
-                  value: '12345',
-                  prefix: '',
-                  local: 'length',
-                  uri: ''
-                }
-              },
-              ns: {},
-              prefix: '',
-              local: 'root',
-              uri: '',
-              isSelfClosing: false
-            }
-          ],
-          [
-            'closetag',
-            'root'
-          ]
-        ],
-        strict: true,
-        opt: {
-          xmlns: true
-        }
-      }
-      test(data, expect);
-
+    it('attributeNameTest', 0, () => {
+      test(attributeNameTestData, expect);
     })
   })
 }

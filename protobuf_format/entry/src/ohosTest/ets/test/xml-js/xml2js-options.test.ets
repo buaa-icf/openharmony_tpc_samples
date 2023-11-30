@@ -15,18 +15,59 @@
 import convert from '@ohos/xml_js'
 import testItems from '../../xml_js_util/test-items'
 import { describe, expect, it } from '@ohos/hypium'
+import {
+  Xml2JsData1,
+  Xml2JsData2,
+  Xml2JsData3,
+  Xml2JsData4,
+  Xml2JsData5,
+  Xml2JsData6,
+  Xml2JsData7,
+  Xml2JsData8,
+  xml_js_issue_3_json,
+  xml_js_issue_26_js,
+  xml_js_issue_26_js2,
+  xml_js_issue_29_js,
+  xml_js_issue_34_js
+} from './XmlJSData'
 
 export default function testingXml2jsOptions() {
-  describe('TestingXml2jsOptions', function () {
+  describe('TestingXml2jsOptions', () => {
+    it('baseCase', 0, () => {
 
-    var options = {};
-    testItems('xml2js', options).forEach(function (test) {
-      it('no_options_supplied' + test.desc, 0, function () {
+    })
+
+    interface Options {}
+
+    let options: Options = {};
+    testItems('xml2js', options).forEach((test: ESObject) => {
+      it('no_options_supplied' + test.desc, 0, () => {
         expect(JSON.stringify(convert.xml2js(test.xml, options))).assertEqual(JSON.stringify(test.js));
       });
     });
 
-    var compact_false_default_options = {
+    class CompactFalseDefaultOptions {
+      singleLine?: boolean;
+      compact?: boolean;
+      trim?: boolean;
+      sanitize?: boolean;
+      nativeType?: boolean;
+      alwaysChildren?: boolean;
+      addParent?: boolean;
+      nativeTypeAttributes?: boolean;
+      ignoreText?: boolean;
+      ignoreComment?: boolean;
+      ignoreCdata?: boolean;
+      ignoreDoctype?: boolean;
+      ignoreDeclaration?: boolean;
+      ignoreInstruction?: boolean;
+      alwaysArray?: string[] | boolean;
+      spaces?: number | boolean | string;
+      instructionHasAttributes?: boolean;
+      onlyItem?: number;
+    }
+
+    let compact_false_default_options: CompactFalseDefaultOptions = {
       singleLine: false,
       compact: false,
       trim: false,
@@ -35,131 +76,143 @@ export default function testingXml2jsOptions() {
       alwaysChildren: false,
       addParent: false
     };
-    testItems('xml2js', compact_false_default_options).forEach(function (test) {
-      it('compact_false_default_options_' + test.desc, 0, function () {
-        expect(JSON.stringify(convert.xml2js(test.xml, compact_false_default_options))).assertEqual(JSON.stringify(test.js));
+    testItems('xml2js', compact_false_default_options).forEach((test: ESObject) => {
+      it('compact_false_default_options_' + test.desc, 0, () => {
+        expect(JSON.stringify(convert.xml2js(test.xml, compact_false_default_options)))
+          .assertEqual(JSON.stringify(test.js));
       });
     });
 
-    var compact_false_options = {
+    let compact_false_options: CompactFalseDefaultOptions = {
       compact: false
     };
-    testItems('xml2js', compact_false_options).forEach(function (test) {
-      it('compact_false_options_' + test.desc, 0, function () {
+    testItems('xml2js', compact_false_options).forEach((test: ESObject) => {
+      it('compact_false_options_' + test.desc, 0, () => {
         expect(JSON.stringify(convert.xml2js(test.xml, compact_false_options))).assertEqual(JSON.stringify(test.js));
       });
     });
 
-    var compact_false_trim_true_options = {
+    let compact_false_trim_true_options: CompactFalseDefaultOptions = {
       compact: false, trim: true
     };
-    testItems('xml2js', compact_false_trim_true_options).forEach(function (test) {
-      it('compact_false_trim_true_options_' + test.desc, 0, function () {
-        expect(JSON.stringify(convert.xml2js(test.xml, compact_false_trim_true_options))).assertEqual(JSON.stringify(test.js));
+    testItems('xml2js', compact_false_trim_true_options).forEach((test: ESObject) => {
+      it('compact_false_trim_true_options_' + test.desc, 0, () => {
+        expect(JSON.stringify(convert.xml2js(test.xml, compact_false_trim_true_options)))
+          .assertEqual(JSON.stringify(test.js));
       });
     });
 
-    var compact_false_sanitize_true_options = {
+    let compact_false_sanitize_true_options: CompactFalseDefaultOptions = {
       compact: false, sanitize: true
     };
-    testItems('xml2js', compact_false_sanitize_true_options).forEach(function (test) {
-      it('compact_false_sanitize_true_options_' + test.desc, 0, function () {
-        expect(JSON.stringify(convert.xml2js(test.xml, compact_false_sanitize_true_options))).assertEqual(JSON.stringify(test.js));
+    testItems('xml2js', compact_false_sanitize_true_options).forEach((test: ESObject) => {
+      it('compact_false_sanitize_true_options_' + test.desc, 0, () => {
+        expect(JSON.stringify(convert.xml2js(test.xml, compact_false_sanitize_true_options)))
+          .assertEqual(JSON.stringify(test.js));
       });
     });
 
-    var compact_false_nativeType_true_options = {
+    let compact_false_nativeType_true_options: CompactFalseDefaultOptions = {
       compact: false, nativeType: true
     };
-    testItems('xml2js', compact_false_nativeType_true_options).forEach(function (test) {
-      it('compact_false_nativeType_true_options_' + test.desc, 0, function () {
-        expect(JSON.stringify(convert.xml2js(test.xml, compact_false_nativeType_true_options))).assertEqual(JSON.stringify(test.js));
+    testItems('xml2js', compact_false_nativeType_true_options).forEach((test: ESObject) => {
+      it('compact_false_nativeType_true_options_' + test.desc, 0, () => {
+        expect(JSON.stringify(convert.xml2js(test.xml, compact_false_nativeType_true_options)))
+          .assertEqual(JSON.stringify(test.js));
       });
     });
 
-    var compact_false_nativeTypeAttributes_true_options = {
+    let compact_false_nativeTypeAttributes_true_options: CompactFalseDefaultOptions = {
       compact: false, nativeTypeAttributes: true
     };
-    testItems('xml2js', compact_false_nativeTypeAttributes_true_options).forEach(function (test) {
-      it('compact_false_nativeTypeAttributes_true_options_' + test.desc, 0, function () {
-        expect(JSON.stringify(convert.xml2js(test.xml, compact_false_nativeTypeAttributes_true_options))).assertEqual(JSON.stringify(test.js));
+    testItems('xml2js', compact_false_nativeTypeAttributes_true_options).forEach((test: ESObject) => {
+      it('compact_false_nativeTypeAttributes_true_options_' + test.desc, 0, () => {
+        expect(JSON.stringify(convert.xml2js(test.xml, compact_false_nativeTypeAttributes_true_options)))
+          .assertEqual(JSON.stringify(test.js));
       });
     });
 
-    var compact_false_alwaysChildren_true_options = {
+    let compact_false_alwaysChildren_true_options: CompactFalseDefaultOptions = {
       compact: false, alwaysChildren: true
     };
-    testItems('xml2js', compact_false_alwaysChildren_true_options).forEach(function (test) {
-      it('compact_false_alwaysChildren_true_options_' + test.desc, 0, function () {
-        expect(JSON.stringify(convert.xml2js(test.xml, compact_false_alwaysChildren_true_options))).assertEqual(JSON.stringify(test.js));
+    testItems('xml2js', compact_false_alwaysChildren_true_options).forEach((test: ESObject) => {
+      it('compact_false_alwaysChildren_true_options_' + test.desc, 0, () => {
+        expect(JSON.stringify(convert.xml2js(test.xml, compact_false_alwaysChildren_true_options)))
+          .assertEqual(JSON.stringify(test.js));
       });
     });
 
-    var compact_false_addParent_true_options = {
+    let compact_false_addParent_true_options: CompactFalseDefaultOptions = {
       compact: false, addParent: true
     };
-    testItems('xml2js', compact_false_addParent_true_options).forEach(function (test) {
-      it('compact_false_addParent_true_options_' + test.desc, 0, function () {
+    testItems('xml2js', compact_false_addParent_true_options).forEach((test: ESObject) => {
+      it('compact_false_addParent_true_options_' + test.desc, 0, () => {
         expect(!!(convert.xml2js(test.xml, compact_false_addParent_true_options))).assertTrue();
       });
     });
 
 
-    var compact_false_ignoreText_true_options = {
+    let compact_false_ignoreText_true_options: CompactFalseDefaultOptions = {
       compact: false, ignoreText: true
     };
-    testItems('xml2js', compact_false_ignoreText_true_options).forEach(function (test) {
-      it('compact_false_ignoreText_true_options_' + test.desc, 0, function () {
-        expect(JSON.stringify(convert.xml2js(test.xml, compact_false_ignoreText_true_options))).assertEqual(JSON.stringify(test.js));
+    testItems('xml2js', compact_false_ignoreText_true_options).forEach((test: ESObject) => {
+      it('compact_false_ignoreText_true_options_' + test.desc, 0, () => {
+        expect(JSON.stringify(convert.xml2js(test.xml, compact_false_ignoreText_true_options)))
+          .assertEqual(JSON.stringify(test.js));
       });
     });
 
-    var compact_false_ignoreComment_true_options = {
+    let compact_false_ignoreComment_true_options: CompactFalseDefaultOptions = {
       compact: false, ignoreComment: true
     };
-    testItems('xml2js', compact_false_ignoreComment_true_options).forEach(function (test) {
-      it('compact_false_ignoreComment_true_options_' + test.desc, 0, function () {
-        expect(JSON.stringify(convert.xml2js(test.xml, compact_false_ignoreComment_true_options))).assertEqual(JSON.stringify(test.js));
+    testItems('xml2js', compact_false_ignoreComment_true_options).forEach((test: ESObject) => {
+      it('compact_false_ignoreComment_true_options_' + test.desc, 0, () => {
+        expect(JSON.stringify(convert.xml2js(test.xml, compact_false_ignoreComment_true_options)))
+          .assertEqual(JSON.stringify(test.js));
       });
     });
 
-    var compact_false_ignoreCdata_true_options = {
+    let compact_false_ignoreCdata_true_options: CompactFalseDefaultOptions = {
       compact: false, ignoreCdata: true
     };
-    testItems('xml2js', compact_false_ignoreCdata_true_options).forEach(function (test) {
-      it('compact_false_ignoreCdata_true_options_' + test.desc, 0, function () {
-        expect(JSON.stringify(convert.xml2js(test.xml, compact_false_ignoreCdata_true_options))).assertEqual(JSON.stringify(test.js));
+    testItems('xml2js', compact_false_ignoreCdata_true_options).forEach((test: ESObject) => {
+      it('compact_false_ignoreCdata_true_options_' + test.desc, 0, () => {
+        expect(JSON.stringify(convert.xml2js(test.xml, compact_false_ignoreCdata_true_options)))
+          .assertEqual(JSON.stringify(test.js));
       });
     });
 
-    var compact_false_ignoreDoctype_true_options = {
+    let compact_false_ignoreDoctype_true_options: CompactFalseDefaultOptions = {
       compact: false, ignoreDoctype: true
     };
-    testItems('xml2js', compact_false_ignoreDoctype_true_options).forEach(function (test) {
-      it('compact_false_ignoreDoctype_true_options_' + test.desc, 0, function () {
-        expect(JSON.stringify(convert.xml2js(test.xml, compact_false_ignoreDoctype_true_options))).assertEqual(JSON.stringify(test.js));
+    testItems('xml2js', compact_false_ignoreDoctype_true_options).forEach((test: ESObject) => {
+      it('compact_false_ignoreDoctype_true_options_' + test.desc, 0, () => {
+        expect(JSON.stringify(convert.xml2js(test.xml, compact_false_ignoreDoctype_true_options)))
+          .assertEqual(JSON.stringify(test.js));
       });
     });
 
-    var compact_false_ignoreDeclaration_true_options = {
+    let compact_false_ignoreDeclaration_true_options: CompactFalseDefaultOptions = {
       compact: false, ignoreDeclaration: true
     };
-    testItems('xml2js', compact_false_ignoreDeclaration_true_options).forEach(function (test) {
-      it('compact_false_ignoreDeclaration_true_options_' + test.desc, 0, function () {
-        expect(JSON.stringify(convert.xml2js(test.xml, compact_false_ignoreDeclaration_true_options))).assertEqual(JSON.stringify(test.js));
+    testItems('xml2js', compact_false_ignoreDeclaration_true_options).forEach((test: ESObject) => {
+      it('compact_false_ignoreDeclaration_true_options_' + test.desc, 0, () => {
+        expect(JSON.stringify(convert.xml2js(test.xml, compact_false_ignoreDeclaration_true_options)))
+          .assertEqual(JSON.stringify(test.js));
       });
     });
 
-    var compact_false_ignoreInstruction_true_options = {
+    let compact_false_ignoreInstruction_true_options: CompactFalseDefaultOptions = {
       compact: false, ignoreInstruction: true
     };
-    testItems('xml2js', compact_false_ignoreInstruction_true_options).forEach(function (test) {
-      it('compact_false_ignoreInstruction_true_options_' + test.desc, 0, function () {
-        expect(JSON.stringify(convert.xml2js(test.xml, compact_false_ignoreInstruction_true_options))).assertEqual(JSON.stringify(test.js));
+    testItems('xml2js', compact_false_ignoreInstruction_true_options).forEach((test: ESObject) => {
+      it('compact_false_ignoreInstruction_true_options_' + test.desc, 0, () => {
+        expect(JSON.stringify(convert.xml2js(test.xml, compact_false_ignoreInstruction_true_options)))
+          .assertEqual(JSON.stringify(test.js));
       });
     });
 
-    var compact_true_default_options = {
+    let compact_true_default_options: CompactFalseDefaultOptions = {
       compact: true,
       trim: false,
       sanitize: false,
@@ -167,295 +220,266 @@ export default function testingXml2jsOptions() {
       alwaysChildren: false,
       addParent: false
     };
-    testItems('xml2js', compact_true_default_options).forEach(function (test) {
-      it('compact_true_default_options_' + test.desc, 0, function () {
-        expect(JSON.stringify(convert.xml2js(test.xml, compact_true_default_options))).assertEqual(JSON.stringify(test.js));
+    testItems('xml2js', compact_true_default_options).forEach((test: ESObject) => {
+      it('compact_true_default_options_' + test.desc, 0, () => {
+        expect(JSON.stringify(convert.xml2js(test.xml, compact_true_default_options)))
+          .assertEqual(JSON.stringify(test.js));
       });
     });
 
-    var compact_true_options = {
+    let compact_true_options: CompactFalseDefaultOptions = {
       compact: true
     };
-    testItems('xml2js', compact_true_options).forEach(function (test) {
-      it('compact_true_options_' + test.desc, 0, function () {
+    testItems('xml2js', compact_true_options).forEach((test: ESObject) => {
+      it('compact_true_options_' + test.desc, 0, () => {
         expect(JSON.stringify(convert.xml2js(test.xml, compact_true_options))).assertEqual(JSON.stringify(test.js));
       });
     });
 
-    var compact_true_trim_true_options = {
+    let compact_true_trim_true_options: CompactFalseDefaultOptions = {
       compact: true, trim: true
     };
-    testItems('xml2js', compact_true_trim_true_options).forEach(function (test) {
-      it('compact_true_trim_true_options_' + test.desc, 0, function () {
-        expect(JSON.stringify(convert.xml2js(test.xml, compact_true_trim_true_options))).assertEqual(JSON.stringify(test.js));
+    testItems('xml2js', compact_true_trim_true_options).forEach((test: ESObject) => {
+      it('compact_true_trim_true_options_' + test.desc, 0, () => {
+        expect(JSON.stringify(convert.xml2js(test.xml, compact_true_trim_true_options)))
+          .assertEqual(JSON.stringify(test.js));
       });
     });
 
-    var compact_true_sanitize_true_options = {
+    let compact_true_sanitize_true_options: CompactFalseDefaultOptions = {
       compact: true, sanitize: true
     };
-    testItems('xml2js', compact_true_sanitize_true_options).forEach(function (test) {
-      it('compact_true_sanitize_true_options_' + test.desc, 0, function () {
-        expect(JSON.stringify(convert.xml2js(test.xml, compact_true_sanitize_true_options))).assertEqual(JSON.stringify(test.js));
+    testItems('xml2js', compact_true_sanitize_true_options).forEach((test: ESObject) => {
+      it('compact_true_sanitize_true_options_' + test.desc, 0, () => {
+        expect(JSON.stringify(convert.xml2js(test.xml, compact_true_sanitize_true_options)))
+          .assertEqual(JSON.stringify(test.js));
       });
     });
 
-    var compact_true_alwaysArray_true_options = {
+    let compact_true_alwaysArray_true_options: CompactFalseDefaultOptions = {
       compact: true, alwaysArray: true
     };
-    testItems('xml2js', compact_true_alwaysArray_true_options).forEach(function (test) {
-      it('compact_true_alwaysArray_true_options_' + test.desc, 0, function () {
-        expect(JSON.stringify(convert.xml2js(test.xml, compact_true_alwaysArray_true_options))).assertEqual(JSON.stringify(test.js));
+    testItems('xml2js', compact_true_alwaysArray_true_options).forEach((test: ESObject) => {
+      it('compact_true_alwaysArray_true_options_' + test.desc, 0, () => {
+        expect(JSON.stringify(convert.xml2js(test.xml, compact_true_alwaysArray_true_options)))
+          .assertEqual(JSON.stringify(test.js));
       });
     });
 
-    var compact_true_alwaysArray_options = {
+    let compact_true_alwaysArray_options: CompactFalseDefaultOptions = {
       compact: true, alwaysArray: ['a', 'c']
     };
-    testItems('xml2js', compact_true_alwaysArray_options).forEach(function (test) {
-      it('compact_true_alwaysArray_options_' + test.desc, 0, function () {
-        expect(JSON.stringify(convert.xml2js(test.xml, compact_true_alwaysArray_options))).assertEqual(JSON.stringify(test.js));
+    testItems('xml2js', compact_true_alwaysArray_options).forEach((test: ESObject) => {
+      it('compact_true_alwaysArray_options_' + test.desc, 0, () => {
+        expect(JSON.stringify(convert.xml2js(test.xml, compact_true_alwaysArray_options)))
+          .assertEqual(JSON.stringify(test.js));
       });
     });
 
-    var compact_true_addParent_true_options = {
+    let compact_true_addParent_true_options: CompactFalseDefaultOptions = {
       compact: true, addParent: true
     };
-    testItems('xml2js', compact_true_addParent_true_options).forEach(function (test) {
-      it('compact_true_addParent_true_options_' + test.desc, 0, function () {
+    testItems('xml2js', compact_true_addParent_true_options).forEach((test: ESObject) => {
+      it('compact_true_addParent_true_options_' + test.desc, 0, () => {
         expect(!!convert.xml2js(test.xml, compact_true_addParent_true_options)).assertTrue();
       });
     });
 
-    var compact_true_ignoreText_true_options = {
+    let compact_true_ignoreText_true_options: CompactFalseDefaultOptions = {
       compact: true, ignoreText: true
     };
-    testItems('xml2js', compact_true_ignoreText_true_options).forEach(function (test) {
-      it('compact_true_ignoreText_true_options_' + test.desc, 0, function () {
-        expect(JSON.stringify(convert.xml2js(test.xml, compact_true_ignoreText_true_options))).assertEqual(JSON.stringify(test.js));
+    testItems('xml2js', compact_true_ignoreText_true_options).forEach((test: ESObject) => {
+      it('compact_true_ignoreText_true_options_' + test.desc, 0, () => {
+        expect(JSON.stringify(convert.xml2js(test.xml, compact_true_ignoreText_true_options)))
+          .assertEqual(JSON.stringify(test.js));
       });
     });
 
 
-    var compact_true_ignoreComment_true_options = {
+    let compact_true_ignoreComment_true_options: CompactFalseDefaultOptions = {
       compact: true, ignoreComment: true
     };
-    testItems('xml2js', compact_true_ignoreComment_true_options).forEach(function (test) {
-      it('compact_true_ignoreComment_true_options_' + test.desc, 0, function () {
-        expect(JSON.stringify(convert.xml2js(test.xml, compact_true_ignoreComment_true_options))).assertEqual(JSON.stringify(test.js));
+    testItems('xml2js', compact_true_ignoreComment_true_options).forEach((test: ESObject) => {
+      it('compact_true_ignoreComment_true_options_' + test.desc, 0, () => {
+        expect(JSON.stringify(convert.xml2js(test.xml, compact_true_ignoreComment_true_options)))
+          .assertEqual(JSON.stringify(test.js));
       });
     });
 
-    var compact_true_ignoreCdata_true_options = {
+    let compact_true_ignoreCdata_true_options: CompactFalseDefaultOptions = {
       compact: true, ignoreCdata: true
     };
-    testItems('xml2js', compact_true_ignoreCdata_true_options).forEach(function (test) {
-      it('compact_true_ignoreCdata_true_options_' + test.desc, 0, function () {
-        expect(JSON.stringify(convert.xml2js(test.xml, compact_true_ignoreCdata_true_options))).assertEqual(JSON.stringify(test.js));
+    testItems('xml2js', compact_true_ignoreCdata_true_options).forEach((test: ESObject) => {
+      it('compact_true_ignoreCdata_true_options_' + test.desc, 0, () => {
+        expect(JSON.stringify(convert.xml2js(test.xml, compact_true_ignoreCdata_true_options)))
+          .assertEqual(JSON.stringify(test.js));
       });
     });
 
-    var compact_true_ignoreDoctype_true_options = {
+    let compact_true_ignoreDoctype_true_options: CompactFalseDefaultOptions = {
       compact: true, ignoreDoctype: true
     };
-    testItems('xml2js', compact_true_ignoreDoctype_true_options).forEach(function (test) {
-      it('compact_true_ignoreDoctype_true_options_' + test.desc, 0, function () {
-        expect(JSON.stringify(convert.xml2js(test.xml, compact_true_ignoreDoctype_true_options))).assertEqual(JSON.stringify(test.js));
+    testItems('xml2js', compact_true_ignoreDoctype_true_options).forEach((test: ESObject) => {
+      it('compact_true_ignoreDoctype_true_options_' + test.desc, 0, () => {
+        expect(JSON.stringify(convert.xml2js(test.xml, compact_true_ignoreDoctype_true_options)))
+          .assertEqual(JSON.stringify(test.js));
       });
     });
 
-    var compact_true_ignoreDeclaration_true_options = {
+    let compact_true_ignoreDeclaration_true_options: CompactFalseDefaultOptions = {
       compact: true, ignoreDeclaration: true
     };
-    testItems('xml2js', compact_true_ignoreDeclaration_true_options).forEach(function (test) {
-      it('compact_true_ignoreDeclaration_true_options_' + test.desc, 0, function () {
-        expect(JSON.stringify(convert.xml2js(test.xml, compact_true_ignoreDeclaration_true_options))).assertEqual(JSON.stringify(test.js));
+    testItems('xml2js', compact_true_ignoreDeclaration_true_options).forEach((test: ESObject) => {
+      it('compact_true_ignoreDeclaration_true_options_' + test.desc, 0, () => {
+        expect(JSON.stringify(convert.xml2js(test.xml, compact_true_ignoreDeclaration_true_options)))
+          .assertEqual(JSON.stringify(test.js));
       });
     });
 
-    var compact_true_ignoreInstruction_true_options = {
+    let compact_true_ignoreInstruction_true_options: CompactFalseDefaultOptions = {
       compact: true, ignoreInstruction: true
     };
-    testItems('xml2js', compact_true_ignoreInstruction_true_options).forEach(function (test) {
-      it('compact_true_ignoreInstruction_true_options_' + test.desc, 0, function () {
-        expect(JSON.stringify(convert.xml2js(test.xml, compact_true_ignoreInstruction_true_options))).assertEqual(JSON.stringify(test.js));
+    testItems('xml2js', compact_true_ignoreInstruction_true_options).forEach((test: ESObject) => {
+      it('compact_true_ignoreInstruction_true_options_' + test.desc, 0, () => {
+        expect(JSON.stringify(convert.xml2js(test.xml, compact_true_ignoreInstruction_true_options)))
+          .assertEqual(JSON.stringify(test.js));
       });
     });
 
-    var varying_spaces_options = {};
-    testItems('xml2js', varying_spaces_options).forEach(function (test) {
-      it('varying_spaces_options_' + test.desc, 0, function () {
+    let varying_spaces_options: CompactFalseDefaultOptions = {};
+    testItems('xml2js', varying_spaces_options).forEach((test: ESObject) => {
+      it('varying_spaces_options_' + test.desc, 0, () => {
         expect(JSON.stringify(convert.xml2js(test.xml, varying_spaces_options))).assertEqual(JSON.stringify(test.js));
       });
     });
 
-    var varying_spaces_true_options = {
+    let varying_spaces_true_options: CompactFalseDefaultOptions = {
       spaces: true
     };
-    testItems('xml2js', varying_spaces_true_options).forEach(function (test) {
-      it('varying_spaces_true_options_' + test.desc, 0, function () {
-        expect(JSON.stringify(convert.xml2js(test.xml, varying_spaces_true_options))).assertEqual(JSON.stringify(test.js));
+    testItems('xml2js', varying_spaces_true_options).forEach((test: ESObject) => {
+      it('varying_spaces_true_options_' + test.desc, 0, () => {
+        expect(JSON.stringify(convert.xml2js(test.xml, varying_spaces_true_options)))
+          .assertEqual(JSON.stringify(test.js));
       });
     });
 
-    var varying_spaces2_options = {
+    let varying_spaces2_options: CompactFalseDefaultOptions = {
       spaces: 2
     };
-    testItems('xml2js', varying_spaces2_options).forEach(function (test) {
-      it('varying_spaces2_options_' + test.desc, 0, function () {
+    testItems('xml2js', varying_spaces2_options).forEach((test: ESObject) => {
+      it('varying_spaces2_options_' + test.desc, 0, () => {
         expect(JSON.stringify(convert.xml2js(test.xml, varying_spaces2_options))).assertEqual(JSON.stringify(test.js));
       });
     });
 
-    var varying_spaces4_options = {
+    let varying_spaces4_options: CompactFalseDefaultOptions = {
       spaces: 4
     };
-    testItems('xml2js', varying_spaces4_options).forEach(function (test) {
-      it('varying_spaces4_options_' + test.desc, 0, function () {
+    testItems('xml2js', varying_spaces4_options).forEach((test: ESObject) => {
+      it('varying_spaces4_options_' + test.desc, 0, () => {
         expect(JSON.stringify(convert.xml2js(test.xml, varying_spaces4_options))).assertEqual(JSON.stringify(test.js));
       });
     });
 
-    var varying_spaces_whitespace_options = {
+    let varying_spaces_whitespace_options: CompactFalseDefaultOptions = {
       spaces: '  '
     };
-    testItems('xml2js', varying_spaces_whitespace_options).forEach(function (test) {
-      it('varying_spaces_whitespace_options_' + test.desc, 0, function () {
-        expect(JSON.stringify(convert.xml2js(test.xml, varying_spaces_whitespace_options))).assertEqual(JSON.stringify(test.js));
+    testItems('xml2js', varying_spaces_whitespace_options).forEach((test: ESObject) => {
+      it('varying_spaces_whitespace_options_' + test.desc, 0, () => {
+        expect(JSON.stringify(convert.xml2js(test.xml, varying_spaces_whitespace_options)))
+          .assertEqual(JSON.stringify(test.js));
       });
     });
 
-    var varying_spaces_t_options = {
+    let varying_spaces_t_options: CompactFalseDefaultOptions = {
       spaces: '\t'
     };
-    testItems('xml2js', varying_spaces_t_options).forEach(function (test) {
-      it('varying_spaces_t_options_' + test.desc, 0, function () {
+    testItems('xml2js', varying_spaces_t_options).forEach((test: ESObject) => {
+      it('varying_spaces_t_options_' + test.desc, 0, () => {
         expect(JSON.stringify(convert.xml2js(test.xml, varying_spaces_t_options))).assertEqual(JSON.stringify(test.js));
       });
     });
 
 
-    var various_trim_true_options = {
+    let various_trim_true_options: CompactFalseDefaultOptions = {
       trim: true
     };
-    testItems('xml2js', various_trim_true_options).forEach(function (test) {
-      it('various_trim_true_options_' + test.desc, 0, function () {
-        expect(JSON.stringify(convert.xml2js(test.xml, various_trim_true_options))).assertEqual(JSON.stringify(test.js));
+    testItems('xml2js', various_trim_true_options).forEach((test: ESObject) => {
+      it('various_trim_true_options_' + test.desc, 0, () => {
+        expect(JSON.stringify(convert.xml2js(test.xml, various_trim_true_options)))
+          .assertEqual(JSON.stringify(test.js));
       });
     });
 
-    var various_nativeType_true_options = {
+    let various_nativeType_true_options: CompactFalseDefaultOptions = {
       nativeType: true
     };
 
-    it('various_nativeType_true_options_parse_number', 0, function () {
-      expect(JSON.stringify(convert.xml2js('<a>123</a>', various_nativeType_true_options))).assertEqual(JSON.stringify({
-        "elements": [{
-          "type": "element", "name": "a", "elements": [{
-            "type": "text", "text": 123
-          }]
-        }]
-      }));
+    it('various_nativeType_true_options_parse_number', 0, () => {
+      expect(JSON.stringify(convert.xml2js('<a>123</a>', various_nativeType_true_options)))
+        .assertEqual(JSON.stringify(Xml2JsData1));
     });
-    it('various_nativeType_true_options_parse_true', 0, function () {
-      expect(JSON.stringify(convert.xml2js('<a>true</a>', various_nativeType_true_options))).assertEqual(JSON.stringify({
-        "elements": [{
-          "type": "element", "name": "a", "elements": [{
-            "type": "text", "text": true
-          }]
-        }]
-      }));
+    it('various_nativeType_true_options_parse_true', 0, () => {
+      expect(JSON.stringify(convert.xml2js('<a>true</a>', various_nativeType_true_options)))
+        .assertEqual(JSON.stringify(Xml2JsData2));
     });
-    it('various_nativeType_true_options_parse_false', 0, function () {
-      expect(JSON.stringify(convert.xml2js('<a>false</a>', various_nativeType_true_options))).assertEqual(JSON.stringify({
-        "elements": [{
-          "type": "element", "name": "a", "elements": [{
-            "type": "text", "text": false
-          }]
-        }]
-      }));
+    it('various_nativeType_true_options_parse_false', 0, () => {
+      expect(JSON.stringify(convert.xml2js('<a>false</a>', various_nativeType_true_options)))
+        .assertEqual(JSON.stringify(Xml2JsData3));
     });
 
-    var various_nativeTypeAttributes_true_options = {
+    let various_nativeTypeAttributes_true_options: CompactFalseDefaultOptions = {
       nativeTypeAttributes: true
     };
 
-    it('various_nativeTypeAttributes_true_options_parse_number', 0, function () {
-      expect(JSON.stringify(convert.xml2js('<a data-value="123"></a>', various_nativeTypeAttributes_true_options))).assertEqual(JSON.stringify({
-        "elements": [{
-          "type": "element", "name": "a", "attributes": {
-            "data-value": 123
-          }
-        }]
-      }));
+    it('various_nativeTypeAttributes_true_options_parse_number', 0, () => {
+      expect(JSON.stringify(convert.xml2js('<a data-value="123"></a>', various_nativeTypeAttributes_true_options)))
+        .assertEqual(JSON.stringify(Xml2JsData4));
     });
-    it('various_nativeTypeAttributes_true_options_parse_true', 0, function () {
-      expect(JSON.stringify(convert.xml2js('<a data-value="true"></a>', various_nativeTypeAttributes_true_options))).assertEqual(JSON.stringify({
-        "elements": [{
-          "type": "element", "name": "a", "attributes": {
-            "data-value": true
-          }
-        }]
-      }));
+    it('various_nativeTypeAttributes_true_options_parse_true', 0, () => {
+      expect(JSON.stringify(convert.xml2js('<a data-value="true"></a>', various_nativeTypeAttributes_true_options)))
+        .assertEqual(JSON.stringify(Xml2JsData5));
     });
-    it('various_nativeTypeAttributes_true_options_parse_false', 0, function () {
-      expect(JSON.stringify(convert.xml2js('<a data-value="false"></a>', various_nativeTypeAttributes_true_options))).assertEqual(JSON.stringify({
-        "elements": [{
-          "type": "element", "name": "a", "attributes": {
-            "data-value": false
-          }
-        }]
-      }));
+    it('various_nativeTypeAttributes_true_options_parse_false', 0, () => {
+      expect(JSON.stringify(convert.xml2js('<a data-value="false"></a>', various_nativeTypeAttributes_true_options)))
+        .assertEqual(JSON.stringify(Xml2JsData6));
     });
 
-    var various_instructionHasAttributes_true_options = {
+    let various_instructionHasAttributes_true_options: CompactFalseDefaultOptions = {
       compact: true, instructionHasAttributes: true
     };
 
-    it('various_instructionHasAttributes_true_options_Parse_attributes_in_processing_instruction', 0, function () {
-      expect(JSON.stringify(convert.xml2js('<?go to="there"?>', various_instructionHasAttributes_true_options))).assertEqual(JSON.stringify({
-        "_instruction": {
-          "go": {
-            "_attributes": {
-              "to": "there"
-            }
-          }
-        }
-      }));
+    it('various_instructionHasAttributes_true_options_Parse_attributes_in_processing_instruction', 0, () => {
+      expect(JSON.stringify(convert.xml2js('<?go to="there"?>', various_instructionHasAttributes_true_options)))
+        .assertEqual(JSON.stringify(Xml2JsData7));
     });
 
-    it('various_instructionHasAttributes_true_options_parse_attributes_in_processing_instruction', 0, function () {
+    it('various_instructionHasAttributes_true_options_parse_attributes_in_processing_instruction', 0, () => {
       expect(JSON.stringify(convert.xml2js('<?go to="there"?>', {
         instructionHasAttributes: true
-      }))).assertEqual(JSON.stringify({
-        "elements": [{
-          "type": "instruction", "name": "go", "attributes": {
-            "to": "there"
-          }
-        }]
-      }));
+      }))).assertEqual(JSON.stringify(Xml2JsData8));
     });
 
-    var xml2json_default_options = {};
-    testItems('xml2js', xml2json_default_options).forEach(function (test) {
-      it('xml2json_default_options_' + test.desc, 0, function () {
+    let xml2json_default_options: CompactFalseDefaultOptions = {};
+    testItems('xml2js', xml2json_default_options).forEach((test: ESObject) => {
+      it('xml2json_default_options_' + test.desc, 0, () => {
         expect(convert.xml2json(test.xml, xml2json_default_options)).assertEqual(JSON.stringify(test.js));
       });
     });
 
-    var compact_true_addParent_true_options2 = {
+    let compact_true_addParent_true_options2: CompactFalseDefaultOptions = {
       onlyItem: 6, compact: true, addParent: true
     };
-    testItems('xml2js', compact_true_addParent_true_options2).forEach(function (test) {
-      it('compact_true_addParent_true_options2_' + test.desc, 0, function () {
+    testItems('xml2js', compact_true_addParent_true_options2).forEach((test: ESObject) => {
+      it('compact_true_addParent_true_options2_' + test.desc, 0, () => {
         expect(convert.xml2json(test.xml, compact_true_addParent_true_options2))
-          .assertEqual(JSON.stringify(test.js, function (k, v) {
+          .assertEqual(JSON.stringify(test.js, (k: string, v: string) => {
             return k === '_parent' ? '_' : v;
           }));
       });
     });
 
-    var issue_3_xml =
+    let issue_3_xml =
       '<?xml version="1.0" encoding="utf-8"?>\n' +
       '<dp:ListServicesReply ReturnCode="0" xmlns:dp="http://www.cisco.com/vtg/diagnosticportal">\n' +
       '  <dp:Schema Version="1.0" />\n' +
@@ -464,55 +488,14 @@ export default function testingXml2jsOptions() {
       '    <dp:Service Name="Cisco ICM Diagnostic Framework" Description="Provides a web-based diagnostic service for Cisco Unified ICM, Contact Center Enterprise application." Status="Running" StartupType="Auto" LogOnAs="LocalSystem" />\n' +
       '  </dp:ServiceList>\n' +
       '</dp:ListServicesReply>';
-    var issue_3_json = {
-      "_declaration": {
-        "_attributes": {
-          "version": "1.0",
-          "encoding": "utf-8"
-        }
-      },
-      "dp:ListServicesReply": {
-        "_attributes": {
-          "ReturnCode": "0",
-          "xmlns:dp": "http://www.cisco.com/vtg/diagnosticportal"
-        },
-        "dp:Schema": {
-          "_attributes": {
-            "Version": "1.0"
-          }
-        },
-        "dp:ServiceList": {
-          "dp:Service": [
-            {
-              "_attributes": {
-                "Name": "Cisco ICM usgd1 LoggerA",
-                "Description": "Provides Call Logging services for Instance usgd1",
-                "Status": "Running",
-                "StartupType": "Auto",
-                "LogOnAs": "****"
-              }
-            },
-            {
-              "_attributes": {
-                "Name": "Cisco ICM Diagnostic Framework",
-                "Description": "Provides a web-based diagnostic service for Cisco Unified ICM, Contact Center Enterprise application.",
-                "Status": "Running",
-                "StartupType": "Auto",
-                "LogOnAs": "LocalSystem"
-              }
-            }
-          ]
-        }
-      }
-    };
 
-    it('issue_3_should_output_as_expected_json', 0, function () {
+    it('issue_3_should_output_as_expected_json', 0, () => {
       expect(convert.xml2json(issue_3_xml, {
         compact: true
-      })).assertEqual(JSON.stringify(issue_3_json));
+      })).assertEqual(JSON.stringify(xml_js_issue_3_json));
     });
 
-    var issue_6_xml =
+    let issue_6_xml =
       '<ZohoCreator>\n' +
       '    <applicationslist>\n' +
       '        <application name="testapp">\n' +
@@ -539,28 +522,28 @@ export default function testingXml2jsOptions() {
       '    </applicationslist>\n' +
       '</ZohoCreator>';
 
-    var issue_6_json = convert.xml2json(issue_6_xml, {
+    let issue_6_json = convert.xml2json(issue_6_xml, {
       compact: true, spaces: 4
     });
 
-    it('issue_6_should_output_json_and_reverse_it_back_to_xml', 0, function () {
+    it('issue_6_should_output_json_and_reverse_it_back_to_xml', 0, () => {
       expect(convert.json2xml(issue_6_json, {
         compact: true, spaces: 4, fullTagEmptyElement: true
       })).assertEqual(issue_6_xml);
     });
 
-    var issue_13_xml = '<!DOCTYPE svc_init SYSTEM "MLP_SVC_INIT_300.DTD" [<!ENTITY % extension SYSTEM "PIF_EXTENSION_100.DTD">%extension;]>';
-    var issue_13_json = {
+    let issue_13_xml = '<!DOCTYPE svc_init SYSTEM "MLP_SVC_INIT_300.DTD" [<!ENTITY % extension SYSTEM "PIF_EXTENSION_100.DTD">%extension;]>';
+    let issue_13_json: Record<string, string> = {
       "_doctype": "svc_init SYSTEM \"MLP_SVC_INIT_300.DTD\" [<!ENTITY % extension SYSTEM \"PIF_EXTENSION_100.DTD\">%extension;]"
     };
 
-    it('issue_13_should_output_as_expected_json', 0, function () {
+    it('issue_13_should_output_as_expected_json', 0, () => {
       expect(JSON.stringify(convert.xml2js(issue_13_xml, {
         compact: true
       }))).assertEqual(JSON.stringify(issue_13_json));
     });
 
-    var issue_26_xml =
+    let issue_26_xml =
       '<?xml version="1.0" encoding="UTF-8"?>\n' +
       '<note>\n' +
       '\v<to>xml-js</to>\n' +
@@ -568,111 +551,39 @@ export default function testingXml2jsOptions() {
       '\v<heading>Min Example</heading>\n' +
       '\v<body>Here are some characters that get sanitized: " \'</body>\n' +
       '</note>';
-    var issue_26_js = {
-      "_declaration": {
-        "_attributes": {
-          "version": "1.0",
-          "encoding": "UTF-8"
-        }
-      },
-      "note": {
-        "to": {
-          "_text": "xml-js"
-        },
-        "from": {
-          "_text": "ACraig"
-        },
-        "heading": {
-          "_text": "Min Example"
-        },
-        "body": {
-          "_text": "Here are some characters that get sanitized: \" '"
-        }
-      }
-    };
 
-    it('issue_26_should_convert_xml_object_to_js_and_back_to_xml_correctly', 0, function () {
-      issue_26_xml = issue_26_xml.replace(/\v/g, '  ');
-      var js_ = convert.xml2js(issue_26_xml, {
+    it('issue_26_should_convert_xml_object_to_js_and_back_to_xml_correctly', 0, () => {
+      issue_26_xml = issue_26_xml.replace(new RegExp('\v', 'g'), '  ');
+      let js_ = convert.xml2js(issue_26_xml, {
         compact: true
       });
-      expect(JSON.stringify(js_)).assertEqual(JSON.stringify(issue_26_js));
+      expect(JSON.stringify(js_)).assertEqual(JSON.stringify(xml_js_issue_26_js));
       expect(convert.js2xml(js_, {
         spaces: 2, compact: true
       })).assertEqual(issue_26_xml);
     });
 
-    var issue_26_xml2 = '<title>Support &amp; resistance</title>';
-    var issue_26_js2 = {
-      elements: [{
-        type: 'element',
-        name: 'title',
-        elements: [{
-          type: 'text',
-          text: 'Support & resistance'
-        }]
-      }]
-    };
+    let issue_26_xml2 = '<title>Support &amp; resistance</title>';
 
-    it('issue_26_2_should_convert_xml_object_to_js_and_back_to_xml_correctly', 0, function () {
-      var js_ = convert.xml2js(issue_26_xml2);
-      expect(JSON.stringify(js_)).assertEqual(JSON.stringify(issue_26_js2));
+    it('issue_26_2_should_convert_xml_object_to_js_and_back_to_xml_correctly', 0, () => {
+      let js_ = convert.xml2js(issue_26_xml2);
+      expect(JSON.stringify(js_)).assertEqual(JSON.stringify(xml_js_issue_26_js2));
       expect(convert.js2xml(js_)).assertEqual(issue_26_xml2);
     });
 
-    var issue_29_xml = '<outer> This is <inner> some</inner> <inner>Text </inner> </outer>';
-    var issue_29_js = {
-      elements: [{
-        type: 'element',
-        name: 'outer',
-        elements: [{
-          type: 'text',
-          text: ' This is '
-        }, {
-          type: 'element',
-          name: 'inner',
-          elements: [{
-            type: 'text',
-            text: ' some'
-          }]
-        }, {
-          type: 'text',
-          text: ' '
-        }, {
-          type: 'element',
-          name: 'inner',
-          elements: [{
-            type: 'text',
-            text: 'Text '
-          }]
-        }, {
-          type: 'text',
-          text: ' '
-        }]
-      }]
-    };
-
-    it('issue_29_should_convert_xml_object_to_js_and_back_to_xml_correctly', 0, function () {
-      var js_ = convert.xml2js(issue_29_xml, {
+    let issue_29_xml = '<outer> This is <inner> some</inner> <inner>Text </inner> </outer>';
+    it('issue_29_should_convert_xml_object_to_js_and_back_to_xml_correctly', 0, () => {
+      let js_ = convert.xml2js(issue_29_xml, {
         captureSpacesBetweenElements: true
       });
-      expect(JSON.stringify(js_)).assertEqual(JSON.stringify(issue_29_js));
+      expect(JSON.stringify(js_)).assertEqual(JSON.stringify(xml_js_issue_29_js));
       expect(convert.js2xml(js_)).assertEqual(issue_29_xml);
     });
   });
 
-  var issue_34_xml = '<?xml version=\'1.0\' encoding=\'UTF-8\'?>';
-  var issue_34_js = {
-    declaration: {
-      attributes: {
-        version: '1.0',
-        encoding: 'UTF-8'
-      }
-    }
-  };
-
-  it('issue_34_should_accept_XML_declarations_that_use_single_quotes', 0, function () {
-    expect(JSON.stringify(convert.xml2js(issue_34_xml))).assertEqual(JSON.stringify(issue_34_js));
+  let issue_34_xml = '<?xml version=\'1.0\' encoding=\'UTF-8\'?>';
+  it('issue_34_should_accept_XML_declarations_that_use_single_quotes', 0, () => {
+    expect(JSON.stringify(convert.xml2js(issue_34_xml))).assertEqual(JSON.stringify(xml_js_issue_34_js));
   });
 
 }

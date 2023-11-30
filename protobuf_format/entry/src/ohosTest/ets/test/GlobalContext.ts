@@ -12,17 +12,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import test from '../../sax_util/TestUtil'
-import { describe, expect, it } from '@ohos/hypium'
-import { scriptCloseBetterTestData } from './SaxData'
 
-export default function scriptCloseBetterTest() {
+export class GlobalContext {
+  private constructor() {
+  }
 
-  describe('ScriptCloseBetterTest', () => {
+  private static instance: GlobalContext;
 
-    it('scriptCloseBetterTest', 0, () => {
-      test(scriptCloseBetterTestData, expect);
-    })
-  })
+  private _objects = new Map<string, Object>();
+
+  public static getContext(): GlobalContext {
+    if (!GlobalContext.instance) {
+      GlobalContext.instance = new GlobalContext();
+    }
+    return GlobalContext.instance;
+  }
+
+  getObject(value: string): Object | undefined {
+    return this._objects.get(value);
+  }
+
+  setObject(key: string, objectClass: Object): void {
+    this._objects.set(key, objectClass);
+  }
 }
-

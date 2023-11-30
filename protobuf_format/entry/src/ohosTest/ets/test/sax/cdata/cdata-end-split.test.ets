@@ -14,27 +14,14 @@
  */
 import test from '../../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import { cdataEndSplitTestData } from '../SaxData'
 
 export default function cdataEndSplitTest() {
 
-  describe('CDataEndSplitTest', function () {
+  describe('CDataEndSplitTest', () => {
 
-    it('cdataEndSplitTest', 0, function () {
-      let data = {
-        expect: [
-          ['opentagstart', {
-            'name': 'R', 'attributes': {}
-          }],
-          ['opentag', {
-            'name': 'R', 'attributes': {}, 'isSelfClosing': false
-          }],
-          ['opencdata', undefined],
-          ['cdata', ' this is '],
-          ['closecdata', undefined],
-          ['closetag', 'R']
-        ]
-      }
-      test(data, expect).write('<r><![CDATA[ this is ]')
+    it('cdataEndSplitTest', 0, () => {
+      test(cdataEndSplitTestData, expect).write('<r><![CDATA[ this is ]')
         .write(']>')
         .write('</r>')
         .close();

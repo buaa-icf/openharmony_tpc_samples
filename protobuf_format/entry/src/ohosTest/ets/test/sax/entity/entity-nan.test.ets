@@ -14,26 +14,14 @@
  */
 import test from '../../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import { entityNanTestData } from '../SaxData'
 
 export default function entityNanTest() {
 
-  describe('EntityNanTest', function () {
+  describe('EntityNanTest', () => {
 
-    it('entityNanTest', 0, function () {
-      let data = {
-        xml: '<r>&#NaN;</r>',
-        expect: [
-          ['opentagstart', {
-            'name': 'R', attributes: {}
-          }],
-          ['opentag', {
-            'name': 'R', attributes: {}, isSelfClosing: false
-          }],
-          ['text', '&#NaN;'],
-          ['closetag', 'R']
-        ]
-      }
-      test(data, expect);
+    it('entityNanTest', 0, () => {
+      test(entityNanTestData, expect);
     })
   })
 }

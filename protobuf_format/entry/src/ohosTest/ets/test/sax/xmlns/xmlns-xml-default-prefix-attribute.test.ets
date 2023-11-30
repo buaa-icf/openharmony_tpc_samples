@@ -14,64 +14,14 @@
  */
 import test from '../../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import { xmlnsXmlDefaultPrefixAttributeData } from '../SaxData'
 
 export default function xmlnsXmlDefaultPrefixAttributeTest() {
 
-  describe('xmlnsXmlDefaultPrefixAttributeTest', function () {
+  describe('xmlnsXmlDefaultPrefixAttributeTest', () => {
 
-    it('xmlns_xml_default_prefix_attribute', 0, function () {
-      let data = {
-        xml: "<root xml:lang='en'/>",
-        expect: [
-          [
-            'opentagstart',
-            {
-              name: 'root',
-              attributes: {},
-              ns: {}
-            }
-          ],
-          [
-            'attribute',
-            {
-              name: 'xml:lang',
-              local: 'lang',
-              prefix: 'xml',
-              uri: 'http://www.w3.org/XML/1998/namespace',
-              value: 'en'
-            }
-          ],
-          [
-            'opentag',
-            {
-              name: 'root',
-              uri: '',
-              prefix: '',
-              local: 'root',
-              attributes: {
-                'xml:lang': {
-                  name: 'xml:lang',
-                  local: 'lang',
-                  prefix: 'xml',
-                  uri: 'http://www.w3.org/XML/1998/namespace',
-                  value: 'en'
-                }
-              },
-              ns: {},
-              isSelfClosing: true
-            }
-          ],
-          [
-            'closetag',
-            'root'
-          ]
-        ],
-        strict: true,
-        opt: {
-          xmlns: true
-        }
-      }
-      test(data, expect);
+    it('xmlns_xml_default_prefix_attribute', 0, () => {
+      test(xmlnsXmlDefaultPrefixAttributeData, expect);
     })
   })
 }

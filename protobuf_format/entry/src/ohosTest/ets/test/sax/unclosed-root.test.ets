@@ -14,39 +14,14 @@
  */
 import test from '../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import { unclosedRootTestData } from './SaxData'
 
 export default function unclosedRootTest() {
 
-  describe('UnclosedRootTest', function () {
+  describe('UnclosedRootTest', () => {
 
-    it('unclosedRootTest', 0, function () {
-      let data = {
-        xml: '<root>',
-        expect: [
-          [
-            'opentagstart',
-            {
-              name: 'root',
-              attributes: {}
-            }
-          ],
-          [
-            'opentag',
-            {
-              name: 'root',
-              attributes: {},
-              isSelfClosing: false
-            }
-          ],
-          [
-            'error',
-            'Unclosed root tag\nLine: 0\nColumn: 6\nChar: '
-          ]
-        ],
-        strict: true,
-        opt: {}
-      }
-      test(data, expect);
+    it('unclosedRootTest', 0, () => {
+      test(unclosedRootTestData, expect);
     })
   })
 }

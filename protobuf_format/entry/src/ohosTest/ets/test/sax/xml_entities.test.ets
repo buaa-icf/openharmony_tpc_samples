@@ -14,31 +14,14 @@
  */
 import test from '../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import { xmlEntitiesTestData } from './SaxData'
 
 export default function xmlEntitiesTest() {
 
-  describe('XmlEntitiesTest', function () {
+  describe('XmlEntitiesTest', () => {
 
-    it('xmlEntitiesTest', 0, function () {
-      let data = {
-        opt: {
-          strictEntities: true
-        },
-        xml: '<r>&rfloor; ' +
-        '&spades; &copy; &rarr; &amp; ' +
-        '&lt; < <  <   < &gt; &real; &weierp; &euro;</r>',
-        expect: [
-          ['opentagstart', {
-            'name': 'R', attributes: {}
-          }],
-          ['opentag', {
-            'name': 'R', attributes: {}, isSelfClosing: false
-          }],
-          ['text', '&rfloor; &spades; &copy; &rarr; & < < <  <   < > &real; &weierp; &euro;'],
-          ['closetag', 'R']
-        ]
-      }
-      test(data, expect);
+    it('xmlEntitiesTest', 0, () => {
+      test(xmlEntitiesTestData, expect);
     })
   })
 }

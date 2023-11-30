@@ -24,22 +24,22 @@ import sax from '@ohos/sax'
 ```
 import sax from '@ohos/sax'
 
-var strict = true; // set to false for html-mode
-var parser = sax.parser(strict);
+let strict = true; // set to false for html-mode
+let parser = sax.parser(strict);
 
-parser.onerror = function (e) {
+parser.onerror = (e:Error) => {
   // an error happened.
 };
-parser.ontext = function (t) {
+parser.ontext = (t:string) => {
   // got some text.  t is the string of text.
 };
-parser.onopentag = function (node) {
+parser.onopentag = (node:ESObject) => {
   // opened a tag.  node has "name" and "attributes"
 };
-parser.onattribute = function (attr) {
+parser.onattribute = (attr:ESObject) => {
   // an attribute.  attr has "name" and "value"
 };
-parser.onend = function () {
+parser.onend = () => {
   // parser stream is done, and ready to have more stuff written to it.
 };
 
@@ -165,6 +165,7 @@ function flush(): void;
 
 在下述版本验证通过：
 
+DevEco Studio: 4.1 Canary2(4.1.3.313), SDK: API11 (4.1.3.1)
 DevEco Studio: 4.0 Release(4.0.3.413), SDK: API10 (4.0.10.3)
 
 ## 目录结构
@@ -174,7 +175,7 @@ DevEco Studio: 4.0 Release(4.0.3.413), SDK: API10 (4.0.10.3)
 |     |---- src/main  # 模块代码
 |           |---- ets/   # 模块代码
 |                |---- sax.js     # 提供xml解析能力
-|            |---- index.ets          # 入口文件
+|            |---- index.ts          # 入口文件
 |            |---- *.json5      # 配置文件
 |     |---- README.md  # 安装使用方法
 |     |---- README.OpenSource  # 开源说明

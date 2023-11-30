@@ -14,34 +14,14 @@
  */
 import test from '../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import { trailingNonWhitespaceTestData } from './SaxData'
 
 export default function trailingNonWhitespaceTest() {
 
-  describe('TrailingNonWhitespaceTest', function () {
+  describe('TrailingNonWhitespaceTest', () => {
 
-    it('trailingNonWhitespaceTest', 0, function () {
-      let data = {
-        xml: '<span>Welcome,</span> to monkey land',
-        expect: [
-          ['opentagstart', {
-            'name': 'SPAN',
-            'attributes': {}
-          }],
-          ['opentag', {
-            'name': 'SPAN',
-            'attributes': {},
-            isSelfClosing: false
-          }],
-          ['text', 'Welcome,'],
-          ['closetag', 'SPAN'],
-          ['text', ' to monkey land'],
-          ['end'],
-          ['ready']
-        ],
-        strict: false,
-        opt: {}
-      }
-      test(data, expect);
+    it('trailingNonWhitespaceTest', 0, () => {
+      test(trailingNonWhitespaceTestData, expect);
     })
   })
 }

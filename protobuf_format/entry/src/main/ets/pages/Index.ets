@@ -12,9 +12,50 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import ProtobufFormat from '@ohos/protobuf_format'
+import { Format, Long, Protobuf } from '@ohos/protobuf_format';
 import hilog from '@ohos.hilog';
 import router from '@ohos.router';
+
+class Person {
+  name: string = '';
+  id: number | Long = 0;
+  email: string = '';
+  phones: PhoneInfo[] = [];
+}
+
+class PhoneInfo {
+  number: string = '';
+  type: number = 0;
+}
+
+class UserInfo {
+  sessionId: number = 0;
+  isTokenType: boolean = false;
+  formatTimestamp: number = 0;
+}
+
+class InnerClass {
+  result: ResultInfo[] = []
+}
+
+class ResultInfo {
+  url: string = '';
+  title: string = '';
+  spinner: string[] = [];
+}
+
+class Test1 {
+  a: number = 0;
+}
+
+class Test2 {
+  b: string = '';
+}
+
+class Test3 {
+  test1: Test1 = { a: 0 };
+  test2: Test2 = { b: '' };
+}
 
 @Entry
 @Component
@@ -159,20 +200,20 @@ struct Index {
               .height('80px')
               .onClick(async () => {
                 this.messageType = 'person';
-                let idValue = ProtobufFormat.Protobuf.Long.fromValue({ high: 0, low: 256, unsigned: true });
-                let personData = {
+                let idValue: Long = Long.fromValue({ high: 0, low: 256, unsigned: true });
+                let personData: Person = {
                   name: "personName@<>'*\".",
                   id: idValue,
                   email: "personEmail@xxx.com",
                   phones: [{ number: "13812341234", type: 0 }, { number: "0431-81234567", type: 1 }]
                 };
-                let personBuilder = await ProtobufFormat.Protobuf.loadProto(this.personProto, null, 'person.proto')
+                let personBuilder: ESObject = await Protobuf.loadProto(this.personProto, null, 'person.proto')
                 if (!personBuilder) {
                   hilog.error(0x0000, this.TAG, '%{public}s', 'codec error: builder is null|undefined.');
                   return;
                 }
-                let Person = personBuilder.build("tutorial.Person");
-                let message = new Person(personData);
+                let Person: ESObject = personBuilder.build("tutorial.Person");
+                let message: ESObject = new Person(personData);
                 this.protobufFormat(personBuilder, message, "tutorial.Person");
               })
 
@@ -181,18 +222,18 @@ struct Index {
               .height('80px')
               .onClick(async () => {
                 this.messageType = 'user';
-                let userData = {
+                let userData: UserInfo = {
                   sessionId: 1,
                   isTokenType: false,
                   formatTimestamp: 2
                 };
-                let userBuilder = await ProtobufFormat.Protobuf.loadProto(this.userProto, null, 'user.proto')
+                let userBuilder: ESObject = await Protobuf.loadProto(this.userProto, null, 'user.proto')
                 if (!userBuilder) {
                   hilog.error(0x0000, this.TAG, '%{public}s', 'codec error: builder is null|undefined.');
                   return;
                 }
-                let UserLoginResponse = userBuilder.build("com.user.UserLoginResponse");
-                let message = new UserLoginResponse(userData);
+                let UserLoginResponse: ESObject = userBuilder.build("com.user.UserLoginResponse");
+                let message: ESObject = new UserLoginResponse(userData);
                 this.protobufFormat(userBuilder, message, "com.user.UserLoginResponse");
               })
 
@@ -201,7 +242,7 @@ struct Index {
               .height('80px')
               .onClick(async () => {
                 this.messageType = 'inner';
-                let innerData = {
+                let innerData: InnerClass = {
                   result: [{
                     url: "url1",
                     title: "title1",
@@ -212,13 +253,13 @@ struct Index {
                     spinner: ["spinner1", "spinner2"]
                   }]
                 };
-                let innerBuilder = await ProtobufFormat.Protobuf.loadProto(this.innerProtoStr, null, 'inner.proto')
+                let innerBuilder: ESObject = await Protobuf.loadProto(this.innerProtoStr, null, 'inner.proto')
                 if (!innerBuilder) {
                   hilog.error(0x0000, this.TAG, '%{public}s', 'codec error: builder is null|undefined.');
                   return;
                 }
-                let ResultResponse = innerBuilder.build("js.ResultResponse");
-                let message = new ResultResponse(innerData);
+                let ResultResponse: ESObject = innerBuilder.build("js.ResultResponse");
+                let message: ESObject = new ResultResponse(innerData);
                 this.protobufFormat(innerBuilder, message, "js.ResultResponse");
               })
 
@@ -227,17 +268,17 @@ struct Index {
               .height('80px')
               .onClick(async () => {
                 this.messageType = 'import_test1';
-                let test1Data = {
+                let test1Data: Test1 = {
                   a: 150
                 };
-                let builder = await ProtobufFormat.Protobuf.loadProtoFile('imports.proto', null, null, getContext(this)
+                let builder: ESObject = await Protobuf.loadProtoFile('imports.proto', null, null, getContext(this)
                   .resourceManager)
                 if (!builder) {
                   hilog.error(0x0000, this.TAG, '%{public}s', 'codec error: builder is null|undefined.');
                   return;
                 }
-                let ImportTest1Entity = builder.build("Test1");
-                let message = new ImportTest1Entity(test1Data);
+                let ImportTest1Entity: ESObject = builder.build("Test1");
+                let message: ESObject = new ImportTest1Entity(test1Data);
                 this.protobufFormat(builder, message, "Test1");
               })
 
@@ -246,17 +287,17 @@ struct Index {
               .height('80px')
               .onClick(async () => {
                 this.messageType = 'import_test2';
-                let test2Data = {
+                let test2Data: Test2 = {
                   b: "this is test2 value"
                 };
-                let builder = await ProtobufFormat.Protobuf.loadProtoFile('imports.proto', null, null, getContext(this)
+                let builder: ESObject = await Protobuf.loadProtoFile('imports.proto', null, null, getContext(this)
                   .resourceManager)
                 if (!builder) {
                   hilog.error(0x0000, this.TAG, '%{public}s', 'codec error: builder is null|undefined.');
                   return;
                 }
-                let ImportTest2Entity = builder.build("Test2");
-                let message = new ImportTest2Entity(test2Data);
+                let ImportTest2Entity: ESObject = builder.build("Test2");
+                let message: ESObject = new ImportTest2Entity(test2Data);
                 this.protobufFormat(builder, message, "Test2");
               })
 
@@ -265,18 +306,18 @@ struct Index {
               .height('80px')
               .onClick(async () => {
                 this.messageType = 'import_test3';
-                let test3Data = {
+                let test3Data: Test3 = {
                   test1: { a: 150 },
                   test2: { b: "this is test2 value" }
                 };
-                let builder = await ProtobufFormat.Protobuf.loadProtoFile('imports.proto', null, null, getContext(this)
+                let builder: ESObject = await Protobuf.loadProtoFile('imports.proto', null, null, getContext(this)
                   .resourceManager)
                 if (!builder) {
                   hilog.error(0x0000, this.TAG, '%{public}s', 'codec error: builder is null|undefined.');
                   return;
                 }
-                let ImportTest3Entity = builder.build("js.Test3");
-                let message = new ImportTest3Entity(test3Data);
+                let ImportTest3Entity: ESObject = builder.build("js.Test3");
+                let message: ESObject = new ImportTest3Entity(test3Data);
                 this.protobufFormat(builder, message, "js.Test3");
               })
           }.alignItems(HorizontalAlign.Start)
@@ -293,18 +334,17 @@ struct Index {
     .alignItems(VerticalAlign.Top)
   }
 
-  // @ts-ignore
-  private protobufFormat(builder: ProtobufFormat.Protobuf.Builder, message: ProtoBufFormat.Protobuf.Builder.Message, path: string): void {
+  private protobufFormat(builder: ESObject, message: ESObject, path: string): void {
     try {
-      let messageJson = ProtobufFormat.Format.messageToJson(message);
+      let messageJson: string = Format.messageToJson(message);
       hilog.info(0x0000, this.TAG, '%{public}s', 'messageJson: ' + messageJson);
-      let jsonMessage = ProtobufFormat.Format.jsonToMessage(builder, path, messageJson);
+      let jsonMessage: ESObject = Format.jsonToMessage(builder, path, messageJson);
       hilog.info(0x0000, this.TAG, '%{public}s', 'jsonMessage: ' + jsonMessage);
-      let messageXml = ProtobufFormat.Format.messageToXml(message);
+      let messageXml: string = Format.messageToXml(message);
       hilog.info(0x0000, this.TAG, '%{public}s', 'messageXml: ' + messageXml);
-      let xmlMessage = ProtobufFormat.Format.xmlToMessage(builder, path, messageXml);
+      let xmlMessage: ESObject = Format.xmlToMessage(builder, path, messageXml);
       hilog.info(0x0000, this.TAG, '%{public}s', 'xmlMessage: ' + xmlMessage);
-      let messageHtml = ProtobufFormat.Format.messageToHtml(message);
+      let messageHtml: string = Format.messageToHtml(message);
       hilog.info(0x0000, this.TAG, '%{public}s', 'messageHtml: ' + messageHtml);
 
       this.messageToJsonResult = messageJson;

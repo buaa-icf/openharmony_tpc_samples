@@ -14,103 +14,22 @@
  */
 import test from '../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import { caseTestData1, caseTestData2, caseTestData3 } from './SaxData'
 
 export default function caseTest() {
 
-  describe('CaseTest', function () {
+  describe('CaseTest', () => {
 
-    it('caseTest_1', 0, function () {
-      let data = {
-        xml: '<span class="test" hello="world"></span>',
-        expect: [
-          ['opentagstart', {
-            name: 'SPAN',
-            attributes: {}
-          }],
-          ['attribute', {
-            name: 'CLASS', value: 'test'
-          }],
-          ['attribute', {
-            name: 'HELLO', value: 'world'
-          }],
-          ['opentag', {
-            name: 'SPAN',
-            attributes: {
-              CLASS: 'test', HELLO: 'world'
-            },
-            isSelfClosing: false
-          }],
-          ['closetag', 'SPAN']
-        ],
-        strict: false,
-        opt: {}
-      }
-      test(data, expect);
-
+    it('caseTest_1', 0, () => {
+      test(caseTestData1, expect);
     })
 
-    it('caseTest_2', 0, function () {
-      let data = {
-        xml: '<span class="test" hello="world"></span>',
-        expect: [
-          ['opentagstart', {
-            name: 'span',
-            attributes: {}
-          }],
-          ['attribute', {
-            name: 'class', value: 'test'
-          }],
-          ['attribute', {
-            name: 'hello', value: 'world'
-          }],
-          ['opentag', {
-            name: 'span',
-            attributes: {
-              class: 'test', hello: 'world'
-            },
-            isSelfClosing: false
-          }],
-          ['closetag', 'span']
-        ],
-        strict: false,
-        opt: {
-          lowercase: true
-        }
-      }
-      test(data, expect);
-
+    it('caseTest_2', 0, () => {
+      test(caseTestData2, expect);
     })
 
-    it('caseTest_3', 0, function () {
-      let data = {
-        xml: '<span class="test" hello="world"></span>',
-        expect: [
-          ['opentagstart', {
-            name: 'span',
-            attributes: {}
-          }],
-          ['attribute', {
-            name: 'class', value: 'test'
-          }],
-          ['attribute', {
-            name: 'hello', value: 'world'
-          }],
-          ['opentag', {
-            name: 'span',
-            attributes: {
-              class: 'test', hello: 'world'
-            },
-            isSelfClosing: false
-          }],
-          ['closetag', 'span']
-        ],
-        strict: false,
-        opt: {
-          lowercasetags: true
-        }
-      }
-      test(data, expect);
-
+    it('caseTest_3', 0, () => {
+      test(caseTestData3, expect);
     })
   })
 }

@@ -14,24 +14,14 @@
  */
 import test from '../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import { standAloneCommentTestData } from './SaxData'
 
 export default function standAloneCommentTest() {
 
-  describe('StandAloneCommentTest', function () {
+  describe('StandAloneCommentTest', () => {
 
-    it('standAloneCommentTest', 0, function () {
-      let data = {
-        xml: '<!-- stand alone comment -->',
-        expect: [
-          [
-            'comment',
-            ' stand alone comment '
-          ]
-        ],
-        strict: true,
-        opt: {}
-      }
-      test(data, expect);
+    it('standAloneCommentTest', 0, () => {
+      test(standAloneCommentTestData, expect);
     })
   })
 }

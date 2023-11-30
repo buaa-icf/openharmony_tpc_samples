@@ -2,13 +2,13 @@ import helper from './options-helper';
 import xml2js from './xml2js';
 
 function validateOptions(userOptions) {
-  var options = helper.copyOptions(userOptions);
+  let options = helper.copyOptions(userOptions);
   helper.ensureSpacesExists(options);
   return options;
 }
 
-var xml2json = function (xml, userOptions) {
-  var options, js, json, parentKey;
+let xml2json = function (xml, userOptions) {
+  let options, js, json, parentKey;
   options = validateOptions(userOptions);
   js = xml2js(xml, options);
   parentKey = 'compact' in options && options.compact ? '_parent' : 'parent';

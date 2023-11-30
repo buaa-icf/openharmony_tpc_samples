@@ -14,56 +14,14 @@
  */
 import test from '../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import { unquotedTestData } from './SaxData'
 
 export default function unquotedTest() {
 
-  describe('UnquotedTest', function () {
+  describe('UnquotedTest', () => {
 
-    it('unquotedTest', 0, function () {
-      let data = {
-        xml: '<span class=test hello=world></span>',
-        expect: [
-          [
-            'opentagstart',
-            {
-              name: 'SPAN',
-              attributes: {}
-            }
-          ],
-          [
-            'attribute',
-            {
-              name: 'CLASS',
-              value: 'test'
-            }
-          ],
-          [
-            'attribute',
-            {
-              name: 'HELLO',
-              value: 'world'
-            }
-          ],
-          [
-            'opentag',
-            {
-              name: 'SPAN',
-              attributes: {
-                CLASS: 'test',
-                HELLO: 'world'
-              },
-              isSelfClosing: false
-            }
-          ],
-          [
-            'closetag',
-            'SPAN'
-          ]
-        ],
-        strict: false,
-        opt: {}
-      }
-      test(data, expect);
+    it('unquotedTest', 0, () => {
+      test(unquotedTestData, expect);
     })
   })
 }
