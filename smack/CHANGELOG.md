@@ -2,7 +2,6 @@
 
 - 1.适配DevEco Studio 版本：4.0.3.600，OpenHarmony SDK: 4.0.10.11
 - 2.ArkTS新语法适配
-- 3.GlobalContext 整改
 
 ## 1.0.0
 

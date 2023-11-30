@@ -5,12 +5,12 @@
     "smack"
   ],
   "author": "hihope",
-  "description": "A client based on XMPP protocol",
+  "description": "A chat client based on XMPP protocol, to achieve single chat, group chat mode, can quickly integrate IM communication.",
   "ohos": {
     "org": "opensource"
   },
   "main": "index.ts",
-  "repository": "https://gitee.com/hihopeorg/smack",
+  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/smack",
   "version": "2.0.0",
   "tags": [
     "OpenHarmony",
@@ -18,7 +18,7 @@
     "Tool"
   ],
   "dependencies": {},
-  "license": "GPL-3.0-or-later",
+  "license": "GPL 3.0",
   "devDependencies": {
     "@types/libentry.so": "file:./src/main/cpp/types/libentry"
   },

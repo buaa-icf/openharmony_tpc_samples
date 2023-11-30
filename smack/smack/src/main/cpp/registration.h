@@ -1,12 +1,13 @@
-/*
-  Copyright (C) 2022 Huawei Device Co., Ltd.
-
-  This software is distributed under a license. The full license
-  agreement can be found in the file LICENSE in this distribution.
-  This software may not be copied, modified, sold or distributed
-  other than expressed in the named license agreement.
-  This software is distributed without any warranty.
-*/
+/**
+ * Copyright (C) 2023 Huawei Device Co., Ltd.
+ *
+ * This software is distributed under a license. The full license
+ * agreement can be found in the file LICENSE in this distribution.
+ * This software may not be copied, modified, sold or distributed
+ * other than expressed in the named license agreement.
+ *
+ * This software is distributed without any warranty.
+ */
 
 #ifndef ohosXmppClient_registration_H
 #define ohosXmppClient_registration_H
@@ -16,33 +17,31 @@
 #include <src/client.h>
 #include <src/registration.h>
 
-using namespace gloox;
-
-class registration : ConnectionListener, LogHandler, RegistrationHandler {
+class registration : public gloox::ConnectionListener,
+                     public gloox::LogHandler,
+                     public gloox::RegistrationHandler {
 public:
-
-    int createAccounts(const std::string& ip, const std::string& name, const std::string& pwd );
-
+    int createAccounts(const std::string &ipStr, const std::string &nameStr, const std::string &pwdStr);
     virtual void onConnect();
-    virtual void onDisconnect( ConnectionError e );
-    virtual void onResourceBind( const std::string& resource );
-    virtual void onResourceBindError( const Error* error );
-    virtual void onSessionCreateError( const Error* error );
-    virtual bool onTLSConnect( const CertInfo& info );
-    virtual void onStreamEvent( StreamEvent event );
+    virtual void onDisconnect(gloox::ConnectionError e);
+    virtual void onResourceBind(const std::string& resource);
+    virtual void onResourceBindError(const gloox::Error* error);
+    virtual void onSessionCreateError(const gloox::Error* error);
+    virtual bool onTLSConnect(const gloox::CertInfo& info);
+    virtual void onStreamEvent(gloox::StreamEvent event);
 
-    virtual void handleLog( LogLevel level, LogArea area, const std::string& message );
-    virtual void handleRegistrationFields( const JID& from, int fields,
-                                           std::string instructions );
-    virtual void handleAlreadyRegistered( const JID& from );
-    virtual void handleRegistrationResult( const JID& from, RegistrationResult regResult );
-    virtual void handleDataForm( const JID& from, const DataForm& form );
-    virtual void handleOOB( const JID& from, const OOB& oob );
+    virtual void handleLog(gloox::LogLevel level, gloox::LogArea area, const std::string& message);
+    virtual void handleRegistrationFields(const gloox::JID& from, int fields, std::string instructions);
+    virtual void handleAlreadyRegistered(const gloox::JID& from);
+    virtual void handleRegistrationResult(const gloox::JID& from, gloox::RegistrationResult regResult);
+    virtual void handleDataForm(const gloox::JID& from, const gloox::DataForm& form);
+    virtual void handleOOB(const gloox::JID& from, const gloox::OOB& oob);
 
 private:
-    Client* j = nullptr;
-    Registration *m_reg;
+    gloox::Client *j = nullptr;
+    gloox::Registration *m_reg;
     std::string name = "";
     std::string pwd = "";
 };
-#endif //ohosXmppClient_registration_H
+
+#endif // ohosXmppClient_registration_H

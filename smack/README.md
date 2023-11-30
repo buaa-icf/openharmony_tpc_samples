@@ -9,14 +9,14 @@
 ```
 ohpm install @ohos/smack
 ```
-OpenHarmony ohpm环境配置等更多内容，请参考 如何安装 OpenHarmony ohpm 包 https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md
+OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
 
 ## 使用说明
 
 1. 创建后台服务
 ```
-通过https://igniterealtime.org/downloads/地址下载最新版的Openfire并安装作为服务器
+通过https://igniterealtime.org/downloads/地址下载Openfire并安装作为服务器
 ```
 
 
@@ -147,6 +147,14 @@ static HOST_DOMAIN: string = "he-202101111234"
 53. 接受好友添加请求 `Smack.receiveFriends("444@"+Constant.HOST_DOMAIN, "group", msg: "accept")`
 54. 拒绝好友添加请求 `Smack.rejectFriends("444@"+Constant.HOST_DOMAIN, “reject”)`
 
+## 源码下载
+1. 本项目依赖 gloox 库，通过`git submodule`引入，下载代码时需加上`--recursive`参数。
+  ```
+  git clone --recursive https://gitee.com/openharmony-tpc/openharmony_tpc_samples.git
+  ```
+2. Linux环境无需执行该步骤，如果是windows环境下，代码下载完成后合入OHOS适配的代码，cd 进入到smack/smack/src/main/cpp/thirdModule 目录下，执行 modify.sh 脚本，将本目录下的 patch 文件合入到 gloox 源码中。
+3. 开始编译项目。
+
 ## 约束与限制
 在下述版本验证通过：
 
@@ -166,7 +174,8 @@ DevEco Studio: 4.0.3.600, SDK: API10(4.0.10.11)
 ```
 
 ## 贡献代码
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然也非常欢迎您
+发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 给我们。
 
 ## 开源协议
-本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/smack/LICENSE) ，请自由地享受和参与开源。
+本项目基于 [GPL 3.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/smack/LICENSE)。

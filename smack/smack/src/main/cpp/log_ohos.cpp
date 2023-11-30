@@ -1,41 +1,46 @@
-/*
-  Copyright (C) 2022 Huawei Device Co., Ltd.
+/**
+ * Copyright (C) 2023 Huawei Device Co., Ltd.
+ *
+ * This software is distributed under a license. The full license
+ * agreement can be found in the file LICENSE in this distribution.
+ * This software may not be copied, modified, sold or distributed
+ * other than expressed in the named license agreement.
+ *
+ * This software is distributed without any warranty.
+ */
 
-  This software is distributed under a license. The full license
-  agreement can be found in the file LICENSE in this distribution.
-  This software may not be copied, modified, sold or distributed
-  other than expressed in the named license agreement.
-  This software is distributed without any warranty.
-*/
-
+#include <hilog/log.h>
 #include "log.h"
 
-#define LOG_DOMAIN 0x0201
-#include <hilog/log.h>
+constexpr unsigned int LOG_DOMAIN_NUM = 0x0201;
+constexpr unsigned int LOG_LEN = 65535;
 
-std::list<std::string> Log::logs(65535);
+std::list<std::string> Log::logs(LOG_LEN);
 
-void Log::log(Level level, const char *tag, const char * msg) {
+void Log::log(Level level, const char *tag, const char * msg)
+{
     LogLevel logLevel = LOG_DEBUG;
-    switch(level) {
-        case VERBOSE:
-        case DEBUG:
+    switch (level) {
+        case Level::VERBOSE:
+        case Level::DEBUG:
             logLevel = LOG_DEBUG;
             break;
-        case INFO:
+        case Level::INFO:
             logLevel = LOG_INFO;
             break;
-        case WARN:
+        case Level::WARN:
             logLevel = LOG_WARN;
             break;
-        case ERROR:
+        case Level::ERROR:
             logLevel = LOG_ERROR;
             break;
-        case FATAL:
+        case Level::FATAL:
+            logLevel = LOG_FATAL;
+            break;
+        default:
             logLevel = LOG_FATAL;
             break;
     }
 
-    OH_LOG_Print(LOG_APP, logLevel, LOG_DOMAIN, tag, msg, 0);
-//    saveLog(msg);
+    OH_LOG_Print(LOG_APP, logLevel, LOG_DOMAIN_NUM, tag, msg, 0);
 }

@@ -96,8 +96,27 @@
                 <policyitem type="copyright" name="Copyright 2010-2023 Three.js Authors" path="ThreeJs360Demo/source/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="匹配源码协议，符合开源要求"/>
                 <policyitem type="license" name="SPDX:MIT" path="ThreeJs360Demo/source/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="SMTPClient/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>		
-                <policyitem type="license" name="MIT" path="class-transformer/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>						
+                <policyitem type="license" name="MIT" path="class-transformer/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="Copyright (C) 2023 Huawei Device Co., Ltd." path="smack/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="Copyright (C) 1992-1996, 1998-2012 Free Software Foundation, Inc." path="smack/.*" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="匹配原库协议，符合开源要求"/>						
             </policy>
         </policylist>
+        <licensematcherlist>
+            <licensematcher
+                desc="Huawei Device Co., Ltd."
+                name="Copyright (C) 2023 Huawei Device Co., Ltd.">
+                <licensetext
+                    desc=""
+                    name="
+                         * Copyright (C) 2023 Huawei Device Co., Ltd.
+                         *
+                         * This software is distributed under a license. The full license
+                         * agreement can be found in the file LICENSE in this distribution.
+                         * This software may not be copied, modified, sold or distributed
+                         * other than expressed in the named license agreement.
+                         *
+                         * This software is distributed without any warranty."/>
+            </licensematcher>
+        </licensematcherlist>
     </oatconfig>
 </configuration>
