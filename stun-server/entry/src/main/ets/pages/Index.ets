@@ -92,6 +92,7 @@ struct Index {
             .placeholderFont({ size: 20, weight: 2 })
             .fontSize(20)
             .layoutWeight(1)
+            .focusable(false)
             .onChange((value: string) => {
               this.newDefaults.primary.host = value;
             })
@@ -100,6 +101,7 @@ struct Index {
             .placeholderFont({ size: 20, weight: 2 })
             .fontSize(20)
             .layoutWeight(1)
+            .focusable(false)
             .onChange((value: string) => {
               this.newDefaults.primary.port = value;
             })
@@ -113,6 +115,7 @@ struct Index {
             .placeholderFont({ size: 20, weight: 2 })
             .fontSize(20)
             .layoutWeight(1)
+            .focusable(false)
             .onChange((value: string) => {
               this.newDefaults.secondary.host = value;
             })
@@ -121,6 +124,7 @@ struct Index {
             .placeholderFont({ size: 20, weight: 2 })
             .fontSize(20)
             .layoutWeight(1)
+            .focusable(false)
             .onChange((value: string) => {
               this.newDefaults.secondary.port = value;
             })
@@ -145,7 +149,7 @@ struct Index {
         .scrollBarColor(Color.Gray)
         .scrollBarWidth(30)
 
-      }.layoutWeight(1)
+      }.height('50%')
 
       Flex({ direction: FlexDirection.Column }) {
 
@@ -155,6 +159,7 @@ struct Index {
             .placeholderFont({ size: 20, weight: 2 })
             .fontSize(20)
             .layoutWeight(1)
+            .focusable(false)
             .onChange((value: string) => {
               this.serverInfo.host = value;
             })
@@ -163,6 +168,7 @@ struct Index {
             .placeholderFont({ size: 20, weight: 2 })
             .fontSize(20)
             .layoutWeight(1)
+            .focusable(false)
             .onChange((value: string) => {
               this.serverInfo.port = value;
             })
@@ -171,7 +177,7 @@ struct Index {
         Line().backgroundColor(Color.Blue).height(1).width('100%')
 
         TextInput({ placeholder: 'Please input client ip address' })
-          .height(40)
+          .height(50)
           .placeholderFont({ size: 20, weight: 2 })
           .fontSize(20)
           .onChange((value: string) => {
@@ -183,21 +189,22 @@ struct Index {
           .fontSize(40)
           .fontColor('#FFFFFF')
           .fontWeight(FontWeight.Bold)
+          .height(100)
           .onClick(() => {
             this.createClient();
           })
 
-        Scroll() {
-          Text(this.clientMessage)
-            .fontSize(20)
-            .fontWeight(FontWeight.Bold)
-        }
-        .scrollable(ScrollDirection.Vertical)
-        .scrollBar(BarState.On)
-        .scrollBarColor(Color.Gray)
-        .scrollBarWidth(30)
-      }.layoutWeight(1)
-
+          Scroll() {
+            Text(this.clientMessage)
+              .fontSize(20)
+              .fontWeight(FontWeight.Bold)
+          }
+          .scrollable(ScrollDirection.Vertical)
+          .scrollBar(BarState.On)
+          .scrollBarColor(Color.Gray)
+          .scrollBarWidth(30)
+          .height('70%')
+      }.height('50%')
     }
     .width('100%')
     .height('100%')
