@@ -1,0 +1,24 @@
+{
+  "string": [
+    {
+      "name": "entry_desc",
+      "value": "description"
+    },
+    {
+      "name": "MainAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "MainAbility_label",
+      "value": "label"
+    },
+    {
+      "name": "invite_str",
+      "value": "%s 邀请您加入群聊"
+    },
+    {
+      "name": "add_friends_str",
+      "value": "%s 请求添加你为好友"
+    }
+  ]
+}
