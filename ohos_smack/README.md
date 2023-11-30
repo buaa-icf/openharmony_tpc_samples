@@ -178,4 +178,4 @@ DevEco Studio: 4.0.3.600, SDK: API10(4.0.10.11)
 发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 给我们。
 
 ## 开源协议
-本项目基于 [GPL 3.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/smack/LICENSE)。
+本项目基于 [GPL 3.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_smack/LICENSE)。

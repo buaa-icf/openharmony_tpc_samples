@@ -24,6 +24,6 @@
 [submodule "class-transformer/class_transformer"]
 	path = class-transformer/class_transformer
 	url = https://gitee.com/Young-zhiqiang/class_transformer.git
-[submodule "smack/smack/src/main/cpp/gloox"]
-	path = smack/smack/src/main/cpp/gloox
+[submodule "ohos_smack/ohos_smack/src/main/cpp/gloox"]
+	path = ohos_smack/ohos_smack/src/main/cpp/gloox
 	url = https://github.com/rxwen/gloox.git

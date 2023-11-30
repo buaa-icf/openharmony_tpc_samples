@@ -20,8 +20,6 @@
     "pages/tabs/friends/add_group",
     "pages/tabs/group/create_group_chat",
     "pages/tabs/group/Join_in_group",
-    "pages/tabs/meeting/create_meeting",
-    "pages/tabs/meeting/Join_in_meeting",
     "pages/page",
     "pages/tabs/friends/change_group_name",
     "pages/chat/group_chat/group_member",

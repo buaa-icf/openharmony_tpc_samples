@@ -11,6 +11,6 @@
   "repository": {},
   "version": "2.0.0",
   "dependencies": {
-    "@ohos/smack": "file:../smack"
+    "@ohos/smack": "file:../ohos_smack"
   }
 }
