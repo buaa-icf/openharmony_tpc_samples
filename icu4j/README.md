@@ -35,19 +35,8 @@ Button('parse测试').fontSize(24).onClick(() => {
 
 - 解析字符串
 
-```typescript
-parse
-(
-  input:
-  string
-  ,
-  opts
-    ?
-    :
-    ParseOptions
-)
-:
-MessageFormatElement[]
+```
+parse(input: string, opts ? : ParseOptions):MessageFormatElement[]
 ```
 
 ## 约束与限制
