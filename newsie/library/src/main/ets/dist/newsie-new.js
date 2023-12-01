@@ -2050,6 +2050,36 @@ class Client {
         const { host, port = 119, tlsPort = false, responseInterceptor = (r) => r, tlsOptions = {} } = options;
         this._connection = new Connection(host, port, tlsPort, tlsOptions);
         this._interceptor = responseInterceptor;
+      this.list = Client.prototype.list;
+      this.group = Client.prototype.group;
+      this.newgroups = Client.prototype.newgroups;
+      this.newnews = Client.prototype.newnews;
+      this.listActive = Client.prototype.listActive;
+      this.listNewsgroups = Client.prototype.listNewsgroups;
+      this.listOverviewFmt = Client.prototype.listOverviewFmt;
+      this.hdr = Client.prototype.hdr;
+      this.listHeaders = Client.prototype.listHeaders;
+      this.last = Client.prototype.last;
+      this.next = Client.prototype.next;
+      this.listActiveTimes = Client.prototype.listActiveTimes;
+      this.listDistribPats = Client.prototype.listDistribPats;
+      this.listGroup = Client.prototype.listGroup;
+      this.article = Client.prototype.article;
+      this.head = Client.prototype.head;
+      this.body = Client.prototype.body;
+      this.stat = Client.prototype.stat;
+      this.over = Client.prototype.over;
+      this.post = Client.prototype.post;
+      this.ihave = Client.prototype.ihave;
+      this.check = Client.prototype.check;
+      this.help = Client.prototype.help;
+      this.capabilities = Client.prototype.capabilities;
+      this.date = Client.prototype.date;
+      this.modeReader = Client.prototype.modeReader;
+      this.quit = Client.prototype.quit;
+      this.modeStream = Client.prototype.modeStream;
+      this.slave = Client.prototype.slave;
+      this.compressDeflate = Client.prototype.compressDeflate;
     }
 }
 function rfc977() {
@@ -7101,4 +7131,5 @@ async function fetch(uri) {
     return response;
 }
 
-export { CapabilityLabel$1 as CapabilityLabel, Command, addHandler, build, Client as default, fetch, parse$2 as parse };
+export { CapabilityLabel$1 as CapabilityLabel, Command, addHandler, build, Client, fetch, parse$2 as parse };
+export default Client;

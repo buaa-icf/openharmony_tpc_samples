@@ -1,6 +1,6 @@
 {
   "module": {
-    "name": "newsie",
+    "name": "library",
     "type": "har",
     "deviceTypes": [
       "default"

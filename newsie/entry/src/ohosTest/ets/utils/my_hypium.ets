@@ -21,69 +21,30 @@ import {
   it as _it,
   expect as _expect
 } from '@ohos/hypium'
+import { expectFunction } from './TestExpect'
 
-export const it = function (testSuiteName: string, callback: Function) {
+export const it = (testSuiteName: string, callback: Function): Function => {
   return _it(testSuiteName, 0, callback);
 }
 
-export const describe = _describe;
+export const describe: Function = _describe;
 
-export const beforeAll = _beforeAll
+export const beforeAll: Function = _beforeAll
 
-export const beforeEach = _beforeEach
+export const beforeEach: Function = _beforeEach
 
-export const afterEach = _afterEach
+export const afterEach: Function = _afterEach
 
-export const afterAll = _afterAll
+export const afterAll: Function = _afterAll
 
-export const expect = function(value){
-  return {
-    toEqual(source){
-      _expect(value).assertEqual(source);
-    },
-    to:{
-      throw(source){
-        try {
-          value()
-          _expect(1).assertEqual(2);
-        }catch (err){
-          _expect(err.message).assertEqual(source)
-        }
-      },
-      be:{
-        a(source){
-          _expect(typeof value).assertEqual(source);
-        },
-        null(){
-          _expect(value).assertNull();
-        },
-        ok(){
-          _expect(!!value).assertTrue();
-        },
-        instanceof(source){
-          _expect(value instanceof  source).assertTrue();
-        }
-      },
-      have:{
-        length(source){
-          _expect(value.length).assertEqual(source);
-        }
-      },
-      equal(source){
-        _expect(value).assertEqual(source);
-      },
-
-    },
-    assertNull(){
-      _expect(value).assertNull()
-    }
-  }
+export const expect: Function = (value: ESObject): ESObject => {
+  return expectFunction(_expect, value);
 }
 
-export function diff(obj1, obj2) {
+export function diff(obj1: ESObject, obj2: ESObject) {
   log(`当前比较对象 (1): ${JSON.stringify(obj1)}   (2): ${JSON.stringify(obj2)}`)
-  var o1 = obj1 instanceof Object;
-  var o2 = obj2 instanceof Object;
+  let o1: boolean = obj1 instanceof Object;
+  let o2: boolean = obj2 instanceof Object;
   // 判断是不是对象
   if (!o1 || !o2) {
     return obj1 === obj2;
@@ -93,14 +54,15 @@ export function diff(obj1, obj2) {
   if (Object.keys(obj1).length !== Object.keys(obj2).length) {
     return false;
   }
-  for (var o in obj1) {
-    var t1 = obj1[o] instanceof Object;
-    var t2 = obj2[o] instanceof Object;
+  let objKeys = Object.keys(obj1);
+  for (let i = 0; i <objKeys.length; i++) {
+    let t1 = obj1[objKeys[i]] instanceof Object;
+    let t2 = obj2[objKeys[i]] instanceof Object;
     if (t1 && t2) {
-      if (!diff(obj1[o], obj2[o])) {
+      if (!diff(obj1[objKeys[i]], obj2[objKeys[i]])) {
         return false
       }
-    } else if (obj1[o] !== obj2[o]) {
+    } else if (obj1[objKeys[i]] !== obj2[objKeys[i]]) {
       return false;
     }
   }
