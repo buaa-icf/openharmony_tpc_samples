@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "ohos_smack",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}
