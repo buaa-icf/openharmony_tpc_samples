@@ -3,14 +3,14 @@ import sax from '@ohos/sax';
 import helper from './options-helper';
 import arrayHelper from './array-helper';
 
-var expat = { on: function () {
+let expat = { on: function () {
 }, parse: function () {
 }
 };
 
-var options;
-var pureJsParser = true;
-var currentElement;
+let options;
+let pureJsParser = true;
+let currentElement;
 
 function validateOptions(userOptions) {
   options = helper.copyOptions(userOptions);
@@ -56,11 +56,11 @@ function validateOptions(userOptions) {
 }
 
 function nativeType(value) {
-  var nValue = Number(value);
+  let nValue = Number(value);
   if (!isNaN(nValue)) {
     return nValue;
   }
-  var bValue = value.toLowerCase();
+  let bValue = value.toLowerCase();
   if (bValue === 'true') {
     return true;
   } else if (bValue === 'false') {
@@ -70,7 +70,7 @@ function nativeType(value) {
 }
 
 function addField(type, value) {
-  var key;
+  let key;
   if (options.compact) {
     if (
       !currentElement[options[type + 'Key']] &&
@@ -90,7 +90,7 @@ function addField(type, value) {
           if ('instructionFn' in options) {
             value[key] = options.instructionFn(value[key], key, currentElement);
           } else {
-            var temp = value[key];
+            let temp = value[key];
             delete value[key];
             value[options.instructionNameFn(key, temp, currentElement)] = temp;
           }
@@ -106,7 +106,7 @@ function addField(type, value) {
     if (!currentElement[options.elementsKey]) {
       currentElement[options.elementsKey] = [];
     }
-    var element = {};
+    let element = {};
     element[options.typeKey] = type;
     if (type === 'instruction') {
       for (key in value) {
@@ -144,7 +144,7 @@ function manipulateAttributes(attributes) {
     attributes = options.attributesFn(attributes, currentElement);
   }
   if ((options.trim || 'attributeValueFn' in options || 'attributeNameFn' in options || options.nativeTypeAttributes) && attributes) {
-    var key;
+    let key;
     for (key in attributes) {
       if (Object.prototype.hasOwnProperty.call(attributes, key)) {
         if (options.trim) attributes[key] = attributes[key].trim();
@@ -153,7 +153,7 @@ function manipulateAttributes(attributes) {
         }
         if ('attributeValueFn' in options) attributes[key] = options.attributeValueFn(attributes[key], key, currentElement);
         if ('attributeNameFn' in options) {
-          var temp = attributes[key];
+          let temp = attributes[key];
           delete attributes[key];
           attributes[options.attributeNameFn(key, attributes[key], currentElement)] = temp;
         }
@@ -164,10 +164,10 @@ function manipulateAttributes(attributes) {
 }
 
 function onInstruction(instruction) {
-  var attributes = {};
+  let attributes = {};
   if (instruction.body && (instruction.name.toLowerCase() === 'xml' || options.instructionHasAttributes)) {
-    var attrsRegExp = /([\w:-]+)\s*=\s*(?:"([^"]*)"|'([^']*)'|(\w+))\s*/g;
-    var match;
+    let attrsRegExp = /([\w:-]+)\s*=\s*(?:"([^"]*)"|'([^']*)'|(\w+))\s*/g;
+    let match;
     while ((match = attrsRegExp.exec(instruction.body)) !== null) {
       attributes[match[1]] = match[2] || match[3] || match[4];
     }
@@ -191,7 +191,7 @@ function onInstruction(instruction) {
     if (options.trim) {
       instruction.body = instruction.body.trim();
     }
-    var value = {};
+    let value = {};
     if (options.instructionHasAttributes && Object.keys(attributes).length) {
       value[instruction.name] = {};
       value[instruction.name][options.attributesKey] = attributes;
@@ -203,7 +203,7 @@ function onInstruction(instruction) {
 }
 
 function onStartElement(name, attributes) {
-  var element;
+  let element;
   if (typeof name === 'object') {
     attributes = name.attributes;
     name = name.name;
@@ -216,7 +216,7 @@ function onStartElement(name, attributes) {
     element = {};
     if (!options.ignoreAttributes && attributes && Object.keys(attributes).length) {
       element[options.attributesKey] = {};
-      var key;
+      let key;
       for (key in attributes) {
         if (Object.prototype.hasOwnProperty.call(attributes, key)) {
           element[options.attributesKey][key] = attributes[key];
@@ -284,7 +284,7 @@ function onComment(comment) {
 }
 
 function onEndElement(name) {
-  var parentElement = currentElement[options.parentKey];
+  let parentElement = currentElement[options.parentKey];
   if (!options.addParent) {
     delete currentElement[options.parentKey];
   }
@@ -316,10 +316,10 @@ function onError(error) {
   error.note = error;
 }
 
-var xml2js = function (xml, userOptions) {
+let xml2js = function (xml, userOptions) {
 
-  var parser = pureJsParser ? sax.parser(true, {}) : parser = new expat.Parser('UTF-8');
-  var result = {};
+  let parser = pureJsParser ? sax.parser(true, {}) : parser = new expat.Parser('UTF-8');
+  let result = {};
   currentElement = result;
 
   options = validateOptions(userOptions);
@@ -351,7 +351,7 @@ var xml2js = function (xml, userOptions) {
   }
 
   if (result[options.elementsKey]) {
-    var temp = result[options.elementsKey];
+    let temp = result[options.elementsKey];
     delete result[options.elementsKey];
     result[options.elementsKey] = temp;
     delete result.text;

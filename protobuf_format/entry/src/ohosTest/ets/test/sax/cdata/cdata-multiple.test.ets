@@ -14,30 +14,14 @@
  */
 import test from '../../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import { cdataMultipleTestData } from '../SaxData'
 
 export default function cdataMultipleTest() {
 
-  describe('CDataMultipleTest', function () {
+  describe('CDataMultipleTest', () => {
 
-    it('cdataMultipleTest', 0, function () {
-      let data = {
-        expect: [
-          ['opentagstart', {
-            'name': 'R', 'attributes': {}
-          }],
-          ['opentag', {
-            'name': 'R', 'attributes': {}, 'isSelfClosing': false
-          }],
-          ['opencdata', undefined],
-          ['cdata', ' this is '],
-          ['closecdata', undefined],
-          ['opencdata', undefined],
-          ['cdata', 'character data  '],
-          ['closecdata', undefined],
-          ['closetag', 'R']
-        ]
-      }
-      test(data, expect)
+    it('cdataMultipleTest', 0, () => {
+      test(cdataMultipleTestData, expect)
         .write('<r><![CDATA[ this is ]]>')
         .write('<![CDA')
         .write('T')
@@ -45,7 +29,6 @@ export default function cdataMultipleTest() {
         .write('character data  ')
         .write(']]></r>')
         .close()
-
     })
   })
 }

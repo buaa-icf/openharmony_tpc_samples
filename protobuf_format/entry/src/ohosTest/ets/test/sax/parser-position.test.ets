@@ -15,25 +15,26 @@
 import sax from '@ohos/sax'
 import { describe, expect, it } from '@ohos/hypium'
 
-function testPosition(chunks, expectedEvents, testFunc) {
-  var parser = sax.parser()
-  expectedEvents.forEach(function (expectation) {
-    parser['on' + expectation[0]] = function () {
-      for (var prop in expectation[1]) {
-        testFunc(parser[prop]).assertEqual(expectation[1][prop]);
+function testPosition(chunks: string[], expectedEvents: ESObject, testFunc: Function) {
+  let parser: ESObject = sax.parser()
+  expectedEvents.forEach((expectation: string[] | ESObject[]) => {
+    parser['on' + expectation[0]] = () => {
+      let objKeys = Object.keys(expectation[1]);
+      for (let i = 0; i < objKeys.length; i++) {
+        testFunc(parser[objKeys[i]]).assertEqual(expectation[1][objKeys[i]]);
       }
     }
   })
-  chunks.forEach(function (chunk) {
+  chunks.forEach((chunk: string) => {
     parser.write(chunk)
   })
 }
 
 export default function parserPositionTest() {
 
-  describe('ParserPositionTest', function () {
+  describe('ParserPositionTest', () => {
 
-    it('parserPositionTest_1', 0, function () {
+    it('parserPositionTest_1', 0, () => {
       testPosition(['<div>abcdefgh</div>'], [
         ['opentagstart', {
           position: 5, startTagPosition: 1
@@ -50,7 +51,7 @@ export default function parserPositionTest() {
       ], expect)
     })
 
-    it('parserPositionTest_2', 0, function () {
+    it('parserPositionTest_2', 0, () => {
       testPosition(['<div>abcde', 'fgh</div>'], [
         ['opentagstart', {
           position: 5, startTagPosition: 1

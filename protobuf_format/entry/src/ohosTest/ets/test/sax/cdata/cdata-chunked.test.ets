@@ -14,28 +14,18 @@
  */
 import test from '../../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import { cdataChunkedTestData } from '../SaxData'
 
 export default function cdataChunkedTest() {
 
-  describe('CDataChunkedTest', function () {
+  describe('CDataChunkedTest', () => {
 
-    it('cdataChunkedTest', 0, function () {
-      let data = {
-        expect: [
-          ['opentagstart', {
-            'name': 'R', 'attributes': {}
-          }],
-          ['opentag', {
-            'name': 'R', 'attributes': {}, 'isSelfClosing': false
-          }],
-          ['opencdata', undefined],
-          ['cdata', ' this is character data  '],
-          ['closecdata', undefined],
-          ['closetag', 'R']
-        ]
-      }
-      test(data, expect).write('<r><![CDATA[ this is ').write('character data  ').write(']]></r>').close()
-
+    it('cdataChunkedTest', 0, () => {
+      test(cdataChunkedTestData, expect)
+        .write('<r><![CDATA[ this is ')
+        .write('character data  ')
+        .write(']]></r>')
+        .close()
     })
   })
 }

@@ -16,7 +16,7 @@
   // Set to Infinity to have unlimited buffers.
   sax.MAX_BUFFER_LENGTH = 64 * 1024
 
-  var buffers = [
+  let buffers = [
     'comment', 'sgmlDecl', 'textNode', 'tagName', 'doctype',
     'procInstName', 'procInstBody', 'entity', 'attribName',
     'attribValue', 'cdata', 'script'
@@ -48,7 +48,7 @@
       return new SAXParser(strict, opt)
     }
 
-    var parser = this
+    let parser = this
     clearBuffers(parser)
     parser.q = parser.c = ''
     parser.bufferCheckPosition = sax.MAX_BUFFER_LENGTH
@@ -87,24 +87,24 @@
       }
 
       F.prototype = o
-      var newf = new F()
+      let newf = new F()
       return newf
     }
   }
 
   if (!Object.keys) {
     Object.keys = function (o) {
-      var a = []
-      for (var i in o) if (Object.prototype.hasOwnProperty.call(o, i)) a.push(i)
+      let a = []
+      for (let i in o) if (Object.prototype.hasOwnProperty.call(o, i)) a.push(i)
       return a
     }
   }
 
   function checkBufferLength(parser) {
-    var maxAllowed = Math.max(sax.MAX_BUFFER_LENGTH, 10)
-    var maxActual = 0
-    for (var i = 0, l = buffers.length; i < l; i++) {
-      var len = parser[buffers[i]].length
+    let maxAllowed = Math.max(sax.MAX_BUFFER_LENGTH, 10)
+    let maxActual = 0
+    for (let i = 0, l = buffers.length; i < l; i++) {
+      let len = parser[buffers[i]].length
       if (len > maxAllowed) {
 
         // Text/cdata nodes can get big, and since they're buffered,
@@ -134,12 +134,12 @@
     }
 
     // schedule the next check for the earliest possible buffer overrun.
-    var m = sax.MAX_BUFFER_LENGTH - maxActual
+    let m = sax.MAX_BUFFER_LENGTH - maxActual
     parser.bufferCheckPosition = m + parser.position
   }
 
   function clearBuffers(parser) {
-    for (var i = 0, l = buffers.length; i < l; i++) {
+    for (let i = 0, l = buffers.length; i < l; i++) {
       parser[buffers[i]] = ''
     }
   }
@@ -175,11 +175,11 @@
 
   // this really needs to be replaced with character classes.
   // XML allows all manner of ridiculous numbers and digits.
-  var CDATA = '[CDATA['
-  var DOCTYPE = 'DOCTYPE'
-  var XML_NAMESPACE = 'http://www.w3.org/XML/1998/namespace'
-  var XMLNS_NAMESPACE = 'http://www.w3.org/2000/xmlns/'
-  var rootNS = { xml: XML_NAMESPACE, xmlns: XMLNS_NAMESPACE }
+  let CDATA = '[CDATA['
+  let DOCTYPE = 'DOCTYPE'
+  let XML_NAMESPACE = 'http://www.w3.org/XML/1998/namespace'
+  let XMLNS_NAMESPACE = 'http://www.w3.org/2000/xmlns/'
+  let rootNS = { xml: XML_NAMESPACE, xmlns: XMLNS_NAMESPACE }
 
   // http://www.w3.org/TR/REC-xml/#NT-NameStartChar
   // This implementation works on strings, a single character at a time
@@ -187,12 +187,12 @@
   // without a significant breaking change to either this  parser, or the
   // JavaScript language.  Implementation of an emoji-capable xml parser
   // is left as an exercise for the reader.
-  var nameStart = /[:_A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD]/
+  let nameStart = /[:_A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD]/
 
-  var nameBody = /[:_A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD\u00B7\u0300-\u036F\u203F-\u2040.\d-]/
+  let nameBody = /[:_A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD\u00B7\u0300-\u036F\u203F-\u2040.\d-]/
 
-  var entityStart = /[#:_A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD]/
-  var entityBody = /[#:_A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD\u00B7\u0300-\u036F\u203F-\u2040.\d-]/
+  let entityStart = /[#:_A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD]/
+  let entityBody = /[#:_A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD\u00B7\u0300-\u036F\u203F-\u2040.\d-]/
 
   function isWhitespace(c) {
     return c === ' ' || c === '\n' || c === '\r' || c === '\t'
@@ -214,7 +214,7 @@
     return !isMatch(regex, c)
   }
 
-  var S = 0
+  let S = 0
   sax.STATE = {
     BEGIN: S++, // leading byte order mark or whitespace
     BEGIN_WHITESPACE: S++, // leading whitespace
@@ -519,12 +519,12 @@
   }
 
   Object.keys(sax.ENTITIES).forEach(function (key) {
-    var e = sax.ENTITIES[key]
-    var s = typeof e === 'number' ? String.fromCharCode(e) : e
+    let e = sax.ENTITIES[key]
+    let s = typeof e === 'number' ? String.fromCharCode(e) : e
     sax.ENTITIES[key] = s
   })
 
-  for (var s in sax.STATE) {
+  for (let s in sax.STATE) {
     sax.STATE[sax.STATE[s]] = s
   }
 
@@ -591,8 +591,8 @@
 
   function newTag(parser) {
     if (!parser.strict) parser.tagName = parser.tagName[parser.looseCase]()
-    var parent = parser.tags[parser.tags.length - 1] || parser
-    var tag = parser.tag = { name: parser.tagName, attributes: {} }
+    let parent = parser.tags[parser.tags.length - 1] || parser
+    let tag = parser.tag = { name: parser.tagName, attributes: {} }
 
     // will be overridden if tag contails an xmlns="foo" or xmlns:foo="bar"
     if (parser.opt.xmlns) {
@@ -603,10 +603,10 @@
   }
 
   function qname(name, attribute) {
-    var i = name.indexOf(':')
-    var qualName = i < 0 ? ['', name] : name.split(':')
-    var prefix = qualName[0]
-    var local = qualName[1]
+    let i = name.indexOf(':')
+    let qualName = i < 0 ? ['', name] : name.split(':')
+    let prefix = qualName[0]
+    let local = qualName[1]
 
     // <x "xmlns"="http://foo">
     if (attribute && name === 'xmlns') {
@@ -629,9 +629,9 @@
     }
 
     if (parser.opt.xmlns) {
-      var qn = qname(parser.attribName, true)
-      var prefix = qn.prefix
-      var local = qn.local
+      let qn = qname(parser.attribName, true)
+      let prefix = qn.prefix
+      let local = qn.local
 
       if (prefix === 'xmlns') {
 
@@ -645,8 +645,8 @@
             'xmlns: prefix must be bound to ' + XMLNS_NAMESPACE + '\n' +
             'Actual: ' + parser.attribValue)
         } else {
-          var tag = parser.tag
-          var parent = parser.tags[parser.tags.length - 1] || parser
+          let tag = parser.tag
+          let parent = parser.tags[parser.tags.length - 1] || parser
           if (tag.ns === parent.ns) {
             tag.ns = Object.create(parent.ns)
           }
@@ -675,10 +675,10 @@
     if (parser.opt.xmlns) {
 
       // emit namespace binding events
-      var tag = parser.tag
+      let tag = parser.tag
 
       // add namespace info to tag
-      var qn = qname(parser.tagName)
+      let qn = qname(parser.tagName)
       tag.prefix = qn.prefix
       tag.local = qn.local
       tag.uri = tag.ns[qn.prefix] || ''
@@ -689,7 +689,7 @@
         tag.uri = qn.prefix
       }
 
-      var parent = parser.tags[parser.tags.length - 1] || parser
+      let parent = parser.tags[parser.tags.length - 1] || parser
       if (tag.ns && parent.ns !== tag.ns) {
         Object.keys(tag.ns).forEach(function (p) {
           emitNode(parser, 'onopennamespace', {
@@ -702,15 +702,15 @@
       // handle deferred onattribute events
       // Note: do not apply default ns to attributes:
       //   http://www.w3.org/TR/REC-xml-names/#defaulting
-      for (var i = 0, l = parser.attribList.length; i < l; i++) {
-        var nv = parser.attribList[i]
-        var name = nv[0]
-        var value = nv[1]
-        var qualName = qname(name, true)
-        var prefix = qualName.prefix
-        var local = qualName.local
-        var uri = prefix === '' ? '' : (tag.ns[prefix] || '')
-        var a = {
+      for (let i = 0, l = parser.attribList.length; i < l; i++) {
+        let nv = parser.attribList[i]
+        let name = nv[0]
+        let value = nv[1]
+        let qualName = qname(name, true)
+        let prefix = qualName.prefix
+        let local = qualName.local
+        let uri = prefix === '' ? '' : (tag.ns[prefix] || '')
+        let a = {
           name: name,
           value: value,
           prefix: prefix,
@@ -773,14 +773,14 @@
 
     // first make sure that the closing tag actually exists.
     // <a><b></c></b></a> will close everything, otherwise.
-    var t = parser.tags.length
-    var tagName = parser.tagName
+    let t = parser.tags.length
+    let tagName = parser.tagName
     if (!parser.strict) {
       tagName = tagName[parser.looseCase]()
     }
-    var closeTo = tagName
+    let closeTo = tagName
     while (t--) {
-      var close = parser.tags[t]
+      let close = parser.tags[t]
       if (close.name !== closeTo) {
 
         // fail the first time in strict mode
@@ -798,23 +798,23 @@
       return
     }
     parser.tagName = tagName
-    var s = parser.tags.length
+    let s = parser.tags.length
     while (s-- > t) {
-      var tag = parser.tag = parser.tags.pop()
+      let tag = parser.tag = parser.tags.pop()
       parser.tagName = parser.tag.name
       emitNode(parser, 'onclosetag', parser.tagName)
 
-      var x = {}
-      for (var i in tag.ns) {
+      let x = {}
+      for (let i in tag.ns) {
         x[i] = tag.ns[i]
       }
 
-      var parent = parser.tags[parser.tags.length - 1] || parser
+      let parent = parser.tags[parser.tags.length - 1] || parser
       if (parser.opt.xmlns && tag.ns !== parent.ns) {
 
         // remove namespace bindings introduced by tag
         Object.keys(tag.ns).forEach(function (p) {
-          var n = tag.ns[p]
+          let n = tag.ns[p]
           emitNode(parser, 'onclosenamespace', { prefix: p, uri: n })
         })
       }
@@ -826,10 +826,10 @@
   }
 
   function parseEntity(parser) {
-    var entity = parser.entity
-    var entityLC = entity.toLowerCase()
-    var num
-    var numStr = ''
+    let entity = parser.entity
+    let entityLC = entity.toLowerCase()
+    let num
+    let numStr = ''
 
     if (parser.ENTITIES[entity]) {
       return parser.ENTITIES[entity]
@@ -873,7 +873,7 @@
   }
 
   function charAt(chunk, i) {
-    var result = ''
+    let result = ''
     if (i < chunk.length) {
       result = chunk.charAt(i)
     }
@@ -881,7 +881,7 @@
   }
 
   function write(chunk) {
-    var parser = this
+    let parser = this
     if (this.error) {
       throw this.error
     }
@@ -895,8 +895,8 @@
     if (typeof chunk === 'object') {
       chunk = chunk.toString()
     }
-    var i = 0
-    var c = ''
+    let i = 0
+    let c = ''
     while (true) {
       c = charAt(chunk, i++)
       parser.c = c
@@ -930,7 +930,7 @@
 
         case S.TEXT:
           if (parser.sawRoot && !parser.closedRoot) {
-            var starti = i - 1
+            let starti = i - 1
             while (c && c !== '<' && c !== '&') {
               c = charAt(chunk, i++)
               if (c && parser.trackPosition) {
@@ -1002,12 +1002,8 @@
 
             // if there was some whitespace, then add that in.
             if (parser.startTagPosition + 1 < parser.position) {
-              var pad = parser.position - parser.startTagPosition
-              var tempC = '';
-              for (let i = 0; i < pad - 1; i++) {
-                tempC += ' '
-              }
-              c = tempC + c
+              let pad = parser.position - parser.startTagPosition
+              c = new Array(pad).join(' ') + c
             }
             parser.textNode += '<' + c
             parser.state = S.TEXT
@@ -1390,8 +1386,8 @@
         case S.TEXT_ENTITY:
         case S.ATTRIB_VALUE_ENTITY_Q:
         case S.ATTRIB_VALUE_ENTITY_U:
-          var returnState
-          var buffer
+          let returnState
+          let buffer
           switch (parser.state) {
             case S.TEXT_ENTITY:
               returnState = S.TEXT
@@ -1439,21 +1435,21 @@
   /* istanbul ignore next */
   if (!String.fromCodePoint) {
     (function(){
-      var stringFromCharCode = String.fromCharCode
-      var floor = Math.floor
-      var fromCodePoint = function () {
-        var MAX_SIZE = 0x4000
-        var codeUnits = []
-        var highSurrogate
-        var lowSurrogate
-        var index = -1
-        var length = arguments.length
+      let stringFromCharCode = String.fromCharCode
+      let floor = Math.floor
+      let fromCodePoint = function () {
+        let MAX_SIZE = 0x4000
+        let codeUnits = []
+        let highSurrogate
+        let lowSurrogate
+        let index = -1
+        let length = arguments.length
         if (!length) {
           return ''
         }
-        var result = ''
+        let result = ''
         while (++index < length) {
-          var codePoint = Number(arguments[index])
+          let codePoint = Number(arguments[index])
           if (
             !isFinite(codePoint) || // `NaN`, `+Infinity`, or `-Infinity`
             codePoint < 0 || // not a valid Unicode code point

@@ -14,67 +14,18 @@
  */
 import test from '../../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import { issue49TestData1, issue49TestData2 } from '../SaxData'
 
 export default function issue_49Test() {
 
-  describe('Issue_49Test', function () {
+  describe('Issue_49Test', () => {
 
-    it('issue_49Test_1', 0, function () {
-      let data = {
-        xml: '<xml><script>hello world</script></xml>',
-        expect: [
-          ['opentagstart', {
-            name: 'xml', attributes: {}
-          }],
-          ['opentag', {
-            name: 'xml', attributes: {}, isSelfClosing: false
-          }],
-          ['opentagstart', {
-            name: 'script', attributes: {}
-          }],
-          ['opentag', {
-            name: 'script', attributes: {}, isSelfClosing: false
-          }],
-          ['text', 'hello world'],
-          ['closetag', 'script'],
-          ['closetag', 'xml']
-        ],
-        strict: false,
-        opt: {
-          lowercasetags: true, noscript: true
-        }
-      }
-      test(data, expect);
+    it('issue_49Test_1', 0, () => {
+      test(issue49TestData1, expect);
     })
 
-    it('issue_49Test_2', 0, function () {
-      let data = {
-        xml: '<xml><script><![CDATA[hello world]]></script></xml>',
-        expect: [
-          ['opentagstart', {
-            name: 'xml', attributes: {}
-          }],
-          ['opentag', {
-            name: 'xml', attributes: {}, isSelfClosing: false
-          }],
-          ['opentagstart', {
-            name: 'script', attributes: {}
-          }],
-          ['opentag', {
-            name: 'script', attributes: {}, isSelfClosing: false
-          }],
-          ['opencdata', undefined],
-          ['cdata', 'hello world'],
-          ['closecdata', undefined],
-          ['closetag', 'script'],
-          ['closetag', 'xml']
-        ],
-        strict: false,
-        opt: {
-          lowercasetags: true, noscript: true
-        }
-      }
-      test(data, expect);
+    it('issue_49Test_2', 0, () => {
+      test(issue49TestData2, expect);
     })
   })
 }

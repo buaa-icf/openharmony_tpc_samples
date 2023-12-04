@@ -1,18 +1,10 @@
 import helper from './options-helper';
 import arrayHelper from './array-helper';
 
-var currentElement, currentElementName;
-
-function arrayJoin(length, char) {
-  var arrayStr = '';
-  for (let i = 0; i < length; i++) {
-    arrayStr += char;
-  }
-  return arrayStr;
-}
+let currentElement, currentElementName;
 
 function validateOptions(userOptions) {
-  var options = helper.copyOptions(userOptions);
+  let options = helper.copyOptions(userOptions);
   helper.ensureFlagExists('ignoreDeclaration', options);
   helper.ensureFlagExists('ignoreInstruction', options);
   helper.ensureFlagExists('ignoreAttributes', options);
@@ -29,7 +21,7 @@ function validateOptions(userOptions) {
   helper.ensureFlagExists('noQuotesForNativeAttributes', options);
   helper.ensureSpacesExists(options);
   if (typeof options.spaces === 'number') {
-    options.spaces = arrayJoin(options.spaces, ' ');
+    options.spaces = Array(options.spaces + 1).join(' ');
   }
   helper.ensureKeyExists('declaration', options);
   helper.ensureKeyExists('instruction', options);
@@ -56,7 +48,7 @@ function validateOptions(userOptions) {
 }
 
 function writeIndentation(options, depth, firstLine) {
-  return (!firstLine && options.spaces ? '\n' : '') + arrayJoin(depth, options.spaces);
+  return (!firstLine && options.spaces ? '\n' : '') + Array(depth + 1).join(options.spaces);
 }
 
 function writeAttributes(attributes, options, depth) {
@@ -66,7 +58,7 @@ function writeAttributes(attributes, options, depth) {
   if ('attributesFn' in options) {
     attributes = options.attributesFn(attributes, currentElementName, currentElement);
   }
-  var key, attr, attrName, quote, result = [];
+  let key, attr, attrName, quote, result = [];
   for (key in attributes) {
     if (Object.prototype.hasOwnProperty.call(attributes, key) && attributes[key] !== null && attributes[key] !== undefined) {
       quote = options.noQuotesForNativeAttributes && typeof attributes[key] !== 'string' ? '' : '"';
@@ -93,19 +85,19 @@ function writeInstruction(instruction, options, depth) {
   if (options.ignoreInstruction) {
     return '';
   }
-  var key;
+  let key;
   for (key in instruction) {
     if (Object.prototype.hasOwnProperty.call(instruction, key)) {
       break;
     }
   }
-  var instructionName = 'instructionNameFn' in options ? options.instructionNameFn(key, instruction[key], currentElementName, currentElement) : key;
+  let instructionName = 'instructionNameFn' in options ? options.instructionNameFn(key, instruction[key], currentElementName, currentElement) : key;
   if (typeof instruction[key] === 'object') {
     currentElement = instruction;
     currentElementName = instructionName;
     return '<?' + instructionName + writeAttributes(instruction[key][options.attributesKey], options, depth) + '?>';
   } else {
-    var instructionValue = instruction[key] ? instruction[key] : '';
+    let instructionValue = instruction[key] ? instruction[key] : '';
     if ('instructionFn' in options) instructionValue = options.instructionFn(instructionValue, key, currentElementName, currentElement);
     return '<?' + instructionName + (instructionValue ? ' ' + instructionValue : '') + '?>';
   }
@@ -132,7 +124,7 @@ function writeText(text, options) {
 }
 
 function hasContent(element, options) {
-  var i;
+  let i;
   if (element.elements && element.elements.length) {
     for (i = 0; i < element.elements.length; ++i) {
       switch (element.elements[i][options.typeKey]) {
@@ -166,12 +158,12 @@ function hasContent(element, options) {
 function writeElement(element, options, depth) {
   currentElement = element;
   currentElementName = element.name;
-  var xml = [], elementName = 'elementNameFn' in options ? options.elementNameFn(element.name, element) : element.name;
+  let xml = [], elementName = 'elementNameFn' in options ? options.elementNameFn(element.name, element) : element.name;
   xml.push('<' + elementName);
   if (element[options.attributesKey]) {
     xml.push(writeAttributes(element[options.attributesKey], options, depth));
   }
-  var withClosingTag = element[options.elementsKey] && element[options.elementsKey].length || element[options.attributesKey] && element[options.attributesKey]['xml:space'] === 'preserve';
+  let withClosingTag = element[options.elementsKey] && element[options.elementsKey].length || element[options.attributesKey] && element[options.attributesKey]['xml:space'] === 'preserve';
   if (!withClosingTag) {
     if ('fullTagEmptyElementFn' in options) {
       withClosingTag = options.fullTagEmptyElementFn(element.name, element);
@@ -186,7 +178,7 @@ function writeElement(element, options, depth) {
       currentElement = element;
       currentElementName = element.name;
     }
-    xml.push(options.spaces && hasContent(element, options) ? '\n' + arrayJoin(depth, options.spaces) : '');
+    xml.push(options.spaces && hasContent(element, options) ? '\n' + Array(depth + 1).join(options.spaces) : '');
     xml.push('</' + elementName + '>');
   } else {
     xml.push('/>');
@@ -196,7 +188,7 @@ function writeElement(element, options, depth) {
 
 function writeElements(elements, options, depth, firstLine) {
   return elements.reduce(function (xml, element) {
-    var indent = writeIndentation(options, depth, firstLine && !xml);
+    let indent = writeIndentation(options, depth, firstLine && !xml);
     switch (element.type) {
       case 'element':
         return xml + indent + writeElement(element, options, depth);
@@ -209,7 +201,7 @@ function writeElements(elements, options, depth, firstLine) {
       case 'text':
         return xml + (options.indentText ? indent : '') + writeText(element[options.textKey], options);
       case 'instruction':
-        var instruction = {};
+        let instruction = {};
         instruction[element[options.nameKey]] = element[options.attributesKey] ? element : element[options.instructionKey];
         return xml + (options.indentInstruction ? indent : '') + writeInstruction(instruction, options, depth);
     }
@@ -217,7 +209,7 @@ function writeElements(elements, options, depth, firstLine) {
 }
 
 function hasContentCompact(element, options, anyContent) {
-  var key;
+  let key;
   for (key in element) {
     if (Object.prototype.hasOwnProperty.call(element, key)) {
       switch (key) {
@@ -253,11 +245,11 @@ function hasContentCompact(element, options, anyContent) {
 function writeElementCompact(element, name, options, depth, indent) {
   currentElement = element;
   currentElementName = name;
-  var elementName = 'elementNameFn' in options ? options.elementNameFn(name, element) : name;
+  let elementName = 'elementNameFn' in options ? options.elementNameFn(name, element) : name;
   if (typeof element === 'undefined' || element === null || element === '') {
     return 'fullTagEmptyElementFn' in options && options.fullTagEmptyElementFn(name, element) || options.fullTagEmptyElement ? '<' + elementName + '></' + elementName + '>' : '<' + elementName + '/>';
   }
-  var xml = [];
+  let xml = [];
   if (name) {
     xml.push('<' + elementName);
     if (typeof element !== 'object') {
@@ -267,7 +259,7 @@ function writeElementCompact(element, name, options, depth, indent) {
     if (element[options.attributesKey]) {
       xml.push(writeAttributes(element[options.attributesKey], options, depth));
     }
-    var withClosingTag = hasContentCompact(element, options, true) || element[options.attributesKey] && element[options.attributesKey]['xml:space'] === 'preserve';
+    let withClosingTag = hasContentCompact(element, options, true) || element[options.attributesKey] && element[options.attributesKey]['xml:space'] === 'preserve';
     if (!withClosingTag) {
       if ('fullTagEmptyElementFn' in options) {
         withClosingTag = options.fullTagEmptyElementFn(name, element);
@@ -292,7 +284,7 @@ function writeElementCompact(element, name, options, depth, indent) {
 }
 
 function writeElementsCompact(element, options, depth, firstLine) {
-  var i, key, nodes, xml = [];
+  let i, key, nodes, xml = [];
   for (key in element) {
     if (Object.prototype.hasOwnProperty.call(element, key)) {
       nodes = arrayHelper.isArray(element[key]) ? element[key] : [element[key]];
@@ -329,9 +321,9 @@ function writeElementsCompact(element, options, depth, firstLine) {
   return xml.join('');
 }
 
-var js2xml = function (js, options) {
+let js2xml = function (js, options) {
   options = validateOptions(options);
-  var xml = [];
+  let xml = [];
   currentElement = js;
   currentElementName = '_root_';
   if (options.compact) {

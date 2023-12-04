@@ -14,146 +14,36 @@
  */
 import test from '../../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import {
+  attributeNoSpaceData1,
+  attributeNoSpaceData2,
+  attributeNoSpaceData3,
+  attributeNoSpaceData4,
+  attributeNoSpaceData5
+} from '../SaxData'
 
 export default function attributeNoSpace() {
 
-  describe('AttributeNoSpace', function () {
+  describe('AttributeNoSpace', () => {
 
-    it('attribute_no_space_1', 0, function () {
-      let data = {
-        xml: '<root attr1="first"attr2="second"/>',
-        expect: [
-          ['opentagstart', {
-            name: 'root', attributes: {}
-          }],
-          ['attribute', {
-            name: 'attr1', value: 'first'
-          }],
-          ['attribute', {
-            name: 'attr2', value: 'second'
-          }],
-          ['opentag', {
-            name: 'root', attributes: {
-              attr1: 'first', attr2: 'second'
-            }, isSelfClosing: true
-          }],
-          ['closetag', 'root']
-        ],
-        strict: false,
-        opt: {
-          lowercase: true
-        }
-      }
-      test(data, expect);
+    it('attribute_no_space_1', 0, () => {
+      test(attributeNoSpaceData1, expect);
     })
 
-    it('attribute_no_space_2', 0, function () {
-      let data = {
-        xml: '<root attr1="first"attr2="second"/>',
-        expect: [
-          ['opentagstart', {
-            name: 'root', attributes: {}
-          }],
-          ['attribute', {
-            name: 'attr1', value: 'first'
-          }],
-          ['error', 'No whitespace between attributes\nLine: 0\nColumn: 20\nChar: a'],
-          ['attribute', {
-            name: 'attr2', value: 'second'
-          }],
-          ['opentag', {
-            name: 'root', attributes: {
-              attr1: 'first', attr2: 'second'
-            }, isSelfClosing: true
-          }],
-          ['closetag', 'root']
-        ],
-        strict: true,
-        opt: {}
-      }
-      test(data, expect);
-
+    it('attribute_no_space_2', 0, () => {
+      test(attributeNoSpaceData2, expect);
     })
 
-    it('attribute_no_space_3', 0, function () {
-      let data = {
-        xml: '<root attr1="first" attr2="second"/>',
-        expect: [
-          ['opentagstart', {
-            name: 'root', attributes: {}
-          }],
-          ['attribute', {
-            name: 'attr1', value: 'first'
-          }],
-          ['attribute', {
-            name: 'attr2', value: 'second'
-          }],
-          ['opentag', {
-            name: 'root', attributes: {
-              attr1: 'first', attr2: 'second'
-            }, isSelfClosing: true
-          }],
-          ['closetag', 'root']
-        ],
-        strict: true,
-        opt: {}
-      }
-      test(data, expect);
-
+    it('attribute_no_space_3', 0, () => {
+      test(attributeNoSpaceData3, expect);
     })
 
-    it('attribute_no_space_4', 0, function () {
-      let data = {
-        xml: '<root attr1="first"\nattr2="second"/>',
-        expect: [
-          ['opentagstart', {
-            name: 'root', attributes: {}
-          }],
-          ['attribute', {
-            name: 'attr1', value: 'first'
-          }],
-          ['attribute', {
-            name: 'attr2', value: 'second'
-          }],
-          ['opentag', {
-            name: 'root', attributes: {
-              attr1: 'first', attr2: 'second'
-            }, isSelfClosing: true
-          }],
-          ['closetag', 'root']
-        ],
-        strict: true,
-        opt: {}
-      }
-      test(data, expect);
-
+    it('attribute_no_space_4', 0, () => {
+      test(attributeNoSpaceData4, expect);
     })
 
-    it('attribute_no_space_5', 0, function () {
-      let data = {
-        xml: '<root attr1="first"  attr2="second"/>',
-        expect: [
-          ['opentagstart', {
-            name: 'root', attributes: {}
-          }],
-          ['attribute', {
-            name: 'attr1', value: 'first'
-          }],
-          ['attribute', {
-            name: 'attr2', value: 'second'
-          }],
-          ['opentag', {
-            name: 'root', attributes: {
-              attr1: 'first', attr2: 'second'
-            }, isSelfClosing: true
-          }],
-          ['closetag', 'root']
-        ],
-        strict: true,
-        opt: {}
-      }
-      test(data, expect);
-
+    it('attribute_no_space_5', 0, () => {
+      test(attributeNoSpaceData5, expect);
     })
   })
 }

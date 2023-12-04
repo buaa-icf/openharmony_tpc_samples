@@ -14,119 +14,18 @@
  */
 import test from '../../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import { xmlnsUnboundElementTestData1, xmlnsUnboundElementTestData2 } from '../SaxData'
 
 export default function xmlnsUnboundElementTest() {
 
-  describe('xmlnsUnboundElementTest', function () {
+  describe('xmlnsUnboundElementTest', () => {
 
-    it('xmlns_unbound_element_test_1', 0, function () {
-      let data = {
-        strict: true,
-        opt: {
-          xmlns: true
-        },
-        expect: [
-          [
-            'opentagstart',
-            {
-              name: 'unbound:root',
-              attributes: {},
-              ns: {}
-            }
-          ],
-          [
-            'error',
-            'Unbound namespace prefix: "unbound:root"\nLine: 0\nColumn: 15\nChar: >'
-          ],
-          [
-            'opentag',
-            {
-              name: 'unbound:root',
-              uri: 'unbound',
-              prefix: 'unbound',
-              local: 'root',
-              attributes: {},
-              ns: {},
-              isSelfClosing: true
-            }
-          ],
-          [
-            'closetag',
-            'unbound:root'
-          ]
-        ]
-      }
-      test(data, expect).write('<unbound:root/>');
+    it('xmlns_unbound_element_test_1', 0, () => {
+      test(xmlnsUnboundElementTestData1, expect).write('<unbound:root/>');
     })
 
-    it('xmlns_unbound_element_test_2', 0, function () {
-      let data = {
-        strict: true,
-        opt: {
-          xmlns: true
-        },
-        expect: [
-          [
-            'opentagstart',
-            {
-              name: 'unbound:root',
-              attributes: {},
-              ns: {}
-            }
-          ],
-          [
-            'opennamespace',
-            {
-              prefix: 'unbound',
-              uri: 'someuri'
-            }
-          ],
-          [
-            'attribute',
-            {
-              name: 'xmlns:unbound',
-              value: 'someuri',
-              prefix: 'xmlns',
-              local: 'unbound',
-              uri: 'http://www.w3.org/2000/xmlns/'
-            }
-          ],
-          [
-            'opentag',
-            {
-              name: 'unbound:root',
-              uri: 'someuri',
-              prefix: 'unbound',
-              local: 'root',
-              attributes: {
-                'xmlns:unbound': {
-                  name: 'xmlns:unbound',
-                  value: 'someuri',
-                  prefix: 'xmlns',
-                  local: 'unbound',
-                  uri: 'http://www.w3.org/2000/xmlns/'
-                }
-              },
-              ns: {
-                'unbound': 'someuri'
-              },
-              isSelfClosing: true
-            }
-          ],
-          [
-            'closetag',
-            'unbound:root'
-          ],
-          [
-            'closenamespace',
-            {
-              prefix: 'unbound',
-              uri: 'someuri'
-            }
-          ]
-        ]
-      }
-      test(data, expect).write('<unbound:root xmlns:unbound="someuri"/>');
+    it('xmlns_unbound_element_test_2', 0, () => {
+      test(xmlnsUnboundElementTestData2, expect).write('<unbound:root xmlns:unbound="someuri"/>');
     })
   })
 }

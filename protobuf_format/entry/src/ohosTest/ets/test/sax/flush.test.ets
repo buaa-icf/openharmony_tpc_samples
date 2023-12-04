@@ -14,26 +14,14 @@
  */
 import test from '../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import { flushTestData } from './SaxData'
 
 export default function flushTest() {
 
-  describe('FlushTest', function () {
+  describe('FlushTest', () => {
 
-    it('flushTest', 0, function () {
-      let data = {
-        expect: [
-          ['opentagstart', {
-            'name': 'T', attributes: {}
-          }],
-          ['opentag', {
-            'name': 'T', attributes: {}, isSelfClosing: false
-          }],
-          ['text', 'flush'],
-          ['text', 'rest'],
-          ['closetag', 'T']
-        ]
-      }
-      var parser = test(data, expect);
+    it('flushTest', 0, () => {
+      let parser: ESObject = test(flushTestData, expect);
       parser.write('<T>flush');
       parser.flush();
       parser.write('rest</T>');

@@ -35,31 +35,31 @@ let xml =
 // 配置xml转js的可选配置项
 let options = {
     compact: true,
-    instructionNameFn: function (val, elementName) {
+    instructionNameFn: (val:string, elementName:string) => {
           return val;
         },
-    elementNameFn: function (val, elementName) {
+    elementNameFn: (val:string, elementName:string) => {
           return val;
         },
-    attributeNameFn: function (val, elementName) {
+    attributeNameFn: (val:string, elementName:string) => {
           return val;
         },
-    attributeValueFn: function (val, elementName) {
+    attributeValueFn: (val:string, elementName:string) => {
           return val;
         }
 };
 
 //  xml2js
-var xml2jsResult = convert.xml2js(xml,options);
+let xml2jsResult = convert.xml2js(xml,options);
 
 // js2xml
-var js2xmlResult = convert.js2xml(xml2jsResult);
+let js2xmlResult = convert.js2xml(xml2jsResult);
 
 // xml2json
-var xml2jsonResult =  convert.xml2json(js2xmlResult);
+let xml2jsonResult =  convert.xml2json(js2xmlResult);
 
 // json2xml
-var json2xmlResult =  convert.json2xml(xml2jsonResult);
+let json2xmlResult =  convert.json2xml(xml2jsonResult);
 ```
 
 ## 接口说明
@@ -322,6 +322,7 @@ declare namespace Options {
 
 在下述版本验证通过：
 
+DevEco Studio: 4.1 Canary2(4.1.3.313), SDK: API11 (4.1.3.1)
 DevEco Studio: 4.0 Release(4.0.3.413), SDK: API10 (4.0.10.3)
 
 ## 目录结构
@@ -337,7 +338,7 @@ DevEco Studio: 4.0 Release(4.0.3.413), SDK: API10 (4.0.10.3)
 |                |---- options-helper.js    
 |                |---- xml2js.js    
 |                |---- xml2json.js    
-|            |---- index.ets          # 入口文件
+|            |---- index.ts          # 入口文件
 |            |---- *.json5      # 配置文件
 |     |---- README.md  # 安装使用方法
 |     |---- README.OpenSource  # 开源说明

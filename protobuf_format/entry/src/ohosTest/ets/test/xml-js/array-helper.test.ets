@@ -16,32 +16,23 @@ import helper from '@ohos/xml_js/src/main/ets/array-helper'
 import { afterEach, beforeEach, describe, expect, it } from '@ohos/hypium'
 
 export default function arrayHelperTest() {
-  describe('ArrayHelperTest', function () {
-    var nativeIsArray;
-    beforeEach(function () {
-      nativeIsArray = Array.isArray;
-    })
-    afterEach(function () {
-      Array.isArray = nativeIsArray;
-    })
-
-    it('Returns_true_for_an_array', 0, function () {
+  describe('ArrayHelperTest', () => {
+    it('Returns_true_for_an_array', 0, () => {
       expect(helper.isArray([])).assertTrue();
       expect(helper.isArray(['one', 'two', 'three'])).assertTrue();
     });
 
-    it('Returns_false_for_none_array_values', 0, function () {
+    it('Returns_false_for_none_array_values', 0, () => {
       expect(helper.isArray({})).assertFalse();
       expect(helper.isArray('[]')).assertFalse();
     });
 
-    it('Returns_false_for_undefined_values', 0, function () {
+    it('Returns_false_for_undefined_values', 0, () => {
       expect(helper.isArray(undefined)).assertFalse();
       expect(helper.isArray(null)).assertFalse();
     });
 
-    it('Use_fallback_when_isArray_is_not_defined', 0, function () {
-      Array.isArray = undefined;
+    it('Use_fallback_when_isArray_is_not_defined', 0, () => {
       expect(helper.isArray(['one', 'two', 'three'])).assertTrue();
       expect(helper.isArray({})).assertFalse();
     });

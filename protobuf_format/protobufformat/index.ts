@@ -13,9 +13,8 @@
  * limitations under the License.
  */
 import Format from './src/main/ets/ProtoBufFormat'
-import Protobuf from '@ohos/protobufjs'
+import Protobuf, { Long, ByteBuffer } from '@ohos/protobufjs'
 
-export default {
-  Format,
-  Protobuf
+export {
+  Format, Protobuf, Long, ByteBuffer
 }

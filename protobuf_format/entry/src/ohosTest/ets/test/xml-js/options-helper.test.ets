@@ -16,29 +16,40 @@ import helper from '@ohos/xml_js/src/main/ets/options-helper'
 import { describe, expect, it } from '@ohos/hypium'
 
 export default function optionsHelperTest() {
-  describe('OptionsHelperTest', function () {
+  describe('OptionsHelperTest', () => {
 
-    it('Copy_unprovided_options', 0, function () {
+    it('Copy_unprovided_options', 0, () => {
       expect(JSON.stringify(helper.copyOptions())).assertEqual(JSON.stringify({}));
     });
 
-    it('Copy_provided_options', 0, function () {
-      var options = {
+    it('Copy_provided_options', 0, () => {
+      class Options {
+        ignoreText: boolean = true;
+        textKey: boolean = true;
+      }
+
+      let options: Options = {
         ignoreText: true, textKey: true
       };
       expect(JSON.stringify(helper.copyOptions(options))).assertEqual(JSON.stringify(options));
     });
 
-    it('New_flag', 0, function () {
-      var options = {};
+    it('New_flag', 0, () => {
+      interface Options {}
+
+      let options: Options = {};
       helper.ensureFlagExists('foo', options);
       expect(JSON.stringify(options)).assertEqual(JSON.stringify({
         foo: false
       }));
     });
 
-    it('Existing_flag_not_boolean', 0, function () {
-      var options = {
+    it('Existing_flag_not_boolean', 0, () => {
+      class Options {
+        foo: number = 123
+      }
+
+      let options: Options = {
         foo: 123
       };
       helper.ensureFlagExists('foo', options);
@@ -47,8 +58,12 @@ export default function optionsHelperTest() {
       }));
     });
 
-    it('Existing_flag', 0, function () {
-      var options = {
+    it('Existing_flag', 0, () => {
+      class Options {
+        foo: boolean = true
+      }
+
+      let options: Options = {
         foo: true
       };
       helper.ensureFlagExists('foo', options);
@@ -57,16 +72,22 @@ export default function optionsHelperTest() {
       }));
     });
 
-    it('New_key', 0, function () {
-      var options = {};
+    it('New_key', 0, () => {
+      interface Options {}
+
+      let options: Options = {};
       helper.ensureKeyExists('foo', options);
       expect(JSON.stringify(options)).assertEqual(JSON.stringify({
         fooKey: 'foo'
       }));
     });
 
-    it('Existing_key_not_string', 0, function () {
-      var options = {
+    it('Existing_key_not_string', 0, () => {
+      class Options {
+        fooKey: number = 123
+      }
+
+      let options: Options = {
         fooKey: 123
       };
       helper.ensureKeyExists('foo', options);
@@ -75,8 +96,12 @@ export default function optionsHelperTest() {
       }));
     });
 
-    it('Existing_key_string', 0, function () {
-      var options = {
+    it('Existing_key_string', 0, () => {
+      class Options {
+        fooKey: string = 'baa'
+      }
+
+      let options: Options = {
         fooKey: 'baa'
       };
       helper.ensureKeyExists('foo', options);

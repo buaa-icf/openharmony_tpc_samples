@@ -14,32 +14,14 @@
  */
 import test from '../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import { trailingAttributeNoValueTestData } from './SaxData'
 
 export default function trailingAttributeNoValueTest() {
 
-  describe('TrailingAttributeNoValueTest', function () {
+  describe('TrailingAttributeNoValueTest', () => {
 
-    it('trailingAttributeNoValueTest', 0, function () {
-      let data = {
-        xml: '<root attrib>',
-        expect: [
-          ['opentagstart', {
-            name: 'ROOT', attributes: {}
-          }],
-          ['attribute', {
-            name: 'ATTRIB', value: 'attrib'
-          }],
-          ['opentag', {
-            name: 'ROOT', attributes: {
-              'ATTRIB': 'attrib'
-            }, isSelfClosing: false
-          }]
-        ],
-        opt: {
-          trim: true
-        }
-      }
-      test(data, expect);
+    it('trailingAttributeNoValueTest', 0, () => {
+      test(trailingAttributeNoValueTestData, expect);
     })
   })
 }

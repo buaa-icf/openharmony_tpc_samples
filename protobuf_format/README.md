@@ -16,7 +16,7 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 2.在需要使用的页面导入protobuf_format库,如Index.ets:
 
 ```
-import ProtobufFormat from '@ohos/protobuf_format'
+import  { Format, Protobuf } from '@ohos/protobuf_format'
 ```
 
 ## 使用说明
@@ -71,15 +71,21 @@ message UserLoginResponse{
 2.读取.proto 文件
 
 ```
-let builder = await ProtobufFormat.Protobuf.loadProtoFile("userproto.proto", null, null, getContext(this).resourceManager)
+let builder:ESObject = await Protobuf.loadProtoFile("userproto.proto", null, null, getContext(this).resourceManager)
 ```
 
 3.构建消息体
 
 ```
 // 构建消息体
-var UserLoginResponse = builder.build("com.user.UserLoginResponse");
-let userLoginData = {
+let UserLoginResponse:ESObject = builder.build("com.user.UserLoginResponse");
+class UserInfo {
+  sessionId: string = '';
+  userPrivilege: string = '';
+  isTokenType: boolean = false;
+  formatTimestamp: string = '';
+}
+let userLoginData:UserInfo = {
     sessionId: "testAsynchronouslyLoadProtoFile",
     userPrivilege: "John123",
     isTokenType: false,
@@ -87,7 +93,7 @@ let userLoginData = {
   };
 
 // 可对Message进行序列化与反序列化操作，也可进行格式转换
-var message = new UserLoginResponse(userLoginData);
+let message:ESObject = new UserLoginResponse(userLoginData);
 ```
 
 **主要接口示例：**
@@ -97,21 +103,27 @@ var message = new UserLoginResponse(userLoginData);
 构建消息体 ==》 转换为json字符串
 
 ```
-const protoStr = 'syntax = "proto3"; package com.user;message UserLoginResponse{string sessionId = 1;string userPrivilege = 2;bool isTokenType = 3;string formatTimestamp = 4;}';
+const protoStr:string = 'syntax = "proto3"; package com.user;message UserLoginResponse{string sessionId = 1;string userPrivilege = 2;bool isTokenType = 3;string formatTimestamp = 4;}';
 // 解析proto文件，获取消息体构建工具类Builder
-let root = await ProtoBufFormat.Protobuf.loadProto(protoStr, null, 'user.proto');
+let root: ESObject = await Protobuf.loadProto(protoStr, null, 'user.proto');
 
-let UserLoginResponse = root.build("com.user.UserLoginResponse");
-const userLogin = {
+let UserLoginResponse: ESObject  = root.build("com.user.UserLoginResponse");
+class UserInfo {
+  sessionId: string = '';
+  userPrivilege: string = '';
+  isTokenType: boolean = false;
+  formatTimestamp: string = '';
+}
+const userLogin: UserInfo = {
   sessionId: "message_to_json",
   userPrivilege: "John123",
   isTokenType: false,
   formatTimestamp: "12342222"
 };
 // 构建消息体
-let msg = new UserLoginResponse(userLogin);
+let msg: ESObject  = new UserLoginResponse(userLogin);
 // Message转换为json字符串
-let json = ProtoBufFormat.Format.messageToJson(msg);
+let json: string = Format.messageToJson(msg);
 ```
 
 **json转Message**
@@ -119,18 +131,23 @@ let json = ProtoBufFormat.Format.messageToJson(msg);
 构建消息体构建工具类Builder， 组合消息体路径：包名+类名，定义json数据 ==》构建消息体
 
 ```
-const protoStr = 'syntax = "proto3"; package com.user;message UserLoginResponse{string sessionId = 1;string userPrivilege = 2;bool isTokenType = 3;string formatTimestamp = 4;}';
+const protoStr:string = 'syntax = "proto3"; package com.user;message UserLoginResponse{string sessionId = 1;string userPrivilege = 2;bool isTokenType = 3;string formatTimestamp = 4;}';
 // 构建消息体构建工具类Builder
-let root = await ProtoBufFormat.Protobuf.loadProto(protoStr, null, 'user.proto');
-
-const userLogin = {
+let root: ESObject = await Protobuf.loadProto(protoStr, null, 'user.proto');
+class UserInfo {
+  sessionId: string = '';
+  userPrivilege: string = '';
+  isTokenType: boolean = false;
+  formatTimestamp: string = '';
+}
+const userLogin:UserInfo = {
   sessionId: "json_to_message",
   userPrivilege: "John123",
   isTokenType: false,
   formatTimestamp: "12342222"
 };
 
-let json = ProtoBufFormat.Format.jsonToMessage(root,"com.user.UserLoginResponse",userLogin);
+let message: ESObject = Format.jsonToMessage(root,"com.user.UserLoginResponse",userLogin);
 ```
 
 **Message转xml**
@@ -138,21 +155,27 @@ let json = ProtoBufFormat.Format.jsonToMessage(root,"com.user.UserLoginResponse"
 构建消息体 ==》 转换为xml字符串
 
 ```
-const protoStr = 'syntax = "proto3"; package com.user;message UserLoginResponse{string sessionId = 1;string userPrivilege = 2;bool isTokenType = 3;string formatTimestamp = 4;}';
+const protoStr:string = 'syntax = "proto3"; package com.user;message UserLoginResponse{string sessionId = 1;string userPrivilege = 2;bool isTokenType = 3;string formatTimestamp = 4;}';
 // 解析proto文件，获取消息体构建工具类Builder
-let root = await ProtoBufFormat.Protobuf.loadProto(protoStr, null, 'user.proto');
+let root: ESObject = await Protobuf.loadProto(protoStr, null, 'user.proto');
 
-let UserLoginResponse = root.build("com.user.UserLoginResponse");
-const userLogin = {
+let UserLoginResponse: ESObject = root.build("com.user.UserLoginResponse");
+class UserInfo {
+  sessionId: string = '';
+  userPrivilege: string = '';
+  isTokenType: boolean = false;
+  formatTimestamp: string = '';
+}
+const userLogin:UserInfo = {
   sessionId: "message_to_json",
   userPrivilege: "John123",
   isTokenType: false,
   formatTimestamp: "12342222"
 };
 // 构建消息体
-let msg = new UserLoginResponse(userLogin);
+let msg: ESObject = new UserLoginResponse(userLogin);
 // Message转换为xml字符串
-let xml = ProtoBufFormat.Format.messageToXml(msg);
+let xml:string = Format.messageToXml(msg);
 ```
 
 **xml转Message**
@@ -160,12 +183,12 @@ let xml = ProtoBufFormat.Format.messageToXml(msg);
 构建消息体构建工具类Builder， 组合消息体路径：包名+类名，定义xml数据 ==》构建消息体
 
 ```
-const protoStr = 'syntax = "proto3"; package com.user;message UserLoginResponse{string sessionId = 1;string userPrivilege = 2;bool isTokenType = 3;string formatTimestamp = 4;}';
+const protoStr:string = 'syntax = "proto3"; package com.user;message UserLoginResponse{string sessionId = 1;string userPrivilege = 2;bool isTokenType = 3;string formatTimestamp = 4;}';
 // 构建消息体构建工具类Builder
-let root = await ProtoBufFormat.Protobuf.loadProto(protoStr, null, 'user.proto');
+let root: ESObject = await Protobuf.loadProto(protoStr, null, 'user.proto');
 
 let xml = '<UserLoginResponse><sessionId>xml_to_message</sessionId><userPrivilege>John123</userPrivilege><isTokenType>false</isTokenType><formatTimestamp>12342222</formatTimestamp></UserLoginResponse>';
-let msg = ProtoBufFormat.Format.xmlToMessage(root, 'com.user.UserLoginResponse', xml); 
+let msg: ESObject = Format.xmlToMessage(root, 'com.user.UserLoginResponse', xml); 
 ```
 
 **Message转html**
@@ -173,21 +196,27 @@ let msg = ProtoBufFormat.Format.xmlToMessage(root, 'com.user.UserLoginResponse',
 构建消息体 ==》 转换为html字符串
 
 ```
-const protoStr = 'syntax = "proto3"; package com.user;message UserLoginResponse{string sessionId = 1;string userPrivilege = 2;bool isTokenType = 3;string formatTimestamp = 4;}';
+const protoStr:string = 'syntax = "proto3"; package com.user;message UserLoginResponse{string sessionId = 1;string userPrivilege = 2;bool isTokenType = 3;string formatTimestamp = 4;}';
 // 解析proto文件，获取消息体构建工具类Builder
-let root = await ProtoBufFormat.Protobuf.loadProto(protoStr, null, 'user.proto');
+let root:ESObject = await Protobuf.loadProto(protoStr, null, 'user.proto');
 
-let UserLoginResponse = root.build("com.user.UserLoginResponse");
-const userLogin = {
+let UserLoginResponse:ESObject = root.build("com.user.UserLoginResponse");
+class UserInfo {
+  sessionId: string = '';
+  userPrivilege: string = '';
+  isTokenType: boolean = false;
+  formatTimestamp: string = '';
+}
+const userLogin:UserInfo = {
   sessionId: "message_to_json",
   userPrivilege: "John123",
   isTokenType: false,
   formatTimestamp: "12342222"
 };
 // 构建消息体
-let msg = new UserLoginResponse(userLogin);
+let msg:ESObject = new UserLoginResponse(userLogin);
 // Message转换为html字符串
-let xml = ProtoBufFormat.Format.messageToHtml(msg);
+let xml:string = Format.messageToHtml(msg);
 ```
 
 ## 接口说明
@@ -285,6 +314,7 @@ static messageToHtml(message: Protobuf.Builder.Message): string;
 ## 约束与限制
 在下述版本验证通过：
 
+DevEco Studio: 4.1 Canary2(4.1.3.313), SDK: API11 (4.1.3.1)
 DevEco Studio: 4.0 Release(4.0.3.413), SDK: API10 (4.0.10.3)
 
 ## 目录结构
@@ -296,9 +326,9 @@ DevEco Studio: 4.0 Release(4.0.3.413), SDK: API10 (4.0.10.3)
 |     |---- protobufformat  # Message格式转换
 |           |---- src/main  # 模块代码
 |                |---- ets/   # 模块代码
-|                     |---- ProtoBufFormat.ets     # 格式转换对外接口实现类
-|                     |---- Util.ets     # 格式转换工具类
-|            |---- index.ets          # 入口文件
+|                     |---- ProtoBufFormat.ts     # 格式转换对外接口实现类
+|                     |---- Util.ts     # 格式转换工具类
+|            |---- index.ts          # 入口文件
 |            |---- *.json5      # 配置文件
 |     |---- README.md  # 安装使用方法
 |     |---- README.OpenSource  # 开源说明

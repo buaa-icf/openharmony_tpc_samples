@@ -14,26 +14,14 @@
  */
 import test from '../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import { cyrillicTestData } from './SaxData'
 
 export default function cyrillicTest() {
 
-  describe('CyrillicTest', function () {
+  describe('CyrillicTest', () => {
 
-    it('cyrillicTest', 0, function () {
-      let data = {
-        xml: '<Р>тест</Р>',
-        expect: [
-          ['opentagstart', {
-            'name': 'Р', attributes: {}
-          }],
-          ['opentag', {
-            'name': 'Р', attributes: {}, isSelfClosing: false
-          }],
-          ['text', 'тест'],
-          ['closetag', 'Р']
-        ]
-      }
-      test(data, expect)
+    it('cyrillicTest', 0, () => {
+      test(cyrillicTestData, expect)
     })
   })
 }

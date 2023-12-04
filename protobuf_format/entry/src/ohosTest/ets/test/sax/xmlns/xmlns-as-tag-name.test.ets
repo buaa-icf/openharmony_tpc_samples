@@ -14,46 +14,14 @@
  */
 import test from '../../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import { xmlnsAsTagNameTestData } from '../SaxData'
 
 export default function xmlnsAsTagNameTest() {
 
-  describe('xmlnsAsTagNameTest', function () {
+  describe('xmlnsAsTagNameTest', () => {
 
-    it('xmlns_as_tag_name_test', 0, function () {
-      let data = {
-        xml: '<xmlns/>',
-        expect: [
-          [
-            'opentagstart',
-            {
-              name: 'xmlns',
-              attributes: {},
-              ns: {}
-            }
-          ],
-          [
-            'opentag',
-            {
-              name: 'xmlns',
-              attributes: {},
-              ns: {},
-              prefix: '',
-              local: 'xmlns',
-              uri: '',
-              isSelfClosing: true
-            }
-          ],
-          [
-            'closetag',
-            'xmlns'
-          ]
-        ],
-        strict: true,
-        opt: {
-          xmlns: true
-        }
-      }
-      test(data, expect);
+    it('xmlns_as_tag_name_test', 0, () => {
+      test(xmlnsAsTagNameTestData, expect);
     })
   })
 }

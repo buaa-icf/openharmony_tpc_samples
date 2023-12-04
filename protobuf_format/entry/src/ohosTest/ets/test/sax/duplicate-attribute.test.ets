@@ -14,35 +14,14 @@
  */
 import test from '../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import { duplicateAttributeTestData } from './SaxData'
 
 export default function duplicateAttributeTest() {
 
-  describe('DuplicateAttributeTest', function () {
+  describe('DuplicateAttributeTest', () => {
 
-    it('duplicateAttributeTest', 0, function () {
-      let data = {
-        xml: '<span id="hello" id="there"></span>',
-        expect: [
-          ['opentagstart', {
-            name: 'SPAN',
-            attributes: {}
-          }],
-          ['attribute', {
-            name: 'ID', value: 'hello'
-          }],
-          ['opentag', {
-            name: 'SPAN',
-            attributes: {
-              ID: 'hello'
-            },
-            isSelfClosing: false
-          }],
-          ['closetag', 'SPAN']
-        ],
-        strict: false,
-        opt: {}
-      }
-      test(data, expect);
+    it('duplicateAttributeTest', 0, () => {
+      test(duplicateAttributeTestData, expect);
     })
   })
 }

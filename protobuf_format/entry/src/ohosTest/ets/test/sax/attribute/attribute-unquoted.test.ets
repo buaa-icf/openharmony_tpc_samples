@@ -14,52 +14,14 @@
  */
 import test from '../../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import { attributeUnquotedData } from '../SaxData'
 
 export default function attributeUnquoted() {
 
-  describe('AttributeUnquoted', function () {
+  describe('AttributeUnquoted', () => {
 
-    it('attribute_unquoted', 0, function () {
-      let data = {
-        expect: [
-          ['opentagstart', {
-            name: 'ROOT', attributes: {}, ns: {}
-          }],
-          ['attribute', {
-            name: 'LENGTH',
-            value: '12345',
-            prefix: '',
-            local: 'LENGTH',
-            uri: ''
-          }],
-          ['opentag', {
-            name: 'ROOT',
-            attributes: {
-              LENGTH: {
-                name: 'LENGTH',
-                value: '12345',
-                prefix: '',
-                local: 'LENGTH',
-                uri: ''
-              }
-            },
-            ns: {},
-            prefix: '',
-            local: 'ROOT',
-            uri: '',
-            isSelfClosing: false
-          }],
-          ['closetag', 'ROOT'],
-          ['end'],
-          ['ready']
-        ],
-        strict: false,
-        opt: {
-          xmlns: true
-        }
-      }
-      var parser = test(data, expect);
-
+    it('attribute_unquoted', 0, () => {
+      let parser: ESObject = test(attributeUnquotedData, expect);
       parser.write('<root length=12').write('345></root>').close()
     })
   })

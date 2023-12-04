@@ -14,101 +14,18 @@
  */
 import test from '../../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import { issue86TestData1, issue86TestData2 } from '../SaxData'
 
 export default function issue_86Test() {
 
-  describe('Issue_86Test', function () {
+  describe('Issue_86Test', () => {
 
-    it('issue_86Test_1', 0, function () {
-      let data = {
-        xml: '<root>abc</root>de<f',
-        expect: [
-          [
-            'opentagstart',
-            {
-              name: 'ROOT',
-              attributes: {}
-            }
-          ],
-          [
-            'opentag',
-            {
-              name: 'ROOT',
-              attributes: {},
-              isSelfClosing: false
-            }
-          ],
-          [
-            'text',
-            'abc'
-          ],
-          [
-            'closetag',
-            'ROOT'
-          ],
-          [
-            'text',
-            'de<f'
-          ]
-        ],
-        strict: false,
-        opt: {}
-      }
-      test(data, expect);
+    it('issue_86Test_1', 0, () => {
+      test(issue86TestData1, expect);
     })
 
-    it('issue_86Test_2', 0, function () {
-      let data = {
-        xml: '<root>abc</root>de<f',
-        expect: [
-          [
-            'opentagstart',
-            {
-              name: 'root',
-              attributes: {}
-            }
-          ],
-          [
-            'opentag',
-            {
-              name: 'root',
-              attributes: {},
-              isSelfClosing: false
-            }
-          ],
-          [
-            'text',
-            'abc'
-          ],
-          [
-            'closetag',
-            'root'
-          ],
-          [
-            'error',
-            'Text data outside of root node.\nLine: 0\nColumn: 17\nChar: d'
-          ],
-          [
-            'text',
-            'd'
-          ],
-          [
-            'error',
-            'Text data outside of root node.\nLine: 0\nColumn: 18\nChar: e'
-          ],
-          [
-            'text',
-            'e'
-          ],
-          [
-            'error',
-            'Unexpected end\nLine: 0\nColumn: 20\nChar: '
-          ]
-        ],
-        strict: true,
-        opt: {}
-      }
-      test(data, expect);
+    it('issue_86Test_2', 0, () => {
+      test(issue86TestData2, expect);
     })
   })
 }

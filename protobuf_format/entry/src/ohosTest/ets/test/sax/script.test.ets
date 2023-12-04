@@ -14,80 +14,14 @@
  */
 import test from '../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import { scriptTestData } from './SaxData'
 
 export default function scriptTest() {
 
-  describe('ScriptTest', function () {
+  describe('ScriptTest', () => {
 
-    it('scriptTest', 0, function () {
-      let data = {
-        xml: "<html><head><script>if (1 < 0) { console.log('elo there'); }</script></head></html>",
-        expect: [
-          [
-            'opentagstart',
-            {
-              'name': 'HTML',
-              'attributes': {}
-            }
-          ],
-          [
-            'opentag',
-            {
-              'name': 'HTML',
-              'attributes': {},
-              'isSelfClosing': false
-            }
-          ],
-          [
-            'opentagstart',
-            {
-              'name': 'HEAD',
-              'attributes': {}
-            }
-          ],
-          [
-            'opentag',
-            {
-              'name': 'HEAD',
-              'attributes': {},
-              'isSelfClosing': false
-            }
-          ],
-          [
-            'opentagstart',
-            {
-              'name': 'SCRIPT',
-              'attributes': {}
-            }
-          ],
-          [
-            'opentag',
-            {
-              'name': 'SCRIPT',
-              'attributes': {},
-              'isSelfClosing': false
-            }
-          ],
-          [
-            'script',
-            "if (1 < 0) { console.log('elo there'); }"
-          ],
-          [
-            'closetag',
-            'SCRIPT'
-          ],
-          [
-            'closetag',
-            'HEAD'
-          ],
-          [
-            'closetag',
-            'HTML'
-          ]
-        ]
-      }
-      test(data, expect);
-
+    it('scriptTest', 0, () => {
+      test(scriptTestData, expect);
     })
   })
 }

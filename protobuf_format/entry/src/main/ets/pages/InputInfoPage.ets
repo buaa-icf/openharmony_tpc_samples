@@ -12,9 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import ProtobufFormat from '@ohos/protobuf_format'
-import hilog from '@ohos.hilog'
+import { Format, Protobuf } from '@ohos/protobuf_format';
+import hilog from '@ohos.hilog';
 import promptAction from '@ohos.promptAction';
+
+class UserInfo {
+  sessionId: string = '';
+  userPrivilege: number = 0;
+  isTokenType: boolean = false;
+  formatTimestamp: number = 0;
+  field5: number = 0;
+  field6: number = 0;
+  field7: number = 0;
+  field8: number = 0;
+}
 
 @Entry
 @Component
@@ -42,7 +53,7 @@ struct InputInfoPage {
   'float field8 = 8;' +
   '}';
   private defaultUserPath: string = "com.user.UserLoginResponse";
-  private defaultUserData: Object = {
+  private defaultUserData: UserInfo = {
     sessionId: "testProtobufFormat",
     userPrivilege: 123456,
     isTokenType: false,
@@ -148,13 +159,13 @@ struct InputInfoPage {
                   return;
                 }
                 try {
-                  let builder = await ProtobufFormat.Protobuf.loadProto(this.protoInfo, null, 'protoInfo.proto')
+                  let builder: ESObject = await Protobuf.loadProto(this.protoInfo, null, 'protoInfo.proto')
                   if (!builder) {
                     hilog.error(0x0000, this.TAG, '%{public}s', 'codec error: builder is null|undefined.');
                     return;
                   }
-                  let Message = builder.build(this.protoPath);
-                  let message = new Message(JSON.parse(this.protoData));
+                  let Message: ESObject = builder.build(this.protoPath);
+                  let message: ESObject = new Message(JSON.parse(this.protoData));
                   this.protobufFormat(builder, message, this.protoPath)
                 } catch (error) {
                   hilog.error(0x0000, this.TAG, '%{public}s', 'protobufFormat catch error: ' + error);
@@ -180,17 +191,16 @@ struct InputInfoPage {
     .alignItems(VerticalAlign.Top)
   }
 
-  // @ts-ignore
-  private protobufFormat(builder: ProtobufFormat.Protobuf.Builder, message: ProtoBufFormat.Protobuf.Builder.Message, path: string): void {
-    let messageJson = ProtobufFormat.Format.messageToJson(message);
+  private protobufFormat(builder: ESObject, message: ESObject, path: string): void {
+    let messageJson: string = Format.messageToJson(message);
     hilog.info(0x0000, this.TAG, '%{public}s', 'messageJson: ' + messageJson);
-    let jsonMessage = ProtobufFormat.Format.jsonToMessage(builder, path, messageJson);
+    let jsonMessage: ESObject = Format.jsonToMessage(builder, path, messageJson);
     hilog.info(0x0000, this.TAG, '%{public}s', 'jsonMessage: ' + jsonMessage);
-    let messageXml = ProtobufFormat.Format.messageToXml(message);
+    let messageXml: string = Format.messageToXml(message);
     hilog.info(0x0000, this.TAG, '%{public}s', 'messageXml: ' + messageXml);
-    let xmlMessage = ProtobufFormat.Format.xmlToMessage(builder, path, messageXml);
+    let xmlMessage: ESObject = Format.xmlToMessage(builder, path, messageXml);
     hilog.info(0x0000, this.TAG, '%{public}s', 'xmlMessage: ' + xmlMessage);
-    let messageHtml = ProtobufFormat.Format.messageToHtml(message);
+    let messageHtml: string = Format.messageToHtml(message);
     hilog.info(0x0000, this.TAG, '%{public}s', 'messageHtml: ' + messageHtml);
 
     this.messageToJsonResult = messageJson;

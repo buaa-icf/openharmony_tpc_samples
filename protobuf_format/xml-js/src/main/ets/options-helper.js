@@ -1,9 +1,9 @@
 import arrayHelper from './array-helper';
 
-var helper = {
+let helper = {
 
   copyOptions: function (options) {
-    var key, copy = {};
+    let key, copy = {};
     for (key in options) {
       if (Object.prototype.hasOwnProperty.call(options, key)) {
         copy[key] = options[key];

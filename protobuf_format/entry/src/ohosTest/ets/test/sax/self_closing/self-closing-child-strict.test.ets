@@ -14,71 +14,14 @@
  */
 import test from '../../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import { selfClosingChildStrictTestData } from '../SaxData'
 
 export default function selfClosingChildStrictTest() {
 
-  describe('SelfClosingChildStrictTest', function () {
+  describe('SelfClosingChildStrictTest', () => {
 
-    it('selfClosingChildStrictTest', 0, function () {
-      let data = {
-        xml: '<root>' +
-        '<child>' +
-        '<haha />' +
-        '</child>' +
-        '<monkey>' +
-        '=(|)' +
-        '</monkey>' +
-        '</root>',
-        expect: [
-          ['opentagstart', {
-            'name': 'root',
-            'attributes': {}
-          }],
-          ['opentag', {
-            'name': 'root',
-            'attributes': {},
-            'isSelfClosing': false
-          }],
-          ['opentagstart', {
-            'name': 'child',
-            'attributes': {}
-          }],
-          ['opentag', {
-            'name': 'child',
-            'attributes': {},
-            'isSelfClosing': false
-          }],
-          ['opentagstart', {
-            'name': 'haha',
-            'attributes': {}
-          }],
-          ['opentag', {
-            'name': 'haha',
-            'attributes': {},
-            'isSelfClosing': true
-          }],
-          ['closetag', 'haha'],
-          ['closetag', 'child'],
-          ['opentagstart', {
-            'name': 'monkey',
-            'attributes': {}
-          }],
-          ['opentag', {
-            'name': 'monkey',
-            'attributes': {},
-            'isSelfClosing': false
-          }],
-          ['text', '=(|)'],
-          ['closetag', 'monkey'],
-          ['closetag', 'root'],
-          ['end'],
-          ['ready']
-        ],
-        strict: true,
-        opt: {}
-      }
-      test(data, expect);
-
+    it('selfClosingChildStrictTest', 0, () => {
+      test(selfClosingChildStrictTestData, expect);
     })
   })
 }

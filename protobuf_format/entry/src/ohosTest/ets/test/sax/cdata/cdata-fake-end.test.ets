@@ -14,55 +14,25 @@
  */
 import test from '../../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import { cdataFakeEndTestData1, cdataFakeEndTestData2 } from '../SaxData'
 
 export default function cdataFakeEndTest() {
 
-  describe('CDataFakeEndTest', function () {
+  describe('CDataFakeEndTest', () => {
 
-    it('cdataFakeEndTest_1', 0, function () {
-      let data = {
-        expect: [
-          ['opentagstart', {
-            'name': 'R', 'attributes': {}
-          }],
-          ['opentag', {
-            'name': 'R', 'attributes': {}, 'isSelfClosing': false
-          }],
-          ['opencdata', undefined],
-          ['cdata', '[[[[[[[[]]]]]]]]'],
-          ['closecdata', undefined],
-          ['closetag', 'R']
-        ]
-      }
-
-      var parser = test(data, expect);
-      var x = '<r><![CDATA[[[[[[[[[]]]]]]]]]]></r>'
-      for (var i = 0; i < x.length; i++) {
+    it('cdataFakeEndTest_1', 0, () => {
+      let parser: ESObject = test(cdataFakeEndTestData1, expect);
+      let x: string = '<r><![CDATA[[[[[[[[[]]]]]]]]]]></r>'
+      for (let i = 0; i < x.length; i++) {
         parser.write(x.charAt(i))
       }
-      parser.close()
-
+      parser.close();
     })
 
-    it('cdataFakeEndTest_2', 0, function () {
-      let data = {
-        expect: [
-          ['opentagstart', {
-            'name': 'R', 'attributes': {}
-          }],
-          ['opentag', {
-            'name': 'R', 'attributes': {}, 'isSelfClosing': false
-          }],
-          ['opencdata', undefined],
-          ['cdata', '[[[[[[[[]]]]]]]]'],
-          ['closecdata', undefined],
-          ['closetag', 'R']
-        ]
-      }
-
-      var parser = test(data, expect);
-      var x = '<r><![CDATA[[[[[[[[[]]]]]]]]]]></r>'
-      parser.write(x).close()
+    it('cdataFakeEndTest_2', 0, () => {
+      let parser: ESObject = test(cdataFakeEndTestData2, expect);
+      let x: string = '<r><![CDATA[[[[[[[[[]]]]]]]]]]></r>'
+      parser.write(x).close();
     })
   })
 }

@@ -14,28 +14,14 @@
  */
 import test from '../../sax_util/TestUtil'
 import { describe, expect, it } from '@ohos/hypium'
+import { emojiTestData } from './SaxData'
 
 export default function emojiTest() {
 
-  describe('EmojiTest', function () {
+  describe('EmojiTest', () => {
 
-    it('emojiTest', 0, function () {
-      let data = {
-        xml: '<a>&#x1f525;</a>',
-        expect: [
-          ['opentagstart', {
-            name: 'A', attributes: {}
-          }],
-          ['opentag', {
-            name: 'A', attributes: {}, isSelfClosing: false
-          }],
-          ['text', '\ud83d\udd25'],
-          ['closetag', 'A']
-        ],
-        strict: false,
-        opt: {}
-      }
-      test(data, expect);
+    it('emojiTest', 0, () => {
+      test(emojiTestData, expect);
     })
   })
 }
