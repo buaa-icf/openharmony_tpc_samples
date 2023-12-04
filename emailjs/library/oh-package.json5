@@ -1,5 +1,5 @@
 {
-  "name": "library",
+  "name": "@ohos/emailjs",
   "version": "1.0.1-rc.1",
   "type": "module",
   "types": "",
