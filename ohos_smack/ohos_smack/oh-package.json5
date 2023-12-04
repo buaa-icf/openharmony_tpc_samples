@@ -10,7 +10,7 @@
     "org": "opensource"
   },
   "main": "index.ts",
-  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/smack",
+  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_smack",
   "version": "2.0.0-rc.0",
   "tags": [
     "OpenHarmony",

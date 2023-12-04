@@ -34,7 +34,7 @@ struct Main {
   })
 
   aboutToAppear() {
-    Smack.handleSubscriptionRequestListener((json) => {
+    Smack.handleSubscriptionRequestListener((json:ESObject) => {
       console.info("收到好友添加申请"+json)
        // let obj=JSON.parse(json)
        // this.mbare = obj.jid

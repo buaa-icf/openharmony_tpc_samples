@@ -23,7 +23,7 @@ struct page {
 
   service:string="@"+Constant.HOST_DOMAIN+Constant.HOST_RES
   aboutToAppear() {
-    Smack.registerGroupMessageCallback((id, msg) => {
+    Smack.registerGroupMessageCallback((id:ESObject, msg:ESObject) => {
       console.info('群聊消息接收到了  id = ' + id + '   msg = ' + msg)
     })
     Smack.registerInvitationListener((v0:string) => {
@@ -32,7 +32,7 @@ struct page {
     Smack.registerMUCParticipantPresenceListener((nike: string, presenceType: string) => {
       console.info('我在群中的状态变化（踢出、禁止、授予权限等）  nike = ' + nike + '   presenceType = ' + presenceType )
     })
-    Smack.handleSubscriptionRequestListener((resultStr) => {
+    Smack.handleSubscriptionRequestListener((resultStr:ESObject) => {
       console.info('handleSubscriptionRequestListener  resultStr = ' + resultStr)
     })
   }
@@ -234,7 +234,7 @@ struct page {
           Item({
             text: '获取全部群聊成员',
             click: () => {
-              let number = Smack.getRoomItems();
+              let number:ESObject = Smack.getRoomItems();
               console.info('getRoomItems = ' + JSON.stringify(number))
             }
           })
@@ -242,7 +242,7 @@ struct page {
           Item({
             text: '过滤群聊成员',
             click: () => {
-              let list = Smack.requestList(MUCOperation.RequestOwnerList);
+              let list:ESObject = Smack.requestList(MUCOperation.RequestOwnerList);
               console.info('requestList = ' + JSON.stringify(list))
             }
           })
@@ -257,21 +257,21 @@ struct page {
           Item({
             text: '创建并加入房间',
             click: () => {
-              let info = Smack.createOrJoinRoom("room4", Constant.HOST_DOMAIN, Constant.SERVICE_NAME, "123");
+              let info:ESObject = Smack.createOrJoinRoom("room4", Constant.HOST_DOMAIN, Constant.SERVICE_NAME, "123");
             }
           })
 
           Item({
             text: '房间设置密码',
             click: () => {
-              let info = Smack.setPassword("123123");
+              let info:ESObject = Smack.setPassword("123123");
             }
           })
 
           Item({
             text: '获取加入房间的房间信息',
             click: () => {
-              let info = Smack.getRoomInfo();
+              let info:ESObject = Smack.getRoomInfo();
               console.info('getRoomInfo = ' + JSON.stringify(info))
             }
           })
@@ -279,7 +279,7 @@ struct page {
           Item({
             text: '获取群聊配置',
             click: () => {
-              let config = Smack.requestRoomConfig();
+              let config:ESObject = Smack.requestRoomConfig();
               console.info('config = ' + JSON.stringify(config))
             }
           })
@@ -321,28 +321,28 @@ struct page {
 //              roomConfig.roomowners = "";
               roomConfig.presencebroadcast = ["participant", "moderator", "visitor"];
               console.info("test page setRoomConfig str:"+JSON.stringify(roomConfig))
-              let info = Smack.setRoomConfig(JSON.stringify(roomConfig));
+              let info:ESObject = Smack.setRoomConfig(JSON.stringify(roomConfig));
             }
           })
 
           Item({
             text: '从该聊天室踢出用户群',
             click: () => {
-              let info = Smack.bans("888,555", "bans");
+              let info:ESObject = Smack.bans("888,555", "bans");
             }
           })
 
           Item({
             text: '更改聊天室成员的昵称',
             click: () => {
-              let info = Smack.setNick("new_nike_name");
+              let info:ESObject = Smack.setNick("new_nike_name");
             }
           })
 
           Item({
             text: '目前是否在多人聊天中',
             click: () => {
-              let isJoined = Smack.isJoined();
+              let isJoined:ESObject = Smack.isJoined();
               console.info('isJoined = ' + isJoined)
             }
           })
@@ -350,28 +350,28 @@ struct page {
           Item({
             text: '返回房间里用户的昵称',
             click: () => {
-              let nick = Smack.nick();
+              let nick:ESObject = Smack.nick();
               console.info('nick = ' + nick)
             }
           })
           Item({
             text: '是否连接',
             click: () => {
-              let isConnected = Smack.isConnected();
+              let isConnected:ESObject = Smack.isConnected();
               console.info('连接状态 = ' + isConnected)
             }
           })
           Item({
             text: '用户名称',
             click: () => {
-              let username = Smack.username();
+              let username:ESObject = Smack.username();
               console.info('连接状态 = ' + username)
             }
           })
           Item({
             text: 'connect',
             click: () => {
-              let connect = Smack.connect();
+              let connect:ESObject = Smack.connect();
               console.info('connect = ' + connect)
             }
           })
@@ -385,42 +385,42 @@ struct page {
           Item({
             text: 'setUsernameAndPassword',
             click: () => {
-              let value=Smack.setUsernameAndPassword("zhang", "123456");
+              let value:ESObject=Smack.setUsernameAndPassword("zhang", "123456");
               console.info('setUsernameAndPassword = '+value)
             }
           })
           Item({
             text: 'setPort',
             click: () => {
-              let value=Smack.setPort(Constant.HOST_PORT);
+              let value:ESObject=Smack.setPort(Constant.HOST_PORT);
               console.info('setUsernameAndPassword = '+value)
             }
           })
           Item({
             text: 'password',
             click: () => {
-              let value=Smack.password();
+              let value:ESObject=Smack.password();
               console.info('password = '+value)
             }
           })
           Item({
             text: 'setResource',
             click: () => {
-              let value=Smack.setResource(Constant.HOST_RES.replace("/",""));
+              let value:ESObject=Smack.setResource(Constant.HOST_RES.replace("/",""));
               console.info('password = '+value)
             }
           })
           Item({
             text: 'receiveFriends',
             click: () => {
-              let value=Smack.receiveFriends("555@"+Constant.HOST_DOMAIN, "group", "receive request");
+              let value:ESObject=Smack.receiveFriends("555@"+Constant.HOST_DOMAIN, "group", "receive request");
             }
           })
 
           Item({
             text: 'rejectFriends',
             click: () => {
-              let value=Smack.rejectFriends("555@"+Constant.HOST_DOMAIN, "reject request");
+              let value:ESObject=Smack.rejectFriends("555@"+Constant.HOST_DOMAIN, "reject request");
             }
           })
         }

@@ -13,8 +13,7 @@ import hilog from '@ohos.hilog';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 import { Constant } from '../../../main/ets/entity/Constant';
 import { FriendsEntity, MUCOperation, MUCRoomAffiliation, MUCRoomRole, PresenceType,
-  RoomConfig,
-  Smack ,GlobalContext} from '@ohos/smack'
+  RoomConfig, Smack } from '@ohos/smack'
 export default function abilityTest() {
   let userName :string|null= ''
   let userPassword :string|null= ''

@@ -1,20 +1,23 @@
-From 2a2f0c43f679948167b3449dd5de604f655b2865 Mon Sep 17 00:00:00 2001
+From 99f9315873977a22be702228960664ed01d5054e Mon Sep 17 00:00:00 2001
 From: song_yu <songyu50@h-partners.com>
-Date: Tue, 14 Nov 2023 18:44:51 +0800
-Subject: [PATCH] =?UTF-8?q?=E4=BF=AE=E6=94=B9?=
+Date: Sat, 2 Dec 2023 17:04:35 +0800
+Subject: [PATCH] =?UTF-8?q?=E4=BE=B5=E5=85=A5=E5=BC=8F=E4=BF=AE=E6=94=B9?=
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 ---
- config.h.ohos      | 130 ++++++++
- src/clientbase.cpp |   4 +
- src/clientbase.h   |   2 +-
- src/config.h       |   2 +
- src/mucroom.cpp    | 140 +++++++++
- src/mucroom.h      | 758 ++++++++++++++++++++++-----------------------
- src/registration.h | 496 ++++++++++++++---------------
- 7 files changed, 893 insertions(+), 639 deletions(-)
+ config.h.ohos        | 130 ++++++++
+ src/client.cpp       |  12 +-
+ src/clientbase.cpp   |   8 +-
+ src/clientbase.h     |   2 +-
+ src/config.h         |   2 +
+ src/jid.h            |   2 +-
+ src/mucroom.cpp      | 140 ++++++++
+ src/mucroom.h        | 758 +++++++++++++++++++++----------------------
+ src/registration.cpp |  75 +++--
+ src/registration.h   | 496 ++++++++++++++--------------
+ 10 files changed, 947 insertions(+), 678 deletions(-)
  create mode 100644 config.h.ohos
 
 diff --git a/config.h.ohos b/config.h.ohos
@@ -153,8 +156,58 @@ index 0000000..6c44335
 +#ifndef __cplusplus
 +/* #undef inline */
 +#endif
+diff --git a/src/client.cpp b/src/client.cpp
+index abd9bc1..7f3daa6 100644
+--- a/src/client.cpp
++++ b/src/client.cpp
+@@ -456,7 +456,7 @@ namespace gloox
+         && !m_forceNonSasl )
+     {
+       notifyStreamEvent( StreamEventAuthentication );
+-      startSASL( SaslMechScramSha1Plus );
++      startSASL(SaslMechScramSha1Plus);
+     }
+     else if( m_streamFeatures & SaslMechScramSha1 && m_availableSaslMechs & SaslMechScramSha1
+              && !m_forceNonSasl )
+@@ -467,8 +467,8 @@ namespace gloox
+     else if( m_streamFeatures & SaslMechDigestMd5 && m_availableSaslMechs & SaslMechDigestMd5
+              && !m_forceNonSasl )
+     {
+-      notifyStreamEvent( StreamEventAuthentication );
+-      startSASL( SaslMechDigestMd5 );
++      notifyStreamEvent(StreamEventAuthentication);
++      startSASL(SaslMechDigestMd5);
+     }
+     else if( m_streamFeatures & SaslMechPlain && m_availableSaslMechs & SaslMechPlain
+              && !m_forceNonSasl )
+@@ -671,14 +671,14 @@ namespace gloox
+     m_presence.setPresence( pres );
+     m_presence.setPriority( priority );
+     m_presence.addStatus( status );
+-    sendPresence( m_presence );
++    sendPresence(m_presence);
+   }
+ 
+   void Client::setPresence( const JID& to, Presence::PresenceType pres, int priority,
+                             const std::string& status )
+   {
+     Presence p( pres, to, status, priority );
+-    sendPresence( p );
++    sendPresence(p);
+   }
+ 
+   void Client::sendPresence( Presence& pres )
+@@ -724,7 +724,7 @@ namespace gloox
+ 
+   void Client::rosterFilled()
+   {
+-    sendPresence( m_presence );
++    sendPresence(m_presence);
+     notifyStreamEvent( StreamEventFinished );
+     notifyOnConnect();
+   }
 diff --git a/src/clientbase.cpp b/src/clientbase.cpp
-index 07f5b1c..62d8d15 100644
+index 07f5b1c..45bfe0c 100644
 --- a/src/clientbase.cpp
 +++ b/src/clientbase.cpp
 @@ -213,6 +213,10 @@ namespace gloox
@@ -168,6 +221,17 @@ index 07f5b1c..62d8d15 100644
  
    void ClientBase::handleTag( Tag* tag )
    {
+@@ -976,8 +980,8 @@ namespace gloox
+   {
+     ++m_stats.s10nStanzasSent;
+     Tag* tag = sub.tag();
+-    addFrom( tag );
+-    addNamespace( tag );
++    addFrom(tag);
++    addNamespace(tag);
+     send( tag, true, false );
+   }
+ 
 diff --git a/src/clientbase.h b/src/clientbase.h
 index ea5fe3a..acd0b12 100644
 --- a/src/clientbase.h
@@ -194,6 +258,19 @@ index 53a1e82..a8411d1 100644
  #else
  # include "config.h.unix" // run ./configure to create config.h.unix
  #endif
+diff --git a/src/jid.h b/src/jid.h
+index 2c5869a..833d7f6 100644
+--- a/src/jid.h
++++ b/src/jid.h
+@@ -40,7 +40,7 @@ namespace gloox
+        * Constructs a new JID from a string.
+        * @param jid The string containing the JID.
+        */
+-      JID( const std::string& jid ) : m_valid( true ) { setJID( jid ); }
++      JID( const std::string& jid ) : m_valid( true ) { setJID(jid); }
+ 
+       /**
+        * Destructor.
 diff --git a/src/mucroom.cpp b/src/mucroom.cpp
 index 3fdf623..880eb89 100644
 --- a/src/mucroom.cpp
@@ -1629,6 +1706,162 @@ index 238cb4b..be1c6e9 100644
 +} // namespace gloox
  
  #endif // MUCROOM_H__
+diff --git a/src/registration.cpp b/src/registration.cpp
+index ad7eaa6..7c4ac3a 100644
+--- a/src/registration.cpp
++++ b/src/registration.cpp
+@@ -19,31 +19,33 @@
+ #include "prep.h"
+ #include "oob.h"
+ 
++#include "log.h"
++
+ namespace gloox
+ {
+ 
+   // Registration::Query ----
+   Registration::Query::Query( DataForm* form )
+-    : StanzaExtension( ExtRegistration ), m_form( form ), m_fields( 0 ), m_oob( 0 ),
+-      m_del( false ), m_reg( false )
++  : StanzaExtension( ExtRegistration ), m_form( form ), m_fields( 0 ), m_oob( 0 ),
++  m_del( false ), m_reg( false )
+   {
+   }
+ 
+   Registration::Query::Query( bool del )
+-    : StanzaExtension( ExtRegistration ), m_form( 0 ), m_fields( 0 ), m_oob( 0 ), m_del( del ),
+-      m_reg( false )
++  : StanzaExtension( ExtRegistration ), m_form( 0 ), m_fields( 0 ), m_oob( 0 ), m_del( del ),
++  m_reg( false )
+   {
+   }
+ 
+   Registration::Query::Query( int fields, const RegistrationFields& values )
+-    : StanzaExtension( ExtRegistration ), m_form( 0 ), m_fields( fields ), m_values( values ),
+-      m_oob( 0 ), m_del( false ), m_reg( false )
++  : StanzaExtension( ExtRegistration ), m_form( 0 ), m_fields( fields ), m_values( values ),
++  m_oob( 0 ), m_del( false ), m_reg( false )
+   {
+   }
+ 
+   Registration::Query::Query( const Tag* tag )
+-    : StanzaExtension( ExtRegistration ), m_form( 0 ), m_fields( 0 ), m_oob( 0 ), m_del( false ),
+-      m_reg( false )
++  : StanzaExtension( ExtRegistration ), m_form( 0 ), m_fields( 0 ), m_oob( 0 ), m_del( false ),
++  m_reg( false )
+   {
+     if( !tag || tag->name() != "query" || tag->xmlns() != XMLNS_REGISTER )
+       return;
+@@ -217,7 +219,7 @@ namespace gloox
+ 
+   // ---- Registration ----
+   Registration::Registration( ClientBase* parent, const JID& to )
+-    : m_parent( parent ), m_to( to ), m_registrationHandler( 0 )
++  : m_parent( parent ), m_to( to ), m_registrationHandler( 0 )
+   {
+     init();
+   }
+@@ -282,24 +284,37 @@ namespace gloox
+ 
+   void Registration::removeAccount()
+   {
++    LOGD("Test Registration removeAccount");
+     if( !m_parent || !m_parent->authed() )
+       return;
+ 
++    LOGD("Test Registration removeAccount 1");
+     IQ iq( IQ::Set, m_to );
++    LOGD("Test Registration removeAccount 2");
+     iq.addExtension( new Query( true ) );
++    LOGD("Test Registration removeAccount 3");
+     m_parent->send( iq, this, RemoveAccount );
++    LOGD("Test Registration removeAccount 4");
+   }
+ 
+   void Registration::changePassword( const std::string& username, const std::string& password )
+   {
+-    if( !m_parent || !m_parent->authed() || username.empty() )
++    LOGD("Test Registration changePassword");
++
++    if( !m_parent || !m_parent->authed() || username.empty() ){
++      LOGD("Test Registration changePassword  0");
+       return;
++    }
++
+ 
++    LOGD("Test Registration changePassword 1");
+     int fields = FieldUsername | FieldPassword;
+     RegistrationFields rf;
+     rf.username = username;
+     rf.password = password;
++    LOGD("Test Registration changePassword 2");
+     createAccount( fields, rf );
++    LOGD("Test Registration changePassword 3");
+   }
+ 
+   void Registration::registerRegistrationHandler( RegistrationHandler* rh )
+@@ -343,8 +358,8 @@ namespace gloox
+         case CreateAccount:
+         case ChangePassword:
+         case RemoveAccount:
+-          m_registrationHandler->handleRegistrationResult( iq.from(), RegistrationSuccess );
+-          break;
++        m_registrationHandler->handleRegistrationResult( iq.from(), RegistrationSuccess );
++        break;
+       }
+     }
+     else if( iq.subtype() == IQ::Error )
+@@ -356,32 +371,32 @@ namespace gloox
+       switch( e->error() )
+       {
+         case StanzaErrorConflict:
+-          m_registrationHandler->handleRegistrationResult( iq.from(), RegistrationConflict );
+-          break;
++        m_registrationHandler->handleRegistrationResult( iq.from(), RegistrationConflict );
++        break;
+         case StanzaErrorNotAcceptable:
+-          m_registrationHandler->handleRegistrationResult( iq.from(), RegistrationNotAcceptable );
+-          break;
++        m_registrationHandler->handleRegistrationResult( iq.from(), RegistrationNotAcceptable );
++        break;
+         case StanzaErrorBadRequest:
+-          m_registrationHandler->handleRegistrationResult( iq.from(), RegistrationBadRequest );
+-          break;
++        m_registrationHandler->handleRegistrationResult( iq.from(), RegistrationBadRequest );
++        break;
+         case StanzaErrorForbidden:
+-          m_registrationHandler->handleRegistrationResult( iq.from(), RegistrationForbidden );
+-          break;
++        m_registrationHandler->handleRegistrationResult( iq.from(), RegistrationForbidden );
++        break;
+         case StanzaErrorRegistrationRequired:
+-          m_registrationHandler->handleRegistrationResult( iq.from(), RegistrationRequired );
+-          break;
++        m_registrationHandler->handleRegistrationResult( iq.from(), RegistrationRequired );
++        break;
+         case StanzaErrorUnexpectedRequest:
+-          m_registrationHandler->handleRegistrationResult( iq.from(), RegistrationUnexpectedRequest );
+-          break;
++        m_registrationHandler->handleRegistrationResult( iq.from(), RegistrationUnexpectedRequest );
++        break;
+         case StanzaErrorNotAuthorized:
+-          m_registrationHandler->handleRegistrationResult( iq.from(), RegistrationNotAuthorized );
+-          break;
++        m_registrationHandler->handleRegistrationResult( iq.from(), RegistrationNotAuthorized );
++        break;
+         case StanzaErrorNotAllowed:
+-          m_registrationHandler->handleRegistrationResult( iq.from(), RegistrationNotAllowed );
+-          break;
++        m_registrationHandler->handleRegistrationResult( iq.from(), RegistrationNotAllowed );
++        break;
+         default:
+-          m_registrationHandler->handleRegistrationResult( iq.from(), RegistrationUnknownError );
+-          break;
++        m_registrationHandler->handleRegistrationResult( iq.from(), RegistrationUnknownError );
++        break;
+ 
+       }
+     }
 diff --git a/src/registration.h b/src/registration.h
 index fac0c09..82d0a22 100644
 --- a/src/registration.h
