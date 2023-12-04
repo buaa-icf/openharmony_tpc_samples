@@ -59,45 +59,45 @@ struct xmlBuilder {
   }
 
   private xmlBuilder() {
-    var obj = { name: "Super", Surname: "Man", age: 23 };
-    var builder = new xml2js.Builder();
+    let obj: ESObject = { name: "Super", Surname: "Man", age: 23 } as ESObject;
+    let builder : ESObject= new xml2js.Builder();
     this.message = builder.buildObject(obj);
   }
 
   private xmlBuilder2() {
-    var obj = { root: { $: { id: "my id" }, _: "my inner text" } };
-    var builder = new xml2js.Builder();
+    let obj: ESObject = { root: { $: { id: "my id" } as ESObject, _: "my inner text" } as ESObject } as ESObject;
+    let builder: ESObject = new xml2js.Builder();
     this.message = builder.buildObject(obj);
   }
 
   private xmlBuilder3() {
     // 在根元素上声明默认命名空间的示例
-    var obj = {
+    let obj: ESObject = {
       Foo: {
         $: {
-          "xmlns": "http://foo.com"
-        }
-      }
-    };
-    var builder = new xml2js.Builder();
+          xmlns: "http://foo.com"
+        } as ESObject
+      } as ESObject
+    } as ESObject;
+    let builder: ESObject = new xml2js.Builder();
     this.message = builder.buildObject(obj);
   }
 
   private xmlBuilder4() {
     // 在非根元素上声明默认命名空间的示例
-    var obj = {
-      'foo:Foo': {
+    let obj: ESObject = {
+      foo: {
         $: {
-          'xmlns:foo': 'http://foo.com'
-        },
-        'bar:Bar': {
+          foo: 'http://foo.com'
+        } as ESObject,
+        bar: {
           $: {
-            'xmlns:bar': 'http://bar.com'
-          }
-        }
-      }
-    }
-    var builder = new xml2js.Builder();
+            bar: 'http://bar.com'
+          } as ESObject
+        } as ESObject
+      } as ESObject
+    } as ESObject
+    let builder: ESObject = new xml2js.Builder();
     this.message = builder.buildObject(obj);
   }
 }

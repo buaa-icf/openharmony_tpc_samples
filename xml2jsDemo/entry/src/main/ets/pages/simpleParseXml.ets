@@ -35,6 +35,7 @@ struct simpleParseXml {
           .fontStyle(FontStyle.Normal)
           .fontColor(Color.Red)
           .margin(10)
+          .enabled(false)
 
         Button("解析XML")
           .fontSize(30)
@@ -54,7 +55,7 @@ struct simpleParseXml {
   }
 
   private simpleParseXml() {
-    xml2js.parseString(this.xml, (err, result) => {
+    xml2js.parseString(this.xml, (err:ESObject, result:ESObject) => {
       this.message = JSON.stringify(result)
     })
   }

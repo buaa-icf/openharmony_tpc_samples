@@ -35,6 +35,7 @@ struct promiseUsage {
           .fontStyle(FontStyle.Normal)
           .fontColor(Color.Red)
           .margin(10)
+          .enabled(false)
 
         Button(" start ")
           .fontSize(30)
@@ -56,12 +57,12 @@ struct promiseUsage {
   private promiseParse() {
     console.log('PromiseParse')
     // With parser
-    var parser = new xml2js.Parser( /* options */
+    let parser:ESObject = new xml2js.Parser( /* options */
       { trim: true });
-    parser.parseStringPromise(this.xml).then((result) => {
+    parser.parseStringPromise(this.xml).then((result:ESObject) => {
       this.message = JSON.stringify(result)
       console.log('Done')
-    }).catch((err) => {
+    }).catch((err:ESObject) => {
       // Fail
     })
   }
@@ -69,10 +70,10 @@ struct promiseUsage {
   private promiseParse2() {
     // without parser
     xml2js.parseStringPromise(this.xml, /* options */
-      { trim: true }).then((result) => {
+      { trim: true }).then((result:ESObject) => {
       this.message = JSON.stringify(result)
       console.log('Done')
-    }).catch((err) => {
+    }).catch((err:ESObject) => {
     })
   }
 }
