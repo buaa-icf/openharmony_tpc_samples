@@ -75,7 +75,7 @@ await this.client.date();
     |           |-EntryAbility.ts
     |   |-pages
     |           |-Index.ets             #主页demo
-|-newsie   # newsie
+|-library   # newsie组件
 ```
 
 ## 接口

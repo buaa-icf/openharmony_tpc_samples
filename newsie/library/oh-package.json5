@@ -12,5 +12,5 @@
   tags: ["Tool"],
   license: "GNU AFFERO GENERAL",
   devDependencies: {},
-  name: "library",
+  name: "@ohos/newsie",
 }
