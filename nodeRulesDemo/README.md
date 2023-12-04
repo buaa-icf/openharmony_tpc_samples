@@ -29,7 +29,6 @@ import RuleEngine from "node-rules"
 ```
     class Rule {
       condition(R: ESObject) {
-        console.debug('lzdebug simple condition start:' + (this as ESObject).transactionTotal)
         R.when((this as ESObject).transactionTotal < 500);
       }
 
@@ -70,7 +69,6 @@ R.next</span> <span style="color:#ff6700">R.restart</span> 是流量控制 API �
 
     class Rule {
       condition(ruleEngine: ESObject) {
-        console.debug('lzdebug simple condition start:' + (this as ESObject).transactionTotal)
         ruleEngine.when((this as ESObject).transactionTotal < 500);
       }
 

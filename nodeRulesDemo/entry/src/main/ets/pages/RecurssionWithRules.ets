@@ -14,17 +14,28 @@
  */
 
 import RuleEngine from "node-rules";
+import Prompt from '@system.prompt';
 
 @Entry
 @Component
 struct RecurssionWithRules {
   @State message: string = 'Hello World'
-  @State setValue: string = "0";
+  @State setValue: string = "";
   @State resultStr: string = "";
   @State arrayStr: Array<string> = [];
   controller: TextAreaController = new TextAreaController();
 
   ruleEngineExecute(): void {
+    let value: number = Number(this.setValue)
+
+    if (this.setValue === '' || Number.isNaN(value) || value >= 10 || value < 0) {
+      Prompt.showToast({
+        message: '请输入10以内的整数值'
+      })
+      return
+    }
+
+
     let ruleEngine: RuleEngine = new RuleEngine();
     let that = this;
 
@@ -76,8 +87,6 @@ struct RecurssionWithRules {
         .onChange((value: string) => {
           this.setValue = value;
           this.arrayStr = [];
-
-
         })
 
       Button("点击查看是否满足规则").onClick(() => {

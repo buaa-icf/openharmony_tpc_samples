@@ -14,17 +14,25 @@
  */
 
 import RuleEngine from "node-rules";
+import Prompt from '@system.prompt';
 
 @Entry
 @Component
 struct MultipleRules {
   @State message: string = 'Hello World'
-  @State setValue: string = "0";
+  @State setValue: string = "";
   @State typeValue: string = "other";
   @State resultStr: string = "";
   controller: TextAreaController = new TextAreaController();
 
   ruleEngineExecute(): void {
+    if (this.setValue === '' || Number.isNaN(Number(this.setValue))) {
+      Prompt.showToast({
+        message: '请输入整数值'
+      })
+      return
+    }
+
     let ruleEngine: ESObject = new RuleEngine();
 
     abstract class Rule {
