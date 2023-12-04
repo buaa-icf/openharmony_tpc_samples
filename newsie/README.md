@@ -120,6 +120,7 @@ await this.client.date();
 
 在下述版本验证通过：
 
+DevEco Studio: 4.1 Canary2(4.1.3.313), SDK: API11 (4.1.3.1)
 DevEco Studio: 4.0.1.400, SDK: API10 (4.0.0.24)
 
 ### 开源协议

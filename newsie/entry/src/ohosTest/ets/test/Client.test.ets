@@ -18,16 +18,15 @@ import { config } from "../utils/config"
 import Client from "ohos_newsie"
 
 export default function ClientTest() {
-  var client:Client;
-  var greeting;
-  describe('ClientTest', function () {
+  let client: Client;
+  let greeting: ESObject;
+  describe('ClientTest', () => {
     beforeAll(async () => {
       client = new Client({ host:config.host, port:config.port })
       greeting = await client.connect()
     })
 
     afterAll(async () => {
-      // @ts-ignore
       await client.quit()
     })
 

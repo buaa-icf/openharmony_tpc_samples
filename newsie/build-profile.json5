@@ -24,8 +24,8 @@
       ]
     },
     {
-      "name": "newsie",
-      "srcPath": "./newsie"
+      "name": "library",
+      "srcPath": "./library"
     }
   ]
 }

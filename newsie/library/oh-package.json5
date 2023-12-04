@@ -8,9 +8,9 @@
   main: "index.ets",
   repository: "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/newsie",
   type: "module",
-  version: "1.0.1-rc.0",
+  version: "1.0.1-rc.1",
   tags: ["Tool"],
   license: "GNU AFFERO GENERAL",
   devDependencies: {},
-  name: "@ohos/newsie",
+  name: "library",
 }
