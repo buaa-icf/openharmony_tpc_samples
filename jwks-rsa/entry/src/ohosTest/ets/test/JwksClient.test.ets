@@ -22,7 +22,6 @@ let signingKey:ESObject;
 export default function JwksClientTest() {
   describe('ArtsJwksClientTest', ()=> {
       beforeAll(() => {
-
         console.info("===== beforeAll ======")
         let option: Option = new Option('https://sandrino.auth0.com/.well-known/jwks.json',null,5000,false,true)
         jwksClient = new JwksClient(option);
@@ -32,44 +31,36 @@ export default function JwksClientTest() {
         jwksClient == null;
       })
       it('JwksClient_Test_getKeys',0, async () => {
-
         expect(await jwksClient.getKeys() != null).assertTrue()
       })
 
       it('JwksClient_Test_getSigningKeys',0, async () => {
-
         expect(await jwksClient.getSigningKeys() != null).assertTrue()
       })
 
       it('JwksClient_Test_signingKey',0, async () => {
-
         const kid = 'RkI5MjI5OUY5ODc1N0Q4QzM0OUYzNkVGMTJDOUEzQkFCOTU3NjE2Rg';
         signingKey = await jwksClient.getSigningKey(kid);
         expect(signingKey != null).assertTrue()
       })
 
       it('JwksClient_Test_kid',0, async () =>{
-
         expect(signingKey.kid != null).assertTrue()
       })
 
       it('JwksClient_Test_algorithm',0, () => {
-
         expect(signingKey.algorithm != null).assertTrue()
       })
 
       it('JwksClient_Test_type',0, () => {
-
         expect(signingKey.type != null).assertTrue()
       })
 
       it('JwksClient_Test_usage',0, () => {
-
         expect(signingKey.usage != null).assertTrue()
       })
 
       it('JwksClient_Test_getPublicKey',0, async () => {
-
         let publicKey:ESObject = await signingKey.getPublicKey()
         expect(publicKey != null).assertTrue()
       })
