@@ -17,6 +17,8 @@ import promptAction from '@ohos.promptAction'
 import router from '@ohos.router'
 import { Message, MessageAttachment, MessageHeaders } from '@ohos/emailjs'
 import fs from '@ohos.file.fs';
+import GlobalObj from '../GlobalObj'
+
 const BASE_COUNT = 1
 
 @Entry
@@ -24,21 +26,19 @@ const BASE_COUNT = 1
 struct SendMailPage {
   @State message: string = 'Hello World'
   @State from: string = ''
-  @State accountName: string = ''
-  @State to: string = ''
-  @State cc: string = ''
-  @State bcc: string = ''
-  @State subject: string = ''
-  @State content: string = ''
+  @State accountName: string = 'OH邮件客户端'
+  @State to: string = '479868299@qq.com'
+  @State cc: string = 'zdy_cz_jk@163.com'
+  @State bcc: string = 'zhaodongyang7@h-partners.com'
+  @State subject: string = '这是OH测试主题'
+  @State content: string = '这是测试的鸿蒙邮件正文，邮件的收件人，抄送，密件抄送的格式为：someone <someone@your-email.com>, another <another@your-email.com>，多个账号以英文逗号,连接。'
   @State attachment: Array<MessageAttachment> = []
   @State mailType: string = '@qq.com'
   @State textValue: string = ''
   @State inputValue: string = 'click me'
 
   aboutToDisappear() {
-    if (globalThis.client) {
-      globalThis.client.close(true)
-    }
+    GlobalObj?.getInstance()?.getClient()?.close(true);
   }
 
   showToast(text: string, name = '测试') {
@@ -52,8 +52,9 @@ struct SendMailPage {
 
   aboutToAppear() {
     let params = router.getParams()
-    if (params && params['sendCount'] && typeof params['sendCount'] === 'string') {
-      this.from = params['sendCount'];
+    let temp = params as Record<string, Object>
+    if (temp && temp['sendCount'] && typeof temp['sendCount'] === 'string') {
+      this.from = temp['sendCount'];
     }
   }
 
@@ -86,7 +87,7 @@ struct SendMailPage {
                 .textAlign(TextAlign.Center)
                 .margin({ right: 5 })
 
-              TextInput({ placeholder: '请输入发件人昵称', text: '鸿蒙邮件客户端' })
+              TextInput({ placeholder: '请输入发件人昵称', text: this.accountName })
                 .layoutWeight(1)
                 .fontSize(20)
                 .height(50)
@@ -115,7 +116,7 @@ struct SendMailPage {
 
               TextInput({
                 placeholder: '格式为：xx <xx@yxx.com>, xx <xx@yxx.com>，多个账号以英文逗号,连接。',
-                text: 'xxxxx@qq.com'
+                text: this.to
               })
                 .layoutWeight(1)
                 .fontSize(20)
@@ -144,7 +145,7 @@ struct SendMailPage {
 
               TextInput({
                 placeholder: '格式为：xx <xx@yxx.com>, xx <xx@yxx.com>，多个账号以英文逗号,连接。',
-                text: 'zdy_cz_jk@163.com'
+                text: this.cc
               })
                 .layoutWeight(1)
                 .fontSize(20)
@@ -172,7 +173,7 @@ struct SendMailPage {
 
               TextInput({
                 placeholder: '格式为：xx <xx@yxx.com>, xx <xx@yxx.com>，多个账号以英文逗号,连接。',
-                text: 'zhaodongyang1@h-partners.com'
+                text: this.bcc
               })
                 .layoutWeight(1)
                 .fontSize(20)
@@ -200,7 +201,7 @@ struct SendMailPage {
                 .textAlign(TextAlign.Center)
                 .margin({ right: 5 })
 
-              TextInput({ placeholder: '请输入邮件主题', text: '这是测试的鸿蒙邮件主题' })
+              TextInput({ placeholder: '请输入邮件主题', text: this.subject })
                 .layoutWeight(1)
                 .fontSize(20)
                 .height(50)
@@ -228,7 +229,7 @@ struct SendMailPage {
 
               TextInput({
                 placeholder: '请输入邮件正文',
-                text: '这是测试的鸿蒙邮件正文，邮件的收件人，抄送，密件抄送的格式为：someone <someone@your-email.com>, another <another@your-email.com>，多个账号以英文逗号,连接。'
+                text: this.content
               })
                 .layoutWeight(1)
                 .fontSize(20)
@@ -356,9 +357,10 @@ struct SendMailPage {
 
   async sendMail() {
     try {
-      if (globalThis.client) {
-        if (globalThis.client.isLogin()) {
-          globalThis.client.setQuitAfterSendDone(true) // 设置发送完毕之后客户端是否退出 源库逻辑默认退出
+      this.mailType = this.to.substring(this.to.lastIndexOf('@' + 1), this.to.lastIndexOf('.'))
+      if (GlobalObj?.getInstance()?.getClient()) {
+        if (GlobalObj?.getInstance()?.getClient()?.isLogin()) {
+          GlobalObj?.getInstance()?.getClient()?.setQuitAfterSendDone(true) // 设置发送完毕之后客户端是否退出 源库逻辑默认退出
           let msg: Message | MessageHeaders = {
             text: this.content,
             from: `${this.accountName} <${this.from}>`,
@@ -369,14 +371,14 @@ struct SendMailPage {
             attachment: this.attachment
           }
           let startTime1 = new Date().getTime();
-          const message = await globalThis.client.sendAsync(msg)
+          const message = await GlobalObj?.getInstance()?.getClient()?.sendAsync(msg)
           let endTime1 = new Date().getTime();
           let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
           console.log("sendAsync averageTime : " + averageTime1 + "us")
           this.showToast('邮件发送成功', 'sendmail-smtp')
-          if (globalThis.client.isQuitAfterSendDone()) {
-            globalThis.client.close(true);
-            globalThis.client = null;
+          if (GlobalObj?.getInstance()?.getClient()?.isQuitAfterSendDone()) {
+            GlobalObj?.getInstance()?.getClient()?.close(true);
+            GlobalObj?.getInstance()?.setClient(null);
           }
         } else {
           this.showToast('账号未登录，请需重新登录', 'sendmail-smtp')
@@ -396,9 +398,9 @@ struct SendMailPage {
     try {
       if (ctx.attachment && ctx.attachment.length == 0) {
         ctx.showToast('开始生成单个本地文件', 'createSingleFile')
-        let context = globalThis.context ? globalThis.context : getContext()
+        let context = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext()
         let randomNum = Math.round(Math.random() * 1024 + 1);
-        let filePath = context.cacheDir + '/' + 'attachment-' + randomNum + '.txt'
+        let filePath = context?.cacheDir + '/' + 'attachment-' + randomNum + '.txt'
         let file = fs.openSync(filePath, fs.OpenMode.CREATE | fs.OpenMode.READ_WRITE)
         let str = "客户端发送到服务端的信息，请查收\r\n"
         fs.writeSync(file.fd, str)
@@ -414,9 +416,9 @@ struct SendMailPage {
         ctx.showToast('生成本地单个文件成功' + filePath, 'createSingleFile')
       } else if (ctx.attachment && ctx.attachment.length == 1) {
         ctx.showToast('开始生成单个本地文件', 'createSingleFile')
-        let context: Context = globalThis.context ? globalThis.context : getContext()
-        let filePath = context.cacheDir + '/icon.png'
-        context.resourceManager.getRawFileContent('icon.png').then((imageData) => {
+        let context: Context | null = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext()
+        let filePath = context?.cacheDir + '/icon.png'
+        context?.resourceManager?.getRawFileContent('icon.png')?.then((imageData) => {
           if (imageData) {
             let file = fs.openSync(filePath, fs.OpenMode.CREATE | fs.OpenMode.READ_WRITE)
             fs.writeSync(file.fd, imageData.buffer)
@@ -432,15 +434,15 @@ struct SendMailPage {
           } else {
             ctx.showToast(`生成本地单个文件${'icon.png'}失败` + filePath, 'createSingleFile')
           }
-        }).catch((err: Error) => {
+        })?.catch((err: Error) => {
           ctx.showToast(`生成本地单个文件${'icon.png'}失败,原因是：${err.message}` + filePath, 'createSingleFile')
         })
         ctx.showToast('生成本地单个文件成功' + filePath, 'createSingleFile')
       } else if (ctx.attachment && ctx.attachment.length == 2) {
         ctx.showToast('开始生成单个本地文件', 'createSingleFile')
-        let context: Context = globalThis.context ? globalThis.context : getContext()
-        let filePath = context.cacheDir + '/test.docx'
-        context.resourceManager.getRawFileContent('test.docx').then((wordData) => {
+        let context: Context | null = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext()
+        let filePath = context?.cacheDir + '/test.docx'
+        context?.resourceManager?.getRawFileContent('test.docx')?.then((wordData) => {
           if (wordData) {
             let file = fs.openSync(filePath, fs.OpenMode.CREATE | fs.OpenMode.READ_WRITE)
             fs.writeSync(file.fd, wordData.buffer)
@@ -456,13 +458,16 @@ struct SendMailPage {
           } else {
             ctx.showToast(`生成本地单个文件${'test.docx'}失败` + filePath, 'createSingleFile')
           }
-        }).catch((err: Error) => {
+        })?.catch((err: Error) => {
           ctx.showToast(`生成本地单个文件${'test.docx'}失败,原因是：${err.message}` + filePath, 'createSingleFile')
         })
         ctx.showToast('生成本地单个文件成功' + filePath, 'createSingleFile')
       } else if (ctx.attachment && ctx.attachment.length == 3) {
         ctx.showToast('开始生成单个本地文件', 'createSingleFile')
-        let context: Context = globalThis.context ? globalThis.context : getContext()
+        let context: Context | null = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext()
+        if (!context) {
+          return
+        }
         let filePath = context.cacheDir + '/test.xlsx'
         context.resourceManager.getRawFileContent('test.xlsx').then((excelData) => {
           if (excelData) {
@@ -532,8 +537,7 @@ struct SendMailPage {
     }
   }
 
-  onBackPress(){
-    globalThis.context.terminateSelf()
+  onBackPress() {
+    GlobalObj?.getInstance()?.getContext()?.terminateSelf()
   }
-  
 }

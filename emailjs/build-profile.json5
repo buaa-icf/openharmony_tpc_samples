@@ -7,6 +7,14 @@
         "compileSdkVersion": 10,
         "compatibleSdkVersion": 9
       }
+    ],
+    "buildModeSet": [
+      {
+        "name": "debug"
+      },
+      {
+        "name": "release"
+      }
     ]
   },
   "modules": [

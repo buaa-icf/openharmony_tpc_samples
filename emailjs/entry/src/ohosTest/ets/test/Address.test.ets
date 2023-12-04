@@ -14,13 +14,13 @@
  */
 
 import { describe, it, expect } from '@ohos/hypium'
-import { addressparser } from '@ohos/emailjs'
+import { addressparser, AddressObject } from '@ohos/emailjs'
 
 export default function addressTest() {
-  describe('addressTest', function () {
-    it('addressparser_should_handle_single_address_correctly', 0, function () {
+  describe('addressTest', () => {
+    it('addressparser_should_handle_single_address_correctly', 0, () => {
       // Defines a test case. This API supports three parameters: test case name, filter parameter, and test case function.
-      let resukt = [
+      let resukt:AddressObject[] = [
         {
           address: 'andris@tr.ee', name: ''
         },
@@ -29,8 +29,8 @@ export default function addressTest() {
     })
 
 
-    it('addressparser_should_handle_multiple_addresses_correctly', 0, function () {
-      let resukt = [
+    it('addressparser_should_handle_multiple_addresses_correctly', 0, () => {
+      let resukt:AddressObject[] = [
         {
           address: 'andris@tr.ee', name: ''
         },
@@ -41,8 +41,8 @@ export default function addressTest() {
       expect(resukt).assertDeepEquals(addressparser('andris@tr.ee, andris@example.com'))
     })
 
-    it('addressparser_should_handle_unquoted_name_correctly', 0, function () {
-      let resukt = [
+    it('addressparser_should_handle_unquoted_name_correctly', 0, () => {
+      let resukt:AddressObject[] = [
         {
           name: 'andris', address: 'andris@tr.ee'
         },
@@ -51,8 +51,8 @@ export default function addressTest() {
     })
 
 
-    it('addressparser_should_handle_quoted_name_correctly', 0, function () {
-      let resukt = [
+    it('addressparser_should_handle_quoted_name_correctly', 0, () => {
+      let resukt:AddressObject[] = [
         {
           name: 'reinman, andris', address: 'andris@tr.ee'
         },
@@ -60,8 +60,8 @@ export default function addressTest() {
       expect(resukt).assertDeepEquals(addressparser('"reinman, andris" <andris@tr.ee>'))
     })
 
-    it('addressparser_should_handle_quoted_semicolons_correctly', 0, function () {
-      let resukt = [
+    it('addressparser_should_handle_quoted_semicolons_correctly', 0, () => {
+      let resukt:AddressObject[] = [
         {
           name: 'reinman; andris', address: 'andris@tr.ee'
         },
@@ -69,8 +69,8 @@ export default function addressTest() {
       expect(resukt).assertDeepEquals(addressparser('"reinman; andris" <andris@tr.ee>'))
     })
 
-    it('addressparser_should_handle_unquoted_name_unquoted_address_correctly', 0, function () {
-      let resukt = [
+    it('addressparser_should_handle_unquoted_name_unquoted_address_correctly', 0, () => {
+      let resukt:AddressObject[] = [
         {
           name: 'andris', address: 'andris@tr.ee'
         },
@@ -78,8 +78,8 @@ export default function addressTest() {
       expect(resukt).assertDeepEquals(addressparser('andris andris@tr.ee'))
     })
 
-    it('addressparser_should_handle_empty_group_correctly', 0, function () {
-      let resukt = [
+    it('addressparser_should_handle_empty_group_correctly', 0, () => {
+      let resukt:AddressObject[] = [
         {
           name: 'Undisclosed', group: []
         },
@@ -87,8 +87,8 @@ export default function addressTest() {
       expect(resukt).assertDeepEquals(addressparser('Undisclosed:;'))
     })
 
-    it('addressparser_should_handle_address_group_correctly', 0, function () {
-      let resukt = [
+    it('addressparser_should_handle_address_group_correctly', 0, () => {
+      let resukt:AddressObject[] = [
         {
           name: 'Disclosed',
           group: [
@@ -105,8 +105,8 @@ export default function addressTest() {
     })
 
 
-    it('addressparser_should_handle_semicolon_as_a_delimiter', 0, function () {
-      let resukt = [
+    it('addressparser_should_handle_semicolon_as_a_delimiter', 0, () => {
+      let resukt:AddressObject[] = [
         {
           address: 'andris@tr.ee', name: ''
         },
@@ -117,8 +117,8 @@ export default function addressTest() {
       expect(resukt).assertDeepEquals(addressparser('andris@tr.ee; andris@example.com;'))
     })
 
-    it('addressparser_should_handle_mixed_group_correctly', 0, function () {
-      let resukt = [
+    it('addressparser_should_handle_mixed_group_correctly', 0, () => {
+      let resukt:AddressObject[] = [
         {
           address: 'test.user@mail.ee', name: 'Test User'
         },
@@ -143,8 +143,8 @@ export default function addressTest() {
     })
 
 
-    it('addressparser_semicolon_as_delimiter_should_not_break_group_parsing', 0, function () {
-      let resukt = [
+    it('addressparser_semicolon_as_delimiter_should_not_break_group_parsing', 0, () => {
+      let resukt:AddressObject[] = [
         {
           address: 'test.user@mail.ee', name: 'Test User'
         },
@@ -174,8 +174,8 @@ export default function addressTest() {
     })
 
 
-    it('addressparser_should_handle_name_from_comment_correctly', 0, function () {
-      let resukt = [
+    it('addressparser_should_handle_name_from_comment_correctly', 0, () => {
+      let resukt:AddressObject[] = [
         {
           name: 'andris', address: 'andris@tr.ee'
         },
@@ -184,8 +184,8 @@ export default function addressTest() {
     })
 
 
-    it('addressparser_should_handle_skip_comment_correctly', 0, function () {
-      let resukt = [
+    it('addressparser_should_handle_skip_comment_correctly', 0, () => {
+      let resukt:AddressObject[] = [
         {
           name: 'andris', address: 'andris@tr.ee'
         },
@@ -194,23 +194,23 @@ export default function addressTest() {
     })
 
 
-    it('addressparser_should_handle_missing_address_correctly', 0, function () {
-      let resukt = [{
+    it('addressparser_should_handle_missing_address_correctly', 0, () => {
+      let resukt:AddressObject[] = [{
         name: 'andris', address: ''
       }]
       expect(resukt).assertDeepEquals(addressparser('andris'))
     })
 
 
-    it('addressparser_should_handle_apostrophe_in_name_correctly', 0, function () {
-      let resukt = [{
+    it('addressparser_should_handle_apostrophe_in_name_correctly', 0, () => {
+      let resukt:AddressObject[] = [{
         name: "O'Neill", address: ''
       }]
       expect(resukt).assertDeepEquals(addressparser("O'Neill"))
     })
 
-    it('addressparser_should_handle_particularly_bad_input_unescaped_colon_correctly', 0, function () {
-      let resukt = [
+    it('addressparser_should_handle_particularly_bad_input_unescaped_colon_correctly', 0, () => {
+      let resukt :AddressObject[]= [
         {
           name: 'FirstName Surname-WithADash',
           group: [

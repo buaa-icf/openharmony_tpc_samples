@@ -16,6 +16,8 @@ import { AUTH_METHODS, SMTPClient } from '@ohos/emailjs'
 import promptAction from '@ohos.promptAction'
 import router from '@ohos.router'
 import socket from '@ohos.net.socket'
+import GlobalObj from '../GlobalObj'
+
 const BASE_COUNT = 1
 
 @CustomDialog
@@ -23,8 +25,10 @@ struct CustomDialogDiy {
   @Link textValue: string
   @Link inputValue: string
   controller: CustomDialogController
-  cancel: () => void;
-  confirm: () => void;
+  cancel: Function = () => {
+  };
+  confirm: Function = () => {
+  };
 
   build() {
     Column() {
@@ -61,13 +65,13 @@ struct CustomDialogDiy {
 @Component
 struct LoginPage {
   @State message: string = 'Hello World'
-  @State account: string = ''
-  @State pwd: string = ''
+  @State account: string = '479868299'
+  @State pwd: string = 'wzkdawfyaatvcabb'
   @State mailType: string = '@qq.com'
   @State textValue: string = ''
   @State inputValue: string = 'click me'
   @State secure: boolean = false
-  dialogController: CustomDialogController = new CustomDialogController({
+  dialogController: CustomDialogController | null = new CustomDialogController({
     builder: CustomDialogDiy({
       cancel: () => {
         this.showToast(`关闭了对话框，取消选输入其他类型邮箱`, 'mailType-cancel')
@@ -93,7 +97,7 @@ struct LoginPage {
           this.showToast(`邮箱类型中除了@和.，必须含有其他字符`, 'mailType-confirm')
           return
         }
-        if (this.inputValue.indexOf('@')!= 0) {
+        if (this.inputValue.indexOf('@') != 0) {
           this.showToast(`邮箱类型中@必须在第一位`, 'mailType-confirm')
           return
         }
@@ -108,11 +112,8 @@ struct LoginPage {
   })
 
   aboutToDisappear() {
-    delete this.dialogController;
     this.dialogController = null;
-    if (globalThis.client) {
-      globalThis.client.close(true)
-    }
+    GlobalObj?.getInstance()?.getClient()?.close(true);
   }
 
   showToast(text: string, name = '测试') {
@@ -193,7 +194,7 @@ struct LoginPage {
             .textAlign(TextAlign.Center)
             .margin({ right: 5 })
 
-          TextInput({ placeholder: '请输入账号', text: '' })
+          TextInput({ placeholder: '请输入账号', text: '479868299' })
             .layoutWeight(1)
             .fontSize(20)
             .height(50)
@@ -227,7 +228,7 @@ struct LoginPage {
             .textAlign(TextAlign.Center)
             .margin({ right: 5 })
 
-          TextInput({ placeholder: '请输入密码/授权码', text: 'prcryvqwfbspbhhi' })
+          TextInput({ placeholder: '请输入密码/授权码', text: 'wzkdawfyaatvcabb' })
             .layoutWeight(1)
             .fontSize(20)
             .height(50)
@@ -294,8 +295,8 @@ struct LoginPage {
     const ctx = this;
     try {
       let hostParam = this.mailType.substring(this.mailType.indexOf('@') + 1, this.mailType.indexOf('.'))
-      if (!globalThis.client) {
-        let client: SMTPClient = undefined;
+      if (!GlobalObj?.getInstance()?.getClient()) {
+        let client: SMTPClient | null = new SMTPClient({});
         if (this.secure) {
           let option: socket.TLSConnectOptions = {
             ALPNProtocols: ["spdy/1", "http/1.1"],
@@ -311,16 +312,26 @@ struct LoginPage {
               useRemoteCipherPrefer: true,
             }
           }
-          let context: Context = globalThis.context ? globalThis.context : getContext(this)
-          let ca0Data = await context.resourceManager.getRawFileContent('QQMailMiddle.pem')
-          let ca0 = '';
+          let context: Context | null = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext(this)
+          if (!context) {
+            return
+          }
+
+          let ca0Data = await context?.resourceManager?.getRawFileContent('QQMailMiddle.pem')
+          if (!ca0Data) {
+            return
+          }
+          let ca0: string = '';
           for (let i = 0; i < ca0Data.length; i++) {
             let todo = ca0Data[i]
             let item = String.fromCharCode(todo);
             ca0 += item;
           }
-          // @ts-ignore
-          option.secureOptions.ca[0] = ca0;
+          if (option.secureOptions.ca instanceof Array) {
+            option.secureOptions.ca[0] = ca0;
+          } else {
+            option.secureOptions.ca = ca0;
+          }
 
           let ca1Data = await context.resourceManager.getRawFileContent('QQMailRoot.pem')
           let ca1 = '';
@@ -329,8 +340,11 @@ struct LoginPage {
             let item = String.fromCharCode(todo);
             ca1 += item;
           }
-          // @ts-ignore
-          option.secureOptions.ca[1] = ca1;
+          if (option.secureOptions.ca instanceof Array) {
+            option.secureOptions.ca[1] = ca1;
+          } else {
+            option.secureOptions.ca = ca1;
+          }
           let startTime1 = new Date().getTime();
           client = new SMTPClient({
             user: this.account + this.mailType,
@@ -361,11 +375,11 @@ struct LoginPage {
           let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
           console.log("new SMTPClient averageTime : " + averageTime1 + "us")
         }
-        globalThis.client = client
+        GlobalObj?.getInstance()?.setClient(client)
       }
-      if (globalThis.client) {
-        if (!globalThis.client.isLogin()) {
-          globalThis.client.login((err, result) => {
+      if (GlobalObj?.getInstance()?.getClient()) {
+        if (GlobalObj?.getInstance()?.getClient()?.isLogin() === false) {
+          GlobalObj?.getInstance()?.getClient()?.login((err, result) => {
             if (!err && result == true) {
               this.showToast('账号登录成功', 'login-smtp')
               router.pushUrl({
@@ -392,8 +406,8 @@ struct LoginPage {
     const ctx = this;
     try {
       let hostParam = this.mailType.substring(this.mailType.indexOf('@') + 1, this.mailType.indexOf('.'))
-      if (!globalThis.client) {
-        let client: SMTPClient = undefined;
+      if (!GlobalObj?.getInstance()?.getClient()) {
+        let client: SMTPClient | null = null;
         if (this.secure) {
           let option: socket.TLSConnectOptions = {
             ALPNProtocols: ["spdy/1", "http/1.1"],
@@ -409,16 +423,25 @@ struct LoginPage {
               useRemoteCipherPrefer: true,
             }
           }
-          let context: Context = globalThis.context ? globalThis.context : getContext(this)
-          let ca0Data = await context.resourceManager.getRawFileContent('QQMailMiddle.pem')
+          let context: Context | null = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext(this)
+          if (!context) {
+            return
+          }
+          let ca0Data = await context?.resourceManager.getRawFileContent('QQMailMiddle.pem')
+          if (!ca0Data) {
+            return
+          }
           let ca0 = '';
           for (let i = 0; i < ca0Data.length; i++) {
             let todo = ca0Data[i]
             let item = String.fromCharCode(todo);
             ca0 += item;
           }
-          // @ts-ignore
-          option.secureOptions.ca[0] = ca0;
+          if (option.secureOptions.ca instanceof Array) {
+            option.secureOptions.ca[0] = ca0;
+          } else {
+            option.secureOptions.ca = ca0;
+          }
 
           let ca1Data = await context.resourceManager.getRawFileContent('QQMailRoot.pem')
           let ca1 = '';
@@ -427,8 +450,11 @@ struct LoginPage {
             let item = String.fromCharCode(todo);
             ca1 += item;
           }
-          // @ts-ignore
-          option.secureOptions.ca[1] = ca1;
+          if (option.secureOptions.ca instanceof Array) {
+            option.secureOptions.ca[1] = ca1;
+          } else {
+            option.secureOptions.ca = ca1;
+          }
           let startTime1 = new Date().getTime();
           client = new SMTPClient({
             user: this.account + this.mailType,
@@ -459,11 +485,11 @@ struct LoginPage {
           let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
           console.log("new SMTPClient averageTime : " + averageTime1 + "us")
         }
-        globalThis.client = client
+        GlobalObj?.getInstance()?.setClient(client)
       }
-      if (globalThis.client) {
-        if (!globalThis.client.isLogin()) {
-          globalThis.client.login((err, result) => {
+      if (GlobalObj?.getInstance()?.getClient()) {
+        if (GlobalObj?.getInstance()?.getClient()?.isLogin() === false) {
+          GlobalObj?.getInstance()?.getClient()?.login((err, result) => {
             if (!err && result == true) {
               this.showToast('账号登录成功', 'login-smtp')
               router.pushUrl({

@@ -34,10 +34,10 @@ export default function SMTPPressTest() {
   //总的次数
   const BASE_COUNT = 10000
 
-  describe('SMTPPressTest', function () {
+  describe('SMTPPressTest', ()=> {
 
     for(let i=1;i<=BASE_COUNT;i++){
-      it('new_SMTPClient', 0, function () {
+      it('new_SMTPClient', 0, ()=> {
         let client = new SMTPClient({
           user: '',
           password: '',
@@ -51,7 +51,7 @@ export default function SMTPPressTest() {
         console.log("new_SMTPClient count:"+i)
       })
 
-      it('sendAsync', 0, function () {
+      it('sendAsync', 0, ()=> {
         let client = new SMTPClient({
           user: '',
           password: '',

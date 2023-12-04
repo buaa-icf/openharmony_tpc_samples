@@ -35,7 +35,7 @@ export default function SMTPPressTest() {
   const BASE_COUNT = 10000
   //每个用例延迟时间执行毫秒单位
   const deplayTime=500
-  describe('SMTPPressTest', function () {
+  describe('SMTPPressTest', ()=> {
 
     for(let i=1;i<=BASE_COUNT;i++){
       it('new_SMTPClient', 0, function (done) {
