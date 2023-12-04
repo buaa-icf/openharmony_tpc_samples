@@ -6,7 +6,7 @@
   "author": "ohos_tpc",
   "license": "MIT",
   "dependencies": {
-    "@ohos/emailjs": "file:../emailjs"
+    "@ohos/emailjs": "file:../library"
   }
 }
 

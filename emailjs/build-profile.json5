@@ -31,8 +31,8 @@
       ]
     },
     {
-      "name": "email",
-      "srcPath": "./emailjs"
+      "name": "library",
+      "srcPath": "./library"
     }
   ]
 }
