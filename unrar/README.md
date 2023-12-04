@@ -79,7 +79,7 @@ DevEco Studio: 4.0 Canary1(4.0.0.112), SDK: API10 (4.0.7.2)
 ```javascript
 |---- ohosunrar
 |     |---- entry  # 示例代码文件夹
-|     |---- unrar  # unrar 库文件夹
+|     |---- library  # unrar 库文件夹
 |           |---- src   #  unrar库解压核心代码
 |                 |---- cpp # unrar 核心代码
 |     |---- README.MD  # 安装使用方法
