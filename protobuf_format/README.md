@@ -23,7 +23,7 @@ import  { Format, Protobuf } from '@ohos/protobuf_format'
 
 **输入说明：**
 
-本组件基于@ohos/protobufjs 1.0.1版本，以下简称Protobuf。实现Protobuf.Message转换为xml,json,html格式，需要先构建Protobuf.Message。
+本组件基于@ohos/protobufjs 1.0.2版本，以下简称Protobuf。实现Protobuf.Message转换为xml,json,html格式，需要先构建Protobuf.Message。
 
 Protobuf支持加载解析proto字符串，proto json字符串，proto文件，proto json 文件；
 
@@ -330,6 +330,8 @@ DevEco Studio: 4.0 Release(4.0.3.413), SDK: API10 (4.0.10.3)
 |                     |---- Util.ts     # 格式转换工具类
 |            |---- index.ts          # 入口文件
 |            |---- *.json5      # 配置文件
+|     |---- sax  # xml解析工具
+|     |---- xml-js  # xml与js转换类
 |     |---- README.md  # 安装使用方法
 |     |---- README.OpenSource  # 开源说明
 |     |---- CHANGELOG.md  # 更新日志

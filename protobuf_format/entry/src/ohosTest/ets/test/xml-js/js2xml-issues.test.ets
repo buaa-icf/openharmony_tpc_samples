@@ -174,7 +174,7 @@ export default function testing_js2xml_issue() {
       '  <vcpi/>\n' +
       '</textless>';
     it('issue_59_should_not_create_full_tag_for_empty_elements', 0, () => {
-      let result = convert.js2xml(issue_59_js, {
+      let result: string = convert.js2xml(issue_59_js, {
         compact: true, spaces: 2, fullTagEmptyElement: false
       });
       expect(result).assertEqual(issue_59_xml);

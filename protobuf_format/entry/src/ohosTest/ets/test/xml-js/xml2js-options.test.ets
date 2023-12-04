@@ -522,7 +522,7 @@ export default function testingXml2jsOptions() {
       '    </applicationslist>\n' +
       '</ZohoCreator>';
 
-    let issue_6_json = convert.xml2json(issue_6_xml, {
+    let issue_6_json: ESObject = convert.xml2json(issue_6_xml, {
       compact: true, spaces: 4
     });
 
@@ -554,7 +554,7 @@ export default function testingXml2jsOptions() {
 
     it('issue_26_should_convert_xml_object_to_js_and_back_to_xml_correctly', 0, () => {
       issue_26_xml = issue_26_xml.replace(new RegExp('\v', 'g'), '  ');
-      let js_ = convert.xml2js(issue_26_xml, {
+      let js_: ESObject = convert.xml2js(issue_26_xml, {
         compact: true
       });
       expect(JSON.stringify(js_)).assertEqual(JSON.stringify(xml_js_issue_26_js));
@@ -566,14 +566,14 @@ export default function testingXml2jsOptions() {
     let issue_26_xml2 = '<title>Support &amp; resistance</title>';
 
     it('issue_26_2_should_convert_xml_object_to_js_and_back_to_xml_correctly', 0, () => {
-      let js_ = convert.xml2js(issue_26_xml2);
+      let js_: ESObject = convert.xml2js(issue_26_xml2);
       expect(JSON.stringify(js_)).assertEqual(JSON.stringify(xml_js_issue_26_js2));
       expect(convert.js2xml(js_)).assertEqual(issue_26_xml2);
     });
 
     let issue_29_xml = '<outer> This is <inner> some</inner> <inner>Text </inner> </outer>';
     it('issue_29_should_convert_xml_object_to_js_and_back_to_xml_correctly', 0, () => {
-      let js_ = convert.xml2js(issue_29_xml, {
+      let js_: ESObject = convert.xml2js(issue_29_xml, {
         captureSpacesBetweenElements: true
       });
       expect(JSON.stringify(js_)).assertEqual(JSON.stringify(xml_js_issue_29_js));
