@@ -26,8 +26,8 @@
       ]
     },
     {
-      "name": "epublib",
-      "srcPath": "./epublib"
+      "name": "library",
+      "srcPath": "./library"
     }
   ]
 }

@@ -2,7 +2,6 @@
 
 - 适配DevEco Studio 版本：4.0 Beta2（4.0.3.600），OpenHarmony SDK:API10（4.0.10.15）
 - 新语法适配
-- 补充单元测试
 - 使用GlobalContext替换globalthis
 
 ## 1.0.2

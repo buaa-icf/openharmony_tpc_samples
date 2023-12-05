@@ -1,6 +1,6 @@
 {
   "module": {
-    "name": "epublib",
+    "name": "library",
     "type": "har",
     "deviceTypes": [
       "default",

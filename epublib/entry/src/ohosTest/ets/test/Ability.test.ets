@@ -153,7 +153,7 @@ export default function abilityTest() {
       expect(resource.getHref()).assertUndefined()
     })
 
-    it('createResource_undefined', 0, ()=> {
+    it('createResource_undefined_empty', 0, ()=> {
       let buf = new ArrayBuffer(10);
       let resource: EpubResource = ResourceUtil.createResource('', new Uint8Array(buf));
       expect(resource.getHref()).assertEqual('')
