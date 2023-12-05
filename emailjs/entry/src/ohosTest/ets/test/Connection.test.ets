@@ -18,8 +18,8 @@ import { SMTPConnection } from '@ohos/emailjs'
 
 
 export default function connectionTest() {
-  describe('connectionTest', function () {
-    it('accepts_a_custom_logger', 0, function () {
+  describe('connectionTest', ()=> {
+    it('accepts_a_custom_logger', 0, ()=> {
       const logger = () => {
         /** ø */
       };

@@ -16,6 +16,7 @@ import promptAction from '@ohos.promptAction'
 import router from '@ohos.router'
 import { Message, MessageAttachment, MessageHeaders } from '@ohos/emailjs'
 import fs from '@ohos.file.fs';
+import GlobalObj from '../GlobalObj'
 
 const BASE_COUNT = 1
 
@@ -24,12 +25,12 @@ const BASE_COUNT = 1
 struct SendBigAttachmentPage {
   @State message: string = 'Hello World'
   @State from: string = ''
-  @State accountName: string = ''
-  @State to: string = ''
-  @State cc: string = ''
-  @State bcc: string = ''
-  @State subject: string = ''
-  @State content: string = ''
+  @State accountName: string = 'OH邮件客户端'
+  @State to: string = '479868299@qq.com'
+  @State cc: string = 'zdy_cz_jk@163.com'
+  @State bcc: string = 'zhaodongyang7@h-partners.com'
+  @State subject: string = '这是OH测试主题'
+  @State content: string = '这是测试的鸿蒙邮件正文，邮件的收件人，抄送，密件抄送的格式为：someone <someone@your-email.com>, another <another@your-email.com>，多个账号以英文逗号,连接。'
   @State bigFileInfo: string = '暂无附件'
   @State bigFileName: string = ''
   @State attachment: Array<MessageAttachment> = []
@@ -38,9 +39,7 @@ struct SendBigAttachmentPage {
   @State inputValue: string = 'click me'
 
   aboutToDisappear() {
-    if (globalThis.client) {
-      globalThis.client.close(true)
-    }
+    GlobalObj?.getInstance()?.getClient()?.close(true);
   }
 
   showToast(text: string, name = '测试') {
@@ -54,8 +53,9 @@ struct SendBigAttachmentPage {
 
   aboutToAppear() {
     let params = router.getParams()
-    if (params && params['sendCount'] && typeof params['sendCount'] === 'string') {
-      this.from = params['sendCount'];
+    let temp = params as Record<string, Object>
+    if (temp && temp['sendCount'] && typeof temp['sendCount'] === 'string') {
+      this.from = temp['sendCount'];
     }
   }
 
@@ -88,7 +88,7 @@ struct SendBigAttachmentPage {
                 .textAlign(TextAlign.Center)
                 .margin({ right: 5 })
 
-              TextInput({ placeholder: '请输入发件人昵称', text: '鸿蒙邮件客户端' })
+              TextInput({ placeholder: '请输入发件人昵称', text: this.accountName })
                 .layoutWeight(1)
                 .fontSize(20)
                 .height(50)
@@ -117,7 +117,7 @@ struct SendBigAttachmentPage {
 
               TextInput({
                 placeholder: '格式为：xx <xx@yxx.com>, xx <xx@yxx.com>，多个账号以英文逗号,连接。',
-                text: ''
+                text: this.to
               })
                 .layoutWeight(1)
                 .fontSize(20)
@@ -145,8 +145,8 @@ struct SendBigAttachmentPage {
                 .margin({ right: 5 })
 
               TextInput({
-                placeholder: '格式为：xx <xx@yxx.com>, xx <xx@yxx.com>，多个账号以英文逗号,连接。',
-                text: 'zdy_cz_jk@163.com'
+                placeholder: '格式为：xx <xx@xxx.com>, xx <xx@yxx.com>，多个账号以英文逗号,连接。',
+                text: this.cc
               })
                 .layoutWeight(1)
                 .fontSize(20)
@@ -174,7 +174,7 @@ struct SendBigAttachmentPage {
 
               TextInput({
                 placeholder: '格式为：xx <xx@yxx.com>, xx <xx@yxx.com>，多个账号以英文逗号,连接。',
-                text: 'zhaodongyang1@h-partners.com'
+                text: this.bcc
               })
                 .layoutWeight(1)
                 .fontSize(20)
@@ -202,7 +202,7 @@ struct SendBigAttachmentPage {
                 .textAlign(TextAlign.Center)
                 .margin({ right: 5 })
 
-              TextInput({ placeholder: '请输入邮件主题', text: '这是测试的鸿蒙邮件主题' })
+              TextInput({ placeholder: '请输入邮件主题', text: this.subject })
                 .layoutWeight(1)
                 .fontSize(20)
                 .height(50)
@@ -230,7 +230,7 @@ struct SendBigAttachmentPage {
 
               TextInput({
                 placeholder: '请输入邮件正文',
-                text: '这是测试的鸿蒙邮件正文，邮件的收件人，抄送，密件抄送的格式为：someone <someone@your-email.com>, another <another@your-email.com>，多个账号以英文逗号,连接。'
+                text: this.content
               })
                 .layoutWeight(1)
                 .fontSize(20)
@@ -297,9 +297,10 @@ struct SendBigAttachmentPage {
 
   async sendMail() {
     try {
-      if (globalThis.client) {
-        if (globalThis.client.isLogin()) {
-          globalThis.client.setQuitAfterSendDone(true) // 设置发送完毕之后客户端是否退出 源库逻辑默认退出
+      this.mailType = this.to.substring(this.to.lastIndexOf('@' + 1), this.to.lastIndexOf('.'))
+      if (GlobalObj?.getInstance()?.getClient()) {
+        if (GlobalObj?.getInstance()?.getClient()?.isLogin()) {
+          GlobalObj?.getInstance()?.getClient()?.setQuitAfterSendDone(true) // 设置发送完毕之后客户端是否退出 源库逻辑默认退出
           let msg: Message | MessageHeaders = {
             text: this.content,
             from: `${this.accountName} <${this.from}>`,
@@ -310,14 +311,14 @@ struct SendBigAttachmentPage {
             attachment: this.attachment
           }
           let startTime1 = new Date().getTime();
-          const message = await globalThis.client.sendAsync(msg)
+          const message = await GlobalObj?.getInstance()?.getClient()?.sendAsync(msg)
           let endTime1 = new Date().getTime();
           let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
           console.log("sendAsync averageTime : " + averageTime1 + "us")
           this.showToast('邮件发送成功', 'sendmail-smtp')
-          if (globalThis.client.isQuitAfterSendDone()) {
-            globalThis.client.close(true);
-            globalThis.client = null;
+          if (GlobalObj?.getInstance()?.getClient()?.isQuitAfterSendDone()) {
+            GlobalObj?.getInstance()?.getClient()?.close(true);
+            GlobalObj?.getInstance()?.setClient(null);
           }
         } else {
           this.showToast('账号未登录，请需重新登录', 'sendmail-smtp')
@@ -338,8 +339,11 @@ struct SendBigAttachmentPage {
       ctx.bigFileName = ''
       ctx.bigFileInfo = '暂无附件'
       ctx.showToast('开始检测cache目录下的大附件', 'createSingleFile')
-      let context = globalThis.context ? globalThis.context : getContext()
-      let fileDir = context.cacheDir
+      let context = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext()
+      if (!context) {
+        return;
+      }
+      let fileDir = context?.cacheDir
       let fileList = fs.listFileSync(fileDir)
       if (!fileList || fileList.length < 1) {
         ctx.showToast('请先推入大附件', 'addBigFile-imapclient')
@@ -409,6 +413,6 @@ struct SendBigAttachmentPage {
   }
 
   onBackPress() {
-    globalThis.context.terminateSelf()
+    GlobalObj?.getInstance()?.getContext()?.terminateSelf()
   }
 }

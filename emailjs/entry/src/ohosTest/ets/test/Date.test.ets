@@ -20,8 +20,8 @@ const toD_utc = (dt: number) => getRFC2822DateUTC(new Date(dt));
 const toD = (dt: number, utc = false) => getRFC2822Date(new Date(dt), utc);
 
 export default function dateTest() {
-  describe('dateTest', function () {
-    it('rfc2822_non_UTC', 0, function () {
+  describe('dateTest', ()=> {
+    it('rfc2822_non_UTC', 0, ()=> {
       expect(isRFC2822Date(toD(0))).assertTrue();
       expect(isRFC2822Date(toD(329629726785))).assertTrue();
       expect(isRFC2822Date(toD(729629726785))).assertTrue();
@@ -30,7 +30,7 @@ export default function dateTest() {
     })
 
 
-    it('rfc2822_UTC', 0, function () {
+    it('rfc2822_UTC', 0, ()=> {
       expect('Thu, 01 Jan 1970 00:00:00 +0000').assertEqual(toD_utc(0));
       expect(toD(0, true)).assertEqual(toD_utc(0));
 

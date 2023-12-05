@@ -18,25 +18,25 @@ import { mimeEncode, mimeWordEncode } from '@ohos/emailjs'
 
 
 export default function mimeTest() {
-  describe('mimeTest', function () {
-    it('mimeEncode_should_encode_UTF_8', 0, function () {
+  describe('mimeTest', ()=> {
+    it('mimeEncode_should_encode_UTF_8', 0, ()=> {
       expect("tere =C3=95=C3=84=C3=96=C3=95").assertEqual(mimeEncode('tere ÕÄÖÕ'));
     })
 
-    it('mimeEncode_should_encode_trailing_whitespace', 0, function () {
+    it('mimeEncode_should_encode_trailing_whitespace', 0, ()=> {
       expect('tere =20').assertEqual(mimeEncode('tere  '));
     })
 
 
-    it('mimeEncode_should_encode_non_UTF_8', 0, function () {
+    it('mimeEncode_should_encode_non_UTF_8', 0, ()=> {
       expect('=EB=B7=85').assertEqual(mimeEncode(new Uint8Array([0xbd, 0xc5]), 'utf-16be'));
     })
 
-    it('mimeWordEncode_should_encode', 0, function () {
+    it('mimeWordEncode_should_encode', 0, ()=> {
       expect('=?UTF-8?Q?See_on_=C3=B5hin_test?=').assertEqual(mimeWordEncode('See on õhin test'));
     })
 
-    it('mimeWordEncode_should_QP_encode_mime_word', 0, function () {
+    it('mimeWordEncode_should_QP_encode_mime_word', 0, ()=> {
       expect('=?UTF-8?Q?=E4=AB=B5=E6=9D=A5=E2=B5=B6=E6=87=9E?=').assertEqual(mimeWordEncode(
         new Uint8Array([0x4a, 0xf5, 0x67, 0x65, 0x2d, 0x76, 0x61, 0xde]),
         'Q',
@@ -44,12 +44,12 @@ export default function mimeTest() {
       ));
     })
 
-    it('mimeWordEncode_should_Base64_encode_mime_word', 0, function () {
+    it('mimeWordEncode_should_Base64_encode_mime_word', 0, ()=> {
       expect('=?UTF-8?B?0J/RgNC40LLQtdGCINC4INC00L4g0YHQstC40LTQsNC90LjRjw==?=')
         .assertEqual(mimeWordEncode('Привет и до свидания', 'B'));
     })
 
-    it('mimeWordEncode_should_Base64_encode_a_long_mime_word', 0, function () {
+    it('mimeWordEncode_should_Base64_encode_a_long_mime_word', 0, ()=> {
       const payload =
         'üöß‹€Привет и до свиданияПривет и до свиданияПривет и до свиданияПривет и до свиданияПривет и до свиданияПривет и до свиданияПривет и до свиданияПривет и до свидания';
       const expected =
