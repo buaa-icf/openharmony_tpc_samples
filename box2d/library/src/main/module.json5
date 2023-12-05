@@ -1,6 +1,6 @@
 {
   "module": {
-    "name": "box2d",
+    "name": "library",
     "type": "har",
     "deviceTypes": [
       "default",

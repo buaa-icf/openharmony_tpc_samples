@@ -34,8 +34,8 @@
       ]
     },
     {
-      "name": "box2d",
-      "srcPath": "./box2d"
+      "name": "library",
+      "srcPath": "./library"
     }
   ]
 }

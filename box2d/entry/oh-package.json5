@@ -7,6 +7,6 @@
   "main": "",
   "version": "2.0.0",
   "dependencies": {
-    "@ohos/box2d": "file:../box2d"
+    "@ohos/box2d": "file:../library"
   }
 }
