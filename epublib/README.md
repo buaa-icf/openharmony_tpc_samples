@@ -57,7 +57,7 @@ import {DOMParser,EpubReader,EpubWriter, Book,Author,EpubResource,MediaType,Meta
 
 在下述版本验证通过：
 
-- DevEco Studio 版本：4.0 Beta2（4.0.3.600），OpenHarmony SDK:API10（4.0.10.11）
+- DevEco Studio 版本：4.0 Beta2（4.0.3.600），OpenHarmony SDK:API10（4.0.10.15）
 
 ## 目录结构
 
@@ -85,4 +85,4 @@ import {DOMParser,EpubReader,EpubWriter, Book,Author,EpubResource,MediaType,Meta
 
 ## 开源协议
 
-本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/epublib/blob/master/LICENSE) ，请自由地享受和参与开源。
+本项目基于 [LGPL License 3.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/epublib/LICENSE) ，请自由地享受和参与开源。

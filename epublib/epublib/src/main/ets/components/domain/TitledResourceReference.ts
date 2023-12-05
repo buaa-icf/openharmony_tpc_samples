@@ -1,17 +1,27 @@
 /*
- * Copyright (C) 2022 Huawei Device Co., Ltd.
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * GNU LESSER GENERAL PUBLIC LICENSE
+ * Version 3, 29 June 2007
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * Copyright (C) 2023 Huawei Device Co., Ltd.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The Free Software Foundation may publish revised and/or new versions of the GNU Lesser
+ * General Public License from time to time. Such new versions will be similar in spirit to the
+ * present version, but may differ in detail to address new problems or concerns.
+
+ * Each version is given a distinguishing version number. If the Library as you received it
+ * specifies that a certain numbered version of the GNU Lesser General Public License “or any
+ * later version” applies to it, you have the option of following the terms and conditions either
+ * of that published version or of any later version published by the Free Software Foundation. If
+ * the Library as you received it does not specify a version number of the GNU Lesser General
+ * Public License, you may choose any version of the GNU Lesser General Public License ever
+ * published by the Free Software Foundation.
+
+ * If the Library as you received it specifies that a proxy can decide whether future versions of
+ * the GNU Lesser General Public License shall apply, that proxy's public statement of
+ * acceptance of any version is permanent authorization for you to choose that version
+ * for the Library.
  */
+
 
 import StringUtil from '../util/StringUtil';
 import { Constants } from '../Constants';
