@@ -20,6 +20,8 @@ import buffer from '@ohos.buffer'
 import socket from '@ohos.net.socket';
 import promptAction from '@ohos.promptAction'
 import { ToolType } from '@ohos.multimodalInput.touchEvent'
+import GlobalObj from '../GlobalObj'
+
 /**
  * tips:一旦调用setWorkingDirectory 设置了当前工作目录 远程地址remotePath只需要写文件名，否则会报错，仅限于操作本文件夹内的文件
  * 设置工作目录之前，remotePath = 'Users\\Administrator\\Desktop\\commonsNet\\ftp\\serverReceived.txt'
@@ -32,8 +34,10 @@ struct CustomDialogDiy {
   @Link textValue: string
   @Link inputValue: string
   controller: CustomDialogController
-  cancel: () => void;
-  confirm: () => void;
+  cancel: Function = () => {
+  };
+  confirm: Function = () => {
+  };
 
   build() {
     Column() {
@@ -71,25 +75,25 @@ struct CustomDialogDiy {
 struct SamplePage {
   @State message: string = 'Hello World'
   @State secure: boolean = false;
-  @State user: string = 'xxxx';
-  @State password: string = '';
-  @State host: string = '';
+  @State user: string = 'xxx';
+  @State password: string = 'xxx';
+  @State host: string = 'xxx';
   @State port: number = 21;
-  @State secureOptions: socket.TLSConnectOptions = undefined
-  @State remoteRoot: string = undefined
+  @State secureOptions: socket.TLSConnectOptions | null = null;
+  @State remoteRoot: string | null = null;
   @State currentFileList: FileInfo[] = [];
-  @State localUploadFilePath: string = undefined;
-  @State localUploadFileDir: string = undefined;
-  @State localDownloadFilePath: string = undefined;
-  @State localDownloadFileDir: string = undefined;
-  @State selectFilePath: string = undefined;
-  @State selectDirPath: string = undefined;
+  @State localUploadFilePath: string | null = null;
+  @State localUploadFileDir: string | null = null;
+  @State localDownloadFilePath: string | null = null;
+  @State localDownloadFileDir: string | null = null;
+  @State selectFilePath: string | null = null;
+  @State selectDirPath: string | null = null;
   @State isShowLog: boolean = false;
   @State isLogin: boolean = false;
   @State textValue: string = ''
   @State inputValue: string = 'click me'
   @State operationType: string = ''
-  private ftpUtil: NoTlsUtil = null;
+  private ftpUtil: NoTlsUtil | null = null;
   private option: socket.TLSConnectOptions = {
     ALPNProtocols: ["spdy/1", "http/1.1"],
     address: {
@@ -108,7 +112,7 @@ struct SamplePage {
       cipherSuite: "AES256-SHA256"
     }
   }
-  dialogController: CustomDialogController = new CustomDialogController({
+  dialogController: CustomDialogController | null = new CustomDialogController({
     builder: CustomDialogDiy({
       cancel: () => {
         this.showToast(`关闭了对话框，取消在服务器创建新的文件夹`, 'CustomDialogDiy-cancel')
@@ -226,13 +230,12 @@ struct SamplePage {
 
   aboutToAppear() {
     if (!this.ftpUtil) {
-      this.ftpUtil = new NoTlsUtil(globalThis.context ? globalThis.context : getContext(this))
+      this.ftpUtil = new NoTlsUtil(GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext(this))
       this.ftpUtil.setTag();
     }
   }
 
   aboutToDisappear() {
-    delete this.dialogController;
     this.dialogController = null;
     if (this.ftpUtil) {
       this.ftpUtil.close();
@@ -248,7 +251,7 @@ struct SamplePage {
     let newStr = ctx.message.substring(index, ctx.message.length)
     if (newStr.indexOf('当前上传长度') != -1) {
       let front = ctx.message.substring(0, index)
-      ctx.message = front + "\r\n" + text, 'uploadSingleFile'
+      ctx.message = front + "\r\n" + text;
     } else if (newStr.indexOf('当前下载长度') != -1) {
       let index = ctx.message.lastIndexOf("\r\n")
       let front = ctx.message.substring(0, index)
@@ -307,7 +310,7 @@ struct SamplePage {
               .borderColor(Color.Gray)
               .type(InputType.Normal)
               .onChange((data) => {
-                this.port = parseInt(data)
+                this.port = Number.parseInt(data)
               })
           }
 
@@ -400,7 +403,7 @@ struct SamplePage {
               startIcon: $r('app.media.icon'),
               content: '更多操作',
               endIcon: $r('app.media.more'),
-              builder: this.SubMenu.bind(this)
+              builder: this.SubMenu
             })
               .bindMenu(this.SubMenu)
 
@@ -502,7 +505,7 @@ struct SamplePage {
                         this.selectFilePath = name
                         this.showToast(`选择了 selectFilePath ${this.selectFilePath}`, 'selectFilePath')
                       } else {
-                        this.selectFilePath = undefined;
+                        this.selectFilePath = null;
                         this.showToast(`取消了选择 `, 'selectFilePath')
                       }
                     } else {
@@ -513,7 +516,7 @@ struct SamplePage {
                 }), GestureMask.Normal)
                 .gesture(LongPressGesture().onAction((event) => {
                   if (this.selectDirPath && this.selectDirPath.length > 0) {
-                    this.selectDirPath = undefined
+                    this.selectDirPath = null
                   } else {
                     this.selectDirPath = item.name
                   }
@@ -575,8 +578,8 @@ struct SamplePage {
                 if (this.ftpUtil) {
                   await this.ftpUtil.close();
                 }
-                if (globalThis.context) {
-                  globalThis.context.terminateSelf()
+                if (GlobalObj?.getInstance()?.getContext()) {
+                  GlobalObj?.getInstance()?.getContext()?.terminateSelf()
                 }
               })
           }
@@ -710,10 +713,16 @@ struct SamplePage {
   async loginServer() {
     const ctx = this
     ctx.message = '初始化参数，准备登录'
-    var loginInfo: AccessOptions = null
+    let loginInfo: AccessOptions | null = null
     if (ctx.secure) {
-      let context = globalThis.context ? globalThis.context : getContext(this)
-      let keyData = await context.resourceManager.getRawFileContent('client_rsa_private.pem.unsecure')
+      let context = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext(this)
+      if (!context) {
+        return;
+      }
+      let keyData = await context?.resourceManager?.getRawFileContent('client_rsa_private.pem.unsecure')
+      if (!keyData) {
+        return;
+      }
       let key = '';
       for (let i = 0; i < keyData.length; i++) {
         let todo = keyData[i]
@@ -739,8 +748,12 @@ struct SamplePage {
         let item = String.fromCharCode(todo);
         ca += item;
       }
-      // @ts-ignore
-      ctx.option.secureOptions.ca[0] = ca;
+      if (ctx.option.secureOptions.ca instanceof Array) {
+        ctx.option.secureOptions.ca[0] = ca;
+      } else {
+        ctx.option.secureOptions.ca = ca;
+      }
+
 
       ctx.option.address = {
         address: ctx.host,
@@ -784,7 +797,7 @@ struct SamplePage {
   getCurrentDirectory() {
     const ctx = this
     if (ctx.ftpUtil) {
-      if (!this.ftpUtil.getLogin()) {
+      if (!ctx.ftpUtil.getLogin()) {
         ctx.showToast('客户端未登录，请先登录', 'isLogin')
         return
       }
@@ -806,11 +819,11 @@ struct SamplePage {
   refreshScreen() {
     const ctx = this
     if (ctx.ftpUtil) {
-      if (!this.ftpUtil.getLogin()) {
+      if (!ctx.ftpUtil?.getLogin()) {
         ctx.showToast('客户端未登录，请先登录', 'isLogin')
         return
       }
-      ctx.ftpUtil.getCurrentDirectory({
+      ctx.ftpUtil?.getCurrentDirectory({
         currentDirectoryErr(err: Error) {
           ctx.showToast(`获取当前工作目录失败：${err.message}`, 'currentDirectoryErr')
         },
@@ -826,7 +839,7 @@ struct SamplePage {
           } else {
             listName = msg
           }
-          ctx.ftpUtil.getList(listName, {
+          ctx.ftpUtil?.getList(listName, {
             getListErr(err: Error) {
               ctx.showToast(`获取文件列表失败：${err.message}`, 'getListErr')
               ctx.currentFileList = []
@@ -854,8 +867,8 @@ struct SamplePage {
     const ctx = this
     try {
       ctx.showToast('开始生成单个本地文件', 'createSingleFile')
-      let context = globalThis.context ? globalThis.context : getContext(ctx).cacheDir
-      ctx.localUploadFilePath = context.cacheDir + '/' + (new Date().getTime()) + '.txt'
+      let context: Context | null = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext(ctx)
+      ctx.localUploadFilePath = context?.cacheDir + '/' + (new Date().getTime()) + '.txt'
       let file = fs.openSync(ctx.localUploadFilePath, fs.OpenMode.CREATE | fs.OpenMode.READ_WRITE)
       let str = ''
       for (let i = 0; i < 1024; i++) {
@@ -866,7 +879,7 @@ struct SamplePage {
       fs.closeSync(file)
       ctx.showToast('生成本地单个文件成功', 'createSingleFile')
     } catch (err) {
-      ctx.localUploadFilePath = undefined
+      ctx.localUploadFilePath = null
       ctx.showToast('生成本地单个文件失败:' + JSON.stringify(err), 'createSingleFile')
     }
   }
@@ -875,8 +888,8 @@ struct SamplePage {
     const ctx = this
     try {
       ctx.showToast('开始生成本地文件夹', 'createFileDir')
-      let context = globalThis.context ? globalThis.context : getContext(ctx).cacheDir
-      ctx.localUploadFileDir = context.cacheDir + '/' + (new Date().getTime())
+      let context: Context | null = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext(ctx)
+      ctx.localUploadFileDir = context?.cacheDir + '/' + (new Date().getTime())
       let localPath1 = ctx.localUploadFileDir + '/' + 'test1.txt'
       let localPath2 = ctx.localUploadFileDir + '/' + 'test2.txt'
       let localPath3 = ctx.localUploadFileDir + '/' + 'test3.txt'
@@ -907,7 +920,7 @@ struct SamplePage {
 
       ctx.showToast('生成本地文件夹成功', 'createFileDir')
     } catch (err) {
-      ctx.localUploadFileDir = undefined
+      ctx.localUploadFileDir = null;
       ctx.showToast('生成本地文件夹失败:' + JSON.stringify(err), 'createFileDir')
     }
   }
@@ -915,7 +928,7 @@ struct SamplePage {
   appendFile() {
     const ctx = this
     if (ctx.ftpUtil) {
-      if (!this.ftpUtil.getLogin()) {
+      if (!this.ftpUtil?.getLogin()) {
         ctx.operationType = ''
         ctx.showToast('客户端未登录，请先登录', 'uploadSingleFile')
         return
@@ -935,7 +948,7 @@ struct SamplePage {
         ctx.showToast('未选择需要附加上传的文件，请先选择需要附加上传的文件', 'appendFile')
         return
       }
-      ctx.ftpUtil.getFileSize(ctx.selectFilePath, {
+      ctx.ftpUtil?.getFileSize(ctx.selectFilePath, {
         getSizeErr(err: Error) {
           ctx.showToast(`附加上传之前先获取原文件大小失败，${err.message}`, 'appendFile')
         },
@@ -944,7 +957,7 @@ struct SamplePage {
         },
         getSizeSuccess(result: number) {
           ctx.showToast(`附加上传之前先获取原文件${ctx.selectFilePath}大小:${result}`, 'appendFile')
-          ctx.ftpUtil.appendFile(ctx.localUploadFilePath, ctx.selectFilePath, {
+          ctx.ftpUtil?.appendFile(ctx.localUploadFilePath, ctx.selectFilePath, {
             appendErr(err: Error) {
               ctx.showToast(`附加上传单个文件失败： ${JSON.stringify(err)}`, 'appendFile')
             },
@@ -953,7 +966,7 @@ struct SamplePage {
             },
             appendSuccess(msg: FTPResponse) {
               ctx.showToast(`附加上传成功，返回的信息是:` + JSON.stringify(msg), 'appendFile')
-              ctx.ftpUtil.getFileSize(ctx.selectFilePath, {
+              ctx.ftpUtil?.getFileSize(ctx.selectFilePath, {
                 getSizeErr(err: Error) {
                   ctx.showToast(`附加上传之后获取原文件大小失败，${err.message}`, 'appendFile')
                 },
@@ -981,7 +994,7 @@ struct SamplePage {
   uploadSingleFile() {
     const ctx = this
     if (ctx.ftpUtil) {
-      if (!this.ftpUtil.getLogin()) {
+      if (!this.ftpUtil?.getLogin()) {
         ctx.operationType = ''
         ctx.showToast('客户端未登录，请先登录', 'uploadSingleFile')
         return
@@ -1001,7 +1014,7 @@ struct SamplePage {
         ctx.showToast('未输入文件名，请先输入文件名', 'uploadSingleFile')
         return
       }
-      ctx.ftpUtil.uploadSingleFile(ctx.localUploadFilePath, ctx.inputValue, {
+      ctx.ftpUtil?.uploadSingleFile(ctx.localUploadFilePath, ctx.inputValue, {
         uploadErr(err: Error) {
           ctx.showToast(`上传单个文件失败： ${JSON.stringify(err)}`, 'uploadSingleFile')
         },
@@ -1023,7 +1036,7 @@ struct SamplePage {
   uploadDir() {
     const ctx = this
     if (ctx.ftpUtil) {
-      if (!this.ftpUtil.getLogin()) {
+      if (!this.ftpUtil?.getLogin()) {
         ctx.operationType = ''
         ctx.showToast('客户端未登录，请先登录', 'uploadDir')
         return
@@ -1043,7 +1056,7 @@ struct SamplePage {
         ctx.showToast('未输入文件名，请先输入文件名', 'uploadDir')
         return
       }
-      ctx.ftpUtil.uploadDir(ctx.localUploadFileDir, ctx.inputValue, {
+      ctx.ftpUtil?.uploadDir(ctx.localUploadFileDir, ctx.inputValue, {
         uploadDirErr(err: Error) {
           ctx.showToast(err.message, 'uploadDir')
         },
@@ -1063,10 +1076,10 @@ struct SamplePage {
 
   downloadSingleFile() {
     const ctx = this
-    let context = globalThis.context ? globalThis.context : getContext(ctx).cacheDir
+    let context = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext(ctx)
 
     if (this.ftpUtil) {
-      if (!this.ftpUtil.getLogin()) {
+      if (!this.ftpUtil?.getLogin()) {
         ctx.showToast('客户端未登录，请先登录', 'downloadSingleFile')
         return
       }
@@ -1078,8 +1091,8 @@ struct SamplePage {
         ctx.showToast('未选择文件，请先选择文件', 'getFileSize')
         return
       }
-      let localPath = context.cacheDir + '/' + ctx.selectFilePath
-      this.ftpUtil.downloadSingleFile(localPath, ctx.selectFilePath, {
+      let localPath = context?.cacheDir + '/' + ctx.selectFilePath
+      this.ftpUtil?.downloadSingleFile(localPath, ctx.selectFilePath, {
         downloadErr(err: Error) {
           ctx.showToast(`下载单个文件失败，${err.message}`, 'downloadSingleFile')
         },
@@ -1098,11 +1111,10 @@ struct SamplePage {
 
   downloadDir() {
     const ctx = this
-    let context = globalThis.context ? globalThis.context : getContext(ctx).cacheDir
-
+    let context = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext(ctx)
 
     if (this.ftpUtil) {
-      if (!this.ftpUtil.getLogin()) {
+      if (!this.ftpUtil?.getLogin()) {
         ctx.showToast('客户端未登录，请先登录', 'downloadDir')
         return
       }
@@ -1114,9 +1126,9 @@ struct SamplePage {
         ctx.showToast('请先长按选中某个文件夹再进行本操作', 'deleteEmptyDirectory')
         return
       }
-      let localDir = context.cacheDir + ctx.selectDirPath
+      let localDir = context?.cacheDir + ctx.selectDirPath
 
-      this.ftpUtil.downloadDir(localDir, ctx.selectDirPath, {
+      this.ftpUtil?.downloadDir(localDir, ctx.selectDirPath, {
         downloadDirErr(err: Error) {
           ctx.showToast(`下载文件夹失败，${err.message}`, 'downloadDir')
         },
@@ -1136,7 +1148,7 @@ struct SamplePage {
   getFileSize() {
     const ctx = this
     if (this.ftpUtil) {
-      if (!this.ftpUtil.getLogin()) {
+      if (!this.ftpUtil?.getLogin()) {
         ctx.showToast('客户端未登录，请先登录', 'getFileSize')
         return
       }
@@ -1148,7 +1160,7 @@ struct SamplePage {
         ctx.showToast('未选择文件，请先选择文件', 'getFileSize')
         return
       }
-      this.ftpUtil.getFileSize(ctx.selectFilePath, {
+      this.ftpUtil?.getFileSize(ctx.selectFilePath, {
         getSizeErr(err: Error) {
           ctx.showToast(`获取文件大小失败，${err.message}`, 'getFileSize')
         },
@@ -1165,7 +1177,7 @@ struct SamplePage {
   getServerFeatures() {
     const ctx = this
     if (this.ftpUtil) {
-      if (!this.ftpUtil.getLogin()) {
+      if (!this.ftpUtil?.getLogin()) {
         ctx.showToast('客户端未登录，请先登录', 'getServerFeatures')
         return
       }
@@ -1186,7 +1198,7 @@ struct SamplePage {
   getLastModifyTime() {
     const ctx = this
     if (ctx.ftpUtil) {
-      if (!ctx.ftpUtil.getLogin()) {
+      if (!ctx.ftpUtil?.getLogin()) {
         ctx.showToast('客户端未登录，请先登录', 'getLastModifyTime')
         return
       }
@@ -1198,7 +1210,7 @@ struct SamplePage {
         ctx.showToast('未选择文件，请先选择文件', 'getLastModifyTime')
         return
       }
-      ctx.ftpUtil.getLastModify(ctx.selectFilePath, {
+      ctx.ftpUtil?.getLastModify(ctx.selectFilePath, {
         lastModifyErr(err: Error) {
           ctx.showToast(`切换到工作目录的父目录失败，${err.message}`, 'getLastModifyTime')
         },
@@ -1215,7 +1227,7 @@ struct SamplePage {
   deleteSingleFile() {
     const ctx = this
     if (ctx.ftpUtil) {
-      if (!ctx.ftpUtil.getLogin()) {
+      if (!ctx.ftpUtil?.getLogin()) {
         ctx.showToast('客户端未登录，请先登录', 'deleteSingleFile')
         return
       }
@@ -1227,7 +1239,7 @@ struct SamplePage {
         ctx.showToast('未选择文件，请先选择文件', 'deleteSingleFile')
         return
       }
-      ctx.ftpUtil.deleteFile(ctx.selectFilePath, {
+      ctx.ftpUtil?.deleteFile(ctx.selectFilePath, {
         deleteFileErr(err: Error) {
           ctx.showToast(`删除文件失败，${err.message}`, 'deleteSingleFile')
         },
@@ -1245,7 +1257,7 @@ struct SamplePage {
   backToParent() {
     const ctx = this
     if (ctx.ftpUtil) {
-      if (!ctx.ftpUtil.getLogin()) {
+      if (!ctx.ftpUtil?.getLogin()) {
         ctx.showToast('客户端未登录，请先登录', 'backToParent')
         return
       }
@@ -1253,7 +1265,7 @@ struct SamplePage {
         ctx.showToast('未获取当前工作目录，请先获取当前工作目录', 'backToParent')
         return
       }
-      ctx.ftpUtil.cdToParentDirectory({
+      ctx.ftpUtil?.cdToParentDirectory({
         cdToParentDirectoryErr(err: Error) {
           ctx.showToast(`切换到工作目录的父目录失败，${err.message}`, 'backToParent')
         },
@@ -1271,7 +1283,7 @@ struct SamplePage {
   ensureRemotePath() {
     const ctx = this
     if (this.ftpUtil) {
-      if (!this.ftpUtil.getLogin()) {
+      if (!this.ftpUtil?.getLogin()) {
         ctx.operationType = ''
         ctx.showToast('客户端未登录，请先登录', 'ensureRemotePath')
         return
@@ -1286,7 +1298,7 @@ struct SamplePage {
         ctx.showToast('未输入文件夹名，请先输入输入文件夹名', 'ensureRemotePath')
         return
       }
-      this.ftpUtil.ensureRemotePath(ctx.inputValue, {
+      this.ftpUtil?.ensureRemotePath(ctx.inputValue, {
         ensureRemotePathErr(err: Error) {
           ctx.operationType = ''
           ctx.showToast(`确保远程服务器存在给定的目录失败，${err.message}`, 'ensureRemotePath')
@@ -1307,7 +1319,7 @@ struct SamplePage {
   deleteEmptyDirectory() {
     const ctx = this
     if (this.ftpUtil) {
-      if (!this.ftpUtil.getLogin()) {
+      if (!this.ftpUtil?.getLogin()) {
         ctx.showToast('客户端未登录，请先登录', 'deleteEmptyDirectory')
         return
       }
@@ -1320,7 +1332,7 @@ struct SamplePage {
         return
       }
 
-      this.ftpUtil.deleteEmptyDirectory(ctx.selectDirPath, {
+      this.ftpUtil?.deleteEmptyDirectory(ctx.selectDirPath, {
         deleteEmptyDirectoryErr(err: Error) {
           ctx.showToast(`删除空目录失败，${err.message}`, 'deleteEmptyDirectory')
         },
@@ -1338,7 +1350,7 @@ struct SamplePage {
   deleteAll() {
     const ctx = this
     if (this.ftpUtil) {
-      if (!this.ftpUtil.getLogin()) {
+      if (!this.ftpUtil?.getLogin()) {
         ctx.showToast('客户端未登录，请先登录', 'deleteEmptyDirectory')
         return
       }
@@ -1351,7 +1363,7 @@ struct SamplePage {
         return
       }
 
-      this.ftpUtil.deleteAll(ctx.selectDirPath, {
+      this.ftpUtil?.deleteAll(ctx.selectDirPath, {
         deleteAllErr(err: Error) {
           ctx.showToast(`删除目录及其所有内容失败，${err.message}`, 'deleteEmptyDirectory')
         },
@@ -1369,7 +1381,7 @@ struct SamplePage {
   deleteAllButSelf() {
     const ctx = this
     if (this.ftpUtil) {
-      if (!this.ftpUtil.getLogin()) {
+      if (!this.ftpUtil?.getLogin()) {
         ctx.showToast('客户端未登录，请先登录', 'deleteEmptyDirectory')
         return
       }
@@ -1377,7 +1389,7 @@ struct SamplePage {
         ctx.showToast('未获取当前工作目录，请先获取当前工作目录', 'deleteEmptyDirectory')
         return
       }
-      this.ftpUtil.deleteAllButSelf({
+      this.ftpUtil?.deleteAllButSelf({
         deleteAllButSelfErr(err: Error) {
           ctx.showToast(`清空当前工作目录失败，${err.message}`, 'deleteEmptyDirectory')
         },
@@ -1395,7 +1407,7 @@ struct SamplePage {
   renameFile() {
     const ctx = this
     if (this.ftpUtil) {
-      if (!this.ftpUtil.getLogin()) {
+      if (!this.ftpUtil?.getLogin()) {
         ctx.operationType = ''
         ctx.showToast('客户端未登录，请先登录', 'renameFile')
         return
@@ -1415,7 +1427,7 @@ struct SamplePage {
         return
       }
 
-      this.ftpUtil.renameFile(ctx.inputValue, ctx.selectFilePath, {
+      this.ftpUtil?.renameFile(ctx.inputValue, ctx.selectFilePath, {
         renameFileErr(err: Error) {
           ctx.operationType = ''
           ctx.showToast(`重命名文件失败，${err.message}`, 'deleteEmptyDirectory')
@@ -1436,7 +1448,7 @@ struct SamplePage {
   enterChildDir(remoteChildPath: string) {
     const ctx = this
     if (this.ftpUtil) {
-      if (!this.ftpUtil.getLogin()) {
+      if (!this.ftpUtil?.getLogin()) {
         ctx.showToast('客户端未登录，请先登录', 'enterChildDir')
         return
       }
@@ -1449,7 +1461,7 @@ struct SamplePage {
         return
       }
 
-      this.ftpUtil.setWorkingDirectory(remoteChildPath, {
+      this.ftpUtil?.setWorkingDirectory(remoteChildPath, {
         setWorkingDirectoryErr(err: Error) {
           ctx.showToast(`进入子文件夹失败，${err.message}`, 'ensureRemotePath')
         },
