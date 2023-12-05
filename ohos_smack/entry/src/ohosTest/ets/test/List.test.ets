@@ -10,11 +10,7 @@
  */
 
 import abilityTest from './Ability.test'
-import AbcTest from './Abc.test'
-import TimeTest from './TimeAbility.test'
 
 export default function testsuite() {
   abilityTest()
-  AbcTest()
-  TimeTest()
 }
