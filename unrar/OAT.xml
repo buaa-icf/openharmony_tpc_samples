@@ -22,7 +22,7 @@
                 <filteritem type="filename" name="hvigorw.bat" desc="项目工程默认文件，不需要添加版权头"/>
                 <filteritem type="filepath" name="entry/hvigorfile.ts" desc="项目工程默认文件，不需要添加版权头"/>
                 <filteritem type="filepath" name="entry/build-profile.json5" desc="项目工程默认文件，不需要添加版权头"/>
-                <filteritem type="filepath" name="unrar/src/main/ets/cpp/libunrar/.*" desc="第三方源库文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="library/src/main/ets/cpp/libunrar/.*" desc="第三方源库文件，不需要添加版权头"/>
                 <filteritem type="filename" name="NOTICE" desc="项目工程NOTICE文件，不需要添加版权头"/>
             </filefilter>
             <filefilter name="binaryFileTypePolicyFilter" desc="Filters for copyright header policies">

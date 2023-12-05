@@ -1,6 +1,6 @@
 {
   "module": {
-    "name": "unrar",
+    "name": "library",
     "type": "har",
     "deviceTypes": [
       "default",

@@ -32,8 +32,8 @@
       ]
     },
     {
-      "name": "unrar",
-      "srcPath": "./unrar"
+      "name": "library",
+      "srcPath": "./library"
     }
   ]
 }
