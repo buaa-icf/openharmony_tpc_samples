@@ -65,8 +65,8 @@ struct CustomDialogDiy {
 @Component
 struct LoginPage {
   @State message: string = 'Hello World'
-  @State account: string = '479868299'
-  @State pwd: string = 'wzkdawfyaatvcabb'
+  @State account: string = 'xxx'
+  @State pwd: string = 'xxx'
   @State mailType: string = '@qq.com'
   @State textValue: string = ''
   @State inputValue: string = 'click me'
@@ -194,7 +194,7 @@ struct LoginPage {
             .textAlign(TextAlign.Center)
             .margin({ right: 5 })
 
-          TextInput({ placeholder: '请输入账号', text: '479868299' })
+          TextInput({ placeholder: '请输入账号', text: 'xxx' })
             .layoutWeight(1)
             .fontSize(20)
             .height(50)
@@ -228,7 +228,7 @@ struct LoginPage {
             .textAlign(TextAlign.Center)
             .margin({ right: 5 })
 
-          TextInput({ placeholder: '请输入密码/授权码', text: 'wzkdawfyaatvcabb' })
+          TextInput({ placeholder: '请输入密码/授权码', text: 'xxx' })
             .layoutWeight(1)
             .fontSize(20)
             .height(50)

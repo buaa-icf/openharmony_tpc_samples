@@ -26,7 +26,7 @@ export default function SMTPPressTest() {
 
   let from: string = ''
   let accountName: string = ''
-  let to: string = '12345689@qq.com'
+  let to: string = 'xxx@qq.com'
   let cc: string = '1'
   let bcc: string = '2'
   let subject: string = 'test'

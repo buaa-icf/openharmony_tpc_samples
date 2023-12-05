@@ -24,11 +24,11 @@ import fs from '@ohos.file.fs';
 
 export default function SMTPPressTest() {
 
-  let from: string = ''
-  let accountName: string = ''
-  let to: string = ''
-  let cc: string = '1'
-  let bcc: string = '2'
+  let from: string = 'xxx'
+  let accountName: string = 'xxx'
+  let to: string = 'xxx'
+  let cc: string = 'xxx'
+  let bcc: string = 'xxx'
   let subject: string = 'test'
   let content: string = 'test'
   //总的次数
@@ -41,9 +41,9 @@ export default function SMTPPressTest() {
       it('new_SMTPClient', 0, function (done) {
         setTimeout(()=>{
           let client = new SMTPClient({
-            user: '',
-            password: '',
-            host: 'smtp.qq.com',
+            user: 'xxx',
+            password: 'xxx',
+            host: 'smtp.xxx.com',
             port: 25,
             timeout: 30000,
             authentication: [AUTH_METHODS.LOGIN],
