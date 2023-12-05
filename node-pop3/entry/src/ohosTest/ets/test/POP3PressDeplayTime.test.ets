@@ -18,15 +18,15 @@ import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from
 import promptAction from '@ohos.promptAction'
 import router from '@ohos.router'
 import socket from '@ohos.net.socket'
-import Pop3Command from '@ohos/node-pop3'
+import Pop3Command, { Pop3LoginBean } from '@ohos/node-pop3'
 import AbilityDelegatorRegistry from '@ohos.app.ability.abilityDelegatorRegistry';
 import MsgBean from '../../../../../entry/src/main/ets/MsgBean'
 
 export default function POP3PressTest() {
 
   let message = 'Hello World'
-  let account = ''
-  let password = ''
+  let account = 'xxx'
+  let password = 'xxx'
   let mailType = '@qq.com'
   let textValue = ''
   let inputValue = 'click me'
@@ -38,212 +38,212 @@ export default function POP3PressTest() {
   //总的次数
   const BASE_COUNT = 10000
   //每个用例延迟时间执行毫秒单位
-  const deplayTime=500
+  const deplayTime = 500
 
-  describe('POP3PressTest', function () {
-    for (let i = 1;i <= BASE_COUNT; i++) {
-      it('LIST', 0, function (done) {
-        setTimeout(()=>{
-          let option = {
-            host: 'pop.xxx.com',
+  describe('POP3PressTest', () => {
+    for (let i = 1; i <= BASE_COUNT; i++) {
+      it('LIST', 0, (done: Function) => {
+        setTimeout(() => {
+          let option: Pop3LoginBean = {
+            host: 'pop.qq.com',
             port: 110,
             user: account + mailType,
             password: password,
             timeout: 30000,
-            servername: 'pop.xxx.com',
+            servername: 'pop.qq.com',
             tls: false,
             tlsOptions: undefined
           }
           client = new Pop3Command(option);
           let result = client.LIST();
           done()
-        },deplayTime)
+        }, deplayTime)
       })
 
-      it('STAT', 0, function (done) {
-        setTimeout(()=>{
-          let option = {
-            host: 'pop.xxx.com',
+      it('STAT', 0, (done: Function) => {
+        setTimeout(() => {
+          let option: Pop3LoginBean = {
+            host: 'pop.qq.com',
             port: 110,
             user: account + mailType,
             password: password,
             timeout: 30000,
-            servername: 'pop.xxx.com',
+            servername: 'pop.qq.com',
             tls: false,
             tlsOptions: undefined
           }
           client = new Pop3Command(option);
           let result = client.STAT()
           done()
-        },deplayTime)
+        }, deplayTime)
       })
 
-      it('NOOP', 0, function (done) {
-        setTimeout(()=>{
-          let option = {
-            host: 'pop.xxx.com',
+      it('NOOP', 0, (done: Function) => {
+        setTimeout(() => {
+          let option: Pop3LoginBean = {
+            host: 'pop.qq.com',
             port: 110,
             user: account + mailType,
             password: password,
             timeout: 30000,
-            servername: 'pop.xxx.com',
+            servername: 'pop.qq.com',
             tls: false,
             tlsOptions: undefined
           }
           client = new Pop3Command(option);
           let result = client.NOOP()
           done()
-        },deplayTime)
+        }, deplayTime)
 
       })
 
-      it('UIDL', 0, function (done) {
-        setTimeout(()=>{
-          let option = {
-            host: 'pop.xxx.com',
+      it('UIDL', 0, (done: Function) => {
+        setTimeout(() => {
+          let option: Pop3LoginBean = {
+            host: 'pop.qq.com',
             port: 110,
             user: account + mailType,
             password: password,
             timeout: 30000,
-            servername: 'pop.xxx.com',
+            servername: 'pop.qq.com',
             tls: false,
             tlsOptions: undefined
           }
           client = new Pop3Command(option);
           let result = client.UIDL("1")
           done()
-        },deplayTime)
+        }, deplayTime)
       })
 
-      it('RSET', 0, function (done) {
-        setTimeout(()=>{
-          let option = {
-            host: 'pop.xxx.com',
+      it('RSET', 0, (done: Function) => {
+        setTimeout(() => {
+          let option: Pop3LoginBean = {
+            host: 'pop.qq.com',
             port: 110,
             user: account + mailType,
             password: password,
             timeout: 30000,
-            servername: 'pop.xxx.com',
+            servername: 'pop.qq.com',
             tls: false,
             tlsOptions: undefined
           }
           client = new Pop3Command(option);
           let result = client.RSET()
           done()
-        },deplayTime)
+        }, deplayTime)
 
       })
 
-      it('RETR', 0, function (done) {
-        setTimeout(()=>{
-          let option = {
-            host: 'pop.xxx.com',
+      it('RETR', 0, (done: Function) => {
+        setTimeout(() => {
+          let option: Pop3LoginBean = {
+            host: 'pop.qq.com',
             port: 110,
             user: account + mailType,
             password: password,
             timeout: 30000,
-            servername: 'pop.xxx.com',
+            servername: 'pop.qq.com',
             tls: false,
             tlsOptions: undefined
           }
           client = new Pop3Command(option);
           let result = client.RETR("1")
           done()
-        },deplayTime)
+        }, deplayTime)
 
       })
 
-      it('DELE', 0, function (done) {
-        setTimeout(()=>{
-          let option = {
-            host: 'pop.xxx.com',
+      it('DELE', 0, (done: Function) => {
+        setTimeout(() => {
+          let option: Pop3LoginBean = {
+            host: 'pop.qq.com',
             port: 110,
             user: account + mailType,
             password: password,
             timeout: 30000,
-            servername: 'pop.xxx.com',
+            servername: 'pop.qq.com',
             tls: false,
             tlsOptions: undefined
           }
           client = new Pop3Command(option);
           let result = client.DELE("1")
           done()
-        },deplayTime)
+        }, deplayTime)
       })
 
-      it('QUIT', 0, function (done) {
-        setTimeout(()=>{
-          let option = {
-            host: 'pop.xxx.com',
+      it('QUIT', 0, (done: Function) => {
+        setTimeout(() => {
+          let option: Pop3LoginBean = {
+            host: 'pop.qq.com',
             port: 110,
             user: account + mailType,
             password: password,
             timeout: 30000,
-            servername: 'pop.xxx.com',
+            servername: 'pop.qq.com',
             tls: false,
             tlsOptions: undefined
           }
           client = new Pop3Command(option);
           let result = client.QUIT()
           done()
-        },deplayTime)
+        }, deplayTime)
 
       })
 
-      it('connect', 0, function (done) {
-        setTimeout(()=>{
-          let option = {
-            host: 'pop.xxx.com',
+      it('connect', 0, (done: Function) => {
+        setTimeout(() => {
+          let option: Pop3LoginBean = {
+            host: 'pop.qq.com',
             port: 110,
             user: account + mailType,
             password: password,
             timeout: 30000,
-            servername: 'pop.xxx.com',
+            servername: 'pop.qq.com',
             tls: false,
             tlsOptions: undefined
           }
           client = new Pop3Command(option);
           let result = client.connect()
           done()
-        },deplayTime)
+        }, deplayTime)
 
       })
 
-      it('TOP', 0, function (done) {
-        setTimeout(()=>{
-          let option = {
-            host: 'pop.xxx.com',
+      it('TOP', 0, (done: Function) => {
+        setTimeout(() => {
+          let option: Pop3LoginBean = {
+            host: 'pop.qq.com',
             port: 110,
             user: account + mailType,
             password: password,
             timeout: 30000,
-            servername: 'pop.xxx.com',
+            servername: 'pop.qq.com',
             tls: false,
             tlsOptions: undefined
           }
           client = new Pop3Command(option);
           let result = client.TOP("1")
           done()
-        },deplayTime)
+        }, deplayTime)
       })
 
-      it('command', 0, function (done) {
-        setTimeout(()=>{
-          let option = {
-            host: 'pop.xxx.com',
+      it('command', 0, (done: Function) => {
+        setTimeout(() => {
+          let option: Pop3LoginBean = {
+            host: 'pop.qq.com',
             port: 110,
             user: account + mailType,
             password: password,
             timeout: 30000,
-            servername: 'pop.xxx.com',
+            servername: 'pop.qq.com',
             tls: false,
             tlsOptions: undefined
           }
           client = new Pop3Command(option);
           let result = client.command("NOOP")
-          console.log("command count:"+i)
+          console.log("command count:" + i)
           done()
-        },deplayTime)
+        }, deplayTime)
 
       })
     }

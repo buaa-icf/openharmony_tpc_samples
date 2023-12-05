@@ -31,8 +31,8 @@
       ]
     },
     {
-      "name": "NodePop3",
-      "srcPath": "./NodePop3"
+      "name": "library",
+      "srcPath": "./library"
     }
   ]
 }

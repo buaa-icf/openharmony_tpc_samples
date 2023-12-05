@@ -6,6 +6,7 @@ import { listify, stream2String } from '../ets/helper';
 import to, { to } from './await-to-js';
 
 const BASE_COUNT = 1
+
 /**
  * @typedef {number} Integer
  */
@@ -30,33 +31,17 @@ class Pop3Command extends Pop3Connection {
   private password: string = '';
   private _PASSInfo: string = '';
 
-  constructor({
-                user,
-                password,
-                host,
-                port,
-                tls,
-                timeout,
-                tlsOptions,
-                servername
-              }) {
-    super({
-      host,
-      port,
-      tls,
-      timeout,
-      tlsOptions,
-      servername
-    });
-    this.user = user;
-    this.password = password;
+  constructor(bean: Pop3LoginBean) {
+    super(bean);
+    this.user = bean?.user;
+    this.password = bean?.password;
     this._PASSInfo = '';
   }
 
   /**
    * @returns {Promise<string>}
    */
-  async _connect() {
+  async _connect(): Promise<string> {
     if (this._socket) {
       let [stateErr, stateInfo] = await to(this._socket.getState())
       if (!stateErr && stateInfo && stateInfo.isBound && stateInfo.isConnected && !stateInfo.isClose) {
@@ -85,7 +70,7 @@ class Pop3Command extends Pop3Connection {
    * @param {Integer|string} msgNumber
    * @returns {Promise<string[][]|string[]>}
    */
-  async UIDL(msgNumber = '') {
+  async UIDL(msgNumber = ''): Promise<string[][] | string[]> {
     await this._connect();
     const [info, stream] = await super.command('UIDL', msgNumber);
     if (msgNumber) {
@@ -98,7 +83,7 @@ class Pop3Command extends Pop3Connection {
   /**
    * @returns {Promise<void>}
    */
-  async NOOP() {
+  async NOOP(): Promise<void> {
     await this._connect();
     await super.command('NOOP');
   }
@@ -107,7 +92,7 @@ class Pop3Command extends Pop3Connection {
    * @param {Integer|string} msgNumber
    * @returns {Promise<string[][]|string[]>}
    */
-  async LIST(msgNumber = '') {
+  async LIST(msgNumber = ''): Promise<string[][] | string[]> {
     await this._connect();
     const [info, stream] = await super.command('LIST', msgNumber);
     if (msgNumber) {
@@ -120,7 +105,7 @@ class Pop3Command extends Pop3Connection {
   /**
    * @returns {Promise<string>}
    */
-  async RSET() {
+  async RSET(): Promise<string> {
     await this._connect();
     const [info] = await super.command('RSET');
     return info;
@@ -130,7 +115,7 @@ class Pop3Command extends Pop3Connection {
    * @param {Integer} msgNumber
    * @returns {Promise<string>}
    */
-  async RETR(msgNumber) {
+  async RETR(msgNumber): Promise<string> {
     await this._connect();
     const [, stream] = await super.command('RETR', msgNumber);
     return stream2String(stream);
@@ -140,7 +125,7 @@ class Pop3Command extends Pop3Connection {
    * @param {Integer} msgNumber
    * @returns {Promise<string>}
    */
-  async DELE(msgNumber) {
+  async DELE(msgNumber): Promise<string> {
     await this._connect();
     const [info] = await super.command('DELE', msgNumber);
     return info;
@@ -149,7 +134,7 @@ class Pop3Command extends Pop3Connection {
   /**
    * @returns {Promise<string>}
    */
-  async STAT() {
+  async STAT(): Promise<string> {
     await this._connect();
     const [info] = await super.command('STAT');
     return info;
@@ -158,7 +143,7 @@ class Pop3Command extends Pop3Connection {
   /**
    * @returns {Promise<string>}
    */
-  async LAST() {
+  async LAST(): Promise<string> {
     await this._connect();
     const [info] = await super.command('LAST');
     /* c8 ignore next 2 */
@@ -171,7 +156,7 @@ class Pop3Command extends Pop3Connection {
    * @param {Integer} numLines
    * @returns {Promise<string>}
    */
-  async TOP(msgNumber, numLines = 0) {
+  async TOP(msgNumber, numLines = 0): Promise<string> {
     await this._connect();
     const [, stream] = await super.command('TOP', msgNumber, numLines);
     return stream2String(stream);
@@ -180,7 +165,7 @@ class Pop3Command extends Pop3Connection {
   /**
    * @returns {Promise<string>}
    */
-  async QUIT() {
+  async QUIT(): Promise<string> {
     if (!this._socket) {
       this._PASSInfo = 'Bye';
       return this._PASSInfo;

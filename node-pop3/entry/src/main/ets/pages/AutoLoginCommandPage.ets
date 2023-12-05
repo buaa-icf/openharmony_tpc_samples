@@ -15,16 +15,19 @@
 
 import promptAction from '@ohos.promptAction'
 import router from '@ohos.router'
-import Pop3Command from '@ohos/node-pop3'
+import Pop3Command, { Pop3LoginBean } from '@ohos/node-pop3'
 import MsgBean from '../MsgBean'
+import GlobalObj from '../GlobalObj'
+
 const BASE_COUNT = 1
+
 @Entry
 @Component
 struct AutoLoginCommandPage {
   @State message: string = 'Hello World'
   @State listData: Array<string> = []
   @State mailType: string = '@qq.com'
-  @State client: Pop3Command = undefined
+  @State client: Pop3Command | null = null
   @State selectMsgNum: number = -1
   @State isListShow: boolean = false
   @State msgList: Array<MsgBean> = []
@@ -48,9 +51,19 @@ struct AutoLoginCommandPage {
 
   aboutToAppear() {
     let params = router.getParams()
-    if (params && params['loginOption'] && typeof params['loginOption'] === 'object') {
-      let option = params['loginOption'];
-      this.client = new Pop3Command(option);
+    let tempParam = params as Record<string, Object>
+    if (tempParam && tempParam['loginOption'] && typeof tempParam['loginOption'] === 'object') {
+      let option = tempParam['loginOption'] as Pop3LoginBean;
+      this.client = new Pop3Command({
+        user: option?.user,
+        password: option?.password,
+        host: option?.host,
+        port: option?.port,
+        tls: option?.tls,
+        timeout: option?.timeout,
+        tlsOptions: option?.tlsOptions,
+        servername: option?.servername
+      });
     }
   }
 
@@ -122,6 +135,7 @@ struct AutoLoginCommandPage {
               TextInput({ text: this.topLine, placeholder: '输入TOP行数', controller: this.controller })
                 .placeholderColor(Color.Grey)
                 .placeholderFont({ size: 14, weight: 400 })
+                .type(InputType.Number)
                 .caretColor(Color.Blue)
                 .width(600)
                 .height(40)
@@ -247,6 +261,7 @@ struct AutoLoginCommandPage {
     const ctx = this
     ctx.isListShow = false
     ctx.msgList = []
+    ctx.topLine = ''
     ctx.listData = []
     ctx.selectMsgNum = -1;
     try {
@@ -260,7 +275,7 @@ struct AutoLoginCommandPage {
         if (result && result.toString() && result.toString().length > 0) {
           let arr = result.toString().split(' ')
           if (arr && arr.length >= 1) {
-            let totalMailSize = parseInt(arr[0]);
+            let totalMailSize = Number.parseInt(arr[0]);
             if (totalMailSize > 0) {
               ctx.isListShow = true;
               ctx.listData.push(`获取到STAT命令的结果：${'\r\n'}${result}`)
@@ -283,6 +298,7 @@ struct AutoLoginCommandPage {
   async sendLIST() {
     const ctx = this
     ctx.msgList = [];
+    ctx.topLine = ''
     ctx.listData = []
     ctx.selectMsgNum = -1;
     try {
@@ -298,8 +314,8 @@ struct AutoLoginCommandPage {
           if (arr && arr.length >= 2) {
             ctx.isListShow = true;
             for (let i = 0; i < arr.length; i += 2) {
-              let index = parseInt(arr[i]);
-              let size = parseInt(arr[i+1]);
+              let index = Number.parseInt(arr[i]);
+              let size = Number.parseInt(arr[i+1]);
               ctx.listData.push(`列表条目，序号：${index}，大小：${size}`)
               let bean = new MsgBean()
               bean.setIndex(index);
@@ -323,18 +339,19 @@ struct AutoLoginCommandPage {
 
   async sendNOOP() {
     const ctx = this
+    ctx.topLine = ''
     ctx.msgList = []
     ctx.listData = []
     ctx.selectMsgNum = -1;
     try {
       if (ctx.client) {
         let startTime1 = new Date().getTime();
-        let result = await ctx.client.NOOP()
+        await ctx.client.NOOP()
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("NOOP averageTime : " + averageTime1 + "us")
         this.showToast('获取到NOOP命令的结果', 'sendNOOP')
-        ctx.listData.push(`获取到NOOP命令的结果：${'\r\n'}${JSON.stringify(result)}`)
+        ctx.listData.push(`获取到NOOP命令的结果：成功`)
       } else {
         ctx.listData.push(`账号未登录，请需重新登录`)
         this.showToast('账号未登录，请需重新登录', 'sendNOOP')
@@ -354,9 +371,13 @@ struct AutoLoginCommandPage {
         ctx.showToast(`请先选择一个列表项目`, 'sendTOP')
         return
       }
+      if (!ctx.topLine || ctx.topLine.length < 1 || Number.parseInt(ctx.topLine) < 1) {
+        ctx.showToast(`请先输入Top行数`, 'sendTOP')
+        return
+      }
       if (ctx.client) {
         let startTime1 = new Date().getTime();
-        let result = await ctx.client.TOP(ctx.selectMsgNum + '', parseInt(this.topLine))
+        let result = await ctx.client.TOP(ctx.selectMsgNum + '', Number.parseInt(ctx.topLine))
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("TOP averageTime : " + averageTime1 + "us")
@@ -377,6 +398,7 @@ struct AutoLoginCommandPage {
 
   async sendUIDL() {
     const ctx = this
+    ctx.topLine = ''
     ctx.listData = []
     try {
       if (ctx.selectMsgNum === -1) {
@@ -406,6 +428,7 @@ struct AutoLoginCommandPage {
 
   async sendLAST() {
     const ctx = this
+    ctx.topLine = ''
     ctx.msgList = []
     ctx.listData = []
     ctx.selectMsgNum = -1;
@@ -432,6 +455,7 @@ struct AutoLoginCommandPage {
 
   async sendDELE() {
     const ctx = this;
+    ctx.topLine = ''
     ctx.listData = []
     try {
       if (ctx.selectMsgNum === -1) {
@@ -460,6 +484,7 @@ struct AutoLoginCommandPage {
 
   async sendRSET() {
     const ctx = this;
+    ctx.topLine = ''
     ctx.listData = []
     try {
       if (ctx.selectMsgNum === -1) {
@@ -467,9 +492,9 @@ struct AutoLoginCommandPage {
         return
       }
       if (ctx.client) {
- //       let delResult = ctx.client.DELE(ctx.selectMsgNum + '')
- //       ctx.showToast('获取到RSETE命令的结果', 'sendRSET')
- //       ctx.listData.push(`发送DELE命令删除的结果：${'\r\n'}${delResult}`)
+        //       let delResult = ctx.client.DELE(ctx.selectMsgNum + '')
+        //       ctx.showToast('获取到RSETE命令的结果', 'sendRSET')
+        //       ctx.listData.push(`发送DELE命令删除的结果：${'\r\n'}${delResult}`)
         let startTime1 = new Date().getTime();
         let result = await ctx.client.RSET() // 用于撤销DELE命令 所以不需要等DELE命令返回
         let endTime1 = new Date().getTime();
@@ -491,6 +516,7 @@ struct AutoLoginCommandPage {
 
   async sendRETR() {
     const ctx = this;
+    ctx.topLine = ''
     ctx.listData = []
     try {
       if (ctx.selectMsgNum === -1) {
@@ -508,7 +534,7 @@ struct AutoLoginCommandPage {
         if (result.toString().length > 1000) {
           ctx.listData.push(`由于RETR命令的结果太长text无法完全显示，取最后1000字节显示：${'\r\n'}${result.toString()
             .substring(result.toString().length - 1000, result.toString().length)}`)
-        }else {
+        } else {
           ctx.listData.push(`ETR命令的结果显示：${'\r\n'}${result.toString()}`)
         }
 
@@ -526,6 +552,7 @@ struct AutoLoginCommandPage {
 
   async sendQUIT() {
     const ctx = this;
+    ctx.topLine = ''
     ctx.msgList = []
     ctx.listData = []
     ctx.selectMsgNum = -1;
@@ -533,14 +560,14 @@ struct AutoLoginCommandPage {
 
       if (ctx.client) {
         let startTime1 = new Date().getTime();
-        const [quitInfo] = await ctx.client.QUIT();
+        const quitInfo = await ctx.client.QUIT();
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("QUIT averageTime : " + averageTime1 + "us")
 
         ctx.showToast('获取到QUIT命令的结果', 'sendQUIT')
         ctx.listData.push(`获取到QUIT命令的结果：${'\r\n'}${quitInfo}`)
-        globalThis.context.terminateSelf()
+        GlobalObj?.getInstance()?.getContext()?.terminateSelf()
       } else {
         ctx.listData.push(`账号未登录，请需重新登录`)
         ctx.showToast('账号未登录，请需重新登录', 'sendQUIT')
