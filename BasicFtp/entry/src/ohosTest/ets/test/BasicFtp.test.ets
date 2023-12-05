@@ -14,21 +14,226 @@
  */
 
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
-import NoTlsUtil from '../../../../../entry/src/main/ets/utils/FtpApiUtil'
+import FtpApiUtil from '../../../../../entry/src/main/ets/utils/FtpApiUtil'
 import { AccessOptions, FileInfo, FileType, FTPResponse, UnixPermissions } from '@ohos/basic-ftp'
 import fs from '@ohos.file.fs'
 import socket from '@ohos.net.socket';
 import AbilityDelegatorRegistry from '@ohos.app.ability.abilityDelegatorRegistry';
 
+const BASE_COUNT = 1
+
+async function loginServer(option: socket.TLSConnectOptions, secure: boolean, ftpUtil: FtpApiUtil, done: Function) {
+  let loginInfo: AccessOptions | null = null
+  if (secure) {
+    let context = AbilityDelegatorRegistry.getAbilityDelegator().getAppContext()
+    let keyData = await context.resourceManager.getRawFileContent('client_rsa_private.pem.unsecure')
+    let key = '';
+    for (let i = 0; i < keyData.length; i++) {
+      let todo = keyData[i]
+      let item = String.fromCharCode(todo);
+      key += item;
+    }
+    option.secureOptions.key = key;
+
+    let certData = await context.resourceManager.getRawFileContent('client.pem')
+    let cert = '';
+    for (let i = 0; i < certData.length; i++) {
+      let todo = certData[i]
+      let item = String.fromCharCode(todo);
+      cert += item;
+    }
+    option.secureOptions.cert = cert;
+
+
+    let caData = await context.resourceManager.getRawFileContent('ca.pem')
+    let ca = '';
+    for (let i = 0; i < caData.length; i++) {
+      let todo = caData[i]
+      let item = String.fromCharCode(todo);
+      ca += item;
+    }
+    if (option.secureOptions.ca instanceof Array) {
+      option.secureOptions.ca[0] = ca;
+    } else {
+      option.secureOptions.ca = ca;
+    }
+
+    loginInfo = {
+      host: 'xxx',
+      user: 'xxx',
+      password: 'xxx',
+      secure: 'implicit',
+      secureOptions: option
+    }
+  } else {
+    loginInfo = {
+      host: 'xxx',
+      user: 'xxx',
+      password: 'xxx',
+      secure: false,
+      secureOptions: undefined
+    }
+  }
+  if (ftpUtil) {
+    let startTime1: number = 0;
+    ftpUtil.doLogin(loginInfo, {
+      onLoginStart(info) {
+        startTime1 = new Date().getTime();
+      },
+      onLoginSuccess(result) {
+        let endTime1 = new Date().getTime();
+        let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+        console.log("BasicFtpTest : login averageTime : " + averageTime1 + "us")
+        expect(0).assertEqual(0)
+        done()
+      },
+      onLoginErr(err: Error) {
+        let endTime1 = new Date().getTime();
+        let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+        console.log("BasicFtpTest : login averageTime : " + averageTime1 + "us")
+        expect(0).assertEqual(1)
+        done()
+      }
+    })
+  } else {
+    expect(0).assertEqual(1)
+    done()
+  }
+}
+
+function createSingleFile() {
+  try {
+    let tempPath = AbilityDelegatorRegistry.getAbilityDelegator()
+      .getAppContext()
+      .cacheDir + '/' + (new Date().getTime()) + '.txt'
+    let file = fs.openSync(tempPath, fs.OpenMode.CREATE | fs.OpenMode.READ_WRITE)
+    fs.writeSync(file.fd, '客户端发送到服务端的信息')
+    fs.fsyncSync(file.fd)
+    fs.closeSync(file)
+    return tempPath
+  } catch (err) {
+    return null
+  }
+}
+
+function createFileDir() {
+  try {
+    let localDir = AbilityDelegatorRegistry.getAbilityDelegator()
+      .getAppContext()
+      .cacheDir + '/' + (new Date().getTime())
+    let localPath1 = localDir + '/' + 'test1.txt'
+    let localPath2 = localDir + '/' + 'test2.txt'
+    let localPath3 = localDir + '/' + 'test3.txt'
+
+    fs.mkdirSync(localDir)
+    let file = fs.openSync(localPath1, fs.OpenMode.CREATE | fs.OpenMode.READ_WRITE)
+    fs.writeSync(file.fd, "客户端发送到服务端的信息，请查收\r\n")
+    fs.fsyncSync(file.fd)
+    fs.closeSync(file)
+
+    let file1 = fs.openSync(localPath2, fs.OpenMode.CREATE | fs.OpenMode.READ_WRITE)
+    let str1 = '789456123abcd'
+    fs.writeSync(file1.fd, str1)
+    fs.fsyncSync(file1.fd)
+    fs.closeSync(file1)
+
+
+    let file3 = fs.openSync(localPath3, fs.OpenMode.CREATE | fs.OpenMode.READ_WRITE)
+    let str3 = '111111111111111111111111111111111111111111111111111111'
+    fs.writeSync(file3.fd, str3)
+    fs.fsyncSync(file3.fd)
+    fs.closeSync(file3)
+    return localDir
+  } catch (err) {
+    return null;
+  }
+}
+
+function createDownloadToFile() {
+  try {
+    let tempPath = AbilityDelegatorRegistry.getAbilityDelegator()
+      .getAppContext()
+      .cacheDir + '/' + (new Date().getTime()) + '.txt'
+    let file = fs.openSync(tempPath, fs.OpenMode.CREATE | fs.OpenMode.READ_WRITE)
+    fs.writeSync(file.fd, '客户端发送到服务端的信息')
+    fs.fsyncSync(file.fd)
+    fs.closeSync(file)
+    return tempPath
+  } catch (err) {
+    return null
+  }
+}
+
+function createSizeFile() {
+  try {
+    let tempPath = AbilityDelegatorRegistry.getAbilityDelegator()
+      .getAppContext()
+      .cacheDir + '/' + (new Date().getTime()) + '.txt'
+    let file = fs.openSync(tempPath, fs.OpenMode.CREATE | fs.OpenMode.READ_WRITE)
+    fs.writeSync(file.fd, '客户端发送到服务端的信息')
+    fs.fsyncSync(file.fd)
+    fs.closeSync(file)
+    return tempPath
+  } catch (err) {
+    return null
+  }
+}
+
+function createLastModFile() {
+  try {
+    let tempPath = AbilityDelegatorRegistry.getAbilityDelegator()
+      .getAppContext()
+      .cacheDir + '/' + (new Date().getTime()) + '.txt'
+    let file = fs.openSync(tempPath, fs.OpenMode.CREATE | fs.OpenMode.READ_WRITE)
+    fs.writeSync(file.fd, '客户端发送到服务端的信息')
+    fs.fsyncSync(file.fd)
+    fs.closeSync(file)
+    return tempPath
+  } catch (err) {
+    return null
+  }
+}
+
+function createRenameFile() {
+  try {
+    let tempPath = AbilityDelegatorRegistry.getAbilityDelegator()
+      .getAppContext()
+      .cacheDir + '/' + (new Date().getTime()) + '.txt'
+    let file = fs.openSync(tempPath, fs.OpenMode.CREATE | fs.OpenMode.READ_WRITE)
+    fs.writeSync(file.fd, '客户端发送到服务端的信息')
+    fs.fsyncSync(file.fd)
+    fs.closeSync(file)
+    return tempPath
+  } catch (err) {
+    return null
+  }
+}
+
+function createDeleteSingleFile() {
+  try {
+    let tempPath = AbilityDelegatorRegistry.getAbilityDelegator()
+      .getAppContext()
+      .cacheDir + '/' + (new Date().getTime()) + '.txt'
+
+    let file = fs.openSync(tempPath, fs.OpenMode.CREATE | fs.OpenMode.READ_WRITE)
+    fs.writeSync(file.fd, "客户端发送到服务端的信息，请查收\r\n")
+    fs.fsyncSync(file.fd)
+    fs.closeSync(file)
+    return tempPath
+  } catch (err) {
+    return null
+  }
+}
+
 export default function BasicFtpTest() {
 
-  let ftpUtil;
+  let ftpUtil: FtpApiUtil;
   let secure = false;
-  const BASE_COUNT = 1
-  let option = {
+
+  let option: socket.TLSConnectOptions = {
     ALPNProtocols: ["spdy/1", "http/1.1"],
     address: {
-      address: 'xxxxxx',
+      address: 'xxx',
       port: 21,
       family: 1
     },
@@ -36,7 +241,7 @@ export default function BasicFtpTest() {
       key: '',
       cert: '',
       ca: [''],
-      password: 'xxxxxx',
+      password: 'xxx',
       protocols: [socket.Protocol.TLSv12, socket.Protocol.TLSv13],
       useRemoteCipherPrefer: true,
       signatureAlgorithms: "rsa_pss_rsae_sha256:ECDSA+SHA256",
@@ -45,215 +250,16 @@ export default function BasicFtpTest() {
   }
 
 
-  async function loginServer(done) {
-    var loginInfo: AccessOptions = null
-    if (secure) {
-      let context = AbilityDelegatorRegistry.getAbilityDelegator().getAppContext()
-      let keyData = await context.resourceManager.getRawFileContent('client_rsa_private.pem.unsecure')
-      let key = '';
-      for (let i = 0; i < keyData.length; i++) {
-        let todo = keyData[i]
-        let item = String.fromCharCode(todo);
-        key += item;
-      }
-      option.secureOptions.key = key;
-
-      let certData = await context.resourceManager.getRawFileContent('client.pem')
-      let cert = '';
-      for (let i = 0; i < certData.length; i++) {
-        let todo = certData[i]
-        let item = String.fromCharCode(todo);
-        cert += item;
-      }
-      option.secureOptions.cert = cert;
-
-
-      let caData = await context.resourceManager.getRawFileContent('ca.pem')
-      let ca = '';
-      for (let i = 0; i < caData.length; i++) {
-        let todo = caData[i]
-        let item = String.fromCharCode(todo);
-        ca += item;
-      }
-      option.secureOptions.ca[0] = ca;
-
-      loginInfo = {
-        host: 'xxxxxx',
-        user: 'xxxxxx',
-        password: 'xxxxxx',
-        secure: 'implicit',
-        secureOptions: option
-      }
-    } else {
-      loginInfo = {
-        host: 'xxxxxx',
-        user: 'xxxxxx',
-        password: 'xxxxxx',
-        secure: false,
-        secureOptions: undefined
-      }
-    }
-    if (ftpUtil) {
-      let startTime1;
-      ftpUtil.doLogin(loginInfo, {
-        onLoginStart(info) {
-          startTime1 = new Date().getTime();
-        },
-        onLoginSuccess(result) {
-          let endTime1 = new Date().getTime();
-          let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
-          console.log("BasicFtpTest : login averageTime : " + averageTime1 + "us")
-          expect(0).assertEqual(0)
-          done()
-        },
-        onLoginErr(err: Error) {
-          let endTime1 = new Date().getTime();
-          let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
-          console.log("BasicFtpTest : login averageTime : " + averageTime1 + "us")
-          expect(0).assertEqual(1)
-          done()
-        }
-      })
-    } else {
-      expect(0).assertEqual(1)
-      done()
-    }
-  }
-
-  function createSingleFile() {
-    try {
-      let tempPath = AbilityDelegatorRegistry.getAbilityDelegator()
-        .getAppContext()
-        .cacheDir + '/' + (new Date().getTime()) + '.txt'
-      let file = fs.openSync(tempPath, fs.OpenMode.CREATE | fs.OpenMode.READ_WRITE)
-      fs.writeSync(file.fd, '客户端发送到服务端的信息')
-      fs.fsyncSync(file.fd)
-      fs.closeSync(file)
-      return tempPath
-    } catch (err) {
-      return null
-    }
-  }
-
-  function createFileDir() {
-    try {
-      let localDir = AbilityDelegatorRegistry.getAbilityDelegator()
-        .getAppContext()
-        .cacheDir + '/' + (new Date().getTime())
-      let localPath1 = localDir + '/' + 'test1.txt'
-      let localPath2 = localDir + '/' + 'test2.txt'
-      let localPath3 = localDir + '/' + 'test3.txt'
-
-      fs.mkdirSync(localDir)
-      let file = fs.openSync(localPath1, fs.OpenMode.CREATE | fs.OpenMode.READ_WRITE)
-      fs.writeSync(file.fd, "客户端发送到服务端的信息，请查收\r\n")
-      fs.fsyncSync(file.fd)
-      fs.closeSync(file)
-
-      let file1 = fs.openSync(localPath2, fs.OpenMode.CREATE | fs.OpenMode.READ_WRITE)
-      let str1 = '789456123abcd'
-      fs.writeSync(file1.fd, str1)
-      fs.fsyncSync(file1.fd)
-      fs.closeSync(file1)
-
-
-      let file3 = fs.openSync(localPath3, fs.OpenMode.CREATE | fs.OpenMode.READ_WRITE)
-      let str3 = '111111111111111111111111111111111111111111111111111111'
-      fs.writeSync(file3.fd, str3)
-      fs.fsyncSync(file3.fd)
-      fs.closeSync(file3)
-      return localDir
-    } catch (err) {
-      return null;
-    }
-  }
-
-  function createDownloadToFile() {
-    try {
-      let tempPath = AbilityDelegatorRegistry.getAbilityDelegator()
-        .getAppContext()
-        .cacheDir + '/' + (new Date().getTime()) + '.txt'
-      let file = fs.openSync(tempPath, fs.OpenMode.CREATE | fs.OpenMode.READ_WRITE)
-      fs.writeSync(file.fd, '客户端发送到服务端的信息')
-      fs.fsyncSync(file.fd)
-      fs.closeSync(file)
-      return tempPath
-    } catch (err) {
-      return null
-    }
-  }
-
-  function createSizeFile() {
-    try {
-      let tempPath = AbilityDelegatorRegistry.getAbilityDelegator()
-        .getAppContext()
-        .cacheDir + '/' + (new Date().getTime()) + '.txt'
-      let file = fs.openSync(tempPath, fs.OpenMode.CREATE | fs.OpenMode.READ_WRITE)
-      fs.writeSync(file.fd, '客户端发送到服务端的信息')
-      fs.fsyncSync(file.fd)
-      fs.closeSync(file)
-      return tempPath
-    } catch (err) {
-      return null
-    }
-  }
-
-  function createLastModFile() {
-    try {
-      let tempPath = AbilityDelegatorRegistry.getAbilityDelegator()
-        .getAppContext()
-        .cacheDir + '/' + (new Date().getTime()) + '.txt'
-      let file = fs.openSync(tempPath, fs.OpenMode.CREATE | fs.OpenMode.READ_WRITE)
-      fs.writeSync(file.fd, '客户端发送到服务端的信息')
-      fs.fsyncSync(file.fd)
-      fs.closeSync(file)
-      return tempPath
-    } catch (err) {
-      return null
-    }
-  }
-
-  function createRenameFile() {
-    try {
-      let tempPath = AbilityDelegatorRegistry.getAbilityDelegator()
-        .getAppContext()
-        .cacheDir + '/' + (new Date().getTime()) + '.txt'
-      let file = fs.openSync(tempPath, fs.OpenMode.CREATE | fs.OpenMode.READ_WRITE)
-      fs.writeSync(file.fd, '客户端发送到服务端的信息')
-      fs.fsyncSync(file.fd)
-      fs.closeSync(file)
-      return tempPath
-    } catch (err) {
-      return null
-    }
-  }
-
-  function createDeleteSingleFile() {
-    try {
-      let tempPath = AbilityDelegatorRegistry.getAbilityDelegator()
-        .getAppContext()
-        .cacheDir + '/' + (new Date().getTime()) + '.txt'
-
-      let file = fs.openSync(tempPath, fs.OpenMode.CREATE | fs.OpenMode.READ_WRITE)
-      fs.writeSync(file.fd, "客户端发送到服务端的信息，请查收\r\n")
-      fs.fsyncSync(file.fd)
-      fs.closeSync(file)
-      return tempPath
-    } catch (err) {
-      return null
-    }
-  }
-
-  describe('BasicFtpTest', function () {
-    beforeAll(function (done) {
+  describe('BasicFtpTest', () => {
+    beforeAll((done: Function) => {
       if (!ftpUtil || !ftpUtil.getLogin()) {
         let context = AbilityDelegatorRegistry.getAbilityDelegator().getAppContext()
-        ftpUtil = new NoTlsUtil(context)
+        ftpUtil = new FtpApiUtil(context)
         ftpUtil.setTag();
-        loginServer(done)
+        loginServer(option, secure, ftpUtil, done)
       }
     })
-    beforeEach(function (done) {
+    beforeEach((done: Function) => {
       if (ftpUtil) {
         if (!ftpUtil.getLogin()) {
           expect(0).assertEqual(1)
@@ -278,14 +284,14 @@ export default function BasicFtpTest() {
     })
 
 
-    it('list_root_1', 0, function (done) {
+    it('list_root_1', 0, (done: Function) => {
       if (ftpUtil) {
         if (!ftpUtil.getLogin()) {
           expect(0).assertEqual(0)
           done()
           return;
         }
-        let startTime1;
+        let startTime1: number = 0;
         ftpUtil.getList('', {
           getListErr(err: Error) {
             let endTime1 = new Date().getTime();
@@ -310,8 +316,8 @@ export default function BasicFtpTest() {
         done()
       }
     })
-    
-    it('uploadFrom', 0, function (done) {
+
+    it('uploadFrom', 0, (done: Function) => {
       if (ftpUtil) {
         if (!ftpUtil.getLogin()) {
           expect(0).assertEqual(1)
@@ -321,7 +327,7 @@ export default function BasicFtpTest() {
         ftpUtil.getFileSize('uploadText.txt', {
           getSizeErr(err: Error) {
             let tempPath = createSingleFile();
-            let startTime1;
+            let startTime1: number = 0;
             ftpUtil.uploadSingleFile(tempPath, 'uploadText.txt', {
               uploadErr(err: Error) {
                 expect(0).assertEqual(1)
@@ -354,7 +360,7 @@ export default function BasicFtpTest() {
               },
               deleteFileSuccess(msg: FTPResponse) {
                 let tempPath = createSingleFile();
-                let startTime1;
+                let startTime1: number = 0;
                 ftpUtil.uploadSingleFile(tempPath, 'uploadText.txt', {
                   uploadErr(err: Error) {
                     expect(0).assertEqual(1)
@@ -381,7 +387,7 @@ export default function BasicFtpTest() {
       }
     })
 
-    it('uploadFromDir', 0, function (done) {
+    it('uploadFromDir', 0, (done: Function) => {
       if (ftpUtil) {
         if (!ftpUtil.getLogin()) {
           expect(0).assertEqual(1)
@@ -415,7 +421,7 @@ export default function BasicFtpTest() {
                   },
                   deleteAllSuccess(result) {
                     let localDir = createFileDir()
-                    let startTime1;
+                    let startTime1: number = 0;
                     ftpUtil.uploadDir(localDir, 'uploadDir', {
                       uploadDirErr(err: Error) {
                         expect(0).assertEqual(1)
@@ -445,7 +451,7 @@ export default function BasicFtpTest() {
       }
     })
 
-    it('downloadTo', 0, function (done) {
+    it('downloadTo', 0, (done: Function) => {
       if (ftpUtil) {
         if (!ftpUtil.getLogin()) {
           expect(0).assertEqual(1)
@@ -468,7 +474,7 @@ export default function BasicFtpTest() {
               },
               uploadSuccess(msg: FTPResponse) {
                 fs.unlinkSync(tempPath)
-                let startTime1;
+                let startTime1: number = 0;
                 ftpUtil.downloadSingleFile(localPath, "downloadTo.txt", {
                   downloadErr(err: Error) {
                     expect(0).assertEqual(1)
@@ -496,7 +502,7 @@ export default function BasicFtpTest() {
           getSizeStart(info) {
           },
           getSizeSuccess(result: number) {
-            let startTime1;
+            let startTime1: number = 0;
             ftpUtil.downloadSingleFile(localPath, "downloadTo.txt", {
               downloadErr(err: Error) {
                 expect(0).assertEqual(1)
@@ -525,7 +531,7 @@ export default function BasicFtpTest() {
       }
     })
 
-    it('downloadDir', 0, function (done) {
+    it('downloadDir', 0, (done: Function) => {
       if (ftpUtil) {
         if (!ftpUtil.getLogin()) {
           expect(0).assertEqual(1)
@@ -552,7 +558,7 @@ export default function BasicFtpTest() {
 
               },
               cdToParentDirectorySuccess(res: FTPResponse) {
-                let startTime1;
+                let startTime1: number = 0;
                 ftpUtil.downloadDir(localDir, "downloadDir", {
                   downloadDirErr(err: Error) {
                     expect(0).assertEqual(1)
@@ -583,7 +589,7 @@ export default function BasicFtpTest() {
       }
     })
 
-    it('size', 0, function (done) {
+    it('size', 0, (done: Function) => {
       if (ftpUtil) {
         if (!ftpUtil.getLogin()) {
           expect(0).assertEqual(1)
@@ -601,7 +607,7 @@ export default function BasicFtpTest() {
           },
           uploadSuccess(msg: FTPResponse) {
             fs.unlinkSync(tempPath)
-            let startTime1;
+            let startTime1: number = 0;
             ftpUtil.getFileSize(sizePath, {
               getSizeErr(err: Error) {
                 expect(0).assertEqual(1)
@@ -627,14 +633,14 @@ export default function BasicFtpTest() {
         done()
       }
     })
-    it('features', 0, function (done) {
+    it('features', 0, (done: Function) => {
       if (ftpUtil) {
         if (!ftpUtil.getLogin()) {
           expect(0).assertEqual(1)
           done()
           return
         }
-        let startTime1;
+        let startTime1: number = 0;
         ftpUtil.getServerFeatures({
           featuresErr(err: Error) {
             expect(0).assertEqual(1)
@@ -656,7 +662,7 @@ export default function BasicFtpTest() {
         done()
       }
     })
-    it('lastMod', 0, function (done) {
+    it('lastMod', 0, (done: Function) => {
       if (ftpUtil) {
         if (!ftpUtil.getLogin()) {
           expect(0).assertEqual(1)
@@ -674,7 +680,7 @@ export default function BasicFtpTest() {
           },
           uploadSuccess(msg: FTPResponse) {
             fs.unlinkSync(tempPath)
-            let startTime1;
+            let startTime1: number = 0;
             ftpUtil.getLastModify(lastModPath, {
               lastModifyErr(err: Error) {
                 expect(0).assertEqual(1)
@@ -703,7 +709,7 @@ export default function BasicFtpTest() {
       }
     })
 
-    it('rename', 0, function (done) {
+    it('rename', 0, (done: Function) => {
       if (ftpUtil) {
         if (!ftpUtil.getLogin()) {
           expect(0).assertEqual(1)
@@ -713,7 +719,7 @@ export default function BasicFtpTest() {
         ftpUtil.getFileSize('rename.txt', {
           getSizeErr(err: Error) {
             let tempPath = createRenameFile();
-            let startTime1;
+            let startTime1: number = 0;
             ftpUtil.uploadSingleFile(tempPath, 'rename.txt', {
               uploadErr(err: Error) {
                 expect(0).assertEqual(1)
@@ -723,7 +729,7 @@ export default function BasicFtpTest() {
               },
               uploadSuccess(msg: FTPResponse) {
                 fs.unlinkSync(tempPath)
-                let startTime1;
+                let startTime1: number = 0;
                 ftpUtil.renameFile('newName.txt', 'rename.txt', {
                   renameFileErr(err: Error) {
                     expect(0).assertEqual(1)
@@ -757,7 +763,7 @@ export default function BasicFtpTest() {
           getSizeStart(info) {
           },
           getSizeSuccess(result: number) {
-            let startTime1;
+            let startTime1: number = 0;
             ftpUtil.renameFile('newName.txt', 'rename.txt', {
               renameFileErr(err: Error) {
                 expect(0).assertEqual(1)
@@ -790,14 +796,14 @@ export default function BasicFtpTest() {
     })
 
 
-    it('cdup', 0, function (done) {
+    it('cdup', 0, (done: Function) => {
       if (ftpUtil) {
         if (!ftpUtil.getLogin()) {
           expect(0).assertEqual(1)
           done()
           return
         }
-        let startTime1;
+        let startTime1: number = 0;
         ftpUtil.cdToParentDirectory({
           cdToParentDirectoryErr(err: Error) {
             expect(0).assertEqual(1)
@@ -821,14 +827,14 @@ export default function BasicFtpTest() {
     })
 
 
-    it('ensureDir', 0, function (done) {
+    it('ensureDir', 0, (done: Function) => {
       if (ftpUtil) {
         if (!ftpUtil.getLogin()) {
           expect(0).assertEqual(1)
           done()
           return
         }
-        let startTime1;
+        let startTime1: number = 0;
         ftpUtil.ensureRemotePath("clientCreateOnServer", {
           ensureRemotePathErr(err: Error) {
             expect(0).assertEqual(1)
@@ -851,7 +857,7 @@ export default function BasicFtpTest() {
       }
     })
 
-    it('removeEmptyDir', 0, function (done) {
+    it('removeEmptyDir', 0, (done: Function) => {
       if (ftpUtil) {
         if (!ftpUtil.getLogin()) {
           return
@@ -873,7 +879,7 @@ export default function BasicFtpTest() {
 
               },
               cdToParentDirectorySuccess(res: FTPResponse) {
-                let startTime1;
+                let startTime1: number = 0;
                 ftpUtil.deleteEmptyDirectory("emptyDir", {
                   deleteEmptyDirectoryErr(err: Error) {
                     expect(0).assertEqual(1)
@@ -898,7 +904,7 @@ export default function BasicFtpTest() {
     })
 
 
-    it('remove', 0, function (done) {
+    it('remove', 0, (done: Function) => {
       if (ftpUtil) {
         if (!ftpUtil.getLogin()) {
           expect(0).assertEqual(1)
@@ -916,7 +922,7 @@ export default function BasicFtpTest() {
               uploadStart(info: string) {
               },
               uploadSuccess(msg: FTPResponse) {
-                let startTime1;
+                let startTime1: number = 0;
                 ftpUtil.deleteFile("singleDelete.txt", {
                   deleteFileErr(err: Error) {
                     expect(0).assertEqual(1)
@@ -942,7 +948,7 @@ export default function BasicFtpTest() {
 
           },
           getSizeSuccess(size: number) {
-            let startTime1;
+            let startTime1: number = 0;
             ftpUtil.deleteFile("singleDelete.txt", {
               deleteFileErr(err: Error) {
                 expect(0).assertEqual(1)
@@ -967,7 +973,7 @@ export default function BasicFtpTest() {
       }
     })
 
-    it('removeDir', 0, function (done) {
+    it('removeDir', 0, (done: Function) => {
       if (ftpUtil) {
         if (!ftpUtil.getLogin()) {
           expect(0).assertEqual(1)
@@ -991,7 +997,7 @@ export default function BasicFtpTest() {
 
               },
               cdToParentDirectorySuccess(res: FTPResponse) {
-                let startTime1;
+                let startTime1: number = 0;
                 ftpUtil.deleteAll("deleteAll", {
                   deleteAllErr(err: Error) {
                     expect(0).assertEqual(1)
@@ -1016,7 +1022,7 @@ export default function BasicFtpTest() {
 
       }
     })
-    it('clearWorkingDir', 0, function (done) {
+    it('clearWorkingDir', 0, (done: Function) => {
       if (ftpUtil) {
         if (!ftpUtil.getLogin()) {
           expect(0).assertEqual(1)
@@ -1048,7 +1054,7 @@ export default function BasicFtpTest() {
                   setWorkingDirectoryStart(info) {
                   },
                   setWorkingDirectorySuccess(result: FTPResponse) {
-                    let startTime1;
+                    let startTime1: number = 0;
                     ftpUtil.deleteAllButSelf({
                       deleteAllButSelfErr(err: Error) {
                         expect(0).assertEqual(1)
@@ -1077,7 +1083,7 @@ export default function BasicFtpTest() {
       }
     })
 
-    it('cd', 0, function (done) {
+    it('cd', 0, (done: Function) => {
       if (ftpUtil) {
         if (!ftpUtil.getLogin()) {
           return
@@ -1099,7 +1105,7 @@ export default function BasicFtpTest() {
 
               },
               cdToParentDirectorySuccess(res: FTPResponse) {
-                let startTime1;
+                let startTime1: number = 0;
                 ftpUtil.setWorkingDirectory("workingDir", {
                   setWorkingDirectoryErr(err: Error) {
                     expect(0).assertEqual(1)

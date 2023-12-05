@@ -19,6 +19,8 @@ OpenHarmony ohpm
 
 ## 使用说明
 
+注意：全局搜索项目中的‘xxx’，需要替换修改为真实的邮箱，账号密码,服务器地址。 如需测试ftps加密传输，需要提前准备好自签名证书放置于src/main/resources/rawfile文件夹下，同时替换SamplePage.ets文件的loginServer方法的证书名称。
+
 ```
 import { AccessOptions, FileInfo, FileType, FTPResponse, UnixPermissions } from '@ohos/basic-ftp'
 import buffer from '@ohos.buffer'
@@ -55,7 +57,7 @@ import NoTlsUtil from '../utils/FtpApiUtil'
         host: 'x.x.x.x',
         user: 'xxxxx',
         port: 'xx',
-        password: 'xxxxxx',
+        password: 'xxx',
         secure: 'implicit',
         secureOptions: option
       }
@@ -65,7 +67,7 @@ import NoTlsUtil from '../utils/FtpApiUtil'
         host: 'x.x.x.x',
         user: 'xxxxx',
         port: 'xx',
-        password: 'xxxxxx',
+        password: 'xxx',
         secure: false,
         secureOptions: undefined
       }

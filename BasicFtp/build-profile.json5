@@ -31,8 +31,8 @@
       ]
     },
     {
-      "name": "BasicFtp",
-      "srcPath": "./BasicFtp"
+      "name": "library",
+      "srcPath": "./library"
     }
   ]
 }

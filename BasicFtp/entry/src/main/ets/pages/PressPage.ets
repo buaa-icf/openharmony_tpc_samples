@@ -15,12 +15,13 @@
 import { AccessOptions, Client, FileInfo, FTPResponse, join, to } from '@ohos/basic-ftp'
 import fs from '@ohos.file.fs'
 import socket from '@ohos.net.socket';
+import GlobalObj from '../GlobalObj'
 
 @Entry
 @Component
 struct PressPage {
   @State message: string = 'Hello World'
-  private client: Client;
+  private client: Client | null = null;
   private secure: boolean = false;
   private option: socket.TLSConnectOptions = {
     ALPNProtocols: ["spdy/1", "http/1.1"],
@@ -42,7 +43,7 @@ struct PressPage {
   }
 
   aboutToAppear() {
-    this.client = new Client(globalThis.context ? globalThis.context : getContext(this), 60000)
+    this.client = new Client(GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext(this), 60000)
   }
 
   build() {
@@ -228,7 +229,7 @@ struct PressPage {
   login() {
     const ctx = this
     try {
-      var loginInfo: AccessOptions = null
+      let loginInfo: AccessOptions | null = null
       if (ctx.secure) {
         loginInfo = {
           host: '',
@@ -255,7 +256,7 @@ struct PressPage {
       console.log("BasicFtpTest : sendIgnoringError 接口已调用 : ")
       console.log("BasicFtpTest : login 接口已调用 : ")
       console.log("BasicFtpTest : closed 接口已调用 : ")
-      this.client.access(loginInfo)
+      this.client?.access(loginInfo)
     } catch (err) {
 
     }
@@ -264,7 +265,7 @@ struct PressPage {
   cdup() {
     try {
       console.log("BasicFtpTest : cdup 接口已调用 : ")
-      this.client.cdup()
+      this.client?.cdup()
     } catch (err) {
 
     }
@@ -273,7 +274,7 @@ struct PressPage {
   cd() {
     try {
       console.log("BasicFtpTest : cd 接口已调用 : ")
-      this.client.cd('appTest')
+      this.client?.cd('appTest')
     } catch (err) {
 
     }
@@ -281,10 +282,10 @@ struct PressPage {
 
   appendFrom() {
     try {
-      let tempPath = globalThis.context.cacheDir + '/' + (new Date().getTime()) + '.txt'
+      let tempPath = GlobalObj?.getInstance()?.getContext()?.cacheDir + '/' + (new Date().getTime()) + '.txt'
       fs.open(tempPath, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE)
       console.log("BasicFtpTest : uploadFrom 接口已调用 : ")
-      this.client.uploadFrom(tempPath, 'appendFrom.txt')
+      this.client?.uploadFrom(tempPath, 'appendFrom.txt')
     } catch (err) {
 
     }
@@ -292,10 +293,10 @@ struct PressPage {
 
   downloadTo() {
     try {
-      let tempPath = globalThis.context.cacheDir + '/' + (new Date().getTime()) + '.txt'
+      let tempPath = GlobalObj?.getInstance()?.getContext()?.cacheDir + '/' + (new Date().getTime()) + '.txt'
       fs.open(tempPath, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE)
       console.log("BasicFtpTest : downloadTo 接口已调用 : ")
-      this.client.downloadTo(tempPath, 'download.txt')
+      this.client?.downloadTo(tempPath, 'download.txt')
     } catch (err) {
 
     }
@@ -304,7 +305,7 @@ struct PressPage {
   list() {
     try {
       console.log("BasicFtpTest : list 接口已调用 : ")
-      this.client.list('')
+      this.client?.list('')
     } catch (err) {
 
     }
@@ -312,20 +313,20 @@ struct PressPage {
 
   uploadFromDir() {
     try {
-      let tempPath = globalThis.context.cacheDir + '/' + (new Date().getTime())
+      let tempPath = GlobalObj?.getInstance()?.getContext()?.cacheDir + '/' + (new Date().getTime())
       fs.mkdir(tempPath)
       console.log("BasicFtpTest : uploadFromDir 接口已调用 : ")
-      this.client.uploadFromDir(tempPath, 'remoteDir')
+      this.client?.uploadFromDir(tempPath, 'remoteDir')
     } catch (err) {
     }
   }
 
   downloadDir() {
     try {
-      let tempPath = globalThis.context.cacheDir + '/' + (new Date().getTime())
+      let tempPath = GlobalObj?.getInstance()?.getContext()?.cacheDir + '/' + (new Date().getTime())
       fs.mkdir(tempPath)
       console.log("BasicFtpTest : downloadToDir 接口已调用 : ")
-      this.client.downloadToDir(tempPath, 'remoteDir')
+      this.client?.downloadToDir(tempPath, 'remoteDir')
     } catch (err) {
     }
   }
@@ -333,7 +334,7 @@ struct PressPage {
   sizeApi() {
     try {
       console.log("BasicFtpTest : size 接口已调用 : ")
-      this.client.size('test.txt')
+      this.client?.size('test.txt')
     } catch (err) {
     }
   }
@@ -341,7 +342,7 @@ struct PressPage {
   features() {
     try {
       console.log("BasicFtpTest : features 接口已调用 : ")
-      this.client.features()
+      this.client?.features()
     } catch (err) {
     }
   }
@@ -349,7 +350,7 @@ struct PressPage {
   lastMod() {
     try {
       console.log("BasicFtpTest : lastMod 接口已调用 : ")
-      this.client.lastMod('test.txt')
+      this.client?.lastMod('test.txt')
     } catch (err) {
     }
   }
@@ -357,7 +358,7 @@ struct PressPage {
   rename() {
     try {
       console.log("BasicFtpTest : rename 接口已调用 : ")
-      this.client.rename('test.txt', 'rename.txt')
+      this.client?.rename('test.txt', 'rename.txt')
     } catch (err) {
     }
   }
@@ -365,7 +366,7 @@ struct PressPage {
   ensureDir() {
     try {
       console.log("BasicFtpTest : ensureDir 接口已调用 : ")
-      this.client.ensureDir('clientToServer')
+      this.client?.ensureDir('clientToServer')
     } catch (err) {
     }
   }
@@ -373,7 +374,7 @@ struct PressPage {
   removeEmptyDir() {
     try {
       console.log("BasicFtpTest : removeEmptyDir 接口已调用 : ")
-      this.client.removeEmptyDir('remotePath')
+      this.client?.removeEmptyDir('remotePath')
     } catch (err) {
     }
   }
@@ -381,7 +382,7 @@ struct PressPage {
   remove() {
     try {
       console.log("BasicFtpTest : remove 接口已调用 : ")
-      this.client.remove('test.txt')
+      this.client?.remove('test.txt')
     } catch (err) {
     }
   }
@@ -389,7 +390,7 @@ struct PressPage {
   removeDir() {
     try {
       console.log("BasicFtpTest : removeDir 接口已调用 : ")
-      this.client.removeDir('remotePath')
+      this.client?.removeDir('remotePath')
     } catch (err) {
     }
   }
@@ -397,7 +398,7 @@ struct PressPage {
   clearWorkingDir() {
     try {
       console.log("BasicFtpTest : clearWorkingDir 接口已调用 : ")
-      this.client.clearWorkingDir()
+      this.client?.clearWorkingDir()
     } catch (err) {
     }
   }
@@ -405,7 +406,7 @@ struct PressPage {
   close() {
     try {
       console.log("BasicFtpTest : close 接口已调用 : ")
-      this.client.close();
+      this.client?.close();
     } catch (err) {
     }
   }
