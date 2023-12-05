@@ -16,7 +16,7 @@
 import promptAction from '@ohos.promptAction'
 import router from '@ohos.router'
 import fs from '@ohos.file.fs';
-
+import GlobalObj from '../GlobalObj'
 @Entry
 @Component
 struct CommandPage {
@@ -32,9 +32,7 @@ struct CommandPage {
   @State inputValue: string = 'click me'
 
   async aboutToDisappear() {
-    if (globalThis.client) {
-      await globalThis.client.QUIT()
-    }
+    await GlobalObj?.getInstance()?.getClient()?.QUIT()
   }
 
   showToast(text: string, name = '测试') {
@@ -48,8 +46,9 @@ struct CommandPage {
 
   aboutToAppear() {
     let params = router.getParams()
-    if (params && params['sendCount'] && typeof params['sendCount'] === 'string') {
-      this.from = params['sendCount'];
+    let testParam = params as Record<string,Object>
+    if (testParam && testParam['sendCount'] && typeof testParam['sendCount'] === 'string') {
+      this.from = testParam['sendCount'];
     }
   }
 
@@ -197,7 +196,7 @@ struct CommandPage {
 
   async sendMail() {
     try {
-      if (globalThis.client) {
+      if (GlobalObj?.getInstance()?.getClient()) {
 
       } else {
         this.showToast('账号未登录，请需重新登录', 'sendmail-smtp')

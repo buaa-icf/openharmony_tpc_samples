@@ -27,24 +27,17 @@ class Pop3Connection extends EventEmitter {
   private servername: string = '';
   private _stream: any = undefined;
 
-  constructor({
-                host,
-                port,
-                tls,
-                timeout,
-                tlsOptions,
-                servername
-              }) {
+  constructor(bean:Pop3LoginBean) {
     super();
-    this.host = host;
-    this.port = port || (tls ? 995 : 110);
-    this.tls = tls;
-    this.timeout = timeout;
+    this.host = bean?.host;
+    this.port = bean?.port || (bean?.tls ? 995 : 110);
+    this.tls = bean?.tls;
+    this.timeout = bean?.timeout;
     this._socket = null;
     this._stream = null;
     this._command = '';
-    this.tlsOptions = tlsOptions || {};
-    this.servername = servername || host;
+    this.tlsOptions = bean?.tlsOptions || {};
+    this.servername = bean?.servername || bean?.host;
   }
 
   /**
@@ -94,7 +87,7 @@ class Pop3Connection extends EventEmitter {
   /**
    * @returns {Promise<void>}
    */
-  connect() {
+  connect():Promise<void> {
     return new Promise(async (resolve, reject) => {
       const {host, port, tlsOptions, servername} = this;
       if (!tlsOptions) {
@@ -269,7 +262,7 @@ class Pop3Connection extends EventEmitter {
    * @throws {Error}
    * @returns {Promise<[string, Readable]>}
    */
-  async command(...args) {
+  async command(...args):Promise<[string, Readable]> {
     let startTime1 = new Date().getTime();
     this._command = args.join(' ');
     if (!this._socket) {
@@ -277,11 +270,10 @@ class Pop3Connection extends EventEmitter {
     }
     await new Promise((resolve, reject) => {
       if (!this._stream) {
-        resolve(null);
-        return;
+        return resolve(null,null);
       }
       this.once('error', (err) => {
-        reject(err);
+        return reject(err);
       });
       this.once('end', (err) => {
         return err ? reject(err) : resolve(null);
@@ -296,7 +288,7 @@ class Pop3Connection extends EventEmitter {
       this.once('error', rejectFn);
       this.once('response', (info, stream) => {
         this.removeListener('error', rejectFn);
-        resolve([info, stream]);
+        return resolve([info, stream]);
       });
       if (!this._socket) {
         reject(new Pop3Error('no-socket'));

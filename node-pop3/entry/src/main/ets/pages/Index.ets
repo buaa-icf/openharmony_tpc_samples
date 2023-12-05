@@ -16,15 +16,18 @@
 import promptAction from '@ohos.promptAction'
 import router from '@ohos.router'
 import socket from '@ohos.net.socket'
-import Pop3Command from '@ohos/node-pop3'
+import Pop3Command, { Pop3LoginBean } from '@ohos/node-pop3'
+import GlobalObj from '../GlobalObj'
 
 @CustomDialog
 struct CustomDialogDiy {
   @Link textValue: string
   @Link inputValue: string
   controller: CustomDialogController
-  cancel: () => void;
-  confirm: () => void;
+  cancel: Function = () => {
+  };
+  confirm: Function = () => {
+  };
 
   build() {
     Column() {
@@ -59,13 +62,13 @@ struct CustomDialogDiy {
 @Component
 struct Index {
   @State message: string = 'Hello World'
-  @State account: string = 'xxxxx'
-  @State password: string = 'xxxxx'
+  @State account: string = 'xxx'
+  @State password: string = 'xxx'
   @State mailType: string = '@qq.com'
   @State textValue: string = ''
   @State inputValue: string = 'click me'
   @State secure: boolean = false
-  dialogController: CustomDialogController = new CustomDialogController({
+  dialogController: CustomDialogController | null = new CustomDialogController({
     builder: CustomDialogDiy({
       cancel: () => {
         this.showToast(`关闭了对话框，取消选输入其他类型邮箱`, 'mailType-cancel')
@@ -82,11 +85,8 @@ struct Index {
   })
 
   aboutToDisappear() {
-    delete this.dialogController;
     this.dialogController = null;
-    if (globalThis.client) {
-      globalThis.client.close(true)
-    }
+    GlobalObj?.getInstance()?.getClient()?.QUIT();
   }
 
   showToast(text: string, name = '测试') {
@@ -256,7 +256,7 @@ struct Index {
             .margin(20)
             .layoutWeight(1)
             .height(50)
-            .visibility(Visibility.None) // 暂时先不显示
+            .visibility(Visibility.None)// 暂时先不显示
             .backgroundColor(Color.Blue)
             .fontColor(Color.White)
             .onClick(() => {
@@ -282,8 +282,8 @@ struct Index {
     const ctx = this;
     try {
       let hostParam = ctx.mailType.substring(ctx.mailType.indexOf('@') + 1, ctx.mailType.indexOf('.'))
-      if (!globalThis.client) {
-        let client: Pop3Command = undefined;
+      if (!GlobalObj?.getInstance()?.getClient()) {
+        let client: Pop3Command | null = null;
         if (this.secure) {
           let option: socket.TLSConnectOptions = {
             ALPNProtocols: ["spdy/1", "http/1.1"],
@@ -299,17 +299,25 @@ struct Index {
               useRemoteCipherPrefer: true,
             }
           }
-          let context: Context = globalThis.context ? globalThis.context : getContext(this)
-          let ca0Data = await context.resourceManager.getRawFileContent('QQMailMiddle.pem')
+          let context: Context | null = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext(this)
+          if (!context) {
+            return;
+          }
+          let ca0Data = await context?.resourceManager?.getRawFileContent('QQMailMiddle.pem')
+          if (!ca0Data) {
+            return;
+          }
           let ca0 = '';
           for (let i = 0; i < ca0Data.length; i++) {
             let todo = ca0Data[i]
             let item = String.fromCharCode(todo);
             ca0 += item;
           }
-          // @ts-ignore
-          option.secureOptions.ca[0] = ca0;
-
+          if (option.secureOptions.ca instanceof Array) {
+            option.secureOptions.ca[0] = ca0;
+          } else {
+            option.secureOptions.ca = ca0;
+          }
           let ca1Data = await context.resourceManager.getRawFileContent('QQMailRoot.pem')
           let ca1 = '';
           for (let i = 0; i < ca1Data.length; i++) {
@@ -317,8 +325,12 @@ struct Index {
             let item = String.fromCharCode(todo);
             ca1 += item;
           }
-          // @ts-ignore
-          option.secureOptions.ca[1] = ca1;
+          if (option.secureOptions.ca instanceof Array) {
+            option.secureOptions.ca[1] = ca1;
+          } else {
+            option.secureOptions.ca = ca1;
+          }
+
 
           client = new Pop3Command({
             host: `pop.${hostParam}.com`,
@@ -332,7 +344,7 @@ struct Index {
           });
         } else {
           client = new Pop3Command({
-            host:`pop.${hostParam}.com`,
+            host: `pop.${hostParam}.com`,
             port: 465,
             user: ctx.account + ctx.mailType,
             password: ctx.password,
@@ -342,20 +354,20 @@ struct Index {
             tlsOptions: undefined
           });
         }
-        globalThis.client = client
+        GlobalObj?.getInstance()?.setClient(client)
       }
 
-      if (globalThis.client) {
+      if (GlobalObj?.getInstance()?.getClient()) {
         // 因为没有登录状态判断的接口 所以登陆之前先退出一下 防止已经登录导致出错了
         try {
-          const [quitInfo] = await globalThis.client.command('QUIT');
+          const quitInfo = await GlobalObj?.getInstance()?.getClient()?.command('QUIT');
         } catch (err) {
 
         }
         // These must be in order
-        await globalThis.client.connect();
-        await globalThis.client.command('USER', ctx.account + ctx.mailType);
-        await globalThis.client.command('PASS', ctx.password);
+        await GlobalObj?.getInstance()?.getClient()?.connect();
+        await GlobalObj?.getInstance()?.getClient()?.command('USER', ctx.account + ctx.mailType);
+        await GlobalObj?.getInstance()?.getClient()?.command('PASS', ctx.password);
         this.showToast('账号登录成功', 'login-pop3')
         router.pushUrl({
           url: 'pages/CommandPage',
@@ -371,8 +383,8 @@ struct Index {
 
   async autoLogin() {
     const ctx = this;
-    globalThis.client = undefined;
-    let jumpOption = undefined;
+    GlobalObj?.getInstance()?.setClient(null)
+    let jumpOption: Pop3LoginBean | null = null;
     try {
       let hostParam = ctx.mailType.substring(ctx.mailType.indexOf('@') + 1, ctx.mailType.indexOf('.'))
       if (this.secure) {
@@ -390,16 +402,25 @@ struct Index {
             useRemoteCipherPrefer: true,
           }
         }
-        let context: Context = globalThis.context ? globalThis.context : getContext(this)
-        let ca0Data = await context.resourceManager.getRawFileContent('QQMailMiddle.pem')
+        let context: Context | null = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext(this)
+        if (!context) {
+          return;
+        }
+        let ca0Data = await context?.resourceManager?.getRawFileContent('QQMailMiddle.pem')
+        if (!ca0Data) {
+          return;
+        }
         let ca0 = '';
         for (let i = 0; i < ca0Data.length; i++) {
           let todo = ca0Data[i]
           let item = String.fromCharCode(todo);
           ca0 += item;
         }
-        // @ts-ignore
-        option.secureOptions.ca[0] = ca0;
+        if (option.secureOptions.ca instanceof Array) {
+          option.secureOptions.ca[0] = ca0;
+        } else {
+          option.secureOptions.ca = ca0;
+        }
 
         let ca1Data = await context.resourceManager.getRawFileContent('QQMailRoot.pem')
         let ca1 = '';
@@ -408,26 +429,30 @@ struct Index {
           let item = String.fromCharCode(todo);
           ca1 += item;
         }
-        // @ts-ignore
-        option.secureOptions.ca[1] = ca1;
+        if (option.secureOptions.ca instanceof Array) {
+          option.secureOptions.ca[1] = ca1;
+        } else {
+          option.secureOptions.ca = ca1;
+        }
+
         jumpOption = {
-          host:  `pop.${hostParam}.com`,
+          host: `pop.${hostParam}.com`,
           port: 995,
           user: ctx.account + ctx.mailType,
           password: ctx.password,
           timeout: 30000,
-          servername:  `pop.${hostParam}.com`,
+          servername: `pop.${hostParam}.com`,
           tls: true,
           tlsOptions: option
         }
       } else {
         jumpOption = {
-          host:  `pop.${hostParam}.com`,
+          host: `pop.${hostParam}.com`,
           port: 110,
           user: ctx.account + ctx.mailType,
           password: ctx.password,
           timeout: 30000,
-          servername:  `pop.${hostParam}.com`,
+          servername: `pop.${hostParam}.com`,
           tls: false,
           tlsOptions: undefined
         }

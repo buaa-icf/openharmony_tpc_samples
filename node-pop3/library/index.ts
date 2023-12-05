@@ -14,5 +14,6 @@
  */
 
 import Pop3Command from './src/main/ets/Command';
+import Pop3LoginBean from './src/main/ets/Pop3LoginBean';
 
-export default Pop3Command
+export { Pop3Command as default, Pop3LoginBean }

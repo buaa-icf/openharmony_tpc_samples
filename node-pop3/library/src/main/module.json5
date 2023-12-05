@@ -1,6 +1,6 @@
 {
   "module": {
-    "name": "NodePop3",
+    "name": "library",
     "type": "har",
     "deviceTypes": [
       "default"

@@ -13,20 +13,14 @@
  * limitations under the License.
  */
 
-import hilog from '@ohos.hilog';
-import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
-import promptAction from '@ohos.promptAction'
-import router from '@ohos.router'
-import socket from '@ohos.net.socket'
-import Pop3Command from '@ohos/node-pop3'
-import AbilityDelegatorRegistry from '@ohos.app.ability.abilityDelegatorRegistry';
-import MsgBean from '../../../../../entry/src/main/ets/MsgBean'
+import { describe, it } from '@ohos/hypium';
+import Pop3Command, { Pop3LoginBean } from '@ohos/node-pop3';
 
 export default function POP3PressTest() {
 
   let message = 'Hello World'
-  let account = ''
-  let password = ''
+  let account = 'xxx'
+  let password = 'xxx'
   let mailType = '@qq.com'
   let textValue = ''
   let inputValue = 'click me'
@@ -36,16 +30,16 @@ export default function POP3PressTest() {
   let selectMsgNum: number = -1
   let isListShow: boolean = false
   const BASE_COUNT = 10000
-  describe('POP3PressTest', function () {
-    for (let i = 1;i <= BASE_COUNT; i++) {
-      it('LIST', 0, function () {
-        let option = {
-          host: 'pop.xxx.com',
+  describe('POP3PressTest', () => {
+    for (let i = 1; i <= BASE_COUNT; i++) {
+      it('LIST', 0, () => {
+        let option: Pop3LoginBean = {
+          host: 'pop.qq.com',
           port: 110,
           user: account + mailType,
           password: password,
           timeout: 30000,
-          servername: 'pop.xxx.com',
+          servername: 'pop.qq.com',
           tls: false,
           tlsOptions: undefined
         }
@@ -53,14 +47,14 @@ export default function POP3PressTest() {
         let result = client.LIST();
       })
 
-      it('STAT', 0, function () {
-        let option = {
-          host: 'pop.xxx.com',
+      it('STAT', 0, () => {
+        let option: Pop3LoginBean = {
+          host: 'pop.qq.com',
           port: 110,
           user: account + mailType,
           password: password,
           timeout: 30000,
-          servername: 'pop.xxx.com',
+          servername: 'pop.qq.com',
           tls: false,
           tlsOptions: undefined
         }
@@ -68,14 +62,14 @@ export default function POP3PressTest() {
         let result = client.STAT()
       })
 
-      it('NOOP', 0, function () {
-        let option = {
-          host: 'pop.xxxx.com',
+      it('NOOP', 0, () => {
+        let option: Pop3LoginBean = {
+          host: 'pop.qq.com',
           port: 110,
           user: account + mailType,
           password: password,
           timeout: 30000,
-          servername: 'pop.xxx.com',
+          servername: 'pop.qq.com',
           tls: false,
           tlsOptions: undefined
         }
@@ -83,14 +77,14 @@ export default function POP3PressTest() {
         let result = client.NOOP()
       })
 
-      it('UIDL', 0, function () {
-        let option = {
-          host: 'pop.xxx.com',
+      it('UIDL', 0, () => {
+        let option: Pop3LoginBean = {
+          host: 'pop.qq.com',
           port: 110,
           user: account + mailType,
           password: password,
           timeout: 30000,
-          servername: 'pop.xxx.com',
+          servername: 'pop.qq.com',
           tls: false,
           tlsOptions: undefined
         }
@@ -98,14 +92,14 @@ export default function POP3PressTest() {
         let result = client.UIDL("1")
       })
 
-      it('RSET', 0, function () {
-        let option = {
-          host: 'pop.xxx.com',
+      it('RSET', 0, () => {
+        let option: Pop3LoginBean = {
+          host: 'pop.qq.com',
           port: 110,
           user: account + mailType,
           password: password,
           timeout: 30000,
-          servername: 'pop.xxx.com',
+          servername: 'pop.qq.com',
           tls: false,
           tlsOptions: undefined
         }
@@ -113,14 +107,14 @@ export default function POP3PressTest() {
         let result = client.RSET()
       })
 
-      it('RETR', 0, function () {
-        let option = {
-          host: 'pop.xxx.com',
+      it('RETR', 0, () => {
+        let option: Pop3LoginBean = {
+          host: 'pop.qq.com',
           port: 110,
           user: account + mailType,
           password: password,
           timeout: 30000,
-          servername: 'pop.xxx.com',
+          servername: 'pop.qq.com',
           tls: false,
           tlsOptions: undefined
         }
@@ -128,14 +122,14 @@ export default function POP3PressTest() {
         let result = client.RETR("1")
       })
 
-      it('DELE', 0, function () {
-        let option = {
-          host: 'pop.xxx.com',
+      it('DELE', 0, () => {
+        let option: Pop3LoginBean = {
+          host: 'pop.qq.com',
           port: 110,
           user: account + mailType,
           password: password,
           timeout: 30000,
-          servername: 'pop.xxx.com',
+          servername: 'pop.qq.com',
           tls: false,
           tlsOptions: undefined
         }
@@ -143,14 +137,14 @@ export default function POP3PressTest() {
         let result = client.DELE("1")
       })
 
-      it('QUIT', 0, function () {
-        let option = {
-          host: 'pop.xxx.com',
+      it('QUIT', 0, () => {
+        let option: Pop3LoginBean = {
+          host: 'pop.qq.com',
           port: 110,
           user: account + mailType,
           password: password,
           timeout: 30000,
-          servername: 'pop.xxxx.com',
+          servername: 'pop.qq.com',
           tls: false,
           tlsOptions: undefined
         }
@@ -158,14 +152,14 @@ export default function POP3PressTest() {
         let result = client.QUIT()
       })
 
-      it('connect', 0, function () {
-        let option = {
-          host: 'pop.xxx.com',
+      it('connect', 0, () => {
+        let option: Pop3LoginBean = {
+          host: 'pop.qq.com',
           port: 110,
           user: account + mailType,
           password: password,
           timeout: 30000,
-          servername: 'pop.xxx.com',
+          servername: 'pop.qq.com',
           tls: false,
           tlsOptions: undefined
         }
@@ -173,14 +167,14 @@ export default function POP3PressTest() {
         let result = client.connect()
       })
 
-      it('TOP', 0, function () {
-        let option = {
-          host: 'pop.xxx.com',
+      it('TOP', 0, () => {
+        let option: Pop3LoginBean = {
+          host: 'pop.qq.com',
           port: 110,
           user: account + mailType,
           password: password,
           timeout: 30000,
-          servername: 'pop.xxx.com',
+          servername: 'pop.qq.com',
           tls: false,
           tlsOptions: undefined
         }
@@ -189,20 +183,20 @@ export default function POP3PressTest() {
 
       })
 
-      it('command', 0, function (done) {
-        let option = {
-          host: 'pop.xxx.com',
+      it('command', 0, (done: Function) => {
+        let option: Pop3LoginBean = {
+          host: 'pop.qq.com',
           port: 110,
           user: account + mailType,
           password: password,
           timeout: 30000,
-          servername: 'pop.xxx.com',
+          servername: 'pop.qq.com',
           tls: false,
           tlsOptions: undefined
         }
         client = new Pop3Command(option);
         let result = client.command("NOOP")
-        console.log("command count:"+i)
+        console.log("command count:" + i)
       })
     }
   })
