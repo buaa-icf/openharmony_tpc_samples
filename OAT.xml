@@ -60,12 +60,14 @@
                 <filteritem type="filename" name="*.json5" desc="工程配置文件"/>
                 <filteritem type="filename" name="*.zip" desc="工程配置文件"/>
                 <filteritem type="filename" name="*.PNG" desc="PNG图片格式文件，用于展示示例"/>
+                <filteritem type="filename" name="*.epub" desc="工程配置文件"/>
                 <filteritem type="filepath" name="unrar/entry/src/main/resources/base/media/.*.png" desc="测试用途的小图片，亦不会变化"/>
 				<filteritem type="filepath" name="pakoDemo/entry/src/ohosTest/resources/base/media/.*" desc="第三方开源软件资源文件，不进行侵入式修改，只用于单元测试文件，忽略"/>
                 <filteritem type="filepath" name="ThreeJs360Demo/source/.*" desc="第三方开源软件，不做修改"/>
                 <filteritem type="filepath" name="SMTPClient/entry/src/main/resources/rawfile/.*" desc="测试文件"/>				
                 <filteritem type="filepath" name="metadata-extractor/resources/.*" desc="测试文件"/>
 				<filteritem type="filepath" name="epublib/entry/src/main/resources/rawfile/.*" desc="测试文件"/>
+                
             </filefilter>
         </filefilterlist>
         <policylist>
@@ -138,7 +140,11 @@
                 <policyitem type="copyright" name="Copyright 2009 Pete Goodliffe" path="socketio/socketio/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by X Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
                 <policyitem type="license" name="MIT" path="socketio/.*" rule="may" group="defaultGroup" filefilter="defaultPolicyFilter" desc="源开源项目的LICENSE,  符合开源要求"/>
                 <policyitem type="license" name="ThirdPartyNotice" path="socketio/.*" rule="may" group="defaultGroup" filefilter="defaultPolicyFilter" desc="源开源项目的LICENSE,  符合开源要求"/>
-
+                
+                <policyitem type="license" name="zlib-acknowledgement" path="box2d/entry/src/main/ets/Testbed/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="当前项目兼容此协议" />
+                <policyitem type="license" name="zlib-acknowledgement" path="box2d/library/src/main/ets/Box2D/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="当前项目兼容此协议" />
+                <policyitem type="license" name="NoLicenseHeader" path="box2d/entry/src/main/ets/Testbed/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改" />
+                <policyitem type="license" name="NoLicenseHeader" path="box2d/library/src/main/ets/Box2D/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改" />
             </policy>
         </policylist>
         <licensematcherlist>
