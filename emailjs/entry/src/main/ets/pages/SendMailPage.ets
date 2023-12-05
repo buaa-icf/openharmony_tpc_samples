@@ -27,9 +27,9 @@ struct SendMailPage {
   @State message: string = 'Hello World'
   @State from: string = ''
   @State accountName: string = 'OH邮件客户端'
-  @State to: string = '479868299@qq.com'
-  @State cc: string = 'zdy_cz_jk@163.com'
-  @State bcc: string = 'zhaodongyang7@h-partners.com'
+  @State to: string = 'xxx@qq.com'
+  @State cc: string = 'xxx@163.com'
+  @State bcc: string = 'xxx@139.com'
   @State subject: string = '这是OH测试主题'
   @State content: string = '这是测试的鸿蒙邮件正文，邮件的收件人，抄送，密件抄送的格式为：someone <someone@your-email.com>, another <another@your-email.com>，多个账号以英文逗号,连接。'
   @State attachment: Array<MessageAttachment> = []

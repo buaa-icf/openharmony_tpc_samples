@@ -22,6 +22,8 @@ import { AUTH_METHODS, SMTPClient } from '@ohos/emailjs'
 
 参考该[Demo](./entry/src/main/ets/pages/LoginPage.ets)工程
 
+注意：全局搜索项目中的‘xxx’，需要替换修改为真实的邮箱，账号密码。如果需要测试附件，需要预先生成test.docx,test.xlsx文档放置于entry目录下的src/main/resources/rawfile文件夹中
+
 ### 接口说明
 
 |                      方法名                      |                入参                 |       接口描述       |
