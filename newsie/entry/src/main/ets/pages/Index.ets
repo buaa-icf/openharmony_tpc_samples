@@ -26,7 +26,7 @@ class Value {
 struct Index {
   client: Client = new Client({});
   @State status: boolean = false;
-  host: string = "124.221.182.182"
+  host: string = "xxx.xxx.xxx.xxx"
   port: number = 8084
   @State groups: Array<SelectOption> = [] //所有新闻组
   @State select_group: string = "" //选中新闻组
@@ -64,7 +64,7 @@ struct Index {
         Row() {
           this.BuildButton("点击连接", this.safeCallFunc((async () => {
             this.client = new Client({
-              host: "124.221.182.182",
+              host: "xxx.xxx.xxx.xxx",
               port: 8084
             })
             await this.client.connect();

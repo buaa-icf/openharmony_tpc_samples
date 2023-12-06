@@ -13,11 +13,11 @@
  * limitations under the License.
  */
 class Config {
-  host: string = "124.221.182.182";
+  host: string = "xxx.xxx.xxx.xxx";
   port: number = 8085;
 }
 
 export const config: Config = {
-  host: "124.221.182.182",
+  host: "xxx.xxx.xxx.xxx",
   port: 8085
 }
