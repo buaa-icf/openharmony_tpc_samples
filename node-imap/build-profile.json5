@@ -23,8 +23,8 @@
       ]
     },
     {
-      "name": "NodeImap",
-      "srcPath": "./NodeImap"
+      "name": "library",
+      "srcPath": "./library"
     }
   ]
 }

@@ -12,18 +12,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 import promptAction from '@ohos.promptAction'
 import Imap, { inspect } from '@ohos/node-imap'
 import router from '@ohos.router'
+import GlobalObj from '../GlobalObj'
+import MailBoxes from '../bean/MailBoxes'
+import Box from '../bean/Box'
 
 @CustomDialog
 struct CustomDialogDiy {
   @Link textValue: string
   @Link inputValue: string
   controller: CustomDialogController
-  cancel: () => void;
-  confirm: () => void;
+  cancel: Function = () => {
+  };
+  confirm: Function = () => {
+  };
 
   build() {
     Column() {
@@ -63,12 +68,12 @@ struct FolderPage {
   @State startIndex: number = 1 //当前页
   @State endIndex: number = 3 //当前页
   @State listData: Array<string> = [] //邮件列表数据集合
-  @State selectFolder: string = '' //选择的文件夹
+  @State selectFolder: string | null = '' //选择的文件夹
   @State selectType: string = '' //选择的文件夹
   @State textValue: string = ''
   @State inputValue: string = ''
   pageSize: number = 3 //请求时的每页多少条信息，用于分页请求
-  dialogController: CustomDialogController = new CustomDialogController({
+  dialogController: CustomDialogController | null = new CustomDialogController({
     builder: CustomDialogDiy({
       cancel: () => {
         this.showToast(`关闭了对话框，取消输入文件夹名称`, 'CustomDialogDiy-cancel')
@@ -103,28 +108,27 @@ struct FolderPage {
     })
   }
 
-
   aboutToAppear() {
     this.refreshFolderList()
   }
 
   aboutToDisappear() {
-    delete this.dialogController;
     this.dialogController = null;
   }
 
   refreshFolderList() {
     const ctx = this;
-    if (globalThis.client) {
-      globalThis.client.getBoxes(function (err, data) {
+    if (GlobalObj?.getInstance()?.getClient()) {
+      GlobalObj?.getInstance()?.getClient()?.getBoxes((err: Error, data?: MailBoxes) => {
         if (err) throw err;
         if (!data || typeof data != 'object') {
           throw new Error('get box status fail')
         }
         ctx.listData = [];
-        for (let key in data) {
-          console.log(`zdy---getBoxes key--->${key}`);
-          ctx.listData.push(key.toString())
+        let keyArr = Object.getOwnPropertyNames(data)
+        for (let i = 0; i < keyArr.length; i++) {
+          console.log(`zdy---getBoxes key--->${keyArr[i]}`);
+          ctx.listData.push(keyArr[i])
         }
 
       })
@@ -255,7 +259,7 @@ struct FolderPage {
           }), GestureMask.Normal)
           .gesture(LongPressGesture().onAction((event) => {
             if (this.selectFolder) {
-              this.selectFolder = undefined
+              this.selectFolder = null
             } else {
               this.selectFolder = item
             }
@@ -280,12 +284,12 @@ struct FolderPage {
         return
       }
       ctx.showToast('开始删除文件夹', 'deleteFolder-imap')
-      if (globalThis.client) {
-        globalThis.client.delBox(ctx.selectFolder, (err, result) => {
+      if (GlobalObj?.getInstance()?.getClient()) {
+        GlobalObj?.getInstance()?.getClient()?.delBox(ctx.selectFolder, (err:Error) => {
           if (err) {
             ctx.showToast('删除文件夹失败', 'deleteFolder-imap')
           } else {
-            ctx.selectFolder = undefined;
+            ctx.selectFolder = null;
             ctx.showToast('删除文件夹成功', 'deleteFolder-imap')
             ctx.refreshFolderList()
           }
@@ -308,8 +312,8 @@ struct FolderPage {
         return
       }
       ctx.showToast('开始创建文件夹', 'createFolder-imap')
-      if (globalThis.client) {
-        globalThis.client.addBox(ctx.inputValue, (err, result) => {
+      if (GlobalObj?.getInstance()?.getClient()) {
+        GlobalObj?.getInstance()?.getClient()?.addBox(ctx.inputValue, (err:Error) => {
           if (err) {
             ctx.showToast(`创建文件夹失败,原因：${err.message}`, 'createFolder-imap')
           } else {
@@ -341,12 +345,12 @@ struct FolderPage {
         return
       }
       ctx.showToast('开始重命名文件夹', 'renameFolder-imap')
-      if (globalThis.client) {
-        globalThis.client.renameBox(ctx.selectFolder, ctx.inputValue, (err, result) => {
+      if (GlobalObj?.getInstance()?.getClient()) {
+        GlobalObj?.getInstance()?.getClient()?.renameBox(ctx.selectFolder, ctx.inputValue, (err:Error, result:Box) => {
           if (err) {
             ctx.showToast(`重命名文件夹失败,原因：${err.message}`, 'renameFolder-imap')
           } else {
-            ctx.selectFolder = undefined;
+            ctx.selectFolder = null;
             ctx.inputValue = '';
             ctx.textValue = '';
             ctx.showToast('重命名文件夹成功', 'renameFolder-imap')
@@ -371,8 +375,8 @@ struct FolderPage {
         return
       }
       ctx.showToast('订阅一个文件夹', 'subBox-imap')
-      if (globalThis.client) {
-        globalThis.client.subscribeBox(this.selectFolder , (err, result) => {
+      if (GlobalObj?.getInstance()?.getClient()) {
+        GlobalObj?.getInstance()?.getClient()?.subscribeBox(this.selectFolder, (err:Error) => {
           if (err) {
             ctx.showToast(`订阅邮箱失败,原因：${err.message}`, 'subBox-imap')
           } else {
@@ -400,8 +404,8 @@ struct FolderPage {
         return
       }
       ctx.showToast('取消订阅邮箱', 'unSubBox-imap')
-      if (globalThis.client) {
-        globalThis.client.unsubscribeBox(this.selectFolder, (err, result) => {
+      if (GlobalObj?.getInstance()?.getClient()) {
+        GlobalObj?.getInstance()?.getClient()?.unsubscribeBox(this.selectFolder, (err:Error) => {
           if (err) {
             ctx.showToast(`取消订阅邮箱失败,原因：${err.message}`, 'unSubBox-imap')
           } else {
@@ -425,16 +429,17 @@ struct FolderPage {
     const ctx = this;
     try {
       ctx.showToast('开始回用户$HOME目录下所有的文件，但LSUB命令只显示那些使用SUBSCRIBE命令设置为活动邮箱的文件。两个参数：邮箱路径和邮箱名。', 'closeBox-imap')
-      if (globalThis.client) {
-        globalThis.client.getSubscribedBoxes((err, result) => {
+      if (GlobalObj?.getInstance()?.getClient()) {
+        GlobalObj?.getInstance()?.getClient()?.getSubscribedBoxes((err:Error, result:MailBoxes) => {
           if (err) {
             ctx.showToast(`获取所有活动邮箱的文件失败,原因：${err.message}`, 'expungeMail-imap')
           } else {
             ctx.showToast('获取所有活动邮箱的文件成功', 'expungeMail-imap')
             ctx.listData = [];
-            for (let key in result) {
-              console.log(`zdy---getBoxes key--->${key}`);
-              ctx.listData.push(key.toString())
+            let keyArr = Object.getOwnPropertyNames(result)
+            for (let i = 0; i < keyArr.length; i++) {
+              console.log(`zdy---getBoxes key--->${keyArr[i]}`);
+              ctx.listData.push(keyArr[i])
             }
           }
         });

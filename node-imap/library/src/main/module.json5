@@ -1,6 +1,6 @@
 {
   "module": {
-    "name": "NodeImap",
+    "name": "library",
     "type": "har",
     "deviceTypes": [
       "default"

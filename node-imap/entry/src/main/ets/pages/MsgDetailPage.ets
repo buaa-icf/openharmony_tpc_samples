@@ -12,16 +12,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 import promptAction from '@ohos.promptAction'
 import Imap, { inspect } from '@ohos/node-imap'
 import router from '@ohos.router'
+import MsgDetailUtil from '../MsgDetailUtil'
+import DetailCallback from '../bean/DetailCallback'
+import { ImapMessageAttributes } from '../bean/ImapMessage'
+import GlobalObj from '../GlobalObj'
 
 @Entry
 @Component
 struct MsgDetailPage {
   @State message: string = 'Hello World'
   @State clickIndex: number = -1
+  private util: MsgDetailUtil = new MsgDetailUtil()
 
   showToast(text: string, name = '测试') {
     console.log(`zdy---${name}--->${text}`)
@@ -34,59 +39,59 @@ struct MsgDetailPage {
 
   aboutToAppear() {
     const ctx = this;
-    if (!globalThis.client) {
+    if (!GlobalObj?.getInstance()?.getClient()) {
       this.showToast('账号未登录，请登录后再试', 'MsgDetail-imap')
       router.back()
       return
     }
-    if (router.getParams() && router.getParams()['clickIndex']) {
-      ctx.clickIndex = router.getParams()['clickIndex']
+    let tempParam = router.getParams() as Record<string, number>
+    if (tempParam && tempParam['clickIndex']) {
+      ctx.clickIndex = tempParam['clickIndex']
     } else {
       this.showToast('未获取到邮箱文件夹参数', 'MsgDetail-imap')
       router.back()
       return
     }
-    var f = globalThis.client.seq.fetch(`${ctx.clickIndex}`, {
-      bodies: 'TEXT',
-      struct: true
-    });
-    f.on('message', function (msg, seqno) {
-      console.log('Message #%d', seqno);
-      var prefix = '(#' + seqno + ') ';
-
-      msg.on('body', function (stream, info) {
-        var buffer = '';
-        stream.on('data', function (chunk) {
-          buffer += chunk.toString('utf8');
-        });
-        stream.once('end', function () {
-          try {
-            ctx.showToast(`获取整个邮件体成功：${'\r\n'}${buffer}`, 'MsgDetail-imap');
-            if (buffer.length > 65535) {
-              ctx.message = `获取整个邮件体成功,文本长度超过65535，text，取65535长度用于显示：${'\r\n'}${buffer.substring(0, 65535)}`
-            } else {
-              ctx.message = `获取整个邮件体成功：${'\r\n'}${buffer}`
-            }
-
-          } catch (err) {
-            throw err
+    let prefix: string = ''
+    let buffer: string = '';
+    let callback: DetailCallback = {
+      messageStartCallback: (seqno: number) => {
+        console.log('Message #%d', seqno);
+        prefix = '(#' + seqno + ') ';
+      },
+      bodyStartCallback: () => {
+      },
+      bodyDataCallback: (data: string) => {
+        buffer += data;
+      },
+      bodyEndCallback: () => {
+        try {
+          ctx.showToast(`获取整个邮件体成功：${'\r\n'}${buffer}`, 'MsgDetail-imap');
+          if (buffer.length > 65535) {
+            ctx.message = `获取整个邮件体成功,文本长度超过65535，text，取65535长度用于显示：${'\r\n'}${buffer.substring(0, 65535)}`
+          } else {
+            ctx.message = `获取整个邮件体成功：${'\r\n'}${buffer}`
           }
-        });
-      });
-      msg.once('attributes', function (attrs) {
+
+        } catch (err) {
+          throw err as Error
+        }
+      },
+      attributesCallback: (attrs: ImapMessageAttributes) => {
         // console.log(prefix + 'Attributes: %s', inspect(attrs, false, 8));
-      });
-      msg.once('end', function () {
+      },
+      messageEndCallback: () => {
         console.log(prefix + 'Finished');
-      });
-    });
-    f.on('error', function (err) {
-      console.log('Fetch error: ' + err);
-    });
-    f.once('end', function () {
-      console.log('Done fetching all messages!');
-      globalThis.client.end();
-    });
+      },
+      fetchErrorCallback: (err: Error) => {
+        console.log('Fetch error: ' + err);
+      },
+      fetchEndCallback: () => {
+        console.log('Done fetching all messages!');
+        GlobalObj?.getInstance()?.getClient()?.end();
+      }
+    }
+    this.util?.getDetail(ctx.clickIndex, callback)
   }
 
   build() {
@@ -106,5 +111,4 @@ struct MsgDetailPage {
     }
     .height('100%')
   }
-
 }

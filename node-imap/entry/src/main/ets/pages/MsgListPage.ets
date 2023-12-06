@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 import promptAction from '@ohos.promptAction'
 import Imap, { inspect } from '@ohos/node-imap'
 import router from '@ohos.router'
@@ -20,6 +20,13 @@ import StatusBean from '../bean/StatusBean'
 import MsgListBean, { MsgListFootBean, MsgListHeadBean } from '../bean/MsgListBean'
 import { Buffer } from '@ohos/node-imap/src/main/polyfill/buffer'
 import buffer from '@ohos.buffer'
+import MsgListUtil, { SortCriteria } from '../MsgListUtil'
+import Box from '../bean/Box'
+import GlobalObj from '../GlobalObj'
+import DetailCallback from '../bean/DetailCallback'
+import { ImapMessageAttributes } from '../bean/ImapMessage'
+import MsgSendBean from '../bean/MsgSendBean'
+import AppendOptions from '../bean/AppendOptions'
 
 const searchCommand = ['ALL', 'ANSWERED', 'DELETED', 'DRAFT',
   'FLAGGED', 'NEW', 'SEEN', 'RECENT',
@@ -40,8 +47,10 @@ struct CustomDialogDiy {
   @Link textValue: string
   @Link inputValue: string
   controller: CustomDialogController
-  cancel: () => void;
-  confirm: () => void;
+  cancel: Function = () => {
+  };
+  confirm: Function = () => {
+  };
 
   build() {
     Column() {
@@ -89,13 +98,16 @@ struct MsgListPage {
   @State selectIndex: number = -1 //当前选中的邮箱序号
   @State selectSortIndex: number = 0 //当前选中的邮箱序号
   @State selectFolder: string = '' //当前选中的邮箱名字
-  @State selectSort: string = '' //当前选中的排序规则
+  @State selectSort: SortCriteria = 'DATE' //当前选中的排序规则
   @State inputValue: string = 'click me'
   @State listData: Array<MsgListBean> = [] //邮件列表数据集合
   @State selectMsg: number = -1 //选择的邮件列表 用于添加已读或者删除的标记
-  @State bean: StatusBean = undefined //获取邮件列表之前先获取该文件夹里面的邮件总数和状态
+  @State bean: Box | null = null //获取邮件列表之前先获取该文件夹里面的邮件总数和状态
+  private selectMenuList: SortCriteria[] = [];
+  private selectMenuArr: Array<SelectOption> = [];
   pageSize: number = 10 //请求时的每页多少条信息，用于分页请求
-  dialogController: CustomDialogController = new CustomDialogController({
+  private util: MsgListUtil = new MsgListUtil()
+  dialogController: CustomDialogController | null = new CustomDialogController({
     builder: CustomDialogDiy({
       cancel: () => {
         this.showToast(`关闭了对话框，取消选输入`, 'imap-search')
@@ -162,32 +174,56 @@ struct MsgListPage {
 
   refreshPageSize() {
     const ctx = this;
-    if (ctx.bean && ctx.bean.messages && ctx.startIndex >= ctx.bean.messages.total) {
+    if (ctx.startIndex >= (ctx.bean?.messages?.total ? ctx.bean?.messages?.total : 0)) {
       return;
     }
     ctx.endIndex = ctx.startIndex + ctx.pageSize - 1;
-    if (ctx.bean && ctx.bean.messages && ctx.endIndex > ctx.bean.messages.total) {
-      ctx.endIndex = ctx.bean.messages.total;
+    if (ctx.endIndex > (ctx.bean?.messages?.total ? ctx.bean?.messages?.total : 0)) {
+      ctx.endIndex = (ctx.bean?.messages?.total ? ctx.bean?.messages?.total : 0);
     }
   }
 
   aboutToAppear() {
     const ctx = this;
-    if (!globalThis.client) {
+    ctx.selectMenuList.push("ARRIVAL")
+    ctx.selectMenuList.push("-ARRIVAL")
+    ctx.selectMenuList.push("CC")
+    ctx.selectMenuList.push("-CC")
+    ctx.selectMenuList.push("DATE")
+    ctx.selectMenuList.push("-DATE")
+    ctx.selectMenuList.push("FROM")
+    ctx.selectMenuList.push("-FROM")
+    ctx.selectMenuList.push("SIZE")
+    ctx.selectMenuList.push("-SIZE")
+    ctx.selectMenuList.push("SUBJECT")
+    ctx.selectMenuList.push("-SUBJECT")
+    ctx.selectMenuList.push("TO")
+    ctx.selectMenuList.push("-TO")
+
+    for (let i = 0; i < ctx.selectMenuList.length; i++) {
+      let obj: SelectOption = {
+        value: ctx.selectMenuList[i].toString(),
+        icon: "app.media.app_icon"
+      }
+      ctx.selectMenuArr.push(obj)
+    }
+
+    if (!GlobalObj?.getInstance()?.getClient()) {
       this.showToast('账号未登录，请登录后再试', 'MsgList-imap')
       router.back()
       return
     }
-    if (router.getParams() && router.getParams()['folderName'] && router.getParams()['folderName']
-      .toString().length > 0) {
-      ctx.folderName = router.getParams()['folderName'].toString()
+    let tempParam = router.getParams() as Record<string, string | Array<string>>
+    if (tempParam && tempParam['folderName'] && (tempParam['folderName'] as string).length > 0) {
+      ctx.folderName = tempParam['folderName'] as string
     } else {
       this.showToast('未获取到邮箱文件夹参数', 'MsgList-imap')
       router.back()
       return
     }
-    if (router.getParams() && router.getParams()['folderList']) {
-      let folderList: Array<string> = router.getParams()['folderList']
+
+    if (tempParam && tempParam['folderList']) {
+      let folderList: Array<string> = tempParam['folderList'] as Array<string>
       if (folderList) {
         for (let i = 0; i < folderList.length; i++) {
           ctx.selectList.push({
@@ -204,122 +240,124 @@ struct MsgListPage {
       router.back()
       return
     }
-    globalThis.client.status(ctx.folderName, function (err, data) {
+    GlobalObj?.getInstance()?.getClient()?.status(ctx.folderName, (err: Error, data: Box) => {
       if (err) throw err;
-      if (!data || data.length < 1) {
+      if (!data || (data?.messages?.total ? data?.messages?.total : 0) < 1) {
         throw new Error('get box status fail')
       }
       try {
-        ctx.bean = JSON.parse(JSON.stringify(data))
-        if (ctx.bean && ctx.bean.messages.total > 0) {
-          globalThis.client.openBox(ctx.folderName, true, function (err, box) {
+        if ((data?.messages?.total ? data?.messages?.total : 0) > 0) {
+          GlobalObj?.getInstance()?.getClient()?.openBox(ctx.folderName, true, (err: Error, data: Box) => {
             if (err) throw err;
             ctx.getListData()
           });
         } else {
-          ctx.showToast(`文件夹：${ctx.folderName}中，有信息总共：${ctx.bean.messages.total},新消息:${ctx.bean.messages.new},未读消息:${ctx.bean.messages.unseen}`)
+          ctx.showToast(`文件夹：${ctx.folderName}中，有信息总共：${ctx?.bean?.messages?.total},新消息:${ctx?.bean?.messages?.new},未读消息:${ctx?.bean?.messages?.unseen}`)
           ctx.listData = []
           let emptyBean = new MsgListBean()
-          emptyBean.Subject = `文件夹：${ctx.folderName}中，有信息总共：${ctx.bean.messages.total},新消息:${ctx.bean.messages.new},未读消息:${ctx.bean.messages.unseen}`
+          emptyBean.Subject = `文件夹：${ctx.folderName}中，有信息总共：${ctx?.bean?.messages?.total},新消息:${ctx?.bean?.messages?.new},未读消息:${ctx?.bean?.messages?.unseen}`
           ctx.listData.push(emptyBean)
         }
 
       } catch (err) {
-        throw err
+        throw err as Error
       }
     })
   }
 
   aboutToDisappear() {
-    delete this.dialogController;
     this.dialogController = null;
-    if (globalThis.client) {
-      globalThis.client.end()
-    }
+    GlobalObj?.getInstance()?.getClient()?.end()
   }
 
   getListData() {
     const ctx = this;
     ctx.refreshPageSize();
-    let buffer = '';
     ctx.uidList = [];
     ctx.listData = [];
     ctx.selectFolder = '';
     ctx.searchType = '';
     ctx.selectMsg = -1;
     // fetch里面可以是fetch(`1:3`）这种取序号为1-3的信息的  也可以是可以是fetch(`1`）这种取序号为1的信息
-    var f = globalThis.client.seq.fetch(`${ctx.startIndex}:${ctx.endIndex}`, {
-      bodies: 'HEADER.FIELDS (FROM TO SUBJECT DATE)',
-      struct: true
-    });
-    f.on('message', function (msg, seqno) {
-      console.log('Message #%d', seqno);
-      var prefix = '(#' + seqno + ') ';
+    let prefix: string = ''
+    let buffer: string = '';
+    let callback: DetailCallback = {
+      messageStartCallback: (seqno: number) => {
+        console.log('Message #%d', seqno);
+        prefix = '(#' + seqno + ') ';
+      },
+      bodyStartCallback: () => {
+      },
+      bodyDataCallback: (data: string) => {
+        buffer += data;
+      },
+      bodyEndCallback: () => {
+        try {
+          ctx.showToast(`获取整个邮件体成功：${'\r\n'}${buffer}`, 'MsgDetail-imap');
+          if (buffer.length > 65535) {
+            ctx.message = `获取整个邮件体成功,文本长度超过65535，text，取65535长度用于显示：${'\r\n'}${buffer.substring(0, 65535)}`
+          } else {
+            ctx.message = `获取整个邮件体成功：${'\r\n'}${buffer}`
+          }
 
-      msg.on('body', function (stream, info) {
-
-        stream.on('data', function (chunk) {
-          buffer += chunk.toString('utf8');
-        });
-        stream.once('end', function () {
-          // console.log(prefix + 'Parsed header: %s', inspect(Imap.parseHeader(buffer)));
-
-        });
-      });
-      msg.once('attributes', function (attrs) {
-        if (attrs && typeof attrs === 'object') {
-          let uid = attrs['uid'] ? attrs['uid'] : ''
-          ctx.uidList.push(uid);
+        } catch (err) {
+          throw err as Error
         }
-      });
-      msg.once('end', function () {
+      },
+      attributesCallback: (attrs: ImapMessageAttributes) => {
+        if (attrs && attrs.uid) {
+          ctx.uidList.push(attrs.uid + "");
+        }
+      },
+      messageEndCallback: () => {
         console.log(prefix + 'Finished');
-      });
-    });
-    f.on('error', function (err) {
-      console.log('Fetch error: ' + err);
-    });
-    f.once('end', function () {
-      console.log('Done fetching all messages!');
-      try {
-        if (ctx.listData.length > 0) {
-          ctx.listData.pop()
-        }
-        if (ctx.listData.length == 0) {
-          ctx.listData.push(new MsgListHeadBean())
-        }
-        let jsonObj = buffer.split('\r\n\r\n')
-        if (!jsonObj) {
-          throw new Error('get message list fail')
-        }
-        for (let i = 0; i < jsonObj.length; i++) {
-          let childArr = jsonObj[i].split('\r\n')
-          let bean = new MsgListBean();
-          if (i < ctx.uidList.length) {
-            bean.uid = ctx.uidList[i];
+      },
+      fetchErrorCallback: (err: Error) => {
+        console.log('Fetch error: ' + err);
+      },
+      fetchEndCallback: () => {
+        console.log('Done fetching all messages!');
+        try {
+          if (ctx.listData.length > 0) {
+            ctx.listData.pop()
           }
-          for (let j = 0; j < childArr.length; j++) {
-            let child = childArr[j];
-            if (child && child.indexOf('Date') != -1) {
-              bean.Date = child;
-            } else if (child && child.indexOf('From') != -1) {
-              bean.From = child;
-            } else if (child && child.indexOf('To') != -1) {
-              bean.To = child;
-            } else if (child && child.indexOf('Subject') != -1) {
-              bean.Subject = child;
-            } else {
-              continue;
+          if (ctx.listData.length == 0) {
+            ctx.listData.push(new MsgListHeadBean())
+          }
+          let jsonObj = buffer.split('\r\n\r\n')
+          if (!jsonObj) {
+            throw new Error('get message list fail')
+          }
+          for (let i = 0; i < jsonObj.length; i++) {
+            let childArr = jsonObj[i].split('\r\n')
+            let bean = new MsgListBean();
+            if (i < ctx.uidList.length) {
+              bean.uid = ctx.uidList[i];
             }
+            for (let j = 0; j < childArr.length; j++) {
+              let child = childArr[j];
+              if (child && child.indexOf('Date') != -1) {
+                bean.Date = child;
+              } else if (child && child.indexOf('From') != -1) {
+                bean.From = child;
+              } else if (child && child.indexOf('To') != -1) {
+                bean.To = child;
+              } else if (child && child.indexOf('Subject') != -1) {
+                bean.Subject = child;
+              } else {
+                continue;
+              }
+            }
+            ctx.listData.push(bean)
           }
-          ctx.listData.push(bean)
+          ctx.listData.push(new MsgListFootBean())
+        } catch (err) {
+          throw err as Error
         }
-        ctx.listData.push(new MsgListFootBean())
-      } catch (err) {
-        throw err
+        // GlobalObj?.getInstance()?.getClient().end();
       }
-      // globalThis.client.end();
-    });
+    }
+    this.util?.getListData(ctx.startIndex, ctx.endIndex, callback)
   }
 
   build() {
@@ -447,7 +485,7 @@ struct MsgListPage {
             .onSelect((index: number, text: string) => {
               this.selectIndex = index;
               this.selectFolder = text;
-              this.copyMail()
+              this.copyMail();
             })
             .margin(10)
             .height(50)
@@ -465,18 +503,14 @@ struct MsgListPage {
               this.selectIndex = index;
               this.selectFolder = text;
               this.moveMail()
+
+
             })
             .margin(10)
             .height(50)
             .backgroundColor(Color.Blue)
 
-          Select([{ value: 'ARRIVAL', icon: $r('app.media.app_icon') },
-            { value: 'CC', icon: $r('app.media.app_icon') },
-            { value: 'DATE', icon: $r('app.media.app_icon') },
-            { value: 'FROM', icon: $r('app.media.app_icon') },
-            { value: 'SIZE', icon: $r('app.media.app_icon') },
-            { value: 'SUBJECT', icon: $r('app.media.app_icon') },
-            { value: 'TO', icon: $r('app.media.app_icon') }])
+          Select(this.selectMenuArr)
             .selected(this.selectSortIndex)
             .value('邮件排序')
             .fontColor("#182431")
@@ -485,9 +519,14 @@ struct MsgListPage {
             .selectedOptionFont({ size: 16, weight: 400 })
             .optionFont({ size: 16, weight: 400 })
             .onSelect((index: number, text: string) => {
-              this.selectSortIndex = index;
-              this.selectSort = text;
-              this.sortMail()
+              this.selectIndex = index;
+              for (let i = 0; i < this.selectMenuList.length; i++) {
+                if (this.selectMenuList[i].toString() == text) {
+                  this.selectFolder = text;
+                  this.sortMail();
+                  break;
+                }
+              }
             })
             .margin(10)
             .height(50)
@@ -591,7 +630,7 @@ struct MsgListPage {
   }
 
   createMailData() {
-    let msg = {
+    let msg: MsgSendBean = {
       text: 'IMAP协议测试上传的邮件',
       from: `${'鸿蒙搬砖工'} <${'xxxx@xxxx.com'}>`,
       to: 'xxxx@xxxx.com',
@@ -612,14 +651,14 @@ struct MsgListPage {
         return
       }
       ctx.showToast('开始上传邮件', 'appendMail-imap')
-      if (globalThis.client) {
-        let option = {
+      if (GlobalObj?.getInstance()?.getClient()) {
+        let option: AppendOptions = {
           mailbox: ctx.folderName,
-          flag: ['Seen'], //取值 Seen flagged等
+          flags: ['Seen'], //取值 Seen flagged等
           date: new Date(), //取值 Seen flagged等
 
         }
-        globalThis.client.append(data, option, (err, result) => {
+        GlobalObj?.getInstance()?.getClient()?.append(data, option, (err: Error) => {
           if (err) {
             ctx.showToast(`上传邮件失败,原因：${err.message}`, 'appendMail-imap')
           } else {
@@ -648,9 +687,8 @@ struct MsgListPage {
     try {
       ctx.selectMsg = -1
       ctx.showToast('开始关闭本文件夹', 'closeBox-imap')
-      if (globalThis.client) {
-
-        globalThis.client.closeBox((err, result) => {
+      if (GlobalObj?.getInstance()?.getClient()) {
+        GlobalObj?.getInstance()?.getClient()?.closeBox((err: Error) => {
           if (err) {
             ctx.showToast(`关闭本文件夹失败,原因：${err.message}`, 'closeBox-imap')
           } else {
@@ -679,9 +717,9 @@ struct MsgListPage {
         return
       }
       ctx.showToast('开始设置排序', 'sortMail-imap')
-      if (globalThis.client) {
+      if (GlobalObj?.getInstance()?.getClient()) {
 
-        globalThis.client.sort([ctx.selectSort], ['ALL'], (err, result) => {
+        GlobalObj?.getInstance()?.getClient()?.sort([ctx.selectSort], ['ALL'], (err: Error, uids: number[]) => {
           if (err) {
             ctx.showToast(`设置排序失败,原因：${err.message}`, 'sortMail-imap')
           } else {
@@ -706,27 +744,24 @@ struct MsgListPage {
     try {
       ctx.selectMsg = -1
       ctx.showToast('开始搜索邮件', 'search-imap')
-      if (globalThis.client) {
-        globalThis.client.search([ctx.searchType], (err, result) => {
+      if (GlobalObj?.getInstance()?.getClient()) {
+        GlobalObj?.getInstance()?.getClient()?.search([ctx.searchType], (err: Error, uids: number[]) => {
           if (err) {
             ctx.showToast(`搜索邮件失败,原因：${err.message}`, 'search-imap')
           } else {
-            ctx.showToast('搜索邮件成功 ' + JSON.stringify(result), 'search-imap')
-
-            let jsonObj = result.split(',')
-            if (!jsonObj) {
+            ctx.showToast('搜索邮件成功 ' + JSON.stringify(uids), 'search-imap')
+            if (!uids) {
               throw new Error('get message list fail')
             }
             ctx.listData = [];
-            for (let i = 0; i < jsonObj.length; i++) {
+            for (let i = 0; i < uids.length; i++) {
               let bean = new MsgListBean();
               bean.Date = '';
               bean.From = '';
               bean.To = '';
-              bean.Subject = '当前搜索的信息编号：' + jsonObj[i];
+              bean.Subject = '当前搜索的信息编号：' + uids[i];
               ctx.listData.push(bean)
             }
-
           }
         });
       } else {
@@ -738,7 +773,6 @@ struct MsgListPage {
       ctx.showToast(`搜索邮件出错：${err.message}`, 'search-smtp')
     }
   }
-
 
   /**
    * 给邮件打标记 比如删除 已读
@@ -768,8 +802,8 @@ struct MsgListPage {
     try {
 
       ctx.showToast('开始给邮件打删除标记', 'storeMail-imap')
-      if (globalThis.client) {
-        globalThis.client.addFlags(uid, '\\Seen', (err, result) => {
+      if (GlobalObj?.getInstance()?.getClient()) {
+        GlobalObj?.getInstance()?.getClient()?.addFlags(uid, '\\Seen', (err: Error) => {
           if (err) {
             ctx.showToast(`给邮件打删除标记失败,原因：${err.message}`, 'storeMail-imap')
           } else {
@@ -794,8 +828,8 @@ struct MsgListPage {
     try {
       ctx.selectMsg = -1
       ctx.showToast('开始永久删除所有的标志为DELETED的邮件，EXPUNGE删除的邮件将不可以恢复', 'closeBox-imap')
-      if (globalThis.client) {
-        globalThis.client.expunge(uid, (err, result) => {
+      if (GlobalObj?.getInstance()?.getClient()) {
+        GlobalObj?.getInstance()?.getClient()?.expunge(uid, (err: Error) => {
           if (err) {
             ctx.showToast(`永久删除失败,原因：${err.message}`, 'expungeMail-imap')
           } else {
@@ -833,13 +867,12 @@ struct MsgListPage {
         return
       }
       let uid = ctx.listData[ctx.selectMsg].uid
-      if (globalThis.client) {
-        globalThis.client.copy(uid, ctx.selectFolder, (err, result) => {
+      if (GlobalObj?.getInstance()?.getClient()) {
+        GlobalObj?.getInstance()?.getClient()?.copy(uid, ctx.selectFolder, (err: Error) => {
           if (err) {
             ctx.showToast(`复制邮件失败,原因：${err.message}`, 'copyMail-imap')
           } else {
-            ctx.showToast('复制邮件成功 ' + JSON.stringify(result), 'copyMail-imap')
-
+            ctx.showToast('复制邮件成功 ', 'copyMail-imap')
           }
         });
       } else {
@@ -871,12 +904,12 @@ struct MsgListPage {
         return
       }
       let uid = ctx.listData[ctx.selectMsg].uid
-      if (globalThis.client) {
-        globalThis.client.move(uid, ctx.selectFolder, (err, result) => {
+      if (GlobalObj?.getInstance()?.getClient()) {
+        GlobalObj?.getInstance()?.getClient()?.move(uid, ctx.selectFolder, (err: Error) => {
           if (err) {
             ctx.showToast(`移动邮件失败,原因：${err.message}`, 'moveMail-imap')
           } else {
-            ctx.showToast('移动邮件成功 ' + JSON.stringify(result), 'moveMail-imap')
+            ctx.showToast('移动邮件成功 ', 'moveMail-imap')
 
           }
         });
@@ -908,8 +941,8 @@ struct MsgListPage {
       let uid = ctx.listData[ctx.selectMsg].uid
 
       ctx.showToast('开始给邮件添加已读标记', 'addFlag-imap')
-      if (globalThis.client) {
-        globalThis.client.addFlags(uid, '\\Seen', (err, result) => {
+      if (GlobalObj?.getInstance()?.getClient()) {
+        GlobalObj?.getInstance()?.getClient()?.addFlags(uid, '\\Seen', (err:Error) => {
           if (err) {
             ctx.showToast(`给邮件添加已读标记失败,原因：${err.message}`, 'addFlag-imap')
           } else {
@@ -945,8 +978,8 @@ struct MsgListPage {
       let uid = ctx.listData[ctx.selectMsg].uid
 
       ctx.showToast('开始给邮件设置已读标记', 'setFlag-imap')
-      if (globalThis.client) {
-        globalThis.client.setFlags(uid, '\\Seen', (err, result) => {
+      if (GlobalObj?.getInstance()?.getClient()) {
+        GlobalObj?.getInstance()?.getClient()?.setFlags(uid, '\\Seen', (err:Error) => {
           if (err) {
             ctx.showToast(`给邮件设置已读标记失败,原因：${err.message}`, 'setFlag-imap')
           } else {
@@ -982,8 +1015,8 @@ struct MsgListPage {
       let uid = ctx.listData[ctx.selectMsg].uid
 
       ctx.showToast('开始给邮件取消已读标记', 'deleteFlag-imap')
-      if (globalThis.client) {
-        globalThis.client.delFlags(uid, '\\Seen', (err, result) => {
+      if (GlobalObj?.getInstance()?.getClient()) {
+        GlobalObj?.getInstance()?.getClient()?.delFlags(uid, '\\Seen', (err:Error) => {
           if (err) {
             ctx.showToast(`给邮件取消已读标记失败,原因：${err.message}`, 'deleteFlag-imap')
           } else {
@@ -1019,8 +1052,8 @@ struct MsgListPage {
       let uid = ctx.listData[ctx.selectMsg].uid
 
       ctx.showToast('开始给邮件添加关键字', 'setKeywords-imap')
-      if (globalThis.client) {
-        globalThis.client.addKeywords(uid, '鸿蒙关键字', (err, result) => {
+      if (GlobalObj?.getInstance()?.getClient()) {
+        GlobalObj?.getInstance()?.getClient()?.addKeywords(uid, '鸿蒙关键字', (err:Error) => {
           if (err) {
             ctx.showToast(`给邮件添加关键字失败,原因：${err.message}`, 'setKeywords-imap')
           } else {
@@ -1056,8 +1089,8 @@ struct MsgListPage {
       let uid = ctx.listData[ctx.selectMsg].uid
 
       ctx.showToast('开始给邮件设置关键字', 'setKeywords-imap')
-      if (globalThis.client) {
-        globalThis.client.setKeywords(uid, '鸿蒙关键字', (err, result) => {
+      if (GlobalObj?.getInstance()?.getClient()) {
+        GlobalObj?.getInstance()?.getClient()?.setKeywords(uid, '鸿蒙关键字', (err:Error) => {
           if (err) {
             ctx.showToast(`给邮件设置关键字失败,原因：${err.message}`, 'setKeywords-imap')
           } else {
@@ -1093,8 +1126,8 @@ struct MsgListPage {
       let uid = ctx.listData[ctx.selectMsg].uid
 
       ctx.showToast('开始给邮件删除关键字', 'delKeywords-imap')
-      if (globalThis.client) {
-        globalThis.client.delKeywords(uid, '鸿蒙关键字', (err, result) => {
+      if (GlobalObj?.getInstance()?.getClient()) {
+        GlobalObj?.getInstance()?.getClient()?.delKeywords(uid, '鸿蒙关键字', (err:Error) => {
           if (err) {
             ctx.showToast(`给邮件删除关键字失败,原因：${err.message}`, 'delKeywords-imap')
           } else {
