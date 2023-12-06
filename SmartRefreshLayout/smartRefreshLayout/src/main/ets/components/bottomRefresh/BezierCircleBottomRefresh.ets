@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 import smartRefreshSecond from "../topRefresh/SmartRefreshSecond"
+import display from '@ohos.display';
 
 @Component
 export struct BezierCircleBottom {
@@ -26,6 +27,9 @@ export struct BezierCircleBottom {
   private bounceCount: number = 0
   private bounceMaxOffset : number = 100
   private bounceDirection: boolean = true
+  private multiple3:number = 3
+  private screenWidth:number = display.getDefaultDisplaySync().width
+
   private onDraw(): void {
     // 动态绘制
     if (this.classicsSimple.isSpinning) {
@@ -99,11 +103,11 @@ export struct BezierCircleBottom {
   }
   draw() : void {
       this.model.headerRefreshId = setInterval(() => {
-        let topHeight = this.model.initFooterHeight * 1.5
+        let topHeight = this.model.initFooterHeight * this.multiple3
         if (smartRefreshSecond.REFRESHSTATE.TOREFRESH == this.model.refreshState) {
           this.bounceCount = 0
-          let bottomCircleStartY = this.model.headerHeight * 1.5
-          this.smoothPathCmd = `M0 0 L0 ${topHeight} S360 ${bottomCircleStartY} 720 ${topHeight} L720 0 Z`;
+          let bottomCircleStartY = this.model.footerHeight * this.multiple3
+          this.smoothPathCmd = `M0 0 L0 ${topHeight} S${this.screenWidth / 2} ${bottomCircleStartY} ${this.screenWidth} ${topHeight} L${this.screenWidth} 0 Z`;
         }
         if (smartRefreshSecond.REFRESHSTATE.REFRESHING == this.model.refreshState) {
           let bottomCircleStartY = 0
@@ -113,13 +117,13 @@ export struct BezierCircleBottom {
               if (this.bounceMaxOffset <= 0) {
                 this.bounceMaxOffset = 100 - this.bounceCount * 5 //第二次在50位置开始
               }
-              bottomCircleStartY = (this.model.initHeaderHeight - this.bounceMaxOffset) * 1.5
+              bottomCircleStartY = (this.model.initFooterHeight - this.bounceMaxOffset) * this.multiple3
               this.bounceMaxOffset -= 10
             }
           } else {
-            bottomCircleStartY = this.model.initHeaderHeight * 1.5
+            bottomCircleStartY = this.model.initFooterHeight * this.multiple3
           }
-          this.smoothPathCmd = `M0 0 L0 ${topHeight} S360 ${bottomCircleStartY} 720 ${topHeight} L720 0 Z`;
+          this.smoothPathCmd = `M0 0 L0 ${topHeight} S${this.screenWidth / 2} ${bottomCircleStartY} ${this.screenWidth} ${topHeight} L${this.screenWidth} 0 Z`;
           this.onDraw()
         }
         this.refresh = !this.refresh
@@ -130,7 +134,7 @@ export struct BezierCircleBottom {
     this.model.setInitFooterHeight(250)
     this.model.setFooterHeight(250)
     this.model.setRefreshBottomCallback(() => this.draw())
-    this.classicsSimple.setBarColor(Color.White).setCircleRadius(70).init()
+    this.classicsSimple.setBarColor(Color.White).setCircleRadius(110).init()
   }
 
   build() {
@@ -143,7 +147,7 @@ export struct BezierCircleBottom {
       if (this.model.refreshState == smartRefreshSecond.REFRESHSTATE.REFRESHING) {//松开过后的刷新样式
           Stack( { alignContent: Alignment.Center }) {
             Path().width("100%").height(this.model.initHeaderHeight).commands(this.smoothPathCmd).backgroundColor(Color.White).fill(this.model.getBackgroundColor())
-            Circle({ width: 50, height: 50 })
+            Circle({ width: 40, height: 40 })
               .fillOpacity(3)
               .stroke(Color.White)
               .strokeWidth(2)
@@ -156,7 +160,7 @@ export struct BezierCircleBottom {
               .width(80)
               .height(80)
               .zIndex(2)
-              .margin({right: 10, bottom: 15})
+              .margin({left:(16 ) , top:(18)})
               .opacity(1)
          }.width("100%").height("100%")
       } else if (this.model.refreshState == smartRefreshSecond.REFRESHSTATE.TOREFRESH) {//拖住过程中的样式

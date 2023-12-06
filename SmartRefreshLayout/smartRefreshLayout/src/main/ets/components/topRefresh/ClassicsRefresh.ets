@@ -14,6 +14,7 @@
  */
 
 import SmartRefresh from "./SmartRefresh"
+import display from '@ohos.display';
 
 @Component
 export struct Classics {
@@ -32,9 +33,9 @@ export struct Classics {
   private pullRefreshImage: Resource = $r("app.media.classicsRefreshing")
   private pullRefreshIntervalId : number = -1
   @State pullRefreshImageAngle: number = 0
+  private screenWidth:number = display.getDefaultDisplaySync().width
 
   aboutToAppear() {
-    console.log('liqi 66666666666666666666666666666666===' + "classicsRefresh -1");
     this.model.setRefreshHeaderCallback(() => this.draw())
     if(this.model.initRefreshing) {
       this.model.refreshHeaderCallback()
@@ -82,13 +83,11 @@ export struct Classics {
 
   refreshingFunction() : void {
     this.pullRefreshImage = $r("app.media.classicsRefreshing")
-    console.log('liqi 222222222222222222222222222222222222222222===' + "classicsRefresh 2");
     this.model.headerRefreshId = setInterval(() => {
       if(this.pullRefreshImageAngle > 360) {
         this.pullRefreshImageAngle = this.pullRefreshImageAngle - 360
       }
       this.pullRefreshImageAngle = this.pullRefreshImageAngle + 10
-      console.log('liqi 222222222222222222222222222222222222222222');
     }, 50)
   }
 
@@ -105,13 +104,13 @@ export struct Classics {
         this.information = index + "月" + day + "日"
       }
     })
-    let morningOrAfternoon = (Number.parseInt(str[0]) + 8) > 24 ? (Number.parseInt(str[0]) + 8) - 24 : (Number.parseInt(str[0]) + 8)
-    if (morningOrAfternoon < 12) {
-      this.information = this.information + "上午"
-    } else if(morningOrAfternoon > 12 ) {
-      this.information = this.information + "下午"
-    }
-    this.information = this.information + morningOrAfternoon + ":" + str[1]
+    // let morningOrAfternoon = Number.parseInt(str[0])
+    // if (morningOrAfternoon < 12) {
+    //   this.information = this.information + "上午"
+    // } else if(morningOrAfternoon > 12 ) {
+    //   this.information = this.information + "下午"
+    // }
+    this.information = this.information + Number.parseInt(str[0]) + ":" + str[1]
   }
 
   private onDraw(): void {
@@ -287,7 +286,7 @@ export struct Classics {
           Text(this.model.refreshHeaderRefreshFinish)
             .fontSize(40)
             .fontColor(this.model.getAccentColor())
-            .margin({ top: 60, left : 150})
+            .margin({ top: 60, left : px2vp(this.screenWidth / 3)})
         }.alignItems(VerticalAlign.Center)
       }
     }.backgroundColor(this.model.getBackgroundShadowColor()).width("100%")

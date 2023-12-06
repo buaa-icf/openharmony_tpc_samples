@@ -64,7 +64,6 @@ export struct DropBox {
   aboutToDisappear(): void {
     if (this.model.headerRefreshId > 0) {
       clearInterval(this.model.headerRefreshId)
-      console.log('liqi 66666666666666666666666666666666===' + "classicsRefresh 0");
       this.model.headerRefreshId = -1
     }
   }
@@ -119,8 +118,8 @@ export struct DropBox {
               centerY: 0
             })
             .translate({
-              x: -20,
-              y: this.model.headerHeight - 110
+              x: -5,
+              y: this.model.headerHeight - 105
             })
           Path()
             .commands("M0 49L85 0L"
@@ -144,8 +143,8 @@ export struct DropBox {
               centerY: 0
             })
             .translate({
-              x: -20,
-              y: this.model.headerHeight - 110
+              x: -5,
+              y: this.model.headerHeight - 105
             })
           //红包
           ForEach(this.drawable1Paths, (item:Drawable3PathsParam) => {
@@ -262,8 +261,8 @@ export struct DropBox {
               centerY: 0
             })
             .translate({
-              x: -20,
-              y: this.model.headerHeight - 110
+              x: -5,
+              y: this.model.headerHeight - 105
             })
 
           Path()
@@ -288,8 +287,8 @@ export struct DropBox {
               centerY: 0
             })
             .translate({
-              x: -20,
-              y: this.model.headerHeight - 110
+              x: -5,
+              y: this.model.headerHeight - 105
             })
 
 

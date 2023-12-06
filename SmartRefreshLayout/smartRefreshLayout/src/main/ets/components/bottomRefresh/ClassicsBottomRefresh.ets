@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 import SmartRefresh from "../topRefresh/SmartRefresh"
+import display from '@ohos.display';
 
 @Component
 export struct ClassicsBottom {
@@ -28,6 +29,7 @@ export struct ClassicsBottom {
   private arrowDown: string = 'M 25 20 L25 120 L0 85 L25 120 L50 85 L25 120'
   private arrowUp : string = 'M 25 100  L25 -20 L0 15 L25 -20 L50 15 L25 -20'
   private EnglishMonth: string[] = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec']
+  private screenWidth:number = display.getDefaultDisplaySync().width
 
    aboutToAppear() {
     if (this.model.getClassicsBottomDrawableArrow()) {
@@ -186,7 +188,7 @@ export struct ClassicsBottom {
             .width(100)
             .height(200)
             .stroke(this.model.getClassicsBottomAccentColor())
-            .margin({left: 50, top: 50 + this.calculateTopPosition()})
+            .margin({left: 50, top: this.model.footerHeight / 2})
           Column() {
             Row() {
               Text(this.model.classicsBottomRefreshRefreshing)
@@ -238,7 +240,7 @@ export struct ClassicsBottom {
           Text(this.model.refreshHeaderRefreshFinish)
             .fontSize(40)
             .fontColor(this.model.getAccentColor())
-            .margin({ top: 60, left : 150})
+            .margin({ top: 20, left : px2vp(this.screenWidth / 4)})
         }.alignItems(VerticalAlign.Center)
       }
     }.backgroundColor(this.model.getBackgroundShadowColor()).width("100%")

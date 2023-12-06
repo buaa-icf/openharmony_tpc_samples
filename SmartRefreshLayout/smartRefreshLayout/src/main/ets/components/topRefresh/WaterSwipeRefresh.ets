@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 import SmartRefresh from "./SmartRefresh"
+import display from '@ohos.display';
 
 @Component
 export struct WaterSwipe {
@@ -22,7 +23,7 @@ export struct WaterSwipe {
   private waterTopPathCmd: string = ''
   private waterSwipeTouchType: TouchType = TouchType.Down
   private bottomWaterCmd: string = ''
-  private middleWaterCmd: string = ''
+  @State middleWaterCmd: string = ''
   private waterBottomPathCmd: string = ''
   private sunSingleLinePth: string = ''
   private sunSingleSecondLinePth: string = ''
@@ -51,9 +52,12 @@ export struct WaterSwipe {
   private arrowAngle: number = 45
   private arrowPathCmd: string = ''
   private arrowAngleFlag: number = 0
-  private arrowPositionStartX: number = 330
-  private arrowPositionStartY: number = 100
+
   private pullRefreshImage: Resource = $r("app.media.ic_loading")
+  private screenWidth:number = display.getDefaultDisplaySync().width
+  private screenHeight:number = display.getDefaultDisplaySync().height
+  private arrowPositionStartX: number = (this.screenWidth / 2) //330
+  private arrowPositionStartY: number = 100
 
   caculateSunOffset(sunXOffset: number, sunYOffset: number): void {
     let index: number = 0
@@ -88,8 +92,9 @@ export struct WaterSwipe {
           }, this.model.refreshDuration);
         }
       }
-      let initStartX: number = 250
-      let topCircleRadius: number = 80
+      let topCircleRadius: number = 100
+      let initStartX: number = this.screenWidth / 2 - topCircleRadius
+
       let initStartY: number = this.model.headerHeight - this.model.initHeaderHeight < 100 ? (this.model.headerHeight - this.model.initHeaderHeight) : 100
       this.arrowPositionStartY = initStartY
       if (SmartRefresh.REFRESHSTATE.TOREFRESH == this.model.refreshState) {
@@ -100,7 +105,9 @@ export struct WaterSwipe {
         let bottomCircleStartX = initStartX + topCircleRadius - this.bottomCircleRadius // 450 + 100
         let getOffset = this.model.getOffset() * this.model.initHeaderHeight
         //let bottomCircleStartY = getOffset > this.model.initHeaderHeight ? (getOffset - 50): (initStartY - 20)
-        let bottomCircleStartY = this.model.headerHeight > this.model.initHeaderHeight ? (this.model.headerHeight - this.model.initHeaderHeight + initStartY) : (initStartY - 20)
+        //let bottomCircleStartY = this.model.headerHeight > this.model.initHeaderHeight ? (this.model.headerHeight - this.model.initHeaderHeight + initStartY) : (initStartY - 20)
+        let bottomCircleStartY = this.model.headerHeight > this.model.initHeaderHeight ?
+          ((this.model.headerHeight - this.model.initHeaderHeight + initStartY) * 3) : (initStartY)
         let leftMiddleX = (initStartX + bottomCircleStartX) / 2 + 20
         let leftMiddleY = (initStartY + bottomCircleStartY) / 2
         let rightMiddleX = (initStartX + 2 * topCircleRadius  + bottomCircleStartX + 2 * this.bottomCircleRadius) / 2 - 20
@@ -115,8 +122,8 @@ export struct WaterSwipe {
                             + ` L${initStartX} ${initStartY} `
 
         //顶部圆形中的刷新
-        let increase_distanceToAngle : number = 360 * (this.model.headerHeight - this.model.initHeaderHeight) / 200
-        let reduce_distanceToAngle : number = 135 * (this.model.headerHeight - this.model.initHeaderHeight) / 200
+        let increase_distanceToAngle : number = 360 * this.model.headerHeight / (this.model.initHeaderHeight * 2)
+        let reduce_distanceToAngle : number = 135 * this.model.headerHeight  / (this.model.initHeaderHeight * 3)
         let arrowTopRadian: number = 0
         let arrowBottomRadian: number = 0
         if ((increase_distanceToAngle - reduce_distanceToAngle) < 180) {
@@ -138,7 +145,7 @@ export struct WaterSwipe {
         let arrowBottomPointEndX = this.dragRefreshData.startX + (this.ArrowRadius * Math.cos(arrowBottomRadian))
         let arrowBottomPointEndY = this.dragRefreshData.startY + (this.ArrowRadius * Math.sin(arrowBottomRadian))
         if (this.arrowAngleFlag == 0){
-          this.dragPathCmd = "M" + this.dragRefreshData.endX + " " + this.dragRefreshData.endY + " "
+          this.dragPathCmd = "M" + this.dragRefreshData.endX  + " " + this.dragRefreshData.endY + " "
                             + "A " + this.dragRefreshData.radius + " " + this.dragRefreshData.radius + ", 0, "
                             + this.arrowAngleFlag + ", " + this.dragRefreshData.directionFlag + ", "
                             + this.dragRefreshData.startX + " " + this.dragRefreshData.startY
@@ -152,6 +159,11 @@ export struct WaterSwipe {
                             + "L " + arrowBottomPointEndX + " " + arrowBottomPointEndY
         }
         this.refresh = !this.refresh
+      } else { //清除上一次的数据
+        this.bottomWaterCmd = ""
+        this.middleWaterCmd = ""
+        this.waterTopPathCmd = ""
+        this.dragPathCmd = ""
       }
     }, 30)
   }
@@ -238,17 +250,17 @@ export struct WaterSwipe {
                 .fill(this.model.backgroundColor)
                 .stroke(Color.White)
                 .margin({top:0,left:0})
-              if (this.arrowAngleFlag == 1) {
-                Path() //圆的轨道
-                  .width("100%")
-                  .height(this.model.headerHeight)
-                  .strokeWidth(3)
-                  .fillOpacity(0)
-                  .stroke(Color.White)
-                  .commands(this.arrowPathCmd)
-                  .zIndex(2)
-                  .opacity(1)
-              }
+              // if (this.arrowAngleFlag == 1) {
+              //   Path() //圆的轨道
+              //     .width("100%")
+              //     .height(this.model.headerHeight)
+              //     .strokeWidth(3)
+              //     .fillOpacity(0)
+              //     .stroke(Color.White)
+              //     .commands(this.arrowPathCmd)
+              //     .zIndex(2)
+              //     .opacity(1)
+              // }
             }
           }
         }

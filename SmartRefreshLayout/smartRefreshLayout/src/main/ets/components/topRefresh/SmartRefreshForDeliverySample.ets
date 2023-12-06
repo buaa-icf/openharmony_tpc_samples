@@ -418,10 +418,8 @@ struct SmartRefreshForDeliverySample {
     this.modelDelivery.refreshHeaderCallbackState = true
     this.modelDelivery.refreshBottomCallbackState = false
     this.scrollerIsEnableRollWhenRefreshing = true//结束刷新，设置scroll可以滚动
-    console.log('liqi 333333333333333333333333333333333333===' + this.modelDelivery.headerRefreshId);
     clearInterval(this.modelDelivery.headerRefreshId)
     this.modelDelivery.headerRefreshId = -1
-    console.log('liqi 4444444444444444444444444444444444444===' + this.modelDelivery.headerRefreshId);
   }
 
   closeFooterRefresh() {

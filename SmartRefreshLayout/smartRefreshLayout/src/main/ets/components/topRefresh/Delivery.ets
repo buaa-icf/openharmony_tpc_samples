@@ -78,7 +78,6 @@ export struct Delivery {
   aboutToDisappear(): void {
     if (this.model.headerRefreshId > 0) {
       clearInterval(this.model.headerRefreshId)
-      console.log('liqi 66666666666666666666666666666666===' + "classicsRefresh 0");
       this.model.headerRefreshId = -1
     }
   }
@@ -179,7 +178,7 @@ export struct Delivery {
               .fill(this.umbrellaColors[item.index])
               .width("100%")
               .height(this.model.headerHeight)
-              .margin({left: 25,top:86})
+              .margin({left: 45,top:160})
               .rotate({
                 x: 0,
                 y: 1,

@@ -37,6 +37,11 @@ struct DropBoxSample {
     {text:"红色主题颜色",label:"更改为红色主题颜色",boxColor:[0xfff08080,0xfffffafa],backgroundColor:0xffff4444},
     {text:"绿色主题颜色",label:"更改为绿色主题颜色",boxColor:[0xff90ee90,0xfffffafa],backgroundColor:0xff99cc00},
     {text:"蓝色主题颜色",label:"更改为蓝色主题颜色",boxColor:[0xffafeeee,0xfffffafa],backgroundColor:0xff33aaff},
+    {text:"蓝色主题颜色",label:"更改为蓝色主题颜色",boxColor:[0xffafeeee,0xfffffafa],backgroundColor:0xff33aaff},
+    {text:"蓝色主题颜色",label:"更改为蓝色主题颜色",boxColor:[0xffafeeee,0xfffffafa],backgroundColor:0xff33aaff},
+    {text:"蓝色主题颜色",label:"更改为蓝色主题颜色",boxColor:[0xffafeeee,0xfffffafa],backgroundColor:0xff33aaff},
+    {text:"蓝色主题颜色",label:"更改为蓝色主题颜色",boxColor:[0xffafeeee,0xfffffafa],backgroundColor:0xff33aaff},
+    {text:"蓝色主题颜色",label:"更改为蓝色主题颜色",boxColor:[0xffafeeee,0xfffffafa],backgroundColor:0xff33aaff},
   ]
   boxColor?: Array<number> = [0xff6ea9ff,0xff6ea9ff];
 

@@ -14,6 +14,7 @@
  */
 
 import SmartRefresh from "./SmartRefresh"
+import display from '@ohos.display';
 
 @Component
 export struct WaveSwipe {
@@ -68,6 +69,8 @@ export struct WaveSwipe {
   private arrowDragDown_BottomPointEndY: number = 0
   private arrowDragUpYOffset : number = 230
   private arrowDragUpXOffset : number = 10
+  private screenWidth:number = display.getDefaultDisplaySync().width
+  private screenHeight:number = display.getDefaultDisplaySync().height
 
   arrowDraw(centerX:number, centerY:number) : void {
       if (SmartRefresh.REFRESHSTATE.TOREFRESH == this.model.refreshState) {
@@ -121,7 +124,7 @@ export struct WaveSwipe {
 //先放大圆，在放大颈部，更好控制刷新条
   private dropMoveDraw(): void {
     this.model.headerRefreshId = setInterval(() => {
-      let screenWidth = 720
+      let screenWidth = this.screenWidth
       let bottomLineWidth = 100
       //this.touchMoveHeight = this.model.headerHeight
       this.touchMoveHeight = this.model.downYOffset
@@ -130,7 +133,7 @@ export struct WaveSwipe {
         this.model.waterDropYMiddleCoordinate = 400
         this.model.waterDropYBottomCoordinate = 600
 
-        this.secondOffsetX = screenWidth * 9 / 22
+        this.secondOffsetX = screenWidth * 9 / 20
         this.firstOffsetX = this.secondOffsetX / 2
         this.thirdOffsetX = this.secondOffsetX + 40
         this.fourOffsetX  = this.secondOffsetX
@@ -152,10 +155,14 @@ export struct WaveSwipe {
           this.maxRangeHeight = this.touchMoveHeight * 3// 为1100dp 除以360
         }
         if(this.touchMoveHeight <= this.model.initHeaderHeight) {
-          this.pathCmd = `C0 0 ${this.firstOffsetX} ${this.firstOffsetY} 350 ${this.secondOffsetY}`
-                         + `C350 ${this.secondOffsetY} 360 ${this.secondOffsetY} 370 ${this.secondOffsetY}`
-                         + `C370 ${this.secondOffsetY} ${this.eightOffsetX} ${this.firstOffsetY} ${screenWidth} 0`
-                         + `Z`;
+          // this.pathCmd = `C0 0 ${this.firstOffsetX} ${this.firstOffsetY} 350 ${this.secondOffsetY}`
+          //                + `C350 ${this.secondOffsetY} 360 ${this.secondOffsetY} 370 ${this.secondOffsetY}`
+          //                + `C370 ${this.secondOffsetY} ${this.eightOffsetX} ${this.firstOffsetY} ${screenWidth} 0`
+          //                + `Z`;
+          this.pathCmd = `C0 0 ${this.firstOffsetX} ${this.firstOffsetY} C ${screenWidth / 2 - 10} 350`
+            + `C ${screenWidth / 2 - 10} ${this.secondOffsetY} ${screenWidth / 2} ${this.secondOffsetY} ${screenWidth / 2 + 10} ${this.secondOffsetY}`
+            + `C ${screenWidth / 2 + 10} ${this.secondOffsetY} ${this.eightOffsetX} ${this.firstOffsetY} ${screenWidth} 0`
+            + `Z`;
         } else {
           this.pathCmd = `C0 0 ${this.firstOffsetX} ${this.firstOffsetY} ${this.secondOffsetX} ${this.secondOffsetY}
                         C${this.secondOffsetX} ${this.secondOffsetY} ${this.thirdOffsetX} ${this.thirdOffsetY} ${this.fourOffsetX} ${this.fourOffsetY}
@@ -246,7 +253,7 @@ export struct WaveSwipe {
         }
       } else if (this.model.refreshState == SmartRefresh.REFRESHSTATE.REFRESHING ) { //松开过后的刷新样式
         if (this.dragUpFlag) {
-          Stack() {
+          Stack() {//掉过的过程中
             Path() //圆的轨道
               .width("100%")
               .height("100%")
@@ -268,11 +275,12 @@ export struct WaveSwipe {
             Path() //圆的轨道
               .strokeWidth(1)
               .stroke(this.model.backgroundColor)
-              .commands("M430 620 A 70 70, 0, 1, 1, 430 619.99")
+              .commands("M70 70 A 70 70 0 1 1 70 69.9")
               .width("100%")
               .height("100%")
               .fill(this.model.backgroundColor)
               .zIndex(10)
+              .margin({left:px2vp(this.screenWidth),top:this.screenHeight / 5})
             Path() //圆的轨道
               .strokeWidth(this.refreshData.barWidth)
               .stroke(Color.White)
@@ -281,6 +289,7 @@ export struct WaveSwipe {
               .width("100%")
               .height("100%")
               .zIndex(20)
+              .margin({left:px2vp(this.screenWidth - 140) + 10,top:(this.screenHeight / 5 + 10)})
            }
         }
       }
@@ -314,7 +323,10 @@ export struct WaveSwipe {
       if (this.refreshData.targetAngle > 360) {
         this.refreshData.targetAngle = this.refreshData.targetAngle - 360
       }
-      this.refreshData.svgPath = "M" + (this.refreshData.startX + 310) + " " + (this.refreshData.startY + 570)+ " " + "A " + this.refreshData.radius + " " + this.refreshData.radius + ", 0, " + this.refreshData.angleFlag + ", " + this.refreshData.directionFlag + ", " + (this.refreshData.endX + 310) + " " + (this.refreshData.endY + 570)
+      this.refreshData.svgPath = "M" + (this.refreshData.startX) + " " + (this.refreshData.startY)+ " "
+                                + "A " + this.refreshData.radius + " " + this.refreshData.radius
+                                + ", 0, " + this.refreshData.angleFlag + ", " + this.refreshData.directionFlag + ", "
+                                + (this.refreshData.endX) + " " + (this.refreshData.endY)
 
       this.refreshData.mProgress = "Progress:"
     }

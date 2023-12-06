@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 import SmartRefresh from "./SmartRefresh"
+import display from '@ohos.display';
 
 @Component
 export struct Material {
@@ -39,7 +40,8 @@ export struct Material {
   private arrowPathCmd: string = ''
   private arrowAngleFlag: number = 0
   @State shadowCommands: string = ''
-  private screenWidth: number = 730
+  private screenWidth: number = display.getDefaultDisplaySync().width
+  private multiple3:number = 3
 
   aboutToAppear() {
     this.model.headerHeight = this.model.initHeaderHeight
@@ -55,14 +57,14 @@ export struct Material {
 
   shadowCommand() {
     if (this.model.headerHeight < this.model.initHeaderHeight || this.model.refreshState == SmartRefresh.REFRESHSTATE.REFRESHING) {
-      let height = this.model.headerHeight * 1.5
+      let height = this.model.headerHeight * this.multiple3
       this.shadowCommands = "M0 0 L0 " + height
               + " L " + this.screenWidth + " " + height + " L " + this.screenWidth + " 0 Z"
     }
     if (this.model.headerHeight >= this.model.initHeaderHeight && this.model.refreshState == SmartRefresh.REFRESHSTATE.TOREFRESH) {
-      let height = this.model.initHeaderHeight * 1.5
+      let height = this.model.initHeaderHeight * this.multiple3
       this.shadowCommands = "M0 0 L0 " + height
-              +"C0 " + height + " " +(this.screenWidth / 2) + " " + (height + (this.model.headerHeight - this.model.initHeaderHeight) * 0.9)
+              +"C0 " + height + " " +(this.screenWidth / 2) + " " + (height + (this.model.headerHeight - this.model.initHeaderHeight) * 0.9 * this.multiple3)
               + " " + this.screenWidth + " " + height
               + " L " + this.screenWidth + " " + height + " L " + this.screenWidth + " 0 Z"
     }
@@ -225,11 +227,11 @@ export struct Material {
           Path() //外圆的轨道
             .strokeWidth(3)
             .stroke(this.model.backgroundColor)
-            .commands("M405 50 A 60 60, 0, 1, 1, 405 49.99")
+            .commands("M0 80 A 80 80, 0, 1, 1, 0 79.99")
             .width("100%")
             .height("100%")
             .fill(Color.White)
-            .margin({top: (this.model.headerHeight - 50) / 2 * 1.5})
+            .margin({left:(this.screenWidth / 6),top: ((this.model.headerHeight / 2 - 70) * 3 + 45) })
           Path() //内圆的轨道
             .strokeWidth(5)
             .fillOpacity(0)
@@ -238,7 +240,7 @@ export struct Material {
             .width("100%")
             .height("100%")
             .zIndex(2)
-            .margin({left: 200,top: (this.model.headerHeight - 40) / 2 * 1.5})
+            .margin({left: (this.screenWidth / 6) - 35,top: ((this.model.headerHeight / 2 - 70) * 3 + 60) })
             .opacity(1)
         }
       } else if (this.model.refreshState == SmartRefresh.REFRESHSTATE.TOREFRESH) { //拖住过程中的样式
@@ -246,14 +248,15 @@ export struct Material {
           Stack({ alignContent: Alignment.Start}) {
             Path()
               .commands(this.shadowCommands)
-              .fill(this.model.accentColor)
+              .fill(this.model.getBackgroundColor())
             Path() //外圆的轨道
               .strokeWidth(3)
               .stroke(4)
-              .commands("M400 50 A 60 60, 0, 1, 1, 400 49.99")
+              .commands("M0 70 A 80 80, 0, 1, 1, 0 69.99")
               .width(50)
               .height(50)
-              .margin({top: this.model.headerHeight < this.model.initHeaderHeight ? this.model.headerHeight - this.model.initHeaderHeight
+              .margin({left:(this.screenWidth / 6),
+                top: this.model.headerHeight < this.model.initHeaderHeight ? this.model.headerHeight - this.model.initHeaderHeight
                 : ((this.model.headerHeight - this.model.initHeaderHeight) < 48 ? (this.model.headerHeight - this.model.initHeaderHeight)
                   :48)})
               .fill(Color.White)
@@ -265,13 +268,13 @@ export struct Material {
               .width(50)
               .height(50)
               .zIndex(2)
-              .margin({top:  this.model.headerHeight < this.model.initHeaderHeight ? this.model.headerHeight - this.model.initHeaderHeight - 10
-                : ((this.model.headerHeight - this.model.initHeaderHeight - 15) < 30 ? (this.model.headerHeight - this.model.initHeaderHeight - 15)
-                  :30),
+              .margin({top:  this.model.headerHeight < this.model.initHeaderHeight ? this.model.headerHeight - this.model.initHeaderHeight
+                : ((this.model.headerHeight - this.model.initHeaderHeight) < 48 ? (this.model.headerHeight - this.model.initHeaderHeight)
+                  :48),
                 left: 185})
               .opacity(1)
             if (this.arrowAngleFlag == 1) {
-              Path() //圆的轨道
+              Path() //箭头轨道
                 .strokeWidth(3)
                 .fillOpacity(0)
                 .stroke(Color.Blue)
@@ -279,9 +282,9 @@ export struct Material {
                 .width(50)
                 .height(50)
                 .zIndex(2)
-                .margin({top:  this.model.headerHeight < 200 ? this.model.headerHeight - this.model.initHeaderHeight - 10
-                  : ((this.model.headerHeight - this.model.initHeaderHeight - 15) < 30 ? (this.model.headerHeight - this.model.initHeaderHeight - 15)
-                    :30),
+                .margin({top:  this.model.headerHeight < this.model.initHeaderHeight ? this.model.headerHeight - this.model.initHeaderHeight
+                  : ((this.model.headerHeight - this.model.initHeaderHeight) < 48 ? (this.model.headerHeight - this.model.initHeaderHeight)
+                    :48),
                   left: 185})
                 .opacity(1)
             }
@@ -363,7 +366,7 @@ namespace MaterialSimple {
     //初始化
     init() {
       this.radius = this.circleRadius - this.barWidth
-      this.startX = this.circleRadius
+      this.startX = 0//this.circleRadius
       this.startY = this.barWidth
       // 近似一个完整的回环(轮圈)
       let closureRadian = 359.99 * Math.PI / 180

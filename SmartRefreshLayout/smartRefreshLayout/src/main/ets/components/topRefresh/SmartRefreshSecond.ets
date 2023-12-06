@@ -342,7 +342,7 @@ namespace SmartRefreshSecond {
   export class Model {
     scroller: Scroller = new Scroller()
     headerHeight: number = 1 //实际头部高度
-    initHeaderHeight: number = 210 //标准头部高度
+    initHeaderHeight: number = 200 //标准头部高度
 
     downY: number= 0
     currentMouseX: number = 0 //获取下拉中鼠标的X轴坐标

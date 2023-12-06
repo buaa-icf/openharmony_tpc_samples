@@ -14,6 +14,7 @@
  */
 //import SmartRefresh from "./SmartRefresh"
 import smartRefreshSecond from "./SmartRefreshSecond"
+import display from '@ohos.display';
 
 @Component
 export struct BezierCircle {
@@ -28,6 +29,10 @@ export struct BezierCircle {
   private bounceCount: number = 0
   private bounceMaxOffset : number = 100
   private bounceDirection: boolean = true
+  private multiple3:number = 3
+
+  private screenWidth:number = display.getDefaultDisplaySync().width
+
   private onDraw(): void {
     // 动态绘制
     if (this.classicsSimple.isSpinning) {
@@ -101,11 +106,11 @@ export struct BezierCircle {
   }
   draw() : void {
       this.model.headerRefreshId = setInterval(() => {
-        let initTopHeight = (this.model.headerHeight < this.model.initHeaderHeight ? this.model.headerHeight : this.model.initHeaderHeight) * 1.5
+        let initTopHeight = (this.model.headerHeight < this.model.initHeaderHeight ? this.model.headerHeight : this.model.initHeaderHeight) * this.multiple3
         if (smartRefreshSecond.REFRESHSTATE.TOREFRESH == this.model.refreshState) {
           this.bounceCount = 0
-          let bottomCircleStartY = this.model.headerHeight * 1.5
-          this.smoothPathCmd = `M0 0 L0 ${initTopHeight} S360 ${bottomCircleStartY} 720 ${initTopHeight} L720 0 Z`;
+          let bottomCircleStartY = this.model.headerHeight * this.multiple3
+          this.smoothPathCmd = `M0 0 L0 ${initTopHeight} S${this.screenWidth / 2} ${bottomCircleStartY} ${this.screenWidth} ${initTopHeight} L${this.screenWidth} 0 Z`;
         }
         if (smartRefreshSecond.REFRESHSTATE.REFRESHING == this.model.refreshState) {
           let bottomCircleStartY = 0
@@ -115,13 +120,13 @@ export struct BezierCircle {
               if (this.bounceMaxOffset <= 0) {
                 this.bounceMaxOffset = 100 - this.bounceCount * 5 //第二次在50位置开始
               }
-              bottomCircleStartY = (this.model.initHeaderHeight - this.bounceMaxOffset) * 1.5
+              bottomCircleStartY = (this.model.initHeaderHeight - this.bounceMaxOffset) * this.multiple3
               this.bounceMaxOffset -= 10
             }
           } else {
-            bottomCircleStartY = this.model.initHeaderHeight * 1.5
+            bottomCircleStartY = this.model.initHeaderHeight * this.multiple3
           }
-          this.smoothPathCmd = `M0 0 L0 ${initTopHeight} S360 ${bottomCircleStartY} 720 ${initTopHeight} L1100 0 Z`;
+          this.smoothPathCmd = `M0 0 L0 ${initTopHeight} S${this.screenWidth / 2} ${bottomCircleStartY} ${this.screenWidth} ${initTopHeight} L${this.screenWidth} 0 Z`;
         }
 
         this.onDraw()
@@ -130,7 +135,7 @@ export struct BezierCircle {
   }
 
   aboutToAppear() {
-    this.classicsSimple.setBarColor(Color.White).setCircleRadius(70).init()
+    this.classicsSimple.setBarColor(Color.White).setCircleRadius(110).init()
     this.model.setInitHeaderHeight(200).setZHeaderIndex(99).setZMainHeight(-1)
     this.model.setRefreshHeaderCallback(() => this.draw())
     if(this.model.initRefreshing) {
@@ -152,10 +157,10 @@ export struct BezierCircle {
             Path() //圆的轨道
               .strokeWidth(3)
               .stroke(Color.White)
-              .commands("M360 50 A 40 40, 0, 1, 1, 360 49.99")
+              .commands(`M0 60 A 60 60, 1, 1, 1, 0 59.9`)
               .width("100%")
               .height("100%")
-              .margin({top: (this.model.headerHeight - 40) / 2 * 1.5})
+              .margin({left: (this.screenWidth / 3.1),top:(this.model.headerHeight / 2 + 25)})
               .fill(Color.White)
             Path() //圆的轨道
               .strokeWidth(8)
@@ -165,7 +170,7 @@ export struct BezierCircle {
               .width("100%")
               .height("100%")
               .zIndex(2)
-              .margin({left: 335, top: (this.model.headerHeight - 80) / 2 * 1.5})
+               .margin({left: (this.screenWidth / 4), top: (this.model.headerHeight) / 2 })
               .opacity(1)
          }.width("100%").height("100%")
       } else if (this.model.refreshState == smartRefreshSecond.REFRESHSTATE.TOREFRESH) {//拖住过程中的样式
@@ -191,7 +196,7 @@ namespace ClassicsSimple {
     // 圆弧最大角度
     maxAngle: number = 270
     //半径
-    circleRadius: number = 60
+    circleRadius: number = 550
     //真实半径
     radius: number = 0
     // 在 minAngle 基础上，额外需要绘制的角度
@@ -255,14 +260,14 @@ namespace ClassicsSimple {
       let closureX = this.circleRadius + (this.radius * Math.sin(closureRadian))
       this.closureY = this.circleRadius - (this.radius * Math.cos(closureRadian))
       this.rimSvgPath = "M" + this.startX + " " + this.startY + " " + "A " + this.radius + " " +
-      this.radius + ", 0, " + "1" + ", " + this.directionFlag + ", " + closureX + " " + this.closureY + "Z"
+                    this.radius + ", 0, " + "1" + ", " + this.directionFlag + ", " + closureX + " " + this.closureY + "Z"
       // 计算弧度
       if (this.isSpinning) {
         let radian = this.minAngle * Math.PI / 180
         this.endX = this.circleRadius + (this.radius * Math.sin(radian))
         this.endY = this.circleRadius - (this.radius * Math.cos(radian))
         this.svgPath = "M" + this.startX + " " + this.startY + " " + "A " + this.radius + " " +
-        this.radius + ", 0, " + this.angleFlag + ", " + this.directionFlag + ", " + this.endX + " " + this.endY
+                  this.radius + ", 0, " + this.angleFlag + ", " + this.directionFlag + ", " + this.endX + " " + this.endY
       } else {
         if (this.mTargetProgress == 1) {
           this.maxAngle = 359.99

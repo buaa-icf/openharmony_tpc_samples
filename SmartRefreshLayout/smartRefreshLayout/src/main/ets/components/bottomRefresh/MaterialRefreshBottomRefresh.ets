@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 import SmartRefresh from "../topRefresh/SmartRefresh"
+import display from '@ohos.display';
 
 @Component
 export struct MaterialBottom {
@@ -39,6 +40,8 @@ export struct MaterialBottom {
   private arrowAngle: number = 45
   private arrowPathCmd: string = ''
   private arrowAngleFlag: number = 0
+  private screenWidth: number = display.getDefaultDisplaySync().width
+  private multiple3:number = 3
 
   draw() : void {
     this.model.bottomRefreshId = setInterval(() => {
@@ -197,10 +200,10 @@ export struct MaterialBottom {
             Path() //圆的轨道
               .strokeWidth(3)
               .stroke(this.model.backgroundColor)
-              .commands("M255 50 A 60 60, 0, 1, 1, 255 49.99")
+              .commands("M0 80 A 80 80, 0, 1, 1, 0 79.99")
               .width(50)
               .height(50)
-              .margin({top: 48})
+              .margin({top: (this.model.footerHeight / 5),left:this.screenWidth / 6.5})
               .fill(Color.White)
             Path() //圆的轨道
               .strokeWidth(5)
@@ -210,41 +213,43 @@ export struct MaterialBottom {
               .width(50)
               .height(50)
               .zIndex(2)
-              .margin({top: 50, left: 200})
+              .margin({top: (this.model.footerHeight / 5 + 20),left:this.screenWidth / 10})
               .opacity(1)
         }
       } else if (this.model.refreshState == SmartRefresh.REFRESHSTATE.TOREFRESH) { //拖住过程中的样式
-        Stack() {
-          Path() //圆的轨道
-            .strokeWidth(3)
-            .stroke(4)
-            .commands("M255 50 A 60 60, 0, 1, 1, 255 49.99")
-            .width(50)
-            .height(50)
-            .margin({top: 48})
-            .fill(Color.White)
-          Path() //圆的轨道
-            .strokeWidth(this.refreshData.barWidth)
-            .fillOpacity(0)
-            .stroke(Color.Blue)
-            .commands(this.dragPathCmd)
-            .width(50)
-            .height(50)
-            .zIndex(2)
-            .margin({top: 30, left: 185})
-            .opacity(1)
-          if (this.arrowAngleFlag == 1) {
+        if (this.model.footerHeight > (this.model.initFooterHeight * 3 / 4)) {
+          Stack() {
             Path() //圆的轨道
               .strokeWidth(3)
+              .stroke(4)
+              .commands("M0 80 A 80 80, 0, 1, 1, 0 79.99")
+              .margin({top: (this.model.footerHeight / 5 + 10),left:px2vp(this.screenWidth / 2) - 80})
+              .width(px2vp(80))
+              .height(px2vp(80))
+              .fill(Color.White)
+            Path() //圆的轨道
+              .strokeWidth(this.refreshData.barWidth)
               .fillOpacity(0)
               .stroke(Color.Blue)
-              .commands(this.arrowPathCmd)
-              .width(50)
-              .height(50)
+              .commands(this.dragPathCmd)
+              .width(px2vp(80))
+              .height(px2vp(80))
               .zIndex(2)
-              .margin({top: 30, left: 185})
+              .margin({top: (this.model.footerHeight / 5 + 20),left:px2vp(this.screenWidth / 2) - 160})
               .opacity(1)
-          }
+            if (this.arrowAngleFlag == 1) {
+              Path() //圆的轨道
+                .strokeWidth(3)
+                .fillOpacity(0)
+                .stroke(Color.Blue)
+                .commands(this.arrowPathCmd)
+                .width(50)
+                .height(50)
+                .zIndex(2)
+                .margin({top: (this.model.footerHeight / 5 + 20),left:px2vp(this.screenWidth / 2 ) - 160})
+                .opacity(1)
+            }
+          }.width("100%")
         }
       }
     }.backgroundColor(Color.White).width("100%").height("100%")

@@ -74,7 +74,7 @@ struct SmartRefreshForDropBoxSample {
           Flex() {
             this.header()
           }.height(this.headerHeight).zIndex(this.modelDropBox.zHeaderIndex)
-          .backgroundColor(this.modelDropBox.getBackgroundShadowColor()).visibility((this.headerIsVisibleLoadMore && this.modelDropBox.enableRefresh) ? Visibility.Visible : Visibility.None)
+          .backgroundColor(this.modelDropBox.getBackgroundColor()).visibility((this.headerIsVisibleLoadMore && this.modelDropBox.enableRefresh) ? Visibility.Visible : Visibility.None)
         }
       }
       Scroll(this.modelDropBox.scroller) {
@@ -418,10 +418,8 @@ struct SmartRefreshForDropBoxSample {
     this.modelDropBox.refreshHeaderCallbackState = true
     this.modelDropBox.refreshBottomCallbackState = false
     this.scrollerIsEnableRollWhenRefreshing = true//结束刷新，设置scroll可以滚动
-    console.log('liqi 333333333333333333333333333333333333===' + this.modelDropBox.headerRefreshId);
     clearInterval(this.modelDropBox.headerRefreshId)
     this.modelDropBox.headerRefreshId = -1
-    console.log('liqi 4444444444444444444444444444444444444===' + this.modelDropBox.headerRefreshId);
   }
 
   closeFooterRefresh() {

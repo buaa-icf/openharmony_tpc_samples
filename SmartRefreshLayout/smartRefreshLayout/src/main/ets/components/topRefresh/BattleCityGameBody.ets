@@ -14,6 +14,7 @@
  */
 
 import SmartRefreshForGame from './SmartRefreshForGame'
+import display from '@ohos.display';
 
 class BulletModel {
   public index: number = 0;
@@ -41,7 +42,7 @@ export struct AirplaneGameBody {
   private bulletSize: number = 20 // 子弹大小
   private timeOutPlain: number = -1
   private timeOutBullet: number = -1
-  private screenWidth: number = px2vp(720)
+  private screenWidth: number = px2vp(display.getDefaultDisplaySync().width)
   private bulletIndex: number = 1
   private enemyIndex: number = 0
   @Prop @Watch('onGameStateChange') gameIsStart: boolean = false

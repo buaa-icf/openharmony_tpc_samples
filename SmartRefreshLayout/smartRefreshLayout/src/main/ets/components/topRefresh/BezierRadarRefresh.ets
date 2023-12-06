@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 import SmartRefreshForBezierRadarSample from "./SmartRefreshForBezierRadarSample"
+import display from '@ohos.display';
 
 @Component
 export struct BezierRadar {
@@ -27,8 +28,11 @@ export struct BezierRadar {
   @State beforeEnableHorizontalDrag: boolean = false
   @State beforePrimaryColor:string = "#0000FF"
   @State beforeRadarFillColor:string = "#ADD8E6"
+  private screenWidth: number = display.getDefaultDisplaySync().width
+
 
   aboutToAppear() {
+    this.bezierRadarModel.setMWidth(this.screenWidth)
     this.bezierRadarModel.init();
     this.model.setRefreshHeaderCallback(() => this.draw())
     if(this.model.initRefreshing) {
@@ -40,7 +44,6 @@ export struct BezierRadar {
   aboutToDisappear(): void {
     if (this.model.headerRefreshId > 0) {
       clearInterval(this.model.headerRefreshId)
-      console.log('liqi 66666666666666666666666666666666===' + "classicsRefresh 0");
       this.model.headerRefreshId = -1
     }
   }
@@ -50,7 +53,6 @@ export struct BezierRadar {
         // 刷新数据
         this.invalidate();
         this.init();
-        console.info("BezierRadarRefresh==================" +this.model.refreshState)
       }, 20)
   }
 

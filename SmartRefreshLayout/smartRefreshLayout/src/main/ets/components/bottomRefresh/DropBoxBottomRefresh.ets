@@ -107,8 +107,8 @@ export struct DropBoxBottomRefresh {
               centerY: 0
             })
             .translate({
-              x: -20,
-              y: this.model.footerHeight - 120
+              x: -5,
+              y: this.model.footerHeight - 115
             })
           //this.boxPath("M0 149L85 198L170 149Q170 99 170 49L85 0L0 49Q0 99 0 149Z", this.boxColor[0])
           Path()
@@ -133,8 +133,8 @@ export struct DropBoxBottomRefresh {
               centerY: 0
             })
             .translate({
-              x: -20,
-              y: this.model.footerHeight - 120
+              x: -5,
+              y: this.model.footerHeight - 115
             })
 
           //红包
@@ -252,8 +252,8 @@ export struct DropBoxBottomRefresh {
               centerY: 0
             })
             .translate({
-              x: -20,
-              y: this.model.footerHeight - 120
+              x: -5,
+              y: this.model.footerHeight - 115
             })
 
           Path()
@@ -278,8 +278,8 @@ export struct DropBoxBottomRefresh {
               centerY: 0
             })
             .translate({
-              x: -20,
-              y: this.model.footerHeight - 120
+              x: -5,
+              y: this.model.footerHeight - 115
             })
 
 

@@ -389,10 +389,8 @@ struct SmartRefreshForBezierRadarSample {
     this.modelBezierRadar.refreshHeaderCallbackState = true
     this.modelBezierRadar.refreshBottomCallbackState = false
     this.scrollerIsEnableRollWhenRefreshing = true//结束刷新，设置scroll可以滚动
-    console.log('liqi 333333333333333333333333333333333333===' + this.modelBezierRadar.headerRefreshId);
     clearInterval(this.modelBezierRadar.headerRefreshId)
     this.modelBezierRadar.headerRefreshId = -1
-    console.log('liqi 4444444444444444444444444444444444444===' + this.modelBezierRadar.headerRefreshId);
   }
 
   closeFooterRefresh() {
