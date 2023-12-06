@@ -114,7 +114,6 @@ export struct TaurusBottomRefresh {
   build() {
     Flex() {
       if (this.model.refreshState == SmartRefreshForTaurus.REFRESHSTATE.REFRESHING) { //松开过后的刷新样式
-        //Text("替换头部刷新格式 ").fontColor(Color.Red).fontSize(20).backgroundColor(Color.Yellow)
         Stack({ alignContent: Alignment.TopStart }) {
           this.drawWind(0)
           this.drawWind(1)
@@ -151,7 +150,6 @@ export struct TaurusBottomRefresh {
         .height("100%")
         .backgroundColor(this.model.backgroundColor)
       } else if (this.model.refreshState == SmartRefreshForTaurus.REFRESHSTATE.TOREFRESH) { //拖住过程中的样式
-        //      Text("替换头部刷新格式").fontColor(Color.Red).fontSize(20).backgroundColor(Color.Yellow)
         Stack({ alignContent: Alignment.TopStart }) {
           this.Clouds(this.cloudPaths[1], this.cloudColors[0], 140)
           this.Clouds(this.cloudPaths[0], this.cloudColors[0], 140)

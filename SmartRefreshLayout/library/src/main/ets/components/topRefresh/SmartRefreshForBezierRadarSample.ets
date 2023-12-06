@@ -14,8 +14,8 @@
  */
 
 @Component
-struct SmartRefreshForDropBoxSample {
-  @Link modelDropBox: SmartRefreshForDropBoxSample.Model
+struct SmartRefreshForBezierRadarSample {
+  @Link modelBezierRadar: SmartRefreshForBezierRadarSample.Model
   @BuilderParam header?: () => void
   @BuilderParam main?: () => void
   @BuilderParam footer?: () => void
@@ -34,11 +34,11 @@ struct SmartRefreshForDropBoxSample {
 
   refreshClose(location:ESObject) { //重置Scroller
     this.needScroller = true
-    this.modelDropBox.refreshState = SmartRefreshForDropBoxSample.REFRESHSTATE.NONE
+    this.modelBezierRadar.refreshState = SmartRefreshForBezierRadarSample.REFRESHSTATE.NONE
   }
 
   aboutToAppear(){
-    if (this.modelDropBox.initRefreshing) { //初始化刷新  头部允许刷新
+    if (this.modelBezierRadar.initRefreshing) { //初始化刷新  头部允许刷新
       this.scrollerInit()
     }
   }
@@ -46,38 +46,38 @@ struct SmartRefreshForDropBoxSample {
   scrollerInit() {
 
     this.headerIsVisibleLoadMore = true
-    this.headerHeight = this.modelDropBox.initHeaderHeight
-    this.modelDropBox.headerHeight = this.headerHeight
-    this.modelDropBox.refreshState = SmartRefreshForDropBoxSample.REFRESHSTATE.REFRESHING
-    if (this.modelDropBox.refreshHeaderCallback) { //初始化刷新的回调
-      this.modelDropBox.refreshHeaderCallback()
+    this.headerHeight = this.modelBezierRadar.initHeaderHeight
+    this.modelBezierRadar.headerHeight = this.headerHeight
+    this.modelBezierRadar.refreshState = SmartRefreshForBezierRadarSample.REFRESHSTATE.REFRESHING
+    if (this.modelBezierRadar.refreshHeaderCallback) { //初始化刷新的回调
+      this.modelBezierRadar.refreshHeaderCallback()
     }
-    if(this.modelDropBox.getRefreshFinishStopDuration() > 0) {//刷新结束过后停留的时间
+    if(this.modelBezierRadar.getRefreshFinishStopDuration() > 0) {//刷新结束过后停留的时间
       setTimeout(() => {
-        this.modelDropBox.refreshState = SmartRefreshForDropBoxSample.REFRESHSTATE.REFRESHFINISH
-      }, this.modelDropBox.refreshDuration);
+        this.modelBezierRadar.refreshState = SmartRefreshForBezierRadarSample.REFRESHSTATE.REFRESHFINISH
+      }, this.modelBezierRadar.refreshDuration);
     }
-    this.modelDropBox.refreshTimeOut = setTimeout(() => {
+    this.modelBezierRadar.refreshTimeOut = setTimeout(() => {
       this.headerHeight = 0
-      this.modelDropBox.headerHeight = 0
+      this.modelBezierRadar.headerHeight = 0
       this.headerIsVisibleLoadMore = false
-      this.refreshClose(SmartRefreshForDropBoxSample.LOCATION.HEAD)
-      this.modelDropBox.refreshTimeOut = 0
+      this.refreshClose(SmartRefreshForBezierRadarSample.LOCATION.HEAD)
+      this.modelBezierRadar.refreshTimeOut = 0
       this.closeHeaderRefresh()//关闭头部刷新效果
-    }, this.modelDropBox.refreshDuration + this.modelDropBox.getRefreshFinishStopDuration());
+    }, this.modelBezierRadar.refreshDuration + this.modelBezierRadar.getRefreshFinishStopDuration());
   }
 
   build() {
     Column() {
-      if (this.header && this.modelDropBox.headerIsRefresh) {
-        if (this.modelDropBox.fixedContent && !this.modelDropBox.flyRefreshHeaderIsShow) {
+      if (this.header && this.modelBezierRadar.headerIsRefresh) {
+        if (this.modelBezierRadar.fixedContent && !this.modelBezierRadar.flyRefreshHeaderIsShow) {
           Flex() {
             this.header()
-          }.height(this.headerHeight).zIndex(this.modelDropBox.zHeaderIndex)
-          .backgroundColor(this.modelDropBox.getBackgroundColor()).visibility((this.headerIsVisibleLoadMore && this.modelDropBox.enableRefresh) ? Visibility.Visible : Visibility.None)
+          }.height(this.headerHeight).zIndex(this.modelBezierRadar.zHeaderIndex)
+          .backgroundColor(this.modelBezierRadar.getBackgroundShadowColor()).visibility((this.headerIsVisibleLoadMore && this.modelBezierRadar.enableRefresh) ? Visibility.Visible : Visibility.None)
         }
       }
-      Scroll(this.modelDropBox.scroller) {
+      Scroll(this.modelBezierRadar.scroller) {
         Column() {
           if (this.needScroller) { //重置Scroller
             Text("0").visibility(Visibility.None)
@@ -98,38 +98,38 @@ struct SmartRefreshForDropBoxSample {
       .enabled(this.scrollerIsEnableRollWhenRefreshing)
       .onScrollEdge((side: Edge) => {
         if (side.valueOf() == 0) { //滑动到顶部
-          this.modelDropBox.refreshHeaderCallbackState = true
-          this.modelDropBox.refreshBottomCallbackState = false
-          this.modelDropBox.scrollLocation = SmartRefreshForDropBoxSample.LOCATION.HEAD
+          this.modelBezierRadar.refreshHeaderCallbackState = true
+          this.modelBezierRadar.refreshBottomCallbackState = false
+          this.modelBezierRadar.scrollLocation = SmartRefreshForBezierRadarSample.LOCATION.HEAD
         }
         if (side.valueOf() == 2) { //滑动到底部
-          this.modelDropBox.refreshBottomCallbackState = true
-          this.modelDropBox.refreshHeaderCallbackState = false
-          this.modelDropBox.firstArriveBottomEdgeOffsetY = this.modelDropBox.scroller.currentOffset().yOffset
-          this.modelDropBox.scrollLocation = SmartRefreshForDropBoxSample.LOCATION.FOOT
+          this.modelBezierRadar.refreshBottomCallbackState = true
+          this.modelBezierRadar.refreshHeaderCallbackState = false
+          this.modelBezierRadar.firstArriveBottomEdgeOffsetY = this.modelBezierRadar.scroller.currentOffset().yOffset
+          this.modelBezierRadar.scrollLocation = SmartRefreshForBezierRadarSample.LOCATION.FOOT
         }
       })
       .onScroll((xOffset: number, yOffset: number) => {
-        if(!this.modelDropBox.disableContentWhenRefresh && (this.modelDropBox.refreshState == SmartRefreshForDropBoxSample.REFRESHSTATE.REFRESHING || this.modelDropBox.refreshState == SmartRefreshForDropBoxSample.REFRESHSTATE.REFRESHFINISH)) {
+        if(!this.modelBezierRadar.disableContentWhenRefresh && (this.modelBezierRadar.refreshState == SmartRefreshForBezierRadarSample.REFRESHSTATE.REFRESHING || this.modelBezierRadar.refreshState == SmartRefreshForBezierRadarSample.REFRESHSTATE.REFRESHFINISH)) {
           //do nothing->设置下拉刷新过程中不可以拖动
         } else {
-          if (this.modelDropBox.fixedContent != this.modelDropBox.oldFixedContent) {//内容固定
+          if (this.modelBezierRadar.fixedContent != this.modelBezierRadar.oldFixedContent) {//内容固定
             this.needScroller = true
-            this.modelDropBox.oldFixedContent = this.modelDropBox.fixedContent
+            this.modelBezierRadar.oldFixedContent = this.modelBezierRadar.fixedContent
           }
-          this.modelDropBox.latestYOffset = this.modelDropBox.scroller.currentOffset().yOffset
+          this.modelBezierRadar.latestYOffset = this.modelBezierRadar.scroller.currentOffset().yOffset
           this.scrollerEventFunction()
         }
       })
       .onTouch((event: TouchEvent) => this.contentEnableScroll(event))
 
-      if (this.footer && this.modelDropBox.footerIsRefresh) {
+      if (this.footer && this.modelBezierRadar.footerIsRefresh) {
         Flex({ alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
           this.footer()
         }.opacity(1)
         .height(this.footerHeightPercentage)
-        .backgroundColor(this.modelDropBox.getBackgroundShadowColor())
-        .visibility((this.footerIsVisibleLoadMore && this.modelDropBox.enableLoadMore) ? Visibility.Visible : Visibility.None)
+        .backgroundColor(this.modelBezierRadar.getBackgroundShadowColor())
+        .visibility((this.footerIsVisibleLoadMore && this.modelBezierRadar.enableLoadMore) ? Visibility.Visible : Visibility.None)
       }
     }
     .height("100%")
@@ -140,16 +140,16 @@ struct SmartRefreshForDropBoxSample {
 
   //刷新过程中是否可以滚动列表
   scrollerIsEnableRollWhenRefreshingFunction() {
-    if (this.modelDropBox.refreshState == SmartRefreshForDropBoxSample.REFRESHSTATE.REFRESHING || this.modelDropBox.refreshState == SmartRefreshForDropBoxSample.REFRESHSTATE.REFRESHFINISH) {
-      if (this.modelDropBox.scrollLocation == SmartRefreshForDropBoxSample.LOCATION.HEAD) {
-        if (!this.modelDropBox.disableContentWhenRefresh) {
+    if (this.modelBezierRadar.refreshState == SmartRefreshForBezierRadarSample.REFRESHSTATE.REFRESHING || this.modelBezierRadar.refreshState == SmartRefreshForBezierRadarSample.REFRESHSTATE.REFRESHFINISH) {
+      if (this.modelBezierRadar.scrollLocation == SmartRefreshForBezierRadarSample.LOCATION.HEAD) {
+        if (!this.modelBezierRadar.disableContentWhenRefresh) {
           this.scrollerIsEnableRollWhenRefreshing = false
         } else {
           this.scrollerIsEnableRollWhenRefreshing = true
         }
       }
-      if(this.modelDropBox.scrollLocation == SmartRefreshForDropBoxSample.LOCATION.FOOT) {
-        if(!this.modelDropBox.disableContentWhenLoading) {
+      if(this.modelBezierRadar.scrollLocation == SmartRefreshForBezierRadarSample.LOCATION.FOOT) {
+        if(!this.modelBezierRadar.disableContentWhenLoading) {
           this.scrollerIsEnableRollWhenRefreshing = false
         } else {
           this.scrollerIsEnableRollWhenRefreshing = true
@@ -163,26 +163,25 @@ struct SmartRefreshForDropBoxSample {
 
 
   scrollerEventFunction() {
-    if (this.modelDropBox.scrollLocation == SmartRefreshForDropBoxSample.LOCATION.HEAD && this.needScroller) {
+    if (this.modelBezierRadar.scrollLocation == SmartRefreshForBezierRadarSample.LOCATION.HEAD && this.needScroller) {
       this.needScroller = false
-      this.modelDropBox.scrollerEndYOffset = 0
-      this.modelDropBox.scrollerEndState = true
-      this.headerHeight = this.modelDropBox.initHeaderHeight
-      this.modelDropBox.headerHeight = this.modelDropBox.initHeaderHeight
-      //this.modelDropBox.scroller.scrollEdge(Edge.Top)
-    } else if (this.modelDropBox.scrollLocation == SmartRefreshForDropBoxSample.LOCATION.FOOT && this.needScroller) {
+      this.modelBezierRadar.scrollerEndYOffset = 0
+      this.modelBezierRadar.scrollerEndState = true
+      this.headerHeight = this.modelBezierRadar.initHeaderHeight
+      this.modelBezierRadar.headerHeight = this.modelBezierRadar.initHeaderHeight
+    } else if (this.modelBezierRadar.scrollLocation == SmartRefreshForBezierRadarSample.LOCATION.FOOT && this.needScroller) {
       this.needScroller = false
-      this.modelDropBox.scrollerEndYOffset = this.modelDropBox.firstArriveBottomEdgeOffsetY
-      this.modelDropBox.scrollerEndState = true
-      if(this.modelDropBox.enableScrollContentWhenLoaded) {//是否在加载完成之后滚动内容显示新数据
-        this.modelDropBox.scroller.scrollEdge(Edge.Bottom)
+      this.modelBezierRadar.scrollerEndYOffset = this.modelBezierRadar.firstArriveBottomEdgeOffsetY
+      this.modelBezierRadar.scrollerEndState = true
+      if(this.modelBezierRadar.enableScrollContentWhenLoaded) {//是否在加载完成之后滚动内容显示新数据
+        this.modelBezierRadar.scroller.scrollEdge(Edge.Bottom)
       } else {
-        if(this.modelDropBox.refreshState == SmartRefreshForDropBoxSample.REFRESHSTATE.TOREFRESH
-          || this.modelDropBox.refreshState == SmartRefreshForDropBoxSample.REFRESHSTATE.REFRESHING
-          || this.modelDropBox.refreshState == SmartRefreshForDropBoxSample.REFRESHSTATE.REFRESHFINISH) {
-          this.modelDropBox.scroller.scrollEdge(Edge.Bottom)
+        if(this.modelBezierRadar.refreshState == SmartRefreshForBezierRadarSample.REFRESHSTATE.TOREFRESH
+          || this.modelBezierRadar.refreshState == SmartRefreshForBezierRadarSample.REFRESHSTATE.REFRESHING
+          || this.modelBezierRadar.refreshState == SmartRefreshForBezierRadarSample.REFRESHSTATE.REFRESHFINISH) {
+          this.modelBezierRadar.scroller.scrollEdge(Edge.Bottom)
         } else {
-          this.modelDropBox.scroller.scrollTo({xOffset: 0, yOffset: this.modelDropBox.firstArriveBottomEdgeOffsetY})
+          this.modelBezierRadar.scroller.scrollTo({xOffset: 0, yOffset: this.modelBezierRadar.firstArriveBottomEdgeOffsetY})
         }
       }
     }
@@ -191,13 +190,13 @@ struct SmartRefreshForDropBoxSample {
   contentEnableScroll(event: TouchEvent) {
     //判断头部刷新时是否可以滚动
     //只能头部控制刷新时，不可以操作。底部加载时，设置列表不可以操作需要刷新页面设置scrollable，则内容会回到顶部。
-    if(this.modelDropBox.refreshState == SmartRefreshForDropBoxSample.REFRESHSTATE.REFRESHING || this.modelDropBox.refreshState == SmartRefreshForDropBoxSample.REFRESHSTATE.REFRESHFINISH) {
-      if(this.modelDropBox.scrollLocation == SmartRefreshForDropBoxSample.LOCATION.HEAD && this.modelDropBox.disableContentWhenRefresh) {
+    if(this.modelBezierRadar.refreshState == SmartRefreshForBezierRadarSample.REFRESHSTATE.REFRESHING || this.modelBezierRadar.refreshState == SmartRefreshForBezierRadarSample.REFRESHSTATE.REFRESHFINISH) {
+      if(this.modelBezierRadar.scrollLocation == SmartRefreshForBezierRadarSample.LOCATION.HEAD && this.modelBezierRadar.disableContentWhenRefresh) {
         this.touchEventFunction(event)
       } else {
         this.scrollerIsEnableRollWhenRefreshingFunction()
       }
-      if(this.modelDropBox.scrollLocation == SmartRefreshForDropBoxSample.LOCATION.FOOT && this.modelDropBox.disableContentWhenLoading) {
+      if(this.modelBezierRadar.scrollLocation == SmartRefreshForBezierRadarSample.LOCATION.FOOT && this.modelBezierRadar.disableContentWhenLoading) {
         this.touchEventFunction(event)
       } else {
         this.scrollerIsEnableRollWhenRefreshingFunction()
@@ -212,69 +211,40 @@ struct SmartRefreshForDropBoxSample {
     switch (event.type) {
       case TouchType.Down: // 手指按下
         this.headerHeight = 0
-        this.modelDropBox.headerHeight = 0
-        this.modelDropBox.initScrollerYOffset = this.modelDropBox.scroller.currentOffset().yOffset
+        this.modelBezierRadar.headerHeight = 0
+        this.modelBezierRadar.initScrollerYOffset = this.modelBezierRadar.scroller.currentOffset().yOffset
       // 记录按下的y坐标
-        this.modelDropBox.downY = event.touches[0].y
+        this.modelBezierRadar.downY = event.touches[0].y
         break
       case TouchType.Move: // 手指移动
-        this.modelDropBox.currentMouseX = event.touches[0].screenX;
-        this.modelDropBox.downYOffset = event.touches[0].y - this.modelDropBox.downY
+        this.modelBezierRadar.currentMouseX = event.touches[0].screenX;
+        this.modelBezierRadar.downYOffset = event.touches[0].y - this.modelBezierRadar.downY
       //记录拖拽方向
-        this.modelDropBox.dragDirection = this.modelDropBox.downYOffset > 0 ? true : false
+        this.modelBezierRadar.dragDirection = this.modelBezierRadar.downYOffset > 0 ? true : false
       //到达底部，而向下拖动，则清楚到达底部的标识
-        if(this.modelDropBox.scrollLocation == SmartRefreshForDropBoxSample.LOCATION.FOOT && this.modelDropBox.dragDirection) {
-          this.modelDropBox.scrollLocation = SmartRefreshForDropBoxSample.LOCATION.MIDDER
+        if(this.modelBezierRadar.scrollLocation == SmartRefreshForBezierRadarSample.LOCATION.FOOT && this.modelBezierRadar.dragDirection) {
+          this.modelBezierRadar.scrollLocation = SmartRefreshForBezierRadarSample.LOCATION.MIDDER
         }
       // 下拉方向判断头部刷新
-        if(this.modelDropBox.dragDirection) {
-          if (this.modelDropBox.downYOffset > this.modelDropBox.initScrollerYOffset) {
+        if(this.modelBezierRadar.dragDirection) {
+          if (this.modelBezierRadar.downYOffset > this.modelBezierRadar.initScrollerYOffset) {
             this.headerIsVisibleLoadMore = true
             this.footerIsVisibleLoadMore = false
           }
           //下拉头部刷新样式回调
-          if (this.modelDropBox.refreshHeaderCallbackState && this.modelDropBox.headerRefreshId == -1 && this.modelDropBox.headerHeight > (this.modelDropBox.initHeaderHeight / 2)) {
-            this.modelDropBox.refreshHeaderCallbackState = false
-            this.modelDropBox.refreshHeaderCallback()
+          if (this.modelBezierRadar.refreshHeaderCallbackState && this.modelBezierRadar.headerRefreshId == -1 && this.modelBezierRadar.headerHeight > (this.modelBezierRadar.initHeaderHeight / 2)) {
+            this.modelBezierRadar.refreshHeaderCallbackState = false
+            this.modelBezierRadar.refreshHeaderCallback()
           }
           this.dragDownDirection_Move(event)
           return
-        } else{// 尾部刷新
-          //scroll的高度小于整个屏幕的高度
-          if (this.columnAreaChangeHeight > this.scrollAreaChangeHeight) {
-            this.headerIsVisibleLoadMore = false
-            this.footerIsVisibleLoadMore = true
-            if (this.modelDropBox.refreshBottomCallbackState && this.modelDropBox.bottomRefreshId < 0) {
-              this.modelDropBox.refreshBottomCallbackState = false
-              this.modelDropBox.refreshBottomCallback()
-            }
-            this.dragUpDirection_Move(event)
-          } else {//scroll的高度大于、等于整个屏幕的高度
-            if (this.modelDropBox.firstArriveBottomEdgeOffsetY == 0 || this.modelDropBox.scrollLocation != SmartRefreshForDropBoxSample.LOCATION.FOOT) {//第一次进入，高度为默认高度0
-              this.headerIsVisibleLoadMore = false
-              this.footerIsVisibleLoadMore = false
-            } else {
-              if (Math.abs(this.modelDropBox.downYOffset) > (this.modelDropBox.firstArriveBottomEdgeOffsetY - this.modelDropBox.initScrollerYOffset)) {
-                this.headerIsVisibleLoadMore = false
-                this.footerIsVisibleLoadMore = true
-              }
-            }
-            if (this.modelDropBox.scrollLocation == SmartRefreshForDropBoxSample.LOCATION.FOOT) {
-              this.footerIsVisibleLoadMore = true
-              if (this.modelDropBox.refreshBottomCallbackState && this.modelDropBox.bottomRefreshId == 0) {
-                this.modelDropBox.refreshBottomCallbackState = false
-                this.modelDropBox.refreshBottomCallback()
-              }
-              this.dragUpDirection_Move(event)
-            }
-          }
         }
         break
       case TouchType.Up: // 手指抬起
-        if (this.modelDropBox.dragDirection && this.headerIsVisibleLoadMore) {
-          this.dragDownDirection_UP(this.modelDropBox.downYOffset)
-        } else if (!this.modelDropBox.dragDirection && this.footerIsVisibleLoadMore) {
-          this.dragUpDirection_UP(Math.abs(this.modelDropBox.downYOffset))
+        if (this.modelBezierRadar.dragDirection && this.headerIsVisibleLoadMore) {
+          this.dragDownDirection_UP(this.modelBezierRadar.downYOffset)
+        } else if (!this.modelBezierRadar.dragDirection && this.footerIsVisibleLoadMore) {
+          this.dragUpDirection_UP(Math.abs(this.modelBezierRadar.downYOffset))
         }
         break
       case TouchType.Cancel:
@@ -282,27 +252,27 @@ struct SmartRefreshForDropBoxSample {
   }
 
   dragDownDirection_Move(event: TouchEvent) {
-    switch (this.modelDropBox.refreshState) {
-      case SmartRefreshForDropBoxSample.REFRESHSTATE.NONE:
-        this.modelDropBox.refreshState = SmartRefreshForDropBoxSample.REFRESHSTATE.TOREFRESH
+    switch (this.modelBezierRadar.refreshState) {
+      case SmartRefreshForBezierRadarSample.REFRESHSTATE.NONE:
+        this.modelBezierRadar.refreshState = SmartRefreshForBezierRadarSample.REFRESHSTATE.TOREFRESH
         break
-      case SmartRefreshForDropBoxSample.REFRESHSTATE.TOREFRESH:
-        let dragOffsetY = Math.abs(event.touches[0].y - this.modelDropBox.downY) + this.modelDropBox.srlHeaderInsetStart
-        if (this.headerHeight <= this.modelDropBox.initHeaderHeight) {
+      case SmartRefreshForBezierRadarSample.REFRESHSTATE.TOREFRESH:
+        let dragOffsetY = Math.abs(event.touches[0].y - this.modelBezierRadar.downY) + this.modelBezierRadar.srlHeaderInsetStart
+        if (this.headerHeight <= this.modelBezierRadar.initHeaderHeight) {
           this.headerHeight = dragOffsetY
-          this.modelDropBox.headerHeight = dragOffsetY
+          this.modelBezierRadar.headerHeight = dragOffsetY
         }
-        if (dragOffsetY > this.modelDropBox.initHeaderHeight) { //下拉超过默认值
+        if (dragOffsetY > this.modelBezierRadar.initHeaderHeight) { //下拉超过默认值
           //下拉超出初始范围
-          this.headerHeight = this.modelDropBox.initHeaderHeight + (Math.pow(dragOffsetY - this.modelDropBox.initHeaderHeight, this.modelDropBox.dragRate))
-          this.modelDropBox.headerHeight = this.headerHeight
+          this.headerHeight = this.modelBezierRadar.initHeaderHeight + (Math.pow(dragOffsetY - this.modelBezierRadar.initHeaderHeight, this.modelBezierRadar.dragRate))
+          this.modelBezierRadar.headerHeight = this.headerHeight
         }
-        this.modelDropBox.refreshState = SmartRefreshForDropBoxSample.REFRESHSTATE.TOREFRESH
+        this.modelBezierRadar.refreshState = SmartRefreshForBezierRadarSample.REFRESHSTATE.TOREFRESH
         break
-      case SmartRefreshForDropBoxSample.REFRESHSTATE.REFRESHING:
-        if ((event.touches[0].y - this.modelDropBox.downY) > 0) { //刷新状态下拉
-          this.headerHeight = this.modelDropBox.initHeaderHeight + (Math.pow(event.touches[0].y - this.modelDropBox.downY, this.modelDropBox.dragRate))
-          this.modelDropBox.headerHeight = this.headerHeight
+      case SmartRefreshForBezierRadarSample.REFRESHSTATE.REFRESHING:
+        if ((event.touches[0].y - this.modelBezierRadar.downY) > 0) { //刷新状态下拉
+          this.headerHeight = this.modelBezierRadar.initHeaderHeight + (Math.pow(event.touches[0].y - this.modelBezierRadar.downY, this.modelBezierRadar.dragRate))
+          this.modelBezierRadar.headerHeight = this.headerHeight
         }
         break
       default:
@@ -310,103 +280,101 @@ struct SmartRefreshForDropBoxSample {
   }
 
   dragDownDirection_UP(downYOffsetParam: number) {
-    if (this.modelDropBox.refreshState != SmartRefreshForDropBoxSample.REFRESHSTATE.NONE) {
-      if (this.modelDropBox.refreshState == SmartRefreshForDropBoxSample.REFRESHSTATE.TOREFRESH) {
-        if (this.headerHeight < (this.modelDropBox.initHeaderHeight * this.modelDropBox.headerTriggerRate)) { //未下滑到指定位置则不刷新(头部高度小于默认高度)
+    if (this.modelBezierRadar.refreshState != SmartRefreshForBezierRadarSample.REFRESHSTATE.NONE) {
+      if (this.modelBezierRadar.refreshState == SmartRefreshForBezierRadarSample.REFRESHSTATE.TOREFRESH) {
+        if (this.headerHeight < (this.modelBezierRadar.initHeaderHeight * this.modelBezierRadar.headerTriggerRate)) { //未下滑到指定位置则不刷新(头部高度小于默认高度)
           this.headerIsVisibleLoadMore = false  //小于头部固定高度时，则隐藏头部
           this.closeHeaderRefresh()//关闭头部刷新效果
-          this.refreshClose(SmartRefreshForDropBoxSample.LOCATION.HEAD)
+          this.refreshClose(SmartRefreshForBezierRadarSample.LOCATION.HEAD)
         } else {
-          this.headerHeight = this.modelDropBox.initHeaderHeight //重置头部高度
-          this.modelDropBox.headerHeight = this.modelDropBox.initHeaderHeight
-          //this.modelDropBox.scroller.scrollEdge(Edge.Top)
+          this.headerHeight = this.modelBezierRadar.initHeaderHeight //重置头部高度
+          this.modelBezierRadar.headerHeight = this.modelBezierRadar.initHeaderHeight
           this.needScroller = true
-          this.modelDropBox.refreshState = SmartRefreshForDropBoxSample.REFRESHSTATE.REFRESHING //更改为刷新态
-          if (this.modelDropBox.refreshTimeOut == 0) {
-            if(this.modelDropBox.getRefreshFinishStopDuration() > 0) {//刷新结束过后停留的时间
+          this.modelBezierRadar.refreshState = SmartRefreshForBezierRadarSample.REFRESHSTATE.REFRESHING //更改为刷新态
+          if (this.modelBezierRadar.refreshTimeOut == 0) {
+            if(this.modelBezierRadar.getRefreshFinishStopDuration() > 0) {//刷新结束过后停留的时间
               setTimeout(() => {
-                this.modelDropBox.refreshState = SmartRefreshForDropBoxSample.REFRESHSTATE.REFRESHFINISH
-              }, this.modelDropBox.refreshDuration);
+                this.modelBezierRadar.refreshState = SmartRefreshForBezierRadarSample.REFRESHSTATE.REFRESHFINISH
+              }, this.modelBezierRadar.refreshDuration);
             }
-            this.modelDropBox.refreshTimeOut = setTimeout(() => {
-              this.modelDropBox.refreshTimeOut = 0
+            this.modelBezierRadar.refreshTimeOut = setTimeout(() => {
+              this.modelBezierRadar.refreshTimeOut = 0
               this.headerIsVisibleLoadMore = false
-              this.refreshClose(SmartRefreshForDropBoxSample.LOCATION.HEAD)
-              this.modelDropBox.lastRefreshTime = new Date()
+              this.refreshClose(SmartRefreshForBezierRadarSample.LOCATION.HEAD)
+              this.modelBezierRadar.lastRefreshTime = new Date()
               this.closeHeaderRefresh()//关闭头部刷新效果
-              this.modelDropBox.refreshHeaderDataCallback()
-            }, this.modelDropBox.refreshDuration + this.modelDropBox.getRefreshFinishStopDuration());
+              this.modelBezierRadar.refreshHeaderDataCallback()
+            }, this.modelBezierRadar.refreshDuration + this.modelBezierRadar.getRefreshFinishStopDuration());
           }
         }
-      } else if (this.modelDropBox.refreshState == SmartRefreshForDropBoxSample.REFRESHSTATE.REFRESHING) {
-        this.headerHeight = this.modelDropBox.initHeaderHeight //重置头部高度
-        this.modelDropBox.headerHeight = this.modelDropBox.initHeaderHeight
+      } else if (this.modelBezierRadar.refreshState == SmartRefreshForBezierRadarSample.REFRESHSTATE.REFRESHING) {
+        this.headerHeight = this.modelBezierRadar.initHeaderHeight //重置头部高度
+        this.modelBezierRadar.headerHeight = this.modelBezierRadar.initHeaderHeight
       }
     }
   }
 
   dragUpDirection_Move(event: TouchEvent) {
-    let dragOffsetY = Math.abs(event.touches[0].y - this.modelDropBox.downY) + this.modelDropBox.srlFooterInsetStart
-    if (this.footerHeight < this.modelDropBox.initFooterHeight && this.modelDropBox.refreshState != SmartRefreshForDropBoxSample.REFRESHSTATE.REFRESHING) {
+    let dragOffsetY = Math.abs(event.touches[0].y - this.modelBezierRadar.downY) + this.modelBezierRadar.srlFooterInsetStart
+    if (this.footerHeight < this.modelBezierRadar.initFooterHeight && this.modelBezierRadar.refreshState != SmartRefreshForBezierRadarSample.REFRESHSTATE.REFRESHING) {
       this.footerHeight = dragOffsetY
       this.scrollHeight = this.columnAreaChangeHeight - this.footerHeight
       this.footerHeightPercentage = (this.footerHeight / this.columnAreaChangeHeight * 100) + "%"
       this.scrollHeightPercentage = (this.scrollHeight / this.columnAreaChangeHeight * 100) + "%"
-      this.modelDropBox.footerHeight = this.footerHeight
+      this.modelBezierRadar.footerHeight = this.footerHeight
     } else {
-      if (this.modelDropBox.refreshState != SmartRefreshForDropBoxSample.REFRESHSTATE.REFRESHING
-        && (this.modelDropBox.downY - event.touches[0].y) > 0 && dragOffsetY > this.modelDropBox.initFooterHeight) { //非刷新状态上拉
-        this.footerHeight = this.modelDropBox.initFooterHeight + (Math.pow(dragOffsetY - this.modelDropBox.initFooterHeight, this.modelDropBox.dragRate))
-        this.modelDropBox.footerHeight =  this.footerHeight
+      if (this.modelBezierRadar.refreshState != SmartRefreshForBezierRadarSample.REFRESHSTATE.REFRESHING
+        && (this.modelBezierRadar.downY - event.touches[0].y) > 0 && dragOffsetY > this.modelBezierRadar.initFooterHeight) { //非刷新状态上拉
+        this.footerHeight = this.modelBezierRadar.initFooterHeight + (Math.pow(dragOffsetY - this.modelBezierRadar.initFooterHeight, this.modelBezierRadar.dragRate))
+        this.modelBezierRadar.footerHeight =  this.footerHeight
         this.scrollHeight = this.columnAreaChangeHeight - this.footerHeight
         this.footerHeightPercentage = (this.footerHeight / this.columnAreaChangeHeight * 100) + "%"
         this.scrollHeightPercentage = (this.scrollHeight / this.columnAreaChangeHeight * 100) + "%"
-        this.modelDropBox.refreshState = SmartRefreshForDropBoxSample.REFRESHSTATE.TOREFRESH
+        this.modelBezierRadar.refreshState = SmartRefreshForBezierRadarSample.REFRESHSTATE.TOREFRESH
       }
-      if (this.modelDropBox.refreshState == SmartRefreshForDropBoxSample.REFRESHSTATE.REFRESHING && dragOffsetY > 0) { //刷新状态下拉
-        this.footerHeight = this.modelDropBox.initFooterHeight + (Math.pow(dragOffsetY, this.modelDropBox.dragRate))
-        this.modelDropBox.footerHeight =  this.footerHeight
+      if (this.modelBezierRadar.refreshState == SmartRefreshForBezierRadarSample.REFRESHSTATE.REFRESHING && dragOffsetY > 0) { //刷新状态下拉
+        this.footerHeight = this.modelBezierRadar.initFooterHeight + (Math.pow(dragOffsetY, this.modelBezierRadar.dragRate))
+        this.modelBezierRadar.footerHeight =  this.footerHeight
       }
     }
   }
 
   dragUpDirection_UP(downYOffsetParam: number) {
-    if (this.modelDropBox.refreshState != SmartRefreshForDropBoxSample.REFRESHSTATE.NONE) {
-      if (this.modelDropBox.refreshState == SmartRefreshForDropBoxSample.REFRESHSTATE.TOREFRESH) {
-        if (downYOffsetParam <= (this.modelDropBox.initFooterHeight * this.modelDropBox.footerTriggerRate)) { //未下滑到指定位置则不刷新
+    if (this.modelBezierRadar.refreshState != SmartRefreshForBezierRadarSample.REFRESHSTATE.NONE) {
+      if (this.modelBezierRadar.refreshState == SmartRefreshForBezierRadarSample.REFRESHSTATE.TOREFRESH) {
+        if (downYOffsetParam <= (this.modelBezierRadar.initFooterHeight * this.modelBezierRadar.footerTriggerRate)) { //未下滑到指定位置则不刷新
           this.footerIsVisibleLoadMore = false  //小于尾部固定高度时，则隐藏尾部
-          this.refreshClose(SmartRefreshForDropBoxSample.LOCATION.HEAD)
+          this.refreshClose(SmartRefreshForBezierRadarSample.LOCATION.HEAD)
           this.footerHeight = 0
-          this.modelDropBox.footerHeight = this.footerHeight
+          this.modelBezierRadar.footerHeight = this.footerHeight
           this.footerHeightPercentage = "0%"
           this.scrollHeightPercentage = "100%"
         } else {
-          this.footerHeight = this.modelDropBox.initFooterHeight //重置尾部高度
-          this.modelDropBox.footerHeight = this.footerHeight
+          this.footerHeight = this.modelBezierRadar.initFooterHeight //重置尾部高度
+          this.modelBezierRadar.footerHeight = this.footerHeight
           this.footerHeightPercentage = (this.footerHeight / this.columnAreaChangeHeight * 100) + "%"
           this.scrollHeightPercentage = ((this.columnAreaChangeHeight - this.footerHeight) / this.columnAreaChangeHeight * 100) + "%"
-          //this.modelDropBox.scroller.scrollEdge(Edge.Bottom)
           this.needScroller = true
-          this.modelDropBox.refreshState = SmartRefreshForDropBoxSample.REFRESHSTATE.REFRESHING //更改为刷新态
-          if (this.modelDropBox.refreshTimeOut == 0) {
-            if(this.modelDropBox.getRefreshFinishStopDuration() > 0) {//刷新结束过后停留的时间
+          this.modelBezierRadar.refreshState = SmartRefreshForBezierRadarSample.REFRESHSTATE.REFRESHING //更改为刷新态
+          if (this.modelBezierRadar.refreshTimeOut == 0) {
+            if(this.modelBezierRadar.getRefreshFinishStopDuration() > 0) {//刷新结束过后停留的时间
               setTimeout(() => {
-                this.modelDropBox.refreshState = SmartRefreshForDropBoxSample.REFRESHSTATE.REFRESHFINISH
-              }, this.modelDropBox.refreshDuration);
+                this.modelBezierRadar.refreshState = SmartRefreshForBezierRadarSample.REFRESHSTATE.REFRESHFINISH
+              }, this.modelBezierRadar.refreshDuration);
             }
-            this.modelDropBox.refreshTimeOut = setTimeout(() => {
+            this.modelBezierRadar.refreshTimeOut = setTimeout(() => {
               this.footerIsVisibleLoadMore = false
-              this.refreshClose(SmartRefreshForDropBoxSample.LOCATION.HEAD)
-              this.modelDropBox.refreshTimeOut = 0
-              this.modelDropBox.lastRefreshTime = new Date()
+              this.refreshClose(SmartRefreshForBezierRadarSample.LOCATION.HEAD)
+              this.modelBezierRadar.refreshTimeOut = 0
+              this.modelBezierRadar.lastRefreshTime = new Date()
               this.closeFooterRefresh()
-              this.modelDropBox.refreshBottomDataCallback()
-            }, this.modelDropBox.refreshDuration + this.modelDropBox.getRefreshFinishStopDuration());
+              this.modelBezierRadar.refreshBottomDataCallback()
+            }, this.modelBezierRadar.refreshDuration + this.modelBezierRadar.getRefreshFinishStopDuration());
           }
         }
-      } else if (this.modelDropBox.refreshState == SmartRefreshForDropBoxSample.REFRESHSTATE.REFRESHING) {
-        this.footerHeight = this.modelDropBox.initFooterHeight //重置尾部高度
-        this.modelDropBox.footerHeight =  this.footerHeight
+      } else if (this.modelBezierRadar.refreshState == SmartRefreshForBezierRadarSample.REFRESHSTATE.REFRESHING) {
+        this.footerHeight = this.modelBezierRadar.initFooterHeight //重置尾部高度
+        this.modelBezierRadar.footerHeight =  this.footerHeight
       }
     }
   }
@@ -414,29 +382,28 @@ struct SmartRefreshForDropBoxSample {
   //滚动结束，关闭刷新
   closeHeaderRefresh() {
     this.headerHeight = 0
-    this.modelDropBox.headerHeight = 0
-    this.modelDropBox.refreshHeaderCallbackState = true
-    this.modelDropBox.refreshBottomCallbackState = false
+    this.modelBezierRadar.headerHeight = 0
+    this.modelBezierRadar.refreshHeaderCallbackState = true
+    this.modelBezierRadar.refreshBottomCallbackState = false
     this.scrollerIsEnableRollWhenRefreshing = true//结束刷新，设置scroll可以滚动
-    clearInterval(this.modelDropBox.headerRefreshId)
-    this.modelDropBox.headerRefreshId = -1
+    clearInterval(this.modelBezierRadar.headerRefreshId)
+    this.modelBezierRadar.headerRefreshId = -1
   }
 
   closeFooterRefresh() {
     this.footerHeight = 0
-    this.modelDropBox.footerHeight =  this.footerHeight
+    this.modelBezierRadar.footerHeight =  this.footerHeight
     this.footerHeightPercentage = "0%"
     this.scrollHeightPercentage = "100%"
-    this.modelDropBox.refreshHeaderCallbackState = false
-    this.modelDropBox.refreshBottomCallbackState = true
+    this.modelBezierRadar.refreshHeaderCallbackState = false
+    this.modelBezierRadar.refreshBottomCallbackState = true
     this.scrollerIsEnableRollWhenRefreshing = true
-    clearInterval(this.modelDropBox.bottomRefreshId)
-    this.modelDropBox.bottomRefreshId = -1
-
+    clearInterval(this.modelBezierRadar.bottomRefreshId)
+    this.modelBezierRadar.bottomRefreshId = 0
   }
 }
 
-namespace SmartRefreshForDropBoxSample {
+namespace SmartRefreshForBezierRadarSample {
   export enum LOCATION {
     HEAD = 0,
     MIDDER = 1,
@@ -482,9 +449,9 @@ namespace SmartRefreshForDropBoxSample {
     lastRefreshTime: Date = new Date() //上次刷新时间
     refreshHeaderDataCallback: () => void = () => {};//刷新头部数据回调
     refreshBottomDataCallback: () => void = () => {};//刷新头部数据回调
-    refreshHeaderCallback: () => void  = ()=>{} //刷新时的回调
+    refreshHeaderCallback: () => void = ()=> {}//刷新时的回调
     refreshHeaderCallbackState: boolean = true
-    refreshBottomCallback: () => void = ()=>{}//刷新时的回调
+    refreshBottomCallback: () => void = ()=> {}//刷新时的回调
     refreshBottomCallbackState: boolean = false
     disableContentWhenRefresh : boolean = false //下拉过程是否支持列表滚动
     disableContentWhenLoading : boolean = false //上拉过程是否支持列表滚动
@@ -567,6 +534,35 @@ namespace SmartRefreshForDropBoxSample {
     refreshPosition: RefreshPositionEnum = RefreshPositionEnum.TOPANDBOTTOM
     headerIsRefresh: boolean = true
     footerIsRefresh: boolean = true
+
+    enableHorizontalDrag: boolean = false
+    primaryColor:string = "#0000FF"
+    radarFillColor:string = "#ADD8E6"
+
+    setEnableHorizontalDrag(enableHorizontalDrag: boolean) : Model{
+      this.enableHorizontalDrag = enableHorizontalDrag
+      return this
+    }
+
+    getEnableHorizontalDrag() :boolean {
+      return this.enableHorizontalDrag
+    }
+    setPrimaryColor(primaryColor: string) : Model{
+      this.primaryColor = primaryColor
+      return this
+    }
+
+    getPrimaryColor() :string {
+      return this.primaryColor
+    }
+    setRadarFillColor(radarFillColor: string) : Model{
+      this.radarFillColor = radarFillColor
+      return this
+    }
+
+    getRadarFillColor() :string {
+      return this.radarFillColor
+    }
 
     setEnableScrollContentWhenLoaded(enableScrollContentWhenLoaded: boolean) : Model{
       this.enableScrollContentWhenLoaded = enableScrollContentWhenLoaded
@@ -1076,4 +1072,4 @@ namespace SmartRefreshForDropBoxSample {
   }
 }
 
-export default SmartRefreshForDropBoxSample
+export default SmartRefreshForBezierRadarSample

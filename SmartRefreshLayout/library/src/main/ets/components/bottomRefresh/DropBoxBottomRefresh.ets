@@ -12,16 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import SmartRefreshForDropBoxSample from "./SmartRefreshForDropBoxSample"
+import SmartRefreshForDropBoxSample from "../topRefresh/SmartRefreshForDropBoxSample"
 
 class Drawable3PathsParam{
   index:number = 0;
   content:string = ""
 }
 
-
 @Component
-export struct DropBox {
+export struct DropBoxBottomRefresh {
   @Link model: SmartRefreshForDropBoxSample.Model
   @State boxColor: Array<number> = [0xff4169E1, 0xff6ea9ff];
   @State time: number  = -20
@@ -49,27 +48,17 @@ export struct DropBox {
   drawable3Paths: Array<Drawable3PathsParam> = [{
     index: 0,
     content: "M6,2.1L6,11.3C5.4,11.3 4.8,11.4 4.2,11.6C2.6,12.3 1.6,13.7 2.1,14.8C2.6,15.9 4.2,16.2 5.8,15.6C7.1,15.1 7.8,14.1 7.9,13.2L7.9,4.3L15,3L15,9.4C14.4,9.3 13.7,9.4 13,9.7C11.4,10.3 10.5,11.7 11,12.8C11.4,13.9 13.1,14.3 14.7,13.6C15.9,13.1 16.8,12.2 16.9,11.3L16.9,0L6,2.1L6,2.1Z"
-  }];
+  }
+    ];
   drawable3Colors: Array<number> = [0xff98d761];
-  private lastRefreshState:ESObject = SmartRefreshForDropBoxSample.REFRESHSTATE.NONE
+  private lastRefreshState = this.model.refreshState
 
   aboutToAppear() {
-    this.model.setRefreshHeaderCallback(() => this.draw())
-    if(this.model.initRefreshing) {
-      this.model.refreshHeaderCallback()
-      this.model.initRefreshing = false
-    }
+    this.model.setRefreshBottomCallback(():void => this.draw())
   }
 
-  aboutToDisappear(): void {
-    if (this.model.headerRefreshId > 0) {
-      clearInterval(this.model.headerRefreshId)
-      this.model.headerRefreshId = -1
-    }
-  }
-
-  draw() : void {
-    this.model.headerRefreshId = setInterval(() => {
+  draw() {
+    this.model.bottomRefreshId = setInterval(() => {
       if (this.lastRefreshState == SmartRefreshForDropBoxSample.REFRESHSTATE.TOREFRESH && this.model.refreshState == SmartRefreshForDropBoxSample.REFRESHSTATE.REFRESHING) {
         this.time = -20
       }
@@ -84,7 +73,7 @@ export struct DropBox {
       .commands(str)
       .fill(color)
       .width('100%')
-      .height(this.model.headerHeight)
+      .height(this.model.footerHeight)
       .scale({
         x: 0.6,
         y: 0.6,
@@ -93,7 +82,7 @@ export struct DropBox {
       })
       .translate({
         x: -20,
-        y: this.model.headerHeight - 110
+        y: this.model.footerHeight - 70
       })
   }
 
@@ -110,7 +99,7 @@ export struct DropBox {
             .commands("M0 149L85 198L170 149Q170 99 170 49L85 0L0 49Q0 99 0 149Z")
             .fill(this.boxColor[0])
             .width('100%')
-            .height(this.model.headerHeight)
+            .height(this.model.footerHeight)
             .scale({
               x: 0.6,
               y: 0.6,
@@ -119,23 +108,23 @@ export struct DropBox {
             })
             .translate({
               x: -5,
-              y: this.model.headerHeight - 105
+              y: this.model.footerHeight - 115
             })
           Path()
             .commands("M0 49L85 0L"
-          + (25 + ((this.time % 40 < 20 && this.time > 0) ? 20 * Math.sin((this.time % 40 < 20 ? this.time % 40 : 20 - this.time % 40) * Math.PI / 90) : 0)) + " "
-          + (-30 - ((this.time % 40 < 20 && this.time > 0) ? 20 * Math.cos((this.time % 40 < 10 ? this.time % 40 : 20 - this.time % 40) * Math.PI / 90) : 0))
-          + "L" + (-60 + ((this.time % 40 < 20 && this.time > 0) ? 20 * Math.sin((this.time % 40 < 20 ? this.time % 40 : 20 - this.time % 40) * Math.PI / 90) : 0)) + " "
-          + (19 - ((this.time % 40 < 20 && this.time > 0) ? 20 * Math.cos((this.time % 40 < 10 ? this.time % 40 : 20 - this.time % 40) * Math.PI / 90) : 0))
-          + " Z M170 49L85 0L"
-          + (145 - ((this.time % 40 < 20 && this.time > 0) ? 20 * Math.sin((this.time % 40 < 20 ? this.time % 40 : 20 - this.time % 40) * Math.PI / 90) : 0)) + " "
-          + (-30 - ((this.time % 40 < 20 && this.time > 0) ? 20 * Math.cos((this.time % 40 < 10 ? this.time % 40 : 20 - this.time % 40) * Math.PI / 90) : 0))
-          + "L" + (230 - ((this.time % 40 < 20 && this.time > 0) ? 20 * Math.sin((this.time % 40 < 20 ? this.time % 40 : 20 - this.time % 40) * Math.PI / 90) : 0)) + " "
-          + (19 - ((this.time % 40 < 20 && this.time > 0) ? 20 * Math.cos((this.time % 40 < 10 ? this.time % 40 : 20 - this.time % 40) * Math.PI / 90) : 0))
-          + " Z")
+              + (25 + ((this.time % 40 < 20 && this.time > 0) ? 20 * Math.sin((this.time % 40 < 20 ? this.time % 40 : 20 - this.time % 40) * Math.PI / 90) : 0)) + " "
+              + (-30 - ((this.time % 40 < 20 && this.time > 0) ? 20 * Math.cos((this.time % 40 < 10 ? this.time % 40 : 20 - this.time % 40) * Math.PI / 90) : 0))
+              + "L" + (-60 + ((this.time % 40 < 20 && this.time > 0) ? 20 * Math.sin((this.time % 40 < 20 ? this.time % 40 : 20 - this.time % 40) * Math.PI / 90) : 0)) + " "
+              + (19 - ((this.time % 40 < 20 && this.time > 0) ? 20 * Math.cos((this.time % 40 < 10 ? this.time % 40 : 20 - this.time % 40) * Math.PI / 90) : 0))
+              + " Z M170 49L85 0L"
+              + (145 - ((this.time % 40 < 20 && this.time > 0) ? 20 * Math.sin((this.time % 40 < 20 ? this.time % 40 : 20 - this.time % 40) * Math.PI / 90) : 0)) + " "
+              + (-30 - ((this.time % 40 < 20 && this.time > 0) ? 20 * Math.cos((this.time % 40 < 10 ? this.time % 40 : 20 - this.time % 40) * Math.PI / 90) : 0))
+              + "L" + (230 - ((this.time % 40 < 20 && this.time > 0) ? 20 * Math.sin((this.time % 40 < 20 ? this.time % 40 : 20 - this.time % 40) * Math.PI / 90) : 0)) + " "
+              + (19 - ((this.time % 40 < 20 && this.time > 0) ? 20 * Math.cos((this.time % 40 < 10 ? this.time % 40 : 20 - this.time % 40) * Math.PI / 90) : 0))
+              + " Z")
             .fill(this.boxColor[1])
             .width('100%')
-            .height(this.model.headerHeight)
+            .height(this.model.footerHeight)
             .scale({
               x: 0.6,
               y: 0.6,
@@ -144,64 +133,49 @@ export struct DropBox {
             })
             .translate({
               x: -5,
-              y: this.model.headerHeight - 105
+              y: this.model.footerHeight - 115
             })
+
           //红包
           ForEach(this.drawable1Paths, (item:Drawable3PathsParam) => {
             Path()
               .commands(item.content)
               .fill(this.drawable1Colors[item.index])
-              .height(this.model.headerHeight)
+              .height(this.model.footerHeight)
               .scale({
                 x: 3,
                 y: 3,
                 centerX: 0,
                 centerY: 0
               })
-              .translate({//取时间余数在-20-0的阶段 掉落过程20ms ，停顿20ms，下一个掉落为文件 20ms，在停顿20ms。然后为音乐，所以一个周期为120ms。下一次红包掉落范围在100-120
-                y: (this.model.headerHeight - this.model.initHeaderHeight) / 3 + 100 + (this.time < 0 ? this.time * 4 : 0)
+              .translate({
+                y: (this.model.footerHeight - this.model.initFooterHeight) / 3 + 100 + (this.time < 0 ? this.time * 4 : 0)
               })
-              .height(this.model.headerHeight)
+              .height(this.model.footerHeight)
           }, (item:Drawable3PathsParam) => item.index.toString())
           //红包
           ForEach(this.drawable1Paths, (item:Drawable3PathsParam) => {
             Path()
               .commands(item.content)
               .fill(this.drawable1Colors[item.index])
-              .height(this.model.headerHeight)
+              .height(this.model.footerHeight)
               .scale({
                 x: 3,
                 y: 3,
                 centerX: 0,
                 centerY: 0
               })
-              .translate({//取时间余数在100-120的阶段
-                y: (this.model.headerHeight - this.model.initHeaderHeight) / 3  + 100 + ((this.time > 100 ? (this.time % 120 > 100 && this.time % 120 < 120 ? (this.time % 120 - 120) * 4 : 0) : 1000))
+              .translate({
+                y: (this.model.footerHeight - this.model.initFooterHeight) / 3 + 100 + ((this.time > 100 ? (this.time % 120 > 100 && this.time % 120 < 120 ? (this.time % 120 - 120) * 4 : 0) : 1000))
               })
-              .height(this.model.headerHeight)
+              .height(this.model.footerHeight)
           }, (item:Drawable3PathsParam) => item.index.toString())
           //文件
           ForEach(this.drawable2Paths, (item:Drawable3PathsParam) => {
             Path()
               .commands(item.content)
               .fill(this.drawable2Colors[item.index])
-              .height(this.model.headerHeight)
-              .scale({
-                x: 1.25,
-                y: 1.25,
-                centerX: 0,
-                centerY: 0
-              })
-              .translate({//取时间余数在20-40的阶段 变小
-                y: (this.model.headerHeight - this.model.initHeaderHeight) / 1.25 + 100 + ((this.time > 20 ? (this.time < 40 ? (this.time - 40) * 4 : 0) : 1000))
-              })
-          }, (item:Drawable3PathsParam) => item.index.toString())
-          //文件
-          ForEach(this.drawable2Paths, (item:Drawable3PathsParam) => {
-            Path()
-              .commands(item.content)
-              .fill(this.drawable2Colors[item.index])
-              .height(this.model.headerHeight)
+              .height(this.model.footerHeight)
               .scale({
                 x: 1.25,
                 y: 1.25,
@@ -209,7 +183,23 @@ export struct DropBox {
                 centerY: 0
               })
               .translate({
-                y: (this.model.headerHeight - this.model.initHeaderHeight) / 1.25  + 100 + (this.time > 140 ? (this.time % 120 > 20 && this.time % 120 < 40 ? (this.time % 120 - 40) * 4 : 0) : 1000)
+                y: (this.model.footerHeight - this.model.initFooterHeight) / 1.25 + 100 + ((this.time > 20 ? (this.time < 40 ? (this.time - 40) * 4 : 0) : 1000))
+              })
+          }, (item:Drawable3PathsParam) => item.index.toString())
+          //文件
+          ForEach(this.drawable2Paths, (item:Drawable3PathsParam) => {
+            Path()
+              .commands(item.content)
+              .fill(this.drawable2Colors[item.index])
+              .height(this.model.footerHeight)
+              .scale({
+                x: 1.25,
+                y: 1.25,
+                centerX: 0,
+                centerY: 0
+              })
+              .translate({
+                y: (this.model.footerHeight - this.model.initFooterHeight) / 1.25 + 100 + (this.time > 140 ? (this.time % 120 > 20 && this.time % 120 < 40 ? (this.time % 120 - 40) * 4 : 0) : 1000)
               })
           }, (item:Drawable3PathsParam) => item.index.toString())
           //音乐
@@ -217,15 +207,15 @@ export struct DropBox {
             Path()
               .commands(item.content)
               .fill(this.drawable3Colors[item.index])
-              .height(this.model.headerHeight)
+              .height(this.model.footerHeight)
               .scale({
                 x: 4,
                 y: 4,
                 centerX: 0,
                 centerY: 0
               })
-              .translate({//取时间余数在60-80的阶段
-                y: (this.model.headerHeight - this.model.initHeaderHeight) / 4  + 100 + ((this.time > 60 ? (this.time < 80 ? (this.time - 80) * 4 : 0) : 1000))
+              .translate({
+                y: (this.model.footerHeight - this.model.initFooterHeight) / 4 + 100 + ((this.time > 60 ? (this.time < 80 ? (this.time - 80) * 4 : 0) : 1000))
               })
           }, (item:Drawable3PathsParam) => item.index.toString())
           //音乐
@@ -233,15 +223,15 @@ export struct DropBox {
             Path()
               .commands(item.content)
               .fill(this.drawable3Colors[item.index])
-              .height(this.model.headerHeight)
+              .height(this.model.footerHeight)
               .scale({
                 x: 4,
                 y: 4,
                 centerX: 0,
                 centerY: 0
               })
-              .translate({//取时间余数在60-80的阶段
-                y: (this.model.headerHeight - this.model.initHeaderHeight) / 4  + 100 + (this.time > 180 ? (this.time % 120 > 60 && this.time % 120 < 80 ? (this.time % 120 - 80) * 4 : 0) : 1000)
+              .translate({
+                y: (this.model.footerHeight - this.model.initFooterHeight) / 4 + 100 + (this.time > 180 ? (this.time % 120 > 60 && this.time % 120 < 80 ? (this.time % 120 - 80) * 4 : 0) : 1000)
               })
           }, (item:Drawable3PathsParam) => item.index.toString())
 
@@ -253,7 +243,7 @@ export struct DropBox {
               + " 99 0 149Z")
             .fill(this.boxColor[0])
             .width('100%')
-            .height(this.model.headerHeight)
+            .height(this.model.footerHeight)
             .scale({
               x: 0.6,
               y: 0.6,
@@ -262,7 +252,7 @@ export struct DropBox {
             })
             .translate({
               x: -5,
-              y: this.model.headerHeight - 105
+              y: this.model.footerHeight - 115
             })
 
           Path()
@@ -279,7 +269,7 @@ export struct DropBox {
               + " Z")
             .fill(this.boxColor[1])
             .width('100%')
-            .height(this.model.headerHeight)
+            .height(this.model.footerHeight)
             .scale({
               x: 0.6,
               y: 0.6,
@@ -288,7 +278,7 @@ export struct DropBox {
             })
             .translate({
               x: -5,
-              y: this.model.headerHeight - 105
+              y: this.model.footerHeight - 115
             })
 
 
@@ -303,38 +293,8 @@ export struct DropBox {
 
       } else if (this.model.refreshState == SmartRefreshForDropBoxSample.REFRESHSTATE.TOREFRESH) { //拖住过程中的样式
         Stack({ alignContent: Alignment.TopStart }) {
-          Path()
-            .commands("M0 149L85 198L170 149Q170 99 170 49L85 0L0 49Q0 99 0 149Z")
-            .fill(this.boxColor[0])
-            .width('100%')
-            .height(this.model.headerHeight)
-            .scale({
-              x: 0.6,
-              y: 0.6,
-              centerX: 0,
-              centerY: 0
-            })
-            .translate({
-              x: -20,
-              y: this.model.headerHeight - 110
-            })
-          // this.boxPath("M0 149L85 198L170 149Q170 99 170 49L85 0L0 49Q0 99 0 149Z", this.boxColor[0])
-          Path()
-            .commands("M0 49L85 0L25 -30L-60 19ZM170 49L85 0L145 -30L230 19ZM170 49L85 99L145 129L230 79ZM0 49L85 99L25 129L-60 79Z")
-            .fill(this.boxColor[1])
-            .width('100%')
-            .height(this.model.headerHeight)
-            .scale({
-              x: 0.6,
-              y: 0.6,
-              centerX: 0,
-              centerY: 0
-            })
-            .translate({
-              x: -20,
-              y: this.model.headerHeight - 110
-            })
-          // this.boxPath("M0 49L85 0L25 -30L-60 19ZM170 49L85 0L145 -30L230 19ZM170 49L85 99L145 129L230 79ZM0 49L85 99L25 129L-60 79Z", this.boxColor[1])
+          this.boxPath("M0 149L85 198L170 149Q170 99 170 49L85 0L0 49Q0 99 0 149Z", this.boxColor[0])
+          this.boxPath("M0 49L85 0L25 -30L-60 19ZM170 49L85 0L145 -30L230 19ZM170 49L85 99L145 129L230 79ZM0 49L85 99L25 129L-60 79Z", this.boxColor[1])
         }.width("100%")
         .translate({
           x:'50%'

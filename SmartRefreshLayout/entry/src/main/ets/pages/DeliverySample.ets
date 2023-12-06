@@ -97,7 +97,6 @@ struct DeliverySample {
         }, main: () => {
           this.deliveryMain()
         }, footer: () => {
-          //this.deliveryFooter()
         } })
     }.backgroundColor("#dddddd")
   }

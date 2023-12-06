@@ -126,7 +126,6 @@ export struct WaveSwipe {
     this.model.headerRefreshId = setInterval(() => {
       let screenWidth = this.screenWidth
       let bottomLineWidth = 100
-      //this.touchMoveHeight = this.model.headerHeight
       this.touchMoveHeight = this.model.downYOffset
       if (this.model.refreshState == SmartRefresh.REFRESHSTATE.TOREFRESH) {
         this.model.waterDropYTopCoordinate = 0

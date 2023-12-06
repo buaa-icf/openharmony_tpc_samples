@@ -7,6 +7,6 @@
   "main": "",
   "version": "2.0.0",
   "dependencies": {
-    "@ohos/smartrefreshlayout": "file:../smartRefreshLayout"
+    "@ohos/smartrefreshlayout": "file:../library"
   }
 }

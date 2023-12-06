@@ -1,6 +1,6 @@
 {
   "module": {
-    "name": "SmartRefreshLayout",
+    "name": "library",
     "type": "har",
     "deviceTypes": [
       "default",

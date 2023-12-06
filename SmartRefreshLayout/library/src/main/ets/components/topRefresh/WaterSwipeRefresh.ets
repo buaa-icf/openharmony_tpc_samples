@@ -98,14 +98,10 @@ export struct WaterSwipe {
       let initStartY: number = this.model.headerHeight - this.model.initHeaderHeight < 100 ? (this.model.headerHeight - this.model.initHeaderHeight) : 100
       this.arrowPositionStartY = initStartY
       if (SmartRefresh.REFRESHSTATE.TOREFRESH == this.model.refreshState) {
-        //this.model.getOffset() * this.model.initHeaderHeight 获取拖拽的高度
         this.waterTopPathCmd = `M ${initStartX},${initStartY} a ${topCircleRadius} ${topCircleRadius} 90 1 1 0 1 Z`
         this.bottomCircleRadius = 100 - Math.pow(this.model.getOffset() , 0.8) * 45
-        //80 - (this.model.latestYOffset - this.model.initHeaderHeight)
         let bottomCircleStartX = initStartX + topCircleRadius - this.bottomCircleRadius // 450 + 100
         let getOffset = this.model.getOffset() * this.model.initHeaderHeight
-        //let bottomCircleStartY = getOffset > this.model.initHeaderHeight ? (getOffset - 50): (initStartY - 20)
-        //let bottomCircleStartY = this.model.headerHeight > this.model.initHeaderHeight ? (this.model.headerHeight - this.model.initHeaderHeight + initStartY) : (initStartY - 20)
         let bottomCircleStartY = this.model.headerHeight > this.model.initHeaderHeight ?
           ((this.model.headerHeight - this.model.initHeaderHeight + initStartY) * 3) : (initStartY)
         let leftMiddleX = (initStartX + bottomCircleStartX) / 2 + 20
@@ -178,7 +174,6 @@ export struct WaterSwipe {
           this.pullRefreshImage = $r("app.media.ic_loading")
         }
       }, () => {
-        //this.offsetY = 0
       })
     }, 200)
   }
@@ -190,7 +185,6 @@ export struct WaterSwipe {
       this.model.refreshHeaderCallback()
       this.model.initRefreshing = false
     }
-    //this.caculateSunOffset(this.sunXOffset , this.sunYOffset)
   }
 
   aboutToDisappear(){
@@ -250,17 +244,6 @@ export struct WaterSwipe {
                 .fill(this.model.backgroundColor)
                 .stroke(Color.White)
                 .margin({top:0,left:0})
-              // if (this.arrowAngleFlag == 1) {
-              //   Path() //圆的轨道
-              //     .width("100%")
-              //     .height(this.model.headerHeight)
-              //     .strokeWidth(3)
-              //     .fillOpacity(0)
-              //     .stroke(Color.White)
-              //     .commands(this.arrowPathCmd)
-              //     .zIndex(2)
-              //     .opacity(1)
-              // }
             }
           }
         }

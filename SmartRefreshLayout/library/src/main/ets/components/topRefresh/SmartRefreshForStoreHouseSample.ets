@@ -14,8 +14,8 @@
  */
 
 @Component
-struct SmartRefreshForDeliverySample {
-  @Link modelDelivery: SmartRefreshForDeliverySample.Model
+struct SmartRefreshForStoreHouseSample {
+  @Link modelStoreHouse: SmartRefreshForStoreHouseSample.Model
   @BuilderParam header?: () => void
   @BuilderParam main?: () => void
   @BuilderParam footer?: () => void
@@ -34,11 +34,11 @@ struct SmartRefreshForDeliverySample {
 
   refreshClose(location:ESObject) { //重置Scroller
     this.needScroller = true
-    this.modelDelivery.refreshState = SmartRefreshForDeliverySample.REFRESHSTATE.NONE
+    this.modelStoreHouse.refreshState = SmartRefreshForStoreHouseSample.REFRESHSTATE.NONE
   }
 
   aboutToAppear(){
-    if (this.modelDelivery.initRefreshing) { //初始化刷新  头部允许刷新
+    if (this.modelStoreHouse.initRefreshing) { //初始化刷新  头部允许刷新
       this.scrollerInit()
     }
   }
@@ -46,38 +46,38 @@ struct SmartRefreshForDeliverySample {
   scrollerInit() {
 
     this.headerIsVisibleLoadMore = true
-    this.headerHeight = this.modelDelivery.initHeaderHeight
-    this.modelDelivery.headerHeight = this.headerHeight
-    this.modelDelivery.refreshState = SmartRefreshForDeliverySample.REFRESHSTATE.REFRESHING
-    if (this.modelDelivery.refreshHeaderCallback) { //初始化刷新的回调
-      this.modelDelivery.refreshHeaderCallback()
+    this.headerHeight = this.modelStoreHouse.initHeaderHeight
+    this.modelStoreHouse.headerHeight = this.headerHeight
+    this.modelStoreHouse.refreshState = SmartRefreshForStoreHouseSample.REFRESHSTATE.REFRESHING
+    if (this.modelStoreHouse.refreshHeaderCallback) { //初始化刷新的回调
+      this.modelStoreHouse.refreshHeaderCallback()
     }
-    if(this.modelDelivery.getRefreshFinishStopDuration() > 0) {//刷新结束过后停留的时间
+    if(this.modelStoreHouse.getRefreshFinishStopDuration() > 0) {//刷新结束过后停留的时间
       setTimeout(() => {
-        this.modelDelivery.refreshState = SmartRefreshForDeliverySample.REFRESHSTATE.REFRESHFINISH
-      }, this.modelDelivery.refreshDuration);
+        this.modelStoreHouse.refreshState = SmartRefreshForStoreHouseSample.REFRESHSTATE.REFRESHFINISH
+      }, this.modelStoreHouse.refreshDuration);
     }
-    this.modelDelivery.refreshTimeOut = setTimeout(() => {
+    this.modelStoreHouse.refreshTimeOut = setTimeout(() => {
       this.headerHeight = 0
-      this.modelDelivery.headerHeight = 0
+      this.modelStoreHouse.headerHeight = 0
       this.headerIsVisibleLoadMore = false
-      this.refreshClose(SmartRefreshForDeliverySample.LOCATION.HEAD)
-      this.modelDelivery.refreshTimeOut = 0
+      this.refreshClose(SmartRefreshForStoreHouseSample.LOCATION.HEAD)
+      this.modelStoreHouse.refreshTimeOut = 0
       this.closeHeaderRefresh()//关闭头部刷新效果
-    }, this.modelDelivery.refreshDuration + this.modelDelivery.getRefreshFinishStopDuration());
+    }, this.modelStoreHouse.refreshDuration + this.modelStoreHouse.getRefreshFinishStopDuration());
   }
 
   build() {
     Column() {
-      if (this.header && this.modelDelivery.headerIsRefresh) {
-        if (this.modelDelivery.fixedContent && !this.modelDelivery.flyRefreshHeaderIsShow) {
+      if (this.header && this.modelStoreHouse.headerIsRefresh) {
+        if (this.modelStoreHouse.fixedContent && !this.modelStoreHouse.flyRefreshHeaderIsShow) {
           Flex() {
             this.header()
-          }.height(this.headerHeight).zIndex(this.modelDelivery.zHeaderIndex)
-          .backgroundColor(this.modelDelivery.getBackgroundShadowColor()).visibility((this.headerIsVisibleLoadMore && this.modelDelivery.enableRefresh) ? Visibility.Visible : Visibility.None)
+          }.height(this.headerHeight).zIndex(this.modelStoreHouse.zHeaderIndex)
+          .backgroundColor(this.modelStoreHouse.getBackgroundShadowColor()).visibility((this.headerIsVisibleLoadMore && this.modelStoreHouse.enableRefresh) ? Visibility.Visible : Visibility.None)
         }
       }
-      Scroll(this.modelDelivery.scroller) {
+      Scroll(this.modelStoreHouse.scroller) {
         Column() {
           if (this.needScroller) { //重置Scroller
             Text("0").visibility(Visibility.None)
@@ -98,38 +98,38 @@ struct SmartRefreshForDeliverySample {
       .enabled(this.scrollerIsEnableRollWhenRefreshing)
       .onScrollEdge((side: Edge) => {
         if (side.valueOf() == 0) { //滑动到顶部
-          this.modelDelivery.refreshHeaderCallbackState = true
-          this.modelDelivery.refreshBottomCallbackState = false
-          this.modelDelivery.scrollLocation = SmartRefreshForDeliverySample.LOCATION.HEAD
+          this.modelStoreHouse.refreshHeaderCallbackState = true
+          this.modelStoreHouse.refreshBottomCallbackState = false
+          this.modelStoreHouse.scrollLocation = SmartRefreshForStoreHouseSample.LOCATION.HEAD
         }
         if (side.valueOf() == 2) { //滑动到底部
-          this.modelDelivery.refreshBottomCallbackState = true
-          this.modelDelivery.refreshHeaderCallbackState = false
-          this.modelDelivery.firstArriveBottomEdgeOffsetY = this.modelDelivery.scroller.currentOffset().yOffset
-          this.modelDelivery.scrollLocation = SmartRefreshForDeliverySample.LOCATION.FOOT
+          this.modelStoreHouse.refreshBottomCallbackState = true
+          this.modelStoreHouse.refreshHeaderCallbackState = false
+          this.modelStoreHouse.firstArriveBottomEdgeOffsetY = this.modelStoreHouse.scroller.currentOffset().yOffset
+          this.modelStoreHouse.scrollLocation = SmartRefreshForStoreHouseSample.LOCATION.FOOT
         }
       })
       .onScroll((xOffset: number, yOffset: number) => {
-        if(!this.modelDelivery.disableContentWhenRefresh && (this.modelDelivery.refreshState == SmartRefreshForDeliverySample.REFRESHSTATE.REFRESHING || this.modelDelivery.refreshState == SmartRefreshForDeliverySample.REFRESHSTATE.REFRESHFINISH)) {
+        if(!this.modelStoreHouse.disableContentWhenRefresh && (this.modelStoreHouse.refreshState == SmartRefreshForStoreHouseSample.REFRESHSTATE.REFRESHING || this.modelStoreHouse.refreshState == SmartRefreshForStoreHouseSample.REFRESHSTATE.REFRESHFINISH)) {
           //do nothing->设置下拉刷新过程中不可以拖动
         } else {
-          if (this.modelDelivery.fixedContent != this.modelDelivery.oldFixedContent) {//内容固定
+          if (this.modelStoreHouse.fixedContent != this.modelStoreHouse.oldFixedContent) {//内容固定
             this.needScroller = true
-            this.modelDelivery.oldFixedContent = this.modelDelivery.fixedContent
+            this.modelStoreHouse.oldFixedContent = this.modelStoreHouse.fixedContent
           }
-          this.modelDelivery.latestYOffset = this.modelDelivery.scroller.currentOffset().yOffset
+          this.modelStoreHouse.latestYOffset = this.modelStoreHouse.scroller.currentOffset().yOffset
           this.scrollerEventFunction()
         }
       })
       .onTouch((event: TouchEvent) => this.contentEnableScroll(event))
 
-      if (this.footer && this.modelDelivery.footerIsRefresh) {
+      if (this.footer && this.modelStoreHouse.footerIsRefresh) {
         Flex({ alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
           this.footer()
         }.opacity(1)
         .height(this.footerHeightPercentage)
-        .backgroundColor(this.modelDelivery.getBackgroundShadowColor())
-        .visibility((this.footerIsVisibleLoadMore && this.modelDelivery.enableLoadMore) ? Visibility.Visible : Visibility.None)
+        .backgroundColor(this.modelStoreHouse.getBackgroundShadowColor())
+        .visibility((this.footerIsVisibleLoadMore && this.modelStoreHouse.enableLoadMore) ? Visibility.Visible : Visibility.None)
       }
     }
     .height("100%")
@@ -140,16 +140,16 @@ struct SmartRefreshForDeliverySample {
 
   //刷新过程中是否可以滚动列表
   scrollerIsEnableRollWhenRefreshingFunction() {
-    if (this.modelDelivery.refreshState == SmartRefreshForDeliverySample.REFRESHSTATE.REFRESHING || this.modelDelivery.refreshState == SmartRefreshForDeliverySample.REFRESHSTATE.REFRESHFINISH) {
-      if (this.modelDelivery.scrollLocation == SmartRefreshForDeliverySample.LOCATION.HEAD) {
-        if (!this.modelDelivery.disableContentWhenRefresh) {
+    if (this.modelStoreHouse.refreshState == SmartRefreshForStoreHouseSample.REFRESHSTATE.REFRESHING || this.modelStoreHouse.refreshState == SmartRefreshForStoreHouseSample.REFRESHSTATE.REFRESHFINISH) {
+      if (this.modelStoreHouse.scrollLocation == SmartRefreshForStoreHouseSample.LOCATION.HEAD) {
+        if (!this.modelStoreHouse.disableContentWhenRefresh) {
           this.scrollerIsEnableRollWhenRefreshing = false
         } else {
           this.scrollerIsEnableRollWhenRefreshing = true
         }
       }
-      if(this.modelDelivery.scrollLocation == SmartRefreshForDeliverySample.LOCATION.FOOT) {
-        if(!this.modelDelivery.disableContentWhenLoading) {
+      if(this.modelStoreHouse.scrollLocation == SmartRefreshForStoreHouseSample.LOCATION.FOOT) {
+        if(!this.modelStoreHouse.disableContentWhenLoading) {
           this.scrollerIsEnableRollWhenRefreshing = false
         } else {
           this.scrollerIsEnableRollWhenRefreshing = true
@@ -163,26 +163,25 @@ struct SmartRefreshForDeliverySample {
 
 
   scrollerEventFunction() {
-    if (this.modelDelivery.scrollLocation == SmartRefreshForDeliverySample.LOCATION.HEAD && this.needScroller) {
+    if (this.modelStoreHouse.scrollLocation == SmartRefreshForStoreHouseSample.LOCATION.HEAD && this.needScroller) {
       this.needScroller = false
-      this.modelDelivery.scrollerEndYOffset = 0
-      this.modelDelivery.scrollerEndState = true
-      this.headerHeight = this.modelDelivery.initHeaderHeight
-      this.modelDelivery.headerHeight = this.modelDelivery.initHeaderHeight
-      //this.modelDelivery.scroller.scrollEdge(Edge.Top)
-    } else if (this.modelDelivery.scrollLocation == SmartRefreshForDeliverySample.LOCATION.FOOT && this.needScroller) {
+      this.modelStoreHouse.scrollerEndYOffset = 0
+      this.modelStoreHouse.scrollerEndState = true
+      this.headerHeight = this.modelStoreHouse.initHeaderHeight
+      this.modelStoreHouse.headerHeight = this.modelStoreHouse.initHeaderHeight
+    } else if (this.modelStoreHouse.scrollLocation == SmartRefreshForStoreHouseSample.LOCATION.FOOT && this.needScroller) {
       this.needScroller = false
-      this.modelDelivery.scrollerEndYOffset = this.modelDelivery.firstArriveBottomEdgeOffsetY
-      this.modelDelivery.scrollerEndState = true
-      if(this.modelDelivery.enableScrollContentWhenLoaded) {//是否在加载完成之后滚动内容显示新数据
-        this.modelDelivery.scroller.scrollEdge(Edge.Bottom)
+      this.modelStoreHouse.scrollerEndYOffset = this.modelStoreHouse.firstArriveBottomEdgeOffsetY
+      this.modelStoreHouse.scrollerEndState = true
+      if(this.modelStoreHouse.enableScrollContentWhenLoaded) {//是否在加载完成之后滚动内容显示新数据
+        this.modelStoreHouse.scroller.scrollEdge(Edge.Bottom)
       } else {
-        if(this.modelDelivery.refreshState == SmartRefreshForDeliverySample.REFRESHSTATE.TOREFRESH
-          || this.modelDelivery.refreshState == SmartRefreshForDeliverySample.REFRESHSTATE.REFRESHING
-          || this.modelDelivery.refreshState == SmartRefreshForDeliverySample.REFRESHSTATE.REFRESHFINISH) {
-          this.modelDelivery.scroller.scrollEdge(Edge.Bottom)
+        if(this.modelStoreHouse.refreshState == SmartRefreshForStoreHouseSample.REFRESHSTATE.TOREFRESH
+          || this.modelStoreHouse.refreshState == SmartRefreshForStoreHouseSample.REFRESHSTATE.REFRESHING
+          || this.modelStoreHouse.refreshState == SmartRefreshForStoreHouseSample.REFRESHSTATE.REFRESHFINISH) {
+          this.modelStoreHouse.scroller.scrollEdge(Edge.Bottom)
         } else {
-          this.modelDelivery.scroller.scrollTo({xOffset: 0, yOffset: this.modelDelivery.firstArriveBottomEdgeOffsetY})
+          this.modelStoreHouse.scroller.scrollTo({xOffset: 0, yOffset: this.modelStoreHouse.firstArriveBottomEdgeOffsetY})
         }
       }
     }
@@ -191,13 +190,13 @@ struct SmartRefreshForDeliverySample {
   contentEnableScroll(event: TouchEvent) {
     //判断头部刷新时是否可以滚动
     //只能头部控制刷新时，不可以操作。底部加载时，设置列表不可以操作需要刷新页面设置scrollable，则内容会回到顶部。
-    if(this.modelDelivery.refreshState == SmartRefreshForDeliverySample.REFRESHSTATE.REFRESHING || this.modelDelivery.refreshState == SmartRefreshForDeliverySample.REFRESHSTATE.REFRESHFINISH) {
-      if(this.modelDelivery.scrollLocation == SmartRefreshForDeliverySample.LOCATION.HEAD && this.modelDelivery.disableContentWhenRefresh) {
+    if(this.modelStoreHouse.refreshState == SmartRefreshForStoreHouseSample.REFRESHSTATE.REFRESHING || this.modelStoreHouse.refreshState == SmartRefreshForStoreHouseSample.REFRESHSTATE.REFRESHFINISH) {
+      if(this.modelStoreHouse.scrollLocation == SmartRefreshForStoreHouseSample.LOCATION.HEAD && this.modelStoreHouse.disableContentWhenRefresh) {
         this.touchEventFunction(event)
       } else {
         this.scrollerIsEnableRollWhenRefreshingFunction()
       }
-      if(this.modelDelivery.scrollLocation == SmartRefreshForDeliverySample.LOCATION.FOOT && this.modelDelivery.disableContentWhenLoading) {
+      if(this.modelStoreHouse.scrollLocation == SmartRefreshForStoreHouseSample.LOCATION.FOOT && this.modelStoreHouse.disableContentWhenLoading) {
         this.touchEventFunction(event)
       } else {
         this.scrollerIsEnableRollWhenRefreshingFunction()
@@ -212,30 +211,30 @@ struct SmartRefreshForDeliverySample {
     switch (event.type) {
       case TouchType.Down: // 手指按下
         this.headerHeight = 0
-        this.modelDelivery.headerHeight = 0
-        this.modelDelivery.initScrollerYOffset = this.modelDelivery.scroller.currentOffset().yOffset
+        this.modelStoreHouse.headerHeight = 0
+        this.modelStoreHouse.initScrollerYOffset = this.modelStoreHouse.scroller.currentOffset().yOffset
       // 记录按下的y坐标
-        this.modelDelivery.downY = event.touches[0].y
+        this.modelStoreHouse.downY = event.touches[0].y
         break
       case TouchType.Move: // 手指移动
-        this.modelDelivery.currentMouseX = event.touches[0].screenX;
-        this.modelDelivery.downYOffset = event.touches[0].y - this.modelDelivery.downY
+        this.modelStoreHouse.currentMouseX = event.touches[0].screenX;
+        this.modelStoreHouse.downYOffset = event.touches[0].y - this.modelStoreHouse.downY
       //记录拖拽方向
-        this.modelDelivery.dragDirection = this.modelDelivery.downYOffset > 0 ? true : false
+        this.modelStoreHouse.dragDirection = this.modelStoreHouse.downYOffset > 0 ? true : false
       //到达底部，而向下拖动，则清楚到达底部的标识
-        if(this.modelDelivery.scrollLocation == SmartRefreshForDeliverySample.LOCATION.FOOT && this.modelDelivery.dragDirection) {
-          this.modelDelivery.scrollLocation = SmartRefreshForDeliverySample.LOCATION.MIDDER
+        if(this.modelStoreHouse.scrollLocation == SmartRefreshForStoreHouseSample.LOCATION.FOOT && this.modelStoreHouse.dragDirection) {
+          this.modelStoreHouse.scrollLocation = SmartRefreshForStoreHouseSample.LOCATION.MIDDER
         }
       // 下拉方向判断头部刷新
-        if(this.modelDelivery.dragDirection) {
-          if (this.modelDelivery.downYOffset > this.modelDelivery.initScrollerYOffset) {
+        if(this.modelStoreHouse.dragDirection) {
+          if (this.modelStoreHouse.downYOffset > this.modelStoreHouse.initScrollerYOffset) {
             this.headerIsVisibleLoadMore = true
             this.footerIsVisibleLoadMore = false
           }
           //下拉头部刷新样式回调
-          if (this.modelDelivery.refreshHeaderCallbackState && this.modelDelivery.headerRefreshId == -1 && this.modelDelivery.headerHeight > (this.modelDelivery.initHeaderHeight / 2)) {
-            this.modelDelivery.refreshHeaderCallbackState = false
-            this.modelDelivery.refreshHeaderCallback()
+          if (this.modelStoreHouse.refreshHeaderCallbackState && this.modelStoreHouse.headerRefreshId == -1 && this.modelStoreHouse.headerHeight > (this.modelStoreHouse.initHeaderHeight / 2)) {
+            this.modelStoreHouse.refreshHeaderCallbackState = false
+            this.modelStoreHouse.refreshHeaderCallback()
           }
           this.dragDownDirection_Move(event)
           return
@@ -244,26 +243,26 @@ struct SmartRefreshForDeliverySample {
           if (this.columnAreaChangeHeight > this.scrollAreaChangeHeight) {
             this.headerIsVisibleLoadMore = false
             this.footerIsVisibleLoadMore = true
-            if (this.modelDelivery.refreshBottomCallbackState && this.modelDelivery.bottomRefreshId == 0) {
-              this.modelDelivery.refreshBottomCallbackState = false
-              this.modelDelivery.refreshBottomCallback()
+            if (this.modelStoreHouse.refreshBottomCallbackState && this.modelStoreHouse.bottomRefreshId == 0) {
+              this.modelStoreHouse.refreshBottomCallbackState = false
+              this.modelStoreHouse.refreshBottomCallback()
             }
             this.dragUpDirection_Move(event)
           } else {//scroll的高度大于、等于整个屏幕的高度
-            if (this.modelDelivery.firstArriveBottomEdgeOffsetY == 0 || this.modelDelivery.scrollLocation != SmartRefreshForDeliverySample.LOCATION.FOOT) {//第一次进入，高度为默认高度0
+            if (this.modelStoreHouse.firstArriveBottomEdgeOffsetY == 0 || this.modelStoreHouse.scrollLocation != SmartRefreshForStoreHouseSample.LOCATION.FOOT) {//第一次进入，高度为默认高度0
               this.headerIsVisibleLoadMore = false
               this.footerIsVisibleLoadMore = false
             } else {
-              if (Math.abs(this.modelDelivery.downYOffset) > (this.modelDelivery.firstArriveBottomEdgeOffsetY - this.modelDelivery.initScrollerYOffset)) {
+              if (Math.abs(this.modelStoreHouse.downYOffset) > (this.modelStoreHouse.firstArriveBottomEdgeOffsetY - this.modelStoreHouse.initScrollerYOffset)) {
                 this.headerIsVisibleLoadMore = false
                 this.footerIsVisibleLoadMore = true
               }
             }
-            if (this.modelDelivery.scrollLocation == SmartRefreshForDeliverySample.LOCATION.FOOT) {
+            if (this.modelStoreHouse.scrollLocation == SmartRefreshForStoreHouseSample.LOCATION.FOOT) {
               this.footerIsVisibleLoadMore = true
-              if (this.modelDelivery.refreshBottomCallbackState && this.modelDelivery.bottomRefreshId == 0) {
-                this.modelDelivery.refreshBottomCallbackState = false
-                this.modelDelivery.refreshBottomCallback()
+              if (this.modelStoreHouse.refreshBottomCallbackState && this.modelStoreHouse.bottomRefreshId == 0) {
+                this.modelStoreHouse.refreshBottomCallbackState = false
+                this.modelStoreHouse.refreshBottomCallback()
               }
               this.dragUpDirection_Move(event)
             }
@@ -271,10 +270,10 @@ struct SmartRefreshForDeliverySample {
         }
         break
       case TouchType.Up: // 手指抬起
-        if (this.modelDelivery.dragDirection && this.headerIsVisibleLoadMore) {
-          this.dragDownDirection_UP(this.modelDelivery.downYOffset)
-        } else if (!this.modelDelivery.dragDirection && this.footerIsVisibleLoadMore) {
-          this.dragUpDirection_UP(Math.abs(this.modelDelivery.downYOffset))
+        if (this.modelStoreHouse.dragDirection && this.headerIsVisibleLoadMore) {
+          this.dragDownDirection_UP(this.modelStoreHouse.downYOffset)
+        } else if (!this.modelStoreHouse.dragDirection && this.footerIsVisibleLoadMore) {
+          this.dragUpDirection_UP(Math.abs(this.modelStoreHouse.downYOffset))
         }
         break
       case TouchType.Cancel:
@@ -282,27 +281,27 @@ struct SmartRefreshForDeliverySample {
   }
 
   dragDownDirection_Move(event: TouchEvent) {
-    switch (this.modelDelivery.refreshState) {
-      case SmartRefreshForDeliverySample.REFRESHSTATE.NONE:
-        this.modelDelivery.refreshState = SmartRefreshForDeliverySample.REFRESHSTATE.TOREFRESH
+    switch (this.modelStoreHouse.refreshState) {
+      case SmartRefreshForStoreHouseSample.REFRESHSTATE.NONE:
+        this.modelStoreHouse.refreshState = SmartRefreshForStoreHouseSample.REFRESHSTATE.TOREFRESH
         break
-      case SmartRefreshForDeliverySample.REFRESHSTATE.TOREFRESH:
-        let dragOffsetY = Math.abs(event.touches[0].y - this.modelDelivery.downY) + this.modelDelivery.srlHeaderInsetStart
-        if (this.headerHeight <= this.modelDelivery.initHeaderHeight) {
+      case SmartRefreshForStoreHouseSample.REFRESHSTATE.TOREFRESH:
+        let dragOffsetY = Math.abs(event.touches[0].y - this.modelStoreHouse.downY) + this.modelStoreHouse.srlHeaderInsetStart
+        if (this.headerHeight <= this.modelStoreHouse.initHeaderHeight) {
           this.headerHeight = dragOffsetY
-          this.modelDelivery.headerHeight = dragOffsetY
+          this.modelStoreHouse.headerHeight = dragOffsetY
         }
-        if (dragOffsetY > this.modelDelivery.initHeaderHeight) { //下拉超过默认值
+        if (dragOffsetY > this.modelStoreHouse.initHeaderHeight) { //下拉超过默认值
           //下拉超出初始范围
-          this.headerHeight = this.modelDelivery.initHeaderHeight + (Math.pow(dragOffsetY - this.modelDelivery.initHeaderHeight, this.modelDelivery.dragRate))
-          this.modelDelivery.headerHeight = this.headerHeight
+          this.headerHeight = this.modelStoreHouse.initHeaderHeight + (Math.pow(dragOffsetY - this.modelStoreHouse.initHeaderHeight, this.modelStoreHouse.dragRate))
+          this.modelStoreHouse.headerHeight = this.headerHeight
         }
-        this.modelDelivery.refreshState = SmartRefreshForDeliverySample.REFRESHSTATE.TOREFRESH
+        this.modelStoreHouse.refreshState = SmartRefreshForStoreHouseSample.REFRESHSTATE.TOREFRESH
         break
-      case SmartRefreshForDeliverySample.REFRESHSTATE.REFRESHING:
-        if ((event.touches[0].y - this.modelDelivery.downY) > 0) { //刷新状态下拉
-          this.headerHeight = this.modelDelivery.initHeaderHeight + (Math.pow(event.touches[0].y - this.modelDelivery.downY, this.modelDelivery.dragRate))
-          this.modelDelivery.headerHeight = this.headerHeight
+      case SmartRefreshForStoreHouseSample.REFRESHSTATE.REFRESHING:
+        if ((event.touches[0].y - this.modelStoreHouse.downY) > 0) { //刷新状态下拉
+          this.headerHeight = this.modelStoreHouse.initHeaderHeight + (Math.pow(event.touches[0].y - this.modelStoreHouse.downY, this.modelStoreHouse.dragRate))
+          this.modelStoreHouse.headerHeight = this.headerHeight
         }
         break
       default:
@@ -310,103 +309,101 @@ struct SmartRefreshForDeliverySample {
   }
 
   dragDownDirection_UP(downYOffsetParam: number) {
-    if (this.modelDelivery.refreshState != SmartRefreshForDeliverySample.REFRESHSTATE.NONE) {
-      if (this.modelDelivery.refreshState == SmartRefreshForDeliverySample.REFRESHSTATE.TOREFRESH) {
-        if (this.headerHeight < (this.modelDelivery.initHeaderHeight * this.modelDelivery.headerTriggerRate)) { //未下滑到指定位置则不刷新(头部高度小于默认高度)
+    if (this.modelStoreHouse.refreshState != SmartRefreshForStoreHouseSample.REFRESHSTATE.NONE) {
+      if (this.modelStoreHouse.refreshState == SmartRefreshForStoreHouseSample.REFRESHSTATE.TOREFRESH) {
+        if (this.headerHeight < (this.modelStoreHouse.initHeaderHeight * this.modelStoreHouse.headerTriggerRate)) { //未下滑到指定位置则不刷新(头部高度小于默认高度)
           this.headerIsVisibleLoadMore = false  //小于头部固定高度时，则隐藏头部
           this.closeHeaderRefresh()//关闭头部刷新效果
-          this.refreshClose(SmartRefreshForDeliverySample.LOCATION.HEAD)
+          this.refreshClose(SmartRefreshForStoreHouseSample.LOCATION.HEAD)
         } else {
-          this.headerHeight = this.modelDelivery.initHeaderHeight //重置头部高度
-          this.modelDelivery.headerHeight = this.modelDelivery.initHeaderHeight
-          //this.modelDelivery.scroller.scrollEdge(Edge.Top)
+          this.headerHeight = this.modelStoreHouse.initHeaderHeight //重置头部高度
+          this.modelStoreHouse.headerHeight = this.modelStoreHouse.initHeaderHeight
           this.needScroller = true
-          this.modelDelivery.refreshState = SmartRefreshForDeliverySample.REFRESHSTATE.REFRESHING //更改为刷新态
-          if (this.modelDelivery.refreshTimeOut == 0) {
-            if(this.modelDelivery.getRefreshFinishStopDuration() > 0) {//刷新结束过后停留的时间
+          this.modelStoreHouse.refreshState = SmartRefreshForStoreHouseSample.REFRESHSTATE.REFRESHING //更改为刷新态
+          if (this.modelStoreHouse.refreshTimeOut == 0) {
+            if(this.modelStoreHouse.getRefreshFinishStopDuration() > 0) {//刷新结束过后停留的时间
               setTimeout(() => {
-                this.modelDelivery.refreshState = SmartRefreshForDeliverySample.REFRESHSTATE.REFRESHFINISH
-              }, this.modelDelivery.refreshDuration);
+                this.modelStoreHouse.refreshState = SmartRefreshForStoreHouseSample.REFRESHSTATE.REFRESHFINISH
+              }, this.modelStoreHouse.refreshDuration);
             }
-            this.modelDelivery.refreshTimeOut = setTimeout(() => {
-              this.modelDelivery.refreshTimeOut = 0
+            this.modelStoreHouse.refreshTimeOut = setTimeout(() => {
+              this.modelStoreHouse.refreshTimeOut = 0
               this.headerIsVisibleLoadMore = false
-              this.refreshClose(SmartRefreshForDeliverySample.LOCATION.HEAD)
-              this.modelDelivery.lastRefreshTime = new Date()
+              this.refreshClose(SmartRefreshForStoreHouseSample.LOCATION.HEAD)
+              this.modelStoreHouse.lastRefreshTime = new Date()
               this.closeHeaderRefresh()//关闭头部刷新效果
-              this.modelDelivery.refreshHeaderDataCallback()
-            }, this.modelDelivery.refreshDuration + this.modelDelivery.getRefreshFinishStopDuration());
+              this.modelStoreHouse.refreshHeaderDataCallback()
+            }, this.modelStoreHouse.refreshDuration + this.modelStoreHouse.getRefreshFinishStopDuration());
           }
         }
-      } else if (this.modelDelivery.refreshState == SmartRefreshForDeliverySample.REFRESHSTATE.REFRESHING) {
-        this.headerHeight = this.modelDelivery.initHeaderHeight //重置头部高度
-        this.modelDelivery.headerHeight = this.modelDelivery.initHeaderHeight
+      } else if (this.modelStoreHouse.refreshState == SmartRefreshForStoreHouseSample.REFRESHSTATE.REFRESHING) {
+        this.headerHeight = this.modelStoreHouse.initHeaderHeight //重置头部高度
+        this.modelStoreHouse.headerHeight = this.modelStoreHouse.initHeaderHeight
       }
     }
   }
 
   dragUpDirection_Move(event: TouchEvent) {
-    let dragOffsetY = Math.abs(event.touches[0].y - this.modelDelivery.downY) + this.modelDelivery.srlFooterInsetStart
-    if (this.footerHeight < this.modelDelivery.initFooterHeight && this.modelDelivery.refreshState != SmartRefreshForDeliverySample.REFRESHSTATE.REFRESHING) {
+    let dragOffsetY = Math.abs(event.touches[0].y - this.modelStoreHouse.downY) + this.modelStoreHouse.srlFooterInsetStart
+    if (this.footerHeight < this.modelStoreHouse.initFooterHeight && this.modelStoreHouse.refreshState != SmartRefreshForStoreHouseSample.REFRESHSTATE.REFRESHING) {
       this.footerHeight = dragOffsetY
       this.scrollHeight = this.columnAreaChangeHeight - this.footerHeight
       this.footerHeightPercentage = (this.footerHeight / this.columnAreaChangeHeight * 100) + "%"
       this.scrollHeightPercentage = (this.scrollHeight / this.columnAreaChangeHeight * 100) + "%"
-      this.modelDelivery.footerHeight = this.footerHeight
+      this.modelStoreHouse.footerHeight = this.footerHeight
     } else {
-      if (this.modelDelivery.refreshState != SmartRefreshForDeliverySample.REFRESHSTATE.REFRESHING
-        && (this.modelDelivery.downY - event.touches[0].y) > 0 && dragOffsetY > this.modelDelivery.initFooterHeight) { //非刷新状态上拉
-        this.footerHeight = this.modelDelivery.initFooterHeight + (Math.pow(dragOffsetY - this.modelDelivery.initFooterHeight, this.modelDelivery.dragRate))
-        this.modelDelivery.footerHeight =  this.footerHeight
+      if (this.modelStoreHouse.refreshState != SmartRefreshForStoreHouseSample.REFRESHSTATE.REFRESHING
+        && (this.modelStoreHouse.downY - event.touches[0].y) > 0 && dragOffsetY > this.modelStoreHouse.initFooterHeight) { //非刷新状态上拉
+        this.footerHeight = this.modelStoreHouse.initFooterHeight + (Math.pow(dragOffsetY - this.modelStoreHouse.initFooterHeight, this.modelStoreHouse.dragRate))
+        this.modelStoreHouse.footerHeight =  this.footerHeight
         this.scrollHeight = this.columnAreaChangeHeight - this.footerHeight
         this.footerHeightPercentage = (this.footerHeight / this.columnAreaChangeHeight * 100) + "%"
         this.scrollHeightPercentage = (this.scrollHeight / this.columnAreaChangeHeight * 100) + "%"
-        this.modelDelivery.refreshState = SmartRefreshForDeliverySample.REFRESHSTATE.TOREFRESH
+        this.modelStoreHouse.refreshState = SmartRefreshForStoreHouseSample.REFRESHSTATE.TOREFRESH
       }
-      if (this.modelDelivery.refreshState == SmartRefreshForDeliverySample.REFRESHSTATE.REFRESHING && dragOffsetY > 0) { //刷新状态下拉
-        this.footerHeight = this.modelDelivery.initFooterHeight + (Math.pow(dragOffsetY, this.modelDelivery.dragRate))
-        this.modelDelivery.footerHeight =  this.footerHeight
+      if (this.modelStoreHouse.refreshState == SmartRefreshForStoreHouseSample.REFRESHSTATE.REFRESHING && dragOffsetY > 0) { //刷新状态下拉
+        this.footerHeight = this.modelStoreHouse.initFooterHeight + (Math.pow(dragOffsetY, this.modelStoreHouse.dragRate))
+        this.modelStoreHouse.footerHeight =  this.footerHeight
       }
     }
   }
 
   dragUpDirection_UP(downYOffsetParam: number) {
-    if (this.modelDelivery.refreshState != SmartRefreshForDeliverySample.REFRESHSTATE.NONE) {
-      if (this.modelDelivery.refreshState == SmartRefreshForDeliverySample.REFRESHSTATE.TOREFRESH) {
-        if (downYOffsetParam <= (this.modelDelivery.initFooterHeight * this.modelDelivery.footerTriggerRate)) { //未下滑到指定位置则不刷新
+    if (this.modelStoreHouse.refreshState != SmartRefreshForStoreHouseSample.REFRESHSTATE.NONE) {
+      if (this.modelStoreHouse.refreshState == SmartRefreshForStoreHouseSample.REFRESHSTATE.TOREFRESH) {
+        if (downYOffsetParam <= (this.modelStoreHouse.initFooterHeight * this.modelStoreHouse.footerTriggerRate)) { //未下滑到指定位置则不刷新
           this.footerIsVisibleLoadMore = false  //小于尾部固定高度时，则隐藏尾部
-          this.refreshClose(SmartRefreshForDeliverySample.LOCATION.HEAD)
+          this.refreshClose(SmartRefreshForStoreHouseSample.LOCATION.HEAD)
           this.footerHeight = 0
-          this.modelDelivery.footerHeight = this.footerHeight
+          this.modelStoreHouse.footerHeight = this.footerHeight
           this.footerHeightPercentage = "0%"
           this.scrollHeightPercentage = "100%"
         } else {
-          this.footerHeight = this.modelDelivery.initFooterHeight //重置尾部高度
-          this.modelDelivery.footerHeight = this.footerHeight
+          this.footerHeight = this.modelStoreHouse.initFooterHeight //重置尾部高度
+          this.modelStoreHouse.footerHeight = this.footerHeight
           this.footerHeightPercentage = (this.footerHeight / this.columnAreaChangeHeight * 100) + "%"
           this.scrollHeightPercentage = ((this.columnAreaChangeHeight - this.footerHeight) / this.columnAreaChangeHeight * 100) + "%"
-          //this.modelDelivery.scroller.scrollEdge(Edge.Bottom)
           this.needScroller = true
-          this.modelDelivery.refreshState = SmartRefreshForDeliverySample.REFRESHSTATE.REFRESHING //更改为刷新态
-          if (this.modelDelivery.refreshTimeOut == 0) {
-            if(this.modelDelivery.getRefreshFinishStopDuration() > 0) {//刷新结束过后停留的时间
+          this.modelStoreHouse.refreshState = SmartRefreshForStoreHouseSample.REFRESHSTATE.REFRESHING //更改为刷新态
+          if (this.modelStoreHouse.refreshTimeOut == 0) {
+            if(this.modelStoreHouse.getRefreshFinishStopDuration() > 0) {//刷新结束过后停留的时间
               setTimeout(() => {
-                this.modelDelivery.refreshState = SmartRefreshForDeliverySample.REFRESHSTATE.REFRESHFINISH
-              }, this.modelDelivery.refreshDuration);
+                this.modelStoreHouse.refreshState = SmartRefreshForStoreHouseSample.REFRESHSTATE.REFRESHFINISH
+              }, this.modelStoreHouse.refreshDuration);
             }
-            this.modelDelivery.refreshTimeOut = setTimeout(() => {
+            this.modelStoreHouse.refreshTimeOut = setTimeout(() => {
               this.footerIsVisibleLoadMore = false
-              this.refreshClose(SmartRefreshForDeliverySample.LOCATION.HEAD)
-              this.modelDelivery.refreshTimeOut = 0
-              this.modelDelivery.lastRefreshTime = new Date()
+              this.refreshClose(SmartRefreshForStoreHouseSample.LOCATION.HEAD)
+              this.modelStoreHouse.refreshTimeOut = 0
+              this.modelStoreHouse.lastRefreshTime = new Date()
               this.closeFooterRefresh()
-              this.modelDelivery.refreshBottomDataCallback()
-            }, this.modelDelivery.refreshDuration + this.modelDelivery.getRefreshFinishStopDuration());
+              this.modelStoreHouse.refreshBottomDataCallback()
+            }, this.modelStoreHouse.refreshDuration + this.modelStoreHouse.getRefreshFinishStopDuration());
           }
         }
-      } else if (this.modelDelivery.refreshState == SmartRefreshForDeliverySample.REFRESHSTATE.REFRESHING) {
-        this.footerHeight = this.modelDelivery.initFooterHeight //重置尾部高度
-        this.modelDelivery.footerHeight =  this.footerHeight
+      } else if (this.modelStoreHouse.refreshState == SmartRefreshForStoreHouseSample.REFRESHSTATE.REFRESHING) {
+        this.footerHeight = this.modelStoreHouse.initFooterHeight //重置尾部高度
+        this.modelStoreHouse.footerHeight =  this.footerHeight
       }
     }
   }
@@ -414,28 +411,28 @@ struct SmartRefreshForDeliverySample {
   //滚动结束，关闭刷新
   closeHeaderRefresh() {
     this.headerHeight = 0
-    this.modelDelivery.headerHeight = 0
-    this.modelDelivery.refreshHeaderCallbackState = true
-    this.modelDelivery.refreshBottomCallbackState = false
+    this.modelStoreHouse.headerHeight = 0
+    this.modelStoreHouse.refreshHeaderCallbackState = true
+    this.modelStoreHouse.refreshBottomCallbackState = false
     this.scrollerIsEnableRollWhenRefreshing = true//结束刷新，设置scroll可以滚动
-    clearInterval(this.modelDelivery.headerRefreshId)
-    this.modelDelivery.headerRefreshId = -1
+    clearInterval(this.modelStoreHouse.headerRefreshId)
+    this.modelStoreHouse.headerRefreshId = -1
   }
 
   closeFooterRefresh() {
     this.footerHeight = 0
-    this.modelDelivery.footerHeight =  this.footerHeight
+    this.modelStoreHouse.footerHeight =  this.footerHeight
     this.footerHeightPercentage = "0%"
     this.scrollHeightPercentage = "100%"
-    this.modelDelivery.refreshHeaderCallbackState = false
-    this.modelDelivery.refreshBottomCallbackState = true
+    this.modelStoreHouse.refreshHeaderCallbackState = false
+    this.modelStoreHouse.refreshBottomCallbackState = true
     this.scrollerIsEnableRollWhenRefreshing = true
-    clearInterval(this.modelDelivery.bottomRefreshId)
-    this.modelDelivery.bottomRefreshId = 0
+    clearInterval(this.modelStoreHouse.bottomRefreshId)
+    this.modelStoreHouse.bottomRefreshId = 0
   }
 }
 
-namespace SmartRefreshForDeliverySample {
+namespace SmartRefreshForStoreHouseSample {
   export enum LOCATION {
     HEAD = 0,
     MIDDER = 1,
@@ -483,7 +480,7 @@ namespace SmartRefreshForDeliverySample {
     refreshBottomDataCallback: () => void = () => {};//刷新头部数据回调
     refreshHeaderCallback: () => void = ()=>{} //刷新时的回调
     refreshHeaderCallbackState: boolean = true
-    refreshBottomCallback: () => void = ()=>{} //刷新时的回调
+    refreshBottomCallback: () => void = ()=>{}//刷新时的回调
     refreshBottomCallbackState: boolean = false
     disableContentWhenRefresh : boolean = false //下拉过程是否支持列表滚动
     disableContentWhenLoading : boolean = false //上拉过程是否支持列表滚动
@@ -496,9 +493,6 @@ namespace SmartRefreshForDeliverySample {
     downYOffset = 0
     fixedContent: boolean = true
     oldFixedContent: boolean = true
-    waterDropYTopCoordinate = 0
-    waterDropYMiddleCoordinate = 400
-    waterDropYBottomCoordinate = 600
     //classics
     classicsSpinnerStyle: ClassicsSpinnerStyleEnum =  ClassicsSpinnerStyleEnum.FIXEDBEHIND
     drawableSize : number = 100
@@ -519,6 +513,7 @@ namespace SmartRefreshForDeliverySample {
     textSizeTitle : number = 30//标题文字大小
     textSizeTime: number = 22//设置时间文字大小
     textTimeMarginTop: number = 10//设置上边距
+
 
     //storeHouse
     textColor : Color = Color.Red
@@ -566,6 +561,30 @@ namespace SmartRefreshForDeliverySample {
     refreshPosition: RefreshPositionEnum = RefreshPositionEnum.TOPANDBOTTOM
     headerIsRefresh: boolean = true
     footerIsRefresh: boolean = true
+
+
+    demand: string = "E";
+    color: string = "#000000";
+
+    setColor(color: string): Model{
+      this.color = color;
+      return this
+    }
+
+    getColor() : string{
+      return this.color
+    }
+
+    setDemand(demand: string): Model{
+      this.demand = demand;
+      return this
+    }
+
+    getDemand() : string{
+      return this.demand
+    }
+
+
 
     setEnableScrollContentWhenLoaded(enableScrollContentWhenLoaded: boolean) : Model{
       this.enableScrollContentWhenLoaded = enableScrollContentWhenLoaded
@@ -1075,4 +1094,4 @@ namespace SmartRefreshForDeliverySample {
   }
 }
 
-export default SmartRefreshForDeliverySample
+export default SmartRefreshForStoreHouseSample

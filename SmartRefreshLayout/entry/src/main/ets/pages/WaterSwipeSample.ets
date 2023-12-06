@@ -22,12 +22,6 @@ struct WaterSwipeSample {
   arr: string[] = ['默认主题', '橙色主题', '红色主题', '绿色主题', '蓝色主题', '默认主题', '橙色主题', '红色主题', '绿色主题', '蓝色主题']
   pickColor(SelectColorParam: string) {
     let SelectColor = SelectColorParam.trim()
-//    if (SelectColor == this.arr[0].trim()) {
-//      this.model.setFixedContent(false)
-//    }
-//    if (SelectColor == this.arr[1].trim()) {
-//      this.model.setFixedContent(true)
-//    }
     if (SelectColor == this.arr[0].trim()) {
       this.model.setBackgroundColor(Color.Gray)
     }

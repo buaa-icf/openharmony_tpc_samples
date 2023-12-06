@@ -40,8 +40,8 @@
       ]
     },
     {
-      "name": "SmartRefreshLayout",
-      "srcPath": "./smartRefreshLayout"
+      "name": "library",
+      "srcPath": "./library"
     }
   ]
 }

@@ -34,15 +34,12 @@ struct SmartRefreshForGame {
     } else {
       this.marginTop = 0
     }
-    //this.modelGame.finishRefresh1 = this.finishRefreshFunction
-   // this.modelGame.autoRefresh1 = this.autoRefresh.bind(this)
     this.modelGame.setRefreshCallback(() => {
       let that = this
       if (!this.isClick) {
         this.isClick = true
         setTimeout(() => {
           this.isClick = false
-          //this.modelGame.finishRefresh(true)
 
           this.modelGame.isFinishSuccess = true
           this.modelGame.isNotifyFinish = true

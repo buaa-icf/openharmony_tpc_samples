@@ -79,20 +79,6 @@ struct ClassicsSample {
            }
         }, (item:string) => item)
       }
-//      Grid() {
-//        ForEach(this.arr, (item:string) => {
-//          GridItem() {
-//            //Button(item).onClick(()=> {this.pickColor(item)}).fontSize(40).width("100%").height("100%").backgroundColor("#CCCCCC")
-//            this.card(item)
-//          }
-//        }, item => item)
-//      }.columnsTemplate('1fr')
-//      .rowsTemplate('1fr 1fr 1fr 1fr 1fr')
-//      .columnsGap(10)
-//      .rowsGap(10)
-//      .width('100%')
-//      .backgroundColor(0xFAEEE0)
-//      .height("100%")
     }.width("100%").padding("20lpx")
   }
 

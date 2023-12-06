@@ -129,10 +129,6 @@ export struct StoreHouse {
               .commands(this.whiteIndexCommandStrThree)
               .stroke(Color.White)
               .strokeWidth(3)
-            //this.buildWhitePath(this.whiteIndexCommandStr);
-            // this.buildWhitePath(this.whiteIndex + 1);
-            // this.buildWhitePath(this.whiteIndex + 2);
-            // this.buildWhitePath(this.whiteIndex + 3);
           }
         } else if (this.model.refreshState == SmartRefreshForStoreHouseSample.REFRESHSTATE.TOREFRESH) { //拖住过程中的样式
           Stack({ alignContent: Alignment.TopStart }) {

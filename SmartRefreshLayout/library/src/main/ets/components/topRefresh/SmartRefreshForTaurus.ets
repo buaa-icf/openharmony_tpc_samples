@@ -103,7 +103,6 @@ struct SmartRefreshForTaurus {
             this.model.oldFixedContent = this.model.fixedContent
           }
           this.model.latestYOffset = this.model.scroller.currentOffset().yOffset
-          //this.scrollerEventFunction()
         })
         .onScrollEnd(() => {
           if (this.model.scrollerEndState) {

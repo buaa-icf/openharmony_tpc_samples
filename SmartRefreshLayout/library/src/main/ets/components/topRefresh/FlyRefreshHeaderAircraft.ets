@@ -71,7 +71,6 @@ export struct FlyRefreshHeaderAircraft {
             playMode: PlayMode.Normal, // 动画模式
           })
       }.onClick(event => {
-        //this.modelParam.refreshHeaderCallback()
         this.angle = -30
         this.modelParam.setHeaderHeight(340)
         this.initHeight = 240

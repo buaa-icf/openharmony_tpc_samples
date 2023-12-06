@@ -57,9 +57,6 @@ struct DropBoxSample {
       Column() {
         Text(this.theme[i%this.theme.length].text+"").fontSize(30)
         Text(this.theme[i%this.theme.length].label+"").fontSize(20).fontColor(Color.Gray)
-//        Flex().width("370lpx").height("25lpx").backgroundColor("#dddddd").margin({ top: "10lpx", bottom: "70lpx" })
-//        Flex().width("200lpx").height("25lpx").backgroundColor("#dddddd").margin({ bottom: "30lpx" })
-//        Flex().width("200lpx").height("25lpx").backgroundColor("#dddddd").margin({ bottom: "30lpx" })
       }.alignItems(HorizontalAlign.Start).margin("10lpx")
     }
     .onClick(()=>{

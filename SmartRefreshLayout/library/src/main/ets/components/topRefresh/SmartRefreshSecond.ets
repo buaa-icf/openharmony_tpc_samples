@@ -126,7 +126,6 @@ struct SmartRefreshSecond {
               this.model.oldFixedContent = this.model.fixedContent
             }
             this.model.latestYOffset = this.model.scroller.currentOffset().yOffset
-            //this.scrollerEventFunction()
           })
           .onTouch((event: TouchEvent) => this.touchEventFunction(event))
         }
@@ -139,8 +138,6 @@ struct SmartRefreshSecond {
     if (this.model.scrollLocation == SmartRefreshSecond.LOCATION.HEAD && this.needScroller) {
       this.needScroller = false
       this.model.scrollerEndYOffset = 0
-      //this.model.scrollerEndState = true
-      //this.model.headerHeight = this.model.initHeaderHeight
     } else if (this.model.scrollLocation == SmartRefreshSecond.LOCATION.FOOT && this.needScroller) {
       this.needScroller = false
       this.model.scrollerEndYOffset = this.model.firstArriveBottomEdgeOffsetY
