@@ -87,7 +87,6 @@
                 <policyitem type="license" name="MIT" path="cborjsDemo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="EventBus/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="ForgeDemo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
-                <policyitem type="license" name="MIT" path="jszipDemo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="BSD-3-Clause" path="libcoap/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="LibphoneNumber/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="GNU AFFERO GENERAL PUBLIC LICENSE" path="newsie/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
@@ -99,7 +98,6 @@
                 <policyitem type="license" name="MIT" path="js-tokens/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="BSD-3-Clause" path="protobuf/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="ThirdPartyNotice" path=".*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="误报，非协议名称" />
-                <policyitem type="copyright" name="Copyright (c) 2009-2016 Stuart Knightley, David Duponchel, Franz Buchinger, António Afonso" path="jszipDemo/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="jszip 原开源库的版权头，保留以符合开源要求"/>
                 <policyitem type="license" name="MIT" path="levenDemo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="JsSha1Demo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="protobuf_format/sax/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
