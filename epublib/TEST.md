@@ -10,7 +10,6 @@
 | setSpine()                                                            | pass     |
 | getMetadata()                                                             | pass     |
 | setMetadata()                                                             | pass     |
-| getGuide()                                                             | pass     |
 | addResource()                                                             | pass     |
 | createResource()                                                             | pass     |
 | createStrResource()                                                             | pass     |
@@ -20,7 +19,6 @@
 | readEpubToBook()                                                             | pass     |
 | isEmpty()                                                             | pass     |
 | getHref()                                                             | pass     |
-| getByHref()                                                             | pass     |
 | loadResources()                                                             | pass     |
 | loadResourcesZip()                                                             | pass     |
 | outFile()                                                             | pass     |
