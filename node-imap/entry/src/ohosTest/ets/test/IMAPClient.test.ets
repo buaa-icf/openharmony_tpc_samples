@@ -20,23 +20,32 @@ import Imap, { inspect } from '@ohos/node-imap'
 import socket from '@ohos.net.socket'
 import StatusBean from '../../../main/ets/bean/StatusBean'
 import MsgListBean, { MsgListFootBean, MsgListHeadBean } from '../../../main/ets/bean/MsgListBean'
+import IMAPClientUtil from '../IMAPClientUtil';
+import GlobalObj from '../../../main/ets/GlobalObj';
+import MailBoxes from '../../../main/ets/bean/MailBoxes';
+import Box from '../../../main/ets/bean/Box';
+import DetailCallback from '../../../main/ets/bean/DetailCallback';
+import { ImapMessageAttributes } from '../../../main/ets/bean/ImapMessage';
+import MsgSendBean from '../../../main/ets/bean/MsgSendBean';
+import AppendOptions from '../../../main/ets/bean/AppendOptions';
 
 export default function IMAPClientTest() {
   let isLogin = false;
+  let util: IMAPClientUtil = new IMAPClientUtil()
   // let endIndex: number = 10 //当前页
   // let bean: StatusBean = undefined //获取邮件列表之前先获取该文件夹里面的邮件总数和状态
   // let uidList: Array<string> = [] //邮件uid列表
   // let subFolderList: Array<string> = [] //邮件列表数据集合
   // let folderList: Array<string> = [] //邮件列表数据集合
   // let listData: Array<MsgListBean> = [] //邮件列表数据集合
-  describe('IMAPClientTest', function () {
-    beforeAll(async function (done) {
+  describe('IMAPClientTest', () => {
+    beforeAll(async (done: Function) => {
       try {
-        if (!globalThis.client) {
-          globalThis.client = new Imap({
-            user: 'xxx@xx.com',
-            password: 'xxxx',
-            host: 'imap.xx.com',
+        if (!GlobalObj?.getInstance()?.getClient()) {
+          let client = new Imap({
+            user: 'xxx@qq.com',
+            password: 'xxx',
+            host: 'imap.qq.com',
             port: 143,
             tls: false,
             tlsOptions: undefined,
@@ -45,43 +54,39 @@ export default function IMAPClientTest() {
             authTimeout: 60000,
             keepalive: true,
           });
+          GlobalObj?.getInstance()?.setClient(client)
         }
-        if (globalThis.client) {
-          globalThis.client.once('ready', function () {
+        if (GlobalObj?.getInstance()?.getClient()) {
+          util?.login(() => {
             isLogin = true;
             done()
-          });
-
-          globalThis.client.once('error', function (err) {
-            console.log(err);
+          }, (err: Error) => {
+            console.log(err.message);
             done()
-          });
-
-          globalThis.client.once('end', function () {
+          }, () => {
             console.log('Connection ended');
             done()
-          });
-          await globalThis.client.connect();
+          })
         }
       } catch (err) {
         done()
       }
     })
-    it('serverSupports', 0, function (done) {
-      if (!globalThis.client || !isLogin) {
+    it('serverSupports', 0, (done: Function) => {
+      if (!GlobalObj?.getInstance()?.getClient() || !isLogin) {
         expect(1).assertEqual(2)
         done()
       }
-      let checkResult = globalThis.client.serverSupports('IMAP4');
+      let checkResult: boolean = GlobalObj?.getInstance()?.getClient()?.serverSupports('IMAP4') ? GlobalObj?.getInstance()?.getClient()?.serverSupports('IMAP4') : false;
       expect(checkResult).assertEqual(true)
       done()
     })
-    it('getBoxes', 0, function (done) {
-      if (!globalThis.client || !isLogin) {
+    it('getBoxes', 0, (done: Function) => {
+      if (!GlobalObj?.getInstance()?.getClient() || !isLogin) {
         expect(1).assertEqual(2)
         done()
       }
-      globalThis.client.getBoxes(function (err, data) {
+      GlobalObj?.getInstance()?.getClient()?.getBoxes((err: Error, data: MailBoxes) => {
         if (err) {
           expect(1).assertEqual(2)
           done()
@@ -94,14 +99,14 @@ export default function IMAPClientTest() {
         done()
       })
     })
-    it('addBox', 0, function (done) {
-      if (!globalThis.client || !isLogin) {
+    it('addBox', 0, (done: Function) => {
+      if (!GlobalObj?.getInstance()?.getClient() || !isLogin) {
         expect(1).assertEqual(2)
         done()
       }
       try {
         let folderName = 'test' + new Date().getTime();
-        globalThis.client.addBox(folderName, (err, result) => {
+        GlobalObj?.getInstance()?.getClient()?.addBox(folderName, (err: Error) => {
           if (err) {
             expect(1).assertEqual(2)
             done()
@@ -116,19 +121,19 @@ export default function IMAPClientTest() {
         done()
       }
     })
-    it('delBox', 0, function (done) {
-      if (!globalThis.client || !isLogin) {
+    it('delBox', 0, (done: Function) => {
+      if (!GlobalObj?.getInstance()?.getClient() || !isLogin) {
         expect(1).assertEqual(2)
         done()
       }
       try {
         let folderName = 'test' + new Date().getTime();
-        globalThis.client.addBox(folderName, (err, result) => {
+        GlobalObj?.getInstance()?.getClient()?.addBox(folderName, (err: Error) => {
           if (err) {
             expect(1).assertEqual(2)
             done()
           } else {
-            globalThis.client.delBox(folderName, (err, result) => {
+            GlobalObj?.getInstance()?.getClient()?.delBox(folderName, (err: Error) => {
               if (err) {
                 expect(1).assertEqual(2)
                 done()
@@ -145,24 +150,24 @@ export default function IMAPClientTest() {
         done()
       }
     })
-    it('renameBox', 0, function (done) {
-      if (!globalThis.client || !isLogin) {
+    it('renameBox', 0, (done: Function) => {
+      if (!GlobalObj?.getInstance()?.getClient() || !isLogin) {
         expect(1).assertEqual(2)
         done()
       }
       try {
         let folderName = 'test' + new Date().getTime();
-        globalThis.client.addBox(folderName, (err, result) => {
+        GlobalObj?.getInstance()?.getClient()?.addBox(folderName, (err: Error) => {
           if (err) {
             expect(1).assertEqual(2)
             done()
           } else {
-            globalThis.client.renameBox(folderName, 'newFolder', (err, result) => {
+            GlobalObj?.getInstance()?.getClient()?.renameBox(folderName, 'newFolder', (err: Error) => {
               if (err) {
                 expect(1).assertEqual(2)
                 done()
               } else {
-                globalThis.client.delBox('newFolder', (err, result) => {
+                GlobalObj?.getInstance()?.getClient()?.delBox('newFolder', (err: Error) => {
                   if (err) {
                     expect(1).assertEqual(2)
                     done()
@@ -181,19 +186,19 @@ export default function IMAPClientTest() {
         done()
       }
     })
-    it('subscribeBox', 0, function (done) {
-      if (!globalThis.client || !isLogin) {
+    it('subscribeBox', 0, (done: Function) => {
+      if (!GlobalObj?.getInstance()?.getClient() || !isLogin) {
         expect(1).assertEqual(2)
         done()
       }
       try {
         let folderName = 'test' + new Date().getTime();
-        globalThis.client.addBox(folderName, (err, result) => {
+        GlobalObj?.getInstance()?.getClient()?.addBox(folderName, (err: Error) => {
           if (err) {
             expect(1).assertEqual(2)
             done()
           } else {
-            globalThis.client.subscribeBox(folderName, (err, result) => {
+            GlobalObj?.getInstance()?.getClient()?.subscribeBox(folderName, (err: Error) => {
               if (err) {
                 expect(1).assertEqual(2)
                 done()
@@ -210,24 +215,24 @@ export default function IMAPClientTest() {
         done()
       }
     })
-    it('unsubscribeBox', 0, function (done) {
-      if (!globalThis.client || !isLogin) {
+    it('unsubscribeBox', 0, (done: Function) => {
+      if (!GlobalObj?.getInstance()?.getClient() || !isLogin) {
         expect(1).assertEqual(2)
         done()
       }
       try {
         let folderName = 'test' + new Date().getTime();
-        globalThis.client.addBox(folderName, (err, result) => {
+        GlobalObj?.getInstance()?.getClient()?.addBox(folderName, (err: Error) => {
           if (err) {
             expect(1).assertEqual(2)
             done()
           } else {
-            globalThis.client.subscribeBox(folderName, (err, result) => {
+            GlobalObj?.getInstance()?.getClient()?.subscribeBox(folderName, (err: Error) => {
               if (err) {
                 expect(1).assertEqual(2)
                 done()
               } else {
-                globalThis.client.unsubscribeBox(folderName, (err, result) => {
+                GlobalObj?.getInstance()?.getClient()?.unsubscribeBox(folderName, (err: Error) => {
                   if (err) {
                     expect(1).assertEqual(2)
                     done()
@@ -246,13 +251,13 @@ export default function IMAPClientTest() {
         done()
       }
     })
-    it('getSubscribedBoxes', 0, function (done) {
-      if (!globalThis.client || !isLogin) {
+    it('getSubscribedBoxes', 0, (done: Function) => {
+      if (!GlobalObj?.getInstance()?.getClient() || !isLogin) {
         expect(1).assertEqual(2)
         done()
       }
       try {
-        globalThis.client.getSubscribedBoxes((err, result) => {
+        GlobalObj?.getInstance()?.getClient()?.getSubscribedBoxes((err: Error) => {
           if (err) {
             expect(1).assertEqual(2)
             done()
@@ -267,13 +272,13 @@ export default function IMAPClientTest() {
         done()
       }
     })
-    it('status', 0, function (done) {
-      if (!globalThis.client || !isLogin) {
+    it('status', 0, (done: Function) => {
+      if (!GlobalObj?.getInstance()?.getClient() || !isLogin) {
         expect(1).assertEqual(2)
         done()
       }
       try {
-        globalThis.client.getBoxes(function (err, data) {
+        GlobalObj?.getInstance()?.getClient()?.getBoxes((err: Error, data: MailBoxes) => {
           if (err) {
             expect(1).assertEqual(2)
             done()
@@ -283,8 +288,9 @@ export default function IMAPClientTest() {
             done()
           }
           let hasInbox = false;
-          for (let key in data) {
-            if (key === 'INBOX') {
+          let keyArr = Object.getOwnPropertyNames(data)
+          for (let i = 0; i < keyArr.length; i++) {
+            if (keyArr[i] === 'INBOX') {
               hasInbox = true;
               break;
             }
@@ -293,12 +299,12 @@ export default function IMAPClientTest() {
             expect(1).assertEqual(2)
             done()
           }
-          globalThis.client.status('INBOX', function (err, data) {
+          GlobalObj?.getInstance()?.getClient()?.status('INBOX', (err: Error, data: Box) => {
             if (err) {
               expect(1).assertEqual(2)
               done()
             }
-            if (!data || data.length < 1) {
+            if (!data ) {
               expect(1).assertEqual(2)
               done()
             }
@@ -313,13 +319,13 @@ export default function IMAPClientTest() {
         done()
       }
     })
-    it('openBox_closeBox', 0, function (done) {
-      if (!globalThis.client || !isLogin) {
+    it('openBox_closeBox', 0, (done: Function) => {
+      if (!GlobalObj?.getInstance()?.getClient() || !isLogin) {
         expect(1).assertEqual(2)
         done()
       }
       try {
-        globalThis.client.getBoxes(function (err, data) {
+        GlobalObj?.getInstance()?.getClient()?.getBoxes((err: Error, data: MailBoxes) => {
           if (err) {
             expect(1).assertEqual(2)
             done()
@@ -329,8 +335,9 @@ export default function IMAPClientTest() {
             done()
           }
           let hasInbox = false;
-          for (let key in data) {
-            if (key === 'INBOX') {
+          let keyArr = Object.getOwnPropertyNames(data)
+          for (let i = 0; i < keyArr.length; i++) {
+            if (keyArr[i] === 'INBOX') {
               hasInbox = true;
               break;
             }
@@ -339,21 +346,21 @@ export default function IMAPClientTest() {
             expect(1).assertEqual(2)
             done()
           }
-          globalThis.client.status('INBOX', function (err, data) {
+          GlobalObj?.getInstance()?.getClient()?.status('INBOX', (err: Error, data: Box) => {
             if (err) {
               expect(1).assertEqual(2)
               done()
             }
-            if (!data || data.length < 1) {
+            if (!data ) {
               expect(1).assertEqual(2)
               done()
             }
-            globalThis.client.openBox('INBOX', true, function (err, box) {
+            GlobalObj?.getInstance()?.getClient()?.openBox('INBOX', true, (err: Error, data: Box) => {
               if (err) {
                 expect(1).assertEqual(2)
                 done()
               }
-              globalThis.client.closeBox((err, result) => {
+              GlobalObj?.getInstance()?.getClient()?.closeBox((err: Error) => {
                 if (err) {
                   expect(1).assertEqual(2)
                   done()
@@ -370,13 +377,13 @@ export default function IMAPClientTest() {
         done()
       }
     })
-    it('fetch_closeBox', 0, function (done) {
-      if (!globalThis.client || !isLogin) {
+    it('fetch_closeBox', 0, (done: Function) => {
+      if (!GlobalObj?.getInstance()?.getClient() || !isLogin) {
         expect(1).assertEqual(2)
         done()
       }
       try {
-        globalThis.client.getBoxes(function (err, data) {
+        GlobalObj?.getInstance()?.getClient()?.getBoxes((err: Error, data: MailBoxes) => {
           if (err) {
             expect(1).assertEqual(2)
             done()
@@ -386,8 +393,9 @@ export default function IMAPClientTest() {
             done()
           }
           let hasInbox = false;
-          for (let key in data) {
-            if (key === 'INBOX') {
+          let keyArr = Object.getOwnPropertyNames(data)
+          for (let i = 0; i < keyArr.length; i++) {
+            if (keyArr[i] === 'INBOX') {
               hasInbox = true;
               break;
             }
@@ -396,163 +404,64 @@ export default function IMAPClientTest() {
             expect(1).assertEqual(2)
             done()
           }
-          globalThis.client.status('INBOX', function (err, data) {
+          GlobalObj?.getInstance()?.getClient()?.status('INBOX', (err: Error, data: Box) => {
             if (err) {
               expect(1).assertEqual(2)
               done()
             }
-            if (!data || data.length < 1) {
+            if (!data ) {
               expect(1).assertEqual(2)
               done()
             }
-            globalThis.client.openBox('INBOX', true, function (err, box) {
+            GlobalObj?.getInstance()?.getClient()?.openBox('INBOX', true, (err: Error, box: Box) => {
               if (err) {
                 expect(1).assertEqual(2)
                 done()
               }
-              let buffer = ''
-              var f = globalThis.client.seq.fetch(`1:10`, {
-                bodies: 'HEADER.FIELDS (FROM TO SUBJECT DATE)',
-                struct: true
-              });
-              f.on('message', function (msg, seqno) {
-                msg.on('body', function (stream, info) {
+              let prefix: string = ''
+              let buffer: string = '';
+              let callback: DetailCallback = {
+                messageStartCallback: (seqno: number) => {
+                  console.log('Message #%d', seqno);
+                  prefix = '(#' + seqno + ') ';
+                },
+                bodyStartCallback: () => {
+                },
+                bodyDataCallback: (data: string) => {
+                  buffer += data;
+                },
+                bodyEndCallback: () => {
 
-                  stream.on('data', function (chunk) {
-                    buffer += chunk.toString('utf8');
-                  });
-                  stream.once('end', function () {
-                  });
-                });
-                msg.once('attributes', function (attrs) {
-                });
-                msg.once('end', function () {
-                });
-              });
-              f.once('error', function (err) {
-                expect(1).assertEqual(2)
-                done()
-              });
-              f.once('end', function () {
-                console.log('Done fetching all messages!');
-                if (buffer && buffer.length > 1) {
-                  globalThis.client.closeBox((err, result) => {
-                    if (err) {
-                      expect(1).assertEqual(2)
-                      done()
-                    } else {
-                      expect(1).assertEqual(1)
-                      done()
-                    }
-                  });
-                } else {
-                  expect(1).assertEqual(0)
+                },
+                attributesCallback: (attrs: ImapMessageAttributes) => {
+
+                },
+                messageEndCallback: () => {
+                },
+                fetchErrorCallback: (err: Error) => {
+                  expect(1).assertEqual(2)
                   done()
-                }
-
-              });
-
-            });
-          })
-        })
-
-      } catch (err) {
-        expect(1).assertEqual(2)
-        done()
-      }
-    })
-    it('addFlags_closeBox', 0, function (done) {
-      if (!globalThis.client || !isLogin) {
-        expect(1).assertEqual(2)
-        done()
-      }
-      let uidList: Array<string> = []
-      try {
-        globalThis.client.getBoxes(function (err, data) {
-          if (err) {
-            expect(1).assertEqual(2)
-            done()
-          }
-          if (!data || typeof data != 'object') {
-            expect(1).assertEqual(2)
-            done()
-          }
-          let hasInbox = false;
-          for (let key in data) {
-            if (key === 'INBOX') {
-              hasInbox = true;
-              break;
-            }
-          }
-          if (!hasInbox) {
-            expect(1).assertEqual(2)
-            done()
-          }
-          globalThis.client.status('INBOX', function (err, data) {
-            if (err) {
-              expect(1).assertEqual(2)
-              done()
-            }
-            if (!data || data.length < 1) {
-              expect(1).assertEqual(2)
-              done()
-            }
-            globalThis.client.openBox('INBOX', true, function (err, box) {
-              if (err) {
-                expect(1).assertEqual(2)
-                done()
-              }
-              var f = globalThis.client.seq.fetch(`1`, {
-                bodies: 'HEADER.FIELDS (FROM TO SUBJECT DATE)',
-                struct: true
-              });
-              f.on('message', function (msg, seqno) {
-                msg.on('body', function (stream, info) {
-
-                  stream.on('data', function (chunk) {
-                  });
-                  stream.once('end', function () {
-                  });
-                });
-                msg.once('attributes', function (attrs) {
-                  if (attrs && typeof attrs === 'object') {
-                    let uid = attrs['uid'] ? attrs['uid'] : ''
-                    uidList.push(uid);
+                },
+                fetchEndCallback: () => {
+                  console.log('Done fetching all messages!');
+                  if (buffer && buffer.length > 1) {
+                    GlobalObj?.getInstance()?.getClient()?.closeBox((err: Error) => {
+                      if (err) {
+                        expect(1).assertEqual(2)
+                        done()
+                      } else {
+                        expect(1).assertEqual(1)
+                        done()
+                      }
+                    });
+                  } else {
+                    expect(1).assertEqual(0)
+                    done()
                   }
-                });
-                msg.once('end', function () {
-                });
-              });
-              f.once('error', function (err) {
-                expect(1).assertEqual(2)
-                done()
-              });
-              f.once('end', function () {
-                console.log('Done fetching all messages!');
-                if (uidList && uidList.length >= 1 && uidList[0]) {
-                  globalThis.client.addFlags(uidList[0], '\\Seen', (err, result) => {
-                    if (err) {
-                      expect(1).assertEqual(2)
-                      done()
-                    } else {
-                      globalThis.client.closeBox((err, result) => {
-                        if (err) {
-                          expect(1).assertEqual(2)
-                          done()
-                        } else {
-                          expect(1).assertEqual(1)
-                          done()
-                        }
-                      });
-                    }
-                  });
-                } else {
-                  expect(1).assertEqual(0)
-                  done()
+
                 }
-
-              });
-
+              }
+              util?.getListData(1, 10, callback)
             });
           })
         })
@@ -562,14 +471,14 @@ export default function IMAPClientTest() {
         done()
       }
     })
-    it('setFlags_closeBox', 0, function (done) {
-      if (!globalThis.client || !isLogin) {
+    it('addFlags_closeBox', 0, (done: Function) => {
+      if (!GlobalObj?.getInstance()?.getClient() || !isLogin) {
         expect(1).assertEqual(2)
         done()
       }
       let uidList: Array<string> = []
       try {
-        globalThis.client.getBoxes(function (err, data) {
+        GlobalObj?.getInstance()?.getClient()?.getBoxes((err: Error, data: MailBoxes) => {
           if (err) {
             expect(1).assertEqual(2)
             done()
@@ -579,8 +488,9 @@ export default function IMAPClientTest() {
             done()
           }
           let hasInbox = false;
-          for (let key in data) {
-            if (key === 'INBOX') {
+          let keyArr = Object.getOwnPropertyNames(data)
+          for (let i = 0; i < keyArr.length; i++) {
+            if (keyArr[i] === 'INBOX') {
               hasInbox = true;
               break;
             }
@@ -589,71 +499,73 @@ export default function IMAPClientTest() {
             expect(1).assertEqual(2)
             done()
           }
-          globalThis.client.status('INBOX', function (err, data) {
+          GlobalObj?.getInstance()?.getClient()?.status('INBOX', (err: Error, data: Box) => {
             if (err) {
               expect(1).assertEqual(2)
               done()
             }
-            if (!data || data.length < 1) {
+            if (!data ) {
               expect(1).assertEqual(2)
               done()
             }
-            globalThis.client.openBox('INBOX', true, function (err, box) {
+            GlobalObj?.getInstance()?.getClient()?.openBox('INBOX', true, (err: Error, box: Box) => {
               if (err) {
                 expect(1).assertEqual(2)
                 done()
               }
-              var f = globalThis.client.seq.fetch(`1`, {
-                bodies: 'HEADER.FIELDS (FROM TO SUBJECT DATE)',
-                struct: true
-              });
-              f.on('message', function (msg, seqno) {
-                msg.on('body', function (stream, info) {
 
-                  stream.on('data', function (chunk) {
-                  });
-                  stream.once('end', function () {
-                  });
-                });
-                msg.once('attributes', function (attrs) {
+              let prefix: string = ''
+              let buffer: string = '';
+              let callback: DetailCallback = {
+                messageStartCallback: (seqno: number) => {
+                  console.log('Message #%d', seqno);
+                  prefix = '(#' + seqno + ') ';
+                },
+                bodyStartCallback: () => {
+                },
+                bodyDataCallback: (data: string) => {
+                  buffer += data;
+                },
+                bodyEndCallback: () => {
+
+                },
+                attributesCallback: (attrs: ImapMessageAttributes) => {
                   if (attrs && typeof attrs === 'object') {
-                    let uid = attrs['uid'] ? attrs['uid'] : ''
-                    uidList.push(uid);
+                    uidList.push(attrs.uid + '');
                   }
-                });
-                msg.once('end', function () {
-                });
-              });
-              f.once('error', function (err) {
-                expect(1).assertEqual(2)
-                done()
-              });
-              f.once('end', function () {
-                console.log('Done fetching all messages!');
-                if (uidList && uidList.length >= 1 && uidList[0]) {
-                  globalThis.client.setFlags(uidList[0], '\\Seen', (err, result) => {
-                    if (err) {
-                      expect(1).assertEqual(2)
-                      done()
-                    } else {
-                      globalThis.client.closeBox((err, result) => {
-                        if (err) {
-                          expect(1).assertEqual(2)
-                          done()
-                        } else {
-                          expect(1).assertEqual(1)
-                          done()
-                        }
-                      });
-                    }
-                  });
-                } else {
-                  expect(1).assertEqual(0)
+                },
+                messageEndCallback: () => {
+                },
+                fetchErrorCallback: (err: Error) => {
+                  expect(1).assertEqual(2)
                   done()
+                },
+                fetchEndCallback: () => {
+                  console.log('Done fetching all messages!');
+                  if (uidList && uidList.length >= 1 && uidList[0]) {
+                    GlobalObj?.getInstance()?.getClient()?.addFlags(uidList[0], '\\Seen', (err: Error) => {
+                      if (err) {
+                        expect(1).assertEqual(2)
+                        done()
+                      } else {
+                        GlobalObj?.getInstance()?.getClient()?.closeBox((err: Error) => {
+                          if (err) {
+                            expect(1).assertEqual(2)
+                            done()
+                          } else {
+                            expect(1).assertEqual(1)
+                            done()
+                          }
+                        });
+                      }
+                    });
+                  } else {
+                    expect(1).assertEqual(0)
+                    done()
+                  }
                 }
-
-              });
-
+              }
+              util?.getListData(1, null, callback)
             });
           })
         })
@@ -663,14 +575,14 @@ export default function IMAPClientTest() {
         done()
       }
     })
-    it('delFlags_closeBox', 0, function (done) {
-      if (!globalThis.client || !isLogin) {
+    it('setFlags_closeBox', 0, (done: Function) => {
+      if (!GlobalObj?.getInstance()?.getClient() || !isLogin) {
         expect(1).assertEqual(2)
         done()
       }
       let uidList: Array<string> = []
       try {
-        globalThis.client.getBoxes(function (err, data) {
+        GlobalObj?.getInstance()?.getClient()?.getBoxes((err: Error, data: MailBoxes) => {
           if (err) {
             expect(1).assertEqual(2)
             done()
@@ -680,8 +592,9 @@ export default function IMAPClientTest() {
             done()
           }
           let hasInbox = false;
-          for (let key in data) {
-            if (key === 'INBOX') {
+          let keyArr = Object.getOwnPropertyNames(data)
+          for (let i = 0; i < keyArr.length; i++) {
+            if (keyArr[i] === 'INBOX') {
               hasInbox = true;
               break;
             }
@@ -690,71 +603,69 @@ export default function IMAPClientTest() {
             expect(1).assertEqual(2)
             done()
           }
-          globalThis.client.status('INBOX', function (err, data) {
+          GlobalObj?.getInstance()?.getClient()?.status('INBOX', (err: Error, data: Box) => {
             if (err) {
               expect(1).assertEqual(2)
               done()
             }
-            if (!data || data.length < 1) {
+            if (!data ) {
               expect(1).assertEqual(2)
               done()
             }
-            globalThis.client.openBox('INBOX', true, function (err, box) {
+            GlobalObj?.getInstance()?.getClient()?.openBox('INBOX', true, (err: Error, box: Box) => {
               if (err) {
                 expect(1).assertEqual(2)
                 done()
               }
-              var f = globalThis.client.seq.fetch(`1`, {
-                bodies: 'HEADER.FIELDS (FROM TO SUBJECT DATE)',
-                struct: true
-              });
-              f.on('message', function (msg, seqno) {
-                msg.on('body', function (stream, info) {
+              let callback: DetailCallback = {
+                messageStartCallback: (seqno: number) => {
+                  console.log('Message #%d', seqno);
+                },
+                bodyStartCallback: () => {
+                },
+                bodyDataCallback: (data: string) => {
+                },
+                bodyEndCallback: () => {
 
-                  stream.on('data', function (chunk) {
-                  });
-                  stream.once('end', function () {
-                  });
-                });
-                msg.once('attributes', function (attrs) {
+                },
+                attributesCallback: (attrs: ImapMessageAttributes) => {
                   if (attrs && typeof attrs === 'object') {
-                    let uid = attrs['uid'] ? attrs['uid'] : ''
-                    uidList.push(uid);
+                    uidList.push(attrs.uid + '');
                   }
-                });
-                msg.once('end', function () {
-                });
-              });
-              f.once('error', function (err) {
-                expect(1).assertEqual(2)
-                done()
-              });
-              f.once('end', function () {
-                console.log('Done fetching all messages!');
-                if (uidList && uidList.length >= 1 && uidList[0]) {
-                  globalThis.client.delFlags(uidList[0], '\\Seen', (err, result) => {
-                    if (err) {
-                      expect(1).assertEqual(2)
-                      done()
-                    } else {
-                      globalThis.client.closeBox((err, result) => {
-                        if (err) {
-                          expect(1).assertEqual(2)
-                          done()
-                        } else {
-                          expect(1).assertEqual(1)
-                          done()
-                        }
-                      });
-                    }
-                  });
-                } else {
-                  expect(1).assertEqual(0)
+                },
+                messageEndCallback: () => {
+                },
+                fetchErrorCallback: (err: Error) => {
+                  expect(1).assertEqual(2)
                   done()
+                },
+                fetchEndCallback: () => {
+                  console.log('Done fetching all messages!');
+                  if (uidList && uidList.length >= 1 && uidList[0]) {
+                    GlobalObj?.getInstance()?.getClient()?.setFlags(uidList[0], '\\Seen', (err: Error) => {
+                      if (err) {
+                        expect(1).assertEqual(2)
+                        done()
+                      } else {
+                        GlobalObj?.getInstance()?.getClient()?.closeBox((err: Error) => {
+                          if (err) {
+                            expect(1).assertEqual(2)
+                            done()
+                          } else {
+                            expect(1).assertEqual(1)
+                            done()
+                          }
+                        });
+                      }
+                    });
+                  } else {
+                    expect(1).assertEqual(0)
+                    done()
+                  }
+
                 }
-
-              });
-
+              }
+              util?.getListData(1, null, callback)
             });
           })
         })
@@ -764,14 +675,14 @@ export default function IMAPClientTest() {
         done()
       }
     })
-    it('addKeywords_closeBox', 0, function (done) {
-      if (!globalThis.client || !isLogin) {
+    it('delFlags_closeBox', 0, (done: Function) => {
+      if (!GlobalObj?.getInstance()?.getClient() || !isLogin) {
         expect(1).assertEqual(2)
         done()
       }
       let uidList: Array<string> = []
       try {
-        globalThis.client.getBoxes(function (err, data) {
+        GlobalObj?.getInstance()?.getClient()?.getBoxes((err: Error, data: MailBoxes) => {
           if (err) {
             expect(1).assertEqual(2)
             done()
@@ -781,8 +692,9 @@ export default function IMAPClientTest() {
             done()
           }
           let hasInbox = false;
-          for (let key in data) {
-            if (key === 'INBOX') {
+          let keyArr = Object.getOwnPropertyNames(data)
+          for (let i = 0; i < keyArr.length; i++) {
+            if (keyArr[i] === 'INBOX') {
               hasInbox = true;
               break;
             }
@@ -791,71 +703,68 @@ export default function IMAPClientTest() {
             expect(1).assertEqual(2)
             done()
           }
-          globalThis.client.status('INBOX', function (err, data) {
+          GlobalObj?.getInstance()?.getClient()?.status('INBOX', (err: Error, data: Box) => {
             if (err) {
               expect(1).assertEqual(2)
               done()
             }
-            if (!data || data.length < 1) {
+            if (!data ) {
               expect(1).assertEqual(2)
               done()
             }
-            globalThis.client.openBox('INBOX', true, function (err, box) {
+            GlobalObj?.getInstance()?.getClient()?.openBox('INBOX', true, (err: Error, box: Box) => {
               if (err) {
                 expect(1).assertEqual(2)
                 done()
               }
-              var f = globalThis.client.seq.fetch(`1`, {
-                bodies: 'HEADER.FIELDS (FROM TO SUBJECT DATE)',
-                struct: true
-              });
-              f.on('message', function (msg, seqno) {
-                msg.on('body', function (stream, info) {
+              let callback: DetailCallback = {
+                messageStartCallback: (seqno: number) => {
+                  console.log('Message #%d', seqno);
+                },
+                bodyStartCallback: () => {
+                },
+                bodyDataCallback: (data: string) => {
+                },
+                bodyEndCallback: () => {
 
-                  stream.on('data', function (chunk) {
-                  });
-                  stream.once('end', function () {
-                  });
-                });
-                msg.once('attributes', function (attrs) {
+                },
+                attributesCallback: (attrs: ImapMessageAttributes) => {
                   if (attrs && typeof attrs === 'object') {
-                    let uid = attrs['uid'] ? attrs['uid'] : ''
-                    uidList.push(uid);
+                    uidList.push(attrs.uid + '');
                   }
-                });
-                msg.once('end', function () {
-                });
-              });
-              f.once('error', function (err) {
-                expect(1).assertEqual(2)
-                done()
-              });
-              f.once('end', function () {
-                console.log('Done fetching all messages!');
-                if (uidList && uidList.length >= 1 && uidList[0]) {
-                  globalThis.client.addKeywords(uidList[0], 'testKeyWords', (err, result) => {
-                    if (err) {
-                      expect(1).assertEqual(2)
-                      done()
-                    } else {
-                      globalThis.client.closeBox((err, result) => {
-                        if (err) {
-                          expect(1).assertEqual(2)
-                          done()
-                        } else {
-                          expect(1).assertEqual(1)
-                          done()
-                        }
-                      });
-                    }
-                  });
-                } else {
-                  expect(1).assertEqual(0)
+                },
+                messageEndCallback: () => {
+                },
+                fetchErrorCallback: (err: Error) => {
+                  expect(1).assertEqual(2)
                   done()
+                },
+                fetchEndCallback: () => {
+                  console.log('Done fetching all messages!');
+                  if (uidList && uidList.length >= 1 && uidList[0]) {
+                    GlobalObj?.getInstance()?.getClient()?.delFlags(uidList[0], '\\Seen', (err: Error) => {
+                      if (err) {
+                        expect(1).assertEqual(2)
+                        done()
+                      } else {
+                        GlobalObj?.getInstance()?.getClient()?.closeBox((err: Error) => {
+                          if (err) {
+                            expect(1).assertEqual(2)
+                            done()
+                          } else {
+                            expect(1).assertEqual(1)
+                            done()
+                          }
+                        });
+                      }
+                    });
+                  } else {
+                    expect(1).assertEqual(0)
+                    done()
+                  }
                 }
-
-              });
-
+              }
+              util?.getListData(1, null, callback)
             });
           })
         })
@@ -865,14 +774,14 @@ export default function IMAPClientTest() {
         done()
       }
     })
-    it('setKeywords_closeBox', 0, function (done) {
-      if (!globalThis.client || !isLogin) {
+    it('addKeywords_closeBox', 0, (done: Function) => {
+      if (!GlobalObj?.getInstance()?.getClient() || !isLogin) {
         expect(1).assertEqual(2)
         done()
       }
       let uidList: Array<string> = []
       try {
-        globalThis.client.getBoxes(function (err, data) {
+        GlobalObj?.getInstance()?.getClient()?.getBoxes((err: Error, data: MailBoxes) => {
           if (err) {
             expect(1).assertEqual(2)
             done()
@@ -882,8 +791,9 @@ export default function IMAPClientTest() {
             done()
           }
           let hasInbox = false;
-          for (let key in data) {
-            if (key === 'INBOX') {
+          let keyArr = Object.getOwnPropertyNames(data)
+          for (let i = 0; i < keyArr.length; i++) {
+            if (keyArr[i] === 'INBOX') {
               hasInbox = true;
               break;
             }
@@ -892,71 +802,69 @@ export default function IMAPClientTest() {
             expect(1).assertEqual(2)
             done()
           }
-          globalThis.client.status('INBOX', function (err, data) {
+          GlobalObj?.getInstance()?.getClient()?.status('INBOX', (err: Error, data: Box) => {
             if (err) {
               expect(1).assertEqual(2)
               done()
             }
-            if (!data || data.length < 1) {
+            if (!data ) {
               expect(1).assertEqual(2)
               done()
             }
-            globalThis.client.openBox('INBOX', true, function (err, box) {
+            GlobalObj?.getInstance()?.getClient()?.openBox('INBOX', true, (err: Error, box: Box) => {
               if (err) {
                 expect(1).assertEqual(2)
                 done()
               }
-              var f = globalThis.client.seq.fetch(`1`, {
-                bodies: 'HEADER.FIELDS (FROM TO SUBJECT DATE)',
-                struct: true
-              });
-              f.on('message', function (msg, seqno) {
-                msg.on('body', function (stream, info) {
+              let callback: DetailCallback = {
+                messageStartCallback: (seqno: number) => {
+                  console.log('Message #%d', seqno);
+                },
+                bodyStartCallback: () => {
+                },
+                bodyDataCallback: (data: string) => {
+                },
+                bodyEndCallback: () => {
 
-                  stream.on('data', function (chunk) {
-                  });
-                  stream.once('end', function () {
-                  });
-                });
-                msg.once('attributes', function (attrs) {
+                },
+                attributesCallback: (attrs: ImapMessageAttributes) => {
                   if (attrs && typeof attrs === 'object') {
-                    let uid = attrs['uid'] ? attrs['uid'] : ''
-                    uidList.push(uid);
+                    uidList.push(attrs.uid + '');
                   }
-                });
-                msg.once('end', function () {
-                });
-              });
-              f.once('error', function (err) {
-                expect(1).assertEqual(2)
-                done()
-              });
-              f.once('end', function () {
-                console.log('Done fetching all messages!');
-                if (uidList && uidList.length >= 1 && uidList[0]) {
-                  globalThis.client.setKeywords(uidList[0], 'testKeyWords', (err, result) => {
-                    if (err) {
-                      expect(1).assertEqual(2)
-                      done()
-                    } else {
-                      globalThis.client.closeBox((err, result) => {
-                        if (err) {
-                          expect(1).assertEqual(2)
-                          done()
-                        } else {
-                          expect(1).assertEqual(1)
-                          done()
-                        }
-                      });
-                    }
-                  });
-                } else {
-                  expect(1).assertEqual(0)
+                },
+                messageEndCallback: () => {
+                },
+                fetchErrorCallback: (err: Error) => {
+                  expect(1).assertEqual(2)
                   done()
+                },
+                fetchEndCallback: () => {
+                  console.log('Done fetching all messages!');
+                  if (uidList && uidList.length >= 1 && uidList[0]) {
+                    GlobalObj?.getInstance()?.getClient()?.addKeywords(uidList[0], 'testKeyWords', (err: Error) => {
+                      if (err) {
+                        expect(1).assertEqual(2)
+                        done()
+                      } else {
+                        GlobalObj?.getInstance()?.getClient()?.closeBox((err: Error) => {
+                          if (err) {
+                            expect(1).assertEqual(2)
+                            done()
+                          } else {
+                            expect(1).assertEqual(1)
+                            done()
+                          }
+                        });
+                      }
+                    });
+                  } else {
+                    expect(1).assertEqual(0)
+                    done()
+                  }
+
                 }
-
-              });
-
+              }
+              util?.getListData(1, null, callback)
             });
           })
         })
@@ -966,14 +874,14 @@ export default function IMAPClientTest() {
         done()
       }
     })
-    it('delKeywords_closeBox', 0, function (done) {
-      if (!globalThis.client || !isLogin) {
+    it('setKeywords_closeBox', 0, (done: Function) => {
+      if (!GlobalObj?.getInstance()?.getClient() || !isLogin) {
         expect(1).assertEqual(2)
         done()
       }
       let uidList: Array<string> = []
       try {
-        globalThis.client.getBoxes(function (err, data) {
+        GlobalObj?.getInstance()?.getClient()?.getBoxes((err: Error, data: MailBoxes) => {
           if (err) {
             expect(1).assertEqual(2)
             done()
@@ -983,8 +891,9 @@ export default function IMAPClientTest() {
             done()
           }
           let hasInbox = false;
-          for (let key in data) {
-            if (key === 'INBOX') {
+          let keyArr = Object.getOwnPropertyNames(data)
+          for (let i = 0; i < keyArr.length; i++) {
+            if (keyArr[i] === 'INBOX') {
               hasInbox = true;
               break;
             }
@@ -993,71 +902,68 @@ export default function IMAPClientTest() {
             expect(1).assertEqual(2)
             done()
           }
-          globalThis.client.status('INBOX', function (err, data) {
+          GlobalObj?.getInstance()?.getClient()?.status('INBOX', (err: Error, data: Box) => {
             if (err) {
               expect(1).assertEqual(2)
               done()
             }
-            if (!data || data.length < 1) {
+            if (!data ) {
               expect(1).assertEqual(2)
               done()
             }
-            globalThis.client.openBox('INBOX', true, function (err, box) {
+            GlobalObj?.getInstance()?.getClient()?.openBox('INBOX', true, (err: Error, box: Box) => {
               if (err) {
                 expect(1).assertEqual(2)
                 done()
               }
-              var f = globalThis.client.seq.fetch(`1`, {
-                bodies: 'HEADER.FIELDS (FROM TO SUBJECT DATE)',
-                struct: true
-              });
-              f.on('message', function (msg, seqno) {
-                msg.on('body', function (stream, info) {
+              let callback: DetailCallback = {
+                messageStartCallback: (seqno: number) => {
+                  console.log('Message #%d', seqno);
+                },
+                bodyStartCallback: () => {
+                },
+                bodyDataCallback: (data: string) => {
+                },
+                bodyEndCallback: () => {
 
-                  stream.on('data', function (chunk) {
-                  });
-                  stream.once('end', function () {
-                  });
-                });
-                msg.once('attributes', function (attrs) {
+                },
+                attributesCallback: (attrs: ImapMessageAttributes) => {
                   if (attrs && typeof attrs === 'object') {
-                    let uid = attrs['uid'] ? attrs['uid'] : ''
-                    uidList.push(uid);
+                    uidList.push(attrs.uid + '');
                   }
-                });
-                msg.once('end', function () {
-                });
-              });
-              f.once('error', function (err) {
-                expect(1).assertEqual(2)
-                done()
-              });
-              f.once('end', function () {
-                console.log('Done fetching all messages!');
-                if (uidList && uidList.length >= 1 && uidList[0]) {
-                  globalThis.client.delKeywords(uidList[0], 'testKeyWords', (err, result) => {
-                    if (err) {
-                      expect(1).assertEqual(2)
-                      done()
-                    } else {
-                      globalThis.client.closeBox((err, result) => {
-                        if (err) {
-                          expect(1).assertEqual(2)
-                          done()
-                        } else {
-                          expect(1).assertEqual(1)
-                          done()
-                        }
-                      });
-                    }
-                  });
-                } else {
-                  expect(1).assertEqual(0)
+                },
+                messageEndCallback: () => {
+                },
+                fetchErrorCallback: (err: Error) => {
+                  expect(1).assertEqual(2)
                   done()
+                },
+                fetchEndCallback: () => {
+                  console.log('Done fetching all messages!');
+                  if (uidList && uidList.length >= 1 && uidList[0]) {
+                    GlobalObj?.getInstance()?.getClient()?.setKeywords(uidList[0], 'testKeyWords', (err: Error) => {
+                      if (err) {
+                        expect(1).assertEqual(2)
+                        done()
+                      } else {
+                        GlobalObj?.getInstance()?.getClient()?.closeBox((err: Error) => {
+                          if (err) {
+                            expect(1).assertEqual(2)
+                            done()
+                          } else {
+                            expect(1).assertEqual(1)
+                            done()
+                          }
+                        });
+                      }
+                    });
+                  } else {
+                    expect(1).assertEqual(0)
+                    done()
+                  }
                 }
-
-              });
-
+              }
+              util?.getListData(1, null, callback)
             });
           })
         })
@@ -1067,14 +973,14 @@ export default function IMAPClientTest() {
         done()
       }
     })
-    it('expunge_closeBox', 0, function (done) {
-      if (!globalThis.client || !isLogin) {
+    it('delKeywords_closeBox', 0, (done: Function) => {
+      if (!GlobalObj?.getInstance()?.getClient() || !isLogin) {
         expect(1).assertEqual(2)
         done()
       }
       let uidList: Array<string> = []
       try {
-        globalThis.client.getBoxes(function (err, data) {
+        GlobalObj?.getInstance()?.getClient()?.getBoxes((err: Error, data: MailBoxes) => {
           if (err) {
             expect(1).assertEqual(2)
             done()
@@ -1084,8 +990,9 @@ export default function IMAPClientTest() {
             done()
           }
           let hasInbox = false;
-          for (let key in data) {
-            if (key === 'INBOX') {
+          let keyArr = Object.getOwnPropertyNames(data)
+          for (let i = 0; i < keyArr.length; i++) {
+            if (keyArr[i] === 'INBOX') {
               hasInbox = true;
               break;
             }
@@ -1094,77 +1001,68 @@ export default function IMAPClientTest() {
             expect(1).assertEqual(2)
             done()
           }
-          globalThis.client.status('INBOX', function (err, data) {
+          GlobalObj?.getInstance()?.getClient()?.status('INBOX', (err: Error, data: Box) => {
             if (err) {
               expect(1).assertEqual(2)
               done()
             }
-            if (!data || data.length < 1) {
+            if (!data ) {
               expect(1).assertEqual(2)
               done()
             }
-            globalThis.client.openBox('INBOX', true, function (err, box) {
+            GlobalObj?.getInstance()?.getClient()?.openBox('INBOX', true, (err: Error, box: Box) => {
               if (err) {
                 expect(1).assertEqual(2)
                 done()
               }
-              var f = globalThis.client.seq.fetch(`1`, {
-                bodies: 'HEADER.FIELDS (FROM TO SUBJECT DATE)',
-                struct: true
-              });
-              f.on('message', function (msg, seqno) {
-                msg.on('body', function (stream, info) {
+              let callback: DetailCallback = {
+                messageStartCallback: (seqno: number) => {
+                  console.log('Message #%d', seqno);
+                },
+                bodyStartCallback: () => {
+                },
+                bodyDataCallback: (data: string) => {
+                },
+                bodyEndCallback: () => {
 
-                  stream.on('data', function (chunk) {
-                  });
-                  stream.once('end', function () {
-                  });
-                });
-                msg.once('attributes', function (attrs) {
+                },
+                attributesCallback: (attrs: ImapMessageAttributes) => {
                   if (attrs && typeof attrs === 'object') {
-                    let uid = attrs['uid'] ? attrs['uid'] : ''
-                    uidList.push(uid);
+                    uidList.push(attrs.uid + '');
                   }
-                });
-                msg.once('end', function () {
-                });
-              });
-              f.once('error', function (err) {
-                expect(1).assertEqual(2)
-                done()
-              });
-              f.once('end', function () {
-                console.log('Done fetching all messages!');
-                if (uidList && uidList.length >= 1 && uidList[0]) {
-                  let uid = uidList[0]
-                  globalThis.client.addFlags(uid, '\\Deleted', (err, result) => {
-                    if (err) {
-                      expect(1).assertEqual(2)
-                      done()
-                    } else {
-                      globalThis.client.expunge(uid, (err, result) => {
-                        if (err) {
-                          expect(1).assertEqual(2)
-                          done()
-                        } else {
-                          globalThis.client.closeBox((err, result) => {
-                            if (err) {
-                              expect(1).assertEqual(2)
-                              done()
-                            } else {
-                              expect(1).assertEqual(1)
-                              done()
-                            }
-                          });
-                        }
-                      });
-                    }
-                  });
-                } else {
-                  expect(1).assertEqual(0)
+                },
+                messageEndCallback: () => {
+                },
+                fetchErrorCallback: (err: Error) => {
+                  expect(1).assertEqual(2)
                   done()
+                },
+                fetchEndCallback: () => {
+                  console.log('Done fetching all messages!');
+                  if (uidList && uidList.length >= 1 && uidList[0]) {
+                    GlobalObj?.getInstance()?.getClient()?.delKeywords(uidList[0], 'testKeyWords', (err: Error) => {
+                      if (err) {
+                        expect(1).assertEqual(2)
+                        done()
+                      } else {
+                        GlobalObj?.getInstance()?.getClient()?.closeBox((err: Error) => {
+                          if (err) {
+                            expect(1).assertEqual(2)
+                            done()
+                          } else {
+                            expect(1).assertEqual(1)
+                            done()
+                          }
+                        });
+                      }
+                    });
+                  } else {
+                    expect(1).assertEqual(0)
+                    done()
+                  }
                 }
-              });
+              }
+              util?.getListData(1, null, callback)
             });
           })
         })
@@ -1174,14 +1072,14 @@ export default function IMAPClientTest() {
         done()
       }
     })
-    it('search_closeBox', 0, function (done) {
-      if (!globalThis.client || !isLogin) {
+    it('expunge_closeBox', 0, (done: Function) => {
+      if (!GlobalObj?.getInstance()?.getClient() || !isLogin) {
         expect(1).assertEqual(2)
         done()
       }
       let uidList: Array<string> = []
       try {
-        globalThis.client.getBoxes(function (err, data) {
+        GlobalObj?.getInstance()?.getClient()?.getBoxes((err: Error, data: MailBoxes) => {
           if (err) {
             expect(1).assertEqual(2)
             done()
@@ -1191,8 +1089,9 @@ export default function IMAPClientTest() {
             done()
           }
           let hasInbox = false;
-          for (let key in data) {
-            if (key === 'INBOX') {
+          let keyArr = Object.getOwnPropertyNames(data)
+          for (let i = 0; i < keyArr.length; i++) {
+            if (keyArr[i] === 'INBOX') {
               hasInbox = true;
               break;
             }
@@ -1201,26 +1100,133 @@ export default function IMAPClientTest() {
             expect(1).assertEqual(2)
             done()
           }
-          globalThis.client.status('INBOX', function (err, data) {
+          GlobalObj?.getInstance()?.getClient()?.status('INBOX', (err: Error, data: Box) => {
             if (err) {
               expect(1).assertEqual(2)
               done()
             }
-            if (!data || data.length < 1) {
+            if (!data ) {
               expect(1).assertEqual(2)
               done()
             }
-            globalThis.client.openBox('INBOX', true, function (err, box) {
+            GlobalObj?.getInstance()?.getClient()?.openBox('INBOX', true, (err: Error, box: Box) => {
               if (err) {
                 expect(1).assertEqual(2)
                 done()
               }
-              globalThis.client.search(['RECENT'], (err, result) => {
+              let callback: DetailCallback = {
+                messageStartCallback: (seqno: number) => {
+                  console.log('Message #%d', seqno);
+                },
+                bodyStartCallback: () => {
+                },
+                bodyDataCallback: (data: string) => {
+                },
+                bodyEndCallback: () => {
+
+                },
+                attributesCallback: (attrs: ImapMessageAttributes) => {
+                  if (attrs && typeof attrs === 'object') {
+                    uidList.push(attrs.uid + '');
+                  }
+                },
+                messageEndCallback: () => {
+                },
+                fetchErrorCallback: (err: Error) => {
+                  expect(1).assertEqual(2)
+                  done()
+                },
+                fetchEndCallback: () => {
+                  console.log('Done fetching all messages!');
+                  if (uidList && uidList.length >= 1 && uidList[0]) {
+                    let uid = uidList[0]
+                    GlobalObj?.getInstance()?.getClient()?.addFlags(uid, '\\Deleted', (err: Error) => {
+                      if (err) {
+                        expect(1).assertEqual(2)
+                        done()
+                      } else {
+                        GlobalObj?.getInstance()?.getClient()?.expunge(uid, (err: Error) => {
+                          if (err) {
+                            expect(1).assertEqual(2)
+                            done()
+                          } else {
+                            GlobalObj?.getInstance()?.getClient()?.closeBox((err: Error) => {
+                              if (err) {
+                                expect(1).assertEqual(2)
+                                done()
+                              } else {
+                                expect(1).assertEqual(1)
+                                done()
+                              }
+                            });
+                          }
+                        });
+                      }
+                    });
+                  } else {
+                    expect(1).assertEqual(0)
+                    done()
+                  }
+                }
+              }
+              util?.getListData(1, null, callback)
+            });
+          })
+        })
+
+      } catch (err) {
+        expect(1).assertEqual(2)
+        done()
+      }
+    })
+    it('search_closeBox', 0, (done: Function) => {
+      if (!GlobalObj?.getInstance()?.getClient() || !isLogin) {
+        expect(1).assertEqual(2)
+        done()
+      }
+      let uidList: Array<string> = []
+      try {
+        GlobalObj?.getInstance()?.getClient()?.getBoxes((err: Error, data: MailBoxes) => {
+          if (err) {
+            expect(1).assertEqual(2)
+            done()
+          }
+          if (!data || typeof data != 'object') {
+            expect(1).assertEqual(2)
+            done()
+          }
+          let hasInbox = false;
+          let keyArr = Object.getOwnPropertyNames(data)
+          for (let i = 0; i < keyArr.length; i++) {
+            if (keyArr[i] === 'INBOX') {
+              hasInbox = true;
+              break;
+            }
+          }
+          if (!hasInbox) {
+            expect(1).assertEqual(2)
+            done()
+          }
+          GlobalObj?.getInstance()?.getClient()?.status('INBOX', (err: Error, data: Box) => {
+            if (err) {
+              expect(1).assertEqual(2)
+              done()
+            }
+            if (!data ) {
+              expect(1).assertEqual(2)
+              done()
+            }
+            GlobalObj?.getInstance()?.getClient()?.openBox('INBOX', true, (err: Error, box: Box) => {
+              if (err) {
+                expect(1).assertEqual(2)
+                done()
+              }
+              GlobalObj?.getInstance()?.getClient()?.search(['RECENT'], (err: Error, uids: number[]) => {
                 if (err) {
                   expect(1).assertEqual(2)
                   done()
                 } else {
-                  globalThis.client.closeBox((err, result) => {
+                  GlobalObj?.getInstance()?.getClient()?.closeBox((err: Error) => {
                     if (err) {
                       expect(1).assertEqual(2)
                       done()
@@ -1240,14 +1246,14 @@ export default function IMAPClientTest() {
         done()
       }
     })
-    it('sort_closeBox', 0, function (done) {
-      if (!globalThis.client || !isLogin) {
+    it('sort_closeBox', 0, (done: Function) => {
+      if (!GlobalObj?.getInstance()?.getClient() || !isLogin) {
         expect(1).assertEqual(2)
         done()
       }
       let uidList: Array<string> = []
       try {
-        globalThis.client.getBoxes(function (err, data) {
+        GlobalObj?.getInstance()?.getClient()?.getBoxes((err: Error, data: MailBoxes) => {
           if (err) {
             expect(1).assertEqual(2)
             done()
@@ -1257,8 +1263,9 @@ export default function IMAPClientTest() {
             done()
           }
           let hasInbox = false;
-          for (let key in data) {
-            if (key === 'INBOX') {
+          let keyArr = Object.getOwnPropertyNames(data)
+          for (let i = 0; i < keyArr.length; i++) {
+            if (keyArr[i] === 'INBOX') {
               hasInbox = true;
               break;
             }
@@ -1267,27 +1274,27 @@ export default function IMAPClientTest() {
             expect(1).assertEqual(2)
             done()
           }
-          globalThis.client.status('INBOX', function (err, data) {
+          GlobalObj?.getInstance()?.getClient()?.status('INBOX', (err: Error, data: Box) => {
             if (err) {
               expect(1).assertEqual(2)
               done()
             }
-            if (!data || data.length < 1) {
+            if (!data ) {
               expect(1).assertEqual(2)
               done()
             }
-            globalThis.client.openBox('INBOX', true, function (err, box) {
+            GlobalObj?.getInstance()?.getClient()?.openBox('INBOX', true, (err: Error, box: Box) => {
               if (err) {
                 expect(1).assertEqual(2)
                 done()
               }
-              try{
-                globalThis.client.sort(['DATE'], ['ALL'], (err, result) => {
+              try {
+                GlobalObj?.getInstance()?.getClient()?.sort(['DATE'], ['ALL'], (err: Error, uids: number[]) => {
                   if (err) {
                     expect(1).assertEqual(2)
                     done()
-                  }else {
-                    globalThis.client.closeBox((err, result) => {
+                  } else {
+                    GlobalObj?.getInstance()?.getClient()?.closeBox((err: Error) => {
                       if (err) {
                         expect(1).assertEqual(2)
                         done()
@@ -1298,15 +1305,15 @@ export default function IMAPClientTest() {
                     });
                   }
                 });
-              }catch (err){
+              } catch (err) {
                 if (err && err.message == 'Sort is not supported on the server') {
                   expect(1).assertEqual(1)
                   done()
-                }else {
+                } else {
                   expect(1).assertEqual(2)
                   done()
                 }
-                globalThis.client.closeBox((err, result) => {
+                GlobalObj?.getInstance()?.getClient()?.closeBox((err: Error) => {
                   if (err) {
                     expect(1).assertEqual(2)
                     done()
@@ -1325,14 +1332,14 @@ export default function IMAPClientTest() {
         done()
       }
     })
-    it('copy_closeBox', 0, function (done) {
-      if (!globalThis.client || !isLogin) {
+    it('copy_closeBox', 0, (done: Function) => {
+      if (!GlobalObj?.getInstance()?.getClient() || !isLogin) {
         expect(1).assertEqual(2)
         done()
       }
       let uidList: Array<string> = []
       try {
-        globalThis.client.getBoxes(function (err, data) {
+        GlobalObj?.getInstance()?.getClient()?.getBoxes((err: Error, data: MailBoxes) => {
           if (err) {
             expect(1).assertEqual(2)
             done()
@@ -1343,80 +1350,81 @@ export default function IMAPClientTest() {
           }
           let hasInbox = false;
           let selectFoler = ''
-          for (let key in data) {
-            if (key === 'INBOX') {
+          let keyArr = Object.getOwnPropertyNames(data)
+          for (let i = 0; i < keyArr.length; i++) {
+            if (keyArr[i] === 'INBOX') {
               hasInbox = true;
             }
-            selectFoler = key
+            selectFoler = keyArr[i]
           }
           if (!hasInbox) {
             expect(1).assertEqual(2)
             done()
           }
-          globalThis.client.status('INBOX', function (err, data) {
+          GlobalObj?.getInstance()?.getClient()?.status('INBOX', (err: Error, data: Box) => {
             if (err) {
               expect(1).assertEqual(2)
               done()
             }
-            if (!data || data.length < 1) {
+            if (!data ) {
               expect(1).assertEqual(2)
               done()
             }
-            globalThis.client.openBox('INBOX', true, function (err, box) {
+            GlobalObj?.getInstance()?.getClient()?.openBox('INBOX', true, (err: Error, box: Box) => {
               if (err) {
                 expect(1).assertEqual(2)
                 done()
               }
-              var f = globalThis.client.seq.fetch(`1`, {
-                bodies: 'HEADER.FIELDS (FROM TO SUBJECT DATE)',
-                struct: true
-              });
-              f.on('message', function (msg, seqno) {
-                msg.on('body', function (stream, info) {
 
-                  stream.on('data', function (chunk) {
-                  });
-                  stream.once('end', function () {
-                  });
-                });
-                msg.once('attributes', function (attrs) {
+              let callback: DetailCallback = {
+                messageStartCallback: (seqno: number) => {
+                  console.log('Message #%d', seqno);
+                },
+                bodyStartCallback: () => {
+                },
+                bodyDataCallback: (data: string) => {
+                },
+                bodyEndCallback: () => {
+
+                },
+                attributesCallback: (attrs: ImapMessageAttributes) => {
                   if (attrs && typeof attrs === 'object') {
-                    let uid = attrs['uid'] ? attrs['uid'] : ''
-                    uidList.push(uid);
+                    uidList.push(attrs.uid + '');
                   }
-                });
-                msg.once('end', function () {
-                });
-              });
-              f.once('error', function (err) {
-                expect(1).assertEqual(2)
-                done()
-              });
-              f.once('end', function () {
-                console.log('Done fetching all messages!');
-                if (uidList && uidList.length >= 1 && uidList[0]) {
-                  let uid = uidList[0];
-                  globalThis.client.copy(uid, selectFoler, (err, result) => {
-                    if (err) {
-                      expect(1).assertEqual(2)
-                      done()
-                    } else {
-                      globalThis.client.closeBox((err, result) => {
-                        if (err) {
-                          expect(1).assertEqual(2)
-                          done()
-                        } else {
-                          expect(1).assertEqual(1)
-                          done()
-                        }
-                      });
-                    }
-                  });
-                } else {
-                  expect(1).assertEqual(0)
+                },
+                messageEndCallback: () => {
+                },
+                fetchErrorCallback: (err: Error) => {
+                  expect(1).assertEqual(2)
                   done()
+                },
+                fetchEndCallback: () => {
+                  console.log('Done fetching all messages!');
+                  if (uidList && uidList.length >= 1 && uidList[0]) {
+                    let uid = uidList[0];
+                    GlobalObj?.getInstance()?.getClient()?.copy(uid, selectFoler, (err: Error) => {
+                      if (err) {
+                        expect(1).assertEqual(2)
+                        done()
+                      } else {
+                        GlobalObj?.getInstance()?.getClient()?.closeBox((err: Error) => {
+                          if (err) {
+                            expect(1).assertEqual(2)
+                            done()
+                          } else {
+                            expect(1).assertEqual(1)
+                            done()
+                          }
+                        });
+                      }
+                    });
+                  } else {
+                    expect(1).assertEqual(0)
+                    done()
+                  }
                 }
-              });
+              }
+              util?.getListData(1, null, callback)
             });
           })
         })
@@ -1426,14 +1434,14 @@ export default function IMAPClientTest() {
         done()
       }
     })
-    it('move_closeBox', 0, function (done) {
-      if (!globalThis.client || !isLogin) {
+    it('move_closeBox', 0, (done: Function) => {
+      if (!GlobalObj?.getInstance()?.getClient() || !isLogin) {
         expect(1).assertEqual(2)
         done()
       }
       let uidList: Array<string> = []
       try {
-        globalThis.client.getBoxes(function (err, data) {
+        GlobalObj?.getInstance()?.getClient()?.getBoxes((err: Error, data: MailBoxes) => {
           if (err) {
             expect(1).assertEqual(2)
             done()
@@ -1444,83 +1452,83 @@ export default function IMAPClientTest() {
           }
           let hasInbox = false;
           let selectFoler = ''
-          for (let key in data) {
-            if (key === 'INBOX') {
+          let keyArr = Object.getOwnPropertyNames(data)
+          for (let i = 0; i < keyArr.length; i++) {
+            if (keyArr[i] === 'INBOX') {
               hasInbox = true;
             }
-            selectFoler = key
+            selectFoler = keyArr[i]
           }
+
           if (!hasInbox) {
             expect(1).assertEqual(2)
             done()
           }
-          globalThis.client.status('INBOX', function (err, data) {
+          GlobalObj?.getInstance()?.getClient()?.status('INBOX', (err: Error, data: Box) => {
             if (err) {
               expect(1).assertEqual(2)
               done()
             }
-            if (!data || data.length < 1) {
+            if (!data ) {
               expect(1).assertEqual(2)
               done()
             }
-            globalThis.client.openBox('INBOX', true, function (err, box) {
+            GlobalObj?.getInstance()?.getClient()?.openBox('INBOX', true, (err: Error, box: Box) => {
               if (err) {
                 expect(1).assertEqual(2)
                 done()
               }
-              var f = globalThis.client.seq.fetch(`1`, {
-                bodies: 'HEADER.FIELDS (FROM TO SUBJECT DATE)',
-                struct: true
-              });
-              f.on('message', function (msg, seqno) {
-                msg.on('body', function (stream, info) {
 
-                  stream.on('data', function (chunk) {
-                  });
-                  stream.once('end', function () {
-                  });
-                });
-                msg.once('attributes', function (attrs) {
+
+              let callback: DetailCallback = {
+                messageStartCallback: (seqno: number) => {
+                  console.log('Message #%d', seqno);
+                },
+                bodyStartCallback: () => {
+                },
+                bodyDataCallback: (data: string) => {
+                },
+                bodyEndCallback: () => {
+
+                },
+                attributesCallback: (attrs: ImapMessageAttributes) => {
                   if (attrs && typeof attrs === 'object') {
-                    let uid = attrs['uid'] ? attrs['uid'] : ''
-                    uidList.push(uid);
+                    uidList.push(attrs.uid + '');
                   }
-                });
-                msg.once('end', function () {
-                });
-              });
-              f.once('error', function (err) {
-                expect(1).assertEqual(2)
-                done()
-              });
-              f.once('end', function () {
-                console.log('Done fetching all messages!');
-                if (uidList && uidList.length >= 1 && uidList[0]) {
-                  let uid = uidList[0];
-                  globalThis.client.move(uid, selectFoler, (err, result) => {
-                    if (err) {
-                      expect(1).assertEqual(2)
-                      done()
-                    } else {
-                      globalThis.client.closeBox((err, result) => {
-                        if (err) {
-                          expect(1).assertEqual(2)
-                          done()
-                        } else {
-                          expect(1).assertEqual(1)
-                          done()
-                        }
-                      });
-                    }
-                  });
-                } else {
-                  expect(1).assertEqual(0)
+                },
+                messageEndCallback: () => {
+                },
+                fetchErrorCallback: (err: Error) => {
+                  expect(1).assertEqual(2)
                   done()
+                },
+                fetchEndCallback: () => {
+                  console.log('Done fetching all messages!');
+                  if (uidList && uidList.length >= 1 && uidList[0]) {
+                    let uid = uidList[0];
+                    GlobalObj?.getInstance()?.getClient()?.move(uid, selectFoler, (err: Error) => {
+                      if (err) {
+                        expect(1).assertEqual(2)
+                        done()
+                      } else {
+                        GlobalObj?.getInstance()?.getClient()?.closeBox((err: Error) => {
+                          if (err) {
+                            expect(1).assertEqual(2)
+                            done()
+                          } else {
+                            expect(1).assertEqual(1)
+                            done()
+                          }
+                        });
+                      }
+                    });
+                  } else {
+                    expect(1).assertEqual(0)
+                    done()
+                  }
                 }
-
-              });
-
-
+              }
+              util?.getListData(1, null, callback)
             });
           })
         })
@@ -1530,13 +1538,13 @@ export default function IMAPClientTest() {
         done()
       }
     })
-    it('append_closeBox', 0, function (done) {
-      if (!globalThis.client || !isLogin) {
+    it('append_closeBox', 0, (done: Function) => {
+      if (!GlobalObj?.getInstance()?.getClient() || !isLogin) {
         expect(1).assertEqual(2)
         done()
       }
       try {
-        globalThis.client.getBoxes(function (err, data) {
+        GlobalObj?.getInstance()?.getClient()?.getBoxes((err: Error, data: MailBoxes) => {
           if (err) {
             expect(1).assertEqual(2)
             done()
@@ -1547,53 +1555,54 @@ export default function IMAPClientTest() {
           }
           let hasUploadBox = false;
           let selectFoler = 'uploadMail'
-          for (let key in data) {
-            if (key.toString() === selectFoler) {
+          let keyArr = Object.getOwnPropertyNames(data)
+          for (let i = 0; i < keyArr.length; i++) {
+            if (keyArr[i] === selectFoler) {
               hasUploadBox = true;
               break;
             }
-
           }
+
           if (!hasUploadBox) {
-            globalThis.client.addBox(selectFoler, (err, result) => {
+            GlobalObj?.getInstance()?.getClient()?.addBox(selectFoler, (err: Error) => {
               if (err) {
                 expect(1).assertEqual(2)
                 done()
               } else {
-                globalThis.client.status(selectFoler, function (err, data) {
+                GlobalObj?.getInstance()?.getClient()?.status(selectFoler, (err: Error, data: Box) => {
                   if (err) {
                     expect(1).assertEqual(2)
                     done()
                   }
-                  if (!data || data.length < 1) {
+                  if (!data ) {
                     expect(1).assertEqual(2)
                     done()
                   }
-                  globalThis.client.openBox(selectFoler, true, function (err, box) {
+                  GlobalObj?.getInstance()?.getClient()?.openBox(selectFoler, true, (err: Error, box: Box) => {
                     if (err) {
                       expect(1).assertEqual(2)
                       done()
                     }
-                    let msg = {
+                    let msg: MsgSendBean = {
                       text: 'IMAP协议测试上传的邮件',
-                      from: `${'鸿蒙搬砖工'} <${'xxx@xxx.com'}>`,
-                      to: 'xxx@xxxx.com',
+                      from: `${'鸿蒙搬砖工'} <${'xxx@qq.com'}>`,
+                      to: 'xxx@qq.com',
                       cc: 'xxx@xxx.com',
                       bcc: 'xxx@xxx.com',
                       subject: '鸿蒙客户端IMAP协议的主题'
                     }
                     let data = JSON.stringify(msg);
-                    let option = {
+                    let option: AppendOptions = {
                       mailbox: 'INBOX',
-                      flag: ['Seen'], //取值 Seen flagged等
+                      flags: ['Seen'], //取值 Seen flagged等
                       date: new Date(),
                     }
-                    globalThis.client.append(data, option, (err, result) => {
+                    GlobalObj?.getInstance()?.getClient()?.append(data, option, (err: Error) => {
                       if (err) {
                         expect(1).assertEqual(2)
                         done()
                       } else {
-                        globalThis.client.closeBox((err, result) => {
+                        GlobalObj?.getInstance()?.getClient()?.closeBox((err: Error) => {
                           if (err) {
                             expect(1).assertEqual(2)
                             done()
@@ -1610,21 +1619,21 @@ export default function IMAPClientTest() {
               }
             });
           } else {
-            globalThis.client.status(selectFoler, function (err, data) {
+            GlobalObj?.getInstance()?.getClient()?.status(selectFoler, (err: Error, data: Box) => {
               if (err) {
                 expect(1).assertEqual(2)
                 done()
               }
-              if (!data || data.length < 1) {
+              if (!data ) {
                 expect(1).assertEqual(2)
                 done()
               }
-              globalThis.client.openBox(selectFoler, true, function (err, box) {
+              GlobalObj?.getInstance()?.getClient()?.openBox(selectFoler, true, (err: Error, box: Box) => {
                 if (err) {
                   expect(1).assertEqual(2)
                   done()
                 }
-                let msg = {
+                let msg: MsgSendBean = {
                   text: 'IMAP协议测试上传的邮件',
                   from: `${'鸿蒙搬砖工'} <${'xxx@xx.com'}>`,
                   to: 'xxx@xx.com',
@@ -1633,17 +1642,17 @@ export default function IMAPClientTest() {
                   subject: '鸿蒙客户端IMAP协议的主题'
                 }
                 let data = JSON.stringify(msg);
-                let option = {
+                let option: AppendOptions = {
                   mailbox: 'INBOX',
-                  flag: ['Seen'], //取值 Seen flagged等
+                  flags: ['Seen'], //取值 Seen flagged等
                   date: new Date(),
                 }
-                globalThis.client.append(data, option, (err, result) => {
+                GlobalObj?.getInstance()?.getClient()?.append(data, option, (err: Error) => {
                   if (err) {
                     expect(1).assertEqual(2)
                     done()
                   } else {
-                    globalThis.client.closeBox((err, result) => {
+                    GlobalObj?.getInstance()?.getClient()?.closeBox((err: Error) => {
                       if (err) {
                         expect(1).assertEqual(2)
                         done()
@@ -1666,13 +1675,13 @@ export default function IMAPClientTest() {
         done()
       }
     })
-    it('end', 0, function (done) {
+    it('end', 0, (done: Function) => {
       try {
-        if (!globalThis.client || !isLogin) {
+        if (!GlobalObj?.getInstance()?.getClient() || !isLogin) {
           expect(1).assertEqual(2)
           done()
         }
-        globalThis.client.end(() => {
+        GlobalObj?.getInstance()?.getClient()?.end(() => {
           isLogin = false;
           expect(1).assertEqual(1)
           done()

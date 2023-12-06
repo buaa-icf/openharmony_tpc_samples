@@ -17,14 +17,19 @@ import Imap, { inspect } from '@ohos/node-imap'
 import promptAction from '@ohos.promptAction'
 import router from '@ohos.router'
 import socket from '@ohos.net.socket'
+import LoginUtil from '../LoginUtil'
+import GlobalObj from '../GlobalObj'
+import LoginOption from '../bean/LoginOption'
 
 @CustomDialog
 struct CustomDialogDiy {
   @Link textValue: string
   @Link inputValue: string
   controller: CustomDialogController
-  cancel: () => void;
-  confirm: () => void;
+  cancel: Function = () => {
+  };
+  confirm: Function = () => {
+  };
 
   build() {
     Column() {
@@ -70,6 +75,7 @@ struct LoginPage {
   @State secure: boolean = false
   @State isLogin: boolean = false
   @State capability: string = ''
+  private util: LoginUtil = new LoginUtil();
   private option: socket.TLSConnectOptions = {
     ALPNProtocols: ["spdy/1", "http/1.1"],
     address: {
@@ -85,7 +91,7 @@ struct LoginPage {
 
     }
   }
-  dialogController: CustomDialogController = new CustomDialogController({
+  dialogController: CustomDialogController | null = new CustomDialogController({
     builder: CustomDialogDiy({
       cancel: () => {
         this.showToast(`关闭了对话框，取消选输入其他类型邮箱`, 'mailType-cancel')
@@ -126,11 +132,8 @@ struct LoginPage {
   })
 
   aboutToDisappear() {
-    delete this.dialogController;
     this.dialogController = null;
-    if (globalThis.client) {
-      globalThis.client.end()
-    }
+    GlobalObj?.getInstance()?.getClient()?.end()
   }
 
   showToast(text: string, name = '测试') {
@@ -417,18 +420,28 @@ struct LoginPage {
     try {
       ctx.showToast('开始登录账号', 'login-imap')
       let hostParam = ctx.mailType.substring(ctx.mailType.indexOf('@') + 1, ctx.mailType.indexOf('.'))
-      if (!globalThis.client) {
+      let loginOption: LoginOption = new LoginOption();
+      if (!GlobalObj?.getInstance()?.getClient()) {
         if (ctx.secure) {
-          let context: Context = globalThis.context ? globalThis.context : getContext(ctx)
-          let ca0Data = await context.resourceManager.getRawFileContent('QQMailMiddle.pem')
+          let context: Context | null = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext()
+          if (!context) {
+            return
+          }
+          let ca0Data = await context?.resourceManager?.getRawFileContent('QQMailMiddle.pem')
+          if (!ca0Data) {
+            return
+          }
           let ca0 = '';
           for (let i = 0; i < ca0Data.length; i++) {
             let todo = ca0Data[i]
             let item = String.fromCharCode(todo);
             ca0 += item;
           }
-          // @ts-ignore
-          ctx.option.secureOptions.ca[0] = ca0;
+          if (ctx.option.secureOptions.ca instanceof Array) {
+            ctx.option.secureOptions.ca[0] = ca0;
+          } else {
+            ctx.option.secureOptions.ca = ca0;
+          }
 
           let ca1Data = await context.resourceManager.getRawFileContent('QQMailRoot.pem')
           let ca1 = '';
@@ -437,58 +450,40 @@ struct LoginPage {
             let item = String.fromCharCode(todo);
             ca1 += item;
           }
-          // @ts-ignore
-          ctx.option.secureOptions.ca[1] = ca1;
+          if (ctx.option.secureOptions.ca instanceof Array) {
+            ctx.option.secureOptions.ca[1] = ca1;
+          } else {
+            ctx.option.secureOptions.ca = ca1;
+          }
+
           ctx.option.address.address = `imap.${hostParam}.com`;
           ctx.option.address.port = 993;
-          globalThis.client = new Imap({
-            user: ctx.account + ctx.mailType,
-            password: ctx.password,
-            host: `imap.${hostParam}.com`,
-            port: 993,
-            tls: true,
-            tlsOptions: ctx.option,
-            socketTimeout: 60000,
-            connTimeout: 60000,
-            authTimeout: 60000,
-            keepalive: true,
 
-          });
+          loginOption.account = ctx.account;
+          loginOption.password = ctx.password;
+          loginOption.hostParam = hostParam;
+          loginOption.secure = ctx.secure;
+          loginOption.tlsOption = ctx.option;
+          loginOption.mailType = ctx.mailType;
+
         } else {
-          globalThis.client = new Imap({
-            user: ctx.account + ctx.mailType,
-            password: ctx.password,
-            host: `imap.${hostParam}.com`,
-            port: 143,
-            tls: false,
-            tlsOptions: undefined,
-            socketTimeout: 60000,
-            connTimeout: 60000,
-            authTimeout: 60000,
-            keepalive: true,
-
-          });
+          loginOption.account = ctx.account;
+          loginOption.password = ctx.password;
+          loginOption.hostParam = hostParam;
+          loginOption.secure = ctx.secure;
+          loginOption.tlsOption = null;
+          loginOption.mailType = ctx.mailType;
         }
       }
-      ctx.showToast(`客户端初始化成功，参数：${JSON.stringify(globalThis.client._config)}`, 'login-imap')
-      if (globalThis.client) {
-        globalThis.client.once('ready', function () {
-          ctx.isLogin = true;
-          ctx.showToast('登录成功，准备跳转邮件文件夹列表', 'login-imap')
-          // globalThis.client._doKeepaliveTimer(true) //登陆成功之后通过noop命令不断的轮训服务器 防止断开连接 原库已封装了该命令不断调用 无需用户手动调用
-        });
-
-        globalThis.client.on('error', function (err) {
-          console.log(err);
-        });
-
-        globalThis.client.once('end', function () {
-          console.log('Connection ended');
-        });
-        ctx.showToast('开始连接服务器', 'login-imap')
-        await globalThis.client.connect();
-        ctx.showToast('服务器连接成功', 'login-imap')
-      }
+      this.util?.login(loginOption, () => {
+        ctx.isLogin = true;
+        ctx.showToast('登录成功，准备跳转邮件文件夹列表', 'login-imap')
+      }, (err: Error) => {
+        console.log(err.message);
+      }, () => {
+        console.log('Connection ended');
+      })
+      ctx.showToast('服务器连接成功', 'login-imap')
     } catch (err) {
       ctx.showToast(`账号登录出错：${err.message}`, 'login-smtp')
     }
@@ -498,8 +493,8 @@ struct LoginPage {
     const ctx = this;
     try {
       ctx.showToast('开始退出登录,请稍等', 'loginOut-imap')
-      if (globalThis.client) {
-        globalThis.client.end(() => {
+      if (GlobalObj?.getInstance()?.getClient()) {
+        GlobalObj?.getInstance()?.getClient()?.end(() => {
           ctx.showToast('退出登录成功', 'loginOut-imap')
           router.clear()
           router.pushUrl({
@@ -521,7 +516,7 @@ struct LoginPage {
 
   checkServerCapability() {
     if (this.isLogin) {
-      let checkResult = globalThis.client.serverSupports(this.capability);
+      let checkResult: boolean | undefined = GlobalObj?.getInstance()?.getClient()?.serverSupports(this.capability);
       this.showToast(`服务端能力是否支持-${this.capability},结果是：${checkResult}`, 'checkServerCapability-smtp')
     } else {
       this.showToast(`检查服务端能力出错：客户端未登录`, 'checkServerCapability-smtp')

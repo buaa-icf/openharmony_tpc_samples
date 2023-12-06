@@ -18,6 +18,15 @@ import Imap, { inspect } from '@ohos/node-imap'
 import socket from '@ohos.net.socket'
 import StatusBean from '../bean/StatusBean'
 import MsgListBean, { MsgListFootBean, MsgListHeadBean } from '../bean/MsgListBean'
+import Box from '../bean/Box'
+import TestInterfaceUtil from '../TestInterfaceUtil'
+import GlobalObj from '../GlobalObj'
+import LoginOption from '../bean/LoginOption'
+import MailBoxes from '../bean/MailBoxes'
+import DetailCallback from '../bean/DetailCallback'
+import MsgSendBean from '../bean/MsgSendBean'
+import AppendOptions from '../bean/AppendOptions'
+import { ImapMessageAttributes } from '../bean/ImapMessage'
 
 
 const BASE_COUNT = 1
@@ -31,19 +40,20 @@ struct TestInterfacePage {
   @State secure: boolean = false
   @State startIndex: number = 1 //当前页
   @State endIndex: number = 10 //当前页
-  @State bean: StatusBean = undefined //获取邮件列表之前先获取该文件夹里面的邮件总数和状态
+  @State bean: Box | null = null //获取邮件列表之前先获取该文件夹里面的邮件总数和状态
   @State uidList: Array<string> = [] //邮件uid列表
   @State subFolderList: Array<string> = [] //邮件列表数据集合
   @State folderList: Array<string> = [] //邮件列表数据集合
   @State listData: Array<MsgListBean> = [] //邮件列表数据集合
-  @State account: string = ''
-  @State password: string = ''
+  @State account: string = 'xxx@qq.com'
+  @State password: string = 'xxx';
+  private util: TestInterfaceUtil = new TestInterfaceUtil();
   pageSize: number = 10 //请求时的每页多少条信息，用于分页请求
   folderName: string = 'INBOX'
   private option: socket.TLSConnectOptions = {
     ALPNProtocols: ["spdy/1", "http/1.1"],
     address: {
-      address: 'imap.xxx.com',
+      address: 'imap.qq.com',
       port: 993,
       family: 1
     },
@@ -386,26 +396,35 @@ struct TestInterfacePage {
 
   }
 
-
   async login() {
     const ctx = this;
     ctx.message = ''
     try {
       ctx.showToast('开始登录账号', 'login-imap')
       let hostParam = ctx.account.substring(ctx.account.indexOf('@') + 1, ctx.account.indexOf('.'))
-      if (!globalThis.client) {
+      let mailType = ctx.account.substring(ctx.account.indexOf('@') + 1, ctx.account.length)
+      let loginOption: LoginOption = new LoginOption();
+      if (!GlobalObj?.getInstance()?.getClient()) {
         if (ctx.secure) {
-          let context: Context = globalThis.context ? globalThis.context : getContext(ctx)
-          let ca0Data = await context.resourceManager.getRawFileContent('QQMailMiddle.pem')
+          let context: Context | null = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext()
+          if (!context) {
+            return;
+          }
+          let ca0Data = await context?.resourceManager?.getRawFileContent('QQMailMiddle.pem')
+          if (!ca0Data) {
+            return;
+          }
           let ca0 = '';
           for (let i = 0; i < ca0Data.length; i++) {
             let todo = ca0Data[i]
             let item = String.fromCharCode(todo);
             ca0 += item;
           }
-          // @ts-ignore
-          ctx.option.secureOptions.ca[0] = ca0;
-
+          if (ctx.option.secureOptions.ca instanceof Array) {
+            ctx.option.secureOptions.ca[0] = ca0;
+          } else {
+            ctx.option.secureOptions.ca = ca0;
+          }
           let ca1Data = await context.resourceManager.getRawFileContent('QQMailRoot.pem')
           let ca1 = '';
           for (let i = 0; i < ca1Data.length; i++) {
@@ -413,62 +432,39 @@ struct TestInterfacePage {
             let item = String.fromCharCode(todo);
             ca1 += item;
           }
-          // @ts-ignore
-          ctx.option.secureOptions.ca[1] = ca1;
+          if (ctx.option.secureOptions.ca instanceof Array) {
+            ctx.option.secureOptions.ca[1] = ca1;
+          } else {
+            ctx.option.secureOptions.ca = ca1;
+          }
+
           ctx.option.address.address = `imap.${hostParam}.com`;
           ctx.option.address.port = 993;
-          globalThis.client = new Imap({
-            user: ctx.account,
-            password: ctx.password,
-            host: `imap.${hostParam}.com`,
-            port: 993,
-            tls: true,
-            tlsOptions: ctx.option,
-            socketTimeout: 60000,
-            connTimeout: 60000,
-            authTimeout: 60000,
-            keepalive: true,
 
-          });
+          loginOption.account = ctx.account;
+          loginOption.password = ctx.password;
+          loginOption.mailType = mailType;
+          loginOption.hostParam = hostParam;
+          loginOption.tlsOption = ctx.option;
+          loginOption.secure = ctx.secure;
         } else {
-          globalThis.client = new Imap({
-            user: ctx.account,
-            password: ctx.password,
-            host: `imap.${hostParam}.com`,
-            port: 143,
-            tls: false,
-            tlsOptions: undefined,
-            socketTimeout: 60000,
-            connTimeout: 60000,
-            authTimeout: 60000,
-            keepalive: true,
-
-          });
+          loginOption.account = ctx.account;
+          loginOption.password = ctx.password;
+          loginOption.mailType = mailType;
+          loginOption.hostParam = hostParam;
+          loginOption.tlsOption = null;
+          loginOption.secure = ctx.secure;
         }
       }
-      ctx.showToast(`客户端初始化成功，参数：${JSON.stringify(globalThis.client._config)}`, 'login-imap')
-      if (globalThis.client) {
-        globalThis.client.once('ready', function () {
-          ctx.isLogin = true;
-          ctx.showToast('登录成功，准备跳转邮件文件夹列表', 'login-imap')
-          // globalThis.client._doKeepaliveTimer(true) //登陆成功之后通过noop命令不断的轮训服务器 防止断开连接 原库已封装了该命令不断调用 无需用户手动调用
-        });
-
-        globalThis.client.on('error', function (err) {
-          console.log(err);
-        });
-
-        globalThis.client.once('end', function () {
-          console.log('Connection ended');
-        });
-        ctx.showToast('开始连接服务器', 'login-imap')
-        let startTime1 = new Date().getTime();
-        await globalThis.client.connect();
-        let endTime1 = new Date().getTime();
-        let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
-        console.log("IMAPClientTest : connect averageTime : " + averageTime1 + "us")
-        ctx.showToast('服务器连接成功', 'login-imap')
-      }
+      this?.util?.login(loginOption, () => {
+        ctx.isLogin = true;
+        ctx.showToast('登录成功，准备跳转邮件文件夹列表', 'login-imap')
+        // GlobalObj?.getInstance()?.getClient()?._doKeepaliveTimer(true) //登陆成功之后通过noop命令不断的轮训服务器 防止断开连接 原库已封装了该命令不断调用 无需用户手动调用
+      }, (err: Error) => {
+        console.log(err.message);
+      }, () => {
+        console.log('Connection ended');
+      })
     } catch (err) {
       ctx.showToast(`账号登录出错：${err.message}`, 'login-smtp')
     }
@@ -479,22 +475,20 @@ struct TestInterfacePage {
     ctx.message = ''
     try {
       ctx.showToast('开始退出登录,请稍等', 'loginOut-imap')
-      if (globalThis.client) {
+      if (GlobalObj?.getInstance()?.getClient()) {
         let startTime1 = new Date().getTime();
-        globalThis.client.end(() => {
-          let endTime1 = new Date().getTime();
-          let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
-          console.log("IMAPClientTest : end averageTime : " + averageTime1 + "us")
-          ctx.showToast('退出登录成功', 'loginOut-imap')
-          let startTime2 = new Date().getTime();
-          globalThis.client.destroy()
-          let endTime2 = new Date().getTime();
-          let averageTime2 = ((endTime2 - startTime2) * 1000) / BASE_COUNT;
-          console.log("IMAPClientTest : destroy averageTime : " + averageTime2 + "us")
-          globalThis.client = undefined;
-          ctx.isLogin = false;
-        });
-
+        GlobalObj?.getInstance()?.getClient()?.end();
+        let endTime1 = new Date().getTime();
+        let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+        console.log("IMAPClientTest : end averageTime : " + averageTime1 + "us")
+        ctx.showToast('退出登录成功', 'loginOut-imap')
+        let startTime2 = new Date().getTime();
+        GlobalObj?.getInstance()?.getClient()?.destroy()
+        let endTime2 = new Date().getTime();
+        let averageTime2 = ((endTime2 - startTime2) * 1000) / BASE_COUNT;
+        console.log("IMAPClientTest : destroy averageTime : " + averageTime2 + "us")
+        GlobalObj?.getInstance()?.setClient(null);
+        ctx.isLogin = false;
       } else {
         ctx.showToast('退出登录失败，客户端对象为空', 'loginOut-imap')
         ctx.isLogin = false;
@@ -506,16 +500,13 @@ struct TestInterfacePage {
 
   checkServerCapability() {
     this.message = ''
-    if (!globalThis.client || !this.isLogin) {
+    if (!GlobalObj?.getInstance()?.getClient() || !this.isLogin) {
       this.showToast(`检查服务端能力出错：客户端未登录`, 'checkServerCapability-smtp')
       return
     }
-    let supportList = globalThis.client.getSupportList();
-    if (supportList) {
-      this.showToast(`服务端能力列表： ${JSON.stringify(supportList)}`, 'checkServerCapability-smtp')
-    }
+
     let startTime1 = new Date().getTime();
-    let checkResult = globalThis.client.serverSupports('IMAP4');
+    let checkResult: boolean = GlobalObj?.getInstance()?.getClient()?.serverSupports('IMAP4') ? GlobalObj?.getInstance()?.getClient()?.serverSupports('IMAP4') : false;
     let endTime1 = new Date().getTime();
     let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
     console.log("IMAPClientTest : serverSupports averageTime : " + averageTime1 + "us")
@@ -525,13 +516,13 @@ struct TestInterfacePage {
   getFolderList() {
     const ctx = this;
     ctx.message = ''
-    if (!globalThis.client || !ctx.isLogin) {
+    if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
       ctx.showToast('账号未登录，请登录后再试', 'getFolderList-imap')
       return
     }
     ctx.showToast(`获取邮箱里的文件夹列表开始`, 'getFolderList-imap')
     let startTime1 = new Date().getTime();
-    globalThis.client.getBoxes(function (err, data) {
+    GlobalObj?.getInstance()?.getClient()?.getBoxes((err: Error, data: MailBoxes) => {
       let endTime1 = new Date().getTime();
       let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
       console.log("IMAPClientTest : getBoxes averageTime : " + averageTime1 + "us")
@@ -544,8 +535,9 @@ struct TestInterfacePage {
         return
       }
       ctx.folderList = [];
-      for (let key in data) {
-        ctx.folderList.push(key.toString())
+      let keyArr = Object.getOwnPropertyNames(data);
+      for (let i = 0; i < keyArr.length; i++) {
+        ctx.folderList.push(keyArr[i])
       }
       ctx.showToast(`获取邮箱里的文件夹列表成功，数据是：${JSON.stringify(ctx.folderList)}`, 'getFolderList-imap')
     })
@@ -555,14 +547,14 @@ struct TestInterfacePage {
     const ctx = this;
     try {
       ctx.message = ''
-      if (!globalThis.client || !ctx.isLogin) {
+      if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
         ctx.showToast('账号未登录，请登录后再试', 'createFolder-imap')
         return
       }
       ctx.showToast('开始创建文件夹', 'createFolder-imap')
       let startTime1 = new Date().getTime();
       let addName = 'addFolder' + new Date().getTime();
-      globalThis.client.addBox(addName, (err, result) => {
+      GlobalObj?.getInstance()?.getClient()?.addBox(addName, (err: Error) => {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("IMAPClientTest : addBox averageTime : " + averageTime1 + "us")
@@ -571,7 +563,7 @@ struct TestInterfacePage {
         } else {
           ctx.showToast('创建文件夹成功', 'createFolder-imap')
           ctx.showToast(`获取邮箱里的文件夹列表开始`, 'getFolderList-imap')
-          globalThis.client.getBoxes(function (err, data) {
+          GlobalObj?.getInstance()?.getClient()?.getBoxes((err: Error, data: MailBoxes) => {
             if (err) {
               ctx.showToast(`获取邮箱里的文件夹列表出错，数据是：${err.message}`, 'getFolderList-imap')
               return
@@ -582,8 +574,9 @@ struct TestInterfacePage {
               return
             }
             ctx.folderList = [];
-            for (let key in data) {
-              ctx.folderList.push(key.toString())
+            let keyArr = Object.getOwnPropertyNames(data);
+            for (let i = 0; i < keyArr.length; i++) {
+              ctx.folderList.push(keyArr[i])
             }
             ctx.showToast(`获取邮箱里的文件夹列表成功，数据是：${JSON.stringify(ctx.folderList)}`, 'getFolderList-imap')
           })
@@ -600,18 +593,18 @@ struct TestInterfacePage {
     const ctx = this;
     try {
       ctx.message = ''
-      if (!globalThis.client || !ctx.isLogin) {
+      if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
         ctx.showToast('账号未登录，请登录后再试', 'delFolder-imap')
         return
       }
       let folderName = 'delFolder' + new Date().getTime();
-      globalThis.client.addBox(folderName, (err, result) => {
+      GlobalObj?.getInstance()?.getClient()?.addBox(folderName, (err: Error) => {
         if (err) {
           ctx.showToast(`创建用于删除的文件夹失败,原因：${err.message}`, 'delFolder-imap')
         } else {
           ctx.showToast('创建用于删除的文件夹成功', 'delFolder-imap')
           ctx.showToast(`获取邮箱里的文件夹列表开始`, 'delFolder-imap')
-          globalThis.client.getBoxes(function (err, data) {
+          GlobalObj?.getInstance()?.getClient()?.getBoxes((err: Error, data: MailBoxes) => {
             if (err) {
               ctx.showToast(`获取邮箱里的文件夹列表出错，数据是：${err.message}`, 'delFolder-imap')
               return
@@ -622,13 +615,14 @@ struct TestInterfacePage {
               return
             }
             ctx.folderList = [];
-            for (let key in data) {
-              ctx.folderList.push(key.toString())
+            let keyArr = Object.getOwnPropertyNames(data);
+            for (let i = 0; i < keyArr.length; i++) {
+              ctx.folderList.push(keyArr[i])
             }
             ctx.showToast(`获取邮箱里的文件夹列表成功，数据是：${JSON.stringify(ctx.folderList)}`, 'delFolder-imap')
             ctx.showToast('开始删除文件夹：delFolder', 'deleteFolder-imap')
             let startTime1 = new Date().getTime();
-            globalThis.client.delBox(folderName, (err, result) => {
+            GlobalObj?.getInstance()?.getClient()?.delBox(folderName, (err: Error) => {
               let endTime1 = new Date().getTime();
               let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
               console.log("IMAPClientTest : delBox averageTime : " + averageTime1 + "us")
@@ -637,19 +631,19 @@ struct TestInterfacePage {
               } else {
                 ctx.showToast('删除文件夹成功', 'delFolder-imap')
                 ctx.showToast(`获取邮箱里的文件夹列表开始`, 'getFolderList-imap')
-                globalThis.client.getBoxes(function (err, data) {
+                GlobalObj?.getInstance()?.getClient()?.getBoxes((err: Error, data: MailBoxes) => {
                   if (err) {
                     ctx.showToast(`获取邮箱里的文件夹列表出错，数据是：${err.message}`, 'getFolderList-imap')
                     return
                   }
-                  ;
                   if (!data || typeof data != 'object') {
                     ctx.showToast(`获取邮箱里的文件夹列表出错，get box status fail`, 'getFolderList-imap')
                     return
                   }
                   ctx.folderList = [];
-                  for (let key in data) {
-                    ctx.folderList.push(key.toString())
+                  let keyArr = Object.getOwnPropertyNames(data);
+                  for (let i = 0; i < keyArr.length; i++) {
+                    ctx.folderList.push(keyArr[i])
                   }
                   ctx.showToast(`获取邮箱里的文件夹列表成功，数据是：${JSON.stringify(ctx.folderList)}`, 'getFolderList-imap')
                 })
@@ -668,35 +662,35 @@ struct TestInterfacePage {
     const ctx = this;
     try {
       ctx.message = ''
-      if (!globalThis.client || !ctx.isLogin) {
+      if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
         ctx.showToast('账号未登录，请登录后再试', 'renameFolder-imap')
         return
       }
       let renameName = 'renameFolder' + new Date().getTime();
-      globalThis.client.addBox(renameName, (err, result) => {
+      GlobalObj?.getInstance()?.getClient()?.addBox(renameName, (err: Error) => {
         if (err) {
           ctx.showToast(`创建用于删除的文件夹失败,原因：${err.message}`, 'renameFolder-imap')
         } else {
           ctx.showToast('创建用于删除的文件夹成功', 'renameFolder-imap')
           ctx.showToast(`获取邮箱里的文件夹列表开始`, 'renameFolder-imap')
-          globalThis.client.getBoxes(function (err, data) {
+          GlobalObj?.getInstance()?.getClient()?.getBoxes((err: Error, data: MailBoxes) => {
             if (err) {
               ctx.showToast(`获取邮箱里的文件夹列表出错，数据是：${err.message}`, 'renameFolder-imap')
               return
             }
-            ;
             if (!data || typeof data != 'object') {
               ctx.showToast(`获取邮箱里的文件夹列表出错，get box status fail`, 'renameFolder-imap')
               return
             }
             ctx.folderList = [];
-            for (let key in data) {
-              ctx.folderList.push(key.toString())
+            let keyArr = Object.getOwnPropertyNames(data);
+            for (let i = 0; i < keyArr.length; i++) {
+              ctx.folderList.push(keyArr[i])
             }
             ctx.showToast(`获取邮箱里的文件夹列表成功，数据是：${JSON.stringify(ctx.folderList)}`, 'renameFolder-imap')
             ctx.showToast('开始重命名文件夹', 'renameFolder-imap')
             let startTime1 = new Date().getTime();
-            globalThis.client.renameBox(renameName, 'newFolder', (err, result) => {
+            GlobalObj?.getInstance()?.getClient()?.renameBox(renameName, 'newFolder', (err: Error, result: MailBoxes) => {
               let endTime1 = new Date().getTime();
               let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
               console.log("IMAPClientTest : renameBox averageTime : " + averageTime1 + "us")
@@ -705,7 +699,7 @@ struct TestInterfacePage {
               } else {
                 ctx.showToast('重命名文件夹成功', 'renameFolder-imap')
                 ctx.showToast(`获取邮箱里的文件夹列表开始`, 'getFolderList-imap')
-                globalThis.client.getBoxes(function (err, data) {
+                GlobalObj?.getInstance()?.getClient()?.getBoxes((err: Error, data: MailBoxes) => {
                   if (err) {
                     ctx.showToast(`获取邮箱里的文件夹列表出错，数据是：${err.message}`, 'getFolderList-imap')
                     return
@@ -716,8 +710,9 @@ struct TestInterfacePage {
                     return
                   }
                   ctx.folderList = [];
-                  for (let key in data) {
-                    ctx.folderList.push(key.toString())
+                  let keyArr = Object.getOwnPropertyNames(data);
+                  for (let i = 0; i < keyArr.length; i++) {
+                    ctx.folderList.push(keyArr[i])
                   }
                   ctx.showToast(`获取邮箱里的文件夹列表成功，数据是：${JSON.stringify(ctx.folderList)}`, 'getFolderList-imap')
                 })
@@ -736,30 +731,36 @@ struct TestInterfacePage {
     const ctx = this;
     try {
       ctx.message = ''
-      if (!globalThis.client || !ctx.isLogin) {
+      if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
         ctx.showToast('账号未登录，请登录后再试', 'subBox-imap')
         return
       }
       ctx.showToast('开始获取订阅的文件夹。', 'subBox-imap')
-      globalThis.client.getSubscribedBoxes((err, result) => {
+      GlobalObj?.getInstance()?.getClient()?.getSubscribedBoxes((err: Error, data: MailBoxes) => {
         if (err) {
           ctx.showToast(`获取订阅的文件夹失败,原因：${err.message}`, 'subBox-imap')
         } else {
+
+          if (!data || typeof data != 'object') {
+            ctx.showToast(`获取邮箱里的文件夹列表出错，get box status fail`, 'subBox-imap')
+            return
+          }
           ctx.subFolderList = [];
-          for (let key in result) {
-            ctx.subFolderList.push(key.toString())
+          let keyArr = Object.getOwnPropertyNames(data);
+          for (let i = 0; i < keyArr.length; i++) {
+            ctx.subFolderList.push(keyArr[i])
           }
           ctx.showToast(`获取订阅的文件夹成功，数据是：${JSON.stringify(ctx.subFolderList)}`, 'subBox-imap')
           ctx.showToast('开始创建文件夹', 'subBox-imap')
           let subName = 'subFolder' + new Date().getTime();
-          globalThis.client.addBox(subName, (err, result) => {
+          GlobalObj?.getInstance()?.getClient()?.addBox(subName, (err: Error) => {
             if (err) {
               ctx.showToast(`创建文件夹失败,原因：${err.message}`, 'subBox-imap')
             } else {
               ctx.showToast('创建文件夹成功', 'subBox-imap')
               ctx.showToast('订阅addFolder文件夹', 'subBox-imap')
               let startTime1 = new Date().getTime();
-              globalThis.client.subscribeBox(subName, (err, result) => {
+              GlobalObj?.getInstance()?.getClient()?.subscribeBox(subName, (err: Error) => {
                 let endTime1 = new Date().getTime();
                 let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
                 console.log("IMAPClientTest : subscribeBox averageTime : " + averageTime1 + "us")
@@ -769,13 +770,18 @@ struct TestInterfacePage {
                 } else {
                   ctx.showToast('订阅邮箱成功', 'subBox-imap')
                   ctx.showToast('开始获取订阅的文件夹。', 'subBox-imap')
-                  globalThis.client.getSubscribedBoxes((err, result) => {
+                  GlobalObj?.getInstance()?.getClient()?.getSubscribedBoxes((err: Error, data: MailBoxes) => {
                     if (err) {
                       ctx.showToast(`获取订阅的文件夹失败,原因：${err.message}`, 'subBox-imap')
                     } else {
+                      if (!data || typeof data != 'object') {
+                        ctx.showToast(`获取邮箱里的文件夹列表出错，get box status fail`, 'subBox-imap')
+                        return
+                      }
                       ctx.subFolderList = [];
-                      for (let key in result) {
-                        ctx.subFolderList.push(key.toString())
+                      let keyArr = Object.getOwnPropertyNames(data);
+                      for (let i = 0; i < keyArr.length; i++) {
+                        ctx.subFolderList.push(keyArr[i])
                       }
                       ctx.showToast(`获取订阅的文件夹成功，数据是：${JSON.stringify(ctx.subFolderList)}`, 'subBox-imap')
                     }
@@ -795,45 +801,55 @@ struct TestInterfacePage {
     const ctx = this;
     try {
       ctx.message = ''
-      if (!globalThis.client || !ctx.isLogin) {
+      if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
         ctx.showToast('账号未登录，请登录后再试', 'unSubBox-imap')
         return
       }
       ctx.showToast('开始获取订阅的文件夹。', 'unSubBox-imap')
-      globalThis.client.getSubscribedBoxes((err, result) => {
+      GlobalObj?.getInstance()?.getClient()?.getSubscribedBoxes((err: Error, data: MailBoxes) => {
         if (err) {
           ctx.showToast(`获取订阅的文件夹失败,原因：${err.message}`, 'unSubBox-imap')
         } else {
+          if (!data || typeof data != 'object') {
+            ctx.showToast(`获取邮箱里的文件夹列表出错，get box status fail`, 'subBox-imap')
+            return
+          }
           ctx.subFolderList = [];
-          for (let key in result) {
-            ctx.subFolderList.push(key.toString())
+          let keyArr = Object.getOwnPropertyNames(data);
+          for (let i = 0; i < keyArr.length; i++) {
+            ctx.subFolderList.push(keyArr[i])
           }
           ctx.showToast(`获取订阅的文件夹成功，数据是：${JSON.stringify(ctx.subFolderList)}`, 'unSubBox-imap')
           ctx.showToast('开始创建文件夹', 'subBox-imap')
           let unSubName = 'unSubFolder' + new Date().getTime();
-          globalThis.client.addBox(unSubName, (err, result) => {
+          GlobalObj?.getInstance()?.getClient()?.addBox(unSubName, (err: Error) => {
             if (err) {
               ctx.showToast(`创建文件夹失败,原因：${err.message}`, 'unSubBox-imap')
             } else {
               ctx.showToast('创建文件夹成功', 'subBox-imap')
               ctx.showToast('订阅addFolder文件夹', 'subBox-imap')
-              globalThis.client.subscribeBox(unSubName, (err, result) => {
+              GlobalObj?.getInstance()?.getClient()?.subscribeBox(unSubName, (err: Error) => {
                 if (err) {
                   ctx.showToast(`订阅邮箱失败,原因：${err.message}`, 'unSubBox-imap')
                 } else {
                   ctx.showToast('订阅邮箱成功', 'subBox-imap')
                   ctx.showToast('开始获取订阅的文件夹。', 'subBox-imap')
-                  globalThis.client.getSubscribedBoxes((err, result) => {
+                  GlobalObj?.getInstance()?.getClient()?.getSubscribedBoxes((err: Error, data: MailBoxes) => {
                     if (err) {
                       ctx.showToast(`获取订阅的文件夹失败,原因：${err.message}`, 'unSubBox-imap')
                     } else {
+                      if (!data || typeof data != 'object') {
+                        ctx.showToast(`获取邮箱里的文件夹列表出错，get box status fail`, 'subBox-imap')
+                        return
+                      }
                       ctx.subFolderList = [];
-                      for (let key in result) {
-                        ctx.subFolderList.push(key.toString())
+                      let keyArr = Object.getOwnPropertyNames(data);
+                      for (let i = 0; i < keyArr.length; i++) {
+                        ctx.subFolderList.push(keyArr[i])
                       }
                       ctx.showToast(`获取订阅的文件夹成功，数据是：${JSON.stringify(ctx.subFolderList)}`, 'unSubBox-imap')
                       let startTime1 = new Date().getTime();
-                      globalThis.client.unsubscribeBox(unSubName, (err, result) => {
+                      GlobalObj?.getInstance()?.getClient()?.unsubscribeBox(unSubName, (err: Error) => {
                         let endTime1 = new Date().getTime();
                         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
                         console.log("IMAPClientTest : unsubscribeBox averageTime : " + averageTime1 + "us")
@@ -842,13 +858,18 @@ struct TestInterfacePage {
                         } else {
                           ctx.showToast('取消订阅邮箱成功', 'unSubBox-imap')
                           ctx.showToast('开始获取订阅的文件夹。', 'getSubFolderList-imap')
-                          globalThis.client.getSubscribedBoxes((err, result) => {
+                          GlobalObj?.getInstance()?.getClient()?.getSubscribedBoxes((err: Error, data: MailBoxes) => {
                             if (err) {
                               ctx.showToast(`获取订阅的文件夹失败,原因：${err.message}`, 'getSubFolderList-imap')
                             } else {
+                              if (!data || typeof data != 'object') {
+                                ctx.showToast(`获取邮箱里的文件夹列表出错，get box status fail`, 'subBox-imap')
+                                return
+                              }
                               ctx.subFolderList = [];
-                              for (let key in result) {
-                                ctx.subFolderList.push(key.toString())
+                              let keyArr = Object.getOwnPropertyNames(data);
+                              for (let i = 0; i < keyArr.length; i++) {
+                                ctx.subFolderList.push(keyArr[i])
                               }
                               ctx.showToast(`获取订阅的文件夹成功，数据是：${JSON.stringify(ctx.subFolderList)}`, 'getFolderList-imap')
                             }
@@ -872,22 +893,27 @@ struct TestInterfacePage {
     const ctx = this;
     try {
       ctx.message = ''
-      if (!globalThis.client || !ctx.isLogin) {
+      if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
         ctx.showToast('账号未登录，请登录后再试', 'getSubFolderList-imap')
         return
       }
       ctx.showToast('开始获取订阅的文件夹。', 'getSubFolderList-imap')
       let startTime1 = new Date().getTime();
-      globalThis.client.getSubscribedBoxes((err, result) => {
+      GlobalObj?.getInstance()?.getClient()?.getSubscribedBoxes((err: Error, data: MailBoxes) => {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("IMAPClientTest : getSubscribedBoxes averageTime : " + averageTime1 + "us")
         if (err) {
           ctx.showToast(`获取订阅的文件夹失败,原因：${err.message}`, 'getSubFolderList-imap')
         } else {
+          if (!data || typeof data != 'object') {
+            ctx.showToast(`获取邮箱里的文件夹列表出错，get box status fail`, 'getSubFolderList-imap')
+            return
+          }
           ctx.subFolderList = [];
-          for (let key in result) {
-            ctx.subFolderList.push(key.toString())
+          let keyArr = Object.getOwnPropertyNames(data);
+          for (let i = 0; i < keyArr.length; i++) {
+            ctx.subFolderList.push(keyArr[i])
           }
           ctx.showToast(`获取订阅的文件夹成功，数据是：${JSON.stringify(ctx.subFolderList)}`, 'getFolderList-imap')
         }
@@ -899,12 +925,12 @@ struct TestInterfacePage {
 
   refreshPageSize() {
     const ctx = this;
-    if (ctx.bean && ctx.bean.messages && ctx.startIndex >= ctx.bean.messages.total) {
+    if (ctx.startIndex >= (ctx?.bean?.messages?.total ? ctx?.bean?.messages?.total : 0)) {
       return;
     }
     ctx.endIndex = ctx.startIndex + ctx.pageSize - 1;
-    if (ctx.bean && ctx.bean.messages && ctx.endIndex > ctx.bean.messages.total) {
-      ctx.endIndex = ctx.bean.messages.total;
+    if (ctx.endIndex > (ctx?.bean?.messages?.total ? ctx?.bean?.messages?.total : 0)) {
+      ctx.endIndex = (ctx?.bean?.messages?.total ? ctx?.bean?.messages?.total : 0);
     }
   }
 
@@ -912,13 +938,13 @@ struct TestInterfacePage {
     const ctx = this;
     try {
       ctx.message = ''
-      if (!globalThis.client || !ctx.isLogin) {
+      if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
         ctx.showToast('账号未登录，请登录后再试', 'openBoxAndGetStatu-imap')
         return
       }
       ctx.showToast(`获取主邮箱主文件夹状态开始，${ctx.folderName}`, 'openBoxAndGetStatu-imap')
       let startTime1 = new Date().getTime();
-      globalThis.client.status(ctx.folderName, function (err, data) {
+      GlobalObj?.getInstance()?.getClient()?.status(ctx.folderName, (err: Error, data: Box) => {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("IMAPClientTest : status averageTime : " + averageTime1 + "us")
@@ -928,16 +954,16 @@ struct TestInterfacePage {
           ctx.showToast(`获取邮箱主文件夹状态失败，${err.message}`, 'openBoxAndGetStatu-imap')
           return
         }
-        if (!data || data.length < 1) {
+        if (!data || (data?.messages?.total ? data?.messages?.total : 0) < 1) {
           ctx.isBoxOpen = false;
           ctx.showToast('获取邮箱主文件夹状态失败，无数据', 'openBoxAndGetStatu-imap')
           return
         }
         try {
-          ctx.bean = JSON.parse(JSON.stringify(data))
-          if (ctx.bean && ctx.bean.messages.total > 0) {
+          ctx.bean = data;
+          if ((ctx?.bean?.messages?.total ? ctx?.bean?.messages?.total : 0) > 0) {
             let startTime1 = new Date().getTime();
-            globalThis.client.openBox(ctx.folderName, true, function (err, box) {
+            GlobalObj?.getInstance()?.getClient()?.openBox(ctx.folderName, true, (err: Error, data: Box) => {
               let endTime1 = new Date().getTime();
               let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
               console.log("IMAPClientTest : openBox averageTime : " + averageTime1 + "us")
@@ -952,7 +978,7 @@ struct TestInterfacePage {
             });
           } else {
             ctx.isBoxOpen = false;
-            ctx.showToast(`文件夹：${ctx.folderName}中，有信息总共：${ctx.bean.messages.total},新消息:${ctx.bean.messages.new},未读消息:${ctx.bean.messages.unseen},未打开邮箱`, 'openBoxAndGetStatu-imap')
+            ctx.showToast(`文件夹：${ctx.folderName}中，有信息总共：${ctx?.bean?.messages?.total},新消息:${ctx?.bean?.messages?.new},未读消息:${ctx?.bean?.messages?.unseen},未打开邮箱`, 'openBoxAndGetStatu-imap')
           }
 
         } catch (err) {
@@ -961,7 +987,7 @@ struct TestInterfacePage {
       })
     } catch (err) {
       ctx.showToast(`获取主邮箱邮件列表失败，信息是：${err.message}`, 'getListData-imap')
-      throw err
+      throw err as Error
     }
   }
 
@@ -970,9 +996,8 @@ struct TestInterfacePage {
     try {
       ctx.listData = []
       ctx.refreshPageSize();
-      let buffer = '';
       ctx.message = ''
-      if (!globalThis.client || !ctx.isLogin) {
+      if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
         ctx.showToast('账号未登录，请登录后再试', 'getListData-imap')
         return
       }
@@ -980,86 +1005,85 @@ struct TestInterfacePage {
         ctx.showToast('邮箱未打开，无法获取邮件列表', 'getListData-imap')
         return
       }
-      if (!globalThis.client.seq) {
+      if (!GlobalObj?.getInstance()?.getClient()?.seq) {
         ctx.showToast('客户端seq对象为空', 'getListData-imap')
         return
       }
       ctx.showToast(`开始获取主邮箱邮件列表`, 'getListData-imap')
       // fetch里面可以是fetch(`1:3`）这种取序号为1-3的信息的  也可以是可以是fetch(`1`）这种取序号为1的信息
       let startTime1 = new Date().getTime();
-      var f = globalThis.client.seq.fetch(`${ctx.startIndex}:${ctx.endIndex}`, {
-        bodies: 'HEADER.FIELDS (FROM TO SUBJECT DATE)',
-        struct: true
-      });
-      f.on('message', function (msg, seqno) {
-        var prefix = '(#' + seqno + ') ';
-        msg.on('body', function (stream, info) {
-
-          stream.on('data', function (chunk) {
-            buffer += chunk.toString('utf8');
-          });
-          stream.once('end', function () {
-
-          });
-        });
-        msg.once('attributes', function (attrs) {
-          if (attrs && typeof attrs === 'object') {
-            let uid = attrs['uid'] ? attrs['uid'] : ''
-            ctx.uidList.push(uid);
+      let prefix: string = ''
+      let buffer: string = '';
+      let callback: DetailCallback = {
+        messageStartCallback: (seqno: number) => {
+          console.log('Message #%d', seqno);
+          prefix = '(#' + seqno + ') ';
+        },
+        bodyStartCallback: () => {
+        },
+        bodyDataCallback: (data: string) => {
+          buffer += data;
+        },
+        bodyEndCallback: () => {
+        },
+        attributesCallback: (attrs: ImapMessageAttributes) => {
+          if (attrs && attrs.uid) {
+            ctx.uidList.push(attrs.uid + "");
           }
-        });
-        msg.once('end', function () {
+        },
+        messageEndCallback: () => {
           console.log(prefix + 'Finished');
-        });
-      });
-      f.once('error', function (err) {
-        console.log('Fetch error: ' + err);
-        ctx.showToast(`获取主邮箱邮件列表失败，信息是：${err.message}`, 'getListData-imap')
-      });
-      f.once('end', function () {
-        let endTime1 = new Date().getTime();
-        let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
-        console.log("IMAPClientTest : fetch averageTime : " + averageTime1 + "us")
-        console.log('Done fetching all messages!');
+        },
+        fetchErrorCallback: (err: Error) => {
+          console.log('Fetch error: ' + err);
+          ctx.showToast(`获取主邮箱邮件列表失败，信息是：${err.message}`, 'getListData-imap')
+        },
+        fetchEndCallback: () => {
+          let endTime1 = new Date().getTime();
+          let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+          console.log("IMAPClientTest : fetch averageTime : " + averageTime1 + "us")
+          console.log('Done fetching all messages!');
 
-        let jsonObj = buffer.split('\r\n\r\n')
-        if (!jsonObj) {
-          throw new Error('get message list fail')
-        }
-        for (let i = 0; i < jsonObj.length; i++) {
-          let childArr = jsonObj[i].split('\r\n')
-          let bean = new MsgListBean();
-          if (i < ctx.uidList.length) {
-            bean.uid = ctx.uidList[i];
+          let jsonObj = buffer.split('\r\n\r\n')
+          if (!jsonObj) {
+            throw new Error('get message list fail')
           }
-          for (let j = 0; j < childArr.length; j++) {
-            let child = childArr[j];
-            if (child && child.indexOf('Date') != -1) {
-              bean.Date = child;
-            } else if (child && child.indexOf('From') != -1) {
-              bean.From = child;
-            } else if (child && child.indexOf('To') != -1) {
-              bean.To = child;
-            } else if (child && child.indexOf('Subject') != -1) {
-              bean.Subject = child;
-            } else {
-              continue;
+          for (let i = 0; i < jsonObj.length; i++) {
+            let childArr = jsonObj[i].split('\r\n')
+            let bean = new MsgListBean();
+            if (i < ctx.uidList.length) {
+              bean.uid = ctx.uidList[i];
             }
+            for (let j = 0; j < childArr.length; j++) {
+              let child = childArr[j];
+              if (child && child.indexOf('Date') != -1) {
+                bean.Date = child;
+              } else if (child && child.indexOf('From') != -1) {
+                bean.From = child;
+              } else if (child && child.indexOf('To') != -1) {
+                bean.To = child;
+              } else if (child && child.indexOf('Subject') != -1) {
+                bean.Subject = child;
+              } else {
+                continue;
+              }
+            }
+            ctx.listData.push(bean)
           }
-          ctx.listData.push(bean)
+          ctx.showToast(`获取主邮箱邮件列表成功，数据是：${JSON.stringify(ctx.listData)}`, 'getListData-imap')
+          // GlobalObj?.getInstance()?.getClient()?.end();
         }
-        ctx.showToast(`获取主邮箱邮件列表成功，数据是：${JSON.stringify(ctx.listData)}`, 'getListData-imap')
-        // globalThis.client.end();
-      });
+      }
+      this.util?.getListData(ctx.startIndex, ctx.endIndex, callback)
     } catch (err) {
       ctx.showToast(`获取主邮箱邮件列表失败，信息是：${err.message}`, 'getListData-imap')
-      throw err
+      throw err as Error
     }
 
   }
 
   createMailData() {
-    let msg = {
+    let msg: MsgSendBean = {
       text: 'IMAP协议测试上传的邮件',
       from: `${'鸿蒙搬砖工'} <${'xx@qq.com'}>`,
       to: 'xx@qq.com',
@@ -1074,7 +1098,7 @@ struct TestInterfacePage {
     const ctx = this;
     try {
       ctx.message = ''
-      if (!globalThis.client || !ctx.isLogin) {
+      if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
         ctx.showToast('账号未登录，请登录后再试', 'appendMail-imap')
         return
       }
@@ -1088,14 +1112,14 @@ struct TestInterfacePage {
         return
       }
       ctx.showToast('开始上传邮件', 'appendMail-imap')
-      let option = {
+      let option: AppendOptions = {
         mailbox: 'INBOX',
-        flag: ['Seen'], //取值 Seen flagged等
+        flags: ['Seen'], //取值 Seen flagged等
         date: new Date(), //取值 Seen flagged等
 
       }
       let startTime1 = new Date().getTime();
-      globalThis.client.append(data, option, (err, result) => {
+      GlobalObj?.getInstance()?.getClient()?.append(data, option, (err: Error) => {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("IMAPClientTest : append averageTime : " + averageTime1 + "us")
@@ -1115,7 +1139,7 @@ struct TestInterfacePage {
     try {
       ctx.message = ''
       ctx.showToast('开始关闭本文件夹', 'closeBox-imap')
-      if (!globalThis.client || !ctx.isLogin) {
+      if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
         ctx.showToast('账号未登录，请登录后再试', 'closeBox-imap')
         return
       }
@@ -1124,7 +1148,7 @@ struct TestInterfacePage {
         return
       }
       let startTime1 = new Date().getTime();
-      globalThis.client.closeBox((err, result) => {
+      GlobalObj?.getInstance()?.getClient()?.closeBox((err: Error) => {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("IMAPClientTest : closeBox averageTime : " + averageTime1 + "us")
@@ -1145,7 +1169,7 @@ struct TestInterfacePage {
     try {
       ctx.message = ''
       ctx.showToast('开始设置排序', 'sortMail-imap')
-      if (!globalThis.client || !ctx.isLogin) {
+      if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
         ctx.showToast('账号未登录，请登录后再试', 'sortMail-imap')
         return
       }
@@ -1155,7 +1179,7 @@ struct TestInterfacePage {
       }
       ctx.showToast('开始对邮件按照日期排序', 'sortMail-imap')
       let startTime1 = new Date().getTime();
-      globalThis.client.sort(['DATE'], ['ALL'], (err, result) => {
+      GlobalObj?.getInstance()?.getClient()?.sort(['DATE'], ['ALL'], (err:Error, uids:number[]) => {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("IMAPClientTest : sort averageTime : " + averageTime1 + "us")
@@ -1176,7 +1200,7 @@ struct TestInterfacePage {
     try {
       ctx.message = ''
       ctx.showToast('开始搜索邮件', 'search-imap')
-      if (!globalThis.client || !ctx.isLogin) {
+      if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
         ctx.showToast('账号未登录，请登录后再试', 'search-imap')
         return
       }
@@ -1185,21 +1209,20 @@ struct TestInterfacePage {
         return
       }
       let startTime1 = new Date().getTime();
-      globalThis.client.search(['RECENT'], (err, result) => {
+      GlobalObj?.getInstance()?.getClient()?.search(['RECENT'], (err:Error, uids:number[]) => {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("IMAPClientTest : search averageTime : " + averageTime1 + "us")
         if (err) {
           ctx.showToast(`搜索邮件失败,原因：${err.message}`, 'search-imap')
         } else {
-          ctx.showToast('搜索邮件成功 ' + JSON.stringify(result), 'search-imap')
+          ctx.showToast('搜索邮件成功 ' + JSON.stringify(uids), 'search-imap')
         }
       });
     } catch (err) {
       ctx.showToast(`搜索邮件出错：${err.message}`, 'search-smtp')
     }
   }
-
 
   /**
    * 给邮件打标记 比如删除 已读
@@ -1209,7 +1232,7 @@ struct TestInterfacePage {
   storeMail() {
     const ctx = this;
     ctx.message = ''
-    if (!globalThis.client || !ctx.isLogin) {
+    if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
       ctx.showToast('账号未登录，请登录后再试', 'search-imap')
       return
     }
@@ -1231,7 +1254,7 @@ struct TestInterfacePage {
     }
     if (uid && uid.length > 0) {
       ctx.addDeleteFlag(uid)
-    }else{
+    } else {
       ctx.showToast('暂无可以操作的邮件', 'storeMail---IMAP')
     }
   }
@@ -1240,7 +1263,7 @@ struct TestInterfacePage {
     const ctx = this;
     try {
       ctx.showToast('开始给邮件打删除标记', 'addDeleteFlag-imap')
-      globalThis.client.addFlags(uid, '\\Deleted', (err, result) => {
+      GlobalObj?.getInstance()?.getClient()?.addFlags(uid, '\\Deleted', (err:Error) => {
         if (err) {
           ctx.showToast(`给邮件打删除标记失败,原因：${err.message}`, 'addDeleteFlag-imap')
         } else {
@@ -1259,14 +1282,14 @@ struct TestInterfacePage {
     try {
       ctx.showToast('开始删除所有的标志为DELETED的邮件，EXPUNGE删除的邮件将不可以恢复', 'expungeMail-imap')
       let startTime1 = new Date().getTime();
-      globalThis.client.expunge(uid, (err, result) => {
+      GlobalObj?.getInstance()?.getClient()?.expunge(uid, (err:Error) => {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("IMAPClientTest : expunge averageTime : " + averageTime1 + "us")
         if (err) {
           ctx.showToast(`永久删除失败,原因：${err.message}`, 'expungeMail-imap')
         } else {
-          ctx.showToast(`永久删除成功 ${result}`, 'expungeMail-imap')
+          ctx.showToast(`永久删除成功`, 'expungeMail-imap')
         }
       });
     } catch (err) {
@@ -1278,7 +1301,7 @@ struct TestInterfacePage {
     const ctx = this;
     try {
       ctx.message = ''
-      if (!globalThis.client || !ctx.isLogin) {
+      if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
         ctx.showToast('账号未登录，请登录后再试', 'copyMail-imap')
         return
       }
@@ -1315,14 +1338,14 @@ struct TestInterfacePage {
       }
       ctx.showToast(`复制邮件开始`, 'copyMail-imap')
       let startTime1 = new Date().getTime();
-      globalThis.client.copy(uid, selectFoler, (err, result) => {
+      GlobalObj?.getInstance()?.getClient()?.copy(uid, selectFoler, (err:Error) => {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("IMAPClientTest : copy averageTime : " + averageTime1 + "us")
         if (err) {
           ctx.showToast(`复制邮件失败,原因：${err.message}`, 'copyMail-imap')
         } else {
-          ctx.showToast('复制邮件成功，请去测试的邮箱查看是否复制成功，这里不通过日志展示 ' + JSON.stringify(result), 'copyMail-imap')
+          ctx.showToast('复制邮件成功，请去测试的邮箱查看是否复制成功，这里不通过日志展示 ', 'copyMail-imap')
 
         }
       });
@@ -1336,7 +1359,7 @@ struct TestInterfacePage {
     const ctx = this;
     try {
       ctx.message = ''
-      if (!globalThis.client || !ctx.isLogin) {
+      if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
         ctx.showToast('账号未登录，请登录后再试', 'moveMail-imap')
         return
       }
@@ -1373,14 +1396,14 @@ struct TestInterfacePage {
       }
       ctx.showToast(`移动邮件开始，从主邮箱移动到 ${selectFoler}`, 'moveMail-imap')
       let startTime1 = new Date().getTime();
-      globalThis.client.move(uid, selectFoler, (err, result) => {
+      GlobalObj?.getInstance()?.getClient()?.move(uid, selectFoler, (err:Error) => {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("IMAPClientTest : move averageTime : " + averageTime1 + "us")
         if (err) {
           ctx.showToast(`移动邮件失败,原因：${err.message}`, 'moveMail-imap')
         } else {
-          ctx.showToast('移动邮件成功 ' + JSON.stringify(result), 'moveMail-imap')
+          ctx.showToast('移动邮件成功 ', 'moveMail-imap')
 
           ctx.showToast(`移动邮件成功之后，请到主邮箱查看是否少了一封邮件，请到${selectFoler} 查看是否新增了一封邮件，然后点击 关闭邮箱 以及获取邮箱列表刷新数据以便进行其他操作 `, 'moveMail-imap')
         }
@@ -1394,7 +1417,7 @@ struct TestInterfacePage {
     const ctx = this;
     try {
       ctx.message = ''
-      if (!globalThis.client || !ctx.isLogin) {
+      if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
         ctx.showToast('账号未登录，请登录后再试', 'addFlag-imap')
         return
       }
@@ -1413,7 +1436,7 @@ struct TestInterfacePage {
       }
       ctx.showToast('开始给邮件添加已读标记', 'addFlag-imap')
       let startTime1 = new Date().getTime();
-      globalThis.client.addFlags(uid, '\\Seen', (err, result) => {
+      GlobalObj?.getInstance()?.getClient()?.addFlags(uid, '\\Seen', (err:Error) => {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("IMAPClientTest : addFlags averageTime : " + averageTime1 + "us")
@@ -1433,7 +1456,7 @@ struct TestInterfacePage {
     const ctx = this;
     try {
       ctx.message = ''
-      if (!globalThis.client || !ctx.isLogin) {
+      if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
         ctx.showToast('账号未登录，请登录后再试', 'setFlag-imap')
         return
       }
@@ -1453,7 +1476,7 @@ struct TestInterfacePage {
 
       ctx.showToast('开始给邮件设置已读标记', 'setFlag-imap')
       let startTime1 = new Date().getTime();
-      globalThis.client.setFlags(uid, '\\Seen', (err, result) => {
+      GlobalObj?.getInstance()?.getClient()?.setFlags(uid, '\\Seen', (err:Error) => {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("IMAPClientTest : setFlags averageTime : " + averageTime1 + "us")
@@ -1472,7 +1495,7 @@ struct TestInterfacePage {
     const ctx = this;
     try {
       ctx.message = ''
-      if (!globalThis.client || !ctx.isLogin) {
+      if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
         ctx.showToast('账号未登录，请登录后再试', 'deleteFlag-imap')
         return
       }
@@ -1491,7 +1514,7 @@ struct TestInterfacePage {
       }
       ctx.showToast('开始给邮件取消已读标记', 'deleteFlag-imap')
       let startTime1 = new Date().getTime();
-      globalThis.client.delFlags(uid, '\\Seen', (err, result) => {
+      GlobalObj?.getInstance()?.getClient()?.delFlags(uid, '\\Seen', (err:Error) => {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("IMAPClientTest : delFlags averageTime : " + averageTime1 + "us")
@@ -1511,7 +1534,7 @@ struct TestInterfacePage {
     const ctx = this;
     try {
       ctx.message = ''
-      if (!globalThis.client || !ctx.isLogin) {
+      if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
         ctx.showToast('账号未登录，请登录后再试', 'addKeywords-imap')
         return
       }
@@ -1530,7 +1553,7 @@ struct TestInterfacePage {
       }
       ctx.showToast('开始给邮件添加关键字', 'addKeywords-imap')
       let startTime1 = new Date().getTime();
-      globalThis.client.addKeywords(uid, '鸿蒙关键字', (err, result) => {
+      GlobalObj?.getInstance()?.getClient()?.addKeywords(uid, '鸿蒙关键字', (err:Error) => {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("IMAPClientTest : addKeywords averageTime : " + averageTime1 + "us")
@@ -1549,7 +1572,7 @@ struct TestInterfacePage {
     const ctx = this;
     try {
       ctx.message = ''
-      if (!globalThis.client || !ctx.isLogin) {
+      if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
         ctx.showToast('账号未登录，请登录后再试', 'setKeywords-imap')
         return
       }
@@ -1568,7 +1591,7 @@ struct TestInterfacePage {
       }
       ctx.showToast('开始给邮件设置关键字', 'setKeywords-imap')
       let startTime1 = new Date().getTime();
-      globalThis.client.setKeywords(uid, '鸿蒙关键字', (err, result) => {
+      GlobalObj?.getInstance()?.getClient()?.setKeywords(uid, '鸿蒙关键字', (err:Error) => {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("IMAPClientTest : setKeywords averageTime : " + averageTime1 + "us")
@@ -1587,7 +1610,7 @@ struct TestInterfacePage {
     const ctx = this;
     try {
       ctx.message = ''
-      if (!globalThis.client || !ctx.isLogin) {
+      if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
         ctx.showToast('账号未登录，请登录后再试', 'delKeywords-imap')
         return
       }
@@ -1606,7 +1629,7 @@ struct TestInterfacePage {
       }
       ctx.showToast('开始给邮件删除关键字', 'delKeywords-imap')
       let startTime1 = new Date().getTime();
-      globalThis.client.delKeywords(uid, '鸿蒙关键字', (err, result) => {
+      GlobalObj?.getInstance()?.getClient()?.delKeywords(uid, '鸿蒙关键字', (err:Error) => {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("IMAPClientTest : delKeywords averageTime : " + averageTime1 + "us")
@@ -1625,7 +1648,7 @@ struct TestInterfacePage {
     const ctx = this;
     try {
       ctx.message = ''
-      if (!globalThis.client || !ctx.isLogin) {
+      if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
         ctx.showToast('账号未登录，请登录后再试', 'getMsgDetail-imap')
         return
       }
@@ -1639,46 +1662,45 @@ struct TestInterfacePage {
       }
       ctx.showToast('开始获取整个邮件体', 'getMsgDetail-imap')
       let startTime1 = new Date().getTime();
-      var f = globalThis.client.seq.fetch(`${1}`, {
-        bodies: 'TEXT',
-        struct: true
-      });
-      f.on('message', function (msg, seqno) {
-        console.log('Message #%d', seqno);
-        var prefix = '(#' + seqno + ') ';
 
-        msg.on('body', function (stream, info) {
-          var buffer = '';
-          stream.on('data', function (chunk) {
-            if (buffer.length <= 1000) {
-              buffer += chunk.toString('utf8');
-            }
+      let prefix: string = ''
+      let buffer: string = '';
+      let callback: DetailCallback = {
+        messageStartCallback: (seqno: number) => {
+          console.log('Message #%d', seqno);
+          prefix = '(#' + seqno + ') ';
+        },
+        bodyStartCallback: () => {
+        },
+        bodyDataCallback: (data: string) => {
+          buffer += data;
+        },
+        bodyEndCallback: () => {
+          let endTime1 = new Date().getTime();
+          let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+          console.log("IMAPClientTest : fetch detail averageTime : " + averageTime1 + "us")
+          try {
+            ctx.showToast(`获取整个邮件体成功,为防止内容过多造成的卡死，只取前1000字符长度显示：${'\r\n'}${buffer}`, 'getMsgDetail-imap');
 
-          });
-          stream.once('end', function () {
-            let endTime1 = new Date().getTime();
-            let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
-            console.log("IMAPClientTest : fetch detail averageTime : " + averageTime1 + "us")
-            try {
-              ctx.showToast(`获取整个邮件体成功,为防止内容过多造成的卡死，只取前1000字符长度显示：${'\r\n'}${buffer}`, 'getMsgDetail-imap');
+          } catch (err) {
+            ctx.showToast(`获取整个邮件体失败：${err.message}`, 'getMsgDetail-smtp')
+          }
+        },
+        attributesCallback: (attrs: ImapMessageAttributes) => {
+          if (attrs && attrs.uid) {
+            ctx.uidList.push(attrs.uid + "");
+          }
+        },
+        messageEndCallback: () => {
+        },
+        fetchErrorCallback: (err: Error) => {
+          ctx.showToast(`获取整个邮件体失败：${err.message}`, 'getMsgDetail-smtp')
+        },
+        fetchEndCallback: () => {
 
-            } catch (err) {
-              ctx.showToast(`获取整个邮件体失败：${err.message}`, 'getMsgDetail-smtp')
-            }
-          });
-        });
-        msg.once('attributes', function (attrs) {
-          // console.log(prefix + 'Attributes: %s', inspect(attrs, false, 8));
-        });
-        msg.once('end', function () {
-        });
-      });
-      f.once('error', function (err) {
-        ctx.showToast(`获取整个邮件体失败：${err.message}`, 'getMsgDetail-smtp')
-      });
-      f.once('end', function () {
-      });
-
+        }
+      }
+      this.util?.getDetail(1, callback)
     } catch (err) {
       ctx.showToast(`获取整个邮件体出错：${err.message}`, 'getMsgDetail-smtp')
     }

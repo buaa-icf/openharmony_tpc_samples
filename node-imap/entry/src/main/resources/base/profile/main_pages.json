@@ -5,7 +5,6 @@
     "pages/MsgListPage",
     "pages/MsgDetailPage",
     "pages/FolderPage",
-    "pages/TestInterfacePage",
-    "pages/PressTestPage"
+    "pages/TestInterfacePage"
   ]
 }
