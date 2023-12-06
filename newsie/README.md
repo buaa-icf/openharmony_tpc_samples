@@ -23,11 +23,11 @@ OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装 OpenHarmo
 
 API：connect
 
-描述：连接服务器
+描述：连接服务器(为保证demo和XTS正常运行，需要全局搜素项目中的xxx，替换为正确的服务器ip)
 
 ```js
 this.client = new Client({
-  host: "124.221.182.182",
+  host: "xxx.xxx.xxx.xxx",
   port: 8084,
 });
 await this.client.connect();
