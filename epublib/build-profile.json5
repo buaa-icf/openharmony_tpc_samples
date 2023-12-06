@@ -1,0 +1,33 @@
+{
+  "app": {
+    "signingConfigs": [],
+    "products": [
+      {
+        "compileSdkVersion": 10,
+        "compatibleSdkVersion": 10,
+        "targetSdkVersion": 10,
+        "runtimeOS": "OpenHarmony",
+        "name": "default",
+        "signingConfig": "debug_default"
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "library",
+      "srcPath": "./library"
+    }
+  ]
+}

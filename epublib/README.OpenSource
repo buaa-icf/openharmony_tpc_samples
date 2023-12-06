@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "epublib",
+        "License": "LGPL License",
+        "License File": "LICENSE",
+        "Version Number": "master",
+        "Owner" : "xiafeng@huawei.com"
+        "Upstream URL": "https://github.com/psiegman/epublib",
+        "Description": "Epublib is a library for reading/writing/manipulating EPUB files."
+    }
+]
