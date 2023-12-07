@@ -2,6 +2,7 @@
     {
         "Name": "emailjs",
         "License": "MIT License",
+		"License File": " LICENSE ",
         "Version Number": "3.3.0",
         "Owner" : "xiafeng@huawei.com"
         "Upstream URL": "https://github.com/eleith/emailjs",
