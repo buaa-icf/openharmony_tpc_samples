@@ -16,7 +16,7 @@ import {SmartRefresh} from "@ohos/smartrefreshlayout"
 import {Material} from "@ohos/smartrefreshlayout"
 import {MaterialBottom} from "@ohos/smartrefreshlayout"
 
-class themeParam{
+class ThemeParam{
   index:number = 0;
   name:string = "";
 }
@@ -26,7 +26,7 @@ class themeParam{
 struct MaterialRefreshSample {
   @State model: SmartRefresh.Model = new SmartRefresh.Model()
 
-  arr: Array<themeParam> = [{index:0,name: '红色主题'}, {index:1,name: '绿色主题'}, {index:2,name: '蓝色主题'}, {index:3,name: '橙色主题'}, {index:4,name: '橙色主题'},
+  arr: Array<ThemeParam> = [{index:0,name: '红色主题'}, {index:1,name: '绿色主题'}, {index:2,name: '蓝色主题'}, {index:3,name: '橙色主题'}, {index:4,name: '橙色主题'},
     {index:5,name: '橙色主题'}, {index:6,name: '橙色主题'}, {index:7,name: '橙色主题'}, {index:8,name: '橙色主题'}, {index:9,name: '橙色主题'}, {index:10,name: '橙色主题'}]
 
   pickColor(SelectColorParam: string) {
@@ -58,9 +58,9 @@ struct MaterialRefreshSample {
   }
   @Builder testMain() {
     Column() {
-      ForEach(this.arr, (item:themeParam) => {
+      ForEach(this.arr, (item:ThemeParam) => {
         this.card(item.name)
-      }, (item:themeParam) => item.index.toString())
+      }, (item:ThemeParam) => item.index.toString())
     }.width("100%").padding("20lpx")
   }
 

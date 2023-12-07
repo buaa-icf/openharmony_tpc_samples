@@ -16,7 +16,7 @@
 import { SmartRefreshForGame } from "@ohos/smartrefreshlayout"
 import {HitBlock} from "@ohos/smartrefreshlayout"
 
-class themeParam{
+class ThemeParam{
   index:number = 0;
   name:string = "";
   color:string = "";
@@ -25,7 +25,7 @@ class themeParam{
 @Entry
 @Component
 struct HitBlockSample {
-  private arr: Array<themeParam> = [
+  private arr: Array<ThemeParam> = [
     {index:1, name: '默认主题', color: '#ffffff' },
     {index:2, name: '橙色主题', color: '#ffbb33' },
     {index:3, name: '红色主题', color: '#ff4444' },
@@ -50,14 +50,14 @@ struct HitBlockSample {
 
   @Builder testMain() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
-        ForEach(this.arr, (item2:themeParam) => {
+        ForEach(this.arr, (itemOther:ThemeParam) => {
           Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
-            Text(item2.name)
+            Text(itemOther.name)
               .fontSize(30)
               .fontColor('#282828')
               .padding({ left: 10, top: 10 })
 
-            Text('更改为' + item2.name + '颜色')
+            Text('更改为' + itemOther.name + '颜色')
               .fontSize(25)
               .fontColor('#8c8c8c')
               .padding({ left: 10, top: 5 })
@@ -69,10 +69,10 @@ struct HitBlockSample {
               .margin({ top: 10, bottom: 5 })
           }
           .onClick(e => {
-            this.modelGame.setBackgroundColor(item2.color)
+            this.modelGame.setBackgroundColor(itemOther.color)
             this.modelGame.autoRefresh()
           })
-        }, (item:themeParam) => item.index.toString())
+        }, (item:ThemeParam) => item.index.toString())
     }
     .width("100%")
     .backgroundColor("#ffffff")

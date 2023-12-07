@@ -48,17 +48,17 @@ struct TaurusSample {
 
   @Builder testMain() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
-      ForEach(this.arr, (item2 : ArrParam) => {
+      ForEach(this.arr, (itemOther : ArrParam) => {
         Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
-          Text(item2.name)
+          Text(itemOther.name)
             .fontSize(30)
             .fontColor('#282828')
             .padding({ left: 10, top: 10 })
 
           Text(
-              item2.color == '1' ? '折叠AppBarLayout，变成正常的列表页面' :
-                item2.color == '2' ? '展开AppBarLayout，变成可伸展头部的页面' :
-                '更改为' + item2.name + '颜色')
+              itemOther.color == '1' ? '折叠AppBarLayout，变成正常的列表页面' :
+                itemOther.color == '2' ? '展开AppBarLayout，变成可伸展头部的页面' :
+                '更改为' + itemOther.name + '颜色')
             .fontSize(25)
             .fontColor('#8c8c8c')
             .padding({ left: 10, top: 5 })
@@ -70,12 +70,12 @@ struct TaurusSample {
             .margin({ top: 10, bottom: 5 })
         }
         .onClick(e => {
-          if (item2.color == '1') {
+          if (itemOther.color == '1') {
             this.model.setExpand(false)
-          } else if (item2.color == '2') {
+          } else if (itemOther.color == '2') {
             this.model.setExpand(true)
           } else {
-            this.model.setBackgroundColor(item2.color)
+            this.model.setBackgroundColor(itemOther.color)
           }
         })
 

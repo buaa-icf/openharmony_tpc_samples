@@ -21,7 +21,7 @@ class arrParam{
   content:string = "";
 }
 
-class themeParam{
+class ThemeParam{
   text:string = "";
   label:string = "";
   boxColor:number[] = [];
@@ -31,7 +31,7 @@ class themeParam{
 @Component
 struct DropBoxSample {
   @State model: SmartRefreshForDropBoxSample.Model = new SmartRefreshForDropBoxSample.Model()
-  theme:themeParam[] = [
+  theme:ThemeParam[] = [
     {text:"默认主题颜色",label:"更改为默认主题颜色",boxColor:[0xff4169E1,0xff6ea9ff],backgroundColor:0xff283645},
     {text:"橙色主题颜色",label:"更改为橙色主题颜色",boxColor:[0xffffe4b5,0xfffffafa],backgroundColor:0xffffbb33},
     {text:"红色主题颜色",label:"更改为红色主题颜色",boxColor:[0xfff08080,0xfffffafa],backgroundColor:0xffff4444},
