@@ -2,7 +2,7 @@
     {
         "Name": " basic-ftp",
         "License": " MIT ",
-        "License File": " LICENSE.txt ",
+        "License File": " LICENSE ",
         "Version Number": " v5.0.3 ",
         "Owner": "xiafeng@huawei.com",
         "Upstream URL": " https://github.com/patrickjuchli/basic-ftp ",
