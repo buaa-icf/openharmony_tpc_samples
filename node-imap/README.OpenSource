@@ -2,7 +2,7 @@
     {
         "Name": "node-imap",
         "License": "MIT License",
-        "License File": "https://github.com/mscdex/node-imap",
+        "License File": " LICENSE ",
         "Version Number": "v0.8.19",
         "Owner" : "xiafeng@huawei.com"
         "Upstream URL": "https://github.com/mscdex/node-imap",
