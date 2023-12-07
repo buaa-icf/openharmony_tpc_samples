@@ -68,8 +68,8 @@ export function ninjaFun(){
   @Reflect.metadata("design:paramtypes",[Katana,Shuriken])
   class Ninja {
 
-    private _katana: Katana;
-    private _shuriken: Shuriken;
+    public _katana: Katana;
+    public _shuriken: Shuriken;
 
     public constructor(katana: Katana, shuriken: Shuriken) {
       this._katana = katana;
