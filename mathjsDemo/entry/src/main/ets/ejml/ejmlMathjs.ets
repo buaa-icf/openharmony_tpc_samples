@@ -15,13 +15,6 @@
 import * as math from 'mathjs';
 import router from '@ohos.router';
 
-function routerfun(url: string) {
-  let options: router.RouterOptions = {
-    url: url
-  }
-  router.pushUrl(options)
-}
-
 @Entry
 @Component
 struct Index {
@@ -323,7 +316,7 @@ struct Index {
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入对称矩阵 如： [[10, 1, 10], [1, 10, 1], [10, 1, 10]]' })
+        TextInput({ placeholder: '请输入数组 如： [5, 10, 1]' })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -636,7 +629,7 @@ struct Index {
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入对称矩阵 如： [[10, 1, 10], [1, 10, 1], [10, 1, 10]]' })
+        TextInput({ placeholder: '请输入矩阵 如： [[1, 2], [3, 4]]' })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -1205,28 +1198,14 @@ struct Index {
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text('跳转到 ejml 页面')
-          .fontSize(20)
-          .padding(8)
-          .margin({ top: 32 })
-          .fontWeight(FontWeight.Bold)
-          .border({ width: 2, color: '#535353', radius: 6 })
-          .onClick(() => {
-          try{
-            routerfun('ejml/ejml')
-            } catch (err) {
-              console.log('errerr ' + err)
-            }
-          })
-
         Text('跳转到首页')
           .fontSize(20)
           .padding(8)
-          .margin({ top: 32 })
+          .margin({ top: 52 })
           .fontWeight(FontWeight.Bold)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            routerfun('pages/index')
+            router.back()
           })
 
       }

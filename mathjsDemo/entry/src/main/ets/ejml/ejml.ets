@@ -22,13 +22,6 @@ import {
 } from 'ml-matrix';
 import router from '@ohos.router';
 
-function routerfun(url: string) {
-  let options: router.RouterOptions = {
-    url: url
-  }
-  router.pushUrl(options)
-}
-
 @Entry
 @Component
 struct Index {
@@ -641,28 +634,14 @@ struct Index {
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text('跳转到 ejmlMathjs 页面')
-          .fontSize(20)
-          .padding(8)
-          .margin({ top: 32 })
-          .fontWeight(FontWeight.Bold)
-          .border({ width: 2, color: '#535353', radius: 6 })
-          .onClick(() => {
-          try{
-            routerfun('ejml/ejmlMathjs')
-            } catch (err) {
-              console.log('errerr ' + err)
-            }
-          })
-
         Text('跳转到首页')
           .fontSize(20)
           .padding(8)
-          .margin({ top: 32 })
+          .margin({ top: 52 })
           .fontWeight(FontWeight.Bold)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            routerfun('pages/index')
+            router.back()
           })
 
       }.width('100%')

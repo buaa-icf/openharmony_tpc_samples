@@ -15,14 +15,6 @@
 import * as math from 'mathjs';
 import router from '@ohos.router';
 
-
-function routerfun(url: string) {
-  let options: router.RouterOptions = {
-    url: url
-  }
-  router.pushUrl(options)
-}
-
 @Entry
 @Component
 struct Index {
@@ -714,7 +706,7 @@ struct Index {
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
-            routerfun('pages/index')
+            router.back()
           })
 
       }
