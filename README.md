@@ -51,7 +51,7 @@
 [返回目录](#目录)
 
 #### <a name="文件解析"></a>加解密算法
-- [jszipDemo](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/jszipDemo) - 基于开源库jszip开发OpenHarmony的demo例子，支持加密或不加密zip格式的压缩/解压功能。
+- [ohos-jszip](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos-jszip) - 基于开源库jszip适配OpenHarmony，支持加密或不加密zip格式的压缩/解压功能。
 
 [返回目录](#目录)
 
