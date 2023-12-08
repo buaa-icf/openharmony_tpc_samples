@@ -29,4 +29,4 @@
 	url = https://github.com/rxwen/gloox.git
 [submodule "socketio/socketio/src/main/cpp/socket.io-client-cpp"]
 	path = socketio/socketio/src/main/cpp/socket.io-client-cpp
-	url = https://github.com/socketio/socket.io-client-cpp.git
+	url = https://gitee.com/damonjiang/socket.io-client-cpp.git
