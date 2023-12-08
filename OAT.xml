@@ -138,6 +138,7 @@
                 <policyitem type="copyright" name="Copyright 2009 Pete Goodliffe" path="socketio/socketio/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by X Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
                 <policyitem type="license" name="MIT" path="socketio/.*" rule="may" group="defaultGroup" filefilter="defaultPolicyFilter" desc="源开源项目的LICENSE,  符合开源要求"/>
                 <policyitem type="license" name="ThirdPartyNotice" path="socketio/.*" rule="may" group="defaultGroup" filefilter="defaultPolicyFilter" desc="源开源项目的LICENSE,  符合开源要求"/>
+                <policyitem type="license" name="Copyright (C) 2023 Huawei Device Co., Ltd." path="socketio/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
                 
                 <policyitem type="license" name="zlib-acknowledgement" path="box2d/entry/src/main/ets/Testbed/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="当前项目兼容此协议" />
                 <policyitem type="license" name="zlib-acknowledgement" path="box2d/library/src/main/ets/Box2D/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="当前项目兼容此协议" />
