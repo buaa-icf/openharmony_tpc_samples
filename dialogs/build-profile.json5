@@ -34,8 +34,8 @@
       ]
     },
     {
-      "name": "Dialogs",
-      "srcPath": "./Dialogs"
+      "name": "library",
+      "srcPath": "./library"
     }
   ]
 }
