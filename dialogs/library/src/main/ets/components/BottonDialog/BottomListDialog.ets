@@ -145,45 +145,47 @@ struct BottomListDialogComponent {
       .backgroundColor(this.mDialogComponentBackgroundColor)
       .borderRadius({ topLeft: 20, topRight: 20 })
       .height(this.mDialogComponentHeight)
-      .onTouch((event) => {
-        if ((event.type === TouchType.Down)) {
-          if (!this.mDialogPrimitiveHeight) {
-            this.mDialogPrimitiveHeight = this.mDialogComponentHeight
-          }
-          this.mStartY = event.touches[0].y;
-          this.mInitiallyY = this.mStartY;
-        } else if (event.type === TouchType.Move) {
-          this.mEndY = event.touches[0].y;
-          let isMoveUp = this.mEndY < this.mStartY;
-          let moveSpace = Math.abs(this.mEndY - this.mStartY);
-          if (isMoveUp) {
-            let height = this.mDialogComponentHeight + moveSpace;
-            if (height > this.mDialogPrimitiveHeight) {
-              height = this.mDialogPrimitiveHeight;
+      .onTouch((event?: TouchEvent) => {
+        if (event != undefined) {
+          if ((event.type === TouchType.Down)) {
+            if (!this.mDialogPrimitiveHeight) {
+              this.mDialogPrimitiveHeight = this.mDialogComponentHeight
             }
-            this.mDialogComponentHeight = height;
-            this.mStartY = this.mEndY;
-          } else {
-            this.mDialogComponentHeight = this.mDialogComponentHeight - moveSpace;
-            this.mStartY = this.mEndY;
-          }
-        } else if (event.type === TouchType.Up) {
-          this.mEndY = event.touches[0].y;
-          let moveSpace = Math.abs(this.mEndY - this.mInitiallyY);
-          if (moveSpace < 1) {
-            this.isTouchEvent = false;
-            return
-          }
-          if (moveSpace > this.mDialogPrimitiveHeight / 2) {
-            if(this.showOrClose != undefined) {
-              this.showOrClose(this.mDialogComponentHeight, false);
+            this.mStartY = event.touches[0].y;
+            this.mInitiallyY = this.mStartY;
+          } else if (event.type === TouchType.Move) {
+            this.mEndY = event.touches[0].y;
+            let isMoveUp = this.mEndY < this.mStartY;
+            let moveSpace = Math.abs(this.mEndY - this.mStartY);
+            if (isMoveUp) {
+              let height = this.mDialogComponentHeight + moveSpace;
+              if (height > this.mDialogPrimitiveHeight) {
+                height = this.mDialogPrimitiveHeight;
+              }
+              this.mDialogComponentHeight = height;
+              this.mStartY = this.mEndY;
+            } else {
+              this.mDialogComponentHeight = this.mDialogComponentHeight - moveSpace;
+              this.mStartY = this.mEndY;
             }
-          } else {
-            if(this.showOrClose != undefined) {
-              this.showOrClose(this.mDialogComponentHeight, true);
+          } else if (event.type === TouchType.Up) {
+            this.mEndY = event.touches[0].y;
+            let moveSpace = Math.abs(this.mEndY - this.mInitiallyY);
+            if (moveSpace < 1) {
+              this.isTouchEvent = false;
+              return
             }
+            if (moveSpace > this.mDialogPrimitiveHeight / 2) {
+              if (this.showOrClose != undefined) {
+                this.showOrClose(this.mDialogComponentHeight, false);
+              }
+            } else {
+              if (this.showOrClose != undefined) {
+                this.showOrClose(this.mDialogComponentHeight, true);
+              }
+            }
+            this.isTouchEvent = true;
           }
-          this.isTouchEvent = true;
         }
       })
     }

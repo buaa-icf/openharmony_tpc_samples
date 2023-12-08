@@ -7,6 +7,6 @@
   "main": "",
   "version": "1.0.1",
   "dependencies": {
-    "@ohos/dialogs": "file:../Dialogs"
+    "@ohos/dialogs": "file:../library"
   }
 }
