@@ -29,20 +29,18 @@ export default function SequentialAccessTest() {
 
     })
     it('testGetUInt8',0, ()=>  {
-      let buffer:Int8Array = Int8Array.of(0x00, 0x01, 127, -1);
+      let buffer:Int8Array = Int8Array.of(0x00, 0x01, 127, 255);
       let reader:SequentialByteArrayReader= new SequentialByteArrayReader(buffer)
       expect(0).assertEqual(reader.getUInt8());
       expect(1).assertEqual(reader.getUInt8());
       expect(127).assertEqual(reader.getUInt8());
-      expect(-1).assertEqual(reader.getUInt8());
+      expect(255).assertEqual(reader.getUInt8());
 
     })
     it('testGetInt16',0, ()=>  {
-      let buffer:Int8Array = Int8Array.of(-1 -1);
+      let buffer:Int8Array = Int8Array.of(0x00, 0x01, 127, -1);
       let reader:SequentialByteArrayReader= new SequentialByteArrayReader(buffer)
-      expect(255).assertEqual(reader.getInt16());
-
-
+      expect(1).assertEqual(reader.getInt16());
     })
 
   })

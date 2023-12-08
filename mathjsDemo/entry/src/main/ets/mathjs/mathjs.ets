@@ -15,14 +15,6 @@
 import * as math from 'mathjs';
 import router from '@ohos.router';
 
-
-function routerfun(url: string) {
-  let options: router.RouterOptions = {
-    url: url
-  }
-  router.pushUrl(options)
-}
-
 @Entry
 @Component
 struct Index {
@@ -82,21 +74,21 @@ struct Index {
   mathVarianceArr = this.arrayMath
   mathSumArr = this.arrayMath
   mathProdArr = this.arrayMath
-  mathmeanArr = this.arrays
+  mathmeanArr = '[[2,5],[6,3],[1,7]]'
   mathmean1: string = ''
   mathmadArr = this.arrays
   mathcumsumArr = this.arrays
   mathusolveArr = this.arrays
-  mathnumusolve = this.arrays
+  mathnumusolve = '[1,2,3]'
   mathsimplifyConstantStr = '2 * 2^ (2 - 1)'
   mathnumsimplifyConstant: math.SimplifyOptions = { exactFractions: true }
   mathsimplifyStr = '2 * 1 * x ^ (2 - 1)'
   mathnumsimplify: ESObject = { x: 4 }
   mathnumsimplify1: math.SimplifyOptions = { exactFractions: true }
   mathlsolveArr = this.arrays
-  mathnumlsolve = this.arrays
-  mathlusolveArr = this.arrays
-  mathnumlusolve = this.arrays
+  mathnumlsolve = '[1,2,3]'
+  mathlusolveArr = '[[-2, 3], [2, 1]]'
+  mathnumlusolve = '[11, 9]'
   mathBitwise = '1'
   mathapplybitNot = '1'
   mathapplybitOr = '1'
@@ -526,7 +518,7 @@ struct Index {
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入数组 如： [10,1,10]' })
+        TextInput({ placeholder: '请输入数组 如： [[2,5],[6,3],[1,7]]' })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -548,7 +540,11 @@ struct Index {
           .onClick(() => {
             try {
               let time = Date.now()
-              this.mathmean = math.mean(math.evaluate(this.mathmeanArr), math.evaluate(this.mathmean1)).toString()
+              if (this.mathmean1) {
+                this.mathmean = math.mean(math.evaluate(this.mathmeanArr), math.evaluate(this.mathmean1)).toString()
+              } else {
+                this.mathmean = math.mean(math.evaluate(this.mathmeanArr)).toString()
+              }
               let time1 = Date.now()
               this.mathTimemean = (time1 - time).toString()
             } catch (err) {
@@ -602,7 +598,7 @@ struct Index {
             this.mathcumsumArr = value
           })
 
-        Text('lusolve test')
+        Text('cumsum test')
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
@@ -632,7 +628,7 @@ struct Index {
             this.mathusolveArr = value
           })
 
-        TextInput({ placeholder: '请输入对称矩阵 如：[[10, 1, 10], [1, 10, 1], [10, 1, 10]]' })
+        TextInput({ placeholder: '请输入矩阵 如：[[1, 2, 3]' })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -746,7 +742,7 @@ struct Index {
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入数组 如：[[10, 1, 10], [1, 10, 1], [10, 1, 10]]' })
+        TextInput({ placeholder: '请输入数组 如：[[-2, 3], [2, 1]]' })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -754,7 +750,7 @@ struct Index {
             this.mathlusolveArr = value
           })
 
-        TextInput({ placeholder: '请输入数组 如：[[10, 1, 10], [1, 10, 1], [10, 1, 10]]' })
+        TextInput({ placeholder: '请输入数组 如：[11, 9]' })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -793,7 +789,7 @@ struct Index {
             this.mathlsolveArr = value
           })
 
-        TextInput({ placeholder: '请输入数组 如：[[10, 1, 10], [1, 10, 1], [10, 1, 10]]' })
+        TextInput({ placeholder: '请输入数组 如：[1,2,3]' })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -830,7 +826,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            routerfun('pages/index')
+            router.back()
           })
 
       }

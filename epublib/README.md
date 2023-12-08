@@ -19,11 +19,20 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
 
 ## 使用说明
 ### 示例代码
-1.在page页面中引入avro
+1.在entryAbility中引入GlobalContext
+```
+import { GlobalContext } from '@ohos/epublib'
+
+onWindowStageCreate(windowStage: window.WindowStage) {
+// Main window is created, set main page for this ability
+GlobalContext.getContext().setValue('filePath',this.context.filesDir)
+}
+ ```
+2.在page页面中引入epublib
 ```
 import {DOMParser,EpubReader,EpubWriter, Book,Author,EpubResource,MediaType,Metadata,MediatypeService} from "@ohos/epublib"
 ```
-2.使用
+3.使用
 
 ```
   funcStart(input: string) {

@@ -17,13 +17,6 @@ import * as math from 'mathjs';
 import BigNumber from 'bignumber.js';
 import long from 'long';
 
-function routerfun(url: string) {
-  let options: router.RouterOptions = {
-    url: url
-  }
-  router.pushUrl(options)
-}
-
 @Entry
 @Component
 struct Index {
@@ -323,7 +316,7 @@ struct Index {
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入-1 到 1 之间任意实数' })
+        TextInput({ placeholder: '请输入任意实数' })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -1068,7 +1061,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            routerfun('pages/index')
+            router.back()
           })
 
       }
