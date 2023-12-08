@@ -28,12 +28,13 @@ struct TaurusSample {
   private arr: Array<ArrParam> = [
     {index:11, name: '折叠', color: '1' },
     {index:22, name: '展开', color: '2' },
-    {index:33, name: '橙色主题', color: '#ffbb33' },
+
     {index:44, name: '红色主题', color: '#ff4444' },
     {index:55, name: '绿色主题', color: '#99cc00' },
     {index:66, name: '蓝色主题', color: '#2299ee' },
+    {index:33, name: '橙色主题', color: '#ffbb33' },
   ]
-  private arrNumberOfCycles: Array<number> = [1,2]
+  private arrNumberOfCycles: Array<number> = [1,2,3,4,5,6]
 
   aboutToAppear() {
     this.model.setBackgroundColor('#ffbb33')
@@ -47,39 +48,60 @@ struct TaurusSample {
 
   @Builder testMain() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
+      ForEach(this.arr, (itemOther : ArrParam) => {
+        Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
+          Text(itemOther.name)
+            .fontSize(30)
+            .fontColor('#282828')
+            .padding({ left: 10, top: 10 })
+
+          Text(
+              itemOther.color == '1' ? '折叠AppBarLayout，变成正常的列表页面' :
+                itemOther.color == '2' ? '展开AppBarLayout，变成可伸展头部的页面' :
+                '更改为' + itemOther.name + '颜色')
+            .fontSize(25)
+            .fontColor('#8c8c8c')
+            .padding({ left: 10, top: 5 })
+
+          Text('')
+            .backgroundColor('#ececec')
+            .height(0.5)
+            .width('100%')
+            .margin({ top: 10, bottom: 5 })
+        }
+        .onClick(e => {
+          if (itemOther.color == '1') {
+            this.model.setExpand(false)
+          } else if (itemOther.color == '2') {
+            this.model.setExpand(true)
+          } else {
+            this.model.setBackgroundColor(itemOther.color)
+          }
+        })
+
+    }, (item:ArrParam) => item.index.toString())
       ForEach(this.arrNumberOfCycles, (item:ArrParam) => {
-          ForEach(this.arr, (item2 : ArrParam) => {
-            Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
-              Text(item2.name)
-                .fontSize(30)
-                .fontColor('#282828')
-                .padding({ left: 10, top: 10 })
 
-              Text(
-                  item2.color == '1' ? '折叠AppBarLayout，变成正常的列表页面' :
-                    item2.color == '2' ? '展开AppBarLayout，变成可伸展头部的页面' :
-                    '更改为' + item2.name + '颜色')
-                .fontSize(25)
-                .fontColor('#8c8c8c')
-                .padding({ left: 10, top: 5 })
+        Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
+          Text("橙色主题")
+            .fontSize(30)
+            .fontColor('#282828')
+            .padding({ left: 10, top: 10 })
 
-              Text('')
-                .backgroundColor('#ececec')
-                .height(0.5)
-                .width('100%')
-                .margin({ top: 10, bottom: 5 })
-            }
-            .onClick(e => {
-              if (item2.color == '1') {
-                this.model.setExpand(false)
-              } else if (item2.color == '2') {
-                this.model.setExpand(true)
-              } else {
-                this.model.setBackgroundColor(item2.color)
-              }
-            })
+          Text('更改为橙色主题颜色')
+            .fontSize(25)
+            .fontColor('#8c8c8c')
+            .padding({ left: 10, top: 5 })
 
-        }, (item:ArrParam) => item.index.toString())
+          Text('')
+            .backgroundColor('#ececec')
+            .height(0.5)
+            .width('100%')
+            .margin({ top: 10, bottom: 5 })
+        }
+        .onClick(e => {
+          this.model.setBackgroundColor('#ffbb33')
+        })
       }, (item:number) => item.toString())
     }
     .width("100%")

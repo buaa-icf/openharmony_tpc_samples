@@ -19,7 +19,7 @@ import { StoreHouse } from "@ohos/smartrefreshlayout"
 @Component
 struct StoreHouseSample {
   @State modelStore: SmartRefreshForStoreHouseSample.Model = new SmartRefreshForStoreHouseSample.Model()
-  arr: string[] = ['显示中文', '显示英文', '显示图标', '显示商标', '显示数字', '蓝色主题', '绿色主题', '红色主题', '橙色主题', '显示中文', '显示英文', '显示图标', '显示商标', '显示数字', '蓝色主题', '绿色主题', '红色主题', '橙色主题',]
+  arr: string[] = ['显示中文', '显示英文', '显示图标', '显示商标', '显示数字', '蓝色主题', '绿色主题', '橙色主题', '橙色主题', '橙色主题', '橙色主题']
 
   @Builder testHeader() {
      StoreHouse({model: $modelStore})
@@ -39,8 +39,6 @@ struct StoreHouseSample {
               this.modelStore.setColor("#0000FF")
             } else if (item == "绿色主题") {
               this.modelStore.setColor("#00785D")
-            } else if (item == "红色主题") {
-              this.modelStore.setColor("#FF0000")
             } else if (item == "橙色主题") {
               this.modelStore.setColor("#FF8000")
             } else {

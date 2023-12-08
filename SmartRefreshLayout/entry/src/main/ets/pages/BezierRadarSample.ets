@@ -24,9 +24,9 @@ class arrParam{
 @Component
 struct BezierRadarSample {
   @State model: SmartRefreshForBezierRadarSample.Model = new SmartRefreshForBezierRadarSample.Model()
-  arr: arrParam[] = [{index:0,content:'打开左右拖动'}, {index:1,content:'关闭左右拖动'}, {index:2,content:'蓝色主题'}, {index:3,content:'绿色主题'}, {index:4,content:'红色主题'},
-    {index:5,content:'橙色主题'}, {index:6,content:'打开左右拖动'}, {index:7,content:'关闭左右拖动'}, {index:8,content:'蓝色主题'}, {index:9,content:'绿色主题'},
-    {index:10,content:'红色主题'},{index:11,content:'橙色主题'}, {index:12,content:'蓝色主题'}, {index:13,content:'绿色主题'}, {index:14,content:'红色主题'}, {index:15,content:'橙色主题'}]
+  arr: arrParam[] = [{index:2,content:'蓝色主题'}, {index:3,content:'绿色主题'}, {index:4,content:'红色主题'}, {index:5,content:'橙色主题'},
+    {index:8,content:'橙色主题'}, {index:9,content:'橙色主题'}, {index:10,content:'橙色主题'},{index:11,content:'橙色主题'}, {index:12,content:'橙色主题'},
+    {index:13,content:'橙色主题'}, {index:14,content:'橙色主题'}, {index:15,content:'橙色主题'}]
 
   @Builder testMain() {
     Column() {
@@ -38,11 +38,7 @@ struct BezierRadarSample {
           if (this.model.refreshState == SmartRefreshForBezierRadarSample.REFRESHSTATE.REFRESHING) { //松开过后的刷新样式
           } else if (this.model.refreshState == SmartRefreshForBezierRadarSample.REFRESHSTATE.TOREFRESH) { //拖住过程中的样式
           } else {
-            if (item.content == "打开左右拖动") {
-              this.model.setEnableHorizontalDrag(true)
-            } else if (item.content == "关闭左右拖动") {
-              this.model.setEnableHorizontalDrag(false)
-            } else if (item.content == "蓝色主题") {
+            if (item.content == "蓝色主题") {
               this.model.setPrimaryColor("#0000FF")
               this.model.setRadarFillColor("#ADD8E6")
             } else if (item.content == "绿色主题") {

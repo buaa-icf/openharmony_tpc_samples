@@ -16,32 +16,29 @@ import {SmartRefresh} from "@ohos/smartrefreshlayout"
 import {Material} from "@ohos/smartrefreshlayout"
 import {MaterialBottom} from "@ohos/smartrefreshlayout"
 
+class ThemeParam{
+  index:number = 0;
+  name:string = "";
+}
+
 @Entry
 @Component
 struct MaterialRefreshSample {
   @State model: SmartRefresh.Model = new SmartRefresh.Model()
 
-  arr: string[] = ['橙色主题', '红色主题', '绿色主题', '蓝色主题', '橙色主题', '红色主题', '默认主题', '橙色主题', '红色主题', '绿色主题', '蓝色主题']
+  arr: Array<ThemeParam> = [{index:0,name: '红色主题'}, {index:1,name: '绿色主题'}, {index:2,name: '蓝色主题'}, {index:3,name: '橙色主题'}, {index:4,name: '橙色主题'},
+    {index:5,name: '橙色主题'}, {index:6,name: '橙色主题'}, {index:7,name: '橙色主题'}, {index:8,name: '橙色主题'}, {index:9,name: '橙色主题'}, {index:10,name: '橙色主题'}]
 
   pickColor(SelectColorParam: string) {
     let SelectColor = SelectColorParam.trim()
-    if (SelectColor == this.arr[0].trim()) {
-      this.model.setAccentColor(Color.Orange)
-    }
-    if (SelectColor == this.arr[1].trim()) {
+    if (SelectColor == this.arr[0].name.trim()) {
       this.model.setAccentColor(Color.Red)
-    }
-    if (SelectColor == this.arr[2].trim()) {
+    } else if (SelectColor == this.arr[1].name.trim()) {
       this.model.setAccentColor(Color.Green)
-    }
-    if (SelectColor == this.arr[3].trim()) {
+    } else if (SelectColor == this.arr[2].name.trim()) {
       this.model.setAccentColor(Color.Blue)
-    }
-    if (SelectColor == this.arr[4].trim()) {
-      this.model.setAccentColor(Color.Green)
-    }
-    if (SelectColor == this.arr[5].trim()) {
-      this.model.setAccentColor(Color.Blue)
+    } else {
+      this.model.setAccentColor(Color.Orange)
     }
   }
   @Builder testHeader() {
@@ -61,9 +58,9 @@ struct MaterialRefreshSample {
   }
   @Builder testMain() {
     Column() {
-      ForEach(this.arr, (item:string) => {
-        this.card(item)
-      }, (item:string) => item)
+      ForEach(this.arr, (item:ThemeParam) => {
+        this.card(item.name)
+      }, (item:ThemeParam) => item.index.toString())
     }.width("100%").padding("20lpx")
   }
 
@@ -75,7 +72,11 @@ struct MaterialRefreshSample {
 
   build() {
     Column() {
-      SmartRefresh({ model: $model, header:()=> {this.testHeader()}, main:()=> {this.testMain()}, footer: ()=> {this.testFooter()}  })
+      SmartRefresh({
+        model: $model,
+        header:()=> {this.testHeader()},
+        main:()=> {this.testMain()},
+        footer: ()=> {this.testFooter()}  })
     }.backgroundColor("#dddddd")
   }
 }

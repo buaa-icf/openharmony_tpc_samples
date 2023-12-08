@@ -21,7 +21,7 @@ class arrParam{
   content:string = "";
 }
 
-class themeParam{
+class ThemeParam{
   text:string = "";
   label:string = "";
   boxColor:number[] = [];
@@ -31,11 +31,16 @@ class themeParam{
 @Component
 struct DropBoxSample {
   @State model: SmartRefreshForDropBoxSample.Model = new SmartRefreshForDropBoxSample.Model()
-  theme:themeParam[] = [
+  theme:ThemeParam[] = [
     {text:"默认主题颜色",label:"更改为默认主题颜色",boxColor:[0xff4169E1,0xff6ea9ff],backgroundColor:0xff283645},
     {text:"橙色主题颜色",label:"更改为橙色主题颜色",boxColor:[0xffffe4b5,0xfffffafa],backgroundColor:0xffffbb33},
     {text:"红色主题颜色",label:"更改为红色主题颜色",boxColor:[0xfff08080,0xfffffafa],backgroundColor:0xffff4444},
     {text:"绿色主题颜色",label:"更改为绿色主题颜色",boxColor:[0xff90ee90,0xfffffafa],backgroundColor:0xff99cc00},
+    {text:"蓝色主题颜色",label:"更改为蓝色主题颜色",boxColor:[0xffafeeee,0xfffffafa],backgroundColor:0xff33aaff},
+    {text:"蓝色主题颜色",label:"更改为蓝色主题颜色",boxColor:[0xffafeeee,0xfffffafa],backgroundColor:0xff33aaff},
+    {text:"蓝色主题颜色",label:"更改为蓝色主题颜色",boxColor:[0xffafeeee,0xfffffafa],backgroundColor:0xff33aaff},
+    {text:"蓝色主题颜色",label:"更改为蓝色主题颜色",boxColor:[0xffafeeee,0xfffffafa],backgroundColor:0xff33aaff},
+    {text:"蓝色主题颜色",label:"更改为蓝色主题颜色",boxColor:[0xffafeeee,0xfffffafa],backgroundColor:0xff33aaff},
     {text:"蓝色主题颜色",label:"更改为蓝色主题颜色",boxColor:[0xffafeeee,0xfffffafa],backgroundColor:0xff33aaff},
   ]
   boxColor?: Array<number> = [0xff6ea9ff,0xff6ea9ff];
@@ -52,9 +57,6 @@ struct DropBoxSample {
       Column() {
         Text(this.theme[i%this.theme.length].text+"").fontSize(30)
         Text(this.theme[i%this.theme.length].label+"").fontSize(20).fontColor(Color.Gray)
-//        Flex().width("370lpx").height("25lpx").backgroundColor("#dddddd").margin({ top: "10lpx", bottom: "70lpx" })
-//        Flex().width("200lpx").height("25lpx").backgroundColor("#dddddd").margin({ bottom: "30lpx" })
-//        Flex().width("200lpx").height("25lpx").backgroundColor("#dddddd").margin({ bottom: "30lpx" })
       }.alignItems(HorizontalAlign.Start).margin("10lpx")
     }
     .onClick(()=>{

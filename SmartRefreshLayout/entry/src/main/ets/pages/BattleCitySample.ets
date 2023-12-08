@@ -16,7 +16,7 @@
 import { SmartRefreshForGame } from "@ohos/smartrefreshlayout"
 import { BattleCity } from "@ohos/smartrefreshlayout"
 
-class themeParam{
+class ThemeParam{
   color:string = "";
   name:string = "";
   index:number = 0;
@@ -25,7 +25,7 @@ class themeParam{
 @Entry
 @Component
 struct BattleCitySample {
-  arr: Array<themeParam> = [
+  arr: Array<ThemeParam> = [
     {index: 1, name: '默认主题', color: '#ffffff' },
     {index: 2, name: '蓝色主题', color: '#2299ee' },
     {index: 3, name: '绿色主题', color: '#99cc00' },
@@ -52,14 +52,14 @@ struct BattleCitySample {
 
   @Builder testMain() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
-        ForEach(this.arr, (item2:themeParam) => {
+        ForEach(this.arr, (itemOther:ThemeParam) => {
           Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
-            Text(item2.name)
+            Text(itemOther.name)
               .fontSize(30)
               .fontColor('#282828')
               .padding({ left: 10, top: 10 })
 
-            Text('更改为' + item2.name + '颜色')
+            Text('更改为' + itemOther.name + '颜色')
               .fontSize(25)
               .fontColor('#8c8c8c')
               .padding({ left: 10, top: 5 })
@@ -71,10 +71,10 @@ struct BattleCitySample {
               .margin({ top: 10, bottom: 5 })
           }
           .onClick(e => {
-            this.model.setBackgroundColor(item2.color)
+            this.model.setBackgroundColor(itemOther.color)
             this.model.autoRefresh()
           })
-        }, (item:themeParam) => item.index.toString())
+        }, (item:ThemeParam) => item.index.toString())
     }
     .width("100%")
     .backgroundColor("#ffffff")

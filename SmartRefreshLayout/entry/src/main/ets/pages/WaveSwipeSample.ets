@@ -28,14 +28,6 @@ struct WaterSwipeSample {
 
   pickColor(SelectColorParam: string) {
     let SelectColor = SelectColorParam.trim()
-    // if (SelectColor == this.arr[0].trim()) {
-    //   this.model.setFixedContent(false)
-    //   this.needScroller = true
-    // }
-    // if (SelectColor == this.arr[1].trim()) {
-    //   this.model.setFixedContent(true)
-    //   this.needScroller = true
-    // }
     if (SelectColor == this.arr[0].trim()) {
       this.model.setBackgroundColor(Color.Black)
     }
