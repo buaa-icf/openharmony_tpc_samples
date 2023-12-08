@@ -4,7 +4,7 @@
   "type": "module",
   "types": "",
   "description": "OhosVideoCache allows to add caching support to your IjkPlayer/AvPlayer or any another player with help of single line!",
-  "main": "index.ts",
+  "main": "Index.ts",
   "author": "ohos_tpc",
   "ohos": {
     "org": "opensource"
