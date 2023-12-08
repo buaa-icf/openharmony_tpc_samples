@@ -62,7 +62,7 @@ export class BaseCenterMode extends BaseMode {
 
   contentFontColor?: string = '#ffffff'            // 内容文字颜色
 
-  contentFontSize?: number = 20                    // 弹窗内容文字尺寸
+  contentFontSize: number | string | Resource = 20                    // 弹窗内容文字尺寸
 
   contentTextAlign?: TextAlign = TextAlign.Center  // 内容文本对齐方式
 
