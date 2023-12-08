@@ -14,6 +14,6 @@
   "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/unrar",
   "version": "2.0.2-rc.0",
   "dependencies": {
-    "libunrar.so": "file:../unrar/src/main/cpp/types/libunrar"
+    "libunrar.so": "file:../library/src/main/cpp/types/libunrar"
   }
 }
