@@ -28,7 +28,8 @@ struct AviSample {
     this.data.splice(0,this.data.length)
     fileDir = GlobalContext.getContext().getValue("filesDir") as string;
     let pathAvi = fileDir.concat("/AVITest.avi")
-     let metadata: Metadata = ImageMetadataReader.readMetadata(pathAvi)
+    try {
+      let metadata: Metadata = ImageMetadataReader.readMetadata(pathAvi)
       // iterate over the metadata and print to System.out
       metadata.getDirectories().forEach((value:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
         let directoryName:string = value.getName()
@@ -38,6 +39,10 @@ struct AviSample {
           this.data.push("[" + directoryName + "] " + tagName + " = " + description)
         })
       })
+    } catch (err) {
+      console.error("metadata error..")
+    }
+
   }
 
   build() {
