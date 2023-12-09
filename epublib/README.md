@@ -55,12 +55,36 @@ import {DOMParser,EpubReader,EpubWriter, Book,Author,EpubResource,MediaType,Meta
 ```
 
 ## 接口说明
-1. 获取Book实例。
-   ` EpubReader.readEpub(inPath:string, encoding?:string, lazyLoadedTypes?: Array<MediaType>):Book`
-2. 获取构成该书的所有图像、章节、章节、xhtml文件、样式表等的集合。
-   `Book.getResources(): Resources `
-3. 获取该书内容。
-   `EpubResource.getStrData()`
+1. 获取Book实例
+   `readEpub(inPath:string, encoding?:string, lazyLoadedTypes?: Array<MediaType>):Book`
+2. 通过resources读取电子书
+   `readEpubToBook(resources:Resources, result?:Book):Book`
+3. 惰性地从EPUB文件中读取并解析EPUB电子书
+   `readEpubLazy(inPath: string, encoding?: string, lazyLoadedTypes?: Array<MediaType>): Book `
+4. 获取构成该书的所有图像、章节、章节、xhtml文件、样式表等的集合
+   `getResources(): Resources `
+5. 获取该书内容。
+   `getStrData()`
+6. 写入Book内容 
+   `write(book: Book, fileName: string)`
+7. 获取EPUB电子书的内容顺序
+   `getSpine()`
+8. 获取EPUB电子书的元数据
+   `getMetadata()`
+9. 向EPUB电子书中添加一个资源
+   `addResource(resource: EpubResource): EpubResource`
+10. 获取epub文件在文件夹中的位置
+   `getHref()`
+11. 通过压缩文件加载资源 
+   `loadResources(ZipFile zipFile, String defaultHtmlEncoding, List<MediaType> lazyLoadedTypes) `
+12. 截取输出目录 
+   `outFile(inZipPath: string): string`
+13. 设置作者
+   `addAuthor(author: Author)`
+14. 添加标题
+   `addTitle(title: string): string`
+15. 设置语言 
+   `setLanguage(language: string)`
 
 ## 约束与限制
 

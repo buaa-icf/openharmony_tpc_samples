@@ -86,6 +86,10 @@
                 desc="Filters for resources files policies"
                 name="binaryFileTypePolicyFilter">
                 <filteritem
+                    desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"
+                    name="*.json5"
+                    type="filename"/>
+                <filteritem
                     desc="自研图片资源文件，DevEco Studio自动生成，不手动修改"
                     name="entry/src/main/resources/base/media/icon.png"
                     type="filepath"/>
