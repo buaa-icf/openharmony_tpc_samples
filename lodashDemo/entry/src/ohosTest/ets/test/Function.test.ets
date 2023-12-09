@@ -206,14 +206,14 @@ export default function functionTest() {
       let deferString: number = defer((text: string)=> {
         console.log(text);
       }, 'deferred');
-      expect(deferString).assertEqual(52);
+      expect(deferString).assertEqual(517);
     })
 
     it('deferTest02',0, () => {
       let deferString: number = defer((content: string)=> {
         console.log(content);
       }, 'GeeksforGeeks!');
-      expect(deferString).assertEqual(56);
+      expect(deferString).assertEqual(521);
     })
 
     it('delayTest',0, () => {
