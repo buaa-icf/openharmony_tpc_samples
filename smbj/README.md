@@ -89,7 +89,7 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
 |---- smbj
     |---- entry
     |     |---- pages       # 示例代码文件夹       
-    |---- smbj              # 库文件夹 
+    |---- library              # 库文件夹 
     |     |---- api         # 接口文件夹 
     |     |---- crypto      # 加密文件夹            
     |     |---- message     # 请求消息体文件夹

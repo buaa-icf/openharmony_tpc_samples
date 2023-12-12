@@ -13,7 +13,7 @@
     "org": "opensource"
   },
   "main": "index.ts",
-  "repository": "https://gitee.com/hihopeorg/smbj",
+  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/smbj",
   "type": "module",
   "version": "2.0.0",
   "dependencies": {

@@ -26,11 +26,11 @@ export default function abilityTest() {
 
     beforeAll(()=>  {
       /** 测试用例仅供参考
-       * 配置自己要分享文件的主机IP和文件夹  如：10.50.40.22，test_smbj
+       * 配置自己要分享文件的主机IP和文件夹  如：**.**.**.**，test_smbj
        * 分享给指定用户的 用户名和密码
        * 配置自己要测试的客户端IP RK3568上  可参考RK3568手动设置IP.bat
        * */
-      let option:Option = new Option('\\\\10.50.40.26\\test_smbj','DOMAIN','test','test1234','10.50.40.33')
+      let option:Option = new Option('\\\\**.**.**.**\\test_smbj','DOMAIN','test','test1234','**.**.**.**')
       client = new SMB2(option)
     })
 
@@ -44,8 +44,7 @@ export default function abilityTest() {
       })
     })
     it('mkdir', 0, ()=>  {
-      client.exists('test',  (err:ESObject)=> {
-
+      client.mkdir('test',  (err:ESObject)=> {
         expect(err).assertNull()
       })
     })
