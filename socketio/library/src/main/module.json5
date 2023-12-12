@@ -1,6 +1,6 @@
 {
   "module": {
-    "name": "socketio",
+    "name": "library",
     "type": "har",
     "deviceTypes": [
       "default",
