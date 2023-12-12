@@ -1,6 +1,6 @@
 {
   "module": {
-    "name": "jsonschema",
+    "name": "library",
     "type": "har",
     "deviceTypes": [
       "default",

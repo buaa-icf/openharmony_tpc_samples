@@ -32,8 +32,8 @@
       ]
     },
     {
-      "name": "jsonschema",
-      "srcPath": "./jsonschema"
+      "name": "library",
+      "srcPath": "./library"
     }
   ],
 
