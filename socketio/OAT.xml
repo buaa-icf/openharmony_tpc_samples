@@ -54,6 +54,7 @@
                 <filteritem type="filepath" name="socketio/src/main/cpp/socket.io-client-cpp/test/sio_test" desc="socketio开源库代码，不做侵入式修改"/>
                 <filteritem type="filepath" name="screenshot/效果展示_登陆页面.jpg" desc="readme 效果图展示"/>
                 <filteritem type="filepath" name="screenshot/效果展示_聊天页面.jpg" desc="readme 效果图展示"/>
+                <filteritem type="filename" name="*.json5" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
             </filefilter>
             <filefilter name="copyrightPolicyFilter" desc="Filters for copyright header policies">
                 <filteritem type="filepath" name="socketio/src/main/cpp/socket.io-client-cpp/examples/Console/main.cpp" desc="socketio开源库代码，原本就无版权头，不做侵入式修改"/>
