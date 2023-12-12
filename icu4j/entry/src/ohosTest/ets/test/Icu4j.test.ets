@@ -14,508 +14,247 @@
  */
 
 import { describe, it, expect } from '@ohos/hypium'
-import * as intl_messageformat_parser from '@f-fjs/intl-messageformat-parser';
+import * as parser from '@f-fjs/intl-messageformat-parser';
 
 export default function icu4jTest() {
   describe('Icu4jTest', () => {
-    // Defines a test suite. Two parameters are supported: test suite name and test suite function.
-    it('test_index_parser_input', 0, () => {
-      let input = '{test}';
-      const parseResult = intl_messageformat_parser.parse(input);
-      expect(parseResult.length > 0).assertTrue();
-    });
-    it('test_index_parser_inputEmpty', 0, () => {
-      let input = '';
-      const parseResult = intl_messageformat_parser.parse(input, {
-        normalizeHashtagInPlural: true, captureLocation: true
-      });
-      expect(parseResult.length).assertEqual(0);
-    });
-    it('test_index_parser_optsFalse', 0, () => {
-      let input = '{test}';
-      const parseResult = intl_messageformat_parser.parse(input, {
-        normalizeHashtagInPlural: false, captureLocation: false
-      });
-      expect(parseResult.length > 0).assertTrue();
-    });
-    it('test_index_parser_optsDefault', 0, () => {
-      let input = '{test}';
-      const parseResult = intl_messageformat_parser.parse(input, {});
-      expect(parseResult.length > 0).assertTrue();
+    it('should_have_a_parse_export', 0, () => {
+      expect((Object as ESObject).getOwnPropertyNames(parser)).assertContain('parse');
+      expect(typeof parser.parse).assertEqual('function');
     });
 
-    it('test_types_isLiteralElement_true', 0, () => {
-      let input: intl_messageformat_parser.LiteralElement = {
-        type: intl_messageformat_parser.TYPE.literal, value: 'testValue'
-      };
-      const typesResult = intl_messageformat_parser.isLiteralElement(input);
-      expect(typesResult).assertTrue();
-    });
-    it('test_types_isLiteralElement_false', 0, () => {
-      let input: intl_messageformat_parser.PoundElement = {
-        type: intl_messageformat_parser.TYPE.pound
-      };
-      const typesResult = intl_messageformat_parser.isLiteralElement(input);
-      expect(typesResult).assertFalse();
-    });
-    it('test_types_isLiteralElement_null', 0, () => {
-      let input = null;
-      let typesResult: string | boolean = '';
-      try {
-        typesResult = intl_messageformat_parser.isLiteralElement(input);
-      } catch (e) {
-        typesResult = 'e';
-      }
-      expect(typesResult == 'e').assertTrue();
-    });
-    it('test_types_isLiteralElement_undefined', 0, () => {
-      let input = undefined;
-      let typesResult: string | boolean = '';
-      try {
-        typesResult = intl_messageformat_parser.isLiteralElement(input);
-      } catch (e) {
-        typesResult = 'e';
-      }
-      expect(typesResult == 'e').assertTrue();
+    it('should_have_a_SyntaxError_export', 0, () => {
+      expect((Object as ESObject).getOwnPropertyNames(parser)).assertContain('SyntaxError');
+
+      expect(typeof (parser as ESObject).SyntaxError).assertEqual('function');
     });
 
-    it('test_types_isArgumentElement_true', 0, () => {
-      let input: intl_messageformat_parser.ArgumentElement = {
-        type: intl_messageformat_parser.TYPE.argument, value: 'testValue'
-      };
-      const typesResult = intl_messageformat_parser.isArgumentElement(input);
-      expect(typesResult).assertTrue();
-    });
-    it('test_types_isArgumentElement_false', 0, () => {
-      let input: intl_messageformat_parser.PoundElement = {
-        type: intl_messageformat_parser.TYPE.pound
-      };
-      const typesResult = intl_messageformat_parser.isArgumentElement(input);
-      expect(typesResult).assertFalse();
-    });
-    it('test_types_isArgumentElement_null', 0, () => {
-      let input = null;
-      let typesResult: string | boolean = '';
+    let parse = parser.parse;
+    it('should_expect_a_String_argument', 0, () => {
+      expect(parse('').length).assertEqual(0);
       try {
-        typesResult = intl_messageformat_parser.isArgumentElement(input);
+        parse(undefined)
+        parse(null)
       } catch (e) {
-        typesResult = 'e';
+        expect(typeof e).assertEqual('object')
       }
-      expect(typesResult == 'e').assertTrue();
-    });
-    it('test_types_isArgumentElement_undefined', 0, () => {
-      let input = undefined;
-      let typesResult: string | boolean = '';
-      try {
-        typesResult = intl_messageformat_parser.isArgumentElement(input);
-      } catch (e) {
-        typesResult = 'e';
-      }
-      expect(typesResult == 'e').assertTrue();
+
     });
 
-    it('test_types_isNumberElement_true', 0, () => {
-      let input: intl_messageformat_parser.NumberElement = {
-        type: intl_messageformat_parser.TYPE.number, value: 'testValue'
-      };
-      const typesResult = intl_messageformat_parser.isNumberElement(input);
-      expect(typesResult).assertTrue();
-    });
-    it('test_types_isNumberElement_false', 0, () => {
-      let input: intl_messageformat_parser.PoundElement = {
-        type: intl_messageformat_parser.TYPE.pound
-      };
-      const typesResult = intl_messageformat_parser.isNumberElement(input);
-      expect(typesResult).assertFalse();
-    });
-    it('test_types_isNumberElement_null', 0, () => {
-      let input = null;
-      let typesResult: string | boolean = '';
-      try {
-        typesResult = intl_messageformat_parser.isNumberElement(input);
-      } catch (e) {
-        typesResult = 'e';
-      }
-      expect(typesResult == 'e').assertTrue();
-    });
-    it('test_types_isNumberElement_undefined', 0, () => {
-      let input = undefined;
-      let typesResult: string | boolean = '';
-      try {
-        typesResult = intl_messageformat_parser.isNumberElement(input);
-      } catch (e) {
-        typesResult = 'e';
-      }
-      expect(typesResult == 'e').assertTrue();
+    it('should_return_an_AST_object', 0, () => {
+      let ast = parse('');
+      expect(typeof ast).assertEqual('object');
+      expect((ast as ESObject).type).assertUndefined();
+      expect((ast as ESObject).elements).assertUndefined();
     });
 
-    it('test_types_isDateElement_true', 0, () => {
-      let input: intl_messageformat_parser.DateElement = {
-        type: intl_messageformat_parser.TYPE.date, value: 'testValue'
-      };
-      const typesResult = intl_messageformat_parser.isDateElement(input);
-      expect(typesResult).assertTrue();
-    });
-    it('test_types_isDateElement_false', 0, () => {
-      let input: intl_messageformat_parser.PoundElement = {
-        type: intl_messageformat_parser.TYPE.pound
-      };
-      const typesResult = intl_messageformat_parser.isDateElement(input);
-      expect(typesResult).assertFalse();
-    });
-    it('test_types_isDateElement_null', 0, () => {
-      let input = null;
-      let typesResult: string | boolean = '';
-      try {
-        typesResult = intl_messageformat_parser.isDateElement(input);
-      } catch (e) {
-        typesResult = 'e';
-      }
-      expect(typesResult == 'e').assertTrue();
-    });
-    it('test_types_isDateElement_undefined', 0, () => {
-      let input = undefined;
-      let typesResult: string | boolean = '';
-      try {
-        typesResult = intl_messageformat_parser.isDateElement(input);
-      } catch (e) {
-        typesResult = 'e';
-      }
-      expect(typesResult == 'e').assertTrue();
+    let msg = 'Hello, World!';
+    let ast = parse(msg);
+
+    it('should_contain_1_elements', 0, () => {
+      expect(ast.length).assertEqual(1);
     });
 
-    it('test_types_isTimeElement_true', 0, () => {
-      let input: intl_messageformat_parser.TimeElement = {
-        type: intl_messageformat_parser.TYPE.time, value: 'testValue'
-      };
-      const typesResult = intl_messageformat_parser.isTimeElement(input);
-      expect(typesResult).assertTrue();
-    });
-    it('test_types_isTimeElement_false', 0, () => {
-      let input: intl_messageformat_parser.PoundElement = {
-        type: intl_messageformat_parser.TYPE.pound
-      };
-      const typesResult = intl_messageformat_parser.isTimeElement(input);
-      expect(typesResult).assertFalse();
-    });
-    it('test_types_isTimeElement_null', 0, () => {
-      let input = null;
-      let typesResult: string | boolean = '';
-      try {
-        typesResult = intl_messageformat_parser.isTimeElement(input);
-      } catch (e) {
-        typesResult = 'e';
-      }
-      expect(typesResult == 'e').assertTrue();
-    });
-    it('test_types_isTimeElement_undefined', 0, () => {
-      let input = undefined;
-      let typesResult: string | boolean = '';
-      try {
-        typesResult = intl_messageformat_parser.isTimeElement(input);
-      } catch (e) {
-        typesResult = 'e';
-      }
-      expect(typesResult == 'e').assertTrue();
+    it('should_contain_a_messageTextElement', 0, () => {
+      expect(typeof ast).assertEqual('object');
+      expect(ast[0].type).assertEqual(0);
+      expect((ast[0] as ESObject).value).assertEqual(msg);
     });
 
-    it('test_types_isSelectElement_true', 0, () => {
-      let input: intl_messageformat_parser.SelectElement = {
-        type: intl_messageformat_parser.TYPE.select, value: 'testValue', options: {}
-      };
-      const typesResult = intl_messageformat_parser.isSelectElement(input);
-      expect(typesResult).assertTrue();
-    });
-    it('test_types_isSelectElement_false', 0, () => {
-      let input: intl_messageformat_parser.PoundElement = {
-        type: intl_messageformat_parser.TYPE.pound
-      };
-      const typesResult = intl_messageformat_parser.isSelectElement(input);
-      expect(typesResult).assertFalse();
-    });
-    it('test_types_isSelectElement_null', 0, () => {
-      let input = null;
-      let typesResult: string | boolean = '';
-      try {
-        typesResult = intl_messageformat_parser.isSelectElement(input);
-      } catch (e) {
-        typesResult = 'e';
-      }
-      expect(typesResult == 'e').assertTrue();
-    });
-    it('test_types_isSelectElement_undefined', 0, () => {
-      let input = undefined;
-      let typesResult: string | boolean = '';
-      try {
-        typesResult = intl_messageformat_parser.isSelectElement(input);
-      } catch (e) {
-        typesResult = 'e';
-      }
-      expect(typesResult == 'e').assertTrue();
+    let msg1 = 'Hello, {name}!';
+    let ast1 = parse(msg1);
+
+    it('should_contain_3_elements', 0, () => {
+      expect(ast1.length).assertEqual(3);
     });
 
-    it('test_types_isPluralElement_true', 0, () => {
-      let input: intl_messageformat_parser.PluralElement = {
-        type: intl_messageformat_parser.TYPE.plural,
-        value: 'testValue',
-        options: {},
-        offset: 0,
-        pluralType: undefined
-      };
-      const typesResult = intl_messageformat_parser.isPluralElement(input)
-      expect(typesResult).assertTrue();
-    });
-    it('test_types_isPluralElement_false', 0, () => {
-      let input: intl_messageformat_parser.PoundElement = {
-        type: intl_messageformat_parser.TYPE.pound
-      };
-      const typesResult = intl_messageformat_parser.isPluralElement(input);
-      expect(typesResult).assertFalse();
-    });
-    it('test_types_isPluralElement_null', 0, () => {
-      let input = null;
-      let typesResult: string | boolean = '';
-      try {
-        typesResult = intl_messageformat_parser.isPluralElement(input);
-      } catch (e) {
-        typesResult = 'e';
-      }
-      expect(typesResult == 'e').assertTrue();
-    });
-    it('test_types_isPluralElement_undefined', 0, () => {
-      let input = undefined;
-      let typesResult: string | boolean = '';
-      try {
-        typesResult = intl_messageformat_parser.isPluralElement(input);
-      } catch (e) {
-        typesResult = 'e';
-      }
-      expect(typesResult == 'e').assertTrue();
+    it('should_first_contain_a_messageTextElement', 0, () => {
+      expect((ast1[0] as ESObject).value).assertEqual('Hello, ');
     });
 
-    it('test_types_isPoundElement_true', 0, () => {
-      let input: intl_messageformat_parser.PoundElement = {
-        type: intl_messageformat_parser.TYPE.pound
-      };
-      const typesResult = intl_messageformat_parser.isPoundElement(input);
-      expect(typesResult).assertTrue();
-    });
-    it('test_types_isPoundElement_false', 0, () => {
-      let input: intl_messageformat_parser.LiteralElement = {
-        type: intl_messageformat_parser.TYPE.literal, value: 'testValue'
-      };
-      const typesResult = intl_messageformat_parser.isPoundElement(input);
-      expect(typesResult).assertFalse();
-    });
-    it('test_types_isPoundElement_null', 0, () => {
-      let input = null;
-      let typesResult: string | boolean = '';
-      try {
-        typesResult = intl_messageformat_parser.isPoundElement(input);
-      } catch (e) {
-        typesResult = 'e';
-      }
-      expect(typesResult == 'e').assertTrue();
-    });
-    it('test_types_isPoundElement_undefined', 0, () => {
-      let input = undefined;
-      let typesResult: string | boolean = '';
-      try {
-        typesResult = intl_messageformat_parser.isPoundElement(input);
-      } catch (e) {
-        typesResult = 'e';
-      }
-      expect(typesResult == 'e').assertTrue();
+    it('should_then_contain_an_argumentElement', 0, () => {
+      expect(ast1[1].type).assertEqual(1);
     });
 
-    it('test_types_isTagElement_true', 0, () => {
-      let input: intl_messageformat_parser.TagElement = {
-        type: intl_messageformat_parser.TYPE.tag, value: 'testValue', children: []
-      };
-      const typesResult = intl_messageformat_parser.isTagElement(input);
-      expect(typesResult).assertTrue();
-    });
-    it('test_types_isTagElement_false', 0, () => {
-      let input: intl_messageformat_parser.PoundElement = {
-        type: intl_messageformat_parser.TYPE.pound
-      }
-      const typesResult = intl_messageformat_parser.isTagElement(input);
-      expect(typesResult).assertFalse();
-    });
-    it('test_types_isTagElement_null', 0, () => {
-      let input = null;
-      let typesResult: string | boolean = '';
-      try {
-        typesResult = intl_messageformat_parser.isTagElement(input);
-      } catch (e) {
-        typesResult = 'e';
-      }
-      expect(typesResult == 'e').assertTrue();
-    });
-    it('test_types_isTagElement_undefined', 0, () => {
-      let input = undefined;
-      let typesResult: string | boolean = '';
-      try {
-        typesResult = intl_messageformat_parser.isTagElement(input);
-      } catch (e) {
-        typesResult = 'e';
-      }
-      expect(typesResult == 'e').assertTrue();
+    it('should_finally_contain_a_messageTextElement', 0, () => {
+      expect((ast1[2] as ESObject).value).assertEqual('!');
     });
 
-    it('test_types_isNumberSkeleton_true', 0, () => {
-      let input: intl_messageformat_parser.NumberSkeleton = {
-        type: intl_messageformat_parser.SKELETON_TYPE.number, tokens: []
-      };
-      const typesResult = intl_messageformat_parser.isNumberSkeleton(input);
-      expect(typesResult).assertTrue();
-    });
-    it('test_types_isNumberSkeleton_false', 0, () => {
-      let input: intl_messageformat_parser.DateTimeSkeleton = {
-        type: intl_messageformat_parser.SKELETON_TYPE.dateTime, pattern: ''
-      };
-      const typesResult = intl_messageformat_parser.isNumberSkeleton(input);
-      expect(typesResult).assertFalse();
-    });
-    it('test_types_isNumberSkeleton_null', 0, () => {
-      let input = null;
-      let typesResult = intl_messageformat_parser.isNumberSkeleton(input);
-      expect(typesResult).assertFalse();
-    });
-    it('test_types_isNumberSkeleton_undefined', 0, () => {
-      let input = undefined;
-      let typesResult = intl_messageformat_parser.isNumberSkeleton(input);
-      expect(typesResult).assertFalse();
+    let msg2 = '{num, number, percent}';
+    let ast2 = parse(msg2);
+
+    it('should_contain_1_elements_1', 0, () => {
+      expect(ast2.length).assertEqual(1);
     });
 
-    it('test_types_isDateTimeSkeleton_true', 0, () => {
-      let input: intl_messageformat_parser.DateTimeSkeleton = {
-        type: intl_messageformat_parser.SKELETON_TYPE.dateTime, pattern: ''
-      };
-      const typesResult = intl_messageformat_parser.isDateTimeSkeleton(input);
-      expect(typesResult).assertTrue();
-    });
-    it('test_types_isDateTimeSkeleton_false', 0, () => {
-      let input: intl_messageformat_parser.NumberSkeleton = {
-        type: intl_messageformat_parser.SKELETON_TYPE.number, tokens: []
-      };
-      const typesResult = intl_messageformat_parser.isDateTimeSkeleton(input);
-      expect(typesResult).assertFalse();
-    });
-    it('test_types_isDateTimeSkeleton_null', 0, () => {
-      let input = null;
-      let typesResult = intl_messageformat_parser.isDateTimeSkeleton(input);
-      expect(typesResult).assertFalse();
-    });
-    it('test_types_isDateTimeSkeleton_undefined', 0, () => {
-      let input = undefined;
-      let typesResult = intl_messageformat_parser.isDateTimeSkeleton(input);
-      expect(typesResult).assertFalse();
+    it('should_contain_an_argumentElement', 0, () => {
+      let element = ast2[0];
+      expect(element.type).assertEqual(2);
+      expect((element as ESObject).style).assertEqual('percent');
     });
 
-    it('test_types_createLiteralElement_string', 0, () => {
-      const typesResult: intl_messageformat_parser.LiteralElement = intl_messageformat_parser.createLiteralElement('testValue');
-      expect(typesResult.value).assertEqual('testValue');
-    });
-    it('test_types_createLiteralElement_empty', 0, () => {
-      const typesResult: intl_messageformat_parser.LiteralElement = intl_messageformat_parser.createLiteralElement('');
-      expect(typesResult.value).assertEqual('');
-    });
-    it('test_types_createLiteralElement_null', 0, () => {
-      const typesResult: intl_messageformat_parser.LiteralElement = intl_messageformat_parser.createLiteralElement(null);
-      expect(typesResult.value).assertNull();
-    });
-    it('test_types_createLiteralElement_undefined', 0, () => {
-      const typesResult: intl_messageformat_parser.LiteralElement = intl_messageformat_parser.createLiteralElement(undefined);
-      expect(typesResult.value).assertUndefined();
+    let msg3 = '{numPhotos, plural, =0{no photos} =1{one photo} other{# photos}}';
+    let ast3 = parse(msg3);
+
+    it('should_contain_1_elements_ast3', 0, () => {
+      expect(ast3.length).assertEqual(1);
     });
 
-    it('test_types_createNumberElement_string', 0, () => {
-      const typesResult: intl_messageformat_parser.NumberElement = intl_messageformat_parser.createNumberElement('testValue');
-      expect(typesResult.value).assertEqual('testValue');
-    });
-    it('test_types_createNumberElement_empty', 0, () => {
-      const typesResult: intl_messageformat_parser.NumberElement = intl_messageformat_parser.createNumberElement('');
-      expect(typesResult.value).assertEqual('');
-    });
-    it('test_types_createNumberElement_null', 0, () => {
-      const typesResult: intl_messageformat_parser.NumberElement = intl_messageformat_parser.createNumberElement(null);
-      expect(typesResult.value).assertNull();
-    });
-    it('test_types_createNumberElement_undefined', 0, () => {
-      const typesResult: intl_messageformat_parser.NumberElement = intl_messageformat_parser.createNumberElement(undefined);
-      expect(typesResult.value).assertUndefined();
+    it('should_contain_an_argumentElement_ast3', 0, () => {
+      let element = ast3[0];
+      expect(element.type).assertEqual(6);
+      expect((element as ESObject).value).assertEqual('numPhotos');
     });
 
-    it('test_skeleton_parseDateTimeSkeleton_success', 0, () => {
-      let input = 'ymd';
-      let skeletonResult = intl_messageformat_parser.parseDateTimeSkeleton(input);
-      expect(skeletonResult != null).assertTrue();
-    });
-    it('test_skeleton_parseDateTimeSkeleton_fail', 0, () => {
-      let input = 'YMD';
-      let skeletonResult: string | intl_messageformat_parser.ExtendedDateTimeFormatOptions = '';
-      try {
-        skeletonResult = intl_messageformat_parser.parseDateTimeSkeleton(input);
-      } catch (e) {
-        skeletonResult = 'e';
-      }
-      expect(skeletonResult == 'e').assertTrue();
-    });
-    it('test_skeleton_parseDateTimeSkeleton_null', 0, () => {
-      let input = null;
-      let skeletonResult: string | intl_messageformat_parser.ExtendedDateTimeFormatOptions = '';
-      try {
-        skeletonResult = intl_messageformat_parser.parseDateTimeSkeleton(input);
-      } catch (e) {
-        skeletonResult = 'e';
-      }
-      expect(skeletonResult == 'e').assertTrue();
-    });
-    it('test_skeleton_parseDateTimeSkeleton_undefined', 0, () => {
-      let input = undefined;
-      let skeletonResult: string | intl_messageformat_parser.ExtendedDateTimeFormatOptions = '';
-      try {
-        skeletonResult = intl_messageformat_parser.parseDateTimeSkeleton(input);
-      } catch (e) {
-        skeletonResult = 'e';
-      }
-      expect(skeletonResult == 'e').assertTrue();
+    it('should_contain_3_options_ast3', 0, () => {
+      let options: ESObject = (ast3[0] as ESObject).options;
+      let keys: ESObject = (Object as ESObject).keys(options)
+      expect(keys.length).assertEqual(3);
+
+      let option: ESObject = options['=0'];
+      expect(option.value[0].type).assertEqual(0);
+      expect(option.value[0].value).assertEqual('no photos');
+      expect(keys[0]).assertEqual('=0');
+      expect(keys[1]).assertEqual('=1');
+      expect(keys[2]).assertEqual('other');
     });
 
-    it('test_skeleton_convertNumberSkeletonToNumberFormatOptions_percent', 0, () => {
-      let skeletonTokens: intl_messageformat_parser.NumberSkeletonToken[] = [{
-        stem: 'percent', options: ['testOptions']
-      }];
-      let skeletonResult = intl_messageformat_parser.convertNumberSkeletonToNumberFormatOptions(skeletonTokens);
-      expect(skeletonResult != null).assertTrue();
+    it('should_contain_nested_messageFormatPattern_values_for_each_option', 0, () => {
+      let options: ESObject = (ast3[0] as ESObject).options;
+
+      let value: ESObject = options['=0'].value;
+      expect(value[0].type).assertEqual(0);
+      expect(value.length).assertEqual(1);
+
+      let element: ESObject = value[0];
+
+      expect(element.type).assertEqual(0);
+      expect(element.value).assertEqual('no photos');
+      expect(options['=1'].value[0].value).assertEqual('one photo');
+      expect(options['other'].value[1].value).assertEqual(' photos');
     });
-    it('test_skeleton_convertNumberSkeletonToNumberFormatOptions_currency', 0, () => {
-      let skeletonTokens: intl_messageformat_parser.NumberSkeletonToken[] = [{
-        stem: 'currency', options: ['testOptions']
-      }];
-      let skeletonResult = intl_messageformat_parser.convertNumberSkeletonToNumberFormatOptions(skeletonTokens);
-      expect(skeletonResult != null).assertTrue();
+
+    let msg4 = '{floor, selectordinal, =0{ground} one{#st} two{#nd} few{#rd} other{#th}} floor';
+    let ast4 = parse(msg4);
+    it('should_contain_2_elements_ast4', 0, () => {
+      expect(ast4.length).assertEqual(2);
     });
-    it('test_skeleton_convertNumberSkeletonToNumberFormatOptions_null', 0, () => {
-      let skeletonTokens = null;
-      let skeletonResult: ESObject;
+
+    it('should_contain_an_argumentElement_ast4', 0, () => {
+      let element = ast4[0];
+      expect(element.type).assertEqual(6);
+      expect((element as ESObject).offset).assertEqual(0);
+      expect((element as ESObject).pluralType).assertEqual('ordinal');
+    });
+
+    it('should_contain_5_options_ast4', 0, () => {
+      let options: ESObject = (ast4[0] as ESObject).options;
+      let keys: ESObject = (Object as ESObject).keys(options)
+      expect(keys.length).assertEqual(5);
+
+      let option: ESObject = options['=0'];
+
+      expect(option.value[0].type).assertEqual(0);
+      expect(keys[0]).assertEqual('=0');
+      expect(option.value[0].value).assertEqual('ground');
+
+
+      expect(keys[1]).assertEqual('one');
+      expect(keys[2]).assertEqual('two');
+      expect(keys[3]).assertEqual('few');
+      expect(keys[4]).assertEqual('other');
+    });
+
+    it('should_contain_nested_messageFormatPattern_values_for_each_option_ast4', 0, () => {
+      let options: ESObject = (ast4[0] as ESObject).options;
+
+      let value: ESObject = options['=0'].value;
+      expect(value[0].type).assertEqual(0);
+      expect(value.length).assertEqual(1);
+
+      let element: ESObject = value[0];
+
+      expect(element.type).assertEqual(0);
+      expect(element.value).assertEqual('ground');
+
+      expect(options['=0'].value[0].value).assertEqual('ground');
+      expect(options['one'].value[1].value).assertEqual('st');
+      expect(options['two'].value[1].value).assertEqual('nd');
+      expect(options['few'].value[1].value).assertEqual('rd');
+      expect(options['other'].value[1].value).assertEqual('th');
+    });
+
+    let msg5 = '{gender, select, female {woman} male {man} other {person}}';
+    let ast5 = parse(msg5);
+
+    it('should_contain_1_elements_ast5', 0, () => {
+      expect(ast5.length).assertEqual(1);
+    });
+
+    it('should_contain_an_argumentElement_ast5', 0, () => {
+      let element = ast5[0];
+      expect(element.type).assertEqual(5);
+      expect((element as ESObject).value).assertEqual('gender');
+    });
+
+    it('should_contain_3_options_ast5', 0, () => {
+      let options: ESObject = (ast5[0] as ESObject).options;
+      let keys: ESObject = (Object as ESObject).keys(options)
+      expect(keys.length).assertEqual(3);
+
+      let option: ESObject = options['female'];
+      expect(option.value[0].type).assertEqual(0);
+      expect(option.value[0].value).assertEqual('woman');
+
+      expect(keys[1]).assertEqual('male');
+      expect(keys[2]).assertEqual('other');
+    });
+
+    it('should_contain_nested_messageFormatPattern_values_for_each_option_ast5', 0, () => {
+      let options: ESObject = (ast5[0] as ESObject).options;
+
+      let value: ESObject = options['female'].value;
+      expect(value[0].type).assertEqual(0);
+      expect(value.length).assertEqual(1);
+
+      let element: ESObject = value[0];
+      expect(element.type).assertEqual(0);
+      expect(element.value).assertEqual('woman');
+      expect(options['male'].value[0].value).assertEqual('man');
+      expect(options['other'].value[0].value).assertEqual('person');
+    });
+
+    it('should_allow_whitespace_in_and_around_messageTextElement_s', 0, () => {
+      let msg = '   some random test   ';
+      let ast = parse(msg);
+      expect((ast[0] as ESObject).value).assertEqual(msg);
+    });
+
+    it('should_allow_whitespace_in_argumentElement_s', 0, () => {
+      let msg = '{  num , number,percent  }';
+      let ast = parse(msg);
+      let element = ast[0];
+      expect((element as ESObject).value).assertEqual('num');
+      expect(element.type).assertEqual(2);
+      expect((element as ESObject).style).assertEqual('percent');
+    });
+
+    it('not_allow_escaping_of_syntax_chars_via', 0, () => {
       try {
-        skeletonResult = intl_messageformat_parser.convertNumberSkeletonToNumberFormatOptions(skeletonTokens);
+        parse('\\{')
+        parse('\\}')
+        parse('\\u003C')
+        parse('\\#')
       } catch (e) {
-        skeletonResult = 'e';
+        expect(e.message).assertEqual('Expected argNameOrNumber but end of input found.')
       }
-      expect(skeletonResult == 'e').assertTrue();
     });
-    it('test_skeleton_convertNumberSkeletonToNumberFormatOptions_undefined', 0, () => {
-      let skeletonTokens = undefined;
-      let skeletonResult: ESObject;
-      try {
-        skeletonResult = intl_messageformat_parser.convertNumberSkeletonToNumberFormatOptions(skeletonTokens);
-      } catch (e) {
-        skeletonResult = 'e';
-      }
-      expect(skeletonResult == 'e').assertTrue();
+
+    it('should_allow_backslash_chars_in_messageTextElement_s', 0, () => {
+
+      expect((parse('\\u005c')[0] as ESObject).value).assertEqual('\\u005c');
+      expect((parse('\\\\')[0] as ESObject).value).assertEqual('\\\\');
     });
+
   })
 }
