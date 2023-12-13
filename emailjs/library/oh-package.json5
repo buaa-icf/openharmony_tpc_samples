@@ -4,7 +4,7 @@
   "type": "module",
   "types": "",
   "description": "send text/html emails and attachments (files, streams and strings) from node.js to any smtp server",
-  "main": "index.ets",
+  "main": "index.ts",
   "author": "ohos_tpc",
   "ohos": {
     "org": "opensource"
