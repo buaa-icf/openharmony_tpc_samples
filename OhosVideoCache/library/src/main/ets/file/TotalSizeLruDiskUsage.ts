@@ -13,12 +13,20 @@
  * limitations under the License.
  */
 
-import HttpProxyCacheServer from './src/main/ets/HttpProxyCacheServer'
-import HttpProxyCacheServerBuilder from './src/main/ets/HttpProxyCacheServerBuilder'
-import { CacheListener } from './src/main/ets/CacheListener'
-import FileNameGenerator from './src/main/ets/file/FileNameGenerator'
-import HeaderInjector from './src/main/ets/headers/HeaderInjector'
-import DiskUsage from './src/main/ets/file/DiskUsage'
+import LruDiskUsage from './LruDiskUsage';
 
-export { HttpProxyCacheServer, HttpProxyCacheServerBuilder, CacheListener, FileNameGenerator, HeaderInjector, DiskUsage
+export default class TotalSizeLruDiskUsage extends LruDiskUsage {
+  private maxSize: number;
+
+  constructor(maxSize: number) {
+    super()
+    if (maxSize <= 0) {
+      throw new Error("Max size must be positive number!");
+    }
+    this.maxSize = maxSize;
+  }
+
+  protected accept(file: string, totalSize: number, totalCount: number): boolean {
+    return totalSize <= this.maxSize;
+  }
 }

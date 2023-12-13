@@ -12,13 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import LruDiskUsage from './LruDiskUsage';
 
-import HttpProxyCacheServer from './src/main/ets/HttpProxyCacheServer'
-import HttpProxyCacheServerBuilder from './src/main/ets/HttpProxyCacheServerBuilder'
-import { CacheListener } from './src/main/ets/CacheListener'
-import FileNameGenerator from './src/main/ets/file/FileNameGenerator'
-import HeaderInjector from './src/main/ets/headers/HeaderInjector'
-import DiskUsage from './src/main/ets/file/DiskUsage'
+export default class TotalCountLruDiskUsage extends LruDiskUsage {
+  private maxCount: number;
 
-export { HttpProxyCacheServer, HttpProxyCacheServerBuilder, CacheListener, FileNameGenerator, HeaderInjector, DiskUsage
+  constructor(maxCount: number) {
+    super()
+    if (maxCount <= 0) {
+      throw new Error("Max count must be positive number!");
+    }
+    this.maxCount = maxCount;
+  }
+
+  protected accept(file: string, totalSize: number, totalCount: number): boolean {
+    return totalCount <= this.maxCount;
+  }
 }

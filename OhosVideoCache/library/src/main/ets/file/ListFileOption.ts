@@ -13,12 +13,10 @@
  * limitations under the License.
  */
 
-import HttpProxyCacheServer from './src/main/ets/HttpProxyCacheServer'
-import HttpProxyCacheServerBuilder from './src/main/ets/HttpProxyCacheServerBuilder'
-import { CacheListener } from './src/main/ets/CacheListener'
-import FileNameGenerator from './src/main/ets/file/FileNameGenerator'
-import HeaderInjector from './src/main/ets/headers/HeaderInjector'
-import DiskUsage from './src/main/ets/file/DiskUsage'
+import {Filter} from "@ohos.file.fs";
 
-export { HttpProxyCacheServer, HttpProxyCacheServerBuilder, CacheListener, FileNameGenerator, HeaderInjector, DiskUsage
+export default class ListFileOption{
+    public recursion: boolean = false;
+    public listNum: number = 0;
+    public filter: Filter = {};
 }

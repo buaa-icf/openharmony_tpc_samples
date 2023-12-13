@@ -1,5 +1,5 @@
 {
-  "name": "@ohos/video_cache",
+  "name": "@ohos/video-cache",
   "version": "1.0.0",
   "type": "module",
   "types": "",
@@ -11,7 +11,9 @@
   },
   "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/OhosVideoCache",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "@ohos/crypto-js": "^2.0.2"
+  },
   "keywords": [
     "Video Cache",
     "Http Proxy",

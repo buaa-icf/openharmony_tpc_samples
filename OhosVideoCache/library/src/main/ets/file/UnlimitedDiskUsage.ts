@@ -13,12 +13,11 @@
  * limitations under the License.
  */
 
-import HttpProxyCacheServer from './src/main/ets/HttpProxyCacheServer'
-import HttpProxyCacheServerBuilder from './src/main/ets/HttpProxyCacheServerBuilder'
-import { CacheListener } from './src/main/ets/CacheListener'
-import FileNameGenerator from './src/main/ets/file/FileNameGenerator'
-import HeaderInjector from './src/main/ets/headers/HeaderInjector'
-import DiskUsage from './src/main/ets/file/DiskUsage'
+import DiskUsage from './DiskUsage';
+import fs from '@ohos.file.fs';
 
-export { HttpProxyCacheServer, HttpProxyCacheServerBuilder, CacheListener, FileNameGenerator, HeaderInjector, DiskUsage
+export class UnlimitedDiskUsage implements DiskUsage {
+  touch(file: string): void {
+    // do nothing
+  }
 }
