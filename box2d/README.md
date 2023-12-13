@@ -165,7 +165,7 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
 |                                    |----Test.ets                      # canvas相关初始化设置
 |                               |----Tests                              # 所有效果具体实现
 |                               |----Testbed.ts                         # 对外接口
-|     |---- box2d                                                       # box2d核心库
+|     |---- library                                                       # box2d核心库
 |	        |----src
 |                |----main
 |                     |----ets
