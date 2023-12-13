@@ -10,6 +10,7 @@
                 <filteritem type="filename" name="*.proto" desc="protobuf文件，不支持注释方式添加版权头"/>
                 <filteritem type="filename" name="hvigorw" desc="工程构建文件，不支持注释方式添加版权头"/>
                 <filteritem type="filename" name="LICENSE" desc="版权文件，不添加版权头"/>
+				<filteritem type="filename" name="LICENSE-MIT.txt" desc="版权文件，不添加版权头"/>
                 <filteritem type="filepath" name="newsie/src/main/ets" desc="此文件夹第三方开源软件源码"/>
                 <filteritem type="filename" name="hvigorw.bat" desc="工程构建文件，不支持注释方式添加版权头"/>
                 <filteritem type="filepath" name="unrar/library/src/main/cpp/libunrar/.*" desc="第三方开源库libunrar源码，维持原样，以防版权许可头篡改"/>
@@ -39,6 +40,7 @@
                 <filteritem type="filename" name="hvigorw" desc="工程构建文件，不支持注释方式添加许可头"/>
                 <filteritem type="filepath" name="newsie/src/main/ets" desc="此文件夹第三方开源软件源码"/>
                 <filteritem type="filename" name="LICENSE" desc="版权文件，不添加版权头"/>
+				<filteritem type="filename" name="LICENSE-MIT.txt" desc="版权文件，不添加版权头"/>
                 <filteritem type="filename" name="hvigorw.bat" desc="工程构建文件，不支持注释方式添加许可头"/>
                 <filteritem type="filepath" name="unrar/library/src/main/cpp/libunrar/.*" desc="第三方开源库libunrar源码，维持原样，以防版权许可头篡改"/>
                 <filteritem type="filepath" name="libcoap/libcoap/src/main/cpp/src/.*" desc="第三方开源软件libocap源码，维持原样，以防版权许可头篡改"/>

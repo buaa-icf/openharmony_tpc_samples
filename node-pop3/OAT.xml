@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <oatconfig>
         <filefilterlist>
@@ -14,7 +14,7 @@
                 <filteritem type="filename" name="module.json5" desc="项目工程默认文件，不需要添加版权头"/>
                 <filteritem type="filename" name="hvigorw"  desc="项目工程默认文件，不需要添加版权头"/>
                 <filteritem type="filename" name="hvigorw.bat" desc="项目工程默认文件，不需要添加版权头"/>
-				<filteritem type="filename" name="LICENSE" desc="项目工程LICENSE申明文件"/>
+				<filteritem type="filename" name="LICENSE-MIT.txt" desc="项目工程LICENSE申明文件"/>
 				<filteritem type="filename" name="NOTICE" desc="项目工程NOTICE申明文件"/>
                 <filteritem type="filename" name="oh-package.json5" desc="项目工程默认文件，不需要添加版权头"/>
                 <filteritem type="filepath" name="entry/oh-package.json5" desc="项目工程默认文件，不需要添加版权头"/>
@@ -32,7 +32,7 @@
                 <filteritem type="filename" name="helper.ts" desc="源库默认的版权头,不做修改"/>
                 <filteritem type="filename" name="hvigorfile.ts" desc="项目工程默认文件，不需要添加版权头"/>
                 <filteritem type="filename" name="module.json5" desc="项目工程默认文件，不需要添加版权头"/>
-                <filteritem type="filename" name="LICENSE" desc="项目工程LICENSE申明文件"/>
+                <filteritem type="filename" name="LICENSE-MIT.txt" desc="项目工程LICENSE申明文件"/>
 				<filteritem type="filename" name="NOTICE" desc="项目工程NOTICE申明文件"/>
                 <filteritem type="filename" name="hvigorw" desc="项目工程默认文件，不需要添加版权头"/>
                 <filteritem type="filename" name="hvigorw.bat" desc="项目工程默认文件，不需要添加版权头"/>
