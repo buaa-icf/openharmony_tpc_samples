@@ -13,19 +13,10 @@
  * limitations under the License.
  */
 
-@Component
-export struct MainPage {
-  @State message: string = 'Hello World';
+export default class ProgressValue {
+  public receiveSize: number = 0;
+  public totalSize: number = 0;
 
-  build() {
-    Row() {
-      Column() {
-        Text(this.message)
-          .fontSize(50)
-          .fontWeight(FontWeight.Bold)
-      }
-      .width('100%')
-    }
-    .height('100%')
+  constructor() {
   }
 }
