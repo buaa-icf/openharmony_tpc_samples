@@ -6,6 +6,6 @@
   "repository": {},
   "version": "2.0.0",
   "dependencies": {
-    "@ohos/jsonschema": "file:../jsonschema"
+    "@ohos/jsonschema": "file:../library"
   }
 }
