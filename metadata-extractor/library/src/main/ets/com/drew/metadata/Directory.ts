@@ -591,9 +591,9 @@ abstract class Directory {
   {
     let o = this.getObject(tagType);
     if(o instanceof Date){
-      console.info("Directory getDate:"+JSON.stringify(o))
+      return o;
     }
-    return o;
+    return null;
   }
 
   /** Returns the specified tag's value as a Rational.  If the value is unset or cannot be converted, <code>null</code> is returned. */

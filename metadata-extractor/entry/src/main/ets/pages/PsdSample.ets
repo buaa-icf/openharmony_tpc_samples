@@ -29,19 +29,24 @@ struct PsdSample{
     fileDir = GlobalContext.getContext().getValue("filesDir") as string;
     let path = fileDir.concat("/8x4x8bit-Grayscale.psd")
       this.data.splice(0,this.data.length)
+    try {
       let metadata: Metadata = ImageMetadataReader.readMetadata(path)
-     console.info("psd sample meta:"+JSON.stringify(metadata))
+
       // iterate over the metadata and print to System.out
 
-    metadata.getDirectories().forEach((value:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
-      let directoryName:string = value.getName()
-      value.getTags().forEach((tag:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
-        let tagName:string = tag.getTagName()
-        let description:string = tag.getDescription()
-        this.data.push("[" + directoryName + "] " + tagName + " = " + description)
+      metadata.getDirectories().forEach((value:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
+        let directoryName:string = value.getName()
+        value.getTags().forEach((tag:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
+          let tagName:string = tag.getTagName()
+          let description:string = tag.getDescription()
+          this.data.push("[" + directoryName + "] " + tagName + " = " + description)
+        })
       })
-    })
-    console.info("psd sample meta all:"+JSON.stringify(this.data))
+      console.info("psd sample meta all:"+JSON.stringify(this.data))
+    } catch (err) {
+      console.error("metadata error..")
+    }
+
 
   }
 

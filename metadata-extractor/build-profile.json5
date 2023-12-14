@@ -1,6 +1,7 @@
 {
   "app": {
-    "signingConfigs": [],
+    "signingConfigs": [
+    ],
     "products": [
       {
         "name": "default",
@@ -26,8 +27,8 @@
       ]
     },
     {
-      "name": "metadata_extractor",
-      "srcPath": "./metadata_extractor"
+      "name": "library",
+      "srcPath": "./library"
     }
   ]
 }

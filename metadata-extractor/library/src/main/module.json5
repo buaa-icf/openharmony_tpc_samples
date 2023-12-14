@@ -1,6 +1,6 @@
 {
   "module": {
-    "name": "metadata_extractor",
+    "name": "library",
     "type": "har",
     "deviceTypes": [
       "default",

@@ -30,15 +30,20 @@ struct AdobeJpeg {
   private getMetaData() {
     fileDir = GlobalContext.getContext().getValue("filesDir") as string;
     let path = fileDir.concat("/adobeJpeg1.jpg.appe")
-    let metadata = new  Metadata()
-    new AdobeJpegReader().extract(new SequentialByteArrayReader(FileUtil.readBytes(path)), metadata);
-    for (let directory of metadata.getDirectories()) {
-      for (let tag of directory.getTags()) {
-        let tagName = tag.getTagName()
-        let description = tag.getDescription()
-        this.data.push("[" + tagName + "] " + tagName + " = " + description)
+    try {
+      let metadata = new  Metadata()
+      new AdobeJpegReader().extract(new SequentialByteArrayReader(FileUtil.readBytes(path)), metadata);
+      for (let directory of metadata.getDirectories()) {
+        for (let tag of directory.getTags()) {
+          let tagName = tag.getTagName()
+          let description = tag.getDescription()
+          this.data.push("[" + tagName + "] " + tagName + " = " + description)
+        }
       }
+    } catch (err) {
+      console.error("metadata error..")
     }
+
   }
 
   build() {

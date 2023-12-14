@@ -1,5 +1,5 @@
 {
-  "license": "Apache License 2.0",
+  "license": "Apache-2.0 License",
   "devDependencies": {},
   "keywords": [
     "OpenHarmony",
@@ -8,10 +8,10 @@
     "HarmonyOS"
   ],
   "author": "hihope",
-  "name": "metadata_extractor",
+  "name": "@ohos/metadata-extractor",
   "description": "Extracts Exif, IPTC, XMP, ICC and other metadata from image, video and audio files",
   "main": "index.ets",
-  "repository": "https://gitee.com/hihopeorg/metadata-extractor",
+  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/metadata-extracto",
   "version": "2.0.0",
   "tags": [
     "OpenHarmony",
