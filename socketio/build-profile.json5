@@ -34,8 +34,8 @@
       ]
     },
     {
-      "name": "socketio",
-      "srcPath": "./socketio"
+      "name": "library",
+      "srcPath": "./library"
     }
   ]
 }

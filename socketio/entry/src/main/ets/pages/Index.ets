@@ -238,13 +238,6 @@ struct Index {
             .onClick(() => {
               this.login(this.username)
             })
-          Button('进入自测界面')
-            .margin(20)
-            .onClick(() => {
-              router.pushUrl({
-                url: 'pages/MyTestPage'
-              })
-            })
 
         }
       }
