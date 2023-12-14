@@ -7,9 +7,9 @@
   "main": "",
   "version": "2.0.0",
   "dependencies": {
-    "ml-matrix": "^6.10.2",
+    "ml-matrix": "6.10.2",
     "bignumber.js": "^9.1.0",
-    "mathjs": "^11.2.0",
+    "mathjs": "11.2.0",
     "long": "^5.2.0"
   }
 }
