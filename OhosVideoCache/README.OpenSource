@@ -1,0 +1,11 @@
+[
+    {
+        "Name": " AndroidVideoCache ",
+        "License": " Apache-2.0 license ",
+        "License File": " LICENSE ",
+        "Version Number": " 2.7.1 ",
+        "Owner": "xiafeng@huawei.com"
+        "Upstream URL": " https://github.com/danikula/AndroidVideoCache ",
+        "Description": "  AndroidVideoCache allows to add caching support to your VideoView/MediaPlayer, ExoPlayer or any another player with help of single line! "
+    }
+]

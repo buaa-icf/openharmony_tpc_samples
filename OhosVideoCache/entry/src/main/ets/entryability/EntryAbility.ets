@@ -18,6 +18,8 @@ import hilog from '@ohos.hilog';
 import UIAbility from '@ohos.app.ability.UIAbility';
 import Want from '@ohos.app.ability.Want';
 import window from '@ohos.window';
+import { HttpProxyCacheServer, HttpProxyCacheServerBuilder } from '@ohos/video-cache';
+import GlobalProxyServer from '../GlobalProxyServer';
 
 export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
@@ -31,7 +33,9 @@ export default class EntryAbility extends UIAbility {
   onWindowStageCreate(windowStage: window.WindowStage): void {
     // Main window is created, set main page for this ability
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
-
+    GlobalProxyServer?.getInstance()?.setContext(this.context);
+    let server: HttpProxyCacheServer = new HttpProxyCacheServerBuilder(this.context).build();
+    GlobalProxyServer?.getInstance()?.setServer(server);
     windowStage.loadContent('pages/Index', (err, data) => {
       if (err.code) {
         hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');

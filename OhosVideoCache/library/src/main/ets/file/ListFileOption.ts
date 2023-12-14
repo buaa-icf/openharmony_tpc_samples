@@ -13,19 +13,10 @@
  * limitations under the License.
  */
 
-@Component
-export struct MainPage {
-  @State message: string = 'Hello World';
+import {Filter} from "@ohos.file.fs";
 
-  build() {
-    Row() {
-      Column() {
-        Text(this.message)
-          .fontSize(50)
-          .fontWeight(FontWeight.Bold)
-      }
-      .width('100%')
-    }
-    .height('100%')
-  }
+export default class ListFileOption{
+    public recursion: boolean = false;
+    public listNum: number = 0;
+    public filter: Filter = {};
 }
