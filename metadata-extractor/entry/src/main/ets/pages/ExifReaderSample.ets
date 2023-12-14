@@ -37,6 +37,7 @@ struct ExifReaderSample {
       new ExifReader().extract(new ByteArrayReader(FileUtil.readBytes(path)), metadata, ExifReader.JPEG_SEGMENT_PREAMBLE.length, null);
 
       metadata.getDirectories().forEach((value:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
+        console.debug("metadata-extractor exif directory parent:"+value.getParent())
         let directoryName:string = value.getName()
         value.getTags().forEach((tag:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
           let tagName:string = tag.getTagName()

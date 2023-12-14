@@ -33,7 +33,12 @@ struct PngSample {
 
     try {
       let metadata: Metadata =  ImageMetadataReader.readMetadata(pathPng);
+      console.debug("metadata-extractor png directory count:"+metadata.getDirectoryCount())
       metadata.getDirectories().forEach((value:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
+        console.debug("metadata-extractor png directory type:"+JSON.stringify(metadata.getDirectoriesOfType(value)))
+        console.debug("metadata-extractor png directory first type:"+metadata.getFirstDirectoryOfType(value))
+        console.debug("metadata-extractor png directory tag count:"+value.getTagCount())
+        console.debug("metadata-extractor png directory directory data:"+value.getDate(3))
         let directoryName:string = value.getName()
         value.getTags().forEach((tag:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
           let tagName:string = tag.getTagName()
