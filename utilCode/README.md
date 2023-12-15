@@ -1145,7 +1145,7 @@ img.getComponent(4, (err, component) => {
 │                   ├── Index.ets        # 首页，测试页入口
 │                   ├── PicturePage.ets  # 图片测试页
 │                   └──  TimePage.ets     #时间测试页
-├── util_code      # 功能代码模块
+├── library      # 功能代码模块
 │   └── src
 │       └── main
 │           └── utilcode  # 功能代码模块

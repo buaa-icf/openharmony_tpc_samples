@@ -1,6 +1,6 @@
 {
   "module": {
-    "name": "util_code",
+    "name": "library",
     "type": "har",
     "deviceTypes": [
       "default",

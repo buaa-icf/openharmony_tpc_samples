@@ -10,7 +10,7 @@
     "randomcolor": "^0.6.2",
     "gcoord": "^1.0.5",
     "memory-cache": "^0.2.0",
-    "@ohos/util_code": "file:../util_code",
+    "@ohos/util_code": "file:../library",
     "imtype": "^1.0.0",
     "time-ampm": "^2.0.0"
   }

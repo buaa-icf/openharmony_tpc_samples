@@ -24,8 +24,8 @@
       ]
     },
     {
-      "name": "util_code",
-      "srcPath": "./util_code"
+      "name": "library",
+      "srcPath": "./library"
     }
   ]
 }
