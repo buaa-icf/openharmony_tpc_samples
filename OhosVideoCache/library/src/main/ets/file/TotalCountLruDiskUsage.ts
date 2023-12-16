@@ -15,7 +15,7 @@
 import LruDiskUsage from './LruDiskUsage';
 
 export default class TotalCountLruDiskUsage extends LruDiskUsage {
-  private maxCount: number;
+  maxCount: number = 0;
 
   constructor(maxCount: number) {
     super()

@@ -63,38 +63,6 @@ struct DiyFileNameGeneratorPage {
     this.SRC_LIST = CommonConstants.VIDEO_HTTPS_LISTS;
     this.index = CommonConstants.VIDEO_HTTPS_LISTS.map(item => item).indexOf(this.videoName);
     Logger.info(TAG, 'aboutToAppear success, and play source is' + this.videoName);
-    let self = this;
-
-    class MyCacheListener implements CacheListener {
-      onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-        self.currentCachePercent = percentsAvailable;
-      }
-    }
-
-    class MyFileNameGenerator implements FileNameGenerator {
-      generate(url: string): string {
-        let start: number = url.lastIndexOf("/");
-        let end: number = url.lastIndexOf(".");
-        let newName: string = url.substring(start, end)
-        return newName
-      }
-    }
-
-    let server: HttpProxyCacheServer = new HttpProxyCacheServerBuilder(getContext())
-      .setFileNameGenerator(new MyFileNameGenerator())
-      .build();
-    server.registerCacheListener(new MyCacheListener(),this.videoName);
-    GlobalProxyServer?.getInstance()?.setServer(server)
-    let proxyUrl: string | undefined = await GlobalProxyServer?.getInstance()?.getServer()?.getProxyUrl(this.videoName)
-    let newUrl = proxyUrl ? proxyUrl : this.videoName;
-    // 由于avplayer不支持直接加载本地文件路径 这里需要转化为fd的路径
-    if (newUrl.startsWith(getContext().cacheDir)) {
-      let file = fs.openSync(newUrl, fs.OpenMode.READ_ONLY);
-      newUrl = "fd://" + file.fd;
-    }
-    if (this.avPlayer) {
-      this.avPlayer.url = newUrl;
-    }
   }
 
   // 界面销毁监听
@@ -277,6 +245,7 @@ struct DiyFileNameGeneratorPage {
   async createAVPlayer(): Promise<boolean> {
     Logger.info(TAG, 'createAVPlayer start');
     let ret = false;
+    let self = this;
     if (this.avPlayer !== undefined) {
       await this.avPlayer?.release();
       this.avPlayer = undefined;
@@ -285,6 +254,37 @@ struct DiyFileNameGeneratorPage {
     if (this.avPlayer !== undefined) {
       ret = true;
     }
+
+    class MyCacheListener implements CacheListener {
+      onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
+        if (percentsAvailable >= self.currentCachePercent) {
+          self.currentCachePercent = percentsAvailable;
+        }
+      }
+    }
+
+    class MyFileNameGenerator implements FileNameGenerator {
+      generate(url: string): string {
+        let start: number = url.lastIndexOf("/");
+        let end: number = url.lastIndexOf(".");
+        let newName: string = url.substring(start, end)
+        return newName
+      }
+    }
+
+    let server: HttpProxyCacheServer = new HttpProxyCacheServerBuilder(getContext())
+      .setFileNameGenerator(new MyFileNameGenerator())
+      .build();
+    server.registerCacheListener(new MyCacheListener(), this.videoName);
+    GlobalProxyServer?.getInstance()?.setServer(server)
+    let proxyUrl: string | undefined = await GlobalProxyServer?.getInstance()?.getServer()?.getProxyUrl(this.videoName)
+    let newUrl = proxyUrl ? proxyUrl : this.videoName;
+    // 由于avplayer不支持直接加载本地文件路径 这里需要转化为fd的路径
+    if (newUrl.startsWith(getContext().cacheDir)) {
+      let file = fs.openSync(newUrl, fs.OpenMode.READ_ONLY);
+      newUrl = "fd://" + file.fd;
+    }
+    this.fdPath = newUrl;
     this.avPlayer.url = this.fdPath;
     Logger.info(TAG, 'createAVPlayer end');
     return ret;
@@ -376,13 +376,6 @@ struct DiyFileNameGeneratorPage {
     }
   }
 
-  /**
-   * 初始化代理，用于启动边播放边缓存功能
-   */
-  initProxy() {
-    // TODO 等library代码合入此处需要加入相关的代码
-  }
-
   // 获取轨道信息接口
   async getTrackDescription(): Promise<void> {
     await this.avPlayer?.getTrackDescription().then((arrayList: Array<media.MediaDescription>) => {
@@ -431,17 +424,22 @@ struct DiyFileNameGeneratorPage {
     this.isBuffering = false;
     Logger.info(TAG, 'file id is : ' + this.fdPath);
     let self = this;
+
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-        self.currentCachePercent = percentsAvailable;
+        if (percentsAvailable >= self.currentCachePercent) {
+          self.currentCachePercent = percentsAvailable;
+        }
       }
     }
+
     GlobalProxyServer?.getInstance()?.getServer()?.registerCacheListener(new MyCacheListener(), this.fdPath)
     let proxyUrl: string | undefined = await GlobalProxyServer?.getInstance()?.getServer()?.getProxyUrl(this.fdPath)
     let newUrl = proxyUrl ? proxyUrl : this.fdPath;
     if (newUrl.startsWith(getContext().cacheDir)) {
       let file = fs.openSync(newUrl, fs.OpenMode.READ_ONLY);
       newUrl = "fd://" + file.fd;
+      self.currentCachePercent = 100;
     }
     // 开始进入下一个视频的播放
     if (this.getState() === 'idle') {
@@ -470,17 +468,22 @@ struct DiyFileNameGeneratorPage {
     this.isBuffering = false;
     Logger.info(TAG, 'file id is : ' + this.fdPath);
     let self = this;
+
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-        self.currentCachePercent = percentsAvailable;
+        if (percentsAvailable >= self.currentCachePercent) {
+          self.currentCachePercent = percentsAvailable;
+        }
       }
     }
+
     GlobalProxyServer?.getInstance()?.getServer()?.registerCacheListener(new MyCacheListener(), this.fdPath)
     let proxyUrl: string | undefined = await GlobalProxyServer?.getInstance()?.getServer()?.getProxyUrl(this.fdPath)
     let newUrl = proxyUrl ? proxyUrl : this.fdPath;
     if (newUrl.startsWith(getContext().cacheDir)) {
       let file = fs.openSync(newUrl, fs.OpenMode.READ_ONLY);
       newUrl = "fd://" + file.fd;
+      self.currentCachePercent = 100;
     }
     if (this.getState() === 'idle') {
       if (this.avPlayer != undefined) {

@@ -134,6 +134,9 @@ export default class HttpUrlSource implements Source {
 
   close(): void {
     try {
+      if (this.interId != 0 - Number.MAX_VALUE) {
+        clearInterval(this.interId)
+      }
       this.isHeaderDealFinish = false;
       this.connection?.off('headersReceive');
       this.connection?.off('dataReceive');

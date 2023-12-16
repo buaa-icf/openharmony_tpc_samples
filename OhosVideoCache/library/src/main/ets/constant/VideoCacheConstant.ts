@@ -20,6 +20,7 @@ export class VideoCacheConstant {
   public static SEND_TOTAL_SIZE_ID: number = 4; // 发出事件---用于接受主线程处理好的TotalSize
   public static GET_ACCEPT_ID: number = 5; // 发出事件---向主线程询问该缓存文件是否需要删除
   public static SEND_ACCEPT_ID: number = 6; // 发出事件---向子线程返回缓存文件是否需要删除的结论
+  public static SHUT_DOWN_TASKPOOL: number = 7; // 发出事件---关闭子线程
   public static PING_RESPONSE: string = "ping ok" // 本地构造的用于本地代理服务器返回给播放器发起的ping请求的响应结果
   public static PING_REQUEST: string = "ping" // 发出事件---用于构造播放器发起的ping请求
 

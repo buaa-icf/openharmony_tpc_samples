@@ -61,21 +61,25 @@ struct IjkVideoPlayerPage {
   async aboutToAppear() {
     LogUtils.getInstance().LOGI("aboutToAppear");
     this.videoUrl = videoUrls[0];
-
     let self = this;
 
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-        self.currentCachePercent = percentsAvailable;
+        if (percentsAvailable >= self.currentCachePercent) {
+          self.currentCachePercent = percentsAvailable;
+        }
       }
     }
 
     let server: HttpProxyCacheServer = new HttpProxyCacheServerBuilder(getContext())
       .build();
-    server.registerCacheListener(new MyCacheListener(),this.videoUrl);
+    server.registerCacheListener(new MyCacheListener(), this.videoUrl);
     GlobalProxyServer?.getInstance()?.setServer(server)
     let proxyUrl: string | undefined = await GlobalProxyServer?.getInstance()?.getServer()?.getProxyUrl(this.videoUrl)
     this.videoUrl = proxyUrl ? proxyUrl : this.videoUrl;
+    if (this.videoUrl.startsWith(getContext().cacheDir)) {
+      self.currentCachePercent = 100;
+    }
   }
 
   aboutToDisappear() {
@@ -475,14 +479,21 @@ struct IjkVideoPlayerPage {
     this.startProgressTask();
     this.videoUrl = videoUrls[curIndex]
     let self = this;
+
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-        self.currentCachePercent = percentsAvailable;
+        if (percentsAvailable >= self.currentCachePercent) {
+          self.currentCachePercent = percentsAvailable;
+        }
       }
     }
+
     GlobalProxyServer?.getInstance()?.getServer()?.registerCacheListener(new MyCacheListener(), this.videoUrl)
     let proxyUrl: string | undefined = await GlobalProxyServer?.getInstance()?.getServer()?.getProxyUrl(this.videoUrl)
     this.videoUrl = proxyUrl ? proxyUrl : this.videoUrl;
+    if (this.videoUrl.startsWith(getContext().cacheDir)) {
+      self.currentCachePercent = 100;
+    }
     this.play(this.videoUrl);
   }
 }

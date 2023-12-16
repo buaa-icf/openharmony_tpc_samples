@@ -31,6 +31,8 @@ import MessageCallBackBean from './bean/MessageCallBackBean';
 
 import buffer from '@ohos.buffer';
 import { Context } from '@ohos.abilityAccessCtrl';
+import emitter from '@ohos.events.emitter';
+import { VideoCacheConstant } from './constant/VideoCacheConstant';
 
 
 export default class HttpProxyCacheServer {
@@ -96,10 +98,10 @@ export default class HttpProxyCacheServer {
           }
         })
         clientSocket?.on("error", (err: Error) => {
-          self.closeSocket(clientSocket)
+          self.closeSocket(clientSocket, false)
         })
         clientSocket?.on("close", () => {
-          self.closeSocket(clientSocket)
+          self.closeSocket(clientSocket, true)
         })
       })
       self.pinger = new Pinger(self.PROXY_HOST, self.port)
@@ -127,7 +129,7 @@ export default class HttpProxyCacheServer {
       self.onError(new ProxyCacheException("Error processing request,reason is : " + err.message));
     } finally {
       if (severConnect) {
-        self.releaseSocket(severConnect);
+        self.releaseSocket(severConnect, false);
       }
     }
   }
@@ -180,6 +182,22 @@ export default class HttpProxyCacheServer {
   }
 
   /**
+   * 返回端口号 用于编写单元测试
+   * @returns 端口号
+   */
+  public getProxyPort(): number {
+    return this.port;
+  }
+
+  /**
+   * 返回代理服务器配置信息 用于编写单元测试
+   * @returns 代理服务器配置信息
+   */
+  public getConfig(): Config | null {
+    return this.config;
+  }
+
+  /**
    * Checks is cache contains fully cached file for particular url.
    *
    * @param url an url cache file will be checked for.
@@ -227,7 +245,7 @@ export default class HttpProxyCacheServer {
     }
   }
 
-  public registerCacheListener(cacheListener: CacheListener, url: string | null = null): void {
+  public registerCacheListener(cacheListener: CacheListener, url: string): void {
     Preconditions.checkAllNotNull(cacheListener, url);
     if (!url || url.length < 1) {
       throw new Error('url is null')
@@ -239,7 +257,7 @@ export default class HttpProxyCacheServer {
     }
   }
 
-  public unregisterCacheListener(cacheListener: CacheListener, url: string | null = null): void {
+  public unregisterCacheListener(cacheListener: CacheListener, url: string): void {
     if (url && url.length > 0) {
       Preconditions.checkAllNotNull(cacheListener, url);
       try {
@@ -249,7 +267,7 @@ export default class HttpProxyCacheServer {
       }
     } else {
       Preconditions.checkNotNull(cacheListener);
-      this.clientsMap.forEach((clients: HttpProxyCacheServerClients, key, map) => {
+      this.clientsMap.forEach((clients: HttpProxyCacheServerClients, key: string, map: HashMap<String, HttpProxyCacheServerClients>) => {
         clients.unregisterCacheListener(cacheListener);
       })
     }
@@ -257,6 +275,12 @@ export default class HttpProxyCacheServer {
 
   public shutdown(): void {
     console.info("Shutdown proxy server");
+
+    let event: emitter.InnerEvent = {
+      eventId: VideoCacheConstant.SHUT_DOWN_TASKPOOL,
+      priority: emitter.EventPriority.IMMEDIATE
+    }
+    emitter.emit(event);
     this.shutdownClients();
     if (this.config && this.config.sourceInfoStorage) {
       this.config.sourceInfoStorage.release();
@@ -268,8 +292,8 @@ export default class HttpProxyCacheServer {
   }
 
   private shutdownClients(): void {
-    this.clientsMap?.forEach((clients: HttpProxyCacheServerClients, key, map) => {
-      clients.shutdown();
+    this.clientsMap?.forEach(async (clients: HttpProxyCacheServerClients,  key: string, map: HashMap<String, HttpProxyCacheServerClients>) => {
+      await clients.shutdown();
     })
     this.clientsMap.clear();
   }
@@ -301,15 +325,25 @@ export default class HttpProxyCacheServer {
     return count;
   }
 
-  private releaseSocket(severConnect: socket.TCPSocketConnection): void {
+  private releaseSocket(severConnect: socket.TCPSocketConnection, isCloseByClient: boolean): void {
     // 鸿蒙不区分socket的input和output 直接关闭
-    this.closeSocket(severConnect);
+    this.closeSocket(severConnect, isCloseByClient);
   }
 
-  private closeSocket(severConnect: socket.TCPSocketConnection): void {
-    severConnect?.off('message');
-    severConnect?.off('error');
-    severConnect?.off('close');
-    severConnect = null;
+  private closeSocket(severConnect: socket.TCPSocketConnection, isCloseByClient: boolean): void {
+    // 客户端主动断开连接的情况下 不做处理 否则可能将正在执行的其他连接断开
+    try {
+      // 暂不处理 该方法关闭可能会关掉当前传输数据的severConnect而不是已经不再使用的severConnect 改为在HttpProxyCache里面关闭。
+     /* if (!isCloseByClient) {
+        severConnect?.off('message');
+        severConnect?.off('error');
+        severConnect?.off('close');
+        severConnect?.close();
+        severConnect = null;
+      }*/
+    } catch (err) {
+      this.onError(err)
+    }
+
   }
 }

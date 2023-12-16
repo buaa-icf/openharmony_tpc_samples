@@ -15,11 +15,11 @@
 import ProgressValue from '../bean/ProgressValue';
 
 export interface DataBackListener {
-  onDataReceive(data: ArrayBuffer);
+  onDataReceive(data: ArrayBuffer): void;
 
-  onDataProgress(progress: ProgressValue);
+  onDataProgress(progress: ProgressValue): void;
 
-  onDataEnd();
+  onDataEnd(): void;
 
-  onDataStart();
+  onDataStart(): void;
 }

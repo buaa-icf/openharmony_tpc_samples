@@ -21,6 +21,7 @@ import fs from '@ohos.file.fs';
 import taskpool from '@ohos.taskpool';
 import emitter from '@ohos.events.emitter';
 import { VideoCacheConstant } from '../constant/VideoCacheConstant';
+import StorageUtils from '../StorageUtils';
 
 async function TouchCallable(file: string) {
   'use concurrent'
@@ -122,14 +123,15 @@ export default class LruDiskUsage implements DiskUsage {
   private totalCount: number = 0;
 
   constructor() {
-    this.list = new LinkedList();
+    let self = this;
+    self.list = new LinkedList();
     let countTotalSizeEvent: emitter.InnerEvent = {
       eventId: VideoCacheConstant.COUNT_TOTAL_SIZE_ID
     }
     emitter.on(countTotalSizeEvent, (data: emitter.EventData) => {
       if (data && data.data && typeof data.data.content === "string") {
         let content = data.data.content;
-        this.list.add(content);
+        self.list.add(content);
       }
     })
 
@@ -137,7 +139,7 @@ export default class LruDiskUsage implements DiskUsage {
       eventId: VideoCacheConstant.COUNT_TOTAL_SIZE_END_ID
     }
     emitter.on(countTotalEndEvent, (data: emitter.EventData) => {
-      let totalSize = this.countTotalSize(this.list);
+      let totalSize = self.countTotalSize(self.list);
       let endData: emitter.EventData = {
         data: {
           id: VideoCacheConstant.SEND_TOTAL_SIZE_ID,
@@ -155,12 +157,12 @@ export default class LruDiskUsage implements DiskUsage {
       eventId: VideoCacheConstant.GET_ACCEPT_ID
     }
     emitter.on(acceptEvent, (data: emitter.EventData) => {
-      this.file = data?.data?.file ? data?.data?.file : "";
-      this.totalSize = data?.data?.totalSize ? data?.data?.totalSize : 0;
-      this.totalCount = data?.data?.totalCount ? data?.data?.totalCount : 0;
+      self.file = data?.data?.file ? data?.data?.file : "";
+      self.totalSize = data?.data?.totalSize ? data?.data?.totalSize : 0;
+      self.totalCount = data?.data?.totalCount ? data?.data?.totalCount : 0;
       if (data && data.data && typeof data.data.file === "string") {
-        this.file = data.data.file;
-        let accept = this.accept(this.file, this.totalSize, this.totalCount);
+        self.file = data.data.file;
+        let accept = self.accept(self.file, self.totalSize, self.totalCount);
         let endData: emitter.EventData = {
           data: {
             id: VideoCacheConstant.SEND_ACCEPT_ID,
@@ -179,14 +181,35 @@ export default class LruDiskUsage implements DiskUsage {
   }
 
   touch(filePath: string): void {
-    let task: taskpool.Task = new taskpool.Task(TouchCallable, filePath);
-    taskpool.execute(task);
+    try {
+      if (!filePath || filePath.startsWith(StorageUtils.DEFAULT_DIR)) {
+        return;
+      }
+      let task: taskpool.Task = new taskpool.Task(TouchCallable, filePath);
+      taskpool.execute(task);
+      let closeTaskEvent: emitter.InnerEvent = {
+        eventId: VideoCacheConstant.SHUT_DOWN_TASKPOOL
+      }
+      emitter.on(closeTaskEvent, (data: emitter.EventData) => {
+        try {
+          taskpool.cancel(task)
+        } catch (err) {
+        }
+      })
+    } catch (err) {
+    }
   }
 
   countTotalSize(files: LinkedList<string>): number {
     let totalSize = 0;
     for (let i = 0; i < files.length; i++) {
       let file: string = files[i];
+      try {
+        if (!fs.accessSync(file)) {
+          continue;
+        }
+      } catch (err) {
+      }
       let tempSize = fs.statSync(file).size;
       totalSize += tempSize
     }

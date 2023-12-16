@@ -27,6 +27,7 @@ export default class FileCache implements Cache {
   public trueFilePath: string = ''
   public parentPath: string = ''
   public fileLength: number = 0
+  private isRenamedEnd: boolean = true;
 
   constructor(filePath: string, diskUsage: DiskUsage = new UnlimitedDiskUsage()) {
     try {
@@ -66,11 +67,14 @@ export default class FileCache implements Cache {
   }
 
   complete() {
+    let self = this;
     try {
       if (this.isCompleted()) {
         return;
       }
-      this.close();
+      self.isRenamedEnd = false;
+      fs.fsyncSync(self.dataFile.fd);
+      fs.closeSync(self.dataFile.fd);
       fs.renameSync(this.tempFilePath, this.trueFilePath);
       this.tempFilePath = this.trueFilePath;
       try {
@@ -82,6 +86,7 @@ export default class FileCache implements Cache {
     } catch (err) {
       throw new Error("Error renaming file " + this.tempFilePath + " to " + this.trueFilePath + " for completion! reason is : " + err.message);
     }
+    self.isRenamedEnd = true;
   }
 
   /**
@@ -97,12 +102,23 @@ export default class FileCache implements Cache {
     return filePath.endsWith(this.TEMP_POSTFIX);
   }
 
-  close() {
+  async close() {
+    let self = this;
     try {
+      if (!self.isRenamedEnd) {
+        await new Promise<void>((resolve, reject) => {
+          let id = setInterval(() => {
+            if (self.isRenamedEnd) {
+              clearInterval(id);
+              resolve()
+            }
+          }, 20)
+        })
+      }
       fs.fsyncSync(this.dataFile.fd)
-      // this.dataFile.close();
       fs.closeSync(this.dataFile.fd)
-      // this.diskUsage.touch(this.tempFilePath); 
+      this.diskUsage.touch(this.tempFilePath);
+      return Promise.resolve();
     } catch (e) {
       throw new Error("Error closing file " + this.tempFilePath + ',reason is : ' + e.message);
     }
@@ -129,6 +145,9 @@ export default class FileCache implements Cache {
 
   read(buffer: ArrayBuffer, offset: number, length: number): number {
     try {
+      if (!this.isRenamedEnd) {
+        return -1;
+      }
       if (offset < 0 || length < 0) {
         return -1;
       }

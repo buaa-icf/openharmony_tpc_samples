@@ -355,7 +355,9 @@ struct DiyCacheCountPage {
 
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-        self.currentCachePercent = percentsAvailable;
+        if (percentsAvailable >= self.currentCachePercent) {
+          self.currentCachePercent = percentsAvailable;
+        }
       }
     }
 
@@ -370,6 +372,7 @@ struct DiyCacheCountPage {
     if (newUrl.startsWith(getContext().cacheDir)) {
       let file = fs.openSync(newUrl, fs.OpenMode.READ_ONLY);
       newUrl = "fd://" + file.fd;
+      self.currentCachePercent = 100;
     }
     // 由于createAVPlayer方法里面已经设置了url 这里必须重置一下才会生效 直接设置url不生效
     if (this.avPlayer) {
@@ -378,7 +381,7 @@ struct DiyCacheCountPage {
     }
     this.isSetFinish = true;
     promptAction.showToast({
-      message:"设置完毕，可以开始播放了"
+      message: "设置完毕，可以开始播放了"
     })
   }
 
@@ -433,7 +436,9 @@ struct DiyCacheCountPage {
 
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-        self.currentCachePercent = percentsAvailable;
+        if (percentsAvailable >= self.currentCachePercent) {
+          self.currentCachePercent = percentsAvailable;
+        }
       }
     }
 
@@ -471,17 +476,22 @@ struct DiyCacheCountPage {
     this.isBuffering = false;
     Logger.info(TAG, 'file id is : ' + this.fdPath);
     let self = this;
+
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-        self.currentCachePercent = percentsAvailable;
+        if (percentsAvailable >= self.currentCachePercent) {
+          self.currentCachePercent = percentsAvailable;
+        }
       }
     }
+
     GlobalProxyServer?.getInstance()?.getServer()?.registerCacheListener(new MyCacheListener(), this.fdPath)
     let proxyUrl: string | undefined = await GlobalProxyServer?.getInstance()?.getServer()?.getProxyUrl(this.fdPath)
     let newUrl = proxyUrl ? proxyUrl : this.fdPath;
     if (newUrl.startsWith(getContext().cacheDir)) {
       let file = fs.openSync(newUrl, fs.OpenMode.READ_ONLY);
       newUrl = "fd://" + file.fd;
+      self.currentCachePercent = 100;
     }
     if (this.getState() === 'idle') {
       if (this.avPlayer != undefined) {

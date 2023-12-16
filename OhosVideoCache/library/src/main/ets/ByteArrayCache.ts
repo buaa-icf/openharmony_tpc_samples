@@ -33,12 +33,14 @@ export default class ByteArrayCache implements Cache {
     this.completed = true;
   }
 
-  close() {
+  close(): Promise<void> {
+    return Promise.resolve();
+  }
+
+  setFileLength(length: number) {
 
   }
-  setFileLength(length: number){
 
-  }
   append(newData: ArrayBuffer, length: number) {
     Preconditions.checkNotNull(this.data);
     Preconditions.checkArgument(length >= 0 && length <= newData.byteLength);
@@ -68,7 +70,7 @@ export default class ByteArrayCache implements Cache {
     if (len <= 0) {
       return 0;
     }
-    buffer = this.data.slice(offset,offset + len)
+    buffer = this.data.slice(offset, offset + len)
     // return new ByteArrayInputStream(data).read(buffer, offset, length);
     return len;
   }
@@ -77,7 +79,7 @@ export default class ByteArrayCache implements Cache {
     return this.data.byteLength;
   }
 
-  totalLength():number {
+  totalLength(): number {
     return 0;
   }
 }

@@ -27,6 +27,7 @@ import Preconditions from './Preconditions';
 import SourceInfoStorage from './sourcestorage/SourceInfoStorage';
 import SourceInfoStorageFactory from './sourcestorage/SourceInfoStorageFactory';
 import StorageUtils from './StorageUtils';
+
 export default class HttpProxyCacheServerBuilder {
   private DEFAULT_MAX_SIZE: number = 512 * 1024 * 1024;
   private cacheRoot: string;
@@ -34,14 +35,12 @@ export default class HttpProxyCacheServerBuilder {
   private diskUsage: DiskUsage;
   private sourceInfoStorage: SourceInfoStorage;
   private headerInjector: HeaderInjector;
+  private context: Context;
 
   public constructor(context: Context) {
-    this.sourceInfoStorage = SourceInfoStorageFactory.newSourceInfoStorage(context);
-    this.cacheRoot = StorageUtils.getIndividualCacheDirectory(context);
-    this.diskUsage = new TotalSizeLruDiskUsage(this.DEFAULT_MAX_SIZE);
-    this.fileNameGenerator = new Md5FileNameGenerator();
-    this.headerInjector = new EmptyHeadersInjector();
+    this.context = context;
   }
+
   /**
    * Overrides default cache folder to be used for caching files.
    * <p>
@@ -127,6 +126,22 @@ export default class HttpProxyCacheServerBuilder {
    * @return proxy cache. Only single instance should be used across whole app.
    */
   public build(): HttpProxyCacheServer {
+    // 之所以把初始化从构造函数改到build是因为再构造函数里面初始化之后再在设置setDiskUsage方法里面设置，diskUsage这些对象不会被消除，还能存在，在LruDiskUsage调用accept方法的时候返回结果导致结果异常
+    if (!this.sourceInfoStorage && this.context) {
+      this.sourceInfoStorage = SourceInfoStorageFactory.newSourceInfoStorage(this.context);
+    }
+    if (!this.cacheRoot && this.context) {
+      this.cacheRoot = StorageUtils.getIndividualCacheDirectory(this.context);
+    }
+    if (!this.diskUsage) {
+      this.diskUsage = new TotalSizeLruDiskUsage(this.DEFAULT_MAX_SIZE);
+    }
+    if (!this.fileNameGenerator) {
+      this.fileNameGenerator = new Md5FileNameGenerator();
+    }
+    if (!this.headerInjector) {
+      this.headerInjector = new EmptyHeadersInjector();
+    }
     let config = this.buildConfig();
     return new HttpProxyCacheServer(config);
   }

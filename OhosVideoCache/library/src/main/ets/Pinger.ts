@@ -103,6 +103,17 @@ export default class Pinger {
           let url = self.getPingUrl()
           let runningTask: taskpool.Task = new taskpool.Task(pingCallable, url)
           taskpool.execute(runningTask);
+
+          let closeTaskEvent: emitter.InnerEvent = {
+            eventId: VideoCacheConstant.SHUT_DOWN_TASKPOOL
+          }
+          emitter.on(closeTaskEvent, (data: emitter.EventData) => {
+            try {
+              taskpool.cancel(runningTask)
+            } catch (err) {
+            }
+          })
+
         })
         if (pingData) {
           break;
