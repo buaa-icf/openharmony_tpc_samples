@@ -38,13 +38,13 @@ export class Main {
   public m_demo_mode: boolean = false;
   public m_demo_time: number = 0;
   public m_max_demo_time: number = 1000 * 10;
-  public m_ctx: OffscreenCanvasRenderingContext2D | null = null;
+  public m_ctx: CanvasRenderingContext2D | null = null;
   private width: number = 480;
   private height: number = 750;
   private densityPixels: number = 1.5;
 
 
-  constructor(time: number, ctx: OffscreenCanvasRenderingContext2D) {
+  constructor(time: number, ctx: CanvasRenderingContext2D) {
     display.getAllDisplays((err, data) => {
       if (err.code) {
         console.error(' Main Failed to obtain all the display objects. Code: ' + JSON.stringify(err));
@@ -358,7 +358,7 @@ export class Main {
       this.m_fps_time = 0;
     }
     {
-      const ctx: OffscreenCanvasRenderingContext2D | null = this.m_ctx;
+      const ctx: CanvasRenderingContext2D | null = this.m_ctx;
 
       const restartTest = [false];
       if (ctx) {

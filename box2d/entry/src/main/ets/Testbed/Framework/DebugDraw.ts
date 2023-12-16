@@ -99,7 +99,7 @@ export class Camera {
 // This class implements debug drawing callbacks that are invoked
 // inside b2World::Step.
 export class DebugDraw extends box2d.b2Draw {
-  public m_ctx: OffscreenCanvasRenderingContext2D | null = null;
+  public m_ctx: CanvasRenderingContext2D | null = null;
 
   constructor() {
     super();
@@ -113,7 +113,7 @@ export class DebugDraw extends box2d.b2Draw {
   }
 
   public PushTransform(xf: box2d.b2Transform): void {
-    const ctx: OffscreenCanvasRenderingContext2D | null = this.m_ctx;
+    const ctx: CanvasRenderingContext2D | null = this.m_ctx;
     if (ctx) {
       ctx.save();
       ctx.translate(xf.p.x, xf.p.y);
@@ -122,14 +122,14 @@ export class DebugDraw extends box2d.b2Draw {
   }
 
   public PopTransform(xf: box2d.b2Transform): void {
-    const ctx: OffscreenCanvasRenderingContext2D | null = this.m_ctx;
+    const ctx: CanvasRenderingContext2D | null = this.m_ctx;
     if (ctx) {
       ctx.restore();
     }
   }
 
   public DrawPolygon(vertices: box2d.b2Vec2[], vertexCount: number, color: box2d.b2Color): void {
-    const ctx: OffscreenCanvasRenderingContext2D | null = this.m_ctx;
+    const ctx: CanvasRenderingContext2D | null = this.m_ctx;
     if (ctx) {
       ctx.beginPath();
       ctx.moveTo(vertices[0].x, vertices[0].y);
@@ -143,7 +143,7 @@ export class DebugDraw extends box2d.b2Draw {
   }
 
   public DrawSolidPolygon(vertices: box2d.b2Vec2[], vertexCount: number, color: box2d.b2Color): void {
-    const ctx: OffscreenCanvasRenderingContext2D | null = this.m_ctx;
+    const ctx: CanvasRenderingContext2D | null = this.m_ctx;
     if (ctx) {
       ctx.beginPath();
       ctx.moveTo(vertices[0].x, vertices[0].y);
@@ -159,7 +159,7 @@ export class DebugDraw extends box2d.b2Draw {
   }
 
   public DrawCircle(center: box2d.b2Vec2, radius: number, color: box2d.b2Color): void {
-    const ctx: OffscreenCanvasRenderingContext2D | null = this.m_ctx;
+    const ctx: CanvasRenderingContext2D | null = this.m_ctx;
     if (ctx) {
       ctx.beginPath();
       ctx.arc(center.x, center.y, radius, 0, box2d.b2_pi * 2);
@@ -169,7 +169,7 @@ export class DebugDraw extends box2d.b2Draw {
   }
 
   public DrawSolidCircle(center: box2d.b2Vec2, radius: number, axis: box2d.b2Vec2, color: box2d.b2Color): void {
-    const ctx: OffscreenCanvasRenderingContext2D | null = this.m_ctx;
+    const ctx: CanvasRenderingContext2D | null = this.m_ctx;
     if (ctx) {
       const cx: number = center.x;
       const cy: number = center.y;
@@ -186,7 +186,7 @@ export class DebugDraw extends box2d.b2Draw {
 
   // #if B2_ENABLE_PARTICLE
   public DrawParticles(centers: box2d.b2Vec2[], radius: number, colors: box2d.b2Color[] | null, count: number) {
-    const ctx: OffscreenCanvasRenderingContext2D | null = this.m_ctx;
+    const ctx: CanvasRenderingContext2D | null = this.m_ctx;
     if (ctx) {
       if (colors !== null) {
         for (let i = 0; i < count; ++i) {
@@ -215,7 +215,7 @@ export class DebugDraw extends box2d.b2Draw {
   // #endif
 
   public DrawSegment(p1: box2d.b2Vec2, p2: box2d.b2Vec2, color: box2d.b2Color): void {
-    const ctx: OffscreenCanvasRenderingContext2D | null = this.m_ctx;
+    const ctx: CanvasRenderingContext2D | null = this.m_ctx;
     if (ctx) {
       ctx.beginPath();
       ctx.moveTo(p1.x, p1.y);
@@ -226,7 +226,7 @@ export class DebugDraw extends box2d.b2Draw {
   }
 
   public DrawTransform(xf: box2d.b2Transform): void {
-    const ctx: OffscreenCanvasRenderingContext2D | null = this.m_ctx;
+    const ctx: CanvasRenderingContext2D | null = this.m_ctx;
     if (ctx) {
       this.PushTransform(xf);
 
@@ -247,7 +247,7 @@ export class DebugDraw extends box2d.b2Draw {
   }
 
   public DrawPoint(p: box2d.b2Vec2, size: number, color: box2d.b2Color): void {
-    const ctx: OffscreenCanvasRenderingContext2D | null = this.m_ctx;
+    const ctx: CanvasRenderingContext2D | null = this.m_ctx;
     if (ctx) {
       ctx.fillStyle = color.MakeStyleString();
       size *= g_camera.m_zoom;
@@ -259,7 +259,7 @@ export class DebugDraw extends box2d.b2Draw {
 
   private static DrawString_s_color: box2d.b2Color = new box2d.b2Color(0.9, 0.6, 0.6);
   public DrawString(x: number, y: number, message: string): void {
-    const ctx: OffscreenCanvasRenderingContext2D | null = this.m_ctx;
+    const ctx: CanvasRenderingContext2D | null = this.m_ctx;
     if (ctx) {
       ctx.save();
       ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -275,7 +275,7 @@ export class DebugDraw extends box2d.b2Draw {
   private static DrawStringWorld_s_cc: box2d.b2Vec2 = new box2d.b2Vec2();
   private static DrawStringWorld_s_color: box2d.b2Color = new box2d.b2Color(0.5, 0.9, 0.5);
   public DrawStringWorld(x: number, y: number, message: string): void {
-    const ctx: OffscreenCanvasRenderingContext2D | null = this.m_ctx;
+    const ctx: CanvasRenderingContext2D | null = this.m_ctx;
     if (ctx) {
       const p: box2d.b2Vec2 = DebugDraw.DrawStringWorld_s_p.Set(x, y);
       // world -> viewport
@@ -305,7 +305,7 @@ export class DebugDraw extends box2d.b2Draw {
   }
 
   public DrawAABB(aabb: box2d.b2AABB, color: box2d.b2Color): void {
-    const ctx: OffscreenCanvasRenderingContext2D | null = this.m_ctx;
+    const ctx: CanvasRenderingContext2D | null = this.m_ctx;
     if (ctx) {
       ctx.strokeStyle = color.MakeStyleString();
       const x: number = aabb.lowerBound.x;
