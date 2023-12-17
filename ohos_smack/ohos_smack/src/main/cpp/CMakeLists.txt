@@ -15,6 +15,8 @@ elseif(${CMAKE_HOST_SYSTEM_NAME} MATCHES "Linux")
         COMMAND cd ${CMAKE_CURRENT_SOURCE_DIR}/thirdModule/
         COMMAND bash modify.sh
         VERBATIM)
+
+    add_library(test SHARED out.c)
 else()
     message(FATAL_ERROR "Unsupported operating system type")
 endif()
@@ -27,7 +29,6 @@ include_directories(${NATIVERENDER_ROOT_PATH}
                     )
 
 add_library(entry SHARED
-        out.c
 		hello.cpp
 		log_ohos.cpp
 		Smack.cpp
