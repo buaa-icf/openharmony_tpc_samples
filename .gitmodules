@@ -24,9 +24,9 @@
 [submodule "class-transformer/class_transformer"]
 	path = class-transformer/class_transformer
 	url = https://gitee.com/Young-zhiqiang/class_transformer.git
-[submodule "ohos_smack/ohos_smack/src/main/cpp/gloox"]
-	path = ohos_smack/ohos_smack/src/main/cpp/gloox
-	url = https://github.com/rxwen/gloox.git
 [submodule "ohos_smack/library/src/main/cpp/gloox"]
 	path = ohos_smack/library/src/main/cpp/gloox
-	url = https://github.com/rxwen/gloox.git
+	url = https://gitee.com/mirrors/gloox.git
+[submodule "socketio/library/src/main/cpp/socket.io-client-cpp"]
+	path = socketio/library/src/main/cpp/socket.io-client-cpp
+	url = https://gitee.com/damonjiang/socket.io-client-cpp.git

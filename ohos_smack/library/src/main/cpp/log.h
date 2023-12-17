@@ -15,18 +15,12 @@
 #include <list>
 #include <sstream>
 
-#define LOGV(...) ((void)Log::v("MYTAG", __VA_ARGS__))
-#define LOGI(...) ((void)Log::i("MYTAG", __VA_ARGS__))
-#define LOGD(...) ((void)Log::d("MYTAG", __VA_ARGS__))
-#define LOGW(...) ((void)Log::w("MYTAG", __VA_ARGS__))
-#define LOGE(...) ((void)Log::e("MYTAG", __VA_ARGS__))
-#define LOGF(...) ((void)Log::f("MYTAG", __VA_ARGS__))
-
-void handleSubscriptionCall(const std::string &resultStr);
-void message_received(const std::string &id, const std::string &msg);
-void handleMUCInvitationListener(const std::string &v0);
-void message_received_group(const std::string &id, const std::string &msg);
-void handleMUCParticipantPresenceListener(const std::string &nike, const std::string &presenceType);
+#define LOGV(...) ((void)Log::V("MYTAG", __VA_ARGS__))
+#define LOGI(...) ((void)Log::I("MYTAG", __VA_ARGS__))
+#define LOGD(...) ((void)Log::D("MYTAG", __VA_ARGS__))
+#define LOGW(...) ((void)Log::W("MYTAG", __VA_ARGS__))
+#define LOGE(...) ((void)Log::E("MYTAG", __VA_ARGS__))
+#define LOGF(...) ((void)Log::F("MYTAG", __VA_ARGS__))
 
 enum class Level {
     VERBOSE,
@@ -40,57 +34,61 @@ enum class Level {
 class Log {
 public:
     template <typename... Args>
-    static inline void v(const char* tag, const char* fmt, Args&&... args)
+    static inline void V(const char* tag, const char* fmt, Args&&... args)
     {
         std::ostringstream oss;
         ((oss << std::forward<Args>(args)), ...);
         std::string msg = oss.str();
-        log(Level::VERBOSE, tag, msg.c_str());
+        Logger(Level::VERBOSE, tag, msg.c_str());
     }
 
     template <typename... Args>
-    static inline void d(const char* tag, const char* fmt, Args&&... args)
+    static inline void D(const char* tag, const char* fmt, Args&&... args)
     {
         std::ostringstream oss;
         ((oss << std::forward<Args>(args)), ...);
         std::string msg = oss.str();
-        log(Level::DEBUG, tag, msg.c_str());
+        Logger(Level::DEBUG, tag, msg.c_str());
     }
 
     template <typename... Args>
-    static inline void i(const char* tag, const char* fmt, Args&&... args)
+    static inline void I(const char* tag, const char* fmt, Args&&... args)
     {
         std::ostringstream oss;
         ((oss << std::forward<Args>(args)), ...);
         std::string msg = oss.str();
-        log(Level::INFO, tag, msg.c_str());
+        std::string msg_fmt = fmt;
+        msg_fmt += msg;
+        Logger(Level::INFO, tag, msg.c_str());
     }
 
     template <typename... Args>
-    static inline void w(const char* tag, const char* fmt, Args&&... args)
+    static inline void W(const char* tag, const char* fmt, Args&&... args)
     {
         std::ostringstream oss;
         ((oss << std::forward<Args>(args)), ...);
         std::string msg = oss.str();
-        log(Level::WARN, tag, msg.c_str());
+        std::string msg_fmt = fmt;
+        msg_fmt += msg;
+        Logger(Level::WARN, tag, msg_fmt.c_str());
     }
 
     template <typename... Args>
-    static inline void e(const char* tag, const char* fmt, Args&&... args)
+    static inline void E(const char* tag, const char* fmt, Args&&... args)
     {
         std::ostringstream oss;
         ((oss << std::forward<Args>(args)), ...);
         std::string msg = oss.str();
-        log(Level::ERROR, tag, msg.c_str());
+        Logger(Level::ERROR, tag, msg.c_str());
     }
 
     template <typename... Args>
-    static inline void f(const char* tag, const char* fmt, Args&&... args)
+    static inline void F(const char* tag, const char* fmt, Args&&... args)
     {
         std::ostringstream oss;
         ((oss << std::forward<Args>(args)), ...);
         std::string msg = oss.str();
-        log(Level::FATAL, tag, msg.c_str());
+        Logger(Level::FATAL, tag, msg.c_str());
     }
 
     static inline const std::list<std::string> &getLogs()
@@ -98,7 +96,7 @@ public:
         return logs;
     }
 
-    static inline void saveLog(const char *log)
+    static inline void SaveLog(const char *log)
     {
         while (logs.size()>=logs.max_size()) {
             logs.pop_front();
@@ -108,7 +106,7 @@ public:
 
 private:
 
-    static void log(Level level, const char *tag, const char *msg);
+    static void Logger(Level level, const char *tag, const char *msg);
 
     static std::list<std::string> logs;
 };

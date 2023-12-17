@@ -187,8 +187,7 @@ export class Smack {
      * @param register
      */
     public static registerMessageCallback(callback: (fromId: number, msg: string) => void) {
-        testNapi.register_message(true, this.onMessageRecived);
-        globalThis.message_recv_func = callback;
+        testNapi.registerMessageCallback(callback);
     }
 
     public static onMessageRecived(fromId: number, msg: string) {
@@ -246,8 +245,7 @@ export class Smack {
     }
 
     public static registerGroupMessageCallback(callback: (fromId: number, msg: string) => void) {
-        testNapi.registerMessageGroup(true, this.onMessageRecived);
-        globalThis.message_recv_func_group = callback;
+        testNapi.registerGroupMessageCallback(callback);
     }
 
     public static setAffiliation(nick: string, affiliation: string, reason: string): number{
@@ -446,8 +444,7 @@ export class Smack {
     }
 
     public static registerInvitationListener(callback: (v0: string) => void) {
-        testNapi.registerInvitationListener( this.onHandleInvitation);
-        globalThis.message_recv_func_invitation = callback;
+        testNapi.registerInvitationListener(callback);
     }
     public static onHandleInvitation(resultStr: string) {
         console.info("onHandleSubscriptionRequest resultStr:" + resultStr);
@@ -490,8 +487,7 @@ export class Smack {
     }
 
     public static registerMUCParticipantPresenceListener(callback: (nike: string, presenceType: string, affiliationType: string) => void) {
-        testNapi.registerMUCParticipantPresenceListener(true, this.onMessageRecived);
-        globalThis.message_recv_func_MUCParticipantPresence = callback;
+        testNapi.registerMUCParticipantPresenceListener(true, callback);
     }
 
     public static bans(nick: string, reason: string): number{
@@ -586,9 +582,7 @@ export class Smack {
     }
 
     public static handleSubscriptionRequestListener(callback: (resultStr: string) => void) {
-        console.info("test handleSubscriptionRequestListener")
-        testNapi.handleSubscriptionRequestListener(this.onHandleSubscriptionRequest);
-        globalThis.handle_subscription_request_func = callback;
+        testNapi.handleSubscriptionRequestListener(callback);
     }
 
     public static onHandleSubscriptionRequest(resultStr: string) {

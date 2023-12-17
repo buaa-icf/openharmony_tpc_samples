@@ -9,8 +9,8 @@
  * This software is distributed without any warranty.
  */
 
-#ifndef ohosXmppClient_registration_H
-#define ohosXmppClient_registration_H
+#ifndef OHOSXMPPCLIENT_REGISTRATION_H
+#define OHOSXMPPCLIENT_REGISTRATION_H
 
 #include <src/connectionlistener.h>
 #include <src/loghandler.h>

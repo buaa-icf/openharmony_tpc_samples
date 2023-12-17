@@ -15,7 +15,7 @@
 #include <src/message.h>
 #include <unistd.h>
 #include <ctime>
-
+#include <node_api.h>
 #include "gloox/src/disco.h"
 #include "log.h"
 #include "src/gloox.h"
@@ -35,8 +35,8 @@ using namespace gloox;
  *  返回-1 表示登陆失败
  *  返回 1 表示登陆成功
  */
-int UserState = -1;
-static void delay_msec(int msec)
+int g_userState = -1;
+static void DelayMsec(int msec)
 {
     clock_t now = clock();
     if (now > 0) {
@@ -49,7 +49,7 @@ Smack::Smack()
     j = new Client("");
 };
 
-bool Smack::connect()
+bool Smack::Connect()
 {
     if (userName == "" || userName.empty()) {
         throw std::runtime_error("userName empty,set userName!!!");
@@ -69,52 +69,52 @@ bool Smack::connect()
     j->logInstance().registerLogHandler(LogLevelDebug, LogAreaAll, this);
     if (j->connect(false)) {
     }
-    return isConnected();
+    return IsConnected();
 }
 
-bool Smack::isConnected()
+bool Smack::IsConnected()
 {
     ConnectionState state = j->state();
     return state >= StateConnected;
 }
 
-std::string Smack::username()
+std::string Smack::Username()
 {
     return j->username();
 }
 
-void Smack::setServer(const std::string &server)
+void Smack::SetServer(const std::string &server)
 {
     j->setServer(server);
 }
 
-void Smack::setUsernameAndPassword(std::string username, std::string pwd)
+void Smack::SetUsernameAndPassword(std::string username, std::string pwd)
 {
     userName = username;
-    setPassword(pwd);
+    SetPassword(pwd);
 }
 
-void Smack::setPassword(const std::string &password)
+void Smack::SetPassword(const std::string &password)
 {
     j->setPassword(password);
 }
 
-void Smack::setPort(int port)
+void Smack::SetPort(int port)
 {
     j->setPort(port);
 }
 
-std::string Smack::password()
+std::string Smack::Password()
 {
     return j->password();
 }
 
-std::string Smack::resource()
+std::string Smack::Resource()
 {
     return j->resource();
 }
 
-void Smack::setResource(const std::string &resource)
+void Smack::SetResource(const std::string &resource)
 {
     j->setResource(resource);
 }
@@ -129,7 +129,7 @@ Client *Smack::getClent()
     return j;
 }
 
-bool Smack::login()
+bool Smack::Login()
 {
     // Registration
     m_reg = new Registration(j);
@@ -149,37 +149,108 @@ bool Smack::login()
     j->disco()->addFeature(XMLNS_CHAT_STATES);
 
     {
-        std::thread t1(&Smack::loop, this);
+        std::thread t1(&Smack::Loop, this);
         t1.detach();
     }
 
-    delay_msec(SMACK_DELAY_TM_5S); // 延时5秒
+    DelayMsec(SMACK_DELAY_TM_5S); // 延时5秒
     return presenceType == 0;
 }
 
-std::string Smack::server()
+std::string Smack::Server()
 {
     return j->server();
 }
 
-int Smack::authed()
+int Smack::Authed()
 {
     return j->authed() ? 1 : 0;
 }
 
-int Smack::port()
+int Smack::Port()
 {
     return j->port();
 }
 
-int Smack::compression()
+int Smack::Compression()
 {
     return j->compression() ? 1 : 0;
 }
 
-int Smack::login(const std::string &jidStr, const std::string &pwd)
+// 实例化结构体
+static struct ThreadSafeInfoRecvMsg g_threadInfoRecvMsg = {};
+static struct ThreadSafeInfoSub g_threadInfoSub = {};
+static napi_threadsafe_function tsfn_recv_msg;
+static napi_threadsafe_function tsfn_sub;
+
+static void CallJs(napi_env env, napi_value jsCb, void *context, void *data)
 {
-    UserState = -1;
+    LOGI("SMACK_TAG--------->smack CallJs0: %s:  %d", "CallJs: ", __LINE__);
+    napi_value undefined;
+    napi_value ret;
+    
+    napi_value argv[] = {nullptr, nullptr};
+
+    // 解析参数 data
+    ThreadSafeInfoRecvMsg *arg = (ThreadSafeInfoRecvMsg *)data;
+    if (arg == nullptr) {
+        LOGE("SMACK_TAG---------> [Smack.CallJs]arg is null");
+        return;
+    }
+    LOGI("SMACK_TAG---------> smack CallJs1: %s:  %d", (arg->id).c_str(), __LINE__);
+    LOGI("SMACK_TAG---------> smack CallJs2: %s:  %d", (arg->msg).c_str(), __LINE__);
+    napi_create_string_utf8(env, (arg->id).c_str(), NAPI_AUTO_LENGTH, &argv[0]);
+    LOGI("SMACK_TAG---------> smack CallJs3: %s:  %d", "CallJs: ", __LINE__);
+    napi_create_string_utf8(env, (arg->msg).c_str(), NAPI_AUTO_LENGTH, &argv[1]);
+    LOGI("SMACK_TAG---------> smack CallJs4: %s:  %d", "CallJs: ", __LINE__);
+    // 调用 js 回调函数
+    napi_status status = napi_call_function(env, undefined, jsCb, 2, argv, &ret);
+    LOGI("SMACK_TAG---------> smack CallJs5: %d:  %d", status, __LINE__);
+}
+
+static void CallJs_Sub(napi_env env, napi_value jsCb, void *context, void *data)
+{
+    LOGI("SMACK_TAG---------> smack CallJs_Sub: %s:  %d", "CallJs: ", __LINE__);
+    napi_value undefined;
+    napi_value ret;
+    napi_value argv;
+
+    // 解析参数 data
+    ThreadSafeInfoSub *arg = (ThreadSafeInfoSub *)data;
+    if (arg == nullptr) {
+        LOGE("SMACK_TAG---------> [Smack.CallJs_Sub]arg is null");
+        return;
+    }
+    napi_create_string_utf8(env, (arg->result).c_str(), NAPI_AUTO_LENGTH, &argv);
+    LOGI("SMACK_TAG---------> smack CallJs_Sub: %s:  %d", "CallJs: ", __LINE__);
+    // 调用 js 回调函数
+    napi_status status = napi_call_function(env, undefined, jsCb, 1, &argv, &ret);
+    LOGI("SMACK_TAG---------> smack CallJs_Sub: %d:  %d", status, __LINE__);
+}
+
+void Smack::RecvMsg(napi_env env, napi_value jsCb)
+{
+    napi_value workName;
+    napi_create_string_utf8(env, "recvMsg", NAPI_AUTO_LENGTH, &workName);
+    LOGI("SMACK_TAG--------->: %s:  %d", "recvMsg: ", __LINE__);
+    napi_create_threadsafe_function(env, jsCb, nullptr, workName, 0, 1, nullptr, nullptr, nullptr,
+        CallJs, &tsfn_recv_msg);
+    LOGI("SMACK_TAG--------->: %s:  %d", "recvMsg: ", __LINE__);
+}
+
+void Smack::RecvSubscriptionRequestListener(napi_env env, napi_value jsCb)
+{
+    napi_value workName;
+    napi_create_string_utf8(env, "recvSubscriptionRequestListener", NAPI_AUTO_LENGTH, &workName);
+    LOGI("SMACK_TAG--------->: %s:  %d", "recvSubscriptionRequestListener: ", __LINE__);
+    napi_create_threadsafe_function(env, jsCb, nullptr, workName, 0, 1, nullptr, nullptr, nullptr,
+                                    CallJs_Sub, &tsfn_sub);
+    LOGI("SMACK_TAG--------->: %s:  %d", "recvSubscriptionRequestListener: ", __LINE__);
+}
+
+int Smack::Login(const std::string &jidStr, const std::string &pwd)
+{
+    g_userState = -1;
 
     JID jid(jidStr);
     m_jid = jid;
@@ -206,12 +277,12 @@ int Smack::login(const std::string &jidStr, const std::string &pwd)
 
     bool value = j->connect(false);
     if (value) {
-        std::thread t1(&Smack::loop, this);
+        std::thread t1(&Smack::Loop, this);
         t1.detach();
     }
-    delay_msec(SMACK_DELAY_TM_40S);
+    DelayMsec(SMACK_DELAY_TM_40S);
 
-    return UserState;
+    return g_userState;
 }
 
 /**
@@ -220,7 +291,7 @@ int Smack::login(const std::string &jidStr, const std::string &pwd)
  * @param priority
  * @param status
  */
-void Smack::changePresence(const std::string &statusType, const std::string &status)
+void Smack::ChangePresence(const std::string &statusType, const std::string &status)
 {
     if (statusType.compare("0") == 0) {
         j->setPresence(Presence::PresenceType::Chat, PRESENCE_DATA, status);
@@ -239,10 +310,18 @@ void Smack::changePresence(const std::string &statusType, const std::string &sta
  * 获取好友以及分组信息
  * @param jidStr
  */
-std::string Smack::getFriendList()
+std::string Smack::GetFriendList()
 {
     RosterManager *rosterManager = j->rosterManager();
+    if (rosterManager == nullptr) {
+        LOGE("SMACK_TAG---------> [Smack.GetFriendList]rosterManager is null");
+        return NULL;
+    }
     Roster *roster = rosterManager->roster();
+    if (roster == nullptr) {
+        LOGE("SMACK_TAG---------> [Smack.GetFriendList]roster is null");
+        return NULL;
+    }
     Roster::const_iterator it = roster->begin();
     std::string name;
     name.append("[");
@@ -281,14 +360,14 @@ void Smack ::Loginout()
     j->disconnect();
 }
 
-void Smack::receiveMsg(const std::string &jidStr, const std::string &msg) {}
+void Smack::ReceiveMsg(const std::string &jidStr, const std::string &msg) {}
 
-void Smack::changePasswords(const std::string &password)
+void Smack::ChangePasswords(const std::string &password)
 {
     m_reg->changePassword(j->username(), password);
 }
 
-void Smack::loop()
+void Smack::Loop()
 {
     ConnectionError ce = ConnNoError;
     while (ce == ConnNoError) {
@@ -303,7 +382,7 @@ void Smack::loop()
  *
  * 无返回值
  */
-void Smack::send(const std::string &jidStr, const std::string &text)
+void Smack::Send(const std::string &jidStr, const std::string &text)
 {
     JID to(jidStr);
     Message msg(Message::MessageType::Chat, to, text);
@@ -317,9 +396,13 @@ void Smack::send(const std::string &jidStr, const std::string &text)
  * @param group
  * @return
  */
-void Smack::addFriends(const std::string &jidStr, const std::string &username, const std::string &group)
+void Smack::AddFriends(const std::string &jidStr, const std::string &username, const std::string &group)
 {
     RosterManager *rosterManager = j->rosterManager();
+    if (rosterManager == nullptr) {
+        LOGE("SMACK_TAG---------> [Smack.AddFriends]rosterManager is null");
+        return;
+    }
     StringList gl;
     gl.clear();
     gl.push_back(group);
@@ -331,17 +414,25 @@ void Smack::addFriends(const std::string &jidStr, const std::string &username, c
  * 删除好友
  * @param jidStr
  */
-void Smack::delfriends(const std::string &jidStr)
+void Smack::Delfriends(const std::string &jidStr)
 {
     RosterManager *rosterManager = j->rosterManager();
+    if (rosterManager == nullptr) {
+        LOGE("SMACK_TAG---------> [Smack.Delfriends]rosterManager is null");
+        return;
+    }
     rosterManager->fill();
     JID jid(jidStr);
     rosterManager->remove(jid);
 }
 
-void Smack::changeFriendGroup(const std::string &jidStr, const std::string &group)
+void Smack::ChangeFriendGroup(const std::string &jidStr, const std::string &group)
 {
     RosterManager *rosterManager = j->rosterManager();
+    if (rosterManager == nullptr) {
+        LOGE("SMACK_TAG---------> [Smack.ChangeFriendGroup]rosterManager is null");
+        return;
+    }
     StringList gl;
     gl.clear();
     gl.push_back(group);
@@ -350,10 +441,18 @@ void Smack::changeFriendGroup(const std::string &jidStr, const std::string &grou
     rosterManager->fill();
 }
 
-void Smack::changeGroup(const std::string &oldGroup, const std::string &newGroup)
+void Smack::ChangeGroup(const std::string &oldGroup, const std::string &newGroup)
 {
     RosterManager *rosterManager = j->rosterManager();
+    if (rosterManager == nullptr) {
+        LOGE("SMACK_TAG---------> [Smack.ChangeGroup]rosterManager is null");
+        return;
+    }
     Roster *roster = rosterManager->roster();
+    if (roster == nullptr) {
+        LOGE("SMACK_TAG---------> [Smack.ChangeGroup]roster is null");
+        return;
+    }
     Roster::const_iterator it = roster->begin();
 
     StringList gl;
@@ -375,9 +474,13 @@ void Smack::changeGroup(const std::string &oldGroup, const std::string &newGroup
  * 创建分组
  * @param group
  */
-void Smack::createGroup(const std::string &group)
+void Smack::CreateGroup(const std::string &group)
 {
     RosterManager *rosterManager = j->rosterManager();
+    if (rosterManager == nullptr) {
+        LOGE("SMACK_TAG---------> [Smack.CreateGroup]rosterManager is null");
+        return;
+    }
     rosterManager->fill();
     RosterItem *m_self = new RosterItem(j->jid().bare());
 
@@ -387,19 +490,19 @@ void Smack::createGroup(const std::string &group)
     m_self->setGroups(gl);
 }
 
-void Smack::removeAccounts()
+void Smack::RemoveAccounts()
 {
     m_reg->removeAccount();
 }
 
 void Smack::onConnect()
 {
-    LOGW("onConnect!!!\n");
+    LOGI("onConnect!!!\n");
 }
 
 void Smack::onDisconnect(ConnectionError e)
 {
-    LOGW("onDisconnect: %d\n", e);
+    LOGI("onDisconnect: %d\n", e);
     if (e == ConnAuthenticationFailed)
         LOGD("auth failed. reason: %d\n", j->authError());
 }
@@ -409,7 +512,7 @@ bool Smack::onTLSConnect(const CertInfo &info)
     time_t from(info.date_from);
     time_t to(info.date_to);
 
-    LOGW("onTLSConnect status: %d\nissuer: %s\npeer: %s\nprotocol: %s\nmac: %s\ncipher: %s\ncompression: %s\n"
+    LOGI("onTLSConnect status: %d\nissuer: %s\npeer: %s\nprotocol: %s\nmac: %s\ncipher: %s\ncompression: %s\n"
          "from: %s\nto: %s\n",
          info.status, info.issuer.c_str(), info.server.c_str(),
          info.protocol.c_str(), info.mac.c_str(), info.cipher.c_str(),
@@ -419,44 +522,61 @@ bool Smack::onTLSConnect(const CertInfo &info)
 
 void Smack::onResourceBind(const std::string &resource)
 {
-    LOGW("onResourceBind: %s", resource.c_str());
+    LOGI("onResourceBind: %s", resource.c_str());
 }
 
 void Smack::onResourceBindError(const Error *error)
 {
-    LOGW("onResourceBindError: %d\n", error);
+    LOGI("onResourceBindError: %d\n", error);
 }
 
 void Smack::onSessionCreateError(const Error *error)
 {
-    LOGW("onSessionCreateError: %d\n", error);
+    LOGI("onSessionCreateError: %d\n", error);
 }
 
 void Smack::handleLog(LogLevel level, LogArea area, const std::string &message)
 {
-    LOGW("handleLog area: 0x%x, msg: %s", area, message.c_str());
+    LOGI("handleLog area: 0x%x, msg: %s", area, message.c_str());
 }
 
 void Smack::handleMessage(const Message &msg, MessageSession *session)
 {
     auto body = msg.body();
-    LOGW("handleLog area: handleMessage msg: %s", msg.from().full().c_str());
-    message_received(msg.from().full().c_str(), body.c_str());
+    LOGI("SMACK_TAG--------->: %s:  %d", msg.from().full().c_str(),  __LINE__);
+
+    ThreadSafeInfoRecvMsg *data = &g_threadInfoRecvMsg;
+    if (data == nullptr) {
+        LOGE("SMACK_TAG---------> [Smack.handleMessage]data is null");
+        return;
+    }
+    data->id = msg.from().full().c_str();
+    data->msg = body.c_str();
+    LOGI("SMACK_TAG--------->: %s:  %d", "handleMessage: ", __LINE__);
+    napi_acquire_threadsafe_function(tsfn_recv_msg);
+    LOGI("SMACK_TAG--------->: %s:  %d", "handleMessage: ", __LINE__);
+    // 调用主线程函数，传入 Data
+    napi_call_threadsafe_function(tsfn_recv_msg, data, napi_tsfn_blocking);
+    LOGI("SMACK_TAG--------->: %s:  %d", "handleMessage: ", __LINE__);
 }
 
 void Smack::handleMessageEvent(const JID &from, MessageEventType event)
 {
-    LOGW("received event: %d from: %s\n", event, from.full().c_str());
+    LOGI("received event: %d from: %s\n", event, from.full().c_str());
 }
 
 void Smack::handleChatState(const JID &from, ChatStateType state)
 {
-    LOGW("received state: %d from: %s\n", state, from.full().c_str());
+    LOGI("received state: %d from: %s\n", state, from.full().c_str());
 }
 
 void Smack::handleMessageSession(MessageSession *session)
 {
-    LOGW("got new session");
+    if (session == nullptr) {
+        LOGE("SMACK_TAG---------> [Smack.handleMessageSession]session is null");
+        return;
+    }
+    LOGI("got new session");
     j->disposeMessageSession(m_session);
     m_session = session;
     m_session->registerMessageHandler(this);
@@ -466,13 +586,17 @@ void Smack::handleMessageSession(MessageSession *session)
     m_chatStateFilter->registerChatStateHandler(this);
 }
 
-void Smack::declineInvitation(const std::string &roomStr, const std::string &invitorStr, const std::string &reason)
+void Smack::DeclineInvitation(const std::string &roomStr, const std::string &invitorStr, const std::string &reason)
 {
     LOGD("smark declineInvitation roomStr: %s, invitorStr: %s, reason: %s",
         roomStr.c_str(), invitorStr.c_str(), reason.c_str());
     JID room(roomStr);
     JID invitor(invitorStr);
     Message *msg = MUCRoom::declineInvitation(room, invitor, reason);
+    if (msg == nullptr) {
+        LOGE("SMACK_TAG---------> [Smack.DeclineInvitation]data is null");
+        return;
+    }
     LOGD("smark declineInvitation result msg:%s", msg->tag()->xml().c_str());
 
     Tag *tag = msg->tag();
@@ -481,103 +605,103 @@ void Smack::declineInvitation(const std::string &roomStr, const std::string &inv
 
 void Smack::onStreamEvent(StreamEvent event)
 {
-    LOGW("onStreamEvent");
+    LOGI("onStreamEvent");
 }
 
 void Smack::handlePresence(const Presence &presence)
 {
-    UserState = 1;
-    LOGW("handlePresence roster: %s state: %d", presence.from().full().c_str(), presence.presence());
+    g_userState = 1;
+    LOGI("handlePresence roster: %s state: %d", presence.from().full().c_str(), presence.presence());
     presenceType = presence.presence();
 }
 
 /****************账户管理开始***********************/
 void Smack::handleRegistrationFields(const JID &from, int fields, std::string instructions)
 {
-    LOGW("handleRegistrationFields fields: %d instructions: %s ", fields, instructions.c_str());
+    LOGI("handleRegistrationFields fields: %d instructions: %s ", fields, instructions.c_str());
 }
 
 void Smack::handleRegistrationResult(const JID & /* from */, RegistrationResult result)
 {
-    LOGW("result: %d\n", result);
+    LOGI("result: %d\n", result);
 }
 
 void Smack::handleAlreadyRegistered(const JID & /* from */)
 {
-    LOGW("handleAlreadyRegistered the account already exists.\n");
+    LOGI("handleAlreadyRegistered the account already exists.\n");
 }
 
 void Smack::handleDataForm(const JID & /* from */, const DataForm & /* form */)
 {
-    LOGW("handleDataForm datForm received\n");
+    LOGI("handleDataForm datForm received\n");
 }
 
 void Smack::handleOOB(const JID & /* from */, const OOB &oob)
 {
-    LOGW("handleOOB OOB registration requested. %s: %s\n", oob.desc().c_str(), oob.url().c_str());
+    LOGI("handleOOB OOB registration requested. %s: %s\n", oob.desc().c_str(), oob.url().c_str());
 }
 
 /****************用户管理开始***********************/
 void Smack::handleItemSubscribed(const JID &jid)
 {
-    LOGW("handleItemSubscribed subscribed %s\n", jid.bare().c_str());
+    LOGI("handleItemSubscribed subscribed %s\n", jid.bare().c_str());
 }
 
 void Smack::handleItemAdded(const JID &jid)
 {
-    LOGW("handleItemAdded added %s\n", jid.bare().c_str());
+    LOGI("handleItemAdded added %s\n", jid.bare().c_str());
 }
 
 void Smack::handleItemUnsubscribed(const JID &jid)
 {
-    LOGW("handleItemUnsubscribed unsubscribed %s\n", jid.bare().c_str());
+    LOGI("handleItemUnsubscribed unsubscribed %s\n", jid.bare().c_str());
 }
 
 void Smack::handleItemRemoved(const JID &jid)
 {
-    LOGW("handleItemRemoved removed %s\n", jid.bare().c_str());
+    LOGI("handleItemRemoved removed %s\n", jid.bare().c_str());
 }
 
 void Smack::handleItemUpdated(const JID &jid)
 {
-    LOGW("handleItemUpdated updated %s\n", jid.bare().c_str());
+    LOGI("handleItemUpdated updated %s\n", jid.bare().c_str());
 }
 
 void Smack::handleRoster(const Roster &roster)
 {
-    LOGW("roster arriving    \nitems:\n");
+    LOGI("roster arriving    \nitems:\n");
     Roster::const_iterator it = roster.begin();
     for (; it != roster.end(); ++it) {
-        LOGW("roster arriving jid: %s, name: %s, subscription: %d\n",
+        LOGI("roster arriving jid: %s, name: %s, subscription: %d\n",
              (*it).second->jidJID().full().c_str(), (*it).second->name().c_str(),
              (*it).second->subscription());
         StringList g = (*it).second->groups();
         StringList::const_iterator it_g = g.begin();
         for (; it_g != g.end(); ++it_g) {
-            LOGW("\t roster arriving group: %s\n", (*it_g).c_str());
+            LOGI("\t roster arriving group: %s\n", (*it_g).c_str());
         }
         RosterItem::ResourceMap::const_iterator rit = (*it).second->resources().begin();
         for (; rit != (*it).second->resources().end(); ++rit) {
-            LOGW("roster arriving resource: %s\n", (*rit).first.c_str());
+            LOGI("roster arriving resource: %s\n", (*rit).first.c_str());
         }
     }
 }
 
 void Smack::handleRosterError(const IQ &)
 {
-    LOGW("a roster-related error occured\n");
+    LOGI("a roster-related error occured\n");
 }
 
 void Smack::handleRosterPresence(const RosterItem &item, const std::string &resource,
                                  Presence::PresenceType presence, const std::string & /* msg */)
 {
-    LOGW("handleRosterPresence received: %s/%s -- %d\n", item.jidJID().full().c_str(), resource.c_str(), presence);
+    LOGI("handleRosterPresence received: %s/%s -- %d\n", item.jidJID().full().c_str(), resource.c_str(), presence);
 }
 
 void Smack::handleSelfPresence(const RosterItem &item, const std::string &resource,
                                Presence::PresenceType presence, const std::string & /* msg */)
 {
-    LOGW("handleSelfPresence received: %s/%s -- %d\n", item.jidJID().full().c_str(), resource.c_str(), presence);
+    LOGI("handleSelfPresence received: %s/%s -- %d\n", item.jidJID().full().c_str(), resource.c_str(), presence);
 }
 
 bool Smack::handleSubscriptionRequest(const JID &jid, const std::string &msg)
@@ -597,12 +721,22 @@ bool Smack::handleSubscriptionRequest(const JID &jid, const std::string &msg)
     resultStr.append(msg.c_str());
     resultStr.append("\"");
     resultStr.append("}");
-
-    handleSubscriptionCall(resultStr);
+    ThreadSafeInfoSub *data = &g_threadInfoSub;
+    if (data == nullptr) {
+        LOGE("SMACK_TAG---------> [Smack.handleSubscriptionRequest]data is null");
+        return false;
+    }
+    data->result = resultStr.c_str();
+    LOGI("SMACK_TAG--------->: %s:  %d", "handleSubscriptionRequest: ", __LINE__);
+    napi_acquire_threadsafe_function(tsfn_sub);
+    LOGI("SMACK_TAG--------->: %s:  %d", "handleSubscriptionRequest: ", __LINE__);
+    // 调用主线程函数，传入 Data
+    napi_call_threadsafe_function(tsfn_sub, data, napi_tsfn_blocking);
+    LOGI("SMACK_TAG--------->: %s:  %d", "handleSubscriptionRequest: ", __LINE__);
     return true;
 }
 
-void Smack::receiveFriends(const std::string &jidStr, const std::string &groupName,
+void Smack::ReceiveFriends(const std::string &jidStr, const std::string &groupName,
     const std::string &hello = EmptyString)
 {
     JID jid(jidStr);
@@ -610,7 +744,15 @@ void Smack::receiveFriends(const std::string &jidStr, const std::string &groupNa
 
     groups.clear();
     RosterManager *rosterManager = j->rosterManager();
+    if (rosterManager == nullptr) {
+        LOGE("SMACK_TAG---------> [Smack.ReceiveFriends]rosterManager is null");
+        return;
+    }
     Roster *roster = rosterManager->roster();
+    if (roster == nullptr) {
+        LOGE("SMACK_TAG---------> [Smack.ReceiveFriends]roster is null");
+        return;
+    }
     Roster::const_iterator it = roster->begin();
 
     bool has = false;
@@ -635,27 +777,31 @@ void Smack::receiveFriends(const std::string &jidStr, const std::string &groupNa
     rosterManager->subscribe(jid, jid.username().c_str(), groups, hello);
 }
 
-void Smack::rejectFriends(const std::string &jidStr, const std::string &reason = EmptyString)
+void Smack::RejectFriends(const std::string &jidStr, const std::string &reason = EmptyString)
 {
     JID jid(jidStr);
     RosterManager *rosterManager = j->rosterManager();
+    if (rosterManager == nullptr) {
+        LOGE("SMACK_TAG---------> [Smack.ReceiveFriends]rosterManager is null");
+        return;
+    }
     rosterManager->unsubscribe(jid, reason);
     rosterManager->remove(jid);
 }
 
 bool Smack::handleUnsubscriptionRequest(const JID &jid, const std::string & /* msg */)
 {
-    LOGW("unsubscription: %s\n", jid.bare().c_str());
+    LOGI("unsubscription: %s\n", jid.bare().c_str());
     return true;
 }
 
 void Smack::handleNonrosterPresence(const Presence &presence)
 {
-    LOGW("handleNonrosterPresence received presence from entity not in the roster: %s to %s state: %d\n",
+    LOGI("handleNonrosterPresence received presence from entity not in the roster: %s to %s state: %d\n",
         presence.from().full().c_str(), presence.to().full().c_str(), presence.presence());
 }
 
 void Smack::handleSubscription(const Subscription &subscription)
 {
-    LOGW("handleSubscription subscription type: %d", subscription.subtype());
+    LOGI("handleSubscription subscription type: %d", subscription.subtype());
 }

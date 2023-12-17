@@ -9,9 +9,10 @@
  * This software is distributed without any warranty.
  */
 
-#ifndef ohosXmppClient_MyMUCInvitationHandler_H
-#define ohosXmppClient_MyMUCInvitationHandler_H
+#ifndef OHOSXMPPCLIENT_MYMUCINVITATIONHANDLER_H
+#define OHOSXMPPCLIENT_MYMUCINVITATIONHANDLER_H
 
+#include <node_api.h>
 #include <src/mucinvitationhandler.h>
 #include <src/clientbase.h>
 #include <string>
@@ -30,6 +31,7 @@ public:
      * @param thread An optional thread identifier in case this is a
      * continued chat.
      */
+    void recvMUCInvitation(napi_env env, napi_value jsCb);
     virtual void handleMUCInvitation(const gloox::JID& room, const gloox::JID& from, const std::string& reason,
                                     const std::string& body, const std::string& password,
                                     bool cont, const std::string& thread);
