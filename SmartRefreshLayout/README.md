@@ -10,7 +10,7 @@
 ## 下载安装
 
 ```shell
-npm install @ohos/smartrefreshlayout --save
+ohpm install @ohos/smartrefreshlayout
 ```
 OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
