@@ -259,9 +259,7 @@ struct DiyCacheHeaderPage {
 
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-        if (percentsAvailable >= self.currentCachePercent) {
-          self.currentCachePercent = percentsAvailable;
-        }
+       self.currentCachePercent = percentsAvailable;
       }
     }
 
@@ -417,6 +415,7 @@ struct DiyCacheHeaderPage {
   // 切换下个视频的接口
   async nextVideo(): Promise<void> {
     // 调用reset函数，重置播放器状态至idle
+    this.currentCachePercent = 0;
     await this.avPlayer?.reset();
     this.isLoop = false;
     // 获取当前播放文件的下一个视频文件在列表中的下标
@@ -433,9 +432,7 @@ struct DiyCacheHeaderPage {
 
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-        if (percentsAvailable >= self.currentCachePercent) {
-          self.currentCachePercent = percentsAvailable;
-        }
+       self.currentCachePercent = percentsAvailable;
       }
     }
 
@@ -462,6 +459,7 @@ struct DiyCacheHeaderPage {
 
   // 切换上个视频的接口
   async preVideo(): Promise<void> {
+    this.currentCachePercent = 0;
     await this.avPlayer?.reset();
     this.isLoop = false;
     if (this.index === (0)) {
@@ -477,9 +475,7 @@ struct DiyCacheHeaderPage {
 
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-        if (percentsAvailable >= self.currentCachePercent) {
-          self.currentCachePercent = percentsAvailable;
-        }
+       self.currentCachePercent = percentsAvailable;
       }
     }
 

@@ -65,9 +65,7 @@ struct IjkVideoPlayerPage {
 
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-        if (percentsAvailable >= self.currentCachePercent) {
-          self.currentCachePercent = percentsAvailable;
-        }
+       self.currentCachePercent = percentsAvailable;
       }
     }
 
@@ -473,6 +471,7 @@ struct IjkVideoPlayerPage {
     } else {
       curIndex++;
     }
+    this.currentCachePercent = 0;
     CONTROL_PlayStatus = PlayStatus.INIT;
     mIjkMediaPlayer.stop();
     mIjkMediaPlayer.reset();
@@ -482,9 +481,7 @@ struct IjkVideoPlayerPage {
 
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-        if (percentsAvailable >= self.currentCachePercent) {
-          self.currentCachePercent = percentsAvailable;
-        }
+       self.currentCachePercent = percentsAvailable;
       }
     }
 

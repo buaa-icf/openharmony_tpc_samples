@@ -355,9 +355,7 @@ struct DiyCacheCountPage {
 
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-        if (percentsAvailable >= self.currentCachePercent) {
-          self.currentCachePercent = percentsAvailable;
-        }
+       self.currentCachePercent = percentsAvailable;
       }
     }
 
@@ -420,6 +418,7 @@ struct DiyCacheCountPage {
   // 切换下个视频的接口
   async nextVideo(): Promise<void> {
     // 调用reset函数，重置播放器状态至idle
+    this.currentCachePercent = 0;
     await this.avPlayer?.reset();
     this.isLoop = false;
     // 获取当前播放文件的下一个视频文件在列表中的下标
@@ -436,9 +435,7 @@ struct DiyCacheCountPage {
 
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-        if (percentsAvailable >= self.currentCachePercent) {
-          self.currentCachePercent = percentsAvailable;
-        }
+       self.currentCachePercent = percentsAvailable;
       }
     }
 
@@ -464,6 +461,7 @@ struct DiyCacheCountPage {
 
   // 切换上个视频的接口
   async preVideo(): Promise<void> {
+    this.currentCachePercent = 0;
     await this.avPlayer?.reset();
     this.isLoop = false;
     if (this.index === (0)) {
@@ -479,9 +477,7 @@ struct DiyCacheCountPage {
 
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-        if (percentsAvailable >= self.currentCachePercent) {
-          self.currentCachePercent = percentsAvailable;
-        }
+       self.currentCachePercent = percentsAvailable;
       }
     }
 
@@ -610,10 +606,10 @@ struct DiyCacheCountPage {
         .alignItems(VerticalAlign.Center)
 
         Row() {
-          Text('输入最大缓存大小：').fontSize(15).width('15%').textAlign(TextAlign.Center)
+          Text('输入最大缓存个数：').fontSize(15).width('15%').textAlign(TextAlign.Center)
           TextInput({
             text: this.currentCacheCount,
-            placeholder: '请输入最大缓存容量，超过此值，将会自动删除多余的缓存文件',
+            placeholder: '请输入最大缓存文件个数，超过此值，将会自动删除多余的缓存文件',
             controller: this.controller
           })
             .enterKeyType(EnterKeyType.Next)
