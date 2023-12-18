@@ -1,8 +1,6 @@
-import http from '@ohos.net.http';
-import prompt from '@ohos.prompt';
 /*  The MIT License (MIT)
  *
- *  Copyright (c) 2022 HUAWEI
+ *  Copyright (c) 2021 Huawei Device Co., Ltd.
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +20,10 @@ import prompt from '@ohos.prompt';
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *  SOFTWARE.
  */
+
+import http from '@ohos.net.http';
+import prompt from '@ohos.prompt';
+
 export class Request{
   request(options){
     return new Promise((resolve, reject) => {
