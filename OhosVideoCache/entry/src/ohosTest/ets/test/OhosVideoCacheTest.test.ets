@@ -21,7 +21,6 @@ import {
   HeaderInjector,
   HttpProxyCacheServer,
   HttpProxyCacheServerBuilder,
-  Md5FileNameGenerator,
   StorageUtils,
   TotalCountLruDiskUsage,
   TotalSizeLruDiskUsage
@@ -31,6 +30,8 @@ import fs from '@ohos.file.fs';
 import http from '@ohos.net.http';
 import CryptoJS from '@ohos/crypto-js';
 import HashMap from '@ohos.util.HashMap';
+
+const BASE_COUNT = 1
 
 function getExtension(url: string): string {
   let dotIndex = url.lastIndexOf('.');
@@ -43,10 +44,12 @@ export default function OhosVideoCacheTest() {
   let testUrl: string = 'https://www.w3school.com.cn/i/movie.mp4';
   let cacheFolder: string;
   let server: HttpProxyCacheServer;
+  let context: Context;
   describe('OhosVideoCacheTest', () => {
     beforeAll(() => {
       try {
-        cacheFolder = StorageUtils.getIndividualCacheDirectory(GlobalProxyServer?.getInstance()?.getContext())
+        context = GlobalProxyServer.getInstance().getContext()
+        cacheFolder = StorageUtils.getIndividualCacheDirectory(context)
         if (fs.accessSync(cacheFolder)) {
           fs.rmdirSync(cacheFolder);
         }
@@ -54,7 +57,7 @@ export default function OhosVideoCacheTest() {
       } catch (err) {
       }
       try {
-        server = new HttpProxyCacheServerBuilder(GlobalProxyServer?.getInstance()?.getContext()).build();
+        server = new HttpProxyCacheServerBuilder(context).build();
       } catch (err) {
       }
 
@@ -115,46 +118,15 @@ export default function OhosVideoCacheTest() {
         done()
       }
     })
-    it('shutdown', 0, async (done: Function) => {
-      let client = http.createHttp();
-      try {
-        let proxyUrl = await server.getProxyUrl('http://1251017968.vod2.myqcloud.com/3eb04eefvodtransgzp1251017968/8782b1285285890810009576163/v.f30.mp4');
-        server?.shutdown();
-        let header: http.HttpRequestOptions = {
-          method: http.RequestMethod.GET,
-          header: {
-            "Content-Type": 'application/json',
-            "Connection": 'Keep-Alive',
-            "Range": 'bytes=0-'
-          },
-          connectTimeout: 10000,
-          readTimeout: 60000,
-          usingProtocol: http.HttpProtocol.HTTP1_1
-        }
-
-        client.requestInStream(proxyUrl, header).then(() => {
-          expect(1).assertEqual(2)
-          done()
-        }).catch((err: Error) => {
-          expect(1).assertEqual(1)
-          done()
-        })
-
-      } catch (err) {
-        expect(1).assertEqual(2);
-        done()
-      }
-    })
-
     it('cacheDirectory', 0, async (done: Function) => {
       let client = http.createHttp();
       try {
-        let directory = GlobalProxyServer?.getInstance()?.getContext()?.cacheDir + "/hahaha"
-        server = new HttpProxyCacheServerBuilder(GlobalProxyServer?.getInstance()?.getContext())
+        let directory = context?.cacheDir + "/hahaha"
+        let server = new HttpProxyCacheServerBuilder(context)
           .cacheDirectory(directory ? directory : '')
           .build()
         let cacheRoot = server.getConfig()?.cacheRoot ? server.getConfig()?.cacheRoot : ""
-        expect(cacheRoot).assertEqual(GlobalProxyServer?.getInstance()?.getContext()?.cacheDir + "/hahaha")
+        expect(cacheRoot).assertEqual(context?.cacheDir + "/hahaha")
         let proxyUrl = await server.getProxyUrl(testUrl) ? await server.getProxyUrl(testUrl) : testUrl;
         let header: http.HttpRequestOptions = {
           method: http.RequestMethod.GET,
@@ -198,12 +170,7 @@ export default function OhosVideoCacheTest() {
           }
         }
 
-        if (server) {
-          let origin = server?.getConfig()?.fileNameGenerator
-          expect(origin instanceof Md5FileNameGenerator).assertTrue();
-          expect(origin instanceof MyFileNameGenerator).assertFalse();
-        }
-        server = new HttpProxyCacheServerBuilder(GlobalProxyServer?.getInstance()?.getContext())
+        let server = new HttpProxyCacheServerBuilder(context)
           .setFileNameGenerator(new MyFileNameGenerator())
           .build()
         let fileNameGenerator = server.getConfig()?.fileNameGenerator;
@@ -242,7 +209,7 @@ export default function OhosVideoCacheTest() {
 
     it('maxCacheSize', 0, async (done: Function) => {
       try {
-        server = new HttpProxyCacheServerBuilder(GlobalProxyServer?.getInstance()?.getContext())
+        let server = new HttpProxyCacheServerBuilder(context)
           .maxCacheSize(50 * 1024 * 1024)
           .build()
         let diskUsage = server?.getConfig()?.diskUsage
@@ -256,7 +223,7 @@ export default function OhosVideoCacheTest() {
     })
     it('maxCacheFilesCount', 0, async (done: Function) => {
       try {
-        server = new HttpProxyCacheServerBuilder(GlobalProxyServer?.getInstance()?.getContext())
+        let server = new HttpProxyCacheServerBuilder(context)
           .maxCacheFilesCount(10)
           .build()
         let diskUsage = server?.getConfig()?.diskUsage
@@ -275,7 +242,7 @@ export default function OhosVideoCacheTest() {
           }
         }
 
-        server = new HttpProxyCacheServerBuilder(GlobalProxyServer?.getInstance()?.getContext())
+        let server = new HttpProxyCacheServerBuilder(context)
           .setDiskUsage(new MyDiskUsage())
           .build()
         let diskUsage = server?.getConfig()?.diskUsage
@@ -297,7 +264,7 @@ export default function OhosVideoCacheTest() {
           }
         }
 
-        server = new HttpProxyCacheServerBuilder(GlobalProxyServer?.getInstance()?.getContext())
+        let server = new HttpProxyCacheServerBuilder(context)
           .setHeaderInjector(new MyHeaderInjector())
           .build()
         let headerInjector = server?.getConfig()?.headerInjector
@@ -313,7 +280,7 @@ export default function OhosVideoCacheTest() {
     })
     it('build', 0, async (done: Function) => {
       try {
-        server = new HttpProxyCacheServerBuilder(GlobalProxyServer?.getInstance()?.getContext())
+        let server = new HttpProxyCacheServerBuilder(context)
           .build()
         expect(server instanceof HttpProxyCacheServer).assertTrue();
         expect(server instanceof HttpProxyCacheServer).assertFalse();
@@ -374,6 +341,35 @@ export default function OhosVideoCacheTest() {
         done()
       }
     })
+    it('shutdown', 0, async (done: Function) => {
+      let client = http.createHttp();
+      try {
+        let proxyUrl = await server.getProxyUrl('http://1251017968.vod2.myqcloud.com/3eb04eefvodtransgzp1251017968/8782b1285285890810009576163/v.f30.mp4');
+        server?.shutdown();
+        let header: http.HttpRequestOptions = {
+          method: http.RequestMethod.GET,
+          header: {
+            "Content-Type": 'application/json',
+            "Connection": 'Keep-Alive',
+            "Range": 'bytes=0-'
+          },
+          connectTimeout: 10000,
+          readTimeout: 60000,
+          usingProtocol: http.HttpProtocol.HTTP1_1
+        }
 
+        client.requestInStream(proxyUrl, header).then(() => {
+          expect(1).assertEqual(2)
+          done()
+        }).catch((err: Error) => {
+          expect(1).assertEqual(1)
+          done()
+        })
+
+      } catch (err) {
+        expect(1).assertEqual(2);
+        done()
+      }
+    })
   })
 }

@@ -27,7 +27,7 @@ import Preconditions from './Preconditions';
 import SourceInfoStorage from './sourcestorage/SourceInfoStorage';
 import SourceInfoStorageFactory from './sourcestorage/SourceInfoStorageFactory';
 import StorageUtils from './StorageUtils';
-
+const BASE_COUNT = 1
 export default class HttpProxyCacheServerBuilder {
   private DEFAULT_MAX_SIZE: number = 512 * 1024 * 1024;
   private cacheRoot: string;
@@ -54,7 +54,11 @@ export default class HttpProxyCacheServerBuilder {
    * @return a builder.
    */
   public cacheDirectory(file: string): HttpProxyCacheServerBuilder {
+    let startTime1 = new Date().getTime();
     this.cacheRoot = Preconditions.checkNotNull(file);
+    let endTime1 = new Date().getTime();
+    let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+    console.log("OhosVideoCacheTest cacheDirectory :  averageTime1 : " + averageTime1 + "us")
     return this;
   }
 
@@ -65,7 +69,11 @@ export default class HttpProxyCacheServerBuilder {
    * @return a builder.
    */
   public setFileNameGenerator(fileNameGenerator: FileNameGenerator): HttpProxyCacheServerBuilder {
+    let startTime1 = new Date().getTime();
     this.fileNameGenerator = Preconditions.checkNotNull(fileNameGenerator);
+    let endTime1 = new Date().getTime();
+    let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+    console.log("OhosVideoCacheTest setFileNameGenerator :  averageTime1 : " + averageTime1 + "us")
     return this;
   }
 
@@ -81,7 +89,11 @@ export default class HttpProxyCacheServerBuilder {
    * @return a builder.
    */
   public maxCacheSize(maxSize: number): HttpProxyCacheServerBuilder {
+    let startTime1 = new Date().getTime();
     this.diskUsage = new TotalSizeLruDiskUsage(maxSize);
+    let endTime1 = new Date().getTime();
+    let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+    console.log("OhosVideoCacheTest maxCacheSize :  averageTime1 : " + averageTime1 + "us")
     return this;
   }
 
@@ -94,7 +106,11 @@ export default class HttpProxyCacheServerBuilder {
    * @return a builder.
    */
   public maxCacheFilesCount(count: number): HttpProxyCacheServerBuilder {
+    let startTime1 = new Date().getTime();
     this.diskUsage = new TotalCountLruDiskUsage(count);
+    let endTime1 = new Date().getTime();
+    let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+    console.log("OhosVideoCacheTest maxCacheFilesCount :  averageTime1 : " + averageTime1 + "us")
     return this;
   }
 
@@ -105,7 +121,11 @@ export default class HttpProxyCacheServerBuilder {
    * @return a builder.
    */
   public setDiskUsage(diskUsage: DiskUsage): HttpProxyCacheServerBuilder {
+    let startTime1 = new Date().getTime();
     this.diskUsage = Preconditions.checkNotNull(diskUsage);
+    let endTime1 = new Date().getTime();
+    let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+    console.log("OhosVideoCacheTest setDiskUsage :  averageTime1 : " + averageTime1 + "us")
     return this;
   }
 
@@ -116,7 +136,11 @@ export default class HttpProxyCacheServerBuilder {
    * @return a builder
    */
   public setHeaderInjector(headerInjector: HeaderInjector): HttpProxyCacheServerBuilder {
+    let startTime1 = new Date().getTime();
     this.headerInjector = Preconditions.checkNotNull(headerInjector);
+    let endTime1 = new Date().getTime();
+    let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+    console.log("OhosVideoCacheTest setHeaderInjector :  averageTime1 : " + averageTime1 + "us")
     return this;
   }
 
@@ -126,6 +150,7 @@ export default class HttpProxyCacheServerBuilder {
    * @return proxy cache. Only single instance should be used across whole app.
    */
   public build(): HttpProxyCacheServer {
+    let startTime1 = new Date().getTime();
     // 之所以把初始化从构造函数改到build是因为再构造函数里面初始化之后再在设置setDiskUsage方法里面设置，diskUsage这些对象不会被消除，还能存在，在LruDiskUsage调用accept方法的时候返回结果导致结果异常
     if (!this.sourceInfoStorage && this.context) {
       this.sourceInfoStorage = SourceInfoStorageFactory.newSourceInfoStorage(this.context);
@@ -143,6 +168,9 @@ export default class HttpProxyCacheServerBuilder {
       this.headerInjector = new EmptyHeadersInjector();
     }
     let config = this.buildConfig();
+    let endTime1 = new Date().getTime();
+    let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+    console.log("OhosVideoCacheTest build :  averageTime1 : " + averageTime1 + "us")
     return new HttpProxyCacheServer(config);
   }
 
