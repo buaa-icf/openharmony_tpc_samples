@@ -1,6 +1,7 @@
-/*  The MIT License (MIT)
+/**
+ *  The MIT License (MIT)
  *
- *  Copyright (c) 2022 HUAWEI
+ *  Copyright (c) 2021 Huawei Device Co., Ltd.
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -20,10 +21,9 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *  SOFTWARE.
  */
-export function callbackSupport(client) {
-  const getSigningKey = client.getSigningKey.bind(client);
-  return async (kid, cb) => {
-    return await getSigningKey(kid)
-  };
-};
-
+export default class ArgumentError extends Error {
+    constructor(message) {
+        super(message)
+        this.name = 'ArgumentError'
+    }
+}

@@ -1,7 +1,7 @@
 /**
  *  The MIT License (MIT)
  *
- *  Copyright (c) 2022 HUAWEI
+ *  Copyright (c) 2021 Huawei Device Co., Ltd.
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -21,9 +21,9 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *  SOFTWARE.
  */
-module.exports = {
-    ArgumentError: require('./ArgumentError'),
-    JwksError: require('./JwksError'),
-    JwksRateLimitError: require('./JwksRateLimitError'),
-    SigningKeyNotFoundError: require('./SigningKeyNotFoundError')
-};
+export default class SigningKeyNotFoundError extends Error {
+    constructor(message) {
+        super(message)
+        this.name = 'SigningKeyNotFoundError'
+    }
+}

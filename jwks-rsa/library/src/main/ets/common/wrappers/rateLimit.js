@@ -1,7 +1,6 @@
-/**
- *  The MIT License (MIT)
+/*  The MIT License (MIT)
  *
- *  Copyright (c) 2022 HUAWEI
+ *  Copyright (c) 2021 Huawei Device Co., Ltd.
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -21,9 +20,24 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *  SOFTWARE.
  */
-export default class JwksError extends Error {
-  constructor(message) {
-    super(message)
-    this.name = 'JwksError'
-  }
+import { RateLimiter } from 'limiter';
+
+export function rateLimitWrapper(client, { jwksRequestsPerMinute = 5 }) {
+    const getSigningKey = client.getSigningKey.bind(client);
+    const limiter = new RateLimiter({tokensPerInterval:jwksRequestsPerMinute, interval:'minute', fireImmediately:true});
+    console.info(`Configured rate limiting to JWKS endpoint at ${jwksRequestsPerMinute}/minute`);
+
+    return async (kid) => {
+        if (limiter.tryRemoveTokens(1)) {
+            try {
+                return await getSigningKey(kid);
+            } catch (error) {
+                console.info(error);
+            }
+        } else {
+            console.info(`Too many requests to the JWKS endpoint`);
+        }
+    }
 }
+
+

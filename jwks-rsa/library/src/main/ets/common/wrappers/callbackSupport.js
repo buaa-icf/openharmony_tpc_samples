@@ -1,6 +1,6 @@
 /*  The MIT License (MIT)
  *
- *  Copyright (c) 2022 HUAWEI
+ *  Copyright (c) 2021 Huawei Device Co., Ltd.
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -20,30 +20,10 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *  SOFTWARE.
  */
-import {retrieveSigningKeys} from '../utils';
-
-/**
- * Uses getKeysInterceptor to allow users to retrieve keys from a file,external cache, or provided object before falling back to the jwksUri endpoint
- */
-
-export function getKeysInterceptor(client, { getKeysInterceptor }) {
-    const getSigningKey = client.getSigningKey.bind(client);
-
-    return async (kid) => {
-        const keys = await getKeysInterceptor();
-        let signingKeys;
-        if (keys && keys.length) {
-            signingKeys = retrieveSigningKeys(keys);
-        }
-        if (signingKeys && signingKeys.length) {
-            const key = signingKeys.find(k =>!kid || k.kid === kid);
-            if (key) {
-                return key;
-            }
-        }
-        return getSigningKey(kid);
-    };
-}
-
-
+export function callbackSupport(client) {
+  const getSigningKey = client.getSigningKey.bind(client);
+  return async (kid, cb) => {
+    return await getSigningKey(kid)
+  };
+};
 

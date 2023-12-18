@@ -7,6 +7,6 @@
   "main": "",
   "version": "1.0.0",
   "dependencies": {
-    "@ohos/jwks_rsa": "file:../jwks_rsa"
+    "@ohos/jwks_rsa": "file:../library"
   }
 }

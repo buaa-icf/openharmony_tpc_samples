@@ -34,8 +34,8 @@
       ]
     },
     {
-      "name": "jwks_rsa",
-      "srcPath": "./jwks_rsa"
+      "name": "library",
+      "srcPath": "./library"
     }
   ]
 }
