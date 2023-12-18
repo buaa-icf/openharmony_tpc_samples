@@ -1,6 +1,6 @@
 ## 2.0.0-rc.0
-- DevEco Studio 版本：4.0 Beta2(4.0.3.600)
-- OpenHarmony SDK:API10 (4.0.10.11)
+- DevEco Studio 版本： 4.1 Canary(4.1.3.317)
+- OpenHarmony SDK:API11 (4.1.0.36)
 - ArkTS新语法适配
 
 ## 1.0.1
