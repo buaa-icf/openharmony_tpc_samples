@@ -1,5 +1,5 @@
 ## v2.0.0
-- 适配DevEco Studio 版本：4.0 Beta2（4.0.3.411），OpenHarmony SDK:API10（4.0.10.2）
+- 适配DevEco Studio 版本： 4.1 Canary(4.1.3.317), OpenHarmony SDK:API11 (4.1.0.36)
 
 ## 0.1.1
 1.适配DevEco Studio 3.1 Beta1版本。
