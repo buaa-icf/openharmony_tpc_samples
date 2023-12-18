@@ -14,7 +14,8 @@
  */
 
 import abilityTest from './Ability.test';
+import OhosVideoCacheTest from './OhosVideoCacheTest.test';
 
 export default function testsuite() {
-  abilityTest();
+  OhosVideoCacheTest();
 }

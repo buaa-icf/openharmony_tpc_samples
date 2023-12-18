@@ -285,6 +285,8 @@ export default class HttpProxyCacheServer {
     if (this.config && this.config.sourceInfoStorage) {
       this.config.sourceInfoStorage.release();
     }
+    this.serverSocket?.off('connect')
+    this.serverSocket = null;
   }
 
   private onError(e: Error | ProxyCacheException): void {
@@ -292,7 +294,7 @@ export default class HttpProxyCacheServer {
   }
 
   private shutdownClients(): void {
-    this.clientsMap?.forEach(async (clients: HttpProxyCacheServerClients,  key: string, map: HashMap<String, HttpProxyCacheServerClients>) => {
+    this.clientsMap?.forEach(async (clients: HttpProxyCacheServerClients, key: string, map: HashMap<String, HttpProxyCacheServerClients>) => {
       await clients.shutdown();
     })
     this.clientsMap.clear();
@@ -334,13 +336,13 @@ export default class HttpProxyCacheServer {
     // 客户端主动断开连接的情况下 不做处理 否则可能将正在执行的其他连接断开
     try {
       // 暂不处理 该方法关闭可能会关掉当前传输数据的severConnect而不是已经不再使用的severConnect 改为在HttpProxyCache里面关闭。
-     /* if (!isCloseByClient) {
-        severConnect?.off('message');
-        severConnect?.off('error');
-        severConnect?.off('close');
-        severConnect?.close();
-        severConnect = null;
-      }*/
+      /* if (!isCloseByClient) {
+         severConnect?.off('message');
+         severConnect?.off('error');
+         severConnect?.off('close');
+         severConnect?.close();
+         severConnect = null;
+       }*/
     } catch (err) {
       this.onError(err)
     }

@@ -117,7 +117,6 @@ export default class FileCache implements Cache {
       }
       fs.fsyncSync(this.dataFile.fd)
       fs.closeSync(this.dataFile.fd)
-      this.diskUsage.touch(this.tempFilePath);
       return Promise.resolve();
     } catch (e) {
       throw new Error("Error closing file " + this.tempFilePath + ',reason is : ' + e.message);
@@ -151,12 +150,14 @@ export default class FileCache implements Cache {
       if (offset < 0 || length < 0) {
         return -1;
       }
+      if (this.fileLength > 0 && offset >= this.fileLength) {
+        this.diskUsage?.touch(this.tempFilePath);
+        return -1;
+      }
       if (offset >= this.available()) {
         return -1;
       }
-      if (this.fileLength > 0 && offset >= this.fileLength) {
-        return -1;
-      }
+
       if (!this.dataFile) {
         return -1;
       }

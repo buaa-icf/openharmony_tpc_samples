@@ -30,6 +30,11 @@ async function TouchCallable(file: string) {
   let directory: string = file.substring(0, last);
   let files = Files.getLruListFiles(directory);
 
+  let eventStart: emitter.InnerEvent = {
+    eventId: VideoCacheConstant.COUNT_TOTAL_SIZE_START_ID,
+    priority: emitter.EventPriority.IMMEDIATE
+  }
+  emitter.emit(eventStart);
   for (let i = 0; i < files.length; i++) {
     let singleFile = files.get(i);
     let eventData: emitter.EventData = {
@@ -134,7 +139,12 @@ export default class LruDiskUsage implements DiskUsage {
         self.list.add(content);
       }
     })
-
+    let countTotalStratEvent: emitter.InnerEvent = {
+      eventId: VideoCacheConstant.COUNT_TOTAL_SIZE_START_ID
+    }
+    emitter.on(countTotalStratEvent, (data: emitter.EventData) => {
+      self.list.clear()
+    })
     let countTotalEndEvent: emitter.InnerEvent = {
       eventId: VideoCacheConstant.COUNT_TOTAL_SIZE_END_ID
     }
@@ -182,7 +192,7 @@ export default class LruDiskUsage implements DiskUsage {
 
   touch(filePath: string): void {
     try {
-      if (!filePath || filePath.startsWith(StorageUtils.DEFAULT_DIR)) {
+      if (!filePath || !filePath.startsWith(StorageUtils.DEFAULT_DIR)) {
         return;
       }
       let task: taskpool.Task = new taskpool.Task(TouchCallable, filePath);
