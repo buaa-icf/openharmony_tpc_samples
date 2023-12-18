@@ -41,7 +41,9 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
 
 在下述版本验证通过：
 
-- DevEco Studio 版本：4.0.3.600，OpenHarmony SDK:API10（4.0.10.15）
+- DevEco Studio 版本： 4.1 Canary(4.1.3.317)
+
+- OpenHarmony SDK:API11 (4.1.0.36)
 
 ## 贡献代码
 
