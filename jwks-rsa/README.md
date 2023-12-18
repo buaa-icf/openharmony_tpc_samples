@@ -4,7 +4,7 @@
 
 从 JWKS（JSON Web 密钥集）端点检索密钥的库，支持的加密算法：非对称公钥加密算法（RSA）、非对称椭圆曲线加密算法(ECC)。
 
-## 安装教程
+## 下载安装
 
 ```shell
 ohpm install @ohos/jwks-rsa 
@@ -39,8 +39,9 @@ this.publicKey = await signingKey.getPublicKey()
 
 ## 约束与限制
 在下述版本验证通过：
-- DevEcoStudio 4.0.3.600
-- OpenHarmony SDK  4.0.10.11(API 10)
+- DevEco Studio 版本： 4.1 Canary(4.1.3.317)
+
+- OpenHarmony SDK:API11 (4.1.0.36)
 
 ## 目录结构
 
