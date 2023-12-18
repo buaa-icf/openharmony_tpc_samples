@@ -8,14 +8,14 @@
     "HamonyOs"
   ],
   "author": "ohos_tpc",
-  "description": "SMBJ Client",
+  "description": "通过smb2协议实现的文件共享客户端，可以进行文件共享并进行操作，比如重命名等功能",
   "ohos": {
     "org": "opensource"
   },
   "main": "index.ts",
   "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/smbj",
   "type": "module",
-  "version": "2.0.0",
+  "version": "2.0.0-rc.0",
   "dependencies": {
     "@ohos/Buffer": "file:../buffer"
   },
