@@ -119,6 +119,7 @@ export default function OhosVideoCacheTest() {
       let client = http.createHttp();
       try {
         let proxyUrl = await server.getProxyUrl('http://1251017968.vod2.myqcloud.com/3eb04eefvodtransgzp1251017968/8782b1285285890810009576163/v.f30.mp4');
+        server?.shutdown();
         let header: http.HttpRequestOptions = {
           method: http.RequestMethod.GET,
           header: {
@@ -127,9 +128,10 @@ export default function OhosVideoCacheTest() {
             "Range": 'bytes=0-'
           },
           connectTimeout: 10000,
-          readTimeout: 0,
+          readTimeout: 60000,
           usingProtocol: http.HttpProtocol.HTTP1_1
         }
+
         client.requestInStream(proxyUrl, header).then(() => {
           expect(1).assertEqual(2)
           done()
@@ -137,9 +139,7 @@ export default function OhosVideoCacheTest() {
           expect(1).assertEqual(1)
           done()
         })
-        setTimeout(() => {
-          server?.shutdown();
-        }, 3000)
+
       } catch (err) {
         expect(1).assertEqual(2);
         done()
