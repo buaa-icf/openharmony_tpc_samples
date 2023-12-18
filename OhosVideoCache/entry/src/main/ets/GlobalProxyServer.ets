@@ -44,7 +44,7 @@ export default class GlobalProxyServer {
     return this._objects.get(this.SERVER_STR) as HttpProxyCacheServer;
   }
 
-  setServer(objectClass: HttpProxyCacheServer | null) {
+  setServer(objectClass: HttpProxyCacheServer) {
     try {
       let currentServer: HttpProxyCacheServer = this.getServer();
       currentServer.shutdown()

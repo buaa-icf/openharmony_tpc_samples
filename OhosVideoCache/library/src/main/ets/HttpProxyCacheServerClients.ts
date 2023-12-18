@@ -33,9 +33,13 @@ class UiListenerHandler implements CacheListener {
   }
 
   onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-    this.listeners.forEach((cacheListener: CacheListener, index?: number, arrlist?: ArrayList<CacheListener>) => {
-      cacheListener?.onCacheAvailable(cacheFilePath, url, percentsAvailable);
-    })
+    if (!this.listeners || this.listeners.length < 1) {
+      return;
+    }
+    for (let i = 0; i < this.listeners.length; i++) {
+      let listener = this.listeners[i] as CacheListener;
+      listener.onCacheAvailable(cacheFilePath, url, percentsAvailable);
+    }
   }
 }
 
@@ -84,7 +88,7 @@ export default class HttpProxyCacheServerClients {
 
   private async finishProcessRequest(): Promise<void> {
     if (this.proxyCache) {
-     await this.proxyCache.shutdown();
+      await this.proxyCache.shutdown();
     }
     this.proxyCache = null;
     return Promise.resolve();

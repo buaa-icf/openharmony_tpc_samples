@@ -102,7 +102,7 @@ export default class FileCache implements Cache {
     return filePath.endsWith(this.TEMP_POSTFIX);
   }
 
-  async close() {
+  async close(): Promise<void> {
     let self = this;
     try {
       if (!self.isRenamedEnd) {

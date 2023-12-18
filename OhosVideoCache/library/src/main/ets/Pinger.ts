@@ -109,7 +109,9 @@ export default class Pinger {
           }
           emitter.on(closeTaskEvent, (data: emitter.EventData) => {
             try {
-              taskpool.cancel(runningTask)
+              if (runningTask) {
+                taskpool.cancel(runningTask)
+              }
             } catch (err) {
             }
           })

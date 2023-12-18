@@ -39,11 +39,11 @@ export default class HttpProxyCache extends ProxyCache {
     this.receiveSize = 0;
   }
 
-  async shutdown():Promise<void> {
+  async shutdown(): Promise<void> {
     try {
       this.stopped = true;
       super.shutdown();
-      this.serverConnect?.close();
+      await this.serverConnect?.close();
     } catch (err) {
     }
     return Promise.resolve()
@@ -79,7 +79,7 @@ export default class HttpProxyCache extends ProxyCache {
       let available = this.cache.available();
       let length = await this.source.length()
       if (length > 0) {
-        let percent = available / length;
+        let percent = available * 100 / length;
         this.onCachePercentsAvailableChanged(percent);
       }
     }

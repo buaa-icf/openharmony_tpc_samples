@@ -235,7 +235,8 @@ struct IjkVideoPlayerPage {
       Flex({ direction: FlexDirection.Row, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Start }) {
         Text('当前缓存进度：').fontSize(15).width('15%').textAlign(TextAlign.Center)
         Progress({ value: 0, total: 100, type: ProgressType.Linear })
-          .color(Color.Grey)
+          .color(Color.Red)
+          .backgroundColor(Color.Gray)
           .value(this.currentCachePercent)
           .width('65%')
 

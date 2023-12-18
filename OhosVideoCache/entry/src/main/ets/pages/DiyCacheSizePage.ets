@@ -59,6 +59,7 @@ struct DiyCacheSizePage {
   private mXcomponentController: XComponentController = new XComponentController();
   private SRC_LIST: Array<string> = new Array();
   private controller: TextInputController = new TextInputController();
+  private server: HttpProxyCacheServer | null = null;
 
   // 界面初始化函数
   async aboutToAppear() {
@@ -71,7 +72,7 @@ struct DiyCacheSizePage {
   // 界面销毁监听
   async aboutToDisappear(): Promise<void> {
     Logger.info(TAG, 'aboutToDisappear success');
-    GlobalProxyServer?.getInstance()?.getServer()?.shutdown()
+    this.server?.shutdown()
     this.setOffCallback();
     await this.avPlayer?.stop();
     await this.avPlayer?.release();
@@ -355,16 +356,15 @@ struct DiyCacheSizePage {
 
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-       self.currentCachePercent = percentsAvailable;
+        self.currentCachePercent = percentsAvailable;
       }
     }
 
-    let server: HttpProxyCacheServer = new HttpProxyCacheServerBuilder(getContext())
+    this.server = new HttpProxyCacheServerBuilder(getContext())
       .maxCacheSize(Number.parseInt(this.currentCacheSize) * 1024 * 1024)
       .build();
-    server.registerCacheListener(new MyCacheListener(), this.videoName);
-    GlobalProxyServer?.getInstance()?.setServer(server)
-    let proxyUrl: string | undefined = await GlobalProxyServer?.getInstance()?.getServer()?.getProxyUrl(this.videoName)
+    this.server?.registerCacheListener(new MyCacheListener(), this.videoName);
+    let proxyUrl: string | undefined = await this.server?.getProxyUrl(this.videoName)
     let newUrl = proxyUrl ? proxyUrl : this.videoName;
     // 由于avplayer不支持直接加载本地文件路径 这里需要转化为fd的路径
     if (newUrl.startsWith(getContext().cacheDir)) {
@@ -400,7 +400,9 @@ struct DiyCacheSizePage {
   // 初始化函数
   async initAVPlayer(): Promise<void> {
     Logger.info(TAG, 'initAVPlayer success');
-    this.fdPath = this.videoName;
+    if (!this.fdPath || this.fdPath.length < 1) {
+      this.fdPath = this.videoName;
+    }
     Logger.info(TAG, 'file id is : ' + this.fdPath);
     this.surfaceID = this.mXcomponentController.getXComponentSurfaceId();
     Logger.info(TAG, 'surfaceID is : ' + this.surfaceID);
@@ -431,12 +433,12 @@ struct DiyCacheSizePage {
 
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-       self.currentCachePercent = percentsAvailable;
+        self.currentCachePercent = percentsAvailable;
       }
     }
 
-    GlobalProxyServer?.getInstance()?.getServer()?.registerCacheListener(new MyCacheListener(), this.fdPath)
-    let proxyUrl: string | undefined = await GlobalProxyServer?.getInstance()?.getServer()?.getProxyUrl(this.fdPath)
+    this.server?.registerCacheListener(new MyCacheListener(), this.fdPath)
+    let proxyUrl: string | undefined = await this.server?.getProxyUrl(this.fdPath)
     let newUrl = proxyUrl ? proxyUrl : this.fdPath;
     if (newUrl.startsWith(getContext().cacheDir)) {
       let file = fs.openSync(newUrl, fs.OpenMode.READ_ONLY);
@@ -474,12 +476,12 @@ struct DiyCacheSizePage {
 
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-       self.currentCachePercent = percentsAvailable;
+        self.currentCachePercent = percentsAvailable;
       }
     }
 
-    GlobalProxyServer?.getInstance()?.getServer()?.registerCacheListener(new MyCacheListener(), this.fdPath)
-    let proxyUrl: string | undefined = await GlobalProxyServer?.getInstance()?.getServer()?.getProxyUrl(this.fdPath)
+    this.server?.registerCacheListener(new MyCacheListener(), this.fdPath)
+    let proxyUrl: string | undefined = await this.server?.getProxyUrl(this.fdPath)
     let newUrl = proxyUrl ? proxyUrl : this.fdPath;
     if (newUrl.startsWith(getContext().cacheDir)) {
       let file = fs.openSync(newUrl, fs.OpenMode.READ_ONLY);
@@ -519,12 +521,12 @@ struct DiyCacheSizePage {
         })
           .onLoad(() => {
             // 加载完成后调用初始化播放器函数
-            let id = setInterval(()=>{
+            let id = setInterval(() => {
               if (this.isSetFinish) {
                 clearInterval(id);
                 this.initAVPlayer();
               }
-            },20)
+            }, 20)
           })
           .width('100%')
           .aspectRatio(this.ratio)

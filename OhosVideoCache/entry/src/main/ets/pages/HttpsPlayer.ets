@@ -257,7 +257,7 @@ struct HttpPlayer {
 
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-       self.currentCachePercent = percentsAvailable;
+        self.currentCachePercent = percentsAvailable;
       }
     }
 
@@ -271,6 +271,7 @@ struct HttpPlayer {
     if (newUrl.startsWith(getContext().cacheDir)) {
       let file = fs.openSync(newUrl, fs.OpenMode.READ_ONLY);
       newUrl = "fd://" + file.fd;
+      self.currentCachePercent = 100;
     }
     this.fdPath = newUrl;
     this.avPlayer.url = this.fdPath;
@@ -416,7 +417,7 @@ struct HttpPlayer {
 
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-       self.currentCachePercent = percentsAvailable;
+        self.currentCachePercent = percentsAvailable;
       }
     }
 
@@ -459,7 +460,7 @@ struct HttpPlayer {
 
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-       self.currentCachePercent = percentsAvailable;
+        self.currentCachePercent = percentsAvailable;
       }
     }
 
@@ -579,7 +580,8 @@ struct HttpPlayer {
         Row() {
           Text('当前缓存进度：').fontSize(15).width('15%').textAlign(TextAlign.Center)
           Progress({ value: 0, total: 100, type: ProgressType.Linear })
-            .color(Color.Grey)
+            .color(Color.Red)
+            .backgroundColor(Color.Gray)
             .value(this.currentCachePercent)
             .width('65%')
 

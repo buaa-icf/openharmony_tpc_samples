@@ -355,7 +355,7 @@ struct DiyCacheCountPage {
 
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-       self.currentCachePercent = percentsAvailable;
+        self.currentCachePercent = percentsAvailable;
       }
     }
 
@@ -404,7 +404,9 @@ struct DiyCacheCountPage {
   // 初始化函数
   async initAVPlayer(): Promise<void> {
     Logger.info(TAG, 'initAVPlayer success');
-    this.fdPath = this.videoName;
+    if (!this.fdPath || this.fdPath.length < 1) {
+      this.fdPath = this.videoName;
+    }
     Logger.info(TAG, 'file id is : ' + this.fdPath);
     this.surfaceID = this.mXcomponentController.getXComponentSurfaceId();
     Logger.info(TAG, 'surfaceID is : ' + this.surfaceID);
@@ -435,7 +437,7 @@ struct DiyCacheCountPage {
 
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-       self.currentCachePercent = percentsAvailable;
+        self.currentCachePercent = percentsAvailable;
       }
     }
 
@@ -445,6 +447,7 @@ struct DiyCacheCountPage {
     if (newUrl.startsWith(getContext().cacheDir)) {
       let file = fs.openSync(newUrl, fs.OpenMode.READ_ONLY);
       newUrl = "fd://" + file.fd;
+      self.currentCachePercent = 100;
     }
     // 开始进入下一个视频的播放
     if (this.getState() === 'idle') {
@@ -477,7 +480,7 @@ struct DiyCacheCountPage {
 
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-       self.currentCachePercent = percentsAvailable;
+        self.currentCachePercent = percentsAvailable;
       }
     }
 
@@ -597,7 +600,8 @@ struct DiyCacheCountPage {
         Row() {
           Text('当前缓存进度：').fontSize(15).width('15%').textAlign(TextAlign.Center)
           Progress({ value: 0, total: 100, type: ProgressType.Linear })
-            .color(Color.Grey)
+            .color(Color.Red)
+            .backgroundColor(Color.Gray)
             .value(this.currentCachePercent)
             .width('65%')
 

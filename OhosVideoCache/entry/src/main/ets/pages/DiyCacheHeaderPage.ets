@@ -285,10 +285,7 @@ struct DiyCacheHeaderPage {
       let file = fs.openSync(newUrl, fs.OpenMode.READ_ONLY);
       newUrl = "fd://" + file.fd;
     }
-    if (this.avPlayer) {
-      this.fdPath = newUrl;
-    }
-
+    this.fdPath = newUrl;
     this.avPlayer.url = this.fdPath;
     Logger.info(TAG, 'createAVPlayer end');
     return ret;
@@ -595,7 +592,8 @@ struct DiyCacheHeaderPage {
         Row() {
           Text('当前缓存进度：').fontSize(15).width('15%').textAlign(TextAlign.Center)
           Progress({ value: 0, total: 100, type: ProgressType.Linear })
-            .color(Color.Grey)
+            .color(Color.Red)
+            .backgroundColor(Color.Gray)
             .value(this.currentCachePercent)
             .width('65%')
 

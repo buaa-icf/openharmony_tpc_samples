@@ -257,16 +257,15 @@ struct DiyFileNameGeneratorPage {
 
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-       self.currentCachePercent = percentsAvailable;
+        self.currentCachePercent = percentsAvailable;
       }
     }
 
     class MyFileNameGenerator implements FileNameGenerator {
       generate(url: string): string {
         let start: number = url.lastIndexOf("/");
-        let end: number = url.lastIndexOf(".");
-        let newName: string = url.substring(start, end)
-        return newName
+        let newName: string = url.substring(start, url.length)
+        return newName;
       }
     }
 
@@ -281,6 +280,7 @@ struct DiyFileNameGeneratorPage {
     if (newUrl.startsWith(getContext().cacheDir)) {
       let file = fs.openSync(newUrl, fs.OpenMode.READ_ONLY);
       newUrl = "fd://" + file.fd;
+      self.currentCachePercent = 100;
     }
     this.fdPath = newUrl;
     this.avPlayer.url = this.fdPath;
@@ -426,7 +426,7 @@ struct DiyFileNameGeneratorPage {
 
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-       self.currentCachePercent = percentsAvailable;
+        self.currentCachePercent = percentsAvailable;
       }
     }
 
@@ -469,7 +469,7 @@ struct DiyFileNameGeneratorPage {
 
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-       self.currentCachePercent = percentsAvailable;
+        self.currentCachePercent = percentsAvailable;
       }
     }
 
@@ -589,7 +589,8 @@ struct DiyFileNameGeneratorPage {
         Row() {
           Text('当前缓存进度：').fontSize(15).width('15%').textAlign(TextAlign.Center)
           Progress({ value: 0, total: 100, type: ProgressType.Linear })
-            .color(Color.Grey)
+            .color(Color.Red)
+            .backgroundColor(Color.Gray)
             .value(this.currentCachePercent)
             .width('65%')
 
