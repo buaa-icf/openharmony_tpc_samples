@@ -44,7 +44,7 @@ struct Index {
           router.pushUrl({ url: "pages/SimpleList" });
         })
          Button("弹幕播放器功能").margin(10).onClick(() => {
-          router.pushUrl({ url: "pages/DanakuVideoDemo" });
+          router.pushUrl({ url: "pages/DanmakuVideoDemo" });
         })
       }.width('100%')
     }.height('100%')

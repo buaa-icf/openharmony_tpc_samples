@@ -24,7 +24,7 @@ struct PlayWithCacheDemo {
           router.pushUrl({ url: 'pages/PlayNetWithCacheDemo' })
         })
         Button('播放不缓存').margin(10).onClick(() => {
-          router.pushUrl({ url: 'pages/PlayNetWithCacheDemo' })
+          router.pushUrl({ url: 'pages/PlayNetWithNoCacheDemo' })
         })
       }.width('100%')
     }.height('100%')

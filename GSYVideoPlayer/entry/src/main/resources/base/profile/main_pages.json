@@ -5,6 +5,7 @@
     "pages/SimpleList",
     "pages/PlayWithCacheDemo",
     "pages/PlayNetWithCacheDemo",
-    "pages/PlayNetWithNoCacheDemo"
+    "pages/PlayNetWithNoCacheDemo",
+    "pages/DanmakuVideoDemo"
   ]
 }

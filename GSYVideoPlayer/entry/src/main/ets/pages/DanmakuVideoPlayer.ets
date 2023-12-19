@@ -15,17 +15,37 @@
 import display from '@ohos.display';
 import window from '@ohos.window';
 import { BusinessError } from '@ohos.base';
-import { LogUtils } from '../utils/LogUtils';
-import { IjkVideoPlayer } from './IjkVideoPlayer';
-import { IVideoPlayer } from './IVideoPlayer';
+import {
+  AvVideoPlayer,
+  GlobalContext,
+  IjkVideoPlayer,
+  IVideoPlayer,
+  LogUtils,
+  PlayerType,
+  PlayStatus,
+  StandardGSYVideoModel
+} from '@ohos/gsyvideoplayer';
 import audio from '@ohos.multimedia.audio';
-import { PlayStatus } from './PlayStatus';
 import emitter from '@ohos.events.emitter';
-import { GlobalContext } from './GlobalContext';
-import { PlayerType } from './PlayerType';
-import { AvVideoPlayer } from './AvVideoPlayer';
 import settings from '@ohos.settings';
-import { StandardGSYVideoModel } from './StandardGSYVideoModel';
+import {
+  BaseDanmaku,
+  BaseDanmakuParser,
+  Callback,
+  DANMAKU_STYLE_STROKEN,
+  DanmakuContext,
+  DanmakuTimer,
+  DanmakuView,
+  IDanmakus,
+  IDanmakuView,
+  JSONSource,
+  OnDanmakuClickListener,
+  Proxy,
+  SpannedCacheStuffer,
+  SystemClock
+} from '@ohos/danmakuflamemaster';
+import { BiliDanmukuParser } from './BiliDanmakuParser';
+import { sourceData } from './DanmakuData';
 
 let updateProgressTimer: number = 0;
 let changeWidth: number = 0;
@@ -50,7 +70,7 @@ let touchStartX: number = 0;
 let touchStartY: number = 0;
 
 @Component
-export struct StandardGSYVideoPlayer {
+export struct DanmakuVideoPlayer {
   mIVideoPlayer: IVideoPlayer | undefined = undefined;
   @Provide currentTime: string = "00:00";
   @Provide totalTime: string = "00:00";
@@ -67,6 +87,7 @@ export struct StandardGSYVideoPlayer {
   @State loadingVisible: Visibility = Visibility.None;
   @State mDirection: number = 0;
   @State screenIsFull: boolean = false;
+  @State danMuText: string = "弹幕关";
   // 是否显示音量数值的布局
   @State showVolumeUi: boolean = false;
   // 是否显示亮度数值的布局
@@ -94,14 +115,42 @@ export struct StandardGSYVideoPlayer {
   private panOptionSeek: PanGestureOptions = new PanGestureOptions({ direction: PanDirection.Horizontal });
   public title: string = "";
   private xComponentId: string = 'xid';
+  private danMuShow: boolean = true;
   sec: number = 3;
   PROGRESS_MAX_VALUE: number = 100;
   public videoModel: StandardGSYVideoModel = new StandardGSYVideoModel();
+  @State
+  model: DanmakuView.Model = new DanmakuView.Model()
+  private mContext: DanmakuContext | ESObject;
+  private mParser: BaseDanmakuParser | ESObject;
+  private mCacheStufferAdapter: Proxy = new Pro()
+
+  private createParser(): BaseDanmakuParser {
+    let parser: BaseDanmakuParser = new BiliDanmukuParser();
+    let jsonSource = new JSONSource(sourceData)
+    parser.load(jsonSource)
+    return parser;
+  }
+
   videoInit: (iVideoPlayer: IVideoPlayer, xid: string) => void = (iVideoPlayer: IVideoPlayer, xid: string) => {
     LogUtils.getInstance().LOGI('VideoInit')
     this.mIVideoPlayer = iVideoPlayer
     this.xComponentId = xid;
     this.mIVideoPlayer.setUp(this.videoModel.getUrl(), this.videoModel.getCacheWithPlay())
+  }
+
+  private addDanmaku(isLive: Boolean) {
+    let danmaku: BaseDanmaku = this.mContext.mDanmakuFactory.createDanmaku(BaseDanmaku.TYPE_SCROLL_RL);
+    danmaku.text = "这是一条弹幕" + SystemClock.uptimeMillis();
+    danmaku.padding = 5;
+    danmaku.priority = 0; // 可能会被各种过滤器过滤并隐藏显示
+    danmaku.isLive = isLive.valueOf();
+    danmaku.setTime(this.model.getCurrentTime() + 1200);
+    danmaku.textSize = 25 * (this.mParser.getDisplayer().getDensity() * 0.8);
+    danmaku.textColor = 0xffff0000;
+    danmaku.textShadowColor = 0xffffffff;
+    danmaku.borderColor = 0xff00ff00;
+    this.model.addDanmaku(danmaku);
   }
 
   @Builder
@@ -231,55 +280,84 @@ export struct StandardGSYVideoPlayer {
 
   @Builder
   bottomControls() {
-    Flex({ direction: FlexDirection.Row, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Start }) {
-      Text(this.currentTime)
-        .width('80px')
-        .fontSize('20px')
-        .margin({ left: 20 })
-        .fontColor($r('app.color.color_white'))
+    Column() {
+      Flex({ direction: FlexDirection.Row, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Start }) {
+        Text(this.currentTime)
+          .width('80px')
+          .fontSize('20px')
+          .margin({ left: 20 })
+          .fontColor($r('app.color.color_white'))
 
-      Slider({
-        value: this.progressValue,
-        min: 0,
-        max: this.PROGRESS_MAX_VALUE,
-        step: 1,
-        style: SliderStyle.OutSet
-      })
-        .layoutWeight(1)
-        .blockColor(Color.Blue)
-        .trackColor(Color.Gray)
-        .selectedColor(Color.Blue)
-        .showSteps(true)
-        .showTips(true)
-        .onChange((value: number, mode: SliderChangeMode) => {
-          clearTimeout(uiTime);
-          if (this.mIVideoPlayer) {
-            LogUtils.getInstance().LOGI('slider-->seekValue start: ' + value);
-            LogUtils.getInstance().LOGI('slider-->seekValue getDuration: ' + this.mIVideoPlayer.getDuration());
-            this.mIVideoPlayer.pause();
-            this.stopProgressTask();
-            this.showPlay = false;
-            this.showPause = false;
-            this.loadingVisible = Visibility.Visible;
-            let seekValue = value * (this.mIVideoPlayer.getDuration() / 100);
-            this.mIVideoPlayer.seekTo(seekValue);
-            this.mIVideoPlayer.firstOrSeek = true;
-            LogUtils.getInstance().LOGI('slider-->seekValue end: ' + seekValue);
-          }
+        Slider({
+          value: this.progressValue,
+          min: 0,
+          max: this.PROGRESS_MAX_VALUE,
+          step: 1,
+          style: SliderStyle.OutSet
         })
-      Text(this.totalTime).fontSize('20px').margin({ right: 5 }).fontColor($r('app.color.color_white'))
+          .blockColor(Color.Blue)
+          .trackColor(Color.Gray)
+          .selectedColor(Color.Blue)
+          .showSteps(true)
+          .showTips(true)
+          .onChange((value: number, mode: SliderChangeMode) => {
+            clearTimeout(uiTime);
+            if (this.mIVideoPlayer) {
+              LogUtils.getInstance().LOGI('slider-->seekValue start: ' + value);
+              LogUtils.getInstance().LOGI('slider-->seekValue getDuration: ' + this.mIVideoPlayer.getDuration());
+              this.mIVideoPlayer.pause();
+              this.stopProgressTask();
+              this.showPlay = false;
+              this.showPause = false;
+              this.loadingVisible = Visibility.Visible;
+              let seekValue = value * (this.mIVideoPlayer.getDuration() / 100);
+              this.mIVideoPlayer.seekTo(seekValue);
+              this.model.seekTo(seekValue);
+              this.mIVideoPlayer.firstOrSeek = true;
+              LogUtils.getInstance().LOGI('slider-->seekValue end: ' + seekValue);
+            }
+          })
+        Text(this.totalTime).width('80px').fontSize('20px').margin({ right: 5 }).fontColor($r('app.color.color_white'))
 
-      Image(this.screenIsFull ? $r('app.media.video_shrink') : $r('app.media.video_enlarge'))
-        .width(20)
-        .height(18)
-        .margin({ right: 15 })
-        .onClick(() => {
-          this.videoModel.ExecuteFullClickListener();
-        })
+        Image(this.screenIsFull ? $r('app.media.video_shrink') : $r('app.media.video_enlarge'))
+          .width(20)
+          .height(18)
+          .margin({ right: 15 })
+          .onClick(() => {
+            this.videoModel.ExecuteFullClickListener();
+          })
+      }.padding({ bottom: 10 })
+      .align(Alignment.BottomEnd)
+      .backgroundColor($r('app.color.bottom_controls_color'))
+
+      Row() {
+        Text("发送弹幕")
+          .backgroundColor($r('app.color.color_add_danmu'))
+          .width("90%")
+          .textAlign(TextAlign.Center)
+          .fontColor($r('app.color.color_add_text_danmu'))
+          .onClick(() => {
+            this.addDanmaku(false);
+          })
+          .layoutWeight(1)
+        Text(this.danMuText)
+          .textAlign(TextAlign.Center)
+          .fontColor($r('app.color.color_show_danmu'))
+          .onClick(() => {
+            if (this.danMuShow) {
+              this.model.hide();
+              this.danMuText = '弹幕开';
+            } else {
+              this.model.setWidth(vp2px(changeWidth));
+              this.model.setHeight(vp2px(changeHeight - 1));
+              this.model.hide();
+              this.model.show();
+              this.danMuText = '弹幕关';
+            }
+            this.danMuShow = !this.danMuShow;
+          })
+      }.backgroundColor($r('app.color.bottom_controls_color')).margin({ bottom: (this.screenIsFull ? 10 : 0) })
     }
-    .padding({ bottom: 10 })
-    .align(Alignment.BottomEnd)
-    .backgroundColor($r('app.color.bottom_controls_color'))
   }
 
   @Builder
@@ -389,6 +467,7 @@ export struct StandardGSYVideoPlayer {
       .height('100%')
 
       this.middleControls()
+      DanmakuView({ model: $model }).backgroundColor(Color.Transparent).position({ x: 0, y: 0 }).enabled(false)
       if (this.showBottomUi) {
         if (this.mDirection == 1 && this.fullShowTop) {
           this.topTitle()
@@ -408,7 +487,7 @@ export struct StandardGSYVideoPlayer {
           }
           if (event && event.fingerList && event.fingerList[0]) {
             LogUtils.getInstance().LOGI('TapGesture event.onActionStart start x: ' + event.fingerList[0].localX +
-              " ---event.onActionStart start y: " + event.fingerList[0].localY);
+            " ---event.onActionStart start y: " + event.fingerList[0].localY);
           }
         }
       }),
@@ -426,7 +505,7 @@ export struct StandardGSYVideoPlayer {
             touchStartX = event.fingerList[0].localX;
             touchStartY = event.fingerList[0].localY;
             LogUtils.getInstance().LOGI('VerticalPanBrightAndVolume event.onActionStart start x: ' + touchStartX +
-              ' event.onActionStart start y: ' + touchStartY);
+            ' event.onActionStart start y: ' + touchStartY);
           }
         })
         .onActionUpdate((event: GestureEvent | undefined) => {
@@ -508,7 +587,7 @@ export struct StandardGSYVideoPlayer {
             this.mSeekTimePosition = this.progressValue;
             LogUtils.getInstance()
               .LOGI('HorizontalSeekProgress event.onActionStart start x: ' + event.fingerList[0].localX +
-                ' event.onActionStart start y: ' + event.fingerList[0].localY);
+              ' event.onActionStart start y: ' + event.fingerList[0].localY);
           }
         })
         .onActionUpdate((event: GestureEvent | undefined) => {
@@ -596,6 +675,14 @@ export struct StandardGSYVideoPlayer {
         this.fullShowTop = true;
         this.fullShowLock = true;
       }
+      this.model.setWidth(vp2px(changeWidth));
+      this.model.setHeight(vp2px(changeHeight));
+      if (this.danMuShow) {
+        this.model.hide();
+        this.model.show();
+      } else {
+        this.model.hide();
+      }
     }).backgroundColor(Color.Black)
   }
 
@@ -644,6 +731,7 @@ export struct StandardGSYVideoPlayer {
     this.coverVisible = Visibility.None;
     this.timeCountdown();
     this.stopProgressTask();
+    this.model.resume();
     this.startProgressTask();
     if (this.mIVideoPlayer) {
       this.totalTime = this.stringForTime(this.mIVideoPlayer.getDuration());
@@ -671,6 +759,7 @@ export struct StandardGSYVideoPlayer {
     this.stopProgressTask();
     clearTimeout(uiTime);
     clearTimeout(uiLockTime);
+    this.model.pause();
     this.showBottomUi = true;
     this.showPause = false;
   }
@@ -697,12 +786,44 @@ export struct StandardGSYVideoPlayer {
     this.mMaxVolumeValue = audioVolumeGroupManager.getMaxVolumeSync(audio.AudioVolumeType.MEDIA);
     this.mCurrentVolumeValue = audioVolumeGroupManager.getVolumeSync(audio.AudioVolumeType.MEDIA);
     this.mCurrentBrightness = Number(settings.getValueSync(getContext(this), settings.display.SCREEN_BRIGHTNESS_STATUS, '10'));
+
+    setTimeout(() => {
+      this.danmuInit()
+    }, 0)
+  }
+
+  danmuInit() {
+    let maxLinesPair: Map<number, number> = new Map();
+    maxLinesPair.set(BaseDanmaku.TYPE_SCROLL_RL, 5); // 滚动弹幕最大显示5行
+    // 设置是否禁止重叠
+    let overlappingEnablePair: Map<number, boolean> = new Map();
+    overlappingEnablePair.set(BaseDanmaku.TYPE_SCROLL_RL, true);
+    overlappingEnablePair.set(BaseDanmaku.TYPE_FIX_TOP, true);
+    this.mContext = DanmakuContext.create();
+    this.mContext.setDanmakuStyle(DANMAKU_STYLE_STROKEN, 3)
+      .setDuplicateMergingEnabled(false)
+      .setScrollSpeedFactor(1.2)
+      .setScaleTextSize(1.2)
+      .setCacheStuffer(new SpannedCacheStuffer(), this.mCacheStufferAdapter) // 图文混排使用SpannedCacheStuffer
+      .setMaximumLines(maxLinesPair)
+      .preventOverlapping(overlappingEnablePair)
+      .setDanmakuMargin(40);
+    let that = this
+    if (this.model != null) {
+      this.mParser = this.createParser();
+      this.model.setCallback(new Call(that));
+      this.model.setOnDanmakuClickListener(new OnDanMu(that))
+      this.model.prepare(this.mParser, this.mContext);
+      this.model.showFPS(false);
+    }
   }
 
   aboutToDisappear() {
     LogUtils.getInstance().LOGI('standardGSYVideoPlayer aboutToDisappear');
     this.emitterOff();
     this.stop();
+    this.model.stop();
+    this.model.release();
   }
 
   private emitterOff() {
@@ -828,3 +949,61 @@ export struct StandardGSYVideoPlayer {
     }, 1000)
   }
 }
+
+class Call implements Callback {
+  private that: ESObject;
+
+  constructor(that: ESObject) {
+    this.that = that
+  }
+
+  public updateTimer(timer: DanmakuTimer): void {
+  }
+
+  public drawingFinished(): void {
+
+  }
+
+  public danmakuShown(danmaku: BaseDanmaku): void {
+  }
+
+  public prepared(): void {
+  }
+}
+
+class OnDanMu implements OnDanmakuClickListener {
+  private that: ESObject;
+
+  constructor(that: ESObject) {
+    this.that = that
+  }
+
+  onDanmakuClick(danmakus: IDanmakus): boolean {
+    console.log('DFM onDanmakuClick: danmakus size:' + danmakus.size())
+    let latest: BaseDanmaku = danmakus.last()
+    if (null != latest) {
+      console.log('DFM onDanmakuClick: text of latest danmaku:' + latest.text)
+      return true
+    }
+    return false
+  };
+
+  onDanmakuLongClick(danmakus: IDanmakus): boolean {
+    return false
+  };
+
+  onViewClick(view: IDanmakuView): boolean {
+    this.that.isVisible = true
+    return false
+  };
+}
+
+class Pro extends Proxy {
+  public prepareDrawing(danmaku: BaseDanmaku, fromWorkerThread: boolean): void {
+  }
+
+  public releaseResource(danmaku: BaseDanmaku): void {
+    // TODO 重要:清理含有ImageSpan的text中的一些占用内存的资源 例如drawable
+  }
+}
+;

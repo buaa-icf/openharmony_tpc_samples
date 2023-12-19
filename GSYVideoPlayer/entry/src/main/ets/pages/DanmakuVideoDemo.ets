@@ -22,14 +22,14 @@ import {
 import router from '@ohos.router';
 import Window from '@ohos.window';
 import display from '@ohos.display';
-import promptAction from '@ohos.promptAction';
+import { DanmakuVideoPlayer } from './DanmakuVideoPlayer';
 
 let mDirection = 0;
 let screenWidth = 0;
 
 @Entry
 @Component
-struct PlayNetWithNoCacheDemo {
+struct DanmakuVideoDemo {
   @State screenHeight: string = '30%';
   videoModel: StandardGSYVideoModel = new StandardGSYVideoModel();
   backClickListener: () => void = () => {
@@ -41,12 +41,12 @@ struct PlayNetWithNoCacheDemo {
   fullClickListener: () => void = () => {
     this.changeOrientation();
   }
-  private videoUrl = "http://video.chinanews.com/flv/2019/04/23/400/111773_web.mp4"
+  private videoUrl = "http://1251017968.vod2.myqcloud.com/3eb04eefvodtransgzp1251017968/8782b1285285890810009576163/v.f30.mp4"
 
   build() {
     Row() {
       Column() {
-        StandardGSYVideoPlayer({
+        DanmakuVideoPlayer({
           videoModel: this.videoModel
         }).height(this.screenHeight)
 
