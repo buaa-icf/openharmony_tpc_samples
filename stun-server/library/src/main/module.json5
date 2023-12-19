@@ -1,6 +1,6 @@
 {
   "module": {
-    "name": "stun",
+    "name": "library",
     "type": "har",
     "deviceTypes": [
       "default",
