@@ -121,8 +121,8 @@ export struct DanmakuVideoPlayer {
   public videoModel: StandardGSYVideoModel = new StandardGSYVideoModel();
   @State
   model: DanmakuView.Model = new DanmakuView.Model()
-  private mContext: DanmakuContext | ESObject;
-  private mParser: BaseDanmakuParser | ESObject;
+  private mContext: DanmakuContext | undefined = undefined;
+  private mParser: BaseDanmakuParser | undefined = undefined;
   private mCacheStufferAdapter: Proxy = new Pro()
 
   private createParser(): BaseDanmakuParser {
@@ -140,17 +140,21 @@ export struct DanmakuVideoPlayer {
   }
 
   private addDanmaku(isLive: Boolean) {
-    let danmaku: BaseDanmaku = this.mContext.mDanmakuFactory.createDanmaku(BaseDanmaku.TYPE_SCROLL_RL);
-    danmaku.text = "这是一条弹幕" + SystemClock.uptimeMillis();
-    danmaku.padding = 5;
-    danmaku.priority = 0; // 可能会被各种过滤器过滤并隐藏显示
-    danmaku.isLive = isLive.valueOf();
-    danmaku.setTime(this.model.getCurrentTime() + 1200);
-    danmaku.textSize = 25 * (this.mParser.getDisplayer().getDensity() * 0.8);
-    danmaku.textColor = 0xffff0000;
-    danmaku.textShadowColor = 0xffffffff;
-    danmaku.borderColor = 0xff00ff00;
-    this.model.addDanmaku(danmaku);
+    if (this.mContext) {
+      let danmaku: BaseDanmaku = this.mContext.mDanmakuFactory.createDanmaku(BaseDanmaku.TYPE_SCROLL_RL);
+      danmaku.text = "这是一条弹幕" + SystemClock.uptimeMillis();
+      danmaku.padding = 5;
+      danmaku.priority = 0; // 可能会被各种过滤器过滤并隐藏显示
+      danmaku.isLive = isLive.valueOf();
+      danmaku.setTime(this.model.getCurrentTime() + 1200);
+      if (this.mParser) {
+        danmaku.textSize = 25 * (this.mParser.getDisplayer().getDensity() * 0.8);
+      }
+      danmaku.textColor = 0xffff0000;
+      danmaku.textShadowColor = 0xffffffff;
+      danmaku.borderColor = 0xff00ff00;
+      this.model.addDanmaku(danmaku);
+    }
   }
 
   @Builder
@@ -626,7 +630,9 @@ export struct DanmakuVideoPlayer {
             this.mSeekCurrentTime = this.stringForTime(seekTimePosition);
 
             // 设置当前进度
-            this.mSeekTimePosition = Number((seekTimePosition / totalTimeDuration).toFixed(2)) * 100;
+            if (totalTimeDuration != 0) {
+              this.mSeekTimePosition = Number((seekTimePosition / totalTimeDuration).toFixed(2)) * 100;
+            }
           }
         })
         .onActionEnd((event: GestureEvent | undefined) => {

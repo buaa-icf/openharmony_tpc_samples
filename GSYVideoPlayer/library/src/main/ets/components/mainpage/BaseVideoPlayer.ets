@@ -148,7 +148,7 @@ export abstract class BaseVideoPlayer implements IVideoPlayer {
 
   }
 
-  public saveFrame(fileSavePath: string, gsyVideoShotSaveListener: GSYVideoShotSaveListener) {
+  public saveFrame(fileSavePath: string, gsyVideoShotSaveListener: GSYVideoShotSaveListener | null) {
     componentSnapshot.get(this.vId, (error: Error, pixmap: image.PixelMap) => {
       if (error) {
         console.log("error:" + JSON.stringify(error));
