@@ -350,7 +350,7 @@ customComponent参数：
 
 在下述版本验证通过：
 
-DevEco Studio: 4.0 Release(4.0.3.614), SDK: API10 (4.0.10.15)
+DevEco Studio: 4.1 Canary2 (4.1.3.322), SDK: API11 (4.1.3.1)
 
 
 ## 软件架构
