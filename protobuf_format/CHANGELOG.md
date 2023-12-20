@@ -1,3 +1,8 @@
+### 1.0.2
+- fix:修改README.OpenSource文件中依赖组件的License File路径信息
+- fix:修改组件依赖的"@ohos/protobufjs"版本为固定"1.0.2"版本，1.0.2之上版本与本组件使用方式不兼容。
+- 适配版本：DevEco Studio: 4.1 Canary2(4.1.3.322), SDK: API11 (4.1.0.36)
+
 ### 1.0.2-rc.1
 - 适配ArkTs语法
 - 修改文件对外导出方式及对象
