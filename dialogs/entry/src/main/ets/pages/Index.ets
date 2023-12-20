@@ -20,7 +20,7 @@ import router from '@ohos.router'
 struct Index {
 
   @Builder
-  buildButton(text1: string, page1: string, text2: string, page2: string) {
+  buildButton(text1: string, page1: string, text2: string|null, page2: string|null) {
     Row({ space: 10 }) {
       Button(text1)
         .layoutWeight(1)
