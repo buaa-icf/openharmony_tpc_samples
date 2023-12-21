@@ -6,6 +6,9 @@ project(client_socket_c)
 if(${CMAKE_HOST_SYSTEM_NAME} MATCHES "Windows")
     # 如果是 Windows,请手动打patch.
     message("The current operating system is: Windows.Please insert patch manually")
+elseif(${CMAKE_HOST_SYSTEM_NAME} MATCHES "Darwin")
+    # 如果是 MacOS,请手动打patch.
+    message("The current operating system is: MacOS.Please insert patch manually")
 elseif(${CMAKE_HOST_SYSTEM_NAME} MATCHES "Linux")
     # 如果是 Linux
     message("The current operating system is: Linux")

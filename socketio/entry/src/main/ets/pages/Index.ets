@@ -35,6 +35,7 @@ struct Index {
 
   on_fail(): void {
     console.log("SOCKET_IO_INDEX on_fail");
+    prompt.showToast({ message: "连接服务器失败" });
   }
 
   on_reconnecting(): void {
