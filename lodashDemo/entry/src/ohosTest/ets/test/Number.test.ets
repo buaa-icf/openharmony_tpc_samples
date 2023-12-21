@@ -49,35 +49,73 @@ export default function numberTest() {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    it('clampTest01',0, () => {
+    it('clampTest01', 0, () => {
+      let startTime0 = new Date().getTime()
+      console.info('appInfoTest xts clampTest01 startTime:' + startTime0 + "us")
       expect(clamp(-10, -5, 5)).assertEqual(-5);
+      let endTime0 = new Date().getTime()
+      console.info('appInfoTest xts clampTest01 endTime:' + endTime0 + "us")
+      let averageTime0 = endTime0 - startTime0
+      console.info('appInfoTest xts clampTest01 averageTime:' + averageTime0 + "us")
     })
 
-    it('clampTest02',0, () => {
+    it('clampTest02', 0, () => {
+      let startTime1 = new Date().getTime()
+      console.info('appInfoTest xts clampTest02 startTime:' + startTime1 + "us")
       expect(clamp(10, -5, 5)).assertEqual(5);
+      let endTime1 = new Date().getTime()
+      console.info('appInfoTest xts clampTest02 endTime:' + endTime1 + "us")
+      let averageTime1 = endTime1 - startTime1
+      console.info('appInfoTest xts clampTest02 averageTime:' + averageTime1 + "us")
     })
 
-    it('inRangeTest01',0, () => {
+    it('inRangeTest01', 0, () => {
+      let startTime2 = new Date().getTime()
+      console.info('appInfoTest xts inRangeTest01 startTime:' + startTime2 + "us")
       expect(inRange(3, 2, 4)).assertTrue();
+      let endTime2 = new Date().getTime()
+      console.info('appInfoTest xts inRangeTest01 endTime:' + endTime2 + "us")
+      let averageTime2 = endTime2 - startTime2
+      console.info('appInfoTest xts inRangeTest01 averageTime:' + averageTime2 + "us")
     })
 
-    it('inRangeTest02',0, () => {
+    it('inRangeTest02', 0, () => {
+      let startTime3 = new Date().getTime()
+      console.info('appInfoTest xts inRangeTest02 startTime:' + startTime3 + "us")
       expect(inRange(2, 2)).assertFalse();
+      let endTime3 = new Date().getTime()
+      console.info('appInfoTest xts inRangeTest02 endTime:' + endTime3 + "us")
+      let averageTime3 = endTime3 - startTime3
+      console.info('appInfoTest xts inRangeTest02 averageTime:' + averageTime3 + "us")
     })
 
-    it('randomTest01',0, () => {
+    it('randomTest01', 0, () => {
+      let startTime4 = new Date().getTime()
+      console.info('appInfoTest xts randomTest01 startTime:' + startTime4 + "us")
       let actual: number[] = [
-      random(Number.MIN_VALUE, Number.MIN_VALUE),
-      random('1', '1'),
-      random(Math.PI, Math.PI)
+        random(Number.MIN_VALUE, Number.MIN_VALUE),
+        random('1', '1'),
+        random(Math.PI, Math.PI)
       ];
+
+      let endTime4 = new Date().getTime()
+      console.info('appInfoTest xts randomTest01 endTime:' + endTime4 + "us")
+      let averageTime4 = endTime4 - startTime4
+      console.info('appInfoTest xts randomTest01 averageTime:' + averageTime4 + "us")
       expect(JSON.stringify(actual)).assertEqual('[5e-324,1,3.141592653589793]');
     })
 
-    it('randomTest02',0, () => {
+    it('randomTest02', 0, () => {
+      let startTime5 = new Date().getTime()
+      console.info('appInfoTest xts randomTest02 startTime:' + startTime5 + "us")
       let actual: number[] = [
-      random(Number.MIN_VALUE, Number.MIN_VALUE),
+        random(Number.MIN_VALUE, Number.MIN_VALUE),
       ];
+
+      let endTime5 = new Date().getTime()
+      console.info('appInfoTest xts randomTest02 endTime:' + endTime5 + "us")
+      let averageTime5 = endTime5 - startTime5
+      console.info('appInfoTest xts randomTest02 averageTime:' + averageTime5 + "us")
       expect(JSON.stringify(actual)).assertEqual('[5e-324]');
     })
   })
