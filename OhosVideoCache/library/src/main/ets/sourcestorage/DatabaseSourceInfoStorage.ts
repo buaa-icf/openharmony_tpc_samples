@@ -67,7 +67,7 @@ export default class DatabaseSourceInfoStorage implements SourceInfoStorage {
   }
 
   release(): void {
-    //close(); 关闭数据库
+    // close(); 关闭数据库
   }
 
   async put(url: string, sourceInfo: SourceInfo): Promise<void> {

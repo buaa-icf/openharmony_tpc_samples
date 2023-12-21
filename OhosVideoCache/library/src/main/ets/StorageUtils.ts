@@ -28,7 +28,6 @@ export default class StorageUtils {
    */
   public static getIndividualCacheDirectory(context: Context): string {
     let cacheDir = StorageUtils.getCacheDirectory(context, true);
-    // return new File(cacheDir, this.INDIVIDUAL_DIR_NAME);
     return cacheDir + '/' + StorageUtils.INDIVIDUAL_DIR_NAME;
   }
 

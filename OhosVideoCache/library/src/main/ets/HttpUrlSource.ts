@@ -159,16 +159,7 @@ export default class HttpUrlSource implements Source {
 
   async length(): Promise<number> {
     let self = this;
-    if (!self?.isInitFinish) {
-      await new Promise<void>((resolve, reject) => {
-        let id = setInterval(() => {
-          if (this.isInitFinish) {
-            clearInterval(id)
-            resolve();
-          }
-        }, 20)
-      })
-    }
+    await self.checkInit()
     if (!this.sourceInfo) {
       return new Promise((resolve, reject) => {
         resolve(0)
@@ -199,19 +190,9 @@ export default class HttpUrlSource implements Source {
 
   async open(offset: number): Promise<void> {
     const self = this
-	self.isHeaderDealFinish = false;
-	self.isDataFinish = false;
-    if (!self.isInitFinish) {
-      let id: number = -Number.MAX_VALUE;
-      await new Promise<void>((resolve, reject) => {
-        id = setInterval(() => {
-          if (self.isInitFinish) {
-            resolve()
-          }
-        }, 20)
-      })
-      clearInterval(id);
-    }
+    self.isHeaderDealFinish = false;
+    self.isDataFinish = false;
+    await self.checkInit()
     try {
       return new Promise<void>(async (resolve, reject) => {
         if (!self.sourceInfo || !self.sourceInfoStorage) {
@@ -276,16 +257,7 @@ export default class HttpUrlSource implements Source {
 
   private async fetchContentInfo(): Promise<void> {
     let self = this;
-    if (!self.isInitFinish) {
-      await new Promise<void>((resolve, reject) => {
-        let id = setInterval(() => {
-          if (self.isInitFinish) {
-            clearInterval(id);
-            return resolve()
-          }
-        }, 20)
-      })
-    }
+    await self.checkInit()
     let urlConnection: http.HttpRequest | null = null;
     try {
       await new Promise<void>(async (resolve, reject) => {
@@ -309,7 +281,7 @@ export default class HttpUrlSource implements Source {
           return resolve()
         })
         let option = self.initRequestParam(0, 10000)
-         urlConnection.requestInStream(self.sourceInfo!!.url, option)
+        urlConnection.requestInStream(self.sourceInfo!!.url, option)
       })
       urlConnection?.destroy();
       return Promise.resolve();
@@ -387,8 +359,23 @@ export default class HttpUrlSource implements Source {
 
   public async getMime(): Promise<string> {
     let self = this;
+    await self.checkInit()
+    if (!self.sourceInfo || !self.sourceInfo.mime || self.sourceInfo.mime.length < 1) {
+      await self.fetchContentInfo();
+    }
+    return new Promise((resolve, reject) => {
+      if (self.sourceInfo && self.sourceInfo.mime) {
+        return resolve(self.sourceInfo.mime)
+      } else {
+        return reject(new Error('can not get sourceInfo.mime'))
+      }
+    });
+  }
+
+  private checkInit(): Promise<void> {
+    let self = this;
     if (!self?.isInitFinish) {
-      await new Promise<void>((resolve, reject) => {
+      return new Promise<void>((resolve, reject) => {
         let id = setInterval(() => {
           if (this.isInitFinish) {
             clearInterval(id)
@@ -396,17 +383,9 @@ export default class HttpUrlSource implements Source {
           }
         }, 20)
       })
+    } else {
+      return Promise.resolve();
     }
-    if (!self.sourceInfo || !self.sourceInfo.mime || self.sourceInfo.mime.length < 1) {
-      await self.fetchContentInfo();
-    }
-    return new Promise((resolve, reject) => {
-      if (self.sourceInfo && self.sourceInfo.mime) {
-       return resolve(self.sourceInfo.mime)
-      } else {
-        return  reject(new Error('can not get sourceInfo.mime'))
-      }
-    });
   }
 
   public getUrl(): string {

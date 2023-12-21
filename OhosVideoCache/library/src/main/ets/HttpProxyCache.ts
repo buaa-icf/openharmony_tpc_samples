@@ -42,7 +42,7 @@ export default class HttpProxyCache extends ProxyCache {
   async shutdown(): Promise<void> {
     try {
       this.stopped = true;
-      super.shutdown();
+      await super.shutdown();
       await this.serverConnect?.close();
     } catch (err) {
     }
@@ -54,7 +54,6 @@ export default class HttpProxyCache extends ProxyCache {
   }
 
   public async processRequest(request: GetRequest, serverConnect: socket.TCPSocketConnection): Promise<void> {
-    // let out = new BufferedOutputStream(socket.getOutputStream());
     if (!request) {
       return Promise.reject(new Error('request can not be null'))
     }

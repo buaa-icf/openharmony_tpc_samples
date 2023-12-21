@@ -117,7 +117,7 @@ async function TouchCallable(file: string) {
         }
       }
     }
-  }catch(err){
+  } catch (err) {
 
   }
 
@@ -200,7 +200,7 @@ export default class LruDiskUsage implements DiskUsage {
         return;
       }
       let task: taskpool.Task = new taskpool.Task(TouchCallable, filePath);
-      taskpool.execute(task);
+      taskpool.execute(task, taskpool.Priority.HIGH);
       let closeTaskEvent: emitter.InnerEvent = {
         eventId: VideoCacheConstant.SHUT_DOWN_TASKPOOL
       }
@@ -209,6 +209,13 @@ export default class LruDiskUsage implements DiskUsage {
           if (task) {
             taskpool.cancel(task)
           }
+          emitter.off(VideoCacheConstant.SEND_TOTAL_SIZE_ID)
+          emitter.off(VideoCacheConstant.SEND_ACCEPT_ID)
+          emitter.off(VideoCacheConstant.COUNT_TOTAL_SIZE_ID)
+          emitter.off(VideoCacheConstant.COUNT_TOTAL_SIZE_START_ID)
+          emitter.off(VideoCacheConstant.COUNT_TOTAL_SIZE_END_ID)
+          emitter.off(VideoCacheConstant.GET_ACCEPT_ID)
+          emitter.off(VideoCacheConstant.SHUT_DOWN_TASKPOOL)
         } catch (err) {
         }
       })

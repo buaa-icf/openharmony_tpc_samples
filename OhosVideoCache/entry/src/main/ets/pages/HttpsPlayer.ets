@@ -56,6 +56,7 @@ struct HttpPlayer {
   private volumeValue: number = 1.00;
   private mXcomponentController: XComponentController = new XComponentController();
   private SRC_LIST: Array<string> = new Array();
+  private playerState: string = '';
 
   // 界面初始化函数
   async aboutToAppear() {
@@ -88,8 +89,7 @@ struct HttpPlayer {
   setErrorCallback(): void {
     this.avPlayer?.on('error', (error) => {
       Logger.error(TAG, 'error happened,message is :' + error.message);
-      // 当error上报时自动播放下一个视频或者音频
-      // this.nextVideo();
+      // 当error上报时自动播放下一个视频或者音频 this.nextVideo();
     })
   }
 
@@ -238,6 +238,7 @@ struct HttpPlayer {
           Logger.info(TAG, 'unkown state :' + state);
           break;
       }
+      this.playerState = state;
     });
   }
 
@@ -274,7 +275,9 @@ struct HttpPlayer {
       self.currentCachePercent = 100;
     }
     this.fdPath = newUrl;
-    this.avPlayer.url = this.fdPath;
+    if (this.avPlayer && this.playerState === 'idle') {
+      this.avPlayer.url = this.fdPath;
+    }
     Logger.info(TAG, 'createAVPlayer end');
     return ret;
   }
@@ -289,7 +292,9 @@ struct HttpPlayer {
   async play(): Promise<void> {
     if (!this.isPrepare) {
       // 设置surfaceID，当播放的问题纯音频时，无需设置
-      this.setSurfaceID();
+      if (this.playerState == "initialized") {
+        this.setSurfaceID();
+      }
       await this.avPlayer?.prepare();
       this.isPrepare = !this.isPrepare;
     }
@@ -400,8 +405,10 @@ struct HttpPlayer {
   // 切换下个视频的接口
   async nextVideo(): Promise<void> {
     // 调用reset函数，重置播放器状态至idle
-    this.currentCachePercent = 0;
+    await this.avPlayer?.pause();
+    await this.avPlayer?.stop();
     await this.avPlayer?.reset();
+    this.currentCachePercent = 0;
     this.isLoop = false;
     // 获取当前播放文件的下一个视频文件在列表中的下标
     if (this.index === (this.SRC_LIST.length - 1)) {
@@ -429,6 +436,7 @@ struct HttpPlayer {
       newUrl = "fd://" + file.fd;
       self.currentCachePercent = 100;
     }
+    this.fdPath = newUrl;
     // 开始进入下一个视频的播放
     if (this.getState() === 'idle') {
       if (this.avPlayer != undefined) {
@@ -445,6 +453,8 @@ struct HttpPlayer {
   // 切换上个视频的接口
   async preVideo(): Promise<void> {
     this.currentCachePercent = 0;
+    await this.avPlayer?.pause();
+    await this.avPlayer?.stop();
     await this.avPlayer?.reset();
     this.isLoop = false;
     if (this.index === (0)) {
@@ -472,6 +482,7 @@ struct HttpPlayer {
       newUrl = "fd://" + file.fd;
       self.currentCachePercent = 100;
     }
+    this.fdPath = newUrl;
     if (this.getState() === 'idle') {
       if (this.avPlayer != undefined) {
         this.avPlayer.url = newUrl;

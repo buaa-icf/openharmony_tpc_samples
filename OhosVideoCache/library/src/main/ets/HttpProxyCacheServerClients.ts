@@ -38,7 +38,7 @@ class UiListenerHandler implements CacheListener {
     }
     for (let i = 0; i < this.listeners.length; i++) {
       let listener = this.listeners[i] as CacheListener;
-      listener.onCacheAvailable(cacheFilePath, url, percentsAvailable);
+      listener?.onCacheAvailable(cacheFilePath, url, percentsAvailable);
     }
   }
 }

@@ -57,6 +57,7 @@ struct DiyCacheHeaderPage {
   private mXcomponentController: XComponentController = new XComponentController();
   private SRC_LIST: Array<string> = new Array();
   private controller: TextInputController = new TextInputController();
+  private playerState: string = '';
 
   // 界面初始化函数
   async aboutToAppear() {
@@ -90,8 +91,7 @@ struct DiyCacheHeaderPage {
   setErrorCallback(): void {
     this.avPlayer?.on('error', (error) => {
       Logger.error(TAG, 'error happened,message is :' + error.message);
-      // 当error上报时自动播放下一个视频或者音频
-      this.nextVideo();
+      // 当error上报时自动播放下一个视频或者音频  this.nextVideo();
     })
   }
 
@@ -240,6 +240,7 @@ struct DiyCacheHeaderPage {
           Logger.info(TAG, 'unkown state :' + state);
           break;
       }
+      this.playerState = state;
     });
   }
 
@@ -259,7 +260,7 @@ struct DiyCacheHeaderPage {
 
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-       self.currentCachePercent = percentsAvailable;
+        self.currentCachePercent = percentsAvailable;
       }
     }
 
@@ -284,6 +285,7 @@ struct DiyCacheHeaderPage {
     if (newUrl.startsWith(getContext().cacheDir)) {
       let file = fs.openSync(newUrl, fs.OpenMode.READ_ONLY);
       newUrl = "fd://" + file.fd;
+      self.currentCachePercent = 100;
     }
     this.fdPath = newUrl;
     this.avPlayer.url = this.fdPath;
@@ -301,7 +303,9 @@ struct DiyCacheHeaderPage {
   async play(): Promise<void> {
     if (!this.isPrepare) {
       // 设置surfaceID，当播放的问题纯音频时，无需设置
-      this.setSurfaceID();
+      if (this.playerState == "initialized") {
+        this.setSurfaceID();
+      }
       await this.avPlayer?.prepare();
       this.isPrepare = !this.isPrepare;
     }
@@ -413,6 +417,8 @@ struct DiyCacheHeaderPage {
   async nextVideo(): Promise<void> {
     // 调用reset函数，重置播放器状态至idle
     this.currentCachePercent = 0;
+    await this.avPlayer?.pause();
+    await this.avPlayer?.stop();
     await this.avPlayer?.reset();
     this.isLoop = false;
     // 获取当前播放文件的下一个视频文件在列表中的下标
@@ -429,7 +435,7 @@ struct DiyCacheHeaderPage {
 
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-       self.currentCachePercent = percentsAvailable;
+        self.currentCachePercent = percentsAvailable;
       }
     }
 
@@ -441,6 +447,7 @@ struct DiyCacheHeaderPage {
       newUrl = "fd://" + file.fd;
       self.currentCachePercent = 100;
     }
+    this.fdPath = newUrl;
     // 开始进入下一个视频的播放
     if (this.getState() === 'idle') {
       if (this.avPlayer != undefined) {
@@ -457,6 +464,8 @@ struct DiyCacheHeaderPage {
   // 切换上个视频的接口
   async preVideo(): Promise<void> {
     this.currentCachePercent = 0;
+    await this.avPlayer?.pause();
+    await this.avPlayer?.stop();
     await this.avPlayer?.reset();
     this.isLoop = false;
     if (this.index === (0)) {
@@ -472,7 +481,7 @@ struct DiyCacheHeaderPage {
 
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-       self.currentCachePercent = percentsAvailable;
+        self.currentCachePercent = percentsAvailable;
       }
     }
 
@@ -484,6 +493,7 @@ struct DiyCacheHeaderPage {
       newUrl = "fd://" + file.fd;
       self.currentCachePercent = 100;
     }
+    this.fdPath = newUrl;
     if (this.getState() === 'idle') {
       if (this.avPlayer != undefined) {
         this.avPlayer.url = newUrl;

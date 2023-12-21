@@ -17,6 +17,8 @@ import { Cache } from '../Cache';
 import DiskUsage from './DiskUsage';
 import fs from '@ohos.file.fs';
 import { UnlimitedDiskUsage } from './UnlimitedDiskUsage';
+import emitter from '@ohos.events.emitter';
+import { VideoCacheConstant } from '../constant/VideoCacheConstant';
 
 export default class FileCache implements Cache {
   private TEMP_POSTFIX: string = ".download";
@@ -133,7 +135,13 @@ export default class FileCache implements Cache {
       }
 
       this.dataFile?.write(fileData).then(() => {
-        fs.fsync(this.dataFile?.fd)
+        fs.fsync(this.dataFile?.fd).then(() => {
+          let event: emitter.InnerEvent = {
+            eventId: VideoCacheConstant.START_READ_ID,
+            priority: emitter.EventPriority.IMMEDIATE
+          }
+          emitter.emit(event)
+        })
       })
 
     } catch (e) {

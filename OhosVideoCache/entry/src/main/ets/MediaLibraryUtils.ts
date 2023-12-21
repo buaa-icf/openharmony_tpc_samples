@@ -28,7 +28,7 @@ export default class MediaLibraryUtils {
   private context = getContext(this) as common.UIAbilityContext;
   private mediaLib: mediaLibrary.MediaLibrary = mediaLibrary.getMediaLibrary(this.context);
 
-  //根据文件id查寻文件对象
+  // 根据文件id查寻文件对象
   async findFile(uri: string, displayName: string): Promise<mediaLibrary.FileAsset> {
     let fileKeyObj = mediaLibrary.FileKey;
     const args = displayName.toString();

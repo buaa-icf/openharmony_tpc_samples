@@ -124,8 +124,6 @@ export default class HttpProxyCacheServer {
         await clients.processRequest(request, severConnect);
       }
     } catch (err) {
-      // There is no way to determine that client closed connection http://stackoverflow.com/a/10241044/999458
-      // So just to prevent log flooding don't log stacktrace
       self.onError(new ProxyCacheException("Error processing request,reason is : " + err.message));
     } finally {
       if (severConnect) {
@@ -134,20 +132,6 @@ export default class HttpProxyCacheServer {
     }
   }
 
-  //   /**
-  //    * Returns url that wrap original url and should be used for client (MediaPlayer, ExoPlayer, etc).
-  //    * <p>
-  //    * If file for this url is fully cached (it means method {@link #isCached(String)} returns {@code true})
-  //    * then file:// uri to cached file will be returned.
-  //    * <p>
-  //    * Calling this method has same effect as calling {@link #getProxyUrl(String, boolean)} with 2nd parameter set to {@code true}.
-  //    *
-  //    * @param url a url to file that should be cached.
-  //    * @return a wrapped by proxy url if file is not fully cached or url pointed to cache file otherwise.
-  //    */
-  //   public  getProxyUrl( url:string):string {
-  //   return this.getProxyUrl(url, true);
-  // }
 
   /**
    * Returns url that wrap original url and should be used for client (MediaPlayer, ExoPlayer, etc).
@@ -298,6 +282,15 @@ export default class HttpProxyCacheServer {
       this.config.sourceInfoStorage.release();
     }
     this.serverSocket?.off('connect')
+    emitter.off(VideoCacheConstant.PING_EVENT_ID)
+    emitter.off(VideoCacheConstant.START_READ_ID)
+    emitter.off(VideoCacheConstant.SEND_TOTAL_SIZE_ID)
+    emitter.off(VideoCacheConstant.SEND_ACCEPT_ID)
+    emitter.off(VideoCacheConstant.COUNT_TOTAL_SIZE_ID)
+    emitter.off(VideoCacheConstant.COUNT_TOTAL_SIZE_START_ID)
+    emitter.off(VideoCacheConstant.COUNT_TOTAL_SIZE_END_ID)
+    emitter.off(VideoCacheConstant.GET_ACCEPT_ID)
+    emitter.off(VideoCacheConstant.SHUT_DOWN_TASKPOOL)
     this.serverSocket = null;
     let endTime1 = new Date().getTime();
     let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
@@ -310,7 +303,7 @@ export default class HttpProxyCacheServer {
 
   private shutdownClients(): void {
     this.clientsMap?.forEach(async (clients: HttpProxyCacheServerClients, key: string, map: HashMap<String, HttpProxyCacheServerClients>) => {
-      await clients.shutdown();
+      await clients?.shutdown();
     })
     this.clientsMap.clear();
   }
@@ -351,13 +344,13 @@ export default class HttpProxyCacheServer {
     // 客户端主动断开连接的情况下 不做处理 否则可能将正在执行的其他连接断开
     try {
       // 暂不处理 该方法关闭可能会关掉当前传输数据的severConnect而不是已经不再使用的severConnect 改为在HttpProxyCache里面关闭。
-      /* if (!isCloseByClient) {
+       if (!isCloseByClient && false) {
          severConnect?.off('message');
          severConnect?.off('error');
          severConnect?.off('close');
          severConnect?.close();
          severConnect = null;
-       }*/
+       }
     } catch (err) {
       this.onError(err)
     }

@@ -279,9 +279,7 @@ OhosVideoCache支持拖动播放。如果拖动之后的位置减去当前播放
 
 在下述版本验证通过：
 
-DevEco Studio: 4.0 Beta2(4.0.3.512), SDK: API10 (4.0.10.9)
-
-DevEco Studio: 3.1 Beta2(3.1.0.400), SDK: API9 Release(3.2.11.9)
+DevEco Studio: 4.1 Canary2(4.1.3.322), SDK: API11 (4.1.0.36)
 
 ## 目录结构
 

@@ -97,6 +97,10 @@
                     desc="测试demo资源文件"
                     name="entry/src/main/resources/rawfile/.*"
                     type="filepath"/>
+                <filteritem
+                    desc="测试demo资源文件"
+                    name="entry/src/main/resources/base/media/.*"
+                    type="filepath"/>
             </filefilter>
         </filefilterlist>
     </oatconfig>

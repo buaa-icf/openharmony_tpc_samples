@@ -45,7 +45,6 @@ export default class ByteArrayCache implements Cache {
     Preconditions.checkNotNull(this.data);
     Preconditions.checkArgument(length >= 0 && length <= newData.byteLength);
 
-    // let appendedData = Arrays.copyOf(data, data.length + length);
     let temp = new Uint8Array(this.data.byteLength + length)
     temp.set(new Uint8Array(this.data), 0)
     temp.set(new Uint8Array(newData), this.data.byteLength)
@@ -71,7 +70,6 @@ export default class ByteArrayCache implements Cache {
       return 0;
     }
     buffer = this.data.slice(offset, offset + len)
-    // return new ByteArrayInputStream(data).read(buffer, offset, length);
     return len;
   }
 

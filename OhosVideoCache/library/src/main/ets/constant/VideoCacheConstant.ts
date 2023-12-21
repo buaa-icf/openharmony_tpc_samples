@@ -22,6 +22,7 @@ export class VideoCacheConstant {
   public static GET_ACCEPT_ID: number = 6; // 发出事件---向主线程询问该缓存文件是否需要删除
   public static SEND_ACCEPT_ID: number = 7; // 发出事件---向子线程返回缓存文件是否需要删除的结论
   public static SHUT_DOWN_TASKPOOL: number = 8; // 发出事件---关闭子线程
+  public static START_READ_ID: number = 9; // 发出事件---已经成功向缓存文件写入数据了 可以开始读取缓存文件的数据了
   public static PING_RESPONSE: string = "ping ok" // 本地构造的用于本地代理服务器返回给播放器发起的ping请求的响应结果
   public static PING_REQUEST: string = "ping" // 发出事件---用于构造播放器发起的ping请求
 
