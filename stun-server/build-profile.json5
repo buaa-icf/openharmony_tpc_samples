@@ -34,8 +34,8 @@
       ]
     },
     {
-      "name": "stun",
-      "srcPath": "./stun"
+      "name": "library",
+      "srcPath": "./library"
     }
   ]
 }

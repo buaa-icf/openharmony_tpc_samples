@@ -113,7 +113,7 @@ private createClient() {
 ````
 |---- stun  
 |     |---- entry  # 示例代码文件夹
-|     |---- stun  # stun库文件夹
+|     |---- library  # stun库文件夹
 |           |---- src/main/ets/common
 |                 |---- node-stun  
 |                       |---- bin  # 对外提供的server和client调用接口
