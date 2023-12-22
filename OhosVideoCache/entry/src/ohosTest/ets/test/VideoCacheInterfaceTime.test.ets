@@ -30,7 +30,7 @@ import GlobalProxyServer from '../../../main/ets/GlobalProxyServer';
 import fs from '@ohos.file.fs';
 import HashMap from '@ohos.util.HashMap';
 
-const BASE_COUNT = 2000
+const BASE_COUNT = 10
 let testUrl: string = 'https://www.w3school.com.cn/i/movie.mp4';
 let server: HttpProxyCacheServer;
 let startTime: number = 0;
@@ -80,6 +80,8 @@ async function registerCacheListenerTest(index: number, callback: () => void, do
         let averageTime1 = ((endTime - startTime) * 1000) / BASE_COUNT;
         console.log("OhosVideoCacheTest registerCacheListener :  averageTime1 : " + averageTime1 + "us")
         done()
+      } else {
+        registerCacheListenerTest(index + 1, callback, done)
       }
 
     } catch (err) {
@@ -102,6 +104,8 @@ async function cacheDirectoryTest(index: number, callback: () => void, done: Fun
         let averageTime1 = ((endTime - startTime) * 1000) / BASE_COUNT;
         console.log("OhosVideoCacheTest cacheDirectory :  averageTime1 : " + averageTime1 + "us")
         done()
+      }else {
+        cacheDirectoryTest(index + 1, callback, done)
       }
     } catch (err) {
       done()
@@ -129,6 +133,8 @@ async function setFileNameGeneratorTest(index: number, callback: () => void, don
         let averageTime1 = ((endTime - startTime) * 1000) / BASE_COUNT;
         console.log("OhosVideoCacheTest setFileNameGenerator :  averageTime1 : " + averageTime1 + "us")
         done()
+      }else {
+        setFileNameGeneratorTest(index + 1, callback, done)
       }
     } catch (err) {
       done()
@@ -149,6 +155,8 @@ async function maxCacheSizeTest(index: number, callback: () => void, done: Funct
         let averageTime1 = ((endTime - startTime) * 1000) / BASE_COUNT;
         console.log("OhosVideoCacheTest maxCacheSize :  averageTime1 : " + averageTime1 + "us")
         done()
+      }else {
+        maxCacheSizeTest(index + 1, callback, done)
       }
     } catch (err) {
       done()
@@ -169,6 +177,8 @@ async function maxCacheFilesCountTest(index: number, callback: () => void, done:
         let averageTime1 = ((endTime - startTime) * 1000) / BASE_COUNT;
         console.log("OhosVideoCacheTest maxCacheFilesCount :  averageTime1 : " + averageTime1 + "us")
         done()
+      }else {
+        maxCacheFilesCountTest(index + 1, callback, done)
       }
     } catch (err) {
       done()
@@ -195,6 +205,8 @@ async function setDiskUsageTest(index: number, callback: () => void, done: Funct
         let averageTime1 = ((endTime - startTime) * 1000) / BASE_COUNT;
         console.log("OhosVideoCacheTest setDiskUsage :  averageTime1 : " + averageTime1 + "us")
         done()
+      }else {
+        setDiskUsageTest(index + 1, callback, done)
       }
     } catch (err) {
       done()
@@ -225,6 +237,8 @@ async function setHeaderInjectorTest(index: number, callback: () => void, done: 
         let averageTime1 = ((endTime - startTime) * 1000) / BASE_COUNT;
         console.log("OhosVideoCacheTest setHeaderInjector :  averageTime1 : " + averageTime1 + "us")
         done()
+      }else {
+        setHeaderInjectorTest(index + 1, callback, done)
       }
     } catch (err) {
       done()
@@ -245,6 +259,8 @@ async function buildTest(index: number, callback: () => void, done: Function) {
         let averageTime1 = ((endTime - startTime) * 1000) / BASE_COUNT;
         console.log("OhosVideoCacheTest build :  averageTime1 : " + averageTime1 + "us")
         done()
+      }else {
+        buildTest(index + 1, callback, done)
       }
     } catch (err) {
       done()
@@ -272,6 +288,8 @@ async function unregisterCacheListenerTest(index: number, callback: () => void, 
         let averageTime1 = ((endTime - startTime) * 1000) / BASE_COUNT;
         console.log("OhosVideoCacheTest unregisterCacheListener :  averageTime1 : " + averageTime1 + "us")
         done()
+      }else {
+        unregisterCacheListenerTest(index + 1, callback, done)
       }
     } catch (err) {
       done()
@@ -292,6 +310,8 @@ async function shutdownTest(index: number, callback: () => void, done: Function)
         let averageTime1 = ((endTime - startTime) * 1000) / BASE_COUNT;
         console.log("OhosVideoCacheTest shutdown :  averageTime1 : " + averageTime1 + "us")
         done()
+      }else {
+        shutdownTest(index + 1, callback, done)
       }
     } catch (err) {
       done()

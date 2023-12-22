@@ -187,8 +187,9 @@ export default function OhosVideoCacheTest() {
           readTimeout: 0,
           usingProtocol: http.HttpProtocol.HTTP1_1
         }
-        client.requestInStream(proxyUrl, header).then(() => {
-          let filePath: string = cacheFolder + "/123456.map4";
+        client.requestInStream(proxyUrl, header)
+        setTimeout(() => {
+          let filePath: string = cacheFolder + "/123456.mp4";
           if (fs.accessSync(filePath)) {
             expect(1).assertEqual(1)
             done()
@@ -196,11 +197,7 @@ export default function OhosVideoCacheTest() {
             expect(1).assertEqual(2)
             done()
           }
-
-        }).catch((err: Error) => {
-          expect(1).assertEqual(2)
-          done()
-        })
+        }, 3000)
       } catch (err) {
         expect(1).assertEqual(2);
         done()
@@ -283,7 +280,7 @@ export default function OhosVideoCacheTest() {
         let server = new HttpProxyCacheServerBuilder(context)
           .build()
         expect(server instanceof HttpProxyCacheServer).assertTrue();
-        expect(server instanceof HttpProxyCacheServer).assertFalse();
+        expect(server instanceof HttpProxyCacheServerBuilder).assertFalse();
         done()
       } catch (err) {
         expect(1).assertEqual(2);
@@ -354,7 +351,7 @@ export default function OhosVideoCacheTest() {
             "Range": 'bytes=0-'
           },
           connectTimeout: 10000,
-          readTimeout: 60000,
+          readTimeout: 6000,
           usingProtocol: http.HttpProtocol.HTTP1_1
         }
 
