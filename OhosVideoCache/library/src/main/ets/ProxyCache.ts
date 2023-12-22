@@ -79,7 +79,6 @@ export default class ProxyCache {
       if (this.timeoutId != (0 - Number.MAX_VALUE)) {
         clearTimeout((this.timeoutId));
       }
-      emitter.off(VideoCacheConstant.START_READ_ID)
       this.closeSource();
     } catch (err) {
       this.onError(err);
@@ -104,16 +103,6 @@ export default class ProxyCache {
   private async waitForSourceData(): Promise<void> {
     let self = this;
     return new Promise<void>((resolve, reject) => {
-      let event: emitter.InnerEvent = {
-        eventId: VideoCacheConstant.START_READ_ID
-      }
-      emitter.on(event, (data: emitter.EventData) => {
-        if (self.timeoutId != (0 - Number.MAX_VALUE)) {
-          clearInterval(self.timeoutId)
-          self.timeoutId = (0 - Number.MAX_VALUE)
-          return resolve()
-        }
-      })
       self.timeoutId = setTimeout(() => {
         if (self.timeoutId != (0 - Number.MAX_VALUE)) {
           clearInterval(self.timeoutId)

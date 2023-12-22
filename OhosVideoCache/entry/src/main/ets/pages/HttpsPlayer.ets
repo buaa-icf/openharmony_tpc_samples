@@ -56,7 +56,6 @@ struct HttpPlayer {
   private volumeValue: number = 1.00;
   private mXcomponentController: XComponentController = new XComponentController();
   private SRC_LIST: Array<string> = new Array();
-  private playerState: string = '';
 
   // 界面初始化函数
   async aboutToAppear() {
@@ -238,7 +237,6 @@ struct HttpPlayer {
           Logger.info(TAG, 'unkown state :' + state);
           break;
       }
-      this.playerState = state;
     });
   }
 
@@ -275,7 +273,7 @@ struct HttpPlayer {
       self.currentCachePercent = 100;
     }
     this.fdPath = newUrl;
-    if (this.avPlayer && this.playerState === 'idle') {
+    if (this.avPlayer && this.getState() === 'idle') {
       this.avPlayer.url = this.fdPath;
     }
     Logger.info(TAG, 'createAVPlayer end');
@@ -292,7 +290,7 @@ struct HttpPlayer {
   async play(): Promise<void> {
     if (!this.isPrepare) {
       // 设置surfaceID，当播放的问题纯音频时，无需设置
-      if (this.playerState == "initialized") {
+      if (this.getState() == "initialized") {
         this.setSurfaceID();
       }
       await this.avPlayer?.prepare();
@@ -405,8 +403,6 @@ struct HttpPlayer {
   // 切换下个视频的接口
   async nextVideo(): Promise<void> {
     // 调用reset函数，重置播放器状态至idle
-    await this.avPlayer?.pause();
-    await this.avPlayer?.stop();
     await this.avPlayer?.reset();
     this.currentCachePercent = 0;
     this.isLoop = false;
@@ -453,8 +449,6 @@ struct HttpPlayer {
   // 切换上个视频的接口
   async preVideo(): Promise<void> {
     this.currentCachePercent = 0;
-    await this.avPlayer?.pause();
-    await this.avPlayer?.stop();
     await this.avPlayer?.reset();
     this.isLoop = false;
     if (this.index === (0)) {

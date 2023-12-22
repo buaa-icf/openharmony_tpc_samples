@@ -35,6 +35,7 @@ import emitter from '@ohos.events.emitter';
 import { VideoCacheConstant } from './constant/VideoCacheConstant';
 
 const BASE_COUNT = 1
+
 export default class HttpProxyCacheServer {
   private static libraryVersion: string = '1.0.0'
   private PROXY_HOST: string = "127.0.0.1";
@@ -106,6 +107,11 @@ export default class HttpProxyCacheServer {
       })
       self.pinger = new Pinger(self.PROXY_HOST, self.port)
       self.isServerReady = true;
+      let event: emitter.InnerEvent = {
+        eventId: VideoCacheConstant.SERVER_READY_ID,
+        priority: emitter.EventPriority.IMMEDIATE
+      }
+      emitter.emit(event)
       return Promise.resolve()
     } catch (err) {
       return Promise.reject(err)
@@ -152,12 +158,16 @@ export default class HttpProxyCacheServer {
     }
     // 以下代码是为了确保服务器准备好了 不加这里的逻辑 很可能服务器没初始化，导致下面的isAlive直接返回false，逻辑就不走代理了
     await new Promise<void>((resolve, reject) => {
-      let id = setInterval(() => {
-        if (self.isServerReady) {
-          clearInterval(id);
-          resolve()
+      if (self.isServerReady) {
+        resolve()
+      } else {
+        let event: emitter.InnerEvent = {
+          eventId: VideoCacheConstant.SERVER_READY_ID
         }
-      }, 20)
+        emitter.on(event, (data: emitter.EventData) => {
+          resolve()
+        })
+      }
     })
     let result = await this.isAlive()
     return new Promise((resolve, reject) => {
@@ -270,13 +280,15 @@ export default class HttpProxyCacheServer {
     }
     this.serverSocket?.off('connect')
     emitter.off(VideoCacheConstant.PING_EVENT_ID)
-    emitter.off(VideoCacheConstant.START_READ_ID)
     emitter.off(VideoCacheConstant.SEND_TOTAL_SIZE_ID)
     emitter.off(VideoCacheConstant.SEND_ACCEPT_ID)
     emitter.off(VideoCacheConstant.COUNT_TOTAL_SIZE_ID)
     emitter.off(VideoCacheConstant.COUNT_TOTAL_SIZE_START_ID)
     emitter.off(VideoCacheConstant.COUNT_TOTAL_SIZE_END_ID)
     emitter.off(VideoCacheConstant.GET_ACCEPT_ID)
+    emitter.off(VideoCacheConstant.HTTP_URL_SOURCE_READY_ID)
+    emitter.off(VideoCacheConstant.SERVER_READY_ID)
+    emitter.off(VideoCacheConstant.RENAME_FINISH_ID)
     emitter.off(VideoCacheConstant.SHUT_DOWN_TASKPOOL)
     this.serverSocket = null;
   }
@@ -328,13 +340,13 @@ export default class HttpProxyCacheServer {
     // 客户端主动断开连接的情况下 不做处理 否则可能将正在执行的其他连接断开
     try {
       // 暂不处理 该方法关闭可能会关掉当前传输数据的severConnect而不是已经不再使用的severConnect 改为在HttpProxyCache里面关闭。
-       if (!isCloseByClient && false) {
-         severConnect?.off('message');
-         severConnect?.off('error');
-         severConnect?.off('close');
-         severConnect?.close();
-         severConnect = null;
-       }
+      if (!isCloseByClient && false) {
+        severConnect?.off('message');
+        severConnect?.off('error');
+        severConnect?.off('close');
+        severConnect?.close();
+        severConnect = null;
+      }
     } catch (err) {
       this.onError(err)
     }

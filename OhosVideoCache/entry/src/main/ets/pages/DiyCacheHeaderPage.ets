@@ -57,7 +57,6 @@ struct DiyCacheHeaderPage {
   private mXcomponentController: XComponentController = new XComponentController();
   private SRC_LIST: Array<string> = new Array();
   private controller: TextInputController = new TextInputController();
-  private playerState: string = '';
 
   // 界面初始化函数
   async aboutToAppear() {
@@ -240,7 +239,6 @@ struct DiyCacheHeaderPage {
           Logger.info(TAG, 'unkown state :' + state);
           break;
       }
-      this.playerState = state;
     });
   }
 
@@ -303,7 +301,7 @@ struct DiyCacheHeaderPage {
   async play(): Promise<void> {
     if (!this.isPrepare) {
       // 设置surfaceID，当播放的问题纯音频时，无需设置
-      if (this.playerState == "initialized") {
+      if (this.getState() == "initialized") {
         this.setSurfaceID();
       }
       await this.avPlayer?.prepare();
@@ -417,8 +415,6 @@ struct DiyCacheHeaderPage {
   async nextVideo(): Promise<void> {
     // 调用reset函数，重置播放器状态至idle
     this.currentCachePercent = 0;
-    await this.avPlayer?.pause();
-    await this.avPlayer?.stop();
     await this.avPlayer?.reset();
     this.isLoop = false;
     // 获取当前播放文件的下一个视频文件在列表中的下标
@@ -464,8 +460,6 @@ struct DiyCacheHeaderPage {
   // 切换上个视频的接口
   async preVideo(): Promise<void> {
     this.currentCachePercent = 0;
-    await this.avPlayer?.pause();
-    await this.avPlayer?.stop();
     await this.avPlayer?.reset();
     this.isLoop = false;
     if (this.index === (0)) {

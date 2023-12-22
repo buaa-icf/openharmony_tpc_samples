@@ -89,6 +89,11 @@ export default class FileCache implements Cache {
       throw new Error("Error renaming file " + this.tempFilePath + " to " + this.trueFilePath + " for completion! reason is : " + err.message);
     }
     self.isRenamedEnd = true;
+    let event: emitter.InnerEvent = {
+      eventId: VideoCacheConstant.RENAME_FINISH_ID,
+      priority: emitter.EventPriority.IMMEDIATE
+    }
+    emitter.emit(event)
   }
 
   /**
@@ -109,14 +114,15 @@ export default class FileCache implements Cache {
     try {
       if (!self.isRenamedEnd) {
         await new Promise<void>((resolve, reject) => {
-          let id = setInterval(() => {
-            if (self.isRenamedEnd) {
-              clearInterval(id);
-              resolve()
-            }
-          }, 20)
+          let event: emitter.InnerEvent = {
+            eventId: VideoCacheConstant.RENAME_FINISH_ID
+          }
+          emitter.on(event, (data: emitter.EventData) => {
+            resolve()
+          })
         })
       }
+      emitter.off(VideoCacheConstant.RENAME_FINISH_ID)
       fs.fsyncSync(this.dataFile.fd)
       fs.closeSync(this.dataFile.fd)
       return Promise.resolve();
@@ -135,13 +141,7 @@ export default class FileCache implements Cache {
       }
 
       this.dataFile?.write(fileData).then(() => {
-        fs.fsync(this.dataFile?.fd).then(() => {
-          let event: emitter.InnerEvent = {
-            eventId: VideoCacheConstant.START_READ_ID,
-            priority: emitter.EventPriority.IMMEDIATE
-          }
-          emitter.emit(event)
-        })
+        fs.fsync(this.dataFile?.fd)
       })
 
     } catch (e) {

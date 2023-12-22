@@ -368,6 +368,8 @@ struct IjkVideoPlayerPage {
     mIjkMediaPlayer.native_setup();
     //设置视频源
     mIjkMediaPlayer.setDataSource(url);
+    // 设置无缓冲，这是播放器的缓冲区，有数据就播放
+    mIjkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "packet-buffering", "0");
     //设置视频源http请求头
     let headers = new Map([
       ["allowCrossProtocolRedirects", "true"]

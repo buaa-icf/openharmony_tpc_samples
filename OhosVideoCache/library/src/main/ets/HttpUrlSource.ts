@@ -27,6 +27,8 @@ import { DataBackListener } from './interfaces/DataBackListener';
 import ProgressValue from './bean/ProgressValue';
 import Queue from '@ohos.util.Queue';
 import HashMap from '@ohos.util.HashMap';
+import emitter from '@ohos.events.emitter';
+import { VideoCacheConstant } from './constant/VideoCacheConstant';
 
 export default class HttpUrlSource implements Source {
   private MAX_REDIRECTS: number = 5;
@@ -62,15 +64,18 @@ export default class HttpUrlSource implements Source {
               self.sourceInfo = new SourceInfo(args[0] as string, Number.MIN_VALUE, ProxyCacheUtils.getSupposablyMime(args[0] as string));
             }
             self.isInitFinish = true;
+            self.notifyInitFinish()
           }).catch((err: Error) => {
             self.sourceInfo = new SourceInfo(args[0] as string, Number.MIN_VALUE, ProxyCacheUtils.getSupposablyMime(args[0] as string))
             self.isInitFinish = true;
+            self.notifyInitFinish()
           });
         } else if (typeof args[0] === 'object' && args[0] instanceof HttpUrlSource) {
           self.sourceInfo = args[0].sourceInfo;
           this.sourceInfoStorage = args[0].sourceInfoStorage;
           self.headerInjector = args[0].headerInjector;
           self.isInitFinish = true;
+          self.notifyInitFinish()
         }
       } else if (args.length === 2) {
         if (typeof args[0] === 'string' && args[1]) {
@@ -84,9 +89,11 @@ export default class HttpUrlSource implements Source {
               self.sourceInfo = new SourceInfo(args[0] as string, Number.MIN_VALUE, ProxyCacheUtils.getSupposablyMime(args[0] as string));
             }
             self.isInitFinish = true;
+            self.notifyInitFinish()
           }).catch((err: Error) => {
             self.sourceInfo = new SourceInfo(args[0] as string, Number.MIN_VALUE, ProxyCacheUtils.getSupposablyMime(args[0] as string))
             self.isInitFinish = true;
+            self.notifyInitFinish()
           });
         }
       } else if (args.length === 3) {
@@ -100,13 +107,16 @@ export default class HttpUrlSource implements Source {
             self.sourceInfo = new SourceInfo(args[0] as string, Number.MIN_VALUE, ProxyCacheUtils.getSupposablyMime(args[0] as string));
           }
           self.isInitFinish = true;
+          self.notifyInitFinish()
         }).catch((err: Error) => {
           self.sourceInfo = new SourceInfo(args[0] as string, Number.MIN_VALUE, ProxyCacheUtils.getSupposablyMime(args[0] as string))
           self.isInitFinish = true;
+          self.notifyInitFinish()
         });
       }
     } catch (err) {
       self.isInitFinish = true;
+      self.notifyInitFinish()
     }
 
     self.interId = setInterval(() => {
@@ -128,8 +138,14 @@ export default class HttpUrlSource implements Source {
         }
       }
     }, 20)
+  }
 
-
+  notifyInitFinish() {
+    let event: emitter.InnerEvent = {
+      eventId: VideoCacheConstant.HTTP_URL_SOURCE_READY_ID,
+      priority: emitter.EventPriority.IMMEDIATE
+    }
+    emitter.emit(event)
   }
 
   close(): void {
@@ -137,6 +153,7 @@ export default class HttpUrlSource implements Source {
       if (this.interId != 0 - Number.MAX_VALUE) {
         clearInterval(this.interId)
       }
+      emitter.off(VideoCacheConstant.HTTP_URL_SOURCE_READY_ID)
       this.isHeaderDealFinish = false;
       this.connection?.off('headersReceive');
       this.connection?.off('dataReceive');
@@ -376,12 +393,12 @@ export default class HttpUrlSource implements Source {
     let self = this;
     if (!self?.isInitFinish) {
       return new Promise<void>((resolve, reject) => {
-        let id = setInterval(() => {
-          if (this.isInitFinish) {
-            clearInterval(id)
-            resolve();
-          }
-        }, 20)
+        let event: emitter.InnerEvent = {
+          eventId: VideoCacheConstant.HTTP_URL_SOURCE_READY_ID
+        }
+        emitter.on(event, (data: emitter.EventData) => {
+          return resolve()
+        })
       })
     } else {
       return Promise.resolve();

@@ -22,7 +22,9 @@ export class VideoCacheConstant {
   public static GET_ACCEPT_ID: number = 6; // 发出事件---向主线程询问该缓存文件是否需要删除
   public static SEND_ACCEPT_ID: number = 7; // 发出事件---向子线程返回缓存文件是否需要删除的结论
   public static SHUT_DOWN_TASKPOOL: number = 8; // 发出事件---关闭子线程
-  public static START_READ_ID: number = 9; // 发出事件---已经成功向缓存文件写入数据了 可以开始读取缓存文件的数据了
+  public static HTTP_URL_SOURCE_READY_ID: number = 10; // 发出事件---HttpUrlSource初始化成功，可以发起网络请求(初始化是异步的 所以必须等待初始化结束才可以进行下一步)
+  public static SERVER_READY_ID: number = 11; // 发出事件---代理服务器初始化成功，可以发起ping请求和获取处理之后的音视频url(初始化是异步的 所以必须等待初始化结束才可以进行下一步)
+  public static RENAME_FINISH_ID: number = 12; // 发出事件---文件重命名结束，可以进行后续的操作了(防止重命名未结束直接关闭文件导致的数据异常)
   public static PING_RESPONSE: string = "ping ok" // 本地构造的用于本地代理服务器返回给播放器发起的ping请求的响应结果
   public static PING_REQUEST: string = "ping" // 发出事件---用于构造播放器发起的ping请求
 
