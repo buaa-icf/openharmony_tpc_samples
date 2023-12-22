@@ -15,8 +15,10 @@
 
 import abilityTest from './Ability.test'
 import eventBusTest from './EventBus.test'
+import telephonyPerfJsunit from './TestInterfaceResponseTime.test'
 
 export default function testsuite() {
   abilityTest()
   eventBusTest()
+  telephonyPerfJsunit()
 }
