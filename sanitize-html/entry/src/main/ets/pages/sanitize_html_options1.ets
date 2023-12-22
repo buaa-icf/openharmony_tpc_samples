@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-import sanitizeHtml from 'sanitize-html';
+import sanitize from 'sanitize-html';
 
 @Entry
 @Component
@@ -36,8 +36,8 @@ struct Sanitize_html_options {
           .height('5%')
           .onClick(() => {
             let html = '<img src="http://www.baidu.com">';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, {
-              allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img'])
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, {
+              allowedTags: sanitize.defaults.allowedTags.concat(['img'])
             });
           })
 
@@ -45,7 +45,7 @@ struct Sanitize_html_options {
           .height('5%')
           .onClick(() => {
             let html = '<a href="http://www.baidu.com" id="alink">';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, {
               allowedAttributes: {
                 a: ['href', 'id']
               }
@@ -56,7 +56,7 @@ struct Sanitize_html_options {
           .height('5%')
           .onClick(() => {
             let html = '<img href="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, {
               allowedTags: false,
               allowedAttributes: false,
               allowedSchemes: ['sms', 'data']
@@ -67,7 +67,7 @@ struct Sanitize_html_options {
           .height('5%')
           .onClick(() => {
             let html = '<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, {
               allowedTags: false,
               allowedAttributes: false,
               allowedSchemesByTag: {
@@ -80,7 +80,7 @@ struct Sanitize_html_options {
           .height('5%')
           .onClick(() => {
             let html = '<img custom="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, {
               allowedTags: false,
               allowedAttributes: false,
               allowedSchemes: ['sms', 'data'],
@@ -92,7 +92,7 @@ struct Sanitize_html_options {
           .height('5%')
           .onClick(() => {
             let html = '<a href="https://www.baidu.com"></a><p>drop text and tags between the disallowed tag</p>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, {
               selfClosing: ['a']
             });
           })
@@ -100,7 +100,7 @@ struct Sanitize_html_options {
         Button('disallowedTagsMode default:discard')
           .onClick(() => {
             let html = '<div>drop disallowed tag and its all child tag <sss src="http://www.baidu.com">sss tag inner text<p> allowed tag</p></sss></div>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, {
               disallowedTagsMode: 'discard'
             });
           })
@@ -109,7 +109,7 @@ struct Sanitize_html_options {
           .height('5%')
           .onClick(() => {
             let html = '<div>escape disallowed tag not its child tag <sss src="http://www.baidu.com">sss tag inner text<sss>ssssssss</sss><p> allowed tag</p></sss></div>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, {
               disallowedTagsMode: 'escape'
             });
           })
@@ -117,7 +117,7 @@ struct Sanitize_html_options {
         Button('disallowedTagsMode recursiveEscape')
           .onClick(() => {
             let html = '<div>escape disallowed tag and its all child tag <sss src="http://www.baidu.com">sss tag inner text<p> allowed tag</p></sss></div>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, {
               disallowedTagsMode: 'recursiveEscape'
             });
           })

@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "sanitizehtml",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}

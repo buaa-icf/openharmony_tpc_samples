@@ -22,14 +22,14 @@
  * SOFTWARE.
  */
 
-import sanitizeHtml from 'sanitize-html';
+import sanitize from 'sanitize-html';
 import prompt from '@ohos.prompt';
 
 
 @Entry
 @Component
 struct Allowed_schemes {
-  private default_allows: string[] = sanitizeHtml.defaults.allowedSchemes;
+  private default_allows: string[] = sanitize.defaults.allowedSchemes;
   @State private schemes: string = '';
   @State private sanitizeResult: string = 'sanitizeResult: ';
 
@@ -53,7 +53,7 @@ struct Allowed_schemes {
               return;
             }
             let html = '<a href="' + this.schemes + '://www.baidu.com">inner text </a>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html);
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html);
           })
 
         Button('Cover all default allowed scheme')
@@ -63,9 +63,9 @@ struct Allowed_schemes {
               prompt.showToast({ message: 'please input scheme' })
               return;
             }
-            sanitizeHtml.defaults.allowedSchemes = ['http1', 'https1', 'sms1'];
+            sanitize.defaults.allowedSchemes = ['http1', 'https1', 'sms1'];
             let html = '<a href="' + this.schemes + '://www.baidu.com">inner text </a>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html);
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html);
           })
 
         Button('Cover allowed scheme by options')
@@ -76,7 +76,7 @@ struct Allowed_schemes {
               return;
             }
             let html = '<a href="' + this.schemes + '://www.baidu.com">inner text </a>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, {
               allowedSchemes: ['http2', 'https2', 'sms2']
             });
           })
@@ -88,8 +88,8 @@ struct Allowed_schemes {
               prompt.showToast({ message: 'please input scheme' })
               return;
             }
-            let schemesArray = sanitizeHtml.defaults.allowedSchemes;
-            let index = schemesArray.indexOf(this.schemes);
+            let schemesArray:ESObject = sanitize.defaults.allowedSchemes;
+            let index:ESObject = schemesArray.indexOf(this.schemes);
             if (index === -1) {
               schemesArray.push(this.schemes);
             } else {
@@ -98,7 +98,7 @@ struct Allowed_schemes {
             }
 
             let html = '<a href="' + this.schemes + '://www.baidu.com">inner text </a>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html);
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html);
           })
 
         Text(this.sanitizeResult)

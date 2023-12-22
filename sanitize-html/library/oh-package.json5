@@ -1,0 +1,18 @@
+{
+  "license": "Apache-2.0",
+  "types": "src/main/ets/esm/index.d.ts",
+  "devDependencies": {},
+  "author": "",
+  "name": "htmlparser2",
+  "description": "Please describe the basic information.",
+  "main": "src/main/ets/esm/index.js",
+  "type": "module",
+  "version": "1.0.0",
+  "dependencies": {
+    "@ohos/node-polyfill": "1.0.0",
+    "entities": "^4.5.0",
+    "domelementtype": "^2.3.0",
+    "domhandler": "^5.0.3",
+    "domutils": "^3.1.0"
+  }
+}

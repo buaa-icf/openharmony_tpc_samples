@@ -22,14 +22,14 @@
  * SOFTWARE.
  */
 
-import sanitizeHtml from 'sanitize-html';
+import sanitize from 'sanitize-html';
 import prompt from '@ohos.prompt';
 
 @Entry
 @Component
 struct Self_closing_tags {
   @State message: string = 'Hello World'
-  private tags: string[] = sanitizeHtml.defaults.selfClosing;
+  private tags: string[] = sanitize.defaults.selfClosing;
   @State private tagName: string = '';
   @State private sanitizeResult: string = 'sanitizeResult: ';
 
@@ -53,7 +53,7 @@ struct Self_closing_tags {
               return;
             }
             let html = '<' + this.tagName + ' name="selfClosingTag">';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, {
               allowedTags: false,
               allowedAttributes: false
             });
@@ -66,9 +66,9 @@ struct Self_closing_tags {
               prompt.showToast({ message: 'please input tag name' })
               return;
             }
-            sanitizeHtml.defaults.selfClosing = [this.tagName];
+            sanitize.defaults.selfClosing = [this.tagName];
             let html = '<' + this.tagName + ' name="selfClosingTag">';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, {
               allowedTags: false,
               allowedAttributes: false
             });
@@ -82,7 +82,7 @@ struct Self_closing_tags {
               return;
             }
             let html = '<' + this.tagName + ' name="selfClosingTag">';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, {
               allowedTags: false,
               allowedAttributes: false,
               selfClosing: [this.tagName]
@@ -96,14 +96,14 @@ struct Self_closing_tags {
               prompt.showToast({ message: 'please input tag name' })
               return;
             }
-            var index = sanitizeHtml.defaults.selfClosing.indexOf(this.tagName);
+            let index:ESObject = sanitize.defaults.selfClosing.indexOf(this.tagName);
             if (index != -1) {
               prompt.showToast({ message: 'the tag name already exist' })
               return;
             }
-            sanitizeHtml.defaults.selfClosing.push(this.tagName);
+            sanitize.defaults.selfClosing.push(this.tagName);
             let html = '<' + this.tagName + ' name="selfClosingTag">';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, {
               allowedTags: false,
               allowedAttributes: false
             });

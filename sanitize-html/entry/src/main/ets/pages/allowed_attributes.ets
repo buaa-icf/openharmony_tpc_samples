@@ -22,13 +22,13 @@
  * SOFTWARE.
  */
 
-import sanitizeHtml from 'sanitize-html';
+import sanitize from 'sanitize-html';
 import prompt from '@ohos.prompt';
 
 @Entry
 @Component
 struct AllowedAttributes {
-  private default_allows: any = sanitizeHtml.defaults.allowedAttributes;
+  private default_allows: ESObject = sanitize.defaults.allowedAttributes;
   @State private attributeName: string = '';
   @State private sanitizeResult: string = 'sanitizeResult: ';
 
@@ -58,7 +58,7 @@ struct AllowedAttributes {
               return;
             }
             let html = '<a ' + this.attributeName + '="test">inner text </' + this.attributeName + '>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html);
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html);
           })
 
         Button('cover all default attribute')
@@ -68,9 +68,9 @@ struct AllowedAttributes {
               prompt.showToast({ message: 'please input attribute name' })
               return;
             }
-            sanitizeHtml.defaults.allowedAttributes = { '*': [this.attributeName] };
+            sanitize.defaults.allowedAttributes = { a: [this.attributeName],img:[this.attributeName] };
             let html = '<a ' + this.attributeName + '="test">inner text </' + this.attributeName + '>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html);
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html);
           })
 
         Button('cover attributes by options')
@@ -81,8 +81,8 @@ struct AllowedAttributes {
               return;
             }
             let html = '<a ' + this.attributeName + '="test">inner text </' + this.attributeName + '>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, {
-              allowedAttributes: { '*': ['a', 'b', 'c', 'd'] }
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, {
+              allowedAttributes: { a: ['a', 'b', 'c', 'd'] }
             });
           })
 
@@ -93,7 +93,7 @@ struct AllowedAttributes {
               prompt.showToast({ message: 'please input attribute name' })
               return;
             }
-            let defaultsCommonValue = sanitizeHtml.defaults.allowedAttributes['*'];
+            let defaultsCommonValue:ESObject = sanitize.defaults.allowedAttributes['*'];
             if (typeof defaultsCommonValue === 'object' && Array.isArray(defaultsCommonValue)) {
               let attrIndex = defaultsCommonValue.indexOf(this.attributeName);
               if (attrIndex != -1) {
@@ -102,10 +102,10 @@ struct AllowedAttributes {
               }
               defaultsCommonValue.push(this.attributeName);
             } else {
-              sanitizeHtml.defaults.allowedAttributes['*'] = [this.attributeName];
+              sanitize.defaults.allowedAttributes['*'] = [this.attributeName];
             }
             let html = '<a ' + this.attributeName + '="test">inner text </' + this.attributeName + '>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html);
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html);
           })
 
         Button('not check attribute : false')
@@ -116,7 +116,7 @@ struct AllowedAttributes {
               return;
             }
             let html = '<a ' + this.attributeName + '="test">inner text </' + this.attributeName + '>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, { allowedAttributes: false });
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, { allowedAttributes: false });
           })
 
         Button('not check attribute : undefined')
@@ -127,7 +127,7 @@ struct AllowedAttributes {
               return;
             }
             let html = '<a ' + this.attributeName + '="test">inner text </' + this.attributeName + '>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, { allowedAttributes: undefined });
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, { allowedAttributes: undefined });
           })
 
         Text(this.sanitizeResult)

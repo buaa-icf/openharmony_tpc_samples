@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "postcss",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}

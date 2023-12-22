@@ -1,6 +1,6 @@
 {
   "src": [
-    "pages/index",
+    "pages/Index",
     "pages/allowed_tags",
     "pages/allowed_attributes",
     "pages/allowed_schemes",

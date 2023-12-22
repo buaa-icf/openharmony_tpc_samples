@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-import sanitizeHtml from 'sanitize-html';
+import sanitize from 'sanitize-html';
 
 @Entry
 @Component
@@ -36,7 +36,7 @@ struct Sanitize_html_options2 {
           .height('5%')
           .onClick(() => {
             let html = '<a href="//cnn.com/example">test</a>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, {
               allowProtocolRelative: true
             });
           })
@@ -45,7 +45,7 @@ struct Sanitize_html_options2 {
           .height('5%')
           .onClick(() => {
             let html = '<a href="//cnn.com/example">test</a>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, {
               allowProtocolRelative: false
             });
           })
@@ -54,7 +54,7 @@ struct Sanitize_html_options2 {
           .height('5%')
           .onClick(() => {
             let html = 'Text before html tag<html><div><p>Hello <b>there</b></p></div></html>Text after html tag!P�X��[<p>paragraph after closing html</p>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, {
               enforceHtmlBoundary: false
             });
           })
@@ -63,7 +63,7 @@ struct Sanitize_html_options2 {
           .height('5%')
           .onClick(() => {
             let html = 'Text before html tag<html><div><p>Hello <b>there</b></p></div></html>Text after html tag!P�X��[<p>paragraph after closing html</p>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, {
               enforceHtmlBoundary: true
             });
           })
@@ -72,13 +72,13 @@ struct Sanitize_html_options2 {
           .height('5%')
           .onClick(() => {
             let html = '<a href="http://www.baidu.com" style="color:yellow;text-align:center;font-family:helvetica" id="alink">';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, {
               allowedAttributes: false,
               allowedStyles: {
-                '*': {
-                  color: [/yellow/],
-                  'text-align': [/center/],
-                  'font-family': [/helvetica/]
+                a: {
+                  color: [new RegExp('yellow')],
+                  text: [new RegExp('center')],
+                  font: [new RegExp('helvetica')]
                 }
               }
             });
@@ -88,10 +88,10 @@ struct Sanitize_html_options2 {
           .height('5%')
           .onClick(() => {
             let html = '<a href="http://www.baidu.com" class="nifty simple dippy"></a>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, {
               allowedAttributes: false,
               allowedClasses: {
-                'a': ['simple', 'dippy']
+                a: ['simple', 'dippy']
               }
             });
           })
@@ -101,7 +101,7 @@ struct Sanitize_html_options2 {
           .height('5%')
           .onClick(() => {
             let html = '<iframe src="https://www.youtube1.com/embed/c2Il7cS7AHxM"></iframe>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, {
               allowedTags: ['h', 'iframe', 'a', 'img', 'h1'],
               allowedAttributes: {
                 iframe: ['src', 'href'],
@@ -116,7 +116,7 @@ struct Sanitize_html_options2 {
           .height('5%')
           .onClick(() => {
             let html = '<iframe src="https://www.food.us025web.zoom2.us/embed/c2Ilc9S7AHxM"></iframe>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, {
               allowedTags: ['h2', 'iframe', 'a', 'br'],
               allowedAttributes: {
                 iframe: ['src', 'href'],
@@ -130,7 +130,7 @@ struct Sanitize_html_options2 {
           .height('5%')
           .onClick(() => {
             let html = '<iframe src="/foo"></iframe>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, {
               allowedTags: ['p', 'iframe', 'a', 'img', 'i'],
               allowedAttributes: {
                 iframe: ['src', 'href'],
@@ -145,7 +145,7 @@ struct Sanitize_html_options2 {
           .height('5%')
           .onClick(() => {
             let html = '<iframe src="/foo"></iframe>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, {
               allowedTags: ['p', 'iframe', 'a', 'img', 'i'],
               allowedAttributes: {
                 iframe: ['src', 'href'],

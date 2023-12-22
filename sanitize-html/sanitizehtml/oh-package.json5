@@ -1,0 +1,18 @@
+{
+  "license": "Apache-2.0",
+  "devDependencies": {},
+  "author": "",
+  "name": "sanitizehtml",
+  "description": "Please describe the basic information.",
+  "main": "Index.ets",
+  "version": "2.0.0",
+  "dependencies": {
+    "source-map-js": "^0.6.2",
+    "escape-string-regexp": "^4.0.0",
+    "htmlparser2": "file:../library",
+    "deepmerge": "^4.2.2",
+    "parse-srcset": "^1.0.2",
+    "postcss": "file:../postcss",
+    "is-plain-object": "^5.0.0"
+  }
+}

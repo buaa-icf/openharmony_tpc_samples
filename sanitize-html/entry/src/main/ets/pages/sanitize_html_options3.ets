@@ -22,8 +22,12 @@
  * SOFTWARE.
  */
 
-import sanitizeHtml from 'sanitize-html';
-
+import sanitize from 'sanitize-html';
+class filter {
+  tagName: ESObject = 0
+  attribs: ESObject = 0
+  text: string = ''
+}
 @Entry
 @Component
 struct Sanitize_html_options3 {
@@ -36,7 +40,7 @@ struct Sanitize_html_options3 {
           .height('5%')
           .onClick(() => {
             let html = '<script src="https://www.unauthorized.com/lib.js"></script>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, {
               allowedTags: ['script'],
               allowVulnerableTags: true,
               allowedAttributes: {
@@ -50,7 +54,7 @@ struct Sanitize_html_options3 {
           .height('5%')
           .onClick(() => {
             let html = '<script src="https://www.safe.authorized.com/lib.js"></script>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, {
               allowedTags: ['script'],
               allowedAttributes: {
                 script: ['src']
@@ -62,9 +66,9 @@ struct Sanitize_html_options3 {
         Button('text filter')
           .height('5%')
           .onClick(() => {
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml('<a href="http://somelink">some text</a>', {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize('<a href="http://somelink">some text</a>', {
               transformTags: {
-                a: function (tagNameParams, attribsParams) {
+                a:  (tagNameParams:ESObject, attribsParams:ESObject):filter=> {
                   return {
                     tagName: tagNameParams,
                     attribs: attribsParams,
@@ -72,8 +76,8 @@ struct Sanitize_html_options3 {
                   };
                 }
               },
-              textFilter: function (text, tagName) {
-                return text.replace(/\s/g, '_');
+              textFilter:  (text:ESObject, tagName:ESObject):ESObject=> {
+                return text.replace(new RegExp('\s','g'), '_');
               }
             });
           })
@@ -82,8 +86,8 @@ struct Sanitize_html_options3 {
           .height('5%')
           .onClick(() => {
             let html = '<p>This is <a href="http://www.linux.org"></a><br/>Linux</p>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, {
-              exclusiveFilter: function (frame) {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, {
+              exclusiveFilter:  (frame:ESObject)=> {
                 return frame.tag === 'a' && !frame.text.trim();
               }
             });
@@ -93,7 +97,7 @@ struct Sanitize_html_options3 {
           .height('5%')
           .onClick(() => {
             let html = '<notty>sssss</notty><p>drop text and tags between the disallowed tag</p>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, {
               nonTextTags: ['notty']
             });
           })
@@ -101,7 +105,7 @@ struct Sanitize_html_options3 {
         Button('transform tag without new attr')
           .height('5%')
           .onClick(() => {
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml('<ol><li>Hello world</li></ol>', {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize('<ol><li>Hello world</li></ol>', {
               transformTags: {
                 ol: 'ul'
               }
@@ -111,9 +115,9 @@ struct Sanitize_html_options3 {
         Button('transform tag with new attribute')
           .height('5%')
           .onClick(() => {
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml('<ol><li>Hello world</li></ol>', {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize('<ol><li>Hello world</li></ol>', {
               transformTags: {
-                ol: sanitizeHtml.simpleTransform('ul', {
+                ol: sanitize.simpleTransform('ul', {
                   class: 'foo',
                   name: 'newAttrName'
                 })
@@ -128,7 +132,7 @@ struct Sanitize_html_options3 {
           .height('5%')
           .onClick(() => {
             let html = '<?doctype/html><script type="text/javascript">var name = "react";</script><div id = "htmlparser2" class="html">abc</div><![CDATA[hello react.js]]>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, {
               parser: {
                 recognizeCDATA: true
               }
@@ -139,7 +143,7 @@ struct Sanitize_html_options3 {
           .height('5%')
           .onClick(() => {
             let html = '<?doctype/html><script type="text/javascript">var name = "react";</script><div id = "htmlparser2" class="html">abc</div><![CDATA[hello react.js]]>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, {
               parser: {
                 recognizeCDATA: false
               }

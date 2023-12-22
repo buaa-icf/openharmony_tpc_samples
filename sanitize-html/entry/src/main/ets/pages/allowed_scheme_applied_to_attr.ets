@@ -101,8 +101,8 @@ struct Allowed_scheme_applied_to_attr {
               prompt.showToast({ message: 'please input attribute or scheme name' })
               return;
             }
-            let attributesArray = sanitizeHtml.defaults.allowedSchemesAppliedToAttributes;
-            let attrIndex = attributesArray.indexOf(this.attrName);
+            let attributesArray:ESObject = sanitizeHtml.defaults.allowedSchemesAppliedToAttributes;
+            let attrIndex:ESObject = attributesArray.indexOf(this.attrName);
             if (attrIndex === -1) {
               attributesArray.push(this.attrName)
             } else {
