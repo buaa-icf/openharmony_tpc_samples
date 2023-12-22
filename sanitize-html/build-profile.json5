@@ -34,14 +34,6 @@
       ]
     },
     {
-      "name": "sanitizehtml",
-      "srcPath": "./sanitizehtml"
-    },
-    {
-      "name": "postcss",
-      "srcPath": "./postcss"
-    },
-    {
       "name": "library",
       "srcPath": "./library"
     }

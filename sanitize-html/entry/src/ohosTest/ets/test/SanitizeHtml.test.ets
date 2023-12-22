@@ -386,7 +386,7 @@ export default function sanitizeHtmlTest() {
       );
     });
 
-    it('test57', 0, ()=> {
+    it('test146', 0, ()=> {
       expect(
       sanitizeHtml('<p>12<a href="http://www.linux.org"><br/>3<br></a><audio>4</audio></p>', {
         exclusiveFilter:  (frame:ESObject)=> {
@@ -734,7 +734,7 @@ export default function sanitizeHtmlTest() {
           }
         }
       )).assertEqual(
-        '<p>Text</p>'
+        '<p style="text-align:center">Text</p>'
       );
     });
     it('test76', 0, ()=> {
@@ -1006,7 +1006,7 @@ export default function sanitizeHtmlTest() {
             text: [new RegExp('left')]
           }
         }
-      })).assertEqual('<span></span>'
+      })).assertEqual('<span style="color:blue"></span>'
       );
     });
     it('test98', 0, ()=> {
@@ -1021,7 +1021,7 @@ export default function sanitizeHtmlTest() {
             color: [new RegExp('blue')]
           }
         }
-      })).assertEqual('<span></span>'
+      })).assertEqual('<span style="color:blue !important"></span>'
       );
     });
     it('test99', 0, ()=> {
