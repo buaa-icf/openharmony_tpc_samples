@@ -144,14 +144,10 @@ export default class HttpProxyCacheServer {
    * @return a wrapped by proxy url if file is not fully cached or url pointed to cache file otherwise (if {@code allowCachedFileUri} is {@code true}).
    */
   public async getProxyUrl(url: string, allowCachedFileUri: boolean = true): Promise<string> {
-    let startTime1 = new Date().getTime();
     let self = this;
     if (allowCachedFileUri && self.isCached(url)) {
       let cacheFile = self.getCacheFile(url);
       self.touchFileSafely(cacheFile);
-      let endTime1 = new Date().getTime();
-      let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
-      console.log("OhosVideoCacheTest getProxyUrl :  averageTime1 : " + averageTime1 + "us")
       return cacheFile;
     }
     // 以下代码是为了确保服务器准备好了 不加这里的逻辑 很可能服务器没初始化，导致下面的isAlive直接返回false，逻辑就不走代理了
@@ -234,7 +230,6 @@ export default class HttpProxyCacheServer {
   }
 
   public registerCacheListener(cacheListener: CacheListener, url: string): void {
-    let startTime1 = new Date().getTime();
     Preconditions.checkAllNotNull(cacheListener, url);
     if (!url || url.length < 1) {
       throw new Error('url is null')
@@ -244,13 +239,9 @@ export default class HttpProxyCacheServer {
     } catch (err) {
       console.warn("Error registering cache listener,reason is : " + err.message);
     }
-    let endTime1 = new Date().getTime();
-    let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
-    console.log("OhosVideoCacheTest registerCacheListener :  averageTime1 : " + averageTime1 + "us")
   }
 
   public unregisterCacheListener(cacheListener: CacheListener, url: string): void {
-    let startTime1 = new Date().getTime();
     if (url && url.length > 0) {
       Preconditions.checkAllNotNull(cacheListener, url);
       try {
@@ -264,14 +255,10 @@ export default class HttpProxyCacheServer {
         clients.unregisterCacheListener(cacheListener);
       })
     }
-    let endTime1 = new Date().getTime();
-    let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
-    console.log("OhosVideoCacheTest unregisterCacheListener :  averageTime1 : " + averageTime1 + "us")
   }
 
   public shutdown(): void {
     console.info("Shutdown proxy server");
-    let startTime1 = new Date().getTime();
     let event: emitter.InnerEvent = {
       eventId: VideoCacheConstant.SHUT_DOWN_TASKPOOL,
       priority: emitter.EventPriority.IMMEDIATE
@@ -292,9 +279,6 @@ export default class HttpProxyCacheServer {
     emitter.off(VideoCacheConstant.GET_ACCEPT_ID)
     emitter.off(VideoCacheConstant.SHUT_DOWN_TASKPOOL)
     this.serverSocket = null;
-    let endTime1 = new Date().getTime();
-    let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
-    console.log("OhosVideoCacheTest registerCacheListener :  averageTime1 : " + averageTime1 + "us")
   }
 
   private onError(e: Error | ProxyCacheException): void {
