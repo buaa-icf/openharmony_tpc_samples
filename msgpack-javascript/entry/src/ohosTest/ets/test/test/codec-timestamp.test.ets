@@ -57,7 +57,7 @@ export default function CodecTimestampTest() {
         it(`encodes_and_decodes_${name}_${value.toISOString()}_`, 0, () => {
           let startTime1 = new Date().getTime();
           const encoded = encode<undefined>(value);
-          assert.deepStrictEqual(decode<undefined>(encoded), value, `encoded: ${(buffer.from(encoded)).toString('utf-8')}`);
+          assert.deepStrictEqual(decode<undefined>(encoded), value);
           let endTime1 = new Date().getTime();
           let averageTime1 = ((endTime1 - startTime1) * 1000) / 2;
           console.log(`msgpack-javascript:encodes_and_decodes_${name}_${value.toISOString()}_ averageTime = ${averageTime1}`)
