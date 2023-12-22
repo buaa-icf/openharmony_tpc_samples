@@ -56,11 +56,16 @@ struct Index {
     }
     self.serverMessage = "";
     prompt.showToast({ message: "node-stun-server", duration: 3000 });
+    let StunServerStartTime = new Date().getTime()
     self.stunServer = new StunServer();
     self.stunServer.setServerMessageListener({ onMessageChanged(serverMessage: string) {
       self.serverMessage += serverMessage + "\n";
     } });
+    let setServerMessageListenerEndTime = new Date().getTime()
+    console.info('StunServer.setServerMessageListener averageTime:' + (setServerMessageListenerEndTime - StunServerStartTime) + "us")
     self.stunServer.createServer(this.newDefaults);
+    let createServerEndTime = new Date().getTime()
+    console.info('StunServer.createServer averageTime:' + (createServerEndTime - StunServerStartTime) + "us")
   }
 
   private createClient() {
@@ -72,14 +77,20 @@ struct Index {
       return
     }
      if (!self.stunClient) {
+       let setClientMessageListenerStartTime = new Date().getTime()
       self.stunClient = new StunClient();
       self.stunClient.setClientMessageListener({
         onMessageChanged(clientMessage: string) {
           self.clientMessage += clientMessage + "\n";
         }
       });
+       let setClientMessageListenerEndTime = new Date().getTime()
+       console.info('StunClient.setClientMessageListener averageTime:' + (setClientMessageListenerEndTime - setClientMessageListenerStartTime) + "us")
      }
+    let createClientStartTime = new Date().getTime()
      self.stunClient.createClient(this.clientAddress, this.serverInfo);
+    let createClientEndTime = new Date().getTime()
+    console.info('StunClient.createClient averageTime:' + (createClientEndTime - createClientStartTime) + "us")
   }
 
   build() {
