@@ -25,7 +25,7 @@
 import SMB2Forge from '../tools/smb2_forge'
 
 var SMB2Request = SMB2Forge.request
-import {Buffer} from '@ohos/Buffer'
+import {Buffer} from '../buffer/index'
 import BigInt from '../tools/bigint'
 
 

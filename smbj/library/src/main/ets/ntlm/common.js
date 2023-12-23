@@ -25,7 +25,7 @@
 
 //var crypto = require('crypto');
 
-import {Buffer} from '@ohos/Buffer'
+import {Buffer} from '../buffer/index'
 
 
 

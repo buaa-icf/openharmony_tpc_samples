@@ -27,8 +27,10 @@
 import { oddpar } from './common'
 import { expandkey } from './common'
 import { bintohex } from './common'
-import {Buffer} from '@ohos/Buffer'
+import {Buffer} from '../buffer/index'
 import { MD4 } from '../crypto/md4'
+import { crypto } from '@ohos/node-polyfill'
+
 import cryptoFramework from '@ohos.security.cryptoFramework';
 /*
  * Generate the LM Hash
@@ -59,52 +61,20 @@ export function lmhashbuf(inputstr) {
    */
   var buf = new Buffer(16);
   var pos = 0;
-  halves.forEach((z)=>{
-    var cipher = cryptoFramework.createCipher('3DES192|ECB');
-    // [82,167,211,200,115,201,196,100]
-    let symKeyGenerator = cryptoFramework.createSymKeyGenerator('3DES192')
-    symKeyGenerator.convertKey(genKeyMaterialBlob(z)).then((symKey)=>{
-      cipher.init(cryptoFramework.CryptoMode.ENCRYPT_MODE, symKey, null).then(()=>{
-        let plainText = { data:stringToUint8Array('KGS!@#$%') };
-        cipher.update(plainText, (err, output) => { // 加密过程举例
-          if (err) {
-            console.error('Failed to update cipher');
-            return;
-          }
-
-          if(pos == 0) Buffer.from(output.data).copy(buf);
-          else Buffer.from(output.data).copy(buf,pos,0,pos)
-
-          //            buf.write(Buffer.from(output.data).toString('binary'),pos)
-          pos += 8
-          // 此处进行doFinal等后续操作
-        })
-      })
-    })
-  })
+  var cts = halves.forEach(function(z) {
+    var des = crypto.createCipheriv('DES-ECB', z, '');
+    var str = des.update('KGS!@#$%', 'binary', 'binary');
+    buf.write(str, pos, pos + 8, 'binary');
+    pos += 8;
+  });
   return buf;
 }
 
 
-function stringToUint8Array(str) {
-  let arr = [];
-  for (let i = 0, j = str.length; i < j; ++i) {
-    arr.push(str.charCodeAt(i));
-  }
-  return new Uint8Array(arr);
-}
 
-
-function genKeyMaterialBlob(z) {
-  let arr = [z[0], z[1], z[2], z[3], z[4], z[5], z[6], z[7],
-  0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0]; // keyLen = 192 (24 bytes)
-  let keyMaterial = new Uint8Array(arr);
-  return { data: keyMaterial };
-}
 
 export function nthashbuf(str) {
-  /* take MD4 hash of UCS-2 encoded password */
+  // /* take MD4 hash of UCS-2 encoded password */
   var ucs2 = Buffer.from(str, 'ucs2');
   MD4.update(ucs2);
   let tembuf = MD4.digest();

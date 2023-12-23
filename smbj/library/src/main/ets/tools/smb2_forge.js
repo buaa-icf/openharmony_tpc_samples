@@ -23,7 +23,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import {Buffer} from '@ohos/Buffer'
+import {Buffer} from '../buffer/index'
 import SMB2Message from './smb2_message'
 
 

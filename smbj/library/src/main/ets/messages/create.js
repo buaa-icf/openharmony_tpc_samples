@@ -25,7 +25,7 @@
 
 import SMB2Message from '../tools/smb2_message'
 import {message} from '../tools/message'
-import {Buffer} from '@ohos/Buffer'
+import {Buffer} from '../buffer/index'
 
 export default message({
   generate: function (connection, params) {

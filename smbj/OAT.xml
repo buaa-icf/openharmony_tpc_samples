@@ -102,12 +102,13 @@
                 desc="协议相关策略"
                 name="projectPolicy">
                 <policyitem
-                    desc="原开源项目的LICENSE, 类似于 MIT licenses, 符合开源要求"
-                    filefilter="defaultPolicyFilter"
-                    group="defaultGroup"
+                    type="license"
                     name="MIT"
-                    path=".*"
-                    type="license"/>
+                    path="smbj/library/.*"
+                    group="defaultGroup"
+                    filefilter="defaultPolicyFilter"
+                    desc="原开源项目的LICENSE, 类似于 MIT licenses, 符合开源要求"
+                    />
                 <policyitem
                     desc="原开源项目的LICENSE, 类似于MIT licenses, 符合开源要求"
                     filefilter="defaultPolicyFilter"
