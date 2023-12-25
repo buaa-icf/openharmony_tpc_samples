@@ -324,8 +324,8 @@ export default function NodeRulesTest() {
         },
         (result: ESObject) => {
           let diffResult: boolean = diff(result.matchPath, [
-          rules[0].name,
-          rules[2].id,
+            rules[0].name,
+            rules[2].id,
             lastMatch
           ])
           expect(diffResult).assertTrue();
@@ -741,5 +741,56 @@ export default function NodeRulesTest() {
         done();
       });
     });
+
+    let time: number = 0
+    let printTime = (isEnd: boolean, tag?: string) => {
+      if (isEnd) {
+        console.info(tag, 'useTime:' + (Date.now() - time))
+      } else {
+        time = Date.now()
+      }
+    }
+
+    _it('nodeRules_useTime', 0, () => {
+      let rules: ESObject[] = [
+        {
+          condition: (R: ESObject) => {
+            printTime(false)
+            R.when(true);
+            printTime(true, 'when')
+
+          },
+          consequence: (R: ESObject) => {
+            printTime(false)
+            R.next()
+            printTime(true, 'next')
+          }
+        },
+        {
+          condition: (R: ESObject) => {
+            R.when(true);
+          },
+          consequence: (R: ESObject) => {
+            printTime(false)
+            R.stop();
+            printTime(true, 'stop')
+
+            printTime(false)
+            R.restart()
+            printTime(true, 'restart')
+          }
+        }
+      ];
+      let R2: ESObject = new RuleEngine(rules[0]);
+      printTime(false)
+      R2.register(rules[1]);
+      printTime(true, 'register')
+
+      printTime(false)
+      R2.execute({x: true, y: false}, (result: ESObject) => {})
+      printTime(true, 'execute')
+
+    })
+
   })
 }
