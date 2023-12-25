@@ -456,7 +456,7 @@ struct DiyCacheSizePage {
       this.isNext = true;
       this.isPlaying = false;
     } else {
-      Logger.info(TAG, 'this state is noe idle');
+      Logger.info(TAG, 'this state is not idle');
     }
   }
 

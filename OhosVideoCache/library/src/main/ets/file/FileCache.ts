@@ -97,7 +97,7 @@ export default class FileCache implements Cache {
   }
 
   /**
-   * Returns file to be used fo caching. It may as original file passed in constructor as some temp file for not completed cache.
+   * Returns file to be used for caching. It may as original file passed in constructor as some temp file for not completed cache.
    *
    * @return file for caching.
    */

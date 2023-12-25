@@ -101,7 +101,7 @@ export default class HttpProxyCacheServerBuilder {
   /**
    * Set custom DiskUsage logic for handling when to keep or clean cache.
    *
-   * @param diskUsage a disk usage strategy, cant be {@code null}.
+   * @param diskUsage a disk usage strategy, can't be {@code null}.
    * @return a builder.
    */
   public setDiskUsage(diskUsage: DiskUsage): HttpProxyCacheServerBuilder {
