@@ -14,8 +14,8 @@
  */
 
 import { DateTimeFormatter, LocalDateTime, ZonedDateTime } from '@js-joda/core'
-import '@js-joda/timezone'
-import { Locale } from '@js-joda/locale_en-us'
+// import '@js-joda/timezone'
+import { Locale } from '@ohos/localeEnUs'
 
 @Entry
 @Component
@@ -52,9 +52,10 @@ function testFormatter(): string {
   console.info(dateTime.format(DateTimeFormatter.ofPattern('M/d/yyyy')));
   // 时间格式化 12:34
   console.info(dateTime.format(DateTimeFormatter.ofPattern('HH:mm')));
+
+
   // 按照英语格式进行日期时间格式化 2021-10-05T17:08:24+01:00[GMT]
-  const dateTimeFormatter = DateTimeFormatter.ofPattern('EEE, dd MMM yyyy HH:mm:ss z')
-    .withLocale(Locale.ENGLISH);
+  const dateTimeFormatter:ESObject = DateTimeFormatter.ofPattern('EEE, dd MMM yyyy HH:mm:ss z').withLocale(Locale.ENGLISH);
   const zoneDateTime = ZonedDateTime.parse('Tue, 05 Oct 2021 17:08:24 GMT', dateTimeFormatter);
   console.log(zoneDateTime.toString());
 

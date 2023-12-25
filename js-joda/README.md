@@ -10,7 +10,7 @@
  npm install @js-joda/core --save
 ```
 
-OpenHarmony npm环境配置等更多内容，请参考 [如何安装OpenHarmony npm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_npm_usage.md) 。
+OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
 ## 使用说明
 
@@ -60,7 +60,7 @@ console.info(mDate.get(ChronoField.ALIGNED_WEEK_OF_YEAR).toString());
 ## 约束与限制
 在下述版本验证通过：
 
-DevEco Studio: 3.1 Beta1(3.1.0.200), SDK: API9 (3.2.10.6)
+DevEco Studio 版本：4.0Beta2（4.0.3.600），OpenHarmony SDK:API10 Release（4.0.10.11）
 
 ## 目录结构
 

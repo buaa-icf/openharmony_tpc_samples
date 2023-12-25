@@ -13,8 +13,7 @@
  * limitations under the License.
  */
 
-import { DateTimeFormatter, LocalDateTime, ZoneId, } from '@js-joda/core'
-import '@js-joda/timezone'
+import { DateTimeFormatter, LocalDateTime, ZoneId, Clock ,ZoneRegion, ZonedDateTime} from '@js-joda/core'
 import router from '@ohos.router';
 
 @Entry
@@ -56,15 +55,14 @@ function testLocalDateTime(): string {
   // 获取日期时间（默认时区 UTC协调世界时）
   console.info(LocalDateTime.now().toString());
   // 获取指定城市的日期时间
-  console.info(LocalDateTime.now(ZoneId.of("Asia/Shanghai")).toString());
   // 构建一个日期时间：2016-02-29T12:55:42.000000009
   console.info(LocalDateTime.of(2016, 2, 29, 12, 55, 42, 9).toString());
   // 获取日期时间类中的信息
-  var mDateTime = LocalDateTime.parse("2016-02-26T12:55:42.000000009");
+  let mDateTime = LocalDateTime.parse("2016-02-29T12:55:42.000000009");
+
   // ISO 8601规范日期时间值
   console.info(mDateTime.toString());
   // 格式化日期 按照M/d/yyyy格式显示日期
-  console.info(mDateTime.format(DateTimeFormatter.ofPattern('M/d/yyyy')).toString());
   // 格式化时间 按照HH:mm来显示时间
   console.info(mDateTime.format(DateTimeFormatter.ofPattern('HH:mm')).toString());
   // 获取当年年份：2016
@@ -100,7 +98,7 @@ function testLocalDateTime(): string {
   // 获取当前的总天数
   console.info(mDateTime.toLocalDate().lengthOfYear().toString());
   return "获取日期时间： " + LocalDateTime.now().toString() + '\n' +
-  "获取国内城市日期时间： " + LocalDateTime.now(ZoneId.of("Asia/Shanghai")).toString() + '\n' +
+  "获取国内城市日期时间： " + LocalDateTime.now(ZoneId.systemDefault()).toString() + '\n' +
   "根据给定数据构建日期时间： " + LocalDateTime.of(2016, 2, 29, 12, 55, 42, 9).toString() + '\n' +
   "获取给定日期年份： " + mDateTime.year().toString() + '\n' +
   "获取给定日期月份： " + mDateTime.month().toString() + '\n' +

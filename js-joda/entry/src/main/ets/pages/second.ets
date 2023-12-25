@@ -29,8 +29,7 @@ import {
   ZoneId,
   ZoneOffset
 } from '@js-joda/core'
-import '@js-joda/timezone'
-import { Locale } from '@js-joda/locale_en-us'
+// import '@js-joda/timezone'
 import router from '@ohos.router';
 
 @Entry
@@ -72,7 +71,7 @@ function testLocalTime(): string {
   // 获取当前时间（默认时区）
   console.info(LocalTime.now(ZoneOffset.UTC).toString());
   // 获取国内时间东8区时间（ZoneId城市对照表可在百度搜索）
-  console.info(LocalTime.now(ZoneId.of("Asia/Shanghai")).toString());
+  //console.info(LocalTime.now(ZoneId.of("Asia/Shanghai")).toString());
   // 从时分秒中格式化时间：23:55:42
   console.info(LocalTime.of(23, 55, 42).toString());
   // 根据提供的秒获取时间：01:01:06
@@ -80,8 +79,8 @@ function testLocalTime(): string {
 
 
   // 时间解析：23:55:42.123
-  var mTime = LocalTime.parse("23:55:42.123");
-  console.info(mTime.toString());
+  let mTime = LocalTime.parse("23:55:42.123");
+
   // 时间格式化截断到秒：23:55:42
   console.info(mTime.truncatedTo(ChronoUnit.SECONDS).toString());
   // 获取小时数：23
@@ -98,7 +97,8 @@ function testLocalTime(): string {
   console.info(mTime.get(ChronoField.HOUR_OF_AMPM).toString());
 
   // *********************************时间计算***************************
-  var mTime1 = LocalTime.parse("11:55:42");
+  let mTime1 = LocalTime.parse("11:55:42");
+
   // 增加12小时：23:55:42
   console.info(mTime1.plusHours(12).toString());
   // 增加30分钟：12:25:42
@@ -118,11 +118,13 @@ function testLocalTime(): string {
   // 将秒数设置为1：   11:55:01
   console.info(mTime1.withSecond(1).toString());
   // 比较两个时间
-  var mTime2 = mTime1.plusHours(2);
+  let mTime2 = mTime1.plusHours(2);
+
   console.info(mTime1.isAfter(mTime2) + '');
   console.info(mTime1.isBefore(mTime2) + '');
   // 计算两个时间的间隔
-  var mTime3 = mTime1.plusHours(2).plusMinutes(42).plusSeconds(12);
+  let mTime3 = mTime1.plusHours(2).plusMinutes(42).plusSeconds(12);
+
   // 两个时间间隔的小时数：2
   console.info(mTime1.until(mTime3, ChronoUnit.HOURS).toString())
   // 两个时间间隔的分钟数：162
@@ -132,7 +134,6 @@ function testLocalTime(): string {
 
 
   return "获取默认时间： " + LocalTime.now(ZoneOffset.UTC).toString() + '\n' +
-  "获取国内时间： " + LocalTime.now(ZoneId.of("Asia/Shanghai")).toString() + '\n' +
   "从时分秒中格式化时间： " + LocalTime.of(23, 55, 42).toString() + '\n' +
   "从提供的秒数获取时间： " + LocalTime.ofSecondOfDay(3666).toString() + '\n' +
   "给定时间解析： " + mTime.toString() + '\n' +

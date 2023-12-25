@@ -15,8 +15,10 @@
 
 import abilityTest from './Ability.test'
 import jodaTest from './Joda.test'
+import jodaEnUsTest from './Joda_en-us.test'
 
 export default function testsuite() {
-  abilityTest(),
+  abilityTest()
   jodaTest()
+  jodaEnUsTest()
 }

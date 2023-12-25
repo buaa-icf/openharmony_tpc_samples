@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "localeEnUs",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}

@@ -1,3 +1,8 @@
+## 2.0.0
+
+- 适配DevEco Studio 版本：4.0Beta2（4.0.3.600），OpenHarmony SDK:API10 Release（4.0.10.11）
+- ArkTs语法整改
+
 ## 1.0.1
 适配DevEco Studio 3.1 Beta1版本
 

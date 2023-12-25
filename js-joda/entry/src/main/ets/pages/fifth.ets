@@ -14,7 +14,7 @@
  */
 
 import { Duration, LocalDateTime, Period } from '@js-joda/core'
-import '@js-joda/timezone'
+// import '@js-joda/timezone'
 import router from '@ohos.router';
 
 @Entry
@@ -58,7 +58,8 @@ function testDurationTime(): string {
   // 时间量 P10Y45D
   console.info(Period.ofYears(10).plusDays(45).toString());
   // 时间量计算 2012-12-24T22:30
-  var mDateTime = LocalDateTime.parse("2012-12-24T12:00");
+  let mDateTime = LocalDateTime.parse("2012-12-24T12:00");
+
   console.info(mDateTime.plus(Duration.ofHours(10).plusMinutes(30)).toString());
 
   return "获取十小时时间量表示： " + Duration.ofHours(10).toString() + '\n' +

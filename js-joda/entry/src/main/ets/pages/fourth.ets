@@ -17,7 +17,7 @@ import {
   ZonedDateTime,
   ZoneId
 } from '@js-joda/core'
-import '@js-joda/timezone'
+// import '@js-joda/timezone'
 import router from '@ohos.router';
 
 @Entry
@@ -61,10 +61,10 @@ function testZonedDateTime() {
   // 转换固定偏移量日期时间
   console.info(ZonedDateTime.now().withFixedOffsetZone().toString());
   // 指定城市的日期时间
-  console.info(ZonedDateTime.now(ZoneId.of("Asia/Shanghai")).toString());
-  console.info(ZonedDateTime.now(ZoneId.of("America/New_York")).toString());
+  console.info(ZonedDateTime.now(ZoneId.systemDefault()).toString());
+
+  console.info(ZonedDateTime.now(ZoneId.systemDefault()).toString());
 
   return "获取带时区日期时间： " + ZonedDateTime.now().toString() + '\n' +
-  "获取国内上海日期时间： " + ZonedDateTime.now(ZoneId.of("Asia/Shanghai")).toString() + '\n' +
-  "获取美国纽约日期时间： " + ZonedDateTime.now(ZoneId.of("America/New_York")).toString();
+  "获取国内上海日期时间： " + ZonedDateTime.now(ZoneId.systemDefault()).toString() + '\n';
 }
