@@ -47,7 +47,7 @@ struct Index {
             let pcxDecoder: PCX = new PCX(uint8Array.buffer);
             let decodeData: DecodeType = pcxDecoder.decode();
             this.RBGA2BGRA(decodeData.pixelArray)
-            image.createPixelMap(decodeData.pixelArray.buffer, {
+            image.createPixelMap(this.typedArrayToBuffer(decodeData.pixelArray), {
               'size': {
                 'width': decodeData.width,
                 'height': decodeData.height
@@ -72,7 +72,7 @@ struct Index {
             this.smallPcx = pcxDecoder;
             let decodeData: DecodeType = pcxDecoder.decode();
             this.RBGA2BGRA(decodeData.pixelArray)
-            image.createPixelMap(decodeData.pixelArray.buffer, {
+            image.createPixelMap(this.typedArrayToBuffer(decodeData.pixelArray), {
               'size': {
                 'width': decodeData.width,
                 'height': decodeData.height
@@ -94,7 +94,7 @@ struct Index {
             let pcxDecoder: PCX = new PCX(uint8Array.buffer);
             let decodeData: DecodeType = pcxDecoder.decode();
             this.RBGA2BGRA(decodeData.pixelArray)
-            image.createPixelMap(decodeData.pixelArray.buffer, {
+            image.createPixelMap(this.typedArrayToBuffer(decodeData.pixelArray), {
               'size': {
                 'width': decodeData.width,
                 'height': decodeData.height
@@ -117,7 +117,7 @@ struct Index {
             let pcxDecoder: PCX = new PCX(uint8Array.buffer);
             let decodeData: DecodeType = pcxDecoder.decode();
             this.RBGA2BGRA(decodeData.pixelArray)
-            image.createPixelMap(decodeData.pixelArray.buffer, {
+            image.createPixelMap(this.typedArrayToBuffer(decodeData.pixelArray), {
               'size': {
                 'width': decodeData.width,
                 'height': decodeData.height
@@ -139,7 +139,7 @@ struct Index {
             let pcxDecoder: PCX = new PCX(uint8Array.buffer);
             let decodeData: DecodeType = pcxDecoder.decode();
             this.RBGA2BGRA(decodeData.pixelArray)
-            image.createPixelMap(decodeData.pixelArray.buffer, {
+            image.createPixelMap(this.typedArrayToBuffer(decodeData.pixelArray), {
               'size': {
                 'width': decodeData.width,
                 'height': decodeData.height
@@ -258,4 +258,8 @@ struct Index {
       }
     }
   ]
+
+  typedArrayToBuffer(array: Uint8ClampedArray): ArrayBuffer {
+    return array.buffer.slice(array.byteOffset, array.byteLength + array.byteOffset)
+  }
 }

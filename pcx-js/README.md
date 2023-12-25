@@ -18,7 +18,12 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 ```typescript
 import image from '@ohos.multimedia.image';
 import util from '@ohos.util';
-import PCX from 'pcx-js'
+import PCX from 'pcx-js';
+
+typedArrayToBuffer(array: Uint8ClampedArray): ArrayBuffer {
+  return array.buffer.slice(array.byteOffset, array.byteLength + array.byteOffset)
+}
+        
 getContext(this).resourceManager.getMediaContent($r("app.media.thimbleweed").id).then((uint8Array) => {
 	let pcxDecoder = new PCX(uint8Array.buffer);
     // 获取到pcx图片的解码后的像素点数据 默认RGBA
@@ -26,7 +31,7 @@ getContext(this).resourceManager.getMediaContent($r("app.media.thimbleweed").id)
     // 转换成BGRA
 	this.RBGA2BGRA(decodeData.pixelArray)
 	// 通过image能力转换成PixelMap
-    image.createPixelMap(decodeData.pixelArray.buffer, {
+    image.createPixelMap(this.typedArrayToBuffer(decodeData.pixelArray), {
 		'size': {
 		'width':  decodeData.width,
 		'height':  decodeData.height
@@ -40,8 +45,7 @@ getContext(this).resourceManager.getMediaContent($r("app.media.thimbleweed").id)
 ## 约束与限制
 
 在下述版本验证通过：
-- DevEco Studio: 4.0(4.0.3.512),SDK: API10（4.0.10.9）
-- DevEco Studio: 4.0Canary1(4.0.3.212), SDK: API10 Beta1(4.0.8.3)
+- DevEco Studio: 4.1Canary2(4.1.3.322),SDK: API11(4.1.0.36)
 
 ## 目录结构
 
