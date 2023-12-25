@@ -19,6 +19,8 @@ import ProxyCacheUtils from './ProxyCacheUtils';
 import Source from './Source';
 import InterruptedProxyCacheException from './InterruptedProxyCacheException';
 import { DataBackListener } from './interfaces/DataBackListener';
+import emitter from '@ohos.events.emitter';
+import { VideoCacheConstant } from './constant/VideoCacheConstant';
 
 
 export default class ProxyCache {
@@ -70,7 +72,7 @@ export default class ProxyCache {
     }
   }
 
-  public shutdown(): void {
+  public async shutdown(): Promise<void> {
     console.debug("Shutdown proxy for " + this.source);
     try {
       this.stopped = true;
@@ -78,11 +80,16 @@ export default class ProxyCache {
         clearTimeout((this.timeoutId));
       }
       this.closeSource();
-      this.cache?.close();
+    } catch (err) {
+      this.onError(err);
+    }
+    try {
+      await this.cache?.close();
       this.cache = null;
     } catch (err) {
       this.onError(err);
     }
+    return Promise.resolve();
   }
 
 
@@ -97,8 +104,11 @@ export default class ProxyCache {
     let self = this;
     return new Promise<void>((resolve, reject) => {
       self.timeoutId = setTimeout(() => {
-        clearTimeout(self.timeoutId);
-        return resolve()
+        if (self.timeoutId != (0 - Number.MAX_VALUE)) {
+          clearInterval(self.timeoutId)
+          self.timeoutId = (0 - Number.MAX_VALUE)
+          return resolve()
+        }
       }, 1000)
     })
   }
@@ -164,7 +174,7 @@ export default class ProxyCache {
       self.readingInProgress = true;
       await self.source.open(offset);
       self.readingInProgress = false;
-	  return Promise.resolve();
+      return Promise.resolve();
     } catch (err) {
       self.readingInProgress = false;
       self.readSourceErrorsCount++;

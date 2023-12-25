@@ -15,18 +15,13 @@
 
 
 import socket from '@ohos.net.socket';
-import buffer from '@ohos.buffer';
 import { CacheListener } from './CacheListener';
 import FileCache from './file/FileCache';
 import GetRequest from './GetRequest';
 import HttpUrlSource from './HttpUrlSource';
 import ProxyCache from './ProxyCache';
 import ProxyCacheUtils from './ProxyCacheUtils';
-import { DataBackListener } from './interfaces/DataBackListener'
-import emitter from '@ohos.events.emitter';
-import { VideoCacheConstant } from './constant/VideoCacheConstant';
-import Queue from "@ohos.util.Queue";
-import fs from "@ohos.file.fs";
+import { DataBackListener } from './interfaces/DataBackListener';
 
 export default class HttpProxyCache extends ProxyCache {
   private NO_CACHE_BARRIER: number = 0.2;
@@ -35,6 +30,7 @@ export default class HttpProxyCache extends ProxyCache {
   private listener: CacheListener | null = null;
   private receiveSize: number = 0;
   private offset: number = 0;
+  private serverConnect: socket.TCPSocketConnection | null = null;
 
   constructor(source: HttpUrlSource, cache: FileCache) {
     super(source, cache)
@@ -43,54 +39,75 @@ export default class HttpProxyCache extends ProxyCache {
     this.receiveSize = 0;
   }
 
-  shutdown(){
-    this.stopped = true;
-    super.shutdown();
+  async shutdown(): Promise<void> {
+    try {
+      this.stopped = true;
+      await super.shutdown();
+      await this.serverConnect?.close();
+    } catch (err) {
+    }
+    return Promise.resolve()
   }
 
   public registerCacheListener(cacheListener: CacheListener | null): void {
     this.listener = cacheListener;
   }
 
-  public async processRequest(request: GetRequest,serverConnect: socket.TCPSocketConnection): Promise<void> {
-    // let out = new BufferedOutputStream(socket.getOutputStream());
+  public async processRequest(request: GetRequest, serverConnect: socket.TCPSocketConnection): Promise<void> {
     if (!request) {
-      throw new Error('request can not be null')
+      return Promise.reject(new Error('request can not be null'))
+    }
+    if (this.serverConnect && this.serverConnect.clientId != serverConnect.clientId) {
+      try {
+        this.serverConnect.off('message')
+        this.serverConnect.off('error')
+        this.serverConnect.off('close')
+        this.serverConnect.close()
+      } catch (err) {
+      }
+      this.serverConnect = serverConnect;
     }
     let responseHeaders = await this.newResponseHeaders(request);
     let msg: socket.TCPSendOptions = {
-      data:responseHeaders
+      data: responseHeaders
     }
     await serverConnect?.send(msg);
     this.offset = request.rangeOffset;
     this.stopped = false;
-    if(await this.isUseCache(request)){
-      await this.responseWithCache(this.offset,serverConnect);
-    }else{
-      await this.responseWithoutCache(this.offset,serverConnect);
+    if (this.cache && this.source) {
+      let available = this.cache.available();
+      let length = await this.source.length()
+      if (length > 0) {
+        let percent = available * 100 / length;
+        this.onCachePercentsAvailableChanged(percent);
+      }
     }
-
-   
+    if (await this.isUseCache(request)) {
+      await this.responseWithCache(this.offset, serverConnect);
+    } else {
+      await this.responseWithoutCache(this.offset, serverConnect);
+    }
+    return Promise.resolve();
   }
 
-  private async responseWithCache(offset: number,serverConnect:socket.TCPSocketConnection): Promise<void> {
+  private async responseWithCache(offset: number, serverConnect: socket.TCPSocketConnection): Promise<void> {
     let buff = new ArrayBuffer(ProxyCacheUtils.DEFAULT_BUFFER_SIZE);
     let readBytes: number = 0;
     while ((readBytes = await this.read(buff, offset, buff.byteLength)) != -1) {
-      try{
-        if(!serverConnect){
+      try {
+        let trueBuff = buff.slice(0, readBytes);
+        let msg: socket.TCPSendOptions = {
+          data: trueBuff
+        }
+        if (this.stopped) {
           break;
         }
-        let trueBuff = buff.slice(0,readBytes);
-        let msg: socket.TCPSendOptions = {
-          data:trueBuff
-        }
-        if(this.stopped){
+        if (!serverConnect) {
           break;
         }
         await serverConnect?.send(msg);
 
-      }catch(err){
+      } catch (err) {
         break;
       }
       offset += readBytes;
@@ -98,12 +115,12 @@ export default class HttpProxyCache extends ProxyCache {
     return Promise.resolve();
   }
 
-  private async responseWithoutCache(offset: number,serverConnect:socket.TCPSocketConnection): Promise<void> {
+  private async responseWithoutCache(offset: number, serverConnect: socket.TCPSocketConnection): Promise<void> {
     if (!this.source) {
       return Promise.reject(new Error("source is null"));
     }
     const ctx = this;
-    await new Promise<void>((resolve,reject) => {
+    await new Promise<void>((resolve, reject) => {
       let newSourceNoCache = new HttpUrlSource([this.source]);
       try {
         class TempDataBackListener implements DataBackListener {
@@ -111,37 +128,37 @@ export default class HttpProxyCache extends ProxyCache {
             newSourceNoCache.close();
             return resolve();
           }
-  
+
           onDataStart() {
             ctx.receiveSize = offset;
           }
-  
+
           onDataReceive(data: ArrayBuffer) {
-            ctx.receiveSize+= data.byteLength;
-            if(ctx.stopped){
+            ctx.receiveSize += data.byteLength;
+            if (ctx.stopped) {
               newSourceNoCache.close();
               return;
             }
-            let msg:socket.TCPSendOptions = {
-              data:data
+            let msg: socket.TCPSendOptions = {
+              data: data
             }
-            serverConnect?.send(msg).catch((err:Error) => {
+            serverConnect?.send(msg).catch((err: Error) => {
               return reject(err);
             })
           }
-  
+
           onDataProgress() {
           }
         }
-  
+
         newSourceNoCache.setDataListener(new TempDataBackListener())
         newSourceNoCache.open(offset);
-      } catch(err) {
+      } catch (err) {
         newSourceNoCache.close();
         reject(err)
       }
     })
-    
+
   }
 
 
@@ -179,7 +196,7 @@ export default class HttpProxyCache extends ProxyCache {
     let str1 = `HTTP/1.1 206 PARTIAL CONTENT${"\n"}${"Accept-Ranges: bytes\n"}${lengthStr}${rangeStr}${mimeStr}${"\n"}`;
     let str2 = `HTTP/1.1 200 OK${"\n"}${"Accept-Ranges: bytes\n"}${lengthStr}${rangeStr}${mimeStr}${"\n"}`;
 
-    return Promise.resolve(`${request.partial?str1:str2}`);
+    return Promise.resolve(`${request.partial ? str1 : str2}`);
 
   }
 

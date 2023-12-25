@@ -46,7 +46,6 @@ export class ByteArraySource implements Source {
       buffer[i] = this.data[this.offset+i]
     }
     return len;
-    // return arrayInputStream.read(buffer, 0, buffer.length);
   }
 
   length(): Promise<number> {
@@ -57,8 +56,6 @@ export class ByteArraySource implements Source {
 
   open(offset: number): Promise<void> {
     this.offset = offset;
-    // arrayInputStream = new ByteArrayInputStream(data);
-    // arrayInputStream.skip(offset);
     return new Promise<void>((resolve, reject) => {
       resolve()
     })

@@ -20,7 +20,6 @@ import mediaLibrary from '@ohos.multimedia.mediaLibrary';
 import media from '@ohos.multimedia.media';
 import audio from '@ohos.multimedia.audio';
 import { CacheListener, HttpProxyCacheServer, HttpProxyCacheServerBuilder } from '@ohos/video-cache';
-import GlobalProxyServer from '../GlobalProxyServer';
 import fs from '@ohos.file.fs';
 import promptAction from '@ohos.promptAction';
 
@@ -59,6 +58,7 @@ struct DiyCacheSizePage {
   private mXcomponentController: XComponentController = new XComponentController();
   private SRC_LIST: Array<string> = new Array();
   private controller: TextInputController = new TextInputController();
+  private server: HttpProxyCacheServer | null = null;
 
   // 界面初始化函数
   async aboutToAppear() {
@@ -71,7 +71,7 @@ struct DiyCacheSizePage {
   // 界面销毁监听
   async aboutToDisappear(): Promise<void> {
     Logger.info(TAG, 'aboutToDisappear success');
-    GlobalProxyServer?.getInstance()?.getServer()?.shutdown()
+    this.server?.shutdown()
     this.setOffCallback();
     await this.avPlayer?.stop();
     await this.avPlayer?.release();
@@ -91,8 +91,7 @@ struct DiyCacheSizePage {
   setErrorCallback(): void {
     this.avPlayer?.on('error', (error) => {
       Logger.error(TAG, 'error happened,message is :' + error.message);
-      // 当error上报时自动播放下一个视频或者音频
-      this.nextVideo();
+      // 当error上报时自动播放下一个视频或者音频 this.nextVideo();
     })
   }
 
@@ -271,7 +270,9 @@ struct DiyCacheSizePage {
   async play(): Promise<void> {
     if (!this.isPrepare) {
       // 设置surfaceID，当播放的问题纯音频时，无需设置
-      this.setSurfaceID();
+      if (this.getState() == "initialized") {
+        this.setSurfaceID();
+      }
       await this.avPlayer?.prepare();
       this.isPrepare = !this.isPrepare;
     }
@@ -359,26 +360,23 @@ struct DiyCacheSizePage {
       }
     }
 
-    let server: HttpProxyCacheServer = new HttpProxyCacheServerBuilder(getContext())
-      .maxCacheSize(Number.parseInt(this.currentCacheSize))
+    this.server = new HttpProxyCacheServerBuilder(getContext())
+      .maxCacheSize(Number.parseInt(this.currentCacheSize) * 1024 * 1024)
       .build();
-    server.registerCacheListener(new MyCacheListener(),this.videoName);
-    GlobalProxyServer?.getInstance()?.setServer(server)
-    let proxyUrl: string | undefined = await GlobalProxyServer?.getInstance()?.getServer()?.getProxyUrl(this.videoName)
+    this.server?.registerCacheListener(new MyCacheListener(), this.videoName);
+    let proxyUrl: string | undefined = await this.server?.getProxyUrl(this.videoName)
     let newUrl = proxyUrl ? proxyUrl : this.videoName;
     // 由于avplayer不支持直接加载本地文件路径 这里需要转化为fd的路径
     if (newUrl.startsWith(getContext().cacheDir)) {
       let file = fs.openSync(newUrl, fs.OpenMode.READ_ONLY);
       newUrl = "fd://" + file.fd;
+      self.currentCachePercent = 100;
     }
-    // 由于createAVPlayer方法里面已经设置了url 这里必须重置一下才会生效 直接设置url不生效
-    if (this.avPlayer) {
-      this.avPlayer?.reset()
-      this.avPlayer.url = newUrl;
-    }
+    this.fdPath = newUrl;
+    this.fdPath = newUrl;
     this.isSetFinish = true;
     promptAction.showToast({
-      message:"设置完毕，可以开始播放了"
+      message: "设置完毕，可以开始播放了"
     })
   }
 
@@ -403,7 +401,9 @@ struct DiyCacheSizePage {
   // 初始化函数
   async initAVPlayer(): Promise<void> {
     Logger.info(TAG, 'initAVPlayer success');
-    this.fdPath = this.videoName;
+    if (!this.fdPath || this.fdPath.length < 1) {
+      this.fdPath = this.videoName;
+    }
     Logger.info(TAG, 'file id is : ' + this.fdPath);
     this.surfaceID = this.mXcomponentController.getXComponentSurfaceId();
     Logger.info(TAG, 'surfaceID is : ' + this.surfaceID);
@@ -417,6 +417,7 @@ struct DiyCacheSizePage {
   // 切换下个视频的接口
   async nextVideo(): Promise<void> {
     // 调用reset函数，重置播放器状态至idle
+    this.currentCachePercent = 0;
     await this.avPlayer?.reset();
     this.isLoop = false;
     // 获取当前播放文件的下一个视频文件在列表中的下标
@@ -430,18 +431,22 @@ struct DiyCacheSizePage {
     this.isBuffering = false;
     Logger.info(TAG, 'file id is : ' + this.fdPath);
     let self = this;
+
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
         self.currentCachePercent = percentsAvailable;
       }
     }
-    GlobalProxyServer?.getInstance()?.getServer()?.registerCacheListener(new MyCacheListener(), this.fdPath)
-    let proxyUrl: string | undefined = await GlobalProxyServer?.getInstance()?.getServer()?.getProxyUrl(this.fdPath)
+
+    this.server?.registerCacheListener(new MyCacheListener(), this.fdPath)
+    let proxyUrl: string | undefined = await this.server?.getProxyUrl(this.fdPath)
     let newUrl = proxyUrl ? proxyUrl : this.fdPath;
     if (newUrl.startsWith(getContext().cacheDir)) {
       let file = fs.openSync(newUrl, fs.OpenMode.READ_ONLY);
       newUrl = "fd://" + file.fd;
+      self.currentCachePercent = 100;
     }
+    this.fdPath = newUrl;
     // 开始进入下一个视频的播放
     if (this.getState() === 'idle') {
       if (this.avPlayer != undefined) {
@@ -451,12 +456,13 @@ struct DiyCacheSizePage {
       this.isNext = true;
       this.isPlaying = false;
     } else {
-      Logger.info(TAG, 'this state is noe idle');
+      Logger.info(TAG, 'this state is not idle');
     }
   }
 
   // 切换上个视频的接口
   async preVideo(): Promise<void> {
+    this.currentCachePercent = 0;
     await this.avPlayer?.reset();
     this.isLoop = false;
     if (this.index === (0)) {
@@ -469,18 +475,22 @@ struct DiyCacheSizePage {
     this.isBuffering = false;
     Logger.info(TAG, 'file id is : ' + this.fdPath);
     let self = this;
+
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
         self.currentCachePercent = percentsAvailable;
       }
     }
-    GlobalProxyServer?.getInstance()?.getServer()?.registerCacheListener(new MyCacheListener(), this.fdPath)
-    let proxyUrl: string | undefined = await GlobalProxyServer?.getInstance()?.getServer()?.getProxyUrl(this.fdPath)
+
+    this.server?.registerCacheListener(new MyCacheListener(), this.fdPath)
+    let proxyUrl: string | undefined = await this.server?.getProxyUrl(this.fdPath)
     let newUrl = proxyUrl ? proxyUrl : this.fdPath;
     if (newUrl.startsWith(getContext().cacheDir)) {
       let file = fs.openSync(newUrl, fs.OpenMode.READ_ONLY);
       newUrl = "fd://" + file.fd;
+      self.currentCachePercent = 100;
     }
+    this.fdPath = newUrl;
     if (this.getState() === 'idle') {
       if (this.avPlayer != undefined) {
         this.avPlayer.url = newUrl;
@@ -514,7 +524,12 @@ struct DiyCacheSizePage {
         })
           .onLoad(() => {
             // 加载完成后调用初始化播放器函数
-            this.initAVPlayer();
+            let id = setInterval(() => {
+              if (this.isSetFinish) {
+                clearInterval(id);
+                this.initAVPlayer();
+              }
+            }, 20)
           })
           .width('100%')
           .aspectRatio(this.ratio)
@@ -589,7 +604,8 @@ struct DiyCacheSizePage {
         Row() {
           Text('当前缓存进度：').fontSize(15).width('15%').textAlign(TextAlign.Center)
           Progress({ value: 0, total: 100, type: ProgressType.Linear })
-            .color(Color.Grey)
+            .color(Color.Red)
+            .backgroundColor(Color.Gray)
             .value(this.currentCachePercent)
             .width('65%')
 
@@ -636,7 +652,7 @@ struct DiyCacheSizePage {
             .onClick(() => {
               if (!this.isSetFinish) {
                 promptAction.showToast({
-                  message:"请先设置最大缓存容量，然后点击键盘的下一步按钮"
+                  message: "请先设置最大缓存容量，然后点击键盘的下一步按钮"
                 })
                 return;
               }
@@ -650,7 +666,7 @@ struct DiyCacheSizePage {
             .onClick(() => {
               if (!this.isSetFinish) {
                 promptAction.showToast({
-                  message:"请先设置最大缓存容量，然后点击键盘的下一步按钮"
+                  message: "请先设置最大缓存容量，然后点击键盘的下一步按钮"
                 })
                 return;
               }
@@ -669,7 +685,7 @@ struct DiyCacheSizePage {
             .onClick(() => {
               if (!this.isSetFinish) {
                 promptAction.showToast({
-                  message:"请先设置最大缓存容量，然后点击键盘的下一步按钮"
+                  message: "请先设置最大缓存容量，然后点击键盘的下一步按钮"
                 })
                 return;
               }
@@ -683,7 +699,7 @@ struct DiyCacheSizePage {
             .onClick(() => {
               if (!this.isSetFinish) {
                 promptAction.showToast({
-                  message:"请先设置最大缓存容量，然后点击键盘的下一步按钮"
+                  message: "请先设置最大缓存容量，然后点击键盘的下一步按钮"
                 })
                 return;
               }

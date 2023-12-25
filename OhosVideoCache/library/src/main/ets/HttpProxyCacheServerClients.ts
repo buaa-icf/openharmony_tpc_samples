@@ -33,14 +33,17 @@ class UiListenerHandler implements CacheListener {
   }
 
   onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-    this.listeners.forEach((cacheListener: CacheListener, index?: number, arrlist?: ArrayList<CacheListener>) => {
-      cacheListener.onCacheAvailable(cacheFilePath, url, percentsAvailable);
-    })
+    if (!this.listeners || this.listeners.length < 1) {
+      return;
+    }
+    for (let i = 0; i < this.listeners.length; i++) {
+      let listener = this.listeners[i] as CacheListener;
+      listener?.onCacheAvailable(cacheFilePath, url, percentsAvailable);
+    }
   }
 }
 
 export default class HttpProxyCacheServerClients {
-  private clientsCount: number = 0;
   private url: string;
   private proxyCache: HttpProxyCache | null = null;
   private uiCacheListener: CacheListener | null = null;
@@ -59,11 +62,13 @@ export default class HttpProxyCacheServerClients {
       if (!this.proxyCache) {
         throw new Error('proxyCache is null')
       }
-      this.clientsCount++;
       await this.proxyCache.processRequest(request, severConnect);
+    } catch (err) {
+      return Promise.reject(err)
     } finally {
-      this.finishProcessRequest();
+      await this.finishProcessRequest();
     }
+    return Promise.resolve()
   }
 
   private startProcessRequest(): void {
@@ -81,14 +86,12 @@ export default class HttpProxyCacheServerClients {
     return httpProxyCache;
   }
 
-  private finishProcessRequest(): void {
-    this.clientsCount--;
-    if (this.clientsCount <= 0) {
-      if (this.proxyCache) {
-        this.proxyCache.shutdown();
-      }
-      this.proxyCache = null;
+  private async finishProcessRequest(): Promise<void> {
+    if (this.proxyCache) {
+      await this.proxyCache.shutdown();
     }
+    this.proxyCache = null;
+    return Promise.resolve();
   }
 
   public registerCacheListener(cacheListener: CacheListener): void {
@@ -99,18 +102,18 @@ export default class HttpProxyCacheServerClients {
     this.listeners.remove(cacheListener);
   }
 
-  public shutdown(): void {
+  public async shutdown(): Promise<void> {
     this.listeners.clear();
     if (this.proxyCache != null) {
       this.proxyCache?.registerCacheListener(null);
-      this.proxyCache?.shutdown();
+      await this.proxyCache?.shutdown();
     }
     this.proxyCache = null;
-    this.clientsCount = 0;
+    return Promise.resolve();
   }
 
   getClientsCount(): number {
-    return this.clientsCount;
+    return 0;
   }
 }
 

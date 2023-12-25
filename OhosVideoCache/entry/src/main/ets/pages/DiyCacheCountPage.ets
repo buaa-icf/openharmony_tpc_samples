@@ -91,8 +91,7 @@ struct DiyCacheCountPage {
   setErrorCallback(): void {
     this.avPlayer?.on('error', (error) => {
       Logger.error(TAG, 'error happened,message is :' + error.message);
-      // 当error上报时自动播放下一个视频或者音频
-      this.nextVideo();
+      // 当error上报时自动播放下一个视频或者音频 this.nextVideo();
     })
   }
 
@@ -256,7 +255,9 @@ struct DiyCacheCountPage {
     if (this.avPlayer !== undefined) {
       ret = true;
     }
-    this.avPlayer.url = this.fdPath;
+    if (this.avPlayer && this.getState() === 'idle') {
+      this.avPlayer.url = this.fdPath;
+    }
     Logger.info(TAG, 'createAVPlayer end');
     return ret;
   }
@@ -271,7 +272,9 @@ struct DiyCacheCountPage {
   async play(): Promise<void> {
     if (!this.isPrepare) {
       // 设置surfaceID，当播放的问题纯音频时，无需设置
-      this.setSurfaceID();
+      if (this.getState() == "initialized") {
+        this.setSurfaceID();
+      }
       await this.avPlayer?.prepare();
       this.isPrepare = !this.isPrepare;
     }
@@ -370,15 +373,16 @@ struct DiyCacheCountPage {
     if (newUrl.startsWith(getContext().cacheDir)) {
       let file = fs.openSync(newUrl, fs.OpenMode.READ_ONLY);
       newUrl = "fd://" + file.fd;
+      self.currentCachePercent = 100;
     }
+    this.fdPath = newUrl;
     // 由于createAVPlayer方法里面已经设置了url 这里必须重置一下才会生效 直接设置url不生效
-    if (this.avPlayer) {
-      this.avPlayer?.reset()
+    if (this.avPlayer && this.getState() == 'idle') {
       this.avPlayer.url = newUrl;
     }
     this.isSetFinish = true;
     promptAction.showToast({
-      message:"设置完毕，可以开始播放了"
+      message: "设置完毕，可以开始播放了"
     })
   }
 
@@ -403,7 +407,9 @@ struct DiyCacheCountPage {
   // 初始化函数
   async initAVPlayer(): Promise<void> {
     Logger.info(TAG, 'initAVPlayer success');
-    this.fdPath = this.videoName;
+    if (!this.fdPath || this.fdPath.length < 1) {
+      this.fdPath = this.videoName;
+    }
     Logger.info(TAG, 'file id is : ' + this.fdPath);
     this.surfaceID = this.mXcomponentController.getXComponentSurfaceId();
     Logger.info(TAG, 'surfaceID is : ' + this.surfaceID);
@@ -417,6 +423,7 @@ struct DiyCacheCountPage {
   // 切换下个视频的接口
   async nextVideo(): Promise<void> {
     // 调用reset函数，重置播放器状态至idle
+    this.currentCachePercent = 0;
     await this.avPlayer?.reset();
     this.isLoop = false;
     // 获取当前播放文件的下一个视频文件在列表中的下标
@@ -443,7 +450,9 @@ struct DiyCacheCountPage {
     if (newUrl.startsWith(getContext().cacheDir)) {
       let file = fs.openSync(newUrl, fs.OpenMode.READ_ONLY);
       newUrl = "fd://" + file.fd;
+      self.currentCachePercent = 100;
     }
+    this.fdPath = newUrl;
     // 开始进入下一个视频的播放
     if (this.getState() === 'idle') {
       if (this.avPlayer != undefined) {
@@ -453,12 +462,13 @@ struct DiyCacheCountPage {
       this.isNext = true;
       this.isPlaying = false;
     } else {
-      Logger.info(TAG, 'this state is noe idle');
+      Logger.info(TAG, 'this state is not idle');
     }
   }
 
   // 切换上个视频的接口
   async preVideo(): Promise<void> {
+    this.currentCachePercent = 0;
     await this.avPlayer?.reset();
     this.isLoop = false;
     if (this.index === (0)) {
@@ -471,18 +481,22 @@ struct DiyCacheCountPage {
     this.isBuffering = false;
     Logger.info(TAG, 'file id is : ' + this.fdPath);
     let self = this;
+
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
         self.currentCachePercent = percentsAvailable;
       }
     }
+
     GlobalProxyServer?.getInstance()?.getServer()?.registerCacheListener(new MyCacheListener(), this.fdPath)
     let proxyUrl: string | undefined = await GlobalProxyServer?.getInstance()?.getServer()?.getProxyUrl(this.fdPath)
     let newUrl = proxyUrl ? proxyUrl : this.fdPath;
     if (newUrl.startsWith(getContext().cacheDir)) {
       let file = fs.openSync(newUrl, fs.OpenMode.READ_ONLY);
       newUrl = "fd://" + file.fd;
+      self.currentCachePercent = 100;
     }
+    this.fdPath = newUrl;
     if (this.getState() === 'idle') {
       if (this.avPlayer != undefined) {
         this.avPlayer.url = newUrl;
@@ -591,7 +605,8 @@ struct DiyCacheCountPage {
         Row() {
           Text('当前缓存进度：').fontSize(15).width('15%').textAlign(TextAlign.Center)
           Progress({ value: 0, total: 100, type: ProgressType.Linear })
-            .color(Color.Grey)
+            .color(Color.Red)
+            .backgroundColor(Color.Gray)
             .value(this.currentCachePercent)
             .width('65%')
 
@@ -600,10 +615,10 @@ struct DiyCacheCountPage {
         .alignItems(VerticalAlign.Center)
 
         Row() {
-          Text('输入最大缓存大小：').fontSize(15).width('15%').textAlign(TextAlign.Center)
+          Text('输入最大缓存个数：').fontSize(15).width('15%').textAlign(TextAlign.Center)
           TextInput({
             text: this.currentCacheCount,
-            placeholder: '请输入最大缓存容量，超过此值，将会自动删除多余的缓存文件',
+            placeholder: '请输入最大缓存文件个数，超过此值，将会自动删除多余的缓存文件',
             controller: this.controller
           })
             .enterKeyType(EnterKeyType.Next)

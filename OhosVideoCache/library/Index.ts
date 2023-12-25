@@ -19,6 +19,19 @@ import { CacheListener } from './src/main/ets/CacheListener'
 import FileNameGenerator from './src/main/ets/file/FileNameGenerator'
 import HeaderInjector from './src/main/ets/headers/HeaderInjector'
 import DiskUsage from './src/main/ets/file/DiskUsage'
+import StorageUtils from './src/main/ets/StorageUtils'
+import TotalCountLruDiskUsage from './src/main/ets/file/TotalCountLruDiskUsage'
+import TotalSizeLruDiskUsage from './src/main/ets/file/TotalSizeLruDiskUsage'
+import Md5FileNameGenerator from './src/main/ets/file/Md5FileNameGenerator'
 
-export { HttpProxyCacheServer, HttpProxyCacheServerBuilder, CacheListener, FileNameGenerator, HeaderInjector, DiskUsage
+export { HttpProxyCacheServer,
+  HttpProxyCacheServerBuilder,
+  CacheListener,
+  FileNameGenerator,
+  HeaderInjector,
+  DiskUsage,
+  StorageUtils,
+  TotalCountLruDiskUsage,
+  TotalSizeLruDiskUsage,
+  Md5FileNameGenerator
 }

@@ -10,9 +10,9 @@
     "org": "opensource"
   },
   "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/OhosVideoCache",
-  "license": "MIT",
+  "license": "Apache-2.0 license",
   "dependencies": {
-    "@ohos/crypto-js": "^2.0.2"
+    "@ohos/crypto-js": "2.0.2"
   },
   "keywords": [
     "Video Cache",

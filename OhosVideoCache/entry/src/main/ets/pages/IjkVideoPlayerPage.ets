@@ -61,21 +61,23 @@ struct IjkVideoPlayerPage {
   async aboutToAppear() {
     LogUtils.getInstance().LOGI("aboutToAppear");
     this.videoUrl = videoUrls[0];
-
     let self = this;
 
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-        self.currentCachePercent = percentsAvailable;
+       self.currentCachePercent = percentsAvailable;
       }
     }
 
     let server: HttpProxyCacheServer = new HttpProxyCacheServerBuilder(getContext())
       .build();
-    server.registerCacheListener(new MyCacheListener(),this.videoUrl);
+    server.registerCacheListener(new MyCacheListener(), this.videoUrl);
     GlobalProxyServer?.getInstance()?.setServer(server)
     let proxyUrl: string | undefined = await GlobalProxyServer?.getInstance()?.getServer()?.getProxyUrl(this.videoUrl)
     this.videoUrl = proxyUrl ? proxyUrl : this.videoUrl;
+    if (this.videoUrl.startsWith(getContext().cacheDir)) {
+      self.currentCachePercent = 100;
+    }
   }
 
   aboutToDisappear() {
@@ -233,7 +235,8 @@ struct IjkVideoPlayerPage {
       Flex({ direction: FlexDirection.Row, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Start }) {
         Text('当前缓存进度：').fontSize(15).width('15%').textAlign(TextAlign.Center)
         Progress({ value: 0, total: 100, type: ProgressType.Linear })
-          .color(Color.Grey)
+          .color(Color.Red)
+          .backgroundColor(Color.Gray)
           .value(this.currentCachePercent)
           .width('65%')
 
@@ -365,6 +368,11 @@ struct IjkVideoPlayerPage {
     mIjkMediaPlayer.native_setup();
     //设置视频源
     mIjkMediaPlayer.setDataSource(url);
+    // 设置无缓冲，这是播放器的缓冲区，有数据就播放
+    mIjkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "packet-buffering", "0");
+    // 变速播放
+    mIjkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "soundtouch", "1");
+    mIjkMediaPlayer.setSpeed(this.playSpeed);
     //设置视频源http请求头
     let headers = new Map([
       ["allowCrossProtocolRedirects", "true"]
@@ -469,20 +477,26 @@ struct IjkVideoPlayerPage {
     } else {
       curIndex++;
     }
+    this.currentCachePercent = 0;
     CONTROL_PlayStatus = PlayStatus.INIT;
     mIjkMediaPlayer.stop();
     mIjkMediaPlayer.reset();
     this.startProgressTask();
     this.videoUrl = videoUrls[curIndex]
     let self = this;
+
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-        self.currentCachePercent = percentsAvailable;
+       self.currentCachePercent = percentsAvailable;
       }
     }
+
     GlobalProxyServer?.getInstance()?.getServer()?.registerCacheListener(new MyCacheListener(), this.videoUrl)
     let proxyUrl: string | undefined = await GlobalProxyServer?.getInstance()?.getServer()?.getProxyUrl(this.videoUrl)
     this.videoUrl = proxyUrl ? proxyUrl : this.videoUrl;
+    if (this.videoUrl.startsWith(getContext().cacheDir)) {
+      self.currentCachePercent = 100;
+    }
     this.play(this.videoUrl);
   }
 }

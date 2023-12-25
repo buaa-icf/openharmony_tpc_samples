@@ -22,11 +22,11 @@ export interface Cache {
 
   append(data: ArrayBuffer, length: number);
 
-  close();
+  close(): Promise<void>;
 
-  complete();
+  complete(): void;
 
   isCompleted(): boolean;
 
-  setFileLength(length: number);
+  setFileLength(length: number): void;
 }

@@ -71,7 +71,6 @@ async function pingCallable(pingUrl: string) {
 }
 
 export default class Pinger {
-  // private  ExecutorService pingExecutor = Executors.newSingleThreadExecutor();
   private host: string;
   private port: number;
 
@@ -102,7 +101,22 @@ export default class Pinger {
           })
           let url = self.getPingUrl()
           let runningTask: taskpool.Task = new taskpool.Task(pingCallable, url)
-          taskpool.execute(runningTask);
+          taskpool.execute(runningTask,taskpool.Priority.HIGH);
+
+          let closeTaskEvent: emitter.InnerEvent = {
+            eventId: VideoCacheConstant.SHUT_DOWN_TASKPOOL
+          }
+          emitter.on(closeTaskEvent, (data: emitter.EventData) => {
+            try {
+              if (runningTask) {
+                taskpool.cancel(runningTask)
+              }
+              emitter.off(VideoCacheConstant.PING_EVENT_ID)
+              emitter.off(VideoCacheConstant.SHUT_DOWN_TASKPOOL)
+            } catch (err) {
+            }
+          })
+
         })
         if (pingData) {
           break;

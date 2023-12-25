@@ -16,7 +16,7 @@ import { Context } from '@ohos.abilityAccessCtrl';
 
 export default class StorageUtils {
   private static INDIVIDUAL_DIR_NAME: string = "video-cache";
-  private static DEFAULT_DIR: string = 'data/storage/el2/base/haps/entry/cache';
+  public  static DEFAULT_DIR: string = '/data/storage/el2/base/haps/entry/cache';
 
   /**
    * Returns individual application cache directory (for only video caching from Proxy). Cache directory will be
@@ -28,7 +28,6 @@ export default class StorageUtils {
    */
   public static getIndividualCacheDirectory(context: Context): string {
     let cacheDir = StorageUtils.getCacheDirectory(context, true);
-    // return new File(cacheDir, this.INDIVIDUAL_DIR_NAME);
     return cacheDir + '/' + StorageUtils.INDIVIDUAL_DIR_NAME;
   }
 

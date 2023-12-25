@@ -53,7 +53,7 @@ export class Files {
             let before = fs.statSync(result[j]).mtime
             let after = fs.statSync(result[j + 1]).mtime
             // 相邻元素两两对比，元素交换，大的元素交换到后面
-            if (before < after) { //	< 为升序排列，降序请换 >
+            if (before > after) { //	< 为升序排列，降序请换 >
               let temp: string = result[j];
               result[j] = result[j+1];
               result[j+1] = temp;

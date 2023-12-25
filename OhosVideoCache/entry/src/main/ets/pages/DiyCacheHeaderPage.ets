@@ -65,38 +65,6 @@ struct DiyCacheHeaderPage {
     this.SRC_LIST = CommonConstants.VIDEO_HTTPS_LISTS;
     this.index = CommonConstants.VIDEO_HTTPS_LISTS.map(item => item).indexOf(this.videoName);
     Logger.info(TAG, 'aboutToAppear success, and play source is' + this.videoName);
-
-    class MyCacheListener implements CacheListener {
-      onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-        self.currentCachePercent = percentsAvailable;
-      }
-    }
-
-    class MyHeaderInjector implements HeaderInjector {
-      addHeaders(url: string): HashMap<string, string> {
-        let header: HashMap<string, string> = new HashMap<string, string>();
-        header.set('allowCrossProtocolRedirects', "true")
-        header.set('name', "张三")
-        header.set('fakeToken', "123456789")
-        return header;
-      }
-    }
-
-    let server: HttpProxyCacheServer = new HttpProxyCacheServerBuilder(getContext())
-      .setHeaderInjector(new MyHeaderInjector())
-      .build();
-    server.registerCacheListener(new MyCacheListener(),this.videoName);
-    GlobalProxyServer?.getInstance()?.setServer(server)
-    let proxyUrl: string | undefined = await GlobalProxyServer?.getInstance()?.getServer()?.getProxyUrl(this.videoName)
-    let newUrl = proxyUrl ? proxyUrl : this.videoName;
-    // 由于avplayer不支持直接加载本地文件路径 这里需要转化为fd的路径
-    if (newUrl.startsWith(getContext().cacheDir)) {
-      let file = fs.openSync(newUrl, fs.OpenMode.READ_ONLY);
-      newUrl = "fd://" + file.fd;
-    }
-    if (this.avPlayer) {
-      this.avPlayer.url = newUrl;
-    }
   }
 
   // 界面销毁监听
@@ -122,8 +90,7 @@ struct DiyCacheHeaderPage {
   setErrorCallback(): void {
     this.avPlayer?.on('error', (error) => {
       Logger.error(TAG, 'error happened,message is :' + error.message);
-      // 当error上报时自动播放下一个视频或者音频
-      this.nextVideo();
+      // 当error上报时自动播放下一个视频或者音频  this.nextVideo();
     })
   }
 
@@ -279,6 +246,7 @@ struct DiyCacheHeaderPage {
   async createAVPlayer(): Promise<boolean> {
     Logger.info(TAG, 'createAVPlayer start');
     let ret = false;
+    let self = this;
     if (this.avPlayer !== undefined) {
       await this.avPlayer?.release();
       this.avPlayer = undefined;
@@ -287,6 +255,37 @@ struct DiyCacheHeaderPage {
     if (this.avPlayer !== undefined) {
       ret = true;
     }
+
+    class MyCacheListener implements CacheListener {
+      onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
+        self.currentCachePercent = percentsAvailable;
+      }
+    }
+
+    class MyHeaderInjector implements HeaderInjector {
+      addHeaders(url: string): HashMap<string, string> {
+        let header: HashMap<string, string> = new HashMap<string, string>();
+        header.set('allowCrossProtocolRedirects', "true")
+        header.set('name', "张三")
+        header.set('fakeToken', "123456789")
+        return header;
+      }
+    }
+
+    let server: HttpProxyCacheServer = new HttpProxyCacheServerBuilder(getContext())
+      .setHeaderInjector(new MyHeaderInjector())
+      .build();
+    server.registerCacheListener(new MyCacheListener(), this.videoName);
+    GlobalProxyServer?.getInstance()?.setServer(server)
+    let proxyUrl: string | undefined = await GlobalProxyServer?.getInstance()?.getServer()?.getProxyUrl(this.videoName)
+    let newUrl = proxyUrl ? proxyUrl : this.videoName;
+    // 由于avplayer不支持直接加载本地文件路径 这里需要转化为fd的路径
+    if (newUrl.startsWith(getContext().cacheDir)) {
+      let file = fs.openSync(newUrl, fs.OpenMode.READ_ONLY);
+      newUrl = "fd://" + file.fd;
+      self.currentCachePercent = 100;
+    }
+    this.fdPath = newUrl;
     this.avPlayer.url = this.fdPath;
     Logger.info(TAG, 'createAVPlayer end');
     return ret;
@@ -302,7 +301,9 @@ struct DiyCacheHeaderPage {
   async play(): Promise<void> {
     if (!this.isPrepare) {
       // 设置surfaceID，当播放的问题纯音频时，无需设置
-      this.setSurfaceID();
+      if (this.getState() == "initialized") {
+        this.setSurfaceID();
+      }
       await this.avPlayer?.prepare();
       this.isPrepare = !this.isPrepare;
     }
@@ -378,13 +379,6 @@ struct DiyCacheHeaderPage {
     }
   }
 
-  /**
-   * 初始化代理，用于启动边播放边缓存功能
-   */
-  initProxy() {
-    // TODO 等library代码合入此处需要加入相关的代码
-  }
-
   // 获取轨道信息接口
   async getTrackDescription(): Promise<void> {
     await this.avPlayer?.getTrackDescription().then((arrayList: Array<media.MediaDescription>) => {
@@ -420,6 +414,7 @@ struct DiyCacheHeaderPage {
   // 切换下个视频的接口
   async nextVideo(): Promise<void> {
     // 调用reset函数，重置播放器状态至idle
+    this.currentCachePercent = 0;
     await this.avPlayer?.reset();
     this.isLoop = false;
     // 获取当前播放文件的下一个视频文件在列表中的下标
@@ -433,18 +428,22 @@ struct DiyCacheHeaderPage {
     this.isBuffering = false;
     Logger.info(TAG, 'file id is : ' + this.fdPath);
     let self = this;
+
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
         self.currentCachePercent = percentsAvailable;
       }
     }
+
     GlobalProxyServer?.getInstance()?.getServer()?.registerCacheListener(new MyCacheListener(), this.fdPath)
     let proxyUrl: string | undefined = await GlobalProxyServer?.getInstance()?.getServer()?.getProxyUrl(this.fdPath)
     let newUrl = proxyUrl ? proxyUrl : this.fdPath;
     if (newUrl.startsWith(getContext().cacheDir)) {
       let file = fs.openSync(newUrl, fs.OpenMode.READ_ONLY);
       newUrl = "fd://" + file.fd;
+      self.currentCachePercent = 100;
     }
+    this.fdPath = newUrl;
     // 开始进入下一个视频的播放
     if (this.getState() === 'idle') {
       if (this.avPlayer != undefined) {
@@ -454,12 +453,13 @@ struct DiyCacheHeaderPage {
       this.isNext = true;
       this.isPlaying = false;
     } else {
-      Logger.info(TAG, 'this state is noe idle');
+      Logger.info(TAG, 'this state is not idle');
     }
   }
 
   // 切换上个视频的接口
   async preVideo(): Promise<void> {
+    this.currentCachePercent = 0;
     await this.avPlayer?.reset();
     this.isLoop = false;
     if (this.index === (0)) {
@@ -472,18 +472,22 @@ struct DiyCacheHeaderPage {
     this.isBuffering = false;
     Logger.info(TAG, 'file id is : ' + this.fdPath);
     let self = this;
+
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
         self.currentCachePercent = percentsAvailable;
       }
     }
+
     GlobalProxyServer?.getInstance()?.getServer()?.registerCacheListener(new MyCacheListener(), this.fdPath)
     let proxyUrl: string | undefined = await GlobalProxyServer?.getInstance()?.getServer()?.getProxyUrl(this.fdPath)
     let newUrl = proxyUrl ? proxyUrl : this.fdPath;
     if (newUrl.startsWith(getContext().cacheDir)) {
       let file = fs.openSync(newUrl, fs.OpenMode.READ_ONLY);
       newUrl = "fd://" + file.fd;
+      self.currentCachePercent = 100;
     }
+    this.fdPath = newUrl;
     if (this.getState() === 'idle') {
       if (this.avPlayer != undefined) {
         this.avPlayer.url = newUrl;
@@ -592,7 +596,8 @@ struct DiyCacheHeaderPage {
         Row() {
           Text('当前缓存进度：').fontSize(15).width('15%').textAlign(TextAlign.Center)
           Progress({ value: 0, total: 100, type: ProgressType.Linear })
-            .color(Color.Grey)
+            .color(Color.Red)
+            .backgroundColor(Color.Gray)
             .value(this.currentCachePercent)
             .width('65%')
 

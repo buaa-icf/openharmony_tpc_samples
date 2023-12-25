@@ -33,17 +33,18 @@ export default class ByteArrayCache implements Cache {
     this.completed = true;
   }
 
-  close() {
+  close(): Promise<void> {
+    return Promise.resolve();
+  }
+
+  setFileLength(length: number) {
 
   }
-  setFileLength(length: number){
 
-  }
   append(newData: ArrayBuffer, length: number) {
     Preconditions.checkNotNull(this.data);
     Preconditions.checkArgument(length >= 0 && length <= newData.byteLength);
 
-    // let appendedData = Arrays.copyOf(data, data.length + length);
     let temp = new Uint8Array(this.data.byteLength + length)
     temp.set(new Uint8Array(this.data), 0)
     temp.set(new Uint8Array(newData), this.data.byteLength)
@@ -68,8 +69,7 @@ export default class ByteArrayCache implements Cache {
     if (len <= 0) {
       return 0;
     }
-    buffer = this.data.slice(offset,offset + len)
-    // return new ByteArrayInputStream(data).read(buffer, offset, length);
+    buffer = this.data.slice(offset, offset + len)
     return len;
   }
 
@@ -77,7 +77,7 @@ export default class ByteArrayCache implements Cache {
     return this.data.byteLength;
   }
 
-  totalLength():number {
+  totalLength(): number {
     return 0;
   }
 }

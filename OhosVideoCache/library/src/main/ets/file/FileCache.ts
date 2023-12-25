@@ -17,6 +17,8 @@ import { Cache } from '../Cache';
 import DiskUsage from './DiskUsage';
 import fs from '@ohos.file.fs';
 import { UnlimitedDiskUsage } from './UnlimitedDiskUsage';
+import emitter from '@ohos.events.emitter';
+import { VideoCacheConstant } from '../constant/VideoCacheConstant';
 
 export default class FileCache implements Cache {
   private TEMP_POSTFIX: string = ".download";
@@ -27,6 +29,7 @@ export default class FileCache implements Cache {
   public trueFilePath: string = ''
   public parentPath: string = ''
   public fileLength: number = 0
+  private isRenamedEnd: boolean = true;
 
   constructor(filePath: string, diskUsage: DiskUsage = new UnlimitedDiskUsage()) {
     try {
@@ -66,11 +69,14 @@ export default class FileCache implements Cache {
   }
 
   complete() {
+    let self = this;
     try {
       if (this.isCompleted()) {
         return;
       }
-      this.close();
+      self.isRenamedEnd = false;
+      fs.fsyncSync(self.dataFile.fd);
+      fs.closeSync(self.dataFile.fd);
       fs.renameSync(this.tempFilePath, this.trueFilePath);
       this.tempFilePath = this.trueFilePath;
       try {
@@ -82,10 +88,16 @@ export default class FileCache implements Cache {
     } catch (err) {
       throw new Error("Error renaming file " + this.tempFilePath + " to " + this.trueFilePath + " for completion! reason is : " + err.message);
     }
+    self.isRenamedEnd = true;
+    let event: emitter.InnerEvent = {
+      eventId: VideoCacheConstant.RENAME_FINISH_ID,
+      priority: emitter.EventPriority.IMMEDIATE
+    }
+    emitter.emit(event)
   }
 
   /**
-   * Returns file to be used fo caching. It may as original file passed in constructor as some temp file for not completed cache.
+   * Returns file to be used for caching. It may as original file passed in constructor as some temp file for not completed cache.
    *
    * @return file for caching.
    */
@@ -97,12 +109,23 @@ export default class FileCache implements Cache {
     return filePath.endsWith(this.TEMP_POSTFIX);
   }
 
-  close() {
+  async close(): Promise<void> {
+    let self = this;
     try {
+      if (!self.isRenamedEnd) {
+        await new Promise<void>((resolve, reject) => {
+          let event: emitter.InnerEvent = {
+            eventId: VideoCacheConstant.RENAME_FINISH_ID
+          }
+          emitter.on(event, (data: emitter.EventData) => {
+            resolve()
+          })
+        })
+      }
+      emitter.off(VideoCacheConstant.RENAME_FINISH_ID)
       fs.fsyncSync(this.dataFile.fd)
-      // this.dataFile.close();
       fs.closeSync(this.dataFile.fd)
-      // this.diskUsage.touch(this.tempFilePath); 
+      return Promise.resolve();
     } catch (e) {
       throw new Error("Error closing file " + this.tempFilePath + ',reason is : ' + e.message);
     }
@@ -129,15 +152,20 @@ export default class FileCache implements Cache {
 
   read(buffer: ArrayBuffer, offset: number, length: number): number {
     try {
+      if (!this.isRenamedEnd) {
+        return -1;
+      }
       if (offset < 0 || length < 0) {
+        return -1;
+      }
+      if (this.fileLength > 0 && offset >= this.fileLength) {
+        this.diskUsage?.touch(this.tempFilePath);
         return -1;
       }
       if (offset >= this.available()) {
         return -1;
       }
-      if (this.fileLength > 0 && offset >= this.fileLength) {
-        return -1;
-      }
+
       if (!this.dataFile) {
         return -1;
       }
