@@ -157,5 +157,36 @@ export default function abilityTest() {
     })
 
 
+    let time: number = 0
+    let printTime = (isEnd: boolean, tag?: string) => {
+      if (isEnd) {
+        console.info(tag, 'useTime:' + (Date.now() - time))
+      } else {
+        time = Date.now()
+      }
+    }
+
+    it('xml2js_useTime', 0, () => {
+
+      let xmlString: string = '<root>Hello xml2js!<root>'
+      printTime(false)
+      xml2js.parseString(xmlString, (err: ESObject, result: ESObject) => {})
+      printTime(true, 'parseString')
+
+      printTime(false)
+      xml2js.parseStringPromise(xmlString)
+      printTime(true, 'parseStringPromise')
+
+
+      let obj: ESObject = {
+        name: "Super", Surname: "Man", age: 23
+      } as ESObject;
+      let builder: ESObject = new xml2js.Builder();
+
+      printTime(false)
+      builder.buildObject(obj)
+      printTime(true, 'buildObject')
+
+    })
   })
 }
