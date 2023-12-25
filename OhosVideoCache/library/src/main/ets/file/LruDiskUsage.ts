@@ -25,100 +25,91 @@ import StorageUtils from '../StorageUtils';
 
 async function TouchCallable(file: string) {
   'use concurrent'
-  try {
-    Files.setLastModifiedNow(file);
-    let last = file.lastIndexOf("/");
-    let directory: string = file.substring(0, last);
-    let files = Files.getLruListFiles(directory);
+  Files.setLastModifiedNow(file);
+  let last = file.lastIndexOf("/");
+  let directory: string = file.substring(0, last);
+  let files = Files.getLruListFiles(directory);
 
-    let eventStart: emitter.InnerEvent = {
-      eventId: VideoCacheConstant.COUNT_TOTAL_SIZE_START_ID,
-      priority: emitter.EventPriority.IMMEDIATE
-    }
-    emitter.emit(eventStart);
-    for (let i = 0; i < files.length; i++) {
-      let singleFile = files.get(i);
-      let eventData: emitter.EventData = {
-        data: {
-          id: VideoCacheConstant.COUNT_TOTAL_SIZE_ID,
-          content: singleFile
-        }
+  let eventStart: emitter.InnerEvent = {
+    eventId: VideoCacheConstant.COUNT_TOTAL_SIZE_START_ID,
+    priority: emitter.EventPriority.IMMEDIATE
+  }
+  emitter.emit(eventStart);
+  for (let i = 0; i < files.length; i++) {
+    let singleFile = files.get(i);
+    let eventData: emitter.EventData = {
+      data: {
+        id: VideoCacheConstant.COUNT_TOTAL_SIZE_ID,
+        content: singleFile
       }
-      let event: emitter.InnerEvent = {
-        eventId: VideoCacheConstant.COUNT_TOTAL_SIZE_ID,
-        priority: emitter.EventPriority.IMMEDIATE
-      }
-      emitter.emit(event, eventData)
     }
-
     let event: emitter.InnerEvent = {
-      eventId: VideoCacheConstant.COUNT_TOTAL_SIZE_END_ID,
+      eventId: VideoCacheConstant.COUNT_TOTAL_SIZE_ID,
       priority: emitter.EventPriority.IMMEDIATE
     }
-    emitter.emit(event);
+    emitter.emit(event, eventData)
+  }
 
-    let totalSize = await new Promise<number>((resolve, reject) => {
-      let sendSizeEvent: emitter.InnerEvent = {
-        eventId: VideoCacheConstant.SEND_TOTAL_SIZE_ID
+  let event: emitter.InnerEvent = {
+    eventId: VideoCacheConstant.COUNT_TOTAL_SIZE_END_ID,
+    priority: emitter.EventPriority.IMMEDIATE
+  }
+  emitter.emit(event);
+
+  let totalSize = await new Promise<number>((resolve, reject) => {
+    let sendSizeEvent: emitter.InnerEvent = {
+      eventId: VideoCacheConstant.SEND_TOTAL_SIZE_ID
+    }
+    emitter.on(sendSizeEvent, (data: emitter.EventData) => {
+      try {
+        if (data && data.data && typeof data.data.totalSize === "number") {
+          return resolve(data.data.totalSize)
+        }
+
+      } catch (err) {
+        return reject(0)
       }
-      emitter.on(sendSizeEvent, (data: emitter.EventData) => {
-        try {
-          if (data && data.data && typeof data.data.totalSize === "number") {
-            return resolve(data.data.totalSize)
-          }
+    })
+  })
 
+  let totalCount = files.length;
+  for (let i = 0; i < files.length; i++) {
+    let file: string = files[i];
+    let eventData: emitter.EventData = {
+      data: {
+        id: VideoCacheConstant.GET_ACCEPT_ID,
+        "file": file,
+        "totalSize": totalSize,
+        "totalCount": totalCount
+      }
+    }
+    let event: emitter.InnerEvent = {
+      eventId: VideoCacheConstant.GET_ACCEPT_ID,
+      priority: emitter.EventPriority.IMMEDIATE
+    }
+    emitter.emit(event, eventData);
+    let accepted = await new Promise<boolean>((resolve, reject) => {
+      let acceptEvent: emitter.InnerEvent = {
+        eventId: VideoCacheConstant.SEND_ACCEPT_ID
+      }
+      emitter.on(acceptEvent, (data: emitter.EventData) => {
+        try {
+          if (data && data.data && typeof data.data.accept === "boolean") {
+            return resolve(data.data.accept);
+          }
         } catch (err) {
-          return reject(0)
+          return reject(false);
         }
       })
+
     })
 
-    let totalCount = files.length;
-    for (let i = 0; i < files.length; i++) {
-      let file: string = files[i];
-      let eventData: emitter.EventData = {
-        data: {
-          id: VideoCacheConstant.GET_ACCEPT_ID,
-          "file": file,
-          "totalSize": totalSize,
-          "totalCount": totalCount
-        }
-      }
-      let event: emitter.InnerEvent = {
-        eventId: VideoCacheConstant.GET_ACCEPT_ID,
-        priority: emitter.EventPriority.IMMEDIATE
-      }
-      emitter.emit(event, eventData);
-      let accepted = await new Promise<boolean>((resolve, reject) => {
-        let acceptEvent: emitter.InnerEvent = {
-          eventId: VideoCacheConstant.SEND_ACCEPT_ID
-        }
-        emitter.on(acceptEvent, (data: emitter.EventData) => {
-          try {
-            if (data && data.data && typeof data.data.accept === "boolean") {
-              return resolve(data.data.accept);
-            }
-          } catch (err) {
-            return reject(false);
-          }
-        })
-
-      })
-
-      if (!accepted) {
-        try {
-          let fileSize = fs.statSync(file).size;
-          fs.unlinkSync(file);
-          totalCount--;
-          totalSize -= fileSize;
-
-        } catch (err) {
-
-        }
-      }
+    if (!accepted) {
+      let fileSize = fs.statSync(file).size;
+      fs.unlinkSync(file);
+      totalCount--;
+      totalSize -= fileSize;
     }
-  } catch (err) {
-
   }
 
 
@@ -195,43 +186,34 @@ export default class LruDiskUsage implements DiskUsage {
   }
 
   touch(filePath: string): void {
-    try {
-      if (!filePath || !filePath.startsWith(StorageUtils.DEFAULT_DIR)) {
-        return;
-      }
-      let task: taskpool.Task = new taskpool.Task(TouchCallable, filePath);
-      taskpool.execute(task, taskpool.Priority.HIGH);
-      let closeTaskEvent: emitter.InnerEvent = {
-        eventId: VideoCacheConstant.SHUT_DOWN_TASKPOOL
-      }
-      emitter.on(closeTaskEvent, (data: emitter.EventData) => {
-        try {
-          if (task) {
-            taskpool.cancel(task)
-          }
-          emitter.off(VideoCacheConstant.SEND_TOTAL_SIZE_ID)
-          emitter.off(VideoCacheConstant.SEND_ACCEPT_ID)
-          emitter.off(VideoCacheConstant.COUNT_TOTAL_SIZE_ID)
-          emitter.off(VideoCacheConstant.COUNT_TOTAL_SIZE_START_ID)
-          emitter.off(VideoCacheConstant.COUNT_TOTAL_SIZE_END_ID)
-          emitter.off(VideoCacheConstant.GET_ACCEPT_ID)
-          emitter.off(VideoCacheConstant.SHUT_DOWN_TASKPOOL)
-        } catch (err) {
-        }
-      })
-    } catch (err) {
+    if (!filePath || !filePath.startsWith(StorageUtils.DEFAULT_DIR)) {
+      return;
     }
+    let task: taskpool.Task = new taskpool.Task(TouchCallable, filePath);
+    taskpool.execute(task, taskpool.Priority.HIGH);
+    let closeTaskEvent: emitter.InnerEvent = {
+      eventId: VideoCacheConstant.SHUT_DOWN_TASKPOOL
+    }
+    emitter.on(closeTaskEvent, (data: emitter.EventData) => {
+      if (task) {
+        taskpool.cancel(task)
+      }
+      emitter.off(VideoCacheConstant.SEND_TOTAL_SIZE_ID)
+      emitter.off(VideoCacheConstant.SEND_ACCEPT_ID)
+      emitter.off(VideoCacheConstant.COUNT_TOTAL_SIZE_ID)
+      emitter.off(VideoCacheConstant.COUNT_TOTAL_SIZE_START_ID)
+      emitter.off(VideoCacheConstant.COUNT_TOTAL_SIZE_END_ID)
+      emitter.off(VideoCacheConstant.GET_ACCEPT_ID)
+      emitter.off(VideoCacheConstant.SHUT_DOWN_TASKPOOL)
+    })
   }
 
   countTotalSize(files: LinkedList<string>): number {
     let totalSize = 0;
     for (let i = 0; i < files.length; i++) {
       let file: string = files[i];
-      try {
-        if (!fs.accessSync(file)) {
-          continue;
-        }
-      } catch (err) {
+      if (!fs.accessSync(file)) {
+        continue;
       }
       let tempSize = fs.statSync(file).size;
       totalSize += tempSize

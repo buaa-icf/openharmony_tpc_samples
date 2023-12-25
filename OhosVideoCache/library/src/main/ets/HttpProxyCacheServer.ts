@@ -39,7 +39,7 @@ const BASE_COUNT = 1
 export default class HttpProxyCacheServer {
   private static libraryVersion: string = '1.0.0'
   private PROXY_HOST: string = "127.0.0.1";
-  private clientsMap: HashMap<String, HttpProxyCacheServerClients> = new HashMap<String, HttpProxyCacheServerClients>();
+  private clientsMap: HashMap<String, HttpProxyCacheServerClients> = new HashMap<string, HttpProxyCacheServerClients>();
   private port: number = 0;
   private config: Config | null = null;
   private pinger: Pinger | null = null;
@@ -261,7 +261,7 @@ export default class HttpProxyCacheServer {
       }
     } else {
       Preconditions.checkNotNull(cacheListener);
-      this.clientsMap.forEach((clients: HttpProxyCacheServerClients, key: string, map: HashMap<String, HttpProxyCacheServerClients>) => {
+      this.clientsMap.forEach((clients: HttpProxyCacheServerClients, key: string, map: HashMap<string, HttpProxyCacheServerClients>) => {
         clients.unregisterCacheListener(cacheListener);
       })
     }
@@ -298,7 +298,7 @@ export default class HttpProxyCacheServer {
   }
 
   private shutdownClients(): void {
-    this.clientsMap?.forEach(async (clients: HttpProxyCacheServerClients, key: string, map: HashMap<String, HttpProxyCacheServerClients>) => {
+    this.clientsMap?.forEach(async (clients: HttpProxyCacheServerClients, key: string, map: HashMap<string, HttpProxyCacheServerClients>) => {
       await clients?.shutdown();
     })
     this.clientsMap.clear();

@@ -9,11 +9,11 @@ Copyright Notice and License Texts
 ----------------------------------------------------------------------
 Software: AndroidVideoCache v2.7.1
 
-The MIT License (MIT)
-
+Copyright notice:
 Copyright 2014-2017 Alexey Danilov
+License: Apache-2.0 License
 
-        Apache License
+                                Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/
 
@@ -219,6 +219,9 @@ Copyright 2014-2017 Alexey Danilov
 ----------------------------------------------------------------------
 Software: ohos_ijkplayer 2.0.2
 
+Copyright notice:
+Copyright (C) 2022 Huawei Device Co., Ltd.
+License: Apache License 2.0
 
                                     Apache License
                            Version 2.0, January 2004
@@ -421,14 +424,14 @@ Software: ohos_ijkplayer 2.0.2
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
 ----------------------------------------------------------------------
 Software: crypto-js 4.1.1
 
 Copyright notice:
-[The MIT License (MIT)](http://opensource.org/licenses/MIT)
+Copyright (C) 2023 Huawei Device Co., Ltd.
 
-Copyright (c) 2009-2013 Jeff Mott
-Copyright (c) 2013-2016 Evan Vosberg
+License:[The MIT License (MIT)](http://opensource.org/licenses/MIT)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -6,9 +6,9 @@
   "author": "",
   "license": "",
   "dependencies": {
-    "@ohos/ijkplayer": "^2.0.2",
+    "@ohos/ijkplayer": "2.0.2",
     "@ohos/video-cache": "file:../library",
-    "@ohos/crypto-js": "^2.0.2"
+    "@ohos/crypto-js": "2.0.2"
   }
 }
 

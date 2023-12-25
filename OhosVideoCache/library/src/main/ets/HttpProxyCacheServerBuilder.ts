@@ -27,7 +27,6 @@ import Preconditions from './Preconditions';
 import SourceInfoStorage from './sourcestorage/SourceInfoStorage';
 import SourceInfoStorageFactory from './sourcestorage/SourceInfoStorageFactory';
 import StorageUtils from './StorageUtils';
-const BASE_COUNT = 1
 export default class HttpProxyCacheServerBuilder {
   private DEFAULT_MAX_SIZE: number = 512 * 1024 * 1024;
   private cacheRoot: string;
