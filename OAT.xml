@@ -70,6 +70,7 @@
                 <filteritem type="filepath" name="SMTPClient/entry/src/main/resources/rawfile/.*" desc="测试文件"/>				
                 <filteritem type="filepath" name="metadata-extractor/resources/.*" desc="测试文件"/>
 				<filteritem type="filepath" name="epublib/entry/src/main/resources/rawfile/.*" desc="测试文件"/>
+                <filteritem type="filepath"  name="jackrabbit/LICENSE"  desc="原开源项目的LICENSE，不手动修改"/>
                 
             </filefilter>
         </filefilterlist>
