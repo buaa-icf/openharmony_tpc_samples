@@ -551,9 +551,6 @@ export struct StandardGSYVideoPlayer {
           }
         })
         .onActionEnd((event: GestureEvent | undefined) => {
-          this.isHorizontalDrag = false;
-          this.showSeekProgressUi = false;
-
           if (!this.mIVideoPlayer || !this.mIVideoPlayer.isPlaying()) {
             return;
           }
@@ -565,6 +562,8 @@ export struct StandardGSYVideoPlayer {
             this.loadingVisible = Visibility.Visible;
             this.mIVideoPlayer.seekTo(this.mSeekTimePosition * (this.mIVideoPlayer.getDuration() / 100));
           }
+          this.isHorizontalDrag = false;
+          this.showSeekProgressUi = false;
         }),
       TapGesture({ count: 2 }).onAction((event: GestureEvent | undefined) => {
         if (this.lock) {

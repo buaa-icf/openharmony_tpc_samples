@@ -2,6 +2,10 @@
   "src": [
     "pages/Index",
     "pages/SimpleDemo",
-    "pages/SimpleList"
+    "pages/SimpleList",
+    "pages/PlayWithCacheDemo",
+    "pages/PlayNetWithCacheDemo",
+    "pages/PlayNetWithNoCacheDemo",
+    "pages/DanmakuVideoDemo"
   ]
 }

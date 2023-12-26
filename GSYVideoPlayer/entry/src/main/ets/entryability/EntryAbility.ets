@@ -18,10 +18,11 @@ import UIAbility from '@ohos.app.ability.UIAbility';
 import Want from '@ohos.app.ability.Want';
 import window from '@ohos.window';
 import { GlobalContext as GsyGlobal, PlayerType } from '@ohos/gsyvideoplayer';
-
+import { GlobalContext } from '@ohos/danmakuflamemaster';
 export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam) {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
+    GlobalContext.getContext().setValue("path", this.context.filesDir);
     GsyGlobal.getContext().setObject('playType', PlayerType.SYSTEM_AVPLAYER);
   }
 

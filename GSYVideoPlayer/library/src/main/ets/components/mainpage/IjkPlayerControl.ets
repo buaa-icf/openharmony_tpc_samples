@@ -85,6 +85,14 @@ export class IjkPlayerControl extends BaseVideoPlayer {
     }
   }
 
+  setContext(context: object): void {
+    this.context = this.context;
+    if (this.mIjkMediaPlayer) {
+      this.mIjkMediaPlayer.setContext(this.context);
+      this.mIjkMediaPlayer.native_setup();
+    }
+  }
+
   private initPlay() {
     if (this.mIjkMediaPlayer) {
       this.playStatus = PlayStatus.PLAY;

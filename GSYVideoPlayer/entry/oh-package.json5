@@ -6,7 +6,8 @@
   "author": "",
   "license": "",
   "dependencies": {
-    "@ohos/gsyvideoplayer": "file:../library"
+    "@ohos/gsyvideoplayer": "file:../library",
+    "@ohos/danmakuflamemaster": "2.0.0"
   }
 }
 
