@@ -34,8 +34,8 @@
       ]
     },
     {
-      "name": "smbj",
-      "srcPath": "./smbj"
+      "name": "library",
+      "srcPath": "./library"
     },
     {
       "name": "buffer",

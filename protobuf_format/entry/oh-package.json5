@@ -5,7 +5,7 @@
   "name": "entry",
   "description": "Please describe the basic information.",
   "main": "",
-  "version": "1.0.2-rc.1",
+  "version": "1.0.2",
   "dynamicDependencies": {},
   "dependencies": {
     "@ohos/sax": "file:../sax",

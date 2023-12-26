@@ -1,3 +1,7 @@
+### 1.0.1
+
+- fix:修改README.OpenSource文件中依赖组件的License File路径信息
+
 ### 1.0.1-rc.1
 
 - 适配ArkTs语法

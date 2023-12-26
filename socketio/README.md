@@ -25,22 +25,13 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 import { client_socket } from '@ohos/socketio';
 ```
 
-2. 下载socketio的4个依赖：asio，catch，rapidjson，websocketpp到socketio/src/main/cpp/lib目录
-
-```
-git clone https://github.com/chriskohlhoff/asio.git
-git clone https://github.com/catchorg/Catch2.git
-git clone https://github.com/Tencent/rapidjson.git
-git clone https://github.com/zaphoyd/websocketpp.git
-```
-
-3. 初始化socket.io客户端
+2. 初始化socket.io客户端
 
 ```typescript
 client: client_socket = new client_socket();
 ```
 
-4. 设置监听事件
+3. 设置监听事件
 
 ```typescript
 this.client.set_open_listener(this.on_open.bind(this));
@@ -52,13 +43,13 @@ this.client.set_socket_open_listener(this.on_socket_open.bind(this));
 this.client.set_socket_close_listener(this.on_socket_close.bind(this));
 ```
 
-5. 连接服务器
+4. 连接服务器
 
 ```typescript
 this.client.connect(uri) //uri: socket.io服务端地址
 ```
 
-6. 设置用户消息监听以及用户加入离开监听
+5. 设置用户消息监听以及用户加入离开监听
 
 - 监听事件实现
 
@@ -77,19 +68,19 @@ this.client.on("user left", this.on_user_left_listener.bind(this));
 this.client.on("login", this.on_login_listener.bind(this));
 ```
 
-7. 登录服务器，并设置登录成功回调
+6. 登录服务器，并设置登录成功回调
 
 ```typescript
 this.client.emit("add user", username, this.on_emit_callback.bind(this));
 ```
 
-8. 发送消息并设置发送消息监听
+7. 发送消息并设置发送消息监听
 
 ```typescript
 this.client.emit("new message", message, this.on_emit_callback);
 ```
 
-9. 关闭服务器链接并清理监听事件
+8. 关闭服务器链接并清理监听事件
 
 ```typescript
 this.client.socket_close();
@@ -201,16 +192,25 @@ off_error()
 emit(name: string, message: string, on_emit_callback?: (emit_callback_json: string) => void)
 ```
 
+## 源码下载
+1. 本项目依赖 socket.io-client-cpp 库，通过`git submodule`引入，下载代码时需加上`--recursive`参数。
+  ```
+  git clone --recursive https://gitee.com/openharmony-tpc/openharmony_tpc_samples.git
+  ```
+2. Linux环境无需执行该步骤，如果是windows环境下，代码下载完成后合入OHOS适配的代码，cd 进入到socketio/library/src/main/cpp/thirdModule 目录下，执行 modify.sh 脚本，将本目录下的 patch 文件合入到 socket.io-client-cpp 源码中。
+3. 开始编译项目。
+
 ## 约束与限制
 在下述版本验证通过：
 
-DevEco Studio: 4.0.3.600, SDK: API10(4.0.10.11)
+- DevEco Studio 版本： 4.1 Canary(4.1.3.317)
+- OpenHarmony SDK:API11 (4.1.0.36)
 
 ## 目录结构
 ````
 |---- socketio  
 |     |---- entry  # 示例代码文件夹
-|     |---- socketio  # socket.io库
+|     |---- library  # socket.io库
 |           |---- ets #对外接口目录
 				  |---- client_socket.ets # 对外接口
             |---- cpp # 组件代码目录

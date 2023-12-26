@@ -28,18 +28,21 @@ struct GifSample {
     this.data.splice(0,this.data.length)
     fileDir = GlobalContext.getContext().getValue("filesDir") as string;
     let pathGif = fileDir.concat("/metadata.gif")
-    let metadata:Metadata = ImageMetadataReader.readMetadata(pathGif)
-    // iterate over the metadata and print to System.out
-
-    metadata.getDirectories().forEach((value:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
-      let directoryName:string = value.getName()
-      value.getTags().forEach((tag:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
-        let tagName:string = tag.getTagName()
-        let description:string = tag.getDescription()
-        this.data.push("[" + directoryName + "] " + tagName + " = " + description)
+    try{
+      let metadata:Metadata = ImageMetadataReader.readMetadata(pathGif)
+      metadata.getDirectories().forEach((value:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
+        let directoryName:string = value.getName()
+        value.getTags().forEach((tag:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
+          let tagName:string = tag.getTagName()
+          let description:string = tag.getDescription()
+          this.data.push("[" + directoryName + "] " + tagName + " = " + description)
+        })
       })
-    })
-    console.info("metadata gif data:"+this.data)
+      console.info("metadata gif data:"+this.data)
+    } catch (err) {
+      console.error("metadata error..")
+    }
+
   }
 
   build() {

@@ -27,7 +27,9 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
 
 在下述版本验证通过：
 
-- DevEco Studio 版本：4.0 Beta 2（4.0.3.600），OpenHarmony SDK:API10（4.0.10.15）
+- DevEco Studio 版本： 4.1 Canary(4.1.3.317)
+
+- OpenHarmony SDK:API11 (4.1.0.36)
 
 ## 目录结构
 ````
@@ -46,7 +48,7 @@ base64-js
 使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
 ## 开源协议
-本项目基于 [BSD License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/base64-js/LICENSE) ，请自由地享受和参与开源。
+本项目基于 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/base64-js/LICENSE) ，请自由地享受和参与开源。
 
 ## license
 

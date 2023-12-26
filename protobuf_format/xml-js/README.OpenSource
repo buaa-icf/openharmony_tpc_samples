@@ -11,7 +11,7 @@
     {
         "Name": "sax",
         "License": "ISC License",
-        "License File": "https://github.com/isaacs/sax-js/blob/main/LICENSE",
+        "License File": "LICENSE",
         "Version Number": "1.2.4",
         "Owner" : "xiafeng@huawei.com"
         "Upstream URL": "https://github.com/isaacs/sax-js",

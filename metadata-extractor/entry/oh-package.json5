@@ -7,6 +7,6 @@
   "main": "",
   "version": "2.0.0",
   "dependencies": {
-    "@ohos/metadata-extractor": "file:../metadata_extractor"
+    "@ohos/metadata-extractor": "file:../library"
   }
 }

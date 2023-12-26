@@ -80,16 +80,16 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
 
 在下述版本验证通过：
 
-- DevEco Studio 版本：4.0 Beta2(4.0.3.600)
+- DevEco Studio 版本： 4.1 Canary(4.1.3.317)
 
-- OpenHarmony SDK:API10 (4.0.10.11)
+- OpenHarmony SDK:API11 (4.1.0.36)
 
 ## 目录结构
 ````
 |---- smbj
     |---- entry
     |     |---- pages       # 示例代码文件夹       
-    |---- smbj              # 库文件夹 
+    |---- library              # 库文件夹 
     |     |---- api         # 接口文件夹 
     |     |---- crypto      # 加密文件夹            
     |     |---- message     # 请求消息体文件夹

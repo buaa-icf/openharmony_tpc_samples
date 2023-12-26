@@ -30,19 +30,24 @@ struct JpgSample {
 
     fileDir = GlobalContext.getContext().getValue("filesDir") as string;
     let pathJpg = fileDir.concat("/metadata.JPG")
-    let metadata: Metadata =  ImageMetadataReader.readMetadata(pathJpg);
-    metadata.getDirectories().forEach((value:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
-      let directoryName:string = value.getName()
-      value.getTags().forEach((tag:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
-        let tagName:string = tag.getTagName()
-        let description:string = tag.getDescription()
-        console.info("metadata jpg tagName:"+tagName)
-        console.info("metadata jpg description:"+description)
-        this.data.push("[" + directoryName + "] " + tagName + " = " + description)
+    try {
+      let metadata: Metadata =  ImageMetadataReader.readMetadata(pathJpg);
+      metadata.getDirectories().forEach((value:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
+        let directoryName:string = value.getName()
+        value.getTags().forEach((tag:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
+          let tagName:string = tag.getTagName()
+          let description:string = tag.getDescription()
+          console.info("metadata jpg tagName:"+tagName)
+          console.info("metadata jpg description:"+description)
+          this.data.push("[" + directoryName + "] " + tagName + " = " + description)
+        })
       })
-    })
-    console.info("metadata jpg data:"+JSON.stringify(this.data))
-    console.info("metadata jpg data:"+this.data.length)
+      console.info("metadata jpg data:"+JSON.stringify(this.data))
+    } catch (err) {
+      console.error("metadata error..")
+    }
+
+
   }
 
   build() {

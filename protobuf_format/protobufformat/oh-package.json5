@@ -1,10 +1,10 @@
 {
   "name": "@ohos/protobuf_format",
-  "version": "1.0.2-rc.1",
+  "version": "1.0.2",
   "description": "基于@ohos/protobufjs 1.0.1版本的Message，提供格式转换能力，允许将Message输出重写为基本文本格式，如xml,json,html。",
   "main": "index.ts",
   "dependencies": {
-    "@ohos/protobufjs": "^1.0.2",
+    "@ohos/protobufjs": "1.0.2",
     "@ohos/xml_js": "file:../xml-js"
   },
   "devDependencies": {},

@@ -105,13 +105,15 @@ private createClient() {
 
 在下述版本验证通过：
 
-- DevEco Studio 版本：4.0.3.600，OpenHarmony SDK:API10（4.0.10.15）
+- DevEco Studio 版本： 4.1 Canary(4.1.3.317)
+
+- OpenHarmony SDK:API11 (4.1.0.36)
 
 ## 目录结构
 ````
 |---- stun  
 |     |---- entry  # 示例代码文件夹
-|     |---- stun  # stun库文件夹
+|     |---- library  # stun库文件夹
 |           |---- src/main/ets/common
 |                 |---- node-stun  
 |                       |---- bin  # 对外提供的server和client调用接口

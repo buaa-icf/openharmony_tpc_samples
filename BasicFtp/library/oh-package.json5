@@ -1,7 +1,7 @@
 {
   "name": "@ohos/basic-ftp",
   "description": "This is an FTP client library for Node.js. It supports FTPS over TLS, Passive Mode over IPv6, has a Promise-based API, and offers methods to operate on whole directories.",
-  "main": "index.ets",
+  "main": "index.ts",
   "author": "ohos_tpc",
   "license": "MIT",
   "dependencies": {},

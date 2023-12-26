@@ -26,7 +26,6 @@ class ArrayItem {
 struct Index {
   private settings: RenderingContextSettings = new RenderingContextSettings(true)
   private context: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.settings)
-  private offContext: OffscreenCanvasRenderingContext2D = new OffscreenCanvasRenderingContext2D(480, 750, this.settings)
   private commonFontSize = 14;
   private fontColor = Color.Grey;
   private zindexRevers: boolean = false;
@@ -35,8 +34,8 @@ struct Index {
   @State title: string = "Box2D Testbed version " + box2d.b2_version + "<br>(branch: " + box2d.b2_branch + " commit: " + box2d.b2_commit + ")";
   @State controlZindex: number = 99;
   @State canvasZindex: number = 1;
-  private time = 1
-  private app: Main = new Main(this.time, this.offContext)
+  private time = 60
+  private app: Main = new Main(this.time, this.context)
   private m_settings = this.app ? this.app.m_settings : (new Settings())
   @State fps: string = this.app ? this.app.m_fps.toFixed(1).toString() : "FPS"
   @State index: number = this.app ? this.app.m_test_index : this.selectIndex
@@ -53,10 +52,6 @@ struct Index {
     const loop = () => {
       let tt = new Date().getTime()
       this.app.SimulationLoop(tt)
-      let image = this.offContext.transferToImageBitmap()
-      if (this.isLoad) {
-        this.context.transferFromImageBitmap(image)
-      }
       setTimeout(loop, this.time)
     }
     setTimeout(loop, this.time)

@@ -71,7 +71,7 @@ interface MyExpectReturn {
   not:MyExpectReturnNot
 }
 type MyExpect = (value:object|number|boolean|string|undefined) => MyExpectReturn
-export const expect:MyExpect = (value) => {
+export const expect:MyExpect = (value:ESObject) => {
   const have:MyExpectReturnToHave = {
     length(source){
       if(typeof value === "number" || typeof value === "boolean") return
@@ -186,7 +186,7 @@ export  function diff(obj1:object|string|number|boolean|undefined, obj2:object|s
 
 
 
-  const obj1s = (typeof obj1 === "object") && Object.keys(obj1);
+  const obj1s:ESObject = (typeof obj1 === "object") && Object.keys(obj1);
   for(let i=0;i<= (obj1s as Array<string>).length -1;i++){
     // 判断当前的key是否为其本身的属性 而不是原型上的属性 for-in循环是会将原型上所有的属性都遍历一遍
     if (!!(obj1 as object)[obj1s[i]]) {

@@ -144,7 +144,9 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
 
 在下述版本验证通过：
 
-- DevEco Studio 版本：4.0 Beta2（4.0.3.600），OpenHarmony SDK:API10（4.0.10.15）
+- DevEco Studio 版本： 4.1 Canary(4.1.3.317)
+
+- OpenHarmony SDK:API11 (4.1.0.36)
 
 ## 目录结构
 ````
@@ -165,7 +167,7 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
 |                                    |----Test.ets                      # canvas相关初始化设置
 |                               |----Tests                              # 所有效果具体实现
 |                               |----Testbed.ts                         # 对外接口
-|     |---- box2d                                                       # box2d核心库
+|     |---- library                                                       # box2d核心库
 |	        |----src
 |                |----main
 |                     |----ets

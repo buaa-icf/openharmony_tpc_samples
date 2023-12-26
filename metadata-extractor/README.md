@@ -56,33 +56,31 @@ Column() {
 ## 接口说明
  #### 说明：支持ImageMetadataReader.readMetadata(path)统一入口；也支持对应文件格式下下的MetadataReader: 如:PngMetadataReader.readMetadata(filepath);JpegMetadataReader.readMetadata(filepath)
 1. 获取元数据`ImageMetadataReader.readMetadata()`
-2. 提取数据`MetadataReader.extract()`
-3. PNG：PngMetadataReader.readMetadata
-4. 获取目录信息`Metadata.getDirectories()`
-5. 获取目录类型`Metadata.getDirectoriesOfType()`
-6. 获取目录数量`Metadata.getDirectoryCount()`
-7. 添加目录数据`Metadata.addDirectory()`
-8. 获取首目录类型`Metadata.getFirstDirectoryOfType()`
-9. 判断是否存在某个目录`Metadata.containsDirectoryOfType()`
-10. 是否有上报错误信息`Metadata.hasErrors()`
-11. 获取目录名称`Directory.getName()`
-12. 获取标签信息`Directory.getTags()`
-13. 获取标签数量`Directory.getTagCount()`
-14. 设置描述信息`Directory.setDescriptor()`
-15. 获取父目录信息`Directory.getParent()`
-16. 获取日期信息`Directory.getDate()`
+2. 获取目录信息`Metadata.getDirectories()`
+3. 获取目录类型`Metadata.getDirectoriesOfType()`
+4. 获取目录数量`Metadata.getDirectoryCount()`
+5. 获取首目录类型`Metadata.getFirstDirectoryOfType()`
+6. 获取目录名称`Directory.getName()`
+7. 获取标签信息`Directory.getTags()`
+8. 获取标签数量`Directory.getTagCount()`
+9. 获取父目录信息`Directory.getParent()`
+10. 获取日期信息`Directory.getDate()`
+11. 获取标签名称`Tag.getTagName()`
+12. 获取标签名称`Tag.getgetDescription()`
 
 ## 约束与限制
 
 在下述版本验证通过：
 
-- DevEco Studio 版本：4.0.3.600，OpenHarmony SDK:API10（4.0.10.11）
+- DevEco Studio 版本： 4.1 Canary(4.1.3.317)
+
+- OpenHarmony SDK:API11 (4.1.0.36)
 
 ## 目录结构
 ````
 |---- metadata-extractor
 |     |---- entry  # 示例代码文件夹
-|     |---- metadata-extractor  # 库文件夹
+|     |---- library # 库文件夹
 |           |---- index.ets  # 对外接口
 |           |---- src
 |                 |---- main

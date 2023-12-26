@@ -36,17 +36,14 @@ export struct BottomScrollDialog {
   @BuilderParam customComponent: (item:Object, itemIndex:number) => void // 列表中的自定义控件
   private panOption: PanGestureOptions = new PanGestureOptions({ direction: PanDirection.Up | PanDirection.Down }) // 手势定义
   dialogInput: CustomDialogController // 输入框的控制对象
-  controller: CustomDialogController|undefined = undefined  // 当选dialog控制对象
+  controller: CustomDialogController  // 当选dialog控制对象
   listenerScrollColumn= inspector.createComponentObserver('scrollColumnId');
   aboutToDisappear() {
     this.listenerScrollColumn.off("draw")
     if (this.model.customCallback && this.model.customCallback.beforeDisappear) {
       this.model.customCallback.beforeDisappear();
     }
-    if (this.model.isDeleteOnDisappear) {
-
-      this.controller = undefined
-    }
+   
   }
   aboutToAppear() {
     this.listenerScrollColumn.on("draw",() => {
@@ -148,5 +145,8 @@ export struct BottomScrollDialog {
       .align(Alignment.Bottom)
     }.width('100%').height('100%')
     .backgroundColor(Color.Transparent)
+    .onClick(() => {
+      this.controller.close();
+    })
   }
 }

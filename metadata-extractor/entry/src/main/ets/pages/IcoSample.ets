@@ -28,15 +28,20 @@ struct IcoSample {
     this.data.splice(0,this.data.length)
     fileDir = GlobalContext.getContext().getValue("filesDir") as string;
     let pathIco = fileDir.concat("/metadata.ico")
-    let metadata: Metadata =  ImageMetadataReader.readMetadata(pathIco);
-    metadata.getDirectories().forEach((value:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
-      let directoryName:string = value.getName()
-      value.getTags().forEach((tag:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
-        let tagName:string = tag.getTagName()
-        let description:string = tag.getDescription()
-        this.data.push("[" + directoryName + "] " + tagName + " = " + description)
+    try {
+      let metadata: Metadata =  ImageMetadataReader.readMetadata(pathIco);
+      metadata.getDirectories().forEach((value:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
+        let directoryName:string = value.getName()
+        value.getTags().forEach((tag:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
+          let tagName:string = tag.getTagName()
+          let description:string = tag.getDescription()
+          this.data.push("[" + directoryName + "] " + tagName + " = " + description)
+        })
       })
-    })
+    } catch (err) {
+      console.error("metadata error..")
+    }
+
   }
 
   build() {

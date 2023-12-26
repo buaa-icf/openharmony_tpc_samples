@@ -117,8 +117,8 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 
 ## 约束与限制
 
-- DevEco Studio版本： 4.0 Beta2(4.0.3.600)
-- OpenHarmony SDK版本： API10(4.0.10.11)
+- DevEco Studio 版本： 4.1 Canary(4.1.3.317)
+- OpenHarmony SDK: API11 (4.1.0.36)
 
 ## 贡献代码
 

@@ -10,7 +10,7 @@
 ## 下载安装
 
 ```shell
-npm install @ohos/smartrefreshlayout --save
+ohpm install @ohos/smartrefreshlayout
 ```
 OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
@@ -61,7 +61,7 @@ import {Material} from "@ohos/smartrefreshlayout"
    `model.setTimeShowState()`
 
 ## 兼容性
-DevEco Studio 版本：4.0Beta2（4.0.3.600），OpenHarmony SDK:API10 Release（4.0.10.11）
+DevEco Studio 版本： 4.1 Canary(4.1.3.317),OpenHarmony SDK:API11 (4.1.0.36)
 
 ## 目录结构
 ````
