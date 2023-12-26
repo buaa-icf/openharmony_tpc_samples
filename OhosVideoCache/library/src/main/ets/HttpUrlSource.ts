@@ -150,6 +150,7 @@ export default class HttpUrlSource implements Source {
 
   close(): void {
     try {
+      this.cacheData = new Queue();
       if (this.interId != 0 - Number.MAX_VALUE) {
         clearInterval(this.interId)
       }
@@ -227,7 +228,6 @@ export default class HttpUrlSource implements Source {
           if (self?.sourceInfo?.url?.indexOf('ping') != -1) {
             self?.callBack?.onDataStart();
           } else {
-            self.cacheData = new Queue();
             if (headers) {
               receiveHeader = headers as Record<string, Object>;
               mime = receiveHeader['content-type'] as string ? receiveHeader['content-type'] as string : receiveHeader['Content-Type'] as string;
@@ -257,6 +257,7 @@ export default class HttpUrlSource implements Source {
           }
         })
         let option: http.HttpRequestOptions = self.initRequestParam(offset, -1)
+        self.cacheData = new Queue();
         await self.connection?.requestInStream(self.sourceInfo!!.url, option)
         return resolve()
       })
