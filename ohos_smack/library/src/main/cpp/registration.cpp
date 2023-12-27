@@ -25,8 +25,8 @@ constexpr int REG_DELAY_TM_40S = (5 * 1000 * 500); // 延时约40秒
 *  返回-1 表示注册失败
 *  返回 1 表示注册成功
 */
-int UserRegState = -1;
-static void delay_msecs(int msec)
+int g_userRegState = -1;
+static void DelayMsecs(int msec)
 {
     clock_t now = clock();
     if (now > 0) {
@@ -36,7 +36,7 @@ static void delay_msecs(int msec)
 
 int registration::createAccounts(const std::string &ipStr, const std::string &nameStr, const std::string &pwdStr)
 {
-    UserRegState = -1;
+    g_userRegState = -1;
     name = nameStr;
     pwd = pwdStr;
     j = new Client(ipStr);
@@ -53,21 +53,21 @@ int registration::createAccounts(const std::string &ipStr, const std::string &na
     j->disco()->addFeature(XMLNS_CHAT_STATES);
 
     j->connect();
-    delay_msecs(REG_DELAY_TM_40S);
+    DelayMsecs(REG_DELAY_TM_40S);
 
-    return UserRegState;
+    return g_userRegState;
 }
 
 void registration::onConnect()
 {
-    LOGW("onConnect!!!\n");
+    LOGI("onConnect!!!\n");
     if (m_reg != nullptr)
         m_reg->fetchRegistrationFields();
 }
 
 void registration::onDisconnect(ConnectionError e)
 {
-    LOGW("onDisconnect: %d\n", e);
+    LOGI("onDisconnect: %d\n", e);
     if (e == ConnAuthenticationFailed)
         LOGD("auth failed. reason: %d\n", j->authError());
 }
@@ -77,7 +77,7 @@ bool registration::onTLSConnect(const CertInfo &info)
     time_t from(info.date_from);
     time_t to(info.date_to);
 
-    LOGW("onTLSConnect status: %d\nissuer: %s\npeer: %s\nprotocol: %s\nmac: %s\ncipher: %s\ncompression: %s\n"
+    LOGI("onTLSConnect status: %d\nissuer: %s\npeer: %s\nprotocol: %s\nmac: %s\ncipher: %s\ncompression: %s\n"
          "from: %s\nto: %s\n",
          info.status, info.issuer.c_str(), info.server.c_str(),
          info.protocol.c_str(), info.mac.c_str(), info.cipher.c_str(),
@@ -87,59 +87,59 @@ bool registration::onTLSConnect(const CertInfo &info)
 
 void registration::onResourceBind(const std::string &resource)
 {
-    LOGW("onResourceBind: %s", resource.c_str());
+    LOGI("onResourceBind: %s", resource.c_str());
 }
 
 void registration::onResourceBindError(const Error *error)
 {
-    LOGW("onResourceBindError: %d\n", error);
+    LOGI("onResourceBindError: %d\n", error);
 }
 
 void registration::onSessionCreateError(const Error *error)
 {
-    LOGW("onSessionCreateError: %d\n", error);
+    LOGI("onSessionCreateError: %d\n", error);
 }
 
 void registration::handleLog(LogLevel level, LogArea area, const std::string &message)
 {
-    LOGW("handleLog area: 0x%x, msg: %s", area, message.c_str());
+    LOGI("handleLog area: 0x%x, msg: %s", area, message.c_str());
 }
 
 void registration::onStreamEvent(StreamEvent event)
 {
-    LOGW("onStreamEvent");
+    LOGI("onStreamEvent");
 }
 
 void registration::handleRegistrationFields(const JID &from, int fields, std::string instructions)
 {
-    LOGW("handleRegistrationFields fields: %d instructions: %s ,from %s", fields,
+    LOGI("handleRegistrationFields fields: %d instructions: %s ,from %s", fields,
         instructions.c_str(), from.full().c_str());
     RegistrationFields vals;
     vals.username = name;
     vals.password = pwd;
     bool isRegSuc = m_reg->createAccount(fields, vals);
     if (isRegSuc) {
-        UserRegState = 1;
+        g_userRegState = 1;
     }
 }
 
 void registration::handleRegistrationResult(const JID & /* from */, RegistrationResult result)
 {
-    LOGW("result: %d\n", result);
+    LOGI("result: %d\n", result);
     j->disconnect();
 }
 
 void registration::handleAlreadyRegistered(const JID & /* from */)
 {
-    LOGW("handleAlreadyRegistered the account already exists.\n");
+    LOGI("handleAlreadyRegistered the account already exists.\n");
 }
 
 void registration::handleDataForm(const JID & /* from */, const DataForm & /* form */)
 {
-    LOGW("handleDataForm datForm received\n");
+    LOGI("handleDataForm datForm received\n");
 }
 
 void registration::handleOOB(const JID & /* from */, const OOB &oob)
 {
-    LOGW("handleOOB OOB registration requested. %s: %s\n", oob.desc().c_str(), oob.url().c_str());
+    LOGI("handleOOB OOB registration requested. %s: %s\n", oob.desc().c_str(), oob.url().c_str());
 }

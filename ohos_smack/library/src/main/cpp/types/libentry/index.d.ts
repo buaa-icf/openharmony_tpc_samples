@@ -1,12 +1,13 @@
-/*
-  Copyright (C) 2022 Huawei Device Co., Ltd.
-
-  This software is distributed under a license. The full license
-  agreement can be found in the file LICENSE in this distribution.
-  This software may not be copied, modified, sold or distributed
-  other than expressed in the named license agreement.
-  This software is distributed without any warranty.
-*/
+/**
+ * Copyright (C) 2023 Huawei Device Co., Ltd.
+ *
+ * This software is distributed under a license. The full license
+ * agreement can be found in the file LICENSE in this distribution.
+ * This software may not be copied, modified, sold or distributed
+ * other than expressed in the named license agreement.
+ *
+ * This software is distributed without any warranty.
+ */
 
 export const send: (jidToStr: string, msg: string) => string;
 
@@ -34,6 +35,8 @@ export const changeFriendGroup: (jidStr: string, group: string) => number;
 
 export const changeGroup: (oldGroup: string, newGroup: string) => number;
 
+
+export const registerMessageCallback: (register: any) => number;
 export const register_message: (status: boolean, register: any) => number;
 /**
  * jid: 当前登录用户id标识, roomStr: 房间名称, domain: 标识符, serviceName: 不知道
@@ -88,6 +91,7 @@ export const revokeVoices: (nick: string, reason: string) => number;
  * status:狀態  register：註冊回調
  */
 export const registerMessageGroup: (status: boolean, register: any) => number;
+export const registerGroupMessageCallback: (register: any) => number;
 /**
  * nick:暱稱   affiliation:狀態   reason:原因
  */
@@ -158,6 +162,8 @@ export const nick: () => string;
  * status:狀態  register：註冊回調
  */
 export const registerMUCParticipantPresenceListener: (status: boolean, register: any) => number;
+
+export const registerMUCParticipantPresenceListener2: (register: any) => number;
 
 /**
  * retrun: number is  0 表示没有连接 1表示连接

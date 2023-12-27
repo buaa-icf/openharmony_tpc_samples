@@ -9,9 +9,10 @@
  * This software is distributed without any warranty.
  */
 
-#ifndef ohosXmppClient_room_H
-#define ohosXmppClient_room_H
+#ifndef OHOSXMPPCLIENT_ROOM_H
+#define OHOSXMPPCLIENT_ROOM_H
 
+#include <node_api.h>
 #include <src/client.h>
 #include <src/connectionlistener.h>
 #include <src/mucroomhandler.h>
@@ -25,18 +26,28 @@
 #include <src/loghandler.h>
 #include <src/logsink.h>
 
+struct RoomParams {
+    std::string roomStr;
+    std::string domain;
+    std::string serviceName;
+    std::string nick;
+    std::string password;
+};
+
 class room : public gloox::MUCRoomHandler,
              public gloox::MUCRoomConfigHandler {
 public:
-    void loop();
+    void Loop();
 
     // First batch completed
     void createRoom(gloox::ClientBase *client, const std::string &jid, const std::string &roomName,
         const std::string &domain, const std::string &serviceName);
+    void recvGroupMsg(napi_env env, napi_value jsCb);
+    void recvMUCParticipantPresenceListener(napi_env env, napi_value jsCb);
     void leave(const std::string &msg);
     void sendGroupMessage(const std::string &message);
     void setSubject(const std::string &subject);
-    void join();
+    void Join();
     void destroy(const std::string &reason, const gloox::JID &alternate, const std::string &password);
 
     // Second batch completed
@@ -62,8 +73,7 @@ public:
     void setAffiliations(const std::string& nicks, std::string& affiliationStr, const std::string& reason);
     // fourth batch completed
     void setRoomConfig(const std::string &config);
-    void createOrJoinRoom(gloox::ClientBase *client, const std::string &room, const std::string &domain,
-        const std::string &serviceName, const std::string &nick, const std::string &password);
+    void createOrJoinRoom(gloox::ClientBase *client, const RoomParams &params);
     void setPassword(const std::string &password);
     void bans(const std::string &nicks, const std::string &reason);
     void setNick(const std::string &nick);
@@ -72,7 +82,7 @@ public:
 
     gloox::Message *createDataForm(const gloox::JID &room, const gloox::DataForm *df);
     const gloox::MUCListItemList &list();
-    virtual void onConnect();
+    virtual void OnConnect();
     virtual void onDisconnect(gloox::ConnectionError e);
     virtual void onResourceBind(const std::string &resource);
     virtual void onResourceBindError(const gloox::Error *error);

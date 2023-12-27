@@ -152,19 +152,20 @@ static HOST_DOMAIN: string = "he-202101111234"
   ```
   git clone --recursive https://gitee.com/openharmony-tpc/openharmony_tpc_samples.git
   ```
-2. Linux环境无需执行该步骤，如果是windows环境下，代码下载完成后合入OHOS适配的代码，cd 进入到smack/smack/src/main/cpp/thirdModule 目录下，执行 modify.sh 脚本，将本目录下的 patch 文件合入到 gloox 源码中。
+2. Linux环境无需执行该步骤，如果是windows环境下，代码下载完成后合入OHOS适配的代码，cd 进入到ohos_smack/library/src/main/cpp/thirdModule 目录下，执行 modify.sh 脚本，将本目录下的 patch 文件合入到 gloox 源码中。
 3. 开始编译项目。
 
 ## 约束与限制
 在下述版本验证通过：
 
-DevEco Studio: 4.0.3.600, SDK: API10(4.0.10.11)
+- DevEco Studio 版本： 4.1 Canary(4.1.3.317)
+- OpenHarmony SDK:API11 (4.1.0.36)
 
 ## 目录结构
 ```
-|---- smack  
+|---- ohos_smack
 |     |---- entry  # 示例代码文件夹
-|     |---- smack  # smack库文件夹
+|     |---- library  # smack库文件夹
 |               |----cpp # C++代码文件夹
 |                    |----gloox # C++代码实现文件夹
 |                    |----types # 对外接口

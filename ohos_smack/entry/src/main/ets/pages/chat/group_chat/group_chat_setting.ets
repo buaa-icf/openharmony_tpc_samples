@@ -101,6 +101,11 @@ struct Group_chat_setting {
   onExitGroup() {
     //销毁房间,群主可调用
     Smack.destroy(GlobalContext.getContext().getValue('userName') as string, "123");
+
+    let options: router.RouterOptions = {
+      url: 'pages/main'
+    };
+    router.pushUrl(options)
   }
 }
 @CustomDialog

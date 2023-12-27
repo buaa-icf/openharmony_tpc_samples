@@ -15,9 +15,7 @@
 constexpr unsigned int LOG_DOMAIN_NUM = 0x0201;
 constexpr unsigned int LOG_LEN = 65535;
 
-std::list<std::string> Log::logs(LOG_LEN);
-
-void Log::log(Level level, const char *tag, const char * msg)
+void Log::Logger(Level level, const char *tag, const char * msg)
 {
     LogLevel logLevel = LOG_DEBUG;
     switch (level) {

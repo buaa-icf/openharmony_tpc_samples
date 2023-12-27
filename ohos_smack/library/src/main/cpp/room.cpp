@@ -27,7 +27,7 @@ void room::createRoom(ClientBase *client, const std::string &jidStr, const std::
     m_room = new MUCRoom(client, nicks, this, this);
 }
 
-void room::loop()
+void room::Loop()
 {
     LOGD("loop...");
     ConnectionError ce = ConnNoError;
@@ -38,13 +38,12 @@ void room::loop()
     LOGD("recv error: %d", ce);
 }
 
-void room::createOrJoinRoom(ClientBase *client, const std::string &roomStr, const std::string &domain,
-                            const std::string &serviceName, const std::string &nick, const std::string &password)
+void room::createOrJoinRoom(ClientBase *client, const RoomParams &params)
 {
-    JID roomJID(roomStr + "@" + serviceName + "." + domain + "/" + nick);
+    JID roomJID(params.roomStr + "@" + params.serviceName + "." + params.domain + "/" + params.nick);
     m_room = new MUCRoom(client, roomJID, this, this);
-    if (password != "") {
-        m_room->setPassword(password);
+    if (params.password != "") {
+        m_room->setPassword(params.password);
     }
     m_room->join();
 }
@@ -60,7 +59,7 @@ void room::setPassword(const std::string &password)
     m_room->setPassword(password);
 }
 
-void room::join()
+void room::Join()
 {
     m_room->join();
 }
@@ -306,7 +305,8 @@ static std::map<std::string, std::string> parseConfigString(const std::string& c
         p1 += strlen(p2) + 1;
         len -= strlen(p2) + 1;
 
-        char *k, *v;
+        char *k;
+        char *v;
         while ((p3 = strtok(p2, ":")) != nullptr) {
             p2 = nullptr;
             if (pos % EXPECT_NUMBER == ODD_NUMBER) {
@@ -352,6 +352,10 @@ static DataFormField* createDataFormField(DataFormField::FieldType type, const s
 // 将值添加到 DataFormField 对象
 static void addValuesToDataFormField(const StringList* list, DataFormField* field)
 {
+    if (list == nullptr || field == nullptr) {
+        LOGE("SMACK_TAG---------> [room.addValuesToDataFormField]list or field is null");
+        return;
+    }
     StringList::const_iterator it = list->begin();
     int in = 0;
     for (; it != list->end(); ++it) {
@@ -368,6 +372,10 @@ static void addChatRoomInfo(const std::map<std::string, std::string>& mmap, Data
 {
     std::map<std::string, std::string> map = mmap;
     DataForm *form = fform;
+    if (form == nullptr) {
+        LOGE("SMACK_TAG---------> [room.addChatRoomInfo]form is null");
+        return;
+    }
     if (map.find("passwordprotectedroom") != map.end()) {
         std::string passwordprotectedroom = map["passwordprotectedroom"]; // "1";
         form->addField(DataFormField::TypeBoolean, "muc#roomconfig_passwordprotectedroom",
@@ -416,13 +424,17 @@ static void addPersonInfo(const std::map<std::string, std::string>& mmap, DataFo
 {
     std::map<std::string, std::string> map = mmap;
     DataForm *form = fform;
+    if (form == nullptr) {
+        LOGE("SMACK_TAG---------> [room.addPersonInfo]form is null");
+        return;
+    }
     if (map.find("publicroom") != map.end()) {
         std::string publicroom = map["publicroom"]; // "1";
         form->addField(DataFormField::TypeBoolean, "muc#roomconfig_publicroom", publicroom, "在目录中列出房间");
     }
     if (map.find("persistentroom") != map.end()) {
         std::string persistentroom = map["persistentroom"]; // "1";
-        LOGW("SETROOMconfig---- persistentroom %s", persistentroom.c_str());
+        LOGI("SETROOMconfig---- persistentroom %s", persistentroom.c_str());
         form->addField(DataFormField::TypeBoolean, "muc#roomconfig_persistentroom", persistentroom, "永久房间");
     }
     if (map.find("moderatedroom") != map.end()) {
@@ -444,6 +456,10 @@ void room::setRoomConfig(const std::string &config)
 
     if (map.size() > 0) {
         DataForm *form = new DataForm(TypeSubmit);
+        if (form == nullptr) {
+            LOGE("SMACK_TAG---------> [room.setRoomConfig]form is null");
+            return;
+        }
         form->addField(DataFormField::TypeHidden, "FORM_TYPE", XMLNS_MUC_REQUEST);
 
         if (map.find("roomname") != map.end()) {
@@ -464,6 +480,10 @@ void room::setRoomConfig(const std::string &config)
         }
         if (map.find("presencebroadcast") != map.end()) {
             StringList *list = createStringListFromMapValue(map);
+            if (list == nullptr) {
+                LOGE("SMACK_TAG---------> [room.setRoomConfig]list is null");
+                return;
+            }
             if (list->size() > 0) {
                 DataFormField *field = createDataFormField(DataFormField::TypeTextMulti,
                     "muc#roomconfig_presencebroadcast", "广播其存在的角色");
@@ -487,7 +507,7 @@ std::string room::requestRoomConfig()
 
 const MUCListItemList &room::list() {}
 
-void room::onConnect()
+void room::OnConnect()
 {
     LOGD("connected!!!\n");
 }
@@ -638,6 +658,73 @@ static std::string flagTypeDetect(const MUCRoomParticipant participant)
     return flagType;
 }
 
+// 定义线程数据结构体
+struct ThreadSafeInfoRoom {
+    std::string id;
+    std::string msg;
+};
+
+struct ThreadSafeInfoMUCP {
+    std::string nike;
+    std::string presenceType;
+};
+
+// 实例化结构体
+static struct ThreadSafeInfoRoom g_threadInfoRoom = {};
+static struct ThreadSafeInfoMUCP g_threadInfoMUCP = {};
+static napi_threadsafe_function tsfn_room;
+static napi_threadsafe_function tsfn_mucp;
+
+static void CallJs(napi_env env, napi_value jsCb, void *context, void *data)
+{
+    LOGI("SMACK_TAG--------->CallJs0: %s:  %d", "CallJs: ", __LINE__);
+    napi_value undefined;
+    napi_value ret;
+
+    napi_value argv[] = {nullptr, nullptr};
+
+    // 解析参数 data
+    ThreadSafeInfoRoom *arg = (ThreadSafeInfoRoom *)data;
+    if (arg == nullptr) {
+        LOGE("SMACK_TAG---------> [room.CallJs]arg is null");
+        return;
+    }
+    LOGI("SMACK_TAG--------->room CallJs1: %s:  %d", (arg->id).c_str(), __LINE__);
+    LOGI("SMACK_TAG--------->room CallJs2: %s:  %d", (arg->msg).c_str(), __LINE__);
+    napi_create_string_utf8(env, (arg->id).c_str(), NAPI_AUTO_LENGTH, &argv[0]);
+    LOGI("SMACK_TAG--------->room CallJs3: %s:  %d", "CallJs: ", __LINE__);
+    napi_create_string_utf8(env, (arg->msg).c_str(), NAPI_AUTO_LENGTH, &argv[1]);
+    LOGI("SMACK_TAG--------->room CallJs4: %s:  %d", "CallJs: ", __LINE__);
+    // 调用 js 回调函数
+    napi_status status = napi_call_function(env, undefined, jsCb, 2, argv, &ret);
+    LOGI("SMACK_TAG--------->room CallJs5: %d:  %d", status, __LINE__);
+}
+
+static void CallJs_MUCP(napi_env env, napi_value jsCb, void *context, void *data)
+{
+    LOGI("SMACK_TAG--------->CallJs0: %s:  %d", "CallJs: ", __LINE__);
+    napi_value undefined;
+    napi_value ret;
+
+    napi_value argv[] = {nullptr, nullptr};
+
+    // 解析参数 data
+    ThreadSafeInfoMUCP *arg = (ThreadSafeInfoMUCP *)data;
+    if (arg == nullptr) {
+        LOGE("SMACK_TAG---------> [room.CallJs_MUCP]arg is null");
+        return;
+    }
+    LOGI("SMACK_TAG--------->room CallJs1: %s:  %d", (arg->nike).c_str(), __LINE__);
+    LOGI("SMACK_TAG--------->room CallJs2: %s:  %d", (arg->presenceType).c_str(), __LINE__);
+    napi_create_string_utf8(env, (arg->nike).c_str(), NAPI_AUTO_LENGTH, &argv[0]);
+    LOGI("SMACK_TAG--------->room CallJs3: %s:  %d", "CallJs: ", __LINE__);
+    napi_create_string_utf8(env, (arg->presenceType).c_str(), NAPI_AUTO_LENGTH, &argv[1]);
+    LOGI("SMACK_TAG--------->room CallJs4: %s:  %d", "CallJs: ", __LINE__);
+    // 调用 js 回调函数
+    napi_status status = napi_call_function(env, undefined, jsCb, 2, argv, &ret);
+    LOGI("SMACK_TAG--------->room CallJs5: %d:  %d", status, __LINE__);
+}
+
 void room::handleMUCParticipantPresence(MUCRoom * /* room */, const MUCRoomParticipant participant,
     const Presence &presence)
 {
@@ -680,7 +767,19 @@ void room::handleMUCParticipantPresence(MUCRoom * /* room */, const MUCRoomParti
     jsonStr.append("\"");
     jsonStr.append("}");
     LOGD("handleMUCParticipantPresence ===>>>> %s %s \n", nick.c_str(), flagType.c_str());
-    handleMUCParticipantPresenceListener(nick.c_str(), jsonStr.c_str());
+    ThreadSafeInfoMUCP *data = &g_threadInfoMUCP;
+    if (data == nullptr) {
+        LOGE("SMACK_TAG---------> [room.handleMUCParticipantPresence]data is null");
+        return;
+    }
+    data->nike = nick.c_str();
+    data->presenceType = jsonStr.c_str();
+    LOGI("SMACK_TAG--------->: %s:  %d", "handleMUCMessage: ", __LINE__);
+    napi_acquire_threadsafe_function(tsfn_mucp);
+    LOGI("SMACK_TAG--------->: %s:  %d", "handleMUCMessage: ", __LINE__);
+    // 调用主线程函数，传入 Data
+    napi_call_threadsafe_function(tsfn_mucp, data, napi_tsfn_blocking);
+    LOGI("SMACK_TAG--------->: %s:  %d", "handleMUCMessage: ", __LINE__);
 }
 
 void room::handleMUCMessage(MUCRoom * /* room */, const Message &msg, bool priv)
@@ -688,8 +787,23 @@ void room::handleMUCMessage(MUCRoom * /* room */, const Message &msg, bool priv)
     LOGD("handleMUCMessage %s said: '%s' (history: %s, private: %s)\n",
         msg.from().resource().c_str(), msg.body().c_str(),
         msg.when() ? "yes" : "no", priv ? "yes" : "no");
+    LOGI("SMACK_TAG--------->: %s:  %d", "handleMUCMessage:  ", __LINE__);
+    auto body = msg.body();
+    LOGI("SMACK_TAG--------->: %s:  %d", msg.from().resource().c_str(), __LINE__);
 
-    message_received_group(msg.from().resource().c_str(), msg.body().c_str());
+    ThreadSafeInfoRoom *data = &g_threadInfoRoom;
+    if (data == nullptr) {
+        LOGE("SMACK_TAG---------> [room.handleMUCMessage]data is null");
+        return;
+    }
+    data->id = msg.from().resource().c_str();
+    data->msg = body.c_str();
+    LOGI("SMACK_TAG--------->: %s:  %d", "handleMUCMessage: ", __LINE__);
+    napi_acquire_threadsafe_function(tsfn_room);
+    LOGI("SMACK_TAG--------->: %s:  %d", "handleMUCMessage: ", __LINE__);
+    // 调用主线程函数，传入 Data
+    napi_call_threadsafe_function(tsfn_room, data, napi_tsfn_blocking);
+    LOGI("SMACK_TAG--------->: %s:  %d", "handleMUCMessage: ", __LINE__);
 }
 
 void room::handleMUCSubject(MUCRoom * /* room */, const std::string &nick, const std::string &subject)
@@ -708,6 +822,10 @@ void room::handleMUCError(MUCRoom * /* room */, StanzaError error)
 
 void room::handleMUCInfo(MUCRoom * /* room */, int features, const std::string &name, const DataForm *infoForm)
 {
+    if (infoForm == nullptr) {
+        LOGE("SMACK_TAG---------> [room.handleMUCInfo]infoForm is null");
+        return;
+    }
     // todo 房间信息获取
     LOGD("handleMUCInfo features: %d, name: %s, form xml: %s\n",
         features, name.c_str(), infoForm->tag()->xml().c_str());
@@ -722,6 +840,10 @@ void room::handleMUCInviteDecline(MUCRoom * /* room */, const JID &invitee, cons
 
 bool room::handleMUCRoomCreation(MUCRoom *room)
 {
+    if (room == nullptr) {
+        LOGE("SMACK_TAG---------> [room.handleMUCRoomCreation]room is null");
+        return false;
+    }
     LOGD("handleMUCRoomCreation room %s didn't exist, beeing created.\n",
          room->name().c_str());
     return true;
@@ -729,6 +851,10 @@ bool room::handleMUCRoomCreation(MUCRoom *room)
 
 void room::handleMUCConfigForm(MUCRoom *room, const DataForm &form)
 {
+    if (room == nullptr) {
+        LOGE("SMACK_TAG---------> [room.handleMUCConfigForm]room is null");
+        return;
+    }
     // todo 房间配置信息处理处
     LOGD("requestRoomConfig handleMUCConfigForm room:%s, title:%s, form:%s", room->name().c_str(),
          form.title().c_str(), form.filterString().c_str());
@@ -760,8 +886,31 @@ void room::handleMUCItems(MUCRoom * /* room */, const Disco::ItemList &items)
     room_item_list = name;
 }
 
+void room::recvGroupMsg(napi_env env, napi_value jsCb)
+{
+    napi_value workName;
+    napi_create_string_utf8(env, "recvGroupMsg", NAPI_AUTO_LENGTH, &workName);
+    LOGI("SMACK_TAG--------->recvGroupMsg: %s:  %d", "recvGroupMsg: ", __LINE__);
+    napi_create_threadsafe_function(env, jsCb, nullptr, workName, 0, 1, nullptr, nullptr, nullptr, CallJs, &tsfn_room);
+    LOGI("SMACK_TAG--------->recvGroupMsg: %s:  %d", "recvGroupMsg: ", __LINE__);
+}
+
+void room::recvMUCParticipantPresenceListener(napi_env env, napi_value jsCb)
+{
+    napi_value workName;
+    napi_create_string_utf8(env, "recvMUCParticipantPresenceListener", NAPI_AUTO_LENGTH, &workName);
+    LOGI("SMACK_TAG--------->recvMUCParticipantPresenceListener: %d", __LINE__);
+    napi_create_threadsafe_function(env, jsCb, nullptr, workName, 0, 1, nullptr, nullptr, nullptr,
+                                    CallJs_MUCP, &tsfn_room);
+    LOGI("SMACK_TAG--------->recvMUCParticipantPresenceListener: %d",  __LINE__);
+}
+
 void room::handleMUCConfigList(MUCRoom *room, const MUCListItemList &items, MUCOperation operation)
 {
+    if (room == nullptr) {
+        LOGE("SMACK_TAG---------> [room.handleMUCConfigList]room is null");
+        return;
+    }
     // todo 房间岗位列表
     LOGD("handleMUCConfigList room:%s", room->name().c_str());
 
@@ -783,10 +932,18 @@ void room::handleMUCConfigList(MUCRoom *room, const MUCListItemList &items, MUCO
 
 void room::handleMUCConfigResult(MUCRoom *room, bool success, MUCOperation operation)
 {
+    if (room == nullptr) {
+        LOGE("SMACK_TAG---------> [room.handleMUCConfigResult]room is null");
+        return;
+    }
     LOGD("handleMUCConfigResult room:%s", room->name().c_str());
 }
 
 void room::handleMUCRequest(MUCRoom *room, const DataForm &form)
 {
+    if (room == nullptr) {
+        LOGE("SMACK_TAG---------> [room.handleMUCRequest]room is null");
+        return;
+    }
     LOGD("handleMUCRequest room:%s", room->name().c_str());
 }

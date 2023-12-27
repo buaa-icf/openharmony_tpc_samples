@@ -107,14 +107,14 @@ struct CustomDialogExample {
             this.controller.close()
           }
         })
-      Text('加入加密群聊')
-        .fontSize(36)
-        .padding(10)
-        .onClick(() => {
-          if(this.controller != null) {
-            this.controller.close()
-          }
-        })
+      // Text('加入加密群聊')
+      //   .fontSize(36)
+      //   .padding(10)
+      //   .onClick(() => {
+      //     if(this.controller != null) {
+      //       this.controller.close()
+      //     }
+      //   })
     }
     .backgroundColor('#ffffff')
     .borderRadius(10)

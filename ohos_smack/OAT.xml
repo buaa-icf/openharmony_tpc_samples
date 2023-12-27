@@ -35,7 +35,7 @@
                     type="filename"/>
                 <filteritem
                     desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"
-                    name="smack/hvigorfile.ts"
+                    name="ohos_smack/hvigorfile.ts"
                     type="filename"/>
                 <filteritem
                     desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"
@@ -219,91 +219,91 @@
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
-                    name="smack/src/main/cpp/types/libentry/index.d.ts"
+                    name="library/src/main/cpp/types/libentry/index.d.ts"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
-                    name="smack/hvigorfile.ts"
+                    name="ohos_smack/hvigorfile.ts"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/AUTHORS"
+                    name="library/src/main/cpp/gloox/AUTHORS"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/config.h.symbian"
+                    name="library/src/main/cpp/gloox/config.h.symbian"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/INSTALL"
+                    name="library/src/main/cpp/gloox/INSTALL"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/config.h.win"
+                    name="library/src/main/cpp/gloox/config.h.win"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/missing"
+                    name="library/src/main/cpp/gloox/missing"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/acinclude.m4"
+                    name="library/src/main/cpp/gloox/acinclude.m4"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/UPGRADING"
+                    name="library/src/main/cpp/gloox/UPGRADING"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/TODO"
+                    name="library/src/main/cpp/gloox/TODO"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/README.wince"
+                    name="library/src/main/cpp/gloox/README.wince"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
-                    name="smack/src/main/ets/PresenceRoomType.ts"
+                    name="library/src/main/ets/PresenceRoomType.ts"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/gloox.cbp"
+                    name="library/src/main/cpp/gloox/gloox.cbp"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/README.win32"
+                    name="library/src/main/cpp/gloox/README.win32"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
-                    name="smack/src/main/ets/MUCRoomRole.ts"
+                    name="library/src/main/ets/MUCRoomRole.ts"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/README.symbian"
+                    name="library/src/main/cpp/gloox/README.symbian"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
-                    name="smack/src/main/ets/MUCRoomAffiliation.ts"
+                    name="library/src/main/ets/MUCRoomAffiliation.ts"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/configure.ac"
+                    name="library/src/main/cpp/gloox/configure.ac"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/ChangeLog"
+                    name="library/src/main/cpp/gloox/ChangeLog"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/gloox.mmp"
+                    name="library/src/main/cpp/gloox/gloox.mmp"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/bld.inf"
+                    name="library/src/main/cpp/gloox/bld.inf"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/COPYING"
+                    name="library/src/main/cpp/gloox/COPYING"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
@@ -311,7 +311,7 @@
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/config.guess"
+                    name="library/src/main/cpp/gloox/config.guess"
                     type="filepath"/>
                 <filteritem
                     desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"
@@ -327,17 +327,20 @@
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/config.sub"
+                    name="library/src/main/cpp/gloox/config.sub"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/configure"
+                    name="library/src/main/cpp/gloox/configure"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/depcomp"
+                    name="library/src/main/cpp/gloox/depcomp"
                     type="filepath"/>
-
+                <filteritem
+                    desc="版权免责声明文件，无需修改"
+                    name="NOTICE"
+                    type="filename"/>
             </filefilter>
 
             <filefilter
@@ -353,75 +356,75 @@
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无版权头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/UPGRADING"
+                    name="library/src/main/cpp/gloox/UPGRADING"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无版权头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/acinclude.m4"
+                    name="library/src/main/cpp/gloox/acinclude.m4"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无版权头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/TODO"
+                    name="library/src/main/cpp/gloox/TODO"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无版权头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/README.wince"
+                    name="library/src/main/cpp/gloox/README.wince"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无版权头，不做侵入式修改"
-                    name="smack/src/main/ets/PresenceRoomType.ts"
+                    name="library/src/main/ets/PresenceRoomType.ts"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无版权头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/gloox.cbp"
+                    name="library/src/main/cpp/gloox/gloox.cbp"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无版权头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/README.win32"
+                    name="library/src/main/cpp/gloox/README.win32"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无版权头，不做侵入式修改"
-                    name="smack/src/main/ets/MUCRoomRole.ts"
+                    name="library/src/main/ets/MUCRoomRole.ts"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无版权头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/README.symbian"
+                    name="library/src/main/cpp/gloox/README.symbian"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无版权头，不做侵入式修改"
-                    name="smack/src/main/ets/MUCRoomAffiliation.ts"
+                    name="library/src/main/ets/MUCRoomAffiliation.ts"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无版权头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/configure.ac"
+                    name="library/src/main/cpp/gloox/configure.ac"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无版权头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/config.h.win"
+                    name="library/src/main/cpp/gloox/config.h.win"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无版权头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/config.h.symbian"
+                    name="library/src/main/cpp/gloox/config.h.symbian"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/config.guess"
+                    name="library/src/main/cpp/gloox/config.guess"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/config.sub"
+                    name="library/src/main/cpp/gloox/config.sub"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/depcomp"
+                    name="library/src/main/cpp/gloox/depcomp"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/missing"
+                    name="library/src/main/cpp/gloox/missing"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/bld.inf"
+                    name="library/src/main/cpp/gloox/bld.inf"
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
@@ -437,8 +440,12 @@
                     type="filepath"/>
                 <filteritem
                     desc="原库代码文件，原本就无协议头，不做侵入式修改"
-                    name="smack/src/main/cpp/gloox/gloox.mmp"
+                    name="library/src/main/cpp/gloox/gloox.mmp"
                     type="filepath"/>
+                <filteritem
+                    desc="版权免责声明文件，无需修改"
+                    name="NOTICE"
+                    type="filename"/>
             </filefilter>
 
         </filefilterlist>
@@ -453,7 +460,6 @@
                     group="defaultGroup"
                     name="GPL-3.0+"
                     path=".*"
-                    rule="may"
                     type="license"/>
 
             </policy>
@@ -466,7 +472,7 @@
                     filefilter="copyrightPolicyFilter"
                     group="defaultGroup"
                     name="Copyright (C) 1992-1996, 1998-2012 Free Software Foundation, Inc."
-                    path="smack/src/main/cpp/gloox/configure"
+                    path="library/src/main/cpp/gloox/configure"
                     rule="may"
                     type="copyright"/>
                 <policyitem

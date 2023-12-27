@@ -9,9 +9,10 @@
  * This software is distributed without any warranty.
  */
 
-#ifndef ohosXmppClient_Smack_H
-#define ohosXmppClient_Smack_H
+#ifndef OHOSXMPPCLIENT_SMACK_H
+#define OHOSXMPPCLIENT_SMACK_H
 
+#include <node_api.h>
 #include <src/connectionlistener.h>
 #include <src/loghandler.h>
 #include <src/presencehandler.h>
@@ -41,45 +42,47 @@ class Smack : public gloox::PresenceHandler,
               public gloox::SubscriptionHandler {
 public:
     Smack();
-    int login(const std::string &jidStr, const std::string &pwd);
-    void loop();
+    int Login(const std::string &jidStr, const std::string &pwd);
+    void RecvMsg(napi_env env, napi_value jsCb);
+    void RecvSubscriptionRequestListener(napi_env env, napi_value jsCb);
+    void Loop();
     void Loginout();
-    void send(const std::string &jidStr, const std::string &text);
-    void receiveMsg(const std::string &jidStr, const std::string &msg);
-    void removeAccounts();
-    void changePasswords(const std::string &password);
-    void addFriends(const std::string &jidStr, const std::string &username, const std::string &group);
-    void createGroup(const std::string &group);
-    void delfriends(const std::string &jidStr);
-    std::string getFriendList();
-    void changeGroup(const std::string &oldGroup, const std::string &newGroup);
+    void Send(const std::string &jidStr, const std::string &text);
+    void ReceiveMsg(const std::string &jidStr, const std::string &msg);
+    void RemoveAccounts();
+    void ChangePasswords(const std::string &password);
+    void AddFriends(const std::string &jidStr, const std::string &username, const std::string &group);
+    void CreateGroup(const std::string &group);
+    void Delfriends(const std::string &jidStr);
+    std::string GetFriendList();
+    void ChangeGroup(const std::string &oldGroup, const std::string &newGroup);
 
-    void declineInvitation(const std::string &roomStr, const std::string &invitorStr, const std::string &reason);
-    bool isConnected();
-    std::string username();
-    void setUsernameAndPassword(std::string username, std::string pwd);
-    void setPort(int port);
-    bool connect();
-    void setServer(const std::string &server);
-    void setPassword(const std::string &password);
-    std::string password();
-    std::string resource();
-    void setResource(const std::string &resource);
-    bool login();
-    void receiveFriends(const std::string &jidStr, const std::string &groupName, const std::string &hello);
-    void rejectFriends(const std::string &jidStr, const std::string &reason);
-    std::string server();
-    int authed();
-    int port();
-    int compression();
+    void DeclineInvitation(const std::string &roomStr, const std::string &invitorStr, const std::string &reason);
+    bool IsConnected();
+    std::string Username();
+    void SetUsernameAndPassword(std::string username, std::string pwd);
+    void SetPort(int port);
+    bool Connect();
+    void SetServer(const std::string &server);
+    void SetPassword(const std::string &password);
+    std::string Password();
+    std::string Resource();
+    void SetResource(const std::string &resource);
+    bool Login();
+    void ReceiveFriends(const std::string &jidStr, const std::string &groupName, const std::string &hello);
+    void RejectFriends(const std::string &jidStr, const std::string &reason);
+    std::string Server();
+    int Authed();
+    int Port();
+    int Compression();
     // 获取当前登录的JID
     gloox::JID &getMyJID();
     // 获取clent
     gloox::Client *getClent();
 
     // 变更用户状态
-    void changePresence(const std::string &statusType, const std::string &status);
-    void changeFriendGroup(const std::string &jidStr, const std::string &group);
+    void ChangePresence(const std::string &statusType, const std::string &status);
+    void ChangeFriendGroup(const std::string &jidStr, const std::string &group);
 
     virtual void handlePresence(const gloox::Presence &presence);
     virtual void onConnect();
@@ -131,5 +134,13 @@ private:
     int32_t presenceType = -1;
     std::string userName = "";
 };
+// 定义线程数据结构体
+struct ThreadSafeInfoRecvMsg {
+    std::string id;
+    std::string msg;
+};
 
+struct ThreadSafeInfoSub {
+    std::string result;
+};
 #endif // ohosXmppClient_Smack_H
