@@ -1,6 +1,6 @@
 {
   "module": {
-    "name": "localeEnUs",
+    "name": "library",
     "type": "har",
     "deviceTypes": [
       "default",

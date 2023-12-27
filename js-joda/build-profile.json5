@@ -34,8 +34,8 @@
       ]
     },
     {
-      "name": "localeEnUs",
-      "srcPath": "./localeEnUs"
+      "name": "library",
+      "srcPath": "./library"
     }
   ]
 }

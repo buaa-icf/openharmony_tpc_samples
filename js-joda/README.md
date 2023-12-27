@@ -2,12 +2,13 @@
 
 ## 简介
 
-适配了OpenHarmony的一款不可变日期和时间开源库。
+js-joda是一个处理时间日期的工具库，为日期时间类提供了简单API,支持时区，持续时间，日期时间格式化和解析,适配了OpenHarmony的一款不可变日期和时间开源库。
 
 ## 下载安裝
 
 ```
- npm install @js-joda/core --save
+ ohpm install @js-joda/core
+ ohpm install @js-joda/timezone
 ```
 
 OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
@@ -60,14 +61,15 @@ console.info(mDate.get(ChronoField.ALIGNED_WEEK_OF_YEAR).toString());
 ## 约束与限制
 在下述版本验证通过：
 
-DevEco Studio 版本：4.0Beta2（4.0.3.600），OpenHarmony SDK:API10 Release（4.0.10.11）
+DevEco Studio 版本： 4.1 Canary(4.1.3.317) OpenHarmony SDK:API11 (4.1.0.36)
 
 ## 目录结构
 
 ````
-/js-joda     # 项目根目录
-├── entry/src/main/ets/pages      # 示例代码文件夹                   
-├── README.md  # 安装使用方法                    
+|---- js-joda     # 项目根目录  
+|     |---- entry  # 示例代码文件夹
+|     |---- library  # localeEnUs库文件夹
+|     |---- README.md  # 安装使用方法                 
 ````
 
 ## 贡献代码
