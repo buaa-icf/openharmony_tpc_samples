@@ -12,12 +12,13 @@
 #include <cstring>
 #include <js_native_api.h>
 #include <js_native_api_types.h>
-
+#include <node_api.h>
 #include "napi/native_api.h"
 #include "hilog/log.h"
 
 #include "sio_client.h"
 #include "sio_message.h"
+#include "client_socket.h"
 
 static constexpr const int MAX_BUF_SIZE = 128;
 
@@ -32,14 +33,19 @@ static std::map<std::string, napi_ref> on_event_listener_call_aux_ref_map;
 static napi_ref on_error_listener_call_ref;
 // 根据eventname筛选ack回调方法
 static std::map<std::string, napi_ref> on_emit_listener_call_ref_map;
-// 全局无参回调
-static napi_value napi_result_void;
 // 全局result
 static size_t result = 0;
 
 static constexpr const int ARG_INDEX_0 = 0;
 static constexpr const int ARG_INDEX_1 = 1;
 static constexpr const int ARG_INDEX_2 = 2;
+
+static const char* g_newMessage = "new message";
+static const char* g_userJoined = "user joined";
+static const char* g_userLeft = "user left";
+static const char* g_login = "login";
+
+static struct ThreadSafeInfo g_threadSafeInfo = {};
 
 static std::string get_message_value(sio::message::ptr const &message)
 {
@@ -89,12 +95,34 @@ static void handler_event_listener_aux(bool isOnce, const std::string &name, sio
             message_json += std::string(",\"") + "message" + "\":" + get_message_value(message);
         }
         message_json += "}";
-        napi_value message_json_result;
-        napi_create_string_utf8(env_global, message_json.c_str(), message_json.length(), &message_json_result);
-        napi_value on_event_listener_call_aux;
-        napi_get_reference_value(env_global, on_event_listener_call_aux_ref, &on_event_listener_call_aux);
-        napi_call_function(env_global, nullptr, on_event_listener_call_aux, 1,
-            &message_json_result, &napi_result_void);
+        
+        OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG,
+                     "SOCKETIO_TAG------> handler_event_listener_aux ,当前是子线程 event_name: %{public}s", name.c_str());
+        
+        ThreadSafeInfo* data = &g_threadSafeInfo;
+        if (data == nullptr) {
+            OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[event_listener]g_threadSafeInfo is null");
+            return;
+        }
+        data->result = message_json;
+        if (name == "new message") {
+            napi_acquire_threadsafe_function(g_tsfnOnNewMessageCall);
+            // 调用主线程函数，传入 Data
+            napi_call_threadsafe_function(g_tsfnOnNewMessageCall, data, napi_tsfn_blocking);
+        } else if (name == "login") {
+            napi_acquire_threadsafe_function(g_tsfnOnLoginCall);
+            // 调用主线程函数，传入 Data
+            napi_call_threadsafe_function(g_tsfnOnLoginCall, data, napi_tsfn_blocking);
+        } else if (name == "user joined") {
+            napi_acquire_threadsafe_function(g_tsfnOnUserJoinedCall);
+            // 调用主线程函数，传入 Data
+            napi_call_threadsafe_function(g_tsfnOnUserJoinedCall, data, napi_tsfn_blocking);
+        } else if (name == "user left") {
+            napi_acquire_threadsafe_function(g_tsfnOnUserLeftCall);
+            // 调用主线程函数，传入 Data
+            napi_call_threadsafe_function(g_tsfnOnUserLeftCall, data, napi_tsfn_blocking);
+        }
+        
         if (isOnce) {
             on_event_listener_call_aux_ref_map[name.c_str()] = nullptr;
         }
@@ -107,39 +135,39 @@ public:
 
     void OnOpen()
     {
-        if (on_open_call_ref != nullptr) {
-            napi_value on_open_call;
-            napi_get_reference_value(env_global, on_open_call_ref, &on_open_call);
-            napi_call_function(env_global, nullptr, on_open_call, 0, &napi_result_void, &napi_result_void);
-        }
+        OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> OnOpen ");
+            
+        napi_acquire_threadsafe_function(g_tsfnOnOpenCall);
+        // 调用主线程函数，传入 Data
+        napi_call_threadsafe_function(g_tsfnOnOpenCall, nullptr, napi_tsfn_blocking);
     }
 
     void OnFail()
     {
-        if (on_fail_call_ref != nullptr) {
-            napi_value on_fail_call;
-            napi_get_reference_value(env_global, on_fail_call_ref, &on_fail_call);
-            napi_call_function(env_global, nullptr, on_fail_call, 0, &napi_result_void, &napi_result_void);
-        }
+        OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> OnFail ");
+            
+        napi_acquire_threadsafe_function(g_tsfnFailCall);
+        // 调用主线程函数，传入 Data
+        napi_call_threadsafe_function(g_tsfnFailCall, nullptr, napi_tsfn_blocking);
     }
 
     void OnReconnecting()
     {
-        if (on_reconnecting_call_ref != nullptr) {
-            napi_value on_reconnecting_call;
-            napi_get_reference_value(env_global, on_reconnecting_call_ref, &on_reconnecting_call);
-            napi_call_function(env_global, nullptr, on_reconnecting_call, 0, &napi_result_void, &napi_result_void);
-        }
+        OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> OnReconnecting ");
+            
+        napi_acquire_threadsafe_function(g_tsfnReconnectingCall);
+        // 调用主线程函数，传入 Data
+        napi_call_threadsafe_function(g_tsfnReconnectingCall, nullptr, napi_tsfn_blocking);
     }
 
     // 待回传unsigned两个参数
     void OnReconnect(unsigned, unsigned)
     {
-        if (on_reconnect_call_ref != nullptr) {
-            napi_value on_reconnect_call;
-            napi_get_reference_value(env_global, on_reconnect_call_ref, &on_reconnect_call);
-            napi_call_function(env_global, nullptr, on_reconnect_call, 0, &napi_result_void, &napi_result_void);
-        }
+        OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> OnReconnect ");
+            
+        napi_acquire_threadsafe_function(g_tsfnReconnectCall);
+        // 调用主线程函数，传入 Data
+        napi_call_threadsafe_function(g_tsfnReconnectCall, nullptr, napi_tsfn_blocking);
     }
 
     void on_close(sio::client::close_reason const &reason)
@@ -150,35 +178,53 @@ public:
         } else if (reason == sio::client::close_reason_drop) {
             reasonString = "close_reason_drop";
         }
-        napi_value napi_reason;
-        napi_create_string_utf8(env_global, reasonString.c_str(), reasonString.length(), &napi_reason);
-        if (on_close_call_ref != nullptr) {
-            napi_value on_close_call;
-            napi_get_reference_value(env_global, on_close_call_ref, &on_close_call);
-            napi_call_function(env_global, nullptr, on_close_call, 1, &napi_reason, &napi_result_void);
+        OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> on_close ");
+        
+        ThreadSafeInfo* data = &g_threadSafeInfo;
+        if (data == nullptr) {
+            OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[on_close]g_threadSafeInfo is null");
+            return;
         }
+        data->result = reasonString;
+        
+        napi_acquire_threadsafe_function(g_tsfnCloseCall);
+        // 调用主线程函数，传入 Data
+        napi_call_threadsafe_function(g_tsfnCloseCall, data, napi_tsfn_blocking);
     }
 
     void on_socket_open(std::string const &nsp)
     {
-        napi_value napi_nsp;
-        napi_create_string_utf8(env_global, nsp.c_str(), nsp.length(), &napi_nsp);
-        if (on_socket_open_call_ref != nullptr) {
-            napi_value on_socket_open_call;
-            napi_get_reference_value(env_global, on_socket_open_call_ref, &on_socket_open_call);
-            napi_call_function(env_global, nullptr, on_socket_open_call, 1, &napi_nsp, &napi_result_void);
+        OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------>0 on_socket_open %{public}s",
+                     nsp.c_str());
+        
+        ThreadSafeInfo* data = &g_threadSafeInfo;
+        if (data == nullptr) {
+            OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[on_socket_open]g_threadSafeInfo is null");
+            return;
         }
+        data->result = nsp;
+        
+        OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG,
+                     "SOCKETIO_TAG------>2 on_socket_open %{public}s", (data->result).c_str());
+        
+        napi_acquire_threadsafe_function(g_tsfnOnSocketioOpenCall);
+        // 调用主线程函数，传入 Data
+        napi_call_threadsafe_function(g_tsfnOnSocketioOpenCall, data, napi_tsfn_blocking);
     }
 
     void on_socket_close(std::string const &nsp)
     {
-        napi_value napi_nsp;
-        napi_create_string_utf8(env_global, nsp.c_str(), nsp.length(), &napi_nsp);
-        if (on_socket_close_call_ref != nullptr) {
-            napi_value on_socket_close_call;
-            napi_get_reference_value(env_global, on_socket_close_call_ref, &on_socket_close_call);
-            napi_call_function(env_global, nullptr, on_socket_close_call, 1, &napi_nsp, &napi_result_void);
+        OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> on_socket_close ");
+        ThreadSafeInfo* data = &g_threadSafeInfo;
+        if (data == nullptr) {
+            OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[on_socket_close]g_threadSafeInfo is null");
+            return;
         }
+        data->result = nsp;
+        
+        napi_acquire_threadsafe_function(g_tsfnOnCloseCall);
+        // 调用主线程函数，传入 Data
+        napi_call_threadsafe_function(g_tsfnOnCloseCall, data, napi_tsfn_blocking);
     }
 
     void on_event_listener_aux(const std::string &name, sio::message::ptr const &message, bool needAck,
@@ -197,17 +243,25 @@ public:
     void on_error_listener(sio::message::ptr const &message)
     {
         std::string error_string = "on error";
-        napi_value on_error_result;
-        napi_create_string_utf8(env_global, error_string.c_str(), error_string.length(), &on_error_result);
-        if (on_error_listener_call_ref != nullptr) {
-            napi_value on_error_listener_call;
-            napi_get_reference_value(env_global, on_error_listener_call_ref, &on_error_listener_call);
-            napi_call_function(env_global, nullptr, on_error_listener_call, 1, &on_error_result, &napi_result_void);
+        
+        ThreadSafeInfo* data = &g_threadSafeInfo;
+        if (data == nullptr) {
+            OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[on_error_listener]g_threadSafeInfo is null");
+            return;
         }
+        data->result = error_string;
+        
+        OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG,
+                     "SOCKETIO_TAG------> on_error_listener %{public}s", (data->result).c_str());
+        
+        napi_acquire_threadsafe_function(g_tsfnOnErrorCall);
+        // 调用主线程函数，传入 Data
+        napi_call_threadsafe_function(g_tsfnOnErrorCall, data, napi_tsfn_blocking);
     }
 
     void on_emit_callback(std::string const &ack_name, sio::message::list const &list)
     {
+        OH_LOG_Print(LOG_APP,   LOG_INFO,   LOG_DOMAIN,   LOG_TAG, "SOCKETIO_TAG------> 0 on_emit_callback -------");
         napi_ref on_emit_listener_call_ref = on_emit_listener_call_ref_map[ack_name.c_str()];
         if (on_emit_listener_call_ref != nullptr) {
             std::string message_json = std::string("{");
@@ -224,11 +278,19 @@ public:
                 message_json += std::string("\"") + "message" + "\":" + get_message_value(list.at(0));
             }
             message_json += "}";
-            napi_value message_json_result;
-            napi_create_string_utf8(env_global, message_json.c_str(), message_json.length(), &message_json_result);
-            napi_value on_emit_listener_call;
-            napi_get_reference_value(env_global, on_emit_listener_call_ref, &on_emit_listener_call);
-            napi_call_function(env_global, nullptr, on_emit_listener_call, 1, &message_json_result, &napi_result_void);
+            OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG,
+                         "SOCKETIO_TAG------> 1 on_emit_callback %{public}s", message_json.c_str());
+
+            ThreadSafeInfo* data = &g_threadSafeInfo;
+            if (data == nullptr) {
+                OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[on_emit_callback]g_threadSafeInfo is null");
+                return;
+            }
+            data->result = message_json;
+            
+            napi_acquire_threadsafe_function(g_tsfnEmitCall);
+            // 调用主线程函数，传入 Data
+            napi_call_threadsafe_function(g_tsfnEmitCall, data, napi_tsfn_blocking);
         }
     }
 };
@@ -264,7 +326,14 @@ static napi_value set_open_listener(napi_env env, napi_callback_info info)
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     napi_value on_open_call = args[0];
     napi_create_reference(env_global, on_open_call, 1, &on_open_call_ref);
+    
+    OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> 1 set_open_listener ");
+    
+    NapiCreateThreadsafe(env, on_open_call, CallJsNoParames, &g_tsfnOnOpenCall);
+
     clientInstance.set_open_listener(std::bind(&ClientSocket::OnOpen, &g_clientSocket));
+    
+    OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> 2 set_open_listener ");
     return 0;
 }
 
@@ -276,6 +345,11 @@ static napi_value set_fail_listener(napi_env env, napi_callback_info info)
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     napi_value on_fail_call = args[0];
     napi_create_reference(env_global, on_fail_call, 1, &on_fail_call_ref);
+    
+    NapiCreateThreadsafe(env, on_fail_call, CallJsNoParames, &g_tsfnFailCall);
+    
+    OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> set_fail_listener ");
+    
     clientInstance.set_fail_listener(std::bind(&ClientSocket::OnFail, &g_clientSocket));
     return 0;
 }
@@ -288,6 +362,10 @@ static napi_value set_reconnecting_listener(napi_env env, napi_callback_info inf
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     napi_value on_reconnecting_call = args[0];
     napi_create_reference(env_global, on_reconnecting_call, 1, &on_reconnecting_call_ref);
+    
+    NapiCreateThreadsafe(env, on_reconnecting_call, CallJsNoParames, &g_tsfnReconnectingCall);
+    OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> set_reconnecting_listener ");
+    
     clientInstance.set_reconnecting_listener(std::bind(&ClientSocket::OnReconnecting, &g_clientSocket));
     return 0;
 }
@@ -300,6 +378,10 @@ static napi_value set_reconnect_listener(napi_env env, napi_callback_info info)
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     napi_value on_reconnect_call = args[0];
     napi_create_reference(env_global, on_reconnect_call, 1, &on_reconnect_call_ref);
+    
+    NapiCreateThreadsafe(env, on_reconnect_call, CallJsNoParames, &g_tsfnReconnectCall);
+    OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> set_reconnect_listener ");
+    
     clientInstance.set_reconnect_listener(std::bind(&ClientSocket::OnReconnect, &g_clientSocket,
         std::placeholders::_1, std::placeholders::_2));
     return 0;
@@ -313,6 +395,10 @@ static napi_value set_close_listener(napi_env env, napi_callback_info info)
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     napi_value on_close_call = args[0];
     napi_create_reference(env_global, on_close_call, 1, &on_close_call_ref);
+    
+    NapiCreateThreadsafe(env, on_close_call, CallJsEmit, &g_tsfnCloseCall);
+    OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> set_close_listener ");
+    
     clientInstance.set_close_listener(std::bind(&ClientSocket::on_close, &g_clientSocket, std::placeholders::_1));
     return 0;
 }
@@ -324,7 +410,10 @@ static napi_value set_socket_open_listener(napi_env env, napi_callback_info info
     napi_value args[1] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     napi_value on_socket_open_call = args[0];
-    napi_create_reference(env_global, on_socket_open_call, 1, &on_socket_open_call_ref);
+    
+    NapiCreateThreadsafe(env, on_socket_open_call, CallJsEmit, &g_tsfnOnSocketioOpenCall);
+    OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> set_socket_open_listener ");
+        
     clientInstance.set_socket_open_listener(std::bind(&ClientSocket::on_socket_open, &g_clientSocket,
         std::placeholders::_1));
     return 0;
@@ -338,6 +427,10 @@ static napi_value set_socket_close_listener(napi_env env, napi_callback_info inf
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     napi_value on_socket_close_call = args[0];
     napi_create_reference(env_global, on_socket_close_call, 1, &on_socket_close_call_ref);
+    
+    NapiCreateThreadsafe(env, on_socket_close_call, CallJsEmit, &g_tsfnOnCloseCall);
+    OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> set_socket_close_listener ");
+      
     clientInstance.set_socket_close_listener(std::bind(&ClientSocket::on_socket_close, &g_clientSocket,
         std::placeholders::_1));
     return 0;
@@ -485,6 +578,21 @@ static napi_value on(napi_env env, napi_callback_info info)
     napi_create_reference(env_global, on_event_listener_call_aux, 1, &on_event_listener_call_aux_ref);
     on_event_listener_call_aux_ref_map.insert(
         {eventName, on_event_listener_call_aux_ref});
+    
+    if (strcmp(eventName, g_newMessage) == 0) {
+        NapiCreateThreadsafe(env,  on_event_listener_call_aux, CallJsEmit,
+            &g_tsfnOnNewMessageCall);
+    } else if (strcmp(eventName, g_userJoined) == 0) {
+        NapiCreateThreadsafe(env,  on_event_listener_call_aux, CallJsEmit,
+            &g_tsfnOnUserJoinedCall);
+    } else if (strcmp(eventName, g_userLeft) == 0) {
+        NapiCreateThreadsafe(env,  on_event_listener_call_aux,  CallJsEmit,
+            &g_tsfnOnUserLeftCall);
+    } else if (strcmp(eventName, g_login) == 0) {
+        NapiCreateThreadsafe(env,  on_event_listener_call_aux,  CallJsEmit,
+            &g_tsfnOnLoginCall);
+    }
+    
     get_socket()->on(eventName, std::bind(&ClientSocket::on_event_listener_aux, &g_clientSocket,
         std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
     return 0;
@@ -538,6 +646,9 @@ static napi_value on_error(napi_env env, napi_callback_info info)
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     napi_value on_error_listener_call = args[0];
     napi_create_reference(env_global, on_error_listener_call, 1, &on_error_listener_call_ref);
+    
+    NapiCreateThreadsafe(env, on_error_listener_call, CallJsEmit, &g_tsfnOnErrorCall);
+    
     get_socket()->on_error(std::bind(&ClientSocket::on_error_listener, &g_clientSocket, std::placeholders::_1));
     return 0;
 }
@@ -625,6 +736,11 @@ static napi_value emit(napi_env env, napi_callback_info info)
         messageList->push(message_item);
         message_item = nullptr;
     }
+    
+    OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> 0 napi_value emit ");
+    NapiCreateThreadsafe(env, on_emit_listener_call, CallJsEmit, &g_tsfnEmitCall);
+    OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> 1 napi_value emit ");
+    
     get_socket()->emit(eventName, *messageList, std::bind(&ClientSocket::on_emit_callback, &g_clientSocket,
         std::placeholders::_1, std::placeholders::_2));
     delete messageList;

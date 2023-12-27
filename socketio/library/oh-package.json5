@@ -23,6 +23,8 @@
     "Network"
   ],
   "license": "MIT License",
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/libclient_socket_c.so": "file:./src/main/cpp/types/libentry"
+  },
   "name": "@ohos/socketio"
 }
