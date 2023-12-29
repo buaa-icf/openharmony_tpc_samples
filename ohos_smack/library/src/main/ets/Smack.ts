@@ -159,7 +159,7 @@ export class Smack {
      * @param username
      * @param group
      */
-    public static unregister() {
+    public static unregister(): void {
         testNapi.unregister();
     }
 
@@ -168,7 +168,7 @@ export class Smack {
      * @param name
      * @param group
      */
-    public static changeFriendGroup(name: string, group: string) {
+    public static changeFriendGroup(name: string, group: string): void {
         testNapi.changeFriendGroup(name, group);
     }
 
@@ -177,7 +177,7 @@ export class Smack {
      * @param oldName
      * @param newName
      */
-    public static changeGroup(oldName: string, newName: string) {
+    public static changeGroup(oldName: string, newName: string): void {
         testNapi.changeGroup(oldName, newName);
     }
 
@@ -186,7 +186,7 @@ export class Smack {
      * @param status 状态
      * @param register
      */
-    public static registerMessageCallback(callback: (fromId: number, msg: string) => void) {
+    public static registerMessageCallback(callback: (fromId: number, msg: string) => void): void {
         testNapi.registerMessageCallback(callback);
     }
 
@@ -195,15 +195,15 @@ export class Smack {
      * @param callback
      */
     // public static registerMessageCallback2(callback: (fromId: number, msg: string/*, type: string*/) => void) {
-    public static registerMessageCallback2(callback: (fromId: string, msg: string, type: string) => void) {
+    public static registerMessageCallback2(callback: (fromId: string, msg: string, type: string) => void): void {
         testNapi.registerMessageCallback(callback);
     }
 
-    public static unregisterMessageCallback() {
+    public static unregisterMessageCallback(): void {
         testNapi.unregisterMessageCallback();
     }
 
-    public static onMessageRecived(fromId: number, msg: string) {
+    public static onMessageRecived(fromId: number, msg: string): void {
         console.info("onMessageRecived fromId:" + fromId + ", msg:" + msg + ",size ");
     }
 
@@ -265,7 +265,7 @@ export class Smack {
         testNapi.registerGroupMessageCallback(callback);
     }
 
-    public static unregisterGroupMessageCallback() {
+    public static unregisterGroupMessageCallback(): void {
         testNapi.unregisterGroupMessageCallback();
     }
 
@@ -474,22 +474,25 @@ export class Smack {
         return value
     }
 
-    public static registerInvitationListener(callback: (v0: string) => void) {
+    public static registerInvitationListener(callback: (v0: string) => void): void {
         testNapi.registerInvitationListener(callback);
     }
 
-    public static unregisterInvitationListener() {
+    public static unregisterInvitationListener(): void {
         testNapi.unregisterInvitationListener();
     }
 
-    public static onHandleInvitation(resultStr: string) {
+    public static onHandleInvitation(resultStr: string): void {
         console.info("onHandleSubscriptionRequest resultStr:" + resultStr);
     }
     public static createOrJoinRoom(room: string, domain: string, serviceName: string, password?: string): number{
         if (password == undefined) {
             password = ""
         }
-        let value = testNapi.createOrJoinRoom(room, domain, serviceName, password)
+        let value = -1;
+        if (room && domain && serviceName) {
+            value = testNapi.createOrJoinRoom(room, domain, serviceName, password)
+        }
         return value
     }
 
@@ -515,20 +518,18 @@ export class Smack {
             .replace(/\[/g, "")
             .replace(/\]/g, "")
         console.info('setRoomConfig end = ' + s1)
-        //todo 示例数据
-        // let s1:string = "roomname:room4,roomdesc:room description,changesubject:1,maxusers:25,presencebroadcast:moderator visitor,publicroom:1,persistentroom:1,moderatedroom:1,membersonly:1,allowinvites:1,passwordprotectedroom:1,roomsecret:123,whois:anyone,allowpm:anyone,enablelogging:1,reservednick:1,canchangenick:1,registration:1,roomadmins:555@he-202101111234,roomowners:444@he-202101111234";
         let value = testNapi.setRoomConfig(s1)
         return value
     }
 
-    public static registerMUCParticipantPresenceListener(callback: (nike: string, presenceType: string, affiliationType: string) => void) {
+    public static registerMUCParticipantPresenceListener(callback: (nike: string, presenceType: string, affiliationType: string) => void): void {
         testNapi.registerMUCParticipantPresenceListener2(callback);
     }
 
     /**
      * 取消房间销毁监听
      */
-    public static unregisterMUCParticipantPresenceListener() {
+    public static unregisterMUCParticipantPresenceListener(): void {
         testNapi.unregisterMUCParticipantPresenceListener();
     }
 
@@ -565,6 +566,7 @@ export class Smack {
     }
 
     public static setServer(server: string): void{
+        if (server)
         testNapi.setServer(server)
     }
 
@@ -623,11 +625,11 @@ export class Smack {
         return testNapi.setAffiliations(nick, affiliationStr, reason);
     }
 
-    public static handleSubscriptionRequestListener(callback: (resultStr: string) => void) {
+    public static handleSubscriptionRequestListener(callback: (resultStr: string) => void): void {
         testNapi.handleSubscriptionRequestListener(callback);
     }
 
-    public static unSubscriptionRequestListener() {
+    public static unSubscriptionRequestListener(): void {
         testNapi.unSubscriptionRequestListener();
     }
 
@@ -645,11 +647,11 @@ export class Smack {
 
     }
 
-    public static registerNonrosterPresenceCallback(callback: (from: string, to: string, presence: string) => void) {
+    public static registerNonrosterPresenceCallback(callback: (from: string, to: string, presence: string) => void): void {
         testNapi.registerNonrosterPresenceCallback(callback);
     }
 
-    public static unregisterNonrosterPresenceCallback() {
+    public static unregisterNonrosterPresenceCallback(): void {
         testNapi.unregisterNonrosterPresenceCallback();
     }
 }

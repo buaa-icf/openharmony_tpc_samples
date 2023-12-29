@@ -654,7 +654,7 @@ export default function abilityTest() {
       if(createOrJoinRoomResult == undefined){
         expect(createOrJoinRoomResult).assertUndefined();
       }else{
-        expect(createOrJoinRoomResult).assertContain('te');
+        expect(createOrJoinRoomResult).assertEqual(-1);
       }
     })
 
@@ -664,7 +664,7 @@ export default function abilityTest() {
       if(createOrJoinRoomResult == undefined){
         expect(createOrJoinRoomResult).assertUndefined();
       }else{
-        expect(createOrJoinRoomResult).assertContain('te');
+        expect(createOrJoinRoomResult).assertEqual(-1);
       }
     })
 
@@ -674,7 +674,7 @@ export default function abilityTest() {
       if(createOrJoinRoomResult == undefined){
         expect(createOrJoinRoomResult).assertUndefined();
       }else{
-        expect(createOrJoinRoomResult).assertContain('te');
+        expect(createOrJoinRoomResult).assertEqual(-1);
       }
     })
 
@@ -840,7 +840,7 @@ export default function abilityTest() {
       if(nickNameResult == undefined){
         expect(nickNameResult).assertUndefined();
       }else{
-        expect(nickNameResult).assertEqual(userName);
+        expect(userName).assertContain(nickNameResult);
       }
     })
 

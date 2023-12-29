@@ -44,8 +44,8 @@ public:
         const std::string &domain, const std::string &serviceName);
     void recvGroupMsg(napi_env env, napi_value jsCb);
     void recvMUCParticipantPresenceListener(napi_env env, napi_value jsCb);
-    void unregisterGroupMessageCallback();
-    void unregisterMUCParticipantPresenceListener();
+    void UnregisterGroupMessageCallback();
+    void UnregisterMUCParticipantPresenceListener();
     void leave(const std::string &msg);
     void sendGroupMessage(const std::string &message);
     void setSubject(const std::string &subject);
@@ -55,7 +55,7 @@ public:
     // Second batch completed
     void kick(const std::string &nick, const std::string &reason);
     void ban(const std::string &nick, const std::string &reason);
-    void requestVoice();
+    void RequestVoice();
     void grantVoice(const std::string &nick, const std::string &reason);
     void grantVoices(const std::string &nicks, const std::string &reason);
     void revokeVoice(const std::string &nick, const std::string &reason);

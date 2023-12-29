@@ -19,7 +19,7 @@ struct ThreadSafeInfoMUCInvitation {
     std::string result;
 };
 
-static struct ThreadSafeInfoMUCInvitation threadInfoMUCInvitation = {};
+static struct ThreadSafeInfoMUCInvitation g_threadInfoMUCInvitation = {};
 static napi_threadsafe_function tsfn_invitation;
 
 static void CallJs(napi_env env, napi_value jsCb, void *context, void *data)
@@ -52,21 +52,21 @@ void MyMUCInvitationHandler::recvMUCInvitation(napi_env env, napi_value jsCb)
     LOGI("SMACK_TAG--------->: %s:  %d", "recvMUCInvitation: ", __LINE__);
 }
 
-void MyMUCInvitationHandler::unregisterInvitationListener()
+void MyMUCInvitationHandler::UnregisterInvitationListener()
 {
-    LOGW("SMACK_TAG------------>: %s:  %d", "unregisterInvitationListener: ", __LINE__);
+    LOGI("SMACK_TAG------------>: %s:  %d", "unregisterInvitationListener: ", __LINE__);
     tsfn_invitation = nullptr;
 }
 
 void MyMUCInvitationHandler::handleMUCInvitation(const JID &room, const JID &from, const std::string &reason,
                                                  const std::string &body, const std::string &password, bool cont,
-                                                 const std::string &thread) {
-
+                                                 const std::string &thread)
+{
     if (tsfn_invitation == nullptr) {
-        LOGW("smack handleMUCInvitation  %s:  %d", "handleMUCInvitation return  ", __LINE__);
+        LOGE("smack handleMUCInvitation  %s:  %d", "handleMUCInvitation return  ", __LINE__);
         return;
     }
-    LOGW("smack handleMUCInvitation  %s:  %d", "handleMUCInvitation work  ", __LINE__);
+    LOGI("smack handleMUCInvitation  %s:  %d", "handleMUCInvitation work  ", __LINE__);
 
     std::string jsonStr;
     jsonStr.append("{");
@@ -94,13 +94,7 @@ void MyMUCInvitationHandler::handleMUCInvitation(const JID &room, const JID &fro
     jsonStr.append("\"");
     jsonStr.append("}");
 
-    LOGW("Test MyMUCInvitationHandler %s", jsonStr.c_str());
-    LOGW("Test MyMUCInvitationHandler handleMUCInvitation room: %s, from: %s, reason: %s, body: %s,"
-         "password: %s, cont: %s, thread: %s",
-         room.full().c_str(), from.full().c_str(), reason.c_str(), body.c_str(), password.c_str(), cont,
-         thread.c_str());
-
-    ThreadSafeInfoMUCInvitation *data = &threadInfoMUCInvitation;
+    ThreadSafeInfoMUCInvitation *data = &g_threadInfoMUCInvitation;
     if (data == nullptr) {
         LOGE("SMACK_TAG---------> [MyMUC....handleMUCInvitation]data is null");
         return;

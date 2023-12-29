@@ -17,13 +17,16 @@
 #include <ctime>
 #include <node_api.h>
 #include "gloox/src/disco.h"
-#include "log.h"
 #include "src/gloox.h"
+#include "src/macros.h"
+#include "log.h"
 #include "Smack.h"
 
 static constexpr const int PRESENCE_DATA = 50;
 static constexpr const int SMACK_DELAY_TM_5S = (5 * 1000 * 60); // 延时5秒
 static constexpr const int SMACK_DELAY_TM_40S = (5 * 1000 * 500); // 延时约40秒
+static constexpr const size_t CALL_JS_ARGV_SIZE = 3;
+static constexpr const int CALL_JS_ARGV_SIZE_INDEX2 = 2;
 
 using namespace gloox;
 /**
@@ -129,9 +132,9 @@ Client *Smack::getClent()
     return j;
 }
 
-MyMUCInvitationHandler *Smack::getMUCInvitationHandler()
-{ 
-    return myMUCInvitationhandler; 
+MyMUCInvitationHandler *Smack::GetMUCInvitationHandler()
+{
+    return myMUCInvitationhandler;
 }
 
 bool Smack::Login()
@@ -203,7 +206,6 @@ static void CallJs(napi_env env, napi_value jsCb, void *context, void *data)
     napi_value undefined;
     napi_value ret;
     
-//    napi_value argv[] = {nullptr, nullptr};
     napi_value argv[] = {nullptr, nullptr, nullptr};
 
     // 解析参数 data
@@ -218,17 +220,15 @@ static void CallJs(napi_env env, napi_value jsCb, void *context, void *data)
     LOGI("SMACK_TAG---------> smack CallJs3: %s:  %d", "CallJs: ", __LINE__);
     napi_create_string_utf8(env, (arg->msg).c_str(), NAPI_AUTO_LENGTH, &argv[1]);
     LOGI("SMACK_TAG---------> smack CallJs4: %s:  %d", "CallJs: ", __LINE__);
-    //     napi_create_int32(env, arg->type, &argv[2]);
-    napi_create_string_utf8(env, (arg->type).c_str(), NAPI_AUTO_LENGTH, &argv[2]);
-    //     napi_create_string_utf8(env, (arg->types).c_str(), 32, &argv[2]);
+    napi_create_string_utf8(env, (arg->type).c_str(), NAPI_AUTO_LENGTH, &argv[CALL_JS_ARGV_SIZE_INDEX2]);
     LOGI("SMACK_TAG------------> smack CallJs4: %s:  %d", "CallJs: ", __LINE__);
     // 调用 js 回调函数
     napi_status status;
     if (jsCb != nullptr && argv != nullptr) {
         LOGI("SMACK_TAG---------> smack CallJs4: %s:  %d", "CallJs 1 ", __LINE__);
-        status = napi_call_function(env, undefined, jsCb, 3, argv, &ret);
+        status = napi_call_function(env, undefined, jsCb, CALL_JS_ARGV_SIZE, argv, &ret);
         LOGI("SMACK_TAG---------> smack CallJs4: %s:  %d", "CallJs 2 ", __LINE__);
-    }        
+    }
     LOGI("SMACK_TAG---------> smack CallJs5: %d:  %d", status, __LINE__);
 }
 
@@ -281,7 +281,8 @@ void Smack::RecvSubscriptionRequestListener(napi_env env, napi_value jsCb)
 static void CallJsNonrosterPresence(napi_env env, napi_value jsCb, void *context, void *data)
 {
     LOGI("SMACK_TAG------------> smack CallJs_Sub: %s:  %d", "CallJs: ", __LINE__);
-    napi_value undefined, ret;
+    napi_value undefined;
+    napi_value ret;
     napi_value argv[] = {nullptr, nullptr, nullptr};
 
     // 解析参数 data
@@ -291,20 +292,15 @@ static void CallJsNonrosterPresence(napi_env env, napi_value jsCb, void *context
     LOGI("SMACK_TAG------------> smack CallJsNonrosterPresence: %s:  %d", (arg->to).c_str(), __LINE__);
     napi_create_string_utf8(env, (arg->to).c_str(), NAPI_AUTO_LENGTH, &argv[1]);
     LOGI("SMACK_TAG------------> smack CallJsNonrosterPresence: %s:  %d", (arg->presence).c_str(), __LINE__);
-    napi_create_string_utf8(env, (arg->presence).c_str(), NAPI_AUTO_LENGTH, &argv[2]);
+    napi_create_string_utf8(env, (arg->presence).c_str(), NAPI_AUTO_LENGTH, &argv[CALL_JS_ARGV_SIZE_INDEX2]);
     LOGI("SMACK_TAG------------> smack CallJsNonrosterPresence: %s:  %d", "CallJsNonrosterPresence: ", __LINE__);
     // 调用 js 回调函数
-    napi_status status; 
-    if (jsCb != nullptr && argv != nullptr) {
-        LOGI("SMACK_TAG------------> smack CallJsNonrosterPresence: %s:  %d", "CallJsNonrosterPresence 1 ", __LINE__);
-        status = napi_call_function(env, undefined, jsCb, 3, argv, &ret);
-        LOGI("SMACK_TAG------------> smack CallJsNonrosterPresence: %s:  %d", "CallJsNonrosterPresence 2 ", __LINE__);
-    }
+    napi_status status = napi_call_function(env, undefined, jsCb, 3, argv, &ret);
     LOGI("SMACK_TAG------------> smack CallJsNonrosterPresence: %d:  %d", status, __LINE__);
 }
 
 
-void Smack::registerNonrosterPresenceCallback(napi_env env, napi_value jsCb)
+void Smack::RegisterNonrosterPresenceCallback(napi_env env, napi_value jsCb)
 {
     napi_value workName;
     napi_create_string_utf8(env, "registerNonrosterPresenceCallback", NAPI_AUTO_LENGTH, &workName);
@@ -314,19 +310,19 @@ void Smack::registerNonrosterPresenceCallback(napi_env env, napi_value jsCb)
     LOGI("SMACK_TAG------------>: %s:  %d", "registerNonrosterPresenceCallback: ", __LINE__);
 }
 
-void Smack::unregisterMessageCallback()
+void Smack::UnregisterMessageCallback()
 {
     LOGI("SMACK_TAG------------>: %s:  %d", "unregisterMessageCallback ", __LINE__);
     tsfn_recv_msg = nullptr;
 }
 
-void Smack::unSubscriptionRequestListener()
+void Smack::UnSubscriptionRequestListener()
 {
     LOGI("SMACK_TAG------------>: %s:  %d", "unSubscriptionRequestListener ", __LINE__);
     tsfn_sub = nullptr;
 }
 
-void Smack::unregisterNonrosterPresenceCallback()
+void Smack::UnregisterNonrosterPresenceCallback()
 {
     LOGI("SMACK_TAG------------>: %s:  %d", "unregisterNonrosterPresenceCallback ", __LINE__);
     tsfn_nonroster_presence = nullptr;
@@ -641,26 +637,26 @@ void Smack::handleMessage(const Message &msg, MessageSession *session)
 
     std::string message;
     switch (type) {
-    case 1: // Chat
-        message.append("1");
-        break;
-    case 2: // Error
-        message.append("2");
-        break;
-    case 4: // Groupchat
-        message.append("4");
-        break;
-    case 8: // Headline
-        message.append("8");
-        break;
-    case 16: // Normal
-        message.append("16");
-        break;
-    case 32: // Invalid
-        message.append("32");
-        break;
-    default:
-        message.append("0");
+        case gloox::Message::MessageType::Chat: // Chat
+            message.append("1");
+            break;
+        case gloox::Message::MessageType::Error: // Error
+            message.append("2");
+            break;
+        case gloox::Message::MessageType::Groupchat: // Groupchat
+            message.append("4");
+            break;
+        case gloox::Message::MessageType::Headline: // Headline
+            message.append("8");
+            break;
+        case gloox::Message::MessageType::Normal: // Normal
+            message.append("16");
+            break;
+        case gloox::Message::MessageType::Invalid: // Invalid
+            message.append("32");
+            break;
+        default:
+            message.append("0");
     }
     
     data->type = message.c_str();
@@ -925,40 +921,42 @@ void Smack::handleNonrosterPresence(const Presence &presence)
     LOGI("SMACK_TAG------------>: handleNonrosterPresence %s:  %d", "ssss ", __LINE__);
     if (tsfn_nonroster_presence != nullptr) {
         LOGI("SMACK_TAG------------>: handleNonrosterPresence %s:  %d", "ssss1 ", __LINE__);
-        struct ThreadSafeInfoNonrosterPresence *data = &g_threadInfoNonrosterPresence;
+        ThreadSafeInfoNonrosterPresence *data = &g_threadInfoNonrosterPresence;
         data->from = presence.from().full().c_str();
         data->to = presence.to().full().c_str();
 
         LOGI("SMACK_TAG------------>: handleNonrosterPresence %s:  %d", "ssss2 ", __LINE__);
         std::string message;
         switch (presence.presence()) {
-        case 0: // Available
-            message.append("0");
-            break;
-        case 1: // Chat
-            message.append("1");
-            break;
-        case 2: // Away
-            message.append("2");
-            break;
-        case 3: // DND
-            message.append("3");
-            break;
-        case 4: // XA
-            message.append("4");
-            break;
-        case 5: // Unavailable
-            message.append("5");
-            break;
-        case 6: // Probe
-            message.append("6");
-            break;
-        case 7: // Error
-            message.append("7");
-            break;
-        case 8: // Invalid
-            message.append("8");
-            break;
+            case gloox::Presence::PresenceType::Available: // Available
+                message.append("0");
+                break;
+            case gloox::Presence::PresenceType::Chat: // Chat
+                message.append("1");
+                break;
+            case gloox::Presence::PresenceType::Away: // Away
+                message.append("2");
+                break;
+            case gloox::Presence::PresenceType::DND: // DND
+                message.append("3");
+                break;
+            case gloox::Presence::PresenceType::XA: // XA
+                message.append("4");
+                break;
+            case gloox::Presence::PresenceType::Unavailable: // Unavailable
+                message.append("5");
+                break;
+            case gloox::Presence::PresenceType::Probe: // Probe
+                message.append("6");
+                break;
+            case gloox::Presence::PresenceType::Error: // Error
+                message.append("7");
+                break;
+            case gloox::Presence::PresenceType::Invalid: // Invalid
+                message.append("8");
+                break;
+            default:
+                break;
         }
         data->presence = message.c_str();
         LOGI("SMACK_TAG------------>: handleNonrosterPresence %s:  %d", "ssss3 ", __LINE__);

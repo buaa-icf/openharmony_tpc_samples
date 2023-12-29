@@ -45,10 +45,10 @@ public:
     int Login(const std::string &jidStr, const std::string &pwd);
     void RecvMsg(napi_env env, napi_value jsCb);
     void RecvSubscriptionRequestListener(napi_env env, napi_value jsCb);
-    void registerNonrosterPresenceCallback(napi_env env, napi_value jsCb);
-    void unregisterMessageCallback();
-    void unSubscriptionRequestListener();
-    void unregisterNonrosterPresenceCallback();
+    void RegisterNonrosterPresenceCallback(napi_env env, napi_value jsCb);
+    void UnregisterMessageCallback();
+    void UnSubscriptionRequestListener();
+    void UnregisterNonrosterPresenceCallback();
     void Loop();
     void Loginout();
     void Send(const std::string &jidStr, const std::string &text);
@@ -83,7 +83,7 @@ public:
     gloox::JID &getMyJID();
     // 获取clent
     gloox::Client *getClent();
-    MyMUCInvitationHandler *getMUCInvitationHandler();
+    MyMUCInvitationHandler *GetMUCInvitationHandler();
 
     // 变更用户状态
     void ChangePresence(const std::string &statusType, const std::string &status);
