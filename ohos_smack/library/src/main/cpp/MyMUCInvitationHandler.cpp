@@ -15,12 +15,12 @@
 
 using namespace gloox;
 
-struct ThreadSafeInfo {
+struct ThreadSafeInfoMUCInvitation {
     std::string result;
 };
 
-static struct ThreadSafeInfo g_threadInfo = {};
-static napi_threadsafe_function tsfn;
+static struct ThreadSafeInfoMUCInvitation threadInfoMUCInvitation = {};
+static napi_threadsafe_function tsfn_invitation;
 
 static void CallJs(napi_env env, napi_value jsCb, void *context, void *data)
 {
@@ -28,8 +28,8 @@ static void CallJs(napi_env env, napi_value jsCb, void *context, void *data)
     napi_value undefined;
     napi_value ret;
     napi_value argv;
-    
-    ThreadSafeInfo *arg = (ThreadSafeInfo *)data;
+
+    ThreadSafeInfoMUCInvitation *arg = (struct ThreadSafeInfoMUCInvitation *)data;
     if (arg == nullptr) {
         LOGE("SMACK_TAG---------> [MyMUC....CallJs]arg is null");
         return;
@@ -47,14 +47,27 @@ void MyMUCInvitationHandler::recvMUCInvitation(napi_env env, napi_value jsCb)
     napi_value workName;
     napi_create_string_utf8(env, "recvMUCInvitation", NAPI_AUTO_LENGTH, &workName);
     LOGI("SMACK_TAG--------->: %s:  %d", "recvMUCInvitation: ", __LINE__);
-    napi_create_threadsafe_function(env, jsCb, nullptr, workName, 0, 1, nullptr, nullptr, nullptr, CallJs, &tsfn);
+    napi_create_threadsafe_function(env, jsCb, nullptr, workName, 0, 1, nullptr, nullptr, nullptr, CallJs,
+                                    &tsfn_invitation);
     LOGI("SMACK_TAG--------->: %s:  %d", "recvMUCInvitation: ", __LINE__);
 }
 
-void MyMUCInvitationHandler::handleMUCInvitation(const JID &room, const JID &from, const std::string &reason,
-                                                 const std::string &body, const std::string &password,
-                                                 bool cont, const std::string &thread)
+void MyMUCInvitationHandler::unregisterInvitationListener()
 {
+    LOGW("SMACK_TAG------------>: %s:  %d", "unregisterInvitationListener: ", __LINE__);
+    tsfn_invitation = nullptr;
+}
+
+void MyMUCInvitationHandler::handleMUCInvitation(const JID &room, const JID &from, const std::string &reason,
+                                                 const std::string &body, const std::string &password, bool cont,
+                                                 const std::string &thread) {
+
+    if (tsfn_invitation == nullptr) {
+        LOGW("smack handleMUCInvitation  %s:  %d", "handleMUCInvitation return  ", __LINE__);
+        return;
+    }
+    LOGW("smack handleMUCInvitation  %s:  %d", "handleMUCInvitation work  ", __LINE__);
+
     std::string jsonStr;
     jsonStr.append("{");
     jsonStr.append("\"room\":\"");
@@ -81,21 +94,21 @@ void MyMUCInvitationHandler::handleMUCInvitation(const JID &room, const JID &fro
     jsonStr.append("\"");
     jsonStr.append("}");
 
-    LOGI("Test MyMUCInvitationHandler %s", jsonStr.c_str());
-    LOGI("Test MyMUCInvitationHandler handleMUCInvitation room: %s, from: %s, reason: %s, body: %s,"
-        "password: %s, cont: %s, thread: %s",
-        room.full().c_str(), from.full().c_str(), reason.c_str(), body.c_str(), password.c_str(),
-        cont, thread.c_str());
+    LOGW("Test MyMUCInvitationHandler %s", jsonStr.c_str());
+    LOGW("Test MyMUCInvitationHandler handleMUCInvitation room: %s, from: %s, reason: %s, body: %s,"
+         "password: %s, cont: %s, thread: %s",
+         room.full().c_str(), from.full().c_str(), reason.c_str(), body.c_str(), password.c_str(), cont,
+         thread.c_str());
 
-    ThreadSafeInfo *data = &g_threadInfo;
+    ThreadSafeInfoMUCInvitation *data = &threadInfoMUCInvitation;
     if (data == nullptr) {
         LOGE("SMACK_TAG---------> [MyMUC....handleMUCInvitation]data is null");
         return;
     }
     data->result = jsonStr.c_str();
-    napi_acquire_threadsafe_function(tsfn);
-    
-    napi_call_threadsafe_function(tsfn, data, napi_tsfn_blocking);
+    napi_acquire_threadsafe_function(tsfn_invitation);
+
+    napi_call_threadsafe_function(tsfn_invitation, data, napi_tsfn_blocking);
     LOGI("SMACK_TAG--------->: %s:  %d", "handleMUCInvitation: ", __LINE__);
 }
 

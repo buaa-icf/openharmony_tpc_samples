@@ -75,6 +75,10 @@ export const ban: (nick: string, reason: string) => number;
  */
 export const bans: (nick: string, reason: string) => number;
 /**
+ * 房间游客请求发言
+ */
+export const requestVoice: () => void;
+/**
  * nick:被授予发言权的人的昵称  reason：原因
  */
 export const grantVoice: (nick: string, reason: string) => number;
@@ -92,6 +96,14 @@ export const revokeVoices: (nick: string, reason: string) => number;
  */
 export const registerMessageGroup: (status: boolean, register: any) => number;
 export const registerGroupMessageCallback: (register: any) => number;
+/**
+ * 获取在房间中的从属关系
+ */
+export const getAffiliation: () => string;
+/**
+ * 获取在房间中的角色
+ */
+export const getRole: () => string;
 /**
  * nick:暱稱   affiliation:狀態   reason:原因
  */
@@ -203,3 +215,19 @@ export const handleSubscriptionRequestListener: (register: any) => string;
 export const receiveFriends: (jidStr: string, groupName: string, msg: string) => string;
 
 export const rejectFriends: (jidStr: string, reason: string) => string;
+// 房间销毁监听回调
+export const registerNonrosterPresenceCallback: (register: any) => number;
+
+//取消消息接收监听
+export const unregisterMessageCallback: () => number;
+//
+export const unregisterGroupMessageCallback: () => number;
+//
+export const unregisterInvitationListener: () => number;
+//取消
+export const unregisterMUCParticipantPresenceListener: () => number;
+//取消订阅监听
+export const unSubscriptionRequestListener: () => number;
+//取消房间销毁监听
+export const unregisterNonrosterPresenceCallback: () => number;
+

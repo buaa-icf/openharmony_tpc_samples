@@ -24,18 +24,18 @@ public:
     int createAccounts(const std::string &ipStr, const std::string &nameStr, const std::string &pwdStr);
     virtual void onConnect();
     virtual void onDisconnect(gloox::ConnectionError e);
-    virtual void onResourceBind(const std::string& resource);
-    virtual void onResourceBindError(const gloox::Error* error);
-    virtual void onSessionCreateError(const gloox::Error* error);
-    virtual bool onTLSConnect(const gloox::CertInfo& info);
+    virtual void onResourceBind(const std::string &resource);
+    virtual void onResourceBindError(const gloox::Error *error);
+    virtual void onSessionCreateError(const gloox::Error *error);
+    virtual bool onTLSConnect(const gloox::CertInfo &info);
     virtual void onStreamEvent(gloox::StreamEvent event);
 
-    virtual void handleLog(gloox::LogLevel level, gloox::LogArea area, const std::string& message);
-    virtual void handleRegistrationFields(const gloox::JID& from, int fields, std::string instructions);
-    virtual void handleAlreadyRegistered(const gloox::JID& from);
-    virtual void handleRegistrationResult(const gloox::JID& from, gloox::RegistrationResult regResult);
-    virtual void handleDataForm(const gloox::JID& from, const gloox::DataForm& form);
-    virtual void handleOOB(const gloox::JID& from, const gloox::OOB& oob);
+    virtual void handleLog(gloox::LogLevel level, gloox::LogArea area, const std::string &message);
+    virtual void handleRegistrationFields(const gloox::JID &from, int fields, std::string instructions);
+    virtual void handleAlreadyRegistered(const gloox::JID &from);
+    virtual void handleRegistrationResult(const gloox::JID &from, gloox::RegistrationResult regResult);
+    virtual void handleDataForm(const gloox::JID &from, const gloox::DataForm &form);
+    virtual void handleOOB(const gloox::JID &from, const gloox::OOB &oob);
 
 private:
     gloox::Client *j = nullptr;
