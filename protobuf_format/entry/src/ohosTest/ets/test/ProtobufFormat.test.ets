@@ -60,43 +60,45 @@ class Test3 {
 }
 
 export default function protobufFormatTest() {
-  const protoStr = 'syntax = "proto3"; package com.user;message UserLoginResponse{string sessionId = 1;string userPrivilege = 2;bool isTokenType = 3;string formatTimestamp = 4;}';
-  const protoJson = `
-      {
-        "package": "com.user",
-        "syntax": "proto3",
-        "messages": [
-          {
-            "name": "UserLoginResponse",
-            "fields": [
-              {
-                "rule": "optional",
-                "type": "string",
-                "name": "sessionId",
-                "id": 1,
-              },
-              {
-                "rule": "optional",
-                "type": "string",
-                "name": "userPrivilege",
-                "id": 2,
-              },
-              {
-                "rule": "optional",
-                "type": "bool",
-                "name": "isTokenType",
-                "id": 3
-              },
-              {
-                "rule": "optional",
-                "type": "string",
-                "name": "formatTimestamp",
-                "id": 4,
-              }
-            ]
-          }
-        ]
-      }`;
+  const protoStr: string = 'syntax = "proto3"; package com.user;message UserLoginResponse{string sessionId = 1;string userPrivilege = 2;bool isTokenType = 3;string formatTimestamp = 4;}';
+  const fields: Record<string, string | number>[] = [
+    {
+      "rule": "optional",
+      "type": "string",
+      "name": "sessionId",
+      "id": 1,
+    },
+    {
+      "rule": "optional",
+      "type": "string",
+      "name": "userPrivilege",
+      "id": 2,
+    },
+    {
+      "rule": "optional",
+      "type": "bool",
+      "name": "isTokenType",
+      "id": 3
+    },
+    {
+      "rule": "optional",
+      "type": "string",
+      "name": "formatTimestamp",
+      "id": 4,
+    }
+  ]
+  const messageData: Record<string, Record<string, string | number>[] | string> [] = [
+    {
+      "name": "UserLoginResponse",
+      "fields": fields
+    }
+  ]
+  const protoJson: Record<string, string | Record<string, string | Record<string, string | number>[]>[]> =
+    {
+      "package": "com.user",
+      "syntax": "proto3",
+      "messages": messageData
+    }
   const innerProto = `
        syntax = "proto3";
        package js;
@@ -110,7 +112,7 @@ export default function protobufFormatTest() {
           repeated Result result = 4;
        }
     `;
-  const personProto = `
+  const personProto: string = `
       syntax = "proto3";
       package tutorial;
 
@@ -149,7 +151,7 @@ export default function protobufFormatTest() {
     })
 
     it('protobuf_load_json_str', 0, async () => {
-      let root: ESObject = await Protobuf.loadJson(protoJson, null, 'user.proto');
+      let root: ESObject = await Protobuf.loadJson(JSON.stringify(protoJson), null, 'user.proto');
       let UserLoginResponse: ESObject = root.build("com.user.UserLoginResponse");
       const userLogin: UserInfo = {
         sessionId: "loadProtoJson",
