@@ -36,10 +36,6 @@
     {
       "name": "library",
       "srcPath": "./library"
-    },
-    {
-      "name": "buffer",
-      "srcPath": "./buffer"
     }
   ]
 }

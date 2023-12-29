@@ -23,7 +23,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import {Buffer} from '@ohos/Buffer'
+import {Buffer} from '../buffer/index'
 
 
 var BigInt =function(n, v){

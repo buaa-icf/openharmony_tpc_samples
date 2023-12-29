@@ -26,7 +26,7 @@ struct Index {
   @State userName: string = 'test'
   @State password: string = 'test123'
   @State foldName: string = ''
-  @State newFoldName: string = ''
+  @State newFileName: string = ''
   @State content: string = ''
   @State fileName: string = ''
   @State log: string = 'log'
@@ -115,19 +115,6 @@ struct Index {
         .onChange((value: string) => {
           this.foldName = value
         })
-      TextInput({ placeholder: '新文件夹名称', text: this.newFoldName })
-        .placeholderColor(Color.Gray)
-        .caretColor(Color.Blue)
-        .height(50)
-        .fontSize(20)
-        .fontWeight(FontWeight.Bold)
-        .fontFamily("sans-serif")
-        .fontStyle(FontStyle.Normal)
-        .fontColor(Color.Black)
-        .margin({ top: 10 })
-        .onChange((value: string) => {
-          this.newFoldName = value
-        })
       TextInput({ placeholder: '文件名', text: this.fileName })
         .placeholderColor(Color.Gray)
         .caretColor(Color.Blue)
@@ -140,7 +127,22 @@ struct Index {
         .margin({ top: 10 })
         .onChange((value: string) => {
           this.fileName = value
+
         })
+      TextInput({ placeholder: '新文件名称', text: this.newFileName })
+        .placeholderColor(Color.Gray)
+        .caretColor(Color.Blue)
+        .height(50)
+        .fontSize(20)
+        .fontWeight(FontWeight.Bold)
+        .fontFamily("sans-serif")
+        .fontStyle(FontStyle.Normal)
+        .fontColor(Color.Black)
+        .margin({ top: 10 })
+        .onChange((value: string) => {
+          this.newFileName = value
+        })
+
       TextInput({ placeholder: '文件内容', text: this.content })
         .placeholderColor(Color.Gray)
         .caretColor(Color.Blue)
@@ -160,7 +162,7 @@ struct Index {
           stateEffect: true
         }).backgroundColor(0x317aff).width(90).onClick(() => {
           let smbClient=this.getClient();
-          let check = this.foldName||this.fileName
+          let check = this.fileName == ''?this.foldName:this.fileName
           if(!!smbClient) {
             try {
               smbClient.exists(check,  (err:ESObject, exit:boolean) =>{
@@ -214,9 +216,7 @@ struct Index {
                   console.log('smb erro:' + err.message)
                   prompt.showToast({message:err.message,duration:5000})
                 }else{
-                  if(!!!fileNames){
-                    prompt.showToast({message:JSON.stringify(fileNames),duration:5000})
-                  }
+                  prompt.showToast({message:JSON.stringify(fileNames),duration:5000})
                 }
               })
             }
@@ -236,9 +236,7 @@ struct Index {
                   console.log('smb erro:' + err.message)
                   prompt.showToast({message:err.message,duration:5000})
                 }else{
-                   if(!!!result){
-                     prompt.showToast({message:JSON.stringify(result),duration:5000})
-                   }
+                  prompt.showToast({message:JSON.stringify(result),duration:5000})
                 }
               })
             }catch (e){
@@ -255,7 +253,7 @@ struct Index {
           let smbClient=this.getClient();
           if(!!smbClient){
             try {
-              smbClient.rename(this.foldName,this.newFoldName,  (err:ESObject)=> {
+              smbClient.rename(this.fileName,this.newFileName,  (err:ESObject)=> {
                 if (err) {
                   console.log('smb erro:' + err.message)
                   prompt.showToast({message:err.message,duration:5000})
@@ -291,25 +289,6 @@ struct Index {
             }
           }
         })
-        Button('rmdir', {
-          type: ButtonType.Capsule,
-          stateEffect: true
-        }).backgroundColor(0x317aff).width(90).onClick(() => {
-          let smbClient=this.getClient();
-          if(!!smbClient){
-            try {
-              smbClient.rmdir(this.foldName,(err:ESObject,files:ESObject)=> {
-                if (err) {
-                  console.log('smb erro:' + err.message)
-                  prompt.showToast({message:err.message,duration:5000})
-                }
-                prompt.showToast({message:"rmdir success",duration:5000})
-              })
-            }catch (e){
-              console.log('smb rmdir erro:')
-            }
-          }
-        })
         Button('rmfile', {
           type: ButtonType.Capsule,
           stateEffect: true
@@ -321,8 +300,10 @@ struct Index {
                 if (err) {
                   console.log('smb erro:' + err.message)
                   prompt.showToast({message:err.message,duration:5000})
+                }else{
+                  prompt.showToast({message:"rmfile success",duration:5000})
                 }
-                prompt.showToast({message:"rmfile success",duration:5000})
+
               })
             }catch (e){
               console.log('smb unlink erro:' )
@@ -330,29 +311,6 @@ struct Index {
           }
         })
 
-        Button('分享', {
-          type: ButtonType.Capsule,
-          stateEffect: true
-        }).backgroundColor(0x317aff).width(90).onClick(() => {
-          let context: Context = getContext(this) as Context
-          let fileName = "epub-book.epub"
-          context.resourceManager.getRawFileContent(fileName).then((value:Uint8Array) => {
-            let smbClient = this.getClient();
-            console.info("----" + fileName + "---size---" + value.length)
-            if(!!smbClient){
-              smbClient.sendFile(fileName, value, (callResult:ESObject) => {
-                console.log("-------sendfile--err------" + callResult.err)
-                if (callResult) {
-                  console.log('smb sendWrite erro:' + callResult.err.message)
-                  prompt.showToast({message:callResult.err.message,duration:5000})
-                }
-                console.log('smb sendWrite progress :' + callResult.progress + "%" + "---send file size " + (callResult.sendFileSize / 1024) + "KB")
-              });
-            }
-          }).catch((error:Error) => {
-            console.log("getRawFile promise error is " + error);
-          });
-        })
       }.margin({ top: 10 }).height(80)
     }
     .height('100%')

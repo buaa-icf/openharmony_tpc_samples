@@ -22,7 +22,7 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-import {Buffer} from '@ohos/Buffer';
+import {Buffer} from '../buffer/index';
 import SMB2Forge from '../tools/smb2_forge'
 import BigInt from '../tools/bigint'
 var SMB2Request = SMB2Forge.request

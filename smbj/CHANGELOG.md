@@ -1,3 +1,6 @@
+## 2.0.0
+- 修复偶现身份认证失败的问题
+
 ## 2.0.0-rc.0
 - DevEco Studio 版本： 4.1 Canary(4.1.3.317)
 - OpenHarmony SDK:API11 (4.1.0.36)
