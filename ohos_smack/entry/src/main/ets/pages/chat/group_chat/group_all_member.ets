@@ -14,6 +14,8 @@ import router from '@ohos.router';
 import { MUCOperation } from '@ohos/smack'
 import { GroupUserEntity } from '../../../entity/GroupUserEntity';
 import { Smack } from '@ohos/smack'
+import { GlobalContext } from '../../../entity/GlobalContext';
+import prompt from '@ohos.prompt';
 
 @Entry
 @Component
@@ -24,31 +26,84 @@ struct Group_all_member {
   @State memberNumber:number=0
   @State IsBatch: boolean = false
   @State rightTxt: string = '批量操作'
+  private ownerList: Array<string> = [];
+  private userName: string = '';
 
   aboutToAppear() {
+    this.userName = GlobalContext.getContext().getValue('userName').toString().split('@')[0];
     this.onGetAllMemberFriends()
     this.onGetAllAdminFriends()
+    this.onGetAllOwnerList();
+  }
+
+
+  //是否是管理员
+  isAdmin(): boolean {
+    if (this.adminList && this.adminList.length>0) {
+      for (let i = 0; i < this.adminList.length; i++) {
+        let user = this.adminList[i].split("@")[0];
+        if (user == this.userName) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  //是否是拥有者
+  isOwner(): boolean {
+    if (this.ownerList && this.ownerList.length>0) {
+      for (let i = 0; i < this.ownerList.length; i++) {
+        let user = this.ownerList[i].split("@")[0];
+        if (user == this.userName) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  //是否可以执行操作
+  isOprationer(): boolean {
+    return this.isOwner() || this.isAdmin();
+  }
+
+  //获取房屋拥有者列表
+  onGetAllOwnerList() {
+    this.ownerList = []
+    let roomitems = Smack.requestList(MUCOperation.RequestOwnerList)
+    if (roomitems) {
+      let items:Array<ESObject>=JSON.parse(roomitems)
+      for (let index = 0; index < items.length; index++) {
+        let str :string= items[index].jid.replace(" ", "")
+        this.ownerList.push(str);
+      }
+    }
   }
 
   // todo 查看所有群成员
   onGetAllMemberFriends() {
     this.allList = []
     let roomitems: Array<ESObject> = JSON.parse(Smack.getRoomItems())
-    for (let index = 0; index < roomitems.length; index++) {
-      let str :string= roomitems[index].room.replace(" ", "")
-      str = str.substr(str.lastIndexOf("/") + 1, str.length - 1)
-      this.allList.push({ name: str, isCheck: 0 });
-      this.memberNumber=this.allList.length
+    if (roomitems) {
+      for (let index = 0; index < roomitems.length; index++) {
+        let str :string= roomitems[index].room.replace(" ", "")
+        str = str.substr(str.lastIndexOf("/") + 1, str.length - 1)
+        this.allList.push({ name: str, isCheck: 0 });
+        this.memberNumber=this.allList.length
+      }
     }
   }
   // todo 查看所有群管理
   onGetAllAdminFriends() {
     this.adminList = []
     let roomitems = Smack.requestList(MUCOperation.RequestAdminList)
-    let items:Array<ESObject>=JSON.parse(roomitems)
-    for (let index = 0; index < items.length; index++) {
-      let str :string= items[index].jid.replace(" ", "")
-      this.adminList.push(str);
+    if (roomitems) {
+      let items:Array<ESObject>=JSON.parse(roomitems)
+      for (let index = 0; index < items.length; index++) {
+        let str :string= items[index].jid.replace(" ", "")
+        this.adminList.push(str);
+      }
     }
   }
 
@@ -87,6 +142,12 @@ struct Group_all_member {
               .width('100%')
               .margin({ top: 1 })
               .onClick(v => {
+                if (!this.isOwner()) {
+                  prompt.showToast({
+                    message: '非拥有者不可操作'
+                  })
+                  return;
+                }
                 router.push({
                   url: 'pages/chat/group_chat/group_member',
                   params: { userData: [item] }
@@ -114,11 +175,20 @@ struct Group_all_member {
           .alignSelf(ItemAlign.Center)
           .textAlign(TextAlign.End)
           .onClick(v => {
-            if (this.IsBatch) {
-              router.push({
-                url: 'pages/chat/group_chat/group_member',
-                params: { userData: this.onGetOperations() }
+            if (!this.isOprationer()) {
+              prompt.showToast({
+                message: '非拥有者和管理员不可操作'
               })
+              return;
+            }
+            if (this.IsBatch) {
+              let users : Array<GroupUserEntity> = this.onGetOperations();
+              if (users && users.length>0) {
+                router.push({
+                  url: 'pages/chat/group_chat/group_member',
+                  params: { userData: users}
+                })
+              }
             }
             this.IsBatch = !this.IsBatch
           })
@@ -143,6 +213,12 @@ struct Group_all_member {
                 .width('100%')
                 .margin({ top: 1 })
                 .onClick(v => {
+                  if (!this.isOprationer()) {
+                    prompt.showToast({
+                      message: '非拥有者和管理员不可操作'
+                    })
+                    return;
+                  }
                   router.push({
                     url: 'pages/chat/group_chat/group_member',
                     params: { userData: [item] }

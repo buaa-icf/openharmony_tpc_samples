@@ -12,8 +12,10 @@
 import { Toolbar } from '../../base/toolbar'
 import router from '@ohos.router';
 import { ChatContentEntity } from '../../../entity/ChatContentEntity'
-import { Smack } from '@ohos/smack'
+import { MUCOperation, RoomConfig, Smack } from '@ohos/smack'
 import { GlobalContext } from '../../../entity/GlobalContext';
+import prompt from '@ohos.prompt';
+import { Constant } from '../../../entity/Constant';
 
 @Entry
 @Component
@@ -22,14 +24,128 @@ struct Group_chat_main {
   @State inputMessage: string = ''
   @State roomName: string = ''
   @State isJoin: number = 0 //0-false,1-true
-  aboutToAppear() {
-    Smack.registerGroupMessageCallback((id:number, msg:string) => {
-      setTimeout(() => {
-        console.info('msg test:'+msg)
-        this.chatContentList.push(new ChatContentEntity(String(id) == '222' ? '1' : String(id), msg, 1))
-      }, 100)
+  private userName: string = '';
+  private role: string = '';
+  private affiliation: string = '';
+  private voiceList: Array<string> = [];//群可发言列表
+  private ownerList: Array<string> = [];
+  private leaveFlag: boolean = false; //离开标志
+  @State message: string = '请把我加入会议中'
 
+
+  //获取房间配置信息
+  private setPublicRoom() {
+    let roomInfo = Smack.getRoomConfig();
+    let roomConfig= JSON.parse(roomInfo) as RoomConfig;
+
+    roomConfig.publicroom = '1';
+    roomConfig.persistentroom = '0';
+    roomConfig.moderatedroom = '0';
+    roomConfig.membersonly = '0';
+    roomConfig.allowinvites = '1';
+
+    Smack.setRoomConfig(JSON.stringify(roomConfig))
+  }
+
+  //是否是拥有者
+  isOwner(): boolean {
+    if (this.ownerList && this.ownerList.length>0) {
+      for (let i = 0; i < this.ownerList.length; i++) {
+        let user = this.ownerList[i].split("@")[0];
+        if (user == this.userName) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  //获取房屋拥有者列表
+  onGetAllOwnerList() {
+    this.ownerList = []
+    let roomitems = Smack.requestList(MUCOperation.RequestOwnerList)
+    if (roomitems) {
+      let items:Array<ESObject>=JSON.parse(roomitems)
+      for (let index = 0; index < items.length; index++) {
+        let str :string= items[index].jid.replace(" ", "")
+        this.ownerList.push(str);
+      }
+    }
+  }
+
+  // 获取可发言列表，用于排查游客
+  getVoiceList() {
+    this.voiceList = []
+    let roomitems = Smack.requestList(MUCOperation.RequestVoiceList)
+    if (roomitems) {
+      let items:Array<ESObject>=JSON.parse(roomitems)
+      for (let index = 0; index < items.length; index++) {
+        let str :string= items[index].jid.replace(" ", "")
+        this.voiceList.push(str);
+      }
+    }
+  }
+
+  // 是否可进行发言
+  isVoice(): boolean {
+    if (this.voiceList && this.voiceList.length > 0) {
+      for (let i = 0; i < this.voiceList.length; i++) {
+        let user = this.voiceList[i].split("@")[0];
+        if (user == this.userName) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  aboutToAppear() {
+    this.userName = GlobalContext.getContext().getValue('userName').toString().split('@')[0];
+    this.leaveFlag = false;
+
+    let that = this
+    Smack.registerInvitationListener((v0:string) => {
+      let info :ESObject= JSON.parse(v0)
+
+      let reason: string = info.reason;
+      if (reason && reason == "invite") { // 接受邀请
+
+      } else if (reason == "room inviation refuesd") { // 拒绝邀请
+        prompt.showToast({
+          message: '对方拒绝邀请'
+        })
+      }
     })
+
+    Smack.registerMessageCallback2((id, msg, type) => {
+      let id_name = id.toString().split("/")[1]
+      let id_msg = msg.toString().trim();
+      if (id_msg !== "" && type == '4') {
+        setTimeout(() => {
+          if (id_name == this.userName) {
+            id_name = '1';
+          }
+          this.chatContentList.push(new ChatContentEntity(id_name, id_msg))
+        }, 100)
+      }
+    })
+    Smack.registerNonrosterPresenceCallback((from: string, to: string, presence: string)=>{
+      let room = from.split("@")[0];
+      let user = from.split("/")[1];
+
+      if (room == this.roomName && user == this.userName && presence == '5' && !this.leaveFlag) {
+        Smack.leave("leave");
+        prompt.showToast({
+          message: '房间被销毁'
+        })
+        router.clear();
+        router.push({
+          url: 'pages/main'
+        })
+      }
+    });
+
     Smack.registerMUCParticipantPresenceListener((name:string,jsonStr: string) => {
       let obj:ESObject=JSON.parse(jsonStr)
       setTimeout(() => {
@@ -49,6 +165,7 @@ struct Group_chat_main {
 
         }
       }, 100)
+
       //      switch (presenceType) {
       //        case "0":
       //          this.chatContentList.push(new ChatContentEntity(name, name + "进入了房间", 1, true))
@@ -73,21 +190,41 @@ struct Group_chat_main {
       //          break
       //      }
     })
-    this.isJoin = Number(Smack.isJoined())
-    if (this.isJoin == 0) {
-      Smack.join();
-    }
-    GlobalContext.getContext().setValue('roomInfo', Smack.parseXML())
-    let roominfo: ESObject = JSON.parse(GlobalContext.getContext().getValue('roomInfo') as string)
+
+    let result = Smack.parseXML();
+    GlobalContext.getContext().setValue('roomInfo', result)
+    let roominfo: ESObject = JSON.parse(result)
     this.roomName = roominfo.description
+    try {
+      this.onGetAllOwnerList();
+      if (this.isOwner()) {
+        this.setPublicRoom();
+      }
+    } catch (e) {
+    }
+  }
+
+  unregisterCallback() {
+    Smack.unregisterMessageCallback();
+    Smack.unregisterMUCParticipantPresenceListener();
+    Smack.unregisterNonrosterPresenceCallback();
+    Smack.unregisterInvitationListener();
   }
 
   aboutToDisappear() {
-    Smack.leave("leave msg");
+    this.leaveFlag = true;
+    try {
+      this.unregisterCallback();
+      Smack.leave("leave msg");
+    } catch (e) {
+      console.error('test group aboutToDisappear err:'+e.message);
+    }
   }
 
-  onPageShow() {
-
+  requestVoice() {
+    this.role = Smack.getRole();
+    this.affiliation = Smack.getAffiliation();
+    Smack.requestVoice();
   }
 
   build() {
@@ -169,6 +306,6 @@ struct Group_chat_main {
   // todo 发送群聊信息
   onSendGroupMessage() {
     Smack.sendGroupMessage(this.inputMessage);
-    this.inputMessage = ""
+    this.inputMessage = ''
   }
 }

@@ -23,6 +23,7 @@ import { GlobalContext } from '../../../entity/GlobalContext';
 @Entry
 @Component
 struct Group_chat_edit {
+  private passwordprotectedroom: string = ''
   @State temp: string = ''
   @State JidVal: string = '任何人'
   @State PrivateVal: string = '任何人'
@@ -127,11 +128,14 @@ struct Group_chat_edit {
     this.roomName = this.roomConfig.roomname
     this.roomDesc = this.roomConfig.roomdesc
     this.roomMaxusers = this.roomConfig.maxusers
-    this.roomPassword = this.roomConfig.roomsecret
+    this.roomPassword = this.roomConfig.roomsecret?this.roomConfig.roomsecret:""
+    this.passwordprotectedroom = this.roomConfig.passwordprotectedroom
+    console.info('passwordprotectedroom-----------//' + this.passwordprotectedroom)
     this.roomAdmins = this.roomConfig.roomadmins
     this.roomOwners = this.roomConfig.roomowners
     this.roomPresencebroadcast = this.roomConfig.presencebroadcast
     console.info('Checkbox-----------//' + JSON.stringify(this.roomPresencebroadcast))
+    console.info('roomConfig-----------//' + JSON.stringify(this.roomConfig))
   }
 
   //todo 修改房间配置
@@ -145,7 +149,10 @@ struct Group_chat_edit {
     this.roomConfig.roomadmins = this.roomAdmins
     this.roomConfig.roomowners = this.roomOwners
     this.roomConfig.presencebroadcast = this.roomPresencebroadcast
-    this.roomConfig.passwordprotectedroom = this.roomPassword != '' ? '0' : '1'
+    this.roomConfig.passwordprotectedroom = this.roomPassword ? '1' : '0'
+    console.info('update roomConfig roomPassword-----------//' + this.roomPassword+',passwordprotectedroom:'+this.roomConfig.passwordprotectedroom+',,')
+
+    console.info('update roomConfig-----------//' + JSON.stringify(this.roomConfig))
     Smack.setRoomConfig(JSON.stringify(this.roomConfig))
     prompt.showToast({ message: "更新成功" })
     setTimeout(() => {
@@ -305,6 +312,3 @@ struct Group_chat_edit {
     Smack.destroy(GlobalContext.getContext().getValue('userName') as string, "123");
   }
 }
-
-
-

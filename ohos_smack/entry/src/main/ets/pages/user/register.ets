@@ -43,12 +43,6 @@ struct Register {
             .onChange(v => {
               this.passWord = v
             })
-          //          TextInput({ placeholder: '请输入邮箱' })
-          //            .margin({ bottom: 20 })
-          //            .type(InputType.Email)
-          //            .onChange(v => {
-          //              this.email = v
-          //            })
 
           Button('注 册')
             .width('100%')
@@ -72,7 +66,7 @@ struct Register {
   private onRegister() {
     if (this.userName == '' || this.passWord == '') {
       prompt.showToast({
-        message: '请输入完整'
+        message: '请输入完整信息'
       })
     } else {
       let result: number = Smack.registers(Constant.HOST_IP, this.userName, this.passWord)
