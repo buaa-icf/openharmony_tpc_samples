@@ -271,12 +271,12 @@ export struct DanmakuVideoPlayer {
         this.mIVideoPlayer.firstOrSeek = true;
       } else {
         LogUtils.getInstance().LOGI('videoJudgeToPlay2');
-        if (this.mIVideoPlayer.playStatus == PlayStatus.INIT) {
-          LogUtils.getInstance().LOGI('standardGSYVideoPlayer videoJudgeToPlay play: ' + this.mIVideoPlayer.videoUrl);
-          this.mIVideoPlayer.play();
-        } else if (this.mIVideoPlayer.playStatus = PlayStatus.PAUSE) {
+        if (this.mIVideoPlayer.playStatus == PlayStatus.PAUSE) {
           LogUtils.getInstance().LOGI('standardGSYVideoPlayer videoJudgeToPlay ResumePlay');
           this.mIVideoPlayer.resumePlay();
+        } else {
+          LogUtils.getInstance().LOGI('standardGSYVideoPlayer videoJudgeToPlay play: ' + this.mIVideoPlayer.videoUrl);
+          this.mIVideoPlayer.play();
         }
       }
     }

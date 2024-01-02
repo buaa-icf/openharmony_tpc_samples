@@ -95,7 +95,7 @@ export class AvPlayerControl extends BaseVideoPlayer {
       GlobalContext.getContext().setObject('currentPlayer', this);
       this.avPlayer.surfaceId = this.surfaceID;
       LogUtils.getInstance().LOGI('avplayer play1: ' + this.surfaceID);
-      if (this.avPlayer.state == AvPlayerStatus.STOPPED) {
+      if (this.avPlayer.state == AvPlayerStatus.STOPPED || this.avPlayer.state == AvPlayerStatus.ERROR) {
         this.avPlayer.reset();
       }
       this.avPlayer.play();

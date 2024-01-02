@@ -66,7 +66,7 @@ export class IjkPlayerControl extends BaseVideoPlayer {
   }
 
   resumePlay() {
-    if (this.mIjkMediaPlayer) {
+    if (this.mIjkMediaPlayer && this.playStatus == PlayStatus.PAUSE) {
       this.mIjkMediaPlayer.start();
       this.onPlayingStatus();
     }
@@ -86,7 +86,7 @@ export class IjkPlayerControl extends BaseVideoPlayer {
   }
 
   setContext(context: object): void {
-    this.context = this.context;
+    super.setContext(context);
     if (this.mIjkMediaPlayer) {
       this.mIjkMediaPlayer.setContext(this.context);
       this.mIjkMediaPlayer.native_setup();

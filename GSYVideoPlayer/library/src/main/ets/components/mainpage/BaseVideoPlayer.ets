@@ -249,7 +249,9 @@ export abstract class BaseVideoPlayer implements IVideoPlayer {
    * 状态切换为暂停播放
    */
   public onPauseStatus() {
-    this.playStatus = PlayStatus.PAUSE;
+    if (this.playStatus == PlayStatus.PLAY) {
+      this.playStatus = PlayStatus.PAUSE;
+    }
     this.onPauseListener();
     let eventData: emitter.EventData = {
       data: {
