@@ -14,7 +14,7 @@
  */
 import componentSnapshot from '@ohos.arkui.componentSnapshot';
 import { IVideoPlayer } from './IVideoPlayer';
-import { PlayStatus } from './PlayStatus';
+import { PlayStatus } from './CommonConstants';
 import fs from '@ohos.file.fs';
 import image from '@ohos.multimedia.image';
 import { GSYVideoShotSaveListener } from '../listener/GSYVideoShotSaveListener';
@@ -25,7 +25,7 @@ import { BusinessError } from '@ohos.base';
 import emitter from '@ohos.events.emitter';
 // import { HttoProxyCacheServerBuilder } from '@ohos/ohosVideoCache';
 import { GlobalContext } from "./GlobalContext";
-import { PlayerType } from "./PlayerType";
+import { PlayerType } from "./CommonConstants";
 
 let screenshotTimerStatus: boolean = false;
 let screenshotTimer: number = 0;
@@ -44,7 +44,7 @@ export abstract class BaseVideoPlayer implements IVideoPlayer {
     eventId: 1,
     priority: emitter.EventPriority.IMMEDIATE
   };
-  videoErrorEvent: emitter.InnerEvent = {
+  videoInitEvent: emitter.InnerEvent = {
     eventId: 2,
     priority: emitter.EventPriority.IMMEDIATE
   };
@@ -249,7 +249,9 @@ export abstract class BaseVideoPlayer implements IVideoPlayer {
    * 状态切换为暂停播放
    */
   public onPauseStatus() {
-    this.playStatus = PlayStatus.PAUSE;
+    if (this.playStatus == PlayStatus.PLAY) {
+      this.playStatus = PlayStatus.PAUSE;
+    }
     this.onPauseListener();
     let eventData: emitter.EventData = {
       data: {
@@ -262,7 +264,7 @@ export abstract class BaseVideoPlayer implements IVideoPlayer {
   /**
    * 视频切换为错误状态
    */
-  public onErrorStatus() {
+  public onInitStatus() {
     this.playStatus = PlayStatus.INIT;
     this.onErrorListener();
     let eventData: emitter.EventData = {
@@ -270,6 +272,6 @@ export abstract class BaseVideoPlayer implements IVideoPlayer {
         "xid": this.xComponentId
       }
     }
-    emitter.emit(this.videoErrorEvent, eventData);
+    emitter.emit(this.videoInitEvent, eventData);
   }
 }

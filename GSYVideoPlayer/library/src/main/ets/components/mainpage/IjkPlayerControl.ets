@@ -23,7 +23,7 @@ import {
 } from '@ohos/ijkplayer';
 import { LogUtils } from '../utils/LogUtils';
 import { BaseVideoPlayer } from './BaseVideoPlayer';
-import { PlayStatus } from './PlayStatus';
+import { PlayStatus } from './CommonConstants';
 import { GlobalContext } from './GlobalContext';
 
 @Observed
@@ -66,7 +66,7 @@ export class IjkPlayerControl extends BaseVideoPlayer {
   }
 
   resumePlay() {
-    if (this.mIjkMediaPlayer) {
+    if (this.mIjkMediaPlayer && this.playStatus == PlayStatus.PAUSE) {
       this.mIjkMediaPlayer.start();
       this.onPlayingStatus();
     }
@@ -86,7 +86,7 @@ export class IjkPlayerControl extends BaseVideoPlayer {
   }
 
   setContext(context: object): void {
-    this.context = this.context;
+    super.setContext(context);
     if (this.mIjkMediaPlayer) {
       this.mIjkMediaPlayer.setContext(this.context);
       this.mIjkMediaPlayer.native_setup();
@@ -166,7 +166,8 @@ export class IjkPlayerControl extends BaseVideoPlayer {
       let mOnCompletionListener: OnCompletionListener = {
         onCompletion: () => {
           LogUtils.getInstance().LOGI("OnCompletionListener--->go");
-          this.stop();
+          this.firstOrSeek = true;
+          this.onInitStatus();
         }
       }
       this.mIjkMediaPlayer.setOnCompletionListener(mOnCompletionListener);
@@ -192,7 +193,7 @@ export class IjkPlayerControl extends BaseVideoPlayer {
       let mOnErrorListener: OnErrorListener = {
         onError: (what: number, extra: number) => {
           LogUtils.getInstance().LOGI("OnErrorListener--->go:" + what + "====" + extra);
-          this.onErrorStatus()
+          this.onInitStatus()
         }
       }
       this.mIjkMediaPlayer.setOnErrorListener(mOnErrorListener);

@@ -13,40 +13,30 @@
  * limitations under the License.
  */
 import display from '@ohos.display';
-import window from '@ohos.window';
-import { BusinessError } from '@ohos.base';
 import { LogUtils } from '../utils/LogUtils';
 import { IjkVideoPlayer } from './IjkVideoPlayer';
 import { IVideoPlayer } from './IVideoPlayer';
-import audio from '@ohos.multimedia.audio';
-import { PlayStatus } from './PlayStatus';
+import { PlayStatus } from './CommonConstants';
 import emitter from '@ohos.events.emitter';
 import { GlobalContext } from './GlobalContext';
-import { PlayerType } from './PlayerType';
+import { PlayerType } from './CommonConstants';
 import { AvVideoPlayer } from './AvVideoPlayer';
-import settings from '@ohos.settings';
 import { StandardGSYVideoModel } from './StandardGSYVideoModel';
 
 let updateProgressTimer: number = 0;
-let changeWidth: number = 0;
 let changeHeight: number = 0;
-let screenWidth: number = 0;
 let screenHeight: number = 0;
 let uiLockTime: number = 0;
-let windowClass: window.Window | undefined = undefined;
 
 let videoPlayEvent: emitter.InnerEvent = {
   eventId: 1
 };
-let videoErrorEvent: emitter.InnerEvent = {
+let videoInitEvent: emitter.InnerEvent = {
   eventId: 2
 };
 let videoPauseEvent: emitter.InnerEvent = {
   eventId: 3
 };
-
-let touchStartX: number = 0;
-let touchStartY: number = 0;
 
 @Component
 export struct StandardForListGSYVideoPlayer {
@@ -62,6 +52,7 @@ export struct StandardForListGSYVideoPlayer {
   @State lock: boolean = false;
   @State showPlay: boolean = true;
   @State showPause: boolean = false;
+  @State showFull: Visibility = Visibility.None;
   @State mDestroyPage: boolean = false;
   @State loadingVisible: Visibility = Visibility.None;
   @State mDirection: number = 0;
@@ -84,13 +75,8 @@ export struct StandardForListGSYVideoPlayer {
   @State mSeekTimePosition: number = 0;
   // 当前拖拽进度的方向资源
   @State mSeekDirectionRes: Resource = $r('app.media.video_forward_icon');
-  private mAudioManager: audio.AudioManager | null = null;
-  private isVerticalDrag: boolean = false;
-  private isHorizontalDrag: boolean = false;
   @State coverImage: Resource = $r('app.media.icon');
   @State coverVisible: Visibility = Visibility.Visible;
-  private panOptionBrightAndVolume: PanGestureOptions = new PanGestureOptions({ direction: PanDirection.Vertical });
-  private panOptionSeek: PanGestureOptions = new PanGestureOptions({ direction: PanDirection.Horizontal });
   public title: string = "";
   private xComponentId: string = 'xid';
   private uiTime: number = 0;
@@ -218,12 +204,12 @@ export struct StandardForListGSYVideoPlayer {
         this.mIVideoPlayer.firstOrSeek = true;
       } else {
         LogUtils.getInstance().LOGI('videoJudgeToPlay2');
-        if (this.mIVideoPlayer.playStatus == PlayStatus.INIT) {
-          LogUtils.getInstance().LOGI('standardGSYVideoPlayer videoJudgeToPlay play: ' + this.mIVideoPlayer.videoUrl);
-          this.mIVideoPlayer.play();
-        } else if (this.mIVideoPlayer.playStatus = PlayStatus.PAUSE) {
+        if (this.mIVideoPlayer.playStatus == PlayStatus.PAUSE) {
           LogUtils.getInstance().LOGI('standardGSYVideoPlayer videoJudgeToPlay ResumePlay');
           this.mIVideoPlayer.resumePlay();
+        } else {
+          LogUtils.getInstance().LOGI('standardGSYVideoPlayer videoJudgeToPlay play: ' + this.mIVideoPlayer.videoUrl);
+          this.mIVideoPlayer.play();
         }
       }
     }
@@ -267,7 +253,7 @@ export struct StandardForListGSYVideoPlayer {
             LogUtils.getInstance().LOGI('slider-->seekValue end: ' + seekValue);
           }
         })
-      Text(this.totalTime).fontSize('20px').margin({ right: 5 }).fontColor($r('app.color.color_white'))
+      Text(this.totalTime).fontSize('20px').margin({ right: ((this.showFull == Visibility.Visible)) ? 5 : 20 }).fontColor($r('app.color.color_white'))
 
       Image(this.screenIsFull ? $r('app.media.video_shrink') : $r('app.media.video_enlarge'))
         .width(20)
@@ -275,7 +261,7 @@ export struct StandardForListGSYVideoPlayer {
         .margin({ right: 15 })
         .onClick(() => {
           this.videoModel.ExecuteFullClickListener();
-        })
+        }).visibility(this.showFull)
     }
     .padding({ bottom: 10 })
     .align(Alignment.BottomEnd)
@@ -432,9 +418,7 @@ export struct StandardForListGSYVideoPlayer {
         }
       })
     )).onAreaChange((oldValue: Area, newValue: Area) => {
-      changeWidth = newValue.width as number;
       changeHeight = newValue.height as number;
-      screenWidth = px2vp(display.getDefaultDisplaySync().width);
       screenHeight = px2vp(display.getDefaultDisplaySync().height);
       this.mDirection = this.getDirection();
       this.screenIsFull = (screenHeight - changeHeight) < 50;
@@ -448,7 +432,7 @@ export struct StandardForListGSYVideoPlayer {
 
   /**
    * 注册的emitter消息回调，在list列表中，每个item都可以收到，只能通过xid区分当前是哪个才是真正的被点击的item
-   * 去做相应的事件处理，不是当前选中的，一律变为初始状态（goError）
+   * 去做相应的事件处理，不是当前选中的，一律变为初始状态（goInit）
    */
   private emitterInit() {
     emitter.on(videoPlayEvent, (data: emitter.EventData) => {
@@ -456,14 +440,14 @@ export struct StandardForListGSYVideoPlayer {
         if (this.xComponentId == data.data.xid) {
           this.goPlaying();
         } else {
-          this.goError();
+          this.goInit();
         }
       }
     });
-    emitter.on(videoErrorEvent, (data: emitter.EventData) => {
+    emitter.on(videoInitEvent, (data: emitter.EventData) => {
       if (data && data.data && typeof data.data.xid === 'string') {
         if (this.xComponentId == data.data.xid) {
-          this.goError();
+          this.goInit();
         }
       }
     });
@@ -498,7 +482,7 @@ export struct StandardForListGSYVideoPlayer {
     LogUtils.getInstance().LOGI('standardGSYVideoPlayer onPlayingListener end.');
   }
 
-  private goError() {
+  private goInit() {
     LogUtils.getInstance().LOGI('standardGSYVideoPlayer onErrorListener');
     clearTimeout(this.uiTime);
     if (this.mIVideoPlayer && GlobalContext.getContext().getObject('playType') == PlayerType.SYSTEM_AVPLAYER) {
@@ -527,23 +511,6 @@ export struct StandardForListGSYVideoPlayer {
     LogUtils.getInstance().LOGI('standardGSYVideoPlayer aboutToAppear');
     this.emitterInit();
     this.mDirection = this.getDirection();
-    try {
-      let promise = window.getLastWindow(getContext(this));
-      promise.then((data) => {
-        windowClass = data;
-      }).catch((error: BusinessError) => {
-        LogUtils.getInstance().LOGI('Failed to obtain the top window. Cause: ' + JSON.stringify(error));
-      })
-    } catch (exception) {
-      LogUtils.getInstance().LOGI('Failed to obtain the top window. Cause: ' + JSON.stringify(exception));
-    }
-    let groupid = audio.DEFAULT_VOLUME_GROUP_ID;
-    this.mAudioManager = audio.getAudioManager();
-    let volumeManager: audio.AudioVolumeManager = this.mAudioManager.getVolumeManager();
-    let audioVolumeGroupManager = volumeManager.getVolumeGroupManagerSync(groupid);
-    this.mMaxVolumeValue = audioVolumeGroupManager.getMaxVolumeSync(audio.AudioVolumeType.MEDIA);
-    this.mCurrentVolumeValue = audioVolumeGroupManager.getVolumeSync(audio.AudioVolumeType.MEDIA);
-    this.mCurrentBrightness = Number(settings.getValueSync(getContext(this), settings.display.SCREEN_BRIGHTNESS_STATUS, '10'));
   }
 
   aboutToDisappear() {

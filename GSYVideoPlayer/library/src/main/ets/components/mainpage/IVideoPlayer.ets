@@ -14,7 +14,7 @@
  */
 import { GSYVideoGifSaveListener } from '../listener/GSYVideoGifSaveListener';
 import { GSYVideoShotSaveListener } from '../listener/GSYVideoShotSaveListener';
-import { PlayStatus } from './PlayStatus';
+import { PlayStatus } from './CommonConstants';
 
 export interface IVideoPlayer {
   playStatus: PlayStatus;
