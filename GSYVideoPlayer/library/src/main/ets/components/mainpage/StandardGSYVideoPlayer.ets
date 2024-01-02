@@ -39,7 +39,7 @@ let windowClass: window.Window | undefined = undefined;
 let videoPlayEvent: emitter.InnerEvent = {
   eventId: 1
 };
-let videoErrorEvent: emitter.InnerEvent = {
+let videoInitEvent: emitter.InnerEvent = {
   eventId: 2
 };
 let videoPauseEvent: emitter.InnerEvent = {
@@ -601,7 +601,7 @@ export struct StandardGSYVideoPlayer {
 
   /**
    * 注册的emitter消息回调，在list列表中，每个item都可以收到，只能通过xid区分当前是哪个才是真正的被点击的item
-   * 去做相应的事件处理，不是当前选中的，一律变为初始状态（goError）
+   * 去做相应的事件处理，不是当前选中的，一律变为初始状态（goInit）
    */
   private emitterInit() {
     emitter.on(videoPlayEvent, (data: emitter.EventData) => {
@@ -609,14 +609,14 @@ export struct StandardGSYVideoPlayer {
         if (this.xComponentId == data.data.xid) {
           this.goPlaying();
         } else {
-          this.goError();
+          this.goInit();
         }
       }
     });
-    emitter.on(videoErrorEvent, (data: emitter.EventData) => {
+    emitter.on(videoInitEvent, (data: emitter.EventData) => {
       if (data && data.data && typeof data.data.xid === 'string') {
         if (this.xComponentId == data.data.xid) {
-          this.goError();
+          this.goInit();
         }
       }
     });
@@ -651,7 +651,7 @@ export struct StandardGSYVideoPlayer {
     LogUtils.getInstance().LOGI('standardGSYVideoPlayer onPlayingListener end.');
   }
 
-  private goError() {
+  private goInit() {
     LogUtils.getInstance().LOGI('standardGSYVideoPlayer onErrorListener');
     clearTimeout(uiTime);
     if (this.mIVideoPlayer && GlobalContext.getContext().getObject('playType') == PlayerType.SYSTEM_AVPLAYER) {

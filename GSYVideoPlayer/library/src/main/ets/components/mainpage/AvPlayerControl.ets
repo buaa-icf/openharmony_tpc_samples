@@ -72,6 +72,7 @@ export class AvPlayerControl extends BaseVideoPlayer {
           break;
         case AvPlayerStatus.COMPLETED:
           LogUtils.getInstance().LOGI('AvPlayerStatus.COMPLETED');
+          this.onInitStatus();
           break;
         case AvPlayerStatus.RELEASED:
           LogUtils.getInstance().LOGI('AvPlayerStatus.RELEASED');
@@ -83,7 +84,7 @@ export class AvPlayerControl extends BaseVideoPlayer {
     });
 
     this.avPlayer.on(Events.ERROR, () => {
-      this.onErrorStatus();
+      this.onInitStatus();
     })
   }
 
@@ -95,7 +96,9 @@ export class AvPlayerControl extends BaseVideoPlayer {
       GlobalContext.getContext().setObject('currentPlayer', this);
       this.avPlayer.surfaceId = this.surfaceID;
       LogUtils.getInstance().LOGI('avplayer play1: ' + this.surfaceID);
-      if (this.avPlayer.state == AvPlayerStatus.STOPPED || this.avPlayer.state == AvPlayerStatus.ERROR) {
+      if (this.avPlayer.state == AvPlayerStatus.STOPPED ||
+          this.avPlayer.state == AvPlayerStatus.ERROR ||
+          this.avPlayer.state == AvPlayerStatus.COMPLETED) {
         this.avPlayer.reset();
       }
       this.avPlayer.play();

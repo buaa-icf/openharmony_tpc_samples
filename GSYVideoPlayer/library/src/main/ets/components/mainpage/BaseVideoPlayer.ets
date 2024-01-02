@@ -44,7 +44,7 @@ export abstract class BaseVideoPlayer implements IVideoPlayer {
     eventId: 1,
     priority: emitter.EventPriority.IMMEDIATE
   };
-  videoErrorEvent: emitter.InnerEvent = {
+  videoInitEvent: emitter.InnerEvent = {
     eventId: 2,
     priority: emitter.EventPriority.IMMEDIATE
   };
@@ -264,7 +264,7 @@ export abstract class BaseVideoPlayer implements IVideoPlayer {
   /**
    * 视频切换为错误状态
    */
-  public onErrorStatus() {
+  public onInitStatus() {
     this.playStatus = PlayStatus.INIT;
     this.onErrorListener();
     let eventData: emitter.EventData = {
@@ -272,6 +272,6 @@ export abstract class BaseVideoPlayer implements IVideoPlayer {
         "xid": this.xComponentId
       }
     }
-    emitter.emit(this.videoErrorEvent, eventData);
+    emitter.emit(this.videoInitEvent, eventData);
   }
 }
