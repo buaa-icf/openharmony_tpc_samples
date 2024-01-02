@@ -16,7 +16,7 @@ export { StandardGSYVideoPlayer } from './src/main/ets/components/mainpage/Stand
 
 export { StandardForListGSYVideoPlayer } from './src/main/ets/components/mainpage/StandardForListGSYVideoPlayer'
 
-export { OrientationUtil } from './src/main/ets/components/mainpage/OrientationUtil'
+export { OrientationUtil } from './src/main/ets/components/utils/OrientationUtil'
 
 export { LogUtils } from './src/main/ets/components/utils/LogUtils'
 
@@ -36,9 +36,7 @@ export { IVideoPlayer } from './src/main/ets/components/mainpage/IVideoPlayer'
 
 export { GlobalContext } from './src/main/ets/components/mainpage/GlobalContext'
 
-export { PlayerType } from './src/main/ets/components/mainpage/PlayerType'
-
-export { PlayStatus } from './src/main/ets/components/mainpage/PlayStatus'
+export { PlayerType, PlayStatus } from './src/main/ets/components/mainpage/CommonConstants'
 
 export { StandardGSYVideoModel } from './src/main/ets/components/mainpage/StandardGSYVideoModel'
 

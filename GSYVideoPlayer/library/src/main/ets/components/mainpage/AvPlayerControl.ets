@@ -17,7 +17,7 @@ import { LogUtils } from '../utils/LogUtils';
 import { BaseVideoPlayer } from './BaseVideoPlayer';
 import { AvPlayerStatus, Events } from './CommonConstants';
 import { GlobalContext } from './GlobalContext';
-import { PlayStatus } from './PlayStatus';
+import { PlayStatus } from './CommonConstants';
 
 export class AvPlayerControl extends BaseVideoPlayer {
   private avPlayer: media.AVPlayer | null = null;

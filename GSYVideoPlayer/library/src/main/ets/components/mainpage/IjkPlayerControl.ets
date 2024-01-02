@@ -23,7 +23,7 @@ import {
 } from '@ohos/ijkplayer';
 import { LogUtils } from '../utils/LogUtils';
 import { BaseVideoPlayer } from './BaseVideoPlayer';
-import { PlayStatus } from './PlayStatus';
+import { PlayStatus } from './CommonConstants';
 import { GlobalContext } from './GlobalContext';
 
 @Observed

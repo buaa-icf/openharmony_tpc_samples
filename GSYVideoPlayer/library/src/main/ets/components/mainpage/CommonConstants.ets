@@ -36,3 +36,15 @@ export enum Events {
   TIME_UPDATE = 'timeUpdate',
   ERROR = 'error'
 }
+
+export enum PlayStatus {
+  INIT,
+  PLAY,
+  PAUSE,
+  DONE
+}
+
+export enum PlayerType {
+  IJK_PLAYER,
+  SYSTEM_AVPLAYER
+}

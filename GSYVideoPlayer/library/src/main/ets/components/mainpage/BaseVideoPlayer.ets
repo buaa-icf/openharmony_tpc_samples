@@ -14,7 +14,7 @@
  */
 import componentSnapshot from '@ohos.arkui.componentSnapshot';
 import { IVideoPlayer } from './IVideoPlayer';
-import { PlayStatus } from './PlayStatus';
+import { PlayStatus } from './CommonConstants';
 import fs from '@ohos.file.fs';
 import image from '@ohos.multimedia.image';
 import { GSYVideoShotSaveListener } from '../listener/GSYVideoShotSaveListener';
@@ -25,7 +25,7 @@ import { BusinessError } from '@ohos.base';
 import emitter from '@ohos.events.emitter';
 // import { HttoProxyCacheServerBuilder } from '@ohos/ohosVideoCache';
 import { GlobalContext } from "./GlobalContext";
-import { PlayerType } from "./PlayerType";
+import { PlayerType } from "./CommonConstants";
 
 let screenshotTimerStatus: boolean = false;
 let screenshotTimer: number = 0;

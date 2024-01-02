@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 import Window from '@ohos.window';
-import { LogUtils } from '../utils/LogUtils';
+import { LogUtils } from './LogUtils';
 
 export class OrientationUtil {
   /**
