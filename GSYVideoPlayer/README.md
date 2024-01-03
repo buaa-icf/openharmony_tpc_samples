@@ -52,6 +52,7 @@ aboutToAppear() {
   this.videoModel.setTitle("这是测试视频的标题");
   this.videoModel.setBackClickListener(this.backClickListener);
   this.videoModel.setFullClickListener(this.fullClickListener);
+  this.videoModel.setCoverImage($r('app.media.app_icon'));
 }
 ```
 
@@ -179,7 +180,7 @@ Button("stopGif").onClick(() => {
 | setTitle(title: string)                  | title: string | 设置视频全屏时的标题        |
 | setBackClickListener(backClickListener: () => void)                             | backClickListener: () => void         | 设置点击播放器返回按钮的回调接口  |
 | setFullClickListener(fullClickListener: () => void)                           | fullClickListener: () => void        | 设置点击播放器全屏按钮的回调接口  |
-
+| setCoverImage(coverImage:Resource)                           | coverImage:Resource        | 设置封面接口            |
 ### IVideoPlayer
 | 方法名          | 入参  | 接口描述           |
 |--------------|-----|----------------|
@@ -224,12 +225,12 @@ DevEco Studio: 4.0 (4.0.3.513), SDK: API10 (4.0.10.10)
                 |---- GlobalContext.ts  # 全局配置类
                 |---- IjkPlayerControl.ets  # ijkplayer逻辑控制类
                 |---- IjkVideoPlayer.ets  # ijkplayer播放器
-                |---- OrientationUtil.ets  # 屏幕方向控制类
-                |---- PlayerType.ets  # 播放器类型
-                |---- PlayStatus.ets  # 播放器播放状态
                 |---- StandardForListGSYVideoPlayer.ets  # 为list页面使用的播放器
                 |---- StandardGSYVideoModel.ets  # 标准播放器
                 |---- StandardGSYVideoPlayer.ets  # 播放器数据配置类
+            |---- utils  # 工具类
+                |---- OrientationUtil.ets  # 屏幕方向控制类
+                |---- LogUtils.ets  # log工具类
 |     |---- README.md  # 安装使用方法                 
 ```
 

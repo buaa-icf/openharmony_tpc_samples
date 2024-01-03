@@ -48,6 +48,7 @@ struct SimpleList {
       let model = new StandardGSYVideoModel();
       model.setUrl(this.items[i], false);
       model.setTitle("这是测试视频的标题");
+      model.setCoverImage($r('app.media.app_icon'));
       this.videoModels[i] = model;
     }
   }

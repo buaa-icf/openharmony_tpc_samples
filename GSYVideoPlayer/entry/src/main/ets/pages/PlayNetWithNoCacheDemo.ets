@@ -59,6 +59,7 @@ struct PlayNetWithNoCacheDemo {
     this.videoModel.setTitle("这是测试视频的标题");
     this.videoModel.setBackClickListener(this.backClickListener);
     this.videoModel.setFullClickListener(this.fullClickListener);
+    this.videoModel.setCoverImage($r('app.media.app_icon'));
     mDirection = this.getDirection();
     screenWidth = px2vp(display.getDefaultDisplaySync().width);
   }
