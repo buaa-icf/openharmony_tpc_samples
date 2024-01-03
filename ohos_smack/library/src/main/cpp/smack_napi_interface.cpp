@@ -438,7 +438,21 @@ static napi_value registerGroupMessageCallback(napi_env env, napi_callback_info 
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     napi_value on_call_back = args[0];
     LOGW("SMACK_TAG--------->registerGroupMessageCallback: %p:  %d", on_call_back, __LINE__);
+    if (g_room1 == nullptr) {
+        g_room1 = new room();
+    }
     g_room1->recvGroupMsg(env, on_call_back);
+
+    return NULL;
+}
+
+static napi_value registerNonrosterPresenceCallback(napi_env env, napi_callback_info info)
+{
+    size_t argc = 1;
+    napi_value args[1] = {nullptr};
+    napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
+    napi_value on_call_back = args[0];
+    g_smack->RegisterNonrosterPresenceCallback(env, on_call_back);
 
     return NULL;
 }
@@ -468,6 +482,9 @@ static napi_value registerMUCParticipantPresenceListener2(napi_env env, napi_cal
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     napi_value on_call_back = args[0];
     LOGW("SMACK_TAG--------->registerMessageCallback: %p:  %d", on_call_back, __LINE__);
+    if (g_room1 == nullptr) {
+        g_room1 = new room();
+    }
     g_room1->recvMUCParticipantPresenceListener(env, on_call_back);
 
     return NULL;
@@ -479,12 +496,9 @@ static napi_value registerInvitationListener(napi_env env, napi_callback_info in
     napi_value args;
     napi_get_cb_info(env, info, &argc, &args, nullptr, nullptr);
     napi_value on_call_back = args;
-
-    if (g_myMUCInvitationHandler == nullptr) {
-        g_myMUCInvitationHandler = new MyMUCInvitationHandler(g_smack->getClent());
-    }
+    
     LOGW("SMACK_TAG--------->registerInvitationListener: %p:  %d", on_call_back, __LINE__);
-    g_myMUCInvitationHandler->recvMUCInvitation(env, on_call_back);
+    g_smack->GetMUCInvitationHandler()->recvMUCInvitation(env, on_call_back);
     return NULL;
 }
 
@@ -741,6 +755,18 @@ static napi_value ban(napi_env env, napi_callback_info info)
         g_room1 = new room();
     }
     g_room1->ban(value0, value1);
+
+    napi_value sum;
+    napi_create_int32(env, 0, &sum);
+    return sum;
+}
+
+static napi_value requestVoice(napi_env env, napi_callback_info info)
+{
+    if (g_room1 == nullptr) {
+        g_room1 = new room();
+    }
+    g_room1->RequestVoice();
 
     napi_value sum;
     napi_create_int32(env, 0, &sum);
@@ -1652,10 +1678,83 @@ static napi_value rejectFriends(napi_env env, napi_callback_info info)
     return sum;
 }
 
+static napi_value getAffiliation(napi_env env, napi_callback_info info)
+{
+    napi_value sum;
+
+    if (g_room1 == nullptr) {
+        g_room1 = new room();
+    }
+    std::string str = g_room1->getAffiliation();
+    napi_create_string_utf8(env, str.c_str(), strlen(str.c_str()), &sum);
+    return sum;
+}
+
+static napi_value getRole(napi_env env, napi_callback_info info)
+{
+    napi_value sum;
+
+    if (g_room1 == nullptr) {
+        g_room1 = new room();
+    }
+    std::string str = g_room1->getRole();
+    napi_create_string_utf8(env, str.c_str(), strlen(str.c_str()), &sum);
+    return sum;
+}
+
+static napi_value unregisterMessageCallback(napi_env env, napi_callback_info info)
+{
+    napi_value sum;
+    g_smack->UnregisterMessageCallback();
+    napi_create_int32(env, 0, &sum);
+    return sum;
+}
+
+static napi_value unregisterGroupMessageCallback(napi_env env, napi_callback_info info)
+{
+    napi_value sum;
+    g_room1->UnregisterGroupMessageCallback();
+    napi_create_int32(env, 0, &sum);
+    return sum;
+}
+
+static napi_value unregisterInvitationListener(napi_env env, napi_callback_info info)
+{
+    napi_value sum;
+    g_smack->GetMUCInvitationHandler()->UnregisterInvitationListener();
+    napi_create_int32(env, 0, &sum);
+    return sum;
+}
+
+static napi_value unregisterMUCParticipantPresenceListener(napi_env env, napi_callback_info info)
+{
+    napi_value sum;
+    g_room1->UnregisterMUCParticipantPresenceListener();
+    napi_create_int32(env, 0, &sum);
+    return sum;
+}
+
+static napi_value unSubscriptionRequestListener(napi_env env, napi_callback_info info)
+{
+    napi_value sum;
+    g_smack->UnSubscriptionRequestListener();
+    napi_create_int32(env, 0, &sum);
+    return sum;
+}
+
+static napi_value unregisterNonrosterPresenceCallback(napi_env env, napi_callback_info info)
+{
+    napi_value sum;
+    g_smack->UnregisterNonrosterPresenceCallback();
+    napi_create_int32(env, 0, &sum);
+    return sum;
+}
+
 static napi_property_descriptor g_desc[] = {
     {"login", nullptr, login, nullptr, nullptr, nullptr, napi_default, nullptr},
     {"kick", nullptr, kick, nullptr, nullptr, nullptr, napi_default, nullptr},
     {"ban", nullptr, ban, nullptr, nullptr, nullptr, napi_default, nullptr},
+    {"requestVoice", nullptr, requestVoice, nullptr, nullptr, nullptr, napi_default, nullptr},
     {"grantVoice", nullptr, grantVoice, nullptr, nullptr, nullptr, napi_default, nullptr},
     {"grantVoices", nullptr, grantVoices, nullptr, nullptr, nullptr, napi_default, nullptr},
     {"revokeVoice", nullptr, revokeVoice, nullptr, nullptr, nullptr, napi_default, nullptr},
@@ -1724,8 +1823,22 @@ static napi_property_descriptor g_desc[] = {
     {"registerMessageCallback", nullptr, registerMessageCallback, nullptr, nullptr, nullptr, napi_default, nullptr},
     {"registerGroupMessageCallback", nullptr, registerGroupMessageCallback, nullptr, nullptr, nullptr, napi_default,
      nullptr},
-    {"registerMessageGroup", nullptr, registerMessageGroup, nullptr, nullptr, nullptr, napi_default, nullptr}
-};
+    {"registerMessageGroup", nullptr, registerMessageGroup, nullptr, nullptr, nullptr, napi_default, nullptr},
+    {"unregisterMessageCallback", nullptr, unregisterMessageCallback, nullptr, nullptr, nullptr, napi_default, nullptr},
+    {"unregisterGroupMessageCallback", nullptr, unregisterGroupMessageCallback, nullptr, nullptr, nullptr, napi_default,
+     nullptr},
+    {"unregisterInvitationListener", nullptr, unregisterInvitationListener, nullptr, nullptr, nullptr, napi_default,
+     nullptr},
+    {"unregisterMUCParticipantPresenceListener", nullptr, unregisterMUCParticipantPresenceListener, nullptr, nullptr,
+     nullptr, napi_default, nullptr},
+    {"unSubscriptionRequestListener", nullptr, unSubscriptionRequestListener, nullptr, nullptr, nullptr, napi_default,
+     nullptr},
+    {"registerNonrosterPresenceCallback", nullptr, registerNonrosterPresenceCallback, nullptr, nullptr, nullptr,
+     napi_default, nullptr},
+    {"unregisterNonrosterPresenceCallback", nullptr, unregisterNonrosterPresenceCallback, nullptr, nullptr, nullptr,
+     napi_default, nullptr},
+    {"getRole", nullptr, getRole, nullptr, nullptr, nullptr, napi_default, nullptr},
+    {"getAffiliation", nullptr, getAffiliation, nullptr, nullptr, nullptr, napi_default, nullptr}};
 
 EXTERN_C_START
 static napi_value Init(napi_env env, napi_value exports)

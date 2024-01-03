@@ -77,7 +77,6 @@ export struct Setting {
                 confirm: {
                   value: '确定',
                   action: () => {
-                    console.log('test loginout hh')
                     this.onExitAccount()
                   }
                 }

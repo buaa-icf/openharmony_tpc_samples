@@ -15,6 +15,7 @@ import { Meeting_list } from './tabs/meeting/meeting_list'
 import { Setting } from './tabs/setting'
 import {Constant} from '../entity/Constant'
 import { Smack } from '@ohos/smack'
+import prompt from '@ohos.prompt'
 
 @Entry
 @Component
@@ -30,24 +31,25 @@ struct Main {
       Message:$mmsg,
     }),
     customStyle: true,
+    autoCancel: false,
     alignment: DialogAlignment.Center,
   })
 
   aboutToAppear() {
     Smack.handleSubscriptionRequestListener((json:ESObject) => {
       console.info("收到好友添加申请"+json)
-       // let obj=JSON.parse(json)
-       // this.mbare = obj.jid
-       // this.musername = obj.name
-       // this.mmsg = obj.msg
-       // let that=this
-       setTimeout(()=>{
-         let obj:ESObject=JSON.parse(json)
-         this.mbare = obj.jid
-         this.musername = obj.name
-         this.mmsg = obj.msg
-         this.addFriendsDialog.open()
-       },500)
+      // let obj=JSON.parse(json)
+      // this.mbare = obj.jid
+      // this.musername = obj.name
+      // this.mmsg = obj.msg
+      // let that=this
+      setTimeout(()=>{
+        let obj:ESObject=JSON.parse(json)
+        this.mbare = obj.jid
+        this.musername = obj.name
+        this.mmsg = obj.msg
+        this.addFriendsDialog.open()
+      },500)
 
     })
   }
@@ -66,10 +68,10 @@ struct Main {
           }
           .tabBar('群聊')
 
-//          TabContent() {
-//            Meeting_list()
-//          }
-//          .tabBar('会议')
+          //          TabContent() {
+          //            Meeting_list()
+          //          }
+          //          .tabBar('会议')
 
           TabContent() {
             Setting()
@@ -95,7 +97,7 @@ struct AddFriendsDialog {
   refuse: () => void = () => {}
 
   build() {
-   Column() {
+    Column() {
       Text($r('app.string.add_friends_str', this.user))
         .height(px2vp(60))
         .fontSize(fp2px(14))
@@ -118,8 +120,14 @@ struct AddFriendsDialog {
           .fontColor(Color.Green)
           .fontSize(fp2px(14))
           .onClick(v => {
-            Smack.receiveFriends(this.bare, this.groupName, "receive request");
-            this.controller.close()
+            if (this.bare && this.groupName) {
+              Smack.receiveFriends(this.bare, this.groupName, "receive request");
+              this.controller.close()
+            } else {
+              prompt.showToast({
+                message: '请输入信息'
+              })
+            }
           })
           .textAlign(TextAlign.Center)
           .layoutWeight(1)

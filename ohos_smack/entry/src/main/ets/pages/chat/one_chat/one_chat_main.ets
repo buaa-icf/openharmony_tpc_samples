@@ -13,8 +13,9 @@ import { Toolbar } from '../../base/toolbar'
 import router from '@ohos.router';
 import { ChatContentEntity } from '../../../entity/ChatContentEntity'
 import { Constant } from '../../../entity/Constant'
-import { Smack } from '@ohos/smack'
+import { MUCRoomAffiliation, MUCRoomRole, Smack } from '@ohos/smack'
 import { GlobalContext } from '../../../entity/GlobalContext';
+import prompt from '@ohos.prompt';
 
 let jid: string = ''
 let service: string = ''
@@ -34,24 +35,26 @@ struct One_chat_main {
   beInviteDialog: CustomDialogController = new CustomDialogController({
     builder: BeInvitedDialog({ user: users,
       Message: this.message, accept: () => {
+        Smack.createOrJoinRoom(roomName, Constant.HOST_DOMAIN, Constant.SERVICE_NAME, vPassword);
         setTimeout(() => {
-          Smack.createRoom(jid, roomName, domain, service)
-            if (vPassword != '') {
-              Smack.setPassword(vPassword)
-            }
-        }, 100)
-        setTimeout(() => {
-          Smack.join();
-          router.push({
-            url: "pages/chat/group_chat/group_chat_main",
-            params: { roomData: roomName }
-          })
-        }, 500)
+          let isJoined = Smack.isJoined();
+          if (isJoined == '1') {
+            router.replace({
+              url: 'pages/chat/group_chat/group_chat_main',
+              params: { roomData: roomName }
+            })
+          } else {
+            prompt.showToast({
+              message: '进入房间失败'
+            })
+          }
+        }, 1000)
 
       }, refuse: () => {
         Smack.declineInvitation(vInfo, users, "room inviation refuesd");
       } }),
     customStyle: true,
+    autoCancel: false,
     alignment: DialogAlignment.Center,
   })
 
@@ -61,20 +64,38 @@ struct One_chat_main {
     let that = this
     Smack.registerInvitationListener((v0:string) => {
       let info :ESObject= JSON.parse(v0)
-      roomName = info.room.substring(0, info.room.indexOf("@"))
-      service = info.room.substring(info.room.indexOf("@") + 1, info.room.indexOf("."))
-      domain = info.room.substring(info.room.indexOf(".") + 1, info.room.length)
-      jid = GlobalContext.getContext().getValue('userName') as string;
-      users = info.from
-      vInfo = info.room
-      vPassword = info.password
-      setTimeout(() => {
-        that.beInviteDialog.open()
-      }, 500)
+      let reason: string = info.reason;
+      if (reason && reason == "invite") { // 接受邀请
+        roomName = info.room.substring(0, info.room.indexOf("@"))
+        service = info.room.substring(info.room.indexOf("@") + 1, info.room.indexOf("."))
+        domain = info.room.substring(info.room.indexOf(".") + 1, info.room.length)
+        jid = GlobalContext.getContext().getValue('userName') as string;
+        users = info.from
+        vInfo = info.room
+        vPassword = info.password
+        setTimeout(() => {
+          that.beInviteDialog.open()
+        }, 500)
+      } else if (reason == "room inviation refuesd") { // 拒绝邀请
+        prompt.showToast({
+          message: '对方拒绝邀请'
+        })
+      }
+    })
+
+    Smack.registerMessageCallback2((id, msg, type) => {
+      let id_name = id.toString().split("@")[0]
+      let id_msg = msg.toString().trim();
+      if (id_name == this.userName && id_msg !== "" && type == "1") {
+        setTimeout(() => {
+          this.chatContentList.push(new ChatContentEntity(id_name, id_msg))
+        }, 100)
+      }
     })
   }
   aboutToDisappear() {
-    Smack.registerInvitationListener(null)
+    Smack.unregisterInvitationListener();
+    Smack.unregisterMessageCallback();
   }
 
 
@@ -173,19 +194,6 @@ struct One_chat_main {
       this.chatContentList.push(new ChatContentEntity('我', this.inputMessage))
       this.inputMessage = ''
     }
-  }
-
-  onPageShow() {
-    Smack.registerMessageCallback((id, msg) => {
-      console.info('msg test '+ msg)
-      let id_name = id.toString().split("@")[0]
-      let id_msg = msg.toString().trim();
-      if (id_name == this.userName && id_msg !== "") {
-        setTimeout(() => {
-          this.chatContentList.push(new ChatContentEntity(id_name, msg))
-          }, 100)
-      }
-    })
   }
 }
 

@@ -29,7 +29,7 @@ if(${CMAKE_HOST_SYSTEM_NAME} MATCHES "Windows" OR ${CMAKE_HOST_SYSTEM_NAME} MATC
     # 如果是 Windows or MacOS,请手动打patch.
     message("add_library: Windows or MacOS")
     add_library(entry SHARED
-            hello.cpp
+            smack_napi_interface.cpp
             log_ohos.cpp
             Smack.cpp
             room.cpp
@@ -41,7 +41,7 @@ elseif(${CMAKE_HOST_SYSTEM_NAME} MATCHES "Linux")
     message("add_library: Linux")
     add_library(entry SHARED
             out.c
-            hello.cpp
+            smack_napi_interface.cpp
             log_ohos.cpp
             Smack.cpp
             room.cpp

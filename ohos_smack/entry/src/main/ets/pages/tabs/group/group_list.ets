@@ -121,12 +121,6 @@ struct CustomDialogExample {
     .width(100)
 
   }
-  // todo 创建群聊
-  onCreateGroupChat() {
-    let usrName:string =GlobalContext.getContext().getValue('userName') as string;
-    Smack.createRoom(usrName, "room", Constant.HOST_DOMAIN, Constant.SERVICE_NAME);
-
-  }
 }
 
 

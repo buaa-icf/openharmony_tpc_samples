@@ -17,6 +17,8 @@
 #include "log.h"
 #include "room.h"
 
+static constexpr const size_t CALL_JS_ARGV_SIZE = 2;
+
 using namespace gloox;
 
 void room::createRoom(ClientBase *client, const std::string &jidStr, const std::string &roomName,
@@ -83,6 +85,67 @@ void room::bans(const std::string &nicks, const std::string &reason)
     LOGD("bans  end");
 }
 
+std::string room::getAffiliation()
+{
+    LOGD("smack room getAffiliation", "smack room getAffiliation");
+    auto affiliation = m_room->affiliation();
+    LOGD("smack room getAffiliation", "smack room getAffiliation affiliation: %d", affiliation);
+    std::string result = "";
+    switch (affiliation) {
+        case gloox::MUCRoomAffiliation::AffiliationNone: // MUCRoomAffiliation.AffiliationNone
+            result = "0";
+            break;
+        case gloox::MUCRoomAffiliation::AffiliationOutcast: // MUCRoomAffiliation.AffiliationOutcast:
+            result = "1";
+            break;
+        case gloox::MUCRoomAffiliation::AffiliationMember: // MUCRoomAffiliation.AffiliationMember:
+            result = "2";
+            break;
+        case gloox::MUCRoomAffiliation::AffiliationOwner: // MUCRoomAffiliation.AffiliationOwner:
+            result = "3";
+            break;
+        case gloox::MUCRoomAffiliation::AffiliationAdmin: // MUCRoomAffiliation.AffiliationAdmin:
+            result = "4";
+            break;
+        case gloox::MUCRoomAffiliation::AffiliationInvalid: // MUCRoomAffiliation.AffiliationInvalid:
+            result = "5";
+            break;
+        default:
+            break;
+    }
+    LOGD("smack room getAffiliation", "smack room getAffiliation result: %s", result.c_str());
+    return result;
+}
+
+std::string room::getRole()
+{
+    LOGD("smack room getRole", "smack room getRole");
+    auto role = m_room->role();
+    LOGD("smack room getRole", "smack room getRole role: %d", role);
+    std::string result = "";
+    switch (role) {
+        case gloox::MUCRoomRole::RoleNone: // MUCRoomRole.RoleNone
+            result = "0";
+            break;
+        case gloox::MUCRoomRole::RoleVisitor: // MUCRoomRole.RoleVisitor
+            result = "1";
+            break;
+        case gloox::MUCRoomRole::RoleParticipant: // MUCRoomRole.RoleParticipant
+            result = "2";
+            break;
+        case gloox::MUCRoomRole::RoleModerator: // MUCRoomRole.RoleModerator
+            result = "3";
+            break;
+        case gloox::MUCRoomRole::RoleInvalid: // MUCRoomRole.RoleInvalid
+            result = "4";
+            break;
+        default:
+            break;
+    }
+    LOGD("smack room getRole", "smack room getRole result: %s", result.c_str());
+    return result;
+}
+
 std::string room::isJoined()
 {
     return m_room->isJoined();
@@ -118,6 +181,11 @@ void room::kick(const std::string &nick, const std::string &reason)
 void room::ban(const std::string &nick, const std::string &reason)
 {
     m_room->ban(nick, reason);
+}
+
+void room::RequestVoice()
+{
+    m_room->requestVoice();
 }
 
 void room::grantVoice(const std::string &nick, const std::string &reason)
@@ -320,7 +388,6 @@ static std::map<std::string, std::string> parseConfigString(const std::string& c
             map[k] = v;
         }
     }
-    delete[] p1;
     return map;
 }
 
@@ -696,7 +763,12 @@ static void CallJs(napi_env env, napi_value jsCb, void *context, void *data)
     napi_create_string_utf8(env, (arg->msg).c_str(), NAPI_AUTO_LENGTH, &argv[1]);
     LOGI("SMACK_TAG--------->room CallJs4: %s:  %d", "CallJs: ", __LINE__);
     // 调用 js 回调函数
-    napi_status status = napi_call_function(env, undefined, jsCb, 2, argv, &ret);
+    napi_status status;
+    if (jsCb != nullptr && argv != nullptr) {
+        LOGI("SMACK_TAG--------->room CallJs4: %s:  %d", "CallJs 1 ", __LINE__);
+        status = napi_call_function(env, undefined, jsCb, CALL_JS_ARGV_SIZE, argv, &ret);
+        LOGI("SMACK_TAG--------->room CallJs4: %s:  %d", "CallJs 2 ", __LINE__);
+    }
     LOGI("SMACK_TAG--------->room CallJs5: %d:  %d", status, __LINE__);
 }
 
@@ -721,7 +793,12 @@ static void CallJs_MUCP(napi_env env, napi_value jsCb, void *context, void *data
     napi_create_string_utf8(env, (arg->presenceType).c_str(), NAPI_AUTO_LENGTH, &argv[1]);
     LOGI("SMACK_TAG--------->room CallJs4: %s:  %d", "CallJs: ", __LINE__);
     // 调用 js 回调函数
-    napi_status status = napi_call_function(env, undefined, jsCb, 2, argv, &ret);
+    napi_status status;
+    if (jsCb != nullptr && argv != nullptr) {
+        LOGI("SMACK_TAG--------->room CallJs4: %s:  %d", "CallJs_MUCP 1 ", __LINE__);
+        status = napi_call_function(env, undefined, jsCb, CALL_JS_ARGV_SIZE, argv, &ret);
+        LOGI("SMACK_TAG--------->room CallJs4: %s:  %d", "CallJs_MUCP 2 ", __LINE__);
+    }
     LOGI("SMACK_TAG--------->room CallJs5: %d:  %d", status, __LINE__);
 }
 
@@ -733,13 +810,10 @@ void room::handleMUCParticipantPresence(MUCRoom * /* room */, const MUCRoomParti
         presence.presence(), participant.nick->resource().c_str(), participant.reason.c_str(),
         participant.status.c_str(), participant.affiliation, participant.role, participant.flags);
 
-    LOGD("handleMUCParticipantPresence Presence MUCUserFlag UserSelf: %d, UserNickChanged: %d, UserKicked: %d,"
-        "UserBanned: %d, UserAffiliationChanged: %d, UserRoomDestroyed: %d, UserNickAssigned: %d,"
-        "UserNewRoom: %d, UserMembershipRequired: %d, UserRoomShutdown: %d, UserAffiliationChangedWNR: %d",
-        MUCUserFlag::UserSelf, MUCUserFlag::UserNickChanged, MUCUserFlag::UserKicked,
-        MUCUserFlag::UserBanned, MUCUserFlag::UserAffiliationChanged, MUCUserFlag::UserRoomDestroyed,
-        MUCUserFlag::UserNickAssigned, MUCUserFlag::UserNewRoom, MUCUserFlag::UserMembershipRequired,
-        MUCUserFlag::UserRoomShutdown, MUCUserFlag::UserAffiliationChangedWNR);
+    if (tsfn_mucp == nullptr) {
+        LOGE("smack handleMUCParticipantPresence  %s:  %d", "handleMUCParticipantPresence return  ", __LINE__);
+        return;
+    }
 
     std::string nick = participant.nick->resource().c_str(); // 用户昵称
     std::string presenceType = presenceTypeDetect(presence); // 用户状态
@@ -774,7 +848,6 @@ void room::handleMUCParticipantPresence(MUCRoom * /* room */, const MUCRoomParti
     }
     data->nike = nick.c_str();
     data->presenceType = jsonStr.c_str();
-    LOGI("SMACK_TAG--------->: %s:  %d", "handleMUCMessage: ", __LINE__);
     napi_acquire_threadsafe_function(tsfn_mucp);
     LOGI("SMACK_TAG--------->: %s:  %d", "handleMUCMessage: ", __LINE__);
     // 调用主线程函数，传入 Data
@@ -790,9 +863,15 @@ void room::handleMUCMessage(MUCRoom * /* room */, const Message &msg, bool priv)
     LOGI("SMACK_TAG--------->: %s:  %d", "handleMUCMessage:  ", __LINE__);
     auto body = msg.body();
     LOGI("SMACK_TAG--------->: %s:  %d", msg.from().resource().c_str(), __LINE__);
+    
+    if (tsfn_room == nullptr) {
+        LOGE("smack handleMUCMessage  %s:  %d", "handleMUCMessage return  ", __LINE__);
+        return;
+    }
+    LOGI("smack handleMUCMessage  %s:  %d", "handleMUCMessage work  ", __LINE__);
 
     ThreadSafeInfoRoom *data = &g_threadInfoRoom;
-    if (data == nullptr) {
+	if (data == nullptr) {
         LOGE("SMACK_TAG---------> [room.handleMUCMessage]data is null");
         return;
     }
@@ -905,9 +984,21 @@ void room::recvMUCParticipantPresenceListener(napi_env env, napi_value jsCb)
     LOGI("SMACK_TAG--------->recvMUCParticipantPresenceListener: %d",  __LINE__);
 }
 
+void room::UnregisterGroupMessageCallback()
+{
+    LOGI("SMACK_TAG------------>: unregisterGroupMessageCallback %d", __LINE__);
+    tsfn_room = nullptr;
+}
+
+void room::UnregisterMUCParticipantPresenceListener()
+{
+    LOGI("SMACK_TAG------------>: unregisterMUCParticipantPresenceListener %d", __LINE__);
+    tsfn_mucp = nullptr;
+}
+
 void room::handleMUCConfigList(MUCRoom *room, const MUCListItemList &items, MUCOperation operation)
 {
-    if (room == nullptr) {
+	if (room == nullptr) {
         LOGE("SMACK_TAG---------> [room.handleMUCConfigList]room is null");
         return;
     }

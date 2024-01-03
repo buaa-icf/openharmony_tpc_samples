@@ -32,6 +32,7 @@ public:
      * continued chat.
      */
     void recvMUCInvitation(napi_env env, napi_value jsCb);
+    void UnregisterInvitationListener();
     virtual void handleMUCInvitation(const gloox::JID& room, const gloox::JID& from, const std::string& reason,
                                     const std::string& body, const std::string& password,
                                     bool cont, const std::string& thread);

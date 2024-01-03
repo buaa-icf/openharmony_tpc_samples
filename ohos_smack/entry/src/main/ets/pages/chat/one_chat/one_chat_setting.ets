@@ -65,22 +65,25 @@ struct One_chat_setting {
       Line().width('100%').height(1).backgroundColor('#ececec').margin({ left: 20 })
       Text('邀请到会议').padding(15).fontSize(18).backgroundColor('#ffffff')
         .onClick(e => {
-          let usreNameResult:string=GlobalContext.getContext().getValue('userName') as string;
           let roomName:string = Smack.username()+ this.RandomStr(3)
-          Smack.createRoom(usreNameResult, roomName,  Constant.HOST_DOMAIN, Constant.SERVICE_NAME);
+          Smack.createOrJoinRoom(roomName, Constant.HOST_DOMAIN, Constant.SERVICE_NAME/*, password?: string*/)
+
           setTimeout(() => {
-            Smack.invite(this.userName+"@"+Constant.HOST_DOMAIN+Constant.HOST_RES, "invite");
-          }, 3000)
-          setTimeout(() => {
-            router.push({
-              url: 'pages/chat/group_chat/group_chat_main'
-            })
-          }, 1000)
+            let isJoined = Smack.isJoined();
+            if (isJoined == '1') {
+              Smack.invite(this.userName+"@"+Constant.HOST_DOMAIN+Constant.HOST_RES, "invite");
+              router.back(); // todo router
+              router.replace({
+                url: 'pages/chat/group_chat/group_chat_main'
+              })
+            } else {
+              prompt.showToast({
+                message: '创建房间失败'
+              })
+            }
+          }, 800)
         })
       Line().width('100%').height(1).backgroundColor('#ececec').margin({ left: 20 })
-      Text('查看会话历史记录').padding(15).fontSize(18).backgroundColor('#ffffff')
-        .onClick(e => {
-        })
       Column() {
         Button('删 除 好 友')
           .height(40)

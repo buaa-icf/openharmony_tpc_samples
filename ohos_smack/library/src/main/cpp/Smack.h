@@ -45,6 +45,10 @@ public:
     int Login(const std::string &jidStr, const std::string &pwd);
     void RecvMsg(napi_env env, napi_value jsCb);
     void RecvSubscriptionRequestListener(napi_env env, napi_value jsCb);
+    void RegisterNonrosterPresenceCallback(napi_env env, napi_value jsCb);
+    void UnregisterMessageCallback();
+    void UnSubscriptionRequestListener();
+    void UnregisterNonrosterPresenceCallback();
     void Loop();
     void Loginout();
     void Send(const std::string &jidStr, const std::string &text);
@@ -79,6 +83,7 @@ public:
     gloox::JID &getMyJID();
     // 获取clent
     gloox::Client *getClent();
+    MyMUCInvitationHandler *GetMUCInvitationHandler();
 
     // 变更用户状态
     void ChangePresence(const std::string &statusType, const std::string &status);
@@ -133,11 +138,13 @@ private:
     gloox::Registration *m_reg;
     int32_t presenceType = -1;
     std::string userName = "";
+    MyMUCInvitationHandler *myMUCInvitationhandler = nullptr;
 };
 // 定义线程数据结构体
 struct ThreadSafeInfoRecvMsg {
     std::string id;
     std::string msg;
+    std::string type;
 };
 
 struct ThreadSafeInfoSub {

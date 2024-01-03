@@ -39,10 +39,6 @@ struct Create_group_chat {
         TextInput().onChange(v => {
           this.inputName = v
         })
-        //        Text('描述').fontSize(15).padding(10)
-        //        TextInput()
-        //        Text('最大用户数').fontSize(15).padding(10)
-        //        TextInput().type(InputType.Number)
         Button('创 建').onClick(e => {
           if (this.inputName != '') {
             this.onCreateGroupChat(this.inputName)
@@ -51,9 +47,14 @@ struct Create_group_chat {
           }
         }).margin({ top: 20 })
         Button('加入密码房').onClick(e => {
-
-          Smack.createRoom("555@" + Constant.HOST_IP + Constant.HOST_RES, "room", Constant.HOST_DOMAIN, Constant.SERVICE_NAME);
-          this.passWordDialog.open()
+          if (this.inputName) {
+            Smack.createRoom(GlobalContext.getContext().getValue('userName') as string, this.inputName, Constant.HOST_DOMAIN, Constant.SERVICE_NAME);
+            this.passWordDialog.open()
+          } else {
+            prompt.showToast({
+              message: '输入房间名称'
+            })
+          }
         }).margin({ top: 20 })
       }
       .padding(30)
@@ -65,14 +66,24 @@ struct Create_group_chat {
   // todo 创建群聊
   onCreateGroupChat(input: string) {
     Smack.createRoom(GlobalContext.getContext().getValue('userName') as string, input, Constant.HOST_DOMAIN, Constant.SERVICE_NAME);
-    prompt.showToast({
-      message: '房间创建成功'
-    })
     setTimeout(() => {
-      router.replace({
-        url: 'pages/chat/group_chat/group_chat_main'
-      })
-    }, 1000)
+      Smack.join();
+    }, 500)
+
+    setTimeout(() => {
+      if (Smack.isJoined() == '1') {
+        prompt.showToast({
+          message: '房间创建成功'
+        })
+        router.replace({
+          url: 'pages/chat/group_chat/group_chat_main'
+        })
+      } else {
+        prompt.showToast({
+          message: '进入房间失败'
+        })
+      }
+    }, 1200)
   }
 }
 
@@ -111,6 +122,17 @@ struct PassWordDialog {
       {
         this.controller.close()
       }
+      setTimeout(() => {
+        if (Smack.isJoined() == '1') {
+          router.replace({
+            url: 'pages/chat/group_chat/group_chat_main'
+          })
+        } else {
+          prompt.showToast({
+            message: '进入房间失败'
+          })
+        }
+      }, 1000)
     }, 500)
   }
 }

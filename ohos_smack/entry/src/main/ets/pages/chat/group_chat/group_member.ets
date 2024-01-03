@@ -225,22 +225,28 @@ struct group_all_member {
           } else {
             Smack.revokeVoice(this.users[0].name, "revokeVoice");
           }
+
+          if (this.users.length > 1) {
+            Smack.setAffiliations(this.getUsers(), MUCRoomAffiliation.AffiliationNone, "AffiliationNone");
+          } else {
+            Smack.setAffiliation(this.users[0].name, MUCRoomAffiliation.AffiliationNone, "AffiliationNone");
+          }
         } })
       }
-      Text("发消息")
-        .backgroundColor(Color.Red)
-        .width('60%')
-        .height(50)
-        .borderRadius(25)
-        .textAlign(TextAlign.Center)
-        .padding(5)
-        .fontColor(Color.White)
-        .fontSize(20)
-        .margin({ top: 30 })
-        .onClick(() => {
-          router.push({ url: "pages/chat/one_chat/one_chat_main", params: { userName: this.users[0].name } })
-          router.back()
-        })
+      // Text("发消息")
+      //   .backgroundColor(Color.Red)
+      //   .width('60%')
+      //   .height(50)
+      //   .borderRadius(25)
+      //   .textAlign(TextAlign.Center)
+      //   .padding(5)
+      //   .fontColor(Color.White)
+      //   .fontSize(20)
+      //   .margin({ top: 30 })
+      //   .onClick(() => {
+      //     router.push({ url: "pages/chat/one_chat/one_chat_main", params: { userName: this.users[0].name } })
+      //     router.back()
+      //   })
     }
   }
 }
