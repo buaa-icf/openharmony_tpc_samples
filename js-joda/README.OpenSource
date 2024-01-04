@@ -2,9 +2,9 @@
     {
         "Name": "js-joda",
         "License": "BSD License",
-        "License File": "https://github.com/js-joda/js-joda/blob/main/LICENSE",
+        "License File": "LICENSE",
         "Version Number": "v2.2.1",
-        "Owner":"js-joda",
+        "Owner":"xiafeng@huawei.com",
         "Upstream URL": "https://github.com/js-joda/js-joda",
         "Description": "Immutable date and time library for javascript"
     }
