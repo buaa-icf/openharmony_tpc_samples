@@ -16,6 +16,7 @@ export class StandardGSYVideoModel {
   private videoUrl: string = '';
   private cacheWithPlay: boolean = false;
   private title: string = '';
+  private coverImage: Resource | undefined = undefined;
   private backClickListener: () => void = () => {
   };
   private fullClickListener: () => void = () => {
@@ -58,5 +59,13 @@ export class StandardGSYVideoModel {
 
   public ExecuteBackClickListener() {
     this.backClickListener();
+  }
+
+  public getCoverImage() {
+    return this.coverImage;
+  }
+
+  public setCoverImage(coverImage:Resource) {
+    this.coverImage = coverImage;
   }
 }

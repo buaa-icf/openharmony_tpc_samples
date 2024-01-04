@@ -109,7 +109,6 @@ export struct DanmakuVideoPlayer {
   private mAudioManager: audio.AudioManager | null = null;
   private isVerticalDrag: boolean = false;
   private isHorizontalDrag: boolean = false;
-  @State coverImage: Resource = $r('app.media.icon');
   @State coverVisible: Visibility = Visibility.Visible;
   private panOptionBrightAndVolume: PanGestureOptions = new PanGestureOptions({ direction: PanDirection.Vertical });
   private panOptionSeek: PanGestureOptions = new PanGestureOptions({ direction: PanDirection.Horizontal });
@@ -458,10 +457,12 @@ export struct DanmakuVideoPlayer {
         IjkVideoPlayer({ videoInit: this.videoInit })
       }
 
-      Image(this.coverImage)
-        .width('100%')
-        .height('100%')
-        .visibility(this.coverVisible)
+      if (this.videoModel.getCoverImage()) {
+        Image(this.videoModel.getCoverImage())
+          .width('100%')
+          .height('100%')
+          .visibility(this.coverVisible)
+      }
 
       Flex({ alignItems: ItemAlign.Center, justifyContent: FlexAlign.SpaceBetween }) {
         this.VolumeUi()

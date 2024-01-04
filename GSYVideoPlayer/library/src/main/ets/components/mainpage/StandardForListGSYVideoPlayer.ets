@@ -75,7 +75,6 @@ export struct StandardForListGSYVideoPlayer {
   @State mSeekTimePosition: number = 0;
   // 当前拖拽进度的方向资源
   @State mSeekDirectionRes: Resource = $r('app.media.video_forward_icon');
-  @State coverImage: Resource = $r('app.media.icon');
   @State coverVisible: Visibility = Visibility.Visible;
   public title: string = "";
   private xComponentId: string = 'xid';
@@ -362,10 +361,12 @@ export struct StandardForListGSYVideoPlayer {
         IjkVideoPlayer({ videoInit: this.videoInit })
       }
 
-      Image(this.coverImage)
-        .width('100%')
-        .height('100%')
-        .visibility(this.coverVisible)
+      if (this.videoModel.getCoverImage()) {
+        Image(this.videoModel.getCoverImage())
+          .width('100%')
+          .height('100%')
+          .visibility(this.coverVisible)
+      }
 
       Flex({ alignItems: ItemAlign.Center, justifyContent: FlexAlign.SpaceBetween }) {
         this.VolumeUi()

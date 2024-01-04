@@ -16,7 +16,7 @@
   "version": "1.0.0",
   "dependencies": {
     "@ohos/mp4parser": "2.0.3-rc.0",
-    "@ohos/ijkplayer": "^2.0.2"
+    "@ohos/ijkplayer": "2.0.2"
   },
   "tags": [
     "Media"
