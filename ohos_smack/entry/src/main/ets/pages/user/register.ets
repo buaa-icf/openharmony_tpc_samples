@@ -70,7 +70,7 @@ struct Register {
       })
     } else {
       let result: number = Smack.registers(Constant.HOST_IP, this.userName, this.passWord)
-      if(result == 1){
+      if(result == 0){
         router.back();
       }else{
         prompt.showToast({

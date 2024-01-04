@@ -112,26 +112,24 @@ void registration::onStreamEvent(StreamEvent event)
 
 void registration::handleRegistrationFields(const JID &from, int fields, std::string instructions)
 {
-    LOGI("handleRegistrationFields fields: %d instructions: %s ,from %s", fields,
+    LOGI("handleRegistrationFields", "handleRegistrationFields fields: %d instructions: %s ,from %s", fields,
         instructions.c_str(), from.full().c_str());
     RegistrationFields vals;
     vals.username = name;
     vals.password = pwd;
     bool isRegSuc = m_reg->createAccount(fields, vals);
-    if (isRegSuc) {
-        g_userRegState = 1;
-    }
 }
 
 void registration::handleRegistrationResult(const JID & /* from */, RegistrationResult result)
 {
-    LOGI("result: %d\n", result);
+    LOGI("handleRegistrationResult", "handleRegistrationResult result: %d", result);
+    g_userRegState = result;
     j->disconnect();
 }
 
 void registration::handleAlreadyRegistered(const JID & /* from */)
 {
-    LOGI("handleAlreadyRegistered the account already exists.\n");
+    LOGI("handleAlreadyRegistered", "handleAlreadyRegistered the account already exists.\n");
 }
 
 void registration::handleDataForm(const JID & /* from */, const DataForm & /* form */)
