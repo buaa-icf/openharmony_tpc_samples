@@ -1,20 +1,35 @@
 /**
- * Copyright (C) 2022 Huawei Device Co., Ltd.
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * BSD License
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * Copyright (c) 2023 Huawei Device Co., Ltd. All rights reserved.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * * Redistributions of source code must retain the above copyright notice, this
+ *  list of conditions and the following disclaimer.
+ *
+ * * Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ *
+ * * Neither the name Facebook nor the names of its contributors may be used to
+ * endorse or promote products derived from this software without specific
+ * prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 'AS IS' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { DateTimeFormatter, LocalDateTime, ZoneId, } from '@js-joda/core'
-import '@js-joda/timezone'
+import { DateTimeFormatter, LocalDateTime, ZoneId, Clock ,ZoneRegion, ZonedDateTime} from '@js-joda/core'
 import router from '@ohos.router';
 
 @Entry
@@ -56,15 +71,14 @@ function testLocalDateTime(): string {
   // 获取日期时间（默认时区 UTC协调世界时）
   console.info(LocalDateTime.now().toString());
   // 获取指定城市的日期时间
-  console.info(LocalDateTime.now(ZoneId.of("Asia/Shanghai")).toString());
   // 构建一个日期时间：2016-02-29T12:55:42.000000009
   console.info(LocalDateTime.of(2016, 2, 29, 12, 55, 42, 9).toString());
   // 获取日期时间类中的信息
-  var mDateTime = LocalDateTime.parse("2016-02-26T12:55:42.000000009");
+  let mDateTime = LocalDateTime.parse("2016-02-29T12:55:42.000000009");
+
   // ISO 8601规范日期时间值
   console.info(mDateTime.toString());
   // 格式化日期 按照M/d/yyyy格式显示日期
-  console.info(mDateTime.format(DateTimeFormatter.ofPattern('M/d/yyyy')).toString());
   // 格式化时间 按照HH:mm来显示时间
   console.info(mDateTime.format(DateTimeFormatter.ofPattern('HH:mm')).toString());
   // 获取当年年份：2016
@@ -100,7 +114,7 @@ function testLocalDateTime(): string {
   // 获取当前的总天数
   console.info(mDateTime.toLocalDate().lengthOfYear().toString());
   return "获取日期时间： " + LocalDateTime.now().toString() + '\n' +
-  "获取国内城市日期时间： " + LocalDateTime.now(ZoneId.of("Asia/Shanghai")).toString() + '\n' +
+  "获取国内城市日期时间： " + LocalDateTime.now(ZoneId.systemDefault()).toString() + '\n' +
   "根据给定数据构建日期时间： " + LocalDateTime.of(2016, 2, 29, 12, 55, 42, 9).toString() + '\n' +
   "获取给定日期年份： " + mDateTime.year().toString() + '\n' +
   "获取给定日期月份： " + mDateTime.month().toString() + '\n' +
