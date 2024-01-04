@@ -42,10 +42,10 @@ export default function abilityTest() {
       userName= null;
       userPassword= '123456';
       let result: number = Smack.registers(Constant.HOST_IP, userName, userPassword)
-      if(result == 1){
-        expect(result).assertEqual(1);
+      if(result == 0){
+        expect(result).assertEqual(0);
       }else{
-        expect(result).assertEqual(-1);
+        expect(result).assertEqual(1);
       }
     })
 
@@ -53,10 +53,10 @@ export default function abilityTest() {
       userName= 'testuser';
       userPassword= null;
       let result: number = Smack.registers(Constant.HOST_IP, userName, userPassword)
-      if(result == 1){
-        expect(result).assertEqual(1);
+      if(result == 0){
+        expect(result).assertEqual(0);
       }else{
-        expect(result).assertEqual(-1);
+        expect(result).assertEqual(2);
       }
     })
 
@@ -64,8 +64,8 @@ export default function abilityTest() {
       userName= 'testuser01';
       userPassword= '123456';
       let result: number = Smack.registers(Constant.HOST_IP, userName, userPassword)
-      if(result == 1){
-        expect(result).assertEqual(1);
+      if(result == 0){
+        expect(result).assertEqual(0);
       }else{
         expect(result).assertEqual(-1);
       }
@@ -258,10 +258,10 @@ export default function abilityTest() {
       userName='testuser02';
       userPassword='123456';
       let result: number = Smack.registers(Constant.HOST_IP, userName, userPassword)
-      if(result == 1){
-        expect(result).assertEqual(1);
+      if(result == 0){
+        expect(result).assertEqual(0);
       }else{
-        expect(result).assertEqual(-1);
+        expect(result).assertEqual(2);
       }
     })
 

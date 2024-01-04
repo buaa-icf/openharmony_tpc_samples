@@ -44,7 +44,9 @@ struct Main {
         this.mbare = obj.jid
         this.musername = obj.name
         this.mmsg = obj.msg
-        this.addFriendsDialog.open()
+        if (obj.msg == '') {
+          this.addFriendsDialog.open()
+        }
       },500)
     })
   }
