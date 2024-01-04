@@ -25,6 +25,7 @@ import {
 } from 'htmlparser2'
 import { Callbacks, QuoteType } from 'htmlparser2/src/main/ets/esm/Tokenizer'
 import * as helper from './helper'
+import { Element } from 'domhandler';
 
 const html = `
 <!DOCTYPE html>
@@ -123,7 +124,7 @@ struct Index {
                                     this.result = JSON.stringify(arr);
                                 }
                             });
-                            const parser = new Parser(handler);
+                            const parser: Parser = new Parser(handler);
                             parser.write("china <script type='text/javascript'>const foo = '<<bar>>';</script>",);
                             parser.end();
                         });
@@ -171,16 +172,16 @@ struct Index {
                         .onClick(event => {
                             this.result = ""
                             let dom: Document = parseDocument(html);
-                            let element = DomUtils.getElementsByTagName('style', dom);
-                            let text = DomUtils.textContent(element);
+                            let element: Element[] = DomUtils.getElementsByTagName('style', dom);
+                            let text:string = DomUtils.textContent(element);
                             this.result += "text:" + text + "\r\n"
-                            let isTag = DomUtils.isTag(element[0]);
+                            let isTag :boolean= DomUtils.isTag(element[0]);
                             this.result += "isTag:" + isTag + "\r\n"
-                            let isCDATA = DomUtils.isCDATA(element[0]);
+                            let isCDATA:boolean = DomUtils.isCDATA(element[0]);
                             this.result += "isCDATA:" + isCDATA + "\r\n"
-                            let isText = DomUtils.isText(element[0]);
+                            let isText:boolean = DomUtils.isText(element[0]);
                             this.result += "isText:" + isText + "\r\n"
-                            let isComment = DomUtils.isComment(element[0]);
+                            let isComment :boolean= DomUtils.isComment(element[0]);
                             this.result += "isComment:" + isComment + "\r\n"
                         });
 
@@ -217,16 +218,16 @@ struct Index {
                                     this.result = JSON.stringify(error)
                                     return
                                 }
-                                let element = DomUtils.getElementsByTagName('style', dom);
-                                let text = DomUtils.textContent(element);
+                                let element : Element[]= DomUtils.getElementsByTagName('style', dom);
+                                let text:string = DomUtils.textContent(element);
                                 this.result += "text:" + text + "\r\n"
-                                let isTag = DomUtils.isTag(element[0]);
+                                let isTag :boolean= DomUtils.isTag(element[0]);
                                 this.result += "isTag:" + isTag + "\r\n"
-                                let isCDATA = DomUtils.isCDATA(element[0]);
+                                let isCDATA :boolean= DomUtils.isCDATA(element[0]);
                                 this.result += "isCDATA:" + isCDATA + "\r\n"
-                                let isText = DomUtils.isText(element[0]);
+                                let isText:boolean = DomUtils.isText(element[0]);
                                 this.result += "isText:" + isText + "\r\n"
-                                let isComment = DomUtils.isComment(element[0]);
+                                let isComment :boolean= DomUtils.isComment(element[0]);
                                 this.result += "isComment:" + isComment + "\r\n"
                             });
                             parser.write(html);
@@ -243,7 +244,7 @@ struct Index {
                         .margin({ top: 20 })
                         .onClick(event => {
                             this.result = ""
-                            let that=this
+                            let that = this
                             const callbacks: Callbacks = {
                                 onattribdata(start: number, endIndex: number) {
                                 },
@@ -277,7 +278,7 @@ struct Index {
                                 ontextentity(codepoint: number, endIndex: number) {
                                 },
                             }
-                            let tokenizer = new Tokenizer({
+                            let tokenizer:Tokenizer = new Tokenizer({
                                 xmlMode: true,
                                 decodeEntities: true,
                             }, callbacks);
