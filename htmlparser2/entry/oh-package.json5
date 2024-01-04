@@ -7,6 +7,7 @@
   "main": "",
   "version": "1.0.0",
   "dependencies": {
-    "htmlparser2": "file:../library"
+    "htmlparser2": "file:../library",
+    "domhandler": "^5.0.3"
   }
 }
