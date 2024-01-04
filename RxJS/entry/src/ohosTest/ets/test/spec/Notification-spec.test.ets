@@ -1,8 +1,22 @@
-import { describe, expect, beforeEach } from '../hypium';
-import { it } from '../It'
+/*
+ * Copyright (C) 2024 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+import { describe, expect, beforeEach, it } from '@ohos/hypium';
 import { Notification, Subscriber } from 'rxjs';
-import { TestScheduler } from 'rxjs/testing';
+import { TestScheduler, RunHelpers } from 'rxjs/internal/testing/TestScheduler';
 import { observableMatcher } from '../spec/helpers/observableMatcher';
+import { InstanceofNotFun, UndefinedFun } from './ArkTools';
 
 export default function NotificationTest() {
   /** @test {Notification} */
@@ -12,14 +26,16 @@ export default function NotificationTest() {
       rxTestScheduler = new TestScheduler(observableMatcher);
     });
 
-    it('should exist', () => {
-      expect(Notification != undefined && Notification != null).assertTrue();
-      expect(Notification instanceof Function).assertTrue();
+    it('should_exist', 0, () => {
+      let result1 = UndefinedFun()
+      let result2 = InstanceofNotFun()
+      expect(result1).assertTrue();
+      expect(result2).assertTrue();
     });
 
-    it('should not allow convert to observable if given kind is unknown', () => {
-      let error: any = null;
-      const n = new Notification('x' as any);
+    it('should_not_allow_convert_to_observable_if_given_kind_is_unknown', 0, () => {
+      let error: ESObject = null;
+      const n: ESObject = new Notification<ESObject>('x' as ESObject);
       try {
         n.toObservable()
       } catch (err) {
@@ -28,7 +44,7 @@ export default function NotificationTest() {
       expect(error != null).assertTrue();
     });
 
-    it('createNext:should return a Notification', () => {
+    it('createNext_should_return_a_Notification', 0, () => {
       const n = Notification.createNext('test');
       expect(n instanceof Notification).assertTrue();
       expect(n.value).assertEqual('test');
@@ -38,7 +54,7 @@ export default function NotificationTest() {
     });
 
 
-    it('createError:should return a Notification', () => {
+    it('createError_should_return_a_Notification', 0, () => {
       const n = Notification.createError('test');
       expect(n instanceof Notification).assertTrue();
       expect(n.value).assertUndefined();
@@ -48,7 +64,7 @@ export default function NotificationTest() {
     });
 
 
-    it('createComplete:should return a Notification', () => {
+    it('createComplete_should_return_a_Notification', 0, () => {
       const n = Notification.createComplete();
       expect(n instanceof Notification).assertTrue();
       expect(n.value).assertUndefined();
@@ -58,29 +74,32 @@ export default function NotificationTest() {
     });
 
 
-    it('toObservable:should create observable from a next Notification', () => {
-      rxTestScheduler.run(({ expectObservable }) => {
+    it('toObservable_should_create_observable_from_a_next_Notification', 0, () => {
+      rxTestScheduler.run((helpers: RunHelpers) => {
+        let expectObservable = helpers.expectObservable
         const value = 'a';
         const next = Notification.createNext(value);
         expectObservable(next.toObservable()).toBe('(a|)');
       });
     });
 
-    it('toObservable:should create observable from a complete Notification', () => {
-      rxTestScheduler.run(({ expectObservable }) => {
+    it('toObservable_should_create_observable_from_a_complete_Notification', 0, () => {
+      rxTestScheduler.run((helpers: RunHelpers) => {
+        let expectObservable = helpers.expectObservable
         const complete = Notification.createComplete();
         expectObservable(complete.toObservable()).toBe('|');
       });
     });
 
-    it('toObservable:should create observable from a error Notification', () => {
-      rxTestScheduler.run(({ expectObservable }) => {
+    it('toObservable_should_create_observable_from_a_error_Notification', 0, () => {
+      rxTestScheduler.run((helpers: RunHelpers) => {
+        let expectObservable = helpers.expectObservable
         const error = Notification.createError('error');
         expectObservable(error.toObservable()).toBe('#');
       });
     });
 
-    it('static reference:should create new next Notification with value', () => {
+    it('static_reference_should_create_new_next_Notification_with_value', 0, () => {
       const value = 'a';
       const first = Notification.createNext(value);
       const second = Notification.createNext(value);
@@ -88,21 +107,21 @@ export default function NotificationTest() {
       expect(first === second).assertFalse();
     });
 
-    it('static reference:should create new error Notification', () => {
+    it('static_reference_should_create_new_error_Notification', 0, () => {
       const first = Notification.createError();
       const second = Notification.createError();
 
       expect(first === second).assertFalse();
     });
 
-    it('static reference:should return static complete Notification reference', () => {
+    it('static_reference_should_return_static_complete_Notification_reference', 0, () => {
       const first = Notification.createComplete();
       const second = Notification.createComplete();
 
       expect(first).assertEqual(second);
     });
 
-    it('do:should invoke on next', () => {
+    it('do_should_invoke_on_next', 0, () => {
       const n = Notification.createNext('a');
       let invoked = false;
       n.do(
@@ -110,43 +129,43 @@ export default function NotificationTest() {
           invoked = true;
         },
         () => {
-          throw 'should not be called';
+          throw new Error('should not be called');
         },
         () => {
-          throw 'should not be called';
+          throw new Error('should not be called');
         }
       );
 
       expect(invoked).assertTrue();
     });
 
-    it('do:should invoke on error', () => {
+    it('do_should_invoke_on_error', 0, () => {
       const n = Notification.createError();
       let invoked = false;
       n.do(
         () => {
-          throw 'should not be called';
+          throw new Error('should not be called');
         },
         () => {
           invoked = true;
         },
         () => {
-          throw 'should not be called';
+          throw new Error('should not be called');
         }
       );
 
       expect(invoked).assertTrue();
     });
 
-    it('do:should invoke on complete', () => {
+    it('do_should_invoke_on_complete', 0, () => {
       const n = Notification.createComplete();
       let invoked = false;
       n.do(
         () => {
-          throw 'should not be called';
+          throw new Error('should not be called');
         },
         () => {
-          throw 'should not be called';
+          throw new Error('should not be called');
         },
         () => {
           invoked = true;
@@ -157,7 +176,7 @@ export default function NotificationTest() {
     });
 
 
-    it('accept:should accept observer for next Notification', () => {
+    it('accept_should_accept_observer_for_next_Notification', 0, () => {
       const value = 'a';
       let observed = false;
       const n = Notification.createNext(value);
@@ -167,10 +186,10 @@ export default function NotificationTest() {
           observed = true;
         },
         () => {
-          throw 'should not be called';
+          throw new Error('should not be called');
         },
         () => {
-          throw 'should not be called';
+          throw new Error('should not be called');
         }
       );
 
@@ -178,18 +197,18 @@ export default function NotificationTest() {
       expect(observed).assertTrue();
     });
 
-    it('accept:should accept observer for error Notification', () => {
+    it('accept_should_accept_observer_for_error_Notification', 0, () => {
       let observed = false;
       const n = Notification.createError();
-      const observer = Subscriber.create(
+      const observer: ESObject = Subscriber.create(
         () => {
-          throw 'should not be called';
+          throw new Error('should not be called');
         },
         () => {
           observed = true;
         },
         () => {
-          throw 'should not be called';
+          throw new Error('should not be called');
         }
       );
 
@@ -197,15 +216,15 @@ export default function NotificationTest() {
       expect(observed).assertTrue();
     });
 
-    it('accept:should accept observer for complete Notification', () => {
+    it('accept_should_accept_observer_for_complete_Notification', 0, () => {
       let observed = false;
       const n = Notification.createComplete();
-      const observer = Subscriber.create(
+      const observer: ESObject = Subscriber.create(
         () => {
-          throw 'should not be called';
+          throw new Error('should not be called');
         },
         () => {
-          throw 'should not be called';
+          throw new Error('should not be called');
         },
         () => {
           observed = true;
@@ -216,7 +235,7 @@ export default function NotificationTest() {
       expect(observed).assertTrue();
     });
 
-    it('accept:should accept function for next Notification', () => {
+    it('accept_should_accept_function_for_next_Notification', 0, () => {
       const value = 'a';
       let observed = false;
       const n = Notification.createNext(value);
@@ -227,45 +246,45 @@ export default function NotificationTest() {
           observed = true;
         },
         () => {
-          throw 'should not be called';
+          throw new Error('should not be called');
         },
         () => {
-          throw 'should not be called';
+          throw new Error('should not be called');
         }
       );
       expect(observed).assertTrue();
     });
 
-    it('accept:should accept function for error Notification', () => {
+    it('accept_should_accept_function_for_error_Notification', 0, () => {
       let observed = false;
       const error = 'error';
       const n = Notification.createError(error);
 
       n.accept(
         () => {
-          throw 'should not be called';
+          throw new Error('should not be called');
         },
-        (err: any) => {
+        (err: ESObject) => {
           expect(err).assertEqual(error);
           observed = true;
         },
         () => {
-          throw 'should not be called';
+          throw new Error('should not be called');
         }
       );
       expect(observed).assertTrue();
     });
 
-    it('accept:should accept function for complete Notification', () => {
+    it('accept_should_accept_function_for_complete_Notification', 0, () => {
       let observed = false;
       const n = Notification.createComplete();
 
       n.accept(
         () => {
-          throw 'should not be called';
+          throw new Error('should not be called');
         },
         () => {
-          throw 'should not be called';
+          throw new Error('should not be called');
         },
         () => {
           observed = true;
@@ -275,7 +294,7 @@ export default function NotificationTest() {
     });
 
 
-    it('observe:should observe for next Notification', () => {
+    it('observe_should_observe_for_next_Notification', 0, () => {
       const value = 'a';
       let observed = false;
       const n = Notification.createNext(value);
@@ -285,10 +304,10 @@ export default function NotificationTest() {
           observed = true;
         },
         () => {
-          throw 'should not be called';
+          throw new Error('should not be called');
         },
         () => {
-          throw 'should not be called';
+          throw new Error('should not be called');
         }
       );
 
@@ -296,18 +315,18 @@ export default function NotificationTest() {
       expect(observed).assertTrue();
     });
 
-    it('observe:should observe for error Notification', () => {
+    it('observe_should_observe_for_error_Notification', 0, () => {
       let observed = false;
       const n = Notification.createError();
-      const observer = Subscriber.create(
+      const observer: ESObject = Subscriber.create(
         () => {
-          throw 'should not be called';
+          throw new Error('should not be called');
         },
         () => {
           observed = true;
         },
         () => {
-          throw 'should not be called';
+          throw new Error('should not be called');
         }
       );
 
@@ -315,15 +334,15 @@ export default function NotificationTest() {
       expect(observed).assertTrue();
     });
 
-    it('observe:should observe for complete Notification', () => {
+    it('observe_should_observe_for_complete_Notification', 0, () => {
       let observed = false;
       const n = Notification.createComplete();
-      const observer = Subscriber.create(
+      const observer: ESObject = Subscriber.create(
         () => {
-          throw 'should not be called';
+          throw new Error('should not be called');
         },
         () => {
-          throw 'should not be called';
+          throw new Error('should not be called');
         },
         () => {
           observed = true;

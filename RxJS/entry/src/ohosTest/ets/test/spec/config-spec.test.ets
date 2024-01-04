@@ -1,12 +1,26 @@
+/*
+ * Copyright (C) 2024 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 /** @prettier */
 import { config } from 'rxjs';
-import { expect, describe, it, afterEach } from '../hypium';
+import { expect, describe, it, afterEach } from '@ohos/hypium';
 import { Observable } from 'rxjs';
 import { timeoutProvider } from 'rxjs/internal/scheduler/timeoutProvider';
 
 export default function configTest() {
   describe('config', () => {
-    it('should have a Promise property that defaults to nothing', 0, () => {
+    it('should_have_a_Promise_property_that_defaults_to_nothing', 0, () => {
       expect(config.Promise).assertUndefined();
     });
   });
@@ -16,15 +30,15 @@ export default function configTest() {
       config.onUnhandledError = null;
     });
 
-    it('should default to null', 0, () => {
+    it('should_default_to_null', 0, () => {
       expect(config.onUnhandledError).assertNull();
     });
 
-    it('should call asynchronously if an error is emitted and not handled by the consumer observer', 0, () => {
+    it('should_call_asynchronously_if_an_error_is_emitted_and_not_handled_by_the_consumer_observer', 0, () => {
       let called = false;
-      const results: any[] = [];
+      const results: ESObject[] = [];
 
-      config.onUnhandledError = (err) => {
+      config.onUnhandledError = (err: ESObject) => {
         called = true;
         expect(err).assertEqual('bad');
       };
@@ -42,11 +56,11 @@ export default function configTest() {
       expect(results[0]).assertEqual(1);
     });
 
-    it('should call asynchronously if an error is emitted and not handled by the consumer next callback', 0, () => {
+    it('should_call_asynchronously_if_an_error_is_emitted_and_not_handled_by_the_consumer_next_callback', 0, () => {
       let called = false;
-      const results: any[] = [];
+      const results: ESObject[] = [];
 
-      config.onUnhandledError = (err) => {
+      config.onUnhandledError = (err: ESObject) => {
         called = true;
         expect(err).assertEqual('bad');
 
@@ -63,15 +77,15 @@ export default function configTest() {
       expect(results[0]).assertEqual(1);
     });
 
-    it('should call asynchronously if an error is emitted and not handled by the consumer in the empty case', 0, () => {
+    it('should_call_asynchronously_if_an_error_is_emitted_and_not_handled_by_the_consumer_in_the_empty_case', 0, () => {
       let called = false;
-      config.onUnhandledError = (err) => {
+      config.onUnhandledError = (err: ESObject) => {
         called = true;
         expect(err).assertEqual('bad');
 
       };
 
-      const source = new Observable((subscriber) => {
+      const source: ESObject = new Observable<ESObject>((subscriber: ESObject) => {
         subscriber.error('bad');
       });
 
@@ -87,20 +101,20 @@ export default function configTest() {
      * for two calls of `complete`? This is really something a build-time tool like a linter should
      * capture. Not a run time error reporting event.
      */
-    it('should not be called if two errors are sent to the subscriber', 0, () => {
+    it('should_not_be_called_if_two_errors_are_sent_to_the_subscriber', 0, () => {
       let called = false;
       config.onUnhandledError = () => {
         called = true;
       };
 
-      const source = new Observable((subscriber) => {
+      const source: ESObject = new Observable<ESObject>((subscriber: ESObject) => {
         subscriber.error('handled');
         subscriber.error('swallowed');
       });
 
-      let syncSentError: any;
+      let syncSentError: ESObject;
       source.subscribe({
-        error: (err) => {
+        error: (err: ESObject) => {
           syncSentError = err;
         },
       });
@@ -120,11 +134,11 @@ export default function configTest() {
       config.onStoppedNotification = null;
     });
 
-    it('should default to null', 0, () => {
+    it('should_default_to_null', 0, () => {
       expect(config.onStoppedNotification).assertNull();
     });
 
-    it('should be called asynchronously if a subscription setup errors after the subscription is closed by an error', 0, () => {
+    it('should_be_called_asynchronously_if_a_subscription_setup_errors_after_the_subscription_is_closed_by_an_error', 0, () => {
       let called = false;
       config.onStoppedNotification = (notification) => {
         called = true;
@@ -133,14 +147,14 @@ export default function configTest() {
 
       };
 
-      const source = new Observable((subscriber) => {
+      const source: ESObject = new Observable<ESObject>((subscriber: ESObject) => {
         subscriber.error('handled');
-        throw 'bad';
+        throw new Error('bad');
       });
 
-      let syncSentError: any;
+      let syncSentError: ESObject;
       source.subscribe({
-        error: (err) => {
+        error: (err: ESObject) => {
           syncSentError = err;
         },
       });
@@ -149,7 +163,7 @@ export default function configTest() {
       expect(called).assertFalse();
     });
 
-    it('should be called asynchronously if a subscription setup errors after the subscription is closed by a completion', 0, () => {
+    it('should_be_called_asynchronously_if_a_subscription_setup_errors_after_the_subscription_is_closed_by_a_completion', 0, () => {
       let called = false;
       let completed = false;
       config.onStoppedNotification = (notification) => {
@@ -159,14 +173,14 @@ export default function configTest() {
 
       };
 
-      const source = new Observable((subscriber) => {
+      const source: ESObject = new Observable<ESObject>((subscriber: ESObject) => {
         subscriber.complete();
-        throw 'bad';
+        throw new Error('bad');
       });
 
       source.subscribe({
         error: () => {
-          throw 'should not be called';
+          throw new Error('should not be called');
         },
         complete: () => {
           completed = true;
@@ -177,7 +191,7 @@ export default function configTest() {
       expect(called).assertFalse();
     });
 
-    it('should be called if a next is sent to the stopped subscriber', 0, () => {
+    it('should_be_called_if_a_next_is_sent_to_the_stopped_subscriber', 0, () => {
       let called = false;
       config.onStoppedNotification = (notification) => {
         called = true;
@@ -186,15 +200,15 @@ export default function configTest() {
 
       };
 
-      const source = new Observable((subscriber) => {
+      const source: ESObject = new Observable<ESObject>((subscriber: ESObject) => {
         subscriber.next(1);
         subscriber.complete();
         subscriber.next(2);
       });
 
-      let syncSentValue: any;
+      let syncSentValue: ESObject;
       source.subscribe({
-        next: (value) => {
+        next: (value: ESObject) => {
           syncSentValue = value;
         },
       });
@@ -203,7 +217,7 @@ export default function configTest() {
       expect(called).assertFalse();
     });
 
-    it('should be called if two errors are sent to the subscriber', 0, () => {
+    it('should_be_called_if_two_errors_are_sent_to_the_subscriber', 0, () => {
       let called = false;
       config.onStoppedNotification = (notification) => {
         called = true;
@@ -213,14 +227,14 @@ export default function configTest() {
 
       };
 
-      const source = new Observable((subscriber) => {
+      const source: ESObject = new Observable<ESObject>((subscriber: ESObject) => {
         subscriber.error('handled');
         subscriber.error('swallowed');
       });
 
-      let syncSentError: any;
+      let syncSentError: ESObject;
       source.subscribe({
-        error: (err) => {
+        error: (err: ESObject) => {
           syncSentError = err;
         },
       });
@@ -229,7 +243,7 @@ export default function configTest() {
       expect(called).assertFalse();
     });
 
-    it('should be called if two completes are sent to the subscriber', 0, () => {
+    it('should_be_called_if_two_completes_are_sent_to_the_subscriber', 0, () => {
       let called = false;
       config.onStoppedNotification = (notification) => {
         called = true;
@@ -237,7 +251,7 @@ export default function configTest() {
 
       };
 
-      const source = new Observable((subscriber) => {
+      const source: ESObject = new Observable<ESObject>((subscriber: ESObject) => {
         subscriber.complete();
         subscriber.complete();
       });

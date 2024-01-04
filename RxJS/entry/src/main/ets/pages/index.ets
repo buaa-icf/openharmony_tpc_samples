@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Huawei Device Co., Ltd.
+ * Copyright (C) 2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,7 +18,8 @@ import router from '@ohos.router'
 @Entry
 @Component
 struct Index {
-  @Builder MyButton(content:string, eventType:number) {
+  @Builder
+  MyButton(content: string, eventType: number) {
     Button(content, { type: ButtonType.Normal })
       .borderRadius(5)
       .width(300)
@@ -50,7 +51,7 @@ struct Index {
     .height('100%')
   }
 
-  click(eventType) {
+  click(eventType: number) {
     switch (eventType) {
       case 1:
         router.pushUrl({ url: 'pages/create' })

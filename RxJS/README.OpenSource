@@ -1,11 +1,11 @@
 [
     {
-        "Name": "rxjs",
+        "Name": "RxJS",
         "License": "Apache License",
         "License File": " LICENSE ",
-        "Version Number": "7.5.5",
-        "Owner": "ReactiveX",
-        "Upstream URL": "https://github.com/ReactiveX/rxjs",
+        "Version Number": "7.8.1",
+        "Owner": "xiafeng@huawei.com",
+        "Upstream URL": "https://github.com/reactivex/rxjs",
         "Description": "A reactive programming library for JavaScript"
     }
 ]

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Huawei Device Co., Ltd.
+ * Copyright (C) 2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,7 +16,7 @@
 @Component
 export struct MyButton {
   @State content: string = '';
-  onClickListener?: () => void ;
+  onClickListener?: () => void;
 
   build() {
     Button({ type: ButtonType.Normal }) {
@@ -24,8 +24,11 @@ export struct MyButton {
     }
     .borderRadius(5)
     .margin({ top: 25, left: 20, right: 20 })
-    .onClick((event: ClickEvent) => {
-      this.onClickListener();
+    .onClick(() => {
+      if (this.onClickListener) {
+        this.onClickListener();
+      }
+
     })
   }
 }

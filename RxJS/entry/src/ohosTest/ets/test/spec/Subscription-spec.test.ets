@@ -1,25 +1,35 @@
-import { expect, describe, beforeEach, afterEach } from '../hypium';
-import { it } from '../It'
+/*
+ * Copyright (C) 2024 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+import { expect, describe, beforeEach, afterEach, it } from '@ohos/hypium';
 import { Observable, UnsubscriptionError, Subscription, merge } from 'rxjs';
-import lodash from 'lodash'
 
 /** @test {Subscription} */
 export default function subscriptionTest() {
   describe('Subscription', () => {
-    it('should unsubscribe child subscriptions', () => {
+    it('should_unsubscribe_child_subscriptions', 0, () => {
       const main = new Subscription();
-
       let isCalled = false;
       const child = new Subscription(() => {
         isCalled = true;
       });
       main.add(child);
       main.unsubscribe();
-
       expect(isCalled).assertTrue();
     });
 
-    it('should unsubscribe child subscriptions if it has already been unsubscribed', () => {
+    it('should_unsubscribe_child_subscriptions_if_it_has_already_been_unsubscribed', 0, () => {
       const main = new Subscription();
       main.unsubscribe();
 
@@ -32,7 +42,7 @@ export default function subscriptionTest() {
       expect(isCalled).assertTrue();
     });
 
-    it('should unsubscribe a finalizer function that was passed', () => {
+    it('should_unsubscribe_a_finalizer_function_that_was_passed', 0, () => {
       let isCalled = false;
       const main = new Subscription();
       main.add(() => {
@@ -42,7 +52,7 @@ export default function subscriptionTest() {
       expect(isCalled).assertTrue();
     });
 
-    it('should unsubscribe a finalizer function that was passed immediately if it has been unsubscribed', () => {
+    it('should_unsubscribe_a_finalizer_function_that_was_passed_immediately_if_it_has_been_unsubscribed', 0, () => {
       let isCalled = false;
       const main = new Subscription();
       main.unsubscribe();
@@ -52,7 +62,7 @@ export default function subscriptionTest() {
       expect(isCalled).assertTrue();
     });
 
-    it('should unsubscribe an Unsubscribable when unsubscribed', () => {
+    it('should_unsubscribe_an_Unsubscribable_when_unsubscribed', 0, () => {
       let isCalled = false;
       const main = new Subscription();
       main.add({
@@ -64,7 +74,7 @@ export default function subscriptionTest() {
       expect(isCalled).assertTrue();
     });
 
-    it('should unsubscribe an Unsubscribable if it is already unsubscribed', () => {
+    it('should_unsubscribe_an_Unsubscribable_if_it_is_already_unsubscribed', 0, () => {
       let isCalled = false;
       const main = new Subscription();
       main.unsubscribe();
@@ -76,7 +86,7 @@ export default function subscriptionTest() {
       expect(isCalled).assertTrue();
     });
 
-    it('should remove added Subscriptions', () => {
+    it('should_remove_added_Subscriptions', 0, () => {
       let isCalled = false;
       const main = new Subscription();
       const child = new Subscription(() => {
@@ -88,7 +98,7 @@ export default function subscriptionTest() {
       expect(isCalled).assertFalse();
     });
 
-    it('should remove added functions', () => {
+    it('should_remove_added_functions', 0, () => {
       let isCalled = false;
       const main = new Subscription();
       const finalizer = () => {
@@ -100,10 +110,10 @@ export default function subscriptionTest() {
       expect(isCalled).assertFalse();
     });
 
-    it('should remove added unsubscribables', () => {
+    it('should_remove_added_unsubscribables', 0, () => {
       let isCalled = false;
       const main = new Subscription();
-      const unsubscribable = {
+      const unsubscribable: ESObject = {
         unsubscribe() {
           isCalled = true;
         }
@@ -114,23 +124,23 @@ export default function subscriptionTest() {
       expect(isCalled).assertFalse();
     });
 
-    it('should unsubscribe from all subscriptions, when some of them throw', (done) => {
+    it('should_unsubscribe_from_all_subscriptions_when_some_of_them_throw', 0, (done: ESObject) => {
       const finalizers: number[] = [];
 
-      const source1 = new Observable(() => {
+      const source1: ESObject = new Observable<ESObject>(() => {
         return () => {
           finalizers.push(1);
         };
       });
 
-      const source2 = new Observable(() => {
+      const source2: ESObject = new Observable<ESObject>(() => {
         return () => {
           finalizers.push(2);
           throw new Error('oops, I am a bad unsubscribe!');
         };
       });
 
-      const source3 = new Observable(() => {
+      const source3: ESObject = new Observable<ESObject>(() => {
         return () => {
           finalizers.push(3);
         };
@@ -139,30 +149,30 @@ export default function subscriptionTest() {
       const subscription = merge(source1, source2, source3).subscribe();
 
       setTimeout(() => {
-        let error = null;
+        let error: ESObject = null;
         try {
           subscription.unsubscribe();
         } catch (err) {
           error = err;
         }
         expect(error != null && error instanceof UnsubscriptionError).assertTrue();
-        expect(lodash.isEqual(finalizers, [1, 2, 3]));
+        expect(finalizers).assertDeepEquals([1, 2, 3])
         done();
       }, 0);
     });
 
-    it('should unsubscribe from all subscriptions, when adding a bad custom subscription to a subscription', (done) => {
+    it('should_unsubscribe_from_all_subscriptions_when_adding_a_bad_custom_subscription_to_a_subscription', 0, (done: ESObject) => { //要改
       const finalizers: number[] = [];
 
       const sub = new Subscription();
 
-      const source1 = new Observable(() => {
+      const source1: ESObject = new Observable<ESObject>(() => {
         return () => {
           finalizers.push(1);
         };
       });
 
-      const source2 = new Observable(() => {
+      const source2: ESObject = new Observable<ESObject>(() => {
         return () => {
           finalizers.push(2);
           sub.add(({
@@ -174,7 +184,7 @@ export default function subscriptionTest() {
         };
       });
 
-      const source3 = new Observable(() => {
+      const source3: ESObject = new Observable<ESObject>(() => {
         return () => {
           finalizers.push(3);
         };
@@ -183,19 +193,19 @@ export default function subscriptionTest() {
       sub.add(merge(source1, source2, source3).subscribe());
 
       setTimeout(() => {
-        let error = null;
+        let error: ESObject = null;
         try {
           sub.unsubscribe();
         } catch (err) {
           error = err;
         }
         expect(error != null && error instanceof UnsubscriptionError).assertTrue();
-        expect(lodash.isEqual(finalizers, [1, 2, 3])).assertTrue();
+        expect(finalizers).assertDeepEquals([1, 2, 3]);
         done();
       }, 1);
     });
 
-    it('should have idempotent unsubscription', () => {
+    it('should_have_idempotent_unsubscription', 0, () => {
       let count = 0;
       const subscription = new Subscription(() => ++count);
       expect(count).assertEqual(0);
@@ -207,7 +217,7 @@ export default function subscriptionTest() {
       expect(count).assertEqual(1);
     });
 
-    it('should unsubscribe from all parents', () => {
+    it('should_unsubscribe_from_all_parents', 0, () => {
       // https://github.com/ReactiveX/rxjs/issues/6351
       const a = new Subscription(() => { /* noop */
       });
@@ -223,15 +233,15 @@ export default function subscriptionTest() {
       // When d is added to the subscriptions, it's added as a finalizer. The
       // length is 1 because the finalizers passed to the ctors are stored in a
       // separate property.
-      expect((a as any)._finalizers['length']).assertEqual(1);
-      expect((b as any)._finalizers['length']).assertEqual(1);
-      expect((c as any)._finalizers['length']).assertEqual(1);
+      expect((a as ESObject)._finalizers['length']).assertEqual(1);
+      expect((b as ESObject)._finalizers['length']).assertEqual(1);
+      expect((c as ESObject)._finalizers['length']).assertEqual(1);
       d.unsubscribe();
       // When d is unsubscribed, it should remove itself from each of its
       // parents.
-      expect((a as any)._finalizers['length']).assertEqual(0);
-      expect((b as any)._finalizers['length']).assertEqual(0);
-      expect((c as any)._finalizers['length']).assertEqual(0);
+      expect((a as ESObject)._finalizers['length']).assertEqual(0);
+      expect((b as ESObject)._finalizers['length']).assertEqual(0);
+      expect((c as ESObject)._finalizers['length']).assertEqual(0);
     });
   }
   );

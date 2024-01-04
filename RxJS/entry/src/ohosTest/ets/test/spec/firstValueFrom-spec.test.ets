@@ -1,11 +1,24 @@
+/*
+ * Copyright (C) 2024 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 import { from, firstValueFrom, EMPTY, EmptyError, throwError, of, Observable } from 'rxjs';
-import { finalize, take } from 'rxjs/operators';
-import { describe, expect } from '../hypium';
-import { it } from '../It'
+import { finalize } from 'rxjs';
+import { expect, describe, it } from '@ohos/hypium';
 
 export default function firstValueFromTest() {
   describe('firstValueFrom', () => {
-    it('should emit the first value as a promise', async () => {
+    it('should_emit_the_first_value_as_a_promise', 0, async () => {
       let finalized = false;
       const source = from([0, 1, 2, 3, 4, 5]).pipe(finalize(() => (finalized = true)));
       const result = await firstValueFrom(source);
@@ -14,7 +27,7 @@ export default function firstValueFromTest() {
 
     });
 
-    it('should support a default value', async () => {
+    it('should_support_a_default_value', 0, async () => {
       const source = EMPTY;
       const result = await firstValueFrom(source, {
         defaultValue: 0
@@ -22,20 +35,20 @@ export default function firstValueFromTest() {
       expect(result).assertEqual(0);
     });
 
-    it('should support an undefined config', async () => {
+    it('should_support_an_undefined_config', 0, async () => {
       const source = EMPTY;
-      let error: any = null;
+      let error: ESObject = null;
       try {
-        await firstValueFrom(source, undefined as any);
+        await firstValueFrom(source, undefined as ESObject);
       } catch (err) {
         error = err;
       }
       expect(error instanceof EmptyError).assertTrue();
     });
 
-    it('should error for empty observables', async () => {
+    it('should_error_for_empty_observables', 0, async () => {
       const source = EMPTY;
-      let error: any = null;
+      let error: ESObject = null;
       try {
         await firstValueFrom(source);
       } catch (err) {
@@ -44,9 +57,9 @@ export default function firstValueFromTest() {
       expect(error instanceof EmptyError).assertTrue();
     });
 
-    it('should error for errored observables', async () => {
+    it('should_error_for_errored_observables', 0, async () => {
       const source = throwError(() => new Error('blorp!'));
-      let error: any = null;
+      let error: ESObject = null;
       try {
         await firstValueFrom(source);
       } catch (err) {
@@ -56,7 +69,7 @@ export default function firstValueFromTest() {
       expect(error.message).assertEqual('blorp!');
     });
 
-    it('should work with a synchronous observable', async () => {
+    it('should_work_with_a_synchronous_observable', 0, async () => {
       let finalized = false;
       const source = of('apples', 'bananas').pipe(finalize(() => (finalized = true)));
       const result = await firstValueFrom(source);
@@ -64,7 +77,7 @@ export default function firstValueFromTest() {
       expect(finalized).assertTrue();
     });
 
-    it('should stop listening to a synchronous observable when resolved', async () => {
+    it('should_stop_listening_to_a_synchronous_observable_when_resolved', 0, async () => {
       const sideEffects: number[] = [];
       const synchronousObservable = new Observable<number>(subscriber => {
         // This will check to see if the subscriber was closed on each loop

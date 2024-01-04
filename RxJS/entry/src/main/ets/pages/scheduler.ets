@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Huawei Device Co., Ltd.
+ * Copyright (C) 2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,15 +13,14 @@
  * limitations under the License.
  */
 
-import {Observable, asyncScheduler, from, of, combineLatest, asapScheduler, queueScheduler} from 'rxjs';
-import {observeOn} from 'rxjs/operators';
+import { Observable, asyncScheduler, from, of, combineLatest, asapScheduler, queueScheduler } from 'rxjs';
+import { observeOn } from 'rxjs';
 import Log from '../log'
 import { MyButton } from '../common/MyButton'
 
 @Entry
 @Component
 struct Scheduler {
-
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center }) {
       MyButton({ content: "asyncScheduler", onClickListener: () => {
@@ -40,9 +39,8 @@ struct Scheduler {
     .height('100%')
   }
 
-
-  async(){
-    let observable = new Observable((proxyObserver) => {
+  async() {
+    let observable: ESObject = new Observable<ESObject>((proxyObserver: ESObject) => {
       proxyObserver.next(1);
       proxyObserver.next(2);
       proxyObserver.next(3);
@@ -50,11 +48,11 @@ struct Scheduler {
     }).pipe(
       observeOn(asyncScheduler)
     );
-    let finalObserver = {
-      next(x) {
+    let finalObserver: ESObject = {
+      next(x: ESObject) {
         Log.showLog('async--got value ' + x)
       },
-      error(err) {
+      error(err: ESObject) {
         Log.showError('async--something wrong occurred: ' + err);
       },
       complete() {
@@ -72,7 +70,9 @@ struct Scheduler {
     const example = combineLatest(arraySource, source, (a, b) => {
       return a + b
     });
-    example.subscribe(val => Log.showLog('asap--'+val));
+    example.subscribe(val => {
+      Log.showLog('asap--' + val)
+    });
   }
 
   queue() {

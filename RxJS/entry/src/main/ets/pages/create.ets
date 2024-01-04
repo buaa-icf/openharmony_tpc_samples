@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Huawei Device Co., Ltd.
+ * Copyright (C) 2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,14 +13,13 @@
  * limitations under the License.
  */
 
-import {Observable, empty, of, interval, from, range, throwError, timer} from 'rxjs';
+import { Observable, empty, of, interval, from, range, throwError, timer } from 'rxjs';
 import Log from '../log'
 import { MyButton } from '../common/MyButton'
 
 @Entry
 @Component
 struct Create {
-
   build() {
     Scroll() {
       Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center }) {
@@ -28,7 +27,7 @@ struct Create {
           this.create();
         } })
 
-        MyButton({ content: "empty:立即完成的observable",onClickListener: () => {
+        MyButton({ content: "empty:立即完成的observable", onClickListener: () => {
           this.empty();
         } })
 
@@ -74,19 +73,25 @@ struct Create {
   }
 
   create() {
-    const observable = Observable.create(function (observer) {
+    const observable: ESObject = Observable.create((observer: ESObject) => {
       observer.next('Hello');
       observer.next('World');
       setTimeout(() => {
         observer.complete();
       }, 1000)
     });
-    const observer = {
-      next: x => Log.showLog('create--'+x),
-      error: err => Log.showError('create--Observer got an error: ' + err),
-      complete: () => Log.showLog('create--complete'),
+    const observer: ESObject = {
+      next: (x: ESObject) => {
+        Log.showLog('create--' + x)
+      },
+      error: (err: ESObject) => {
+        Log.showError('create--Observer got an error: ' + err)
+      },
+      complete: () => {
+        Log.showLog('create--complete')
+      },
     };
-    const subscription = observable.subscribe(observer);
+    const subscription: ESObject = observable.subscribe(observer);
   }
 
   empty() {
@@ -99,14 +104,14 @@ struct Create {
   fromArray() {
     const arraySource = from([1, 2, 3, 4, 5]);
     const subscribe = arraySource.subscribe(val => {
-      Log.showLog('from--'+val)
+      Log.showLog('from--' + val)
     });
   }
 
   intervalNum() {
     const source = interval(1000);
     const subscribe = source.subscribe(val => {
-      Log.showLog('interval--'+val)
+      Log.showLog('interval--' + val)
       if (val > 4) {
         subscribe.unsubscribe();
       }
@@ -115,27 +120,33 @@ struct Create {
 
   ofNum() {
     const source = of(1, 2, 3, 4, 5);
-    const subscribe = source.subscribe(val => Log.showLog('of--'+val));
+    const subscribe = source.subscribe((val) => {
+      Log.showLog('of--' + val)
+    });
   }
 
   rang() {
     const source = range(1, 10);
-    const example = source.subscribe(val => Log.showLog('rang--'+val));
+    const example = source.subscribe((val) => {
+      Log.showLog('rang--' + val)
+    });
   }
 
   throwError() {
     const source = throwError('This is an error!');
     const subscribe = source.subscribe({
-      next: val => Log.showLog('throwError--'+val),
+      next: val => Log.showLog('throwError--' + val),
       complete: () => Log.showLog('throwError--Complete!'),
-      error: val => Log.showLog(`throwError--Error: ${val}`)
+      error: (val: ESObject) => {
+        Log.showLog(`throwError--Error: ${val}`)
+      }
     });
   }
 
   timer() {
     const source = timer(1000, 2000);
     const subscribe = source.subscribe(val => {
-      Log.showLog('timer--'+val)
+      Log.showLog('timer--' + val)
       if (val > 4) {
         subscribe.unsubscribe();
       }

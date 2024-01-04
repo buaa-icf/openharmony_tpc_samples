@@ -1,10 +1,22 @@
-import { describe, expect, beforeEach } from '../../hypium';
-import { it } from '../../It'
-import { ReplaySubject, Subject, of } from 'rxjs';
-import { mergeMapTo, tap } from 'rxjs/operators';
-import { TestScheduler } from 'rxjs/testing';
+/*
+ * Copyright (C) 2024 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+import { describe, expect, beforeEach, it } from '@ohos/hypium';
+import { ReplaySubject, Subject, of, mergeMapTo, tap } from 'rxjs';
+import { TestScheduler, RunHelpers } from 'rxjs/internal/testing/TestScheduler';
 import { observableMatcher } from '../helpers/observableMatcher';
-import lodash from 'lodash'
+import { ReplaySubjectFun, ReplaySubjectFun2 } from '../ArkTools';
 
 /** @test {ReplaySubject} */
 export default function replaySubjectTest() {
@@ -15,12 +27,12 @@ export default function replaySubjectTest() {
       rxTestScheduler = new TestScheduler(observableMatcher);
     });
 
-    it('should extend Subject', () => {
-      const subject = new ReplaySubject();
+    it('should_extend_Subject', 0, () => {
+      const subject: ESObject = new ReplaySubject<ESObject>();
       expect(subject instanceof Subject).assertTrue();
     });
 
-    it('should add the observer before running subscription code', () => {
+    it('should_add_the_observer_before_running_subscription_code', 0, () => {
       const subject = new ReplaySubject<number>();
       subject.next(1);
       const results: number[] = [];
@@ -32,10 +44,10 @@ export default function replaySubjectTest() {
         }
       });
 
-      expect(lodash.isEqual(results, [1, 2, 3])).assertTrue();
+      expect(results).assertDeepEquals([1, 2, 3]);
     });
 
-    it('should replay values upon subscription', (done) => {
+    it('should_replay_values_upon_subscription', 0, (done: ESObject) => {
       const subject = new ReplaySubject<number>();
       const expects = [1, 2, 3];
       let i = 0;
@@ -49,7 +61,7 @@ export default function replaySubjectTest() {
             subject.complete();
           }
         },
-        error: (err: any) => {
+        error: (err: ESObject) => {
           done(new Error('should not be called'));
         },
         complete: () => {
@@ -58,7 +70,7 @@ export default function replaySubjectTest() {
       });
     });
 
-    it('should replay values and complete', (done) => {
+    it('should_replay_values_and_complete', 0, (done: ESObject) => {
       const subject = new ReplaySubject<number>();
       const expects = [1, 2, 3];
       let i = 0;
@@ -74,7 +86,7 @@ export default function replaySubjectTest() {
       });
     });
 
-    it('should replay values and error', (done) => {
+    it('should_replay_values_and_error', 0, (done: ESObject) => {
       const subject = new ReplaySubject<number>();
       const expects = [1, 2, 3];
       let i = 0;
@@ -86,14 +98,14 @@ export default function replaySubjectTest() {
         next: (x: number) => {
           expect(x).assertEqual(expects[i++]);
         },
-        error: (err: any) => {
+        error: (err: ESObject) => {
           expect(err).assertEqual('fooey');
           done();
         },
       });
     });
 
-    it('should only replay values within its buffer size', (done) => {
+    it('should_only_replay_values_within_its_buffer_size', 0, (done: ESObject) => {
       const subject = new ReplaySubject<number>(2);
       const expects = [2, 3];
       let i = 0;
@@ -107,7 +119,7 @@ export default function replaySubjectTest() {
             subject.complete();
           }
         },
-        error: (err: any) => {
+        error: (err: ESObject) => {
           done(new Error('should not be called'));
         },
         complete: () => {
@@ -116,19 +128,21 @@ export default function replaySubjectTest() {
       });
     });
 
-    it('should replay 2 previous values when subscribed', () => {
-      rxTestScheduler.run(({ hot, expectObservable }) => {
+    it('should_replay_2_previous_values_when_subscribed', 0, () => {
+      rxTestScheduler.run((helpers: RunHelpers) => {
+        let hot = helpers.hot
+        let expectObservable = helpers.expectObservable
         const replaySubject = new ReplaySubject<string>(2);
 
-        function feedNextIntoSubject(x: string) {
+        let feedNextIntoSubject = (x: string) => {
           replaySubject.next(x);
         }
 
-        function feedErrorIntoSubject(err: string) {
+        let feedErrorIntoSubject = (err: string) => {
           replaySubject.error(err);
         }
 
-        function feedCompleteIntoSubject() {
+        let feedCompleteIntoSubject = () => {
           replaySubject.complete();
         }
 
@@ -143,10 +157,10 @@ export default function replaySubjectTest() {
         const expected3 = '      ---------------------------(78)9--|';
 
         expectObservable(
-        hot(sourceTemplate)
-          .pipe(tap({
-            next: feedNextIntoSubject, error: feedErrorIntoSubject, complete: feedCompleteIntoSubject
-          }))
+          hot(sourceTemplate)
+            .pipe(tap({
+              next: feedNextIntoSubject, error: feedErrorIntoSubject, complete: feedCompleteIntoSubject
+            }))
         ).toBe(sourceTemplate);
         expectObservable(subscriber1, unsub1).toBe(expected1);
         expectObservable(subscriber2, unsub2).toBe(expected2);
@@ -154,19 +168,21 @@ export default function replaySubjectTest() {
       });
     });
 
-    it('should replay 2 last values for when subscribed after completed', () => {
-      rxTestScheduler.run(({ hot, expectObservable }) => {
+    it('should_replay_2_last_values_for_when_subscribed_after_completed', 0, () => {
+      rxTestScheduler.run((helpers: RunHelpers) => {
+        let hot = helpers.hot
+        let expectObservable = helpers.expectObservable
         const replaySubject = new ReplaySubject<string>(2);
 
-        function feedNextIntoSubject(x: string) {
+        let feedNextIntoSubject = (x: string) => {
           replaySubject.next(x);
         }
 
-        function feedErrorIntoSubject(err: string) {
+        let feedErrorIntoSubject = (err: string) => {
           replaySubject.error(err);
         }
 
-        function feedCompleteIntoSubject() {
+        let feedCompleteIntoSubject = () => {
           replaySubject.complete();
         }
 
@@ -175,16 +191,16 @@ export default function replaySubjectTest() {
         const expected1 = '      ---------------(34|)';
 
         expectObservable(
-        hot(sourceTemplate)
-          .pipe(tap({
-            next: feedNextIntoSubject, error: feedErrorIntoSubject, complete: feedCompleteIntoSubject
-          }))
+          hot(sourceTemplate)
+            .pipe(tap({
+              next: feedNextIntoSubject, error: feedErrorIntoSubject, complete: feedCompleteIntoSubject
+            }))
         ).toBe(sourceTemplate);
         expectObservable(subscriber1).toBe(expected1);
       });
     });
 
-    it('should handle subscribers that arrive and leave at different times, ' + 'subject does not complete', () => {
+    it('should_handle_subscribers_that_arrive_and_leave_at_different_times_subject_does_not_complete', 0, () => {
       const subject = new ReplaySubject<number>(2);
       const results1: (number | string)[] = [];
       const results2: (number | string)[] = [];
@@ -199,7 +215,7 @@ export default function replaySubjectTest() {
         next: (x: number) => {
           results1.push(x);
         },
-        error: (err: any) => {
+        error: () => {
           results1.push('E');
         },
         complete: () => {
@@ -213,7 +229,7 @@ export default function replaySubjectTest() {
         next: (x: number) => {
           results2.push(x);
         },
-        error: (err: any) => {
+        error: () => {
           results2.push('E');
         },
         complete: () => {
@@ -237,7 +253,7 @@ export default function replaySubjectTest() {
         next: (x: number) => {
           results3.push(x);
         },
-        error: (err: any) => {
+        error: () => {
           results3.push('E');
         },
         complete: () => {
@@ -249,27 +265,29 @@ export default function replaySubjectTest() {
 
       subscription3.unsubscribe();
 
-      expect(lodash.isEqual(results1, [3, 4, 5, 6, 7])).assertTrue();
-      expect(lodash.isEqual(results2, [4, 5, 6, 7, 8])).assertTrue();
-      expect(lodash.isEqual(results3, [9, 10, 11])).assertTrue();
+      expect(results1).assertDeepEquals([3, 4, 5, 6, 7]);
+      expect(results2).assertDeepEquals([4, 5, 6, 7, 8]);
+      expect(results3).assertDeepEquals([9, 10, 11]);
 
       subject.complete();
     });
 
 
-    it('should replay previous values since 4 time units ago when subscribed', () => {
-      rxTestScheduler.run(({ hot, expectObservable }) => {
-        const replaySubject = new ReplaySubject<string>(Infinity, 4, rxTestScheduler);
+    it('should_replay_previous_values_since_4_time_units_ago_when_subscribed', 0, () => {
+      rxTestScheduler.run((helpers: RunHelpers) => {
+        let hot = helpers.hot
+        let expectObservable = helpers.expectObservable
+        const replaySubject = ReplaySubjectFun(rxTestScheduler)
 
-        function feedNextIntoSubject(x: string) {
+        let feedNextIntoSubject = (x: string) => {
           replaySubject.next(x);
         }
 
-        function feedErrorIntoSubject(err: any) {
+        let feedErrorIntoSubject = (err: ESObject) => {
           replaySubject.error(err);
         }
 
-        function feedCompleteIntoSubject() {
+        let feedCompleteIntoSubject = () => {
           replaySubject.complete();
         }
 
@@ -284,10 +302,10 @@ export default function replaySubjectTest() {
         const expected3 = '      ---------------------------(78)9--|';
 
         expectObservable(
-        hot(sourceTemplate)
-          .pipe(tap({
-            next: feedNextIntoSubject, error: feedErrorIntoSubject, complete: feedCompleteIntoSubject
-          }))
+          hot(sourceTemplate)
+            .pipe(tap({
+              next: feedNextIntoSubject, error: feedErrorIntoSubject, complete: feedCompleteIntoSubject
+            }))
         ).toBe(sourceTemplate);
         expectObservable(subscriber1, unsub1).toBe(expected1);
         expectObservable(subscriber2, unsub2).toBe(expected2);
@@ -295,19 +313,21 @@ export default function replaySubjectTest() {
       });
     });
 
-    it('should replay last values since 4 time units ago when subscribed', () => {
-      rxTestScheduler.run(({ hot, expectObservable }) => {
-        const replaySubject = new ReplaySubject<string>(Infinity, 4, rxTestScheduler);
+    it('should_replay_last_values_since_4_time_units_ago_when_subscribed', 0, () => {
+      rxTestScheduler.run((helpers: RunHelpers) => {
+        let hot = helpers.hot
+        let expectObservable = helpers.expectObservable
+        const replaySubject = ReplaySubjectFun(rxTestScheduler)
 
-        function feedNextIntoSubject(x: string) {
+        let feedNextIntoSubject = (x: string) => {
           replaySubject.next(x);
         }
 
-        function feedErrorIntoSubject(err: any) {
+        let feedErrorIntoSubject = (err: ESObject) => {
           replaySubject.error(err);
         }
 
-        function feedCompleteIntoSubject() {
+        let feedCompleteIntoSubject = () => {
           replaySubject.complete();
         }
 
@@ -316,28 +336,30 @@ export default function replaySubjectTest() {
         const expected1 = '      -------------(4|)';
 
         expectObservable(
-        hot(sourceTemplate)
-          .pipe(tap({
-            next: feedNextIntoSubject, error: feedErrorIntoSubject, complete: feedCompleteIntoSubject
-          }))
+          hot(sourceTemplate)
+            .pipe(tap({
+              next: feedNextIntoSubject, error: feedErrorIntoSubject, complete: feedCompleteIntoSubject
+            }))
         ).toBe(sourceTemplate);
         expectObservable(subscriber1).toBe(expected1);
       });
     });
 
-    it('should only replay bufferSize items when 4 time units ago more were emited', () => {
-      rxTestScheduler.run(({ hot, expectObservable }) => {
-        const replaySubject = new ReplaySubject<string>(2, 4, rxTestScheduler);
+    it('should_only_replay_bufferSize_items_when_4_time_units_ago_more_were_emited', 0, () => {
+      rxTestScheduler.run((helpers: RunHelpers) => {
+        let hot = helpers.hot
+        let expectObservable = helpers.expectObservable
+        const replaySubject = ReplaySubjectFun2(rxTestScheduler)
 
-        function feedNextIntoSubject(x: string) {
+        let feedNextIntoSubject = (x: string) => {
           replaySubject.next(x);
         }
 
-        function feedErrorIntoSubject(err: any) {
+        let feedErrorIntoSubject = (err: ESObject) => {
           replaySubject.error(err);
         }
 
-        function feedCompleteIntoSubject() {
+        let feedCompleteIntoSubject = () => {
           replaySubject.complete();
         }
 
@@ -346,17 +368,17 @@ export default function replaySubjectTest() {
         const expected1 = '      ----(34)---|';
 
         expectObservable(
-        hot(sourceTemplate)
-          .pipe(tap({
-            next: feedNextIntoSubject, error: feedErrorIntoSubject, complete: feedCompleteIntoSubject
-          }))
+          hot(sourceTemplate)
+            .pipe(tap({
+              next: feedNextIntoSubject, error: feedErrorIntoSubject, complete: feedCompleteIntoSubject
+            }))
         ).toBe(sourceTemplate);
         expectObservable(subscriber1).toBe(expected1);
       });
     });
   });
 
-  it('should be an Observer which can be given to Observable.subscribe', () => {
+  it('should_be_an_Observer_which_can_be_given_to_Observable_subscribe', 0, () => {
     const source = of(1, 2, 3, 4, 5);
     const subject = new ReplaySubject<number>(3);
     let results: (number | string)[] = [];
@@ -367,7 +389,7 @@ export default function replaySubjectTest() {
 
     source.subscribe(subject);
 
-    expect(lodash.isEqual(results, [1, 2, 3, 4, 5, 'done'])).assertTrue();
+    expect(results).assertDeepEquals([1, 2, 3, 4, 5, 'done']);
 
     results = [];
 
@@ -375,10 +397,10 @@ export default function replaySubjectTest() {
       next: (x) => results.push(x), complete: () => results.push('done')
     });
 
-    expect(lodash.isEqual(results, [3, 4, 5, 'done'])).assertTrue();
+    expect(results).assertEqual([3, 4, 5, 'done']);
   });
 
-  it('should not buffer nexted values after complete', () => {
+  it('should_not_buffer_nexted_values_after_complete', 0, () => {
     const results: (number | string)[] = [];
     const subject = new ReplaySubject<number>();
     subject.next(1);
@@ -389,10 +411,10 @@ export default function replaySubjectTest() {
       next: (value) => results.push(value),
       complete: () => results.push('C'),
     });
-    expect(lodash.isEqual(results, [1, 2, 'C'])).assertTrue();
+    expect(results).assertEqual([1, 2, 'C']);
   });
 
-  it('should not buffer nexted values after error', () => {
+  it('should_not_buffer_nexted_values_after_error', 0, () => {
     const results: (number | string)[] = [];
     const subject = new ReplaySubject<number>();
     subject.next(1);
@@ -403,6 +425,6 @@ export default function replaySubjectTest() {
       next: (value) => results.push(value),
       error: () => results.push('E'),
     });
-    expect(lodash.isEqual(results, [1, 2, 'E'])).assertTrue();
+    expect(results).assertEqual([1, 2, 'E']);
   });
 }
