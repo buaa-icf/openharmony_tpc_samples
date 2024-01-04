@@ -25,12 +25,11 @@
     "@js-joda/core": "^5.4.2"
   },
   "license": "BSD-3-Clause",
-
   "devDependencies": {},
   "name": "@ohos/localeEnUs",
   "contributors": [
     "pithu",
     "phueper"
   ],
-  "homepage": "https://js-joda.github.io/js-joda"
+  "homepage": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/js-joda"
 }
