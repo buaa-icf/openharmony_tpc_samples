@@ -132,8 +132,9 @@ export struct Friends_list {
 
   // todo 获取所有好友及其分组信息
   getMyAllFriends() {
-    let res: Array<FriendsEntity> = Smack.getFriendList()
+
     setTimeout(() => {
+      let res: Array<FriendsEntity> = Smack.getFriendList()
       this.myFriendList = res
       let groups:string[]=[]
       for (let i = 0; i < this.myFriendList.length; i++) {
@@ -144,7 +145,7 @@ export struct Friends_list {
       prompt.showToast({
         message: '刷新完成'
       })
-    }, 100)
+    }, 300)
   }
 }
 

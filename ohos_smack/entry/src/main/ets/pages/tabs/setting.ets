@@ -65,7 +65,6 @@ export struct Setting {
 
         Flex({ direction: FlexDirection.Row, justifyContent: FlexAlign.Center, alignItems: ItemAlign.Center }) {
           Button('退出登录')
-            .padding(10)
             .backgroundColor('red')
             .height(px2vp(80))
             .width('30%')
@@ -84,7 +83,6 @@ export struct Setting {
             })
 
           Button('账号注销')
-            .padding(10)
             .margin({ left: 20 })
             .backgroundColor('red')
             .height(px2vp(80))
@@ -178,6 +176,7 @@ struct CustomDialogExample {
       TextInput()
         .height(px2vp(80))
         .fontSize(px2fp(30))
+        .padding({left: px2vp(15), top: 0, bottom: 0})
         .onChange(v => {
           this.pass1 = v
         })
@@ -188,6 +187,7 @@ struct CustomDialogExample {
       TextInput()
         .height(px2vp(80))
         .fontSize(px2fp(30))
+        .padding({left: px2vp(15), top: 0, bottom: 0})
         .onChange(v => {
           this.pass2 = v
         })

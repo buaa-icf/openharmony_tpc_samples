@@ -162,11 +162,14 @@ struct One_chat_main {
 
         Flex({ direction: FlexDirection.Row, justifyContent: FlexAlign.Center, alignItems: ItemAlign.Center }) {
           TextInput({ placeholder: '请输入', text: this.inputMessage })
-            .height(px2vp(80))
-            .fontSize(px2fp(30))
+            .height(px2vp(90))
+            .padding({left: 10})
+            .fontSize(px2fp(25))
             .onChange(v => {
               this.inputMessage = v
             })
+            .placeholderFont({size: px2fp(25)})
+
           Button('发 送')
             .width(150)
             .margin({ left: 8 })
@@ -209,15 +212,14 @@ struct BeInvitedDialog {
     Flex({ direction: FlexDirection.Column }) {
 
       Text($r('app.string.invite_str', this.user))
-        .height(40)
         .fontSize(20)
-        .padding(10)
+        .padding(5)
         .width('100%')
         .textAlign(TextAlign.Center)
       Text('Message:' + this.Message)
         .height(40)
         .fontSize(16)
-        .padding(10)
+        .padding(5)
         .width('100%')
         .textAlign(TextAlign.Center)
       Row() {

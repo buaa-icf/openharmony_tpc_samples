@@ -72,7 +72,7 @@ struct One_chat_setting {
             let isJoined = Smack.isJoined();
             if (isJoined == '1') {
               Smack.invite(this.userName+"@"+Constant.HOST_DOMAIN+Constant.HOST_RES, "invite");
-              router.back(); // todo router
+              router.back();
               router.replace({
                 url: 'pages/chat/group_chat/group_chat_main'
               })
@@ -122,9 +122,9 @@ struct TextDialog {
 
   build() {
     Flex({ direction: FlexDirection.Column }) {
-      Text('请输入新的分组名称').fontSize(px2vp(30)).padding(10)
+      Text('请输入新的分组名称').fontSize(px2vp(30)).margin({top: 10})
       TextInput()
-        .margin({ bottom: 20 })
+        .margin({ bottom: 20, top: 10})
         .height(px2vp(80))
         .fontSize(px2fp(30))
         .onChange(v => {

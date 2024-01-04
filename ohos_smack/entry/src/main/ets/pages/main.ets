@@ -36,13 +36,9 @@ struct Main {
   })
 
   aboutToAppear() {
+
     Smack.handleSubscriptionRequestListener((json:ESObject) => {
       console.info("收到好友添加申请"+json)
-      // let obj=JSON.parse(json)
-      // this.mbare = obj.jid
-      // this.musername = obj.name
-      // this.mmsg = obj.msg
-      // let that=this
       setTimeout(()=>{
         let obj:ESObject=JSON.parse(json)
         this.mbare = obj.jid
@@ -50,7 +46,6 @@ struct Main {
         this.mmsg = obj.msg
         this.addFriendsDialog.open()
       },500)
-
     })
   }
 
@@ -99,18 +94,18 @@ struct AddFriendsDialog {
   build() {
     Column() {
       Text($r('app.string.add_friends_str', this.user))
-        .height(px2vp(60))
-        .fontSize(fp2px(14))
-        .padding(px2vp(10))
+        .height(px2vp(40))
+        .fontSize(px2fp(35))
         .textAlign(TextAlign.Center)
+        .margin({ top: px2vp(20) })
       Row() {
-        Text("昵称:").fontSize(fp2px(14)).width('20%')
-        TextInput({ text: this.user }).fontSize(fp2px(14)).width('70%')
-      }.margin({ top: px2vp(10) }).padding({ left: px2vp(10), right:  px2vp(10) })
+        Text("昵称:").fontSize(px2fp(30)).width('20%')
+        TextInput({ text: this.user }).fontSize(px2fp(30)).width('70%')
+      }.margin({ top: px2vp(20) }).padding({ left: px2vp(10), right:  px2vp(10) })
 
       Row() {
-        Text("分组:").fontSize(fp2px(14)).width('20%')
-        TextInput({ text: this.groupName, placeholder: "请输入好友分组" }).fontSize(px2fp(16)).onChange(v=>{
+        Text("分组:").fontSize(px2fp(30)).width('20%')
+        TextInput({ text: this.groupName, placeholder: "请输入好友分组" }).fontSize(px2fp(30)).onChange(v=>{
           this.groupName=v
         }).width('70%')
       }.margin({ top:  px2vp(10) }).padding({ left:  px2vp(10), right:  px2vp(10) })
@@ -118,7 +113,7 @@ struct AddFriendsDialog {
       Row() {
         Text("(A)接受")
           .fontColor(Color.Green)
-          .fontSize(fp2px(14))
+          .fontSize(px2fp(40))
           .onClick(v => {
             if (this.bare && this.groupName) {
               Smack.receiveFriends(this.bare, this.groupName, "receive request");
@@ -133,17 +128,17 @@ struct AddFriendsDialog {
           .layoutWeight(1)
         Text("拒绝")
           .fontColor(Color.Red)
-          .fontSize(fp2px(14))
+          .fontSize(px2fp(40))
           .onClick(v => {
             Smack.rejectFriends(this.bare, "reject request");
             this.controller.close()
           })
           .textAlign(TextAlign.Center)
           .layoutWeight(1)
-      }.margin({ top: px2vp(30) })
+      }.margin({ top: px2vp(30), bottom: px2vp(10)})
     }
     .padding(px2vp(10))
-    .height(px2vp(310))
+    // .height(px2vp(460))
     .backgroundColor('#ffffff')
     .borderRadius(10)
     .width('80%')
