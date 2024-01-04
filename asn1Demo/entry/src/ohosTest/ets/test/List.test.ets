@@ -13,8 +13,20 @@
  * limitations under the License.
  */
 
-import abilityTest from './Ability.test'
+
+
+import Hex_Encode_DecodeTest from './hex_encode_decode.test'
+import Base64Test from './base64.test'
+import PvUtilsTest from './pvutils.test'
+import Asn1Test from './asn1.test'
+import Asn1DerTest from './asn1_der.test'
+import Asn1JSTest from './asn1JS.test'
 
 export default function testsuite() {
-  abilityTest()
+  Hex_Encode_DecodeTest();
+  Base64Test();
+  PvUtilsTest();
+  Asn1Test();
+  Asn1DerTest();
+  Asn1JSTest()
 }
