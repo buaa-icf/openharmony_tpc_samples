@@ -3,6 +3,7 @@
 json-bigint是一个具有bigints支持的JSON.parse/stringify，基于JSON.js包和bignumber.js库。
 # 下载安装
     ohpm install json-bigint
+    ohpm install @types/json-bigint --save-dev //import json-bigint 的时候语法报错。其原因是json-bigint包内不含类型声明，需要 @types/json-bigint 下载这个包的声明文件，从而解决语法的报错。
 OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 # 使用说明
 安装json-bigint之后，在需要使用的界面先导入json-bigint并调用
