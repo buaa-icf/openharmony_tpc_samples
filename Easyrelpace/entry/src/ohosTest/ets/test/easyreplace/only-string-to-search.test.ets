@@ -210,7 +210,7 @@ export default function onlystringtosearch() {
 
     test("12 - source and replacement are of integer type", () => {
       equal(
-        er(// @ts-ignore
+        er(
           "0",optsFunc("","","","0","","",""),
           "1"
         ),
@@ -221,7 +221,7 @@ export default function onlystringtosearch() {
 
     test("13 - all raw integers: source, replacement and searchFor", () => {
       equal(
-        er(// @ts-ignore
+        er(
           "0",optsFunc("","","","0","","",""),
           "1"
         ),
