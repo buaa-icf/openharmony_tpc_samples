@@ -29,7 +29,6 @@ export default function MetadataClassXts() {
       meta.selectNumberingPlan('US');
       let numberingPlan = meta.numberingPlan;
       if (numberingPlan != undefined) {
-        Log.info(JSON.stringify(numberingPlan.IDDPrefix));
         expect(numberingPlan.possibleLengths())
           .assertDeepEquals([10]);
       }
@@ -40,7 +39,6 @@ export default function MetadataClassXts() {
       meta.selectNumberingPlan('US');
       let numberingPlan = meta.numberingPlan;
       if (numberingPlan != undefined) {
-        Log.info(JSON.stringify(numberingPlan.IDDPrefix));
         expect(numberingPlan.IDDPrefix())
           .assertEqual("011");
       }
@@ -51,7 +49,6 @@ export default function MetadataClassXts() {
       meta.selectNumberingPlan('US');
       let numberingPlan = meta.numberingPlan;
       if (numberingPlan != undefined) {
-        Log.info(numberingPlan.leadingDigits());
         expect(numberingPlan.leadingDigits())
           .assertEqual(0);
       }
@@ -62,7 +59,6 @@ export default function MetadataClassXts() {
       meta.selectNumberingPlan('AG');
       let numberingPlan = meta.numberingPlan;
       if (numberingPlan != undefined) {
-        Log.info(numberingPlan.leadingDigits()); // leadingDigits()
         expect(numberingPlan.leadingDigits())
           .assertEqual('268');
       }
@@ -73,7 +69,6 @@ export default function MetadataClassXts() {
       meta.selectNumberingPlan('AG');
       let numberingPlan = meta.numberingPlan;
       if (numberingPlan != undefined) {
-        Log.info(JSON.stringify(numberingPlan.IDDPrefix())); // IDDPrefix()
         expect(numberingPlan.IDDPrefix())
           .assertEqual('011');
       }
@@ -100,7 +95,6 @@ export default function MetadataClassXts() {
       meta.selectNumberingPlan('AF');
       let numberingPlan = meta.numberingPlan;
       if (numberingPlan != undefined) {
-        Log.info(JSON.stringify(numberingPlan.IDDPrefix())); // IDDPrefix()
         expect(numberingPlan.IDDPrefix())
           .assertEqual("00");
       }
@@ -111,7 +105,6 @@ export default function MetadataClassXts() {
       meta.selectNumberingPlan('AF');
       let numberingPlan = meta.numberingPlan;
       if (numberingPlan != undefined) {
-        Log.info(JSON.stringify(numberingPlan.possibleLengths())); // possibleLengths()
         expect(numberingPlan.possibleLengths())
           .assertDeepEquals([9]);
       }
@@ -133,7 +126,6 @@ export default function MetadataClassXts() {
       let numberingPlan = meta.numberingPlan;
       if (numberingPlan != undefined) {
 
-        Log.info(numberingPlan.leadingDigits()); // leadingDigits()
         expect(numberingPlan.leadingDigits())
           .assertEqual("3[04-689]|[489]");
       }
@@ -144,7 +136,6 @@ export default function MetadataClassXts() {
       meta.selectNumberingPlan('RU');
       let numberingPlan = meta.numberingPlan;
       if (numberingPlan != undefined) {
-        Log.info(JSON.stringify(numberingPlan.IDDPrefix())); // IDDPrefix()
         expect(numberingPlan.IDDPrefix())
           .assertEqual("810");
       }
@@ -155,7 +146,6 @@ export default function MetadataClassXts() {
       meta.selectNumberingPlan('RU');
       let numberingPlan = meta.numberingPlan;
       if (numberingPlan != undefined) {
-        Log.info(JSON.stringify(numberingPlan.possibleLengths())); // possibleLengths()
         expect(numberingPlan.possibleLengths())
           .assertDeepEquals([10, 14]);
       }
@@ -167,7 +157,6 @@ export default function MetadataClassXts() {
       let numberingPlan = meta.numberingPlan;
       if (numberingPlan != undefined) {
         const value = numberingPlan.defaultIDDPrefix();
-        Log.info(JSON.stringify(value)); // defaultIDDPrefix()
         expect(value)
           .assertEqual("8~10");
       }
