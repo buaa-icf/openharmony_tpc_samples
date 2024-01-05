@@ -24,8 +24,10 @@
 
 import abilityTest from './Ability.test'
 import sanitizeHtmlTest from './SanitizeHtml.test'
+import InterfaceTime from './interfaceTime.test'
 
 export default function testsuite() {
   abilityTest()
   sanitizeHtmlTest()
+  InterfaceTime()
 }
