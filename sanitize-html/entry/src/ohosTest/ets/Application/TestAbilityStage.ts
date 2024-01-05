@@ -23,7 +23,7 @@
  */
 
 import hilog from '@ohos.hilog';
-import AbilityStage from "@ohos.application.AbilityStage"
+import AbilityStage from "@ohos.app.ability.AbilityStage"
 
 export default class TestAbilityStage extends AbilityStage {
     onCreate() {

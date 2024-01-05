@@ -22,13 +22,13 @@
  * SOFTWARE.
  */
 
-import sanitizeHtml from 'sanitize-html';
+import sanitize from 'sanitize-html';
 import prompt from '@ohos.prompt';
 
 @Entry
 @Component
 struct Allowed_schemes_by_tag {
-  private allowedSchemeByTag: object = sanitizeHtml.defaults.allowedSchemesByTag;
+  private allowedSchemeByTag: object = sanitize.defaults.allowedSchemesByTag;
   @State private tagName: string = '';
   @State private schemeName: string = '';
   @State private sanitizeResult: string = 'sanitizeResult: ';
@@ -59,7 +59,7 @@ struct Allowed_schemes_by_tag {
               return;
             }
             let html = '<' + this.tagName + ' href="' + this.schemeName + '://www.baidu.com">inner text </' + this.tagName + '>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html);
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html);
           })
 
         Button('add default scheme for tag')
@@ -69,9 +69,9 @@ struct Allowed_schemes_by_tag {
               prompt.showToast({ message: 'please input tag name' })
               return;
             }
-            sanitizeHtml.defaults.allowedSchemesByTag['a'] = ['sms', 'data'];
+            sanitize.defaults.allowedSchemesByTag['a'] = ['sms', 'data'];
             let html = '<' + this.tagName + ' href="' + this.schemeName + '://www.baidu.com">inner text </' + this.tagName + '>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html);
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html);
           })
 
         Button('cover scheme for tag by options')
@@ -82,7 +82,7 @@ struct Allowed_schemes_by_tag {
               return;
             }
             let html = '<' + this.tagName + ' href="' + this.schemeName + '://www.baidu.com">inner text </' + this.tagName + '>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, {
               allowedSchemesByTag: {
                 a: ['sms1', 'data1']
               }

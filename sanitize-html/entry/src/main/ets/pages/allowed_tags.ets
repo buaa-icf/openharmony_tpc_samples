@@ -22,13 +22,13 @@
  * SOFTWARE.
  */
 
-import sanitizeHtml from 'sanitize-html';
+import sanitize from 'sanitize-html';
 import prompt from '@ohos.prompt';
 
 @Entry
 @Component
 struct AllowedTags {
-  private default_allows: string[] = sanitizeHtml.defaults.allowedTags;
+  private default_allows: string[] = sanitize.defaults.allowedTags;
   @State private tagName: string = '';
   @State private sanitizeResult: string = 'sanitizeResult: ';
 
@@ -55,7 +55,7 @@ struct AllowedTags {
               return;
             }
             let html = '<' + this.tagName + '>inner text </' + this.tagName + '>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html);
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html);
           })
 
         Button('Cover all default allowed tags')
@@ -65,9 +65,9 @@ struct AllowedTags {
               prompt.showToast({ message: 'please input tag name' })
               return;
             }
-            sanitizeHtml.defaults.allowedTags = ['img', 'iframe'];
+            sanitize.defaults.allowedTags = ['img', 'iframe'];
             let html = '<' + this.tagName + '>inner text </' + this.tagName + '>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html);
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html);
           })
 
         Button('Cover allowed tags by options')
@@ -78,7 +78,7 @@ struct AllowedTags {
               return;
             }
             let html = '<' + this.tagName + '>inner text </' + this.tagName + '>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, {
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, {
               allowedTags: ['tag1', 'tag2']
             });
           })
@@ -90,14 +90,14 @@ struct AllowedTags {
               prompt.showToast({ message: 'please input tag name' })
               return;
             }
-            var index = sanitizeHtml.defaults.allowedTags.indexOf(this.tagName);
+            let index:ESObject = sanitize.defaults.allowedTags.indexOf(this.tagName);
             if (index != -1) {
               prompt.showToast({ message: 'the tag name already exist' })
               return;
             }
-            sanitizeHtml.defaults.allowedTags.push(this.tagName);
+            sanitize.defaults.allowedTags.push(this.tagName);
             let html = '<' + this.tagName + '>inner text </' + this.tagName + '>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html);
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html);
           })
 
         Button('not check tag : false')
@@ -108,7 +108,7 @@ struct AllowedTags {
               return;
             }
             let html = '<' + this.tagName + '>inner text </' + this.tagName + '>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, { allowedTags: false });
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, { allowedTags: false });
           })
 
         Button('not check tag : undefined')
@@ -119,7 +119,7 @@ struct AllowedTags {
               return;
             }
             let html = '<' + this.tagName + '>inner text </' + this.tagName + '>';
-            this.sanitizeResult = 'sanitizeResult: ' + sanitizeHtml(html, { allowedTags: undefined });
+            this.sanitizeResult = 'sanitizeResult: ' + sanitize(html, { allowedTags: undefined });
           })
 
         Text(this.sanitizeResult)
