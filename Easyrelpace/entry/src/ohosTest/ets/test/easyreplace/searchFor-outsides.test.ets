@@ -199,16 +199,16 @@ export default function searchForoutsides() {
     });
 
     test("11 - left outside requirement not satisfied for replacement to happen", () => {
-      equal(// @ts-ignore
-        er("aaaBBBccc",optsFunc("","x","","bbb","","z","",true,true)),
+      equal(
+        er("aaaBBBccc",optsFunc("","x","","bbb","","z","",true,true),""),
         "aaaBBBccc",
         "test 5.11 - did not replace because of o.leftOutside"
       );
     });
 
     test("12 - right outside requirement not satisfied for replacement to happen", () => {
-      equal(// @ts-ignore
-        er("aaaBBBccc",optsFunc("","x","","bbb","","z","",true,true)),
+      equal(
+        er("aaaBBBccc",optsFunc("","x","","bbb","","z","",true,true),""),
         "aaaBBBccc",
         "test 5.12 - did not replace because of o.rightOutside"
       );

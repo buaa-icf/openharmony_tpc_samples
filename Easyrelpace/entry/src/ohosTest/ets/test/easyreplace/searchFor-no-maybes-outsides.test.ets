@@ -123,7 +123,7 @@ export default function searchFornomaybesoutsides() {
     test("04 - leftOutside and replacement are null", () => {
       equal(
         er(
-          "aaaa bbbb cccc",optsFunc("",null,"","","","",""), null
+          "aaaa bbbb cccc",optsFunc("",undefined,"","","","",""), null
         ),
         "aaaa bbbb cccc",
         "test 7.4"
