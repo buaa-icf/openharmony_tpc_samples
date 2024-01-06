@@ -26,33 +26,28 @@ export default function AsYouTypeClassXts() {
   describe('AsYouTypeClass', () => {
     // input()
     it('shouldUseNational_prefix_formatting_rule_01', 0, () => {
-      Log.info(asYouTypeFactoryInstance.getFormatter("RU").input('88005553535'));
       asYouTypeFactoryInstance.getFormatter("RU").reset();
       expect(asYouTypeFactoryInstance.getFormatter("RU").input('88005553535')).assertEqual('8 (800) 555-35-35');
     });
 
     it("shouldUseNational_prefix_formatting_rule_02", 0, () => {
       asYouTypeFactoryInstance.getFormatter("RU").reset();
-      Log.info(asYouTypeFactoryInstance.getFormatter("RU").input('880055535'));
       asYouTypeFactoryInstance.getFormatter("RU").reset();
       expect(asYouTypeFactoryInstance.getFormatter("RU").input('880055535')).assertEqual('8 (800) 555-35');
     })
 
     it("shouldUseNational_prefix_formatting_rule_03", 0, () => {
       asYouTypeFactoryInstance.getFormatter("RU").reset();
-      Log.info(asYouTypeFactoryInstance.getFormatter("RU").input('899955535'));
       asYouTypeFactoryInstance.getFormatter("RU").reset();
       expect(asYouTypeFactoryInstance.getFormatter("RU").input('899955535')).assertEqual('8 (999) 555-35');
     })
 
     it("shouldUseNational_prefix_formatting_rule_04", 0, () => {
-      Log.info(asYouTypeFactoryInstance.getFormatter("CN").input('18729961766'));
       asYouTypeFactoryInstance.getFormatter("CN").reset();
       expect(asYouTypeFactoryInstance.getFormatter("CN").input('18729961766')).assertEqual('187 2996 1766');
     })
 
     it("shouldUseNational_prefix_formatting_rule_05", 0, () => {
-      Log.info(asYouTypeFactoryInstance.getFormatter("CH").input('044-668-1'));
       asYouTypeFactoryInstance.getFormatter("CH").reset();
       expect(asYouTypeFactoryInstance.getFormatter("CH").input('044-668-1')).assertEqual('044 668 1');
     })
@@ -68,7 +63,6 @@ export default function AsYouTypeClassXts() {
       const asYouType: AsYouType = asYouTypeFactoryInstance.getFormatter("RU");
       const phoneNumber = asYouType.getNumber();
       if (phoneNumber != undefined) {
-        Log.info(JSON.stringify(phoneNumber.country));
         expect(phoneNumber.country).assertEqual('RU');
       }
     })
@@ -77,7 +71,6 @@ export default function AsYouTypeClassXts() {
       asYouType.input("88005553535");
       const phoneNumber = asYouType.getNumber();
       if (phoneNumber != undefined) {
-        Log.info(JSON.stringify(phoneNumber));
         expect(phoneNumber.nationalNumber).assertEqual("8005553535");
         expect((phoneNumber.number)).assertEqual("+78005553535");
       }
@@ -90,7 +83,6 @@ export default function AsYouTypeClassXts() {
       asYouType1.input("18729961778");
       const phoneNumber = asYouType1.getNumber();
       if (phoneNumber != undefined) {
-        Log.info(JSON.stringify(phoneNumber));
         expect(phoneNumber.countryCallingCode).assertEqual("86");
         expect(phoneNumber.number).assertEqual("+8618729961778")
       }
@@ -103,14 +95,12 @@ export default function AsYouTypeClassXts() {
 
     // getNumberValue()
     it("shouldReturnE.164number_getNumberValueCase1", 0, () => {
-      Log.info(asYouTypeFactoryInstance.getFormatter("US").getNumberValue());
       asYouTypeFactoryInstance.getFormatter("US").reset();
       expect(asYouTypeFactoryInstance.getFormatter("US").getNumberValue()).assertUndefined();
     });
 
     it("shouldReturnE.164number_getNumberValueCase2", 0, () => {
       asYouTypeFactoryInstance.getFormatter("AG").input("");
-      Log.info(asYouTypeFactoryInstance.getFormatter("AG").getNumberValue());
       asYouTypeFactoryInstance.getFormatter("AG").reset();
       asYouTypeFactoryInstance.getFormatter("AG").input("");
       expect(asYouTypeFactoryInstance.getFormatter("AG").getNumberValue()).assertUndefined();
@@ -119,21 +109,18 @@ export default function AsYouTypeClassXts() {
     it("shouldReturnE.164number_getNumberValueCase3", 0, () => {
       asYouTypeFactoryInstance.getFormatter("US").reset();
       asYouTypeFactoryInstance.getFormatter("US").input("1");
-      Log.info(asYouTypeFactoryInstance.getFormatter("US").getNumberValue());
       expect(asYouTypeFactoryInstance.getFormatter("US").getNumberValue()).assertEqual("+1");
     })
 
     it("shouldReturnE.164number_getNumberValueCase4", 0, () => {
       asYouTypeFactoryInstance.getFormatter("CN").reset();
       asYouTypeFactoryInstance.getFormatter("CN").input("+86");
-      Log.info(asYouTypeFactoryInstance.getFormatter("CN").getNumberValue());
       expect(asYouTypeFactoryInstance.getFormatter("CN").getNumberValue()).assertEqual("+86");
     })
 
     it("shouldReturnE.164number_getNumberValueCase5", 0, () => {
       asYouTypeFactoryInstance.getFormatter("RU").reset();
       asYouTypeFactoryInstance.getFormatter("RU").input("+7");
-      Log.info(asYouTypeFactoryInstance.getFormatter("RU").getNumberValue());
       expect(asYouTypeFactoryInstance.getFormatter("RU").getNumberValue()).assertEqual("+7");
     })
 
@@ -141,53 +128,45 @@ export default function AsYouTypeClassXts() {
     it("shouldDisplayNationalPhoneNumberStyle_getNationalNumberCase1", 0, () => {
       asYouTypeFactoryInstance.getFormatter("RU").reset();
       expect(asYouTypeFactoryInstance.getFormatter("RU").input("+78005553535")).assertEqual('+7 800 555 35 35');
-      Log.info(asYouTypeFactoryInstance.getFormatter("RU").getNationalNumber());
       expect(asYouTypeFactoryInstance.getFormatter("RU").getNationalNumber()).assertEqual("8005553535");
     });
 
     it("shouldDisplayNationalPhoneNumberStyle_getNationalNumberCase2", 0, () => {
       asYouTypeFactoryInstance.getFormatter("CN").reset();
       expect(asYouTypeFactoryInstance.getFormatter("CN").input("+8618729881777")).assertEqual("+86 187 2988 1777");
-      Log.info(asYouTypeFactoryInstance.getFormatter("CN").getNationalNumber());
     })
 
     it("shouldDisplayNationalPhoneNumberStyle_getNationalNumberCase3", 0, () => {
       asYouTypeFactoryInstance.getFormatter("AU").reset();
       expect(asYouTypeFactoryInstance.getFormatter("AU").input("+61438331999")).assertEqual("+61 438 331 999");
-      Log.info(asYouTypeFactoryInstance.getFormatter("AU").getNationalNumber());
     })
 
     it("shouldDisplayNationalPhoneNumberStyle_getNationalNumberCase4", 0, () => {
       asYouTypeFactoryInstance.getFormatter("AE").reset();
       expect(asYouTypeFactoryInstance.getFormatter("AE").input("1883237839")).assertEqual("1883237839");
-      Log.info(asYouTypeFactoryInstance.getFormatter("AE").getNationalNumber());
     })
 
     it("shouldDisplayNationalPhoneNumberStyle_getNationalNumberCase5", 0, () => {
       let formatter: AsYouType = new AsYouType();
       formatter.input('+8618699354418');
-      Log.info(formatter.getNationalNumber());
       expect(formatter.getNationalNumber()).assertEqual("18699354418");
     })
 
     // getChar()
     it("shouldFormatIndonesianNumbers_getCharsCase1", 0, () => {
       asYouTypeFactoryInstance.getFormatter("US").reset();
-      Log.info(JSON.stringify(asYouTypeFactoryInstance.getFormatter("US").getChars()));
       expect(asYouTypeFactoryInstance.getFormatter("US").getChars()).assertEqual("");
     });
 
     it("shouldFormatIndonesianNumbers_getCharsCase2", 0, () => {
       asYouTypeFactoryInstance.getFormatter("ID").reset();
       asYouTypeFactoryInstance.getFormatter("ID").input('081');
-      Log.info(asYouTypeFactoryInstance.getFormatter("ID").getChars());
       expect(asYouTypeFactoryInstance.getFormatter("ID").getChars()).assertEqual("081");
     })
 
     it("shouldFormatIndonesianNumbers_getCharsCase3", 0, () => {
       asYouTypeFactoryInstance.getFormatter("CN").reset();
       asYouTypeFactoryInstance.getFormatter("CN").input("+86");
-      Log.info(asYouTypeFactoryInstance.getFormatter("CN").getChars());
       expect(asYouTypeFactoryInstance.getFormatter("CN").getChars()).assertEqual("+86");
 
     })
@@ -195,14 +174,12 @@ export default function AsYouTypeClassXts() {
     it("shouldFormatIndonesianNumbers_getCharsCase4", 0, () => {
       asYouTypeFactoryInstance.getFormatter("AG").reset();
       asYouTypeFactoryInstance.getFormatter("AG").input('335');
-      Log.info(asYouTypeFactoryInstance.getFormatter("AG").getChars());
       expect(asYouTypeFactoryInstance.getFormatter("AG").getChars()).assertEqual("335");
     })
 
     it("shouldFormatIndonesianNumbers_getCharsCase5", 0, () => {
       asYouTypeFactoryInstance.getFormatter("AL").reset();
       asYouTypeFactoryInstance.getFormatter("AL").input('+001');
-      Log.info(asYouTypeFactoryInstance.getFormatter("AL").getChars());
       expect(asYouTypeFactoryInstance.getFormatter("AL").getChars()).assertEqual("+001");
     })
 
@@ -210,39 +187,33 @@ export default function AsYouTypeClassXts() {
     it("shouldReturnAPartialTemplateForCurrentValue_getTemplateCase1", 0, () => {
       asYouTypeFactoryInstance.getFormatter("US").reset();
       asYouTypeFactoryInstance.getFormatter("US").input("");
-      Log.info(asYouTypeFactoryInstance.getFormatter("US").getTemplate());
       expect(asYouTypeFactoryInstance.getFormatter("US").getTemplate()).assertEqual("");
     });
 
     it("shouldReturnAPartialTemplateForCurrentValue_getTemplateCase2", 0, () => {
       asYouTypeFactoryInstance.getFormatter("US").input("2");
-      Log.info(asYouTypeFactoryInstance.getFormatter("US").getTemplate());
       expect(asYouTypeFactoryInstance.getFormatter("US").getTemplate()).assertEqual("x");
     })
 
     it("shouldReturnAPartialTemplateForCurrentValue_getTemplateCase3", 0, () => {
       asYouTypeFactoryInstance.getFormatter("US").input("1");
-      Log.info(asYouTypeFactoryInstance.getFormatter("US").getTemplate());
       expect(asYouTypeFactoryInstance.getFormatter("US").getTemplate()).assertEqual("xx");
     })
 
     it("shouldReturnAPartialTemplateForCurrentValue_getTemplateCase4", 0, () => {
       asYouTypeFactoryInstance.getFormatter("US").input("3");
-      Log.info(asYouTypeFactoryInstance.getFormatter("US").getTemplate());
       expect(asYouTypeFactoryInstance.getFormatter("US").getTemplate()).assertEqual("(xxx)");
     })
 
     it("shouldReturnAPartialTemplateForCurrentValue_getTemplateCase5", 0, () => {
       asYouTypeFactoryInstance.getFormatter("AR").reset();
       asYouTypeFactoryInstance.getFormatter("AR").input("1");
-      Log.info(asYouTypeFactoryInstance.getFormatter("AR").getTemplate());
       expect(asYouTypeFactoryInstance.getFormatter("AR").getTemplate()).assertEqual("x");
     })
 
     it("shouldReturnAPartialTemplateForCurrentValue_getTemplateCase6", 0, () => {
       asYouTypeFactoryInstance.getFormatter("AR").reset();
       asYouTypeFactoryInstance.getFormatter("AR").input("0");
-      Log.info(asYouTypeFactoryInstance.getFormatter("AR").getTemplate());
       expect(asYouTypeFactoryInstance.getFormatter("AR").getTemplate()).assertEqual("x");
     })
 
@@ -250,160 +221,135 @@ export default function AsYouTypeClassXts() {
     it("shouldReturnsTheCallingCodePortionOfThePhoneNumber_getCallingCodeCase1", 0, () => {
       asYouTypeFactoryInstance.getFormatter("MX").reset();
       asYouTypeFactoryInstance.getFormatter("MX").input("+52(449)978-000");
-      Log.info(asYouTypeFactoryInstance.getFormatter("MX").getCallingCode());
       expect(asYouTypeFactoryInstance.getFormatter("MX").getCallingCode()).assertEqual("52");
     });
 
     it("shouldReturnsTheCallingCodePortionOfThePhoneNumber_getCallingCodeCase2", 0, () => {
       asYouTypeFactoryInstance.getFormatter("MX").reset();
       asYouTypeFactoryInstance.getFormatter("MX").input("01449978000");
-      Log.info(JSON.stringify(asYouTypeFactoryInstance.getFormatter("MX").getCallingCode()));
       expect(asYouTypeFactoryInstance.getFormatter("MX").getCallingCode()).assertUndefined();
     })
 
     it("shouldReturnsTheCallingCodePortionOfThePhoneNumber_getCallingCodeCase3", 0, () => {
       asYouTypeFactoryInstance.getFormatter("MX").reset();
       asYouTypeFactoryInstance.getFormatter("MX").input("+77331234567");
-      Log.info(asYouTypeFactoryInstance.getFormatter("MX").getCallingCode());
       expect(asYouTypeFactoryInstance.getFormatter("MX").getCallingCode()).assertEqual("7");
     })
 
     it("shouldReturnsTheCallingCodePortionOfThePhoneNumber_getCallingCodeCase4", 0, () => {
       asYouTypeFactoryInstance.getFormatter("CN").reset();
       asYouTypeFactoryInstance.getFormatter("CN").input("+8618729859999");
-      Log.info(asYouTypeFactoryInstance.getFormatter("CN").getCallingCode());
       expect(asYouTypeFactoryInstance.getFormatter("CN").getCallingCode()).assertEqual("86");
     })
 
     it("shouldReturnsTheCallingCodePortionOfThePhoneNumber_getCallingCodeCase5", 0, () => {
       asYouTypeFactoryInstance.getFormatter("US").reset();
       asYouTypeFactoryInstance.getFormatter("US").input("+12345678");
-      Log.info(asYouTypeFactoryInstance.getFormatter("US").getCallingCode());
       expect(asYouTypeFactoryInstance.getFormatter("US").getCallingCode()).assertEqual("1");
     })
 
     // getCountry()
     it("shouldDisplayCountryCodeOrUndefined_getCountryCase1", 0, () => {
       const country = new AsYouType("AG").getCountry();
-      Log.info(JSON.stringify(country));
       expect(country).assertUndefined();
     });
 
     it("shouldDisplayCountryCodeOrUndefined_getCountryCase2", 0, () => {
-      Log.info(asYouTypeFactoryInstance.getFormatter("AO").getCountry());
       expect(asYouTypeFactoryInstance.getFormatter("AO").getCountry()).assertUndefined();
     })
 
     it("shouldDisplayCountryCodeOrUndefined_getCountryCase3", 0, () => {
       asYouTypeFactoryInstance.getFormatter("RU").reset();
       asYouTypeFactoryInstance.getFormatter("RU").input("+78005553535");
-      Log.info(JSON.stringify(asYouTypeFactoryInstance.getFormatter("RU").getCountry()));
       expect(asYouTypeFactoryInstance.getFormatter("RU").getCountry()).assertEqual("RU");
     })
 
     it("shouldDisplayCountryCodeOrUndefined_getCountryCase4", 0, () => {
       asYouTypeFactoryInstance.getFormatter("CN").input("18729907886");
-      Log.info(asYouTypeFactoryInstance.getFormatter("CN").getCountry());
       expect(asYouTypeFactoryInstance.getFormatter("CN").getCountry()).assertEqual("CN");
     })
 
     it("shouldDisplayCountryCodeOrUndefined_getCountryCase5", 0, () => {
-      Log.info(asYouTypeFactoryInstance.getFormatter("AG").getCountry());
       expect(asYouTypeFactoryInstance.getFormatter("AG").getCountry()).assertEqual("AG");
     })
 
     // isInternational()
     it("shouldReturnIfTheNumberIsInternational_isInternationalCase1", 0, () => {
       asYouTypeFactoryInstance.getFormatter("RU").reset();
-      Log.info(JSON.stringify(asYouTypeFactoryInstance.getFormatter("RU").isInternational()));
       expect(asYouTypeFactoryInstance.getFormatter("RU").isInternational()).assertFalse();
     });
 
     it("shouldReturnIfTheNumberIsInternational_isInternationalCase2", 0, () => {
       asYouTypeFactoryInstance.getFormatter("RU").input("88005553535");
-      Log.info(JSON.stringify(asYouTypeFactoryInstance.getFormatter("RU").isInternational()));
       expect(asYouTypeFactoryInstance.getFormatter("RU").isInternational()).assertFalse();
     })
 
     it("shouldReturnIfTheNumberIsInternational_isInternationalCase3", 0, () => {
       asYouTypeFactoryInstance.getFormatter("RU").reset();
       asYouTypeFactoryInstance.getFormatter("RU").input("+");
-      Log.info(JSON.stringify(asYouTypeFactoryInstance.getFormatter("RU").isInternational()));
       expect(asYouTypeFactoryInstance.getFormatter("RU").isInternational()).assertTrue();
 
     })
 
     it("shouldReturnIfTheNumberIsInternational_isInternationalCase4", 0, () => {
       asYouTypeFactoryInstance.getFormatter("RU").input("78005553535");
-      Log.info(JSON.stringify(asYouTypeFactoryInstance.getFormatter("RU").isInternational()));
       expect(asYouTypeFactoryInstance.getFormatter("RU").isInternational()).assertTrue();
     })
 
     it("shouldReturnIfTheNumberIsInternational_isInternationalCase5", 0, () => {
       asYouTypeFactoryInstance.getFormatter("CN").reset();
       asYouTypeFactoryInstance.getFormatter("CN").input("+8618765431265");
-      Log.info(JSON.stringify(asYouTypeFactoryInstance.getFormatter("CN").isInternational()));
       expect(asYouTypeFactoryInstance.getFormatter("CN").isInternational()).assertTrue();
     })
 
     // isPossible()
     it("shouldReturnIfTheNumberIsPossible_isPossibleCase1", 0, () => {
       asYouTypeFactoryInstance.getFormatter("RU").reset();
-      Log.info(JSON.stringify(asYouTypeFactoryInstance.getFormatter("RU").isPossible()));
       expect(asYouTypeFactoryInstance.getFormatter("RU").isPossible()).assertFalse();
     });
 
     it("shouldReturnIfTheNumberIsPossible_isPossibleCase2", 0, () => {
       asYouTypeFactoryInstance.getFormatter("RU").input("8");
-      Log.info(JSON.stringify(asYouTypeFactoryInstance.getFormatter("RU").isPossible()));
       expect(asYouTypeFactoryInstance.getFormatter("RU").isPossible()).assertFalse();
     })
 
     it("shouldReturnIfTheNumberIsPossible_isPossibleCase3", 0, () => {
       asYouTypeFactoryInstance.getFormatter("CN").reset();
       asYouTypeFactoryInstance.getFormatter("CN").input("+8618799811755");
-      Log.info(JSON.stringify(asYouTypeFactoryInstance.getFormatter("CN").isPossible()));
       expect(asYouTypeFactoryInstance.getFormatter("CN").isPossible()).assertTrue();
     })
 
     it("shouldReturnIfTheNumberIsPossible_isPossibleCase4", 0, () => {
       asYouTypeFactoryInstance.getFormatter("AT").input("0");
-      Log.info(JSON.stringify(asYouTypeFactoryInstance.getFormatter("AT").isPossible()));
       expect(asYouTypeFactoryInstance.getFormatter("AT").isPossible()).assertFalse();
     })
 
     it("shouldReturnIfTheNumberIsPossible_isPossibleCase5", 0, () => {
       asYouTypeFactoryInstance.getFormatter("US").reset();
       asYouTypeFactoryInstance.getFormatter("US").input("rere5656ssaas5656");
-      Log.info(JSON.stringify(asYouTypeFactoryInstance.getFormatter("US").isPossible()));
       expect(asYouTypeFactoryInstance.getFormatter("US").isPossible()).assertFalse();
     })
 
     // isValid()
     it("shouldReturnIfTheNumberIsValid_isValidCase1", 0, () => {
       asYouTypeFactoryInstance.getFormatter("RU").reset();
-      Log.info(JSON.stringify(asYouTypeFactoryInstance.getFormatter("RU").isValid()));
       expect(asYouTypeFactoryInstance.getFormatter("RU").isValid()).assertFalse();
     });
 
     it("shouldReturnIfTheNumberIsValid_isValidCase2", 0, () => {
       asYouTypeFactoryInstance.getFormatter("RU").input("5");
-      Log.info(JSON.stringify(asYouTypeFactoryInstance.getFormatter("RU").isValid()));
       expect(asYouTypeFactoryInstance.getFormatter("RU").isValid()).assertFalse();
     })
 
     it("shouldReturnIfTheNumberIsValid_isValidCase3", 0, () => {
-      Log.info(JSON.stringify(asYouTypeFactoryInstance.getFormatter("CN").isValid()));
       expect(asYouTypeFactoryInstance.getFormatter("CN").isValid()).assertTrue();
     })
 
     it("shouldReturnIfTheNumberIsValid_isValidCase4", 0, () => {
-      Log.info(JSON.stringify(asYouTypeFactoryInstance.getFormatter("AR").isValid()));
       expect(asYouTypeFactoryInstance.getFormatter("AR").isValid()).assertFalse();
     })
 
     it("shouldReturnIfTheNumberIsValid_isValidCase5", 0, () => {
-      Log.info(JSON.stringify(asYouTypeFactoryInstance.getFormatter("PM").isValid()));
       expect(asYouTypeFactoryInstance.getFormatter("PM").isValid()).assertFalse();
     })
   })
