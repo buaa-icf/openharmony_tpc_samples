@@ -23,6 +23,7 @@ import getownmetadatakeysTest from './reflect-getownmetadatakeys.test';
 import hasmetadataTest from './reflect-hasmetadata.test';
 import hasownmetadataTest from './reflect-hasownmetadata.test';
 import metadataTest from './reflect-metadata.test';
+import InterfaceTime from './InterfaceTime.test';
 
 export default function testsuite() {
   decorateTest();
@@ -35,4 +36,5 @@ export default function testsuite() {
   hasmetadataTest();
   hasownmetadataTest();
   metadataTest();
+  InterfaceTime();
 }
