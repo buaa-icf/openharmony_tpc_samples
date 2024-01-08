@@ -5,7 +5,7 @@
  EventEmitter3是一款高性能EventEmitter，支持添加监听事件，监听一次性事件，发送事件，移除事件，统计监听事件的个数，统计监听事件的名称。
 
 ```
-ohpm install eventemitter3 
+ohpm install @types/eventemitter3 
 ```
 
 OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
