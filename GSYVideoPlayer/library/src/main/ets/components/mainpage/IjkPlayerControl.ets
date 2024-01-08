@@ -73,7 +73,7 @@ export class IjkPlayerControl extends BaseVideoPlayer {
   }
 
   pause() {
-    if (this.mIjkMediaPlayer && this.mIjkMediaPlayer.isPlaying()) {
+    if (this.mIjkMediaPlayer && this.playStatus == PlayStatus.PLAY) {
       this.mIjkMediaPlayer.pause();
       this.onPauseStatus();
     }
@@ -89,7 +89,6 @@ export class IjkPlayerControl extends BaseVideoPlayer {
     super.setContext(context);
     if (this.mIjkMediaPlayer) {
       this.mIjkMediaPlayer.setContext(this.context);
-      this.mIjkMediaPlayer.native_setup();
     }
   }
 
@@ -105,7 +104,7 @@ export class IjkPlayerControl extends BaseVideoPlayer {
       GlobalContext.getContext().setObject('currentPlayer', this);
 
       // 设置debug模式
-      this.mIjkMediaPlayer.setDebug(true);
+      this.mIjkMediaPlayer.setDebug(false);
       this.mIjkMediaPlayer.native_setup();
 
       // 设置视频源

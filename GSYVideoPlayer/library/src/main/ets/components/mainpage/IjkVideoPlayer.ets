@@ -23,7 +23,7 @@ export struct IjkVideoPlayer {
   private xComponentId = 'xid' + Math.random();
   public videoInit: (mIVideoPlayer: IVideoPlayer, xid: string) => void = (mIVideoPlayer: IVideoPlayer, xid: string) => {
   }
-
+  @Link isVisible : Visibility;
   build() {
     Stack() {
       XComponent({
@@ -39,7 +39,7 @@ export struct IjkVideoPlayer {
         })
         .width("100%")
         .height("100%")
-    }.id(this.videoId)
+    }.id(this.videoId).visibility(this.isVisible)
   }
 
   private initDelayPlay(context: object) {

@@ -23,7 +23,7 @@ import { LogUtils } from '../utils/LogUtils';
 import { ICallBack, MP4Parser } from '@ohos/mp4parser';
 import { BusinessError } from '@ohos.base';
 import emitter from '@ohos.events.emitter';
-// import { HttoProxyCacheServerBuilder } from '@ohos/ohosVideoCache';
+import { HttpProxyCacheServerBuilder } from '@ohos/video-cache';
 import { GlobalContext } from "./GlobalContext";
 import { PlayerType } from "./CommonConstants";
 
@@ -98,8 +98,8 @@ export abstract class BaseVideoPlayer implements IVideoPlayer {
     // 开启边播边缓存
     if ((this.videoUrl.startsWith('http') || this.videoUrl.startsWith('https')) && this.cacheWithPlay) {
       LogUtils.getInstance().LOGI('play with cache');
-      // let server = new HttoProxyCacheServerBuilder(getContext()).cacheDirectory(getContext().cacheDir).build();
-      // this.videoUrl = await server.getProxyUrl(this.videoUrl);
+      let server = new HttpProxyCacheServerBuilder(getContext()).cacheDirectory(getContext().cacheDir).build();
+      this.videoUrl = await server.getProxyUrl(this.videoUrl);
     }
     LogUtils.getInstance().LOGI('setUp2: ' + this.videoUrl + '--------' + this.cacheWithPlay);
   }

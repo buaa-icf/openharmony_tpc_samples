@@ -26,6 +26,7 @@ import { PlayerType } from './CommonConstants';
 import { AvVideoPlayer } from './AvVideoPlayer';
 import settings from '@ohos.settings';
 import { StandardGSYVideoModel } from './StandardGSYVideoModel';
+import systemDateTime from '@ohos.systemDateTime';
 
 let updateProgressTimer: number = 0;
 let changeWidth: number = 0;
@@ -83,6 +84,10 @@ export struct StandardGSYVideoPlayer {
   @State mSeekCurrentTime: string = this.currentTime;
   // 当前进度
   @State mSeekTimePosition: number = 0;
+  // 是否拖动进度条
+  private isSeek: boolean = false;
+  // 是否正在加载手势滑动禁止
+  private isLoadNotSeek: boolean = false;
   // 当前拖拽进度的方向资源
   @State mSeekDirectionRes: Resource = $r('app.media.video_forward_icon');
   private mAudioManager: audio.AudioManager | null = null;
@@ -93,6 +98,7 @@ export struct StandardGSYVideoPlayer {
   private panOptionSeek: PanGestureOptions = new PanGestureOptions({ direction: PanDirection.Horizontal });
   public title: string = "";
   private xComponentId: string = 'xid';
+  @State ijkComponentVisible: Visibility = Visibility.Hidden;
   sec: number = 3;
   PROGRESS_MAX_VALUE: number = 100;
   public videoModel: StandardGSYVideoModel = new StandardGSYVideoModel();
@@ -213,7 +219,11 @@ export struct StandardGSYVideoPlayer {
     if (this.mIVideoPlayer) {
       if (GlobalContext.getContext().getObject('xid') !== this.mIVideoPlayer.xComponentId) {
         LogUtils.getInstance().LOGI('videoJudgeToPlay1');
+        let sVideoPlayTime = systemDateTime.getTime(true) / 1000;
         this.mIVideoPlayer.play();
+        let eVideoPlayTime = systemDateTime.getTime(true) / 1000;
+        let aVideoPlayTime = eVideoPlayTime - sVideoPlayTime;
+        LogUtils.getInstance().LOGI('playTime:' + aVideoPlayTime + 'us');
         this.mIVideoPlayer.firstOrSeek = true;
       } else {
         LogUtils.getInstance().LOGI('videoJudgeToPlay2');
@@ -222,7 +232,11 @@ export struct StandardGSYVideoPlayer {
           this.mIVideoPlayer.resumePlay();
         } else {
           LogUtils.getInstance().LOGI('standardGSYVideoPlayer videoJudgeToPlay play: ' + this.mIVideoPlayer.videoUrl);
+          let sVideoPlayTime = systemDateTime.getTime(true) / 1000;
           this.mIVideoPlayer.play();
+          let eVideoPlayTime = systemDateTime.getTime(true) / 1000;
+          let aVideoPlayTime = eVideoPlayTime - sVideoPlayTime;
+          LogUtils.getInstance().LOGI('playTime:' + aVideoPlayTime + 'us');
         }
       }
     }
@@ -253,17 +267,26 @@ export struct StandardGSYVideoPlayer {
         .onChange((value: number, mode: SliderChangeMode) => {
           clearTimeout(uiTime);
           if (this.mIVideoPlayer) {
-            LogUtils.getInstance().LOGI('slider-->seekValue start: ' + value);
-            LogUtils.getInstance().LOGI('slider-->seekValue getDuration: ' + this.mIVideoPlayer.getDuration());
-            this.mIVideoPlayer.pause();
-            this.stopProgressTask();
-            this.showPlay = false;
-            this.showPause = false;
-            this.loadingVisible = Visibility.Visible;
-            let seekValue = value * (this.mIVideoPlayer.getDuration() / 100);
-            this.mIVideoPlayer.seekTo(seekValue);
-            this.mIVideoPlayer.firstOrSeek = true;
-            LogUtils.getInstance().LOGI('slider-->seekValue end: ' + seekValue);
+            switch (mode) {
+              case SliderChangeMode.Begin:
+                // 通知的回调会到的慢一点，导致下面设置的showPause = true无效
+                // 使用isSeek参数去控制pause通知里面的状态操作
+                this.mIVideoPlayer.pause();
+                this.isSeek = true;
+                this.stopProgressTask();
+                this.showPlay = false;
+                this.showPause = true;
+                break;
+              case SliderChangeMode.End:
+                this.showPause = false;
+                this.loadingVisible = Visibility.Visible;
+                this.isSeek = false;
+                let seekValue = value * (this.mIVideoPlayer.getDuration() / 100);
+                this.mIVideoPlayer.seekTo(seekValue);
+                this.mIVideoPlayer.firstOrSeek = true;
+                LogUtils.getInstance().LOGI('slider-->seekValue end: ' + seekValue);
+                break;
+            }
           }
         })
       Text(this.totalTime).fontSize('20px').margin({ right: 5 }).fontColor($r('app.color.color_white'))
@@ -290,20 +313,20 @@ export struct StandardGSYVideoPlayer {
         type: ProgressType.Linear
       })
         .style({ strokeWidth: 10, enableSmoothEffect: false })
-        .height('30%')
-        .rotate({ angle: -180 })
+        .width(100)
+        .rotate({ angle: -90 })
+        .margin({top: 20, left: -20})
         .alignSelf(ItemAlign.Center)
         .backgroundColor(Color.White);
 
       Image($r('app.media.video_volume_icon'))
         .objectFit(ImageFit.Auto)
-        .margin({ top: 5, left: 5 })
+        .margin({ top: 50, left: -15 })
         .width(30)
         .height(30)
         .alignSelf(ItemAlign.Center)
         .borderStyle(BorderStyle.Dashed)
     }.visibility(this.showVolumeUi ? Visibility.Visible : Visibility.Hidden)
-    .width(50)
     .alignSelf(ItemAlign.Center)
   }
 
@@ -372,7 +395,7 @@ export struct StandardGSYVideoPlayer {
       if (GlobalContext.getContext().getObject('playType') == PlayerType.SYSTEM_AVPLAYER) {
         AvVideoPlayer({ videoInit: this.videoInit })
       } else {
-        IjkVideoPlayer({ videoInit: this.videoInit })
+        IjkVideoPlayer({ videoInit: this.videoInit, isVisible: this.ijkComponentVisible })
       }
 
       if (this.videoModel.getCoverImage()) {
@@ -404,6 +427,11 @@ export struct StandardGSYVideoPlayer {
             this.timeLockCountdown();
             return;
           }
+
+          if (this.loadingVisible == Visibility.Visible) {
+            return;
+          }
+
           if (!this.showPlay) {
             this.timeCountdown();
           }
@@ -495,16 +523,27 @@ export struct StandardGSYVideoPlayer {
       PanGesture(this.panOptionSeek)
         .onActionStart((event: GestureEvent | undefined) => {
           LogUtils.getInstance().LOGI('Horizontal Pan Start');
-          if (!this.mIVideoPlayer || !this.mIVideoPlayer.isPlaying()) {
+          if (!this.mIVideoPlayer) {
             return;
           }
           if (this.lock) {
             return;
           }
+
+          if (this.loadingVisible == Visibility.Visible) {
+            this.isLoadNotSeek = true;
+            return;
+          }
+
           if (this.isVerticalDrag) {
             return;
           }
           if (event && event.fingerList && event.fingerList[0]) {
+            this.isSeek = true;
+            this.mIVideoPlayer.pause();
+            this.showPlay = false;
+            this.showPause = false;
+            this.stopProgressTask();
             touchStartX = event.fingerList[0].localX;
             this.mSeekTimePosition = this.progressValue;
             LogUtils.getInstance()
@@ -513,12 +552,17 @@ export struct StandardGSYVideoPlayer {
           }
         })
         .onActionUpdate((event: GestureEvent | undefined) => {
-          if (!this.mIVideoPlayer || !this.mIVideoPlayer.isPlaying()) {
+          if (!this.mIVideoPlayer) {
             return;
           }
           if (this.lock) {
             return;
           }
+
+          if (this.isLoadNotSeek) {
+            return;
+          }
+
           if (this.isVerticalDrag) {
             return;
           }
@@ -552,16 +596,21 @@ export struct StandardGSYVideoPlayer {
           }
         })
         .onActionEnd((event: GestureEvent | undefined) => {
-          if (!this.mIVideoPlayer || !this.mIVideoPlayer.isPlaying()) {
+          if (!this.mIVideoPlayer) {
             return;
           }
+
+          if (this.isLoadNotSeek) {
+            this.isLoadNotSeek = false;
+            return;
+          }
+
           if (this.isHorizontalDrag && this.mIVideoPlayer) {
             this.progressValue = this.mSeekTimePosition;
-            this.mIVideoPlayer.pause();
-            this.showPlay = false;
-            this.showPause = false;
             this.loadingVisible = Visibility.Visible;
+            this.showPause = false;
             this.mIVideoPlayer.seekTo(this.mSeekTimePosition * (this.mIVideoPlayer.getDuration() / 100));
+            this.isSeek = false;
           }
           this.isHorizontalDrag = false;
           this.showSeekProgressUi = false;
@@ -570,6 +619,11 @@ export struct StandardGSYVideoPlayer {
         if (this.lock) {
           return;
         }
+
+        if (this.loadingVisible == Visibility.Visible) {
+          return;
+        }
+
         if (!this.mIVideoPlayer) {
           return;
         }
@@ -646,6 +700,7 @@ export struct StandardGSYVideoPlayer {
     this.timeCountdown();
     this.stopProgressTask();
     this.startProgressTask();
+    this.ijkComponentVisible = Visibility.Visible;
     if (this.mIVideoPlayer) {
       this.totalTime = this.stringForTime(this.mIVideoPlayer.getDuration());
     }
@@ -661,6 +716,7 @@ export struct StandardGSYVideoPlayer {
     }
     this.loadingVisible = Visibility.None;
     this.coverVisible = Visibility.Visible;
+    this.ijkComponentVisible = Visibility.Hidden;
     this.showBottomUi = false;
     this.showPlay = true;
     this.showPause = false;
@@ -668,12 +724,14 @@ export struct StandardGSYVideoPlayer {
 
   private goPause() {
     LogUtils.getInstance().LOGI('standardGSYVideoPlayer onPauseListener');
-    this.showPlay = true;
+    if (!this.isSeek) {
+      this.showPlay = true;
+      this.showPause = false;
+    }
     this.stopProgressTask();
     clearTimeout(uiTime);
     clearTimeout(uiLockTime);
     this.showBottomUi = true;
-    this.showPause = false;
   }
 
   aboutToAppear() {
