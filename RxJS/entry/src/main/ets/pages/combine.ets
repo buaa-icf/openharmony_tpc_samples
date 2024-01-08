@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Huawei Device Co., Ltd.
+ * Copyright (C) 2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,17 +19,18 @@ import {
   combineAll,
   concatAll,
   delay,
-  mergeAll,
   pairwise,
   mapTo,
   startWith,
   withLatestFrom,
   concat,
-  merge
-} from 'rxjs/operators';
-import { interval, timer, combineLatest, of, forkJoin, race, zip } from 'rxjs';
+  merge,
+  mergeWith
+} from 'rxjs';
+import { interval, timer, combineLatest, of, race, zip } from 'rxjs';
 import Log from '../log'
 import { MyButton } from '../common/MyButton'
+import { forkJoin, mergeAll } from './ArkTools';
 
 @Entry
 @Component
@@ -37,17 +38,26 @@ struct Combine {
   build() {
     Scroll() {
       Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center }) {
-        MyButton({ content: "combineAll:当源observable完成时，对收集的observables使用combineLatest", onClickListener: () => {
-          this.combineAll();
-        } })
+        MyButton({
+          content: "combineAll:当源observable完成时，对收集的observables使用combineLatest",
+          onClickListener: () => {
+            this.combineAll();
+          }
+        })
 
-        MyButton({ content: "combineLatest:当任意observable发出值时，发出每个observable的最新值", onClickListener: () => {
-          this.combineLatest();
-        } })
+        MyButton({
+          content: "combineLatest:当任意observable发出值时，发出每个observable的最新值",
+          onClickListener: () => {
+            this.combineLatest();
+          }
+        })
 
-        MyButton({ content: "concat:按照顺序，前一个observable完成了再订阅下一个observable并发出值", onClickListener: () => {
-          this.concatObservable();
-        } })
+        MyButton({
+          content: "concat:按照顺序，前一个observable完成了再订阅下一个observable并发出值",
+          onClickListener: () => {
+            this.concatObservable();
+          }
+        })
 
         MyButton({ content: "concatAll:收集observables，当前一个完成时订阅下一个", onClickListener: () => {
           this.concatAll();
@@ -93,11 +103,13 @@ struct Combine {
   combineAll() {
     const source = interval(1000).pipe(take(2));
     const example = source.pipe(
-    map(val => interval(1000)
-      .pipe(map(i => `Result (${val}): ${i}`), take(5)))
+      map(val => interval(1000)
+        .pipe(map(i => `Result (${val}): ${i}`), take(5)))
     );
     const combined = example.pipe(combineAll());
-    const subscribe = combined.subscribe(val => Log.showLog('combineAll--'+val));
+    const subscribe = combined.subscribe((val) => {
+      Log.showLog('combineAll--' + val)
+    });
   }
 
   combineLatest() {
@@ -115,15 +127,15 @@ struct Combine {
               Timer Three (Proj) Latest: ${three}`;
       });
     const subscribe = combinedProject.subscribe(latestValuesProject => {
-      Log.showLog('combineLatest--'+latestValuesProject);
+      Log.showLog('combineLatest--' + latestValuesProject);
     });
   }
 
   concatObservable() {
     const sourceOne = of(1, 2, 3);
     const sourceTwo = of(4, 5, 6);
-    const example = sourceOne.pipe(concat(sourceTwo));
-    const subscribe = example.subscribe(val => {
+    const example: ESObject = concat(sourceOne, sourceTwo);
+    const subscribe: ESObject = example.subscribe((val: ESObject) => {
       Log.showLog('concatObservable--' + val);
     });
   }
@@ -134,81 +146,69 @@ struct Combine {
     const obs3 = interval(2000).pipe(take(1));
     const source = of(obs1, obs2, obs3);
     const example = source.pipe(concatAll());
-    const subscribe = example.subscribe(val => Log.showLog('concatAll--'+val));
+    const subscribe: ESObject = example.subscribe((val: ESObject) => {
+      Log.showLog('concatAll--' + val)
+    });
   }
 
-  forkJoin() {
-    const myPromise = val =>
-    new Promise(resolve =>
-    setTimeout(() => resolve(`Promise Resolved: ${val}`), 5000));
-    const example = forkJoin(
-    of('Hello'),
-    of('World')
-      .pipe(delay(1000)),
-    interval(1000)
-      .pipe(take(1)),
-    interval(1000)
-      .pipe(take(2)),
-    myPromise('RESULT')
-    );
-    const subscribe = example.subscribe(val => Log.showLog('forkJoin--'+val));
-  }
+  forkJoin = forkJoin
 
   merge() {
     const first = interval(2500);
     const second = interval(1000);
-    const example = first.pipe(merge(second), take(6));
-    const subscribe = example.subscribe(val => Log.showLog('merge--'+val));
+    const example: ESObject = first.pipe(mergeWith(second), take(6));
+    const subscribe: ESObject = example.subscribe((val: ESObject) => {
+      Log.showLog('merge--' + val)
+    });
   }
 
-  mergeAll() {
-    const myPromise = val =>
-    new Promise(resolve => setTimeout(() => resolve(`Result: ${val}`), 2000));
-    const source = of(1, 2, 3);
-    const example = source.pipe(
-    map(val => myPromise(val)),
-    mergeAll());
-    const subscribe = example.subscribe(val => Log.showLog('mergeAll--'+val));
-  }
+  mergeAll = mergeAll
 
   pairwise() {
     const example = interval(1000).pipe(
-    pairwise(),
-    take(5)
+      pairwise(),
+      take(5)
     );
-    const subscribe = example.subscribe(val => Log.showLog('pairwise--'+val));
+    const subscribe = example.subscribe((val: ESObject) => {
+      Log.showLog('pairwise--' + val)
+    });
   }
 
   race() {
     const example = race(
-    interval(1500),
-    interval(1000)
-      .pipe(mapTo('1s won!')),
-    interval(2000),
-    interval(2500)
+      interval(1500),
+      interval(1000)
+        .pipe(mapTo('1s won!')),
+      interval(2000),
+      interval(2500)
     )
       .pipe(take(2));
-    const subscribe = example.subscribe(val => Log.showLog('race--'+val));
+    const subscribe = example.subscribe((val: ESObject) => {
+      Log.showLog('race--' + val)
+    });
   }
 
   startWith() {
     const source = of(1, 2, 3);
     const example = source.pipe(startWith(0));
-    const subscribe = example.subscribe(val => Log.showLog('startWith--'+val));
+    const subscribe = example.subscribe((val: ESObject) => {
+      Log.showLog('startWith--' + val)
+    });
   }
 
   withLatestFrom() {
     const source = interval(5000);
     const secondSource = interval(1000);
     const example = source.pipe(
-      // @ts-ignore
-    withLatestFrom(secondSource),
-    map(([first, second]) => {
-      return `First Source (5s): ${first} Second Source (1s): ${second}`;
-    }),
-    take(5)
+      withLatestFrom(secondSource),
+      map((first, second) => {
+        return `First Source (5s): ${first} Second Source (1s): ${second}`;
+      }),
+      take(5)
     );
-    const subscribe = example.subscribe(val => Log.showLog('withLatestFrom--'+val));
+    const subscribe = example.subscribe((val: ESObject) => {
+      Log.showLog('withLatestFrom--' + val)
+    });
   }
 
   zip() {
@@ -218,10 +218,12 @@ struct Combine {
     const sourceFour = of('World!');
     const example = zip(
       sourceOne,
-    sourceTwo.pipe(delay(1000)),
-    sourceThree.pipe(delay(2000)),
-    sourceFour.pipe(delay(3000))
+      sourceTwo.pipe(delay(1000)),
+      sourceThree.pipe(delay(2000)),
+      sourceFour.pipe(delay(3000))
     );
-    const subscribe = example.subscribe(val => Log.showLog('zip--'+val));
+    const subscribe = example.subscribe((val: ESObject) => {
+      Log.showLog('zip--' + val)
+    });
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Huawei Device Co., Ltd.
+ * Copyright (C) 2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +14,7 @@
  */
 
 import { of } from 'rxjs';
-import { defaultIfEmpty, every } from 'rxjs/operators';
+import { defaultIfEmpty, every } from 'rxjs';
 import Log from '../log'
 import { MyButton } from '../common/MyButton'
 
@@ -37,14 +37,18 @@ struct Condition {
 
   defaultIfEmpty() {
     const exampleOne = of().pipe(defaultIfEmpty('Observable.of() Empty!'));
-    const subscribe = exampleOne.subscribe(val => Log.showLog('defaultIfEmpty--'+val));
+    const subscribe = exampleOne.subscribe((val: ESObject) => {
+      Log.showLog('defaultIfEmpty--' + val)
+    });
   }
 
   every() {
     const source = of(1, 2, 3, 4, 5);
     const example = source.pipe(
-    every(val => val % 2 === 0)
+      every(val => val % 2 === 0)
     );
-    const subscribe = example.subscribe(val => Log.showLog('every--'+val));
+    const subscribe = example.subscribe((val: ESObject) => {
+      Log.showLog('every--' + val)
+    });
   }
 }

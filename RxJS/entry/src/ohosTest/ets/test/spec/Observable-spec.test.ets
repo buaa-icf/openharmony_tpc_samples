@@ -1,5 +1,18 @@
-import { describe, expect, beforeEach, afterEach } from '../hypium';
-import { it } from '../It'
+/*
+ * Copyright (C) 2024 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+import { describe, expect, beforeEach, afterEach, it, TestType } from '@ohos/hypium';
 import { Observer, TeardownLogic } from 'rxjs/internal/types';
 import {
   Observable,
@@ -24,20 +37,17 @@ import {
   merge,
   race,
   zip,
-  catchError,
-  concatMap,
-  switchMap,
   publish,
   publishLast,
   publishBehavior,
-  share,
-  finalize
-} from 'rxjs/operators';
-import { TestScheduler } from 'rxjs/testing';
+  share
+} from 'rxjs';
+import { TestScheduler, RunHelpers } from 'rxjs/internal/testing/TestScheduler';
 import { observableMatcher } from '../spec//helpers/observableMatcher';
-import lodash from 'lodash';
 
-function expectFullObserver(val: any) {
+import { BindFun, EmptyFun, MyPromise1, observableOperator, observableSource, SourceFun } from './ArkTools';
+
+function expectFullObserver(val: ESObject) {
   expect(val instanceof Object).assertTrue();
   expect(val.next instanceof Function).assertTrue();
   expect(val.error instanceof Function).assertTrue();
@@ -46,7 +56,6 @@ function expectFullObserver(val: any) {
 }
 
 export default function observableTest() {
-  /** @test {Observable} */
   describe('Observable', () => {
     let rxTestScheduler: TestScheduler;
 
@@ -54,8 +63,8 @@ export default function observableTest() {
       rxTestScheduler = new TestScheduler(observableMatcher);
     });
 
-    it('should be constructed with a subscriber function', (done) => {
-      const source = new Observable<number>(function (observer) {
+    it('should_be_constructed_with_a_subscriber_function', 0, (done: ESObject) => {
+      const source = new Observable<number>((observer) => {
         expectFullObserver(observer);
         observer.next(1);
         observer.complete();
@@ -63,36 +72,37 @@ export default function observableTest() {
 
       source.subscribe(
         {
-          next: function (x) {
-            expect(x).assertEqual(1);
+          next: (x) => {
+            expect(x).assertDeepEquals(1);
           }, complete: done
         }
       );
     });
 
-    it('should send errors thrown in the constructor down the error path', (done) => {
+    it('should_send_errors_thrown_in_the_constructor_down_the_error_path', 0, (done: ESObject) => {
       new Observable<number>(() => {
         throw new Error('this should be handled');
       }).subscribe({
-        error(err) {
+        error(err: ESObject) {
           expect(err instanceof Error).assertTrue();
-          expect(err['message']).assertEqual('this should be handled');
+          expect(err['message']).assertDeepEquals('this should be handled');
           done();
         },
       });
     });
 
-    it('should allow empty ctor, which is effectively a never-observable', () => {
-      rxTestScheduler.run(({ expectObservable }) => {
-        const result = new Observable<any>();
-        expectObservable(result).toBe('-');
+    it('should_allow_empty_ctor_which_is_effectively_a_never_observable', 0, () => {
+      rxTestScheduler.run((helpers: RunHelpers) => {
+        let expectObservable = helpers.expectObservable
+        const result: ESObject = new Observable<ESObject>();
+        expectObservable<ESObject>(result).toBe('-');
       });
     });
 
-    it('forEach:should iterate and return a Promise', (done) => {
+    it('forEach_should_iterate_and_return_a_Promise', 0, (done: ESObject) => {
       const expected = [1, 2, 3];
       const result = of(1, 2, 3)
-        .forEach(function (x) {
+        .forEach((x) => {
           expect(x).assertEqual(expected.shift());
         }, Promise)
         .then(() => {
@@ -101,7 +111,7 @@ export default function observableTest() {
       expect(result.then instanceof Function).assertTrue();
     });
 
-    it('should reject promise when in error', (done) => {
+    it('should_reject_promise_when_in_error', 0, (done: ESObject) => {
       throwError(() => ('bad'))
         .forEach(() => {
           done(new Error('should not be called'));
@@ -110,24 +120,22 @@ export default function observableTest() {
           () => {
             done(new Error('should not complete'));
           },
-          (err) => {
-            expect(err).assertEqual('bad');
+          (err: ESObject) => {
+            expect(err).assertDeepEquals('bad');
             done();
           }
         );
     });
 
-    it('should allow Promise to be globally configured', async () => {
+    it('should_allow_Promise_to_be_globally_configured', 0, async () => {
       try {
         let wasCalled = false;
 
-        config.Promise = function MyPromise(callback: any) {
-          wasCalled = true;
-          return new Promise<number>(callback);
-        } as any;
+        config.Promise = MyPromise1(wasCalled) as ESObject;
 
         await of(42).forEach((x) => {
-          expect(x).assertEqual(42);
+          expect(x).assertDeepEquals(42);
+          wasCalled = true
         })
 
         expect(wasCalled).assertTrue();
@@ -136,7 +144,7 @@ export default function observableTest() {
       }
     });
 
-    it('should reject promise if nextHandler throws', (done) => {
+    it('should_reject_promise_if_nextHandler_throws', 0, (done: ESObject) => {
       const results: number[] = [];
 
       of(1, 2, 3)
@@ -150,9 +158,9 @@ export default function observableTest() {
           () => {
             done(new Error('should not be called'));
           },
-          (err) => {
-            expect(err['message']).assertEqual('NO THREES!');
-            expect(lodash.isEqual(results, [1, 2])).assertTrue();
+          (err: ESObject) => {
+            expect(err['message']).assertDeepEquals('NO THREES!');
+            expect(results).assertDeepEquals([1, 2]);
           }
         )
         .then(() => {
@@ -160,7 +168,7 @@ export default function observableTest() {
         });
     });
 
-    it('should handle a synchronous throw from the next handler', () => {
+    it('should_handle_a_synchronous_throw_from_the_next_handler', 0, () => {
       const expected = new Error('I told, you Bobby Boucher, threes are the debil!');
       const syncObservable = new Observable<number>((observer) => {
         observer.next(1);
@@ -182,16 +190,16 @@ export default function observableTest() {
           () => {
             throw new Error('should not be called');
           },
-          (err) => {
+          (err: ESObject) => {
             results.push(err);
             // The error should unsubscribe from the source, meaning we 
             // should not see the number 4.
-            expect(lodash.isEqual(results, [1, 2, 3, expected])).assertTrue();
+            expect(results).assertDeepEquals([1, 2, 3, expected]);
           }
         );
     });
 
-    it('should handle an asynchronous throw from the next handler and tear down', () => {
+    it('should_handle_an_asynchronous_throw_from_the_next_handler_and_tear_down', 0, () => {
       const expected = new Error('I told, you Bobby Boucher, twos are the debil!');
       const asyncObservable = new Observable<number>((observer) => {
         let i = 1;
@@ -215,39 +223,37 @@ export default function observableTest() {
           () => {
             throw new Error('should not be called');
           },
-          (err) => {
+          (err: ESObject) => {
             results.push(err);
-            expect(lodash.isEqual(results, [1, 2, expected])).assertTrue();
+            expect(results).assertDeepEquals([1, 2, expected]);
           }
         );
     });
 
 
-    it('subscribe:should work with handlers with hacked bind methods', () => {
+    it('subscribe_should_work_with_handlers_with_hacked_bind_methods', 0, () => {
       const source = of('Hi');
-      const results: any[] = [];
-      const next = function (value: string) {
+      const results: ESObject[] = [];
+      const next = (value: string) => {
         results.push(value);
       }
-      next.bind = () => { /* lol */
-      };
+      BindFun(next)
 
-      const complete = function () {
+      const complete = () => {
         results.push('done');
       }
-      complete.bind = () => { /* lol */
-      };
+      BindFun(complete)
 
       source.subscribe({
         next, complete
       });
-      expect(lodash.isEqual(results, ['Hi', 'done'])).assertTrue();
+      expect(results).assertDeepEquals(['Hi', 'done']);
     });
 
-    it('should work with handlers with hacked bind methods, in the error case', () => {
+    it('should_work_with_handlers_with_hacked_bind_methods_in_the_error_case', 0, () => {
       const source = throwError(() => 'an error');
-      const results: any[] = [];
-      const error = function (value: string) {
+      const results: ESObject[] = [];
+      const error = (value: string) => {
         results.push(value);
       }
 
@@ -255,17 +261,17 @@ export default function observableTest() {
         error
       });
       expect(results.length).assertEqual(1);
-      expect(results[0]).assertEqual('an error');
+      expect(results[0]).assertDeepEquals('an error');
     });
 
-    it('should be synchronous', () => {
+    it('should_be_synchronous', 0, () => {
       let subscribed = false;
       let nexted: string;
       let completed: boolean;
       const source = new Observable<string>((observer) => {
         subscribed = true;
         observer.next('wee');
-        expect(nexted).assertEqual('wee');
+        expect(nexted).assertDeepEquals('wee');
         observer.complete();
         expect(completed).assertTrue();
       });
@@ -291,7 +297,7 @@ export default function observableTest() {
       expect(mutatedByComplete).assertTrue();
     });
 
-    it('should work when subscribe is called with no arguments', () => {
+    it('should_work_when_subscribe_is_called_with_no_arguments', 0, () => {
       const source = new Observable<string>((subscriber) => {
         subscriber.next('foo');
         subscriber.complete();
@@ -300,7 +306,7 @@ export default function observableTest() {
       source.subscribe();
     });
 
-    it('should not be unsubscribed when other empty subscription completes', () => {
+    it('should_not_be_unsubscribed_when_other_empty_subscription_completes', 0, () => {
       let unsubscribeCalled = false;
       const source = new Observable<number>(() => {
         return () => {
@@ -317,7 +323,7 @@ export default function observableTest() {
       expect(unsubscribeCalled).assertFalse();
     });
 
-    it('should not be unsubscribed when other subscription with same observer completes', () => {
+    it('should_not_be_unsubscribed_when_other_subscription_with_same_observer_completes', 0, () => {
       let unsubscribeCalled = false;
       const source = new Observable<number>(() => {
         return () => {
@@ -325,8 +331,8 @@ export default function observableTest() {
         };
       });
 
-      let observer = {
-        next: function () {
+      let observer: ESObject = {
+        next: () => {
           /*noop*/
         },
       };
@@ -340,7 +346,7 @@ export default function observableTest() {
       expect(unsubscribeCalled).assertFalse();
     });
 
-    it('should run unsubscription logic when an error is sent asynchronously and subscribe is called with no arguments', (done) => {
+    it('should_run_unsubscription_logic_when_an_error_is_sent_asynchronously_and_subscribe_is_called_with_no_arguments', 0, (done: ESObject) => {
       let unsubscribeCalled = false;
       const source = new Observable<number>((observer) => {
         const id = setInterval(() => {
@@ -359,7 +365,7 @@ export default function observableTest() {
       });
 
       setTimeout(() => {
-        let err;
+        let err: ESObject;
         let errHappened = false;
         try {
           expect(unsubscribeCalled).assertTrue();
@@ -376,7 +382,7 @@ export default function observableTest() {
       }, 100);
     });
 
-    it('should return a Subscription that calls the unsubscribe function returned by the subscriber', () => {
+    it('should_return_a_Subscription_that_calls_the_unsubscribe_function_returned_by_the_subscriber', 0, () => {
       let unsubscribeCalled = false;
 
       const source = new Observable<number>(() => {
@@ -396,7 +402,7 @@ export default function observableTest() {
       expect(unsubscribeCalled).assertTrue();
     });
 
-    it('should ignore error messages after unsubscription', () => {
+    it('should_ignore_error_messages_after_unsubscription', 0, () => {
       let times = 0;
       let errorCalled = false;
       const source = new Observable<number>((observer) => {
@@ -418,13 +424,13 @@ export default function observableTest() {
             if (times === 2) {
               subscription.unsubscribe();
             }
-          }, error: err => {
+          }, error: (err: ESObject) => {
           errorCalled = true;
         }
         });
     });
 
-    it('should ignore complete messages after unsubscription', () => {
+    it('should_ignore_complete_messages_after_unsubscription', 0, () => {
       let times = 0;
       let completeCalled = false;
 
@@ -451,15 +457,14 @@ export default function observableTest() {
       );
     });
 
-    it('should accept an anonymous observer with just a next function and call the next function in the context' +
-    ' of the anonymous observer',
-      (done) => {
+    it('should_accept_an_anonymous_observe_wit_ust_a_ext_function_and_call_the_next_function_in_the_context_of_the_anonymous_observer', 0,
+      (done: ESObject) => {
         //intentionally not using lambda to avoid typescript's this context capture
-        const o = {
+        const o: ESObject = {
           myValue: 'foo',
-          next(x: any) {
-            expect(this.myValue).assertEqual('foo');
-            expect(x).assertEqual(1);
+          next(x: ESObject) {
+            expect(o.myValue).assertDeepEquals('foo');
+            expect(x).assertDeepEquals(1);
             done();
           },
         };
@@ -468,15 +473,14 @@ export default function observableTest() {
     );
 
     it(
-      'should accept an anonymous observer with just an error function and call the error function in the context' +
-      ' of the anonymous observer',
-      (done) => {
+      'should_accept_an_anonymous_bserver_with_ust_an_error_function_nd_call_the_error_unction_in_the_context_of_the_anonymous_observer', 0,
+      (done: ESObject) => {
         //intentionally not using lambda to avoid typescript's this context capture
-        const o = {
+        const o: ESObject = {
           myValue: 'foo',
-          error(err: any) {
-            expect(this.myValue).assertEqual('foo');
-            expect(err).assertEqual('bad');
+          error(err: ESObject) {
+            expect(o.myValue).assertDeepEquals('foo');
+            expect(err).assertDeepEquals('bad');
             done();
           },
         };
@@ -486,14 +490,13 @@ export default function observableTest() {
     );
 
     it(
-      'should accept an anonymous observer with just a complete function and call the complete function in the' +
-      ' context of the anonymous observer',
-      (done) => {
+      'should_accept_an_anonymou_observer_with_ust_a_complete_function_and_call_the_complete_unction_in_the_context_of_the_anonymous_observer', 0,
+      (done: ESObject) => {
         //intentionally not using lambda to avoid typescript's this context capture
-        const o = {
+        const o: ESObject = {
           myValue: 'foo',
-          complete: function complete() {
-            expect(this.myValue).assertEqual('foo');
+          complete: () => {
+            expect(o.myValue).assertDeepEquals('foo');
             done();
           },
         };
@@ -502,17 +505,17 @@ export default function observableTest() {
       }
     );
 
-    it('should accept an anonymous observer with no functions at all', () => {
-      let error = null;
+    it('should_accept_an_anonymous_observer_with_no_functions_at_all', 0, () => {
+      let error: ESObject = null;
       try {
-        empty().subscribe(<any> {});
+        EmptyFun()
       } catch (err) {
         error = err;
       }
       expect(error).assertNull();
     });
 
-    it('should ignore next messages after unsubscription', () => {
+    it('should_ignore_next_messages_fter_unsubscription', 0, () => {
       let num = 0;
       const source = new Observable<number>((observer) => {
         observer.next(1);
@@ -534,9 +537,9 @@ export default function observableTest() {
     });
 
 
-    it('should finalize even with a synchronous thrown error', () => {
+    it('should_finalize_even_with_a_synchronou_thrown_error', 0, () => {
       let called = false;
-      const badObservable = new Observable((subscriber) => {
+      const badObservable: ESObject = new Observable<ESObject>((subscriber: ESObject) => {
         subscriber.add(() => {
           called = true;
         });
@@ -553,62 +556,61 @@ export default function observableTest() {
     });
 
 
-    it('should handle empty string sync errors', () => {
-      const badObservable = new Observable(() => {
-        throw '';
+    it('should_handle_empty_string_sync_errors', 0, () => {
+      const badObservable: ESObject = new Observable<ESObject>(() => {
+        throw new Error('');
       });
 
       let caught = false;
       badObservable.subscribe({
-        error: (err) => {
+        error: (err: ESObject) => {
           caught = true;
-          expect(err).assertEqual('');
+          expect(err).assertDeepEquals(new Error(''));
         }
       });
       expect(caught).assertTrue();
     });
 
 
-    it('should exist', () => {
+    it('should_xist', 0, () => {
       const source = of('test');
       expect(source.pipe instanceof Function).assertTrue();
     });
 
-    it('should pipe multiple operations', (done) => {
+    it('should_pipe_multiple_perations', 0, (done: ESObject) => {
       of('test')
         .pipe(
-        map((x) => x + x),
-        map((x) => x + '!!!')
+          map((x) => x + x),
+          map((x) => x + '!!!')
         )
         .subscribe(
           {
             next: (x) => {
-              expect(x).assertEqual('testtest!!!');
+              expect(x).assertDeepEquals('testtest!!!');
             }, complete: done
           }
         );
     });
 
-    it('should return the same observable if there are no arguments', () => {
+    it('should_return_the_same_observable_if_there_are_no_arguments', 0, () => {
       const source = of('test');
       const result = source.pipe();
-      expect(result).assertEqual(source);
+      expect(result).assertDeepEquals(source);
     });
 
   });
 
-  /** @test {Observable} */
-  describe('Observable.create', () => {
-    it('should create an Observable', () => {
-      const result = Observable.create(() => {
+  describe('Observable_create', () => {
+    it('should_create_an_Observable', 0, () => {
+      const result: ESObject = Observable.create(() => {
         //noop
       });
       expect(result instanceof Observable).assertTrue();
     });
 
-    it('should provide an observer to the function', () => {
+    it('should_provide_an_observer_to_the_function', 0, () => {
       let called = false;
-      const result = Observable.create((observer: Observer<any>) => {
+      const result: ESObject = Observable.create((observer: Observer<ESObject>) => {
         called = true;
         expectFullObserver(observer);
         observer.complete();
@@ -621,13 +623,13 @@ export default function observableTest() {
       expect(called).assertTrue();
     });
 
-    it('should send errors thrown in the passed function down the error path', (done) => {
+    it('should_send_rrors_thrown_in_the_assed_function_down_the_error_ath', 0, (done: ESObject) => {
       Observable.create(() => {
         throw new Error('this should be handled');
       }).subscribe({
         error(err: Error) {
           expect(err instanceof Error).assertTrue();
-          expect(err['message']).assertEqual('this should be handled');
+          expect(err.message).assertDeepEquals('this should be handled');
           done();
         },
       });
@@ -635,7 +637,7 @@ export default function observableTest() {
   });
 
   /** @test {Observable} */
-  describe('Observable.lift', () => {
+  describe('Observable_lift', () => {
     let rxTestScheduler: TestScheduler;
 
     beforeEach(() => {
@@ -643,24 +645,25 @@ export default function observableTest() {
     });
 
     class MyCustomObservable<T> extends Observable<T> {
-      static from<T>(source: any) {
+      static from<T>(source: ESObject) {
         const observable = new MyCustomObservable<T>();
-        observable.source = <Observable<T>> source;
+        SourceFun<T>(observable, source)
         return observable;
       }
 
       lift<R>(operator: Operator<T, R>): Observable<R> {
         const observable = new MyCustomObservable<R>();
-        (<any> observable).source = this;
-        (<any> observable).operator = operator;
+        let that = this
+        observableSource(observable, that)
+        observableOperator(observable, operator)
         return observable;
       }
     }
 
-    it('should return Observable which calls FinalizationLogic of operator on unsubscription', (done) => {
-      const myOperator: Operator<any, any> = {
-        call: (subscriber: Subscriber<any>, source: any) => {
-          const subscription = source.subscribe((x: any) => subscriber.next(x));
+    it('should_return_Observable_which_calls_FinalizationLogic_of_operator_on_unsubscription', 0, (done: ESObject) => {
+      const myOperator: Operator<ESObject, ESObject> = {
+        call: (subscriber: Subscriber<ESObject>, source: ESObject) => {
+          const subscription: ESObject = source.subscribe((x: ESObject) => subscriber.next(x));
           return () => {
             subscription.unsubscribe();
             done();
@@ -668,22 +671,22 @@ export default function observableTest() {
         },
       };
 
-      (NEVER as any).lift(myOperator)
+      (NEVER as ESObject).lift(myOperator)
         .subscribe()
         .unsubscribe();
 
     });
 
-    it('should be overrideable in a custom Observable type that composes', (done) => {
+    it('should_be_overrideable_in_a_ustom_Observable_typ_that_composes', 0, (done: ESObject) => {
       const result = new MyCustomObservable<number>((observer) => {
         observer.next(1);
         observer.next(2);
         observer.next(3);
         observer.complete();
       }).pipe(
-      map((x) => {
-        return 10 * x;
-      })
+        map((x) => {
+          return 10 * x;
+        })
       );
 
       expect(result instanceof MyCustomObservable).assertTrue();
@@ -692,8 +695,8 @@ export default function observableTest() {
 
       result.subscribe(
         {
-          next: function (x) {
-            expect(x).assertEqual(expected.shift());
+          next: (x) => {
+            expect(x).assertDeepEquals(expected.shift());
           }, error: () => {
           done(new Error('should not be called'));
         }, complete: () => {
@@ -703,16 +706,16 @@ export default function observableTest() {
       );
     });
 
-    it('should compose through multicast and refCount', (done) => {
+    it('should_compose_through_multicas_and_refCount', 0, (done: ESObject) => {
       const result = new MyCustomObservable<number>((observer) => {
         observer.next(1);
         observer.next(2);
         observer.next(3);
         observer.complete();
       }).pipe(
-      multicast(() => new Subject<number>()),
-      refCount(),
-      map((x) => 10 * x)
+        multicast(() => new Subject<number>()),
+        refCount(),
+        map((x) => 10 * x)
       );
 
       expect(result instanceof MyCustomObservable).assertTrue();
@@ -721,38 +724,8 @@ export default function observableTest() {
 
       result.subscribe(
         {
-          next: function (x) {
-            expect(x).assertEqual(expected.shift());
-          }, error: () => {
-          done(new Error('should not be called'));
-        }, complete: () => {
-          done();
-        }
-        }
-      );
-    });
-
-
-    it('should compose through publish and refCount', (done) => {
-      const result = new MyCustomObservable<number>((observer) => {
-        observer.next(1);
-        observer.next(2);
-        observer.next(3);
-        observer.complete();
-      }).pipe(
-      publish(),
-      refCount(),
-      map((x) => 10 * x)
-      );
-
-      expect(result instanceof MyCustomObservable).assertTrue();
-
-      const expected = [10, 20, 30];
-
-      result.subscribe(
-        {
-          next: function (x) {
-            expect(x).assertEqual(expected.shift());
+          next: (x) => {
+            expect(x).assertDeepEquals(expected.shift());
           }, error: () => {
           done(new Error('should not be called'));
         }, complete: () => {
@@ -763,16 +736,46 @@ export default function observableTest() {
     });
 
 
-    it('should compose through publishLast and refCount', (done) => {
+    it('should_ompose_hrough_publish_and_refCount', 0, (done: ESObject) => {
       const result = new MyCustomObservable<number>((observer) => {
         observer.next(1);
         observer.next(2);
         observer.next(3);
         observer.complete();
       }).pipe(
-      publishLast(),
-      refCount(),
-      map((x) => 10 * x)
+        publish(),
+        refCount(),
+        map((x: ESObject) => 10 * x)
+      );
+
+      expect(result instanceof MyCustomObservable).assertTrue();
+
+      const expected = [10, 20, 30];
+
+      result.subscribe(
+        {
+          next: (x) => {
+            expect(x).assertDeepEquals(expected.shift());
+          }, error: () => {
+          done(new Error('should not be called'));
+        }, complete: () => {
+          done();
+        }
+        }
+      );
+    });
+
+
+    it('should_compose_through_publishLast_and_efCount', 0, (done: ESObject) => {
+      const result = new MyCustomObservable<number>((observer) => {
+        observer.next(1);
+        observer.next(2);
+        observer.next(3);
+        observer.complete();
+      }).pipe(
+        publishLast(),
+        refCount(),
+        map((x: ESObject) => 10 * x)
       );
 
       expect(result instanceof MyCustomObservable).assertTrue();
@@ -781,8 +784,8 @@ export default function observableTest() {
 
       result.subscribe(
         {
-          next: function (x) {
-            expect(x).assertEqual(expected.shift());
+          next: (x) => {
+            expect(x).assertDeepEquals(expected.shift());
           }, error: () => {
           done(new Error('should not be called'));
         }, complete: () => {
@@ -792,16 +795,16 @@ export default function observableTest() {
       );
     });
 
-    it('should compose through publishBehavior and refCount', (done) => {
+    it('should_compose_through_publishBehavior_and_refCount', 0, (done: ESObject) => {
       const result = new MyCustomObservable<number>((observer) => {
         observer.next(1);
         observer.next(2);
         observer.next(3);
         observer.complete();
       }).pipe(
-      publishBehavior(0),
-      refCount(),
-      map((x) => 10 * x)
+        publishBehavior(0),
+        refCount(),
+        map((x) => 10 * x)
       );
 
       expect(result instanceof MyCustomObservable).assertTrue();
@@ -810,8 +813,8 @@ export default function observableTest() {
 
       result.subscribe(
         {
-          next: function (x) {
-            expect(x).assertEqual(expected.shift());
+          next: (x) => {
+            expect(x).assertDeepEquals(expected.shift());
           }, error: () => {
           done(new Error('should not be called'));
         }, complete: () => {
@@ -821,49 +824,49 @@ export default function observableTest() {
       );
     });
 
-    it('should composes Subjects in the simple case', () => {
+    it('should_composes_Subjects_in_the_simple_case', 0, () => {
       const subject = new Subject<number>();
 
       const result = subject.pipe(
-      map((x) => 10 * x)
-      ) as any as Subject<number>; // Yes, this is correct. (but you're advised not to do this)
+        map((x) => 10 * x)
+      ) as ESObject as Subject<number>; // Yes, this is correct. (but you're advised not to do this)
 
       expect(result instanceof Subject).assertTrue();
 
-      const emitted: any[] = [];
+      const emitted: ESObject[] = [];
       result.subscribe(value => emitted.push(value));
 
       result.next(10);
       result.next(20);
       result.next(30);
 
-      expect(lodash.isEqual(emitted, [100, 200, 300])).assertTrue();
+      expect(emitted).assertDeepEquals([100, 200, 300]);
     });
 
     /**
      * Seriously, never do this. It's probably bad that we've allowed this. Fortunately, it's not
      * a common practice, so maybe we can remove it?
      */
-    it('should demonstrate the horrors of sharing and lifting the Subject through', () => {
+    it('should_demonstrate_the_horrors_f_haring_an_lifting_he_bject_ough', 0, () => {
       const subject = new Subject<number>();
 
       const shared = subject.pipe(
-      share()
+        share()
       );
 
       const result1 = shared.pipe(
-      map(x => x * 10)
-      ) as any as Subject<number>; // Yes, this is correct.
+        map(x => x * 10)
+      ) as ESObject as Subject<number>; // Yes, this is correct.
 
       const result2 = shared.pipe(
-      map(x => x - 10)
-      ) as any as Subject<number>; // Yes, this is correct.
+        map(x => x - 10)
+      ) as ESObject as Subject<number>; // Yes, this is correct.
       expect(result1 instanceof Subject).assertTrue();
 
-      const emitted1: any[] = [];
+      const emitted1: ESObject[] = [];
       result1.subscribe(value => emitted1.push(value));
 
-      const emitted2: any[] = [];
+      const emitted2: ESObject[] = [];
       result2.subscribe(value => emitted2.push(value));
 
       // THIS IS HORRIBLE DON'T DO THIS.
@@ -871,8 +874,8 @@ export default function observableTest() {
       result2.next(20); // Yuck
       result1.next(30);
 
-      expect(lodash.isEqual(emitted1, [100, 200, 300])).assertTrue();
-      expect(lodash.isEqual(emitted2, [0, 10, 20])).assertTrue();
+      expect(emitted1).assertDeepEquals([100, 200, 300]);
+      expect(emitted2).assertDeepEquals([0, 10, 20]);
     });
 
     /**
@@ -889,45 +892,22 @@ export default function observableTest() {
      * return `ConnectableObservable`. :tada:
      */
 
-    it('should compose through multicast and refCount, even if it is a Subject', () => {
+    it('should_compose_through_multicast_and_refCount_even_if_it_is_a_Subject', 0, () => {
       const subject = new Subject<number>();
 
       const result = subject.pipe(
-      multicast(() => new Subject<number>()),
-      refCount(),
-      map((x) => 10 * x)
-      ) as any as Subject<number>; // Yes, this is correct.
+        multicast(() => new Subject<number>()),
+        refCount(),
+        map((x) => 10 * x)
+      ) as ESObject as Subject<number>; // Yes, this is correct.
 
       expect(result instanceof Subject).assertTrue();
 
-      const emitted: any[] = [];
-      result.subscribe(value => {
-        emitted.push(value)
-        if(value==300){
-          expect(lodash.isEqual(emitted, [100, 200, 300])).assertTrue();
-        }
-      });
-      result.next(10);
-      result.next(20);
-      result.next(30);
-    });
-
-    it('should compose through publish and refCount, even if it is a Subject', () => {
-      const subject = new Subject<number>();
-
-      const result = subject.pipe(
-      publish(),
-      refCount(),
-      map((x) => 10 * x)
-      ) as any as Subject<number>; // Yes, this is correct.
-
-      expect(result instanceof Subject).assertTrue();
-
-      const emitted: any[] = [];
+      const emitted: ESObject[] = [];
       result.subscribe(value => {
         emitted.push(value)
         if (value == 300) {
-          expect(lodash.isEqual(emitted, [100, 200, 300])).assertTrue();
+          expect(emitted).assertDeepEquals([100, 200, 300]);
         }
       });
       result.next(10);
@@ -935,23 +915,22 @@ export default function observableTest() {
       result.next(30);
     });
 
-
-    it('should compose through publishLast and refCount, even if it is a Subject', () => {
+    it('should_compose_through_publish_and_refCount_even_if_it_is_a_Subject', 0, () => {
       const subject = new Subject<number>();
 
       const result = subject.pipe(
-      publishLast(),
-      refCount(),
-      map((x) => 10 * x)
-      ) as any as Subject<number>; // Yes, this is correct.
+        publish(),
+        refCount(),
+        map((x: ESObject) => 10 * x)
+      ) as ESObject as Subject<number>; // Yes, this is correct.
 
       expect(result instanceof Subject).assertTrue();
 
-      const emitted: any[] = [];
+      const emitted: ESObject[] = [];
       result.subscribe(value => {
-        emitted.push(value);
+        emitted.push(value)
         if (value == 300) {
-          expect(lodash.isEqual(emitted, [100, 200, 300])).assertTrue();
+          expect(emitted).assertDeepEquals([100, 200, 300]);
         }
       });
       result.next(10);
@@ -959,22 +938,46 @@ export default function observableTest() {
       result.next(30);
     });
 
-    it('should compose through publishBehavior and refCount, even if it is a Subject', () => {
+
+    it('should_compos_through_publishLast_and_refCount_even_if_it_is_a_Subject', 0, () => {
       const subject = new Subject<number>();
 
       const result = subject.pipe(
-      publishBehavior(0),
-      refCount(),
-      map((x) => 10 * x)
-      ) as any as Subject<number>; // Yes, this is correct.
+        publishLast(),
+        refCount(),
+        map((x: ESObject) => 10 * x)
+      ) as ESObject as Subject<number>; // Yes, this is correct.
 
       expect(result instanceof Subject).assertTrue();
 
-      const emitted: any[] = [];
+      const emitted: ESObject[] = [];
       result.subscribe(value => {
         emitted.push(value);
         if (value == 300) {
-          expect(lodash.isEqual(emitted, [0, 100, 200, 300])).assertTrue();
+          expect(emitted).assertDeepEquals([100, 200, 300]);
+        }
+      });
+      result.next(10);
+      result.next(20);
+      result.next(30);
+    });
+
+    it('should_compos_through_publishBehavior_nd_refCount_even_if_it_is_a_Subject', 0, () => {
+      const subject = new Subject<number>();
+
+      const result = subject.pipe(
+        publishBehavior(0),
+        refCount(),
+        map((x) => 10 * x)
+      ) as ESObject as Subject<number>; // Yes, this is correct.
+
+      expect(result instanceof Subject).assertTrue();
+
+      const emitted: ESObject[] = [];
+      result.subscribe(value => {
+        emitted.push(value);
+        if (value == 300) {
+          expect(emitted).assertDeepEquals([0, 100, 200, 300]);
         }
       });
 
@@ -984,17 +987,17 @@ export default function observableTest() {
     });
 
 
-    it('should compose through multicast with selector function', (done) => {
+    it('should_compose_through_multicast_with_selector_function', 0, (done: ESObject) => {
       const result = new MyCustomObservable<number>((observer) => {
         observer.next(1);
         observer.next(2);
         observer.next(3);
         observer.complete();
       }).pipe(
-      multicast(
-        () => new Subject<number>(),
-        (shared) => shared.pipe(map((x) => 10 * x))
-      )
+        multicast(
+          () => new Subject<number>(),
+          (shared) => shared.pipe(map((x) => 10 * x))
+        )
       );
 
       expect(result instanceof MyCustomObservable).assertTrue();
@@ -1003,8 +1006,8 @@ export default function observableTest() {
 
       result.subscribe(
         {
-          next: function (x) {
-            expect(x).assertEqual(expected.shift());
+          next: (x) => {
+            expect(x).assertDeepEquals(expected.shift());
           }, error: () => {
           done(new Error('should not be called'));
         }, complete: () => {
@@ -1014,17 +1017,17 @@ export default function observableTest() {
       );
     });
 
-    it('should compose through combineLatest', () => {
-      rxTestScheduler.run(({ cold, expectObservable }) => {
+    it('should_compose_through_combineLatest', 0, () => {
+      rxTestScheduler.run((helpers: RunHelpers) => {
+        let cold = helpers.cold
+        let expectObservable = helpers.expectObservable
         const e1 = cold(' -a--b-----c-d-e-|');
         const e2 = cold(' --1--2-3-4---|   ');
         const expected = '--A-BC-D-EF-G-H-|';
 
-        const result = MyCustomObservable.from(e1).pipe(combineLatest(e2, (a, b) => String(a) + String(b)));
+        const result = combineLatest([e1, e2], (a, b) => String(a) + String(b));
 
-        expect(result instanceof MyCustomObservable).assertTrue();
-
-        expectObservable(result).toBe(expected, {
+        expectObservable<ESObject>(result).toBe(expected, {
           A: 'a1',
           B: 'b1',
           C: 'b2',
@@ -1037,64 +1040,63 @@ export default function observableTest() {
       });
     });
 
-    it('should compose through concat', () => {
-      rxTestScheduler.run(({ cold, expectObservable }) => {
+    it('should_ompose_through_concat', 0, () => {
+      rxTestScheduler.run((helpers: RunHelpers) => {
+        let cold = helpers.cold
+        let expectObservable = helpers.expectObservable
         const e1 = cold(' --a--b-|');
         const e2 = cold(' --x---y--|');
         const expected = '--a--b---x---y--|';
 
-        const result = MyCustomObservable.from(e1).pipe(concat(e2, rxTestScheduler));
+        const result: ESObject = concat(e1, e2);
 
-        expect(result instanceof MyCustomObservable).assertTrue();
-
-        expectObservable(result).toBe(expected);
+        expectObservable<ESObject>(result).toBe(expected);
       });
     });
-    it('should compose through merge', () => {
-      rxTestScheduler.run(({ cold, expectObservable }) => {
+    it('should_compose_through_merge', 0, () => {
+      rxTestScheduler.run((helpers: RunHelpers) => {
+        let cold = helpers.cold
+        let expectObservable = helpers.expectObservable
         const e1 = cold(' -a--b-| ');
         const e2 = cold(' --x--y-|');
         const expected = '-ax-by-|';
 
-        const result = MyCustomObservable.from(e1).pipe(merge(e2, rxTestScheduler));
+        const result: ESObject = merge(e1, e2);
 
-        expect(result instanceof MyCustomObservable).assertTrue();
-
-        expectObservable(result).toBe(expected);
+        expectObservable<ESObject>(result).toBe(expected);
       });
     });
 
-    it('should compose through race', () => {
-      rxTestScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+    it('should_compose_through_race', 0, () => {
+      rxTestScheduler.run((helpers: RunHelpers) => {
+        let cold = helpers.cold
+        let expectObservable = helpers.expectObservable
+        let expectSubscriptions = helpers.expectSubscriptions
         const e1 = cold(' ---a-----b-----c----|');
         const e1subs = '  ^-------------------!';
         const e2 = cold(' ------x-----y-----z----|');
         const e2subs = '  ^--!';
         const expected = '---a-----b-----c----|';
+        const result = race(e1, e2);
 
-        const result = MyCustomObservable.from<string>(e1).pipe(
-        race(e2)
-        );
-
-        expect(result instanceof MyCustomObservable).assertTrue();
-
-        expectObservable(result).toBe(expected);
+        expectObservable<ESObject>(result).toBe(expected);
         expectSubscriptions(e1.subscriptions).toBe(e1subs);
         expectSubscriptions(e2.subscriptions).toBe(e2subs);
       });
     });
 
-    it('should compose through zip', () => {
-      rxTestScheduler.run(({ cold, expectObservable }) => {
+    it('should_compose_through_zip', 0, () => {
+      rxTestScheduler.run((helpers: RunHelpers) => {
+        let cold = helpers.cold
+        let expectObservable = helpers.expectObservable
         const e1 = cold(' -a--b-----c-d-e-|');
         const e2 = cold(' --1--2-3-4---|   ');
         const expected = '--A--B----C-D|   ';
 
-        const result = MyCustomObservable.from(e1).pipe(zip(e2, (a, b) => String(a) + String(b)));
+        const result: ESObject = zip(e1, e2, (a, b) => String(a) + String(b));
 
-        expect(result instanceof MyCustomObservable).assertTrue();
 
-        expectObservable(result).toBe(expected, {
+        expectObservable<ESObject>(result).toBe(expected, {
           A: 'a1',
           B: 'b2',
           C: 'c3',
@@ -1103,7 +1105,7 @@ export default function observableTest() {
       });
     });
 
-    it('should allow injecting behaviors into all subscribers in an operator ' + 'chain when overridden', (done) => {
+    it('should_allow_njecting_behaviors_into_all_subscribers_n_an_operator_chain_when_overridden', 0, (done: ESObject) => {
       // The custom Subscriber
       const log: Array<string> = [];
 
@@ -1118,10 +1120,13 @@ export default function observableTest() {
 
       // The custom Operator
       class LogOperator<T, R> implements Operator<T, R> {
-        constructor(private childOperator: Operator<T, R>) {
+        private childOperator: Operator<T, R>
+
+        constructor(childOperator: Operator<T, R>) {
+          this.childOperator = childOperator
         }
 
-        call(subscriber: Subscriber<R>, source: any): TeardownLogic {
+        call(subscriber: Subscriber<R>, source: ESObject): TeardownLogic {
           return this.childOperator.call(new LogSubscriber<R>(subscriber), source);
         }
       }
@@ -1143,9 +1148,9 @@ export default function observableTest() {
         observer.next(3);
         observer.complete();
       }).pipe(
-      map((x) => 10 * x),
-      filter((x) => x > 15),
-      count()
+        map((x) => 10 * x),
+        filter((x) => x > 15),
+        count()
       );
 
       expect(result instanceof LogObservable).assertTrue();
@@ -1154,19 +1159,19 @@ export default function observableTest() {
 
       result.subscribe(
         {
-          next: function (x) {
+          next: (x) => {
             expect(x).assertEqual(expected.shift());
           }, error: () => {
           done(new Error('should not be called'));
         }, complete: () => {
-          expect(lodash.isEqual(log, [
+          expect(log).assertDeepEquals([
             'next 10', // map
             'next 20', // map
             'next 20', // filter
             'next 30', // map
             'next 30', // filter
-            'next 2', // count
-          ])).assertTrue();
+            'next 2',// count
+          ]);
           done();
         }
         }

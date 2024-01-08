@@ -1,11 +1,23 @@
-import { describe, expect, beforeEach } from '../../hypium';
-import { it } from '../../It'
+/*
+ * Copyright (C) 2024 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+import { describe, expect, beforeEach, it } from '@ohos/hypium';
 import { BehaviorSubject, Subject, ObjectUnsubscribedError, of } from 'rxjs';
-import { tap, mergeMapTo } from 'rxjs/operators';
+import { tap, mergeMapTo } from 'rxjs';
 import { asInteropSubject } from '../helpers/interop-helper';
-import { TestScheduler } from 'rxjs/testing';
+import { TestScheduler, RunHelpers } from 'rxjs/internal/testing/TestScheduler';
 import { observableMatcher } from '../helpers/observableMatcher';
-import lodash from 'lodash'
 
 /** @test {BehaviorSubject} */
 export default function behaviorSubjectTest() {
@@ -16,23 +28,23 @@ export default function behaviorSubjectTest() {
       testScheduler = new TestScheduler(observableMatcher);
     });
 
-    it('should extend Subject', () => {
-      const subject = new BehaviorSubject(null);
+    it('should_extend_Subject', 0, () => {
+      const subject: ESObject = new BehaviorSubject<ESObject>(null);
       expect(subject instanceof Subject).assertTrue();
     });
 
-    it('should throw if it has received an error and getValue() is called', () => {
-      const subject = new BehaviorSubject(null);
+    it('should_throw_if_it_has_received_an_error_and_getValue_is_called', 0, () => {
+      const subject: ESObject = new BehaviorSubject<ESObject>(null);
       subject.error(new Error('derp'));
       expect(() => {
         subject.getValue();
       }).assertThrowError('derp');
     });
 
-    it('should throw an ObjectUnsubscribedError if getValue() is called and the BehaviorSubject has been unsubscribed', () => {
+    it('should_throw_an_ObjectUnsubscribedError_if_getValue_is_called_and_the_BehaviorSubject_has_been_unsubscribed', 0, () => {
       const subject = new BehaviorSubject('hi there');
       subject.unsubscribe();
-      let error = null;
+      let error: ESObject = null;
       try {
         subject.getValue();
       } catch (err) {
@@ -41,7 +53,7 @@ export default function behaviorSubjectTest() {
       expect(error != null && error instanceof ObjectUnsubscribedError).assertTrue()
     });
 
-    it('should have a getValue() method to retrieve the current value', () => {
+    it('should_have_a_getValue_method_to_retrieve_the_current_value', 0, () => {
       const subject = new BehaviorSubject('staltz');
       expect(subject.getValue()).assertEqual('staltz');
 
@@ -50,12 +62,12 @@ export default function behaviorSubjectTest() {
       expect(subject.getValue()).assertEqual('oj');
     });
 
-    it('should not allow you to set `value` directly', () => {
+    it('should_not_allow_you_to_set_value_directly', 0, () => {
       const subject = new BehaviorSubject('flibberty');
 
       try {
         // XXX: escape from readonly restriction for testing.
-        (subject as any).value = 'jibbets';
+        (subject as ESObject).value = 'jibbets';
       } catch (e) {
         //noop
       }
@@ -64,14 +76,14 @@ export default function behaviorSubjectTest() {
       expect(subject.value).assertEqual('flibberty');
     });
 
-    it('should still allow you to retrieve the value from the value property', () => {
+    it('should_still_allow_you_to_retrieve_the_value_from_the_value_property', 0, () => {
       const subject = new BehaviorSubject('fuzzy');
       expect(subject.value).assertEqual('fuzzy');
       subject.next('bunny');
       expect(subject.value).assertEqual('bunny');
     });
 
-    it('should start with an initialization value', (done) => {
+    it('should_start_with_an_initialization_value', 0, (done: ESObject) => {
       const subject = new BehaviorSubject('foo');
       const expected = ['foo', 'bar'];
       let i = 0;
@@ -87,7 +99,7 @@ export default function behaviorSubjectTest() {
       subject.complete();
     });
 
-    it('should pump values to multiple subscribers', (done) => {
+    it('should_pump_values_to_multiple_subscribers', 0, (done: ESObject) => {
       const subject = new BehaviorSubject('init');
       const expected = ['init', 'foo', 'bar'];
       let i = 0;
@@ -110,26 +122,26 @@ export default function behaviorSubjectTest() {
       subject.complete();
     });
 
-    it('should not pass values nexted after a complete', () => {
+    it('should_not_pass_values_nexted_after_a_complete', 0, () => {
       const subject = new BehaviorSubject('init');
       const results: string[] = [];
 
       subject.subscribe((x: string) => {
         results.push(x);
       });
-      expect(lodash.isEqual(results, ['init'])).assertTrue();
+      expect(results).assertDeepEquals(['init']);
 
       subject.next('foo');
-      expect(lodash.isEqual(results, ['init', 'foo'])).assertTrue();
+      expect(results).assertDeepEquals(['init', 'foo']);
 
       subject.complete();
-      expect(lodash.isEqual(results, ['init', 'foo'])).assertTrue();
+      expect(results).assertDeepEquals(['init', 'foo']);
 
       subject.next('bar');
-      expect(lodash.isEqual(results, ['init', 'foo'])).assertTrue();
+      expect(results).assertDeepEquals(['init', 'foo']);
     });
 
-    it('should clean out unsubscribed subscribers', (done) => {
+    it('should_clean_out_unsubscribed_subscribers', 0, (done: ESObject) => {
       const subject = new BehaviorSubject('init');
 
       const sub1 = subject.subscribe((x: string) => {
@@ -148,19 +160,21 @@ export default function behaviorSubjectTest() {
       done();
     });
 
-    it('should replay the previous value when subscribed', () => {
-      testScheduler.run(({ hot, expectObservable }) => {
+    it('should_replay_the_previous_value_when_subscribed', 0, () => {
+      testScheduler.run((helpers: RunHelpers) => {
+        let hot = helpers.hot
+        let expectObservable = helpers.expectObservable
         const behaviorSubject = new BehaviorSubject('0');
 
-        function feedNextIntoSubject(x: string) {
+        let feedNextIntoSubject = (x: string) => {
           behaviorSubject.next(x);
         }
 
-        function feedErrorIntoSubject(err: any) {
+        let feedErrorIntoSubject = (err: ESObject) => {
           behaviorSubject.error(err);
         }
 
-        function feedCompleteIntoSubject() {
+        let feedCompleteIntoSubject = () => {
           behaviorSubject.complete();
         }
 
@@ -175,10 +189,10 @@ export default function behaviorSubjectTest() {
         const expected3 = '      ---------------------------8---9--|';
 
         expectObservable(
-        hot(sourceTemplate)
-          .pipe(tap({
-            next: feedNextIntoSubject, error: feedErrorIntoSubject, complete: feedCompleteIntoSubject
-          }))
+          hot(sourceTemplate)
+            .pipe(tap({
+              next: feedNextIntoSubject, error: feedErrorIntoSubject, complete: feedCompleteIntoSubject
+            }))
         ).toBe(sourceTemplate);
         expectObservable(subscriber1, unsub1).toBe(expected1);
         expectObservable(subscriber2, unsub2).toBe(expected2);
@@ -186,19 +200,21 @@ export default function behaviorSubjectTest() {
       });
     });
 
-    it('should emit complete when subscribed after completed', () => {
-      testScheduler.run(({ hot, expectObservable }) => {
+    it('should_emit_complete_when_subscribed_after_completed', 0, () => {
+      testScheduler.run((helpers: RunHelpers) => {
+        let hot = helpers.hot
+        let expectObservable = helpers.expectObservable
         const behaviorSubject = new BehaviorSubject('0');
 
-        function feedNextIntoSubject(x: string) {
+        let feedNextIntoSubject = (x: string) => {
           behaviorSubject.next(x);
         }
 
-        function feedErrorIntoSubject(err: any) {
+        let feedErrorIntoSubject = (err: ESObject) => {
           behaviorSubject.error(err);
         }
 
-        function feedCompleteIntoSubject() {
+        let feedCompleteIntoSubject = () => {
           behaviorSubject.complete();
         }
 
@@ -207,16 +223,16 @@ export default function behaviorSubjectTest() {
         const expected1 = '      ---------------|   ';
 
         expectObservable(
-        hot(sourceTemplate)
-          .pipe(tap({
-            next: feedNextIntoSubject, error: feedErrorIntoSubject, complete: feedCompleteIntoSubject
-          }))
+          hot(sourceTemplate)
+            .pipe(tap({
+              next: feedNextIntoSubject, error: feedErrorIntoSubject, complete: feedCompleteIntoSubject
+            }))
         ).toBe(sourceTemplate);
         expectObservable(subscriber1).toBe(expected1);
       });
     });
 
-    it('should be an Observer which can be given to Observable.subscribe', (done) => {
+    it('should_be_an_Observer_which_can_be_given_to_Observable_subscribe', 0, (done: ESObject) => {
       const source = of(1, 2, 3, 4, 5);
       const subject = new BehaviorSubject(0);
       const expected = [0, 1, 2, 3, 4, 5];
@@ -225,7 +241,7 @@ export default function behaviorSubjectTest() {
         next: (x: number) => {
           expect(x).assertEqual(expected.shift());
         },
-        error: (x) => {
+        error: (x: ESObject) => {
           done(new Error('should not be called'));
         },
         complete: () => {
@@ -237,7 +253,7 @@ export default function behaviorSubjectTest() {
       source.subscribe(subject);
     });
 
-    it('should be an Observer which can be given to an interop source', (done) => {
+    it('should_be_an_Observer_which_can_be_given_to_an_interop_source', 0, (done: ESObject) => {
       // This test reproduces a bug reported in this issue:
       // https://github.com/ReactiveX/rxjs/issues/5105
       // However, it cannot easily be fixed. See this comment:
@@ -250,7 +266,7 @@ export default function behaviorSubjectTest() {
         next: (x: number) => {
           expect(x).assertEqual(expected.shift());
         },
-        error: (x) => {
+        error: (x: ESObject) => {
           done(new Error('should not be called'));
         },
         complete: () => {

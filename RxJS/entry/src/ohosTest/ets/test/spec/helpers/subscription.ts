@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Huawei Device Co., Ltd.
+ * Copyright (C) 2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -12,5 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/** @prettier */
+import type { TeardownLogic } from 'rxjs';
 
-export { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
+export function getRegisteredFinalizers(subscription: any): Exclude<TeardownLogic, void>[] {
+  if ('_finalizers' in subscription) {
+    return subscription._finalizers ?? [];
+  } else {
+    throw new TypeError('Invalid Subscription');
+  }
+}
