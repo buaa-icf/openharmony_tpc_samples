@@ -21,6 +21,7 @@ import PvUtilsTest from './pvutils.test'
 import Asn1Test from './asn1.test'
 import Asn1DerTest from './asn1_der.test'
 import Asn1JSTest from './asn1JS.test'
+import InterfaceTime from './InterfaceTime'
 
 export default function testsuite() {
   Hex_Encode_DecodeTest();
@@ -28,5 +29,6 @@ export default function testsuite() {
   PvUtilsTest();
   Asn1Test();
   Asn1DerTest();
-  Asn1JSTest()
+  Asn1JSTest();
+  InterfaceTime();
 }
