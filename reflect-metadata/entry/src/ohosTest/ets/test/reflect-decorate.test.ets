@@ -61,7 +61,7 @@ export default function decorateTest() {
         ];
         let target = new type();
         let name = "name";
-        let descriptor = new type();
+        let descriptor!: PropertyDescriptor;
         Reflect.decorate(decorators, target, name, descriptor);
         expect(order[0]).assertEqual(0);
       })
@@ -98,7 +98,7 @@ export default function decorateTest() {
       import("reflect-metadata").then((reflectMetadata) => {
         let A = new type();
         let B = new type();
-        let C = new type();
+        let C!: PropertyDescriptor;
         let decorators = [
           (target: Object, name: ESObject): ESObject => { return undefined; },
           (target: Object, name: ESObject): ESObject => { return A; },
@@ -158,7 +158,7 @@ export default function decorateTest() {
         let sent: Object[] = [];
         let A = new type();
         let B = new type();
-        let C = new type();
+        let C!: PropertyDescriptor;
         let decorators = [
           (target: Object, name: ESObject): ESObject => { sent.push(target); return undefined; },
           (target: Object, name: ESObject): ESObject => { sent.push(target); return undefined; },
@@ -175,7 +175,7 @@ export default function decorateTest() {
         let sent: (string)[] = [];
         let A = new type();
         let B = new type();
-        let C = new type();
+        let C!: PropertyDescriptor;
         let decorators = [
           (target: Object, name: ESObject): ESObject => { sent.push(name); return undefined; },
           (target: Object, name: ESObject): ESObject => { sent.push(name); return undefined; },
@@ -192,7 +192,7 @@ export default function decorateTest() {
         let sent: PropertyDescriptor[] = [];
         let A = new type();
         let B = new type();
-        let C = new type();
+        let C!: PropertyDescriptor;
         let decorators = [
           (target: Object, name: ESObject, descriptor: PropertyDescriptor): ESObject => { sent.push(descriptor); return undefined; },
           (target: Object, name: ESObject, descriptor: PropertyDescriptor): ESObject => { sent.push(descriptor); return undefined; },
