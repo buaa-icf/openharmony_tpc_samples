@@ -25,7 +25,7 @@ import { BusinessError } from '@ohos.base';
 import emitter from '@ohos.events.emitter';
 import { HttpProxyCacheServerBuilder } from '@ohos/video-cache';
 import { GlobalContext } from "./GlobalContext";
-import { PlayerType } from "./CommonConstants";
+import { PlayerType, EffectType } from "./CommonConstants";
 
 let screenshotTimerStatus: boolean = false;
 let screenshotTimer: number = 0;
@@ -64,6 +64,10 @@ export abstract class BaseVideoPlayer implements IVideoPlayer {
 
   setVideoId(id: string): void {
     this.vId = id;
+  }
+
+  setEffectFilter(type: EffectType): void {
+
   }
 
   setXComponentId(id: string): void {

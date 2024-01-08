@@ -23,7 +23,7 @@ import {
 } from '@ohos/ijkplayer';
 import { LogUtils } from '../utils/LogUtils';
 import { BaseVideoPlayer } from './BaseVideoPlayer';
-import { PlayStatus } from './CommonConstants';
+import { PlayStatus, EffectType } from './CommonConstants';
 import { GlobalContext } from './GlobalContext';
 
 @Observed
@@ -87,7 +87,7 @@ export class IjkPlayerControl extends BaseVideoPlayer {
 
   setContext(context: object): void {
     super.setContext(context);
-    if (this.mIjkMediaPlayer) {
+    if (this.mIjkMediaPlayer && this.context) {
       this.mIjkMediaPlayer.setContext(this.context);
     }
   }
@@ -98,7 +98,9 @@ export class IjkPlayerControl extends BaseVideoPlayer {
 
       // 设置当前context，如果是放在list场景中，这个操作可以解决list错乱问题
       // 单例的ijk播放器，切换Context就可以锁定选择的Xcomponent
-      this.mIjkMediaPlayer.setContext(this.context);
+      if (this.context) {
+        this.mIjkMediaPlayer.setContext(this.context);
+      }
       this.mIjkMediaPlayer.reset();
       GlobalContext.getContext().setObject('xid', this.xComponentId);
       GlobalContext.getContext().setObject('currentPlayer', this);
@@ -106,6 +108,9 @@ export class IjkPlayerControl extends BaseVideoPlayer {
       // 设置debug模式
       this.mIjkMediaPlayer.setDebug(false);
       this.mIjkMediaPlayer.native_setup();
+
+      // 打开滤镜效果
+      this.mIjkMediaPlayer.openFilter('1');
 
       // 设置视频源
       this.mIjkMediaPlayer.setDataSource(this.videoUrl);
@@ -215,6 +220,8 @@ export class IjkPlayerControl extends BaseVideoPlayer {
     LogUtils.getInstance().LOGI("IjkPlayerVideoPlayer ijkStop");
     this.playStatus = PlayStatus.INIT;
     if (this.mIjkMediaPlayer) {
+      // 打开滤镜效果
+      this.mIjkMediaPlayer.openFilter('0');
       this.mIjkMediaPlayer.stop();
       this.mIjkMediaPlayer.release();
     }
@@ -225,5 +232,11 @@ export class IjkPlayerControl extends BaseVideoPlayer {
       return this.mIjkMediaPlayer.getDuration();
     }
     return 0;
+  }
+
+  setEffectFilter(type: EffectType): void {
+    if (this.mIjkMediaPlayer) {
+      this.mIjkMediaPlayer.filterType(type + '');
+    }
   }
 }

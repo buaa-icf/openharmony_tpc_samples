@@ -115,6 +115,36 @@ Button("点击截图").onClick(() => {
 })
 ```
 
+### 视频切换滤镜能力
+滤镜能力只有ijkplayer播放器支持。
+```typescript
+ Button('切换滤镜效果').onClick(() => {
+  let player = GlobalContext.getContext().getObject("currentPlayer") as BaseVideoPlayer;
+  this.type++;
+  if (this.type > 2) {
+    this.type = 0;
+  }
+  let text = '';
+  if (player) {
+    player.setEffectFilter(this.type);
+    switch (this.type) {
+      case 0:
+        text = '无效果';
+        break;
+      case 1:
+        text = '黑白';
+        break;
+      case 2:
+        text = '网格';
+        break;
+    }
+    promptAction.showToast({
+      message: text
+    })
+  }
+})
+```
+
 ### 视频生成gif能力
 
 ```typescript
@@ -190,7 +220,8 @@ Button("stopGif").onClick(() => {
 | stop()       | 无   | 视频停止播放         |
 | saveFrame(fileSavePath: string, gsyVideoShotSaveListener: GSYVideoShotSaveListener)| fileSavePath: string, gsyVideoShotSaveListener: GSYVideoShotSaveListener   | 视频截图           |
 | startGif(tmpPicPath?: string)      | tmpPicPath?: string   | 视频开始gif        |
-| stopGif(saveGifPath: string, gsyVideoGifSaveListener: GSYVideoGifSaveListener)      | 无   | 视频结束gif,并生成gif |
+| stopGif(saveGifPath: string, gsyVideoGifSaveListener: GSYVideoGifSaveListener)    | saveGifPath: string, gsyVideoGifSaveListener: GSYVideoGifSaveListener   | 视频结束gif,并生成gif |
+| setEffectFilter(type: EffectType): void;      | type: EffectType   | 视频切换滤镜         |
 ## 约束与限制
 
 在下述版本验证通过：
@@ -207,6 +238,7 @@ DevEco Studio: 4.0 (4.0.3.513), SDK: API10 (4.0.10.10)
                 |---- DanmakuData.ets  # 弹幕数据
                 |---- DanmakuVideoDemo.ets  # 弹幕demo
                 |---- DanmakuVideoPlayer.ets  # 弹幕播放器
+                |---- EffectFilterDemo.ets  # 滤镜demo
                 |---- Index.ets  # 首页
                 |---- PlayNetWithCacheDemo.ets  # 边播放边缓存demo
                 |---- PlayNetWithNoCacheDemo.ets  # 边播放不缓存demo

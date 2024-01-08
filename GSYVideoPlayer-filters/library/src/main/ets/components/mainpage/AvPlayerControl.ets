@@ -21,7 +21,7 @@ import { PlayStatus } from './CommonConstants';
 
 export class AvPlayerControl extends BaseVideoPlayer {
   private avPlayer: media.AVPlayer | null = null;
-
+  private firstPlay: boolean = true;
   public constructor() {
     super();
     this.createAVPlayer();
@@ -91,10 +91,12 @@ export class AvPlayerControl extends BaseVideoPlayer {
   play() {
     LogUtils.getInstance().LOGI('avplayer play');
     if (this.avPlayer) {
-      this.avPlayer.url = this.videoUrl;
+      if (this.firstPlay == true) {
+        this.avPlayer.url = this.videoUrl;
+        this.firstPlay = false;
+      }
       GlobalContext.getContext().setObject('xid', this.xComponentId);
       GlobalContext.getContext().setObject('currentPlayer', this);
-      this.avPlayer.surfaceId = this.surfaceID;
       LogUtils.getInstance().LOGI('avplayer play1: ' + this.surfaceID);
       if (this.avPlayer.state == AvPlayerStatus.STOPPED ||
           this.avPlayer.state == AvPlayerStatus.ERROR ||

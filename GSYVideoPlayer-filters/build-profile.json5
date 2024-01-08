@@ -35,6 +35,10 @@
     {
       "name": "library",
       "srcPath": "./library"
+    },
+    {
+      "name": "ijkplayer",
+      "srcPath": "./ohos_ijkplayer/ijkplayer"
     }
   ]
 }

@@ -48,3 +48,9 @@ export enum PlayerType {
   IJK_PLAYER,
   SYSTEM_AVPLAYER
 }
+
+export enum EffectType {
+  NO_EFFECT, // 无效果
+  BLACK_WITHE, // 黑白
+  GRID, // 网格
+}

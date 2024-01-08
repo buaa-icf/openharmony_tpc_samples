@@ -40,6 +40,15 @@ struct Index {
         Button("边播放边缓存功能").margin(10).onClick(() => {
           router.pushUrl({ url: "pages/PlayWithCacheDemo" });
         })
+        Button("滤镜功能").margin(10).onClick(() => {
+          if (GlobalContext.getContext().getObject('playType') == PlayerType.IJK_PLAYER) {
+            router.pushUrl({ url: "pages/EffectFilterDemo" });
+          } else {
+            promptAction.showToast({
+              message: '滤镜能力只支持ijkPlayer播放器'
+            })
+          }
+        })
          Button("简单列表功能").margin(10).onClick(() => {
           router.pushUrl({ url: "pages/SimpleList" });
         })

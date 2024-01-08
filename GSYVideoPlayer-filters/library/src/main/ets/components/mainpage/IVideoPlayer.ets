@@ -14,7 +14,7 @@
  */
 import { GSYVideoGifSaveListener } from '../listener/GSYVideoGifSaveListener';
 import { GSYVideoShotSaveListener } from '../listener/GSYVideoShotSaveListener';
-import { PlayStatus } from './CommonConstants';
+import { PlayStatus, EffectType } from './CommonConstants';
 
 export interface IVideoPlayer {
   playStatus: PlayStatus;
@@ -72,6 +72,8 @@ export interface IVideoPlayer {
    * @param id
    */
   setXComponentId(id: string): void;
+
+  setEffectFilter(type: EffectType): void;
 
   setOnPlayingListener(onPlayingListener: () => void): void;
 

@@ -6,6 +6,7 @@
     "pages/PlayWithCacheDemo",
     "pages/PlayNetWithCacheDemo",
     "pages/PlayNetWithNoCacheDemo",
-    "pages/DanmakuVideoDemo"
+    "pages/DanmakuVideoDemo",
+    "pages/EffectFilterDemo"
   ]
 }
