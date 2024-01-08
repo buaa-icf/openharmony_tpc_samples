@@ -15,6 +15,7 @@
 import {
   BaseVideoPlayer,
   GlobalContext,
+  LogUtils,
   OrientationUtil,
   StandardGSYVideoModel,
   StandardGSYVideoPlayer
@@ -23,7 +24,7 @@ import router from '@ohos.router';
 import Window from '@ohos.window';
 import display from '@ohos.display';
 import promptAction from '@ohos.promptAction';
-
+import systemDateTime from '@ohos.systemDateTime';
 let mDirection = 0;
 let screenWidth = 0;
 
@@ -63,6 +64,7 @@ struct SimpleDemo {
         Button("点击截图").onClick(() => {
           let player = GlobalContext.getContext().getObject("currentPlayer") as BaseVideoPlayer;
           if (player) {
+            this.testSetFramePerformance();
             let path = getContext(this).cacheDir + "/test.jpeg";
             player.saveFrame(path, {
               shotResult(code: number) {
@@ -78,7 +80,11 @@ struct SimpleDemo {
           let player = GlobalContext.getContext().getObject("currentPlayer") as BaseVideoPlayer;
           if (player) {
             let path = getContext(this).cacheDir + "/tempGif";
+            let sStartGifTime = systemDateTime.getTime(true) / 1000;
             player.startGif(path);
+            let eStartGifTime = systemDateTime.getTime(true) / 1000;
+            let aStartGifTime = eStartGifTime - sStartGifTime;
+            LogUtils.getInstance().LOGI('startGifTime:' + aStartGifTime + 'us');
             promptAction.showToast({
               message: "开始gif截图"
             });
@@ -91,6 +97,7 @@ struct SimpleDemo {
             this.dialogController.open();
             let path = getContext(this).cacheDir + "/gifTest.gif";
             let that = this;
+            let sStopGifTime = systemDateTime.getTime(true) / 1000;
             player.stopGif(path, {
               gifResult(code: number) {
                 that.dialogController.close();
@@ -99,6 +106,9 @@ struct SimpleDemo {
                 });
               }
             })
+            let eStopGifTime = systemDateTime.getTime(true) / 1000;
+            let aStopGifTime = eStopGifTime - sStopGifTime;
+            LogUtils.getInstance().LOGI('stopGifTime:' + aStopGifTime + 'us');
           }
         })
 
@@ -107,6 +117,7 @@ struct SimpleDemo {
   }
 
   async aboutToAppear() {
+    this.testModelPerformance();
     this.videoModel.setUrl(this.videoUrl, false);
     this.videoModel.setTitle("这是测试视频的标题");
     this.videoModel.setBackClickListener(this.backClickListener);
@@ -115,25 +126,97 @@ struct SimpleDemo {
     mDirection = this.getDirection();
     screenWidth = px2vp(display.getDefaultDisplaySync().width);
   }
+  
+  private testSetFramePerformance() {
+    let player = GlobalContext.getContext().getObject("currentPlayer") as BaseVideoPlayer;
+    if (player) {
+      let path = getContext(this).cacheDir + "/test.jpeg";
+      let sFrameTime = systemDateTime.getTime(true) / 1000;
+      for (let i = 0; i < 10; i++) {
+        player.saveFrame(path, {
+          shotResult(code: number) {
+          }
+        })
+      }
+      let eFrameTime = systemDateTime.getTime(true) / 1000;
+      let aFrameTime = (eFrameTime - sFrameTime) / 10;
+      LogUtils.getInstance().LOGI('setFrameTime:' + aFrameTime + 'us');
+      
+    }
+  }
+
+  private testModelPerformance() {
+    let sTime = systemDateTime.getTime(true) / 1000;
+    for (let i = 0; i < 2000; i++) {
+      this.videoModel.setUrl(this.videoUrl, false);
+    }
+    let endTime = systemDateTime.getTime(true) / 1000;
+    let aTime = (endTime - sTime) / 2000;
+    LogUtils.getInstance().LOGI('setUrlTime:' + aTime + 'us');
+
+    sTime = systemDateTime.getTime(true) / 1000;
+    for (let i = 0; i < 2000; i++) {
+      this.videoModel.setTitle("这是测试视频的标题");
+    }
+    endTime = systemDateTime.getTime(true) / 1000;
+    aTime = (endTime - sTime) / 2000;
+    LogUtils.getInstance().LOGI('setTitleTime:' + aTime + 'us');
+
+    sTime = systemDateTime.getTime(true) / 1000;
+    for (let i = 0; i < 2000; i++) {
+      this.videoModel.setBackClickListener(this.backClickListener);
+    }
+    endTime = systemDateTime.getTime(true) / 1000;
+    aTime = (endTime - sTime) / 2000;
+    LogUtils.getInstance().LOGI('setBackClickListenerTime:' + aTime + 'us');
+
+    sTime = systemDateTime.getTime(true) / 1000;
+    for (let i = 0; i < 2000; i++) {
+      this.videoModel.setFullClickListener(this.fullClickListener);
+    }
+    endTime = systemDateTime.getTime(true) / 1000;
+    aTime = (endTime - sTime) / 2000;
+    LogUtils.getInstance().LOGI('setFullClickListenerTime:' + aTime + 'us');
+
+    sTime = systemDateTime.getTime(true) / 1000;
+    for (let i = 0; i < 2000; i++) {
+      this.videoModel.setCoverImage($r('app.media.app_icon'));
+    }
+    endTime = systemDateTime.getTime(true) / 1000;
+    aTime = (endTime - sTime) / 2000;
+    LogUtils.getInstance().LOGI('setCoverImageTime:' + aTime + 'us');
+  }
 
   aboutToDisappear() {
     let player = GlobalContext.getContext().getObject("currentPlayer") as BaseVideoPlayer;
     if (player) {
+      let sTime = systemDateTime.getTime(true) / 1000;
       player.stop();
+      let endTime = systemDateTime.getTime(true) / 1000;
+      let aTime = endTime - sTime;
+      LogUtils.getInstance().LOGI('stopTime:' + aTime + 'us');
     }
   }
 
   onPageShow() {
     let player = GlobalContext.getContext().getObject("currentPlayer") as BaseVideoPlayer;
     if (player) {
+      let sTime = systemDateTime.getTime(true) / 1000;
       player.resumePlay();
+      let endTime = systemDateTime.getTime(true) / 1000;
+      let aTime = endTime - sTime;
+      LogUtils.getInstance().LOGI('resumePlayTime:' + aTime + 'us');
     }
   }
 
   onPageHide() {
     let player = GlobalContext.getContext().getObject("currentPlayer") as BaseVideoPlayer;
     if (player) {
+      let sTime = systemDateTime.getTime(true) / 1000;
       player.pause();
+      let endTime = systemDateTime.getTime(true) / 1000;
+      let aTime = endTime - sTime;
+      LogUtils.getInstance().LOGI('pauseTime:' + aTime + 'us');
     }
   }
 
