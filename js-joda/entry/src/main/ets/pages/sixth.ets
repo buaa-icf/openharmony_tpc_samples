@@ -31,7 +31,7 @@
 
 import { DateTimeFormatter, LocalDateTime, ZonedDateTime } from '@js-joda/core'
 // import '@js-joda/timezone'
-import { Locale } from '@ohos/localeEnUs'
+import { Locale } from '@ohos/localeenus'
 
 @Entry
 @Component

@@ -7,7 +7,7 @@
   "main": "",
   "version": "1.0.0",
   "dependencies": {
-    "@ohos/localeEnUs": "file:../library",
+    "@ohos/localeenus": "file:../library",
     "@js-joda/timezone": "^2.15.0",
     "@js-joda/core": "^5.4.2"
   }
