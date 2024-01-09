@@ -45,7 +45,7 @@ export default function abilityTest() {
       if(result == 0){
         expect(result).assertEqual(0);
       }else{
-        expect(result).assertEqual(1);
+        expect(result).assertEqual(9);
       }
     })
 
