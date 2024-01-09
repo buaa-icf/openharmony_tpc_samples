@@ -327,7 +327,7 @@ struct Index {
         .margin({ left: '10', top: '10' })
         .padding({ left: 20, right: 20, bottom: 10, top: 10 })
         .fontSize(this.commonFontSize)
-        .onClick((event?: ClickEvent) => {
+        .onClick((event: ClickEvent) => {
           callback(event);
         });
     }
