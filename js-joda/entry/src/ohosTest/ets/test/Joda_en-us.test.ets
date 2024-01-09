@@ -29,7 +29,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { Locale, WeekFields }  from '@ohos/localeEnUs'
+import { Locale, WeekFields }  from '@ohos/localeenus'
 import { describe, expect, it } from '@ohos/hypium'
 
 
