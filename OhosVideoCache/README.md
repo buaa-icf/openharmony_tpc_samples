@@ -45,20 +45,25 @@ export default class GlobalProxyServer {
     return GlobalProxyServer.instance;
   }
 
-  getContext(): common.UIAbilityContext | null {
-    return this._objects?.get(this.CONTEXT_STR) ? this._objects?.get(this.CONTEXT_STR) as common.UIAbilityContext : null
+  getContext(): common.UIAbilityContext {
+    return this._objects.get(this.CONTEXT_STR) as common.UIAbilityContext;
   }
 
-  setContext(objectClass: common.UIAbilityContext | null) {
-    this._objects?.set(this.CONTEXT_STR, objectClass);
+  setContext(objectClass: common.UIAbilityContext) {
+    this._objects.set(this.CONTEXT_STR, objectClass);
   }
 
-  getServer(): HttpProxyCacheServer | null {
-    return this._objects?.get(this.SERVER_STR) ? this._objects?.get(this.CONTEXT_STR) as HttpProxyCacheServer : null
+  getServer(): HttpProxyCacheServer {
+    return this._objects.get(this.SERVER_STR) as HttpProxyCacheServer;
   }
 
-  setServer(objectClass: HttpProxyCacheServer | null) {
-    this._objects?.set(this.SERVER_STR, objectClass);
+  setServer(objectClass: HttpProxyCacheServer) {
+    try {
+      let currentServer: HttpProxyCacheServer = this.getServer();
+      currentServer.shutdown()
+    } catch (err) {
+    }
+    this._objects.set(this.SERVER_STR, objectClass);
   }
 }
   ```

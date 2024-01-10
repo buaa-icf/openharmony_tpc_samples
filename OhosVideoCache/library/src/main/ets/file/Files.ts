@@ -72,7 +72,7 @@ export class Files {
   static setLastModifiedNow(file: string): void {
     if (fs.accessSync(file)) {
       try {
-        // fs.utimes(file, new Date().getTime()); TODO 此处是API 11的API 暂时注释 否则CI无法编译
+        fs.utimes(file, new Date().getTime());
       } catch (err) {
         throw new Error(`Last modified date is not set for file ${file},reason is ${err.message}`)
       }
