@@ -30,3 +30,7 @@
 [submodule "socketio/library/src/main/cpp/socket.io-client-cpp"]
 	path = socketio/library/src/main/cpp/socket.io-client-cpp
 	url = https://gitee.com/damonjiang/socket.io-client-cpp.git
+
+[submodule "GSYVideoPlayer-filters/ohos_ijkplayer"]
+	path = GSYVideoPlayer-filters/ohos_ijkplayer
+	url = https://gitee.com/openharmony-sig/ohos_ijkplayer.git -b develop
