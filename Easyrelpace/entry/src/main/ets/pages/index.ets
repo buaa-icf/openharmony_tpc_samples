@@ -16,7 +16,7 @@
 import router from '@system.router';
 import leven from "leven";
 import { setData, CustomDialogExample } from './loding'
-import { er } from 'easy-replace'
+import { er, version } from 'easy-replace'
 
 @Entry
 @Component
@@ -43,6 +43,10 @@ struct Index {
             router.push({ uri: "pages/HomePage", })
           })
       }
+
+      Column() {
+        Text("easy-replace的版本号：" + version).fontSize(18).fontColor("red")
+      }.alignItems(HorizontalAlign.Start).width('90%').margin({ left: "20%" })
 
       Column() {
         Text("输入文本").fontSize(18).fontColor("red")
