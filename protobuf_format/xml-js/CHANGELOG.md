@@ -1,3 +1,6 @@
+### 1.0.2
+- fix:修改sax依赖库的依赖版本为^1.0.1
+
 ### 1.0.1
 
 - fix:修改README.OpenSource文件中依赖组件的License File路径信息

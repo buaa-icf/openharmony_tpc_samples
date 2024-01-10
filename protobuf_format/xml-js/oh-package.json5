@@ -1,10 +1,10 @@
 {
   "name": "@ohos/xml_js",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Converter utility between XML text and Javascript object/JSON text。",
   "main": "index.ts",
   "dependencies": {
-    "@ohos/sax": "file:../sax"
+    "@ohos/sax": "^1.0.1"
   },
   "devDependencies": {},
   "types": "",
