@@ -19,7 +19,7 @@
     }
 	 {
         "Name": "asn1js",
-        "License": "MIT License",
+        "License": "BSD-3-Clause License",
         "License File": "LICENSE",
         "Version Number": "3.0.5",
         "Owner":"xiafeng@huawei.com",
