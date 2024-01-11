@@ -2,7 +2,7 @@
 
 ## 简介
 
-从 JWKS（JSON Web 密钥集）端点检索密钥的库，支持的加密算法：非对称公钥加密算法（RSA）、非对称椭圆曲线加密算法(ECC)。
+从 JWKS（JSON Web 密钥集）端点检索密钥来生成公钥的库，其加密方式采用了非对称公钥加密算法（RSA）和非对称椭圆曲线加密算法(ECC)。
 
 ## 下载安装
 
@@ -12,7 +12,6 @@ ohpm install @ohos/jwks-rsa
 OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
 ## 使用说明
-
 1. 初始化：实例化JwksClient和设置对应的属性
 
  ```
@@ -28,13 +27,65 @@ this.client = new JwksClient({
  
 2. 获取publicKey和属性值：
 
+  公钥加密实现是使用OH子系统的加密框架（@ohos.security.cryptoFramework）。具体实现参考(https://gitee.com/openharmony/docs/blob/master/zh-cn/application-dev/security/CryptoArchitectureKit/crypto-rsa-asym-encrypt-decrypt-pkcs1_oaep.md) 。
 ```
-let signingKey = await this.client.getSigningKey(kid)
-this.kid = signingKey.kid
-this.alg = signingKey.alg
-this.kty = signingKey.kty
-this.use = signingKey.use
-this.publicKey = await signingKey.getPublicKey()
+  function compareRsaPubKeyBySpec(rsaKeySpec, n, e) {
+    if (typeof n === 'string' || typeof e === 'string') {
+        console.error('type is string');
+        return false;
+    }
+    if (typeof n === 'number' || typeof e === 'number') {
+        console.error('type is number');
+        return false;
+    }
+    if (rsaKeySpec.params.n != n) {
+        return false;
+    }
+    if (rsaKeySpec.pk != e) {
+        return false;
+    }
+    return true;
+  }
+  
+  let n = buffer.from(key.n,'base64')
+  let e = buffer.from(key.e,'base64')
+  let bN = base64ToBigNum(n);
+  let eN = base64ToBigNum(e);
+  var commonSpec = {
+      algName:"RSA",
+      specType:cryptoFramework.AsyKeySpecType.COMMON_PARAMS_SPEC,
+      n:BigInt(bN)
+  }
+  var rsaSpec = {
+      algName:"RSA",
+      specType:cryptoFramework.AsyKeySpecType.PUBLIC_KEY_SPEC,
+      params : commonSpec,
+      pk :BigInt(eN),
+  }
+  //根据RSA密钥对参数生成RSA密钥对
+  asyKeyGenerator = cryptoFramework.createAsyKeyGeneratorBySpec(rsaSpec);
+  //生成公钥实例
+  const  pubKey = await asyKeyGenerator.generatePubKey()
+  //获取公钥的指定参数
+  let nBN = pubKey.getAsyKeySpec(cryptoFramework.AsyKeySpecItem.RSA_N_BN);
+  let eBN = pubKey.getAsyKeySpec(cryptoFramework.AsyKeySpecItem.RSA_PK_BN);
+  将RSA公钥规范与预期值进行比较
+  if (compareRsaPubKeyBySpec(rsaSpec, nBN, eBN) != true) {
+      console.error("jwks_rsa error pub key big number")
+  } else {
+      console.info("jwks_rsa n, e in the pubKey are same as the spec.");
+      return pubKey;
+  }
+```
+
+  获取publicKey和属性值
+```
+  let signingKey = await this.client.getSigningKey(kid)
+  this.kid = signingKey.kid
+  this.alg = signingKey.alg
+  this.kty = signingKey.kty
+  this.use = signingKey.use
+  this.publicKey = await signingKey.getPublicKey()
 ```
 
 ## 约束与限制
