@@ -19,7 +19,7 @@ import customParseFormat from "dayjs/plugin/customParseFormat"
 import * as ns from  'dayjs/locale/zh-cn';
 
 dayjs.extend(customParseFormat)
-
+dayjs.locale("zh-cn")
 interface ApiItem {
   apiName: string;
   func: () => void;
@@ -63,7 +63,13 @@ let apisIndex:Array<ModuleItem>=[
           showMessage(dayjs( '2018-05-02 11:12:13').valueOf().toString())
         }
       },
-
+      {
+        apiName: "dayjs().toJSON()",
+        des:"通过同toJSON获取当前时间",
+        func: () => {
+          showMessage(dayjs().toJSON())
+        }
+      },
       {
         apiName: "dayjs('2018-05-02 11:12:13.998').valueOf()",
         des:"解析带时分秒毫秒的时间",
@@ -115,6 +121,13 @@ let apisIndex:Array<ModuleItem>=[
         }
       },
       {
+        apiName: "dayjs().day(5).day()",
+        des:"获取指定周五",
+        func: () => {
+          showMessage(dayjs().day(5).day() + "")
+        }
+      },
+      {
         apiName: "dayjs().month()",
         des:"获取当前月",
         func: () => {
@@ -126,6 +139,34 @@ let apisIndex:Array<ModuleItem>=[
         des:"获取当前年",
         func: () => {
           showMessage(dayjs().year() + "")
+        }
+      },
+      {
+        apiName: 'dayjs("2024-01-10 20:00:00").startOf("day").subtract(1,"hour").format()',
+        des:"通过startOf设置某天的开始",
+        func: () => {
+          showMessage(dayjs("2024-01-10 02:00:00").startOf("day").subtract(1,"hour").format() + "")
+        }
+      },
+      {
+        apiName: 'dayjs("2024-01-10 20:00:00").endOf("day").add(1,"hour").format()',
+        des:"通过endOf设置某天的结束",
+        func: () => {
+          showMessage(dayjs("2024-01-10 20:00:00").endOf("day").add(1,"hour").format() + "")
+        }
+      },
+      {
+        apiName: 'dayjs("2023-12-31").diff("2024-01-10","days")',
+        des:"获取时间差(天)",
+        func: () => {
+          showMessage(dayjs("2023-12-31").diff("2024-01-10","days") + "")
+        }
+      },
+      {
+        apiName: 'dayjs().daysInMonth()',
+        des:"获取当前月天数",
+        func: () => {
+          showMessage(dayjs().daysInMonth() + "")
         }
       },
       {
