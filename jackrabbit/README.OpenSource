@@ -11,7 +11,7 @@
     {
         "Name": "amqplib",
         "License": "MIT license",
-        "License File": "package.json",
+        "License File": "LICENSE-MIT",
         "Version Number": "0.10.3",
         "Owner" : "xiafeng@huawei.com"
         "Upstream URL": "https://github.com/amqp-node/amqplib",
