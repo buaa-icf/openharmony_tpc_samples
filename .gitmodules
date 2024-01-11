@@ -33,4 +33,5 @@
 
 [submodule "GSYVideoPlayer-filters/ohos_ijkplayer"]
 	path = GSYVideoPlayer-filters/ohos_ijkplayer
-	url = https://gitee.com/openharmony-sig/ohos_ijkplayer.git -b develop
+	url = https://gitee.com/openharmony-sig/ohos_ijkplayer.git
+	branch = develop
