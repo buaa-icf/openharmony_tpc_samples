@@ -28,6 +28,8 @@ import {
   inRange,
   random } from 'lodash';
 
+const BASE_COUNT: number = 2000;
+
 export default function numberTest() {
   describe('NumberTest', () => {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
@@ -57,6 +59,11 @@ export default function numberTest() {
       console.info('appInfoTest xts clampTest01 endTime:' + endTime0 + "us")
       let averageTime0 = endTime0 - startTime0
       console.info('appInfoTest xts clampTest01 averageTime:' + averageTime0 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        clamp(-10, -5, 5)
+      }
+      endTime(startTime, 'clampTest01');
     })
 
     it('clampTest02', 0, () => {
@@ -67,6 +74,11 @@ export default function numberTest() {
       console.info('appInfoTest xts clampTest02 endTime:' + endTime1 + "us")
       let averageTime1 = endTime1 - startTime1
       console.info('appInfoTest xts clampTest02 averageTime:' + averageTime1 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        clamp(10, -5, 5)
+      }
+      endTime(startTime, 'clampTest02');
     })
 
     it('inRangeTest01', 0, () => {
@@ -77,6 +89,11 @@ export default function numberTest() {
       console.info('appInfoTest xts inRangeTest01 endTime:' + endTime2 + "us")
       let averageTime2 = endTime2 - startTime2
       console.info('appInfoTest xts inRangeTest01 averageTime:' + averageTime2 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        inRange(3, 2, 4)
+      }
+      endTime(startTime, 'inRangeTest01');
     })
 
     it('inRangeTest02', 0, () => {
@@ -87,6 +104,11 @@ export default function numberTest() {
       console.info('appInfoTest xts inRangeTest02 endTime:' + endTime3 + "us")
       let averageTime3 = endTime3 - startTime3
       console.info('appInfoTest xts inRangeTest02 averageTime:' + averageTime3 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        inRange(2, 2)
+      }
+      endTime(startTime, 'inRangeTest02');
     })
 
     it('randomTest01', 0, () => {
@@ -102,6 +124,11 @@ export default function numberTest() {
       console.info('appInfoTest xts randomTest01 endTime:' + endTime4 + "us")
       let averageTime4 = endTime4 - startTime4
       console.info('appInfoTest xts randomTest01 averageTime:' + averageTime4 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        random(Math.PI, Math.PI)
+      }
+      endTime(startTime, 'randomTest01');
       expect(JSON.stringify(actual)).assertEqual('[5e-324,1,3.141592653589793]');
     })
 
@@ -116,7 +143,20 @@ export default function numberTest() {
       console.info('appInfoTest xts randomTest02 endTime:' + endTime5 + "us")
       let averageTime5 = endTime5 - startTime5
       console.info('appInfoTest xts randomTest02 averageTime:' + averageTime5 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        random(Number.MIN_VALUE, Number.MIN_VALUE)
+      }
+      endTime(startTime, 'randomTest02');
       expect(JSON.stringify(actual)).assertEqual('[5e-324]');
     })
   })
+}
+
+function endTime(startTime: number, tag: string) {
+  let endTime: number = new Date().getTime();
+  let averageTime = ((endTime - startTime) * 1000 / BASE_COUNT)
+  console.info(tag + " startTime: " + endTime)
+  console.info(tag + " endTime: " + endTime)
+  console.log(tag + " averageTime: " + averageTime + "μs");
 }

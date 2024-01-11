@@ -26,6 +26,15 @@ import abilityTest from './Ability.test'
 import arrayTest from './Array.test'
 import collectionTest from './Collection.test'
 import functionTest from './Function.test';
+import InterfaceTime_Array from './InterfaceTime_Array.test';
+import InterfaceTime_Collection from './InterfaceTime_Collection.test';
+import InterfaceTime_Function from './InterfaceTime_Function.test';
+import InterfaceTime_Lang from './InterfaceTime_Lang.test';
+import InterfaceTime_Math from './InterfaceTime_Math.test';
+import InterfaceTime_Number from './InterfaceTime_Number.test';
+import InterfaceTime_Object from './InterfaceTime_Object.test';
+import InterfaceTime_String from './InterfaceTime_String.test';
+import InterfaceTime_Util from './InterfaceTime_Util.test';
 import langTest from './Lang.test';
 import mathTest from './Math.test';
 import numberTest from './Number.test';
@@ -44,4 +53,13 @@ export default function testsuite() {
   objectTest();
   stringTest();
   utilTest();
+  InterfaceTime_Collection();
+  InterfaceTime_Array();
+  InterfaceTime_Function();
+  InterfaceTime_Lang();
+  InterfaceTime_Math();
+  InterfaceTime_Number();
+  InterfaceTime_Object();
+  InterfaceTime_String();
+  InterfaceTime_Util();
 }
