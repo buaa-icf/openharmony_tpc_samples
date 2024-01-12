@@ -14,10 +14,7 @@
   "author": "ohos_tpc",
   "description": "prebuilt js-joda locale package for locales: en,en-US",
   "main": "src/main/ets/dist/index.esm.js",
-  "repository": {
-    "type": "git",
-    "url": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/js-joda"
-  },
+  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/js-joda",
   "type": "module",
   "version": "2.0.0",
   "dependencies": {
@@ -27,9 +24,5 @@
   "license": "BSD-3-Clause",
   "devDependencies": {},
   "name": "@ohos/localeenus",
-  "contributors": [
-    "pithu",
-    "phueper"
-  ],
   "homepage": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/js-joda"
 }
