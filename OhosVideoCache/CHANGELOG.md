@@ -4,7 +4,7 @@
 
    在下述版本验证通过：
    DevEco Studio: 4.1 Canary2(4.1.3.322), SDK: API11 (4.1.0.36)
-2. 
+
 ## 1.0.0-rc.0
 
 1. 发布OhosVideoCache的适配鸿蒙系统版本.
