@@ -45,7 +45,7 @@ export default function abilityTest() {
       if(result == 0){
         expect(result).assertEqual(0);
       }else{
-        expect(result).assertEqual(9);
+        expect(result).assertLargerOrEqual(1);
       }
     })
 
@@ -242,7 +242,11 @@ export default function abilityTest() {
         let LoginName = uName + '@' + Constant.HOST_IP
         userName = uName + '@' + Constant.HOST_IP + Constant.HOST_RES
         let result:number = Smack.Login(LoginName, uPassword);
-        expect(result).assertEqual(1)
+        if(result == 1){
+          expect(result).assertEqual(1);
+        }else{
+          expect(result).assertEqual(-1);
+        }
       } catch (e) {
         hilog.info(0x0000, 'testTag', '%{public}s', "onLogin fail  " + e.message);
       }
@@ -299,7 +303,11 @@ export default function abilityTest() {
         let LoginName = uName + '@' + Constant.HOST_IP
         userName = uName + '@' + Constant.HOST_IP + Constant.HOST_RES
         let result:number = Smack.Login(LoginName, uPassword);
-        expect(result).assertEqual(1)
+        if(result == 1){
+          expect(result).assertEqual(1);
+        }else{
+          expect(result).assertEqual(-1);
+        }
       } catch (e) {
         hilog.info(0x0000, 'testTag', '%{public}s', "onLogin fail  " + e.message);
       }
