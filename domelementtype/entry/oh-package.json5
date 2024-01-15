@@ -1,0 +1,17 @@
+{
+  "license": "BSD License",
+  "devDependencies": {},
+  "author": "ohos_tpc",
+  "name": "entry",
+  "ohos": {
+    "org": "huawei",
+    "directoryLevel": "module",
+    "buildTool": "hvigor"
+  },
+  "description": "All the types of nodes in htmlparser2's DOM",
+  "main": "",
+  "version": "1.0.0",
+  "dependencies": {
+    "domelementtype": "^2.3.0"
+  }
+}
