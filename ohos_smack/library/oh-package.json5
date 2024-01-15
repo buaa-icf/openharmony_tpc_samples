@@ -2,16 +2,17 @@
   "types": "",
   "keywords": [
     "OpenHarmony",
+    "HarmonyOS",
     "smack"
   ],
-  "author": "hihope",
+  "author": "ohos_tpc",
   "description": "A chat client based on XMPP protocol, to achieve single chat, group chat mode, can quickly integrate IM communication.",
   "ohos": {
     "org": "opensource"
   },
   "main": "index.ts",
   "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_smack",
-  "version": "2.0.0-rc.2",
+  "version": "2.0.0",
   "tags": [
     "OpenHarmony",
     "smack",
