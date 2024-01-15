@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "pvutils",
+        "License": "MIT License",
+        "License File": "LICENSE",
+        "Version Number": "1.0.0",
+        "Owner" : "xiafeng@huawei.com"
+        "Upstream URL": "https://github.com/PeculiarVentures/pvutils",
+        "Description": "pvutils is a set of common utility functions used in various Peculiar Ventures Javascript based projects."
+    }
+]

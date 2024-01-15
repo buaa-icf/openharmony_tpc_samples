@@ -1,0 +1,12 @@
+{
+  "license": "MIT",
+  "devDependencies": {
+    "@ohos/hypium": "1.0.11"
+  },
+  "author": "",
+  "name": "pvutils",
+  "description": "a set of common utility functions used in various Peculiar Ventures Javascript based projects.",
+  "main": "",
+  "version": "1.0.0",
+  "dependencies": {}
+}
