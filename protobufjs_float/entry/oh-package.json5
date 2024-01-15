@@ -1,0 +1,17 @@
+{
+  "license": "BSD License",
+  "devDependencies": {},
+  "author": "ohos_tpc",
+  "name": "entry",
+  "description": "Reads / writes floats / doubles from / to buffers in both modern and ancient browsers. Fast.",
+  "main": "",
+  "version": "1.0.2",
+  "ohos": {
+    "org": "huawei",
+    "directoryLevel": "module",
+    "buildTool": "hvigor"
+  },
+  "dependencies": {
+    "@protobufjs/float": "^1.0.2"
+  }
+}
