@@ -9,7 +9,7 @@
   "ohos": {
     "org": "opensource"
   },
-  "description": "gsyvideoplayer是一款ohos视频播放器三方库",
+  "description": "gsyvideoplayer是一款ohos视频播放器三方库。",
   "main": "Index.ets",
   "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/GSYVideoPlayer",
   "type": "module",
