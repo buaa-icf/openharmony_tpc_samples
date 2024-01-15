@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "@protobufjs/aspromise",
+        "License": "BSD License",
+        "License File": " LICENSE ",
+        "Version Number": "1.1.2",
+        "Owner" : "xiafeng@huawei.com"
+        "Upstream URL": "https://github.com/protobufjs/protobuf.js/tree/master/lib/aspromise",
+        "Description": "Returns a promise from a node-style callback function"
+    }
+]
