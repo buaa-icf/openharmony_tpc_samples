@@ -19,7 +19,7 @@
     },
      {
        "Name": "ohos_ijkplayer",
-       "License": "Apache-2.0 license",
+        "License": " LGPLv2.1 or later ",
        "License File": "LICENSE",
        "Version Number": "2.0.2",
        "Owner": "xiafeng@huawei.com"
