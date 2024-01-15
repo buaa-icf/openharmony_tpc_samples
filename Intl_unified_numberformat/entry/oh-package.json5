@@ -1,0 +1,12 @@
+{
+  "license": "MIT license",
+  "devDependencies": {},
+  "author": "",
+  "name": "entry",
+  "description": "Please describe the basic information.",
+  "main": "",
+  "version": "1.0.0",
+  "dependencies": {
+    "@f-fjs/intl-unified-numberformat": "^3.2.1"
+  }
+}
