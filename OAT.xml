@@ -218,6 +218,7 @@
                 <policyitem type="license" name="MIT" path="complex_js/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="decimal_js/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="fraction_js/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="copyright" name="Copyright (c) 2012 Dang Mai" path="escape_latex/LICENSE.md" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
             </policy>
         </policylist>
         <licensematcherlist>
