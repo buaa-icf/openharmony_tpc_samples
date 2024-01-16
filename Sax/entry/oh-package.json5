@@ -1,0 +1,12 @@
+{
+  "license": "ISC",
+  "devDependencies": {},
+  "author": "",
+  "name": "entry",
+  "description": "An evented streaming XML parser in JavaScript",
+  "main": "",
+  "version": "2.0.0",
+  "dependencies": {
+    "sax": "0.6.0"
+  }
+}
