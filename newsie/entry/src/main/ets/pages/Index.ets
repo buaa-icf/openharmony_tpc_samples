@@ -40,7 +40,7 @@ struct Index {
     Text(text).fontSize(14)
   }
 
-  @Builder BuildButton(text: string, callback: () => void,bgColor:ResourceColor=Color.Green) {
+  @Builder BuildButton(text: string, callback: (() => Promise<void>) | undefined, bgColor:ResourceColor=Color.Green) {
     Button(text).margin({ right: 2, bottom: 1 }).fontSize(12).onClick(callback).height(30).backgroundColor(bgColor)
   }
 
@@ -76,8 +76,10 @@ struct Index {
         Row() {
           this.BuildLabel("当前时间：")
           DatePicker({ selected: this.selected_date_time })
-            .onChange((value) => {
-              this.selected_date_time.setFullYear(value.year, value.month, value.day)
+            .onChange((value: DatePickerResult) => {
+              if (value && value.year !== undefined) {
+                this.selected_date_time.setFullYear(value.year, value.month, value.day)
+              }
             }).layoutWeight(1).height(70)
           TimePicker({ selected: this.selected_date_time }).onChange((value) => {
             this.selected_date_time.setHours(value.hour, value.minute)
