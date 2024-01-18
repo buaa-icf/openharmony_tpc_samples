@@ -219,9 +219,40 @@
                 <policyitem type="license" name="MIT" path="decimal_js/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="fraction_js/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
                 <policyitem type="copyright" name="Copyright (c) 2012 Dang Mai" path="escape_latex/LICENSE.md" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
-            </policy>
+                <policyitem type="license" name="BSD" path="Domhandler/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求" />
+                <policyitem type="license" name="BSD" path="domUtils/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求" />
+                <policyitem type="license" name="MIT" path="parse_srcset/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="BSD" path="ASN1js/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="BSD" path="ieee754/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="seedrandom/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="typed-function/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="pvutils/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="buffer/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="regenerratorruntime/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+            	<policyitem type="license" name="MIT" path="Xmlbuilder/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+		<policyitem type="license" name="MIT" path="timers/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+		<policyitem type="license" name="BSD" path="Sax/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+		<policyitem type="license" name="MIT" path="Intl_utils/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+		<policyitem type="license" name="MIT" path="Intl_unified_numberformat/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+		<policyitem type="license" name="MIT" path="lodash_Clonedeep/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+		<policyitem type="license" name="MIT" path="lodash_IsEqual/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+	    </policy>
         </policylist>
         <licensematcherlist>
+            <licensematcher name="BSD-2-Clause" desc="License for BSD">
+                <licensetext name="
+                /**
+                 * Copyright (c) 2023 Huawei Device Co., Ltd.
+                 *
+                 * All rights reserved.
+                 * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+                 * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+                 * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+                 * THIS IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 'AS IS' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS,
+                 * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+                 */
+                " desc="" />
+            </licensematcher>
             <licensematcher
                 desc="Huawei Device Co., Ltd."
                 name="Copyright (C) 2023 Huawei Device Co., Ltd.">
