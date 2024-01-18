@@ -1,0 +1,11 @@
+[
+  {
+   "Name":"Domhandler",
+   "License":"BSD-2-license",
+   "License File":"LICENSE",
+   "Version Number":"v1.0.0",
+   "Owner":"xiafeng@huawei.com",
+   "Upstream URL":"https://github.com/fb55/domhandler",
+   "Description": "用于将页面转换为dom的htmlparser2的处理程序，创建一个包含页面所有节点的dom."
+  }
+]
