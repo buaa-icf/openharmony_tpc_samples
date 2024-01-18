@@ -32,8 +32,10 @@ import slice from './slice.test'
 import syntax from './syntax.test'
 import unicode from './unicode.test'
 import wildcard from './wildcard.test'
+import jmespathAPI from './jmespathAPI.test'
 
 export default function testsuite() {
+  jmespathAPI()
   tokenize()
   parsing()
   strictDeepEqual()
