@@ -1,0 +1,14 @@
+{
+  "license": "",
+  "devDependencies": {},
+  "author": "",
+  "name": "entry",
+  "description": "提供一个HTML/XML解析器，用于处理htmlparser2的dom的实用程序.",
+  "main": "",
+  "version": "1.0.0",
+  "dependencies": {
+    "domutils": "3.1.0",
+    "@ohos/htmlparser2": "1.0.0",
+    "domhandler": "^5.0.3"
+  }
+}

@@ -1,0 +1,11 @@
+[
+  {
+   "Name":"domUtils",
+   "License":"BSD-2-license",
+   "License File":"LICENSE",
+   "Version Number":"v1.0.0",
+   "Owner":"xiafeng@huawei.com",
+   "Upstream URL":"https://github.com/fb55/domutils",
+   "Description": "提供一个HTML/XML解析器，用于处理htmlparser2的dom的实用程序."
+  }
+]
