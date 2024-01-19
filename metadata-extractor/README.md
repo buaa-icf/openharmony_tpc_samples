@@ -1,6 +1,7 @@
 # metadata-extractor
 
 ## 简介
+
 > metadata-extractor是用于从图像、视频和音频文件中提取 Exif、IPTC、XMP、ICC 和其他元数据的组件。
 
 ![png.png](screenshots/png.png)
@@ -8,19 +9,25 @@
 ![avi.png](screenshots/avi.png)
 
 ## 下载安装
+
 ```shell
 ohpm install @ohos/metadata-extractor
 ```
-OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+
+OpenHarmony
+ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
 ## 使用说明
+
 1. 引入文件及代码依赖
+
  ```
     import {Metadata} from '@ohos/metadata-extractor'
     import {ImageMetadataReader} from '@ohos/metadata_extractor'
  ```
 
 2. 读取数据
+
  ```
   private getMetaData() {
     let path = globalThis.fileDir.concat("/AVITest.avi")
@@ -43,6 +50,7 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
  ```
 
 3. 展示数据
+
  ```
 Column() {
   Text("元数据:" ).fontSize(20).width('100%')
@@ -54,7 +62,9 @@ Column() {
  ```
 
 ## 接口说明
- #### 说明：支持ImageMetadataReader.readMetadata(path)统一入口；也支持对应文件格式下下的MetadataReader: 如:PngMetadataReader.readMetadata(filepath);JpegMetadataReader.readMetadata(filepath)
+
+#### 说明：支持ImageMetadataReader.readMetadata(path)统一入口；也支持对应文件格式下下的MetadataReader: 如:PngMetadataReader.readMetadata(filepath);JpegMetadataReader.readMetadata(filepath)
+
 1. 获取元数据`ImageMetadataReader.readMetadata()`
 2. 提取数据`MetadataReader.extract()`
 3. PNG：PngMetadataReader.readMetadata
@@ -81,6 +91,7 @@ Column() {
 - OpenHarmony SDK:API11 (4.1.0.36)
 
 ## 目录结构
+
 ````
 |---- metadata-extractor
 |     |---- entry  # 示例代码文件夹
@@ -118,7 +129,11 @@ Column() {
 ````
 
 ## 贡献代码
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+
+使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
+给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
 ## 开源协议
-本项目基于 [Apache-2.0 License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/metadata-extractor/LICENSE) ，请自由地享受和参与开源。
+
+本项目基于 [Apache-2.0 License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/metadata-extractor/LICENSE)
+，请自由地享受和参与开源。
