@@ -32,10 +32,10 @@
 import { Locale, WeekFields }  from '@ohos/localeenus'
 import { describe, expect, it } from '@ohos/hypium'
 
+const BASE_COUNT: number = 2000;
 
 export default function jodaEnUsTest() {
   describe('JsJodaEnUs', () => {
-    for (let i =0 ; i< 1000; i++) {
       it('language', 0, () => {
         try {
           let startTime0 = new Date().getTime()
@@ -45,6 +45,11 @@ export default function jodaEnUsTest() {
           console.info('JsJodaEnUs xts language endTime:' + endTime0 + "us")
           let averageTime0 = endTime0 - startTime0
           console.info('JsJodaEnUs xts language averageTime:' + averageTime0 + "us")
+          let startTime = new Date().getTime();
+          for (let index = 0; index < BASE_COUNT; index++) {
+            new Locale("Chinese", "", "").language();
+          }
+          endTime(startTime, 'language');
           expect(languageParam).assertEqual("Chinese");
         } catch (e) {
           console.info(e)
@@ -60,6 +65,11 @@ export default function jodaEnUsTest() {
           console.info('JsJodaEnUs xts country endTime:' + endTime0 + "us")
           let averageTime0 = endTime0 - startTime0
           console.info('JsJodaEnUs xts country averageTime:' + averageTime0 + "us")
+          let startTime = new Date().getTime();
+          for (let index = 0; index < BASE_COUNT; index++) {
+            new Locale("Chinese", "china", "").country();
+          }
+          endTime(startTime, 'country');
           expect(chinaParam).assertEqual("china");
         } catch (e) {
           console.info(e)
@@ -76,6 +86,11 @@ export default function jodaEnUsTest() {
           console.info('JsJodaEnUs xts localeString endTime:' + endTime0 + "us")
           let averageTime0 = endTime0 - startTime0
           console.info('JsJodaEnUs xts localeString averageTime:' + averageTime0 + "us")
+          let startTime = new Date().getTime();
+          for (let index = 0; index < BASE_COUNT; index++) {
+            new Locale("Chinese", "china", "localeString").localeString();
+          }
+          endTime(startTime, 'localeString');
           expect(localeStringParam).assertEqual("localeString");
         } catch (e) {
           console.info(e)
@@ -91,6 +106,11 @@ export default function jodaEnUsTest() {
           console.info('JsJodaEnUs xts toString endTime:' + endTime0 + "us")
           let averageTime0 = endTime0 - startTime0
           console.info('JsJodaEnUs xts toString averageTime:' + averageTime0 + "us")
+          let startTime = new Date().getTime();
+          for (let index = 0; index < BASE_COUNT; index++) {
+            new Locale("Chinese", "china", "localeString").toString();
+          }
+          endTime(startTime, 'localeToString');
           expect(toStringParam).assertEqual("Locale[localeString]");
         } catch (e) {
         }
@@ -105,6 +125,11 @@ export default function jodaEnUsTest() {
           console.info('JsJodaEnUs xts localeEquals endTime:' + endTime0 + "us")
           let averageTime0 = endTime0 - startTime0
           console.info('JsJodaEnUs xts localeEquals averageTime:' + averageTime0 + "us")
+          let startTime = new Date().getTime();
+          for (let index = 0; index < BASE_COUNT; index++) {
+            new Locale("Chinese", "china", "localeString").equals("");
+          }
+          endTime(startTime, 'localeEquals');
           expect(equalsResult).assertEqual(false);
         } catch (e) {
           console.info(e)
@@ -121,6 +146,11 @@ export default function jodaEnUsTest() {
           console.info('JsJodaEnUs xts firstDayOfWeek endTime:' + endTime0 + "us")
           let averageTime0 = endTime0 - startTime0
           console.info('JsJodaEnUs xts firstDayOfWeek averageTime:' + averageTime0 + "us")
+          let startTime = new Date().getTime();
+          for (let index = 0; index < BASE_COUNT; index++) {
+            WeekFields.SUNDAY_START.firstDayOfWeek().name();
+          }
+          endTime(startTime, 'firstDayOfWeek');
           expect(firstDayOfWeek).assertEqual("SUNDAY");
         } catch (e) {
           console.info(e)
@@ -136,6 +166,11 @@ export default function jodaEnUsTest() {
           console.info('JsJodaEnUs xts minimalDaysInFirstWeek endTime:' + endTime0 + "us")
           let averageTime0 = endTime0 - startTime0
           console.info('JsJodaEnUs xts minimalDaysInFirstWeek averageTime:' + averageTime0 + "us")
+          let startTime = new Date().getTime();
+          for (let index = 0; index < BASE_COUNT; index++) {
+            WeekFields.SUNDAY_START.minimalDaysInFirstWeek();
+          }
+          endTime(startTime, 'minimalDaysInFirstWeek');
           expect(minimalDaysInFirstWeek).assertEqual(1);
         } catch (e) {
           console.info(e)
@@ -151,6 +186,11 @@ export default function jodaEnUsTest() {
           console.info('JsJodaEnUs xts dayOfWeek endTime:' + endTime0 + "us")
           let averageTime0 = endTime0 - startTime0
           console.info('JsJodaEnUs xts dayOfWeek averageTime:' + averageTime0 + "us")
+          let startTime = new Date().getTime();
+          for (let index = 0; index < BASE_COUNT; index++) {
+            WeekFields.SUNDAY_START.dayOfWeek().name();
+          }
+          endTime(startTime, 'dayOfWeek');
           expect(dayOfWeek).assertEqual("DayOfWeek");
         } catch (e) {
           console.info(e)
@@ -166,6 +206,11 @@ export default function jodaEnUsTest() {
           console.info('JsJodaEnUs xts weekOfMonth endTime:' + endTime0 + "us")
           let averageTime0 = endTime0 - startTime0
           console.info('JsJodaEnUs xts weekOfMonth averageTime:' + averageTime0 + "us")
+          let startTime = new Date().getTime();
+          for (let index = 0; index < BASE_COUNT; index++) {
+            WeekFields.SUNDAY_START.weekOfMonth().name();
+          }
+          endTime(startTime, 'weekOfMonth');
           expect(weekOfMonth).assertEqual("WeekOfMonth");
         } catch (e) {
           console.info(e)
@@ -181,6 +226,11 @@ export default function jodaEnUsTest() {
           console.info('JsJodaEnUs xts weekOfYear endTime:' + endTime0 + "us")
           let averageTime0 = endTime0 - startTime0
           console.info('JsJodaEnUs xts weekOfYear averageTime:' + averageTime0 + "us")
+          let startTime = new Date().getTime();
+          for (let index = 0; index < BASE_COUNT; index++) {
+            WeekFields.SUNDAY_START.weekOfYear().name();
+          }
+          endTime(startTime, 'weekOfYear');
           expect(weekOfYear).assertEqual("WeekOfYear");
         } catch (e) {
           console.info(e)
@@ -196,6 +246,11 @@ export default function jodaEnUsTest() {
           console.info('JsJodaEnUs xts weekOfWeekBasedYear endTime:' + endTime0 + "us")
           let averageTime0 = endTime0 - startTime0
           console.info('JsJodaEnUs xts weekOfWeekBasedYear averageTime:' + averageTime0 + "us")
+          let startTime = new Date().getTime();
+          for (let index = 0; index < BASE_COUNT; index++) {
+            WeekFields.SUNDAY_START.weekOfWeekBasedYear().name();
+          }
+          endTime(startTime, 'weekOfWeekBasedYear');
           expect(weekOfWeekBasedYear).assertEqual("WeekOfWeekBasedYear");
         } catch (e) {
           console.info(e)
@@ -211,6 +266,11 @@ export default function jodaEnUsTest() {
           console.info('JsJodaEnUs xts weekBasedYear endTime:' + endTime0 + "us")
           let averageTime0 = endTime0 - startTime0
           console.info('JsJodaEnUs xts weekBasedYear averageTime:' + averageTime0 + "us")
+          let startTime = new Date().getTime();
+          for (let index = 0; index < BASE_COUNT; index++) {
+            WeekFields.SUNDAY_START.weekBasedYear().name();
+          }
+          endTime(startTime, 'weekBasedYear');
           expect(weekBasedYear).assertEqual("WeekBasedYear");
         } catch (e) {
           console.info(e)
@@ -226,6 +286,11 @@ export default function jodaEnUsTest() {
           console.info('JsJodaEnUs xts equals endTime:' + endTime0 + "us")
           let averageTime0 = endTime0 - startTime0
           console.info('JsJodaEnUs xts equals averageTime:' + averageTime0 + "us")
+          let startTime = new Date().getTime();
+          for (let index = 0; index < BASE_COUNT; index++) {
+            WeekFields.SUNDAY_START.equals(2);
+          }
+          endTime(startTime, 'equals');
           expect(equalsParam).assertEqual(false);
         } catch (e) {
           console.info(e)
@@ -241,6 +306,11 @@ export default function jodaEnUsTest() {
           console.info('JsJodaEnUs xts hashCode endTime:' + endTime0 + "us")
           let averageTime0 = endTime0 - startTime0
           console.info('JsJodaEnUs xts hashCode averageTime:' + averageTime0 + "us")
+          let startTime = new Date().getTime();
+          for (let index = 0; index < BASE_COUNT; index++) {
+            WeekFields.SUNDAY_START.hashCode();
+          }
+          endTime(startTime, 'hashCode');
           expect(hashCodeParam).assertEqual(43);
         } catch (e) {
           console.info(e)
@@ -256,11 +326,23 @@ export default function jodaEnUsTest() {
           console.info('JsJodaEnUs xts toString endTime:' + endTime0 + "us")
           let averageTime0 = endTime0 - startTime0
           console.info('JsJodaEnUs xts toString averageTime:' + averageTime0 + "us")
+          let startTime = new Date().getTime();
+          for (let index = 0; index < BASE_COUNT; index++) {
+            WeekFields.SUNDAY_START.toString();
+          }
+          endTime(startTime, 'toString');
           expect(toStringParam).assertEqual("WeekFields[SUNDAY,1]");
         } catch (e) {
           console.info(e)
         }
       })
-    }
   })
+}
+
+function endTime(startTime: number, tag: string) {
+  let endTime: number = new Date().getTime();
+  let averageTime = ((endTime - startTime) * 1000 / BASE_COUNT)
+  console.info(tag + " startTime: " + endTime)
+  console.info(tag + " endTime: " + endTime)
+  console.log(tag + " averageTime: " + averageTime + "μs");
 }
