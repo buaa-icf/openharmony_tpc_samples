@@ -18,29 +18,29 @@ struct Index {
 
   onParseFromString() {
     const XML = '<xml attr="&quot;">&lt; &amp;</xml>'
-    const actual = new DOMParser().parseFromString(XML).toString()
+    const actual: ESObject = new DOMParser().parseFromString(XML).toString()
     this.text = actual
   }
 
   onSerializeToString() {
     const str = '<a:foo xmlns:a="AAA"><bar xmlns="AAA"/></a:foo>'
-    const doc = new DOMParser().parseFromString(str, "text/xml")
-    const child = doc.createElementNS('AAA', 'child')
+    const doc: ESObject = new DOMParser().parseFromString(str, "text/xml")
+    const child: ESObject = doc.createElementNS('AAA', 'child')
     let xmlSerializer = new XMLSerializer()
     let xmlSerializerStr = xmlSerializer.serializeToString(child)
     this.text = xmlSerializerStr
   }
 
   onDOMImplementation() {
-    const impl = new DOMImplementation()
-    const doc = impl.createDocumentType('qualifiedName', 'publicId', 'systemId')
+    const impl: ESObject = new DOMImplementation()
+    const doc: ESObject = impl.createDocumentType('qualifiedName', 'publicId', 'systemId')
     this.text = doc.name
   }
 
   onErrorHandler() {
     const errors: string[] = []
     const parser = new DOMParser({
-      errorHandler: (msg) => {
+      errorHandler: (msg: ESObject) => {
         errors.push(msg)
       },
     })
@@ -48,33 +48,33 @@ struct Index {
     parser.parseFromString('<xml attr=value/>', 'text/xml')
     parser.parseFromString('<doc a1=></doc>', 'text/xml')
     parser.parseFromString('<xml a="1" a="2"></xml>', 'text/xml')
-    this.text = errors[0]+'\n'+errors[1]+'\n'+errors[2]
+    this.text = errors[0] + '\n' + errors[1] + '\n' + errors[2]
   }
 
   build() {
     Row() {
       Column() {
-          Button('parseFromString')
-            .margin({ top: px2vp(30) })
-            .onClick(() => this.onParseFromString())
-          Button('serializeToString')
-            .margin({ top: px2vp(30) })
-            .onClick(() => this.onSerializeToString())
-          Button('DOMImplementation')
-            .margin({ top: px2vp(30) })
-            .onClick(() => this.onDOMImplementation())
-          Button('errorHandler')
-            .margin({ top: px2vp(30) })
-            .onClick(() => this.onErrorHandler())
+        Button('parseFromString')
+          .margin({ top: px2vp(30) })
+          .onClick(() => this.onParseFromString())
+        Button('serializeToString')
+          .margin({ top: px2vp(30) })
+          .onClick(() => this.onSerializeToString())
+        Button('DOMImplementation')
+          .margin({ top: px2vp(30) })
+          .onClick(() => this.onDOMImplementation())
+        Button('errorHandler')
+          .margin({ top: px2vp(30) })
+          .onClick(() => this.onErrorHandler())
 
 
-          TextArea({ text: this.text })
-            .textAlign(TextAlign.Start)
-            .fontSize(px2fp(35))
+        TextArea({ text: this.text })
+          .textAlign(TextAlign.Start)
+          .fontSize(px2fp(35))
 
-            .margin({ top: px2vp(30) })
-            .width('100%')
-            .backgroundColor(Color.Orange)
+          .margin({ top: px2vp(30) })
+          .width('100%')
+          .backgroundColor(Color.Orange)
       }
       .height('100%')
       .width('100%')
