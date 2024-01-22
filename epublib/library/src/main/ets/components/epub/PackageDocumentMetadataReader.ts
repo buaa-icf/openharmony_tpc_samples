@@ -47,9 +47,9 @@ class PackageDocumentMetadataReader {
     constructor() {
     }
 
-    public static readMetadata(packageDocument: Document): Metadata {
+    public static readMetadata(packageDocument:ESObject): Metadata {
         let result: Metadata = new Metadata();
-        let metadataElement: Element = DOMUtil.getFirstElementByTagNameNS(packageDocument.documentElement, PackageDocumentBase.NAMESPACE_OPF, OPFTags.metadata);
+        let metadataElement:ESObject = DOMUtil.getFirstElementByTagNameNS(packageDocument.documentElement, PackageDocumentBase.NAMESPACE_OPF, OPFTags.metadata);
         if (metadataElement == null) {
             console.error("Package does not contain element " + OPFTags.metadata);
             return result;
@@ -66,7 +66,7 @@ class PackageDocumentMetadataReader {
         result.setDates(PackageDocumentMetadataReader.readDates(metadataElement));
         result.setOtherProperties(PackageDocumentMetadataReader.readOtherProperties(metadataElement));
         result.setMetaAttributes(PackageDocumentMetadataReader.readMetaProperties(metadataElement));
-        let languageTag: Element = DOMUtil.getFirstElementByTagNameNS(metadataElement, PackageDocumentBase.NAMESPACE_DUBLIN_CORE, DCTags.language);
+        let languageTag:ESObject = DOMUtil.getFirstElementByTagNameNS(metadataElement, PackageDocumentBase.NAMESPACE_DUBLIN_CORE, DCTags.language);
         if (languageTag != null) {
             result.setLanguage(DOMUtil.getTextChildrenContent(languageTag));
         }
@@ -79,7 +79,7 @@ class PackageDocumentMetadataReader {
          * @param metadataElement
          * @return
          */
-    private static readOtherProperties(metadataElement: Element): Map<string, string>  {
+    private static readOtherProperties(metadataElement:ESObject): Map<string, string>  {
         let result: Map<string, string> = new Map<string, string>();
         let metaTags = metadataElement.getElementsByTagName(OPFTags.meta);
         for (let i: number = 0; i < metaTags.length; i++) {
@@ -101,12 +101,12 @@ class PackageDocumentMetadataReader {
          * @param metadataElement
          * @return
          */
-    private static readMetaProperties(metadataElement: Element): Map<string, string>  {
+    private static readMetaProperties(metadataElement:ESObject): Map<string, string>  {
         let result: Map<string, string> = new Map<string, string>();
 
         let metaTags = metadataElement.getElementsByTagName(OPFTags.meta);
         for (let i: number = 0; i < metaTags.length; i++) {
-            let metaElement: Element = <Element> metaTags.item(i);
+            let metaElement:ESObject = metaTags.item(i);
             let name: string = metaElement.getAttribute(OPFAttributes.name);
             let value: string = metaElement.getAttribute(OPFAttributes.content);
             result.set(name, value);
@@ -115,8 +115,8 @@ class PackageDocumentMetadataReader {
         return result;
     }
 
-    private static getBookIdId(document: Document): string {
-        let packageElement: Element = DOMUtil.getFirstElementByTagNameNS(document.documentElement, PackageDocumentBase.NAMESPACE_OPF, OPFTags.packageTag);
+    private static getBookIdId(document:ESObject): string {
+        let packageElement:ESObject = DOMUtil.getFirstElementByTagNameNS(document.documentElement, PackageDocumentBase.NAMESPACE_OPF, OPFTags.packageTag);
         if (packageElement == null) {
             return null;
         }
@@ -124,15 +124,15 @@ class PackageDocumentMetadataReader {
         return result;
     }
 
-    private static readCreators(metadataElement: Element): Author[] {
+    private static readCreators(metadataElement:ESObject): Author[] {
         return PackageDocumentMetadataReader.readAuthors(DCTags.creator, metadataElement);
     }
 
-    private static readContributors(metadataElement: Element): Author[]{
+    private static readContributors(metadataElement:ESObject): Author[]{
         return PackageDocumentMetadataReader.readAuthors(DCTags.contributor, metadataElement);
     }
 
-    private static readAuthors(authorTag: string, metadataElement: Element): Author[] {
+    private static readAuthors(authorTag: string, metadataElement:ESObject): Author[] {
         let elements = metadataElement.getElementsByTagNameNS(PackageDocumentBase.NAMESPACE_DUBLIN_CORE, authorTag);
         let result: Author[] = new Array<Author>();
         for (let i = 0; i < elements.length; i++) {
@@ -145,11 +145,11 @@ class PackageDocumentMetadataReader {
         return result;
     }
 
-    private static readDates(metadataElement: Element): Date[] {
+    private static readDates(metadataElement:ESObject): Date[] {
         let elements = metadataElement.getElementsByTagNameNS(PackageDocumentBase.NAMESPACE_DUBLIN_CORE, DCTags.date);
         let result: Date[] = new Array<Date>();
         for (let i: number = 0; i < elements.length; i++) {
-            let dateElement: Element = <Element> elements.item(i);
+            let dateElement:ESObject = elements.item(i);
             let date: Date;
             try {
                 date = new Date(DOMUtil.getTextChildrenContent(dateElement), dateElement.getAttributeNS(PackageDocumentBase.NAMESPACE_OPF, OPFAttributes.event));
@@ -162,7 +162,7 @@ class PackageDocumentMetadataReader {
 
     }
 
-    private static createAuthor(authorElement: Element): Author{
+    private static createAuthor(authorElement:ESObject): Author{
         let authorString: string = DOMUtil.getTextChildrenContent(authorElement);
         if (StringUtil.isBlank(authorString)) {
             return null;
@@ -178,7 +178,7 @@ class PackageDocumentMetadataReader {
         return result;
     }
 
-    private static readIdentifiers(metadataElement: Element): Identifier[]{
+    private static readIdentifiers(metadataElement:ESObject): Identifier[]{
         let identifierElements = metadataElement.getElementsByTagNameNS(PackageDocumentBase.NAMESPACE_DUBLIN_CORE, DCTags.identifier);
         if (identifierElements.length == 0) {
             console.error("Package does not contain element " + DCTags.identifier);
@@ -187,7 +187,7 @@ class PackageDocumentMetadataReader {
         let bookIdId: string = PackageDocumentMetadataReader.getBookIdId(metadataElement.ownerDocument);
         let result: Identifier[] = new Array<Identifier>();
         for (let i: number = 0; i < identifierElements.length; i++) {
-            let identifierElement: Element = <Element> identifierElements.item(i);
+            let identifierElement:ESObject = identifierElements.item(i);
             let schemeName: string = identifierElement.getAttributeNS(PackageDocumentBase.NAMESPACE_OPF, DCAttributes.scheme);
             let identifierValue: string = DOMUtil.getTextChildrenContent(identifierElement);
             if (StringUtil.isBlank(identifierValue)) {

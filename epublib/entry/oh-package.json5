@@ -7,6 +7,7 @@
   "main": "",
   "version": "2.0.0",
   "dependencies": {
-    "@ohos/epublib": "file:../library"
+    "@ohos/epublib": "file:../library",
+    "@xmldom/xmldom": "file:../xmldom"
   }
 }

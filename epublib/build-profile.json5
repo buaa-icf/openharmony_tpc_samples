@@ -8,7 +8,7 @@
         "targetSdkVersion": 10,
         "runtimeOS": "OpenHarmony",
         "name": "default",
-        "signingConfig": "debug_default"
+        "signingConfig": "default"
       }
     ]
   },
@@ -28,6 +28,10 @@
     {
       "name": "library",
       "srcPath": "./library"
+    },
+    {
+      "name": "xmldom",
+      "srcPath": "./xmldom"
     }
   ]
 }

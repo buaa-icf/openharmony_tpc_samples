@@ -46,9 +46,9 @@ class PackageDocumentWriter extends PackageDocumentBase {
     public static write(fd: number, book: Book): void {
         try {
             let domParser = new DOMParser();
-            let document: Document = domParser.parseFromString("<?xml encoding='" + Constants.CHARACTER_ENCODING + "'?>");
+            let document:ESObject = domParser.parseFromString("<?xml encoding='" + Constants.CHARACTER_ENCODING + "'?>");
 
-            let root: Element = document.createElementNS(PackageDocumentBase.NAMESPACE_OPF, OPFTags.packageTag);
+            let root:ESObject = document.createElementNS(PackageDocumentBase.NAMESPACE_OPF, OPFTags.packageTag);
             root.setAttribute("xmlns:" + PackageDocumentBase.PREFIX_OPF, PackageDocumentBase.NAMESPACE_OPF);
             root.setAttribute("xmlns:" + PackageDocumentBase.PREFIX_DUBLIN_CORE, PackageDocumentBase.NAMESPACE_DUBLIN_CORE);
 
@@ -85,7 +85,7 @@ class PackageDocumentWriter extends PackageDocumentBase {
      * @throws IllegalArgumentException
      * @throws XMLStreamException
      */
-    private static writeSpine(book: Book, parentElement: Element, document: Document): void {
+    private static writeSpine(book: Book, parentElement:ESObject, document:ESObject): void {
 
         let spineElement = document.createElementNS(PackageDocumentBase.NAMESPACE_OPF, OPFTags.spine);
         // todo
@@ -105,7 +105,7 @@ class PackageDocumentWriter extends PackageDocumentBase {
         parentElement.appendChild(spineElement);
     }
 
-    private static writeManifest(book: Book, parentElement: Element, document: Document): void {
+    private static writeManifest(book: Book, parentElement:ESObject, document:ESObject): void {
 
         let manifestElement = document.createElementNS(PackageDocumentBase.NAMESPACE_OPF, OPFTags.manifest);
 
@@ -141,7 +141,7 @@ class PackageDocumentWriter extends PackageDocumentBase {
      * @throws IllegalArgumentException
      * @throws XMLStreamException
      */
-    private static writeItem(book: Book, resource: EpubResource, parentElement: Element, document: Document): void {
+    private static writeItem(book: Book, resource: EpubResource, parentElement:ESObject, document:ESObject): void {
         if (resource == null ||
         (resource.getMediaType() == MediatypeService.NCX
         && book.getSpine().getTocResource() != null)) {
@@ -174,7 +174,7 @@ class PackageDocumentWriter extends PackageDocumentBase {
      * @throws IllegalArgumentException
      */
 
-    private static writeSpineItems(spine: Spine, parentElement: Element, document: Document): void {
+    private static writeSpineItems(spine: Spine, parentElement:ESObject, document:ESObject): void {
 
         for (let spineReference of spine.getSpineReferences()) {
             let itemrefElement = document.createElementNS(PackageDocumentBase.NAMESPACE_OPF, OPFTags.itemref);
@@ -187,7 +187,7 @@ class PackageDocumentWriter extends PackageDocumentBase {
         }
     }
 
-    private static writeGuide(book: Book, parentElement: Element, document: Document): void {
+    private static writeGuide(book: Book, parentElement:ESObject, document:ESObject): void {
 
         let guideElement = document.createElementNS(PackageDocumentBase.NAMESPACE_OPF, OPFTags.guide);
 
@@ -199,7 +199,7 @@ class PackageDocumentWriter extends PackageDocumentBase {
         parentElement.appendChild(guideElement);
     }
 
-    private static ensureCoverPageGuideReferenceWritten(guide: Guide, parentElement: Element, document: Document): void{
+    private static ensureCoverPageGuideReferenceWritten(guide: Guide, parentElement:ESObject, document:ESObject): void{
         if (!(guide.getGuideReferencesByType(GuideReference.COVER).length == 0)) {
             return;
         }
@@ -209,7 +209,7 @@ class PackageDocumentWriter extends PackageDocumentBase {
         }
     }
 
-    private static writeGuideReference(reference: GuideReference, parentElement: Element, document: Document): void {
+    private static writeGuideReference(reference: GuideReference, parentElement: ESObject, document: ESObject): void {
         if (reference == null) {
             return;
         }
