@@ -1,18 +1,7 @@
 {
   "app": {
     "signingConfigs": [
-      {
-        "name": "default",
-        "material": {
-          "certpath": "C:\\Users\\Administrator\\.ohos\\config\\openharmony\\auto_ohos_default_mime_com.openharmony.mime.cer",
-          "storePassword": "0000001B146DAE9C3FF40382B87A2D9DDEC91DAA05354992949C03A7EFF935DAFA6EEA770C2BB1E4071BD5",
-          "keyAlias": "debugKey",
-          "keyPassword": "0000001B6F97DACB736A187BB5AC6EFEA91EC29FCF7B22B9DE4E090F244A453CD8208309CC8B1FCB284F53",
-          "profile": "C:\\Users\\Administrator\\.ohos\\config\\openharmony\\auto_ohos_default_mime_com.openharmony.mime.p7b",
-          "signAlg": "SHA256withECDSA",
-          "storeFile": "C:\\Users\\Administrator\\.ohos\\config\\openharmony\\auto_ohos_default_mime_com.openharmony.mime.p12"
-        }
-      }
+      
     ],
     "products": [
       {
