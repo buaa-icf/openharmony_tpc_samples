@@ -47,6 +47,8 @@ import { camelCase, capitalize, deburr, endsWith, escape, escapeRegExp, kebabCas
   parseInt
 } from 'lodash'
 
+const BASE_COUNT: number = 2000;
+
 export default function stringTest() {
   describe('StringTest', () => {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
@@ -76,6 +78,11 @@ export default function stringTest() {
       console.info('appInfoTest xts camelCaseTest01 endTime:' + endTime0 + "us")
       let averageTime0 = endTime0 - startTime0
       console.info('appInfoTest xts camelCaseTest01 averageTime:' + averageTime0 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        camelCase('Foo Bar')
+      }
+      endTime(startTime, 'camelCaseTest01');
     })
 
 
@@ -87,6 +94,11 @@ export default function stringTest() {
       console.info('appInfoTest xts camelCaseTest02 endTime:' + endTime1 + "us")
       let averageTime1 = endTime1 - startTime1
       console.info('appInfoTest xts camelCaseTest02 averageTime:' + averageTime1 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        camelCase('--foo-bar--')
+      }
+      endTime(startTime, 'camelCaseTest02');
     })
 
 
@@ -98,6 +110,11 @@ export default function stringTest() {
       console.info('appInfoTest xts capitalizeTest01 endTime:' + endTime2 + "us")
       let averageTime2 = endTime2 - startTime2
       console.info('appInfoTest xts capitalizeTest01 averageTime:' + averageTime2 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        capitalize('FRED')
+      }
+      endTime(startTime, 'capitalizeTest01');
     })
 
 
@@ -109,6 +126,11 @@ export default function stringTest() {
       console.info('appInfoTest xts capitalizeTest02 endTime:' + endTime3 + "us")
       let averageTime3 = endTime3 - startTime3
       console.info('appInfoTest xts capitalizeTest02 averageTime:' + averageTime3 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        capitalize('hello')
+      }
+      endTime(startTime, 'capitalizeTest02');
     })
 
 
@@ -120,6 +142,11 @@ export default function stringTest() {
       console.info('appInfoTest xts deburrTest01 endTime:' + endTime4 + "us")
       let averageTime4 = endTime4 - startTime4
       console.info('appInfoTest xts deburrTest01 averageTime:' + averageTime4 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        deburr('déjà vu')
+      }
+      endTime(startTime, 'deburrTest01');
     })
 
 
@@ -131,6 +158,11 @@ export default function stringTest() {
       console.info('appInfoTest xts deburrTest02 endTime:' + endTime5 + "us")
       let averageTime5 = endTime5 - startTime5
       console.info('appInfoTest xts deburrTest02 averageTime:' + averageTime5 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        deburr('ãäåæçè')
+      }
+      endTime(startTime, 'deburrTest02');
     })
 
 
@@ -142,6 +174,11 @@ export default function stringTest() {
       console.info('appInfoTest xts endsWithTest01 endTime:' + endTime6 + "us")
       let averageTime6 = endTime6 - startTime6
       console.info('appInfoTest xts endsWithTest01 averageTime:' + averageTime6 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        endsWith('abc', 'c')
+      }
+      endTime(startTime, 'endsWithTest01');
     })
 
 
@@ -153,6 +190,11 @@ export default function stringTest() {
       console.info('appInfoTest xts endsWithTest02 endTime:' + endTime7 + "us")
       let averageTime7 = endTime7 - startTime7
       console.info('appInfoTest xts endsWithTest02 averageTime:' + averageTime7 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        endsWith('abc', 'b', 2)
+      }
+      endTime(startTime, 'endsWithTest02');
     })
 
 
@@ -164,6 +206,11 @@ export default function stringTest() {
       console.info('appInfoTest xts escapeTest01 endTime:' + endTime8 + "us")
       let averageTime8 = endTime8 - startTime8
       console.info('appInfoTest xts escapeTest01 averageTime:' + averageTime8 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        escape('fred, barney, & pebbles')
+      }
+      endTime(startTime, 'escapeTest01');
     })
 
 
@@ -175,6 +222,11 @@ export default function stringTest() {
       console.info('appInfoTest xts escapeTest02 endTime:' + endTime9 + "us")
       let averageTime9 = endTime9 - startTime9
       console.info('appInfoTest xts escapeTest02 averageTime:' + averageTime9 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        escape('hello, a&b, `world`')
+      }
+      endTime(startTime, 'escapeTest02');
     })
 
 
@@ -186,6 +238,11 @@ export default function stringTest() {
       console.info('appInfoTest xts escapeRegExpTest01 endTime:' + endTime10 + "us")
       let averageTime10 = endTime10 - startTime10
       console.info('appInfoTest xts escapeRegExpTest01 averageTime:' + averageTime10 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        escapeRegExp('[lodash]+(HELLO)')
+      }
+      endTime(startTime, 'escapeRegExpTest01');
     })
 
 
@@ -197,6 +254,11 @@ export default function stringTest() {
       console.info('appInfoTest xts escapeRegExpTest02 endTime:' + endTime11 + "us")
       let averageTime11 = endTime11 - startTime11
       console.info('appInfoTest xts escapeRegExpTest02 averageTime:' + averageTime11 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        escapeRegExp('[hello],[($10000)]World!')
+      }
+      endTime(startTime, 'escapeRegExpTest02');
     })
 
 
@@ -208,6 +270,11 @@ export default function stringTest() {
       console.info('appInfoTest xts kebabCaseTest01 endTime:' + endTime12 + "us")
       let averageTime12 = endTime12 - startTime12
       console.info('appInfoTest xts kebabCaseTest01 averageTime:' + averageTime12 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        kebabCase('Foo Bar')
+      }
+      endTime(startTime, 'kebabCaseTest01');
     })
 
 
@@ -219,6 +286,11 @@ export default function stringTest() {
       console.info('appInfoTest xts kebabCaseTest02 endTime:' + endTime13 + "us")
       let averageTime13 = endTime13 - startTime13
       console.info('appInfoTest xts kebabCaseTest02 averageTime:' + averageTime13 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        kebabCase('__FOO_BAR__')
+      }
+      endTime(startTime, 'kebabCaseTest02');
     })
 
 
@@ -230,6 +302,11 @@ export default function stringTest() {
       console.info('appInfoTest xts lowerCaseTest01 endTime:' + endTime14 + "us")
       let averageTime14 = endTime14 - startTime14
       console.info('appInfoTest xts lowerCaseTest01 averageTime:' + averageTime14 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        lowerCase('Foo Bar')
+      }
+      endTime(startTime, 'lowerCaseTest01');
     })
 
 
@@ -241,6 +318,11 @@ export default function stringTest() {
       console.info('appInfoTest xts lowerCaseTest02 endTime:' + endTime15 + "us")
       let averageTime15 = endTime15 - startTime15
       console.info('appInfoTest xts lowerCaseTest02 averageTime:' + averageTime15 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        lowerCase('__FOO_BAR__')
+      }
+      endTime(startTime, 'lowerCaseTest02');
     })
 
 
@@ -252,6 +334,11 @@ export default function stringTest() {
       console.info('appInfoTest xts lowerFirstTest01 endTime:' + endTime16 + "us")
       let averageTime16 = endTime16 - startTime16
       console.info('appInfoTest xts lowerFirstTest01 averageTime:' + averageTime16 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        lowerFirst('Fred')
+      }
+      endTime(startTime, 'lowerFirstTest01');
     })
 
 
@@ -263,6 +350,11 @@ export default function stringTest() {
       console.info('appInfoTest xts lowerFirstTest02 endTime:' + endTime17 + "us")
       let averageTime17 = endTime17 - startTime17
       console.info('appInfoTest xts lowerFirstTest02 averageTime:' + averageTime17 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        lowerFirst('FRED')
+      }
+      endTime(startTime, 'lowerFirstTest02');
     })
 
 
@@ -274,6 +366,11 @@ export default function stringTest() {
       console.info('appInfoTest xts padTest01 endTime:' + endTime18 + "us")
       let averageTime18 = endTime18 - startTime18
       console.info('appInfoTest xts padTest01 averageTime:' + averageTime18 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        pad('abc', 8)
+      }
+      endTime(startTime, 'padTest01');
     })
 
 
@@ -285,6 +382,11 @@ export default function stringTest() {
       console.info('appInfoTest xts padTest02 endTime:' + endTime19 + "us")
       let averageTime19 = endTime19 - startTime19
       console.info('appInfoTest xts padTest02 averageTime:' + averageTime19 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        pad('abc', 8, '_-')
+      }
+      endTime(startTime, 'padTest02');
     })
 
 
@@ -296,6 +398,11 @@ export default function stringTest() {
       console.info('appInfoTest xts padEndTest01 endTime:' + endTime20 + "us")
       let averageTime20 = endTime20 - startTime20
       console.info('appInfoTest xts padEndTest01 averageTime:' + averageTime20 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        padEnd('abc', 6)
+      }
+      endTime(startTime, 'padEndTest01');
     })
 
 
@@ -307,6 +414,11 @@ export default function stringTest() {
       console.info('appInfoTest xts padEndTest02 endTime:' + endTime21 + "us")
       let averageTime21 = endTime21 - startTime21
       console.info('appInfoTest xts padEndTest02 averageTime:' + averageTime21 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        padEnd('abc', 6, '_-')
+      }
+      endTime(startTime, 'padEndTest02');
     })
 
 
@@ -318,6 +430,11 @@ export default function stringTest() {
       console.info('appInfoTest xts padStartTest01 endTime:' + endTime22 + "us")
       let averageTime22 = endTime22 - startTime22
       console.info('appInfoTest xts padStartTest01 averageTime:' + averageTime22 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        padStart('abc', 6)
+      }
+      endTime(startTime, 'padStartTest01');
     })
 
 
@@ -329,6 +446,11 @@ export default function stringTest() {
       console.info('appInfoTest xts padStartTest02 endTime:' + endTime23 + "us")
       let averageTime23 = endTime23 - startTime23
       console.info('appInfoTest xts padStartTest02 averageTime:' + averageTime23 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        padStart('abc', 3)
+      }
+      endTime(startTime, 'padStartTest02');
     })
 
 
@@ -340,6 +462,11 @@ export default function stringTest() {
       console.info('appInfoTest xts parseIntTest01 endTime:' + endTime24 + "us")
       let averageTime24 = endTime24 - startTime24
       console.info('appInfoTest xts parseIntTest01 averageTime:' + averageTime24 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        parseInt('08')
+      }
+      endTime(startTime, 'parseIntTest01');
     })
 
 
@@ -352,6 +479,11 @@ export default function stringTest() {
       console.info('appInfoTest xts parseIntTest02 endTime:' + endTime25 + "us")
       let averageTime25 = endTime25 - startTime25
       console.info('appInfoTest xts parseIntTest02 averageTime:' + averageTime25 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        map(['6', '08', '10'], parseInt)
+      }
+      endTime(startTime, 'parseIntTest02');
       expect(JSON.stringify(parseArray)).assertEqual('[6,8,10]');
     })
 
@@ -364,6 +496,11 @@ export default function stringTest() {
       console.info('appInfoTest xts repeatTest01 endTime:' + endTime26 + "us")
       let averageTime26 = endTime26 - startTime26
       console.info('appInfoTest xts repeatTest01 averageTime:' + averageTime26 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        repeat('*', 3)
+      }
+      endTime(startTime, 'repeatTest01');
     })
 
 
@@ -375,6 +512,11 @@ export default function stringTest() {
       console.info('appInfoTest xts repeatTest02 endTime:' + endTime27 + "us")
       let averageTime27 = endTime27 - startTime27
       console.info('appInfoTest xts repeatTest02 averageTime:' + averageTime27 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        repeat('abc', 2)
+      }
+      endTime(startTime, 'repeatTest02');
     })
 
 
@@ -386,6 +528,11 @@ export default function stringTest() {
       console.info('appInfoTest xts replaceTest01 endTime:' + endTime28 + "us")
       let averageTime28 = endTime28 - startTime28
       console.info('appInfoTest xts replaceTest01 averageTime:' + averageTime28 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        replace('Hi Fred', 'Fred', 'Barney')
+      }
+      endTime(startTime, 'replaceTest01');
     })
 
 
@@ -397,6 +544,11 @@ export default function stringTest() {
       console.info('appInfoTest xts replaceTest02 endTime:' + endTime29 + "us")
       let averageTime29 = endTime29 - startTime29
       console.info('appInfoTest xts replaceTest02 averageTime:' + averageTime29 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        replace('Stay In', 'In', 'Safe')
+      }
+      endTime(startTime, 'replaceTest02');
     })
 
 
@@ -408,6 +560,11 @@ export default function stringTest() {
       console.info('appInfoTest xts snakeCaseTest01 endTime:' + endTime30 + "us")
       let averageTime30 = endTime30 - startTime30
       console.info('appInfoTest xts snakeCaseTest01 averageTime:' + averageTime30 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        snakeCase('Foo Bar')
+      }
+      endTime(startTime, 'snakeCaseTest01');
     })
 
 
@@ -419,6 +576,11 @@ export default function stringTest() {
       console.info('appInfoTest xts snakeCaseTest02 endTime:' + endTime31 + "us")
       let averageTime31 = endTime31 - startTime31
       console.info('appInfoTest xts snakeCaseTest02 averageTime:' + averageTime31 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        snakeCase('--FOO-BAR--')
+      }
+      endTime(startTime, 'snakeCaseTest02');
     })
 
 
@@ -430,6 +592,11 @@ export default function stringTest() {
       console.info('appInfoTest xts splitTest01 endTime:' + endTime32 + "us")
       let averageTime32 = endTime32 - startTime32
       console.info('appInfoTest xts splitTest01 averageTime:' + averageTime32 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        split('a-b-c', '-', 2)
+      }
+      endTime(startTime, 'splitTest01');
     })
 
 
@@ -441,6 +608,11 @@ export default function stringTest() {
       console.info('appInfoTest xts splitTest02 endTime:' + endTime33 + "us")
       let averageTime33 = endTime33 - startTime33
       console.info('appInfoTest xts splitTest02 averageTime:' + averageTime33 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        split('A#B#C', '#', 3)
+      }
+      endTime(startTime, 'splitTest02');
     })
 
 
@@ -452,6 +624,11 @@ export default function stringTest() {
       console.info('appInfoTest xts startCaseTest01 endTime:' + endTime34 + "us")
       let averageTime34 = endTime34 - startTime34
       console.info('appInfoTest xts startCaseTest01 averageTime:' + averageTime34 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        startCase('--foo-bar--')
+      }
+      endTime(startTime, 'startCaseTest01');
     })
 
 
@@ -463,6 +640,11 @@ export default function stringTest() {
       console.info('appInfoTest xts startCaseTest02 endTime:' + endTime35 + "us")
       let averageTime35 = endTime35 - startTime35
       console.info('appInfoTest xts startCaseTest02 averageTime:' + averageTime35 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        startCase('__FOO_BAR__')
+      }
+      endTime(startTime, 'startCaseTest02');
     })
 
 
@@ -474,6 +656,11 @@ export default function stringTest() {
       console.info('appInfoTest xts startsWithTest01 endTime:' + endTime36 + "us")
       let averageTime36 = endTime36 - startTime36
       console.info('appInfoTest xts startsWithTest01 averageTime:' + averageTime36 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        startsWith('abc', 'a')
+      }
+      endTime(startTime, 'startsWithTest01');
     })
 
 
@@ -485,6 +672,11 @@ export default function stringTest() {
       console.info('appInfoTest xts startsWithTest02 endTime:' + endTime37 + "us")
       let averageTime37 = endTime37 - startTime37
       console.info('appInfoTest xts startsWithTest02 averageTime:' + averageTime37 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        startsWith('abc', 'b')
+      }
+      endTime(startTime, 'startsWithTest02');
     })
 
 
@@ -496,6 +688,11 @@ export default function stringTest() {
       console.info('appInfoTest xts toLowerTest01 endTime:' + endTime38 + "us")
       let averageTime38 = endTime38 - startTime38
       console.info('appInfoTest xts toLowerTest01 averageTime:' + averageTime38 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        toLower('--Foo-Bar--')
+      }
+      endTime(startTime, 'toLowerTest01');
     })
 
 
@@ -507,6 +704,11 @@ export default function stringTest() {
       console.info('appInfoTest xts toLowerTest02 endTime:' + endTime39 + "us")
       let averageTime39 = endTime39 - startTime39
       console.info('appInfoTest xts toLowerTest02 averageTime:' + averageTime39 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        toLower('__FOO_BAR__')
+      }
+      endTime(startTime, 'toLowerTest02');
     })
 
 
@@ -518,6 +720,11 @@ export default function stringTest() {
       console.info('appInfoTest xts toUpperTest01 endTime:' + endTime40 + "us")
       let averageTime40 = endTime40 - startTime40
       console.info('appInfoTest xts toUpperTest01 averageTime:' + averageTime40 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        toUpper('--foo-bar--')
+      }
+      endTime(startTime, 'toUpperTest01');
     })
 
 
@@ -529,6 +736,11 @@ export default function stringTest() {
       console.info('appInfoTest xts toUpperTest02 endTime:' + endTime41 + "us")
       let averageTime41 = endTime41 - startTime41
       console.info('appInfoTest xts toUpperTest02 averageTime:' + averageTime41 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        toUpper('__foo_bar__')
+      }
+      endTime(startTime, 'toUpperTest02');
     })
 
 
@@ -540,6 +752,11 @@ export default function stringTest() {
       console.info('appInfoTest xts trimTest01 endTime:' + endTime42 + "us")
       let averageTime42 = endTime42 - startTime42
       console.info('appInfoTest xts trimTest01 averageTime:' + averageTime42 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        trim('  abc  ')
+      }
+      endTime(startTime, 'trimTest01');
     })
 
 
@@ -551,6 +768,11 @@ export default function stringTest() {
       console.info('appInfoTest xts trimTest02 endTime:' + endTime43 + "us")
       let averageTime43 = endTime43 - startTime43
       console.info('appInfoTest xts trimTest02 averageTime:' + averageTime43 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        map(['  foo  ', '  bar  '], trim)
+      }
+      endTime(startTime, 'trimTest02');
     })
 
 
@@ -562,6 +784,11 @@ export default function stringTest() {
       console.info('appInfoTest xts trimEndTest01 endTime:' + endTime44 + "us")
       let averageTime44 = endTime44 - startTime44
       console.info('appInfoTest xts trimEndTest01 averageTime:' + averageTime44 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        trimEnd('  abc  ')
+      }
+      endTime(startTime, 'trimEndTest01');
     })
 
 
@@ -573,6 +800,11 @@ export default function stringTest() {
       console.info('appInfoTest xts trimEndTest02 endTime:' + endTime45 + "us")
       let averageTime45 = endTime45 - startTime45
       console.info('appInfoTest xts trimEndTest02 averageTime:' + averageTime45 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        trimEnd('-_-abc-_-', '_-')
+      }
+      endTime(startTime, 'trimEndTest02');
     })
 
 
@@ -584,6 +816,11 @@ export default function stringTest() {
       console.info('appInfoTest xts trimStartTest01 endTime:' + endTime46 + "us")
       let averageTime46 = endTime46 - startTime46
       console.info('appInfoTest xts trimStartTest01 averageTime:' + averageTime46 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        trimStart('  abc  ')
+      }
+      endTime(startTime, 'trimStartTest01');
     })
 
 
@@ -595,6 +832,11 @@ export default function stringTest() {
       console.info('appInfoTest xts trimStartTest02 endTime:' + endTime47 + "us")
       let averageTime47 = endTime47 - startTime47
       console.info('appInfoTest xts trimStartTest02 averageTime:' + averageTime47 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        trimStart('-_-abc-_-', '_-')
+      }
+      endTime(startTime, 'trimStartTest02');
     })
 
 
@@ -606,6 +848,11 @@ export default function stringTest() {
       console.info('appInfoTest xts truncateTest01 endTime:' + endTime48 + "us")
       let averageTime48 = endTime48 - startTime48
       console.info('appInfoTest xts truncateTest01 averageTime:' + averageTime48 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        truncate('hi-diddly-ho there, neighborino')
+      }
+      endTime(startTime, 'truncateTest01');
     })
 
 
@@ -620,6 +867,13 @@ export default function stringTest() {
       console.info('appInfoTest xts truncateTest02 endTime:' + endTime49 + "us")
       let averageTime49 = endTime49 - startTime49
       console.info('appInfoTest xts truncateTest02 averageTime:' + averageTime49 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        truncate('hi-diddly-ho there, neighborino', {
+          'omission': ' [...]'
+        });
+      }
+      endTime(startTime, 'truncateTest02');
       expect(string).assertEqual('hi-diddly-ho there, neig [...]');
     })
 
@@ -632,6 +886,11 @@ export default function stringTest() {
       console.info('appInfoTest xts unescapeTest01 endTime:' + endTime50 + "us")
       let averageTime50 = endTime50 - startTime50
       console.info('appInfoTest xts unescapeTest01 averageTime:' + averageTime50 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        unescape('fred, barney, &amp; pebbles')
+      }
+      endTime(startTime, 'unescapeTest01');
     })
 
 
@@ -643,6 +902,11 @@ export default function stringTest() {
       console.info('appInfoTest xts unescapeTest02 endTime:' + endTime51 + "us")
       let averageTime51 = endTime51 - startTime51
       console.info('appInfoTest xts unescapeTest02 averageTime:' + averageTime51 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        unescape('hello, &amp; &gt; world!')
+      }
+      endTime(startTime, 'unescapeTest02');
     })
 
 
@@ -654,6 +918,11 @@ export default function stringTest() {
       console.info('appInfoTest xts upperCaseTest01 endTime:' + endTime52 + "us")
       let averageTime52 = endTime52 - startTime52
       console.info('appInfoTest xts upperCaseTest01 averageTime:' + averageTime52 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        upperCase('--foo-bar')
+      }
+      endTime(startTime, 'upperCaseTest01');
     })
 
 
@@ -665,6 +934,11 @@ export default function stringTest() {
       console.info('appInfoTest xts upperCaseTest02 endTime:' + endTime53 + "us")
       let averageTime53 = endTime53 - startTime53
       console.info('appInfoTest xts upperCaseTest02 averageTime:' + averageTime53 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        upperCase('__foo_bar__')
+      }
+      endTime(startTime, 'upperCaseTest02');
     })
 
 
@@ -676,6 +950,11 @@ export default function stringTest() {
       console.info('appInfoTest xts upperFirstTest01 endTime:' + endTime54 + "us")
       let averageTime54 = endTime54 - startTime54
       console.info('appInfoTest xts upperFirstTest01 averageTime:' + averageTime54 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        upperFirst('fred')
+      }
+      endTime(startTime, 'upperFirstTest01');
     })
 
 
@@ -687,6 +966,11 @@ export default function stringTest() {
       console.info('appInfoTest xts upperFirstTest02 endTime:' + endTime55 + "us")
       let averageTime55 = endTime55 - startTime55
       console.info('appInfoTest xts upperFirstTest02 averageTime:' + averageTime55 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        upperFirst('FRED')
+      }
+      endTime(startTime, 'upperFirstTest02');
     })
 
 
@@ -698,6 +982,11 @@ export default function stringTest() {
       console.info('appInfoTest xts wordsTest01 endTime:' + endTime56 + "us")
       let averageTime56 = endTime56 - startTime56
       console.info('appInfoTest xts wordsTest01 averageTime:' + averageTime56 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        words('fred, barney, & pebbles')
+      }
+      endTime(startTime, 'wordsTest01');
     })
 
 
@@ -709,6 +998,19 @@ export default function stringTest() {
       console.info('appInfoTest xts wordsTest02 endTime:' + endTime57 + "us")
       let averageTime57 = endTime57 - startTime57
       console.info('appInfoTest xts wordsTest02 averageTime:' + averageTime57 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        words('fred, barney, & pebbles', '&')
+      }
+      endTime(startTime, 'wordsTest02');
     })
   })
+}
+
+function endTime(startTime: number, tag: string) {
+  let endTime: number = new Date().getTime();
+  let averageTime = ((endTime - startTime) * 1000 / BASE_COUNT)
+  console.info(tag + " startTime: " + endTime)
+  console.info(tag + " endTime: " + endTime)
+  console.log(tag + " averageTime: " + averageTime + "μs");
 }

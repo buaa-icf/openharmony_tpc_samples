@@ -37,6 +37,8 @@ import { countBy, every, filter, find, findLast, flatMap, flatMapDeep, flatMapDe
   sortBy
 } from 'lodash';
 
+const BASE_COUNT: number = 2000;
+
 export default function collectionTest() {
   describe('CollectionTestTest', () => {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
@@ -96,6 +98,11 @@ export default function collectionTest() {
       console.info('appInfoTest xts countByTest01 endTime:' + endTime0 + "us")
       let averageTime0 = endTime0 - startTime0
       console.info('appInfoTest xts countByTest01 averageTime:' + averageTime0 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        countBy([6.1, 4.2, 6.3], Math.floor);
+      }
+      endTime(startTime, 'countByTest01');
       expect(JSON.stringify(countByObject)).assertEqual('{"4":1,"6":2}')
     })
 
@@ -109,6 +116,11 @@ export default function collectionTest() {
       console.info('appInfoTest xts countByTest02 endTime:' + endTime1 + "us")
       let averageTime1 = endTime1 - startTime1
       console.info('appInfoTest xts countByTest02 averageTime:' + averageTime1 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        countBy(['one', 'two', 'three'], 'length');
+      }
+      endTime(startTime, 'countByTest02');
       expect(JSON.stringify(countByObject)).assertEqual('{"3":2,"5":1}')
     })
 
@@ -122,6 +134,11 @@ export default function collectionTest() {
       console.info('appInfoTest xts everyTest01 endTime:' + endTime2 + "us")
       let averageTime2 = endTime2 - startTime2
       console.info('appInfoTest xts everyTest01 averageTime:' + averageTime2 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        every([true, 1, null, 'yes'], Boolean);
+      }
+      endTime(startTime, 'everyTest01');
       expect(everyObject).assertFalse()
     })
 
@@ -147,6 +164,11 @@ export default function collectionTest() {
       console.info('appInfoTest xts everyTest02 endTime:' + endTime3 + "us")
       let averageTime3 = endTime3 - startTime3
       console.info('appInfoTest xts everyTest02 averageTime:' + averageTime3 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        every(users, ['active', false]);
+      }
+      endTime(startTime, 'everyTest02');
       expect(everyObject).assertTrue()
     })
 
@@ -174,6 +196,13 @@ export default function collectionTest() {
       console.info('appInfoTest xts filterTest01 endTime:' + endTime4 + "us")
       let averageTime4 = endTime4 - startTime4
       console.info('appInfoTest xts filterTest01 averageTime:' + averageTime4 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        filter(users, (o: User) => {
+          return !o.active;
+        });
+      }
+      endTime(startTime, 'filterTest01');
       expect(JSON.stringify(filterObject)).assertEqual('[{"user":"fred","age":40,"active":false}]')
     })
 
@@ -201,6 +230,13 @@ export default function collectionTest() {
       console.info('appInfoTest xts filterTest02 endTime:' + endTime5 + "us")
       let averageTime5 = endTime5 - startTime5
       console.info('appInfoTest xts filterTest02 averageTime:' + averageTime5 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        filter(users, {
+          'age': 36, 'active': true
+        });
+      }
+      endTime(startTime, 'filterTest02');
       expect(JSON.stringify(filterObject)).assertEqual('[{"user":"barney","age":36,"active":true}]')
     })
 
@@ -232,6 +268,13 @@ export default function collectionTest() {
       console.info('appInfoTest xts findTest01 endTime:' + endTime6 + "us")
       let averageTime6 = endTime6 - startTime6
       console.info('appInfoTest xts findTest01 averageTime:' + averageTime6 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        find(users, (o: User) => {
+          return o.age < 40;
+        });
+      }
+      endTime(startTime, 'findTest01');
       expect(JSON.stringify(findObject)).assertEqual('{"user":"barney","age":36,"active":true}')
     })
 
@@ -261,6 +304,11 @@ export default function collectionTest() {
       console.info('appInfoTest xts findTest02 endTime:' + endTime7 + "us")
       let averageTime7 = endTime7 - startTime7
       console.info('appInfoTest xts findTest02 averageTime:' + averageTime7 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        find(users, ['active', false]);
+      }
+      endTime(startTime, 'findTest02');
       expect(JSON.stringify(findObject)).assertEqual('{"user":"fred","age":40,"active":false}')
     })
 
@@ -278,6 +326,13 @@ export default function collectionTest() {
       console.info('appInfoTest xts findLastTest01 endTime:' + endTime8 + "us")
       let averageTime8 = endTime8 - startTime8
       console.info('appInfoTest xts findLastTest01 averageTime:' + averageTime8 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        findLast([1, 2, 3, 4], (n: number) => {
+          return n % 2 == 1;
+        });
+      }
+      endTime(startTime, 'findLastTest01');
       expect(findLastObject).assertEqual(3)
     })
 
@@ -295,6 +350,13 @@ export default function collectionTest() {
       console.info('appInfoTest xts findLastTest02 endTime:' + endTime9 + "us")
       let averageTime9 = endTime9 - startTime9
       console.info('appInfoTest xts findLastTest02 averageTime:' + averageTime9 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        findLast([6, 5, 6, 8, 4, 88, 23, 25, 48], (n: number) => {
+          return n % 2 == 0;
+        })
+      }
+      endTime(startTime, 'findLastTest02');
       expect(findLastObject).assertEqual(48)
     })
 
@@ -314,6 +376,11 @@ export default function collectionTest() {
       console.info('appInfoTest xts flatMapTest01 endTime:' + endTime10 + "us")
       let averageTime10 = endTime10 - startTime10
       console.info('appInfoTest xts flatMapTest01 averageTime:' + averageTime10 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        flatMap([1, 2], duplicate);
+      }
+      endTime(startTime, 'flatMapTest01');
       expect(JSON.stringify(flatMapObject)).assertEqual('[1,1,2,2]')
     })
 
@@ -333,6 +400,11 @@ export default function collectionTest() {
       console.info('appInfoTest xts flatMapTest02 endTime:' + endTime11 + "us")
       let averageTime11 = endTime11 - startTime11
       console.info('appInfoTest xts flatMapTest02 averageTime:' + averageTime11 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        flatMap([43, 62], duplicate);
+      }
+      endTime(startTime, 'flatMapTest02');
       expect(JSON.stringify(flatMapObject)).assertEqual('[43,43,62,62]')
     })
 
@@ -352,6 +424,11 @@ export default function collectionTest() {
       console.info('appInfoTest xts flatMapDeepTest01 endTime:' + endTime12 + "us")
       let averageTime12 = endTime12 - startTime12
       console.info('appInfoTest xts flatMapDeepTest01 averageTime:' + averageTime12 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        flatMapDeep([1, 2], duplicate);
+      }
+      endTime(startTime, 'flatMapDeepTest01');
       expect(JSON.stringify(flatMapDeepObject)).assertEqual('[1,1,2,2]')
     })
 
@@ -371,6 +448,11 @@ export default function collectionTest() {
       console.info('appInfoTest xts flatMapDeepTest02 endTime:' + endTime13 + "us")
       let averageTime13 = endTime13 - startTime13
       console.info('appInfoTest xts flatMapDeepTest02 averageTime:' + averageTime13 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        flatMapDeep([87, 72], duplicate);
+      }
+      endTime(startTime, 'flatMapDeepTest02');
       expect(JSON.stringify(flatMapDeepObject)).assertEqual('[87,87,72,72]')
     })
 
@@ -390,6 +472,11 @@ export default function collectionTest() {
       console.info('appInfoTest xts flatMapDepthTest01 endTime:' + endTime14 + "us")
       let averageTime14 = endTime14 - startTime14
       console.info('appInfoTest xts flatMapDepthTest01 averageTime:' + averageTime14 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        flatMapDepth([1, 2], duplicate, 2);
+      }
+      endTime(startTime, 'flatMapDepthTest01');
       expect(JSON.stringify(flatMapDepthObject)).assertEqual('[[1,1],[2,2]]')
     })
 
@@ -409,6 +496,11 @@ export default function collectionTest() {
       console.info('appInfoTest xts flatMapDepthTest02 endTime:' + endTime15 + "us")
       let averageTime15 = endTime15 - startTime15
       console.info('appInfoTest xts flatMapDepthTest02 averageTime:' + averageTime15 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        flatMapDepth([23, 8], duplicate, 3);
+      }
+      endTime(startTime, 'flatMapDepthTest02');
       expect(JSON.stringify(flatMapDepthObject)).assertEqual('[23,23,8,8]')
     })
 
@@ -422,6 +514,11 @@ export default function collectionTest() {
       console.info('appInfoTest xts groupByTest01 endTime:' + endTime16 + "us")
       let averageTime16 = endTime16 - startTime16
       console.info('appInfoTest xts groupByTest01 averageTime:' + averageTime16 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        groupBy([6.1, 4.2, 6.3], Math.floor);
+      }
+      endTime(startTime, 'groupByTest01');
       expect(JSON.stringify(groupByObject)).assertEqual('{"4":[4.2],"6":[6.1,6.3]}')
     })
 
@@ -435,6 +532,11 @@ export default function collectionTest() {
       console.info('appInfoTest xts groupByTest02 endTime:' + endTime17 + "us")
       let averageTime17 = endTime17 - startTime17
       console.info('appInfoTest xts groupByTest02 averageTime:' + averageTime17 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        groupBy(['one', 'two', 'three'], 'length');
+      }
+      endTime(startTime, 'groupByTest02');
       expect(JSON.stringify(groupByObject)).assertEqual('{"3":["one","two"],"5":["three"]}')
     })
 
@@ -448,6 +550,11 @@ export default function collectionTest() {
       console.info('appInfoTest xts includesTest01 endTime:' + endTime18 + "us")
       let averageTime18 = endTime18 - startTime18
       console.info('appInfoTest xts includesTest01 averageTime:' + averageTime18 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        includes([1, 2, 3], 1);
+      }
+      endTime(startTime, 'includesTest01');
       expect(includesObject).assertTrue();
     })
 
@@ -461,6 +568,11 @@ export default function collectionTest() {
       console.info('appInfoTest xts includesTest02 endTime:' + endTime19 + "us")
       let averageTime19 = endTime19 - startTime19
       console.info('appInfoTest xts includesTest02 averageTime:' + averageTime19 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        includes([1, 2, 3], 1, 2);
+      }
+      endTime(startTime, 'includesTest02');
       expect(includesObject).assertFalse();
     })
 
@@ -474,6 +586,11 @@ export default function collectionTest() {
       console.info('appInfoTest xts invokeMapTest01 endTime:' + endTime20 + "us")
       let averageTime20 = endTime20 - startTime20
       console.info('appInfoTest xts invokeMapTest01 averageTime:' + averageTime20 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        invokeMap([123, 456], '');
+      }
+      endTime(startTime, 'invokeMapTest01');
       expect(JSON.stringify(invokeMapObject)).assertEqual('[null,null]');
     })
 
@@ -487,6 +604,11 @@ export default function collectionTest() {
       console.info('appInfoTest xts invokeMapTest02 endTime:' + endTime21 + "us")
       let averageTime21 = endTime21 - startTime21
       console.info('appInfoTest xts invokeMapTest02 averageTime:' + averageTime21 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        invokeMap([[5, 1, 7], [3, 2, 1]], 'sort');
+      }
+      endTime(startTime, 'invokeMapTest02');
       expect(JSON.stringify(invokeMapObject)).assertEqual('[[1,5,7],[1,2,3]]');
     })
 
@@ -516,6 +638,13 @@ export default function collectionTest() {
       console.info('appInfoTest xts keyByTest01 endTime:' + endTime22 + "us")
       let averageTime22 = endTime22 - startTime22
       console.info('appInfoTest xts keyByTest01 averageTime:' + averageTime22 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        keyBy(array, (o: Array) => {
+          return String.fromCharCode(o.code);
+        });
+      }
+      endTime(startTime, 'keyByTest01');
       expect(JSON.stringify(keyByObject)).assertEqual('{"a":{"dir":"left","code":97},"d":{"dir":"right","code":100}}');
     })
 
@@ -541,6 +670,11 @@ export default function collectionTest() {
       console.info('appInfoTest xts keyByTest02 endTime:' + endTime23 + "us")
       let averageTime23 = endTime23 - startTime23
       console.info('appInfoTest xts keyByTest02 averageTime:' + averageTime23 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        keyBy(array, 'dir');
+      }
+      endTime(startTime, 'keyByTest02');
       expect(JSON.stringify(keyByObject))
         .assertEqual('{"left":{"dir":"left","code":97},"right":{"dir":"right","code":100}}');
     })
@@ -561,6 +695,11 @@ export default function collectionTest() {
       console.info('appInfoTest xts mapTest01 endTime:' + endTime24 + "us")
       let averageTime24 = endTime24 - startTime24
       console.info('appInfoTest xts mapTest01 averageTime:' + averageTime24 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        map([4, 8], square);
+      }
+      endTime(startTime, 'mapTest01');
       expect(JSON.stringify(mapObject)).assertEqual('[16,64]');
     })
 
@@ -586,6 +725,11 @@ export default function collectionTest() {
       console.info('appInfoTest xts mapTest02 endTime:' + endTime25 + "us")
       let averageTime25 = endTime25 - startTime25
       console.info('appInfoTest xts mapTest02 averageTime:' + averageTime25 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        map(users, 'user');
+      }
+      endTime(startTime, 'mapTest02');
       expect(JSON.stringify(mapObject)).assertEqual('["barney","fred"]');
     })
 
@@ -619,6 +763,11 @@ export default function collectionTest() {
       console.info('appInfoTest xts orderByTest01 endTime:' + endTime26 + "us")
       let averageTime26 = endTime26 - startTime26
       console.info('appInfoTest xts orderByTest01 averageTime:' + averageTime26 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        orderBy(users, ['user', 'age'], ['asc', 'desc']);
+      }
+      endTime(startTime, 'orderByTest01');
       expect(JSON.stringify(orderByObject))
         .assertEqual('[{"user":"barney","age":36},{"user":"barney","age":34},{"user":"fred","age":48},{"user":"fred","age":40}]');
     })
@@ -655,6 +804,11 @@ export default function collectionTest() {
       console.info('appInfoTest xts orderByTest02 endTime:' + endTime27 + "us")
       let averageTime27 = endTime27 - startTime27
       console.info('appInfoTest xts orderByTest02 averageTime:' + averageTime27 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        orderBy(users, ['employee', 'salary'], ['asc', 'desc']);
+      }
+      endTime(startTime, 'orderByTest02');
       expect(JSON.stringify(orderByObject))
         .assertEqual('[{"employee":"hunny","salary":60000},{"employee":"hunny","salary":55000},{"employee":"munny","salary":40000},{"employee":"munny","salary":36000}]');
     })
@@ -687,6 +841,13 @@ export default function collectionTest() {
       console.info('appInfoTest xts partitionTest01 endTime:' + endTime28 + "us")
       let averageTime28 = endTime28 - startTime28
       console.info('appInfoTest xts partitionTest01 averageTime:' + averageTime28 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        partition(users, (o: User) => {
+          return o.active;
+        });
+      }
+      endTime(startTime, 'partitionTest01');
       expect(JSON.stringify(partitionObject))
         .assertEqual('[[{"user":"fred","age":40,"active":true}],[{"user":"barney","age":36,"active":false},{"user":"pebbles","age":1,"active":false}]]');
     })
@@ -717,6 +878,11 @@ export default function collectionTest() {
       console.info('appInfoTest xts partitionTest02 endTime:' + endTime29 + "us")
       let averageTime29 = endTime29 - startTime29
       console.info('appInfoTest xts partitionTest02 averageTime:' + averageTime29 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        partition(users, ['active', false]);
+      }
+      endTime(startTime, 'partitionTest02');
       expect(JSON.stringify(partitionObject))
         .assertEqual('[[{"user":"barney","age":36,"active":false},{"user":"pebbles","age":1,"active":false}],[{"user":"fred","age":40,"active":true}]]');
     })
@@ -735,6 +901,13 @@ export default function collectionTest() {
       console.info('appInfoTest xts reduceTest01 endTime:' + endTime30 + "us")
       let averageTime30 = endTime30 - startTime30
       console.info('appInfoTest xts reduceTest01 averageTime:' + averageTime30 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        reduce([1, 2], (sum: number, n: number) => {
+          return sum + n;
+        }, 0);
+      }
+      endTime(startTime, 'reduceTest01');
       expect(reduceObject).assertEqual(3);
     })
 
@@ -756,6 +929,16 @@ export default function collectionTest() {
       console.info('appInfoTest xts reduceTest02 endTime:' + endTime31 + "us")
       let averageTime31 = endTime31 - startTime31
       console.info('appInfoTest xts reduceTest02 averageTime:' + averageTime31 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        reduce({
+          'a': 1, 'b': 2, 'c': 1
+        }, (result: object, value: string, key: number) => {
+          (result[value] || (result[value] = [])).push(key);
+          return result;
+        }, {});
+      }
+      endTime(startTime, 'reduceTest02');
       expect(JSON.stringify(reduceObject)).assertEqual('{"1":["a","c"],"2":["b"]}');
     })
 
@@ -775,6 +958,13 @@ export default function collectionTest() {
       console.info('appInfoTest xts reduceRightTest01 endTime:' + endTime32 + "us")
       let averageTime32 = endTime32 - startTime32
       console.info('appInfoTest xts reduceRightTest01 averageTime:' + averageTime32 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        reduceRight(array, (flattened: number[], other: number[]) => {
+          return flattened.concat(other);
+        }, []);
+      }
+      endTime(startTime, 'reduceRightTest01');
       expect(JSON.stringify(reduceRightObject)).assertEqual('[4,5,2,3,0,1]');
     })
 
@@ -794,6 +984,13 @@ export default function collectionTest() {
       console.info('appInfoTest xts reduceRightTest02 endTime:' + endTime33 + "us")
       let averageTime33 = endTime33 - startTime33
       console.info('appInfoTest xts reduceRightTest02 averageTime:' + averageTime33 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        reduceRight(array, (flattened: number[], other: number[]) => {
+          return flattened.concat(other);
+        }, []);
+      }
+      endTime(startTime, 'reduceRightTest02');
       expect(JSON.stringify(reduceRightObject)).assertEqual('[4,35,7,12,33,8,54,45,1]');
     })
 
@@ -821,6 +1018,13 @@ export default function collectionTest() {
       console.info('appInfoTest xts rejectTest01 endTime:' + endTime34 + "us")
       let averageTime34 = endTime34 - startTime34
       console.info('appInfoTest xts rejectTest01 averageTime:' + averageTime34 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        reject(users, (o: User) => {
+          return !o.active;
+        });
+      }
+      endTime(startTime, 'rejectTest01');
       expect(JSON.stringify(rejectObject)).assertEqual('[{"user":"fred","age":40,"active":true}]');
     })
 
@@ -846,6 +1050,11 @@ export default function collectionTest() {
       console.info('appInfoTest xts rejectTest02 endTime:' + endTime35 + "us")
       let averageTime35 = endTime35 - startTime35
       console.info('appInfoTest xts rejectTest02 averageTime:' + averageTime35 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        reject(users, 'active');
+      }
+      endTime(startTime, 'rejectTest02');
       expect(JSON.stringify(rejectObject)).assertEqual('[{"user":"barney","age":36,"active":false}]');
     })
 
@@ -859,6 +1068,11 @@ export default function collectionTest() {
       console.info('appInfoTest xts sizeTest01 endTime:' + endTime36 + "us")
       let averageTime36 = endTime36 - startTime36
       console.info('appInfoTest xts sizeTest01 averageTime:' + averageTime36 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        size([1, 2, 3]);
+      }
+      endTime(startTime, 'sizeTest01');
       expect(sizeObject).assertEqual(3);
     })
 
@@ -874,6 +1088,13 @@ export default function collectionTest() {
       console.info('appInfoTest xts sizeTest02 endTime:' + endTime37 + "us")
       let averageTime37 = endTime37 - startTime37
       console.info('appInfoTest xts sizeTest02 averageTime:' + averageTime37 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        size({
+          'a': 1, 'b': 2
+        });
+      }
+      endTime(startTime, 'sizeTest02');
       expect(sizeObject).assertEqual(2);
     })
 
@@ -887,6 +1108,11 @@ export default function collectionTest() {
       console.info('appInfoTest xts someTest01 endTime:' + endTime38 + "us")
       let averageTime38 = endTime38 - startTime38
       console.info('appInfoTest xts someTest01 averageTime:' + averageTime38 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        some([null, 0, 'yes', false], Boolean);
+      }
+      endTime(startTime, 'someTest01');
       expect(someObject).assertTrue();
     })
 
@@ -914,6 +1140,13 @@ export default function collectionTest() {
       console.info('appInfoTest xts someTest02 endTime:' + endTime39 + "us")
       let averageTime39 = endTime39 - startTime39
       console.info('appInfoTest xts someTest02 averageTime:' + averageTime39 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        some(users, {
+          'user': 'barney', 'active': false
+        });
+      }
+      endTime(startTime, 'someTest02');
       expect(someObject).assertFalse();
     })
 
@@ -949,6 +1182,13 @@ export default function collectionTest() {
       console.info('appInfoTest xts sortByTest01 endTime:' + endTime40 + "us")
       let averageTime40 = endTime40 - startTime40
       console.info('appInfoTest xts sortByTest01 averageTime:' + averageTime40 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        sortBy(users, (o: Age) => {
+          return o.user;
+        });
+      }
+      endTime(startTime, 'sortByTest01');
       expect(JSON.stringify(sortByObject))
         .assertEqual('[{"user":"barney","age":36},{"user":"barney","age":34},{"user":"fred","age":48},{"user":"fred","age":40}]');
     })
@@ -978,8 +1218,23 @@ export default function collectionTest() {
       console.info('appInfoTest xts sortByTest02 endTime:' + endTime41 + "us")
       let averageTime41 = endTime41 - startTime41
       console.info('appInfoTest xts sortByTest02 averageTime:' + averageTime41 + "us")
+      let startTime = new Date().getTime();
+      for (let index = 0; index < BASE_COUNT; index++) {
+        sortBy(users, 'user', (o: Age) => {
+          return Math.floor(o.age / 10);
+        });
+      }
+      endTime(startTime, 'sortByTest02');
       expect(JSON.stringify(sortByObject))
         .assertEqual('[{"user":"barney","age":36},{"user":"barney","age":34},{"user":"fred","age":48},{"user":"fred","age":40}]');
     })
   })
+}
+
+function endTime(startTime: number, tag: string) {
+  let endTime: number = new Date().getTime();
+  let averageTime = ((endTime - startTime) * 1000 / BASE_COUNT)
+  console.info(tag + " startTime: " + endTime)
+  console.info(tag + " endTime: " + endTime)
+  console.log(tag + " averageTime: " + averageTime + "μs");
 }
