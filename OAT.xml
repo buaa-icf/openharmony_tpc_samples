@@ -240,6 +240,8 @@
 		<policyitem type="license" name="MIT" path="Intl_unified_numberformat/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
 		<policyitem type="license" name="MIT" path="lodash_Clonedeep/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
 		<policyitem type="license" name="MIT" path="lodash_IsEqual/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+		<policyitem type="license" name="MIT" path="babel-runtime/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+		<policyitem type="license" name="MIT" path="requires-port/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>	
 	    </policy>
         </policylist>
         <licensematcherlist>
