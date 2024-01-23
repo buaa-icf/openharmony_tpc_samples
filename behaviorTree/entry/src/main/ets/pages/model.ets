@@ -34,8 +34,8 @@ export const JSONData:ImportableJson = {
           name: "Tencent",
         },
         {
-          type: "Google",
-          name: "Google",
+          type: "GL",
+          name: "GL",
         },
       ],
     },
