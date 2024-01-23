@@ -15,6 +15,7 @@
 import { RUNNING, SUCCESS, FAILURE,Task,Decorator } from 'behaviortree'
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 import { Utils } from '../utils/Utils'
+const BASE_COUNT: number = 2000;
 export default function DecoratorTest() {
   // 通过
   describe('DecoratorTest', ()=> {
@@ -30,7 +31,11 @@ export default function DecoratorTest() {
       expect(decoratedTask.run({ result: SUCCESS })).assertEqual(SUCCESS)
 
       expect(decoratedTask.run({ result: FAILURE })).assertEqual(FAILURE)
-
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        decoratedTask.run({ result: SUCCESS })
+      }
+      endTime(startTime, 'does_nothing_by_itself');
     })
 
     it('can_have_a_start_and_end_callback',0, () => {
@@ -48,6 +53,19 @@ export default function DecoratorTest() {
 
       expect(blackboard.start).assertEqual(1)
       expect(blackboard.end).assertEqual(1)
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        decoratedTask.run(blackboard, { rerun: true })
+      }
+      endTime(startTime, 'can_have_a_start_and_end_callback');
     })
   })
+}
+
+function endTime(startTime: number, tag: string) {
+  console.log(tag + ":startTime:" + startTime)
+  let endTime: number = new Date().getTime();
+  let averageTime = ((endTime - startTime) * 1000 / BASE_COUNT)
+  console.log(tag + ":endTime:" + endTime)
+  console.log(tag + ":averageTime:" + averageTime + "μs");
 }

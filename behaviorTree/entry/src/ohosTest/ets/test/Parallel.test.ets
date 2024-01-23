@@ -18,7 +18,7 @@ import {
   SUCCESS,FAILURE as NO,RUNNING, FAILURE
 } from 'behaviortree'
 import { Task_1,Parallel_1 } from "../utils/constant";
-
+const BASE_COUNT: number = 2000;
 export default function ParallelTestDescribe() {
   // 通过
   describe('ParallelTest', () => {
@@ -60,6 +60,11 @@ export default function ParallelTestDescribe() {
       expect(countRunning).assertEqual(1);
       expect(countSuccess).assertEqual(2);
       expect(result).assertEqual(SUCCESS);
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        parallel.run()
+      }
+      endTime(startTime, 'runs_all_child_nodes_and_returns_running_child_index_as_long_as_one_node_is_running_and_none_are_failing');
     });
     it('returns_failure_if_one_task_is_failing',0, () => {
       const parallel = new Parallel_1({
@@ -70,6 +75,11 @@ export default function ParallelTestDescribe() {
       expect(countRunning).assertEqual(1);
       expect(countFail).assertEqual(1);
       expect(result).assertEqual(NO);
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        parallel.run()
+      }
+      endTime(startTime, 'returns_failure_if_one_task_is_failing');
     });
     it('returns_success_if_all_tasks_are_success',0, () => {
       const parallel = new Parallel_1({
@@ -78,7 +88,19 @@ export default function ParallelTestDescribe() {
       const result = parallel.run();
       expect(countSuccess).assertEqual(2);
       expect(result).assertEqual(SUCCESS);
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        parallel.run();
+      }
+      endTime(startTime, 'returns_success_if_all_tasks_are_success');
     });
 
   })
+}
+function endTime(startTime: number, tag: string) {
+  console.log(tag + ":startTime:" + startTime)
+  let endTime: number = new Date().getTime();
+  let averageTime = ((endTime - startTime) * 1000 / BASE_COUNT)
+  console.log(tag + ":endTime:" + endTime)
+  console.log(tag + ":averageTime:" + averageTime + "μs");
 }
