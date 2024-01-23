@@ -159,7 +159,7 @@ let  data:dataType[] = [
   { text:"91.将输入字符串转换为float，或者如果输入不是float则为NaN", str:'2.', mode:"toFloat" },
   { text:"92.删除未出现在白名单中的字符", str:'abcdef', str1:"abc",mode:"whitelist" },
   { text:"93.删除黑名单中出现的字符", str:'abcdef', str1:"abc",mode:"blacklist" },
-  { text:"94.将电子邮件地址规范化", str:'some.name@googleMail.com', mode:"normalizeEmail" },
+  { text:"94.将电子邮件地址规范化", str:'some.name@qq.com', mode:"normalizeEmail" },
   { text:"95.将输入字符串转换为布尔值", str:'true', mode:"toBoolean" },
   { text:"96.将输入字符串转换为日期，如果输入不是日期，则转换为null", str:'2022/05/07', mode:"toDate" }
 ]
