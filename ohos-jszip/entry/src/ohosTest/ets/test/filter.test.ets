@@ -14,7 +14,7 @@
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 import JSZip,{JSZipObject} from "jszip";
-
+const BASE_COUNT: number = 2000;
 export default function filterTest() {
   describe('filterTest', () => {
     it('Filtering_a_zip', 0, () => {
@@ -28,6 +28,13 @@ export default function filterTest() {
       expect(result.length).assertEqual(2);
       expect(result[0].name.indexOf(".txt") !== -1).assertTrue();
       expect(result[1].name.indexOf(".txt") !== -1).assertTrue();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        zip.filter((relativeFilename) => {
+          return relativeFilename.indexOf(".txt") !== -1;
+        });
+      }
+      endTime(startTime, 'Filtering_a_zip');
     })
     it('Filtering_a_zip_from_a_relative_path2', 0, () => {
 
@@ -48,6 +55,14 @@ export default function filterTest() {
       expect(count).assertEqual(3);
       expect(result?.length).assertEqual(1);
       expect(result && result.length && result[0].name).assertEqual("foo/3.log");
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        zip.folder("foo")?.filter((relativeFilename) => {
+          count++;
+          return relativeFilename.indexOf("3") !== -1;
+        });
+      }
+      endTime(startTime, 'Filtering_a_zip_from_a_relative_path2');
     })
 
     it('Filtering_a_zip_from_a_relative_path', 0, () => {
@@ -64,6 +79,22 @@ export default function filterTest() {
       });
       expect(result?.length).assertEqual(1);
       expect(result && result.length && result[0].name).assertEqual("foo/3.log");
+
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        zip.folder("foo")?.filter((relativeFilename, file) =>  {
+          return file.name.indexOf("3") !== -1;
+        });
+      }
+      endTime(startTime, 'Filtering_a_zip_from_a_relative_path');
     })
   })
+}
+
+function endTime(startTime: number, tag: string) {
+  console.log(tag + ":startTime:" + startTime)
+  let endTime: number = new Date().getTime();
+  let averageTime = ((endTime - startTime) * 1000 / BASE_COUNT)
+  console.log(tag + ":endTime:" + endTime)
+  console.log(tag + ":averageTime:" + averageTime + "μs");
 }

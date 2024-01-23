@@ -14,7 +14,7 @@
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 import JSZip from "jszip";
-
+const BASE_COUNT: number = 2000;
 const createZipAll =() => {
   const zip = new JSZip();
   zip.file("Hello.txt", "Hello World\n");
@@ -35,6 +35,11 @@ export default function forEachTest() {
       });
 
       expect(count).assertEqual(3);
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        zip.forEach(() => {});
+      }
+      endTime(startTime, 'forEach_works_on');
     })
 
     it('forEach_works_on_a_sub_folder', 0, () => {
@@ -54,6 +59,20 @@ export default function forEachTest() {
       });
 
       expect(count).assertEqual(3);
+
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        sub && sub.forEach(() => {});
+      }
+      endTime(startTime, 'forEach_works_on_a_sub_folder');
     })
   })
+}
+
+function endTime(startTime: number, tag: string) {
+  console.log(tag + ":startTime:" + startTime)
+  let endTime: number = new Date().getTime();
+  let averageTime = ((endTime - startTime) * 1000 / BASE_COUNT)
+  console.log(tag + ":endTime:" + endTime)
+  console.log(tag + ":averageTime:" + averageTime + "μs");
 }

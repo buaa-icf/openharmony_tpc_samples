@@ -14,21 +14,46 @@
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 import JSZip from "jszip";
+
+const BASE_COUNT: number = 2000;
 export default function constructorTest() {
   describe('constructorTest',  () => {
 
     it('JSZip_exists', 0, () => {
       expect(!!JSZip).assertTrue();
+
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        JSZip
+      }
+      endTime(startTime, 'JSZip_exists');
     })
 
     it('new_JSZip', 0, () => {
       const zip = new JSZip();
       expect(zip instanceof JSZip).assertTrue();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        new JSZip();
+      }
+      endTime(startTime, 'new_JSZip');
     })
 
     it('JSZip', 0, () => {
       const zip = JSZip();
       expect(zip instanceof JSZip).assertTrue();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        JSZip();
+      }
+      endTime(startTime, 'JSZip');
     })
   })
+}
+function endTime(startTime: number, tag: string) {
+  console.log(tag + ":startTime:" + startTime)
+  let endTime: number = new Date().getTime();
+  let averageTime = ((endTime - startTime) * 1000 / BASE_COUNT)
+  console.log(tag + ":endTime:" + endTime)
+  console.log(tag + ":averageTime:" + averageTime + "μs");
 }
