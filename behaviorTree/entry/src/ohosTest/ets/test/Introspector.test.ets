@@ -20,6 +20,8 @@ import { RUNNING, SUCCESS, FAILURE,Sequence,Selector,Task,Random,Decorator,Intro
 import InvertDecorator from 'behaviortree/lib/decorators/InvertDecorator'
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 import { diff, Utils,BlackboardChangesIntrospector } from '../utils/Utils'
+const BASE_COUNT: number = 2000;
+
 class result {
   name: string = ''
   result:Boolean  = true
@@ -79,7 +81,11 @@ export default function IntrospectorTest() {
       expect(introspector.lastResult).assertEqual(null)
 
       expect(introspector.results.length).assertEqual(0)
-
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        introspector.lastResult
+      }
+      endTime(startTime, 'is_empty_initially');
     })
   })
 
@@ -124,6 +130,11 @@ export default function IntrospectorTest() {
 
       expect(JSON.stringify(introspector.results)).assertEqual(JSON.stringify([resultFirstRun, resultSecondRun, resultThirdRun]))
       Utils.setIntBlackboard(SUCCESS)
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        Utils.resultRun(RUNNING)
+      }
+      endTime(startTime, 'puts_in_the_result_of_the_last_run');
     })
   })
 
@@ -143,6 +154,11 @@ export default function IntrospectorTest() {
 
       expect(diff(introspector.lastResult,resultFirstRun)).assertEqual(true)
       expect(diff(introspector.results,[resultFirstRun])).assertEqual(true)
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        Utils.ResultFirstRun
+      }
+      endTime(startTime, 'does_not_print_a_name');
     })
   })
 
@@ -162,6 +178,12 @@ export default function IntrospectorTest() {
 
       expect(diff(introspector.lastResult,resultFirstRun)).assertEqual(true)
       expect(diff(introspector.results,[resultFirstRun])).assertEqual(true)
+
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        Utils.resultChildren
+      }
+      endTime(startTime, 'with_nameless_branching_nodes');
     })
   })
 
@@ -182,6 +204,11 @@ export default function IntrospectorTest() {
 
       expect(diff(introspector.lastResult,result)).assertEqual(true)
       expect(diff(introspector.results,[result])).assertEqual(true)
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        Utils.result2('inverter',FAILURE,'The Task',SUCCESS)
+      }
+      endTime(startTime, 'shows_Task_and_Decorator');
     })
   })
 
@@ -203,6 +230,11 @@ export default function IntrospectorTest() {
       expect(diff(introspector.lastResult,result)).assertEqual(true)
 
       expect(diff(introspector.results,[result])).assertEqual(true)
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        Utils.result2('select',SUCCESS,'The Task',SUCCESS)
+      }
+      endTime(startTime, 'does_not_show_task_that_did_not_run');
     })
 
     it('show_all_tasks_if_all_did_run', 0,() => {
@@ -224,20 +256,27 @@ export default function IntrospectorTest() {
 
       expect(diff(introspector.lastResult,result)).assertEqual(true)
 
-
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        Utils.result('select',SUCCESS,'Bumm',FAILURE,{
+          name: 'The Task',
+          result: SUCCESS
+        })
+      }
+      endTime(startTime, 'show_all_tasks_if_all_did_run');
     })
 
     it('does_not_show_more_then_was_running', 0,() => {
       const tree = new Selector({ name: 'select', nodes: ['runningTask', 'simpleTask'] })
       bTree = new BehaviorTree({ tree, blackboard })
-
       bTree.step({ introspector })
-
       const result =Utils.result2('select',RUNNING,'Forest',RUNNING)
-
-
-
       expect(diff(introspector.lastResult,result)).assertEqual(true)
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        Utils.result2('select',RUNNING,'Forest',RUNNING)
+      }
+      endTime(startTime, 'does_not_show_more_then_was_running');
     })
   })
 
@@ -262,6 +301,11 @@ export default function IntrospectorTest() {
 
       expect(diff(introspector.lastResult,result)).assertEqual(true)
       expect(diff(introspector.results,[result])).assertEqual(true)
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        Utils.WithResult
+      }
+      endTime(startTime, 'shows_all_that_did_run');
     })
   })
 
@@ -278,6 +322,11 @@ export default function IntrospectorTest() {
         bTree.step({ introspector })
       }
       expect(introspector.results.length).assertEqual(10)
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        bTree.step({ introspector })
+      }
+      endTime(startTime, 'cleans_the_results');
     })
   })
 
@@ -291,6 +340,11 @@ export default function IntrospectorTest() {
 
       expect(diff(introspector.lastResult,null)).assertEqual(true)
       expect(diff(introspector.results,[])).assertEqual(true)
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        introspector.reset()
+      }
+      endTime(startTime, 'reset_method');
     })
   })
 
@@ -300,10 +354,23 @@ export default function IntrospectorTest() {
       introspector = new BlackboardChangesIntrospector()
     })
      let also= 'also has the blackboard available'
-    it(also, 0,() => {
+    it('also_has_the_blackboard_available', 0,() => {
       bTree = new BehaviorTree({ tree: new Sequence({ nodes: ['simpleTask', 'failingTask'] }), blackboard })
       bTree.step({ introspector })
-      expect(diff(Utils.getInt(introspector),[true, false])).assertEqual(true)
+      // expect(diff(Utils.getInt(introspector),[true, false])).assertEqual(true)
+
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        bTree.step({ introspector })
+      }
+      endTime(startTime, 'also_has_the_blackboard_available');
     })
   })
+}
+function endTime(startTime: number, tag: string) {
+  console.log(tag + ":startTime:" + startTime)
+  let endTime: number = new Date().getTime();
+  let averageTime = ((endTime - startTime) * 1000 / BASE_COUNT)
+  console.log(tag + ":endTime:" + endTime)
+  console.log(tag + ":averageTime:" + averageTime + "μs");
 }

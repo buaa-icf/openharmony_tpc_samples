@@ -17,7 +17,7 @@ import { RUNNING, SUCCESS, FAILURE, Sequence, Selector, Task, Decorator, Behavio
   RunResult } from 'behaviortree'
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 import { createTask, Utils } from '../utils/Utils'
-
+const BASE_COUNT: number = 2000;
 let bTree: BehaviorTree
 let blackboard: Blackboard
 
@@ -136,6 +136,11 @@ export default function BehaviorTreedescribe() {
     it('running_does_not_call_start_multiple_times', 0, () => {
       bTree.step()
 
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        bTree.step()
+      }
+      endTime(startTime, 'with_the_simplest_tree_possible1');
       expect(blackboard.start).assertEqual(1)
       expect(blackboard.run).assertEqual(1)
       expect(blackboard.end).assertEqual(0)
@@ -214,6 +219,11 @@ export default function BehaviorTreedescribe() {
       expect(blackboard.start).assertEqual(2)
       expect(blackboard.run).assertEqual(4)
       expect(blackboard.end).assertEqual(2)
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        blackboard.start
+      }
+      endTime(startTime, 'running_does_not_call_start_multiple_times');
     })
   })
 
@@ -257,6 +267,11 @@ export default function BehaviorTreedescribe() {
 
       expect(blackboard.taskA).assertEqual(1)
       expect(blackboard.taskB).assertEqual(1)
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        blackboard.taskA
+      }
+      endTime(startTime, 'looks_up_previously_registered_tasks');
     })
 
     it('can_use_function_shortcut_to_create_tasks_with_only_a_run_method', 0, () => {
@@ -275,6 +290,11 @@ export default function BehaviorTreedescribe() {
       expect(blackboard.taskA).assertEqual(1)
       expect(blackboard.taskB).assertEqual(0)
       expect(blackboard.taskC).assertEqual(1)
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        blackboard.taskA
+      }
+      endTime(startTime, 'can_use_function_shortcut_to_create_tasks_with_only_a_run_method');
     })
 
     it('can_be_erased', 0, () => {
@@ -290,6 +310,11 @@ export default function BehaviorTreedescribe() {
       expect(() => {
         bTree.step()
       }).assertThrowError('No node with name taskA registered.')
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        BehaviorTree.cleanRegistry()
+      }
+      endTime(startTime, 'can_be_erased');
     })
 
     it('can_load_tree_directly_as_registered_sequence', 0, () => {
@@ -304,7 +329,16 @@ export default function BehaviorTreedescribe() {
         tree: 'awesome behavior'
       })
       bTree.step()
-
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        BehaviorTree.register(
+          'awesome behavior',
+          new Sequence({
+            nodes: ['taskA', 'taskB', 'taskA']
+          })
+        )
+      }
+      endTime(startTime, 'can_load_tree_directly_as_registered_sequence');
       expect(blackboard.taskA).assertEqual(1)
       expect(blackboard.taskB).assertEqual(1)
     })
@@ -330,7 +364,16 @@ export default function BehaviorTreedescribe() {
         })
       })
       bTree.step()
-
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        new BehaviorTree({
+          blackboard,
+          tree: new Sequence({
+            nodes: ['mySequence']
+          })
+        })
+      }
+      endTime(startTime, 'looks_up_previously_registered_sequences_with_sub_sequences_as_well');
       expect(blackboard.taskA).assertEqual(1)
       expect(blackboard.taskB).assertEqual(1)
     })
@@ -345,6 +388,11 @@ export default function BehaviorTreedescribe() {
         })
       })
       bTree.step()
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        bTree.step()
+      }
+      endTime(startTime, 'looks_up_previously_registered_sequences_with_sub_sequences_as_well');
       console.log("testt testt " + blackboard.taskA)
       console.log("testt testt  " + blackboard.taskB)
       expect(blackboard.taskA).assertEqual(1)
@@ -419,7 +467,19 @@ export default function BehaviorTreedescribe() {
       })
 
       bTree.step()
-
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        new Sequence({
+          start: (blackboard: Blackboard) => {
+            ++blackboard.startSeq
+          },
+          end: (blackboard: Blackboard) => {
+            ++blackboard.endSeq
+          },
+          nodes: [task1, decoratedTask2, task3]
+        })
+      }
+      endTime(startTime, 'behavior_with_running_nodes');
       expect(blackboard.startSeq).assertEqual(1)
       expect(blackboard.endSeq).assertEqual(0)
 
@@ -520,6 +580,13 @@ export default function BehaviorTreedescribe() {
       let startEnd: Options ={a1start: 1,a1run: 2,a1end: 1,b1start: 1,b1run: 1,b1end: 1}
       expect(JSON.stringify(blackboard.result))
         .assertEqual(JSON.stringify(startEnd))
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        new Sequence({
+          nodes: [aSeq, bSeq]
+        })
+      }
+      endTime(startTime, 'start_of_second_sequence_is_called_after_first_reruns');
     })
   })
 }
@@ -531,4 +598,12 @@ interface Options {
   b1start?: number
   b1run?: number
   b1end?: number
+}
+
+function endTime(startTime: number, tag: string) {
+  console.log(tag + ":startTime:" + startTime)
+  let endTime: number = new Date().getTime();
+  let averageTime = ((endTime - startTime) * 1000 / BASE_COUNT)
+  console.log(tag + ":endTime:" + endTime)
+  console.log(tag + ":averageTime:" + averageTime + "μs");
 }
