@@ -41,6 +41,10 @@
                     desc="版权免责声明文件，无需修改"
                     name="LICENSE"
                     type="filename"/>
+                <filteritem
+                    desc="原库代码不做手动修改"
+                    name="xmldom/.*"
+                    type="filepath"/>
             </filefilter>
             <filefilter
                 desc="Filters for compatibility，license header policies"
@@ -81,6 +85,10 @@
                     desc="版权免责声明文件，无需修改"
                     name="LICENSE"
                     type="filename"/>
+                <filteritem
+                    desc="原库代码不做手动修改"
+                    name="xmldom/.*"
+                    type="filepath"/>
             </filefilter>
             <filefilter
                 desc="Filters for resources files policies"

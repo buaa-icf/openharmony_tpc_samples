@@ -87,7 +87,7 @@ struct Index {
     console.info("- Test to unit system lib.dow.d.ts of  getElementsByTagNameNS(namespaceURI: string, localName: string)-");
     let dataStr = this.readerFile(this.filePath + "/test", "mimetype");
     let domParser: DOMParser = new DOMParser();
-    let result: Document= domParser.parseFromString(dataStr + "");
+    let result: ESObject = domParser.parseFromString(dataStr + "");
     this.text = result.toString();
   }
 

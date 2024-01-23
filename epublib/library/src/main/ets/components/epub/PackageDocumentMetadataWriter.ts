@@ -46,8 +46,8 @@ class PackageDocumentMetadataWriter extends PackageDocumentBase {
 	 * @throws IllegalStateException
 	 * @throws IllegalArgumentException
 	 */
-	public static writeMetaData(book : Book, parentElement:Element, document:Document) : void  {
-		let metadataElement:Element = document.createElementNS(PackageDocumentBase.NAMESPACE_OPF, OPFTags.metadata);
+	public static writeMetaData(book : Book, parentElement:ESObject, document:ESObject) : void  {
+		let metadataElement:ESObject = document.createElementNS(PackageDocumentBase.NAMESPACE_OPF, OPFTags.metadata);
 		metadataElement.setAttribute("xmlns:" + PackageDocumentBase.PREFIX_DUBLIN_CORE, PackageDocumentBase.NAMESPACE_DUBLIN_CORE);
 		metadataElement.setAttribute("xmlns:" + PackageDocumentBase.PREFIX_OPF, PackageDocumentBase.NAMESPACE_OPF);
 
@@ -61,7 +61,7 @@ class PackageDocumentMetadataWriter extends PackageDocumentBase {
 
 		// write authors
 		for(let author of book.getMetadata().getAuthors()) {
-      let creatorElement:Element = document.createElementNS(PackageDocumentBase.NAMESPACE_DUBLIN_CORE, DCTags.creator);
+      let creatorElement:ESObject = document.createElementNS(PackageDocumentBase.NAMESPACE_DUBLIN_CORE, DCTags.creator);
 		  creatorElement.setAttributeNS(PackageDocumentBase.NAMESPACE_OPF, OPFAttributes.role, author.getRelator().getCode());
 		  creatorElement.setAttributeNS(PackageDocumentBase.NAMESPACE_OPF, OPFAttributes.file_as, author.getLastname() + ", " + author.getFirstname());
 		  creatorElement.textContent = author.getFirstname() + " " + author.getLastname();
@@ -70,7 +70,7 @@ class PackageDocumentMetadataWriter extends PackageDocumentBase {
 
 		// write contributors
 		for(let author of book.getMetadata().getContributors()) {
-      let contributorElement:Element = document.createElementNS(PackageDocumentBase.NAMESPACE_DUBLIN_CORE, DCTags.contributor);
+      let contributorElement:ESObject = document.createElementNS(PackageDocumentBase.NAMESPACE_DUBLIN_CORE, DCTags.contributor);
 		  contributorElement.setAttributeNS(PackageDocumentBase.NAMESPACE_OPF, OPFAttributes.role, author.getRelator().getCode());
 		  contributorElement.setAttributeNS(PackageDocumentBase.NAMESPACE_OPF, OPFAttributes.file_as, author.getLastname() + ", " + author.getFirstname());
 		  contributorElement.textContent = author.getFirstname() + " " + author.getLastname();
@@ -79,7 +79,7 @@ class PackageDocumentMetadataWriter extends PackageDocumentBase {
 
 		// write dates
 		for (let date of book.getMetadata().getDates()) {
-      let dateElement:Element = document.createElementNS(PackageDocumentBase.NAMESPACE_DUBLIN_CORE, DCTags.date);
+      let dateElement:ESObject = document.createElementNS(PackageDocumentBase.NAMESPACE_DUBLIN_CORE, DCTags.date);
       if (date.getEvent() != null) {
         dateElement.setAttributeNS(PackageDocumentBase.NAMESPACE_OPF, OPFAttributes.event, date.getEvent().toString());
       }
@@ -89,7 +89,7 @@ class PackageDocumentMetadataWriter extends PackageDocumentBase {
 
 		// write language
 		if(StringUtil.isNotBlank(book.getMetadata().getLanguage())) {
-			let languageElement: Element = document.createElementNS(PackageDocumentBase.NAMESPACE_DUBLIN_CORE, "language");
+			let languageElement:ESObject = document.createElementNS(PackageDocumentBase.NAMESPACE_DUBLIN_CORE, "language");
 			languageElement.textContent = book.getMetadata().getLanguage();
 			metadataElement.appendChild(languageElement);
 		}
@@ -97,7 +97,7 @@ class PackageDocumentMetadataWriter extends PackageDocumentBase {
 		// write other properties
 		if(book.getMetadata().getOtherProperties() != null) {
 			book.getMetadata().getOtherProperties().forEach((value, key)=>{
-				let metaElement: Element = document.createElementNS(PackageDocumentBase.NAMESPACE_DUBLIN_CORE, OPFTags.meta);
+				let metaElement:ESObject = document.createElementNS(PackageDocumentBase.NAMESPACE_DUBLIN_CORE, OPFTags.meta);
 				metaElement.setAttributeNS(EpubWriter.EMPTY_NAMESPACE_PREFIX, OPFAttributes.property, key);
 				metaElement.textContent = value;
 				metadataElement.appendChild(metaElement);
@@ -106,14 +106,14 @@ class PackageDocumentMetadataWriter extends PackageDocumentBase {
 
 		// write coverimage
 		if(book.getCoverImage() != null) { // write the cover image
-			let metaElement: Element = document.createElementNS(PackageDocumentBase.NAMESPACE_OPF, OPFTags.meta);
+			let metaElement:ESObject = document.createElementNS(PackageDocumentBase.NAMESPACE_OPF, OPFTags.meta);
 			metaElement.setAttributeNS(EpubWriter.EMPTY_NAMESPACE_PREFIX, OPFAttributes.name, OPFValues.meta_cover);
 			metaElement.setAttributeNS(EpubWriter.EMPTY_NAMESPACE_PREFIX, OPFAttributes.content, book.getCoverImage().getId());
 			metadataElement.appendChild(metaElement);
 		}
 
 		// write generator
-		let metaElement: Element = document.createElementNS(PackageDocumentBase.NAMESPACE_OPF, OPFTags.meta);
+		let metaElement:ESObject = document.createElementNS(PackageDocumentBase.NAMESPACE_OPF, OPFTags.meta);
 		metaElement.setAttributeNS(EpubWriter.EMPTY_NAMESPACE_PREFIX, OPFAttributes.name, OPFValues.generator);
 		metaElement.setAttributeNS(EpubWriter.EMPTY_NAMESPACE_PREFIX, OPFAttributes.content, Constants.EPUBLIB_GENERATOR_NAME);
 		metadataElement.appendChild(metaElement);
@@ -121,12 +121,12 @@ class PackageDocumentMetadataWriter extends PackageDocumentBase {
 		parentElement.appendChild(metadataElement);
 	}
 
-	private static writeSimpleMetdataElements(tagName:string, values:string[], parentElement:Element, document:Document) : void {
+	private static writeSimpleMetdataElements(tagName:string, values:string[], parentElement:ESObject, document:ESObject) : void {
 		for(let value of values) {
 			if (StringUtil.isBlank(value)) {
 				continue;
 			}
-			let tagElement: Element = document.createElementNS(PackageDocumentBase.NAMESPACE_DUBLIN_CORE, tagName);
+			let tagElement:ESObject = document.createElementNS(PackageDocumentBase.NAMESPACE_DUBLIN_CORE, tagName);
 			tagElement.textContent = value;
 			parentElement.appendChild(tagElement);
 		}
@@ -145,13 +145,13 @@ class PackageDocumentMetadataWriter extends PackageDocumentBase {
 	 * @
 	 */
 
-	private static writeIdentifiers(identifiers:Identifier[], parentElement:Element, document:Document) : void {
+	private static writeIdentifiers(identifiers:Identifier[], parentElement:ESObject, document:ESObject) : void {
 		let bookIdIdentifier : Identifier = Identifier.getBookIdIdentifier(identifiers);
 		if(bookIdIdentifier == null) {
 			return;
 		}
 
-		let identifierElement: Element = document.createElementNS(PackageDocumentBase.NAMESPACE_DUBLIN_CORE, DCTags.identifier);
+		let identifierElement:ESObject = document.createElementNS(PackageDocumentBase.NAMESPACE_DUBLIN_CORE, DCTags.identifier);
 		identifierElement.setAttributeNS(EpubWriter.EMPTY_NAMESPACE_PREFIX, DCAttributes.id, PackageDocumentBase.BOOK_ID_ID);
 		identifierElement.setAttributeNS(PackageDocumentBase.NAMESPACE_OPF, OPFAttributes.scheme, bookIdIdentifier.getScheme());
 		identifierElement.textContent = bookIdIdentifier.getValue();
@@ -161,7 +161,7 @@ class PackageDocumentMetadataWriter extends PackageDocumentBase {
 			if(identifier == bookIdIdentifier) {
 				continue;
 			}
-			let tmpElement: Element = document.createElementNS(PackageDocumentBase.NAMESPACE_DUBLIN_CORE, DCTags.identifier);
+			let tmpElement:ESObject = document.createElementNS(PackageDocumentBase.NAMESPACE_DUBLIN_CORE, DCTags.identifier);
 			tmpElement.setAttributeNS(PackageDocumentBase.NAMESPACE_OPF, "scheme", identifier.getScheme());
 			tmpElement.textContent = identifier.getValue();
 			parentElement.appendChild(tmpElement);

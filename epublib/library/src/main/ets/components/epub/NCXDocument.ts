@@ -61,7 +61,7 @@ class NCXDocument {
                 return ncxResource;
             }
             console.debug("-----------NXCDocument.ets---read------ResourceUtil.getAsDocument---------" + ncxResource.toString())
-            let ncxDocument: Document = ResourceUtil.getAsDocument(ncxResource);
+            let ncxDocument: ESObject = ResourceUtil.getAsDocument(ncxResource);
 
             let navMapElement = DOMUtil.getFirstElementByTagNameNS(ncxDocument.documentElement, NCXDocument.NAMESPACE_NCX, NCXTags.navMap);
             let tableOfContents = new TableOfContents(NCXDocument.readTOCReferences(navMapElement.childNodes, book));
@@ -73,26 +73,26 @@ class NCXDocument {
         return ncxResource;
     }
 
-    private static readTOCReferences(navPoints: NodeList, book: Book): TOCReference[] {
+    private static readTOCReferences(navPoints: ESObject, book: Book): TOCReference[] {
         if (navPoints == null) {
             return new Array<TOCReference>();
         }
         let result: Array<TOCReference> = new Array<TOCReference>();
         for (let i = 0; i < navPoints.length; i++) {
-            let node: Node = navPoints.item(i);
+            let node: ESObject = navPoints.item(i);
             if (node.nodeType != 1) { // Node.ELEMENT_NODE == 1
                 continue;
             }
             if (node.nodeName != NCXTags.navPoint) {
                 continue;
             }
-            let tocReference: TOCReference = NCXDocument.readTOCReference(<Element> node, book);
+            let tocReference: TOCReference = NCXDocument.readTOCReference(<ESObject> node, book);
             result.push(tocReference);
         }
         return result;
     }
 
-    private static readTOCReference(navPointElement: Element, book: Book): TOCReference {
+    private static readTOCReference(navPointElement: ESObject, book: Book): TOCReference {
         let label: string = NCXDocument.readNavLabel(navPointElement);
         let tocResourceRoot: string = StringUtil.substringBeforeLast(book.getSpine().getTocResource().getHref(), '/');
         if (tocResourceRoot.length == book.getSpine().getTocResource().getHref().length) {
@@ -113,8 +113,8 @@ class NCXDocument {
         return result;
     }
 
-    private static readNavReference(navPointElement: Element): string {
-        let contentElement: Element = DOMUtil.getFirstElementByTagNameNS(navPointElement, NCXDocument.NAMESPACE_NCX, NCXTags.content);
+    private static readNavReference(navPointElement: ESObject): string {
+        let contentElement: ESObject = DOMUtil.getFirstElementByTagNameNS(navPointElement, NCXDocument.NAMESPACE_NCX, NCXTags.content);
         let result: string = DOMUtil.getAttribute(contentElement, NCXDocument.NAMESPACE_NCX, NCXAttributes.src);
         try {
             result = decodeURI(result);
@@ -124,8 +124,8 @@ class NCXDocument {
         return result;
     }
 
-    private static readNavLabel(navPointElement: Element): string {
-        let navLabel: Element = DOMUtil.getFirstElementByTagNameNS(navPointElement, NCXDocument.NAMESPACE_NCX, NCXTags.navLabel);
+    private static readNavLabel(navPointElement: ESObject): string {
+        let navLabel: ESObject = DOMUtil.getFirstElementByTagNameNS(navPointElement, NCXDocument.NAMESPACE_NCX, NCXTags.navLabel);
         return DOMUtil.getTextChildrenContent(DOMUtil.getFirstElementByTagNameNS(navLabel, NCXDocument.NAMESPACE_NCX, NCXTags.text));
     }
 
@@ -153,12 +153,12 @@ class NCXDocument {
 
     public static writeInner(fd: number, identifiers: Identifier[], title: string, authors: Author[], tableOfContents: TableOfContents): void {
         let domParser = new DOMParser();
-        let document: Document = domParser.parseFromString("<?xml encoding='" + Constants.CHARACTER_ENCODING + "'?>");
+        let document: ESObject = domParser.parseFromString("<?xml encoding='" + Constants.CHARACTER_ENCODING + "'?>");
 
-        let root: Element = document.createElementNS(NCXDocument.NAMESPACE_NCX, NCXTags.ncx);
+        let root: ESObject = document.createElementNS(NCXDocument.NAMESPACE_NCX, NCXTags.ncx);
         root.setAttribute("xmlns" + EpubWriter.EMPTY_NAMESPACE_PREFIX, NCXDocument.NAMESPACE_NCX);
         root.setAttributeNS(EpubWriter.EMPTY_NAMESPACE_PREFIX, NCXAttributes.version, NCXAttributeValues.version);
-        let headElement: Element = document.createElementNS(NCXDocument.NAMESPACE_NCX, NCXTags.head);
+        let headElement: ESObject = document.createElementNS(NCXDocument.NAMESPACE_NCX, NCXTags.head);
 
         for (let identifier of identifiers) {
             NCXDocument.writeMetaElement(identifier.getScheme(), identifier.getValue(), headElement, document);
@@ -171,22 +171,22 @@ class NCXDocument {
 
         root.appendChild(headElement);
 
-        let docTitleElement: Element = document.createElementNS(NCXDocument.NAMESPACE_NCX, NCXTags.docTitle);
-        let textElement: Element = document.createElementNS(NCXDocument.NAMESPACE_NCX, NCXTags.text);
+        let docTitleElement: ESObject = document.createElementNS(NCXDocument.NAMESPACE_NCX, NCXTags.docTitle);
+        let textElement: ESObject = document.createElementNS(NCXDocument.NAMESPACE_NCX, NCXTags.text);
         // write the first title
         textElement.textContent = StringUtil.defaultIfNull(title);
         docTitleElement.appendChild(textElement);
         root.appendChild(docTitleElement);
 
         for (let author of authors) {
-            let docAuthorElement: Element = document.createElementNS(NCXDocument.NAMESPACE_NCX, NCXTags.docAuthor);
-            let textElement: Element = document.createElementNS(NCXDocument.NAMESPACE_NCX, NCXTags.text);
+            let docAuthorElement: ESObject = document.createElementNS(NCXDocument.NAMESPACE_NCX, NCXTags.docAuthor);
+            let textElement: ESObject = document.createElementNS(NCXDocument.NAMESPACE_NCX, NCXTags.text);
             textElement.textContent = author.getLastname() + ", " + author.getFirstname();
             docAuthorElement.appendChild(textElement);
             root.appendChild(docAuthorElement);
         }
 
-        let navMapElement: Element = document.createElementNS(NCXDocument.NAMESPACE_NCX, NCXTags.navMap);
+        let navMapElement: ESObject = document.createElementNS(NCXDocument.NAMESPACE_NCX, NCXTags.navMap);
         NCXDocument.writeNavPoints(tableOfContents.getTocReferences(), 1, navMapElement, document);
         root.appendChild(navMapElement);
 
@@ -198,14 +198,14 @@ class NCXDocument {
         let num = fs.writeSync(fd, xmlDocument);
     }
 
-    private static writeMetaElement(dtbName: string, content: string, parentElement: Element, document: Document): void   {
-        let metaElement: Element = document.createElementNS(NCXDocument.NAMESPACE_NCX, NCXTags.meta);
+    private static writeMetaElement(dtbName: string, content: string, parentElement:ESObject, document:ESObject): void   {
+        let metaElement: ESObject = document.createElementNS(NCXDocument.NAMESPACE_NCX, NCXTags.meta);
         metaElement.setAttributeNS(EpubWriter.EMPTY_NAMESPACE_PREFIX, NCXAttributes.name, NCXDocument.PREFIX_DTB + ":" + dtbName);
         metaElement.setAttributeNS(EpubWriter.EMPTY_NAMESPACE_PREFIX, NCXAttributes.content, content);
         parentElement.appendChild(metaElement);
     }
 
-    private static writeNavPoints(tocReferences: TOCReference[], playOrder: number, parentElement: Element, document: Document): number {
+    private static writeNavPoints(tocReferences: TOCReference[], playOrder: number, parentElement: ESObject, document: ESObject): number {
         for (let tocReference of tocReferences) {
             if (tocReference.getResource() == null) {
                 playOrder = NCXDocument.writeNavPoints(tocReference.getChildren(), playOrder, parentElement, document);
@@ -221,17 +221,17 @@ class NCXDocument {
         return playOrder;
     }
 
-    private static writeNavPointStart(tocReference: TOCReference, playOrder: number, parentElement: Element, document: Document): Element {
-        let navPointElement: Element = document.createElementNS(NCXDocument.NAMESPACE_NCX, NCXTags.navPoint);
+    private static writeNavPointStart(tocReference: TOCReference, playOrder: number, parentElement: ESObject, document: ESObject): ESObject {
+        let navPointElement: ESObject = document.createElementNS(NCXDocument.NAMESPACE_NCX, NCXTags.navPoint);
         navPointElement.setAttributeNS(EpubWriter.EMPTY_NAMESPACE_PREFIX, NCXAttributes.id, "navPoint-" + playOrder);
         navPointElement.setAttributeNS(EpubWriter.EMPTY_NAMESPACE_PREFIX, NCXAttributes.playOrder, String(playOrder));
         navPointElement.setAttributeNS(EpubWriter.EMPTY_NAMESPACE_PREFIX, NCXAttributes.clazz, NCXAttributeValues.chapter);
-        let navLabelElement: Element = document.createElementNS(NCXDocument.NAMESPACE_NCX, NCXTags.navLabel);
-        let textElement: Element = document.createElementNS(NCXDocument.NAMESPACE_NCX, NCXTags.text);
+        let navLabelElement: ESObject = document.createElementNS(NCXDocument.NAMESPACE_NCX, NCXTags.navLabel);
+        let textElement: ESObject = document.createElementNS(NCXDocument.NAMESPACE_NCX, NCXTags.text);
         textElement.textContent = tocReference.getTitle();
         navLabelElement.appendChild(textElement);
         navPointElement.appendChild(navLabelElement);
-        let contentElement: Element = document.createElementNS(NCXDocument.NAMESPACE_NCX, NCXTags.content);
+        let contentElement: ESObject = document.createElementNS(NCXDocument.NAMESPACE_NCX, NCXTags.content);
         contentElement.setAttributeNS(EpubWriter.EMPTY_NAMESPACE_PREFIX, NCXAttributes.src, tocReference.getCompleteHref());
         navPointElement.appendChild(contentElement);
         return navPointElement;

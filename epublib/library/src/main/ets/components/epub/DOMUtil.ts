@@ -26,7 +26,7 @@
 import StringUtil from '../util/StringUtil'
 
 class DOMUtil {
-    public static getAttribute(element: Element, namespace: string, attribute: string): string {
+    public static getAttribute(element: ESObject, namespace: string, attribute: string): string {
         let result = element.getAttributeNS(namespace, attribute);
         if (StringUtil.isEmpty(result)) {
             result = element.getAttribute(attribute);
@@ -42,7 +42,7 @@ class DOMUtil {
        * @param tagname
        * @return
        */
-    public static getElementsTextChild(parentElement: Element, namespace: string, tagname: string): Array<string> {
+    public static getElementsTextChild(parentElement: ESObject, namespace: string, tagname: string): Array<string> {
         let elements = parentElement.getElementsByTagNameNS(namespace, tagname);
         let result = new Array<string>();
         for (let i = 0; i < elements.length; i++) {
@@ -63,7 +63,7 @@ class DOMUtil {
       * @param resultAttributeName
       * @return
       */
-    public static getFindAttributeValue(document: Document, namespace: string, elementName: string, findAttributeName: string, findAttributeValue: string, resultAttributeName: string): string {
+    public static getFindAttributeValue(document: ESObject, namespace: string, elementName: string, findAttributeName: string, findAttributeValue: string, resultAttributeName: string): string {
         let metaTags = document.getElementsByTagNameNS(namespace, elementName);
         for (let i = 0; i < metaTags.length; i++) {
             let metaElement = metaTags.item(i);
@@ -83,7 +83,7 @@ class DOMUtil {
        * @param tagName
        * @return
        */
-    public static getFirstElementByTagNameNS(parentElement: Element, namespace: string, tagName: string): Element {
+    public static getFirstElementByTagNameNS(parentElement: ESObject, namespace: string, tagName: string):ESObject {
         console.info("----DOMUtil.ets----init------getFirstElementByTagNameNS-----parma1----parentElement:" + parentElement)
         console.error("----DOMUtil.ets----init------getFirstElementByTagNameNS-----parma2--namespace:" + namespace)
         console.info("----DOMUtil.ets----init------getFirstElementByTagNameNS-----parma3--tagName:-" + tagName)
@@ -105,7 +105,7 @@ class DOMUtil {
        * @param parentElement
        * @return
        */
-    public static getTextChildrenContent(parentElement: Element): string {
+    public static getTextChildrenContent(parentElement: ESObject): string {
         if (parentElement == null) {
             return null;
         }

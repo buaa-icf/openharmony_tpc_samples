@@ -24,7 +24,7 @@
 
 
 import EpubResource from "../domain/EpubResource"
-import {DOMParser} from '@xmldom/xmldom'
+import { DOMParser } from '@xmldom/xmldom'
 import util from '@ohos.util';
 
 class ResourceUtil {
@@ -64,13 +64,13 @@ class ResourceUtil {
      * @throws IOException
      * @throws ParserConfigurationException
      */
-	public static getAsDocument(resource:EpubResource):Document {
+	public static getAsDocument(resource:EpubResource):ESObject {
 		if (resource.getStrData() == null) {
 			return null;
 		}
 		console.debug("---ResourceUtil-----DOMParser----DOMParser----DOMParser--DOMParser--DOMParser--DOMParser---DOMParser----DOMParser------")
 		let domParser = new DOMParser();
-		let result:Document = domParser.parseFromString(resource.getStrData());
+		let result:ESObject = domParser.parseFromString(resource.getStrData());
 		return result;
 	}
 }

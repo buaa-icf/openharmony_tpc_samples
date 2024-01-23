@@ -49,7 +49,7 @@ class PackageDocumentReader extends PackageDocumentBase {
     }
 
     public static read(packageResource: EpubResource, epubReader: EpubReader, book: Book, resources: Resources): void {
-        let packageDocument: Document = ResourceUtil.getAsDocument(packageResource);
+        let packageDocument:ESObject = ResourceUtil.getAsDocument(packageResource);
         let packageHref: string = packageResource.getHref();
         resources = this.fixHrefs(packageHref, resources);
         this.readGuide(packageDocument, epubReader, book, resources);
@@ -77,7 +77,7 @@ class PackageDocumentReader extends PackageDocumentBase {
          * @param resourcesByHref
          * @return a Map with resources, with their id's as key.
          */
-    private static readManifest(packageDocument: Document, packageHref: string,
+    private static readManifest(packageDocument:ESObject, packageHref: string,
                                 epubReader: EpubReader, resources: Resources, idMapping: Map<string, string>): Resources {
         console.info("--------------PackageDocumentReader.ets--init---readManifest()-----------")
         let manifestElement = DOMUtil.getFirstElementByTagNameNS(packageDocument.documentElement, PackageDocumentBase.NAMESPACE_OPF, OPFTags.manifest);
@@ -122,7 +122,7 @@ class PackageDocumentReader extends PackageDocumentBase {
          * @param book
          * @param resources
          */
-    private static readGuide(packageDocument: Document,
+    private static readGuide(packageDocument:ESObject,
                              epubReader: EpubReader, book: Book, resources: Resources): void {
         let guideElement = DOMUtil.getFirstElementByTagNameNS(packageDocument.documentElement, PackageDocumentBase.NAMESPACE_OPF, OPFTags.guide);
         if (guideElement == null) {
@@ -196,7 +196,7 @@ class PackageDocumentReader extends PackageDocumentBase {
          * @param resourcesById
          * @return the document's spine, containing all sections in reading order.
          */
-    private static readSpine(packageDocument: Document, resources: Resources, idMapping: Map<string, string>): Spine {
+    private static readSpine(packageDocument:ESObject, resources: Resources, idMapping: Map<string, string>): Spine {
 
         let spineElement = DOMUtil.getFirstElementByTagNameNS(packageDocument.documentElement, PackageDocumentBase.NAMESPACE_OPF, OPFTags.spine);
         if (spineElement == null) {
@@ -313,7 +313,7 @@ class PackageDocumentReader extends PackageDocumentBase {
          * @return all resources that have something to do with the coverpage and the cover image.
          */
     // package
-    static findCoverHrefs(packageDocument: Document): Set<string> {
+    static findCoverHrefs(packageDocument:ESObject): Set<string> {
 
         let result: Set<string> = new Set<string>();
 
@@ -349,7 +349,7 @@ class PackageDocumentReader extends PackageDocumentBase {
          * @param book
          * @param resources
          */
-    private static readCover(packageDocument: Document, book: Book): void {
+    private static readCover(packageDocument:ESObject, book: Book): void {
         let coverHrefs: Set<string> = this.findCoverHrefs(packageDocument);
         for (let coverHref of coverHrefs) {
             let resource: EpubResource = book.getResources().getByHref(coverHref);
