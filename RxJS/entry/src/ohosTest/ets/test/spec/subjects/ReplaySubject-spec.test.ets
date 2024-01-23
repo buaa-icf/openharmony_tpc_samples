@@ -17,7 +17,7 @@ import { ReplaySubject, Subject, of, mergeMapTo, tap } from 'rxjs';
 import { TestScheduler, RunHelpers } from 'rxjs/internal/testing/TestScheduler';
 import { observableMatcher } from '../helpers/observableMatcher';
 import { ReplaySubjectFun, ReplaySubjectFun2 } from '../ArkTools';
-
+const BASE_COUNT: number = 2000;
 /** @test {ReplaySubject} */
 export default function replaySubjectTest() {
   describe('ReplaySubject', () => {
@@ -30,6 +30,11 @@ export default function replaySubjectTest() {
     it('should_extend_Subject', 0, () => {
       const subject: ESObject = new ReplaySubject<ESObject>();
       expect(subject instanceof Subject).assertTrue();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        subject
+      }
+      endTime(startTime, 'should_extend_Subject');
     });
 
     it('should_add_the_observer_before_running_subscription_code', 0, () => {
@@ -45,6 +50,12 @@ export default function replaySubjectTest() {
       });
 
       expect(results).assertDeepEquals([1, 2, 3]);
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        subject.next(1);
+      }
+      endTime(startTime, 'should_add_the_observer_before_running_subscription_code');
+
     });
 
     it('should_replay_values_upon_subscription', 0, (done: ESObject) => {
@@ -68,6 +79,12 @@ export default function replaySubjectTest() {
           done();
         },
       });
+
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        subject.complete();
+      }
+      endTime(startTime, 'should_replay_values_upon_subscription');
     });
 
     it('should_replay_values_and_complete', 0, (done: ESObject) => {
@@ -84,6 +101,12 @@ export default function replaySubjectTest() {
         },
         complete: done,
       });
+
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        subject.complete();
+      }
+      endTime(startTime, 'should_replay_values_and_complete');
     });
 
     it('should_replay_values_and_error', 0, (done: ESObject) => {
@@ -103,6 +126,12 @@ export default function replaySubjectTest() {
           done();
         },
       });
+
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        subject.error('fooey');
+      }
+      endTime(startTime, 'should_replay_values_and_error');
     });
 
     it('should_only_replay_values_within_its_buffer_size', 0, (done: ESObject) => {
@@ -126,6 +155,12 @@ export default function replaySubjectTest() {
           done();
         },
       });
+
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        new ReplaySubject<number>(2);
+      }
+      endTime(startTime, 'should_only_replay_values_within_its_buffer_size');
     });
 
     it('should_replay_2_previous_values_when_subscribed', 0, () => {
@@ -165,6 +200,12 @@ export default function replaySubjectTest() {
         expectObservable(subscriber1, unsub1).toBe(expected1);
         expectObservable(subscriber2, unsub2).toBe(expected2);
         expectObservable(subscriber3).toBe(expected3);
+
+        let startTime = new Date().getTime()
+        for (let index = 0; index < BASE_COUNT; index++) {
+          new ReplaySubject<string>(2);
+        }
+        endTime(startTime, 'should_replay_2_previous_values_when_subscribed');
       });
     });
 
@@ -197,6 +238,11 @@ export default function replaySubjectTest() {
             }))
         ).toBe(sourceTemplate);
         expectObservable(subscriber1).toBe(expected1);
+        let startTime = new Date().getTime()
+        for (let index = 0; index < BASE_COUNT; index++) {
+          new ReplaySubject<string>(2);
+        }
+        endTime(startTime, 'should_replay_2_last_values_for_when_subscribed_after_completed');
       });
     });
 
@@ -270,6 +316,23 @@ export default function replaySubjectTest() {
       expect(results3).assertDeepEquals([9, 10, 11]);
 
       subject.complete();
+
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        subject.subscribe({
+          next: (x: number) => {
+            results3.push(x);
+          },
+          error: () => {
+            results3.push('E');
+          },
+          complete: () => {
+            results3.push('C');
+          },
+        });
+      }
+      endTime(startTime, 'should_handle_subscribers_that_arrive_and_leave_at_different_times_subject_does_not_complete');
+
     });
 
 
@@ -278,19 +341,15 @@ export default function replaySubjectTest() {
         let hot = helpers.hot
         let expectObservable = helpers.expectObservable
         const replaySubject = ReplaySubjectFun(rxTestScheduler)
-
         let feedNextIntoSubject = (x: string) => {
           replaySubject.next(x);
         }
-
         let feedErrorIntoSubject = (err: ESObject) => {
           replaySubject.error(err);
         }
-
         let feedCompleteIntoSubject = () => {
           replaySubject.complete();
         }
-
         const sourceTemplate = ' -1-2-3----4------5-6----7-8----9--|';
         const subscriber1 = hot('------(a|)                         ').pipe(mergeMapTo(replaySubject));
         const unsub1 = '         ---------------------!             ';
@@ -300,7 +359,6 @@ export default function replaySubjectTest() {
         const expected2 = '      ------------4----5-6----7-         ';
         const subscriber3 = hot('---------------------------(c|)    ').pipe(mergeMapTo(replaySubject));
         const expected3 = '      ---------------------------(78)9--|';
-
         expectObservable(
           hot(sourceTemplate)
             .pipe(tap({
@@ -310,6 +368,11 @@ export default function replaySubjectTest() {
         expectObservable(subscriber1, unsub1).toBe(expected1);
         expectObservable(subscriber2, unsub2).toBe(expected2);
         expectObservable(subscriber3).toBe(expected3);
+        let startTime = new Date().getTime()
+        for (let index = 0; index < BASE_COUNT; index++) {
+          ReplaySubjectFun(rxTestScheduler)
+        }
+        endTime(startTime, 'should_replay_previous_values_since_4_time_units_ago_when_subscribed');
       });
     });
 
@@ -342,6 +405,11 @@ export default function replaySubjectTest() {
             }))
         ).toBe(sourceTemplate);
         expectObservable(subscriber1).toBe(expected1);
+        let startTime = new Date().getTime()
+        for (let index = 0; index < BASE_COUNT; index++) {
+          ReplaySubjectFun(rxTestScheduler)
+        }
+        endTime(startTime, 'should_replay_last_values_since_4_time_units_ago_when_subscribed');
       });
     });
 
@@ -374,6 +442,11 @@ export default function replaySubjectTest() {
             }))
         ).toBe(sourceTemplate);
         expectObservable(subscriber1).toBe(expected1);
+        let startTime = new Date().getTime()
+        for (let index = 0; index < BASE_COUNT; index++) {
+          ReplaySubjectFun2(rxTestScheduler)
+        }
+        endTime(startTime, 'should_only_replay_bufferSize_items_when_4_time_units_ago_more_were_emited');
       });
     });
   });
@@ -398,6 +471,14 @@ export default function replaySubjectTest() {
     });
 
     expect(results).assertEqual([3, 4, 5, 'done']);
+
+    let startTime = new Date().getTime()
+    for (let index = 0; index < BASE_COUNT; index++) {
+      subject.subscribe({
+        next: (x) => results.push(x), complete: () => results.push('done')
+      });
+    }
+    endTime(startTime, 'should_be_an_Observer_which_can_be_given_to_Observable_subscribe');
   });
 
   it('should_not_buffer_nexted_values_after_complete', 0, () => {
@@ -412,6 +493,15 @@ export default function replaySubjectTest() {
       complete: () => results.push('C'),
     });
     expect(results).assertEqual([1, 2, 'C']);
+
+    let startTime = new Date().getTime()
+    for (let index = 0; index < BASE_COUNT; index++) {
+      subject.subscribe({
+        next: (value) => results.push(value),
+        complete: () => results.push('C'),
+      });
+    }
+    endTime(startTime, 'should_not_buffer_nexted_values_after_complete');
   });
 
   it('should_not_buffer_nexted_values_after_error', 0, () => {
@@ -426,5 +516,22 @@ export default function replaySubjectTest() {
       error: () => results.push('E'),
     });
     expect(results).assertEqual([1, 2, 'E']);
+
+    let startTime = new Date().getTime()
+    for (let index = 0; index < BASE_COUNT; index++) {
+      subject.subscribe({
+        next: (value) => results.push(value),
+        error: () => results.push('E'),
+      });
+    }
+    endTime(startTime, 'should_not_buffer_nexted_values_after_complete');
   });
+}
+
+function endTime(startTime: number, tag: string) {
+  console.log(tag + ":startTime:" + startTime)
+  let endTime: number = new Date().getTime();
+  let averageTime = ((endTime - startTime) * 1000 / BASE_COUNT)
+  console.log(tag + ":endTime:" + endTime)
+  console.log(tag + ":averageTime:" + averageTime + "μs");
 }

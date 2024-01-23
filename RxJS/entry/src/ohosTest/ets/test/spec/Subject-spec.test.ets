@@ -29,7 +29,7 @@ import { TestScheduler, RunHelpers } from 'rxjs/internal/testing/TestScheduler';
 import { observableMatcher } from './helpers/observableMatcher';
 import { InstanceofFun, ObjFun } from './ArkTools';
 
-
+const BASE_COUNT: number = 2000;
 export default function subjectTest() {
   /** @test {Subject} */
   describe('Subject', () => {
@@ -53,6 +53,11 @@ export default function subjectTest() {
       subject.next(undefined);
       subject.next(data);
       subject.complete();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        subject.next(undefined);
+      }
+      endTime(startTime, 'should_allow_next_with_undefined_or_any_when_created_with_no_type');
     });
 
     it('should_allow_empty_next_when_created_with_void_type', 0, (done: ESObject) => {
@@ -67,6 +72,11 @@ export default function subjectTest() {
 
       subject.next();
       subject.complete();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        subject.complete();
+      }
+      endTime(startTime, 'should_allow_empty_next_when_created_with_void_type');
     });
 
     it('should_pump_values_right_on_through_itself', 0, (done: ESObject) => {
@@ -84,6 +94,11 @@ export default function subjectTest() {
       subject.next('foo');
       subject.next('bar');
       subject.complete();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        new Subject<string>();
+      }
+      endTime(startTime, 'should_pump_values_right_on_through_itself');
     });
 
     it('should_pump_values_to_multiple_subscribers', 0, (done: ESObject) => {
@@ -109,6 +124,12 @@ export default function subjectTest() {
       subject.next('foo');
       subject.next('bar');
       subject.complete();
+
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        new Subject<string>();
+      }
+      endTime(startTime, 'should_pump_values_to_multiple_subscribers');
     });
 
     it('should_handle_subscribers_that_arrive_and_leave_t_different_times_subject_does_not_complete', 0, () => {
@@ -179,6 +200,11 @@ export default function subjectTest() {
       expect(results1).assertDeepEquals([5, 6, 7]);
       expect(results2).assertDeepEquals([6, 7, 8]);
       expect(results3).assertDeepEquals([11]);
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        subject.next(10);
+      }
+      endTime(startTime, 'should_handle_subscribers_that_arrive_and_leave_t_different_times_subject_does_not_complete');
     });
 
     it('should_handle_subscribers_that_arrive_and_leave_at_different_times_subject_completes', 0, () => {
@@ -244,6 +270,11 @@ export default function subjectTest() {
       expect(results1).assertDeepEquals([5, 6, 7]);
       expect(results2).assertDeepEquals([6, 7, 'C']);
       expect(results3).assertDeepEquals(['C']);
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        subject.next(7);
+      }
+      endTime(startTime, 'should_handle_subscribers_that_arrive_and_leave_at_different_times_subject_completes');
     });
 
     it('should_handle_subscribers_that_arrive_and_leave_at_different_imes_subject_terminates_with_an_error', 0, () => {
@@ -309,6 +340,11 @@ export default function subjectTest() {
       expect(results1).assertDeepEquals([5, 6, 7]);
       expect(results2).assertDeepEquals([6, 7, 'E']);
       expect(results3).assertDeepEquals(['E']);
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        subject.next(7);
+      }
+      endTime(startTime, 'should_handle_subscribers_that_arrive_and_leave_at_different_imes_subject_terminates_with_an_error');
     });
 
     it('should_handle_subscribers_that_arrive_and_leave_at_different_times_subject_completes_before_nexting_any_value', 0, () => {
@@ -364,6 +400,11 @@ export default function subjectTest() {
       expect(results1).assertDeepEquals([]);
       expect(results2).assertDeepEquals(['C']);
       expect(results3).assertDeepEquals(['C']);
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        subject.complete();
+      }
+      endTime(startTime, 'should_handle_subscribers_that_arrive_and_leave_at_different_times_subject_completes_before_nexting_any_value');
     });
 
     it('should_disallow_new_subscriber_once_subject_has_been_disposed', 0, () => {
@@ -425,6 +466,12 @@ export default function subjectTest() {
       expect(results1).assertDeepEquals([1, 2, 3, 4, 5]);
       expect(results2).assertDeepEquals([3, 4, 5]);
       expect(results3.length == 0).assertTrue();
+
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        new Subject<number>();
+      }
+      endTime(startTime, 'should_disallow_new_subscriber_once_subject_has_been_disposed');
     });
 
     it('should_not_allow_values_to_be_nexted_after_it_is_unsubscribed', 0, (done: ESObject) => {
@@ -445,6 +492,11 @@ export default function subjectTest() {
       }
       expect(err != null && err instanceof ObjectUnsubscribedError).assertTrue();
       done();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        subject.unsubscribe();
+      }
+      endTime(startTime, 'should_not_allow_values_to_be_nexted_after_it_is_unsubscribed');
     });
 
     it('should_clean_out_unsubscribed_subscribers', 0, (done: ESObject) => {
@@ -464,6 +516,11 @@ export default function subjectTest() {
       sub2.unsubscribe();
       expect(subject.observers.length).assertEqual(0);
       done();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        subject.subscribe(() => {});
+      }
+      endTime(startTime, 'should_clean_out_unsubscribed_subscribers');
     });
 
     it('should_expose_observed_status', 0, () => {
@@ -488,6 +545,11 @@ export default function subjectTest() {
       expect(subject.observed).assertFalse();
       subject.unsubscribe();
       expect(subject.observed).assertFalse();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        subject.observed
+      }
+      endTime(startTime, 'should_expose_observed_status');
     });
 
     it('should_have_a_static_create_function_that_works', 0, () => {
@@ -525,6 +587,11 @@ export default function subjectTest() {
 
       expect(output).assertDeepEquals([1, 2, 3, 4, 5]);
       expect(outputComplete).assertTrue();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        sub.next('c');
+      }
+      endTime(startTime, 'should_have_a_static_create_function_that_works');
     });
 
     it('should_have_a_tatic_create_function_tha_works_also_to_raise_rrors', 0, () => {
@@ -564,6 +631,11 @@ export default function subjectTest() {
 
       expect(output).assertDeepEquals([1, 2, 3, 4, 5]);
       expect(outputComplete).assertTrue();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        sub.error('boom');
+      }
+      endTime(startTime, 'should_have_a_tatic_create_function_tha_works_also_to_raise_rrors');
     });
 
     it('should_be_an_Observer_ich_can_be_given_to_Observable_subscribe', 0, (done: ESObject) => {
@@ -584,6 +656,12 @@ export default function subjectTest() {
       );
 
       source.subscribe(subject);
+
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        source.subscribe(subject);
+      }
+      endTime(startTime, 'should_be_an_Observer_ich_can_be_given_to_Observable_subscribe');
     });
 
     it('should_be_usable_as_an_Observer_of_a_finite_delayed_Observable', 0, (done: ESObject) => {
@@ -605,6 +683,12 @@ export default function subjectTest() {
       );
 
       source.subscribe(subject);
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        source.subscribe(subject);
+      }
+      endTime(startTime, 'should_be_usable_as_an_Observer_of_a_finite_delayed_Observable');
+
     });
 
     it('should_throw_ObjectUnsubscribedError_when_emit_after_unsubscribed', 0, () => {
@@ -632,6 +716,12 @@ export default function subjectTest() {
         err3 = e;
       }
       expect(err3 != null && err3 instanceof ObjectUnsubscribedError).assertTrue();
+
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        subject.unsubscribe();
+      }
+      endTime(startTime, 'should_throw_ObjectUnsubscribedError_when_emit_after_unsubscribed');
     });
 
     it('should_not_next_after_completed', 0, () => {
@@ -646,6 +736,11 @@ export default function subjectTest() {
       subject.complete();
       subject.next('b');
       expect(results).assertDeepEquals(['a', 'C']);
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        subject.next('b');
+      }
+      endTime(startTime, 'should_not_next_after_completed');
     });
 
     it('should_not_next_after_error', 0, () => {
@@ -661,6 +756,11 @@ export default function subjectTest() {
       subject.error(error);
       subject.next('b');
       expect(results).assertDeepEquals(['a', error]);
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        subject.next('b');
+      }
+      endTime(startTime, 'should_not_next_after_error');
     });
 
 
@@ -672,6 +772,11 @@ export default function subjectTest() {
 
       expect(observable instanceof Observable).assertTrue();
       expect(observable instanceof Subject).assertFalse();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        subject.asObservable();
+      }
+      endTime(startTime, 'should_hide_subject');
     });
 
     it('should_handle_subject_never_emits', 0, () => {
@@ -681,6 +786,11 @@ export default function subjectTest() {
         const observable = hot('-').asObservable();
 
         expectObservable(observable).toBe('-');
+        let startTime = new Date().getTime()
+        for (let index = 0; index < BASE_COUNT; index++) {
+          hot('-').asObservable();
+        }
+        endTime(startTime, 'should_handle_subject_completes_without_emits');
       });
     });
 
@@ -692,6 +802,11 @@ export default function subjectTest() {
         const expected = '        ---|';
 
         expectObservable(observable).toBe(expected);
+        let startTime = new Date().getTime()
+        for (let index = 0; index < BASE_COUNT; index++) {
+          hot('--^--|').asObservable();
+        }
+        endTime(startTime, 'should_handle_subject_completes_without_emits');
       });
     });
 
@@ -703,6 +818,11 @@ export default function subjectTest() {
         const expected = '        ---#';
 
         expectObservable(observable).toBe(expected);
+        let startTime = new Date().getTime()
+        for (let index = 0; index < BASE_COUNT; index++) {
+          hot('--^--#').asObservable();
+        }
+        endTime(startTime, 'should_handle_subject_hrows');
       });
     });
 
@@ -714,7 +834,13 @@ export default function subjectTest() {
         const expected = '        ---x--|';
 
         expectObservable(observable).toBe(expected);
+        let startTime = new Date().getTime()
+        for (let index = 0; index < BASE_COUNT; index++) {
+          hot('--^--x--|').asObservable();
+        }
+        endTime(startTime, 'should_handle_subject_emits');
       });
+
     });
 
     it('should_work_with_inherited_subject', 0, () => {
@@ -733,6 +859,11 @@ export default function subjectTest() {
       );
 
       expect(results).assertDeepEquals([42, 'done']);
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        subject.next(42);
+      }
+      endTime(startTime, 'should_work_with_inherited_subject');
     });
   });
 
@@ -760,6 +891,11 @@ export default function subjectTest() {
         expect(true).assertFalse();
       }
       expect(true).assertTrue();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        source.next(42);
+      }
+      endTime(startTime, 'should_not_synchronously_error_when_exted_nto');
     });
   });
 
@@ -767,6 +903,11 @@ export default function subjectTest() {
   it('should_be_exposed', 0, () => {
     let result: ESObject = InstanceofFun()
     expect(result).assertTrue();
+    let startTime = new Date().getTime()
+    for (let index = 0; index < BASE_COUNT; index++) {
+      result
+    }
+    endTime(startTime, 'should_not_be_ger');
   });
 
   it('should_not_be_ger', 0, () => {
@@ -788,6 +929,14 @@ export default function subjectTest() {
 
     observable.subscribe();
     expect(subscribed).assertTrue();
+
+    let startTime = new Date().getTime()
+    for (let index = 0; index < BASE_COUNT; index++) {
+      expect(() => {
+        subject.asObservable();
+      }).assertThrowError('bad');
+    }
+    endTime(startTime, 'should_not_be_ger');
   });
 
   describe('useDeprecatedSynchronousErrorHandling', () => {
@@ -806,6 +955,13 @@ export default function subjectTest() {
       expect(() => {
         subject.next('wee');
       }).assertThrowError('bad');
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        expect(() => {
+          subject.next('wee');
+        })
+      }
+      endTime(startTime, 'should_throw_an_error_when_nexting_with_a_flattened_erroring_inner_observable');
     });
 
     it('should_throw_an_error_when_nexting_with_flattened_erroring_inner_observable_with_more_than_one_operator', 0, () => {
@@ -815,6 +971,13 @@ export default function subjectTest() {
       expect(() => {
         subject.next('wee');
       }).assertThrowError('bad');
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        expect(() => {
+          subject.error('wee');
+        })
+      }
+      endTime(startTime, 'should_thro_an_error_when_notifying_an_error_with_catchError_eturning_an_erroring_nne_bservable');
     });
 
     it('should_thro_an_error_when_notifying_an_error_with_catchError_eturning_an_erroring_nne_bservable', 0, () => {
@@ -824,6 +987,13 @@ export default function subjectTest() {
       expect(() => {
         subject.error('wee');
       }).assertThrowError('bad');
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        expect(() => {
+          subject.error('wee');
+        })
+      }
+      endTime(startTime, 'should_thro_an_error_when_notifying_an_error_with_catchError_eturning_an_erroring_nne_bservable');
     });
 
     it('should_throw_an_error_when_nexting_with_an_operator_hat_errors_synchronously', 0, () => {
@@ -835,6 +1005,13 @@ export default function subjectTest() {
       expect(() => {
         subject.next('wee');
       }).assertThrowError('lol');
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        expect(() => {
+          subject.error('wee');
+        })
+      }
+      endTime(startTime, 'should_throw_an_error_when_notifying_an_error_with_a_catchError_that_errors_synchronously');
     });
 
 
@@ -847,6 +1024,13 @@ export default function subjectTest() {
       expect(() => {
         subject.error('wee');
       }).assertThrowError('lol');
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        expect(() => {
+          subject.error('wee');
+        })
+      }
+      endTime(startTime, 'should_throw_an_error_when_notifying_an_error_with_a_catchError_that_errors_synchronously');
     });
 
     it('should_throw_an_rror_when_nexting_with_an_erroring_ext_handler', 0, () => {
@@ -858,6 +1042,13 @@ export default function subjectTest() {
       expect(() => {
         subject.next('wee');
       }).assertThrowError('lol');
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        subject.subscribe(() => {
+          throw new Error('lol');
+        });
+      }
+      endTime(startTime, 'should_throw_an_rror_when_nexting_with_an_erroring_ext_handler');
     });
 
     it('should_throw_an_error_when_notifying_with_an_erroring_error_handler', 0, () => {
@@ -871,6 +1062,11 @@ export default function subjectTest() {
       expect(() => {
         subject.error('wee');
       }).assertThrowError('lol');
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        subject.error('wee');
+      }
+      endTime(startTime, 'should_throw_an_error_when_notifying_with_an_erroring_error_handler');
     });
 
     it('should_throw_an_error_when_notifying_with_an_erroring_complete_handler', 0, () => {
@@ -884,6 +1080,11 @@ export default function subjectTest() {
       expect(() => {
         subject.complete();
       }).assertThrowError('lol');
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        subject.complete();
+      }
+      endTime(startTime, 'should_throw_an_error_when_notifying_with_an_erroring_complete_handler');
     });
 
     it('should_throw_an_rror_when_notifying_an_complete_and_concatenated_with_nother_observabl_that_synchronously_errors', 0, () => {
@@ -893,6 +1094,11 @@ export default function subjectTest() {
       expect(() => {
         subject.complete();
       }).assertThrowError('lol');
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        new Subject<string>();
+      }
+      endTime(startTime, 'should_throw_an_rror_when_notifying_an_complete_and_concatenated_with_nother_observabl_that_synchronously_errors');
     });
 
     it('should_not_throw_on_second_erro_passed', 0, () => {
@@ -903,7 +1109,11 @@ export default function subjectTest() {
       expect(() => {
         subject.error(new Error('one'));
       }).assertThrowError('one');
-
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        subject.error(new Error('one'));
+      }
+      endTime(startTime, 'should_not_throw_on_second_erro_passed');
     });
 
     it('should_not_throw_on_second_error_passed_even_afte_having_been_operated_on', 0, () => {
@@ -914,6 +1124,11 @@ export default function subjectTest() {
       expect(() => {
         subject.error(new Error('one'));
       }).assertThrowError('one');
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        subject.error(new Error('one'));
+      }
+      endTime(startTime, 'should_not_throw_on_second_error_passed_even_afte_having_been_operated_on');
     });
 
     it('deep_rethrowing_1', 0, () => {
@@ -929,6 +1144,13 @@ export default function subjectTest() {
       expect(() => {
         subject1.next('test');
       }).assertThrowError('hahaha');
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        subject1.subscribe({
+          next: (): ESObject => subject2.error(new Error('hahaha'))
+        });
+      }
+      endTime(startTime, 'deep_rethrowing_2');
     });
 
     it('deep_rethrowing_2', 0, () => {
@@ -943,6 +1165,19 @@ export default function subjectTest() {
       expect(() => {
         subject1.next('test');
       }).assertThrowError('hahaha');
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        new Subject<ESObject>();
+      }
+      endTime(startTime, 'deep_rethrowing_2');
     });
   });
+}
+
+function endTime(startTime: number, tag: string) {
+  console.log(tag + ":startTime:" + startTime)
+  let endTime: number = new Date().getTime();
+  let averageTime = ((endTime - startTime) * 1000 / BASE_COUNT)
+  console.log(tag + ":endTime:" + endTime)
+  console.log(tag + ":averageTime:" + averageTime + "μs");
 }

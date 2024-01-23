@@ -14,7 +14,7 @@
  */
 import { expect, describe, beforeEach, afterEach, it } from '@ohos/hypium';
 import { Observable, UnsubscriptionError, Subscription, merge } from 'rxjs';
-
+const BASE_COUNT: number = 2000;
 /** @test {Subscription} */
 export default function subscriptionTest() {
   describe('Subscription', () => {
@@ -27,6 +27,11 @@ export default function subscriptionTest() {
       main.add(child);
       main.unsubscribe();
       expect(isCalled).assertTrue();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        new Subscription();
+      }
+      endTime(startTime, 'should_unsubscribe_child_subscriptions');
     });
 
     it('should_unsubscribe_child_subscriptions_if_it_has_already_been_unsubscribed', 0, () => {
@@ -40,6 +45,11 @@ export default function subscriptionTest() {
       main.add(child);
 
       expect(isCalled).assertTrue();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        main.unsubscribe();
+      }
+      endTime(startTime, 'should_unsubscribe_child_subscriptions_if_it_has_already_been_unsubscribed');
     });
 
     it('should_unsubscribe_a_finalizer_function_that_was_passed', 0, () => {
@@ -50,6 +60,11 @@ export default function subscriptionTest() {
       });
       main.unsubscribe();
       expect(isCalled).assertTrue();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        main.unsubscribe();
+      }
+      endTime(startTime, 'should_unsubscribe_a_finalizer_function_that_was_passed');
     });
 
     it('should_unsubscribe_a_finalizer_function_that_was_passed_immediately_if_it_has_been_unsubscribed', 0, () => {
@@ -60,6 +75,11 @@ export default function subscriptionTest() {
         isCalled = true;
       });
       expect(isCalled).assertTrue();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        new Subscription();
+      }
+      endTime(startTime, 'should_unsubscribe_a_finalizer_function_that_was_passed_immediately_if_it_has_been_unsubscribed');
     });
 
     it('should_unsubscribe_an_Unsubscribable_when_unsubscribed', 0, () => {
@@ -72,6 +92,11 @@ export default function subscriptionTest() {
       });
       main.unsubscribe();
       expect(isCalled).assertTrue();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        main.unsubscribe();
+      }
+      endTime(startTime, 'should_unsubscribe_an_Unsubscribable_when_unsubscribed');
     });
 
     it('should_unsubscribe_an_Unsubscribable_if_it_is_already_unsubscribed', 0, () => {
@@ -84,6 +109,11 @@ export default function subscriptionTest() {
         }
       });
       expect(isCalled).assertTrue();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        main.unsubscribe();
+      }
+      endTime(startTime, 'should_unsubscribe_an_Unsubscribable_if_it_is_already_unsubscribed');
     });
 
     it('should_remove_added_Subscriptions', 0, () => {
@@ -96,6 +126,11 @@ export default function subscriptionTest() {
       main.remove(child);
       main.unsubscribe();
       expect(isCalled).assertFalse();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        main.remove(child);
+      }
+      endTime(startTime, 'should_remove_added_Subscriptions');
     });
 
     it('should_remove_added_functions', 0, () => {
@@ -108,6 +143,11 @@ export default function subscriptionTest() {
       main.remove(finalizer);
       main.unsubscribe();
       expect(isCalled).assertFalse();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        main.remove(finalizer);
+      }
+      endTime(startTime, 'should_remove_added_functions');
     });
 
     it('should_remove_added_unsubscribables', 0, () => {
@@ -122,32 +162,32 @@ export default function subscriptionTest() {
       main.remove(unsubscribable);
       main.unsubscribe();
       expect(isCalled).assertFalse();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        main.remove(unsubscribable);
+      }
+      endTime(startTime, 'should_remove_added_functions');
     });
 
     it('should_unsubscribe_from_all_subscriptions_when_some_of_them_throw', 0, (done: ESObject) => {
       const finalizers: number[] = [];
-
       const source1: ESObject = new Observable<ESObject>(() => {
         return () => {
           finalizers.push(1);
         };
       });
-
       const source2: ESObject = new Observable<ESObject>(() => {
         return () => {
           finalizers.push(2);
           throw new Error('oops, I am a bad unsubscribe!');
         };
       });
-
       const source3: ESObject = new Observable<ESObject>(() => {
         return () => {
           finalizers.push(3);
         };
       });
-
       const subscription = merge(source1, source2, source3).subscribe();
-
       setTimeout(() => {
         let error: ESObject = null;
         try {
@@ -159,6 +199,11 @@ export default function subscriptionTest() {
         expect(finalizers).assertDeepEquals([1, 2, 3])
         done();
       }, 0);
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        merge(source1, source2, source3).subscribe();
+      }
+      endTime(startTime, 'should_unsubscribe_from_all_subscriptions_when_some_of_them_throw');
     });
 
     it('should_unsubscribe_from_all_subscriptions_when_adding_a_bad_custom_subscription_to_a_subscription', 0, (done: ESObject) => { //要改
@@ -203,6 +248,12 @@ export default function subscriptionTest() {
         expect(finalizers).assertDeepEquals([1, 2, 3]);
         done();
       }, 1);
+
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        new Subscription();
+      }
+      endTime(startTime, 'should_unsubscribe_from_all_subscriptions_when_adding_a_bad_custom_subscription_to_a_subscription');
     });
 
     it('should_have_idempotent_unsubscription', 0, () => {
@@ -215,6 +266,12 @@ export default function subscriptionTest() {
 
       subscription.unsubscribe();
       expect(count).assertEqual(1);
+
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        subscription.unsubscribe();
+      }
+      endTime(startTime, 'should_have_idempotent_unsubscription');
     });
 
     it('should_unsubscribe_from_all_parents', 0, () => {
@@ -242,7 +299,20 @@ export default function subscriptionTest() {
       expect((a as ESObject)._finalizers['length']).assertEqual(0);
       expect((b as ESObject)._finalizers['length']).assertEqual(0);
       expect((c as ESObject)._finalizers['length']).assertEqual(0);
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        d.unsubscribe();
+      }
+      endTime(startTime, 'should_unsubscribe_from_all_parents');
     });
   }
   );
+}
+
+function endTime(startTime: number, tag: string) {
+  console.log(tag + ":startTime:" + startTime)
+  let endTime: number = new Date().getTime();
+  let averageTime = ((endTime - startTime) * 1000 / BASE_COUNT)
+  console.log(tag + ":endTime:" + endTime)
+  console.log(tag + ":averageTime:" + averageTime + "μs");
 }

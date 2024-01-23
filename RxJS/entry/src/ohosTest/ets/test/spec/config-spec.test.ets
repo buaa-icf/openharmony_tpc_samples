@@ -17,11 +17,16 @@ import { config } from 'rxjs';
 import { expect, describe, it, afterEach } from '@ohos/hypium';
 import { Observable } from 'rxjs';
 import { timeoutProvider } from 'rxjs/internal/scheduler/timeoutProvider';
-
+const BASE_COUNT: number = 2000;
 export default function configTest() {
   describe('config', () => {
     it('should_have_a_Promise_property_that_defaults_to_nothing', 0, () => {
       expect(config.Promise).assertUndefined();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        config.Promise
+      }
+      endTime(startTime, 'should_have_a_Promise_property_that_defaults_to_nothing');
     });
   });
 
@@ -32,6 +37,11 @@ export default function configTest() {
 
     it('should_default_to_null', 0, () => {
       expect(config.onUnhandledError).assertNull();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        config.onUnhandledError
+      }
+      endTime(startTime, 'should_default_to_null');
     });
 
     it('should_call_asynchronously_if_an_error_is_emitted_and_not_handled_by_the_consumer_observer', 0, () => {
@@ -54,6 +64,14 @@ export default function configTest() {
       expect(called).assertFalse();
       expect(results.length).assertEqual(1);
       expect(results[0]).assertEqual(1);
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        new Observable<number>((subscriber) => {
+          subscriber.next(1);
+          subscriber.error('bad');
+        });
+      }
+      endTime(startTime, 'should_call_asynchronously_if_an_error_is_emitted_and_not_handled_by_the_consumer_observer');
     });
 
     it('should_call_asynchronously_if_an_error_is_emitted_and_not_handled_by_the_consumer_next_callback', 0, () => {
@@ -75,6 +93,14 @@ export default function configTest() {
       expect(called).assertFalse();
       expect(results.length).assertEqual(1);
       expect(results[0]).assertEqual(1);
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        new Observable<number>((subscriber) => {
+          subscriber.next(1);
+          subscriber.error('bad');
+        });
+      }
+      endTime(startTime, 'should_call_asynchronously_if_an_error_is_emitted_and_not_handled_by_the_consumer_next_callback');
     });
 
     it('should_call_asynchronously_if_an_error_is_emitted_and_not_handled_by_the_consumer_in_the_empty_case', 0, () => {
@@ -91,6 +117,13 @@ export default function configTest() {
 
       source.subscribe();
       expect(called).assertFalse();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        new Observable<ESObject>((subscriber: ESObject) => {
+          subscriber.error('bad');
+        });
+      }
+      endTime(startTime, 'should_call_asynchronously_if_an_error_is_emitted_and_not_handled_by_the_consumer_in_the_empty_case');
     });
 
     /**
@@ -126,6 +159,15 @@ export default function configTest() {
       timeoutProvider.setTimeout(() => {
         expect(called).assertFalse();
       }, 0);
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        source.subscribe({
+          error: (err: ESObject) => {
+            syncSentError = err;
+          },
+        });
+      }
+      endTime(startTime, 'should_not_be_called_if_two_errors_are_sent_to_the_subscriber');
     });
   });
 
@@ -136,6 +178,11 @@ export default function configTest() {
 
     it('should_default_to_null', 0, () => {
       expect(config.onStoppedNotification).assertNull();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        config.onStoppedNotification
+      }
+      endTime(startTime, 'should_default_to_null');
     });
 
     it('should_be_called_asynchronously_if_a_subscription_setup_errors_after_the_subscription_is_closed_by_an_error', 0, () => {
@@ -161,6 +208,16 @@ export default function configTest() {
 
       expect(syncSentError).assertEqual('handled');
       expect(called).assertFalse();
+
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        source.subscribe({
+          error: (err: ESObject) => {
+            syncSentError = err;
+          },
+        });
+      }
+      endTime(startTime, 'should_be_called_asynchronously_if_a_subscription_setup_errors_after_the_subscription_is_closed_by_an_error');
     });
 
     it('should_be_called_asynchronously_if_a_subscription_setup_errors_after_the_subscription_is_closed_by_a_completion', 0, () => {
@@ -189,6 +246,19 @@ export default function configTest() {
 
       expect(completed).assertTrue();
       expect(called).assertFalse();
+
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        source.subscribe({
+          error: () => {
+            throw new Error('should not be called');
+          },
+          complete: () => {
+            completed = true;
+          },
+        });
+      }
+      endTime(startTime, 'should_be_called_asynchronously_if_a_subscription_setup_errors_after_the_subscription_is_closed_by_a_completion');
     });
 
     it('should_be_called_if_a_next_is_sent_to_the_stopped_subscriber', 0, () => {
@@ -215,6 +285,15 @@ export default function configTest() {
 
       expect(syncSentValue).assertEqual(1);
       expect(called).assertFalse();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        source.subscribe({
+          next: (value: ESObject) => {
+            syncSentValue = value;
+          },
+        });
+      }
+      endTime(startTime, 'should_be_called_if_a_next_is_sent_to_the_stopped_subscriber');
     });
 
     it('should_be_called_if_two_errors_are_sent_to_the_subscriber', 0, () => {
@@ -241,6 +320,15 @@ export default function configTest() {
 
       expect(syncSentError).assertEqual('handled');
       expect(called).assertFalse();
+
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        new Observable<ESObject>((subscriber: ESObject) => {
+          subscriber.error('handled');
+          subscriber.error('swallowed');
+        })
+      }
+      endTime(startTime, 'should_be_called_if_two_errors_are_sent_to_the_subscriber');
     });
 
     it('should_be_called_if_two_completes_are_sent_to_the_subscriber', 0, () => {
@@ -250,16 +338,29 @@ export default function configTest() {
         expect(notification.kind).assertEqual('C');
 
       };
-
       const source: ESObject = new Observable<ESObject>((subscriber: ESObject) => {
         subscriber.complete();
         subscriber.complete();
       });
-
       source.subscribe();
-
       expect(called).assertFalse();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        new Observable<ESObject>((subscriber: ESObject) => {
+          subscriber.complete();
+          subscriber.complete();
+        })
+      }
+      endTime(startTime, 'should_be_called_if_two_completes_are_sent_to_the_subscriber');
     });
   });
 
+}
+
+function endTime(startTime: number, tag: string) {
+  console.log(tag + ":startTime:" + startTime)
+  let endTime: number = new Date().getTime();
+  let averageTime = ((endTime - startTime) * 1000 / BASE_COUNT)
+  console.log(tag + ":endTime:" + endTime)
+  console.log(tag + ":averageTime:" + averageTime + "μs");
 }

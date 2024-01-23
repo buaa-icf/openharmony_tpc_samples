@@ -17,7 +17,7 @@ import { queueScheduler as queue, Subscription } from 'rxjs';
 import { QueueScheduler } from 'rxjs/internal/scheduler/QueueScheduler';
 import { scheduleCallback } from './ArkTools';
 
-
+const BASE_COUNT: number = 2000;
 export default function queueSchedulerTest() {
   /** @test {Scheduler} */
   describe('Scheduler_queue', () => {
@@ -32,6 +32,12 @@ export default function queueSchedulerTest() {
       });
       expect(call1).assertTrue();
       expect(call2).assertTrue();
+
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        queue.schedule(() => {});
+      }
+      endTime(startTime, 'should_schedule_things_recursively');
     });
 
     it('should_schedule_things_recursively_via_this_schedule', 0, () => { //要改
@@ -42,6 +48,11 @@ export default function queueSchedulerTest() {
 
       expect(stateData.call1).assertTrue();
       expect(stateData.call2).assertTrue();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        scheduleCallback(stateData);
+      }
+      endTime(startTime, 'should_schedule_things_recursively_via_this_schedule');
     });
 
     it('should_be_reusable_after_an_error_is_thrown_during_execution', 0, (done: Function) => {
@@ -64,7 +75,19 @@ export default function queueSchedulerTest() {
         expect(results).assertDeepEquals([1, 2]);
         done();
       }, 0);
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        queue.schedule(() => {});
+      }
+      endTime(startTime, 'should_be_reusable_after_an_error_is_thrown_during_execution');
     });
 
   });
+}
+function endTime(startTime: number, tag: string) {
+  console.log(tag + ":startTime:" + startTime)
+  let endTime: number = new Date().getTime();
+  let averageTime = ((endTime - startTime) * 1000 / BASE_COUNT)
+  console.log(tag + ":endTime:" + endTime)
+  console.log(tag + ":averageTime:" + averageTime + "μs");
 }

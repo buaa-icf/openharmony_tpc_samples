@@ -46,7 +46,7 @@ import { TestScheduler, RunHelpers } from 'rxjs/internal/testing/TestScheduler';
 import { observableMatcher } from '../spec//helpers/observableMatcher';
 
 import { BindFun, EmptyFun, MyPromise1, observableOperator, observableSource, SourceFun } from './ArkTools';
-
+const BASE_COUNT: number = 2000;
 function expectFullObserver(val: ESObject) {
   expect(val instanceof Object).assertTrue();
   expect(val.next instanceof Function).assertTrue();
@@ -77,6 +77,15 @@ export default function observableTest() {
           }, complete: done
         }
       );
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        source.subscribe(
+          {
+            next: (x) => {}, complete: done
+          }
+        );
+      }
+      endTime(startTime, 'should_be_constructed_with_a_subscriber_function')
     });
 
     it('should_send_errors_thrown_in_the_constructor_down_the_error_path', 0, (done: ESObject) => {
@@ -89,6 +98,16 @@ export default function observableTest() {
           done();
         },
       });
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        new Observable<number>(() => {
+        }).subscribe({
+          error(err: ESObject) {
+            done();
+          },
+        });
+      }
+      endTime(startTime, 'should_send_errors_thrown_in_the_constructor_down_the_error_path')
     });
 
     it('should_allow_empty_ctor_which_is_effectively_a_never_observable', 0, () => {
@@ -97,6 +116,15 @@ export default function observableTest() {
         const result: ESObject = new Observable<ESObject>();
         expectObservable<ESObject>(result).toBe('-');
       });
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        rxTestScheduler.run((helpers: RunHelpers) => {
+          let expectObservable = helpers.expectObservable
+          const result: ESObject = new Observable<ESObject>();
+          expectObservable<ESObject>(result).toBe('-');
+        });
+      }
+      endTime(startTime, 'should_allow_empty_ctor_which_is_effectively_a_never_observable')
     });
 
     it('forEach_should_iterate_and_return_a_Promise', 0, (done: ESObject) => {
@@ -109,6 +137,15 @@ export default function observableTest() {
           done();
         });
       expect(result.then instanceof Function).assertTrue();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        of(1, 2, 3)
+          .forEach((x) => {}, Promise)
+          .then(() => {
+            done();
+          });
+      }
+      endTime(startTime, 'forEach_should_iterate_and_return_a_Promise')
     });
 
     it('should_reject_promise_when_in_error', 0, (done: ESObject) => {
@@ -125,9 +162,14 @@ export default function observableTest() {
             done();
           }
         );
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        throwError(() => ('bad'))
+      }
+      endTime(startTime, 'should_reject_promise_when_in_error')
     });
 
-    it('should_allow_Promise_to_be_globally_configured', 0, async () => {
+    it('should_allow_Promise_to_be_globally_configured', 0, async (done:Function) => {
       try {
         let wasCalled = false;
 
@@ -139,9 +181,33 @@ export default function observableTest() {
         })
 
         expect(wasCalled).assertTrue();
+
+        let startTime = new Date().getTime()
+        let configUrlTest: (index: number) => void = async (index) => {
+          of(42).forEach((x) => {
+            expect(x).assertDeepEquals(42);
+            wasCalled = true
+          }).then(() => {
+            if (index < BASE_COUNT) {
+              configUrlTest(index + 1)
+            } else {
+              let endTime = new Date().getTime()
+              let averageTime = (endTime - startTime) * 1000/ BASE_COUNT
+              console.info("should_allow_Promise_to_be_globally_configured startTime: " + startTime + ' μs');
+              console.info("should_allow_Promise_to_be_globally_configured endTime: " + endTime + ' μs');
+              console.info("should_allow_Promise_to_be_globally_configured averageTime: " + averageTime + ' μs');
+              done()
+            }
+          })
+        }
+        configUrlTest(0)
+
       } finally {
         config.Promise = undefined;
       }
+
+
+
     });
 
     it('should_reject_promise_if_nextHandler_throws', 0, (done: ESObject) => {
@@ -166,6 +232,12 @@ export default function observableTest() {
         .then(() => {
           done();
         });
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        of(1, 2, 3)
+          .forEach((x) => { }, Promise)
+      }
+      endTime(startTime, 'should_reject_promise_if_nextHandler_throws')
     });
 
     it('should_handle_a_synchronous_throw_from_the_next_handler', 0, () => {
@@ -178,7 +250,16 @@ export default function observableTest() {
       });
 
       const results: Array<number | Error> = [];
-
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        new Observable<number>((observer) => {
+          observer.next(1);
+          observer.next(2);
+          observer.next(3);
+          observer.next(4);
+        });
+      }
+      endTime(startTime, 'should_handle_a_synchronous_throw_from_the_next_handler')
       return syncObservable
         .forEach((x) => {
           results.push(x);
@@ -197,6 +278,7 @@ export default function observableTest() {
             expect(results).assertDeepEquals([1, 2, 3, expected]);
           }
         );
+
     });
 
     it('should_handle_an_asynchronous_throw_from_the_next_handler_and_tear_down', 0, () => {
@@ -211,6 +293,18 @@ export default function observableTest() {
       });
 
       const results: Array<number | Error> = [];
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        new Observable<number>((observer) => {
+          let i = 1;
+          const id = setInterval(() => observer.next(i++), 1);
+
+          return () => {
+            clearInterval(id);
+          };
+        });
+      }
+      endTime(startTime, 'should_handle_an_asynchronous_throw_from_the_next_handler_and_tear_down')
 
       return asyncObservable
         .forEach((x) => {
@@ -228,6 +322,7 @@ export default function observableTest() {
             expect(results).assertDeepEquals([1, 2, expected]);
           }
         );
+
     });
 
 
@@ -248,6 +343,13 @@ export default function observableTest() {
         next, complete
       });
       expect(results).assertDeepEquals(['Hi', 'done']);
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        source.subscribe({
+          next, complete
+        });
+      }
+      endTime(startTime, 'subscribe_should_work_with_handlers_with_hacked_bind_methods')
     });
 
     it('should_work_with_handlers_with_hacked_bind_methods_in_the_error_case', 0, () => {
@@ -262,6 +364,13 @@ export default function observableTest() {
       });
       expect(results.length).assertEqual(1);
       expect(results[0]).assertDeepEquals('an error');
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        source.subscribe({
+          error
+        });
+      }
+      endTime(startTime, 'should_work_with_handlers_with_hacked_bind_methods_in_the_error_case')
     });
 
     it('should_be_synchronous', 0, () => {
@@ -295,6 +404,15 @@ export default function observableTest() {
 
       expect(mutatedByNext).assertTrue();
       expect(mutatedByComplete).assertTrue();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        source.subscribe(
+          {
+            next: (x) => { }, complete: () => {}
+          }
+        );
+      }
+      endTime(startTime, 'should_be_synchronous')
     });
 
     it('should_work_when_subscribe_is_called_with_no_arguments', 0, () => {
@@ -304,6 +422,11 @@ export default function observableTest() {
       });
 
       source.subscribe();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        source.subscribe();
+      }
+      endTime(startTime, 'should_work_when_subscribe_is_called_with_no_arguments')
     });
 
     it('should_not_be_unsubscribed_when_other_empty_subscription_completes', 0, () => {
@@ -321,6 +444,11 @@ export default function observableTest() {
       empty().subscribe();
 
       expect(unsubscribeCalled).assertFalse();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        empty().subscribe();
+      }
+      endTime(startTime, 'should_not_be_unsubscribed_when_other_empty_subscription_completes')
     });
 
     it('should_not_be_unsubscribed_when_other_subscription_with_same_observer_completes', 0, () => {
@@ -344,6 +472,11 @@ export default function observableTest() {
       empty().subscribe(observer);
 
       expect(unsubscribeCalled).assertFalse();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        empty().subscribe(observer);
+      }
+      endTime(startTime, 'should_not_be_unsubscribed_when_other_subscription_with_same_observer_completes')
     });
 
     it('should_run_unsubscription_logic_when_an_error_is_sent_asynchronously_and_subscribe_is_called_with_no_arguments', 0, (done: ESObject) => {
@@ -380,6 +513,13 @@ export default function observableTest() {
           }
         }
       }, 100);
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        source.subscribe({
+          error() {},
+        });
+      }
+      endTime(startTime, 'should_return_a_Subscription_that_calls_the_unsubscribe_function_returned_by_the_subscriber')
     });
 
     it('should_return_a_Subscription_that_calls_the_unsubscribe_function_returned_by_the_subscriber', 0, () => {
@@ -400,6 +540,11 @@ export default function observableTest() {
 
       sub.unsubscribe();
       expect(unsubscribeCalled).assertTrue();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        sub.unsubscribe();
+      }
+      endTime(startTime, 'should_return_a_Subscription_that_calls_the_unsubscribe_function_returned_by_the_subscriber')
     });
 
     it('should_ignore_error_messages_after_unsubscription', 0, () => {
@@ -428,6 +573,21 @@ export default function observableTest() {
           errorCalled = true;
         }
         });
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        source.subscribe(
+          {
+            next: val => {
+              times = val;
+              if (times === 2) {
+                subscription.unsubscribe();
+              }
+            }, error: (err: ESObject) => {
+            errorCalled = true;
+          }
+          });
+      }
+      endTime(startTime, 'should_ignore_error_messages_after_unsubscription')
     });
 
     it('should_ignore_complete_messages_after_unsubscription', 0, () => {
@@ -455,6 +615,11 @@ export default function observableTest() {
           }, complete: () => completeCalled = true
         }
       );
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        subscription
+      }
+      endTime(startTime, 'should_ignore_complete_messages_after_unsubscription')
     });
 
     it('should_accept_an_anonymous_observe_wit_ust_a_ext_function_and_call_the_next_function_in_the_context_of_the_anonymous_observer', 0,
@@ -469,6 +634,11 @@ export default function observableTest() {
           },
         };
         of(1).subscribe(o);
+        let startTime = new Date().getTime()
+        for (let index = 0; index < BASE_COUNT; index++) {
+          of(1).subscribe(o);
+        }
+        endTime(startTime, 'should_accept_an_anonymous_observe_wit_ust_a_ext_function_and_call_the_next_function_in_the_context_of_the_anonymous_observer')
       }
     );
 
@@ -486,6 +656,11 @@ export default function observableTest() {
         };
 
         throwError(() => ('bad')).subscribe(o);
+        let startTime = new Date().getTime()
+        for (let index = 0; index < BASE_COUNT; index++) {
+          throwError(() => ('bad')).subscribe(o);
+        }
+        endTime(startTime, 'should_accept_an_anonymous_bserver_with_ust_an_error_function_nd_call_the_error_unction_in_the_context_of_the_anonymous_observer')
       }
     );
 
@@ -502,6 +677,11 @@ export default function observableTest() {
         };
 
         empty().subscribe(o);
+        let startTime = new Date().getTime()
+        for (let index = 0; index < BASE_COUNT; index++) {
+          empty().subscribe(o);
+        }
+        endTime(startTime, 'should_accept_an_anonymou_observer_with_ust_a_complete_function_and_call_the_complete_unction_in_the_context_of_the_anonymous_observer');
       }
     );
 
@@ -513,6 +693,11 @@ export default function observableTest() {
         error = err;
       }
       expect(error).assertNull();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        error
+      }
+      endTime(startTime, 'should_accept_an_anonymous_observer_with_no_functions_at_all');
     });
 
     it('should_ignore_next_messages_fter_unsubscription', 0, () => {
@@ -533,7 +718,18 @@ export default function observableTest() {
           }
         }
       });
-
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        new Observable<number>((observer) => {
+          observer.next(1);
+          observer.next(2);
+          observer.next(3);
+          return () => {
+            expect(num).assertEqual(2);
+          }
+        })
+      }
+      endTime(startTime, 'should_ignore_next_messages_fter_unsubscription');
     });
 
 
@@ -553,6 +749,13 @@ export default function observableTest() {
       });
 
       expect(called).assertTrue();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        badObservable.subscribe({
+          error: () => {  }
+        });
+      }
+      endTime(startTime, 'should_finalize_even_with_a_synchronou_thrown_error');
     });
 
 
@@ -569,12 +772,24 @@ export default function observableTest() {
         }
       });
       expect(caught).assertTrue();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        new Observable<ESObject>(() => {
+          throw new Error('');
+        });
+      }
+      endTime(startTime, 'should_handle_empty_string_sync_errors');
     });
 
 
     it('should_xist', 0, () => {
       const source = of('test');
       expect(source.pipe instanceof Function).assertTrue();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        of('test');
+      }
+      endTime(startTime, 'should_xist');
     });
 
     it('should_pipe_multiple_perations', 0, (done: ESObject) => {
@@ -590,12 +805,27 @@ export default function observableTest() {
             }, complete: done
           }
         );
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        of('test')
+          .pipe(
+            map((x) => x + x),
+            map((x) => x + '!!!')
+          )
+          .subscribe();
+      }
+      endTime(startTime, 'should_pipe_multiple_perations');
     });
 
     it('should_return_the_same_observable_if_there_are_no_arguments', 0, () => {
       const source = of('test');
       const result = source.pipe();
       expect(result).assertDeepEquals(source);
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        of('test')
+      }
+      endTime(startTime, 'should_return_the_same_observable_if_there_are_no_arguments');
     });
 
   });
@@ -606,6 +836,11 @@ export default function observableTest() {
         //noop
       });
       expect(result instanceof Observable).assertTrue();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        Observable.create(() => {});
+      }
+      endTime(startTime, 'should_create_an_Observable');
     });
 
     it('should_provide_an_observer_to_the_function', 0, () => {
@@ -621,6 +856,11 @@ export default function observableTest() {
         //noop
       });
       expect(called).assertTrue();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        result.subscribe(() => {});
+      }
+      endTime(startTime, 'should_provide_an_observer_to_the_function');
     });
 
     it('should_send_rrors_thrown_in_the_assed_function_down_the_error_ath', 0, (done: ESObject) => {
@@ -633,6 +873,11 @@ export default function observableTest() {
           done();
         },
       });
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        Observable.create(() => {})
+      }
+      endTime(startTime, 'should_send_rrors_thrown_in_the_assed_function_down_the_error_ath');
     });
   });
 
@@ -674,7 +919,13 @@ export default function observableTest() {
       (NEVER as ESObject).lift(myOperator)
         .subscribe()
         .unsubscribe();
-
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        (NEVER as ESObject).lift(myOperator)
+          .subscribe()
+          .unsubscribe();
+      }
+      endTime(startTime, 'should_return_Observable_which_calls_FinalizationLogic_of_operator_on_unsubscription');
     });
 
     it('should_be_overrideable_in_a_ustom_Observable_typ_that_composes', 0, (done: ESObject) => {
@@ -704,6 +955,11 @@ export default function observableTest() {
         }
         }
       );
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        result.subscribe();
+      }
+      endTime(startTime, 'should_be_overrideable_in_a_ustom_Observable_typ_that_composes');
     });
 
     it('should_compose_through_multicas_and_refCount', 0, (done: ESObject) => {
@@ -733,6 +989,11 @@ export default function observableTest() {
         }
         }
       );
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        result.subscribe();
+      }
+      endTime(startTime, 'should_compose_through_multicas_and_refCount');
     });
 
 
@@ -763,6 +1024,11 @@ export default function observableTest() {
         }
         }
       );
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        result.subscribe();
+      }
+      endTime(startTime, 'should_ompose_hrough_publish_and_refCount');
     });
 
 
@@ -793,6 +1059,11 @@ export default function observableTest() {
         }
         }
       );
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        result.subscribe();
+      }
+      endTime(startTime, 'should_compose_through_publishLast_and_efCount');
     });
 
     it('should_compose_through_publishBehavior_and_refCount', 0, (done: ESObject) => {
@@ -822,6 +1093,11 @@ export default function observableTest() {
         }
         }
       );
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        result.subscribe();
+      }
+      endTime(startTime, 'should_compose_through_publishBehavior_and_refCount');
     });
 
     it('should_composes_Subjects_in_the_simple_case', 0, () => {
@@ -841,6 +1117,11 @@ export default function observableTest() {
       result.next(30);
 
       expect(emitted).assertDeepEquals([100, 200, 300]);
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        result.next(30);
+      }
+      endTime(startTime, 'should_composes_Subjects_in_the_simple_case');
     });
 
     /**
@@ -876,6 +1157,11 @@ export default function observableTest() {
 
       expect(emitted1).assertDeepEquals([100, 200, 300]);
       expect(emitted2).assertDeepEquals([0, 10, 20]);
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        result2.next(20); // Yuck
+      }
+      endTime(startTime, 'should_demonstrate_the_horrors_f_haring_an_lifting_he_bject_ough');
     });
 
     /**
@@ -913,6 +1199,11 @@ export default function observableTest() {
       result.next(10);
       result.next(20);
       result.next(30);
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        result.subscribe(value => {});
+      }
+      endTime(startTime, 'should_compose_through_multicast_and_refCount_even_if_it_is_a_Subject');
     });
 
     it('should_compose_through_publish_and_refCount_even_if_it_is_a_Subject', 0, () => {
@@ -936,6 +1227,11 @@ export default function observableTest() {
       result.next(10);
       result.next(20);
       result.next(30);
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        result.subscribe(value => {});
+      }
+      endTime(startTime, 'should_compose_through_publish_and_refCount_even_if_it_is_a_Subject');
     });
 
 
@@ -960,6 +1256,11 @@ export default function observableTest() {
       result.next(10);
       result.next(20);
       result.next(30);
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        result.next(30);
+      }
+      endTime(startTime, 'should_compos_through_publishLast_and_refCount_even_if_it_is_a_Subject');
     });
 
     it('should_compos_through_publishBehavior_nd_refCount_even_if_it_is_a_Subject', 0, () => {
@@ -984,6 +1285,11 @@ export default function observableTest() {
       result.next(10);
       result.next(20);
       result.next(30);
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        result.subscribe(value => { });
+      }
+      endTime(startTime, 'should_compos_through_publishBehavior_nd_refCount_even_if_it_is_a_Subject');
     });
 
 
@@ -1015,6 +1321,16 @@ export default function observableTest() {
         }
         }
       );
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        new MyCustomObservable<number>((observer) => {
+          observer.next(1);
+          observer.next(2);
+          observer.next(3);
+          observer.complete();
+        })
+      }
+      endTime(startTime, 'should_compose_through_multicast_with_selector_function');
     });
 
     it('should_compose_through_combineLatest', 0, () => {
@@ -1037,6 +1353,11 @@ export default function observableTest() {
           G: 'd4',
           H: 'e4',
         });
+        let startTime = new Date().getTime()
+        for (let index = 0; index < BASE_COUNT; index++) {
+          combineLatest([e1, e2], (a, b) => String(a) + String(b));
+        }
+        endTime(startTime, 'should_compose_through_combineLatest');
       });
     });
 
@@ -1051,6 +1372,11 @@ export default function observableTest() {
         const result: ESObject = concat(e1, e2);
 
         expectObservable<ESObject>(result).toBe(expected);
+        let startTime = new Date().getTime()
+        for (let index = 0; index < BASE_COUNT; index++) {
+          concat(e1, e2);
+        }
+        endTime(startTime, 'should_ompose_through_concat');
       });
     });
     it('should_compose_through_merge', 0, () => {
@@ -1064,6 +1390,11 @@ export default function observableTest() {
         const result: ESObject = merge(e1, e2);
 
         expectObservable<ESObject>(result).toBe(expected);
+        let startTime = new Date().getTime()
+        for (let index = 0; index < BASE_COUNT; index++) {
+          merge(e1, e2);
+        }
+        endTime(startTime, 'should_compose_through_merge');
       });
     });
 
@@ -1082,6 +1413,11 @@ export default function observableTest() {
         expectObservable<ESObject>(result).toBe(expected);
         expectSubscriptions(e1.subscriptions).toBe(e1subs);
         expectSubscriptions(e2.subscriptions).toBe(e2subs);
+        let startTime = new Date().getTime()
+        for (let index = 0; index < BASE_COUNT; index++) {
+          e2.subscriptions;
+        }
+        endTime(startTime, 'should_compose_through_race');
       });
     });
 
@@ -1102,6 +1438,11 @@ export default function observableTest() {
           C: 'c3',
           D: 'd4',
         });
+        let startTime = new Date().getTime()
+        for (let index = 0; index < BASE_COUNT; index++) {
+          cold(' --1--2-3-4---|   ');
+        }
+        endTime(startTime, 'should_compose_through_zip');
       });
     });
 
@@ -1176,6 +1517,19 @@ export default function observableTest() {
         }
         }
       );
+
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        result.subscribe();
+      }
+      endTime(startTime, 'should_allow_njecting_behaviors_into_all_subscribers_n_an_operator_chain_when_overridden');
     });
   });
+}
+function endTime(startTime: number, tag: string) {
+  console.log(tag + ":startTime:" + startTime)
+  let endTime: number = new Date().getTime();
+  let averageTime = ((endTime - startTime) * 1000 / BASE_COUNT)
+  console.log(tag + ":endTime:" + endTime)
+  console.log(tag + ":averageTime:" + averageTime + "μs");
 }

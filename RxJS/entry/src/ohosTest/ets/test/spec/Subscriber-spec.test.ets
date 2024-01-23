@@ -17,7 +17,7 @@ import { SafeSubscriber } from 'rxjs/internal/Subscriber';
 import { Subscriber, Observable, config, of, Observer } from 'rxjs';
 import { asInteropSubscriber } from './helpers/interop-helper';
 import { getRegisteredFinalizers } from './helpers/subscription';
-
+const BASE_COUNT: number = 2000;
 export default function subscriberTest() {
   describe('SafeSubscriber', () => {
     it('should_ignore_next_messages_after_unsubscription', 0, () => {
@@ -35,6 +35,11 @@ export default function subscriberTest() {
       sub.next();
 
       expect(times).assertEqual(2);
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        sub.unsubscribe();
+      }
+      endTime(startTime, 'should_ignore_next_messages_after_unsubscription');
     });
 
     it('should_ignore_error_messages_after_unsubscription', 0, () => {
@@ -58,6 +63,11 @@ export default function subscriberTest() {
 
       expect(times).assertEqual(2);
       expect(errorCalled).assertFalse();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        sub.error();
+      }
+      endTime(startTime, 'should_ignore_next_messages_after_unsubscription');
     });
 
     it('should_ignore_complete_messages_after_unsubscription', 0, () => {
@@ -81,6 +91,11 @@ export default function subscriberTest() {
 
       expect(times).assertEqual(2);
       expect(completeCalled).assertFalse();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        sub.complete();
+      }
+      endTime(startTime, 'should_ignore_complete_messages_after_unsubscription');
     });
 
     it('should_not_be_closed_when_other_subscriber_with_same_observer_instance_completes', 0, () => {
@@ -96,6 +111,11 @@ export default function subscriberTest() {
 
       expect(sub1.closed).assertFalse();
       expect(sub2.closed).assertTrue();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        sub2.complete();
+      }
+      endTime(startTime, 'should_not_be_closed_when_other_subscriber_with_same_observer_instance_completes');
     });
 
     it('should_call_complete_observer_without_any_arguments', 0, () => {
@@ -113,7 +133,11 @@ export default function subscriberTest() {
       let a: ESObject = argument!.length
       expect(a).assertEqual(0);
 
-
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        sub1.complete();
+      }
+      endTime(startTime, 'should_call_complete_observer_without_any_arguments');
     });
 
     it('should_chain_interop_unsubscriptions', 0, () => {
@@ -132,6 +156,11 @@ export default function subscriberTest() {
       expect(observableUnsubscribed).assertTrue();
       expect(subscriberUnsubscribed).assertTrue();
       expect(subscriptionUnsubscribed).assertTrue();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        subscriber.unsubscribe();
+      }
+      endTime(startTime, 'should_chain_interop_unsubscriptions');
     });
 
     it('should_have_idempotent_unsubscription', 0, () => {
@@ -145,6 +174,12 @@ export default function subscriberTest() {
 
       subscriber.unsubscribe();
       expect(count).assertEqual(1);
+
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        subscriber.unsubscribe();
+      }
+      endTime(startTime, 'should_have_idempotent_unsubscription');
     });
 
     it('should_close_unsubscribe_and_unregister_all_finalizers_after_complete', 0, () => {
@@ -155,6 +190,11 @@ export default function subscriberTest() {
       expect(isUnsubscribed).assertTrue();
       expect(subscriber.closed).assertTrue();
       expect(getRegisteredFinalizers(subscriber).length).assertEqual(0);
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        subscriber.complete();
+      }
+      endTime(startTime, 'should_close_unsubscribe_and_unregister_all_finalizers_after_complete');
     });
 
     it('should_close_unsubscribe_and_unregister_all_finalizers_after_error', 0, () => {
@@ -171,6 +211,11 @@ export default function subscriberTest() {
       expect(isTornDown).assertTrue();
       expect(subscriber.closed).assertTrue();
       expect(getRegisteredFinalizers(subscriber).length).assertEqual(0);
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        subscriber.error(new Error('test'));
+      }
+      endTime(startTime, 'should_close_unsubscribe_and_unregister_all_finalizers_after_complete');
     });
   });
 
@@ -183,6 +228,11 @@ export default function subscriberTest() {
     subscriber.complete();
     expect(isTornDown).assertTrue();
     expect(getRegisteredFinalizers(subscriber).length).assertEqual(0);
+    let startTime = new Date().getTime()
+    for (let index = 0; index < BASE_COUNT; index++) {
+      subscriber.complete();
+    }
+    endTime(startTime, 'should_close_unsubscribe_and_unregister_all_finalizers_after_complete');
   });
 
   it('should_NOT_break_this_context_on_next_methods_from_unfortunate_consumers', 0, () => {
@@ -208,6 +258,18 @@ export default function subscriberTest() {
     of('old', 'old', 'reset', 'new', 'new').subscribe(consumer);
 
     expect(JSON.stringify(consumer.valuesProcessed) === JSON.stringify(['new', 'new'])).assertFalse(); //要改
-
+    let startTime = new Date().getTime()
+    for (let index = 0; index < BASE_COUNT; index++) {
+      new CustomConsumer();
+    }
+    endTime(startTime, 'should_close_unsubscribe_and_unregister_all_finalizers_after_complete');
   });
+}
+
+function endTime(startTime: number, tag: string) {
+  console.log(tag + ":startTime:" + startTime)
+  let endTime: number = new Date().getTime();
+  let averageTime = ((endTime - startTime) * 1000 / BASE_COUNT)
+  console.log(tag + ":endTime:" + endTime)
+  console.log(tag + ":averageTime:" + averageTime + "μs");
 }

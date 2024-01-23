@@ -17,7 +17,7 @@ import { Notification, Subscriber } from 'rxjs';
 import { TestScheduler, RunHelpers } from 'rxjs/internal/testing/TestScheduler';
 import { observableMatcher } from '../spec/helpers/observableMatcher';
 import { InstanceofNotFun, UndefinedFun } from './ArkTools';
-
+const BASE_COUNT: number = 2000;
 export default function NotificationTest() {
   /** @test {Notification} */
   describe('Notification', () => {
@@ -31,6 +31,11 @@ export default function NotificationTest() {
       let result2 = InstanceofNotFun()
       expect(result1).assertTrue();
       expect(result2).assertTrue();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        InstanceofNotFun()
+      }
+      endTime(startTime, 'should_not_allow_convert_to_observable_if_given_kind_is_unknown');
     });
 
     it('should_not_allow_convert_to_observable_if_given_kind_is_unknown', 0, () => {
@@ -42,6 +47,11 @@ export default function NotificationTest() {
         error = err;
       }
       expect(error != null).assertTrue();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        new Notification<ESObject>('x' as ESObject);
+      }
+      endTime(startTime, 'should_not_allow_convert_to_observable_if_given_kind_is_unknown');
     });
 
     it('createNext_should_return_a_Notification', 0, () => {
@@ -51,6 +61,11 @@ export default function NotificationTest() {
       expect(n.kind).assertEqual('N');
       expect(n.error).assertUndefined();
       expect(n.hasValue).assertTrue();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        Notification.createNext('test');
+      }
+      endTime(startTime, 'createNext_should_return_a_Notification');
     });
 
 
@@ -61,6 +76,11 @@ export default function NotificationTest() {
       expect(n.kind).assertEqual('E');
       expect(n.error).assertEqual('test');
       expect(n.hasValue).assertFalse();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        Notification.createError('test');
+      }
+      endTime(startTime, 'createError_should_return_a_Notification');
     });
 
 
@@ -71,6 +91,11 @@ export default function NotificationTest() {
       expect(n.kind).assertEqual('C');
       expect(n.error).assertUndefined();
       expect(n.hasValue).assertFalse();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        Notification.createComplete();
+      }
+      endTime(startTime, 'createComplete_should_return_a_Notification');
     });
 
 
@@ -80,6 +105,11 @@ export default function NotificationTest() {
         const value = 'a';
         const next = Notification.createNext(value);
         expectObservable(next.toObservable()).toBe('(a|)');
+        let startTime = new Date().getTime()
+        for (let index = 0; index < BASE_COUNT; index++) {
+          Notification.createNext(value);
+        }
+        endTime(startTime, 'toObservable_should_create_observable_from_a_next_Notification');
       });
     });
 
@@ -88,6 +118,11 @@ export default function NotificationTest() {
         let expectObservable = helpers.expectObservable
         const complete = Notification.createComplete();
         expectObservable(complete.toObservable()).toBe('|');
+        let startTime = new Date().getTime()
+        for (let index = 0; index < BASE_COUNT; index++) {
+          Notification.createComplete();
+        }
+        endTime(startTime, 'toObservable_should_create_observable_from_a_complete_Notification');
       });
     });
 
@@ -96,6 +131,11 @@ export default function NotificationTest() {
         let expectObservable = helpers.expectObservable
         const error = Notification.createError('error');
         expectObservable(error.toObservable()).toBe('#');
+        let startTime = new Date().getTime()
+        for (let index = 0; index < BASE_COUNT; index++) {
+          Notification.createError('error');
+        }
+        endTime(startTime, 'toObservable_should_create_observable_from_a_error_Notification');
       });
     });
 
@@ -105,6 +145,11 @@ export default function NotificationTest() {
       const second = Notification.createNext(value);
 
       expect(first === second).assertFalse();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        Notification.createNext(value);
+      }
+      endTime(startTime, 'static_reference_should_create_new_next_Notification_with_value');
     });
 
     it('static_reference_should_create_new_error_Notification', 0, () => {
@@ -112,6 +157,11 @@ export default function NotificationTest() {
       const second = Notification.createError();
 
       expect(first === second).assertFalse();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        Notification.createError();
+      }
+      endTime(startTime, 'static_reference_should_create_new_error_Notification');
     });
 
     it('static_reference_should_return_static_complete_Notification_reference', 0, () => {
@@ -119,6 +169,11 @@ export default function NotificationTest() {
       const second = Notification.createComplete();
 
       expect(first).assertEqual(second);
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        Notification.createComplete();
+      }
+      endTime(startTime, 'static_reference_should_return_static_complete_Notification_reference');
     });
 
     it('do_should_invoke_on_next', 0, () => {
@@ -137,6 +192,11 @@ export default function NotificationTest() {
       );
 
       expect(invoked).assertTrue();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        Notification.createNext('a');
+      }
+      endTime(startTime, 'do_should_invoke_on_next');
     });
 
     it('do_should_invoke_on_error', 0, () => {
@@ -155,6 +215,12 @@ export default function NotificationTest() {
       );
 
       expect(invoked).assertTrue();
+
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        Notification.createError();
+      }
+      endTime(startTime, 'do_should_invoke_on_error');
     });
 
     it('do_should_invoke_on_complete', 0, () => {
@@ -173,6 +239,12 @@ export default function NotificationTest() {
       );
 
       expect(invoked).assertTrue();
+
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        Notification.createComplete();
+      }
+      endTime(startTime, 'do_should_invoke_on_complete');
     });
 
 
@@ -195,6 +267,11 @@ export default function NotificationTest() {
 
       n.accept(observer);
       expect(observed).assertTrue();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        Notification.createNext(value);
+      }
+      endTime(startTime, 'accept_should_accept_observer_for_next_Notification');
     });
 
     it('accept_should_accept_observer_for_error_Notification', 0, () => {
@@ -214,6 +291,11 @@ export default function NotificationTest() {
 
       n.accept(observer);
       expect(observed).assertTrue();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        Notification.createError();
+      }
+      endTime(startTime, 'accept_should_accept_observer_for_error_Notification');
     });
 
     it('accept_should_accept_observer_for_complete_Notification', 0, () => {
@@ -233,6 +315,11 @@ export default function NotificationTest() {
 
       n.accept(observer);
       expect(observed).assertTrue();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        n.accept(observer);
+      }
+      endTime(startTime, 'accept_should_accept_observer_for_complete_Notification');
     });
 
     it('accept_should_accept_function_for_next_Notification', 0, () => {
@@ -253,6 +340,11 @@ export default function NotificationTest() {
         }
       );
       expect(observed).assertTrue();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        Notification.createNext(value);
+      }
+      endTime(startTime, 'accept_should_accept_function_for_next_Notification');
     });
 
     it('accept_should_accept_function_for_error_Notification', 0, () => {
@@ -273,6 +365,12 @@ export default function NotificationTest() {
         }
       );
       expect(observed).assertTrue();
+
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        Notification.createError(error);
+      }
+      endTime(startTime, 'accept_should_accept_function_for_error_Notification');
     });
 
     it('accept_should_accept_function_for_complete_Notification', 0, () => {
@@ -291,6 +389,12 @@ export default function NotificationTest() {
         }
       );
       expect(observed).assertTrue();
+
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        Notification.createComplete();
+      }
+      endTime(startTime, 'accept_should_accept_function_for_complete_Notification');
     });
 
 
@@ -313,6 +417,12 @@ export default function NotificationTest() {
 
       n.observe(observer);
       expect(observed).assertTrue();
+
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        Notification.createNext(value);
+      }
+      endTime(startTime, 'observe_should_observe_for_next_Notification');
     });
 
     it('observe_should_observe_for_error_Notification', 0, () => {
@@ -332,6 +442,11 @@ export default function NotificationTest() {
 
       n.observe(observer);
       expect(observed).assertTrue();
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        Notification.createError();
+      }
+      endTime(startTime, 'observe_should_observe_for_error_Notification');
     });
 
     it('observe_should_observe_for_complete_Notification', 0, () => {
@@ -351,6 +466,19 @@ export default function NotificationTest() {
 
       n.observe(observer);
       expect(observed).assertTrue();
+
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        Subscriber.create();
+      }
+      endTime(startTime, 'observe_should_observe_for_complete_Notification');
     });
   });
+}
+function endTime(startTime: number, tag: string) {
+  console.log(tag + ":startTime:" + startTime)
+  let endTime: number = new Date().getTime();
+  let averageTime = ((endTime - startTime) * 1000 / BASE_COUNT)
+  console.log(tag + ":endTime:" + endTime)
+  console.log(tag + ":averageTime:" + averageTime + "μs");
 }
