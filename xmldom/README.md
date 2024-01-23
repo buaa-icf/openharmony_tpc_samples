@@ -2,7 +2,7 @@
 
 ## 简介
 
-> 一个纯JavaScriptW3C标准(XMLDOMLevel2 Core)“DOM Parser”和“XMLSerializer”模块
+> 专门为OpenHarmony打造的一个提供了符合 W3C 标准的 DOMParser 和 XMLSerializer 功能的 JavaScript 模块。它允许你在浏览器和 Node.js 环境中解析和操作 XML 数据，并提供了将 DOM 文档对象转换为 XML 字符串的能力。这使得处理和操作 XML 数据变得更加方便和标准化
 
 ## 下载安装
 
@@ -25,9 +25,9 @@ ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](ht
 	<child/>
  </xml>`
 
- const doc = new DOMParser().parseFromString(source, 'text/xml')
+ const doc :ESObject = new DOMParser().parseFromString(source, 'text/xml')
 
- const serialized = new XMLSerializer().serializeToString(doc)
+ const serialized :ESObject = new XMLSerializer().serializeToString(doc)
  ```
 
 ## 接口说明
