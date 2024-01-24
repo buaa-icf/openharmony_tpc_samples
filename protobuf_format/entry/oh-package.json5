@@ -9,7 +9,7 @@
   "dynamicDependencies": {},
   "dependencies": {
     "@ohos/sax": "file:../sax",
-    "@ohos/protobuf_format": "file:../protobufformat",
+    "@ohos/protobuf_format": "file:../library",
     "@ohos/xml_js": "file:../xml-js"
   }
 }
