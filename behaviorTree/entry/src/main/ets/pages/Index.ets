@@ -96,11 +96,11 @@ struct Index {
     );
 
     BehaviorTree.register(
-      "Google",
+      "GL",
       new Task({
         run() {
           const value = Math.random() * 10;
-          console.log(`Google Value ${value}`);
+          console.log(`GL Value ${value}`);
           if (value >= 5) {
             console.log("通过了--谷歌--面试");
             return SUCCESS;
