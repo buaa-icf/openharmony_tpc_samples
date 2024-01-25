@@ -111,9 +111,10 @@ export default function eventBusTest() {
       expect(EventBus.getEvents()).assertContain("abc")
       let startTime = new Date().getTime();
       for (let index = 0; index < BASE_COUNT; index++) {
-        expect(EventBus.getEvents()).assertContain("cbd")
+        EventBus.getEvents()
       }
       endTime(startTime, TAG + ' getEvents', BASELINE_CREATEHTTP);
+      expect(EventBus.getEvents()).assertContain("cbd")
       console.info("getEvents end")
     })
   })
