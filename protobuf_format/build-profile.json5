@@ -39,8 +39,8 @@
       "srcPath": "./xml-js"
     },
     {
-      "name": "protobufformat",
-      "srcPath": "./protobufformat"
+      "name": "library",
+      "srcPath": "./library"
     }
   ]
 }
