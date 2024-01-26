@@ -1,8 +1,8 @@
-# rebound
+# domutils
 
 # 简介
 
-提供一个HTML/XML解析器，用于处理htmlparser2的dom的实用程序
+domutils提供一个HTML/XML解析器，用于处理htmlparser2的dom的实用程序
 
 ## 下载安装
 
@@ -61,6 +61,10 @@ let dom: Document = parseDocument(html);
 let element:Element[] = DomUtils.getElementsByTagName('style', dom);
 let text:string = DomUtils.textContent(element);
 ```
+
+### 接口说明
+单元测试用例详情见[TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/domutils/TEST.md)
+
 
 ## 约束与限制
 在下述版本验证通过：
