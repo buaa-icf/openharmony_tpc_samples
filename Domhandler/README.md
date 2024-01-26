@@ -1,4 +1,4 @@
-# rebound
+# Domhandler
 
 # 简介
 
@@ -65,6 +65,10 @@ const html = `
 let dom: Document = parseDocument(html);
 let text:string = DomUtils.textContent(element);
 ```
+
+### 接口说明
+单元测试用例详情见[TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Domhandler/TEST.md)
+
 
 ## 约束与限制
 在下述版本验证通过：
