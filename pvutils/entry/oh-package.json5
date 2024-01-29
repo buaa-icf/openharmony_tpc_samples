@@ -1,0 +1,12 @@
+{
+  "license": "MIT",
+  "devDependencies": {},
+  "author": "",
+  "name": "entry",
+  "description": "a set of common utility functions used in various Peculiar Ventures Javascript based projects.",
+  "main": "",
+  "version": "1.0.0",
+  "dependencies": {
+    "pvutils": "1.1.3"
+  }
+}
