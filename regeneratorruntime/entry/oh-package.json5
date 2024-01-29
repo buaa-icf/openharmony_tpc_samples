@@ -1,0 +1,12 @@
+{
+  "license": "",
+  "devDependencies": {},
+  "author": "",
+  "name": "entry",
+  "description": "regeneratorRuntime是 ES6 提供的一种异步编程解决方案，语法行为与传统函数完全不同,是一种解决异步方案.",
+  "main": "",
+  "version": "1.0.0",
+  "dependencies": {
+    "regenerator-runtime": "^0.13.11"
+  }
+}
