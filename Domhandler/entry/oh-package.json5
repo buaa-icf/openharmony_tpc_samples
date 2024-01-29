@@ -1,0 +1,13 @@
+{
+  "license": "BSD License",
+  "devDependencies": {},
+  "author": "ohos_tpc",
+  "name": "entry",
+  "description": "用于将页面转换为dom的htmlparser2的处理程序，创建一个包含页面所有节点的dom.",
+  "main": "",
+  "version": "1.0.0",
+  "dependencies": {
+    "@ohos/htmlparser2": "1.0.0",
+    "domhandler": "^5.0.3"
+  }
+}

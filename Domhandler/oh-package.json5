@@ -1,0 +1,12 @@
+{
+  "license": "BSD License",
+  "devDependencies": {
+    "@ohos/hypium": "1.0.11"
+  },
+  "author": "",
+  "name": "Domhandler",
+  "description": "Domhandler生成DOM处理程序，创建一个包含页面所有节点的树.",
+  "main": "",
+  "version": "1.0.0",
+  "dependencies": {}
+}
