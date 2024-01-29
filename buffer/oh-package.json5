@@ -1,0 +1,12 @@
+{
+  "license": "MIT",
+  "devDependencies": {
+    "@ohos/hypium": "1.0.11"
+  },
+  "author": "",
+  "name": "buffer",
+  "description": "he goal is to provide an API that is 100% identical to node's Buffer API.",
+  "main": "",
+  "version": "1.0.0",
+  "dependencies": {}
+}
