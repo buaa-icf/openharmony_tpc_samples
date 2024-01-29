@@ -1,0 +1,12 @@
+{
+  "license": "MIT",
+  "devDependencies": {
+    "@ohos/hypium": "1.0.6"
+  },
+  "author": "",
+  "name": "xmlbuilder",
+  "description": "An XML builder for node.js",
+  "main": "",
+  "version": "2.0.0",
+  "dependencies": {}
+}

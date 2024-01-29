@@ -1,0 +1,12 @@
+{
+  "license": "MIT",
+  "devDependencies": {},
+  "author": "",
+  "name": "entry",
+  "description": "An XML builder for node.js",
+  "main": "",
+  "version": "2.0.0",
+  "dependencies": {
+    "xmlbuilder": "~11.0.0"
+  }
+}
