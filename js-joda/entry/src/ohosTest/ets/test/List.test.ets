@@ -29,12 +29,17 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+
 import abilityTest from './Ability.test'
 import jodaTest from './Joda.test'
 import jodaEnUsTest from './Joda_en-us.test'
+import jodaTimeConsuming from './JodaTimeConsuming.test'
+import jodaEnUsTimeConsuming from './JodaEnUsTimeConsuming.test'
 
 export default function testsuite() {
   abilityTest()
   jodaTest()
   jodaEnUsTest()
+  jodaTimeConsuming()
+  jodaEnUsTimeConsuming()
 }
