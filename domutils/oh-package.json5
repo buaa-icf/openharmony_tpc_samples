@@ -1,0 +1,12 @@
+{
+  "license": "",
+  "devDependencies": {
+    "@ohos/hypium": "1.0.11"
+  },
+  "author": "",
+  "name": "domutils",
+  "description": "提供一个HTML/XML解析器，生成DOM处理程序，创建一个包含页面所有节点的Dom.",
+  "main": "",
+  "version": "1.0.0",
+  "dependencies": {}
+}
