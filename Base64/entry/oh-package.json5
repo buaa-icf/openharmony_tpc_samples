@@ -1,0 +1,12 @@
+{
+  "license": "Apache 2.0 and WTFPL",
+  "devDependencies": {},
+  "author": "",
+  "name": "entry",
+  "description": "Base64 encoding/decoding tool.",
+  "main": "",
+  "version": "1.0.0",
+  "dependencies": {
+    "Base64": "1.1.0"
+  }
+}

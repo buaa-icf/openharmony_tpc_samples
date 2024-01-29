@@ -1,0 +1,12 @@
+{
+  "license": "Apache 2.0 and WTFPL",
+  "devDependencies": {
+    "@ohos/hypium": "1.0.11"
+  },
+  "author": "",
+  "name": "base64",
+  "description": "Base64 encoding/decoding tool.",
+  "main": "",
+  "version": "1.0.0",
+  "dependencies": {}
+}
