@@ -1,0 +1,14 @@
+{
+  "license": "MIT License",
+  "devDependencies": {},
+  "author": "ohos_tpc",
+  "name": "entry",
+  "description": "A library that can render DOM nodes or DOM node arrays as strings.",
+  "main": "",
+  "version": "1.0.0",
+  "dependencies": {
+    "dom-serializer": "2.0.0",
+    "@ohos/htmlparser2": "^1.0.0",
+    "domhandler": "5.0.3"
+  }
+}
