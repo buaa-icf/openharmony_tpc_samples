@@ -1,0 +1,17 @@
+{
+  "license": "BSD License",
+  "devDependencies": {},
+  "author": "ohos_tpc",
+  "name": "entry",
+  "description": "A minimal path module to resolve Unix, Windows and URL paths alike.",
+  "main": "",
+  "version": "1.0.0",
+  "ohos": {
+    "org": "huawei",
+    "directoryLevel": "module",
+    "buildTool": "hvigor"
+  },
+  "dependencies": {
+    "@protobufjs/path": "^1.1.2"
+  }
+}
