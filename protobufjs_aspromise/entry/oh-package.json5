@@ -1,0 +1,17 @@
+{
+  "license": "BSD License",
+  "devDependencies": {},
+  "author": "ohos_tpc",
+  "name": "entry",
+  "ohos": {
+    "org": "huawei",
+    "directoryLevel": "module",
+    "buildTool": "hvigor"
+  },
+  "description": "Returns a promise from a node-style callback function.",
+  "main": "",
+  "version": "1.0.0",
+  "dependencies": {
+    "@protobufjs/aspromise": "^1.1.2"
+  }
+}
