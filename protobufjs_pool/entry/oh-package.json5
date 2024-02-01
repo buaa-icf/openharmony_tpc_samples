@@ -1,0 +1,17 @@
+{
+  "license": "BSD License",
+  "devDependencies": {},
+  "author": "ohos_tpc",
+  "name": "entry",
+  "description": "A general purpose buffer pool ",
+  "main": "",
+  "ohos": {
+    "org": "huawei",
+    "directoryLevel": "module",
+    "buildTool": "hvigor"
+  },
+  "version": "1.1.0",
+  "dependencies": {
+    "@protobufjs/pool": "^1.1.0"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "license": "BSD License",
+  "devDependencies": {
+    "@ohos/hypium": "1.0.11"
+  },
+  "author": "",
+  "name": "protobufjs_pool",
+  "description": "Please describe the basic information.",
+  "main": "",
+  "version": "1.1.0",
+  "dependencies": {}
+}
