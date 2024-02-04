@@ -50,15 +50,15 @@ export default function abilityTest() {
 
     it('serializeToString', 0, () => {
       const input = `<xml xmlns='<&"' xmlns:attr='"&<'><test attr:test=""/></xml>`
-      const doc = new DOMParser().parseFromString(input)
+      const doc:ESObject = new DOMParser().parseFromString(input)
       let docStr = new XMLSerializer().serializeToString(doc)
       expect(docStr).assertEqual(`<xml xmlns="&lt;&amp;&quot;" xmlns:attr="&quot;&amp;&lt;"><test attr:test=""/></xml>`)
     })
 
     it('DOMImplementation', 0, () => {
-      const impl = new DOMImplementation()
-      const doctype = impl.createDocumentType('test', '', '')
-      const doc = impl.createDocument(null, '', doctype)
+      const impl:ESObject = new DOMImplementation()
+      const doctype:ESObject = impl.createDocumentType('test', '', '')
+      const doc:ESObject = impl.createDocument(null, '', doctype)
       expect(doc.doctype).assertEqual(doctype)
       expect(doctype.ownerDocument).assertEqual(doc)
       expect(doc.childNodes.item(0)).assertEqual(doctype)
@@ -85,33 +85,33 @@ export default function abilityTest() {
     })
 
     it('can_properly_set_clone', 0, () => {
-      const doc1 = new DOMParser().parseFromString(
+      const doc1:ESObject = new DOMParser().parseFromString(
         "<doc1 attr1='1' attr2='a2'>text1<child>text2</child></doc1>",
         'text/xml'
       )
       const doc1s = new XMLSerializer().serializeToString(doc1)
-      const n = doc1.cloneNode(true)
+      const n :ESObject= doc1.cloneNode(true)
       expect(n.toString()).assertEqual(doc1s.toString())
     })
 
     it('can_properly_import', 0, () => {
-      const doc1 = new DOMParser().parseFromString("<doc2 attr='2'/>")
-      const doc2 = new DOMParser().parseFromString(
+      const doc1:ESObject = new DOMParser().parseFromString("<doc2 attr='2'/>")
+      const doc2:ESObject= new DOMParser().parseFromString(
         "<doc1 attr1='1' attr2='a2'>text1<child>text2</child></doc1>",
         'text/xml'
       )
 
-      const doc3 = new DOMParser().parseFromString(
+      const doc3:ESObject= new DOMParser().parseFromString(
         "<doc2 attr='2'><doc1 attr1='1' attr2='a2'>text1<child>text2</child></doc1></doc2>"
       )
-      const n = doc1.importNode(doc2.documentElement, true)
+      const n:ESObject= doc1.importNode(doc2.documentElement, true)
       doc1.documentElement.appendChild(n)
       expect(doc1.toString()).assertEqual(doc3.toString())
       expect(doc2.toString()).not().assertEqual(doc3.toString())
     })
 
     it('can_properly_set_attribute', 0, () => {
-      const root = new DOMParser().parseFromString(
+      const root:ESObject = new DOMParser().parseFromString(
         '<xml/>',
         'text/xml'
       ).documentElement
@@ -126,7 +126,7 @@ export default function abilityTest() {
     })
 
     it('can_properly_set_ns_attribute', 0, () => {
-      const root = new DOMParser().parseFromString(
+      const root:ESObject = new DOMParser().parseFromString(
         "<xml xmlns:a='a' xmlns:b='b' xmlns='e'><child/></xml>",
         'text/xml'
       ).documentElement
@@ -142,7 +142,7 @@ export default function abilityTest() {
     })
 
     it('can_properly_override_attribute', 0, () => {
-      const root = new DOMParser().parseFromString(
+      const root:ESObject= new DOMParser().parseFromString(
         "<xml xmlns:a='a' xmlns:b='b' xmlns='e'><child/></xml>",
         'text/xml'
       ).documentElement
@@ -151,7 +151,7 @@ export default function abilityTest() {
     })
 
     it('properly_supports_attribute_namespace', 0, () => {
-      const root = new DOMParser().parseFromString(
+      const root:ESObject = new DOMParser().parseFromString(
         "<xml xmlns:a='a' xmlns:b='b' a:b='e'></xml>",
         'text/xml'
       ).documentElement
