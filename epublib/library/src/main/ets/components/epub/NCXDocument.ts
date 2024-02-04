@@ -38,8 +38,8 @@ import Book from '../domain/Book';
 import ResourceUtil from '../util/ResourceUtil'
 import DOMUtil from './DOMUtil';
 import fs from '@ohos.file.fs';
-import { DOMParser } from '@xmldom/xmldom';
-import { XMLSerializer } from '@xmldom/xmldom';
+import { DOMParser } from '@ohos/xmldom';
+import { XMLSerializer } from '@ohos/xmldom';
 import EpubWriter from './EpubWriter';
 
 class NCXDocument {

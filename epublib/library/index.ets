@@ -33,5 +33,5 @@ export {default as ResourcesLoader} from './src/main/ets/components/epub/Resourc
 export {default as MediaType} from './src/main/ets/components/domain/MediaType'
 export {default as Metadata} from './src/main/ets/components/domain/Metadata'
 export { GlobalContext } from './src/main/ets/components/util/GlobalContext';
-export { DOMParser } from '@xmldom/xmldom';
+export { DOMParser } from '@ohos/xmldom';
 

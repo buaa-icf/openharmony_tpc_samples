@@ -28,10 +28,6 @@
     {
       "name": "library",
       "srcPath": "./library"
-    },
-    {
-      "name": "xmldom",
-      "srcPath": "./xmldom"
     }
   ]
 }

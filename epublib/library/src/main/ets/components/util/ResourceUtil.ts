@@ -24,7 +24,7 @@
 
 
 import EpubResource from "../domain/EpubResource"
-import { DOMParser } from '@xmldom/xmldom'
+import { DOMParser } from '@ohos/xmldom'
 import util from '@ohos.util';
 
 class ResourceUtil {

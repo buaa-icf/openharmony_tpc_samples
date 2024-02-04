@@ -5,9 +5,8 @@
   "name": "entry",
   "description": "example description",
   "main": "",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "dependencies": {
-    "@ohos/epublib": "file:../library",
-    "@xmldom/xmldom": "file:../xmldom"
+    "@ohos/epublib": "file:../library"
   }
 }
