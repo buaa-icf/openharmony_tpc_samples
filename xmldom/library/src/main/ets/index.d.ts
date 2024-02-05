@@ -1,4 +1,4 @@
-declare module "@xmldom/xmldom" {
+declare module "@ohos/xmldom" {
   var DOMParser: DOMParserStatic;
   var XMLSerializer: XMLSerializerStatic;
   var DOMImplementation: DOMImplementationStatic;
