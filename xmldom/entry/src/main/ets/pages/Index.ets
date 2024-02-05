@@ -9,7 +9,7 @@
 
  * */
 
-import { DOMParser, XMLSerializer, DOMImplementation } from '@xmldom/xmldom'
+import { DOMParser, XMLSerializer, DOMImplementation } from '@ohos/xmldom'
 
 @Entry
 @Component

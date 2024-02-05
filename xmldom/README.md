@@ -1,4 +1,4 @@
-# @xmldom/xmldom
+# @ohos/xmldom
 
 ## 简介
 
@@ -7,7 +7,7 @@
 ## 下载安装
 
 ```shell
-ohpm install @xmldom/xmldom
+ohpm install @ohos/xmldom
 ```
 
 OpenHarmony
@@ -18,7 +18,7 @@ ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](ht
 1. 引入文件及代码依赖
 
  ```
- import { DOMParser, XMLSerializer, DOMImplementation } from '@xmldom/xmldom'
+ import { DOMParser, XMLSerializer, DOMImplementation } from '@ohos/xmldom'
  
  const source = `<xml xmlns="a">
 	<child>test</child>

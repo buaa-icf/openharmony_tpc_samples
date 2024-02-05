@@ -9,7 +9,7 @@
 
  * */
 
-import { DOMParser, XMLSerializer, DOMImplementation } from '@xmldom/xmldom'
+import { DOMParser, XMLSerializer, DOMImplementation } from '@ohos/xmldom'
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 
 export default function abilityTest() {
