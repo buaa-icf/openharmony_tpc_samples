@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <oatconfig>
+        <filefilterlist>
+            <filefilter name="copyrightPolicyFilter" desc="Filters for compatibility，license header policies">
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="hvigorfile.ts" type="filename"/>
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="*.json5" type="filename"/>
+                <filteritem desc="DevEco Studio自动生成，没有修改" name="MainAbility.ts" type="filename"/>
+                <filteritem desc="DevEco Studio自动生成，没有修改" name="AbilityStage.ts" type="filename"/>
+                <filteritem desc="DevEco Studio自动生成，没有修改" name="Ability.test.ets" type="filename"/>
+                <filteritem desc="DevEco Studio自动生成，没有修改" name="OpenHarmonyTestRunner.ts" type="filename"/>
+                <filteritem desc="DevEco Studio自动生成，没有修改" name="entry/src/ohosTest/ets/TestAbility/.*" type="filepath"/>
+                <filteritem desc="DevEco Studio自动生成，没有修改" name="entry/src/ohosTest/ets/test/spec/.*" type="filepath"/>
+            </filefilter>
+            <filefilter name="defaultPolicyFilter" desc="Filters for compatibility，license header policies">
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="hvigorfile.ts" type="filename"/>
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="*.json5" type="filename"/>
+                <filteritem desc="DevEco Studio自动生成，没有修改" name="MainAbility.ts" type="filename"/>
+                <filteritem desc="DevEco Studio自动生成，没有修改" name="AbilityStage.ts" type="filename"/>
+                <filteritem desc="DevEco Studio自动生成，没有修改" name="Ability.test.ets" type="filename"/>
+                <filteritem desc="DevEco Studio自动生成，没有修改" name="OpenHarmonyTestRunner.ts" type="filename"/>
+                <filteritem desc="DevEco Studio自动生成，没有修改" name="entry/src/ohosTest/ets/TestAbility/.*" type="filepath"/>
+                <filteritem desc="DevEco Studio自动生成，没有修改" name="entry/src/ohosTest/ets/test/spec/.*" type="filepath"/>
+            </filefilter>
+            <filefilter name="binaryFileTypePolicyFilter" desc="Filters for copyright header policies">
+                <filteritem type="filepath" name="entry/src/main/resources/base/media/icon.png" desc="图片"/>
+                <filteritem type="filepath" name="entry/src/ohosTest/resources/base/media/icon.png" desc="图片"/>
+                <filteritem type="filepath" name="AppScope/resources/base/media/app_icon.png" desc="图片"/>
+                <filteritem desc="gif图片格式文件,用于readme展示" name="preview/preview1.gif" type="filepath"/>
+                <filteritem desc="gif图片格式文件,用于readme展示" name="preview/preview2.gif" type="filepath"/>
+            </filefilter>
+        </filefilterlist>
+    </oatconfig>
+</configuration>
