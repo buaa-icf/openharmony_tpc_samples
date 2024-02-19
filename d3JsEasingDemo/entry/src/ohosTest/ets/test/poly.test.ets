@@ -56,35 +56,73 @@ export default function easePolyTest() {
       expect(easePolyIn(1.0)).assertEqual(1.0);
     });
 
-    it("easePolyOut_returns_the_expected_results", 0, () => {
-      let ployOut = out(easePolyIn);
-      expect(easePolyOut(0.0)).assertEqual(0.00);
-      expect(assertInDelta(easePolyOut(0.1), ployOut(0.1))).assertTrue();
-      expect(assertInDelta(easePolyOut(0.2), ployOut(0.2))).assertTrue();
-      expect(assertInDelta(easePolyOut(0.3), ployOut(0.3))).assertTrue();
-      expect(assertInDelta(easePolyOut(0.4), ployOut(0.4))).assertTrue();
-      expect(assertInDelta(easePolyOut(0.5), ployOut(0.5))).assertTrue();
-      expect(assertInDelta(easePolyOut(0.6), ployOut(0.6))).assertTrue();
-      expect(assertInDelta(easePolyOut(0.7), ployOut(0.7))).assertTrue();
-      expect(assertInDelta(easePolyOut(0.8), ployOut(0.8))).assertTrue();
-      expect(assertInDelta(easePolyOut(0.9), ployOut(0.9))).assertTrue();
-      expect(easePolyOut(1.0)).assertEqual(1.0);
+    it("easePolyIn_coerces_t_to_a_number", 0, () => {
+      expect(easePolyIn('.9')).assertEqual(easePolyIn(.9));
+      expect(easePolyIn({ valueOf: () => 0.9 })).assertEqual(easePolyIn(.9));
+    });
+
+    it("easePolyIn_t_is_the_same_as_polyIn.exponent_3_t", 0, () => {
+      expect(easePolyIn(0.1)).assertEqual(easePolyIn.exponent(3)(0.1));
+      expect(easePolyIn(0.2)).assertEqual(easePolyIn.exponent(3)(0.2));
+      expect(easePolyIn(0.3)).assertEqual(easePolyIn.exponent(3)(0.3));
+    });
+
+    it("easePolyIn_exponent_2_5_t_returns_the_expected_results", 0, () => {
+      expect(easePolyIn.exponent(2.5)(0.0)).assertEqual(0.000000);
+      expect(assertInDelta(easePolyIn.exponent(2.5)(0.1), 0.003162)).assertTrue();
+      expect(assertInDelta(easePolyIn.exponent(2.5)(0.2), 0.017889)).assertTrue();
+      expect(assertInDelta(easePolyIn.exponent(2.5)(0.3), 0.049295)).assertTrue();
+      expect(assertInDelta(easePolyIn.exponent(2.5)(0.4), 0.101193)).assertTrue();
+      expect(assertInDelta(easePolyIn.exponent(2.5)(0.5), 0.176777)).assertTrue();
+      expect(assertInDelta(easePolyIn.exponent(2.5)(0.6), 0.278855)).assertTrue();
+      expect(assertInDelta(easePolyIn.exponent(2.5)(0.7), 0.409963)).assertTrue();
+      expect(assertInDelta(easePolyIn.exponent(2.5)(0.8), 0.572433)).assertTrue();
+      expect(assertInDelta(easePolyIn.exponent(2.5)(0.9), 0.768433)).assertTrue();
+      expect(easePolyIn.exponent(2.5)(1.0)).assertEqual(1.000000);
     });
 
 
-    it("easePolyInOut_returns_the_expected_results", 0, () => {
-      let ployInOut = inOut(easePolyIn);
-      expect(assertInDelta(easePolyInOut(0.0), ployInOut(0.0))).assertTrue();
-      expect(assertInDelta(easePolyInOut(0.1), ployInOut(0.1))).assertTrue();
-      expect(assertInDelta(easePolyInOut(0.2), ployInOut(0.2))).assertTrue();
-      expect(assertInDelta(easePolyInOut(0.3), ployInOut(0.3))).assertTrue();
-      expect(assertInDelta(easePolyInOut(0.4), ployInOut(0.4))).assertTrue();
-      expect(assertInDelta(easePolyInOut(0.5), ployInOut(0.5))).assertTrue();
-      expect(assertInDelta(easePolyInOut(0.6), ployInOut(0.6))).assertTrue();
-      expect(assertInDelta(easePolyInOut(0.7), ployInOut(0.7))).assertTrue();
-      expect(assertInDelta(easePolyInOut(0.8), ployInOut(0.8))).assertTrue();
-      expect(assertInDelta(easePolyInOut(0.9), ployInOut(0.9))).assertTrue();
-      expect(assertInDelta(easePolyInOut(0.0), ployInOut(0.0))).assertTrue();
+    it("easePolyOut_t_is_the_same_as_polyOut.exponent_3_t", 0, () => {
+      expect(easePolyOut(0.1)).assertEqual(easePolyOut.exponent(3)(0.1));
+      expect(easePolyOut(0.2)).assertEqual(easePolyOut.exponent(3)(0.2));
+      expect(easePolyOut(0.3)).assertEqual(easePolyOut.exponent(3)(0.3));
     });
-  })
+
+    it("easePolyOut_exponent_2.5_returns_the_expected_results", 0, () => {
+      let ployOut = out(easePolyIn.exponent(2.5));
+      expect(easePolyOut.exponent(2.5)(0.0)).assertEqual(0.00);
+      expect(assertInDelta(easePolyOut.exponent(2.5)(0.1), ployOut(0.1))).assertTrue();
+      expect(assertInDelta(easePolyOut.exponent(2.5)(0.2), ployOut(0.2))).assertTrue();
+      expect(assertInDelta(easePolyOut.exponent(2.5)(0.3), ployOut(0.3))).assertTrue();
+      expect(assertInDelta(easePolyOut.exponent(2.5)(0.4), ployOut(0.4))).assertTrue();
+      expect(assertInDelta(easePolyOut.exponent(2.5)(0.5), ployOut(0.5))).assertTrue();
+      expect(assertInDelta(easePolyOut.exponent(2.5)(0.6), ployOut(0.6))).assertTrue();
+      expect(assertInDelta(easePolyOut.exponent(2.5)(0.7), ployOut(0.7))).assertTrue();
+      expect(assertInDelta(easePolyOut.exponent(2.5)(0.8), ployOut(0.8))).assertTrue();
+      expect(assertInDelta(easePolyOut.exponent(2.5)(0.9), ployOut(0.9))).assertTrue();
+      expect(easePolyOut.exponent(2.5)(1.0)).assertEqual(1.0);
+    });
+
+    it("easePolyInOut_t_is_the_same_as_polyOut.exponent_3_t", 0, () => {
+      expect(easePolyInOut(0.1)).assertEqual(easePolyInOut.exponent(3)(0.1));
+      expect(easePolyInOut(0.2)).assertEqual(easePolyInOut.exponent(3)(0.2));
+      expect(easePolyInOut(0.3)).assertEqual(easePolyInOut.exponent(3)(0.3));
+    });
+
+
+  it("easePolyInOut_exponent_2_5_returns_the_expected_results", 0, () => {
+    let polyInOut = inOut(easePolyIn.exponent(2.5));
+    expect(easePolyInOut.exponent(2.5)(0.0)).assertEqual(0.00);
+    expect(assertInDelta(easePolyInOut.exponent(2.5)(0.1), polyInOut(0.1))).assertTrue();
+    expect(assertInDelta(easePolyInOut.exponent(2.5)(0.2), polyInOut(0.2))).assertTrue();
+    expect(assertInDelta(easePolyInOut.exponent(2.5)(0.3), polyInOut(0.3))).assertTrue();
+    expect(assertInDelta(easePolyInOut.exponent(2.5)(0.4), polyInOut(0.4))).assertTrue();
+    expect(assertInDelta(easePolyInOut.exponent(2.5)(0.5), polyInOut(0.5))).assertTrue();
+    expect(assertInDelta(easePolyInOut.exponent(2.5)(0.6), polyInOut(0.6))).assertTrue();
+    expect(assertInDelta(easePolyInOut.exponent(2.5)(0.7), polyInOut(0.7))).assertTrue();
+    expect(assertInDelta(easePolyInOut.exponent(2.5)(0.8), polyInOut(0.8))).assertTrue();
+    expect(assertInDelta(easePolyInOut.exponent(2.5)(0.9), polyInOut(0.9))).assertTrue();
+    expect(easePolyInOut.exponent(2.5)(1.0)).assertEqual(polyInOut(1.0));
+  });
+})
 }

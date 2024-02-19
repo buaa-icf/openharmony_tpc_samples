@@ -38,7 +38,6 @@ export default function LinearEasingTest() {
   describe('linearTest', () => {
 
     it("easeLinear_returns_the_expected_results", 0, () => {
-      // expect(0)
       expect(easeLinear(0)).assertEqual(0)
       expect(assertInDelta(easeLinear(0.1), 0.1)).assertTrue();
       expect(assertInDelta(easeLinear(0.2), 0.2)).assertTrue();
@@ -50,6 +49,11 @@ export default function LinearEasingTest() {
       expect(assertInDelta(easeLinear(0.8), 0.8)).assertTrue();
       expect(assertInDelta(easeLinear(0.9), 0.9)).assertTrue();
       expect(easeLinear(1)).assertEqual(1)
+    });
+
+    it("easeLinear_coerces_t_to_a_number", 0, () => {
+      expect(easeLinear('.9')).assertEqual(easeLinear(.9));
+      expect(easeLinear({ valueOf: () => 0.9 })).assertEqual(easeLinear(.9));
     });
 
   })

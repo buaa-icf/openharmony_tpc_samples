@@ -56,9 +56,14 @@ export default function easeQuadTest() {
       expect(easeQuadIn(1.0)).assertEqual(1.0);
     });
 
+    it("easeQuadIn_coerces_t_to_a_number", 0, () => {
+      expect(easeQuadIn('.9')).assertEqual(easeQuadIn(.9));
+      expect(easeQuadIn({ valueOf: () => 0.9 })).assertEqual(easeQuadIn(.9));
+    });
+
     it("easeQuadOut_returns_the_expected_results", 0, () => {
       let quadOut = out(easeQuadIn);
-      expect(assertInDelta(easeQuadOut(0.0), quadOut(0.0))).assertTrue();
+      expect(easeQuadOut(0.0)).assertEqual(quadOut(0.0));
       expect(assertInDelta(easeQuadOut(0.1), quadOut(0.1))).assertTrue();
       expect(assertInDelta(easeQuadOut(0.2), quadOut(0.2))).assertTrue();
       expect(assertInDelta(easeQuadOut(0.3), quadOut(0.3))).assertTrue();
@@ -68,13 +73,17 @@ export default function easeQuadTest() {
       expect(assertInDelta(easeQuadOut(0.7), quadOut(0.7))).assertTrue();
       expect(assertInDelta(easeQuadOut(0.8), quadOut(0.8))).assertTrue();
       expect(assertInDelta(easeQuadOut(0.9), quadOut(0.9))).assertTrue();
-      expect(assertInDelta(easeQuadOut(1.0), quadOut(1.0))).assertTrue();
+      expect(easeQuadOut(1.0)).assertEqual(quadOut(1.0));
     });
 
+    it("easeQuadOut_coerces_t_to_a_number", 0, () => {
+      expect(easeQuadOut('.9')).assertEqual(easeQuadOut(.9));
+      expect(easeQuadOut({ valueOf: () => 0.9 })).assertEqual(easeQuadOut(.9));
+    });
 
     it("easeQuadInOut_returns_the_expected_results", 0, () => {
       let quadInOut = inOut(easeQuadIn);
-      expect(assertInDelta(easeQuadInOut(0.0), quadInOut(0.0))).assertTrue();
+      expect(easeQuadInOut(0.0)).assertEqual(quadInOut(0.0));
       expect(assertInDelta(easeQuadInOut(0.1), quadInOut(0.1))).assertTrue();
       expect(assertInDelta(easeQuadInOut(0.2), quadInOut(0.2))).assertTrue();
       expect(assertInDelta(easeQuadInOut(0.3), quadInOut(0.3))).assertTrue();
@@ -84,9 +93,14 @@ export default function easeQuadTest() {
       expect(assertInDelta(easeQuadInOut(0.7), quadInOut(0.7))).assertTrue();
       expect(assertInDelta(easeQuadInOut(0.8), quadInOut(0.8))).assertTrue();
       expect(assertInDelta(easeQuadInOut(0.9), quadInOut(0.9))).assertTrue();
-      expect(assertInDelta(easeQuadInOut(0.0), quadInOut(0.0))).assertTrue();
-
+      expect(easeQuadInOut(1.0)).assertEqual(quadInOut(1.0));
     });
   })
+
+  it("easeQuadInOut_coerces_t_to_a_number", 0, () => {
+    expect(easeQuadInOut('.9')).assertEqual(easeQuadInOut(.9));
+    expect(easeQuadInOut({ valueOf: () => 0.9 })).assertEqual(easeQuadInOut(.9));
+  });
+
 }
 

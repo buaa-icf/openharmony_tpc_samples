@@ -56,9 +56,14 @@ export default function easeBounceTest() {
       expect(easeBounceIn(1.0)).assertEqual(1.0);
     });
 
+    it("easeBounceIn_coerces_t_to_a_number", 0, () => {
+      expect(easeBounceIn('.9')).assertEqual(easeBounceIn(.9));
+      expect(easeBounceIn({ valueOf: () => 0.9 })).assertEqual(easeBounceIn(.9));
+    });
+
     it("easeBounceOut_returns_the_expected_results", 0, () => {
       let bounceOut = out(easeBounceIn);
-      expect(easeBounceOut(0.0)).assertEqual(0.00);
+      expect(easeBounceOut(0.0)).assertEqual(bounceOut(0.00));
       expect(assertInDelta(easeBounceOut(0.1), bounceOut(0.1))).assertTrue();
       expect(assertInDelta(easeBounceOut(0.2), bounceOut(0.2))).assertTrue();
       expect(assertInDelta(easeBounceOut(0.3), bounceOut(0.3))).assertTrue();
@@ -68,13 +73,17 @@ export default function easeBounceTest() {
       expect(assertInDelta(easeBounceOut(0.7), bounceOut(0.7))).assertTrue();
       expect(assertInDelta(easeBounceOut(0.8), bounceOut(0.8))).assertTrue();
       expect(assertInDelta(easeBounceOut(0.9), bounceOut(0.9))).assertTrue();
-      expect(easeBounceOut(1.0)).assertEqual(1.0);
+      expect(easeBounceOut(1.0)).assertEqual(bounceOut(1.0));
     });
 
+    it("easeBounceOut_coerces_t_to_a_number", 0, () => {
+      expect(easeBounceOut('.9')).assertEqual(easeBounceOut(.9));
+      expect(easeBounceOut({ valueOf: () => 0.9 })).assertEqual(easeBounceOut(.9));
+    });
 
     it("easeBounceInOut_returns_the_expected_results", 0, () => {
       let bounceInOut = inOut(easeBounceIn);
-      expect(assertInDelta(easeBounceInOut(0.0), bounceInOut(0.0))).assertTrue();
+      expect(easeBounceInOut(0.0)).assertEqual(bounceInOut(0.0));
       expect(assertInDelta(easeBounceInOut(0.1), bounceInOut(0.1))).assertTrue();
       expect(assertInDelta(easeBounceInOut(0.2), bounceInOut(0.2))).assertTrue();
       expect(assertInDelta(easeBounceInOut(0.3), bounceInOut(0.3))).assertTrue();
@@ -84,7 +93,13 @@ export default function easeBounceTest() {
       expect(assertInDelta(easeBounceInOut(0.7), bounceInOut(0.7))).assertTrue();
       expect(assertInDelta(easeBounceInOut(0.8), bounceInOut(0.8))).assertTrue();
       expect(assertInDelta(easeBounceInOut(0.9), bounceInOut(0.9))).assertTrue();
-      expect(assertInDelta(easeBounceInOut(0.0), bounceInOut(0.0))).assertTrue();
+      expect(easeBounceInOut(1.0)).assertEqual(bounceInOut(1.0));
     });
   })
+
+  it("easeBounceInOut_coerces_t_to_a_number", 0, () => {
+    expect(easeBounceInOut('.9')).assertEqual(easeBounceInOut(.9));
+    expect(easeBounceInOut({ valueOf: () => 0.9 })).assertEqual(easeBounceInOut(.9));
+  });
+
 }

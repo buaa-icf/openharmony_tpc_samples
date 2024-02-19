@@ -56,9 +56,14 @@ export default function easeCubicTest() {
       expect(easeCubicIn(1.0)).assertEqual(1.0);
     });
 
+    it("easeCubicIn_coerces_t_to_a_number", 0, () => {
+      expect(easeCubicIn('.9')).assertEqual(easeCubicIn(.9));
+      expect(easeCubicIn({ valueOf: () => 0.9 })).assertEqual(easeCubicIn(.9));
+    });
+
     it("easeCubicOut_returns_the_expected_results", 0, () => {
       let cubicOut = out(easeCubicIn);
-      expect(easeCubicOut(0.0)).assertEqual(0.00);
+      expect(easeCubicOut(0.0)).assertEqual(cubicOut(0.0));
       expect(assertInDelta(easeCubicOut(0.1), cubicOut(0.1))).assertTrue();
       expect(assertInDelta(easeCubicOut(0.2), cubicOut(0.2))).assertTrue();
       expect(assertInDelta(easeCubicOut(0.3), cubicOut(0.3))).assertTrue();
@@ -68,13 +73,17 @@ export default function easeCubicTest() {
       expect(assertInDelta(easeCubicOut(0.7), cubicOut(0.7))).assertTrue();
       expect(assertInDelta(easeCubicOut(0.8), cubicOut(0.8))).assertTrue();
       expect(assertInDelta(easeCubicOut(0.9), cubicOut(0.9))).assertTrue();
-      expect(easeCubicOut(1.0)).assertEqual(1.0);
+      expect(easeCubicOut(1.0)).assertEqual(cubicOut(1.0));
     });
 
+    it("easeCubicOut_coerces_t_to_a_number", 0, () => {
+      expect(easeCubicOut('.9')).assertEqual(easeCubicOut(.9));
+      expect(easeCubicOut({ valueOf: () => 0.9 })).assertEqual(easeCubicOut(.9));
+    });
 
     it("easeCubicInOut_returns_the_expected_results", 0, () => {
       let cubicInOut = inOut(easeCubicIn);
-      expect(assertInDelta(easeCubicInOut(0.0), cubicInOut(0.0))).assertTrue();
+      expect(easeCubicInOut(0.0)).assertEqual(cubicInOut(0.0));
       expect(assertInDelta(easeCubicInOut(0.1), cubicInOut(0.1))).assertTrue();
       expect(assertInDelta(easeCubicInOut(0.2), cubicInOut(0.2))).assertTrue();
       expect(assertInDelta(easeCubicInOut(0.3), cubicInOut(0.3))).assertTrue();
@@ -84,7 +93,12 @@ export default function easeCubicTest() {
       expect(assertInDelta(easeCubicInOut(0.7), cubicInOut(0.7))).assertTrue();
       expect(assertInDelta(easeCubicInOut(0.8), cubicInOut(0.8))).assertTrue();
       expect(assertInDelta(easeCubicInOut(0.9), cubicInOut(0.9))).assertTrue();
-      expect(assertInDelta(easeCubicInOut(0.0), cubicInOut(0.0))).assertTrue();
+      expect(easeCubicInOut(1.0)).assertEqual(cubicInOut(1.0));
     });
   })
+
+  it("easeCubicInOut_coerces_t_to_a_number", 0, () => {
+    expect(easeCubicInOut('.9')).assertEqual(easeCubicInOut(.9));
+    expect(easeCubicInOut({ valueOf: () => 0.9 })).assertEqual(easeCubicInOut(.9));
+  });
 }
