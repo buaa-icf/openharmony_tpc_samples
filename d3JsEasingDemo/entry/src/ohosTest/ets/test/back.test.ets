@@ -56,9 +56,14 @@ export default function easeBackTest() {
       expect(easeBackIn(1.0)).assertEqual(1.0);
     });
 
+    it("easeBackIn_coerces_t_to_a_number", 0, () => {
+      expect(easeBackIn('.9')).assertEqual(easeBackIn(.9));
+      expect(easeBackIn({ valueOf: () => 0.9 })).assertEqual(easeBackIn(.9));
+    });
+
     it("easeBackOut_returns_the_expected_results", 0, () => {
       let backOut = out(easeBackIn);
-      expect(easeBackOut(0.0)).assertEqual(0.00);
+      expect(easeBackOut(0.0)).assertEqual(backOut(0.0));
       expect(assertInDelta(easeBackOut(0.1), backOut(0.1))).assertTrue();
       expect(assertInDelta(easeBackOut(0.2), backOut(0.2))).assertTrue();
       expect(assertInDelta(easeBackOut(0.3), backOut(0.3))).assertTrue();
@@ -68,13 +73,17 @@ export default function easeBackTest() {
       expect(assertInDelta(easeBackOut(0.7), backOut(0.7))).assertTrue();
       expect(assertInDelta(easeBackOut(0.8), backOut(0.8))).assertTrue();
       expect(assertInDelta(easeBackOut(0.9), backOut(0.9))).assertTrue();
-      expect(easeBackOut(1.0)).assertEqual(1.0);
+      expect(easeBackOut(1.0)).assertEqual(backOut(1.0));
     });
 
+    it("easeBackOut_coerces_t_to_a_number", 0, () => {
+      expect(easeBackOut('.9')).assertEqual(easeBackOut(.9));
+      expect(easeBackOut({ valueOf: () => 0.9 })).assertEqual(easeBackOut(.9));
+    });
 
     it("easeBackInOut_returns_the_expected_results", 0, () => {
       let backInOut = inOut(easeBackIn);
-      expect(assertInDelta(easeBackInOut(0.0), backInOut(0.0))).assertTrue();
+      expect(easeBackInOut(0.0)).assertEqual(backInOut(0.0));
       expect(assertInDelta(easeBackInOut(0.1), backInOut(0.1))).assertTrue();
       expect(assertInDelta(easeBackInOut(0.2), backInOut(0.2))).assertTrue();
       expect(assertInDelta(easeBackInOut(0.3), backInOut(0.3))).assertTrue();
@@ -84,7 +93,12 @@ export default function easeBackTest() {
       expect(assertInDelta(easeBackInOut(0.7), backInOut(0.7))).assertTrue();
       expect(assertInDelta(easeBackInOut(0.8), backInOut(0.8))).assertTrue();
       expect(assertInDelta(easeBackInOut(0.9), backInOut(0.9))).assertTrue();
-      expect(assertInDelta(easeBackInOut(0.0), backInOut(0.0))).assertTrue();
+      expect(easeBackInOut(1.0)).assertEqual(backInOut(1.0));
     });
   })
+
+  it("easeBackInOut_coerces_t_to_a_number", 0, () => {
+    expect(easeBackInOut('.9')).assertEqual(easeBackInOut(.9));
+    expect(easeBackInOut({ valueOf: () => 0.9 })).assertEqual(easeBackInOut(.9));
+  });
 }

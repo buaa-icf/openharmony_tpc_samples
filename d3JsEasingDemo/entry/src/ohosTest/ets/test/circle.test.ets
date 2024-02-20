@@ -56,9 +56,14 @@ export default function easeCircleTest() {
       expect(easeCircleIn(1.0)).assertEqual(1.0);
     });
 
+    it("easeCircleIn_coerces_t_to_a_number", 0, () => {
+      expect(easeCircleIn('.9')).assertEqual(easeCircleIn(.9));
+      expect(easeCircleIn({ valueOf: () => 0.9 })).assertEqual(easeCircleIn(.9));
+    });
+
     it("easeCircleOut_returns_the_expected_results", 0, () => {
       let circleOut = out(easeCircleIn);
-      expect(easeCircleOut(0.0)).assertEqual(0.00);
+      expect(easeCircleOut(0.0)).assertEqual(circleOut(0.0));
       expect(assertInDelta(easeCircleOut(0.1), circleOut(0.1))).assertTrue();
       expect(assertInDelta(easeCircleOut(0.2), circleOut(0.2))).assertTrue();
       expect(assertInDelta(easeCircleOut(0.3), circleOut(0.3))).assertTrue();
@@ -68,13 +73,17 @@ export default function easeCircleTest() {
       expect(assertInDelta(easeCircleOut(0.7), circleOut(0.7))).assertTrue();
       expect(assertInDelta(easeCircleOut(0.8), circleOut(0.8))).assertTrue();
       expect(assertInDelta(easeCircleOut(0.9), circleOut(0.9))).assertTrue();
-      expect(easeCircleOut(1.0)).assertEqual(1.0);
+      expect(easeCircleOut(1.0)).assertEqual(circleOut(1.0));
     });
 
+    it("easeCircleOut_coerces_t_to_a_number", 0, () => {
+      expect(easeCircleOut('.9')).assertEqual(easeCircleOut(.9));
+      expect(easeCircleOut({ valueOf: () => 0.9 })).assertEqual(easeCircleOut(.9));
+    });
 
     it("easeCircleInOut_returns_the_expected_results", 0, () => {
       let circleInOut = inOut(easeCircleIn);
-      expect(assertInDelta(easeCircleInOut(0.0), circleInOut(0.0))).assertTrue();
+      expect(easeCircleInOut(0.0)).assertEqual(circleInOut(0.0));
       expect(assertInDelta(easeCircleInOut(0.1), circleInOut(0.1))).assertTrue();
       expect(assertInDelta(easeCircleInOut(0.2), circleInOut(0.2))).assertTrue();
       expect(assertInDelta(easeCircleInOut(0.3), circleInOut(0.3))).assertTrue();
@@ -84,7 +93,12 @@ export default function easeCircleTest() {
       expect(assertInDelta(easeCircleInOut(0.7), circleInOut(0.7))).assertTrue();
       expect(assertInDelta(easeCircleInOut(0.8), circleInOut(0.8))).assertTrue();
       expect(assertInDelta(easeCircleInOut(0.9), circleInOut(0.9))).assertTrue();
-      expect(assertInDelta(easeCircleInOut(0.0), circleInOut(0.0))).assertTrue();
+      expect(easeCircleInOut(1.0)).assertEqual(circleInOut(1.0));
     });
   })
+
+  it("easeCircleInOut_coerces_t_to_a_number", 0, () => {
+    expect(easeCircleInOut('.9')).assertEqual(easeCircleInOut(.9));
+    expect(easeCircleInOut({ valueOf: () => 0.9 })).assertEqual(easeCircleInOut(.9));
+  });
 }
