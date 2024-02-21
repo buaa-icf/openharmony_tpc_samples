@@ -14,17 +14,42 @@
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 import { pinyin, customPinyin } from 'pinyin-pro'
+import taskpool from '@ohos.taskpool';
+
+@Concurrent
+async function customMultiple(): Promise<string[]> {
+  customPinyin({
+    嗯: 'en',
+  });
+  const result = pinyin('嗯', {
+    type: 'array',
+    nonZh: 'removed',
+    toneType: 'num',
+  });
+  return result
+}
+
+@Concurrent
+async function customSurname(word: string): Promise<string> {
+  customPinyin({
+    乐嘉: 'lè jiā',
+  });
+  const result = pinyin(word, {
+    mode: 'surname'
+  });
+  return result
+}
 
 export default function customConfigTest() {
   describe('customConfig', () => {
-    it('custom_custom_none',0, () => {
+    it('custom_custom_none', 0, () => {
       customPinyin();
       const result = pinyin('干一行行一行');
       expect(result).assertEqual('gān yī xíng xíng yī xíng');
       customPinyin({});
     });
 
-    it('custom_custom1',0, () => {
+    it('custom_custom1', 0, () => {
       customPinyin({
         能: 'nài',
       });
@@ -33,7 +58,7 @@ export default function customConfigTest() {
       customPinyin({});
     });
 
-    it('custom_custom2',0, () => {
+    it('custom_custom2', 0, () => {
       customPinyin({
         好好: 'hào hǎo',
       });
@@ -42,7 +67,7 @@ export default function customConfigTest() {
       customPinyin({});
     });
 
-    it('custom_custom3',0, () => {
+    it('custom_custom3', 0, () => {
       customPinyin({
         哈什玛: 'hà shén mǎ',
       });
@@ -51,7 +76,7 @@ export default function customConfigTest() {
       customPinyin({});
     });
 
-    it('custom_custom4',0, () => {
+    it('custom_custom4', 0, () => {
       customPinyin({
         暴虎冯河: 'bào hǔ píng hé',
       });
@@ -60,7 +85,7 @@ export default function customConfigTest() {
       customPinyin({});
     });
 
-    it('custom_custom5',0, () => {
+    it('custom_custom5', 0, () => {
       customPinyin({
         干一行行一行: 'gàn yī háng xíng yī háng',
       });
@@ -69,28 +94,24 @@ export default function customConfigTest() {
       customPinyin({});
     });
 
-    it('custom_custom_with_surname',0, () => {
-      customPinyin({
-        乐嘉: 'lè jiā',
-      });
-      const result = pinyin('乐嘉啊', {
-        mode: 'surname'
-      });
-      expect(result).assertEqual('lè jiā a');
+    it('custom_custom_with_surname', 0, async (done:Function) => {
+      try {
+        let result:ESObject = await taskpool.execute(customSurname, '乐嘉啊');
+        expect(result).assertEqual('lè jiā a');
 
-      const result1 = pinyin('啊乐嘉', {
-        mode: 'surname'
-      });
-      expect(result1).assertEqual('a lè jiā');
+        let result1:ESObject = await taskpool.execute(customSurname, '啊乐嘉');
+        expect(result1).assertEqual('a lè jiā');
 
-      const result2 = pinyin('啊乐嘉是', {
-        mode: 'surname'
-      });
-      expect(result2).assertEqual('a lè jiā shì');
-      customPinyin({});
+        let result2:ESObject = await taskpool.execute(customSurname, '啊乐嘉是');
+        expect(result2).assertEqual('a lè jiā shì');
+        customPinyin({});
+      } finally {
+        done()
+      }
+
     });
 
-    it('custom_customs',0, () => {
+    it('custom_customs', 0, () => {
       customPinyin({
         好: 'hào',
         好好: 'hào hǎo',
@@ -100,21 +121,18 @@ export default function customConfigTest() {
       customPinyin({});
     });
 
-    it('custom_custom_with_multiple',0, () => {
-      customPinyin({
-        嗯: 'en',
-      });
-      const result = pinyin('嗯', {
-        multiple: true,
-        type: 'array',
-        nonZh: 'removed',
-        toneType: 'num',
-      });
-      expect(result).assertDeepEquals(['en0']);
-      customPinyin({});
+    it('custom_custom_with_multiple', 0, async (done:Function) => {
+      try {
+        let result:ESObject = await taskpool.execute(customMultiple);
+        expect(result).assertDeepEquals(['en0']);
+        customPinyin({});
+      } finally {
+        done()
+      }
+
     });
 
-    it('custom_ac_high_level',0, () => {
+    it('custom_ac_high_level', 0, () => {
       customPinyin({
         银行: 'yin hang',
       });
@@ -123,7 +141,7 @@ export default function customConfigTest() {
       customPinyin({});
     });
 
-    it('custom_double_unicode',0, () => {
+    it('custom_double_unicode', 0, () => {
       customPinyin({
         𧒽: 'lei',
       });
@@ -132,7 +150,7 @@ export default function customConfigTest() {
       customPinyin({});
     });
 
-    it('_custom_double_unicode',0, () => {
+    it('_custom_double_unicode', 0, () => {
       customPinyin({
         𧒽𧒽: 'lei ke',
       });
@@ -142,3 +160,4 @@ export default function customConfigTest() {
     });
   });
 }
+
