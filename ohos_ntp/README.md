@@ -1,0 +1,86 @@
+# ohos_ntp
+
+
+## 简介
+
+> ohos_ntp是一个用于网络时间协议(NTP)服务器同步事件的TypeScript库。它允许你的应用程序通过与NTP服务器通信来获取准确的事件信息，以确保你的设备具有准确的系统时钟，或确保能获取到准确时间信息用来调试。
+>
+> ![GIF](./img/ntpGIF.gif)
+
+## 下载安装
+
+```shell
+ohpm install @ohos/ntp
+```
+
+OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+
+## 使用说明
+
+1、引入依赖
+
+ ``` 
+ import { getNetworkTime, NTPConfig } from '@ohos/ntp';
+ ```
+
+2、在module.json5中添加权限
+
+ ```
+ "requestPermissions": [
+     {
+         "name": "ohos.permission.INTERNET"
+     }
+ ]
+ ```
+
+3、在事件或钩子函数中创建NTPClient实例化对象，调用getNetworkTime方法，不传参为默认值
+
+ ```
+const ntpConfig: NTPConfig = {
+    server: ntp.aliyun.com(NTP服务器),
+	port: 123(远端端口号),
+	delayTime: 3000(等待响应时长(ms))
+}
+ 
+getNetworkTime(ntpConfig)
+.then(date => {
+	this.ntpResult = JSON.stringify(date); //"2024-02-06T01:50:37.645Z"
+})
+.catch((err: string) => {
+	this.timeoutResult = JSON.stringify(err);
+})
+ ```
+
+## 接口说明
+
+| 接口名         | 参数                               | 返回值          | 说明        |
+| -------------- | ---------------------------------- | --------------- | ----------- |
+| getNetworkTime | {server,port,delayTime}:NTPConfig | Promise< Date > | 获取NTP时间 |
+
+## 约束与限制
+
+在下述版本验证通过：
+
+- DevEco Studio版本: 4.1.3.500, SDK: API11 Release(4.1.0)
+
+## 目录结构
+
+````
+|---- ntpclient
+|     |---- entry  # 示例代码文件夹
+|     |---- library  # ntp库文件夹
+|         |---- src
+|             |---- main
+|                  |---- ets
+|                       |---- index.ts  #ntp
+|         |---- index.ts  # 对外接口
+|     |---- README.md  # 安装使用方法                    
+````
+
+## 贡献代码
+
+使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_ntp/issues)给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_ntp/pulls)。
+
+## 开源协议
+
+本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_ntp/LICENSE) ，请自由地享受和参与开源。

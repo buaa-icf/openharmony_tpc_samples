@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <oatconfig>
+        <licensefile>LICENSE</licensefile>
+        <policylist>
+            <policy name="projectPolicy" desc="">
+                <policyitem type="copyright" name="Copyright Header Invalid: Copyright (C) 2024 Huawei Device Co., Ltd." path=".*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc=""/>
+            </policy>
+        </policylist>
+        <filefilterlist>
+            <filefilter
+                    desc="Filters for compatibility，license header policies"
+                    name="copyrightPolicyFilter">
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="*.json5" type="filename"/>
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="*.json5.ftl" type="filename"/>
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="hvigor-wrapper.js" type="filename"/>
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="hvigorw" type="filename"/>
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="hvigorw.bat" type="filename"/>
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="hvigorfile.ts" type="filename"/>
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="*.json" type="filename"/>
+                <filteritem desc="license file" name="LICENSE" type="filepath"/>
+            </filefilter>
+            <filefilter
+                    desc="Filters for compatibility，license header policies"
+                    name="defaultPolicyFilter">
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="*.json5" type="filename"/>
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="*.json5.ftl" type="filename"/>
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="hvigor-wrapper.js" type="filename"/>
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="hvigorw" type="filename"/>
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="hvigorw.bat" type="filename"/>
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="hvigorfile.ts" type="filename"/>
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="*.json" type="filename"/>
+                <filteritem desc="license file" name="LICENSE" type="filepath"/>
+            </filefilter>
+        </filefilterlist>
+    </oatconfig>
+</configuration>

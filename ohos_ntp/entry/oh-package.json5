@@ -1,0 +1,11 @@
+{
+    "name": "entry",
+    "version": "1.0.0",
+    "description": "example description",
+    "author": "ohos_tpc",
+    "license": "Apache License 2.0",
+    "dependencies": {
+        "@ohos/ntp": "file:../library"
+    }
+}
+
