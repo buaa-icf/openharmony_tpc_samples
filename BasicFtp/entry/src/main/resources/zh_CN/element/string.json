@@ -11,6 +11,14 @@
     {
       "name": "EntryAbility_label",
       "value": "FTP"
+    },
+    {
+      "name": "Reason_Internet",
+      "value": "Use Internet to upload File"
+    },
+    {
+      "name": "Reason_File",
+      "value": "Operate file in application file system"
     }
   ]
 }
