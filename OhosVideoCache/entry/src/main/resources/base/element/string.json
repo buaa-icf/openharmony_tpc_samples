@@ -11,6 +11,14 @@
     {
       "name": "EntryAbility_label",
       "value": "OhosVideoCache"
+    },
+    {
+      "name": "Reason_Internet",
+      "value": "Use internet for inititating request"
+    },
+    {
+      "name": "Reason_File",
+      "value": "Operate file in application file system"
     }
   ]
 }
