@@ -114,6 +114,9 @@ struct LineAnimatePage {
         .onReady(() => {
           this.createAnimation();
         })
+        .onAreaChange(() => {
+          this.drawAnimationPath();
+        })
 
       ForEach(this.rowEasing, (item: EasingFunctions[]) => {
         Row() {
