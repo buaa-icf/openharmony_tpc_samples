@@ -12,12 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import JSZip, { JSZipObject } from "@ohos/jszip";
+import JSZip, { JSZipObject } from '@ohos/jszip';
 import { BuildButtonOptions, Files, ReturnValue } from '../types/type';
 import promptAction from '@ohos.promptAction';
-import { writeCacheDirFile, loadAsyncFromRawFile } from "../utils/FileSaver";
-import { log } from "../utils/log";
-import { CreateDirOrFile } from "../components/CreateDirOrFile";
+import { loadAsyncFromRawFile, writeCacheDirFile } from '../utils/FileSaver';
+import { log } from '../utils/log';
+import { CreateDirOrFile } from '../components/CreateDirOrFile';
+import fs from '@ohos.file.fs';
 
 @Entry
 @Component
@@ -29,12 +30,14 @@ struct Index {
   @State create_type: "DIR" | "FILE" | "ZIP" = "DIR";
   @State currentFolder: string = "";
   @State password: string | null = null;
-  @State isLoading:boolean = false;
+  @State isLoading: boolean = false;
+  @State filePath: string = "";
+  @State rawFileName: string = "";
   dialogController: CustomDialogController = new CustomDialogController({
     builder: CreateDirOrFile({
       create_type: this.create_type,
       confirm: (data): void => this.onConfirm(data),
-      cancel: ():void => this.onCancel()
+      cancel: (): void => this.onCancel()
     }),
     autoCancel: true,
   })
@@ -106,13 +109,113 @@ struct Index {
     this.dialogController?.close();
   }
 
-  openLoading(){
+  openLoading() {
     this.isLoading = true;
   }
-  closeLoading(){
+
+  closeLoading() {
     this.isLoading = false;
   }
 
+  unGzipFile() {
+    try {
+      this.closeLoading()
+      this.closeDialog()
+      let isAccess: boolean = fs.accessSync(this.filePath)
+      if (!isAccess) {
+        promptAction.showToast({
+          message: `暂无权限处理文件 ${this.filePath}`
+        })
+        return
+      }
+      this.openLoading();
+      let totalSize = fs.statSync(this.filePath).size;
+      let fileId = fs.openSync(this.filePath, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE)
+      let cacheData: Uint8Array = new Uint8Array(totalSize);
+      let readLength = 0;
+      let buff = new ArrayBuffer(8 * 1024)
+      let readSize = 0;
+      while (readLength <= totalSize) {
+        if (readLength + buff.byteLength < totalSize) {
+          readSize = fs.readSync(fileId.fd, buff, {
+            offset: readLength,
+            length: buff.byteLength
+          })
+          cacheData.set(new Uint8Array(buff), readLength)
+        } else {
+          let trueLength = totalSize - readLength
+          readSize = fs.readSync(fileId.fd, buff, {
+            offset: readLength,
+            length: trueLength
+          })
+          let trueBuff = buff.slice(0, trueLength)
+          cacheData.set(new Uint8Array(trueBuff), readLength)
+        }
+        readLength += readSize;
+      }
+      JSZip.loadAsync(cacheData, {
+        password: this.password
+      }).then((data: JSZip) => {
+        promptAction.showToast({
+          message: `解压缩解密文件成功  ${JSON.stringify(data)}`
+        })
+        this.refresh();
+        this.closeLoading();
+        this.closeDialog();
+      }).catch((err: Error) => {
+        this.closeLoading();
+        this.closeDialog();
+        promptAction.showToast({
+          message: `解压缩加密文件失败！ 错误原因： ${err.message}`
+        })
+      })
+    } catch (err) {
+      promptAction.showToast({
+        message: `解压缩加密文件出错！ 错误原因： ${err.message}`
+      })
+      this.closeLoading();
+      this.closeDialog();
+    }
+  }
+
+  unGzipRawFile() {
+    try {
+      this.closeLoading();
+      this.closeDialog();
+      this.openLoading();
+      loadAsyncFromRawFile(this.rawFileName).then((res: Uint8Array | void) => {
+        if (!res) {
+          promptAction.showToast({
+            message: `没有找到此压缩文件！`
+          })
+          this.closeLoading()
+          return
+        }
+        this.instance.loadAsync(res, {
+          password: this.password
+        }).then((data: JSZip) => {
+          promptAction.showToast({
+            message: `解压缩加密文件成功  ￥${JSON.stringify(data)}`
+          })
+          this.refresh();
+          this.closeLoading();
+          this.closeDialog();
+        }).catch((err: Error) => {
+          this.closeLoading();
+          this.closeDialog();
+          promptAction.showToast({
+            message: `解压缩加密文件失败！ 错误原因： ${err.message}`
+          })
+        })
+      })
+    } catch (err) {
+      promptAction.showToast({
+        message: `解压缩加密文件出错！ 错误原因： ${err.message}`
+      })
+      this.closeLoading();
+      this.closeDialog();
+    }
+  }
 
   onConfirm(data: ReturnValue) {
     const type = data.create_type;
@@ -139,12 +242,12 @@ struct Index {
       this.dialogController?.close();
     } else if (type === "ZIP") {
       const zipName = data.zipName;
-      if(!zipName) {
-          promptAction.showToast({ message: `文件名称不能为空` });
-          return;
-        }
+      if (!zipName) {
+        promptAction.showToast({ message: `文件名称不能为空` });
+        return;
+      }
       loadAsyncFromRawFile(zipName).then(res => {
-        if(!res) {
+        if (!res) {
           promptAction.showToast({ message: `没有找到此压缩文件!` });
 
           // this.closeLoading();
@@ -190,9 +293,10 @@ struct Index {
   }
 
   generateZIP() {
+    let ctx = this;
     this.openLoading();
     this.instance.generateAsync({ type: "arraybuffer", password: this.password, encryptStrength: 3 }).then(res => {
-      writeCacheDirFile(`prod-${Date.now()}.zip`, res);
+      ctx.filePath = writeCacheDirFile(`prod-${Date.now()}.zip`, res);
       this.closeLoading();
     })
       .catch((err: object) => {
@@ -261,6 +365,106 @@ struct Index {
         }
 
         Row() {
+          Button("解压缩本Demo中加密之后的压缩文件")
+            .height(40)
+            .width('50%')
+            .onClick(() => {
+              if (!this.filePath || this.filePath.length < 1) {
+                promptAction.showToast({
+                  message: `暂无可用文件，请先加密压缩文件`
+                })
+                return;
+              }
+              if (!this.password || this.password.length < 1) {
+                promptAction.showToast({
+                  message: `请先输入解压缩密码`
+                })
+                return;
+              }
+              this.unGzipFile()
+            })
+
+        }.border({
+          width: 2,
+          color: Color.Red,
+          radius: 10,
+          style: BorderStyle.Solid
+        }).margin({ bottom: 12 }).padding(10)
+
+        Column() {
+          Text("填写应用沙箱内的加密文件路径：")
+          TextInput({
+            placeholder: '填写应用沙箱内的加密文件路径...',
+            text: this.filePath || "data/storage/el2/base/haps/entry/cache/test.zip"
+          })
+            .height(40)
+            .width('70%')
+            .onChange((value: string) => {
+              this.filePath = value
+            })
+            .margin({ bottom: 12 })
+          Button("解压缩应用沙箱内的加密压缩文件")
+            .height(40)
+            .width('50%')
+            .onClick(() => {
+              if (!this.filePath || this.filePath.length < 1) {
+                promptAction.showToast({
+                  message: `暂无可用文件，请先在应用沙箱内放入加密压缩文件`
+                })
+                return;
+              }
+              if (!this.password || this.password.length < 1) {
+                promptAction.showToast({
+                  message: `请先输入解压缩密码`
+                })
+                return;
+              }
+              this.unGzipFile()
+            })
+        }.border({
+          width: 2,
+          color: Color.Red,
+          radius: 10,
+          style: BorderStyle.Solid
+        }).margin({ bottom: 12 }).padding(10)
+
+        Column() {
+          Text("填写rawfile的加密压缩文件名")
+          TextInput({
+            placeholder: '请填写rawfile的加密压缩文件名...',
+            text: this.rawFileName || "test.zip"
+          })
+            .height(40)
+            .width('70%')
+            .onChange((value: string) => {
+              this.filePath = value
+            })
+            .margin({ bottom: 12 })
+          Button("解压缩rawfile内的加密压缩文件")
+            .height(40)
+            .width('50%')
+            .onClick(() => {
+              if (!this.rawFileName || this.rawFileName.length < 1) {
+                promptAction.showToast({
+                  message: `暂无可用文件，请先在项目rawfile文件夹内放入加密压缩文件`
+                })
+                return;
+              }
+              if (!this.password || this.password.length < 1) {
+                promptAction.showToast({
+                  message: `请先输入解压缩密码`
+                })
+                return;
+              }
+              this.unGzipRawFile()
+            })
+        }.border({
+          width: 2,
+          color: Color.Red,
+          radius: 10,
+          style: BorderStyle.Solid
+        }).margin({ bottom: 12 }).padding(10)
+        Row() {
           Text(`当前选中文件夹：${this.currentFolder || '根目录'}`)
             .fontSize(20)
             .fontColor(Color.Red)
@@ -277,21 +481,19 @@ struct Index {
           })
 
         }.width("100%").layoutWeight(1)
-        Flex({justifyContent:FlexAlign.Center,alignItems:ItemAlign.Center}){
+
+        Flex({ justifyContent: FlexAlign.Center, alignItems: ItemAlign.Center }) {
           LoadingProgress()
             .color(Color.White)
             .width(100)
             .height(100)
         }
-        .position({x:0,y:0})
+        .position({ x: 0, y: 0 })
         .opacity(0.3)
         .backgroundColor(Color.Black)
         .width("100%")
         .height("100%")
-        .visibility(this.isLoading?Visibility.Visible:Visibility.None)
-
-
-
+        .visibility(this.isLoading ? Visibility.Visible : Visibility.None)
 
       }
       .width('100%')

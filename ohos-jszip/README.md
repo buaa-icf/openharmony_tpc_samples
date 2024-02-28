@@ -71,6 +71,117 @@ jszip.generateAsync({ type: "arraybuffer", password: "1234", encryptStrength: 3 
 jszip.loadAsync(data)
 ```
 
+解压缩加密的压缩文件
+
+1.直接解压缩本Demo生成的加密压缩文件
+
+2.将加密好的文件导入应用沙箱内的cache或者files文件夹，然后解压缩（注意导入之后的文件一定要是可读写的，否则会报错没有权限）
+
+以上两种场景的压缩文件解压缩示例代码如下：
+
+```typescript
+ // 参数校验
+ if (!this.filePath || this.filePath.length < 1) {
+  promptAction.showToast({
+    message: `暂无可用文件，请先加密压缩文件`
+  })
+  return;
+}
+if (!this.password || this.password.length < 1) {
+  promptAction.showToast({
+    message: `请先输入解压缩密码`
+  })
+  return;
+}
+try {
+
+   // 检查是否有权限处理文件
+  let isAccess: boolean = fs.accessSync(this.filePath)
+  if (!isAccess) {
+    promptAction.showToast({
+      message: `暂无权限处理文件 ${this.filePath}`
+    })
+    return
+  }
+   // 将应用沙箱内的本地文件读取出来，转化为 Uint8Array  注意文件不能太大 否则造成OOM
+  let totalSize = fs.statSync(this.filePath).size;
+  let fileId = fs.openSync(this.filePath, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE)
+  let cacheData: Uint8Array = new Uint8Array(totalSize);
+  let readLength = 0;
+  let buff = new ArrayBuffer(8 * 1024)
+  let readSize = 0;
+  while (readLength <= totalSize) {
+    if (readLength + buff.byteLength < totalSize) {
+      readSize = fs.readSync(fileId.fd, buff, {
+        offset: readLength,
+        length: buff.byteLength
+      })
+      cacheData.set(new Uint8Array(buff), readLength)
+    } else {
+      let trueLength = totalSize - readLength
+      readSize = fs.readSync(fileId.fd, buff, {
+        offset: readLength,
+        length: trueLength
+      })
+      let trueBuff = buff.slice(0, trueLength)
+      cacheData.set(new Uint8Array(trueBuff), readLength)
+    }
+    readLength += readSize;
+  }
+  // 添加密码解压缩文件
+  JSZip.loadAsync(cacheData, {
+    password: this.password
+  }).then((data: JSZip) => {
+    promptAction.showToast({
+      message: `解压缩解密文件成功  ${JSON.stringify(data)}`
+    })
+  }).catch((err: Error) => {
+    promptAction.showToast({
+      message: `解压缩加密文件失败！ 错误原因： ${err.message}`
+    })
+  })
+} catch (err) {
+  promptAction.showToast({
+    message: `解压缩加密文件出错！ 错误原因： ${err.message}`
+  })
+}
+
+```
+
+3.还可以解压缩放在项目rawfile文件夹内的加密压缩文件
+
+```typescript
+  try {
+   // 传入rawfile文件名 加密压缩文件可以是PC端的软件加密的文件
+  loadAsyncFromRawFile(this.rawFileName).then((res: Uint8Array | void) => {
+    if (!res) {
+      promptAction.showToast({
+        message: `没有找到此压缩文件！`
+      })
+      this.closeLoading()
+      return
+    }
+      // 读取到文件数据之后传递给JSZIP去解压缩
+    this.instance.loadAsync(res, {
+      password: this.password
+    }).then((data: JSZip) => {
+      promptAction.showToast({
+        message: `解压缩加密文件成功  ￥${JSON.stringify(data)}`
+      })
+    }).catch((err: Error) => {
+      promptAction.showToast({
+        message: `解压缩加密文件失败！ 错误原因： ${err.message}`
+      })
+    })
+  })
+} catch (err) {
+  promptAction.showToast({
+    message: `解压缩加密文件出错！ 错误原因： ${err.message}`
+  })
+}
+```
+
+
 
 ## 约束与限制
 
