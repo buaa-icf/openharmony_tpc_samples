@@ -1,0 +1,15 @@
+{
+  "name": "eventsource",
+  "version": "2.0.2",
+  "description": "This library is a pure JavaScript implementation of the EventSource client",
+  "main": "",
+  "author": "",
+  "license": "",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@ohos/hypium": "1.0.15",
+    "@ohos/hamock": "1.0.0-rc"
+  },
+  "dynamicDependencies": {}
+}
