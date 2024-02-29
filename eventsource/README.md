@@ -26,7 +26,7 @@ import EventSource from '@ohos/eventsource';
 ```
 ### 需要SSE服务器配合使用
 #### 服务端示例代码
-创建一个可以传输事件流数据的node服务器，具体请看server目录
+创建一个可以传输事件流数据的node服务器，具体请看[server目录](./server)
 ```javascript
 const express = require('express');
 const serveStatic = require('serve-static');
