@@ -30,7 +30,7 @@ import ResourcesLoader from "../epub/ResourcesLoader"
 import { Constants } from '../Constants';
 import EpubResource from "../domain/EpubResource"
 import Resources from "../domain/Resources"
-import { DOMParser } from '@xmldom/xmldom'
+import { DOMParser } from '@ohos/xmldom'
 import StringUtil from '../util/StringUtil'
 import PackageDocumentReader from "./PackageDocumentReader"
 import NCXDocument from './NCXDocument'

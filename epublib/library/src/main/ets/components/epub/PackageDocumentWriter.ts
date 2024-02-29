@@ -37,8 +37,8 @@ import GuideReference from '../domain/GuideReference'
 import EpubResource from "../domain/EpubResource"
 import MediatypeService from '../service/MediatypeService';
 import StringUtil from '../util/StringUtil';
-import { DOMParser } from '@xmldom/xmldom';
-import { XMLSerializer } from '@xmldom/xmldom';
+import { DOMParser } from '@ohos/xmldom';
+import { XMLSerializer } from '@ohos/xmldom';
 import fs from '@ohos.file.fs';
 import OPFValues from './OPFValues';
 
