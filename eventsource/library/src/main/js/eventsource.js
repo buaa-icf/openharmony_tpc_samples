@@ -1,13 +1,20 @@
-var parse = require('url').parse
-var events = require('events')
-var https = require('https')
-var http = require('http')
-var util = require('util')
+import { url, URL, buffer, util, events } from '@ohos/node-polyfill'
 
+import http from '@ohos.net.http'
+
+var parse = url.parse
 var httpsOptions = [
     'pfx', 'key', 'passphrase', 'cert', 'ca', 'ciphers',
     'rejectUnauthorized', 'secureProtocol', 'servername', 'checkServerIdentity'
 ]
+
+class Header {
+    contentType;
+
+    constructor(contentType) {
+        this.contentType = contentType;
+    }
+}
 
 var bom = [239, 187, 191]
 var colon = 58
@@ -41,22 +48,21 @@ function EventSource(url, eventSourceInitDict) {
             return readyState
         }
     })
-
     Object.defineProperty(this, 'url', {
         get: function () {
             return url
         }
     })
-
     var self = this
-    self.reconnectInterval = 1000
+    self.reconnectInterval = 5000
     self.connectionInProgress = false
+    var count = 10
+    var retryCurrentCount = 0
 
     function onConnectionClosed(message) {
         if (readyState === EventSource.CLOSED) return
         readyState = EventSource.CONNECTING
         _emit('error', new Event('error', { message: message }))
-
         // The url may have been changed by a temporary redirect. If that's the case,
         // revert it now, and flag that we are no longer pointing to a new origin
         if (reconnectUrl) {
@@ -65,25 +71,26 @@ function EventSource(url, eventSourceInitDict) {
             hasNewOrigin = false
         }
         setTimeout(function () {
+            retryCurrentCount += 1
             if (readyState !== EventSource.CONNECTING || self.connectionInProgress) {
                 return
             }
             self.connectionInProgress = true
-            connect()
+            if (retryCurrentCount <= count) {
+                connect()
+            }
         }, self.reconnectInterval)
     }
 
-    var req
+    var crateHttp
     var lastEventId = ''
     if (headers && headers['Last-Event-ID']) {
         lastEventId = headers['Last-Event-ID']
         delete headers['Last-Event-ID']
     }
-
     var discardTrailingNewline = false
     var data = ''
     var eventName = ''
-
     var reconnectUrl = null
 
     function connect() {
@@ -100,22 +107,18 @@ function EventSource(url, eventSourceInitDict) {
                 }
             }
         }
-
         // Legacy: this should be specified as `eventSourceInitDict.https.rejectUnauthorized`,
         // but for now exists as a backwards-compatibility layer
-        options.rejectUnauthorized = !(eventSourceInitDict && typeof eventSourceInitDict.rejectUnauthorized === 'boolean' && !eventSourceInitDict.rejectUnauthorized)
-
+        options.rejectUnauthorized = !(eventSourceInitDict && !eventSourceInitDict.rejectUnauthorized)
         if (eventSourceInitDict && eventSourceInitDict.createConnection !== undefined) {
             options.createConnection = eventSourceInitDict.createConnection
         }
-
         // If specify http proxy, make the request to sent to the proxy server,
         // and include the original url in path and Host headers
         var useProxy = eventSourceInitDict && eventSourceInitDict.proxy
         if (useProxy) {
             var proxy = parse(eventSourceInitDict.proxy)
             isSecure = proxy.protocol === 'https:'
-
             options.protocol = isSecure ? 'https:' : 'http:'
             options.path = url
             options.headers.Host = options.host
@@ -123,161 +126,113 @@ function EventSource(url, eventSourceInitDict) {
             options.host = proxy.host
             options.port = proxy.port
         }
-
         // If https options are specified, merge them into the request options
         if (eventSourceInitDict && eventSourceInitDict.https) {
             for (var optName in eventSourceInitDict.https) {
                 if (httpsOptions.indexOf(optName) === -1) {
                     continue
                 }
-
                 var option = eventSourceInitDict.https[optName]
                 if (option !== undefined) {
                     options[optName] = option
                 }
             }
         }
-
         // Pass this on to the XHR
         if (eventSourceInitDict && eventSourceInitDict.withCredentials !== undefined) {
             options.withCredentials = eventSourceInitDict.withCredentials
         }
+        crateHttp = http.createHttp()
 
-        req = (isSecure ? https : http).request(options, function (res) {
-            self.connectionInProgress = false
-            // Handle HTTP errors
-            if (res.statusCode === 500 || res.statusCode === 502 || res.statusCode === 503 || res.statusCode === 504) {
-                _emit('error', new Event('error', { status: res.statusCode, message: res.statusMessage }))
-                onConnectionClosed()
+        crateHttp.requestInStream(url, {
+            method: http.RequestMethod.GET,
+            connectTimeout: 0,
+            readTimeout: 0,
+            header: new Header('application/json'),
+        }, (err, res) => {
+            if (!err) {
+                readyState = EventSource.OPEN
+                _emit('open', new Event('open'))
+            } else {
+                self.connectionInProgress = false
+                _emit('error', new Event('error', { status: err.code, message: err.message }))
+                onConnectionClosed(err.message)
                 return
             }
-
-            // Handle HTTP redirects
-            if (res.statusCode === 301 || res.statusCode === 302 || res.statusCode === 307) {
-                var location = res.headers.location
-                if (!location) {
-                    // Server sent redirect response without Location header.
-                    _emit('error', new Event('error', { status: res.statusCode, message: res.statusMessage }))
-                    return
-                }
-                var prevOrigin = new URL(url).origin
-                var nextOrigin = new URL(location).origin
-                hasNewOrigin = prevOrigin !== nextOrigin
-                if (res.statusCode === 307) reconnectUrl = url
-                url = location
-                process.nextTick(connect)
-                return
-            }
-
-            if (res.statusCode !== 200) {
-                _emit('error', new Event('error', { status: res.statusCode, message: res.statusMessage }))
-                return self.close()
-            }
-
-            readyState = EventSource.OPEN
-            res.on('close', function () {
-                res.removeAllListeners('close')
-                res.removeAllListeners('end')
-                onConnectionClosed()
-            })
-
-            res.on('end', function () {
-                res.removeAllListeners('close')
-                res.removeAllListeners('end')
-                onConnectionClosed()
-            })
-            _emit('open', new Event('open'))
-
-            // text/event-stream parser adapted from webkit's
-            // Source/WebCore/page/EventSource.cpp
+        })
+        crateHttp.on('dataReceive', (data) => {
             var buf
             var newBuffer
             var startingPos = 0
             var startingFieldLength = -1
             var newBufferSize = 0
             var bytesUsed = 0
-
-            res.on('data', function (chunk) {
-                if (!buf) {
-                    buf = chunk
-                    if (hasBom(buf)) {
-                        buf = buf.slice(bom.length)
+            if (data.byteLength < 2) return
+            var
+            chunk = buffer.Buffer.from(data)
+            if (!buf) {
+                buf = chunk
+                if (hasBom(buf)) {
+                    buf = buf.slice(bom.length)
+                }
+                bytesUsed = buf.length
+            } else {
+                if (chunk.length > buf.length - bytesUsed) {
+                    newBufferSize = (buf.length * 2) + chunk.length
+                    if (newBufferSize > maxBufferAheadAllocation) {
+                        newBufferSize = buf.length + chunk.length + maxBufferAheadAllocation
                     }
-                    bytesUsed = buf.length
+                    newBuffer = buffer.Buffer.alloc(newBufferSize)
+                    buf.copy(newBuffer, 0, 0, bytesUsed)
+                    buf = newBuffer
+                }
+                chunk.copy(buf, bytesUsed)
+                bytesUsed += chunk.length
+            }
+            var pos = 0
+            var length = bytesUsed
+            while (pos < length) {
+                if (discardTrailingNewline) {
+                    if (buf[pos] === lineFeed) {
+                        ++pos
+                    }
+                    discardTrailingNewline = false
+                }
+                var lineLength = -1
+                var fieldLength = startingFieldLength
+                var c
+                for (var i = startingPos; lineLength < 0 && i < length; ++i) {
+                    c = buf[i]
+                    if (c === colon) {
+                        if (fieldLength < 0) {
+                            fieldLength = i - pos
+                        }
+                    } else if (c === carriageReturn) {
+                        discardTrailingNewline = true
+                        lineLength = i - pos
+                    } else if (c === lineFeed) {
+                        lineLength = i - pos
+                    }
+                }
+                if (lineLength < 0) {
+                    startingPos = length - pos
+                    startingFieldLength = fieldLength
+                    break
                 } else {
-                    if (chunk.length > buf.length - bytesUsed) {
-                        newBufferSize = (buf.length * 2) + chunk.length
-                        if (newBufferSize > maxBufferAheadAllocation) {
-                            newBufferSize = buf.length + chunk.length + maxBufferAheadAllocation
-                        }
-                        newBuffer = Buffer.alloc(newBufferSize)
-                        buf.copy(newBuffer, 0, 0, bytesUsed)
-                        buf = newBuffer
-                    }
-                    chunk.copy(buf, bytesUsed)
-                    bytesUsed += chunk.length
+                    startingPos = 0
+                    startingFieldLength = -1
                 }
-
-                var pos = 0
-                var length = bytesUsed
-
-                while (pos < length) {
-                    if (discardTrailingNewline) {
-                        if (buf[pos] === lineFeed) {
-                            ++pos
-                        }
-                        discardTrailingNewline = false
-                    }
-
-                    var lineLength = -1
-                    var fieldLength = startingFieldLength
-                    var c
-
-                    for (var i = startingPos; lineLength < 0 && i < length; ++i) {
-                        c = buf[i]
-                        if (c === colon) {
-                            if (fieldLength < 0) {
-                                fieldLength = i - pos
-                            }
-                        } else if (c === carriageReturn) {
-                            discardTrailingNewline = true
-                            lineLength = i - pos
-                        } else if (c === lineFeed) {
-                            lineLength = i - pos
-                        }
-                    }
-
-                    if (lineLength < 0) {
-                        startingPos = length - pos
-                        startingFieldLength = fieldLength
-                        break
-                    } else {
-                        startingPos = 0
-                        startingFieldLength = -1
-                    }
-
-                    parseEventStreamLine(buf, pos, fieldLength, lineLength)
-
-                    pos += lineLength + 1
-                }
-
-                if (pos === length) {
-                    buf = void 0
-                    bytesUsed = 0
-                } else if (pos > 0) {
-                    buf = buf.slice(pos, bytesUsed)
-                    bytesUsed = buf.length
-                }
-            })
+                parseEventStreamLine(buf, pos, fieldLength, lineLength)
+                pos += lineLength + 1
+            }
+            if (pos === length) {
+                buf = void 0
+                bytesUsed = 0
+            } else if (pos > 0) {
+                buf = buf.slice(pos, bytesUsed)
+                bytesUsed = buf.length
+            }
         })
-
-        req.on('error', function (err) {
-            self.connectionInProgress = false
-            onConnectionClosed(err.message)
-        })
-
-        if (req.setNoDelay) req.setNoDelay(true)
-        req.end()
     }
 
     connect()
@@ -291,8 +246,7 @@ function EventSource(url, eventSourceInitDict) {
     this._close = function () {
         if (readyState === EventSource.CLOSED) return
         readyState = EventSource.CLOSED
-        if (req.abort) req.abort()
-        if (req.xhr && req.xhr.abort) req.xhr.abort()
+        crateHttp.destroy();
     }
 
     function parseEventStreamLine(buf, pos, fieldLength, lineLength) {
@@ -311,7 +265,6 @@ function EventSource(url, eventSourceInitDict) {
             var noValue = fieldLength < 0
             var step = 0
             var field = buf.slice(pos, pos + (noValue ? lineLength : fieldLength)).toString()
-
             if (noValue) {
                 step = lineLength
             } else if (buf[pos + fieldLength + 1] !== space) {
@@ -320,10 +273,8 @@ function EventSource(url, eventSourceInitDict) {
                 step = fieldLength + 2
             }
             pos += step
-
             var valueLength = lineLength - step
             var value = buf.slice(pos, pos + valueLength).toString()
-
             if (field === 'data') {
                 data += value + '\n'
             } else if (field === 'event') {
@@ -340,11 +291,9 @@ function EventSource(url, eventSourceInitDict) {
     }
 }
 
-module.exports = EventSource
-
+export default EventSource
 util.inherits(EventSource, events.EventEmitter)
 EventSource.prototype.constructor = EventSource; // make stacktraces readable
-
 ['open', 'error', 'message'].forEach(function (method) {
     Object.defineProperty(EventSource.prototype, 'on' + method, {
         /**
@@ -371,18 +320,15 @@ EventSource.prototype.constructor = EventSource; // make stacktraces readable
         }
     })
 })
-
 /**
  * Ready states
  */
 Object.defineProperty(EventSource, 'CONNECTING', { enumerable: true, value: 0 })
 Object.defineProperty(EventSource, 'OPEN', { enumerable: true, value: 1 })
 Object.defineProperty(EventSource, 'CLOSED', { enumerable: true, value: 2 })
-
 EventSource.prototype.CONNECTING = 0
 EventSource.prototype.OPEN = 1
 EventSource.prototype.CLOSED = 2
-
 /**
  * Closes the connection, if one is made, and sets the readyState attribute to 2 (closed)
  *
@@ -392,7 +338,6 @@ EventSource.prototype.CLOSED = 2
 EventSource.prototype.close = function () {
     this._close()
 }
-
 /**
  * Emulates the W3C Browser based WebSocket interface using addEventListener.
  *
@@ -409,7 +354,6 @@ EventSource.prototype.addEventListener = function addEventListener(type, listene
         this.on(type, listener)
     }
 }
-
 /**
  * Emulates the W3C Browser based WebSocket interface using dispatchEvent.
  *
@@ -421,10 +365,10 @@ EventSource.prototype.dispatchEvent = function dispatchEvent(event) {
     if (!event.type) {
         throw new Error('UNSPECIFIED_EVENT_TYPE_ERR')
     }
-
-    this.emit(event.type, event)
+    // if event is instance of an CustomEvent (or has 'details' property),
+    // send the detail object as the payload for the event
+    this.emit(event.type, event.message)
 }
-
 /**
  * Emulates the W3C Browser based WebSocket interface using removeEventListener.
  *
@@ -441,13 +385,20 @@ EventSource.prototype.removeEventListener = function removeEventListener(type, l
     }
 }
 
+EventSource.prototype.onFailure = function onFailure(listener) {
+    if (typeof listener === 'function') {
+        this.addEventListener('error', listener)
+    }
+
+}
+
 /**
  * W3C Event
  *
  * @see http://www.w3.org/TR/DOM-Level-3-Events/#interface-Event
  * @api private
  */
-function Event(type, optionalProperties) {
+export function Event(type, optionalProperties) {
     Object.defineProperty(this, 'type', { writable: false, value: type, enumerable: true })
     if (optionalProperties) {
         for (var f in optionalProperties) {
@@ -486,9 +437,7 @@ function removeUnsafeHeaders(headers) {
         if (reUnsafeHeader.test(key)) {
             continue
         }
-
         safe[key] = headers[key]
     }
-
     return safe
 }
