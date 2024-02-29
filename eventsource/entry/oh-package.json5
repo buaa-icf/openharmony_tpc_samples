@@ -1,0 +1,11 @@
+{
+  "name": "entry",
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@ohos/eventsource": "file:../library"
+  }
+}
+
