@@ -1,0 +1,11 @@
+[
+  {
+   "Name":"parser-html-json",
+   "License":"MIT License",
+   "License File":" LICENSE ",
+   "Version Number":"1.0.3",
+   "Owner":"xiafeng@huawei.com",
+   "Upstream URL":"https://github.com/1623311678/html-parser-server",
+   "Description": "用于将html解析为json数据"
+  }
+]
