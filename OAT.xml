@@ -117,7 +117,7 @@
                 <filteritem type="filepath" name="metadata-extractor/resources/.*" desc="测试文件"/>
 				<filteritem type="filepath" name="epublib/entry/src/main/resources/rawfile/.*" desc="测试文件"/>
                 <filteritem type="filepath"  name="jackrabbit/LICENSE"  desc="原开源项目的LICENSE，不手动修改"/>
-                
+                <filteritem type="filepath" name="parserHtmlJsonDemo/demo.gif" desc="演示效果动图，用于readme展示，无需检查"/>
             </filefilter>
         </filefilterlist>
         <policylist>
@@ -253,6 +253,7 @@
 		<policyitem type="license" name="MIT" path="requires-port/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>	
         <policyitem type="license" name="BSD" path="source_map_js/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
         <policyitem type="license" name="BSD-3-Clause" path="d3JsEasingDemo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+		<policyitem type="license" name="MIT" path="parserHtmlJsonDemo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
 	    </policy>
         </policylist>
         <licensematcherlist>

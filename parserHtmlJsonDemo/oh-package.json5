@@ -1,0 +1,13 @@
+{
+  "license": "",
+  "devDependencies": {
+    "@ohos/hypium": "1.0.11"
+  },
+  "author": "",
+  "name": "parserhtmljsondemo",
+  "description": "将html解析为json数据",
+  "main": "",
+  "version": "1.0.0",
+  "dynamicDependencies": {},
+  "dependencies": {}
+}
