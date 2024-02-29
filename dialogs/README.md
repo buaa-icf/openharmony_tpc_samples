@@ -72,13 +72,13 @@
 1.安装
 
 ```
-ohpm install @ohos/dialog
+ohpm install @ohos/dialogs
 ```
 
 2.在需要使用的页面导入需要的组件，如ConfirmDialog.ets:
 
 ```
-import { ConfirmDialog } from '@ohos/dialog'
+import { ConfirmDialog } from '@ohos/dialogs'
 ```
 
 ## 使用说明
@@ -163,7 +163,7 @@ build() {
     }
 }
 }
-```
+   ```
 
 ## 全局属性说明
 | 属性名                 | 属性类型             | 属性描述                           |
