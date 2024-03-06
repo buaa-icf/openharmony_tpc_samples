@@ -21,11 +21,12 @@
  */
 
 export class APNG {
+  isAPNG = true;
   width = 0;
   height = 0;
   numPlays = 0;
   playTime = 0;
-  frames = [];
+  frames: Frame[] = [];
 }
 
 export class Frame {
@@ -36,4 +37,6 @@ export class Frame {
   delay = 0;
   disposeOp = 0;
   blendOp = 0;
+  dataParts: Uint8Array[] = [];
+  imageBuffer: Uint8Array[] = [];
 }
