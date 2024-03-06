@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "apng-js",
+        "License": "MIT",
+        "License File": "https://github.com/davidmz/apng-js/blob/master/LICENSE.txt",
+        "Version Number": "1.1.2",
+        "Owner": "xiafeng@huawei.com",
+        "Upstream URL": "https://github.com/davidmz/apng-js",
+        "Description": "apng-js provides functions for parse and render animated PNG's (APNG)"
+    }
+]
