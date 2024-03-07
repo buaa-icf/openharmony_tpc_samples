@@ -25,6 +25,19 @@ import { apng } from '@ohos/apng';
 @Entry
 @Component
 struct Index {
+  @State demoType: boolean = false;
+  @State textContext: string = '';
+
+  @Builder
+  loadApng(){
+    Scroll(){
+      apng({
+        src: $r('app.media.stack'),
+        speedRate: 1
+      })
+    }
+  }
+
   build() {
     Flex({
       direction: FlexDirection.Column,
@@ -41,12 +54,17 @@ struct Index {
       .flexBasis('100vp')
 
       Flex({
+        direction: FlexDirection.Column,
         alignItems: ItemAlign.Center
       }) {
-        apng({
-          src: $r('app.media.stack'),
-          speedRate: 1
-        })
+       Button(this.demoType ? (this.textContext = '取消加载') :(this.textContext = '点击加载apng'))
+         .margin({left:'33%', right:''})
+         .onClick(() => {
+           this.demoType = !this.demoType
+         })
+        if(this.demoType){
+           this.loadApng()
+        }
       }
     }
     .width('100%')

@@ -6,9 +6,7 @@
     "HarmonyOS"
   ],
   "tags": [
-    "apng",
-    "OpenHarmony",
-    "HarmonyOS"
+    "Tool"
   ],
   "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples",
   "name": "@ohos/apng",
