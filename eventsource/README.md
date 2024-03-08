@@ -69,7 +69,7 @@ eventListener = (e: Record<"data", string>) => {
   this.simpleList.push(e.data);
 }
 // 创建连接
-this.es = new axios.EventSource(this.url)
+this.es = new EventSource(this.url)
 
 // 开启监听
 this.es.addEventListener("server-time", this.eventListener);

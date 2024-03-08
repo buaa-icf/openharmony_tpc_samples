@@ -10,7 +10,7 @@
     "org": "opensource"
   },
   "description": "This library is a pure JavaScript implementation of the EventSource client.",
-  "main": "src/main/js/eventsource.js",
+  "main": "Index.ts",
   "repository": "https://gitee.com/openharmony-tpc/eventsource",
   "type": "module",
   "version": "2.0.2",

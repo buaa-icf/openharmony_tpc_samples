@@ -17,6 +17,30 @@
                     desc="hvigor构建脚本，DevEco Studio自动生成，不手动修改"
                     name="hvigorfile.ts"
                     type="filename"/>
+                 <filteritem
+                    desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"
+                    name="hvigorw.bat"
+                    type="filename"/>
+                <filteritem
+                    desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"
+                    name="hvigor/hvigor-wrapper.js"
+                    type="filepath"/>
+                <filteritem
+                    desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"
+                    name="hvigorw"
+                    type="filename"/>
+                <filteritem 
+                    type="filepath"
+                    name="library/.*.js" 
+                    desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem
+                    type="filepath"
+                    name="server/.*.js" 
+                    desc="此文件第三方开源软件源码，不修改版权头"/>
+                  <filteritem
+                    desc="原开源项目的LICENSE，不手动修改"
+                    name="LICENSE"
+                    type="filename"/>
             </filefilter>
             <filefilter
                 desc="Filters for compatibility，license header policies"
@@ -53,7 +77,18 @@
                     desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"
                     name="hvigor/hvigor-wrapper.js"
                     type="filepath"/>
-
+                <filteritem 
+                    type="filepath"
+                    name="library/.*.js" 
+                    desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem
+                    type="filepath" 
+                    name="server/.*.js" 
+                    desc="此文件只用于单元测试，不修改版权头"/>
+                <filteritem 
+                    type="filepath" 
+                    name="server/.*" 
+                    desc="此文件只用于单元测试，不修改版权头"/>
             </filefilter>
             <filefilter
                 desc="Filters for binary file policies"
@@ -62,6 +97,14 @@
                     desc="项目工程默认文件，不需要添加许可证头"
                     name="*.json5"
                     type="filename"/>
+                <filteritem 
+                    desc="此文件第三方开源软件源码，不修改版权头"
+                    type="filepath"
+                    name="library/.*.js" />
+                <filteritem
+                    desc="此文件第三方开源软件源码，不修改版权头"
+                    type="filepath" 
+                    name="server/.*.js" />
                 <filteritem
                     desc="项目工程默认文件，不需要添加版权头"
                     name="hvigorw.bat"
@@ -90,7 +133,17 @@
                     desc="gif图片格式文件,用于readme展示"
                     name="img/GIF.gif"
                     type="filepath"/>
+                <filteritem
+                    desc="png图片格式文件,程序图标"
+                    name="*.png"
+                    type="filename"/>
             </filefilter>
+            
         </filefilterlist>
+          <policylist>
+            <policy name="projectPolicy" desc="匹配原库协议，符合开源要求">
+                <policyitem type="license" name="MIT" path=".*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="标准MIT协议内容，符合开源要求"/>
+            </policy>
+        </policylist>
     </oatconfig>
 </configuration>
