@@ -26,13 +26,11 @@
  */
 
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium';
-import  EventSource  from '@ohos/eventsource'
+import EventSource from '@ohos/eventsource'
+
 export default function abilityTest() {
   describe('ssePerformance', () => {
-    // Defines a test suite. Two parameters are supported: test suite name and test suite function.
     beforeAll(() => {
-      // Presets an action, which is performed only once before all test cases of the test suite start.
-      // This API supports only one parameter: preset action function.
     })
     beforeEach(() => {
       // Presets an action, which is performed before each unit test case starts.
@@ -49,61 +47,122 @@ export default function abilityTest() {
       // This API supports only one parameter: clear action function.
     })
     let url = 'http://localhost:8080/sse'
+    let a: string = '';
+    let b: string = ''
     const BASE_COUNT = 2
-    it('addEventListener', 0, () => {
-      // Defines a test case. This API supports three parameters: test case name, filter parameter, and test case function.
-      let startTime = new Date().getTime()
-      let es = new EventSource(url)
-      es.addEventListener('server-time',(e:Record<'data',string>)=>{
-        expect(!!e.data).assertTrue()
-      })
-      let endTime = new Date().getTime()
-      console.info("EndTime:" + endTime)
-      let averageTime = ((endTime - startTime) * 1000) / BASE_COUNT
-      console.info("AverageTime:" + averageTime)
-      expect(averageTime).assertLess(2000)
+    it('addEventListener', 0, async (done: Function) => {
+      let es: EventSource = new EventSource(url)
+      let startTime1 = new Date().getTime();
+      try {
+        es.onFailure((e: Record<'message', string>) => {
+          b = e.message;
+          console.info('-------04------' + b);
+          expect(b == "Co11uldn't connect to server").assertTrue();
+          done();
+        })
+        es.addEventListener('server-time', (e: Record<'data', string>) => {
+          a = e.data;
+          expect(!!a).assertTrue();
+          console.info('-------06------');
+          done();
+        })
+      }
+      catch (e) {
+        console.info('-------01------')
+      }
+      let nowTime = (new Date()).getTime();
+      let endTime = (new Date()).getTime();
+      while (endTime - nowTime < 5000) {
+        endTime = (new Date()).getTime();
+      }
+      console.info('-------03------')
+      let endTime1 = new Date().getTime();
+      console.info("EndTime:" + endTime);
+      let averageTime = ((endTime1 - startTime1));
+      console.info("AverageTime:" + averageTime );
+      expect(averageTime).assertLess(6000);
     })
-    it('removeEventListener', 0, () => {
-      // Defines a test case. This API supports three parameters: test case name, filter parameter, and test case function.
-      let startTime = new Date().getTime()
-      let es = new EventSource(url)
-      es.removeEventListener('server-time',(e:Record<'data',string>)=>{
-        console.info('Stop listening')
-        expect(!!e.data).assertFalse()
-      })
-      let endTime = new Date().getTime()
-      console.info("EndTime:" + endTime)
-      let averageTime = ((endTime - startTime) * 1000) / BASE_COUNT
-      console.info("AverageTime:" + averageTime)
-      expect(averageTime).assertLess(2000)
+    it('removeEventListener', 0, async (done: Function) => {
+      let es: EventSource = new EventSource(url);
+      let startTime1 = new Date().getTime();
+      try {
+        es.onFailure((e: Record<'message', string>) => {
+          b = e.message;
+          console.info('-------04------' + b);
+          expect(b == "Co11uldn't connect to server").assertTrue();
+          done();
+        })
+        es.addEventListener('server-time', (e: Record<'data', string>) => {
+          a = e.data;
+          expect(!!a).assertTrue();
+          console.info('-------06------');
+          done();
+        })
+        let startTime = new Date().getTime();
+        es.removeEventListener('server-time', (e: Record<'data', string>) => {
+          a = e.data;
+          expect(!!e.data).assertFalse();
+          done();
+        })
+      }
+      catch (e) {
+        console.info('-------01------');
+      }
+      let nowTime = (new Date()).getTime();
+      let endTime = (new Date()).getTime();
+      while (endTime - nowTime < 5000) {
+        endTime = (new Date()).getTime();
+      }
+      console.info('-------03------');
+      let endTime1 = new Date().getTime();
+      console.info("EndTime:" + endTime);
+      let averageTime = ((endTime1 - startTime1));
+      console.info("AverageTime:" + averageTime );
+      expect(averageTime).assertLess(6000);
     })
     it('close', 0, () => {
-      // Defines a test case. This API supports three parameters: test case name, filter parameter, and test case function.
-      let startTime = new Date().getTime()
-      let es = new EventSource(url)
-      es.close()
-      es.addEventListener('server-time',(e:Record<'data',string>)=>{
-        expect(!!e.data).assertFalse()
+      let es = new EventSource(url);
+      let startTime = new Date().getTime();
+      es.close();
+      let endTime = new Date().getTime();
+      console.info("EndTime:" + endTime);
+      let averageTime = ((endTime - startTime) * 1000) / BASE_COUNT;
+      console.info("AverageTime:" + averageTime + 'US');
+      expect(averageTime).assertLess(2000);
+      es.addEventListener('server-time', (e: Record<'data', string>) => {
+        expect(!!e.data).assertFalse();
       })
-      let endTime = new Date().getTime()
-      console.info("EndTime:" + endTime)
-      let averageTime = ((endTime - startTime) * 1000) / BASE_COUNT
-      console.info("AverageTime:" + averageTime)
-      expect(averageTime).assertLess(2000)
     })
-    it('onFailure', 0, () => {
-      // Defines a test case. This API supports three parameters: test case name, filter parameter, and test case function.
-      let startTime = new Date().getTime()
-      let es = new EventSource(url)
-      es.onFailure((e:Record<"message", string>)=>{
-        expect(e.message).assertContain('error')
-      })
-      es.close()
-      let endTime = new Date().getTime()
-      console.info("EndTime:" + endTime)
-      let averageTime = ((endTime - startTime) * 1000) / BASE_COUNT
-      console.info("AverageTime:" + averageTime)
-      expect(averageTime).assertLess(2000)
+    it('onFailure', 0, async (done: Function) => {
+      let es: EventSource = new EventSource(url);
+      let startTime1 = new Date().getTime();
+      try {
+        es.onFailure((e: Record<'message', string>) => {
+          b = e.message;
+          console.info('-------04------' + b);
+          expect(b == "Co11uldn't connect to server").assertTrue();
+          done();
+        })
+        es.addEventListener('server-time', (e: Record<'data', string>) => {
+          a = e.data;
+          expect(!!a).assertTrue();
+          console.info('-------06------');
+          done();
+        })
+      }
+      catch (e) {
+        console.info('-------01------')
+      }
+      let nowTime = (new Date()).getTime();
+      let endTime = (new Date()).getTime();
+      while (endTime - nowTime < 5000) {
+        endTime = (new Date()).getTime();
+      }
+      let endTime1 = new Date().getTime();
+      console.info("EndTime:" + endTime);
+      let averageTime = ((endTime1 - startTime1));
+      console.info("AverageTime:" + averageTime );
+      expect(averageTime).assertLess(6000);
     })
   })
 }

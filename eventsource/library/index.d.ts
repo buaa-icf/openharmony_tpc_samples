@@ -25,12 +25,23 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
- 
-import abilityTest from './Ability.test';
-import sse from './sse.test';
-import ssePerformance from './ssePerformance.test';
-export default function testsuite() {
-  abilityTest();
-  sse();
-  ssePerformance();
-}
+export default class EventSource {
+    static readonly CLOSED: number;
+    static readonly CONNECTING: number;
+    static readonly OPEN: number;
+  
+    constructor(url: string, eventSourceInitDict?: EventSourceInitDict);
+    addEventListener(type:string,listener:(e:any)=>void):void;
+    removeEventListener(type:string,listener:(e:any)=>void):void;
+    onFailure(callback:(message:any)=>void):void;
+    close():void
+  }
+  
+
+    interface EventSourceInitDict {
+      withCredentials?: boolean | undefined;
+      headers?: object | undefined;
+      proxy?: string | undefined;
+      https?: object | undefined;
+      rejectUnauthorized?: boolean | undefined;
+    }

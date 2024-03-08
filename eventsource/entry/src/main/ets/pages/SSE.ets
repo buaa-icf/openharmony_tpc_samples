@@ -28,23 +28,36 @@
 
 import Eventsource from '@ohos/eventsource'
 import promptAction from '@ohos.promptAction';
-import {EventSource} from './Evetnsource.d.ts'
 @Entry
 @Component
+
 struct Parent {
   @State simpleList: Array<string> = [];
   @State es: null | Eventsource = null;
-  eventListener = (e: Record<"data", string>) => {
+  @State text: string = 'http://192.168.8.129:8080/sse';
+  eventListener:null|((e: Record<"data", string>)=>void) = (e: Record<"data", string>) => {
     this.simpleList.push(e.data);
   }
   aboutToDisappear(): void {
     this.simpleList = [];
     this.es = null;
+    this.eventListener = null;
   }
-
+  onPageShow():void{
+    this.simpleList = [];
+    this.es = null;
+  }
+  onPageHide():void{
+    this.simpleList = [];
+    this.es = null;
+    this.eventListener = null;
+  }
   build() {
     Row() {
       Column() {
+        TextInput({text:this.text}).onChange((value:string)=>{
+          this.text = value;
+        }).margin({top:20})
         Button('创建连接')
           .margin({ top: 20, bottom: 10 })
           .size({
@@ -52,9 +65,9 @@ struct Parent {
             height: 50
           })
           .onClick(() => {
-            this.es = new Eventsource("http://localhost:8080/sse");
+            this.es = new Eventsource(this.text);
+            if(this.es===null) return
             this.es.onFailure((e: Record<"message", string>) => {
-              console.info("11111111", JSON.stringify(e.message));
               promptAction.showToast({ message: JSON.stringify(e.message) });
             })
           })
@@ -68,7 +81,6 @@ struct Parent {
             if (!this.es) return;
             this.es.addEventListener("server-time", this.eventListener);
             promptAction.showToast({ message: '监听开始' });
-            console.info("simpleList" + this.simpleList);
 
           })
         Button('取消监听')
@@ -81,7 +93,6 @@ struct Parent {
             if (!this.es) return;
             this.es.removeEventListener("server-time", this.eventListener);
             promptAction.showToast({ message: '监听取消' });
-            console.info("simpleList" + this.simpleList);
           })
         Button('断开连接')
           .margin({ top: 20, bottom: 10 })
@@ -114,7 +125,9 @@ struct Parent {
 @Component
 struct ChildItem {
   @Prop item: string = '';
-
+  aboutToDisappear(): void {
+    this.item = '';
+  }
   build() {
     Text(this.item)
       .fontSize(12)
