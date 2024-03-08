@@ -13,105 +13,76 @@
  * limitations under the License.
  */
 
-import router from '@ohos.router';
-import { getNetworkTime } from '@ohos/ntp';
+import { getNetworkTime, NTPConfig } from '@ohos/ntp';
 
 @Entry
 @Component
 struct NtpClient {
-  @State server: string | undefined = 'ntp.aliyun.com';
-  @State port: string | undefined = '123';
-  @State timeout: string | undefined = '2000';
   @State ntpResult: string | undefined = ''
-  @State timeoutResult: String | undefined = ''
+  @State timeoutResult: string | undefined = ''
+
+  aboutToAppear(): void {
+    this.ntpResult = undefined
+    this.timeoutResult = undefined
+  }
 
   aboutToDisappear(): void {
-    this.server = undefined
-    this.port = undefined
-    this.timeout = undefined
+    this.ntpResult = undefined
+    this.timeoutResult = undefined
+  }
+
+  onPageShow(): void {
+    this.ntpResult = ''
+    this.timeoutResult = ''
+  }
+
+  onPageHide(): void {
     this.ntpResult = undefined
     this.timeoutResult = undefined
   }
 
   build() {
     Column() {
-      Button('返回')
-        .margin(10)
-        .width('95%')
-        .height('150px')
-        .fontSize(18)
-        .fontColor('#fff')
-        .align(Alignment.Center)
-        .margin(10)
-        .onClick(() => {
-          router.back();
-        })
+      Text('NTP服务器地址:ntp.aliyun.com')
+        .width('100%')
+        .padding({ left: 10 })
 
-      Text('请输入NTP服务器地址')
+      Text('远端端口:123')
+        .width('100%')
+        .padding({ left: 10 })
 
-      TextInput({ text: this.server })
-        .caretColor(Color.Blue)
-        .height('150px')
-        .fontSize('18fp')
-        .onChange((value: string) => {
-          this.server = value
-        })
-        .margin(10)
-
-      Text('请输入远端端口')
-
-      TextInput({ text: this.port })
-        .caretColor(Color.Blue)
-        .height('150px')
-        .fontSize('18fp')
-        .onChange((value: string) => {
-          this.port = value
-        })
-        .margin(10)
-
-      Text('请输入等待响应时长(ms)')
-
-      TextInput({ text: this.timeout })
-        .caretColor(Color.Blue)
-        .height('150px')
-        .fontSize('18fp')
-        .margin(10)
-        .onChange((value: string) => {
-          this.timeout = value
-        })
-
+      Text('等待响应时长(ms):2000')
+        .width('100%')
+        .padding({ left: 10 })
 
       Button('请求NTP')
         .margin(10)
         .width('95%')
-        .height('150px')
-        .fontSize(18)
-        .fontColor('#fff')
-        .align(Alignment.Center)
+        .height('100px')
         .onClick(() => {
-          getNetworkTime({
-            server: this.server as string,
-            port: Number(this.port) as number,
-            delayTime: Number(this.timeout) as number
-          })
+          let config: NTPConfig | undefined = undefined
+          config = {
+            server: 'ntp.aliyun.com',
+            port: 123,
+            delayTime: 2000
+          }
+          getNetworkTime(config)
             .then((date: Date) => {
               this.ntpResult = JSON.stringify(date)
+              config = undefined
             })
             .catch((err: string) => {
               this.timeoutResult = JSON.stringify(err)
+              config = undefined
             })
         })
 
-      Text('Result:' + this.ntpResult)
+      Text(this.ntpResult)
         .width('100%')
-        .padding(10)
-        .textAlign(TextAlign.Start)
-        .fontSize(20)
-      Text('Timeout Result:' + this.timeoutResult)
+        .padding({ left: 10 })
+      Text(this.timeoutResult)
         .width('100%')
-        .padding(10)
-        .textAlign(TextAlign.Start)
-        .fontSize(20)
+        .padding({ left: 10 })
     }
     .width('100%')
     .height('100%');
