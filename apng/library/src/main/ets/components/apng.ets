@@ -73,28 +73,28 @@ export struct apng {
       let frameStyle = this.styleInfo[count] as Frame;
 
       if (count === 0) {
-        this.context.clearRect(0, 0, frameStyle.width, frameStyle.height);
+        this.context.clearRect(0, 0, px2vp(frameStyle.width), px2vp(frameStyle.height));
         this.prevFrameData = null;
         if (frameStyle.disposeOp === 2) frameStyle.disposeOp = 1;
       }
 
       if (this.prevFrame && this.prevFrame.disposeOp == 1) {
-        this.context.clearRect(this.prevFrame.left, this.prevFrame.top, this.prevFrame.width, this.prevFrame.height);
+        this.context.clearRect(px2vp(this.prevFrame.left), px2vp(this.prevFrame.top), px2vp(this.prevFrame.width), px2vp(this.prevFrame.height));
       } else if (this.prevFrame && this.prevFrame.disposeOp == 2) {
-        this.context.putImageData(this.prevFrameData, this.prevFrame.left, this.prevFrame.top);
+        this.context.putImageData(this.prevFrameData, px2vp(this.prevFrame.left), px2vp(this.prevFrame.top));
       }
 
       let frame = frameStyle;
       this.prevFrame = frame;
       this.prevFrameData = null;
       if (frame.disposeOp == 2) {
-        this.prevFrameData = this.context.getImageData(frame.left, frame.top, frame.width, frame.height);
+        this.prevFrameData = this.context.getImageData(px2vp(frame.left), px2vp(frame.top), px2vp(frame.width), px2vp(frame.height));
       }
       if (frame.blendOp == 0) {
-        this.context.clearRect(frame.left, frame.top, frame.width, frame.height);
+        this.context.clearRect(px2vp(frame.left), px2vp(frame.top), px2vp(frame.width), px2vp(frame.height));
       }
       this.context.imageSmoothingEnabled = false;
-      this.context.drawImage(img, frame.left, frame.top, frame.width, frame.height);
+      this.context.drawImage(img, px2vp(frame.left), px2vp(frame.top), px2vp(frame.width), px2vp(frame.height));
     }, this.frameTime)
   }
 
