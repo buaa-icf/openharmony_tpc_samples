@@ -22,7 +22,7 @@ OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装 OpenHarmo
 1.引入 import apng from '@ohos/apng';
  apng({
       src: $r('app.media.stack'), //图片资源
-      speedRate: 1 //动画倍速
+      speedRate: 1 //动画倍速，该属性仅对APNG图片类型为fcTL的生效
  })
 2、在应用的entryAility中引入 import { GlobalContext } from '@ohos/apng'
    在onCreate函数中调用，传入上下文对象，用作后续读取本地图片资源文件

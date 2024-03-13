@@ -35,6 +35,15 @@ function typedArrayConcat(buffer1: ArrayBuffer | Uint8Array, buffer2: ArrayBuffe
   return uintBuffer.buffer;
 }
 
+// canvas组件绘制单位为vp,与px的转换过程中存在精度丢失，需要手动转换成px
+export function floor(n: number) {
+  return Math.floor(px2vp(n));
+}
+
+export function ceil(n: number) {
+  return Math.ceil(px2vp(n));
+}
+
 const defaultSpeed = 1;
 
 @Component
@@ -62,18 +71,21 @@ export struct apng {
 
   loop(c: number, max: number) {
     let frameInfo = this.styleInfo[this.count] as Frame;
+    if (this.speedRate < 0.1 || this.speedRate > 2) {
+      this.speedRate = defaultSpeed;
+    }
     this.frameTime = frameInfo.delay == 0 ? 100 : frameInfo.delay / this.speedRate;
     let count = this.count;
 
     setInterval(() => {
-        count >= (max - 1) ? count = 0 : count++;
+      count >= (max - 1) ? count = 0 : count++;
       this.count = count;
       this.currentImage = this.imageArr[count];
       let img: ImageBitmap = new ImageBitmap(this.currentImage);
       let frameStyle = this.styleInfo[count] as Frame;
 
       if (count === 0) {
-        this.context.clearRect(0, 0, px2vp(frameStyle.width), px2vp(frameStyle.height));
+        this.context.clearRect(0, 0, ceil(frameStyle.width), ceil(frameStyle.height));
         this.prevFrameData = null;
         if (frameStyle.disposeOp === 2) frameStyle.disposeOp = 1;
       }
@@ -81,14 +93,14 @@ export struct apng {
       if (this.prevFrame && this.prevFrame.disposeOp == 1) {
         this.context.clearRect(px2vp(this.prevFrame.left), px2vp(this.prevFrame.top), px2vp(this.prevFrame.width), px2vp(this.prevFrame.height));
       } else if (this.prevFrame && this.prevFrame.disposeOp == 2) {
-        this.context.putImageData(this.prevFrameData, px2vp(this.prevFrame.left), px2vp(this.prevFrame.top));
+        this.context.putImageData(this.prevFrameData, floor(this.prevFrame.left), floor(this.prevFrame.top));
       }
 
       let frame = frameStyle;
       this.prevFrame = frame;
       this.prevFrameData = null;
       if (frame.disposeOp == 2) {
-        this.prevFrameData = this.context.getImageData(px2vp(frame.left), px2vp(frame.top), px2vp(frame.width), px2vp(frame.height));
+        this.prevFrameData = this.context.getImageData(floor(frame.left), floor(frame.top), frame.width, frame.height);
       }
       if (frame.blendOp == 0) {
         this.context.clearRect(px2vp(frame.left), px2vp(frame.top), px2vp(frame.width), px2vp(frame.height));
@@ -104,7 +116,7 @@ export struct apng {
     if (!imageArr.length) {
       return;
     }
-    if (imageArr.length == 1) {
+    if (imageArr.length === 1) {
       this.currentImage = imageArr[0];
       return;
     }
@@ -125,9 +137,13 @@ export struct apng {
           const buffer = bufferArr.reduce((rst, item) => {
             return typedArrayConcat(rst, item)
           }, new ArrayBuffer(0))
-          const b = bufferUtil.from(buffer);
-          const pbase64 = `data:image/png;base64,${b.toString('base64')}`;
-          imagePixelArr.push(pbase64);
+          try {
+            const b = bufferUtil.from(buffer);
+            const pbase64 = `data:image/png;base64,${b.toString('base64')}`;
+            imagePixelArr.push(pbase64);
+          } catch (error) {
+            console.log('FG error ' + JSON.stringify(error));
+          }
 
           if (imagePixelArr.length === apng.frames.length) {
             this.imageArr = imagePixelArr;
