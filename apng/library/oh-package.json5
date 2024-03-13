@@ -10,7 +10,7 @@
   ],
   "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples",
   "name": "@ohos/apng",
-  "version": "1.0.0-rc.0",
+  "version": "1.0.0-rc.1",
   "description": "为微博等厂商打造的一款适配OH的APNG格式动画三方应用，调用后OH就可支持APNG格式图片的编解码",
   "main": "index.ets",
   "author": "ohos_tpc",

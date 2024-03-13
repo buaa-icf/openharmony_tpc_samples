@@ -1,8 +1,8 @@
 [
     {
         "Name": "apng-js",
-        "License": "MIT",
-        "License File": "https://github.com/davidmz/apng-js/blob/master/LICENSE.txt",
+        "License": "MIT License",
+        "License File": "LICENSE.txt",
         "Version Number": "1.1.2",
         "Owner": "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/davidmz/apng-js",
