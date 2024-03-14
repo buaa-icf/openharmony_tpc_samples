@@ -27,14 +27,17 @@ import { apng } from '@ohos/apng';
 struct Index {
   @State demoType: boolean = false;
   @State textContext: string = '';
+  @State speedRate: number = 1;
 
   @Builder
-  loadApng(){
-    Scroll(){
-      apng({
-        src: $r('app.media.stack'),
-        speedRate: 1
-      })
+  loadApng() {
+    Scroll() {
+      Column() {
+        apng({
+          src: $r('app.media.stack'),
+          speedRate: this.speedRate
+        })
+      }
     }
   }
 
@@ -57,14 +60,37 @@ struct Index {
         direction: FlexDirection.Column,
         alignItems: ItemAlign.Center
       }) {
-       Button(this.demoType ? (this.textContext = '取消加载') :(this.textContext = '点击加载apng'))
-         .margin({left:'33%', right:''})
-         .onClick(() => {
-           this.demoType = !this.demoType
-         })
-        if(this.demoType){
-           this.loadApng()
+        Button(this.demoType ? (this.textContext = '取消加载') : (this.textContext = '点击加载apng'))
+          .margin({ left: '33%', right: '' })
+          .onClick(() => {
+            this.demoType = !this.demoType
+            if (this.demoType) {
+              console.log('Time when image loading starts:' + new Date().getTime());
+            }
+          })
+        if (this.demoType) {
+          this.loadApng()
         }
+        Column() {
+          Text('当前速率：' + this.speedRate.toFixed(1))
+          Row() {
+            Slider({
+              value: this.speedRate,
+              min: 0.1,
+              max: 2,
+              step: 0.1,
+              style: SliderStyle.OutSet
+            })
+              .onChange((value: number, model: SliderChangeMode) => {
+                this.speedRate = value;
+              })
+          }
+          .width('100%')
+          .margin({ top: 10 })
+          .justifyContent(FlexAlign.SpaceBetween)
+          .visibility((!this.demoType ? Visibility.Visible : Visibility.None))
+        }
+        .margin({ top: this.demoType ? 0 : '60%' })
       }
     }
     .width('100%')

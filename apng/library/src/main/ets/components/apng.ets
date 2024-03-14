@@ -70,11 +70,13 @@ export struct apng {
   };
 
   loop(c: number, max: number) {
-    let frameInfo = this.styleInfo[this.count] as Frame;
-    if (this.speedRate < 0.1 || this.speedRate > 2) {
-      this.speedRate = defaultSpeed;
-    }
-    this.frameTime = frameInfo.delay == 0 ? 100 : frameInfo.delay / this.speedRate;
+    setTimeout(() => {
+      let frameInfo = this.styleInfo[this.count] as Frame;
+      if (this.speedRate < 0.1 || this.speedRate > 2) {
+        this.speedRate = defaultSpeed;
+      }
+      this.frameTime = frameInfo.delay == 0 ? 100 : frameInfo.delay / this.speedRate;
+    })
     let count = this.count;
 
     setInterval(() => {
