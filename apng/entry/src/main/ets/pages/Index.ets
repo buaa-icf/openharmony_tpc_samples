@@ -37,6 +37,12 @@ struct Index {
           src: $r('app.media.stack'),
           speedRate: this.speedRate
         })
+        apng({
+          src: {
+            url: 'https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/apng/entry/src/main/resources/base/media/stack.png'
+          },
+          speedRate: this.speedRate
+        })
       }
     }
   }

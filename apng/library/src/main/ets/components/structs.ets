@@ -40,3 +40,7 @@ export class Frame {
   dataParts: Uint8Array[] = [];
   imageBuffer: Uint8Array[] = [];
 }
+
+export class UrlModel {
+  url = '';
+}

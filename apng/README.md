@@ -29,12 +29,25 @@ OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装 OpenHarmo
         src: $r('app.media.stack'), //图片资源
         speedRate: 1 //动画倍速
     })
+  示例2：
+    apng({
+        src: {
+            url: 'https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/apng/entry/src/main/resources/base/media/stack.png' // 网络资源连接
+        }, 
+        speedRate: 1 //动画倍速
+    })
+ 
+  示例3：
+    apng({
+        src: this.srcUint8Array, // Uint8Array对象资源
+        speedRate: 1 //动画倍速
+    })
 ```
 ## 接口说明
 
-| **接口**                                                     | 参数                                                                    | 功能                     |
-|------------------------------------------------------------|-----------------------------------------------------------------------|------------------------|
-| apng(src: Resource, speedRate: number) | src：图片资源<br/>speedRate：动画倍速，默认值为1                                     | apng图片展示。              |
+| **接口**                                                     | 参数                                                                    | 功能        |
+|------------------------------------------------------------|-----------------------------------------------------------------------|-----------|
+| apng(src: Resource/Uint8Array/UrlModel, speedRate: number) | src：图片资源，支持本地资源，网络图片以及Uint8Array三种格式<br/>speedRate：动画倍速，默认值为1                   | apng图片展示。 |
 | GlobalContext.getContext().setObject(key: string,objectClass: Object)  | key：上下文对象对应的key,固定值 "MainContext"<br/>objectClass:上下文对象(this.context) | 在EntryAbility文件设置上下文对象 |
 
 ## 约束与限制
