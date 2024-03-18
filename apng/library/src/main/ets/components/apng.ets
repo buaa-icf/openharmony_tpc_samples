@@ -22,7 +22,8 @@
 
 import APngManager from "./manager";
 import bufferUtil from '@ohos.buffer';
-import { APNG, Frame } from "./structs";
+import { APNG, Frame, UrlModel } from "./structs";
+import url from '@ohos.url';
 
 function typedArrayConcat(buffer1: ArrayBuffer | Uint8Array, buffer2: ArrayBuffer | Uint8Array): ArrayBuffer {
   const u1 = new Uint8Array(buffer1);
@@ -48,7 +49,7 @@ const defaultSpeed = 1;
 
 @Component
 export struct apng {
-  @Prop src: Resource;
+  @Prop src: Resource | Uint8Array | UrlModel;
   @Prop speedRate: number = defaultSpeed;
   @State @Watch('imageArrWatchHandle') imageArr: Array<string> = [];
   @State currentImage: string = '';
@@ -57,6 +58,7 @@ export struct apng {
   scroller: Scroller = new Scroller();
   @State count: number = 0;
   @State frameTime: number = 100 / this.speedRate;
+  @State timeTaken: string = '加载中...';
   private settings: RenderingContextSettings = new RenderingContextSettings(true);
   private context: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.settings);
   private prevFrameData: ImageData | null = null;
@@ -109,6 +111,10 @@ export struct apng {
       }
       this.context.imageSmoothingEnabled = false;
       this.context.drawImage(img, px2vp(frame.left), px2vp(frame.top), px2vp(frame.width), px2vp(frame.height));
+      if (this.timeTaken) {
+        console.log('Time when the picture is displayed:' + new Date().getTime())
+      }
+      this.timeTaken = '';
     }, this.frameTime)
   }
 
@@ -129,39 +135,66 @@ export struct apng {
     const apngManager = new APngManager();
 
     if (this.src) {
-      const buffer = await apngManager.getResource(this.src);
-      const apng = apngManager.getAPNGInstance(buffer) as APNG;
-      if (apng.frames.length) {
-        let imagePixelArr: Array<string> = [];
-        this.styleInfo = apng.frames;
-        apng.frames.forEach((item) => {
-          const bufferArr = item.imageBuffer;
-          const buffer = bufferArr.reduce((rst, item) => {
-            return typedArrayConcat(rst, item)
-          }, new ArrayBuffer(0))
-          try {
-            const b = bufferUtil.from(buffer);
-            const pbase64 = `data:image/png;base64,${b.toString('base64')}`;
-            imagePixelArr.push(pbase64);
-          } catch (error) {
-            console.log('FG error ' + JSON.stringify(error));
+      let apng: APNG = new APNG();
+      if (this.src instanceof Uint8Array) {
+        apng = apngManager.getAPNGInstance(this.src as Uint8Array);
+      } else if ((this.src as UrlModel).url) {
+        APngManager.loadData((this.src as UrlModel).url, (data) => {
+          console.log('arrayBuffer length: ' + data.byteLength);
+          if (data) {
+            apng = apngManager.getAPNGInstance(new Uint8Array(data)) as APNG;
+          } else {
+            console.log(">>> data is empty or http request failed");
           }
-
-          if (imagePixelArr.length === apng.frames.length) {
-            this.imageArr = imagePixelArr;
-          }
+        }, (err) => {
+          this.timeTaken = '网络错误';
+          console.log(">>>> error message : " + err);
         })
+      } else if ((this.src as Resource).id) {
+        let buffer = await apngManager.getResource(this.src as Resource);
+        apng = apngManager.getAPNGInstance(buffer) as APNG;
       }
+      await this.getImageArr(apng);
+    }
+  }
+
+  async getImageArr(apng: APNG) {
+    if (apng.frames.length) {
+      let imagePixelArr: Array<string> = [];
+      this.styleInfo = apng.frames;
+      apng.frames.forEach((item) => {
+        const bufferArr = item.imageBuffer;
+        const buffer = bufferArr.reduce((rst, item) => {
+          return typedArrayConcat(rst, item)
+        }, new ArrayBuffer(0))
+        try {
+          const b = bufferUtil.from(buffer);
+          const pbase64 = `data:image/png;base64,${b.toString('base64')}`;
+          imagePixelArr.push(pbase64);
+        } catch (error) {
+          console.log('FG error ' + JSON.stringify(error));
+        }
+
+        if (imagePixelArr.length === apng.frames.length) {
+          this.imageArr = imagePixelArr;
+        }
+      })
     }
   }
 
   build() {
-    Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
+    if (!this.timeTaken) {
       Canvas(this.context)
         .width('100%')
         .height('100%')
+    } else {
+      Column() {
+        Text(this.timeTaken)
+      }
+      .width('100%')
+      .height('100%')
+      .alignItems(HorizontalAlign.Start)
     }
-    .width('100%')
-    .height('100%')
+
   }
 }
