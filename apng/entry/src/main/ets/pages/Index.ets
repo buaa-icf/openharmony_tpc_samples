@@ -39,7 +39,7 @@ struct Index {
         })
         apng({
           src: {
-            url: 'https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/apng/entry/src/main/resources/base/media/stack.png'
+            url: 'https://gitee.com/openharmony-tpc/openharmony_tpc_samples/raw/master/apng/entry/src/main/resources/base/media/stack.png'
           },
           speedRate: this.speedRate
         })

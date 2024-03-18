@@ -23,7 +23,6 @@
 import APngManager from "./manager";
 import bufferUtil from '@ohos.buffer';
 import { APNG, Frame, UrlModel } from "./structs";
-import url from '@ohos.url';
 
 function typedArrayConcat(buffer1: ArrayBuffer | Uint8Array, buffer2: ArrayBuffer | Uint8Array): ArrayBuffer {
   const u1 = new Uint8Array(buffer1);
@@ -46,6 +45,7 @@ export function ceil(n: number) {
 }
 
 const defaultSpeed = 1;
+const errText = '网络错误';
 
 @Component
 export struct apng {
@@ -63,9 +63,17 @@ export struct apng {
   private context: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.settings);
   private prevFrameData: ImageData | null = null;
   private prevFrame: Frame = new Frame();
+  @State canvasWidth: number = 0;
+  @State canvasHeight: number = 0;
+  @State aPngSetInterval: number = 0;
 
   aboutToAppear() {
     this.init();
+  }
+
+  aboutToDisappear(): void {
+    this.context.clearRect(px2vp(this.prevFrame.left), px2vp(this.prevFrame.top), px2vp(this.prevFrame.width), px2vp(this.prevFrame.height));
+    clearInterval(this.aPngSetInterval);
   }
 
   getAllImage: (allImages: Array<string>) => void = () => {
@@ -81,7 +89,7 @@ export struct apng {
     })
     let count = this.count;
 
-    setInterval(() => {
+    this.aPngSetInterval = setInterval(() => {
       count >= (max - 1) ? count = 0 : count++;
       this.count = count;
       this.currentImage = this.imageArr[count];
@@ -112,7 +120,9 @@ export struct apng {
       this.context.imageSmoothingEnabled = false;
       this.context.drawImage(img, px2vp(frame.left), px2vp(frame.top), px2vp(frame.width), px2vp(frame.height));
       if (this.timeTaken) {
-        console.log('Time when the picture is displayed:' + new Date().getTime())
+        this.canvasWidth = Number(px2vp(frame.width).toFixed(1));
+        this.canvasHeight = Number(px2vp(frame.height).toFixed(1));
+        console.log('Time when the picture is displayed:' + new Date().getTime());
       }
       this.timeTaken = '';
     }, this.frameTime)
@@ -143,22 +153,29 @@ export struct apng {
           console.log('arrayBuffer length: ' + data.byteLength);
           if (data) {
             apng = apngManager.getAPNGInstance(new Uint8Array(data)) as APNG;
+            if (!apng) {
+              this.timeTaken = errText;
+            }
+            this.getImageArr(apng);
           } else {
             console.log(">>> data is empty or http request failed");
           }
         }, (err) => {
-          this.timeTaken = '网络错误';
+          this.timeTaken = errText;
           console.log(">>>> error message : " + err);
         })
       } else if ((this.src as Resource).id) {
         let buffer = await apngManager.getResource(this.src as Resource);
         apng = apngManager.getAPNGInstance(buffer) as APNG;
       }
+      if ((this.src as UrlModel).url) {
+        return;
+      }
       await this.getImageArr(apng);
     }
   }
 
-  async getImageArr(apng: APNG) {
+  async getImageArr(apng: APNG): Promise<void> {
     if (apng.frames.length) {
       let imagePixelArr: Array<string> = [];
       this.styleInfo = apng.frames;
@@ -179,22 +196,22 @@ export struct apng {
           this.imageArr = imagePixelArr;
         }
       })
+    } else {
+      this.timeTaken = errText;
     }
   }
 
   build() {
-    if (!this.timeTaken) {
+    Column() {
       Canvas(this.context)
-        .width('100%')
-        .height('100%')
-    } else {
-      Column() {
-        Text(this.timeTaken)
-      }
-      .width('100%')
-      .height('100%')
-      .alignItems(HorizontalAlign.Start)
+        .width(this.canvasWidth)
+        .height(this.canvasHeight)
+        .visibility(!this.timeTaken ? Visibility.Visible : Visibility.None)
+      Text(this.timeTaken)
+        .visibility(this.timeTaken ? Visibility.Visible : Visibility.None)
     }
-
+    .width('100%')
+    .height('100%')
+    .alignItems(HorizontalAlign.Start)
   }
 }

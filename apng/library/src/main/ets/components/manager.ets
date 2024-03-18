@@ -43,7 +43,11 @@ class APngManager {
 
   getAPNGInstance(buffer: Uint8Array): APNG {
     let apng = {} as APNG;
-    apng = parseAPNG(buffer);
+    try {
+      apng = parseAPNG(buffer);
+    } catch (err) {
+      console.log('get parse apng err: ' + err);
+    }
     return apng;
   }
 
@@ -106,10 +110,10 @@ class APngManager {
     }
   }
 
-  static combineArrayBuffers(arrayBuffers: ArrayBuffer[]) :ArrayBuffer{
+  static combineArrayBuffers(arrayBuffers: ArrayBuffer[]): ArrayBuffer {
     // 计算多个ArrayBuffer的总字节大小
     let totalByteLength = 0;
-    for(const arrayBuffer of arrayBuffers){
+    for (const arrayBuffer of arrayBuffers) {
       totalByteLength += arrayBuffer.byteLength;
     }
     // 创建一个新的ArrayBuffer
@@ -118,9 +122,9 @@ class APngManager {
     const combinedUint8Buffer = new Uint8Array(combinedArrayBuffer);
 
     let offset = 0;
-    for(const attayBuffer of arrayBuffers){
+    for (const attayBuffer of arrayBuffers) {
       const sourceUint8Buffer = new Uint8Array(attayBuffer);
-      combinedUint8Buffer.set(sourceUint8Buffer,offset);
+      combinedUint8Buffer.set(sourceUint8Buffer, offset);
       offset += sourceUint8Buffer.length;
     }
     return combinedArrayBuffer;
