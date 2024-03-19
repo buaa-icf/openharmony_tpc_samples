@@ -1,0 +1,12 @@
+{
+  "license": "",
+  "devDependencies": {},
+  "author": "",
+  "name": "entry",
+  "description": "Please describe the basic information.",
+  "main": "",
+  "version": "3.0.0-beta2",
+  "dependencies": {
+    "@ohos/msgpack": "file:../library"
+  }
+}
