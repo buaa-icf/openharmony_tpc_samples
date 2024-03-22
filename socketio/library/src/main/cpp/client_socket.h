@@ -53,8 +53,9 @@ void CallJsNoParames(napi_env env, napi_value jsCb, void *context, void *data)
 {
     OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> 0 CallJsOpen ");
     napi_value undefined;
+    napi_value argv;
     // 调用 js 回调函数
-    napi_status status = napi_call_function(env, undefined, jsCb, 0, nullptr, &napi_result_void);
+    napi_status status = napi_call_function(env, undefined, jsCb, 0, &argv, &napi_result_void);
     OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> 1 CallJsOpen %{public}d", status);
 }
 

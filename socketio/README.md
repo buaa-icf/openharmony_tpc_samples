@@ -203,8 +203,8 @@ emit(name: string, message: string, on_emit_callback?: (emit_callback_json: stri
 ## 约束与限制
 在下述版本验证通过：
 
-- DevEco Studio 版本： 4.1 Canary(4.1.3.317)
-- OpenHarmony SDK:API11 (4.1.0.36)
+- DevEco Studio 版本： 4.1 Canary(4.1.3.600)
+- OpenHarmony SDK:API11 (4.1.0.65)
 
 ## 目录结构
 ````
