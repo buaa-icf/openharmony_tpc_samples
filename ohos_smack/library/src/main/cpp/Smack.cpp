@@ -34,11 +34,7 @@ using namespace gloox;
  * @param jidStr 当前登陆用的地址 例如：user@10.50.40.65/gloox
  * @param pwd  当前用户的登陆密码
  *
- * 注：当前的返回值没有添加
- *  返回-1 表示登陆失败
- *  返回 1 表示登陆成功
  */
-int g_userState = -1;
 static void DelayMsec(int msec)
 {
     clock_t now = clock();
@@ -46,6 +42,9 @@ static void DelayMsec(int msec)
         while (clock() - now < msec) {}
     }
 }
+
+static struct ThreadSafeLoginInfo g_threadInfo = {};
+static napi_threadsafe_function tsfn;
 
 Smack::Smack()
 {
@@ -137,7 +136,7 @@ MyMUCInvitationHandler *Smack::GetMUCInvitationHandler()
     return myMUCInvitationhandler;
 }
 
-bool Smack::Login()
+bool Smack::LoginInit()
 {
     // Registration
     m_reg = new Registration(j);
@@ -204,6 +203,10 @@ static void CallJs(napi_env env, napi_value jsCb, void *context, void *data)
 {
     LOGI("SMACK_TAG--------->smack CallJs0: %s:  %d", "CallJs: ", __LINE__);
     napi_value undefined;
+    napi_status undefinedStatus = napi_get_null(env, &undefined);
+    if (undefinedStatus != napi_ok) {
+        return;
+    }
     napi_value ret;
     
     napi_value argv[] = {nullptr, nullptr, nullptr};
@@ -236,6 +239,10 @@ static void CallJs_Sub(napi_env env, napi_value jsCb, void *context, void *data)
 {
     LOGI("SMACK_TAG---------> smack CallJs_Sub: %s:  %d", "CallJs: ", __LINE__);
     napi_value undefined;
+    napi_status undefinedStatus = napi_get_null(env, &undefined);
+    if (undefinedStatus != napi_ok) {
+        return;
+    }
     napi_value ret;
     napi_value argv;
 
@@ -256,6 +263,38 @@ static void CallJs_Sub(napi_env env, napi_value jsCb, void *context, void *data)
     }
     
     LOGI("SMACK_TAG---------> smack CallJs_Sub: %d:  %d", status, __LINE__);
+}
+
+static void CallJs_Login(napi_env env, napi_value jsCb, void *context, void *data)
+{
+    LOGI("SMACK_TAG--------->CallJs_Login:", "%{public}d", __LINE__);
+    napi_value undefined;
+    napi_status undefinedStatus = napi_get_null(env, &undefined);
+    if (undefinedStatus != napi_ok) {
+        LOGE("SMACK_TAG--------->CallJs_Login get globalThis fail");
+        return;
+    }
+
+    napi_value ret;
+
+    napi_value argv;
+
+    // 解析参数 data
+    ThreadSafeLoginInfo *arg = (ThreadSafeLoginInfo *)data;
+    if (arg == nullptr) {
+        LOGE("SMACK_TAG---------> [login.CallJs_Login]arg is null");
+        return;
+    }
+    napi_create_int32(env, arg->result, &argv);
+    // 调用 js 回调函数
+    napi_status status;
+    if (jsCb != nullptr && argv != nullptr) {
+        LOGI("SMACK_TAG--------->Login CallJs_Login3:  %{public}d", __LINE__);
+        status = napi_call_function(env, undefined, jsCb, 1, &argv, &ret);
+        LOGI("SMACK_TAG--------->Login CallJs_Login4:  %{public}d", __LINE__);
+    }
+    tsfn = nullptr;
+    LOGI("SMACK_TAG--------->Login CallJs_Login5: %d:  %d", status, __LINE__);
 }
 
 void Smack::RecvMsg(napi_env env, napi_value jsCb)
@@ -328,9 +367,13 @@ void Smack::UnregisterNonrosterPresenceCallback()
     tsfn_nonroster_presence = nullptr;
 }
 
-int Smack::Login(const std::string &jidStr, const std::string &pwd)
+void Smack::Login(napi_env env, const std::string &jidStr, const std::string &pwd, napi_value jsCb)
 {
-    g_userState = -1;
+    napi_value workName;
+    napi_create_string_utf8(env, "Login", NAPI_AUTO_LENGTH, &workName);
+    LOGI("SMACK_TAG--------->Login 1: %{public}d", __LINE__);
+    napi_create_threadsafe_function(env, jsCb, nullptr, workName, 0, 1, nullptr, nullptr, nullptr, CallJs_Login, &tsfn);
+    LOGI("SMACK_TAG--------->Login 2: %{public}d", __LINE__);
 
     JID jid(jidStr);
     m_jid = jid;
@@ -360,9 +403,6 @@ int Smack::Login(const std::string &jidStr, const std::string &pwd)
         std::thread t1(&Smack::Loop, this);
         t1.detach();
     }
-    DelayMsec(SMACK_DELAY_TM_40S);
-
-    return g_userState;
 }
 
 /**
@@ -720,8 +760,22 @@ void Smack::onStreamEvent(StreamEvent event)
 
 void Smack::handlePresence(const Presence &presence)
 {
-    g_userState = 1;
     LOGI("handlePresence roster: %s state: %d", presence.from().full().c_str(), presence.presence());
+
+    ThreadSafeLoginInfo *data = &g_threadInfo;
+    if (data == nullptr) {
+        LOGE("SMACK_TAG---------> [Login.handlePresence]data is null");
+        return;
+    }
+    data->result = presence.presence();
+    LOGI("SMACK_TAG--------->: %s:  %d", "handlePresence: ", __LINE__);
+    LOGI("SMACK_TAG---------> handlePresence 2 行号：", "%{public}d", __LINE__);
+    napi_acquire_threadsafe_function(tsfn);
+    LOGI("SMACK_TAG--------->: %s:  %d", "handlePresence: ", __LINE__);
+    // 调用主线程函数，传入 Data
+    napi_call_threadsafe_function(tsfn, data, napi_tsfn_blocking);
+    LOGI("SMACK_TAG--------->: %s:  %d", "handlePresence: ", __LINE__);
+
     presenceType = presence.presence();
 }
 

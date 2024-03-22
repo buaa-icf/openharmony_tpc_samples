@@ -12,6 +12,7 @@
 #ifndef OHOSXMPPCLIENT_REGISTRATION_H
 #define OHOSXMPPCLIENT_REGISTRATION_H
 
+#include <js_native_api_types.h>
 #include <src/connectionlistener.h>
 #include <src/loghandler.h>
 #include <src/client.h>
@@ -21,7 +22,8 @@ class registration : public gloox::ConnectionListener,
                      public gloox::LogHandler,
                      public gloox::RegistrationHandler {
 public:
-    int createAccounts(const std::string &ipStr, const std::string &nameStr, const std::string &pwdStr);
+    void createAccounts(const std::string &ipStr, const std::string &nameStr, const std::string &pwdStr, napi_env env,
+                        napi_value jsCb);
     virtual void onConnect();
     virtual void onDisconnect(gloox::ConnectionError e);
     virtual void onResourceBind(const std::string &resource);

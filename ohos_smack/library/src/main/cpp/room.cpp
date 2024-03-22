@@ -9,13 +9,13 @@
  * This software is distributed without any warranty.
  */
 
+#include "room.h"
 #include <string>
 #include <thread>
 #include <cstdio>
 #include <forward_list>
-
+#include "napiThreadsafeUtil.h"
 #include "log.h"
-#include "room.h"
 
 static constexpr const size_t CALL_JS_ARGV_SIZE = 2;
 
@@ -161,16 +161,18 @@ std::string room::nick()
     return m_room->nick();
 }
 
-std::string room::getRoomInfo()
+void room::getRoomInfo(napi_env env, napi_value jsCb)
 {
-    room_info = "";
-    LOGD("getRoomInfo handleMUCInfo");
-    m_room->getRoomInfo();
-    while (room_info.empty()) {
+    LOGI("SMACK_TAG--------->getRoomInfo 1: %{public}d", __LINE__);
+    
+    NapiCreateThreadsafe(env, jsCb, CallJsFun);
+    
+    if (!m_room) {
+        LOGE("SMACK_TAG--------->getRoomInfo 1: %{public}d", __LINE__);
+        return;
     }
-
-    LOGD("getRoomInfo handleMUCInfo 11 result:%s", room_info.c_str());
-    return room_info;
+    m_room->getRoomInfo();
+    LOGI("SMACK_TAG--------->getRoomInfo 1: %{public}d", __LINE__);
 }
 
 void room::kick(const std::string &nick, const std::string &reason)
@@ -564,12 +566,15 @@ void room::setRoomConfig(const std::string &config)
     }
 }
 
-std::string room::requestRoomConfig()
+void room::requestRoomConfig(napi_env env, napi_value jsCb)
 {
-    room_config = "";
+    NapiCreateThreadsafe(env, jsCb, CallJsFun);
+
+    if (!m_room) {
+        LOGI("SMACK_TAG--------->requestRoomConfig 1: %{public}d", __LINE__);
+        return;
+    }
     m_room->requestRoomConfig();
-    while (room_config.empty()) {}
-    return room_config;
 }
 
 const MUCListItemList &room::list() {}
@@ -737,6 +742,7 @@ struct ThreadSafeInfoMUCP {
 };
 
 // 实例化结构体
+static struct ThreadSafeRoomInfo g_threadRoomInfo = {};
 static struct ThreadSafeInfoRoom g_threadInfoRoom = {};
 static struct ThreadSafeInfoMUCP g_threadInfoMUCP = {};
 static napi_threadsafe_function tsfn_room;
@@ -746,6 +752,10 @@ static void CallJs(napi_env env, napi_value jsCb, void *context, void *data)
 {
     LOGI("SMACK_TAG--------->CallJs0: %s:  %d", "CallJs: ", __LINE__);
     napi_value undefined;
+    napi_status undefinedStatus = napi_get_null(env, &undefined);
+    if (undefinedStatus != napi_ok) {
+        return;
+    }
     napi_value ret;
 
     napi_value argv[] = {nullptr, nullptr};
@@ -776,6 +786,10 @@ static void CallJs_MUCP(napi_env env, napi_value jsCb, void *context, void *data
 {
     LOGI("SMACK_TAG--------->CallJs0: %s:  %d", "CallJs: ", __LINE__);
     napi_value undefined;
+    napi_status undefinedStatus = napi_get_null(env, &undefined);
+    if (undefinedStatus != napi_ok) {
+        return;
+    }
     napi_value ret;
 
     napi_value argv[] = {nullptr, nullptr};
@@ -908,7 +922,14 @@ void room::handleMUCInfo(MUCRoom * /* room */, int features, const std::string &
     // todo 房间信息获取
     LOGD("handleMUCInfo features: %d, name: %s, form xml: %s\n",
         features, name.c_str(), infoForm->tag()->xml().c_str());
-    room_info = infoForm->tag()->xml().c_str();
+
+    ThreadSafeRoomInfo *data = &g_threadRoomInfo;
+    if (data == nullptr) {
+        LOGE("SMACK_TAG---------> [room.handleMUCMessage]data is null");
+        return;
+    }
+    data->roomInfo = infoForm->tag()->xml().c_str();
+    NapiJsCallBack(data);
 }
 
 void room::handleMUCInviteDecline(MUCRoom * /* room */, const JID &invitee, const std::string &reason)
@@ -938,7 +959,14 @@ void room::handleMUCConfigForm(MUCRoom *room, const DataForm &form)
     LOGD("requestRoomConfig handleMUCConfigForm room:%s, title:%s, form:%s", room->name().c_str(),
          form.title().c_str(), form.filterString().c_str());
     LOGD("requestRoomConfig handleMUCConfigForm tag:%s", form.tag()->xml().c_str());
-    room_config = form.tag()->xml().c_str();
+
+    ThreadSafeRoomInfo *data = &g_threadRoomInfo;
+    if (data == nullptr) {
+        LOGE("SMACK_TAG---------> [room.handleMUCMessage]data is null");
+        return;
+    }
+    data->roomInfo = form.tag()->xml().c_str();
+    NapiJsCallBack(data);
 }
 
 void room::handleMUCItems(MUCRoom * /* room */, const Disco::ItemList &items)

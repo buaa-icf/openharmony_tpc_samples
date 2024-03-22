@@ -122,20 +122,22 @@ struct Group_chat_edit {
   }
 
   public getRoomConfig() {
-    this.roomConfig= JSON.parse(Smack.getRoomConfig()) as RoomConfig;
-    this.JidVal = this.roomConfig.whois == "anyone" ? "任何人" : "审核者"
-    this.switchAllowpm(this.roomConfig.allowpm)
-    this.roomName = this.roomConfig.roomname
-    this.roomDesc = this.roomConfig.roomdesc
-    this.roomMaxusers = this.roomConfig.maxusers
-    this.roomPassword = this.roomConfig.roomsecret?this.roomConfig.roomsecret:""
-    this.passwordprotectedroom = this.roomConfig.passwordprotectedroom
-    console.info('passwordprotectedroom-----------//' + this.passwordprotectedroom)
-    this.roomAdmins = this.roomConfig.roomadmins
-    this.roomOwners = this.roomConfig.roomowners
-    this.roomPresencebroadcast = this.roomConfig.presencebroadcast
-    console.info('Checkbox-----------//' + JSON.stringify(this.roomPresencebroadcast))
-    console.info('roomConfig-----------//' + JSON.stringify(this.roomConfig))
+    Smack.getRoomConfig((result: string) => {
+      this.roomConfig= JSON.parse(result) as RoomConfig;
+      this.JidVal = this.roomConfig.whois == "anyone" ? "任何人" : "审核者"
+      this.switchAllowpm(this.roomConfig.allowpm)
+      this.roomName = this.roomConfig.roomname
+      this.roomDesc = this.roomConfig.roomdesc
+      this.roomMaxusers = this.roomConfig.maxusers
+      this.roomPassword = this.roomConfig.roomsecret?this.roomConfig.roomsecret:""
+      this.passwordprotectedroom = this.roomConfig.passwordprotectedroom
+      console.info('passwordprotectedroom-----------//' + this.passwordprotectedroom)
+      this.roomAdmins = this.roomConfig.roomadmins
+      this.roomOwners = this.roomConfig.roomowners
+      this.roomPresencebroadcast = this.roomConfig.presencebroadcast
+      console.info('Checkbox-----------//' + JSON.stringify(this.roomPresencebroadcast))
+      console.info('roomConfig-----------//' + JSON.stringify(this.roomConfig))
+    });
   }
 
   //todo 修改房间配置

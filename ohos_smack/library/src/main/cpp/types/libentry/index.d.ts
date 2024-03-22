@@ -11,7 +11,8 @@
 
 export const send: (jidToStr: string, msg: string) => string;
 
-export const registers: (ip: string, name: string, pwd: string) => number;
+export const registers: (ip: string, name: string, pwd: string, callBack: any) => number;
+// export const registers2: (ip: string, name: string, pwd: string, callBack: any) => number;
 
 export const changpwd: (pwd: string) => string;
 
@@ -25,7 +26,7 @@ export const getFriendList: () => string;
 
 export const changePresence: (jidStr: String, status: string) => string;
 
-export const login: (jidStr: string, pwd: string) => number;
+export const login: (jidStr: string, pwd: string, callBack: any) => number;
 
 export const loginout: () => number;
 
@@ -125,7 +126,7 @@ export const invite: (jid: string, reason: string) => number;
 /**
  *
  */
-export const requestRoomConfig: () => string;
+export const requestRoomConfig: (callBack: any) => string;
 /**
  *
  */
@@ -145,7 +146,7 @@ export const registerInvitationListener: ( register: any) => number;
 /**
  *
  */
-export const getRoomInfo: () => string;
+export const getRoomInfo: (callBack: any) => string;
 /**
  * room：房间名   domain：    serviceName：     password：房间密码
  */
@@ -157,7 +158,7 @@ export const setPassword: (password: string) => number;
 /**
  *  config：配置项
  */
-export const setRoomConfig: (config: string) => number;
+export const setRoomConfig: (config: string) => string;
 /**
  * name：昵称
  */

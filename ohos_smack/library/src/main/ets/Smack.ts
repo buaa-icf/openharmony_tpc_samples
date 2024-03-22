@@ -21,8 +21,8 @@ export class Smack {
      * @param name
      * @param password
      */
-    public static Login(name: string, password: string): number{
-        let value = testNapi.login(name, password)
+    public static Login(name: string, password: string, callBack: any): number{
+        let value = testNapi.login(name, password, callBack)
         return value
     }
 
@@ -84,8 +84,8 @@ export class Smack {
      * @param name
      * @param password
      */
-    public static registers(ip: string, name: string, password: string): number{
-        return testNapi.registers(ip, name, password);
+    public static registers(ip: string, name: string, password: string, callBack: any): void{
+        testNapi.registers(ip, name, password, callBack);
     }
 
     /**
@@ -304,125 +304,131 @@ export class Smack {
         return value
     }
 
-    public static parseXML(): string {
-        var xml = testNapi.getRoomInfo()
-        let str = this.xml(xml)
-        let jsonObj = JSON.parse(str)
+    public static parseXML(callBack: any): void {
         let info = new RoomInfo()
-        for (var i = 0; i < jsonObj._elements[0]._elements.length; i++) {
-            let obj = jsonObj._elements[0]._elements[i]
-            if (obj._elements[0]._elements != undefined) {
-                switch (obj._attributes.var) {
-                    case "muc#roominfo_description":
-                        info.description = obj._elements[0]._elements[0]._text
-                        break;
-                    case "muc#roominfo_subject":
-                        info.subject = obj._elements[0]._elements[0]._text
-                        break;
-                    case "muc#roominfo_occupants":
-                        info.occupants = obj._elements[0]._elements[0]._text
-                        break;
-                    case "x-muc#roominfo_creationdate":
-                        info.creationdate = obj._elements[0]._elements[0]._text
-                        break;
+        testNapi.getRoomInfo((xml: string)=>{
+            let str = this.xml(xml)
+            let jsonObj = JSON.parse(str)
+            for (var i = 0; i < jsonObj._elements[0]._elements.length; i++) {
+                let obj = jsonObj._elements[0]._elements[i]
+                if (obj._elements[0]._elements != undefined) {
+                    switch (obj._attributes.var) {
+                        case "muc#roominfo_description":
+                            info.description = obj._elements[0]._elements[0]._text
+                            break;
+                        case "muc#roominfo_subject":
+                            info.subject = obj._elements[0]._elements[0]._text
+                            break;
+                        case "muc#roominfo_occupants":
+                            info.occupants = obj._elements[0]._elements[0]._text
+                            break;
+                        case "x-muc#roominfo_creationdate":
+                            info.creationdate = obj._elements[0]._elements[0]._text
+                            break;
+                    }
                 }
             }
-        }
-        console.info('ssss-' + JSON.stringify(info))
-        return JSON.stringify(info);
+            callBack(JSON.stringify(info));
+            console.info('ssss-' + JSON.stringify(info))
+        })
+
+        // return JSON.stringify(info);
     }
 
-    public static getRoomConfig(): string {
-        var xml = testNapi.requestRoomConfig()
-        let config = new RoomConfig()
-        let str = this.xml(xml)
-        let jsonObj = JSON.parse(str)
-        for (var i = 0; i < jsonObj._elements[0]._elements.length; i++) {
-            let obj = jsonObj._elements[0]._elements[i]
-            if (obj._name == 'field' && obj._attributes != undefined && obj._elements != undefined) {
-                switch (obj._attributes.var) {
-                    case "muc#roomconfig_roomname":
-                        config.roomname = obj._elements[0]._elements[0]._text
-                        break;
-                    case "muc#roomconfig_roomdesc":
-                        config.roomdesc = obj._elements[0]._elements[0]._text
-                        break;
-                    case "muc#roomconfig_changesubject":
-                        config.changesubject = obj._elements[0]._elements[0]._text
-                        break;
-                    case "muc#roomconfig_maxusers":
-                        for (let j = 0;j < obj._elements.length; j++) {
-                            if (obj._elements[j]._name == "value") {
-                                config.maxusers = obj._elements[j]._elements[0]._text
+    public static getRoomConfig(callBack: any): void {
+        testNapi.requestRoomConfig((xml: string) => {
+            let config = new RoomConfig()
+            let str = this.xml(xml)
+            let jsonObj = JSON.parse(str)
+            for (var i = 0; i < jsonObj._elements[0]._elements.length; i++) {
+                let obj = jsonObj._elements[0]._elements[i]
+                if (obj._name == 'field' && obj._attributes != undefined && obj._elements != undefined) {
+                    switch (obj._attributes.var) {
+                        case "muc#roomconfig_roomname":
+                            config.roomname = obj._elements[0]._elements[0]._text
+                            break;
+                        case "muc#roomconfig_roomdesc":
+                            config.roomdesc = obj._elements[0]._elements[0]._text
+                            break;
+                        case "muc#roomconfig_changesubject":
+                            config.changesubject = obj._elements[0]._elements[0]._text
+                            break;
+                        case "muc#roomconfig_maxusers":
+                            for (let j = 0;j < obj._elements.length; j++) {
+                                if (obj._elements[j]._name == "value") {
+                                    config.maxusers = obj._elements[j]._elements[0]._text
+                                }
                             }
-                        }
-                        break;
-                    case "muc#roomconfig_presencebroadcast":
-                        config.presencebroadcast = []
-                        for (let j = 0;j < obj._elements.length; j++) {
-                            if (obj._elements[j]._name == "value") {
-                                config.presencebroadcast.push(obj._elements[j]._elements[0]._text)
+                            break;
+                        case "muc#roomconfig_presencebroadcast":
+                            config.presencebroadcast = []
+                            for (let j = 0;j < obj._elements.length; j++) {
+                                if (obj._elements[j]._name == "value") {
+                                    config.presencebroadcast.push(obj._elements[j]._elements[0]._text)
+                                }
                             }
-                        }
-                        break;
-                    case "muc#roomconfig_publicroom":
-                        config.publicroom = obj._elements[0]._elements[0]._text
-                        break;
-                    case "muc#roomconfig_persistentroom":
-                        config.persistentroom = obj._elements[0]._elements[0]._text
-                        break;
-                    case "muc#roomconfig_moderatedroom":
-                        config.moderatedroom = obj._elements[0]._elements[0]._text
-                        break;
-                    case "muc#roomconfig_membersonly":
-                        config.membersonly = obj._elements[0]._elements[0]._text
-                        break;
-                    case "muc#roomconfig_allowinvites":
-                        config.allowinvites = obj._elements[0]._elements[0]._text
-                        break;
-                    case "muc#roomconfig_passwordprotectedroom":
-                        config.passwordprotectedroom = obj._elements[0]._elements[0]._text
-                        break;
-                    case "muc#roomconfig_roomsecret":
-                        config.roomsecret = obj._elements[0]._elements[0]._text
-                        break;
-                    case "muc#roomconfig_whois":
-                        for (let j = 0;j < obj._elements.length; j++) {
-                            if (obj._elements[j]._name == "value") {
-                                config.whois = obj._elements[j]._elements[0]._text
+                            break;
+                        case "muc#roomconfig_publicroom":
+                            config.publicroom = obj._elements[0]._elements[0]._text
+                            break;
+                        case "muc#roomconfig_persistentroom":
+                            config.persistentroom = obj._elements[0]._elements[0]._text
+                            break;
+                        case "muc#roomconfig_moderatedroom":
+                            config.moderatedroom = obj._elements[0]._elements[0]._text
+                            break;
+                        case "muc#roomconfig_membersonly":
+                            config.membersonly = obj._elements[0]._elements[0]._text
+                            break;
+                        case "muc#roomconfig_allowinvites":
+                            config.allowinvites = obj._elements[0]._elements[0]._text
+                            break;
+                        case "muc#roomconfig_passwordprotectedroom":
+                            config.passwordprotectedroom = obj._elements[0]._elements[0]._text
+                            break;
+                        case "muc#roomconfig_roomsecret":
+                            config.roomsecret = obj._elements[0]._elements[0]._text
+                            break;
+                        case "muc#roomconfig_whois":
+                            for (let j = 0;j < obj._elements.length; j++) {
+                                if (obj._elements[j]._name == "value") {
+                                    config.whois = obj._elements[j]._elements[0]._text
+                                }
                             }
-                        }
 
-                        break;
-                    case "muc#roomconfig_allowpm":
-                        for (let j = 0;j < obj._elements.length; j++) {
-                            if (obj._elements[j]._name == "value") {
-                                config.allowpm = obj._elements[j]._elements[0]._text
+                            break;
+                        case "muc#roomconfig_allowpm":
+                            for (let j = 0;j < obj._elements.length; j++) {
+                                if (obj._elements[j]._name == "value") {
+                                    config.allowpm = obj._elements[j]._elements[0]._text
+                                }
                             }
-                        }
-                        break;
-                    case "muc#roomconfig_enablelogging":
-                        config.enablelogging = obj._elements[0]._elements[0]._text
-                        break;
-                    case "x-muc#roomconfig_reservednick":
-                        config.reservednick = obj._elements[0]._elements[0]._text
-                        break;
-                    case "x-muc#roomconfig_canchangenick":
-                        config.canchangenick = obj._elements[0]._elements[0]._text
-                        break;
-                    case "x-muc#roomconfig_registration":
-                        config.registration = obj._elements[0]._elements[0]._text
-                        break;
-                    case "muc#roomconfig_roomadmins":
-                        config.roomadmins = obj._elements[0]._elements[0]._text
-                        break;
-                    case "muc#roomconfig_roomowners":
-                        config.roomowners = obj._elements[0]._elements[0]._text
-                        break;
+                            break;
+                        case "muc#roomconfig_enablelogging":
+                            config.enablelogging = obj._elements[0]._elements[0]._text
+                            break;
+                        case "x-muc#roomconfig_reservednick":
+                            config.reservednick = obj._elements[0]._elements[0]._text
+                            break;
+                        case "x-muc#roomconfig_canchangenick":
+                            config.canchangenick = obj._elements[0]._elements[0]._text
+                            break;
+                        case "x-muc#roomconfig_registration":
+                            config.registration = obj._elements[0]._elements[0]._text
+                            break;
+                        case "muc#roomconfig_roomadmins":
+                            config.roomadmins = obj._elements[0]._elements[0]._text
+                            break;
+                        case "muc#roomconfig_roomowners":
+                            config.roomowners = obj._elements[0]._elements[0]._text
+                            break;
+                    }
                 }
             }
-        }
-        return JSON.stringify(config);
+            callBack(config);
+        })
+
+        // return JSON.stringify(config);
     }
 
     public static xml(ml: string): string {
@@ -445,8 +451,8 @@ export class Smack {
         return result
     }
 
-    public static requestRoomConfig(): string{
-        let value = testNapi.requestRoomConfig()
+    public static requestRoomConfig(callBack: any): string{
+        let value = testNapi.requestRoomConfig(callBack)
         return value
     }
 
@@ -458,8 +464,8 @@ export class Smack {
         return str
     }
 
-    public static getRoomInfo(): string{
-        let value = testNapi.getRoomInfo()
+    public static getRoomInfo(callBack: any): string{
+        let value = testNapi.getRoomInfo(callBack)
         return value
     }
 
@@ -501,7 +507,7 @@ export class Smack {
         return value
     }
 
-    public static setRoomConfig(config: string): number{
+    public static setRoomConfig(config: string): string{
         console.info('setRoomConfig start = ' + config)
         let configInfo: RoomConfig = JSON.parse(config)
         let configStr = JSON.stringify(configInfo.presencebroadcast)
