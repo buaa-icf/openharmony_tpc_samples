@@ -14,10 +14,10 @@
   "name": "@ohos/jackrabbit",
   "description": "Jackrabbit is a very opinionated abstraction built on top of amqplib focused on usability and implementing several messaging patterns on RabbitMQ.",
   "main": "./src/main/ets/jackrabbit.js",
-  "version": "2.0.0",
+  "version": "2.0.1-rc.0",
   "dependencies": {
     "lodash.assignin": "4.x",
-    "@ohos/amqplib": "file:../amqplib",
+    "@ohos/amqplib": "1.0.0",
     "@ohos/node-polyfill": "1.0.0"
   }
 }
