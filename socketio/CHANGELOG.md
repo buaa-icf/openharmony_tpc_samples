@@ -1,8 +1,6 @@
 ## v2.0.1-rc.0
 
 - 修复socket.io接口connect调用crash问题
-- DevEco Studio 版本： 4.1 Canary(4.1.3.600)
-- OpenHarmony SDK:API11 (4.1.0.65)
 
 ## v2.0.0
 
