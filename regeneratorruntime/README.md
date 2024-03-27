@@ -8,6 +8,7 @@ regeneratorRuntime是 ES6 提供的一种异步编程解决方案，语法行为
 
 ```
  ohpm install regenerator-runtime
+ ohpm install @types/regenerator-runtime  // import regenerator-runtime 的时候语法报错, 其原因是regenerator-runtime包内不含类型声明, 需要 @types/regenerator-runtime 下载这个包的声明文件, 从而解决语法的报错.
 ```
 
 OpenHarmony ohpm环境配置等更多内容，请参考[如何安装OpenHarmony ohpm](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
