@@ -11,6 +11,7 @@ Underscore是JavaScript的实用程序库，它在不扩展任何核心JavaScrip
 
 ````
 ohpm install underscore@1.13.2
+ohpm install @types/underscore  //import underscore 的时候语法报错。其原因是underscore包内不含类型声明，需要 @types/underscore 下载这个包的声明文件，从而解决语法的报错。
 ````
 
 OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
