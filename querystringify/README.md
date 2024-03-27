@@ -8,6 +8,7 @@
 
 ```shell
 ohpm install querystringify
+ohpm install @types/querystringify  // import querystringify 的时候语法报错, 其原因是querystringify包内不含类型声明, 需要 @types/querystringify 下载这个包的声明文件, 从而解决语法的报错.
 ```
 
 OpenHarmony
