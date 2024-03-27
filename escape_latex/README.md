@@ -8,6 +8,7 @@
 
 ```shell
 ohpm  install escape-latex@1.2.0
+ohpm  install @types/escape-latex  // import escape-latex 的时候语法报错, 其原因是escape-latex包内不含类型声明, 需要 @types/escape-latex 下载这个包的声明文件, 从而解决语法的报错.
 ```
 
 OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
