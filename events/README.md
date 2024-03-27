@@ -6,6 +6,7 @@ events 是一个提供事件监听的功能库
 ## 下载安装:
 ```bash
 ohpm install events@3.3.0
+ohpm install @types/events  // import events 的时候语法报错, 其原因是events包内不含类型声明, 需要 @types/events 下载这个包的声明文件, 从而解决语法的报错.
 ```
 
 ## 使用说明
