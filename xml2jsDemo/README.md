@@ -14,6 +14,8 @@
 
 ```
   ohpm install xml2js@0.4.23
+  ohpm install @types/xml2js --save-dev //import xml2js 的时候语法报错.其原因是xml2js包内不含类型声明,需要 @types/xml2js 下载这个包的声明文件,从而解决语法的报错.
+
 ```
 
 2点需要补充修改点
