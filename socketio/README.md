@@ -203,6 +203,7 @@ emit(name: string, message: string, on_emit_callback?: (emit_callback_json: stri
 ## 约束与限制
 在下述版本验证通过：
 
+- IDE：DevEco Studio 4.1.3.532; SDK: 4.1.0.67(SP3)。
 - IDE：DevEco Studio Next ,Developer Beta1(5.0.3.121); SDK:API12 (5.0.0.16)。
 
 ## 目录结构
