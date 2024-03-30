@@ -7,6 +7,7 @@
 ## 下载安装
 ```shell
 ohpm install caverphone 
+ohpm install @types/caverphone@1.0.0  // import caverphone 的时候语法报错, 其原因是caverphone包内不含类型声明, 需要 @types/caverphone 下载这个包的声明文件, 从而解决语法的报错. 
 ```
 
 OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)

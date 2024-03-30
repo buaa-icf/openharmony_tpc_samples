@@ -26,7 +26,7 @@ struct Index {
           .height('100px')
           .onClick(() => {
             try {
-              let result: caverPhone = caverPhone(null);
+              let result: string = caverPhone(null);
               hilog.info(0x0000, 'caverPhone', '%{public}s', result)
             } catch (error) {
               hilog.info(0x0000, 'caverPhone', '%{public}s', "error: " + error)
@@ -38,7 +38,7 @@ struct Index {
           .height('100px')
           .onClick(() => {
             try {
-              let result: caverPhone = caverPhone(undefined);
+              let result: string = caverPhone(undefined);
               hilog.info(0x0000, 'caverPhone', '%{public}s', result)
             } catch (error) {
               hilog.info(0x0000, 'caverPhone', '%{public}s', "error: " + error)
@@ -49,7 +49,7 @@ struct Index {
           .width('80%')
           .height('100px')
           .onClick(() => {
-            let result: caverPhone = caverPhone('');
+            let result: string = caverPhone('');
             hilog.info(0x0000, 'caverPhone', '%{public}s', result)
           })
 
@@ -57,7 +57,7 @@ struct Index {
           .width('80%')
           .height('100px')
           .onClick(() => {
-            let result: caverPhone = caverPhone('你好啊');
+            let result: string = caverPhone('你好啊');
             hilog.info(0x0000, 'caverPhone', '%{public}s', result)
           })
 
@@ -65,7 +65,7 @@ struct Index {
           .width('80%')
           .height('100px')
           .onClick(() => {
-            let result: caverPhone = caverPhone('Cailean');
+            let result: string = caverPhone('Cailean');
             hilog.info(0x0000, 'caverPhone', '%{public}s', result)
           })
       }
