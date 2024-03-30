@@ -169,7 +169,7 @@ export async function snappyCompress(path:string, newfile:string) {
   let newpath = path + '/' + newfile
   let buf = getFileBuf(newpath)
   /* 压缩文件*/
-  let compressed:string = snappyJS.compress(buf)
+  let compressed:ArrayBuffer = snappyJS.compress(buf)
   let fd = fileio.openSync(path + '/' + newfile + '.sz', 0o102, 0o666);
   let num = await fileio.write(fd, compressed);
   fileio.closeSync(fd);
@@ -179,7 +179,7 @@ export async function snappyCompress(path:string, newfile:string) {
 export async function snappyUncompress(path:string, newfolder:string, newfile:string, newfile1:string) {
   let newpath = path + '/' + newfolder + '/' + newfile + '.sz'
   let buf = getFileBuf(newpath)
-  let uncompressed:string = snappyJS.uncompress(buf)
+  let uncompressed:ArrayBuffer = snappyJS.uncompress(buf)
   let fd = fileio.openSync(path + '/' + newfile1, 0o102, 0o666);
   let num = await fileio.write(fd, uncompressed);
   fileio.closeSync(fd);
