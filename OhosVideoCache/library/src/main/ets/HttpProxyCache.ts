@@ -135,10 +135,6 @@ export default class HttpProxyCache extends ProxyCache {
 
           onDataReceive(data: ArrayBuffer) {
             ctx.receiveSize += data.byteLength;
-            if (ctx.stopped) {
-              newSourceNoCache.close();
-              return;
-            }
             let msg: socket.TCPSendOptions = {
               data: data
             }
