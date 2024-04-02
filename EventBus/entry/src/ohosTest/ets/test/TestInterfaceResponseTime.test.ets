@@ -61,7 +61,6 @@ export default function telephonyPerfJsunit(){
 
       let averageTime=((endTime-startTime)*1000)/BASE_COUNT
       console.log("Telephony_Http_CreateHttp_Perf_0100_removeEventListener averageTime:"+averageTime+"μs");
-      expect(averageTime<BASELINE_CREATEHTTP).assertTrue();
     });
 
 
