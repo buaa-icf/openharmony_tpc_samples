@@ -10,6 +10,8 @@
 
 ```
 ohpm i eventbusjs
+ohpm install @types/eventbusjs --save-dev //import eventbusjs 的时候语法报错。其原因是eventbusjs包内不含类型声明，需要 @types/eventbusjs 下载这个包的声明文件，从而解决语法的报错。
+
 ```
 
 使用组件在您的代码中:
