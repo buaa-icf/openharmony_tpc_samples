@@ -42,7 +42,7 @@ class Smack : public gloox::PresenceHandler,
               public gloox::SubscriptionHandler {
 public:
     Smack();
-    int Login(const std::string &jidStr, const std::string &pwd);
+    void Login(napi_env env, const std::string &jidStr, const std::string &pwd, napi_value jsCbconst);
     void RecvMsg(napi_env env, napi_value jsCb);
     void RecvSubscriptionRequestListener(napi_env env, napi_value jsCb);
     void RegisterNonrosterPresenceCallback(napi_env env, napi_value jsCb);
@@ -72,7 +72,7 @@ public:
     std::string Password();
     std::string Resource();
     void SetResource(const std::string &resource);
-    bool Login();
+    bool LoginInit();
     void ReceiveFriends(const std::string &jidStr, const std::string &groupName, const std::string &hello);
     void RejectFriends(const std::string &jidStr, const std::string &reason);
     std::string Server();
@@ -149,5 +149,9 @@ struct ThreadSafeInfoRecvMsg {
 
 struct ThreadSafeInfoSub {
     std::string result;
+};
+
+struct ThreadSafeLoginInfo {
+    int result;
 };
 #endif // ohosXmppClient_Smack_H

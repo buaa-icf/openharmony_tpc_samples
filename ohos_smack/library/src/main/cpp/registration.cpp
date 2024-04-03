@@ -9,7 +9,9 @@
  * This software is distributed without any warranty.
  */
 
-#include <thread>
+#include <js_native_api.h>
+#include <node_api.h>
+#include <node_api_types.h>
 #include <src/base64.h>
 #include <src/message.h>
 #include <unistd.h>
@@ -21,11 +23,14 @@
 
 using namespace gloox;
 constexpr int REG_DELAY_TM_40S = (5 * 1000 * 500); // 延时约40秒
-/*
-*  返回-1 表示注册失败
-*  返回 1 表示注册成功
-*/
-int g_userRegState = -1;
+
+struct ThreadSafeInfo {
+    int result;
+};
+static constexpr const size_t CALL_JS_ARGV_SIZE = 1;
+static struct ThreadSafeInfo g_threadInfo = {};
+static napi_threadsafe_function tsfn;
+
 static void DelayMsecs(int msec)
 {
     clock_t now = clock();
@@ -34,9 +39,49 @@ static void DelayMsecs(int msec)
     }
 }
 
-int registration::createAccounts(const std::string &ipStr, const std::string &nameStr, const std::string &pwdStr)
+static void CallJs(napi_env env, napi_value jsCb, void *context, void *data)
 {
-    g_userRegState = -1;
+    LOGI("SMACK_TAG--------->CallJS:", "%{public}d", __LINE__);
+    napi_value undefined;
+    napi_status undefinedStatus = napi_get_null(env, &undefined);
+    if (undefinedStatus != napi_ok) {
+        LOGE("SMACK_TAG--------->CallJS get globalThis fail");
+        return;
+    }
+
+    napi_value ret;
+
+    napi_value argv;
+
+    // 解析参数 data
+    ThreadSafeInfo *arg = (ThreadSafeInfo *)data;
+    if (arg == nullptr) {
+        LOGE("SMACK_TAG---------> [createAccounts.CallJs]arg is null");
+        return;
+    }
+    napi_create_int32(env, arg->result, &argv);
+    // 调用 js 回调函数
+    napi_status status;
+    if (jsCb != nullptr && argv != nullptr) {
+        LOGI("SMACK_TAG--------->createAccounts CallJs3:  %{public}d", __LINE__);
+        status = napi_call_function(env, undefined, jsCb, CALL_JS_ARGV_SIZE, &argv, &ret);
+        LOGI("SMACK_TAG--------->createAccounts CallJs4:  %{public}d", __LINE__);
+    }
+    tsfn = nullptr;
+    LOGI("SMACK_TAG--------->createAccounts CallJs5: %d:  %d", status, __LINE__);
+}
+
+void registration::createAccounts(const std::string &ipStr, const std::string &nameStr, const std::string &pwdStr,
+                                  napi_env env, napi_value jsCb)
+{
+    LOGI("SMACK_TAG--------->createAccounts: %{public}d", __LINE__);
+    
+    napi_value workName;
+    napi_create_string_utf8(env, "createAccounts", NAPI_AUTO_LENGTH, &workName);
+    LOGI("SMACK_TAG--------->createAccounts 1: %{public}d", __LINE__);
+    napi_create_threadsafe_function(env, jsCb, nullptr, workName, 0, 1, nullptr, nullptr, nullptr, CallJs, &tsfn);
+    LOGI("SMACK_TAG--------->createAccounts 2: %{public}d", __LINE__);
+    
     name = nameStr;
     pwd = pwdStr;
     j = new Client(ipStr);
@@ -53,9 +98,6 @@ int registration::createAccounts(const std::string &ipStr, const std::string &na
     j->disco()->addFeature(XMLNS_CHAT_STATES);
 
     j->connect();
-    DelayMsecs(REG_DELAY_TM_40S);
-
-    return g_userRegState;
 }
 
 void registration::onConnect()
@@ -67,7 +109,7 @@ void registration::onConnect()
 
 void registration::onDisconnect(ConnectionError e)
 {
-    LOGI("onDisconnect: %d\n", e);
+    LOGI("onDisconnect: %{public}d\n", e);
     if (e == ConnAuthenticationFailed)
         LOGD("auth failed. reason: %d\n", j->authError());
 }
@@ -122,8 +164,19 @@ void registration::handleRegistrationFields(const JID &from, int fields, std::st
 
 void registration::handleRegistrationResult(const JID & /* from */, RegistrationResult result)
 {
-    LOGI("handleRegistrationResult", "handleRegistrationResult result: %d", result);
-    g_userRegState = result;
+    LOGI("SMACK_TAG---------->", "handleRegistrationResult result: %{public}d", result);
+
+    ThreadSafeInfo *data = &g_threadInfo;
+    if (data == nullptr) {
+        LOGE("SMACK_TAG---------> [registration.handleRegistrationResult]data is null");
+        return;
+    }
+    data->result = result;
+    napi_acquire_threadsafe_function(tsfn);
+    LOGI("SMACK_TAG--------->: %s:  %d", "handleRegistrationResult: ", __LINE__);
+    // 调用主线程函数，传入 Data
+    napi_call_threadsafe_function(tsfn, data, napi_tsfn_blocking);
+    LOGI("SMACK_TAG--------->: %s:  %d", "handleRegistrationResult: ", __LINE__);
     j->disconnect();
 }
 

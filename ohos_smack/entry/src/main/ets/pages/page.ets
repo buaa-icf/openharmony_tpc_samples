@@ -41,25 +41,11 @@ struct page {
     Row() {
       Scroll() {
         Column() {
-          Item({
-            text: '登录',
-            click: () => {
-              Smack.Login('test@'+Constant.HOST_IP+Constant.HOST_RES, '123');
-
-            }
-          })
 
           Item({
             text: '发送单人消息',
             click: () => {
               Smack.send('test3'+this.service, 'hello from test2 abc');
-            }
-          })
-
-          Item({
-            text: '注册',
-            click: () => {
-              Smack.registers(Constant.HOST_IP,"test2", "123456");
             }
           })
 
@@ -225,13 +211,6 @@ struct page {
           })
 
           Item({
-            text: '解析xml',
-            click: () => {
-              Smack.parseXML();
-            }
-          })
-
-          Item({
             text: '获取全部群聊成员',
             click: () => {
               let number:ESObject = Smack.getRoomItems();
@@ -269,36 +248,10 @@ struct page {
           })
 
           Item({
-            text: '获取加入房间的房间信息',
-            click: () => {
-              let info:ESObject = Smack.getRoomInfo();
-              console.info('getRoomInfo = ' + JSON.stringify(info))
-            }
-          })
-
-          Item({
-            text: '获取群聊配置',
-            click: () => {
-              let config:ESObject = Smack.requestRoomConfig();
-              console.info('config = ' + JSON.stringify(config))
-            }
-          })
-
-          Item({
             text: '设置群聊配置',
             click: () => {
               console.info("test page setRoomConfig");
               let roomConfig: RoomConfig = new RoomConfig();
-//              roomConfig = JSON.parse(Smack.getRoomConfig());
-//              let  JidVal = roomConfig.whois == "anyone" ? "任何人" : "审核者"
-//              let  switchAllowpm = roomConfig.allowpm
-//              let  roomName = roomConfig.roomname
-//              let  roomDesc = roomConfig.roomdesc
-//              let  roomMaxusers = roomConfig.maxusers
-//              let  roomPassword = roomConfig.roomsecret
-//              let  roomAdmins = roomConfig.roomadmins
-//              let  roomOwners = roomConfig.roomowners
-//              let  roomPresencebroadcast = roomConfig.presencebroadcast
 
               roomConfig.allowinvites = "1";
               roomConfig.canchangenick = "1";
@@ -317,8 +270,6 @@ struct page {
               roomConfig.roomdesc = "room desc";
               roomConfig.maxusers = "25"
               roomConfig.roomsecret = "123"
-//              roomConfig.roomadmins = ""
-//              roomConfig.roomowners = "";
               roomConfig.presencebroadcast = ["participant", "moderator", "visitor"];
               console.info("test page setRoomConfig str:"+JSON.stringify(roomConfig))
               let info:ESObject = Smack.setRoomConfig(JSON.stringify(roomConfig));

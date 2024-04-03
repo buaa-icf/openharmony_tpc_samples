@@ -59,7 +59,7 @@ public:
         std::string msg = oss.str();
         std::string msg_fmt = fmt;
         msg_fmt += msg;
-        Logger(Level::INFO, tag, msg.c_str());
+        Logger(Level::INFO, tag, msg_fmt.c_str());
     }
 
     template <typename... Args>

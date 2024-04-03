@@ -158,8 +158,8 @@ static HOST_DOMAIN: string = "he-202101111234"
 ## 约束与限制
 在下述版本验证通过：
 
-- DevEco Studio 版本： 4.1 Canary(4.1.3.317)
-- OpenHarmony SDK:API11 (4.1.0.36)
+- DevEco Studio 版本： 4.1 Canary(4.1.3.317); OpenHarmony SDK:API11 (4.1.0.36)
+- IDE：DevEco Studio Next Developer Preview2, 4.1.3.600; OpenHarmony SDK:API12 (5.0.0.19)
 
 ## 目录结构
 ```

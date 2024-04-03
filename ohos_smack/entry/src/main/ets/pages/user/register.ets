@@ -69,14 +69,10 @@ struct Register {
         message: '请输入完整信息'
       })
     } else {
-      let result: number = Smack.registers(Constant.HOST_IP, this.userName, this.passWord)
-      if(result == 0){
+      Smack.registers(Constant.HOST_IP, this.userName, this.passWord,(result: number)=>{
+        console.log("registers result: " + result);
         router.back();
-      }else{
-        prompt.showToast({
-          message: '注册失败'
-        })
-      }
+      })
     }
   }
 }
