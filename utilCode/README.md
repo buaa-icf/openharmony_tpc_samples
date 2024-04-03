@@ -26,6 +26,10 @@ ohpm install memory-cache
 ohpm install @types/memory-cache --save-dev //import memory-cache 的时候语法报错.其原因是memory-cache包内不含类型声明,需要 @types/memory-cache 下载这个包的声明文件,从而解决语法的报错.
 
 
+ohpm install imtype
+ohpm install @types/imtype@1.0.0  //import imtype 的时候语法报错.其原因是imtype包内不含类型声明,需要 @types/imtype 下载这个包的声明文件,从而解决语法的报错.
+
+
 ```
 OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
