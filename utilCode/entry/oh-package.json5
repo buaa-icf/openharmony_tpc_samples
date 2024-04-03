@@ -12,6 +12,7 @@
     "memory-cache": "^0.2.0",
     "@ohos/util_code": "file:../library",
     "imtype": "^1.0.0",
-    "time-ampm": "^2.0.0"
+    "time-ampm": "^2.0.0",
+    "@types/imtype": "1.0.0"
   }
 }
