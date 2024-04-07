@@ -5,6 +5,7 @@
 ## 下载安装
 ```ts
 ohpm install validator
+ohpm install @types/validator --save-dev //import validator 的时候语法报错。其原因是validator包内不含类型声明，需要 @types/validator 下载这个包的声明文件，从而解决语法的报错。
 ```
 - OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
