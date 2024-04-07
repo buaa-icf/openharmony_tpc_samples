@@ -41,12 +41,12 @@ struct Index {
   testCount: number = 0;
   eventBusCount: number = 0;
   scroller: Scroller = new Scroller();
-  basicTestCallBack: Function = (event: Event) => {
+  basicTestCallBack: EventBus.EventListener = (event: Event) => {
     this.testCount++;
     this.changeText = "basicTest监听创建成功 " + this.testCount;
     console.log(TAG + " basicTest message received " + event.type);
   }
-  basicEventBusCallBack: Function = (event: Event) => {
+  basicEventBusCallBack: EventBus.EventListener = (event: Event) => {
     this.eventBusCount++;
     this.changeText = "basicEventBus监听创建成功 " + this.eventBusCount;
     console.log(TAG + " basicEventBus message received " + event.type);
@@ -173,7 +173,7 @@ struct Index {
 function testAddParameters() {
   class TestA {
     className: string = ''
-    doSomething: Function = (): void => {
+    doSomething: EventBus.EventListener = (): void => {
     }
   }
 
