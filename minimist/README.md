@@ -8,6 +8,7 @@
 
 ```shell
 ohpm install minimist
+ohpm install @types/minimist@1.2.2  // import minimist 的时候语法报错, 其原因是minimist包内不含类型声明, 需要 @types/minimist 下载这个包的声明文件, 从而解决语法的报错.
 ```
 
 OpenHarmony
