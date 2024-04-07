@@ -9,7 +9,7 @@
   },
   "description": "example description",
   "repository": {},
-  "version": "2.0.0",
+  "version": "2.0.1-rc.0",
   "dependencies": {
     "@ohos/hypium": "1.0.6"
   }
