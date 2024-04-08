@@ -88,7 +88,7 @@ export class Encoder<ContextType = undefined> {
 
   public constructor(options?: EncoderOptions<ContextType>) {
     this.extensionCodec = options?.extensionCodec ?? (ExtensionCodec.defaultCodec as ExtensionCodecType<ContextType>);
-    this.context = (options as { context: ContextType } | undefined)?.context as ContextType; // needs a type assertion because EncoderOptions has no context property when ContextType is undefined
+    this.context = (options as unknown as { context: ContextType } | undefined)?.context as ContextType; // needs a type assertion because EncoderOptions has no context property when ContextType is undefined
 
     this.useBigInt64 = options?.useBigInt64 ?? false;
     this.maxDepth = options?.maxDepth ?? DEFAULT_MAX_DEPTH;

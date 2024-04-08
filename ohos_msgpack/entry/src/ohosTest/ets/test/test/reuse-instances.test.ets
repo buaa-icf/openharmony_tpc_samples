@@ -111,7 +111,7 @@ export default function reuseInstancesTest() {
             let averageTime1 = ((endTime1 - startTime1) * 1000) / 1;
             console.log(`msgpack-javascript:regression #212 runs_multiple_times#${orig} #${acc} averageTime = ${averageTime1}`)
 
-            assert.deepStrictEqual(decoder.decode(acc as any), orig);
+            assert.deepStrictEqual(decoder.decode(acc as ESObject), orig);
 
           });
         });

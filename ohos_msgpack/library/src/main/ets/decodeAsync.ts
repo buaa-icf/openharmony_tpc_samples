@@ -9,12 +9,12 @@ import type { SplitUndefined } from "./context";
  * @throws {@link DecodeError} if the buffer contains invalid data.
  */
 export async function decodeAsync<ContextType = undefined>(
-  streamLike: ReadableStreamLike<ArrayLike<number> | BufferSource>,
+  streamLike: ReadableStreamLike<ArrayLike<number> | Uint8Array | ArrayBufferView | ArrayBuffer>,
   options?: DecoderOptions<SplitUndefined<ContextType>>,
 ): Promise<unknown> {
   const stream = ensureAsyncIterable(streamLike);
   const decoder = new Decoder(options);
-  return decoder.decodeAsync(stream);
+  return decoder.decodeAsync(stream as AsyncIterable<ArrayLike<number> | Uint8Array | ArrayBufferView | ArrayBuffer>);
 }
 
 /**
@@ -22,12 +22,12 @@ export async function decodeAsync<ContextType = undefined>(
  * @throws {@link DecodeError} if the buffer contains invalid data.
  */
 export function decodeArrayStream<ContextType>(
-  streamLike: ReadableStreamLike<ArrayLike<number> | BufferSource>,
+  streamLike: ReadableStreamLike<ArrayLike<number> | Uint8Array | ArrayBufferView | ArrayBuffer>,
   options?: DecoderOptions<SplitUndefined<ContextType>>,
 ): AsyncGenerator<unknown, void, unknown> {
   const stream = ensureAsyncIterable(streamLike);
   const decoder = new Decoder(options);
-  return decoder.decodeArrayStream(stream);
+  return decoder.decodeArrayStream(stream as AsyncIterable<Uint8Array | ArrayBuffer | ArrayLike<number> | ArrayBufferView>);
 }
 
 /**
@@ -35,12 +35,12 @@ export function decodeArrayStream<ContextType>(
  * @throws {@link DecodeError} if the buffer contains invalid data.
  */
 export function decodeMultiStream<ContextType>(
-  streamLike: ReadableStreamLike<ArrayLike<number> | BufferSource>,
+  streamLike: ReadableStreamLike<ArrayLike<number> | Uint8Array | ArrayBufferView | ArrayBuffer>,
   options?: DecoderOptions<SplitUndefined<ContextType>>,
 ): AsyncGenerator<unknown, void, unknown> {
   const stream = ensureAsyncIterable(streamLike);
   const decoder = new Decoder(options);
-  return decoder.decodeStream(stream);
+  return decoder.decodeStream(stream as AsyncIterable<Uint8Array | ArrayBuffer | ArrayLike<number> | ArrayBufferView>);
 }
 
 /**

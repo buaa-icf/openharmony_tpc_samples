@@ -41,7 +41,12 @@ import {
   decodeTimestampToTimeSpec,
   encodeTimestampExtension,
   decodeTimestampExtension,
+  TimeSpec,
 } from "./timestamp";
+import { getInt64, getUint64, setInt64, setUint64 } from './utils/int';
+import { utf8Count, utf8EncodeJs } from './utils/utf8';
+import { CachedKeyDecoder, KeyDecoder } from './CachedKeyDecoder';
+
 export {
   EXT_TIMESTAMP,
   encodeDateToTimeSpec,
@@ -49,4 +54,7 @@ export {
   decodeTimestampToTimeSpec,
   encodeTimestampExtension,
   decodeTimestampExtension,
+  setInt64, getInt64, getUint64, setUint64,
+  utf8Count, utf8EncodeJs, CachedKeyDecoder, KeyDecoder,
+  TimeSpec,
 };

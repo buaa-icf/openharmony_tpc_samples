@@ -212,7 +212,7 @@ export class Decoder<ContextType = undefined> {
 
   public constructor(options?: DecoderOptions<ContextType>) {
     this.extensionCodec = options?.extensionCodec ?? (ExtensionCodec.defaultCodec as ExtensionCodecType<ContextType>);
-    this.context = (options as { context: ContextType } | undefined)?.context as ContextType; // needs a type assertion because EncoderOptions has no context property when ContextType is undefined
+    this.context = (options as unknown as { context: ContextType } | undefined)?.context as ContextType; // needs a type assertion because EncoderOptions has no context property when ContextType is undefined
 
     this.useBigInt64 = options?.useBigInt64 ?? false;
     this.maxStrLength = options?.maxStrLength ?? UINT32_MAX;
@@ -231,13 +231,13 @@ export class Decoder<ContextType = undefined> {
     // view, bytes, and pos will be re-initialized in setBuffer()
   }
 
-  private setBuffer(buffer: ArrayLike<number> | BufferSource): void {
+  private setBuffer(buffer: ArrayLike<number> | Uint8Array | ArrayBufferView | ArrayBuffer): void {
     this.bytes = ensureUint8Array(buffer);
     this.view = createDataView(this.bytes);
     this.pos = 0;
   }
 
-  private appendBuffer(buffer: ArrayLike<number> | BufferSource) {
+  private appendBuffer(buffer: ArrayLike<number> | Uint8Array | ArrayBufferView | ArrayBuffer) {
     if (this.headByte === HEAD_BYTE_REQUIRED && !this.hasRemaining(1)) {
       this.setBuffer(buffer);
     } else {
@@ -265,7 +265,7 @@ export class Decoder<ContextType = undefined> {
    * @throws {@link DecodeError}
    * @throws {@link RangeError}
    */
-  public decode(buffer: ArrayLike<number> | BufferSource): unknown {
+  public decode(buffer: ArrayLike<number> | Uint8Array | ArrayBufferView | ArrayBuffer): unknown {
     this.reinitializeState();
     this.setBuffer(buffer);
 
@@ -276,7 +276,7 @@ export class Decoder<ContextType = undefined> {
     return object;
   }
 
-  public *decodeMulti(buffer: ArrayLike<number> | BufferSource): Generator<unknown, void, unknown> {
+  public *decodeMulti(buffer: ArrayLike<number> | Uint8Array | ArrayBufferView | ArrayBuffer): Generator<unknown, void, unknown> {
     this.reinitializeState();
     this.setBuffer(buffer);
 
@@ -285,7 +285,7 @@ export class Decoder<ContextType = undefined> {
     }
   }
 
-  public async decodeAsync(stream: AsyncIterable<ArrayLike<number> | BufferSource>): Promise<unknown> {
+  public async decodeAsync(stream: AsyncIterable<ArrayLike<number> | Uint8Array | ArrayBufferView | ArrayBuffer>): Promise<unknown> {
     let decoded = false;
     let object: unknown;
     for await (const buffer of stream) {
@@ -321,16 +321,16 @@ export class Decoder<ContextType = undefined> {
   }
 
   public decodeArrayStream(
-    stream: AsyncIterable<ArrayLike<number> | BufferSource>,
+    stream: AsyncIterable<ArrayLike<number> | Uint8Array | ArrayBufferView | ArrayBuffer>,
   ): AsyncGenerator<unknown, void, unknown> {
     return this.decodeMultiAsync(stream, true);
   }
 
-  public decodeStream(stream: AsyncIterable<ArrayLike<number> | BufferSource>): AsyncGenerator<unknown, void, unknown> {
+  public decodeStream(stream: AsyncIterable<ArrayLike<number> | Uint8Array | ArrayBufferView | ArrayBuffer>): AsyncGenerator<unknown, void, unknown> {
     return this.decodeMultiAsync(stream, false);
   }
 
-  private async *decodeMultiAsync(stream: AsyncIterable<ArrayLike<number> | BufferSource>, isArray: boolean) {
+  private async *decodeMultiAsync(stream: AsyncIterable<ArrayLike<number> | Uint8Array | ArrayBufferView | ArrayBuffer>, isArray: boolean) {
     let isArrayHeaderRequired = isArray;
     let arrayItemsLeft = -1;
 

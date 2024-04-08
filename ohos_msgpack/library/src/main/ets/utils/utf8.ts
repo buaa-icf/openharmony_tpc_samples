@@ -1,3 +1,5 @@
+import util from '@ohos.util';
+
 export function utf8Count(str: string): number {
   const strLength = str.length;
 
@@ -88,14 +90,14 @@ export function utf8EncodeJs(str: string, output: Uint8Array, outputOffset: numb
 // They are available in Node.js since v12 LTS as well:
 // https://nodejs.org/api/globals.html#textencoder
 
-const sharedTextEncoder = new TextEncoder();
+const sharedTextEncoder = new util.TextEncoder();
 
 // This threshold should be determined by benchmarking, which might vary in engines and input data.
 // Run `npx ts-node benchmark/encode-string.ts` for details.
 const TEXT_ENCODER_THRESHOLD = 50;
 
 export function utf8EncodeTE(str: string, output: Uint8Array, outputOffset: number): void {
-  sharedTextEncoder.encodeInto(str, output.subarray(outputOffset));
+  sharedTextEncoder.encodeIntoUint8Array(str, output.subarray(outputOffset));
 }
 
 export function utf8Encode(str: string, output: Uint8Array, outputOffset: number): void {
@@ -157,7 +159,7 @@ export function utf8DecodeJs(bytes: Uint8Array, inputOffset: number, byteLength:
   return result;
 }
 
-const sharedTextDecoder = new TextDecoder();
+const sharedTextDecoder = util.TextDecoder.create();
 
 // This threshold should be determined by benchmarking, which might vary in engines and input data.
 // Run `npx ts-node benchmark/decode-string.ts` for details.
@@ -165,7 +167,7 @@ const TEXT_DECODER_THRESHOLD = 200;
 
 export function utf8DecodeTD(bytes: Uint8Array, inputOffset: number, byteLength: number): string {
   const stringBytes = bytes.subarray(inputOffset, inputOffset + byteLength);
-  return sharedTextDecoder.decode(stringBytes);
+  return sharedTextDecoder.decodeWithStream(stringBytes);
 }
 
 export function utf8Decode(bytes: Uint8Array, inputOffset: number, byteLength: number): string {

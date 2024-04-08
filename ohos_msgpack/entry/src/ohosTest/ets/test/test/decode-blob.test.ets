@@ -86,7 +86,7 @@ export default function DecodeBlobTest() {
       console.log(`msgpack-javascript:decodes_it_with_decodeAsync_2 averageTime = ${averageTime1}`)
 
       blob.arrayBuffer().then(buffer => {
-        decodeAsync<undefined>(buffer as any).then((result: Object) => {
+        decodeAsync<undefined>(buffer as ESObject).then((result: Object) => {
           assert.deepStrictEqual(result, "Hello!");
         })
       })
