@@ -6,6 +6,7 @@
   "repository": {},
   "version": "1.0.0",
   "dependencies": {
-    "utf8": "3.0.0"
+    "utf8": "3.0.0",
+    "@types/utf8": "3.0.3"
   }
 }
