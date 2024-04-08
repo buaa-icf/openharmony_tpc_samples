@@ -1,16 +1,18 @@
 {
   "types": "",
   "keywords": [
-    "msgpack"
+    "msgpack",
+    "HarmonyOS",
+    "OpenHarmony"
   ],
   "author": "ohos_tpc",
   "description": "This library is an implementation of MessagePack for TypeScript and JavaScript, providing a compact and efficient binary serialization format.",
-  "main": "index.ts",
+  "main": "Index.ts",
   "type": "module",
   "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_msgpack",
   "version": "1.0.0-rc.0",
   "tags": [
-    "msgpack"
+    "Tool"
   ],
   "dependencies": {},
   "license": "ISC License",

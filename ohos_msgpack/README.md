@@ -84,11 +84,10 @@ expect(result).assertDeepEquals(items);
 
 - DevEco Studio: 4.1 (4.1.3.322), SDK: API11 (4.1.0.36)
 - DevEco Studio: 4.0 (4.0.3.513), SDK: API10 (4.0.10.10)
-- DevEco Studio: 3.1 Beta2(3.1.0.400), SDK: API9 Release(3.2.11.9)
 
 ## 贡献代码
 
 使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples) 。
 
 ## 开源协议
-本项目基于 [ISC License]() ，请自由地享受和参与开源。
+本项目基于 [ISC License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ohos_msgpack/LICENSE) ，请自由地享受和参与开源。
