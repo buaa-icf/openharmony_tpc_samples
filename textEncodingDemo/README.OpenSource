@@ -1,10 +1,10 @@
 [
     {
         "Name": "text-encoding",
-        "License": "Apache 2.0",
-        "License File": "LICENSE",
+        "License": "Apache License 2.0",
+        "License File": "LICENSE.md",
         "Version Number": "0.7.0",
-        "Owner" : "inexorabletash"
+        "Owner":"xiafeng@huawei.com",
         "Upstream URL": "https://github.com/inexorabletash/text-encoding",
         "Description": "allowing encoding and decoding of textual data to and from Typed Array buffers for binary data in JavaScript"
     }
