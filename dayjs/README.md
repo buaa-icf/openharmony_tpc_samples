@@ -2,7 +2,7 @@
 
 ## 介绍
 
-[dayjs](https://github.com/iamkun/dayjs) 是一个轻量的处理时间和日期的 JavaScript 库，可以运行 node.js 和浏览器中，本库基于 [dayjs](https://github.com/iamkun/dayjs)原库 v1.11.7 版本进行验证。
+[dayjs](https://github.com/iamkun/dayjs) 是一个轻量级的处理时间和日期的 JavaScript 库，可以运行在 node.js 和浏览器中，本库基于 [dayjs](https://github.com/iamkun/dayjs)原库 v1.11.7 版本进行验证。
 
 ## 下载安装
 
