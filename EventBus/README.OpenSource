@@ -2,9 +2,9 @@
     {
         "Name": "eventbusjs",
         "License": "MIT License",
-        "License File": "LICENSE",
-        "Version Number": " ",
-        "Owner" : "krasimir"
+        "License File": "LICENSE-MIT",
+        "Version Number": "0.2.0",
+        "Owner" : "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/krasimir/EventBus",
         "Description": "Simple JavaScript class for managing events in JavaScript"
     }
