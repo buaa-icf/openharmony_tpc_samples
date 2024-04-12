@@ -2,7 +2,7 @@
 
 ## 简介
 
-本demo是基于openHarmony系统下使用三方js库jsdiff,jsdiff提供JavaScript文本差异的工具库
+本demo是基于openHarmony系统下使用三方js库[jsdiff](https://github.com/kpdecker/jsdiff)，jsdiff是一个用于比较两个文件或字符串差异的JavaScript库。
 
 ## 下载安装
 
@@ -70,4 +70,4 @@ DevEco Studio: 3.1 Beta2(3.1.0.400), SDK: API9 Release(3.2.11.9)
 
 ## 开源协议
 
-该项目基于 [License](https://github.com/kpdecker/jsdiff/blob/master/LICENSE) ，请自由地享受和参与开源
+该项目基于 [ Apache License 2.0 ](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/jsDiffDemo/LICENSE) ，请自由地享受和参与开源
