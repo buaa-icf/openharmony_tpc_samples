@@ -53,7 +53,6 @@ export default function jodaEnUsTestTimeConsuming() {
       let averageTime0 = (endTime0 - startTime0) * 1000 / BASE_COUNT
       console.info('appInfoTest xts language averageTime:' + averageTime0 + "us")
       expect(averageTime0 < BASELINE_CREATEHTTP).assertTrue();
-      done()
     })
 
     it('country', 0, () => {
