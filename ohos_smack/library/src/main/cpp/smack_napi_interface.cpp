@@ -8,6 +8,7 @@
  *
  * This software is distributed without any warranty.
  */
+#include <hilog/log.h>
 #include <string>
 
 #include <js_native_api.h>
@@ -54,8 +55,8 @@ using namespace gloox;
 
 static napi_value login(napi_env env, napi_callback_info info)
 {
-    size_t argc = 2;
-    napi_value args[2] = {nullptr};
+    size_t argc = 3;
+    napi_value args[3] = {nullptr};
 
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
 
@@ -64,6 +65,9 @@ static napi_value login(napi_env env, napi_callback_info info)
 
     napi_valuetype valuetype1;
     napi_typeof(env, args[1], &valuetype1);
+
+    napi_valuetype valuetype3;
+    napi_typeof(env, args[ARG_INDEX_2], &valuetype3);
 
     char value0[MAX_STRING_LENGTH];
     size_t size0 = 0;
@@ -74,9 +78,8 @@ static napi_value login(napi_env env, napi_callback_info info)
     napi_get_value_string_utf8(env, args[1], value1, MAX_STRING_LENGTH, &size1);
 
     g_smack = new Smack();
-    napi_value sum;
-    napi_create_int32(env, g_smack->Login(value0, value1), &sum);
-    return sum;
+    g_smack->Login(env, value0, value1, args[ARG_INDEX_2]);
+    return NULL;
 }
 
 /**
@@ -209,8 +212,9 @@ static napi_value changpwd(napi_env env, napi_callback_info info)
  */
 static napi_value registers(napi_env env, napi_callback_info info)
 {
-    size_t argc = 3;
-    napi_value args[3] = {nullptr};
+    LOGI("-->registers: %d", __LINE__);
+    size_t argc = 4;
+    napi_value args[4] = {nullptr};
 
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
 
@@ -222,6 +226,9 @@ static napi_value registers(napi_env env, napi_callback_info info)
 
     napi_valuetype valuetype2;
     napi_typeof(env, args[ARG_INDEX_2], &valuetype2);
+
+    napi_valuetype valuetype3;
+    napi_typeof(env, args[ARG_INDEX_3], &valuetype3);
 
     char value0[MAX_STRING_LENGTH];
     size_t size0 = 0;
@@ -239,9 +246,8 @@ static napi_value registers(napi_env env, napi_callback_info info)
         g_mregistration = new registration();
     }
 
-    napi_value sum;
-    napi_create_int32(env, g_mregistration->createAccounts(value0, value1, value2), &sum);
-    return sum;
+    g_mregistration->createAccounts(value0, value1, value2, env, args[ARG_INDEX_3]);
+    return NULL;
 }
 
 /**
@@ -1076,14 +1082,16 @@ static napi_value invite(napi_env env, napi_callback_info info)
 
 static napi_value requestRoomConfig(napi_env env, napi_callback_info info)
 {
-    napi_value sum;
+    size_t argc = 1;
+    napi_value args = nullptr;
+
+    napi_get_cb_info(env, info, &argc, &args, nullptr, nullptr);
 
     if (g_room1 == nullptr) {
         g_room1 = new room();
     }
-    std::string str = g_room1->requestRoomConfig();
-    napi_create_string_utf8(env, str.c_str(), strlen(str.c_str()), &sum);
-    return sum;
+    g_room1->requestRoomConfig(env, args);
+    return NULL;
 }
 
 static napi_value requestList(napi_env env, napi_callback_info info)
@@ -1123,14 +1131,20 @@ static napi_value getRoomItems(napi_env env, napi_callback_info info)
 
 static napi_value getRoomInfo(napi_env env, napi_callback_info info)
 {
+    size_t argc = 1;
+    napi_value args[1] = {nullptr};
+    napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
+
+    napi_valuetype valuetype0;
+    napi_typeof(env, args[0], &valuetype0);
+
     napi_value sum;
 
     if (g_room1 == nullptr) {
         g_room1 = new room();
     }
-    std::string str = g_room1->getRoomInfo();
-    napi_create_string_utf8(env, str.c_str(), strlen(str.c_str()), &sum);
-    return sum;
+    g_room1->getRoomInfo(env, args[0]);
+    return NULL;
 }
 
 static napi_value declineInvitation(napi_env env, napi_callback_info info)
@@ -1511,7 +1525,7 @@ static napi_value onLogin(napi_env env, napi_callback_info info)
     if (g_smack == nullptr) {
         g_smack = new Smack();
     }
-    int32_t num = g_smack->Login() ? 1 : 0;
+    int32_t num = g_smack->LoginInit() ? 1 : 0;
     napi_create_int32(env, num, &sum);
     return sum;
 }

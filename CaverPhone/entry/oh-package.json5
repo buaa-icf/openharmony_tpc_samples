@@ -7,6 +7,7 @@
   "main": "",
   "version": "1.0.1",
   "dependencies": {
-    "caverphone": "^1.0.0"
+    "caverphone": "^1.0.0",
+    "@types/caverphone": "1.0.0"
   }
 }

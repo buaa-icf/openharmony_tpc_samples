@@ -1,8 +1,10 @@
+## v2.0.1-rc.1
+
+- 修复Openharmony4.1.0.66版本上connect接口调用crash问题，问题原因：由于系统napi_call_function接口在该版本上参数定义问题导致crash。
+
 ## v2.0.1-rc.0
 
 - 修复socket.io接口connect调用crash问题
-- DevEco Studio 版本： 4.1 Canary(4.1.3.600)
-- OpenHarmony SDK:API11 (4.1.0.65)
 
 ## v2.0.0
 

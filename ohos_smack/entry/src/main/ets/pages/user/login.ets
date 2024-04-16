@@ -127,7 +127,6 @@ struct Login {
 
   // todo 登录
   private onLogin() {
-    let result: number
     if (this.check()) {
       prompt.showToast({
         message: '登陆中..'
@@ -137,18 +136,20 @@ struct Login {
         try {
           let LoginName = this.uName + '@' + Constant.HOST_IP
           GlobalContext.getContext().setValue('userName',this.uName + '@' + Constant.HOST_IP + Constant.HOST_RES)
-          result = Smack.Login(LoginName, this.uPassword);
+          Smack.Login(LoginName, this.uPassword, (res: number)=>{
+            console.log("login result： " + res);
+            if (res != 7 && res != 8) {
+              router.replace({
+                url: 'pages/main'
+              })
+            } else {
+              prompt.showToast({
+                message: "登录失败"
+              })
+            }
+          });
         } catch (e) {
           console.log("onLogin err  " + e.message)
-        }
-        if (result == 1) {
-          router.replace({
-            url: 'pages/main'
-          })
-        } else {
-          prompt.showToast({
-            message: "登录失败"
-          })
         }
       },100)
     }

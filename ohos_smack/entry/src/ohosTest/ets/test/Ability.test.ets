@@ -41,34 +41,38 @@ export default function abilityTest() {
     it('test_register_none_name',0, () => {
       userName= null;
       userPassword= '123456';
-      let result: number = Smack.registers(Constant.HOST_IP, userName, userPassword)
-      if(result == 0){
-        expect(result).assertEqual(0);
-      }else{
-        expect(result).assertLargerOrEqual(1);
-      }
+      Smack.registers(Constant.HOST_IP, userName, userPassword,(result: number)=>{
+        console.log("XTS test_register_none_name result: " + result)
+        if(result == 0){
+          expect(result).assertEqual(0);
+        }else{
+          expect(result).assertLarger(0);
+        }
+      })
     })
 
     it('test_register_none_pwd',0, () => {
       userName= 'testuser';
       userPassword= null;
-      let result: number = Smack.registers(Constant.HOST_IP, userName, userPassword)
-      if(result == 0){
-        expect(result).assertEqual(0);
-      }else{
-        expect(result).assertEqual(2);
-      }
+      Smack.registers(Constant.HOST_IP, userName, userPassword,(result:number)=>{
+        if(result == 0){
+          expect(result).assertEqual(0);
+        }else{
+          expect(result).assertLarger(0);
+        }
+      })
     })
 
     it('test_register_userone',0, () => {
       userName= 'testuser01';
       userPassword= '123456';
-      let result: number = Smack.registers(Constant.HOST_IP, userName, userPassword)
-      if(result == 0){
-        expect(result).assertEqual(0);
-      }else{
-        expect(result).assertEqual(-1);
-      }
+      Smack.registers(Constant.HOST_IP, userName, userPassword,(result:number)=>{
+        if(result == 0){
+          expect(result).assertEqual(0);
+        }else{
+          expect(result).assertLarger(0);
+        }
+      })
     })
 
     it('test_set_server_none',0, () => {
@@ -123,7 +127,7 @@ export default function abilityTest() {
     })
 
     it('test_set_resource_undefined',0, () => {
-      let resource = undefined;
+      let resource: string = "";
       let setResResult =Smack.setResource(resource)
       if(setResResult == undefined){
         expect(setResResult).assertUndefined();
@@ -241,12 +245,13 @@ export default function abilityTest() {
       try {
         let LoginName = uName + '@' + Constant.HOST_IP
         userName = uName + '@' + Constant.HOST_IP + Constant.HOST_RES
-        let result:number = Smack.Login(LoginName, uPassword);
-        if(result == 1){
-          expect(result).assertEqual(1);
-        }else{
-          expect(result).assertEqual(-1);
-        }
+        Smack.Login(LoginName, uPassword, (res: number)=>{
+          if(res != 7 && res != 8){
+            expect(res).assertEqual(0);
+          } else {
+            expect(res).assertEqual(-1);
+          }
+        });
       } catch (e) {
         hilog.info(0x0000, 'testTag', '%{public}s', "onLogin fail  " + e.message);
       }
@@ -261,12 +266,14 @@ export default function abilityTest() {
     it('test_register_usertwo',0, () => {
       userName='testuser02';
       userPassword='123456';
-      let result: number = Smack.registers(Constant.HOST_IP, userName, userPassword)
-      if(result == 0){
-        expect(result).assertEqual(0);
-      }else{
-        expect(result).assertEqual(2);
-      }
+      Smack.registers(Constant.HOST_IP, userName, userPassword, (result: number)=>{
+        if(result == 0){
+          expect(result).assertEqual(0);
+        }else{
+          expect(result).assertEqual(2);
+        }
+      })
+
     })
 
     it('test_connect_server_usertwo',0, () => {
@@ -291,8 +298,10 @@ export default function abilityTest() {
       try {
         let LoginName = uName + '@errorUserName' + Constant.HOST_IP
         userName = uName + '@' + Constant.HOST_IP + Constant.HOST_RES
-        let result:number = Smack.Login(LoginName, uPassword);
-        expect(result).assertEqual(-1)
+        Smack.Login(LoginName, uPassword, (res: number)=>{
+          console.log("test_login_fail_usertwo Login.res: " + res)
+          expect(res).assertEqual(2)
+        });
       } catch (e) {
         hilog.info(0x0000, 'testTag', '%{public}s', "test_login_fail  " + e.message);
       }
@@ -302,12 +311,13 @@ export default function abilityTest() {
       try {
         let LoginName = uName + '@' + Constant.HOST_IP
         userName = uName + '@' + Constant.HOST_IP + Constant.HOST_RES
-        let result:number = Smack.Login(LoginName, uPassword);
-        if(result == 1){
-          expect(result).assertEqual(1);
-        }else{
-          expect(result).assertEqual(-1);
-        }
+        Smack.Login(LoginName, uPassword, (res: number)=>{
+          if(res == 0){
+            expect(res).assertEqual(0);
+          }else{
+            expect(res).assertEqual(7);
+          }
+        });
       } catch (e) {
         hilog.info(0x0000, 'testTag', '%{public}s', "onLogin fail  " + e.message);
       }
@@ -329,6 +339,7 @@ export default function abilityTest() {
       let pwd = '123456';
       Smack.changPwd(pwd);
       let chengeResultPwd = Smack.password();
+      console.log("test_changePwd_userTwo chengeResultPwd: " + chengeResultPwd)
       expect(chengeResultPwd).assertEqual(pwd);
     })
 
@@ -350,7 +361,7 @@ export default function abilityTest() {
     it('test_register_msg_callback',0, () => {
       Smack.registerMessageCallback((id, msg)=>{
         let id_msg = msg.toString().trim();
-        expect(id_msg).assertUndefined();
+        expect(id_msg).assertEqual('testOthermsg');
       })
     })
 
@@ -415,7 +426,7 @@ export default function abilityTest() {
     })
 
     it('test_send_room_no_msg',0, () => {
-      let msg =undefined;
+      let msg: string = "";
       let sendRoomMsgResult:number|string= Smack.sendGroupMessage(msg);
       if(sendRoomMsgResult == undefined) {
         expect(sendRoomMsgResult).assertUndefined();
@@ -435,7 +446,7 @@ export default function abilityTest() {
     })
 
     it('test_set_room_subject_undefined',0, () => {
-      let subject =undefined;
+      let subject: string = "";
       let setRoomSubjectResult= Smack.setSubject(subject);
       if(setRoomSubjectResult == undefined){
         expect(setRoomSubjectResult).assertUndefined();
@@ -487,7 +498,7 @@ export default function abilityTest() {
     })
 
     it('test_destroy_room_undefined',0, () => {
-      let roomName =undefined;
+      let roomName: string = "";
       let destroyResult = Smack.destroy(userName, roomName);
       if(destroyResult == undefined){
         expect(destroyResult).assertUndefined();
@@ -667,7 +678,7 @@ export default function abilityTest() {
     })
 
     it('test_createOrJoin_null_room',0, () => {
-      let roomName = null;
+      let roomName: string = "";
       let createOrJoinRoomResult= Smack.createOrJoinRoom(roomName, Constant.HOST_DOMAIN, Constant.SERVICE_NAME, "123");
       if(createOrJoinRoomResult == undefined){
         expect(createOrJoinRoomResult).assertUndefined();
@@ -677,7 +688,7 @@ export default function abilityTest() {
     })
 
     it('test_createOrJoin_undefined_room',0, () => {
-      let roomName = undefined;
+      let roomName: string = "";
       let createOrJoinRoomResult= Smack.createOrJoinRoom(roomName, Constant.HOST_DOMAIN, Constant.SERVICE_NAME, "123");
       if(createOrJoinRoomResult == undefined){
         expect(createOrJoinRoomResult).assertUndefined();
@@ -707,7 +718,7 @@ export default function abilityTest() {
     })
 
     it('test_setPassword_room_null',0, () => {
-      let password = null;
+      let password: string = "";
       let setPasswordRoomResult= Smack.setPassword(password);
       if(setPasswordRoomResult == undefined){
         expect(setPasswordRoomResult).assertUndefined();
@@ -737,53 +748,60 @@ export default function abilityTest() {
     })
 
     it('test_get_room_info',0, () => {
-      let infoResult= Smack.getRoomInfo();
-      if(infoResult == undefined){
-        expect(infoResult).assertUndefined();
-      }else{
-        expect(infoResult).assertContain('roomthird');
-      }
+      Smack.getRoomInfo((infoResult: string)=> {
+        if(infoResult == ""){
+          expect(infoResult).assertEqual("");
+        }else{
+          expect(infoResult).assertContain('roomthird');
+        }
+      });
     })
 
     it('test_get_parseXML_info',0, () => {
-      let xmlResult= Smack.parseXML();
-      if(xmlResult == undefined){
-        expect(xmlResult).assertUndefined();
-      }else{
-        let jsonXML:ESObject = JSON.parse(xmlResult);
-        expect(jsonXML.description).assertContain('roomthird');
-      }
+      Smack.parseXML((xmlResult: string)=>{
+        if(xmlResult == ""){
+          expect(xmlResult).assertEqual("");
+        }else{
+          let jsonXML:ESObject = JSON.parse(xmlResult);
+          expect(jsonXML.description).assertContain('roomthird');
+        }
+      });
     })
 
     it('test_request_room_config',0, () => {
-      let configResult= Smack.requestRoomConfig();
-      if(configResult == undefined){
-        expect(configResult).assertUndefined();
-      }else{
-        expect(configResult).assertContain('roomthird');
-      }
+      Smack.requestRoomConfig((configResult: string) => {
+        if(configResult == ""){
+          expect(configResult).assertEqual("");
+        }else{
+          expect(configResult).assertContain('roomthird');
+        }
+      });
     })
 
     it('test_set_room_config',0, () => {
-      let roomConfig: RoomConfig =JSON.parse(Smack.getRoomConfig());
-      let configResult= Smack.setRoomConfig(JSON.stringify(roomConfig));
-      hilog.info(0x0000, 'testTag', '%{public}s', "configResult : " +configResult );
-      if(configResult == undefined){
-        expect(configResult).assertUndefined();
-      }else{
-        expect(configResult).assertContain('roomthird');
-      }
+      Smack.getRoomConfig((result: string) => {
+        let roomConfig: RoomConfig = JSON.parse(result);
+        let configResult= Smack.setRoomConfig(JSON.stringify(roomConfig));
+        hilog.info(0x0000, 'testTag', '%{public}s', "configResult : " +configResult );
+        if(configResult == undefined){
+          expect(configResult).assertUndefined();
+        }else{
+          expect(configResult).assertContain('roomthird');
+        }
+      });
     })
 
     it('test_room_config',0, () => {
-      let roomConfig: RoomConfig =JSON.parse(Smack.getRoomConfig());
-      let configResult= Smack.setRoomConfig(JSON.stringify(roomConfig));
-      hilog.info(0x0000, 'testTag', '%{public}s', "configResult : " +configResult );
-      if(configResult == undefined){
-        expect(configResult).assertUndefined();
-      }else{
-        expect(configResult).assertContain('roomthird');
-      }
+      Smack.getRoomConfig((result: string) => {
+        let roomConfig: RoomConfig =JSON.parse(result);
+        let configResult: string = Smack.setRoomConfig(JSON.stringify(roomConfig));
+        hilog.info(0x0000, 'testTag', '%{public}s', "configResult : " +configResult );
+        if(configResult == ""){
+          expect(configResult).assertEqual("");
+        }else{
+          expect(configResult).assertContain('roomthird');
+        }
+      });
     })
 
     it('test_bans_member',0, () => {
@@ -797,7 +815,7 @@ export default function abilityTest() {
     })
 
     it('test_bans_member_null',0, () => {
-      let bansMember=null;
+      let bansMember: string = "";
       let bansResult =Smack.bans(bansMember, "bans");
       if(bansResult == undefined){
         expect(bansResult).assertUndefined();

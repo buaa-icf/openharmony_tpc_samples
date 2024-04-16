@@ -20,8 +20,6 @@
 
 - OAUTH
 
-![snapshot_2022-10-13_16-41-13](./screenshot/snapshot_2022-10-13_16-41-13.png)
-
 ![snapshot_2022-10-13_16-42-46](./screenshot/snapshot_2022-10-13_16-42-46.png)
 
 ## 下载安装

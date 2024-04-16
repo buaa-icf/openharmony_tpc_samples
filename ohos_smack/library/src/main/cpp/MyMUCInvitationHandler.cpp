@@ -26,6 +26,10 @@ static void CallJs(napi_env env, napi_value jsCb, void *context, void *data)
 {
     LOGI("SMACK_TAG--------->MyMUCInvitationHandler CallJs0: %s:  %d", "CallJs: ", __LINE__);
     napi_value undefined;
+    napi_status undefinedStatus = napi_get_null(env, &undefined);
+    if (undefinedStatus != napi_ok) {
+        return;
+    }
     napi_value ret;
     napi_value argv;
 

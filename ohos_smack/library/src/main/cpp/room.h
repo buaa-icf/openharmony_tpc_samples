@@ -69,10 +69,10 @@ public:
     void invite(const gloox::JID &invitee, const std::string &reason);
 
     // fourth batch completed
-    std::string requestRoomConfig();
+    void requestRoomConfig(napi_env env, napi_value jsCb);
     std::string requestList(const std::string &operationStr);
     std::string getRoomItems();
-    std::string getRoomInfo();
+    void getRoomInfo(napi_env env, napi_value jsCb);
     void setAffiliations(const std::string& nicks, std::string& affiliationStr, const std::string& reason);
     // fourth batch completed
     void setRoomConfig(const std::string &config);

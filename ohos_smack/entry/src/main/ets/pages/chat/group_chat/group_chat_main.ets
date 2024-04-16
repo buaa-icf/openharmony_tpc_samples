@@ -35,16 +35,17 @@ struct Group_chat_main {
 
   //获取房间配置信息
   private setPublicRoom() {
-    let roomInfo = Smack.getRoomConfig();
-    let roomConfig= JSON.parse(roomInfo) as RoomConfig;
+    Smack.getRoomConfig((roomInfo: string) => {
+      let roomConfig= JSON.parse(roomInfo) as RoomConfig;
 
-    roomConfig.publicroom = '1';
-    roomConfig.persistentroom = '0';
-    roomConfig.moderatedroom = '0';
-    roomConfig.membersonly = '0';
-    roomConfig.allowinvites = '1';
+      roomConfig.publicroom = '1';
+      roomConfig.persistentroom = '0';
+      roomConfig.moderatedroom = '0';
+      roomConfig.membersonly = '0';
+      roomConfig.allowinvites = '1';
 
-    Smack.setRoomConfig(JSON.stringify(roomConfig))
+      Smack.setRoomConfig(JSON.stringify(roomConfig))
+    });
   }
 
   //是否是拥有者
@@ -191,17 +192,18 @@ struct Group_chat_main {
       //      }
     })
 
-    let result = Smack.parseXML();
-    GlobalContext.getContext().setValue('roomInfo', result)
-    let roominfo: ESObject = JSON.parse(result)
-    this.roomName = roominfo.description
-    try {
-      this.onGetAllOwnerList();
-      if (this.isOwner()) {
-        this.setPublicRoom();
+    Smack.parseXML((result: string)=>{
+      GlobalContext.getContext().setValue('roomInfo', result)
+      let roominfo: ESObject = JSON.parse(result)
+      this.roomName = roominfo.description
+      try {
+        this.onGetAllOwnerList();
+        if (this.isOwner()) {
+          this.setPublicRoom();
+        }
+      } catch (e) {
       }
-    } catch (e) {
-    }
+    });
   }
 
   unregisterCallback() {

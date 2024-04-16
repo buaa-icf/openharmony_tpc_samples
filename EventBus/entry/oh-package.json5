@@ -9,5 +9,7 @@
   "description": "Simple JavaScript class for managing events",
   "main": "",
   "version": "1.0.0",
-  "dependencies": {}
+  "dependencies": {
+    "@types/eventbusjs": "^0.2.0"
+  }
 }

@@ -113,7 +113,7 @@ struct Index {
             .fontSize(18)
             .height(80)
             .onClick(() => {
-              let isHas: boolean  = EventBus.hasEventListener('basicTest', this.basicTestCallBack);
+              let isHas: boolean = EventBus.hasEventListener('basicTest', this.basicTestCallBack);
               this.changeText = isHas + ""
               console.log(TAG + " Determine whether the Basictest subscription exists " + isHas)
             }).margin({ bottom: 20 })

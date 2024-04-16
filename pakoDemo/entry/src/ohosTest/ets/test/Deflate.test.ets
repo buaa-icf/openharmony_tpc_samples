@@ -58,8 +58,8 @@ export default function DeflateTest() {
         let context:Context = GlobalContext.getContext().getObject("context") as Context
         context.createModuleContext('entry_test').resourceManager.getMediaContent($r('app.media.issue_78').id).then(data=>{
 
-        const deflatedPakoData:string = pako.deflate(data,  onTypeOf12(1));
-        const inflatedPakoData:string = pako.inflate(deflatedPakoData);
+        const deflatedPakoData:Uint8Array = pako.deflate(data,  onTypeOf12(1));
+        const inflatedPakoData:Uint8Array = pako.inflate(deflatedPakoData);
         expect(data.length).assertEqual(inflatedPakoData.length);
       });
 
