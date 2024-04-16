@@ -2,9 +2,9 @@
     {
         "Name": "metaphone",
         "License": "MIT License",
-        "License File": " LICENSE ",
+        "License File": " LICENSE-MIT ",
         "Version Number": "2.0.0",
-        "Owner" : "words"
+        "Owner" : "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/words/metaphone",
         "Description": "Fast Metaphone implementation."
     }
