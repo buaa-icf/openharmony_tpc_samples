@@ -8,7 +8,7 @@
 
 ```shell
 ohpm install utf8
-ohpm install @types/utf8 --save-dev //import utf8 的时候语法报错。其原因是utf8包内不含类型声明，需要 @types/utf8 下载这个包的声明文件，从而解决语法的报错。
+ohpm install @types/utf8@3.0.3 --save-dev //import utf8 的时候语法报错。其原因是utf8包内不含类型声明，需要 @types/utf8 下载这个包的声明文件，从而解决语法的报错。
 ```
 
 OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
