@@ -26,15 +26,22 @@
  */
 
 import seedrandom from 'seedrandom'
+class global {
+  global?: boolean
+}
+
+class entropy {
+  entropy?: boolean
+}
 
 @Entry
 @Component
 struct Index {
-  @State value1: string = ''
+  @State value1: number = 0
   @State value2: string = ''
-  @State value3: string = ''
-  @State value4: string = ''
-  @State value5: string = ''
+  @State value3: number = 0
+  @State value4: number = 0
+  @State value5: number = 0
 
   build() {
     Column () {
@@ -44,19 +51,21 @@ struct Index {
         .height(60)
         .margin({ bottom: 30, top: 50 })
         .onClick(() => {
-          let rng1: ESObject = seedrandom('hello.');
+          let rng1 = seedrandom('hello.');
           this.value1 = rng1();
 
-          let rng2: ESObject = seedrandom('hello.', { global: true });
+          let global:global ={ global: true }
+          let rng2 = seedrandom('hello.',global);
           this.value2 = Math.random().toString()
 
-          let rng3: ESObject = seedrandom();
+          let rng3 = seedrandom();
           this.value3 = rng3();
 
-          let rng4: ESObject = seedrandom('added entropy.', { entropy: true });
+          let entropy:entropy ={ entropy: true }
+          let rng4 = seedrandom('added entropy.',entropy);
           this.value4 = rng4();
 
-          let rng5: ESObject = seedrandom.xor4096('hello.');
+          let rng5 = seedrandom.xor4096('hello.');
           this.value5 = rng5();
         })
 
