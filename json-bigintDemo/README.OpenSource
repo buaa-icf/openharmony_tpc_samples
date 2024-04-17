@@ -4,8 +4,8 @@
         "License": "MIT License",
         "License File": " LICENSE ",
         "Version Number": "v1.0.0",
-        "Owner" : "xiafeng@huawei.com"
+        "Owner" : "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/sidorares/json-bigint",
-        "Description": "JSON.parse/stringify with bigints support"
+        "Description": "JSON.parse with bigints support"
     }
 ]
