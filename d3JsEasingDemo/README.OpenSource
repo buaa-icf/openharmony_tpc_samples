@@ -6,6 +6,6 @@
         "Version Number": "3.0.1",
         "Owner": "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/d3/d3-ease",
-        "Description": "Javascript animate library"
+        "Description": "Easing functions for smooth animation."
     }
 ]
