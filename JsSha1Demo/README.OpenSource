@@ -2,7 +2,7 @@
     {
         "Name": "js-sha1",
         "License": "MIT License",
-        "License File": "LICENSE",
+        "License File": "LICENSE-MIT",
         "Version Number": "0.6.0",
         "Owner" : "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/emn178/js-sha1",
