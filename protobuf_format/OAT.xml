@@ -117,6 +117,9 @@
           desc="hvigor构建脚本，DevEco Studio自动生成，不手动修改"
           name="app_icon.png"
           type="filename"/>
+        <filteritem type="filepath" name="sax/oh-package.json5" desc="png图片格式文件,应用图标"/>
+        <filteritem type="filepath" name="xml-js/oh-package.json5" desc="png图片格式文件,应用图标"/>
+
       </filefilter>
     </filefilterlist>
   </oatconfig>
