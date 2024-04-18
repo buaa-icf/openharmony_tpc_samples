@@ -15,10 +15,37 @@
 import { from, lastValueFrom, EMPTY, EmptyError, throwError, of } from 'rxjs';
 import { describe, expect, it } from '@ohos/hypium';
 import { finalize } from 'rxjs';
+import taskpool from '@ohos.taskpool';
+
+@Concurrent
+async function errored() {
+  const source = throwError(() => new Error('blorp!'));
+  let error: ESObject = null;
+  await lastValueFrom(source);
+  return error
+}
+
+@Concurrent
+async function emptyFun() {
+  const source = EMPTY;
+  let error: ESObject = null;
+  await lastValueFrom(source);
+  return error
+}
+
+@Concurrent
+async function undefinedFun() {
+  const source = EMPTY;
+  let error: ESObject = null;
+  await lastValueFrom(source, undefined as ESObject);
+  return error
+}
+
 const HTTP_COUNT = 2000
+
 export default function lastValueFromTest() {
   describe('lastValueFrom', () => {
-    it('should_emit_the_last_value_as_a_promise', 0, async (done:Function) => {
+    it('should_emit_the_last_value_as_a_promise', 0, async (done: Function) => {
       let finalized = false;
       const source = from([1, 0, 2, 8, 6, 9]).pipe(
         finalize(() => (finalized = true))
@@ -28,12 +55,12 @@ export default function lastValueFromTest() {
       expect(finalized).assertTrue();
       let startTime = new Date().getTime()
       let configUrlTest: (index: number) => void = async (index) => {
-         lastValueFrom(source).then(() => {
+        lastValueFrom(source).then(() => {
           if (index < HTTP_COUNT) {
             configUrlTest(index + 1)
           } else {
             let endTime = new Date().getTime()
-            let averageTime = (endTime - startTime) * 1000/ HTTP_COUNT
+            let averageTime = (endTime - startTime) * 1000 / HTTP_COUNT
             console.info("should_emit_the_last_value_as_a_promise startTime: " + startTime + ' μs');
             console.info("should_emit_the_last_value_as_a_promise endTime: " + endTime + ' μs');
             console.info("should_emit_the_last_value_as_a_promise averageTime: " + averageTime + ' μs');
@@ -44,7 +71,7 @@ export default function lastValueFromTest() {
       configUrlTest(0)
     });
 
-    it('should_support_a_default_value', 0, async (done:Function) => {
+    it('should_support_a_default_value', 0, async (done: Function) => {
       const source = EMPTY;
       const result = await lastValueFrom(source, {
         defaultValue: 0
@@ -59,7 +86,7 @@ export default function lastValueFromTest() {
             configUrlTest(index + 1)
           } else {
             let endTime = new Date().getTime()
-            let averageTime = (endTime - startTime) * 1000/ HTTP_COUNT
+            let averageTime = (endTime - startTime) * 1000 / HTTP_COUNT
             console.info("should_support_a_default_value startTime: " + startTime + ' μs');
             console.info("should_support_a_default_value endTime: " + endTime + ' μs');
             console.info("should_support_a_default_value averageTime: " + averageTime + ' μs');
@@ -70,23 +97,22 @@ export default function lastValueFromTest() {
       configUrlTest(0)
     });
 
-    it('should_support_an_undefined_config', 0, async (done:Function) => {
-      const source = EMPTY;
-      let error: ESObject = null;
+    it('should_support_an_undefined_config', 0, async (done: Function) => {
       try {
-        await lastValueFrom(source, undefined as ESObject);
-      } catch (err) {
-        error = err;
+        let result: ESObject = await taskpool.execute(undefinedFun)
+        expect(result instanceof EmptyError).assertTrue();
+      } finally {
+        done()
       }
-      expect(error instanceof EmptyError).assertTrue();
       let startTime = new Date().getTime()
+      const source = EMPTY;
       let configUrlTest: (index: number) => void = async (index) => {
         lastValueFrom(source, undefined as ESObject).then(() => {
           if (index < HTTP_COUNT) {
             configUrlTest(index + 1)
           } else {
             let endTime = new Date().getTime()
-            let averageTime = (endTime - startTime) * 1000/ HTTP_COUNT
+            let averageTime = (endTime - startTime) * 1000 / HTTP_COUNT
             console.info("should_support_an_undefined_config startTime: " + startTime + ' μs');
             console.info("should_support_an_undefined_config endTime: " + endTime + ' μs');
             console.info("should_support_an_undefined_config averageTime: " + averageTime + ' μs');
@@ -97,23 +123,23 @@ export default function lastValueFromTest() {
       configUrlTest(0)
     });
 
-    it('should_error_for_empty_observables', 0, async (done:Function) => {
-      const source = EMPTY;
-      let error: ESObject = null;
+    it('should_error_for_empty_observables', 0, async (done: Function) => {
       try {
-        await lastValueFrom(source);
-      } catch (err) {
-        error = err;
+        let result: ESObject = await taskpool.execute(emptyFun)
+        expect(result instanceof EmptyError).assertTrue();
+      } finally {
+        done()
       }
-      expect(error instanceof EmptyError).assertTrue();
+
       let startTime = new Date().getTime()
+      const source = EMPTY;
       let configUrlTest: (index: number) => void = async (index) => {
         lastValueFrom(source).then(() => {
           if (index < HTTP_COUNT) {
             configUrlTest(index + 1)
           } else {
             let endTime = new Date().getTime()
-            let averageTime = (endTime - startTime) * 1000/ HTTP_COUNT
+            let averageTime = (endTime - startTime) * 1000 / HTTP_COUNT
             console.info("should_error_for_empty_observables startTime: " + startTime + ' μs');
             console.info("should_error_for_empty_observables endTime: " + endTime + ' μs');
             console.info("should_error_for_empty_observables averageTime: " + averageTime + ' μs');
@@ -124,24 +150,23 @@ export default function lastValueFromTest() {
       configUrlTest(0)
     });
 
-    it('should_error_for_errored_observables', 0, async (done:Function) => {
-      const source = throwError(() => new Error('blorp!'));
-      let error: ESObject = null;
+    it('should_error_for_errored_observables', 0, async (done: Function) => {
       try {
-        await lastValueFrom(source);
-      } catch (err) {
-        error = err;
+        let result: ESObject = await taskpool.execute(errored)
+        expect(result).assertInstanceOf('Error');
+        expect(result.message).assertEqual('blorp!');
+      } finally {
+        done()
       }
-      expect(error).assertInstanceOf('Error');
-      expect(error.message).assertEqual('blorp!');
       let startTime = new Date().getTime()
+      const source = throwError(() => new Error('blorp!'));
       let configUrlTest: (index: number) => void = async (index) => {
         lastValueFrom(source).then(() => {
           if (index < HTTP_COUNT) {
             configUrlTest(index + 1)
           } else {
             let endTime = new Date().getTime()
-            let averageTime = (endTime - startTime) * 1000/ HTTP_COUNT
+            let averageTime = (endTime - startTime) * 1000 / HTTP_COUNT
             console.info("should_error_for_errored_observables startTime: " + startTime + ' μs');
             console.info("should_error_for_errored_observables endTime: " + endTime + ' μs');
             console.info("should_error_for_errored_observables averageTime: " + averageTime + ' μs');
@@ -152,7 +177,7 @@ export default function lastValueFromTest() {
       configUrlTest(0)
     });
 
-    it('should_work_with_a_synchronous_observable', 0, async (done:Function) => {
+    it('should_work_with_a_synchronous_observable', 0, async (done: Function) => {
       let finalized = false;
       const source = of('apples', 'bananas').pipe(finalize(() => (finalized = true)));
       const result = await lastValueFrom(source);
@@ -165,7 +190,7 @@ export default function lastValueFromTest() {
             configUrlTest(index + 1)
           } else {
             let endTime = new Date().getTime()
-            let averageTime = (endTime - startTime) * 1000/ HTTP_COUNT
+            let averageTime = (endTime - startTime) * 1000 / HTTP_COUNT
             console.info("should_work_with_a_synchronous_observable startTime: " + startTime + ' μs');
             console.info("should_work_with_a_synchronous_observable endTime: " + endTime + ' μs');
             console.info("should_work_with_a_synchronous_observable averageTime: " + averageTime + ' μs');
