@@ -4,7 +4,7 @@
         "License": "MIT license",
         "License File": "LICENSE",
         "Version Number": "2.2.1",
-        "Owner" : "xiafeng@huawei.com"
+        "Owner" : "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/formatjs/formatjs",
         "Description": "Provide i18n utilities.."
     }
