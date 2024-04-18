@@ -4,7 +4,7 @@
         "License": "Apache 2.0 and WTFPL License",
         "License File": "LICENSE",
         "Version Number": "1.0.0",
-        "Owner" : "xiafeng@huawei.com"
+        "Owner" : "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/davidchambers/Base64.js",
         "Description": "Base64 encoding/decoding tool."
     }
