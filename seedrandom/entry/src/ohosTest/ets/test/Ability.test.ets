@@ -51,32 +51,46 @@ export default function abilityTest() {
       // This API supports only one parameter: clear action function.
     })
     it('seedrandom1',0, () => {
-      let rng: ESObject = seedrandom('hello.');
+      let rng = seedrandom('hello.');
       expect(rng()).assertEqual(0.9282578795792454)
     })
 
     it('seedrandom2',0, () => {
-      let rng: ESObject = seedrandom('hello.', { global: true });
+      class global {
+        global?: boolean
+      }
+      let globalParam:global = { global: true }
+      let rng = seedrandom('hello.', globalParam);
       expect(Math.random()).assertEqual(0.9282578795792454)
     })
 
     it('seedrandom3',0, () => {
-      let rng: ESObject = seedrandom();
+      let rng = seedrandom();
       expect(rng() != null).assertTrue()
     })
 
     it('seedrandom4',0, () => {
-      let rng: ESObject = seedrandom('added entropy.', { entropy: true });
+      class entropy {
+        entropy?: boolean
+      }
+      let entropyParam:entropy = { entropy: true }
+      let rng = seedrandom('added entropy.',entropyParam);
       expect(rng() != null).assertTrue()
     })
 
     it('seedrandom5',0, () => {
-      let rng: ESObject = seedrandom('hello.', { global: false });
+      class globalType {
+        global?: boolean
+      }
+      let globalParams:globalType = { global: false }
+      let rng = seedrandom('hello.', globalParams);
       expect(rng()).assertEqual(0.9282578795792454)
     })
 
     it('seedrandom6',0, () => {
-      let rng: ESObject = seedrandom('hello.', {});
+      class emptyObj {}
+      let emptyParam:emptyObj = {}
+      let rng = seedrandom('hello.', emptyParam);
       expect(rng()).assertEqual(0.9282578795792454)
     })
   })

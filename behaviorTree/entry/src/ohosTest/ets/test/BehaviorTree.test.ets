@@ -136,11 +136,6 @@ export default function BehaviorTreedescribe() {
     it('running_does_not_call_start_multiple_times', 0, () => {
       bTree.step()
 
-      let startTime = new Date().getTime()
-      for (let index = 0; index < BASE_COUNT; index++) {
-        bTree.step()
-      }
-      endTime(startTime, 'with_the_simplest_tree_possible1');
       expect(blackboard.start).assertEqual(1)
       expect(blackboard.run).assertEqual(1)
       expect(blackboard.end).assertEqual(0)
@@ -164,6 +159,11 @@ export default function BehaviorTreedescribe() {
       expect(blackboard.start).assertEqual(2)
       expect(blackboard.run).assertEqual(4)
       expect(blackboard.end).assertEqual(2)
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        bTree.step()
+      }
+      endTime(startTime, 'with_the_simplest_tree_possible1');
     })
   })
 
@@ -329,6 +329,8 @@ export default function BehaviorTreedescribe() {
         tree: 'awesome behavior'
       })
       bTree.step()
+      expect(blackboard.taskA).assertEqual(1)
+      expect(blackboard.taskB).assertEqual(1)
       let startTime = new Date().getTime()
       for (let index = 0; index < BASE_COUNT; index++) {
         BehaviorTree.register(
@@ -339,8 +341,6 @@ export default function BehaviorTreedescribe() {
         )
       }
       endTime(startTime, 'can_load_tree_directly_as_registered_sequence');
-      expect(blackboard.taskA).assertEqual(1)
-      expect(blackboard.taskB).assertEqual(1)
     })
 
     it('looks_up_previously_registered_sequences_with_sub_sequences_as_well', 0, () => {
@@ -364,6 +364,8 @@ export default function BehaviorTreedescribe() {
         })
       })
       bTree.step()
+      expect(blackboard.taskA).assertEqual(1)
+      expect(blackboard.taskB).assertEqual(1)
       let startTime = new Date().getTime()
       for (let index = 0; index < BASE_COUNT; index++) {
         new BehaviorTree({
@@ -374,8 +376,6 @@ export default function BehaviorTreedescribe() {
         })
       }
       endTime(startTime, 'looks_up_previously_registered_sequences_with_sub_sequences_as_well');
-      expect(blackboard.taskA).assertEqual(1)
-      expect(blackboard.taskB).assertEqual(1)
     })
 
     it('looks_up_previously_registered_task_within_a_decorators', 0, () => {
@@ -388,15 +388,16 @@ export default function BehaviorTreedescribe() {
         })
       })
       bTree.step()
+
+      console.log("testt testt " + blackboard.taskA)
+      console.log("testt testt  " + blackboard.taskB)
+      expect(blackboard.taskA).assertEqual(1)
+      expect(blackboard.taskB).assertEqual(1)
       let startTime = new Date().getTime()
       for (let index = 0; index < BASE_COUNT; index++) {
         bTree.step()
       }
       endTime(startTime, 'looks_up_previously_registered_sequences_with_sub_sequences_as_well');
-      console.log("testt testt " + blackboard.taskA)
-      console.log("testt testt  " + blackboard.taskB)
-      expect(blackboard.taskA).assertEqual(1)
-      expect(blackboard.taskB).assertEqual(1)
     })
   })
 
@@ -467,19 +468,7 @@ export default function BehaviorTreedescribe() {
       })
 
       bTree.step()
-      let startTime = new Date().getTime()
-      for (let index = 0; index < BASE_COUNT; index++) {
-        new Sequence({
-          start: (blackboard: Blackboard) => {
-            ++blackboard.startSeq
-          },
-          end: (blackboard: Blackboard) => {
-            ++blackboard.endSeq
-          },
-          nodes: [task1, decoratedTask2, task3]
-        })
-      }
-      endTime(startTime, 'behavior_with_running_nodes');
+
       expect(blackboard.startSeq).assertEqual(1)
       expect(blackboard.endSeq).assertEqual(0)
 
@@ -539,6 +528,20 @@ export default function BehaviorTreedescribe() {
       expect(blackboard.start3).assertEqual(1)
       expect(blackboard.run3).assertEqual(1)
       expect(blackboard.end3).assertEqual(1)
+
+      let startTime = new Date().getTime()
+      for (let index = 0; index < BASE_COUNT; index++) {
+        new Sequence({
+          start: (blackboard: Blackboard) => {
+            ++blackboard.startSeq
+          },
+          end: (blackboard: Blackboard) => {
+            ++blackboard.endSeq
+          },
+          nodes: [task1, decoratedTask2, task3]
+        })
+      }
+      endTime(startTime, 'behavior_with_running_nodes');
     })
   })
 

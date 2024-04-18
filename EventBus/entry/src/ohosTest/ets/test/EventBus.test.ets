@@ -19,10 +19,7 @@ import EventBus from 'eventbusjs'
 let TAG: string = 'EventBusDemo '
 const BASE_COUNT: number = 2000;
 const HTTP_COUNT: number = 2;
-const BASELINE_HASSIMECASR: number = 500;
 const BASELINE_CREATEHTTP: number = 500;
-const BASELINE_REQUEST: number = 2500;
-const BASELINE_DESTROY: number = 30;
 
 interface TargetType {
   className: string
@@ -58,7 +55,7 @@ export default function eventBusTest() {
       EventBus.addEventListener("basicTest", basicTestCallBack)
       expect(EventBus.hasEventListener('basicTest', basicTestCallBack)).assertTrue()
       let startTime = new Date().getTime();
-      for (let index = 0; index < BASE_COUNT; index++) {
+      for (let index = 0; index < HTTP_COUNT; index++) {
         EventBus.removeEventListener("basicTest", basicTestCallBack)
       }
       endTime(startTime, TAG + ' removeEventListener', BASELINE_CREATEHTTP);
@@ -93,7 +90,7 @@ export default function eventBusTest() {
       }
       EventBus.addEventListener("basicEventBus", basicEventBusCallBack)
       let startTime = new Date().getTime();
-      for (let index = 0; index < BASE_COUNT; index++) {
+      for (let index = 0; index < HTTP_COUNT; index++) {
         EventBus.dispatch("basicEventBus")
       }
       endTime(startTime, TAG + ' dispatch', BASELINE_CREATEHTTP);
@@ -110,7 +107,7 @@ export default function eventBusTest() {
       EventBus.addEventListener("cbd", cbdCallBack)
       expect(EventBus.getEvents()).assertContain("abc")
       let startTime = new Date().getTime();
-      for (let index = 0; index < BASE_COUNT; index++) {
+      for (let index = 0; index < HTTP_COUNT; index++) {
         EventBus.getEvents()
       }
       endTime(startTime, TAG + ' getEvents', BASELINE_CREATEHTTP);

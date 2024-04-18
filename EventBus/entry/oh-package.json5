@@ -1,6 +1,9 @@
 {
   "license": "MIT license",
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/eventbusjs": "^0.2.0"
+
+  },
   "author": "ohos_tpc",
   "name": "entry",
   "description": "Simple JavaScript class for managing events",

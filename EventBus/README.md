@@ -13,6 +13,7 @@ ohpm i eventbusjs
 ohpm install @types/eventbusjs --save-dev //import eventbusjs 的时候语法报错。其原因是eventbusjs包内不含类型声明，需要 @types/eventbusjs 下载这个包的声明文件，从而解决语法的报错。
 
 ```
+OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
 使用组件在您的代码中:
 
