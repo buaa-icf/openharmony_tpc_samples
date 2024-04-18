@@ -4,7 +4,7 @@
         "License": "MIT License",
         "License File": " LICENSE ",
         "Version Number": "2.1.0",
-        "Owner" : "Calamari"
+        "Owner" : "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/Calamari/BehaviorTree.js",
         "Description": "A JavaScript implementation of Behavior Trees."
     }
