@@ -1,8 +1,8 @@
-# reflect_metadata
+# reflect-metadata
 
 ## 简介
 
-reflect_metadata用于在TypeScript中操作类的元数据，允许在声明类和属性时添加和读取元数据。
+reflect-metadata用于在TypeScript中操作类的元数据，允许在声明类和属性时添加和读取元数据。
 
 ## 效果展示
 <img height="400" src="./screenshot/效果展示.gif"/>
@@ -10,7 +10,7 @@ reflect_metadata用于在TypeScript中操作类的元数据，允许在声明类
 ## 下载安装
 
 ````
-ohpm install reflect_metadata@0.1.13
+ohpm install reflect-metadata@0.1.13
 ````
 
 OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)

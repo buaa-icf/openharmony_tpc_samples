@@ -28,7 +28,6 @@ export default function BeflateCoverTest() {
   describe('BeflateCoverTest',  () =>{
 
     let long_sample: string | Uint8Array;
-    let c:pako.constants = pako.constants
     beforeAll(() =>{
 
     })
@@ -97,37 +96,37 @@ export default function BeflateCoverTest() {
 
       let deflate1: Object = deflate
       ret = deflate(null, 0);
-      expect(ret).assertDeepEquals(c.Z_STREAM_ERROR)
+      expect(ret).assertDeepEquals(pako.constants.Z_STREAM_ERROR)
 
 
       let strm:ZStream = new ZStream();
       //
       ret = deflateInit(null);
 
-      expect(ret).assertDeepEquals(c.Z_STREAM_ERROR)
+      expect(ret).assertDeepEquals(pako.constants.Z_STREAM_ERROR)
       ret = deflateInit(strm, 6);
-      expect(ret).assertDeepEquals(c.Z_OK)
+      expect(ret).assertDeepEquals(pako.constants.Z_OK)
 
       ret = deflateSetHeader(null);
 
-      expect(ret).assertDeepEquals(c.Z_STREAM_ERROR)
+      expect(ret).assertDeepEquals(pako.constants.Z_STREAM_ERROR)
       strm.state.wrap = 1;
       ret = deflateSetHeader(strm, null);
 
-      expect(ret).assertDeepEquals(c.Z_STREAM_ERROR)
+      expect(ret).assertDeepEquals(pako.constants.Z_STREAM_ERROR)
       strm.state.wrap = 2;
       ret = deflateSetHeader(strm, null);
-      expect(ret).assertDeepEquals(c.Z_OK)
-      ret = deflate(strm, c.Z_FINISH);
+      expect(ret).assertDeepEquals(pako.constants.Z_OK)
+      ret = deflate(strm, pako.constants.Z_FINISH);
 
-      expect(ret).assertDeepEquals(c.Z_BUF_ERROR)
+      expect(ret).assertDeepEquals(pako.constants.Z_BUF_ERROR)
       ret = deflateEnd(null);
 
-      expect(ret).assertDeepEquals(c.Z_STREAM_ERROR)
+      expect(ret).assertDeepEquals(pako.constants.Z_STREAM_ERROR)
       //BS_NEED_MORE
       strm.state.status = 5;
       ret = deflateEnd(strm);
-      expect(ret).assertDeepEquals(c.Z_STREAM_ERROR)
+      expect(ret).assertDeepEquals(pako.constants.Z_STREAM_ERROR)
     });
 
   })
@@ -137,7 +136,7 @@ function testDeflate(data:string | Uint8Array, opts:object, flush:number): void 
   let deflator:pako.Deflate = new pako.Deflate(opts);
   deflator.push(data, flush);
   deflator.push(data, true);
-  let errcode:Error = deflator.err;
+  let errcode:ReturnCodes = deflator.err;
 
   expect(errcode).assertEqual(0)
 }

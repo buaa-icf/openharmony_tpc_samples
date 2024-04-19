@@ -93,4 +93,4 @@ expect(result).assertDeepEquals(items);
 使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples) 。
 
 ## 开源协议
-本项目基于 [ISC License]() ，请自由地享受和参与开源。
+本项目基于 [ISC License](https://github.com/msgpack/msgpack-javascript/blob/main/LICENSE) ，请自由地享受和参与开源。

@@ -2,7 +2,7 @@
 
 ## 简介
 
-[Unrar](https://www.rarlab.com/rar_add.htm) ，是一个解压rar文件的库。本库基于[Unrar](https://www.rarlab.com/rar_add.htm) 原库进行适配，使其可以运行在 OpenHarmony，并沿用其现有用法和特性。
+本库基于[Unrar](https://www.rarlab.com/rar_add.htm) 原库进行适配，使其可以运行在 OpenHarmony，并沿用其现有用法和特性。[Unrar](https://www.rarlab.com/rar_add.htm) ，是一个解压rar文件的库。功能如下：
 
 - 判断压缩包名是否加密
 - 解压文件到指定目标路径
@@ -22,6 +22,12 @@ ohpm install @ohos/unrar
 import unrar from '@ohos/unrar'
 ```
 
+## 接口说明
+| **属性**                                                                               |                                  **入参类型**                                  | **说明**                                                     |
+|--------------------------------------------------------------------------------------|:--------------------------------------------------------------------------:| ------------------------------------------------------------ |
+| isEncrypted                                                        |                           (path:string)=>number                            | 判断文件是否加密 |
+| extract                               |          (path: string, dest: string, password?: string)=>string           | 同步解压文件                       |
+| RarFiles_Extract | (path: string, dest: string, callBack: ICallBack, password?: string)=>void | 异步步解压文件 |
 
 
 ### isEncrypted 判断压缩包名是否加密方法示例

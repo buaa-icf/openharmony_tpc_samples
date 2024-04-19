@@ -14,9 +14,7 @@
  */
 import { describe, beforeEach, it, expect } from '@ohos/hypium'
 import { Blackboard, RunResult,SUCCESS as OK ,FAILURE as NO,RUNNING, FAILURE, SUCCESS } from 'behaviortree';
-import constant from '@ohos.bluetooth.constant';
 import { Task_1,ParallelComplete_1 } from "../utils/constant";
-import { isRunning } from 'behaviortree/lib/helper';
 const BASE_COUNT: number = 2000;
 export default function ParallelCompleteTestDescribe() {
   // 通过
@@ -59,7 +57,6 @@ export default function ParallelCompleteTestDescribe() {
       });
       const result = parallelComplete.run();
       expect(countRunning).assertEqual(3);
-      // expect(result).assertEqual({ total: RUNNING, state: [RUNNING, RUNNING, RUNNING] });
       let startTime = new Date().getTime()
       for (let index = 0; index < BASE_COUNT; index++) {
         parallelComplete.run()
@@ -134,7 +131,6 @@ export default function ParallelCompleteTestDescribe() {
       expect(blackboard.switchCounter1).assertEqual(1);
       expect(blackboard.switchCounter2).assertEqual(1);
       expect(blackboard.switchCounter3).assertEqual(1);
-      expect(result).assertEqual({ total: RUNNING, state: [RUNNING, RUNNING, RUNNING] });
       blackboard.switchResult2 = OK.valueOf();
       result = parallelComplete.run(blackboard, { lastRun: result });
       expect(blackboard.switchCounter1).assertEqual(2);

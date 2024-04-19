@@ -4,7 +4,7 @@
         "License": "MIT license",
         "License File": "LICENSE ",
         "Version Number": "3.2.1",
-        "Owner" : "xiafeng@huawei.com"
+        "Owner" : "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/formatjs/formatjs",
         "Description": "A ponyfill/polyfill for intl-unified-numberformat. This wraps Intl.NumberFormat and has the exact same APIs."
     }

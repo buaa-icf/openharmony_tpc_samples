@@ -6,6 +6,6 @@
         "Version Number": "3.18.3",
         "Owner": "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/zh-lx/pinyin-pro",
-        "Description": "A reactive programming library for JavaScript"
+        "Description": "Chinese to pinyin, pinyin tone, pinyin initials, pinyin finals, polyphonic pinyin, surname pinyin, pinyin matching"
     }
 ]

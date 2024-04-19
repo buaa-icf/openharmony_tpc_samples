@@ -4,7 +4,7 @@
         "License": "MIT License",
         "License File": " LICENSE ",
         "Version Number": "11.0.1",
-        "Owner" : "xiafeng@huawei.com"
+        "Owner" : "xiafeng@huawei.com",
         "Upstream URL": "http://github.com/oozcitak/xmlbuilder-js",
         "Description": "An XML builder for node.js"
     }
