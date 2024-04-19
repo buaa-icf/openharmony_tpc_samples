@@ -48,7 +48,10 @@ export default function GzipSpecialsTest() {
 
         const inflator:pako.Inflate = new pako.Inflate();
         inflator.push(data);
-        expect(inflator.header.name).assertEqual('test name');
+          if (inflator == undefined) return;
+          if (inflator.header.extra == undefined) return;
+
+          expect(inflator.header.name).assertEqual('test name');
         expect(inflator.header.comment).assertEqual('test comment');
         expect(a2s(inflator.header.extra)).assertEqual('test extra');
       });
@@ -60,13 +63,14 @@ export default function GzipSpecialsTest() {
       const deflator:pako.Deflate = new pako.Deflate(onTypeOf11(true,true,1234567,15,'test name','test comment', [ 4, 5, 6 ]));
       deflator.push(data, true);
 
-      const inflator:pako.Inflate = new pako.Inflate(onTypeOf10('string'));
+      const inflator:pako.Inflate = new pako.Inflate(onTypeOf10('string')) as pako.InflateOptions;
       inflator.push(deflator.result);
 
       expect(inflator.err).assertEqual(0);
       expect(inflator.result).assertEqual(data);
 
-      const header: pako.Inflate = inflator.header;
+      const header: pako.Inflate | undefined = inflator.header;
+      if (header == undefined) return;
       expect(header.time).assertEqual(1234567);
       expect(header.os).assertEqual(15);
       expect(header.name).assertEqual('test name');

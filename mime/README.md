@@ -2,13 +2,13 @@
 
 ## 简介
 
-获取给定文件路径或扩展名的 mime 类型。
+mime库用来获取给定文件路径或扩展名的 mime 类型，为开发者提供更为便利的开发使用体验，代码的可读性更强。
 
 ## 安装
 
 ```
 ohpm install mime
-ohpm install @types/mime --save-dev //import mime 的时候语法报错。其原因是mime包内不含类型声明，需要 @types/mime 下载这个包的声明文件，从而解决语法的报错。
+ohpm install @types/mime@3.0.3 --save-dev //import mime 的时候语法报错。其原因是mime包内不含类型声明，需要 @types/mime 下载这个包的声明文件，从而解决语法的报错。
 ```
 
 OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)

@@ -4,17 +4,17 @@
         "License": "Apache License 2.0",
         "License File": " LICENSE ",
         "Version Number": "4.0.0",
-        "Owner" : "sindresorhus"
+        "Owner" : "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/sindresorhus/leven/",
         "Description": "Measure the difference between two strings using the Levenshtein distance algorithm"
     },
-        {
-            "Name": "codsen",
-            "License": "Apache License 2.0",
-            "License File": " LICENSE ",
-            "Version Number": "5.1.1",
-            "Owner" : "Codsen"
-            "Upstream URL": "https://github.com/codsen/codsen/tree/main/packages/easy-replace",
-            "Description": "Replace strings with optional lookarounds, but without regexes"
-        }
+    {
+        "Name": "codsen",
+        "License": "Apache License 2.0",
+        "License File": " LICENSE ",
+        "Version Number": "5.1.1",
+        "Owner" : "xiafeng@huawei.com",
+        "Upstream URL": "https://github.com/codsen/codsen/tree/main/packages/easy-replace",
+        "Description": "Replace strings with optional lookarounds, but without regexes"
+    }
 ]

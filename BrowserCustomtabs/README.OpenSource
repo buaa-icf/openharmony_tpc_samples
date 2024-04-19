@@ -4,7 +4,7 @@
         "License": "Apache License 2.0",
         "License File": " LICENSE ",
         "Version Number": "1.4.0",
-        "Owner" : "Android Jetpack"
+        "Owner" : "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/androidx/androidx/tree/androidx-main/browser",
         "Description": "该androidx.browser库为应用程序开发人员提供了一个接口，用于通信和使用web浏览器"
     }

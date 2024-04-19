@@ -113,8 +113,8 @@ struct Index {
             .fontSize(18)
             .height(80)
             .onClick(() => {
-              let isHas: string = EventBus.hasEventListener('basicTest', this.basicTestCallBack);
-              this.changeText = isHas
+              let isHas: boolean = EventBus.hasEventListener('basicTest', this.basicTestCallBack);
+              this.changeText = isHas + ""
               console.log(TAG + " Determine whether the Basictest subscription exists " + isHas)
             }).margin({ bottom: 20 })
 
@@ -214,7 +214,7 @@ function testAddParameters() {
 function refreshComeFromDetail(that: ThatType) {
   interface formDetailA {
     className: string
-    doSomething: Function
+    doSomething: EventBus.EventListener
   }
 
   // 刷新来自Detail测试开始

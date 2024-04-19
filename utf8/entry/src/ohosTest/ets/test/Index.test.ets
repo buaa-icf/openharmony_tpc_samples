@@ -43,7 +43,7 @@ export default function IndexTest() {
 
             raises(
               ()=> {
-                utf8.encode((object as Record<string,Object>).decoded);
+                utf8.encode((object as Record<string,string>).decoded);
               },
               Error,
               'Error: non-scalar value detected'
@@ -51,7 +51,7 @@ export default function IndexTest() {
           } else {
             equal(
               (object as Record<string,Object>).encoded,
-              utf8.encode((object as Record<string,Object>).decoded),
+              utf8.encode((object as Record<string,string>).decoded),
               'Encoding: ' + description
             );
 
@@ -66,7 +66,7 @@ export default function IndexTest() {
         if ((object as Record<string,Object>).error) {
           raises(
             ()=> {
-              utf8.decode((object as Record<string,Object>).encoded);
+              utf8.decode((object as Record<string,string>).encoded);
             },
             Error,
             'Error: non-scalar value detected'
@@ -76,7 +76,7 @@ export default function IndexTest() {
 
           equal(
             (object as Record<string,Object>).decoded,
-            utf8.decode((object as Record<string,Object>).encoded),
+            utf8.decode((object as Record<string,string>).encoded),
             'Decoding: ' + description
           );
         }

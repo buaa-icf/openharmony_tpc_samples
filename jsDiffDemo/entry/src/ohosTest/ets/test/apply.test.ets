@@ -14,7 +14,7 @@
  */
 
 import { describe, it, expect } from '@ohos/hypium'
-import { createPatch, applyPatch, applyPatches, parsePatch } from 'diff'
+import {ParsedDiff, createPatch, applyPatch, applyPatches, parsePatch } from 'diff'
 import { Patch, Options } from './interface'
 
 export default function applyTest() {
@@ -562,7 +562,7 @@ class Data {
     }
   }
 
-  patched(index: Patch, content: boolean, callback: Function) {
+  patched(index: ParsedDiff, content: string, callback: Function) {
     callback(this.expected);
   }
 

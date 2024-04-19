@@ -4,7 +4,7 @@
         "License": "MIT License",
         "License File": " LICENSE ",
         "Version Number": "1.0.0",
-        "Owner" : "xiafeng@huawei.com"
+        "Owner" : "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/mithunsatheesh/node-rules",
         "Description": "Node-rules is a light weight forward chaining Rule Engine, written in JavaScript for both browser and node.js environments."
     }

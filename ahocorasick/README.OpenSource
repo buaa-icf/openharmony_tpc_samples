@@ -4,7 +4,7 @@
         "License": "MIT License",
         "License File": "https://github.com/BrunoRB/ahocorasick/blob/master/LICENSE",
         "Version Number": "1.0.2",
-        "Owner" : "BrunoRB"
+        "Owner" : "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/BrunoRB/ahocorasick",
         "Description": "Aho-corasick for javascript."
     }

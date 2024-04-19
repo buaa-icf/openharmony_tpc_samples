@@ -4,6 +4,7 @@
         "License": "Apache-2.0 License",
         "License File": " LICENSE ",
         "Version Number": "master",
+        "Owner" : "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/openid/AppAuth-JS",
         "Description": "It mainly provides authentication and authorization for applications"
     }
