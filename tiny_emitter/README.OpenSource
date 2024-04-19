@@ -4,7 +4,7 @@
          "License": "MIT License",
          "License File": "LICENSE",
          "Version Number": "2.1.0",
-         "Owner" : "xiafeng@huawei.com"
+         "Owner" : "xiafeng@huawei.com",
          "Upstream URL": "https://github.com/scottcorgan/tiny-emitter",
          "Description": "A tiny (less than 1k) event emitter library"
     }
