@@ -10,6 +10,8 @@
 ohpm install cbor-js
 ```
 
+OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。 
+
 ## 使用说明
 
 ```javascript
