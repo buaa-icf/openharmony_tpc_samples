@@ -27,6 +27,7 @@ import subscriptionTest from './spec/Subscription-spec.test';
 import asyncSubjectTest from './spec/subjects/AsyncSubject-spec.test';
 import behaviorSubjectTest from './spec/subjects/BehaviorSubject-spec.test';
 import replaySubjectTest from './spec/subjects/ReplaySubject-spec.test';
+import DurationTest from './spec/DurationTest';
 
 
 export default function testsuite() {
@@ -44,4 +45,5 @@ export default function testsuite() {
   replaySubjectTest();
   observableTest();
   configTest();
+  // DurationTest();
 }
