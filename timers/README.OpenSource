@@ -4,7 +4,7 @@
         "License": "MIT license",
         "License File": "README.md",
         "Version Number": "0.1.1",
-        "Owner" : "xiafeng@huawei.com"
+        "Owner" : "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/popomore/timers",
         "Description": "A tiny cron-like tools for humman"
     }
