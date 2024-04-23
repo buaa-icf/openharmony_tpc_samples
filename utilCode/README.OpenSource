@@ -7,7 +7,7 @@
    "Owner":"Blankj",
    "Upstream URL":"https://github.com/Blankj/AndroidUtilCode",
    "Description": "AndroidUtilCode 🔥 是一个强大易用的安卓工具类库"
-  }
+  },
   {
    "Name":"validator.js",
    "License":"MIT license",
@@ -16,7 +16,7 @@
    "Owner":"validatorjs",
    "Upstream URL":"https://github.com/validatorjs/validator.js",
    "Description": "This library validates and sanitizes strings only."
-  }
+  },
     {
      "Name":"gcoord",
      "License":"MIT license",
@@ -25,16 +25,16 @@
      "Owner":"hujiulong",
      "Upstream URL":"https://github.com/hujiulong/gcoord",
      "Description": "gcoord(geographic coordinates)是一个处理地理坐标系的JS库，用来修正百度地图、高德地图及其它互联网地图坐标系不统一的问题。"
-    }
+    },
     {
      "Name":"node-cache",
-     "License":"BSD 2-Clause "Simplified" License",
+     "License":"BSD 2-Clause 'Simplified' License",
      "License File":"https://github.com/ptarjan/node-cache/blob/master/LICENSE.md",
      "Version Number":"0.2.0",
      "Owner":"ptarjan",
      "Upstream URL":"https://github.com/ptarjan/node-cache",
      "Description": "A simple in-memory cache for node.js"
-    }
+    },
     {
      "Name":"ImageKnife",
      "License":" Apache License 2.0",
@@ -43,7 +43,7 @@
      "Owner":"zhoulisheng1",
      "Upstream URL":"https://gitee.com/openharmony-tpc/ImageKnife",
      "Description": "专门为OpenHarmony打造的一款图像加载缓存库，致力于更高效、更轻便、更简单。"
-    }
+    },
     {
      "Name":"time-apmp",
      "License":"无",
@@ -52,7 +52,7 @@
      "Owner":"ipostol",
      "Upstream URL":"https://github.com/ipostol/time-ampm",
      "Description": "time-apmp"
-    }
+    },
     {
      "Name":"leap-year",
      "License":"MIT License",
@@ -61,7 +61,7 @@
      "Owner":"sindresorhus",
      "Upstream URL":"https://github.com/sindresorhus/leap-year",
      "Description": "Check if a year is a leap year"
-    }
+    },
     {
      "Name":"imagetype",
      "License":"无",
@@ -70,7 +70,7 @@
      "Owner":"fatelei",
      "Upstream URL":"https://github.com/fatelei/imagetype",
      "Description": "Get correct image type"
-    }
+    },
     {
      "Name":"randomcolor",
      "License":"CC0 1.0 Universal",
