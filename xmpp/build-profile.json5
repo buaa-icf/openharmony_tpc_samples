@@ -1,0 +1,132 @@
+{
+  "app": {
+    "signingConfigs": [],
+    "products": [
+      {
+        "name": "default",
+        "signingConfig": "default",
+        "compileSdkVersion": 12,
+        "compatibleSdkVersion": 12,
+        "runtimeOS": "OpenHarmony",
+      }
+    ],
+    "buildModeSet": [
+      {
+        "name": "debug",
+      },
+      {
+        "name": "release"
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "library_xml",
+      "srcPath": "./library_xml"
+    },
+    {
+      "name": "library_uri",
+      "srcPath": "./library_uri"
+    },
+    {
+      "name": "library_connection",
+      "srcPath": "./library_connection"
+    },
+    {
+      "name": "library_sasl_anonymous",
+      "srcPath": "./library_sasl_anonymous"
+    },
+    {
+      "name": "library_error",
+      "srcPath": "./library_error"
+    },
+    {
+      "name": "library_connection_tcp",
+      "srcPath": "./library_connection_tcp"
+    },
+    {
+      "name": "library_tcp",
+      "srcPath": "./library_tcp"
+    },
+    {
+      "name": "library_websocket",
+      "srcPath": "./library_websocket"
+    },
+    {
+      "name": "library_iq",
+      "srcPath": "./library_iq"
+    },
+    {
+      "name": "library_middleware",
+      "srcPath": "./library_middleware"
+    },
+    {
+      "name": "library_client_core",
+      "srcPath": "./library_client_core"
+    },
+    {
+      "name": "library_client",
+      "srcPath": "./library_client"
+    },
+    {
+      "name": "library_reconnect",
+      "srcPath": "./library_reconnect"
+    },
+    {
+      "name": "ltx",
+      "srcPath": "./ltx"
+    },
+    {
+      "name": "library_events",
+      "srcPath": "./library_events"
+    },
+    {
+      "name": "library_id",
+      "srcPath": "./library_id"
+    },
+    {
+      "name": "library_stream_features",
+      "srcPath": "./library_stream_features"
+    },
+    {
+      "name": "library_resolve",
+      "srcPath": "./library_resolve"
+    },
+    {
+      "name": "library_sasl",
+      "srcPath": "./library_sasl"
+    },
+    {
+      "name": "library_resource_binding",
+      "srcPath": "./library_resource_binding"
+    },
+    {
+      "name": "library_stream_management",
+      "srcPath": "./library_stream_management"
+    },
+    {
+      "name": "library_sasl_scram_sha_1",
+      "srcPath": "./library_sasl_scram_sha_1"
+    },
+    {
+      "name": "library_session_establishment",
+      "srcPath": "./library_session_establishment"
+    },
+    {
+      "name": "library_sasl_plain",
+      "srcPath": "./library_sasl_plain"
+    }
+  ]
+}

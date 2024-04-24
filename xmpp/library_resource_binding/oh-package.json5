@@ -1,0 +1,16 @@
+{
+  "name": "@xmpp/resource-binding",
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@xmpp/xml": "file:../library_xml",
+    "@xmpp/iq": "file:../library_iq",
+    "@xmpp/middleware": "file:../library_middleware",
+    "@xmpp/stream-features": "file:../library_stream_features"
+  }
+}

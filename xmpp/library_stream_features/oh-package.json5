@@ -1,0 +1,18 @@
+{
+  "name": "@xmpp/stream-features",
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@types/koa-compose": "^3.2.8",
+    "@types/koa": "^2.15.0",
+    "@xmpp/xml": "file:../library_xml",
+    "@xmpp/middleware": "file:../library_middleware"
+  },
+  "devDependencies": {},
+  "dynamicDependencies": {}
+}

@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "library_connection",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}

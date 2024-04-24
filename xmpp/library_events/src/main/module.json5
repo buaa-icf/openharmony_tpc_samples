@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "library_events",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}

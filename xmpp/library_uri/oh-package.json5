@@ -1,0 +1,11 @@
+{
+  "name": "@xmpp/uri",
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "main": "index.js",
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@xmpp/jid": "^0.13.1"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "@xmpp/library_sasl_scram_sha_1",
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "main": "index.js",
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {}
+}

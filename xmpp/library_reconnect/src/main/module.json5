@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "library_reconnect",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}

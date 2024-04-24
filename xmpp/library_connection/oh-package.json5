@@ -1,0 +1,16 @@
+{
+  "name": "@xmpp/connection",
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@xmpp/error": "file:../library_error",
+    "@xmpp/jid": "^0.13.1",
+    "@xmpp/xml": "file:../library_xml",
+    "@xmpp/events": "file:../library_events"
+  }
+}

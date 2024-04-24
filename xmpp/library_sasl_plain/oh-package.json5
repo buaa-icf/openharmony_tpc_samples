@@ -1,0 +1,16 @@
+{
+  "name": "@xmpp/sasl-plain",
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@xmpp/sasl": "file:../library_sasl",
+    "sasl-plain": "^0.1.0"
+  },
+  "devDependencies": {},
+  "dynamicDependencies": {}
+}

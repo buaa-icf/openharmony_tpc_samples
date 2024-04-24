@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "library_websocket",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}

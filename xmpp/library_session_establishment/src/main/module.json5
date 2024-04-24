@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "library_session_establishment",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "library_resource_binding",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "name": "@xmpp/iq",
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "main": "index.js",
+  "type": "module",
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@xmpp/events": "file:../library_events",
+    "@xmpp/xml": "file:../library_xml",
+    "@xmpp/middleware": "file:../library_middleware",
+    "@xmpp/id": "file:../library_id",
+    "@types/koa-compose": "^3.2.8"
+  },
+  "devDependencies": {},
+  "dynamicDependencies": {}
+}

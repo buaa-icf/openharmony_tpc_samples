@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "library_tls",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}

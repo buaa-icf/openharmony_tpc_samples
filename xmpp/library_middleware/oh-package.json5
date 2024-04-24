@@ -1,0 +1,20 @@
+{
+  "name": "@xmpp/middleware",
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@xmpp/xml": "file:../library_xml",
+    "@xmpp/connection": "file:../library_connection",
+    "@xmpp/error": "file:../library_error",
+    "koa-compose": "^4.1.0",
+//    "@types/koa-compose": "^3.2.8",
+    "@xmpp/jid": "0.0.2"
+  },
+  "devDependencies": {},
+  "dynamicDependencies": {}
+}

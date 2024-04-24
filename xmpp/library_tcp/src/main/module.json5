@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "library_tcp",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}
