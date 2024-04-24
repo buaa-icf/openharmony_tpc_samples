@@ -25,11 +25,11 @@ import parse from 'minimist'
 export default function parseModifiedTest() {
   describe('minimist_parse_modified', ()=> {
     it('parse_with_modifier_functions', 0, ()=> {
-      let argv: ESObject = parse(['-b', '123'], {
+      let argv: ESObject = parse(['-b', 'moo'], {
         boolean: 'b', string: "_"
       });
       expect(argv).assertDeepEquals({
-        b: true, _: [123]
+        b: true, _: ['moo']
       });
     });
   })
