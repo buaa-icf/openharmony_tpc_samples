@@ -275,6 +275,7 @@
                 <policyitem type="license" name="MIT" path="apng/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="ISC" path="ohos_msgpack/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="ohos_msgpack/entry/src/ohosTest/ets/test/test/msg/timestamp.js" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="ohos_ftp-srv/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
 	    </policy>
         </policylist>
         <licensematcherlist>
