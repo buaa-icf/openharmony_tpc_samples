@@ -215,7 +215,7 @@ export default function dommhandler() {
     })
 
     it('endIndex', 0, () => {
-      let childNode: ChildNode | null = element[4].firstChild
+      let childNode: ChildNode | null = element[0].firstChild
       if (childNode != null) {
         let parentNode: ParentNode | null = childNode.parent
         if(parentNode != null) {
