@@ -192,6 +192,4 @@ struct Index {
 
 ```
 
-以上是我以admin这个账户登陆的，在spark中进行以下操作：
-
 ![image-20240424171156274](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20240424171156274.png)
