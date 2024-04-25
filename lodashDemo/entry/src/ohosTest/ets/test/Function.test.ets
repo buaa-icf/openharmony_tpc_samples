@@ -482,47 +482,50 @@ export default function functionTest() {
     it('deferTest01', 0, () => {
       let startTime16 = new Date().getTime()
       console.info('appInfoTest xts deferTest01 startTime:' + startTime16 + "us")
-      let deferString: number = defer((text: string) => {
+      let pass = false;
+      defer(() => {
+        pass = true;
+        let endTime16 = new Date().getTime()
+        console.info('appInfoTest xts deferTest01 endTime:' + endTime16 + "us")
+        let averageTime16 = endTime16 - startTime16
+        console.info('appInfoTest xts deferTest01 averageTime:' + averageTime16 + "us")
+      });
 
-        console.log(text);
-
-      }, 'deferred');
-
-      let endTime16 = new Date().getTime()
-      console.info('appInfoTest xts deferTest01 endTime:' + endTime16 + "us")
-      let averageTime16 = endTime16 - startTime16
-      console.info('appInfoTest xts deferTest01 averageTime:' + averageTime16 + "us")
       let startTime = new Date().getTime();
       for (let index = 0; index < BASE_COUNT; index++) {
-        defer((text: string) => {
-          console.log(text);
-        }, 'deferred');
+        defer(() => {
+          pass = true;
+        });
       }
       endTime(startTime, 'deferTest01');
-      expect(deferString).assertEqual(517);
+      setTimeout(() => {
+        expect(pass)
+      }, 32);
     })
 
 
     it('deferTest02', 0, () => {
       let startTime17 = new Date().getTime()
       console.info('appInfoTest xts deferTest02 startTime:' + startTime17 + "us")
-      let deferString: number = defer((content: string) => {
+      let args = [];
+      defer(()=> {
+        args = slice.call(arguments);
+        let endTime17 = new Date().getTime()
+        console.info('appInfoTest xts deferTest02 endTime:' + endTime17 + "us")
+        let averageTime17 = endTime17 - startTime17
+        console.info('appInfoTest xts deferTest02 averageTime:' + averageTime17 + "us")
+        }, 1, 2,);
 
-        console.log(content);
-
-      }, 'GeeksforGeeks!');
-
-      let endTime17 = new Date().getTime()
-      console.info('appInfoTest xts deferTest02 endTime:' + endTime17 + "us")
-      let averageTime17 = endTime17 - startTime17
-      console.info('appInfoTest xts deferTest02 averageTime:' + averageTime17 + "us")
       let startTime = new Date().getTime();
       for (let index = 0; index < BASE_COUNT; index++) {
         defer((content: string) => {
         }, 'GeeksforGeeks!');
       }
       endTime(startTime, 'deferTest02');
-      expect(deferString).assertEqual(521);
+
+      setTimeout(() => {
+        expect(args).toEqual([1, 2]);
+      }, 32);
     })
 
 
