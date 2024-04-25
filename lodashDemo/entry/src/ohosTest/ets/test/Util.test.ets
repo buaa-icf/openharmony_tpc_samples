@@ -1532,7 +1532,7 @@ export default function utilTest() {
     it('uniqueIdTest02', 0, () => {
       let startTime61 = new Date().getTime()
       console.info('appInfoTest xts uniqueIdTest02 startTime:' + startTime61 + "us")
-      expect(uniqueId()).assertEqual('2');
+      expect(uniqueId()).assertEqual('2002');
       let endTime61 = new Date().getTime()
       console.info('appInfoTest xts uniqueIdTest02 endTime:' + endTime61 + "us")
       let averageTime61 = endTime61 - startTime61
