@@ -499,7 +499,7 @@ export default function functionTest() {
       }
       endTime(startTime, 'deferTest01');
       setTimeout(() => {
-        expect(pass)
+        expect(pass).assertTrue();
       }, 32);
     })
 
@@ -507,24 +507,17 @@ export default function functionTest() {
     it('deferTest02', 0, () => {
       let startTime17 = new Date().getTime()
       console.info('appInfoTest xts deferTest02 startTime:' + startTime17 + "us")
-      let args = [];
-      defer(()=> {
-        args = slice.call(arguments);
+      let pass = true;
+      let timerId:number = defer(() => {
+        pass = false;
         let endTime17 = new Date().getTime()
         console.info('appInfoTest xts deferTest02 endTime:' + endTime17 + "us")
         let averageTime17 = endTime17 - startTime17
         console.info('appInfoTest xts deferTest02 averageTime:' + averageTime17 + "us")
-        }, 1, 2,);
-
-      let startTime = new Date().getTime();
-      for (let index = 0; index < BASE_COUNT; index++) {
-        defer((content: string) => {
-        }, 'GeeksforGeeks!');
-      }
-      endTime(startTime, 'deferTest02');
-
+      });
+      clearTimeout(timerId);
       setTimeout(() => {
-        expect(args).toEqual([1, 2]);
+        expect(pass).assertTrue();
       }, 32);
     })
 
