@@ -4,11 +4,12 @@
         <licensefile></licensefile>
         <policylist>
             <policy name="projectPolicy" desc="">
-                <policyitem type="copyright" name="Huawei Device Co., Ltd." path=".*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc=""/>
-                <policyitem type="license" name="Apache" path=".*" rule="may" group="defaultGroup" filefilter="defaultPolicyFilter" desc=""/>
-                <policyitem type="filetype" name="!archive" path=".*" rule="must" group="defaultGroup" filefilter="binaryFileTypePolicyFilter" desc=""/>
+                <policyitem type="copyright" name="Huawei Device Co., Ltd." path="*.js" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc=""/>
+                <policyitem type="license" name="Apache" path="*.js" rule="may" group="defaultGroup" filefilter="defaultPolicyFilter" desc=""/>
+                <policyitem type="filetype" name="!archive" path="*.js" rule="must" group="defaultGroup" filefilter="binaryFileTypePolicyFilter" desc=""/>
             </policy>
         </policylist>
+
         <filefilterlist>
             <filefilter name="defaultPolicyFilter" desc="Filters for compatibility，license header policies">
                 <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="*.json5" type="filename"/>
@@ -18,10 +19,36 @@
                 <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="hvigorw.bat" type="filename"/>
                 <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="hvigorfile.ts" type="filename"/>
                 <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="*.json" type="filename"/>
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="LICENSE" type="filename"/>
+                <filteritem type="filepath" name="library_connection_tcp/index.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_client/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_connection/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_client_core/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_connection_tcp/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_error/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_id/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_iq/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_middleware/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_events/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_reconnect/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_resolve/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_resource_binding/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_sasl/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_sasl_anonymous/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_sasl_plain/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_sasl_scram_sha_1/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_session_establishment/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_starttls/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_stream_features/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_stream_management/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_tls/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_tcp/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_uri/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_websocket/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_xml/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="ltx/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
             </filefilter>
-            <filefilter
-                desc="Filters for compatibility，license header policies"
-                name="copyrightPolicyFilter">
+            <filefilter name="copyrightPolicyFilter" desc="Filters for compatibility，license header policies">
                 <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="*.json5" type="filename"/>
                 <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="*.json5.ftl" type="filename"/>
                 <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="hvigor-wrapper.js" type="filename"/>
@@ -29,6 +56,96 @@
                 <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="hvigorw.bat" type="filename"/>
                 <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="hvigorfile.ts" type="filename"/>
                 <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="*.json" type="filename"/>
+                <filteritem type="filepath" name="library_connection_tcp/index.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_client/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_connection/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_client_core/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_connection_tcp/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_error/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_id/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_iq/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_middleware/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_events/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_reconnect/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_resolve/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_resource_binding/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_sasl/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_sasl_anonymous/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_sasl_plain/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_sasl_scram_sha_1/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_session_establishment/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_starttls/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_stream_features/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_stream_management/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_tls/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_tcp/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_uri/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_websocket/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library_xml/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="ltx/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+
+<!--                <filteritem type="filepath" name="xmpp/library_uri/src/main/uri/iri.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_middleware/src/main/middleware/lib/StanzaError.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_events/src/main/lib/Deferred.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_iq/src/main/iq/callee.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_middleware/src/main/middleware/lib/OutgoingContext.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/ltx/src/main/ltx/lib/parsers/node-expat.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/ltx/src/main/ltx/lib/JSONify.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/ltx/src/main/ltx/lib/createElement.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_connection_tcp/src/main/connection-tcp/lib/event-polyfill.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_events/src/main/lib/timeout.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/ltx/src/main/ltx/lib/DOMElement.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_resolve/example.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/ltx/src/main/ltx/lib/parsers/saxes.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/ltx/src/main/ltx/lib/stringify.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_websocket/src/main/websocket/lib/FramedParser.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_resolve/src/main/lib/alt-connections.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_xml/src/main/xml/lib/XMLError.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_starttls/client.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/ltx/src/main/ltx/lib/parsers.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_middleware/src/main/middleware/lib/IncomingContext.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/ltx/src/main/ltx/lib/parsers/node-xml.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_events/src/main/lib/TimeoutError.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/ltx/src/main/ltx/lib/Element.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/ltx/src/main/ltx/lib/tag.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_resolve/src/main/lib/http.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_connection_tcp/src/main/connection-tcp/lib/net.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/ltx/src/main/ltx/lib/parsers/libxmljs.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_resolve/resolve.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/ltx/src/main/ltx/lib/is.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_resolve/src/main/lib/dns.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/ltx/src/main/ltx/lib/equal.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_client_core/src/main/client-core/lib/Client.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_events/src/main/lib/promise.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/ltx/src/main/ltx/lib/Parser.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_iq/src/main/iq/caller.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_connection_tcp/src/main/connection-tcp/lib/common.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_connection/src/main/connection/lib/util.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_sasl_plain/index.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_client/src/main/client/lib/getDomain.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/ltx/src/main/ltx/lib/clone.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_sasl/src/main/lib/SASLError.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/ltx/src/main/ltx/lib/tagString.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_events/src/main/lib/delay.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_stream_features/route.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/ltx/src/main/ltx/lib/escape.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_middleware/src/main/middleware/lib/compose.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_starttls/starttls.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_xml/src/main/xml/lib/parse.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_starttls/starttls.test.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_websocket/src/main/websocket/lib/Connection.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_connection/src/main/connection/lib/StreamError.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_middleware/src/main/middleware/lib/Context.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/ltx/src/main/ltx/lib/parsers/sax-js.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/ltx/src/main/ltx/lib/parsers/ltx.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_websocket/src/main/websocket/lib/Socket.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+<!--                <filteritem type="filepath" name="xmpp/library_middleware/src/main/middleware/lib/StanzaError.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>-->
+            </filefilter>
+            <filefilter name="binaryFileTypePolicyFilter" desc="Filters for resources files policies">
+                <filteritem type="filepath" name="entry/src/ohosTest/resources/base/media/icon.png" desc="原开源库图片资源文件，协议为MIT"/>
+                <filteritem type="filepath" name="AppScope/resources/base/media/app_icon.png" desc="原开源库图片资源文件，协议为MIT"/>
+                <filteritem type="filepath" name="entry/src/main/resources/base/media/icon.png" desc="原开源库图片资源文件，协议为MIT"/>
+                <filteritem type="filepath" name="entry/src/main/resources/base/media/startIcon.png" desc="原开源库图片资源文件，协议为MIT"/>
             </filefilter>
         </filefilterlist>
     </oatconfig>
