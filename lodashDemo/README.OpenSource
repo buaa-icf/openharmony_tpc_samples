@@ -3,7 +3,7 @@
         "Name": "lodash",
         "License": "MIT License",
         "License File": "LICENSE",
-        "Version Number": "4.0.0",
+        "Version Number": "4.17.21",
         "Owner" : "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/lodash/lodash",
         "Description": "A modern JavaScript utility library delivering modularity, performance, & extras."
