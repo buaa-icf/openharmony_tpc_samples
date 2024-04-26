@@ -32,11 +32,10 @@ struct Index {
         .imageAccess(true)
         .horizontalScrollBarAccess(true)
         .onProgressChange((ev) => {
-          console.log("ThreeJs360 progress:" + ev.newProgress);
+
         })
         .onErrorReceive((error) => {
-          console.log("ThreeJs360 error:" + error.error.getErrorInfo() + ";code:" + error.error.getErrorCode());
-          console.log("ThreeJs360 error url:" + error.request.getRequestUrl());
+
         })
 
       Button("返回").onClick(() => {
