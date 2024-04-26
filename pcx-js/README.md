@@ -2,7 +2,7 @@
 
 ## 简介
 
-> 在OpenHarmony环境下,提供了PCX图像格式解码的能力。
+本软件是使用开源软件 [pcx-js](https://github.com/warpdesign/pcx-js)， 在OpenHarmony环境下,提供了PCX图像格式解码的能力。
 
 ## 下载安装
 
@@ -41,6 +41,12 @@ getContext(this).resourceManager.getMediaContent($r("app.media.thimbleweed").id)
 		})
 	})
 ```
+
+## 接口说明
+| 接口名称               |                 参数                 |功能描述|
+|:-------------------|:----------------------------------:| -----:|
+| new PCX(buffer)    | Buffer：用于解码PCX数据的Buffer |初始化pcx对象|
+| decode             |                                    |解码接口|
 
 ## 约束与限制
 
