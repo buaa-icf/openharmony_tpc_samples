@@ -4,7 +4,7 @@
         "License": "MIT License",
         "License File": "LICENSE",
         "Version Number": "2.0.2",
-        "Owner" : "xiafeng@huawei.com"
+        "Owner" : "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/EventSource/eventsource",
         "Description": "This library is a pure JavaScript implementation of the EventSource client"
     }
