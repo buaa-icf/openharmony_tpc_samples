@@ -8,6 +8,6 @@
         "Owner" : "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/Leonidas-from-XIV/node-xml2js",
         "Description": "XML to JavaScript object converter."
-    };
+    }
 
 ]
