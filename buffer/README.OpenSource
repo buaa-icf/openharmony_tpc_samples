@@ -4,7 +4,7 @@
          "License": "MIT LICENSE",
          "License File": "LICENSE",
          "Version Number": "6.0.3",
-         "Owner" : "xiafeng@huawei.com"
+         "Owner" : "xiafeng@huawei.com",
          "Upstream URL": "https://github.com/feross/buffer",
          "Description": "he goal is to provide an API that is 100% identical to node's Buffer API."
 ]
