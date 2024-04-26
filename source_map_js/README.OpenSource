@@ -4,8 +4,9 @@
          "License": "BSD-3-Clause",
          "License File": "LICENSE",
          "Version Number": "0.6.2",
-         "Owner" : "xiafeng@huawei.com"
+         "Owner" : "xiafeng@huawei.com",
          "Upstream URL": "https://github.com/7rulnik/source-map-js",
          "Description": "This is a library to generate and consume the source map format described here."
+    }
 ]
 
