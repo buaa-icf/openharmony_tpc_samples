@@ -4,7 +4,7 @@
         "License": "MIT License",
         "License File": " LICENSE ",
         "Version Number": "2.0.0",
-        "Owner" : "xiafeng@huawei.com"
+        "Owner" : "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/cheeriojs/dom-serializer",
         "Description": "Renders a  DOM node or an array of domhandler DOM nodes to a string."
     }
