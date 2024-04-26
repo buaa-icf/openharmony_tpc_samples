@@ -7,7 +7,7 @@
         "Owner" : "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/apostrophecms/sanitize-html",
         "Description": "Clean up user-submitted HTML, preserving whitelisted elements and whitelisted attributes on a per-element basis. Built on htmlparser2 for speed and tolerance"
-    }
+    },
     {
          "Name": "postcss",
          "License": "MIT License",
