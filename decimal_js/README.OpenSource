@@ -4,7 +4,7 @@
          "License": "MIT License",
          "License File": "LICENSE",
          "Version Number": "10.4.0",
-         "Owner" : "xiafeng@huawei.com"
+         "Owner" : "xiafeng@huawei.com",
          "Upstream URL": "https://github.com/MikeMcl/decimal.js",
          "Description": "An arbitrary-precision Decimal type for JavaScript."
     }
