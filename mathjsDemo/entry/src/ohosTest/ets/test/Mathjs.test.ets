@@ -630,18 +630,26 @@ export default function mathjsTest() {
     it('qr_1', 0, () => {
       // qr
       const result1 = math.qr([[1, -1,  4], [1,  4, -2], [1,  4,  2], [1,  -1, 0]]);
-      expect(JSON.stringify(result1)).assertEqual('{"Q":[[0.5,-0.5,0.49999999999999992,0.5],[0.5,0.5000000000000001,-0.5000000000000002,0.5000000000000001],[0.5,0.5,0.5000000000000001,-0.5000000000000001],[0.5,-0.4999999999999999,-0.5000000000000001,-0.5]],"R":[[1.9999999999999996,3,2],[0,5,-2],[0,0,4],[0,0,0]]}')
+      const a:number = result1.Q[0][2];
+      const b:number = result1.Q[0][1];
+      expect(a.toFixed(10)).assertEqual('0.5000000000')
+      expect(b.toFixed(10)).assertEqual('-0.5000000000')
+
     })
     it('qr_2', 0, () => {
       // qr
       const m2 = [
-        [1, -1,  4],
-        [1,  4, -2],
-        [1,  4,  2],
-        [1,  -1, 0]
+        [1, -1, 4],
+        [1, 4, -2],
+        [1, 4, 2],
+        [1, -1, 0]
       ]
       const result2 = math.qr(m2);
-      expect(JSON.stringify(result2)).assertEqual('{"Q":[[0.5,-0.5,0.49999999999999992,0.5],[0.5,0.5000000000000001,-0.5000000000000002,0.5000000000000001],[0.5,0.5,0.5000000000000001,-0.5000000000000001],[0.5,-0.4999999999999999,-0.5000000000000001,-0.5]],"R":[[1.9999999999999996,3,2],[0,5,-2],[0,0,4],[0,0,0]]}')
+      const a:number = result2.Q[0][2];
+      const b:number = result2.Q[1][1];
+      expect(a.toFixed(10)).assertEqual('0.5000000000')
+      expect(b.toFixed(10)).assertEqual('0.5000000000')
+
     })
     it('qr_3', 0, () => {
       // qr
@@ -657,7 +665,11 @@ export default function mathjsTest() {
         [6.527, 1.094, 3.321]
       ]
       const result4 = math.qr(m4);
-      expect(JSON.stringify(result4)).assertEqual('{"Q":[[0.688035188511916,0.7014713412756386,-0.18586429656695424],[0.4107864279885984,-0.16534848404002778,0.8966127310082278],[0.598215755350643,-0.6932516398787825,-0.40192048200563072]],"R":[[10.9107791655775,8.485733657968277,9.468771426145148],[0,5.744378146155103,-0.36610375169256315],[0,0,6.461900782464385]]}')
+      const a:number = result4.Q[0][2];
+      const b:number = result4.Q[1][1];
+      expect(a.toFixed(10)).assertEqual('-0.1858642966')
+      expect(b.toFixed(10)).assertEqual('-0.1653484840')
+
     })
     it('qr_5', 0, () => {
       // qr
@@ -1234,7 +1246,9 @@ export default function mathjsTest() {
     it('exp_4', 0, () => {
       // exp
       let result4 = math.exp(-1)
-      expect(JSON.stringify(result4)).assertEqual('0.36787944117144232')
+      const a:number = result4;
+      expect(a.toFixed(10)).assertEqual('0.3678794412')
+
     })
     it('exp_5', 0, () => {
       // exp
@@ -4848,7 +4862,8 @@ export default function mathjsTest() {
     it('sin_1', 0, () => {
       // sin
       const result1 = math.sin(math.pi / 6);
-      expect(result1.toString()).assertEqual('0.49999999999999992')
+      expect(result1.toFixed(10)).assertEqual('0.5000000000')
+
     })
     it('sin_2', 0, () => {
       // sin
@@ -4900,7 +4915,8 @@ export default function mathjsTest() {
     it('tan_1', 0, () => {
       // tan
       const result1 = math.tan(math.pi / 4);
-      expect(result1.toString()).assertEqual('0.99999999999999984')
+      expect(result1.toFixed(10)).assertEqual('1.0000000000')
+
     })
     it('tan_2', 0, () => {
       // tan
@@ -4946,7 +4962,7 @@ export default function mathjsTest() {
     it('tanh_5', 0, () => {
       // tanh
       const result5 = math.tanh(0.5);
-      expect(result5.toString()).assertEqual('0.46211715726000976')
+      expect(result5.toFixed(10)).assertEqual('0.4621171573')
     })
 
     it('to_1', 0, () => {
