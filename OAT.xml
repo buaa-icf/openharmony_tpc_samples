@@ -57,6 +57,33 @@
 		<filteritem type="filepath" name="asn1Demo/asn1_der/src/main/dist/.*" desc="此文件第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
                 <filteritem type="filepath" name="epublib/xmldom/.*" desc="第三方开源库libunrar源码，维持原样，以防版权许可头篡改"/>
                 <filteritem type="filepath" name="xmldom/library/.*" desc="第三方开源库libunrar源码，维持原样，以防版权许可头篡改"/>
+                <filteritem type="filepath" name="xmpp/library_client/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="xmpp/library_connection/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="xmpp/library_client_core/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="xmpp/library_connection_tcp/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="xmpp/library_error/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="xmpp/library_id/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="xmpp/library_iq/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="xmpp/library_middleware/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="xmpp/library_events/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="xmpp/library_reconnect/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="xmpp/library_resolve/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="xmpp/library_resource_binding/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="xmpp/library_sasl/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="xmpp/library_sasl_anonymous/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="xmpp/library_sasl_plain/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="xmpp/library_sasl_scram_sha_1/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="xmpp/library_session_establishment/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="xmpp/library_starttls/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="xmpp/library_stream_features/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="xmpp/library_stream_management/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="xmpp/library_tls/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="xmpp/library_tcp/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="xmpp/library_uri/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="xmpp/library_websocket/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="xmpp/library_xml/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="xmpp/ltx/.*.js" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+				<filteritem type="filepath" name="xmpp/LICENSE-ISC" desc="原开源库的LICENSE文件，维持原样"/>
             </filefilter>
             <filefilter name="defaultPolicyFilter" desc="许可头过滤器，按文件名或路径屏蔽无需检查的文件，需要通过desc备注说明原因">
                 <filteritem type="filename" name="hvigorfile.js" desc="IDE生成的默认构建脚本文件，建议无需手动修改"/>
@@ -116,6 +143,34 @@
                 <filteritem type="filepath" name="js-joda/library/src/.*" desc="开源库代码（或原库代码文件），原本就无协议头，不做侵入式修改"/>
                 <filteritem type="filepath" name="epublib/xmldom/.*" desc="此文件第三方开源软件源码,原本就无协议头，不做侵入式修改"/>
                 <filteritem type="filepath" name="xmldom/library/.*" desc="此文件第三方开源软件源码,原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="xmpp/library_client/.*.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="xmpp/library_connection/.*.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="xmpp/library_client_core/.*.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="xmpp/library_connection_tcp/.*.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="xmpp/library_error/.*.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="xmpp/library_id/.*.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="xmpp/library_iq/.*.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="xmpp/library_middleware/.*.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="xmpp/library_events/.*.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="xmpp/library_reconnect/.*.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="xmpp/library_resolve/.*.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="xmpp/library_resource_binding/.*.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="xmpp/library_sasl/.*.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="xmpp/library_sasl_anonymous/.*.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="xmpp/library_sasl_plain/.*.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="xmpp/library_sasl_scram_sha_1/.*.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="xmpp/library_session_establishment/.*.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="xmpp/library_starttls/.*.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="xmpp/library_stream_features/.*.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="xmpp/library_stream_management/.*.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="xmpp/library_tls/.*.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="xmpp/library_tcp/.*.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="xmpp/library_uri/.*.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="xmpp/library_websocket/.*.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="xmpp/library_xml/.*.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="xmpp/ltx/.*.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+				<filteritem type="filepath" name="xmpp/LICENSE-ISC" desc="原开源库的LICENSE文件，维持原样"/>
+				
             </filefilter>
             <filefilter name="binaryFileTypePolicyFilter" desc="二进制文件过滤器，按文件名或路径屏蔽无需检查的文件，需要通过desc备注说明原因">
                 <filteritem type="filename" name="icon.png" desc="应用icon，文件较小，不建议使用git lfs"/>

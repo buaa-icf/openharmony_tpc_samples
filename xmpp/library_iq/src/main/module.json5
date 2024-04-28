@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "library_iq",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}

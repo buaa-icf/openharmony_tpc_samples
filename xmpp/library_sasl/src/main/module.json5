@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "library_sasl",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "@xmpp/sasl",
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@xmpp/error": "file:../library_error",
+    "@xmpp/xml": "file:../library_xml",
+    "@xmpp/base64": "^0.13.1",
+    "saslmechanisms": "^0.1.1",
+    "@types/saslmechanisms": "^0.1.0",
+    "@xmpp/middleware": "file:../library_middleware",
+    "@xmpp/stream-features": "file:../library_stream_features",
+  },
+  "devDependencies": {},
+  "dynamicDependencies": {}
+}

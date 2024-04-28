@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "library_client_core",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}

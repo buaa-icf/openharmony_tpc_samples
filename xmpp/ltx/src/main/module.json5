@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "ltx",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}

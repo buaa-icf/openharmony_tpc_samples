@@ -1,0 +1,16 @@
+{
+  "name": "@xmpp/sasl-anonymous",
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "sasl-anonymous": "^0.1.0",
+    "@xmpp/sasl": "file:../library_sasl"
+  },
+  "devDependencies": {},
+  "dynamicDependencies": {}
+}

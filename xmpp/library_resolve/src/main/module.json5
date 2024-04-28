@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "library_resolve",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}

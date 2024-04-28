@@ -1,0 +1,37 @@
+{
+  "name": "@xmpp/client",
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@xmpp/xml": "file:../library_xml",
+    "@xmpp/connection": "file:../library_connection",
+    "@xmpp/connection-tcp": "file:../library_connection_tcp",
+    "@xmpp/tcp": "file:../library_tcp",
+    "@xmpp/websocket": "file:../library_websocket",
+    "@xmpp/client-core": "file:../library_client_core",
+//    "@xmpp/uri": "file:../library_uri",
+    "@xmpp/reconnect": "file:../library_reconnect",
+    "@xmpp/middleware": "file:../library_middleware",
+    "@xmpp/stream-features": "file:../library_stream_features",
+    "@xmpp/iq": "file:../library_iq",
+    "@xmpp/resolve": "file:../library_resolve",
+    "@xmpp/sasl": "file:../library_sasl",
+    "@xmpp/starttls": "file:../library_starttls",
+    "@xmpp/resource-binding": "file:../library_resource_binding",
+    "@xmpp/stream-management": "file:../library_stream_management",
+//    "@xmpp/sasl-scram-sha-1": "file:../library_sasl_scram_sha_1",
+    "@xmpp/sasl-anonymous": "file:../library_sasl_anonymous",
+
+    "@xmpp/session-establishment": "file:../library_session_establishment",
+    "@xmpp/sasl-plain": "file:../library_sasl_plain",
+    "@xmpp/jid": "^0.13.1",
+    "@types/koa-compose": "^3.2.8"
+  },
+  "devDependencies": {},
+  "dynamicDependencies": {}
+}

@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "library_stream_management",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}
