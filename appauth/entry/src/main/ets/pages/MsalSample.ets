@@ -27,32 +27,36 @@ struct MsalSample {
           .imageAccess(true)
           .mixedMode(this.mode)
           .onConsole((event) => {
-            console.log('getMessage:' + event.message.getMessage());
-            console.log('getSourceId:' + event.message.getSourceId());
-            console.log('getLineNumber:' + event.message.getLineNumber());
-            console.log('getMessageLevel:' + event.message.getMessageLevel());
+            if (event) {
+              console.log('getMessage:' + event.message.getMessage());
+              console.log('getSourceId:' + event.message.getSourceId());
+              console.log('getLineNumber:' + event.message.getLineNumber());
+              console.log('getMessageLevel:' + event.message.getMessageLevel());
+            }
             return false;
           })
           .onAlert((event) => {
-            AlertDialog.show({
-              title: 'ArkTs-Msal',
-              message: event.message,
-              primaryButton: {
-                value: 'cancel',
-                action: () => {
+            if (event) {
+              AlertDialog.show({
+                title: 'ArkTs-Msal',
+                message: event.message,
+                primaryButton: {
+                  value: 'cancel',
+                  action: () => {
+                    event.result.handleCancel()
+                  }
+                },
+                secondaryButton: {
+                  value: 'ok',
+                  action: () => {
+                    event.result.handleConfirm()
+                  }
+                },
+                cancel: () => {
                   event.result.handleCancel()
                 }
-              },
-              secondaryButton: {
-                value: 'ok',
-                action: () => {
-                  event.result.handleConfirm()
-                }
-              },
-              cancel: () => {
-                event.result.handleCancel()
-              }
-            })
+              })
+            }
             return true
           })
       }
