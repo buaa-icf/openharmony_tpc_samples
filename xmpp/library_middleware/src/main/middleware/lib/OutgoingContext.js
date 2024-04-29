@@ -14,10 +14,10 @@ import {JID} from "@xmpp/jid";
     const from = stanza.attrs.from || (jid && jid.toString());
     const to = stanza.attrs.to || domain;
 
-    if (from) this.from = new JID(from);
+    if (from) this.from = parse(from);
 
     if (to) {
-      this.to = new JID(to);
+      this.to = parse(to);
       this.local = this.to.local;
       this.domain = this.to.domain;
       this.resource = this.to.resource;

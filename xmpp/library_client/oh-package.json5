@@ -21,7 +21,7 @@
     "@xmpp/iq": "file:../library_iq",
     "@xmpp/resolve": "file:../library_resolve",
     "@xmpp/sasl": "file:../library_sasl",
-    "@xmpp/starttls": "file:../library_starttls",
+//    "@xmpp/starttls": "file:../library_starttls",
     "@xmpp/resource-binding": "file:../library_resource_binding",
     "@xmpp/stream-management": "file:../library_stream_management",
 //    "@xmpp/sasl-scram-sha-1": "file:../library_sasl_scram_sha_1",

@@ -10,7 +10,8 @@ import xml from "@xmpp/xml";
 const NS = "urn:ietf:params:xml:ns:xmpp-bind";
 
 function makeBindElement(resource) {
-  return xml("bind", { xmlns: NS }, resource && xml("resource", {}, resource));
+
+    return xml("bind", { xmlns: NS }, resource && xml("resource", {}, resource));
 }
 
 async function bind(entity, iqCaller, resource) {
@@ -21,18 +22,20 @@ async function bind(entity, iqCaller, resource) {
 }
 
 function route({ iqCaller }, resource) {
-  return async ({ entity }, next) => {
-    await (typeof resource === "function"
-      ? resource((resource) => bind(entity, iqCaller, resource))
-      : bind(entity, iqCaller, resource));
 
-    next();
-  };
+    return async ({ entity }, next) => {
+        await (typeof resource === "function"
+            ? resource((resource) => bind(entity, iqCaller, resource))
+            : bind(entity, iqCaller, resource));
+        next();
+    };
 }
 
 export default function resourceBinding(
-  { streamFeatures, iqCaller },
-  resource,
+    { streamFeatures, iqCaller },
+    resource,
 ) {
-  streamFeatures.use("bind", NS, route({ iqCaller }, resource));
+    streamFeatures.use("bind", NS, route({
+        iqCaller
+    }, resource));
 };

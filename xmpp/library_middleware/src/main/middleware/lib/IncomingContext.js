@@ -3,7 +3,7 @@
 // const Context = require("./Context");
 // const JID = require("@xmpp/jid");
 import {Context} from './Context';
-import {JID} from "@xmpp/jid";
+import {parse} from "@xmpp/jid";
 
 class IncomingContext extends Context {
   constructor(entity, stanza) {
@@ -14,10 +14,10 @@ class IncomingContext extends Context {
     const to = stanza.attrs.to || (jid && jid.toString());
     const from = stanza.attrs.from || domain;
 
-    if (to) this.to = new JID(to);
+    if (to) this.to = parse(to);
 
     if (from) {
-      this.from = new JID(from);
+      this.from = parse(from);
       this.local = this.from.local;
       this.domain = this.from.domain;
       this.resource = this.from.resource;

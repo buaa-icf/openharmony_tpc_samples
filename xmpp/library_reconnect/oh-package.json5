@@ -8,7 +8,7 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@xmpp/events": "file:../library_events",
+    "@xmpp/events": "^0.13.1",
     "@xmpp/connection": "file:../library_connection"
   }
 }

@@ -215,6 +215,7 @@ class Connection extends EventEmitter {
 
         const { service, domain, lang } = this.options;
 
+        this.service = service
         await this.connect(service);
         const promiseOnline = promise(this.socket, "online","error",this.timeout);
         await this.open({ domain, lang });
@@ -235,7 +236,8 @@ class Connection extends EventEmitter {
         const socket = new this.Socket(this.socketParameters(service))
         this._attachSocket(socket);
         if (protocol.includes('ws')) {
-            socket.connect(service)
+            let {caPath}=this.options
+            socket.connect(service,caPath)
         } else {
             socket.connect()
         }
@@ -340,15 +342,24 @@ class Connection extends EventEmitter {
                 reject(new Error("Connection is closing"));
                 return;
             }
-
-            this.socket.write(string, "utf-8", (err) => {
-                if (err) {
-                    return reject(err);
-                }
-
-                this.emit("output", string);
-                resolve();
-            });
+            const { port, hostname, protocol } = parseURI(this.service);
+            if (protocol.includes("ws")) {
+                this.socket.write(string, (err) => {
+                    if (err) {
+                        return reject(err);
+                    }
+                    this.emit("output", string);
+                    resolve();
+                });
+            } else {
+                this.socket.write(string, "utf-8", (err) => {
+                    if (err) {
+                        return reject(err);
+                    }
+                    this.emit("output", string);
+                    resolve();
+                });
+            }
         });
     }
 

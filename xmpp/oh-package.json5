@@ -6,13 +6,6 @@
   "author": "",
   "license": "",
   "dependencies": {
-    "events": "^3.3.0",
-    "@xmpp/error": "^0.13.1",
-    "@ohos/node-polyfill": "^1.0.0",
-    "koa-compose": "^4.1.0",
-    "@xmpp/events": "^0.13.1",
-    "ws": "^8.4.0",
-    "@xmpp/jid": "0.0.2"
   },
   "devDependencies": {
     "@ohos/hypium": "1.0.15",

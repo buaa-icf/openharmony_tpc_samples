@@ -32,6 +32,7 @@ declare namespace sasl {
   type Credentials = Partial<CredentialsObj> | CredentialsFactory;
 
   interface CredentialsObj {
+    authzid: string;
     username: string;
     password: string;
   }
