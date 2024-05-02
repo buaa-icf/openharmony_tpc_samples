@@ -58,6 +58,7 @@ export default class HttpProxyCacheServerClients {
 
   async processRequest(request: GetRequest, severConnect: socket.TCPSocketConnection): Promise<void> {
     try {
+      await this.finishProcessRequest();
       this.startProcessRequest();
       if (!this.proxyCache) {
         throw new Error('proxyCache is null')
@@ -65,8 +66,6 @@ export default class HttpProxyCacheServerClients {
       await this.proxyCache.processRequest(request, severConnect);
     } catch (err) {
       return Promise.reject(err)
-    } finally {
-      await this.finishProcessRequest();
     }
     return Promise.resolve()
   }
