@@ -252,7 +252,7 @@ export default class HttpUrlSource implements Source {
         self.connection!!.on('dataEnd', () => {
           if (self?.sourceInfo?.url?.indexOf('ping') != -1) {
             self?.callBack?.onDataEnd();
-          } else {
+          } else if (self?.cacheData?.length > 1) {
             self.isDataFinish = true;
           }
         })
