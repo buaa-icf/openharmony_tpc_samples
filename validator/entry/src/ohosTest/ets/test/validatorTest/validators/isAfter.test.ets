@@ -46,16 +46,20 @@ export default function isAfterTest() {
       if (options.valid) {
         options.valid.forEach((valid) => {
           args[0] = valid;
-          let resule: boolean = validator[options.validator](...args)
-          expect(resule).assertTrue()
+          if (options.validator != undefined) {
+            let resule: boolean = validator[options.validator](...args)
+            expect(resule).assertTrue()
+          }
         });
       }
 
       if (options.invalid) {
         options.invalid.forEach((invalid) => {
           args[0] = invalid;
-          let resule: boolean = validator[options.validator](...args)
-          expect(resule).assertFalse()
+          if (options.validator != undefined) {
+            let resule: boolean = validator[options.validator](...args)
+            expect(resule).assertFalse()
+          }
         });
       }
     }

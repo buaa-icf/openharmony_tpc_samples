@@ -17,10 +17,10 @@ import validator from 'validator';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 import Buffer from '@ohos.buffer'
 import { ValOptions, fixturesType } from './valOptionsTest'
-import { isArray}from'./IsArrayFunction'
+import { isArray } from './IsArrayFunction'
 
 export default function ValidatorsTest() {
-  describe('Validators', ()=>   {
+  describe('Validators', () => {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
     beforeAll(() => {
       // Presets an action, which is performed only once before all test cases of the test suite start.
@@ -41,7 +41,7 @@ export default function ValidatorsTest() {
       // This API supports only one parameter: clear action function.
     })
 
-    let test= (options: ValOptions) => {
+    let test = (options: ValOptions) => {
       const args = options.args || [];
 
       args.unshift(null);
@@ -51,7 +51,9 @@ export default function ValidatorsTest() {
           args[0] = error;
 
           try {
-            expect(validator[options.validator](...args)).assertFail()
+            if (options.validator != undefined) {
+              expect(validator[options.validator](...args)).assertFail()
+            }
           } catch (err) {
             console.log(`ValidatorsTest validator.${options.validator}(${args}) ` + err)
           }
@@ -61,16 +63,21 @@ export default function ValidatorsTest() {
       if (options.valid) {
         options.valid.forEach((valid) => {
           args[0] = valid;
-          let resule: boolean = validator[options.validator](...args)
-          expect(resule).assertTrue()
+          if (options.validator != undefined) {
+            let resule: boolean = validator[options.validator](...args)
+            expect(resule).assertTrue()
+          }
         });
       }
 
       if (options.invalid) {
         options.invalid.forEach((invalid) => {
           args[0] = invalid;
-          let resule: boolean = validator[options.validator](...args)
-          expect(resule).assertFalse()
+          if (options.validator != undefined) {
+            let resule: boolean = validator[options.validator](...args)
+            expect(resule).assertFalse()
+          }
+
         });
       }
     }
@@ -1389,20 +1396,21 @@ export default function ValidatorsTest() {
         ],
       });
     });
-    it('should_validate_FQDN_with_required_allow_trailing_dot__allow_underscores_and_allow_numeric_tld_options', 0, () => {
-      test({
-        validator: 'isFQDN',
-        args: [
-          {
-            allow_trailing_dot: true, allow_underscores: true, allow_numeric_tld: true
-          },
-        ],
-        valid: [
-          'abc.efg.g1h.',
-          'as1s.sad3s.ssa2d.',
-        ],
+    it('should_validate_FQDN_with_required_allow_trailing_dot__allow_underscores_and_allow_numeric_tld_options', 0,
+      () => {
+        test({
+          validator: 'isFQDN',
+          args: [
+            {
+              allow_trailing_dot: true, allow_underscores: true, allow_numeric_tld: true
+            },
+          ],
+          valid: [
+            'abc.efg.g1h.',
+            'as1s.sad3s.ssa2d.',
+          ],
+        });
       });
-    });
     it('should_validate_alpha_strings', 0, () => {
       test({
         validator: 'isAlpha',
@@ -4882,7 +4890,10 @@ export default function ValidatorsTest() {
 
     it('should_validate_strings_against_an_expected_value', 0, () => {
       test({
-        validator: 'equals', args: ['abc'], valid: ['abc'], invalid: ['Abc', '123'],
+        validator: 'equals',
+        args: ['abc'],
+        valid: ['abc'],
+        invalid: ['Abc', '123'],
       });
     });
 
@@ -5302,8 +5313,8 @@ export default function ValidatorsTest() {
         validator: 'isBefore',
         valid: [
           '2000-08-04',
-        new Date(0).toString(),
-        new Date(Date.now() - 86400000).toString(),
+          new Date(0).toString(),
+          new Date(Date.now() - 86400000).toString(),
         ],
         invalid: ['2100-07-02', new Date(2217, 10, 10).toString()],
       });
@@ -5752,7 +5763,7 @@ export default function ValidatorsTest() {
 
 
     it('should_validate_identity_cards', 0, () => {
-      const fixtures:fixturesType[] = [
+      const fixtures: fixturesType[] = [
         {
           locale: 'zh-HK',
           valid: [
@@ -6113,7 +6124,9 @@ export default function ValidatorsTest() {
 
       // Test fixtures
       fixtures.forEach((fixture) => {
-        if (fixture.valid) allValid = allValid.concat(fixture.valid);
+        if (fixture.valid) {
+          allValid = allValid.concat(fixture.valid);
+        }
         test({
           validator: 'isIdentityCard',
           valid: fixture.valid,
@@ -6641,7 +6654,7 @@ export default function ValidatorsTest() {
     });
 
     it('should_validate_mobile_phone_number', 0, () => {
-      let fixtures:fixturesType[] = [
+      let fixtures: fixturesType[] = [
         {
           locale: 'am-AM',
           valid: [
@@ -9887,7 +9900,9 @@ export default function ValidatorsTest() {
 
       fixtures.forEach((fixture) => {
         // to be used later on for validating 'any' locale
-        if (fixture.valid) allValid = allValid.concat(fixture.valid);
+        if (fixture.valid) {
+          allValid = allValid.concat(fixture.valid);
+        }
 
         if (isArray(fixture.locale)) {
           test({
@@ -11413,7 +11428,8 @@ export default function ValidatorsTest() {
           'data:,A%20brief%20invalid%20[note',
           'file:text/plain;base64,SGVsbG8sIFdvcmxkIQ%3D%3D',
           'data:text/html;charset=,%3Ch1%3EHello!%3C%2Fh1%3E',
-          'data:text/html;charset,%3Ch1%3EHello!%3C%2Fh1%3E', 'data:base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAABlBMVEUAAAD///+l2Z/dAAAAM0lEQVR4nGP4/5/h/1+G/58ZDrAz3D/McH8yw83NDDeNGe4Ug9C9zwz3gVLMDA/A6P9/AFGGFyjOXZtQAAAAAElFTkSuQmCC',
+          'data:text/html;charset,%3Ch1%3EHello!%3C%2Fh1%3E',
+          'data:base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAABlBMVEUAAAD///+l2Z/dAAAAM0lEQVR4nGP4/5/h/1+G/58ZDrAz3D/McH8yw83NDDeNGe4Ug9C9zwz3gVLMDA/A6P9/AFGGFyjOXZtQAAAAAElFTkSuQmCC',
           '',
           'http://wikipedia.org',
           'base64',
@@ -11544,22 +11560,22 @@ export default function ValidatorsTest() {
     });
 
     it('should_validate_postal_code', 0, () => {
-      const fixtures:fixturesType[] = [
+      const fixtures: fixturesType[] = [
         {
-        locale: 'BY',
-        valid: [
-          '225320',
-          '211120',
-          '247710',
-          '231960',
-        ],
-        invalid: [
-          'test 225320',
-          '211120 test',
-          '317543',
-          '267946',
-        ],
-      },
+          locale: 'BY',
+          valid: [
+            '225320',
+            '211120',
+            '247710',
+            '231960',
+          ],
+          invalid: [
+            'test 225320',
+            '211120 test',
+            '317543',
+            '267946',
+          ],
+        },
         {
           locale: 'CA',
           valid: [
@@ -12037,7 +12053,9 @@ export default function ValidatorsTest() {
 
       // Test fixtures
       fixtures.forEach((fixture) => {
-        if (fixture.valid) allValid = allValid.concat(fixture.valid);
+        if (fixture.valid) {
+          allValid = allValid.concat(fixture.valid);
+        }
         test({
           validator: 'isPostalCode',
           valid: fixture.valid,

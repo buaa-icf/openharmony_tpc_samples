@@ -16,6 +16,8 @@ import validator from 'validator';
 import prompt from '@ohos.promptAction';
 import { data } from './data';
 import {dataType} from './data';
+import { IPVersion } from 'validator';
+import { IdentityCardLocale } from 'validator';
 
 
 const TAG: string = "TAG validator"
@@ -26,9 +28,9 @@ const TAG: string = "TAG validator"
    str1:string
    min:number
    max:number
-   IPVersion:number
+   IPVersion:IPVersion
    values:string[]
-   default?:string
+   default?:ESObject | IdentityCardLocale
    local:SelectOption[]
  }
 interface  minMaxType{
@@ -60,7 +62,7 @@ struct Index {
     { value: 'IT' }, { value: 'KZ' }, { value: 'LT' }, { value: 'LU' }, { value: 'LV' },
     { value: 'MK' }, { value: 'MT' }, { value: 'MX' }, { value: 'NG' }, { value: 'NI' },
   ]
-  @State data1: string = '';
+  @State data1: string | false = '';
 
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start }) {
@@ -98,7 +100,7 @@ struct Index {
                   .height(60)
                   .fontSize(18)
                   .onChange((value: string) => {
-                    item.IPVersion = new Number(value).valueOf()
+                    item.IPVersion = new Number(value).valueOf() as IPVersion
                   })
               }
               if (item.max) {
@@ -132,7 +134,7 @@ struct Index {
               if (item.mode == "escape" || item.mode == "unescape" || item.mode == "whitelist" ||
               item.mode == "blacklist" || item.mode == "normalizeEmail" || item.mode == "toBoolean" ||
               item.mode == "toDate") {
-                Text(this.data1).fontSize(25).fontColor(Color.Gray).padding(20)
+                Text('' + this.data1).fontSize(25).fontColor(Color.Gray).padding(20)
               }
               Button('验证', { type: ButtonType.Normal })
                 .fontSize(18)
@@ -152,7 +154,7 @@ struct Index {
   }
 
   Validator(item:itemType) {
-    let result:Boolean|string = true
+    let result:Boolean|string|number = true
     if (item.mode == "isBase32") {
       result = validator.isBase32(item.str)
     }
@@ -268,7 +270,7 @@ struct Index {
       result = validator.isAlphanumeric(item.str)
     }
     if (item.mode == "isByteLength") {
-      result = validator.isByteLength(item.str, item.min, item.max)
+      result = validator.isByteLength(item.str,{min: item.min, max:item.max})
     }
     if (item.mode == "isFloat") {
       let minMax:minMaxType={ min:item.min, max:item.max }
@@ -322,7 +324,7 @@ struct Index {
       result = validator.isLatLong(item.str)
     }
     if (item.mode == "isLength") {
-      result = validator.isLength(item.str, item.min, item.max)
+      result = validator.isLength(item.str, {min:item.min, max:item.max})
     }
     if (item.mode == "isLowercase") {
       if(item.str == ''){
