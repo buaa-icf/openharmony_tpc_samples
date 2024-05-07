@@ -7,5 +7,32 @@
     "Owner":"xiafeng@huawei.com",
     "Upstream URL":"https://github.com/xmppjs/xmpp.js/tree/main/packages/xml",
     "Description": "XMPP XML for JavaScript"
-  }
+  },
+  {
+    "Name":"@types/xmpp__xml",
+    "License":"MIT License",
+    "License File":"LICENSE",
+    "Version Number":"3.0.0",
+    "Owner":"xiafeng@huawei.com",
+    "Upstream URL":"https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/xmpp__xml",
+    "Description": "XMPP XML for JavaScript"
+  },
+  {
+    "Name":"ltx",
+    "License":"MIT License",
+    "License File":"LICENSE",
+    "Version Number":"3.0.0",
+    "Owner":"xiafeng@huawei.com",
+    "Upstream URL":"https://github.com/xmppjs/ltx",
+    "Description": "ltx is a fast XML builder, parser, serialization and manipulation library for JavaScript."
+  },
+  {
+    "Name":"@types/ltx",
+    "License":"MIT License",
+    "License File":"LICENSE",
+    "Version Number":"3.0.0",
+    "Owner":"xiafeng@huawei.com",
+    "Upstream URL":"https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/ltx",
+    "Description": "ltx is a fast XML builder, parser, serialization and manipulation library for JavaScript."
+  },
 ]

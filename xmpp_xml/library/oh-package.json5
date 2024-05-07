@@ -1,5 +1,5 @@
 {
-  "name": "@xmpp/xml",
+  "name": "@ohos/xmpp_xml",
   "version": "1.0.0",
   "description": "XMPP is an open technology for real-time communication, which powers a wide range of applications including instant messaging, presence, multi-party chat, voice and video calls, collaboration, lightweight middleware, content syndication, and generalized routing of XML data",
   "main": "index.js",
