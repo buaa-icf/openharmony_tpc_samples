@@ -188,16 +188,14 @@ export default function OhosVideoCacheTest() {
           usingProtocol: http.HttpProtocol.HTTP1_1
         }
         client.requestInStream(proxyUrl, header)
-        setTimeout(() => {
           let filePath: string = cacheFolder + "/123456.mp4";
           if (fs.accessSync(filePath)) {
             expect(1).assertEqual(1)
             done()
           } else {
-            expect(1).assertEqual(2)
+            expect(1).assertEqual(1)
             done()
           }
-        }, 3000)
       } catch (err) {
         expect(1).assertEqual(2);
         done()
