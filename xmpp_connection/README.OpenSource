@@ -1,0 +1,20 @@
+[
+  {
+    "Name":"@xmpp/connection",
+    "License":"ISC License",
+    "License File":"LICENSE-ISC",
+    "Version Number":"0.13.1",
+    "Owner":"xiafeng@huawei.com",
+    "Upstream URL":"https://github.com/xmppjs/xmpp.js/tree/main/packages/connection",
+    "Description": "@xmpp/connection is a JavaScript library that enables the creation and management of XMPP (Extensible Messaging and Presence Protocol) connections, facilitating real-time communication and messaging in web applications, particularly for implementing features like chat and presence notifications."
+  },
+  {
+    "Name":"@types/xmpp__connection",
+    "License":"MIT License",
+    "License File":"LICENSE",
+    "Version Number":"0.13.1",
+    "Owner":"xiafeng@huawei.com",
+    "Upstream URL":"https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/xmpp__connection",
+    "Description": "This package contains type definitions for @xmpp/connection"
+  }
+]
