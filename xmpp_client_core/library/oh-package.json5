@@ -1,0 +1,15 @@
+{
+  "name": "@ohos/xmpp_client_core",
+  "version": "1.0.0",
+  "description": "用于开发基于xmpp的实时通信应用程序的基本库，提供连接管理、消息处理和自定义功能等关键功能。",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "author": "tpc",
+  "license": "ISC License",
+  "dependencies": {
+    "@ohos/xmpp_connection": "1.0.0",
+    "@xmpp/jid": "^0.13.1",
+    "@ohos/xmpp_xml": "1.0.0"
+  }
+}

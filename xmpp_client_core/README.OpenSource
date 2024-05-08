@@ -1,0 +1,21 @@
+[
+  {
+    "Name":"@xmpp/client-core",
+    "License":"ISC License",
+    "License File":"LICENSE",
+    "Version Number":"0.13.1",
+    "Owner":"xiafeng@huawei.com",
+    "Upstream URL":"https://github.com/xmppjs/xmpp.js/tree/main/packages/client-core",
+    "Description": " a fundamental library used for developing XMPP-based real-time communication applications, offering key functionalities like connection management, message processing, and customization capabilities."
+  },
+  {
+    "Name":"@types/xmpp__client-core",
+    "License":"MIT License",
+    "License File":"LICENSE-MIT",
+    "Version Number":"0.13.1",
+    "Owner":"xiafeng@huawei.com",
+    "Upstream URL":"https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/xmpp__client-core",
+    "Description": " a fundamental library used for developing XMPP-based real-time communication applications, offering key functionalities like connection management, message processing, and customization capabilities."
+  },
+
+]
