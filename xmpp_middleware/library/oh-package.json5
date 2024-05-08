@@ -1,0 +1,18 @@
+{
+  "name": "@ohos/xmpp_middleware",
+  "version": "1.0.0",
+  "description": "用于@xmpp/client和@xmpp/component的中间件库",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "author": "tpc",
+  "license": "ISC License",
+  "dependencies": {
+    "@ohos/xmpp_xml": "1.0.0",
+    "@ohos/xmpp_connection": "1.0.0",
+    "@xmpp/error": "^0.13.0",
+    "koa-compose": "^4.1.0",
+    "@types/koa-compose": "^3.2.8",
+    "@xmpp/jid": "^0.13.1"
+  }
+}
