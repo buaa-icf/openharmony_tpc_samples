@@ -1,0 +1,14 @@
+{
+  "name": "entry",
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "main": "",
+  "author": "",
+  "license": "",
+  "dependencies": {
+    "@ohos/xmpp_reconnect": "file:../library",
+    "@xmpp/events": "^0.13.1",
+    "@ohos/xmpp_connection": "1.0.0"
+  }
+}
+
