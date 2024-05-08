@@ -1,0 +1,18 @@
+{
+  "name": "@ohos/xmpp_resolve",
+  "version": "1.0.0",
+  "description": "a knowledgeable and helpful individual who provides insightful solutions and guidance on technical issues related to XMPP protocol.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "author": "tpc",
+  "license": "ISC License",
+  "dependencies": {
+    "@ohos/xmpp_xml": "1.0.0",
+    "@xmpp/events": "^0.13.1",
+    "@ohos/xmpp_connection": "1.0.0",
+    "@ohos/axios": "^2.2.0"
+  },
+  "devDependencies": {},
+  "dynamicDependencies": {}
+}
