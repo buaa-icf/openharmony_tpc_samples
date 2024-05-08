@@ -98,6 +98,8 @@ export interface Options extends ConnectionOptions {
    * Password for `@xmpp/sasl`.
    */
   password?: string | undefined;
+
+  caPath?:string | undefined;
 }
 
 export interface Client extends ClientCore {

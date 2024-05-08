@@ -28,7 +28,7 @@ import anonymous from "@xmpp/sasl-anonymous";
 
 function client(options = {}) {
     const { resource, credentials, username, password, ...params } = options;
-    const { domain, service } = params;
+    const { domain, service, caPath } = params;
     if (!domain && service) {
         params.domain = getDomain(service);
     }
@@ -39,7 +39,6 @@ function client(options = {}) {
     const websocket = _websocket({ entity });
     const tcp = _tcp({ entity });
     // const tls = _tls({ entity });
-    // websocket
     const middleware = _middleware({ entity });
     const streamFeatures = _streamFeatures({ middleware });
     const iqCaller = _iqCaller({ middleware, entity });

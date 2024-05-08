@@ -49,10 +49,6 @@
       "srcPath": "./library_sasl_anonymous"
     },
     {
-      "name": "library_error",
-      "srcPath": "./library_error"
-    },
-    {
       "name": "library_connection_tcp",
       "srcPath": "./library_connection_tcp"
     },
@@ -87,14 +83,6 @@
     {
       "name": "ltx",
       "srcPath": "./ltx"
-    },
-    {
-      "name": "library_events",
-      "srcPath": "./library_events"
-    },
-    {
-      "name": "library_id",
-      "srcPath": "./library_id"
     },
     {
       "name": "library_stream_features",

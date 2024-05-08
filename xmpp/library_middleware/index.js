@@ -37,6 +37,8 @@ function middleware({ entity }) {
     return {
         use(fn) {
             incoming.push(fn);
+            console.error("xmpp---incomingListener" + JSON.stringify(incoming))
+
             return fn;
         },
         filter(fn) {

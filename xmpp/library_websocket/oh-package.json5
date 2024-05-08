@@ -10,6 +10,6 @@
   "dependencies": {
     "@xmpp/connection": "file:../library_connection",
     "@xmpp/xml": "file:../library_xml",
-    "ws": "^8.4.0"
+    "@ohos/node-polyfill": "^1.0.0"
   }
 }

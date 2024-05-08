@@ -8,6 +8,7 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "ltx": "file:../ltx"
+    "ltx": "file:../ltx",
+    "@ohos/node-polyfill": "^1.0.0"
   }
 }

@@ -1,10 +1,10 @@
 "use strict";
 
 // const jid = require("@xmpp/jid");
-import {jid} from "@xmpp/jid"
 // const { IRI } = require("iri");
-import {querystring} from '@ohos/node-polyfill'
-import {IRI} from './src/main/uri/iri'
+import { jid } from "@xmpp/jid"
+import { querystring } from '@ohos/node-polyfill'
+import { IRI } from './src/main/uri/iri'
 function findQueryType(params) {
   return Object.getOwnPropertyNames(params).find((k) => {
     return k[0] === "?" && params[k] === "";
@@ -43,4 +43,4 @@ function parse(str) {
 
 // module.exports.parse = parse;
 
-export {parse}
+export { parse }

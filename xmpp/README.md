@@ -16,6 +16,10 @@
 
 ## 下载安装
 
+1. 参考安装教程 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+
+2. 安装命令如下：
+
 ```
  ohpm install @xmpp/client
 ```
@@ -66,8 +70,7 @@ ohos.permission.GET_NETWORK_INFO
 
 （2）使用刚在openfire中的新建的用户进行登录
 
-```javascript
-
+```
 import {client, xml, Options } from '@xmpp/client';
 
 @Entry
@@ -78,49 +81,66 @@ struct Index {
   @State sendMessage: string = ""
   @State contact: string = ""
   private options: Options = {
-    service: 'xmpp://10.50.80.51:5222/', 替换自己的服务器地址
-    domain: '10.50.80.51',              //服务器名称
-    resource: 'minint-5b5r6sm',        //主机名
-    username: "cq",					  //openfire注册用户的用户名
-    password: "123456"				//openfire注册的用户密码
+    service: 'xmpp://xx.xx.xx.xx:xxxx/', //xx.xx.xx.xx(服务器地址) xxxx 服务端口
+    domain: 'xx.xx.xx.xx',               //服务器名称(xx.xx.xx.xx)
+    resource: 'xx.xx.xx.xx',             //主机名(默认为服务器地址)
+    username: "xxx",					 //openfire注册用户的用户名
+    password: "xxx"				         //openfire注册的用户密码
   }
   private xmpp = client(this.options); //创建xmpp实例
 
-  aboutToAppear(): void {
-    this.xmpp.on('error', (err) => {//监听错误信息
-      console.info('xmpp-❌', JSON.stringify(err.message));
-    });
-    this.xmpp.on('offline', () => {//离线状态
-      console.info('xmpp--', 'offline');
-    });
-    this.xmpp.on('status', (status, value) => {//监听当前状态
-      this.status = status
-    });
-    this.xmpp.on('online', async (address: ESObject) => {//在线
-      console.log('🗸', 'online as', address);
-      const presence = xml(
-        'presence',
-        {},
-        xml('show', {}, 'chat'),
-        xml('status', {}, 'presence!')
-      );
-      this.xmpp.send(presence);
-    });
-    this.xmpp.on('stanza', (stanza) => {
+  private xmpp = client(this.options); //连接服务
+
+  private onError = (err: Error) => {
+    console.info('xmpp-❌', JSON.stringify(err.message));
+  }
+  private onOffline = () => {
+    console.info('xmpp--', 'offline');
+  }
+  private onStanza = (stanza: ESObject) => {
+    this.contact = stanza.attrs.from
+    if (stanza.is('presence') && stanza.attrs.type === 'subscribe') {
       this.contact = stanza.attrs.from
-      if (stanza.is('presence') && stanza.attrs.type === 'subscribe') {
-        this.contact = stanza.attrs.from
-        this.xmpp.send(xml('presence', { to: stanza.attrs.from, type: 'subscribed' }));
-      }
-      if (stanza.is('message') && stanza.attrs.from !== this.xmpp.jid) {
-        stanza.children.forEach((child: ESObject) => {
-          if (child.name === 'body') {
-            console.log("xmpp---message" + child.text())
-            this.message = child.text()
-          }
-        });
-      }
-    });
+      this.xmpp.send(xml('presence', { to: stanza.attrs.from, type: 'subscribed' }));
+    }
+    if (stanza.is('message') && stanza.attrs.from !== this.xmpp.jid) {
+      stanza.children.forEach((child: ESObject) => {
+        if (child.name === 'body') {
+          console.log("xmpp---message" + child.text())
+          this.message = child.text()
+        }
+      });
+    }
+  }
+  private onStatus = (status: string, value: string) => {
+    this.status = status
+    console.info("xmpp-response --" + "status--" + status + "---value---" + value)
+  }
+  private onLine = async (address: ESObject) => {
+    console.log('🗸', 'online as', address);
+    const presence = xml(
+      'presence',
+      {},
+      xml('show', {}, 'chat'),
+      xml('status', {}, 'presence!')
+    );
+    this.xmpp.send(presence);
+  }
+
+  aboutToAppear() {
+    this.xmpp.on('error', this.onError);
+    this.xmpp.on('offline',this.onOffline);
+    this.xmpp.on('status', this.onStatus);
+    this.xmpp.on('online', this.onLine);
+    this.xmpp.on('stanza',this.onStanza);
+  }
+
+  aboutToDisappear(){
+    this.xmpp.off('error',this.onError)
+    this.xmpp.off('offline',this.onOffline)
+    this.xmpp.off('status',this.onStatus)
+    this.xmpp.off('online',this.onLine)
+    this.xmpp.off('stanza',this.onStanza)
   }
 
   build() {
@@ -156,7 +176,7 @@ struct Index {
 
 
           }).margin({ top: 30 })
-
+      
         Button("断开").fontSize(30)
           .width("60%")
           .onClick(() => {
@@ -183,14 +203,14 @@ struct Index {
 
 ##### xmpp=client(options)
 
-```javascript
+```
 
  private options: Options = {
-    service: 'xmpp://10.50.80.51:5222/', 替换自己的服务器地址
-    domain: '10.50.80.51',              //服务器名称
-    resource: 'minint-5b5r6sm',        //主机名
-    username: "cq",					  //openfire注册用户的用户名
-    password: "123456"				//openfire注册的用户密码
+    service: 'xmpp://xx.xx.xx.xx:xxxx/', //xx.xx.xx.xx(服务器地址) xxxx 服务端口
+    domain: 'xx.xx.xx.xx',               //服务器名称(xx.xx.xx.xx)
+    resource: 'xx.xx.xx.xx',             //主机名(默认为服务器地址)
+    username: "xxx",					 //openfire注册用户的用户名
+    password: "xxx"				         //openfire注册的用户密码
   }
   private xmpp = client(this.options); //创建xmpp实例
 ```
@@ -198,47 +218,53 @@ struct Index {
 #### 监听错误回调
 
 为方便起见，为所有支持的请求方法提供了别名。
-
-- xmpp.on('error', (err) => {//监听错误信息});
-
-```javascript
- this.xmpp.on('error', (err) => {//监听错误信息
-      console.info('xmpp-❌', JSON.stringify(err.message));
-    });
+异常监听
 ```
-
+  private onError = (err: Error) => {
+    console.info('xmpp-❌', JSON.stringify(err.message));
+  }
+  
+  this.xmpp.on('error', this.onError);
+```
+状态监听
 #### 监听状态回调
 
-xmpp.on('status', (status) => {});
-
-```javascript
-xmpp.on('status', (status, value) => {//监听当前状态});
+```
+ private onStatus = (status: string, value: string) => {
+    this.status = status
+    console.info("xmpp-response --" + "status--" + status + "---value---" + value)
+  }
+  this.xmpp.on('status', this.onStatus);
 ```
 
 - message（消息）
 
 - presence（在线状态）
 
-  ```javascript
-  xmpp.on('stanza', (stanza) => {
-        if (stanza.is('presence') && stanza.attrs.type === 'subscribe') {//监听在线
-          this.xmpp.send(xml('presence', { to: stanza.attrs.from, type: 'subscribed' }));
-        }
-        if (stanza.is('message') && stanza.attrs.from !== this.xmpp.jid) {//监听收到信息
-          stanza.children.forEach((child: ESObject) => {
-            if (child.name === 'body') {
-              this.message = child.text()
-            }
-          });
+  ```
+   private onStanza = (stanza: ESObject) => {
+    this.contact = stanza.attrs.from
+    if (stanza.is('presence') && stanza.attrs.type === 'subscribe') {
+      this.contact = stanza.attrs.from
+      this.xmpp.send(xml('presence', { to: stanza.attrs.from, type: 'subscribed' }));
+    }
+    if (stanza.is('message') && stanza.attrs.from !== this.xmpp.jid) {
+      stanza.children.forEach((child: ESObject) => {
+        if (child.name === 'body') {
+          console.log("xmpp---message" + child.text())
+          this.message = child.text()
         }
       });
+    }
+  }
+  this.xmpp.on('stanza',this.onStanza)
   ```
 
 #### 发送消息
 
 xmpp.send(xml)
 
-```javascript
+```
 const message = xml("message", { type: "chat", to: "JID" }, xml("body", {}, this.sendMessage));
 //此示例为 message：这条xml发送一条消息，类型chat是聊天，to后跟的参数为JID，"body"后为要发送的信息
 ```
@@ -256,8 +282,41 @@ const message = xml("message", { type: "chat", to: "JID" }, xml("body", {}, this
 | Parameter error        | number   | 是   | 否   | 参数错误       |
 | Permission denied      | number   | 是   | 否   | 没有权限       |
 
+## 目录结构
+
+```
+|---- @xmpp/client 
+|     |---- entry  # 示例代码文件夹
+|     |---- library_client  # XMPP客户端库文件夹
+|     |---- library_client_core  # XMPP客户端核心功能实现
+|     |---- library_connection  # 负责处理XMPP连接的子包
+|     |---- library_connection_tcp  # 负责处理基于TCP协议的XMPP连接的子包
+|     |---- library_iq  # 负责处理XMPP IQ(信息/查询)请求的子包
+|     |---- library_middleware  # 负责处理中间件的子包
+|     |---- library_reconnect  # 负责处理XMPP连接断线重连的子包
+|     |---- library_resolve  # 用于解析XMPP地址的子包
+|     |---- library_resource_binding  # xmpp.js库中负责处理XMPP资源绑定的子包
+|     |---- library_sasl  # 负责处理XMPP SASL（Simple Authentication and Security Layer）身份验证的子包
+|     |---- library_sasl_anonymous  # xmpp.js库中负责处理XMPP匿名身份验证的子包
+|     |---- library_sasl_plain  # 用于XMPP（Extensible Messaging and Presence Protocol，可扩展消息和在线状态协议）的 SASL（Simple Authentication and Security Layer，简单身份验证和安全层）插件
+|     |---- library_sasl_scram_sha_1  # SCRAM-SHA-1 认证机制的封装包
+|     |---- library_session_establishment  # XMPP客户端开发中的核心部分
+|     |---- library_stream_features  # 客户端和服务器之间建立连接时交换能力
+|     |---- library_stream_management  # 封装处理 XMPP 流管理功能
+|     |---- library_tcp  # 封装TCP 进行 XMPP 通信
+|     |---- library_uri  # 封装处理 XMPP URI 的逻辑
+|     |---- library_websocket  # 封装了 WebSocket 协议和 XMPP 协议的相关逻辑
+|     |---- library_xml  # 处理 XMPP 协议中的 XML 数据
+|     |---- library_ltx  # 快速XML构建器、解析器、序列化和操作库
+|     |---- README.md  # 安装使用方法
+```
+
+## 约束与限制
+
 在下述版本验证通过：
-DevEco Studio:4.1.3.500, 5.0.0.22-Canary2, SDK: API12
+
+- DevEco Studio 版本： 5.0.3.200 OpenHarmony SDK:API12 (5.0.0.22-Canary2)
+
 
 ## 贡献代码
 

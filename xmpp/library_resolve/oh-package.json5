@@ -9,7 +9,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@xmpp/xml": "file:../library_xml",
-    "@xmpp/events": "file:../library_events",
+    "@xmpp/events": "^0.13.1",
     "@xmpp/connection": "file:../library_connection",
     "@ohos/axios": "^2.2.0"
   },

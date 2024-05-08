@@ -48,7 +48,6 @@ class IQCaller {
 
     const deferred = new Deferred();
     this.handlers.set(stanza.attrs.id, deferred);
-
     try {
       await this.entity.send(stanza);
       await timeoutPromise.timeout(deferred.promise, timeout);
