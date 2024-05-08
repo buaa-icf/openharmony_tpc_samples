@@ -1,0 +1,17 @@
+{
+  "name": "@ohos/xmpp_connection",
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "author": "tcp",
+  "license": "ISC License",
+  "dependencies": {
+    "@xmpp/error": "^0.13.1",
+    "@xmpp/jid": "^0.13.1",
+    "@ohos/xmpp_xml": "1.0.0",
+    "@xmpp/events": "^0.13.1",
+    "@ohos/node-polyfill": "^1.0.0",
+  }
+}
