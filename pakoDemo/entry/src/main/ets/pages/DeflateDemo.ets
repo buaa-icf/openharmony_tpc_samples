@@ -14,7 +14,7 @@
  */
 
 import fileio from '@ohos.fileio';
-import pako from 'pako' ;
+import pako from 'pako';
 import { GlobalContext } from '../entryability/GlobalContext'
 
 interface optionsType {
@@ -30,7 +30,7 @@ export async function DeflateFile(src: string, dest: string): Promise<boolean> {
     fileio.readSync(reader, buf);
     const writer = fileio.openSync(dest, 0o102, 0o666);
     const options: optionsType = { deflate: true, level: 9 };
-    fileio.writeSync(writer, pako.deflate(new Uint8Array(buf), options).buffer);
+    fileio.writeSync(writer, pako.deflate(new Uint8Array(buf), options)?.buffer);
     fileio.closeSync(reader);
     fileio.closeSync(writer);
     return true;
@@ -47,9 +47,12 @@ export async function InflateFile(src: string, target: string): Promise<boolean>
     const buf = new ArrayBuffer(stat.size);
     const res = await fileio.read(reader, buf);
     const options: optionsType = { deflate: true, level: 9 };
-    const data: Uint8Array = pako.inflate(new Uint8Array(res.buffer), options);
+    const data: string | Uint8Array | undefined = pako.inflate(new Uint8Array(res.buffer), options);
+    if (typeof data == 'string') {
+      return false
+    }
     const writer = fileio.openSync(target, 0o102, 0o666);
-    fileio.writeSync(writer, data.buffer);
+    fileio.writeSync(writer, data?.buffer);
     fileio.closeSync(writer);
     fileio.closeSync(reader);
     return true;
@@ -111,15 +114,18 @@ export struct DeflateTest {
   }
 
   InflateFileTest(): void {
-    let context:Context = GlobalContext.getContext().getObject("context") as Context
+    let context: Context = GlobalContext.getContext().getObject("context") as Context
     try {
       let data = context.filesDir
       InflateFile(data + "/hello.txt.deflate", data + '/test.txt')
         .then(() => {
-          AlertDialog.show({ title: '解缩成功',
+          AlertDialog.show({
+            title: '解缩成功',
             message: '请查看沙箱路径 ' + data + '/test.txt',
-            confirm: { value: 'OK', action: () => {
-            } }
+            confirm: {
+              value: 'OK', action: () => {
+              }
+            }
           })
         });
     } catch (error) {
@@ -128,18 +134,21 @@ export struct DeflateTest {
   }
 
   DeflateFileTest(): void {
-    let context:Context = GlobalContext.getContext().getObject("context") as Context
+    let context: Context = GlobalContext.getContext().getObject("context") as Context
     try {
       let data = context.filesDir
       console.info('directory obtained. Data:' + data);
       DeflateFile(data + '/hello.txt', data + '/hello.txt.deflate')
         .then((isSuccess) => {
           if (isSuccess) {
-            AlertDialog.show({ title: '压缩成功',
+            AlertDialog.show({
+              title: '压缩成功',
               message: '请查看沙箱路径 ' + data + '/test.txt.deflate',
-              confirm: { value: 'OK', action: () => {
-                this.isDeCompressGZipShow = true
-              } }
+              confirm: {
+                value: 'OK', action: () => {
+                  this.isDeCompressGZipShow = true
+                }
+              }
             })
           }
         });
@@ -149,30 +158,33 @@ export struct DeflateTest {
   }
 
   generateTextFile(): void {
-    let context:Context = GlobalContext.getContext().getObject("context") as Context
+    let context: Context = GlobalContext.getContext().getObject("context") as Context
     try {
       let data = context.filesDir
       const writer = fileio.openSync(data + '/hello.txt', 0o102, 0o666);
       fileio.writeSync(writer, "hello, world!  adjasjdakjdakjdkjakjdakjskjasdkjaskjdajksdkjasdkjaksjdkja\n"
-      + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
-      + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
-      + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
-      + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
-      + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
-      + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
-      + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
-      + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
-      + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
-      + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
-      + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
-      + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs"
+        + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
+        + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
+        + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
+        + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
+        + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
+        + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
+        + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
+        + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
+        + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
+        + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
+        + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
+        + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs"
       );
       fileio.closeSync(writer);
-      AlertDialog.show({ title: '生成成功',
+      AlertDialog.show({
+        title: '生成成功',
         message: '请查看沙箱路径' + data + '/hello.txt',
-        confirm: { value: 'OK', action: () => {
-          this.isCompressGZipFileShow = true
-        } }
+        confirm: {
+          value: 'OK', action: () => {
+            this.isCompressGZipFileShow = true
+          }
+        }
       })
     } catch (error) {
       console.error('File to obtain the file directory. Cause: ' + error.message);

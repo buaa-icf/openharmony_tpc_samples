@@ -29,20 +29,17 @@ import {
 import {testInflate} from './pako/helpers'
 import {Sample} from "./Sample"
 
-
-
-
 export default function InflateTest() {
   // fromCharCode, but understands right > 0xffff values
+
+  let samples = new Sample();
+
+  let entryTestUint8Data: Uint8Array;
 
   describe('inflateTest', () =>{
     beforeAll(() =>{
 
     })
-
-
-    let samples = new Sample()
-
     beforeEach(() => {
       let name =[
         'blank',
@@ -51,7 +48,6 @@ export default function InflateTest() {
         'lorem_en_100k',
         'lorem_utf_100k'
       ]
-
 
       let nameRes = [
       $r('app.media.blank'),
@@ -67,6 +63,10 @@ export default function InflateTest() {
         });
       }
 
+      let context:Context = GlobalContext.getContext().getObject("context") as Context
+      context.createModuleContext('entry_test').resourceManager.getMediaContent($r('app.media.spdy_dict').id).then(uint8=>{
+        entryTestUint8Data = uint8;
+      })
     })
     afterEach(() => {
       // Presets a clear action, which is performed after each unit test case ends.
@@ -118,12 +118,7 @@ export default function InflateTest() {
         });
 
         it('spdydictionary',3, () => {
-          let context:Context = GlobalContext.getContext().getObject("context") as Context
-          context.createModuleContext('entry_test').resourceManager.getMediaContent($r('app.media.spdy_dict').id).then(uint8=>{
-          let spdyDict:Uint8Array = uint8;
-
-          testInflate(samples, onTypeOf1(spdyDict), onTypeOf1(spdyDict));
-            })
+          testInflate(samples, onTypeOf1(entryTestUint8Data), onTypeOf1(entryTestUint8Data));
         });
 
         // it('shouldthrowifdirectoryisnotsuppliedtorawinflate',4, () => {
@@ -134,12 +129,7 @@ export default function InflateTest() {
         // });
 
         it('testsrawinflatewithspdydictionary',5, () => {
-            let context:Context = GlobalContext.getContext().getObject("context") as Context
-            context.createModuleContext('entry_test').resourceManager.getMediaContent($r('app.media.spdy_dict').id).then(uint8=>{
-            let spdyDict:Uint8Array = uint8;
-            testInflate(samples, onTypeOf2(true,spdyDict), onTypeOf2(true,spdyDict));
-          })
-
+          testInflate(samples, onTypeOf2(true,entryTestUint8Data), onTypeOf2(true,entryTestUint8Data));
         });
 
         it('testsdictionaryasUint8Array',6, () => {

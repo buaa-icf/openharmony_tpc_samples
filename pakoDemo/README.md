@@ -8,7 +8,6 @@
 
 ```
   ohpm install pako
-  ohpm install @types/pako --save-dev //import pako 的时候语法报错。其原因是pako包内不含类型声明，需要 @types/pako 下载这个包的声明文件，从而解决语法的报错。
 ```
 OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
@@ -91,7 +90,7 @@ const output = inflator.result;**
 ## 约束与限制
 在下述版本验证通过：
 
-DevEco Studio: 3.1 Beta2(3.1.0.400), SDK: API9 Release(3.2.11.9) 。
+DevEco Studio: 5.0 Canary3(5.0.3.228), SDK: API12(5.0.0.18) 。
 
 ## 开源协议
 
