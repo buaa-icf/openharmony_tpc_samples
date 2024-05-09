@@ -1,11 +1,11 @@
 {
   "name": "@ohos/xmpp_connection",
   "version": "1.0.0",
-  "description": "Please describe the basic information.",
+  "description": "提供了XMPP（一种基于XML的即时通讯协议）的客户端连接功能，支持WebSocket、TLS加密和SSL/TLS安全连接",
   "main": "index.js",
   "types": "index.d.ts",
   "type": "module",
-  "author": "tcp",
+  "author": "tpc",
   "license": "ISC License",
   "dependencies": {
     "@xmpp/error": "^0.13.1",
