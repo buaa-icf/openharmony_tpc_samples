@@ -1,8 +1,8 @@
-本库是OpenHarmony系统下使用eventbusjs的开发示例，此处使用的版本是eventbusjs@0.2.0，eventbusjs主要功能是消息订阅发送，用于在JavaScript中管理事件，受到广大开发者的喜爱。
+# EventBus
 
 ## 简介
 
-用于管理事件的简单JavaScript类
+本库是OpenHarmony系统下基于[EventBus](https://github.com/krasimir/EventBus)库使用的开发示例，此处使用的版本是eventbusjs@0.2.0，eventbusjs主要功能是消息订阅发送，用于在JavaScript中管理事件，为多组件之间的通信提供了一个简单而高效的解决方案，受到广大开发者的喜爱。
 
 ## 下载
 
@@ -103,6 +103,8 @@ EventBus.removeEventListener('EXAMPLE_EVENT', handler);
 
 ### `addEventListener`
 
+用于将一个事件处理函数绑定到特定的事件类型上。当这个特定的事件被触发时，绑定的事件处理函数就会被执行。
+
 ```
 // @type - string
 // @callback - function
@@ -111,6 +113,8 @@ EventBus.addEventListener(type, callback, scope)
 ```
 
 ### `removeEventListener`
+
+用于移除之前通过addEventListener方法添加的事件监听器。
 
 ```
 // @type - string
@@ -121,6 +125,8 @@ EventBus.removeEventListener(type, callback, scope)
 
 ### `hasEventListener`
 
+用来检查是否有事件监听器注册在特定的事件类型上。
+
 ```
 // @type - string
 // @callback - function
@@ -129,6 +135,8 @@ EventBus.hasEventListener(type, callback, scope)
 ```
 
 ### `dispatch`
+
+用于触发一个事件。
 
 ```
 // @type - string
@@ -152,7 +160,7 @@ EventBus.getEvents()
 
 ## 开源协议
 
-本项目基于 [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0) ，请自由地享受和参与开源。
+本项目基于 [Apache License 2.0](https://gitee.com/lgrong2303/openharmony_tpc_samples/blob/EventBus/EventBus/LICENSE) ，请自由地享受和参与开源。
 
 ## 贡献代码
 
