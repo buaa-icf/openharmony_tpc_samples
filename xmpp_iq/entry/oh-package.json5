@@ -1,0 +1,15 @@
+{
+  "name": "entry",
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "main": "",
+  "author": "",
+  "license": "",
+  "dependencies": {
+    "@ohos/xmpp_iq":"file:../library",
+    "@ohos/xmpp_xml": "1.0.0",
+    "@ohos/xmpp_middleware": "file:../library/library_middleware.har",
+    "@ohos/xmpp_connection": "file:../library/library_connection.har"
+  }
+}
+
