@@ -1,0 +1,14 @@
+{
+  "name": "@ohos/xmpp_connection_tcp",
+  "version": "1.0.0",
+  "description": "用于建立和管理XMPP连接的库",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "author": "tpc",
+  "license": "ISC License",
+  "dependencies": {
+    "@ohos/xmpp_connection": "1.0.0",
+    "@ohos/xmpp_xml": "1.0.0"
+  }
+}
