@@ -1,0 +1,20 @@
+[
+  {
+    "Name":"@xmpp/tcp",
+    "License":"ISC License",
+    "License File":"LICENSE",
+    "Version Number":"0.13.1",
+    "Owner":"xiafeng@huawei.com",
+    "Upstream URL":"https://github.com/xmppjs/xmpp.js/tree/main/packages/tcp",
+    "Description": "The @xmpp/tcp module provides a TCP transport layer for XMPP entities, enabling them to establish and maintain connections over the TCP protocol."
+  },
+  {
+    "Name":"@types/xmpp__tcp",
+    "License":"MIT License",
+    "License File":"LICENSE-MIT",
+    "Version Number":"0.13.1",
+    "Owner":"xiafeng@huawei.com",
+    "Upstream URL":"https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/xmpp__tcp",
+    "Description": "The @types/xmpp__tcp package is a type definition or interface for integrating XMPP (Extensible Messaging and Presence Protocol) with TCP, ensuring proper code compatibility and type checking for developers using the technology."
+  }
+]
