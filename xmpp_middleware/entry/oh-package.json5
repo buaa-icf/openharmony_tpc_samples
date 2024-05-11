@@ -1,0 +1,14 @@
+{
+  "name": "entry",
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "main": "",
+  "author": "",
+  "license": "",
+  "dependencies": {
+    "@ohos/xmpp_middleware": "file:../library",
+    "@xmpp/jid": "^0.13.1"
+  },
+  "devDependencies": {},
+  "dynamicDependencies": {}
+}
