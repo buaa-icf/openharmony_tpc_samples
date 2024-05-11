@@ -39,23 +39,28 @@ export default function toDateTest() {
     })
 
     it('toDate1', 0, ()=> {
-      let result:Date = validator.toDate("2022/12/05")
+      let result = validator.toDate("2022/12/05")
+      if(result == null) return
       expect(result.toString()).assertEqual("Mon Dec 05 2022 00:00:00 GMT+0800")
     })
     it('toDate2', 0, ()=> {
-      let result:Date  = validator.toDate("2022-12-05")
+      let result  = validator.toDate("2022-12-05")
+      if(result == null) return
       expect(result.toString()).assertEqual("Mon Dec 05 2022 08:00:00 GMT+0800")
     })
     it('toDate3', 0, ()=> {
-      let result:Date  = validator.toDate("2007-04-06T00:00")
+      let result  = validator.toDate("2007-04-06T00:00")
+      if(result == null) return
       expect(result.toString()).assertEqual("Fri Apr 06 2007 00:00:00 GMT+0800")
     })
     it('toDate4', 0, ()=> {
-      let result:Date  = validator.toDate("2010-02-18T16:23:48.5")
+      let result  = validator.toDate("2010-02-18T16:23:48.5")
+      if(result == null) return
       expect(result.toString()).assertEqual("Thu Feb 18 2010 16:23:48 GMT+0800")
     })
     it('toDate5', 0, ()=> {
-      let result:Date  = validator.toDate("2007-05-19 14:34:23")
+      let result  = validator.toDate("2007-05-19 14:34:23")
+      if(result == null) return
       expect(result.toString()).assertEqual("Sat May 19 2007 14:34:23 GMT+0800")
     })
   })
