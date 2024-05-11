@@ -25,10 +25,10 @@ import { onTypeOf13, onTypeOf14, onTypeOf15, onTypeOf5 } from './IntertfaceData'
 export default function BeflateCoverTest() {
   // fromCharCode, but understands right > 0xffff values
 
-  describe('BeflateCoverTest',  () =>{
+  describe('BeflateCoverTest', () => {
 
     let long_sample: string | Uint8Array;
-    beforeAll(() =>{
+    beforeAll(() => {
 
     })
     beforeEach(() => {
@@ -50,56 +50,68 @@ export default function BeflateCoverTest() {
 
 
     it('stored', 0, () => {
-      testDeflate(short_sample, onTypeOf13(0,200), 0);
-      testDeflate(short_sample, onTypeOf13(0,10), 5);
+      testDeflate(short_sample, onTypeOf13(0, 200), 0);
+      testDeflate(short_sample, onTypeOf13(0, 10), 5);
     });
     it('fast', 1, () => {
-      let context:Context = GlobalContext.getContext().getObject("context") as Context
-      testDeflate(short_sample, onTypeOf13(1,10), 5);
-      context.createModuleContext('entry_test').resourceManager.getMediaContent($r('app.media.lorem_en_100k').id).then((uint8: Uint8Array) => {
-        long_sample = uint8
-        testDeflate(long_sample, onTypeOf14(1,1,10), 0);
-      });
+      let context: Context = GlobalContext.getContext().getObject("context") as Context
+      testDeflate(short_sample, onTypeOf13(1, 10), 5);
+      context.createModuleContext('entry_test')
+        .resourceManager
+        .getMediaContent($r('app.media.lorem_en_100k').id)
+        .then((uint8: Uint8Array) => {
+          long_sample = uint8
+          testDeflate(long_sample, onTypeOf14(1, 1, 10), 0);
+        });
 
     });
     it('slow', 2, () => {
-      let context:Context = GlobalContext.getContext().getObject("context") as Context
-      testDeflate(short_sample, onTypeOf13(4,10), 5);
-      context.createModuleContext('entry_test').resourceManager.getMediaContent($r('app.media.lorem_en_100k').id).then((uint8: Uint8Array) => {
-        long_sample = uint8
-        testDeflate(long_sample, onTypeOf14(9,1,10), 0);
-      });
+      let context: Context = GlobalContext.getContext().getObject("context") as Context
+      testDeflate(short_sample, onTypeOf13(4, 10), 5);
+      context.createModuleContext('entry_test')
+        .resourceManager
+        .getMediaContent($r('app.media.lorem_en_100k').id)
+        .then((uint8: Uint8Array) => {
+          long_sample = uint8
+          testDeflate(long_sample, onTypeOf14(9, 1, 10), 0);
+        });
     });
     it('rle', 3, () => {
-      let context:Context = GlobalContext.getContext().getObject("context") as Context
+      let context: Context = GlobalContext.getContext().getObject("context") as Context
       testDeflate(short_sample, onTypeOf5(3), 0);
-      testDeflate(short_sample, onTypeOf15(3,10), 5);
+      testDeflate(short_sample, onTypeOf15(3, 10), 5);
 
-      context.createModuleContext('entry_test').resourceManager.getMediaContent($r('app.media.lorem_en_100k').id).then((uint8: Uint8Array) => {
-        long_sample = uint8
-        testDeflate(long_sample,onTypeOf15(3,10), 0);
-      });
+      context.createModuleContext('entry_test')
+        .resourceManager
+        .getMediaContent($r('app.media.lorem_en_100k').id)
+        .then((uint8: Uint8Array) => {
+          long_sample = uint8
+          testDeflate(long_sample, onTypeOf15(3, 10), 0);
+        });
     });
     it('huffman', 4, () => {
-      let context:Context = GlobalContext.getContext().getObject("context") as Context
+      let context: Context = GlobalContext.getContext().getObject("context") as Context
       testDeflate(short_sample, onTypeOf5(2), 0);
-      testDeflate(short_sample, onTypeOf15(2,10), 5);
-      context.createModuleContext('entry_test').resourceManager.getMediaContent($r('app.media.lorem_en_100k').id).then((uint8: Uint8Array) => {
-        long_sample = uint8
-        testDeflate(long_sample, onTypeOf15(2,10), 0);
-      });
+      testDeflate(short_sample, onTypeOf15(2, 10), 5);
+      context.createModuleContext('entry_test')
+        .resourceManager
+        .getMediaContent($r('app.media.lorem_en_100k').id)
+        .then((uint8: Uint8Array) => {
+          long_sample = uint8
+          testDeflate(long_sample, onTypeOf15(2, 10), 0);
+        });
     });
 
     //in port checking input parameters was removed
     it('inflatebadparameters', 5, () => {
-      let ret:string;
+      let ret: number;
 
       let deflate1: Object = deflate
       ret = deflate(null, 0);
       expect(ret).assertDeepEquals(pako.constants.Z_STREAM_ERROR)
 
 
-      let strm:ZStream = new ZStream();
+      let strm: ZStream = new ZStream();
       //
       ret = deflateInit(null);
 
@@ -132,11 +144,11 @@ export default function BeflateCoverTest() {
   })
 }
 
-function testDeflate(data:string | Uint8Array, opts:object, flush:number): void {
-  let deflator:pako.Deflate = new pako.Deflate(opts);
+function testDeflate(data: string | Uint8Array, opts: object, flush: number): void {
+  let deflator: pako.Deflate = new pako.Deflate(opts);
   deflator.push(data, flush);
   deflator.push(data, true);
-  let errcode:ReturnCodes = deflator.err;
+  let errcode: number = deflator.err;
 
   expect(errcode).assertEqual(0)
 }
