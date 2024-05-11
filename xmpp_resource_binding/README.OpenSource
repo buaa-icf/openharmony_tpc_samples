@@ -1,0 +1,20 @@
+[
+  {
+    "Name":"@xmpp/resource-binding",
+    "License":"ISC License",
+    "License File":"LICENSE",
+    "Version Number":"0.13.1",
+    "Owner":"xiafeng@huawei.com",
+    "Upstream URL":"https://github.com/xmppjs/xmpp.js/tree/main/packages/resource-binding",
+    "Description": ""XMPP resource binding is a process that associates a unique resource identifier with a connected XMPP entity, allowing for multiple simultaneous connections and targeted communication.""
+  },
+  {
+    "Name":"@types/xmpp__resource-binding",
+    "License":"MIT License",
+    "License File":"LICENSE-MIT",
+    "Version Number":"0.13.1",
+    "Owner":"xiafeng@huawei.com",
+    "Upstream URL":"https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/xmpp__resource-binding",
+    "Description": "@types/xmpp__resource-binding provides TypeScript type definitions for the XMPP resource binding module, ensuring type safety and autocompletion when working with XMPP resource binding in a TypeScript environment."
+  }
+]
