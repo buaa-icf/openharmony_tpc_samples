@@ -1,0 +1,18 @@
+{
+  "name": "@ohos/xmpp_stream_features",
+  "version": "1.0.0",
+  "description": "提供了一个用于建立和管理XMPP流连接的library",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "author": "tpc",
+  "license": "ISC License",
+  "dependencies": {
+    "@types/koa-compose": "^3.2.8",
+    "@types/koa": "^2.15.0",
+    "@ohos/xmpp_xml": "1.0.0",
+    "@ohos/xmpp_middleware": "1.0.0"
+  },
+  "devDependencies": {},
+  "dynamicDependencies": {}
+}
