@@ -1,0 +1,16 @@
+{
+  "name": "@ohos/xmpp_sasl_plain",
+  "version": "1.0.0",
+  "description": "用于 XMPP（Extensible Messaging and Presence Protocol）的 SASL PLAIN 认证机制的库",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "author": "tpc",
+  "license": "ISC License",
+  "dependencies": {
+    "@ohos/xmpp_sasl": "1.0.0",
+    "sasl-plain": "^0.1.0"
+  },
+  "devDependencies": {},
+  "dynamicDependencies": {}
+}
