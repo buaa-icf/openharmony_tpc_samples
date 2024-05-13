@@ -1,0 +1,20 @@
+[
+  {
+    "Name":"@xmpp/stream-features",
+    "License":"ISC License",
+    "License File":"LICENSE-ISC",
+    "Version Number":"0.13.1",
+    "Owner":"xiafeng@huawei.com",
+    "Upstream URL":"https://github.com/xmppjs/xmpp.js/tree/main/packages/stream-features",
+    "Description": "@xmpp/stream-features is a module that handles the negotiation and management of additional features during the establishment of an XMPP connection."
+  },
+  {
+    "Name":"@types/xmpp__stream-features",
+    "License":"MIT License",
+    "License File":"LICENSE",
+    "Version Number":"0.13.1",
+    "Owner":"xiafeng@huawei.com",
+    "Upstream URL":"https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/xmpp__stream-features",
+    "Description": "The @types/xmpp__stream-features package provides TypeScript type definitions for the @xmpp/stream-features module, enhancing the development experience with type checking and autocompletion."
+  }
+]
