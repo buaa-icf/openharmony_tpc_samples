@@ -1,0 +1,16 @@
+{
+  "name": "@ohos/xmpp_session_establishment",
+  "version": "1.0.0",
+  "description": "用于处理服务器发送的特性，并根据这些特性来决定如何建立会话",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "author": "tpc",
+  "license": "ISC License",
+  "dependencies": {
+    "@ohos/xmpp_xml": "1.0.0",
+    "@ohos/xmpp_iq": "1.0.0",
+    "@ohos/xmpp_middleware": "1.0.0",
+    "@ohos/xmpp_stream_features": "1.0.0",
+  }
+}
