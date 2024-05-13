@@ -2,7 +2,7 @@
 
 ### 介绍
 
-js-tokens 是一个微型JavaScript的分词器。小巧的、正则表达式驱动的、宽松的、几乎符合规范的 JavaScript 标记器
+本库是OpenHarmony系统下基于[js-tokens](https://github.com/lydell/js-tokens)库使用的开发示例，js-tokens 是一个微型JavaScript的分词器。小巧的、正则表达式驱动的、宽松的、几乎符合规范的 JavaScript 标记器
 
 ### 下载安装
 
@@ -128,4 +128,4 @@ DevEco Studio: 3.1.1 Release(3.1.0.501), SDK: API9 Release(3.2.12.5)
 
 ### 开源协议
 
-本项目基于[MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/js-tokens/LICENSE),请自由的享受和参与开源
+本项目基于[Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/js-tokens/LICENSE),请自由的享受和参与开源

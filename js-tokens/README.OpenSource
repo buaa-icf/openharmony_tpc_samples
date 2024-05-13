@@ -2,9 +2,9 @@
     {
         "Name": "js-tokens",
         "License": "MIT License",
-        "License File": "https://github.com/lydell/js-tokens/blob/main/LICENSE",
+        "License File": "LICENSE-MIT ",
         "Version Number": "v5.0.0",
-        "Owner":"lydell",
+        "Owner" : "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/lydell/js-tokens",
         "Description": "Tiny JavaScript tokenizer."
     }
