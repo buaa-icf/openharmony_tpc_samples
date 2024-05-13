@@ -1,0 +1,16 @@
+{
+  "name": "@ohos/xmpp_resoure_binding",
+  "version": "1.0.0",
+  "description": "提供了一个用于客户端资源绑定的library",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "author": "tpc",
+  "license": "ISC Licensee",
+  "dependencies": {
+    "@ohos/xmpp_xml": "1.0.0",
+    "@ohos/xmpp_iq": "1.0.0",
+    "@ohos/xmpp_middleware": "1.0.0",
+    "@ohos/xmpp_stream_features": "1.0.0"
+  }
+}
