@@ -1,0 +1,14 @@
+{
+  "name": "@ohos/xmpp_reconnect",
+  "version": "1.0.0",
+  "description": "用于 XMPP（Extensible Messaging and Presence Protocol，可扩展消息和状态协议）客户端的库，它提供了自动重连功能",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "author": "tpc",
+  "license": "ISC License",
+  "dependencies": {
+    "@xmpp/events": "^0.13.1",
+    "@ohos/xmpp_connection": "1.0.0",
+  }
+}
