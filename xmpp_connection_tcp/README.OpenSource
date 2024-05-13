@@ -1,0 +1,20 @@
+[
+  {
+    "Name":"@xmpp/connection-tcp",
+    "License":"ISC License",
+    "License File":"LICENSE",
+    "Version Number":"0.13.1",
+    "Owner":"xiafeng@huawei.com",
+    "Upstream URL":"https://github.com/xmppjs/xmpp.js/tree/main/packages/connection-tcp",
+    "Description": "is a Node.js XMPP client library for establishing TCP connections with XMPP servers."
+  },
+  {
+    "Name":"@types/xmpp__connection-tcp",
+    "License":"MIT License",
+    "License File":"LICENSE-MIT",
+    "Version Number":"0.13.1",
+    "Owner":"xiafeng@huawei.com",
+    "Upstream URL":"https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/xmpp__xml",
+    "Description": "is a Node.js XMPP client library for establishing TCP connections with XMPP servers."
+  },
+]
