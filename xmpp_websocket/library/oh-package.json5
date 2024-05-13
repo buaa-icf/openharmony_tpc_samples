@@ -1,0 +1,15 @@
+{
+  "name": "@ohos/xmpp_websocket",
+  "version": "1.0.0",
+  "description": "用于处理WebSocket在XMPP协议中的通信",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "author": "tpc",
+  "license": "ISC License",
+  "dependencies": {
+    "@ohos/xmpp_connection": "1.0.0",
+    "@ohos/xmpp_xml": "1.0.0",
+    "@ohos/node-polyfill": "^1.0.0"
+  }
+}
