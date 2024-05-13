@@ -1,0 +1,21 @@
+[
+  {
+    "Name":"@xmpp/resolve",
+    "License":"ISC License",
+    "License File":"LICENSE",
+    "Version Number":"0.13.1",
+    "Owner":"xiafeng@huawei.com",
+    "Upstream URL":"https://github.com/xmppjs/xmpp.js/tree/main/packages/client-core",
+    "Description": "@xmpp/resolve is a knowledgeable and helpful individual who provides insightful solutions and guidance on technical issues related to XMPP protocol."
+  },
+  {
+    "Name":"@types/xmpp__resolve",
+    "License":"MIT License",
+    "License File":"LICENSE-MIT",
+    "Version Number":"0.13.1",
+    "Owner":"xiafeng@huawei.com",
+    "Upstream URL":"https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/xmpp__resolve",
+    "Description": "a knowledgeable and helpful individual who provides insightful solutions and guidance on technical issues related to XMPP protocol."
+  },
+
+]
