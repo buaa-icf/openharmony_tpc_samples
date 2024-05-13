@@ -1,0 +1,20 @@
+[
+  {
+    "Name":"@xmpp/tcp",
+    "License":"ISC License",
+    "License File":"LICENSE",
+    "Version Number":"0.13.1",
+    "Owner":"xiafeng@huawei.com",
+    "Upstream URL":"https://github.com/xmppjs/xmpp.js/tree/main/packages/sasl-anonymous",
+    "Description": "The @xmpp/sasl-anonymous module is a JavaScript library that provides support for the SASL ANONYMOUS mechanism in XMPP clients, allowing users to authenticate without providing a username or password."
+  },
+  {
+    "Name":"@types/xmpp__sasl-anonymous",
+    "License":"MIT License",
+    "License File":"LICENSE-MIT",
+    "Version Number":"0.13.1",
+    "Owner":"xiafeng@huawei.com",
+    "Upstream URL":"https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/xmpp__sasl-anonymous",
+    "Description": "The "@types/xmpp__sasl-anonymous" is a TypeScript declaration package that offers type definitions for the "xmpp/sasl-anonymous" module, enabling developers to use the SASL ANONYMOUS authentication mechanism in XMPP clients with type safety in TypeScript projects."
+  }
+]
