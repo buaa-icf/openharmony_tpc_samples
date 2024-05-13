@@ -1,0 +1,20 @@
+[
+  {
+    "Name":"@xmpp/iq",
+    "License":"ISC License",
+    "License File":"LICENSE",
+    "Version Number":"0.13.1",
+    "Owner":"xiafeng@huawei.com",
+    "Upstream URL":"https://github.com/xmppjs/xmpp.js/tree/main/packages/iq",
+    "Description": "The '@xmpp/iq' library is a JavaScript module that provides a convenient interface for working with IQ (Instant Message Query) stanzas in XMPP (Extensible Messaging and Presence Protocol), allowing developers to easily send, receive, and manipulate IQ requests and responses in their XMPP applications."
+  },
+  {
+    "Name":"@types/xmpp__iq",
+    "License":"MIT License",
+    "License File":"LICENSE-MIT",
+    "Version Number":"0.13.1",
+    "Owner":"xiafeng@huawei.com",
+    "Upstream URL":"https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/xmpp__iq",
+    "Description": "The '@types/xmpp__iq' package is a TypeScript definition file that serves as a type hints and interface for working with IQ stanzas within the XMPP framework, enabling developers to write type-safe code when interacting with IQ messages in their XMPP-based applications."
+  }
+]
