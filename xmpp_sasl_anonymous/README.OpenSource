@@ -1,6 +1,6 @@
 [
   {
-    "Name":"@xmpp/tcp",
+    "Name":"@xmpp/sasl-anonymous",
     "License":"ISC License",
     "License File":"LICENSE",
     "Version Number":"0.13.1",
