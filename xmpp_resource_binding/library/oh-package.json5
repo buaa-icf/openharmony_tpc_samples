@@ -1,7 +1,7 @@
 {
   "name": "@ohos/xmpp_resoure_binding",
   "version": "1.0.0",
-  "description": "提供了一个用于客户端资源绑定的library",
+  "description": "在OpenHarmony上提供了一个用于XMPP(Extensible Messaging and Presence Protocol)客户端与XMPP服务端进行资源绑定的library",
   "main": "index.js",
   "types": "index.d.ts",
   "type": "module",
