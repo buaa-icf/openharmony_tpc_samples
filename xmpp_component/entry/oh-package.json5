@@ -1,0 +1,13 @@
+{
+  "name": "entry",
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "main": "",
+  "author": "",
+  "license": "",
+  "dependencies": {
+    "@ohos/xmpp_component": "file:../library",
+    "@ohos/xmpp_component_core": "1.0.0"
+  }
+}
+
