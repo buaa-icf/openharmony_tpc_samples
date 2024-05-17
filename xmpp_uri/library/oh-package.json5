@@ -1,0 +1,16 @@
+{
+  "name": "@ohos/xmpp_uri",
+  "version": "1.0.0",
+  "description": "提供了对XMPP协议中URI的解析和构建功能，使开发者能够方便地处理XMPP协议中的资源标识符",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "author": "tpc",
+  "license": "ISC License",
+  "dependencies": {
+    "@xmpp/jid": "^0.13.1",
+    "@ohos/node-polyfill": "^1.0.0"
+  },
+  "devDependencies": {},
+  "dynamicDependencies": {}
+}
