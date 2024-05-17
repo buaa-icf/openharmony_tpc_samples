@@ -1,0 +1,16 @@
+{
+  "name": "@ohos/xmpp_debug",
+  "version": "1.0.0",
+  "description": "在Openharmony上提供了一个针对XMPP（Extensible Messaging and Presence Protocol，扩展消息和在线状态协议）开发的调试工具库",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "author": "tpc",
+  "license": "ISC License",
+  "dependencies": {
+    "@ohos/xmpp_xml": "^1.0.0",
+    "@ohos/xmpp_connection": "^1.0.0"
+  },
+  "devDependencies": {},
+  "dynamicDependencies": {}
+}
