@@ -4,6 +4,10 @@
     "pages/EncodeDecodePage",
     "pages/EncodeDecodeConstructorPage",
     "pages/MultiDecodePage",
-    "pages/ExamPage"
+    "pages/ExamPage",
+    "pages/Encoding64DemoFour",
+    "pages/Encoding64DemoOne",
+    "pages/Encoding64DemoTwo",
+    "pages/Encoding64DemoThree"
   ]
 }

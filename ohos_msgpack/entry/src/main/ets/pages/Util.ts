@@ -43,6 +43,20 @@ namespace Util {
     }
   }
 
+  export function objReplacer(key, value) {
+    if (typeof value === 'bigint') {
+      return value.toString();
+    } else if (typeof value === 'object') {
+      for (const k in value) {
+        if (typeof value[k] === 'bigint') {
+          value[k] = value[k].toString();
+        } else if (typeof value[k] === 'object') {
+          value[k] = objReplacer(k, value[k]);
+        }
+      }
+    }
+    return value;
+  }
 }
 
 export default Util;

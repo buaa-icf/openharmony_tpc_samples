@@ -37,7 +37,7 @@ import msgpackTestSuiteTest2 from './test/msgpack-test-suite2.test'
 import msgpackExtTest from './test/msgpack-ext.test'
 import prototypePollutionTest from './test/prototype-pollution.test'
 import reuseInstancesTest from './test/reuse-instances.test'
-
+import Bigint64Test from './test/Bigint64.test'
 
 export default function testsuite() {
   CachedKeyDecoderTest()
@@ -62,4 +62,5 @@ export default function testsuite() {
   msgpackExtTest()
   prototypePollutionTest()
   reuseInstancesTest()
+  Bigint64Test()
 }

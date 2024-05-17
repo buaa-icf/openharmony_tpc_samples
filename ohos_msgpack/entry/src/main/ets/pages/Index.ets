@@ -24,12 +24,32 @@ struct Index {
       Column() {
         Button('简单编码解码')
           .onClick(() => {
-            router.push({ url: 'pages/EncodeDecodePage' })
+            router.pushUrl({ url: 'pages/EncodeDecodePage' })
+          })
+        Button('Encoding64DemoOne')
+          .margin({ top: 10 })
+          .onClick(() => {
+            router.pushUrl({ url: 'pages/Encoding64DemoOne' })
+          })
+        Button('Encoding64DemoTwo')
+          .margin({ top: 10 })
+          .onClick(() => {
+            router.pushUrl({ url: 'pages/Encoding64DemoTwo' })
+          })
+        Button('Encoding64DemoThree')
+          .margin({ top: 10 })
+          .onClick(() => {
+            router.pushUrl({ url: 'pages/Encoding64DemoThree' })
+          })
+        Button('Encoding64DemoFour')
+          .margin({ top: 10 })
+          .onClick(() => {
+            router.pushUrl({ url: 'pages/Encoding64DemoFour' })
           })
         Button('构造器编码解码')
           .margin({ top: 10 })
           .onClick(() => {
-            router.push({ url: 'pages/EncodeDecodeConstructorPage' })
+            router.pushUrl({ url: 'pages/EncodeDecodeConstructorPage' })
           })
         Button('复杂Multi编码解码')
           .margin({ top: 10 })
@@ -39,7 +59,7 @@ struct Index {
         Button('特殊字符扩展编解码')
           .margin({ top: 10 })
           .onClick(() => {
-            router.push({ url: 'pages/ExamPage' })
+            router.pushUrl({ url: 'pages/ExamPage' })
           })
       }
       .width('100%')
