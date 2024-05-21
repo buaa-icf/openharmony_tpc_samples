@@ -1,0 +1,18 @@
+{
+  "name": "@ohos/xmpp_component_core",
+  "version": "1.0.0",
+  "description": "在OpenHarmony上提供了一个用于创建XMPP(Extensible Messaging and Presence Protocol)组件并连接到 XMPP 服务器的library",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "author": "tpc",
+  "license": "ISC License",
+  "dependencies": {
+    "@ohos/xmpp_xml": "1.0.0",
+    "@xmpp/jid": "0.13.1",
+    "@ohos/xmpp_connection_tcp": "1.0.0",
+    "@ohos/node-polyfill": "^1.0.0"
+  },
+  "devDependencies": {},
+  "dynamicDependencies": {}
+}
