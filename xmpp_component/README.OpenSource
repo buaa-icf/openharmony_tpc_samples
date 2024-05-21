@@ -1,0 +1,20 @@
+[
+  {
+    "Name":"@xmpp/component",
+    "License":"ISC License",
+    "License File":"LICENSE",
+    "Version Number":"0.13.1",
+    "Owner":"xiafeng@huawei.com",
+    "Upstream URL":"https://github.com/xmppjs/xmpp.js/tree/main/packages/component",
+    "Description": ""The @xmpp/component library provides tools for building and managing XMPP components.""
+  },
+  {
+    "Name":"@types/xmpp__component",
+    "License":"MIT License",
+    "License File":"LICENSE-MIT",
+    "Version Number":"0.13.1",
+    "Owner":"xiafeng@huawei.com",
+    "Upstream URL":"https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/xmpp__component",
+    "Description": "The @types/xmpp__component package offers TypeScript type definitions for the @xmpp/component library."
+  }
+]
