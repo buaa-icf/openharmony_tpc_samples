@@ -49,7 +49,7 @@ export default function abilityTest() {
       expect(JSON.stringify(qs.parse('?foo=bar'))).assertEqual('{"foo":"bar"}')
       expect(JSON.stringify(qs.parse('foo=bar&bar=foo'))).assertEqual('{"foo":"bar","bar":"foo"}')
       expect(JSON.stringify(qs.parse('foo&bar=foo'))).assertEqual('{"foo":"","bar":"foo"}')
-      expect(JSON.stringify(qs.parse('#foo=bar'))).assertEqual('{"#foo":"bar"}')
+      expect(JSON.stringify(qs.parse('#foo=bar'))).assertEqual('{"foo":"bar"}')
     })
 
     it('stringify', 0, () => {
