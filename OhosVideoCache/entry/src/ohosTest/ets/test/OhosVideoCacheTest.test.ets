@@ -158,6 +158,8 @@ export default function OhosVideoCacheTest() {
       } catch (err) {
         expect(1).assertEqual(2);
         done()
+      } finally {
+        done()
       }
     })
 
@@ -188,14 +190,14 @@ export default function OhosVideoCacheTest() {
           usingProtocol: http.HttpProtocol.HTTP1_1
         }
         client.requestInStream(proxyUrl, header)
-          let filePath: string = cacheFolder + "/123456.mp4";
-          if (fs.accessSync(filePath)) {
-            expect(1).assertEqual(1)
-            done()
-          } else {
-            expect(1).assertEqual(1)
-            done()
-          }
+        let filePath: string = cacheFolder + "/123456.mp4";
+        if (fs.accessSync(filePath)) {
+          expect(1).assertEqual(1)
+          done()
+        } else {
+          expect(1).assertEqual(1)
+          done()
+        }
       } catch (err) {
         expect(1).assertEqual(2);
         done()
@@ -334,12 +336,15 @@ export default function OhosVideoCacheTest() {
       } catch (err) {
         expect(1).assertEqual(2);
         done()
+      } finally {
+        done()
       }
     })
     it('shutdown', 0, async (done: Function) => {
       let client = http.createHttp();
       try {
-        let proxyUrl = await server.getProxyUrl('http://1251017968.vod2.myqcloud.com/3eb04eefvodtransgzp1251017968/8782b1285285890810009576163/v.f30.mp4');
+        let proxyUrl =
+          await server.getProxyUrl('http://1251017968.vod2.myqcloud.com/3eb04eefvodtransgzp1251017968/8782b1285285890810009576163/v.f30.mp4');
         server?.shutdown();
         let header: http.HttpRequestOptions = {
           method: http.RequestMethod.GET,
