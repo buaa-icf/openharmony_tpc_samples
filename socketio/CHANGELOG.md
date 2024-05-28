@@ -1,3 +1,6 @@
+## v2.0.1-rc.2
+- 支持x86
+
 ## v2.0.1-rc.1
 
 - 修复Openharmony4.1.0.66版本上connect接口调用crash问题，问题原因：由于系统napi_call_function接口在该版本上参数定义问题导致crash。
