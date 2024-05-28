@@ -87,18 +87,19 @@ class Socket extends EventEmitter_1 {
     }
   }
 
-  write(data, encoding, cb) {
+  write(data, cb) {
     console.log(tag + `write 开始发送消息`);
 
     if (this.ohos_tcp_socket.connecting) {
       console.log(tag + `进入缓冲队列`);
 
       this.once("connect", () => {
-        this.write(data, encoding, cb);
+        this.write(data, cb);
       });
     } else {
       console.log(tag + `write--发送 ` + JSON.stringify(data));
-      this.ohos_tcp_socket.tcp_socket.send({ data, encoding }, cb);
+      this.ohos_tcp_socket.tcp_socket.send({ data, encoding:"utf8" });
+      cb()
     }
   }
 
@@ -109,12 +110,5 @@ class Socket extends EventEmitter_1 {
   removeAllListeners() {}
   unref() {}
 }
-
-
-// function createConnection(port, host, connectionListener) {
-//   const socket = new Socket({ port, host, connectionListener });
-//   socket.connect();
-//   return socket;
-// }
 
 export { Socket };

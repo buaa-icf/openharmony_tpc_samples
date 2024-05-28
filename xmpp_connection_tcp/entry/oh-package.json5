@@ -1,13 +1,13 @@
 {
   "name": "entry",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Please describe the basic information.",
   "main": "",
   "author": "",
   "license": "",
   "dependencies": {
     "@ohos/xmpp_connection_tcp": "file:../library",
-    "@ohos/xmpp_connection": "1.0.0",
+    "@ohos/xmpp_connection": "1.0.1",
     "@ohos/xmpp_xml": "1.0.0"
   }
 }
