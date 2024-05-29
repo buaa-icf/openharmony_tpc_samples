@@ -4,7 +4,7 @@
 
 ## 简介
 
->本软件是参照开源软件 [xmpp_connection](https://github.com/xmppjs/xmpp.js/tree/main/packages/connection)源码并用 TypeScript 语言实现了相关功能，在OpenHarmony上提供了一个用于建立和管理XMPP连接的library
+>本软件是参照开源软件 [@xmpp/connection](https://github.com/xmppjs/xmpp.js/tree/main/packages/connection)源码并用 TypeScript 语言实现了相关功能，在OpenHarmony上提供了一个用于建立和管理XMPP连接的library
 
 ## 已支持功能
 

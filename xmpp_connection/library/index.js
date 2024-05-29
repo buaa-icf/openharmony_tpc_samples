@@ -204,8 +204,14 @@ class Connection extends EventEmitter {
     }
 
     async _end() {
-        let el = await this.close();
-        await this.disconnect();
+        let el;
+        try {
+            el = await this.close();
+        } catch {}
+
+        try {
+            await this.disconnect();
+        } catch {}
 
         return el;
     }
@@ -244,7 +250,7 @@ class Connection extends EventEmitter {
             let {caPath}=this.options
             socket.connect(service,caPath)
         } else {
-            socket.connect()
+            socket.connect(service)
         }
         return promise(socket, "connect");
 
@@ -347,24 +353,13 @@ class Connection extends EventEmitter {
                 reject(new Error("Connection is closing"));
                 return;
             }
-            const { port, hostname, protocol } = parseURI(this.service);
-            if (protocol.includes("ws")) {
-                this.socket.write(string, (err) => {
-                    if (err) {
-                        return reject(err);
-                    }
-                    this.emit("output", string);
-                    resolve();
-                });
-            } else {
-                this.socket.write(string, "utf-8", (err) => {
-                    if (err) {
-                        return reject(err);
-                    }
-                    this.emit("output", string);
-                    resolve();
-                });
-            }
+            this.socket.write(string, (err) => {
+                if (err) {
+                    return reject(err);
+                }
+                this.emit("output", string);
+                resolve();
+            });
         });
     }
 
