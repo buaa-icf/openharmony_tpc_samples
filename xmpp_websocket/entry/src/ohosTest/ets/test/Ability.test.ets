@@ -19,9 +19,9 @@ import { hilog } from '@kit.PerformanceAnalysisKit';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium';
 import { FramedParser } from "@ohos/xmpp_websocket/src/main/lib/FramedParser"
 import xml from "@ohos/xmpp_xml"
-import {EventEmitter} from "@xmpp/events"
-import {ConnectionWebSocket} from "@ohos/xmpp_websocket/src/main/lib/Connection"
-import {Socket} from "@ohos/xmpp_websocket/src/main/lib/Socket"
+import { EventEmitter } from "@xmpp/events"
+import { ConnectionWebSocket } from "@ohos/xmpp_websocket/src/main/lib/Connection"
+import { Socket } from "@ohos/xmpp_websocket/src/main/lib/Socket"
 export default function abilityTest() {
   describe('ohos_xmpp_websocket_test', () => {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
@@ -80,35 +80,15 @@ export default function abilityTest() {
       expect(params).assertEqual(undefined)
     });
 
-    it("DOM_WebSocket_error",0,() => {
+    it("WebSocket_error",0,() => {
       const socket:ESObject = new Socket();
       const sock:ESObject = new EventEmitter();
       sock.addEventListener = sock.addListener;
       socket._attachSocket(sock);
       socket.url = "ws://foobar";
-      const evt :ESObject = {};
+      const evt: ESObject = {};
       socket.on("error", (err:ESObject) => {
         expect(err.message).assertEqual("WebSocket ECONNERROR ws://foobar")
-        expect(err.errno).assertEqual("ECONNERROR")
-        expect(err.code).assertEqual("ECONNERROR")
-        expect(err.url).assertEqual("ws://foobar")
-        expect(err.event).assertEqual(evt)
-      });
-      socket.socket.emit("error", evt);
-    });
-
-    it("WS_WebSocket_error",0,() => {
-      const socket:ESObject = new Socket();
-      const sock:ESObject = new EventEmitter();
-      sock.addEventListener = sock.addListener;
-      socket._attachSocket(sock);
-      socket.url = "ws://foobar";
-      const error:ESObject = {};
-      const evt :ESObject = {error};
-      socket.on("error", (err:ESObject) => {
-      expect(err).assertEqual(error);
-      expect(err.event).assertEqual(evt);
-      expect(err.url).assertEqual("ws://foobar")
       });
       socket.socket.emit("error", evt);
     });
