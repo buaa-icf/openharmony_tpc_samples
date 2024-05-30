@@ -17,7 +17,6 @@
 
 "use strict";
 import webSocket from '@ohos.net.webSocket';
-// const  WebSocket = global.WebSocket || WS;
 
 import {EventEmitter} from "@ohos/node-polyfill";
 
@@ -54,7 +53,6 @@ export class Socket extends EventEmitter {
         })
 
         this._attachSocket(socket);
-        // this._attachSocket(new WebSocket(url,['xmpp']));
     }
 
     _attachSocket(socket) {
@@ -65,20 +63,8 @@ export class Socket extends EventEmitter {
         };
 
         listeners.message = ({ data }) => this.emit("data", data);
-        listeners.error = (event) => {
-            const { url } = this;
-            // WS
-            let { error } = event;
-            // DOM
-            if (!error) {
-                error = new Error(`WebSocket ${CODE} ${url}`);
-                error.errno = CODE;
-                error.code = CODE;
-            }
-
-            error.event = event;
-            error.url = url;
-            this.emit("error", error);
+        listeners.error = (err) => {
+            this.emit("error", { message: err.message ? err.message : "WebSocket ECONNERROR "+this.url });
         };
 
         listeners.close = (event) => {
@@ -99,22 +85,10 @@ export class Socket extends EventEmitter {
         });
 
         this.socket.on('error',(err)=>{
-            const { url } = this;
-            // WS
-            let { error } = err;
-            // DOM
-            if (!error) {
-                error = new Error(`WebSocket ${CODE} ${url}`);
-                error.errno = CODE;
-                error.code = CODE;
-            }
-
-            error.event = err;
-            error.url = url;
-            this.emit("error", error);
+            this.emit("error", { message: err.message ? err.message : "WebSocket ECONNERROR "+this.url });
         })
 
-        this.socket.on('close',(err,value)=>{
+        this.socket.on('close', (err, value) => {
             console.info("CQ-----socket on-"+JSON.stringify(value))
             this._detachSocket();
             this.emit("close", !value.wasClean, value);
@@ -141,12 +115,6 @@ export class Socket extends EventEmitter {
     }
 
     write(data, fn) {
-        // if (WebSocket === WS) {
-        //   this.socket.send(data, fn);
-        // } else {
-        //   this.socket.send(data);
-        //   fn();
-        // }
         console.log("xmpp---write"+JSON.stringify(data))
         this.socket.send(data, (err, value) => {
             if (err) {

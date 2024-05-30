@@ -1,5 +1,8 @@
 # Changelog[.gitignore](entry%2F.gitignore)
 
+## 1.0.1
+- 修复稳定性测试报告偶现的crash问题
+
 ## 1.0.0
 - 连接到WebSocket服务器。
 - 发送和接收消息。
