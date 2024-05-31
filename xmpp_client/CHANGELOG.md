@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.1
+- 修复websocket包内crash问题
+
 ## 1.0.0
 - 完成xmpp TCP连接、断连、重连功能。
 - 完成通信功能。
