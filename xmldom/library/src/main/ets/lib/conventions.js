@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 /**
  * "Shallow freezes" an object to render it immutable.
@@ -9,7 +9,7 @@
  *
  * @template T
  * @param {T} object the object to freeze
- * @param {Pick<ObjectConstructor, 'freeze'>=} oc `Object` by default,
+ * @param {Pick<ObjectConstructor, 'freeze'>} [oc=Object] `Object` by default,
  * 				allows to inject custom object constructor for tests
  * @returns {Readonly<T>}
  *
@@ -17,9 +17,9 @@
  */
 function freeze(object, oc) {
 	if (oc === undefined) {
-		oc = Object
+		oc = Object;
 	}
-	return oc && typeof oc.freeze === 'function' ? oc.freeze(object) : object
+	return oc && typeof oc.freeze === 'function' ? oc.freeze(object) : object;
 }
 
 /**
@@ -37,14 +37,163 @@ function freeze(object, oc) {
  */
 function assign(target, source) {
 	if (target === null || typeof target !== 'object') {
-		throw new TypeError('target is not an object')
+		throw new TypeError('target is not an object');
 	}
 	for (var key in source) {
 		if (Object.prototype.hasOwnProperty.call(source, key)) {
-			target[key] = source[key]
+			target[key] = source[key];
 		}
 	}
-	return target
+	return target;
+}
+
+/**
+ * A number of attributes are boolean attributes.
+ * The presence of a boolean attribute on an element represents the `true` value,
+ * and the absence of the attribute represents the `false` value.
+ *
+ * If the attribute is present, its value must either be the empty string
+ * or a value that is an ASCII case-insensitive match for the attribute's canonical name,
+ * with no leading or trailing whitespace.
+ *
+ * Note: The values `"true"` and `"false"` are not allowed on boolean attributes.
+ * To represent a `false` value, the attribute has to be omitted altogether.
+ *
+ * @see https://html.spec.whatwg.org/#boolean-attributes
+ * @see https://html.spec.whatwg.org/#attributes-3
+ */
+var HTML_BOOLEAN_ATTRIBUTES = freeze({
+	allowfullscreen: true,
+	async: true,
+	autofocus: true,
+	autoplay: true,
+	checked: true,
+	controls: true,
+	default: true,
+	defer: true,
+	disabled: true,
+	formnovalidate: true,
+	hidden: true,
+	ismap: true,
+	itemscope: true,
+	loop: true,
+	multiple: true,
+	muted: true,
+	nomodule: true,
+	novalidate: true,
+	open: true,
+	playsinline: true,
+	readonly: true,
+	required: true,
+	reversed: true,
+	selected: true,
+});
+
+/**
+ * Check if `name` is matching one of the HTML boolean attribute names.
+ * This method doesn't check if such attributes are allowed in the context of the current document/parsing.
+ *
+ * @param {string} name
+ * @return {boolean}
+ * @see HTML_BOOLEAN_ATTRIBUTES
+ * @see https://html.spec.whatwg.org/#boolean-attributes
+ * @see https://html.spec.whatwg.org/#attributes-3
+ */
+function isHTMLBooleanAttribute(name) {
+	return HTML_BOOLEAN_ATTRIBUTES.hasOwnProperty(name.toLowerCase());
+}
+
+/**
+ * Void elements only have a start tag; end tags must not be specified for void elements.
+ * These elements should be written as self closing like this: `<area />`.
+ * This should not be confused with optional tags that HTML allows to omit the end tag for
+ * (like `li`, `tr` and others), which can have content after them,
+ * so they can not be written as self closing.
+ * xmldom does not have any logic for optional end tags cases and will report them as a warning.
+ * Content that would go into the unopened element will instead be added as a sibling text node.
+ *
+ * @type {Readonly<{area: boolean, col: boolean, img: boolean, wbr: boolean, link: boolean, hr: boolean, source: boolean, br: boolean, input: boolean, param: boolean, meta: boolean, embed: boolean, track: boolean, base: boolean}>}
+ * @see https://html.spec.whatwg.org/#void-elements
+ * @see https://html.spec.whatwg.org/#optional-tags
+ */
+var HTML_VOID_ELEMENTS = freeze({
+	area: true,
+	base: true,
+	br: true,
+	col: true,
+	embed: true,
+	hr: true,
+	img: true,
+	input: true,
+	link: true,
+	meta: true,
+	param: true,
+	source: true,
+	track: true,
+	wbr: true,
+});
+
+/**
+ * Check if `tagName` is matching one of the HTML void element names.
+ * This method doesn't check if such tags are allowed
+ * in the context of the current document/parsing.
+ *
+ * @param {string} tagName
+ * @return {boolean}
+ * @see HTML_VOID_ELEMENTS
+ * @see https://html.spec.whatwg.org/#void-elements
+ */
+function isHTMLVoidElement(tagName) {
+	return HTML_VOID_ELEMENTS.hasOwnProperty(tagName.toLowerCase());
+}
+
+/**
+ * Tag names that are raw text elements according to HTML spec.
+ * The value denotes whether they are escapable or not.
+ *
+ * @see isHTMLEscapableRawTextElement
+ * @see isHTMLRawTextElement
+ * @see https://html.spec.whatwg.org/#raw-text-elements
+ * @see https://html.spec.whatwg.org/#escapable-raw-text-elements
+ */
+var HTML_RAW_TEXT_ELEMENTS = freeze({
+	script: false,
+	style: false,
+	textarea: true,
+	title: true,
+});
+
+/**
+ * Check if `tagName` is matching one of the HTML raw text element names.
+ * This method doesn't check if such tags are allowed
+ * in the context of the current document/parsing.
+ *
+ * @param {string} tagName
+ * @return {boolean}
+ * @see isHTMLEscapableRawTextElement
+ * @see HTML_RAW_TEXT_ELEMENTS
+ * @see https://html.spec.whatwg.org/#raw-text-elements
+ * @see https://html.spec.whatwg.org/#escapable-raw-text-elements
+ */
+function isHTMLRawTextElement(tagName) {
+	var key = tagName.toLowerCase();
+	return HTML_RAW_TEXT_ELEMENTS.hasOwnProperty(key) && !HTML_RAW_TEXT_ELEMENTS[key];
+}
+/**
+ * Check if `tagName` is matching one of the HTML escapable raw text element names.
+ * This method doesn't check if such tags are allowed
+ * in the context of the current document/parsing.
+ *
+ * @param {string} tagName
+ * @return {boolean}
+ * @see isHTMLRawTextElement
+ * @see HTML_RAW_TEXT_ELEMENTS
+ * @see https://html.spec.whatwg.org/#raw-text-elements
+ * @see https://html.spec.whatwg.org/#escapable-raw-text-elements
+ */
+function isHTMLEscapableRawTextElement(tagName) {
+	var key = tagName.toLowerCase();
+	return HTML_RAW_TEXT_ELEMENTS.hasOwnProperty(key) && HTML_RAW_TEXT_ELEMENTS[key];
 }
 
 /**
@@ -72,12 +221,28 @@ var MIME_TYPE = freeze({
 	 * @param {string} [value]
 	 * @returns {boolean}
 	 *
-	 * @see https://www.iana.org/assignments/media-types/text/html IANA MimeType registration
-	 * @see https://en.wikipedia.org/wiki/HTML Wikipedia
-	 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMParser/parseFromString MDN
-	 * @see https://html.spec.whatwg.org/multipage/dynamic-markup-insertion.html#dom-domparser-parsefromstring 	 */
+	 * @see [IANA MimeType registration](https://www.iana.org/assignments/media-types/text/html)
+	 * @see [Wikipedia](https://en.wikipedia.org/wiki/HTML)
+	 * @see [`DOMParser.parseFromString` @ MDN](https://developer.mozilla.org/en-US/docs/Web/API/DOMParser/parseFromString)
+	 * @see [`DOMParser.parseFromString` @ HTML Specification](https://html.spec.whatwg.org/multipage/dynamic-markup-insertion.html#dom-domparser-parsefromstring)
+	 */
 	isHTML: function (value) {
-		return value === MIME_TYPE.HTML
+		return value === MIME_TYPE.HTML;
+	},
+
+	/**
+	 * For both the `text/html` and the `application/xhtml+xml` namespace
+	 * the spec defines that the HTML namespace is provided as the default in some cases.
+	 *
+	 * @param {string} mimeType
+	 * @returns {boolean}
+	 *
+	 * @see https://dom.spec.whatwg.org/#dom-document-createelement
+	 * @see https://dom.spec.whatwg.org/#dom-domimplementation-createdocument
+	 * @see https://dom.spec.whatwg.org/#dom-domimplementation-createhtmldocument
+	 */
+	hasDefaultHTMLNamespace: function (mimeType) {
+		return MIME_TYPE.isHTML(mimeType) || mimeType === MIME_TYPE.XML_XHTML_APPLICATION;
 	},
 
 	/**
@@ -116,7 +281,7 @@ var MIME_TYPE = freeze({
 	 * @see https://en.wikipedia.org/wiki/Scalable_Vector_Graphics Wikipedia
 	 */
 	XML_SVG_IMAGE: 'image/svg+xml',
-})
+});
 
 /**
  * Namespaces that are used in this code base.
@@ -139,7 +304,7 @@ var NAMESPACE = freeze({
 	 * @see NAMESPACE.HTML
 	 */
 	isHTML: function (uri) {
-		return uri === NAMESPACE.HTML
+		return uri === NAMESPACE.HTML;
 	},
 
 	/**
@@ -162,6 +327,18 @@ var NAMESPACE = freeze({
 	 * @see https://www.w3.org/2000/xmlns/
 	 */
 	XMLNS: 'http://www.w3.org/2000/xmlns/',
-})
+});
 
-export { assign, freeze, MIME_TYPE, NAMESPACE }
+export {
+	assign,
+	freeze,
+	HTML_BOOLEAN_ATTRIBUTES,
+	HTML_RAW_TEXT_ELEMENTS,
+	HTML_VOID_ELEMENTS,
+	isHTMLBooleanAttribute,
+	isHTMLRawTextElement,
+	isHTMLEscapableRawTextElement,
+	isHTMLVoidElement,
+	MIME_TYPE,
+	NAMESPACE,
+}

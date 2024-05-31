@@ -35,18 +35,12 @@ export default function abilityTest() {
     })
 
     it('parseFromString', 0, () => {
-      const options: ESObject = {
-        locator: {} as ESObject
-      }
-      const it = new DOMParser(options)
-      it.parseFromString('<xml/>')
-      const expected: ESObject = {
-        lineNumber: 1,
-        columnNumber: 1,
-      }
-      expect(JSON.stringify(options.locator)).assertContain(JSON.stringify(expected))
-
-    })
+      const options:ESObject = {};
+      const it:DOMParser = new DOMParser(options);
+      const doc:ESObject = it.parseFromString('<xml/>');
+      expect(doc.documentElement).not().assertContain('columnNumber')
+      expect(doc.documentElement).not().assertContain('lineNumber')
+    });
 
     it('serializeToString', 0, () => {
       const input = `<xml xmlns='<&"' xmlns:attr='"&<'><test attr:test=""/></xml>`
