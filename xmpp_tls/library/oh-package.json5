@@ -1,0 +1,17 @@
+{
+  "name": "@ohos/xmpp_tls",
+  "version": "1.0.0",
+  "description": "在OpenHarmony上提供了一个用于与xmpp（Extensible Messaging and Presence Protocol）服务器建立加密TLS连接的library",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "author": "tpc",
+  "license": "ISC License",
+  "dependencies": {
+    "@ohos/xmpp_connection_tcp": "^1.0.1",
+    "@ohos/xmpp_connection": "^1.0.1",
+    "@ohos/node-polyfill": "1.0.0"
+  },
+  "devDependencies": {},
+  "dynamicDependencies": {}
+}

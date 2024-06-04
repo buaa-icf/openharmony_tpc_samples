@@ -1,0 +1,20 @@
+[
+  {
+    "Name":"@xmpp/tls",
+    "License":"ISC License",
+    "License File":"LICENSE",
+    "Version Number":"0.13.1",
+    "Owner":"xiafeng@huawei.com",
+    "Upstream URL":"https://github.com/xmppjs/xmpp.js/tree/main/packages/tls",
+    "Description":  "XMPP/TLS, short for eXtensible Messaging and Presence Protocol with Transport Layer Security, is a cryptographic extension that provides secure communication over the XMPP network, ensuring end-to-end encryption and authentication for real-time messaging and presence services."
+  },
+  {
+    "Name":"@types/xmpp__tls",
+    "License":"MIT License",
+    "License File":"LICENSE-MIT",
+    "Version Number":"0.13.1",
+    "Owner":"xiafeng@huawei.com",
+    "Upstream URL":"https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/xmpp__tls",
+    "Description": "@types/xmpp-tls, a TypeScript definition package, provides typed interfaces and declarations for the xmpp.tls library, making it easier to develop strong-typed applications implementing XMPP with secure TLS connections."
+  }
+]
