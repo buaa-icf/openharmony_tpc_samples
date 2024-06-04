@@ -1,43 +1,43 @@
-declare module "@ohos/xmldom" {
-  var DOMParser: DOMParserStatic;
-  var XMLSerializer: XMLSerializerStatic;
-  var DOMImplementation: DOMImplementationStatic;
+declare module '@ohos/xmldom' {
+	var DOMParser: DOMParserStatic
+	var XMLSerializer: XMLSerializerStatic
+	var DOMImplementation: DOMImplementationStatic
 
-  interface DOMImplementationStatic {
-      new(): ESObject;
-  }
+	interface DOMImplementationStatic {
+		new (): ESObject
+	}
 
-  interface DOMParserStatic {
-      new (): DOMParser;
-      new (options: Options): DOMParser;
-  }
+	interface DOMParserStatic {
+		new (): DOMParser
+		new (options: DOMParserOptions): DOMParser
+	}
 
-  interface XMLSerializerStatic {
-      new (): XMLSerializer;
-  }
+	interface XMLSerializerStatic {
+		new (): XMLSerializer
+	}
 
-  interface DOMParser {
-      parseFromString(xmlsource: string, mimeType?: string): ESObject;
-  }
+	interface DOMParser {
+		parseFromString(source: string, mimeType?: string): ESObject
+	}
 
-  interface XMLSerializer {
-      serializeToString(node: ESObject): string;
-  }
+	interface XMLSerializer {
+		serializeToString(node: ESObject): string
+	}
 
-  interface Options {
-      locator?: any;
-      errorHandler?: ErrorHandlerFunction | ErrorHandlerObject | undefined;
-  }
+	interface DOMParserOptions {
+		errorHandler?: ErrorHandlerFunction | ErrorHandlerObject
+		locator?: boolean
+		normalizeLineEndings?: (source: string) => string
+		xmlns?: Record<string, string | null | undefined>
+	}
 
-  interface ErrorHandlerFunction {
-      (level: string, msg: any): any;
-  }
+	interface ErrorHandlerFunction {
+		(level: 'warn' | 'error' | 'fatalError', msg: string): void
+	}
 
-  interface ErrorHandlerObject {
-      warning?: ((msg: any) => any) | undefined;
-      error?: ((msg: any) => any) | undefined;
-      fatalError?: ((msg: any) => any) | undefined;
-  }
+	interface ErrorHandlerObject {
+		warning?: (msg: string) => void
+		error?: (msg: string) => void
+		fatalError?: (msg: string) => void
+	}
 }
-
-
