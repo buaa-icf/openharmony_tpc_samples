@@ -1,0 +1,21 @@
+{
+  "name": "@ohos/xmpp_starttls",
+  "version": "1.0.0",
+  "description": "在OpenHarmony上提供了一个XMPP(Extensible Messaging and Presence Protocol)客户端，用于在XMPP连接中启用StartTLS(TLS 握手)来进行加密通信",
+  "main": "client.js",
+  "types": "./src/main/types/client.d.ts",
+  "type": "module",
+  "author": "tpc",
+  "license": "ISC License",
+  "dependencies": {
+    "@xmpp/events": "^0.13.1",
+    "@ohos/xmpp_xml": "^1.0.0",
+    "@ohos/xmpp_tls": "^1.0.0",
+    "@ohos/xmpp_middleware": "^1.0.0",
+    "@ohos/xmpp_stream_features": "^1.0.0",
+    "@types/koa-compose": "^3.2.8",
+    "@ohos/xmpp_connection_tcp": "^1.0.1"
+  },
+  "devDependencies": {},
+  "dynamicDependencies": {}
+}

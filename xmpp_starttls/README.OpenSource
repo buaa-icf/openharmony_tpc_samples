@@ -1,0 +1,20 @@
+[
+  {
+    "Name":"@xmpp/starttls",
+    "License":"ISC License",
+    "License File":"LICENSE",
+    "Version Number":"0.13.1",
+    "Owner":"xiafeng@huawei.com",
+    "Upstream URL":"https://github.com/xmppjs/xmpp.js/tree/main/packages/starttls",
+    "Description":  "The "@xmpp/starttls" module is a JavaScript implementation for XMPP (Extensible Messaging and Presence Protocol) that facilitates secure communication by enabling the negotiation and upgrade of an existing connection to Transport Layer Security (TLS) for added encryption and privacy."
+  },
+  {
+    "Name":"@types/xmpp__starttls",
+    "License":"MIT License",
+    "License File":"LICENSE-MIT",
+    "Version Number":"0.13.1",
+    "Owner":"xiafeng@huawei.com",
+    "Upstream URL":"https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/xmpp__starttls",
+    "Description": "The "@types/xmpp__starttls" package provides TypeScript type definitions for the "@xmpp/starttls" module, ensuring type safety and autocompletion when working with XMPP's StartTLS functionality in TypeScript projects."
+  }
+]
