@@ -22,7 +22,7 @@ import { getDomain } from "./src/main/lib/getDomain";
 import _reconnect from "@ohos/xmpp_reconnect";
 import _websocket from "@ohos/xmpp_websocket";
 import _tcp from "@ohos/xmpp_tcp";
-// import _tls from "@ohos/xmpp_tls";
+import _tls from "@ohos/xmpp_tls";
 import _middleware from "@ohos/xmpp_middleware";
 import _streamFeatures from "@ohos/xmpp_stream_features";
 import _iqCaller from "@ohos/xmpp_iq/src/main/lib/caller";
@@ -30,7 +30,7 @@ import _iqCallee from "@ohos/xmpp_iq/src/main/lib/callee";
 import _resolve from "@ohos/xmpp_resolve";
 
 // Stream features - order matters and define priority
-// import _starttls from "@ohos/xmpp_starttls";
+import _starttls from "@ohos/xmpp_starttls";
 import _sasl from "@ohos/xmpp_sasl";
 import _resourceBinding from "@ohos/xmpp_resoure_binding";
 import _sessionEstablishment from "@ohos/xmpp_session_establishment";
@@ -39,7 +39,7 @@ import _streamManagement from "@ohos/xmpp_stream_management";
 // SASL mechanisms - order matters and define priority
 import plain from "@ohos/xmpp_sasl_plain";
 
-// import scramsha1 from "@ohos/xmpp_sasl-scram-sha-1";
+import scramsha1 from "@ohos/xmpp_sasl_scram_sha_1";
 import anonymous from "@ohos/xmpp_sasl_anonymous";
 
 function client(options = {}) {
@@ -54,14 +54,14 @@ function client(options = {}) {
     const reconnect = _reconnect({ entity });
     const websocket = _websocket({ entity });
     const tcp = _tcp({ entity });
-    // const tls = _tls({ entity });
+    const tls = _tls({ entity });
     const middleware = _middleware({ entity });
     const streamFeatures = _streamFeatures({ middleware });
     const iqCaller = _iqCaller({ middleware, entity });
     const iqCallee = _iqCallee({ middleware, entity });
     const resolve = _resolve({ entity });
     // // Stream features - order matters and define priority
-    // const starttls = _starttls({ streamFeatures });
+    const starttls = _starttls({ streamFeatures });
     const sasl = _sasl({ streamFeatures }, credentials || { username, password });
     const streamManagement = _streamManagement({
         streamFeatures,
@@ -78,8 +78,8 @@ function client(options = {}) {
     });
     // SASL mechanisms - order matters and define priority
     const mechanisms = Object.entries({
-        // scramsha1,
         plain,
+        scramsha1,
         anonymous,
     }).map(([k, v]) => ({ [k]: v(sasl) }));
     //
@@ -88,13 +88,13 @@ function client(options = {}) {
         reconnect,
         tcp,
         websocket,
-        // tls,
+        tls,
         middleware,
         streamFeatures,
         iqCaller,
         iqCallee,
         resolve,
-        // starttls,
+        starttls,
         sasl,
         resourceBinding,
         sessionEstablishment,

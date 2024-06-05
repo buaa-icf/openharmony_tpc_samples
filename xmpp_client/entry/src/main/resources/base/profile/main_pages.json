@@ -1,5 +1,8 @@
 {
   "src": [
-    "pages/Index"
+    "pages/Index",
+    "pages/WebSocketPage",
+    "pages/TcpSocketPage",
+    "pages/TlsSocketPage"
   ]
 }

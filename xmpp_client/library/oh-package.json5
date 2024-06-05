@@ -1,6 +1,6 @@
 {
   "name": "@ohos/xmpp_client",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "是连接到XMPP服务器的实体,它包含一组最小的功能，用于安全可靠地进行连接和身份验证",
   "main": "index.js",
   "types": "index.d.ts",
@@ -25,6 +25,9 @@
     "@ohos/xmpp_sasl_anonymous": "^1.0.0",
     "@ohos/xmpp_session_establishment": "^1.0.0",
     "@ohos/xmpp_sasl_plain": "^1.0.0",
+    "@ohos/xmpp_tls": "^1.0.0",
+    "@ohos/xmpp_starttls": "^1.0.0",
+    "@ohos/xmpp_sasl_scram_sha_1": "^1.0.0",
     "@xmpp/jid": "^0.13.1",
     "@types/koa-compose": "^3.2.8"
   },
