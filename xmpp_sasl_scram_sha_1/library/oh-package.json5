@@ -1,0 +1,14 @@
+{
+  "name": "@ohos/xmpp_sasl_scram_sha_1",
+  "version": "1.0.0",
+  "description": "在OpenHarmony上提供了一个用于 XMPP 协议的 SASL（安全认证层）机制，它基于 SCRAM 协议使用 SHA-1 哈希函数进行用户认证的library",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "author": "tpc",
+  "license": "ISC License",
+  "dependencies": {
+    "@ohos/node-polyfill": "^1.0.0",
+    "@ohos/xmpp_sasl": "^1.0.0"
+  }
+}

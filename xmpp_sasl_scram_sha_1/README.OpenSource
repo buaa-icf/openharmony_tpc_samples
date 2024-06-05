@@ -1,0 +1,20 @@
+[
+  {
+    "Name":"@xmpp/sasl-scram-sha-1",
+    "License":"ISC License",
+    "License File":"LICENSE",
+    "Version Number":"0.13.1",
+    "Owner":"xiafeng@huawei.com",
+    "Upstream URL":"https://github.com/xmppjs/xmpp.js/tree/main/packages/sasl-scram-sha-1",
+    "Description":  "@xmpp/sasl-scram-sha-1 is a SASL (Simple Authentication and Security Layer) mechanism for the XMPP protocol that uses the SCRAM protocol with SHA-1 hash function for user authentication."
+  },
+  {
+    "Name":"@types/xmpp__sasl-scram-sha-1",
+    "License":"MIT License",
+    "License File":"LICENSE-MIT",
+    "Version Number":"0.13.1",
+    "Owner":"xiafeng@huawei.com",
+    "Upstream URL":"https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/xmpp__tls",
+    "Description": "@types/xmpp__sasl-scram-sha-1 is a TypeScript definition file for the SCRAM-SHA-1 authentication mechanism within the XMPP protocol, providing accurate type information for TypeScript projects to enhance code quality and developer productivity."
+  }
+]
