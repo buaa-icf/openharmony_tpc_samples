@@ -13,7 +13,7 @@
 1. 参考安装教程 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 2. 安装命令如下：
 ```
- ohpm install @ohos/sasl_scram_sha_1
+ ohpm install @ohos/xmpp_sasl_scram_sha_1
 ```
 ## 接口和属性列表
 接口列表
