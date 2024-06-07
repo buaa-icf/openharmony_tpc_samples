@@ -64,7 +64,9 @@ export class Socket extends EventEmitter {
 
         listeners.message = ({ data }) => this.emit("data", data);
         listeners.error = (err) => {
-            this.emit("error", { message: err.message ? err.message : "WebSocket ECONNERROR "+this.url });
+            if (err) {
+                console.error('websocket error:' + JSON.stringify(err))
+            }
         };
 
         listeners.close = (event) => {
@@ -85,7 +87,9 @@ export class Socket extends EventEmitter {
         });
 
         this.socket.on('error',(err)=>{
-            this.emit("error", { message: err.message ? err.message : "WebSocket ECONNERROR "+this.url });
+            if (err) {
+                console.error('websocket error:' + JSON.stringify(err))
+            }
         })
 
         this.socket.on('close', (err, value) => {

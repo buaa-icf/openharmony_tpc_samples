@@ -1,5 +1,8 @@
 # Changelog[.gitignore](entry%2F.gitignore)
 
+## 1.0.2
+- 修复websocket错误信息抛出时异常
+
 ## 1.0.1
 - 修复稳定性测试报告偶现的crash问题
 

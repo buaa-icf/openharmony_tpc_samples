@@ -1,14 +1,14 @@
 {
   "name": "entry",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Please describe the basic information.",
   "main": "",
   "author": "tpc",
   "license": "",
   "dependencies": {
     "@ohos/xmpp_websocket": "file:../library",
-    "@ohos/xmpp_xml": "1.0.0",
-    "@xmpp/events": "0.13.1"
+    "@ohos/xmpp_xml": "^1.0.0",
+    "@xmpp/events": "^0.13.1"
   }
 }
 
