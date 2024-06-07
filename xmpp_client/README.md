@@ -70,32 +70,34 @@ ohos.permission.GET_NETWORK_INFO
 （2）使用刚在openfire中的新建的用户进行登录
 
 ```
-import {client, xml, Options } from '@ohos/xmpp_client';
+import { client,Client, xml, Options } from '@ohos/xmpp_client';
+import { Element } from '@ohos/xmpp_xml';
 
 @Entry
 @Component
-struct Index {
+struct WebSocketPage {
   @State status: string = "offline";
   @State message: string = 'Hello World';
   @State sendMessage: string = ""
   @State contact: string = ""
   private options: Options = {
-    service: 'xmpp://xx.xx.xx.xx:xxxx/', //xx.xx.xx.xx(服务器地址) xxxx 服务端口
+    service: 'ws://xx.xx.xx.xx:xxxx/ws', //xx.xx.xx.xx(服务器地址) xxxx 服务端口
     domain: 'xx.xx.xx.xx',               //服务器名称(xx.xx.xx.xx)
     resource: 'xx.xx.xx.xx',             //主机名(默认为服务器地址)
     username: "xxx",					 //openfire注册用户的用户名
     password: "xxx"				         //openfire注册的用户密码
   }
+  
   private xmpp = client(this.options); //创建xmpp实例
-
-  private xmpp = client(this.options); //连接服务
 
   private onError = (err: Error) => {
     console.info('xmpp-❌', JSON.stringify(err.message));
   }
+  
   private onOffline = () => {
     console.info('xmpp--', 'offline');
   }
+  
   private onStanza = (stanza: ESObject) => {
     this.contact = stanza.attrs.from
     if (stanza.is('presence') && stanza.attrs.type === 'subscribe') {
@@ -111,13 +113,15 @@ struct Index {
       });
     }
   }
+  
   private onStatus = (status: string, value: string) => {
     this.status = status
     console.info("xmpp-response --" + "status--" + status + "---value---" + value)
   }
+  
   private onLine = async (address: ESObject) => {
     console.log('🗸', 'online as', address);
-    const presence = xml(
+    const presence:Element  = xml(
       'presence',
       {},
       xml('show', {}, 'chat'),
@@ -133,8 +137,9 @@ struct Index {
     this.xmpp.on('online', this.onLine);
     this.xmpp.on('stanza',this.onStanza);
   }
-
-  aboutToDisappear(){
+  
+  async aboutToDisappear(){
+    await this.xmpp.stop();
     this.xmpp.off('error',this.onError)
     this.xmpp.off('offline',this.onOffline)
     this.xmpp.off('status',this.onStatus)
@@ -166,14 +171,11 @@ struct Index {
             this.sendMessage = value;
           })
 
-
         Button("发送").fontSize(30)
           .width("60%")
           .onClick(() => {
             const message = xml("message", { type: "chat", to: this.contact }, xml("body", {}, this.sendMessage));
             this.xmpp.send(message)
-
-
           }).margin({ top: 30 })
       
         Button("断开").fontSize(30)
@@ -182,7 +184,7 @@ struct Index {
             try {
               this.xmpp.stop();
             } catch (e) {
-              console.info("xmpp ---- error -" + e.toString())
+              console.info("stop ---- error -" + e.toString())
             }
           }).margin({ top: 30 })
       }
@@ -201,9 +203,12 @@ struct Index {
 #### 通过配置client参数创建xmpp实例
 
 ##### xmpp=client(options)
-
+##### 下面options中service属性值中xmpp可替换为xmpps、xmpp、ws、wss
+- xmpp对应tcpSocket连接,例如:xmpp://xxxx:xxxx
+- xmpps对应tlsSocket连接,也就是加密连接,服务端需验证ca证书,例如:xmpps://xxxx:xxxx
+- ws对应webSocket连接,例如:ws://xxxx:xxxx/ws/
+- wss对应webSocket加密连接,服务端需验证ca证书,例如:wss://xxxx:xxxx/ws/
 ```
-
  private options: Options = {
     service: 'xmpp://xx.xx.xx.xx:xxxx/', //xx.xx.xx.xx(服务器地址) xxxx 服务端口
     domain: 'xx.xx.xx.xx',               //服务器名称(xx.xx.xx.xx)
