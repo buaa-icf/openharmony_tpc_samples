@@ -23,6 +23,7 @@ export enum  AnimateEffect{
   ScaleCenterRight,
   ScaleCenterBottom,
   Center,
+  TranslateFromCenter,
   TranslateFromTop,
   TranslateFromBottom,
   TranslateFromLeft,
