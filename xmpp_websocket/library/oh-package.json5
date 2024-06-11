@@ -1,6 +1,6 @@
 {
   "name": "@ohos/xmpp_websocket",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "在OpenHarmony上提供了一个用于处理WebSocket在XMPP协议中的通信的library",
   "main": "index.js",
   "types": "index.d.ts",
@@ -8,8 +8,8 @@
   "author": "tpc",
   "license": "ISC License",
   "dependencies": {
-    "@ohos/xmpp_connection": "1.0.1",
-    "@ohos/xmpp_xml": "1.0.0",
+    "@ohos/xmpp_connection": "^1.0.1",
+    "@ohos/xmpp_xml": "^1.0.0",
     "@ohos/node-polyfill": "^1.0.0"
   }
 }
