@@ -350,7 +350,7 @@ customComponent参数：
 
 在下述版本验证通过：
 
-DevEco Studio: 4.1 Canary2 (4.1.3.322), SDK: API11 (4.1.3.1)
+DevEco Studio: 5.0 Canary3(5.0.3.320)，OpenHarmony SDK:API11 (4.1.0.36)
 
 
 ## 软件架构
