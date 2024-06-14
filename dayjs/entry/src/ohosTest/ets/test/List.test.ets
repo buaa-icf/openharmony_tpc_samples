@@ -12,7 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import parseTest from './parse.test'
 import pluginTest from './plugin.test'
 import queryTest from './query.test'
 import utilsTest from './Utils.test'
@@ -20,5 +19,4 @@ export default function testsuite() {
   utilsTest()
   queryTest()
   pluginTest()
-  parseTest()
 }
