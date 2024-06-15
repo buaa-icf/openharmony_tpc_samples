@@ -20,7 +20,7 @@ import { Patch, Options } from './interface'
 export default function applyTest() {
   describe('applyTest', () => {
     it('applyPatch_accept_parsed_patches', 0, () => {
-      const patch: Patch[] = parsePatch(
+      const patch: ParsedDiff[] = parsePatch(
         'Index: test\n'
           + '===================================================================\n'
           + '--- test\theader1\n'
@@ -30,7 +30,7 @@ export default function applyTest() {
           + ' line3\n'
           + '+line4\n'
           + ' line5\n');
-      let result: string = applyPatch(
+      let result: string | false = applyPatch(
         'line2\n'
           + 'line3\n'
           + 'line5\n',
