@@ -67,6 +67,10 @@
           name="LICENSE"
           type="filename"/>
         <filteritem
+          desc="三方依赖LICENSE文件，不修改版权头"
+          name="licenses/.*"
+          type="filepath"/>
+        <filteritem
           desc="工程文件，不修改版权头"
           name="NOTICE"
           type="filename"/>
@@ -86,6 +90,10 @@
           desc="原三方库证书文件无需更改，因此添加过滤"
           name="LICENSE"
           type="filename"/>
+        <filteritem
+          desc="三方依赖LICENSE文件无需更改，因此添加过滤"
+          name="licenses/.*"
+          type="filepath"/>  
         <filteritem
           desc="原三方库证书文件无需更改，因此添加过滤"
           name="NOTICE"
