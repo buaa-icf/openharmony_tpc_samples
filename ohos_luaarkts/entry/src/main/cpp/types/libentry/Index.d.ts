@@ -12,4 +12,5 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export const add: (a: number, b: number) => number;
+
+export const Add: (a: number, b: number) => number;

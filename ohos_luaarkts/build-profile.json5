@@ -1,13 +1,37 @@
 {
   "app": {
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "C:\\Users\\t021445\\.ohos\\config\\default_ohos_luaarkts_yQUx3f-V4o1y-__fLCMpckj6x6a3BG4MoOP-7jxdVz0=.cer",
+          "storePassword": "0000001B3EBB844B3B8C1A06A04D4E78D99223C1BF70FB5FD9EDD8ECE057DF91475118970BD5FF4CA74A36",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001BEE0D89430C1A0DB89A3D63DA755FED16AA6A0DB7708482CF6385D6B1D2D6928598AD3869B736BC",
+          "profile": "C:\\Users\\t021445\\.ohos\\config\\default_ohos_luaarkts_yQUx3f-V4o1y-__fLCMpckj6x6a3BG4MoOP-7jxdVz0=.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "C:\\Users\\t021445\\.ohos\\config\\default_ohos_luaarkts_yQUx3f-V4o1y-__fLCMpckj6x6a3BG4MoOP-7jxdVz0=.p12"
+        }
+      }
+    ],
     "products": [
       {
         "name": "default",
         "signingConfig": "default",
-        "compileSdkVersion": 10,
-        "compatibleSdkVersion": 10
+        "compileSdkVersion": "5.0.0(12)",
+        "compatibleSdkVersion": "5.0.0(12)",
+        "runtimeOS": "HarmonyOS",
       }
     ],
+    "buildModeSet": [
+      {
+        "name": "debug",
+      },
+      {
+        "name": "release"
+      }
+    ]
   },
   "modules": [
     {
@@ -25,6 +49,14 @@
     {
       "name": "luaarkts",
       "srcPath": "./luaarkts",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
     }
   ]
 }

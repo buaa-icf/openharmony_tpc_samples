@@ -4,7 +4,13 @@
     "externalNativeOptions": {
       "path": "./src/main/cpp/CMakeLists.txt",
       "arguments": "",
-      "cppFlags": "",
+      "cppFlags": ""
+    },
+    "arkOptions" : {
+      "runtimeOnly" : {
+        "sources": [
+        ]
+      }
     }
   },
   "buildOptionSet": [
