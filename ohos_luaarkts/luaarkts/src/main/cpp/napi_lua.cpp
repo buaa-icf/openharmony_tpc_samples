@@ -20,6 +20,7 @@ using namespace std;
 
 lua_State *g_L;
 
+namespace Ohos_LuaArkts {
 static lua_State* GetLuaStateL()
 {
     return g_L;
@@ -603,3 +604,4 @@ int luaopen_mLualib(lua_State *L)
     luaL_register(L, "cc", myLib); // 注册导出类
     return 1;                      // 把myLib表压入了栈中，所以就需要返回1
 }
+} // namespace Ohos_LuaArkts

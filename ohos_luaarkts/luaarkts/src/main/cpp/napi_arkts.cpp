@@ -20,6 +20,7 @@
 #include "napi_lua.h"
 using namespace std;
 
+namespace Ohos_LuaArkts {
 napi_env g_env;
 
 std::string TestHelloWorld(std::string msg)
@@ -452,3 +453,4 @@ napi_value T2lCallFunction(napi_env env, napi_callback_info info)
 
     return nullptr;
 }
+} // namespace Ohos_LuaArkts

@@ -18,6 +18,7 @@ using namespace std;
 
 bool g_bLog = false;
 
+namespace Ohos_LuaArkts {
 string GetFileName(string path)
 {
     size_t found = path.find_last_of("/"); // 查找最后一个斜杠或反斜杠的位置
@@ -28,3 +29,4 @@ string GetFileName(string path)
 
     return path;
 }
+} // namespace Ohos_LuaArkts

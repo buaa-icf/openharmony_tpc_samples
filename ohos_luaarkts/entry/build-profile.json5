@@ -6,34 +6,7 @@
       "arguments": "",
       "cppFlags": ""
     },
-    "arkOptions" : {
-      "runtimeOnly" : {
-        "sources": [
-        ]
-      }
-    }
   },
-  "buildOptionSet": [
-    {
-      "name": "release",
-      "arkOptions": {
-        "obfuscation": {
-          "ruleOptions": {
-            "enable": true,
-            "files": [
-              "./obfuscation-rules.txt"
-            ]
-          }
-        }
-      },
-      "nativeLib": {
-        "debugSymbol": {
-          "strip": true,
-          "exclude": []
-        }
-      }
-    },
-  ],
   "targets": [
     {
       "name": "default"

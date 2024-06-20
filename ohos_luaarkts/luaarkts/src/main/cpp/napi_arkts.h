@@ -19,6 +19,7 @@
 #include <string>
 #include "napi/native_api.h"
 
+namespace Ohos_LuaArkts {
 extern napi_env g_env;
 
 napi_value TestNAPI(napi_env env, napi_callback_info info);
@@ -48,5 +49,6 @@ int64_t T2lGetTableLong(std::string strTableName, std::string strVarLong);
 double T2lGetTableDouble(std::string strTableName, std::string strVarDouble);
 const char *T2lGetTableChar(std::string strTableName, std::string strVarChar);
 int T2lGetTableBool(std::string strTableName, std::string strVarBool);
+} // namespace Ohos_LuaArkts
 
 #endif // OHOS_LUAARKTS_NAPI_ARKTS_H

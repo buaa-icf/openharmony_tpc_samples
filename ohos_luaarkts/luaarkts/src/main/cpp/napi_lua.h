@@ -22,6 +22,9 @@ extern "C" {
 }
 
 extern lua_State *g_L;
+
+namespace Ohos_LuaArkts {
 int luaopen_mLualib(lua_State *L);
+} // namespace Ohos_LuaArkts
 
 #endif // OHOS_LUAARKTS_NAPI_LUA_H

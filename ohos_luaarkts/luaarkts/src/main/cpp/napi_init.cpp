@@ -22,6 +22,7 @@
 
 using namespace std;
 
+namespace Ohos_LuaArkts {
 // napi注册
 EXTERN_C_START
 static napi_value Init(napi_env env, napi_value exports)
@@ -78,3 +79,4 @@ JSBIND_GLOBAL()
     JSBIND_FUNCTION(T2lGetTableChar);   // 获取lua中,Table的变量-char
     JSBIND_FUNCTION(T2lGetTableBool);   // 获取lua中,Table的变量-bool
 }
+} // namespace Ohos_LuaArkts

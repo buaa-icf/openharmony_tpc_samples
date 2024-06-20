@@ -21,6 +21,7 @@
 
 extern bool g_bLog; // 日志是否显示
 
+namespace Ohos_LuaArkts {
 // 自定义日志
 #define DLOGINFOVOID(tag)                                                                                       \
     if (g_bLog) OH_LOG_Print(LOG_APP, LOG_INFO, 0, tag, "func=%{public}s,line=%{public}d,file=%{public}s", \
@@ -41,5 +42,5 @@ extern bool g_bLog; // 日志是否显示
                      __VA_ARGS__, __FUNCTION__, __LINE__, GetFileName(__FILE__).c_str())
 
 std::string GetFileName(std::string path);
-
+} // namespace Ohos_LuaArkts
 #endif // OHOS_LUAARKTS_NAPI_COMMON_H
