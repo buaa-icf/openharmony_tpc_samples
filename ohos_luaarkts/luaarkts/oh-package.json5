@@ -2,10 +2,14 @@
   "name": "luaarkts",
   "version": "1.0.0",
   "description": "Please describe the basic information.",
-  "main": "",
+  "main": "Index.ets",
   "author": "",
-  "license": "",
+  "license": "Apache-2.0",
+  "packageType": "InterfaceHar",
   "dependencies": {
-    "libluaarkts.so": "file:./src/main/cpp/types/libluaarkts"
-  }
+    "libluaarkts.so": "file:./src/main/cpp/types/libluaarkts",
+    "@ohos/aki": "^1.2.8"
+  },
+  "devDependencies": {},
+  "dynamicDependencies": {}
 }

@@ -5,6 +5,13 @@
       "path": "./src/main/cpp/CMakeLists.txt",
       "arguments": "",
       "cppFlags": "",
+    },
+    "arkOptions" : {
+      "runtimeOnly" : {
+        "sources": [
+          "./src/main/ets/test/TestTs.ets"
+        ]
+      }
     }
   },
   "buildOptionSet": [
@@ -33,7 +40,7 @@
       "name": "default"
     },
     {
-      "name": "ohosTest",
+      "name": "ohosTest"
     }
   ]
 }

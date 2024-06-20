@@ -1,6 +1,6 @@
 {
   "app": {
-    "bundleName": "com.example.ohos_luaarkts",
+    "bundleName": "com.hwyb.ohos_luaarkts",
     "vendor": "example",
     "versionCode": 1000000,
     "versionName": "1.0.0",
