@@ -146,5 +146,5 @@ DevEco Studio: 4.0 Canary2(4.0.1.300), SDK: API10 Beta(4.0.8.6)
 
 ### 开源协议
 
-本项目基于[Apache License 2.0](./LICENSE)
+本项目基于[MIT License](./LICENSE)
 ,请自由的享受和参与开源
