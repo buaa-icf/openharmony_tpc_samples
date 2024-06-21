@@ -11,7 +11,7 @@
      {
         "Name": " ohos_ijkplayer",
         "License": " LGPLv2.1 or later ",
-        "License File": " LICENSE ",
+        "License File": " LICENSE-LGPL ",
         "Version Number": "2.0.2",
         "Owner": "xiafeng@huawei.com",
         "Upstream URL": " https://gitee.com/openharmony-sig/ohos_ijkplayer",

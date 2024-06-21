@@ -2,7 +2,8 @@
 
 ## 简介
 
-GSYVideoPlayer是一个视频播放器库，支持切换内核播放器（IJKPlayer、avplayer），并且支持了多种能力。
+GSYVideoPlayer是一个视频播放器库，支持切换内核播放器（IJKPlayer、avplayer），并且支持视频截图能力、
+视频生成gif能力、边播边缓存能力、视频全屏能力等多种能力。
 
 ## 效果展示：
 ![gif](screenshot/gsyvideoplayer.gif)
