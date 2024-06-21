@@ -12,7 +12,12 @@ ohpm install @ohos/minizip
 
 ### 编译运行
 
-如果想要在本地编译，需要自行编译minizip_ng，[minizip_ng集成到应用hap](https://gitee.com/openharmony-sig/tpc_c_cplusplus/tree/master/thirdparty/minizip-ng)
+本项目依赖minizip_ng库，编译产物.a文件和头文件通过`git submodule`引入，下载代码时需加上`--recursive`参数。
+  ```
+  git clone --recursive https://gitee.com/openharmony-tpc/openharmony_tpc_samples.git
+  ```
+
+如果想要在本地编译minizip_ng，参考[minizip_ng集成到应用hap](https://gitee.com/openharmony-sig/tpc_c_cplusplus/tree/master/thirdparty/minizip-ng)
 
 在cpp目录下新增third_party目录，并将编译生成的库拷贝到该目录下，如下图所示
 
