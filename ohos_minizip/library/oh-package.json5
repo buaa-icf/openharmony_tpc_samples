@@ -11,7 +11,7 @@
   "ohos": {
     "org": "opensource"
   },
-  "description": "基于minizip_ng的zip加密解压库",
+  "description": "基于minizip_ng的zip加密解压库，支持zip格式的解密解压",
   "main": "index.ets",
   "type": "module",
   "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_minizip",
