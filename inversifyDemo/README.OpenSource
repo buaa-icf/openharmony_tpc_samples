@@ -2,7 +2,7 @@
   {
     "Name":"inversify",
     "License":"MIT License",
-    "License File":"LICENSE",
+    "License File":"LICENSE-MIT",
     "Version Number":"6.0.1",
     "Owner":"xiafeng@huawei.com",
     "Upstream URL":"https://github.com/inversify/InversifyJS.git",
