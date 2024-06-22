@@ -2,7 +2,7 @@
 
 ## 简介
 
-> 在OpenHarmony环境下,提供了UTF-8的编码能力和解码能力。
+> 在OpenHarmony环境下,提供了UTF-8的编码能力和解码能力。此库是一个经过充分测试的用 JavaScript 编写的 UTF-8 编码器/解码器。与许多其他 JavaScript 解决方案不同，它被设计为一个合适的 UTF-8 编码器/解码器：它可以按照编码标准对任何标量 Unicode 码位值进行编码/解码。
 
 ## 下载安装
 
@@ -46,6 +46,11 @@ showMessage(message:string){
 }
 }
 ```
+
+## 接口说明
+encode：编码
+
+decode：解码
 
 ## 约束与限制
 
