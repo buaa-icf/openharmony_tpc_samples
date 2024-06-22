@@ -394,6 +394,7 @@
                 <policyitem type="license" name="ISC" path="xmpp_sasl_scram_sha_1/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="ohos_msgpack/entry/src/ohosTest/ets/test/test/msg/timestamp.js" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="ohos_ftp-srv/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="js-md2Demo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="ThreeJs360Demo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
 	    </policy>
         </policylist>
