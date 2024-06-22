@@ -35,3 +35,7 @@
 	path = GSYVideoPlayer-filters/ohos_ijkplayer
 	url = https://gitee.com/openharmony-sig/ohos_ijkplayer.git
 	branch = develop
+
+[submodule "ohos_minizip/library/src/main/cpp/third_party"]
+	path = ohos_minizip/library/src/main/cpp/third_party
+	url = https://gitee.com/longfeng20/third_party.git
