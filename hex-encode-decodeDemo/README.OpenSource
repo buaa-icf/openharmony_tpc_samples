@@ -2,7 +2,7 @@
     {
         "Name": "hex-encode-decode",
         "License": "MIT License",
-        "License File": "LICENSE",
+        "License File": "LICENSE-MIT",
         "Version Number": "1.0.0",
         "Owner" : "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/tiaanduplessis/hex-encode-decode",

@@ -2,9 +2,9 @@
   {
    "Name":"cbor-js",
    "License":"MIT License",
-   "License File":"LICENSE",
+   "License File":"LICENSE-MIT",
    "Version Number":"v0.1.0",
-   "Owner":"kaifun",
+   "Owner":"xiafeng@huawei.com",
    "Upstream URL":"https://github.com/paroga/cbor-js",
    "Description": " The Concise Binary Object Representation (CBOR) data format (RFC7049) implemented in pure JavaScript."
   }

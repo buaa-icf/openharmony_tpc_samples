@@ -1,8 +1,8 @@
 [
     {
         "Name": "lz4js",
-        "License": "",
-        "License File": "",
+        "License": "Apache License 2.0",
+        "License File": "LICENSE",
         "Version Number": "0.2.0",
         "Owner": "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/Benzinga/lz4js",

@@ -1,0 +1,11 @@
+{
+  "name": "luaarkts",
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "main": "",
+  "author": "",
+  "license": "",
+  "dependencies": {
+    "libluaarkts.so": "file:./src/main/cpp/types/libluaarkts"
+  }
+}

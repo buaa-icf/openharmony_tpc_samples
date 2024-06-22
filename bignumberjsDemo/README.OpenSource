@@ -2,7 +2,7 @@
     {
         "Name": "bignumber.js",
         "License": "MIT license",
-        "License File": "LICENSE",
+        "License File": "LICENSE-MIT",
         "Version Number": "9.1.0",
         "Owner" : "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/MikeMcl/bignumber.js",
