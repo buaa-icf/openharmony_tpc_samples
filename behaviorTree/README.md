@@ -48,8 +48,8 @@ const myTask = new Task({
 
 方法：
 
-- start - 在调用运行之前调用。但如果任务在以 this.running()结束后恢复
-- end - 在调用运行后调用。但如果任务以 this.running()结束则不会
+- start - 在调用运行之前调用。但如果任务在以 this.running()结束后恢复,则不会
+- end - 在调用运行后调用。但如果任务以 this.running()结束,则不会
 - run - 包含你希望任务做的事情
 
 ### 2.创建序列
@@ -109,6 +109,17 @@ bTree.step();
 ```
 
 [单元测试用例](https://gitee.com/tybrave/openharmony_tpc_samples/tree/master/behaviortree/TEST.md)详情可参考
+
+## 接口说明
+
+| 方法名       |             接口描述              |
+|:------------------------:|:-----------------------------:|
+|  Sequence             |            创建序列            |
+| Selector            |             创建优先级选择器             |
+|    Random                 |            创建随机选择器            |
+|   BehaviorTree                 |           创建行为树实例          |
+|    step     |        遍历行为树          |
+
 
 ## 约束与限制
 
