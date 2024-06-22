@@ -2,9 +2,9 @@
   {
    "Name":"validator.js",
    "License":"MIT license",
-   "License File":"LICENSE.txt",
+   "License File":"LICENSE-MIT",
    "Version Number":"13.9.0",
-   "Owner":"validatorjs",
+   "Owner":"xiafeng@huawei.com",
    "Upstream URL":"https://github.com/validatorjs/validator.js",
    "Description": "This library validates and sanitizes strings only."
   }
