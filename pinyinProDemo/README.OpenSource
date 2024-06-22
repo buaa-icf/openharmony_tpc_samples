@@ -1,8 +1,8 @@
 [
     {
         "Name": "pinyin-pro",
-        "License": "Apache License",
-        "License File": " LICENSE ",
+        "License": "MIT License",
+        "License File": " LICENSE-MIT ",
         "Version Number": "3.18.3",
         "Owner": "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/zh-lx/pinyin-pro",
