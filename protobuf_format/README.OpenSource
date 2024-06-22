@@ -2,14 +2,14 @@
     {
         "Name": "protobuf-java-format",
         "License": "BSD-3-Clause license",
-        "License File": "LICENSE.txt",
+        "License File": "licenses/LICENSE-BSD-3-Clause",
         "Version Number": "1.5",
         "Owner" : "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/bivas/protobuf-java-format",
         "Description": "Provide serialization and de-serialization of different formats based on Google’s protobuf Message. Enables overriding the default (byte array) output to text based formats such as XML, JSON and HTML."
     },
     {
-        "Name": "@ohos/protobufjs",
+        "Name": "protobuf",
         "License": "Apache-2.0",
         "License File": "LICENSE",
         "Version Number": "1.0.2",
@@ -20,7 +20,7 @@
     {
         "Name": "xml-js",
         "License": "MIT License",
-        "License File": "LICENSE",
+        "License File": "license/LICENSE-MIT",
         "Version Number": "1.6.11",
         "Owner" : "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/nashwaan/xml-js",
@@ -29,7 +29,7 @@
     {
         "Name": "sax-js",
         "License": "ISC License",
-        "License File": "LICENSE",
+        "License File": "licenses/LICENSE-ISC",
         "Version Number": "1.2.4",
         "Owner" : "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/isaacs/sax-js",
