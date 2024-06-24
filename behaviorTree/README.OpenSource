@@ -2,7 +2,7 @@
     {
         "Name": "behaviortree",
         "License": "MIT License",
-        "License File": " LICENSE ",
+        "License File": " LICENSE-MIT ",
         "Version Number": "2.1.0",
         "Owner" : "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/Calamari/BehaviorTree.js",
