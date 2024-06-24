@@ -105,7 +105,7 @@ export default class ProxyCache {
     return new Promise<void>((resolve, reject) => {
       self.timeoutId = setTimeout(() => {
         if (self.timeoutId != (0 - Number.MAX_VALUE)) {
-          clearInterval(self.timeoutId)
+          clearTimeout(self.timeoutId)
           self.timeoutId = (0 - Number.MAX_VALUE)
           return resolve()
         }
