@@ -244,6 +244,7 @@
                 <policyitem type="license" name="MIT" path="mdurl/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="url_parse/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="dom_serializer/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="pinyinProDemo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="validator/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="behaviorTree/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="BSD-3-Clause" path="libcoap/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
