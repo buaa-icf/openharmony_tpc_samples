@@ -354,6 +354,15 @@ struct LazyMultiInjectPage {
 
 更多使用方式请参考[inversify-inject-decorators](https://github.com/inversify/inversify-inject-decorators)
 
+## 接口说明
+
+|          方法名           |                                           接口描述                                            |
+|:----------------------:|:-----------------------------------------------------------------------------------------:|
+|      @lazyInject       |           用于在类的属性上声明依赖，而不是在构造函数中。该装饰器会延迟到真正需要时才从 InversifyJS 容器中获取依赖，实现所谓的“懒加载”           |
+|    @lazyInjectNamed    |                                       根据名称来选择要注入的依赖                                       |
+|   @lazyInjectTagged    |                      使用标签（tag）而不是名称来选择要注入的依赖。这允许你根据特定的元数据或标签来区分不同的依赖                      |
+
+
 ### 约束和限制
 
 在下述版本验证通过：
