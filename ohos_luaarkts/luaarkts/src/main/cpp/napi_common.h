@@ -23,18 +23,10 @@ extern bool g_bLog; // 日志是否显示
 
 namespace Ohos_LuaArkts {
 // 自定义日志
-#define DLOGINFOVOID(tag)                                                                                       \
-    if (g_bLog) OH_LOG_Print(LOG_APP, LOG_INFO, 0, tag, "func=%{public}s,line=%{public}d,file=%{public}s", \
-                __FUNCTION__, __LINE__, \
-                GetFileName(__FILE__).c_str())
 #define DLOGINFO(tag, content, ...)                                                                                  \
     if (g_bLog) OH_LOG_Print(LOG_APP, LOG_INFO, 0, tag, content ",func=%{public}s,line=%{public}d,file=%{public}s", \
                 __VA_ARGS__,   \
                 __FUNCTION__, __LINE__, GetFileName(__FILE__).c_str())
-#define DLOGINFOCONTENT(tag, content)                                                                                \
-    if (g_bLog)  OH_LOG_Print(LOG_APP, LOG_INFO, 0, tag, content ",func=%{public}s,line=%{public}d,file=%{public}s", \
-                __FUNCTION__,  \
-                __LINE__, GetFileName(__FILE__).c_str())
 
 #define DLOGERROR(tag, content, ...)                                                                                 \
     if (g_bLog)                                                                                                      \

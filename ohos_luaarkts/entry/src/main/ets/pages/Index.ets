@@ -14,7 +14,6 @@
  */
 
 import { hilog } from '@kit.PerformanceAnalysisKit';
-import hapNAPI  from 'libentry.so';
 import {SetLogShowState, init, UnitTest} from '@ohos/luaarkts';
 
 //运行模式
@@ -78,8 +77,6 @@ struct Index {
       .width("100%")
       .height("100%")
     }
-
-    .height
-    ('100%')
+    .height('100%')
   }
 }

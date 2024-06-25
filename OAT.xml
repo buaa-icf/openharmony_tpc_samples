@@ -198,7 +198,8 @@
                 <filteritem type="filepath" name="parserHtmlJsonDemo/demo.gif" desc="演示效果动图，用于readme展示，无需检查"/>
                 <filteritem type="filepath" name="apng/APNG.gif" desc="演示效果动图，用于readme展示，无需检查"/>
 <filteritem type="filepath" name="ohos_luaarkts/entry/src/main/ets/common/assets/bg_3.jpg" desc="演示效果动图，用于readme展示，无需检查"/>
-<filteritem type="filepath" name="ohos_luaarkts/hvigor/hvigor-ohos-plugin-4.3.0.tgz" desc="演示效果动图，用于readme展示，无需检查"/>
+<filteritem type="filepath" name="ohos_luaarkts/luaarkts/src/main/cpp/thirdparty/LuaJIT/arm64-v8a/lib/libluajit-5.1.a" desc="三方库编译文件"/>
+<filteritem type="filepath" name="ohos_luaarkts/luaarkts/src/main/cpp/thirdparty/LuaJIT/arm64-v8a/lib/libluajit-5.1.a" desc="三方库编译文件"/>
 <filteritem type="filepath" name="ohos_luaarkts/entry/src/main/ets/common/assets/bg_4.jpg" desc="演示效果动图，用于readme展示，无需检查"/>
 <filteritem type="filepath" name="ohos_luaarkts/hvigor/hvigor-4.3.0.tgz" desc="演示效果动图，用于readme展示，无需检查"/>
 
