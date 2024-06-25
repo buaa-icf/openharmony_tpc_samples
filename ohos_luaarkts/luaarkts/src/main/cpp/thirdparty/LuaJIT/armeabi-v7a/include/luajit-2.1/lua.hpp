@@ -1,4 +1,6 @@
 // C++ wrapper for LuaJIT header files.
+#ifndef LUA_HAPP
+#define LUA_HAPP
 
 extern "C" {
 #include "lua.h"
@@ -6,4 +8,6 @@ extern "C" {
 #include "lualib.h"
 #include "luajit.h"
 }
+
+#endif
 

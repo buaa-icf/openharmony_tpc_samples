@@ -1,8 +1,3 @@
-/*
-** Standard library header.
-** Copyright (C) 2005-2017 Mike Pall. See Copyright Notice in luajit.h
-*/
-
 #ifndef _LUALIB_H
 #define _LUALIB_H
 

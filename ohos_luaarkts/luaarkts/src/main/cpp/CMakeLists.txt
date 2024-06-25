@@ -17,7 +17,7 @@ set(AKI_ROOT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../../oh_modules/@ohos/aki) # �
 set(CMAKE_MODULE_PATH ${AKI_ROOT_PATH})
 find_package(Aki REQUIRED)
 
-add_library(luaarkts SHARED napi_init.cpp napi_arkts.cpp napi_lua.cpp napi_common.cpp)
+add_library(luaarkts SHARED napi_init.cpp napi_arkts.cpp napi_lua.cpp)
 
 target_link_libraries(luaarkts PUBLIC Aki::libjsbind) # 链接二进制依赖 & 头文件
 target_link_libraries(luaarkts PUBLIC libace_napi.z.so)

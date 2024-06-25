@@ -21,9 +21,8 @@ extern "C" {
 #include <lualib.h>
 }
 
-extern lua_State *g_L;
-
 namespace Ohos_LuaArkts {
+extern lua_State *g_L;
 int luaopen_mLualib(lua_State *L);
 } // namespace Ohos_LuaArkts
 

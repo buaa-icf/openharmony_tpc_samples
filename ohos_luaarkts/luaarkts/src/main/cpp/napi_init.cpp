@@ -17,11 +17,9 @@
 #include <string>
 #include "napi/native_api.h"
 #include "napi_arkts.h"
-#include "napi_common.h"
-
 
 using namespace std;
-
+bool g_bLog = false;
 namespace Ohos_LuaArkts {
 // napi注册
 EXTERN_C_START
