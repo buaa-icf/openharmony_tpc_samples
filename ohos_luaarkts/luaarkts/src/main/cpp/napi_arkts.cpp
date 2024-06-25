@@ -23,65 +23,106 @@ using namespace std;
 namespace Ohos_LuaArkts {
 napi_env g_env;
 
-std::string TestHelloWorld(std::string msg)
-{
-    DLOGINFOVOID("testTag");
+std::string TestHelloWorld(std::string msg) {
+    if (g_bLog)
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag", "func=%{public}s,line=%{public}d,file=%{public}s", __FUNCTION__,
+                     __LINE__, GetFileName(__FILE__).c_str());
     return msg + " too.";
 }
 
-void SetLogShowState(bool bLogShowState)
-{
-    g_bLog = bLogShowState;
-}
+void SetLogShowState(bool bLogShowState) { g_bLog = bLogShowState; }
 
 void InitLuaEnv(std::string sPath)
 {
-    DLOGINFOVOID("testTag");
-    DLOGINFOCONTENT("testTag", "0.初始化InitLuaEnv接口");
+    if (g_bLog)
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag", "func=%{public}s,line=%{public}d,file=%{public}s", __FUNCTION__,
+                     __LINE__, GetFileName(__FILE__).c_str());
+    if (g_bLog)
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag",
+                     "0.初始化InitLuaEnv接口"
+                     ",func=%{public}s,line=%{public}d,file=%{public}s",
+                     __FUNCTION__, __LINE__, GetFileName(__FILE__).c_str());
+    if (g_bLog)
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag",
+                     "1.通过AKI接口获取env"
+                     ",func=%{public}s,line=%{public}d,file=%{public}s",
+                     __FUNCTION__, __LINE__, GetFileName(__FILE__).c_str());
 
-    DLOGINFOCONTENT("testTag", "1.通过AKI接口获取env");
     napi_env env = aki::JSBind::GetScopedEnv();
     g_env = env;
 
-    DLOGINFOCONTENT("testTag", "2.初始化lua虚拟机");
+    if (g_bLog)
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag",
+                     "2.初始化lua虚拟机"
+                     ",func=%{public}s,line=%{public}d,file=%{public}s",
+                     __FUNCTION__, __LINE__, GetFileName(__FILE__).c_str());
     // 1.创建Lua状态
     lua_State *L = luaL_newstate();
     if (L == NULL) {
-        DLOGINFOCONTENT("testTag", "lua虚拟机初始化失败");
+        if (g_bLog)
+            OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag",
+                         "lua虚拟机初始化失败"
+                         ",func=%{public}s,line=%{public}d,file=%{public}s",
+                         __FUNCTION__, __LINE__, GetFileName(__FILE__).c_str());
         return;
     }
-    DLOGINFOCONTENT("testTag", "3.保存lua虚拟机");
+    if (g_bLog)
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag",
+                     "3.保存lua虚拟机"
+                     ",func=%{public}s,line=%{public}d,file=%{public}s",
+                     __FUNCTION__, __LINE__, GetFileName(__FILE__).c_str());
     g_L = L;
 
-    DLOGINFOCONTENT("testTag", "4.载入lua虚拟机基础库");
+    if (g_bLog)
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag",
+                     "4.载入lua虚拟机基础库"
+                     ",func=%{public}s,line=%{public}d,file=%{public}s",
+                     __FUNCTION__, __LINE__, GetFileName(__FILE__).c_str());
     luaopen_base(L);
     luaL_openlibs(L);
 
-    DLOGINFOCONTENT("testTag", "5.c++向lua虚拟机注册接口");
+    if (g_bLog)
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag",
+                     "5.c++向lua虚拟机注册接口"
+                     ",func=%{public}s,line=%{public}d,file=%{public}s",
+                     __FUNCTION__, __LINE__, GetFileName(__FILE__).c_str());
     luaopen_mLualib(L);
-    
+
     DLOGINFO("testTag", "6.准备加载lua文件,获取参数lua沙箱地址=%{public}s", sPath.c_str());
     // 2.加载Lua文件
     int bRet = luaL_loadfile(L, sPath.c_str());
     if (bRet) {
-        DLOGINFOCONTENT("testTag", "读取lua文件失败");
+        if (g_bLog)
+            OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag",
+                         "读取lua文件失败"
+                         ",func=%{public}s,line=%{public}d,file=%{public}s",
+                         __FUNCTION__, __LINE__, GetFileName(__FILE__).c_str());
         return;
     }
 
-    DLOGINFOCONTENT("testTag", "7.c++开始运行lua入口文件");
+    if (g_bLog)
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag",
+                     "7.c++开始运行lua入口文件"
+                     ",func=%{public}s,line=%{public}d,file=%{public}s",
+                     __FUNCTION__, __LINE__, GetFileName(__FILE__).c_str());
     // 3.运行Lua文件
     bRet = lua_pcall(L, 0, 0, 0);
     if (bRet) {
-        DLOGINFOCONTENT("testTag", "接口调用失败");
+        if (g_bLog)
+            OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag",
+                         "接口调用失败"
+                         ",func=%{public}s,line=%{public}d,file=%{public}s",
+                         __FUNCTION__, __LINE__, GetFileName(__FILE__).c_str());
         return;
     }
 
     return;
 }
 
-napi_status LoadModule(string pathModuleTs, napi_value *pResult)
-{
-    DLOGINFOVOID("testTag");
+napi_status LoadModule(string pathModuleTs, napi_value *pResult) {
+    if (g_bLog)
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag", "func=%{public}s,line=%{public}d,file=%{public}s", __FUNCTION__,
+                     __LINE__, GetFileName(__FILE__).c_str());
     // 1. 使用napi_load_module加载Test文件中的模块
     return napi_load_module(g_env, pathModuleTs.c_str(), pResult);
 }
@@ -89,7 +130,9 @@ napi_status LoadModule(string pathModuleTs, napi_value *pResult)
 
 void T2lSetVarInt(string strVarInt, int32_t intValue)
 {
-    DLOGINFOVOID("testTag");
+    if (g_bLog)
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag", "func=%{public}s,line=%{public}d,file=%{public}s", __FUNCTION__,
+                     __LINE__, GetFileName(__FILE__).c_str());
 
     auto L = g_L; /* variable in Lua */
     lua_pushinteger(L, intValue);
@@ -98,7 +141,9 @@ void T2lSetVarInt(string strVarInt, int32_t intValue)
 
 void T2lSetVarLong(string strVarLong, int64_t longValue)
 {
-    DLOGINFOVOID("testTag");
+    if (g_bLog)
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag", "func=%{public}s,line=%{public}d,file=%{public}s", __FUNCTION__,
+                     __LINE__, GetFileName(__FILE__).c_str());
 
     auto L = g_L; /* variable in Lua */
     lua_pushinteger(L, longValue);
@@ -107,16 +152,20 @@ void T2lSetVarLong(string strVarLong, int64_t longValue)
 
 void T2lSetVarDouble(string strVarDouble, double doubleValue)
 {
-    DLOGINFOVOID("testTag");
+    if (g_bLog)
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag", "func=%{public}s,line=%{public}d,file=%{public}s", __FUNCTION__,
+                     __LINE__, GetFileName(__FILE__).c_str());
 
     auto L = g_L; /* variable in Lua */
     lua_pushnumber(L, doubleValue);
     lua_setglobal(L, strVarDouble.c_str());
 }
 
-void T2lSetVarChar(string strVarChar, const char* charValue)
+void T2lSetVarChar(string strVarChar, const char *charValue)
 {
-    DLOGINFOVOID("testTag");
+    if (g_bLog)
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag", "func=%{public}s,line=%{public}d,file=%{public}s", __FUNCTION__,
+                     __LINE__, GetFileName(__FILE__).c_str());
 
     auto L = g_L; /* variable in Lua */
     lua_pushstring(L, charValue);
@@ -125,7 +174,9 @@ void T2lSetVarChar(string strVarChar, const char* charValue)
 
 void T2lSetVarBool(string strVarBool, bool boolValue)
 {
-    DLOGINFOVOID("testTag");
+    if (g_bLog)
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag", "func=%{public}s,line=%{public}d,file=%{public}s", __FUNCTION__,
+                     __LINE__, GetFileName(__FILE__).c_str());
 
     auto L = g_L; /* variable in Lua */
     lua_pushboolean(L, boolValue);
@@ -134,43 +185,51 @@ void T2lSetVarBool(string strVarBool, bool boolValue)
 
 int T2lGetVarInt(string strVarInt)
 {
-    DLOGINFOVOID("testTag");
+    if (g_bLog)
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag", "func=%{public}s,line=%{public}d,file=%{public}s", __FUNCTION__,
+                     __LINE__, GetFileName(__FILE__).c_str());
 
     auto L = g_L; /* variable in Lua */
     // 4.读取变量
     lua_getglobal(L, strVarInt.c_str());
     auto result = lua_tointeger(L, -1);
-    
+
     return result;
 }
 
 int64_t T2lGetVarLong(string strVarLong)
 {
-    DLOGINFOVOID("testTag");
+    if (g_bLog)
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag", "func=%{public}s,line=%{public}d,file=%{public}s", __FUNCTION__,
+                     __LINE__, GetFileName(__FILE__).c_str());
 
     auto L = g_L; /* variable in Lua */
     // 4.读取变量
     lua_getglobal(L, strVarLong.c_str());
     int64_t result = lua_tonumber(L, -1);
-    
+
     return result;
 }
 
-double T2lGetVarDouble(string strVarDouble)
+double T2lGetVarDouble( string strVarDouble) 
 {
-    DLOGINFOVOID("testTag");
+    if (g_bLog)
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag", "func=%{public}s,line=%{public}d,file=%{public}s", __FUNCTION__,
+                     __LINE__, GetFileName(__FILE__).c_str());
 
     auto L = g_L; /* variable in Lua */
     // 4.读取变量
     lua_getglobal(L, strVarDouble.c_str());
     auto result = lua_tonumber(L, -1);
-    
+
     return result;
 }
 
-const char* T2lGetVarChar(string strVarChar)
+const char *T2lGetVarChar(string strVarChar)
 {
-    DLOGINFOVOID("testTag");
+    if (g_bLog)
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag", "func=%{public}s,line=%{public}d,file=%{public}s", __FUNCTION__,
+                     __LINE__, GetFileName(__FILE__).c_str());
 
     auto L = g_L; /* variable in Lua */
     // 4.读取变量
@@ -181,9 +240,11 @@ const char* T2lGetVarChar(string strVarChar)
     return result;
 }
 
-int T2lGetVarBool(string strVarBool)
+int T2lGetVarBool(string strVarBool) 
 {
-    DLOGINFOVOID("testTag");
+    if (g_bLog)
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag", "func=%{public}s,line=%{public}d,file=%{public}s", __FUNCTION__,
+                     __LINE__, GetFileName(__FILE__).c_str());
 
     auto L = g_L; /* variable in Lua */
     // 4.读取变量
@@ -196,7 +257,9 @@ int T2lGetVarBool(string strVarBool)
 
 void T2lSetTableInt(std::string tab, std::string field, int32_t intValue)
 {
-    DLOGINFOVOID("testTag");
+    if (g_bLog)
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag", "func=%{public}s,line=%{public}d,file=%{public}s", __FUNCTION__,
+                     __LINE__, GetFileName(__FILE__).c_str());
 
     auto L = g_L; /* variable in Lua */
     // 5.读取table
@@ -208,7 +271,9 @@ void T2lSetTableInt(std::string tab, std::string field, int32_t intValue)
 
 void T2lSetTableLong(std::string tab, std::string field, int64_t intValue)
 {
-    DLOGINFOVOID("testTag");
+    if (g_bLog)
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag", "func=%{public}s,line=%{public}d,file=%{public}s", __FUNCTION__,
+                     __LINE__, GetFileName(__FILE__).c_str());
 
     auto L = g_L; /* variable in Lua */
     // 5.读取table
@@ -220,7 +285,9 @@ void T2lSetTableLong(std::string tab, std::string field, int64_t intValue)
 
 void T2lSetTableDouble(std::string tab, std::string field, double intValue)
 {
-    DLOGINFOVOID("testTag");
+    if (g_bLog)
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag", "func=%{public}s,line=%{public}d,file=%{public}s", __FUNCTION__,
+                     __LINE__, GetFileName(__FILE__).c_str());
 
     auto L = g_L; /* variable in Lua */
     // 5.读取table
@@ -232,20 +299,24 @@ void T2lSetTableDouble(std::string tab, std::string field, double intValue)
 
 void T2lSetTableString(std::string tab, std::string field, std::string intValue)
 {
-    DLOGINFOVOID("testTag");
+    if (g_bLog)
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag", "func=%{public}s,line=%{public}d,file=%{public}s", __FUNCTION__,
+                     __LINE__, GetFileName(__FILE__).c_str());
 
     auto L = g_L; /* variable in Lua */
     // 5.读取table
     lua_getglobal(L, tab.c_str());
     lua_pushstring(L, intValue.c_str()); // 入栈
-    int parStackOne = -2; // 栈从-2开始
+    int parStackOne = -2;                // 栈从-2开始
     lua_setfield(L, parStackOne, field.c_str());
 }
 
-void T2lSetTableBool(std::string tab, std::string field, bool intValue)
+void T2lSetTableBool( std::string tab, std::string field, bool intValue) 
 {
-    DLOGINFOVOID("testTag");
-    
+    if (g_bLog)
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag", "func=%{public}s,line=%{public}d,file=%{public}s", __FUNCTION__,
+                     __LINE__, GetFileName(__FILE__).c_str());
+
     auto L = g_L; /* variable in Lua */
     // 5.读取table
     lua_getglobal(L, tab.c_str());
@@ -257,7 +328,9 @@ void T2lSetTableBool(std::string tab, std::string field, bool intValue)
 
 int T2lGetTableInt(string strTableName, string strVarInt)
 {
-    DLOGINFOVOID("testTag");
+    if (g_bLog)
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag", "func=%{public}s,line=%{public}d,file=%{public}s", __FUNCTION__,
+                     __LINE__, GetFileName(__FILE__).c_str());
 
     auto L = g_L; /* variable in Lua */
     // 5.读取table
@@ -270,7 +343,9 @@ int T2lGetTableInt(string strTableName, string strVarInt)
 
 int64_t T2lGetTableLong(string strTableName, string strVarLong)
 {
-    DLOGINFOVOID("testTag");
+    if (g_bLog)
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag", "func=%{public}s,line=%{public}d,file=%{public}s", __FUNCTION__,
+                     __LINE__, GetFileName(__FILE__).c_str());
 
     auto L = g_L; /* variable in Lua */
     // 5.读取table
@@ -283,7 +358,9 @@ int64_t T2lGetTableLong(string strTableName, string strVarLong)
 
 double T2lGetTableDouble(string strTableName, string strVarDouble)
 {
-    DLOGINFOVOID("testTag");
+    if (g_bLog)
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag", "func=%{public}s,line=%{public}d,file=%{public}s", __FUNCTION__,
+                     __LINE__, GetFileName(__FILE__).c_str());
 
     auto L = g_L; /* variable in Lua */
     // 5.读取table
@@ -294,9 +371,11 @@ double T2lGetTableDouble(string strTableName, string strVarDouble)
     return valDouble;
 }
 
-const char* T2lGetTableChar(string strTableName, string strVarChar)
+const char *T2lGetTableChar(string strTableName, string strVarChar)
 {
-    DLOGINFOVOID("testTag");
+    if (g_bLog)
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag", "func=%{public}s,line=%{public}d,file=%{public}s", __FUNCTION__,
+                     __LINE__, GetFileName(__FILE__).c_str());
 
     auto L = g_L; /* variable in Lua */
     // 5.读取table
@@ -310,7 +389,9 @@ const char* T2lGetTableChar(string strTableName, string strVarChar)
 
 int T2lGetTableBool(string strTableName, string strVarBool)
 {
-    DLOGINFOVOID("testTag");
+    if (g_bLog)
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag", "func=%{public}s,line=%{public}d,file=%{public}s", __FUNCTION__,
+                     __LINE__, GetFileName(__FILE__).c_str());
 
     auto L = g_L; /* variable in Lua */
     // 5.读取table
@@ -322,9 +403,10 @@ int T2lGetTableBool(string strTableName, string strVarBool)
     return valBool;
 }
 
-napi_value TestNAPI(napi_env env, napi_callback_info info)
-{
-    DLOGINFOVOID("testTag");
+napi_value TestNAPI(napi_env env, napi_callback_info info) {
+    if (g_bLog)
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag", "func=%{public}s,line=%{public}d,file=%{public}s", __FUNCTION__,
+                     __LINE__, GetFileName(__FILE__).c_str());
 
     size_t requireArgc = 2;
     size_t argc = 2;
@@ -352,7 +434,9 @@ napi_value TestNAPI(napi_env env, napi_callback_info info)
 
 napi_value T2lCallFunction(napi_env env, napi_callback_info info)
 {
-    DLOGINFOVOID("testTag");
+    if (g_bLog)
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag", "func=%{public}s,line=%{public}d,file=%{public}s", __FUNCTION__,
+                     __LINE__, GetFileName(__FILE__).c_str());
 
     auto L = g_L; /* variable in Lua */
     size_t argc = 0;
@@ -362,24 +446,28 @@ napi_value T2lCallFunction(napi_env env, napi_callback_info info)
     napi_get_cb_info(env, info, &argc, argv, nullptr, nullptr);
 
     string strFunc = "";
-    if (argc==0) {
+    if (argc == 0) {
         DLOGINFO("testTag", "参数个数不能为0,第一个参数必须是函数名=%{public}d", (int)argc);
         return nullptr;
     }
-    
+
     char buf[512] = {0};
     size_t sizeBuff = sizeof(buf);
     size_t result = 0;
     auto status = napi_get_value_string_utf8(env, argv[0], buf, sizeBuff, &result);
     DLOGINFO("testTag", "获取函数名结果status=%{public}d", status);
     strFunc = std::string(buf);
-    if (strFunc=="") {
-        DLOGINFOCONTENT("testTag", "t2lCallFunction失败,函数名为空");
+    if (strFunc == "") {
+        if (g_bLog)
+            OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag",
+                         "t2lCallFunction失败,函数名为空"
+                         ",func=%{public}s,line=%{public}d,file=%{public}s",
+                         __FUNCTION__, __LINE__, GetFileName(__FILE__).c_str());
         return nullptr;
     }
     DLOGINFO("testTag", "准备调用的接口名=%{public}s", strFunc.c_str());
     lua_getglobal(L, strFunc.c_str()); // 获取函数，压入栈中
-    
+
     // 开始压入参数
     for (int i = 1; i < argc; i++) {
         auto it = argv[i];
@@ -394,45 +482,65 @@ napi_value T2lCallFunction(napi_env env, napi_callback_info info)
                 bool resultBool;
                 napi_get_value_bool(g_env, it, &resultBool);
                 lua_pushboolean(L, resultBool);
-                DLOGINFOCONTENT("testTag", "压入bool");
-            }
-                break;
+                if (g_bLog)
+                    OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag",
+                                 "压入bool"
+                                 ",func=%{public}s,line=%{public}d,file=%{public}s",
+                                 __FUNCTION__, __LINE__, GetFileName(__FILE__).c_str());
+            } break;
             case napi_number: {
                 int resultInt;
                 napi_get_value_int32(g_env, it, &resultInt);
                 lua_pushinteger(L, resultInt);
-                DLOGINFOCONTENT("testTag", "压入int");
-            }
-                break;
+                if (g_bLog)
+                    OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag",
+                                 "压入int"
+                                 ",func=%{public}s,line=%{public}d,file=%{public}s",
+                                 __FUNCTION__, __LINE__, GetFileName(__FILE__).c_str());
+            } break;
             case napi_string: {
                 char tmpChar[2048];
                 size_t size = sizeof(tmpChar);
                 napi_get_value_string_utf8(g_env, it, tmpChar, size, &size);
-                DLOGINFOCONTENT("testTag", "压入string");
-            }
-                break;
+                if (g_bLog)
+                    OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag",
+                                 "压入string"
+                                 ",func=%{public}s,line=%{public}d,file=%{public}s",
+                                 __FUNCTION__, __LINE__, GetFileName(__FILE__).c_str());
+            } break;
             case napi_bigint: {
                 int64_t resultInt;
                 napi_get_value_int64(g_env, it, &resultInt);
                 lua_pushnumber(L, resultInt);
-                DLOGINFOCONTENT("testTag", "压入int64");
-            }
-                break;
+                if (g_bLog)
+                    OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag",
+                                 "压入int64"
+                                 ",func=%{public}s,line=%{public}d,file=%{public}s",
+                                 __FUNCTION__, __LINE__, GetFileName(__FILE__).c_str());
+            } break;
             default: {
                 DLOGINFO("testTag", "不支持的类型=%{public}d", resultType);
+            } break;
             }
-                break;
-        }
     }
-    
-    int iRet = lua_pcall(L, argc-1, 1, 0); // 调用函数，调用完成以后，会将返回值压入栈中，2表示参数个数，1表示返回结果个数。
+
+    int iRet =
+        lua_pcall(L, argc - 1, 1, 0); // 调用函数，调用完成以后，会将返回值压入栈中，2表示参数个数，1表示返回结果个数。
     if (iRet) {
-        DLOGINFOCONTENT("testTag", "调用lua失败");
+        if (g_bLog)
+            OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag",
+                         "调用lua失败"
+                         ",func=%{public}s,line=%{public}d,file=%{public}s",
+                         __FUNCTION__, __LINE__, GetFileName(__FILE__).c_str());
         const char *pErrorMsg = lua_tostring(L, -1);
         DLOGINFO("testTag", "str=%{public}s", pErrorMsg);
     } else {
         napi_value result = nullptr;
-        DLOGINFOCONTENT("testTag", "调用lua成功");
+        if (g_bLog)
+            OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag",
+                         "调用lua成功"
+                         ",func=%{public}s,line=%{public}d,file=%{public}s",
+                         __FUNCTION__, __LINE__, GetFileName(__FILE__).c_str());
         if (lua_isnumber(L, -1)) {
             int value = lua_tointeger(L, -1); // 将堆栈顶部的值转换为数字
 
@@ -445,7 +553,11 @@ napi_value T2lCallFunction(napi_env env, napi_callback_info info)
             status = napi_create_string_utf8(g_env, value.c_str(), value.size(), &result);
             DLOGINFO("testTag", "状态,结果=%{public}d", status);
         } else {
-            DLOGINFOCONTENT("testTag", "无参数或不不支持参数,直接返回");
+            if (g_bLog)
+                OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag",
+                             "无参数或不不支持参数,直接返回"
+                             ",func=%{public}s,line=%{public}d,file=%{public}s",
+                             __FUNCTION__, __LINE__, GetFileName(__FILE__).c_str());
             return nullptr;
         }
         return result;

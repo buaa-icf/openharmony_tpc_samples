@@ -36,11 +36,7 @@ export interface ImageProperty {
 }
 
 export function C2tCallBack(a:number, s:string, b:number, callbackFuncLua: string): number {
-  console.log(`testTag -- 收到lua请求,C2tCallBack1`);
   let tmpFunc =():Promise<string>=>{return new Promise((resolve) => {
-    console.log(`
-    , Promise1`);
-    console.log(`testTag -- 测试不同类型打印,s1=, ${s}`);
     let c = a + b
     harNAPI.T2lCallFunction(callbackFuncLua);
   });
@@ -53,28 +49,22 @@ export function C2tCallBack(a:number, s:string, b:number, callbackFuncLua: strin
 
 export function C2tCallBack2(a:number, s:string, b:number, callbackFuncLua: string): Promise<string> {
   return new Promise((resolve) => {
-    console.log(`testTag -- 收到lua请求,C2tCallBack, Promise`);
-    console.log(`testTag -- 测试不同类型打印,s=, ${s}`);
     let c = a + b
     harNAPI.T2lCallFunction(callbackFuncLua, c);
     resolve("testTag -- Promis返回");
-    // reject("rejuect 11111");
   });
 }
 
 export function testNumberAdd(number:number){
-  console.log('testTag -- testNumberAdd');
   return number+1
 }
 
 
 export function factoryGameControl(): gameControl {
-  console.log('testTag -- 前端返回gameControl');
   return gameControl.Instance;
 }
 
 export function drawImage(): void {
-  console.log('testTag -- 前端 绘制基本图片');
   const gameControl: gameControl = factoryGameControl();
   gameControl.initBackgroundImage("/common/assets/bg_3.jpg")
   gameControl.addDrawText({
@@ -119,13 +109,11 @@ export class gameControl {
 
   // 创建背景图片
   initBackgroundImage(img: string): void {
-    console.log('testTag -- 前端  创建背景图片')
     this.context.drawImage(new ImageBitmap(img), 0, 0, this.canvasWidth, this.canvasHeight)
   }
 
   // 清除画布
   clearImage(): void {
-    console.log('testTag -- 前端  清除画布')
     this.context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
     this.initBackgroundImage(this.bgImages);
     this.drawText();
@@ -134,17 +122,12 @@ export class gameControl {
 
   // 新增fillText
   addDrawText(textDetails: textFillProperty): void {
-    console.log('testTag -- 前端  新增fillText')
-    // if (!textDetails) {
-    //   throw new Error('请输入需要绘制的文本信息！')
-    // }
     this.textArray.push(textDetails);
     this.drawText();
   }
 
   // 绘制filltext
   drawText(): void {
-    console.log('testTag -- 前端  绘制filltext')
     if (!this.textArray.length) {
       return
     }
@@ -165,10 +148,6 @@ export class gameControl {
 
   // 删除filltext
   delDrawText(textDetails: textFillProperty): void {
-    console.log('testTag -- 前端  删除filltext')
-    // if (!textDetails) {
-    //   throw new Error('请输入需要清除的文本信息！')
-    // }
     this.textArray = this.textArray.filter(item => {
       return JSON.stringify(item) !== JSON.stringify(textDetails)
     })
@@ -177,10 +156,6 @@ export class gameControl {
 
   // 绘制image
   drawImage(): void {
-    console.log('testTag -- 前端  绘制image')
-    // if (!this.imageArray.length) {
-    //   throw new Error('请输入需要绘制的图片信息！')
-    // }
     // 绘制图片
     this.imageArray.forEach(image => {
       this.context.drawImage(image.image, image.dx, image.dy, image.dw, image.dh)
@@ -189,7 +164,6 @@ export class gameControl {
 
   // 新增Image
   addDrawImage(image: ImageBitmap | PixelMap, dx: number, dy: number, dw: number, dh: number): void {
-    console.log('testTag -- 前端  新增Image')
     if (!image || !dx || !dy || !dw || !dh) {
       throw new Error('请输入需要绘制的图片信息！')
     }
@@ -205,7 +179,6 @@ export class gameControl {
 
   // 删除DrawImage
   delDrawImage(image: ImageBitmap | PixelMap, dx: number, dy: number, dw: number, dh: number): void {
-    console.log('testTag -- 前端  删除DrawImage')
     const imageDetails: ImageProperty = {
       image,
       dx,
@@ -213,9 +186,6 @@ export class gameControl {
       dw,
       dh
     }
-    // if (!imageDetails) {
-    //   throw new Error('请输入需要清除的文本信息！')
-    // }
     this.imageArray = this.imageArray.filter(item => {
       return JSON.stringify(item) !== JSON.stringify(imageDetails)
     })
