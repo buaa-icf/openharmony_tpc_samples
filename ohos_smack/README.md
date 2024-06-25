@@ -12,6 +12,11 @@ ohpm install @ohos/smack
 OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
 
+## X86模拟器配置
+
+[使用模拟器运行应用/服务](https://developer.huawei.com/consumer/cn/deveco-developer-suite/enabling/kit?currentPage=1&pageSize=100)
+
+
 ## 使用说明
 
 1. 创建后台服务
