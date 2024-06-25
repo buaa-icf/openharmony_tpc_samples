@@ -211,7 +211,7 @@ int64_t T2lGetVarLong(string strVarLong)
     return result;
 }
 
-double T2lGetVarDouble( string strVarDouble) 
+double T2lGetVarDouble(string strVarDouble) 
 {
     if (g_bLog)
         OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag", "func=%{public}s,line=%{public}d,file=%{public}s", __FUNCTION__,
@@ -240,7 +240,7 @@ const char *T2lGetVarChar(string strVarChar)
     return result;
 }
 
-int T2lGetVarBool(string strVarBool) 
+int T2lGetVarBool(string strVarBool)
 {
     if (g_bLog)
         OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag", "func=%{public}s,line=%{public}d,file=%{public}s", __FUNCTION__,
@@ -311,7 +311,7 @@ void T2lSetTableString(std::string tab, std::string field, std::string intValue)
     lua_setfield(L, parStackOne, field.c_str());
 }
 
-void T2lSetTableBool(std::string tab,std::string field,bool intValue)
+void T2lSetTableBool(std::string tab, std::string field, bool intValue)
 {
     if (g_bLog)
         OH_LOG_Print(LOG_APP, LOG_INFO, 0, "testTag", "func=%{public}s,line=%{public}d,file=%{public}s", __FUNCTION__,
