@@ -46,7 +46,7 @@ static napi_value Add(napi_env env, napi_callback_info info)
 }
 
 EXTERN_C_START
-static napi_value Init(napi_env env, napi_value exports) 
+static napi_value Init(napi_env env, napi_value exports)
 {
     napi_property_descriptor desc[] = {
         { "Add", nullptr, Add, nullptr, nullptr, nullptr, napi_default, nullptr }
