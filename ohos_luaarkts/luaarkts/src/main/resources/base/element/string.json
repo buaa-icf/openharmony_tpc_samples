@@ -1,16 +1,8 @@
 {
   "string": [
     {
-      "name": "module_desc",
-      "value": "module description"
-    },
-    {
-      "name": "LuaarktsAbility_desc",
+      "name": "shared_desc",
       "value": "description"
-    },
-    {
-      "name": "LuaarktsAbility_label",
-      "value": "label"
     }
   ]
 }

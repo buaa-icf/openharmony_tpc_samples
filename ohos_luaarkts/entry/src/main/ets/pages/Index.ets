@@ -13,21 +13,69 @@
  * limitations under the License.
  */
 
+import { hilog } from '@kit.PerformanceAnalysisKit';
+import {SetLogShowState, init, UnitTest} from '@ohos/luaarkts';
+
+//运行模式
+enum EnumRunMode{
+  eRunRelease,
+  eRunUnitTest,
+}
+
 @Entry
 @Component
 struct Index {
-  @State message: string = 'Hello World';
+  private runMode:EnumRunMode = EnumRunMode.eRunUnitTest;
+  private settings: RenderingContextSettings = new RenderingContextSettings(true);
+  private context: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.settings);
+  @State canvasHeight: number = 0;
+  @State canvasWidth: number = 0;
 
   build() {
-    Row() {
-      Column() {
-        Text(this.message)
-          .fontSize(50)
-          .fontWeight(FontWeight.Bold)
-          .onClick(() => {
+    Stack() {
+      Row() {
+        Canvas(this.context)
+          .width(this.canvasWidth)
+          .height(this.canvasHeight)
+          .onReady(() => {
+            //获取lua入口文件
+            let content = getContext(this);
+
+            if(this.runMode == EnumRunMode.eRunRelease)
+            {
+              let filePath = content.resourceDir + "/main.lua";
+              hilog.info(0x0000, 'testTag', '1.获取lua入口文件沙箱地址,path=%{public}s', filePath);
+
+              //调用har包初始化接口
+              hilog.info(0x0000, 'testTag', '2.准备调用har包init初始化接口');
+              SetLogShowState(false);
+              init(this.context, this.canvasWidth, this.canvasHeight, filePath);
+
+              hilog.info(0x0000, 'testTag', 'end.完成初始化');
+            }else{
+              //测试本地napi接口
+              let filePath = content.resourceDir + "/unitTest.lua";
+              hilog.info(0x0000, 'testTag', '1.获取lua入口文件沙箱地址,path=%{public}s', filePath);
+
+              //调用har包初始化接口
+              hilog.info(0x0000, 'testTag', '2.准备调用har包UnitTest初始化接口');
+              SetLogShowState(false);
+              UnitTest(this.context, this.canvasWidth, this.canvasHeight, filePath);
+
+              hilog.info(0x0000, 'testTag', 'end.完成所有测试');
+            }
+
+          })
+          .onTouch((event: TouchEvent) => {
+
           })
       }
-      .width('100%')
+      .onAreaChange((oldValue: Area, newValue: Area) => {
+        this.canvasWidth = Number(newValue.width).valueOf()
+        this.canvasHeight = Number(newValue.height).valueOf()
+      })
+      .width("100%")
+      .height("100%")
     }
     .height('100%')
   }

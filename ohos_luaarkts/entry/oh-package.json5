@@ -6,6 +6,9 @@
   "author": "",
   "license": "",
   "dependencies": {
-    "libentry.so": "file:./src/main/cpp/types/libentry"
-  }
+    "libentry.so": "file:./src/main/cpp/types/libentry",
+    "@ohos/luaarkts": "file:../luaarkts"
+  },
+  "devDependencies": {},
+  "dynamicDependencies": {}
 }

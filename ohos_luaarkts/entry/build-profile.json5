@@ -4,30 +4,9 @@
     "externalNativeOptions": {
       "path": "./src/main/cpp/CMakeLists.txt",
       "arguments": "",
-      "cppFlags": "",
-    }
-  },
-  "buildOptionSet": [
-    {
-      "name": "release",
-      "arkOptions": {
-        "obfuscation": {
-          "ruleOptions": {
-            "enable": true,
-            "files": [
-              "./obfuscation-rules.txt"
-            ]
-          }
-        }
-      },
-      "nativeLib": {
-        "debugSymbol": {
-          "strip": true,
-          "exclude": []
-        }
-      }
+      "cppFlags": ""
     },
-  ],
+  },
   "targets": [
     {
       "name": "default"
