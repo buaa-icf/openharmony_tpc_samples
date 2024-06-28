@@ -1,13 +1,14 @@
 {
-  "name": "ohos_luaarkts",
+  "name": "@ohos/luaarkts",
   "version": "1.0.0",
-  "description": "Please describe the basic information.",
+  "description": "Implement the ability to access Lua scripts and TS scripts through LuaJIT and NAPI, and simplify C++and Arkts\
+    development through the AKI library",
   "main": "",
-  "author": "",
-  "license": "",
+  "author": "ohos_tpc",
+  "license": "Apache-2.0",
   "dependencies": {
     "@ohos/hypium": "1.0.17",
     "@ohos/hamock": "1.0.0"
   },
-  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/ohos_luaarkts.git"
+  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/ohos_luaarkts"
 }
