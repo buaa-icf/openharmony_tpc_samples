@@ -23,6 +23,7 @@ import { CacheListener, HttpProxyCacheServer, HttpProxyCacheServerBuilder } from
 import GlobalProxyServer from '../GlobalProxyServer';
 import fs from '@ohos.file.fs';
 import promptAction from '@ohos.promptAction';
+import photoAccessHelper from '@ohos.file.photoAccessHelper';
 
 const TAG: string = 'MediaDemo HttpPlayer:';
 
@@ -263,7 +264,7 @@ struct DiyCacheCountPage {
   }
 
   // 播放文件打开函数
-  async openMediaFile(fileName: string): Promise<mediaLibrary.FileAsset> {
+  async openMediaFile(fileName: string): Promise<photoAccessHelper.PhotoAsset> {
     let fileAsset = await this.mediaLibUtils.findFile('0', fileName);
     return fileAsset;
   }

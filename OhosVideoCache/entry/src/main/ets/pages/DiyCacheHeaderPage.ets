@@ -23,6 +23,7 @@ import { CacheListener, HeaderInjector, HttpProxyCacheServer, HttpProxyCacheServ
 import GlobalProxyServer from '../GlobalProxyServer';
 import fs from '@ohos.file.fs';
 import HashMap from '@ohos.util.HashMap';
+import photoAccessHelper from '@ohos.file.photoAccessHelper';
 
 const TAG: string = 'MediaDemo HttpPlayer:';
 
@@ -292,7 +293,7 @@ struct DiyCacheHeaderPage {
   }
 
   // 播放文件打开函数
-  async openMediaFile(fileName: string): Promise<mediaLibrary.FileAsset> {
+  async openMediaFile(fileName: string): Promise<photoAccessHelper.PhotoAsset> {
     let fileAsset = await this.mediaLibUtils.findFile('0', fileName);
     return fileAsset;
   }
