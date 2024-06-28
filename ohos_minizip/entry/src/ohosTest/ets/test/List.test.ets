@@ -16,5 +16,5 @@
 import miniZipTest from './minizip.test'
 
 export default function testsuite() {
-  miniZipTest
+  miniZipTest()
 }
