@@ -18,13 +18,13 @@ import { MinizipNative, unzipToDirectory } from '@ohos/minizip'
 import { GlobalContext } from './globalThis'
 
 export default function miniZipTest() {
-  let gloContext: Context = GlobalContext.getContext().getObject("context") as Context
-  let filesDir : string = gloContext.createModuleContext('entry_test').filesDir
+  let filesDir : string = ""
   describe('miniZipTestTest', () => {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
     beforeAll(() => {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
+      let gloContext: Context = GlobalContext.getContext().getObject("context") as Context
       filesDir = gloContext.createModuleContext('entry_test').filesDir
     })
     beforeEach(() => {
@@ -56,7 +56,7 @@ export default function miniZipTest() {
       }
     })
 
-    it('MinizipNative', 0, async () => {
+    it('unzipToDirectory', 0, async () => {
       let selectFilePath : string = filesDir + '/test.zip'
       let targetPath: string = filesDir + "/target"
       let password: string = "123456"

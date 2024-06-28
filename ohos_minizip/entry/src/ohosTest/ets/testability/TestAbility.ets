@@ -53,11 +53,11 @@ export default class TestAbility extends UIAbility {
     let contextTest = this.context.createModuleContext('entry_test')
     GlobalContext.getContext().setObject("context", this.context)
     let fileDir: string = contextTest.filesDir
-    contextTest.resourceManager.getRawFile("ca.crt", (error, value) => {
+    contextTest.resourceManager.getRawFile("test.zip", (error, value) => {
       if (error != null) {
         return;
       }
-      let filePath = fileDir + "/" + "ca.crt"
+      let filePath = fileDir + "/" + "test.zip"
       let file = fs.openSync(filePath, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
       let writeLen = fs.writeSync(file.fd, value.buffer);
     })
