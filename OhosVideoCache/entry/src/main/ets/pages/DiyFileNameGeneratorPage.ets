@@ -22,6 +22,7 @@ import audio from '@ohos.multimedia.audio';
 import { CacheListener, FileNameGenerator, HttpProxyCacheServer, HttpProxyCacheServerBuilder } from '@ohos/video-cache';
 import fs from '@ohos.file.fs';
 import GlobalProxyServer from '../GlobalProxyServer';
+import photoAccessHelper from '@ohos.file.photoAccessHelper';
 
 const TAG: string = 'MediaDemo HttpPlayer:';
 
@@ -290,7 +291,7 @@ struct DiyFileNameGeneratorPage {
   }
 
   // 播放文件打开函数
-  async openMediaFile(fileName: string): Promise<mediaLibrary.FileAsset> {
+  async openMediaFile(fileName: string): Promise<photoAccessHelper.PhotoAsset> {
     let fileAsset = await this.mediaLibUtils.findFile('0', fileName);
     return fileAsset;
   }

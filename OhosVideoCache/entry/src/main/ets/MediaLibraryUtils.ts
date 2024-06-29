@@ -17,6 +17,8 @@ import mediaLibrary from '@ohos.multimedia.mediaLibrary';
 import media from '@ohos.multimedia.media';
 import common from '@ohos.app.ability.common';
 import Logger from './Logger';
+import photoAccessHelper from '@ohos.file.photoAccessHelper';
+import dataSharePredicates from '@ohos.data.dataSharePredicates';
 
 const TAG = 'MediaDemo MediaLibraryUtils:';
 const MS_TIME: number = 1000;
@@ -26,20 +28,21 @@ const TEN_NUMBER: number = 10;
 export default class MediaLibraryUtils {
   // @ts-ignore
   private context = getContext(this) as common.UIAbilityContext;
-  private mediaLib: mediaLibrary.MediaLibrary = mediaLibrary.getMediaLibrary(this.context);
-
+  private phAccessHelper = photoAccessHelper.getPhotoAccessHelper(this.context);
   // 根据文件id查寻文件对象
-  async findFile(uri: string, displayName: string): Promise<mediaLibrary.FileAsset> {
-    let fileKeyObj = mediaLibrary.FileKey;
-    const args = displayName.toString();
-    const fetchOp = {
-      selections: fileKeyObj.DISPLAY_NAME + '= ?',
-      selectionArgs: [args],
+  async findFile(uri: string, displayName: string): Promise<photoAccessHelper.PhotoAsset> {
+    let predicates: dataSharePredicates.DataSharePredicates = new dataSharePredicates.DataSharePredicates();
+    predicates.equalTo(photoAccessHelper.PhotoKeys.DISPLAY_NAME, displayName);
+
+    const fetchOptions: photoAccessHelper.FetchOptions  = {
+      fetchColumns: [],
+      predicates: predicates
     };
-    const fetchFileResult = await this.mediaLib.getFileAssets(fetchOp);
-    let fileAsset: mediaLibrary.FileAsset;
-    if (fetchFileResult.getCount() > 0) {
-      fileAsset = await fetchFileResult.getFirstObject();
+    let fetchResult: photoAccessHelper.FetchResult<photoAccessHelper.PhotoAsset> = await this.phAccessHelper.getAssets(fetchOptions);
+    let fileAsset:photoAccessHelper.PhotoAsset;
+    fileAsset = await fetchResult.getFirstObject();
+    if (fetchResult.getCount() > 0) {
+      fileAsset = await fetchResult.getFirstObject();
     }
     return fileAsset;
   }
