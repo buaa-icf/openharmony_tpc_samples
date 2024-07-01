@@ -85,10 +85,10 @@ export class IjkPlayerControl extends BaseVideoPlayer {
     }
   }
 
-  setContext(context: object): void {
-    super.setContext(context);
+  setContext(context: object,id:string): void {
+    super.setContext(context,id);
     if (this.mIjkMediaPlayer) {
-      this.mIjkMediaPlayer.setContext(this.context);
+      this.mIjkMediaPlayer.setContext(this.context,id);
     }
   }
 
@@ -98,7 +98,7 @@ export class IjkPlayerControl extends BaseVideoPlayer {
 
       // 设置当前context，如果是放在list场景中，这个操作可以解决list错乱问题
       // 单例的ijk播放器，切换Context就可以锁定选择的Xcomponent
-      this.mIjkMediaPlayer.setContext(this.context);
+      this.mIjkMediaPlayer.setContext(this.context,this.xComponentId);
       this.mIjkMediaPlayer.reset();
       GlobalContext.getContext().setObject('xid', this.xComponentId);
       GlobalContext.getContext().setObject('currentPlayer', this);

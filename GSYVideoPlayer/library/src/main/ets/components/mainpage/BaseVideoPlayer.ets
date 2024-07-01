@@ -132,8 +132,11 @@ export abstract class BaseVideoPlayer implements IVideoPlayer {
     return false;
   }
 
-  setContext(context: object): void {
+  setContext(context: object,id?:string): void {
     this.context = context;
+    if (id) {
+      this.xComponentId=id
+    }
   }
 
   setOnPlayingListener(onPlayingListener: () => void): void {

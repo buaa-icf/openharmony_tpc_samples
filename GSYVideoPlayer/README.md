@@ -196,7 +196,7 @@ Button("stopGif").onClick(() => {
 
 在下述版本验证通过：
 
-DevEco Studio: 4.0 (4.0.3.513), SDK: API10 (4.0.10.10)
+DevEco Studio:NEXT Developer Beta1(5.0.3.326), SDK: API12 (5.0.0.25)
 
 ## 目录结构
 

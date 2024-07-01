@@ -47,7 +47,7 @@ export struct IjkVideoPlayer {
     LogUtils.getInstance().LOGI("initDelayPlay create IjkPlayerControl videoId: " + this.videoId);
     LogUtils.getInstance().LOGI("initDelayPlay create IjkPlayerControl xComponentId: " + this.xComponentId);
     this.mIVideoPlayer = new IjkPlayerControl();
-    this.mIVideoPlayer.setContext(context);
+    this.mIVideoPlayer.setContext(context,this.xComponentId);
     this.mIVideoPlayer.setVideoId(this.videoId);
     this.mIVideoPlayer.setXComponentId(this.xComponentId);
     this.videoInit(this.mIVideoPlayer, this.xComponentId);
