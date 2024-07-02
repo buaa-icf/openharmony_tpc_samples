@@ -24,10 +24,10 @@ import {
 struct SimpleList {
   @State screenHeight: string = '30%';
   private videoModels: Array<StandardGSYVideoModel> = [];
-  private items: Array<string> = ['http://1251017968.vod2.myqcloud.com/3eb04eefvodtransgzp1251017968/8782b1285285890810009576163/v.f30.mp4', 'http://video.chinanews.com/flv/2019/04/23/400/111773_web.mp4',
-    'http://1251017968.vod2.myqcloud.com/3eb04eefvodtransgzp1251017968/8782b1285285890810009576163/v.f30.mp4', 'http://video.chinanews.com/flv/2019/04/23/400/111773_web.mp4',
-    'http://1251017968.vod2.myqcloud.com/3eb04eefvodtransgzp1251017968/8782b1285285890810009576163/v.f30.mp4', 'http://video.chinanews.com/flv/2019/04/23/400/111773_web.mp4',
-    'http://1251017968.vod2.myqcloud.com/3eb04eefvodtransgzp1251017968/8782b1285285890810009576163/v.f30.mp4', 'http://video.chinanews.com/flv/2019/04/23/400/111773_web.mp4']
+  private items: Array<string> = ['http://1251017968.vod2.myqcloud.com/3eb04eefvodtransgzp1251017968/8782b1285285890810009576163/v.f30.mp4', 'http://1251017968.vod2.myqcloud.com/3eb04eefvodtransgzp1251017968/8782b1285285890810009576163/v.f30.mp4',
+    'http://1251017968.vod2.myqcloud.com/3eb04eefvodtransgzp1251017968/8782b1285285890810009576163/v.f30.mp4', 'http://1251017968.vod2.myqcloud.com/3eb04eefvodtransgzp1251017968/8782b1285285890810009576163/v.f30.mp4',
+    'http://1251017968.vod2.myqcloud.com/3eb04eefvodtransgzp1251017968/8782b1285285890810009576163/v.f30.mp4', 'http://1251017968.vod2.myqcloud.com/3eb04eefvodtransgzp1251017968/8782b1285285890810009576163/v.f30.mp4',
+    'http://1251017968.vod2.myqcloud.com/3eb04eefvodtransgzp1251017968/8782b1285285890810009576163/v.f30.mp4', 'http://1251017968.vod2.myqcloud.com/3eb04eefvodtransgzp1251017968/8782b1285285890810009576163/v.f30.mp4']
 
   build() {
     List({ space: 3 }) {
