@@ -16,7 +16,7 @@ import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from
 import { pinyin } from 'pinyin-pro'
 
 export default function vTest() {
-  describe('v',() => {
+  describe('ccc',() => {
     it('v_no_v', 0,() => {
       const result1 = pinyin('吕布');
       expect(result1).assertEqual('lǚ bù');
