@@ -214,6 +214,7 @@
                 <filteritem type="filepath" name="metadata-extractor/resources/.*" desc="测试文件"/>
 				<filteritem type="filepath" name="epublib/entry/src/main/resources/rawfile/.*" desc="测试文件"/>
                 <filteritem type="filepath" name="jackrabbit/LICENSE"  desc="原开源项目的LICENSE，不手动修改"/>
+                <filteritem type="filepath" name="socketio/socketio服务搭建.pdf" desc="服务搭建文件，无需检查"/>
                 <filteritem type="filepath" name="parserHtmlJsonDemo/demo.gif" desc="演示效果动图，用于readme展示，无需检查"/>
                 <filteritem type="filepath" name="apng/APNG.gif" desc="演示效果动图，用于readme展示，无需检查"/>
 <filteritem type="filepath" name="ohos_luaarkts/entry/src/main/ets/common/assets/bg_3.jpg" desc="演示效果动图，用于readme展示，无需检查"/>
