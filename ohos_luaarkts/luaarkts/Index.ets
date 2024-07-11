@@ -15,3 +15,4 @@
 export { init, SetLogShowState } from './src/main/ets/utils/main'
 export { UnitTest } from './src/main/ets/utils/unitTest'
 export {value, test, valueLong, valueChar, valueDouble, valueBool , CClassTest} from './src/main/ets/test/TestTs'
+export * as harNAPI from 'libluaarkts.so'
