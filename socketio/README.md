@@ -140,11 +140,11 @@ set_socket_close_listener(on_socket_close: (nsp: string) => void)
 ```typescript
 connect(uri: string)
 ```
-- 清楚所有监听器
+- 清除所有监听器
 ```typescript
 clear_con_listeners()
 ```
-- 清楚所有socket监听器
+- 清除所有socket监听器
 ```typescript
 clear_socket_listeners()
 ```
