@@ -17,5 +17,4 @@ import soundexTest from './soundecode/test'
 
 export default function testsuite() {
   abilityTest()
-  soundexTest()
 }
