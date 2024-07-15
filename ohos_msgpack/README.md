@@ -2,6 +2,7 @@
 
 ## 简介
 > MessagePack是一个非常高效的对象序列化库。它像JSON，但速度很快，而且很小。
+> 现在MessagePack已经适配了3.0版本，可用于实现int64的复杂性编码。
 
 ## 下载安装
 ```shell
@@ -32,6 +33,19 @@ let decoder = new Decoder()
 let encoded:Uint8Array = encoder.encode({ foo: "bar" });
 // 解码
 let decodedObject = decoder.decode(encoded);
+// int64复杂对象解码 
+let data: ESObject =
+   {
+     ints: [0, Number.MAX_SAFE_INTEGER, Number.MIN_SAFE_INTEGER],
+     nums: [Number.NaN, Math.PI, Math.E, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY],
+     bigints: [BigInt(0), BigInt(Number.MAX_SAFE_INTEGER) + BigInt(1), BigInt(Number.MIN_SAFE_INTEGER) - BigInt(1)],
+   };
+// int64编码最小值
+return BigInt(Number.MIN_SAFE_INTEGER) - BigInt(1);
+// int64普通编解码
+return BigInt(0);
+// int64编码最大值
+return BigInt(Number.MAX_SAFE_INTEGER) + BigInt(1);
 ```
 
 ### 数组对象编解码
@@ -72,6 +86,10 @@ expect(result).assertDeepEquals(items);
 |     |---- entry  # 示例代码文件夹
 |           |---- Index.ets  # 对外接口介绍
 			|---- EncodeDecodePage.ets  # 普通编解码
+      |---- Encoding64DemoFour.ets  # int64复杂对象解码
+      |---- Encoding64DemoOne.ets  # int64编码最小值
+      |---- Encoding64DemoThree.ets  # int64普通编解码
+      |---- Encoding64DemoTwo.ets  # int64编码最大值
 			|---- EncodeDecodeConstructorPage.ets  # 通过构造器编解码
 			|---- MultiDecodePage.ets  # 复杂对象解码
 |     |---- library  # 库代码文件夹
