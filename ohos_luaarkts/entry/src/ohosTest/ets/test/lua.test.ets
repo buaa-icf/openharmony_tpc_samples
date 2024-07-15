@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium';
-import harNAPI from 'libluaarkts.so'
+import { harNAPI } from '@ohos/luaarkts'
 
 export default function luaTest() {
   beforeAll(() => {
@@ -25,7 +25,7 @@ export default function luaTest() {
   afterAll(() => {
   })
   describe('ActsInitTest', () => {
-    const filePath = '/data/storage/el1/bundle/entry/resources/resfile/unitTest.lua';
+    const filePath = '';
     harNAPI.InitLuaEnv(filePath);
     it('run_init__setVarInt', 0, async () => {
       harNAPI.T2lSetVarInt('testValInt', 12);
