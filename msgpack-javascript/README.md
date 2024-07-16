@@ -69,6 +69,14 @@ for (let item of decodeMulti(encoded)) {
 // result与items一致
 expect(result).assertDeepEquals(items);
 ```
+## 接口说明
+
+| 方法名称                                                               |                    参数                     |                  功能描述 |
+|:----------------------------------------------------------------------|:-----------------------------------------:|----------------------:|
+| encode(object: unknown)                                               |                object:编码内容               | 对象进行编码并返回编码器内部缓冲区的副本。 |
+| decode(buffer: ArrayLike<number>)                                     |               buffer:解码内容 。             |               对象进行解码。 |
+| new Encoder()                                                         |                                             |             编码可复用构造器。 |
+| new Decoder()                                                         |                                             |            解码可复用构造器。 |
 
 ## 目录结构
 ````
