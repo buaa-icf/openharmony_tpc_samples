@@ -2,6 +2,7 @@
 
 ## 简介
 > MessagePack是一个非常高效的对象序列化库。它像JSON，但速度很快，而且很小。
+> 现在MessagePack已经适配了3.0版本，可用于实现int64的复杂性编码。
 
 
 <img src="screenshot/msgpack.gif" width="40%"/>
