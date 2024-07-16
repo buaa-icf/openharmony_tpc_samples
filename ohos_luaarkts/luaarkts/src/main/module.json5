@@ -1,13 +1,11 @@
 {
   "module": {
     "name": "luaarkts",
-    "type": "shared",
+    "type": "har",
     "description": "$string:shared_desc",
     "deviceTypes": [
       "default",
       "tablet"
     ],
-    "deliveryWithInstall": true,
-    "pages": "$profile:main_pages"
   }
 }
