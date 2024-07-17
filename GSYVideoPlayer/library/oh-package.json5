@@ -13,10 +13,10 @@
   "main": "Index.ets",
   "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/GSYVideoPlayer",
   "type": "module",
-  "version": "1.0.1-rc.0",
+  "version": "1.0.1-rc.1",
   "dependencies": {
     "@ohos/mp4parser": "^2.0.3-rc.0",
-    "@ohos/ijkplayer": "^2.0.3-rc.3",
+    "@ohos/ijkplayer": "^2.0.4",
     "@ohos/video-cache": "^1.0.1-rc.2"
   },
   "tags": [
