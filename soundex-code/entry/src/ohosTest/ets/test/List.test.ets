@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 import abilityTest from './Ability.test'
-import soundexTest from './soundecode/test'
 
 export default function testsuite() {
   abilityTest()

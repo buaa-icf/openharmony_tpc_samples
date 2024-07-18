@@ -49,11 +49,6 @@ export default function abilityTest() {
     let equal =(src:string,dst:string,info?:string) =>{
 
       expect(src).assertEqual(dst)
-
-
-      if(info){
-        console.log(tag+info)
-      }
     }
     interface equalType{
       equal: (src: string, dst: string, info?: string) => void,
