@@ -46,6 +46,10 @@ export class client_socket {
     client_socket_c.set_socket_close_listener(on_socket_close);
   }
 
+  public set_headers(headers: string) {
+    client_socket_c.set_headers(headers);
+  }
+
   public connect(uri: string) {
     client_socket_c.connect(uri);
   }

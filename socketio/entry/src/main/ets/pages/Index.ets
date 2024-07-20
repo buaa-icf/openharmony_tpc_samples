@@ -124,6 +124,7 @@ struct Index {
     this.client.set_socket_close_listener((nsp: string)=>{
       this.on_socket_close(nsp);
     });
+    this.client.set_headers("{'Content-Type':'application/json'}");
     this.client.connect(uri);
   }
 
