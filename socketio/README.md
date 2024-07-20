@@ -136,6 +136,10 @@ set_socket_open_listener(on_socket_open: (nsp: string) => void)
 ```typescript
 set_socket_close_listener(on_socket_close: (nsp: string) => void)
 ```
+- 设置 header
+```typescript
+set_headers(headers: string)
+```
 - 连接服务器
 ```typescript
 connect(uri: string)
@@ -211,6 +215,7 @@ emit(name: string, message: string, on_emit_callback?: (emit_callback_json: stri
 
 - IDE：DevEco Studio 4.1.3.532; SDK: 4.1.0.67(SP3)。
 - IDE：DevEco Studio Next ,Developer Beta1(5.0.3.121); SDK:API12 (5.0.0.16)。
+- IDE：DevEco Studio NEXT Developer Beta2(5.0.3.500); SDK: API12 (5.0.0.31)。
 
 ## 目录结构
 ````

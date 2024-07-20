@@ -48,7 +48,7 @@ static const char* g_userLeft = "user left";
 static const char* g_login = "login";
 
 static struct ThreadSafeInfo g_threadSafeInfo = {};
-std::map<std::string, std::string> g_headerMap;
+static std::map<std::string, std::string> g_headerMap;
 
 static std::string get_message_value(sio::message::ptr const &message)
 {
@@ -355,7 +355,6 @@ static napi_value set_headers(napi_env env, napi_callback_info info)
     napi_get_value_string_utf8(env, args[0], headers, MAX_BUF_SIZE, &result);
     
     std::string myString(headers);
-    OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> set_headers  aaaa%{public}snnn", myString.c_str());
     g_headerMap = parseConfigString(myString);
     
     return 0;
@@ -368,9 +367,8 @@ static napi_value connect(napi_env env, napi_callback_info info)
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     char uri[MAX_BUF_SIZE];
     napi_get_value_string_utf8(env, args[0], uri, MAX_BUF_SIZE, &result);
-    OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> connect  %{public}d", g_headerMap.size());
-    if (g_headerMap.size() > 0){
-        clientInstance.connect(uri,{},g_headerMap);
+    if (g_headerMap.size() > 0) {
+        clientInstance.connect(uri, {}, g_headerMap);
     } else {
         clientInstance.connect(uri);
     }
