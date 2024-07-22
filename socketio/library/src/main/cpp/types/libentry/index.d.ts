@@ -9,6 +9,7 @@
  * This software is distributed without any warranty.
  */
 
+export const set_headers: (headers: string) => void;
 export const connect: (uri: string) => void;
 export const set_nsp: (set_nsp: string) => void;
 export const set_open_listener: (open: any) => void;

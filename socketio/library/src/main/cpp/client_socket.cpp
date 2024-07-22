@@ -21,6 +21,8 @@
 #include "client_socket.h"
 
 static constexpr const int MAX_BUF_SIZE = 128;
+static constexpr const int ODD_NUMBER = 1;
+static constexpr const int EXPECT_NUMBER = 2;
 
 // 全局env
 static napi_env env_global = nullptr;
@@ -46,6 +48,7 @@ static const char* g_userLeft = "user left";
 static const char* g_login = "login";
 
 static struct ThreadSafeInfo g_threadSafeInfo = {};
+static std::map<std::string, std::string> g_headerMap;
 
 static std::string get_message_value(sio::message::ptr const &message)
 {
@@ -307,6 +310,56 @@ static void initEnv(napi_env env)
 }
 
 // client相关napi接口
+static std::map<std::string, std::string> parseConfigString(const std::string& config)
+{
+    std::map<std::string, std::string> map;
+    std::string str = config;
+    str = str.replace(str.find_last_of("}"), 1, "");
+    str = str.replace(str.find_last_of("{"), 1, "");
+
+    char* p1 = new char[str.size() + 1];
+    std::strcpy(p1, str.c_str());
+    int len = strlen(p1);
+    char *p2;
+    char *p3;
+    int pos = 1;
+
+    while ((len > 0) && (p2 = strtok(p1, ",")) != nullptr) {
+        p1 += strlen(p2) + 1;
+        len -= strlen(p2) + 1;
+
+        char *k;
+        char *v;
+        while ((p3 = strtok(p2, ":")) != nullptr) {
+            p2 = nullptr;
+            if (pos % EXPECT_NUMBER == ODD_NUMBER) {
+                k = p3;
+            } else {
+                v = p3;
+            }
+            pos++;
+        }
+        if (k && v) {
+            map[k] = v;
+        }
+    }
+    return map;
+}
+
+static napi_value set_headers(napi_env env, napi_callback_info info)
+{
+    size_t argc = 1;
+    napi_value args[1] = {nullptr};
+    napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
+    char headers[MAX_BUF_SIZE];
+    napi_get_value_string_utf8(env, args[0], headers, MAX_BUF_SIZE, &result);
+    
+    std::string myString(headers);
+    g_headerMap = parseConfigString(myString);
+    
+    return 0;
+}
+
 static napi_value connect(napi_env env, napi_callback_info info)
 {
     size_t argc = 1;
@@ -314,7 +367,12 @@ static napi_value connect(napi_env env, napi_callback_info info)
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     char uri[MAX_BUF_SIZE];
     napi_get_value_string_utf8(env, args[0], uri, MAX_BUF_SIZE, &result);
-    clientInstance.connect(uri);
+    if (g_headerMap.size() > 0) {
+        clientInstance.connect(uri, {}, g_headerMap);
+    } else {
+        clientInstance.connect(uri);
+    }
+    
     return 0;
 }
 
@@ -752,6 +810,7 @@ EXTERN_C_START
 static napi_value Init(napi_env env, napi_value exports)
 {
     napi_property_descriptor desc[] = {
+        {"set_headers", nullptr, set_headers, nullptr, nullptr, nullptr, napi_default, nullptr},
         {"connect", nullptr, connect, nullptr, nullptr, nullptr, napi_default, nullptr},
         {"set_open_listener", nullptr, set_open_listener, nullptr, nullptr, nullptr, napi_default, nullptr},
         {"set_fail_listener", nullptr, set_fail_listener, nullptr, nullptr, nullptr, napi_default, nullptr},
