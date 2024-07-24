@@ -480,9 +480,8 @@ struct IjkVideoPlayerPage {
     this.currentCachePercent = 0;
     CONTROL_PlayStatus = PlayStatus.INIT;
     mIjkMediaPlayer.stop();
-    mIjkMediaPlayer.reset();
-    this.startProgressTask();
     this.videoUrl = videoUrls[curIndex]
+
     let self = this;
 
     class MyCacheListener implements CacheListener {
@@ -497,6 +496,6 @@ struct IjkVideoPlayerPage {
     if (this.videoUrl.startsWith(getContext().cacheDir)) {
       self.currentCachePercent = 100;
     }
-    this.play(this.videoUrl);
+    this.startPlayOrResumePlay()
   }
 }
