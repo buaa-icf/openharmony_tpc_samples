@@ -18,7 +18,7 @@
  */
 export class CommonConstants {
   static readonly VIDEO_HTTPS_LISTS: Array<string> = [
-    'https://www.w3school.com.cn/i/movie.mp4',
+    'https://www.w3schools.com/html/movie.mp4',
     'http://1251017968.vod2.myqcloud.com/3eb04eefvodtransgzp1251017968/8782b1285285890810009576163/v.f30.mp4',
     'https://video.chinanews.com/flv/2019/04/23/400/111773_web.mp4',
     'https://assets.mixkit.co/videos/preview/mixkit-white-cat-lying-among-the-grasses-seen-up-close-22732-large.mp4']
