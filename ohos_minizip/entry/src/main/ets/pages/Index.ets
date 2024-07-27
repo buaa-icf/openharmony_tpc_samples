@@ -21,6 +21,7 @@ import promptAction from '@ohos.promptAction'
 function myAsyncFunction(selectFilePath : string, password : string){
   let startTime: number = Date.now();
   let minizipEntry = new MinizipNative(selectFilePath);
+  minizipEntry.SetCharEncoding(936);
   if(minizipEntry.Open() == 0){
     let entryNames = minizipEntry.GetEntryNames();
     for (let i = 0; i < entryNames.length; i++) {
