@@ -26,6 +26,11 @@ MinizipNative::MinizipNative(std::string zipFilePath)
     zipFilePath_= zipFilePath;
 }
 
+void MinizipNative::SetCharEncoding(int32_t charEncoding)
+{
+    charEncoding_ = charEncoding;
+}
+
 MinizipNative::~MinizipNative()
 {
     Release();
@@ -81,6 +86,34 @@ std::vector<std::string> MinizipNative::GetEntryNames()
     return entryNames_;
 }
 
+bool MinizipNative::AddEntryInfo(mz_zip_file *fileInfo)
+{
+    MinizipEntryInfo minizipEntryInfo;
+    if (fileInfo->flag & MZ_ZIP_FLAG_ENCRYPTED) {
+        minizipEntryInfo.isEncryptedFlag = true;
+    }
+
+    std::string entryName;
+    if (charEncoding_ > 0) {
+        uint8_t *utf8String = mz_os_utf8_string_create(fileInfo->filename, charEncoding_);
+        if (utf8String == nullptr) {
+            OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOGNAME,
+                "Error in mz_os_utf8_string_create\n");
+            return false;
+        }
+        entryName.assign(reinterpret_cast<const char*>(utf8String));
+        mz_os_utf8_string_delete(&utf8String);
+    } else {
+        entryName.assign(fileInfo->filename);
+    }
+    
+    minizipEntryInfo.entryNameSize = fileInfo->filename_size;
+    minizipEntryInfo.uncompressedSize = fileInfo->uncompressed_size;
+    minizipEntryInfo.originName.assign(fileInfo->filename);
+    entryInfoMap_.insert(std::make_pair(entryName, minizipEntryInfo));
+    return true;
+}
+
 int32_t MinizipNative::GetEntrysInfo()
 {
     mz_zip_file *fileInfo = NULL;
@@ -96,22 +129,24 @@ int32_t MinizipNative::GetEntrysInfo()
         return err;
     }
     
+    if (charEncoding_ > 0) {
+        mz_zip_reader_set_encoding(zipReader_, charEncoding_);
+    }
+    
     do {
         err = mz_zip_reader_entry_get_info(zipReader_, &fileInfo);
-        if (err != MZ_OK) {
+        if (err != MZ_OK || fileInfo == NULL) {
             OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOGNAME,
                          "Error %" PRId32 " getting entry info in archive\n", err);
             break;
         }
-        MinizipEntryInfo minizipEntryInfo;
-        if (fileInfo->flag & MZ_ZIP_FLAG_ENCRYPTED) {
-            minizipEntryInfo.isEncryptedFlag = true;
+
+        if (AddEntryInfo(fileInfo) == false) {
+            OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOGNAME,
+                         "AddEntryInfo failed\n");
+            break;
         }
-        std::string entryName;
-        entryName.assign(fileInfo->filename);
-        minizipEntryInfo.entryNameSize = fileInfo->filename_size;
-        minizipEntryInfo.uncompressedSize = fileInfo->uncompressed_size;
-        entryInfoMap_.insert(std::make_pair(entryName, minizipEntryInfo));
+        
         err = mz_zip_reader_goto_next_entry(zipReader_);
         if (err != MZ_OK && err != MZ_END_OF_LIST) {
             OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOGNAME,
@@ -142,17 +177,17 @@ int32_t MinizipNative::ExtractFileToMemory(std::string entryName, char *buffer, 
     if (entryInfoMap_[entryName].isEncryptedFlag) {
         mz_zip_reader_set_password(zipReader_, password);
     }
-    err = mz_zip_reader_locate_entry(zipReader_, entryName.c_str(), 0);
+    err = mz_zip_reader_locate_entry(zipReader_, minizipEntryInfo.originName.c_str(), 0);
     if (err != MZ_OK) {
         OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOGNAME,
-                     "File %{public}s not found in zip archive\n", entryName.c_str());
+                     "File %{public}s not found in zip archive\n", minizipEntryInfo.originName.c_str());
         return err;
     }
     
     err = mz_zip_reader_entry_open(zipReader_);
     if (err != MZ_OK) {
         OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOGNAME,
-                     "Cannot open file %{public}s in zip archive\n, err:%{public}d", entryName.c_str(), err);
+                     "Cannot open file %{public}s in zip archive, err:%{public}d", entryName.c_str(), err);
         return err;
     }
     
@@ -197,6 +232,7 @@ JSBIND_CLASS(MinizipNative)
 {
     JSBIND_CONSTRUCTOR<std::string>();
     JSBIND_METHOD(Open);
+    JSBIND_METHOD(SetCharEncoding);
     JSBIND_METHOD(GetEntryNames);
     JSBIND_METHOD(ExtractFileToJS);
 }

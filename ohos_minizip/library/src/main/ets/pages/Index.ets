@@ -29,6 +29,7 @@ export function unzipToDirectory(selectPath: string, targetPath: string, passwor
       password = ""
     }
     let minizipEntry = new MinizipNative(selectPath);
+    minizipEntry.SetCharEncoding(936);
     let code: number = minizipEntry.Open()
     if(code == 0) {
       let entryNames: Array<string> = minizipEntry.GetEntryNames();

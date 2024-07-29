@@ -67,7 +67,8 @@ unzipToDirectory(this.selectFilePath, this.targetPath, this.password).then(() =>
 |------------------|-----------------------------------------------------------|---------------------------------------------------------|----------------------------------------------------------------|
 | MinizipNative    | path:string                                               | zip压缩包路径                                                | MinizipNative实例                                                |
 | Open             | 无                                                         | 无                                                       | 当返回值为0时，打开文件成功                                                 |
-| GetEntryNames    | 无                                                         | 无                                                       | Array< string > 获取文件列表                                         |
+| SetCharEncoding  | charEncoding:number                                       | charEncoding: 字符编码类型，可设置为 437(CP437 主要用于英文和一些西欧语言环境) 932(CP932 主要用于日语环境) 936(CP936 主要用于简体中文环境) 950(CP950 主要用于繁体中文环境) 65001(UTF8)            | 无返回值。设置压缩包的字符编码类型                                                                |
+| GetEntryNames    | 无                                                         | 无                                                       | Array< string > 获取文件列表，如果调用过SetCharEncoding设置字符编码，则返回的文件名字符串为utf8编码                                         |
 | ExtractFileToJS  | entryName : string, password : string                     | entryName：文件名， password：密码                              | ArrayBuffer或者undefined 解压文件内容，密码错误或entryName为文件夹名时，返回undefined |
 | unzipToDirectory | selectPath: string, targetPath: string, password?: string | selectPath: 待解压文件路径, targetPath: 解压到此路径下, password?: 密码 | Promise< string > 是否解压成功                                       |
 

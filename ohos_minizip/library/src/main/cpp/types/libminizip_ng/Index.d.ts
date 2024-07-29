@@ -17,8 +17,10 @@ export class MinizipNative{
   constructor(path : string);
   // 打开文件路径
   Open : () => number;
+  // 设置字符编码
+  SetCharEncoding : (charEncoding : number) => void;
   // 获取文件列表
-  GetEntryNames : () => Array<string>
+  GetEntryNames : () => Array<string>;
   //解压文件
   ExtractFileToJS : (entryName : string, password : string) => ArrayBuffer | undefined;
 }
