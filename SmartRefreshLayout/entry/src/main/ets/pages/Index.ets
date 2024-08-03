@@ -20,7 +20,7 @@ class RefreshTypeMapParam{
   url:string = ""
 }
 @Entry
-@Component
+@ComponentV2
 struct Index {
   scroller: Scroller = new Scroller()
   private refreshTypeMap: Array<RefreshTypeMapParam> = [

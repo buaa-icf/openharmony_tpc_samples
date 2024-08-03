@@ -16,9 +16,9 @@ import {SmartRefresh} from "@ohos/smartrefreshlayout"
 import {WaterSwipe} from "@ohos/smartrefreshlayout"
 
 @Entry
-@Component
+@ComponentV2
 struct WaterSwipeSample {
-   @State model: SmartRefresh.Model = new SmartRefresh.Model()
+   @Local model: SmartRefresh.Model = new SmartRefresh.Model()
   arr: string[] = ['默认主题', '橙色主题', '红色主题', '绿色主题', '蓝色主题', '默认主题', '橙色主题', '红色主题', '绿色主题', '蓝色主题']
   pickColor(SelectColorParam: string) {
     let SelectColor = SelectColorParam.trim()
@@ -39,7 +39,7 @@ struct WaterSwipeSample {
     }
   }
   @Builder testHeader() {
-    WaterSwipe({ model: $model})
+    WaterSwipe({ model: this.model!!})
   }
   @Builder card(item: string) {
     Row() {
@@ -64,7 +64,7 @@ struct WaterSwipeSample {
   build() {
     Column() {
       SmartRefresh({
-        model: $model,
+        model: this.model!!,
         header:()=> {this.testHeader()},
         main:()=> {this.testMain()},
         footer: ()=> {} })

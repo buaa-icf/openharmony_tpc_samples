@@ -16,10 +16,10 @@ import {SmartRefreshForFlyRefresh} from "@ohos/smartrefreshlayout"
 import {FlyRefreshHeader} from "@ohos/smartrefreshlayout"
 
 @Entry
-@Component
+@ComponentV2
 struct FlyRefreshStylePage {
-  @State model: SmartRefreshForFlyRefresh.Model = new SmartRefreshForFlyRefresh.Model().setBackgroundColor('white').setNoInit(true)
-  @State mDataSet: Array<ItemData> = []
+  @Local model: SmartRefreshForFlyRefresh.Model = new SmartRefreshForFlyRefresh.Model().setBackgroundColor('white').setNoInit(true)
+  @Local mDataSet: Array<ItemData> = []
   private index:number = 10;
   aboutToAppear() {
     this.mDataSet.push(new ItemData(1,0xFF76A9FC, $r('app.media.ic_public_file'), "Meeting Minutes", new Date()))
@@ -34,7 +34,7 @@ struct FlyRefreshStylePage {
   }
 
   @Builder header() {
-    FlyRefreshHeader({ model: $model })
+    FlyRefreshHeader({ model: this.model!! })
   }
 
   @Builder content() {
@@ -63,7 +63,7 @@ struct FlyRefreshStylePage {
   build() {
     Column() {
       SmartRefreshForFlyRefresh({
-        modelFly: $model,
+        modelFly: this.model!!,
         header: () => {
           this.header()
         },

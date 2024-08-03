@@ -15,23 +15,24 @@
  */
 import SmartRefreshForFlyRefresh from "./SmartRefreshForFlyRefresh"
 import FlyRefreshHeaderAircraft from "./FlyRefreshHeaderAircraft"
-@Component
+@ComponentV2
 export struct FlyRefreshHeader {
-  @Link model: SmartRefreshForFlyRefresh.Model
+  @Param @Require model: SmartRefreshForFlyRefresh.Model = new SmartRefreshForFlyRefresh.Model()
+  @Event $model: (value: SmartRefreshForFlyRefresh.Model) => void = (value: SmartRefreshForFlyRefresh.Model) => {}
   private settings: RenderingContextSettings = new RenderingContextSettings(true)
   private context: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.settings)
-  @State ready: boolean = false
+  @Local ready: boolean = false
   private mScale: number= 0
   protected mScaleX: number = 1
   protected mScaleY: number = 1
   protected mTrunk: Path2D = new Path2D();
   protected mBranch: Path2D = new Path2D();
-  @State x: number = 0
-  @State y: number = 0
-  @State angle: number = 0
-  @State isClick: boolean = true
-  @State isAdd: boolean = false
-  @State initHeight: number = this.model.initHeaderHeight
+  @Local x: number = 0
+  @Local y: number = 0
+  @Local angle: number = 0
+  @Local isClick: boolean = true
+  @Local isAdd: boolean = false
+  @Local initHeight: number = this.model.initHeaderHeight
   aboutToAppear(){ //当独走头部刷新
     this.model.flyRefreshHeaderIsShow = true
   }
@@ -69,7 +70,7 @@ export struct FlyRefreshHeader {
             .position({ x: 440, y: -45 })
           Image($r("app.media.bg3")).width('100%').height('100%').objectFit(ImageFit.Fill)
         }.width('100%').height((80 + ((this.model.getOffset() > 1 ? this.model.getOffset() : 1) - 1) * 10))
-        FlyRefreshHeaderAircraft({modelParam : $model})
+        FlyRefreshHeaderAircraft({modelParam : this.model!!})
       }
       .alignContent(Alignment.Bottom)
       .width('100%')

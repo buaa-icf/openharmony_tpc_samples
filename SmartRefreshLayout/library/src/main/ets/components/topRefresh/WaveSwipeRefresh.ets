@@ -16,15 +16,16 @@
 import SmartRefresh from "./SmartRefresh"
 import display from '@ohos.display';
 
-@Component
+@ComponentV2
 export struct WaveSwipe {
-  @State refresh: boolean  = false
-  @Link model: SmartRefresh.Model
-  @State refreshData: ComWheel.Model = new ComWheel.Model();
+  @Local refresh: boolean  = false
+  @Param @Require model: SmartRefresh.Model;
+  @Event $model: (value: SmartRefresh.Model) => void = (value: SmartRefresh.Model) => {}
+  @Local refreshData: ComWheel.Model = new ComWheel.Model();
   private touchMoveHeight: number = 0
-  @State pathCmd: string = ""
-  @State dragPathCmd: string = ''
-  @State private dragUpFlag: boolean = true
+  @Local pathCmd: string = ""
+  @Local dragPathCmd: string = ''
+  @Local dragUpFlag: boolean = true
   private dragBottomCirclePathCmd: string = ''
   private lastYOffset: number = 0
   private maxRangeHeight : number = 0
@@ -372,72 +373,73 @@ export struct WaveSwipe {
 }
 
 namespace ComWheel {
+  @ObservedV2
   export class Model {
     //画笔宽度
-    barWidth: number = 5;
+    @Trace barWidth: number = 5;
     //轮圈宽度
-    rimWidth: number = 5
+    @Trace rimWidth: number = 5
     //画笔颜色
-    barColor: number = 0X5588FF
+    @Trace barColor: number = 0X5588FF
     // 大/小角度弧标志  0为小角度
-    angleFlag: number = 0
+    @Trace angleFlag: number = 0
     // 圆弧最小角度
-    minAngle: number = 16
+    @Trace minAngle: number = 16
     // 圆弧最大角度
-    maxAngle: number = 270
+    @Trace maxAngle: number = 270
     //半径
-    circleRadius: number = 60
+    @Trace circleRadius: number = 60
     //真实半径
-    radius: number = 0
+    @Trace radius: number = 0
     // 在 minAngle 基础上，额外需要绘制的角度
-    barExtraLength: number = 0
+    @Trace barExtraLength: number = 0
     // 需要绘制到的角度
-    targetAngle: number = 0
+    @Trace targetAngle: number = 0
     // 圆弧递增或递减的标记  true表示递增
-    barGrowingFromFront: boolean = true
+    @Trace barGrowingFromFront: boolean = true
     // 逆时针顺时针标志 1表示顺时针
-    directionFlag: number = 1
+    @Trace directionFlag: number = 1
     // svg路径
-    svgPath: string = "";
+    @Trace svgPath: string = "";
     // 绘制终点的X轴坐标
-    endX: number = 0;
+    @Trace endX: number = 0;
     //绘制终点的Y轴坐标
-    endY: number = 0;
+    @Trace endY: number = 0;
     //起始位置
-    startX: number = 0;
-    startY: number = 0;
+    @Trace startX: number = 0;
+    @Trace startY: number = 0;
     // 目标进度值
-    mTargetProgress: number = 1
+    @Trace mTargetProgress: number = 1
     // 进度值
-    mProgress: string = "0";
+    @Trace mProgress: string = "0";
     // 起始角度
-    progress: number = 0
+    @Trace progress: number = 0
     //轮圈颜色
-    rimColor: number = Color.White
+    @Trace rimColor: number = Color.White
     // 近似闭合的坐标
-    closureY: number = 0
+    @Trace closureY: number = 0
     // 每1ms的旋转角度，例：230 每1s旋转 230 度    (270-16)/0.46 = 230
-    spinSpeed: number = 230
+    @Trace spinSpeed: number = 230
     //轮圈的svg路径
-    rimSvgPath: string = ""
+    @Trace rimSvgPath: string = ""
     // 是否是动态进度轮
-    isSpinning: boolean = true
+    @Trace isSpinning: boolean = true
     // 是否是线性进度轮
-    linearProgress: boolean = false
+    @Trace linearProgress: boolean = false
     //圆弧处在最大或者最小角度时，保持当时状态的时间，简而言之，当圆弧为的角度为 barLength
     //圆弧处在最大或者最小角度时，保持当时状态的时间，简而言之，当圆弧为的角度为 barLength
     // 或者 barMaxLength 时，都会在 pauseGrowingTime 这个时间后才会继续变化，最大向最小变化，最小向最大变化，可以理解为 delayTime
-    pauseGrowingTime: number = 200
+    @Trace pauseGrowingTime: number = 200
     // 圆弧 递增/递减 已经经历时间
-    timeStartGrowing: number = 0
+    @Trace timeStartGrowing: number = 0
     //圆弧 从最小到最大/从最大到最小 的总时间
-    barSpinCycleTime: number = 460
+    @Trace barSpinCycleTime: number = 460
     // 圆弧在 最大/最小 角度保持的时间
-    pausedTimeWithoutGrowing: number = 0
+    @Trace pausedTimeWithoutGrowing: number = 0
     //上一次绘制的时间
-    lastTimeAnimated: number = 0
+    @Trace lastTimeAnimated: number = 0
     // 定时器
-    intervalID: number = 0
+    @Trace intervalID: number = 0
     init() {
       this.radius = this.circleRadius - this.barWidth
       this.startX = this.circleRadius

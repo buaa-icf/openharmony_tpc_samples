@@ -23,15 +23,16 @@ class BulletModel {
 
 }
 
-@Component
+@ComponentV2
 export struct AirplaneGameBody {
-  @State model: SmartRefreshForGame.Model = new SmartRefreshForGame.Model()
-  @State private i: number = 0
-  @State private enemyPlainList: Array<BulletModel> = [] // 敌机的数组
-  @State private bulletList: Array<BulletModel> = [] // 存放子弹
-  @State private myPlainY: number = 0 // 自己飞机的y位置
-  @State private isGameOver: boolean = false // 游戏时是否结束
-  @State private tipText: string = this.model.textLoading
+  @Param @Require model: SmartRefreshForGame.Model = new SmartRefreshForGame.Model()
+  @Event $model: (value: SmartRefreshForGame.Model) => void = (value: SmartRefreshForGame.Model) => {}
+  @Local i: number = 0
+  @Local enemyPlainList: Array<BulletModel> = [] // 敌机的数组
+  @Local bulletList: Array<BulletModel> = [] // 存放子弹
+  @Local myPlainY: number = 0 // 自己飞机的y位置
+  @Local isGameOver: boolean = false // 游戏时是否结束
+  @Local tipText: string = this.model.textLoading
 
   private flySpeed: number = 3 // 敌机速度
   private bulletSpeed: number = 8 // 子弹速度
@@ -45,33 +46,33 @@ export struct AirplaneGameBody {
   private screenWidth: number = px2vp(display.getDefaultDisplaySync().width)
   private bulletIndex: number = 1
   private enemyIndex: number = 0
-  @Prop @Watch('onGameStateChange') gameIsStart: boolean = false
-  @Prop @Watch('onYStateChange') downY: number = 0
-  initBackgroundColor: Color | string | number = ''
-  maxHeight: number = px2vp(150)
-  @Prop @Watch('onFinishChange') isNotifyFinish: boolean = false
-
-  private onFinishChange() {
-    if (this.isNotifyFinish) {
-      this.tipText = this.model.isFinishSuccess? this.model.textLoadingFinish: this.model.textLoadingFailed
-    }
-  }
-
-  private onGameStateChange() {
+  @Param @Once gameIsStart: boolean = false
+  @Monitor('gameIsStart')
+  onGameStateChange() {
     if (this.gameIsStart) {
       this.startGame()
     } else {
       this.stopGame()
     }
   }
-
-  private onYStateChange() {
+  @Param downY: number = 0
+  @Monitor('downY')
+  onYStateChange() {
     if (this.downY < 0) {
       this.myPlainY = 0
     } else if (this.downY > (this.maxHeight - this.myPlainSize)) {
       this.myPlainY = (this.maxHeight - this.myPlainSize)
     } else {
       this.myPlainY = this.downY
+    }
+  }
+  @Param initBackgroundColor: Color | string | number = ''
+  @Param maxHeight: number = px2vp(150)
+  @Param isNotifyFinish: boolean = false
+  @Monitor('isNotifyFinish')
+  onFinishChange() {
+    if (this.isNotifyFinish) {
+      this.tipText = this.model.isFinishSuccess? this.model.textLoadingFinish: this.model.textLoadingFailed
     }
   }
 

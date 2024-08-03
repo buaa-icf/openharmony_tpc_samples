@@ -13,9 +13,10 @@
  * limitations under the License.
  */
 
-@Component
+@ComponentV2
 struct SmartRefreshForGame {
-  @Link modelGame: SmartRefreshForGame.Model
+  @Param @Require modelGame: SmartRefreshForGame.Model
+  @Event $modelGame: (value: SmartRefreshForGame.Model) => void = (value: SmartRefreshForGame.Model) => {}
   @BuilderParam header?: () => void
   @BuilderParam main?: () => void
   @BuilderParam footer?: () => void
@@ -25,7 +26,7 @@ struct SmartRefreshForGame {
   private intervalId4: number = 0
   private touchDownY: number = 0
   private isMoveTopEnd: boolean = true
-  @State private marginTop: number = 0
+  @Local marginTop: number = 0
   private isClick: boolean = false
 
   public aboutToAppear() {
@@ -190,30 +191,30 @@ namespace SmartRefreshForGame {
     TOREFRESH = 1,
     REFRESHING = 2,
   }
-
+  @ObservedV2
   export class Model {
     finishRefresh1: () => void = () => {}
     autoRefresh1: () => void = () => {}
-    isTouchMove: boolean = false // 当前手指是否在移动
-    isNotifyFinish: boolean = false // 是否通知了要停止刷新
+    @Trace isTouchMove: boolean = false // 当前手指是否在移动
+    @Trace isNotifyFinish: boolean = false // 是否通知了要停止刷新
 
-    downY: number = 0 // 偏移量
-    backgroundColor: Color | string | number = Color.Gray // 主题色
-    initHeaderHeight: number = 200 // 头部高度
+    @Trace downY: number = 0 // 偏移量
+    @Trace backgroundColor: Color | string | number = Color.Gray // 主题色
+    @Trace initHeaderHeight: number = 200 // 头部高度
     refreshCallback: () => void = ()=>{}// 刷新监听器
-    refreshState: SmartRefreshForGame.REFRESHSTATE = SmartRefreshForGame.REFRESHSTATE.NONE // 刷新状态
-    textGameOver: string = '游戏结束'
-    textLoading: string = '玩个游戏解解闷'
-    textLoadingFinish: string = '刷新完成'
-    textLoadingFailed: string = '刷新失败'
-    maskTextTopPull: string = '下拉开始游戏!'
-    maskTextTopRelease: string = '释放立刻开始!'
-    maskTextBottom: string = '上下滑动控制游戏'
-    maskTextSizeTop: number = 20
-    maskTextSizeBottom: number = 20
-    blockHorizontalNum: number = 3
-    ballSpeed: number = 3
-    isFinishSuccess: boolean = true
+    @Trace refreshState: SmartRefreshForGame.REFRESHSTATE = SmartRefreshForGame.REFRESHSTATE.NONE // 刷新状态
+    @Trace textGameOver: string = '游戏结束'
+    @Trace textLoading: string = '玩个游戏解解闷'
+    @Trace textLoadingFinish: string = '刷新完成'
+    @Trace textLoadingFailed: string = '刷新失败'
+    @Trace maskTextTopPull: string = '下拉开始游戏!'
+    @Trace maskTextTopRelease: string = '释放立刻开始!'
+    @Trace maskTextBottom: string = '上下滑动控制游戏'
+    @Trace maskTextSizeTop: number = 20
+    @Trace maskTextSizeBottom: number = 20
+    @Trace blockHorizontalNum: number = 3
+    @Trace ballSpeed: number = 3
+    @Trace isFinishSuccess: boolean = true
 
     getDownY(): number{
       return this.downY

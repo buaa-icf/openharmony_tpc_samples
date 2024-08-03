@@ -21,10 +21,11 @@ class Drawable3PathsParam{
 }
 
 
-@Component
+@ComponentV2
 export struct Delivery {
-  @Link model: SmartRefreshForDeliverySample.Model
-  @State time: number  = 0
+  @Param @Require model: SmartRefreshForDeliverySample.Model
+  @Event $model: (value: SmartRefreshForDeliverySample.Model) => void = (value: SmartRefreshForDeliverySample.Model) => {}
+  @Local time: number  = 0
   umbrellaPaths: Array<Drawable3PathsParam> = [
     {index: 0,content: "m114,329 5,2 16,28h-1zM2,144.5c-4,-77 50,-122 96,-135 6,0 7.1,.2 13,3.5v4.5C63,55.1 56,97.1 43,154.5 37.6,195 16,191 2,144.5Z"},
     {index: 1,content: "m134,359 -1,-27h2.6l-1,26zm-24,-34.6c0,-1 -2,-3.6 -4.5,-6C88,300 7,218.5 2,144.5c18,43.6 33,45 41,10 0,-71 34,-125.5 68,-137 2,3 4,4.5 8,7.5C97,91 96.5,109.4 95.5,175.4 86.5,205 58,208.5 43,154.5c14,64 32,101.6 60.6,147 6,8 15.4,18.5 15.4,29.5 -3.8,-1.3 -8.27988,-2.8 -9,-6.6zM98.5,9.5c4.6,-1.5 18,-4.6 34,-5 1,1 1,2 1,3 -9,1 -16,3 -22,6 -2.5,-1 -8,-3 -13,-4z"},

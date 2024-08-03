@@ -16,14 +16,14 @@ import {WaveSwipe} from "@ohos/smartrefreshlayout"
 import {SmartRefresh} from "@ohos/smartrefreshlayout"
 
 @Entry
-@Component
+@ComponentV2
 struct WaterSwipeSample {
-  @State model: SmartRefresh.Model = new SmartRefresh.Model()
-  @State needScroller: boolean = false
+  @Local model: SmartRefresh.Model = new SmartRefresh.Model()
+  @Local needScroller: boolean = false
   private arr: string[] = ['默认主题', '橙色主题', '红色主题', '绿色主题', '蓝色主题', '默认主题', '橙色主题', '红色主题', '绿色主题', '蓝色主题']
 
   @Builder testHeader() {
-      WaveSwipe({ model: $model})
+      WaveSwipe({ model: this.model!!})
   }
 
   pickColor(SelectColorParam: string) {
@@ -67,7 +67,7 @@ struct WaterSwipeSample {
   build() {
     Column() {
       SmartRefresh({
-        model: $model,
+        model: this.model!!,
         header:()=> {this.testHeader()},
         main:()=> {this.testMain()},
         footer: () => {}

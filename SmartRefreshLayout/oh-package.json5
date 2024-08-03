@@ -5,8 +5,8 @@
   },
   "author": "",
   "name": "smartrefreshlayout",
-  "description": "´øÓĞ¶¯»­µÄÉÏÀ­Ë¢ĞÂBezierRadarÑùÊ½ÏÂÀ­Ë¢ĞÂ(BezierRadarÑùÊ½¡¢BezierCircleÑùÊ½¡¢FlyRefreshÑùÊ½¡¢WaterDropÑùÊ½µÈ£©ºÍÏÂÀ­¼ÓÔØµÄ»¬¶¯ÁĞ±í¿â.",
+  "description": "ï¿½ï¿½ï¿½Ğ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¢ï¿½ï¿½BezierRadarï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½Ë¢ï¿½ï¿½(BezierRadarï¿½ï¿½Ê½ï¿½ï¿½BezierCircleï¿½ï¿½Ê½ï¿½ï¿½FlyRefreshï¿½ï¿½Ê½ï¿½ï¿½WaterDropï¿½ï¿½Ê½ï¿½È£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ØµÄ»ï¿½ï¿½ï¿½ï¿½Ğ±ï¿½ï¿½.",
   "main": "",
-  "version": "2.0.1-rc.0",
+  "version": "2.1.0-rc.0",
   "dependencies": {}
 }

@@ -17,11 +17,12 @@ import SmartRefreshForGame from './SmartRefreshForGame'
 import {HitBlockGameCover} from './HitBlockGameCover'
 import {HitBlockGameBody} from './HitBlockGameBody'
 
-@Component
+@ComponentV2
 export struct HitBlock {
-  @Link hitBlockModel: SmartRefreshForGame.Model
-  @State private welcomeIsStart: boolean = false
-  @State private gameIsStart: boolean = false
+  @Param @Require hitBlockModel: SmartRefreshForGame.Model
+  @Event $hitBlockModel: (value: SmartRefreshForGame.Model) => void = (value: SmartRefreshForGame.Model) => {}
+  @Local welcomeIsStart: boolean = false
+  @Local gameIsStart: boolean = false
 
   private changeState(state:ESObject) {
     if (state == SmartRefreshForGame.REFRESHSTATE.TOREFRESH ) { // 下拉中
@@ -54,7 +55,7 @@ export struct HitBlock {
       } else {
         // 游戏欢迎界面
         HitBlockGameCover({
-          modelCover:$hitBlockModel,
+          modelCover:this.hitBlockModel!!,
           gameState: this.welcomeIsStart,
           maxHeight: this.hitBlockModel.initHeaderHeight,
           downY: this.hitBlockModel.downY,
