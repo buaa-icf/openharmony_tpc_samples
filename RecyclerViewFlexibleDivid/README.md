@@ -37,7 +37,7 @@ RecyclerViewFlexibleDivid是一款提供数据列表分割线的库
 
 在下述版本验证通过：
 
-DevEco Studio 版本：3.1 Beta1(3.1.0.200)，SDK:API9 Beta5(3.2.10.6)
+- DevEco Studio NEXT Developer Beta3: (5.0.3.530), SDK: API12 (5.0.0.35(SP3))
 
 ## 目录结构
 

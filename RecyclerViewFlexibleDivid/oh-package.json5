@@ -1,0 +1,11 @@
+{
+  "modelVersion": "5.0.0",
+  "name": "recyclerviewflexibledivid",
+  "version": "1.1.0-rc.0",
+  "description": "example description",
+  "repository": {},
+  "license": "ISC",
+  "dependencies": {
+    "@ohos/hypium": "1.0.6"
+  },
+}

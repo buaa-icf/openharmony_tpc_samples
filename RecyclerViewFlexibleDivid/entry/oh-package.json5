@@ -1,11 +1,6 @@
 {
   "name": "entry",
-  "version": "1.0.0",
-  "ohos": {
-    "org": "huawei",
-    "buildTool": "hvigor",
-    "directoryLevel": "module"
-  },
+  "version": "1.1.0-rc.0",
   "description": "example description",
   "repository": {},
   "license": "ISC",
