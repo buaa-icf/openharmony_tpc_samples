@@ -8,13 +8,9 @@
         "name": "default",
         "signingConfig": "default",
         "compileSdkVersion": 12,
-        //ָ��OpenHarmonyӦ��/�������ʱ�İ汾
         "compatibleSdkVersion": 12,
-        //ָ��OpenHarmonyӦ��/������ݵ���Ͱ汾��
         "targetSdkVersion": 12,
-        //ָ��OpenHarmonyӦ��/����Ŀ��汾����û�����ã�Ĭ��ΪcompatibleSdkVersion
-        "runtimeOS": "OpenHarmony",
-        //ָ��ΪOpenHarmony
+        "runtimeOS": "OpenHarmony"
       }
     ],
     "buildModeSet": [

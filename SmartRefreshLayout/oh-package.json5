@@ -5,7 +5,7 @@
   },
   "author": "",
   "name": "smartrefreshlayout",
-  "description": "���ж���������ˢ��BezierRadar��ʽ����ˢ��(BezierRadar��ʽ��BezierCircle��ʽ��FlyRefresh��ʽ��WaterDrop��ʽ�ȣ����������صĻ����б��.",
+  "description": "A sliding list library with animated pull-up refresh and pull-down loading",
   "main": "",
   "version": "2.1.0-rc.0",
   "dependencies": {}
