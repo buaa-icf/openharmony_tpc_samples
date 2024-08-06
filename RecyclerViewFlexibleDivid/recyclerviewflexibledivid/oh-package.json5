@@ -4,7 +4,7 @@
   "ohos": {
     "org": ""
   },
-  "version": "1.0.0",
+  "version": "1.1.0-rc.0",
   "main": "index.ets",
   "types": "",
   "license": "ISC",
