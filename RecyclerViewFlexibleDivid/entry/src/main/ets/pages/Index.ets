@@ -16,7 +16,7 @@
 import { DividerLine } from "recyclerviewflexibledivid"
 
 @Entry
-@Component
+@ComponentV2
 struct Index {
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center }) {

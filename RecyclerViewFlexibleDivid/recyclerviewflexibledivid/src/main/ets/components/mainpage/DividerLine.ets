@@ -13,14 +13,15 @@
  * limitations under the License.
  */
 
-@Component
+@ComponentV2
 export struct DividerLine {
-  @State color: string | number = "red" //分割线颜色
-  @State lineWidth: number = 5 //分割线宽度
-  @State lineLength: number = 200 //分割线容器的长度
-  @State dashed: boolean = true //是否实线条
-  @State times: number = 15 //遍历次数
-  @State dashLength: number = 2 //单个虚线长度
+  @Param color: string | number = "red" //分割线颜色
+  @Param lineWidth: number = 5 //分割线宽度
+  @Param lineLength: number = 200 //分割线容器的长度
+  @Param dashed: boolean = true //是否实线条
+  @Param times: number = 15 //遍历次数
+  @Param dashLength: number = 2 //单个虚线长度
+
 
   build() {
     Flex({ justifyContent: FlexAlign.SpaceBetween }) {
