@@ -21,9 +21,9 @@ class arrParam{
 }
 
 @Entry
-@Component
+@ComponentV2
 struct BezierRadarSample {
-  @State model: SmartRefreshForBezierRadarSample.Model = new SmartRefreshForBezierRadarSample.Model()
+  @Local model: SmartRefreshForBezierRadarSample.Model = new SmartRefreshForBezierRadarSample.Model()
   arr: arrParam[] = [{index:2,content:'蓝色主题'}, {index:3,content:'绿色主题'}, {index:4,content:'红色主题'}, {index:5,content:'橙色主题'},
     {index:8,content:'橙色主题'}, {index:9,content:'橙色主题'}, {index:10,content:'橙色主题'},{index:11,content:'橙色主题'}, {index:12,content:'橙色主题'},
     {index:13,content:'橙色主题'}, {index:14,content:'橙色主题'}, {index:15,content:'橙色主题'}]
@@ -69,13 +69,13 @@ struct BezierRadarSample {
   }
 
   @Builder testHeader() {
-    BezierRadar({ model: $model})
+    BezierRadar({ model: this.model!!})
   }
 
   build() {
     Column() {
       SmartRefreshForBezierRadarSample({
-        modelBezierRadar: $model,
+        modelBezierRadar: this.model!!,
         header: () => {
           this.testHeader()
         },

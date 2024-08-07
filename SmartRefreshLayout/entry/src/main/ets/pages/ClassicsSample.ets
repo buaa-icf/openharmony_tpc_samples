@@ -16,9 +16,9 @@ import {SmartRefresh} from "@ohos/smartrefreshlayout"
 import {Classics} from "@ohos/smartrefreshlayout"
 import {ClassicsBottom} from "@ohos/smartrefreshlayout"
 @Entry
-@Component
+@ComponentV2
 struct ClassicsSample {
-  @State model: SmartRefresh.Model = new SmartRefresh.Model()
+  @Local model: SmartRefresh.Model = new SmartRefresh.Model()
   arr: string[] = ['显示时间', '隐藏时间', '默认主题', '橙色主题', '红色主题', '绿色主题', '蓝色主题']
   aboutToAppear(){
     this.model.setBackgroundColor(Color.White)
@@ -55,7 +55,7 @@ struct ClassicsSample {
     }
   }
   @Builder testHeader() {
-    Classics({ model: $model})
+    Classics({ model: this.model!!})
   }
   @Builder card(item: string) {
     Row() {
@@ -84,14 +84,14 @@ struct ClassicsSample {
 
   @Builder testFooter() {
     Column() {
-       ClassicsBottom({ model: $model})
+       ClassicsBottom({ model: this.model!!})
     }.width("100%").padding("20lpx")
   }
 
   build() {
     Column() {
       SmartRefresh({
-        model: $model,
+        model: this.model!!,
         header:()=> {this.testHeader()},
         main:()=> {this.testMain()},
         footer: ()=> {this.testFooter()}

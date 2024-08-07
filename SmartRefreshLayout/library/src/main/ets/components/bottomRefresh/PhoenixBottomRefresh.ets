@@ -16,12 +16,13 @@
 import SmartRefreshForTaurus from "../topRefresh/SmartRefreshForTaurus"
 
 
-@Component
+@ComponentV2
 export struct PhoenixBottomRefresh {
-  @Link model: SmartRefreshForTaurus.Model
-  @State angle: number= 0
-  @State refresh: boolean= true
-  @State mYCenter: number= 140
+  @Param @Require model: SmartRefreshForTaurus.Model
+  @Event $model: (value: SmartRefreshForTaurus.Model) => void = (value: SmartRefreshForTaurus.Model) => {}
+  @Local angle: number= 0
+  @Local refresh: boolean= true
+  @Local mYCenter: number= 140
 
   aboutToAppear() {
     this.model.setZFooterHeight(-1).setInitFooterHeight(200)

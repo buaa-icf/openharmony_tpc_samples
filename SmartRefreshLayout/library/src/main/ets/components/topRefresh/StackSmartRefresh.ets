@@ -12,16 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-@Component
+@ComponentV2
 struct StackSmartRefresh {
-  @State model: StackSmartRefresh.Model = new StackSmartRefresh.Model()
-  @BuilderParam header?: () => {}
-  @BuilderParam main?: () => {}
-  @State needScroller: boolean= false
+  @Param model: StackSmartRefresh.Model = new StackSmartRefresh.Model()
+  @Event $model: (value: StackSmartRefresh.Model) => void = (value: StackSmartRefresh.Model) => {}
+  @BuilderParam header?: () => void
+  @BuilderParam main?: () => void
+  @Local needScroller: boolean= false
   //  @BuilderParam footer?: () => {}
   private refreshLocation : boolean = false //true 内容跟随偏移， false: 内容不偏移
 
-  refreshEnd(location) { //重置Scroller
+  refreshEnd(location: number) { //重置Scroller
     this.needScroller = true
     this.model.refreshState = StackSmartRefresh.REFRESHSTATE.NONE
     //    let that = this
@@ -174,31 +175,31 @@ namespace StackSmartRefresh {
     TOREFRESH = 1,
     REFRESHING = 2,
   }
-
+  @ObservedV2
   export class Model {
     scroller: Scroller = new Scroller()
-    refreshIsShow: boolean = false
-    headerHeight: number = 150 //实际头部高度
-    footerHeight: number = 0
-    initHeaderHeight: number = 150 //标准头部高度
-    initFooterHeight: number = 150
-    downY: number= 0
-    scrollLocation: LOCATION = LOCATION.HEAD
-    refreshDuration: number = 5000 //刷新态持续时间
-    toRefreshDuration: number = 250 //
-    refreshTimeOut: number= 0
-    refreshInterval: number= 0
-    init: boolean = false
-    latestYOffset: number = 0
-    refreshState: REFRESHSTATE = REFRESHSTATE.NONE //刷新状态
-    zIndex: number = 2 //首部zIndex
-    backgroundColor: Color | string | number= Color.Gray //主题色
-    lastRefreshTime: Date = new Date() //上次刷新时间
-    dropMoveState : boolean = false
-    dropUpState : boolean = false
-    waterDropYTopCoordinate = 0
-    waterDropYMiddleCoordinate = 400
-    waterDropYBottomCoordinate = 600
+    @Trace refreshIsShow: boolean = false
+    @Trace headerHeight: number = 150 //实际头部高度
+    @Trace footerHeight: number = 0
+    @Trace initHeaderHeight: number = 150 //标准头部高度
+    @Trace initFooterHeight: number = 150
+    @Trace downY: number= 0
+    @Trace scrollLocation: LOCATION = LOCATION.HEAD
+    @Trace refreshDuration: number = 5000 //刷新态持续时间
+    @Trace toRefreshDuration: number = 250 //
+    @Trace refreshTimeOut: number= 0
+    @Trace refreshInterval: number= 0
+    @Trace init: boolean = false
+    @Trace latestYOffset: number = 0
+    @Trace refreshState: REFRESHSTATE = REFRESHSTATE.NONE //刷新状态
+    @Trace zIndex: number = 2 //首部zIndex
+    @Trace backgroundColor: Color | string | number= Color.Gray //主题色
+    @Trace lastRefreshTime: Date = new Date() //上次刷新时间
+    @Trace dropMoveState : boolean = false
+    @Trace dropUpState : boolean = false
+    @Trace waterDropYTopCoordinate = 0
+    @Trace waterDropYMiddleCoordinate = 400
+    @Trace waterDropYBottomCoordinate = 600
 
     getOffset(): number{ //下拉偏移量，标准为1
       if (this.headerHeight > this.initHeaderHeight) {

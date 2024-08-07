@@ -14,19 +14,20 @@
  */
 import SmartRefreshForStoreHouseSample from "./SmartRefreshForStoreHouseSample"
 
-@Component
+@ComponentV2
 export struct StoreHouse {
-  @Link model: SmartRefreshForStoreHouseSample.Model;
-  @State storeHouseModel: StoreHouseClassModel.StoreHouseModel = new StoreHouseClassModel.StoreHouseModel();
-  @State refresh: boolean  = false;
-  @State whiteIndex: number = -4;
+  @Param @Require model: SmartRefreshForStoreHouseSample.Model;
+  @Event $model: (value: SmartRefreshForStoreHouseSample.Model) => void = (value: SmartRefreshForStoreHouseSample.Model) => {}
+  @Local storeHouseModel: StoreHouseClassModel.StoreHouseModel = new StoreHouseClassModel.StoreHouseModel();
+  @Local refresh: boolean  = false;
+  @Local whiteIndex: number = -4;
   private status = SmartRefreshForStoreHouseSample.REFRESHSTATE.NONE;
   private beforeDemand:string = "E"
   private beforeColor:string = "#000000";
-  @State whiteIndexCommandStr:string = "M24.5 1 L1 1";
-  @State whiteIndexCommandStrOne:string = "M24.5 1 L1 1";
-  @State whiteIndexCommandStrTwo:string = "M24.5 1 L1 1";
-  @State whiteIndexCommandStrThree:string = "M24.5 1 L1 1";
+  @Local whiteIndexCommandStr:string = "M24.5 1 L1 1";
+  @Local whiteIndexCommandStrOne:string = "M24.5 1 L1 1";
+  @Local whiteIndexCommandStrTwo:string = "M24.5 1 L1 1";
+  @Local whiteIndexCommandStrThree:string = "M24.5 1 L1 1";
 
   aboutToAppear() {
     this.storeHouseModel.change();
@@ -161,8 +162,9 @@ export struct StoreHouse {
 }
 
 namespace StoreHouseClassModel {
+  @ObservedV2
   export class StoreHouseModel {
-    sourceArrays: Array<Array<number>> = [
+    @Trace sourceArrays: Array<Array<number>> = [
       [
         // A
         24, 0, 1, 22,
@@ -461,7 +463,7 @@ namespace StoreHouseClassModel {
         24, 60, 24, 72
       ]
     ];
-    Trademark: Array<number> = [
+    @Trace Trademark: Array<number> = [
       22, 0, 0, 30,
       22, 0, 30, 0,
       30, 0, 52, 30,
@@ -479,7 +481,7 @@ namespace StoreHouseClassModel {
       206, 0, 228, 30,
       176, 30, 202, 30,
     ]
-    Chinese: Array<number> = [
+    @Trace Chinese: Array<number> = [
       0, 17, 30, 17,
       30, 17, 30, 47,
       25, 40, 30, 47,
@@ -505,7 +507,7 @@ namespace StoreHouseClassModel {
       140, 32, 180, 32,
       160, 0, 160, 57
     ]
-    Icon: Array<number> = [
+    @Trace Icon: Array<number> = [
       0, 35, 12, 42,
       12, 42, 24, 35,
       24, 35, 12, 28,
@@ -521,16 +523,16 @@ namespace StoreHouseClassModel {
       24, 7, 12, 0,
       0, 7, 12, 0,
     ]
-    map:Map<string, Array<number>> = new Map<string, Array<number>>();
-    ArrNumber: Array<number> = [];
-    Arr: Array<string> = [];
-    interval: number = 66;
-    demand: string = "E"; //C:中文 E:英文 I:图标 T:商标 N:数字
-    color: string = "#000000";
-    English: string = 'StoreHouse';
-    margin: number = 35; //顶部间隔
-    scale: number = 0.5;
-    Number: number = 0;
+    @Trace map:Map<string, Array<number>> = new Map<string, Array<number>>();
+    @Trace ArrNumber: Array<number> = [];
+    @Trace Arr: Array<string> = [];
+    @Trace interval: number = 66;
+    @Trace demand: string = "E"; //C:中文 E:英文 I:图标 T:商标 N:数字
+    @Trace color: string = "#000000";
+    @Trace English: string = 'StoreHouse';
+    @Trace margin: number = 35; //顶部间隔
+    @Trace scale: number = 0.5;
+    @Trace Number: number = 0;
 
     change() {
       this.Arr.length = this.ArrNumber.length = 0;

@@ -14,9 +14,10 @@
  */
 import SmartRefreshForFlyRefresh from "./SmartRefreshForFlyRefresh"
 
-@Component
+@ComponentV2
 export struct FlyRefreshHeaderAircraft {
-  @Link modelParam: SmartRefreshForFlyRefresh.Model
+  @Param @Require modelParam: SmartRefreshForFlyRefresh.Model = new SmartRefreshForFlyRefresh.Model()
+  @Event $modelParam: (value: SmartRefreshForFlyRefresh.Model) => void = (value: SmartRefreshForFlyRefresh.Model) => {}
   private mScale: number= 0
   protected mScaleX: number = 1
   protected mScaleY: number = 1
@@ -24,11 +25,11 @@ export struct FlyRefreshHeaderAircraft {
   protected mBranch: Path2D = new Path2D();
   private x: number = 0
   private y: number = 0
-  @State private angle: number = 0
+  @Local angle: number = 0
   private isClick: boolean = true
   private isAdd: boolean = false
   private initHeight = this.modelParam.initHeaderHeight
-  @State refresh: boolean= true
+  @Local refresh: boolean= true
   private isRefreshState: boolean = false
   aboutToAppear(){
     this.modelParam.setRefreshHeaderCallback(() => this.startDraw())

@@ -22,9 +22,9 @@ class ArrParam {
   color:string = "";
 }
 @Entry
-@Component
+@ComponentV2
 struct TaurusSample {
-  @State model: SmartRefreshForTaurus.Model = new SmartRefreshForTaurus.Model()
+  @Local model: SmartRefreshForTaurus.Model = new SmartRefreshForTaurus.Model()
   private arr: Array<ArrParam> = [
     {index:11, name: '折叠', color: '1' },
     {index:22, name: '展开', color: '2' },
@@ -43,7 +43,7 @@ struct TaurusSample {
   }
 
   @Builder testHeader() {
-    Taurus({ model: $model })
+    Taurus({ model: this.model!! })
   }
 
   @Builder testMain() {
@@ -110,14 +110,14 @@ struct TaurusSample {
 
   @Builder testFooter() {
     Column() {
-      TaurusBottomRefresh({ model: $model })
+      TaurusBottomRefresh({ model: this.model!! })
     }.width("100%")
   }
 
   build() {
     Column() {
       SmartRefreshForTaurus({
-        model: $model,
+        model: this.model!!,
         header: () => {
           this.testHeader()
         },

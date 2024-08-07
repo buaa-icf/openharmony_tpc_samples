@@ -16,13 +16,13 @@ import { SmartRefreshForStoreHouseSample } from "@ohos/smartrefreshlayout"
 import { StoreHouse } from "@ohos/smartrefreshlayout"
 
 @Entry
-@Component
+@ComponentV2
 struct StoreHouseSample {
-  @State modelStore: SmartRefreshForStoreHouseSample.Model = new SmartRefreshForStoreHouseSample.Model()
+  @Local modelStore: SmartRefreshForStoreHouseSample.Model = new SmartRefreshForStoreHouseSample.Model()
   arr: string[] = ['显示中文', '显示英文', '显示图标', '显示商标', '显示数字', '蓝色主题', '绿色主题', '橙色主题', '橙色主题', '橙色主题', '橙色主题']
 
   @Builder testHeader() {
-     StoreHouse({model: $modelStore})
+     StoreHouse({model: this.modelStore!!})
   }
 
   @Builder testMain() {
@@ -55,7 +55,7 @@ struct StoreHouseSample {
   build() {
     Column() {
       SmartRefreshForStoreHouseSample({
-        modelStoreHouse: $modelStore,
+        modelStoreHouse: this.modelStore!!,
         header: () => {
           this.testHeader()
         }, main: () => {

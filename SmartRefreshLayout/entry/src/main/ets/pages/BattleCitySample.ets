@@ -23,7 +23,7 @@ class ThemeParam{
 }
 
 @Entry
-@Component
+@ComponentV2
 struct BattleCitySample {
   arr: Array<ThemeParam> = [
     {index: 1, name: '默认主题', color: '#ffffff' },
@@ -38,7 +38,7 @@ struct BattleCitySample {
     {index: 10, name: '橙色主题', color: '#ffbb33' },
     {index: 11, name: '橙色主题', color: '#ffbb33' },
   ]
-  @State model: SmartRefreshForGame.Model = new SmartRefreshForGame.Model()
+  @Local model: SmartRefreshForGame.Model = new SmartRefreshForGame.Model()
 
   public aboutToAppear() {
     this.model.setBackgroundColor('#ffffff')
@@ -47,7 +47,7 @@ struct BattleCitySample {
 
 
   @Builder testHeader() {
-    BattleCity({ model: $model })
+    BattleCity({ model: this.model!! })
   }
 
   @Builder testMain() {
@@ -83,7 +83,7 @@ struct BattleCitySample {
   build() {
     Column() {
       SmartRefreshForGame({
-        modelGame: $model,
+        modelGame: this.model!!,
         header: () => {
           this.testHeader()
         },

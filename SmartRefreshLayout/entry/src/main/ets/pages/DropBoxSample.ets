@@ -28,9 +28,9 @@ class ThemeParam{
   backgroundColor:number = 0;
 }
 @Entry
-@Component
+@ComponentV2
 struct DropBoxSample {
-  @State model: SmartRefreshForDropBoxSample.Model = new SmartRefreshForDropBoxSample.Model()
+  @Local model: SmartRefreshForDropBoxSample.Model = new SmartRefreshForDropBoxSample.Model()
   theme:ThemeParam[] = [
     {text:"默认主题颜色",label:"更改为默认主题颜色",boxColor:[0xff4169E1,0xff6ea9ff],backgroundColor:0xff283645},
     {text:"橙色主题颜色",label:"更改为橙色主题颜色",boxColor:[0xffffe4b5,0xfffffafa],backgroundColor:0xffffbb33},
@@ -48,7 +48,7 @@ struct DropBoxSample {
   arr: arrParam[] = [{index:0,content:'内容不偏移'}, {index:1,content:'内容跟随偏移'}, {index:2,content:'默认主题'},{index:3,content:'橙色主题'},
     {index:4,content:'红色主题'}, {index:5,content:'绿色主题'}, {index:6,content:'蓝色主题'}, {index:7,content:'蓝色主题'}, {index:8,content:'蓝色主题'}, {index:9,content:'蓝色主题'}]
   @Builder dropBoxHeader() {
-    DropBox({ model: $model, boxColor:this.boxColor})
+    DropBox({ model: this.model!!, boxColor:this.boxColor})
   }
   @Builder card(i:number) {
     Row() {
@@ -80,7 +80,7 @@ struct DropBoxSample {
   }
   @Builder dropBoxFooter() {
     Column() {
-      DropBoxBottomRefresh({ model: $model ,boxColor:this.boxColor})
+      DropBoxBottomRefresh({ model: this.model!! ,boxColor:this.boxColor})
     }.width("100%").padding("20lpx")
   }
 
@@ -91,7 +91,7 @@ struct DropBoxSample {
   build() {
     Column() {
       SmartRefreshForDropBoxSample({
-        modelDropBox: $model,
+        modelDropBox: this.model!!,
         header: () => {
           this.dropBoxHeader()
         }, main: () => {

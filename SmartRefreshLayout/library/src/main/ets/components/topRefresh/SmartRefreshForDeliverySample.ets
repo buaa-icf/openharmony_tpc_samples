@@ -13,22 +13,23 @@
  * limitations under the License.
  */
 
-@Component
+@ComponentV2
 struct SmartRefreshForDeliverySample {
-  @Link modelDelivery: SmartRefreshForDeliverySample.Model
+  @Param @Require modelDelivery: SmartRefreshForDeliverySample.Model
+  @Event $modelDelivery: (value: SmartRefreshForDeliverySample.Model) => void = (value: SmartRefreshForDeliverySample.Model) => {}
   @BuilderParam header?: () => void
   @BuilderParam main?: () => void
   @BuilderParam footer?: () => void
   private needScroller: boolean = false
-  @State headerIsVisibleLoadMore :boolean = true
-  @State footerIsVisibleLoadMore :boolean = false
-  @State headerHeight: number = 0
-  @State footerHeight: number = 0
-  @State scrollerIsEnableRollWhenRefreshing: boolean = true
+  @Local headerIsVisibleLoadMore :boolean = true
+  @Local footerIsVisibleLoadMore :boolean = false
+  @Local headerHeight: number = 0
+  @Local footerHeight: number = 0
+  @Local scrollerIsEnableRollWhenRefreshing: boolean = true
 
-  @State scrollHeight : number = 0
-  @State footerHeightPercentage: string = "0%"
-  @State scrollHeightPercentage : string = "100%"
+  @Local scrollHeight : number = 0
+  @Local footerHeightPercentage: string = "0%"
+  @Local scrollHeightPercentage : string = "100%"
   private scrollAreaChangeHeight : number = 0
   private columnAreaChangeHeight: number = 0
 
@@ -454,115 +455,115 @@ namespace SmartRefreshForDeliverySample {
     //变换样式：Translate(平行移动 底部)、Scale（拉伸形变）、FixedBehind（固定在背后固定于顶部）
     TRANSLATE = 0, SCALE = 1, FIXEDBEHIND = 2
   }
-
+  @ObservedV2
   export class Model {
     scroller: Scroller = new Scroller()
-    headerHeight: number = 10 //实际头部高度
-    initHeaderHeight: number = 200 //标准头部高度
+    @Trace headerHeight: number = 10 //实际头部高度
+    @Trace initHeaderHeight: number = 200 //标准头部高度
 
-    downY: number= 0
-    currentMouseX: number = 0 //获取下拉中鼠标的X轴坐标
-    scrollLocation: LOCATION = LOCATION.HEAD
-    refreshDuration: number = 5000 //刷新态持续时间
-    toRefreshDuration: number = 250
-    refreshTimeOut: number= 0
-    refreshInterval: number= 0
-    initRefreshing: boolean = true
-    latestYOffset: number = 0
-    refreshState: REFRESHSTATE = REFRESHSTATE.NONE //刷新状态
-    zHeaderIndex: number = 2 //首部zIndex
-    zMainIndex: number = 2;
-    zFooterIndex: number = 2;
-    backgroundColor: Color | string | number= Color.Gray //主题色
-    accentColor: Color = Color.White //内容颜色
-    lastRefreshTime: Date = new Date() //上次刷新时间
+    @Trace downY: number= 0
+    @Trace currentMouseX: number = 0 //获取下拉中鼠标的X轴坐标
+    @Trace scrollLocation: LOCATION = LOCATION.HEAD
+    @Trace refreshDuration: number = 5000 //刷新态持续时间
+    @Trace toRefreshDuration: number = 250
+    @Trace refreshTimeOut: number= 0
+    @Trace refreshInterval: number= 0
+    @Trace initRefreshing: boolean = true
+    @Trace latestYOffset: number = 0
+    @Trace refreshState: REFRESHSTATE = REFRESHSTATE.NONE //刷新状态
+    @Trace zHeaderIndex: number = 2 //首部zIndex
+    @Trace zMainIndex: number = 2;
+    @Trace zFooterIndex: number = 2;
+    @Trace backgroundColor: Color | string | number= Color.Gray //主题色
+    @Trace accentColor: Color = Color.White //内容颜色
+    @Trace lastRefreshTime: Date = new Date() //上次刷新时间
     refreshHeaderDataCallback: () => void = () => {};//刷新头部数据回调
     refreshBottomDataCallback: () => void = () => {};//刷新头部数据回调
     refreshHeaderCallback: () => void = ()=>{} //刷新时的回调
-    refreshHeaderCallbackState: boolean = true
+    @Trace refreshHeaderCallbackState: boolean = true
     refreshBottomCallback: () => void = ()=>{} //刷新时的回调
-    refreshBottomCallbackState: boolean = false
-    disableContentWhenRefresh : boolean = false //下拉过程是否支持列表滚动
-    disableContentWhenLoading : boolean = false //上拉过程是否支持列表滚动
-    enableLoadMoreWhenContentNotFull : boolean = false //在内容不满一页的时候，是否可以上拉加载更多
-    headerTriggerRate : number = 1
-    refreshFinishStopDuration: number = 1000
-    enableScrollContentWhenLoaded: boolean = true //是否在加载完成之后滚动内容显示新数据
+    @Trace refreshBottomCallbackState: boolean = false
+    @Trace disableContentWhenRefresh : boolean = false //下拉过程是否支持列表滚动
+    @Trace disableContentWhenLoading : boolean = false //上拉过程是否支持列表滚动
+    @Trace enableLoadMoreWhenContentNotFull : boolean = false //在内容不满一页的时候，是否可以上拉加载更多
+    @Trace headerTriggerRate : number = 1
+    @Trace refreshFinishStopDuration: number = 1000
+    @Trace enableScrollContentWhenLoaded: boolean = true //是否在加载完成之后滚动内容显示新数据
 
     //waveSwipe
-    downYOffset = 0
-    fixedContent: boolean = true
-    oldFixedContent: boolean = true
-    waterDropYTopCoordinate = 0
-    waterDropYMiddleCoordinate = 400
-    waterDropYBottomCoordinate = 600
+    @Trace downYOffset = 0
+    @Trace fixedContent: boolean = true
+    @Trace oldFixedContent: boolean = true
+    @Trace waterDropYTopCoordinate = 0
+    @Trace waterDropYMiddleCoordinate = 400
+    @Trace waterDropYBottomCoordinate = 600
     //classics
-    classicsSpinnerStyle: ClassicsSpinnerStyleEnum =  ClassicsSpinnerStyleEnum.FIXEDBEHIND
-    drawableSize : number = 100
-    drawableArrow :boolean = true
-    drawableArrowSize : number = 100
-    drawableProgress : boolean = true
-    drawableProgressSize: number = 50
-    drawableMarginRight: number = 130
-    timeShowState: boolean = true
-    headerRefreshId: number = 0
-    bottomRefreshId: number = 0
-    backgroundShadowColor: Color = Color.Gray
-    refreshHeaderPullDown: string = "下拉刷新"
-    refreshHeaderRelease : string = "释放刷新"
-    refreshHeaderRefreshing: string  = "正在刷新"
-    refreshHeaderRefreshFinish: string  = "完成刷新"
-    refreshHeaderFailed : string = "刷新失败"
-    textSizeTitle : number = 30//标题文字大小
-    textSizeTime: number = 22//设置时间文字大小
-    textTimeMarginTop: number = 10//设置上边距
+    @Trace classicsSpinnerStyle: ClassicsSpinnerStyleEnum =  ClassicsSpinnerStyleEnum.FIXEDBEHIND
+    @Trace drawableSize : number = 100
+    @Trace drawableArrow :boolean = true
+    @Trace drawableArrowSize : number = 100
+    @Trace drawableProgress : boolean = true
+    @Trace drawableProgressSize: number = 50
+    @Trace drawableMarginRight: number = 130
+    @Trace timeShowState: boolean = true
+    @Trace headerRefreshId: number = 0
+    @Trace bottomRefreshId: number = 0
+    @Trace backgroundShadowColor: Color = Color.Gray
+    @Trace refreshHeaderPullDown: string = "下拉刷新"
+    @Trace refreshHeaderRelease : string = "释放刷新"
+    @Trace refreshHeaderRefreshing: string  = "正在刷新"
+    @Trace refreshHeaderRefreshFinish: string  = "完成刷新"
+    @Trace refreshHeaderFailed : string = "刷新失败"
+    @Trace textSizeTitle : number = 30//标题文字大小
+    @Trace textSizeTime: number = 22//设置时间文字大小
+    @Trace textTimeMarginTop: number = 10//设置上边距
 
     //storeHouse
-    textColor : Color = Color.Red
+    @Trace textColor : Color = Color.Red
 
     //materialRefresh
-    progressBackgroundColorSchemeResource: Color[] =  [Color.Blue, Color.Red, Color.Green]
+    @Trace progressBackgroundColorSchemeResource: Color[] =  [Color.Blue, Color.Red, Color.Green]
 
     //bottom
-    footerHeight: number = 210 //实际头部高度
-    initFooterHeight: number = 210
-    firstArriveBottomEdgeOffsetY: number = 0
-    dragArriveBottomEdgeState: boolean = true
-    dragDirection: boolean = true //true：下拉  false上拉
-    initScrollerYOffset: number = 0
-    tempTitleHeight: number = this.initHeaderHeight
-    tempDownY: number = -1
-    titleName: string = ''
-    expand: boolean = false
-    flyRefreshHeaderIsShow: boolean = false
-    scrollerEndYOffset: number = 0 //和scrollerEndState结合使用
-    scrollerEndState: boolean = false//和scrollerEndYOffset结合使用
-    srlHeaderInsetStart: number = 0//Header的起始偏移量
-    srlFooterInsetStart: number = 0//Footer的起始偏移量
-    enableRefresh:boolean = true;//是否开启下拉刷新功能（默认true）
-    enableLoadMore: boolean = true;//是否开启上拉加载功能（默认true）
-    dragRate: number = 0.8	//显示拖动高度/真实拖动高度（默认0.5，阻尼效果）
-    headerMaxDragRate: number = 0.8	//阻尼效果（默认0.8，要求<=1）
-    footerMaxDragRate: number = 0.8  //Footer阻尼效果（默认0.8，要求<=1）
+    @Trace footerHeight: number = 210 //实际头部高度
+    @Trace initFooterHeight: number = 210
+    @Trace firstArriveBottomEdgeOffsetY: number = 0
+    @Trace dragArriveBottomEdgeState: boolean = true
+    @Trace dragDirection: boolean = true //true：下拉  false上拉
+    @Trace initScrollerYOffset: number = 0
+    @Trace tempTitleHeight: number = this.initHeaderHeight
+    @Trace tempDownY: number = -1
+    @Trace titleName: string = ''
+    @Trace expand: boolean = false
+    @Trace flyRefreshHeaderIsShow: boolean = false
+    @Trace scrollerEndYOffset: number = 0 //和scrollerEndState结合使用
+    @Trace scrollerEndState: boolean = false//和scrollerEndYOffset结合使用
+    @Trace srlHeaderInsetStart: number = 0//Header的起始偏移量
+    @Trace srlFooterInsetStart: number = 0//Footer的起始偏移量
+    @Trace enableRefresh:boolean = true;//是否开启下拉刷新功能（默认true）
+    @Trace enableLoadMore: boolean = true;//是否开启上拉加载功能（默认true）
+    @Trace dragRate: number = 0.8	//显示拖动高度/真实拖动高度（默认0.5，阻尼效果）
+    @Trace headerMaxDragRate: number = 0.8	//阻尼效果（默认0.8，要求<=1）
+    @Trace footerMaxDragRate: number = 0.8  //Footer阻尼效果（默认0.8，要求<=1）
 
     //bottomClassics
-    classicsBottomSpinnerStyle: ClassicsSpinnerStyleEnum =  ClassicsSpinnerStyleEnum.FIXEDBEHIND
-    classicsBottomDrawableArrow :boolean = true
-    classicsBottomDrawableSize : number = 100
-    classicsBottomDrawableArrowSize : number = 100
-    classicsBottomDrawableMarginRight: number = 130
-    classicsBottomRefreshPullDown: string = "上拉刷新"
-    classicsBottomRefreshRelease : string = "释放刷新"
-    classicsBottomRefreshRefreshing: string  = "正在刷新"
-    classicsBottomRefreshFailed : string = "刷新失败"
-    classicsBottomTextSizeTitle : number = 30//标题文字大小
-    classicsBottomTextSizeTime: number = 22//设置时间文字大小
-    classicsBottomAccentColor: Color = Color.White
-    footerTriggerRate: number = 1
+    @Trace classicsBottomSpinnerStyle: ClassicsSpinnerStyleEnum =  ClassicsSpinnerStyleEnum.FIXEDBEHIND
+    @Trace classicsBottomDrawableArrow :boolean = true
+    @Trace classicsBottomDrawableSize : number = 100
+    @Trace classicsBottomDrawableArrowSize : number = 100
+    @Trace classicsBottomDrawableMarginRight: number = 130
+    @Trace classicsBottomRefreshPullDown: string = "上拉刷新"
+    @Trace classicsBottomRefreshRelease : string = "释放刷新"
+    @Trace classicsBottomRefreshRefreshing: string  = "正在刷新"
+    @Trace classicsBottomRefreshFailed : string = "刷新失败"
+    @Trace classicsBottomTextSizeTitle : number = 30//标题文字大小
+    @Trace classicsBottomTextSizeTime: number = 22//设置时间文字大小
+    @Trace classicsBottomAccentColor: Color = Color.White
+    @Trace footerTriggerRate: number = 1
 
-    refreshPosition: RefreshPositionEnum = RefreshPositionEnum.TOPANDBOTTOM
-    headerIsRefresh: boolean = true
-    footerIsRefresh: boolean = true
+    @Trace refreshPosition: RefreshPositionEnum = RefreshPositionEnum.TOPANDBOTTOM
+    @Trace headerIsRefresh: boolean = true
+    @Trace footerIsRefresh: boolean = true
 
     setEnableScrollContentWhenLoaded(enableScrollContentWhenLoaded: boolean) : Model{
       this.enableScrollContentWhenLoaded = enableScrollContentWhenLoaded
