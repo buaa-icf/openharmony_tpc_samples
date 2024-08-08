@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-import JSZip, { JSZipFileOptions } from "jszip";
+import JSZip, { JSZipFileOptions } from "@ohos/jszip";
 
 type Done = () => void
 const BASE_COUNT: number = 2000;
