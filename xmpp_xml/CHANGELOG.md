@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.1
+- 补充repository内容
+
 ## [v1.0.0] 2024-05
 - 创建xml元素。
 - 解析XML字符串。
