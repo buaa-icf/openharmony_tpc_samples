@@ -34,14 +34,19 @@ class Socket extends EventEmitter {
         port: port != "5223" ? 5223 : parseInt(port)
       }
     };
+    try{
       await tls.bind(options.address)
       tls.connect(options, (err) => {
         if (!err) {
           console.info('tlsSocket-----------------connect')
         } else {
-          console.info('tlsSocket-----------------connect-err' + JSON.stringify(err))
+          console.error('tlsSocket-----------------connect-err' , JSON.stringify(err))
         }
       })
+    } catch (e) {
+      this.emit('close');
+      console.error('tls-connect-error',JSON.stringify(e))
+    }
     this._attachSocket(tls);
   }
   _attachSocket(socket) {
@@ -62,7 +67,8 @@ class Socket extends EventEmitter {
     this.socket.on('error',(err)=>{
       // this.emit("error",  new Error(err.errorString));
       // this.emit("error",  err);
-      console.info("the--xmpp--error-is---"+JSON.stringify(err))
+      this.emit('close');
+      console.info("the--xmpp--error-is---"+JSON.stringify(err));
     })
     this.socket.on('connect',()=>{
       if (this.socket.getProtocol() !== "TLSv1.3") {
