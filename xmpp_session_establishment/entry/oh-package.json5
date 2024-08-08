@@ -1,6 +1,6 @@
 {
   "name": "entry",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "用于在 XMPP 客户端和服务器之间建立会话的库",
   "main": "",
   "author": "",
