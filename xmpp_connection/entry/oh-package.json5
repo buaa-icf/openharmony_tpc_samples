@@ -1,6 +1,6 @@
 {
   "name": "entry",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Please describe the basic information.",
   "main": "",
   "author": "",
@@ -8,7 +8,7 @@
   "dependencies": {
     "@ohos/xmpp_connection": "file:../library",
     "@xmpp/events": "^0.13.0",
-    "@ohos/xmpp_xml": "1.0.0"
+    "@ohos/xmpp_xml": "^1.0.0"
   }
 }
 
