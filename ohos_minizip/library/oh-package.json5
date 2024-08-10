@@ -15,7 +15,7 @@
   "main": "index.ets",
   "type": "module",
   "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_minizip",
-  "version": "1.0.0",
+  "version": "1.0.1-rc.0",
   "tags": [
 
   ],

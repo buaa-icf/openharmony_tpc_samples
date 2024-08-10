@@ -23,7 +23,7 @@ export function unzipToDirectory(selectPath: string, targetPath: string, passwor
       reject("selectPath not exists");
     }
     if(!fs.accessSync(targetPath)) {
-      fs.mkdirSync(targetPath);
+      fs.mkdirSync(targetPath, true);
     }
     if(!password) {
       password = ""
@@ -37,7 +37,7 @@ export function unzipToDirectory(selectPath: string, targetPath: string, passwor
         let path: string = targetPath + "/" + entryNames[i];
         if(entryNames[i].endsWith("/")) {
           if(!fs.accessSync(path)) {
-            fs.mkdirSync(path);
+            fs.mkdirSync(path, true);
           }
         } else {
           let arrBuffer: ArrayBuffer | undefined = minizipEntry.ExtractFileToJS(entryNames[i], password);
