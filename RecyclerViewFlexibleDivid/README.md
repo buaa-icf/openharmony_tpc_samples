@@ -3,6 +3,12 @@
 ## 简介
 RecyclerViewFlexibleDivid是一款提供数据列表分割线的库
 
+## 下载安装
+
+```
+ohpm install @ohos/recyclerviewflexibledivid
+```
+OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
 ## 使用说明
 - 步骤一
