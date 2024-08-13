@@ -16,7 +16,6 @@
 import { CommonConstants } from '../CommonConstants';
 import Logger from '../Logger';
 import MediaLibraryUtils from '../MediaLibraryUtils';
-import mediaLibrary from '@ohos.multimedia.mediaLibrary';
 import media from '@ohos.multimedia.media';
 import audio from '@ohos.multimedia.audio';
 import { CacheListener, FileNameGenerator, HttpProxyCacheServer, HttpProxyCacheServerBuilder } from '@ohos/video-cache';

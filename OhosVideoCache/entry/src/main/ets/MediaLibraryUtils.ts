@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 
-import mediaLibrary from '@ohos.multimedia.mediaLibrary';
 import media from '@ohos.multimedia.media';
 import common from '@ohos.app.ability.common';
 import Logger from './Logger';
