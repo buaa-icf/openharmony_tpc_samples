@@ -308,7 +308,7 @@ export default function abilityTest() {
         }
         endTime(startTime,'decode_null');
       } catch (e) {
-        expect(e.message).assertEqual('The type of Parameter must be Uint8Array.')
+        expect(e.message).assertEqual('Parameter error. The type of Parameter must be Uint8Array.')
       }
     })
 
@@ -321,7 +321,7 @@ export default function abilityTest() {
         }
         endTime(startTime,'decode_undefined');
       } catch (e) {
-        expect(e.message).assertEqual('The type of Parameter must be Uint8Array.')
+        expect(e.message).assertEqual('Parameter error. The type of Parameter must be Uint8Array.')
       }
     })
 
