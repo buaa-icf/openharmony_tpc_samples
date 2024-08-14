@@ -18,17 +18,17 @@ import taskpool from '@ohos.taskpool';
 import promptAction from '@ohos.promptAction'
 
 @Concurrent
-function myAsyncFunction(selectFilePath : string, password : string){
+function myAsyncFunction(selectFilePath: string, password: string) {
   let startTime: number = Date.now();
   let minizipEntry = new MinizipNative(selectFilePath);
   minizipEntry.SetCharEncoding(936);
-  if(minizipEntry.Open() == 0){
+  if (minizipEntry.Open() == 0) {
     let entryNames = minizipEntry.GetEntryNames();
     for (let i = 0; i < entryNames.length; i++) {
       console.log('names:' + entryNames[i]);
-      if(!entryNames[i].endsWith("/")) {
+      if (!entryNames[i].endsWith("/")) {
         let arrBuffer = minizipEntry.ExtractFileToJS(entryNames[i], password);
-        if(arrBuffer != undefined) {
+        if (arrBuffer != undefined) {
           console.log('' + arrBuffer.byteLength);
         } else {
           console.log('' + arrBuffer);
@@ -55,7 +55,7 @@ function myAsyncFunction(selectFilePath : string, password : string){
 }
 
 @Concurrent
-function myAsyncFunction1(selectFilePath : string, targetPath: string, password : string){
+function myAsyncFunction1(selectFilePath: string, targetPath: string, password: string) {
   let startTime: number = Date.now();
   unzipToDirectory(selectFilePath, targetPath, password).then((data: string) => {
     let endTime: number = Date.now();
@@ -85,7 +85,7 @@ struct Index {
     Row() {
       Column() {
 
-        TextInput({placeholder: "输入密码"})
+        TextInput({ placeholder: "输入密码" })
           .margin(10)
           .onChange((value: string) => {
             this.password = value;
@@ -106,7 +106,7 @@ struct Index {
           this.asyncGet(this.selectFilePath, this.password);
         })
 
-        TextInput({placeholder: "解压到文件夹"})
+        TextInput({ placeholder: "解压到文件夹" })
           .margin(10)
           .onChange((value: string) => {
             this.directory = value;
@@ -133,13 +133,13 @@ struct Index {
     .height('100%')
   }
 
-  async asyncGet(paths:string, password : string): Promise<void> {
-  let task: taskpool.Task = new taskpool.Task(myAsyncFunction, paths, password);
-  await taskpool.execute(task);
-  console.info("taskpool: task end");
-}
+  async asyncGet(paths: string, password: string): Promise<void> {
+    let task: taskpool.Task = new taskpool.Task(myAsyncFunction, paths, password);
+    await taskpool.execute(task);
+    console.info("taskpool: task end");
+  }
 
-  async asyncGet1(selectFilePath : string, targetPath: string, password : string): Promise<void> {
+  async asyncGet1(selectFilePath: string, targetPath: string, password: string): Promise<void> {
     let task: taskpool.Task = new taskpool.Task(myAsyncFunction1, selectFilePath, targetPath, password);
     await taskpool.execute(task);
     console.info("taskpool: task end");

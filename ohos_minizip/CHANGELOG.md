@@ -3,6 +3,7 @@
 - 修复中文乱码问题
   - 新增接口SetCharEncoding(charEncoding : number)
 - 修复创建多层级目录失败问题
+- 修复unzipToDirectory接口解压0kb文件失败问题
 
 ## 1.0.0
 
