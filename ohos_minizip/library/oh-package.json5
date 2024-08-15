@@ -21,7 +21,7 @@
   ],
   "dependencies": {
     "libminizip_ng.so": "file:./src/main/cpp/types/libminizip_ng",
-    "@ohos/aki": "^1.2.7"
+    "@ohos/aki": "1.2.7"
   },
   "license": "Apache License-2.0",
   "devDependencies": {},
