@@ -17,7 +17,7 @@ import { MinizipNative } from "libminizip_ng.so"
 import fs from '@ohos.file.fs';
 import { BusinessError } from '@ohos.base';
 
-export function unzipToDirectory(selectPath: string, targetPath: string, password?: string): Promise<string> {
+export function unzipToDirectory(selectPath: string, targetPath: string, password?: string, charEncoding?: number): Promise<string> {
   return new Promise((resolve, reject) => {
     if(!fs.accessSync(selectPath)) {
       reject("selectPath not exists");
@@ -29,7 +29,9 @@ export function unzipToDirectory(selectPath: string, targetPath: string, passwor
       password = ""
     }
     let minizipEntry = new MinizipNative(selectPath);
-    minizipEntry.SetCharEncoding(936);
+    if(!!charEncoding) {
+      minizipEntry.SetCharEncoding(charEncoding);
+    }
     let code: number = minizipEntry.Open()
     if(code == 0) {
       let entryNames: Array<string> = minizipEntry.GetEntryNames();
