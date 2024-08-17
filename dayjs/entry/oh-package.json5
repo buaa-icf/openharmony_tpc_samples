@@ -7,6 +7,6 @@
   "main": "",
   "version": "1.0.0",
   "dependencies": {
-    "dayjs": "^1.11.7"
+    "dayjs": "^1.11.13"
   }
 }
