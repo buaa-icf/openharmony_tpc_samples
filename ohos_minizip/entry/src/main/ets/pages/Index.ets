@@ -57,7 +57,7 @@ function myAsyncFunction(selectFilePath: string, password: string) {
 @Concurrent
 function myAsyncFunction1(selectFilePath: string, targetPath: string, password: string) {
   let startTime: number = Date.now();
-  unzipToDirectory(selectFilePath, targetPath, password).then((data: string) => {
+  unzipToDirectory(selectFilePath, targetPath, password, 936).then((data: string) => {
     let endTime: number = Date.now();
     console.log("unzip time: " + (endTime - startTime));
     promptAction.showToast({
