@@ -106,12 +106,12 @@ struct SmartRefreshSecond {
           .scrollable(ScrollDirection.Vertical)
           .scrollBar(BarState.Off)
           .onScrollEdge((side: Edge) => {
-            if (side == 0) { //滑动到顶部
+            if (side == Edge.Top) { //滑动到顶部
               this.model.refreshHeaderCallbackState = true
               this.model.refreshBottomCallbackState = false
               this.model.scrollLocation = SmartRefreshSecond.LOCATION.HEAD
             }
-            if (side == 2) { //滑动到底部
+            if (side == Edge.Bottom) { //滑动到底部
               if (this.model.dragArriveBottomEdgeState) {
                 this.model.dragArriveBottomEdgeState = false
                 this.model.refreshBottomCallbackState = true
@@ -389,6 +389,9 @@ namespace SmartRefreshSecond {
     @Trace scrollerEndYOffset: number = 0 //和scrollerEndState结合使用
     @Trace scrollerEndState: boolean = false//和scrollerEndYOffset结合使用
 
+    constructor(fixedContent: boolean) {
+      this.fixedContent = fixedContent
+    }
 
     setExpand(expand: boolean) {
       this.expand = expand
