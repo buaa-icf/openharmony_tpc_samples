@@ -1,4 +1,5 @@
 {
+  "modelVersion": "5.0.0",
   "license": "Apache-2.0",
   "devDependencies": {
     "@ohos/hypium": "1.0.6"
@@ -7,6 +8,6 @@
   "name": "smartrefreshlayout",
   "description": "A sliding list library with animated pull-up refresh and pull-down loading",
   "main": "",
-  "version": "2.1.0-rc.0",
+  "version": "2.1.0-rc.1",
   "dependencies": {}
 }
