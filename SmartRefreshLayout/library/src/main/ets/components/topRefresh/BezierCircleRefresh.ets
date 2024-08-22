@@ -129,9 +129,7 @@ export struct BezierCircle {
           }
           this.smoothPathCmd = `M0 0 L0 ${initTopHeight} S${this.screenWidth / 2} ${bottomCircleStartY} ${this.screenWidth} ${initTopHeight} L${this.screenWidth} 0 Z`;
         }
-
         this.onDraw()
-        this.refresh = !this.refresh
       }, 30)
   }
 
@@ -147,21 +145,17 @@ export struct BezierCircle {
 
   build() {
     Flex() {
-      if (this.refresh) {
-        Text("0").visibility(Visibility.None)
-      } else {
-        Text("1").visibility(Visibility.None)
-      }
+
       if (this.model.refreshState == smartRefreshSecond.REFRESHSTATE.REFRESHING) {//松开过后的刷新样式
           Stack( { alignContent: Alignment.Center }) {
-            Path().width("100%").height(this.model.headerHeight).commands(this.smoothPathCmd).backgroundColor(Color.White).fill(this.model.getBackgroundColor())
+            Path().width("100%").height(this.model.headerHeight).commands(this.smoothPathCmd).backgroundColor(Color.Gray).fill(this.model.getBackgroundColor())
             Path() //圆的轨道
               .strokeWidth(3)
               .stroke(Color.White)
               .commands(`M0 60 A 60 60, 1, 1, 1, 0 59.9`)
               .width("100%")
               .height("100%")
-              .margin({left: (this.screenWidth / 3.1),top:(this.model.headerHeight / 2 + 25)})
+              .margin({left: (this.screenWidth / 3),top:(this.model.headerHeight / 2 + 25)})
               .fill(Color.White)
             Path() //圆的轨道
               .strokeWidth(8)
@@ -175,7 +169,7 @@ export struct BezierCircle {
               .opacity(1)
          }.width("100%").height("100%")
       } else if (this.model.refreshState == smartRefreshSecond.REFRESHSTATE.TOREFRESH) {//拖住过程中的样式
-        Path().width("100%").height(this.model.headerHeight).commands(this.smoothPathCmd).backgroundColor(Color.White).fill(this.model.getBackgroundColor())
+        Path().width("100%").height(this.model.headerHeight).commands(this.smoothPathCmd).backgroundColor(Color.Gray).fill(this.model.getBackgroundColor())
        // Path().width("100%").height(this.dragAndDropOverMaxRangeHeight).commands(this.rectPathCmd).backgroundColor(Color.White).fill(Color.Blue)
       }
     }
