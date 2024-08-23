@@ -1,12 +1,12 @@
 {
   "name": "entry",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Please describe the basic information.",
   "main": "",
   "author": "",
   "license": "",
   "dependencies": {
-    "@ohos/xmpp_sasl": "1.0.0",
+    "@ohos/xmpp_sasl": "^1.0.0",
     "@ohos/xmpp_sasl_anonymous": "file:../library"
   }
 }
