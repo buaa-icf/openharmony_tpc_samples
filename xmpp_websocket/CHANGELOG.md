@@ -1,5 +1,9 @@
 # Changelog[.gitignore](entry%2F.gitignore)
 
+## 1.0.3
+- 修复websocket断开重连功能
+- 补充repository内容
+
 ## 1.0.2
 - 修复websocket错误信息抛出时异常
 
