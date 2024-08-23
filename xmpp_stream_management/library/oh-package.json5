@@ -1,6 +1,7 @@
 {
   "name": "@ohos/xmpp_stream_management",
-  "version": "1.0.0",
+  "version": "1.0.1",
+  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/xmpp_stream_management",
   "description": "提供了在XMPP连接中协商和实现流管理的功能，包括会话恢复和错误恢复",
   "main": "index.js",
   "types": "index.d.ts",
@@ -8,8 +9,8 @@
   "author": "tpc",
   "license": "ISC License",
   "dependencies": {
-    "@ohos/xmpp_xml": "1.0.0",
-    "@ohos/xmpp_middleware": "1.0.0",
-    "@ohos/xmpp_stream_features": "1.0.0",
+    "@ohos/xmpp_xml": "^1.0.0",
+    "@ohos/xmpp_middleware": "^1.0.0",
+    "@ohos/xmpp_stream_features": "^1.0.0",
   }
 }
