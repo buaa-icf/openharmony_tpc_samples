@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.3
+- 补充repository内容
+
 ## 1.0.2
 - 新增tls、starttls、xmpp_sasl_scram_sha_1使用逻辑
 - 新增sample中tcp、tls使用场景
