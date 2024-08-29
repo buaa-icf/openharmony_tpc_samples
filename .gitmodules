@@ -27,9 +27,6 @@
 [submodule "ohos_smack/library/src/main/cpp/gloox"]
 	path = ohos_smack/library/src/main/cpp/gloox
 	url = https://gitee.com/mirrors/gloox.git
-[submodule "socketio/library/src/main/cpp/socket.io-client-cpp"]
-	path = socketio/library/src/main/cpp/socket.io-client-cpp
-	url = https://gitee.com/damonjiang/socket.io-client-cpp.git
 
 [submodule "GSYVideoPlayer-filters/ohos_ijkplayer"]
 	path = GSYVideoPlayer-filters/ohos_ijkplayer
@@ -39,3 +36,7 @@
 [submodule "ohos_minizip/library/src/main/cpp/third_party"]
 	path = ohos_minizip/library/src/main/cpp/third_party
 	url = https://gitee.com/longfeng20/third_party.git
+[submodule "socketio/library/src/main/cpp/socket.io-client-cpp"]
+	path = socketio/library/src/main/cpp/socket.io-client-cpp
+	url = https://gitee.com/damonjiang/socket.io-client-cpp.git
+	branch = 1.0.0
