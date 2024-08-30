@@ -57,18 +57,18 @@ struct Second {
     Row() {
       Scroll() {
         Column() {
-          Button('本地时间测试', { type: ButtonType.Capsule, stateEffect: true })
+          Button('Local time testing', { type: ButtonType.Capsule, stateEffect: true })
             .backgroundColor(0x317aff)
             .width(240)
             .onClick(() => {
               this.message = testLocalTime();
             })
           Text(this.message)
-            .fontSize(20)
+            .fontSize(15)
             .margin(10)
             .fontColor(Color.Blue)
 
-          Button('下一页', { type: ButtonType.Capsule, stateEffect: true })
+          Button('Next', { type: ButtonType.Capsule, stateEffect: true })
             .backgroundColor(0x317aff)
             .width(240)
             .onClick(() => {
@@ -149,24 +149,24 @@ function testLocalTime(): string {
   console.info(mTime1.until(mTime3, ChronoUnit.SECONDS).toString())
 
 
-  return "获取默认时间： " + LocalTime.now(ZoneOffset.UTC).toString() + '\n' +
-  "从时分秒中格式化时间： " + LocalTime.of(23, 55, 42).toString() + '\n' +
-  "从提供的秒数获取时间： " + LocalTime.ofSecondOfDay(3666).toString() + '\n' +
-  "给定时间解析： " + mTime.toString() + '\n' +
-  "时间格式化截断到秒： " + mTime.truncatedTo(ChronoUnit.SECONDS).toString() + '\n' +
-  "获取给定时间小时数： " + mTime.hour().toString() + '\n' +
-  "获取给定时间分钟数： " + mTime.minute().toString() + '\n' +
-  "获取给定时间秒数： " + mTime.second().toString() + '\n' +
-  "获取给定时间纳秒数： " + mTime.nano().toString() + '\n' +
-  "给定时间在一天中的秒数： " + mTime.get(ChronoField.SECOND_OF_DAY).toString() + '\n' +
-  "测试时间在AM PM 中的小时数： " + mTime.get(ChronoField.HOUR_OF_AMPM).toString() + '\n' +
-  "给定时间增加12小时： " + mTime1.plusHours(12).toString() + '\n' +
-  "给定时间增加30分钟： " + mTime1.plusMinutes(30).toString() + '\n' +
-  "给定时间增加30秒： " + mTime1.plusSeconds(30).toString() + '\n' +
-  "给定时间增加1000000纳秒： " + mTime1.plusNanos(1000000).toString() + '\n' +
-  "给定时间增加1毫秒： " + mTime1.plus(1, ChronoUnit.MILLIS).toString() + '\n' +
-  "给定时间增加半天： " + mTime1.plus(1, ChronoUnit.HALF_DAYS).toString() + '\n' +
-  "将小时设置为1： " + mTime1.withHour(1).toString() + '\n' +
-  "将分钟设置为1： " + mTime1.withMinute(1).toString() + '\n' +
-  "将秒数设置为1： " + mTime1.withSecond(1).toString();
+  return "Get default time： " + LocalTime.now(ZoneOffset.UTC).toString() + '\n' +
+  "Format time from hours, minutes, and seconds： " + LocalTime.of(23, 55, 42).toString() + '\n' +
+  "Retrieve time from the provided seconds： " + LocalTime.ofSecondOfDay(3666).toString() + '\n' +
+  "Given time analysis： " + mTime.toString() + '\n' +
+  "Time formatting truncated to seconds： " + mTime.truncatedTo(ChronoUnit.SECONDS).toString() + '\n' +
+  "Get the given time hours： " + mTime.hour().toString() + '\n' +
+  "Get the given number of minutes at a given time： " + mTime.minute().toString() + '\n' +
+  "Get the given time in seconds： " + mTime.second().toString() + '\n' +
+  "Obtain the number of nanoseconds at a given time： " + mTime.nano().toString() + '\n' +
+  "Given the number of seconds in a day at a given time： " + mTime.get(ChronoField.SECOND_OF_DAY).toString() + '\n' +
+  "Test time in AM PM hours： " + mTime.get(ChronoField.HOUR_OF_AMPM).toString() + '\n' +
+  "Add 12 hours to the given time： " + mTime1.plusHours(12).toString() + '\n' +
+  "Add 30 minutes to the given time： " + mTime1.plusMinutes(30).toString() + '\n' +
+  "Add 30 seconds to the given time： " + mTime1.plusSeconds(30).toString() + '\n' +
+  "Increase the given time by 1000000 nanoseconds： " + mTime1.plusNanos(1000000).toString() + '\n' +
+  "Add 1 millisecond to the given time： " + mTime1.plus(1, ChronoUnit.MILLIS).toString() + '\n' +
+  "Add half a day to the given time： " + mTime1.plus(1, ChronoUnit.HALF_DAYS).toString() + '\n' +
+  "Set the hour to 1： " + mTime1.withHour(1).toString() + '\n' +
+  "Set the minute to 1： " + mTime1.withMinute(1).toString() + '\n' +
+  "Set the number of seconds to 1： " + mTime1.withSecond(1).toString();
 }

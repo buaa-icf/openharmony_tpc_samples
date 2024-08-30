@@ -41,14 +41,14 @@ struct Third {
     Row() {
       Scroll() {
         Column() {
-          Button('本地日期时间测试', { type: ButtonType.Capsule, stateEffect: true })
+          Button('Local date and time testing', { type: ButtonType.Capsule, stateEffect: true })
             .backgroundColor(0x317aff)
             .width(240)
             .onClick(() => {
               this.message = testLocalDateTime();
             })
           Text(this.message)
-            .fontSize(20)
+            .fontSize(15)
             .margin(10)
             .fontColor(Color.Blue)
 
@@ -113,19 +113,19 @@ function testLocalDateTime(): string {
   console.info(mDateTime.toLocalDate().lengthOfMonth().toString());
   // 获取当前的总天数
   console.info(mDateTime.toLocalDate().lengthOfYear().toString());
-  return "获取日期时间： " + LocalDateTime.now().toString() + '\n' +
-  "获取国内城市日期时间： " + LocalDateTime.now(ZoneId.systemDefault()).toString() + '\n' +
-  "根据给定数据构建日期时间： " + LocalDateTime.of(2016, 2, 29, 12, 55, 42, 9).toString() + '\n' +
-  "获取给定日期年份： " + mDateTime.year().toString() + '\n' +
-  "获取给定日期月份： " + mDateTime.month().toString() + '\n' +
-  "获取给定日期月份的值： " + mDateTime.monthValue().toString() + '\n' +
-  "获取给定日期在当月中第几天： " + mDateTime.dayOfMonth().toString() + '\n' +
-  "获取小时数： " + mDateTime.hour().toString() + '\n' +
-  "获取分钟数： " + mDateTime.minute().toString() + '\n' +
-  "获取秒数： " + mDateTime.second().toString() + '\n' +
-  "获取纳秒数： " + mDateTime.nano().toString() + '\n' +
-  "获取周几： " + mDateTime.dayOfWeek().toString() + '\n' +
-  "获取在一年中的日期： " + mDateTime.dayOfYear().toString() + '\n' +
-  "获取给定月份总天数： " + mDateTime.toLocalDate().lengthOfMonth().toString() + '\n' +
-  "获取给定年份总天数： " + mDateTime.toLocalDate().lengthOfYear().toString();
+  return "Get date and time： " + LocalDateTime.now().toString() + '\n' +
+  "Obtain domestic city date and time： " + LocalDateTime.now(ZoneId.systemDefault()).toString() + '\n' +
+  "Build date and time based on given data： " + LocalDateTime.of(2016, 2, 29, 12, 55, 42, 9).toString() + '\n' +
+  "Obtain the given date and year： " + mDateTime.year().toString() + '\n' +
+  "Get the given date month： " + mDateTime.month().toString() + '\n' +
+  "Get the value of the given date and month： " + mDateTime.monthValue().toString() + '\n' +
+  "Get the given date on which day of the month： " + mDateTime.dayOfMonth().toString() + '\n' +
+  "Obtain the number of hours： " + mDateTime.hour().toString() + '\n' +
+  "Get minutes： " + mDateTime.minute().toString() + '\n' +
+  "Get seconds： " + mDateTime.second().toString() + '\n' +
+  "Obtain nanosecond count： " + mDateTime.nano().toString() + '\n' +
+  "Obtain the day of the week： " + mDateTime.dayOfWeek().toString() + '\n' +
+  "Obtain dates within a year： " + mDateTime.dayOfYear().toString() + '\n' +
+  "Get the total number of days in a given month： " + mDateTime.toLocalDate().lengthOfMonth().toString() + '\n' +
+  "Obtain the total number of days in a given year： " + mDateTime.toLocalDate().lengthOfYear().toString();
 }

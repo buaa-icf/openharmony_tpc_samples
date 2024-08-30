@@ -42,14 +42,14 @@ struct Fifth {
     Row() {
       Scroll() {
         Column() {
-          Button('时间量测试', { type: ButtonType.Capsule, stateEffect: true })
+          Button('Time measurement test', { type: ButtonType.Capsule, stateEffect: true })
             .backgroundColor(0x317aff)
             .width(240)
             .onClick(() => {
               this.message = testDurationTime();
             })
           Text(this.message)
-            .fontSize(20)
+            .fontSize(15)
             .margin(10)
             .fontColor(Color.Blue)
 
@@ -78,7 +78,7 @@ function testDurationTime(): string {
 
   console.info(mDateTime.plus(Duration.ofHours(10).plusMinutes(30)).toString());
 
-  return "获取十小时时间量表示： " + Duration.ofHours(10).toString() + '\n' +
-  "获取10年45天时间量表示： " + Period.ofYears(10).plusDays(45).toString() + '\n' +
-  "给定时间加10小时30分： " + mDateTime.plus(Duration.ofHours(10).plusMinutes(30)).toString();
+  return "Obtain a ten hour time quantity representation： " + Duration.ofHours(10).toString() + '\n' +
+  "Obtain a 10-year and 45 day time quantity representation： " + Period.ofYears(10).plusDays(45).toString() + '\n' +
+  "Given time plus 10 hours and 30 minutes： " + mDateTime.plus(Duration.ofHours(10).plusMinutes(30)).toString();
 }
