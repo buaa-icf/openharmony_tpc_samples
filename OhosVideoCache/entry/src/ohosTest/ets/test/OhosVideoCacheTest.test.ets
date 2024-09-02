@@ -82,19 +82,17 @@ export default function OhosVideoCacheTest() {
     afterAll(() => {
 
     })
-    it('getProxyUrl', 0, async (done: Function) => {
+    it('getProxyUrl', 0, async () => {
       let expectUrl = `http://127.0.0.1:${server.getProxyPort()}/${testUrl}`
       let proxyUrl = await server.getProxyUrl(testUrl);
       expect(expectUrl).assertEqual(proxyUrl);
-      done()
     })
-    it('registerCacheListener', 0, async (done: Function) => {
+    it('registerCacheListener', 0, async () => {
       let client = http.createHttp();
       try {
         class TestListener implements CacheListener {
           onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
             expect(1).assertEqual(1);
-            done();
           }
         }
 
@@ -115,10 +113,9 @@ export default function OhosVideoCacheTest() {
         client.requestInStream(proxyUrl, header)
       } catch (err) {
         expect(1).assertEqual(2);
-        done()
       }
     })
-    it('cacheDirectory', 0, async (done: Function) => {
+    it('cacheDirectory', 0, async () => {
       let client = http.createHttp();
       try {
         let directory = context?.cacheDir + "/hahaha"
@@ -145,25 +142,20 @@ export default function OhosVideoCacheTest() {
           let filePath: string = directory + '/' + name + "." + extension;
           if (fs.accessSync(filePath)) {
             expect(1).assertEqual(1)
-            done()
           } else {
             expect(1).assertEqual(2)
-            done()
           }
 
         }).catch((err: Error) => {
           expect(1).assertEqual(2)
-          done()
         })
       } catch (err) {
         expect(1).assertEqual(2);
-        done()
       } finally {
-        done()
       }
     })
 
-    it('setFileNameGenerator', 0, async (done: Function) => {
+    it('setFileNameGenerator', 0, async () => {
       let client = http.createHttp();
       try {
         class MyFileNameGenerator implements FileNameGenerator {
@@ -193,18 +185,15 @@ export default function OhosVideoCacheTest() {
         let filePath: string = cacheFolder + "/123456.mp4";
         if (fs.accessSync(filePath)) {
           expect(1).assertEqual(1)
-          done()
         } else {
           expect(1).assertEqual(1)
-          done()
         }
       } catch (err) {
         expect(1).assertEqual(2);
-        done()
       }
     })
 
-    it('maxCacheSize', 0, async (done: Function) => {
+    it('maxCacheSize', 0, async () => {
       try {
         let server = new HttpProxyCacheServerBuilder(context)
           .maxCacheSize(50 * 1024 * 1024)
@@ -212,13 +201,11 @@ export default function OhosVideoCacheTest() {
         let diskUsage = server?.getConfig()?.diskUsage
         expect(diskUsage instanceof TotalSizeLruDiskUsage).assertTrue();
         expect((diskUsage as TotalSizeLruDiskUsage).maxSize).assertEqual(50 * 1024 * 1024);
-        done()
       } catch (err) {
         expect(1).assertEqual(2);
-        done()
       }
     })
-    it('maxCacheFilesCount', 0, async (done: Function) => {
+    it('maxCacheFilesCount', 0, async () => {
       try {
         let server = new HttpProxyCacheServerBuilder(context)
           .maxCacheFilesCount(10)
@@ -226,13 +213,11 @@ export default function OhosVideoCacheTest() {
         let diskUsage = server?.getConfig()?.diskUsage
         expect(diskUsage instanceof TotalCountLruDiskUsage).assertTrue();
         expect((diskUsage as TotalCountLruDiskUsage).maxCount).assertEqual(10);
-        done()
       } catch (err) {
         expect(1).assertEqual(2);
-        done()
       }
     })
-    it('setDiskUsage', 0, async (done: Function) => {
+    it('setDiskUsage', 0, async () => {
       try {
         class MyDiskUsage implements DiskUsage {
           touch(filePath: string) {
@@ -244,13 +229,11 @@ export default function OhosVideoCacheTest() {
           .build()
         let diskUsage = server?.getConfig()?.diskUsage
         expect(diskUsage instanceof MyDiskUsage).assertTrue();
-        done()
       } catch (err) {
         expect(1).assertEqual(2);
-        done()
       }
     })
-    it('setHeaderInjector', 0, async (done: Function) => {
+    it('setHeaderInjector', 0, async () => {
       try {
         class MyHeaderInjector implements HeaderInjector {
           addHeaders(url: string): HashMap<string, string> {
@@ -269,25 +252,21 @@ export default function OhosVideoCacheTest() {
         let result = (headerInjector as MyHeaderInjector).addHeaders(testUrl)
         expect(result.get('name')).assertEqual("abc");
         expect(result.get('sex')).assertEqual("男");
-        done()
       } catch (err) {
         expect(1).assertEqual(2);
-        done()
       }
     })
-    it('build', 0, async (done: Function) => {
+    it('build', 0, async () => {
       try {
         let server = new HttpProxyCacheServerBuilder(context)
           .build()
         expect(server instanceof HttpProxyCacheServer).assertTrue();
         expect(server instanceof HttpProxyCacheServerBuilder).assertFalse();
-        done()
       } catch (err) {
         expect(1).assertEqual(2);
-        done()
       }
     })
-    it('unregisterCacheListener', 0, async (done: Function) => {
+    it('unregisterCacheListener', 0, async () => {
       let client = http.createHttp();
       try {
         let isUnRegisterSuccess: boolean = true;
@@ -324,23 +303,18 @@ export default function OhosVideoCacheTest() {
         client.requestInStream(proxyUrl, header).then((respondCode: number) => {
           if (isUnRegisterSuccess && isRequestSuccess) {
             expect(1).assertEqual(1);
-            done()
           } else {
             expect(1).assertEqual(2);
-            done()
           }
         }).catch((err: Error) => {
           expect(1).assertEqual(2);
-          done()
         })
       } catch (err) {
         expect(1).assertEqual(2);
-        done()
       } finally {
-        done()
       }
     })
-    it('shutdown', 0, async (done: Function) => {
+    it('shutdown', 0, async () => {
       let client = http.createHttp();
       try {
         let proxyUrl =
@@ -360,15 +334,12 @@ export default function OhosVideoCacheTest() {
 
         client.requestInStream(proxyUrl, header).then(() => {
           expect(1).assertEqual(2)
-          done()
         }).catch((err: Error) => {
           expect(1).assertEqual(1)
-          done()
         })
 
       } catch (err) {
         expect(1).assertEqual(2);
-        done()
       }
     })
   })
