@@ -224,8 +224,6 @@ export async function connectForPassiveTransfer(host: string, port: number, ftp:
   })
   socket.on('close', () => {
     if (cacheData) {
-      cacheData.setEnCoding(null);
-      cacheData.setResponse(null);
       cacheData.setErrorInfo(null);
     }
   })
