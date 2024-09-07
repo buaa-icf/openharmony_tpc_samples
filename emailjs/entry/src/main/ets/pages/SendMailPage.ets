@@ -26,12 +26,12 @@ const BASE_COUNT = 1
 struct SendMailPage {
   @State message: string = 'Hello World'
   @State from: string = ''
-  @State accountName: string = 'OH邮件客户端'
+  @State accountName: string = 'OH email client'
   @State to: string = 'xxx@qq.com'
   @State cc: string = 'xxx@163.com'
   @State bcc: string = 'xxx@139.com'
-  @State subject: string = '这是OH测试主题'
-  @State content: string = '这是测试的鸿蒙邮件正文，邮件的收件人，抄送，密件抄送的格式为：someone <someone@your-email.com>, another <another@your-email.com>，多个账号以英文逗号,连接。'
+  @State subject: string = 'This is the OH testing topic'
+  @State content: string = 'This is the text of the OpenHarmony email for testing. The format for the recipient, cc, and confidential cc of the email is: someone<someone@your-email.com>, another<another@your-email.com> Multiple accounts are connected by commas in English.'
   @State attachment: Array<MessageAttachment> = []
   @State mailType: string = '@qq.com'
   @State textValue: string = ''
@@ -41,7 +41,7 @@ struct SendMailPage {
     GlobalObj?.getInstance()?.getClient()?.close(true);
   }
 
-  showToast(text: string, name = '测试') {
+  showToast(text: string, name = 'test') {
     console.log(`zdy---${name}--->${text}`)
     promptAction.showToast({
       message: text,
@@ -68,7 +68,7 @@ struct SendMailPage {
             alignContent: FlexAlign.Center,
             direction: FlexDirection.Column
           }) {
-            Text('添加信息，发送邮件')
+            Text('Add information, send email')
               .fontSize(20)
               .height(50)
               .textAlign(TextAlign.Center)
@@ -81,13 +81,13 @@ struct SendMailPage {
               alignContent: FlexAlign.Start,
               direction: FlexDirection.Row
             }) {
-              Text(`发件人(${this.from})昵称：`)
+              Text(`From (${this.from}) nickname：`)
                 .fontSize(20)
                 .height(50)
                 .textAlign(TextAlign.Center)
                 .margin({ right: 5 })
 
-              TextInput({ placeholder: '请输入发件人昵称', text: this.accountName })
+              TextInput({ placeholder: 'Please enter sender nickname', text: this.accountName })
                 .layoutWeight(1)
                 .fontSize(20)
                 .height(50)
@@ -108,14 +108,14 @@ struct SendMailPage {
               alignContent: FlexAlign.Start,
               direction: FlexDirection.Row
             }) {
-              Text('收件人：')
+              Text('Recipient：')
                 .fontSize(20)
                 .height(50)
                 .textAlign(TextAlign.Center)
                 .margin({ right: 5 })
 
               TextInput({
-                placeholder: '格式为：xx <xx@yxx.com>, xx <xx@yxx.com>，多个账号以英文逗号,连接。',
+                placeholder: 'Format: xx<xx@yxx.com>, xx<xx@yxx.com> Multiple accounts are connected by commas in English.',
                 text: this.to
               })
                 .layoutWeight(1)
@@ -137,14 +137,14 @@ struct SendMailPage {
               alignContent: FlexAlign.Start,
               direction: FlexDirection.Row
             }) {
-              Text('抄送：')
+              Text('Email CC：')
                 .fontSize(20)
                 .height(50)
                 .textAlign(TextAlign.Center)
                 .margin({ right: 5 })
 
               TextInput({
-                placeholder: '格式为：xx <xx@yxx.com>, xx <xx@yxx.com>，多个账号以英文逗号,连接。',
+                placeholder: 'Format: xx<xx@yxx.com>, xx<xx@yxx.com> Multiple accounts are connected by commas in English.',
                 text: this.cc
               })
                 .layoutWeight(1)
@@ -165,14 +165,14 @@ struct SendMailPage {
               alignContent: FlexAlign.Start,
               direction: FlexDirection.Row
             }) {
-              Text('密件抄送抄送：')
+              Text('BCC Blind Carbon Copy：')
                 .fontSize(20)
                 .height(50)
                 .textAlign(TextAlign.Center)
                 .margin({ right: 5 })
 
               TextInput({
-                placeholder: '格式为：xx <xx@yxx.com>, xx <xx@yxx.com>，多个账号以英文逗号,连接。',
+                placeholder: 'Format: xx<xx@yxx.com>, xx<xx@yxx.com> Multiple accounts are connected by commas in English.',
                 text: this.bcc
               })
                 .layoutWeight(1)
@@ -195,13 +195,13 @@ struct SendMailPage {
               alignContent: FlexAlign.Start,
               direction: FlexDirection.Row
             }) {
-              Text('主题：')
+              Text('Theme：')
                 .fontSize(20)
                 .height(50)
                 .textAlign(TextAlign.Center)
                 .margin({ right: 5 })
 
-              TextInput({ placeholder: '请输入邮件主题', text: this.subject })
+              TextInput({ placeholder: 'Please enter the email subject', text: this.subject })
                 .layoutWeight(1)
                 .fontSize(20)
                 .height(50)
@@ -221,14 +221,14 @@ struct SendMailPage {
               alignContent: FlexAlign.Start,
               direction: FlexDirection.Column
             }) {
-              Text('正文：')
+              Text('Body：')
                 .fontSize(20)
                 .height(50)
                 .textAlign(TextAlign.Center)
                 .margin({ right: 5 })
 
               TextInput({
-                placeholder: '请输入邮件正文',
+                placeholder: 'Please enter the email body',
                 text: this.content
               })
                 .layoutWeight(1)
@@ -252,7 +252,7 @@ struct SendMailPage {
               alignContent: FlexAlign.Start,
               direction: FlexDirection.Row
             }) {
-              Button('添加附件')
+              Button('Add attachment')
                 .fontSize(20)
                 .height(50)
                 .backgroundColor(Color.Blue)
@@ -312,7 +312,7 @@ struct SendMailPage {
                           .maxLines(1)
                           .textAlign(TextAlign.Center)
 
-                        Text(item.size + "字节")
+                        Text(item.size + " byte")
                           .fontSize(14)
                           .width(100)
                           .textOverflow({ overflow: TextOverflow.Ellipsis })
@@ -336,7 +336,7 @@ struct SendMailPage {
             .margin({ top: 10 })
 
 
-            Button('发送邮件')
+            Button('Send mail')
               .margin(20)
               .width('80%')
               .height(50)
@@ -375,21 +375,21 @@ struct SendMailPage {
           let endTime1 = new Date().getTime();
           let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
           console.log("sendAsync averageTime : " + averageTime1 + "us")
-          this.showToast('邮件发送成功', 'sendmail-smtp')
+          this.showToast('Email sent successfully', 'sendmail-smtp')
           if (GlobalObj?.getInstance()?.getClient()?.isQuitAfterSendDone()) {
             GlobalObj?.getInstance()?.getClient()?.close(true);
             GlobalObj?.getInstance()?.setClient(null);
           }
         } else {
-          this.showToast('账号未登录，请需重新登录', 'sendmail-smtp')
+          this.showToast('Account not logged in, please login again', 'sendmail-smtp')
         }
 
       } else {
-        this.showToast('账号未登录，请需重新登录', 'sendmail-smtp')
+        this.showToast('Account not logged in, please login again', 'sendmail-smtp')
       }
 
     } catch (err) {
-      this.showToast(`邮件发送出错：${err.message}`, 'sendmail-smtp')
+      this.showToast(`Email sending error：${err.message}`, 'sendmail-smtp')
     }
   }
 
@@ -397,12 +397,12 @@ struct SendMailPage {
     const ctx = this
     try {
       if (ctx.attachment && ctx.attachment.length == 0) {
-        ctx.showToast('开始生成单个本地文件', 'createSingleFile')
+        ctx.showToast('Start generating a single local file', 'createSingleFile')
         let context = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext()
         let randomNum = Math.round(Math.random() * 1024 + 1);
         let filePath = context?.cacheDir + '/' + 'attachment-' + randomNum + '.txt'
         let file = fs.openSync(filePath, fs.OpenMode.CREATE | fs.OpenMode.READ_WRITE)
-        let str = "客户端发送到服务端的信息，请查收\r\n"
+        let str = "Please check the information sent from the client to the server\r\n"
         fs.writeSync(file.fd, str)
         fs.fsyncSync(file.fd)
         fs.closeSync(file)
@@ -413,9 +413,9 @@ struct SendMailPage {
           size: str.length
         }
         this.attachment.push(attach)
-        ctx.showToast('生成本地单个文件成功' + filePath, 'createSingleFile')
+        ctx.showToast('Successfully generated local single file' + filePath, 'createSingleFile')
       } else if (ctx.attachment && ctx.attachment.length == 1) {
-        ctx.showToast('开始生成单个本地文件', 'createSingleFile')
+        ctx.showToast('Start generating a single local file', 'createSingleFile')
         let context: Context | null = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext()
         let filePath = context?.cacheDir + '/icon.png'
         context?.resourceManager?.getRawFileContent('icon.png')?.then((imageData) => {
@@ -432,14 +432,14 @@ struct SendMailPage {
             }
             this.attachment.push(attach)
           } else {
-            ctx.showToast(`生成本地单个文件${'icon.png'}失败` + filePath, 'createSingleFile')
+            ctx.showToast(`Failed to generate local single file ${'icon.png'} ` + filePath, 'createSingleFile')
           }
         })?.catch((err: Error) => {
-          ctx.showToast(`生成本地单个文件${'icon.png'}失败,原因是：${err.message}` + filePath, 'createSingleFile')
+          ctx.showToast(`Failed to generate local single file ${'icon.png'} due to：${err.message}` + filePath, 'createSingleFile')
         })
-        ctx.showToast('生成本地单个文件成功' + filePath, 'createSingleFile')
+        ctx.showToast('Successfully generated local single file' + filePath, 'createSingleFile')
       } else if (ctx.attachment && ctx.attachment.length == 2) {
-        ctx.showToast('开始生成单个本地文件', 'createSingleFile')
+        ctx.showToast('Start generating a single local file', 'createSingleFile')
         let context: Context | null = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext()
         let filePath = context?.cacheDir + '/test.docx'
         context?.resourceManager?.getRawFileContent('test.docx')?.then((wordData) => {
@@ -456,14 +456,14 @@ struct SendMailPage {
             }
             this.attachment.push(attach)
           } else {
-            ctx.showToast(`生成本地单个文件${'test.docx'}失败` + filePath, 'createSingleFile')
+            ctx.showToast(`Failed to generate local single file ${'test.docx'} ` + filePath, 'createSingleFile')
           }
         })?.catch((err: Error) => {
-          ctx.showToast(`生成本地单个文件${'test.docx'}失败,原因是：${err.message}` + filePath, 'createSingleFile')
+          ctx.showToast(`Failed to generate local single file ${'test.docx'} due to：${err.message}` + filePath, 'createSingleFile')
         })
-        ctx.showToast('生成本地单个文件成功' + filePath, 'createSingleFile')
+        ctx.showToast('Successfully generated local single file' + filePath, 'createSingleFile')
       } else if (ctx.attachment && ctx.attachment.length == 3) {
-        ctx.showToast('开始生成单个本地文件', 'createSingleFile')
+        ctx.showToast('Start generating a single local file', 'createSingleFile')
         let context: Context | null = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext()
         if (!context) {
           return
@@ -483,19 +483,19 @@ struct SendMailPage {
             }
             this.attachment.push(attach)
           } else {
-            ctx.showToast(`生成本地单个文件${'test.xlsx'}失败` + filePath, 'createSingleFile')
+            ctx.showToast(`Failed to generate local single file ${'test.xlsx'} ` + filePath, 'createSingleFile')
           }
         }).catch((err: Error) => {
-          ctx.showToast(`生成本地单个文件${'test.xlsx'}失败,原因是：${err.message}` + filePath, 'createSingleFile')
+          ctx.showToast(`Failed to generate local single file ${'test. xlsx'} due to：${err.message}` + filePath, 'createSingleFile')
         })
-        ctx.showToast('生成本地单个文件成功' + filePath, 'createSingleFile')
+        ctx.showToast('Successfully generated local single file' + filePath, 'createSingleFile')
       } else {
-        ctx.showToast('暂时只支持测试文本，图片，文档，表格，其他类型的文件等待测试开放', 'createSingleFile')
+        ctx.showToast('Currently only supports testing text, images, documents, tables, and other types of files waiting for testing to be opened', 'createSingleFile')
 
       }
 
     } catch (err) {
-      ctx.showToast('生成本地单个文件失败:' + JSON.stringify(err), 'createSingleFile')
+      ctx.showToast('Failed to generate a single local file:' + JSON.stringify(err), 'createSingleFile')
     }
   }
 
