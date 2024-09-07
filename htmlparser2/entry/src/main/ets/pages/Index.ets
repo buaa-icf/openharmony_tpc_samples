@@ -99,7 +99,7 @@ struct Index {
         Stack({ alignContent: Alignment.TopStart }) {
             Scroll(this.scroller) {
                 Column() {
-                    Text("解析html")
+                    Text("Parsing HTML")
                         .width('90%')
                         .height(60)
                         .backgroundColor(0xFFFFFF)
@@ -112,7 +112,7 @@ struct Index {
                             let arr: Array<string> = new Array()
                             const handler = helper.getEventCollector((error, actual: ESObject) => {
                                 if (error) {
-                                    this.result += "解析失败：" + JSON.stringify(error)
+                                    this.result += "Parse fail：" + JSON.stringify(error)
                                     return
                                 }
 
@@ -129,7 +129,7 @@ struct Index {
                             parser.end();
                         });
 
-                    Text("parseComplete")
+                    Text("ParseComplete")
                         .width('90%')
                         .height(60)
                         .backgroundColor(0xFFFFFF)
@@ -145,7 +145,7 @@ struct Index {
 
                             const handler = helper.getEventCollector((error, actual: ESObject) => {
                                 if (error) {
-                                    this.result += "解析失败：" + JSON.stringify(error)
+                                    this.result += "Parse fail：" + JSON.stringify(error)
                                     return
                                 }
 
@@ -161,7 +161,7 @@ struct Index {
                             parser.parseComplete("Xyz <script type='text/javascript'>const foo = '<<bar>>';</script>")
                         });
 
-                    Text("parseDocument")
+                    Text("ParseDocument")
                         .width('90%')
                         .height(60)
                         .backgroundColor(0xFFFFFF)
@@ -185,7 +185,7 @@ struct Index {
                             this.result += "isComment:" + isComment + "\r\n"
                         });
 
-                    Text("解析feed字符串")
+                    Text("Parse feed string")
                         .width('90%')
                         .height(60)
                         .backgroundColor(0xFFFFFF)
@@ -203,7 +203,7 @@ struct Index {
                             }
                         });
 
-                    Text("createDocumentStream")
+                    Text("CreateDocumentStream")
                         .width('90%')
                         .height(60)
                         .backgroundColor(0xFFFFFF)
@@ -234,7 +234,7 @@ struct Index {
                             parser.end();
                         });
 
-                    Text("将HTML文档分解成一个个的标记(tokens)")
+                    Text("Decompose HTML documents into individual tokens")
                         .width('90%')
                         .height(60)
                         .backgroundColor(0xFFFFFF)
@@ -287,7 +287,7 @@ struct Index {
                             tokenizer.end()
                         });
 
-                    Text("解析结果 :\r\n  " + this.result)
+                    Text("Parse results :\r\n  " + this.result)
                         .fontSize(15)
                         .margin({ top: 55, left: 10, right: 10 })
 
