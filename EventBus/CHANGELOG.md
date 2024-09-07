@@ -1,14 +1,14 @@
 ## 2.0.1
-1.适配DevEco Studio 版本: 4.0(4.0.3.512),SDK: API10（4.0.10.9）
-2.适配ArkTs语法
+1. Compatible with DevEco Studio 4.0(4.0.3.512), SDK: API10(4.0.10.9)
+2. Adapt to ArkTs syntax
 
 ## 2.0.0
-1.适配DevEco Studio:3.1 Beta2(3.1.0.400), SDK:API9 Release(3.2.11.9)
-2.包管理工具由npm切换成ohpm
-3.补充组件接口XTS测试
+1. Compatible with DevEco Studio: 3.1 Beta2(3.1.0.400), SDK: API9 Release(3.2.11.9)
+2. Switch package management tool from npm to ohpm
+3. Supplement component interface XTS testing
 
 ## 0.2.1
-1.适配DevEco Studio 3.1 Beta1版本。
+1. Compatible with DevEco Studio 3.1 Beta1.
 
 ## 0.2.0
-1.eventbusjs 0.2.0版本组件的Demo，验证消息订阅发送功能。
+Demo of eventbusjs 0.2.0 component to verify the message subscription and sending function.
