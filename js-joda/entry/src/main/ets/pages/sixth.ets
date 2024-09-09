@@ -42,14 +42,14 @@ struct Sixth {
     Row() {
       Scroll() {
         Column() {
-          Button('日期时间格式化', { type: ButtonType.Capsule, stateEffect: true })
+          Button('Date and time formatting', { type: ButtonType.Capsule, stateEffect: true })
             .backgroundColor(0x317aff)
             .width(240)
             .onClick(() => {
               this.message = testFormatter();
             })
           Text(this.message)
-            .fontSize(20)
+            .fontSize(15)
             .margin(10)
             .fontColor(Color.Blue)
         }
@@ -75,8 +75,8 @@ function testFormatter(): string {
   const zoneDateTime = ZonedDateTime.parse('Tue, 05 Oct 2021 17:08:24 GMT', dateTimeFormatter);
   console.log(zoneDateTime.toString());
 
-  return "基础日期格式化： " + dateTime.format(DateTimeFormatter.ofPattern('M/d/yyyy')) + '\n' +
-  "时间格式化： " + dateTime.format(DateTimeFormatter.ofPattern('HH:mm')) + '\n' +
-  "给定日期时间格式化： " + zoneDateTime.toString();
+  return "Basic date formatting： " + dateTime.format(DateTimeFormatter.ofPattern('M/d/yyyy')) + '\n' +
+  "Time Format： " + dateTime.format(DateTimeFormatter.ofPattern('HH:mm')) + '\n' +
+  "Format given date and time： " + zoneDateTime.toString();
 
 }

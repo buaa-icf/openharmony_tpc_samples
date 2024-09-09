@@ -45,18 +45,18 @@ struct Fourth {
     Row() {
       Scroll() {
         Column() {
-          Button('带时区日期时间测试', { type: ButtonType.Capsule, stateEffect: true })
+          Button('Test with time zone, date, and time', { type: ButtonType.Capsule, stateEffect: true })
             .backgroundColor(0x317aff)
             .width(240)
             .onClick(() => {
               this.message = testZonedDateTime();
             })
           Text(this.message)
-            .fontSize(20)
+            .fontSize(15)
             .margin(10)
             .fontColor(Color.Blue)
 
-          Button('下一页', { type: ButtonType.Capsule, stateEffect: true })
+          Button('Next', { type: ButtonType.Capsule, stateEffect: true })
             .backgroundColor(0x317aff)
             .width(240)
             .onClick(() => {
@@ -81,6 +81,6 @@ function testZonedDateTime() {
 
   console.info(ZonedDateTime.now(ZoneId.systemDefault()).toString());
 
-  return "获取带时区日期时间： " + ZonedDateTime.now().toString() + '\n' +
-  "获取国内上海日期时间： " + ZonedDateTime.now(ZoneId.systemDefault()).toString() + '\n';
+  return "Get date and time with time zone： " + ZonedDateTime.now().toString() + '\n' +
+  "Obtain domestic Shanghai date and time： " + ZonedDateTime.now(ZoneId.systemDefault()).toString() + '\n';
 }
