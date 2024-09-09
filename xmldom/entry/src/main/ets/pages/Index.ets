@@ -14,7 +14,7 @@ import { DOMParser, XMLSerializer, DOMImplementation } from '@ohos/xmldom'
 @Entry
 @Component
 struct Index {
-  @State text: string = '展示结果区'
+  @State text: string = 'Display Results Area'
 
   onParseFromString() {
     const XML = '<xml attr="&quot;">&lt; &amp;</xml>'
