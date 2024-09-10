@@ -24,15 +24,15 @@ struct WebSocketPage {
   @State sendMessage: string = ""
   @State contact: string = ""
   private options: Options = {
-    service: 'ws://xx.xx.xx.xx:xxxx/ws', //tcp连接
+    service: 'ws://xx.xx.xx.xx:xxxx/ws', //tcp connection
     domain: 'xx.xx.xx.xx',
     resource: 'xx.xx.xx.xx',
     username: "xxx",
     password: "xxx",
-    caPath:"",//证书地址为沙箱路径
+    caPath:"",// The certificate address is the sandbox path
   }
 
-  private xmpp:Client  = client(this.options); //连接服务
+  private xmpp:Client  = client(this.options); // Connect service
   private onError = (err: Error) => {
     console.error('xmpp-❌', JSON.stringify(err.message));
   }
@@ -93,19 +93,19 @@ struct WebSocketPage {
   build() {
     Row() {
       Column() {
-        Text("当前状态：" + this.status)
+        Text("Current state：" + this.status)
           .fontSize(30)
           .fontWeight(FontWeight.Bold)
-        Text("收到消息：" + this.message)
+        Text("Receive a message：" + this.message)
           .fontSize(30)
           .fontWeight(FontWeight.Bold)
           .margin({ top: 30 })
-        Button("连接").fontSize(30)
+        Button("connect").fontSize(30)
           .width("60%")
           .onClick(() => {
             this.xmpp.start();
           }).margin({ top: 30 })
-        TextInput({ placeholder: "请输入消息" })
+        TextInput({ placeholder: "Please enter a message" })
           .margin({ top: 30 })
           .fontSize(30)
           .width("60%")
@@ -113,13 +113,13 @@ struct WebSocketPage {
           .onChange((value: string) => {
             this.sendMessage = value;
           })
-        Button("发送").fontSize(30)
+        Button("sending").fontSize(30)
           .width("60%")
           .onClick(() => {
             const message:Element  = xml("message", { type: "chat", to: this.contact }, xml("body", {}, this.sendMessage));
             this.xmpp.send(message)
           }).margin({ top: 30 })
-        Button("断开").fontSize(30)
+        Button("disconnect").fontSize(30)
           .width("60%")
           .onClick(() => {
             try {
