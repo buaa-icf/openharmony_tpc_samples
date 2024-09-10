@@ -16,33 +16,33 @@
 @Entry
 @Component
 struct TipsPage {
-  @State message: string = 'pop3命令说明及注意事项'
+  @State message: string = 'Pop3 Command Description and Precautions'
 
   aboutToAppear() {
-    this.message = this.message += '\r\n' + '\r\n' + "命令说明："
-    this.message = this.message += '\r\n' + '\r\n' + "USER        username        认证用户名"
-    this.message = this.message += '\r\n' + '\r\n' + "PASS         password        认证密码认证，认证通过则状态转换"
-    this.message = this.message += '\r\n' + '\r\n' + "APOP        name,digest    认可一种安全传输口令的办法，执行成功导致状态转换，请参见 RFC 1321 "
-    this.message = this.message += '\r\n' + '\r\n' + "STAT         回送邮箱统计资料，如邮件数、 邮件总字节数 "
-    this.message = this.message += '\r\n' + '\r\n' + "UIDL n       返回用于该指定邮件的唯一标识， 如果没有指定，返回所有的 "
-    this.message = this.message += '\r\n' + '\r\n' + "LIST n       返回指定邮件的大小等，如果没有指定，返回所有的"
-    this.message = this.message += '\r\n' + '\r\n' + "RETR n     返回邮件的全部文本，如果没有指定，返回所有的"
-    this.message = this.message += '\r\n' + '\r\n' + "DELE n      删除，QUIT 命令执行时才真正删除"
-    this.message = this.message += '\r\n' + '\r\n' + "RSET         撤消所有的 DELE 命令"
-    this.message = this.message += '\r\n' + '\r\n' + "TOP n,m     返回 n 号邮件的前 m 行内容，m 必须是自然数"
-    this.message = this.message += '\r\n' + '\r\n' + "NOOP        返回一个肯定的响应"
-    this.message = this.message += '\r\n' + '\r\n' + "QUIT          结束会话"
-    this.message = this.message += '\r\n' + '\r\n' + "注意事项："
-    this.message = this.message += '\r\n' + '\r\n' + "USER 用于发送邮箱账号"
-    this.message = this.message += '\r\n' + '\r\n' + "PASS 用于发送邮箱密码，部分邮箱需要的是授权码，例如QQ 163"
-    this.message = this.message += '\r\n' + '\r\n' + "STAT 用于返回邮箱里的所有邮件个数以及大小，目前QQ邮箱仅返回当天的邮件统计"
-    this.message = this.message += '\r\n' + '\r\n' + "LIST 用于返回邮箱里的邮件序号以及大小，不传邮件的序号则是返回所有邮件的序号以及大小，传某个邮件的序号则是当前这邮件的信息"
-    this.message = this.message += '\r\n' + '\r\n' + "DELE 用于删除邮件 但是需要在DELE成功之后再次发布QUIT才会生效，目前测试的QQ邮箱发送DELE即可生效"
-    this.message = this.message += '\r\n' + '\r\n' + "RSET 用于撤销删除邮件操作 但是需要在DELE成功之后执行，然后发布QUIT才会生效，目前测试的QQ邮箱发送DELE直接删除了"
-    this.message = this.message += '\r\n' + '\r\n' + "RETR 用于获取邮件详情，返回的数据是经过加密以及编码的 需要解码才可以显示正常的内容 内容数据过多的时候在文本上面是不显示的，需要阶段部分数据"
-    this.message = this.message += '\r\n' + '\r\n' + "TOP 用于获取邮件信息的前几行"
-    this.message = this.message += '\r\n' + '\r\n' + "NOOP 用于确认和服务器连接是否正常，类似与websocket的ping/pong"
-    this.message = this.message += '\r\n' + '\r\n' + "QUIT 退出登录，并开始执行删除等操作"
+    this.message = this.message += '\r\n' + '\r\n' + "Command Description："
+    this.message = this.message += '\r\n' + '\r\n' + "USER        username        Authentication username"
+    this.message = this.message += '\r\n' + '\r\n' + "PASS         password        Authentication password authentication, If the authentication is passed, the state will transition"
+    this.message = this.message += '\r\n' + '\r\n' + "APOP        name,digest    Recognize a secure method for transmitting passwords, Successful execution leads to state transition, Please refer to RFC 1321 "
+    this.message = this.message += '\r\n' + '\r\n' + "STAT         Send back email statistics, such as the number of emails and the total number of bytes in emails "
+    this.message = this.message += '\r\n' + '\r\n' + "UIDL n       Return the unique identifier used for the specified email. If not specified, return all "
+    this.message = this.message += '\r\n' + '\r\n' + "LIST n       Return the size of the specified email, etc. If not specified, return all"
+    this.message = this.message += '\r\n' + '\r\n' + "RETR n     Return all text of the email, if not specified, return all"
+    this.message = this.message += '\r\n' + '\r\n' + "DELE n      Delete, the QUIT command is executed to truly delete"
+    this.message = this.message += '\r\n' + '\r\n' + "RSET         Revoke all DELE commands"
+    this.message = this.message += '\r\n' + '\r\n' + "TOP n,m     Return the first m lines of email n, where m must be a natural number"
+    this.message = this.message += '\r\n' + '\r\n' + "NOOP        Return a positive response"
+    this.message = this.message += '\r\n' + '\r\n' + "QUIT          End Session"
+    this.message = this.message += '\r\n' + '\r\n' + "Note："
+    this.message = this.message += '\r\n' + '\r\n' + "USER Used for sending email accounts"
+    this.message = this.message += '\r\n' + '\r\n' + "PASS Used to send email passwords, some emails require authorization codes, such as QQ 163"
+    this.message = this.message += '\r\n' + '\r\n' + "STAT Used to return the number and size of all emails in the mailbox. Currently, QQ mailbox only returns the email statistics for that day"
+    this.message = this.message += '\r\n' + '\r\n' + "LIST Used to return the email sequence number and size in the mailbox, the sequence number for not sending emails is the sequence number and size of all emails returned, and the sequence number for sending a certain email is the information of the current email"
+    this.message = this.message += '\r\n' + '\r\n' + "DELE Used to delete emails, but requires re publishing QUIT after DELE is successful for it to take effect. Currently, the QQ email being tested can take effect by sending DELE"
+    this.message = this.message += '\r\n' + '\r\n' + "RSET Used to undo the deletion of emails, but it needs to be executed after DELE is successful, and then QUIT will be published for it to take effect. Currently, the QQ mailbox being tested has directly deleted emails sent with DELE"
+    this.message = this.message += '\r\n' + '\r\n' + "RETR Used to obtain email details, the returned data is encrypted and encoded, and needs to be decoded to display normal content. When there is too much data, it will not be displayed on the text and requires partial data in the stage"
+    this.message = this.message += '\r\n' + '\r\n' + "TOP The first few lines used to retrieve email information"
+    this.message = this.message += '\r\n' + '\r\n' + "NOOP Used to confirm whether the connection with the server is normal, similar to ping/ong in WebSocket"
+    this.message = this.message += '\r\n' + '\r\n' + "QUIT Log out and start performing deletion and other operations"
   }
 
   build() {
