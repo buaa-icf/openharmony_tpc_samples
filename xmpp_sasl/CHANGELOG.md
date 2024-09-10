@@ -1,7 +1,6 @@
 # Changelog
 ## 1.0.1
-- 补充repository内容
+- Supplement repository content
 
 ## 1.0.0
-- XMPP 连接提供身份验证支持。
-
+- XMPP connection provides authentication support.
