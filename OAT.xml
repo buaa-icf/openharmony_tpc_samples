@@ -215,6 +215,9 @@
 				<filteritem type="filepath" name="epublib/entry/src/main/resources/rawfile/.*" desc="测试文件"/>
                 <filteritem type="filepath" name="jackrabbit/LICENSE"  desc="原开源项目的LICENSE，不手动修改"/>
                 <filteritem type="filepath" name="socketio/socketio服务搭建.pdf" desc="服务搭建文件，无需检查"/>
+                <filteritem type="filepath" name="socketio_2.x/socketio服务搭建.pdf" desc="服务搭建文件，无需检查"/>
+                <filteritem type="filepath" name="socketio_2.x/screenshot/效果展示_登陆页面.jpg" desc="效果展示文件，无需检查"/>
+                <filteritem type="filepath" name="socketio_2.x/screenshot/效果展示_聊天页面.jpg" desc="效果展示文件，无需检查"/>
                 <filteritem type="filepath" name="parserHtmlJsonDemo/demo.gif" desc="演示效果动图，用于readme展示，无需检查"/>
                 <filteritem type="filepath" name="apng/APNG.gif" desc="演示效果动图，用于readme展示，无需检查"/>
 <filteritem type="filepath" name="ohos_luaarkts/entry/src/main/ets/common/assets/bg_3.jpg" desc="演示效果动图，用于readme展示，无需检查"/>
@@ -323,6 +326,12 @@
                 <policyitem type="license" name="MIT" path="socketio/.*" rule="may" group="defaultGroup" filefilter="defaultPolicyFilter" desc="源开源项目的LICENSE,  符合开源要求"/>
                 <policyitem type="license" name="ThirdPartyNotice" path="socketio/.*" rule="may" group="defaultGroup" filefilter="defaultPolicyFilter" desc="源开源项目的LICENSE,  符合开源要求"/>
                 <policyitem type="license" name="Copyright (C) 2023 Huawei Device Co., Ltd." path="socketio/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="copyright" name="Copyright (c) 2015 Melo Yao. All rights reserved." path="socketio_2.x/library/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by X Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="copyright" name="Copyright (c) 2013-2015 Niels Lohmann." path="socketio_2.x/library/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by X Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="copyright" name="Copyright 2009 Pete Goodliffe" path="socketio_2.x/library/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by X Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="license" name="MIT" path="socketio_2.x/.*" rule="may" group="defaultGroup" filefilter="defaultPolicyFilter" desc="源开源项目的LICENSE,  符合开源要求"/>
+                <policyitem type="license" name="ThirdPartyNotice" path="socketio_2.x/.*" rule="may" group="defaultGroup" filefilter="defaultPolicyFilter" desc="源开源项目的LICENSE,  符合开源要求"/>
+                <policyitem type="license" name="Copyright (C) 2023 Huawei Device Co., Ltd." path="socketio_2.x/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="zlib-acknowledgement" path="box2d/entry/src/main/ets/Testbed/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="当前项目兼容此协议" />
                 <policyitem type="license" name="zlib-acknowledgement" path="box2d/library/src/main/ets/Box2D/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="当前项目兼容此协议" />
                 <policyitem type="license" name="NoLicenseHeader" path="box2d/entry/src/main/ets/Testbed/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改" />
