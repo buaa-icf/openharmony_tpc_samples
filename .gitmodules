@@ -39,4 +39,4 @@
 [submodule "socketio/library/src/main/cpp/socket.io-client-cpp"]
 	path = socketio/library/src/main/cpp/socket.io-client-cpp
 	url = https://gitee.com/damonjiang/socket.io-client-cpp.git
-	branch = 1.0.0
+	branch = dev
