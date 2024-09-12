@@ -1,0 +1,18 @@
+{
+  "license": "Apache-2.0",
+  "devDependencies": {},
+  "author": "",
+  "name": "entry",
+  "ohos": {
+    "org": "huawei",
+    "directoryLevel": "module",
+    "buildTool": "hvigor"
+  },
+  "description": "example description",
+  "main": "",
+  "version": "1.0.0",
+  "dependencies": {
+    "@ohos/socketio_2.x": "file:../library",
+    "@ohos/axios": "^2.2.2"
+  }
+}
