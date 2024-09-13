@@ -6,7 +6,7 @@ This demo allows you to use the third-party JavaScript library [js-md2](https://
 ## How to Install
 ```
 ohpm install js-md5
-ohpm install @types/js-md5 --save-dev // If a syntax error is reported when 'import js-md5' is executed, the js-md5 package does not contain the type declaration. To solve this problem, run '@types/js-md5' to download the type declaration file.
+ohpm install @types/js-md5 --save-dev // This can prevent the syntax error that is reported if js-md5 does not contain the type declaration file when imported.
 ```
 For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 ## How to Use
