@@ -62,7 +62,7 @@ console.info(mDate.get(ChronoField.ALIGNED_WEEK_OF_YEAR).toString());
 ## Constraints
 This project has been verified in the following version:
 
-DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API11 (4.1.0.36)
+- DevEco Studio: NEXT Beta1-5.0.3.806, SDK:API12 Release(5.0.0.66)
 
 ## Directory Structure
 
