@@ -1,3 +1,6 @@
+## v1.0.1
+- Release 1.0.1
+
 ## v1.0.0
 - Compatible with DevEco Studio: 4.1 Canary(4.1.3.317), OpenHarmony SDK: API11(4.1.0.36)
 - ArkTS new syntax adaptation
