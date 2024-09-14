@@ -12,7 +12,7 @@
   },
   "main": "index.ts",
   "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_smack",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "tags": [
     "OpenHarmony",
     "smack",
