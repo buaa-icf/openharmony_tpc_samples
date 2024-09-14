@@ -5,7 +5,7 @@
   "name": "entry",
   "description": "Please describe the basic information.",
   "main": "",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "dependencies": {
     "@ohos/metadata-extractor": "file:../library"
   }
