@@ -13,7 +13,7 @@
 ## 下载安装
 
 ```shell
-ohpm install @ohos/socketio 
+ohpm install @ohos/socketio_2.x
 ```
 OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
@@ -28,7 +28,7 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 1. 导入依赖库
 
 ```typescript
-import { client_socket } from '@ohos/socketio';
+import { client_socket } from '@ohos/socketio_2.x';
 ```
 
 2. 初始化socket.io客户端
