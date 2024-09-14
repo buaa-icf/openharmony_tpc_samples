@@ -26,7 +26,7 @@ class ThemeParam{
   backgroundColor:number = 0;
 }
 @Entry
-@Component
+@ComponentV2
 struct DeliverySample {
   theme:ThemeParam[] = [
     { text: "默认主题颜色", label: "更改为默认主题颜色", boxColor: [0xff4169E1, 0xff6ea9ff], backgroundColor: 0xff283645 },
@@ -40,12 +40,12 @@ struct DeliverySample {
     { text: "蓝色主题颜色", label: "更改为蓝色主题颜色", boxColor: [0xffafeeee, 0xfffffafa], backgroundColor: 0xff33aaff },
     { text: "蓝色主题颜色", label: "更改为蓝色主题颜色", boxColor: [0xffafeeee, 0xfffffafa], backgroundColor: 0xff33aaff },
   ]
-  @State modelDelivery: SmartRefreshForDeliverySample.Model = new SmartRefreshForDeliverySample.Model().setZMainIndex(999)
+  @Local modelDelivery: SmartRefreshForDeliverySample.Model = new SmartRefreshForDeliverySample.Model().setZMainIndex(999)
   arr: arrParam[] = [{index:2,content:'默认主题'}, {index:3,content:'橙色主题'}, {index:4,content:'红色主题'}, {index:5,content:'绿色主题'},
     {index:6,content:'蓝色主题'}, {index:7,content:'蓝色主题'}, {index:8,content:'蓝色主题'}, {index:9,content:'蓝色主题'}]
 
   @Builder deliveryHeader() {
-    Delivery({ model: $modelDelivery })
+    Delivery({ model: this.modelDelivery!! })
   }
 
   @Builder card(index:number) {
@@ -80,7 +80,7 @@ struct DeliverySample {
 
   @Builder deliveryFooter() {
     Column() {
-      Delivery({ model: $modelDelivery })
+      Delivery({ model: this.modelDelivery!! })
     }.width("100%").padding("20lpx")
   }
 
@@ -91,7 +91,7 @@ struct DeliverySample {
   build() {
     Column() {
       SmartRefreshForDeliverySample({
-        modelDelivery: $modelDelivery,
+        modelDelivery: this.modelDelivery!!,
         header: () => {
           this.deliveryHeader()
         }, main: () => {

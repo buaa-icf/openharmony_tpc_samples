@@ -1,4 +1,6 @@
 # Changelog
+## 1.0.1
+- Supplement repository content
 
 ## 1.0.0
-- 实现xmpp流管理功能。
+- Implements xmpp stream management.

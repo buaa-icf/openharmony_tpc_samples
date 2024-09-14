@@ -15,17 +15,12 @@
 
 import SmartRefreshForGame from './SmartRefreshForGame'
 
-@Component
+@ComponentV2
 export struct AirplaneGameCover {
-  @Link model: SmartRefreshForGame.Model
-  @State @Watch('onGameChange') gameState: boolean = false
-  maxHeight: number = 0
-  @Prop @Watch('onYChange') downY: number = 0
-  textColor: Color | string | number = ''
-  @State private topAnimY: number = 1
-  @State private bottomAnimY: number = 1
-  @State private tipText: string  = this.model.maskTextTopPull
-
+  @Param @Require model: SmartRefreshForGame.Model = new SmartRefreshForGame.Model()
+  @Event $model: (value: SmartRefreshForGame.Model) => void = (value: SmartRefreshForGame.Model) => {}
+  @Param gameState: boolean = false
+  @Monitor('gameState')
   private onGameChange(value:ESObject) {
     if (this.gameState) {
       this.bottomAnimY = 0
@@ -35,7 +30,9 @@ export struct AirplaneGameCover {
       this.topAnimY = 1
     }
   }
-
+  @Param maxHeight: number = 0
+  @Param downY: number = 0
+  @Monitor('downY')
   private onYChange() {
     if (this.downY < this.maxHeight) {
       this.tipText = this.model.maskTextTopPull
@@ -43,6 +40,10 @@ export struct AirplaneGameCover {
       this.tipText = this.model.maskTextTopRelease
     }
   }
+  @Param textColor: Color | string | number = ''
+  @Local topAnimY: number = 1
+  @Local bottomAnimY: number = 1
+  @Local tipText: string  = this.model.maskTextTopPull
 
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {

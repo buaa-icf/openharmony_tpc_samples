@@ -9,3 +9,5 @@
 
 4.可扩展性， 可通过使用 ext 为类型提供类型感知的编码进行扩展MessagePack。
 
+5.现在MessagePack已经适配了3.0版本，可用于实现int64的复杂性编码。详情可看ohos-msgpack
+

@@ -40,7 +40,7 @@ struct AutoLoginCommandPage {
     }
   }
 
-  showToast(text: string, name = '测试') {
+  showToast(text: string, name = 'test') {
     console.log(`zdy---${name}--->${text}`)
     promptAction.showToast({
       message: text,
@@ -83,7 +83,7 @@ struct AutoLoginCommandPage {
               alignContent: FlexAlign.Start,
               direction: FlexDirection.Column
             }) {
-              Button('STAT命令')
+              Button('STAT command')
                 .margin(20)
                 .height(50)
                 .backgroundColor(Color.Blue)
@@ -92,17 +92,8 @@ struct AutoLoginCommandPage {
                   this.sendSTAT()
                 })
                 .margin({ top: 10 })
-              // Button('LAST命令(pop3暂无该指令，原库运行结果同样报错)')
-              //   .margin(20)
-              //   .height(50)
-              //   .backgroundColor(Color.Blue)
-              //   .fontColor(Color.White)
-              //   .onClick(() => {
-              //     this.sendLAST()
-              //   })
-              //   .margin({ top: 10 })
 
-              Button('NOOP命令')
+              Button('NOOP command')
                 .margin(20)
                 .height(50)
                 .backgroundColor(Color.Blue)
@@ -112,7 +103,7 @@ struct AutoLoginCommandPage {
                 })
                 .margin({ top: 10 })
 
-              Button('QUIT命令')
+              Button('QUIT command')
                 .margin(20)
                 .height(50)
                 .backgroundColor(Color.Blue)
@@ -122,7 +113,7 @@ struct AutoLoginCommandPage {
                 })
                 .margin({ top: 10 })
 
-              Button('LIST命令')
+              Button('LIST command')
                 .margin(20)
                 .height(50)
                 .backgroundColor(Color.Blue)
@@ -132,7 +123,7 @@ struct AutoLoginCommandPage {
                 })
                 .margin({ top: 10 })
 
-              TextInput({ text: this.topLine, placeholder: '输入TOP行数', controller: this.controller })
+              TextInput({ text: this.topLine, placeholder: 'Enter the number of TOP rows', controller: this.controller })
                 .placeholderColor(Color.Grey)
                 .placeholderFont({ size: 14, weight: 400 })
                 .type(InputType.Number)
@@ -146,7 +137,7 @@ struct AutoLoginCommandPage {
                   this.topLine = value
                 })
 
-              Button('TOP命令')
+              Button('TOP command')
                 .margin(20)
                 .height(50)
                 .enabled(this.msgList.length > 0)
@@ -157,7 +148,7 @@ struct AutoLoginCommandPage {
                   this.sendTOP()
                 })
                 .margin({ top: 10 })
-              Button('UIDL命令')
+              Button('UIDL command')
                 .margin(20)
                 .height(50)
                 .enabled(this.msgList.length > 0)
@@ -170,7 +161,7 @@ struct AutoLoginCommandPage {
                 .margin({ top: 10 })
 
 
-              Button('DELE命令')
+              Button('DELE command')
                 .margin(20)
                 .height(50)
                 .enabled(this.msgList.length > 0)
@@ -182,7 +173,7 @@ struct AutoLoginCommandPage {
                 })
                 .margin({ top: 10 })
 
-              Button('RSET命令')
+              Button('RSET command')
                 .margin(20)
                 .height(50)
                 .enabled(this.msgList.length > 0)
@@ -194,7 +185,7 @@ struct AutoLoginCommandPage {
                 })
                 .margin({ top: 10 })
 
-              Button('RETR命令')
+              Button('RETR command')
                 .margin(20)
                 .height(50)
                 .enabled(this.msgList.length > 0)
@@ -228,7 +219,7 @@ struct AutoLoginCommandPage {
                 .borderColor(Color.Gray)
                 .onClick(() => {
                   if (this.msgList.length === 0) {
-                    this.showToast('仅LIST命令获取的数据可选择', 'list-item-click')
+                    this.showToast('Only the data obtained by the LIST command can be selected', 'list-item-click')
                     return
                   }
                   if (index < this.msgList.length) {
@@ -271,27 +262,27 @@ struct AutoLoginCommandPage {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("STAT averageTime : " + averageTime1 + "us")
-        this.showToast('获取到STAT命令的结果', 'sendSTAT')
+        this.showToast('Obtain the result of STAT command', 'sendSTAT')
         if (result && result.toString() && result.toString().length > 0) {
           let arr = result.toString().split(' ')
           if (arr && arr.length >= 1) {
             let totalMailSize = Number.parseInt(arr[0]);
             if (totalMailSize > 0) {
               ctx.isListShow = true;
-              ctx.listData.push(`获取到STAT命令的结果：${'\r\n'}${result}`)
+              ctx.listData.push(`Obtain the result of STAT command：${'\r\n'}${result}`)
               return
             }
           }
         }
-        ctx.listData.push(`获取到STAT命令的结果：${'\r\n'}获取到的结果为空`)
+        ctx.listData.push(`Obtain the result of STAT command：${'\r\n'} The obtained result is empty`)
       } else {
-        ctx.listData.push(`账号未登录，请需重新登录`)
-        this.showToast('账号未登录，请需重新登录', 'sendSTAT')
+        ctx.listData.push(`Account not logged in, Please login again`)
+        this.showToast('Account not logged in, Please login again', 'sendSTAT')
       }
 
     } catch (err) {
-      ctx.listData.push(`获取STAT命令结果失败：${'\r\n'}${err.message}`)
-      this.showToast(`获取STAT命令结果失败：${err.message}`, 'sendSTAT')
+      ctx.listData.push(`Failed to obtain STAT command result：${'\r\n'}${err.message}`)
+      this.showToast(`Failed to obtain STAT command result：${err.message}`, 'sendSTAT')
     }
   }
 
@@ -308,7 +299,7 @@ struct AutoLoginCommandPage {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("LIST averageTime : " + averageTime1 + "us")
-        this.showToast(`获取到LIST命令的结果：${result}`, 'sendLIST')
+        this.showToast(`Obtain the result of the LIST command：${result}`, 'sendLIST')
         if (result && result.toString() && result.toString().length > 0) {
           let arr = result.toString().split(',')
           if (arr && arr.length >= 2) {
@@ -316,7 +307,7 @@ struct AutoLoginCommandPage {
             for (let i = 0; i < arr.length; i += 2) {
               let index = Number.parseInt(arr[i]);
               let size = Number.parseInt(arr[i+1]);
-              ctx.listData.push(`列表条目，序号：${index}，大小：${size}`)
+              ctx.listData.push(`List entry, serial number：${index}，size：${size}`)
               let bean = new MsgBean()
               bean.setIndex(index);
               bean.setSize(size);
@@ -325,15 +316,15 @@ struct AutoLoginCommandPage {
             return
           }
         }
-        ctx.listData.push(`获取到LIST命令的结果解析失败，${result}`)
+        ctx.listData.push(`Failed to parse the result obtained from the LIST command, ${result}`)
       } else {
-        ctx.listData.push(`账号未登录，请需重新登录`)
-        this.showToast('账号未登录，请需重新登录', 'sendLIST')
+        ctx.listData.push(`Account not logged in, Please login again`)
+        this.showToast('Account not logged in, Please login again', 'sendLIST')
       }
 
     } catch (err) {
-      ctx.listData.push(`获取LIST命令结果失败：${'\r\n'}${err.message}`)
-      this.showToast(`获取LIST命令结果失败：${err.message}`, 'sendLIST')
+      ctx.listData.push(`Failed to retrieve the LIST command result：${'\r\n'}${err.message}`)
+      this.showToast(`Failed to retrieve the LIST command result：${err.message}`, 'sendLIST')
     }
   }
 
@@ -350,16 +341,16 @@ struct AutoLoginCommandPage {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("NOOP averageTime : " + averageTime1 + "us")
-        this.showToast('获取到NOOP命令的结果', 'sendNOOP')
-        ctx.listData.push(`获取到NOOP命令的结果：成功`)
+        this.showToast('Obtain the result of the NOOP command', 'sendNOOP')
+        ctx.listData.push(`Obtain the result of the NOOP command：success`)
       } else {
-        ctx.listData.push(`账号未登录，请需重新登录`)
-        this.showToast('账号未登录，请需重新登录', 'sendNOOP')
+        ctx.listData.push(`Account not logged in, Please login again`)
+        this.showToast('Account not logged in, Please login again', 'sendNOOP')
       }
 
     } catch (err) {
-      ctx.listData.push(`获取NOOP命令结果失败：${'\r\n'}${err.message}`)
-      this.showToast(`获取NOOP命令结果失败：${err.message}`, 'sendNOOP')
+      ctx.listData.push(`Failed to obtain NOOP command result：${'\r\n'}${err.message}`)
+      this.showToast(`Failed to obtain NOOP command result：${err.message}`, 'sendNOOP')
     }
   }
 
@@ -368,11 +359,11 @@ struct AutoLoginCommandPage {
     ctx.listData = []
     try {
       if (ctx.selectMsgNum === -1) {
-        ctx.showToast(`请先选择一个列表项目`, 'sendTOP')
+        ctx.showToast(`Please select a list item first`, 'sendTOP')
         return
       }
       if (!ctx.topLine || ctx.topLine.length < 1 || Number.parseInt(ctx.topLine) < 1) {
-        ctx.showToast(`请先输入Top行数`, 'sendTOP')
+        ctx.showToast(`Please enter the number of Top rows first`, 'sendTOP')
         return
       }
       if (ctx.client) {
@@ -382,16 +373,16 @@ struct AutoLoginCommandPage {
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("TOP averageTime : " + averageTime1 + "us")
 
-        ctx.showToast('获取到TOP命令的结果', 'sendTOP')
-        ctx.listData.push(`获取到TOP命令的结果：${'\r\n'}${result}`)
+        ctx.showToast('Obtain the result of the TOP command', 'sendTOP')
+        ctx.listData.push(`Obtain the result of the TOP command：${'\r\n'}${result}`)
       } else {
-        ctx.listData.push(`账号未登录，请需重新登录`)
-        ctx.showToast('账号未登录，请需重新登录', 'sendTOP')
+        ctx.listData.push(`Account not logged in, Please login again`)
+        ctx.showToast('Account not logged in, Please login again', 'sendTOP')
       }
 
     } catch (err) {
-      ctx.listData.push(`获取TOP命令结果失败：${'\r\n'}${err.message}`)
-      ctx.showToast(`获取TOP命令结果失败：${err.message}`, 'sendTOP')
+      ctx.listData.push(`Failed to obtain TOP command result：${'\r\n'}${err.message}`)
+      ctx.showToast(`Failed to obtain TOP command result：${err.message}`, 'sendTOP')
     }
     ctx.selectMsgNum = -1;
   }
@@ -402,7 +393,7 @@ struct AutoLoginCommandPage {
     ctx.listData = []
     try {
       if (ctx.selectMsgNum === -1) {
-        ctx.showToast(`请先选择一个列表项目`, 'sendUIDL')
+        ctx.showToast(`Please select a list item first`, 'sendUIDL')
         return
       }
       if (ctx.client) {
@@ -412,16 +403,16 @@ struct AutoLoginCommandPage {
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("UIDL averageTime : " + averageTime1 + "us")
 
-        ctx.showToast('获取到UIDL命令的结果', 'sendUIDL')
-        ctx.listData.push(`获取到UIDL命令的结果：${'\r\n'}${result}`)
+        ctx.showToast('Obtain the result of the UIDL command', 'sendUIDL')
+        ctx.listData.push(`Obtain the result of the UIDL command：${'\r\n'}${result}`)
       } else {
-        ctx.listData.push(`账号未登录，请需重新登录`)
-        ctx.showToast('账号未登录，请需重新登录', 'sendUIDL')
+        ctx.listData.push(`Account not logged in, Please login again`)
+        ctx.showToast('Account not logged in, Please login again', 'sendUIDL')
       }
 
     } catch (err) {
-      ctx.listData.push(`获取UIDL命令结果失败：${'\r\n'}${err.message}`)
-      ctx.showToast(`获取UIDL命令结果失败：${err.message}`, 'sendUIDL')
+      ctx.listData.push(`Failed to obtain UIDL command result：${'\r\n'}${err.message}`)
+      ctx.showToast(`Failed to obtain UIDL command result：${err.message}`, 'sendUIDL')
     }
     ctx.selectMsgNum = -1;
   }
@@ -440,16 +431,16 @@ struct AutoLoginCommandPage {
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("LAST averageTime : " + averageTime1 + "us")
 
-        ctx.showToast('获取到LAST命令的结果', 'sendLAST')
-        ctx.listData.push(`获取到LAST命令的结果：${'\r\n'}${result}`)
+        ctx.showToast('Obtain the result of the Last command', 'sendLAST')
+        ctx.listData.push(`Obtain the result of the Last command：${'\r\n'}${result}`)
       } else {
-        ctx.listData.push(`账号未登录，请需重新登录`)
-        ctx.showToast('账号未登录，请需重新登录', 'sendLAST')
+        ctx.listData.push(`Account not logged in, Please login again`)
+        ctx.showToast('Account not logged in, Please login again', 'sendLAST')
       }
 
     } catch (err) {
-      ctx.listData.push(`获取LAST命令结果失败：${'\r\n'}${err.message}`)
-      ctx.showToast(`获取LAST命令结果失败：${err.message}`, 'sendLAST')
+      ctx.listData.push(`Failed to obtain the last command result：${'\r\n'}${err.message}`)
+      ctx.showToast(`Failed to obtain the last command result：${err.message}`, 'sendLAST')
     }
   }
 
@@ -459,7 +450,7 @@ struct AutoLoginCommandPage {
     ctx.listData = []
     try {
       if (ctx.selectMsgNum === -1) {
-        ctx.showToast(`请先选择一个列表项目`, 'sendDELE')
+        ctx.showToast(`Please select a list item first`, 'sendDELE')
         return
       }
       if (ctx.client) {
@@ -468,16 +459,16 @@ struct AutoLoginCommandPage {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("DELE averageTime : " + averageTime1 + "us")
-        ctx.showToast('获取到DELE命令的结果', 'sendDELE')
-        ctx.listData.push(`获取到DELE命令的结果：${'\r\n'}${result}`)
+        ctx.showToast('Obtain the result of the DELE command', 'sendDELE')
+        ctx.listData.push(`Obtain the result of the DELE command：${'\r\n'}${result}`)
       } else {
-        ctx.listData.push(`账号未登录，请需重新登录`)
-        ctx.showToast('账号未登录，请需重新登录', 'sendDELE')
+        ctx.listData.push(`Account not logged in, Please login again`)
+        ctx.showToast('Account not logged in, Please login again', 'sendDELE')
       }
 
     } catch (err) {
-      ctx.listData.push(`获取DELE命令结果失败：${'\r\n'}${err.message}`)
-      ctx.showToast(`获取DELE命令结果失败：${err.message}`, 'sendDELE')
+      ctx.listData.push(`Failed to obtain DELE command result：${'\r\n'}${err.message}`)
+      ctx.showToast(`Failed to obtain DELE command result：${err.message}`, 'sendDELE')
     }
     ctx.selectMsgNum = -1;
   }
@@ -488,7 +479,7 @@ struct AutoLoginCommandPage {
     ctx.listData = []
     try {
       if (ctx.selectMsgNum === -1) {
-        ctx.showToast(`请先选择一个列表项目`, 'sendRSET')
+        ctx.showToast(`Please select a list item first`, 'sendRSET')
         return
       }
       if (ctx.client) {
@@ -500,16 +491,16 @@ struct AutoLoginCommandPage {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("RSET averageTime : " + averageTime1 + "us")
-        ctx.showToast('获取到RSETE命令的结果', 'sendRSET')
-        ctx.listData.push(`发送RSET命令取消删除操作的结果：${'\r\n'}${result}`)
+        ctx.showToast('Obtain the result of the RSETE command', 'sendRSET')
+        ctx.listData.push(`Send RSET command to cancel the deletion operation result：${'\r\n'}${result}`)
       } else {
-        ctx.listData.push(`账号未登录，请需重新登录`)
-        ctx.showToast('账号未登录，请需重新登录', 'sendRSET')
+        ctx.listData.push(`Account not logged in, Please login again`)
+        ctx.showToast('Account not logged in, Please login again', 'sendRSET')
       }
 
     } catch (err) {
-      ctx.listData.push(`获取RSET命令结果失败：${'\r\n'}${err.message}`)
-      ctx.showToast(`获取RSET命令结果失败：${err.message}`, 'sendRSET')
+      ctx.listData.push(`Failed to obtain RSET command result：${'\r\n'}${err.message}`)
+      ctx.showToast(`Failed to obtain RSET command result：${err.message}`, 'sendRSET')
     }
     ctx.selectMsgNum = -1;
   }
@@ -520,7 +511,7 @@ struct AutoLoginCommandPage {
     ctx.listData = []
     try {
       if (ctx.selectMsgNum === -1) {
-        ctx.showToast(`请先选择一个列表项目`, 'sendRETR')
+        ctx.showToast(`Please select a list item first`, 'sendRETR')
         return
       }
       if (ctx.client) {
@@ -529,23 +520,23 @@ struct AutoLoginCommandPage {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("RETR averageTime : " + averageTime1 + "us")
-        ctx.showToast('获取到RETR命令的结果', 'sendRETR')
-        ctx.listData.push(`获取到RETR命令的结果，结果长度为：${'\r\n'}${result.toString().length}${'\r\n'}}`)
+        ctx.showToast('Obtain the result of the RETR command', 'sendRETR')
+        ctx.listData.push(`Obtain the result of the RETR command, The result length is：${'\r\n'}${result.toString().length}${'\r\n'}}`)
         if (result.toString().length > 1000) {
-          ctx.listData.push(`由于RETR命令的结果太长text无法完全显示，取最后1000字节显示：${'\r\n'}${result.toString()
+          ctx.listData.push(`Due to the result of the RETR command being too long to fully display the text, the last 1000 bytes will be taken for display：${'\r\n'}${result.toString()
             .substring(result.toString().length - 1000, result.toString().length)}`)
         } else {
-          ctx.listData.push(`ETR命令的结果显示：${'\r\n'}${result.toString()}`)
+          ctx.listData.push(`The result of ETR command displays：${'\r\n'}${result.toString()}`)
         }
 
       } else {
-        ctx.listData.push(`账号未登录，请需重新登录`)
-        ctx.showToast('账号未登录，请需重新登录', 'sendRETR')
+        ctx.listData.push(`Account not logged in, Please login again`)
+        ctx.showToast('Account not logged in, Please login again', 'sendRETR')
       }
 
     } catch (err) {
-      ctx.listData.push(`获取RETR命令结果失败：${'\r\n'}${err.message}`)
-      ctx.showToast(`获取RETR命令结果失败：${err.message}`, 'sendRETR')
+      ctx.listData.push(`Failed to obtain RETR command result：${'\r\n'}${err.message}`)
+      ctx.showToast(`Failed to obtain RETR command result：${err.message}`, 'sendRETR')
     }
     ctx.selectMsgNum = -1;
   }
@@ -565,17 +556,17 @@ struct AutoLoginCommandPage {
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("QUIT averageTime : " + averageTime1 + "us")
 
-        ctx.showToast('获取到QUIT命令的结果', 'sendQUIT')
-        ctx.listData.push(`获取到QUIT命令的结果：${'\r\n'}${quitInfo}`)
+        ctx.showToast('Obtain the result of the QUIT command', 'sendQUIT')
+        ctx.listData.push(`Obtain the result of the QUIT command：${'\r\n'}${quitInfo}`)
         GlobalObj?.getInstance()?.getContext()?.terminateSelf()
       } else {
-        ctx.listData.push(`账号未登录，请需重新登录`)
-        ctx.showToast('账号未登录，请需重新登录', 'sendQUIT')
+        ctx.listData.push(`Account not logged in, Please login again`)
+        ctx.showToast('Account not logged in, Please login again', 'sendQUIT')
       }
 
     } catch (err) {
-      ctx.listData.push(`获取RETR命令结果失败：${'\r\n'}${err.message}`)
-      ctx.showToast(`获取RETR命令结果失败：${err.message}`, 'sendRETR')
+      ctx.listData.push(`Failed to obtain RETR command result：${'\r\n'}${err.message}`)
+      ctx.showToast(`Failed to obtain RETR command result：${err.message}`, 'sendRETR')
     }
   }
 }

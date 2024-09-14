@@ -1,8 +1,7 @@
 {
   "name": "@ohos/luaarkts",
   "version": "1.0.1-rc.0",
-  "description": "Implement the ability to access Lua scripts and TS scripts through LuaJIT and NAPI, and simplify C++and Arkts\
-    development through the AKI library",
+  "description": "Please describe the basic information.",
   "main": "",
   "author": "ohos_tpc",
   "license": "Apache-2.0",

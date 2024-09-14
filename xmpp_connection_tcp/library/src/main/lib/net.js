@@ -81,7 +81,7 @@ class Socket extends EventEmitter_1 {
       this.emit("connect");
     } catch (err) {
       console.log(tag + `connect 出现异常 ${JSON.stringify(err)}`);
-
+      this.emit("close");
       this.ohos_tcp_socket.connecting = false;
       this.emit("error", err);
     }

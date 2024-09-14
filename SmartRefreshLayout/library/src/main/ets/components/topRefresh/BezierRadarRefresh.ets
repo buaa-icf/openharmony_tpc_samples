@@ -15,19 +15,20 @@
 import SmartRefreshForBezierRadarSample from "./SmartRefreshForBezierRadarSample"
 import display from '@ohos.display';
 
-@Component
+@ComponentV2
 export struct BezierRadar {
-  @Link model: SmartRefreshForBezierRadarSample.Model
-  @State bezierRadarModel: BezierRadarModel.BezierRadarModel = new BezierRadarModel.BezierRadarModel()
-  @State refresh: boolean  = false;
-  @State refreshGenerationId: number= 0;
+  @Param @Require model: SmartRefreshForBezierRadarSample.Model
+  @Event $model: (value: SmartRefreshForBezierRadarSample.Model) => void = (value: SmartRefreshForBezierRadarSample.Model) => {}
+  @Local bezierRadarModel: BezierRadarModel.BezierRadarModel = new BezierRadarModel.BezierRadarModel()
+  @Local refresh: boolean  = false;
+  @Local refreshGenerationId: number= 0;
   private context: CanvasRenderingContext2D = new CanvasRenderingContext2D(new RenderingContextSettings(true));
   private ready: boolean = false;
   private status = SmartRefreshForBezierRadarSample.REFRESHSTATE.NONE; //当前的状态
   private index: number = 0; //数组下标
-  @State beforeEnableHorizontalDrag: boolean = false
-  @State beforePrimaryColor:string = "#0000FF"
-  @State beforeRadarFillColor:string = "#ADD8E6"
+  @Local beforeEnableHorizontalDrag: boolean = false
+  @Local beforePrimaryColor:string = "#0000FF"
+  @Local beforeRadarFillColor:string = "#ADD8E6"
   private screenWidth: number = display.getDefaultDisplaySync().width
 
 
@@ -159,34 +160,35 @@ export struct BezierRadar {
 }
 
 namespace BezierRadarModel {
+  @ObservedV2
   export class BezierRadarModel {
-    mWidth: number = 720
-    mHeight: number = 1280
+    @Trace mWidth: number = 720
+    @Trace mHeight: number = 1280
     //<editor-fold desc="属性字段">
-    mAccentColor: string = ""; //背景的颜色（白球内部，雷达内部）
-    mPrimaryColor: string = ""; //背景波形的颜色
-    mRadarFillColor: string = ""; //雷达填充的颜色
-    mWavePulling: boolean= true; //背景波形是否可拉动
-    mEnableHorizontalDrag: boolean  = false; //水平拖拽
-    isSupportHorizontalDrag: boolean = true;//是否支持水平拖拽
-    mWaveTop: number = 0; //背景波形头部
-    mWaveHeight: number = 0; //背景波形高度
-    mWaveOffsetX: number = -1; //弧度的顶端坐标。-1表示没有进行设置
+    @Trace mAccentColor: string = ""; //背景的颜色（白球内部，雷达内部）
+    @Trace mPrimaryColor: string = ""; //背景波形的颜色
+    @Trace mRadarFillColor: string = ""; //雷达填充的颜色
+    @Trace mWavePulling: boolean= true; //背景波形是否可拉动
+    @Trace mEnableHorizontalDrag: boolean  = false; //水平拖拽
+    @Trace isSupportHorizontalDrag: boolean = true;//是否支持水平拖拽
+    @Trace mWaveTop: number = 0; //背景波形头部
+    @Trace mWaveHeight: number = 0; //背景波形高度
+    @Trace mWaveOffsetX: number = -1; //弧度的顶端坐标。-1表示没有进行设置
     //mWaveOffsetY: number = 0;
-    mDotAlpha: number = 255; //多个点的颜色分配
-    mDotFraction: number = 0; //控制多个点的位置与份数
-    mDotRadius: number = 0; //多个点的半径
-    mRippleRadius: number = 0; //白色扩展半径
-    mRippleRadiusAdd: number = 10; //白色扩展半径增量
-    mRadarAngle: number = 0; //雷达角度
-    mRadarRadius: number = 0; //雷达半径
-    mRadarCircle: number = 0; //圆环宽度
-    mRadarScale: number = 0; //雷达比例
-    firstTime: number = 0; //第一次获取的时间
-    lastTime: number = 0; //最后一次获取的时间
-    isFirstGetTime: boolean = true
-    location: number = 17; //表示绘制中心在整个高度的位置，height / location
-    Arr: Array<number> = [-30, -60, -80, -100, -120, -130, -20, -80, -60, -40, -20,];
+    @Trace mDotAlpha: number = 255; //多个点的颜色分配
+    @Trace mDotFraction: number = 0; //控制多个点的位置与份数
+    @Trace mDotRadius: number = 0; //多个点的半径
+    @Trace mRippleRadius: number = 0; //白色扩展半径
+    @Trace mRippleRadiusAdd: number = 10; //白色扩展半径增量
+    @Trace mRadarAngle: number = 0; //雷达角度
+    @Trace mRadarRadius: number = 0; //雷达半径
+    @Trace mRadarCircle: number = 0; //圆环宽度
+    @Trace mRadarScale: number = 0; //雷达比例
+    @Trace firstTime: number = 0; //第一次获取的时间
+    @Trace lastTime: number = 0; //最后一次获取的时间
+    @Trace isFirstGetTime: boolean = true
+    @Trace location: number = 17; //表示绘制中心在整个高度的位置，height / location
+    @Trace Arr: Array<number> = [-30, -60, -80, -100, -120, -130, -20, -80, -60, -40, -20,];
 
     init() {
       this.mDotRadius = vp2px(7);

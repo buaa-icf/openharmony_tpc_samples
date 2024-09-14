@@ -1,7 +1,10 @@
 # Changelog
 
-## [1.0.0] 
-- 多设备登录:将消息从发送方路由到接收方，确保消息能够准确传递。
-- 状态同步:确保用户在不同设备上的状态信息（如在线/离线状态）保持同步。
-- 消息路由:将消息从发送方路由到接收方，确保消息能够准确传递。
-- 会话管理:管理用户与其他用户之间的会话，包括创建、终止和跟踪会话状态。
+## 1.0.1
+- Supplement repository content
+
+## [1.0.0]
+- Multi device login: Route messages from the sender to the receiver to ensure accurate delivery of messages.
+- Status synchronization: Ensure that users' status information (such as online/offline status) on different devices remains synchronized.
+- Message routing: Routing messages from the sender to the receiver to ensure accurate delivery.
+- Session management: Manage sessions between users and other users, including creating, terminating, and tracking session status.

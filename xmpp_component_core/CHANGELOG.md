@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.1
+- Supplement repository content
+
 ## 1.0.0
-- 构建的组件或服务器与其他 XMPP 实体兼容
-- 提供了一些基本的 XMPP 功能，例如身份验证、连接管理和元素发送/接收
+- Build components or servers that are compatible with other XMPP entities
+- Provides some basic XMPP functionality, such as authentication, connection management, and element send/receive

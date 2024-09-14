@@ -1,6 +1,7 @@
 {
   "name": "@ohos/xmpp_client",
-  "version": "1.0.2",
+  "version": "1.0.3",
+  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/xmpp_client",
   "description": "是连接到XMPP服务器的实体,它包含一组最小的功能，用于安全可靠地进行连接和身份验证",
   "main": "index.js",
   "types": "index.d.ts",
@@ -10,9 +11,9 @@
   "dependencies": {
     "@ohos/xmpp_xml": "^1.0.0",
     "@ohos/xmpp_connection": "^1.0.1",
-    "@ohos/xmpp_connection_tcp": "^1.0.0",
-    "@ohos/xmpp_tcp": "^1.0.0",
-    "@ohos/xmpp_websocket": "^1.0.1",
+    "@ohos/xmpp_connection_tcp": "^1.0.1",
+    "@ohos/xmpp_tcp": "^1.0.1",
+    "@ohos/xmpp_websocket": "^1.0.2",
     "@ohos/xmpp_client_core": "^1.0.0",
     "@ohos/xmpp_reconnect": "^1.0.0",
     "@ohos/xmpp_middleware": "^1.0.0",

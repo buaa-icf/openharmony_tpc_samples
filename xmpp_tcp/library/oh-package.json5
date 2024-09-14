@@ -1,6 +1,7 @@
 {
   "name": "@ohos/xmpp_tcp",
-  "version": "1.0.1",
+  "version": "1.0.2",
+  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/xmpp_tcp",
   "description": "在OpenHarmony上提供了一个用于建立和管理TCP连接的library。",
   "main": "index.js",
   "types": "index.d.ts",
@@ -8,7 +9,7 @@
   "author": "tpc",
   "license": "ISC License",
   "dependencies": {
-    "@ohos/xmpp_connection_tcp": "1.0.1",
-    "@ohos/xmpp_connection": "1.0.1"
+    "@ohos/xmpp_connection_tcp": "^1.0.1",
+    "@ohos/xmpp_connection": "^1.0.1"
   }
 }

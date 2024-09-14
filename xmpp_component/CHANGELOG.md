@@ -1,6 +1,8 @@
 # Changelog
+## 1.0.1
+- Supplement repository content
 
 ## 1.0.0
-- 组件连接： 该库允许你与XMPP服务器和其它组件建立和管理连接，包括处理认证、流特性以及错误处理。
-- 消息路由： 它提供了处理接收和发送消息的功能，包括处理消息stanza（XML消息）、元数据以及错误。
-- 组件发现： 包含组件发现协议支持，用于组件之间展示自身能力和功能。
+- Component Connections: This library allows you to establish and manage connections with XMPP servers and other components, including handling authentication, streaming features, and error handling.
+- Message routing: It provides functionality for handling received and sent messages, including message stanza (XML messages), metadata, and errors.
+- Component discovery: supports the component discovery protocol, which displays capabilities and functions among components.

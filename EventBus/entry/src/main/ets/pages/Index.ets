@@ -36,19 +36,19 @@ interface ThatType {
 @Entry
 @Component
 struct Index {
-  @State comeDetailText: string = "全局监听detail页面刷新展示";
+  @State comeDetailText: string = "Refresh and display the global monitoring detail page";
   @State changeText: string = "";
   testCount: number = 0;
   eventBusCount: number = 0;
   scroller: Scroller = new Scroller();
   basicTestCallBack: EventBus.EventListener = (event: Event) => {
     this.testCount++;
-    this.changeText = "basicTest监听创建成功 " + this.testCount;
+    this.changeText = "BasicTest listening successfully created " + this.testCount;
     console.log(TAG + " basicTest message received " + event.type);
   }
   basicEventBusCallBack: EventBus.EventListener = (event: Event) => {
     this.eventBusCount++;
-    this.changeText = "basicEventBus监听创建成功 " + this.eventBusCount;
+    this.changeText = "BasicEventBus listening successfully created " + this.eventBusCount;
     console.log(TAG + " basicEventBus message received " + event.type);
   }
 
@@ -73,7 +73,7 @@ struct Index {
       Scroll(this.scroller) {
         Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center }) {
 
-          Button("订阅basicTest消息")
+          Button("Subscribe to basicTest messages")
             .fontSize(18)
             .height(80)
             .onClick(() => {
@@ -84,14 +84,14 @@ struct Index {
               }
             }).margin({ bottom: 20 })
 
-          Button("发送basicTest消息")
+          Button("Send basicTest message")
             .fontSize(18)
             .height(80)
             .onClick(() => {
               EventBus.dispatch("basicTest")
             }).margin({ bottom: 20 })
 
-          Button("订阅basicEventBus消息")
+          Button("Subscribe to basicEventBus messages")
             .fontSize(18)
             .height(80)
             .onClick(() => {
@@ -102,14 +102,14 @@ struct Index {
               }
             }).margin({ bottom: 20 })
 
-          Button("发送basicEventBus消息")
+          Button("Send basicEventBus message")
             .fontSize(18)
             .height(80)
             .onClick(() => {
               EventBus.dispatch("basicEventBus")
             }).margin({ bottom: 20 })
 
-          Button("判断basicTest订阅是否存在")
+          Button("Determine whether the basicTest subscription exists")
             .fontSize(18)
             .height(80)
             .onClick(() => {
@@ -118,22 +118,22 @@ struct Index {
               console.log(TAG + " Determine whether the Basictest subscription exists " + isHas)
             }).margin({ bottom: 20 })
 
-          Button("移除basicTest消息")
+          Button("Remove basicTest message")
             .fontSize(18)
             .height(80)
             .onClick(() => {
               EventBus.removeEventListener('basicTest', this.basicTestCallBack);
-              this.changeText = '移除basicTest消息成功'
+              this.changeText = 'Successfully removed basicTest message'
             }).margin({ bottom: 20 })
 
-          Button("传递参数测试")
+          Button("Passing parameter testing")
             .fontSize(18)
             .height(80)
             .onClick(() => {
               testAddParameters()
             }).margin({ bottom: 20 })
 
-          Button("测试获取有多少事件被注册")
+          Button("Test how many events have been registered")
             .fontSize(18)
             .height(80)
             .onClick(() => {

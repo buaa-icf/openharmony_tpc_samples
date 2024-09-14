@@ -17,11 +17,12 @@ import SmartRefreshForGame from './SmartRefreshForGame'
 import {AirplaneGameCover} from './BattleCityGameCover'
 import {AirplaneGameBody} from './BattleCityGameBody'
 
-@Component
+@ComponentV2
 export struct BattleCity {
-  @Link model: SmartRefreshForGame.Model
-  @State private welcomeIsStart: boolean = false
-  @State private gameIsStart: boolean = false
+  @Param @Require model: SmartRefreshForGame.Model
+  @Event $model: (value: SmartRefreshForGame.Model) => void = (value: SmartRefreshForGame.Model) => {}
+  @Local welcomeIsStart: boolean = false
+  @Local gameIsStart: boolean = false
 
   private changeState(state:ESObject) {
     if (state == SmartRefreshForGame.REFRESHSTATE.TOREFRESH) { // 下拉中

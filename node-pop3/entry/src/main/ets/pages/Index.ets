@@ -31,23 +31,23 @@ struct CustomDialogDiy {
 
   build() {
     Column() {
-      Text('请输入邮箱类型').fontSize(20).margin({ top: 10, bottom: 10 }).width('90%')
+      Text('Please enter email type').fontSize(20).margin({ top: 10, bottom: 10 }).width('90%')
       TextInput({ placeholder: '', text: this.textValue }).height(60).width('90%')
         .onChange((value: string) => {
           this.textValue = value;
         })
-      Text('Tips:请输入正确格式的邮箱类型，例如@qq.com或者@163.com')
+      Text('Tips: Please enter the correct email type format, such as @qq.com or @163.com')
         .margin({ top: 10, bottom: 10 })
         .width('90%')
         .fontSize(8)
         .fontColor(Color.Red)
       Flex({ justifyContent: FlexAlign.SpaceAround }) {
-        Button('取消')
+        Button('Cancel')
           .onClick(() => {
             this.controller.close()
             this.cancel()
           })
-        Button('确定')
+        Button('Confirm')
           .onClick(() => {
             this.inputValue = this.textValue
             this.controller.close()
@@ -71,11 +71,11 @@ struct Index {
   dialogController: CustomDialogController | null = new CustomDialogController({
     builder: CustomDialogDiy({
       cancel: () => {
-        this.showToast(`关闭了对话框，取消选输入其他类型邮箱`, 'mailType-cancel')
+        this.showToast(`The dialog box has been closed, and the option to enter a different type of email has been unselected`, 'mailType-cancel')
       },
       confirm: () => {
         this.mailType = this.inputValue
-        this.showToast(`输入其他类型邮箱：${this.mailType}`, 'mailType-confirm')
+        this.showToast(`Enter other types of email addresses：${this.mailType}`, 'mailType-confirm')
       },
       textValue: $textValue,
       inputValue: $inputValue
@@ -89,7 +89,7 @@ struct Index {
     GlobalObj?.getInstance()?.getClient()?.QUIT();
   }
 
-  showToast(text: string, name = '测试') {
+  showToast(text: string, name = 'test') {
     console.log(`zdy---${name}--->${text}`)
     promptAction.showToast({
       message: text,
@@ -128,7 +128,7 @@ struct Index {
             this.mailType = '@sina.com'
           }
         })
-      MenuItem({ content: '其他', labelInfo: 'other' })
+      MenuItem({ content: 'other', labelInfo: 'other' })
         .onChange((selected) => {
           if (selected) {
             if (this.dialogController) {
@@ -147,7 +147,7 @@ struct Index {
         alignContent: FlexAlign.Center,
         direction: FlexDirection.Column
       }) {
-        Text('点击账号后面的邮箱可以切换邮箱类型')
+        Text('Click on the email after the account to switch email types')
           .fontSize(20)
           .height(50)
           .textAlign(TextAlign.Center)
@@ -161,13 +161,13 @@ struct Index {
           alignContent: FlexAlign.Start,
           direction: FlexDirection.Row
         }) {
-          Text('账号：')
+          Text('Account：')
             .fontSize(20)
             .height(50)
             .textAlign(TextAlign.Center)
             .margin({ right: 5 })
 
-          TextInput({ placeholder: '请输入账号', text: this.account })
+          TextInput({ placeholder: 'Please enter your account', text: this.account })
             .layoutWeight(1)
             .fontSize(20)
             .height(50)
@@ -195,13 +195,13 @@ struct Index {
           alignContent: FlexAlign.Start,
           direction: FlexDirection.Row
         }) {
-          Text('密码/授权码：')
+          Text('Password/Authorization Code：')
             .fontSize(20)
             .height(50)
             .textAlign(TextAlign.Center)
             .margin({ right: 5 })
 
-          TextInput({ placeholder: '请输入密码/授权码', text: this.password })
+          TextInput({ placeholder: 'Please enter password/Authorization code', text: this.password })
             .layoutWeight(1)
             .fontSize(20)
             .height(50)
@@ -217,7 +217,7 @@ struct Index {
         .margin({ left: 15, top: 20 })
 
         Flex({ justifyContent: FlexAlign.Start, direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
-          Text('是否开启SSL/TLS(当前仅需支持SMTP,无需支持SMTPS,此按钮暂不可用)')
+          Text('Do you want to enable SSL/TLS (currently only supporting SMTP, not SMTPS, this button is temporarily unavailable)')
             .fontSize(20)
             .height(50)
             .margin({})
@@ -225,11 +225,11 @@ struct Index {
             .fontWeight(FontWeight.Bold)
 
 
-          Checkbox({ name: '是否开启SSL/TLS', group: 'ssl' })
+          Checkbox({ name: 'Do you want to enable SSL/TLS', group: 'ssl' })
             .height(40)
             .select(false)
             .onClick((event) => {
-              this.showToast('当前仅需支持SMTP,无需支持SMTPS')
+              this.showToast('Currently, only SMTP support is required, no SMTPS support is needed')
             })
             .enabled(false)
             .margin({ left: 10 })
@@ -241,7 +241,7 @@ struct Index {
         .margin({ left: 15, top: 20 })
 
         Flex({ justifyContent: FlexAlign.Center, direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
-          Button('命令说明及注意事项')
+          Button('Command instructions and precautions')
             .margin(20)
             .layoutWeight(1)
             .height(50)
@@ -252,7 +252,7 @@ struct Index {
                 url: 'pages/TipsPage'
               })
             })
-          Button('测试自己调用登陆并通过command获取邮件')
+          Button('Test calling login and obtaining emails through command')
             .margin(20)
             .layoutWeight(1)
             .height(50)
@@ -262,7 +262,7 @@ struct Index {
             .onClick(() => {
               this.diyLogin()
             })
-          Button('测试通过library登录以及使用已有的指令')
+          Button('Test logging in through library and using existing commands')
             .margin(20)
             .layoutWeight(1)
             .height(50)
@@ -368,7 +368,7 @@ struct Index {
         await GlobalObj?.getInstance()?.getClient()?.connect();
         await GlobalObj?.getInstance()?.getClient()?.command('USER', ctx.account + ctx.mailType);
         await GlobalObj?.getInstance()?.getClient()?.command('PASS', ctx.password);
-        this.showToast('账号登录成功', 'login-pop3')
+        this.showToast('Account login successful', 'login-pop3')
         router.pushUrl({
           url: 'pages/CommandPage',
           params: {
@@ -377,7 +377,7 @@ struct Index {
         })
       }
     } catch (err) {
-      this.showToast(`账号登录出错：${err.message}`, 'login-pop3')
+      this.showToast(`Account login error：${err.message}`, 'login-pop3')
     }
   }
 
@@ -464,7 +464,7 @@ struct Index {
         }
       })
     } catch (err) {
-      this.showToast(`配置登录参数失败：${err.message}`, 'login-pop3')
+      this.showToast(`Failed to configure login parameters：${err.message}`, 'login-pop3')
     }
   }
 }

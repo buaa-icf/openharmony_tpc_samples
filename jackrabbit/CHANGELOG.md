@@ -1,3 +1,7 @@
+## V2.0.1
+
+- 在DevEco Studio: NEXT Beta1-5.0.3.806, SDK: API12 Release (5.0.0.66)上验证通过
+
 ## V2.0.1-rc.0
 
 - 修改amqplib源码引用的方式，采用ohpm仓库依赖的方式使用

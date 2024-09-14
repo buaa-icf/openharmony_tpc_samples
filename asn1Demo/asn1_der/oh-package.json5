@@ -12,7 +12,7 @@
   "main": "src/main/dist/der_index.js",
   "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/asn1Demo",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "dependencies": {
     "buffer": "^6.0.3"
   }

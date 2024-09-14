@@ -15,13 +15,13 @@
   "main": "index.ets",
   "type": "module",
   "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_minizip",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "tags": [
 
   ],
   "dependencies": {
     "libminizip_ng.so": "file:./src/main/cpp/types/libminizip_ng",
-    "@ohos/aki": "^1.2.7"
+    "@ohos/aki": "1.2.13"
   },
   "license": "Apache License-2.0",
   "devDependencies": {},

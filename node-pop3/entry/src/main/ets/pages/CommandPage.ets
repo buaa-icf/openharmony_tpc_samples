@@ -35,7 +35,7 @@ struct CommandPage {
     await GlobalObj?.getInstance()?.getClient()?.QUIT()
   }
 
-  showToast(text: string, name = '测试') {
+  showToast(text: string, name = 'test') {
     console.log(`zdy---${name}--->${text}`)
     promptAction.showToast({
       message: text,
@@ -68,7 +68,7 @@ struct CommandPage {
               alignContent: FlexAlign.Start,
               direction: FlexDirection.Row
             }) {
-              Button('STAT命令')
+              Button('STAT command')
                 .margin(20)
                 .height(50)
                 .backgroundColor(Color.Blue)
@@ -78,7 +78,7 @@ struct CommandPage {
                 })
                 .margin({ top: 10 })
 
-              Button('LIST命令')
+              Button('LIST command')
                 .margin(20)
                 .height(50)
                 .backgroundColor(Color.Blue)
@@ -87,7 +87,7 @@ struct CommandPage {
                   this.sendMail()
                 })
                 .margin({ top: 10 })
-              Button('TOP命令')
+              Button('TOP command')
                 .margin(20)
                 .height(50)
                 .backgroundColor(Color.Blue)
@@ -96,7 +96,7 @@ struct CommandPage {
                   this.sendMail()
                 })
                 .margin({ top: 10 })
-              Button('UIDL命令')
+              Button('UIDL command')
                 .margin(20)
                 .height(50)
                 .backgroundColor(Color.Blue)
@@ -105,17 +105,7 @@ struct CommandPage {
                   this.sendMail()
                 })
                 .margin({ top: 10 })
-              Button('LAST命令')
-                .margin(20)
-                .height(50)
-                .backgroundColor(Color.Blue)
-                .fontColor(Color.White)
-                .onClick(() => {
-                  this.sendMail()
-                })
-                .margin({ top: 10 })
-
-              Button('NOOP命令')
+              Button('LAST command')
                 .margin(20)
                 .height(50)
                 .backgroundColor(Color.Blue)
@@ -125,7 +115,7 @@ struct CommandPage {
                 })
                 .margin({ top: 10 })
 
-              Button('DELE命令')
+              Button('NOOP command')
                 .margin(20)
                 .height(50)
                 .backgroundColor(Color.Blue)
@@ -135,7 +125,7 @@ struct CommandPage {
                 })
                 .margin({ top: 10 })
 
-              Button('RSET命令')
+              Button('DELE command')
                 .margin(20)
                 .height(50)
                 .backgroundColor(Color.Blue)
@@ -145,7 +135,7 @@ struct CommandPage {
                 })
                 .margin({ top: 10 })
 
-              Button('RETR命令')
+              Button('RSET command')
                 .margin(20)
                 .height(50)
                 .backgroundColor(Color.Blue)
@@ -155,7 +145,17 @@ struct CommandPage {
                 })
                 .margin({ top: 10 })
 
-              Button('QUIT命令')
+              Button('RETR command')
+                .margin(20)
+                .height(50)
+                .backgroundColor(Color.Blue)
+                .fontColor(Color.White)
+                .onClick(() => {
+                  this.sendMail()
+                })
+                .margin({ top: 10 })
+
+              Button('QUIT command')
                 .margin(20)
                 .height(50)
                 .backgroundColor(Color.Blue)
@@ -199,11 +199,11 @@ struct CommandPage {
       if (GlobalObj?.getInstance()?.getClient()) {
 
       } else {
-        this.showToast('账号未登录，请需重新登录', 'sendmail-smtp')
+        this.showToast('Account not logged in, Please login again', 'sendmail-smtp')
       }
 
     } catch (err) {
-      this.showToast(`邮件发送出错：${err.message}`, 'sendmail-smtp')
+      this.showToast(`Email sending error：${err.message}`, 'sendmail-smtp')
     }
   }
 }

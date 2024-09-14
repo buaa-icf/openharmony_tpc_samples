@@ -21,7 +21,7 @@ struct Index {
   build() {
     Row() {
       Column() {
-        Button('快速使用')
+        Button('Quick-access')
           .onClick(() => {
             router.push({ url: 'pages/Example' });
           })

@@ -25,13 +25,13 @@ const BASE_COUNT = 1
 struct SendBigAttachmentPage {
   @State message: string = 'Hello World'
   @State from: string = ''
-  @State accountName: string = 'OH邮件客户端'
+  @State accountName: string = 'OH email client'
   @State to: string = 'xxx@qq.com'
   @State cc: string = 'xxx@163.com'
   @State bcc: string = 'xxx@139.com'
-  @State subject: string = '这是OH测试主题'
-  @State content: string = '这是测试的鸿蒙邮件正文，邮件的收件人，抄送，密件抄送的格式为：someone <someone@your-email.com>, another <another@your-email.com>，多个账号以英文逗号,连接。'
-  @State bigFileInfo: string = '暂无附件'
+  @State subject: string = 'This is the OH testing topic'
+  @State content: string = 'This is the text of the OpenHarmony email for testing. The format for the recipient, cc, and confidential cc of the email is: someone<someone@your-email.com>, another<another@your-email.com> Multiple accounts are connected by commas in English.'
+  @State bigFileInfo: string = 'No attachments available at the moment'
   @State bigFileName: string = ''
   @State attachment: Array<MessageAttachment> = []
   @State mailType: string = '@qq.com'
@@ -42,7 +42,7 @@ struct SendBigAttachmentPage {
     GlobalObj?.getInstance()?.getClient()?.close(true);
   }
 
-  showToast(text: string, name = '测试') {
+  showToast(text: string, name = 'test') {
     console.log(`zdy---${name}--->${text}`)
     promptAction.showToast({
       message: text,
@@ -69,7 +69,7 @@ struct SendBigAttachmentPage {
             alignContent: FlexAlign.Center,
             direction: FlexDirection.Column
           }) {
-            Text('添加信息，发送邮件')
+            Text('Add information, send email')
               .fontSize(20)
               .height(50)
               .textAlign(TextAlign.Center)
@@ -82,13 +82,13 @@ struct SendBigAttachmentPage {
               alignContent: FlexAlign.Start,
               direction: FlexDirection.Row
             }) {
-              Text(`发件人(${this.from})昵称：`)
+              Text(`From (${this.from}) nickname：`)
                 .fontSize(20)
                 .height(50)
                 .textAlign(TextAlign.Center)
                 .margin({ right: 5 })
 
-              TextInput({ placeholder: '请输入发件人昵称', text: this.accountName })
+              TextInput({ placeholder: 'Please enter sender nickname', text: this.accountName })
                 .layoutWeight(1)
                 .fontSize(20)
                 .height(50)
@@ -109,14 +109,14 @@ struct SendBigAttachmentPage {
               alignContent: FlexAlign.Start,
               direction: FlexDirection.Row
             }) {
-              Text('收件人：')
+              Text('Recipient：')
                 .fontSize(20)
                 .height(50)
                 .textAlign(TextAlign.Center)
                 .margin({ right: 5 })
 
               TextInput({
-                placeholder: '格式为：xx <xx@yxx.com>, xx <xx@yxx.com>，多个账号以英文逗号,连接。',
+                placeholder: 'Format: xx<xx@yxx.com>, xx<xx@yxx.com> Multiple accounts are connected by commas in English.',
                 text: this.to
               })
                 .layoutWeight(1)
@@ -138,14 +138,14 @@ struct SendBigAttachmentPage {
               alignContent: FlexAlign.Start,
               direction: FlexDirection.Row
             }) {
-              Text('抄送：')
+              Text('Email CC：')
                 .fontSize(20)
                 .height(50)
                 .textAlign(TextAlign.Center)
                 .margin({ right: 5 })
 
               TextInput({
-                placeholder: '格式为：xx <xx@xxx.com>, xx <xx@yxx.com>，多个账号以英文逗号,连接。',
+                placeholder: 'Format: xx<xx@yxx.com>, xx<xx@yxx.com> Multiple accounts are connected by commas in English.',
                 text: this.cc
               })
                 .layoutWeight(1)
@@ -166,14 +166,14 @@ struct SendBigAttachmentPage {
               alignContent: FlexAlign.Start,
               direction: FlexDirection.Row
             }) {
-              Text('密件抄送抄送：')
+              Text('BCC Blind Carbon Copy：')
                 .fontSize(20)
                 .height(50)
                 .textAlign(TextAlign.Center)
                 .margin({ right: 5 })
 
               TextInput({
-                placeholder: '格式为：xx <xx@yxx.com>, xx <xx@yxx.com>，多个账号以英文逗号,连接。',
+                placeholder: 'Format: xx<xx@yxx.com>, xx<xx@yxx.com> Multiple accounts are connected by commas in English.',
                 text: this.bcc
               })
                 .layoutWeight(1)
@@ -196,13 +196,13 @@ struct SendBigAttachmentPage {
               alignContent: FlexAlign.Start,
               direction: FlexDirection.Row
             }) {
-              Text('主题：')
+              Text('Theme：')
                 .fontSize(20)
                 .height(50)
                 .textAlign(TextAlign.Center)
                 .margin({ right: 5 })
 
-              TextInput({ placeholder: '请输入邮件主题', text: this.subject })
+              TextInput({ placeholder: 'Please enter the email subject', text: this.subject })
                 .layoutWeight(1)
                 .fontSize(20)
                 .height(50)
@@ -222,14 +222,14 @@ struct SendBigAttachmentPage {
               alignContent: FlexAlign.Start,
               direction: FlexDirection.Column
             }) {
-              Text('正文：')
+              Text('Body：')
                 .fontSize(20)
                 .height(50)
                 .textAlign(TextAlign.Center)
                 .margin({ right: 5 })
 
               TextInput({
-                placeholder: '请输入邮件正文',
+                placeholder: 'Please enter the email body',
                 text: this.content
               })
                 .layoutWeight(1)
@@ -247,7 +247,7 @@ struct SendBigAttachmentPage {
             .height(160)
             .margin({ top: 10, right: 10 })
 
-            Text('大附件需要手动推入设备沙箱，多个大附件仅选取第一个')
+            Text('Large attachments need to be manually pushed into the device sandbox, and only the first one should be selected from multiple large attachments')
               .fontSize(20)
               .height(50)
               .textAlign(TextAlign.Center)
@@ -259,7 +259,7 @@ struct SendBigAttachmentPage {
               alignContent: FlexAlign.Start,
               direction: FlexDirection.Row
             }) {
-              Button('添加大附件')
+              Button('Add large attachment')
                 .fontSize(20)
                 .height(50)
                 .onClick(() => {
@@ -276,7 +276,7 @@ struct SendBigAttachmentPage {
 
             }.margin({ right: 10 })
 
-            Button('发送邮件')
+            Button('Send mail')
               .margin(20)
               .width('80%')
               .height(50)
@@ -315,21 +315,21 @@ struct SendBigAttachmentPage {
           let endTime1 = new Date().getTime();
           let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
           console.log("sendAsync averageTime : " + averageTime1 + "us")
-          this.showToast('邮件发送成功', 'sendmail-smtp')
+          this.showToast('Email sent successfully', 'sendmail-smtp')
           if (GlobalObj?.getInstance()?.getClient()?.isQuitAfterSendDone()) {
             GlobalObj?.getInstance()?.getClient()?.close(true);
             GlobalObj?.getInstance()?.setClient(null);
           }
         } else {
-          this.showToast('账号未登录，请需重新登录', 'sendmail-smtp')
+          this.showToast('Account not logged in, please login again', 'sendmail-smtp')
         }
 
       } else {
-        this.showToast('账号未登录，请需重新登录', 'sendmail-smtp')
+        this.showToast('Account not logged in, please login again', 'sendmail-smtp')
       }
 
     } catch (err) {
-      this.showToast(`邮件发送出错：${err.message}`, 'sendmail-smtp')
+      this.showToast(`Email sending error：${err.message}`, 'sendmail-smtp')
     }
   }
 
@@ -337,8 +337,8 @@ struct SendBigAttachmentPage {
     const ctx = this
     try {
       ctx.bigFileName = ''
-      ctx.bigFileInfo = '暂无附件'
-      ctx.showToast('开始检测cache目录下的大附件', 'createSingleFile')
+      ctx.bigFileInfo = 'No attachments available at the moment'
+      ctx.showToast('Start detecting large attachments in the cache directory', 'createSingleFile')
       let context = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext()
       if (!context) {
         return;
@@ -346,7 +346,7 @@ struct SendBigAttachmentPage {
       let fileDir = context?.cacheDir
       let fileList = fs.listFileSync(fileDir)
       if (!fileList || fileList.length < 1) {
-        ctx.showToast('请先推入大附件', 'addBigFile-imapclient')
+        ctx.showToast('Please push in the large attachment first', 'addBigFile-imapclient')
         return
       }
       for (let i = 0; i < fileList.length; i++) {
@@ -357,7 +357,7 @@ struct SendBigAttachmentPage {
       }
       let filePath = fileDir + '/' + ctx.bigFileName
       let stat = fs.statSync(filePath)
-      ctx.bigFileInfo = `附件名称：${ctx.bigFileName},附件大小：${stat.size}`
+      ctx.bigFileInfo = `Attachment Name：${ctx.bigFileName}, Attachment size：${stat.size}`
       let index = ctx.bigFileName.indexOf('.')
       let fileType = ctx.bigFileName.substring(index + 1, ctx.bigFileName.length)
 
@@ -368,9 +368,9 @@ struct SendBigAttachmentPage {
         size: stat.size
       }
       this.attachment.push(attach)
-      ctx.showToast(`获取到大附件  ${ctx.bigFileName}`, 'addBigFile-imapclient')
+      ctx.showToast(`Obtain the large attachment  ${ctx.bigFileName}`, 'addBigFile-imapclient')
     } catch (err) {
-      ctx.showToast('请先推入大附件', 'addBigFile-imapclient')
+      ctx.showToast('Please push in the large attachment first', 'addBigFile-imapclient')
     }
   }
 

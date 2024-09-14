@@ -42,7 +42,7 @@ struct Index {
     Row() {
       Scroll() {
         Column() {
-          Button('本地日期测试', { type: ButtonType.Capsule, stateEffect: true })
+          Button('Local date testing', { type: ButtonType.Capsule, stateEffect: true })
             .backgroundColor(0x317aff)
             .width(240)
             .onClick(() => {
@@ -50,11 +50,11 @@ struct Index {
             })
 
           Text(this.message)
-            .fontSize(20)
+            .fontSize(15)
             .margin(10)
             .fontColor(Color.Blue)
 
-          Button('下一页', { type: ButtonType.Capsule, stateEffect: true })
+          Button('Next', { type: ButtonType.Capsule, stateEffect: true })
             .backgroundColor(0x317aff)
             .width(240)
             .onClick(() => {
@@ -170,32 +170,32 @@ function testLocalDate(): string {
   // 获取测试月份最后一个周日的日期：2022-07-31
   console.info(mDate1.with(TemporalAdjusters.lastInMonth(DayOfWeek.SUNDAY)).toString());
 
-  return "解析给定日期： " + mDate.toString() + '\n' +
-    "给定日期是当月第几天： " + mDate.dayOfMonth().toString() + '\n' +
-    "给定日期月份： " + mDate.month().toString() + '\n' +
-    "给定月份的值： " + mDate.monthValue().toString() + '\n' +
-    "给定日期年份： " + mDate.year().toString() + '\n' +
-    "给定日期是周几: " + mDate.dayOfWeek().toString() + '\n' +
-    "给定日期是周几数字值： " + mDate.dayOfWeek().value().toString() + '\n' +
-    "给定日期是一年中的第几天： " + mDate.dayOfYear().toString() + '\n' +
-    "给定年份是否是闰年： " + mDate.isLeapYear() + '\n' +
-    "给定月份有多少天： " + mDate.lengthOfMonth().toString() + '\n' +
-    "给定年份有多少天： " + mDate.lengthOfYear().toString() + '\n' +
-    "给定日期在一年中的第几周： " + mDate.get(ChronoField.ALIGNED_WEEK_OF_YEAR).toString() + '\n' +
-    "给定日期加366天： " + mDate.plusDays(366).toString() + '\n' +
-    "给定日期减去366天： " + mDate.minusDays(366).toString() + '\n' +
-    "给定日期加上12个月： " + mDate.plusMonths(12).toString() + '\n' +
-    "给定日期减去12个月： " + mDate.minusMonths(12).toString() + '\n' +
-    "给定日期加上4周： " + mDate.plusWeeks(4).toString() + '\n' +
-    "给定日期减去4周： " + mDate.minusWeeks(4).toString() + '\n' +
-    "给定日期加上1年： " + mDate.plusYears(1).toString() + '\n' +
-    "给定日期减去1年： " + mDate.minusYears(1).toString() + '\n' +
-    "给定日期加上一个月零三天： " + mDate.plus(Period.ofMonths(1).plusDays(3)).toString() + '\n' +
-    "给定日期减去一个月零三天： " + mDate.minus(Period.ofMonths(1).plusDays(3)).toString() + '\n' +
-    "给定日期的日期设置成1： " + mDate.withDayOfMonth(1).toString() + '\n' +
-    "给定日期的月份和日期设置成1： " + mDate.withMonth(1).withDayOfMonth(1).toString() + '\n' +
-    "给定年份的第42天： " + mDate.withDayOfYear(42).toString() + '\n' +
-    "给定月份的第一天： " + mDate.with(TemporalAdjusters.firstDayOfMonth()).toString() + '\n' +
-    "获取当前日期： " + LocalDate.now().toString() + '\n' +
-    "获取月份最后一天： " + LocalDate.now().plusMonths(1).withDayOfMonth(1).minusDays(1).toString();
+  return "Analyze the given date： " + mDate.toString() + '\n' +
+    "What day of the month is the given date： " + mDate.dayOfMonth().toString() + '\n' +
+    "Given date and month： " + mDate.month().toString() + '\n' +
+    "Given the value of the month： " + mDate.monthValue().toString() + '\n' +
+    "Given date and year： " + mDate.year().toString() + '\n' +
+    "What day of the week is the given date: " + mDate.dayOfWeek().toString() + '\n' +
+    "What day of the week is the given date represented by a numerical value： " + mDate.dayOfWeek().value().toString() + '\n' +
+    "What day of the year is the given date is the given year a leap year： " + mDate.dayOfYear().toString() + '\n' +
+    "Is the given year a leap year： " + mDate.isLeapYear() + '\n' +
+    "How many days are there in a given month： " + mDate.lengthOfMonth().toString() + '\n' +
+    "How many days are there in a given year： " + mDate.lengthOfYear().toString() + '\n' +
+    "What week of the year is the given date in： " + mDate.get(ChronoField.ALIGNED_WEEK_OF_YEAR).toString() + '\n' +
+    "Add 366 days to the given date： " + mDate.plusDays(366).toString() + '\n' +
+    "Subtract 366 days from the given date： " + mDate.minusDays(366).toString() + '\n' +
+    "Given date plus 12 months： " + mDate.plusMonths(12).toString() + '\n' +
+    "Subtract 12 months from the given date： " + mDate.minusMonths(12).toString() + '\n' +
+    "Given date plus 4 weeks： " + mDate.plusWeeks(4).toString() + '\n' +
+    "Subtract 4 weeks from the given date： " + mDate.minusWeeks(4).toString() + '\n' +
+    "Given date plus 1 year： " + mDate.plusYears(1).toString() + '\n' +
+    "Subtract 1 year from the given date： " + mDate.minusYears(1).toString() + '\n' +
+    "Add one month and three days to the given date： " + mDate.plus(Period.ofMonths(1).plusDays(3)).toString() + '\n' +
+    "Subtract one month and three days from the given date： " + mDate.minus(Period.ofMonths(1).plusDays(3)).toString() + '\n' +
+    "Set the given date to 1： " + mDate.withDayOfMonth(1).toString() + '\n' +
+    "Set the month and date of the given date to 1： " + mDate.withMonth(1).withDayOfMonth(1).toString() + '\n' +
+    "On the 42nd day of a given year： " + mDate.withDayOfYear(42).toString() + '\n' +
+    "The first day of a given month： " + mDate.with(TemporalAdjusters.firstDayOfMonth()).toString() + '\n' +
+    "Get current date： " + LocalDate.now().toString() + '\n' +
+    "Obtain the last day of the month： " + LocalDate.now().plusMonths(1).withDayOfMonth(1).minusDays(1).toString();
 }

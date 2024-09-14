@@ -1,6 +1,7 @@
 {
   "name": "@ohos/xmpp_stream_features",
-  "version": "1.0.0",
+  "version": "1.0.1",
+  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/xmpp_stream_features",
   "description": "在OpenHarmony上提供了一个用于建立和管理XMPP(Extensible Messaging and Presence Protocol)流连接的library",
   "main": "index.js",
   "types": "index.d.ts",
@@ -10,8 +11,8 @@
   "dependencies": {
     "@types/koa-compose": "^3.2.8",
     "@types/koa": "^2.15.0",
-    "@ohos/xmpp_xml": "1.0.0",
-    "@ohos/xmpp_middleware": "1.0.0"
+    "@ohos/xmpp_xml": "^1.0.0",
+    "@ohos/xmpp_middleware": "^1.0.0"
   },
   "devDependencies": {},
   "dynamicDependencies": {}

@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.0.2
+- 补充repository内容
+
 ## v1.0.1
 - 新增TLS连接、通信、断连
 

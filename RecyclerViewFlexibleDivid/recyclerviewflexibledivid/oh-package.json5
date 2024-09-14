@@ -1,0 +1,23 @@
+{
+  "name": "@ohos/recyclerviewflexibledivid",
+  "description": "a npm package which contains arkUI2.0 page",
+  "ohos": {
+    "org": "opensource"
+  },
+  "keywords": [
+    "OpenHarmony",
+    "FlexibleDivider",
+    "HarmonyOS"
+  ],
+  "tags": [
+    "UI"
+  ],
+  "author": "ohos_tpc",
+  "version": "1.1.0-rc.0",
+  "main": "index.ets",
+  "types": "",
+  "license": "Apache License 2.0",
+  "type": "module",
+  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/RecyclerViewFlexibleDivid",
+  "dependencies": {}
+}

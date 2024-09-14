@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-import JSZip,{JSZipObject} from "jszip";
+import JSZip,{JSZipObject} from "@ohos/jszip";
 const BASE_COUNT: number = 2000;
 export default function filterTest() {
   describe('filterTest', () => {

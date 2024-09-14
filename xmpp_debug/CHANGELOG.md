@@ -1,6 +1,8 @@
 # Changelog
 
-## 1.0.0
-- 隐藏敏感标签
-- 启用调试开关
+## 1.0.1
+- Supplement repository content
 
+## 1.0.0
+- Hide sensitive labels
+- Enable debugging

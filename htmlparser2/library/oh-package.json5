@@ -13,7 +13,7 @@
   "main": "src/main/ets/esm/index.js",
   "type": "module",
   "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/htmlparser2",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "dependencies": {
     "@ohos/node-polyfill": "1.0.0",
     "entities": "^4.5.0",

@@ -16,7 +16,7 @@
   "main": "src/main/ets/dist/index.esm.js",
   "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/js-joda",
   "type": "module",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "dependencies": {
     "@js-joda/timezone": "^2.15.0",
     "@js-joda/core": "^5.4.2"

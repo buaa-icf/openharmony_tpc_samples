@@ -46,9 +46,9 @@ export class Socket extends EventEmitter {
         }
         socket.connect(url, header, (err, value) => {
             if (!err) {
-                console.error('connect------value' + JSON.stringify(value))
+                console.info('connect------value' + JSON.stringify(value))
             } else {
-                console.info('connect------err' + JSON.stringify(err))
+                console.error('connect------err' + JSON.stringify(err))
             }
         })
 
@@ -88,6 +88,9 @@ export class Socket extends EventEmitter {
 
         this.socket.on('error',(err)=>{
             if (err) {
+                if (err.code == 200) {
+                    this.emit('close');
+                }
                 console.error('websocket error:' + JSON.stringify(err))
             }
         })

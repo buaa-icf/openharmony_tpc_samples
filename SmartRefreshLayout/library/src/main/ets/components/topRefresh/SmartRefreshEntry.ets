@@ -14,34 +14,35 @@
  */
 
 import {REFRESHSTATE, LOCATION} from "./SmartRefreshEnum"
+@ObservedV2
 export class SmartRefreshEntry {
-    scroller: Scroller = new Scroller()
-    headerHeight: number = 150 //实际头部高度
-    footerHeight: number = 0
-    initHeaderHeight: number = 150 //标准头部高度
-    initFooterHeight: number = 150
-    downY: number= 0
-    scrollLocation: LOCATION = LOCATION.HEAD
-    refreshDuration: number = 5000 //刷新态持续时间
-    toRefreshDuration: number = 250 //
-    refreshTimeOut: number= 0
-    refreshInterval: number= 0
-    init: boolean = false
-    latestYOffset: number = 0
-    refreshState: REFRESHSTATE = REFRESHSTATE.NONE //刷新状态
-    zIndex: number = 2 //首部zIndex
-    backgroundColor: Color | string | number= Color.Gray //主题色
-    lastRefreshTime: Date = new Date() //上次刷新时间
+  scroller: Scroller = new Scroller()
+  @Trace headerHeight: number = 150 //实际头部高度
+  @Trace footerHeight: number = 0
+  @Trace initHeaderHeight: number = 150 //标准头部高度
+  @Trace initFooterHeight: number = 150
+  @Trace downY: number= 0
+  @Trace scrollLocation: LOCATION = LOCATION.HEAD
+  @Trace refreshDuration: number = 5000 //刷新态持续时间
+  @Trace toRefreshDuration: number = 250 //
+  @Trace refreshTimeOut: number= 0
+  @Trace refreshInterval: number= 0
+  @Trace init: boolean = false
+  @Trace latestYOffset: number = 0
+  @Trace refreshState: REFRESHSTATE = REFRESHSTATE.NONE //刷新状态
+  @Trace zIndex: number = 2 //首部zIndex
+  @Trace backgroundColor: Color | string | number= Color.Gray //主题色
+  @Trace lastRefreshTime: Date = new Date() //上次刷新时间
     refreshCallback: () => void = () => {}//刷新时的回调
 
     //waveSwipe
-    downYOffset = 0
-    fixedContent: boolean = true
-    waterDropYTopCoordinate = 0
-    waterDropYMiddleCoordinate = 400
-    waterDropYBottomCoordinate = 600
+  @Trace downYOffset = 0
+  @Trace fixedContent: boolean = true
+  @Trace waterDropYTopCoordinate = 0
+  @Trace waterDropYMiddleCoordinate = 400
+  @Trace waterDropYBottomCoordinate = 600
     //class
-    timeShowState: boolean = true
+  @Trace timeShowState: boolean = true
 
     getTimeShowState(): boolean {
       return this.timeShowState

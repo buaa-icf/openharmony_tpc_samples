@@ -135,7 +135,7 @@ struct Index {
       let readLength = 0;
       let buff = new ArrayBuffer(8 * 1024)
       let readSize = 0;
-      while (readLength <= totalSize) {
+      while (readLength < totalSize) {
         if (readLength + buff.byteLength < totalSize) {
           readSize = fs.readSync(fileId.fd, buff, {
             offset: readLength,

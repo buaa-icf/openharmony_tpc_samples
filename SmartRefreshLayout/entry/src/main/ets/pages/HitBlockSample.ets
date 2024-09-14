@@ -23,7 +23,7 @@ class ThemeParam{
 }
 
 @Entry
-@Component
+@ComponentV2
 struct HitBlockSample {
   private arr: Array<ThemeParam> = [
     {index:1, name: '默认主题', color: '#ffffff' },
@@ -37,7 +37,7 @@ struct HitBlockSample {
     {index:9, name: '蓝色主题', color: '#2299ee' },
     { index:10,name: '蓝色主题', color: '#2299ee' },
   ]
-  @State modelGame: SmartRefreshForGame.Model = new SmartRefreshForGame.Model()
+  @Local modelGame: SmartRefreshForGame.Model = new SmartRefreshForGame.Model()
 
   public aboutToAppear() {
     this.modelGame.setBackgroundColor('#ffbb33')
@@ -45,7 +45,7 @@ struct HitBlockSample {
   }
 
   @Builder testHeader() {
-    HitBlock({ hitBlockModel: $modelGame })
+    HitBlock({ hitBlockModel: this.modelGame!! })
   }
 
   @Builder testMain() {
@@ -81,7 +81,7 @@ struct HitBlockSample {
   build() {
     Column() {
       SmartRefreshForGame({
-        modelGame: $modelGame,
+        modelGame: this.modelGame!!,
         header: () => {this.testHeader()},
         main: () => {
           this.testMain()

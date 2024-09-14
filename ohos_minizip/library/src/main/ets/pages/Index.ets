@@ -17,18 +17,21 @@ import { MinizipNative } from "libminizip_ng.so"
 import fs from '@ohos.file.fs';
 import { BusinessError } from '@ohos.base';
 
-export function unzipToDirectory(selectPath: string, targetPath: string, password?: string): Promise<string> {
+export function unzipToDirectory(selectPath: string, targetPath: string, password?: string, charEncoding?: number): Promise<string> {
   return new Promise((resolve, reject) => {
     if(!fs.accessSync(selectPath)) {
       reject("selectPath not exists");
     }
     if(!fs.accessSync(targetPath)) {
-      fs.mkdirSync(targetPath);
+      fs.mkdirSync(targetPath, true);
     }
     if(!password) {
       password = ""
     }
     let minizipEntry = new MinizipNative(selectPath);
+    if(!!charEncoding) {
+      minizipEntry.SetCharEncoding(charEncoding);
+    }
     let code: number = minizipEntry.Open()
     if(code == 0) {
       let entryNames: Array<string> = minizipEntry.GetEntryNames();
@@ -36,12 +39,12 @@ export function unzipToDirectory(selectPath: string, targetPath: string, passwor
         let path: string = targetPath + "/" + entryNames[i];
         if(entryNames[i].endsWith("/")) {
           if(!fs.accessSync(path)) {
-            fs.mkdirSync(path);
+            fs.mkdirSync(path, true);
           }
         } else {
+          let file = fs.openSync(path, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
           let arrBuffer: ArrayBuffer | undefined = minizipEntry.ExtractFileToJS(entryNames[i], password);
           if(arrBuffer != undefined) {
-            let file = fs.openSync(path, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
             fs.write(file.fd, arrBuffer).then((writeLen: number) => {
 
             }).catch((err: BusinessError) => {
@@ -50,7 +53,8 @@ export function unzipToDirectory(selectPath: string, targetPath: string, passwor
               fs.closeSync(file);
             })
           } else {
-            reject("ExtractFileToJS failed: " + entryNames[i])
+            // reject("ExtractFileToJS failed: " + entryNames[i])
+            console.log("minizip ExtractFileToJS failed:" + entryNames[i])
           }
         }
       }

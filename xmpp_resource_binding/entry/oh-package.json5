@@ -1,17 +1,17 @@
 {
   "name": "entry",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Please describe the basic information.",
   "main": "",
   "author": "tpc",
   "license": "",
   "dependencies": {
     "@ohos/xmpp_resource_binding": "file:../library",
-    "@ohos/xmpp_xml": "1.0.0",
-    "@ohos/xmpp_iq": "1.0.0",
-    "@ohos/xmpp_middleware": "1.0.0",
-    "@ohos/xmpp_stream_features": "1.0.0",
-    "@ohos/xmpp_connection": "1.0.0"
+    "@ohos/xmpp_xml": "^1.0.0",
+    "@ohos/xmpp_iq": "^1.0.0",
+    "@ohos/xmpp_middleware": "^1.0.0",
+    "@ohos/xmpp_stream_features": "^1.0.0",
+    "@ohos/xmpp_connection": "^1.0.0"
   }
 }
 

@@ -13,15 +13,16 @@
  * limitations under the License.
  */
 
-@Component
+@ComponentV2
 struct SmartRefreshSecond {
-  @Link model: SmartRefreshSecond.Model
+  @Param @Require model: SmartRefreshSecond.Model
+  @Event $model: (value: SmartRefreshSecond.Model) => void = (value: SmartRefreshSecond.Model) => {}
   @BuilderParam header?: () => void
   @BuilderParam main?: () => void
   @BuilderParam footer?: () => void
-  @State needScroller: boolean = false
-  @State headerIsVisibleLoadMore :boolean = true
-  @State footerIsVisibleLoadMore :boolean = false
+  @Local needScroller: boolean = false
+  @Local headerIsVisibleLoadMore :boolean = true
+  @Local footerIsVisibleLoadMore :boolean = false
 
   refreshClose() { //重置Scroller
     this.needScroller = true
@@ -105,12 +106,12 @@ struct SmartRefreshSecond {
           .scrollable(ScrollDirection.Vertical)
           .scrollBar(BarState.Off)
           .onScrollEdge((side: Edge) => {
-            if (side == 0) { //滑动到顶部
+            if (side == Edge.Top) { //滑动到顶部
               this.model.refreshHeaderCallbackState = true
               this.model.refreshBottomCallbackState = false
               this.model.scrollLocation = SmartRefreshSecond.LOCATION.HEAD
             }
-            if (side == 2) { //滑动到底部
+            if (side == Edge.Bottom) { //滑动到底部
               if (this.model.dragArriveBottomEdgeState) {
                 this.model.dragArriveBottomEdgeState = false
                 this.model.refreshBottomCallbackState = true
@@ -335,59 +336,62 @@ namespace SmartRefreshSecond {
   export enum RefreshPositionEnum {
     TOP = 0, CENTER = 1, BOTTOM = 2
   }
-
+  @ObservedV2
   export class Model {
     scroller: Scroller = new Scroller()
-    headerHeight: number = 1 //实际头部高度
-    initHeaderHeight: number = 200 //标准头部高度
+    @Trace headerHeight: number = 1 //实际头部高度
+    @Trace initHeaderHeight: number = 200 //标准头部高度
 
-    downY: number= 0
-    currentMouseX: number = 0 //获取下拉中鼠标的X轴坐标
-    scrollLocation: LOCATION = LOCATION.HEAD
-    refreshDuration: number = 5000 //刷新态持续时间
-    toRefreshDuration: number = 250 //
-    refreshTimeOut: number= 0
-    refreshInterval: number= 0
-    initRefreshing: boolean = true
-    latestYOffset: number = 0
-    refreshState: REFRESHSTATE = REFRESHSTATE.NONE //刷新状态
-    zHeaderIndex: number = 2 //首部zIndex
-    zMainIndex: number = 2;
-    zFooterIndex: number = 2;
-    backgroundColor: Color | string | number= Color.Gray //主题色
+    @Trace downY: number= 0
+    @Trace currentMouseX: number = 0 //获取下拉中鼠标的X轴坐标
+    @Trace scrollLocation: LOCATION = LOCATION.HEAD
+    @Trace refreshDuration: number = 5000 //刷新态持续时间
+    @Trace toRefreshDuration: number = 250 //
+    @Trace refreshTimeOut: number= 0
+    @Trace refreshInterval: number= 0
+    @Trace initRefreshing: boolean = true
+    @Trace latestYOffset: number = 0
+    @Trace refreshState: REFRESHSTATE = REFRESHSTATE.NONE //刷新状态
+    @Trace zHeaderIndex: number = 2 //首部zIndex
+    @Trace zMainIndex: number = 2;
+    @Trace zFooterIndex: number = 2;
+    @Trace backgroundColor: Color | string | number= Color.Gray //主题色
     refreshCallback: () => void = ()=> {}//刷新时的回调
     refreshHeaderCallback: () => void = ()=> {}//刷新时的回调
-    refreshHeaderCallbackState: boolean = true
+    @Trace refreshHeaderCallbackState: boolean = true
     refreshBottomCallback: () => void = ()=> {}//刷新时的回调
-    refreshBottomCallbackState: boolean = false
+    @Trace refreshBottomCallbackState: boolean = false
     //waveSwipe
-    downYOffset = 0
-    fixedContent: boolean = false
-    oldFixedContent: boolean = false
-    waterDropYTopCoordinate = 0
-    waterDropYMiddleCoordinate = 400
-    waterDropYBottomCoordinate = 600
+    @Trace downYOffset = 0
+    @Trace fixedContent: boolean = false
+    @Trace oldFixedContent: boolean = false
+    @Trace waterDropYTopCoordinate = 0
+    @Trace waterDropYMiddleCoordinate = 400
+    @Trace waterDropYBottomCoordinate = 600
     //class
-    refreshPosition: RefreshPositionEnum = RefreshPositionEnum.TOP
-    timeShowState: boolean = true
-    headerRefreshId: number = 0
-    backgroundShadowColor: Color = Color.Gray
+    @Trace refreshPosition: RefreshPositionEnum = RefreshPositionEnum.TOP
+    @Trace timeShowState: boolean = true
+    @Trace headerRefreshId: number = 0
+    @Trace backgroundShadowColor: Color = Color.Gray
 
     //bottom
-    footerHeight: number = 210 //实际头部高度
-    initFooterHeight: number = 210
-    firstArriveBottomEdgeOffsetY: number = 0
-    dragArriveBottomEdgeState: boolean = true
-    dragDirection: boolean = true //true：下拉  false上拉
-    scrollToEdgeStatus: boolean = false //滚动事件是否结束
-    initScrollerYOffset: number = 0
-    tempTitleHeight: number = this.initHeaderHeight
-    tempDownY: number = -1
-    titleName: string = ''
-    expand: boolean = false
-    scrollerEndYOffset: number = 0 //和scrollerEndState结合使用
-    scrollerEndState: boolean = false//和scrollerEndYOffset结合使用
+    @Trace footerHeight: number = 210 //实际头部高度
+    @Trace initFooterHeight: number = 210
+    @Trace firstArriveBottomEdgeOffsetY: number = 0
+    @Trace dragArriveBottomEdgeState: boolean = true
+    @Trace dragDirection: boolean = true //true：下拉  false上拉
+    @Trace scrollToEdgeStatus: boolean = false //滚动事件是否结束
+    @Trace initScrollerYOffset: number = 0
+    @Trace tempTitleHeight: number = this.initHeaderHeight
+    @Trace tempDownY: number = -1
+    @Trace titleName: string = ''
+    @Trace expand: boolean = false
+    @Trace scrollerEndYOffset: number = 0 //和scrollerEndState结合使用
+    @Trace scrollerEndState: boolean = false//和scrollerEndYOffset结合使用
 
+    constructor(fixedContent: boolean) {
+      this.fixedContent = fixedContent
+    }
 
     setExpand(expand: boolean) {
       this.expand = expand

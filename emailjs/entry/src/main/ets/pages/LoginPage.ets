@@ -32,23 +32,23 @@ struct CustomDialogDiy {
 
   build() {
     Column() {
-      Text('请输入邮箱类型').fontSize(20).margin({ top: 10, bottom: 10 }).width('90%')
+      Text('Please enter email type').fontSize(20).margin({ top: 10, bottom: 10 }).width('90%')
       TextInput({ placeholder: '', text: this.textValue }).height(60).width('90%')
         .onChange((value: string) => {
           this.textValue = value;
         })
-      Text('Tips:请输入正确格式的邮箱类型，例如@qq.com或者@163.com')
+      Text('Tips:Please enter the email type in the correct format, such as @qq.com or @163.com')
         .margin({ top: 10, bottom: 10 })
         .width('90%')
         .fontSize(8)
         .fontColor(Color.Red)
       Flex({ justifyContent: FlexAlign.SpaceAround }) {
-        Button('取消')
+        Button('Cancel')
           .onClick(() => {
             this.controller.close()
             this.cancel()
           })
-        Button('确定')
+        Button('Confirm')
           .onClick(() => {
             this.inputValue = this.textValue
             this.controller.close()
@@ -74,35 +74,35 @@ struct LoginPage {
   dialogController: CustomDialogController | null = new CustomDialogController({
     builder: CustomDialogDiy({
       cancel: () => {
-        this.showToast(`关闭了对话框，取消选输入其他类型邮箱`, 'mailType-cancel')
+        this.showToast(`The dialog box has been closed, and the option to enter a different type of email has been unselected`, 'mailType-cancel')
       },
       confirm: () => {
         if (!this.inputValue || this.inputValue.length < 1) {
-          this.showToast(`邮箱类型不可为空`, 'mailType-confirm')
+          this.showToast(`Email type cannot be empty`, 'mailType-confirm')
           return
         }
         if (this.inputValue.indexOf('@') == -1 && this.inputValue.indexOf('@') != this.inputValue.lastIndexOf('@')) {
-          this.showToast(`邮箱类型必须含有一个@，且只能含有一个@`, 'mailType-confirm')
+          this.showToast(`Email type must contain one @ and can only contain one @`, 'mailType-confirm')
           return
         }
         if (this.inputValue.indexOf('.') == -1 && this.inputValue.indexOf('.') != this.inputValue.lastIndexOf('.')) {
-          this.showToast(`邮箱类型必须含有一个.，且只能含有一个.`, 'mailType-confirm')
+          this.showToast(`The email type must contain a, And it can only contain one.`, 'mailType-confirm')
           return
         }
         if (this.inputValue.indexOf('@') != -1 && this.inputValue.indexOf('.') != -1 && this.inputValue.indexOf('@') > this.inputValue.indexOf('.')) {
-          this.showToast(`邮箱类型中@需要在.之前，例如@qq.com,@163.com这些`, 'mailType-confirm')
+          this.showToast(`In email types, @ needs to be before., such as @qq.com, @163.com, etc`, 'mailType-confirm')
           return
         }
         if (this.inputValue.indexOf('@') - this.inputValue.indexOf('.') == 1) {
-          this.showToast(`邮箱类型中除了@和.，必须含有其他字符`, 'mailType-confirm')
+          this.showToast(`Except for @ and. in email types, Must contain other characters`, 'mailType-confirm')
           return
         }
         if (this.inputValue.indexOf('@') != 0) {
-          this.showToast(`邮箱类型中@必须在第一位`, 'mailType-confirm')
+          this.showToast(`@ must be first in the email type`, 'mailType-confirm')
           return
         }
         this.mailType = this.inputValue
-        this.showToast(`输入其他类型邮箱：${this.mailType}`, 'mailType-confirm')
+        this.showToast(`Enter other types of email addresses：${this.mailType}`, 'mailType-confirm')
       },
       textValue: $textValue,
       inputValue: $inputValue
@@ -116,7 +116,7 @@ struct LoginPage {
     GlobalObj?.getInstance()?.getClient()?.close(true);
   }
 
-  showToast(text: string, name = '测试') {
+  showToast(text: string, name = 'test') {
     console.log(`zdy---${name}--->${text}`)
     promptAction.showToast({
       message: text,
@@ -155,7 +155,7 @@ struct LoginPage {
             this.mailType = '@sina.com'
           }
         })
-      MenuItem({ content: '其他', labelInfo: 'other' })
+      MenuItem({ content: 'other', labelInfo: 'other' })
         .onChange((selected) => {
           if (selected) {
             if (this.dialogController) {
@@ -174,7 +174,7 @@ struct LoginPage {
         alignContent: FlexAlign.Center,
         direction: FlexDirection.Column
       }) {
-        Text('点击账号后面的邮箱可以切换邮箱类型')
+        Text('Click on the email after the account to switch email types')
           .fontSize(20)
           .height(50)
           .textAlign(TextAlign.Center)
@@ -188,13 +188,13 @@ struct LoginPage {
           alignContent: FlexAlign.Start,
           direction: FlexDirection.Row
         }) {
-          Text('账号：')
+          Text('Account：')
             .fontSize(20)
             .height(50)
             .textAlign(TextAlign.Center)
             .margin({ right: 5 })
 
-          TextInput({ placeholder: '请输入账号', text: 'xxx' })
+          TextInput({ placeholder: 'Please enter your account', text: 'xxx' })
             .layoutWeight(1)
             .fontSize(20)
             .height(50)
@@ -222,13 +222,13 @@ struct LoginPage {
           alignContent: FlexAlign.Start,
           direction: FlexDirection.Row
         }) {
-          Text('密码/授权码：')
+          Text('Password/Authorization Code：')
             .fontSize(20)
             .height(50)
             .textAlign(TextAlign.Center)
             .margin({ right: 5 })
 
-          TextInput({ placeholder: '请输入密码/授权码', text: 'xxx' })
+          TextInput({ placeholder: 'Please enter password/Authorization code', text: 'xxx' })
             .layoutWeight(1)
             .fontSize(20)
             .height(50)
@@ -244,7 +244,7 @@ struct LoginPage {
         .margin({ left: 15, top: 20 })
 
         Flex({ justifyContent: FlexAlign.Start, direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
-          Text('是否开启SSL/TLS(当前仅需支持SMTP,无需支持SMTPS,此按钮暂不可用)')
+          Text('Do you want to enable SSL/TLS (currently only supporting SMTP, not SMTPS, this button is temporarily unavailable)')
             .fontSize(20)
             .height(50)
             .margin({})
@@ -252,11 +252,11 @@ struct LoginPage {
             .fontWeight(FontWeight.Bold)
 
 
-          Checkbox({ name: '是否开启SSL/TLS', group: 'ssl' })
+          Checkbox({ name: 'Do you want to enable SSL/TLS', group: 'ssl' })
             .height(40)
             .select(false)
             .onClick((event) => {
-              this.showToast('当前仅需支持SMTP,无需支持SMTPS')
+              this.showToast('Currently, only SMTP support is required, no SMTPS support is needed')
             })
             .enabled(false)
             .margin({ left: 10 })
@@ -267,7 +267,7 @@ struct LoginPage {
         }
         .margin({ left: 15, top: 20 })
 
-        Button('跳普通附件')
+        Button('Skip ordinary attachments')
           .margin(20)
           .width('80%')
           .height(50)
@@ -276,7 +276,7 @@ struct LoginPage {
           .onClick(() => {
             this.login()
           })
-        Button('跳转大附件')
+        Button('Jump to large attachments')
           .margin(20)
           .width('80%')
           .height(50)
@@ -381,7 +381,7 @@ struct LoginPage {
         if (GlobalObj?.getInstance()?.getClient()?.isLogin() === false) {
           GlobalObj?.getInstance()?.getClient()?.login((err, result) => {
             if (!err && result == true) {
-              this.showToast('账号登录成功', 'login-smtp')
+              this.showToast('Account login successful', 'login-smtp')
               router.pushUrl({
                 url: 'pages/SendMailPage',
                 params: {
@@ -389,16 +389,16 @@ struct LoginPage {
                 }
               })
             } else {
-              this.showToast('账号登录失败', 'login-smtp')
+              this.showToast('Account login failed', 'login-smtp')
             }
           })
         } else {
-          this.showToast('账号已登录，无需重新登录', 'login-smtp')
+          this.showToast('Account already logged in, no need to login again', 'login-smtp')
         }
 
       }
     } catch (err) {
-      this.showToast(`账号登录出错：${err.message}`, 'login-smtp')
+      this.showToast(`Account login error：${err.message}`, 'login-smtp')
     }
   }
 
@@ -491,7 +491,7 @@ struct LoginPage {
         if (GlobalObj?.getInstance()?.getClient()?.isLogin() === false) {
           GlobalObj?.getInstance()?.getClient()?.login((err, result) => {
             if (!err && result == true) {
-              this.showToast('账号登录成功', 'login-smtp')
+              this.showToast('Account login successful', 'login-smtp')
               router.pushUrl({
                 url: 'pages/SendBigAttachmentPage',
                 params: {
@@ -499,16 +499,16 @@ struct LoginPage {
                 }
               })
             } else {
-              this.showToast('账号登录失败', 'login-smtp')
+              this.showToast('Account login failed', 'login-smtp')
             }
           })
         } else {
-          this.showToast('账号已登录，无需重新登录', 'login-smtp')
+          this.showToast('Account already logged in, no need to login again', 'login-smtp')
         }
 
       }
     } catch (err) {
-      this.showToast(`账号登录出错：${err.message}`, 'login-smtp')
+      this.showToast(`Account login error：${err.message}`, 'login-smtp')
     }
   }
 }

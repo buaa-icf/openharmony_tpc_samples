@@ -4,7 +4,7 @@
         "License": " MIT License ",
         "License File": " LICENSE ",
         "Version Number": " v6.2.1 ",
-        "Owner": "pillarjs"
+        "Owner" : "xiafeng@huawei.com",
         "Upstream URL": " https://github.com/pillarjs/path-to-regexp ",
         "Description": "  Turn a path string such as /user/:name into a regular expression. "
     }

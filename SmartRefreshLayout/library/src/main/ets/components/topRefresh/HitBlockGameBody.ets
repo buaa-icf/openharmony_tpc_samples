@@ -26,9 +26,9 @@ class TouchBlock {
   y: number = 0;
 }
 
-@Component
+@ComponentV2
 export struct HitBlockGameBody {
-  @State model: SmartRefreshForGame.Model = new SmartRefreshForGame.Model()
+  @Param model: SmartRefreshForGame.Model = new SmartRefreshForGame.Model()
   protected blockHorizontalNum: number = this.model.blockHorizontalNum;
   protected blockVerticalNum: number = 5;
   protected BLOCK_WIDTH_RATIO: number = 0.01806;
@@ -38,13 +38,13 @@ export struct HitBlockGameBody {
   protected DEFAULT_ANGLE: number = 30
   private mCircle: number = 7
   protected blockLeft: number = 0;
-  @State cx: number = 0;
-  @State cy: number = 0;
+  @Local cx: number = 0;
+  @Local cy: number = 0;
   protected pointList: Array<TouchBlock> = [];
   protected isLeft: boolean = true;
   protected angle: number = 30;
   protected speed: number = this.model.ballSpeed; // 球球移动速度
-  @State private rectList: Array<RectParam> = [] // 绘制的砖块
+  @Local rectList: Array<RectParam> = [] // 绘制的砖块
   private controllerSize: number = 40 //挡板长度
   private mOffsetY: number = 55 // 挡板上下移动的位置
   private isGameOver: boolean = false // 游戏时是否结束
@@ -53,26 +53,26 @@ export struct HitBlockGameBody {
   private mScreenWidth: number = px2vp(lpx2px(720))
   protected blockHeight: number = 0 ;
   protected blockWidth: number = 0;
-  @State private tipText: string = this.model.textLoading
-  @State private slideOffset: number = 0
-  mScreenHeight: number = 0
-  initBackgroundColor: Color | string | number = ''
-  @Prop @Watch('onYStateChange') downY: number
-  @Prop @Watch('onFinishChange') isNotifyFinish: boolean
-
-  private onFinishChange() {
-    if (this.isNotifyFinish) {
-      this.tipText = this.model.isFinishSuccess? this.model.textLoadingFinish: this.model.textLoadingFailed
-    }
-  }
-
-  private onYStateChange() {
+  @Local tipText: string = this.model.textLoading
+  @Local slideOffset: number = 0
+  @Param mScreenHeight: number = 0
+  @Param initBackgroundColor: Color | string | number = ''
+  @Param @Require downY: number
+  @Monitor('downY')
+  onYStateChange() {
     if (this.downY < 0) {
       this.slideOffset = 0
     } else if (this.downY > (this.mScreenHeight - this.controllerSize)) {
       this.slideOffset = (this.mScreenHeight - this.controllerSize)
     } else {
       this.slideOffset = this.downY
+    }
+  }
+  @Param @Require isNotifyFinish: boolean
+  @Monitor('isNotifyFinish')
+  onFinishChange() {
+    if (this.isNotifyFinish) {
+      this.tipText = this.model.isFinishSuccess? this.model.textLoadingFinish: this.model.textLoadingFailed
     }
   }
 

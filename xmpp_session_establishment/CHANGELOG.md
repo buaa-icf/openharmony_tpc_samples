@@ -1,4 +1,7 @@
 # Changelog
 
+## 1.0.1
+- Supplement repository content
+
 ## 1.0.0
-- 实现建立会话。
+- Establishes a session.

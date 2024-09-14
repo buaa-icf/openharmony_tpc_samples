@@ -1,5 +1,6 @@
 # Changelog
+## 1.0.1
+- Supplement repository content.
 
 ## 1.0.0
-- 实现简单明文认证。
-
+- Implements simple plaintext authentication.

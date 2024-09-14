@@ -15,18 +15,13 @@
 
 import SmartRefreshForGame from './SmartRefreshForGame'
 
-@Component
+@ComponentV2
 export struct HitBlockGameCover {
-  @Link modelCover: SmartRefreshForGame.Model
-  @State @Watch('onGameChange') gameState: boolean = false
-  maxHeight: number = 0
-  @Prop @Watch('onYChange') downY: number
-  textColor: Color | string | number = ''
-  @State private topAnimY: number = 1
-  @State private bottomAnimY: number = 1
-  @State private tipText: string = this.modelCover.maskTextTopPull
-
-  private onGameChange(value:ESObject) {
+  @Param @Require modelCover: SmartRefreshForGame.Model = new SmartRefreshForGame.Model()
+  @Event $modelCover: (value: SmartRefreshForGame.Model) => void = (value: SmartRefreshForGame.Model) => {}
+  @Param gameState: boolean = false
+  @Monitor('gameState')
+  onGameChange(value:ESObject) {
     if (this.gameState) {
       this.bottomAnimY = 0
       this.topAnimY = 0
@@ -35,14 +30,20 @@ export struct HitBlockGameCover {
       this.topAnimY = 1
     }
   }
-
-  private onYChange() {
+  @Param maxHeight: number = 0
+  @Param @Require downY: number
+  @Monitor('downY')
+  onYChange() {
     if (this.downY < this.maxHeight) {
       this.tipText = this.modelCover.maskTextTopPull
     } else {
       this.tipText = this.modelCover.maskTextTopRelease
     }
   }
+  @Param textColor: Color | string | number = ''
+  @Local topAnimY: number = 1
+  @Local bottomAnimY: number = 1
+  @Local tipText: string = this.modelCover.maskTextTopPull
 
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {

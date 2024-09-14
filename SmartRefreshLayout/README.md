@@ -21,12 +21,12 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
 import {SmartRefresh} from "@ohos/smartrefreshlayout"
 import {Material} from "@ohos/smartrefreshlayout"
 
-  @State model: SmartRefresh.Model = new SmartRefresh.Model()
+  @Local model: SmartRefresh.Model = new SmartRefresh.Model()
   this.model.setBackgroundColor()
   this.model.setFixedContent()
   
   @Builder testHeader() {
-    Material({ model: this.model})
+    Material({ model: this.model!!})
   }
   
   @Builder testMain() {
@@ -39,14 +39,14 @@ import {Material} from "@ohos/smartrefreshlayout"
   
   build() {
     Column() {
-      SmartRefresh({ model: this.model, header:() => {this.testHeader()}, main:() => {this.testMain()} })
+      SmartRefresh({ model: this.model!!, header:() => {this.testHeader()}, main:() => {this.testMain()} })
     }.backgroundColor("#dddddd")
   }
 
 ```
 
 ## 接口说明
-`@State model: SmartRefresh.Model = new SmartRefresh.Model()`
+`@Local model: SmartRefresh.Model = new SmartRefresh.Model()`
 1. 背景颜色
    `model.setBackgroundShadowColor()`
 2. 字体颜色
@@ -60,8 +60,8 @@ import {Material} from "@ohos/smartrefreshlayout"
 6. 刷新时间是否显示
    `model.setTimeShowState()`
 
-## 兼容性
-DevEco Studio 版本： 4.1 Canary(4.1.3.317),OpenHarmony SDK:API11 (4.1.0.36)
+## 约束与限制
+DevEco Studio: NEXT Developer Beta3-5.0.3.530, SDK: API12 (5.0.0.35)
 
 ## 目录结构
 ````

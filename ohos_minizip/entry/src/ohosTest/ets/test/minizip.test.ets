@@ -60,7 +60,8 @@ export default function miniZipTest() {
       let selectFilePath : string = filesDir + '/test.zip'
       let targetPath: string = filesDir + "/target"
       let password: string = "123456"
-      let result: string = await unzipToDirectory(selectFilePath, targetPath, password)
+      let charEncoding: number = 936
+      let result: string = await unzipToDirectory(selectFilePath, targetPath, password, charEncoding)
       expect(result).assertEqual("unzip success")
     })
   })

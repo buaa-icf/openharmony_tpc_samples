@@ -1,6 +1,7 @@
 {
   "name": "@ohos/xmpp_debug",
-  "version": "1.0.0",
+  "version": "1.0.1",
+  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/xmpp_debug",
   "description": "在Openharmony上提供了一个针对XMPP（Extensible Messaging and Presence Protocol，扩展消息和在线状态协议）开发的调试工具库",
   "main": "index.js",
   "types": "index.d.ts",

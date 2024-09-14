@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.1
+- 补充repository内容
+
 ## [1.0.0]
 - 处IQ请求处理:解析和处理XMPP（eXtensible Messaging and Presence Protocol）协议中的IQ（Information Query）请求，执行相应的操作。
 - 请求验证:对发送的IQ请求进行身份验证和内容有效性检查，确保数据安全。

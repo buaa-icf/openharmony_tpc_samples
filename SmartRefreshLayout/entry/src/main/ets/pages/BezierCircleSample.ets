@@ -16,20 +16,20 @@ import {SmartRefreshSecond} from "@ohos/smartrefreshlayout"
 import {BezierCircleBottom} from "@ohos/smartrefreshlayout"
 import {BezierCircle} from "@ohos/smartrefreshlayout"
 @Entry
-@Component
+@ComponentV2
 struct ABottomBezierCircleSample {
-  @State model: SmartRefreshSecond.Model = new SmartRefreshSecond.Model()
+  @Local model: SmartRefreshSecond.Model = new SmartRefreshSecond.Model(false)
   arr: string[] = ['内容不偏移 ', '内容跟随偏移', '橙色主题', '红色主题', '绿色主题', '蓝色主题', '蓝色主题', '蓝色主题', '蓝色主题']
 
   pickColor(SelectColorParam: string) {
     this.model.setBackgroundShadowColor(Color.Gray)
     let SelectColor = SelectColorParam.trim()
-    if (SelectColor == this.arr[0].trim()) {
-      this.model.setFixedContent(true)
+    if (SelectColor == this.arr[0].trim() && !this.model.getFixedContent()) {
+      this.model = new SmartRefreshSecond.Model(true)
       this.model.setBackgroundShadowColor(Color.White)
       this.model.setBackgroundColor(Color.Gray)
-    } else if (SelectColor == this.arr[1].trim()) {
-      this.model.setFixedContent(false)
+    } else if (SelectColor == this.arr[1].trim() && this.model.getFixedContent()) {
+      this.model = new SmartRefreshSecond.Model(false)
       this.model.setBackgroundShadowColor(Color.White)
       this.model.setBackgroundColor(Color.Gray)
     } else if (SelectColor == this.arr[2].trim()) {
@@ -44,14 +44,11 @@ struct ABottomBezierCircleSample {
     } else if (SelectColor == this.arr[5].trim()) {
       this.model.setBackgroundShadowColor(Color.White)
       this.model.setBackgroundColor(Color.Blue)
-    } else {
-      this.model.setBackgroundShadowColor(Color.White)
-      this.model.setBackgroundColor(Color.Blue)
     }
   }
 
   @Builder testHeader() {
-    BezierCircle({ model: $model})
+    BezierCircle({ model: this.model!!})
   }
   @Builder card(item: string) {
     Row() {
@@ -75,7 +72,7 @@ struct ABottomBezierCircleSample {
 
   @Builder testFooter() {
     Column() {
-       BezierCircleBottom({ model: $model})
+       BezierCircleBottom({ model: this.model!!})
     }.width("100%").padding("20lpx")
   }
 
@@ -83,15 +80,14 @@ struct ABottomBezierCircleSample {
     Column() {
       if (this.model.fixedContent) {
         SmartRefreshSecond({
-          model: $model,
+          model: this.model!!,
           header:()=> {this.testHeader()},
           main:()=> {this.testMain()},
           footer: ()=> {this.testFooter()}
         })
-      }
-      if (!this.model.fixedContent){
+      } else {
         SmartRefreshSecond({
-          model: $model,
+          model: this.model!!,
           header:()=> {this.testHeader()},
           main:()=> {this.testMain()},
           footer: ()=> {this.testFooter()}

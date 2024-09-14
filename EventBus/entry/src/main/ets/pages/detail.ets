@@ -31,15 +31,15 @@ struct Detail {
   }
   aboutToAppear()  {
     console.log(TAG + "aboutToAppear")
-    class  TestA{
-      className:string=''
-      ready:Function=()=>{}
+    class  TestA {
+      className:string = ''
+      ready:Function = () => {}
     }
-    let TestClass2 =  ():TestA=> {
+    let TestClass2 = ():TestA=> {
       let TestClass = new TestA()
       TestClass.className = "TestClass2";
-      TestClass.ready =  () =>{
-        console.log(TAG + "发送刷新refreshComeFromDetail事件----------");
+      TestClass.ready = () => {
+        console.log(TAG + "Send refreshComeFromDetail event----------");
         EventBus.dispatch("refreshComeFromDetail", TestClass, "javascript events", " come from detail params");
       }
       return {className:TestClass.className,ready:TestClass.ready }

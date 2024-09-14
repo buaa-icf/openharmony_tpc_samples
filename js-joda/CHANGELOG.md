@@ -1,14 +1,20 @@
+## 2.0.1
+
+- release 2.0.1
+
 ## 2.0.0
 
-- DevEco Studio 版本： 4.1 Canary(4.1.3.317),OpenHarmony SDK:API11 (4.1.0.36)
-- ArkTs语法适配
-- 将local_en-us改为本地依赖
+- DevEco Studio version: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API11 (4.1.0.36)
+- ArkTs syntax adaptation
+- Change local_de-us to a local dependency
 
 ## 1.0.1
-适配DevEco Studio 3.1 Beta1版本
+
+Compatible with DevEco Studio 3.1 Beta 1 version
 
 ## v1.0.0
-适配兼容OpenHarmony系统的一款不可变时间日期开源库。
-* 轻量级，压缩后只有43kb,没有三方依赖
-* 速度很快，比其他的JavaScript日期库快2到10倍
-* 健壮和稳定，经过大量测试用例验证
+
+An open-source library that is compatible with OpenHarmony system and has an immutable time and date.
+* Lightweight, compressed to only 43kb, without any third-party dependencies
+* Fast, 2 to 10 times faster than other JavaScript date libraries
+* Robust and stable, validated through numerous test cases

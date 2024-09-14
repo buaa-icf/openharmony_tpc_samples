@@ -35,6 +35,7 @@ struct MinizipEntryInfo {
     uint16_t entryNameSize = 0;
     int64_t uncompressedSize = 0;
     bool isEncryptedFlag = false;
+    std::string originName;
 };
 
 class MinizipNative {
@@ -42,15 +43,18 @@ public:
     explicit MinizipNative(std::string zipFilePath);
     ~MinizipNative();
     int32_t Open();
+    void SetCharEncoding(int32_t charEncoding);
     std::vector<std::string> GetEntryNames();
     napi_value ExtractFileToJS(std::string entryName, std::string password);
 private:
     MinizipNative() = delete;
     void Release();
+    bool AddEntryInfo(mz_zip_file *fileInfo);
     int32_t GetEntrysInfo();
     int32_t ExtractFileToMemory(std::string entryName, char *buffer, int64_t *size, const char *password);
     std::string zipFilePath_;
     void *zipReader_ {nullptr};
+    int32_t charEncoding_ {-1};
     std::vector<std::string> entryNames_;
     std::map<std::string, MinizipEntryInfo> entryInfoMap_;
 };
