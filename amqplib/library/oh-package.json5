@@ -13,7 +13,7 @@
   ],
   "description": "专门为OpenHarmony打造的一个支持AMQP（Advanced Message Queuing Protocol）网络通信协议的library，可以在一个进程间传递异步消息",
   "main": "src/main/ets/channel_api.js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "dependencies": {
     "@ohos/node-polyfill": "1.0.0",
     "querystringify": "^2.1.1",
