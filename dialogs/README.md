@@ -351,6 +351,7 @@ customComponent参数：
 
 在下述版本验证通过：
 
+DevEco Studio: NEXT Beta1-5.0.3.806, SDK: API12 Release(5.0.0.66)
 DevEco Studio: 5.0 Canary3(5.0.3.320)，OpenHarmony SDK:API11 (4.1.0.36)
 
 

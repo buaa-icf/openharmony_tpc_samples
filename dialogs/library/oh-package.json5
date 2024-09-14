@@ -13,7 +13,7 @@
   "main": "index.ets",
   "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/dialogs",
   "type": "module",
-  "version": "1.0.2-rc.0",
+  "version": "1.0.2",
   "dependencies": {
     "@ohos/subsampling-scale-image-view": "2.0.1"
   },
