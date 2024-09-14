@@ -1,6 +1,6 @@
 {
   "name": "@ohos/video-cache",
-  "version": "1.0.1-rc.2",
+  "version": "1.0.1",
   "type": "module",
   "types": "",
   "description": "OhosVideoCache allows to add caching support to your IjkPlayer/AvPlayer or any another player with help of single line!",
@@ -12,7 +12,7 @@
   "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/OhosVideoCache",
   "license": "Apache-2.0 license",
   "dependencies": {
-    "@ohos/crypto-js": "2.0.2"
+    "@ohos/crypto-js": "2.0.4"
   },
   "keywords": [
     "Video Cache",
