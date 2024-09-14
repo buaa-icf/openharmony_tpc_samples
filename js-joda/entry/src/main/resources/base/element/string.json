@@ -11,6 +11,322 @@
     {
       "name": "MainAbility_label",
       "value": "js-joda"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "label"
+    },
+    {
+      "name": "next_page",
+      "value": "下一页"
+    },
+    {
+      "name": "time_measurement_test",
+      "value": "Time measurement test"
+    },
+    {
+      "name": "a_ten_hour_time_quantity_representation",
+      "value": "Obtain a ten hour time quantity representation: "
+    },
+    {
+      "name": "a_10_year_and_45_day_time_quantity_representation",
+      "value": "Obtain a 10-year and 45 day time quantity representation: "
+    },
+    {
+      "name": "Given_time_plus_10_hours_and_30_minutes",
+      "value": "Given time plus 10 hours and 30 minutes: "
+    },
+    {
+      "name": "Local_date_testing",
+      "value": "Local date testing"
+    },
+    {
+      "name": "Analyze_the_given_date",
+      "value": "Analyze the given date： "
+    },
+    {
+      "name": "What_day_of_the_month_is_the_given_date",
+      "value": "What day of the month is the given date： "
+    },
+    {
+      "name": "Given_date_and_month",
+      "value": "Given date and month： "
+    },
+    {
+      "name": "Given_the_value_of_the_month",
+      "value": "Given the value of the month： "
+    },
+    {
+      "name": "Given_date_and_year",
+      "value": "Given date and year： "
+    },
+    {
+      "name": "What_day_of_the_week_is_the_given_date",
+      "value": "What day of the week is the given date: "
+    },
+    {
+      "name": "What_day_of_the_week_is_the_given_date_represented_by_a_numerical_value",
+      "value": "What day of the week is the given date represented by a numerical value： "
+    },
+    {
+      "name": "What_day_of_the_year_is_the_given_date_is_the_given_year_a_leap_year",
+      "value": "What day of the year is the given date is the given year a leap year： "
+    },
+    {
+      "name": "Is_the_given_year_a_leap_year",
+      "value": "Is the given year a leap year： "
+    },
+    {
+      "name": "How_many_days_are_there_in_a_given_month",
+      "value": "How many days are there in a given month： "
+    },
+    {
+      "name": "How_many_days_are_there_in_a_given_year",
+      "value": "How many days are there in a given year： "
+    },
+    {
+      "name": "What_week_of_the_year_is_the_given_date_in",
+      "value": "What week of the year is the given date in： "
+    },
+    {
+      "name": "Add_366_days_to_the_given_date",
+      "value": "Add 366 days to the given date： "
+    },
+    {
+      "name": "Subtract_366_days_from_the_given_date",
+      "value": "Subtract 366 days from the given date： "
+    },
+    {
+      "name": "Given_date_plus_12_months",
+      "value": "Given date plus 12 months： "
+    },
+    {
+      "name": "Subtract_12_months_from_the_given_date",
+      "value": "Subtract 12 months from the given date： "
+    },
+    {
+      "name": "Given_date_plus_4_weeks",
+      "value": "Given date plus 4 weeks： "
+    },
+    {
+      "name": "Subtract_4_weeks_from_the_given_date",
+      "value": "Subtract 4 weeks from the given date： "
+    },
+    {
+      "name": "Given_date_plus_1_year",
+      "value": "Given date plus 1 year： "
+    },
+    {
+      "name": "Subtract_1_year_from_the_given_date",
+      "value": "Subtract 1 year from the given date： "
+    },
+    {
+      "name": "Add_one_month_and_three_days_to_the_given_date",
+      "value": "Add one month and three days to the given date： "
+    },
+    {
+      "name": "Subtract_one_month_and_three_days_from_the_given_date",
+      "value": "Subtract one month and three days from the given date：  "
+    },
+    {
+      "name": "Set_the_given_date_to_1",
+      "value": "Set the given date to 1： "
+    },
+    {
+      "name": "Set_the_month_and_date_of_the_given_date_to_1",
+      "value": "Set the month and date of the given date to 1： "
+    },
+    {
+      "name": "On_the_42nd_day_of_a_given_year",
+      "value": "On the 42nd day of a given year： "
+    },
+    {
+      "name": "The_first_day_of_a_given_month",
+      "value": "The first day of a given month： "
+    },
+    {
+      "name": "Get_current_date",
+      "value": "Get current date： "
+    },
+    {
+      "name": "Obtain_the_last_day_of_the_month",
+      "value": "Obtain the last day of the month： "
+    },
+    {
+      "name": "Local_time_testing",
+      "value": "Local time testing"
+    },
+    {
+      "name": "Get_default_time",
+      "value": "Get default time： "
+    },
+    {
+      "name": "Format_time_from_hours_minutes_and_seconds",
+      "value": "Format time from hours, minutes, and seconds： "
+    },
+    {
+      "name": "Retrieve_time_from_the_provided_seconds",
+      "value": "Retrieve time from the provided seconds： "
+    },
+    {
+      "name": "Given_time_analysis",
+      "value": "Given time analysis： "
+    },
+    {
+      "name": "Time_formatting_truncated_to_seconds",
+      "value": "Time formatting truncated to seconds： "
+    },
+    {
+      "name": "Get_the_given_time_hours",
+      "value": "Get the given time hours： "
+    },
+    {
+      "name": "Get_the_given_number_of_minutes_at_a_given_time",
+      "value": "Get the given number of minutes at a given time： "
+    },
+    {
+      "name": "Get_the_given_time_in_seconds",
+      "value": "Get the given time in seconds： "
+    },
+    {
+      "name": "Obtain_the_number_of_nanoseconds_at_a_given_time",
+      "value": "Obtain the number of nanoseconds at a given time： "
+    },
+    {
+      "name": "Given_the_number_of_seconds_in_a_day_at_a_given_time",
+      "value": "Given the number of seconds in a day at a given time： "
+    },
+    {
+      "name": "Test_time_in_AM_PM_hours",
+      "value": "Test time in AM PM hours： "
+    },
+    {
+      "name": "Add_12_hours_to_the_given_time",
+      "value": "Add 12 hours to the given time： "
+    },
+    {
+      "name": "Add_30_minutes_to_the_given_time",
+      "value": "Add 30 minutes to the given time： "
+    },
+    {
+      "name": "Add_30_seconds_to_the_given_time",
+      "value": "Add 30 seconds to the given time： "
+    },
+    {
+      "name": "Increase_the_given_time_by_1000000_nanoseconds",
+      "value": "Increase the given time by 1000000 nanoseconds： "
+    },
+    {
+      "name": "Add_1_millisecond_to_the_given_time",
+      "value": "Add 1 millisecond to the given time： "
+    },
+    {
+      "name": "Add_half_a_day_to_the_given_time",
+      "value": "Add half a day to the given time： "
+    },
+    {
+      "name": "Set_the_hour_to_1",
+      "value": "Set the hour to 1： "
+    },
+    {
+      "name": "Set_the_minute_to_1",
+      "value": "Set the minute to 1： "
+    },
+    {
+      "name": "Set_the_number_of_seconds_to_1",
+      "value": "Set the number of seconds to 1： "
+    },
+    {
+      "name": "Local_date_and_time_testing",
+      "value": "Local date and time testing"
+    },
+    {
+      "name": "Get_date_and_time",
+      "value": "Get date and time： "
+    },
+    {
+      "name": "Obtain_domestic_city_date_and_time",
+      "value": "Obtain domestic city date and time： "
+    },
+    {
+      "name": "Build_date_and_time_based_on_given_data",
+      "value": "Build date and time based on given data： "
+    },
+    {
+      "name": "Obtain_the_given_date_and_year",
+      "value": "Obtain the given date and year： "
+    },
+    {
+      "name": "Get_the_given_date_month",
+      "value": "Get the given date month： "
+    },
+    {
+      "name": "Get_the_value_of_the_given_date_and_month",
+      "value": "Get the value of the given date and month： "
+    },
+    {
+      "name": "Get_the_given_date_on_which_day_of_the_month",
+      "value": "Get the given date on which day of the month： "
+    },
+    {
+      "name": "Obtain_the_number_of_hours",
+      "value": "Obtain the number of hours： "
+    },
+    {
+      "name": "Get_minutes",
+      "value": "Get minutes： "
+    },
+    {
+      "name": "Get_seconds",
+      "value": "Get seconds： "
+    },
+    {
+      "name": "Obtain_nanosecond_count",
+      "value": "Obtain nanosecond count： "
+    },
+    {
+      "name": "Obtain_the_day_of_the_week",
+      "value": "Obtain the day of the week： "
+    },
+    {
+      "name": "Obtain_dates_within_a_year",
+      "value": "Obtain dates within a year： "
+    },
+    {
+      "name": "Get_the_total_number_of_days_in_a_given_month",
+      "value": "Get the total number of days in a given month： "
+    },
+    {
+      "name": "Obtain_the_total_number_of_days_in_a_given_year",
+      "value": "Obtain the total number of days in a given year： "
+    },
+    {
+      "name": "Test_with_time_zone_date_and_time",
+      "value": "Test with time zone, date, and time"
+    },
+    {
+      "name": "Get_date_and_time_with_time_zone",
+      "value": "Get date and time with time zone： "
+    },
+    {
+      "name": "Obtain_domestic_Shanghai_date_and_time",
+      "value": "Obtain domestic Shanghai date and time： "
+    },
+    {
+      "name": "Date_and_time_formatting",
+      "value": "Date and time formatting"
+    },
+    {
+      "name": "Basic_date_formatting",
+      "value": "Basic date formatting: "
+    },
+    {
+      "name": "Time_Format",
+      "value": "Time Format: "
+    },
+    {
+      "name": "Format_given_date_and_time",
+      "value": "Format given date and time: "
     }
   ]
 }

@@ -41,7 +41,7 @@ struct Third {
     Row() {
       Scroll() {
         Column() {
-          Button('Local date and time testing', { type: ButtonType.Capsule, stateEffect: true })
+          Button($r('app.string.Local_date_and_time_testing'), { type: ButtonType.Capsule, stateEffect: true })
             .backgroundColor(0x317aff)
             .width(240)
             .onClick(() => {
@@ -52,7 +52,7 @@ struct Third {
             .margin(10)
             .fontColor(Color.Blue)
 
-          Button('下一页', { type: ButtonType.Capsule, stateEffect: true })
+          Button($r('app.string.next_page'), { type: ButtonType.Capsule, stateEffect: true })
             .backgroundColor(0x317aff)
             .width(240)
             .onClick(() => {
@@ -113,19 +113,19 @@ function testLocalDateTime(): string {
   console.info(mDateTime.toLocalDate().lengthOfMonth().toString());
   // 获取当前的总天数
   console.info(mDateTime.toLocalDate().lengthOfYear().toString());
-  return "Get date and time： " + LocalDateTime.now().toString() + '\n' +
-  "Obtain domestic city date and time： " + LocalDateTime.now(ZoneId.systemDefault()).toString() + '\n' +
-  "Build date and time based on given data： " + LocalDateTime.of(2016, 2, 29, 12, 55, 42, 9).toString() + '\n' +
-  "Obtain the given date and year： " + mDateTime.year().toString() + '\n' +
-  "Get the given date month： " + mDateTime.month().toString() + '\n' +
-  "Get the value of the given date and month： " + mDateTime.monthValue().toString() + '\n' +
-  "Get the given date on which day of the month： " + mDateTime.dayOfMonth().toString() + '\n' +
-  "Obtain the number of hours： " + mDateTime.hour().toString() + '\n' +
-  "Get minutes： " + mDateTime.minute().toString() + '\n' +
-  "Get seconds： " + mDateTime.second().toString() + '\n' +
-  "Obtain nanosecond count： " + mDateTime.nano().toString() + '\n' +
-  "Obtain the day of the week： " + mDateTime.dayOfWeek().toString() + '\n' +
-  "Obtain dates within a year： " + mDateTime.dayOfYear().toString() + '\n' +
-  "Get the total number of days in a given month： " + mDateTime.toLocalDate().lengthOfMonth().toString() + '\n' +
-  "Obtain the total number of days in a given year： " + mDateTime.toLocalDate().lengthOfYear().toString();
+  return getContext().resourceManager.getStringByNameSync("Get_date_and_time") + LocalDateTime.now().toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync("Obtain_domestic_city_date_and_time")+ LocalDateTime.now(ZoneId.systemDefault()).toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync("Build_date_and_time_based_on_given_data") + LocalDateTime.of(2016, 2, 29, 12, 55, 42, 9).toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync("Obtain_the_given_date_and_year")+ mDateTime.year().toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync("Get_the_given_date_month") + mDateTime.month().toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync("Get_the_value_of_the_given_date_and_month") + mDateTime.monthValue().toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync("Get_the_given_date_on_which_day_of_the_month") + mDateTime.dayOfMonth().toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync("Obtain_the_number_of_hours")+ mDateTime.hour().toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync("Get_minutes") + mDateTime.minute().toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync("Get_seconds") + mDateTime.second().toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync("Obtain_nanosecond_count") + mDateTime.nano().toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync("Obtain_the_day_of_the_week") + mDateTime.dayOfWeek().toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync("Obtain_dates_within_a_year") + mDateTime.dayOfYear().toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync("Get_the_total_number_of_days_in_a_given_month") + mDateTime.toLocalDate().lengthOfMonth().toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync("Obtain_the_total_number_of_days_in_a_given_year") + mDateTime.toLocalDate().lengthOfYear().toString();
 }

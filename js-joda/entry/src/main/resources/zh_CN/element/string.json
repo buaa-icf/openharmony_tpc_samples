@@ -11,6 +11,318 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "next_page",
+      "value": "下一页"
+    },
+    {
+      "name": "time_measurement_test",
+      "value": "时间量测试"
+    },
+    {
+      "name": "a_ten_hour_time_quantity_representation",
+      "value": "获取十小时时间量表示: "
+    },
+    {
+      "name": "a_10_year_and_45_day_time_quantity_representation",
+      "value": "获取10年45天时间量表示: "
+    },
+    {
+      "name": "Given_time_plus_10_hours_and_30_minutes",
+      "value": "给定时间加10小时30分: "
+    },
+    {
+      "name": "Local_date_testing",
+      "value": "本地日期测试"
+    },
+    {
+      "name": "Analyze_the_given_date",
+      "value": "解析给定日期： "
+    },
+    {
+      "name": "What_day_of_the_month_is_the_given_date",
+      "value": "给定日期是当月第几天： "
+    },
+    {
+      "name": "Given_date_and_month",
+      "value": "给定日期月份： "
+    },
+    {
+      "name": "Given_the_value_of_the_month",
+      "value": "给定月份的值： "
+    },
+    {
+      "name": "Given_date_and_year",
+      "value": "给定日期年份： "
+    },
+    {
+      "name": "What_day_of_the_week_is_the_given_date",
+      "value": "给定日期是周几: "
+    },
+    {
+      "name": "What_day_of_the_week_is_the_given_date_represented_by_a_numerical_value",
+      "value": "给定日期是周几数字值： "
+    },
+    {
+      "name": "What_day_of_the_year_is_the_given_date_is_the_given_year_a_leap_year",
+      "value": "给定日期是一年中的第几天： "
+    },
+    {
+      "name": "Is_the_given_year_a_leap_year",
+      "value": "给定年份是否是闰年： "
+    },
+    {
+      "name": "How_many_days_are_there_in_a_given_month",
+      "value": "给定月份有多少天： "
+    },
+    {
+      "name": "How_many_days_are_there_in_a_given_year",
+      "value": "给定年份有多少天： "
+    },
+    {
+      "name": "What_week_of_the_year_is_the_given_date_in",
+      "value": "给定日期在一年中的第几周： "
+    },
+    {
+      "name": "Add_366_days_to_the_given_date",
+      "value": "给定日期加366天： "
+    },
+    {
+      "name": "Subtract_366_days_from_the_given_date",
+      "value": "给定日期减去366天： "
+    },
+    {
+      "name": "Given_date_plus_12_months",
+      "value": "给定日期加上12个月： "
+    },
+    {
+      "name": "Subtract_12_months_from_the_given_date",
+      "value": "给定日期减去12个月： "
+    },
+    {
+      "name": "Given_date_plus_4_weeks",
+      "value": "给定日期加上4周： "
+    },
+    {
+      "name": "Subtract_4_weeks_from_the_given_date",
+      "value": "给定日期减去4周： "
+    },
+    {
+      "name": "Given_date_plus_1_year",
+      "value": "给定日期加上1年： "
+    },
+    {
+      "name": "Subtract_1_year_from_the_given_date",
+      "value": "给定日期减去1年： "
+    },
+    {
+      "name": "Add_one_month_and_three_days_to_the_given_date",
+      "value": "给定日期加上一个月零三天： "
+    },
+    {
+      "name": "Subtract_one_month_and_three_days_from_the_given_date",
+      "value": "给定日期减去一个月零三天：  "
+    },
+    {
+      "name": "Set_the_given_date_to_1",
+      "value": "给定日期的日期设置成1： "
+    },
+    {
+      "name": "Set_the_month_and_date_of_the_given_date_to_1",
+      "value": "给定日期的月份和日期设置成1： "
+    },
+    {
+      "name": "On_the_42nd_day_of_a_given_year",
+      "value": "给定年份的第42天： "
+    },
+    {
+      "name": "The_first_day_of_a_given_month",
+      "value": "给定月份的第一天： "
+    },
+    {
+      "name": "Get_current_date",
+      "value": "获取当前日期： "
+    },
+    {
+      "name": "Obtain_the_last_day_of_the_month",
+      "value": "获取月份最后一天： "
+    },
+    {
+      "name": "Local_time_testing",
+      "value": "本地时间测试"
+    },
+    {
+      "name": "Get_default_time",
+      "value": "获取默认时间： "
+    },
+    {
+      "name": "Format_time_from_hours_minutes_and_seconds",
+      "value": "从时分秒中格式化时间： "
+    },
+    {
+      "name": "Retrieve_time_from_the_provided_seconds",
+      "value": "从提供的秒数获取时间： "
+    },
+    {
+      "name": "Given_time_analysis",
+      "value": "给定时间解析： "
+    },
+    {
+      "name": "Time_formatting_truncated_to_seconds",
+      "value": "时间格式化截断到秒： "
+    },
+    {
+      "name": "Get_the_given_time_hours",
+      "value": "获取给定时间小时数： "
+    },
+    {
+      "name": "Get_the_given_number_of_minutes_at_a_given_time",
+      "value": "获取给定时间分钟数： "
+    },
+    {
+      "name": "Get_the_given_time_in_seconds",
+      "value": "获取给定时间秒数： "
+    },
+    {
+      "name": "Obtain_the_number_of_nanoseconds_at_a_given_time",
+      "value": "获取给定时间纳秒数： "
+    },
+    {
+      "name": "Given_the_number_of_seconds_in_a_day_at_a_given_time",
+      "value": "给定时间在一天中的秒数： "
+    },
+    {
+      "name": "Test_time_in_AM_PM_hours",
+      "value": "测试时间在AM PM 中的小时数： "
+    },
+    {
+      "name": "Add_12_hours_to_the_given_time",
+      "value": "给定时间增加12小时： "
+    },
+    {
+      "name": "Add_30_minutes_to_the_given_time",
+      "value": "给定时间增加30分钟： "
+    },
+    {
+      "name": "Add_30_seconds_to_the_given_time",
+      "value": "给定时间增加30秒： "
+    },
+    {
+      "name": "Increase_the_given_time_by_1000000_nanoseconds",
+      "value": "给定时间增加1000000纳秒： "
+    },
+    {
+      "name": "Add_1_millisecond_to_the_given_time",
+      "value": "给定时间增加1毫秒： "
+    },
+    {
+      "name": "Add_half_a_day_to_the_given_time",
+      "value": "给定时间增加半天： "
+    },
+    {
+      "name": "Set_the_hour_to_1",
+      "value": "将小时设置为1： "
+    },
+    {
+      "name": "Set_the_minute_to_1",
+      "value": "将分钟设置为1： "
+    },
+    {
+      "name": "Set_the_number_of_seconds_to_1",
+      "value": "将秒数设置为1： "
+    },
+    {
+      "name": "Local_date_and_time_testing",
+      "value": "本地日期时间测试"
+    },
+    {
+      "name": "Get_date_and_time",
+      "value": "获取日期时间： "
+    },
+    {
+      "name": "Obtain_domestic_city_date_and_time",
+      "value": "获取国内城市日期时间： "
+    },
+    {
+      "name": "Build_date_and_time_based_on_given_data",
+      "value": "根据给定数据构建日期时间： "
+    },
+    {
+      "name": "Obtain_the_given_date_and_year",
+      "value": "获取给定日期年份： "
+    },
+    {
+      "name": "Get_the_given_date_month",
+      "value": "获取给定日期月份： "
+    },
+    {
+      "name": "Get_the_value_of_the_given_date_and_month",
+      "value": "获取给定日期月份的值： "
+    },
+    {
+      "name": "Get_the_given_date_on_which_day_of_the_month",
+      "value": "获取给定日期在当月中第几天： "
+    },
+    {
+      "name": "Obtain_the_number_of_hours",
+      "value": "获取小时数： "
+    },
+    {
+      "name": "Get_minutes",
+      "value": "获取分钟数： "
+    },
+    {
+      "name": "Get_seconds",
+      "value": "获取秒数： "
+    },
+    {
+      "name": "Obtain_nanosecond_count",
+      "value": "获取纳秒数： "
+    },
+    {
+      "name": "Obtain_the_day_of_the_week",
+      "value": "获取周几： "
+    },
+    {
+      "name": "Obtain_dates_within_a_year",
+      "value": "获取在一年中的日期： "
+    },
+    {
+      "name": "Get_the_total_number_of_days_in_a_given_month",
+      "value": "获取给定月份总天数： "
+    },
+    {
+      "name": "Obtain_the_total_number_of_days_in_a_given_year",
+      "value": "获取给定年份总天数： "
+    },
+    {
+      "name": "Test_with_time_zone_date_and_time",
+      "value": "带时区日期时间测试"
+    },
+    {
+      "name": "Get_date_and_time_with_time_zone",
+      "value": "获取带时区日期时间： "
+    },
+    {
+      "name": "Obtain_domestic_Shanghai_date_and_time",
+      "value": "获取国内上海日期时间: "
+    },
+    {
+      "name": "Date_and_time_formatting",
+      "value": "日期时间格式化"
+    },
+    {
+      "name": "Basic_date_formatting",
+      "value": "基础日期格式化： "
+    },
+    {
+      "name": "Time_Format",
+      "value": "时间格式化： "
+    },
+    {
+      "name": "Format_given_date_and_time",
+      "value": "给定日期时间格式化： "
     }
   ]
 }

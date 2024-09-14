@@ -45,7 +45,7 @@ struct Fourth {
     Row() {
       Scroll() {
         Column() {
-          Button('Test with time zone, date, and time', { type: ButtonType.Capsule, stateEffect: true })
+          Button($r('app.string.Test_with_time_zone_date_and_time'), { type: ButtonType.Capsule, stateEffect: true })
             .backgroundColor(0x317aff)
             .width(240)
             .onClick(() => {
@@ -56,7 +56,7 @@ struct Fourth {
             .margin(10)
             .fontColor(Color.Blue)
 
-          Button('Next', { type: ButtonType.Capsule, stateEffect: true })
+          Button($r('app.string.next_page'), { type: ButtonType.Capsule, stateEffect: true })
             .backgroundColor(0x317aff)
             .width(240)
             .onClick(() => {
@@ -81,6 +81,6 @@ function testZonedDateTime() {
 
   console.info(ZonedDateTime.now(ZoneId.systemDefault()).toString());
 
-  return "Get date and time with time zone： " + ZonedDateTime.now().toString() + '\n' +
-  "Obtain domestic Shanghai date and time： " + ZonedDateTime.now(ZoneId.systemDefault()).toString() + '\n';
+  return getContext().resourceManager.getStringByNameSync("Get_date_and_time_with_time_zone") + ZonedDateTime.now().toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync("Obtain_domestic_Shanghai_date_and_time")+ ZonedDateTime.now(ZoneId.systemDefault()).toString() + '\n';
 }
