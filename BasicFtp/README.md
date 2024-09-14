@@ -583,6 +583,7 @@ if (ftpUtil) {
 
 ## 约束与限制
 在下述版本验证通过：
+DevEco Studio: NEXT Beta1-5.0.3.806, SDK: API12 Release(5.0.0.66)
 DevEco Studio版本: 4.0 Release(4.0.3.413), SDK: (4.0.10.3)
 
 本库当前支持ftp被动模式，不支持主动模式；支持FTP,隐式tls加密的FTPS。
