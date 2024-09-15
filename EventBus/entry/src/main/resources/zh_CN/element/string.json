@@ -14,39 +14,39 @@
     },
     {
       "name": "subscribe_to_basicTest_messages",
-      "value": "Subscribe to basicTest messages"
+      "value": "订阅basicTest消息"
     },
     {
       "name": "send_basicTest_message",
-      "value": "Send basicTest message"
+      "value": "发送basicTest消息"
     },
     {
       "name": "subscribe_to_basicEventBus_messages",
-      "value": "Subscribe to basicEventBus messages"
+      "value": "订阅basicEventBus消息"
     },
     {
       "name": "send_basicEventBus_message",
-      "value": "Send basicEventBus message"
+      "value": "发送basicEventBus消息"
     },
     {
       "name": "determine_whether_the_basicTest_subscription_exists",
-      "value": "Determine whether the basicTest subscription exists"
+      "value": "判断basicTest订阅是否存在"
     },
     {
       "name": "remove_basicTest_message",
-      "value": "Remove basicTest message"
+      "value": "移除basicTest消息"
     },
     {
       "name": "successfully_removed_basicTest_message",
-      "value": "Successfully removed basicTest message"
+      "value": "移除basicTest消息成功"
     },
     {
       "name": "passing_parameter_testing",
-      "value": "Passing parameter testing"
+      "value": "传递参数测试"
     },
     {
       "name": "test_how_many_events_have_been_registered",
-      "value": "Test how many events have been registered"
+      "value": "测试获取有多少事件被注册"
     },
     {
       "name": "go_to_detail",
@@ -54,19 +54,19 @@
     },
     {
       "name": "refresh_and_display_the_global_monitoring_detail_page",
-      "value": "Refresh and display the global monitoring detail page"
+      "value": "全局监听detail页面刷新展示"
     },
     {
       "name": "basicTest_listening_successfully_created",
-      "value": "BasicTest listening successfully created"
+      "value": "basicTest监听创建成功"
     },
     {
       "name": "basicEventBus_listening_successfully_created",
-      "value": "BasicEventBus listening successfully created "
+      "value": "basicEventBus监听创建成功 "
     },
     {
       "name": "send_refreshComeFromDetail_event",
-      "value": "Send refreshComeFromDetail event----------"
+      "value": "发送刷新refreshComeFromDetail事件----------"
     }
   ]
 }

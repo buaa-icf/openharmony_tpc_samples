@@ -39,7 +39,7 @@ struct Detail {
       let TestClass = new TestA()
       TestClass.className = "TestClass2";
       TestClass.ready = () => {
-        console.log(TAG + "Send refreshComeFromDetail event----------");
+        console.log(TAG + getContext().resourceManager.getStringByNameSync('app.string.send_refreshComeFromDetail_event'));
         EventBus.dispatch("refreshComeFromDetail", TestClass, "javascript events", " come from detail params");
       }
       return {className:TestClass.className,ready:TestClass.ready }

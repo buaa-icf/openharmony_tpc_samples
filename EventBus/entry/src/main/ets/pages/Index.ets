@@ -36,19 +36,19 @@ interface ThatType {
 @Entry
 @Component
 struct Index {
-  @State comeDetailText: string = "Refresh and display the global monitoring detail page";
+  @State comeDetailText: string = "";
   @State changeText: string = "";
   testCount: number = 0;
   eventBusCount: number = 0;
   scroller: Scroller = new Scroller();
   basicTestCallBack: EventBus.EventListener = (event: Event) => {
     this.testCount++;
-    this.changeText = "BasicTest listening successfully created " + this.testCount;
+    this.changeText = getContext().resourceManager.getStringByNameSync('app.string.basicTest_listening_successfully_created') + this.testCount;
     console.log(TAG + " basicTest message received " + event.type);
   }
   basicEventBusCallBack: EventBus.EventListener = (event: Event) => {
     this.eventBusCount++;
-    this.changeText = "BasicEventBus listening successfully created " + this.eventBusCount;
+    this.changeText = getContext().resourceManager.getStringByNameSync('app.string.basicEventBus_listening_successfully_created') + this.eventBusCount;
     console.log(TAG + " basicEventBus message received " + event.type);
   }
 
@@ -73,7 +73,7 @@ struct Index {
       Scroll(this.scroller) {
         Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center }) {
 
-          Button("Subscribe to basicTest messages")
+          Button($r('app.string.subscribe_to_basicTest_messages'))
             .fontSize(18)
             .height(80)
             .onClick(() => {
@@ -84,14 +84,14 @@ struct Index {
               }
             }).margin({ bottom: 20 })
 
-          Button("Send basicTest message")
+          Button($r('app.string.send_basicTest_message'))
             .fontSize(18)
             .height(80)
             .onClick(() => {
               EventBus.dispatch("basicTest")
             }).margin({ bottom: 20 })
 
-          Button("Subscribe to basicEventBus messages")
+          Button($r('app.string.subscribe_to_basicEventBus_messages'))
             .fontSize(18)
             .height(80)
             .onClick(() => {
@@ -102,14 +102,14 @@ struct Index {
               }
             }).margin({ bottom: 20 })
 
-          Button("Send basicEventBus message")
+          Button($r('app.string.send_basicEventBus_message'))
             .fontSize(18)
             .height(80)
             .onClick(() => {
               EventBus.dispatch("basicEventBus")
             }).margin({ bottom: 20 })
 
-          Button("Determine whether the basicTest subscription exists")
+          Button($r('app.string.determine_whether_the_basicTest_subscription_exists'))
             .fontSize(18)
             .height(80)
             .onClick(() => {
@@ -118,29 +118,29 @@ struct Index {
               console.log(TAG + " Determine whether the Basictest subscription exists " + isHas)
             }).margin({ bottom: 20 })
 
-          Button("Remove basicTest message")
+          Button($r('app.string.remove_basicTest_message'))
             .fontSize(18)
             .height(80)
             .onClick(() => {
               EventBus.removeEventListener('basicTest', this.basicTestCallBack);
-              this.changeText = 'Successfully removed basicTest message'
+              this.changeText = getContext().resourceManager.getStringByNameSync('app.string.successfully_removed_basicTest_message')
             }).margin({ bottom: 20 })
 
-          Button("Passing parameter testing")
+          Button($r('app.string.passing_parameter_testing'))
             .fontSize(18)
             .height(80)
             .onClick(() => {
               testAddParameters()
             }).margin({ bottom: 20 })
 
-          Button("Test how many events have been registered")
+          Button($r('app.string.test_how_many_events_have_been_registered'))
             .fontSize(18)
             .height(80)
             .onClick(() => {
               testGetEvents()
             }).margin({ bottom: 20 })
 
-          Button("GoToDetail")
+          Button($r('app.string.go_to_detail'))
             .fontSize(18)
             .height(80)
             .onClick(() => {
@@ -165,6 +165,7 @@ struct Index {
   }
 
   onInitEventBus() {
+    this.comeDetailText = getContext().resourceManager.getStringByNameSync('app.string.refresh_and_display_the_global_monitoring_detail_page')
     refreshComeFromDetail(this)
   }
 }
