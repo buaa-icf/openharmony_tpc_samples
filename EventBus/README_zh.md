@@ -1,21 +1,21 @@
 # EventBus
 
-## Introduction
+## 简介
 
-This project is an OpenHarmony development example based on the [EventBus](https://github.com/krasimir/EventBus) library. It uses eventbusjs of version 0.2.0. eventbusjs is used to subscribe to and send messages and manage events in JavaScript, providing a simple yet efficient solution for communication between multiple components.
+本库是OpenHarmony系统下基于[EventBus](https://github.com/krasimir/EventBus)库使用的开发示例，此处使用的版本是eventbusjs@0.2.0，eventbusjs主要功能是消息订阅发送，用于在JavaScript中管理事件，为多组件之间的通信提供了一个简单而高效的解决方案，受到广大开发者的喜爱。
 
-## How to Download
+## 下载
 
-**Using CLI**
+命令行下载：
 
 ```
 ohpm i eventbusjs
-ohpm install @types/eventbusjs --save-dev // A syntax error is reported for the import eventbusjs instruction if the eventbusjs package does not contain the type declaration. You need to download the declaration file of the package using @types/eventbusjs to rectify the syntax error.
+ohpm install @types/eventbusjs --save-dev //import eventbusjs 的时候语法报错。其原因是eventbusjs包内不含类型声明，需要 @types/eventbusjs 下载这个包的声明文件，从而解决语法的报错。
 
 ```
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
-Use the project in your code:
+使用组件在您的代码中:
 
 ```
 import EventBus from "eventbusjs"
@@ -30,7 +30,7 @@ EventBus.dispatch("my_function_event");
 
 ```
 
-### Range
+### 保持范围
 
 ```
 var TestClass1 = function() {
@@ -51,7 +51,7 @@ EventBus.addEventListener("callback_event", t1.callback, t1);
 t2.dispatchOurEvent();
 ```
 
-### Passing In Additional Parameters
+### 传递附加参数
 
 ```
 var TestClass1 = function() {
@@ -78,7 +78,7 @@ t2.ready();
 
 ```
 
-### Example of Using EventBus.removeEventListener
+### EventBus.removeEventListener用法示例
 
 ```
 /* Wrong - callback functions are different instances */
@@ -99,11 +99,11 @@ EventBus.removeEventListener('EXAMPLE_EVENT', handler);
 
 
 
-## Available APIs
+## 接口说明
 
 ### `addEventListener`
 
-Binds an event processing function to a specific event type. When this event is triggered, the bound event processing function is executed.
+用于将一个事件处理函数绑定到特定的事件类型上。当这个特定的事件被触发时，绑定的事件处理函数就会被执行。
 
 ```
 // @type - string
@@ -114,7 +114,7 @@ EventBus.addEventListener(type, callback, scope)
 
 ### `removeEventListener`
 
-Removes the event listener added using the `addEventListener` method.
+用于移除之前通过addEventListener方法添加的事件监听器。
 
 ```
 // @type - string
@@ -125,7 +125,7 @@ EventBus.removeEventListener(type, callback, scope)
 
 ### `hasEventListener`
 
-Checks whether an event listener is registered with a specific event type.
+用来检查是否有事件监听器注册在特定的事件类型上。
 
 ```
 // @type - string
@@ -136,7 +136,7 @@ EventBus.hasEventListener(type, callback, scope)
 
 ### `dispatch`
 
-Triggers an event.
+用于触发一个事件。
 
 ```
 // @type - string
@@ -147,21 +147,21 @@ EventBus.dispatch(type, target, args ...)
 
 ### `getEvents`
 
-Prints the added listeners for debugging purposes.
+出于调试目的，会打印出添加的侦听器。
 
 ```
 EventBus.getEvents()
 ```
 
-## Constraints
-This project has been verified in the following versions:
-- DevEco Studio: 4.0 (4.0.3.512), SDK: API 10 (4.0.10.9)
-- DevEco Studio: 3.1 Beta2 (3.1.0.400), SDK: API 9 Release (3.2.11.9)
+## 约束与限制
+在下述版本验证通过：
+- DevEco Studio 版本: 4.0(4.0.3.512),SDK: API10（4.0.10.9）
+- DevEco Studio 版本：3.1 Beta2(3.1.0.400)，SDK:API9 Release(3.2.11.9)
 
-## License
+## 开源协议
 
-This project is incensed under [Apache License 2.0](https://gitee.com/lgrong2303/openharmony_tpc_samples/blob/EventBus/EventBus/LICENSE).
+本项目基于 [Apache License 2.0](https://gitee.com/lgrong2303/openharmony_tpc_samples/blob/EventBus/EventBus/LICENSE) ，请自由地享受和参与开源。
 
-## How to Contribute
+## 贡献代码
 
-If you find any problem during the use, submit an issue or a PR.
+使用过程中发现任何问题都可以提 [Issue] 给我们，当然，我们也非常欢迎你给我们发 [PR] 。
