@@ -1,15 +1,15 @@
 # js-md5Demo
 
-## 简介
-本demo是基于openHarmony系统下使用三方js库[js-md2](https://github.com/emn178/js-md5)，JavaScript的简单MD5哈希函数支持UTF-8编码
+## Introduction
+This demo allows you to use the third-party JavaScript library [js-md2](https://github.com/emn178/js-md5) with OpenHarmony. The simple MD5 hash function of JavaScript supports UTF-8 encoding.
 
-## 下载安装
+## How to Install
 ```
 ohpm install js-md5
-ohpm install @types/js-md5 --save-dev //import js-md5 的时候语法报错。其原因是js-md5包内不含类型声明，需要 @types/js-md5 下载这个包的声明文件，从而解决语法的报错。
+ohpm install @types/js-md5 --save-dev // Install @types/js-md5 to prevent import syntax errors due to missing type declarations in the js-md5 package.
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
-## 使用说明
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+## How to Use
 
 ```javascript
 import md5 from 'js-md5';
@@ -20,28 +20,29 @@ let mess2 = md5.hex(content);
 let mess3 = md5.base64(content);
 ```
 
-## 接口说明
+## Available APIs
 
-|    方法名    |    入参     | 接口描述 |
-|:---------:|:---------:|:----:|
-| md5(data) | data:内容 |  算法  |
-| md5.hex(data) | data:内容 |  算法  |
-| md5.base64(data) | data:内容 |  算法  |
-| md5.digest(data) | data:内容 |  算法  |
-| md5.array(data) | data:内容 |  算法  |
+|    API   |    Parameter    | Description|
+|:---------|:---------|:----|
+| md5(data) | data|  Algorithm. |
+| md5.hex(data) | data|  Algorithm. |
+| md5.base64(data) | data|  Algorithm. |
+| md5.digest(data) | data|  Algorithm. |
+| md5.array(data) | data|  Algorithm. |
 
 
-## 约束与限制
-在下述版本验证通过：
+## Constraints
+This project has been verified in the following versions:
 
-DevEco Studio: 4.0 Beta2(4.0.3.512), SDK: API10 (4.0.10.9)
+- DevEco Studio: 4.0 Beta2(4.0.3.512), SDK: API10 (4.0.10.9)
 
-DevEco Studio: 3.1 Beta2(3.1.0.400), SDK: API9 Release(3.2.11.9)。
+- DevEco Studio: 3.1 Beta2 (3.1.0.400), SDK: API9 Release (3.2.11.9)
 
-## 开源协议
 
-本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/js-md5Demo/LICENSE) ，请自由地享受和参与开源。
+## License
 
-## 贡献代码
+This project is licensed under [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/js-md5Demo/LICENSE).
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+## How to Contribute
+
+If you find any problem during the use, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
