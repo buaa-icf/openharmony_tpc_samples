@@ -1,56 +1,56 @@
 # Unrar
 
-## 简介
+## Introduction
 
-本库基于[Unrar](https://www.rarlab.com/rar_add.htm) 原库进行适配，使其可以运行在 OpenHarmony，并沿用其现有用法和特性。[Unrar](https://www.rarlab.com/rar_add.htm) ，是一个解压rar文件的库。功能如下：
+This library is adapted based on [Unrar](https://www.rarlab.com/rar_add.htm) to ensure compatibility with OpenHarmony, while retaining its original usage and features. [Unrar](https://www.rarlab.com/rar_add.htm) is a decompression library for RAR files. It provides the following capabilities:
 
-- 判断压缩包名是否加密
-- 解压文件到指定目标路径
-- 解压无加密/加密压缩包
+- Checking whether a package is encrypted
+- Decompressing a file to the specified path
+- Decompressing an unencrypted or encrypted package
 
-![unrar1](./entry/src/main/resources/base/media/unrar1.png)
+![unrar1](./entry/src/main/resources/base/media/unrar_en.png)
 
-## 下载安装
+## How to Install
 
 ```
 ohpm install @ohos/unrar
 ```
-- OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 
-## X86模拟器配置
+## Configuring the x86 Emulator
 
-[使用模拟器运行应用/服务](https://developer.huawei.com/consumer/cn/deveco-developer-suite/enabling/kit?currentPage=1&pageSize=100)
+See [Running Your App/Service on an Emulator](https://developer.huawei.com/consumer/en/doc/harmonyos-guides-V5/ide-run-emulator-V5).
 
 
-## 使用说明
+## How to Use
 ```javascript
 import unrar from '@ohos/unrar'
 ```
 
-## 接口说明
-| **属性**                                                                               |                                  **入参类型**                                  | **说明**                                                     |
-|--------------------------------------------------------------------------------------|:--------------------------------------------------------------------------:| ------------------------------------------------------------ |
-| isEncrypted                                                        |                           (path:string)=>number                            | 判断文件是否加密 |
-| extract                               |          (path: string, dest: string, password?: string)=>string           | 同步解压文件                       |
-| RarFiles_Extract | (path: string, dest: string, callBack: ICallBack, password?: string)=>void | 异步步解压文件 |
+## Available APIs
+| API        |                         Parameter                        | Description        |
+| ---------------- | :----------------------------------------------------------: | ---------------- |
+| isEncrypted      |                    (path:string)=>number                     | Checks whether a package is encrypted.|
+| extract          |   (path: string, dest: string, password?: string)=>string    | Synchronously decompresses a file.    |
+| RarFiles_Extract | (path: string, dest: string, callBack: ICallBack, password?: string)=>void | Asynchronously decompresses a file.  |
 
 
-### isEncrypted 判断压缩包名是否加密方法示例
+### Checking Whether a Package Is Encrypted
 
 ```
-// path:文件所在路径 path目前只支持沙箱路径
+// path: file path. Currently, only the sandbox path is supported.
 unrar.isEncrypted(path)
 
 ```
 
-### 解压无加密文件方法示例
+### Decompressing an Unencrypted File
 
 ```
 unrar.RarFiles_Extract(path, globalThis.context.filesDir).then((value) => {
                 let resultss;
-                if (value == '解压成功') {
-                  resultss = '解压testRar5.rar文件解压成功,解压文件在:' + globalThis.context.filesDir;
+                if (value = ='Decompression succeeded') {
+                  resultss = 'The testRar5.rar file is decompressed successfully. The decompressed file is stored in:' + globalThis.context.filesDir;
                 } else {
                   resultss = value;
                 }
@@ -58,54 +58,54 @@ unrar.RarFiles_Extract(path, globalThis.context.filesDir).then((value) => {
                 this.showDialog(resultss)
               }).catch((error) => {
                 this.tag = true;
-                this.showDialog('解压失败')
+                this.showDialog('Decompression failed.')
               });
 
 ```
 
-### 解压加密文件方法示例
+### Decompressing an Encrypted File
 
 ```
 unrar.RarFiles_Extract(path, globalThis.context.filesDir, passwords).then((value) => {
                   let resultss;
-                  if (value == '解压成功') {
-                    resultss = 'name_encrypted.rar文件解压成功,解压文件在:' + globalThis.context.filesDir;
+                  if (value = ='Decompression succeeded') {
+                    resultss = 'The name_encrypted.rar file is decompressed successfully. The decompressed file is stored in:' + globalThis.context.filesDir;
                   } else {
-                    resultss = '解压失败';
+                    resultss = 'Decompression failed.'
                   }
                   this.showDialog(resultss)
                 }).catch((error) => {
-                  this.showDialog('解压失败')
+                  this.showDialog('Decompression failed.')
                 });
 ```
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+This project has been verified in the following versions:
 
 DevEco Studio: NEXT Beta1-5.0.3.806, SDK: API12 Release(5.0.0.66)
 
-DevEco Studio： (5.0.3.122), SDK: API12 (5.0.0.17)
+- DevEco Studio: (5.0.3.122), SDK: API 12 (5.0.0.17)
 
-DevEco Studio: 4.0 (4.0.3.512), SDK: API10 (4.0.10.9)
+- DevEco Studio: 4.0 (4.0.3.512), SDK: API 10 (4.0.10.9)
 
-DevEco Studio: 4.0 Canary1(4.0.0.112), SDK: API10 (4.0.7.2)
+- DevEco Studio: 4.0 Canary1 (4.0.0.112), SDK: API 10 (4.0.7.2)
 
-## 目录结构
+
+## Directory Structure
 ```javascript
 |---- ohosunrar
-|     |---- entry  # 示例代码文件夹
-|     |---- library  # unrar 库文件夹
-|           |---- src   #  unrar库解压核心代码
-|                 |---- cpp # unrar 核心代码
-|     |---- README.MD  # 安装使用方法
+|     |---- entry  # Sample code
+|     |---- library  # Unrar library
+|           |---- src   #  Decompression core code of the unrar library
+|                 |---- cpp # Core code of unrar
+|     |---- README_EN.md  # Readme
 ```
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提[Issue](https://gitee.com/openharmony-tpc/ohos-unrar/issues) 给我们，当然，我们也非常欢迎你给我们提[PR](https://gitee.com/openharmony-tpc/ohos-unrar/pulls)。
+If you find any problem when using unrar, submit an [issue](https://gitee.com/openharmony-tpc/ohos-unrar/issues) or a [PR](https://gitee.com/openharmony-tpc/ohos-unrar/pulls).
 
-## 开源协议
+## License
 
-本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/ohos-unrar/blob/master/LICENSE)，请自由地享受和参与开源。
-
+This project is licensed under [Apache License 2.0](https://gitee.com/openharmony-tpc/ohos-unrar/blob/master/LICENSE).

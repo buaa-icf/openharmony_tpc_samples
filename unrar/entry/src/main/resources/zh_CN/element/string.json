@@ -14,75 +14,71 @@
     },
     {
       "name": "rar_file",
-      "value": "RAR file decompression"
+      "value": "RAR 文件解压"
     },
     {
       "name": "name_encrypted",
-      "value": "Check whether name_encrypted.rar is encrypted"
+      "value": "name_encrypted.rar文件是否加密文件"
     },
     {
       "name": "testRar5",
-      "value": "Check whether testRar5.rar is encrypted"
+      "value": "testRar5.rar文件是否加密文件"
     },
     {
       "name": "decompress_testRar5",
-      "value": "Decompress testRar5.rar"
+      "value": "解压testRar5.rar文件"
     },
     {
       "name": "decompress_encrypted",
-      "value": "Decompress name_encrypted.rar"
+      "value": "解压name_encrypted.rar文件"
     },
     {
       "name": "please_wait",
-      "value": "Decompressing, please wait"
+      "value": "正在解压中，请稍等... "
     },
     {
       "name": "name_encrypted2",
-      "value": "Name_decryptited.rar is an encrypted file!"
+      "value": "name_encrypted.rar是加密文件！"
     },
     {
       "name": "name_encrypted2_no",
-      "value": "Name_decryptited.rar is not an encrypted file!"
+      "value": "name_encrypted.rar不是加密文件！"
     },
     {
       "name": "file_exist",
-      "value": "file does not exist"
+      "value": "文件不存在"
     },
     {
       "name": "name_testRar2",
-      "value": "testRar5.rar is an encrypted file!"
+      "value": "testRar5.rar是加密文件！"
     },
     {
       "name": "name_testRar2_no",
-      "value": "testRar5.rar is not an encrypted file!"
+      "value": "testRar5.rar不是加密文件!"
     },
     {
       "name": "successfully",
-      "value": "Successfully decompressed"
+      "value": "解压成功"
     },
     {
       "name": "Extract_testRar5",
-      "value": "Extract testRar5,rar file successfully. The extracted file can be found at:"
+      "value": "解压testRar5.rar文件解压成功,解压文件在: "
     },
     {
       "name": "Extract_encrypted",
-      "value": "Extract encrypted.rar file successfully. The extracted file can be found at:"
+      "value": "解压name_encrypted.rar文件解压成功,解压文件在:"
     },
     {
       "name": "Please_input",
-      "value": "Please input a password"
+      "value": "请输入密码"
     },
     {
       "name": "cancel",
-      "value": "Cancel"
+      "value": "取消"
     },
     {
       "name": "confirm",
-      "value": "Confirm"
+      "value": "确认"
     }
-
-
-
-
   ]
 }
