@@ -1,39 +1,37 @@
-
-
 # @ohos/xmpp_stream_features
 
-## 简介
+## Introduction
 
->本软件是参照开源软件 [xmpp_connection](https://github.com/xmppjs/xmpp.js/tree/main/packages/stream-feraturs)源码并用 TypeScript 语言实现了相关功能，在OpenHarmony上提供了一个用于建立和管理XMPP流连接的library
+>Based on the open source software [xmpp_connection](https://github.com/xmppjs/xmpp.js/tree/main/packages/stream-feraturs), this project uses TypeScript to implement similar capabilities. It provides OpenHarmony with a library for establishing and managing XMPP stream connections.
 
-## 已支持功能
+## Supported Features
 
-- 处理流特性
-- 使用中间件
-- 调用特性处理器
-- 错误处理
+- Processing stream features
+- Using middleware
+- Invoking feature processors
+- Error handling
 
-## 下载安装
+## How to Install
 
-1. 参考安装教程 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+1. Configure the OpenHarmony ohpm environment. For details, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-2. 安装命令如下：
+2. Run the following installation command:
 
-```
- ohpm install @ohos/xmpp_stream_features
-```
+   ```
+    ohpm install @ohos/xmpp_stream_features
+   ```
 
-## 接口和属性列表
+## Available APIs
 
-接口列表
+Supported APIs
 
-| **接口**                              | 参数                                                         | 功能             |
+| API                             | Parameter                                                        | Description            |
 | ------------------------------------- | ------------------------------------------------------------ | ---------------- |
-| use(featureName, namespace, callback) | `featureName`（特性名称），`namespace`（特性命名空间），和 `callback`（处理特定特性事件的函数） | 处理特定特性事件 |
+| use(featureName, namespace, callback) | **featureName**, **namespace**, and **callback** (function for processing specific feature events)| Handles a feature event.|
 
-## 使用示例
+## Example
 ```
-//使用streamFeatures.use()注册的中间件，用于处理XMPP流管理（Stream Management）
+// Use the middleware registered by streamFeatures.use() for XMPP stream management.
 import streamFeatures from "@ohos/xmpp_stream_features";
 const NS = "urn:xmpp:sm:3";
 streamFeatures.use("sm", NS, async (context, next) => {
@@ -78,53 +76,53 @@ streamFeatures.use("sm", NS, async (context, next) => {
   });
 ```
 
-## 使用说明
+## How to Use
 
-#### 在XMPP连接的流（stream）上注册一个中间件（middleware）处理函数
+#### Registering a Middleware Processing Function on the Stream of the XMPP Connection
 
 ```
 streamFeatures.use(featureName, namespace, callback);
-//featureName：通常是字符串，表示要使用的功能或协议的名称，例如"sm"（Stream Management）。
-//namespace：通常是一个字符串，表示该功能使用的XML命名空间，例如"http://jabber.org/protocol/stream-management"。
-//callback：一个异步函数，它接收两个参数：context（上下文对象，包含有关连接和会话的信息）和next（一个函数，用于继续执行下一个中间件，或者在完成特定操作后继续执行流的建立过程）。
-在callback函数中，你可以编写处理特定功能的逻辑，比如处理连接的建立、数据传输、错误处理等。如果中间件需要异步操作，可以在回调函数中使用await关键字等待操作完成
+// featureName: usually a string, indicating the name of the feature or protocol to be used, for example, sm (Stream Management).
+// namespace: usually a string, indicating the XML namespace used by the feature, for example, "http://jabber.org/protocol/stream-management".
+// callback: an asynchronous function that receives two parameters: context (context object, including connection and session information) and next (a function used to continue to execute the next middleware or continue to execute the stream establishment process after a specific operation is complete).
+In the callback function, you can write the logic for processing specific capabilities, such as connection establishment, data transmission, and error handling. If the middleware requires asynchronous operations, you can use **await** in the callback function to wait until the operation is complete.
 
-const streamFeatures = connection.features.streamFeatures; // 获取连接的streamFeatures对象
+const streamFeatures = connection.features.streamFeatures; // Obtain the streamFeatures object of the connection.
 
 streamFeatures.use("sm", NS, async (context, next) => {
-  // 在这里添加你的SM中间件逻辑
+  // Add the SM middleware logic here.
   // ...
-  await next(); // 调用next()以继续流的建立过程
+  await next(); // Call next() to continue the stream establishment process.
 });
 
 ```
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+This project has been verified in the following version:
 
-- DevEco Studio 版本： 5.0.3.200,OpenHarmony SDK:API12 (5.0.0.21-Canary2)。
+- DevEco Studio: 5.0.3.200, OpenHarmony SDK: API 12 (5.0.0.21-Canary2)
 
-## 目录结构
+## Directory Structure
 ````
 |---- @ohos/xmpp_stream_features 
-|     |---- entry  # 示例代码文件夹
+|     |---- entry  # Sample code
 |           |---- src  
-|                   |---- main  #sample示例代码
-|                   |---- ohosTest  #xts示例代码
-|     |---- library  # @ohos/xmpp_stream_features 库文件夹
+|                   |---- main  # Sample code
+|                   |---- ohosTest  # xts code
+|     |---- library  # @ohos/xmpp_stream_features library
 |           |---- ets
-|                 |---- lib  # 主要依赖
-|                 |---- types  # 对外接口文件夹
-|           |---- index.js  # 主入口文件
-|           |---- index.d.ts  # 主对外接口声明文件
-|     |---- README.md  # 安装使用方法                    
+|                 |---- lib  # Main dependencies
+|                 |---- types  # External APIs
+|           |---- index.js  # Main entry file
+|           |---- index.d.ts  # Main declaration file of the external APIs
+|     |---- README_EN.md  # Readme                   
 ````
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提[Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们提[PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem when using @ohos/xmpp_stream_features, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-本项目基于ISC，请自由地享受和参与开源。
+This project is licensed under ISC License.
