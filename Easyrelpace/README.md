@@ -1,47 +1,47 @@
 # Compare Text
 
-## 简介
-> 使用Levenshtein 距离算法测量两个字符串之间的差异。
->  Compare Text替换字符串，
+## Introduction
+> This project uses the Levenshtein distance algorithm to measure the difference between two strings.
+> Compare Text is used to compare and replace strings.
 
 
-![img1.png](img1.png)
+![img1.png](./screenshot/img1.png)
 
-## 下载安装
+## How to Install
 ```shell
 ohpm install leven;
 ohpm install easy-replace;
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 
-### leven字符差异
+### Differences of LEVEN Strings
 ```
       import leven from "leven";
       @State TextString: string = "Text entry"
       @State messaged: string= "cer"
  
-      TextInput({ placeholder: "输入字符比较", text: this.messaged })
+      TextInput({ placeholder: "Enter characters to compare," text: this.messaged })
         .width("70%")
         .onChange((value) => {
           this.messaged = value
         })
-      Button("比较字符串")
+      Button("Compare Strings")
         .onClick(() => {
-          this.messagevl = `字符串相差${leven(this.TextString, this.messaged)}个`
+          this.messagevl = 'Number of different characters: ${leven(this.TextString, this.messaged)}'
           setData(this.messagevl, this)
         })
-       结果 =>8
+       Result => 8
 ```
-### easy-replace字符串对比
+### Comparison of easy-replace Strings
 ```
   import {er} from 'easy-replace'  
 
-  @State TextString: string = "Text entry"//输入文本字符串
-  @State ReplaceString: string= "t"//替换字符
-  @State StringResults: string = "💖"//要替换的字符
-  Button("简单替换")
+  @State TextString: string = "Text entry"// Enter a text string.
+  @State ReplaceString: string= "t"// Character to be used for replacement.
+  @State StringResults: string = "��"// Character to be replaced.
+  Button("Simple Replace")
         .margin({ top: 10, bottom: 10 })
         .onClick(() => {
           this.Text = er(
@@ -71,23 +71,23 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
     }
 ```
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
-- DevEco Studio: 4.1(4.1.3.413),SDK: API11（4.1.0.53）
-- DevEco Studio: 4.0(4.0.3.512),SDK: API10（4.0.10.9）
-- DevEco Studio: IDE Canary1(4.0.3.212) SDK API10(4.0.8.3)
+This project has been verified in the following versions:
+- DevEco Studio: 4.1 (4.1.3.413), SDK: API 11 (4.1.0.53)
+- DevEco Studio: 4.0 (4.0.3.512), SDK: API 10 (4.0.10.9)
+- DevEco Studio: IDE Canary1 (4.0.3.212), SDK API 10 (4.0.8.3)
 
-## 目录结构
+## Directory Structure
 ````
 |---- Compare Text  
-|     |---- entry  # 示例代码文件夹
-|           |---- index.ets  # 对外接口
-|     |---- README.MD  # 安装使用方法                    
+|     |---- entry  # Sample code
+|           |---- index.ets  # External APIs
+|     |---- README_EN.md  # Readme                   
 ````
 
-## 贡献代码
-使用过程中发现任何问题都可以提 [Issue]() 给我们，当然，我们也非常欢迎你给我们发 [PR]() 。
+## How to Contribute
+If you find any problem during the use, submit an issue or a PR.
 
-## 开源协议
-本项目基于 [Apache License 2.0]() ，请自由地享受和参与开源。
+## License
+The project is licensed under Apache License 2.0.
