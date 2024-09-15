@@ -84,13 +84,17 @@ export struct GzipTest {
   @State isDeCompressGZipShow: boolean = false;
   preTimestamp: number = 0;
 
+  getResourceString(res:Resource){
+    return getContext().resourceManager.getStringSync(res.id)
+  }
+
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center }) {
-      Text('gzip相关功能')
+      Text($r("app.string.Gzip_related_functions"))
         .fontSize(20)
         .margin({ top: 16 })
 
-      Text('点击生成hello.txt')
+      Text($r("app.string.Click_Generate_hello_txt"))
         .fontSize(16)
         .margin({ top: 32 })
         .padding(8)
@@ -102,7 +106,7 @@ export struct GzipTest {
         })
 
       if (this.isCompressGZipFileShow) {
-        Text('点击压缩hello.txt为gz文件')
+        Text($r("app.string.Click_compress_hello_txt_as_GZ_file"))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -115,7 +119,7 @@ export struct GzipTest {
       }
 
       if (this.isDeCompressGZipShow) {
-        Text('点击解压gz文件')
+        Text($r("app.string.Click_extract_GZ_file"))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -153,8 +157,8 @@ export struct GzipTest {
       );
       fileio.closeSync(writer);
       AlertDialog.show({
-        title: '生成成功',
-        message: '请查看沙箱路径' + data + '/hello.txt',
+        title: $r("app.string.Build_succeeded"),
+        message: this.getResourceString($r("app.string.Check_out_sandbox_path")) + data + '/hello.txt',
         confirm: {
           value: 'OK', action: () => {
             this.isCompressGZipFileShow = true
@@ -175,8 +179,8 @@ export struct GzipTest {
         .then((isSuccess) => {
           if (isSuccess) {
             AlertDialog.show({
-              title: '压缩成功',
-              message: '请查看沙箱路径 ' + data + '/test.txt.gz',
+              title: $r("app.string.Compression_succeeded"),
+              message: this.getResourceString($r("app.string.Check_out_sandbox_path")) + data + '/test.txt.gz',
               confirm: {
                 value: 'OK', action: () => {
                   this.isDeCompressGZipShow = true
@@ -198,8 +202,8 @@ export struct GzipTest {
         .then((isSuccess) => {
           if (isSuccess) {
             AlertDialog.show({
-              title: '解缩成功',
-              message: '请查看沙箱路径 ' + data + '/test.txt',
+              title: $r("app.string.Decompression_successful"),
+              message: this.getResourceString($r("app.string.Check_out_sandbox_path")) + data + '/test.txt',
               confirm: {
                 value: 'OK', action: () => {
                 }

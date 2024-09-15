@@ -1,20 +1,20 @@
 # pakoDemo
 
-## 简介
+## Introduction
 
-本demo是基于openHarmony系统下使用三方js库[pako](https://github.com/nodeca/pako)，pako提供gzip和deflate等格式压缩解压码功能
+This demo allows you to use the third-party JavaScript library [pako](https://github.com/nodeca/pako) with OpenHarmony. pako provides data compression and decompression in gzip and deflate formats.
 
-## 下载安装
+## How to Install
 
 ```
   ohpm install pako
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 
-[完整API文档](http://nodeca.github.io/pako/) 
-### 1.使用pako处理Uint8Array数据。
+[API reference](http://nodeca.github.io/pako/)
+### Processing Uint8Array Data
 ```
   import pako from 'pako'
 
@@ -63,39 +63,39 @@ if (inflator.err) {
 const output = inflator.result;**
 ```
 
-## 接口说明
+## Available APIs
 
-|                   方法名                    |          入参          |    接口描述     |
-|:----------------------------------------:|:--------------------:|:-----------:|
-|           new Deflate(options)           |      options:选项      | 创建Deflate实例 |
-|          deflate(data, options)          | data：压缩内容，options：选项 | deflate压缩功能 |
-|           gzip(data, options)            | data：压缩内容，options：选项 |  gzip压缩功能   |
-|          ungzip(data, options)           | data：解压内容，options：选项 |  gzip解压功能   |
-|          inflate(data)           | data：解压内容 |  解压功能   |
+|                   API                   |          Parameter         |    Description    |
+|:----------------------------------------|:--------------------|:-----------|
+|           new Deflate(options)           |      **options**: Deflate options.     | Creates a Deflate instance.|
+|          deflate(data, options)          | **data**: data to compress.<br/>**options**: options for data compression. | Compresses data in Deflate format.|
+|           gzip(data, options)            | **data**: data to compress.<br/>**options**: options for data compression. |  Compresses data in gzip format.  |
+|          ungzip(data, options)           | **data**: data to decompress.<br/>**options**: options for data decompression. |  Decompresses the gzip data.  |
+|          inflate(data)           | **data**: data to decompress.|  Decompresses the data that was compressed by using Deflate.  |
 
-## 目录结构
+## Directory Structure
 
 ```
-/pakoDemo  # 工程代码
-|—— entry   # 工程demo示例
+/pakoDemo # Project code.
+|—— entry   # Project demo.
 │   └── main
 │       └── ets
 │       └── pages 
-│           └── DeflateDemo.ets       # Deflate示例
-│           └── Gzip.ets              # Gzip示例  
+│           └── DeflateDemo.ets       # Deflate example.
+│           └── Gzip.ets              # gzip example. 
 │           └── Index.ets
-│           └── PakoTest.ets          # pako其他接口示例  
+│           └── PakoTest.ets          # Other examples. 
 ```
 
-## 约束与限制
-在下述版本验证通过：
+## Constraints
+This project has been verified in the following version:
 
-DevEco Studio: 5.0 Canary3(5.0.3.228), SDK: API12(5.0.0.18) 。
+DevEco Studio: 5.0 Canary3(5.0.3.228), SDK: API12(5.0.0.18)
 
-## 开源协议
+## License
 
-本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/pakoDemo/LICENSE) ，请自由地享受和参与开源。
+This project is licensed under [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/pakoDemo/LICENSE).
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem during the use, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).

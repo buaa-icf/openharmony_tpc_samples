@@ -11,6 +11,87 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Jump_to_gzip",
+      "value": "跳转到 gzip"
+    },
+    {
+      "name": "Jump_to_deflateDemo",
+      "value": "跳转到 deflateDemo"
+    },
+    {
+      "name": "Jump_to_pakoTes",
+      "value": "跳转到 pakoTest"
+    },
+    {
+      "name": "Gzip_related_functions",
+      "value": "gzip相关功能"
+    },
+    {
+      "name": "Click_Generate_hello_txt",
+      "value": "点击生成hello.txt"
+    },
+    {
+      "name": "Click_compress_hello_txt_as_GZ_file",
+      "value": "点击压缩hello.txt为gz文件"
+    },
+    {
+      "name": "Click_extract_GZ_file",
+      "value": "点击解压gz文件"
+    },
+    {
+      "name": "Build_succeeded",
+      "value": "生成成功"
+    },
+    {
+      "name": "Check_out_sandbox_path",
+      "value": "请查看沙箱路径"
+    },
+    {
+      "name": "Compression_succeeded",
+      "value": "压缩成功"
+    },
+    {
+      "name": "Decompression_successful",
+      "value": "解缩成功"
+    },
+    {
+      "name": "Deflate_related_features",
+      "value": "Deflate相关功能"
+    },
+    {
+      "name": "Click_Compress",
+      "value": "点击压缩"
+    },
+    {
+      "name": "Click_Unzip",
+      "value": "点击解压"
+    },
+    {
+      "name": "Test_Deflate_interface",
+      "value": "测试Deflate接口"
+    },
+    {
+      "name": "Expected_Results",
+      "value": "预期结果: "
+    },
+    {
+      "name": "Actual_results",
+      "value": "实际结果: "
+    },
+
+    {
+      "name": "Test_Inflate_interface",
+      "value": "测试Inflate接口"
+    },
+    {
+      "name": "Test_inflateRaw_interface",
+      "value": "测试inflateRaw接口"
+    },
+    {
+      "name": "Test_ungzip_interface",
+      "value": "测试ungzip接口"
     }
   ]
 }

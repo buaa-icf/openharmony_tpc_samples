@@ -68,12 +68,16 @@ export struct DeflateTest {
   @State isDeCompressGZipShow: boolean = false;
   preTimestamp: number = 0;
 
+  getResourceString(res:Resource){
+    return getContext().resourceManager.getStringSync(res.id)
+  }
+
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center }) {
-      Text('Deflate相关功能')
+      Text($r("app.string.Deflate_related_features"))
         .fontSize(20)
         .margin({ top: 16 })
-      Text('点击生成hello.txt')
+      Text($r("app.string.Click_Generate_hello_txt"))
         .fontSize(16)
         .margin({ top: 32 })
         .padding(8)
@@ -85,7 +89,7 @@ export struct DeflateTest {
         })
 
       if (this.isCompressGZipFileShow) {
-        Text('点击压缩')
+        Text($r("app.string.Click_Compress"))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -98,7 +102,7 @@ export struct DeflateTest {
       }
 
       if (this.isDeCompressGZipShow) {
-        Text('点击解压')
+        Text($r("app.string.Click_Unzip"))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -120,8 +124,8 @@ export struct DeflateTest {
       InflateFile(data + "/hello.txt.deflate", data + '/test.txt')
         .then(() => {
           AlertDialog.show({
-            title: '解缩成功',
-            message: '请查看沙箱路径 ' + data + '/test.txt',
+            title: $r("app.string.Decompression_successful"),
+            message: this.getResourceString($r("app.string.Check_out_sandbox_path")) + data + '/test.txt',
             confirm: {
               value: 'OK', action: () => {
               }
@@ -142,8 +146,8 @@ export struct DeflateTest {
         .then((isSuccess) => {
           if (isSuccess) {
             AlertDialog.show({
-              title: '压缩成功',
-              message: '请查看沙箱路径 ' + data + '/test.txt.deflate',
+              title: $r("app.string.Compression_succeeded"),
+              message: this.getResourceString($r("app.string.Check_out_sandbox_path")) + data + '/test.txt.deflate',
               confirm: {
                 value: 'OK', action: () => {
                   this.isDeCompressGZipShow = true
@@ -178,8 +182,8 @@ export struct DeflateTest {
       );
       fileio.closeSync(writer);
       AlertDialog.show({
-        title: '生成成功',
-        message: '请查看沙箱路径' + data + '/hello.txt',
+        title: $r("app.string.Build_succeeded"),
+        message: this.getResourceString($r("app.string.Check_out_sandbox_path")) + data + '/hello.txt',
         confirm: {
           value: 'OK', action: () => {
             this.isCompressGZipFileShow = true

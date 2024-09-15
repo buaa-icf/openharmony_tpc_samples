@@ -11,6 +11,86 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Jump_to_gzip",
+      "value": "Jump to gzip"
+    },
+    {
+      "name": "Jump_to_deflateDemo",
+      "value": "Jump to deflateDemo"
+    },
+    {
+      "name": "Jump_to_pakoTes",
+      "value": "Jump to pakoTes"
+    },
+    {
+      "name": "Gzip_related_functions",
+      "value": "gzip related functions"
+    },
+    {
+      "name": "Click_Generate_hello_txt",
+      "value": "Click Generate hello.txt"
+    },
+    {
+      "name": "Click_compress_hello_txt_as_GZ_file",
+      "value": "Click to compress hello.txt as a GZ file"
+    },
+    {
+      "name": "Click_extract_GZ_file",
+      "value": "Click to extract the GZ file"
+    },
+    {
+      "name": "Build_succeeded",
+      "value": "The build succeeded"
+    },
+    {
+      "name": "Check_out_sandbox_path",
+      "value": "Check out the sandbox path"
+    },
+    {
+      "name": "Compression_succeeded",
+      "value": "Compression succeeded"
+    },
+    {
+      "name": "Decompression_successful",
+      "value": "The decompression was successful"
+    },
+    {
+      "name": "Deflate_related_features",
+      "value": "Deflate-related features"
+    },
+    {
+      "name": "Click_Compress",
+      "value": "Click Compress"
+    },
+    {
+      "name": "Click_Unzip",
+      "value": "Click Unzip"
+    },
+    {
+      "name": "Test_Deflate_interface",
+      "value": "Test Deflate interface"
+    },
+    {
+      "name": "Expected_Results",
+      "value": "Expected Results: "
+    },
+    {
+      "name": "Actual_results",
+      "value": "Actual results: "
+    },
+    {
+      "name": "Test_Inflate_interface",
+      "value": "Test the Inflate interface"
+    },
+    {
+      "name": "Test_inflateRaw_interface",
+      "value": "Test the inflateRaw interface"
+    },
+    {
+      "name": "Test_ungzip_interface",
+      "value": "Test the ungzip interface"
     }
   ]
 }
