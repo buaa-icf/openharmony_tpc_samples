@@ -1,21 +1,19 @@
 # Domhandler
 
-# 简介
+# Introduction
 
-用于将页面转换为dom的htmlparser2的处理程序，创建一个包含页面所有节点的dom
+Domhandler is a handler for htmlparser2 that turns pages into a DOM. It creates a DOM containing all nodes of a page.
 
-## 下载安装
+## How to Install
 
 ```
  ohpm install domhandler
  ohpm install @ohos/htmlparser2
 ```
 
-OpenHarmony ohpm环境配置等更多内容，请参考[如何安装OpenHarmony ohpm](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-
-
-# 使用说明
+# How to Use
 ```
 import { Element } from 'domhandler';
 import {
@@ -27,7 +25,7 @@ import {
 } from '@ohos/htmlparser2'
 ```
 
-功能一：解析html，生成dom对象，并获取text内容。
+Parse an HTML file, generate a DOM object, and obtain the text content.
 
 ```javascript
 const html = `
@@ -66,28 +64,27 @@ let dom: Document = parseDocument(html);
 let text:string = DomUtils.textContent(element);
 ```
 
-### 接口说明
-单元测试用例详情见[TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Domhandler/TEST.md)
+### Available APIs
+For details about unit test cases, see [TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Domhandler/TEST.md).
 
 
-## 约束与限制
-在下述版本验证通过：
+## Constraints
+This project has been verified in the following version:
 
-DevEco Studio 版本： 4.1 Canary(4.1.3.317),OpenHarmony SDK:API11 (4.1.0.36)。
+DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API 11 (4.1.0.36)
 
-## 目录结构
+## Directory Structure
 
 ```
 |---- Domhandler  
-|     |---- entry  # 示例代码文件夹
-|     |---- README.MD  # 安装使用方法                   
+|     |---- entry  # Sample code
+|     |---- README_EN.md  # Readme                  
 ```
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提[Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们提[PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls)。
+If you find any problem when using domhandler, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-本项目基于 [BSD License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Domhandler/LICENSE)，请自由地享受和参与开源。
-
+This project is licensed under [BSD License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Domhandler/LICENSE).
