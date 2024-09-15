@@ -101,6 +101,7 @@ expect(result).assertDeepEquals(items);
 在下述版本验证通过：
 
 - DevEco Studio: 5.0.3.132, SDK: API12 (5.0.0.19)
+- DevEco Studio: NEXT Beta1-5.0.3.806, SDK: API12 Release (5.0.0.66)
 
 ## 贡献代码
 
