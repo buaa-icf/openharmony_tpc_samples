@@ -11,6 +11,38 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Snappy_related_features",
+      "value": "Snappy相关功能"
+    },
+    {
+      "name": "Click_Generate_bla_txt",
+      "value": "点击生成bla.txt"
+    },
+    {
+      "name": "Click_Compress_bla_txt_sz_file",
+      "value": "点击压缩bla.txt为sz文件"
+    },
+    {
+      "name": "Click_extract_SZ_file",
+      "value": "点击解压sz文件"
+    },
+    {
+      "name": "Build_succeeded",
+      "value": "生成成功"
+    },
+    {
+      "name": "Checkout_sandbox_path",
+      "value": "请查看沙箱路径"
+    },
+    {
+      "name": "Compression_succeeded",
+      "value": "压缩成功"
+    },
+    {
+      "name": "Decompression_successful",
+      "value": "解缩成功"
     }
   ]
 }

@@ -23,15 +23,20 @@ export struct SnappyTest {
   @State newfile1: string = 'bla1.txt'
   @State isCompressSnappyFileShow: boolean = false;
   @State isDeCompressSnappyShow: boolean = false;
+
+  getResourceString(res:Resource){
+    return getContext().resourceManager.getStringSync(res.id)
+  }
+
   preTimestamp: number = 0;
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center }) {
 
-      Text('Snappy相关功能')
+      Text($r("app.string.Snappy_related_features"))
         .fontSize(20)
         .margin({ top: 16 })
 
-      Text('点击生成bla.txt')
+      Text($r("app.string.Click_Generate_bla_txt"))
         .fontSize(16)
         .margin({ top: 32 })
         .padding(8)
@@ -43,7 +48,7 @@ export struct SnappyTest {
         })
 
       if (this.isCompressSnappyFileShow) {
-        Text('点击压缩bla.txt为sz文件')
+        Text($r("app.string.Click_Compress_bla_txt_sz_file"))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -57,7 +62,7 @@ export struct SnappyTest {
 
 
       if (this.isDeCompressSnappyShow) {
-        Text('点击解压sz文件')
+        Text($r("app.string.Click_extract_SZ_file"))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -109,8 +114,8 @@ export struct SnappyTest {
       + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs"
       );
       fileio.closeSync(fd);
-      AlertDialog.show({ title: '生成成功',
-        message: '请查看沙箱路径' + data + '/' + this.newfolder + '/' + this.newfile,
+      AlertDialog.show({ title: $r("app.string.Build_succeeded"),
+        message: this.getResourceString($r("app.string.Checkout_sandbox_path")) + data + '/' + this.newfolder + '/' + this.newfile,
         confirm: { value: 'OK', action: () => {
           this.isCompressSnappyFileShow = true
         } }
@@ -129,8 +134,8 @@ export struct SnappyTest {
         console.log('snappyCompress');
         snappyCompress(path, this.newfile)
           .then(() => {
-            AlertDialog.show({ title: '压缩成功',
-              message: '请查看沙箱路径 ' + data + '/' + this.newfolder + '/' + this.newfile + '.sz',
+            AlertDialog.show({ title:  $r("app.string.Compression_succeeded"),
+              message:  this.getResourceString($r("app.string.Checkout_sandbox_path")) + data + '/' + this.newfolder + '/' + this.newfile + '.sz',
               confirm: { value: 'OK', action: () => {
                 this.isDeCompressSnappyShow = true
               } }
@@ -140,8 +145,8 @@ export struct SnappyTest {
         console.log('snappyUncompress');
         snappyUncompress(data, this.newfolder, this.newfile, this.newfile1)
           .then(() => {
-            AlertDialog.show({ title: '解缩成功',
-              message: '请查看沙箱路径 ' + data + '/' + this.newfile1,
+            AlertDialog.show({ title: $r("app.string.Decompression_successful"),
+              message: this.getResourceString($r("app.string.Checkout_sandbox_path")) + data + '/' + this.newfile1,
               confirm: { value: 'OK', action: () => {
               } }
             })
