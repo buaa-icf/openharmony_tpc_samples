@@ -1,36 +1,34 @@
-
-
 # @ohos/xmpp_reconnect
 
-## 简介
+## Introduction
 
->本软件是参照开源软件 [xmpp_reconnect]((https://github.com/xmppjs/xmpp.js/tree/main/packages/reconnect))源码并用 TypeScript 语言实现了相关功能，在OpenHarmony上提供了一个用于 XMPP（Extensible Messaging and Presence Protocol，可扩展消息和状态协议）客户端的库，它提供了自动重连功能的library
+>Based on the open source software [xmpp_reconnect](https://github.com/xmppjs/xmpp.js/tree/main/packages/reconnect), this project uses TypeScript to implement similar capabilities. It provides OpenHarmony with a library for automatic reconnection of the XMPP client.
 
-## 已支持功能
+## Supported Features
 
-- 重新连接
+- Reconnection
 
-## 下载安装
-1. 参考安装教程 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+## How to Install
+1. Configure the OpenHarmony ohpm environment. For details, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-2. 安装命令如下：
+2. Run the following installation command:
 
-```
- ohpm install @ohos/xmpp_reconnect
-```
+   ```
+    ohpm install @ohos/xmpp_reconnect
+   ```
 
-## 接口和属性列表
+## Available APIs
 
-接口列表
+Supported APIs
 
-| **接口**            | 参数 | 功能                                                         |
+| API           | Parameter| Description                                                        |
 | ------------------- | ---- | ------------------------------------------------------------ |
-| scheduleReconnect() | 无   | 义了一个重新连接的调度方法，它会清除之前的超时计时器，然后设置一个新的超时计时器，当超时后会尝试重新连接 |
-| reconnect()         | 无   | 定义了重新连接的方法，它会触发 "reconnecting" 事件，然后调用 `entity` 的 `connect` 和 `open` 方法来重新连接 |
-| start()             | 无   | 初始化重新连接模块，设置了一个监听器来监听 `entity` 的断开连接事件，并调用 `scheduleReconnect` 方法开始重新连接的调度 |
-| stop()              | 无   | 停止重新连接模块，移除了断开连接的监听器并清除超时计时器     |
+| scheduleReconnect() | N/A  | Clears the previous timer, sets a new timer, and initiates a reconnection when the new timer expires.|
+| reconnect()         | N/A  | Triggers the `reconnecting` event and calls the `connect` and `open` APIs of `entity` for reconnection.|
+| start()             | N/A  | Initializes the reconnection module, sets a listener to listen for the disconnection event of `entity`, and calls `scheduleReconnect` to start reconnection scheduling.|
+| stop()              | N/A  | Stops the reconnection module, removes the listener that listens for the disconnection event, and clears the timer.    |
 
-## 使用示例
+## Example
 ```
 import { client } from '@ohos/xmpp_client';
 import reconnect from '@ohos/xmpp_reconnect';
@@ -53,54 +51,54 @@ entity.start().catch(console.error);
 
 ```
 
-## 使用说明
+## How to Use
 
-#### 重新连接的调度方法
-
-```
-scheduleReconnect()//此方法为重新连接内部监听调用
-```
-
-#### 重新连接
+#### Reconnection Scheduling
 
 ```
-reconnect() //此方法是在监听到断连，后调用
+scheduleReconnect() // Set a new timer for reconnection.
 ```
 
-#### 初始化重新连接模块
+#### Initiating Reconnection
 
 ```
-start():  初始化重新连接模块，设置了一个监听器来监听 entity 的断开连接事件，并调用 scheduleReconnect 方法开始重新连接的调度。
+reconnect() // Called after a disconnection is detected.
 ```
 
-#### 停止重新连接模块
+#### Initializing the Reconnection Module
 
 ```
-stop(): 停止重新连接模块，移除了断开连接的监听器并清除超时计时器
+start(): initializes the reconnection module, sets a listener to listen for the disconnection event of entity, and calls scheduleReconnect to start reconnection scheduling.
 ```
 
-## 约束与限制
+#### Stopping Reconnection
 
-在下述版本验证通过：
+```
+stop(): stops the reconnection module, removes the listener, and clears the timer.
+```
 
-- DevEco Studio 版本： 5.0.3.200,OpenHarmony SDK:API12 (5.0.0.21-Canary2)。
+## Constraints
 
-## 目录结构
+This project has been verified in the following version:
+
+- DevEco Studio: 5.0.3.200, OpenHarmony SDK: API 12 (5.0.0.21-Canary2)
+
+## Directory Structure
 ```
 |---- xmpp_reconnect
-|     |---- entry  # 示例代码文件夹
-|     |---- library  # xmpp_reconnect库文件夹
+|     |---- entry  # Sample code
+|     |---- library  # xmpp_reconnect library
 |               |----src/main #
-|                    |----lib # reconnect代码文件夹
-|               |----index.d.ts # 对外接口描述文件
-|               |---- index.js  # 主入口文件
-|     |---- README.MD  # 安装使用方法
+|                    |----lib # xmpp_reconnect code folder
+|               |----index.d.ts # External APIs
+|               |---- index.js  # Main entry file
+|     |---- README_EN.md  # Readme
 ```
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提[Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们提[PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem when using @ohos/xmpp_reconnect, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-本项目基于ISC，请自由地享受和参与开源。
+This project is licensed under ISC License.
