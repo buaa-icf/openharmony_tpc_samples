@@ -11,6 +11,38 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Generate_a_txt_file",
+      "value": "Generate a txt file"
+    },
+    {
+      "name": "Compress_txt_file",
+      "value": "Compress the txt file"
+    },
+    {
+      "name": "Unzip_txt_file",
+      "value": "Unzip the txt file"
+    },
+    {
+      "name": "Txt_file_created",
+      "value": "The txt file was created"
+    },
+    {
+      "name": "Txt_file_compressed_successfully",
+      "value": "The txt file was compressed successfully"
+    },
+    {
+      "name": "Failed_compress_txt_file",
+      "value": "Failed to compress the txt file"
+    },
+    {
+      "name": "Txt_file_successfully_extracted",
+      "value": "The txt file was successfully extracted"
+    },
+    {
+      "name": "Failed_decompress_txt_file",
+      "value": "Failed to decompress the txt file"
     }
   ]
 }

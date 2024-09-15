@@ -11,6 +11,38 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Generate_a_txt_file",
+      "value": "生成txt文件"
+    },
+    {
+      "name": "Compress_txt_file",
+      "value": "压缩txt文件"
+    },
+    {
+      "name": "Unzip_txt_file",
+      "value": "解压txt文件"
+    },
+    {
+      "name": "Txt_file_created",
+      "value": "创建txt文件成功"
+    },
+    {
+      "name": "Txt_file_compressed_successfully",
+      "value": "压缩txt文件成功"
+    },
+    {
+      "name": "Failed_compress_txt_file",
+      "value": "压缩txt文件失败"
+    },
+    {
+      "name": "Txt_file_successfully_extracted",
+      "value": "解压缩txt文件成功"
+    },
+    {
+      "name": "Failed_decompress_txt_file",
+      "value": "解压缩txt文件失败"
     }
   ]
 }
