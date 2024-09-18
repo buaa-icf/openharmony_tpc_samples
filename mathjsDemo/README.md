@@ -1,33 +1,33 @@
 # mathjs
 
-## 简介
-- mathjs是一个OpenHarmony系统下使用数学运算的示例，包含数字、大数、三角函数、字符串、和矩阵等数学功能。 
-- 目前示例的功能有如下
+## Introduction
+- The mathjs demo shows the use of mathematical operations encompassing numbers, big numbers, trigonometric functions, strings, matrix manipulations, and additional functionalities in OpenHarmony.
+- Currently, the functions listed in the table below are supported.
 
-| 数学库 | 功能  |
-| :-----------: |:---------------:|
-| [mathjs](https://mathjs.org/docs/reference/functions.html) | 代数函数，算术函数，按位函数，逻辑函数，矩阵函数，三角函数，判断函数，比较函数，大数运算。 |
-| [long](https://github.com/dcodeIO/long.js) | 字符串转long类型，number转long类型,long算术函数,long按位函数,long逻辑函数，long类型转换为 32 位整数。 |
-| [bignumber.js](https://mikemcl.github.io/bignumber.js) | 进制的转换函数 |
-| [matrix](https://mljs.github.io/matrix) |矩阵操作和计算函数    |
+|                           Math Library                          |                             Description                            |
+| :--------------------------------------------------------: | :----------------------------------------------------------: |
+| [mathjs](https://mathjs.org/docs/reference/functions.html) | Algebraic functions, arithmetic functions, bitwise functions, logical functions, matrix functions, trigonometric functions, judgment functions, comparison functions, and big number arithmetic functions.|
+|         [long](https://github.com/dcodeIO/long.js)         | Converting strings to long type, converting numbers to long type, long arithmetic functions, long bitwise functions, long logical functions, and converting long types to 32-bit integers.|
+|   [bignumber.js](https://mikemcl.github.io/bignumber.js)   |                        Radix conversion functions.                       |
+|          [matrix](https://mljs.github.io/matrix)           |                      Matrix operation and computation functions.                     |
 
-## 下载安装
+## How to Install
 
-| 库名 | URL地址  |                ohpm安装                 |
-| :-----------: |:---------------:|:------------------------------------:|
-| mathjs     | https://github.com/josdejong/mathjs |         ohpm install mathjs          |
-| long      | https://github.com/dcodeIO/long.js |           ohpm install long           |
-| bignumber.js |https://github.com/MikeMcl/bignumber.js       |       ohpm install bignumber.js       |
-| matrix | https://github.com/mljs/matrix |        ohpm install ml-matrix         |
+|     Library    |                 URL                |         Installing ohpm         |
+| :----------: | :-------------------------------------: | :-----------------------: |
+|    mathjs    |   https://github.com/josdejong/mathjs   |    ohpm install mathjs    |
+|     long     |   https://github.com/dcodeIO/long.js    |     ohpm install long     |
+| bignumber.js | https://github.com/MikeMcl/bignumber.js | ohpm install bignumber.js |
+|    matrix    |     https://github.com/mljs/matrix      |  ohpm install ml-matrix   |
 
-OpenHarmony ohpm环境配置等更多内容，请参考[如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 
-### mathjs 使用功能
+### Using mathjs
 ```javascript
 	import * as math from 'mathjs';
-	或者 import {abs,add,bignumber,...} from 'mathjs';
+	or import {abs,add,bignumber,...} from 'mathjs';
 
 	let mathabs = math.abs(math.bignumber('-123456789123456789123456789'))
 	console.log(mathabs);//123456789123456789123456789
@@ -42,9 +42,9 @@ OpenHarmony ohpm环境配置等更多内容，请参考[如何安装OpenHarmony 
 	console.log(mathabs);//246913578246913578246913578
 	
 ```
-更多使用方法请参照：https://mathjs.org/docs/reference/functions.html
+For details, see https://mathjs.org/docs/reference/functions.html.
 
-### bignumber.js 使用功能
+### Using bignumber.js
 
 ``` javascript
 	import BigNumber from "bignumber.js";
@@ -60,9 +60,9 @@ OpenHarmony ohpm环境配置等更多内容，请参考[如何安装OpenHarmony 
 
 ```
 
-更多使用方法请参照：https://mikemcl.github.io/bignumber.js
+For details, see https://mikemcl.github.io/bignumber.js.
 
-### long 使用功能
+### Using long
 
 ``` javascript
 	import long  from "long";
@@ -75,11 +75,9 @@ OpenHarmony ohpm环境配置等更多内容，请参考[如何安装OpenHarmony 
 
 ```
 
-更多使用方法请参照：https://github.com/dcodeIO/long.js
+For details, see https://github.com/dcodeIO/long.js.
 
-
-
-### matrix 使用功能
+### Using matrix
 
 ``` javascript
 	import { Matrix } from 'ml-matrix'
@@ -92,41 +90,39 @@ OpenHarmony ohpm环境配置等更多内容，请参考[如何安装OpenHarmony 
 
 ```
 
-更多使用方法请参照：https://mljs.github.io/matrix
+For details, see https://mljs.github.io/matrix.
 
-
-
-## 目录
+## Directory Structure
 
 ```
-/mathjsDemo # demo代码
+/mathjsDemo # Demo code
 |—— entry
 ├── src     
 │   └── main
 │   	└── ets
 │   	    └── entryability
 │   	    └── crcalc
-│   	        └── crcalc.ets         # mathjs大数据运算界面
+│   	        └── crcalc.ets         # Big number calculation page of mathjs
 │   	    └── ejml
-│   	        └── ejml.ets           # matrix矩阵界面
-│   	        └── ejmlMathjs.ets     # mathjs矩阵界面
+│   	        └── ejml.ets           # Matrix page of matrix
+│   	        └── ejmlMathjs.ets     # Matrix page of mathjs
 │   	    └── jafama
-│   	        └── jafama.ets         # mathjs三角函数界面
+│   	        └── jafama.ets         # Trigonometric function page of mathjs
 │   	    └── mathjs
-│   	        └── mathjs.ets         # mathjs位运算及数值判断界面
+│   	        └── mathjs.ets         # Bitwise operation and value judgment page of mathjs
 │   	    └── pages
-│       	    └── Index.ets          # mathjs示例首页
+│       	    └── Index.ets          # Home page of the mathjs demo
 ```
 
-## 约束与限制
-在下述版本验证通过：
+## Constraints
+This project has been verified in the following version:
 
-- DevEco Studio 版本： 4.1 Canary(4.1.3.317)
+- DevEco Studio: 4.1 Canary (4.1.3.317)
 
-- OpenHarmony SDK:API11 (4.1.0.36)
+- OpenHarmony SDK: API 11 (4.1.0.36)
 
-## 贡献代码
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+## How to Contribute
+If you find any problem when using the mathjs demo, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
-本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/mathjsDemo/LICENSE) ，请自由地享受和参与开源。
+## License
+This project is licensed under [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/mathjsDemo/LICENSE).
