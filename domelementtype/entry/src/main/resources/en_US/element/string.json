@@ -11,6 +11,13 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Check_if",
+      "value": "Check if it is a tag"
+    }, {
+      "name": "result",
+      "value": "result:"
     }
   ]
 }
