@@ -17,7 +17,7 @@ import { soundex } from 'soundex-code'
 @Entry
 @Component
 struct Index {
-  @State message: string = '点我看测试结果'
+  @State message: Resource = $r('app.string.Click_here')
 
   build() {
     Row() {

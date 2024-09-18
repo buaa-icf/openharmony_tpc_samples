@@ -1,16 +1,16 @@
-# ohos-gif-drawable
+# soundex-code
 
-## 简介
+## Introduction
 
-在OpenHarmony环境下,提供了soundex语音算法能力。
+This project provides the Soundex phonetic algorithm capability in OpenHarmony.
 
-## 下载安装
+## How to Install
 
 ```typescript
 ohpm install soundex-code
 ```
 
-## 使用说明
+## How to Use
 
 ```typescript
 import {soundex} from 'soundex-code'
@@ -24,26 +24,26 @@ soundex('Ashcraftersson', 6) // => 'A26136'
 soundex('A', 6) // => 'A000'
 ```
 
-## 约束与限制
-在下述版本验证通过：
+## Constraints
+This project has been verified in the following versions:
 
-DevEco Studio: 4.0 Canary1(4.0.3.212), SDK: API10(4.0.8.3)
-DevEco Studio: 4.0(4.0.3.512),SDK: API10（4.0.10.9）
+- DevEco Studio: 4.0 Canary1 (4.0.3.212), SDK: API 10 (4.0.8.3)
+- DevEco Studio: 4.0 (4.0.3.512), SDK: API 10 (4.0.10.9)
 
 
-## 目录结构
+## Directory Structure
 
 ```
 /entry/src/
 - main/ets/     
-    - pages                        # 测试page页面列表
-       - index.ets                    	# 测试soundex-code
+    - pages                        # List of test pages
+       - index.ets                    	# soundex-code test code
 ```
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem when using IMAP, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
 
-## 开源协议
+## License
 
-本项目基于 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/soundex-code/LICENSE) ，请自由的享受和参与开源。
+This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/soundex-code/LICENSE).

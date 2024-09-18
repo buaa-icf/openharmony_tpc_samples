@@ -11,6 +11,10 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Click_here",
+      "value": "点我看测试结果"
     }
   ]
 }
