@@ -1,45 +1,45 @@
-# @xmpp/client
+# @ohos/xmpp_xml
 
-## 简介
+## Introduction
 
-[@xmpp/xml][xmpp.js/packages/xml at main · xmppjs/xmpp.js (github.com)](https://github.com/xmppjs/xmpp.js/tree/main/packages/xml) @xmpp/xml 是一个专注于处理XMPP协议的XML解析库。
+Based on the open source software [@xmpp/xml](https://github.com/xmppjs/xmpp.js/tree/main/packages/xml), this project uses TypeScript to implement similar capabilities. It provides OpenHarmony with a library for writing XML over XMPP.
 
-## 已支持功能
+## Supported Features
 
-- 创建xml元素
-- 解析XML字符串
-- 含有特殊字符XML字符串进行转义
-- 将转义后的XML字符串进行反转义
-- 将XML文本中的特殊字符进行转义
-- 将转义后的XML文本进行反转义
+- Creating an XML element
+- Parsing XML strings
+- Escaping XML strings containing special characters
+- Unescaping escaped XML strings
+- Escaping special characters in XML files
+- Unescaping escaped XML files
 
-## 下载安装
+## How to Install
 
 ```
  ohpm install @ohos/xmpp_xml
 ```
 
-## 接口和属性列表
+## Available APIs
 
-接口列表
+Supported APIs
 
-| **接口**                    | 参数                  | 功能                                                         |
+| API                   | Parameter                 | Description                                                        |
 | --------------------------- | --------------------- | ------------------------------------------------------------ |
-| onStartElement(name, attrs) | name，attrs           | 创建了一个新的 `Element` 实例，并根据当前的解析状态将其添加到正确的位置 |
-| onEndElement(name)          | 'name':string         | 当解析器遇到 XML 结束标签时调用的方法。在该方法中，检查当前的解析状态，处理结束标签 |
-| onText(str)                 | 'online':string       | 当解析器遇到文本内容时调用的方法。在该方法中，将文本内容添加到当前的 `cursor` 元素中 |
-| end(data)                   | 'status':string       | 结束解析，如果有剩余的数据，继续解析。                       |
-| write(data)                 | 'stanza':string       | 将数据传递给 `LtxParser` 实例进行解析                        |
-| xml(...args)                | args用于构建xml的数据 | 这是一个默认导出的函数，接受任意参数并返回一个通过`createElement()`函数创建的XML元素。可以用于快速创建XML元素 |
-| createElement               | 无                    | 用于创建一个XML元素，可以传入标签名、属性、子元素等信息，返回一个新的`Element`实例。 |
-| escapeXML                   | 无                    | 用于将XML字符串中的特殊字符进行转义                          |
-| unescapeXML                 | 无                    | 用于将转义后的XML字符串进行反转义，还原特殊字符              |
-| escapeXMLText               | 无                    | 用于将XML文本中的特殊字符进行转义                            |
-| unescapeXMLText             | 无                    | 用于将转义后的XML文本进行反转义，还原特殊字符                |
+| onStartElement(name, attrs) | name, attrs          | Called when the parser encounters the start tag of an XML element. In this callback, you need to create an `Element` instance and add it to the correct location based on the current parsing status.|
+| onEndElement(name)          | 'name':string         | Called when the parser encounters the end tag of an XML element. In this callback, you need to check the current parsing status and process the end tag.|
+| onText(str)                 | 'online':string       | Called when the parser encounters text. In this callback, you need to add the text to the current `cursor` element.|
+| end(data)                   | 'status':string       | Ends the parsing process. Parsing will not end immediately when there is still data left. It continues until all the data has been completely parsed.                      |
+| write(data)                 | 'stanza':string       | Passes data to a `LtxParser` instance for parsing.                       |
+| xml(...args)                | **args**: data used to construct an XML element.| Default export function that takes any parameter and returns an XML element created by `createElement()`. It can be used to quickly create an XML element.|
+| createElement               | N/A                   | Creates an XML element. You can pass in information such as the tag name, attributes, and subelements, and a new `Element` instance is returned.|
+| escapeXML                   | N/A                   | Escapes special characters in an XML string.                         |
+| unescapeXML                 | N/A                   | Unescapes special characters in an XML string.             |
+| escapeXMLText               | N/A                   | Escapes special characters in an XML file.                           |
+| unescapeXMLText             | N/A                   | Unescapes special characters in an XML file.               |
 
 
 
-## 使用示例
+## Example
 
 ```
 import {Parser} from '@ohos/xmpp_xml'
@@ -51,23 +51,23 @@ struct Index {
   build() {
     Column() {
       Button('Parser').onClick((v) => {
-          //解析开始标签
+          // Called upon the start tag.
         this.parser.on('start', (element:ESObject) => {
           console.info('Parser---Start element:', element);
         });
-          //解析结束标签
+          // Called upon the end tag.
         this. parser.on('end', (root:ESObject) => {
           console.info('Parser---End element:', root);
         });
-          //解析值
+          // Called upon text.
         this. parser.on('element', (element:ESObject) => {
           console.info('Parser---Element:', element);
         });
-          //写入一个XML字符串，触发解析过程。
+          // Write an XML string to trigger the parsing process.
         this.parser.write("<foo><bar>hello</bar></foo>");
       }).margin({ top: px2vp(50) })
-        //创建xml实体
-         message= xml("message", { type: "chat", to: "admin@10.50.80.51" }, xml("body", {}, "你好")).toString();
+        // Create an XML element.
+         message= xml("message", { type: "chat", to: "admin@10.50.80.51" }, xml("body", {}, "Hello").toString ();
           })
     }
     .height('100%')
@@ -75,27 +75,27 @@ struct Index {
   }
 ```
 
-## 使用说明
+## How to Use
 
-#### 当解析器遇到 XML 开始标签时调用的方法
+#### Callback Invoked Upon an XML Start Tag
 
 ```
 parser.onStartElement('message', { from: 'sender@example.com', to: 'receiver@example.com' });
 ```
 
-#### 当解析器遇到 XML 结束标签时调用的方法。
+#### Callback Invoked Upon an XML End Tag
 
 ```
 parser.onEndElement('message');
 ```
 
-#### 当解析器遇到文本内容时调用的方法
+#### Callback Invoked Upon Text
 
 ```
 parser.onText('Hello, world!');
 ```
 
-#### 将数据传递给 `LtxParser` 实例进行解析
+#### Passing Data to a `LtxParser` Instance for Parsing
 
 xmpp.send(xml)
 
@@ -103,13 +103,13 @@ xmpp.send(xml)
 parser.write('<message from="sender@example.com" to="receiver@example.com">Hello, world!</message>');
 ```
 
-#### 结束解析，如果有剩余的数据，继续解析
+#### Ending the Parsing Process (Parsing Will Not Stop Immediately If there Is Still Data Left)
 
 ```
 parser.end();
 ```
 
-#### 监听Parser方法
+#### Listening for Parser State Changes
 
 ```
 parser.on('start', (element) => {
@@ -128,14 +128,16 @@ parser.on('error', (error) => {
   console.error('Error:', error.message);
 });
 ```
+## Constraints
 
-在下述版本验证通过：
-DevEco Studio:5.0.3.200, 5.0.0.22-Canary2, SDK: API12
+This project has been verified in the following version:
 
-## 贡献代码
+DevEco Studio: 5.0.3.200, 5.0.0.22-Canary2, SDK: API 12
 
-使用过程中发现任何问题都可以提[Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们提[PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+## How to Contribute
 
-## 开源协议
+If you find any problem when using @xmpp/xml, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-本项目基于ISC，请自由地享受和参与开源。
+## License
+
+This project is licensed under ISC License.
