@@ -70,10 +70,13 @@ const html = `
 @Component
 struct Index {
   @State result: string = "";
+  getResourceString(res:Resource){
+    return getContext().resourceManager.getStringSync(res.id)
+  }
   build() {
     Row() {
       Column() {
-        Text("解析结果 :\r\n  " + this.result)
+        Text( this.getResourceString($r('app.string.Analysis_results'))+"\r\n  " + this.result)
           .fontSize(15)
           .margin({ top: 55, left: 10, right: 10 })
         Text("parseDocument")
