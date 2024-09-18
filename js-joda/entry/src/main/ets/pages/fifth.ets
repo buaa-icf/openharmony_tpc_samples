@@ -42,7 +42,7 @@ struct Fifth {
     Row() {
       Scroll() {
         Column() {
-          Button('Time measurement test', { type: ButtonType.Capsule, stateEffect: true })
+          Button($r('app.string.time_measurement_test'), { type: ButtonType.Capsule, stateEffect: true })
             .backgroundColor(0x317aff)
             .width(240)
             .onClick(() => {
@@ -53,7 +53,7 @@ struct Fifth {
             .margin(10)
             .fontColor(Color.Blue)
 
-          Button('下一页', { type: ButtonType.Capsule, stateEffect: true })
+          Button($r('app.string.next_page'), { type: ButtonType.Capsule, stateEffect: true })
             .backgroundColor(0x317aff)
             .width(240)
             .onClick(() => {
@@ -78,7 +78,7 @@ function testDurationTime(): string {
 
   console.info(mDateTime.plus(Duration.ofHours(10).plusMinutes(30)).toString());
 
-  return "Obtain a ten hour time quantity representation： " + Duration.ofHours(10).toString() + '\n' +
-  "Obtain a 10-year and 45 day time quantity representation： " + Period.ofYears(10).plusDays(45).toString() + '\n' +
-  "Given time plus 10 hours and 30 minutes： " + mDateTime.plus(Duration.ofHours(10).plusMinutes(30)).toString();
+  return getContext().resourceManager.getStringByNameSync("a_ten_hour_time_quantity_representation") + Duration.ofHours(10).toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync('a_10_year_and_45_day_time_quantity_representation') + Period.ofYears(10).plusDays(45).toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync('Given_time_plus_10_hours_and_30_minutes') + mDateTime.plus(Duration.ofHours(10).plusMinutes(30)).toString();
 }

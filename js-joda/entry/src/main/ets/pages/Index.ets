@@ -42,7 +42,7 @@ struct Index {
     Row() {
       Scroll() {
         Column() {
-          Button('Local date testing', { type: ButtonType.Capsule, stateEffect: true })
+          Button($r('app.string.Local_date_testing'), { type: ButtonType.Capsule, stateEffect: true })
             .backgroundColor(0x317aff)
             .width(240)
             .onClick(() => {
@@ -54,7 +54,7 @@ struct Index {
             .margin(10)
             .fontColor(Color.Blue)
 
-          Button('Next', { type: ButtonType.Capsule, stateEffect: true })
+          Button($r('app.string.next_page'), { type: ButtonType.Capsule, stateEffect: true })
             .backgroundColor(0x317aff)
             .width(240)
             .onClick(() => {
@@ -170,32 +170,32 @@ function testLocalDate(): string {
   // 获取测试月份最后一个周日的日期：2022-07-31
   console.info(mDate1.with(TemporalAdjusters.lastInMonth(DayOfWeek.SUNDAY)).toString());
 
-  return "Analyze the given date： " + mDate.toString() + '\n' +
-    "What day of the month is the given date： " + mDate.dayOfMonth().toString() + '\n' +
-    "Given date and month： " + mDate.month().toString() + '\n' +
-    "Given the value of the month： " + mDate.monthValue().toString() + '\n' +
-    "Given date and year： " + mDate.year().toString() + '\n' +
-    "What day of the week is the given date: " + mDate.dayOfWeek().toString() + '\n' +
-    "What day of the week is the given date represented by a numerical value： " + mDate.dayOfWeek().value().toString() + '\n' +
-    "What day of the year is the given date is the given year a leap year： " + mDate.dayOfYear().toString() + '\n' +
-    "Is the given year a leap year： " + mDate.isLeapYear() + '\n' +
-    "How many days are there in a given month： " + mDate.lengthOfMonth().toString() + '\n' +
-    "How many days are there in a given year： " + mDate.lengthOfYear().toString() + '\n' +
-    "What week of the year is the given date in： " + mDate.get(ChronoField.ALIGNED_WEEK_OF_YEAR).toString() + '\n' +
-    "Add 366 days to the given date： " + mDate.plusDays(366).toString() + '\n' +
-    "Subtract 366 days from the given date： " + mDate.minusDays(366).toString() + '\n' +
-    "Given date plus 12 months： " + mDate.plusMonths(12).toString() + '\n' +
-    "Subtract 12 months from the given date： " + mDate.minusMonths(12).toString() + '\n' +
-    "Given date plus 4 weeks： " + mDate.plusWeeks(4).toString() + '\n' +
-    "Subtract 4 weeks from the given date： " + mDate.minusWeeks(4).toString() + '\n' +
-    "Given date plus 1 year： " + mDate.plusYears(1).toString() + '\n' +
-    "Subtract 1 year from the given date： " + mDate.minusYears(1).toString() + '\n' +
-    "Add one month and three days to the given date： " + mDate.plus(Period.ofMonths(1).plusDays(3)).toString() + '\n' +
-    "Subtract one month and three days from the given date： " + mDate.minus(Period.ofMonths(1).plusDays(3)).toString() + '\n' +
-    "Set the given date to 1： " + mDate.withDayOfMonth(1).toString() + '\n' +
-    "Set the month and date of the given date to 1： " + mDate.withMonth(1).withDayOfMonth(1).toString() + '\n' +
-    "On the 42nd day of a given year： " + mDate.withDayOfYear(42).toString() + '\n' +
-    "The first day of a given month： " + mDate.with(TemporalAdjusters.firstDayOfMonth()).toString() + '\n' +
-    "Get current date： " + LocalDate.now().toString() + '\n' +
-    "Obtain the last day of the month： " + LocalDate.now().plusMonths(1).withDayOfMonth(1).minusDays(1).toString();
+  return getContext().resourceManager.getStringByNameSync('Analyze_the_given_date') + mDate.toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync('What_day_of_the_month_is_the_given_date')  + mDate.dayOfMonth().toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync('Given_date_and_month')  + mDate.month().toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync('Given_the_value_of_the_month') + mDate.monthValue().toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync('Given_date_and_year') + mDate.year().toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync('What_day_of_the_week_is_the_given_date') + mDate.dayOfWeek().toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync('What_day_of_the_week_is_the_given_date_represented_by_a_numerical_value') + mDate.dayOfWeek().value().toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync('What_day_of_the_year_is_the_given_date_is_the_given_year_a_leap_year') + mDate.dayOfYear().toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync('Is_the_given_year_a_leap_year') + mDate.isLeapYear() + '\n' +
+  getContext().resourceManager.getStringByNameSync('How_many_days_are_there_in_a_given_month') + mDate.lengthOfMonth().toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync('How_many_days_are_there_in_a_given_year') + mDate.lengthOfYear().toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync('What_week_of_the_year_is_the_given_date_in') + mDate.get(ChronoField.ALIGNED_WEEK_OF_YEAR).toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync('Add_366_days_to_the_given_date') + mDate.plusDays(366).toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync('Subtract_366_days_from_the_given_date') + mDate.minusDays(366).toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync('Given_date_plus_12_months') + mDate.plusMonths(12).toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync('Subtract_12_months_from_the_given_date') + mDate.minusMonths(12).toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync('Given_date_plus_4_weeks') + mDate.plusWeeks(4).toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync('Subtract_4_weeks_from_the_given_date') + mDate.minusWeeks(4).toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync('Given_date_plus_1_year') + mDate.plusYears(1).toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync('Subtract_1_year_from_the_given_date') + mDate.minusYears(1).toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync('Add_one_month_and_three_days_to_the_given_date') + mDate.plus(Period.ofMonths(1).plusDays(3)).toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync('Subtract_one_month_and_three_days_from_the_given_date') + mDate.minus(Period.ofMonths(1).plusDays(3)).toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync('Set_the_given_date_to_1')+ mDate.withDayOfMonth(1).toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync('Set_the_month_and_date_of_the_given_date_to_1') + mDate.withMonth(1).withDayOfMonth(1).toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync('On_the_42nd_day_of_a_given_year') + mDate.withDayOfYear(42).toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync('The_first_day_of_a_given_month') + mDate.with(TemporalAdjusters.firstDayOfMonth()).toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync('Get_current_date') + LocalDate.now().toString() + '\n' +
+  getContext().resourceManager.getStringByNameSync('Obtain_the_last_day_of_the_month') + LocalDate.now().plusMonths(1).withDayOfMonth(1).minusDays(1).toString();
 }
