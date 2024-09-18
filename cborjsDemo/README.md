@@ -1,21 +1,21 @@
 # cborDemo
 
-## 简介
+## Introduction
 
-本项目是OpenHarmony系统下使用cbor-js的示例，cbor-js是以简明二进制对象表示 (CBOR) 数据格式 ( RFC8949 )编码和解析数据的Javascript开源库。
+This project is an OpenHarmony development example based on the cbor-js library, which is is an open-source JavaScript library for encoding and parsing data in the Concise Binary Object Representation (CBOR) data format (RFC 8949).
 
-## 下载安装
+## How to Install
 
 ```
 ohpm install cbor-js
-ohpm install @types/cbor-js --save-dev //import cbor-js 的时候语法报错。其原因是cbor-js包内不含类型声明，需要 @types/cbor-js 下载这个包的声明文件，从而解决语法的报错。
+ohpm install @types/cbor-js --save-dev // Install @types/cbor-js to prevent import syntax errors due to missing type declarations in the cbor-js package.
 
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。 
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 
 ```javascript
 import CBOR from 'cbor-js'
@@ -25,18 +25,18 @@ var encoded = CBOR.encode(initial)
 var decoded = CBOR.decode(encoded)
 ```
 
-## 接口说明
-1. encode()对数据进行简明二进制对象CBOR的编码。
-2. decode()对数据进行简明二进制对象CBOR的解码。
+## Available APIs
+1. **encode()**: encodes data into the CBOR format.
+2. **decode()**: decodes data from the CBOR format.
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
-- Deveco Studio:4.0 (4.0.3.512),SDK:API10 (4.0.10.9)
+This project has been verified in the following versions:
+- Deveco Studio: 4.0 (4.0.3.512), SDK: API 10 (4.0.10.9)
 
-- DevEco Studio: 3.1 Beta2(3.1.0.400), SDK: API9 Release(3.2.11.9)
+- DevEco Studio: 3.1 Beta2 (3.1.0.400), SDK: API 9 Release (3.2.11.9)
 
-## 目录结构
+## Directory Structure
 
 ```
  ├── cborjsDemo
@@ -45,11 +45,11 @@ var decoded = CBOR.decode(encoded)
  │ │ │ ├── main
  │ │ │ │  ├── ets
  │ │ │ │  │ ├── pages        
- │ │ │ │ │  │ ├── index.ets       # cbor编解码示例
+ │ │ │ │ │  │ ├── index.ets       # CBOR encoding and decoding example
 ```
 
-## 贡献代码
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+## How to Contribute
+If you find any problem during the use, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
-本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/cborjsDemo/blob/master/LICENSE) ，请自由地享受和参与开源。
+## License
+This project is licensed under [Apache License 2.0](https://gitee.com/openharmony-tpc/cborjsDemo/blob/master/LICENSE).

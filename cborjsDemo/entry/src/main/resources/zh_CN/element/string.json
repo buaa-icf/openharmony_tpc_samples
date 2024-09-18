@@ -14,23 +14,23 @@
     },
     {
       "name": "Default_testWorld",
-      "value": "Default testWorld"
+      "value": "默认 testWorld"
     },
     {
       "name": "Please_enter",
-      "value": "Please enter"
+      "value": "请输入"
     },
     {
       "name": "Test_cbor_codec",
-      "value": "Test cbor codec"
+      "value": "测试cbor编解码"
     },
     {
       "name": "same_value",
-      "value": "The decoded value is the same as the original value"
+      "value": "解码值和原值相同"
     },
     {
       "name": "different_value",
-      "value": "The decoded value is different from the original value"
+      "value": "解码值和原值不同"
     }
   ]
 }
