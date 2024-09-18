@@ -1,37 +1,38 @@
 # @ohos/xmpp_client_core
 
-## 简介
+## Introduction
 
->本软件是参照开源软件 [@xmpp/client-core](https://github.com/xmppjs/xmpp.js/tree/main/packages/client-core)源码并用 TypeScript 语言实现了相关功能，在OpenHarmony上提供了用于为@xmpp/client整合entity属性的library
+>Based on the open source software [@xmpp/client-core](https://github.com/xmppjs/xmpp.js/tree/main/packages/client-core), this project uses TypeScript to implement similar capabilities. It provides OpenHarmony a library for integrating entity attributes for @xmpp/client.
 
-## 已支持功能
+## Supported Features
 
-- 连接管理
-- 消息处理
-- 状态管理
-- 安全认证
-- 可扩展性
+- Connection management
+- Message processing
+- State management
+- Security certification
+- Scalability
 
-## 下载安装
-1. 参考安装教程 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+## How to Install
+1. Configure the OpenHarmony ohpm environment. For details, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-2. 安装命令如下：
-```
- ohpm install @ohos/xmpp_client_core
-```
+2. Run the following installation command:
 
-## 接口和属性列表
+   ```
+    ohpm install @ohos/xmpp_client_core
+   ```
 
-接口列表
+## Available APIs
 
-| **接口**               | 参数            | 功能                                                      |
-|----------------------|---------------| --------------------------------------------------------- |
-| send(element, ...args) | elemnet:xml标签 |发送单个消息元素|
-| connect(service)             | service：服务器地址 | 连接到指定服务 |
-| socketParameters(...args)      | args          |获取连接参数 |
+Supported APIs
+
+| API                 | Parameter               | Description            |
+| ------------------------- | ------------------- | ---------------- |
+| send(element, ...args)    | **element**: XML tag.    | Sends a message element.|
+| connect(service)          | **service**: server address.| Connects to a service.  |
+| socketParameters(...args) | args                | Obtains connection parameters.    |
 
 
-## 使用示例
+## Example
 
 ```
 import { Client } from "@ohos/xmpp_client_core";
@@ -40,71 +41,72 @@ const client = new Client(options);
 
 client.connect("xmpp://example.com")
   .then(() => {
-    // 连接成功后的操作
+    // Operations after the connection is successful.
   })
   .catch((error) => {
-    // 处理连接错误
+    // Handle connection errors.
   });
 
 client.send("<message>Hello</message>");
 ```
 
-## 使用说明
+## How to Use
 
-#### 引入 Client 类并创建实例
+#### Importing the Client Class and Creating an Instance
 
 ```
 import { Client } from "@ohos/xmpp_client_core";
 const client = new Client(options);
 ```
 
-#### 连接到 XMPP 服务器
+#### Connecting to an XMPP Server
 
 ```
 client.connect("xmpp://example.com")
   .then(() => {
-    // 连接成功后的操作
+    // Operations after the connection is successful.
   })
   .catch((error) => {
-    // 处理连接错误
+    // Handle connection errors.
   });
 ```
 
-#### 发送消息
+#### Sending Messages
 
 ```
 client.send("<message>Hello</message>");
 
 ```
-#### 获取连接参数
+#### Obtaining Connection Parameters
 ```
  client.socketParameters(...args)   
 ```
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+This project has been verified in the following version:
 
-- DevEco Studio 版本： 5.0.3.200 OpenHarmony SDK:API12 (5.0.0.21-Canary2)
+- DevEco Studio: 5.0.3.200, OpenHarmony SDK: API 12 (5.0.0.21-Canary2)
 
-## 目录结构
+## Directory Structure
 ````
 |---- @ohos/xmpp_client_core
-|     |---- entry  # 示例代码文件夹
+|     |---- entry  # Sample code
 |           |---- src  
-|                   |---- main  #sample示例代码
-|                   |---- ohosTest  #xts示例代码
-|     |---- library  # @ohos/xmpp_client_core 库文件夹
+|                   |---- main  # Sample code
+|                   |---- ohosTest  # xts code
+|     |---- library  # @ohos/xmpp_client_core library
 |           |---- ets
-|                 |---- lib  # 主要依赖
-|                 |---- types  # 对外接口文件夹
-|           |---- index.js  # 主入口文件
-|           |---- index.d.ts  # 主对外接口声明文件
-|     |---- README.md  # 安装使用方法                    
+|                 |---- lib  # Main dependencies
+|                 |---- types  # External APIs
+|           |---- index.js  # Main entry file
+|           |---- index.d.ts  # Main declaration file of the external APIs
+|     |---- README_EN.md  # Readme                   
 ````
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提[Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们提[PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem when using @ohos/xmpp_client_core, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-本项目基于ISC，请自由地享受和参与开源。
+This project is licensed under ISC License.
+
