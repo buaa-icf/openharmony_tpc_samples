@@ -27,6 +27,9 @@ struct Index {
   @State results: string = ''
   @State password: string = ''
   @State tag: boolean = true
+  getResourceString(res: Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
   dialogController: CustomDialogController = new CustomDialogController({
     builder: CustomDialogExample({
       cancel: this.onCancel,
@@ -65,7 +68,7 @@ struct Index {
           .width(300)
           .onClick(() => {
             if (!this.tag) {
-              this.showDialog($r('app.string.please_wait'))
+              this.showDialog(this.getResourceString($r('app.string.please_wait')))
               return;
             }
             //hdc_std file send C:\Users\admin\Desktop\鸿蒙openharmony.rar /data/app/el2/100/base/com.huawei.ohosunrar/haps/entry/files
@@ -77,15 +80,15 @@ struct Index {
             try {
               fileio.accessSync(path, 0);
               let tag: number = UnrarApi.isEncrypted(path);
-              let encrypted: ResourceStr
+              let encrypted: string
               if (tag == 1) {
-                encrypted = $r('app.string.name_encrypted2')
+                encrypted = this.getResourceString($r('app.string.name_encrypted2'))
               } else {
-                encrypted = $r('app.string.name_encrypted2_no')
+                encrypted = this.getResourceString($r('app.string.name_encrypted2_no'))
               }
               this.showDialog(encrypted)
             } catch (err) {
-              this.showDialog($r('app.string.file_exist'))
+              this.showDialog(this.getResourceString($r('app.string.file_exist')))
             }
           })
 
@@ -97,22 +100,22 @@ struct Index {
           .width(300)
           .onClick(() => {
             if (!this.tag) {
-              this.showDialog($r('app.string.please_wait'))
+              this.showDialog(this.getResourceString($r('app.string.please_wait')))
               return;
             }
             let path: string = context.filesDir + "/testRar5.rar";
             try {
               fileio.accessSync(path, 0);
               let tag: number = UnrarApi.isEncrypted(path);
-              let encrypted: ResourceStr = ''
+              let encrypted: string = ''
               if (tag == 1) {
-                encrypted = $r('app.string.name_testRar2')
+                encrypted = this.getResourceString($r('app.string.name_testRar2'))
               } else {
-                encrypted = $r('app.string.name_testRar2_no')
+                encrypted = this.getResourceString($r('app.string.name_testRar2_no'))
               }
               this.showDialog(encrypted)
             } catch (err) {
-              this.showDialog($r('app.string.file_exist'))
+              this.showDialog(this.getResourceString($r('app.string.file_exist')) )
             }
           })
 
@@ -134,7 +137,7 @@ struct Index {
           .width(300)
           .onClick(() => {
             if (!this.tag) {
-              this.showDialog($r('app.string.please_wait'))
+              this.showDialog(this.getResourceString($r('app.string.please_wait')))
               return;
             }
             this.dialogController.open();
@@ -147,7 +150,7 @@ struct Index {
 
   private extract() {
     if (!this.tag) {
-      this.showDialog($r('app.string.please_wait'))
+      this.showDialog(this.getResourceString($r('app.string.please_wait')))
       return;
     }
     let path: string = context.filesDir + "/testRar5.rar";
@@ -157,23 +160,23 @@ struct Index {
       let that = this;
       let callBack: ICallBack = {
         callBackResult(value: string) {
-          let results: ResourceStr = '';
+          let results: string = '';
           that.tag = true;
           if (value == '解压成功') {
-            let s1:ResourceStr = $r('app.string.Extract_testRar5');
-
-            results = s1+'' + context.filesDir;
+            results = '' + context.filesDir;
+            that.showDialog(results,$r('app.string.Extract_testRar5'))
           } else {
             results = value;
+            that.showDialog(results)
           }
           that.tag = true;
-          that.showDialog(results)
+
         }
       }
       UnrarApi.RarFiles_Extract(path, context.filesDir, callBack)
     } catch (err) {
       this.tag = true;
-      this.showDialog($r('app.string.successfully'))
+      this.showDialog(this.getResourceString($r('app.string.successfully')))
     }
   }
 
@@ -195,10 +198,10 @@ struct Index {
     fileio.closeSync(writer);
   }
 
-  showDialog(message: ResourceStr) {
+  showDialog(message: string,title?:ResourceStr) {
     AlertDialog.show(
       {
-        title: '',
+        title: title,
         message: message,
         confirm: {
           value: 'OK',
@@ -221,7 +224,9 @@ struct CustomDialogExample {
   }
   confirm: () => void = () => {
   }
-
+  getResourceString(res: Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
   build() {
     Column() {
       Text($r('app.string.Please_input')).width('70%').fontSize(20).margin({ top: 10, bottom: 10 })
@@ -247,7 +252,7 @@ struct CustomDialogExample {
   private rarFiles_Extract() {
     if (this.passwords == null || this.passwords == "") {
       this.passwords = ""
-      this.showDialog($r('app.string.Please_input'))
+      this.showDialog(this.getResourceString($r('app.string.Please_input')))
     } else {
       this.passwords = ""
       let passwords = this.password;
@@ -259,13 +264,15 @@ struct CustomDialogExample {
 
         let callBack: ICallBack = {
           callBackResult(value: string) {
-            let results: ResourceStr = '';
+            let results: string = '';
             if (value == '解压成功') {
-              results = $r('app.string.Extract_encrypted') + context.filesDir;
+              results = ''+ context.filesDir;
+              that.showDialog(results,$r('app.string.Extract_encrypted'))
             } else {
               results = value;
+              that.showDialog(results)
             }
-            that.showDialog(results)
+
           }
         }
         UnrarApi.RarFiles_Extract(path, context.filesDir, callBack, passwords);
@@ -274,17 +281,17 @@ struct CustomDialogExample {
       } catch (err) {
         this.tag = true;
         console.info("accessSync failed with error:" + err);
-        this.showDialog($r('app.string.file_exist'))
+        this.showDialog(this.getResourceString($r('app.string.file_exist')))
       }
       this.controller!.close()
       this.confirm()
     }
   }
 
-  showDialog(message: ResourceStr) {
+  showDialog(message: string,title?:ResourceStr) {
     AlertDialog.show(
       {
-        title: '',
+        title: title,
         message: message,
         confirm: {
           value: 'OK',
