@@ -1,14 +1,14 @@
 # levenDemo
 
-## 简介
-本demo是基于openHarmony系统下使用三方js库[leven](https://github.com/sindresorhus/leven)，使用Leven 距离算法的最快JS实现测量两个字符串之间的差异
+## Introduction
+This project is an OpenHarmony development example based on the [leven](https://github.com/sindresorhus/leven) library. It measures the difference between two strings using the Levenshtein distance algorithm.
 
-## 下载安装
+## How to Install
 ```
 ohpm install leven
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
-## 使用说明
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+## How to Use
 
 ```javascript
 import leven from 'leven';
@@ -18,23 +18,23 @@ let data2:string = "ABCDGH";
 let s:number = leven(data1,data2);
 ```
 
-## 接口说明
+## Available APIs
 
-|        方法名         |           入参            | 接口描述 |
-|:------------------:|:-----------------------:|:----:|
-| leven(data1,data2) | data1:字符串内容，data2:字符串内容 |  比较字符串的不同个数  |
+| API                | Parameter                                                    | Description                                                 |
+| :----------------- | :----------------------------------------------------------- | ----------------------------------------------------------- |
+| leven(data1,data2) | **data1**: content of the first string<br>**data2**: content of the second string | Compares the number of differences between the two strings. |
 
 
-## 约束与限制
-在下述版本验证通过：
+## Constraints
+This project has been verified in the following versions:
 
-- DevEco Studio: 4.0 (4.0.3.512), SDK: API10 (4.0.10.9)
-- DevEco Studio: 3.1 Beta2 (3.1.0.400), SDK: API9 Release (3.2.11.9)
+- DevEco Studio: 4.0 (4.0.3.512), SDK: API 10 (4.0.10.9)
+- DevEco Studio: 3.1 Beta2 (3.1.0.400), SDK: API 9 Release (3.2.11.9)
 
-## 开源协议
+## License
 
-本项目基于 [MIT license](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/levenDemo/LICENSE) ，请自由地享受和参与开源。
+This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/levenDemo/LICENSE).
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem during the use, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
