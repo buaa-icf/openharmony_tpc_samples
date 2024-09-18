@@ -111,6 +111,7 @@ This project has been verified in the following version:
 |                 |---- callback_api.js  # Callback scripts
 |                 |---- channel_api.js  # Promise scripts
 |     |---- README.md  # Readme
+|     |---- README_zh.md  # Readme
 ```
 
 ## How to Contribute

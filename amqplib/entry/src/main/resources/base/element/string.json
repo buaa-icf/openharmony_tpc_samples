@@ -11,6 +11,14 @@
     {
       "name": "EntryAbility_label",
       "value": "amqplib"
+    },
+    {
+      "name": "Publish_a_message",
+      "value": "Publish a message"
+    },
+    {
+      "name": "Consumer_News",
+      "value": "Consumer News"
     }
   ]
 }

@@ -112,6 +112,7 @@
 |                       |---- properties.d.ts  # 参数类型等对外声明文件
 |                 |---- callback_api.js  # callback回调脚本
 |                 |---- channel_api.js  # promise回调脚本
+|     |---- README.md  # 安装使用方法
 |     |---- README_zh.md  # 安装使用方法
 ```
 

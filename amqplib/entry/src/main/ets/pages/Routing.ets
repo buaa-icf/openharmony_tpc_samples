@@ -85,7 +85,7 @@ struct Routing {
     Row() {
       Column() {
         Console({ model: $consoleSend }).height('40%')
-        Button('发布消息').onClick(async () => {
+        Button($r('app.string.Publish_a_message')).onClick(async () => {
           // 发布消息
           const publishOptions: Options.Publish = { persistent: true };
           let isPush: boolean | undefined = this.channel?.sendToQueue(infoQueue, Buffer.from('this is a harmless log'), publishOptions);
@@ -94,7 +94,7 @@ struct Routing {
           this.consoleSend.info('publish message:' + isPush)
         })
         Console({ model: $consoleReceive }).height('40%')
-        Button('消费消息').onClick(async () => {
+        Button($r('app.string.Consumer_News')).onClick(async () => {
           // 消费消息
           const consumeOptions: Options.Consume = { noAck: false };
           await this.channel?.consume(infoQueue, (msg: ConsumeMessage | null) => {
