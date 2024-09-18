@@ -11,6 +11,21 @@
     {
       "name": "EntryAbility_label",
       "value": "hi-base32Demo"
+    },
+    {
+
+      "name": "text_label",
+      "value": "Hi-base32的编码与解码"
+    },
+    {
+
+      "name": "encode_label",
+      "value": "编码"
+    },
+    {
+
+      "name": "decode_label",
+      "value": "解码"
     }
   ]
 }
