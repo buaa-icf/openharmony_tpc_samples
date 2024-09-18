@@ -78,7 +78,7 @@ DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API 11 (4.1.0.36)
 ```
 |---- Domhandler  
 |     |---- entry  # Sample code
-|     |---- README_EN.md  # Readme                  
+|     |---- README.md  # Readme                  
 ```
 
 ## How to Contribute
