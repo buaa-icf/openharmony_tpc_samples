@@ -11,6 +11,14 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Enter_a_string",
+      "value": "Enter a string that requires secure hashing algorithm 1"
+    },
+    {
+      "name": "Please_enter_a_string",
+      "value": "Please enter a string"
     }
   ]
 }

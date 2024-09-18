@@ -1,22 +1,22 @@
 # JsSha1Demo
 
-## 简介
+## Introduction
 
-本demo是基于openHarmony系统下使用三方js库[js-sha1](https://github.com/emn178/js-sha1)，js-sha1是一个简单的用于JavaScript的SHA1散列函数支持UTF-8编码。
+This project is an OpenHarmony development example based on the [js-sha1](https://github.com/emn178/js-sha1) library, which is a simple SHA-1 hash function for JavaScript that supports UTF-8 encoding.
 
-## 下载安装
+## How to Install
 
 ```
   ohpm install js-sha1
-  ohpm install @types/js-sha1 --save-dev //import js-sha1 的时候语法报错。其原因是js-sha1包内不含类型声明，需要 @types/js-sha1 下载这个包的声明文件，从而解决语法的报错。
+  ohpm install @types/js-sha1 --save-dev // Install @types/js-sha1 to prevent import syntax errors due to missing type declarations in the js-sha1 package.
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 
-[完整API文档](https://github.com/emn178/js-sha1)
+[API reference](https://github.com/emn178/js-sha1)
 
-### 1.使用js-sha1处理字符串、二进制数组、数组等数据。
+Example of using js-sha1 to process strings, binary arrays, arrays, and other data:
 ```
 // @ts-ignore
 import sha1 from 'js-sha1';
@@ -40,39 +40,39 @@ sha1.digest(''); // [218, 57, 163, 238, 94, 107, 75, 13, 50, 85, 191, 239, 149, 
 sha1.arrayBuffer(''); // ArrayBuffer
 ```
 
-## 接口说明
+## Available APIs
 
-|          方法名           |              入参               |     接口描述      |
-|:----------------------:|:-----------------------------:|:-------------:|
-|       sha1(data)       |  data:字符串、二进制数组、数组、8位无符号整型数组  | 生成安全散列算法1的字符串 |
-|     sha1.hex(data)     |           data：字符串            | 生成安全散列算法1的字符串 |
-|    sha1.array(data)    |     data：字符串      | 生成安全散列算法1的数组  |
-|   sha1.digest(data)    |     data：字符串      |   生成安全散列算法1的数组    |
-| sha1.arrayBuffer(data) |           data：字符串           |     生成安全散列算法1的二进制数组   |
+| API                    | Parameter                                            | Description                                     |
+| :--------------------- | :--------------------------------------------------- | :---------------------------------------------- |
+| sha1(data)             | **data**: string, binary array, array, or Unit8Array | Generates a SHA-1 hash as a string.             |
+| sha1.hex(data)         | **data**: string                                     | Generates a SHA-1 hash as a hexadecimal string. |
+| sha1.array(data)       | **data**: string                                     | Generates a SHA-1 hash as an array.             |
+| sha1.digest(data)      | **data**: string                                     | Generates a SHA-1 hash as a digest.             |
+| sha1.arrayBuffer(data) | **data**: string                                     | Generates a SHA-1 hash as a binary array.       |
 
-## 目录结构
+## Directory Structure
 
 ```
-/JsSha1Demo  # 工程代码
-|—— entry   # 工程demo示例
+/JsSha1Demo  # Project code
+|—— entry   # Project demo
 │   └── main
 │       └── ets
 │           └── entryability 
-│               └── EntryAbility.ts    # 工程Ability
+│               └── EntryAbility.ts    # Project ability
 │           └── pages 
-│               └── Index.ets       # demo示例页面
+│               └── Index.ets       # Demo example page
 
 ```
 
-## 约束与限制
-在下述版本验证通过：
-- DevEco Studio: 4.0 (4.0.3.512), SDK: API10 (4.0.10.9)
-- DevEco Studio: 4.0 Canary2(4.0.3.312), SDK: API10 (4.0.9.2)
+## Constraints
+This project has been verified in the following versions:
+- DevEco Studio: 4.0 (4.0.3.512), SDK: API 10 (4.0.10.9)
+- DevEco Studio: 4.0 Canary2 (4.0.3.312), SDK: API 10 (4.0.9.2)
 
-## 开源协议
+## License
 
-本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/JsSha1Demo/LICENSE) ，请自由地享受和参与开源。
+This project is licensed under [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/JsSha1Demo/LICENSE).
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem during the use, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).

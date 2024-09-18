@@ -36,8 +36,8 @@ struct Index {
 
   build() {
     Column() {
-      Text("输入一个需要安全散列算法1的字符串").textFancy(16, Color.Green, true).margin(40)
-      TextInput({ placeholder: '请输入字符串', text: this.statement })
+      Text($r('app.string.Enter_a_string')).textFancy(16, Color.Green, true).margin(40)
+      TextInput({ placeholder: $r('app.string.Please_enter_a_string'), text: this.statement })
         .onChange((value: string) => {
           this.statement = value;
         })
