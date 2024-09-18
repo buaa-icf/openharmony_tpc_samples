@@ -54,7 +54,7 @@ This project has been verified in the following version:
 |                             |---- test
 |                                   |---- Ability.test.ets  # Unit test
 
-|     |---- README_EN.md  # Readme
+|     |---- README.md  # Readme
 |     |---- README.OpenSource  # Open source description
 |     |---- CHANGELOG.md  # Changelog               
 ````

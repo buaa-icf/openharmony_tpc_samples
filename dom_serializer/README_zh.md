@@ -52,7 +52,7 @@ import { Document, DomUtils, parseDocument } from "@ohos/htmlparser2";
 |                             |---- test
 |                                   |---- Ability.test.ets  # 单元测试
 
-|     |---- README.md  # 安装使用方法
+|     |---- README_zh.md  # 安装使用方法
 |     |---- README.OpenSource  # 开源说明
 |     |---- CHANGELOG.md  # 更新日志                
 ````
