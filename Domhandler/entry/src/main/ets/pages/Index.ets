@@ -79,7 +79,7 @@ struct Index {
         Text( this.getResourceString($r('app.string.Analysis_results'))+"\r\n  " + this.result)
           .fontSize(15)
           .margin({ top: 55, left: 10, right: 10 })
-        Text("parseDocument")
+        Text($r('app.string.parseDocument'))
           .width('90%')
           .height(60)
           .backgroundColor(0xFFFFFF)
@@ -105,7 +105,7 @@ struct Index {
             this.result += "isComment:" + element[0].name + "\r\n"
           });
         Column() {
-          Text("createDocumentStream")
+          Text($r('app.string.createDocumentStream'))
             .width('90%')
             .height(60)
             .backgroundColor(0xFFFFFF)

@@ -15,6 +15,14 @@
     {
       "name": "Analysis_results",
       "value": "Analysis results :"
+    },
+    {
+      "name": "parseDocument",
+      "value": "parseDocument"
+    },
+    {
+      "name": "createDocumentStream",
+      "value": "createDocumentStream"
     }
   ]
 }

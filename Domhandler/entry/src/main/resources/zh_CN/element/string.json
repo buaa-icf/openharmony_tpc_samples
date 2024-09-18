@@ -15,6 +15,14 @@
     {
       "name": "Analysis_results",
       "value": "解析结果 :"
+    },
+    {
+      "name": "parseDocument",
+      "value": "解析文档"
+    },
+    {
+      "name": "createDocumentStream",
+      "value": "创建文档流"
     }
   ]
 }
