@@ -18,7 +18,6 @@ import { testRarData } from './dataTestRar5'
 import { nameEncryptData } from './dataNameEncrypt'
 import { GlobalContext } from './GlobalContext'
 
-// import  common from'@ohos.app.ability.common'
 let context: Context = GlobalContext.getContext().getObject('context') as Context
 
 @Entry
@@ -54,11 +53,11 @@ struct Index {
   build() {
     Row() {
       Column() {
-        Text(this.message)
+        Text($r('app.string.rar_file'))
           .fontSize(50)
           .fontWeight(FontWeight.Bold);
 
-        Button('name_encrypted.rar文件是否加密文件', { type: ButtonType.Normal, stateEffect: true })
+        Button($r('app.string.name_encrypted'), { type: ButtonType.Normal, stateEffect: true })
           .borderRadius(8)
           .margin(40)
           .backgroundColor(0x317aff)
@@ -66,7 +65,7 @@ struct Index {
           .width(300)
           .onClick(() => {
             if (!this.tag) {
-              this.showDialog("正在解压中，请稍等...")
+              this.showDialog($r('app.string.please_wait'))
               return;
             }
             //hdc_std file send C:\Users\admin\Desktop\鸿蒙openharmony.rar /data/app/el2/100/base/com.huawei.ohosunrar/haps/entry/files
@@ -78,19 +77,19 @@ struct Index {
             try {
               fileio.accessSync(path, 0);
               let tag: number = UnrarApi.isEncrypted(path);
-              let encrypted: string = ''
+              let encrypted: ResourceStr
               if (tag == 1) {
-                encrypted = "name_encrypted.rar是加密文件！"
+                encrypted = $r('app.string.name_encrypted2')
               } else {
-                encrypted = "name_encrypted.rar不是加密文件！"
+                encrypted = $r('app.string.name_encrypted2_no')
               }
               this.showDialog(encrypted)
             } catch (err) {
-              this.showDialog('文件不存在')
+              this.showDialog($r('app.string.file_exist'))
             }
           })
 
-        Button('testRar5.rar文件是否加密文件', { type: ButtonType.Normal, stateEffect: true })
+        Button($r('app.string.testRar5'), { type: ButtonType.Normal, stateEffect: true })
           .borderRadius(8)
           .margin(40)
           .backgroundColor(0x317aff)
@@ -98,26 +97,26 @@ struct Index {
           .width(300)
           .onClick(() => {
             if (!this.tag) {
-              this.showDialog("正在解压中，请稍等...")
+              this.showDialog($r('app.string.please_wait'))
               return;
             }
             let path: string = context.filesDir + "/testRar5.rar";
             try {
               fileio.accessSync(path, 0);
               let tag: number = UnrarApi.isEncrypted(path);
-              let encrypted: string = ''
+              let encrypted: ResourceStr = ''
               if (tag == 1) {
-                encrypted = "testRar5.rar是加密文件！"
+                encrypted = $r('app.string.name_testRar2')
               } else {
-                encrypted = "testRar5.rar不是加密文件！"
+                encrypted = $r('app.string.name_testRar2_no')
               }
               this.showDialog(encrypted)
             } catch (err) {
-              this.showDialog('文件不存在')
+              this.showDialog($r('app.string.file_exist'))
             }
           })
 
-        Button('解压testRar5.rar文件', { type: ButtonType.Normal, stateEffect: true })
+        Button($r('app.string.decompress_testRar5'), { type: ButtonType.Normal, stateEffect: true })
           .borderRadius(8)
           .backgroundColor(0x317aff)
           .margin(40)
@@ -127,7 +126,7 @@ struct Index {
             this.extract();
           })
 
-        Button('解压name_encrypted.rar文件', { type: ButtonType.Normal, stateEffect: true })
+        Button($r('app.string.decompress_encrypted'), { type: ButtonType.Normal, stateEffect: true })
           .borderRadius(8)
           .backgroundColor(0x317aff)
           .margin(40)
@@ -135,7 +134,7 @@ struct Index {
           .width(300)
           .onClick(() => {
             if (!this.tag) {
-              this.showDialog("正在解压中，请稍等...")
+              this.showDialog($r('app.string.please_wait'))
               return;
             }
             this.dialogController.open();
@@ -148,7 +147,7 @@ struct Index {
 
   private extract() {
     if (!this.tag) {
-      this.showDialog("正在解压中，请稍等...")
+      this.showDialog($r('app.string.please_wait'))
       return;
     }
     let path: string = context.filesDir + "/testRar5.rar";
@@ -158,10 +157,12 @@ struct Index {
       let that = this;
       let callBack: ICallBack = {
         callBackResult(value: string) {
-          let results: string = '';
+          let results: ResourceStr = '';
           that.tag = true;
           if (value == '解压成功') {
-            results = '解压testRar5.rar文件解压成功,解压文件在:' + context.filesDir;
+            let s1:ResourceStr = $r('app.string.Extract_testRar5');
+
+            results = s1+'' + context.filesDir;
           } else {
             results = value;
           }
@@ -172,7 +173,7 @@ struct Index {
       UnrarApi.RarFiles_Extract(path, context.filesDir, callBack)
     } catch (err) {
       this.tag = true;
-      this.showDialog('文件不存在')
+      this.showDialog($r('app.string.successfully'))
     }
   }
 
@@ -194,7 +195,7 @@ struct Index {
     fileio.closeSync(writer);
   }
 
-  showDialog(message: string) {
+  showDialog(message: ResourceStr) {
     AlertDialog.show(
       {
         title: '',
@@ -223,19 +224,19 @@ struct CustomDialogExample {
 
   build() {
     Column() {
-      Text('请输入密码').width('70%').fontSize(20).margin({ top: 10, bottom: 10 })
+      Text($r('app.string.Please_input')).width('70%').fontSize(20).margin({ top: 10, bottom: 10 })
       TextInput({ placeholder: 'input your password: 190512' })
         .type(InputType.Password).margin({ top: 20 }).onChange((value) => {
         this.password = value
         this.passwords = value
       })
       Flex({ justifyContent: FlexAlign.SpaceAround }) {
-        Button('取消')
+        Button($r('app.string.cancel'))
           .onClick(() => {
             this.controller!.close()
             this.cancel()
           }).backgroundColor(0xffffff).fontColor(Color.Black)
-        Button('确认')
+        Button($r('app.string.confirm'))
           .onClick(() => {
             this.rarFiles_Extract();
           }).backgroundColor(0xffffff).fontColor(Color.Red)
@@ -246,7 +247,7 @@ struct CustomDialogExample {
   private rarFiles_Extract() {
     if (this.passwords == null || this.passwords == "") {
       this.passwords = ""
-      this.showDialog("请输入密码")
+      this.showDialog($r('app.string.Please_input'))
     } else {
       this.passwords = ""
       let passwords = this.password;
@@ -258,9 +259,9 @@ struct CustomDialogExample {
 
         let callBack: ICallBack = {
           callBackResult(value: string) {
-            let results: string = '';
+            let results: ResourceStr = '';
             if (value == '解压成功') {
-              results = 'name_encrypted.rar文件解压成功,解压文件在:' + context.filesDir;
+              results = $r('app.string.Extract_encrypted') + context.filesDir;
             } else {
               results = value;
             }
@@ -273,14 +274,14 @@ struct CustomDialogExample {
       } catch (err) {
         this.tag = true;
         console.info("accessSync failed with error:" + err);
-        this.showDialog('文件不存在')
+        this.showDialog($r('app.string.file_exist'))
       }
       this.controller!.close()
       this.confirm()
     }
   }
 
-  showDialog(message: string) {
+  showDialog(message: ResourceStr) {
     AlertDialog.show(
       {
         title: '',
