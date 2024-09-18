@@ -110,7 +110,7 @@ This project has been verified in the following version:
 |                       |---- properties.d.ts  # External declaration file of the parameter types
 |                 |---- callback_api.js  # Callback scripts
 |                 |---- channel_api.js  # Promise scripts
-|     |---- README_EN.md  # Readme
+|     |---- README.md  # Readme
 ```
 
 ## How to Contribute
