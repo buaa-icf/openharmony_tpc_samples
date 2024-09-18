@@ -11,6 +11,13 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Check_if",
+      "value": "检测是否是tag"
+    }, {
+      "name": "result",
+      "value": "结果 :"
     }
   ]
 }

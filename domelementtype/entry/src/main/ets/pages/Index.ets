@@ -37,7 +37,9 @@ struct Index {
     ElementType.Tag, ElementType.CDATA, ElementType.Doctype]
     private selectIndex = 0
     @State private result: string = ""
-
+    getResourceString(res:Resource){
+        return getContext().resourceManager.getStringSync(res.id)
+    }
     build() {
         Row() {
             Column() {
@@ -51,7 +53,7 @@ struct Index {
                         this.selectIndex = index
                     })
 
-                Button("检测是否是tag")
+                Button($r('app.string.Check_if'))
                     .fontSize(20)
                     .margin({ top: "80px" })
                     .fontWeight(FontWeight.Bold)
@@ -62,7 +64,7 @@ struct Index {
 
                     })
 
-                Text("结果 :" + this.result)
+                Text(this.getResourceString($r('app.string.result')) + this.result)
                     .fontSize(20)
                     .fontWeight(FontWeight.Bold)
                     .margin({ top: "30px" })
