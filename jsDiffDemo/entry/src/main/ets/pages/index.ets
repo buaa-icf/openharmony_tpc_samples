@@ -29,8 +29,8 @@ import {
 @Entry
 @Component
 struct Index {
-  @State strChars: string = '文本块比较'
-  @State strWords: string = '文本块_忽略空格'
+  @State strChars: Resource = $r('app.string.Text_block_comparison')
+  @State strWords: Resource = $r('app.string.Text_BlockIgnore_Spaces')
   private canvasContext: CanvasRenderingContext2D = new CanvasRenderingContext2D({ antialias: true })
   private offContext: OffscreenCanvasRenderingContext2D = new OffscreenCanvasRenderingContext2D(600, 600, {
     antialias: true
@@ -69,7 +69,7 @@ struct Index {
               this.objectToString(one, other, diff);
             }).margin({ bottom: "20vp", left: "20vp" })
 
-          Button("文本块_空格视为重要")
+          Button($r('app.string.considered_important'))
             .fontSize(18)
             .height("45vp")
             .onClick((event) => {
@@ -79,7 +79,7 @@ struct Index {
               this.drawText(diff);
               this.objectToString(one, other, diff);
             }).margin({ bottom: "20vp", left: "20vp" })
-          Button("逐行比较")
+          Button($r('app.string.Compare_line_by_line'))
             .fontSize(18)
             .height("45vp")
             .onClick((event) => {
@@ -89,7 +89,7 @@ struct Index {
               this.drawText(diff);
               this.objectToString(one, other, diff);
             }).margin({ bottom: "20vp", left: "20vp" })
-          Button("逐行比较_忽略前尾空格")
+          Button($r('app.string.Compare_line_ignore'))
             .fontSize(18)
             .height("45vp")
             .onClick((event) => {
@@ -99,7 +99,7 @@ struct Index {
               this.drawText(diff);
               this.objectToString(one, other, diff);
             }).margin({ bottom: "20vp", left: "20vp" })
-          Button("逐句比较")
+          Button($r('app.string.Compare_sentence_by_sentence'))
             .fontSize(18)
             .height("45vp")
             .onClick((event) => {
@@ -109,7 +109,7 @@ struct Index {
               this.drawText(diff);
               this.objectToString(one, other, diff);
             }).margin({ bottom: "20vp", left: "20vp" })
-          Button("比较CSS标记")
+          Button($r('app.string.Compare_CSS_tags'))
             .fontSize(18)
             .height("45vp")
             .onClick((event) => {
@@ -119,7 +119,7 @@ struct Index {
               this.drawText(diff);
               this.objectToString(one, other, diff);
             }).margin({ bottom: "20vp", left: "20vp" })
-          Button("比较JSON")
+          Button($r('app.string.Compare_JSON'))
             .fontSize(18)
             .height("45vp")
             .onClick((event) => {
@@ -129,7 +129,7 @@ struct Index {
               this.objectToString(one, other, diff);
               this.visible = Visibility.Hidden;
             }).margin({ bottom: "20vp", left: "20vp" })
-          Button("比较两个数组")
+          Button($r('app.string.Compare_two_arrays'))
             .fontSize(18)
             .height("45vp")
             .onClick((event) => {
@@ -154,7 +154,7 @@ struct Index {
       .margin({ top: '50vp' })
       .width('100%')
 
-      Text("---------------------------------------结果展示(oldStr,newStr为参数，resultData为结果)------------------------------------------------------")
+      Text($r('app.string.Result_display'))
         .fontSize(18)
         .margin({ top: "20vp" });
       Text(this.oldStr).fontSize(18).margin({ top: "20vp" });
