@@ -1,4 +1,9 @@
+## v2.0.1
+
+- 在DevEco Studio: NEXT Beta1-5.0.3.806, SDK: API12 Release(5.0.0.66)上验证通过
+
 ## v2.0.0
+
 - 本库是基于jsonschema源库v1.4.1版本代码进行OpenHarmony环境接口适配验证的三方库。
 
 - 包管理工具由npm切换为ohpm
