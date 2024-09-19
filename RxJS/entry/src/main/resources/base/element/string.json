@@ -11,6 +11,342 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "CombineAll_content",
+      "value": "CombineAll: When the source observables are completed, use combineLast on the collected observables"
+    },
+    {
+      "name": "CombineLatest_content",
+      "value": "CombineLast: When any observable emits a value, it emits the latest value for each observable"
+    },
+    {
+      "name": "Concat_content",
+      "value": "Concat: In order, once the previous observable is completed, subscribe to the next observable and issue a value"
+    },
+    {
+      "name": "ConcatAll_content",
+      "value": "ConcatAll: Collect observables, subscribe to the next one when the current one is completed"
+    },
+    {
+      "name": "ForkJoin_content",
+      "value": "ForkCoin: When all observables are completed, issue the latest value for each observable"
+    },
+    {
+      "name": "Merge_content",
+      "value": "Merge: Convert multiple observables into a single observable"
+    },
+    {
+      "name": "MergeAll_content",
+      "value": "MergeAll: Collect and subscribe to all observables"
+    },
+    {
+      "name": "Pairwise_content",
+      "value": "pairwise:Send the previous and current values as an array"
+    },
+    {
+      "name": "Race_content",
+      "value": "Race: Use the observable that emits the value first"
+    },
+    {
+      "name": "StartWith_content",
+      "value": "StartWith: Send the first given value"
+    },
+    {
+      "name": "WithLatestFrom_content",
+      "value": "WithLatestFrom: also provides the latest value of another observable"
+    },
+    {
+      "name": "zip_content",
+      "value": "Zip: After all observables are emitted, send their values as an array"
+    },
+    {
+      "name": "DefaultIfEmpty_content",
+      "value": "DefaultIfEmpty: If no notification is issued before completion, issue the given value"
+    },
+    {
+      "name": "Every_content",
+      "value": "Every: If all values can be asserted upon completion, then issue true; otherwise, issue false"
+    },
+    {
+      "name": "Buffer_content",
+      "value": "Buffer: Collect output values until the provided observable is emitted, and then emit the collected values as an array"
+    },
+    {
+      "name": "BufferCount_content",
+      "value": "BufferCount: Collect the values sent out until the provided quantity of values are collected before sending them out as an array"
+    },
+    {
+      "name": "BufferTime_content",
+      "value": "BufferTime: Collect emitted values until the provided time has passed before sending them out as an array"
+    },
+    {
+      "name": "BufferToggle_content",
+      "value": "BufferToggle: Turn on the switch to capture the value emitted by the source observable, turn off the switch to emit the buffered value as an array"
+    },
+    {
+      "name": "BufferWhen_content",
+      "value": "BufferWhen: Collect values until the selector is closed to output the buffered value"
+    },
+    {
+      "name": "ConcatMap_content",
+      "value": "ConcatMap: Map values to internal observables and subscribe and issue them in order"
+    },
+    {
+      "name": "ConcatMapTo_content",
+      "value": "ConcatMapTo: When the current observable is completed, subscribe to the provided observable and issue a value"
+    },
+    {
+      "name": "ExhaustMap_content",
+      "value": "ExhaustMap: Map to an internal observable, ignore other values until the observable is complete"
+    },
+    {
+      "name": "Expand_content",
+      "value": "Expand: recursively call the provided function"
+    },
+    {
+      "name": "GroupBy_content",
+      "value": "GroupBy: Grouping multiple observables based on the provided values"
+    },
+    {
+      "name": "Map_content",
+      "value": "Map: Apply a projection function to each value of the source observable"
+    },
+    {
+      "name": "MapTo_content",
+      "value": "MapTo: Map each emitted value to a constant"
+    },
+    {
+      "name": "MergeMap_content",
+      "value": "MergeMap: Map to observable and emit values"
+    },
+    {
+      "name": "Partition_content",
+      "value": "Partition: Split an observable value into two based on the provided predicate"
+    },
+    {
+      "name": "pluck_content",
+      "value": "Pluck: Select attributes to send out"
+    },
+    {
+      "name": "Reduce_content",
+      "value": "Reduce: Merge the values of the source observable into a single value, and emit this value when the source observable is completed"
+    },
+    {
+      "name": "Scan_content",
+      "value": "Scan: Merge over time"
+    },
+    {
+      "name": "SwitchMap_content",
+      "value": "SwitchMap: Map to observable, complete the previous internal observable, and emit values"
+    },
+    {
+      "name": "Window_content",
+      "value": "Window: Observable value of time window"
+    },
+    {
+      "name": "WindowCount_content",
+      "value": "WindowCount: The observable of the values in the source observable, emitting N values at a time"
+    },
+    {
+      "name": "WindowTime_content",
+      "value": "WindowTime: Collect observable values from the source observable within each provided time span"
+    },
+    {
+      "name": "WindowToggle_content",
+      "value": "windowToggle:Starting with the issuance of Openings and ending with the issuance of ClosingSelectors, collect and concurrently output the observable values from the source observable"
+    },
+    {
+      "name": "WindowWhen_content",
+      "value": "windowWhen:Close the window at the provided time frame and emit the observed value collected from the source observable"
+    },
+    {
+      "name": "Create_content",
+      "value": "create:Use the given subscription function to create an observable"
+    },
+    {
+      "name": "Empty_content",
+      "value": "empty:Instantly Completed Observable"
+    },
+    {
+      "name": "From_content",
+      "value": "from:Convert arrays, promises, or iterators to observable"
+    },
+    {
+      "name": "Interval_content",
+      "value": "interval:Send out a sequence of numbers based on a given time interval"
+    },
+    {
+      "name": "Of_content",
+      "value": "of:Send any number of values in sequence"
+    },
+    {
+      "name": "Rang_content",
+      "value": "rang:Send out the numbers within the given interval in sequence"
+    },
+    {
+      "name": "Throw_content",
+      "value": "throw:Sending an error on the subscription"
+    },
+    {
+      "name": "Timer_content",
+      "value": "timer:After a given duration, send out numbers in sequence at specified intervals"
+    },
+    {
+      "name": "FromEvent_content",
+      "value": "fromEvent:Convert events into observable sequences (not supported)"
+    },
+    {
+      "name": "CatchError_content",
+      "value": "catchError:Elegantly handle errors in observable sequences"
+    },
+    {
+      "name": "Retry_content",
+      "value": "retry:If an error occurs, retry the observable sequence a specified number of times"
+    },
+    {
+      "name": "RetryWhen_content",
+      "value": "retryWhen:When an error occurs, retry the observable sequence based on custom criteria"
+    },
+    {
+      "name": "Debounce_content",
+      "value": "debounce:According to a selector function, discard the output values that are less than the specified time between two outputs"
+    },
+    {
+      "name": "DebounceTime_content",
+      "value": "debounceTime:Discard emission values that are less than the specified time between two outputs"
+    },
+    {
+      "name": "DistinctUntilChanged_content",
+      "value": "distinctUntilChanged:Only when the current value is different from the last previous value, will it be issued"
+    },
+    {
+      "name": "Filter_content",
+      "value": "filter:Send values that meet the given conditions"
+    },
+    {
+      "name": "First_content",
+      "value": "first:Send the first value or the first value obtained through a given expression"
+    },
+    {
+      "name": "IgnoreElements_content",
+      "value": "ignoreElements:Ignore all notifications except for complete and error"
+    },
+    {
+      "name": "Last_content",
+      "value": "last:According to the provided expression, emit its last value upon completion of the source observable"
+    },
+    {
+      "name": "Sample_content",
+      "value": "sample:Sample from the source observable when the provided observable is emitted"
+    },
+    {
+      "name": "Single_content",
+      "value": "single:Issue a single item through an expression"
+    },
+    {
+      "name": "Skip_content",
+      "value": "skip:Skip N (provided by parameters) emitted values"
+    },
+    {
+      "name": "SkipUntil_content",
+      "value": "skipUntil:Skip the value emitted by the source observable until the provided observable emits a value"
+    },
+    {
+      "name": "SkipWhile_content",
+      "value": "skipWhile:Skip the value emitted by the source observable until the provided expression results in false"
+    },
+    {
+      "name": "Take_content",
+      "value": "take:Send N values (N determined by parameters) before completion"
+    },
+    {
+      "name": "TakeUntil_content",
+      "value": "takeUntil:Send out a value until the provided observable sends out a value, and it is complete"
+    },
+    {
+      "name": "TakeWhile_content",
+      "value": "TakeWhile: Issue a value until the provided expression results in false"
+    },
+    {
+      "name": "Throttle_content",
+      "value": "throttle:Using a certain time interval as a threshold, the emission of new values will be suppressed until the durationselector is completed"
+    },
+    {
+      "name": "ThrottleTime_content",
+      "value": "throttleTime:Issue the latest value after the specified duration has passed"
+    },
+    {
+      "name": "Create_operation",
+      "value": "Create operation"
+    },
+    {
+      "name": "Filtering_content",
+      "value": "Filtering operation"
+    },
+    {
+      "name": "Multicast_content",
+      "value": "Multicast operation"
+    },
+    {
+      "name": "Combined_content",
+      "value": "combined operation"
+    },
+    {
+      "name": "Incorrect_content",
+      "value": "Incorrect operation"
+    },
+    {
+      "name": "Conditional_content",
+      "value": "Conditional operation"
+    },
+    {
+      "name": "Conversion_content",
+      "value": "Conversion operation"
+    },
+    {
+      "name": "Tool_content",
+      "value": "tool"
+    },
+    {
+      "name": "Scheduler_content",
+      "value": "scheduler"
+    },
+    {
+      "name": "Publish_content",
+      "value": "publish:Share the source observable and make it hot by calling the connect method"
+    },
+    {
+      "name": "Multicasts_content",
+      "value": "multicast:Use the provided Subject to share the source observable"
+    },
+    {
+      "name": "Share_content",
+      "value": "share:Share source observable among multiple subscribers"
+    },
+    {
+      "name": "ShareReplay_content",
+      "value": "shareReplay:Share the source observable and replay the specified number of occurrences"
+    },
+    {
+      "name": "Do_tap_content",
+      "value": "do/tap:Transparent execution of operations or side effects, such as printing logs"
+    },
+    {
+      "name": "Delay_content",
+      "value": "delay:Send values with a given time delay"
+    },
+    {
+      "name": "DelayWhen_content",
+      "value": "delayWhen:Delay sending value, the delay time is determined by the provided function"
+    },
+    {
+      "name": "Dematerialize_content",
+      "value": "dematerialize:Convert the notification object into a notification value"
+    },
+    {
+      "name": "Timeout_content",
+      "value": "timeout:Report an error if no value is issued within the specified time interval"
     }
   ]
 }

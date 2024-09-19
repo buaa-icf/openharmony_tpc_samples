@@ -1,33 +1,32 @@
 # RxJS
 
-## 简介
+## Overview
 
-本项目是OpenHarmony rxjsDemo项目。
-[rxjs](https://github.com/reactivex/rxjs)是一个通过使用可观察序列来合成异步和基于事件的程序的JavaScript库。它通过使用 observable 序列编写基于异步和事件的程序。核心类型是： Observable , 附属类型：Observer， Schedules, Subjects 和一些操作符 map，filter等。这些操作符可以把异步事件当作集合处理。
+[rxjs](https://github.com/reactivex/rxjs) is a JavaScript library that synthesizes asynchronous and event-based programs by using observable sequences. It provides one core key, the **Observable**, three satellite types, **Observer**, **Schedules**, and **Subjects**, and some operators such as **map** and **filter**. These operators allow us to process asynchronous events as collections.
 
-| 功能名称                                       | 功能描述                                                     |
+| Function                                      | Description                                                    |
 | ---------------------------------------------- | :----------------------------------------------------------- |
-| 创建一个可观察对象发射数据流                   | 创建可观察对象Observale，发送数据流，或则一条数据，一个通知  |
-| 通过操作符Operator加工处理数据流               | 创建操作符、 组合操作符、 过滤操作符、条件操作符、转换操作符、工具集 |
-| Scheduler调度者                                | 通过线程调度器Scheduler指定操作数据流所在的线程。            |
-| 创建一个观察者Observer接收响应数据流，或者通知 | 1.onNext接收数据<br/> 2.onError接收异常通知<br/> 3.onComplete接收完成通知 |
+| Using an **Observable** object to send data streams                  | Create an **Observable** object, and send data streams, a piece of data, or a notification. |
+| Using operators to process data streams              | Create operators, combination operators, filtering operators, conditional operators, transformation operators, and utility operators. |
+| Using Scheduler                               | Use the thread scheduler to specify the thread for processing data streams.           |
+| Using an observer to receive response streams or notifications | 1. onNext: data received<br> 2. onError: error detected<br> 3. onComplete: data receiving completed |
 
-## 下载安装
+## Download and Installation
 
 ```shell
 ohpm install rxjs
 ```
 
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 
 
-## 使用说明
+## Usage
 
-### RxJS 观察者模式
+### RxJS Observer Mode
 
-什么是观察员？观察者是观察者传递的价值的消费者。观察者只是一组回调，一个用于由所述可观测的递送通知每种类型：next，error，和 complete。
-以下是典型的 Observer 对象的示例：
+What is an observer? An **Observer** is a consumer of values delivered by an **Observable**. Observers are simply a set of callbacks, one for each type of notification delivered by the **Observable**: **next**, **error**, and complete.
+The following is an example of a typical **Observer** object:
 
 ```javascript
 const observer = {
@@ -37,97 +36,97 @@ const observer = {
 };
 ```
 
-要使用 Observer，请将其提供给 subscribeObservable 的：
+To use the **Observer**, provide it to the **subscribe** method of an **Observable**:
 
 ```javascript
 const subscription =observable.subscribe(observer);
 ```
 
-取消订阅
-订阅实际上仅具有 unsubscribe()释放资源或取消可观察执行的功能。
+Unsubscription
+You can use **unsubscribe()** to release resources or cancel an observable execution.
 
 ```javascript
 subscription.unsubscribe();
 ```
 
-### 操作符
+### Operator
 
-操作符就是功能。操作符有两种：
-一、管道运算符是可以使用语法通过管道传递给 Observables 的类型 observableInstance.pipe(operator())。 这些包括filter(...)和 mergeMap(...)。调用时，它们不会更改现有的 Observable 实例。相反，它们返回一个新的 Observable，其订阅逻辑基于第一个 Observable。
-管道运算符是一个将 Observable 作为其输入并返回另一个 Observable 的函数。这是一个纯粹的操作：以前的 Observable 保持不变。
-二、创建运算符是另一种运算符，可以称为独立函数来创建新的 Observable。例如：of(1, 2, 3)创建一个可观察物体，该物体将依次发射 1、2 和 3。
+Operators are functions. There are two types of operators:
+1. Pipeable operators are types that can be passed to **Observables** by using the syntax **observableInstance.pipe(operator())**.  Typical operators are **filter(...)** and **mergeMap(...)**. When being called, they do not change existing **Observable** instances. Instead, they return a new **Observable** whose subscription logic is based on the first **Observable**.
+The pipeable operators are methods that take an **Observable** as input and return another **Observable**. This is a pure operation: the previous **Observable** remains unchanged.
+2. Creation operators are another type of operators that can be called as standalone functions to create new **Observables**. For example, **of(1, 2, 3)** creates an **Observable** that emits 1, 2, and 3 in sequence.
 
-以下是其中一些操作符的例子：
-create：使用给定的订阅函数来创建 observable
+Here are some examples of these operators:
+**create**: Create an **Observable** using the given **subscribe** function
 
 ```javascript
 import { Observable } from 'rxjs';
-//创建在订阅函数中发出 'Hello' 和 'World' 的 observable 。
+// Create an observable that emits 'Hello' and 'World' in the subscribe function.
     const hello = Observable.create(function (observer) {
       observer.next('Hello');
       observer.next('World');
     });
-    // 输出: 'Hello'...'World'
+    // Output: 'Hello'...'World'
     const subscribe = hello.subscribe(val => console.log(val));
 ```
 
-concat：concat 2个基础的 observables
+**concat**: Concatenate two basic Observables.
 
 ```javascript
 import { concat } from 'rxjs/operators';
 import { of } from 'rxjs';
 
-// 发出 1,2,3
+// Emit 1,2,3.
 const sourceOne = of(1, 2, 3);
-// 发出 4,5,6
+// Emit 4,5,6.
 const sourceTwo = of(4, 5, 6);
-// 先发出 sourceOne 的值，当完成时订阅 sourceTwo
+// Emit the values of sourceOne, and subscribe to sourceTwo when completed.
 const example = sourceOne.pipe(concat(sourceTwo));
-// 输出: 1,2,3,4,5,6
+// Output: 1,2,3,4,5,6
 const subscribe = example.subscribe(val =>
   console.log('Example: Basic concat:', val)
 );
 ```
 
-debounce：根据一个选择器函数，舍弃掉在两次输出之间小于指定时间的发出值
+**debounce**: Discard emitted values between two outputs that are less than the specified time according to a selector function.
 
 ```javascript
 import { of, timer } from 'rxjs';
 import { debounce } from 'rxjs/operators';
 
-// 发出四个字符串
+// Emit four strings.
 const example = of('WAIT', 'ONE', 'SECOND', 'Last will display');
 /*
-  只有在最后一次发送后再经过一秒钟，才会发出值，并抛弃在此之前的所有其他值
+  The value is sent only one second after the last emission, and all other values emitted before are discarded.
 */
 const debouncedExample = example.pipe(debounce(() => timer(1000)));
 /*
-    在这个示例中，所有的值都将被忽略，除了最后一个
-    输出: 'Last will display'
+    In this example, all values except the last one will be ignored.
+    Output: 'Last will display'
 */
 const subscribe = debouncedExample.subscribe(val => console.log(val));
 ```
 
-关于更多的操作符的使用方式，可以参考这个文档[学习RxJs](https://rxjs-cn.github.io/learn-rxjs-operators/)
+For more details about how to use operators, see [Learning RxJs](https://rxjs-cn.github.io/learn-rxjs-operators/).
 
-### Schedulers (调度器)
+### Schedulers
 
-#### 调度程序类型
+#### Scheduler Type
 
-下列中的每一个都可以通过使用Scheduler对象的静态属性来创建和返回。
+Each of the following can be created and returned using the static properties of the **Scheduler** object.
 
-| 调度器         | 目的                                                         |
+| Scheduler        | Purpose                                                        |
 | :------------- | :----------------------------------------------------------- |
-| null           | 通过不传递任何调度程序，通知以同步和递归的方式传递。将此用于恒定时间操作或尾递归操作。 |
-| queueScheduler | 当前事件框架中的队列上调度（蹦床调度程序）。将此用于迭代操作。 |
-| asapScheduler  | 微任务队列上的调度，与用于承诺的队列相同。基本上在当前工作之后，但在下一个工作之前。将此用于异步转换。 |
-| asyncScheduler | 使用 setInterval 的调度。用于基于时间的操作符。              |
+| null           | Notifications are delivered synchronously and recursively without passing any scheduler. Use this for constant time operations or tail recursive operations. |
+| queueScheduler | Scheduling on the current event frame's queue (trampoline scheduler). Use this for iteration operations. |
+| asapScheduler  | Scheduling on the micro task queue. It is the same as the queue used for commitment. It usually occurs after the current job but before the next job. Use this for asynchronous conversions. |
+| asyncScheduler | Scheduling with **setInterval**. Use this for time-based operations.             |
 
-#### 使用调度器
+#### Using Schedulers
 
-对于返回带有有限和少量消息的observable的操作符，RxJS不使用调度程序，即null或undefined。对于返回潜在大量或无限数量消息的操作符，使用queue调度程序。对于使用计时器的操作员，使用async。
+For operators that return observables with a finite and small number of messages, RxJS does not use a scheduler, i.e., **null** or **undefined**. For operators that return potentially large or infinite numbers of messages, the **queue** scheduler is used. For operators that use timers, **async** scheduler is used.
 
-* 静态创建操作符通常将调度程序作为参数。例如，from(array, scheduler)让您指定在传递从array. 它通常是运算符的最后一个参数。以下静态创建操作符采用Scheduler参数：
+* Static creation operators often take a scheduler as an argument. For example, **from(array, scheduler)** lets you specify the scheduler to use when delivering each notification converted from the specified array. It is usually the last argument of an operator. The following static creation operators use a **Scheduler** argument:
   bindCallback
   bindNodeCallback
   combineLatest
@@ -142,35 +141,35 @@ const subscribe = debouncedExample.subscribe(val => console.log(val));
   throw
   timer
 
-* 使用subscribeOn预定计划在什么情况下会在subscribe()呼叫发生。默认情况下，subscribe()对 Observable的调用将同步且立即发生。但是，您可以使用实例 operator 延迟或安排实际订阅发生在给定的调度程序上subscribeOn(scheduler)。
+* Use **subscribeOn** to schedule in what context will a **subscribe()** call occur. By default, a **subscribe()** call on an **Observable** occurs synchronously and immediately. However, you may delay or schedule the actual subscription to occur on a given scheduler using the instance operator **subscribeOn(scheduler)**.
 
-* 使用observeOn预定计划在什么情况下会通知交付。实例操作符observeOn(scheduler)在源 Observable 和目标观察者之间引入了一个中介观察者，其中中介使用给定的scheduler。实例运算符可以将调度程序作为参数。
+* Use **observeOn** to schedule in what context will notifications be delivered. The instance operator **observeOn(scheduler)** introduces a mediator **Observer** between the source **Observable** and the destination **Observer**, where the mediator schedules calls using the given **Scheduler**. The instance operator can take the scheduler as an argument.
 
-* 时间相关的操作符如bufferTime，debounceTime，delay，auditTime，sampleTime，throttleTime，timeInterval，timeout，timeoutWith，windowTime都将一个调度程序作为最后一个参数，否则默认情况下的操作asyncScheduler。
+* Time-related operators, such as **bufferTime**, **debounceTime**, **delay**, **auditTime**, **sampleTime**, **throttleTime**, **timeInterval**, **timeout**, **timeoutWith**, and **windowTime**, all take a **Scheduler** as the last argument. Otherwise, **asyncScheduler** is used by default.
 
-关于RxJs的更多介绍，可以参考官方文档[https://rxjs.dev/]
+For more information about RxJs, see the [official documentation](https://rxjs.dev/).
 
-## 接口说明
+## Available APIs
 
-RxJS 操作符的完整列表
+List of RxJS operators
 
-| 操作符类型 | 操作符方法名                                                 |
+| Operator Type | Operator Name                                                |
 | ---------- | :----------------------------------------------------------- |
-| 创建       | create、empty、from、interval、of / just、range、throw、timer |
-| 组合       | combineAll、combineLatest、concat、concatAll、forkJoin、merge、mergeAll、pairwise、race、startWith、withLatestFrom、zip |
-| 过滤       | debounce、debounceTime、distinctUntilChanged、filter、first、ignoreElements、last、sample、single、skip、skipUntil、skipWhile、take、takeUntil、takeWhile、throttle、throttleTime |
-| 条件       | defaultIfEmpty、every                                        |
-| 转换       | buffer、bufferCount、bufferTime、bufferToggle、bufferWhen、concatMap、concatMapTo、exhaustMap、expand、groupBy、map、mapTo、mergeMap、partition、pluck、reduce、scan、switchMap、window、windowCount、windowTime、windowToggle、windowWhen |
-| 工具集     | do / tap、delay、delayWhen、dematerialize、timeout           |
-| 错误处理   | catch / catchError、 retry 、  retryWhen                     |
-| 多播       | publish、multicast、share、 shareReplay                      |
+| Creation      | create, empty, from, interval, of / just, range, throw, and timer |
+| Combination      | combineAll, combineLatest, concat, concatAll, forkJoin, merge, mergeAll, pairwise, race, startWith, withLatestFrom, and zip |
+| Filtering      | debounce, debounceTime, distinctUntilChanged, filter, first, ignoreElements, last, sample, single, skip, skipUntil, skipWhile, take, takeUntil, takeWhile, throttle, and throttleTime |
+| Conditional      | defaultIfEmpty and every                                       |
+| Transformation      | buffer, bufferCount, bufferTime, bufferToggle, bufferWhen, concatMap, concatMapTo, exhaustMap, expand, groupBy, map, mapTo, mergeMap, partition, pluck, reduce, scan, switchMap, window, windowCount, windowTime, windowToggle, and windowWhen |
+| Utility    | do / tap, delay, delayWhen, dematerialize, and timeout          |
+| Error handling  | catch/catchError, retry, and retryWhen                    |
+| Multicasting      | publish, multicast, share, and shareReplay                     |
 
-## 约束与限制
-在下述版本验证通过：
+## Constraints
+RxJS has been verified in the following versions:
 
-DevEco Studio:DevEco Studio 4.1 Canary2(4.1.3.400), SDK: API11 (4.1.0.36(SP6))
+DevEco Studio: DevEco Studio 4.1 Canary2 (4.1.3.400), SDK: API11 (4.1.0.36(SP6))
 
-## 目录
+## Directory Structure
 
 ```
  ├── entry
@@ -178,26 +177,26 @@ DevEco Studio:DevEco Studio 4.1 Canary2(4.1.3.400), SDK: API11 (4.1.0.36(SP6))
  │ │ └── main
  │ │ │ ├── ets
  │ │ │ │  ├── pages
- │ │ │ │  │ ├── index.ets        # 入口文件
- │ │ │ │  │ ├── create.ets       # 创建操作符相关demo
- │ │ │ │  │ ├── filter.ets       # 过滤操作符相关demo
- │ │ │ │  │ ├── multicast.ets    # 多播操作符相关demo
- │ │ │ │  │ ├── combine.ets      # 组合操作符相关demo
- │ │ │ │  │ ├── error.ets        # 错误处理操作符相关demo
- │ │ │ │  │ ├── condition.ets    # 条件操作符相关demo
- │ │ │ │  │ ├── convert.ets      # 转换操作符相关demo
- │ │ │ │  │ ├── tool.ets         # 工具集相关demo
- │ │ │ │  │ ├── scheduler.ets    # 调度器相关demo
- │ │ │ │  │ └── ArkTools.ts      # 适配ark语法相关工具函数
- │ │ │ │  └── log.js             # 日志打印工具类
- │ │ │ ├── resources              # hap资源存放目录
- │ │ │ └── module.json5            # hap配置文件
+ │ │ │ │  │ ├── index.ets        # Entry file
+ │ │ │ │  │ ├── create.ets       # Demo for creation operators
+ │ │ │ │  │ ├── filter.ets       # Demo for filtering operators
+ │ │ │ │  │ ├── multicast.ets    # Demo for multicasting operators
+ │ │ │ │  │ ├── combine.ets      # Demo for combination operators
+ │ │ │ │  │ ├── error.ets        # Demo for error handling operators
+ │ │ │ │  │ ├── condition.ets    # Demo for conditional operators
+ │ │ │ │  │ ├── convert.ets      # Demo for transformation operators
+ │ │ │ │  │ ├── tool.ets         # Demo for utility operators
+ │ │ │ │  │ ├── scheduler.ets    # Demo for schedulers
+ │ │ │ │  │ └── ArkTools.ts      # Utility functions for ArkUI syntax adaptation
+ │ │ │ │  └── log.js             # Log printing utility class
+ │ │ │ ├── resources              # HAP resources
+ │ │ │ └── module.json5            # HAP configuration file
 ```
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem when using RxJS, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/RxJS/LICENSE) 协议，请自由地享受和参与开源。
+This project is licensed under the terms of the [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/RxJS/LICENSE).

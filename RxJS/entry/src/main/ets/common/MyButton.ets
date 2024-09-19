@@ -15,7 +15,7 @@
 
 @Component
 export struct MyButton {
-  @State content: string = '';
+  @State content: ResourceStr = '';
   onClickListener?: () => void;
 
   build() {

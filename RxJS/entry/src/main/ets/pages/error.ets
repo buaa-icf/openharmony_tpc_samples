@@ -24,17 +24,23 @@ import { retryWhenLogic } from './ArkTools';
 struct Error {
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center }) {
-      MyButton({ content: "catchError:优雅地处理 observable 序列中的错误", onClickListener: () => {
-        this.catchError();
-      } })
+      MyButton({
+        content: $r("app.string.CatchError_content"), onClickListener: () => {
+          this.catchError();
+        }
+      })
 
-      MyButton({ content: "retry:如果发生错误，以指定次数重试 observable 序列", onClickListener: () => {
-        this.retry();
-      } })
+      MyButton({
+        content: $r("app.string.Retry_content"), onClickListener: () => {
+          this.retry();
+        }
+      })
 
-      MyButton({ content: "retryWhen:当发生错误时，基于自定义的标准来重试 observable 序列", onClickListener: () => {
-        this.retryWhen();
-      } })
+      MyButton({
+        content: $r("app.string.RetryWhen_content"), onClickListener: () => {
+          this.retryWhen();
+        }
+      })
     }
     .width('100%')
     .height('100%')

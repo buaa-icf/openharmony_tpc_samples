@@ -23,43 +23,55 @@ struct Create {
   build() {
     Scroll() {
       Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center }) {
-        MyButton({ content: "create:使用给定的订阅函数来创建observable", onClickListener: () => {
-          this.create();
-        } })
+        MyButton({
+          content: $r("app.string.Create_content"), onClickListener: () => {
+            this.create();
+          }
+        })
 
-        MyButton({ content: "empty:立即完成的observable", onClickListener: () => {
-          this.empty();
-        } })
+        MyButton({
+          content: $r("app.string.Empty_content"), onClickListener: () => {
+            this.empty();
+          }
+        })
 
-        MyButton({ content: "from:将数组、promise或迭代器转换成observable", onClickListener: () => {
-          this.fromArray();
-        } })
+        MyButton({
+          content: $r("app.string.From_content"), onClickListener: () => {
+            this.fromArray();
+          }
+        })
 
-        MyButton({ content: "interval:基于给定时间间隔发出数字序列", onClickListener: () => {
-          this.intervalNum();
-        } })
+        MyButton({
+          content: $r("app.string.Interval_content"), onClickListener: () => {
+            this.intervalNum();
+          }
+        })
 
-        MyButton({ content: "of:按顺序发出任意数量的值", onClickListener: () => {
-          this.ofNum();
-        } })
+        MyButton({
+          content: $r("app.string.Of_content"), onClickListener: () => {
+            this.ofNum();
+          }
+        })
 
-        MyButton({ content: "rang:依次发出给定区间内的数字", onClickListener: () => {
-          this.rang();
-        } })
+        MyButton({
+          content: $r("app.string.Rang_content"), onClickListener: () => {
+            this.rang();
+          }
+        })
 
-        MyButton({ content: "rang:依次发出给定区间内的数字", onClickListener: () => {
-          this.rang();
-        } })
+        MyButton({
+          content: $r("app.string.Throw_content"), onClickListener: () => {
+            this.throwError();
+          }
+        })
 
-        MyButton({ content: "throw:在订阅上发出错误", onClickListener: () => {
-          this.throwError();
-        } })
+        MyButton({
+          content: $r("app.string.Timer_content"), onClickListener: () => {
+            this.timer();
+          }
+        })
 
-        MyButton({ content: "timer:给定持续时间后，再按照指定间隔时间依次发出数字", onClickListener: () => {
-          this.timer();
-        } })
-
-        Text("fromEvent:将事件转换成observable序列(不支持)")
+        Text($r("app.string.FromEvent_content"))
           .fontSize(15)
           .width(330)
           .height(50)

@@ -11,6 +11,342 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "CombineAll_content",
+      "value": "combineAll:当源observable完成时，对收集的observables使用combineLatest"
+    },
+    {
+      "name": "CombineLatest_content",
+      "value": "combineLatest:当任意observable发出值时，发出每个observable的最新值"
+    },
+    {
+      "name": "Concat_content",
+      "value": "concat:按照顺序，前一个observable完成了再订阅下一个observable并发出值"
+    },
+    {
+      "name": "ConcatAll_content",
+      "value": "concatAll:收集observables，当前一个完成时订阅下一个"
+    },
+    {
+      "name": "ForkJoin_content",
+      "value": "forkJoin:当所有observables完成时，发出每个observable的最新值"
+    },
+    {
+      "name": "Merge_content",
+      "value": "merge:将多个observables转换成单个observable"
+    },
+    {
+      "name": "MergeAll_content",
+      "value": "mergeAll:收集并订阅所有的observables"
+    },
+    {
+      "name": "Pairwise_content",
+      "value": "pairwise:将前一个值和当前值作为数组发出"
+    },
+    {
+      "name": "Race_content",
+      "value": "race:使用首先发出值的observable"
+    },
+    {
+      "name": "StartWith_content",
+      "value": "startWith:发出给定的第一个值"
+    },
+    {
+      "name": "WithLatestFrom_content",
+      "value": "withLatestFrom:还提供另一个observable的最新值"
+    },
+    {
+      "name": "zip_content",
+      "value": "zip:在所有observables发出后将它们的值作为数组发出"
+    },
+    {
+      "name": "DefaultIfEmpty_content",
+      "value": "defaultIfEmpty:如果在完成前没有发出任何通知，那么发出给定的值"
+    },
+    {
+      "name": "Every_content",
+      "value": "every:如果完成时所有的值都能通过断言，那么发出 true，否则发出false"
+    },
+    {
+      "name": "Buffer_content",
+      "value": "buffer:收集输出值，直到提供的observable发出才将收集到的值作为数组发出"
+    },
+    {
+      "name": "BufferCount_content",
+      "value": "bufferCount:收集发出的值，直到收集完提供的数量的值才将其作为数组发出"
+    },
+    {
+      "name": "BufferTime_content",
+      "value": "bufferTime:收集发出的值，直到经过了提供的时间才将其作为数组发出"
+    },
+    {
+      "name": "BufferToggle_content",
+      "value": "bufferToggle:开启开关以捕获源observable所发出的值，关闭开关以将缓冲的值作为数组发出"
+    },
+    {
+      "name": "BufferWhen_content",
+      "value": "bufferWhen:收集值，直到关闭选择器发出值才发出缓冲的值"
+    },
+    {
+      "name": "ConcatMap_content",
+      "value": "concatMap:将值映射成内部observable，并按顺序订阅和发出"
+    },
+    {
+      "name": "ConcatMapTo_content",
+      "value": "concatMapTo:当前一个observable完成时订阅提供的observable并发出值"
+    },
+    {
+      "name": "ExhaustMap_content",
+      "value": "exhaustMap:映射成内部observable，忽略其他值直到该observable完成"
+    },
+    {
+      "name": "Expand_content",
+      "value": "expand:递归调用提供的函数"
+    },
+    {
+      "name": "GroupBy_content",
+      "value": "groupBy:基于提供的值分组成多个observables"
+    },
+    {
+      "name": "Map_content",
+      "value": "map:对源observable的每个值应用投射函数"
+    },
+    {
+      "name": "MapTo_content",
+      "value": "mapTo:将每个发出值映射成常量"
+    },
+    {
+      "name": "MergeMap_content",
+      "value": "mergeMap:映射成observable并发出值"
+    },
+    {
+      "name": "Partition_content",
+      "value": "partition:根据提供的谓词将一个可观测值拆分为两个"
+    },
+    {
+      "name": "pluck_content",
+      "value": "pluck:选择属性来发出"
+    },
+    {
+      "name": "Reduce_content",
+      "value": "reduce:将源observalbe的值归并为单个值，当源observable完成时将这个值发出"
+    },
+    {
+      "name": "Scan_content",
+      "value": "scan:随着时间的推移进行归并"
+    },
+    {
+      "name": "SwitchMap_content",
+      "value": "switchMap:映射成observable，完成前一个内部observable，发出值"
+    },
+    {
+      "name": "Window_content",
+      "value": "window:时间窗口值的observable"
+    },
+    {
+      "name": "WindowCount_content",
+      "value": "windowCount:源observable中的值的observable，每次发出N个值"
+    },
+    {
+      "name": "WindowTime_content",
+      "value": "windowTime:在每个提供的时间跨度内，收集源obsercvable中的值的observable"
+    },
+    {
+      "name": "WindowToggle_content",
+      "value": "windowToggle:以openings发出为起始，以closingSelector发出为结束，收集并发出源observable中的值的observable"
+    },
+    {
+      "name": "WindowWhen_content",
+      "value": "windowWhen:在提供的时间帧处关闭窗口，并发出从源observable中收集的值的observable"
+    },
+    {
+      "name": "Create_content",
+      "value": "create:使用给定的订阅函数来创建observable"
+    },
+    {
+      "name": "Empty_content",
+      "value": "empty:立即完成的observable"
+    },
+    {
+      "name": "From_content",
+      "value": "from:将数组、promise或迭代器转换成observable"
+    },
+    {
+      "name": "Interval_content",
+      "value": "interval:基于给定时间间隔发出数字序列"
+    },
+    {
+      "name": "Of_content",
+      "value": "of:按顺序发出任意数量的值"
+    },
+    {
+      "name": "Rang_content",
+      "value": "rang:依次发出给定区间内的数字"
+    },
+    {
+      "name": "Throw_content",
+      "value": "throw:在订阅上发出错误"
+    },
+    {
+      "name": "Timer_content",
+      "value": "timer:给定持续时间后，再按照指定间隔时间依次发出数字"
+    },
+    {
+      "name": "FromEvent_content",
+      "value": "fromEvent:将事件转换成observable序列(不支持)"
+    },
+    {
+      "name": "CatchError_content",
+      "value": "catchError:优雅地处理 observable 序列中的错误"
+    },
+    {
+      "name": "Retry_content",
+      "value": "retry:如果发生错误，以指定次数重试 observable 序列"
+    },
+    {
+      "name": "RetryWhen_content",
+      "value": "retryWhen:当发生错误时，基于自定义的标准来重试 observable 序列"
+    },
+    {
+      "name": "Debounce_content",
+      "value": "debounce:根据一个选择器函数，舍弃掉在两次输出之间小于指定时间的发出值"
+    },
+    {
+      "name": "DebounceTime_content",
+      "value": "debounceTime:舍弃掉在两次输出之间小于指定时间的发出值"
+    },
+    {
+      "name": "DistinctUntilChanged_content",
+      "value": "distinctUntilChanged:只有当当前值与之前最后一个值不同时才将其发出"
+    },
+    {
+      "name": "Filter_content",
+      "value": "filter:发出符合给定条件的值"
+    },
+    {
+      "name": "First_content",
+      "value": "first:发出第一个值或第一个通过给定表达式的值"
+    },
+    {
+      "name": "IgnoreElements_content",
+      "value": "ignoreElements:忽略所有通知，除了complete和error"
+    },
+    {
+      "name": "Last_content",
+      "value": "last:根据提供的表达式，在源 observable 完成时发出它的最后一个值"
+    },
+    {
+      "name": "Sample_content",
+      "value": "sample:当提供的observable发出时从源observable中取样"
+    },
+    {
+      "name": "Single_content",
+      "value": "single:发出通过表达式的单一项"
+    },
+    {
+      "name": "Skip_content",
+      "value": "skip:跳过N个(由参数提供)发出值"
+    },
+    {
+      "name": "SkipUntil_content",
+      "value": "skipUntil:跳过源observable发出的值，直到提供的observable发出值"
+    },
+    {
+      "name": "SkipWhile_content",
+      "value": "skipWhile:跳过源observable发出的值，直到提供的表达式结果为 false"
+    },
+    {
+      "name": "Take_content",
+      "value": "take:在完成前发出N个值(N由参数决定)"
+    },
+    {
+      "name": "TakeUntil_content",
+      "value": "takeUntil:发出值，直到提供的observable发出值，它便完成"
+    },
+    {
+      "name": "TakeWhile_content",
+      "value": "takeWhile:发出值，直到提供的表达式结果为 false"
+    },
+    {
+      "name": "Throttle_content",
+      "value": "throttle:以某个时间间隔为阈值，在durationSelector 完成前将抑制新值的发出"
+    },
+    {
+      "name": "ThrottleTime_content",
+      "value": "throttleTime:当指定的持续时间经过后发出最新值"
+    },
+    {
+      "name": "Create_operation",
+      "value": "创建操作"
+    },
+    {
+      "name": "Filtering_content",
+      "value": "过滤操作"
+    },
+    {
+      "name": "Multicast_content",
+      "value": "多播操作"
+    },
+    {
+      "name": "Combined_content",
+      "value": "组合操作"
+    },
+    {
+      "name": "Incorrect_content",
+      "value": "错误操作"
+    },
+    {
+      "name": "Conditional_content",
+      "value": "条件操作"
+    },
+    {
+      "name": "Conversion_content",
+      "value": "转换操作"
+    },
+    {
+      "name": "Tool_content",
+      "value": "工具"
+    },
+    {
+      "name": "Scheduler_content",
+      "value": "调度器"
+    },
+    {
+      "name": "Publish_content",
+      "value": "publish:共享源observable并通过调用connect方法使其变成热的"
+    },
+    {
+      "name": "Multicasts_content",
+      "value": "multicast:使用提供的Subject来共享源observable"
+    },
+    {
+      "name": "Share_content",
+      "value": "share:在多个订阅者间共享源observable"
+    },
+    {
+      "name": "ShareReplay_content",
+      "value": "shareReplay:共享源observable并重放指定次数的发出"
+    },
+    {
+      "name": "Do_tap_content",
+      "value": "do/tap:透明地执行操作或副作用，比如打印日志"
+    },
+    {
+      "name": "Delay_content",
+      "value": "delay:根据给定时间延迟发出值"
+    },
+    {
+      "name": "DelayWhen_content",
+      "value": "delayWhen:延迟发出值，延迟时间由提供函数决定"
+    },
+    {
+      "name": "Dematerialize_content",
+      "value": "dematerialize:将notification对象转换成notification值"
+    },
+    {
+      "name": "Timeout_content",
+      "value": "timeout:在指定时间间隔内不发出值就报错"
     }
   ]
 }

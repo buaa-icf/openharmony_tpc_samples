@@ -19,7 +19,7 @@ import router from '@ohos.router'
 @Component
 struct Index {
   @Builder
-  MyButton(content: string, eventType: number) {
+  MyButton(content: string | Resource, eventType: number) {
     Button(content, { type: ButtonType.Normal })
       .borderRadius(5)
       .width(300)
@@ -36,15 +36,15 @@ struct Index {
   build() {
     Scroll() {
       Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center }) {
-        this.MyButton('创建操作', 1)
-        this.MyButton('过滤操作', 2)
-        this.MyButton('多播操作', 3)
-        this.MyButton('组合操作', 4)
-        this.MyButton('错误操作', 5)
-        this.MyButton('条件操作', 6)
-        this.MyButton('转换操作', 7)
-        this.MyButton('工具', 8)
-        this.MyButton('调度器', 9)
+        this.MyButton($r("app.string.Create_operation"), 1)
+        this.MyButton($r("app.string.Filtering_content"), 2)
+        this.MyButton($r("app.string.Multicast_content"), 3)
+        this.MyButton($r("app.string.Combined_content"), 4)
+        this.MyButton($r("app.string.Incorrect_content"), 5)
+        this.MyButton($r("app.string.Conditional_content"), 6)
+        this.MyButton($r("app.string.Conversion_content"), 7)
+        this.MyButton($r("app.string.Tool_content"), 8)
+        this.MyButton($r("app.string.Scheduler_content"), 9)
       }
     }
     .width('100%')

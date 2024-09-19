@@ -23,25 +23,35 @@ import { MyButton } from '../common/MyButton'
 struct Tool {
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center }) {
-      MyButton({ content: "do/tap:透明地执行操作或副作用，比如打印日志", onClickListener: () => {
-        this.tap();
-      } })
+      MyButton({
+        content: $r("app.string.Do_tap_content"), onClickListener: () => {
+          this.tap();
+        }
+      })
 
-      MyButton({ content: "delay:根据给定时间延迟发出值", onClickListener: () => {
-        this.delay();
-      } })
+      MyButton({
+        content: $r("app.string.Delay_content"), onClickListener: () => {
+          this.delay();
+        }
+      })
 
-      MyButton({ content: "delayWhen:延迟发出值，延迟时间由提供函数决定", onClickListener: () => {
-        this.delayWhen();
-      } })
+      MyButton({
+        content: $r("app.string.DelayWhen_content"), onClickListener: () => {
+          this.delayWhen();
+        }
+      })
 
-      MyButton({ content: "dematerialize:将notification对象转换成notification值", onClickListener: () => {
-        this.dematerialize();
-      } })
+      MyButton({
+        content: $r("app.string.Dematerialize_content"), onClickListener: () => {
+          this.dematerialize();
+        }
+      })
 
-      MyButton({ content: "timeout:在指定时间间隔内不发出值就报错", onClickListener: () => {
-        this.timeout();
-      } })
+      MyButton({
+        content: $r("app.string.Timeout_content"), onClickListener: () => {
+          this.timeout();
+        }
+      })
     }
     .width('100%')
     .height('100%')

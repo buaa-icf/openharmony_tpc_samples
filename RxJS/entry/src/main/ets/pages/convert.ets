@@ -53,116 +53,146 @@ struct Convert {
     Scroll() {
       Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center }) {
         MyButton({
-          content: "buffer:收集输出值，直到提供的observable发出才将收集到的值作为数组发出",
+          content: $r("app.string.Buffer_content"),
           onClickListener: () => {
             this.buffer();
           }
         })
 
         MyButton({
-          content: "bufferCount:收集发出的值，直到收集完提供的数量的值才将其作为数组发出",
+          content: $r("app.string.BufferCount_content"),
           onClickListener: () => {
             this.bufferCount();
           }
         })
 
-        MyButton({ content: "bufferTime:收集发出的值，直到经过了提供的时间才将其作为数组发出", onClickListener: () => {
-          this.bufferTime();
-        } })
+        MyButton({
+          content: $r("app.string.BufferTime_content"), onClickListener: () => {
+            this.bufferTime();
+          }
+        })
 
         MyButton({
-          content: "bufferToggle:开启开关以捕获源observable所发出的值，关闭开关以将缓冲的值作为数组发出",
+          content: $r("app.string.BufferToggle_content"),
           onClickListener: () => {
             this.bufferToggle();
           }
         })
 
-        MyButton({ content: "bufferWhen:收集值，直到关闭选择器发出值才发出缓冲的值", onClickListener: () => {
-          this.bufferWhen();
-        } })
-
-        MyButton({ content: "concatMap:将值映射成内部observable，并按顺序订阅和发出", onClickListener: () => {
-          this.concatMap();
-        } })
-
-        MyButton({ content: "concatMapTo:当前一个observable完成时订阅提供的observable并发出值", onClickListener: () => {
-          this.concatMapTo();
-        } })
-
-        MyButton({ content: "exhaustMap:映射成内部observable，忽略其他值直到该observable完成", onClickListener: () => {
-          this.exhaustMap();
-        } })
-
-        MyButton({ content: "expand:递归调用提供的函数", onClickListener: () => {
-          this.expand();
-        } })
-
-        MyButton({ content: "groupBy:基于提供的值分组成多个observables", onClickListener: () => {
-          this.groupBy();
-        } })
-
-        MyButton({ content: "map:对源observable的每个值应用投射函数", onClickListener: () => {
-          this.map();
-        } })
-
-        MyButton({ content: "mapTo:将每个发出值映射成常量", onClickListener: () => {
-          this.mapTo();
-        } })
-
-        MyButton({ content: "mergeMap:映射成observable并发出值", onClickListener: () => {
-          this.mergeMap();
-        } })
+        MyButton({
+          content: $r("app.string.BufferWhen_content"), onClickListener: () => {
+            this.bufferWhen();
+          }
+        })
 
         MyButton({
-          content: "partition:Split one observable into two based on provided predicate",
+          content: $r("app.string.ConcatMap_content"), onClickListener: () => {
+            this.concatMap();
+          }
+        })
+
+        MyButton({
+          content: $r("app.string.ConcatMapTo_content"), onClickListener: () => {
+            this.concatMapTo();
+          }
+        })
+
+        MyButton({
+          content: $r("app.string.ExhaustMap_content"), onClickListener: () => {
+            this.exhaustMap();
+          }
+        })
+
+        MyButton({
+          content: $r("app.string.Expand_content"), onClickListener: () => {
+            this.expand();
+          }
+        })
+
+        MyButton({
+          content: $r("app.string.GroupBy_content"), onClickListener: () => {
+            this.groupBy();
+          }
+        })
+
+        MyButton({
+          content: $r("app.string.Map_content"), onClickListener: () => {
+            this.map();
+          }
+        })
+
+        MyButton({
+          content: $r("app.string.MapTo_content"), onClickListener: () => {
+            this.mapTo();
+          }
+        })
+
+        MyButton({
+          content: $r("app.string.MergeMap_content"), onClickListener: () => {
+            this.mergeMap();
+          }
+        })
+
+        MyButton({
+          content: $r("app.string.Partition_content"),
           onClickListener: () => {
             this.partition();
           }
         })
 
-        MyButton({ content: "pluck:选择属性来发出", onClickListener: () => {
-          this.pluck();
-        } })
+        MyButton({
+          content: $r("app.string.pluck_content"), onClickListener: () => {
+            this.pluck();
+          }
+        })
 
         MyButton({
-          content: "reduce:将源observalbe的值归并为单个值，当源observable完成时将这个值发出",
+          content: $r("app.string.Reduce_content"),
           onClickListener: () => {
             this.reduce();
           }
         })
 
-        MyButton({ content: "scan:随着时间的推移进行归并", onClickListener: () => {
-          this.scan();
-        } })
-
-        MyButton({ content: "switchMap:映射成observable，完成前一个内部observable，发出值", onClickListener: () => {
-          this.switchMap();
-        } })
-
-        MyButton({ content: "window:时间窗口值的observable", onClickListener: () => {
-          this.window();
-        } })
-
-        MyButton({ content: "windowCount:源observable中的值的observable，每次发出N个值", onClickListener: () => {
-          this.windowCount();
-        } })
+        MyButton({
+          content: $r("app.string.Scan_content"), onClickListener: () => {
+            this.scan();
+          }
+        })
 
         MyButton({
-          content: "windowTime:在每个提供的时间跨度内，收集源obsercvable中的值的observable",
+          content: $r("app.string.SwitchMap_content"), onClickListener: () => {
+            this.switchMap();
+          }
+        })
+
+        MyButton({
+          content: $r("app.string.Window_content"), onClickListener: () => {
+            this.window();
+          }
+        })
+
+        MyButton({
+          content: $r("app.string.WindowCount_content"), onClickListener: () => {
+            this.windowCount();
+          }
+        })
+
+        MyButton({
+          content: $r("app.string.WindowTime_content"),
           onClickListener: () => {
             this.windowTime();
           }
         })
 
         MyButton({
-          content: "windowToggle:以openings发出为起始，以closingSelector发出为结束，收集并发出源observable中的值的observable",
+          content: $r("app.string.WindowToggle_content"),
           onClickListener: () => {
             this.windowToggle();
           }
         })
 
         MyButton({
-          content: "windowWhen:在提供的时间帧处关闭窗口，并发出从源observable中收集的值的observable",
+          content: $r("app.string.WindowWhen_content"),
           onClickListener: () => {
             this.windowWhen();
           }

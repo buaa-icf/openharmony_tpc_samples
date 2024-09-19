@@ -7,6 +7,5 @@
   "main": "",
   "version": "7.8.1",
   "dependencies": {
-    "tslib": "2.6.1"
   }
 }
