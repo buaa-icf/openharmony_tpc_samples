@@ -16,7 +16,7 @@ import base32 from 'hi-base32'
 @Entry
 @Component
 struct Index {
-  @State message: string = 'hi-base32的编码与解码'
+  @State message: string = getContext(this).resourceManager.getStringByNameSync('app.string.text_label').toString()
   @State inputText: string = ''
   @State encodes: string = ''
 
@@ -38,12 +38,12 @@ struct Index {
             this.inputText = value
           })
 
-        Button('编码').width(300).margin(20).fontSize(25).onClick(()=>{
+        Button($r("app.string.encode_label")).width(300).margin(20).fontSize(25).onClick(()=>{
           this.encodes = base32.encode (this.inputText);
           this.showDialog(this.encodes )
         })
 
-        Button('解码').width(300).margin(20).fontSize(25).onClick(()=>{
+        Button($r("app.string.decode_label")).width(300).margin(20).fontSize(25).onClick(()=>{
           let mess = base32.decode (this.encodes );
           this.showDialog(mess)
         })

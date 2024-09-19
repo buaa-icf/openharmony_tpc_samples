@@ -11,6 +11,21 @@
     {
       "name": "EntryAbility_label",
       "value": "hi-base32Demo"
+    },
+    {
+
+      "name": "text_label",
+      "value": "Hi-Base32 encoding and decoding"
+    },
+    {
+
+      "name": "encode_label",
+      "value": "Encode"
+    },
+    {
+
+      "name": "decode_label",
+      "value": "Decode"
     }
   ]
 }
