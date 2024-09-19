@@ -1,18 +1,20 @@
 # EventEmitter3 
 
-## 简介
+## Introduction
 
- EventEmitter3是一款高性能EventEmitter，支持添加监听事件，监听一次性事件，发送事件，移除事件，统计监听事件的个数，统计监听事件的名称。
+**EventEmitter3** is a high-performance EventEmitter. It provides APIs for adding a listener for an event, adding a one-time listener for an event, emitting an event, removing listeners, and obtaining the names and the number of listeners for an event.
+
+## How to Install
 
 ```
 ohpm install @types/eventemitter3 
 ```
 
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage_en.md).
 
-## 使用说明
+## How to Use
 
-安装eventemitter3库之后，在需要使用的界面先导入eventemitter3，并完成初始化。
+After the **EventEmitter3** library is installed, import **EventEmitter** from **eventemitter3** and initialize **EventEmitter**.
 
 ```typescript
 import EventEmitter from 'eventemitter3';
@@ -20,79 +22,79 @@ import EventEmitter from 'eventemitter3';
 let emitter: EventEmitter<string, Object> = new EventEmitter<string, Object>();
 ```
 
-### 添加事件
+### Adding a Listener for an Event
 
-#### 通过on的方式来绑定事件
+#### Using **on()**
 
   ```typescript
-// 通过on来绑定event事件，通过回调接口来接受发送的事件，无数据传递
+// Call on() to add a listener for an event named 'event'. When 'event' is emitted, a callback is invoked. In this case, the callback receives no data.
 emitter.on('event', () => {
-  ctx.state = ctx.state + "\r\n" + `收到事件event回调`
+  ctx.state = ctx.state + "\r\n" + `Received the event callback.`
 });  
-// 通过on来绑定event事件，通过回调接口来接受发送的事件传递来的数据 data
+// Call on() to add a listener for an event named 'event'. When 'event' is emitted, a callback is invoked. In this case, the callback receives 'data', which is of the string type.
 emitter.on('event', (data: string) => {
-  ctx.state = ctx.state + "\r\n" + `收到事件event回调，数据为：${data}`
+  ctx.state = ctx.state + "\r\n" + `Received the event callback with data of ${data}.`
 });
 
-// 通过on来绑定event事件，通过回调接口来接受发送事件传递来的数据 name,age
+// Call on() to add a listener for an event named 'event'. When 'event' is emitted, a callback is invoked. In this case, the callback receives name and age.
 emitter.on('event', (name: string,age: number) => {
-  ctx.state = ctx.state + "\r\n" + `收到事件event回调，name为：${data},age为：${age}`
+  The ctx.state = ctx.state + "\r\n" + `Received the event callback, with name of ${data} and age of ${age}'.
 });
 
   ```
 
-EventEmitter3支持通过on的方式来绑定事件，在回调接口里面接受该事件传递的数据，回调接口支持0到多个参数。
+You can **on()** to add a listener for an event. After the event is emitted, a callback will be invoked to receive the data passed by the event. The callback supports none or multiple parameters.
 
-#### 通过addListener的方式来绑定事件
+#### Using **addListener()**
 
 ```typescript
   emitter.addListener('addListener', () => {
-      ctx.state = ctx.state + "\r\n" + `收到事件addListener回调`
+      ctx.state = ctx.state + "\r\n" + `Received the addListener event callback.`
   });
 
  let callback = (data: string) => {
-      ctx.state = ctx.state + "\r\n" + `收到事件callback回调，数据为：${data}`
+      ctx.state = ctx.state + "\r\n" + `Received the callback event callback with data of ${data}.`
  }
  emitter.addListener('callback', callback);
 ```
 
-EventEmitter3也支持通过addListener的方式来绑定事件，在回调接口里面接受该事件传递的数据，回调接口支持0到多个参数。
+You can also use **addListener()** to add a listener for an event. After the event is emitted, a callback will be invoked to receive the data passed by the event. The callback supports none or multiple parameters.
 
-#### 通过once的方式来绑定事件
+#### Using **once()**
 
 ```typescript
 emitter.once('single', (data: string) => {
-      ctx.state = ctx.state + "\r\n" + `收到事件single回调，数据为：${data}`
+      ctx.state = ctx.state + "\r\n" + `Received the single event callback with data of ${data}.`
     });
 ```
 
-EventEmitter3还支持通过once的方式来绑定事件，该事件在接收到一次回调之后即会解除绑定。
+You can also use **once()** to add a listener for an event. The listener will be automatically removed once the callback is invoked.
 
 
 
-**以上三种方式均可绑定事件，并且同一个事件可以绑定多次，事件发出之后每个绑定事件的回调接口均可以接收到通知，回调接口接收到通知的顺序为绑定时候的顺序**
+You can use **on()**, **addListener()**, or **once()** to add a listener for an event. An event can be added with multiple listeners. Each time an event is emitted, the callback registered for the event can receive a notification. The order in which the callbacks receive notifications is as per the order in which the callbacks are registered.
 
-### 发送事件
+### Emitting an Event
 
 ```typescript
 emitter.emit("callback")
-emitter.emit('event', "这是原始信息");
-emitter.emit('event', 'Tom', 18, "这是原始信息");
+emitter.emit ('event', "This is original info.");
+emitter.emit ('event', 'Tom', 18, "This is original info.");
 ```
 
-EventEmitter3通过emit发送事件，支持同时携带多个参数。其中首个参数为事件名称，其余参数为该事件携带的数据。
+You can use **emit()** to emit an event. This API can carry multiple parameters. The first parameter is the event name, and the other parameters are the data carried in the event.
 
-如果用户是通过on或者addListener来绑定的事件，那么emit发送多次事件，回调接口可以接收到多次回调。
+If you use **on()** or **addListener()** to add a listener for an event, a callback will be invoked each time the event is emitted.
 
-如果用户是通过once来绑定的事件，那么emit发送多次事件，回调接口只可以接收一次回调。
+If you use **once()**, the callback can be invoked only once after the event is emitted.
 
 
 
-**发送事件一定要发生在绑定事件之后，否则绑定事件的回调接口无法接收到事件的通知**
+**emit()** must be called after **on()**, **addListener()**, or **once()**. Otherwise, the callback registered for the event cannot receive the event notification.
 
-### 解绑事件
+### Removing a Listener from an Event
 
-#### 通过off的方式来解绑
+#### Using **off()**
 
 ```typescript
  let listener1 = () => {
@@ -101,9 +103,9 @@ EventEmitter3通过emit发送事件，支持同时携带多个参数。其中首
  emitter.off('listenNum', listener1)
 ```
 
-#### 通过removeListener的方式来解绑
+#### Using **removeListener()**
 
-一次性绑定多个同名的事件回调接口，同时不指定移除某一个回调接口，那么通过事件名移除回调接口的时候，会把同名的所有回调接口都移除。
+For the same event that is added with multiple listeners, all the listeners for the event will be removed if the callback is not specified when **removeListener()** is used. In the following example, callbacks **obj1**, **obj2**, **obj3**, and **obj4** are registered for the same event **newListener**. The **emitter.removeListener('newListener');** API will remove all the listeners for **newListener**.
 
 ```typescript
 let obj1 = () => {}
@@ -117,7 +119,7 @@ emitter.on('newListener', obj4);
 emitter.removeListener('newListener');
 ```
 
-一次性绑定多个同名的事件回调接口，指定移除某一个回调接口，那么通过事件名移除回调接口的时候，只会移除该回调接口，同时保留同名的剩余回调接口。
+In the following example, **emitter.removeListener('newListener',obj3);** will remove only the listener added by **emitter.on('newListener', obj3);**.
 
 ```typescript
 let obj1 = () => {}
@@ -131,36 +133,38 @@ emitter.on('newListener', obj4);
 emitter.removeListener('newListener',obj3);
 ```
 
-**通过off解绑同样是不指定移除某个回调接口的时候，会把同名事件的所有回调接口都移除。**
+That is the same for **off()**. If you do not specify the callback in **off()**, all the listeners added for the same event will be removed.
 
-#### 通过removeAllListeners移除所有绑定的事件
+#### Using **removeAllListeners**
+
+Use **removeAllListeners** to remove all listeners.
 
 ```typescript
 emitter.removeAllListeners();
 ```
 
-### 简单使用示例
+### Example
 
 ```typescript
-const emitter: EventEmitter<string, Object> = new EventEmitter<string, Object>(); //初始化EventEmitter
+const emitter: EventEmitter<string, Object> = new EventEmitter<string, Object>(); // Initialize EventEmitter.
 
-emitter.on('event', (name: string, age: number) => {   //绑定事件event
+emitter.on('event', (name: string, age: number) ==> { // Add a listener for an event named 'event'. 
   console.log(`${name} is ${age} years old`);
 });
 let callback = (data: string) => {   
   console.log(`data is ${data} `);
 }
-emitter.addListener('callback', callback);//绑定事件callback
-emitter.emit('event', 'Tom', 18);  //发送事件
-emitter.listeners('event') //返回一个事件的listener数组
-emitter.listenerCount('event') //返回一个事件的listener数量
-emitter.eventNames(); //返回绑定的所有事件的名称数组
-emitter.off('event') //移除event事件
-emitter.removeListener('callback',callback) //移除callback事件
-emitter.removeAllListeners() //移除绑定的所有事件
+emitter.addListener('callback', callback);// Add a listener for an event named 'callback'.
+emitter.emit('event', 'Tom', 18); // Emit the 'event' event.
+emitter.listeners('event') // Return all the listeners for the 'event' event.
+emitter.listenerCount('event') // Return the number of listeners for the 'event' event.
+emitter.eventNames(); // Return the names of all the events observed.
+emitter.off('event') // Remove the listeners for the 'event' event.
+emitter.removeListener('callback',callback) // Remove the listener for the 'callback' event.
+emitter.removeAllListeners() // Remove all event listeners.
 ```
 
-### 跨页面调用
+### Cross-Page Invocation
 
 EntryAbility.ts
 
@@ -187,7 +191,7 @@ Index.ets
 ```typescript
 import { GlobalContext } from './GlobalContext'
         
-        Button('页面之间的通信') 
+        Button ('Communication between pages')
         .width('100%')
         .backgroundColor(Color.Blue)
         .fontColor(Color.White)
@@ -197,11 +201,11 @@ import { GlobalContext } from './GlobalContext'
           router.pushUrl({
             url: 'pages/JumpOne'
           }).then(() => {
-              // 需要在跳转发起之后发出事件，否则下个页面的事件监听还没有绑定则无法接收到发出的事件
+              // The event must be emitted after the redirection is initiated. Otherwise, the event listener of the next page has not been added and cannot receive the event emitted.
             let emitterInstance: EventEmitter<string, Object> | undefined = GlobalContext.getContext()
               .getObject(GlobalContext.KEY_EMITTER) as EventEmitter<string, Object>;
             if (emitterInstance) {
-              emitterInstance.emit('pageOne', '这是首页发给页面1的信息');
+              emitterInstance.emit ('pageOne','This is the information sent from the home page to page 1.');
             }
           })
 
@@ -215,7 +219,7 @@ import { GlobalContext } from './GlobalContext'
         
   aboutToAppear() {
     const ctx = this
-    // 页面初始化的时候绑定事件，一定要保证使用全局的EventEmitter对象，以及绑定事件发生在发出事件之前
+    // When adding a listener during page initialization, use the global EventEmitter object and add the listener before the event is emitted.
     let emitter: EventEmitter<string, Object> | undefined = GlobalContext.getContext()
       .getObject(GlobalContext.KEY_EMITTER) as EventEmitter<string, Object>;
     if (emitter) {
@@ -227,7 +231,7 @@ import { GlobalContext } from './GlobalContext'
   }
 ```
 
-### 事件处理排序
+### Sequencing Events
 
 ```typescript
 import EventEmitter from 'eventemitter3'
@@ -240,17 +244,17 @@ struct EventSequencing {
 
   aboutToAppear() {
     this.emitter = new EventEmitter<string, Object>();
-    this.emitter.on('event', (name: string, age: number, message: string) => {}); //页面初始化的时候添加同名的event事件
+    this.emitter.on('event', (name: string, age: number, message: string) => {}); // Add the same event name in page initialization.
   }
 
   onPageShow() {
-    this.emitter.on('event', (name: string, age: number, message: string) => {}); //页面显示的时候添加同名的event事件
+    this.emitter.on('event', (name: string, age: number, message: string) => {}); // Add the same event name when the page is displayed.
   }
 
   build() {
     Row() {
       Column() {
-        Button('发送事件')
+        Button ('Emit Event')
           .width('100%')
           .height(50)
           .backgroundColor(Color.Blue)
@@ -267,63 +271,63 @@ struct EventSequencing {
 
   startSendEvent() {
     const ctx = this
-    //点击按钮之后首次添加同名的event事件
+    // Add an event with the same name for the first time after the button is clicked.
     ctx.emitter.on('event', (name: string, age: number, message: string) => {});
-    //点击按钮之后第二次添加同名的event事件
+    // Add an event with the same name after the button is clicked the second time.
     ctx.emitter.on('event', (name: string, age: number, message: string) => { });
-    ctx.emitter.emit('event', 'Tom', 18, "这是原始信息");
+    ctx.emitter.emit('event', 'Tom', 18, "This is original info.");
   }
 }
   
 ```
 
-在发出事件之后通过查看各个对调接口的执行顺序可以发现，回调接口的执行顺序是按照添加顺序来执行的。在一些场景下，需要对事件进行排序处理，例如在队列中处理事件，只需要按照顺序将事件添加到EventEmitter3即可。
+After the event is emitted, the callbacks are invoked in the sequence in which they are added. In some scenarios, you need to sequence the events. For example, to process events in a queue, you need to add the events to **EventEmitter3** in sequence.
 
-## 接口说明
+## Available APIs
 
 ### EventEmitter3
 
-| 接口名             | 参数                                                         | 返回值                                           | 说明                         |
+| API            | Parameter                                                        | Return Value                                          | Description                        |
 | ------------------ | ------------------------------------------------------------ | ------------------------------------------------ | ---------------------------- |
-| eventNames         | 暂无                                                         | Array<EventEmitter.EventNames<EventTypes>>       | 返回绑定的所有事件的名称数组 |
-| listeners          | event: T                                                     | Array<EventEmitter.EventListener<EventTypes, T>> | 返回一个事件的listener数组   |
-| listenerCount      | event: EventEmitter.EventNames<EventTypes>                   | number                                           | 返回一个事件的listener数量   |
-| emit               | event: T, ...args: EventEmitter.EventArgs<EventTypes, T>     | boolean                                          | 发送一个事件                 |
-| on                 | event: T,<br/>fn: EventEmitter.EventListener<EventTypes, T>, <br/>context?: Context | EventEmitter                                     | 绑定事件                     |
-| addListener        | event: T,<br/>fn: EventEmitter.EventListener<EventTypes, T>, <br/>context?: Context | EventEmitter                                     | 添加事件                     |
-| once               | event: T,<br/>fn: EventEmitter.EventListener<EventTypes, T>, <br/>context?: Context | EventEmitter                                     | 绑定一次性事件               |
-| removeListener     | event: T,<br/>fn?: EventEmitter.EventListener<EventTypes, T>, <br/>context?: Context,<br/>once?: boolean | EventEmitter                                     | 移除事件                     |
-| off                | event: T,<br/>fn?: EventEmitter.EventListener<EventTypes, T>, <br/>context?: Context,<br/>once?: boolean | EventEmitter                                     | 移除事件                     |
-| removeAllListeners | event?: EventEmitter.EventNames<EventTypes>                  | EventEmitter                                     | 移除绑定的所有事件           |
+| eventNames         | None                                                        | Array<EventEmitter.EventNames<EventTypes>>       | Returns the names of all the events observed.|
+| listeners          | event: T                                                     | Array<EventEmitter.EventListener<EventTypes, T>> | Returns all the listeners of an event.  |
+| listenerCount      | event: EventEmitter.EventNames<EventTypes>                   | number                                           | Returns the number of listeners for an event.  |
+| emit               | event: T, ...args: EventEmitter.EventArgs<EventTypes, T>     | boolean                                          | Emits an event.                |
+| on                 | event: T,<br>fn: EventEmitter.EventListener<EventTypes, T>, <br>context?: Context | EventEmitter                                     | Listens for an event.                    |
+| addListener        | event: T,<br>fn: EventEmitter.EventListener<EventTypes, T>, <br>context?: Context | EventEmitter                                     | Adds a listener for an event.                    |
+| once               | event: T,<br>fn: EventEmitter.EventListener<EventTypes, T>, <br>context?: Context | EventEmitter                                     | Adds a one-time listener for an event.              |
+| removeListener     | event: T,<br>fn?: EventEmitter.EventListener<EventTypes, T>, <br>context?: Context,<br>once?: boolean | EventEmitter                                     | Removes a listener from an event.                    |
+| off                | event: T,<br>fn?: EventEmitter.EventListener<EventTypes, T>, <br>context?: Context,<br>once?: boolean | EventEmitter                                     | Removes a listener from an event.                    |
+| removeAllListeners | event?: EventEmitter.EventNames<EventTypes>                  | EventEmitter                                     | Removes all listeners.          |
 
-更多模块的使用可参考[官方文档](https://github.com/primus/eventemitter3/blob/master/README.md)，[单元测试用例](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/EventEmitter3Demo/TEST.md)详情可参考
+For more information, see [EventEmitter3](https://github.com/primus/eventemitter3/blob/master/README.md) and [Unit Test Cases](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/EventEmitter3Demo/TEST.md).
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+This project has been verified in the following version:
+
 DevEco Studio: 4.0 Release(4.0.3.513), SDK: API10 Release(4.0.10.10)
 
-## 目录结构
+## Directory Structure
 
 ```typescript
 |---- EventEmitter3Demo  
-|     |---- entry  # 示例代码文件夹
-			|---- pages  # 应用页面，根据测试场景的不同分为不同页面。
-			    |---- ApiTest.ets  # 全量API测试示例
-                |---- EventSequencing.ets  # 事件处理排序示例
-                |---- FileRead.ets  # 监听文件读取完成的事件示例
-                |---- GlobalContext.ts  # 单例模式的存储类
-                |---- Index.ets  # 首页
-                |---- JumpOne.ets  # 页面跳转页面1示例
-                |---- JumpTwo.ets  # 页面跳转页面2示例
-|     |---- README.MD  # 安装使用方法                   
+|     |---- entry  # Sample code
+			|---- pages  # Application pages, which may vary depending on the test scenario
+			   |---- ApiTest.ets          # Full API test cases
+                |---- EventSequencing.ets  # Event sequencing example
+                |---- FileRead.ets         # Example of file read listening
+                |---- GlobalContext.ts     # Global context for singleton mode
+                |---- Index.ets            # Homepage
+                |---- JumpOne.ets          # Example of jumping to page 1
+                |---- JumpTwo.ets          # Example of jumping to page 2
+|     |---- README.MD  # Readme                  
 ```
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提[Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们提[PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls)。
+If you find any problem during the use, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-本项目基于 [MIT License ](https://gitee.com/zdy09/openharmony_tpc_samples/blob/master/EventEmitter3Demo/LICENSE)，请自由地享受和参与开源。
-
+This project is licensed under [MIT License](https://gitee.com/zdy09/openharmony_tpc_samples/blob/master/EventEmitter3Demo/LICENSE).
