@@ -31,7 +31,7 @@ export default  struct lz4jsDemo {
       List({ space: 20, initialIndex: 0 }){
         ListItem(){
           Column({ space: 12 }){
-            Button('生成txt文件', { type: ButtonType.Normal })
+            Button($r("app.string.Generate_a_txt_file"), { type: ButtonType.Normal })
               .fontSize(18)
               .fontColor('#000')
               .height(60)
@@ -45,7 +45,7 @@ export default  struct lz4jsDemo {
         }
         ListItem(){
           Column({ space: 12 }){
-            Button('压缩txt文件', { type: ButtonType.Normal })
+            Button($r("app.string.Compress_txt_file"), { type: ButtonType.Normal })
               .fontSize(18)
               .fontColor('#000')
               .height(60)
@@ -59,7 +59,7 @@ export default  struct lz4jsDemo {
         }
         ListItem(){
           Column({ space: 12 }){
-            Button('解压txt文件', { type: ButtonType.Normal })
+            Button($r("app.string.Unzip_txt_file"), { type: ButtonType.Normal })
               .fontSize(18)
               .fontColor('#000')
               .height(60)
@@ -79,7 +79,7 @@ export default  struct lz4jsDemo {
     let path = (context as common.UIAbilityContext).filesDir + '/test.txt'
     let file = fs.openSync(path, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
     let writeLen = fs.writeSync(file.fd, str);
-    prompt.showToast({ message: '创建txt文件成功', duration: 4000 })
+    prompt.showToast({ message: $r("app.string.Txt_file_created"), duration: 4000 })
   }
   compressTxt(){
     let path = (context as common.UIAbilityContext).filesDir+ '/test.txt'
@@ -92,10 +92,10 @@ export default  struct lz4jsDemo {
       let path1 = (context as common.UIAbilityContext).filesDir + '/test.lz4'
       let file1 = fs.openSync(path1, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
       let writeLen = fs.writeSync(file1.fd, compressed.buffer);
-      prompt.showToast({ message: '压缩txt文件成功', duration: 4000 })
+      prompt.showToast({ message: $r("app.string.Txt_file_compressed_successfully"), duration: 4000 })
     }).catch((err:errs)=> {
       console.info("get file info failed with error message: " + err.message + ", error code: " + err.code);
-      prompt.showToast({ message: '压缩txt文件失败', duration: 4000 })
+      prompt.showToast({ message: $r("app.string.Failed_compress_txt_file"), duration: 4000 })
     });
   }
   deCompressTxt(){
@@ -109,10 +109,10 @@ export default  struct lz4jsDemo {
       let path1 = (context as common.UIAbilityContext).filesDir + '/test1.txt'
       let file1 = fs.openSync(path1, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
       let writeLen = fs.writeSync(file1.fd, deCompressed.buffer);
-      prompt.showToast({ message: '解压缩txt文件成功', duration: 4000 })
+      prompt.showToast({ message: $r("app.string.Txt_file_successfully_extracted"), duration: 4000 })
     }).catch( (err:errs)=> {
       console.info("get file info failed with error message: " + err.message + ", error code: " + err.code);
-      prompt.showToast({ message: '解压缩txt文件失败', duration: 4000 })
+      prompt.showToast({ message: $r("app.string.Failed_decompress_txt_file"), duration: 4000 })
     });
   }
 }

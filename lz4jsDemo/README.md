@@ -1,19 +1,19 @@
 # lz4jsDemo
 
-## 简介
+## Introduction
 
-本demo是基于openHarmony系统下使用三方js库[lz4js](https://github.com/Benzinga/lz4js)，lz4js提供lz4格式压缩解压码功能
+This demo allows you to use the third-party JavaScript library [lz4js](https://github.com/Benzinga/lz4js) in OpenHarmony. lz4js provides data compression and decompression using the LZ4 algorithm.
 
-## 下载安装
+## How to Install
 
 ```
   ohpm install lz4js
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
- 
-### 1.使用lz4js压缩解压。
+## How to Use
+
+### Compressing and Decompressing Data Using lz4js
 ```
   import lz4 from 'lz4js'
 
@@ -25,33 +25,33 @@ var decompressed = lz4.decompress(compressed);
 
 ```
 
-## 接口说明
+## Available APIs
 
-|                  方法名                  |          入参          |    接口描述     |
-|:-------------------------------------:|:--------------------:|:-----------:|
-|            compress(data)             |      data：压缩内容       | lz4js压缩功能 |
-|           decompress(data)            |      data：解压内容       |  lz4js解压功能  |
+|                  API                 |          Parameter         |    Description    |
+|:-------------------------------------|:--------------------|:-----------|
+|            compress(data)             |      **data**: data to compress.      | Compresses data using LZ4.|
+|           decompress(data)            |      **data**: data to decompress.      |  Decompresses data using LZ4. |
 
-## 目录结构
+## Directory Structure
 
 ```
-/lz4jsDemo  # 工程代码
-|—— entry   # 工程demo示例
+/lz4jsDemo # Project code.
+|—— entry   # Project demo.
 │   └── main
 │       └── ets
-│       └── pages  
-│           └── Index.ets             # lz4js示例
+│       └── pages
+│           └── Index.ets             # lz4js example.
 ```
 
-## 约束与限制
-在下述版本验证通过：
+## Constraints
+This project has been verified in the following versions:
 - DevEco Studio: 4.0 (4.0.3.512), SDK: API10 (4.0.10.9)
-- DevEco Studio: 3.1 Beta2(3.1.0.400), SDK: API9 Release(3.2.11.9) 。
+- DevEco Studio: 3.1 Beta2 (3.1.0.400), SDK: API9 Release (3.2.11.9)
 
-## 开源协议
+## License
 
-本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/lz4jsDemo/LICENSE) ，请自由地享受和参与开源。
+This project is licensed under [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/lz4jsDemo/LICENSE).
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem during the use, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
