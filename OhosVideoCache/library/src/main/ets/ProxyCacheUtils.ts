@@ -25,7 +25,7 @@ export default class ProxyCacheUtils {
 
   public static computeMD5(string: string): string {
     try {
-      return CryptoJS.MD5(string);
+      return CryptoJS.MD5(string).toString();
     } catch (err) {
       throw new Error(err.message);
     }
