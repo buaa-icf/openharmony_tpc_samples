@@ -1,54 +1,54 @@
 # msgpack-javascript
 
-## 简介
-> MessagePack是一个非常高效的对象序列化库。它像JSON，但速度很快，而且很小。
-> 现在MessagePack已经适配了3.0版本，可用于实现int64的复杂性编码。
+## Introduction
+> MessagePack is a library that provides efficient object serialization. It is like JSON but offers higher efficiency and smaller data size.
+> Currently, MessagePack 3.0 can be used to implement complex int64 encoding.
 
-## 下载安装
+## How to Install
 ```shell
 ohpm install @ohos/msgpack
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 
-### 编解码
+### Encoding and Decoding
 ```javascript
 import { encode,decode } from "@ohos/msgpack";
 
-// 编码
+// Encode.
 let encoded:Uint8Array = encode({ foo: "bar" });
-// 解码
+// Decode.
 let decodedObject = decode(encoded);
 ```
 
-### 构造器编解码
+### Using Encoder and Decoder
 ```javascript
 import { Encoder,Decoder } from "@ohos/msgpack";
-// 编码可复用构造器
+// Reuse the encoder instance.
 let encoder = new Encoder()
-// 解码可复用构造器
+// Reuse the decoder instance.
 let decoder = new Decoder()
-// 编码
+// Encode.
 let encoded:Uint8Array = encoder.encode({ foo: "bar" });
-// 解码
+// Decode.
 let decodedObject = decoder.decode(encoded);
-// int64复杂对象解码 
+// Decode a complex int64 object.
 let data: ESObject =
    {
      ints: [0, Number.MAX_SAFE_INTEGER, Number.MIN_SAFE_INTEGER],
      nums: [Number.NaN, Math.PI, Math.E, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY],
      bigints: [BigInt(0), BigInt(Number.MAX_SAFE_INTEGER) + BigInt(1), BigInt(Number.MIN_SAFE_INTEGER) - BigInt(1)],
    };
-// int64编码最小值
+// Encode the minimum int64 value.
 return BigInt(Number.MIN_SAFE_INTEGER) - BigInt(1);
-// int64普通编解码
+// Encode and decode a common int64 value.
 return BigInt(0);
-// int64编码最大值
+// Encode the maximum int64 value.
 return BigInt(Number.MAX_SAFE_INTEGER) + BigInt(1);
 ```
 
-### 数组对象编解码
+### Encoding and Decoding an Array Object
 
 ```javascript
 import { encode,decodeMulti } from "@ohos/msgpack";
@@ -61,51 +61,50 @@ let items = [
   },
   [1, 2, 3],
 ];
-// 将数组编码
+// Encode the item array.
 let encodedItems = items.map((item) => encode(item));
-// 创建空白缓存区用来后续存数据流
+// Create a blank buffer for storing streams.
 let encoded = new Uint8Array(encodedItems.reduce((p, c) => p + c.byteLength, 0));
 let offset = 0;
-// 空白缓存区存入数据流
+// Store the encoded items in the buffer.
 for (let encodedItem of encodedItems) {
   encoded.set(encodedItem, offset);
   offset += encodedItem.byteLength;
 }
 let result: Array<unknown> = [];
-// 解码后将数据存入result数组中
+// Store the decoded items in the result array.
 for (let item of decodeMulti(encoded)) {
   result.push(item);
 }
-// result与items一致
+// The value of result is the same as that of items.
 expect(result).assertDeepEquals(items);
 ```
 
-## 目录结构
+## Directory Structure
 ````
 |---- msgpackJavaScript  
-|     |---- entry  # 示例代码文件夹
-|           |---- Index.ets  # 对外接口介绍
-			|---- EncodeDecodePage.ets  # 普通编解码
-      |---- Encoding64DemoFour.ets  # int64复杂对象解码
-      |---- Encoding64DemoOne.ets  # int64编码最小值
-      |---- Encoding64DemoThree.ets  # int64普通编解码
-      |---- Encoding64DemoTwo.ets  # int64编码最大值
-			|---- EncodeDecodeConstructorPage.ets  # 通过构造器编解码
-			|---- MultiDecodePage.ets  # 复杂对象解码
-|     |---- library  # 库代码文件夹
-|     |---- README.MD  # 安装使用方法                    
+|     |---- entry  # Sample code
+|           |---- Index.ets  # External APIs
+			|---- EncodeDecodePage.ets  # Common encoding and decoding
+      |---- Encoding64DemoFour.ets # Decoding complex int64 objects
+      |---- Encoding64DemoOne.ets # Encoding the minimum int64 value
+      |---- Encoding64DemoThree.ets # Encoding and decoding the common int64 value
+      |---- Encoding64DemoTwo.ets # Encoding the maximum int64 value
+			|---- EncodeDecodeConstructorPage.ets # Using encoder and decoder
+			|---- MultiDecodePage.ets # Decoding complex objects
+|     |---- library # Library code
+|     |---- README_EN.MD  # Brief introduction of the MessagePack library                   
 ````
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+MessagePack has been verified only in the following version:
 
 - DevEco Studio: 5.0.3.132, SDK: API12 (5.0.0.19)
-- DevEco Studio: NEXT Beta1-5.0.3.806, SDK: API12 Release (5.0.0.66)
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples) 。
+If you find any problem during the use, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples) to us.
 
-## 开源协议
-本项目基于 [ISC License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ohos_msgpack/LICENSE) ，请自由地享受和参与开源。
+## License
+This project is licensed under [ISC License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ohos_msgpack/LICENSE).
