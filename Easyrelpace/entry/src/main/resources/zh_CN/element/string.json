@@ -14,75 +14,75 @@
     },
     {
       "name": "Back",
-      "value": "Back"
+      "value": "返回"
     },
     {
       "name": "Enter_Text",
-      "value": "Enter Text"
+      "value": "输入文本"
     },
     {
       "name": "Please_enter_text",
-      "value": "Please enter text"
+      "value": "请输入文本"
     },
     {
       "name": "Please_enter_the_characters",
-      "value": "Please enter the characters that need to be replaced in the text"
+      "value": "请输入文本中需要替换的字符"
     },
     {
       "name": "Please_enter_the_replacement",
-      "value": "Please enter the replacement character"
+      "value": "请输入替换的字符"
     },
     {
       "name": "Surrounding_replacement",
-      "value": "Surrounding replacement"
+      "value": "周围替换"
     },
     {
       "name": "Input_into_the_array",
-      "value": "Input into the array, with i on the left for replacement"
+      "value": "输入到数组，左侧有i做替换"
     },
     {
       "name": "Please_input_to_replace",
-      "value": "Please input to replace the right side"
+      "value": "请输入替换右侧"
     },
     {
       "name": "Easy_replace_version",
-      "value": "Easy replace version number:"
+      "value": "easy-replace的版本号："
     },
     {
       "name": "Compare_input_characters",
-      "value": "Compare input characters"
+      "value": "输入字符比较"
     },
     {
       "name": "Compare_strings",
-      "value": "Compare strings"
+      "value": "比较字符串"
     },
     {
       "name": "Simple_replacement",
-      "value": "Simple replacement"
+      "value": "简单替换"
     },
     {
       "name": "custom",
-      "value": "Custom"
+      "value": "自定义"
     },
     {
       "name": "cancel",
-      "value": "Cancel"
+      "value": "取消"
     },
     {
       "name": "confirm",
-      "value": "Confirm"
+      "value": "确认"
     },
     {
       "name": "Enter_space",
-      "value": "Enter space"
+      "value": "输入空格"
     },
     {
       "name": "Input_to_array",
-      "value": "Input to array, filter on the left side"
+      "value": "输入到数组，左侧过滤"
     },
     {
       "name": "right_side",
-      "value": "Input to array, filter on the right side"
+      "value": "输入到数组，右侧过滤"
     }
   ]
 }

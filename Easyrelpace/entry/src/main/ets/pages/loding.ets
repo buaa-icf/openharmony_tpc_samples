@@ -24,15 +24,15 @@ export struct CustomDialogExample {
 
   build() {
     Column() {
-      Text('自定义').width('70%').fontSize(20).margin({ top: 10, bottom: 10 })
+      Text($r('app.string.custom')).width('70%').fontSize(20).margin({ top: 10, bottom: 10 })
       Text(datas).fontSize(20).margin({ top: 10, bottom: 10 })
       Flex({ justifyContent: FlexAlign.SpaceAround }) {
-        Button('取消')
+        Button($r('app.string.cancel'))
           .onClick(() => {
             if(!!this.controller)
               this.controller.close()
           }).backgroundColor(0xffffff).fontColor(Color.Black)
-        Button('确定')
+        Button($r('app.string.confirm'))
           .onClick(() => {
             if(!!this.controller)
               this.controller.close()
