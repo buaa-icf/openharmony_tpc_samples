@@ -93,7 +93,7 @@ struct Index {
         .onChange((value) => {
           this.StringResults = value
         })
-      Button($r('app.string.Surrounding_replacement')
+      Button($r('app.string.Surrounding_replacement'))
         .margin({ top: 10, bottom: 10 })
         .onClick(() => {
           let dataArrFunc = (str:string)=>{
