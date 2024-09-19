@@ -11,6 +11,7 @@
   version: "1.0.1",
   tags: ["Tool"],
   license: "GNU AFFERO GENERAL",
+  "dependencies": {},
   devDependencies: {},
   name: "@ohos/newsie",
 }
