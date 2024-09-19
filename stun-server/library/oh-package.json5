@@ -13,7 +13,7 @@
   "main": "index.ets",
   "repository": "https://gitee.com/hihopeorg/stun-server",
   "type": "module",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "tags": [
     "OpenHarmony",
     "stun",
