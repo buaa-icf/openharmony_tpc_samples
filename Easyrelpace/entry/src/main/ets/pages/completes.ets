@@ -32,7 +32,7 @@ struct Index {
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
       Flex({ justifyContent: FlexAlign.Start, alignItems: ItemAlign.Start }) {
-        Button("返回")
+        Button($r('app.string.Back'))
           .fontSize(16)
           .height(30)
           .onClick(() => {
@@ -41,33 +41,33 @@ struct Index {
       }
 
       Column() {
-        Text("输入文本").fontSize(18).fontColor("red")
+        Text($r('app.string.Please_enter_text')).fontSize(18).fontColor("red")
       }.alignItems(HorizontalAlign.Start).width('90%').margin({ left: "20%" })
 
-      TextInput({ placeholder: "请输入文本", text: this.TextCompletes }).width("70%")
+      TextInput({ placeholder: $r('app.string.Please_enter_text'), text: this.TextCompletes }).width("70%")
         .onChange((value) => {
           this.TextCompletes = value
         })
       Column() {
-        Text("请输入文本中需要替换的字符").fontSize(18).fontColor("red")
+        Text($r('app.string.Please_enter_the_characters')).fontSize(18).fontColor("red")
       }.alignItems(HorizontalAlign.Start).width('90%').margin({ left: "20%" })
 
-      TextInput({ placeholder: "请输入文本中需要替换的字符", text: this.Replace })
+      TextInput({ placeholder: $r('app.string.Please_enter_the_characters'), text: this.Replace })
         .width("70%")
         .margin({ top: 10, bottom: 10 })
         .onChange((value) => {
           this.Replace = value
         })
       Column() {
-        Text("请输入替换的字符").fontSize(18).fontColor("red")
+        Text($r('app.string.Please_enter_the_replacement')).fontSize(18).fontColor("red")
       }.alignItems(HorizontalAlign.Start).width('90%').margin({ left: "20%" })
 
-      TextInput({ placeholder: "请输入替换的字符", text: this.StringResults })
+      TextInput({ placeholder: $r('app.string.Please_enter_the_replacement'), text: this.StringResults })
         .width("70%")
         .onChange((value) => {
           this.StringResults = value
         })
-      Button("周围替换")
+      Button($r('app.string.Surrounding_replacement'))
         .margin({ top: 10, bottom: 10 })
         .onClick(() => {
           this.Text = er(

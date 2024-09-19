@@ -33,10 +33,14 @@ struct Index {
     autoCancel: true
   });
 
+  getResourceString(res: Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
+
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
       Flex({ justifyContent: FlexAlign.Start, alignItems: ItemAlign.Start }) {
-        Button("返回")
+        Button($r('app.string.Back'))
           .fontSize(16)
           .height(30)
           .onClick(() => {
@@ -45,53 +49,53 @@ struct Index {
       }
 
       Column() {
-        Text("easy-replace的版本号：" + version).fontSize(18).fontColor("red")
+        Text(this.getResourceString($r('app.string.Easy_replace_version'))  + version).fontSize(18).fontColor("red")
       }.alignItems(HorizontalAlign.Start).width('90%').margin({ left: "20%" })
 
       Column() {
-        Text("输入文本").fontSize(18).fontColor("red")
+        Text($r('app.string.Please_enter_text')).fontSize(18).fontColor("red")
       }.alignItems(HorizontalAlign.Start).width('90%').margin({ left: "20%" })
 
-      TextInput({ placeholder: "请输入文本", text: this.TextString })
+      TextInput({ placeholder: $r('app.string.Please_enter_text'), text: this.TextString })
         .width("70%")
         .onChange((value) => {
           this.TextString = value
         })
       Column() {
-        Text("输入字符比较").fontSize(18).fontColor("red").margin({ top: 30, bottom: 10 })
+        Text($r('app.string.Compare_input_characters')).fontSize(18).fontColor("red").margin({ top: 30, bottom: 10 })
       }.alignItems(HorizontalAlign.Start).width('90%').margin({ left: "20%" })
 
-      TextInput({ placeholder: "输入字符比较", text: this.messaged })
+      TextInput({ placeholder: $r('app.string.Compare_input_characters'), text: this.messaged })
         .width("70%")
         .onChange((value) => {
           this.messaged = value
         })
-      Button("比较字符串")
+      Button($r('app.string.Compare_strings'))
         .onClick(() => {
           this.messagevl = `字符串相差${leven(this.TextString, this.messaged)}个`
           setData(this.messagevl)
           this.dialogController.open()
         })
       Column() {
-        Text("请输入文本中需要替换的字符").fontSize(18).fontColor("red")
+        Text($r('app.string.Please_enter_the_characters')).fontSize(18).fontColor("red")
       }.alignItems(HorizontalAlign.Start).width('90%').margin({ left: "20%" })
 
-      TextInput({ placeholder: "请输入文本中需要替换的字符", text: this.ReplaceString })
+      TextInput({ placeholder: $r('app.string.Please_enter_the_characters'), text: this.ReplaceString })
         .width("70%")
         .margin({ top: 10, bottom: 10 })
         .onChange((value) => {
           this.ReplaceString = value
         })
       Column() {
-        Text("请输入替换的字符").fontSize(18).fontColor("red")
+        Text($r('app.string.Please_enter_the_replacement')).fontSize(18).fontColor("red")
       }.alignItems(HorizontalAlign.Start).width('90%').margin({ left: "20%" })
 
-      TextInput({ placeholder: "请输入替换的字符", text: this.StringResults })
+      TextInput({ placeholder: $r('app.string.Please_enter_the_replacement'), text: this.StringResults })
         .width("70%")
         .onChange((value) => {
           this.StringResults = value
         })
-      Button("简单替换")
+      Button($r('app.string.Simple_replacement'))
         .margin({ top: 10, bottom: 10 })
         .onClick(() => {
 

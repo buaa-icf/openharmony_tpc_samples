@@ -83,7 +83,8 @@ This project has been verified in the following versions:
 |---- Compare Text  
 |     |---- entry  # Sample code
 |           |---- index.ets  # External APIs
-|     |---- README_EN.md  # Readme                   
+|     |---- README.md  # Readme                   
+|     |---- README_zh.md  # Readme                   
 ````
 
 ## How to Contribute

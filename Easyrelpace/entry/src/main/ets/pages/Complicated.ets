@@ -36,7 +36,7 @@ struct Index {
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
       Flex({ justifyContent: FlexAlign.Start, alignItems: ItemAlign.Start }) {
-        Button("返回")
+        Button($r('app.string.Back'))
           .fontSize(16)
           .height(30)
           .onClick(() => {
@@ -47,19 +47,19 @@ struct Index {
       }
 
       Column() {
-        Text("输入文本").fontSize(18).fontColor("red")
+        Text($r('app.string.Please_enter_text')).fontSize(18).fontColor("red")
       }.alignItems(HorizontalAlign.Start).width('90%').margin({ left: "20%" })
 
-      TextInput({ placeholder: "请输入文本", text: this.TextString })
+      TextInput({ placeholder: $r('app.string.Please_enter_text'), text: this.TextString })
         .width("70%")
         .onChange((value) => {
           this.TextString = value
         })
       Column() {
-        Text("输入到数组，左侧有i做替换").fontSize(18).fontColor("red")
+        Text($r('app.string.Input_into_the_array')).fontSize(18).fontColor("red")
       }.alignItems(HorizontalAlign.Start).width('90%').margin({ left: "20%" })
 
-      TextInput({ placeholder: "请输入文本", text: this.rightOutside.data + "" })
+      TextInput({ placeholder: $r('app.string.Please_enter_text'), text: this.rightOutside.data + "" })
         .width("70%")
         .onChange((value) => {
           this.rightOutside = {
@@ -67,25 +67,25 @@ struct Index {
           }
         })
       Column() {
-        Text("请输入文本中需要替换的字符").fontSize(18).fontColor("red")
+        Text($r('app.string.Please_enter_the_characters')).fontSize(18).fontColor("red")
       }.alignItems(HorizontalAlign.Start).width('90%').margin({ left: "20%" })
 
-      TextInput({ placeholder: "请输入文本中需要替换的字符", text: this.Replace })
+      TextInput({ placeholder: $r('app.string.Please_enter_the_characters'), text: this.Replace })
         .width("70%")
         .margin({ top: 10, bottom: 10 })
         .onChange((value) => {
           this.Replace = value
         })
       Column() {
-        Text("请输入替换右侧").fontSize(18).fontColor("red")
+        Text($r('app.string.Please_input_to_replace')).fontSize(18).fontColor("red")
       }.alignItems(HorizontalAlign.Start).width('90%').margin({ left: "20%" })
 
-      TextInput({ placeholder: "请输入替换的字符", text: this.StringResults })
+      TextInput({ placeholder: $r('app.string.Please_enter_the_replacement'), text: this.StringResults })
         .width("70%")
         .onChange((value) => {
           this.StringResults = value
         })
-      Button("周围替换")
+      Button($r('app.string.Surrounding_replacement'))
         .margin({ top: 10, bottom: 10 })
         .onClick(() => {
           //          if(this.TextString.endsWith(this.Replace)){

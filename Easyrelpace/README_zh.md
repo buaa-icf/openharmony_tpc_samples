@@ -84,10 +84,11 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 |     |---- entry  # 示例代码文件夹
 |           |---- index.ets  # 对外接口
 |     |---- README.MD  # 安装使用方法                    
+|     |---- README_zh.MD  # 安装使用方法                    
 ````
 
 ## 贡献代码
-使用过程中发现任何问题都可以提 [Issue]() 给我们，当然，我们也非常欢迎你给我们发 [PR]() 。
+使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
 ## 开源协议
-本项目基于 [Apache License 2.0]() ，请自由地享受和参与开源。
+本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Easyrelpace/LICENSE) ，请自由地享受和参与开源。
