@@ -11,6 +11,14 @@
     {
       "name": "EntryAbility_label",
       "value": "amqplib"
+    },
+    {
+      "name": "Publish_a_message",
+      "value": "发布消息"
+    },
+    {
+      "name": "Consumer_News",
+      "value": "消费消息"
     }
   ]
 }
