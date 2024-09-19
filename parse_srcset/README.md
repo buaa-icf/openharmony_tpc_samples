@@ -1,52 +1,50 @@
 # parse-srcset
 
-## 简介
+## Overview
 
-> parse-srcset。HTML5 srcset属性的javascript解析器，基于WHATWG参考算法。它有一个基于W3C srcset一致性检查器的广泛测试套件。它符合jQuery
-> JSCS样式规则。
-> 为了兼容性，使用internet -geezer编写测试。
+parse-srcset is a JavaScript parser for HTML5 srcset attributes. It is based on the WHATWG reference algorithm. parse-srcset has an extensive test suite based on the W3C srcset conformance checker. It complies with the jQuery JSCS syntax rules. For compatibility, use **internet -geezer** to compile test cases.
 
-## 下载安装
+## How to Install
 
 ```shell
 ohpm  install parse-srcset@1.0.2
 ```
 
-OpenHarmony ohpm 环境配置等更多内容，请参考 如何安装 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 
 ```js
 import * as parseSrcset from 'parse-srcset'
 let result:ESObject = JSON.stringify(parseSrcset('&#x9;&#x9;data:,a&#x9;&#x9;1x&#x9;&#x9'));
 ```
-## 接口说明
-parseSrcset：解析HTML5 srcset属性
+## Available APIs
+parseSrcset: Parses the HTML5 srcset attributes.
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+parse-srcset has been verified in the following versions:
 
-- DevEco Studio 版本： 4.1 Canary(4.1.3.317),OpenHarmony SDK:API11 (4.1.0.36)。
+- DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API11 (4.1.0.36)
 
-## 目录结构
+## Directory Structure
 
 ````
 |---- parse_srcset
-|     |---- entry  # 示例代码文件夹
+|     |---- entry  # Sample code
               ├── src  
                  ├── main   
                    ├── ets
                        ├── pages
-                             ├── Index.ets  sample代码
-|     |---- README.md  # 安装使用方法                    
+                             ├── Index.ets  # Sample code
+|     |---- README_EN.md  # Readme                   
 ````
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
-给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem when using parse-srcset, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or
+a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
 
-## 开源协议
+## License
 
-本项目基于 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/parse-srcset/LICENSE) ，请自由地享受和参与开源。
+This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/parse-srcset/LICENSE).

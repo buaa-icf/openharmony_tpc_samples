@@ -11,6 +11,10 @@
     {
       "name": "EntryAbility_label",
       "value": "parse_srcset"
+    },
+    {
+      "name": "result",
+      "value": "结果"
     }
   ]
 }
