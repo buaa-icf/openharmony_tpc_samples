@@ -11,6 +11,14 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "result",
+      "value": "执行结果"
+    },
+    {
+      "name": "please_click_button",
+      "value": "请点击按钮"
     }
   ]
 }
