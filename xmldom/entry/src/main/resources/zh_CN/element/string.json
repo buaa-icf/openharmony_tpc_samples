@@ -11,6 +11,26 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Display_Results_Area",
+      "value": "展示结果区"
+    },
+    {
+      "name": "parseFromString",
+      "value": "parseFromString"
+    },
+    {
+      "name": "serializeToString",
+      "value": "serializeToString"
+    },
+    {
+      "name": "DOMImplementation",
+      "value": "DOMImplementation"
+    },
+    {
+      "name": "errorHandler",
+      "value": "errorHandler"
     }
   ]
 }
