@@ -39,12 +39,16 @@ export default struct deflateDemo {
   @State Inflate2: string | undefined = "0"
   @State ungzip1: string | undefined = "0"
 
+  getResourceString(res:Resource){
+    return getContext().resourceManager.getStringSync(res.id)
+  }
+
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start }) {
       List({ space: 20, initialIndex: 0 }) {
         ListItem() {
           Column({ space: 12 }) {
-            Button('测试Deflate接口1', { type: ButtonType.Normal })
+            Button(this.getResourceString($r("app.string.Test_Deflate_interface")) + '1', { type: ButtonType.Normal })
               .fontSize(18)
               .fontColor('#000')
               .height(60)
@@ -55,15 +59,15 @@ export default struct deflateDemo {
                 this.DeflateTest1()
               })
 
-            Text('预期结果:120,94,99,100,98,102,97,101,99,231,224,228,226,230,225,229,227,23,16,20,18,6,0,5,69,0,191')
+            Text(this.getResourceString($r("app.string.Expected_Results")) + '120,94,99,100,98,102,97,101,99,231,224,228,226,230,225,229,227,23,16,20,18,6,0,5,69,0,191')
               .fontSize(20)
               .margin({ top: 16 })
 
-            Text('实际结果: ' + this.Deflate1)
+            Text(this.getResourceString($r("app.string.Actual_results")) + this.Deflate1)
               .fontSize(20)
               .margin({ top: 16 })
 
-            Button('测试Deflate接口2', { type: ButtonType.Normal })
+            Button(this.getResourceString($r("app.string.Test_Deflate_interface")) + '2', { type: ButtonType.Normal })
               .fontSize(18)
               .fontColor('#000')
               .height(60)
@@ -74,15 +78,15 @@ export default struct deflateDemo {
                 this.DeflateTest2()
               })
 
-            Text('预期结果:120,156,99,100,98,102,97,101,99,231,224,4,0,0,174,0,46')
+            Text(this.getResourceString($r("app.string.Expected_Results")) + '120,156,99,100,98,102,97,101,99,231,224,4,0,0,174,0,46')
               .fontSize(20)
               .margin({ top: 16 })
 
-            Text('实际结果: ' + this.Deflate2)
+            Text(this.getResourceString($r("app.string.Actual_results")) + this.Deflate2)
               .fontSize(20)
               .margin({ top: 16 })
 
-            Button('测试Deflate接口3', { type: ButtonType.Normal })
+            Button(this.getResourceString($r("app.string.Test_Deflate_interface")) + '3', { type: ButtonType.Normal })
               .fontSize(18)
               .fontColor('#000')
               .height(60)
@@ -93,15 +97,15 @@ export default struct deflateDemo {
                 this.DeflateTest3()
               })
 
-            Text('预期结果:99,100,98,102,97,101,99,231,224,4,0')
+            Text(this.getResourceString($r("app.string.Expected_Results")) + '99,100,98,102,97,101,99,231,224,4,0')
               .fontSize(20)
               .margin({ top: 16 })
 
-            Text('实际结果: ' + this.Deflate3)
+            Text(this.getResourceString($r("app.string.Actual_results")) + this.Deflate3)
               .fontSize(20)
               .margin({ top: 16 })
 
-            Button('测试Inflate接口', { type: ButtonType.Normal })
+            Button($r("app.string.Test_Inflate_interface"), { type: ButtonType.Normal })
               .fontSize(18)
               .fontColor('#000')
               .height(60)
@@ -112,15 +116,15 @@ export default struct deflateDemo {
                 this.InflateInflateTest()
               })
 
-            Text('预期结果:1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19')
+            Text(this.getResourceString($r("app.string.Expected_Results")) + '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19')
               .fontSize(20)
               .margin({ top: 16 })
 
-            Text('实际结果: ' + this.Inflate)
+            Text(this.getResourceString(($r("app.string.Actual_results"))) + this.Inflate)
               .fontSize(20)
               .margin({ top: 16 })
 
-            Button('测试inflateRaw接口', { type: ButtonType.Normal })
+            Button($r("app.string.Test_inflateRaw_interface"), { type: ButtonType.Normal })
               .fontSize(18)
               .fontColor('#000')
               .height(60)
@@ -131,15 +135,15 @@ export default struct deflateDemo {
                 this.InflateInflateRawTest()
               })
 
-            Text('预期结果:1,2,3,4,5,6,7,8,9')
+            Text(this.getResourceString($r("app.string.Expected_Results")) + '1,2,3,4,5,6,7,8,9')
               .fontSize(20)
               .margin({ top: 16 })
 
-            Text('实际结果: ' + this.Inflate2)
+            Text(this.getResourceString($r("app.string.Actual_results")) + this.Inflate2)
               .fontSize(20)
               .margin({ top: 16 })
 
-            Button('测试ungzip接口', { type: ButtonType.Normal })
+            Button($r("app.string.Test_ungzip_interface"), { type: ButtonType.Normal })
               .fontSize(18)
               .fontColor('#000')
               .height(60)
@@ -150,11 +154,11 @@ export default struct deflateDemo {
                 this.ungzipTest()
               })
 
-            Text('预期结果:1,2,3,4,5,6,7,8,9')
+            Text(this.getResourceString($r("app.string.Expected_Results"))+ '1,2,3,4,5,6,7,8,9')
               .fontSize(20)
               .margin({ top: 16 })
 
-            Text('实际结果: ' + this.ungzip1)
+            Text(this.getResourceString($r("app.string.Actual_results")) + this.ungzip1)
               .fontSize(20)
               .margin({ top: 16 })
           }

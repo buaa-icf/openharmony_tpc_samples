@@ -27,7 +27,7 @@ struct Index {
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
 
-        Button('跳转到 gzip', { type: ButtonType.Normal, stateEffect: true })
+        Button($r("app.string.Jump_to_gzip"), { type: ButtonType.Normal, stateEffect: true })
           .borderRadius(8)
           .margin(20)
           .fontSize(15)
@@ -40,7 +40,7 @@ struct Index {
             router.pushUrl({ url: "pages/Gzip" })
           })
 
-        Button('跳转到 deflateDemo', { type: ButtonType.Normal, stateEffect: true })
+        Button($r("app.string.Jump_to_deflateDemo"), { type: ButtonType.Normal, stateEffect: true })
           .borderRadius(8)
           .margin(20)
           .fontSize(15)
@@ -53,7 +53,7 @@ struct Index {
             router.pushUrl({ url: "pages/DeflateDemo" })
           })
 
-        Button('跳转到 pakoTest', { type: ButtonType.Normal, stateEffect: true })
+        Button($r("app.string.Jump_to_pakoTes"), { type: ButtonType.Normal, stateEffect: true })
           .borderRadius(8)
           .margin(20)
           .fontSize(15)
