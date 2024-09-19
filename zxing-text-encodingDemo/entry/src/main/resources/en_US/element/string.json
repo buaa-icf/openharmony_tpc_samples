@@ -11,6 +11,18 @@
     {
       "name": "EntryAbility_label",
       "value": "text-encoding"
+    },
+    {
+      "name": "title",
+      "value": "Encoding and decoding of zxing/text-encoding"
+    },
+    {
+      "name": "encode",
+      "value": "Encode"
+    },
+    {
+      "name": "decode",
+      "value": "Decode"
     }
   ]
 }

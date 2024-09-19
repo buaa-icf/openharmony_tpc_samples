@@ -17,7 +17,7 @@ import {TextDecoder,TextEncoder} from '@zxing/text-encoding'
 @Entry
 @Component
 struct Index {
-  @State message: string = 'zxing/text-encoding的编码与解码'
+  @State message: string = getContext(this).resourceManager.getStringByNameSync('title').toString()
   @State inputText: string = ''
   @State encoded: Uint8Array|null=null
 
@@ -39,13 +39,13 @@ struct Index {
             this.inputText = value
           })
 
-        Button('编码').width(300).margin(20).fontSize(25).onClick(()=>{
+        Button($r("app.string.encode")).width(300).margin(20).fontSize(25).onClick(()=>{
           this.encoded = new TextEncoder('utf-8').encode(this.inputText);
           let mess = new TextEncoder('utf-8').encode(this.inputText);
           this.showDialog(mess+"")
         })
 
-        Button('解码').width(300).margin(20).fontSize(25).onClick(()=>{
+        Button($r("app.string.decode")).width(300).margin(20).fontSize(25).onClick(()=>{
           const decodedArray = new TextDecoder('utf-8').decode(this.encoded);
           this.showDialog(decodedArray)
         })
