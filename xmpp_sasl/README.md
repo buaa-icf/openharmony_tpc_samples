@@ -1,33 +1,32 @@
 # @ohos/xmpp_sasl
 
-## 简介
+## Introduction
 
->本软件是参照开源软件 [@xmpp/sasl](https://github.com/xmppjs/xmpp.js/tree/main/packages/sasl)源码并用 TypeScript 语言实现了相关功能，在OpenHarmony上提供了用于在客户端和服务器之间进行身份验证和加密通信的框架的library
+>Based on the open source software [@xmpp/sasl](https://github.com/xmppjs/xmpp.js/tree/main/packages/sasl), this project uses TypeScript to implement similar capabilities. It provides OpenHarmony with a library for identity authentication and encrypted communication between the client and server.
 
-## 已支持功能
--  XMPP 连接提供身份验证支持
-
-
-## 下载安装
-1. 参考安装教程 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
-
-2. 安装命令如下：
-```
- ohpm install @ohos/xmpp_sasl
-```
-
-## 接口和属性列表
-
-接口列表
-
-| **接口**                                | 参数                                                             | 功能       |
-|---------------------------------------|----------------------------------------------------------------|----------|
-| sasl({ streamFeatures }, credentials) | streamFeatures:StreamFeatures<br/>credentials:sasl.Credentials | 注册一个sasl |
-| use(...args)                          | args:SASLFactory.MechanismStatic    | 使用制定机制   |
+## Supported Features
+Identity authentication in XMPP connections
 
 
+## How to Install
+1. [Install an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用示例
+2. Run the installation command:
+
+   ```
+    ohpm install @ohos/xmpp_sasl
+   ```
+
+## Available APIs
+
+APIs
+
+| Name                             | Parameter                                                        | Description        |
+| ------------------------------------- | ------------------------------------------------------------ | ------------ |
+| sasl({ streamFeatures }, credentials) | streamFeatures:StreamFeatures<br>credentials:sasl.Credentials | Registers an SASL.|
+| use(...args)                          | args:SASLFactory.MechanismStatic                             | Uses a specific mechanism.|
+
+## Example
 
 ```
 import _sasl from "@ohos/xmpp_sasl";
@@ -41,37 +40,37 @@ import _sasl from "@ohos/xmpp_sasl";
     });
 ```
 
-## 使用说明
+## How to Use
 
-#### 注册一个sasl
+#### Registering an SASL
 
 ```
  const sasl = _sasl({ streamFeatures }, credentials || { username, password });
 ```
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+This project has been verified in the following version:
 
-- DevEco Studio 版本： 5.0.3.200 OpenHarmony SDK:API12 (5.0.0.21-Canary2)
+DevEco Studio: 5.0.3.200, OpenHarmony SDK: API 12 (5.0.0.21-Canary2)
 
-## 目录结构
+## Directory Structure
 ````
 |---- @ohos/xmpp_sasl
-|     |---- entry  # 示例代码文件夹
+|     |---- entry  # Sample code
 |           |---- src  
-|                   |---- main  #sample示例代码
-|                   |---- ohosTest  #xts示例代码
-|     |---- library  # 功能库文件夹
-|           |---- index.js  # 主入口文件
-|           |---- index.d.ts  # 主对外接口声明文件
-|     |---- README.md  # 安装使用方法                    
+|                   |---- main  # Sample code
+|                   |---- ohosTest  # xts code
+|     |---- library  # Function library folder
+|           |---- index.js  # Main entry file
+|           |---- index.d.ts  # Main declaration file of the external APIs
+|     |---- README.md  # Readme                   
 ````
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提[Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们提[PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem during the use, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-本项目基于ISC，请自由地享受和参与开源。
+This project is licensed under the terms of the ISC license.
