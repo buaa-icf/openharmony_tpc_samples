@@ -4,8 +4,7 @@
 
 将字符串的html解析为json数据，获取其中相关内容
 
-<img src="https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/parserHtmlJsonDemo/demo.gif" alt="演示示例" style="zoom:30%;" />
-
+![Demo](./demo.gif)
 ## 安装
 
 ```
