@@ -1,57 +1,57 @@
 # snappyjsDemo
 
-## 简介
+## Introduction
 
-本demo是基于openHarmony系统下使用三方js库[snappyjs](https://github.com/zhipeng-jia/snappyjs)，snappyjs提供snappy格式压缩解压码功能
+This demo allows you to use the third-party JavaScript library [snappyjs](https://github.com/zhipeng-jia/snappyjs) in OpenHarmony. snappyjs provides data compression and decompression using Snappy.
 
-## 下载安装
+## How to Install
 
 ```
   ohpm install snappyjs
-  ohpm install @types/snappyjs@0.7.1 // import snappyjs 的时候语法报错, 其原因是snappyjs包内不含类型声明, 需要 @types/snappyjs 下载这个包的声明文件, 从而解决语法的报错.
+  ohpm install @types/snappyjs@0.7.1 // Install @types/snappyjs@0.7.1 to prevent import syntax errors due to missing type declarations in the snappyjs package.
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 
 
-### 1.使用snappyjs压缩解压。
+### Compressing and Decompressing Data Using snappyjs
 ```
   import snappyJS from 'snappyjs'
-  
+
 var buffer = new ArrayBuffer(100)
 var compressed = snappyJS.compress(buffer)
 var uncompressed = snappyJS.uncompress(compressed)
 ```
 
-## 接口说明
+## Available APIs
 
-|                    方法名                    |                            入参                            |    接口描述    |
-|:-----------------------------------------:|:--------------------------------------------------------:|:----------:|
-|              compress(data:Uint8Array\|ArrayBuffer)              |            data:Uint8Array和ArrayBuffer类型压缩内容             | snappy压缩功能 |
-|             uncompress(data:Uint8Array\|ArrayBuffer)             |            data：Uint8Array和ArrayBuffer类型解压内容             |  snappy解压功能  |
+|                    API                   |                            Parameter                           |    Description   |
+|:-----------------------------------------|:--------------------------------------------------------|:----------|
+|              compress(data:Uint8Array\|ArrayBuffer)              |            **data**: data of the Uint8Array or ArrayBuffer type to compress.            | Compresses data using Snappy.|
+|             uncompress(data:Uint8Array\|ArrayBuffer)             |            **data**: data of the Uint8Array or ArrayBuffer type to decompress.            |  Decompresses data using Snappy. |
 
-## 目录结构
+## Directory Structure
 
 ```
-/snappyjsDemo  # 工程代码
-|—— entry   # 工程demo示例
+/snappyjsDemo # Project code.
+|—— entry   # Project demo.
 │   └── main
 │       └── ets
-│           └── pages  
-│               └── Index.ets             # snappyjs示例 
+│           └── pages
+│               └── Index.ets             # snappyjs example.
 ```
 
-## 约束与限制
-在下述版本验证通过：
+## Constraints
+This project has been verified in the following versions:
 
-DevEco Studio: 3.1 Beta2(3.1.0.400), SDK: API9 Release(3.2.11.9)
-DevEco Studio: 4.0(4.0.3.512),SDK: API10（4.0.10.9）
+- DevEco Studio: 3.1 Beta2(3.1.0.400), SDK: API9 Release(3.2.11.9)
+- DevEco Studio: 4.0 (4.0.3.512), SDK: API 10 (4.0.10.9)
 
-## 开源协议
+## License
 
-本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/snappyjsDemo/LICENSE) ，请自由地享受和参与开源。
+This project is licensed under [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/snappyjsDemo/LICENSE).
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem during the use, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).

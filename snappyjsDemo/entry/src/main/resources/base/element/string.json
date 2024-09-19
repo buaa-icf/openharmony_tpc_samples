@@ -11,6 +11,38 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Snappy_related_features",
+      "value": "Snappy related features"
+    },
+    {
+      "name": "Click_Generate_bla_txt",
+      "value": "Click Generate bla.txt"
+    },
+    {
+      "name": "Click_Compress_bla_txt_sz_file",
+      "value": "Click Compress bla.txt to sz file"
+    },
+    {
+      "name": "Click_extract_SZ_file",
+      "value": "Click to extract the SZ file"
+    },
+    {
+      "name": "Build_succeeded",
+      "value": "The build succeeded"
+    },
+    {
+      "name": "Checkout_sandbox_path",
+      "value": "Check out the sandbox path"
+    },
+    {
+      "name": "Compression_succeeded",
+      "value": "Compression succeeded"
+    },
+    {
+      "name": "Decompression_successful",
+      "value": "The decompression was successful"
     }
   ]
 }
