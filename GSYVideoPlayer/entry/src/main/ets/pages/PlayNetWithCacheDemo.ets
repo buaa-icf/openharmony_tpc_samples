@@ -53,10 +53,12 @@ struct PlayNetWithCacheDemo {
       }.width('100%')
     }
   }
-
+  getResourceString(res:Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
   async aboutToAppear() {
     this.videoModel.setUrl(this.videoUrl, true);
-    this.videoModel.setTitle("这是测试视频的标题");
+    this.videoModel.setTitle(this.getResourceString($r('app.string.title')));
     this.videoModel.setBackClickListener(this.backClickListener);
     this.videoModel.setFullClickListener(this.fullClickListener);
     this.videoModel.setCoverImage($r('app.media.app_icon'));

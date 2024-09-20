@@ -19,10 +19,13 @@ import promptAction from '@ohos.promptAction';
 @Entry
 @Component
 struct Index {
+  getResourceString(res:Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
   build() {
     Row() {
       Column() {
-        Button("切换内核播放器").margin(10).onClick(() => {
+        Button($r('app.string.Switch_kernel_player')).margin(10).onClick(() => {
           if(GlobalContext.getContext().getObject("playType") == PlayerType.IJK_PLAYER) {
             GlobalContext.getContext().setObject("playType", PlayerType.SYSTEM_AVPLAYER);
           } else {
@@ -31,19 +34,19 @@ struct Index {
 
           promptAction.showToast({
             message: GlobalContext.getContext()
-              .getObject("playType") == PlayerType.IJK_PLAYER ? "切换到ijkPlayer播放器" : "切换到avplayer播放器"
+              .getObject("playType") == PlayerType.IJK_PLAYER ? this.getResourceString($r('app.string.ijkPlayer_player')) : this.getResourceString($r('app.string.avplayer_player'))
           })
         })
-        Button("简单播放器，全屏功能，截图，gif功能").margin(10).onClick(() => {
+        Button($r('app.string.Simple_player')).margin(10).onClick(() => {
           router.pushUrl({ url: "pages/SimpleDemo" });
         })
-        Button("边播放边缓存功能").margin(10).onClick(() => {
+        Button($r('app.string.Cache_playing')).margin(10).onClick(() => {
           router.pushUrl({ url: "pages/PlayWithCacheDemo" });
         })
-         Button("简单列表功能").margin(10).onClick(() => {
+        Button($r('app.string.Simple_list_function')).margin(10).onClick(() => {
           router.pushUrl({ url: "pages/SimpleList" });
         })
-         Button("弹幕播放器功能").margin(10).onClick(() => {
+        Button($r('app.string.Danmaku_player_function')).margin(10).onClick(() => {
           router.pushUrl({ url: "pages/DanmakuVideoDemo" });
         })
       }.width('100%')

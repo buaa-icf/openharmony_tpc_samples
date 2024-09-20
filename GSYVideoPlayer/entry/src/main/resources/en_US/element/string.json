@@ -11,6 +11,90 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "NET_REQUEST_PERMISSION",
+      "value": "api apply net request permission."
+    },
+    {
+      "name": "Switch_kernel_player",
+      "value": "Switch kernel player"
+    },
+    {
+      "name": "Simple_player",
+      "value": "Simple player, full screen function, screenshot, gif function"
+    },
+    {
+      "name": "Cache_playing",
+      "value": "Cache function while playing"
+    },
+    {
+      "name": "Play_without_caching",
+      "value": "Play without caching"
+    },
+    {
+      "name": "Simple_list_function",
+      "value": "Simple list function"
+    },
+    {
+      "name": "Danmaku_player_function",
+      "value": "Danmaku player function"
+    },
+    {
+      "name": "ijkPlayer_player",
+      "value": "Switch to ijkPlayer player"
+    },
+    {
+      "name": "avplayer_player",
+      "value": "Switch to avplayer player"
+    },
+    {
+      "name": "Video_cropping",
+      "value": "Video cropping..."
+    },
+    {
+      "name": "take_screenshot",
+      "value": "Click to take screenshot"
+    },
+    {
+      "name": "Screenshot_operation_successful",
+      "value": "Screenshot operation successful"
+    },
+    {
+      "name": "Screenshot_operation_failed",
+      "value": "Screenshot operation failed"
+    },
+    {
+      "name": "Start_gif_screenshot",
+      "value": "Start gif screenshot"
+    },
+    {
+      "name": "gif_screenshot_successful",
+      "value": "gif screenshot successful"
+    },
+    {
+      "name": "gif_screenshot_failed",
+      "value": "gif screenshot failed"
+    },
+    {
+      "name": "title",
+      "value": "This is the title of the test video"
+    },
+    {
+      "name": "Close_barrage",
+      "value": "Close barrage"
+    },
+    {
+      "name": "Open_barrage",
+      "value": "Open barrage"
+    },
+    {
+      "name": "Send_barrages",
+      "value": "Send barrages"
+    },
+    {
+      "name": "barrage",
+      "value": "This is a barrage"
     }
   ]
 }
