@@ -1,58 +1,59 @@
 # timers
 
-## 简介
+## Introduction
 
-> timers是一个用于时间解析的工具库。
+**timers** is a utility library for time parsing.
 
 
-## 下载安装
+## How to Install
 
 ```shell
 ohpm install timers@0.1.1
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 
-1. 导入依赖库
+1. Import the dependency library.
 
 ```typescript
 import timers from 'timers'
 ```
 
-2. 按需使用相关接口
+2. Use APIs as required.
 
 ```typescript
-Button('测试every接口')
+Button ('Test every interface')
   .fontSize(30)
   .onClick(() => {
     this.message = JSON.stringify(timers.every('10h').time)
   })
 ```
 
-## 接口说明
+## Available APIs
 
-- 解析指定字符串的时间值
-
-```typescript
-every(str:string):Every
-```
+| API                     | Description                          |
+| ----------------------- | ------------------------------------ |
+| every(str:string):Every | Parses the time value from a string. |
 
 
-## 约束与限制
 
-在下述版本验证通过：适配DevEco Studio:4.1 Canary(4.1.3.317)，OpenHarmony SDK:API version 11 (4.1.0.36).
 
-## 目录结构
+## Constraints
+
+This project has been verified in the following version:
+
+- DevEco Studio 4.1 Canary (4.1.3.317), OpenHarmony SDK: API 11 (4.1.0.36)
+
+## Directory Structure
 ````
 |---- timers  
-|     |---- entry  # 示例代码文件夹
-|     |---- README.md  # 安装使用方法                    
+|     |---- entry      # Sample code
+|     |---- README.md  # Readme                   
 ````
 
-## 贡献代码
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
-## 开源协议
-本项目基于 [MIT LICENSE](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/timers/LICENSE) ，请自由地享受和参与开源。
-  
+## How to Contribute
+If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+## License
+This project is licensed under [MIT LICENSE](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/timers/LICENSE).
 

@@ -11,6 +11,34 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Test_the_many_interfaces",
+      "value": "测试every接口"
+    },
+    {
+      "name": "Test_the_DO_interface",
+      "value": "测试do接口"
+    },
+    {
+      "name": "Callbacks_every_second",
+      "value": "每一秒回调一次"
+    },
+    {
+      "name": "The_do_interface_callback_called_section",
+      "value": "do接口回调调用第"
+    },
+    {
+      "name": "times",
+      "value": "次"
+    },
+    {
+      "name": "Test_the_stop_interface",
+      "value": "测试stop接口"
+    },
+    {
+      "name": "The_do_interface_has_stopped",
+      "value": "已停止do接口"
     }
   ]
 }

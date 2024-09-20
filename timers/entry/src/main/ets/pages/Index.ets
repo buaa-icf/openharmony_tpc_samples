@@ -33,6 +33,10 @@ struct Index {
   @State message: string = 'Hello World'
   testObj:ESObject= timers.every('1000ms')
 
+  private getResourceString(res:Resource){
+    return getContext().resourceManager.getStringSync(res.id)
+  }
+
   build() {
     Row() {
       Column({space:20}) {
@@ -40,31 +44,31 @@ struct Index {
           .fontSize(30)
           .fontWeight(FontWeight.Bold)
 
-        Button('测试every接口')
+        Button($r("app.string.Test_the_many_interfaces"))
           .fontSize(30)
           .onClick(() => {
             this.message = JSON.stringify(timers.every('10h').time)
           })
 
-        Button('测试do接口')
+        Button($r("app.string.Test_the_DO_interface"))
           .fontSize(30)
           .onClick(() => {
             clearInterval(0)
             this.testObj.stop()
             let count: number = 0
-            this.message = '每一秒回调一次'
+            this.message = this.getResourceString($r("app.string.Callbacks_every_second"))
             this.testObj.do(() => {
               count++
-              this.message = 'do接口回调调用第' + count + '次'
+              this.message = this.getResourceString($r("app.string.The_do_interface_callback_called_section")) + count + this.getResourceString($r("app.string.times"))
             })
           })
 
-        Button('测试stop接口')
+        Button($r("app.string.Test_the_stop_interface"))
           .fontSize(30)
           .onClick(() => {
             clearInterval(0)
             this.testObj.stop()
-            this.message = '已停止do接口'
+            this.message = this.getResourceString($r("app.string.The_do_interface_has_stopped"))
           })
 
 
