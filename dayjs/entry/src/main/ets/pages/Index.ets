@@ -17,6 +17,7 @@ import dayjs from "dayjs";
 
 import customParseFormat from "dayjs/plugin/customParseFormat"
 import * as ns from  'dayjs/locale/zh-cn';
+import router from '@ohos.router';
 
 dayjs.extend(customParseFormat)
 dayjs.locale("zh-cn")
@@ -209,37 +210,77 @@ struct Index {
   @State message: string = 'Hello World'
   @State apis: Array<ModuleItem> = apisIndex
 
-
-
-  @Builder BuildItemForAPI(param: ModuleItem) {
+  @Builder NavigationTitle() {
     Column() {
-      Text(param.moduleName).fontSize(30)
-
-      ForEach(param.examples, (item:ApiItem, index) => {
-        Flex({ alignItems: ItemAlign.Start ,direction:FlexDirection.Column}) {
-          Column(){
-            Text(`${item.apiName}`).fontSize(20).margin({ bottom: 8 }).width("100%")
-            Text(`描述：${item.des || "无"}`).fontSize(16).fontColor(Color.Red).width("100%").margin({top:10,bottom:20})
-          }
-
-
-          Button("运行").onClick(() => item.func()).width("100%");
-        }.padding(10).margin({ bottom: 10 }).width("100%")
-      })
+      Text('Dayjs')
+        .fontColor('#182431')
+        .fontSize(35)
+        .fontWeight(700)
+      Text('演示Demo')
+        .fontColor('#182431')
+        .fontSize(15)
+        .opacity(0.4)
     }
+    .alignItems(HorizontalAlign.Start)
+    .margin(20)
+  }
 
+  @Builder NavigationMenus() {
+    Row() {
+      Image($rawfile('ic_public_detail.svg'))
+        .width(25)
+        .height(25)
+    }
+    .justifyContent(FlexAlign.End)
+    .margin(20)
+  }
+
+  @Builder BuildItemForAPI(item:ApiItem) {
+    Column() {
+      Flex({ alignItems: ItemAlign.Start ,direction:FlexDirection.Column}) {
+        Column(){
+          Text(`${item.apiName}`).fontSize(20).margin({ bottom: 8 }).width("100%")
+          Text(`描述：${item.des || "无"}`).fontSize(16).fontColor(Color.Red).width("100%").margin({top:10,bottom:20})
+        }
+
+        Button("运行").onClick(() => item.func()).width("100%");
+      }.padding(20).width("100%")
+    }
   }
 
   build() {
-    Column() {
-      List() {
-        ForEach(this.apis, (v: ModuleItem, index) => {
-          ListItem() {
-            this.BuildItemForAPI({ moduleName: v.moduleName, examples: v.examples })
+    Navigation() {
+      Scroll() {
+        GridRow({
+          breakpoints: {
+            value: ['200vp', '300vp', '400vp', '500vp', '600vp'],
+            reference: BreakpointsReference.WindowSize
           }
-        })
+        }) {
+          ForEach(this.apis, (v: ModuleItem, index) => {
+            ForEach(v.examples, (item: ApiItem, index) => {
+              GridCol({
+                span: {
+                  xs: 12,
+                  sm: 12,
+                  md: 12,
+                  lg: 6,
+                  xl: 6,
+                  xxl: 4
+                }
+              }) {
+                Row() {
+                  this.BuildItemForAPI(item)
+                }
+              }
+            })
+          })
+        }.width("100%")
       }.width("100%")
-    }.width("100%").height("100%")
-
+    }
+    .menus(this.NavigationMenus)
+    .title(this.NavigationTitle)
+    .titleMode(NavigationTitleMode.Full)
+    .mode(NavigationMode.Stack)
   }
 }
