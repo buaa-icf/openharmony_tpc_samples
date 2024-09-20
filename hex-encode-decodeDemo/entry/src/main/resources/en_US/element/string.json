@@ -11,6 +11,22 @@
     {
       "name": "EntryAbility_label",
       "value": "hex-encode-decodeDemo"
+    },
+    {
+      "name": "hex_encode_decode",
+      "value": "hex-encode-decode encoding and decoding"
+    },
+    {
+      "name": "encode",
+      "value": "Encoding"
+    },
+    {
+      "name": "decode",
+      "value": "Decoding"
+    },
+    {
+      "name": "input",
+      "value": "input your word"
     }
   ]
 }

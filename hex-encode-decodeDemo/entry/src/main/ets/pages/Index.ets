@@ -22,11 +22,11 @@ struct Index {
   build() {
     Row() {
       Column() {
-        Text(this.message)
+        Text($r('app.string.hex_encode_decode'))
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: 'input your word', text: this.inputText })
+        TextInput({ placeholder: $r('app.string.input'), text: this.inputText })
           .height(60)
           .border({ width: 5, color: Color.Red })
           .placeholderColor(Color.Blue)
@@ -37,7 +37,7 @@ struct Index {
             this.inputText = value
           })
 
-        Button('编码').width(300).margin(20).fontSize(25).onClick(()=>{
+        Button($r('app.string.encode')).width(300).margin(20).fontSize(25).onClick(()=>{
           this.encodes =encode(this.inputText) ;
           AlertDialog.show(
             {
@@ -52,7 +52,7 @@ struct Index {
           )
         })
 
-        Button('解码').fontSize(25).width(300).margin(20)
+        Button($r('app.string.decode')).fontSize(25).width(300).margin(20)
           .onClick(()=>{
             let content:string = 'ABCDEFGHIJKabcdefj123456+/AA==!@';
             let encodes:string =encode(content) ;
