@@ -11,6 +11,70 @@
     {
       "name": "EntryAbility_label",
       "value": "pvutils"
+    },
+    {
+      "name": "Display_results",
+      "value": "显示结果："
+    },
+    {
+      "name": "arrayBuffer_to_string",
+      "value": "arrayBuffer转字符串"
+    },
+    {
+      "name": "ArrayBuffer_to_hexadecimal_string",
+      "value": "ArrayBuffer转16进制字符串"
+    },
+    {
+      "name": "local_world_time",
+      "value": "本地时间转世界时间"
+    },
+    {
+      "name": "specified_attribute_value",
+      "value": "获取指定属性值"
+    },
+    {
+      "name": "Buffer_parameter_legality_check",
+      "value": "buffer参数合法性检测"
+    },
+    {
+      "name": "base_converts_to_10",
+      "value": "2^base 转换为 2^10"
+    },
+    {
+      "name": "10_to_base_to_hexadecimal",
+      "value": "2^10 转换为 2^base再转16进制"
+    },
+    {
+      "name": "ArrayBuffers_to_hexadecimal_format",
+      "value": "将多个 ArrayBuffer 以16进制的形式连接在一起"
+    },
+    {
+      "name": "Concatenate_Uint8Arrays",
+      "value": "Concatenate multiple Uint8Arrays together"
+    },
+    {
+      "name": "complement_format_hexadecimal",
+      "value": "将整数值编码成“补码”格式以16进制的形式输出"
+    },
+    {
+      "name": "ArrayBuffer_equality_judgment",
+      "value": "ArrayBuffer相等判断"
+    },
+    {
+      "name": "Add_zeros_numbers",
+      "value": "数字前面添加前导零"
+    },
+    {
+      "name": "string_into_BASE64",
+      "value": "将字符串编码成BASE64格式"
+    },
+    {
+      "name": "BASE64_into_normal_string",
+      "value": "BASE64字符串解码成普通字符串"
+    },
+    {
+      "name": "Calculate_the_nearest_power",
+      "value": "Calculate the nearest power of 2 to the input length"
     }
   ]
 }
