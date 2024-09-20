@@ -11,6 +11,10 @@
     {
       "name": "EntryAbility_label",
       "value": "LibPhoneNumber"
+    },
+    {
+      "name": "instructions",
+      "value": "测试说明：[ 点击顶部文字，log搜索 PHONENUMBER，查看结果 ]"
     }
   ]
 }
