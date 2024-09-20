@@ -1,21 +1,22 @@
 # xmlbuilder
 
-## 简介
+## Introduction
 
-> xmlbuilder 是一个用于构建 XML 文档的 JavaScript 库。它提供了一种简单而直观的方式来创建和生成符合 XML 标准的文档。
+> xmlbuilder is a JavaScript library for building XML documents. It provides a simple and intuitive way to create and generate XML documents.
 
-## 下载安装
+## How to Install
 
 ````
 ohpm install xmlbuilder@11.0.0
 ````
 
 OpenHarmony
-ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
-## 使用说明
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-### 组织xml信息
+## How to Use
+
+### Organizing XML Information
 
 ```
   buildXml() {
@@ -26,7 +27,7 @@ ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](ht
   }
 ```
 
-### 组织html信息
+### Organizing HTML Information
 
 ```
   buildHtml() {
@@ -41,30 +42,30 @@ ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](ht
   }
 ```
 
-## 接口说明
+## Available APIs
 
-| **接口**                                   | 功能                |
-|------------------------------------------|-------------------|
-| create(type:string,opt:Option)           | 创建一个xml或html生成器实例 |
-| ele(name:string,ele:string,obj:ESObject) | 添加元素及内容           |
-| end(opt?:ESObject)                       | 设置结束生成的参数         |
-| att(name:string,content:string)          | 设置属性内容            |
-| removeAttribute(name:string)             | 移除指定属性            |
-| cdata(content:string)                    | 设置cdata内容         |
-| raw(content:string)                      | 设置raw内容           |
-| com(content:string)                      | 设置com内容           |
-| ins(name:string,content:string)          | 设置ins名及内容         |
+| API                                | Description                       |
+| ---------------------------------------- | --------------------------- |
+| create(type:string,opt:Option)           | Creates an XML or HTML builder instance.|
+| ele(name:string,ele:string,obj:ESObject) | Adds an element and its content.             |
+| end(opt?:ESObject)                       | Sets the parameter for ending the generation.         |
+| att(name:string,content:string)          | Sets the property content.               |
+| removeAttribute(name:string)             | Removes a property.               |
+| cdata(content:string)                    | Sets the cdata content.              |
+| raw(content:string)                      | Sets the raw content.                |
+| com(content:string)                      | Sets the comment content.                |
+| ins(name:string,content:string)          | Sets an instruction name and its content.            |
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：适配DevEco Studio:4.1 Canary(4.1.3.317)，OpenHarmony SDK:API version 11 (4.1.0.36).
+This project has been verified in the following version:
 
-## 贡献代码
+DevEco Studio 4.1 Canary (4.1.3.317), OpenHarmony SDK: API 11 (4.1.0.36)
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
-给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+## How to Contribute
 
-## 开源协议
+If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-本项目基于 [MIT LICENSE](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Xmlbuilder/LICENSE)
-，请自由地享受和参与开源。
+## License
+
+This project is licensed under [MIT LICENSE](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Xmlbuilder/LICENSE).

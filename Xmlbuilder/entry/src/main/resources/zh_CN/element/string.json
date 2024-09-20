@@ -11,6 +11,14 @@
     {
       "name": "EntryAbility_label",
       "value": "xmlbuilder"
+    },
+    {
+      "name": "text_xml",
+      "value": "组织一条XML"
+    },
+    {
+      "name": "text_html",
+      "value": "组织一条HTML"
     }
   ]
 }
