@@ -49,15 +49,15 @@ struct GifSample {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
       Column() {
 
-        Text("提取GIF元数据").fontSize(25).fontColor(Color.Gray)
+        Text($r('app.string.Extract_gif_metadata')).fontSize(25).fontColor(Color.Gray)
           .padding(20).height("10%")
           .textAlign(TextAlign.Center)
 
-        Text("资源路径:/resource/metadata.gif" ).fontSize(22).width('100%')
+        Text($r('app.string.Extract_gif_metadata')).fontSize(22).width('100%')
           .textAlign(TextAlign.Start)
 
         Column() {
-          Text("元数据:" ).fontSize(20).width('100%')
+          Text($r('app.string.Resource_path6')).fontSize(20).width('100%')
             .textAlign(TextAlign.Start)
           Text(""+JSON.stringify(this.data)).fontSize(20).width('100%')
             .textAlign(TextAlign.Start)
@@ -65,7 +65,7 @@ struct GifSample {
 
         }.height("80%").padding({ bottom: 10 })
 
-        Button("显示GIF文件的元数据", { type: ButtonType.Normal, stateEffect: true })
+        Button($r('app.string.Display_metadata3'), { type: ButtonType.Normal, stateEffect: true })
           .borderRadius(8).width("70%").height("8%")
           .onClick(() => {
             this.getMetaData()

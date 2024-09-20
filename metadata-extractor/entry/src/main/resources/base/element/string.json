@@ -11,6 +11,202 @@
     {
       "name": "EntryAbility_label",
       "value": "metadata_extractor"
+    },
+    {
+      "name": "Extract_AdobeJpegReader_metadata",
+      "value": "Extract AdobeJpegReader metadata"
+    },
+    {
+      "name": "Resource_path1",
+      "value": "Resource path:/resource/adobeJpeg1.jpg.appe"
+    },
+    {
+      "name": "Metadata",
+      "value": "Metadata:"
+    },
+    {
+      "name": "Extract_AVI_metadata",
+      "value": "Extract AVI metadata"
+    },
+    {
+      "name": "Resource_path2",
+      "value": "Resource path:/resource/AVITest.avi"
+    },
+    {
+      "name": "Display_metadata1",
+      "value": "Display metadata of AVI files"
+    },
+    {
+      "name": "Extract_Bmp_metadata",
+      "value": "Extract Bmp metadata"
+    },
+    {
+      "name": "Resource_path3",
+      "value": "Resource path:/resource/Test_01.bmp"
+    },
+    {
+      "name": "Display_the_metadata2",
+      "value": "Display the metadata of Bmp files"
+    },
+    {
+      "name": "Extract_Eps_metadata",
+      "value": "Extract Eps metadata"
+    },
+    {
+      "name": "Resource_path4",
+      "value": "Resource path:/resource/adobeJpeg1.eps"
+    },
+    {
+      "name": "Display_metadata2",
+      "value": "Display metadata of Eps files"
+    },
+    {
+      "name": "Extract_exif_metadata",
+      "value": "Extract exif metadata"
+    },
+    {
+      "name": "Resource_path5",
+      "value": "Resource path:/resource/manuallyAddedThumbnail.jpg.app1"
+    },
+    {
+      "name": "Display_metadata",
+      "value": "Display metadata"
+    },
+    {
+      "name": "Extract_gif_metadata",
+      "value": "Extract GIF metadata"
+    },
+    {
+      "name": "Resource_path6",
+      "value": "Resource path:/resource/metadata.gif"
+    },
+    {
+      "name": "Display_metadata3",
+      "value": "Display metadata of GIF files"
+    },
+    {
+      "name": "Extract_ico_metadata",
+      "value": "Extract ICO metadata"
+    },
+    {
+      "name": "Resource_path7",
+      "value": "Resource path:/resource/metadata.ico"
+    },
+    {
+      "name": "Display_metadata4",
+      "value": "Display metadata of ICO files"
+    },
+    {
+      "name": "picture",
+      "value": "Picture"
+    },
+    {
+      "name": "audio_frequency",
+      "value": "Audio Frequency"
+    },
+    {
+      "name": "video",
+      "value": "Video"
+    },
+    {
+      "name": "other",
+      "value": "Other"
+    },
+    {
+      "name": "Extract_jpg_metadata",
+      "value": "Extract JPG metadata"
+    },
+    {
+      "name": "Resource_path8",
+      "value": "Resource path:/resource/metadata.JPG"
+    },
+    {
+      "name": "Display_metadata5",
+      "value": "Display metadata of JPG files"
+    },
+    {
+      "name": "Extract_mp3_metadata",
+      "value": "Extract mp3 metadata"
+    },
+    {
+      "name": "Resource_path9",
+      "value": "Resource path:/resource/test.mp3"
+    },
+    {
+      "name": "Display_metadata6",
+      "value": "Display metadata of mp3 files"
+    },
+    {
+      "name": "Extract_mp4_metadata",
+      "value": "Extract mp4 metadata"
+    },
+    {
+      "name": "Resource_path10",
+      "value": "Resource path:/resource/test.mp4"
+    },
+    {
+      "name": "Display_metadata7",
+      "value": "Display metadata of mp4 files"
+    },
+    {
+      "name": "Extract_PCX_metadata",
+      "value": "Extract PCX metadata"
+    },
+    {
+      "name": "Resource_path11",
+      "value": "Resource path:/resource/metadata.PCX"
+    },
+    {
+      "name": "Display_metadata8",
+      "value": "Display metadata of PCX files"
+    },
+    {
+      "name": "Extract_PNG_metadata",
+      "value": "Extract PNG metadata"
+    },
+    {
+      "name": "Resource_path12",
+      "value": "Resource path:/resource/favicon-48px.png"
+    },
+    {
+      "name": "Display_metadata9",
+      "value": "Display metadata of PNG files"
+    },
+    {
+      "name": "Extract_Psd_metadata",
+      "value": "Extract Psd metadata"
+    },
+    {
+      "name": "Resource_path13",
+      "value": "Resource path:/resource/8x4x8bit-Grayscale.psd"
+    },
+    {
+      "name": "Display_metadata10",
+      "value": "Display metadata of Psd files"
+    },
+    {
+      "name": "Extract_wav_metadata",
+      "value": "Extract wav metadata"
+    },
+    {
+      "name": "Resource_path14",
+      "value": "Resource path:/resource/test.wav"
+    },
+    {
+      "name": "Display_metadata11",
+      "value": "Display metadata of wav files"
+    },
+    {
+      "name": "Extract_WEBP_metadata",
+      "value": "Extract WEBP metadata"
+    },
+    {
+      "name": "Resource_path15",
+      "value": "Resource path:/resource/metadata.WEBP"
+    },
+    {
+      "name": "Display_metadata13",
+      "value": "Display metadata of WEBP files"
     }
   ]
 }
