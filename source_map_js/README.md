@@ -1,18 +1,18 @@
 # Source Map JS
 
-## 简介
+## Overview
 
-> 这是一个用于生成和使用这里描述的源映射格式的库。就是一个信息文件，里面存储了代码打包转换后的位置信息，实质是一个 json 描述文件，维护了打包前后的代码映射关系
+Source Map JS is a library that generates and uses the source code mapping. It is an information file that stores the location information after code packaging and conversion. It is actually a JSON description file that maintains the code mapping before and after packaging.
 
-## 下载安装
+## How to Install
 
 ```shell
 ohpm  install source-map-js@0.6.2
 ```
 
-OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 
 
 ```js
@@ -64,38 +64,39 @@ node.replaceRight('world', 'universe');
 this.SourceNode = node.toString();
 
 ```
-## 接口说明
+## Available APIs
 
-1.表示增量构建的源映射:SourceMapGenerator
-2.一个解析过的源映射，我们可以通过给它一个生成的源中的文件位置来查询有关原始文件位置的信息:SourceMapConsumer
-3.一种对生成的JavaScript源代码片段进行抽象插入和/或连接的方法，同时保持这些片段与原始源代码之间的行和列信息的关联:SourceNode
+1. SourceMapGenerator: Defines the generator for source mapping in an incremental build.
+2. SourceMapConsumer: Defines the consumer for source mapping. You can specify a location in the parsed source mapping to query the location in the original file.
+3. SourceNode: Define the source node, which is used to abstractly insert and/or join generated JavaScript source code segments while maintaining the association of row and column information between these segments and the original source code.
 
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+Source Map JS has been verified in the following versions:
 
-- DevEco Studio 版本： 4.1 Canary(4.1.3.317),OpenHarmony SDK:API11 (4.1.0.36)。
+- DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API11 (4.1.0.36)
 
-## 目录结构
+## Directory Structure
 
 ````
 |---- source_map_js
-|     |---- entry  # 示例代码文件夹
+|     |---- entry  # Sample code
               ├── src  
                  ├── main   
                    ├── ets
                        ├── pages
-                             ├── Index.ets  sample代码
-|     |---- README.md  # 安装使用方法                    
+                             ├── Index.ets  # Sample code
+|     |---- README.md  # Readme
+|     |---- README_zh.md  # Readme                   
 ````
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
-给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls)
-## 开源协议
+If you find any problem when using Source Map JS, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or
+a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
+## License
 
-本项目基于 [BSD-3-Clause License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/source_map_js/LICENSE)
-，请自由地享受和参与开源。
+This project is licensed under [BSD-3-Clause License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/source_map_js/LICENSE).
+ 
     
