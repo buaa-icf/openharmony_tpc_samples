@@ -46,25 +46,25 @@ struct Index {
   build() {
     Row() {
       Column() {
-        Button("简单解析XML")
+        Button($r("app.string.Simple_parsing_of_XML"))
           .fontSize(30)
           .margin(10)
           .onClick(() => {
             routePage(0)
           })
-        Button("使用PromiseUsage方式解析")
+        Button($r("app.string.PromiseUsage"))
           .fontSize(30)
           .margin(10)
           .onClick(() => {
             routePage(1)
           })
-        Button("构建xml")
+        Button($r("app.string.Building_XML"))
           .fontSize(30)
           .margin(10)
           .onClick(() => {
             routePage(2)
           })
-        Button("处理属性、标签名称和值")
+        Button($r("app.string.attributes"))
           .fontSize(30)
           .margin(10)
           .onClick(() => {

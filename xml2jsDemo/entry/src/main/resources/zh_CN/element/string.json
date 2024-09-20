@@ -11,6 +11,46 @@
     {
       "name": "EntryAbility_label",
       "value": "xml2js"
+    },
+    {
+      "name": "Simple_parsing_of_XML",
+      "value": "简单解析XML"
+    },
+    {
+      "name": "PromiseUsage",
+      "value": "使用PromiseUsage方式解析"
+    },
+    {
+      "name": "Building_XML",
+      "value": "构建XML"
+    },
+    {
+      "name": "attributes",
+      "value": "处理属性、标签名称和值"
+    },
+    {
+      "name": "XML_convert_uppercase",
+      "value": "解析XML，转大写"
+    },
+    {
+      "name": "XML_convert_to_lowercase",
+      "value": "解析XML，转小写"
+    },
+    {
+      "name": "character_lowercase",
+      "value": "解析XML，将第一个字符转换为小写"
+    },
+    {
+      "name": "namespace_prefixes",
+      "value": "解析XML，去除xml命名空间前缀"
+    },
+    {
+      "name": "analysis_integer",
+      "value": "解析XML，将类整数字符串解析为整数"
+    },
+    {
+      "name": "Boolean_values",
+      "value": "解析XML，将类似布尔的字符床解析为布尔值"
     }
   ]
 }
