@@ -1,22 +1,22 @@
 # querystringify
 
-## 简介
+## Overview
 
-> 查询字符串解析器-小型、简单但功能强大的查询字符串解析器.
+querystringify is a library that implements a lightweight but powerful query string parser.
 
-## 下载安装
+## How to Install
 
 ```shell
 ohpm install querystringify
-ohpm install @types/querystringify  // import querystringify 的时候语法报错, 其原因是querystringify包内不含类型声明, 需要 @types/querystringify 下载这个包的声明文件, 从而解决语法的报错.
+ohpm install @types/querystringify  // A syntax error is reported if the querystringify package does not contain the type declaration. You need to download the declaration file of the package from @types/querystringify to rectify the syntax error.
 ```
 
 OpenHarmony
-ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+For details about the ohpm environment configuration, see [Installing the OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 
-1. 引入文件及代码依赖
+1. Importing files and code dependency.
 
  ```
  import qs from 'querystringify'
@@ -27,36 +27,35 @@ ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](ht
  
  ```
 
-## 接口说明
+## Available APIs
 
-* 将给定的查询字符串转换为对象
+* Converts the given query string to an object.
   - `parse()`
-* 将给定对象转换为查询字符串
+* Converts a given object to a query string.
   - `stringify()`
 
-## 目录结构
+## Directory Structure
 ````
 |---- querystringify
-|     |---- entry  # 示例代码文件夹
+|     |---- entry  # Sample code
               ├── src  
                  ├── main   
                    ├── ets
                        ├── pages
-                             ├── Index.ets  sample代码
-|     |---- README.md  # 安装使用方法                    
+                             ├── Index.ets  # Sample code
+|     |---- README_EN.md  # Readme                   
 ````
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+querystringify has been verified in the following versions:
 
-- DevEco Studio 版本： 4.1 Canary(4.1.3.317),OpenHarmony SDK:API11 (4.1.0.36)
+- DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API11 (4.1.0.36)
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
-给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem when using querystringify, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or
+a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
 
-## 开源协议
-本项目基于 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/querystringify/LICENSE) ，请自由地享受和参与开源。
-
+## License
+This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/querystringify/LICENSE).
