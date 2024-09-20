@@ -1,32 +1,31 @@
 # @ohos/xmpp_stream_management
 
-## 简介
+## Introduction
 
->本软件是参照开源软件 [@xmpp/stream-management](https://github.com/xmppjs/xmpp.js/tree/main/packages/stream-features)源码并用 TypeScript 语言实现了相关功能，在OpenHarmony上提供了在XMPP连接中协商和实现流管理的功能，包括会话恢复和错误恢复的library
+>Based on the open source software [@xmpp/stream-management](https://github.com/xmppjs/xmpp.js/tree/main/packages/stream-features), this project uses TypeScript to implement similar capabilities. It provides OpenHarmony with a library for negotiating and managing streams in Extensible Messaging and Presence Protocol (XMPP) connections, including session recovery and error recovery.
 
-## 已支持功能
-- xmpp流管理功能
-
-
-## 下载安装
-1. 参考安装教程 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
-
-2. 安装命令如下：
-```
- ohpm install @ohos/xmpp_stream_management
-```
-
-## 接口和属性列表
-
-接口列表
-
-| **接口**                                                          | 参数                                                                        | 功能                                                        |
-|-----------------------------------------------------------------|---------------------------------------------------------------------------| ----------------------------------------------------------- |
-| streamManagement({streamFeatures,entity,middleware}) | streamFeatures:StreamFeatures<br/>entity:Entity<br/>middleware:Middleware |创建了一个streamManagement实例|
+## Supported Features
+XMPP stream management
 
 
+## How to Install
+1. [Install an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用示例
+2. Run the installation command:
+
+   ```
+    ohpm install @ohos/xmpp_stream_management
+   ```
+
+## Available APIs
+
+APIs
+
+| Name                                            | Parameter                                                        | Description                          |
+| ---------------------------------------------------- | ------------------------------------------------------------ | ------------------------------ |
+| streamManagement({streamFeatures,entity,middleware}) | streamFeatures:StreamFeatures<br>entity:Entity<br>middleware:Middleware | Creates a stream management instance.|
+
+## Example
 
 ```
 import _streamManagement from "@ohos/xmpp_stream_management";
@@ -38,9 +37,9 @@ const streamManagement = _streamManagement({
 });
 ```
 
-## 使用说明
+## How to Use
 
-#### 创建一个streamManagement实例
+#### Creating a Stream Management Instance
 
 ```
 const middleware = streamManagement({
@@ -50,29 +49,29 @@ const middleware = streamManagement({
 });
 ```
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+This project has been verified in the following version:
 
-- DevEco Studio 版本： 5.0.3.200 OpenHarmony SDK:API12 (5.0.0.21-Canary2)
+DevEco Studio: 5.0.3.200, OpenHarmony SDK: API 12 (5.0.0.21-Canary2)
 
-## 目录结构
+## Directory Structure
 ````
 |---- @ohos/xmpp_stream_management
-|     |---- entry  # 示例代码文件夹
+|     |---- entry  # Sample code
 |           |---- src  
-|                   |---- main  #sample示例代码
-|                   |---- ohosTest  #xts示例代码
-|     |---- library  # 功能库文件夹
-|           |---- index.js  # 主入口文件
-|           |---- index.d.ts  # 主对外接口声明文件
-|     |---- README.md  # 安装使用方法                    
+|                   |---- main  # Sample code
+|                   |---- ohosTest  # xts code
+|     |---- library  # Function library folder
+|           |---- index.js  # Main entry file
+|           |---- index.d.ts  # Main declaration file of the external APIs
+|     |---- README.md  # Readme                   
 ````
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提[Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们提[PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem during the use, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-本项目基于ISC，请自由地享受和参与开源。
+This project is licensed under the terms of the ISC license.
