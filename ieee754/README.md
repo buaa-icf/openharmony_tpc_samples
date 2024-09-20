@@ -1,55 +1,57 @@
 # ieee754
 
-## 简介
+## Introduction
 
-> IEEE浮点运算标准(IEEE 754)是一个浮点计算的技术标准.
+> IEEE 754 specifies the formats and operations for floating-point arithmetic.
 
-## 下载安装
+## How to Install
 
 ```shell
 ohpm  install ieee754@1.2.1
 ```
 
-OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 ```
 import * as ieee754 from 'ieee754'
 ieee754.read = function (buffer, offset, isLE, mLen, nBytes)
 ieee754.write = function (buffer, value, offset, isLE, mLen, nBytes)
-
-## 约束与限制
-
-在下述版本验证通过：
-
-- DevEco Studio 版本： 4.1 Canary(4.1.3.317),OpenHarmony SDK:API11 (4.1.0.36)。
-
 ````
-## 接口说明
+## Constraints
 
-1.写入数据：wirte
-2.读取数据：read
+This project has been verified in the following version:
 
-## 目录结构
+- DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API 11 (4.1.0.36)
+
+
+## Available APIs
+
+1. Writes data.
+
+   `wirte`
+2. Reads data.
+
+   `read`
+
+## Directory Structure
 
 ````
 |---- ieee754
-|     |---- entry  # 示例代码文件夹
+|     |---- entry  # Sample code
               ├── src  
                  ├── main   
                    ├── ets
                        ├── pages
-                             ├── Index.ets  sample代码
-|     |---- README.md  # 安装使用方法                    
+                             ├── Index.ets  # Sample code
+|     |---- README.md  # Readme                   
 ````
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
-给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-本项目基于 [BSD-3-Clause License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ieee754/LICENSE)
-，请自由地享受和参与开源。
+This project is licensed under [BSD-3-Clause License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ieee754/LICENSE).
     
