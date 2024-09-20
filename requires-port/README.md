@@ -1,17 +1,18 @@
 # requires-port
 
-## 简介
-> 一个 Node.js 模块，用于检查给定的协议是否需要指定端口号。
+## Overview
 
-## 下载安装
+requires-port is a Node.js module used to check whether a port number needs to be specified for a given protocol.
+
+## How to Install
 ```shell
 ohpm install requires-port@1.0.0
-ohpm install @types/requires-port@1.0.0  // import requires-port 的时候语法报错, 其原因是requires-port包内不含类型声明, 需要 @types/requires-port 下载这个包的声明文件, 从而解决语法的报错.
+ohpm install @types/requires-port@1.0.0  // If a syntax error is reported, the requires-port package does not contain the type declaration. You need to download the declaration file of the package from @types/requires-port to rectify the syntax error.
 ```
-OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
-1. 引入文件及代码依赖
+## How to Use
+1. Importing files and code dependency.
  ```
  import required from 'requires-port'
  
@@ -21,30 +22,30 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
  required(8080,'gopher')
  ```
 
-## 接口说明
-* 检查端口
+## Available APIs
+* Checks the port.
  `required()`
 
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+requires-port has been verified in the following versions:
 
-- DevEco Studio 版本： 4.1 Canary(4.1.3.317),OpenHarmony SDK:API11 (4.1.0.36)
+- DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API11 (4.1.0.36)
 
-## 目录结构
+## Directory Structure
 ````
 |---- requires-port
-|     |---- entry  # 示例代码文件夹
+|     |---- entry  # Sample code
               ├── src  
                  ├── main   
                    ├── ets
                        ├── pages
-                             ├── Index.ets  sample代码
-|     |---- README.md  # 安装使用方法                
+                             ├── Index.ets  # Sample code
+|     |---- README_EN.md  # Readme               
 ````
-## 贡献代码
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+## How to Contribute
+If you find any problem when using requires-port, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
-本项目基于 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/requires-port/LICENSE) ，请自由地享受和参与开源。
+## License
+This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/requires-port/LICENSE).
