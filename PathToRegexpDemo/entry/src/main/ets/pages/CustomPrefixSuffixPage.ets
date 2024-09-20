@@ -21,9 +21,13 @@ import router from '@ohos.router';
 @Entry
 @Component
 struct CustomPrefixSuffixPage {
-  @State message0: string = '原始数据：const regexp = pathToRegexp("/:attr1?{-:attr2}?{-:attr3}?");'
-  @State message1: string = '原始数据：regexp.exec("/test");'
-  @State message2: string = '原始数据：regexp.exec("/test-test");'
+  @State message0: string = this.getResourceString($r('app.string.Raw_data')) + '：const regexp = pathToRegexp("/:attr1?{-:attr2}?{-:attr3}?");'
+  @State message1: string = this.getResourceString($r('app.string.Raw_data')) + '：regexp.exec("/test");'
+  @State message2: string = this.getResourceString($r('app.string.Raw_data')) + '：regexp.exec("/test-test");'
+
+  getResourceString(res:Resource){
+    return getContext().resourceManager.getStringSync(res.id)
+  }
 
   build() {
     Row() {
@@ -50,7 +54,7 @@ struct CustomPrefixSuffixPage {
           .fontColor(Color.Black)
 
 
-        Button('开始转换')
+        Button($r('app.string.Start_convert'))
           .backgroundColor(Color.Blue)
           .fontColor(Color.White)
           .width('80%')
@@ -60,15 +64,15 @@ struct CustomPrefixSuffixPage {
             let result = api.customPrefixSuffixTest()
             if (!result || result.length < 2) {
               promptAction.showToast({
-                message: '数据处理结果与预期不符',
+                message: $r('app.string.The_data_processing_results_do_not_match_expectations'),
                 duration: 6000
               })
               return;
             }
             let bean = new CommonResultBean();
             let arrBefore = new Array<string>();
-            arrBefore.push('regexp.exec("/test")  期待结果: \r\n ' + `['/test', 'test', null, null]`);
-            arrBefore.push('regexp.exec("/test-test")  期待结果: \r\n ' + `['/test-test', 'test', 'test', null]`); // TODO 源库 readme注释错误 显示结果为`['/test', 'test', 'test', null]` 实际结果是 `['/test-test', 'test', 'test', null]`
+            arrBefore.push('regexp.exec("/test")  ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `['/test', 'test', null, null]`);
+            arrBefore.push('regexp.exec("/test-test")  ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `['/test-test', 'test', 'test', null]`); // TODO 源库 readme注释错误 显示结果为`['/test', 'test', 'test', null]` 实际结果是 `['/test-test', 'test', 'test', null]`
             bean.setBefore(arrBefore);
             let arrAfter = new Array<string>();
             arrAfter.push(JSON.stringify(result[0]));

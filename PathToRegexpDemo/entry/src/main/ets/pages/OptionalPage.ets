@@ -21,9 +21,13 @@ import router from '@ohos.router';
 @Entry
 @Component
 struct OptionalPage {
-  @State message0: string = '原始数据：const regexp = pathToRegexp("/search/:tableName\\?useIndex=true&term=amazing");'
-  @State message1: string = '原始数据：regexp.exec("/search/people?useIndex=true&term=amazing");'
-  @State message2: string = '原始数据：regexp.exec("/search/people?term=amazing&useIndex=true");'
+  @State message0: string = this.getResourceString($r('app.string.Raw_data')) + '：const regexp = pathToRegexp("/search/:tableName\\?useIndex=true&term=amazing");'
+  @State message1: string = this.getResourceString($r('app.string.Raw_data')) + '：regexp.exec("/search/people?useIndex=true&term=amazing");'
+  @State message2: string = this.getResourceString($r('app.string.Raw_data')) + '：regexp.exec("/search/people?term=amazing&useIndex=true");'
+
+  getResourceString(res:Resource){
+    return getContext().resourceManager.getStringSync(res.id)
+  }
 
   build() {
     Row() {
@@ -52,7 +56,7 @@ struct OptionalPage {
           .backgroundColor('#66E1E1E1')
           .fontColor(Color.Black)
 
-        Button('开始转换')
+        Button($r('app.string.Start_convert'))
           .backgroundColor(Color.Blue)
           .fontColor(Color.White)
           .width('80%')
@@ -62,15 +66,15 @@ struct OptionalPage {
             let result = api.optionalTest()
             if (!result || result.length < 2) {
               promptAction.showToast({
-                message: '数据处理结果与预期不符',
+                message: $r('app.string.The_data_processing_results_do_not_match_expectations'),
                 duration: 6000
               })
               return;
             }
             let bean = new CommonResultBean();
             let arrBefore = new Array<string>();
-            arrBefore.push('期待结果: \r\n ' + `[ '/search/people?useIndex=true&term=amazing', 'people' ]`);
-            arrBefore.push('期待结果: \r\n ' + `null`);
+            arrBefore.push(this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `[ '/search/people?useIndex=true&term=amazing', 'people' ]`);
+            arrBefore.push(this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `null`);
             bean.setBefore(arrBefore);
             let arrAfter = new Array<string>();
             arrAfter.push(JSON.stringify(result[0]));

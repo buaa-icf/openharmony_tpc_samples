@@ -21,14 +21,18 @@ import router from '@ohos.router';
 @Entry
 @Component
 struct MatchPage {
-  @State message0: string = '原始数据：const fn = match("/user/:id", { decode: decodeURIComponent });'
-  @State message1: string = '原始数据：fn("/user/123");'
-  @State message2: string = '原始数据：fn("/invalid");'
-  @State message3: string = '原始数据：fn("/user/caf%C3%A9");'
-  @State message4: string = '原始数据：' + `const urlMatch = match("/users/:id/:tab(home|photos|bio)", {decode: decodeURIComponent,})`
-  @State message5: string = '原始数据：urlMatch("/users/1234/photos");'
-  @State message6: string = '原始数据：urlMatch("/users/1234/bio");'
-  @State message7: string = '原始数据：urlMatch("/users/1234/otherstuff");'
+  @State message0: string = this.getResourceString($r('app.string.Raw_data')) + '：const fn = match("/user/:id", { decode: decodeURIComponent });'
+  @State message1: string = this.getResourceString($r('app.string.Raw_data')) + '：fn("/user/123");'
+  @State message2: string = this.getResourceString($r('app.string.Raw_data')) + '：fn("/invalid");'
+  @State message3: string = this.getResourceString($r('app.string.Raw_data')) + '：fn("/user/caf%C3%A9");'
+  @State message4: string = this.getResourceString($r('app.string.Raw_data')) + '：' + `const urlMatch = match("/users/:id/:tab(home|photos|bio)", {decode: decodeURIComponent,})`
+  @State message5: string = this.getResourceString($r('app.string.Raw_data')) + '：urlMatch("/users/1234/photos");'
+  @State message6: string = this.getResourceString($r('app.string.Raw_data')) + '：urlMatch("/users/1234/bio");'
+  @State message7: string = this.getResourceString($r('app.string.Raw_data')) + '：urlMatch("/users/1234/otherstuff");'
+
+  getResourceString(res:Resource){
+    return getContext().resourceManager.getStringSync(res.id)
+  }
 
   build() {
     Row() {
@@ -99,7 +103,7 @@ struct MatchPage {
           .backgroundColor('#66E1E1E1')
           .fontColor(Color.Black)
 
-        Button('开始转换')
+        Button($r('app.string.Start_convert'))
           .backgroundColor(Color.Blue)
           .fontColor(Color.White)
           .width('80%')
@@ -109,19 +113,19 @@ struct MatchPage {
             let result = api.matchTest()
             if (!result || result.length < 6) {
               promptAction.showToast({
-                message: '数据处理结果与预期不符',
+                message: $r('app.string.The_data_processing_results_do_not_match_expectations'),
                 duration: 6000
               })
               return;
             }
             let bean = new CommonResultBean();
             let arrBefore = new Array<string>();
-            arrBefore.push('fn("/user/123") 期待结果: \r\n ' + `{ path: '/user/123', index: 0, params: { id: '123' } }`);
-            arrBefore.push('fn("/invalid") 期待结果: \r\n ' + `false`);
-            arrBefore.push('fn("/user/caf%C3%A9") 期待结果: \r\n ' + `{ path: '/user/caf%C3%A9', index: 0, params: { id: 'café' } }`);
-            arrBefore.push('urlMatch("/users/1234/photos") 期待结果: \r\n ' + `{ path: '/users/1234/photos', index: 0, params: { id: '1234', tab: 'photos' } }`);
-            arrBefore.push('urlMatch("/users/1234/bio") 期待结果: \r\n ' + `{ path: '/users/1234/bio', index: 0, params: { id: '1234', tab: 'bio' } }`);
-            arrBefore.push('urlMatch("/users/1234/otherstuff") 期待结果: \r\n ' + `false`);
+            arrBefore.push('fn("/user/123") ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `{ path: '/user/123', index: 0, params: { id: '123' } }`);
+            arrBefore.push('fn("/invalid") ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `false`);
+            arrBefore.push('fn("/user/caf%C3%A9") ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `{ path: '/user/caf%C3%A9', index: 0, params: { id: 'café' } }`);
+            arrBefore.push('urlMatch("/users/1234/photos") ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `{ path: '/users/1234/photos', index: 0, params: { id: '1234', tab: 'photos' } }`);
+            arrBefore.push('urlMatch("/users/1234/bio") ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `{ path: '/users/1234/bio', index: 0, params: { id: '1234', tab: 'bio' } }`);
+            arrBefore.push('urlMatch("/users/1234/otherstuff") ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `false`);
             bean.setBefore(arrBefore);
             let arrAfter = new Array<string>();
             arrAfter.push(JSON.stringify(result[0]));

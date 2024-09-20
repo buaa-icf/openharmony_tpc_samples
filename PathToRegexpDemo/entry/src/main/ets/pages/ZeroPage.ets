@@ -21,9 +21,13 @@ import router from '@ohos.router';
 @Entry
 @Component
 struct ZeroPage {
-  @State message0: string = '原始数据：const regexp = pathToRegexp("/:foo*");'
-  @State message1: string = '原始数据：regexp.exec("/");'
-  @State message2: string = '原始数据：regexp.exec("/bar/baz");'
+  @State message0: string = this.getResourceString($r('app.string.Raw_data')) + '：const regexp = pathToRegexp("/:foo*");'
+  @State message1: string = this.getResourceString($r('app.string.Raw_data')) + '：regexp.exec("/");'
+  @State message2: string = this.getResourceString($r('app.string.Raw_data')) + '：regexp.exec("/bar/baz");'
+
+  getResourceString(res:Resource){
+    return getContext().resourceManager.getStringSync(res.id)
+  }
 
   build() {
     Row() {
@@ -52,7 +56,7 @@ struct ZeroPage {
           .backgroundColor('#66E1E1E1')
           .fontColor(Color.Black)
 
-        Button('开始转换')
+        Button($r('app.string.Start_convert'))
           .backgroundColor(Color.Blue)
           .fontColor(Color.White)
           .width('80%')
@@ -69,8 +73,8 @@ struct ZeroPage {
             }
             let bean = new CommonResultBean();
             let arrBefore = new Array<string>();
-            arrBefore.push('regexp.exec("/") 期待结果: \r\n ' + `['/', null]`);
-            arrBefore.push('regexp.exec("/bar/baz") 期待结果: \r\n ' + `['/bar/baz', 'bar/baz']`);
+            arrBefore.push('regexp.exec("/") ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `['/', null]`);
+            arrBefore.push('regexp.exec("/bar/baz") ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `['/bar/baz', 'bar/baz']`);
             bean.setBefore(arrBefore);
             let arrAfter = new Array<string>();
             arrAfter.push(JSON.stringify(result[0]));

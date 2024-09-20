@@ -21,8 +21,13 @@ import router from '@ohos.router';
 @Entry
 @Component
 struct UnnamedParametersPage {
-  @State message0: string = '原始数据：const regexp = pathToRegexp("/:foo/(.*)");'
-  @State message1: string = '原始数据：regexp.exec("/test/route");'
+  @State message0: string = this.getResourceString($r('app.string.Raw_data')) + '：const regexp = pathToRegexp("/:foo/(.*)");'
+  @State message1: string = this.getResourceString($r('app.string.Raw_data')) + '：regexp.exec("/test/route");'
+
+  getResourceString(res:Resource){
+    return getContext().resourceManager.getStringSync(res.id)
+  }
+
 
   build() {
     Row() {
@@ -43,7 +48,7 @@ struct UnnamedParametersPage {
           .backgroundColor('#66E1E1E1')
           .fontColor(Color.Black)
 
-        Button('开始转换')
+        Button($r('app.string.Start_convert'))
           .backgroundColor(Color.Blue)
           .fontColor(Color.White)
           .width('80%')
@@ -53,7 +58,7 @@ struct UnnamedParametersPage {
             let result = api.unNamedParametersTest()
             if (!result) {
               promptAction.showToast({
-                message: '数据处理结果与预期不符',
+                message: $r('app.string.The_data_processing_results_do_not_match_expectations'),
                 duration: 6000
               })
               return;
@@ -61,7 +66,7 @@ struct UnnamedParametersPage {
             let bean = new CommonResultBean();
             let arrBefore = new Array<string>();
             // result属性 [ '/test/route', 'test', 'route', index: 0, input: '/test/route', groups: undefined ]
-            arrBefore.push('regexp  期待结果: \r\n ' + `['/test/route', 'test', 'route']`);
+            arrBefore.push('regexp  ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `['/test/route', 'test', 'route']`);
             bean.setBefore(arrBefore);
             let arrAfter = new Array<string>();
             arrAfter.push(JSON.stringify(result));

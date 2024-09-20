@@ -22,8 +22,12 @@ import {  Key } from 'path-to-regexp';
 @Entry
 @Component
 struct PathToRegexpPage {
-  @State message0: string = '原始数据：const keys = [];'
-  @State message1: string = '原始数据：const regexp = pathToRegexp("/foo/:bar", keys);'
+  @State message0: string = this.getResourceString($r('app.string.Raw_data')) + '：const keys = [];'
+  @State message1: string = this.getResourceString($r('app.string.Raw_data')) + '：const regexp = pathToRegexp("/foo/:bar", keys);'
+
+  getResourceString(res:Resource){
+    return getContext().resourceManager.getStringSync(res.id)
+  }
 
   build() {
     Row() {
@@ -44,7 +48,7 @@ struct PathToRegexpPage {
           .backgroundColor('#66E1E1E1')
           .fontColor(Color.Black)
 
-        Button('开始转换')
+        Button($r('app.string.Start_convert'))
           .backgroundColor(Color.Blue)
           .fontColor(Color.White)
           .width('80%')
@@ -55,15 +59,15 @@ struct PathToRegexpPage {
             let result = api.pathToRegexpTest("/foo/:bar", keys)
             if (!result) {
               promptAction.showToast({
-                message: '数据处理结果与预期不符',
+                message: $r('app.string.The_data_processing_results_do_not_match_expectations'),
                 duration: 6000
               })
               return;
             }
             let bean = new CommonResultBean();
             let arrBefore = new Array<string>();
-            arrBefore.push(`regexp  期待结果: ${'\r\n'} ${`/^\/foo(?:\/([^\/#\?]+?))[\/#\?]?$/i`}`);
-            arrBefore.push(`keys   期待结果: ${'\r\n'}  ${`[{ name: 'bar', prefix: '/', suffix: '', pattern: '[^\\/#\\?]+?', modifier: '' }]`}`);
+            arrBefore.push(`regexp  ${this.getResourceString($r('app.string.Expected_results'))}: ${'\r\n'} ${`/^\/foo(?:\/([^\/#\?]+?))[\/#\?]?$/i`}`);
+            arrBefore.push(`keys   ${this.getResourceString($r('app.string.Expected_results'))}: ${'\r\n'}  ${`[{ name: 'bar', prefix: '/', suffix: '', pattern: '[^\\/#\\?]+?', modifier: '' }]`}`);
             bean.setBefore(arrBefore);
             let arrAfter = new Array<string>();
             arrAfter.push(result.toString());

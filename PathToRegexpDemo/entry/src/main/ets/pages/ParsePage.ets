@@ -21,10 +21,14 @@ import router from '@ohos.router';
 @Entry
 @Component
 struct ParsePage {
-  @State message0: string = '原始数据：const tokens = parse("/route/:foo/(.*)");'
-  @State message1: string = '原始数据：console.log(tokens[0]);'
-  @State message2: string = '原始数据：console.log(tokens[1]);'
-  @State message3: string = '原始数据：console.log(tokens[2]);'
+  @State message0: string = this.getResourceString($r('app.string.Raw_data')) + '：const tokens = parse("/route/:foo/(.*)");'
+  @State message1: string = this.getResourceString($r('app.string.Raw_data')) + '：console.log(tokens[0]);'
+  @State message2: string = this.getResourceString($r('app.string.Raw_data')) + '：console.log(tokens[1]);'
+  @State message3: string = this.getResourceString($r('app.string.Raw_data')) + '：console.log(tokens[2]);'
+
+  getResourceString(res:Resource){
+    return getContext().resourceManager.getStringSync(res.id)
+  }
 
   build() {
     Row() {
@@ -62,7 +66,7 @@ struct ParsePage {
           .fontColor(Color.Black)
 
 
-        Button('开始转换')
+        Button($r('app.string.Start_convert'))
           .backgroundColor(Color.Blue)
           .fontColor(Color.White)
           .width('80%')
@@ -72,16 +76,16 @@ struct ParsePage {
             let result = api.parseTest()
             if (!result || result.length < 3) {
               promptAction.showToast({
-                message: '数据处理结果与预期不符',
+                message: $r('app.string.The_data_processing_results_do_not_match_expectations'),
                 duration: 6000
               })
               return;
             }
             let bean = new CommonResultBean();
             let arrBefore = new Array<string>();
-            arrBefore.push('console.log(tokens[0]) 期待结果: \r\n ' + `/route`);
-            arrBefore.push('console.log(tokens[1]) 期待结果: \r\n ' + `{ name: 'foo', prefix: '/', suffix: '', pattern: '[^\\/#\\?]+?', modifier: '' }`);
-            arrBefore.push('console.log(tokens[2]) 期待结果: \r\n ' + `{ name: 0, prefix: '/', suffix: '', pattern: '.*', modifier: '' }`);
+            arrBefore.push('console.log(tokens[0]) ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `/route`);
+            arrBefore.push('console.log(tokens[1]) ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `{ name: 'foo', prefix: '/', suffix: '', pattern: '[^\\/#\\?]+?', modifier: '' }`);
+            arrBefore.push('console.log(tokens[2]) ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `{ name: 0, prefix: '/', suffix: '', pattern: '.*', modifier: '' }`);
             bean.setBefore(arrBefore);
             let arrAfter = new Array<string>();
             arrAfter.push(JSON.stringify(result[0]));

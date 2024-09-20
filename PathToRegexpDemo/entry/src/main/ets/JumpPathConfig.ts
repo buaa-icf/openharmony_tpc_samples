@@ -60,46 +60,46 @@ export default class JumpPathConfig {
       this.dataList = new Array<JumpBean>();
     }
     if (this.dataList.length < 1) {
-      let bean14 = new JumpBean('跳转AlternativePage', 'pages/AlternativePage');
+      let bean14 = new JumpBean('Jump to AlternativePage', 'pages/AlternativePage');
       this.dataList.push(bean14)
 
-      let bean0 = new JumpBean('跳转PathToRegexpPage', 'pages/PathToRegexpPage');
+      let bean0 = new JumpBean('Jump to PathToRegexpPage', 'pages/PathToRegexpPage');
       this.dataList.push(bean0)
 
-      let bean1 = new JumpBean('跳转NamedParamtersPage', 'pages/NamedParamtersPage');
+      let bean1 = new JumpBean('Jump to NamedParamtersPage', 'pages/NamedParamtersPage');
       this.dataList.push(bean1)
 
-      let bean2 = new JumpBean('跳转CustomMatchingParamtersPage', 'pages/CustomMatchingParamtersPage');
+      let bean2 = new JumpBean('Jump to CustomMatchingParamtersPage', 'pages/CustomMatchingParamtersPage');
       this.dataList.push(bean2)
 
-      let bean3 = new JumpBean('跳转CustomPrefixSuffixPage', 'pages/CustomPrefixSuffixPage');
+      let bean3 = new JumpBean('Jump to CustomPrefixSuffixPage', 'pages/CustomPrefixSuffixPage');
       this.dataList.push(bean3)
 
-      let bean4 = new JumpBean('跳转UnnamedParametersPage', 'pages/UnnamedParametersPage');
+      let bean4 = new JumpBean('Jump to UnnamedParametersPage', 'pages/UnnamedParametersPage');
       this.dataList.push(bean4)
 
-      let bean5 = new JumpBean('跳转ModifiersPage', 'pages/ModifiersPage');
+      let bean5 = new JumpBean('Jump to ModifiersPage', 'pages/ModifiersPage');
       this.dataList.push(bean5)
 
-      let bean6 = new JumpBean('跳转OptionalPage', 'pages/OptionalPage');
+      let bean6 = new JumpBean('Jump to OptionalPage', 'pages/OptionalPage');
       this.dataList.push(bean6)
 
-      let bean7 = new JumpBean('跳转ZeroPage', 'pages/ZeroPage');
+      let bean7 = new JumpBean('Jump to ZeroPage', 'pages/ZeroPage');
       this.dataList.push(bean7)
 
-      let bean8 = new JumpBean('跳转OnePage', 'pages/OnePage');
+      let bean8 = new JumpBean('Jump to OnePage', 'pages/OnePage');
       this.dataList.push(bean8)
 
-      let bean9 = new JumpBean('跳转MatchPage', 'pages/MatchPage');
+      let bean9 = new JumpBean('Jump to MatchPage', 'pages/MatchPage');
       this.dataList.push(bean9)
 
-      let bean10 = new JumpBean('跳转ProcessPathnamePage', 'pages/ProcessPathnamePage');
+      let bean10 = new JumpBean('Jump to ProcessPathnamePage', 'pages/ProcessPathnamePage');
       this.dataList.push(bean10)
 
-      let bean11 = new JumpBean('跳转ParsePage', 'pages/ParsePage');
+      let bean11 = new JumpBean('Jump to ParsePage', 'pages/ParsePage');
       this.dataList.push(bean11)
 
-      let bean12 = new JumpBean('跳转CompilePage', 'pages/CompilePage');
+      let bean12 = new JumpBean('Jump to CompilePage', 'pages/CompilePage');
       this.dataList.push(bean12)
     }
   }

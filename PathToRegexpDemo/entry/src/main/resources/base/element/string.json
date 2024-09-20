@@ -11,6 +11,82 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Jump_to_AlternativePage",
+      "value": "Jump to AlternativePage"
+    },
+    {
+      "name": "Jump_to_PathToRegexpPage",
+      "value": "Jump to PathToRegexpPage"
+    },
+    {
+      "name": "Jump_to_NamedParamtersPage",
+      "value": "Jump to NamedParamtersPage"
+    },
+    {
+      "name": "Jump_to_CustomMatchingParamtersPage",
+      "value": "Jump to CustomMatchingParamtersPage"
+    },
+    {
+      "name": "Jump_to_CustomPrefixSuffixPagee",
+      "value": "Jump to CustomPrefixSuffixPage"
+    },
+    {
+      "name": "Jump_to_UnnamedParametersPage",
+      "value": "Jump to UnnamedParametersPage"
+    },
+    {
+      "name": "Jump_to_ModifiersPage",
+      "value": "Jump to ModifiersPage"
+    },
+    {
+      "name": "Jump_to_OptionalPage",
+      "value": "Jump to OptionalPage"
+    },
+    {
+      "name": "Jump_to_ZeroPage",
+      "value": "Jump to ZeroPage"
+    },
+    {
+      "name": "Jump_to_OnePage",
+      "value": "Jump to OnePage"
+    },
+    {
+      "name": "Jump_to_MatchPage",
+      "value": "Jump to MatchPage"
+    },
+    {
+      "name": "Jump_to_ProcessPathnamePage",
+      "value": "Jump to ProcessPathnamePage"
+    },
+    {
+      "name": "Jump_to_ParsePage",
+      "value": "Jump to ParsePage"
+    },
+    {
+      "name": "Jump_to_CompilePage",
+      "value": "Jump to CompilePage"
+    },
+    {
+      "name": "Raw_data",
+      "value": "Raw data"
+    },
+    {
+      "name": "Start_convert",
+      "value": "Start convert"
+    },
+    {
+      "name": "Expected_results",
+      "value": "Expected results"
+    },
+    {
+      "name": "After_convert",
+      "value": "After convert"
+    },
+    {
+      "name": "The_data_processing_results_do_not_match_expectations",
+      "value": "The data processing results do not match expectations"
     }
   ]
 }

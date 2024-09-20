@@ -21,8 +21,12 @@ import router from '@ohos.router';
 @Entry
 @Component
 struct AlternativePage {
-  @State message0: string = '原始数据：const re = pathToRegexp("/caf\u00E9");'
-  @State message1: string = '原始数据：const input = encodeURI("/cafe\u0301");'
+  @State message0: string = this.getResourceString($r('app.string.Raw_data')) + '：const re = pathToRegexp("/caf\u00E9");'
+  @State message1: string = this.getResourceString($r('app.string.Raw_data')) + '：const input = encodeURI("/cafe\u0301");'
+
+  getResourceString(res:Resource){
+    return getContext().resourceManager.getStringSync(res.id)
+  }
 
   build() {
     Row() {
@@ -43,7 +47,7 @@ struct AlternativePage {
           .backgroundColor('#66E1E1E1')
           .fontColor(Color.Black)
 
-        Button('开始转换')
+        Button($r('app.string.Start_convert'))
           .backgroundColor(Color.Blue)
           .fontColor(Color.White)
           .width('80%')
@@ -53,15 +57,15 @@ struct AlternativePage {
             let result = api.alternativeTest('', [])
             if (!result || result.length != 2) {
               promptAction.showToast({
-                message: '数据处理结果与预期不符',
+                message: $r('app.string.The_data_processing_results_do_not_match_expectations'),
                 duration: 6000
               })
               return;
             }
             let bean = new CommonResultBean();
             let arrBefore = new Array<string>();
-            arrBefore.push('re.test(input) 期待结果:false');
-            arrBefore.push('re.test(normalizePathname(input)) 期待结果:true');
+            arrBefore.push('re.test(input) ' + this.getResourceString($r('app.string.Expected_results')) + ':false');
+            arrBefore.push('re.test(normalizePathname(input)) ' + this.getResourceString($r('app.string.Expected_results')) + ':true');
             bean.setBefore(arrBefore);
             let arrAfter = new Array<string>();
             arrAfter.push(JSON.stringify(result[0]));
