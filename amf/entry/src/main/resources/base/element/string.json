@@ -11,6 +11,90 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "AMFstringify_and_AMFparse_click_see_display",
+      "value": "AMF.stringify and AMF.parse, click to see the display"
+    },
+    {
+      "name": "AMFserialize_and_AMFdeserialize_click_see_display",
+      "value": "AMF.serialize and AMF.deserialize, click to see the display"
+    },
+    {
+      "name": "To_be_converted",
+      "value": "To be converted"
+    },
+    {
+      "name": "Transformed_data",
+      "value": "Transformed data："
+    },
+    {
+      "name": "Source_input",
+      "value": "Source input"
+    },
+    {
+      "name": "After_AMFstringify_and_AMFparse_conversions",
+      "value": "After AMF.stringify and AMF.parse conversions"
+    },
+    {
+      "name": "After_AMFserialize_and_AMFdeserialize_conversions",
+      "value": "After AMF.serialize and AMF.deserialize conversions"
+    },
+    {
+      "name": "Enter_any_data",
+      "value": "Enter any data"
+    },
+    {
+      "name": "After_filling_data_click_here_view_amf_stringify_parse_data",
+      "value": "After filling in the data, click here to view the amf stringify parse data"
+    },
+    {
+      "name": "After_filling_data_click_here_view_AMF_Serialize_deserialize_data",
+      "value": "After filling in the data, click here to view the AMF Serialize deserialize data"
+    },
+    {
+      "name": "Jump_to_next_page_test_more_types",
+      "value": "Jump to the next page to test more types"
+    },
+    {
+      "name": "The_response_time_of_test_interface",
+      "value": "The response time of the test interface"
+    },
+    {
+      "name": "Test_the_underlying_data_type",
+      "value": "Test the underlying data type"
+    },
+    {
+      "name": "Test_string",
+      "value": "Test string"
+    },
+    {
+      "name": "Test_date",
+      "value": "Test date"
+    },
+    {
+      "name": "Test_array",
+      "value": "Test the array"
+    },
+    {
+      "name": "Test_object",
+      "value": "Test the object"
+    },
+    {
+      "name": "Test_class_mapping",
+      "value": "Test class mapping"
+    },
+    {
+      "name": "Test_class_mapping_serializable",
+      "value": "Test class mapping + serializable"
+    },
+    {
+      "name": "Test_the_bytearray",
+      "value": "Test the bytearray"
+    },
+    {
+      "name": "Test_Exception",
+      "value": "Test Exception"
     }
   ]
 }
