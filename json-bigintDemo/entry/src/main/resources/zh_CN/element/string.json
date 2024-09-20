@@ -11,6 +11,34 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Quick_access",
+      "value": "快速使用"
+    },
+    {
+      "name": "Test_whether_native_JSON_conversion_supports_bigint",
+      "value": "测试原生Json转换是否支持bigint"
+    },
+    {
+      "name": "Test_whether_the_json_digit_conversion_supports_bigint",
+      "value": "测试json_bigint转换是否支持bigint"
+    },
+    {
+      "name": "Test_to_enable_strict_in_json_true",
+      "value": "测试json_bigint开启strict:true"
+    },
+    {
+      "name": "Test_the_opening_of_storeAsString_using_json_digit_true",
+      "value": "测试json_bigint开启storeAsString: true"
+    },
+    {
+      "name": "Test_to_enable_useNativeBigInt_for_json_digit_true",
+      "value": "测试json_bigint开启useNativeBigInt: true"
+    },
+    {
+      "name": "Test_the_opening_of_alwaysPaseAsBig_using_json_digit_true",
+      "value": "测试json_bigint开启alwaysParseAsBig: true"
     }
   ]
 }
