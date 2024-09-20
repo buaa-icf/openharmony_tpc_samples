@@ -32,23 +32,23 @@ struct CustomDialogDiy {
 
   build() {
     Column() {
-      Text('请输入文件夹名称').fontSize(20).margin({ top: 10, bottom: 10 }).width('90%')
+      Text($r('app.string.Please_enter_the_folder_name')).fontSize(20).margin({ top: 10, bottom: 10 }).width('90%')
       TextInput({ placeholder: '', text: this.textValue }).height(60).width('90%')
         .onChange((value: string) => {
           this.textValue = value;
         })
-      Text('Tips:请输入正确格式的输入的文件夹名称')
+      Text($r('app.string.Please_enter_the_folder_name_in_the_correct_format'))
         .margin({ top: 10, bottom: 10 })
         .width('90%')
         .fontSize(8)
         .fontColor(Color.Red)
       Flex({ justifyContent: FlexAlign.SpaceAround }) {
-        Button('取消')
+        Button($r('app.string.Cancel'))
           .onClick(() => {
             this.controller.close()
             this.cancel()
           })
-        Button('确定')
+        Button($r('app.string.Confirm'))
           .onClick(() => {
             this.inputValue = this.textValue
             this.controller.close()
@@ -76,18 +76,18 @@ struct FolderPage {
   dialogController: CustomDialogController | null = new CustomDialogController({
     builder: CustomDialogDiy({
       cancel: () => {
-        this.showToast(`关闭了对话框，取消输入文件夹名称`, 'CustomDialogDiy-cancel')
+        this.showToast(this.getResourceString('app.string.Closed_the_dialog_box_and_canceled_inputting_the_folder_name'), 'CustomDialogDiy-cancel')
       },
       confirm: () => {
         if (!this.inputValue || this.inputValue.length < 1) {
-          this.showToast(`创建新的文件夹名称为空，请重新输入`, 'CustomDialogDiy-confirm')
+          this.showToast(this.getResourceString('app.string.Create_a_new_folder_with_an_empty_name_please_re_enter'), 'CustomDialogDiy-confirm')
           return;
         }
         if (this.selectType === 'Create') {
-          this.showToast(`创建新的文件夹名称为：${this.inputValue}`, 'CustomDialogDiy-confirm')
+          this.showToast(this.getResourceString('app.string.Create_a_new_folder_named') + `：${this.inputValue}`, 'CustomDialogDiy-confirm')
           this.createFolder()
         } else if (this.selectType === 'Rename') {
-          this.showToast(`重命名的文件夹名称为：${this.inputValue}`, 'CustomDialogDiy-confirm')
+          this.showToast(this.getResourceString('app.string.The_renamed_folder_name_is') + `：${this.inputValue}`, 'CustomDialogDiy-confirm')
           this.renameFolder()
         }
 
@@ -133,7 +133,7 @@ struct FolderPage {
 
       })
     } else {
-      this.showToast('账号未登录，请登录后再试', 'MsgList-imap')
+      this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'MsgList-imap')
       router.back()
     }
   }
@@ -141,7 +141,7 @@ struct FolderPage {
   build() {
     Column() {
       Flex({ justifyContent: FlexAlign.Start, direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
-        Button('删除文件夹')
+        Button($r('app.string.remove_folders'))
           .margin(10)
           .width('80%')
           .height(50)
@@ -151,7 +151,7 @@ struct FolderPage {
             this.deleteFolder()
           })
 
-        Button('创建文件夹')
+        Button($r('app.string.create_folder'))
           .margin(10)
           .width('80%')
           .height(50)
@@ -164,7 +164,7 @@ struct FolderPage {
             }
             this.createFolder()
           })
-        Button('重命名文件夹')
+        Button($r('app.string.Rename_folder'))
           .margin(10)
           .width('80%')
           .height(50)
@@ -172,7 +172,7 @@ struct FolderPage {
           .fontColor(Color.White)
           .onClick(() => {
             if (!this.selectFolder || this.selectFolder.length < 1) {
-              this.showToast('请先选择一个需要重命名的文件夹', 'renameFolder-imap')
+              this.showToast(this.getResourceString('app.string.Please_first_select_a_folder_that_needs_to_be_renamed'), 'renameFolder-imap')
               return;
             }
             this.selectType = 'Rename'
@@ -185,7 +185,7 @@ struct FolderPage {
       .margin({ left: 15, top: 20 })
 
       Flex({ justifyContent: FlexAlign.Start, direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
-        Button('订阅邮箱')
+        Button($r('app.string.subscribed'))
           .margin(10)
           .width('80%')
           .height(50)
@@ -193,13 +193,13 @@ struct FolderPage {
           .fontColor(Color.White)
           .onClick(() => {
             if (!this.selectFolder || this.selectFolder.length < 1) {
-              this.showToast('请先选择一个需要重命名的文件夹', 'renameFolder-imap')
+              this.showToast(this.getResourceString('app.string.Please_first_select_a_folder_that_needs_to_be_renamed'), 'renameFolder-imap')
               return;
             }
             this.subBox()
           })
 
-        Button('取消订阅邮箱')
+        Button($r('app.string.Unsubscribe_email'))
           .margin(10)
           .width('80%')
           .height(50)
@@ -207,12 +207,12 @@ struct FolderPage {
           .fontColor(Color.White)
           .onClick(() => {
             if (!this.selectFolder || this.selectFolder.length < 1) {
-              this.showToast('请先选择一个需要重命名的文件夹', 'renameFolder-imap')
+              this.showToast(this.getResourceString('app.string.Please_first_select_a_folder_that_needs_to_be_renamed'), 'renameFolder-imap')
               return;
             }
             this.unSubBox()
           })
-        Button('获取所有订阅邮箱件')
+        Button($r('app.string.Get_all_subscribed_email_addresses'))
           .margin(10)
           .width('80%')
           .height(50)
@@ -248,7 +248,7 @@ struct FolderPage {
 
           })
           .parallelGesture(TapGesture().onAction((event) => {
-            this.showToast(`准备进入文件夹：${item}`, 'folder-click-imap')
+            this.showToast(this.getResourceString('app.string.Preparing_to_enter_the_folder') + `：${item}`, 'folder-click-imap')
             router.pushUrl({
               url: 'pages/MsgListPage',
               params: {
@@ -280,27 +280,27 @@ struct FolderPage {
     const ctx = this;
     try {
       if (!ctx.selectFolder || ctx.selectFolder.length < 1) {
-        ctx.showToast('请先选择一个需要删除的文件夹', 'renameFolder-imap')
+        ctx.showToast(this.getResourceString('app.string.Please_first_select_a_folder_that_needs_to_be_deleted'), 'renameFolder-imap')
         return
       }
-      ctx.showToast('开始删除文件夹', 'deleteFolder-imap')
+      ctx.showToast(this.getResourceString('app.string.Start_deleting_folder'), 'deleteFolder-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.delBox(ctx.selectFolder, (err:Error) => {
           if (err) {
-            ctx.showToast('删除文件夹失败', 'deleteFolder-imap')
+            ctx.showToast(this.getResourceString('app.string.Failed_to_delete_folder'), 'deleteFolder-imap')
           } else {
             ctx.selectFolder = null;
-            ctx.showToast('删除文件夹成功', 'deleteFolder-imap')
+            ctx.showToast(this.getResourceString('app.string.Folder_deleted_successfully'), 'deleteFolder-imap')
             ctx.refreshFolderList()
           }
         });
       } else {
-        this.showToast('账号未登录，请登录后再试', 'MsgList-imap')
+        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'MsgList-imap')
         router.back()
       }
 
     } catch (err) {
-      ctx.showToast(`账号登录出错：${err.message}`, 'login-smtp')
+      ctx.showToast(this.getResourceString('app.string.Account_login_error') + `：${err.message}`, 'login-smtp')
     }
   }
 
@@ -308,28 +308,28 @@ struct FolderPage {
     const ctx = this;
     try {
       if (!ctx.inputValue || ctx.inputValue.length < 1) {
-        ctx.showToast('请先输入新的文件夹的名字', 'renameFolder-imap')
+        ctx.showToast(this.getResourceString('app.string.Please_enter_the_name_of_the_new_folder_first'), 'renameFolder-imap')
         return
       }
-      ctx.showToast('开始创建文件夹', 'createFolder-imap')
+      ctx.showToast(this.getResourceString('app.string.Start_creating_folder'), 'createFolder-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.addBox(ctx.inputValue, (err:Error) => {
           if (err) {
-            ctx.showToast(`创建文件夹失败,原因：${err.message}`, 'createFolder-imap')
+            ctx.showToast(this.getResourceString('app.string.Failed_to_create_folder_reason') + `：${err.message}`, 'createFolder-imap')
           } else {
             ctx.inputValue = '';
             ctx.textValue = '';
-            ctx.showToast('创建文件夹成功', 'createFolder-imap')
+            ctx.showToast(this.getResourceString('app.string.Folder_created_successfully'), 'createFolder-imap')
             ctx.refreshFolderList()
           }
         });
       } else {
-        this.showToast('账号未登录，请登录后再试', 'createFolder-imap')
+        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'createFolder-imap')
         router.back()
       }
 
     } catch (err) {
-      ctx.showToast(`账号登录出错：${err.message}`, 'createFolder-smtp')
+      ctx.showToast(this.getResourceString('app.string.Account_login_error') + `：${err.message}`, 'createFolder-smtp')
     }
   }
 
@@ -337,33 +337,33 @@ struct FolderPage {
     const ctx = this;
     try {
       if (!ctx.selectFolder || ctx.selectFolder.length < 1) {
-        ctx.showToast('请先选择一个需要重命名的文件夹', 'renameFolder-imap')
+        ctx.showToast(this.getResourceString('app.string.Please_first_select_a_folder_that_needs_to_be_renamed'), 'renameFolder-imap')
         return
       }
       if (!ctx.inputValue || ctx.inputValue.length < 1) {
-        ctx.showToast('请先输入新的文件夹的名字', 'renameFolder-imap')
+        ctx.showToast(this.getResourceString('app.string.Please_enter_the_name_of_the_new_folder_first'), 'renameFolder-imap')
         return
       }
-      ctx.showToast('开始重命名文件夹', 'renameFolder-imap')
+      ctx.showToast(this.getResourceString('app.string.Start_renaming_folder'), 'renameFolder-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.renameBox(ctx.selectFolder, ctx.inputValue, (err:Error, result:Box) => {
           if (err) {
-            ctx.showToast(`重命名文件夹失败,原因：${err.message}`, 'renameFolder-imap')
+            ctx.showToast(this.getResourceString('app.string.Renaming_folder_failed_reason') + `：${err.message}`, 'renameFolder-imap')
           } else {
             ctx.selectFolder = null;
             ctx.inputValue = '';
             ctx.textValue = '';
-            ctx.showToast('重命名文件夹成功', 'renameFolder-imap')
+            ctx.showToast(this.getResourceString('app.string.Renaming_folder_successfully'), 'renameFolder-imap')
             ctx.refreshFolderList()
           }
         });
       } else {
-        this.showToast('账号未登录，请登录后再试', 'renameFolder-imap')
+        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'renameFolder-imap')
         router.back()
       }
 
     } catch (err) {
-      ctx.showToast(`账号登录出错：${err.message}`, 'renameFolder-smtp')
+      ctx.showToast(this.getResourceString('app.string.Account_login_error') + `：${err.message}`, 'renameFolder-smtp')
     }
   }
 
@@ -371,28 +371,28 @@ struct FolderPage {
     const ctx = this;
     try {
       if (!ctx.selectFolder || ctx.selectFolder.length < 1) {
-        ctx.showToast('请先选择邮箱', 'subBox-imap')
+        ctx.showToast(this.getResourceString('app.string.Please_select_your_email_first'), 'subBox-imap')
         return
       }
-      ctx.showToast('订阅一个文件夹', 'subBox-imap')
+      ctx.showToast(this.getResourceString('app.string.Subscribe_to_a_folder'), 'subBox-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.subscribeBox(this.selectFolder, (err:Error) => {
           if (err) {
-            ctx.showToast(`订阅邮箱失败,原因：${err.message}`, 'subBox-imap')
+            ctx.showToast(this.getResourceString('app.string.Subscription_email_failed_reason') + `：${err.message}`, 'subBox-imap')
           } else {
             ctx.inputValue = '';
             ctx.textValue = '';
-            ctx.showToast('订阅邮箱成功', 'subBox-imap')
+            ctx.showToast(this.getResourceString('app.string.Subscription_email_successful'), 'subBox-imap')
             // ctx.refreshFolderList()
           }
         });
       } else {
-        this.showToast('账号未登录，请登录后再试', 'subBox-imap')
+        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'subBox-imap')
         router.back()
       }
 
     } catch (err) {
-      ctx.showToast(`订阅邮箱出错：${err.message}`, 'subBox-smtp')
+      ctx.showToast(this.getResourceString('app.string.Subscription_email_error') + `：${err.message}`, 'subBox-smtp')
     }
   }
 
@@ -400,41 +400,41 @@ struct FolderPage {
     const ctx = this;
     try {
       if (!ctx.selectFolder || ctx.selectFolder.length < 1) {
-        ctx.showToast('请先选择邮箱', 'unSubBox-imap')
+        ctx.showToast(this.getResourceString('app.string.Please_select_your_email_first'), 'unSubBox-imap')
         return
       }
-      ctx.showToast('取消订阅邮箱', 'unSubBox-imap')
+      ctx.showToast(this.getResourceString('app.string.Unsubscribe_email'), 'unSubBox-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.unsubscribeBox(this.selectFolder, (err:Error) => {
           if (err) {
-            ctx.showToast(`取消订阅邮箱失败,原因：${err.message}`, 'unSubBox-imap')
+            ctx.showToast(this.getResourceString('app.string.Unsubscribe_email_failed_reason') + `：${err.message}`, 'unSubBox-imap')
           } else {
             ctx.inputValue = '';
             ctx.textValue = '';
-            ctx.showToast('取消订阅邮箱成功', 'unSubBox-imap')
+            ctx.showToast(this.getResourceString('app.string.Unsubscribed_email_successfully'), 'unSubBox-imap')
             // ctx.refreshFolderList()
           }
         });
       } else {
-        this.showToast('账号未登录，请登录后再试', 'unSubBox-imap')
+        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'unSubBox-imap')
         router.back()
       }
 
     } catch (err) {
-      ctx.showToast(`取消订阅邮箱出错：${err.message}`, 'unSubBox-smtp')
+      ctx.showToast(this.getResourceString('app.string.Unsubscribe_email_error') + `：${err.message}`, 'unSubBox-smtp')
     }
   }
 
   getSubList() {
     const ctx = this;
     try {
-      ctx.showToast('开始回用户$HOME目录下所有的文件，但LSUB命令只显示那些使用SUBSCRIBE命令设置为活动邮箱的文件。两个参数：邮箱路径和邮箱名。', 'closeBox-imap')
+      ctx.showToast(this.getResourceString('app.string.Start_returning_all_files'), 'closeBox-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.getSubscribedBoxes((err:Error, result:MailBoxes) => {
           if (err) {
-            ctx.showToast(`获取所有活动邮箱的文件失败,原因：${err.message}`, 'expungeMail-imap')
+            ctx.showToast(this.getResourceString('app.string.Failed_to_retrieve_files_for_all_active_email_addresses_reason') + `：${err.message}`, 'expungeMail-imap')
           } else {
-            ctx.showToast('获取所有活动邮箱的文件成功', 'expungeMail-imap')
+            ctx.showToast(this.getResourceString('app.string.Successfully_obtained_files_for_all_active_email_addresses'), 'expungeMail-imap')
             ctx.listData = [];
             let keyArr = Object.getOwnPropertyNames(result)
             for (let i = 0; i < keyArr.length; i++) {
@@ -444,12 +444,15 @@ struct FolderPage {
           }
         });
       } else {
-        this.showToast('账号未登录，请登录后再试', 'expungeMail-imap')
+        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'expungeMail-imap')
         router.back()
       }
-
     } catch (err) {
-      ctx.showToast(`获取所有活动邮箱的文件出错：${err.message}`, 'expungeMail-smtp')
+      ctx.showToast(this.getResourceString('app.string.Error_obtaining_files_for_all_active_email_addresses') + `：${err.message}`, 'expungeMail-smtp')
     }
+  }
+
+  getResourceString(resourceName:string) {
+    return getContext().resourceManager.getStringSync($r(resourceName).id)
   }
 }

@@ -54,23 +54,23 @@ struct CustomDialogDiy {
 
   build() {
     Column() {
-      Text('请输入邮箱类型').fontSize(20).margin({ top: 10, bottom: 10 }).width('90%')
+      Text($r('app.string.Please_enter_email_type')).fontSize(20).margin({ top: 10, bottom: 10 }).width('90%')
       TextInput({ placeholder: '', text: this.textValue }).height(60).width('90%')
         .onChange((value: string) => {
           this.textValue = value;
         })
-      Text('Tips:请输入正确格式的邮箱类型，例如@qq.com或者@163.com')
+      Text($r('app.string.Please_enter_the_folder_name_in_the_correct_format'))
         .margin({ top: 10, bottom: 10 })
         .width('90%')
         .fontSize(8)
         .fontColor(Color.Red)
       Flex({ justifyContent: FlexAlign.SpaceAround }) {
-        Button('取消')
+        Button($r('app.string.Cancel'))
           .onClick(() => {
             this.controller.close()
             this.cancel()
           })
-        Button('确定')
+        Button($r('app.string.Confirm'))
           .onClick(() => {
             this.inputValue = this.textValue
             this.controller.close()
@@ -110,11 +110,11 @@ struct MsgListPage {
   dialogController: CustomDialogController | null = new CustomDialogController({
     builder: CustomDialogDiy({
       cancel: () => {
-        this.showToast(`关闭了对话框，取消选输入`, 'imap-search')
+        this.showToast(this.getResourceString('app.string.Closed_the_dialog_box'), 'imap-search')
       },
       confirm: () => {
         if (!this.inputValue || this.inputValue.length < 1) {
-          this.showToast(`搜索的内容不可为空`, 'imap-search')
+          this.showToast(this.getResourceString('app.string.The_search_content_cannot_be_empty'), 'imap-search')
           return
         }
         this.search()
@@ -209,7 +209,7 @@ struct MsgListPage {
     }
 
     if (!GlobalObj?.getInstance()?.getClient()) {
-      this.showToast('账号未登录，请登录后再试', 'MsgList-imap')
+      this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'MsgList-imap')
       router.back()
       return
     }
@@ -217,7 +217,7 @@ struct MsgListPage {
     if (tempParam && tempParam['folderName'] && (tempParam['folderName'] as string).length > 0) {
       ctx.folderName = tempParam['folderName'] as string
     } else {
-      this.showToast('未获取到邮箱文件夹参数', 'MsgList-imap')
+      this.showToast(this.getResourceString('app.string.Email_folder_parameters_not_obtained'), 'MsgList-imap')
       router.back()
       return
     }
@@ -228,7 +228,7 @@ struct MsgListPage {
         for (let i = 0; i < folderList.length; i++) {
           ctx.selectList.push({
             value: folderList[i],
-            icon: $r('app.media.icon')
+            icon: this.getResourceString('app.media.icon')
           })
           if (ctx.folderName === folderList[i]) {
             ctx.selectIndex = i;
@@ -236,7 +236,7 @@ struct MsgListPage {
         }
       }
     } else {
-      this.showToast('未获取到邮箱文件夹参数', 'MsgList-imap')
+      this.showToast(this.getResourceString('app.string.Email_folder_parameters_not_obtained'), 'MsgList-imap')
       router.back()
       return
     }
@@ -293,11 +293,11 @@ struct MsgListPage {
       },
       bodyEndCallback: () => {
         try {
-          ctx.showToast(`获取整个邮件体成功：${'\r\n'}${buffer}`, 'MsgDetail-imap');
+          ctx.showToast(this.getResourceString('app.string.Successfully_obtained_the_entire_email_body') + `：${'\r\n'}${buffer}`, 'MsgDetail-imap');
           if (buffer.length > 65535) {
-            ctx.message = `获取整个邮件体成功,文本长度超过65535，text，取65535长度用于显示：${'\r\n'}${buffer.substring(0, 65535)}`
+            ctx.message = this.getResourceString('app.string.Successfully_obtained') + `：${'\r\n'}${buffer.substring(0, 65535)}`
           } else {
-            ctx.message = `获取整个邮件体成功：${'\r\n'}${buffer}`
+            ctx.message = this.getResourceString('app.string.Successfully_obtained_the_entire_email_body') + `：${'\r\n'}${buffer}`
           }
 
         } catch (err) {
@@ -364,7 +364,7 @@ struct MsgListPage {
     Row() {
       Flex({ justifyContent: FlexAlign.Start, direction: FlexDirection.Column, alignItems: ItemAlign.Start }) {
         Flex({ justifyContent: FlexAlign.Start, direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
-          Button('上传邮件')
+          Button($r('app.string.Upload_email'))
             .margin(10)
             .height(50)
             .backgroundColor(Color.Blue)
@@ -373,7 +373,7 @@ struct MsgListPage {
               this.appendMail()
             })
 
-          Button('关闭邮箱')
+          Button($r('app.string.Close_email'))
             .margin(10)
             .height(50)
             .backgroundColor(Color.Blue)
@@ -388,7 +388,7 @@ struct MsgListPage {
 
         Flex({ justifyContent: FlexAlign.Start, direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
 
-          Button('删除标记的邮件')
+          Button($r('app.string.Delete_tagged_emails'))
             .margin(10)
             .height(50)
             .backgroundColor(Color.Blue)
@@ -396,7 +396,7 @@ struct MsgListPage {
             .onClick(() => {
               this.storeMail()
             })
-          Button('搜索邮件')
+          Button($r('app.string.search_mail'))
             .margin(10)
             .height(50)
             .backgroundColor(Color.Blue)
@@ -410,7 +410,7 @@ struct MsgListPage {
 
         Flex({ justifyContent: FlexAlign.Start, direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
 
-          Button('添加flag')
+          Button($r('app.string.Add_flag'))
             .margin(10)
             .height(50)
             .backgroundColor(Color.Blue)
@@ -418,7 +418,7 @@ struct MsgListPage {
             .onClick(() => {
               this.addFlag()
             })
-          Button('设置flag')
+          Button($r('app.string.Set_flag'))
             .margin(10)
             .height(50)
             .backgroundColor(Color.Blue)
@@ -426,7 +426,7 @@ struct MsgListPage {
             .onClick(() => {
               this.setFlag()
             })
-          Button('删除flag')
+          Button($r('app.string.Delete_flag'))
             .margin(10)
             .height(50)
             .backgroundColor(Color.Blue)
@@ -442,7 +442,7 @@ struct MsgListPage {
 
         Flex({ justifyContent: FlexAlign.Start, direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
 
-          Button('添加关键字')
+          Button($r('app.string.Add_keywords'))
             .margin(10)
             .height(50)
             .backgroundColor(Color.Blue)
@@ -450,7 +450,7 @@ struct MsgListPage {
             .onClick(() => {
               this.addKeywords()
             })
-          Button('设置关键字')
+          Button($r('app.string.Set_keywords'))
             .margin(10)
             .height(50)
             .backgroundColor(Color.Blue)
@@ -458,7 +458,7 @@ struct MsgListPage {
             .onClick(() => {
               this.setKeywords()
             })
-          Button('删除关键字')
+          Button($r('app.string.Delete_keywords'))
             .margin(10)
             .height(50)
             .backgroundColor(Color.Blue)
@@ -477,7 +477,7 @@ struct MsgListPage {
 
           Select(this.selectList)
             .selected(this.selectIndex)
-            .value('复制信息')
+            .value(this.getResourceString('app.string.Replication_Information'))
             .fontColor("#182431")
             .font({ size: 16, weight: 500 })
             .selectedOptionFont({ size: 16, weight: 400 })
@@ -493,7 +493,7 @@ struct MsgListPage {
 
           Select(this.selectList)
             .selected(this.selectIndex)
-            .value('移动信息')
+            .value(this.getResourceString('app.string.Mobile_Information'))
             .fontColor("#182431")
             .margin({ left: 30 })
             .font({ size: 16, weight: 500 })
@@ -512,7 +512,7 @@ struct MsgListPage {
 
           Select(this.selectMenuArr)
             .selected(this.selectSortIndex)
-            .value('邮件排序')
+            .value(this.getResourceString('app.string.Email_sorting'))
             .fontColor("#182431")
             .margin({ left: 30 })
             .font({ size: 16, weight: 500 })
@@ -597,7 +597,7 @@ struct MsgListPage {
                 this.startIndex = this.endIndex + 1;
                 this.getListData()
               } else {
-                this.showToast(`点击了列表的第${index}项`, 'list-click-imap')
+                this.showToast(this.getResourceString('app.string.Clicked_on_the_first_item_in_the_list') + `${index}`, 'list-click-imap')
                 router.pushUrl({
                   url: 'pages/MsgDetailPage',
                   params: {
@@ -631,12 +631,12 @@ struct MsgListPage {
 
   createMailData() {
     let msg: MsgSendBean = {
-      text: 'IMAP协议测试上传的邮件',
+      text: this.getResourceString('app.string.Email_uploaded_during_IMAP_protocol_testing'),
       from: `${'鸿蒙搬砖工'} <${'xxxx@xxxx.com'}>`,
       to: 'xxxx@xxxx.com',
       cc: 'xxxx@xxx.com',
       bcc: 'xxx@xxx.com',
-      subject: '鸿蒙客户端IMAP协议的主题'
+      subject: this.getResourceString('app.string.Topic_of_IMAP_Protocol_for_Client')
     }
     return JSON.stringify(msg);
   }
@@ -647,10 +647,10 @@ struct MsgListPage {
     try {
       let data = ctx.createMailData();
       if (!data || data.length < 1) {
-        ctx.showToast('上传的邮件数据不可以为空', 'appendMail-imap')
+        ctx.showToast(this.getResourceString('app.string.The_uploaded_email_data_cannot_be_empty'), 'appendMail-imap')
         return
       }
-      ctx.showToast('开始上传邮件', 'appendMail-imap')
+      ctx.showToast(this.getResourceString('app.string.Start_uploading_emails'), 'appendMail-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
         let option: AppendOptions = {
           mailbox: ctx.folderName,
@@ -660,39 +660,39 @@ struct MsgListPage {
         }
         GlobalObj?.getInstance()?.getClient()?.append(data, option, (err: Error) => {
           if (err) {
-            ctx.showToast(`上传邮件失败,原因：${err.message}`, 'appendMail-imap')
+            ctx.showToast(this.getResourceString('app.string.Failed_to_upload_email') + `：${err.message}`, 'appendMail-imap')
           } else {
-            ctx.showToast('上传邮件成功', 'appendMail-imap')
+            ctx.showToast(this.getResourceString('app.string.Email_uploaded_successfully'), 'appendMail-imap')
             ctx.startIndex = 0;
             ctx.endIndex = 0;
             ctx.getListData()
           }
         });
       } else {
-        this.showToast('账号未登录，请登录后再试', 'appendMail-imap')
+        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'appendMail-imap')
         router.back()
       }
 
     } catch (err) {
-      ctx.showToast(`上传邮件出错：${err.message}`, 'appendMail-smtp')
+      ctx.showToast(this.getResourceString('app.string.Error_uploading_email') + `：${err.message}`, 'appendMail-smtp')
     }
   }
 
   selectMailBox() {
-    console.log(`zdy--SELECT指令内部调用，未开放给用户--->`)
+    console.log(this.getResourceString('app.string.Zdy_SELECT_instruction_internal_call'))
   }
 
   closeBox() {
     const ctx = this;
     try {
       ctx.selectMsg = -1
-      ctx.showToast('开始关闭本文件夹', 'closeBox-imap')
+      ctx.showToast(this.getResourceString('app.string.Start_closing_this_folder'), 'closeBox-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.closeBox((err: Error) => {
           if (err) {
-            ctx.showToast(`关闭本文件夹失败,原因：${err.message}`, 'closeBox-imap')
+            ctx.showToast(this.getResourceString('app.string.Failed_to_close_this_folder_reason') + `：${err.message}`, 'closeBox-imap')
           } else {
-            ctx.showToast('关闭本文件夹成功', 'appendMail-imap')
+            ctx.showToast(this.getResourceString('app.string.Successfully_closed_this_folder'), 'appendMail-imap')
             router.clear()
             router.pushUrl({
               url: 'pages/FolderPage'
@@ -700,12 +700,12 @@ struct MsgListPage {
           }
         });
       } else {
-        this.showToast('账号未登录，请登录后再试', 'closeBox-imap')
+        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'closeBox-imap')
         router.back()
       }
 
     } catch (err) {
-      ctx.showToast(`关闭本文件夹出错：${err.message}`, 'closeBox-smtp')
+      ctx.showToast(this.getResourceString('app.string.Error_closing_this_folder') + `：${err.message}`, 'closeBox-smtp')
     }
   }
 
@@ -713,29 +713,29 @@ struct MsgListPage {
     const ctx = this;
     try {
       if (!ctx.selectSort || ctx.selectSort.length < 1) {
-        ctx.showToast('排序参数不可以为空', 'sortMail-imap')
+        ctx.showToast(this.getResourceString('app.string.The_sorting_parameter_cannot_be_empty'), 'sortMail-imap')
         return
       }
-      ctx.showToast('开始设置排序', 'sortMail-imap')
+      ctx.showToast(this.getResourceString('app.string.Start_setting_sorting'), 'sortMail-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
 
         GlobalObj?.getInstance()?.getClient()?.sort([ctx.selectSort], ['ALL'], (err: Error, uids: number[]) => {
           if (err) {
-            ctx.showToast(`设置排序失败,原因：${err.message}`, 'sortMail-imap')
+            ctx.showToast(this.getResourceString('app.string.Setting_sorting_failed_reason') + `：${err.message}`, 'sortMail-imap')
           } else {
-            ctx.showToast('设置排序成功', 'sortMail-imap')
+            ctx.showToast(this.getResourceString('app.string.Sort_successfully_set'), 'sortMail-imap')
             ctx.startIndex = 0;
             ctx.endIndex = 0;
             ctx.getListData()
           }
         });
       } else {
-        this.showToast('账号未登录，请登录后再试', 'sortMail-imap')
+        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'sortMail-imap')
         router.back()
       }
 
     } catch (err) {
-      ctx.showToast(`设置排序出错：${err.message}`, 'sortMail-smtp')
+      ctx.showToast(this.getResourceString('app.string.Setting_sorting_error') + `：${err.message}`, 'sortMail-smtp')
     }
   }
 
@@ -743,13 +743,13 @@ struct MsgListPage {
     const ctx = this;
     try {
       ctx.selectMsg = -1
-      ctx.showToast('开始搜索邮件', 'search-imap')
+      ctx.showToast(this.getResourceString('app.string.Start_searching_for_emails'), 'search-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.search([ctx.searchType], (err: Error, uids: number[]) => {
           if (err) {
-            ctx.showToast(`搜索邮件失败,原因：${err.message}`, 'search-imap')
+            ctx.showToast(this.getResourceString('app.string.Search_email_failed_reason') + `：${err.message}`, 'search-imap')
           } else {
-            ctx.showToast('搜索邮件成功 ' + JSON.stringify(uids), 'search-imap')
+            ctx.showToast(this.getResourceString('app.string.Search_email_successful') + JSON.stringify(uids), 'search-imap')
             if (!uids) {
               throw new Error('get message list fail')
             }
@@ -759,18 +759,18 @@ struct MsgListPage {
               bean.Date = '';
               bean.From = '';
               bean.To = '';
-              bean.Subject = '当前搜索的信息编号：' + uids[i];
+              bean.Subject = this.getResourceString('app.string.The_current_search_information_number') + uids[i];
               ctx.listData.push(bean)
             }
           }
         });
       } else {
-        this.showToast('账号未登录，请登录后再试', 'search-imap')
+        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'search-imap')
         router.back()
       }
 
     } catch (err) {
-      ctx.showToast(`搜索邮件出错：${err.message}`, 'search-smtp')
+      ctx.showToast(this.getResourceString('app.string.Search_email_error') + `：${err.message}`, 'search-smtp')
     }
   }
 
@@ -782,15 +782,15 @@ struct MsgListPage {
   storeMail() {
     const ctx = this;
     if (!ctx.selectMsg || ctx.selectMsg === -1) {
-      ctx.showToast('请先选择一个邮件', 'storeMail---IMAP')
+      ctx.showToast(this.getResourceString('app.string.Please_select_an_email_first'), 'storeMail---IMAP')
       return
     }
     if (!ctx.listData || ctx.listData.length < 3) {
-      ctx.showToast('当前邮箱中暂无可用的消息', 'storeMail---IMAP')
+      ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'storeMail---IMAP')
       return
     }
     if (ctx.selectMsg <= 0 || ctx.selectMsg >= ctx.listData.length - 1) {
-      ctx.showToast('请选择正确的可以操作的邮件', 'storeMail---IMAP')
+      ctx.showToast(this.getResourceString('app.string.Please_select_the_correct_email_that_can_be_operated_on'), 'storeMail---IMAP')
       return
     }
     let uid = ctx.listData[ctx.selectMsg].uid
@@ -801,25 +801,25 @@ struct MsgListPage {
     const ctx = this;
     try {
 
-      ctx.showToast('开始给邮件打删除标记', 'storeMail-imap')
+      ctx.showToast(this.getResourceString('app.string.Start_marking_emails_for_deletion'), 'storeMail-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.addFlags(uid, '\\Seen', (err: Error) => {
           if (err) {
-            ctx.showToast(`给邮件打删除标记失败,原因：${err.message}`, 'storeMail-imap')
+            ctx.showToast(this.getResourceString('app.string.Failed_to_mark_the_email_for_deletion_reason') + `：${err.message}`, 'storeMail-imap')
           } else {
-            ctx.showToast('给邮件打删除标记成功', 'storeMail-imap')
+            ctx.showToast(this.getResourceString('app.string.Successfully_marked_the_email_for_deletion'), 'storeMail-imap')
             ctx.startIndex = 0;
             ctx.endIndex = 0;
             ctx.expungeMail(uid)
           }
         });
       } else {
-        this.showToast('账号未登录，请登录后再试', 'storeMail-imap')
+        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'storeMail-imap')
         router.back()
       }
 
     } catch (err) {
-      ctx.showToast(`给邮件打删除标记出错：${err.message}`, 'storeMail-smtp')
+      ctx.showToast(this.getResourceString('app.string.Error_in_marking_email_for_deletion') + `：${err.message}`, 'storeMail-smtp')
     }
   }
 
@@ -827,23 +827,23 @@ struct MsgListPage {
     const ctx = this;
     try {
       ctx.selectMsg = -1
-      ctx.showToast('开始永久删除所有的标志为DELETED的邮件，EXPUNGE删除的邮件将不可以恢复', 'closeBox-imap')
+      ctx.showToast(this.getResourceString('app.string.Starting_to_permanently_delete_all_emails_marked_as_DELETED'), 'closeBox-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.expunge(uid, (err: Error) => {
           if (err) {
-            ctx.showToast(`永久删除失败,原因：${err.message}`, 'expungeMail-imap')
+            ctx.showToast(this.getResourceString('app.string.Permanent_deletion_failed_reason') + `：${err.message}`, 'expungeMail-imap')
           } else {
-            ctx.showToast('永久删除成功', 'expungeMail-imap')
+            ctx.showToast(this.getResourceString('app.string.Permanently_deleted_successfully'), 'expungeMail-imap')
             ctx.getListData()
           }
         });
       } else {
-        this.showToast('账号未登录，请登录后再试', 'expungeMail-imap')
+        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'expungeMail-imap')
         router.back()
       }
 
     } catch (err) {
-      ctx.showToast(`永久删除出错：${err.message}`, 'expungeMail-smtp')
+      ctx.showToast(this.getResourceString('app.string.Permanent_deletion_error') + `：${err.message}`, 'expungeMail-smtp')
     }
   }
 
@@ -851,36 +851,36 @@ struct MsgListPage {
     const ctx = this;
     try {
       if (!ctx.selectMsg || ctx.selectMsg === -1) {
-        ctx.showToast('请先选择一个邮件', 'copyMail---IMAP')
+        ctx.showToast(this.getResourceString('app.string.Please_select_an_email_first'), 'copyMail---IMAP')
         return
       }
       if (!ctx.listData || ctx.listData.length < 3) {
-        ctx.showToast('当前邮箱中暂无可用的消息', 'copyMail---IMAP')
+        ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'copyMail---IMAP')
         return
       }
       if (ctx.selectMsg <= 0 || ctx.selectMsg >= ctx.listData.length - 1) {
-        ctx.showToast('请选择正确的可以操作的邮件', 'copyMail---IMAP')
+        ctx.showToast(this.getResourceString('app.string.Please_select_the_correct_email_that_can_be_operated_on'), 'copyMail---IMAP')
         return
       }
       if (!ctx.selectFolder || ctx.selectFolder.length < 1) {
-        ctx.showToast('请先选择一个邮箱', 'copyMail---IMAP')
+        ctx.showToast(this.getResourceString('app.string.Please_select_an_email_first'), 'copyMail---IMAP')
         return
       }
       let uid = ctx.listData[ctx.selectMsg].uid
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.copy(uid, ctx.selectFolder, (err: Error) => {
           if (err) {
-            ctx.showToast(`复制邮件失败,原因：${err.message}`, 'copyMail-imap')
+            ctx.showToast(this.getResourceString('app.string.Copy_email_failed_reason') + `：${err.message}`, 'copyMail-imap')
           } else {
-            ctx.showToast('复制邮件成功 ', 'copyMail-imap')
+            ctx.showToast(this.getResourceString('app.string.Copy_email_successfully'), 'copyMail-imap')
           }
         });
       } else {
-        this.showToast('账号未登录，请登录后再试', 'copyMail-imap')
+        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'copyMail-imap')
         router.back()
       }
     } catch (err) {
-      ctx.showToast(`复制邮件出错：${err.message}`, 'copyMail-smtp')
+      ctx.showToast(this.getResourceString('app.string.Error_copying_email') + `：${err.message}`, 'copyMail-smtp')
     }
   }
 
@@ -888,37 +888,37 @@ struct MsgListPage {
     const ctx = this;
     try {
       if (!ctx.selectMsg || ctx.selectMsg === -1) {
-        ctx.showToast('请先选择一个邮件', 'moveMail---IMAP')
+        ctx.showToast(this.getResourceString('app.string.Please_select_an_email_first'), 'moveMail---IMAP')
         return
       }
       if (!ctx.listData || ctx.listData.length < 3) {
-        ctx.showToast('当前邮箱中暂无可用的消息', 'moveMail---IMAP')
+        ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'moveMail---IMAP')
         return
       }
       if (ctx.selectMsg <= 0 || ctx.selectMsg >= ctx.listData.length - 1) {
-        ctx.showToast('请选择正确的可以操作的邮件', 'moveMail---IMAP')
+        ctx.showToast(this.getResourceString('app.string.Please_select_the_correct_email_that_can_be_operated_on'), 'moveMail---IMAP')
         return
       }
       if (!ctx.selectFolder || ctx.selectFolder.length < 1) {
-        ctx.showToast('请先选择一个邮箱', 'moveMail---IMAP')
+        ctx.showToast(this.getResourceString('app.string.Please_select_an_email_first'), 'moveMail---IMAP')
         return
       }
       let uid = ctx.listData[ctx.selectMsg].uid
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.move(uid, ctx.selectFolder, (err: Error) => {
           if (err) {
-            ctx.showToast(`移动邮件失败,原因：${err.message}`, 'moveMail-imap')
+            ctx.showToast(this.getResourceString('app.string.Mobile_email_failed_reason') + `：${err.message}`, 'moveMail-imap')
           } else {
-            ctx.showToast('移动邮件成功 ', 'moveMail-imap')
+            ctx.showToast(this.getResourceString('app.string.Mobile_email_successfully_sent'), 'moveMail-imap')
 
           }
         });
       } else {
-        this.showToast('账号未登录，请登录后再试', 'moveMail-imap')
+        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'moveMail-imap')
         router.back()
       }
     } catch (err) {
-      ctx.showToast(`移动邮件出错：${err.message}`, 'moveMail-smtp')
+      ctx.showToast(this.getResourceString('app.string.Mobile_email_error') + `：${err.message}`, 'moveMail-smtp')
     }
   }
 
@@ -927,35 +927,33 @@ struct MsgListPage {
     try {
       const ctx = this;
       if (!ctx.selectMsg || ctx.selectMsg === -1) {
-        ctx.showToast('请先选择一个邮件', 'addFlag---IMAP')
+        ctx.showToast(this.getResourceString('app.string.Please_select_an_email_first'), 'addFlag---IMAP')
         return
       }
       if (!ctx.listData || ctx.listData.length < 3) {
-        ctx.showToast('当前邮箱中暂无可用的消息', 'addFlag---IMAP')
+        ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'addFlag---IMAP')
         return
       }
       if (ctx.selectMsg <= 0 || ctx.selectMsg >= ctx.listData.length - 1) {
-        ctx.showToast('请选择正确的可以操作的邮件', 'addFlag---IMAP')
+        ctx.showToast(this.getResourceString('app.string.Please_select_the_correct_email_that_can_be_operated_on'), 'addFlag---IMAP')
         return
       }
       let uid = ctx.listData[ctx.selectMsg].uid
-
-      ctx.showToast('开始给邮件添加已读标记', 'addFlag-imap')
+      ctx.showToast(this.getResourceString('app.string.Start_adding_read_tags_to_emails'), 'addFlag-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.addFlags(uid, '\\Seen', (err:Error) => {
           if (err) {
-            ctx.showToast(`给邮件添加已读标记失败,原因：${err.message}`, 'addFlag-imap')
+            ctx.showToast(this.getResourceString('app.string.Adding_read_mark_to_email_failed_reason') + `：${err.message}`, 'addFlag-imap')
           } else {
-            ctx.showToast('给邮件添加已读标记成功', 'addFlag-imap')
+            ctx.showToast(this.getResourceString('app.string.Successfully_marked_the_email_as_read'), 'addFlag-imap')
           }
         });
       } else {
-        this.showToast('账号未登录，请登录后再试', 'storeMail-imap')
+        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'storeMail-imap')
         router.back()
       }
-
     } catch (err) {
-      ctx.showToast(`给邮件添加已读标记出错：${err.message}`, 'storeMail-smtp')
+      ctx.showToast(this.getResourceString('app.string.Error_adding_read_mark_to_email') + `：${err.message}`, 'storeMail-smtp')
     }
   }
 
@@ -964,35 +962,35 @@ struct MsgListPage {
     try {
       const ctx = this;
       if (!ctx.selectMsg || ctx.selectMsg === -1) {
-        ctx.showToast('请先选择一个邮件', 'setFlag---IMAP')
+        ctx.showToast(this.getResourceString('app.string.Please_select_an_email_first'), 'setFlag---IMAP')
         return
       }
       if (!ctx.listData || ctx.listData.length < 3) {
-        ctx.showToast('当前邮箱中暂无可用的消息', 'setFlag---IMAP')
+        ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'setFlag---IMAP')
         return
       }
       if (ctx.selectMsg <= 0 || ctx.selectMsg >= ctx.listData.length - 1) {
-        ctx.showToast('请选择正确的可以操作的邮件', 'setFlag---IMAP')
+        ctx.showToast(this.getResourceString('app.string.Please_select_the_correct_email_that_can_be_operated_on'), 'setFlag---IMAP')
         return
       }
       let uid = ctx.listData[ctx.selectMsg].uid
 
-      ctx.showToast('开始给邮件设置已读标记', 'setFlag-imap')
+      ctx.showToast(this.getResourceString('app.string.Start_marking_emails_as_read'), 'setFlag-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.setFlags(uid, '\\Seen', (err:Error) => {
           if (err) {
-            ctx.showToast(`给邮件设置已读标记失败,原因：${err.message}`, 'setFlag-imap')
+            ctx.showToast(this.getResourceString('app.string.Failed_to_set_read_flag_for_email_reason') + `：${err.message}`, 'setFlag-imap')
           } else {
-            ctx.showToast('给邮件设置已读标记成功', 'setFlag-imap')
+            ctx.showToast(this.getResourceString('app.string.Successfully_marked_the_email_as_read'), 'setFlag-imap')
           }
         });
       } else {
-        this.showToast('账号未登录，请登录后再试', 'setFlag-imap')
+        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'setFlag-imap')
         router.back()
       }
 
     } catch (err) {
-      ctx.showToast(`给邮件设置已读标记出错：${err.message}`, 'setFlag-smtp')
+      ctx.showToast(this.getResourceString('app.string.Error_setting_read_flag_for_email') + `：${err.message}`, 'setFlag-smtp')
     }
   }
 
@@ -1001,35 +999,35 @@ struct MsgListPage {
     try {
       const ctx = this;
       if (!ctx.selectMsg || ctx.selectMsg === -1) {
-        ctx.showToast('请先选择一个邮件', 'deleteFlag---IMAP')
+        ctx.showToast(this.getResourceString('app.string.Please_select_an_email_first'), 'deleteFlag---IMAP')
         return
       }
       if (!ctx.listData || ctx.listData.length < 3) {
-        ctx.showToast('当前邮箱中暂无可用的消息', 'deleteFlag---IMAP')
+        ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'deleteFlag---IMAP')
         return
       }
       if (ctx.selectMsg <= 0 || ctx.selectMsg >= ctx.listData.length - 1) {
-        ctx.showToast('请选择正确的可以操作的邮件', 'deleteFlag---IMAP')
+        ctx.showToast(this.getResourceString('app.string.Please_select_the_correct_email_that_can_be_operated_on'), 'deleteFlag---IMAP')
         return
       }
       let uid = ctx.listData[ctx.selectMsg].uid
 
-      ctx.showToast('开始给邮件取消已读标记', 'deleteFlag-imap')
+      ctx.showToast(this.getResourceString('app.string.Start_unmarking_emails_as_read'), 'deleteFlag-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.delFlags(uid, '\\Seen', (err:Error) => {
           if (err) {
-            ctx.showToast(`给邮件取消已读标记失败,原因：${err.message}`, 'deleteFlag-imap')
+            ctx.showToast(this.getResourceString('app.string.Failed_to_unmark_the_email_as_read_reason') + `：${err.message}`, 'deleteFlag-imap')
           } else {
-            ctx.showToast('给邮件取消已读标记成功', 'deleteFlag-imap')
+            ctx.showToast(this.getResourceString('app.string.Successfully_unmarked_the_email_as_read'), 'deleteFlag-imap')
           }
         });
       } else {
-        this.showToast('账号未登录，请登录后再试', 'deleteFlag-imap')
+        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'deleteFlag-imap')
         router.back()
       }
 
     } catch (err) {
-      ctx.showToast(`给邮件取消已读标记出错：${err.message}`, 'deleteFlag-smtp')
+      ctx.showToast(this.getResourceString('app.string.Error_occurred_in_removing_the_read_mark_from_the_email') + `：${err.message}`, 'deleteFlag-smtp')
     }
   }
 
@@ -1038,35 +1036,33 @@ struct MsgListPage {
     try {
       const ctx = this;
       if (!ctx.selectMsg || ctx.selectMsg === -1) {
-        ctx.showToast('请先选择一个邮件', 'setKeywords---IMAP')
+        ctx.showToast(this.getResourceString('app.string.Please_select_an_email_first'), 'setKeywords---IMAP')
         return
       }
       if (!ctx.listData || ctx.listData.length < 3) {
-        ctx.showToast('当前邮箱中暂无可用的消息', 'setKeywords---IMAP')
+        ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'setKeywords---IMAP')
         return
       }
       if (ctx.selectMsg <= 0 || ctx.selectMsg >= ctx.listData.length - 1) {
-        ctx.showToast('请选择正确的可以操作的邮件', 'setKeywords---IMAP')
+        ctx.showToast(this.getResourceString('app.string.Please_select_the_correct_email_that_can_be_operated_on'), 'setKeywords---IMAP')
         return
       }
       let uid = ctx.listData[ctx.selectMsg].uid
-
-      ctx.showToast('开始给邮件添加关键字', 'setKeywords-imap')
+      ctx.showToast(this.getResourceString('app.string.Start_adding_keywords_to_emails'), 'setKeywords-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
-        GlobalObj?.getInstance()?.getClient()?.addKeywords(uid, '鸿蒙关键字', (err:Error) => {
+        GlobalObj?.getInstance()?.getClient()?.addKeywords(uid, this.getResourceString('app.string.OpenHarmony_keywords'), (err:Error) => {
           if (err) {
-            ctx.showToast(`给邮件添加关键字失败,原因：${err.message}`, 'setKeywords-imap')
+            ctx.showToast(this.getResourceString('app.string.Adding_keywords_to_email_failed_reason') + `：${err.message}`, 'setKeywords-imap')
           } else {
-            ctx.showToast('给邮件添加关键字成功', 'setKeywords-imap')
+            ctx.showToast(this.getResourceString('app.string.Successfully_added_keywords_to_email'), 'setKeywords-imap')
           }
         });
       } else {
-        this.showToast('账号未登录，请登录后再试', 'setKeywords-imap')
+        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'setKeywords-imap')
         router.back()
       }
-
     } catch (err) {
-      ctx.showToast(`给邮件添加关键字出错：${err.message}`, 'setKeywords-smtp')
+      ctx.showToast(this.getResourceString('app.string.Error_adding_keywords_to_email') + `：${err.message}`, 'setKeywords-smtp')
     }
   }
 
@@ -1075,35 +1071,33 @@ struct MsgListPage {
     try {
       const ctx = this;
       if (!ctx.selectMsg || ctx.selectMsg === -1) {
-        ctx.showToast('请先选择一个邮件', 'setKeywords---IMAP')
+        ctx.showToast(this.getResourceString('app.string.Please_select_an_email_first'), 'setKeywords---IMAP')
         return
       }
       if (!ctx.listData || ctx.listData.length < 3) {
-        ctx.showToast('当前邮箱中暂无可用的消息', 'setKeywords---IMAP')
+        ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'setKeywords---IMAP')
         return
       }
       if (ctx.selectMsg <= 0 || ctx.selectMsg >= ctx.listData.length - 1) {
-        ctx.showToast('请选择正确的可以操作的邮件', 'setKeywords---IMAP')
+        ctx.showToast(this.getResourceString('app.string.Please_select_the_correct_email_that_can_be_operated_on'), 'setKeywords---IMAP')
         return
       }
       let uid = ctx.listData[ctx.selectMsg].uid
-
-      ctx.showToast('开始给邮件设置关键字', 'setKeywords-imap')
+      ctx.showToast(this.getResourceString('app.string.Start_setting_keywords_for_emails'), 'setKeywords-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
-        GlobalObj?.getInstance()?.getClient()?.setKeywords(uid, '鸿蒙关键字', (err:Error) => {
+        GlobalObj?.getInstance()?.getClient()?.setKeywords(uid, this.getResourceString('app.string.OpenHarmony_keywords'), (err:Error) => {
           if (err) {
-            ctx.showToast(`给邮件设置关键字失败,原因：${err.message}`, 'setKeywords-imap')
+            ctx.showToast(this.getResourceString('app.string.Failed_to_set_keywords_for_email_reason') + `：${err.message}`, 'setKeywords-imap')
           } else {
-            ctx.showToast('给邮件设置关键字成功', 'setKeywords-imap')
+            ctx.showToast(this.getResourceString('app.string.Successfully_set_keywords_for_email'), 'setKeywords-imap')
           }
         });
       } else {
-        this.showToast('账号未登录，请登录后再试', 'setKeywords-imap')
+        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'setKeywords-imap')
         router.back()
       }
-
     } catch (err) {
-      ctx.showToast(`给邮件设置关键字出错：${err.message}`, 'setKeywords-smtp')
+      ctx.showToast(this.getResourceString('app.string.Error_setting_keywords_for_email') + `：${err.message}`, 'setKeywords-smtp')
     }
   }
 
@@ -1112,35 +1106,37 @@ struct MsgListPage {
     try {
       const ctx = this;
       if (!ctx.selectMsg || ctx.selectMsg === -1) {
-        ctx.showToast('请先选择一个邮件', 'delKeywords---IMAP')
+        ctx.showToast(this.getResourceString('app.string.Please_select_an_email_first'), 'delKeywords---IMAP')
         return
       }
       if (!ctx.listData || ctx.listData.length < 3) {
-        ctx.showToast('当前邮箱中暂无可用的消息', 'delKeywords---IMAP')
+        ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'delKeywords---IMAP')
         return
       }
       if (ctx.selectMsg <= 0 || ctx.selectMsg >= ctx.listData.length - 1) {
-        ctx.showToast('请选择正确的可以操作的邮件', 'delKeywords---IMAP')
+        ctx.showToast(this.getResourceString('app.string.Please_select_the_correct_email_that_can_be_operated_on'), 'delKeywords---IMAP')
         return
       }
       let uid = ctx.listData[ctx.selectMsg].uid
-
-      ctx.showToast('开始给邮件删除关键字', 'delKeywords-imap')
+      ctx.showToast(this.getResourceString('app.string.Start_deleting_keywords_from_emails'), 'delKeywords-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.delKeywords(uid, '鸿蒙关键字', (err:Error) => {
           if (err) {
-            ctx.showToast(`给邮件删除关键字失败,原因：${err.message}`, 'delKeywords-imap')
+            ctx.showToast(this.getResourceString('app.string.Failed_to_delete_keywords_from_email_reason') + `：${err.message}`, 'delKeywords-imap')
           } else {
-            ctx.showToast('给邮件删除关键字成功', 'delKeywords-imap')
+            ctx.showToast(this.getResourceString('app.string.Successfully_deleted_keywords_from_email'), 'delKeywords-imap')
           }
         });
       } else {
-        this.showToast('账号未登录，请登录后再试', 'delKeywords-imap')
+        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'delKeywords-imap')
         router.back()
       }
-
     } catch (err) {
-      ctx.showToast(`给邮件删除关键字出错：${err.message}`, 'delKeywords-smtp')
+      ctx.showToast(this.getResourceString('app.string.Error_deleting_keywords_from_email') + `：${err.message}`, 'delKeywords-smtp')
     }
+  }
+
+  getResourceString(resourceName:string) {
+    return getContext().resourceManager.getStringSync($r(resourceName).id)
   }
 }
