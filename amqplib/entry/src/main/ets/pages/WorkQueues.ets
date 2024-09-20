@@ -80,7 +80,7 @@ struct WorkQueues {
     Row() {
       Column() {
         Console({ model: $consoleSend }).height('40%')
-        Button('发布消息').onClick(async () => {
+        Button($r('app.string.Publish_a_message')).onClick(async () => {
           // 发布消息
           const message = 'Hello, World!';
           const publishOptions: Options.Publish = { persistent: true };
@@ -90,7 +90,7 @@ struct WorkQueues {
           this.consoleSend.info('publish message:' + isPush2)
         })
         Console({ model: $consoleReceive }).height('40%')
-        Button('消费消息').onClick(async () => {
+        Button($r('app.string.Consumer_News')).onClick(async () => {
           // 消费消息
           const consumeOptions: Options.Consume = { noAck: false };
           await this.channel?.consume(queueName, (msg: ConsumeMessage | null) => {

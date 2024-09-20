@@ -284,7 +284,8 @@ For details, see [Official Documentation](https://github.com/danikula/AndroidVid
 
 RxJS has been verified in the following versions:
 
-DevEco Studio: NEXT Developer Beta1 (5.0.3.326), SDK: API12 (5.0.0.25)
+DevEco Studio:NEXT Developer Beta1(5.0.3.326), SDK: API12 (5.0.0.25)
+DevEco Studio:NEXT Beta1-5.0.3.806, SDK: API12 Release (5.0.0.66)
 
 ## Directory Structure
 

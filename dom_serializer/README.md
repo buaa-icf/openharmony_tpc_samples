@@ -1,21 +1,22 @@
 # dom-serializer
 
-## 简介
+## Introduction
 
-> dom-serializer 是一个可以将DOM节点或DOM节点数组渲染为字符串的工具库。
+> dom-serializer is a utility library that renders a DOM node or an array of DOM nodes into a string.
 
-## 下载安装
+## How to Install
 
 ```shell
 ohpm install dom-serializer
 ```
 
 OpenHarmony
-ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
-## 使用说明
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-### 引用及使用
+## How to Use
+
+### Referencing and Using the Library
 
 ```
 import { render } from "dom-serializer";
@@ -26,22 +27,23 @@ import { Document, DomUtils, parseDocument } from "@ohos/htmlparser2";
   this.message = render(element)
 ```
 
-## 接口说明
+## Available APIs
 
-1. 将DOM节点或DOM节点数组呈现为字符串
-   `render(node: AnyNode | ArrayLike<AnyNode>, options?: DomSerializerOptions): string`
+Renders a DOM node or an array of DOM nodes into a string.
 
-## 约束与限制
+`render(node: AnyNode | ArrayLike<AnyNode>, options?: DomSerializerOptions): string`
 
-在下述版本验证通过：
+## Constraints
 
-- DevEco Studio 版本：4.1 Canary(4.1.3.317)，OpenHarmony SDK:API11 (4.1.0.36)
+This project has been verified in the following version:
 
-## 目录结构
+- DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API 11 (4.1.0.36)
+
+## Directory Structure
 
 ````
 |---- dom_serializer
-|     |---- entry  # 示例代码文件夹
+|     |---- entry  # Sample code
 |           |---- src
 |                 |---- main
 |                        |---- ets
@@ -50,19 +52,18 @@ import { Document, DomUtils, parseDocument } from "@ohos/htmlparser2";
 |                 |---- ohosTest
 |                       |---- ets
 |                             |---- test
-|                                   |---- Ability.test.ets  # 单元测试
+|                                   |---- Ability.test.ets  # Unit test
 
-|     |---- README.md  # 安装使用方法
-|     |---- README.OpenSource  # 开源说明
-|     |---- CHANGELOG.md  # 更新日志                
+|     |---- README.md  # Readme
+|     |---- README_zh.md  # Readme
+|     |---- README.OpenSource  # Open source description
+|     |---- CHANGELOG.md  # Changelog               
 ````
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
-给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem when using dom-serializer, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-本项目基于 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/dom_serializer/LICENSE)，请自由地享受和参与开源。
-
+This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/dom_serializer/LICENSE).

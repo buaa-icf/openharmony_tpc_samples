@@ -82,7 +82,7 @@ struct Topics {
     Row() {
       Column() {
         Console({ model: $consoleSend }).height('40%')
-        Button('发布消息').onClick(async () => {
+        Button($r('app.string.Publish_a_message')).onClick(async () => {
           // 发布消息
           const publishOptions: Options.Publish = { persistent: true };
           this.channel?.sendToQueue(firstName, Buffer.from('both queues 1'), publishOptions);
@@ -96,7 +96,7 @@ struct Topics {
           this.consoleSend.info('publish message:' + isPush)
         })
         Console({ model: $consoleReceive }).height('40%')
-        Button('消费消息').onClick(async () => {
+        Button($r('app.string.Consumer_News')).onClick(async () => {
           // 消费消息
           await this.channel?.consume('first', (msg: ConsumeMessage | null) => {
               this.consoleReceive.log('First:' + Unit8ArrayUtils.Uint8ArrayToString(msg?.content));
