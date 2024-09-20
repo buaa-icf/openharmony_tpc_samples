@@ -92,7 +92,8 @@ This project has been verified in the following version:
 |                    |----lib # xmpp_reconnect code folder
 |               |----index.d.ts # External APIs
 |               |---- index.js  # Main entry file
-|     |---- README_EN.md  # Readme
+|     |---- README.md  # Readme
+|     |---- README_zh.md  # Readme
 ```
 
 ## How to Contribute
