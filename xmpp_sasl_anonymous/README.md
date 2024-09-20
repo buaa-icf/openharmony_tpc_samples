@@ -1,95 +1,93 @@
-
-
 # @ohos/xmpp_sasl_anonymous
 
-## 简介
+## Introduction
 
->本软件是参照开源软件 [@xmpp/sasl-anonymous](https://github.com/xmppjs/xmpp.js/tree/main/packages/sasl-anonymous)源码并用 TypeScript 语言实现了相关功能，在OpenHarmony上提供了一个用于客户端匿名连接到XMPP服务器的library
+>Based on the open source software [@xmpp/sasl-anonymous](https://github.com/xmppjs/xmpp.js/tree/main/packages/sasl-anonymous), this project uses TypeScript to implement similar capabilities. It provides OpenHarmony with a library for anonymous connection between the Extensible Messaging and Presence Protocol (XMPP) client and server.
 
-## 已支持功能
+## Supported Features
 
-- SASL ANONYMOUS 机制：它提供了 RFC 7525 中定义的 ANONYMOUS SASL机制的实现，这是XMPP协议的一个扩展。
-- XMPP 客户端集成：它可以集成到 XMPP 客户端库或应用程序中，以添加对匿名认证的支持。
-- 客户端与服务器认证：XMPP 客户端能够使用 ANONYMOUS 机制与 XMPP 服务器进行认证，该机制不需要客户端提供用户名或密码。
+- SASL ANONYMOUS mechanism: implements the SASL ANONYMOUS mechanism defined in RFC 7525, which is an extension of the XMPP.
+- XMPP client integration: integrated into XMPP client libraries or applications to add the support for anonymous authentication.
+- Client and server authentication: uses the SASL ANONYMOUS mechanism for authentication during the connection to the server. This mechanism does not require the client to provide the username or password.
 
-## 下载安装
+## How to Install
 
-1. 参考安装教程 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+1. [Install an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-2. 安装命令如下：
+2. Run the installation command:
 
-```
- ohpm install @ohos/xmpp_sasl_anonymous
-```
+   ```
+    ohpm install @ohos/xmpp_sasl_anonymous
+   ```
 
-## 接口和属性列表
+## Available APIs
 
-接口列表
+APIs
 
-| **接口**             | 参数             | 功能                           |
+| Name            | Parameter            | Description                          |
 | -------------------- | ---------------- | ------------------------------ |
-| saslAnonymous(sasl); | `sasl`：SASL实例 | 使用匿名认证来连接到XMPP服务器 |
+| saslAnonymous(sasl); | `sasl`: an SASL instance.| Uses anonymous authentication to connect to the XMPP server.|
 
-## 使用示例
+## Example
 ```
 import _tcp from "@ohos/xmpp_tcp";
 import { xml, jid, Client as ClientCore } from "@ohos/xmpp_client_core";
 import anonymous from "ohos/xmpp_sasl-anonymous";
 import _sasl from "ohos/xmpp_sasl";
 function client(options = {}) {
-	//使用对象解构赋值从 options 对象中提取出 resource（资源标识符）、credentials（认证信息）、        username（用户名）、password（密码），并将剩余的属性放入 params 对象中。
+	// Use object destructuring to extract resource, credentials, username, and password from the options object, and assign the remaining properties to the params object.
     const { resource, credentials, username, password, ...params } = options;
-    //再次使用对象解构赋值从 params 对象中提取出 domain（域名）、service（服务名）和 caPath
+    // Use object destructuring to extract domain, service, and caPath from the params object.
     const { domain, service, caPath } = params;
     if (!domain && service) {
         params.domain = getDomain(service);
     }
-    //创建了一个 ClientCore 实例，传入 params 对象作为配置参数。这个实例将作为 XMPP 客户端的主体。
+    // Create a ClientCore instance, with the params object passed in. This instance will act as the body of the XMPP client.
     const entity = new ClientCore(params);
-    //调用 _tcp 函数，传入 entity 实例。_tcp 函数将返回一个新的对象 tcp，这个对象包含了 TCP 连接的配置和功能。通过这一步，entity 实例现在具备了通过 TCP 连接进行 XMPP 通信的能力。
+    // Call the _tcp function, with the entity instance passed in. The _tcp function returns a new object (named tcp), which contains the configuration and functionalities of the TCP connection. The entity instance is now capable of engaging in XMPP communications through a TCP connection.
     const tcp = _tcp({ entity });
     const sasl = _sasl({ streamFeatures }, credentials || { username, password });
     const mechanisms = Object.entries({
-        plain,//以plain加密的方式验证
-        anonymous,//以匿名的方式验证
+        plain, // Authentication in plain encryption mode.
+        anonymous, // Authentication in anonymous mode.
     }).map(([k, v]) => ({ [k]: v(sasl) }));
 }
 ```
 
-## 使用说明
+## How to Use
 
-####  提供客户端匿名连接到xmpp服务器的功能
+####  Anonymously Connecting the Client to the XMPP Server
 
 ```
-这个模块的主要功能是允许客户端在连接到XMPP服务器时进行匿名认证，即不需要提供任何用户名或密码
+The main function of this module is to allow anonymous authentication when the client connects to the XMPP server. That is, the client does not need to provide any username or password.
 ```
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+This project has been verified in the following version:
 
-- DevEco Studio 版本： 5.0.3.200,OpenHarmony SDK:API12 (5.0.0.21-Canary2)。
+DevEco Studio: 5.0.3.200, OpenHarmony SDK: API 12 (5.0.0.21-Canary2)
 
-## 目录结构
+## Directory Structure
 ````
 |---- @ohos/xmpp_sasl_anonymous 
-|     |---- entry  # 示例代码文件夹
+|     |---- entry  # Sample code
 |           |---- src  
-|                   |---- main  #sample示例代码
-|                   |---- ohosTest  #xts示例代码
-|     |---- library  # @ohos/xmpp_sasl_anonymous 库文件夹
+|                   |---- main  # Sample code
+|                   |---- ohosTest  # xts code
+|     |---- library  # @ohos/xmpp_sasl_anonymous library folder
 |           |---- ets
-|                 |---- lib  # 主要依赖
-|                 |---- types  # 对外接口文件夹
-|           |---- index.js  # 主入口文件
-|           |---- index.d.ts  # 主对外接口声明文件
-|     |---- README.md  # 安装使用方法                    
+|                 |---- lib  # Main dependencies
+|                 |---- types  # External APIs
+|           |---- index.js  # Main entry file
+|           |---- index.d.ts  # Main declaration file of the external APIs
+|     |---- README.md  # Readme                   
 ````
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提[Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们提[PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem during the use, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-本项目基于ISC，请自由地享受和参与开源。
+This project is licensed under the terms of the ISC license.
