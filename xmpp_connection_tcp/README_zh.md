@@ -80,6 +80,7 @@ socketParameters(service)//根据服务的 URI 返回连接参数
 |               |----index.d.ts # 对外接口描述文件
 |               |---- index.js  # 主入口文件
 |     |---- README.MD  # 安装使用方法
+|     |---- README_zh.MD  # 安装使用方法
 ```
 
 ## 贡献代码

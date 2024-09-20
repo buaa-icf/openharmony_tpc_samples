@@ -23,7 +23,7 @@ struct Index {
   build() {
     Row() {
       Column() {
-        Text(this.message)
+        Text($r('app.string.Hello_World'))
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
       }
