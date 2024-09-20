@@ -19,6 +19,850 @@
     {
       "name": "Reason_File",
       "value": "Operate file in application file system"
+    },
+    {
+      "name": "Jump_to_login_page",
+      "value": "跳转登录页"
+    },
+    {
+      "name": "Jump_to_test_page",
+      "value": "跳转测试页"
+    },
+    {
+      "name": "Jump_to_the_stress_test_page",
+      "value": "跳转压力测试页"
+    },
+    {
+      "name": "Please_enter_the_folder_name",
+      "value": "请输入文件夹名称"
+    },
+    {
+      "name": "Please_enter_the_folder_name_in_the_correct_format",
+      "value": "Tips:请输入正确格式的邮箱类型，例如@qq.com或者@163.com"
+    },
+    {
+      "name": "Cancel",
+      "value": "取消"
+    },
+    {
+      "name": "Confirm",
+      "value": "确定"
+    },
+    {
+      "name": "Closed_the_dialog_box_and_canceled_inputting_the_folder_name",
+      "value": "关闭了对话框，取消输入文件夹名称"
+    },
+    {
+      "name": "Create_a_new_folder_with_an_empty_name_please_re_enter",
+      "value": "创建新的文件夹名称为空，请重新输入"
+    },
+    {
+      "name": "Create_a_new_folder_named",
+      "value": "创建新的文件夹名称为"
+    },
+    {
+      "name": "The_renamed_folder_name_is",
+      "value": "重命名的文件夹名称为"
+    },
+    {
+      "name": "Account_not_logged_in_please_login_and_try_again",
+      "value": "账号未登录，请登录后再试"
+    },
+    {
+      "name": "remove_folders",
+      "value": "删除文件夹"
+    },
+    {
+      "name": "create_folder",
+      "value": "创建文件夹"
+    },
+    {
+      "name": "Rename_folder",
+      "value": "重命名文件夹"
+    },
+    {
+      "name": "Please_first_select_a_folder_that_needs_to_be_renamed",
+      "value": "请先选择一个需要重命名的文件夹"
+    },
+    {
+      "name": "subscribed",
+      "value": "订阅邮箱"
+    },
+    {
+      "name": "Unsubscribe_email",
+      "value": "取消订阅邮箱"
+    },
+    {
+      "name": "Get_all_subscribed_email_addresses",
+      "value": "获取所有订阅邮箱件"
+    },
+    {
+      "name": "Preparing_to_enter_the_folder",
+      "value": "准备进入文件夹"
+    },
+    {
+      "name": "Please_first_select_a_folder_that_needs_to_be_deleted",
+      "value": "请先选择一个需要删除的文件夹"
+    },
+    {
+      "name": "Start_deleting_folder",
+      "value": "开始删除文件夹"
+    },
+    {
+      "name": "Failed_to_delete_folder",
+      "value": "删除文件夹失败"
+    },
+    {
+      "name": "Folder_deleted_successfully",
+      "value": "删除文件夹成功"
+    },
+    {
+      "name": "Account_login_error",
+      "value": "账号登录出错"
+    },
+    {
+      "name": "Please_enter_the_name_of_the_new_folder_first",
+      "value": "请先输入新的文件夹的名字"
+    },
+    {
+      "name": "Start_creating_folder",
+      "value": "开始创建文件夹"
+    },
+    {
+      "name": "Failed_to_create_folder_reason",
+      "value": "创建文件夹失败,原因"
+    },
+    {
+      "name": "Folder_created_successfully",
+      "value": "创建文件夹成功"
+    },
+    {
+      "name": "Start_renaming_folder",
+      "value": "开始重命名文件夹"
+    },
+    {
+      "name": "Renaming_folder_failed_reason",
+      "value": "重命名文件夹失败,原因"
+    },
+    {
+      "name": "Renaming_folder_successfully",
+      "value": "重命名文件夹成功"
+    },
+    {
+      "name": "Please_select_your_email_first",
+      "value": "请先选择邮箱"
+    },
+    {
+      "name": "Subscribe_to_a_folder",
+      "value": "订阅一个文件夹"
+    },
+    {
+      "name": "Subscription_email_failed_reason",
+      "value": "订阅邮箱失败,原因"
+    },
+    {
+      "name": "Subscription_email_successful",
+      "value": "订阅邮箱成功"
+    },
+    {
+      "name": "Subscription_email_error",
+      "value": "订阅邮箱出错"
+    },
+    {
+      "name": "Unsubscribe_email_failed_reason",
+      "value": "取消订阅邮箱失败,原因"
+    },
+    {
+      "name": "Unsubscribed_email_successfully",
+      "value": "取消订阅邮箱成功"
+    },
+    {
+      "name": "Unsubscribe_email_error",
+      "value": "取消订阅邮箱出错"
+    },
+    {
+      "name": "Start_returning_all_files",
+      "value": "开始回用户$HOME目录下所有的文件，但LSUB命令只显示那些使用SUBSCRIBE命令设置为活动邮箱的文件。两个参数：邮箱路径和邮箱名。"
+    },
+    {
+      "name": "Failed_to_retrieve_files_for_all_active_email_addresses_reason",
+      "value": "获取所有活动邮箱的文件失败,原因"
+    },
+    {
+      "name": "Successfully_obtained_files_for_all_active_email_addresses",
+      "value": "获取所有活动邮箱的文件成功"
+    },
+    {
+      "name": "Error_obtaining_files_for_all_active_email_addresses",
+      "value": "获取所有活动邮箱的文件出错"
+    },
+    {
+      "name": "The_dialog_box_has_been_closed",
+      "value": "关闭了对话框，取消选输入其他类型邮箱"
+    },
+    {
+      "name": "Email_type_cannot_be_empty",
+      "value": "邮箱类型不可为空"
+    },
+    {
+      "name": "Email_type_must_contain_one",
+      "value": "邮箱类型必须含有一个@，且只能含有一个@"
+    },
+    {
+      "name": "Email_type_must_contain_one_point",
+      "value": "邮箱类型必须含有一个.，且只能含有一个."
+    },
+    {
+      "name": "In_email_types",
+      "value": "邮箱类型中@需要在.之前，例如@qq.com,@163.com这些"
+    },
+    {
+      "name": "Except_for_and",
+      "value": "邮箱类型中除了@和.，必须含有其他字符"
+    },
+    {
+      "name": "must_be_first_in_the_email_type",
+      "value": "邮箱类型中@必须在第一位"
+    },
+    {
+      "name": "Enter_other_types_of_email_addresses",
+      "value": "输入其他类型邮箱"
+    },
+    {
+      "name": "Click_on_the_email_after_the_account_to_switch_email_types",
+      "value": "点击账号后面的邮箱可以切换邮箱类型"
+    },
+    {
+      "name": "account_number",
+      "value": "账号:"
+    },
+    {
+      "name": "Please_enter_your_account",
+      "value": "请输入账号"
+    },
+    {
+      "name": "Password_Authorization_Code",
+      "value": "密码/授权码："
+    },
+    {
+      "name": "Please_enter_password_authorization_code",
+      "value": "请输入密码/授权码"
+    },
+    {
+      "name": "Do_you_want_to_enable_SSL_TLS",
+      "value": "是否开启SSL/TLS(当前仅需支持SMTP,无需支持SMTPS,此按钮暂不可用"
+    },
+    {
+      "name": "Do_you_want_to_enable",
+      "value": "是否开启SSL/TLS"
+    },
+    {
+      "name": "only_SMTP_support_is_required_no_SMTPS_support_is_needed",
+      "value": "当前仅需支持SMTP,无需支持SMTPS"
+    },
+    {
+      "name": "login",
+      "value": "登录"
+    },
+    {
+      "name": "Log_out",
+      "value": "退出登录"
+    },
+    {
+      "name": "Check_the_capability_of_the_server",
+      "value": "检查服务器的能力"
+    },
+    {
+      "name": "Jump_to_folder_list",
+      "value": "跳转文件夹列表"
+    },
+    {
+      "name": "Start_logging_in_to_your_account",
+      "value": "开始登录账号"
+    },
+    {
+      "name": "ready_to_jump_to_the_email_folder_list",
+      "value": "登录成功，准备跳转邮件文件夹列表"
+    },
+    {
+      "name": "Server_connection_successful",
+      "value": "服务器连接成功"
+    },
+    {
+      "name": "Starting_to_log_out",
+      "value": "开始退出登录,请稍等"
+    },
+    {
+      "name": "Login_successfully_logged_out",
+      "value": "退出登录成功"
+    },
+    {
+      "name": "Login_failed_client_object_is_empty",
+      "value": "退出登录失败，客户端对象为空"
+    },
+    {
+      "name": "Login_error_occurred_while_logging_out",
+      "value": "退出登录出错"
+    },
+    {
+      "name": "Client_not_logged_in",
+      "value": "客户端未登录"
+    },
+    {
+      "name": "Error_checking_server_capability",
+      "value": "检查服务端能力出错：客户端未登录"
+    },
+    {
+      "name": "Does_the_server_capability_support_it",
+      "value": "服务端能力是否支持"
+    },
+    {
+      "name": "The_result_is",
+      "value": "结果是"
+    },
+    {
+      "name": "Email_folder_parameters_not_obtained",
+      "value": "未获取到邮箱文件夹参数"
+    },
+    {
+      "name": "Successfully_obtained_the_entire_email_body",
+      "value": "获取整个邮件体成功"
+    },
+    {
+      "name": "Successfully_obtained",
+      "value": "获取整个邮件体成功,文本长度超过65535，text，取65535长度用于显示"
+    },
+    {
+      "name": "Please_enter_email_type",
+      "value": "请输入邮箱类型"
+    },
+    {
+      "name": "Closed_the_dialog_box",
+      "value": "关闭了对话框，取消选输入"
+    },
+    {
+      "name": "The_search_content_cannot_be_empty",
+      "value": "搜索的内容不可为空"
+    },
+    {
+      "name": "Upload_email",
+      "value": "上传邮件"
+    },
+    {
+      "name": "Close_email",
+      "value": "关闭邮箱"
+    },
+    {
+      "name": "Delete_tagged_emails",
+      "value": "删除标记的邮件"
+    },
+    {
+      "name": "search_mail",
+      "value": "搜索邮件"
+    },
+    {
+      "name": "Add_flag",
+      "value": "添加flag"
+    },
+    {
+      "name": "Set_flag",
+      "value": "设置flag"
+    },
+    {
+      "name": "Delete_flag",
+      "value": "删除flag"
+    },
+    {
+      "name": "Add_keywords",
+      "value": "添加关键字"
+    },
+    {
+      "name": "Set_keywords",
+      "value": "设置关键字"
+    },
+    {
+      "name": "Delete_keywords",
+      "value": "删除关键字"
+    },
+    {
+      "name": "Replication_Information",
+      "value": "复制信息"
+    },
+    {
+      "name": "Mobile_Information",
+      "value": "移动信息"
+    },
+    {
+      "name": "Email_sorting",
+      "value": "邮件排序"
+    },
+    {
+      "name": "Clicked_on_the_first_item_in_the_list",
+      "value": "点击了列表的第"
+    },
+    {
+      "name": "Email_uploaded_during_IMAP_protocol_testing",
+      "value": "IMAP协议测试上传的邮件"
+    },
+    {
+      "name": "Topic_of_IMAP_Protocol_for_Client",
+      "value": "鸿蒙客户端IMAP协议的主题"
+    },
+    {
+      "name": "The_uploaded_email_data_cannot_be_empty",
+      "value": "上传的邮件数据不可以为空"
+    },
+    {
+      "name": "Start_uploading_emails",
+      "value": "开始上传邮件"
+    },
+    {
+      "name": "Failed_to_upload_email",
+      "value": "上传邮件失败,原因"
+    },
+    {
+      "name": "Email_uploaded_successfully",
+      "value": "上传邮件成功"
+    },
+    {
+      "name": "Error_uploading_email",
+      "value": "上传邮件出错"
+    },
+    {
+      "name": "Zdy_SELECT_instruction_internal_call",
+      "value": "zdy--SELECT指令内部调用，未开放给用户--->"
+    },
+    {
+      "name": "Start_closing_this_folder",
+      "value": "开始关闭本文件夹"
+    },
+    {
+      "name": "Failed_to_close_this_folder_reason",
+      "value": "关闭本文件夹失败,原因"
+    },
+    {
+      "name": "Successfully_closed_this_folder",
+      "value": "关闭本文件夹成功"
+    },
+    {
+      "name": "Error_closing_this_folder",
+      "value": "关闭本文件夹出错"
+    },
+    {
+      "name": "The_sorting_parameter_cannot_be_empty",
+      "value": "排序参数不可以为空"
+    },
+    {
+      "name": "Start_setting_sorting",
+      "value": "开始设置排序"
+    },
+    {
+      "name": "Setting_sorting_failed_reason",
+      "value": "设置排序失败,原因"
+    },
+    {
+      "name": "Sort_successfully_set",
+      "value": "设置排序成功"
+    },
+    {
+      "name": "Setting_sorting_error",
+      "value": "设置排序出错"
+    },
+    {
+      "name": "Start_searching_for_emails",
+      "value": "开始搜索邮件"
+    },
+    {
+      "name": "Search_email_failed_reason",
+      "value": "搜索邮件失败,原因"
+    },
+    {
+      "name": "Search_email_successful",
+      "value": "搜索邮件成功 "
+    },
+    {
+      "name": "The_current_search_information_number",
+      "value": "当前搜索的信息编号："
+    },
+    {
+      "name": "Search_email_error",
+      "value": "搜索邮件出错"
+    },
+    {
+      "name": "Please_select_an_email_first",
+      "value": "请先选择一个邮件"
+    },
+    {
+      "name": "There_are_currently_no_available_messages_in_the_email",
+      "value": "当前邮箱中暂无可用的消息"
+    },
+    {
+      "name": "Please_select_the_correct_email_that_can_be_operated_on",
+      "value": "请选择正确的可以操作的邮件"
+    },
+    {
+      "name": "Start_marking_emails_for_deletion",
+      "value": "开始给邮件打删除标记"
+    },
+    {
+      "name": "Failed_to_mark_the_email_for_deletion_reason",
+      "value": "给邮件打删除标记失败,原因"
+    },
+    {
+      "name": "Successfully_marked_the_email_for_deletion",
+      "value": "给邮件打删除标记成功"
+    },
+    {
+      "name": "Error_in_marking_email_for_deletion",
+      "value": "给邮件打删除标记出错："
+    },
+    {
+      "name": "Starting_to_permanently_delete_all_emails_marked_as_DELETED",
+      "value": "开始永久删除所有的标志为DELETED的邮件，EXPUNGE删除的邮件将不可以恢复"
+    },
+    {
+      "name": "Permanent_deletion_failed_reason",
+      "value": "永久删除失败,原因"
+    },
+    {
+      "name": "Permanently_deleted_successfully",
+      "value": "永久删除成功"
+    },
+    {
+      "name": "Permanent_deletion_error",
+      "value": "永久删除出错"
+    },
+    {
+      "name": "Copy_email_failed_reason",
+      "value": "复制邮件失败,原因"
+    },
+    {
+      "name": "Copy_email_successfully",
+      "value": "复制邮件成功 "
+    },
+    {
+      "name": "Error_copying_email",
+      "value": "复制邮件出错"
+    },
+    {
+      "name": "Mobile_email_failed_reason",
+      "value": "移动邮件失败,原因"
+    },
+    {
+      "name": "Mobile_email_successfully_sent",
+      "value": "移动邮件成功 "
+    },
+    {
+      "name": "Mobile_email_error",
+      "value": "移动邮件出错"
+    },
+    {
+      "name": "Start_adding_read_tags_to_emails",
+      "value": "开始给邮件添加已读标记"
+    },
+    {
+      "name": "Adding_read_mark_to_email_failed_reason",
+      "value": "给邮件添加已读标记失败,原因"
+    },
+    {
+      "name": "Successfully_marked_the_email_as_read",
+      "value": "给邮件设置已读标记成功"
+    },
+    {
+      "name": "Error_adding_read_mark_to_email",
+      "value": "给邮件添加已读标记出错"
+    },
+    {
+      "name": "Start_marking_emails_as_read",
+      "value": "开始给邮件设置已读标记"
+    },
+    {
+      "name": "Failed_to_set_read_flag_for_email_reason",
+      "value": "给邮件设置已读标记失败,原因"
+    },
+    {
+      "name": "Error_setting_read_flag_for_email",
+      "value": "给邮件设置已读标记出错"
+    },
+    {
+      "name": "Start_unmarking_emails_as_read",
+      "value": "开始给邮件取消已读标记"
+    },
+    {
+      "name": "Failed_to_unmark_the_email_as_read_reason",
+      "value": "给邮件取消已读标记失败,原因"
+    },
+    {
+      "name": "Successfully_unmarked_the_email_as_read",
+      "value": "给邮件取消已读标记成功"
+    },
+    {
+      "name": "Error_occurred_in_removing_the_read_mark_from_the_email",
+      "value": "给邮件取消已读标记出错"
+    },
+    {
+      "name": "Start_adding_keywords_to_emails",
+      "value": "开始给邮件添加关键字"
+    },
+    {
+      "name": "OpenHarmony_keywords",
+      "value": "鸿蒙关键字"
+    },
+    {
+      "name": "Adding_keywords_to_email_failed_reason",
+      "value": "给邮件添加关键字失败,原因"
+    },
+    {
+      "name": "Successfully_added_keywords_to_email",
+      "value": "给邮件添加关键字成功"
+    },
+    {
+      "name": "Error_adding_keywords_to_email",
+      "value": "给邮件添加关键字出错"
+    },
+    {
+      "name": "Start_setting_keywords_for_emails",
+      "value": "开始给邮件设置关键字"
+    },
+    {
+      "name": "Failed_to_set_keywords_for_email_reason",
+      "value": "给邮件设置关键字失败,原因"
+    },
+    {
+      "name": "Successfully_set_keywords_for_email",
+      "value": "给邮件设置关键字成功"
+    },
+    {
+      "name": "Error_setting_keywords_for_email",
+      "value": "给邮件设置关键字出错"
+    },
+    {
+      "name": "Start_deleting_keywords_from_emails",
+      "value": "开始给邮件删除关键字"
+    },
+    {
+      "name": "Failed_to_delete_keywords_from_email_reason",
+      "value": "给邮件删除关键字失败,原因"
+    },
+    {
+      "name": "Successfully_deleted_keywords_from_email",
+      "value": "给邮件删除关键字成功"
+    },
+    {
+      "name": "Error_deleting_keywords_from_email",
+      "value": "给邮件删除关键字出错"
+    },
+    {
+      "name": "Retrieve_the_folder_list_from_the_email",
+      "value": "获取邮箱里的文件夹列表"
+    },
+    {
+      "name": "Add_a_new_folder_tentatively_named_test",
+      "value": "添加新文件夹(名字暂定test)"
+    },
+    {
+      "name": "Delete_new_folder",
+      "value": "删除新文件夹"
+    },
+    {
+      "name": "Rename_new_folder",
+      "value": "重命名新文件夹"
+    },
+    {
+      "name": "Get_the_list_of_subscribed_email_folders",
+      "value": "获取订阅邮箱文件夹列表"
+    },
+    {
+      "name": "Subscription_email_folder",
+      "value": "订阅邮箱文件夹"
+    },
+    {
+      "name": "Unsubscribe_from_email_folder",
+      "value": "取消订阅邮箱文件夹"
+    },
+    {
+      "name": "Get_the_main_email_list",
+      "value": "获取主邮箱列表"
+    },
+    {
+      "name": "Get_the_details_of_a_certain_email",
+      "value": "获取某个邮件详情"
+    },
+    {
+      "name": "Upload_local_email_to_mailbox",
+      "value": "上传本地邮件到邮箱"
+    },
+    {
+      "name": "Close_the_email_home_folder",
+      "value": "关闭邮箱主文件夹"
+    },
+    {
+      "name": "Add_a_delete_mark_to_the_email",
+      "value": "给邮件添加删除标记"
+    },
+    {
+      "name": "Copy_emails_to_other_folders",
+      "value": "复制邮件到其他文件夹"
+    },
+    {
+      "name": "Add_a_flag_to_the_email",
+      "value": "给邮件添加flag"
+    },
+    {
+      "name": "Set_flag_for_email",
+      "value": "给邮件设置flag"
+    },
+    {
+      "name": "Remove_flag_from_email",
+      "value": "给邮件删除flag"
+    },
+    {
+      "name": "Add_a_keyword_to_the_email",
+      "value": "给邮件添加keyword"
+    },
+    {
+      "name": "Set_the_keyword_for_the_email",
+      "value": "给邮件设置keyword"
+    },
+    {
+      "name": "Delete_the_keyword_from_the_email",
+      "value": "给邮件删除keyword"
+    },
+    {
+      "name": "Move_emails_to_other_folders",
+      "value": "移动邮件到其他文件夹"
+    },
+    {
+      "name": "Starting_from_obtaining_the_folder_list_in_the_email",
+      "value": "获取邮箱里的文件夹列表开始"
+    },
+    {
+      "name": "Error_retrieving_folder_list_from_email_data_is",
+      "value": "获取邮箱里的文件夹列表出错，数据是"
+    },
+    {
+      "name": "Error_retrieving_folder_list_from_email",
+      "value": "获取邮箱里的文件夹列表出错"
+    },
+    {
+      "name": "Successfully_obtained_the_folder_list_from_the_email",
+      "value": "获取邮箱里的文件夹列表成功，数据是"
+    },
+    {
+      "name": "Failed_to_create_folder_for_deletion_reason",
+      "value": "创建用于删除的文件夹失败,原因"
+    },
+    {
+      "name": "Successfully_created_folder_for_deletion",
+      "value": "创建用于删除的文件夹成功"
+    },
+    {
+      "name": "Failed_to_retrieve_the_subscribed_folder_reason",
+      "value": "获取订阅的文件夹失败,原因"
+    },
+    {
+      "name": "Successfully_obtained_the_subscribed_folder_the_data_is",
+      "value": "获取订阅的文件夹成功，数据是"
+    },
+    {
+      "name": "Subscribe_to_addFolder_folder",
+      "value": "订阅addFolder文件夹"
+    },
+    {
+      "name": "Start_obtaining_the_subscribed_folder",
+      "value": "开始获取订阅的文件夹。"
+    },
+    {
+      "name": "Error_obtaining_subscription_folder",
+      "value": "获取订阅的文件夹出错"
+    },
+    {
+      "name": "Starting_to_obtain_the_status_of_the_main_email_and_main_folder",
+      "value": "获取主邮箱主文件夹状态开始，"
+    },
+    {
+      "name": "Failed_to_retrieve_the_status_of_the_email_home_folder",
+      "value": "获取邮箱主文件夹状态失败,"
+    },
+    {
+      "name": "Failed_to_retrieve_the_status_of_the_email_home_folder_no_data_available",
+      "value": "获取邮箱主文件夹状态失败，无数据"
+    },
+    {
+      "name": "Failed_to_open_mailbox_main_folder",
+      "value": "打开邮箱主文件夹失败，"
+    },
+    {
+      "name": "Successfully_opened_the_email_home_folder",
+      "value": "打开邮箱主文件夹成功"
+    },
+    {
+      "name": "Failed_to_retrieve_the_main_email_mailing_list_message_is",
+      "value": "获取主邮箱邮件列表失败，信息是"
+    },
+    {
+      "name": "Email_not_opened_unable_to_retrieve_mailing_list",
+      "value": "邮箱未打开，无法获取邮件列表"
+    },
+    {
+      "name": "The_client_seq_object_is_empty",
+      "value": "客户端seq对象为空"
+    },
+    {
+      "name": "Start_obtaining_the_main_email_mailing_list",
+      "value": "开始获取主邮箱邮件列表"
+    },
+    {
+      "name": "Start_obtaining_the_entire_email_body",
+      "value": "开始获取整个邮件体"
+    },
+    {
+      "name": "Failed_to_retrieve_the_entire_email_body",
+      "value": "获取整个邮件体失败"
+    },
+    {
+      "name": "Error_in_obtaining_the_entire_email_body",
+      "value": "获取整个邮件体出错"
+    },
+    {
+      "name": "Successfully_obtained_the_main_email_mailing_list_the_data_is",
+      "value": "获取主邮箱邮件列表成功，数据是"
+    },
+    {
+      "name": "Start_sorting_emails_by_date",
+      "value": "开始对邮件按照日期排序"
+    },
+    {
+      "name": "Failed_to_sort_emails_by_date_reason",
+      "value": "对邮件按照日期排序失败,原因"
+    },
+    {
+      "name": "Successfully_sorted_emails_by_date",
+      "value": "对邮件按照日期排序成功"
+    },
+    {
+      "name": "There_are_currently_no_emails_available_for_operation",
+      "value": "暂无可以操作的邮件"
+    },
+    {
+      "name": "Start_deleting_all_emails_marked_as_DELETED_Emails_deleted_by_EXPUNGE_cannot_be_recovered",
+      "value": "开始删除所有的标志为DELETED的邮件，EXPUNGE删除的邮件将不可以恢复"
+    },
+    {
+      "name": "No_available_email_address",
+      "value": "无可用的邮箱"
+    },
+    {
+      "name": "Copy_email_started",
+      "value": "复制邮件开始"
+    },
+    {
+      "name": "The_email_was_successfully_copied",
+      "value": "复制邮件成功，请去测试的邮箱查看是否复制成功，这里不通过日志展示 "
+    },
+    {
+      "name": "Start_moving_emails_from_the_primary_mailbox_to",
+      "value": "移动邮件开始，从主邮箱移动到 "
     }
   ]
 }

@@ -33,23 +33,23 @@ struct CustomDialogDiy {
 
   build() {
     Column() {
-      Text('请输入邮箱类型').fontSize(20).margin({ top: 10, bottom: 10 }).width('90%')
+      Text($r('app.string.Please_enter_the_folder_name')).fontSize(20).margin({ top: 10, bottom: 10 }).width('90%')
       TextInput({ placeholder: '', text: this.textValue }).height(60).width('90%')
         .onChange((value: string) => {
           this.textValue = value;
         })
-      Text('Tips:请输入正确格式的邮箱类型，例如@qq.com或者@163.com')
+      Text($r('app.string.Please_enter_the_folder_name_in_the_correct_format'))
         .margin({ top: 10, bottom: 10 })
         .width('90%')
         .fontSize(8)
         .fontColor(Color.Red)
       Flex({ justifyContent: FlexAlign.SpaceAround }) {
-        Button('取消')
+        Button($r('app.string.Cancel'))
           .onClick(() => {
             this.controller.close()
             this.cancel()
           })
-        Button('确定')
+        Button($r('app.string.Confirm'))
           .onClick(() => {
             this.inputValue = this.textValue
             this.controller.close()
@@ -94,35 +94,35 @@ struct LoginPage {
   dialogController: CustomDialogController | null = new CustomDialogController({
     builder: CustomDialogDiy({
       cancel: () => {
-        this.showToast(`关闭了对话框，取消选输入其他类型邮箱`, 'mailType-cancel')
+        this.showToast(this.getResourceString('app.string.The_dialog_box_has_been_closed'), 'mailType-cancel')
       },
       confirm: () => {
         if (!this.inputValue || this.inputValue.length < 1) {
-          this.showToast(`邮箱类型不可为空`, 'mailType-confirm')
+          this.showToast(this.getResourceString('app.string.Email_type_cannot_be_empty'), 'mailType-confirm')
           return
         }
         if (this.inputValue.indexOf('@') == -1 && this.inputValue.indexOf('@') != this.inputValue.lastIndexOf('@')) {
-          this.showToast(`邮箱类型必须含有一个@，且只能含有一个@`, 'mailType-confirm')
+          this.showToast(this.getResourceString('app.string.Email_type_must_contain_one'), 'mailType-confirm')
           return
         }
         if (this.inputValue.indexOf('.') == -1 && this.inputValue.indexOf('.') != this.inputValue.lastIndexOf('.')) {
-          this.showToast(`邮箱类型必须含有一个.，且只能含有一个.`, 'mailType-confirm')
+          this.showToast(this.getResourceString('app.string.Email_type_must_contain_one_point'), 'mailType-confirm')
           return
         }
         if (this.inputValue.indexOf('@') != -1 && this.inputValue.indexOf('.') != -1 && this.inputValue.indexOf('@') > this.inputValue.indexOf('.')) {
-          this.showToast(`邮箱类型中@需要在.之前，例如@qq.com,@163.com这些`, 'mailType-confirm')
+          this.showToast(this.getResourceString('app.string.In_email_types'), 'mailType-confirm')
           return
         }
         if (this.inputValue.indexOf('@') - this.inputValue.indexOf('.') == 1) {
-          this.showToast(`邮箱类型中除了@和.，必须含有其他字符`, 'mailType-confirm')
+          this.showToast(this.getResourceString('app.string.Except_for_and'), 'mailType-confirm')
           return
         }
         if (this.inputValue.indexOf('@') != 0) {
-          this.showToast(`邮箱类型中@必须在第一位`, 'mailType-confirm')
+          this.showToast(this.getResourceString('app.string.must_be_first_in_the_email_type'), 'mailType-confirm')
           return
         }
         this.mailType = this.inputValue
-        this.showToast(`输入其他类型邮箱：${this.mailType}`, 'mailType-confirm')
+        this.showToast(this.getResourceString('app.string.Enter_other_types_of_email_addresses') + `：${this.mailType}`, 'mailType-confirm')
       },
       textValue: $textValue,
       inputValue: $inputValue
@@ -269,7 +269,7 @@ struct LoginPage {
         alignContent: FlexAlign.Center,
         direction: FlexDirection.Column
       }) {
-        Text('点击账号后面的邮箱可以切换邮箱类型')
+        Text($r('app.string.Click_on_the_email_after_the_account_to_switch_email_types'))
           .fontSize(20)
           .height(50)
           .textAlign(TextAlign.Center)
@@ -283,13 +283,13 @@ struct LoginPage {
           alignContent: FlexAlign.Start,
           direction: FlexDirection.Row
         }) {
-          Text('账号：')
+          Text($r('app.string.account_number'))
             .fontSize(20)
             .height(50)
             .textAlign(TextAlign.Center)
             .margin({ right: 5 })
 
-          TextInput({ placeholder: '请输入账号', text: '' })
+          TextInput({ placeholder: $r('app.string.Please_enter_your_account'), text: '' })
             .layoutWeight(1)
             .fontSize(20)
             .height(50)
@@ -317,13 +317,13 @@ struct LoginPage {
           alignContent: FlexAlign.Start,
           direction: FlexDirection.Row
         }) {
-          Text('密码/授权码：')
+          Text($r('app.string.Password_Authorization_Code'))
             .fontSize(20)
             .height(50)
             .textAlign(TextAlign.Center)
             .margin({ right: 5 })
 
-          TextInput({ placeholder: '请输入密码/授权码', text: 'bfxeualuaxambged' })
+          TextInput({ placeholder: $r('app.string.Please_enter_password_authorization_code'), text: 'bfxeualuaxambged' })
             .layoutWeight(1)
             .fontSize(20)
             .height(50)
@@ -339,7 +339,7 @@ struct LoginPage {
         .margin({ left: 15, top: 20 })
 
         Flex({ justifyContent: FlexAlign.Start, direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
-          Text('是否开启SSL/TLS(当前仅需支持SMTP,无需支持SMTPS,此按钮暂不可用)')
+          Text($r('app.string.Do_you_want_to_enable_SSL_TLS'))
             .fontSize(20)
             .height(50)
             .margin({})
@@ -347,11 +347,11 @@ struct LoginPage {
             .fontWeight(FontWeight.Bold)
 
 
-          Checkbox({ name: '是否开启SSL/TLS', group: 'ssl' })
+          Checkbox({ name: this.getResourceString('app.string.Do_you_want_to_enable'), group: 'ssl' })
             .height(40)
             .select(false)
             .onClick((event) => {
-              this.showToast('当前仅需支持SMTP,无需支持SMTPS')
+              this.showToast(this.getResourceString('app.string.only_SMTP_support_is_required_no_SMTPS_support_is_needed'))
             })
             .enabled(false)
             .margin({ left: 10 })
@@ -363,7 +363,7 @@ struct LoginPage {
         .margin({ left: 15, top: 20 })
 
         Flex({ justifyContent: FlexAlign.Start, direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
-          Button('登录')
+          Button($r('app.string.login'))
             .margin(20)
             .width('80%')
             .height(50)
@@ -373,7 +373,7 @@ struct LoginPage {
               this.login()
             })
 
-          Button('退出登录')
+          Button($r('app.string.Log_out'))
             .margin(20)
             .width('80%')
             .height(50)
@@ -387,7 +387,7 @@ struct LoginPage {
         .margin({ left: 15, top: 20 })
 
         Flex({ justifyContent: FlexAlign.Start, direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
-          Text('检查服务器的能力')
+          Text($r('app.string.Check_the_capability_of_the_server'))
             .margin(20)
             .width('80%')
             .height(50)
@@ -396,8 +396,7 @@ struct LoginPage {
             .fontColor(Color.White)
             .bindMenu(this.MailMenu)
 
-
-          Button('跳转文件夹列表')
+          Button($r('app.string.Jump_to_folder_list'))
             .margin(20)
             .width('80%')
             .height(50)
@@ -418,7 +417,7 @@ struct LoginPage {
   async login() {
     const ctx = this;
     try {
-      ctx.showToast('开始登录账号', 'login-imap')
+      ctx.showToast(this.getResourceString('app.string.Start_logging_in_to_your_account'), 'login-imap')
       let hostParam = ctx.mailType.substring(ctx.mailType.indexOf('@') + 1, ctx.mailType.indexOf('.'))
       let loginOption: LoginOption = new LoginOption();
       if (!GlobalObj?.getInstance()?.getClient()) {
@@ -477,25 +476,25 @@ struct LoginPage {
       }
       this.util?.login(loginOption, () => {
         ctx.isLogin = true;
-        ctx.showToast('登录成功，准备跳转邮件文件夹列表', 'login-imap')
+        ctx.showToast(this.getResourceString('app.string.ready_to_jump_to_the_email_folder_list'), 'login-imap')
       }, (err: Error) => {
         console.log(err.message);
       }, () => {
         console.log('Connection ended');
       })
-      ctx.showToast('服务器连接成功', 'login-imap')
+      ctx.showToast(this.getResourceString('app.string.Server_connection_successful'), 'login-imap')
     } catch (err) {
-      ctx.showToast(`账号登录出错：${err.message}`, 'login-smtp')
+      ctx.showToast(this.getResourceString('app.string.Account_login_error') + `：${err.message}`, 'login-smtp')
     }
   }
 
   loginOut() {
     const ctx = this;
     try {
-      ctx.showToast('开始退出登录,请稍等', 'loginOut-imap')
+      ctx.showToast(this.getResourceString('app.string.Starting_to_log_out'), 'loginOut-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.end(() => {
-          ctx.showToast('退出登录成功', 'loginOut-imap')
+          ctx.showToast(this.getResourceString('app.string.Login_successfully_logged_out'), 'loginOut-imap')
           router.clear()
           router.pushUrl({
             url: 'pages/Index"'
@@ -503,23 +502,23 @@ struct LoginPage {
         });
 
       } else {
-        ctx.showToast('退出登录失败，客户端对象为空', 'loginOut-imap')
+        ctx.showToast(this.getResourceString('app.string.Login_failed_client_object_is_empty'), 'loginOut-imap')
         router.clear()
         router.pushUrl({
           url: 'pages/Index"'
         })
       }
     } catch (err) {
-      ctx.showToast(`退出登录出错：${err.message}`, 'loginOut-smtp')
+      ctx.showToast(this.getResourceString('app.string.Login_error_occurred_while_logging_out') + `：${err.message}`, 'loginOut-smtp')
     }
   }
 
   checkServerCapability() {
     if (this.isLogin) {
       let checkResult: boolean | undefined = GlobalObj?.getInstance()?.getClient()?.serverSupports(this.capability);
-      this.showToast(`服务端能力是否支持-${this.capability},结果是：${checkResult}`, 'checkServerCapability-smtp')
+      this.showToast(this.getResourceString('app.string.Does_the_server_capability_support_it') + `-${this.capability},`+ this.getResourceString('app.string.The_result_is') +`：${checkResult}`, 'checkServerCapability-smtp')
     } else {
-      this.showToast(`检查服务端能力出错：客户端未登录`, 'checkServerCapability-smtp')
+      this.showToast(this.getResourceString('app.string.Error_checking_server_capability'), 'checkServerCapability-smtp')
     }
   }
 
@@ -529,8 +528,11 @@ struct LoginPage {
         url: 'pages/FolderPage'
       })
     } else {
-      this.showToast(`客户端未登录`, 'jumpIntoFolder-smtp')
+      this.showToast(this.getResourceString('app.string.Client_not_logged_in'), 'jumpIntoFolder-smtp')
     }
+  }
 
+  getResourceString(resourceName:string) {
+    return getContext().resourceManager.getStringSync($r(resourceName).id)
   }
 }

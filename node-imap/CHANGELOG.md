@@ -1,24 +1,22 @@
 ## 1.0.1
 
-- Ark语法适配
-- 适配DevEco Studio:4.0 Release(4.0.3.600),SDK API10(4.0.10.11)
-- 修复不兼容API9问题
+- Ark syntax adaptation
+- Compatible with DevEco Studio: 4.0 Release(4.0.3.600), SDK API10(4.0.10.11)
+- Fix incompatible API9 issues
 
 ## 1.0.1-rc.1
 
-- Ark语法适配
-- 适配DevEco Studio:4.0 Release(4.0.3.600),SDK API10(4.0.10.11)
+- Ark syntax adaptation
+- Compatible with DevEco Studio: 4.0 Release(4.0.3.600), SDK API10(4.0.10.11)
 
 ## 1.0.1-rc.0
 
-- 修复不兼容API9问题
+- Fix incompatible API9 issues
 
 ## 1.0.0
 
-本项目是适配OpenHarmony环境的IMAP协议三方库，支持的能力如下:
-
-- 支持连接邮件服务器。
-- 支持客户端下载服务器上的邮件。
-- 支持获取邮件信息。
-- 支持邮件操作反馈至服务器。
-
+This project is an IMAP protocol third-party library adapted to the OpenHarmony environment, supporting the following capabilities:
+- Support connecting to email servers.
+- Support the client to download emails from the server.
+- Support obtaining email information.
+- Support email operation feedback to the server.

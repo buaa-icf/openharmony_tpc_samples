@@ -26,7 +26,7 @@ struct Index {
 
   build() {
     Column() {
-      Button('跳转登录页')
+      Button($r('app.string.Jump_to_login_page'))
         .fontSize(20)
         .height(50)
         .visibility(Visibility.Hidden)
@@ -36,7 +36,7 @@ struct Index {
             url: 'pages/LoginPage'
           })
         })
-      Button('跳转测试页')
+      Button($r('app.string.Jump_to_test_page'))
         .fontSize(20)
         .height(50)
         .margin({ top: 150 })
@@ -46,7 +46,7 @@ struct Index {
           })
         })
 
-      Button('跳转压力测试页')
+      Button($r('app.string.Jump_to_the_stress_test_page'))
         .fontSize(20)
         .height(50)
 		    .visibility(Visibility.Hidden)

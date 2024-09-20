@@ -40,7 +40,7 @@ struct MsgDetailPage {
   aboutToAppear() {
     const ctx = this;
     if (!GlobalObj?.getInstance()?.getClient()) {
-      this.showToast('账号未登录，请登录后再试', 'MsgDetail-imap')
+      this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'MsgDetail-imap')
       router.back()
       return
     }
@@ -48,7 +48,7 @@ struct MsgDetailPage {
     if (tempParam && tempParam['clickIndex']) {
       ctx.clickIndex = tempParam['clickIndex']
     } else {
-      this.showToast('未获取到邮箱文件夹参数', 'MsgDetail-imap')
+      this.showToast(this.getResourceString('app.string.Email_folder_parameters_not_obtained'), 'MsgDetail-imap')
       router.back()
       return
     }
@@ -66,11 +66,11 @@ struct MsgDetailPage {
       },
       bodyEndCallback: () => {
         try {
-          ctx.showToast(`获取整个邮件体成功：${'\r\n'}${buffer}`, 'MsgDetail-imap');
+          ctx.showToast(this.getResourceString('app.string.Successfully_obtained_the_entire_email_body') + `：${'\r\n'}${buffer}`, 'MsgDetail-imap');
           if (buffer.length > 65535) {
-            ctx.message = `获取整个邮件体成功,文本长度超过65535，text，取65535长度用于显示：${'\r\n'}${buffer.substring(0, 65535)}`
+            ctx.message = this.getResourceString('app.string.Successfully_obtained') + `：${'\r\n'}${buffer.substring(0, 65535)}`
           } else {
-            ctx.message = `获取整个邮件体成功：${'\r\n'}${buffer}`
+            ctx.message = this.getResourceString('app.string.Successfully_obtained_the_entire_email_body') + `：${'\r\n'}${buffer}`
           }
 
         } catch (err) {
@@ -110,5 +110,9 @@ struct MsgDetailPage {
       .width('100%')
     }
     .height('100%')
+  }
+
+  getResourceString(resourceName:string) {
+    return getContext().resourceManager.getStringSync($r(resourceName).id)
   }
 }
