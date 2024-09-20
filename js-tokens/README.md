@@ -1,17 +1,17 @@
 # js-tokens
 
-### 介绍
+### Introduction
 
-本库是OpenHarmony系统下基于[js-tokens](https://github.com/lydell/js-tokens)库使用的开发示例，js-tokens 是一个微型JavaScript的分词器。小巧的、正则表达式驱动的、宽松的、几乎符合规范的 JavaScript 标记器
+This project is an OpenHarmony development example based on the [js-tokens](https://github.com/lydell/js-tokens) library. js-tokens is a tiny, regex powered, lenient, almost spec-compliant JavaScript tokenizer.
 
-### 下载安装
+### How to Install
 
-1.如果已安装好nodejs后，输入以下命令
+1. Make sure Node.js has been installed. Then run the following command:
 ```
 ohpm install js-tokens
 ```
 
-2.在需要使用的页面导入js-tokens
+2. Import js-tokens on the target page.
 
 ```
 import jsTokens from 'js-tokens'
@@ -19,7 +19,7 @@ var tokens = jsTokens.default
 var matchToToken = jsTokens.matchToToken
 ```
 
-### 使用说明
+### How to Use
 
 ### `jsTokens` ###
 
@@ -51,29 +51,29 @@ Multi-line comments and strings also have a `closed` property indicating if the
 token was closed or not (see below).
 
 Comments and strings both come in several flavors. To distinguish them, check if
-the token starts with `//`, `/*`, `'`, `"` or `` ` ``.
+the token starts with `//`, `/*`, `'`, `"` or ` ` `.
 
 Names are ECMAScript IdentifierNames, that is, including both identifiers and
 keywords. You may use [is-keyword-js] to tell them apart.
 
 Whitespace includes both line terminators and other whitespace.
 
-### 限制描述
-1、Tokenizing JavaScript using regexes—in fact, _one single regex_—won’t be
-perfect. But that’s not the point either.
+### Description
+1. Tokenizing JavaScript using regexes - essentially, _one single regex_ - won't be
+perfect. However, that's not the main goal. 
 
-You may compare jsTokens with [esprima] by using `esprima-compare.js`.
-See `npm run esprima-compare`!
+You may compare jsTokens with [esprima] by using **esprima-compare.js**.
+See **npm run esprima-compare**.
 
-2、Template strings are matched as single tokens, from the starting `` ` `` to the
-ending `` ` ``, including interpolations (whose tokens are not matched
+2. Template strings are matched as single tokens, from the starting \` to the
+ending \`, including interpolations (whose tokens are not matched
 individually).
 
 Matching template string interpolations requires recursive balancing of `{` and
-`}`—something that JavaScript regexes cannot do. Only one level of nesting is
+`}`—something that JavaScript regexes cannot handle. Only one level of nesting is
 supported.
 
-3、Division and regex literals collision
+3. Division and regex literals collision
 
 Consider this example:
 
@@ -84,22 +84,22 @@ var number = bar / 2/g
 var regex = / 2/g
 ```
 
-### 接口说明
+### Available APIs
 
-1、jsTokens.default; // 正在匹配表达式
+1. jsTokens.default; // Matching expressions
 
-2、jsTokens.matchToToken // 分词器 function
+2. jsTokens.matchToToken // Tokenizer function
 
-单元测试用例详情见[TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/js-tokens/TEST.md)
+For details about unit test cases, see [TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/js-tokens/TEST.md).
 
-### 约束与限制
-在下述版本验证通过：
+### Constraints
+This project has been verified in the following versions:
 
-DevEco Studio: 4.0 Beta2(4.0.3.512), SDK: API10 (4.0.10.9)
+- DevEco Studio: 4.0 Beta2 (4.0.3.512), SDK: API 10 (4.0.10.9)
 
-DevEco Studio: 3.1.1 Release(3.1.0.501), SDK: API9 Release(3.2.12.5)
+- DevEco Studio: 3.1.1 Release (3.1.0.501), SDK: API 9 Release (3.2.12.5)
 
-### 软件架构
+### Directory Structure
 
 ```
 |-ets
@@ -108,24 +108,23 @@ DevEco Studio: 3.1.1 Release(3.1.0.501), SDK: API9 Release(3.2.12.5)
 |   |-MainAbility
 |           |-MainAbility.ts
 |   |-pages
-|           |-index.ets            #主页demo
+|           |-index.ets            # Home page demo
 ```
 
-### 版本
+### Version
 
-当前版本
+Current version:
 
 ```
 1.0.0
 ```
 
-版本日志请查看[CHANGELOG.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/js-tokens/CHANGELOG.md)
+For details about the version history, see [CHANGELOG.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/js-tokens/CHANGELOG.md).
 
-### 贡献代码
+### How to Contribute
 
-使用过程中发现任何问题都可以提[Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
-给我们，当然，我们也非常欢迎你给我们发[PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls)
+If you find any problem during the use, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
 
-### 开源协议
+### License
 
-本项目基于[Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/js-tokens/LICENSE),请自由的享受和参与开源
+This project is licensed under [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/js-tokens/LICENSE).
