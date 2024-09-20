@@ -16,7 +16,7 @@ import base32 from 'hi-base32'
 @Entry
 @Component
 struct Index {
-  @State message: string = getContext(this).resourceManager.getStringByNameSync('app.string.text_label').toString()
+  @State message: string = getContext(this).resourceManager.getStringByNameSync('text_label').toString()
   @State inputText: string = ''
   @State encodes: string = ''
 
@@ -24,7 +24,7 @@ struct Index {
     Row() {
       Column() {
         Text(this.message)
-          .fontSize(50)
+          .fontSize(40)
           .fontWeight(FontWeight.Bold)
 
         TextInput({ placeholder: 'input your word', text: this.inputText })
