@@ -266,7 +266,7 @@ struct DiyCacheHeaderPage {
       addHeaders(url: string): HashMap<string, string> {
         let header: HashMap<string, string> = new HashMap<string, string>();
         header.set('allowCrossProtocolRedirects', "true")
-        header.set('name', "张三")
+        header.set('name', "zhangsan")
         header.set('fakeToken', "123456789")
         return header;
       }

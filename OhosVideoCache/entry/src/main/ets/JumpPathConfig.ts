@@ -15,26 +15,15 @@
 
 
 class JumpBean {
-  showText: string = '';
   jumpPath: string = '';
 
-  constructor(text, path) {
-    this.showText = text;
+  constructor(path) {
     this.jumpPath = path;
   }
 }
 
 export default class JumpPathConfig {
   public static dataList: Array<JumpBean>;
-
-  public static getText(): string[] {
-    this.initData();
-    let tempArr: string[] = new Array<string>(this.dataList.length);
-    for (let index = 0; index < this.dataList.length; index++) {
-      tempArr[index] = this.dataList[index].showText;
-    }
-    return tempArr;
-  }
 
   public static getIndex(): number[] {
     this.initData();
@@ -61,22 +50,22 @@ export default class JumpPathConfig {
       this.dataList = new Array<JumpBean>();
     }
     if (this.dataList.length < 1) {
-      let bean0 = new JumpBean('AvPlayer缓存播放示例', 'pages/HttpsPlayer');
+      let bean0 = new JumpBean('pages/HttpsPlayer');
       this.dataList.push(bean0)
 
-      let bean1 = new JumpBean('IjkPlayer缓存播放示例', 'pages/IjkVideoPlayerPage');
+      let bean1 = new JumpBean('pages/IjkVideoPlayerPage');
       this.dataList.push(bean1)
 
-      let bean2 = new JumpBean('自定义缓存容量大小策略示例', 'pages/DiyCacheSizePage');
+      let bean2 = new JumpBean('pages/DiyCacheSizePage');
       this.dataList.push(bean2)
 
-      let bean3 = new JumpBean('自定义缓存个数策略示例', 'pages/DiyCacheCountPage');
+      let bean3 = new JumpBean('pages/DiyCacheCountPage');
       this.dataList.push(bean3)
 
-      let bean4 = new JumpBean('使用自定义请求头注入器示例', 'pages/DiyCacheHeaderPage');
+      let bean4 = new JumpBean('pages/DiyCacheHeaderPage');
       this.dataList.push(bean4)
 
-      let bean5 = new JumpBean('使用自定义命名规则示例', 'pages/DiyFileNameGeneratorPage');
+      let bean5 = new JumpBean('pages/DiyFileNameGeneratorPage');
       this.dataList.push(bean5)
 
     }
