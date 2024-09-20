@@ -36,11 +36,14 @@ struct Index {
   @State latin1String: string = '';
   @State hexString: string = '';
 
+  getResourceString(res:Resource){
+    return getContext().resourceManager.getStringSync(res.id)
+  }
+
   build() {
     Row() {
       Column() {
-        Text('创建一个长度5的数组buffer结果：'+ this.message).fontSize(20);
-        Button('创建一个长度5的数组buffer').onClick(()=> {
+        Button($r('app.string.Create_buffer')).onClick(()=> {
           // 从一个数组创建一个长度为5的buffer
           let buffer1 = Buffer.from([1,2,3,4,5]);
           console.log('从一个数组创建一个长度为5的buffer',JSON.stringify(buffer1));
@@ -49,14 +52,10 @@ struct Index {
           this.message = JSON.stringify(buffer1)
           console.log('向buffer1的buffer中写入数字15，类型为int8，(int8 只占用两位)，从第1个位置写入', buffer1)
         }).margin(15);
-        Text('字符编码和JavaScript字符串转换：').fontSize(20);
-        Text('转ascii：'+ this.asciiString);
-        Text('转hex：' + this.hexString);
-        Text('转base64：'+ this.base64String);
-        Text('转utf8：'+ this.utf8String);
-        Text('转ucs2：'+ this.ucs2String);
-        Text('转latin1：'+ this.latin1String);
-        Button('字符编码和JavaScript字符串转换').onClick(()=> {
+        Text(this.getResourceString($r('app.string.Result')) + '：' + this.message).fontSize(15).margin(15);
+
+        Text(this.getResourceString($r('app.string.Character_and_JavaScript_Conversion')) + '：').fontSize(15);
+        Button($r('app.string.Character_and_JavaScript_Conversion')).onClick(()=> {
           let buf = Buffer.from('openHarmony Buffer', 'ascii');
           this.asciiString = buf.toString('ascii');
           // openHarmony Buffer
@@ -82,10 +81,13 @@ struct Index {
           // 输出 openHarmony Buffer
           console.log('转latin1: ', this.latin1String);
         }).margin(10)
+        Text('ascii：'+ this.asciiString);
+        Text('hex：' + this.hexString);
+        Text('base64：'+ this.base64String);
+        Text('utf8：'+ this.utf8String);
+        Text('ucs2：'+ this.ucs2String);
+        Text('latin1：'+ this.latin1String);
 
-        Text('buffer1：'+ Buffer.from('hi  buffer'))
-        Text('buffer2：'+ Buffer.from('openHarmony'))
-        Text('将buffer1插入到buffer2指定位置上后的结果：'+ this.copyString)
         Button('将buffer1插入到另一个buffer指定位置上').onClick(()=> {
           let buf1 = Buffer.from('hi buffer');
           let buf2 = Buffer.from('openHarmony');
@@ -94,6 +96,9 @@ struct Index {
           this.copyString = buf1.toString();
           console.log('将 buf2 插入到 buf1 指定位置上后的结果：',this.copyString);
         }).margin(15);
+        Text('buffer1：'+ Buffer.from('hi  buffer'))
+        Text('buffer2：'+ Buffer.from('openHarmony'))
+        Text(this.getResourceString($r('app.string.Result')) + '：'+ this.copyString)
       }
       .width('100%')
     }
