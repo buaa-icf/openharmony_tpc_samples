@@ -43,12 +43,12 @@ struct Index {
   scroller: Scroller = new Scroller();
   basicTestCallBack: EventBus.EventListener = (event: Event) => {
     this.testCount++;
-    this.changeText = getContext().resourceManager.getStringByNameSync('app.string.basicTest_listening_successfully_created') + this.testCount;
+    this.changeText = this.getResourceString('app.string.basicTest_listening_successfully_created') + this.testCount;
     console.log(TAG + " basicTest message received " + event.type);
   }
   basicEventBusCallBack: EventBus.EventListener = (event: Event) => {
     this.eventBusCount++;
-    this.changeText = getContext().resourceManager.getStringByNameSync('app.string.basicEventBus_listening_successfully_created') + this.eventBusCount;
+    this.changeText = this.getResourceString('app.string.basicEventBus_listening_successfully_created') + this.eventBusCount;
     console.log(TAG + " basicEventBus message received " + event.type);
   }
 
@@ -123,7 +123,7 @@ struct Index {
             .height(80)
             .onClick(() => {
               EventBus.removeEventListener('basicTest', this.basicTestCallBack);
-              this.changeText = getContext().resourceManager.getStringByNameSync('app.string.successfully_removed_basicTest_message')
+              this.changeText = this.getResourceString('app.string.successfully_removed_basicTest_message')
             }).margin({ bottom: 20 })
 
           Button($r('app.string.passing_parameter_testing'))
@@ -165,8 +165,12 @@ struct Index {
   }
 
   onInitEventBus() {
-    this.comeDetailText = getContext().resourceManager.getStringByNameSync('app.string.refresh_and_display_the_global_monitoring_detail_page')
+    this.comeDetailText = this.getResourceString('app.string.refresh_and_display_the_global_monitoring_detail_page')
     refreshComeFromDetail(this)
+  }
+
+  getResourceString(resourceName:string) {
+    return getContext().resourceManager.getStringSync($r(resourceName).id)
   }
 }
 
