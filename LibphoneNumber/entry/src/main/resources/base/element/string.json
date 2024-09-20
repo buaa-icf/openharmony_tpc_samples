@@ -11,6 +11,10 @@
     {
       "name": "EntryAbility_label",
       "value": "LibPhoneNumber"
+    },
+    {
+      "name": "instructions",
+      "value": "Test instructions: [Click on the top text, log search for PHONENUMBER, view results]"
     }
   ]
 }

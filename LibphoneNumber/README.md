@@ -1,20 +1,20 @@
 # libphonenumber-js
 
-本项目是OpenHarmony系统下使用libphonenumber-js的示例，libphonenumber-js是一个电话号码格式化和解析的Javascript开源库
+This project demonstrates how to use **libphonenumber-js** in OpenHarmony. **libphonenumber-js** is an open-source JavaScript library for formatting and parsing phone numbers.
 
 
-## 下载安装
+## How to Install
 
 ```sh
 ohpm install libphonenumber-js@1.9.53
 ```
 
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 ```javascript
     import { parsePhoneNumber, AsYouType, findPhoneNumbersInText, ParseError } from "libphonenumber-js";
-    import customData from "./customData.json"; // 自定义元数据
+    import customData from ."/customData.json"; // Custom metadata
     import Log from './../util/Log';
     import {
         parsePhoneNumberWithError,
@@ -27,80 +27,80 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
     const asYouType = new AsYouType('US');
     const findPhoneNumbers = 'For tech support call +7 (800) 555-35-35 internationally or reach a local US branch at (213) 373-4253 ext. 1234.';
 
-    // 号码, 譬如 +12133734253
-    Log.showInfo('number：' + phoneNumber.number.toString())
+    // Phone number, for example, +12133734253.
+    Log.showInfo('number: ' + phoneNumber.number.toString())
 
-    // 国家，譬如 US
-    Log.showInfo('country：' + phoneNumber.country);
+    // Country, for example, the US.
+    Log.showInfo('country: ' + phoneNumber.country);
 
-    // 国内的号码样式，譬如 (213) 373-4253
-    Log.showInfo('national：' + phoneNumber.formatNational());
+    // National number format, for example, (213) 373-4253.
+    Log.showInfo('national: ' + phoneNumber.formatNational());
 
-    // 国际的号码样式，譬如 +1 213 373 4253
-    Log.showInfo('international：' + phoneNumber.formatInternational());
+    // International number format, for example, +1 213 373 4253.
+    Log.showInfo('international: ' + phoneNumber.formatInternational());
 
-    // uri形式的样式，譬如 tel:+12133734253
-    Log.showInfo('uri：' + phoneNumber.getURI());
+    // Phone number in URI format, for example, tel: +12133734253.
+    Log.showInfo('uri: ' + phoneNumber.getURI());
 
-    // 类型，譬如 FIXED_LINE_OR_MOBILE
-    Log.showInfo('type：' + phoneNumber.getType());
+    // Type of the phone number, for example, fixed line or mobile.
+    Log.showInfo('type: ' + phoneNumber.getType());
 
-    // 是否可能是号码，从数字个数上进行判断
-    Log.showInfo('isPossible：' + phoneNumber.isPossible());
+    // Check whether the number is a phone number based on the quantity of digits.
+    Log.showInfo('isPossible: ' + phoneNumber.isPossible());
 
-    // 是否是有效号码，从所有匹配原则上判断
-    Log.showInfo('isValid：' + phoneNumber.isValid());
+    // Check whether the number is valid based on all matching principles.
+    Log.showInfo('isValid: ' + phoneNumber.isValid());
 
-    // 当你键入一个数字时，与之前键入的数字连接起来一起解析，直到调用clear清除状态
+    // Parse a newly entered digit together with the previously entered digit until the clear function is called.
     asYouType.input(number);
 
-    // 根据你键入的数字,解析国家，譬如 US
-    Log.showInfo('country：' + asYouType.getCountry());
+    // Parse the country based on the entered number, for example, the US.
+    Log.showInfo('country: ' + asYouType.getCountry());
 
-    // 根据你键入的数字,解析模板，譬如 (xxx) xxx-xxxx
-    Log.showInfo('template：' + asYouType.getTemplate());
+    // Parse the template based on the entered number, for example, (xxx) xxx-xxxx.
+    Log.showInfo('template: ' + asYouType.getTemplate());
 
     const phoneNumberValue = asYouType.getNumber();
     if (phoneNumberValue != undefined) {
-    // 根据你键入的数字,解析数字，譬如 +12133734253
-    Log.showInfo('number：' + JSON.stringify(asYouType.getNumber()));
+    // Parse the number based on the entered number, for example, +12133734253.
+    Log.showInfo('number: ' + JSON.stringify(asYouType.getNumber()));
 
-    // 根据你键入的数字,解析国内的号码样式，譬如 (213) 373-4253
-    Log.showInfo('national：' + asYouType.getNumber().formatNational());
+    // Parse the national number format based on the entered number, for example, (213) 373-4253.
+    Log.showInfo('national: ' + asYouType.getNumber().formatNational());
 
-    // 根据你键入的数字,解析国际的号码样式，譬如 +1 213 373 4253
-    Log.showInfo('international：' + asYouType.getNumber().formatInternational());
+    // Parse the international number format based on the entered number, for example, +1 213 373 4253.
+    Log.showInfo('international: ' + asYouType.getNumber().formatInternational());
 
-    // 根据你键入的数字,解析uri形式的样式，譬如 tel:+12133734253
-    Log.showInfo('uri：' + asYouType.getNumber().getURI());
+    // Parse the URI format based on the entered number, for example, tel: +12133734253.
+    Log.showInfo('uri: ' + asYouType.getNumber().getURI());
 
-    // 根据你键入的数字,解析类型，譬如 FIXED_LINE_OR_MOBILE
-    Log.showInfo('type：' + asYouType.getNumber().getType());
+    // Parse the type based on the entered number, for example, fixed line or mobile.
+    Log.showInfo('type: ' + asYouType.getNumber().getType());
     } else {
     Log.showInfo(TAG + "getNumber() is undefined");
     }
 
-    // 根据你键入的数字,解析是否可能是号码，从数字个数上进行判断
-    Log.showInfo('isPossible：' + asYouType.isPossible());
+    // Parse the entered number to check whether it is a phone number based on the quantity of digits.
+    Log.showInfo('isPossible: ' + asYouType.isPossible());
 
-    // 根据你键入的数字,解析是否是有效号码，从所有匹配原则上判断
-    Log.showInfo('isValid：' + asYouType.isValid());
+    // Parse the entered number to whether it is valid based on all matching principles.
+    Log.showInfo('isValid: ' + asYouType.isValid());
 
-    //从一段文本中查找出电话号码
+    // Find a phone number from a text.
     Log.showInfo(JSON.stringify(findPhoneNumbersInText(findPhoneNumbers, 'US')));
 
 
     /**
      *
-     * 使用自定义元数据,引入libphonenumber-js/core
-     * 使用场景：
-     * 1、在某个工程中，可能只需要处理几个特定的国家的号码
-     * 2、所谓自定义元数据，就是只包含几个特定的国家的元数据，比如CN和US
+     * Use custom metadata and introduce libphonenumber-js/core.
+     * Use scenarios:
+     * 1. Only the phone numbers of several specified countries need to be processed.
+     * 2. Custom metadata refers to the metadata that contains only specific countries, such as China and the US.
      *
      */
 
     const number: string[] = ['+8618717452985', '+12133734253', '+78005553535'];
-    // 这里只列举使用自定义元数据接口的几个示例,其它接口和使用普通元数据用法相同
+    // Examples of using the custom metadata APIs are listed here. The usage of other APIs is the same as that of common metadata APIs.
     const type = new coreAsYouType('CN', customData).input(number[0]);
     Log.showInfo(TAG + ' libphonenumber-js/core AsYouType : ' + type);
     Log.showInfo(TAG + ' libphonenumber-js/core parsePhoneNumber : ' + JSON.stringify(coreParsePhoneNumber(number[0], customData)));
@@ -109,21 +109,21 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
         parsePhoneNumberWithError(number[2], customData);
     } catch (error) {
         if (error instanceof ParseError) {
-            Log.showInfo(TAG + " Phone number parsing exception ,customData does not contain this country，error msg :  " + error.message);
+            Log.showInfo(TAG + " Phone number parsing exception ,customData does not contain this country, error msg : " + error.message);
         }
     }
 
 ```
 
-## 约束与限制
+## Constraints
 
-- DevEco Studio 版本： 4.1 Canary(4.1.3.317)
-- OpenHarmony SDK: API11 (4.1.0.36)
+- DevEco Studio: 4.1 Canary (4.1.3.317)
+- OpenHarmony SDK: API 11 (4.1.0.36)
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 Issue 给我们，当然，我们也非常欢迎你给我们发 PR 。
+If you find any problem when using the project, submit an issue or a PR.
 
-## 开源协议
+## License
 
-本项目基于 [Apache License 2.0](https://github.com/catamphetamine/libphonenumber-js/blob/master/LICENSE) ，请自由地享受和参与开源。
+This project is licensed under [Apache License 2.0](https://github.com/catamphetamine/libphonenumber-js/blob/master/LICENSE).

@@ -45,7 +45,7 @@ struct Index {
                     this.useLibPhoneNumberJsCore();
                 })
 
-            Text("测试说明：[ 点击顶部文字，log搜索 PHONENUMBER，查看结果 ]")
+            Text($r("app.string.instructions"))
                 .fontSize(10)
                 .fontWeight(FontWeight.Bold)
         }
