@@ -1,23 +1,24 @@
 # @ohos/xmldom
 
-## 简介
+## Introduction
 
-> 专门为OpenHarmony打造的一个提供了符合 W3C 标准的 DOMParser 和 XMLSerializer 功能的 JavaScript 模块。它允许你在浏览器和 Node.js 环境中解析和操作 XML 数据，并提供了将 DOM 文档对象转换为 XML 字符串的能力。这使得处理和操作 XML 数据变得更加方便和标准化
+> This project provides OpenHarmony with a JavaScript module that supports W3C-compliant DOMParser and XMLSerializer. It allows you to parse and manipulate XML data in browsers and Node.js environments, and to convert DOM documents into XML strings. This makes it easier and more standardized to process and manipulate XML data.
 
-## 下载安装
+## How to Install
 
 ```shell
 ohpm install @ohos/xmldom
 ```
 
 OpenHarmony
-ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
-## 使用说明
+For details about the ohpm environment configuration, see [Installing the OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-1. 引入文件及代码依赖
+## How to Use
 
- ```
+Import files and code dependencies.
+
+```
  import { DOMParser, XMLSerializer, DOMImplementation } from '@ohos/xmldom'
  
  const source = `<xml xmlns="a">
@@ -28,40 +29,38 @@ ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](ht
  const doc :ESObject = new DOMParser().parseFromString(source, 'text/xml')
 
  const serialized :ESObject = new XMLSerializer().serializeToString(doc)
- ```
+```
 
-## 接口说明
+## Available APIs
 
-* XML 字符串解析为 DOM 文档对象
+* Parses an XML string into a DOM document.
  - `parseFromString()`
-* 将 DOM 文档序列化为 XML 字符串
+* Serializes a DOM document into an XML string.
  - `serializeToString()`
 
-## 目录结构
+## Directory Structure
 ````
 |---- xmldom
-|     |---- entry  # 示例代码文件夹
+|     |---- entry  # Sample code
               ├── src  
                  ├── main   
                    ├── ets
                        ├── pages
-                             ├── Index.ets  sample代码
-|     |---- README.md  # 安装使用方法                    
+                             ├── Index.ets  # Sample code
+|     |---- README.md  # Readme                   
 ````
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+This project has been verified in the following version:
 
 - DevEco Studio: NEXT Beta1-5.0.3.806, SDK:API12 Release(5.0.0.66)
 - DevEco Studio： 4.1 Canary(4.1.3.317), OpenHarmony SDK:API11 (4.1.0.36)
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
-给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem during the use, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-本项目基于 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/xmldom/LICENSE) ，请自由地享受和参与开源。
-
+This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/xmldom/LICENSE).

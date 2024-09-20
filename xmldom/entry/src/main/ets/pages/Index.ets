@@ -14,7 +14,7 @@ import { DOMParser, XMLSerializer, DOMImplementation } from '@ohos/xmldom'
 @Entry
 @Component
 struct Index {
-  @State text: string = 'Display Results Area'
+  @State text: string = getContext().resourceManager.getStringByNameSync("Display_Results_Area")
 
   onParseFromString() {
     const XML = '<xml attr="&quot;">&lt; &amp;</xml>'
@@ -54,16 +54,16 @@ struct Index {
   build() {
     Row() {
       Column() {
-        Button('parseFromString')
+        Button($r('app.string.parseFromString'))
           .margin({ top: px2vp(30) })
           .onClick(() => this.onParseFromString())
-        Button('serializeToString')
+        Button($r('app.string.serializeToString'))
           .margin({ top: px2vp(30) })
           .onClick(() => this.onSerializeToString())
-        Button('DOMImplementation')
+        Button($r('app.string.DOMImplementation'))
           .margin({ top: px2vp(30) })
           .onClick(() => this.onDOMImplementation())
-        Button('errorHandler')
+        Button($r('app.string.errorHandler'))
           .margin({ top: px2vp(30) })
           .onClick(() => this.onErrorHandler())
 
