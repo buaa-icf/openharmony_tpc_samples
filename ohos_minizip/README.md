@@ -1,31 +1,31 @@
 # ohos_minizip
 
-## 介绍
-基于minizip_ng的解压缩库
+## Introduction
+This project provides a decompression library based on minizip_ng.
 
-## 下载安装
+## How to Install
 
 ```shell
 ohpm install @ohos/minizip
 ```
-- OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage_en.md).
 
-### 编译运行
+### How to Build
 
-本项目依赖minizip_ng库，编译产物.a文件和头文件通过`git submodule`引入，下载代码时需加上`--recursive`参数。
+This project depends on the minizip_ng library. The build products, .a file and header file, are imported through **git submodule**. The **--recursive** parameter must be carried in the command used to download the project code.
   ```
   git clone --recursive https://gitee.com/openharmony-tpc/openharmony_tpc_samples.git
   ```
 
-如果想要在本地编译minizip_ng，参考[minizip_ng集成到应用hap](https://gitee.com/openharmony-sig/tpc_c_cplusplus/tree/master/thirdparty/minizip-ng)
+For details about how to build minizip_ng locally, see [Integrating minizip_ng into Your HAP](https://gitee.com/openharmony-sig/tpc_c_cplusplus/tree/master/thirdparty/minizip-ng).
 
-在cpp目录下新增third_party目录，并将编译生成的库拷贝到该目录下，如下图所示
+Add the **third_party** directory to the **cpp** directory, and copy the library generated after compilation to the **third_party** directory.
 
 ![img.png](image%2Fimg.png)
 
-## 使用说明
+## How to Use
 
-### 解压zip包获取文件内容
+### Decompressing a ZIP File to Obtain Its Content
 
 ```typescript
 import { MinizipNative } from '@ohos/minizip'
@@ -43,13 +43,13 @@ if (minizipEntry.Open() == 0) {
 }
 ```
 
-1. 使用三方库解压zip文件内容到内存，返回至JS。
-2. GetEntryNames()获取zip文件所有的文件夹路径以及文件路径
-3. ExtractFileToJS(entryname, password),解压指定的文件并将内容返回至JS侧，若文件没有密码参考如下
+1. Use a third-party library to decompress a ZIP file to the memory and return the file content to the JS side.
+2. Call **GetEntryNames()** to obtain all folder paths and file paths of the ZIP file.
+3. Use **ExtractFileToJS(entryname, password)** to decompress the specified file and return the file content to the JS side. If the file does not have a password, call the code below:
 
-ExtractFileToJS(entryname, “”)；
+   ExtractFileToJS(entryname, "");
 
-### 解压zip包到磁盘
+### Decompressing a ZIP File to a Disk
 ```typescript
 import { unzipToDirectory } from '@ohos/minizip'
 
@@ -61,48 +61,45 @@ unzipToDirectory(this.selectFilePath, this.targetPath, this.password).then(() =>
 ```
 
 
-## 接口说明
+## Available APIs
 
-| 接口                 | 参数                                                                               | 参数说明                                                                                                                             | 返回值                                                                 | 接口说明              |
-|--------------------|----------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------|-------------------|
-| MinizipNative      | path:string                                                                      | zip压缩包路径                                                                                                                         | MinizipNative实例                                                     | 创建MinizipNative实例 |
-| Open               | 无                                                                                | 无                                                                                                                                | 当返回值为0时，打开文件成功                                                      | 打开文件              |
-| SetCharEncoding    | charEncoding:number                                                              | charEncoding: 字符编码类型，可设置为 437(CP437 主要用于英文和一些西欧语言环境) 932(CP932 主要用于日语环境) 936(CP936 主要用于简体中文环境) 950(CP950 主要用于繁体中文环境) 65001(UTF8) | 无返回值。设置压缩包的字符编码类型                                                   | 设置字符编码类型          |
-| GetEntryNames      | 无                                                                                | 无                                                                                                                                | Array< string > 获取文件列表，如果调用过SetCharEncoding设置字符编码，则返回的文件名字符串为utf8编码 | 获取文件列表            |
-| ExtractFileToJS    | entryName : string, password : string                                            | entryName：文件名， password：密码                                                                                                       | ArrayBuffer或者undefined 解压文件内容，密码错误或entryName为文件夹名时，返回undefined      | 解压文件内容            |
-| unzipToDirectory   | selectPath: string, targetPath: string, password?: string, charEncoding?: number | selectPath: 待解压文件路径, targetPath: 解压到此路径下, password?: 密码,<br> charEncoding?: 字符编码类型                                               | Promise< string > 是否解压成功                                            | 解压缩文件到文件夹         |
+| API            | Parameter                                                        | Parameter Description                                                    | Return Value                                                      | API Description             |
+| ---------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | --------------------- |
+| MinizipNative    | path:string                                                  | Path of the ZIP file.                                               | **MinizipNative** instance.                                           | Creates a **MinizipNative** instance.|
+| Open             | N/A                                                          | N/A                                                          | **0** if the file is opened successfully.                                 | Opens a file.             |
+| SetCharEncoding  | charEncoding:number                                          | **charEncoding**: character encoding type. The value can be **437** (for English and some Western European languages), **932** (for Japanese), **936** (for Simplified Chinese), **950** (for Traditional Chinese), or **65001** (for UTF-8).| N/A                            | Sets the character encoding type.     |
+| GetEntryNames    | N/A                                                          | N/A                                                          | **Array\<string>**: list of files obtained. If **SetCharEncoding** has been called to set the character encoding type, the file name string encoded in UTF-8 format is returned.| Obtains the file list.         |
+| ExtractFileToJS  | entryName : string, password : string                        | **entryName**: file name.<br>**password**: password.                          | **ArrayBuffer** or **undefined**: decompressed file content. If the password is incorrect or **entryName** is a folder name, **undefined** is returned.| Decompresses a file.         |
+| unzipToDirectory | selectPath: string, targetPath: string, password?: string, charEncoding?: number | **selectPath**: path of the file to decompress.<br>**targetPath**: path to which the file is decompressed.<br>**password?**: password.<br>**charEncoding?**: character encoding format. | **Promise\< string >**: whether the file is decompressed successfully.                              | Decompresses a file to a folder.   |
 
-## 注意事项
-- 创建minizipNative对象需要传入完整的文件路径:**文件路径**+**文件名**
+## Precautions
+- To create a **minizipNative** object, you must pass in a complete file path, which consists of the file path and file name.
 
-- **创建对象**之后**一定要调用Open函数**，并且每一次new minizipNative**只能调用一次Open**，若Open函数返回值非0则是打开文件失败
+- You must call the **Open** function after creating an object. The **Open** function can be called only once each time the **new minizipNative** function is called. If the return value of the **Open** function is not **0**, the file fails to be opened.
 
 
-## 约束与限制
-在下述版本验证通过：
+## Constraints
+This project has been verified in the following version:
 
-DevEco Studio: NEXT Developer Beta1-5.0.3.320, SDK: API12(5.0.0.23)
+DevEco Studio: NEXT Developer Beta1-5.0.3.320, SDK: API 12 (5.0.0.23)
 
-## 目录结构
+## Directory Structure
 ````
 |----ohos_minizip  
-|     |---- entry  # 示例代码文件夹
+|     |---- entry  # Sample code
 |     |---- library  
-|                |---- cpp # c/c++和napi代码
-|                      |---- minizipAdapter # minizip的napi逻辑代码
-|                      |---- CMakeLists.txt  # 构建脚本
-|                      |---- thirdparty # 三方依赖
-|                      |---- types # 接口声明
-|           |---- index.ets  # 对外接口
-|     |---- README.md  # 安装使用方法
+|                |---- cpp # C/C++ and NAPI code
+|                      |---- minizipAdapter # NAPI logic code of minizip
+|                      |---- CMakeLists.txt  # Build script
+|                      |---- thirdparty # Third-party dependencies
+|                      |---- types # API declaration
+|           |---- index.ets  # External APIs
+|     |---- README.md  # Readme
 ````
 
-## 贡献代码
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+## How to Contribute
+If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
-本项目基于 [Apache License License - v 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ohos_minizip/LICENSE) ，请自由地享受和参与开源。 
+## License
+This project is licensed under [Apache License License - v 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ohos_minizip/LICENSE).
     
-
-
-
