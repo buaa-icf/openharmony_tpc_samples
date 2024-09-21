@@ -73,14 +73,18 @@ struct Index {
   ludigMatrix: string = '1,0,0;0,1,0;0,0,1'
   inverseMatrix: string = '1,0,0;0,1,0;0,0,1'
 
+  getResourceString(res: Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
+
   build() {
     Scroll(this.scroller) {
       Column() {
-        Text('矩阵测试')
+        Text($r('app.string.Matrix_testing'))
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入对称矩阵 如： 10,1,10;1,10,1;10,1,10' })
+        TextInput({ placeholder: $r('app.string.Please_symmetric2') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -88,7 +92,7 @@ struct Index {
             this.SymmetricMatrixCholesky = value
           })
 
-        Text('Cholesky分解')
+        Text($r('app.string.Cholesky_decomposition'))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -96,7 +100,8 @@ struct Index {
           .onClick(() => {
             try {
               let time = Date.now()
-              let l: CholeskyDecomposition = new CholeskyDecomposition(new Matrix(this.strTransformationArr(this.SymmetricMatrixCholesky)))
+              let l: CholeskyDecomposition =
+                new CholeskyDecomposition(new Matrix(this.strTransformationArr(this.SymmetricMatrixCholesky)))
               this.CholeskyMatrix = l.lowerTriangularMatrix;
               let time1 = Date.now()
               this.mathTimeCholesky = (time1 - time).toString()
@@ -105,15 +110,15 @@ struct Index {
             }
           })
 
-        Text('Cholesky分解: ' + JSON.stringify(this.CholeskyMatrix))
+        Text(this.getResourceString($r('app.string.Cholesky_decomposition')) + JSON.stringify(this.CholeskyMatrix))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeCholesky)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimeCholesky)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入对称矩阵 如： 10,1,10;1,10,1;10,1,10' })
+        TextInput({ placeholder: $r('app.string.Please_symmetric2') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -121,7 +126,7 @@ struct Index {
             this.SymmetricMatrixSVD = value
           })
 
-        Text('SVD分解')
+        Text($r('app.string.SVD_decomposition'))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -129,7 +134,8 @@ struct Index {
           .onClick(() => {
             try {
               let time = Date.now()
-              this.SVDMatrix = new SingularValueDecomposition(new Matrix(this.strTransformationArr(this.SymmetricMatrixSVD)))
+              this.SVDMatrix =
+                new SingularValueDecomposition(new Matrix(this.strTransformationArr(this.SymmetricMatrixSVD)))
               let time1 = Date.now()
               this.mathTimeSVD = (time1 - time).toString()
             } catch (err) {
@@ -137,47 +143,53 @@ struct Index {
             }
           })
 
-        Text('SVD diagonalMatrix分解: ' + JSON.stringify(this.SVDMatrix))
+        Text(this.getResourceString($r('app.string.SVD_diagnosticMatrix_decomposition')) +
+        JSON.stringify(this.SVDMatrix))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text('SVD diagonalMatrix分解norm2: ' + JSON.stringify(this.SVDMatrix.norm2))
+        Text(this.getResourceString($r('app.string.SVD_diagnosticMatrix_decomposition_norm2')) +
+        JSON.stringify(this.SVDMatrix.norm2))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text('SVD diagonalMatrix分解threshold: ' + JSON.stringify(this.SVDMatrix.threshold))
+        Text(this.getResourceString($r('app.string.SVD_diagnosticMatrix_decomposes_threshold')) +
+        JSON.stringify(this.SVDMatrix.threshold))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text('SVD diagonalMatrix分解leftSingularVectors: ' + JSON.stringify(this.SVDMatrix.leftSingularVectors))
+        Text(this.getResourceString($r('app.string.SVD_leftSingleVectors')) +
+        JSON.stringify(this.SVDMatrix.leftSingularVectors))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text('SVD diagonalMatrix分解condition: ' + JSON.stringify(this.SVDMatrix.condition))
+        Text(this.getResourceString($r('app.string.SVD_condition')) + JSON.stringify(this.SVDMatrix.condition))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text('SVD diagonalMatrix分解rank: ' + JSON.stringify(this.SVDMatrix.rank))
+        Text(this.getResourceString($r('app.string.SVD_rank')) + JSON.stringify(this.SVDMatrix.rank))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text('SVD diagonalMatrix分解rightSingularVectors: ' + JSON.stringify(this.SVDMatrix.rightSingularVectors))
+        Text(this.getResourceString($r('app.string.SVD_rightSingularVectors')) +
+        JSON.stringify(this.SVDMatrix.rightSingularVectors))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text('SVD diagonalMatrix分解diagonal: ' + JSON.stringify(this.SVDMatrix.diagonal))
+        Text(this.getResourceString($r('app.string.SVD_diagnostically')) + JSON.stringify(this.SVDMatrix.diagonal))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text('SVD diagonalMatrix分解diagonalMatrix: ' + JSON.stringify(this.SVDMatrix.diagonalMatrix))
+        Text(this.getResourceString($r('app.string.SVD_diagnosticMatrix')) +
+        JSON.stringify(this.SVDMatrix.diagonalMatrix))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeSVD)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimeSVD)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入对称矩阵 如： 10,1,10;1,10,1;10,1,10' })
+        TextInput({ placeholder: $r('app.string.Please_symmetric2') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -185,7 +197,7 @@ struct Index {
             this.SymmetricMatrix = value
           })
 
-        Text('特征分解')
+        Text($r('app.string.Feature_decomposition'))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -193,7 +205,8 @@ struct Index {
           .onClick(() => {
             try {
               let time = Date.now()
-              let l: EigenvalueDecomposition = new EigenvalueDecomposition(new Matrix(this.strTransformationArr(this.SymmetricMatrix)))
+              let l: EigenvalueDecomposition =
+                new EigenvalueDecomposition(new Matrix(this.strTransformationArr(this.SymmetricMatrix)))
               this.eigenvalueMatrix = l.diagonalMatrix;
               this.eigenvalueMatrix1 = l.eigenvectorMatrix;
               this.eigenvalueMatrix2 = l.realEigenvalues;
@@ -216,11 +229,11 @@ struct Index {
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeEigenvalue)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimeEigenvalue)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入nRows' })
+        TextInput({ placeholder: $r('app.string.Please_nRows') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -228,7 +241,7 @@ struct Index {
             this.nRows = Number(value)
           })
 
-        TextInput({ placeholder: '请输入nColumns' })
+        TextInput({ placeholder: $r('app.string.Please_nColumns') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -237,7 +250,7 @@ struct Index {
           })
 
 
-        Text('生成矩阵')
+        Text($r('app.string.Generate_matrix'))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -251,11 +264,11 @@ struct Index {
           })
 
 
-        Text('生成矩阵: ' + JSON.stringify(this.MyMatrix))
+        Text(this.getResourceString($r('app.string.Generate_matrix')) + JSON.stringify(this.MyMatrix))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入 格式： 1,3,2,5,6;1,2,4,5,5;2,6,9,8,7' })
+        TextInput({ placeholder: $r('app.string.Please_format') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -263,7 +276,7 @@ struct Index {
             this.MatrixA = value
           })
 
-        Text('生成矩阵A')
+        Text($r('app.string.Generate_matrix_A'))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -276,11 +289,11 @@ struct Index {
             }
           })
 
-        Text('生成矩阵A: ' + JSON.stringify(this.MyMatrixA))
+        Text(this.getResourceString($r('app.string.Generate_matrix_A')) + JSON.stringify(this.MyMatrixA))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入 格式： 2,3,2,5,5;3,2,4,5,5;9,8,6,5,8' })
+        TextInput({ placeholder: $r('app.string.Please_format2') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -288,7 +301,7 @@ struct Index {
             this.MatrixB = value
           })
 
-        Text('生成矩阵B')
+        Text($r('app.string.Generate_matrix_b'))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -301,11 +314,11 @@ struct Index {
             }
           })
 
-        Text('生成矩阵B: ' + JSON.stringify(this.MyMatrixB))
+        Text(this.getResourceString($r('app.string.Generate_matrix_b')) + JSON.stringify(this.MyMatrixB))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text('矩阵A+B')
+        Text($r('app.string.Matrix_A_B'))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -318,11 +331,11 @@ struct Index {
             }
           })
 
-        Text('矩阵A+B: ' + JSON.stringify(this.addAB))
+        Text(this.getResourceString($r('app.string.Matrix_A_B')) + JSON.stringify(this.addAB))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text('矩阵A-B')
+        Text($r('app.string.Matrix_A_B2'))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -335,11 +348,11 @@ struct Index {
             }
           })
 
-        Text('矩阵A-B: ' + JSON.stringify(this.subAB))
+        Text(this.getResourceString($r('app.string.Matrix_A_B2')) + JSON.stringify(this.subAB))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text('矩阵A*B')
+        Text($r('app.string.Matrix_A_B3'))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -352,11 +365,11 @@ struct Index {
             }
           })
 
-        Text('矩阵A*B: ' + JSON.stringify(this.mulAB))
+        Text(this.getResourceString($r('app.string.Matrix_A_B3')) + JSON.stringify(this.mulAB))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text('矩阵A div B')
+        Text($r('app.string.Matrix_A_B4'))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -369,11 +382,11 @@ struct Index {
             }
           })
 
-        Text('矩阵A div B: ' + JSON.stringify(this.divAB))
+        Text(this.getResourceString($r('app.string.Matrix_A_B4')) + JSON.stringify(this.divAB))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text('矩阵A mod B')
+        Text($r('app.string.Matrix_A_B5'))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -386,11 +399,11 @@ struct Index {
             }
           })
 
-        Text('矩阵A mod B: ' + JSON.stringify(this.modAB))
+        Text(this.getResourceString($r('app.string.Matrix_A_B5')) + JSON.stringify(this.modAB))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text('矩阵A max B')
+        Text($r('app.string.Matrix_A_B6'))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -403,11 +416,11 @@ struct Index {
             }
           })
 
-        Text('矩阵A max B: ' + JSON.stringify(this.maxAB))
+        Text(this.getResourceString($r('app.string.Matrix_A_B6')) + JSON.stringify(this.maxAB))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text('矩阵A min B')
+        Text($r('app.string.Matrix_A_B7'))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -420,11 +433,11 @@ struct Index {
             }
           })
 
-        Text('矩阵A min B: ' + JSON.stringify(this.minAB))
+        Text(this.getResourceString($r('app.string.Matrix_A_B7')) + JSON.stringify(this.minAB))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text('矩阵A exp')
+        Text($r('app.string.Matrix_exp'))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -437,11 +450,11 @@ struct Index {
             }
           })
 
-        Text('矩阵A exp: ' + JSON.stringify(this.expAB))
+        Text(this.getResourceString($r('app.string.Matrix_exp')) + JSON.stringify(this.expAB))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text('矩阵A cos')
+        Text($r('app.string.Matrix_cos'))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -454,11 +467,11 @@ struct Index {
             }
           })
 
-        Text('矩阵A cos: ' + JSON.stringify(this.cosAB))
+        Text(this.getResourceString($r('app.string.Matrix_cos')) + JSON.stringify(this.cosAB))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入数字' })
+        TextInput({ placeholder: $r('app.string.please_enter_a_number') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -466,7 +479,7 @@ struct Index {
             this.rowIndex = Number(value)
           })
 
-        TextInput({ placeholder: '请输入数字' })
+        TextInput({ placeholder: $r('app.string.please_enter_a_number') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -474,7 +487,7 @@ struct Index {
             this.columnIndex = Number(value)
           })
 
-        TextInput({ placeholder: '请输入数字' })
+        TextInput({ placeholder: $r('app.string.please_enter_a_number') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -482,7 +495,7 @@ struct Index {
             this.setValue = Number(value)
           })
 
-        Text('矩阵A set')
+        Text($r('app.string.Matrix_set'))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -495,11 +508,11 @@ struct Index {
             }
           })
 
-        Text('矩阵A set: ' + JSON.stringify(this.setAB))
+        Text(this.getResourceString($r('app.string.Matrix_set')) + JSON.stringify(this.setAB))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text('矩阵A 对角线')
+        Text($r('app.string.Diagonal_matrix_A'))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -512,11 +525,11 @@ struct Index {
             }
           })
 
-        Text('矩阵A diag: ' + JSON.stringify(this.diagAB))
+        Text(this.getResourceString($r('app.string.Matrix_diag')) +JSON.stringify(this.diagAB))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text('矩阵A 转置')
+        Text($r('app.string.Transpose_matrix'))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -529,11 +542,11 @@ struct Index {
             }
           })
 
-        Text('矩阵A transpose: ' + JSON.stringify(this.transposeMatrix))
+        Text(this.getResourceString($r('app.string.Matrix_transpose')) + JSON.stringify(this.transposeMatrix))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入nRows' })
+        TextInput({ placeholder: $r('app.string.Please_nRows') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -541,7 +554,7 @@ struct Index {
             this.randnRows = Number(value)
           })
 
-        TextInput({ placeholder: '请输入nColumns' })
+        TextInput({ placeholder: $r('app.string.Please_nColumns') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -549,7 +562,7 @@ struct Index {
             this.randnColumns = Number(value)
           })
 
-        Text('创建随机矩阵')
+        Text($r('app.string.Create_matrix'))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -562,11 +575,11 @@ struct Index {
             }
           })
 
-        Text('随机矩阵: ' + JSON.stringify(this.randMatrix))
+        Text(this.getResourceString($r('app.string.Random_matrix')) + JSON.stringify(this.randMatrix))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入对称矩阵 如： 1,0,0;0,1,0;0,0,1' })
+        TextInput({ placeholder: $r('app.string.Please_input_symmetric') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -574,7 +587,7 @@ struct Index {
             this.ludigMatrix = value
           })
 
-        Text('LU分解')
+        Text($r('app.string.LU_decomposition'))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -605,11 +618,11 @@ struct Index {
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeLu)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimeLu)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入对称矩阵 如： 1,0,0;0,1,0;0,0,1' })
+        TextInput({ placeholder: $r('app.string.Please_input_symmetric') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -617,7 +630,7 @@ struct Index {
             this.inverseMatrix = value
           })
 
-        Text('inverse 矩阵 ')
+        Text($r('app.string.Inverse_matrix'))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -630,11 +643,11 @@ struct Index {
             }
           })
 
-        Text(' inverse 矩阵: ' + JSON.stringify(this.inMatrix))
+        Text(this.getResourceString($r('app.string.Inverse_matrix')) + JSON.stringify(this.inMatrix))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text('跳转到首页')
+        Text($r('app.string.Jump_to_homepage'))
           .fontSize(20)
           .padding(8)
           .margin({ top: 52 })

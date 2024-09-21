@@ -82,14 +82,18 @@ struct Index {
   mathceil: string = ''
   mathodd: string = ''
 
+  getResourceString(res: Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
+
   build() {
     Scroll(this.scroller) {
       Column() {
-        Text(this.message)
+        Text($r('app.string.jafama_test'))
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入数值' })
+        TextInput({ placeholder: $r('app.string.Please_enter_value') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -97,7 +101,7 @@ struct Index {
             this.mathPow1 = value
           })
 
-        TextInput({ placeholder: '请输入数值' })
+        TextInput({ placeholder: $r('app.string.Please_enter_value') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -105,7 +109,7 @@ struct Index {
             this.mathPow2 = value
           })
 
-        Text('pow test')
+        Text($r('app.string.pow_test'))
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
@@ -119,15 +123,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathPow)
+        Text(this.getResourceString($r('app.string.Result')) + this.mathPow)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimePow)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimePow)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入数值' })
+        TextInput({ placeholder: $r('app.string.Please_enter_value') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -135,7 +139,7 @@ struct Index {
             this.mathLog101 = value
           })
 
-        Text('log10 test')
+        Text($r('app.string.log10_test'))
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
@@ -149,15 +153,16 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathLog10)
+        Text(this.getResourceString($r('app.string.Result')) + this.mathLog10)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeLog10)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimeLog10)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入数值' })
+        TextInput({
+          placeholder: $r('app.string.Please_enter_value')})
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -166,7 +171,7 @@ struct Index {
           })
 
 
-        Text('log1p test')
+        Text($r('app.string.log1p_test'))
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
@@ -184,11 +189,11 @@ struct Index {
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeLog1p)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimeLog1p)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入数值' })
+        TextInput({ placeholder: $r('app.string.Please_enter_value') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -196,7 +201,7 @@ struct Index {
             this.mathHypot1 = value
           })
 
-        TextInput({ placeholder: '请输入数值' })
+        TextInput({ placeholder: $r('app.string.Please_enter_value') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -204,7 +209,7 @@ struct Index {
             this.mathHypot2 = value
           })
 
-        Text('hypot test')
+        Text($r('app.string.hypot_test'))
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
@@ -222,11 +227,11 @@ struct Index {
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeHypot)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimeHypot)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入数值' })
+        TextInput({ placeholder: $r('app.string.Please_enter_value') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -234,7 +239,7 @@ struct Index {
             this.mathCoshm = value
           })
 
-        Text('coshm1 test')
+        Text($r('app.string.coshm1_test'))
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
@@ -252,11 +257,11 @@ struct Index {
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeCoshm1)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimeCoshm1)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入数值' })
+        TextInput({ placeholder: $r('app.string.Please_enter_value') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -264,7 +269,7 @@ struct Index {
             this.mathCeil1 = value
           })
 
-        Text('ceil test')
+        Text($r('app.string.ceil_test'))
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
@@ -282,11 +287,11 @@ struct Index {
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeCeil)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimeCeil)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入数值' })
+        TextInput({ placeholder: $r('app.string.Please_enter_value') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -294,7 +299,7 @@ struct Index {
             this.mathCbrt1 = value
           })
 
-        Text('cbrt test')
+        Text($r('app.string.cbrt_test'))
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
@@ -312,11 +317,11 @@ struct Index {
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeCbrt)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimeCbrt)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入数值' })
+        TextInput({ placeholder: $r('app.string.Please_enter_value') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -324,7 +329,7 @@ struct Index {
             this.mathAtanh1 = value
           })
 
-        Text('atanh test')
+        Text($r('app.string.atanh_test'))
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
@@ -342,11 +347,11 @@ struct Index {
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeAtanh)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimeAtanh)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入数值' })
+        TextInput({ placeholder: $r('app.string.Please_enter_value') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -354,7 +359,7 @@ struct Index {
             this.mathACosh1p1 = value
           })
 
-        Text('acosh1p test')
+        Text($r('app.string.acosh1p_test'))
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
@@ -372,11 +377,11 @@ struct Index {
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeACosh1p)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimeACosh1p)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入数值' })
+        TextInput({ placeholder: $r('app.string.Please_enter_value') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -384,7 +389,7 @@ struct Index {
             this.mathAbsNeg1 = value
           })
 
-        Text('absNeg test')
+        Text($r('app.string.absNeg_test'))
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
@@ -398,15 +403,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathAbsNeg)
+        Text(this.getResourceString($r('app.string.Result')) + this.mathAbsNeg)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeAbsNeg)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimeAbsNeg)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入数值' })
+        TextInput({ placeholder: $r('app.string.Please_enter_value') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -414,7 +419,7 @@ struct Index {
             this.mathodd = value
           })
 
-        Text('isOdd 测试')
+        Text($r('app.string.isOdd_test'))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -434,11 +439,11 @@ struct Index {
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.oddValueTime)
+        Text(this.getResourceString($r('app.string.Time')) + this.oddValueTime)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入数值' })
+        TextInput({ placeholder: $r('app.string.Please_enter_value') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -446,7 +451,7 @@ struct Index {
             this.mathceil = value
           })
 
-        Text('isEven 测试')
+        Text($r('app.string.isEven_test'))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -466,11 +471,11 @@ struct Index {
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.isEvenValueTime)
+        Text(this.getResourceString($r('app.string.Time')) + this.isEvenValueTime)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入数值' })
+        TextInput({ placeholder: $r('app.string.Please_enter_value') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -478,7 +483,7 @@ struct Index {
             this.mathlog2 = value
           })
 
-        Text('log2测试')
+        Text($r('app.string.log2_test'))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -498,11 +503,11 @@ struct Index {
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.log2ValueTime)
+        Text(this.getResourceString($r('app.string.Time')) + this.log2ValueTime)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入大于等于 1 的任意实数' })
+        TextInput({ placeholder: $r('app.string.Please_enter3') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -510,7 +515,7 @@ struct Index {
             this.mathacosh = value
           })
 
-        Text('acosh测试')
+        Text($r('app.string.acosh_test'))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -530,11 +535,11 @@ struct Index {
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.acoshValueTime)
+        Text(this.getResourceString($r('app.string.Time')) + this.acoshValueTime)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入数值' })
+        TextInput({ placeholder: $r('app.string.Please_enter_value') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -542,7 +547,7 @@ struct Index {
             this.mathasinh = value
           })
 
-        Text('asinh测试')
+        Text($r('app.string.asinh_test'))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -562,11 +567,11 @@ struct Index {
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.asinhValueTime)
+        Text(this.getResourceString($r('app.string.Time')) + this.asinhValueTime)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入数值' })
+        TextInput({ placeholder: $r('app.string.Please_enter_value') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -574,7 +579,7 @@ struct Index {
             this.mathatan1 = value
           })
 
-        TextInput({ placeholder: '请输入数值' })
+        TextInput({ placeholder: $r('app.string.Please_enter_value') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -582,7 +587,7 @@ struct Index {
             this.mathatan2 = value
           })
 
-        Text('atan2测试')
+        Text($r('app.string.atan2_test'))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -602,11 +607,11 @@ struct Index {
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.atan2ValueTime)
+        Text(this.getResourceString($r('app.string.Time')) + this.atan2ValueTime)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入数值' })
+        TextInput({ placeholder: $r('app.string.Please_enter_value') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -614,7 +619,7 @@ struct Index {
             this.mathcosh = value
           })
 
-        Text('cosh测试')
+        Text($r('app.string.cosh_test'))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -634,11 +639,11 @@ struct Index {
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.coshValueTime)
+        Text(this.getResourceString($r('app.string.Time')) + this.coshValueTime)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入数值' })
+        TextInput({ placeholder: $r('app.string.Please_enter_value') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -646,7 +651,7 @@ struct Index {
             this.mathsinh = value
           })
 
-        Text('sinh测试')
+        Text($r('app.string.sinh_test'))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -666,11 +671,11 @@ struct Index {
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.sinhValueTime)
+        Text(this.getResourceString($r('app.string.Time')) + this.sinhValueTime)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入数值' })
+        TextInput({ placeholder: $r('app.string.Please_enter_value') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -678,7 +683,7 @@ struct Index {
             this.mathtanh = value
           })
 
-        Text('tanh测试')
+        Text($r('app.string.tanh_test'))
           .fontSize(16)
           .margin({ top: 32 })
           .padding(8)
@@ -698,11 +703,11 @@ struct Index {
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.tanhValueTime)
+        Text(this.getResourceString($r('app.string.Time')) + this.tanhValueTime)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text('跳转到首页')
+        Text($r('app.string.Jump_to_homepage'))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
@@ -726,24 +731,25 @@ struct Index {
       console.info('Scroll Stop')
     })
   }
+
   onPageHide(): void {
     console.log('lllllllllllll消失')
   }
 }
 
-function isEven( x: number ): boolean {
-  return isInteger( x/2.0 );
+function isEven(x: number): boolean {
+  return isInteger(x / 2.0);
 }
 
-function isOdd( x: number ): boolean {
+function isOdd(x: number): boolean {
   // Check sign to prevent overflow...
-  if ( x > 0.0 ) {
-    return isEven( x-1.0 );
+  if (x > 0.0) {
+    return isEven(x - 1.0);
   }
-  return isEven( x+1.0 );
+  return isEven(x + 1.0);
 }
 
-function isInteger( x: number ): boolean {
+function isInteger(x: number): boolean {
   return (floor(x) === x);
 }
 
