@@ -11,6 +11,38 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Parsing_HTML",
+      "value": "Parsing HTML"
+    },
+    {
+      "name": "ParseComplete",
+      "value": "ParseComplete"
+    },
+    {
+      "name": "Parse_fail",
+      "value": "Parse fail"
+    },
+    {
+      "name": "ParseDocument",
+      "value": "ParseDocument"
+    },
+    {
+      "name": "Parse_feed_string",
+      "value": "Parse feed string"
+    },
+    {
+      "name": "createDocumentStream",
+      "value": "createDocumentStream"
+    },
+    {
+      "name": "Decompose_HTML_documents_into_individual_tokens",
+      "value": "Decompose HTML documents into individual tokens"
+    },
+    {
+      "name": "Parse_results",
+      "value": "Parse results"
     }
   ]
 }
