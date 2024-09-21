@@ -11,6 +11,34 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "comparison_result",
+      "value": "The comparison result is:"
+    },
+    {
+      "name": "Numeric_comparison",
+      "value": "Numeric type comparison"
+    },
+    {
+      "name": "String_comparison",
+      "value": "String type comparison"
+    },
+    {
+      "name": "Boolean_comparison",
+      "value": "Boolean type comparison"
+    },
+    {
+      "name": "Array_comparison",
+      "value": "Array type comparison"
+    },
+    {
+      "name": "Object_comparison",
+      "value": "Object type comparison"
+    },
+    {
+      "name": "Comparison_a_b",
+      "value": "Comparison results between a and b"
     }
   ]
 }

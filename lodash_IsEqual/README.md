@@ -1,16 +1,16 @@
 # lodash.isequal
 
-## 简介
+## Overview
 
-lodash.isequal库用于比较2个对象是否相同
+lodash.isequal is a library used to check whether two objects are the same.
 
-## 下载安装:
+## How to Install
 
 ```bash
 ohpm install lodash.isequal@4.5.0
 ```
 
-## 使用说明
+## How to Use
 
 ```bash
 import isEqual from 'lodash.isequal';
@@ -19,34 +19,35 @@ let a = 1
     let res: boolean = isEqual(a, b)
 ```
 
-## 接口说明
+## Available APIs
 
 
-| **接口**                                                      | 功能             |
+| Name                                                     | Description            |
 | ------------------------------------------------------------ | ---------------- |
-| isEqual(a: ESObject,b:ESObject): boolean | 比较2个对象是否相等 |
+| isEqual(a: ESObject,b:ESObject): boolean | Checks whether two objects are the same. |
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：适配DevEco Studio:4.1 Canary(4.1.3.317)，OpenHarmony SDK:API version 11 (4.1.0.36).
+lodash.isequal has been verified in the following version: DevEco Studio 4.1 Canary (4.1.3.317), OpenHarmony SDK: API11 (4.1.0.36)
 
-## 目录结构
+## Directory Structure
 
 ````
 |---- lodash_isEqual  
-|     |---- entry  # 示例代码文件夹
+|     |---- entry  # Sample code
 |           |---- src  
-|                   |---- main  #sample示例代码
-|                   |---- ohosTest  #xts示例代码
-|     |---- README.md  # 安装使用方法                    
+|                   |---- main  # Sample code
+|                   |---- ohosTest  # xts code
+|     |---- README.md  # Readme
+|     |---- README_zh.md  # Readme                   
 ````
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
-给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem when using lodash.isequal, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or
+a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
 
-## 开源协议
+## License
 
-本项目基于 [MIT LICENSE](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/lodash_isEqual/LICENSE)
-，请自由地享受和参与开源。
+This project is licensed under [MIT LICENSE](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/lodash_isEqual/LICENSE).
+ 

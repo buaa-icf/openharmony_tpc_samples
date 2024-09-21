@@ -30,8 +30,10 @@ import isEqual from 'lodash.isequal';
 @Entry
 @Component
 struct Index {
-  @State message: string = '比较得结果是：'
-
+  @State message: string = this.getResourceString($r('app.string.comparison_result'))
+  getResourceString(res: Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
   build() {
     Row() {
       Scroll() {
@@ -49,7 +51,7 @@ struct Index {
               .padding(10)
               .backgroundColor(Color.Red)
               .fontColor(Color.White)
-            Text('数字类型比较')
+            Text($r('app.string.Numeric_comparison'))
               .fontSize(20)
               .fontWeight(FontWeight.Bold)
               .width('100%')
@@ -62,7 +64,7 @@ struct Index {
               .onClick(() => {
                 this.numberDataTypeisEqual()
               })
-            Text('字符串类型比较')
+            Text($r('app.string.String_comparison'))
               .fontSize(20)
               .fontWeight(FontWeight.Bold)
               .width('100%')
@@ -75,7 +77,7 @@ struct Index {
               .onClick(() => {
                 this.stringDataTypeisEqual()
               })
-            Text('布尔类型比较')
+            Text($r('app.string.Boolean_comparison'))
               .fontSize(20)
               .fontWeight(FontWeight.Bold)
               .width('100%')
@@ -88,7 +90,7 @@ struct Index {
               .onClick(() => {
                 this.boolDataTypeisEqual()
               })
-            Text('数组类型比较')
+            Text($r('app.string.Array_comparison'))
               .fontSize(20)
               .fontWeight(FontWeight.Bold)
               .width('100%')
@@ -101,7 +103,7 @@ struct Index {
               .onClick(() => {
                 this.arrayDataTypeisEqual()
               })
-            Text('对象类型比较')
+            Text($r('app.string.Object_comparison'))
               .fontSize(20)
               .fontWeight(FontWeight.Bold)
               .width('100%')
@@ -129,25 +131,25 @@ struct Index {
     let b = 1
     let res: boolean = isEqual(a, b)
     this.message = 'a = ' + a + ' b= ' + b
-      + '\r\na和b比较结果\r\n' + res + '\r\n'
+      + '\r\n'+this.getResourceString($r('app.string.Comparison_a_b'))+'\r\n' + res + '\r\n'
 
     a = 1
     b = 2
     res = isEqual(a, b)
     this.message = 'a = ' + a + ' b= ' + b
-      + '\r\na和b比较结果\r\n' + res + '\r\n'
+      + '\r\n'+this.getResourceString($r('app.string.Comparison_a_b'))+'\r\n' + res + '\r\n'
 
     a = 1.1
     b = 2.1
     res = isEqual(a, b)
     this.message = 'a = ' + a + ' b= ' + b
-      + '\r\na和b比较结果\r\n' + res + '\r\n'
+      + '\r\n'+this.getResourceString($r('app.string.Comparison_a_b'))+'\r\n' + res + '\r\n'
 
     a = 1.1
     b = 1.1
     res = isEqual(a, b)
     this.message = 'a = ' + a + ' b= ' + b
-      + '\r\na和b比较结果\r\n' + res + '\r\n'
+      + '\r\n'+this.getResourceString($r('app.string.Comparison_a_b'))+'\r\n' + res + '\r\n'
 
   }
 
@@ -156,13 +158,13 @@ struct Index {
     let b = "'abc'"
     let res: boolean = isEqual(a, b)
     this.message = 'a = ' + a + ' b= ' + b
-      + '\r\na和b比较结果\r\n' + res + '\r\n'
+      + '\r\n'+this.getResourceString($r('app.string.Comparison_a_b'))+'\r\n' + res + '\r\n'
 
     a = "'abcd'"
     b = "'abc'"
     res = isEqual(a, b)
     this.message = 'a = ' + a + ' b= ' + b
-      + '\r\na和b比较结果\r\n' + res + '\r\n'
+      + '\r\n'+this.getResourceString($r('app.string.Comparison_a_b'))+'\r\n' + res + '\r\n'
   }
 
   boolDataTypeisEqual() {
@@ -170,12 +172,12 @@ struct Index {
     let b = false
     let res: boolean = isEqual(a, b)
     this.message = 'a = ' + a + ' b= ' + b
-      + '\r\na和b比较结果\r\n' + res + '\r\n'
+      + '\r\n'+this.getResourceString($r('app.string.Comparison_a_b'))+'\r\n' + res + '\r\n'
     a = false
     b = true
     res = isEqual(a, b)
     this.message = 'a = ' + a + ' b= ' + b
-      + '\r\na和b比较结果\r\n' + res + '\r\n'
+      + '\r\n'+this.getResourceString($r('app.string.Comparison_a_b'))+'\r\n' + res + '\r\n'
   }
 
   arrayDataTypeisEqual() {
@@ -183,13 +185,13 @@ struct Index {
     let b = [1, 2]
     let res: boolean = isEqual(a, b)
     this.message = 'a = [' + a + '] b= [' + b + ']'
-      + '\r\na和b比较结果\r\n' + res + '\r\n'
+      + '\r\n'+this.getResourceString($r('app.string.Comparison_a_b'))+'\r\n' + res + '\r\n'
 
     a = [1, 2]
     b = [1, 3]
     res = isEqual(a, b)
     this.message = 'a = [' + a + '] b= [' + b + ']'
-      + '\r\na和b比较结果\r\n' + res + '\r\n'
+      + '\r\n'+this.getResourceString($r('app.string.Comparison_a_b'))+'\r\n' + res + '\r\n'
   }
 
   objectDataTypeisEqual() {
@@ -208,12 +210,12 @@ struct Index {
     let res: boolean = isEqual(a, b)
     this.message = this.message + '\r\n'
       + 'a = [' + a + '] b= [' + b + ']'
-      + '\r\na和b比较结果\r\n' + res + '\r\n'
+      + '\r\n'+this.getResourceString($r('app.string.Comparison_a_b'))+'\r\n' + res + '\r\n'
 
     a = new Temp(1, 'xiaoming')
     b = new Temp(1, 'xiaoming')
     res = isEqual(a, b)
     this.message = 'a = [' + a + '] b= [' + b + ']'
-      + '\r\na和b比较结果\r\n' + res + '\r\n'
+      + '\r\n'+this.getResourceString($r('app.string.Comparison_a_b'))+'\r\n' + res + '\r\n'
   }
 }
