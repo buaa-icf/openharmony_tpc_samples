@@ -16,7 +16,7 @@ import percentageRegex from 'percentage-regex';
 import prompt from '@ohos.promptAction';
 
 interface dataType {
-  str: string,
+  str: string | Resource,
   str1: string,
   mode: number
 }
@@ -33,8 +33,8 @@ let exactData2: exactType = { exact: false }
 struct Index {
   @State strArray: Array<string> | null = []
   @State data: Array<dataType> = [
-    { str: "检查字符串是否是百分数", str1: "80%", mode: 1 },
-    { str: "匹配字符串中的百分数", str1: "weafdz 80% dawedafa", mode: 2 }
+    { str: $r("app.string.data_check"), str1: "80%", mode: 1 },
+    { str: $r("app.string.data_regex"), str1: "weafdz 80% dawedafa", mode: 2 }
   ]
 
   build() {
@@ -52,7 +52,7 @@ struct Index {
                 .onChange((value: string) => {
                   item.str1 = value
                 })
-              Button('验证', { type: ButtonType.Normal })
+              Button($r("app.string.button_verify"), { type: ButtonType.Normal })
                 .fontSize(18)
                 .fontColor('#000')
                 .height(60)
