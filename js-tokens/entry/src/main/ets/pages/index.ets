@@ -45,7 +45,7 @@ struct Index {
     Stack({ alignContent: Alignment.TopStart }) {
       Scroll(this.scroller) {
         Column() {
-          Text("该库核心功能：分词器，就是按字符类型将词分开，---------------------------------（重点：按类型分词，看Readme类型规则），包括各种特殊字符！分完词后给出类型和值，Key-Value形式存在")
+          Text($r('app.string.Text_String1'))
             .width('90%')
             .height(100)
             .borderRadius(15)
@@ -53,14 +53,14 @@ struct Index {
             .textAlign(TextAlign.Center)
             .margin({ top: 10 })
 
-          Text("测试结果:" + this.resultStr)
+          Text("Result:" + this.resultStr)
             .width('90%')
             .borderRadius(15)
             .fontSize(13)
             .textAlign(TextAlign.Start)
             .margin({ top: 10, bottom: 10 })
 
-          TextArea({ placeholder: "输入任意类型字符", controller: this.controller })
+          TextArea({ placeholder: $r('app.string.Input_string'), controller: this.controller })
             .height(50)
             .width('100%')
             .visibility(Visibility.None)
@@ -166,7 +166,7 @@ struct Index {
               this.exclResult("@")
             })
 
-          Text("type 字符表情分词含表情符")
+          Text($r('app.string.Text_String2'))
             .width('90%')
             .height(50)
             .backgroundColor(0xEEEEEE)
