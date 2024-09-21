@@ -24,7 +24,9 @@ struct CascadingRules {
   @State appValue: string = "";
   @State typeValue: string = "other";
   @State resultStr: string = "";
-  controller: TextAreaController = new TextAreaController()
+  controller: TextAreaController = new TextAreaController();
+  testResult: string = getContext(this).resourceManager.getStringByNameSync('text_test_result').toString();
+
 
   ruleEngineExecute(): void {
     let ruleEngine: ESObject = new RuleEngine();
@@ -86,7 +88,7 @@ struct CascadingRules {
 
   build() {
     Column() {
-      Text("目前application名称限制是：mob,如果输入mob,会显示: It was from a mobile device too, Card类型是：debit")
+      Text($r("app.string.text_cascading_tips"))
         .width("90%")
         .height(50)
         .borderRadius(15)
@@ -94,16 +96,15 @@ struct CascadingRules {
         .textAlign(TextAlign.Center)
         .margin({ top: 10 })
 
-      TextArea({ placeholder: "application名称: ", controller: this.controller })
+      TextArea({ placeholder: "Application name", controller: this.controller })
         .height(50)
         .width("100%")
         .margin({ top: 5, bottom: 5, left: 5, right: 5 })
         .onChange((value: string) => {
           this.appValue = value;
-
         })
 
-      TextArea({ placeholder: "card类型", controller: this.controller })
+      TextArea({ placeholder: "card type", controller: this.controller })
         .height(50)
         .width("100%")
         .margin({ top: 5, bottom: 5, left: 5, right: 5 })
@@ -112,11 +113,11 @@ struct CascadingRules {
 
         })
 
-      Button("点击查看是否满足规则").onClick(() => {
+      Button($r("app.string.button_see_rules")).onClick(() => {
         this.ruleEngineExecute();
       })
 
-      Text("测试结果：当前页面规则不是组合验证，结果只对Card类型有影响" + this.resultStr)
+      Text(this.testResult + this.resultStr)
         .width("90%")
         .height(150)
         .fontSize(13)

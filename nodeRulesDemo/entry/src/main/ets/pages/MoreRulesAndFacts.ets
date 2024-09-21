@@ -23,6 +23,7 @@ struct MoreRulesAndFacts {
   @State resultStr: string = "";
   controller: TextAreaController = new TextAreaController();
   @State arrayStr: Array<string> = [];
+  testResult: string = getContext(this).resourceManager.getStringByNameSync('text_result').toString();
 
   ruleEngineExecute(): void {
     let ruleEngine: ESObject = new RuleEngine();
@@ -426,7 +427,7 @@ struct MoreRulesAndFacts {
 
   build() {
     Column() {
-      Text("测试多种规则混合")
+      Text($r("app.string.text_mixed_rules"))
         .width("90%")
         .height(50)
         .borderRadius(15)
@@ -434,14 +435,14 @@ struct MoreRulesAndFacts {
         .textAlign(TextAlign.Center)
         .margin({ top: 10 })
 
-      Button("点击运行")
+      Button($r("app.string.text_run"))
         .onClick(() => {
           this.arrayStr = [];
           this.ruleEngineExecute();
         })
 
       ForEach(this.arrayStr, (item: string, index: number) => {
-        Text("测试结果：" + item)
+        Text(this.testResult + item)
           .width("90%")
           .height(30)
           .borderRadius(15)

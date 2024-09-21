@@ -24,13 +24,14 @@ struct RecurssionWithRules {
   @State resultStr: string = "";
   @State arrayStr: Array<string> = [];
   controller: TextAreaController = new TextAreaController();
+  testResult: string = getContext(this).resourceManager.getStringByNameSync('text_result').toString();
 
   ruleEngineExecute(): void {
     let value: number = Number(this.setValue)
 
     if (this.setValue === '' || Number.isNaN(value) || value >= 10 || value < 0) {
       Prompt.showToast({
-        message: '请输入10以内的整数值'
+        message: 'Enter a value within 10'
       })
       return
     }
@@ -72,7 +73,7 @@ struct RecurssionWithRules {
   build() {
     Column() {
 
-      Text("测试10以内执行次数循环，测试restart接口等")
+      Text($r("app.string.text_recurssion_tips"))
         .width("90%")
         .height(50)
         .borderRadius(15)
@@ -80,7 +81,7 @@ struct RecurssionWithRules {
         .textAlign(TextAlign.Center)
         .margin({ top: 10 });
 
-      TextArea({ placeholder: "10以内数值：", controller: this.controller })
+      TextArea({ placeholder: "Enter a value within 10 ", controller: this.controller })
         .height(50)
         .width("100%")
         .margin({ top: 5, bottom: 5, left: 5, right: 5 })
@@ -89,12 +90,12 @@ struct RecurssionWithRules {
           this.arrayStr = [];
         })
 
-      Button("点击查看是否满足规则").onClick(() => {
+      Button($r("app.string.button_see_rules")).onClick(() => {
         this.ruleEngineExecute();
       })
 
       ForEach(this.arrayStr, (item: string, index: number) => {
-        Text("测试结果：" + item)
+        Text(this.testResult + item)
           .width("90%")
           .height(30)
           .borderRadius(15)

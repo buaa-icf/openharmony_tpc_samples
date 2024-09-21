@@ -23,11 +23,12 @@ struct PrioritizedRules {
   @State typeValue: string = "other";
   @State resultStr: string = "";
   controller: TextAreaController = new TextAreaController();
+  testResult: string = getContext(this).resourceManager.getStringByNameSync('text_result').toString();
 
   ruleEngineExecute(): void {
     if (this.setValue === '' || Number.isNaN(Number(this.setValue))) {
       Prompt.showToast({
-        message: '请输入整数值'
+        message: 'Please enter an integer value'
       })
       return
     }
@@ -93,7 +94,7 @@ struct PrioritizedRules {
 
   build() {
     Column() {
-      Text("本页测试priority,将rules用于事实的顺序，Card类型是：debit,card测试设置了priority是10，优先级高，会优先验证事实")
+      Text($r("app.string.text_priority_tips"))
         .width("90%")
         .height(50)
         .borderRadius(15)
@@ -101,7 +102,7 @@ struct PrioritizedRules {
         .textAlign(TextAlign.Center)
         .margin({ top: 10 })
 
-      TextArea({ placeholder: "任意数值：", controller: this.controller })
+      TextArea({ placeholder: "Any value: ", controller: this.controller })
         .height(50)
         .width("100%")
         .margin({ top: 5, bottom: 5, left: 5, right: 5 })
@@ -109,7 +110,7 @@ struct PrioritizedRules {
           this.setValue = value;
         })
 
-      TextArea({ placeholder: "card类型：", controller: this.controller })
+      TextArea({ placeholder: "Card type: ", controller: this.controller })
         .height(50)
         .width("100%")
         .margin({ top: 5, bottom: 5, left: 5, right: 5 })
@@ -117,10 +118,10 @@ struct PrioritizedRules {
           this.typeValue = value;
         })
 
-      Button("点击查看是否满足规则").onClick(() => {
+      Button($r("app.string.button_see_rules")).onClick(() => {
         this.ruleEngineExecute();
       })
-      Text("测试结果：" + this.resultStr)
+      Text(this.testResult + this.resultStr)
         .width("90%")
         .height(50)
         .borderRadius(15)

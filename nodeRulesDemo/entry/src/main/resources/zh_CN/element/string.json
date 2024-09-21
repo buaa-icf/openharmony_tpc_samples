@@ -10,7 +10,47 @@
     },
     {
       "name": "EntryAbility_label",
-      "value": "label"
+      "value": "node-rules"
+    },
+    {
+      "name": "text_cascading_tips",
+      "value": "目前application名称限制是：mob，如果输入 mob 会显示: It was from a mobile device too, Card类型是：debit"
+    },
+    {
+      "name": "text_multiple_tips",
+      "value": "目前transactionTotal 规则阻止值是小于：500，Card类型是：debit"
+    },
+    {
+      "name": "text_priority_tips",
+      "value": "本页测试priority,将rules用于事实的顺序，Card类型是：debit,card测试设置了priority是10，优先级高，会优先验证事实"
+    },
+    {
+      "name": "text_recurssion_tips",
+      "value": "测试10以内执行次数循环，测试restart接口等"
+    },
+    {
+      "name": "text_simple_tips",
+      "value": "目前transactionTotal规则阻止值是小于：500"
+    },
+    {
+      "name": "button_see_rules",
+      "value": "点击查看是否满足规则"
+    },
+    {
+      "name": "text_test_result",
+      "value": "测试结果：当前页面规则不是组合验证，结果只对Card类型有影响。"
+    },
+    {
+      "name": "text_mixed_rules",
+      "value": "测试多种规则混合"
+    },
+    {
+      "name": "text_run",
+      "value": "点击运行"
+    },
+    {
+      "name": "text_result",
+      "value": "测试结果："
     }
   ]
 }

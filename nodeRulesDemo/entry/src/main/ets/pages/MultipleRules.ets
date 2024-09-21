@@ -24,11 +24,12 @@ struct MultipleRules {
   @State typeValue: string = "other";
   @State resultStr: string = "";
   controller: TextAreaController = new TextAreaController();
+  testResult: string = getContext(this).resourceManager.getStringByNameSync('text_result').toString();
 
   ruleEngineExecute(): void {
     if (this.setValue === '' || Number.isNaN(Number(this.setValue))) {
       Prompt.showToast({
-        message: '请输入整数值'
+        message: 'Enter an integer value'
       })
       return
     }
@@ -91,7 +92,7 @@ struct MultipleRules {
 
   build() {
     Column() {
-      Text("目前transactionTotal 规则阻止值是小于：500，Card类型是：debit")
+      Text($r("app.string.text_multiple_tips"))
         .width("90%")
         .height(50)
         .borderRadius(15)
@@ -99,14 +100,14 @@ struct MultipleRules {
         .textAlign(TextAlign.Center)
         .margin({ top: 10 })
 
-      TextArea({ placeholder: "任意数值：", controller: this.controller })
+      TextArea({ placeholder: "Any value: ", controller: this.controller })
         .height(50)
         .width("100%")
         .margin({ top: 5, bottom: 5, left: 5, right: 5 })
         .onChange((value: string) => {
           this.setValue = value;
         })
-      TextArea({ placeholder: "card：类型", controller: this.controller })
+      TextArea({ placeholder: "Card: type", controller: this.controller })
         .height(50)
         .width("100%")
         .margin({ top: 5, bottom: 5, left: 5, right: 5 })
@@ -114,11 +115,11 @@ struct MultipleRules {
           this.typeValue = value;
         })
 
-      Button("点击查看是否满足规则").onClick(() => {
+      Button($r("app.string.button_see_rules")).onClick(() => {
         this.ruleEngineExecute()
       })
 
-      Text("测试结果：" + this.resultStr)
+      Text(this.testResult + this.resultStr)
         .width("90%")
         .height(50)
         .borderRadius(15)
