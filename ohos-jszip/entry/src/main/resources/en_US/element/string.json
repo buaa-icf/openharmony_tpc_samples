@@ -11,6 +11,162 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Delete",
+      "value": "delete"
+    },
+    {
+      "name": "Delete_sucess",
+      "value": "delete successfully"
+    },
+    {
+      "name": "No_Permission",
+      "value": "No permission to process files at the moment\n"
+    },
+    {
+      "name": "Extract_suce",
+      "value": "Successfully decompressed and decrypted the file\n"
+    },
+    {
+      "name": "Extract_fail",
+      "value": "Failed to decompress encrypted file! Reason for error:"
+    },
+    {
+      "name": "No_Find",
+      "value": "This compressed file was not found"
+    },
+    {
+      "name": "Create_fail",
+      "value": "Creation failed, please enter the correct folder name!"
+    },
+    {
+      "name": "Create_suce",
+      "value": "Folder created successfully"
+    },
+    {
+      "name": "No_Null",
+      "value": "The file name cannot be empty"
+    },
+    {
+      "name": "Create_zip_fail",
+      "value": "Failed to generate compressed file"
+    },
+    {
+      "name": "New_Folder",
+      "value": "+New Folder"
+    },
+    {
+      "name": "New_File",
+      "value": "+New File"
+    },
+    {
+      "name": "Load_zip",
+      "value": "Load compressed file"
+    },
+    {
+      "name": "Create_zip",
+      "value": "Generate compressed files"
+    },
+    {
+      "name": "Ergodic_all",
+      "value": "Traverse (directories and files)"
+    },
+    {
+      "name": "Filter_file",
+      "value": "Filtering (filtering files)"
+    },
+    {
+      "name": "Set_Password",
+      "value": "Set password:"
+    },
+    {
+      "name": "Input_Password",
+      "value": "Please input a password..."
+    },
+    {
+      "name": "Extract_Demo",
+      "value": "Extract the encrypted compressed file from this demo"
+    },
+    {
+      "name": "No_file_used",
+      "value": "There are currently no available files. Please encrypt and compress the files first"
+    },
+    {
+      "name": "Input_zip_Password",
+      "value": "Please enter the decompression password first"
+    },
+    {
+      "name": "Input_Path",
+      "value": "Fill in the encrypted file path in the application sandbox"
+    },
+    {
+      "name": "Extract_zip",
+      "value": "Extract encrypted compressed files from the application sandbox"
+    },
+    {
+      "name": "No_zip_use",
+      "value": "There are currently no available files. Please put encrypted compressed files into the application sandbox first"
+    },
+    {
+      "name": "Input_Filename",
+      "value": "Fill in the encrypted compressed file name of rawfile"
+    },
+    {
+      "name": "Extract_raw",
+      "value": "Extract encrypted compressed files from rawfile"
+    },
+    {
+      "name": "No_raw_use",
+      "value": "There are currently no available files. Please put the encrypted compressed file into the rawfile folder of the project first"
+    },
+    {
+      "name": "Choose_Folder",
+      "value": "Currently selected folder:"
+    },
+    {
+      "name": "Root_path",
+      "value": "root directory"
+    },
+    {
+      "name": "Choose_Root_Path",
+      "value": "Select root directory"
+    },
+    {
+      "name": "Create_Folder",
+      "value": "create folder"
+    },
+    {
+      "name": "Create_File",
+      "value": "create file"
+    },
+    {
+      "name": "Load_zip_file",
+      "value": "Load compressed file"
+    },
+    {
+      "name": "Input_Foldername",
+      "value": "Please enter the folder name"
+    },
+    {
+      "name": "Input_file_name",
+      "value": "Please enter the file name"
+    },
+    {
+      "name": "Input_file_content",
+      "value": "Please enter the file content"
+    },
+    {
+      "name": "Input_zipname",
+      "value": "Please enter the ZIP file name"
+    },
+    {
+      "name": "sure",
+      "value": "sure"
+    },
+    {
+      "name": "cancel",
+      "value": "cancel"
     }
   ]
 }

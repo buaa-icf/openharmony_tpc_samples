@@ -70,14 +70,14 @@ struct Index {
           .onClick(() => {
             this.currentFolder = item.name;
           })
-        Button("删除").onClick(() => {
+        Button($r('app.string.Delete')).onClick(() => {
           this.removeDirOrFile(item.name);
         })
       }
     } else {
       Flex({ justifyContent: FlexAlign.SpaceAround }) {
         Text(item.name).fontSize(20).padding(4).width("100%").fontColor(Color.Grey)
-        Button("删除").onClick(() => {
+        Button($r('app.string.Delete')).onClick(() => {
           this.removeDirOrFile(item.name);
         })
       }
@@ -97,7 +97,7 @@ struct Index {
   removeDirOrFile(path: string) {
     this.instance.remove(path);
     this.refresh();
-    promptAction.showToast({ message: `删除成功` });
+    promptAction.showToast({ message: getContext().resourceManager.getStringByNameSync('Delete_sucess')  });
 
   }
 
@@ -124,7 +124,7 @@ struct Index {
       let isAccess: boolean = fs.accessSync(this.filePath)
       if (!isAccess) {
         promptAction.showToast({
-          message: `暂无权限处理文件 ${this.filePath}`
+          message: getContext().resourceManager.getStringByNameSync('No_Permission')  + `${this.filePath}`
         })
         return
       }
@@ -157,7 +157,7 @@ struct Index {
         password: this.password
       }).then((data: JSZip) => {
         promptAction.showToast({
-          message: `解压缩解密文件成功  ${JSON.stringify(data)}`
+          message: getContext().resourceManager.getStringByNameSync('Extract_suce')  + `${JSON.stringify(data)}`
         })
         this.refresh();
         this.closeLoading();
@@ -166,12 +166,12 @@ struct Index {
         this.closeLoading();
         this.closeDialog();
         promptAction.showToast({
-          message: `解压缩加密文件失败！ 错误原因： ${err.message}`
+          message:  getContext().resourceManager.getStringByNameSync('Extract_fail')  +  `${err.message}`
         })
       })
     } catch (err) {
       promptAction.showToast({
-        message: `解压缩加密文件出错！ 错误原因： ${err.message}`
+        message:  getContext().resourceManager.getStringByNameSync('Extract_fail')  +  `${err.message}`
       })
       this.closeLoading();
       this.closeDialog();
@@ -186,7 +186,7 @@ struct Index {
       loadAsyncFromRawFile(this.rawFileName).then((res: Uint8Array | void) => {
         if (!res) {
           promptAction.showToast({
-            message: `没有找到此压缩文件！`
+            message:  getContext().resourceManager.getStringByNameSync('No_Find') 
           })
           this.closeLoading()
           return
@@ -195,7 +195,7 @@ struct Index {
           password: this.password
         }).then((data: JSZip) => {
           promptAction.showToast({
-            message: `解压缩加密文件成功  ￥${JSON.stringify(data)}`
+            message: getContext().resourceManager.getStringByNameSync('Extract_suce')  + `${JSON.stringify(data)}`
           })
           this.refresh();
           this.closeLoading();
@@ -204,13 +204,13 @@ struct Index {
           this.closeLoading();
           this.closeDialog();
           promptAction.showToast({
-            message: `解压缩加密文件失败！ 错误原因： ${err.message}`
+            message: getContext().resourceManager.getStringByNameSync('Extract_fail')  +  `${err.message}`
           })
         })
       })
     } catch (err) {
       promptAction.showToast({
-        message: `解压缩加密文件出错！ 错误原因： ${err.message}`
+        message: getContext().resourceManager.getStringByNameSync('Extract_fail')  +  `${err.message}`
       })
       this.closeLoading();
       this.closeDialog();
@@ -221,34 +221,34 @@ struct Index {
     const type = data.create_type;
     if (type === 'DIR') {
       if (!data.folderName) {
-        promptAction.showToast({ message: `创建失败,请输入正确的文件夹名称!` });
+        promptAction.showToast({ message:  getContext().resourceManager.getStringByNameSync('Create_fail')  });
         return
       }
       const folderName = this.currentFolder + data.folderName;
       folderName && this.instance.folder(folderName);
-      promptAction.showToast({ message: `文件夹创建成功!` });
+      promptAction.showToast({ message:  getContext().resourceManager.getStringByNameSync('Create_suce')   });
       this.refresh();
       this.dialogController?.close();
     } else if (type === "FILE") {
       if (!data.fileName || !data.contentText) {
-        promptAction.showToast({ message: `创建失败,请输入正确的文件名称以及内容!` });
+        promptAction.showToast({ message: getContext().resourceManager.getStringByNameSync('Create_fail')  });
         return
       }
       const fileName = this.currentFolder + data.fileName;
       const content = data.contentText;
       fileName && content && this.instance.file(fileName, content);
-      promptAction.showToast({ message: `文件创建成功!` });
+      promptAction.showToast({ message:  getContext().resourceManager.getStringByNameSync('Create_suce')  });
       this.refresh();
       this.dialogController?.close();
     } else if (type === "ZIP") {
       const zipName = data.zipName;
       if (!zipName) {
-        promptAction.showToast({ message: `文件名称不能为空` });
+        promptAction.showToast({ message:  getContext().resourceManager.getStringByNameSync('No_Null')  });
         return;
       }
       loadAsyncFromRawFile(zipName).then(res => {
         if (!res) {
-          promptAction.showToast({ message: `没有找到此压缩文件!` });
+          promptAction.showToast({ message:  getContext().resourceManager.getStringByNameSync('No_Find')   });
 
           // this.closeLoading();
           return;
@@ -259,12 +259,12 @@ struct Index {
 
         this.instance.loadAsync(res).then(() => {
           this.refresh();
-          promptAction.showToast({ message: "解压缩文件成功!" });
+          promptAction.showToast({ message:  getContext().resourceManager.getStringByNameSync('Extract_suce')   });
           this.closeLoading();
 
 
         }).catch((err: Error) => {
-          promptAction.showToast({ message: "解压缩文件失败!  错误原因：" + err.message })
+          promptAction.showToast({ message: getContext().resourceManager.getStringByNameSync('Create_fail')   + err.message })
           log(err.message)
           this.closeLoading();
           this.closeDialog();
@@ -301,9 +301,9 @@ struct Index {
     })
       .catch((err: object) => {
         this.closeLoading();
-        promptAction.showToast({ message: `生成压缩文件失败!` });
+        promptAction.showToast({ message: getContext().resourceManager.getStringByNameSync('Create_zip_fail')  });
 
-        log(`生成压缩文件失败 ${err}`)
+        log(getContext().resourceManager.getStringByNameSync('Create_zip_fail')  +  `${err}`)
       })
   }
 
@@ -338,24 +338,24 @@ struct Index {
 
         Flex({ justifyContent: FlexAlign.SpaceBetween, wrap: FlexWrap.Wrap }) {
           Row({ space: 8 }) {
-            this.BuildButton("+新建文件夹", (): void => this.createDir())
-            this.BuildButton("+新建文件", (): void => this.createFile(), {
+            this.BuildButton(getContext().resourceManager.getStringByNameSync('New_Folder') , (): void => this.createDir())
+            this.BuildButton(getContext().resourceManager.getStringByNameSync('New_File') , (): void => this.createFile(), {
               bgColor: Color.White,
               color: Color.Black,
               borderOptions: { width: 2, color: Color.Black }
             })
           }.margin({ bottom: 8 })
 
-          this.BuildButton("加载压缩文件", (): void => this.loadAsyncFile(), { bgColor: Color.Green })
-          this.BuildButton("生成压缩文件", (): void => this.generateZIP(), { bgColor: Color.Orange })
+          this.BuildButton(getContext().resourceManager.getStringByNameSync('Load_zip') , (): void => this.loadAsyncFile(), { bgColor: Color.Green })
+          this.BuildButton(getContext().resourceManager.getStringByNameSync('Create_zip') , (): void => this.generateZIP(), { bgColor: Color.Orange })
           // this.BuildButton("查看文件信息",this.debugger,{bgColor:Color.Gray});
-          this.BuildButton("遍历(目录及文件)", (): void => this.forEachZIP())
-          this.BuildButton("过滤(过滤文件)", (): void => this.filterZIP())
+          this.BuildButton(getContext().resourceManager.getStringByNameSync('Ergodic_all') , (): void => this.forEachZIP())
+          this.BuildButton(getContext().resourceManager.getStringByNameSync('Filter_file') , (): void => this.filterZIP())
         }
 
         Row() {
-          Text("设置密码：")
-          TextInput({ placeholder: '请输入密码...', text: this.password || "" })
+          Text($r('app.string.Set_Password'))
+          TextInput({ placeholder: getContext().resourceManager.getStringByNameSync('Input_Password') , text: this.password || "" })
             .height(40)
             .width('50%')
             .onChange((value: string) => {
@@ -365,19 +365,19 @@ struct Index {
         }
 
         Row() {
-          Button("解压缩本Demo中加密之后的压缩文件")
+          Button($r('app.string.Extract_Demo'))
             .height(40)
             .width('50%')
             .onClick(() => {
               if (!this.filePath || this.filePath.length < 1) {
                 promptAction.showToast({
-                  message: `暂无可用文件，请先加密压缩文件`
+                  message: getContext().resourceManager.getStringByNameSync('No_file_used') 
                 })
                 return;
               }
               if (!this.password || this.password.length < 1) {
                 promptAction.showToast({
-                  message: `请先输入解压缩密码`
+                  message:  getContext().resourceManager.getStringByNameSync('Input_zip_Password') 
                 })
                 return;
               }
@@ -392,9 +392,9 @@ struct Index {
         }).margin({ bottom: 12 }).padding(10)
 
         Column() {
-          Text("填写应用沙箱内的加密文件路径：")
+          Text(getContext().resourceManager.getStringByNameSync('Input_Path') )
           TextInput({
-            placeholder: '填写应用沙箱内的加密文件路径...',
+            placeholder: getContext().resourceManager.getStringByNameSync('Input_Path')  + '...',
             text: this.filePath || "data/storage/el2/base/haps/entry/cache/test.zip"
           })
             .height(40)
@@ -403,19 +403,19 @@ struct Index {
               this.filePath = value
             })
             .margin({ bottom: 12 })
-          Button("解压缩应用沙箱内的加密压缩文件")
+          Button($r('app.string.Extract_zip'))
             .height(40)
             .width('50%')
             .onClick(() => {
               if (!this.filePath || this.filePath.length < 1) {
                 promptAction.showToast({
-                  message: `暂无可用文件，请先在应用沙箱内放入加密压缩文件`
+                  message: getContext().resourceManager.getStringByNameSync('No_zip_use') 
                 })
                 return;
               }
               if (!this.password || this.password.length < 1) {
                 promptAction.showToast({
-                  message: `请先输入解压缩密码`
+                  message: getContext().resourceManager.getStringByNameSync('Input_zip_Password') 
                 })
                 return;
               }
@@ -429,9 +429,9 @@ struct Index {
         }).margin({ bottom: 12 }).padding(10)
 
         Column() {
-          Text("填写rawfile的加密压缩文件名")
+          Text(getContext().resourceManager.getStringByNameSync('Input_Filename') )
           TextInput({
-            placeholder: '请填写rawfile的加密压缩文件名...',
+            placeholder: getContext().resourceManager.getStringByNameSync('Input_Filename')  + '...',
             text: this.rawFileName || "test.zip"
           })
             .height(40)
@@ -440,19 +440,19 @@ struct Index {
               this.filePath = value
             })
             .margin({ bottom: 12 })
-          Button("解压缩rawfile内的加密压缩文件")
+          Button($r('app.string.Extract_raw'))
             .height(40)
             .width('50%')
             .onClick(() => {
               if (!this.rawFileName || this.rawFileName.length < 1) {
                 promptAction.showToast({
-                  message: `暂无可用文件，请先在项目rawfile文件夹内放入加密压缩文件`
+                  message: getContext().resourceManager.getStringByNameSync('No_raw_use') 
                 })
                 return;
               }
               if (!this.password || this.password.length < 1) {
                 promptAction.showToast({
-                  message: `请先输入解压缩密码`
+                  message: getContext().resourceManager.getStringByNameSync('Input_zip_Password') 
                 })
                 return;
               }
@@ -465,12 +465,12 @@ struct Index {
           style: BorderStyle.Solid
         }).margin({ bottom: 12 }).padding(10)
         Row() {
-          Text(`当前选中文件夹：${this.currentFolder || '根目录'}`)
+          Text(getContext().resourceManager.getStringByNameSync('Choose_Folder')  + `${this.currentFolder || getContext().resourceManager.getStringByNameSync('Root_path') }`)
             .fontSize(20)
             .fontColor(Color.Red)
             .textAlign(TextAlign.Start)
             .margin({ right: 10 });
-          this.BuildButton("选择根目录", () => this.currentFolder = "");
+          this.BuildButton(getContext().resourceManager.getStringByNameSync('Choose_Root_Path') , () => this.currentFolder = "");
         }.justifyContent(FlexAlign.Start).padding({ left: 8, right: 8, top: 24, bottom: 24 }).width("100%")
 
         List() {

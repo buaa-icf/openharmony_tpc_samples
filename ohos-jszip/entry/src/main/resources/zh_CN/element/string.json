@@ -11,6 +11,162 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Delete",
+      "value": "删除"
+    },
+    {
+      "name": "Delete_sucess",
+      "value": "删除成功"
+    },
+    {
+      "name": "No_Permission",
+      "value": "暂无权限处理文件"
+    },
+    {
+      "name": "Extract_suce",
+      "value": "解压缩解密文件成功"
+    },
+    {
+      "name": "Extract_fail",
+      "value": "解压缩加密文件失败！ 错误原因："
+    },
+    {
+      "name": "No_Find",
+      "value": "没有找到此压缩文件"
+    },
+    {
+      "name": "Create_fail",
+      "value": "创建失败,请输入正确的文件夹名称!"
+    },
+    {
+      "name": "Create_suce",
+      "value": "文件夹创建成功"
+    },
+    {
+      "name": "No_Null",
+      "value": "文件名称不能为空"
+    },
+    {
+      "name": "Create_zip_fail",
+      "value": "生成压缩文件失败"
+    },
+    {
+      "name": "New_Folder",
+      "value": "+新建文件夹"
+    },
+    {
+      "name": "New_File",
+      "value": "+新建文件"
+    },
+    {
+      "name": "Load_zip",
+      "value": "加载压缩文件"
+    },
+    {
+      "name": "Create_zip",
+      "value": "生成压缩文件"
+    },
+    {
+      "name": "Ergodic_all",
+      "value": "遍历(目录及文件)"
+    },
+    {
+      "name": "Filter_file",
+      "value": "过滤(过滤文件)"
+    },
+    {
+      "name": "Set_Password",
+      "value": "设置密码："
+    },
+    {
+      "name": "Input_Password",
+      "value": "请输入密码..."
+    },
+    {
+      "name": "Extract_Demo",
+      "value": "解压缩本Demo中加密之后的压缩文件"
+    },
+    {
+      "name": "No_file_used",
+      "value": "暂无可用文件，请先加密压缩文件"
+    },
+    {
+      "name": "Input_zip_Password",
+      "value": "请先输入解压缩密码"
+    },
+    {
+      "name": "Input_Path",
+      "value": "填写应用沙箱内的加密文件路径"
+    },
+    {
+      "name": "Extract_zip",
+      "value": "解压缩应用沙箱内的加密压缩文件"
+    },
+    {
+      "name": "No_zip_use",
+      "value": "暂无可用文件，请先在应用沙箱内放入加密压缩文件"
+    },
+    {
+      "name": "Input_Filename",
+      "value": "填写rawfile的加密压缩文件名"
+    },
+    {
+      "name": "Extract_raw",
+      "value": "解压缩rawfile内的加密压缩文件"
+    },
+    {
+      "name": "No_raw_use",
+      "value": "暂无可用文件，请先在项目rawfile文件夹内放入加密压缩文件"
+    },
+    {
+      "name": "Choose_Folder",
+      "value": "当前选中文件夹："
+    },
+    {
+      "name": "Root_path",
+      "value": "根目录"
+    },
+    {
+      "name": "Choose_Root_Path",
+      "value": "选择根目录"
+    },
+    {
+      "name": "Create_Folder",
+      "value": "创建文件夹"
+    },
+    {
+      "name": "Create_File",
+      "value": "创建文件"
+    },
+    {
+      "name": "Load_zip_file",
+      "value": "创建文件"
+    },
+    {
+      "name": "Input_Foldername",
+      "value": "请输入文件夹名称"
+    },
+    {
+      "name": "Input_file_name",
+      "value": "请输入文件名称"
+    },
+    {
+      "name": "Input_file_content",
+      "value": "请输入文件内容"
+    },
+    {
+      "name": "Input_zipname",
+      "value": "请输入ZIP文件名称"
+    },
+    {
+      "name": "sure",
+      "value": "确定"
+    },
+    {
+      "name": "cancel",
+      "value": "取消"
     }
   ]
 }

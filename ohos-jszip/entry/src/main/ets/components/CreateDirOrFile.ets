@@ -44,8 +44,8 @@ export struct CreateDirOrFile {
 
   build() {
       Column() {
-        Text(this.create_type === "DIR" ? "创建文件夹" : this.create_type === "FILE"?"创建文件":"加载ZIP文件").fontSize(20).margin({ top: 10, bottom: 10 })
-        TextInput({ placeholder: '请输入文件夹名称...', text: this.folderName,controller:this.textController })
+        Text(this.create_type === "DIR" ? $r('app.string.Create_Folder') : this.create_type === "FILE"?$r('app.string.Create_File'):$r('app.string.Load_zip_file')).fontSize(20).margin({ top: 10, bottom: 10 })
+        TextInput({ placeholder: $r('app.string.Input_Foldername') +'...', text: this.folderName,controller:this.textController })
           .height(80)
           .width('90%')
           .onChange((value: string) => {
@@ -55,7 +55,7 @@ export struct CreateDirOrFile {
           .visibility(this.isShowDir()?Visibility.Visible:Visibility.None)
 
 
-        TextInput({ placeholder: '请输入文件名称...', text: this.fileName })
+        TextInput({ placeholder: $r('app.string.Input_file_name') + '...', text: this.fileName })
           .height(80)
           .width('90%')
           .onChange((value: string) => {
@@ -66,7 +66,7 @@ export struct CreateDirOrFile {
 
 
 
-        TextInput({ placeholder: '请输入文件内容...', text: this.contentText })
+        TextInput({ placeholder: $r('app.string.Input_file_content') + '...' , text: this.contentText })
           .height(80)
           .width('90%')
           .onChange((value: string) => {
@@ -75,7 +75,7 @@ export struct CreateDirOrFile {
           .margin({ bottom: 12 })
           .visibility(this.isShowFile()?Visibility.Visible:Visibility.None)
 
-        TextInput({ placeholder: '请输入ZIP文件名称...', text: this.zipName })
+        TextInput({ placeholder:$r('app.string.Input_zipname')+'...', text: this.zipName })
           .height(80)
           .width('90%')
           .onChange((value: string) => {
@@ -86,7 +86,7 @@ export struct CreateDirOrFile {
 
 
         Column() {
-          Button("确定").onClick(() => {
+          Button($r('app.string.sure')).onClick(() => {
             const result = new ReturnValue();
             result.create_type = this.create_type;
             result.folderName = this.folderName;
@@ -95,7 +95,7 @@ export struct CreateDirOrFile {
             result.zipName = this.zipName;
             this.confirm(result);
           }).width("100%").margin({bottom:8}).height(50)
-          Button("取消").onClick(this.cancel).width("100%").height(50)
+          Button($r('app.string.cancel')).onClick(this.cancel).width("100%").height(50)
         }.margin(20)
       }
 
