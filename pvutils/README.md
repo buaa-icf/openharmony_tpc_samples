@@ -1,64 +1,64 @@
 # pvutils
 
 
-## 简介
-本项目是OpenHarmony系统下使用puutils的示例，puutils是一组常用的实用程序函数，用于各种Peculiar Ventures基于Javascript的项目库。
+## Introduction
+This project demonstrates the use of puutils in OpenHarmony. puutils provides a set of common utility functions used in a variety of Peculiar Ventures JavaScript-based projects.
 
 
-## 下载安装
+## How to Install
 
 ```shell
 ohpm install puutils
 ```
-OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 ```
-    //导入pvutils相关接口
+    // Import pvutils.
     import { toBase64 } from 'pvutils'
-    Button("将字符串编码成BASE64格式")
+    Button("Encode a string into the Base64 format.")
     .onClick((event: ClickEvent) => {
     // aGVsbG8gQkFTRTY0
         this.message = toBase64('hello BASE64');
-        console.log(" 将字符串编码成BASE64格式' hello BASE64' ：" + this.message)
+        console.log("Encode a string into the Base64 format' hello BASE64': "+ this.message)
     }).margin(5)
 ```
-更多api的使用可参考Index.ets
+For details about how to use more APIs, see **Index.ets**.
 
-## 接口说明
+## Available APIs
 
-| 使用方法                  | 参数                                                      | 相关描述                  |
-|-----------------------|---------------------------------------------------------|-----------------------|
-| getUTCDate()          | date                                                    | 将本地时间转换为协调世界时（UTC）时间。 |
-| getParametersValue()  | parameters, name, defaultValue                          | 获取指定属性值               |
-| bufferToHexCodes()    | inputBuffer, inputOffset?, inputLength?, insertSpace?   | ArrayBuffer转16进制字符串   |
-| checkBufferParams()   | baseBlock, inputBuffer, inputOffset, inputLength        | buffer参数合法性检测         |
-| utilFromBase()        | inputBuffer, inputBase                                  | 2^base 转换为 2^10       |
-| utilToBase()          | value, base, reserved?                                  | 2^10 转换为 2^base       |
-| utilConcatBuf()       | ...buffers                                              | ArrayBuffer 连接        |
-| utilConcatView()      | ...views                                                | Uint8Array 连接         |
-| utilDecodeTC()        | 无                                                       | 补码解析                  |
-| utilEncodeTC()        | value                                                   | 整数转“补码”               |
-| isEqualBuffer()       | inputBuffer1, inputBuffer2                              | ArrayBuffer相等判断       |
-| padNumber()           | inputNumber, fullLength                                 | 数字前面添加前导零             |
-| toBase64()            | input, useUrlTemplate?, skipPadding?, skipLeadingZeros? | 字符串编码转 BASE64         |
-| fromBase64()          | input, useUrlTemplate?, cutTailZeros?                   | BASE64字符串解码成普通字符串。    |
-| arrayBufferToString() | buffer                                                  | ArrayBuffer 转字符串。     |
-| stringToArrayBuffer() | str                                                     | 字符串转 ArrayBuffer。     |
-| nearestPowerOf2()     | length                                                  | 计算最近的2的幂次方            |
-| clearProps()          | object, propsArray                                      | 删除指定名称的属性             |
+| API             | Parameter                                                   | Description                               |
+| --------------------- | ------------------------------------------------------- | --------------------------------------- |
+| getUTCDate()          | date                                                    | Converts the local time to the UTC.|
+| getParametersValue()  | parameters, name, defaultValue                          | Obtains the values of specified properties.                         |
+| bufferToHexCodes()    | inputBuffer, inputOffset?, inputLength?, insertSpace?   | Convert an ArrayBuffer into a hexadecimal string.              |
+| checkBufferParams()   | baseBlock, inputBuffer, inputOffset, inputLength        | Checks the validity of buffer parameters.                   |
+| utilFromBase()        | inputBuffer, inputBase                                  | Converts a number from 2^base to 2^10.                     |
+| utilToBase()          | value, base, reserved?                                  | Converts a number from 2^10 to 2^base.                     |
+| utilConcatBuf()       | ...buffers                                              | Concatenates two ArrayBuffers.                       |
+| utilConcatView()      | ...views                                                | Concatenates two Uint8Arrays.                        |
+| utilDecodeTC()        | N/A                                                     | Decodes a two's complement.                               |
+| utilEncodeTC()        | value                                                   | Converts an integer to a two's complement.                           |
+| isEqualBuffer()       | inputBuffer1, inputBuffer2                              | Checks whether two ArrayBuffers are equal.                    |
+| padNumber()           | inputNumber, fullLength                                 | Adds leading zeros before a number.                     |
+| toBase64()            | input, useUrlTemplate?, skipPadding?, skipLeadingZeros? | Converts a string to the Base64 format.                    |
+| fromBase64()          | input, useUrlTemplate?, cutTailZeros?                   | Decodes a Base64 string into a common string.         |
+| arrayBufferToString() | buffer                                                  | Converts an ArrayBuffer to a string.                 |
+| stringToArrayBuffer() | str                                                     | Converts a string to an ArrayBuffer.                 |
+| nearestPowerOf2()     | length                                                  | Calculates the nearest power of 2.                    |
+| clearProps()          | object, propsArray                                      | Deletes properties with specified names.                     |
 
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+This project has been verified in the following version:
 
-- DevEco Studio 版本： 4.1 Canary(4.1.3.317),OpenHarmony SDK:API11 (4.1.0.36)
+- DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API 11 (4.1.0.36)
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-该项目基于 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/pvutils/LICENSE) ，请自由地享受和参与开源。
+This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/pvutils/LICENSE).

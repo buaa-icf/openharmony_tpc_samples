@@ -11,6 +11,70 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Display_results",
+      "value": "Display results:"
+    },
+    {
+      "name": "arrayBuffer_to_string",
+      "value": "arrayBuffer to string"
+    },
+    {
+      "name": "ArrayBuffer_to_hexadecimal_string",
+      "value": "ArrayBuffer to hexadecimal string"
+    },
+    {
+      "name": "local_world_time",
+      "value": "Convert local time to world time"
+    },
+    {
+      "name": "specified_attribute_value",
+      "value": "Get the specified attribute value"
+    },
+    {
+      "name": "Buffer_parameter_legality_check",
+      "value": "Buffer parameter legality check"
+    },
+    {
+      "name": "base_converts_to_10",
+      "value": "2^base converts to 2^10"
+    },
+    {
+      "name": "10_to_base_to_hexadecimal",
+      "value": "2^10 is converted to 2^base and then converted to hexadecimal"
+    },
+    {
+      "name": "ArrayBuffers_to_hexadecimal_format",
+      "value": "Connect multiple ArrayBuffers together in hexadecimal format"
+    },
+    {
+      "name": "Concatenate_Uint8Arrays",
+      "value": "Concatenate multiple Uint8Arrays together"
+    },
+    {
+      "name": "complement_format_hexadecimal",
+      "value": "Encode the integer value into 'complement' format and output it in hexadecimal form"
+    },
+    {
+      "name": "ArrayBuffer_equality_judgment",
+      "value": "ArrayBuffer equality judgment"
+    },
+    {
+      "name": "Add_zeros_numbers",
+      "value": "Add leading zeros in front of numbers"
+    },
+    {
+      "name": "string_into_BASE64",
+      "value": "Encode string into BASE64 format"
+    },
+    {
+      "name": "BASE64_into_normal_string",
+      "value": "Decode BASE64 string into normal string"
+    },
+    {
+      "name": "Calculate_the_nearest_power",
+      "value": "Calculate the nearest power of 2 to the input length"
     }
   ]
 }

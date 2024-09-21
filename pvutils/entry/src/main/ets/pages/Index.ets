@@ -44,90 +44,92 @@ struct Index {
   @State message: string = '';
   private scrollerForScroll: Scroller = new Scroller()
   private  data = new Uint8Array([0x2A, 0x05, 0x4D, 0x07, 0x6A, 0x6B, 0x7E]);
-
+  getResourceString(res:Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
   build() {
     Scroll(this.scrollerForScroll) {
       Column() {
-        Text('显示结果：' + this.message)
+        Text(this.getResourceString($r('app.string.Display_results')) + this.message)
           .fontSize(16)
-        Button("arrayBuffer转字符串")
+        Button($r('app.string.arrayBuffer_to_string'))
           .width(200)
           .onClick((event: ClickEvent) => {
             this.message = arrayBufferToString(this.data.buffer);
             console.log("arrayBuffer转字符串'：" + this.message)
           }).margin(5)
-        Button("ArrayBuffer转16进制字符串")
+        Button($r('app.string.ArrayBuffer_to_hexadecimal_string'))
           .onClick((event: ClickEvent) => {
             this.message = bufferToHexCodes(this.data.buffer, 0, 5, false);
             console.log("ArrayBuffer转16进制字符串'：" + this.message)
           }).margin(5)
-        Button("本地时间转世界时间")
+        Button($r('app.string.local_world_time'))
           .onClick((event: ClickEvent) => {
             let data = new Date();
             this.message = getUTCDate(data).toString();
             console.log("本地时间转世界时间'：" + this.message)
           }).margin(5)
-        Button("获取指定属性值")
+        Button($r('app.string.specified_attribute_value'))
           .onClick((event: ClickEvent) => {
             let data: Record<string, string> = { 'name': 'Parame', 'key': '2' }
             this.message = getParametersValue(data, 'name', '').toString();
             console.log("获取指定属性值：'name''：" + this.message)
           }).margin(5)
-        Button("buffer参数合法性检测")
+        Button($r('app.string.Buffer_parameter_legality_check'))
           .onClick((event: ClickEvent) => {
             let data: LocalBaseBlock = {};
             this.message = checkBufferParams(data, this.data.buffer, 12, 6).toString();
             console.log("buffer参数合法性检测：" + this.message)
           }).margin(5)
-        Button("2^base 转换为 2^10")
+        Button($r('app.string.base_converts_to_10'))
           .onClick((event: ClickEvent) => {
             let inputBuffer = new Uint8Array(this.data.buffer);
             inputBuffer[0] = 130;
             this.message = utilFromBase(inputBuffer, 8).toString();
             console.log(" 2^base 转换为 2^10 ：" + this.message)
           }).margin(5)
-        Button("2^10 转换为 2^base再转16进制")
+        Button($r('app.string.10_to_base_to_hexadecimal'))
           .onClick((event: ClickEvent) => {
             this.message = bufferToHexCodes(utilToBase(16513, 7));
             console.log(" 2^10 转换为 2^base再转16进制 ：" + this.message)
           }).margin(5)
-        Button("将多个 ArrayBuffer 以16进制的形式连接在一起")
+        Button($r('app.string.ArrayBuffers_to_hexadecimal_format'))
           .onClick((event: ClickEvent) => {
             this.message = bufferToHexCodes(utilConcatBuf(...[this.data.buffer, this.data.buffer]));
             console.log(" 将多个 ArrayBuffer 以16进制的形式连接在一起 ：" + this.message)
           }).margin(5)
-        Button("将多个 Uint8Array 连接在一起")
+        Button($r('app.string.Concatenate_Uint8Arrays'))
           .onClick((event: ClickEvent) => {
             this.message = JSON.stringify(utilConcatView(this.data));
             console.log(" 将多个 Uint8Array 连接在一起 ：" + this.message)
           }).margin(5)
-        Button("将整数值编码成“补码”格式以16进制的形式输出")
+        Button($r('app.string.complement_format_hexadecimal'))
           .onClick((event: ClickEvent) => {
             this.message = bufferToHexCodes(utilEncodeTC(10));
             console.log(" 将整数值编码成“补码”格式以16进制的形式输出 ：" + this.message)
           }).margin(5)
-        Button("ArrayBuffer相等判断")
+        Button($r('app.string.ArrayBuffer_equality_judgment'))
           .onClick((event: ClickEvent) => {
             let data2 = new Uint8Array([0x2A, 0x05, 0x4D, 0x07, 0x08, 0x09, 0x0A]);
             this.message = JSON.stringify(isEqualBuffer(this.data.buffer, data2.buffer));
             console.log(" ArrayBuffer相等判断 ：" + this.message)
           }).margin(5)
-        Button("数字前面添加前导零")
+        Button($r('app.string.Add_zeros_numbers'))
           .onClick((event: ClickEvent) => {
             this.message = JSON.stringify(padNumber(10, 3));
             console.log(" 数字前面添加前导零 ：" + this.message)
           }).margin(5)
-        Button("将字符串编码成BASE64格式")
+        Button($r('app.string.string_into_BASE64'))
           .onClick((event: ClickEvent) => {
             this.message = toBase64('hello BASE64');
             console.log(" 将字符串编码成BASE64格式' hello BASE64' ：" + this.message)
           }).margin(5)
-        Button(" BASE64字符串解码成普通字符串")
+        Button($r('app.string.BASE64_into_normal_string'))
           .onClick((event: ClickEvent) => {
             this.message = fromBase64('aGVsbG8gQkFTRTY0');
             console.log(" BASE64字符串解码成普通字符串 'aGVsbG8gQkFTRTY0'：" + this.message)
           }).margin(5)
-        Button(" 计算离输入长度最近的2的幂次方")
+        Button($r('app.string.Calculate_the_nearest_power'))
           .onClick((event: ClickEvent) => {
             this.message = nearestPowerOf2(3).toString();
             console.log(" 计算离输入长度最近的2的幂次方：" + this.message)
