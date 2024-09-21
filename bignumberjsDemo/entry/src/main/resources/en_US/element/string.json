@@ -11,6 +11,22 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Click_test",
+      "value": "Click test squareRoot"
+    },
+    {
+      "name": "Input_Any_Number",
+      "value": "Please enter any real number"
+    },
+    {
+      "name": "Result",
+      "value": "Result："
+    },
+    {
+      "name": "Time",
+      "value": "Time："
     }
   ]
 }

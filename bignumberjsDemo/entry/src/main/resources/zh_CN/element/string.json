@@ -11,6 +11,22 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Click_test",
+      "value": "点击 test squareRoot"
+    },
+    {
+      "name": "Input_Any_Number",
+      "value": "请输入任意实数"
+    },
+    {
+      "name": "Result",
+      "value": "结果："
+    },
+    {
+      "name": "Time",
+      "value": "时间："
     }
   ]
 }

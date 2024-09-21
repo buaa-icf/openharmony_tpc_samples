@@ -131,7 +131,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
 
 
-        Text('点击 test squareRoot')
+        Text($r('app.string.Click_test'))
           .fontSize(30)
           .fontWeight(FontWeight.Bold)
           .padding(8)
@@ -183,14 +183,14 @@ struct Index {
               tb('2263343854329.638037260235405086446634', '5122725402931741767463814.840999999', 24, 4);
               tb('218875865535828595.704079834928718536449349620686728272', '47906644514058120040043799772367208.9448736248559332241111111111111', 36, 1);
               tb('63216259733951.59', '3996295494750428253401001163.9486336398226471847', 2, 0);
-              AlertDialog.show({ title: 'squareRoot test 成功',
+              AlertDialog.show({ title: 'squareRoot test success',
                 message: '',
                 confirm: { value: 'OK', action: () => {
                 } }
               })
             } catch (err) {
               console.log('errerr ' + err)
-              AlertDialog.show({ title: 'squareRoot test 失败',
+              AlertDialog.show({ title: 'squareRoot test fail',
                 message: err,
                 confirm: { value: 'OK', action: () => {
                 } }
@@ -198,7 +198,7 @@ struct Index {
             }
           })
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -220,15 +220,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathSignum)
+        Text( getContext().resourceManager.getStringByNameSync('Result')  + this.mathSignum)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeSignum)
+        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeSignum)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -236,7 +236,7 @@ struct Index {
             this.mathatanSignum1 = value
           })
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -257,16 +257,15 @@ struct Index {
               console.log('errerr ' + err)
             }
           })
-
-        Text("结果：" + this.mathposSignum)
+        Text(getContext().resourceManager.getStringByNameSync('Result') + this.mathposSignum)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeSignum1)
+        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeSignum1)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -274,7 +273,7 @@ struct Index {
             this.mathUnaryMinus1 = value
           })
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -296,15 +295,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathUnaryMinus)
+        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathUnaryMinus)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeUnaryMinus)
+        Text(getContext().resourceManager.getStringByNameSync('Time') + this.mathTimeUnaryMinus)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -312,7 +311,7 @@ struct Index {
             this.mathTan1 = value
           })
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder:$r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -335,15 +334,15 @@ struct Index {
           })
 
 
-        Text("结果：" + this.mathTan)
+        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathTan)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeTan)
+        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeTan)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -351,7 +350,7 @@ struct Index {
             this.mathSubtract1 = value
           })
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -373,15 +372,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathSubtract)
+        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathSubtract)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeSubtract)
+        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeSubtract)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -389,7 +388,7 @@ struct Index {
             this.mathSqrt1 = value
           })
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -412,15 +411,15 @@ struct Index {
           })
 
 
-        Text("结果：" + this.mathSqrt)
+        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathSqrt)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeSqrt)
+        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeSqrt)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -443,15 +442,15 @@ struct Index {
           })
 
 
-        Text("结果：" + this.mathSin)
+        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathSin)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeSin)
+        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeSin)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder:$r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -459,7 +458,7 @@ struct Index {
             this.mathRound1 = value
           })
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -482,15 +481,15 @@ struct Index {
           })
 
 
-        Text("结果：" + this.mathRound)
+        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathRound)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeRound)
+        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeRound)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -498,7 +497,7 @@ struct Index {
             this.mathRightArithShift1 = value
           })
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -521,15 +520,15 @@ struct Index {
           })
 
 
-        Text("结果：" + this.mathRightArithShift)
+        Text(getContext().resourceManager.getStringByNameSync('Result')   + this.mathRightArithShift)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeRightArithShift)
+        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeRightArithShift)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -537,7 +536,7 @@ struct Index {
             this.mathRadix1 = value
           })
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -559,15 +558,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathRadix)
+        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathRadix)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeRadix)
+        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeRadix)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder:$r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -575,7 +574,7 @@ struct Index {
             this.mathMultiply1 = value
           })
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -597,15 +596,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathMultiply)
+        Text(getContext().resourceManager.getStringByNameSync('Result') + this.mathMultiply)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeMultiply)
+        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeMultiply)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder:$r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -613,7 +612,7 @@ struct Index {
             this.mathMin1 = value
           })
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -635,15 +634,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathMin)
+        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathMin)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeMin)
+        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeMin)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -651,7 +650,7 @@ struct Index {
             this.mathMax1 = value
           })
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -673,15 +672,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathMax)
+        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathMax)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeMax)
+        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeMax)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -703,15 +702,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathLongValue)
+        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathLongValue)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeLongValue)
+        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeLongValue)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -719,7 +718,7 @@ struct Index {
             this.mathLog1 = value
           })
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -741,15 +740,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathLog)
+        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathLog)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeLog)
+        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeLog)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -757,7 +756,7 @@ struct Index {
             this.mathLeftShift1 = value
           })
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -779,15 +778,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathLeftShift)
+        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathLeftShift)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeLeftShift)
+        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeLeftShift)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder:$r('app.string.Input_Any_Number') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -809,15 +808,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathIntValue)
+        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathIntValue)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeIntValue)
+        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeIntValue)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -839,15 +838,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathFormat)
+        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathFormat)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeFormat)
+        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeFormat)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -855,7 +854,7 @@ struct Index {
             this.mathExp1 = value
           })
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -877,15 +876,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathExp)
+        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathExp)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeExp)
+        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeExp)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -893,7 +892,7 @@ struct Index {
             this.mathDivide1 = value
           })
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -915,15 +914,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathDivide)
+        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathDivide)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeDivide)
+        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeDivide)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -945,15 +944,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathCos)
+        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathCos)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeCos)
+        Text(getContext().resourceManager.getStringByNameSync('Time') + this.mathTimeCos)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -961,7 +960,7 @@ struct Index {
             this.mathCompare1 = value
           })
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder:$r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -983,15 +982,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathCompare)
+        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathCompare)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeCompare)
+        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeCompare)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -1013,15 +1012,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathByteValue)
+        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathByteValue)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeByteValue)
+        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeByteValue)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -1029,7 +1028,7 @@ struct Index {
             this.mathAtan1 = value
           })
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -1051,15 +1050,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathAtan)
+        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathAtan)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeAtan)
+        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeAtan)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入任意实数' })
+        TextInput({ placeholder: $r('app.string.Input_Any_Number')  })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -1081,11 +1080,11 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathAsin)
+        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathAsin)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeAsin)
+        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeAsin)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
@@ -1107,7 +1106,7 @@ struct Index {
     })
   }
   onPageHide(): void {
-    console.log('lllllllllllll消失')
+    console.log('lllllllllllll')
   }
 }
 
