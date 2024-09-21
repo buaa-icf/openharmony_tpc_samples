@@ -23,7 +23,7 @@
 import { isAnyArray } from "is-any-array"
 import rescale from "ml-array-rescale"
 
-const errHint: string = '请输入有效数据';
+const errHint: string = getContext().resourceManager.getStringByNameSync("placeholder_input");
 const min: number = 0;
 const max: number = 2;
 
@@ -54,18 +54,19 @@ struct Index {
   private inputMax1 = "";
   private inputMax2 = "";
   private inputMax3 = "";
+  
+  private resultText: string = getContext(this).resourceManager.getStringByNameSync("text_result");
 
   build() {
     Scroll(){
       Row() {
         Column() {
-          Text('rescale(array)使用示例')
+          Text($r("app.string.text_demo_array"))
             .fontSize(30)
             .fontWeight(FontWeight.Normal)
             .margin({ top: 10 })
 
-          TextInput({ placeholder: '请输入数组 如： [1,2,3]' })
-            // .placeholderFont({size: 20})
+          TextInput({ placeholder: $r("app.string.placeholder_array") })// .placeholderFont({size: 20})
             .height(50)
             .fontSize("18vp")
             .margin({ top: 10 })
@@ -74,12 +75,12 @@ struct Index {
               this.inputStr1 = value;
             })
 
-          Text('无输入默认值为 [1,2,3]')
+          Text($r("app.string.text_default_value"))
             .fontSize(20)
             .fontWeight(FontWeight.Normal)
             .margin({ top: 10 })
 
-          Text('点击，运算')
+          Button($r("app.string.text_click_calculation"))
             .fontSize(30)
             .height(50)
             .fontWeight(FontWeight.Bold)
@@ -90,7 +91,7 @@ struct Index {
                 try {
                   tmpArr = JSON.parse(this.inputStr1)
                 } catch (e) {
-                  console.log('test page 1 e:'+e.message)
+                  console.log('test page 1 e:' + e.message)
                   this.result1 = errHint
                   return;
                 }
@@ -105,18 +106,18 @@ struct Index {
               }
             })
 
-          Text('结果: ' + this.result1)
+          Text(this.resultText + this.result1)
             .fontSize(20)
             .fontWeight(FontWeight.Bold)
             .margin({ top: 10 })
 
 
-          Text('rescale(array, { outputArrray })使用示例')
-            .fontSize(30)
+          Text($r("app.string.text_demo_outputArray"))
+            .fontSize(20)
             .fontWeight(FontWeight.Normal)
             .margin({ top: 30 })
 
-          TextInput({ placeholder: '请输入数组 如： [1,2,3]' })
+          TextInput({ placeholder: $r("app.string.placeholder_array") })
             .height(50)
             .fontSize("18vp")
               // .placeholderFont({size: 20})
@@ -126,12 +127,12 @@ struct Index {
               this.inputStr2 = value;
             })
 
-          Text('无输入默认值为 [1,2,3]')
+          Text($r("app.string.text_default_value"))
             .fontSize(20)
             .fontWeight(FontWeight.Normal)
             .margin({ top: 10 })
 
-          Text('点击，运算')
+          Button($r("app.string.text_click_calculation"))
             .fontSize(30)
             .height(50)
             .fontWeight(FontWeight.Bold)
@@ -159,18 +160,18 @@ struct Index {
               }
             })
 
-          Text('outputArrray结果: ' + this.result2)
+          Text('outputArrray result: ' + this.result2)
             .fontSize(20)
             .fontWeight(FontWeight.Bold)
             .margin({ top: 10 })
 
 
-          Text('rescale(array, { output: array });使用示例')
+          Text($r("app.string.text_demo_output"))
             .fontSize(30)
             .fontWeight(FontWeight.Normal)
             .margin({ top: 30 })
 
-          TextInput({ placeholder: '请输入数组 如： [1,2,3]' })
+          TextInput({ placeholder: $r("app.string.placeholder_array") })
             .height(50)
             .fontSize("18vp")
               // .placeholderFont({size: 20})
@@ -180,12 +181,12 @@ struct Index {
               this.inputStr3 = value;
             })
 
-          Text('无输入默认值为 [1,2,3]')
+          Text($r("app.string.text_default_value"))
             .fontSize(20)
             .fontWeight(FontWeight.Normal)
             .margin({ top: 10 })
 
-          Text('点击，运算')
+          Button($r("app.string.text_click_calculation"))
             .fontSize(30)
             .height(50)
             .fontWeight(FontWeight.Bold)
@@ -212,18 +213,18 @@ struct Index {
               }
             })
 
-          Text('array结果: ' + this.result3)
+          Text('array result: ' + this.result3)
             .fontSize(20)
             .fontWeight(FontWeight.Bold)
             .margin({ top: 10 })
 
 
-          Text('rescale(array, { min })使用示例')
+          Text($r("app.string.text_demo_min"))
             .fontSize(30)
             .fontWeight(FontWeight.Normal)
             .margin({ top: 30 })
 
-          TextInput({ placeholder: '请输入数组 如： [1,2,3]' })
+          TextInput({ placeholder: $r("app.string.placeholder_array") })
             .height(50)
             .fontSize("18vp")
               // .placeholderFont({size: 20})
@@ -233,12 +234,12 @@ struct Index {
               this.inputStr4 = value;
             })
 
-          Text('无输入默认值为 [1,2,3]')
+          Text($r("app.string.text_default_value"))
             .fontSize(20)
             .fontWeight(FontWeight.Normal)
             .margin({ top: 10 })
 
-          TextInput({ placeholder: '请输入min值' })
+          TextInput({ placeholder: $r("app.string.placeholder_min") })
             .height(50)
             .fontSize("18vp")
               // .placeholderFont({size: 20})
@@ -248,12 +249,12 @@ struct Index {
               this.inputMin1 = value;
             })
 
-          Text('无输入min默认值为 '+min)
+          Text($r("app.string.text_result_min"))
             .fontSize(20)
             .fontWeight(FontWeight.Normal)
             .margin({ top: 10 })
 
-          Text('点击，运算')
+          Button($r("app.string.text_click_calculation"))
             .fontSize(30)
             .height(50)
             .fontWeight(FontWeight.Bold)
@@ -307,18 +308,18 @@ struct Index {
               }
             })
 
-          Text('结果: ' + this.result4)
+          Text(this.resultText + this.result4)
             .fontSize(20)
             .fontWeight(FontWeight.Bold)
             .margin({ top: 10 })
 
 
-          Text('rescale(array, { max })使用示例')
+          Text($r("app.string.text_demo_max"))
             .fontSize(30)
             .fontWeight(FontWeight.Normal)
             .margin({ top: 30 })
 
-          TextInput({ placeholder: '请输入数组 如： [1,2,3]' })
+          TextInput({ placeholder: $r("app.string.placeholder_array") })
             .height(50)
             .fontSize("18vp")
               // .placeholderFont({size: 20})
@@ -328,12 +329,12 @@ struct Index {
               this.inputStr5 = value;
             })
 
-          Text('无输入默认值为 [1,2,3]')
+          Text($r("app.string.text_default_value"))
             .fontSize(20)
             .fontWeight(FontWeight.Normal)
             .margin({ top: 10 })
 
-          TextInput({ placeholder: '请输入max值' })
+          TextInput({ placeholder: $r("app.string.placeholder_max") })
             .height(50)
             .fontSize("18vp")
               // .placeholderFont({size: 20})
@@ -343,12 +344,12 @@ struct Index {
               this.inputMax1 = value;
             })
 
-          Text('无输入max默认值为 '+max)
+          Text($r("app.string.text_result_max"))
             .fontSize(20)
             .fontWeight(FontWeight.Normal)
             .margin({ top: 10 })
 
-          Text('点击，运算')
+          Button($r("app.string.text_click_calculation"))
             .fontSize(30)
             .height(50)
             .fontWeight(FontWeight.Bold)
@@ -393,17 +394,17 @@ struct Index {
               }
             })
 
-          Text('结果: ' + this.result5)
+          Text(this.resultText + this.result5)
             .fontSize(20)
             .fontWeight(FontWeight.Bold)
             .margin({ top: 10 })
 
-          Text('rescale(array, { min, autoMinMax: true })使用示例')
+          Text($r("app.string.text_demo_min_autoMinMax"))
             .fontSize(30)
             .fontWeight(FontWeight.Normal)
             .margin({ top: 30 })
 
-          TextInput({ placeholder: '请输入数组 如： [1,2,3]' })
+          TextInput({ placeholder: $r("app.string.placeholder_array") })
             .height(50)
             .fontSize("18vp")
               // .placeholderFont({size: 20})
@@ -413,12 +414,12 @@ struct Index {
               this.inputStr6 = value;
             })
 
-          Text('无输入默认值为 [1,2,3]')
+          Text($r("app.string.text_default_value"))
             .fontSize(20)
             .fontWeight(FontWeight.Normal)
             .margin({ top: 10 })
 
-          TextInput({ placeholder: '请输入min值' })
+          TextInput({ placeholder: $r("app.string.placeholder_min") })
             .height(50)
             .fontSize("18vp")
               // .placeholderFont({size: 20})
@@ -428,12 +429,12 @@ struct Index {
               this.inputMin2 = value;
             })
 
-          Text('无输入min默认值为 '+min)
+          Text($r("app.string.text_result_min"))
             .fontSize(20)
             .fontWeight(FontWeight.Normal)
             .margin({ top: 10 })
 
-          Text('点击，运算')
+          Button($r("app.string.text_click_calculation"))
             .fontSize(30)
             .height(50)
             .fontWeight(FontWeight.Bold)
@@ -478,18 +479,18 @@ struct Index {
               }
             })
 
-          Text('结果: ' + this.result6)
+          Text(this.resultText + this.result6)
             .fontSize(20)
             .fontWeight(FontWeight.Bold)
             .margin({ top: 10 })
 
 
-          Text('rescale(array, { max, autoMinMax: true })使用示例')
+          Text($r("app.string.text_demo_max_autoMinMax"))
             .fontSize(30)
             .fontWeight(FontWeight.Normal)
             .margin({ top: 30 })
 
-          TextInput({ placeholder: '请输入数组 如： [1,2,3]' })
+          TextInput({ placeholder: $r("app.string.placeholder_array") })
             .height(50)
             .fontSize("18vp")
               // .placeholderFont({size: 20})
@@ -499,12 +500,12 @@ struct Index {
               this.inputStr7 = value;
             })
 
-          Text('无输入默认值为 [1,2,3]')
+          Text($r("app.string.text_default_value"))
             .fontSize(20)
             .fontWeight(FontWeight.Normal)
             .margin({ top: 10 })
 
-          TextInput({ placeholder: '请输入max值' })
+          TextInput({ placeholder: $r("app.string.placeholder_max") })
             .height(50)
             .fontSize("18vp")
               // .placeholderFont({size: 20})
@@ -514,12 +515,12 @@ struct Index {
               this.inputMax2 = value;
             })
 
-          Text('无输入max默认值为 '+max)
+          Text($r("app.string.text_result_max"))
             .fontSize(20)
             .fontWeight(FontWeight.Normal)
             .margin({ top: 10 })
 
-          Text('点击，运算')
+          Button($r("app.string.text_click_calculation"))
             .fontSize(30)
             .height(50)
             .fontWeight(FontWeight.Bold)
@@ -564,17 +565,17 @@ struct Index {
               }
             })
 
-          Text('结果: ' + this.result7)
+          Text(this.resultText + this.result7)
             .fontSize(20)
             .fontWeight(FontWeight.Bold)
             .margin({ top: 10 })
 
-          Text('rescale(array, { min, max })使用示例')
+          Text($r("app.string.text_demo_minMax"))
             .fontSize(30)
             .fontWeight(FontWeight.Normal)
             .margin({ top: 30 })
 
-          TextInput({ placeholder: '请输入数组 如： [1,2,3]' })
+          TextInput({ placeholder: $r("app.string.placeholder_array") })
             .height(50)
             .fontSize("18vp")
               // .placeholderFont({size: 20})
@@ -584,12 +585,12 @@ struct Index {
               this.inputStr8 = value;
             })
 
-          Text('无输入默认值为 [1,2,3]')
+          Text($r("app.string.text_default_value"))
             .fontSize(20)
             .fontWeight(FontWeight.Normal)
             .margin({ top: 10 })
 
-          TextInput({ placeholder: '请输入min值' })
+          TextInput({ placeholder: $r("app.string.placeholder_min") })
             .height(50)
             .fontSize("18vp")
               // .placeholderFont({size: 20})
@@ -599,12 +600,12 @@ struct Index {
               this.inputMin3 = value;
             })
 
-          Text('无输入min默认值为 '+min)
+          Text($r("app.string.text_result_min"))
             .fontSize(20)
             .fontWeight(FontWeight.Normal)
             .margin({ top: 10 })
 
-          TextInput({ placeholder: '请输入max值' })
+          TextInput({ placeholder: $r("app.string.placeholder_max") })
             .height(50)
             .fontSize("18vp")
               // .placeholderFont({size: 20})
@@ -614,12 +615,12 @@ struct Index {
               this.inputMax3 = value;
             })
 
-          Text('无输入max默认值为 '+max)
+          Text($r("app.string.text_result_max"))
             .fontSize(20)
             .fontWeight(FontWeight.Normal)
             .margin({ top: 10 })
 
-          Text('点击，运算')
+          Button($r("app.string.text_click_calculation"))
             .fontSize(30)
             .height(50)
             .fontWeight(FontWeight.Bold)
@@ -677,7 +678,7 @@ struct Index {
               }
             })
 
-          Text('结果: ' + this.result8)
+          Text(this.resultText + this.result8)
             .fontSize(20)
             .fontWeight(FontWeight.Bold)
             .margin({ top: 10, bottom: 30 })

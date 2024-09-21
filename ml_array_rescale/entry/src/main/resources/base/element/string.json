@@ -11,6 +11,74 @@
     {
       "name": "EntryAbility_label",
       "value": "ml_array_rescale"
+    },
+    {
+      "name": "text_click_calculation",
+      "value": "Click to calculate"
+    },
+    {
+      "name": "text_default_value",
+      "value": "The default value is [1,2,3]"
+    },
+    {
+      "name": "text_result",
+      "value": "Result: "
+    },
+    {
+      "name": "text_result_max",
+      "value": "The default value of max is 2"
+    },
+    {
+      "name": "text_result_min",
+      "value": "The default value of min is 0"
+    },
+    {
+      "name": "placeholder_input",
+      "value": "Please enter data"
+    },
+    {
+      "name": "placeholder_max",
+      "value": "Please enter the max value"
+    },
+    {
+      "name": "placeholder_min",
+      "value": "Please enter the min value"
+    },
+    {
+      "name": "placeholder_array",
+      "value": "Please enter an array such as: [1,2,3]"
+    },
+    {
+      "name": "text_demo_array",
+      "value": "rescale(array) usage example"
+    },
+    {
+      "name": "text_demo_outputArray",
+      "value": "rescale(array, { outputArray }) usage example"
+    },
+    {
+      "name": "text_demo_output",
+      "value": "rescale(array, { output: array }) usage example"
+    },
+    {
+      "name": "text_demo_min",
+      "value": "rescale(array, { min }) usage example"
+    },
+    {
+      "name": "text_demo_max",
+      "value": "rescale(array, { max }) usage example"
+    },
+    {
+      "name": "text_demo_min_autoMinMax",
+      "value": "rescale(array, { min, autoMinMax: true }) usage example"
+    },
+    {
+      "name": "text_demo_max_autoMinMax",
+      "value": "rescale(array, { max, autoMinMax: true }) usage example"
+    },
+    {
+      "name": "text_demo_minMax",
+      "value": "rescale(array, { min, max }) usage example"
     }
   ]
 }
