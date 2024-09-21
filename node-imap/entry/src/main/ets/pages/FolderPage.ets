@@ -76,18 +76,18 @@ struct FolderPage {
   dialogController: CustomDialogController | null = new CustomDialogController({
     builder: CustomDialogDiy({
       cancel: () => {
-        this.showToast(this.getResourceString('app.string.Closed_the_dialog_box_and_canceled_inputting_the_folder_name'), 'CustomDialogDiy-cancel')
+        this.showToast(this.getResourceString('Closed_the_dialog_box_and_canceled_inputting_the_folder_name'), 'CustomDialogDiy-cancel')
       },
       confirm: () => {
         if (!this.inputValue || this.inputValue.length < 1) {
-          this.showToast(this.getResourceString('app.string.Create_a_new_folder_with_an_empty_name_please_re_enter'), 'CustomDialogDiy-confirm')
+          this.showToast(this.getResourceString('Create_a_new_folder_with_an_empty_name_please_re_enter'), 'CustomDialogDiy-confirm')
           return;
         }
         if (this.selectType === 'Create') {
-          this.showToast(this.getResourceString('app.string.Create_a_new_folder_named') + `：${this.inputValue}`, 'CustomDialogDiy-confirm')
+          this.showToast(this.getResourceString('Create_a_new_folder_named') + `：${this.inputValue}`, 'CustomDialogDiy-confirm')
           this.createFolder()
         } else if (this.selectType === 'Rename') {
-          this.showToast(this.getResourceString('app.string.The_renamed_folder_name_is') + `：${this.inputValue}`, 'CustomDialogDiy-confirm')
+          this.showToast(this.getResourceString('The_renamed_folder_name_is') + `：${this.inputValue}`, 'CustomDialogDiy-confirm')
           this.renameFolder()
         }
 
@@ -133,7 +133,7 @@ struct FolderPage {
 
       })
     } else {
-      this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'MsgList-imap')
+      this.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'MsgList-imap')
       router.back()
     }
   }
@@ -172,7 +172,7 @@ struct FolderPage {
           .fontColor(Color.White)
           .onClick(() => {
             if (!this.selectFolder || this.selectFolder.length < 1) {
-              this.showToast(this.getResourceString('app.string.Please_first_select_a_folder_that_needs_to_be_renamed'), 'renameFolder-imap')
+              this.showToast(this.getResourceString('Please_first_select_a_folder_that_needs_to_be_renamed'), 'renameFolder-imap')
               return;
             }
             this.selectType = 'Rename'
@@ -193,7 +193,7 @@ struct FolderPage {
           .fontColor(Color.White)
           .onClick(() => {
             if (!this.selectFolder || this.selectFolder.length < 1) {
-              this.showToast(this.getResourceString('app.string.Please_first_select_a_folder_that_needs_to_be_renamed'), 'renameFolder-imap')
+              this.showToast(this.getResourceString('Please_first_select_a_folder_that_needs_to_be_renamed'), 'renameFolder-imap')
               return;
             }
             this.subBox()
@@ -207,7 +207,7 @@ struct FolderPage {
           .fontColor(Color.White)
           .onClick(() => {
             if (!this.selectFolder || this.selectFolder.length < 1) {
-              this.showToast(this.getResourceString('app.string.Please_first_select_a_folder_that_needs_to_be_renamed'), 'renameFolder-imap')
+              this.showToast(this.getResourceString('Please_first_select_a_folder_that_needs_to_be_renamed'), 'renameFolder-imap')
               return;
             }
             this.unSubBox()
@@ -248,7 +248,7 @@ struct FolderPage {
 
           })
           .parallelGesture(TapGesture().onAction((event) => {
-            this.showToast(this.getResourceString('app.string.Preparing_to_enter_the_folder') + `：${item}`, 'folder-click-imap')
+            this.showToast(this.getResourceString('Preparing_to_enter_the_folder') + `：${item}`, 'folder-click-imap')
             router.pushUrl({
               url: 'pages/MsgListPage',
               params: {
@@ -280,27 +280,27 @@ struct FolderPage {
     const ctx = this;
     try {
       if (!ctx.selectFolder || ctx.selectFolder.length < 1) {
-        ctx.showToast(this.getResourceString('app.string.Please_first_select_a_folder_that_needs_to_be_deleted'), 'renameFolder-imap')
+        ctx.showToast(this.getResourceString('Please_first_select_a_folder_that_needs_to_be_deleted'), 'renameFolder-imap')
         return
       }
-      ctx.showToast(this.getResourceString('app.string.Start_deleting_folder'), 'deleteFolder-imap')
+      ctx.showToast(this.getResourceString('Start_deleting_folder'), 'deleteFolder-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.delBox(ctx.selectFolder, (err:Error) => {
           if (err) {
-            ctx.showToast(this.getResourceString('app.string.Failed_to_delete_folder'), 'deleteFolder-imap')
+            ctx.showToast(this.getResourceString('Failed_to_delete_folder'), 'deleteFolder-imap')
           } else {
             ctx.selectFolder = null;
-            ctx.showToast(this.getResourceString('app.string.Folder_deleted_successfully'), 'deleteFolder-imap')
+            ctx.showToast(this.getResourceString('Folder_deleted_successfully'), 'deleteFolder-imap')
             ctx.refreshFolderList()
           }
         });
       } else {
-        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'MsgList-imap')
+        this.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'MsgList-imap')
         router.back()
       }
 
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Account_login_error') + `：${err.message}`, 'login-smtp')
+      ctx.showToast(this.getResourceString('Account_login_error') + `：${err.message}`, 'login-smtp')
     }
   }
 
@@ -308,28 +308,28 @@ struct FolderPage {
     const ctx = this;
     try {
       if (!ctx.inputValue || ctx.inputValue.length < 1) {
-        ctx.showToast(this.getResourceString('app.string.Please_enter_the_name_of_the_new_folder_first'), 'renameFolder-imap')
+        ctx.showToast(this.getResourceString('Please_enter_the_name_of_the_new_folder_first'), 'renameFolder-imap')
         return
       }
-      ctx.showToast(this.getResourceString('app.string.Start_creating_folder'), 'createFolder-imap')
+      ctx.showToast(this.getResourceString('Start_creating_folder'), 'createFolder-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.addBox(ctx.inputValue, (err:Error) => {
           if (err) {
-            ctx.showToast(this.getResourceString('app.string.Failed_to_create_folder_reason') + `：${err.message}`, 'createFolder-imap')
+            ctx.showToast(this.getResourceString('Failed_to_create_folder_reason') + `：${err.message}`, 'createFolder-imap')
           } else {
             ctx.inputValue = '';
             ctx.textValue = '';
-            ctx.showToast(this.getResourceString('app.string.Folder_created_successfully'), 'createFolder-imap')
+            ctx.showToast(this.getResourceString('Folder_created_successfully'), 'createFolder-imap')
             ctx.refreshFolderList()
           }
         });
       } else {
-        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'createFolder-imap')
+        this.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'createFolder-imap')
         router.back()
       }
 
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Account_login_error') + `：${err.message}`, 'createFolder-smtp')
+      ctx.showToast(this.getResourceString('Account_login_error') + `：${err.message}`, 'createFolder-smtp')
     }
   }
 
@@ -337,33 +337,33 @@ struct FolderPage {
     const ctx = this;
     try {
       if (!ctx.selectFolder || ctx.selectFolder.length < 1) {
-        ctx.showToast(this.getResourceString('app.string.Please_first_select_a_folder_that_needs_to_be_renamed'), 'renameFolder-imap')
+        ctx.showToast(this.getResourceString('Please_first_select_a_folder_that_needs_to_be_renamed'), 'renameFolder-imap')
         return
       }
       if (!ctx.inputValue || ctx.inputValue.length < 1) {
-        ctx.showToast(this.getResourceString('app.string.Please_enter_the_name_of_the_new_folder_first'), 'renameFolder-imap')
+        ctx.showToast(this.getResourceString('Please_enter_the_name_of_the_new_folder_first'), 'renameFolder-imap')
         return
       }
-      ctx.showToast(this.getResourceString('app.string.Start_renaming_folder'), 'renameFolder-imap')
+      ctx.showToast(this.getResourceString('Start_renaming_folder'), 'renameFolder-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.renameBox(ctx.selectFolder, ctx.inputValue, (err:Error, result:Box) => {
           if (err) {
-            ctx.showToast(this.getResourceString('app.string.Renaming_folder_failed_reason') + `：${err.message}`, 'renameFolder-imap')
+            ctx.showToast(this.getResourceString('Renaming_folder_failed_reason') + `：${err.message}`, 'renameFolder-imap')
           } else {
             ctx.selectFolder = null;
             ctx.inputValue = '';
             ctx.textValue = '';
-            ctx.showToast(this.getResourceString('app.string.Renaming_folder_successfully'), 'renameFolder-imap')
+            ctx.showToast(this.getResourceString('Renaming_folder_successfully'), 'renameFolder-imap')
             ctx.refreshFolderList()
           }
         });
       } else {
-        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'renameFolder-imap')
+        this.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'renameFolder-imap')
         router.back()
       }
 
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Account_login_error') + `：${err.message}`, 'renameFolder-smtp')
+      ctx.showToast(this.getResourceString('Account_login_error') + `：${err.message}`, 'renameFolder-smtp')
     }
   }
 
@@ -371,28 +371,28 @@ struct FolderPage {
     const ctx = this;
     try {
       if (!ctx.selectFolder || ctx.selectFolder.length < 1) {
-        ctx.showToast(this.getResourceString('app.string.Please_select_your_email_first'), 'subBox-imap')
+        ctx.showToast(this.getResourceString('Please_select_your_email_first'), 'subBox-imap')
         return
       }
-      ctx.showToast(this.getResourceString('app.string.Subscribe_to_a_folder'), 'subBox-imap')
+      ctx.showToast(this.getResourceString('Subscribe_to_a_folder'), 'subBox-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.subscribeBox(this.selectFolder, (err:Error) => {
           if (err) {
-            ctx.showToast(this.getResourceString('app.string.Subscription_email_failed_reason') + `：${err.message}`, 'subBox-imap')
+            ctx.showToast(this.getResourceString('Subscription_email_failed_reason') + `：${err.message}`, 'subBox-imap')
           } else {
             ctx.inputValue = '';
             ctx.textValue = '';
-            ctx.showToast(this.getResourceString('app.string.Subscription_email_successful'), 'subBox-imap')
+            ctx.showToast(this.getResourceString('Subscription_email_successful'), 'subBox-imap')
             // ctx.refreshFolderList()
           }
         });
       } else {
-        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'subBox-imap')
+        this.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'subBox-imap')
         router.back()
       }
 
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Subscription_email_error') + `：${err.message}`, 'subBox-smtp')
+      ctx.showToast(this.getResourceString('Subscription_email_error') + `：${err.message}`, 'subBox-smtp')
     }
   }
 
@@ -400,41 +400,41 @@ struct FolderPage {
     const ctx = this;
     try {
       if (!ctx.selectFolder || ctx.selectFolder.length < 1) {
-        ctx.showToast(this.getResourceString('app.string.Please_select_your_email_first'), 'unSubBox-imap')
+        ctx.showToast(this.getResourceString('Please_select_your_email_first'), 'unSubBox-imap')
         return
       }
-      ctx.showToast(this.getResourceString('app.string.Unsubscribe_email'), 'unSubBox-imap')
+      ctx.showToast(this.getResourceString('Unsubscribe_email'), 'unSubBox-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.unsubscribeBox(this.selectFolder, (err:Error) => {
           if (err) {
-            ctx.showToast(this.getResourceString('app.string.Unsubscribe_email_failed_reason') + `：${err.message}`, 'unSubBox-imap')
+            ctx.showToast(this.getResourceString('Unsubscribe_email_failed_reason') + `：${err.message}`, 'unSubBox-imap')
           } else {
             ctx.inputValue = '';
             ctx.textValue = '';
-            ctx.showToast(this.getResourceString('app.string.Unsubscribed_email_successfully'), 'unSubBox-imap')
+            ctx.showToast(this.getResourceString('Unsubscribed_email_successfully'), 'unSubBox-imap')
             // ctx.refreshFolderList()
           }
         });
       } else {
-        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'unSubBox-imap')
+        this.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'unSubBox-imap')
         router.back()
       }
 
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Unsubscribe_email_error') + `：${err.message}`, 'unSubBox-smtp')
+      ctx.showToast(this.getResourceString('Unsubscribe_email_error') + `：${err.message}`, 'unSubBox-smtp')
     }
   }
 
   getSubList() {
     const ctx = this;
     try {
-      ctx.showToast(this.getResourceString('app.string.Start_returning_all_files'), 'closeBox-imap')
+      ctx.showToast(this.getResourceString('Start_returning_all_files'), 'closeBox-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.getSubscribedBoxes((err:Error, result:MailBoxes) => {
           if (err) {
-            ctx.showToast(this.getResourceString('app.string.Failed_to_retrieve_files_for_all_active_email_addresses_reason') + `：${err.message}`, 'expungeMail-imap')
+            ctx.showToast(this.getResourceString('Failed_to_retrieve_files_for_all_active_email_addresses_reason') + `：${err.message}`, 'expungeMail-imap')
           } else {
-            ctx.showToast(this.getResourceString('app.string.Successfully_obtained_files_for_all_active_email_addresses'), 'expungeMail-imap')
+            ctx.showToast(this.getResourceString('Successfully_obtained_files_for_all_active_email_addresses'), 'expungeMail-imap')
             ctx.listData = [];
             let keyArr = Object.getOwnPropertyNames(result)
             for (let i = 0; i < keyArr.length; i++) {
@@ -444,15 +444,15 @@ struct FolderPage {
           }
         });
       } else {
-        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'expungeMail-imap')
+        this.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'expungeMail-imap')
         router.back()
       }
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Error_obtaining_files_for_all_active_email_addresses') + `：${err.message}`, 'expungeMail-smtp')
+      ctx.showToast(this.getResourceString('Error_obtaining_files_for_all_active_email_addresses') + `：${err.message}`, 'expungeMail-smtp')
     }
   }
 
   getResourceString(resourceName:string) {
-    return getContext().resourceManager.getStringSync($r(resourceName).id)
+    return getContext().resourceManager.getStringByNameSync(resourceName)
   }
 }

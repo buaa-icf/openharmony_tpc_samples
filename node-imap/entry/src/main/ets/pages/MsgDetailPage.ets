@@ -40,7 +40,7 @@ struct MsgDetailPage {
   aboutToAppear() {
     const ctx = this;
     if (!GlobalObj?.getInstance()?.getClient()) {
-      this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'MsgDetail-imap')
+      this.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'MsgDetail-imap')
       router.back()
       return
     }
@@ -48,7 +48,7 @@ struct MsgDetailPage {
     if (tempParam && tempParam['clickIndex']) {
       ctx.clickIndex = tempParam['clickIndex']
     } else {
-      this.showToast(this.getResourceString('app.string.Email_folder_parameters_not_obtained'), 'MsgDetail-imap')
+      this.showToast(this.getResourceString('Email_folder_parameters_not_obtained'), 'MsgDetail-imap')
       router.back()
       return
     }
@@ -66,11 +66,11 @@ struct MsgDetailPage {
       },
       bodyEndCallback: () => {
         try {
-          ctx.showToast(this.getResourceString('app.string.Successfully_obtained_the_entire_email_body') + `：${'\r\n'}${buffer}`, 'MsgDetail-imap');
+          ctx.showToast(this.getResourceString('Successfully_obtained_the_entire_email_body') + `：${'\r\n'}${buffer}`, 'MsgDetail-imap');
           if (buffer.length > 65535) {
-            ctx.message = this.getResourceString('app.string.Successfully_obtained') + `：${'\r\n'}${buffer.substring(0, 65535)}`
+            ctx.message = this.getResourceString('Successfully_obtained') + `：${'\r\n'}${buffer.substring(0, 65535)}`
           } else {
-            ctx.message = this.getResourceString('app.string.Successfully_obtained_the_entire_email_body') + `：${'\r\n'}${buffer}`
+            ctx.message = this.getResourceString('Successfully_obtained_the_entire_email_body') + `：${'\r\n'}${buffer}`
           }
 
         } catch (err) {
@@ -113,6 +113,6 @@ struct MsgDetailPage {
   }
 
   getResourceString(resourceName:string) {
-    return getContext().resourceManager.getStringSync($r(resourceName).id)
+    return getContext().resourceManager.getStringByNameSync(resourceName)
   }
 }
