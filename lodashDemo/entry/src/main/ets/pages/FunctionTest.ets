@@ -30,14 +30,14 @@ struct Index {
 
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
-      Button('返回新的有上限的函数')
+      Button($r('app.string.Return_upper_limit'))
         .onClick(() => {
           //[6,8,10]
           let array: number[] = map(['6', '8', '10'], ary(parseInt, 1))
           console.log('返回新的有上限的函数' + JSON.stringify(array));
         }).margin(10);
 
-      Button('返回新的柯里化（curry）函数')
+      Button($r('app.string.Return_curry_function'))
         .onClick(() => {
           let abc = (a: number, b: number ,c: number) => {
             return [a, b, c];
@@ -48,7 +48,7 @@ struct Index {
           console.log('返回新的柯里化（curry）函数' + JSON.stringify(curryFunction));
         }).margin(10)
 
-      Button('返回新的去抖动函数')
+      Button($r('app.string.Return_debounce_function'))
         .onClick(() => {
           let debounce_fun: Function = debounce( ()=>{
             console.log('去抖动函数: Function debounced after 1000ms!');
@@ -56,7 +56,7 @@ struct Index {
           debounce_fun()
         }).margin(10)
 
-      Button('延迟wait毫秒后调用 func,返回计时器id')
+      Button($r('app.string.Call_func_after'))
         .onClick(() => {
           let delayId: number = delay( (text: string) => {
             console.log('一秒后输出参数: '+text);

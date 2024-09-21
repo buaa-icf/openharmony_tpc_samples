@@ -29,30 +29,32 @@ import { chunk, compact, uniq, union } from "lodash";
 struct Index {
   private sampleArray = [1, 'a', 4, 7, 9, 's', 'r',2, 5, 'o', 's', 'p', 34, 'k'];
   @State resultArray: number[] = [];
-
+  getResourceString(res: Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
-      Text("显示运行结果:" + JSON.stringify(this.resultArray))
-      Button('将数组拆分成多个长度的区块，组成一个新数组')
+      Text(this.getResourceString($r('app.string.Display_running_results')) + JSON.stringify(this.resultArray))
+      Button($r('app.string.Split_the_array'))
          .onClick(() => {
           this.resultArray = chunk(this.sampleArray, 5)
           console.log('chunk:' + JSON.stringify(this.resultArray))
         }).margin(10)
 
       //false, null,0, "", undefined, 和 NaN 都是被认为是“假值”
-      Button('将数组过滤掉假值組成新数组')
+      Button($r('app.string.Filter_out_false'))
         .onClick(() => {
           this.resultArray = compact([0, undefined, 1, false, 2, '', 3, true, null])
           console.log('compact:' + JSON.stringify(this.resultArray))
         }).margin(10)
 
-      Button('展示去重后的数组')
+      Button($r('app.string.Display_the_array'))
         .onClick(() => {
           this.resultArray = uniq([12,2,3,2,1,2,2,1,1,3,4])
           console.log('[12,2,3,2,1,2,2,1,1,3,4] uniq:' + JSON.stringify(this.resultArray));
         }).margin(10)
 
-      Button('展示合并多个数组后新生成的数组')
+      Button($r('app.string.Display_the_newly'))
         .onClick(() => {
           this.resultArray = union([12,2,6,1],[3,2,1,3,4,6,2],[2,1])
           console.log('[12,2,6,1],[3,2,1,3,4,6,2],[2,1] union:' + JSON.stringify(this.resultArray))

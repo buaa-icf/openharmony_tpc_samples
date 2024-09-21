@@ -30,21 +30,21 @@ struct Index {
 
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
-      Button('获取限制在一个区间之间的值')
+      Button($r('app.string.Get_values_limited'))
         .onClick(() => {
           let numberClamp: number = clamp(10, -5, 5);
           // => 5
           console.log('限制在一个区间之间的值：' + numberClamp);
         }).margin(10);
 
-      Button('检查一个数值是否在某一区间之内')
+      Button($r('app.string.Check_certain_range'))
         .onClick(() => {
           let isRange: boolean = inRange(3, 2, 4);
           // => true
           console.log('检查一个数值是否在某一区间之内：' + isRange);
         }).margin(10)
 
-      Button('产生一个包括某一区间之间的数')
+      Button($r('app.string.Generate_certain_intervals'))
         .onClick(() => {
           let randomNumber: number = random(0, 5);
           // => an integer between 0 and 5

@@ -41,7 +41,7 @@ struct Index {
 
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
-      Button('将非数组数组强制转为数组')
+      Button($r('app.string.Force_non_array'))
         .onClick(() => {
           let array1: number[] = castArray({ 'a': 1 });
           // => [{ 'a': 1 }]
@@ -51,14 +51,14 @@ struct Index {
           console.log('强制转化后的型数组:' + JSON.stringify(array1)+ ' ' + JSON.stringify(array2));
         }).margin(10);
 
-      Button('获取拷贝后的值')
+      Button($r('app.string.Obtain_the_copied'))
         .onClick(() => {
           let objects = [{ a: 1 } as cloneObject, { b: 2 } as bObject];
           let shallow: ESObject = clone(objects);
           console.log('拷贝后的值：' + JSON.stringify(shallow));
         }).margin(10)
 
-      Button('比较两者的值')
+      Button($r('app.string.Compare_the_values'))
         .onClick(() => {
           let object: A = { a: 1 };
           let other: A = { a: 1 };
@@ -70,14 +70,14 @@ struct Index {
           console.log('比较两者的值,两个值相等返回true,否则返回false: ' + eqs1+ ' ' + eqs2);
         }).margin(10)
 
-      Button('检查值是否是ArrayBuffer对象')
+      Button($r('app.string.Check_if_the_value'))
         .onClick(() => {
           let arrayBuffer: boolean = isArrayBuffer(new ArrayBuffer(2));
           // => true
           console.log('检查值是否是ArrayBuffer对象: ' + arrayBuffer);
         }).margin(10)
 
-      Button('检查值是否是原始Number数值型或者对象')
+      Button($r('app.string.Check_an_object'))
         .onClick(() => {
           let isNumber1: boolean = isNumber(3);
           // => true
