@@ -19,15 +19,15 @@ import router from '@ohos.router';
 struct Index {
   build() {
     Column() {
-      Button('ws connection').onClick((v) => {
+      Button($r('app.string.ws_connection')).onClick((v) => {
         router.pushUrl({ url: "pages/WebSocketPage" })
       }).margin({ top: px2vp(50) })
 
-      Button('tcp connection').onClick((v) => {
+      Button($r('app.string.tcp_connection')).onClick((v) => {
         router.pushUrl({ url: "pages/TcpSocketPage" })
       }).margin({ top: px2vp(50) })
 
-      Button('tls connection').onClick((v) => {
+      Button($r('app.string.tls_connection')).onClick((v) => {
         router.pushUrl({ url: "pages/TlsSocketPage" })
       }).margin({ top: px2vp(50) })
     }

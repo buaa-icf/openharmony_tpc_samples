@@ -1,73 +1,71 @@
 # @ohos/xmpp_client
 
-## 简介
+## Introduction
 
->本软件是参照开源软件[@xmpp/client](https://github.com/xmppjs/xmpp.js) 是一个用于构建基于XMPP（可扩展通讯和即时消息传递协议）的客户端的 库。XMPP是一种开放标准的通信协议，通常用于实现即时通讯和在线实时交流。
+>Based on the open-source software [@xmpp/client](https://github.com/xmppjs/xmpp.js), this project provides OpenHarmony with a library for creating Extensible Messaging and Presence Protocol (XMPP) clients. XMPP is an open, standardized protocol used for instant messaging and online real-time communication.
 
-## 已支持功能
+## Supported Features
 
-- xmpp与服务端建立连接
-- xmpp与服务端重连
-- xmpp与服务器断连
-- xmpp与服务端进行通讯
-- xmpp监听登录状态回调
-- xmpp监听错误回调
-- xmpp监听当前状态回调
+- Connecting the XMPP client to the XMPP server
+- Reconnecting the XMPP client to the XMPP server
+- Disconnecting the XMPP client from the XMPP server
+- Communication with the XMPP server.
+- Listening for the XMPP client login status
+- Listening for XMPP client errors
+- Listening for the XMPP client status
 
-## 下载安装
-1. 参考安装教程 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+## How to Install
+1. [Install an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-2. 安装命令如下：
+2. Run the installation command:
 
-```
- ohpm install @ohos/xmpp_client
-```
+   ```
+    ohpm install @ohos/xmpp_client
+   ```
 
-## 需要权限
+## Required Permissions
 
 ```
 ohos.permission.INTERNET
 ohos.permission.GET_NETWORK_INFO
 ```
 
-## 接口和属性列表
+## Available APIs
 
-接口列表
+APIs
 
-| **接口**                                | 参数                | 功能                       |
+| Name                               | Parameter               | Description                      |
 | --------------------------------------- | ------------------- | -------------------------- |
-| let xmpp=client(options:Options)        | Options：连接配置项 | 配置连接参数               |
-| xmpp.on('error',(err)=>{})              | 'error':string      | 监听错误信息回调           |
-| xmpp.on('online',async(address)=>{})    | 'online':string     | 监听在线信息回调           |
-| xmpp.on('status',（status，value）=>{}) | 'status':string     | 监听状态，回调给出当前状态 |
-| xmpp.on('stanza',(stanza)=>{})          | 'stanza':string     | 监听消息以及其他操作       |
-| xmpp.start()                            | 无                  | 开始连接                   |
-| xmpp.send(xml({}))                      | xml:xml实例         | 以xml格式的方式发送消息    |
-| xmpp.stop()                             | 无                  | 断开连接                   |
+| let xmpp=client(options:Options)        | `Options`: connection parameters.| Configures connection parameters.              |
+| xmpp.on('error',(err)=>{})              | 'error':string      | Listens for errors.          |
+| xmpp.on('online',async(address)=>{})    | 'online':string     | Listens for online information.          |
+| xmpp.on('status', (status, value) =>{})| 'status':string     | Listens for the client status.|
+| xmpp.on('stanza',(stanza)=>{})          | 'stanza':string     | Listens for messages and other operations.      |
+| xmpp.start()                            | N/A                 | Starts a connection.                  |
+| xmpp.send(xml({}))                      | `xml`: an XML instance.        | Sends a message in XML format.   |
+| xmpp.stop()                             | N/A                 | Stops a connection.                  |
 
+## Example
 
+xmpp is an XMPP-based communication library and requires a connection to the XMPP server. In the local test, Openfire is used as the XMPP server, and Spark is used as the client. Spark is an open-source and cross-platform instant messaging client that provides rich XMPP-compliant instant messaging features and easy-to-use UIs.
 
-## 使用示例
+### Configuring Openfire
 
-因为xmpp是基于XMPP协议的通信库，所以应连接基于XMPP协议的服务器，本地测试选用的是openfire作为xmpp测试服务端，需要测试通讯功需要用到Spark(Spark 是一个开源的、跨平台的即时通讯客户端，基于 XMPP 协议，提供了丰富的即时通讯功能和易用的用户界面)。
+(1) Download Openfire that suits your operating system from the [official website] https://www.igniterealtime.org/projects/openfire/.
 
-### 配置openfire
+(2) Select `Server Settings` (Use the default value. If no external database is configured for the database, select `Embedded Database`).
 
-（1）访问Openfire官网：https://www.igniterealtime.org/projects/openfire/，选择合适的操作系统进行下载。
+(3) Log in to the [Openfire management page] (http://localhost:9090/login.jsp).
 
-（2）选择服务器设置（选默认.注意数据库如果没有配置外部数据库，则选嵌入式数据库）。
+(4) Log in as user `admin`, and click `Server Settings` to view the name and host name of the server.
 
-（6）登录到：[Openfire 管理界面。](http://localhost:9090/login.jsp)
+(5) On the `Users/Groups` tab page, click `Create User` and enter user information.
 
-（7）用amdin账户登录，选择服务器设置，可以查看此服务器的名称、主机名。
+### Using Spark
 
-（8）选择用户/用户群->新建用户->输入用户信息。
+(1) Download Spark that suits your operating system from [Ignite Realtime: Spark IM Client](https://www.igniterealtime.org/projects/spark/).
 
-### 使用spark
-
-（1）下载地址：[Ignite Realtime: Spark IM Client](https://www.igniterealtime.org/projects/spark/) 下载合适操作系统软件。
-
-（2）使用刚在openfire中的新建的用户进行登录
+(2) Log in as the new user created in Openfire.
 
 ```
 import { client,Client, xml, Options } from '@ohos/xmpp_client';
@@ -81,14 +79,14 @@ struct WebSocketPage {
   @State sendMessage: string = ""
   @State contact: string = ""
   private options: Options = {
-    service: 'ws://xx.xx.xx.xx:xxxx/ws', //xx.xx.xx.xx(服务器地址) xxxx 服务端口
-    domain: 'xx.xx.xx.xx',               //服务器名称(xx.xx.xx.xx)
-    resource: 'xx.xx.xx.xx',             //主机名(默认为服务器地址)
-    username: "xxx",					 //openfire注册用户的用户名
-    password: "xxx"				         //openfire注册的用户密码
+    service: 'ws://xx.xx.xx.xx:xxxx/ws', // xx.xx.xx.xx (server address) xxxx port
+    domain: 'xx.xx.xx.xx',               // Server name (xx.xx.xx.xx)
+    resource: 'xx.xx.xx.xx',             // Host name (server address by default)
+    username: "xxx",					 // Username of the user created in Openfire
+    password: "xxx"				         // Password of the user created in Openfire
   }
   
-  private xmpp = client(this.options); //创建xmpp实例
+  private xmpp = client (this.options); // Create an xmpp instance.
 
   private onError = (err: Error) => {
     console.info('xmpp-❌', JSON.stringify(err.message));
@@ -150,19 +148,19 @@ struct WebSocketPage {
   build() {
     Row() {
       Column() {
-        Text("当前状态：" + this.status)
+        Text("Status: "+ this.status)
           .fontSize(30)
           .fontWeight(FontWeight.Bold)
-        Text("收到消息：" + this.message)
+        Text("Message received: "+ this.message)
           .fontSize(30)
           .fontWeight(FontWeight.Bold)
           .margin({ top: 30 })
-        Button("连接").fontSize(30)
+        Button("Connect").fontSize (30)
           .width("60%")
           .onClick(() => {
             this.xmpp.start();
           }).margin({ top: 30 })
-        TextInput({ placeholder: "请输入消息" })
+        TextInput({ placeholder: "Enter a message" })
           .margin({ top: 30 })
           .fontSize(30)
           .width("60%")
@@ -171,14 +169,14 @@ struct WebSocketPage {
             this.sendMessage = value;
           })
 
-        Button("发送").fontSize(30)
+        Button("Send").fontSize(30)
           .width("60%")
           .onClick(() => {
             const message = xml("message", { type: "chat", to: this.contact }, xml("body", {}, this.sendMessage));
             this.xmpp.send(message)
           }).margin({ top: 30 })
       
-        Button("断开").fontSize(30)
+        Button("Disconnect").fontSize(30)
           .width("60%")
           .onClick(() => {
             try {
@@ -196,33 +194,35 @@ struct WebSocketPage {
 
 ```
 
-## 使用说明
+## How to Use
 
-### xmppAPI
+### xmpp APIs
 
-#### 通过配置client参数创建xmpp实例
+#### Creating an xmpp Instance by Setting the client Parameters
 
 ##### xmpp=client(options)
-##### 下面options中service属性值中xmpp可替换为xmpps、xmpp、ws、wss
-- xmpp对应tcpSocket连接,例如:xmpp://xxxx:xxxx
-- xmpps对应tlsSocket连接,也就是加密连接,服务端需验证ca证书,例如:xmpps://xxxx:xxxx
-- ws对应webSocket连接,例如:ws://xxxx:xxxx/ws/
-- wss对应webSocket加密连接,服务端需验证ca证书,例如:wss://xxxx:xxxx/ws/
+##### In the following `Options`, `xmpp` in the value of `service` can be replaced with `xmpps`, `xmpp`, `ws`, or `wss`.
+- `xmpp` corresponds to a TCP Socket connection, for example, xmpp://xxxx:xxxx.
+- `xmpps` corresponds to a TLS Socket connection, for example, xmpps://xxxx:xxxx. (This is an encrypted connection, and the server needs to verify the CA certificate.)
+- `ws` corresponds to a WebSocket connection, for example, ws://xxxx:xxxx/ws/.
+- `wss` corresponds to an encrypted WebSocket connection, for example, wss://xxxx:xxxx/ws/. (This is an encrypted connection, and the server needs to verify the CA certificate.)
 ```
  private options: Options = {
-    service: 'xmpp://xx.xx.xx.xx:xxxx/', //xx.xx.xx.xx(服务器地址) xxxx 服务端口
-    domain: 'xx.xx.xx.xx',               //服务器名称(xx.xx.xx.xx)
-    resource: 'xx.xx.xx.xx',             //主机名(默认为服务器地址)
-    username: "xxx",					 //openfire注册用户的用户名
-    password: "xxx"				         //openfire注册的用户密码
+    service: 'xmpp://xx.xx.xx.xx:xxxx/', // xx.xx.xx.xx (server address) xxxx port
+    domain: 'xx.xx.xx.xx',               // Server name (xx.xx.xx.xx)
+    resource: 'xx.xx.xx.xx',             // Host name (server address by default)
+    username: "xxx",					 // Username of the user created in Openfire
+    password: "xxx"				         // Password of the user created in Openfire
   }
-  private xmpp = client(this.options); //创建xmpp实例
+  private xmpp = client (this.options); // Create an xmpp instance.
 ```
 
-#### 监听错误回调
+#### Listening for Errors
 
-为方便起见，为所有支持的请求方法提供了别名。
-异常监听
+For convenience, aliases are provided for all supported request methods.
+
+Listen for errors.
+
 ```
   private onError = (err: Error) => {
     console.info('xmpp-❌', JSON.stringify(err.message));
@@ -230,8 +230,8 @@ struct WebSocketPage {
   
   this.xmpp.on('error', this.onError);
 ```
-状态监听
-#### 监听状态回调
+Status Listening
+#### Listening for the Status
 
 ```
  private onStatus = (status: string, value: string) => {
@@ -241,9 +241,9 @@ struct WebSocketPage {
   this.xmpp.on('status', this.onStatus);
 ```
 
-- message（消息）
+- message
 
-- presence（在线状态）
+- presence
 
   ```
    
@@ -265,53 +265,51 @@ struct WebSocketPage {
   this.xmpp.on('stanza',this.onStanza)
   ```
 
-#### 发送消息
+#### Sending Messages
 
 xmpp.send(xml)
 
 ```
 const message = xml("message", { type: "chat", to: "JID" }, xml("body", {}, this.sendMessage));
-//此示例为 message：这条xml发送一条消息，类型chat是聊天，to后跟的参数为JID，"body"后为要发送的信息
+// message is used as an example. This XML message sends a message of the chat type. The to parameter is set to JID, and the information following body is the message to send.
 ```
 
+#### Error Codes
 
+Error constants
 
-#### 错误码
-
-- 错误常量
-
-| 名称                   | 参数类型 | 可读 | 可写 | 说明           |
+| Name                  | Type| Readable| Writable| Description          |
 | ---------------------- | -------- | ---- | ---- | -------------- |
-| Address already in use | number   | 是   | 否   | 地址已经被使用 |
-| Connection timed out   | number   | 是   | 否   | 连接超时       |
-| Parameter error        | number   | 是   | 否   | 参数错误       |
-| Permission denied      | number   | 是   | 否   | 没有权限       |
+| Address already in use | number   | Yes  | No  | The address is in use.|
+| Connection timed out   | number   | Yes  | No  | The connection times out.      |
+| Parameter error        | number   | Yes  | No  | Invalid parameter.      |
+| Permission denied      | number   | Yes  | No  | Permission denied.      |
 
 
-## 目录结构
+## Directory Structure
 ````
 |---- @ohos/xmpp_client
-|     |---- entry  # 示例代码文件夹
+|     |---- entry  # Sample code
 |           |---- src  
-|                   |---- main  #sample示例代码
-|                   |---- ohosTest  #xts示例代码
-|     |---- library  # 功能库文件夹
-|           |---- index.js  # 主入口文件
-|           |---- index.d.ts  # 主对外接口声明文件
-|     |---- README.md  # 安装使用方法                    
+|                   |---- main  # Sample code
+|                   |---- ohosTest  # xts code
+|     |---- library  # Function library folder
+|           |---- index.js  # Main entry file
+|           |---- index.d.ts  # Main declaration file of the external APIs
+|     |---- README.md  # Readme                   
 ````
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+This project has been verified in the following version:
 
-- DevEco Studio 版本： 5.0.3.200 OpenHarmony SDK:API12 (5.0.0.21-Canary2)
+DevEco Studio: 5.0.3.200, OpenHarmony SDK: API 12 (5.0.0.21-Canary2)
 
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提[Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们提[PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem during the use, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-本项目基于ISC，请自由地享受和参与开源。
+This project is licensed under the terms of the ISC license.

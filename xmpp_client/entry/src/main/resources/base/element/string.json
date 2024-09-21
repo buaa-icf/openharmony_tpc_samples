@@ -11,6 +11,42 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "ws_connection",
+      "value": "ws connection"
+    },
+    {
+      "name": "tcp_connection",
+      "value": "tcp connection"
+    },
+    {
+      "name": "tls_connection",
+      "value": "tls connection"
+    },
+    {
+      "name": "Current_state",
+      "value": "Current state： "
+    },
+    {
+      "name": "Receive_a_message",
+      "value": "Receive a message： "
+    },
+    {
+      "name": "connect",
+      "value": "connect"
+    },
+    {
+      "name": "Please_enter_a_message",
+      "value": "Please enter a message"
+    },
+    {
+      "name": "sending",
+      "value": "sending"
+    },
+    {
+      "name": "disconnect",
+      "value": "disconnect"
     }
   ]
 }
