@@ -11,6 +11,122 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "The_copy_result_is",
+      "value": "The copy result is："
+    },
+    {
+      "name": "Basic_data_type_copy",
+      "value": "Basic data type copy"
+    },
+    {
+      "name": "Ordinary_deep_copy",
+      "value": "Ordinary deep copy"
+    },
+    {
+      "name": "function_deep_copy",
+      "value": "function deep copy"
+    },
+    {
+      "name": "Dark_and_light_copy_comparison",
+      "value": "Dark and light copy comparison"
+    },
+    {
+      "name": "Cycle_copy_comparison",
+      "value": "Cycle copy comparison"
+    },
+    {
+      "name": "multilayer_attributes",
+      "value": "Comparison of dark and shallow copies of multi-layer attributes"
+    },
+    {
+      "name": "Before_copying",
+      "value": "Before copying"
+    },
+    {
+      "name": "After_copying",
+      "value": "After copying"
+    },
+    {
+      "name": "Shallow_outObj_Object_assign",
+      "value": "Shallow copy outObj via Object.assign"
+    },
+    {
+      "name": "Get_newObj",
+      "value": "Get newObj, change the properties of newObj, and observe whether the properties of the source object outObj change："
+    },
+    {
+      "name": "Deep_cloneDeep",
+      "value": "Deep copy outObj1 through cloneDeep"
+    },
+    {
+      "name": "Get_deep",
+      "value": "Get deep, change the properties of deep, and observe whether the properties of the source object outObj1 change："
+    },
+    {
+      "name": "observe_Obj",
+      "value": "Get newObj, change the properties of newObj, and observe whether the properties of the source object outObj change："
+    },
+    {
+      "name": "After_shallow",
+      "value": "After shallow copying, get newObj, change the properties of newObj, and observe the properties of the source object obj"
+    },
+    {
+      "name": "After_deep_copying",
+      "value": "After deep copying, get newObj1, change the properties of newObj1, and observe the properties of the source object obj1"
+    },
+    {
+      "name": "LiXiaoyao",
+      "value": "Li Xiaoyao"
+    },
+    {
+      "name": "WangFugui",
+      "value": "Wang Fugui"
+    },
+    {
+      "name": "Add_Vue",
+      "value": "Add Vue to the object obj2 obtained after shallow copying in skills, and check the properties of obj1. The result is："
+    },
+    {
+      "name": "object_obtained",
+      "value": "The properties of the new object obtained"
+    },
+    {
+      "name": "Add_React",
+      "value": "Add React to the object obj2 obtained after deep copying, and check the attributes of obj1. The result is："
+    },
+    {
+      "name": "Without_copying",
+      "value": "Without copying, the result of printing the circular reference directly is："
+    },
+    {
+      "name": "circular_reference_error",
+      "value": "Without copying, circular reference error:"
+    },
+    {
+      "name": "Using_deep_copy",
+      "value": "Using deep copy, the result of printing the circular reference directly is："
+    },
+    {
+      "name": "circular_reference",
+      "value": "Using deep copy, circular reference error："
+    },
+    {
+      "name": "Shallow_Object_assign",
+      "value": "Shallow copy origin through Object.assign"
+    },
+    {
+      "name": "ZhangSan",
+      "value": "Zhang San"
+    },
+    {
+      "name": "LiSi",
+      "value": "Li Si"
+    },
+    {
+      "name": "Deep_copy_cloneDeep",
+      "value": "Deep copy outObj1 through cloneDeep"
     }
   ]
 }
