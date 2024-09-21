@@ -14,23 +14,23 @@
     },
     {
       "name": "matching_search",
-      "value": "Enter a paragraph that can be relied upon for the next matching search ↓"
+      "value": "输入一个可依据的段落进行下一步的匹配搜索 ↓"
     },
     {
       "name": "paragraph_above",
-      "value": "Only one search content can be entered at a time. Please enter the content that is related to the paragraph above ↓"
+      "value": "单次只可输入一个搜索内容，请输入与上边段落被包含关系的内容 ↓"
     },
     {
       "name": "content_index",
-      "value": "Search for specified content index"
+      "value": "搜索指定内容索引"
     },
     {
       "name": "paragraph_content",
-      "value": "Please enter the original paragraph content"
+      "value": "请输入原始段落内容"
     },
     {
       "name": "the_keyword_searched",
-      "value": "Please enter the keyword to be searched"
+      "value": "请输入待搜索关键字"
     }
   ]
 }

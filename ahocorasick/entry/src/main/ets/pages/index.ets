@@ -40,7 +40,7 @@ struct Index {
 
   build() {
     Column() {
-      Text("输入一个可依据的段落进行下一步的匹配搜索 ↓").textFancy(12, Color.Green, true).margin(10)
+      Text($r('app.string.matching_search')).textFancy(12, Color.Green, true).margin(10)
       TextInput({ placeholder: '', text: this.statement })
         .onChange((value: string) => {
           this.statement = value;
@@ -49,7 +49,7 @@ struct Index {
         .margin(15)
 
 
-      Text("单次只可输入一个搜索内容，请输入与上边段落被包含关系的内容 ↓").textFancy(12, Color.Green, true).margin(10)
+      Text($r('app.string.paragraph_above')).textFancy(12, Color.Green, true).margin(10)
       TextInput({ placeholder: '', text: this.formulate_statement })
         .onChange((value: string) => {
           this.formulate_statement = value;
@@ -58,17 +58,17 @@ struct Index {
         .margin(15)
 
       Button() {
-        Text('搜索指定内容索引').textFancy(13, Color.White, false)
+        Text($r('app.string.content_index')).textFancy(13, Color.White, false)
       }
       .buttonFancy()
       .onClick(() => {
         if (!this.statement) {
-          promptAction.showToast({ message: "请输入原始段落内容" })
+          promptAction.showToast({ message: $r('app.string.paragraph_content') })
           this.resultText = "";
           return;
         }
         if (!this.formulate_statement) {
-          promptAction.showToast({ message: "请输入待搜索关键字" })
+          promptAction.showToast({ message: $r('app.string.the_keyword_searched') })
           this.resultText = "";
           return;
         }
