@@ -37,7 +37,9 @@ struct Index {
   @State public SourceMapGenerator: string = ""
   @State public SourceMapConsumer: boolean = true
   @State public SourceNode: String = ''
-
+  getResourceString(res: Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
   build() {
     Row() {
       Column() {
@@ -53,7 +55,7 @@ struct Index {
           .onClick(() => {
             this.generatorClick()
           })
-        Text("结果 :" + this.SourceMapGenerator)
+        Text(this.getResourceString($r('app.string.result')) + this.SourceMapGenerator)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
           .margin({ top: "30px" })
@@ -66,7 +68,7 @@ struct Index {
           .onClick(() => {
             this.consumingClick()
           })
-        Text("结果 :" + this.SourceMapConsumer)
+        Text(this.getResourceString($r('app.string.result')) + this.SourceMapConsumer)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
           .margin({ top: "30px" })
@@ -79,7 +81,7 @@ struct Index {
           .onClick(() => {
             this.nodeClick()
           })
-        Text("结果 :" + this.SourceNode)
+        Text(this.getResourceString($r('app.string.result')) + this.SourceNode)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
           .margin({ top: "30px" })
