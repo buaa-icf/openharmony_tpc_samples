@@ -10,7 +10,47 @@
     },
     {
       "name": "EntryAbility_label",
-      "value": "label"
+      "value": "node-rules"
+    },
+    {
+      "name": "text_cascading_tips",
+      "value": "Currently, the application name restriction is: mob. If you enter mob, it will show: It was from a mobile device too, and the Card type is: debit"
+    },
+    {
+      "name": "text_multiple_tips",
+      "value": "Currently the transactionTotal rule blocks values less than 500 and the Card type is debit"
+    },
+    {
+      "name": "text_priority_tips",
+      "value": "This page tests priority, and applies rules to the order of facts. The Card type is: debit. The card test sets the priority to 10, which is high, and will verify the facts first."
+    },
+    {
+      "name": "text_recurssion_tips",
+      "value": "Test the execution cycle within 10 times, test the restart interface, etc."
+    },
+    {
+      "name": "text_simple_tips",
+      "value": "The current transactionTotal rule blocks values that are less than: 500"
+    },
+    {
+      "name": "button_see_rules",
+      "value": "Check whether the rules are met"
+    },
+    {
+      "name": "text_test_result",
+      "value": "Test result: The current page rule is not a combination verification, and the result only affects the Card type."
+    },
+    {
+      "name": "text_mixed_rules",
+      "value": "Testing multiple rule mixes"
+    },
+    {
+      "name": "text_run",
+      "value": "Run"
+    },
+    {
+      "name": "text_result",
+      "value": "Test result: "
     }
   ]
 }
