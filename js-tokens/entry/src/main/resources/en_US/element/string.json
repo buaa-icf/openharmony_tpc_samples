@@ -14,15 +14,15 @@
     },
     {
       "name": "Text_String1",
-      "value": "该库核心功能：分词器，就是按字符类型将词分开，---------------------------------（重点：按类型分词，看Readme类型规则），包括各种特殊字符！分完词后给出类型和值，Key-Value形式存在"
+      "value": "The core function of this library is a tokenizer, which separates words by character type, including various special characters! After dividing the words, provide the type and value, and the Key Value form exists"
     },
     {
       "name": "Input_string",
-      "value": "输入任意类型字符"
+      "value": "Enter any type of character"
     },
     {
       "name": "Text_String2",
-      "value": "type 字符表情分词含表情符"
+      "value": "Type character emoticon segmentation with emoticons"
     }
   ]
 }
