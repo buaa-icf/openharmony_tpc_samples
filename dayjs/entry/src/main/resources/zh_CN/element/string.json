@@ -11,6 +11,78 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Parse_get_timestamp",
+      "value": "解析无分隔符的时间，得到时间戳"
+    },
+    {
+      "name": "Parse_timestamp",
+      "value": "解析带-的时间，得到时间戳"
+    },
+    {
+      "name": "Parse_hours_and_minutes",
+      "value": "解析带时分的时间"
+    },
+    {
+      "name": "Parse_hours_minutes_and_seconds",
+      "value": "解析带时分秒的时间"
+    },
+    {
+      "name": "Parse_hours_minutes_seconds_milliseconds",
+      "value": "解析带时分秒毫秒的时间"
+    },
+    {
+      "name": "Get_timestamp",
+      "value": "获取时间戳"
+    },
+    {
+      "name": "Get_current_second",
+      "value": "获取当前秒"
+    },
+    {
+      "name": "Get_current_points",
+      "value": "获取当前分"
+    },
+    {
+      "name": "Get_current_tense",
+      "value": "获取当前时"
+    },
+    {
+      "name": "Get_current_day",
+      "value": "获取当前日"
+    },
+    {
+      "name": "Get_the_current_week",
+      "value": "获取当前周"
+    },
+    {
+      "name": "Get_the_current_month",
+      "value": "获取当前月"
+    },
+    {
+      "name": "Get_the_current_year",
+      "value": "获取当前年"
+    },
+    {
+      "name": "Get_year_through_get",
+      "value": "通过get方式获取当前年"
+    },
+    {
+      "name": "Get_year_through_Set",
+      "value": "通过set方式设置当前年"
+    },
+    {
+      "name": "Current_day_forward",
+      "value": "当前日期往前一天"
+    },
+    {
+      "name": "One_day_after_current",
+      "value": "当前日期往后一天"
+    },
+    {
+      "name": "describe",
+      "value": "描述"
     }
   ]
 }

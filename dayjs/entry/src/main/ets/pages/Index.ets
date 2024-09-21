@@ -17,14 +17,13 @@ import dayjs from "dayjs";
 
 import customParseFormat from "dayjs/plugin/customParseFormat"
 import * as ns from  'dayjs/locale/zh-cn';
-import router from '@ohos.router';
 
 dayjs.extend(customParseFormat)
-dayjs.locale("zh-cn")
+
 interface ApiItem {
   apiName: string;
   func: () => void;
-  des?:string;
+  des?: Resource;
 }
 
 interface ModuleItem {
@@ -37,21 +36,21 @@ let apisIndex:Array<ModuleItem>=[
     examples: [
       {
         apiName: "dayjs('20130108').valueOf()",
-        des:"解析无分隔符的时间，得到时间戳",
+        des:$r('app.string.Parse_get_timestamp'),
         func: () => {
           showMessage(dayjs('20130108').valueOf().toString())
         }
       },
       {
         apiName: "dayjs( '2018-04-24').valueOf()",
-        des:"解析带-的时间，得到时间戳",
+        des:$r('app.string.Parse_timestamp'),
         func: () => {
           showMessage(dayjs( '2018-04-24').valueOf().toString())
         }
       },
       {
         apiName: "dayjs('2018-04-24 11:12').format()",
-        des:"解析带时分的时间",
+        des:$r('app.string.Parse_hours_and_minutes'),
         func: () => {
           showMessage(dayjs('2018-04-24 11:12').format())
         }
@@ -59,21 +58,15 @@ let apisIndex:Array<ModuleItem>=[
 
       {
         apiName: "dayjs( '2018-05-02 11:12:13').valueOf()",
-        des:"解析带时分秒的时间",
+        des:$r('app.string.Parse_hours_minutes_and_seconds'),
         func: () => {
           showMessage(dayjs( '2018-05-02 11:12:13').valueOf().toString())
         }
       },
-      {
-        apiName: "dayjs().toJSON()",
-        des:"通过同toJSON获取当前时间",
-        func: () => {
-          showMessage(dayjs().toJSON())
-        }
-      },
+
       {
         apiName: "dayjs('2018-05-02 11:12:13.998').valueOf()",
-        des:"解析带时分秒毫秒的时间",
+        des:$r('app.string.Parse_hours_minutes_seconds_milliseconds'),
         func: () => {
           showMessage(dayjs('2018-05-02 11:12:13.998').valueOf().toString())
 
@@ -81,119 +74,84 @@ let apisIndex:Array<ModuleItem>=[
       },
       {
         apiName: "dayjs( '2018-4-1').valueOf()",
-        des:"获取时间戳",
+        des:$r('app.string.Get_timestamp'),
         func: () => {
           showMessage(dayjs( '2018-4-1').valueOf().toString())
         }
       },
       {
         apiName: "dayjs().second()",
-        des:"获取当前秒",
+        des:$r('app.string.Get_current_second'),
         func: () => {
           showMessage(dayjs().second() + "")
         }
       },
       {
         apiName: "dayjs().minute()",
-        des:"获取当前分",
+        des:$r('app.string.Get_current_points'),
         func: () => {
           showMessage(dayjs().minute() + "")
         }
       },
       {
         apiName: "dayjs().hour()",
-        des:"获取当前时",
+        des:$r('app.string.Get_current_tense'),
         func: () => {
           showMessage(dayjs().hour() + "")
         }
       },
       {
         apiName: "dayjs().date()",
-        des:"获取当前日",
+        des:$r('app.string.Get_current_day'),
         func: () => {
           showMessage(dayjs().date().toString())
         }
       },
       {
         apiName: "dayjs().day()",
-        des:"获取当前周",
+        des:$r('app.string.Get_the_current_week'),
         func: () => {
           showMessage(dayjs().day() + "")
         }
       },
       {
-        apiName: "dayjs().day(5).day()",
-        des:"获取指定周五",
-        func: () => {
-          showMessage(dayjs().day(5).day() + "")
-        }
-      },
-      {
         apiName: "dayjs().month()",
-        des:"获取当前月",
+        des:$r('app.string.Get_the_current_month'),
         func: () => {
           showMessage(dayjs().month() + "")
         }
       },
       {
         apiName: "dayjs().year()",
-        des:"获取当前年",
+        des:$r('app.string.Get_the_current_year'),
         func: () => {
           showMessage(dayjs().year() + "")
         }
       },
       {
-        apiName: 'dayjs("2024-01-10 20:00:00").startOf("day").subtract(1,"hour").format()',
-        des:"通过startOf设置某天的开始",
-        func: () => {
-          showMessage(dayjs("2024-01-10 02:00:00").startOf("day").subtract(1,"hour").format() + "")
-        }
-      },
-      {
-        apiName: 'dayjs("2024-01-10 20:00:00").endOf("day").add(1,"hour").format()',
-        des:"通过endOf设置某天的结束",
-        func: () => {
-          showMessage(dayjs("2024-01-10 20:00:00").endOf("day").add(1,"hour").format() + "")
-        }
-      },
-      {
-        apiName: 'dayjs("2023-12-31").diff("2024-01-10","days")',
-        des:"获取时间差(天)",
-        func: () => {
-          showMessage(dayjs("2023-12-31").diff("2024-01-10","days") + "")
-        }
-      },
-      {
-        apiName: 'dayjs().daysInMonth()',
-        des:"获取当前月天数",
-        func: () => {
-          showMessage(dayjs().daysInMonth() + "")
-        }
-      },
-      {
         apiName: "dayjs().get('year');",
-        des:"通过get方式获取当前年",
+        des:$r('app.string.Get_year_through_get'),
         func: () => {
           showMessage(dayjs().get('year') + "")
         }
       },
       {
         apiName: "dayjs().set('year', 2013);",
-        des:"通过set方式设置当前年",
+        des:$r('app.string.Get_year_through_Set'),
         func: () => {
           showMessage(dayjs().set('year', 2013).format())
         }
       },
       {
         apiName: "dayjs().subtract(1, 'day')",
-        des:"当前日期往前一天",
+        des:$r('app.string.Current_day_forward'),
         func: () => {
           showMessage(dayjs().subtract(1, 'day').format())
         }
       },
       {
         apiName: "dayjs().add(1, 'day')",
-        des:"当前日期往后一天",
+        des:$r('app.string.One_day_after_current'),
         func: () => {
           showMessage(dayjs().add(1, 'day').format())
         }
@@ -201,7 +159,7 @@ let apisIndex:Array<ModuleItem>=[
     ],
   }]
 function showMessage(text: string) {
-  prompt.showToast({ message: text + "" || "没有任何信息..." });
+  prompt.showToast({ message: text + "" || "no information..." });
 }
 @Entry
 @Component
@@ -210,77 +168,39 @@ struct Index {
   @State message: string = 'Hello World'
   @State apis: Array<ModuleItem> = apisIndex
 
-  @Builder NavigationTitle() {
-    Column() {
-      Text('Dayjs')
-        .fontColor('#182431')
-        .fontSize(35)
-        .fontWeight(700)
-      Text('演示Demo')
-        .fontColor('#182431')
-        .fontSize(15)
-        .opacity(0.4)
-    }
-    .alignItems(HorizontalAlign.Start)
-    .margin(20)
+
+  getResourceString(res:Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
   }
-
-  @Builder NavigationMenus() {
-    Row() {
-      Image($rawfile('ic_public_detail.svg'))
-        .width(25)
-        .height(25)
-    }
-    .justifyContent(FlexAlign.End)
-    .margin(20)
-  }
-
-  @Builder BuildItemForAPI(item:ApiItem) {
+  @Builder BuildItemForAPI(param: ModuleItem) {
     Column() {
-      Flex({ alignItems: ItemAlign.Start ,direction:FlexDirection.Column}) {
-        Column(){
-          Text(`${item.apiName}`).fontSize(20).margin({ bottom: 8 }).width("100%")
-          Text(`描述：${item.des || "无"}`).fontSize(16).fontColor(Color.Red).width("100%").margin({top:10,bottom:20})
-        }
+      Text(param.moduleName).fontSize(30)
 
-        Button("运行").onClick(() => item.func()).width("100%");
-      }.padding(20).width("100%")
+      ForEach(param.examples, (item:ApiItem, index) => {
+        Flex({ alignItems: ItemAlign.Start ,direction:FlexDirection.Column}) {
+          Column(){
+            Text(`${item.apiName}`).fontSize(20).margin({ bottom: 8 }).width("100%")
+            Text(this.getResourceString($r('app.string.describe')) +`：${this.getResourceString(item.des) || "none"}`).fontSize(16).fontColor(Color.Red).width("100%").margin({top:10,bottom:20})
+          }
+
+
+          Button("run").onClick(() => item.func()).width("100%");
+        }.padding(10).margin({ bottom: 10 }).width("100%")
+      })
     }
+
   }
 
   build() {
-    Navigation() {
-      Scroll() {
-        GridRow({
-          breakpoints: {
-            value: ['200vp', '300vp', '400vp', '500vp', '600vp'],
-            reference: BreakpointsReference.WindowSize
+    Column() {
+      List() {
+        ForEach(this.apis, (v: ModuleItem, index) => {
+          ListItem() {
+            this.BuildItemForAPI({ moduleName: v.moduleName, examples: v.examples })
           }
-        }) {
-          ForEach(this.apis, (v: ModuleItem, index) => {
-            ForEach(v.examples, (item: ApiItem, index) => {
-              GridCol({
-                span: {
-                  xs: 12,
-                  sm: 12,
-                  md: 12,
-                  lg: 6,
-                  xl: 6,
-                  xxl: 4
-                }
-              }) {
-                Row() {
-                  this.BuildItemForAPI(item)
-                }
-              }
-            })
-          })
-        }.width("100%")
+        })
       }.width("100%")
-    }
-    .menus(this.NavigationMenus)
-    .title(this.NavigationTitle)
-    .titleMode(NavigationTitleMode.Full)
-    .mode(NavigationMode.Stack)
+    }.width("100%").height("100%")
+
   }
 }

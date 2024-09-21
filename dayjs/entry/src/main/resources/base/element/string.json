@@ -11,6 +11,78 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Parse_get_timestamp",
+      "value": "Parse time without delimiter and get timestamp"
+    },
+    {
+      "name": "Parse_timestamp",
+      "value": "Parse the time with - and get the timestamp"
+    },
+    {
+      "name": "Parse_hours_and_minutes",
+      "value": "Parse time with hours and minutes"
+    },
+    {
+      "name": "Parse_hours_minutes_and_seconds",
+      "value": "Parse time with hours, minutes and seconds"
+    },
+    {
+      "name": "Parse_hours_minutes_seconds_milliseconds",
+      "value": "Parse time with hours, minutes, seconds and milliseconds"
+    },
+    {
+      "name": "Get_timestamp",
+      "value": "Get timestamp"
+    },
+    {
+      "name": "Get_current_second",
+      "value": "Get the current second"
+    },
+    {
+      "name": "Get_current_points",
+      "value": "Get current points"
+    },
+    {
+      "name": "Get_current_tense",
+      "value": "Get current tense"
+    },
+    {
+      "name": "Get_current_day",
+      "value": "Get current day"
+    },
+    {
+      "name": "Get_the_current_week",
+      "value": "Get the current week"
+    },
+    {
+      "name": "Get_the_current_month",
+      "value": "Get the current month"
+    },
+    {
+      "name": "Get_the_current_year",
+      "value": "Get the current year"
+    },
+    {
+      "name": "Get_year_through_get",
+      "value": "Get the current year through get method"
+    },
+    {
+      "name": "Get_year_through_Set",
+      "value": "Set the current year through set method"
+    },
+    {
+      "name": "Current_day_forward",
+      "value": "Current date one day forward"
+    },
+    {
+      "name": "One_day_after_current",
+      "value": "One day after the current date"
+    },
+    {
+      "name": "describe",
+      "value": "describe"
     }
   ]
 }
