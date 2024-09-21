@@ -11,6 +11,22 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "isUnitSupported_test",
+      "value": "isUnitSupported测试"
+    },
+    {
+      "name": "successful",
+      "value": "Successful"
+    },
+    {
+      "name": "test_result",
+      "value": "测试结果"
+    },
+    {
+      "name": "ok",
+      "value": "确定"
     }
   ]
 }

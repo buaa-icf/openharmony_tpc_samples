@@ -11,6 +11,22 @@
     {
       "name": "EntryAbility_label",
       "value": "intl_unified_numberformat"
+    },
+    {
+      "name": "isUnitSupported_test",
+      "value": "Test isUnitSupported"
+    },
+    {
+      "name": "successful",
+      "value": "Successful"
+    },
+    {
+      "name": "test_result",
+      "value": "Test result"
+    },
+    {
+      "name": "ok",
+      "value": "OK"
     }
   ]
 }

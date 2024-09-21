@@ -39,11 +39,11 @@ struct Index {
   build() {
     Scroll() {
       Column({ space: 20 }) {
-        Button('isUnitSupported测试').fontSize(24).onClick(() => {
+        Button($r('app.string.isUnitSupported_test')).fontSize(24).onClick(() => {
           let unit:intl_unified_numberformat.Unit = 'degree';
           let supportedResult = intl_unified_numberformat.isUnitSupported(unit);
           if (supportedResult) {
-            setData('测试成功', this.dialogController)
+            setData($r('app.string.successful'), this.dialogController)
           }
         })
       }
