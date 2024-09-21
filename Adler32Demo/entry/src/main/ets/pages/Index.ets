@@ -18,16 +18,16 @@ import adler32 from 'adler-32'
 @Entry
 @Component
 struct Index {
-  @State btrBtn: string = 'byte数组输入'
-  @State utrBtn: string = 'ucs-2字符串输入'
-  @State strBtn: string = 'js正常字符串（utf-8）输入'
-  @State vtrBtn: string = '获取adler32js版本号'
+  @State btrBtn: string = getContext(this).resourceManager.getStringSync($r('app.string.array_input').id);
+  @State utrBtn: string = getContext(this).resourceManager.getStringSync($r('app.string.string_input').id);
+  @State strBtn: string = getContext(this).resourceManager.getStringSync($r('app.string.js_string_input').id);
+  @State vtrBtn: string = getContext(this).resourceManager.getStringSync($r('app.string.get_version').id);
   @State message: string = ''
 
   build() {
     Row() {
       Column() {
-        Text("输出结果："+this.message)
+        Text(getContext(this).resourceManager.getStringSync($r('app.string.output_result').id,this.message))
           .fontSize(13)
           .fontWeight(FontWeight.Bold)
           .margin({ bottom: 50 })
