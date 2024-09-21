@@ -37,7 +37,7 @@ struct Index {
         Text(this.message)
           .fontSize(25)
           .fontWeight(FontWeight.Bold)
-        Text('组织一条xml')
+        Text($r("app.string.text_xml"))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
           .width('100%')
@@ -50,7 +50,7 @@ struct Index {
           .onClick(() => {
             this.buildXml()
           })
-        Text('组织一条html')
+        Text($r("app.string.text_html"))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
           .width('100%')
