@@ -11,6 +11,18 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "data_check",
+      "value": "Checks if the string is a percentage"
+    },
+    {
+      "name": "data_regex",
+      "value": "Matches a percentage in a string"
+    },
+    {
+      "name": "button_verify",
+      "value": "Verify"
     }
   ]
 }

@@ -11,6 +11,18 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "data_check",
+      "value": "检查字符串是否是百分数"
+    },
+    {
+      "name": "data_regex",
+      "value": "匹配字符串中的百分数"
+    },
+    {
+      "name": "button_verify",
+      "value": "验证"
     }
   ]
 }
