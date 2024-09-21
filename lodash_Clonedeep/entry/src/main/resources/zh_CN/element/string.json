@@ -11,6 +11,118 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "The_copy_result_is",
+      "value": "拷贝结果是："
+    },
+    {
+      "name": "Basic_data_type_copy",
+      "value": "基础数据类型拷贝"
+    },
+    {
+      "name": "Ordinary_deep_copy",
+      "value": "普通深拷贝"
+    },
+    {
+      "name": "function_deep_copy",
+      "value": "function深拷贝"
+    },
+    {
+      "name": "Dark_and_light_copy_comparison",
+      "value": "深浅拷贝对比"
+    },
+    {
+      "name": "Cycle_copy_comparison",
+      "value": "循环拷贝对比"
+    },
+    {
+      "name": "multilayer_attributes",
+      "value": "多层属性深浅拷贝对比"
+    },
+    {
+      "name": "Before_copying",
+      "value": "拷贝前"
+    },
+    {
+      "name": "After_copying",
+      "value": "拷贝后"
+    },
+    {
+      "name": "Shallow_outObj_Object_assign",
+      "value": "通过Object.assign浅拷贝outObj"
+    },
+    {
+      "name": "Get_newObj",
+      "value": "得到newObj，改变newObj的属性，观察源对象outObj的属性是否改变："
+    },
+    {
+      "name": "Deep_cloneDeep",
+      "value": "通过cloneDeep深拷贝outObj1"
+    },
+    {
+      "name": "Get_deep",
+      "value": "得到deep，改变deep的属性，观察源对象outObj1的属性是否改变："
+    },
+    {
+      "name": "After_shallow",
+      "value": "浅拷贝之后得到newObj，改变newObj的属性，观察源对象obj的属性"
+    },
+    {
+      "name": "After_deep_copying",
+      "value": "深拷贝之后得到newObj1，改变newObj1的属性，观察源对象obj1的属性"
+    },
+    {
+      "name": "LiXiaoyao",
+      "value": "李逍遥"
+    },
+    {
+      "name": "WangFugui",
+      "value": "王富贵"
+    },
+    {
+      "name": "Add_Vue",
+      "value": "浅拷贝之后得到的对象obj2在skills里面添加Vue，查看obj1的属性结果是："
+    },
+    {
+      "name": "object_obtained",
+      "value": "得到的新对象的属性"
+    },
+    {
+      "name": "Add_React",
+      "value": "深拷贝之后得到的对象obj2在skills里面添加React，查看obj1的属性结果是："
+    },
+    {
+      "name": "Without_copying",
+      "value": "不使用拷贝，直接打印循环引用的结果是："
+    },
+    {
+      "name": "circular_reference_error",
+      "value": "不使用拷贝，循环引用出错："
+    },
+    {
+      "name": "Using_deep_copy",
+      "value": "使用深拷贝，循环引用的结果是："
+    },
+    {
+      "name": "circular_reference",
+      "value": "使用深拷贝，循环引用出错："
+    },
+    {
+      "name": "Shallow_Object_assign",
+      "value": "Shallow copy origin through Object.assign"
+    },
+    {
+      "name": "ZhangSan",
+      "value": "张三"
+    },
+    {
+      "name": "LiSi",
+      "value": "李四"
+    },
+    {
+      "name": "Deep_copy_cloneDeep",
+      "value": "通过cloneDeep深拷贝outObj1"
     }
   ]
 }

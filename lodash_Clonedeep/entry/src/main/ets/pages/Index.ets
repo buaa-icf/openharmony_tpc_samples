@@ -30,8 +30,10 @@ import cloneDeep from 'lodash.clonedeep';
 @Entry
 @Component
 struct Index {
-  @State message: string = '拷贝结果是：'
-
+  @State message: string = this.getResourceString($r('app.string.The_copy_result_is'))
+  getResourceString(res:Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
   build() {
     Row() {
       Scroll() {
@@ -49,7 +51,7 @@ struct Index {
               .padding(10)
               .backgroundColor(Color.Red)
               .fontColor(Color.White)
-            Text('基础数据类型拷贝')
+            Text($r('app.string.Basic_data_type_copy'))
               .fontSize(20)
               .fontWeight(FontWeight.Bold)
               .width('100%')
@@ -63,7 +65,7 @@ struct Index {
                 this.baseDataTypeCopy()
               })
 
-            Text('普通深拷贝')
+            Text($r('app.string.Ordinary_deep_copy'))
               .fontSize(20)
               .fontWeight(FontWeight.Bold)
               .width('100%')
@@ -76,7 +78,7 @@ struct Index {
               .onClick(() => {
                 this.commonCopy()
               })
-            Text('function深拷贝')
+            Text($r('app.string.function_deep_copy'))
               .fontSize(20)
               .fontWeight(FontWeight.Bold)
               .width('100%')
@@ -89,7 +91,7 @@ struct Index {
               .onClick(() => {
                 this.functionCopy()
               })
-            Text('深浅拷贝对比')
+            Text($r('app.string.Dark_and_light_copy_comparison'))
               .fontSize(20)
               .fontWeight(FontWeight.Bold)
               .width('100%')
@@ -102,7 +104,7 @@ struct Index {
               .onClick(() => {
                 this.copyCompare()
               })
-            Text('循环拷贝对比')
+            Text($r('app.string.Cycle_copy_comparison'))
               .fontSize(20)
               .fontWeight(FontWeight.Bold)
               .width('100%')
@@ -116,7 +118,7 @@ struct Index {
                 this.circularReference()
               })
 
-            Text('多层属性深浅拷贝对比')
+            Text($r('app.string.multilayer_attributes'))
               .fontSize(20)
               .fontWeight(FontWeight.Bold)
               .width('100%')
@@ -140,45 +142,45 @@ struct Index {
   }
 
   baseDataTypeCopy() {
-    this.message = '拷贝结果是：'
+    this.message = this.getResourceString($r('app.string.The_copy_result_is'))
     let a = 12
     let b: ESObject = cloneDeep(a)
-    this.message = this.message + '\n' + '\n' + '拷贝前 12，拷贝后 ' + b + '\n'
+    this.message = this.message + '\n' + '\n' + this.getResourceString($r('app.string.Before_copying')) +'12，'+this.getResourceString($r('app.string.After_copying')) + b + '\n'
 
     let c = -123456789.654123
     let d: ESObject = cloneDeep(c)
 
-    this.message = this.message + '\n' + '\n' + '拷贝前 -123456789.654123，拷贝后 ' + d + '\n'
+    this.message = this.message + '\n' + '\n' + this.getResourceString($r('app.string.Before_copying')) +"-123456789.654123，"+this.getResourceString($r('app.string.After_copying')) + d + '\n'
 
     let e = '0055'
     let f: ESObject = cloneDeep(e)
-    this.message = this.message + '\n' + '\n' + '拷贝前 0055，拷贝后 ' + f + '\n'
+    this.message = this.message + '\n' + '\n' + this.getResourceString($r('app.string.Before_copying')) +"0055，"+this.getResourceString($r('app.string.After_copying')) + f + '\n'
 
     let g = [1, 2, 3, 4, ['a', 'b']]
     let h: ESObject = cloneDeep(g)
-    this.message = this.message + '\n' + '\n' + `拷贝前 [1, 2, 3, 4, ['a', 'b']]，拷贝后  ` + JSON.stringify(h) + '\n'
+    this.message = this.message + '\n' + '\n' + this.getResourceString($r('app.string.Before_copying')) +" [1, 2, 3, 4, ['a', 'b']]，"+this.getResourceString($r('app.string.After_copying')) + JSON.stringify(h) + '\n'
 
   }
 
   commonCopy() {
-    this.message = '拷贝结果是：'
+    this.message = this.getResourceString($r('app.string.The_copy_result_is'))
     let outObj: ESObject = {
       inObj: { a: 1, b: 2 } as ESObject
     }
     let newObj: ESObject = (Object as ESObject).assign({}, outObj);
     newObj.inObj.a = 2;
 
-    this.message = '拷贝结果是：\n' + "通过Object.assign浅拷贝outObj= {inObj:{a:1,b:2}}，得到newObj，改变newObj的属性，观察源对象outObj的属性是否改变：" + JSON.stringify(outObj)
+    this.message = this.getResourceString($r('app.string.The_copy_result_is'))+'\n' + this.getResourceString($r('app.string.Shallow_outObj_Object_assign'))+"= {inObj:{a:1,b:2}}，"+this.getResourceString($r('app.string.Get_newObj')) + JSON.stringify(outObj)
 
     let outObj1: ESObject = { inObj: { a: 1, b: 2 } as ESObject }
     let deep: ESObject = cloneDeep(outObj1);
     deep.inObj.a = 2;
     this.message = this.message + '\n' + '\n'
-      + "通过cloneDeep深拷贝outObj1 = { inObj: { a: 1, b: 2 } }，得到deep，改变deep的属性，观察源对象outObj1的属性是否改变：" + JSON.stringify(outObj1)
+      + this.getResourceString($r('app.string.Deep_cloneDeep'))+" = { inObj: { a: 1, b: 2 } }，"+this.getResourceString($r('app.string.Get_deep')) + JSON.stringify(outObj1)
   }
 
   functionCopy() {
-    this.message = '拷贝结果是：'
+    this.message = this.getResourceString($r('app.string.The_copy_result_is'))
     let obj: ESObject = { id: 1, name: { a: 'xx' } as ESObject, c: {
       fn: (a: number, b: number) => {
         return a + b
@@ -187,15 +189,15 @@ struct Index {
 
     let newObj: ESObject = (Object as ESObject).assign({}, obj);
     newObj.id = 999;
-    newObj.name.a = '李逍遥';
+    newObj.name.a = this.getResourceString($r('app.string.LiXiaoyao'));
     newObj.c.fn = (a: number, b: number) => {
       return a + b * 2
     };
     let addResult: number = obj.c.fn(2, 3);
 
     this.message = this.message + "\n"
-      + ` obj = { id: 1, name: { a: 'xx' }, c:{fn: function add(a, b) {return a + b}} } 浅拷贝之后得到newObj，改变newObj的属性，观察源对象obj的属性
-    obj.id：${obj.id}, obj.name.a：${obj.name.a}, obj.fn：${addResult},  `
+      + "obj = { id: 1, name: { a: 'xx' }, c:{fn: function add(a, b) {return a + b}} }"+this.getResourceString($r('app.string.After_shallow'))+
+    `obj.id：${obj.id}, obj.name.a：${obj.name.a}, obj.fn：${addResult},  `
 
 
     let obj1: ESObject = { id: 1, name: { a: 'xx' } as ESObject, c: { fn: (a: number, b: number) => {
@@ -204,20 +206,20 @@ struct Index {
 
     let newObj1: ESObject = cloneDeep(obj1);
     newObj1.id = 777;
-    newObj1.name.a = '王富贵';
+    newObj1.name.a = $r('app.string.WangFugui');
     newObj1.c.fn = (a: number, b: number) => {
       return a * 2 + b
     };
     let addResult1: number = obj1.c.fn(2, 3);
 
     this.message = this.message + "\n" + "\n"
-      + ` obj1 = { id: 1, name: { a: 'xx' }, fn: function add(a, b) {return a + b} } 深拷贝之后得到newObj1，改变newObj1的属性，观察源对象obj1的属性
-    obj1.id：${obj1.id}, obj1.name.a：${obj1.name.a}, obj1.fn：${addResult1},  `
+      + " obj1 = { id: 1, name: { a: 'xx' }, fn: function add(a, b) {return a + b} } "+this.getResourceString($r('app.string.After_deep_copying'))+
+    `obj1.id：${obj1.id}, obj1.name.a：${obj1.name.a}, obj1.fn：${addResult1},  `
 
   }
 
   copyCompare() {
-    this.message = '拷贝结果是：'
+    this.message = this.getResourceString($r('app.string.The_copy_result_is'))
 
     class Obj {
       name: string
@@ -244,13 +246,13 @@ struct Index {
     // obj1.skins 得到新数组 ['JavaScript', 'CSS', 'HTML', 'Vue']
     // obj1.others 将会被修改，和 obj2.others 指向同一引用地址
     this.message = ` let obj1 = {name: 'Tom',age: 20,skills: ['JavaScript', 'CSS', 'HTML'],others: {gender: 'male',city: 'New York'}}`
-      + '\n浅拷贝之后得到的对象obj2在skills里面添加Vue，查看obj1的属性结果是：'
+      + '\n'+this.getResourceString($r('app.string.Add_Vue'))
       + '\n obj1.age:  ' + JSON.stringify(obj1.age)
       + '\n obj1.skills:  ' + JSON.stringify(obj1.skills)
       + '\n obj1.others:  ' + JSON.stringify(obj1.others)
-      + '\n 得到的新对象的属性 obj2.age:  ' + JSON.stringify(obj2.age)
-      + '\n 得到的新对象的属性 obj2.skills:  ' + JSON.stringify(obj2.skills)
-      + '\n  得到的新对象的属性 obj2.others:  ' + JSON.stringify(obj2.others)
+      + '\n'+this.getResourceString($r('app.string.object_obtained'))+' obj2.age:  ' + JSON.stringify(obj2.age)
+      + '\n'+this.getResourceString($r('app.string.object_obtained'))+' obj2.skills:  ' + JSON.stringify(obj2.skills)
+      + '\n'+this.getResourceString($r('app.string.object_obtained'))+' obj2.others:  ' + JSON.stringify(obj2.others)
 
     let obj11: ESObject = {
       name: 'Tom',
@@ -270,26 +272,26 @@ struct Index {
     // obj3.skins 得到新数组 ['JavaScript', 'CSS', 'HTML', 'React']
     // obj3.others 和 obj1.others 是两个不同的引用地址
 
-    this.message = this.message + "\n" + "\n" + '深拷贝之后得到的对象obj2在skills里面添加React，查看obj1的属性结果是：'
+    this.message = this.message + "\n" + "\n" + this.getResourceString($r('app.string.Add_React'))
       + '\n obj1.skills:  ' + JSON.stringify(obj11.skills)
       + '\n obj1.others:  ' + JSON.stringify(obj11.others)
-      + '\n 得到的新对象的属性 obj3.skills:  ' + JSON.stringify(obj3.skills)
-      + '\n  得到的新对象的属性 obj3.others:  ' + JSON.stringify(obj3.others)
+      + '\n '+this.getResourceString($r('app.string.object_obtained'))+' obj3.skills:  ' + JSON.stringify(obj3.skills)
+      + '\n  '+this.getResourceString($r('app.string.object_obtained'))+' obj3.others:  ' + JSON.stringify(obj3.others)
 
   }
 
   circularReference() {
-    this.message = 'const objb = { b: null };\n const obja = { a: objb }; \nobjb.b = obja;\n拷贝结果是：\n'
+    this.message = 'const objb = { b: null };\n const obja = { a: objb }; \nobjb.b = obja;\n'+this.getResourceString($r('app.string.The_copy_result_is'))+'\n'
     try {
       const objb: ESObject = { b: (null as ESObject) };
       const obja: ESObject = { a: objb };
       objb.b = obja;
       let origin = JSON.stringify(objb)
       console.log('ZDY---不使用拷贝--->' + origin);
-      this.message = this.message + "不使用拷贝，直接打印循环引用的结果是：" + origin
+      this.message = this.message + this.getResourceString($r('app.string.Without_copying')) + origin
     } catch (err) {
       console.log('ZDY---不使用拷贝--->' + err);
-      this.message = this.message + "\n不使用拷贝，循环引用出错：" + err
+      this.message = this.message + "\n"+this.getResourceString($r('app.string.circular_reference_error')) + err
     }
     try {
       const objb: ESObject = {
@@ -301,10 +303,10 @@ struct Index {
       objb.b = cloneDeep(obja);
       let cloneObj = JSON.stringify(objb)
       console.log('ZDY---使用拷贝--->' + cloneObj);
-      this.message = this.message + "\n使用深拷贝，循环引用的结果是：" + cloneObj
+      this.message = this.message + "\n"+this.getResourceString($r('app.string.Using_deep_copy')) + cloneObj
     } catch (err) {
       console.log('ZDY---使用拷贝--->' + err);
-      this.message = this.message + "\n使用深拷贝，循环引用出错：" + err
+      this.message = this.message + "\n"+this.getResourceString($r('app.string.circular_reference')) + err
     }
   }
 
@@ -333,10 +335,10 @@ struct Index {
     let newObj: ESObject = (Object as ESObject).assign({} as ESObject, origin);
     newObj.a = '9527';
     newObj.b.c = 99;
-    newObj.b.d.f.h.j.name = '张三';
+    newObj.b.d.f.h.j.name = $r('app.string.ZhangSan');
 
 
-    this.message = '拷贝结果是：\n' + `通过Object.assign浅拷贝origin= ${originStr}，得到newObj，改变newObj的属性，观察源对象outObj的属性是否改变：` + JSON.stringify(origin)
+    this.message = this.getResourceString($r('app.string.The_copy_result_is'))+'\n' + this.getResourceString($r('app.string.Shallow_Object_assign'))+`= ${originStr}，`+this.getResourceString($r('app.string.Get_newObj')) + JSON.stringify(origin)
 
     let outObj1: ESObject = {
       a: "123",
@@ -359,11 +361,11 @@ struct Index {
       } as ESObject
     }
     let deep: ESObject = cloneDeep(outObj1);
-    deep.b.d.f.h.j.name = '李四';
+    deep.b.d.f.h.j.name = this.getResourceString($r('app.string.LiSi'));
     deep.b.c = 11;
     deep.a = '8520';
     this.message = this.message + '\n' + '\n'
-      + `通过cloneDeep深拷贝outObj1 = ${originStr}，得到deep，改变deep的属性，观察源对象outObj1的属性是否改变：` + JSON.stringify(outObj1)
+      +this.getResourceString($r('app.string.Deep_copy_cloneDeep'))+`= ${originStr}，`+this.getResourceString($r('app.string.Get_deep')) + JSON.stringify(outObj1)
 
   }
 }

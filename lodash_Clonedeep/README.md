@@ -1,27 +1,30 @@
 # lodash.clonedeep
 
-## 简介
-lodash.clonedeep库用于创建一个深度克隆的给定对象。深度克隆意味着不仅会复制对象的属性，还会递归地复制其所有子对象，以确保生成的副本是完全独立于原始对象的。
+## Overview
 
-## 下载安装:
+lodash.clonedeep is a library used for deep cloning a given object. Deep cloning means that not only the attributes of an object are copied, but also all its child objects are copied recursively to ensure that the generated copy is completely independent of the original object.
+
+## How to Install
+
 ```bash
 ohpm install lodash.clonedeep@4.5.0
 ```
 
-## 使用说明
+## How to Use
+
 ```bash
 import cloneDeep from @ohos/lodash.clonedeep
-this.message = 'const objb = { b: null };\r\n const obja = { a: objb }; \r\nobjb.b = obja;\r\n拷贝结果是：\r\n'
+this.message = 'const objb = { b: null };\r\n const obja = { a: objb }; \r\nobjb.b = obja;\r\n Copy result: \r\n'
     try {
       const objb = { b: null };
       const obja = { a: objb };
       objb.b = obja;
       let origin = JSON.stringify(objb)
-      console.log('ZDY---不使用拷贝--->' + origin);
-      this.message = this.message + "不使用拷贝，直接打印循环引用的结果是：" + origin
+      console.log('ZDY---No cloning used--->' + origin)
+      this.message = this.message + "No cloning used. Cyclic reference result directly printed"+ origin"
     } catch (err) {
-      console.log('ZDY---不使用拷贝--->' + err);
-      this.message = this.message + "\r\n不使用拷贝，循环引用出错：" + err
+      console.log('ZDY---No cloning used--->' + err);
+      this.message = this.message + "\r\n No cloning used. Cyclic reference error: " + err
     }
     try {
       const objb = {
@@ -32,36 +35,37 @@ this.message = 'const objb = { b: null };\r\n const obja = { a: objb }; \r\nobjb
       };
       objb.b = cloneDeep(obja);
       let cloneObj = JSON.stringify(objb)
-      console.log('ZDY---使用拷贝--->' + cloneObj);
-      this.message = this.message + "\r\n使用深拷贝，循环引用的结果是：" + cloneObj
+      console.log('ZDY---Cloning used--->' + cloneObj);
+      this.message = this.message + "\r\n Deep cloning used. Cyclic reference result: " + cloneObj
     } catch (err) {
-      console.log('ZDY---使用拷贝--->' + err);
-      this.message = this.message + "\r\n使用深拷贝，循环引用出错：" + err
+      console.log('ZDY---Cloning used--->' + err);
+      this.message = this.message + "\r\n Deep cloning used. Cyclic reference error: " + err
     }
 ```
-## 接口说明
+## Available APIs
 
 
-| **接口**                                                      | 功能             |
+| Name                                                     | Description            |
 | ------------------------------------------------------------ | ---------------- |
-| cloneDeep(value: ESObject): ESObject | 深拷贝对象，将一个对象进行深拷贝 |
+| cloneDeep(value: ESObject): ESObject | Deep clones an object. |
 
 
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：适配DevEco Studio:4.1 Canary(4.1.3.317)，OpenHarmony SDK:API version 11 (4.1.0.36).
-## 目录结构
+lodash.clonedeep has been verified in the following version: DevEco Studio 4.1 Canary (4.1.3.317), OpenHarmony SDK: API11 (4.1.0.36)
+## Directory Structure
 ````
 |---- lodash_Clonedeep  
-|     |---- entry  # 示例代码文件夹
+|     |---- entry  # Sample code
 |           |---- src  
-|                   |---- main  #sample示例代码
-|                   |---- ohosTest  #xts示例代码
-|     |---- README.md  # 安装使用方法                    
+|                   |---- main  # Sample code
+|                   |---- ohosTest  # xts code
+|     |---- README.md  # Readme
+|     |---- README_zh.md  # Readme                    
 ````
 
-## 贡献代码
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
-## 开源协议
-本项目基于 [MIT LICENSE](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/lodash_Clonedeep/LICENSE) ，请自由地享受和参与开源。
+## How to Contribute
+If you find any problem when using lodash_clonedeep, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+## License
+This project is licensed under [MIT LICENSE](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/lodash_Clonedeep/LICENSE).
