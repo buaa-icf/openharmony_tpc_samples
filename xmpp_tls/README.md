@@ -1,35 +1,34 @@
-
-
 # @ohos/xmpp_tls
 
-## 简介
+## Introduction
 
->本软件是参照开源软件 [@xmpp/tls](https://github.com/xmppjs/xmpp.js/tree/main/packages/tls)源码并用 TypeScript 语言实现了相关功能，在OpenHarmony上提供了一个用于与xmpp（Extensible Messaging and Presence Protocol）服务器建立加密TLS连接的library
+>Based on the open source software [@xmpp/tls](https://github.com/xmppjs/xmpp.js/tree/main/packages/tls), this project uses TypeScript to implement similar capabilities. It provides OpenHarmony with a library for establishing encrypted TLS connections with the Extensible Messaging and Presence Protocol (XMPP) server.
 
-## 已支持功能
-- 数据加密：可以对XMPP协议中传输的数据进行加密，确保消息传输过程中的数据安全和隐私。
-- 身份验证：可以对服务器和客户端的身份进行验证，确保连接到的是真正的服务器和客户端。
-- 自动证书生成和管理：XMPP协议支持使用STARTTLS命令来明确启动TLS会话，并支持使用SSL/TLS证书的自动生成和管理。
-- 安全通信：TLS加密可以确保XMPP协议中的消息传输和通信的安全性，避免消息被窃听或篡改。
-## 下载安装
+## Supported Features
+- Data encryption: encrypts data transmitted using XMPP to ensure data security and privacy during message transmission.
+- Identity authentication: authenticates the identities of the server and client to ensure that the correct server and client are connected.
+- Automatic certificate generation and management: uses the STARTTLS command to explicitly start a TLS session; supports automatic generation and management of SSL/TLS certificates.
+- Secure communication: ensures the security of message transmission and communication in XMPP, preventing messages from being intercepted or tampered with.
+## How to Install
 
-1. 参考安装教程 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+1. [Install an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-2. 安装命令如下：
-```
- ohpm install @ohos/xmpp_tls
-```
+2. Run the installation command:
 
-## 接口和属性列表
-接口列表
+   ```
+    ohpm install @ohos/xmpp_tls
+   ```
 
-| **接口**         | 参数                                                         | 功能                   |
+## Available APIs
+APIs
+
+| Name        | Parameter                                                        | Description                  |
 | ---------------- | ------------------------------------------------------------ | ---------------------- |
-| connect(service) | `service` 是一个字符串，格式为`xmpp://<username>@<host>:<port>`。 | 连接到指定服务器和端口 |
-| write(data, fn)  | `data` 是一个Buffer或字符串，`fn` 是一个回调函数，连接写入完成后调用。 | 向套接字写入数据       |
-| end()            | 无                                                           | 关闭套接字连接         |
+| connect(service) | `service`: a string in the format of `xmpp://<username>@<host>:<port>`.| Connects to a specified server and port.|
+| write(data, fn)  | `data`: a buffer or string.<br>`fn`: a callback function invoked after the connection is written.| Writes data to a socket.      |
+| end()            | N/A                                                          | Closes a socket connection.        |
 
-## 使用示例
+## Example
 ```
 import { client, xml, Options } from '@ohos/xmpp_client';
 @Entry
@@ -41,13 +40,13 @@ struct TcpSocketPage {
   @State contact: string = ""
   @State TAG: string = 'NETSTACK'
   private options: Options = {
-    service: 'xxxx://xxxxx:xxxx', //测试网站地址
+    service: 'xxxx://xxxxx:xxxx', // Test website address
     domain: 'xxxxxx',
     resource: 'xxxxxxxx',
     username: "xxxxxxxx",
     password: "xxxxxxxx",
   }
-  private xmpp = client(this.options); //连接服务
+  private xmpp = client(this.options); // Service connection
   private onError = (err: Error) => {
     console.info('xmpp-❌', JSON.stringify(err.message));
     console.info('xmpp-❌', JSON.stringify(err.stack));
@@ -75,7 +74,7 @@ struct TcpSocketPage {
     console.info("xmpp-response --" + "status--" + status + "---value---" + value)
   }
   private onLine = async (address: ESObject) => {
-    console.log('🗸', 'online as', address);
+    console.log('��', 'online as', address);
     const presence = xml(
       'presence',
       {},
@@ -101,19 +100,19 @@ struct TcpSocketPage {
   build() {
     Row() {
       Column() {
-        Text("当前状态：" + this.status)
+        Text("Status: "+ this.status)
           .fontSize(30)
           .fontWeight(FontWeight.Bold)
-        Text("收到消息：" + this.message)
+        Text("Message received: "+ this.message)
           .fontSize(30)
           .fontWeight(FontWeight.Bold)
           .margin({ top: 30 })
-        Button("连接").fontSize(30)
+        Button("Connect").fontSize (30)
           .width("60%")
           .onClick(() => {
             this.xmpp.start();
           }).margin({ top: 30 })
-        TextInput({ placeholder: "请输入消息" })
+        TextInput({ placeholder: "Enter a message" })
           .margin({ top: 30 })
           .fontSize(30)
           .width("60%")
@@ -121,13 +120,13 @@ struct TcpSocketPage {
           .onChange((value: string) => {
             this.sendMessage = value;
           })
-        Button("发送").fontSize(30)
+        Button("Send").fontSize(30)
           .width("60%")
           .onClick(() => {
             const message = xml("message", { type: "chat", to: this.contact }, xml("body", {}, this.sendMessage));
             this.xmpp.send(message)
           }).margin({ top: 30 })
-        Button("断开").fontSize(30)
+        Button("Disconnect").fontSize(30)
           .width("60%")
           .onClick(() => {
             try {
@@ -144,42 +143,45 @@ struct TcpSocketPage {
 }
 ```
 
-## 使用说明
-#### 在XMPP连接的流（stream）上注册一个中间件（middleware）处理函数
+## How to Use
+#### Registering a Middleware Processing Function on the Stream of the XMPP Connection
 ```
- //创建一个xmpp的服务
+ // Create an XMPP service.
  private options: Options = {
-    service: 'xxxx://xxxx:xxxx', //测试网站地址
+    service: 'xxxx://xxxx:xxxx', // Test website address
     domain: 'xxxxx',
     resource: 'xxxxxxxx',
     username: "xxxxxxxx",
     password: "xxxxxxxx",
   }
-  private xmpp = client(this.options); //连接服务
-  //服务器地址以xmpps开头就是要创建TLS连接，此外网服务器的加密端口为5223
-    this.xmpp.start();//连接
-    this.xmpp.send(message)//发送消息
-    this.xmpp.stop();//关闭
+  private xmpp = client(this.options); // Service connection
+  // If the server address starts with xmpps, a TLS connection needs to be created. The encrypted port number of the external server is 5223.
+    this.xmpp.start(); // Establish a connection.
+    this.xmpp.send(message) // Send a message.
+    this.xmpp.stop(); // Close the connection.
 ```
-## 约束与限制
-在下述版本验证通过：
-- DevEco Studio 版本： 5.0.3.200,OpenHarmony SDK:API12 (5.0.0.21-Canary2)。
-## 目录结构
+## Constraints
+This project has been verified in the following version:
+
+DevEco Studio: 5.0.3.200, OpenHarmony SDK: API 12 (5.0.0.21-Canary2)
+
+## Directory Structure
 ````
 |---- @ohos/xmpp_tls
-|     |---- entry  # 示例代码文件夹
+|     |---- entry  # Sample code
 |           |---- src  
-|                   |---- main  #sample示例代码
-|                   |---- ohosTest  #xts示例代码
-|     |---- library  # @ohos/xmpp_tls 库文件夹
+|                   |---- main  # Sample code
+|                   |---- ohosTest  # xts code
+|     |---- library  # @ohos/xmpp_tls library folder
 |           |---- ets
-|                 |---- lib  # 主要依赖
-|                 |---- types  # 对外接口文件夹
-|           |---- index.js  # 主入口文件
-|           |---- index.d.ts  # 主对外接口声明文件
-|     |---- README.md  # 安装使用方法                    
+|                 |---- lib  # Main dependencies
+|                 |---- types  # External APIs
+|           |---- index.js  # Main entry file
+|           |---- index.d.ts  # Main declaration file of the external APIs
+|     |---- README.md  # Readme
+|     |---- README_zh.md  # Readme                    
 ````
-## 贡献代码
-使用过程中发现任何问题都可以提[Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们提[PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
-## 开源协议
-本项目基于ISC，请自由地享受和参与开源。
+## How to Contribute
+If you find any problem during the use, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+## License
+This project is licensed under the terms of the ISC license.
