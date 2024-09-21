@@ -21,9 +21,9 @@ import { GlobalContext } from './GlobalContext'
 @Entry
 @Component
 struct FileRead {
-  @State message: string = '监听文件读取'
+  @State message: string =  getContext().resourceManager.getStringByNameSync('Button_Listen')
   @State filePath: string | undefined = undefined;
-  @State state: string = '状态信息：'
+  @State state: string = getContext().resourceManager.getStringByNameSync('State_Message')
   @State emitter: EventEmitter<string, Object> | undefined = undefined;
   @State isCreateFinish: boolean = false
 
@@ -35,27 +35,27 @@ struct FileRead {
     console.log('zdy------>' + 'this.filePath  ' + this.filePath);
     this.emitter = new EventEmitter<string, Object>();
     this.emitter.on('finish', (data: Object) => {
-      this.state = this.state + "\r\n" + "读取文件内容成功：\r\n" + data
+      this.state = this.state + "\r\n" + "read file success：\r\n" + data
       console.log('zdy------>' + 'file read finished');
       this.isCreateFinish = false;
     });
     this.emitter.on('create file', (data: Object) => {
-      this.state = this.state + "\r\n" + "文件生成成功：\r\n" + data
+      this.state = this.state + "\r\n" + "file create success：\r\n" + data
       this.isCreateFinish = true;
       console.log('zdy------>' + 'file read finished');
     });
     this.emitter.on('create err', () => {
-      this.state = this.state + "\r\n" + "生成文件失败"
+      this.state = this.state + "\r\n" + "file create error"
       this.isCreateFinish = false;
       console.log('zdy------>' + 'create file err');
     });
     this.emitter.on('not create', () => {
-      this.state = this.state + "\r\n" + "文件还没有生成，请点击“文件生成”并稍候片刻"
+      this.state = this.state + "\r\n" + getContext().resourceManager.getStringByNameSync('State_Sting12')
       this.isCreateFinish = false;
       console.log('zdy------>' + 'create file err');
     });
     this.emitter.on('read err', () => {
-      this.state = this.state + "\r\n" + "文件读取失败"
+      this.state = this.state + "\r\n" + "file read fail"
       this.isCreateFinish = false;
       console.log('zdy------>' + 'create file err');
     });
@@ -72,7 +72,7 @@ struct FileRead {
           .height(100)
 
 
-        Button('文件生成')
+        Button('File Create')
           .width('100%')
           .height(50)
           .backgroundColor(Color.Blue)
@@ -81,7 +81,7 @@ struct FileRead {
           .onClick(() => {
             this.createFile()
           })
-        Button('文件读取')
+        Button('File Read')
           .width('100%')
           .height(50)
           .backgroundColor(Color.Blue)
@@ -105,7 +105,7 @@ struct FileRead {
   createFile() :void {
     try {
       if (!this.emitter) {
-        this.state = this.state + "\r\n" + "emitter尚未初始化，请检查是否初始化失败"
+        this.state = this.state + "\r\n" + getContext().resourceManager.getStringByNameSync('State_Sting13')
         return
       }
       console.log('zdy------>' + 'createFile start ');
@@ -133,7 +133,7 @@ struct FileRead {
   readFile() {
     try {
       if (!this.emitter) {
-        this.state = this.state + "\r\n" + "emitter尚未初始化，请检查是否初始化失败"
+        this.state = this.state + "\r\n" + getContext().resourceManager.getStringByNameSync('State_Sting13')
         return
       }
 

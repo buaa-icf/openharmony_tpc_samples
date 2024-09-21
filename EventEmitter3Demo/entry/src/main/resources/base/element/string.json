@@ -11,6 +11,118 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Message_Example",
+      "value": "常用场景举例"
+    },
+    {
+      "name": "Button_Event",
+      "value": "监听文件读取完成的事件"
+    },
+    {
+      "name": "Text_Page",
+      "value": "页面之间的通信: \r\n1.不同的页面之间通信 需要使用同一个EventEmitter对象\r\n2.不同的页面之间通信 发送事件.emit一定要在监听事件emitter.on之后，否则无法接收"
+    },
+    {
+      "name": "Emit_Index",
+      "value": "这是首页发给第一个页面的信息"
+    },
+    {
+      "name": "Button_Deal",
+      "value": "处理事件排序"
+    },
+    {
+      "name": "Button_API",
+      "value": "测试所有API"
+    },
+    {
+      "name": "Message_Result",
+      "value": "对于EventEmitter公开的API进行测试并显示结果"
+    },
+    {
+      "name": "State_Message",
+      "value": "状态信息：\r\n"
+    },
+    {
+      "name": "Button_test",
+      "value": "测试API"
+    },
+    {
+      "name": "State_Sting1",
+      "value": "测试先订阅事件event,然后发送事件event，看是否收到event事件回调"
+    },
+    {
+      "name": "Emit_String1",
+      "value": "这是原始信息"
+    },
+    {
+      "name": "State_Sting2",
+      "value": "测试先发送事件before,然后订阅事件before，看是否收到before事件回调"
+    },
+    {
+      "name": "Emit_String2",
+      "value": "在绑定之前先发送事件"
+    },
+    {
+      "name": "State_Sting3",
+      "value": "测试先订阅事件multi,然后多次发送事件multi，看是否收到多次multi事件回调"
+    },
+    {
+      "name": "State_Sting4",
+      "value": "测试先once订阅事件single,然后多次发送事件single，看是否收到多次single事件回调"
+    },
+    {
+      "name": "State_Sting5",
+      "value": "测试获取某个事件listeners数组的API---listeners，看看on绑定和once绑定是否都计数了"
+    },
+    {
+      "name": "State_Sting6",
+      "value": "测试添加事件绑定API---addListener,先添加addListener 然后发送事件addListener，看是否收到addListener事件回调"
+    },
+    {
+      "name": "State_Sting7",
+      "value": "测试添加事件绑定API---callback,先发送事件callback,然后添加callback，看是否收到callback事件回调"
+    },
+    {
+      "name": "State_Sting8",
+      "value": "测试解除事件绑定API---removeListener，一次性添加多个同名事件不指定解除某一个监听器回调接口，解除绑定的事件之前事件个数"
+    },
+    {
+      "name": "State_Sting9",
+      "value": "测试解除事件绑定API---removeListener，一次性添加多个同名事件不指定解除某一个监听器回调接口，解除绑定的事件之后事件个数"
+    },
+    {
+      "name": "State_Sting10",
+      "value": "测试解除事件绑定API---removeListener，一次性添加多个同名事件指定解除某一个监听器回调接口，解除绑定的事件之前事件个数"
+    },
+    {
+      "name": "State_Sting11",
+      "value": "测试解除事件绑定API---removeListener，一次性添加多个同名事件指定解除某一个监听器回调接口，解除绑定的事件之后事件个数"
+    },
+    {
+      "name": "Message_Listen",
+      "value": "对同一个事件多次监听，看是否是按照队列中事件的先后顺序来进行处理。经测试发现，emitter.on多次监听同一个事件，按照添加顺序，每一个监听都会执行，在监听里修改回调数据不改变其他监听器里的数据，不可在监听器里再次发送同名的事件"
+    },
+    {
+      "name": "Button_Send",
+      "value": "发送事件"
+    },
+    {
+      "name": "Button_Listen",
+      "value": "监听文件读取"
+    },
+    {
+      "name": "State_Sting12",
+      "value": "文件还没有生成，请点击“文件生成”并稍候片刻"
+    },
+    {
+      "name": "State_Sting13",
+      "value": "emitter尚未初始化，请检查是否初始化失败"
+    },
+    {
+      "name": "Emit_Second",
+      "value": "这是第一页发给第二个页面的信息"
     }
   ]
 }

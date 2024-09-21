@@ -11,6 +11,118 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Message_Example",
+      "value": "Common scenario examples"
+    },
+    {
+      "name": "Button_Event",
+      "value": "Event of listening for file read completion"
+    },
+    {
+      "name": "Text_Page",
+      "value": "Communication between pages:\n1. Communication between different pages requires the use of the same EventEmitter object\n2. When sending communication events between different pages, be sure to listen for the emitter.on event before sending it. mit, otherwise it cannot be received\n"
+    },
+    {
+      "name": "Emit_Index",
+      "value": "This is the information sent from the homepage to the first page"
+    },
+    {
+      "name": "Button_Deal",
+      "value": "Sort processing events"
+    },
+    {
+      "name": "Button_API",
+      "value": "Test all APIs"
+    },
+    {
+      "name": "Message_Result",
+      "value": "Test and display results for the publicly available API of EventEmitter\n"
+    },
+    {
+      "name": "State_Message",
+      "value": "Status information:\n"
+    },
+    {
+      "name": "Button_test",
+      "value": "Testing API"
+    },
+    {
+      "name": "State_Sting1",
+      "value": "Test subscribing to event events first, then sending event events to see if event callbacks are received"
+    },
+    {
+      "name": "Emit_String1",
+      "value": "This is the original information"
+    },
+    {
+      "name": "State_Sting2",
+      "value": "Test sending the 'before' event first, then subscribing to the 'before' event to see if you receive a callback for the 'before' event"
+    },
+    {
+      "name": "Emit_String2",
+      "value": "Send events before binding"
+    },
+    {
+      "name": "State_Sting3",
+      "value": "Test subscribing to event multi first, and then sending event multi multiple times to see if multiple multi event callbacks are received"
+    },
+    {
+      "name": "State_Sting4",
+      "value": "Test to subscribe to the single event once, and then send the single event multiple times to see if multiple single event callbacks are received"
+    },
+    {
+      "name": "State_Sting5",
+      "value": "Test the API for obtaining the listeners array of a certain event - listeners - to see if both the on binding and the once binding count"
+    },
+    {
+      "name": "State_Sting6",
+      "value": "Test adding event binding API - addListener, first add addListener and then send the event addListener to see if the addListener event callback is received"
+    },
+    {
+      "name": "State_Sting7",
+      "value": "Test adding event binding API - callback, send event callback first, then add callback, see if callback event callback is received"
+    },
+    {
+      "name": "State_Sting8",
+      "value": "Test event unbinding API - removeListener, add multiple events with the same name at once without specifying the callback interface for unbinding a specific listener, and count the number of events before unbinding the event"
+    },
+    {
+      "name": "State_Sting9",
+      "value": "Test event unbinding API - removeListener, add multiple events with the same name at once without specifying the callback interface for unbinding a specific listener, and determine the number of events after unbinding"
+    },
+    {
+      "name": "State_Sting10",
+      "value": "Test event unbinding API - removeListener, add multiple events with the same name at once, specify the callback interface for unbinding a listener, and the number of events before unbinding the event"
+    },
+    {
+      "name": "State_Sting11",
+      "value": "Test event unbinding API - removeListener, add multiple events with the same name at once, specify the callback interface for unbinding a listener, and the number of events after unbinding the event"
+    },
+    {
+      "name": "Message_Listen",
+      "value": "Monitor the same event multiple times to see if it is processed in the order of events in the queue. After testing, it was found that emitter.on listens to the same event multiple times. According to the order of addition, each listen will be executed. Modifying callback data in the listen will not change the data in other listeners. It is not allowed to send events with the same name again in the listener"
+    },
+    {
+      "name": "Button_Send",
+      "value": "Send Event"
+    },
+    {
+      "name": "Button_Listen",
+      "value": "Listening to file reading"
+    },
+    {
+      "name": "State_Sting12",
+      "value": "The file has not been generated yet. Please click on 'File Generation' and wait for a moment"
+    },
+    {
+      "name": "State_Sting13",
+      "value": "The emitter has not been initialized yet. Please check if initialization has failed"
+    },
+    {
+      "name": "Emit_Second",
+      "value": "This is the information sent from the first page to the second page"
     }
   ]
 }
