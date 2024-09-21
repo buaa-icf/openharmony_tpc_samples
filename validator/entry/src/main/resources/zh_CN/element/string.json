@@ -10,7 +10,411 @@
     },
     {
       "name": "EntryAbility_label",
-      "value": "label"
+      "value": "validator"
+    },
+    {
+      "name": "text_title_1",
+      "value": "1.检查字符串是否为 base32 编码"
+    },
+    {
+      "name": "text_title_2",
+      "value": "2.检查字符串是否为 Base58 编码"
+    },
+    {
+      "name": "text_title_3",
+      "value": "3.检查字符串是否为 Base64 编码"
+    },
+    {
+      "name": "text_title_4",
+      "value": "4.检查字符串是否仅包含 ASCII 字符"
+    },
+    {
+      "name": "text_title_5",
+      "value": "5.检查字符串是否是 BIC（银行识别码）"
+    },
+    {
+      "name": "text_title_6",
+      "value": "6.检查字符串是否是 布尔值"
+    },
+    {
+      "name": "text_title_7",
+      "value": "7.检查字符串是否为有效的 BTC 地址"
+    },
+    {
+      "name": "text_title_8",
+      "value": "8.检查字符串是否为信用卡号"
+    },
+    {
+      "name": "text_title_9",
+      "value": "9.检查字符串是否为有效的货币金额"
+    },
+    {
+      "name": "text_title_10",
+      "value": "10.检查字符串是否为数据 URI 格式"
+    },
+    {
+      "name": "text_title_11",
+      "value": "11.检查字符串是否为有效日期"
+    },
+    {
+      "name": "text_title_12",
+      "value": "12.检查字符串是否表示十进制数，例如 0.1、.3、1.1、1.00003、4.0 等"
+    },
+    {
+      "name": "text_title_13",
+      "value": "13.检查字符串是否为 EAN（欧洲货号）"
+    },
+    {
+      "name": "text_title_14",
+      "value": "14.检查字符串是否为电子邮件"
+    },
+    {
+      "name": "text_title_15",
+      "value": "15.检查字符串的长度是否为零"
+    },
+    {
+      "name": "text_title_16",
+      "value": "16.检查字符串是否为以太坊地址"
+    },
+    {
+      "name": "text_title_17",
+      "value": "17.检查字符串是否为完全限定的域名（例如 domain.com）"
+    },
+    {
+      "name": "text_title_18",
+      "value": "18.检查字符串是否包含任何全角字符"
+    },
+    {
+      "name": "text_title_19",
+      "value": "19.检查字符串是否包含任何半角字符"
+    },
+    {
+      "name": "text_title_20",
+      "value": "20.检查字符串是否为十六进制数"
+    },
+    {
+      "name": "text_title_21",
+      "value": "21.检查字符串是否为十六颜色"
+    },
+    {
+      "name": "text_title_22",
+      "value": "22.检查字符串是否是基于 CSS 颜色级别 4 规范的 HSL（色调、饱和度、亮度、可选 alpha）颜色"
+    },
+    {
+      "name": "text_title_23",
+      "value": "23.检查字符串是否为 IBAN（国际银行帐号）"
+    },
+    {
+      "name": "text_title_24",
+      "value": "24.检查字符串是否为有效的身份证代码"
+    },
+    {
+      "name": "text_title_25",
+      "value": "25.检查字符串是否为有效的 IMEI 号码"
+    },
+    {
+      "name": "text_title_26",
+      "value": "26.检查字符串是否为 ISBN"
+    },
+    {
+      "name": "text_title_27",
+      "value": "27.检查字符串是否为 ISIN（股票/证券标识符）"
+    },
+    {
+      "name": "text_title_28",
+      "value": "28.检查字符串是否为有效的 ISO6391 装运集装箱标识"
+    },
+    {
+      "name": "text_title_29",
+      "value": "29.检查字符串是否为有效的 ISO8601 装运集装箱标识"
+    },
+    {
+      "name": "text_title_30",
+      "value": "30.检查字符串是否为有效的 ISO31661Alpha2 装运集装箱标识"
+    },
+    {
+      "name": "text_title_31",
+      "value": "31.检查字符串是否为有效的 ISO31661Alpha3 装运集装箱标识"
+    },
+    {
+      "name": "text_title_32",
+      "value": "32.检查字符串是否为有效的 ISO4217 装运集装箱标识"
+    },
+    {
+      "name": "text_title_33",
+      "value": "33.字符串中是否包含某个字符"
+    },
+    {
+      "name": "text_title_34",
+      "value": "34.比较字符串"
+    },
+    {
+      "name": "text_title_35",
+      "value": "35.检查字符串是否是指定日期之后的日期"
+    },
+    {
+      "name": "text_title_36",
+      "value": "36.检查字符串是否是指定日期之前的日期"
+    },
+    {
+      "name": "text_title_37",
+      "value": "37.检查字符串是否仅包含字母 （a-zA-Z）"
+    },
+    {
+      "name": "text_title_38",
+      "value": "38.检查字符串是否仅包含字母和数字 （a-zA-Z0-9）"
+    },
+    {
+      "name": "text_title_39",
+      "value": "39.检查字符串的长度（以 UTF-8 字节为单位）是否在某个范围内"
+    },
+    {
+      "name": "text_title_40",
+      "value": "40.检查字符串是否为浮点数"
+    },
+    {
+      "name": "text_title_41",
+      "value": "41.检查字符串是否为整数"
+    },
+    {
+      "name": "text_title_42",
+      "value": "42.检查字符串是否是可被另一个整数整除的数字"
+    },
+    {
+      "name": "text_title_43",
+      "value": "43.检查字符串是否在允许值的数组或字符串中"
+    },
+    {
+      "name": "text_title_44",
+      "value": "44.检查字符串是否为 IP（版本 4 或 6）"
+    },
+    {
+      "name": "text_title_45",
+      "value": "45.检查字符串是否为 IP 范围（版本 4 或 6）"
+    },
+    {
+      "name": "text_title_46",
+      "value": "46.检查字符串是否为算法类型的哈希"
+    },
+    {
+      "name": "text_title_47",
+      "value": "47.检查字符串是否为 ISRC"
+    },
+    {
+      "name": "text_title_48",
+      "value": "48.检查字符串是否为 ISSN"
+    },
+    {
+      "name": "text_title_49",
+      "value": "49.检查字符串是否有效（注意：使用 JSON.parse）"
+    },
+    {
+      "name": "text_title_50",
+      "value": "50.检查字符串是否为有效的 JWT 令牌"
+    },
+    {
+      "name": "text_title_51",
+      "value": "51.检查字符串是否为有效经纬度坐标"
+    },
+    {
+      "name": "text_title_52",
+      "value": "52.检查字符串的长度是否在某个范围内"
+    },
+    {
+      "name": "text_title_53",
+      "value": "53.检查字符串是否为小写"
+    },
+    {
+      "name": "text_title_54",
+      "value": "54.检查字符串是否与国家/地区车牌的格式匹配"
+    },
+    {
+      "name": "text_title_55",
+      "value": "55.检查字符串是否为区域设置"
+    },
+    {
+      "name": "text_title_56",
+      "value": "56.检查字符串是否通过 Luhn 算法检查"
+    },
+    {
+      "name": "text_title_57",
+      "value": "57.检查字符串是否为 MAC 地址"
+    },
+    {
+      "name": "text_title_58",
+      "value": "58.检查字符串是否为磁铁 URI 格式"
+    },
+    {
+      "name": "text_title_59",
+      "value": "59.检查字符串是否为 MD5 哈希"
+    },
+    {
+      "name": "text_title_60",
+      "value": "60.检查字符串是否与有效的 MIME 类型格式匹配"
+    },
+    {
+      "name": "text_title_61",
+      "value": "61.检查字符串是否为手机号码"
+    },
+    {
+      "name": "text_title_62",
+      "value": "62.检查字符串是否是MongoDB ObjectId的有效十六进制编码表示形式"
+    },
+    {
+      "name": "text_title_63",
+      "value": "63.检查字符串是否包含一个或多个多字节字符"
+    },
+    {
+      "name": "text_title_64",
+      "value": "64.检查字符串是否仅包含数字"
+    },
+    {
+      "name": "text_title_65",
+      "value": "65.检查字符串是否为有效的八进制数"
+    },
+    {
+      "name": "text_title_66",
+      "value": "66.检查字符串是否为有效的护照号码"
+    },
+    {
+      "name": "text_title_67",
+      "value": "67.检查字符串是否为有效的端口号"
+    },
+    {
+      "name": "text_title_68",
+      "value": "68.检查字符串是否为邮政编码"
+    },
+    {
+      "name": "text_title_69",
+      "value": "69.检查字符串是否为有效的 RFC 3339 日期"
+    },
+    {
+      "name": "text_title_70",
+      "value": "70.检查字符串是 RGB 还是 RGBA 颜色"
+    },
+    {
+      "name": "text_title_71",
+      "value": "71.检查字符串是否为语义版本控制规范 （SemVer）"
+    },
+    {
+      "name": "text_title_72",
+      "value": "72.检查字符串是否包含任何代理项对字符"
+    },
+    {
+      "name": "text_title_73",
+      "value": "73.检查字符串是否为大写"
+    },
+    {
+      "name": "text_title_74",
+      "value": "74.检查字符串是否为 slug 类型"
+    },
+    {
+      "name": "text_title_75",
+      "value": "75.检查该字符串是否可以被视为强密码"
+    },
+    {
+      "name": "text_title_76",
+      "value": "76.检查字符串是否是有效的时间"
+    },
+    {
+      "name": "text_title_77",
+      "value": "77.检查字符串是否为有效的税号"
+    },
+    {
+      "name": "text_title_78",
+      "value": "78.检查字符串是否为 URL"
+    },
+    {
+      "name": "text_title_79",
+      "value": "79.检查字符串是否为 UUID"
+    },
+    {
+      "name": "text_title_80",
+      "value": "80.检查字符串是否包含全角和半角字符的混合"
+    },
+    {
+      "name": "text_title_81",
+      "value": "81.如果给定的国家/地区代码与 ISO 3166-1 alpha-2 匹配，请检查字符串是否为有效的增值税号"
+    },
+    {
+      "name": "text_title_82",
+      "value": "82.检查字符串是否仅由白名单中显示的字符组成"
+    },
+    {
+      "name": "text_title_83",
+      "value": "83.检查字符串是否与模式匹配"
+    },
+    {
+      "name": "text_title_84",
+      "value": "84.从输入的两侧修剪字符"
+    },
+    {
+      "name": "text_title_85",
+      "value": "85.从输入的左侧修剪字符"
+    },
+    {
+      "name": "text_title_86",
+      "value": "86.从输入的右侧修剪字符"
+    },
+    {
+      "name": "text_title_87",
+      "value": "87.将 、、 <> & '/‘ ’替换为 HTML 实体"
+    },
+    {
+      "name": "text_title_88",
+      "value": "88.将 HTML 实体替换为、、 <> & '/‘ ’ "
+    },
+    {
+      "name": "text_title_89",
+      "value": "89.删除数值＜32和127的字符，主要是控制字符"
+    },
+    {
+      "name": "text_title_90",
+      "value": "90.将输入字符串转换为整数，或者如果输入不是int则为NaN"
+    },
+    {
+      "name": "text_title_91",
+      "value": "91.将输入字符串转换为float，或者如果输入不是float则为NaN"
+    },
+    {
+      "name": "text_title_92",
+      "value": "92.删除未出现在白名单中的字符"
+    },
+    {
+      "name": "text_title_93",
+      "value": "93.删除黑名单中出现的字符"
+    },
+    {
+      "name": "text_title_94",
+      "value": "94.将电子邮件地址规范化"
+    },
+    {
+      "name": "text_title_95",
+      "value": "95.将输入字符串转换为布尔值"
+    },
+    {
+      "name": "text_title_96",
+      "value": "96.将输入字符串转换为日期，如果输入不是日期，则转换为null"
+    },
+    {
+      "name": "button_verify",
+      "value": "verify"
+    },
+    {
+      "name": "placeholder_input",
+      "value": "请输入字符串"
+    },
+    {
+      "name": "placeholder_input_int",
+      "value": "请输入整数"
+    },
+    {
+      "name": "placeholder_input_not_empty",
+      "value": "不能输入空值"
+    },
+    {
+      "name": "placeholder_input_letters",
+      "value": "请仅输入英文字母"
     }
   ]
 }
