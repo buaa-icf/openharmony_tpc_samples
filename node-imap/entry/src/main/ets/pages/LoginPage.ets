@@ -94,35 +94,35 @@ struct LoginPage {
   dialogController: CustomDialogController | null = new CustomDialogController({
     builder: CustomDialogDiy({
       cancel: () => {
-        this.showToast(this.getResourceString('app.string.The_dialog_box_has_been_closed'), 'mailType-cancel')
+        this.showToast(this.getResourceString('The_dialog_box_has_been_closed'), 'mailType-cancel')
       },
       confirm: () => {
         if (!this.inputValue || this.inputValue.length < 1) {
-          this.showToast(this.getResourceString('app.string.Email_type_cannot_be_empty'), 'mailType-confirm')
+          this.showToast(this.getResourceString('Email_type_cannot_be_empty'), 'mailType-confirm')
           return
         }
         if (this.inputValue.indexOf('@') == -1 && this.inputValue.indexOf('@') != this.inputValue.lastIndexOf('@')) {
-          this.showToast(this.getResourceString('app.string.Email_type_must_contain_one'), 'mailType-confirm')
+          this.showToast(this.getResourceString('Email_type_must_contain_one'), 'mailType-confirm')
           return
         }
         if (this.inputValue.indexOf('.') == -1 && this.inputValue.indexOf('.') != this.inputValue.lastIndexOf('.')) {
-          this.showToast(this.getResourceString('app.string.Email_type_must_contain_one_point'), 'mailType-confirm')
+          this.showToast(this.getResourceString('Email_type_must_contain_one_point'), 'mailType-confirm')
           return
         }
         if (this.inputValue.indexOf('@') != -1 && this.inputValue.indexOf('.') != -1 && this.inputValue.indexOf('@') > this.inputValue.indexOf('.')) {
-          this.showToast(this.getResourceString('app.string.In_email_types'), 'mailType-confirm')
+          this.showToast(this.getResourceString('In_email_types'), 'mailType-confirm')
           return
         }
         if (this.inputValue.indexOf('@') - this.inputValue.indexOf('.') == 1) {
-          this.showToast(this.getResourceString('app.string.Except_for_and'), 'mailType-confirm')
+          this.showToast(this.getResourceString('Except_for_and'), 'mailType-confirm')
           return
         }
         if (this.inputValue.indexOf('@') != 0) {
-          this.showToast(this.getResourceString('app.string.must_be_first_in_the_email_type'), 'mailType-confirm')
+          this.showToast(this.getResourceString('must_be_first_in_the_email_type'), 'mailType-confirm')
           return
         }
         this.mailType = this.inputValue
-        this.showToast(this.getResourceString('app.string.Enter_other_types_of_email_addresses') + `：${this.mailType}`, 'mailType-confirm')
+        this.showToast(this.getResourceString('Enter_other_types_of_email_addresses') + `：${this.mailType}`, 'mailType-confirm')
       },
       textValue: $textValue,
       inputValue: $inputValue
@@ -347,11 +347,11 @@ struct LoginPage {
             .fontWeight(FontWeight.Bold)
 
 
-          Checkbox({ name: this.getResourceString('app.string.Do_you_want_to_enable'), group: 'ssl' })
+          Checkbox({ name: this.getResourceString('Do_you_want_to_enable'), group: 'ssl' })
             .height(40)
             .select(false)
             .onClick((event) => {
-              this.showToast(this.getResourceString('app.string.only_SMTP_support_is_required_no_SMTPS_support_is_needed'))
+              this.showToast(this.getResourceString('only_SMTP_support_is_required_no_SMTPS_support_is_needed'))
             })
             .enabled(false)
             .margin({ left: 10 })
@@ -417,7 +417,7 @@ struct LoginPage {
   async login() {
     const ctx = this;
     try {
-      ctx.showToast(this.getResourceString('app.string.Start_logging_in_to_your_account'), 'login-imap')
+      ctx.showToast(this.getResourceString('Start_logging_in_to_your_account'), 'login-imap')
       let hostParam = ctx.mailType.substring(ctx.mailType.indexOf('@') + 1, ctx.mailType.indexOf('.'))
       let loginOption: LoginOption = new LoginOption();
       if (!GlobalObj?.getInstance()?.getClient()) {
@@ -476,25 +476,25 @@ struct LoginPage {
       }
       this.util?.login(loginOption, () => {
         ctx.isLogin = true;
-        ctx.showToast(this.getResourceString('app.string.ready_to_jump_to_the_email_folder_list'), 'login-imap')
+        ctx.showToast(this.getResourceString('ready_to_jump_to_the_email_folder_list'), 'login-imap')
       }, (err: Error) => {
         console.log(err.message);
       }, () => {
         console.log('Connection ended');
       })
-      ctx.showToast(this.getResourceString('app.string.Server_connection_successful'), 'login-imap')
+      ctx.showToast(this.getResourceString('Server_connection_successful'), 'login-imap')
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Account_login_error') + `：${err.message}`, 'login-smtp')
+      ctx.showToast(this.getResourceString('Account_login_error') + `：${err.message}`, 'login-smtp')
     }
   }
 
   loginOut() {
     const ctx = this;
     try {
-      ctx.showToast(this.getResourceString('app.string.Starting_to_log_out'), 'loginOut-imap')
+      ctx.showToast(this.getResourceString('Starting_to_log_out'), 'loginOut-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.end(() => {
-          ctx.showToast(this.getResourceString('app.string.Login_successfully_logged_out'), 'loginOut-imap')
+          ctx.showToast(this.getResourceString('Login_successfully_logged_out'), 'loginOut-imap')
           router.clear()
           router.pushUrl({
             url: 'pages/Index"'
@@ -502,23 +502,23 @@ struct LoginPage {
         });
 
       } else {
-        ctx.showToast(this.getResourceString('app.string.Login_failed_client_object_is_empty'), 'loginOut-imap')
+        ctx.showToast(this.getResourceString('Login_failed_client_object_is_empty'), 'loginOut-imap')
         router.clear()
         router.pushUrl({
           url: 'pages/Index"'
         })
       }
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Login_error_occurred_while_logging_out') + `：${err.message}`, 'loginOut-smtp')
+      ctx.showToast(this.getResourceString('Login_error_occurred_while_logging_out') + `：${err.message}`, 'loginOut-smtp')
     }
   }
 
   checkServerCapability() {
     if (this.isLogin) {
       let checkResult: boolean | undefined = GlobalObj?.getInstance()?.getClient()?.serverSupports(this.capability);
-      this.showToast(this.getResourceString('app.string.Does_the_server_capability_support_it') + `-${this.capability},`+ this.getResourceString('app.string.The_result_is') +`：${checkResult}`, 'checkServerCapability-smtp')
+      this.showToast(this.getResourceString('Does_the_server_capability_support_it') + `-${this.capability},`+ this.getResourceString('The_result_is') +`：${checkResult}`, 'checkServerCapability-smtp')
     } else {
-      this.showToast(this.getResourceString('app.string.Error_checking_server_capability'), 'checkServerCapability-smtp')
+      this.showToast(this.getResourceString('Error_checking_server_capability'), 'checkServerCapability-smtp')
     }
   }
 
@@ -528,11 +528,11 @@ struct LoginPage {
         url: 'pages/FolderPage'
       })
     } else {
-      this.showToast(this.getResourceString('app.string.Client_not_logged_in'), 'jumpIntoFolder-smtp')
+      this.showToast(this.getResourceString('Client_not_logged_in'), 'jumpIntoFolder-smtp')
     }
   }
 
   getResourceString(resourceName:string) {
-    return getContext().resourceManager.getStringSync($r(resourceName).id)
+    return getContext().resourceManager.getStringByNameSync(resourceName)
   }
 }

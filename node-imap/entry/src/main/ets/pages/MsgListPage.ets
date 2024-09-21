@@ -110,11 +110,11 @@ struct MsgListPage {
   dialogController: CustomDialogController | null = new CustomDialogController({
     builder: CustomDialogDiy({
       cancel: () => {
-        this.showToast(this.getResourceString('app.string.Closed_the_dialog_box'), 'imap-search')
+        this.showToast(this.getResourceString('Closed_the_dialog_box'), 'imap-search')
       },
       confirm: () => {
         if (!this.inputValue || this.inputValue.length < 1) {
-          this.showToast(this.getResourceString('app.string.The_search_content_cannot_be_empty'), 'imap-search')
+          this.showToast(this.getResourceString('The_search_content_cannot_be_empty'), 'imap-search')
           return
         }
         this.search()
@@ -209,7 +209,7 @@ struct MsgListPage {
     }
 
     if (!GlobalObj?.getInstance()?.getClient()) {
-      this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'MsgList-imap')
+      this.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'MsgList-imap')
       router.back()
       return
     }
@@ -217,7 +217,7 @@ struct MsgListPage {
     if (tempParam && tempParam['folderName'] && (tempParam['folderName'] as string).length > 0) {
       ctx.folderName = tempParam['folderName'] as string
     } else {
-      this.showToast(this.getResourceString('app.string.Email_folder_parameters_not_obtained'), 'MsgList-imap')
+      this.showToast(this.getResourceString('Email_folder_parameters_not_obtained'), 'MsgList-imap')
       router.back()
       return
     }
@@ -236,7 +236,7 @@ struct MsgListPage {
         }
       }
     } else {
-      this.showToast(this.getResourceString('app.string.Email_folder_parameters_not_obtained'), 'MsgList-imap')
+      this.showToast(this.getResourceString('Email_folder_parameters_not_obtained'), 'MsgList-imap')
       router.back()
       return
     }
@@ -293,11 +293,11 @@ struct MsgListPage {
       },
       bodyEndCallback: () => {
         try {
-          ctx.showToast(this.getResourceString('app.string.Successfully_obtained_the_entire_email_body') + `：${'\r\n'}${buffer}`, 'MsgDetail-imap');
+          ctx.showToast(this.getResourceString('Successfully_obtained_the_entire_email_body') + `：${'\r\n'}${buffer}`, 'MsgDetail-imap');
           if (buffer.length > 65535) {
-            ctx.message = this.getResourceString('app.string.Successfully_obtained') + `：${'\r\n'}${buffer.substring(0, 65535)}`
+            ctx.message = this.getResourceString('Successfully_obtained') + `：${'\r\n'}${buffer.substring(0, 65535)}`
           } else {
-            ctx.message = this.getResourceString('app.string.Successfully_obtained_the_entire_email_body') + `：${'\r\n'}${buffer}`
+            ctx.message = this.getResourceString('Successfully_obtained_the_entire_email_body') + `：${'\r\n'}${buffer}`
           }
 
         } catch (err) {
@@ -477,7 +477,7 @@ struct MsgListPage {
 
           Select(this.selectList)
             .selected(this.selectIndex)
-            .value(this.getResourceString('app.string.Replication_Information'))
+            .value(this.getResourceString('Replication_Information'))
             .fontColor("#182431")
             .font({ size: 16, weight: 500 })
             .selectedOptionFont({ size: 16, weight: 400 })
@@ -493,7 +493,7 @@ struct MsgListPage {
 
           Select(this.selectList)
             .selected(this.selectIndex)
-            .value(this.getResourceString('app.string.Mobile_Information'))
+            .value(this.getResourceString('Mobile_Information'))
             .fontColor("#182431")
             .margin({ left: 30 })
             .font({ size: 16, weight: 500 })
@@ -512,7 +512,7 @@ struct MsgListPage {
 
           Select(this.selectMenuArr)
             .selected(this.selectSortIndex)
-            .value(this.getResourceString('app.string.Email_sorting'))
+            .value(this.getResourceString('Email_sorting'))
             .fontColor("#182431")
             .margin({ left: 30 })
             .font({ size: 16, weight: 500 })
@@ -597,7 +597,7 @@ struct MsgListPage {
                 this.startIndex = this.endIndex + 1;
                 this.getListData()
               } else {
-                this.showToast(this.getResourceString('app.string.Clicked_on_the_first_item_in_the_list') + `${index}`, 'list-click-imap')
+                this.showToast(this.getResourceString('Clicked_on_the_first_item_in_the_list') + `${index}`, 'list-click-imap')
                 router.pushUrl({
                   url: 'pages/MsgDetailPage',
                   params: {
@@ -631,12 +631,12 @@ struct MsgListPage {
 
   createMailData() {
     let msg: MsgSendBean = {
-      text: this.getResourceString('app.string.Email_uploaded_during_IMAP_protocol_testing'),
+      text: this.getResourceString('Email_uploaded_during_IMAP_protocol_testing'),
       from: `${'鸿蒙搬砖工'} <${'xxxx@xxxx.com'}>`,
       to: 'xxxx@xxxx.com',
       cc: 'xxxx@xxx.com',
       bcc: 'xxx@xxx.com',
-      subject: this.getResourceString('app.string.Topic_of_IMAP_Protocol_for_Client')
+      subject: this.getResourceString('Topic_of_IMAP_Protocol_for_Client')
     }
     return JSON.stringify(msg);
   }
@@ -647,10 +647,10 @@ struct MsgListPage {
     try {
       let data = ctx.createMailData();
       if (!data || data.length < 1) {
-        ctx.showToast(this.getResourceString('app.string.The_uploaded_email_data_cannot_be_empty'), 'appendMail-imap')
+        ctx.showToast(this.getResourceString('The_uploaded_email_data_cannot_be_empty'), 'appendMail-imap')
         return
       }
-      ctx.showToast(this.getResourceString('app.string.Start_uploading_emails'), 'appendMail-imap')
+      ctx.showToast(this.getResourceString('Start_uploading_emails'), 'appendMail-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
         let option: AppendOptions = {
           mailbox: ctx.folderName,
@@ -660,39 +660,39 @@ struct MsgListPage {
         }
         GlobalObj?.getInstance()?.getClient()?.append(data, option, (err: Error) => {
           if (err) {
-            ctx.showToast(this.getResourceString('app.string.Failed_to_upload_email') + `：${err.message}`, 'appendMail-imap')
+            ctx.showToast(this.getResourceString('Failed_to_upload_email') + `：${err.message}`, 'appendMail-imap')
           } else {
-            ctx.showToast(this.getResourceString('app.string.Email_uploaded_successfully'), 'appendMail-imap')
+            ctx.showToast(this.getResourceString('Email_uploaded_successfully'), 'appendMail-imap')
             ctx.startIndex = 0;
             ctx.endIndex = 0;
             ctx.getListData()
           }
         });
       } else {
-        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'appendMail-imap')
+        this.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'appendMail-imap')
         router.back()
       }
 
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Error_uploading_email') + `：${err.message}`, 'appendMail-smtp')
+      ctx.showToast(this.getResourceString('Error_uploading_email') + `：${err.message}`, 'appendMail-smtp')
     }
   }
 
   selectMailBox() {
-    console.log(this.getResourceString('app.string.Zdy_SELECT_instruction_internal_call'))
+    console.log(this.getResourceString('Zdy_SELECT_instruction_internal_call'))
   }
 
   closeBox() {
     const ctx = this;
     try {
       ctx.selectMsg = -1
-      ctx.showToast(this.getResourceString('app.string.Start_closing_this_folder'), 'closeBox-imap')
+      ctx.showToast(this.getResourceString('Start_closing_this_folder'), 'closeBox-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.closeBox((err: Error) => {
           if (err) {
-            ctx.showToast(this.getResourceString('app.string.Failed_to_close_this_folder_reason') + `：${err.message}`, 'closeBox-imap')
+            ctx.showToast(this.getResourceString('Failed_to_close_this_folder_reason') + `：${err.message}`, 'closeBox-imap')
           } else {
-            ctx.showToast(this.getResourceString('app.string.Successfully_closed_this_folder'), 'appendMail-imap')
+            ctx.showToast(this.getResourceString('Successfully_closed_this_folder'), 'appendMail-imap')
             router.clear()
             router.pushUrl({
               url: 'pages/FolderPage'
@@ -700,12 +700,12 @@ struct MsgListPage {
           }
         });
       } else {
-        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'closeBox-imap')
+        this.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'closeBox-imap')
         router.back()
       }
 
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Error_closing_this_folder') + `：${err.message}`, 'closeBox-smtp')
+      ctx.showToast(this.getResourceString('Error_closing_this_folder') + `：${err.message}`, 'closeBox-smtp')
     }
   }
 
@@ -713,29 +713,29 @@ struct MsgListPage {
     const ctx = this;
     try {
       if (!ctx.selectSort || ctx.selectSort.length < 1) {
-        ctx.showToast(this.getResourceString('app.string.The_sorting_parameter_cannot_be_empty'), 'sortMail-imap')
+        ctx.showToast(this.getResourceString('The_sorting_parameter_cannot_be_empty'), 'sortMail-imap')
         return
       }
-      ctx.showToast(this.getResourceString('app.string.Start_setting_sorting'), 'sortMail-imap')
+      ctx.showToast(this.getResourceString('Start_setting_sorting'), 'sortMail-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
 
         GlobalObj?.getInstance()?.getClient()?.sort([ctx.selectSort], ['ALL'], (err: Error, uids: number[]) => {
           if (err) {
-            ctx.showToast(this.getResourceString('app.string.Setting_sorting_failed_reason') + `：${err.message}`, 'sortMail-imap')
+            ctx.showToast(this.getResourceString('Setting_sorting_failed_reason') + `：${err.message}`, 'sortMail-imap')
           } else {
-            ctx.showToast(this.getResourceString('app.string.Sort_successfully_set'), 'sortMail-imap')
+            ctx.showToast(this.getResourceString('Sort_successfully_set'), 'sortMail-imap')
             ctx.startIndex = 0;
             ctx.endIndex = 0;
             ctx.getListData()
           }
         });
       } else {
-        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'sortMail-imap')
+        this.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'sortMail-imap')
         router.back()
       }
 
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Setting_sorting_error') + `：${err.message}`, 'sortMail-smtp')
+      ctx.showToast(this.getResourceString('Setting_sorting_error') + `：${err.message}`, 'sortMail-smtp')
     }
   }
 
@@ -743,13 +743,13 @@ struct MsgListPage {
     const ctx = this;
     try {
       ctx.selectMsg = -1
-      ctx.showToast(this.getResourceString('app.string.Start_searching_for_emails'), 'search-imap')
+      ctx.showToast(this.getResourceString('Start_searching_for_emails'), 'search-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.search([ctx.searchType], (err: Error, uids: number[]) => {
           if (err) {
-            ctx.showToast(this.getResourceString('app.string.Search_email_failed_reason') + `：${err.message}`, 'search-imap')
+            ctx.showToast(this.getResourceString('Search_email_failed_reason') + `：${err.message}`, 'search-imap')
           } else {
-            ctx.showToast(this.getResourceString('app.string.Search_email_successful') + JSON.stringify(uids), 'search-imap')
+            ctx.showToast(this.getResourceString('Search_email_successful') + JSON.stringify(uids), 'search-imap')
             if (!uids) {
               throw new Error('get message list fail')
             }
@@ -759,18 +759,18 @@ struct MsgListPage {
               bean.Date = '';
               bean.From = '';
               bean.To = '';
-              bean.Subject = this.getResourceString('app.string.The_current_search_information_number') + uids[i];
+              bean.Subject = this.getResourceString('The_current_search_information_number') + uids[i];
               ctx.listData.push(bean)
             }
           }
         });
       } else {
-        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'search-imap')
+        this.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'search-imap')
         router.back()
       }
 
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Search_email_error') + `：${err.message}`, 'search-smtp')
+      ctx.showToast(this.getResourceString('Search_email_error') + `：${err.message}`, 'search-smtp')
     }
   }
 
@@ -782,15 +782,15 @@ struct MsgListPage {
   storeMail() {
     const ctx = this;
     if (!ctx.selectMsg || ctx.selectMsg === -1) {
-      ctx.showToast(this.getResourceString('app.string.Please_select_an_email_first'), 'storeMail---IMAP')
+      ctx.showToast(this.getResourceString('Please_select_an_email_first'), 'storeMail---IMAP')
       return
     }
     if (!ctx.listData || ctx.listData.length < 3) {
-      ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'storeMail---IMAP')
+      ctx.showToast(this.getResourceString('There_are_currently_no_available_messages_in_the_email'), 'storeMail---IMAP')
       return
     }
     if (ctx.selectMsg <= 0 || ctx.selectMsg >= ctx.listData.length - 1) {
-      ctx.showToast(this.getResourceString('app.string.Please_select_the_correct_email_that_can_be_operated_on'), 'storeMail---IMAP')
+      ctx.showToast(this.getResourceString('Please_select_the_correct_email_that_can_be_operated_on'), 'storeMail---IMAP')
       return
     }
     let uid = ctx.listData[ctx.selectMsg].uid
@@ -801,25 +801,25 @@ struct MsgListPage {
     const ctx = this;
     try {
 
-      ctx.showToast(this.getResourceString('app.string.Start_marking_emails_for_deletion'), 'storeMail-imap')
+      ctx.showToast(this.getResourceString('Start_marking_emails_for_deletion'), 'storeMail-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.addFlags(uid, '\\Seen', (err: Error) => {
           if (err) {
-            ctx.showToast(this.getResourceString('app.string.Failed_to_mark_the_email_for_deletion_reason') + `：${err.message}`, 'storeMail-imap')
+            ctx.showToast(this.getResourceString('Failed_to_mark_the_email_for_deletion_reason') + `：${err.message}`, 'storeMail-imap')
           } else {
-            ctx.showToast(this.getResourceString('app.string.Successfully_marked_the_email_for_deletion'), 'storeMail-imap')
+            ctx.showToast(this.getResourceString('Successfully_marked_the_email_for_deletion'), 'storeMail-imap')
             ctx.startIndex = 0;
             ctx.endIndex = 0;
             ctx.expungeMail(uid)
           }
         });
       } else {
-        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'storeMail-imap')
+        this.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'storeMail-imap')
         router.back()
       }
 
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Error_in_marking_email_for_deletion') + `：${err.message}`, 'storeMail-smtp')
+      ctx.showToast(this.getResourceString('Error_in_marking_email_for_deletion') + `：${err.message}`, 'storeMail-smtp')
     }
   }
 
@@ -827,23 +827,23 @@ struct MsgListPage {
     const ctx = this;
     try {
       ctx.selectMsg = -1
-      ctx.showToast(this.getResourceString('app.string.Starting_to_permanently_delete_all_emails_marked_as_DELETED'), 'closeBox-imap')
+      ctx.showToast(this.getResourceString('Starting_to_permanently_delete_all_emails_marked_as_DELETED'), 'closeBox-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.expunge(uid, (err: Error) => {
           if (err) {
-            ctx.showToast(this.getResourceString('app.string.Permanent_deletion_failed_reason') + `：${err.message}`, 'expungeMail-imap')
+            ctx.showToast(this.getResourceString('Permanent_deletion_failed_reason') + `：${err.message}`, 'expungeMail-imap')
           } else {
-            ctx.showToast(this.getResourceString('app.string.Permanently_deleted_successfully'), 'expungeMail-imap')
+            ctx.showToast(this.getResourceString('Permanently_deleted_successfully'), 'expungeMail-imap')
             ctx.getListData()
           }
         });
       } else {
-        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'expungeMail-imap')
+        this.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'expungeMail-imap')
         router.back()
       }
 
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Permanent_deletion_error') + `：${err.message}`, 'expungeMail-smtp')
+      ctx.showToast(this.getResourceString('Permanent_deletion_error') + `：${err.message}`, 'expungeMail-smtp')
     }
   }
 
@@ -851,36 +851,36 @@ struct MsgListPage {
     const ctx = this;
     try {
       if (!ctx.selectMsg || ctx.selectMsg === -1) {
-        ctx.showToast(this.getResourceString('app.string.Please_select_an_email_first'), 'copyMail---IMAP')
+        ctx.showToast(this.getResourceString('Please_select_an_email_first'), 'copyMail---IMAP')
         return
       }
       if (!ctx.listData || ctx.listData.length < 3) {
-        ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'copyMail---IMAP')
+        ctx.showToast(this.getResourceString('There_are_currently_no_available_messages_in_the_email'), 'copyMail---IMAP')
         return
       }
       if (ctx.selectMsg <= 0 || ctx.selectMsg >= ctx.listData.length - 1) {
-        ctx.showToast(this.getResourceString('app.string.Please_select_the_correct_email_that_can_be_operated_on'), 'copyMail---IMAP')
+        ctx.showToast(this.getResourceString('Please_select_the_correct_email_that_can_be_operated_on'), 'copyMail---IMAP')
         return
       }
       if (!ctx.selectFolder || ctx.selectFolder.length < 1) {
-        ctx.showToast(this.getResourceString('app.string.Please_select_an_email_first'), 'copyMail---IMAP')
+        ctx.showToast(this.getResourceString('Please_select_an_email_first'), 'copyMail---IMAP')
         return
       }
       let uid = ctx.listData[ctx.selectMsg].uid
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.copy(uid, ctx.selectFolder, (err: Error) => {
           if (err) {
-            ctx.showToast(this.getResourceString('app.string.Copy_email_failed_reason') + `：${err.message}`, 'copyMail-imap')
+            ctx.showToast(this.getResourceString('Copy_email_failed_reason') + `：${err.message}`, 'copyMail-imap')
           } else {
-            ctx.showToast(this.getResourceString('app.string.Copy_email_successfully'), 'copyMail-imap')
+            ctx.showToast(this.getResourceString('Copy_email_successfully'), 'copyMail-imap')
           }
         });
       } else {
-        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'copyMail-imap')
+        this.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'copyMail-imap')
         router.back()
       }
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Error_copying_email') + `：${err.message}`, 'copyMail-smtp')
+      ctx.showToast(this.getResourceString('Error_copying_email') + `：${err.message}`, 'copyMail-smtp')
     }
   }
 
@@ -888,37 +888,37 @@ struct MsgListPage {
     const ctx = this;
     try {
       if (!ctx.selectMsg || ctx.selectMsg === -1) {
-        ctx.showToast(this.getResourceString('app.string.Please_select_an_email_first'), 'moveMail---IMAP')
+        ctx.showToast(this.getResourceString('Please_select_an_email_first'), 'moveMail---IMAP')
         return
       }
       if (!ctx.listData || ctx.listData.length < 3) {
-        ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'moveMail---IMAP')
+        ctx.showToast(this.getResourceString('There_are_currently_no_available_messages_in_the_email'), 'moveMail---IMAP')
         return
       }
       if (ctx.selectMsg <= 0 || ctx.selectMsg >= ctx.listData.length - 1) {
-        ctx.showToast(this.getResourceString('app.string.Please_select_the_correct_email_that_can_be_operated_on'), 'moveMail---IMAP')
+        ctx.showToast(this.getResourceString('Please_select_the_correct_email_that_can_be_operated_on'), 'moveMail---IMAP')
         return
       }
       if (!ctx.selectFolder || ctx.selectFolder.length < 1) {
-        ctx.showToast(this.getResourceString('app.string.Please_select_an_email_first'), 'moveMail---IMAP')
+        ctx.showToast(this.getResourceString('Please_select_an_email_first'), 'moveMail---IMAP')
         return
       }
       let uid = ctx.listData[ctx.selectMsg].uid
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.move(uid, ctx.selectFolder, (err: Error) => {
           if (err) {
-            ctx.showToast(this.getResourceString('app.string.Mobile_email_failed_reason') + `：${err.message}`, 'moveMail-imap')
+            ctx.showToast(this.getResourceString('Mobile_email_failed_reason') + `：${err.message}`, 'moveMail-imap')
           } else {
-            ctx.showToast(this.getResourceString('app.string.Mobile_email_successfully_sent'), 'moveMail-imap')
+            ctx.showToast(this.getResourceString('Mobile_email_successfully_sent'), 'moveMail-imap')
 
           }
         });
       } else {
-        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'moveMail-imap')
+        this.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'moveMail-imap')
         router.back()
       }
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Mobile_email_error') + `：${err.message}`, 'moveMail-smtp')
+      ctx.showToast(this.getResourceString('Mobile_email_error') + `：${err.message}`, 'moveMail-smtp')
     }
   }
 
@@ -927,33 +927,33 @@ struct MsgListPage {
     try {
       const ctx = this;
       if (!ctx.selectMsg || ctx.selectMsg === -1) {
-        ctx.showToast(this.getResourceString('app.string.Please_select_an_email_first'), 'addFlag---IMAP')
+        ctx.showToast(this.getResourceString('Please_select_an_email_first'), 'addFlag---IMAP')
         return
       }
       if (!ctx.listData || ctx.listData.length < 3) {
-        ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'addFlag---IMAP')
+        ctx.showToast(this.getResourceString('There_are_currently_no_available_messages_in_the_email'), 'addFlag---IMAP')
         return
       }
       if (ctx.selectMsg <= 0 || ctx.selectMsg >= ctx.listData.length - 1) {
-        ctx.showToast(this.getResourceString('app.string.Please_select_the_correct_email_that_can_be_operated_on'), 'addFlag---IMAP')
+        ctx.showToast(this.getResourceString('Please_select_the_correct_email_that_can_be_operated_on'), 'addFlag---IMAP')
         return
       }
       let uid = ctx.listData[ctx.selectMsg].uid
-      ctx.showToast(this.getResourceString('app.string.Start_adding_read_tags_to_emails'), 'addFlag-imap')
+      ctx.showToast(this.getResourceString('Start_adding_read_tags_to_emails'), 'addFlag-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.addFlags(uid, '\\Seen', (err:Error) => {
           if (err) {
-            ctx.showToast(this.getResourceString('app.string.Adding_read_mark_to_email_failed_reason') + `：${err.message}`, 'addFlag-imap')
+            ctx.showToast(this.getResourceString('Adding_read_mark_to_email_failed_reason') + `：${err.message}`, 'addFlag-imap')
           } else {
-            ctx.showToast(this.getResourceString('app.string.Successfully_marked_the_email_as_read'), 'addFlag-imap')
+            ctx.showToast(this.getResourceString('Successfully_marked_the_email_as_read'), 'addFlag-imap')
           }
         });
       } else {
-        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'storeMail-imap')
+        this.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'storeMail-imap')
         router.back()
       }
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Error_adding_read_mark_to_email') + `：${err.message}`, 'storeMail-smtp')
+      ctx.showToast(this.getResourceString('Error_adding_read_mark_to_email') + `：${err.message}`, 'storeMail-smtp')
     }
   }
 
@@ -962,35 +962,35 @@ struct MsgListPage {
     try {
       const ctx = this;
       if (!ctx.selectMsg || ctx.selectMsg === -1) {
-        ctx.showToast(this.getResourceString('app.string.Please_select_an_email_first'), 'setFlag---IMAP')
+        ctx.showToast(this.getResourceString('Please_select_an_email_first'), 'setFlag---IMAP')
         return
       }
       if (!ctx.listData || ctx.listData.length < 3) {
-        ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'setFlag---IMAP')
+        ctx.showToast(this.getResourceString('There_are_currently_no_available_messages_in_the_email'), 'setFlag---IMAP')
         return
       }
       if (ctx.selectMsg <= 0 || ctx.selectMsg >= ctx.listData.length - 1) {
-        ctx.showToast(this.getResourceString('app.string.Please_select_the_correct_email_that_can_be_operated_on'), 'setFlag---IMAP')
+        ctx.showToast(this.getResourceString('Please_select_the_correct_email_that_can_be_operated_on'), 'setFlag---IMAP')
         return
       }
       let uid = ctx.listData[ctx.selectMsg].uid
 
-      ctx.showToast(this.getResourceString('app.string.Start_marking_emails_as_read'), 'setFlag-imap')
+      ctx.showToast(this.getResourceString('Start_marking_emails_as_read'), 'setFlag-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.setFlags(uid, '\\Seen', (err:Error) => {
           if (err) {
-            ctx.showToast(this.getResourceString('app.string.Failed_to_set_read_flag_for_email_reason') + `：${err.message}`, 'setFlag-imap')
+            ctx.showToast(this.getResourceString('Failed_to_set_read_flag_for_email_reason') + `：${err.message}`, 'setFlag-imap')
           } else {
-            ctx.showToast(this.getResourceString('app.string.Successfully_marked_the_email_as_read'), 'setFlag-imap')
+            ctx.showToast(this.getResourceString('Successfully_marked_the_email_as_read'), 'setFlag-imap')
           }
         });
       } else {
-        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'setFlag-imap')
+        this.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'setFlag-imap')
         router.back()
       }
 
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Error_setting_read_flag_for_email') + `：${err.message}`, 'setFlag-smtp')
+      ctx.showToast(this.getResourceString('Error_setting_read_flag_for_email') + `：${err.message}`, 'setFlag-smtp')
     }
   }
 
@@ -999,35 +999,35 @@ struct MsgListPage {
     try {
       const ctx = this;
       if (!ctx.selectMsg || ctx.selectMsg === -1) {
-        ctx.showToast(this.getResourceString('app.string.Please_select_an_email_first'), 'deleteFlag---IMAP')
+        ctx.showToast(this.getResourceString('Please_select_an_email_first'), 'deleteFlag---IMAP')
         return
       }
       if (!ctx.listData || ctx.listData.length < 3) {
-        ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'deleteFlag---IMAP')
+        ctx.showToast(this.getResourceString('There_are_currently_no_available_messages_in_the_email'), 'deleteFlag---IMAP')
         return
       }
       if (ctx.selectMsg <= 0 || ctx.selectMsg >= ctx.listData.length - 1) {
-        ctx.showToast(this.getResourceString('app.string.Please_select_the_correct_email_that_can_be_operated_on'), 'deleteFlag---IMAP')
+        ctx.showToast(this.getResourceString('Please_select_the_correct_email_that_can_be_operated_on'), 'deleteFlag---IMAP')
         return
       }
       let uid = ctx.listData[ctx.selectMsg].uid
 
-      ctx.showToast(this.getResourceString('app.string.Start_unmarking_emails_as_read'), 'deleteFlag-imap')
+      ctx.showToast(this.getResourceString('Start_unmarking_emails_as_read'), 'deleteFlag-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.delFlags(uid, '\\Seen', (err:Error) => {
           if (err) {
-            ctx.showToast(this.getResourceString('app.string.Failed_to_unmark_the_email_as_read_reason') + `：${err.message}`, 'deleteFlag-imap')
+            ctx.showToast(this.getResourceString('Failed_to_unmark_the_email_as_read_reason') + `：${err.message}`, 'deleteFlag-imap')
           } else {
-            ctx.showToast(this.getResourceString('app.string.Successfully_unmarked_the_email_as_read'), 'deleteFlag-imap')
+            ctx.showToast(this.getResourceString('Successfully_unmarked_the_email_as_read'), 'deleteFlag-imap')
           }
         });
       } else {
-        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'deleteFlag-imap')
+        this.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'deleteFlag-imap')
         router.back()
       }
 
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Error_occurred_in_removing_the_read_mark_from_the_email') + `：${err.message}`, 'deleteFlag-smtp')
+      ctx.showToast(this.getResourceString('Error_occurred_in_removing_the_read_mark_from_the_email') + `：${err.message}`, 'deleteFlag-smtp')
     }
   }
 
@@ -1036,33 +1036,33 @@ struct MsgListPage {
     try {
       const ctx = this;
       if (!ctx.selectMsg || ctx.selectMsg === -1) {
-        ctx.showToast(this.getResourceString('app.string.Please_select_an_email_first'), 'setKeywords---IMAP')
+        ctx.showToast(this.getResourceString('Please_select_an_email_first'), 'setKeywords---IMAP')
         return
       }
       if (!ctx.listData || ctx.listData.length < 3) {
-        ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'setKeywords---IMAP')
+        ctx.showToast(this.getResourceString('There_are_currently_no_available_messages_in_the_email'), 'setKeywords---IMAP')
         return
       }
       if (ctx.selectMsg <= 0 || ctx.selectMsg >= ctx.listData.length - 1) {
-        ctx.showToast(this.getResourceString('app.string.Please_select_the_correct_email_that_can_be_operated_on'), 'setKeywords---IMAP')
+        ctx.showToast(this.getResourceString('Please_select_the_correct_email_that_can_be_operated_on'), 'setKeywords---IMAP')
         return
       }
       let uid = ctx.listData[ctx.selectMsg].uid
-      ctx.showToast(this.getResourceString('app.string.Start_adding_keywords_to_emails'), 'setKeywords-imap')
+      ctx.showToast(this.getResourceString('Start_adding_keywords_to_emails'), 'setKeywords-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
-        GlobalObj?.getInstance()?.getClient()?.addKeywords(uid, this.getResourceString('app.string.OpenHarmony_keywords'), (err:Error) => {
+        GlobalObj?.getInstance()?.getClient()?.addKeywords(uid, this.getResourceString('OpenHarmony_keywords'), (err:Error) => {
           if (err) {
-            ctx.showToast(this.getResourceString('app.string.Adding_keywords_to_email_failed_reason') + `：${err.message}`, 'setKeywords-imap')
+            ctx.showToast(this.getResourceString('Adding_keywords_to_email_failed_reason') + `：${err.message}`, 'setKeywords-imap')
           } else {
-            ctx.showToast(this.getResourceString('app.string.Successfully_added_keywords_to_email'), 'setKeywords-imap')
+            ctx.showToast(this.getResourceString('Successfully_added_keywords_to_email'), 'setKeywords-imap')
           }
         });
       } else {
-        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'setKeywords-imap')
+        this.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'setKeywords-imap')
         router.back()
       }
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Error_adding_keywords_to_email') + `：${err.message}`, 'setKeywords-smtp')
+      ctx.showToast(this.getResourceString('Error_adding_keywords_to_email') + `：${err.message}`, 'setKeywords-smtp')
     }
   }
 
@@ -1071,33 +1071,33 @@ struct MsgListPage {
     try {
       const ctx = this;
       if (!ctx.selectMsg || ctx.selectMsg === -1) {
-        ctx.showToast(this.getResourceString('app.string.Please_select_an_email_first'), 'setKeywords---IMAP')
+        ctx.showToast(this.getResourceString('Please_select_an_email_first'), 'setKeywords---IMAP')
         return
       }
       if (!ctx.listData || ctx.listData.length < 3) {
-        ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'setKeywords---IMAP')
+        ctx.showToast(this.getResourceString('There_are_currently_no_available_messages_in_the_email'), 'setKeywords---IMAP')
         return
       }
       if (ctx.selectMsg <= 0 || ctx.selectMsg >= ctx.listData.length - 1) {
-        ctx.showToast(this.getResourceString('app.string.Please_select_the_correct_email_that_can_be_operated_on'), 'setKeywords---IMAP')
+        ctx.showToast(this.getResourceString('Please_select_the_correct_email_that_can_be_operated_on'), 'setKeywords---IMAP')
         return
       }
       let uid = ctx.listData[ctx.selectMsg].uid
-      ctx.showToast(this.getResourceString('app.string.Start_setting_keywords_for_emails'), 'setKeywords-imap')
+      ctx.showToast(this.getResourceString('Start_setting_keywords_for_emails'), 'setKeywords-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
-        GlobalObj?.getInstance()?.getClient()?.setKeywords(uid, this.getResourceString('app.string.OpenHarmony_keywords'), (err:Error) => {
+        GlobalObj?.getInstance()?.getClient()?.setKeywords(uid, this.getResourceString('OpenHarmony_keywords'), (err:Error) => {
           if (err) {
-            ctx.showToast(this.getResourceString('app.string.Failed_to_set_keywords_for_email_reason') + `：${err.message}`, 'setKeywords-imap')
+            ctx.showToast(this.getResourceString('Failed_to_set_keywords_for_email_reason') + `：${err.message}`, 'setKeywords-imap')
           } else {
-            ctx.showToast(this.getResourceString('app.string.Successfully_set_keywords_for_email'), 'setKeywords-imap')
+            ctx.showToast(this.getResourceString('Successfully_set_keywords_for_email'), 'setKeywords-imap')
           }
         });
       } else {
-        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'setKeywords-imap')
+        this.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'setKeywords-imap')
         router.back()
       }
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Error_setting_keywords_for_email') + `：${err.message}`, 'setKeywords-smtp')
+      ctx.showToast(this.getResourceString('Error_setting_keywords_for_email') + `：${err.message}`, 'setKeywords-smtp')
     }
   }
 
@@ -1106,37 +1106,37 @@ struct MsgListPage {
     try {
       const ctx = this;
       if (!ctx.selectMsg || ctx.selectMsg === -1) {
-        ctx.showToast(this.getResourceString('app.string.Please_select_an_email_first'), 'delKeywords---IMAP')
+        ctx.showToast(this.getResourceString('Please_select_an_email_first'), 'delKeywords---IMAP')
         return
       }
       if (!ctx.listData || ctx.listData.length < 3) {
-        ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'delKeywords---IMAP')
+        ctx.showToast(this.getResourceString('There_are_currently_no_available_messages_in_the_email'), 'delKeywords---IMAP')
         return
       }
       if (ctx.selectMsg <= 0 || ctx.selectMsg >= ctx.listData.length - 1) {
-        ctx.showToast(this.getResourceString('app.string.Please_select_the_correct_email_that_can_be_operated_on'), 'delKeywords---IMAP')
+        ctx.showToast(this.getResourceString('Please_select_the_correct_email_that_can_be_operated_on'), 'delKeywords---IMAP')
         return
       }
       let uid = ctx.listData[ctx.selectMsg].uid
-      ctx.showToast(this.getResourceString('app.string.Start_deleting_keywords_from_emails'), 'delKeywords-imap')
+      ctx.showToast(this.getResourceString('Start_deleting_keywords_from_emails'), 'delKeywords-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.delKeywords(uid, '鸿蒙关键字', (err:Error) => {
           if (err) {
-            ctx.showToast(this.getResourceString('app.string.Failed_to_delete_keywords_from_email_reason') + `：${err.message}`, 'delKeywords-imap')
+            ctx.showToast(this.getResourceString('Failed_to_delete_keywords_from_email_reason') + `：${err.message}`, 'delKeywords-imap')
           } else {
-            ctx.showToast(this.getResourceString('app.string.Successfully_deleted_keywords_from_email'), 'delKeywords-imap')
+            ctx.showToast(this.getResourceString('Successfully_deleted_keywords_from_email'), 'delKeywords-imap')
           }
         });
       } else {
-        this.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'delKeywords-imap')
+        this.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'delKeywords-imap')
         router.back()
       }
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Error_deleting_keywords_from_email') + `：${err.message}`, 'delKeywords-smtp')
+      ctx.showToast(this.getResourceString('Error_deleting_keywords_from_email') + `：${err.message}`, 'delKeywords-smtp')
     }
   }
 
   getResourceString(resourceName:string) {
-    return getContext().resourceManager.getStringSync($r(resourceName).id)
+    return getContext().resourceManager.getStringByNameSync(resourceName)
   }
 }

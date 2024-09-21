@@ -397,7 +397,7 @@ struct TestInterfacePage {
     const ctx = this;
     ctx.message = ''
     try {
-      ctx.showToast(this.getResourceString('app.string.Start_logging_in_to_your_account'), 'login-imap')
+      ctx.showToast(this.getResourceString('Start_logging_in_to_your_account'), 'login-imap')
       let hostParam = ctx.account.substring(ctx.account.indexOf('@') + 1, ctx.account.indexOf('.'))
       let mailType = ctx.account.substring(ctx.account.indexOf('@') + 1, ctx.account.length)
       let loginOption: LoginOption = new LoginOption();
@@ -455,7 +455,7 @@ struct TestInterfacePage {
       }
       this?.util?.login(loginOption, () => {
         ctx.isLogin = true;
-        ctx.showToast(this.getResourceString('app.string.ready_to_jump_to_the_email_folder_list'), 'login-imap')
+        ctx.showToast(this.getResourceString('ready_to_jump_to_the_email_folder_list'), 'login-imap')
         // GlobalObj?.getInstance()?.getClient()?._doKeepaliveTimer(true) //登陆成功之后通过noop命令不断的轮训服务器 防止断开连接 原库已封装了该命令不断调用 无需用户手动调用
       }, (err: Error) => {
         console.log(err.message);
@@ -463,7 +463,7 @@ struct TestInterfacePage {
         console.log('Connection ended');
       })
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Account_login_error') + `：${err.message}`, 'login-smtp')
+      ctx.showToast(this.getResourceString('Account_login_error') + `：${err.message}`, 'login-smtp')
     }
   }
 
@@ -471,14 +471,14 @@ struct TestInterfacePage {
     const ctx = this;
     ctx.message = ''
     try {
-      ctx.showToast(this.getResourceString('app.string.Starting_to_log_out'), 'loginOut-imap')
+      ctx.showToast(this.getResourceString('Starting_to_log_out'), 'loginOut-imap')
       if (GlobalObj?.getInstance()?.getClient()) {
         let startTime1 = new Date().getTime();
         GlobalObj?.getInstance()?.getClient()?.end();
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("IMAPClientTest : end averageTime : " + averageTime1 + "us")
-        ctx.showToast(this.getResourceString('app.string.Login_successfully_logged_out'), 'loginOut-imap')
+        ctx.showToast(this.getResourceString('Login_successfully_logged_out'), 'loginOut-imap')
         let startTime2 = new Date().getTime();
         GlobalObj?.getInstance()?.getClient()?.destroy()
         let endTime2 = new Date().getTime();
@@ -487,18 +487,18 @@ struct TestInterfacePage {
         GlobalObj?.getInstance()?.setClient(null);
         ctx.isLogin = false;
       } else {
-        ctx.showToast(this.getResourceString('app.string.Login_failed_client_object_is_empty'), 'loginOut-imap')
+        ctx.showToast(this.getResourceString('Login_failed_client_object_is_empty'), 'loginOut-imap')
         ctx.isLogin = false;
       }
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Login_error_occurred_while_logging_out') + `：${err.message}`, 'loginOut-smtp')
+      ctx.showToast(this.getResourceString('Login_error_occurred_while_logging_out') + `：${err.message}`, 'loginOut-smtp')
     }
   }
 
   checkServerCapability() {
     this.message = ''
     if (!GlobalObj?.getInstance()?.getClient() || !this.isLogin) {
-      this.showToast(this.getResourceString('app.string.Error_checking_server_capability'), 'checkServerCapability-smtp')
+      this.showToast(this.getResourceString('Error_checking_server_capability'), 'checkServerCapability-smtp')
       return
     }
 
@@ -514,21 +514,21 @@ struct TestInterfacePage {
     const ctx = this;
     ctx.message = ''
     if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
-      ctx.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'getFolderList-imap')
+      ctx.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'getFolderList-imap')
       return
     }
-    ctx.showToast(this.getResourceString('app.string.Starting_from_obtaining_the_folder_list_in_the_email'), 'getFolderList-imap')
+    ctx.showToast(this.getResourceString('Starting_from_obtaining_the_folder_list_in_the_email'), 'getFolderList-imap')
     let startTime1 = new Date().getTime();
     GlobalObj?.getInstance()?.getClient()?.getBoxes((err: Error, data: MailBoxes) => {
       let endTime1 = new Date().getTime();
       let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
       console.log("IMAPClientTest : getBoxes averageTime : " + averageTime1 + "us")
       if (err) {
-        ctx.showToast(this.getResourceString('app.string.Error_retrieving_folder_list_from_email_data_is') + `：${err.message}`, 'getFolderList-imap')
+        ctx.showToast(this.getResourceString('Error_retrieving_folder_list_from_email_data_is') + `：${err.message}`, 'getFolderList-imap')
         return
       }
       if (!data || typeof data != 'object') {
-        ctx.showToast(this.getResourceString('app.string.Error_retrieving_folder_list_from_email') + `, get box status fail`, 'getFolderList-imap')
+        ctx.showToast(this.getResourceString('Error_retrieving_folder_list_from_email') + `, get box status fail`, 'getFolderList-imap')
         return
       }
       ctx.folderList = [];
@@ -536,7 +536,7 @@ struct TestInterfacePage {
       for (let i = 0; i < keyArr.length; i++) {
         ctx.folderList.push(keyArr[i])
       }
-      ctx.showToast(this.getResourceString('app.string.Successfully_obtained_the_folder_list_from_the_email') + `：${JSON.stringify(ctx.folderList)}`, 'getFolderList-imap')
+      ctx.showToast(this.getResourceString('Successfully_obtained_the_folder_list_from_the_email') + `：${JSON.stringify(ctx.folderList)}`, 'getFolderList-imap')
     })
   }
 
@@ -545,10 +545,10 @@ struct TestInterfacePage {
     try {
       ctx.message = ''
       if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
-        ctx.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'createFolder-imap')
+        ctx.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'createFolder-imap')
         return
       }
-      ctx.showToast(this.getResourceString('app.string.Start_creating_folder'), 'createFolder-imap')
+      ctx.showToast(this.getResourceString('Start_creating_folder'), 'createFolder-imap')
       let startTime1 = new Date().getTime();
       let addName = 'addFolder' + new Date().getTime();
       GlobalObj?.getInstance()?.getClient()?.addBox(addName, (err: Error) => {
@@ -556,18 +556,18 @@ struct TestInterfacePage {
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("IMAPClientTest : addBox averageTime : " + averageTime1 + "us")
         if (err) {
-          ctx.showToast(this.getResourceString('app.string.Failed_to_create_folder_reason') + `：${err.message}`, 'createFolder-imap')
+          ctx.showToast(this.getResourceString('Failed_to_create_folder_reason') + `：${err.message}`, 'createFolder-imap')
         } else {
-          ctx.showToast(this.getResourceString('app.string.Folder_created_successfully'), 'createFolder-imap')
-          ctx.showToast(this.getResourceString('app.string.Starting_from_obtaining_the_folder_list_in_the_email'), 'getFolderList-imap')
+          ctx.showToast(this.getResourceString('Folder_created_successfully'), 'createFolder-imap')
+          ctx.showToast(this.getResourceString('Starting_from_obtaining_the_folder_list_in_the_email'), 'getFolderList-imap')
           GlobalObj?.getInstance()?.getClient()?.getBoxes((err: Error, data: MailBoxes) => {
             if (err) {
-              ctx.showToast(this.getResourceString('app.string.Error_retrieving_folder_list_from_email_data_is') + `：${err.message}`, 'getFolderList-imap')
+              ctx.showToast(this.getResourceString('Error_retrieving_folder_list_from_email_data_is') + `：${err.message}`, 'getFolderList-imap')
               return
             }
             ;
             if (!data || typeof data != 'object') {
-              ctx.showToast(this.getResourceString('app.string.Error_retrieving_folder_list_from_email') + `，get box status fail`, 'getFolderList-imap')
+              ctx.showToast(this.getResourceString('Error_retrieving_folder_list_from_email') + `，get box status fail`, 'getFolderList-imap')
               return
             }
             ctx.folderList = [];
@@ -575,14 +575,14 @@ struct TestInterfacePage {
             for (let i = 0; i < keyArr.length; i++) {
               ctx.folderList.push(keyArr[i])
             }
-            ctx.showToast(this.getResourceString('app.string.Successfully_obtained_the_folder_list_from_the_email') + `：${JSON.stringify(ctx.folderList)}`, 'getFolderList-imap')
+            ctx.showToast(this.getResourceString('Successfully_obtained_the_folder_list_from_the_email') + `：${JSON.stringify(ctx.folderList)}`, 'getFolderList-imap')
           })
         }
       }
       );
     }
     catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Account_login_error') + `：${err.message}`, 'createFolder-smtp')
+      ctx.showToast(this.getResourceString('Account_login_error') + `：${err.message}`, 'createFolder-smtp')
     }
   }
 
@@ -591,24 +591,24 @@ struct TestInterfacePage {
     try {
       ctx.message = ''
       if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
-        ctx.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'delFolder-imap')
+        ctx.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'delFolder-imap')
         return
       }
       let folderName = 'delFolder' + new Date().getTime();
       GlobalObj?.getInstance()?.getClient()?.addBox(folderName, (err: Error) => {
         if (err) {
-          ctx.showToast(this.getResourceString('app.string.Failed_to_create_folder_for_deletion_reason') + `：${err.message}`, 'delFolder-imap')
+          ctx.showToast(this.getResourceString('Failed_to_create_folder_for_deletion_reason') + `：${err.message}`, 'delFolder-imap')
         } else {
-          ctx.showToast(this.getResourceString('app.string.Successfully_created_folder_for_deletion'), 'delFolder-imap')
-          ctx.showToast(this.getResourceString('app.string.Starting_from_obtaining_the_folder_list_in_the_email'), 'delFolder-imap')
+          ctx.showToast(this.getResourceString('Successfully_created_folder_for_deletion'), 'delFolder-imap')
+          ctx.showToast(this.getResourceString('Starting_from_obtaining_the_folder_list_in_the_email'), 'delFolder-imap')
           GlobalObj?.getInstance()?.getClient()?.getBoxes((err: Error, data: MailBoxes) => {
             if (err) {
-              ctx.showToast(this.getResourceString('app.string.Error_retrieving_folder_list_from_email_data_is') + `：${err.message}`, 'delFolder-imap')
+              ctx.showToast(this.getResourceString('Error_retrieving_folder_list_from_email_data_is') + `：${err.message}`, 'delFolder-imap')
               return
             }
             ;
             if (!data || typeof data != 'object') {
-              ctx.showToast(this.getResourceString('app.string.Error_retrieving_folder_list_from_email') + `, get box status fail`, 'delFolder-imap')
+              ctx.showToast(this.getResourceString('Error_retrieving_folder_list_from_email') + `, get box status fail`, 'delFolder-imap')
               return
             }
             ctx.folderList = [];
@@ -616,25 +616,25 @@ struct TestInterfacePage {
             for (let i = 0; i < keyArr.length; i++) {
               ctx.folderList.push(keyArr[i])
             }
-            ctx.showToast(this.getResourceString('app.string.Successfully_obtained_the_folder_list_from_the_email') + `：${JSON.stringify(ctx.folderList)}`, 'delFolder-imap')
-            ctx.showToast(this.getResourceString('app.string.Start_deleting_folder') + '：delFolder', 'deleteFolder-imap')
+            ctx.showToast(this.getResourceString('Successfully_obtained_the_folder_list_from_the_email') + `：${JSON.stringify(ctx.folderList)}`, 'delFolder-imap')
+            ctx.showToast(this.getResourceString('Start_deleting_folder') + '：delFolder', 'deleteFolder-imap')
             let startTime1 = new Date().getTime();
             GlobalObj?.getInstance()?.getClient()?.delBox(folderName, (err: Error) => {
               let endTime1 = new Date().getTime();
               let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
               console.log("IMAPClientTest : delBox averageTime : " + averageTime1 + "us")
               if (err) {
-                ctx.showToast(this.getResourceString('app.string.Failed_to_delete_folder'), 'delFolder-imap')
+                ctx.showToast(this.getResourceString('Failed_to_delete_folder'), 'delFolder-imap')
               } else {
-                ctx.showToast(this.getResourceString('app.string.Folder_deleted_successfully'), 'delFolder-imap')
-                ctx.showToast(this.getResourceString('app.string.Starting_from_obtaining_the_folder_list_in_the_email'), 'getFolderList-imap')
+                ctx.showToast(this.getResourceString('Folder_deleted_successfully'), 'delFolder-imap')
+                ctx.showToast(this.getResourceString('Starting_from_obtaining_the_folder_list_in_the_email'), 'getFolderList-imap')
                 GlobalObj?.getInstance()?.getClient()?.getBoxes((err: Error, data: MailBoxes) => {
                   if (err) {
-                    ctx.showToast(this.getResourceString('app.string.Error_retrieving_folder_list_from_email_data_is') + `：${err.message}`, 'getFolderList-imap')
+                    ctx.showToast(this.getResourceString('Error_retrieving_folder_list_from_email_data_is') + `：${err.message}`, 'getFolderList-imap')
                     return
                   }
                   if (!data || typeof data != 'object') {
-                    ctx.showToast(this.getResourceString('app.string.Error_retrieving_folder_list_from_email') + `, get box status fail`, 'getFolderList-imap')
+                    ctx.showToast(this.getResourceString('Error_retrieving_folder_list_from_email') + `, get box status fail`, 'getFolderList-imap')
                     return
                   }
                   ctx.folderList = [];
@@ -642,7 +642,7 @@ struct TestInterfacePage {
                   for (let i = 0; i < keyArr.length; i++) {
                     ctx.folderList.push(keyArr[i])
                   }
-                  ctx.showToast(this.getResourceString('app.string.Successfully_obtained_the_folder_list_from_the_email') + `：${JSON.stringify(ctx.folderList)}`, 'getFolderList-imap')
+                  ctx.showToast(this.getResourceString('Successfully_obtained_the_folder_list_from_the_email') + `：${JSON.stringify(ctx.folderList)}`, 'getFolderList-imap')
                 })
               }
             });
@@ -651,7 +651,7 @@ struct TestInterfacePage {
       });
 
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Account_login_error') + `：${err.message}`, 'createFolder-smtp')
+      ctx.showToast(this.getResourceString('Account_login_error') + `：${err.message}`, 'createFolder-smtp')
     }
   }
 
@@ -660,23 +660,23 @@ struct TestInterfacePage {
     try {
       ctx.message = ''
       if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
-        ctx.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'renameFolder-imap')
+        ctx.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'renameFolder-imap')
         return
       }
       let renameName = 'renameFolder' + new Date().getTime();
       GlobalObj?.getInstance()?.getClient()?.addBox(renameName, (err: Error) => {
         if (err) {
-          ctx.showToast(this.getResourceString('app.string.Failed_to_create_folder_for_deletion_reason') + `：${err.message}`, 'renameFolder-imap')
+          ctx.showToast(this.getResourceString('Failed_to_create_folder_for_deletion_reason') + `：${err.message}`, 'renameFolder-imap')
         } else {
-          ctx.showToast(this.getResourceString('app.string.Successfully_created_folder_for_deletion'), 'renameFolder-imap')
-          ctx.showToast(this.getResourceString('app.string.Starting_from_obtaining_the_folder_list_in_the_email'), 'renameFolder-imap')
+          ctx.showToast(this.getResourceString('Successfully_created_folder_for_deletion'), 'renameFolder-imap')
+          ctx.showToast(this.getResourceString('Starting_from_obtaining_the_folder_list_in_the_email'), 'renameFolder-imap')
           GlobalObj?.getInstance()?.getClient()?.getBoxes((err: Error, data: MailBoxes) => {
             if (err) {
-              ctx.showToast(this.getResourceString('app.string.Error_retrieving_folder_list_from_email_data_is') + `：${err.message}`, 'renameFolder-imap')
+              ctx.showToast(this.getResourceString('Error_retrieving_folder_list_from_email_data_is') + `：${err.message}`, 'renameFolder-imap')
               return
             }
             if (!data || typeof data != 'object') {
-              ctx.showToast(this.getResourceString('app.string.Error_retrieving_folder_list_from_email') + `, get box status fail`, 'renameFolder-imap')
+              ctx.showToast(this.getResourceString('Error_retrieving_folder_list_from_email') + `, get box status fail`, 'renameFolder-imap')
               return
             }
             ctx.folderList = [];
@@ -684,26 +684,26 @@ struct TestInterfacePage {
             for (let i = 0; i < keyArr.length; i++) {
               ctx.folderList.push(keyArr[i])
             }
-            ctx.showToast(this.getResourceString('app.string.Successfully_obtained_the_folder_list_from_the_email') + `：${JSON.stringify(ctx.folderList)}`, 'renameFolder-imap')
-            ctx.showToast(this.getResourceString('app.string.Start_renaming_folder'), 'renameFolder-imap')
+            ctx.showToast(this.getResourceString('Successfully_obtained_the_folder_list_from_the_email') + `：${JSON.stringify(ctx.folderList)}`, 'renameFolder-imap')
+            ctx.showToast(this.getResourceString('Start_renaming_folder'), 'renameFolder-imap')
             let startTime1 = new Date().getTime();
             GlobalObj?.getInstance()?.getClient()?.renameBox(renameName, 'newFolder', (err: Error, result: MailBoxes) => {
               let endTime1 = new Date().getTime();
               let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
               console.log("IMAPClientTest : renameBox averageTime : " + averageTime1 + "us")
               if (err) {
-                ctx.showToast(this.getResourceString('app.string.Renaming_folder_failed_reason') + `：${err.message}`, 'renameFolder-imap')
+                ctx.showToast(this.getResourceString('Renaming_folder_failed_reason') + `：${err.message}`, 'renameFolder-imap')
               } else {
-                ctx.showToast(this.getResourceString('app.string.Renaming_folder_successfully'), 'renameFolder-imap')
-                ctx.showToast(this.getResourceString('app.string.Starting_from_obtaining_the_folder_list_in_the_email'), 'getFolderList-imap')
+                ctx.showToast(this.getResourceString('Renaming_folder_successfully'), 'renameFolder-imap')
+                ctx.showToast(this.getResourceString('Starting_from_obtaining_the_folder_list_in_the_email'), 'getFolderList-imap')
                 GlobalObj?.getInstance()?.getClient()?.getBoxes((err: Error, data: MailBoxes) => {
                   if (err) {
-                    ctx.showToast(this.getResourceString('app.string.Error_retrieving_folder_list_from_email_data_is') + `：${err.message}`, 'getFolderList-imap')
+                    ctx.showToast(this.getResourceString('Error_retrieving_folder_list_from_email_data_is') + `：${err.message}`, 'getFolderList-imap')
                     return
                   }
                   ;
                   if (!data || typeof data != 'object') {
-                    ctx.showToast(this.getResourceString('app.string.Error_retrieving_folder_list_from_email') + `, get box status fail`, 'getFolderList-imap')
+                    ctx.showToast(this.getResourceString('Error_retrieving_folder_list_from_email') + `, get box status fail`, 'getFolderList-imap')
                     return
                   }
                   ctx.folderList = [];
@@ -711,7 +711,7 @@ struct TestInterfacePage {
                   for (let i = 0; i < keyArr.length; i++) {
                     ctx.folderList.push(keyArr[i])
                   }
-                  ctx.showToast(this.getResourceString('app.string.Successfully_obtained_the_folder_list_from_the_email') + `：${JSON.stringify(ctx.folderList)}`, 'getFolderList-imap')
+                  ctx.showToast(this.getResourceString('Successfully_obtained_the_folder_list_from_the_email') + `：${JSON.stringify(ctx.folderList)}`, 'getFolderList-imap')
                 })
               }
             });
@@ -720,7 +720,7 @@ struct TestInterfacePage {
       });
 
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Account_login_error') + `：${err.message}`, 'renameFolder-smtp')
+      ctx.showToast(this.getResourceString('Account_login_error') + `：${err.message}`, 'renameFolder-smtp')
     }
   }
 
@@ -729,17 +729,17 @@ struct TestInterfacePage {
     try {
       ctx.message = ''
       if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
-        ctx.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'subBox-imap')
+        ctx.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'subBox-imap')
         return
       }
-      ctx.showToast(this.getResourceString('app.string.Start_obtaining_the_subscribed_folder'), 'subBox-imap')
+      ctx.showToast(this.getResourceString('Start_obtaining_the_subscribed_folder'), 'subBox-imap')
       GlobalObj?.getInstance()?.getClient()?.getSubscribedBoxes((err: Error, data: MailBoxes) => {
         if (err) {
-          ctx.showToast(this.getResourceString('app.string.Failed_to_retrieve_the_subscribed_folder_reason') + `：${err.message}`, 'subBox-imap')
+          ctx.showToast(this.getResourceString('Failed_to_retrieve_the_subscribed_folder_reason') + `：${err.message}`, 'subBox-imap')
         } else {
 
           if (!data || typeof data != 'object') {
-            ctx.showToast(this.getResourceString('app.string.Error_retrieving_folder_list_from_email') + `, get box status fail`, 'subBox-imap')
+            ctx.showToast(this.getResourceString('Error_retrieving_folder_list_from_email') + `, get box status fail`, 'subBox-imap')
             return
           }
           ctx.subFolderList = [];
@@ -747,15 +747,15 @@ struct TestInterfacePage {
           for (let i = 0; i < keyArr.length; i++) {
             ctx.subFolderList.push(keyArr[i])
           }
-          ctx.showToast(this.getResourceString('app.string.Successfully_obtained_the_subscribed_folder_the_data_is') + `：${JSON.stringify(ctx.subFolderList)}`, 'subBox-imap')
-          ctx.showToast(this.getResourceString('app.string.Start_creating_folder'), 'subBox-imap')
+          ctx.showToast(this.getResourceString('Successfully_obtained_the_subscribed_folder_the_data_is') + `：${JSON.stringify(ctx.subFolderList)}`, 'subBox-imap')
+          ctx.showToast(this.getResourceString('Start_creating_folder'), 'subBox-imap')
           let subName = 'subFolder' + new Date().getTime();
           GlobalObj?.getInstance()?.getClient()?.addBox(subName, (err: Error) => {
             if (err) {
-              ctx.showToast(this.getResourceString('app.string.Failed_to_create_folder_reason') + `：${err.message}`, 'subBox-imap')
+              ctx.showToast(this.getResourceString('Failed_to_create_folder_reason') + `：${err.message}`, 'subBox-imap')
             } else {
-              ctx.showToast(this.getResourceString('app.string.Folder_created_successfully'), 'subBox-imap')
-              ctx.showToast(this.getResourceString('app.string.Subscribe_to_addFolder_folder'), 'subBox-imap')
+              ctx.showToast(this.getResourceString('Folder_created_successfully'), 'subBox-imap')
+              ctx.showToast(this.getResourceString('Subscribe_to_addFolder_folder'), 'subBox-imap')
               let startTime1 = new Date().getTime();
               GlobalObj?.getInstance()?.getClient()?.subscribeBox(subName, (err: Error) => {
                 let endTime1 = new Date().getTime();
@@ -763,16 +763,16 @@ struct TestInterfacePage {
                 console.log("IMAPClientTest : subscribeBox averageTime : " + averageTime1 + "us")
 
                 if (err) {
-                  ctx.showToast(this.getResourceString('app.string.Subscription_email_failed_reason') + `：${err.message}`, 'subBox-imap')
+                  ctx.showToast(this.getResourceString('Subscription_email_failed_reason') + `：${err.message}`, 'subBox-imap')
                 } else {
-                  ctx.showToast(this.getResourceString('app.string.Subscription_email_successful'), 'subBox-imap')
-                  ctx.showToast(this.getResourceString('app.string.Start_obtaining_the_subscribed_folder'), 'subBox-imap')
+                  ctx.showToast(this.getResourceString('Subscription_email_successful'), 'subBox-imap')
+                  ctx.showToast(this.getResourceString('Start_obtaining_the_subscribed_folder'), 'subBox-imap')
                   GlobalObj?.getInstance()?.getClient()?.getSubscribedBoxes((err: Error, data: MailBoxes) => {
                     if (err) {
-                      ctx.showToast(this.getResourceString('app.string.Failed_to_retrieve_the_subscribed_folder_reason') + `：${err.message}`, 'subBox-imap')
+                      ctx.showToast(this.getResourceString('Failed_to_retrieve_the_subscribed_folder_reason') + `：${err.message}`, 'subBox-imap')
                     } else {
                       if (!data || typeof data != 'object') {
-                        ctx.showToast(this.getResourceString('app.string.Error_retrieving_folder_list_from_email') + `, get box status fail`, 'subBox-imap')
+                        ctx.showToast(this.getResourceString('Error_retrieving_folder_list_from_email') + `, get box status fail`, 'subBox-imap')
                         return
                       }
                       ctx.subFolderList = [];
@@ -780,7 +780,7 @@ struct TestInterfacePage {
                       for (let i = 0; i < keyArr.length; i++) {
                         ctx.subFolderList.push(keyArr[i])
                       }
-                      ctx.showToast(this.getResourceString('app.string.Successfully_obtained_the_subscribed_folder_the_data_is') + `：${JSON.stringify(ctx.subFolderList)}`, 'subBox-imap')
+                      ctx.showToast(this.getResourceString('Successfully_obtained_the_subscribed_folder_the_data_is') + `：${JSON.stringify(ctx.subFolderList)}`, 'subBox-imap')
                     }
                   });
                 }
@@ -790,7 +790,7 @@ struct TestInterfacePage {
         }
       });
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Subscription_email_error') + `：${err.message}`, 'subBox-smtp')
+      ctx.showToast(this.getResourceString('Subscription_email_error') + `：${err.message}`, 'subBox-smtp')
     }
   }
 
@@ -799,16 +799,16 @@ struct TestInterfacePage {
     try {
       ctx.message = ''
       if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
-        ctx.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'unSubBox-imap')
+        ctx.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'unSubBox-imap')
         return
       }
-      ctx.showToast(this.getResourceString('app.string.Start_obtaining_the_subscribed_folder'), 'unSubBox-imap')
+      ctx.showToast(this.getResourceString('Start_obtaining_the_subscribed_folder'), 'unSubBox-imap')
       GlobalObj?.getInstance()?.getClient()?.getSubscribedBoxes((err: Error, data: MailBoxes) => {
         if (err) {
-          ctx.showToast(this.getResourceString('app.string.Failed_to_retrieve_the_subscribed_folder_reason') + `：${err.message}`, 'unSubBox-imap')
+          ctx.showToast(this.getResourceString('Failed_to_retrieve_the_subscribed_folder_reason') + `：${err.message}`, 'unSubBox-imap')
         } else {
           if (!data || typeof data != 'object') {
-            ctx.showToast(this.getResourceString('app.string.Error_retrieving_folder_list_from_email') + `, get box status fail`, 'subBox-imap')
+            ctx.showToast(this.getResourceString('Error_retrieving_folder_list_from_email') + `, get box status fail`, 'subBox-imap')
             return
           }
           ctx.subFolderList = [];
@@ -816,27 +816,27 @@ struct TestInterfacePage {
           for (let i = 0; i < keyArr.length; i++) {
             ctx.subFolderList.push(keyArr[i])
           }
-          ctx.showToast(this.getResourceString('app.string.Successfully_obtained_the_subscribed_folder_the_data_is') + `：${JSON.stringify(ctx.subFolderList)}`, 'unSubBox-imap')
-          ctx.showToast(this.getResourceString('app.string.Start_creating_folder'), 'subBox-imap')
+          ctx.showToast(this.getResourceString('Successfully_obtained_the_subscribed_folder_the_data_is') + `：${JSON.stringify(ctx.subFolderList)}`, 'unSubBox-imap')
+          ctx.showToast(this.getResourceString('Start_creating_folder'), 'subBox-imap')
           let unSubName = 'unSubFolder' + new Date().getTime();
           GlobalObj?.getInstance()?.getClient()?.addBox(unSubName, (err: Error) => {
             if (err) {
-              ctx.showToast(this.getResourceString('app.string.Failed_to_create_folder_reason') + `：${err.message}`, 'unSubBox-imap')
+              ctx.showToast(this.getResourceString('Failed_to_create_folder_reason') + `：${err.message}`, 'unSubBox-imap')
             } else {
-              ctx.showToast(this.getResourceString('app.string.Folder_created_successfully'), 'subBox-imap')
-              ctx.showToast(this.getResourceString('app.string.Subscribe_to_addFolder_folder'), 'subBox-imap')
+              ctx.showToast(this.getResourceString('Folder_created_successfully'), 'subBox-imap')
+              ctx.showToast(this.getResourceString('Subscribe_to_addFolder_folder'), 'subBox-imap')
               GlobalObj?.getInstance()?.getClient()?.subscribeBox(unSubName, (err: Error) => {
                 if (err) {
-                  ctx.showToast(this.getResourceString('app.string.Subscription_email_failed_reason') + `：${err.message}`, 'unSubBox-imap')
+                  ctx.showToast(this.getResourceString('Subscription_email_failed_reason') + `：${err.message}`, 'unSubBox-imap')
                 } else {
-                  ctx.showToast(this.getResourceString('app.string.Subscription_email_successful'), 'subBox-imap')
-                  ctx.showToast(this.getResourceString('app.string.Start_obtaining_the_subscribed_folder'), 'subBox-imap')
+                  ctx.showToast(this.getResourceString('Subscription_email_successful'), 'subBox-imap')
+                  ctx.showToast(this.getResourceString('Start_obtaining_the_subscribed_folder'), 'subBox-imap')
                   GlobalObj?.getInstance()?.getClient()?.getSubscribedBoxes((err: Error, data: MailBoxes) => {
                     if (err) {
-                      ctx.showToast(this.getResourceString('app.string.Failed_to_retrieve_the_subscribed_folder_reason') + `：${err.message}`, 'unSubBox-imap')
+                      ctx.showToast(this.getResourceString('Failed_to_retrieve_the_subscribed_folder_reason') + `：${err.message}`, 'unSubBox-imap')
                     } else {
                       if (!data || typeof data != 'object') {
-                        ctx.showToast(this.getResourceString('app.string.Error_retrieving_folder_list_from_email') + `, get box status fail`, 'subBox-imap')
+                        ctx.showToast(this.getResourceString('Error_retrieving_folder_list_from_email') + `, get box status fail`, 'subBox-imap')
                         return
                       }
                       ctx.subFolderList = [];
@@ -844,23 +844,23 @@ struct TestInterfacePage {
                       for (let i = 0; i < keyArr.length; i++) {
                         ctx.subFolderList.push(keyArr[i])
                       }
-                      ctx.showToast(this.getResourceString('app.string.Successfully_obtained_the_subscribed_folder_the_data_is') + `：${JSON.stringify(ctx.subFolderList)}`, 'unSubBox-imap')
+                      ctx.showToast(this.getResourceString('Successfully_obtained_the_subscribed_folder_the_data_is') + `：${JSON.stringify(ctx.subFolderList)}`, 'unSubBox-imap')
                       let startTime1 = new Date().getTime();
                       GlobalObj?.getInstance()?.getClient()?.unsubscribeBox(unSubName, (err: Error) => {
                         let endTime1 = new Date().getTime();
                         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
                         console.log("IMAPClientTest : unsubscribeBox averageTime : " + averageTime1 + "us")
                         if (err) {
-                          ctx.showToast(this.getResourceString('app.string.Unsubscribe_email_failed_reason') + `：${err.message}`, 'unSubBox-imap')
+                          ctx.showToast(this.getResourceString('Unsubscribe_email_failed_reason') + `：${err.message}`, 'unSubBox-imap')
                         } else {
-                          ctx.showToast(this.getResourceString('app.string.Unsubscribed_email_successfully'), 'unSubBox-imap')
-                          ctx.showToast(this.getResourceString('app.string.Start_obtaining_the_subscribed_folder'), 'getSubFolderList-imap')
+                          ctx.showToast(this.getResourceString('Unsubscribed_email_successfully'), 'unSubBox-imap')
+                          ctx.showToast(this.getResourceString('Start_obtaining_the_subscribed_folder'), 'getSubFolderList-imap')
                           GlobalObj?.getInstance()?.getClient()?.getSubscribedBoxes((err: Error, data: MailBoxes) => {
                             if (err) {
-                              ctx.showToast(this.getResourceString('app.string.Failed_to_retrieve_the_subscribed_folder_reason') + `：${err.message}`, 'getSubFolderList-imap')
+                              ctx.showToast(this.getResourceString('Failed_to_retrieve_the_subscribed_folder_reason') + `：${err.message}`, 'getSubFolderList-imap')
                             } else {
                               if (!data || typeof data != 'object') {
-                                ctx.showToast(this.getResourceString('app.string.Error_retrieving_folder_list_from_email') + `, get box status fail`, 'subBox-imap')
+                                ctx.showToast(this.getResourceString('Error_retrieving_folder_list_from_email') + `, get box status fail`, 'subBox-imap')
                                 return
                               }
                               ctx.subFolderList = [];
@@ -868,7 +868,7 @@ struct TestInterfacePage {
                               for (let i = 0; i < keyArr.length; i++) {
                                 ctx.subFolderList.push(keyArr[i])
                               }
-                              ctx.showToast(this.getResourceString('app.string.Successfully_obtained_the_subscribed_folder_the_data_is') + `：${JSON.stringify(ctx.subFolderList)}`, 'getFolderList-imap')
+                              ctx.showToast(this.getResourceString('Successfully_obtained_the_subscribed_folder_the_data_is') + `：${JSON.stringify(ctx.subFolderList)}`, 'getFolderList-imap')
                             }
                           });
                         }
@@ -882,7 +882,7 @@ struct TestInterfacePage {
         }
       });
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Subscription_email_error') + `：${err.message}`, 'subBox-smtp')
+      ctx.showToast(this.getResourceString('Subscription_email_error') + `：${err.message}`, 'subBox-smtp')
     }
   }
 
@@ -891,20 +891,20 @@ struct TestInterfacePage {
     try {
       ctx.message = ''
       if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
-        ctx.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'getSubFolderList-imap')
+        ctx.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'getSubFolderList-imap')
         return
       }
-      ctx.showToast(this.getResourceString('app.string.Start_obtaining_the_subscribed_folder'), 'getSubFolderList-imap')
+      ctx.showToast(this.getResourceString('Start_obtaining_the_subscribed_folder'), 'getSubFolderList-imap')
       let startTime1 = new Date().getTime();
       GlobalObj?.getInstance()?.getClient()?.getSubscribedBoxes((err: Error, data: MailBoxes) => {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("IMAPClientTest : getSubscribedBoxes averageTime : " + averageTime1 + "us")
         if (err) {
-          ctx.showToast(this.getResourceString('app.string.Failed_to_retrieve_the_subscribed_folder_reason') + `：${err.message}`, 'getSubFolderList-imap')
+          ctx.showToast(this.getResourceString('Failed_to_retrieve_the_subscribed_folder_reason') + `：${err.message}`, 'getSubFolderList-imap')
         } else {
           if (!data || typeof data != 'object') {
-            ctx.showToast(this.getResourceString('app.string.Error_retrieving_folder_list_from_email') + `, get box status fail`, 'getSubFolderList-imap')
+            ctx.showToast(this.getResourceString('Error_retrieving_folder_list_from_email') + `, get box status fail`, 'getSubFolderList-imap')
             return
           }
           ctx.subFolderList = [];
@@ -912,11 +912,11 @@ struct TestInterfacePage {
           for (let i = 0; i < keyArr.length; i++) {
             ctx.subFolderList.push(keyArr[i])
           }
-          ctx.showToast(this.getResourceString('app.string.Successfully_obtained_the_subscribed_folder_the_data_is') + `：${JSON.stringify(ctx.subFolderList)}`, 'getFolderList-imap')
+          ctx.showToast(this.getResourceString('Successfully_obtained_the_subscribed_folder_the_data_is') + `：${JSON.stringify(ctx.subFolderList)}`, 'getFolderList-imap')
         }
       });
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Error_obtaining_subscription_folder') + `：${err.message}`, 'getSubFolderList-smtp')
+      ctx.showToast(this.getResourceString('Error_obtaining_subscription_folder') + `：${err.message}`, 'getSubFolderList-smtp')
     }
   }
 
@@ -936,10 +936,10 @@ struct TestInterfacePage {
     try {
       ctx.message = ''
       if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
-        ctx.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'openBoxAndGetStatu-imap')
+        ctx.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'openBoxAndGetStatu-imap')
         return
       }
-      ctx.showToast(this.getResourceString('app.string.Starting_to_obtain_the_status_of_the_main_email_and_main_folder') + `${ctx.folderName}`, 'openBoxAndGetStatu-imap')
+      ctx.showToast(this.getResourceString('Starting_to_obtain_the_status_of_the_main_email_and_main_folder') + `${ctx.folderName}`, 'openBoxAndGetStatu-imap')
       let startTime1 = new Date().getTime();
       GlobalObj?.getInstance()?.getClient()?.status(ctx.folderName, (err: Error, data: Box) => {
         let endTime1 = new Date().getTime();
@@ -948,12 +948,12 @@ struct TestInterfacePage {
 
         if (err) {
           ctx.isBoxOpen = false;
-          ctx.showToast(this.getResourceString('app.string.Failed_to_retrieve_the_status_of_the_email_home_folder') + `${err.message}`, 'openBoxAndGetStatu-imap')
+          ctx.showToast(this.getResourceString('Failed_to_retrieve_the_status_of_the_email_home_folder') + `${err.message}`, 'openBoxAndGetStatu-imap')
           return
         }
         if (!data || (data?.messages?.total ? data?.messages?.total : 0) < 1) {
           ctx.isBoxOpen = false;
-          ctx.showToast(this.getResourceString('app.string.Failed_to_retrieve_the_status_of_the_email_home_folder_no_data_available'), 'openBoxAndGetStatu-imap')
+          ctx.showToast(this.getResourceString('Failed_to_retrieve_the_status_of_the_email_home_folder_no_data_available'), 'openBoxAndGetStatu-imap')
           return
         }
         try {
@@ -966,10 +966,10 @@ struct TestInterfacePage {
               console.log("IMAPClientTest : openBox averageTime : " + averageTime1 + "us")
               if (err) {
                 ctx.isBoxOpen = true;
-                ctx.showToast(this.getResourceString('app.string.Failed_to_open_mailbox_main_folder') + `${err.message}`, 'openBoxAndGetStatu-imap')
+                ctx.showToast(this.getResourceString('Failed_to_open_mailbox_main_folder') + `${err.message}`, 'openBoxAndGetStatu-imap')
                 return
               }
-              ctx.showToast(this.getResourceString('app.string.Successfully_opened_the_email_home_folder'), 'openBoxAndGetStatu-imap')
+              ctx.showToast(this.getResourceString('Successfully_opened_the_email_home_folder'), 'openBoxAndGetStatu-imap')
               ctx.isBoxOpen = true;
               ctx.getListData()
             });
@@ -979,11 +979,11 @@ struct TestInterfacePage {
           }
 
         } catch (err) {
-          ctx.showToast(this.getResourceString('app.string.Failed_to_open_mailbox_main_folder') + `${err.message}`, 'openBoxAndGetStatu-imap')
+          ctx.showToast(this.getResourceString('Failed_to_open_mailbox_main_folder') + `${err.message}`, 'openBoxAndGetStatu-imap')
         }
       })
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Failed_to_retrieve_the_main_email_mailing_list_message_is') + `：${err.message}`, 'getListData-imap')
+      ctx.showToast(this.getResourceString('Failed_to_retrieve_the_main_email_mailing_list_message_is') + `：${err.message}`, 'getListData-imap')
       throw err as Error
     }
   }
@@ -995,18 +995,18 @@ struct TestInterfacePage {
       ctx.refreshPageSize();
       ctx.message = ''
       if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
-        ctx.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'getListData-imap')
+        ctx.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'getListData-imap')
         return
       }
       if (!ctx.isBoxOpen) {
-        ctx.showToast(this.getResourceString('app.string.Email_not_opened_unable_to_retrieve_mailing_list'), 'getListData-imap')
+        ctx.showToast(this.getResourceString('Email_not_opened_unable_to_retrieve_mailing_list'), 'getListData-imap')
         return
       }
       if (!GlobalObj?.getInstance()?.getClient()?.seq) {
-        ctx.showToast(this.getResourceString('app.string.The_client_seq_object_is_empty'), 'getListData-imap')
+        ctx.showToast(this.getResourceString('The_client_seq_object_is_empty'), 'getListData-imap')
         return
       }
-      ctx.showToast(this.getResourceString('app.string.Start_obtaining_the_main_email_mailing_list'), 'getListData-imap')
+      ctx.showToast(this.getResourceString('Start_obtaining_the_main_email_mailing_list'), 'getListData-imap')
       // fetch里面可以是fetch(`1:3`）这种取序号为1-3的信息的  也可以是可以是fetch(`1`）这种取序号为1的信息
       let startTime1 = new Date().getTime();
       let prefix: string = ''
@@ -1033,7 +1033,7 @@ struct TestInterfacePage {
         },
         fetchErrorCallback: (err: Error) => {
           console.log('Fetch error: ' + err);
-          ctx.showToast(this.getResourceString('app.string.Failed_to_retrieve_the_main_email_mailing_list_message_is') + `：${err.message}`, 'getListData-imap')
+          ctx.showToast(this.getResourceString('Failed_to_retrieve_the_main_email_mailing_list_message_is') + `：${err.message}`, 'getListData-imap')
         },
         fetchEndCallback: () => {
           let endTime1 = new Date().getTime();
@@ -1067,13 +1067,13 @@ struct TestInterfacePage {
             }
             ctx.listData.push(bean)
           }
-          ctx.showToast(this.getResourceString('app.string.Successfully_obtained_the_main_email_mailing_list_the_data_is') + `：${JSON.stringify(ctx.listData)}`, 'getListData-imap')
+          ctx.showToast(this.getResourceString('Successfully_obtained_the_main_email_mailing_list_the_data_is') + `：${JSON.stringify(ctx.listData)}`, 'getListData-imap')
           // GlobalObj?.getInstance()?.getClient()?.end();
         }
       }
       this.util?.getListData(ctx.startIndex, ctx.endIndex, callback)
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Failed_to_retrieve_the_main_email_mailing_list_message_is') + `：${err.message}`, 'getListData-imap')
+      ctx.showToast(this.getResourceString('Failed_to_retrieve_the_main_email_mailing_list_message_is') + `：${err.message}`, 'getListData-imap')
       throw err as Error
     }
 
@@ -1081,12 +1081,12 @@ struct TestInterfacePage {
 
   createMailData() {
     let msg: MsgSendBean = {
-      text: this.getResourceString('app.string.Email_uploaded_during_IMAP_protocol_testing'),
+      text: this.getResourceString('Email_uploaded_during_IMAP_protocol_testing'),
       from: `${'鸿蒙搬砖工'} <${'xx@qq.com'}>`,
       to: 'xx@qq.com',
       cc: 'xx@163.com',
       bcc: 'xx@139.com',
-      subject: this.getResourceString('app.string.Topic_of_IMAP_Protocol_for_Client')
+      subject: this.getResourceString('Topic_of_IMAP_Protocol_for_Client')
     }
     return JSON.stringify(msg);
   }
@@ -1096,19 +1096,19 @@ struct TestInterfacePage {
     try {
       ctx.message = ''
       if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
-        ctx.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'appendMail-imap')
+        ctx.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'appendMail-imap')
         return
       }
       if (!ctx.isBoxOpen) {
-        ctx.showToast(this.getResourceString('app.string.Email_not_opened_unable_to_retrieve_mailing_list'), 'appendMail-imap')
+        ctx.showToast(this.getResourceString('Email_not_opened_unable_to_retrieve_mailing_list'), 'appendMail-imap')
         return
       }
       let data = ctx.createMailData();
       if (!data || data.length < 1) {
-        ctx.showToast(this.getResourceString('app.string.The_uploaded_email_data_cannot_be_empty'), 'appendMail-imap')
+        ctx.showToast(this.getResourceString('The_uploaded_email_data_cannot_be_empty'), 'appendMail-imap')
         return
       }
-      ctx.showToast(this.getResourceString('app.string.Start_uploading_emails'), 'appendMail-imap')
+      ctx.showToast(this.getResourceString('Start_uploading_emails'), 'appendMail-imap')
       let option: AppendOptions = {
         mailbox: 'INBOX',
         flags: ['Seen'], //取值 Seen flagged等
@@ -1121,13 +1121,13 @@ struct TestInterfacePage {
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("IMAPClientTest : append averageTime : " + averageTime1 + "us")
         if (err) {
-          ctx.showToast(this.getResourceString('app.string.Failed_to_upload_email') + `：${err.message}`, 'appendMail-imap')
+          ctx.showToast(this.getResourceString('Failed_to_upload_email') + `：${err.message}`, 'appendMail-imap')
         } else {
-          ctx.showToast(this.getResourceString('app.string.Email_uploaded_successfully'), 'appendMail-imap')
+          ctx.showToast(this.getResourceString('Email_uploaded_successfully'), 'appendMail-imap')
         }
       });
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Error_uploading_email') + `：${err.message}`, 'appendMail-smtp')
+      ctx.showToast(this.getResourceString('Error_uploading_email') + `：${err.message}`, 'appendMail-smtp')
     }
   }
 
@@ -1135,13 +1135,13 @@ struct TestInterfacePage {
     const ctx = this;
     try {
       ctx.message = ''
-      ctx.showToast(this.getResourceString('app.string.Start_closing_this_folder'), 'closeBox-imap')
+      ctx.showToast(this.getResourceString('Start_closing_this_folder'), 'closeBox-imap')
       if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
-        ctx.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'closeBox-imap')
+        ctx.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'closeBox-imap')
         return
       }
       if (!ctx.isBoxOpen) {
-        ctx.showToast(this.getResourceString('app.string.Email_not_opened_unable_to_retrieve_mailing_list'), 'closeBox-imap')
+        ctx.showToast(this.getResourceString('Email_not_opened_unable_to_retrieve_mailing_list'), 'closeBox-imap')
         return
       }
       let startTime1 = new Date().getTime();
@@ -1150,14 +1150,14 @@ struct TestInterfacePage {
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("IMAPClientTest : closeBox averageTime : " + averageTime1 + "us")
         if (err) {
-          ctx.showToast(this.getResourceString('app.string.Failed_to_close_this_folder_reason') + `：${err.message}`, 'closeBox-imap')
+          ctx.showToast(this.getResourceString('Failed_to_close_this_folder_reason') + `：${err.message}`, 'closeBox-imap')
         } else {
           ctx.isBoxOpen = false;
-          ctx.showToast(this.getResourceString('app.string.Successfully_closed_this_folder'), 'appendMail-imap')
+          ctx.showToast(this.getResourceString('Successfully_closed_this_folder'), 'appendMail-imap')
         }
       });
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Error_closing_this_folder') + `：${err.message}`, 'closeBox-smtp')
+      ctx.showToast(this.getResourceString('Error_closing_this_folder') + `：${err.message}`, 'closeBox-smtp')
     }
   }
 
@@ -1165,30 +1165,30 @@ struct TestInterfacePage {
     const ctx = this;
     try {
       ctx.message = ''
-      ctx.showToast(this.getResourceString('app.string.Start_setting_sorting'), 'sortMail-imap')
+      ctx.showToast(this.getResourceString('Start_setting_sorting'), 'sortMail-imap')
       if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
-        ctx.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'sortMail-imap')
+        ctx.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'sortMail-imap')
         return
       }
       if (!ctx.isBoxOpen) {
-        ctx.showToast(this.getResourceString('app.string.Email_not_opened_unable_to_retrieve_mailing_list'), 'sortMail-imap')
+        ctx.showToast(this.getResourceString('Email_not_opened_unable_to_retrieve_mailing_list'), 'sortMail-imap')
         return
       }
-      ctx.showToast(this.getResourceString('app.string.Start_sorting_emails_by_date'), 'sortMail-imap')
+      ctx.showToast(this.getResourceString('Start_sorting_emails_by_date'), 'sortMail-imap')
       let startTime1 = new Date().getTime();
       GlobalObj?.getInstance()?.getClient()?.sort(['DATE'], ['ALL'], (err:Error, uids:number[]) => {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("IMAPClientTest : sort averageTime : " + averageTime1 + "us")
         if (err) {
-          ctx.showToast(this.getResourceString('app.string.Failed_to_sort_emails_by_date_reason') + `：${err.message}`, 'sortMail-imap')
+          ctx.showToast(this.getResourceString('Failed_to_sort_emails_by_date_reason') + `：${err.message}`, 'sortMail-imap')
         } else {
-          ctx.showToast(this.getResourceString('app.string.Successfully_sorted_emails_by_date'), 'sortMail-imap')
+          ctx.showToast(this.getResourceString('Successfully_sorted_emails_by_date'), 'sortMail-imap')
         }
       });
 
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Setting_sorting_error') + `：${err.message}`, 'sortMail-smtp')
+      ctx.showToast(this.getResourceString('Setting_sorting_error') + `：${err.message}`, 'sortMail-smtp')
     }
   }
 
@@ -1196,13 +1196,13 @@ struct TestInterfacePage {
     const ctx = this;
     try {
       ctx.message = ''
-      ctx.showToast(this.getResourceString('app.string.Start_searching_for_emails'), 'search-imap')
+      ctx.showToast(this.getResourceString('Start_searching_for_emails'), 'search-imap')
       if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
-        ctx.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'search-imap')
+        ctx.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'search-imap')
         return
       }
       if (!ctx.isBoxOpen) {
-        ctx.showToast(this.getResourceString('app.string.Email_not_opened_unable_to_retrieve_mailing_list'), 'search-imap')
+        ctx.showToast(this.getResourceString('Email_not_opened_unable_to_retrieve_mailing_list'), 'search-imap')
         return
       }
       let startTime1 = new Date().getTime();
@@ -1211,13 +1211,13 @@ struct TestInterfacePage {
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("IMAPClientTest : search averageTime : " + averageTime1 + "us")
         if (err) {
-          ctx.showToast(this.getResourceString('app.string.Search_email_failed_reason') + `：${err.message}`, 'search-imap')
+          ctx.showToast(this.getResourceString('Search_email_failed_reason') + `：${err.message}`, 'search-imap')
         } else {
-          ctx.showToast(this.getResourceString('app.string.Search_email_successful') + JSON.stringify(uids), 'search-imap')
+          ctx.showToast(this.getResourceString('Search_email_successful') + JSON.stringify(uids), 'search-imap')
         }
       });
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Search_email_error') + `：${err.message}`, 'search-smtp')
+      ctx.showToast(this.getResourceString('Search_email_error') + `：${err.message}`, 'search-smtp')
     }
   }
 
@@ -1230,16 +1230,16 @@ struct TestInterfacePage {
     const ctx = this;
     ctx.message = ''
     if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
-      ctx.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'search-imap')
+      ctx.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'search-imap')
       return
     }
     if (!ctx.isBoxOpen) {
-      ctx.showToast(this.getResourceString('app.string.Email_not_opened_unable_to_retrieve_mailing_list'), 'search-imap')
+      ctx.showToast(this.getResourceString('Email_not_opened_unable_to_retrieve_mailing_list'), 'search-imap')
       return
     }
 
     if (!ctx.listData || ctx.listData.length < 1) {
-      ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'storeMail---IMAP')
+      ctx.showToast(this.getResourceString('There_are_currently_no_available_messages_in_the_email'), 'storeMail---IMAP')
       return
     }
     let uid = '';
@@ -1252,45 +1252,45 @@ struct TestInterfacePage {
     if (uid && uid.length > 0) {
       ctx.addDeleteFlag(uid)
     } else {
-      ctx.showToast(this.getResourceString('app.string.There_are_currently_no_emails_available_for_operation'), 'storeMail---IMAP')
+      ctx.showToast(this.getResourceString('There_are_currently_no_emails_available_for_operation'), 'storeMail---IMAP')
     }
   }
 
   addDeleteFlag(uid: string) {
     const ctx = this;
     try {
-      ctx.showToast(this.getResourceString('app.string.Start_marking_emails_for_deletion'), 'addDeleteFlag-imap')
+      ctx.showToast(this.getResourceString('Start_marking_emails_for_deletion'), 'addDeleteFlag-imap')
       GlobalObj?.getInstance()?.getClient()?.addFlags(uid, '\\Deleted', (err:Error) => {
         if (err) {
-          ctx.showToast(this.getResourceString('app.string.Failed_to_mark_the_email_for_deletion_reason') + `：${err.message}`, 'addDeleteFlag-imap')
+          ctx.showToast(this.getResourceString('Failed_to_mark_the_email_for_deletion_reason') + `：${err.message}`, 'addDeleteFlag-imap')
         } else {
-          ctx.showToast(this.getResourceString('app.string.Successfully_marked_the_email_for_deletion'), 'storeMail-imap')
+          ctx.showToast(this.getResourceString('Successfully_marked_the_email_for_deletion'), 'storeMail-imap')
           ctx.expungeMail(uid)
         }
       });
 
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Error_in_marking_email_for_deletion') + `：${err.message}`, 'storeMail-smtp')
+      ctx.showToast(this.getResourceString('Error_in_marking_email_for_deletion') + `：${err.message}`, 'storeMail-smtp')
     }
   }
 
   expungeMail(uid: string) {
     const ctx = this;
     try {
-      ctx.showToast(this.getResourceString('app.string.Start_deleting_all_emails_marked_as_DELETED_Emails_deleted_by_EXPUNGE_cannot_be_recovered'), 'expungeMail-imap')
+      ctx.showToast(this.getResourceString('Start_deleting_all_emails_marked_as_DELETED_Emails_deleted_by_EXPUNGE_cannot_be_recovered'), 'expungeMail-imap')
       let startTime1 = new Date().getTime();
       GlobalObj?.getInstance()?.getClient()?.expunge(uid, (err:Error) => {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("IMAPClientTest : expunge averageTime : " + averageTime1 + "us")
         if (err) {
-          ctx.showToast(this.getResourceString('app.string.Permanent_deletion_failed_reason') + `：${err.message}`, 'expungeMail-imap')
+          ctx.showToast(this.getResourceString('Permanent_deletion_failed_reason') + `：${err.message}`, 'expungeMail-imap')
         } else {
-          ctx.showToast(this.getResourceString('app.string.Permanently_deleted_successfully'), 'expungeMail-imap')
+          ctx.showToast(this.getResourceString('Permanently_deleted_successfully'), 'expungeMail-imap')
         }
       });
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Permanent_deletion_error') + `：${err.message}`, 'expungeMail-smtp')
+      ctx.showToast(this.getResourceString('Permanent_deletion_error') + `：${err.message}`, 'expungeMail-smtp')
     }
   }
 
@@ -1299,24 +1299,24 @@ struct TestInterfacePage {
     try {
       ctx.message = ''
       if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
-        ctx.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'copyMail-imap')
+        ctx.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'copyMail-imap')
         return
       }
       if (!ctx.isBoxOpen) {
-        ctx.showToast(this.getResourceString('app.string.Email_not_opened_unable_to_retrieve_mailing_list'), 'copyMail-imap')
+        ctx.showToast(this.getResourceString('Email_not_opened_unable_to_retrieve_mailing_list'), 'copyMail-imap')
         return
       }
       if (!ctx.listData || ctx.listData.length < 1) {
-        ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'copyMail---IMAP')
+        ctx.showToast(this.getResourceString('There_are_currently_no_available_messages_in_the_email'), 'copyMail---IMAP')
         return
       }
       let uid = ctx.listData[0].uid
       if (!uid || uid.length < 1) {
-        ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'copyMail---IMAP')
+        ctx.showToast(this.getResourceString('There_are_currently_no_available_messages_in_the_email'), 'copyMail---IMAP')
         return
       }
       if (!ctx.folderList || ctx.folderList.length < 1) {
-        ctx.showToast(this.getResourceString('app.string.No_available_email_address'), 'copyMail---IMAP')
+        ctx.showToast(this.getResourceString('No_available_email_address'), 'copyMail---IMAP')
         return
       }
       let selectFoler = ''
@@ -1329,26 +1329,26 @@ struct TestInterfacePage {
           }
         }
         if (count === 0) {
-          ctx.showToast(this.getResourceString('app.string.No_available_email_address'), 'copyMail---IMAP')
+          ctx.showToast(this.getResourceString('No_available_email_address'), 'copyMail---IMAP')
           return
         }
       }
-      ctx.showToast(this.getResourceString('app.string.Copy_email_started'), 'copyMail-imap')
+      ctx.showToast(this.getResourceString('Copy_email_started'), 'copyMail-imap')
       let startTime1 = new Date().getTime();
       GlobalObj?.getInstance()?.getClient()?.copy(uid, selectFoler, (err:Error) => {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("IMAPClientTest : copy averageTime : " + averageTime1 + "us")
         if (err) {
-          ctx.showToast(this.getResourceString('app.string.Copy_email_failed_reason') + `：${err.message}`, 'copyMail-imap')
+          ctx.showToast(this.getResourceString('Copy_email_failed_reason') + `：${err.message}`, 'copyMail-imap')
         } else {
-          ctx.showToast(this.getResourceString('app.string.The_email_was_successfully_copied'), 'copyMail-imap')
+          ctx.showToast(this.getResourceString('The_email_was_successfully_copied'), 'copyMail-imap')
 
         }
       });
 
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Error_copying_email') + `：${err.message}`, 'copyMail-smtp')
+      ctx.showToast(this.getResourceString('Error_copying_email') + `：${err.message}`, 'copyMail-smtp')
     }
   }
 
@@ -1357,24 +1357,24 @@ struct TestInterfacePage {
     try {
       ctx.message = ''
       if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
-        ctx.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'moveMail-imap')
+        ctx.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'moveMail-imap')
         return
       }
       if (!ctx.isBoxOpen) {
-        ctx.showToast(this.getResourceString('app.string.Email_not_opened_unable_to_retrieve_mailing_list'), 'moveMail-imap')
+        ctx.showToast(this.getResourceString('Email_not_opened_unable_to_retrieve_mailing_list'), 'moveMail-imap')
         return
       }
       if (!ctx.listData || ctx.listData.length < 1) {
-        ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'moveMail---IMAP')
+        ctx.showToast(this.getResourceString('There_are_currently_no_available_messages_in_the_email'), 'moveMail---IMAP')
         return
       }
       let uid = ctx.listData[0].uid
       if (!uid || uid.length < 1) {
-        ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'moveMail---IMAP')
+        ctx.showToast(this.getResourceString('There_are_currently_no_available_messages_in_the_email'), 'moveMail---IMAP')
         return
       }
       if (!ctx.folderList || ctx.folderList.length < 1) {
-        ctx.showToast(this.getResourceString('app.string.No_available_email_address'), 'moveMail---IMAP')
+        ctx.showToast(this.getResourceString('No_available_email_address'), 'moveMail---IMAP')
         return
       }
       let selectFoler = ''
@@ -1387,26 +1387,26 @@ struct TestInterfacePage {
           }
         }
         if (count === 0) {
-          ctx.showToast(this.getResourceString('app.string.No_available_email_address'), 'moveMail---IMAP')
+          ctx.showToast(this.getResourceString('No_available_email_address'), 'moveMail---IMAP')
           return
         }
       }
-      ctx.showToast(this.getResourceString('app.string.Start_moving_emails_from_the_primary_mailbox_to') + ` ${selectFoler}`, 'moveMail-imap')
+      ctx.showToast(this.getResourceString('Start_moving_emails_from_the_primary_mailbox_to') + ` ${selectFoler}`, 'moveMail-imap')
       let startTime1 = new Date().getTime();
       GlobalObj?.getInstance()?.getClient()?.move(uid, selectFoler, (err:Error) => {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("IMAPClientTest : move averageTime : " + averageTime1 + "us")
         if (err) {
-          ctx.showToast(this.getResourceString('app.string.Mobile_email_failed_reason') + `：${err.message}`, 'moveMail-imap')
+          ctx.showToast(this.getResourceString('Mobile_email_failed_reason') + `：${err.message}`, 'moveMail-imap')
         } else {
-          ctx.showToast(this.getResourceString('app.string.Mobile_email_successfully_sent'), 'moveMail-imap')
+          ctx.showToast(this.getResourceString('Mobile_email_successfully_sent'), 'moveMail-imap')
 
           ctx.showToast(`移动邮件成功之后，请到主邮箱查看是否少了一封邮件，请到${selectFoler} 查看是否新增了一封邮件，然后点击 关闭邮箱 以及获取邮箱列表刷新数据以便进行其他操作 `, 'moveMail-imap')
         }
       });
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Mobile_email_error') + `：${err.message}`, 'moveMail-smtp')
+      ctx.showToast(this.getResourceString('Mobile_email_error') + `：${err.message}`, 'moveMail-smtp')
     }
   }
 
@@ -1415,37 +1415,37 @@ struct TestInterfacePage {
     try {
       ctx.message = ''
       if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
-        ctx.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'addFlag-imap')
+        ctx.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'addFlag-imap')
         return
       }
       if (!ctx.isBoxOpen) {
-        ctx.showToast(this.getResourceString('app.string.Email_not_opened_unable_to_retrieve_mailing_list'), 'addFlag-imap')
+        ctx.showToast(this.getResourceString('Email_not_opened_unable_to_retrieve_mailing_list'), 'addFlag-imap')
         return
       }
       if (!ctx.listData || ctx.listData.length < 1) {
-        ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'addFlag---IMAP')
+        ctx.showToast(this.getResourceString('There_are_currently_no_available_messages_in_the_email'), 'addFlag---IMAP')
         return
       }
       let uid = ctx.listData[0].uid
       if (!uid || uid.length < 1) {
-        ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'addFlag---IMAP')
+        ctx.showToast(this.getResourceString('There_are_currently_no_available_messages_in_the_email'), 'addFlag---IMAP')
         return
       }
-      ctx.showToast(this.getResourceString('app.string.Start_adding_read_tags_to_emails'), 'addFlag-imap')
+      ctx.showToast(this.getResourceString('Start_adding_read_tags_to_emails'), 'addFlag-imap')
       let startTime1 = new Date().getTime();
       GlobalObj?.getInstance()?.getClient()?.addFlags(uid, '\\Seen', (err:Error) => {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("IMAPClientTest : addFlags averageTime : " + averageTime1 + "us")
         if (err) {
-          ctx.showToast(this.getResourceString('app.string.Adding_read_mark_to_email_failed_reason') + `：${err.message}`, 'addFlag-imap')
+          ctx.showToast(this.getResourceString('Adding_read_mark_to_email_failed_reason') + `：${err.message}`, 'addFlag-imap')
         } else {
-          ctx.showToast(this.getResourceString('app.string.Successfully_marked_the_email_as_read'), 'addFlag-imap')
+          ctx.showToast(this.getResourceString('Successfully_marked_the_email_as_read'), 'addFlag-imap')
         }
       });
 
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Error_adding_read_mark_to_email') + `：${err.message}`, 'storeMail-smtp')
+      ctx.showToast(this.getResourceString('Error_adding_read_mark_to_email') + `：${err.message}`, 'storeMail-smtp')
     }
   }
 
@@ -1454,37 +1454,37 @@ struct TestInterfacePage {
     try {
       ctx.message = ''
       if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
-        ctx.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'setFlag-imap')
+        ctx.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'setFlag-imap')
         return
       }
       if (!ctx.isBoxOpen) {
-        ctx.showToast(this.getResourceString('app.string.Email_not_opened_unable_to_retrieve_mailing_list'), 'setFlag-imap')
+        ctx.showToast(this.getResourceString('Email_not_opened_unable_to_retrieve_mailing_list'), 'setFlag-imap')
         return
       }
       if (!ctx.listData || ctx.listData.length < 1) {
-        ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'setFlag---IMAP')
+        ctx.showToast(this.getResourceString('There_are_currently_no_available_messages_in_the_email'), 'setFlag---IMAP')
         return
       }
       let uid = ctx.listData[0].uid
       if (!uid || uid.length < 1) {
-        ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'setFlag---IMAP')
+        ctx.showToast(this.getResourceString('There_are_currently_no_available_messages_in_the_email'), 'setFlag---IMAP')
         return
       }
 
-      ctx.showToast(this.getResourceString('app.string.Start_marking_emails_as_read'), 'setFlag-imap')
+      ctx.showToast(this.getResourceString('Start_marking_emails_as_read'), 'setFlag-imap')
       let startTime1 = new Date().getTime();
       GlobalObj?.getInstance()?.getClient()?.setFlags(uid, '\\Seen', (err:Error) => {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("IMAPClientTest : setFlags averageTime : " + averageTime1 + "us")
         if (err) {
-          ctx.showToast(this.getResourceString('app.string.Failed_to_set_read_flag_for_email_reason') + `：${err.message}`, 'setFlag-imap')
+          ctx.showToast(this.getResourceString('Failed_to_set_read_flag_for_email_reason') + `：${err.message}`, 'setFlag-imap')
         } else {
-          ctx.showToast(this.getResourceString('app.string.Successfully_marked_the_email_as_read'), 'setFlag-imap')
+          ctx.showToast(this.getResourceString('Successfully_marked_the_email_as_read'), 'setFlag-imap')
         }
       });
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Error_setting_read_flag_for_email') + `：${err.message}`, 'setFlag-smtp')
+      ctx.showToast(this.getResourceString('Error_setting_read_flag_for_email') + `：${err.message}`, 'setFlag-smtp')
     }
   }
 
@@ -1493,37 +1493,37 @@ struct TestInterfacePage {
     try {
       ctx.message = ''
       if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
-        ctx.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'deleteFlag-imap')
+        ctx.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'deleteFlag-imap')
         return
       }
       if (!ctx.isBoxOpen) {
-        ctx.showToast(this.getResourceString('app.string.Email_not_opened_unable_to_retrieve_mailing_list'), 'deleteFlag-imap')
+        ctx.showToast(this.getResourceString('Email_not_opened_unable_to_retrieve_mailing_list'), 'deleteFlag-imap')
         return
       }
       if (!ctx.listData || ctx.listData.length < 1) {
-        ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'deleteFlag---IMAP')
+        ctx.showToast(this.getResourceString('There_are_currently_no_available_messages_in_the_email'), 'deleteFlag---IMAP')
         return
       }
       let uid = ctx.listData[0].uid
       if (!uid || uid.length < 1) {
-        ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'deleteFlag---IMAP')
+        ctx.showToast(this.getResourceString('There_are_currently_no_available_messages_in_the_email'), 'deleteFlag---IMAP')
         return
       }
-      ctx.showToast(this.getResourceString('app.string.Start_unmarking_emails_as_read'), 'deleteFlag-imap')
+      ctx.showToast(this.getResourceString('Start_unmarking_emails_as_read'), 'deleteFlag-imap')
       let startTime1 = new Date().getTime();
       GlobalObj?.getInstance()?.getClient()?.delFlags(uid, '\\Seen', (err:Error) => {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("IMAPClientTest : delFlags averageTime : " + averageTime1 + "us")
         if (err) {
-          ctx.showToast(this.getResourceString('app.string.Failed_to_unmark_the_email_as_read_reason') + `：${err.message}`, 'deleteFlag-imap')
+          ctx.showToast(this.getResourceString('Failed_to_unmark_the_email_as_read_reason') + `：${err.message}`, 'deleteFlag-imap')
         } else {
-          ctx.showToast(this.getResourceString('app.string.Successfully_unmarked_the_email_as_read'), 'deleteFlag-imap')
+          ctx.showToast(this.getResourceString('Successfully_unmarked_the_email_as_read'), 'deleteFlag-imap')
         }
       });
 
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Error_occurred_in_removing_the_read_mark_from_the_email') + `：${err.message}`, 'deleteFlag-smtp')
+      ctx.showToast(this.getResourceString('Error_occurred_in_removing_the_read_mark_from_the_email') + `：${err.message}`, 'deleteFlag-smtp')
     }
   }
 
@@ -1532,36 +1532,36 @@ struct TestInterfacePage {
     try {
       ctx.message = ''
       if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
-        ctx.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'addKeywords-imap')
+        ctx.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'addKeywords-imap')
         return
       }
       if (!ctx.isBoxOpen) {
-        ctx.showToast(this.getResourceString('app.string.Email_not_opened_unable_to_retrieve_mailing_list'), 'addKeywords-imap')
+        ctx.showToast(this.getResourceString('Email_not_opened_unable_to_retrieve_mailing_list'), 'addKeywords-imap')
         return
       }
       if (!ctx.listData || ctx.listData.length < 1) {
-        ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'addKeywords---IMAP')
+        ctx.showToast(this.getResourceString('There_are_currently_no_available_messages_in_the_email'), 'addKeywords---IMAP')
         return
       }
       let uid = ctx.listData[0].uid
       if (!uid || uid.length < 1) {
-        ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'addKeywords---IMAP')
+        ctx.showToast(this.getResourceString('There_are_currently_no_available_messages_in_the_email'), 'addKeywords---IMAP')
         return
       }
-      ctx.showToast(this.getResourceString('app.string.Start_adding_keywords_to_emails'), 'addKeywords-imap')
+      ctx.showToast(this.getResourceString('Start_adding_keywords_to_emails'), 'addKeywords-imap')
       let startTime1 = new Date().getTime();
-      GlobalObj?.getInstance()?.getClient()?.addKeywords(uid, this.getResourceString('app.string.OpenHarmony_keywords'), (err:Error) => {
+      GlobalObj?.getInstance()?.getClient()?.addKeywords(uid, this.getResourceString('OpenHarmony_keywords'), (err:Error) => {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("IMAPClientTest : addKeywords averageTime : " + averageTime1 + "us")
         if (err) {
-          ctx.showToast(this.getResourceString('app.string.Adding_keywords_to_email_failed_reason') + `：${err.message}`, 'addKeywords-imap')
+          ctx.showToast(this.getResourceString('Adding_keywords_to_email_failed_reason') + `：${err.message}`, 'addKeywords-imap')
         } else {
-          ctx.showToast(this.getResourceString('app.string.Successfully_added_keywords_to_email'), 'addKeywords-imap')
+          ctx.showToast(this.getResourceString('Successfully_added_keywords_to_email'), 'addKeywords-imap')
         }
       });
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Error_adding_keywords_to_email') + `：${err.message}`, 'addKeywords-smtp')
+      ctx.showToast(this.getResourceString('Error_adding_keywords_to_email') + `：${err.message}`, 'addKeywords-smtp')
     }
   }
 
@@ -1570,36 +1570,36 @@ struct TestInterfacePage {
     try {
       ctx.message = ''
       if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
-        ctx.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'setKeywords-imap')
+        ctx.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'setKeywords-imap')
         return
       }
       if (!ctx.isBoxOpen) {
-        ctx.showToast(this.getResourceString('app.string.Email_not_opened_unable_to_retrieve_mailing_list'), 'setKeywords-imap')
+        ctx.showToast(this.getResourceString('Email_not_opened_unable_to_retrieve_mailing_list'), 'setKeywords-imap')
         return
       }
       if (!ctx.listData || ctx.listData.length < 1) {
-        ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'setKeywords---IMAP')
+        ctx.showToast(this.getResourceString('There_are_currently_no_available_messages_in_the_email'), 'setKeywords---IMAP')
         return
       }
       let uid = ctx.listData[0].uid
       if (!uid || uid.length < 1) {
-        ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'setKeywords---IMAP')
+        ctx.showToast(this.getResourceString('There_are_currently_no_available_messages_in_the_email'), 'setKeywords---IMAP')
         return
       }
-      ctx.showToast(this.getResourceString('app.string.Start_setting_keywords_for_emails'), 'setKeywords-imap')
+      ctx.showToast(this.getResourceString('Start_setting_keywords_for_emails'), 'setKeywords-imap')
       let startTime1 = new Date().getTime();
-      GlobalObj?.getInstance()?.getClient()?.setKeywords(uid, this.getResourceString('app.string.OpenHarmony_keywords'), (err:Error) => {
+      GlobalObj?.getInstance()?.getClient()?.setKeywords(uid, this.getResourceString('OpenHarmony_keywords'), (err:Error) => {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("IMAPClientTest : setKeywords averageTime : " + averageTime1 + "us")
         if (err) {
-          ctx.showToast(this.getResourceString('app.string.Failed_to_set_keywords_for_email_reason') + `：${err.message}`, 'setKeywords-imap')
+          ctx.showToast(this.getResourceString('Failed_to_set_keywords_for_email_reason') + `：${err.message}`, 'setKeywords-imap')
         } else {
-          ctx.showToast(this.getResourceString('app.string.Successfully_set_keywords_for_email'), 'setKeywords-imap')
+          ctx.showToast(this.getResourceString('Successfully_set_keywords_for_email'), 'setKeywords-imap')
         }
       });
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Error_setting_keywords_for_email') + `：${err.message}`, 'setKeywords-smtp')
+      ctx.showToast(this.getResourceString('Error_setting_keywords_for_email') + `：${err.message}`, 'setKeywords-smtp')
     }
   }
 
@@ -1608,36 +1608,36 @@ struct TestInterfacePage {
     try {
       ctx.message = ''
       if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
-        ctx.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'delKeywords-imap')
+        ctx.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'delKeywords-imap')
         return
       }
       if (!ctx.isBoxOpen) {
-        ctx.showToast(this.getResourceString('app.string.Email_not_opened_unable_to_retrieve_mailing_list'), 'delKeywords-imap')
+        ctx.showToast(this.getResourceString('Email_not_opened_unable_to_retrieve_mailing_list'), 'delKeywords-imap')
         return
       }
       if (!ctx.listData || ctx.listData.length < 1) {
-        ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'delKeywords---IMAP')
+        ctx.showToast(this.getResourceString('There_are_currently_no_available_messages_in_the_email'), 'delKeywords---IMAP')
         return
       }
       let uid = ctx.listData[0].uid
       if (!uid || uid.length < 1) {
-        ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'delKeywords---IMAP')
+        ctx.showToast(this.getResourceString('There_are_currently_no_available_messages_in_the_email'), 'delKeywords---IMAP')
         return
       }
-      ctx.showToast(this.getResourceString('app.string.Start_deleting_keywords_from_emails'), 'delKeywords-imap')
+      ctx.showToast(this.getResourceString('Start_deleting_keywords_from_emails'), 'delKeywords-imap')
       let startTime1 = new Date().getTime();
-      GlobalObj?.getInstance()?.getClient()?.delKeywords(uid, this.getResourceString('app.string.OpenHarmony_keywords'), (err:Error) => {
+      GlobalObj?.getInstance()?.getClient()?.delKeywords(uid, this.getResourceString('OpenHarmony_keywords'), (err:Error) => {
         let endTime1 = new Date().getTime();
         let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
         console.log("IMAPClientTest : delKeywords averageTime : " + averageTime1 + "us")
         if (err) {
-          ctx.showToast(this.getResourceString('app.string.Failed_to_delete_keywords_from_email_reason') + `：${err.message}`, 'delKeywords-imap')
+          ctx.showToast(this.getResourceString('Failed_to_delete_keywords_from_email_reason') + `：${err.message}`, 'delKeywords-imap')
         } else {
-          ctx.showToast(this.getResourceString('app.string.Successfully_deleted_keywords_from_email'), 'delKeywords-imap')
+          ctx.showToast(this.getResourceString('Successfully_deleted_keywords_from_email'), 'delKeywords-imap')
         }
       });
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Error_deleting_keywords_from_email') + `：${err.message}`, 'delKeywords-smtp')
+      ctx.showToast(this.getResourceString('Error_deleting_keywords_from_email') + `：${err.message}`, 'delKeywords-smtp')
     }
   }
 
@@ -1646,18 +1646,18 @@ struct TestInterfacePage {
     try {
       ctx.message = ''
       if (!GlobalObj?.getInstance()?.getClient() || !ctx.isLogin) {
-        ctx.showToast(this.getResourceString('app.string.Account_not_logged_in_please_login_and_try_again'), 'getMsgDetail-imap')
+        ctx.showToast(this.getResourceString('Account_not_logged_in_please_login_and_try_again'), 'getMsgDetail-imap')
         return
       }
       if (!ctx.isBoxOpen) {
-        ctx.showToast(this.getResourceString('app.string.Email_not_opened_unable_to_retrieve_mailing_list'), 'getMsgDetail-imap')
+        ctx.showToast(this.getResourceString('Email_not_opened_unable_to_retrieve_mailing_list'), 'getMsgDetail-imap')
         return
       }
       if (!ctx.listData || ctx.listData.length < 1) {
-        ctx.showToast(this.getResourceString('app.string.There_are_currently_no_available_messages_in_the_email'), 'getMsgDetail---IMAP')
+        ctx.showToast(this.getResourceString('There_are_currently_no_available_messages_in_the_email'), 'getMsgDetail---IMAP')
         return
       }
-      ctx.showToast(this.getResourceString('app.string.Start_obtaining_the_entire_email_body'), 'getMsgDetail-imap')
+      ctx.showToast(this.getResourceString('Start_obtaining_the_entire_email_body'), 'getMsgDetail-imap')
       let startTime1 = new Date().getTime();
 
       let prefix: string = ''
@@ -1677,10 +1677,10 @@ struct TestInterfacePage {
           let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
           console.log("IMAPClientTest : fetch detail averageTime : " + averageTime1 + "us")
           try {
-            ctx.showToast(this.getResourceString('app.string.Successfully_obtained') + `：${'\r\n'}${buffer}`, 'getMsgDetail-imap');
+            ctx.showToast(this.getResourceString('Successfully_obtained') + `：${'\r\n'}${buffer}`, 'getMsgDetail-imap');
 
           } catch (err) {
-            ctx.showToast(this.getResourceString('app.string.Failed_to_retrieve_the_entire_email_body') + `：${err.message}`, 'getMsgDetail-smtp')
+            ctx.showToast(this.getResourceString('Failed_to_retrieve_the_entire_email_body') + `：${err.message}`, 'getMsgDetail-smtp')
           }
         },
         attributesCallback: (attrs: ImapMessageAttributes) => {
@@ -1691,7 +1691,7 @@ struct TestInterfacePage {
         messageEndCallback: () => {
         },
         fetchErrorCallback: (err: Error) => {
-          ctx.showToast(this.getResourceString('app.string.Failed_to_retrieve_the_entire_email_body') + `：${err.message}`, 'getMsgDetail-smtp')
+          ctx.showToast(this.getResourceString('Failed_to_retrieve_the_entire_email_body') + `：${err.message}`, 'getMsgDetail-smtp')
         },
         fetchEndCallback: () => {
 
@@ -1699,11 +1699,11 @@ struct TestInterfacePage {
       }
       this.util?.getDetail(1, callback)
     } catch (err) {
-      ctx.showToast(this.getResourceString('app.string.Error_in_obtaining_the_entire_email_body') + `：${err.message}`, 'getMsgDetail-smtp')
+      ctx.showToast(this.getResourceString('Error_in_obtaining_the_entire_email_body') + `：${err.message}`, 'getMsgDetail-smtp')
     }
   }
 
   getResourceString(resourceName:string) {
-    return getContext().resourceManager.getStringSync($r(resourceName).id)
+    return getContext().resourceManager.getStringByNameSync(resourceName)
   }
 }
