@@ -11,6 +11,14 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Start_behavior_tree",
+      "value": "Start a behavior tree instance"
+    },
+    {
+      "name": "Close_behavior_tree",
+      "value": "Close the behavior tree instance"
     }
   ]
 }

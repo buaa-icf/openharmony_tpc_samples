@@ -116,7 +116,7 @@ struct Index {
   build() {
     Row() {
       Column() {
-        Button("启动行为树实例").onClick(() => {
+        Button($r('app.string.Start_behavior_tree')).onClick(() => {
           //防止多次设置重复调用行为树启动
           if (this.flag) {
             this.flag = false;
@@ -126,7 +126,7 @@ struct Index {
           }
 
         })
-        Button("关闭行为树实例").onClick(() => {
+        Button($r('app.string.Close_behavior_tree')).onClick(() => {
           this.flag = true;
           clearInterval(this.timerId);
         })
