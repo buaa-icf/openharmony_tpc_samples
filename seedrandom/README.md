@@ -1,27 +1,27 @@
 # seedrandom
 
-## 简介
+## Overview
 
-seedrandom是一个伪随机数生成器的库，适用于各种需要高质量伪随机数的应用场景，能够根据具体需求进行定制和优化。
+seedrandom is a library that implements a pseudo-random number generator. It is applicable to various application scenarios that require high-quality pseudo-random numbers and can be customized to address specific requirements.
 
-## 效果展示
-<img height="400" src="./screenshot/效果展示.gif"/>
+## Display Effects
+<img height="400" src="./screenshot/effect.gif"/>
 
-## 下载安装
+## How to Install
 
 ````
 ohpm install seedrandom@3.0.5
-ohpm install @types/seedrandom@3.0.8  // import seedrandom 的时候语法报错, 其原因是seedrandom包内不含类型声明, 需要 @types/seedrandom 下载这个包的声明文件, 从而解决语法的报错.
+ohpm install @types/querystringify  // A syntax error is reported if the seedrandom package does not contain the type declaration. You need to download the declaration file of the package from @types/seedrandom to rectify the syntax error.
 ````
 
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 
 ```typescript
-//引入seedrandom
+// Introduce seedrandom.
 import seedrandom from 'seedrandom'
-//接口调用示例
+// Example API call
 rng = seedrandom('hello.');
 console.log(rng());                  // Always 0.9282578795792454
 
@@ -42,34 +42,34 @@ rng2 = seedrandom.xor4096('hello.')
 console.log(rng2());
 ```
 
-## 接口说明
+## Available APIs
 
-1. SeededRandom(seed, options)：创建一个新的 SeededRandom 实例，其中 seed 是种子值，options 是可选的配置对象。
-2. seedrandom.alea(seed, options)：使用alea算法生成伪随机数。
-3. seedrandom.xor128(seed, options)：使用xor128算法生成伪随机数。
-4. seedrandom.tychei(seed, options)：使用tychei算法生成伪随机数。
-5. seedrandom.xorwow(seed, options)：使用xorwow算法生成伪随机数。
-6. seedrandom.xor4096(seed, options)：使用Xor4096算法生成伪随机数。
-7. seedrandom.xorshift7(seed, options)：使用xorshift7算法生成伪随机数。
-8. seedrandom.quick(seed, options)：使用quick算法生成伪随机数。
+1. SeededRandom(seed, options): Creates a new **SeededRandom** instance. **seed** is the seed value, and **options** is an optional configuration object.
+2. seedrandom.alea(seed, options): Generates pseudo-random numbers using the alea algorithm.
+3. seedrandom.xor128(seed, options): Generates pseudo-random numbers using the xor128 algorithm.
+4. seedrandom.tychei(seed, options): Generates pseudo-random numbers using the tychei algorithm.
+5. seedrandom.xorwow(seed, options): Generates pseudo-random numbers using the xorwow algorithm.
+6. seedrandom.xor4096(seed, options): Generates pseudo-random numbers using the xor4096 algorithm.
+7. seedrandom.xorshift7(seed, options): Generates pseudo-random numbers using the xorshift7 algorithm.
+8. seedrandom.quick(seed, options): Generates pseudo-random numbers using the quick algorithm.
 
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+seedrandom has been verified in the following versions:
 
-- DevEco Studio 版本： 4.1 Canary(4.1.3.317), OpenHarmony SDK:API11 (4.1.0.36)
+- DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API11 (4.1.0.36)
 
-## 目录结构
+## Directory Structure
 
 ````
 |---- seedrandom 
-|     |---- entry  # 示例代码文件夹
-|     |---- README.md  # 安装使用方法      
+|     |---- entry  # Sample code
+|     |---- README_EN.md  # Readme     
 ````
 
-## 贡献代码
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+## How to Contribute
+If you find any problem when using seedrandom, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
-本项目基于 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/seedrandom/LICENSE) ，请自由地享受和参与开源。
+## License
+This project follows the [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/seedrandom/LICENSE).
