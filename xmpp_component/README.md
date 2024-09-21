@@ -1,35 +1,34 @@
-
 # @ohos/xmpp_component
 
-## 简介
+## Introduction
 
->本软件是参照开源软件 [@xmpp/component](https://github.com/xmppjs/xmpp.js/tree/main/packages/component)源码并用 TypeScript 语言实现了相关功能，在OpenHarmony上提供了一个用于创建XMPP(Extensible Messaging and Presence Protocol)扩展消息和在线状态协议组件的library
+>Based on the open source software [@xmpp/component](https://github.com/xmppjs/xmpp.js/tree/main/packages/component), this project uses TypeScript to implement similar capabilities. It provides OpenHarmony with a library for creating Extensible Messaging and Presence Protocol (XMPP) components.
 
-## 已支持功能
+## Supported Features
 
-- 组件连接： 该库允许你与XMPP服务器和其它组件建立和管理连接，包括处理认证、流特性以及错误处理。
-- 消息路由： 它提供了处理接收和发送消息的功能，包括处理消息stanza（XML消息）、元数据以及错误。
-- 组件发现： 包含组件发现协议支持，用于组件之间展示自身能力和功能。
+- Component connection: establishes and manages connections with XMPP servers and other components, including authentication, streaming features, and error handling.
+- Message routing: processes received and sent messages, including processing message stanzas (XML messages), metadata, and errors.
+- Component discovery: includes component discovery protocol support, which is used to display component capabilities and functionalities.
 
-## 下载安装
+## How to Install
 
-1. 参考安装教程 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+1. [Install an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-2. 安装命令如下：
+2. Run the installation command:
 
-```
- ohpm install @ohos/xmpp_component
-```
+   ```
+    ohpm install @ohos/xmpp_component
+   ```
 
-## 接口和属性列表
+## Available APIs
 
-接口列表
+APIs
 
-| **接口**             | 参数       | 功能                                                         |
-|--------------------|----------| ------------------------------------------------------------ |
-| component(options) | options：该对象包含password、service和domain等属性。这些属性用于配置XMPP组件。 | 提供了XMPP通信所需的核心功能、重连机制、中间件处理、IQ（信息/查询）调用者和被调用者功能。 |
+| Name          | Parameter                                                        | Description                                                        |
+| ------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| component(options) | `options`: an object that contains properties such as password, service, and domain. These properties are used to configure XMPP components.| Provides core functionalities required for XMPP communication, reconnection mechanism, middleware processing, and IQ (information/query) caller and callee.|
 
-## 使用示例
+## Example
 ```
 import { Component, component, jid, Options, xml } from "@ohos/xmpp_component";
 import { Component as ComponentCore } from "@ohos/xmpp_component_core";
@@ -64,23 +63,23 @@ xml("foo");
 xml("foo", { foo: "bar" }, "bar");
 ```
 
-## 使用说明
+## How to Use
 
 ```
 import { Component, component, jid, Options, xml } from "@ohos/xmpp_component";
 import { Component as ComponentCore } from "@ohos/xmpp_component_core";
-//导入@ohos/xmpp_component库中的Component、component、jid、Options和xml，以及@ohos/xmpp_component_core库中的Component（重命名为ComponentCore）
+// Import Component, component, jid, Options, and xml in the @ohos/xmpp_component library and Component (renamed ComponentCore) in the @ohos/xmpp_component_core library.
 
-// 这里定义了两个类型别名Opts和Cl，分别代表Options和Component类型
+// Two type aliases (Opts and Cl) are defined, representing the Options and Component types, respectively.
 type Opts = Options;
 type Cl = Component;
 
-//使用component()函数创建一个Component实例。第一个例子没有传递任何选项，第二个例子传递了一个包含password属性的选项对象
+// Use the component() function to create a Component instance. The first example does not pass in any options, and the second example passes in an options object that contains the password property.
 const c = component({}); 
 component({ password: "foo" }); 
 // $ExpectType Component
 component({
-//使用异步密码验证。传递给component()函数的选项对象包含一个password属性，该属性是一个异步函数，接受一个auth函数作为参数，并调用该函数验证密码
+// Use asynchronous password authentication. The options object passed to the component() function contains the password property, which is an asynchronous function that accepts an auth function as a parameter and calls the function to verify the password.
     password: async auth => {
         auth; // $ExpectType (password: string) => Promise<void>
         await auth("foo");
@@ -103,32 +102,32 @@ xml("foo");
 xml("foo", { foo: "bar" }, "bar");
 ```
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+This project has been verified in the following version:
 
-- DevEco Studio 版本： 5.0.3.200,OpenHarmony SDK:API12 (5.0.0.21-Canary2)。
+DevEco Studio: 5.0.3.200, OpenHarmony SDK: API 12 (5.0.0.21-Canary2)
 
-## 目录结构
+## Directory Structure
 ````
 |---- @ohos/xmpp_component
-|     |---- entry  # 示例代码文件夹
+|     |---- entry  # Sample code
 |           |---- src  
-|                   |---- main  #sample示例代码
-|                   |---- ohosTest  #xts示例代码
-|     |---- library  # @ohos/xmpp_component 库文件夹
+|                   |---- main  # Sample code
+|                   |---- ohosTest  # xts code
+|     |---- library  # @ohos/xmpp_component library folder
 |           |---- ets
-|                 |---- lib  # 主要依赖
-|                 |---- types  # 对外接口文件夹
-|           |---- index.js  # 主入口文件
-|           |---- index.d.ts  # 主对外接口声明文件
-|     |---- README.md  # 安装使用方法                    
+|                 |---- lib  # Main dependencies
+|                 |---- types  # External APIs
+|           |---- index.js  # Main entry file
+|           |---- index.d.ts  # Main declaration file of the external APIs
+|     |---- README.md  # Readme                   
 ````
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提[Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们提[PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem during the use, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-本项目基于ISC，请自由地享受和参与开源。
+This project is licensed under the terms of the ISC license.
