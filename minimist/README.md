@@ -1,22 +1,21 @@
 # minimist
 
-## 简介
+## Introduction
 
-> 一个轻量级的命令行参数解析库，用于解析Node.js应用程序的命令行参数。它的主要功能是将命令行参数解析为一个对象，方便开发者在程序中使用.
+**minimist** is a lightweight library for parsing command-line parameters in Node.js. It is used to parse command-line parameters into an object for further use.
 
-## 下载安装
+## How to Install
 
 ```shell
 ohpm install minimist
-ohpm install @types/minimist@1.2.2  // import minimist 的时候语法报错, 其原因是minimist包内不含类型声明, 需要 @types/minimist 下载这个包的声明文件, 从而解决语法的报错.
+ohpm install @types/minimist@1.2.2  // Install @types/minimist@1.2.2 to prevent import syntax errors due to missing type declarations in the minimist package.
 ```
 
-OpenHarmony
-ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 
-1. 引入文件及代码依赖
+Import dependencies.
 
  ```
  import minimist from 'minimist'
@@ -25,34 +24,36 @@ ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](ht
  // {"_":[],"f":11,"zoom":55,"z":55,"zm":55} 
  ```
 
-## 接口说明
+## Available APIs
 
-* 将命令行参数解析为一个 JavaScript 对象
-  `minimist(args, opts={})`
+| API                       | Description                            |
+| ------------------------- | -------------------------------------- |
+| `minimist(args, opts={})` | Parses command-line parameters into a JavaScript object.|
 
-## 目录结构
+
+
+## Directory Structure
 ````
 |---- minimist
-|     |---- entry  # 示例代码文件夹
+|     |---- entry  # Sample code
               ├── src  
                  ├── main   
                    ├── ets
                        ├── pages
-                             ├── Index.ets  sample代码
-|     |---- README.md  # 安装使用方法                    
+                             ├── Index.ets  # Sample code
+|     |---- README.md  # Readme                   
+|     |---- README_zh.md  # Readme                   
 ````
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+This project has been verified in the following version:
 
-- DevEco Studio 版本： 4.1 Canary(4.1.3.317),OpenHarmony SDK:API11 (4.1.0.36)
+- DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API 11 (4.1.0.36)
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
-给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-本项目基于 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/minimist/LICENSE) ，请自由地享受和参与开源。
-
+This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/minimist/LICENSE).
