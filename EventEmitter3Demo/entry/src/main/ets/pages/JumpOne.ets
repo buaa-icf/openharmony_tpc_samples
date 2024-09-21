@@ -47,7 +47,7 @@ struct JumpOne {
           .backgroundColor(Color.Grey)
           .fontColor(Color.Black)
           .height(150)
-        Button('去第二个页面')
+        Button('Second Page')
           .backgroundColor(Color.Blue)
           .fontColor(Color.White)
           .width('100%')
@@ -60,11 +60,11 @@ struct JumpOne {
               let emitter: EventEmitter<string, Object> | undefined = GlobalContext.getContext()
                 .getObject(GlobalContext.KEY_EMITTER) as EventEmitter<string, Object>;
               if (emitter) {
-                emitter.emit('pageTwo', '这是第一页发给第二个页面的信息');
+                emitter.emit('pageTwo', getContext().resourceManager.getStringByNameSync('Emit_Second') );
               }
             })
           })
-        Button('返回')
+        Button('Back')
           .backgroundColor(Color.Blue)
           .fontColor(Color.White)
           .width('100%')

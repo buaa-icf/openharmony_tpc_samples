@@ -19,13 +19,13 @@ import buffer from '@ohos.buffer'
 @Entry
 @Component
 struct ApiTest {
-  @State message: string = '对于EventEmitter公开的API进行测试并显示结果'
-  @State state: string = '状态信息：\r\n'
+  @State message: string = getContext().resourceManager.getStringByNameSync('Message_Result')
+  @State state: string = getContext().resourceManager.getStringByNameSync('State_Message')
   @State emitter: EventEmitter<string, Object> | undefined = undefined;
 
   aboutToAppear() {
     this.emitter = new EventEmitter<string, Object>();
-    this.state = this.state + "\r\n" + `测试初始化接口：new EventEmitter，看是否成功：${(this.emitter != undefined && this.emitter != null)}`
+    this.state = this.state + "\r\n" + `Test：new EventEmitter：${(this.emitter != undefined && this.emitter != null)}`
     this.state = this.state + "\r\n" + `<--------------------------------------------->`
   }
 
@@ -40,7 +40,7 @@ struct ApiTest {
             .textAlign(TextAlign.Center)
             .padding(10)
 
-          Button('测试API')
+          Button($r('app.string.Button_test'))
             .width('100%')
             .height(50)
             .backgroundColor(Color.Blue)
@@ -66,41 +66,41 @@ struct ApiTest {
 
   testApi(): void {
     const ctx = this
-    ctx.state = ctx.state + "\r\n" + `测试先订阅事件event,然后发送事件event，看是否收到event事件回调`
+    ctx.state = ctx.state + "\r\n" + getContext().resourceManager.getStringByNameSync('State_Sting1')
     let emitterInstance: EventEmitter<string, Object> | undefined = ctx.emitter;
     if (!emitterInstance) {
       return;
     }
     emitterInstance.on('event', (data: Object) => {
-      ctx.state = ctx.state + "\r\n" + `收到事件event回调，数据为：${data}`
+      ctx.state = ctx.state + "\r\n" + `Recive event Callback，data：${data}`
     });
-    emitterInstance.emit('event', "这是原始信息");
+    emitterInstance.emit('event', getContext().resourceManager.getStringByNameSync('Emit_String1'));
     this.state = this.state + "\r\n" + `<--------------------------------------------->`
-    ctx.state = ctx.state + "\r\n" + `测试先发送事件before,然后订阅事件before，看是否收到before事件回调`
-    emitterInstance.emit('before', "在绑定之前先发送事件");
+    ctx.state = ctx.state + "\r\n" + getContext().resourceManager.getStringByNameSync('State_Sting2')
+    emitterInstance.emit('before', getContext().resourceManager.getStringByNameSync('Emit_String2'));
     emitterInstance.on('before', (data: Object) => {
-      ctx.state = ctx.state + "\r\n" + `收到事件before回调，数据为：${data}`
+      ctx.state = ctx.state + "\r\n" + `Recive before Callback，data：${data}`
     });
 
 
     this.state = this.state + "\r\n" + `<--------------------------------------------->`
-    ctx.state = ctx.state + "\r\n" + `测试先订阅事件multi,然后多次发送事件multi，看是否收到多次multi事件回调`
+    ctx.state = ctx.state + "\r\n" + getContext().resourceManager.getStringByNameSync('State_Sting3')
     emitterInstance.on('multi', (data: Object) => {
-      ctx.state = ctx.state + "\r\n" + `收到事件multi回调，数据为：${data}`
+      ctx.state = ctx.state + "\r\n" + `Recive multi CallBack，data：${data}`
     });
-    emitterInstance.emit('multi', "这是multi第一次发送");
-    emitterInstance.emit('multi', "这是multi第二次发送");
-    emitterInstance.emit('multi', "这是multi第三次发送");
+    emitterInstance.emit('multi', "multi first send");
+    emitterInstance.emit('multi', "multi second send");
+    emitterInstance.emit('multi', "multi 3th send");
     this.state = this.state + "\r\n" + `<--------------------------------------------->`
-    ctx.state = ctx.state + "\r\n" + `测试先once订阅事件single,然后多次发送事件single，看是否收到多次single事件回调`
+    ctx.state = ctx.state + "\r\n" + getContext().resourceManager.getStringByNameSync('State_Sting4')
     emitterInstance.once('single', (data: Object) => {
       ctx.state = ctx.state + "\r\n" + `收到事件single回调，数据为：${data}`
     });
-    emitterInstance.emit('single', "这是single第一次发送");
-    emitterInstance.emit('single', "这是single第二次发送");
-    emitterInstance.emit('single', "这是single第三次发送");
+    emitterInstance.emit('single', "single first send");
+    emitterInstance.emit('single', "single second send");
+    emitterInstance.emit('single', "single 3th send");
     this.state = this.state + "\r\n" + `<--------------------------------------------->`
-    ctx.state = ctx.state + "\r\n" + `测试获取某个事件listeners数组的API---listeners，看看on绑定和once绑定是否都计数了`
+    ctx.state = ctx.state + "\r\n" + getContext().resourceManager.getStringByNameSync('State_Sting5')
     let listener1 = () => {
     }
     let listener2 = () => {
@@ -112,19 +112,19 @@ struct ApiTest {
     emitterInstance.once('listenNum', listener3);
     const listeners = emitterInstance.listeners('event');
     const listenerListenNum = emitterInstance.listeners('listenNum');
-    ctx.state = ctx.state + "\r\n" + `event事件计数个数，预期为1个，实际为${listeners.length}`
+    ctx.state = ctx.state + "\r\n" + `event counts,expected 1,actual${listeners.length}`
     if (listenerListenNum.length === 3) {
-      ctx.state = ctx.state + "\r\n" + `listenNum事件计数个数，预期为3个，实际为${listenerListenNum.length},on和once绑定的listener都计数`
+      ctx.state = ctx.state + "\r\n" + `listenNum event counts,expected 3,actual ${listenerListenNum.length},on sucess ,once sucess`
     } else if (listenerListenNum.length === 2) {
-      ctx.state = ctx.state + "\r\n" + `listenNum事件计数个数，预期为3个，实际为${listenerListenNum.length},on绑定的listener都计数，once绑定的不计数`
+      ctx.state = ctx.state + "\r\n" + `listenNum event counts,expected 3,actual ${listenerListenNum.length},on sucess, once error`
     } else if (listenerListenNum.length === 1) {
-      ctx.state = ctx.state + "\r\n" + `listenNum事件计数个数，预期为3个，实际为${listenerListenNum.length},once绑定的listener都计数，on绑定的不计数`
+      ctx.state = ctx.state + "\r\n" + `listenNum event counts,expected 3,actual ${listenerListenNum.length},once sucess, on error`
     } else {
-      ctx.state = ctx.state + "\r\n" + `listenNum事件计数个数，预期为3个，实际为${listenerListenNum.length},计数错误`
+      ctx.state = ctx.state + "\r\n" + `listenNum event counts,expected 3,actual ${listenerListenNum.length},Count Error`
     }
     this.state = this.state + "\r\n" + `<--------------------------------------------->`
     const count = emitterInstance.listenerCount('listenNum');
-    ctx.state = ctx.state + "\r\n" + `测试获取某个事件listeners个数API---listenerCount，预期为3个，实际为${count}`
+    ctx.state = ctx.state + "\r\n" + `listenerCount，expected 3,actual ${count}`
 
     this.state = this.state + "\r\n" + `<--------------------------------------------->`
     emitterInstance.off('listenNum', listener1);
@@ -133,23 +133,23 @@ struct ApiTest {
 
     const count1 = emitterInstance.listenerCount('listenNum');
     if (count1 === 0) {
-      ctx.state = ctx.state + "\r\n" + `测试解除事件绑定API---off，原有绑定接口为3个，解绑后预期为0个，实际为${count1},once绑定的监听器也可解绑`
+      ctx.state = ctx.state + "\r\n" + `original 3,after remove expected is 0,actual ${count1},once sucess`
     } else if (count1 === 1) {
-      ctx.state = ctx.state + "\r\n" + `测试解除事件绑定API---off，原有绑定接口为3个，解绑后预期为0个，实际为${count},once绑定的监听器不可解绑`
+      ctx.state = ctx.state + "\r\n" + `original 3,after remove expected is 0,actual ${count},once error`
     } else {
-      ctx.state = ctx.state + "\r\n" + `测试解除事件绑定API---off，原有绑定接口为3个，解绑后预期为0个，实际为${count},监听器解绑失败`
+      ctx.state = ctx.state + "\r\n" + `original 3,after remove expected is 0,actual ${count},Failed to unbind the listener`
     }
     this.state = this.state + "\r\n" + `<--------------------------------------------->`
-    ctx.state = ctx.state + "\r\n" + `测试添加事件绑定API---addListener,先添加addListener 然后发送事件addListener，看是否收到addListener事件回调`
+    ctx.state = ctx.state + "\r\n" + getContext().resourceManager.getStringByNameSync('State_Sting6')
     emitterInstance.addListener('addListener', () => {
-      ctx.state = ctx.state + "\r\n" + `收到事件addListener回调`
+      ctx.state = ctx.state + "\r\n" + `Recive addListener Callback`
     });
     emitterInstance.emit("addListener")
     this.state = this.state + "\r\n" + `<--------------------------------------------->`
-    ctx.state = ctx.state + "\r\n" + `测试添加事件绑定API---callback,先发送事件callback,然后添加callback，看是否收到callback事件回调`
+    ctx.state = ctx.state + "\r\n" + getContext().resourceManager.getStringByNameSync('State_Sting7')
     emitterInstance.emit("callback")
     let callback = (data: Object) => {
-      ctx.state = ctx.state + "\r\n" + `收到事件callback回调，数据为：${data}`
+      ctx.state = ctx.state + "\r\n" + `Recive callback Callback，data：${data}`
     }
     emitterInstance.addListener('callback', callback);
     this.state = this.state + "\r\n" + `<--------------------------------------------->`
@@ -163,12 +163,12 @@ struct ApiTest {
     const count7: number = emitterInstance.listeners('addListener').length;
     const count8: number = emitterInstance.listeners('callback').length;
     let total = count2 + count3 + count4 + count5 + count6 + count7 + count8;
-    ctx.state = ctx.state + "\r\n" + `测试解除事件绑定API---off，解除所有绑定的事件之前事件个数${total}`
+    ctx.state = ctx.state + "\r\n" + `Number of events before unbinding all events :${total}`
     this.state = this.state + "\r\n" + `<--------------------------------------------->`
 
     const names: string[] = emitterInstance.eventNames();
 
-    ctx.state = ctx.state + "\r\n" + `测试获取所有事件绑定API---eventNames，解除所有绑定的事件之前所有事件名称是：${JSON.stringify(names)}`
+    ctx.state = ctx.state + "\r\n" + `The names before unbinding all events：${JSON.stringify(names)}`
     this.state = this.state + "\r\n" + `<--------------------------------------------->`
 
     emitterInstance.removeAllListeners();
@@ -180,30 +180,30 @@ struct ApiTest {
     const count77: number = emitterInstance.listeners('addListener').length;
     const count88: number = emitterInstance.listeners('callback').length;
     let total1 = count22 + count33 + count44 + count55 + count66 + count77 + count88;
-    ctx.state = ctx.state + "\r\n" + `测试解除所有事件绑定API---removeAllListeners，解除所有绑定的事件之后事件个数${total1}`
+    ctx.state = ctx.state + "\r\n" + `unbing API---removeAllListeners，Number of events after unbinding all events: ${total1}`
     this.state = this.state + "\r\n" + `<--------------------------------------------->${'\r\n'}`
 
 
     emitterInstance.addListener('newListener', (data: Object) => {
-      ctx.state = ctx.state + "\r\n" + `收到事件newListener回调，数据为：${JSON.stringify(data)}`
+      ctx.state = ctx.state + "\r\n" + `Recive newListener Callback，data：${JSON.stringify(data)}`
     });
     const beforeCount = emitterInstance.listenerCount('newListener');
     const nameBefore = emitterInstance.eventNames();
-    ctx.state = ctx.state + "\r\n" + `测试解除事件绑定API---removeListener，解除绑定的事件之前事件个数${beforeCount}，事件名称${JSON.stringify(nameBefore)}}`
+    ctx.state = ctx.state + "\r\n" + `Unbing API---removeListener，Number of events before unbinding event:${beforeCount}，Name:${JSON.stringify(nameBefore)}}`
     emitterInstance.emit('newListener', {
-      name: "张三",
+      name: "ali",
       age: 21,
       isMan: true,
       info: {
-        msg: "这是测试数据",
-        data: buffer.from("测试是否支持ArrayBuffer").buffer,
+        msg: "This test data",
+        data: buffer.from("Test whether it supports ArrayBuffer").buffer,
         list: [1, 2, 3, 4]
       }
     })
     emitterInstance.removeListener('newListener');
     const afterCount = emitterInstance.listenerCount('newListener');
     const nameAfter = emitterInstance.eventNames();
-    ctx.state = ctx.state + "\r\n" + `测试解除事件绑定API---removeListener，解除绑定的事件之后事件个数${afterCount}，事件名称${JSON.stringify(nameAfter)}}`
+    ctx.state = ctx.state + "\r\n" + `Test unbing API---removeListener，Number of events after unbinding all events: ${afterCount}，Name:${JSON.stringify(nameAfter)}}`
     this.state = this.state + "\r\n" + `<--------------------------------------------->${'\r\n'}`
     emitterInstance.on('newListener', () => {
     });
@@ -215,11 +215,11 @@ struct ApiTest {
     });
     const beforeCount1 = emitterInstance.listenerCount('newListener');
     const nameBefore1 = emitterInstance.eventNames();
-    ctx.state = ctx.state + "\r\n" + `测试解除事件绑定API---removeListener，一次性添加多个同名事件不指定解除某一个监听器回调接口，解除绑定的事件之前事件个数${beforeCount1}，事件名称${JSON.stringify(nameBefore1)}}`
+    ctx.state = ctx.state + "\r\n" + getContext().resourceManager.getStringByNameSync('State_Sting8') + `${beforeCount1}，Name:${JSON.stringify(nameBefore1)}}`
     emitterInstance.removeListener('newListener');
     const afterCount1 = emitterInstance.listenerCount('newListener');
     const nameAfter1 = emitterInstance.eventNames();
-    ctx.state = ctx.state + "\r\n" + `测试解除事件绑定API---removeListener，一次性添加多个同名事件不指定解除某一个监听器回调接口，解除绑定的事件之后事件个数${afterCount1}，事件名称${JSON.stringify(nameAfter1)}}`
+    ctx.state = ctx.state + "\r\n" + getContext().resourceManager.getStringByNameSync('State_Sting9') + `${afterCount1}，Name：${JSON.stringify(nameAfter1)}}`
     this.state = this.state + "\r\n" + `<--------------------------------------------->${'\r\n'}`
     let obj1 = () => {
     }
@@ -235,11 +235,11 @@ struct ApiTest {
     emitterInstance.on('newListener', obj4);
     const beforeCount2 = emitterInstance.listenerCount('newListener');
     const nameBefore3 = emitterInstance.eventNames();
-    ctx.state = ctx.state + "\r\n" + `测试解除事件绑定API---removeListener，一次性添加多个同名事件指定解除某一个监听器回调接口，解除绑定的事件之前事件个数${beforeCount2}，事件名称${JSON.stringify(nameBefore3)}}`
+    ctx.state = ctx.state + "\r\n" + getContext().resourceManager.getStringByNameSync('State_Sting10') + `${beforeCount2}，Name:${JSON.stringify(nameBefore3)}}`
     emitterInstance.removeListener('newListener', obj3);
     const afterCount2 = emitterInstance.listenerCount('newListener');
     const nameAfter2 = emitterInstance.eventNames();
-    ctx.state = ctx.state + "\r\n" + `测试解除事件绑定API---removeListener，一次性添加多个同名事件指定解除某一个监听器回调接口，解除绑定的事件之后事件个数${afterCount2}，事件名称${JSON.stringify(nameAfter2)}}`
+    ctx.state = ctx.state + "\r\n" + getContext().resourceManager.getStringByNameSync('State_Sting11') + `${afterCount2}，Name:${JSON.stringify(nameAfter2)}}`
     this.state = this.state + "\r\n" + `<--------------------------------------------->${'\r\n'}`
   }
 }

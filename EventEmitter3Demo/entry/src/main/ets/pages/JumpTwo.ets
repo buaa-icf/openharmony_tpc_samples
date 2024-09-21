@@ -48,7 +48,7 @@ struct JumpTwo {
           .fontColor(Color.Black)
           .height(150)
 
-        Button('返回')
+        Button('Back')
           .backgroundColor(Color.Blue)
           .fontColor(Color.White)
           .width('100%')

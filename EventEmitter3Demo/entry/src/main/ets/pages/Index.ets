@@ -19,7 +19,7 @@ import { GlobalContext } from './GlobalContext'
 @Entry
 @Component
 struct Index {
-  @State message: string = '常用场景举例'
+  @State message: string = getContext().resourceManager.getStringByNameSync('Message_Example')
   @State emitter: EventEmitter<string, Object> | undefined = undefined;
 
   aboutToAppear() {
@@ -36,7 +36,7 @@ struct Index {
           .width('100%')
           .height(100)
 
-        Button('监听文件读取完成的事件')
+        Button($r('app.string.Button_Event'))
           .width('100%')
           .height(50)
           .backgroundColor(Color.Blue)
@@ -48,7 +48,7 @@ struct Index {
             })
           })
         Button() {
-          Text('页面之间的通信: \r\n1.不同的页面之间通信 需要使用同一个EventEmitter对象\r\n2.不同的页面之间通信 发送事件.emit一定要在监听事件emitter.on之后，否则无法接收')
+          Text($r('app.string.Text_Page'))
             .textAlign(TextAlign.Center)
         }
         .width('100%')
@@ -63,13 +63,13 @@ struct Index {
             let emitterInstance: EventEmitter<string, Object> | undefined = GlobalContext.getContext()
               .getObject(GlobalContext.KEY_EMITTER) as EventEmitter<string, Object>;
             if (emitterInstance) {
-              emitterInstance.emit('pageOne', '这是首页发给第一个页面的信息');
+              emitterInstance.emit('pageOne', getContext().resourceManager.getStringByNameSync('Emit_Index') );
             }
           })
 
         })
 
-        Button('处理事件排序')
+        Button($r('app.string.Button_Deal'))
           .width('100%')
           .height(50)
           .backgroundColor(Color.Blue)
@@ -80,7 +80,7 @@ struct Index {
               url: 'pages/EventSequencing'
             })
           })
-        Button('测试所有API')
+        Button($r('app.string.Button_API'))
           .width('100%')
           .height(50)
           .backgroundColor(Color.Blue)
