@@ -1,141 +1,141 @@
 # utilCode
 
-## 简介
+## Introduction
 
-utilCode是一个OpenHarmony系统下使用通用工具的示例，包含温度转换、正则校验、图片处理、坐标转换、和颜色获取等常用功能。 目前示例的功能有如下
+**UtilCode** provides common utilities and demos for OpenHarmony development, including temperature conversion, regular expression verification, image processing, coordinate conversion, and color-related operations. The following table lists the utilities provided.
 
-| 条目 | 功能  | 依赖库  |
-| :-----------: |:---------------:|:---------------:|
-| 温度相关 | 摄氏度华氏度互相转换。 |无|
-| [坐标转换相关](https://github.com/star-nodejs/gcoord) | 是一个处理地理坐标系的js库，用来修正百度地图、高德地图及其它互联网地图坐标系不统一的问题。 |ohpm install gcoord|
-| [国家码相关](https://gitee.com/openharmony/docs/blob/master/zh-cn/application-dev/reference/apis/js-apis-sim.md) | 获取国家码 |无|
-| [颜色相关](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/arkui-ts/ts-universal-attributes-opacity.md) |获取颜色    |ohpm install randomcolor|
-| [Hap相关](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/apis/js-apis-bundleManager-bundleInfo.md#reqpermissiondetail) |获取Hap信息，操作Hap     |无|
-| [正则相关](https://github.com/validatorjs/validator.js) |正则校验     |ohpm install validator |
-| [内存缓存相关](https://github.com/ptarjan/node-cache) |缓存写入读取数据     | ohpm install memory-cache |
-|时间相关 |格式化时间     | ohpm i time-ampm <br> ohpm i leap-year|
-| [类型转换](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/arkui-ts/ts-pixel-units.md) |基础数据转换     |无|
-| [图片相关](https://gitee.com/openharmony-tpc/ImageKnife) |图片处理工具类     |ohpm install @ohos/imageknife <br>  ohpm i imagetype |
+| Utility| Description | Dependency Library |
+| :----------- |:---------------|:---------------|
+| Temperature| Converts temperature between degrees Celsius and Fahrenheit.|None|
+| [Coordinate](https://github.com/star-nodejs/gcoord)| Converts coordinates to solve the problem of inconsistent coordinate systems used by different Internet maps.|ohpm install gcoord|
+| [Country code](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-sim.md#simgetisocountrycodeforsim) | Obtains the country code.|None|
+| [Color](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/arkui-ts/ts-universal-attributes-opacity.md)|Obtains the color.   |ohpm install randomcolor|
+| [HAP](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-bundleManager-bundleInfo.md#reqpermissiondetail) |Obtains and manipulates HAPs.    |None|
+| [Regular expression](https://github.com/validatorjs/validator.js)|Validates regular expressions.    |ohpm install validator |
+| [Memory cache](https://github.com/ptarjan/node-cache)|Reads and writes data in the cache.    | ohpm install memory-cache |
+|Time|Formats date and time.    | ohpm i time-ampm <br>ohpm i leap-year |
+| [Data type](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/arkui-ts/ts-pixel-units.md)|Converts between basic data types.    |None|
+| [Image](https://gitee.com/openharmony-tpc/ImageKnife)|Processes images.    |ohpm install @ohos/imageknife <br> ohpm i imagetype |
 
-## 下载安装
+## How to Install
 ```shell
 ohpm install randomcolor
-ohpm install @types/randomcolor --save-dev //import randomcolor 的时候语法报错.其原因是randomcolor包内不含类型声明,需要 @types/randomcolor 下载这个包的声明文件,从而解决语法的报错.
+ohpm install @types/randomcolor --save-dev // Install @types/randomcolor to prevent import syntax errors due to missing type declarations in the randomcolor package.
 
 ohpm install memory-cache
-ohpm install @types/memory-cache --save-dev //import memory-cache 的时候语法报错.其原因是memory-cache包内不含类型声明,需要 @types/memory-cache 下载这个包的声明文件,从而解决语法的报错.
+ohpm install @types/memory-cache --save-dev // Install @types/memory-cache to prevent import syntax errors due to missing type declarations in the @types/memory-cache package.
 
 
 ohpm install imtype
-ohpm install @types/imtype@1.0.0  //import imtype 的时候语法报错.其原因是imtype包内不含类型声明,需要 @types/imtype 下载这个包的声明文件,从而解决语法的报错.
+ohpm install @types/imtype@1.0.0  // Install @types/imtype@1.0.0 to prevent import syntax errors due to missing type declarations in the imtype package.
 
 
 ```
-OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 
-## 使用说明
+## How to Use
 
-### 温度相关
+### Temperature Utility
 
-#### 华氏度转摄氏度
+#### Converting Fahrenheit to Celsius
 
 ``` javascript
 import { TempUtils} from '@ohos/util_code'
 TempUtils.F2C(89.6)
 ```
 
-#### 摄氏度转华氏度
+#### Converting Celsius to Fahrenheit
 
 ``` javascript
 import { TempUtils} from '@ohos/util_code'
 TempUtils.C2F(89.6)
 ```
 
-### 坐标转换相关
+### Coordinate Utility
 
-该功能模块基于[gcoord](https://github.com/star-nodejs/gcoord) 开发
+This module is developed based on [gcoord](https://github.com/star-nodejs/gcoord).
 
-#### BD09 坐标转 GCJ02 坐标
-
-``` javascript
-	import gcoord from 'gcoord'
-	
-	gcoord.transform(
-              [116.403988, 39.914266], // 经纬度坐标
-            gcoord.BD09, // 当前坐标系
-            gcoord.GCJ02 // 目标坐标系
-            );
-```
-
-#### GCJ02 坐标转 BD09 坐标
+#### Converting BD09 Coordinates to GCJ02 Coordinates
 
 ``` javascript
 	import gcoord from 'gcoord'
 	
 	gcoord.transform(
-              [116.403988, 39.914266], // 经纬度坐标
-            gcoord.GCJ02, // 当前坐标系
-            gcoord.BD09// 目标坐标系
+              [116.403988, 39.914266], // Longitude and latitude coordinates.
+            gcoord.BD09, // Current coordinate system.
+            gcoord.GCJ02 // Target coordinate system.
             );
 ```
 
-#### GCJ02 坐标转 WGS84 坐标
+#### Converting GCJ02 Coordinates to BD09 Coordinates
 
 ``` javascript
 	import gcoord from 'gcoord'
 	
 	gcoord.transform(
-              [116.403988, 39.914266], // 经纬度坐标
-            gcoord.GCJ02, // 当前坐标系
-            gcoord.WGS84 // 目标坐标系
+              [116.403988, 39.914266], // Longitude and latitude coordinates.
+            gcoord.GCJ02, // Current coordinate system.
+            gcoord.BD09// Target coordinate system
             );
 ```
 
-#### WGS84 坐标转 GCJ02 坐标
+#### Converting GCJ02 Coordinates to WGS84 Coordinates
 
 ``` javascript
 	import gcoord from 'gcoord'
 	
 	gcoord.transform(
-              [116.403988, 39.914266], // 经纬度坐标
-            gcoord.WGS84, // 当前坐标系
-            gcoord.GCJ02 // 目标坐标系
+              [116.403988, 39.914266], // Longitude and latitude coordinates.
+            gcoord.GCJ02, // Current coordinate system.
+            gcoord.WGS84 // Target coordinate system.
             );
 ```
 
-#### BD09 坐标转 WGS84 坐标
+#### Converting WGS84 Coordinates to GCJ02 Coordinates
 
 ``` javascript
 	import gcoord from 'gcoord'
 	
 	gcoord.transform(
-              [116.403988, 39.914266], // 经纬度坐标
-            gcoord.BD09, // 当前坐标系
-            gcoord.WGS84 // 目标坐标系
+              [116.403988, 39.914266], // Longitude and latitude coordinates.
+            gcoord.WGS84, // Current coordinate system.
+            gcoord.GCJ02 // Target coordinate system.
             );
 ```
 
-#### WGS84 坐标转 BD09 坐标
+#### Converting BD09 Coordinates to WGS84 Coordinates
 
 ``` javascript
 	import gcoord from 'gcoord'
 	
 	gcoord.transform(
-              [116.403988, 39.914266], // 经纬度坐标
-            gcoord.WGS84, // 当前坐标系
-            gcoord.BD09 // 目标坐标系
+              [116.403988, 39.914266], // Longitude and latitude coordinates.
+            gcoord.BD09, // Current coordinate system.
+            gcoord.WGS84 // Target coordinate system.
             );
 ```
 
-### 国家码相关
+#### Converting WGS84 Coordinates to BD09 Coordinates
 
-#### 根据 Sim 卡获取ISO国家
+``` javascript
+	import gcoord from 'gcoord'
+	
+	gcoord.transform(
+              [116.403988, 39.914266], // Longitude and latitude coordinates.
+            gcoord.WGS84, // Current coordinate system.
+            gcoord.BD09// Target coordinate system
+            );
+```
+
+### Country Code Utility
+
+#### Obtaining the ISO Country Code Based on the SIM
 
 [getISOCountryCodeForSim(slotId: number, callback: AsyncCallback<string>): void](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/apis/js-apis-sim.md#simgetisocountrycodeforsim
 )
 
-获取指定卡槽SIM卡的ISO国家码。使用callback异步回调。
+Obtains the ISO country code of the SIM card in the specified slot. This API uses an asynchronous callback to return the result.
 
 ``` javascript
 	import sim from '@ohos.telephony.sim';
@@ -145,60 +145,60 @@ TempUtils.C2F(89.6)
         });
 ```
 
-#### 获取系统地区
+#### Obtaining the System Region
 
 [static getSystemRegion(): string](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/apis/js-apis-i18n.md#getsystemregion9)
 
-获取系统地区。地区的详细说明参见实例化Locale对象。
+Obtains the system region. For details about the region, see the **Locale** instance.
 
-系统能力：SystemCapability.Global.I18n
+**System capability**: SystemCapability.Global.I18n
 
 ``` javascript
 import I18n from '@ohos.i18n';
 try {
-  let systemRegion = I18n.System.getSystemRegion(); // 获取系统当前地区设置
+  let systemRegion = I18n.System.getSystemRegion(); // Obtain the current system region.
 } catch(error) {
   console.error(`call System.getSystemRegion failed, error code: ${error.code}, message: ${error.message}.`);
 }
 ```
 
-#### 根据地区获取拨号字冠
+#### Obtaining the Country Code by Language
 
 ``` javascript
 import { CountryUtils} from '@ohos/util_code'
- CountryUtils.getCountryCodeByLanguage() //返回拨号字冠
+ CountryUtils.getCountryCodeByLanguage() // Return the country code (international dialing prefix).
 ```
 
-#### 根据SIM卡获取拨号字冠
+#### Obtaining the Dialing Prefix Based on the SIM Card
 
 ``` javascript
 import { CountryUtils} from '@ohos/util_code'
- CountryUtils.getCountryCodeByLanguage() //返回拨号字冠
+ CountryUtils.getCountryCodeByLanguage() // Return the country code (international dialing prefix).
 ```
 
-#### 根据地区获取拨号字冠
+#### Obtaining the Country Code
 
 ``` javascript
 import {CountryUtils} from '@ohos/util_code'
 CountryUtils.getCountryCode('CN')
 ```
 
-### 颜色相关
+### Color Utility
 
-该功能模块基于[randomcolor](https://github.com/fatelei/imagetype) 开发
+This module is developed based on [randomcolor](https://github.com/fatelei/imagetype).
 
-#### 获取随机颜色
+#### Obtaining Random Colors
 
-您可以传递一个选项对象来影响它产生的颜色类型。选项对象接受以下属性：
+You can pass in an option object to determine the type of color to obtain. The option object can hold the following properties.
 
-| 验证器                                           | 描述                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-|-----------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| hue      | 控制生成颜色的色调。您可以传递表示颜色名称的字符串：red, orange, yellow, green, blue, purple,pink并且monochrome当前受支持。如果您传递一个十六进制颜色字符串，例如#00FFFF，randomColor 将提取其色调值并使用它来生成颜色。
-| luminosity      | 控制生成颜色的亮度。bright您可以指定包含,light或 的字符串dark。
-| count      | 一个整数，指定要生成的颜色数。
-| seed      | 一个整数或字符串，传递时将导致 randomColor 每次返回相同的颜色。
-| format      | 指定生成颜色格式的字符串。可能的值为rgb、rgba、rgbArray、hsl、hsla、hslArray和hex （默认值）。
-| alphargba      | 介于 0 和 1 之间的小数。仅当使用具有 alpha 通道（和）的格式时才相关hsla。默认为随机值。
+|                                            Name|Description   |
+| :----------- |:---------------|
+| hue      | Base color. You can pass in a string representing the color name, such as **red**, **orange**, **yellow**, **green**, **blue**, **purple**, or **pink** or monochrome. If you pass in a hexadecimal color string such as **#00FFFF**, **randomColor** extracts its hue value and generates a color based on it.|
+| luminosity      | Brightness of the color to generate. You can pass in a string, such as **dark** or **light**.|
+| count      | Number of random colors to generate.|
+| seed      | An integer or string that allows **randomColor** to return the same sequence of colors.|
+| format      | Format of the color to generate. The value can be **rgb**, **rgba**, **rgbArray**, **hsl**, **hsla**, **hslArray**, or **hex** (default). |
+| alphargba      | Opacity level of the color when formats that support alpha channels are used. It is a decimal between 0 and 1. It is a random value by default. |
 
 ``` javascript
 // @ts-ignore
@@ -252,9 +252,13 @@ randomColor({
 
 ```
 
-#### 获取颜色
+#### Obtaining Colors
 
-[开发者可以通过“$r('sys.type.resource_id')”的形式引用系统资源。sys代表是系统资源；type代表资源类型，可以取“color”、“float”、“string”、“media”；resource_id代表资源id。](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/quick-start/resource-categories-and-access.md#%E7%B3%BB%E7%BB%9F%E8%B5%84%E6%BA%90)
+You can use **$r('sys.type.resource_id')** to [reference a system resource](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/quick-start/resource-categories-and-access.md#%E7%B3%BB%E7%BB%9F%E8%B5%84%E6%BA%90). 
+
+- **sys** indicates a system resource. 
+- **type** specifies the resource type, which can be **color**, **float**, **string**, or **media**. 
+- **resource_id** specifies the resource ID.  
 
 ``` javascript
 Text($r('app.string.message_arrive', "five of the clock"))
@@ -262,16 +266,15 @@ Text($r('app.string.message_arrive', "five of the clock"))
   .fontSize($r('app.float.font_hello'))
 ```
 
-#### 设置颜色透明度值
+#### Setting the Color Opacity
 
-[设置组件的透明度。](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/arkui-ts/ts-universal-attributes-opacity.md)
+For details, see [Opacity](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/arkui-ts/ts-universal-attributes-opacity.md).
 
-属性
+**Properties**
 
-| 名称      | 参数类型                                     | 描述                                       |
+| Name     | Type                                    | Description                                      |
 | ------- | ---------------------------------------- | ---------------------------------------- |
-| opacity | number I [Resource](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/arkui-ts/ts-types.md#resource)| 元素的不透明度，取值范围为0到1，1表示不透明，0表示完全透明, 达到隐藏组件效果，但是在布局中占位。<br>**
-说明：**<br/>子组件可以继承父组件的此属性。默认值：1<br>从API version 9开始，该接口支持在ArkTS卡片中使用。 |
+| opacity | number I [Resource](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/arkui-ts/ts-types.md#resource)| Opacity of the color, which ranges from 0 to 1.<br/>The value **1** means opaque, and **0** means completely transparent. When being completely transparent, the component is hidden but still takes up space in the layout.<br>Default value: **1**<br/>**NOTE**<br>A component can inherit the opacity setting from its parent component.<br>This API can be used in ArkTS widgets since API version 9. |
 
 ``` ts
 // xxx.ets
@@ -297,12 +300,12 @@ struct OpacityExample {
 }
 ```
 
-#### 获取颜色红绿蓝
+#### Obtaining Colors Red, Green, and Blue
 
-[颜色说明](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/arkui-ts/ts-appendix-enums.md
-)
+For details, see [Color](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/arkui-ts/ts-appendix-enums.md).
 
-| 颜色名称                 | 颜色值   | 颜色示意                                                     |
+
+| Color                | Value  | Illustration                                                    |
 | ------------------------ | -------- | ------------------------------------------------------------ |
 | Black                    | 0x000000 | ![img.png](img/img.png)|
 | Blue                     | 0x0000ff | ![img_1.png](img/img_1.png) |
@@ -315,17 +318,17 @@ struct OpacityExample {
 | Red                      | 0xff0000 | ![img_8.png](img/img_8.png)|
 | White                    | 0xffffff |![img_9.png](img/img_9.png)|
 | Yellow                   | 0xffff00 | ![img_10.png](img/img_10.png) |
-| Transparent<sup>9+</sup> | rgba(0,0,0,0)  |  透明色                                                                   |
+| Transparent<sup>9+</sup> | rgba(0,0,0,0)  |  Transparent                                                                  |
 
-更多使用方法请参照：
+ 
 
-### Hap 相关
+### HAP Utility
 
-#### Hap 前台转到后台监听
+#### Listening for Application Transition from Foreground to Background
 
-[onBackground(): void;](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/apis/js-apis-app-ability-uiAbility.md#uiabilityonbackground)
+[onBackground(): void;](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-app-ability-uiAbility.md#uiabilityonbackground)
 
-Ability生命周期回调，当应用从前台转到后台时触发。
+Called when this ability is switched from the foreground to the background.
 
 ``` javascript
 import Ability from '@ohos.app.ability.UIAbility';
@@ -336,32 +339,11 @@ class myAbility extends Ability {
 }
 ```
 
-#### Hap 后台转到前台监听
+#### Listening for Application Transition from Background to Foreground
 
-[onBackground(): void;](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/apis/js-apis-app-ability-uiAbility.md#uiabilityonbackground)
+[onForeground(): void;](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-app-ability-uiAbility.md#uiabilityonforeground)
 
-Ability生命周期回调，当应用从前台转到后台时触发。
-
-``` javascript
-import Ability from '@ohos.app.ability.UIAbility';
-class myAbility extends Ability {
-    onForeground() {
-        console.log('onForeground');
-    }
-}
-}
-```
-
-
-#### 判断 Hap 是否处于前台
-
-[onBackground(): void;](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/apis/js-apis-app-ability-uiAbility.md#uiabilityonbackground)
-
-Ability生命周期回调，当应用从前台转到后台时触发。
-
-系统能力：SystemCapability.Ability.AbilityRuntime.AbilityCore
-
-对应前后监听接口，监听hap，onForeground，触发则hap在前台
+Called when this ability is switched from the background to the foreground.
 
 ``` javascript
 import Ability from '@ohos.app.ability.UIAbility';
@@ -373,21 +355,43 @@ class myAbility extends Ability {
 }
 ```
 
-#### 打开 Hap
 
-[startAbility(want: Want, callback: AsyncCallback<void>): void;](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/apis/js-apis-inner-application-uiAbilityContext.md#uiabilitycontextstartability)
+#### Checking Application Status
 
-启动Ability（callback形式）。
+[onForeground(): void;](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-app-ability-uiAbility.md#uiabilityonforeground)
 
-使用规则：
+Called when this ability is switched from the background to the foreground. 
 
-调用方应用位于后台时，使用该接口启动Ability需申请ohos.permission.START_ABILITIES_FROM_BACKGROUND权限
+**System capability**: SystemCapability.Ability.AbilityRuntime.AbilityCore
 
-目标Ability的exported属性若配置为false，调用方应用需申请ohos.permission.START_INVISIBLE_ABILITY权限
+If **onForeground()**  is called, the application is in the foreground.
 
-组件启动规则详见：组件启动规则（Stage模型）
+``` javascript
+import Ability from '@ohos.app.ability.UIAbility';
+class myAbility extends Ability {
+    onForeground() {
+        console.log('onForeground');
+    }
+}
+}
+```
 
-系统能力：SystemCapability.Ability.AbilityRuntime.Core
+#### Starting an Ability
+
+[startAbility(want: Want, callback: AsyncCallback<void>): void;](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-inner-application-uiAbilityContext.md#uiabilitycontextstartability)
+
+Starts an ability. This API uses an asynchronous callback to return the result.
+
+Observe the following when using this API:
+
+- If an application running in the background needs to call this API to start an ability, it must have the **ohos.permission.START_ABILITIES_FROM_BACKGROUND** permission.
+
+- If **exported** of the target ability is **false**, the caller must have the **ohos.permission.START_INVISIBLE_ABILITY** permission.
+
+- For details about the startup rules for the components in the stage model, see **Component Startup Rules (Stage Model)**.
+
+
+**System capability**: SystemCapability.Ability.AbilityRuntime.Core
 
 ``` javascript
 import common from '@ohos.app.ability.common';
@@ -399,88 +403,87 @@ let want = {
 try {
   this.context.startAbility(want, (error) => {
     if (error.code) {
-      // 处理业务逻辑错误
+      // Process service logic errors.
       console.log('startAbility failed, error.code: ' + JSON.stringify(error.code) +
         ' error.message: ' + JSON.stringify(error.message));
       return;
     }
-    // 执行正常业务
+    // Carry out normal service processing.
     console.log('startAbility succeed');
   });
 } catch (paramError) {
-  // 处理入参错误异常
+  // Process input parameter errors.
   console.log('error.code: ' + JSON.stringify(paramError.code) +
     ' error.message: ' + JSON.stringify(paramError.message));
 }
 ```
 
-#### 关闭应用
+#### Terminating an Ability
 
-[terminateSelf(callback: AsyncCallback<void>): void;](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/apis/js-apis-inner-application-uiAbilityContext.md#uiabilitycontextterminateself)
+[terminateSelf(callback: AsyncCallback<void>): void;](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-inner-application-uiAbilityContext.md#uiabilitycontextterminateself)
 
-停止Ability自身（callback形式）。
+Terminates this ability. This API uses an asynchronous callback to return the result.
 
-系统能力：SystemCapability.Ability.AbilityRuntime.Core
+**System capability**: SystemCapability.Ability.AbilityRuntime.Core
 
 ``` javascript
 import common from '@ohos.app.ability.common';
 this.context.terminateSelf((error) => {
   if (error.code) {
-    // 处理业务逻辑错误
+    // Process service logic errors.
     console.log('terminateSelf failed, error.code: ' + JSON.stringify(error.code) +
       ' error.message: ' + JSON.stringify(error.message));
     return;
   }
-  // 执行正常业务
+  // Carry out normal service processing.
   console.log('terminateSelf succeed');
 }); error.message: ' + JSON.stringify(paramError.message));
 }
 ```
 
-#### 获取 Ability 信息
+#### Obtaining Ability Information
 
-[queryAbilityInfo(want: Want, abilityFlags: number, userId: number, callback: AsyncCallback<Array<AbilityInfo>>): void;](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/apis/js-apis-bundleManager.md#bundlemanagerqueryabilityinfo)
+[queryAbilityInfo(want: Want, abilityFlags: number, userId: number, callback: AsyncCallback<Array<AbilityInfo>>): void;](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-bundleManager.md#bundlemanagerqueryabilityinfo)
 
-以异步方法根据给定的want、abilityFlags和userId获取多个AbilityInfo，使用callback形式返回结果。
+Obtains an array of ability information based on the given want, ability flags, and user ID. This API uses an asynchronous callback to return the result.
 
-系统接口： 此接口为系统接口。
+**System API**: This is a system API.
 
-需要权限： ohos.permission.GET_BUNDLE_INFO_PRIVILEGED or ohos.permission.GET_BUNDLE_INFO
+**Required permissions**: ohos.permission.GET_BUNDLE_INFO_PRIVILEGED or ohos.permission.GET_BUNDLE_INFO
 
-系统能力： SystemCapability.BundleManager.BundleFramework.Core
+**System capability**: SystemCapability.BundleManager.BundleFramework.Core
 
-[AbilityInfo](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/apis/js-apis-bundleManager-abilityInfo.md)
-请参考
+[AbilityInfo](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-bundleManager-abilityInfo.md)
 
-以下各项对应的系统能力均为SystemCapability.BundleManager.BundleFramework.Core。
 
-| 名称                  | 类型                                                     | 可读 | 可写 | 说明                                      |
+**System capability**: SystemCapability.BundleManager.BundleFramework.Core
+
+| Name                 | Type                                                    | Readable| Writable| Description                                     |
 | --------------------- | -------------------------------------------------------- | ---- | ---- | ------------------------------------------ |
-| bundleName            | string                                                   | 是   | 否   | 应用Bundle名称。                            |
-| moduleName            | string                                                   | 是   | 否   | Ability所属的HAP的名称。                    |
-| name                  | string                                                   | 是   | 否   | Ability名称。                               |
-| label                 | string                                                   | 是   | 否   | Ability对用户显示的名称。                   |
-| labelId               | number                                                   | 是   | 否   | Ability的标签资源id。                       |
-| description           | string                                                   | 是   | 否   | Ability的描述。                             |
-| descriptionId         | number                                                   | 是   | 否   | Ability的描述资源id。                       |
-| icon                  | string                                                   | 是   | 否   | Ability的图标资源文件索引。                 |
-| iconId                | number                                                   | 是   | 否   | Ability的图标资源id。                       |
-| process               | string                                                   | 是   | 否   | Ability的进程，如果不设置，默认为包的名称。 |
-| exported             | boolean                                                  | 是   | 否   | 判断Ability是否可以被其他应用调用。         |
-| type                  | AbilityType     | 是   | 否   | Ability类型<br />此属性仅可在FA模型下使用。 |
-| orientation           | DisplayOrientation  | 是   | 否   | Ability的显示模式。                         |
-| launchType            | LaunchType      | 是   | 否   | Ability的启动模式。                         |
-| permissions           | Array\<string>                                           | 是   | 否   | 被其他应用Ability调用时需要申请的权限集合，通过调用bundleManager.queryAbilityInfo接口，传入GET_ABILITY_INFO_WITH_PERMISSION获取。 |
-| readPermission        | string                                                   | 是   | 否   | 读取Ability数据所需的权限<br />此属性仅可在FA模型下使用。 |
-| writePermission       | string                                                   | 是   | 否   | 向Ability写数据所需的权限<br />此属性仅可在FA模型下使用。 |
-| uri                   | string                                                   | 是   | 否   | 获取Ability的统一资源标识符（URI）<br />此属性仅可在FA模型下使用。 |
-| deviceTypes           | Array\<string>                                           | 是   | 否   | Ability支持的设备类型。                     |
-| applicationInfo       | ApplicationInfo    | 是   | 否   | 应用程序的配置信息，通过调用bundleManager.queryAbilityInfo接口，传入GET_ABILITY_INFO_WITH_APPLICATION获取。 |
-| metadata              | Array\[Metadata>           | 是   | 否   | ability的元信息，通过调用bundleManager.queryAbilityInfo
-(js-apis-bundleManager.md#bundlemanagerqueryabilityinfo)接口，传入GET_ABILITY_INFO_WITH_METADATA获取。 |
-| enabled               | boolean                                                  | 是   | 否   | ability是否可用。                           |
-| supportWindowModes    | Array\<SupportWindowMode> | 是   | 否   | ability支持的窗口模式。                      |
-| windowSize|WindowSize                                           |    是   | 否   | 表示窗口尺寸。|
+| bundleName            | string                                                   | Yes  | No  | Bundle name.                           |
+| moduleName            | string                                                   | Yes  | No  | Name of the HAP file to which the ability belongs.                   |
+| name                  | string                                                   | Yes  | No  | Ability name.                              |
+| label                 | string                                                   | Yes  | No  | Ability name visible to users.                  |
+| labelId               | number                                                   | Yes  | No  | ID of the ability label.                      |
+| description           | string                                                   | Yes  | No  | Ability description.                            |
+| descriptionId         | number                                                   | Yes  | No  | ID of the ability description.                      |
+| icon                  | string                                                   | Yes  | No  | Index of the ability icon resource file.                |
+| iconId                | number                                                   | Yes  | No  | ID of the ability icon.                      |
+| process               | string                                                   | Yes  | No  | Process in which the ability runs. If this parameter is not set, the bundle name is used.|
+| exported             | boolean                                                  | Yes  | No  | Whether the ability can be called by other bundles.        |
+| type                  | AbilityType     | Yes  | No  | Ability type.<br>This property can be used only in the FA model.|
+| orientation           | DisplayOrientation  | Yes  | No  | Ability display orientation.                        |
+| launchType            | LaunchType      | Yes  | No  | Ability launch type.                        |
+| permissions           | Array\<string>                                           | Yes  | No  | Permissions required for other applications to call the ability. The permissions can be obtained by calling **bundleManager.queryAbilityInfo** with **GET_ABILITY_INFO_WITH_PERMISSION** passed in. |
+| readPermission        | string                                                   | Yes  | No  | Permission required for reading the ability data.<br>This property can be used only in the FA model.|
+| writePermission       | string                                                   | Yes  | No  | Permission required for writing data to the ability.<br>This property can be used only in the FA model.|
+| uri                   | string                                                   | Yes  | No  | URI of the ability.<br>This property can be used only in the FA model.|
+| deviceTypes           | Array\<string>                                           | Yes  | No  | Device types supported by the ability.                    |
+| applicationInfo       | ApplicationInfo    | Yes  | No  | Application information, which can be obtained by calling **bundleManager.queryAbilityInfo** with **GET_ABILITY_INFO_WITH_APPLICATION** passed in. |
+| metadata              | Array\[Metadata>           | Yes  | No  | Metadata of ability, which can be obtained by calling **bundleManager.queryAbilityInfo** with **GET_ABILITY_INFO_WITH_METADATA** passed in. |
+| enabled               | boolean                                                  | Yes  | No  | Whether the ability is enabled.                          |
+| supportWindowModes    | Array\<SupportWindowMode> | Yes  | No  | Window modes supported by the ability.                     |
+| windowSize|WindowSize                                           |    Yes  | No  | Window size.|
 
 ``` javascript
 import bundleManager from '@ohos.bundle.bundleManager';
@@ -505,44 +508,43 @@ try {
 }
 ```
 
-#### 获取 Hap 信息
+#### Obtaining HAP Information
 
-[getBundleInfo(bundleName: string, bundleFlags: number, userId: number, callback: AsyncCallback<BundleInfo>): void;
-](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/apis/js-apis-bundleManager.md#/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/apis/js-apis-bundleManager-bundleInfo.md)
+[getBundleInfo(bundleName: string, bundleFlags: number, userId: number, callback: AsyncCallback<BundleInfo>): void;](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-bundleManager.md#/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-bundleManager-bundleInfo.md)
 
-以异步方法根据给定的bundleName、bundleFlags和userId获取BundleInfo，使用callback形式返回结果。
+Obtains the bundle information based on the given bundle name, bundle flags, and user ID. This API uses an asynchronous callback to return the result.
 
-获取调用方自己的信息时不需要权限。
+No permission is required for obtaining the caller's own information.
 
-系统接口： 此接口为系统接口。
+**System API**: This is a system API.
 
-需要权限： ohos.permission.GET_BUNDLE_INFO_PRIVILEGED or ohos.permission.GET_BUNDLE_INFO
+**Required permissions**: ohos.permission.GET_BUNDLE_INFO_PRIVILEGED or ohos.permission.GET_BUNDLE_INFO
 
-系统能力： SystemCapability.BundleManager.BundleFramework.Core
+**System capability**: SystemCapability.BundleManager.BundleFramework.Core
 
-[BundleInfo](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/apis/js-apis-bundleManager-bundleInfo.md)
-参考
+[BundleInfo](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-bundleManager-bundleInfo.md)
 
-以下各项对应的系统能力均为SystemCapability.BundleManager.BundleFramework.Core。
 
-| 名称                              | 类型                                                         | 可读 | 可写 | 说明                                                         |
+**System capability**: SystemCapability.BundleManager.BundleFramework.Core
+
+| Name                             | Type                                                        | Readable| Writable| Description                                                        |
 | --------------------------------- | ------------------------------------------------------------ | ---- | ---- | ------------------------------------------------------------ |
-| name                              | string                                                       | 是   | 否   | 应用包的名称。                                               |
-| vendor                            | string                                                       | 是   | 否   | 应用包的供应商。                                               |
-| versionCode                       | number                                                       | 是   | 否   | 应用包的版本号。                                              |
-| versionName                       | string                                                       | 是   | 否   | 应用包的版本文本描述信息。                                     |
-| minCompatibleVersionCode          | number                                                       | 是   | 否   | 分布式场景下的应用包兼容的最低版本。                           |
-| targetVersion                     | number                                                       | 是   | 否   | 该标签标识应用运行目标版本。                                |
-| appInfo                           | ApplicationInfo       | 是   | 否   | 应用程序的配置信息，通过调用bundleManager.getBundleInfo接口，传入GET_BUNDLE_INFO_WITH_APPLICATION获取。                                           |
-| hapModulesInfo                    | ArrayHapModuleInfo   | 是   | 否   | 模块的配置信息，通过调用bundleManager.getBundleInfo接口，传入GET_BUNDLE_INFO_WITH_HAP_MODULE获取。                                                 |
-| reqPermissionDetails     | Array  | 是   | 否   | 应用运行时需向系统申请的权限集合的详细信息，通过调用bundleManager.getBundleInfo接口，传入GET_BUNDLE_INFO_WITH_REQUESTED_PERMISSION获取。|
-| permissionGrantStates        | ArrayPermissionGrantState | 是   | 否   | 申请权限的授予状态，通过调用bundleManager.getBundleInfo接口，传入GET_BUNDLE_INFO_WITH_REQUESTED_PERMISSION获取。                     |
-| signatureInfo          |SignatureInfo                                 | 是   | 否   | 应用包的签名信息，通过调用bundleManager.getBundleInfo接口，传入GET_BUNDLE_INFO_WITH_SIGNATURE_INFO获取。                                           |
-| installTime                       | number                                                       | 是   | 否   | 应用包安装时间。                                          |
-| updateTime                        | number                                                       | 是   | 否   | 应用包更新时间。                                            |
+| name                              | string                                                       | Yes  | No  | Bundle name.                                              |
+| vendor                            | string                                                       | Yes  | No  | Vendor of the bundle.                                              |
+| versionCode                       | number                                                       | Yes  | No  | Version number of the bundle.                                             |
+| versionName                       | string                                                       | Yes  | No  | Version description of the bundle.                                    |
+| minCompatibleVersionCode          | number                                                       | Yes  | No  | Earliest version compatible with the bundle in the distributed scenario.                          |
+| targetVersion                     | number                                                       | Yes  | No  | Target API version required for running the bundle.                               |
+| appInfo                           | ApplicationInfo       | Yes  | No  | Application information, which can be obtained by calling **bundleManager.getBundleInfo** with **GET_BUNDLE_INFO_WITH_APPLICATION** passed in. |
+| hapModulesInfo                    | ArrayHapModuleInfo   | Yes  | No  | Module configuration information, which can be obtained calling **GET_BUNDLE_INFO_WITH_HAP_MODULE** with **GET_BUNDLE_INFO_WITH_HAP_MODULE** passed in.                                                |
+| reqPermissionDetails     | Array  | Yes  | No  | Detailed information of the permissions to request from the system. The information can be obtained by calling **bundleManager.getBundleInfo** with **GET_BUNDLE_INFO_WITH_REQUESTED_PERMISSION** passed in.|
+| permissionGrantStates        | ArrayPermissionGrantState | Yes  | No  | Permission grant state, which can be obtained by calling **bundleManager.getBundleInfo** with **GET_BUNDLE_INFO_WITH_REQUESTED_PERMISSION** passed in.                    |
+| signatureInfo          |SignatureInfo                                 | Yes  | No  | App package signature information, which is obtained by calling **bundleManager.getBundleInfo** with **GET_BUNDLE_INFO_WITH_SIGNATURE_INFO** passed in.                       |
+| installTime                       | number                                                       | Yes  | No  | Time when the bundle was installed.                                         |
+| updateTime                        | number                                                       | Yes  | No  | Time when the bundle was updated.                                           |
 
 ``` javascript
-// 额外获取ApplicationInfo和SignatureInfo
+// Obtain the bundle information with the application and signature information.
 import bundleManager from '@ohos.bundle.bundleManager';
 import hilog from '@ohos.hilog';
 let bundleName = 'com.example.myapplication';
@@ -560,26 +562,19 @@ try {
 }
 ```
 
-#### 获取Hap签名信息
+#### Obtaining HAP Signature Information
 
-[BundleInfo](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/apis/js-apis-bundleManager-bundleInfo.md)
-包含
-[SignatureInfo](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/apis/js-apis-bundleManager-bundleInfo.md)
-，可用getBundleInfo获取BundleInfo中的SignatureInfo
+[BundleInfo](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-bundleManager-bundleInfo.md) includes [SignatureInfo](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-bundleManager-bundleInfo.md), which can be obtained by **getBundleInfo**.
 
-SignatureInfo参考
+**System capability**: SystemCapability.BundleManager.BundleFramework.Core
 
-描述应用包的签名信息。
-
-**系统能力:** 以下各项对应的系统能力均为SystemCapability.BundleManager.BundleFramework.Core。
-
-| 名称      | 类型           | 可读 | 可写 | 说明                        |
+| Name     | Type          | Readable| Writable| Description                       |
 | --------- | -------------- | ---- | ---- | --------------------------- |
-| appId     | string         | 是   | 否   | 应用的appId。                 |
-|fingerprint| string         | 是   | 否   | 应用包的指纹信息。            |
+| appId     | string         | Yes  | No  | Application ID.                |
+|fingerprint| string         | Yes  | No  | Fingerprint information of the bundle.           |
 
 ``` javascript
-// 额外获取ApplicationInfo和SignatureInfo
+// Obtain the bundle information with the application and signature information.
 import bundleManager from '@ohos.bundle.bundleManager';
 import hilog from '@ohos.hilog';
 let bundleName = 'com.example.myapplication';
@@ -597,19 +592,19 @@ try {
 }
 ```
 
-#### 获取所有已安装 Hap 信息
+#### Obtaining Information about All Installed HAPs
 
 getAllBundleInfo(bundleFlags: number, userId: number, callback: AsyncCallback<Array<BundleInfo>>): void;
 
-以异步方法根据给定的bundleFlags和userId获取系统中所有的BundleInfo，使用callback形式返回结果。
+Obtains information about all bundles based on the given bundle flags and user ID. This API uses an asynchronous callback to return the result.
 
-系统接口： 此接口为系统接口。
+**System API**: This is a system API.
 
-需要权限： ohos.permission.GET_BUNDLE_INFO_PRIVILEGED
+**Required permissions**: ohos.permission.GET_BUNDLE_INFO_PRIVILEGED
 
-系统能力： SystemCapability.BundleManager.BundleFramework.Core
+**System capability**: SystemCapability.BundleManager.BundleFramework.Core
 
-[BundleInfo](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/apis/js-apis-bundleManager-bundleInfo.md)
+[BundleInfo](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-bundleManager-bundleInfo.md)
 
 ``` javascript
 import bundleManager from '@ohos.bundle.bundleManager';
@@ -629,28 +624,28 @@ try {
 }
 ```
 
-### 正则相关
+### Regular Expression Utility
 
-正则相关功能请参考：[validator](*)，validator功能已包含本模块功能
+See [validator](https://github.com/validatorjs/validato).
 
-### 内存缓存相关
+### Memory Cache Utility
 
-该功能模块基于 [node-cache](https://github.com/ptarjan/node-cache) 开发
+This module is developed based on [node-cache](https://github.com/ptarjan/node-cache).
 
-#### 导入内存缓存实例
+#### Importing a Memory Cache Instance
 
-获取内存缓存操作对象
+Obtain an object for memory cache operations.
 
 ``` javascript
 // @ts-ignore
 import cache from 'memory-cache';
 ```
 
-#### 缓存中写入数据
+#### Writing Data to the Cache
 
 put = function(key, value, time, timeoutCallback)
 
-写入数据
+Writes data.
 
 ``` javascript
 // @ts-ignore
@@ -658,11 +653,11 @@ import cache from 'memory-cache';
 cache.put('foo', 'bar');
 ```
 
-#### 缓存中读取数据
+#### Reading Data from the Cache
 
 get = function(key)
 
-通过key读取数据
+Reads data from the cache based on the given key.
 
 ``` javascript
 // @ts-ignore
@@ -670,11 +665,11 @@ import cache from 'memory-cache';
 cache.get('foo')
 ```
 
-#### 根据键值移除缓存
+#### Removing Data from the Cache
 
 del = function(key)
 
-通过键值移除数据
+Removes the value of the given key.
 
 ``` javascript
 // @ts-ignore
@@ -682,9 +677,9 @@ import cache from 'memory-cache';
 cache.del('foo')
 ```
 
-#### 清除所有缓存
+#### Clearing Cache Data
 
-清除所有数据
+Clears all data from the cache.
 
 ``` javascript
 // @ts-ignore
@@ -692,11 +687,11 @@ import cache from 'memory-cache';
 cache.clear()
 ```
 
-#### 缓存大小
+#### Obtaining Cache Data Volume
 
 size = function()
 
-返回缓存中的当前条目数
+Returns the number of entries in the cache.
 
 ``` javascript
 // @ts-ignore
@@ -704,11 +699,11 @@ import cache from 'memory-cache';;
 cache.size();
 ```
 
-#### 缓存内存大小
+#### Obtaining Cache Size
 
 memsize = function()
 
-返回缓存中占用空间的条目数
+Returns the memory occupied by the data in the cache.
 
 ``` javascript
 // @ts-ignore
@@ -716,50 +711,52 @@ import cache from 'memory-cache';
 cache.memsize();
 ```
 
-### 时间相关
+### Time Utility
 
-该功能模块基于 [leap-year](https://github.com/sindresorhus/leap-year) [time-ampm](https://github.com/ipostol/time-ampm) 开发
+This module is developed based on [leap-year](https://github.com/sindresorhus/leap-year) [time-ampm](https://github.com/ipostol/time-ampm).
 
-#### 将 Date 类型转为时间字符串
+#### Converts Date to a String
 
-js语言特性
+JS
 
 ``` javascript
 const date = new Date();
 const isoString = date.toISOString();
-console.log(isoString); // 输出类似于 "2023-04-26T03:36:41.839Z" 的字符串
+console.log(isoString); // Output a string similar to 2023-04-26T03:36:41.839Z.
 ```
 
-#### 将 Date 类型转为时间戳
+#### Converting Date to a Timestamp
 
-js语言特性
+JS
 
 ``` javascript
 const date = new Date();
-const timestamp = date.getTime(); // 返回时间戳，例如：1630198499637
+const timestamp = date.getTime(); // Output a timestamp like 1630198499637.
 ```
 
-#### 将时间戳转为 Date 类型
+#### Converting a Timestamp to Date
 
-js语言特性
+JS
 
 ``` javascript
-const timestamp = 1646112000000; // 2022-03-01 00:00:00的时间戳
+const timestamp = 1646112000000; // Timestamp for 2022-03-01 00:00:00.
 const date = new Date(timestamp);
-console.log(date); // 输出：Tue Mar 01 2022 00:00:00 GMT+0800 (中国标准时间)
+console.log(date); // Output Tue Mar 01 2022 00:00:00 GMT+0800 (China Standard Time)
 ```
 
-#### 获取当前 Date
+#### Obtaining the Current Date
 
-js语言特性
+JS
 
 ``` javascript
 new Date()
 ```
 
-#### 判断时间为上午下午
+#### Converting Time Between 12-Hour and 24-Hour Formats
 
-输入0—24的小时数，输出上午时间或者下午时间
+Use **get12()** to convert a 24-hour time to a 12-hour time with AM/PM notation. 
+
+Use **get24()** to convert a 12-hour time to a 24-hour time.
 
 ``` javascript
 import { get12, get24 } from 'time-ampm';
@@ -772,14 +769,14 @@ console.log(get24(t2)); // '22';
 
 ```
 
-#### 判断是否为闰年
+#### Checking for Leap Year
 
-判断是否为润年，参数支持number
+Use **isLeapYear()** to check whether the give year is a leap year.
 
 ``` javascript
 import isLeapYear from 'leap-year';
 
-isLeapYear(2014);//参数支持number
+isLeapYear(2014);// Check whether the year 2014 is a leap year.
 //=> false
 
 isLeapYear(2016);
@@ -787,52 +784,52 @@ isLeapYear(2016);
 
 ```
 
-### 类型转换
+### Type Utility
 
-#### number转 hexString
+#### Converting a number to a Hexadecimal String
 
-js语言特性
+JS
 
 ``` javascript
 //number.tostring(radix);
-//radix落围2n36，不写就是十进制
+// radix can be 2n36. If it is not specified, it is a decimal number.
 var num = 255;
-console.log(num.tostring(16));// 十进务十六进制
-console.log(num.tostring(16).toupperCase());// 十进制转十六进制，再转大写
+console.log(num.tostring(16));// Convert the number 255 to its hexadecimal (base 16) representation.
+console.log(num.tostring(16).toupperCase());// Convert the lowercase hexadecimal string to uppercase.
 ```
 
-#### hexString 转 number
+#### Converting a Hexadecimal String to a Number
 
-js语言特性
+JS
 
 ``` javascript
 //parseInt(string, radix)
-//radix范围2n36，不写就是十进制
+// radix can be 2n36. If it is not specified, it is a decimal number.
 var str = "FF";
-console.1og(parseInt(str，16));//六进制舞广进制
+console.1og(parseInt(str, 16));// Convert the string FF to an integer using base 16 (hexadecimal).
 var str1 = "12";
-console.log(parseInt(str1));//产停串舞十进制
+console.log(parseInt(str1));// Convert the string 12 to an integer using the default base 10 (decimal).
 ```
 
-#### 像素单位转换
+#### Pixel Unit Utility
 
-[像素单位转换](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/arkui-ts/ts-pixel-units.md/#%E5%83%8F%E7%B4%A0%E5%8D%95%E4%BD%8D%E8%BD%AC%E6%8D%A2)
+[Pixel Unit Conversion](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/arkui-ts/ts-pixel-units.md/#%E5%83%8F%E7%B4%A0%E5%8D%95%E4%BD%8D%E8%BD%AC%E6%8D%A2)
 
-| 名称   | 描述                                       |
+| Name  | Description                                      |
 | ---- | ---------------------------------------- |
-| px   | 屏幕物理像素单位。                                |
-| vp   | 屏幕密度相关像素，根据屏幕像素密度转换为屏幕物理像素，当数值不带单位时，默认单位vp。 |
-| fp   | 字体像素，与vp类似适用屏幕密度变化，随系统字体大小设置变化。          |
-| lpx  | 视窗逻辑像素单位，lpx单位为实际屏幕宽度与逻辑宽度（通过designWidth配置）的比值，designWidth默认值为720。当designWidth为720时，在实际宽度为1440物理像素的屏幕上，1lpx为2px大小。 |
+| px   | Physical pixel unit of the screen.                               |
+| vp   | Pixel unit specific to the screen density. Pixels in this unit are converted into physical pixels of the screen based on the screen pixel density. This unit is used for values whose unit is not specified.|
+| fp   | Font pixel, which is similar to vp and varies according to the system font size.         |
+| lpx  | Logical pixel unit of the window. It is the ratio of the actual screen width to the logical width (configured by **designWidth**). For example, if **designWidth** is set to **720** (default value), then 1 lpx is equal to 2 px for a screen with an actual width of 1440 physical pixels.|
 
-| 接口                                                | 描述                                                         |
+| API                                               | Description                                                        |
 | --------------------------------------------------- | ------------------------------------------------------------ |
-| vp2px(value&nbsp;:&nbsp;number)&nbsp;:&nbsp;number  | 将vp单位的数值转换为以px为单位的数值。<br/>从API version 9开始，该接口支持在ArkTS卡片中使用。 |
-| px2vp(value&nbsp;:&nbsp;number)&nbsp;:&nbsp;number  | 将px单位的数值转换为以vp为单位的数值。<br/>从API version 9开始，该接口支持在ArkTS卡片中使用。 |
-| fp2px(value&nbsp;:&nbsp;number)&nbsp;:&nbsp;number  | 将fp单位的数值转换为以px为单位的数值。<br/>从API version 9开始，该接口支持在ArkTS卡片中使用。 |
-| px2fp(value&nbsp;:&nbsp;number)&nbsp;:&nbsp;number  | 将px单位的数值转换为以fp为单位的数值。<br/>从API version 9开始，该接口支持在ArkTS卡片中使用。 |
-| lpx2px(value&nbsp;:&nbsp;number)&nbsp;:&nbsp;number | 将lpx单位的数值转换为以px为单位的数值。<br/>从API version 9开始，该接口支持在ArkTS卡片中使用。 |
-| px2lpx(value&nbsp;:&nbsp;number)&nbsp;:&nbsp;number | 将px单位的数值转换为以lpx为单位的数值。<br/>从API version 9开始，该接口支持在ArkTS卡片中使用。 |
+| vp2px(value&nbsp;:&nbsp;number)&nbsp;:&nbsp;number  | Converts a value in units of vp to a value in units of px.<br>This API can be used in ArkTS widgets since API version 9.|
+| px2vp(value&nbsp;:&nbsp;number)&nbsp;:&nbsp;number  | Converts a value in units of px to a value in units of vp.<br>This API can be used in ArkTS widgets since API version 9.|
+| fp2px(value&nbsp;:&nbsp;number)&nbsp;:&nbsp;number  | Converts a value in units of fp to a value in units of px.<br>This API can be used in ArkTS widgets since API version 9.|
+| px2fp(value&nbsp;:&nbsp;number)&nbsp;:&nbsp;number  | Converts a value in units of px to a value in units of fp.<br>This API can be used in ArkTS widgets since API version 9.|
+| lpx2px(value&nbsp;:&nbsp;number)&nbsp;:&nbsp;number | Converts a value in units of lpx to a value in units of px.<br>This API can be used in ArkTS widgets since API version 9.|
+| px2lpx(value&nbsp;:&nbsp;number)&nbsp;:&nbsp;number | Converts a value in units of px to a value in units of lpx.<br>This API can be used in ArkTS widgets since API version 9.|
 
 ```ts
 // xxx.ets
@@ -878,29 +875,29 @@ struct Example {
 }
 ```
 
-### 图片相关
+### Image Utility
 
-该功能模块基于 [ImageKnife](https://gitee.com/openharmony-tpc/ImageKnife) [imagetype](https://github.com/fatelei/imagetype) 开发
+This module is developed based on [ImageKnife](https://gitee.com/openharmony-tpc/ImageKnife) [imagetype](https://github.com/fatelei/imagetype).
 
-#### PixelMap 转 ArrayBuffer
+#### Converting a PixelMap to an ArrayBuffer
 
-[readPixelsToBuffer(dst: ArrayBuffer): Promise<void>](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/apis/js-apis-image.md#readpixelstobuffer7)
+[readPixelsToBuffer(dst: ArrayBuffer): Promise<void>](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-image.md#readpixelstobuffer7)
 
-读取图像像素数据，结果写入ArrayBuffer里，使用Promise形式返回。指定BGRA_8888格式创建pixelmap，读取的像素数据与原数据保持一致。
+Reads the image pixel data and writes the data to an ArrayBuffer. This API uses a promise to return the result. If the pixel map is created in the BGRA_8888 format, the data read is the same as the original data.
 
 ``` javascript
-const readBuffer = new ArrayBuffer(96);  //96为需要创建的像素buffer大小，取值为：height * width *4
+const readBuffer = new ArrayBuffer(96);  // 96 is the size of the pixel map buffer to create. The value is calculated as follows: height x width x 4.
 pixelmap.readPixelsToBuffer(readBuffer).then(() => {
-    console.log('Succeeded in reading image pixel data.');  //符合条件则进入 
+    console.log('Succeeded in reading image pixel data.'); // The operation is successful.
 }).catch(error => {
-    console.log('Failed to read image pixel data.');  //不符合条件则进入
+    console.log('Failed to read image pixel data.');  // The operation fails.
 })
 ```
 
-#### ArrayBuffer 转 PixelMap
+#### Converting an ArrayBuffer to a PixelMap
 
 ``` javascript
-const color = new ArrayBuffer(96);  //96为需要创建的像素buffer大小，取值为：height * width *4
+const color = new ArrayBuffer(96);  // 96 is the size of the pixel map buffer to create. The value is calculated as follows: height x width x 4.
 let bufferArr = new Uint8Array(color);
 let opts = { editable: true, pixelFormat: 3, size: { height: 4, width: 6 } }
 image.createPixelMap(color, opts)
@@ -926,11 +923,11 @@ image.createPixelMap(color, opts)
     })
 ```
 
-#### 获取 PixelMap
+#### Obtaining a PixelMap
 
-[writePixels(area: PositionArea): Promise<void>](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/apis/js-apis-image.md#writepixels7)
+[writePixels(area: PositionArea): Promise<void>](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-image.md#writepixels7)
 
-将PixelMap写入指定区域内，使用Promise形式返回写入结果。
+Writes the pixels to an area. This API uses a promise to return the result.
 
 ``` javascript
 const area = {
@@ -940,17 +937,17 @@ const area = {
     region: { size: { height: 1, width: 2 }, x: 0, y: 0 }
 }
 pixelmap.readPixels(area).then(() => {
-    console.log('Succeeded in reading the image data in the area.'); //符合条件则进入
+    console.log('Succeeded in reading the image data in the area.'); // The operation is successful.
 }).catch(error => {
-    console.log('Failed to read the image data in the area.'); //不符合条件则进入
+    console.log('Failed to read the image data in the area.'); // The operation fails.
 })
 ```
 
-#### 缩放图片
+#### Resizing an Image
 
-[scale(x: number, y: number, callback: AsyncCallback<void>): void](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/apis/js-apis-image.md#scale9)
+[scale(x: number, y: number, callback: AsyncCallback<void>): void](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-image.md#scale9)
 
-根据输入的宽高对图片进行缩放，使用callback形式返回。
+Scales this image based on a given scaling multiple of the width and height. This API uses an asynchronous callback to return the result.
 
 ``` javascript
 async function Demo() {
@@ -958,11 +955,11 @@ async function Demo() {
 }
 ```
 
-#### 裁剪图片
+#### Cropping an Image
 
-[crop(region: Region, callback: AsyncCallback<void>): void](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/apis/js-apis-image.md#crop9)
+[crop(region: Region, callback: AsyncCallback<void>): void](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-image.md#crop9)
 
-根据输入的尺寸对图片进行裁剪，使用callback形式返回。
+Crops this image based on a given size. This API uses an asynchronous callback to return the result.
 
 ``` javascript
 async function Demo() {
@@ -970,11 +967,11 @@ async function Demo() {
 }
 ```
 
-#### 旋转图片
+#### Rotating an Image
 
-[rotate(angle: number, callback: AsyncCallback<void>): void](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/apis/js-apis-image.md#rotate9)
+[rotate(angle: number, callback: AsyncCallback<void>): void](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-image.md#rotate9)
 
-根据输入的角度对图片进行旋转，使用callback形式返回。
+Rotates this image based on a given angle. This API uses an asynchronous callback to return the result.
 
 ``` javascript
 var angle = 90.0;
@@ -988,9 +985,9 @@ pixelmap.rotate(angle, (err) => {
 })
 ```
 
-#### 转为圆形图片
+#### Cropping an Image into a Circular Shape
 
-[圆形剪裁显示](https://gitee.com/openharmony-tpc/ImageKnife#%E5%9B%BE%E7%89%87%E5%8F%98%E6%8D%A2%E7%9B%B8%E5%85%B3)
+[Crop an image into a circular shape](https://gitee.com/openharmony-tpc/ImageKnife#%E5%9B%BE%E7%89%87%E5%8F%98%E6%8D%A2%E7%9B%B8%E5%85%B3).
 
 ``` javascript
 import AbilityStage from "@ohos.application.AbilityStage"
@@ -998,17 +995,17 @@ import {ImageKnife} from '@ohos/imageknife'
 
 export default class MyAbilityStage extends AbilityStage {
     onCreate() {
-        // 初始化全局ImageKnife实例，在AbilityStage.ts中调用ImageKnife.with(this.context)进行初始化
+        // Call ImageKnife.with(this.context) in AbilityStage.ts to initialize the ImageKnife instance globally. This allows ImageKnife to be used throughout the application.
         globalThis.ImageKnife = ImageKnife.with(this.context)
     }
  }
-类型:CropCircleTransformation
+Type:CropCircleTransformation
 request.cropCircle()
 ```
 
-#### 转为圆角图片
+#### Applying Rounded Corners to an Image
 
-[圆形剪裁显示](https://gitee.com/openharmony-tpc/ImageKnife#%E5%9B%BE%E7%89%87%E5%8F%98%E6%8D%A2%E7%9B%B8%E5%85%B3)
+[Apply rounded corners to an image](https://gitee.com/openharmony-tpc/ImageKnife#%E5%9B%BE%E7%89%87%E5%8F%98%E6%8D%A2%E7%9B%B8%E5%85%B3).
 
 ``` javascript
 import AbilityStage from "@ohos.application.AbilityStage"
@@ -1016,17 +1013,17 @@ import {ImageKnife} from '@ohos/imageknife'
 
 export default class MyAbilityStage extends AbilityStage {
     onCreate() {
-        // 初始化全局ImageKnife实例，在AbilityStage.ts中调用ImageKnife.with(this.context)进行初始化
+        // Call ImageKnife.with(this.context) in AbilityStage.ts to initialize the ImageKnife instance globally. This allows ImageKnife to be used throughout the application.
         globalThis.ImageKnife = ImageKnife.with(this.context)
     }
  }
-类型:RoundedCornersTransformation
+Type:RoundedCornersTransformation
 request.roundedCorners()
 ```
 
-#### 添加圆角边框
+#### Adding Rounded Borders
 
-[添加圆角边框](https://gitee.com/openharmony-tpc/ImageKnife#1%E5%8A%A0%E8%BD%BD%E6%99%AE%E9%80%9A%E5%9B%BE%E7%89%87)
+[Add rounded borders](https://gitee.com/openharmony-tpc/ImageKnife#1%E5%8A%A0%E8%BD%BD%E6%99%AE%E9%80%9A%E5%9B%BE%E7%89%87).
 
 ``` javascript
 import {ImageKnifeComponent} from '@ohos/imageknife'
@@ -1036,15 +1033,15 @@ import {ImageKnifeDrawFactory} from '@ohos/imageknife'
 @Component
 struct Index {
   @State imageKnifeOption1: ImageKnifeOption =
-    { // 加载一张本地的jpg资源（必选）
+    { // (Mandatory) Load a local JPG file.
       loadSrc: $r('app.media.jpgSample'),
-      // 组件宽设置为300，高设置为300（必选）
+      // (Mandatory) Set the component width to 300 and height to 300.
       size: { width: '300', height: '300' },
-      // 占位图使用本地资源icon_loading（可选）
+      // (Optional) Use the local icon_loading as the placeholder image shown while the main image is loading.
       placeholderSrc: $r('app.media.icon_loading'),
-      // 失败占位图使用本地资源icon_failed（可选）
+      // (Optional) Use the local icon_failed as the image shown if the loading fails.
       errorholderSrc: $r('app.media.icon_failed'),
-      // 绘制圆角30，边框5，边框"#ff00ff".用户自定义绘制（可选）
+      // (Optional) Draw an image, which has rounded corners with a radius of 5 pixels, a border color of magenta (#ff00ff), and a border width of 30 pixels.
       drawLifeCycle:ImageKnifeDrawFactory.createRoundLifeCycle(5,"#ff00ff",30)
     };
 
@@ -1061,9 +1058,9 @@ struct Index {
 }
 ```
 
-#### 转为灰度图片
+#### Applying a Grayscale Effect to an Image
 
-[灰度级转换](https://gitee.com/openharmony-tpc/ImageKnife#%E5%9B%BE%E7%89%87%E5%8F%98%E6%8D%A2%E7%9B%B8%E5%85%B3)
+[Apply grayscale transformation to an image](https://gitee.com/openharmony-tpc/ImageKnife#%E5%9B%BE%E7%89%87%E5%8F%98%E6%8D%A2%E7%9B%B8%E5%85%B3).
 
 ``` javascript
 import AbilityStage from "@ohos.application.AbilityStage"
@@ -1071,17 +1068,17 @@ import {ImageKnife} from '@ohos/imageknife'
 
 export default class MyAbilityStage extends AbilityStage {
     onCreate() {
-        // 初始化全局ImageKnife实例，在AbilityStage.ts中调用ImageKnife.with(this.context)进行初始化
+        // Call ImageKnife.with(this.context) in AbilityStage.ts to initialize the ImageKnife instance globally. This allows ImageKnife to be used throughout the application.
         globalThis.ImageKnife = ImageKnife.with(this.context)
     }
  }
-类型:GrayscaleTransformation
+Type:GrayscaleTransformation
 request.grayscale()
 ```
 
-#### 快速模糊
+#### Blurring an Image
 
-[模糊处理](https://gitee.com/openharmony-tpc/ImageKnife#%E5%9B%BE%E7%89%87%E5%8F%98%E6%8D%A2%E7%9B%B8%E5%85%B3)
+[Blur an image](https://gitee.com/openharmony-tpc/ImageKnife#%E5%9B%BE%E7%89%87%E5%8F%98%E6%8D%A2%E7%9B%B8%E5%85%B3).
 
 ``` javascript
 import AbilityStage from "@ohos.application.AbilityStage"
@@ -1089,17 +1086,17 @@ import {ImageKnife} from '@ohos/imageknife'
 
 export default class MyAbilityStage extends AbilityStage {
     onCreate() {
-        // 初始化全局ImageKnife实例，在AbilityStage.ts中调用ImageKnife.with(this.context)进行初始化
+        // Call ImageKnife.with(this.context) in AbilityStage.ts to initialize the ImageKnife instance globally. This allows ImageKnife to be used throughout the application.
         globalThis.ImageKnife = ImageKnife.with(this.context)
     }
  }
-类型:BlurTransformation
+Type: BlurTransformation
 request.blur()
 ```
 
-#### 图片打包器类
+#### Packing Images
 
-图片打包器类，用于图片压缩和打包。在调用ImagePacker的方法前，需要先通过createImagePacker构建一个ImagePacker实例，当前支持格式有：jpeg webp。
+Provides APIs to pack images. Before calling any API in **ImagePacker**, you must use **createImagePacker** to create an **ImagePacker** instance. The image formats JPEG and WebP are supported.
 
 ``` javascript
 import image from '@ohos.multimedia.image';
@@ -1108,17 +1105,17 @@ let packOpts = { format:"image/jpeg", quality:98 };
 imagePackerApi.packing(imageSourceApi, packOpts, data => {})
 ```
 
-#### 获取图片尺寸
+#### Obtaining Image Size
 
-[提供基本的图像操作，包括获取图像信息、读写图像数据。调用readNextImage和readLatestImage接口时会返回image。](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/apis/js-apis-image.md#image9)
+[Image](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-image.md#image9) provides APIs for basic image operations, including obtaining image information and reading and writing image data. The image is returned when **readNextImage** or **readLatestImage** is called.
 
-**系统能力：** SystemCapability.Multimedia.Image.Core
+**System capability**: SystemCapability.Multimedia.Image.Core
 
-| 名称     | 类型               | 可读 | 可写 | 说明                                               |
+| Name    | Type              | Readable| Writable| Description                                              |
 | -------- | ------------------ | ---- | ---- | -------------------------------------------------- |
-| clipRect | [Region](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/apis/js-apis-image.md#region7) | 是   | 是   | 要裁剪的图像区域。                                 |
-| size     | [Size](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/apis/js-apis-image.md#size)      | 是   | 否   | 图像大小。                                         |
-| format   | number             | 是   | 否   | 图像格式，参考[PixelMapFormat。](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/apis/js-apis-image.md#pixelmapformat7) |
+| clipRect | [Region](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-image.md#region7) | Yes  | Yes  | Image area to be cropped.                                |
+| size     | [Size](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-image.md#size)      | Yes  | No  | Image size.                                        |
+| format   | number             | Yes  | No  | Image format. For details, see [PixelMapFormat](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-image.md#pixelmapformat7). |
 
 ``` javascript
 import image from '@ohos.multimedia.image';
@@ -1131,9 +1128,9 @@ img.getComponent(4, (err, component) => {
 })
 ```
 
-#### 判断是否为图片
+#### Determining an Image
 
-目前支持 jpeg png gif tiff bmp
+Check whether the given object is an image. Currently, jpeg, png, gif, tiff, and bmp are supported.
 
 ``` javascript
     import imtype from 'imtype';
@@ -1146,44 +1143,42 @@ img.getComponent(4, (err, component) => {
       })
 ```
 
-## 目录
+## Directory Structure
 
 ```
-/util_code # 三方库源代码
-├── entry      # demo用例
+/util_code # Source code of the third-party library
+├── entry      # Demo
 │   └── src
 │       └── main
-│   	    └── ets      # demo代码
+│   	    └── ets      # Demo code
 │               └── entryability    # entryability
-│               └── pages    # 测试demo页
-│                   ├── CachePage.ets    # 内存缓存测试页
-│                   ├── ColorDemo.ets    # 颜色测试页
-│                   ├── GcoordPage.ets   # 坐标转换测试页
-│                   ├── Index.ets        # 首页，测试页入口
-│                   ├── PicturePage.ets  # 图片测试页
-│                   └──  TimePage.ets     #时间测试页
-├── library      # 功能代码模块
+│               └── pages    # Demo pages
+│                   ├── CachePage.ets    # Memory cache demo page
+│                   ├── ColorDemo.ets    # Color demo page
+│                   ├── GcoordPage.ets   # Coordinate conversion demo page
+│                   ├── Index.ets        # Main page demo
+│                   ├── PicturePage.ets  # Image demo page
+│                   └──  TimePage.ets    # Time demo page
+├── library      # Code
 │   └── src
 │       └── main
-│           └── utilcode  # 功能代码模块
-│               ├─ CountryUtils.ts  # 国家码模块源码
-│               ├─ TempUtil.ts      # 温度模块源码
-│               └── basic.ts         # 接口
+│           └── utilcode  # utilcode code
+│               ├─ CountryUtils.ts  # Country code utility
+│               ├─ TempUtil.ts      # Temperature utility
+│               └── basic.ts        # APIs
 ```
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+This project has been verified in the following versions:
 
-DevEco Studio 版本：3.1 Beta1（3.1.0.200），OpenHarmony SDK:API9（3.2.10.6）
-DevEco Studio: 4.0(4.0.3.512),SDK: API10（4.0.10.9）
+- DevEco Studio: 3.1 Beta1 (3.1.0.200), OpenHarmony SDK: API9 (3.2.10.6)
+- DevEco Studio: 4.0 (4.0.3.512), SDK: API 10 (4.0.10.9)
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
-给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem during the use, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-本项目基于 [Apache License 2.0](https://gitee.com/zdy09/openharmony_tpc_samples/blob/master/utilCode/LICENSE)
-，请自由地享受和参与开源。
+This project is licensed under [Apache License 2.0](https://gitee.com/zdy09/openharmony_tpc_samples/blob/master/utilCode/LICENSE).
