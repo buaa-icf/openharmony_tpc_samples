@@ -17,7 +17,7 @@ import { TextEncoder,TextDecoder } from 'text-encoding';
 @Component
 struct Index {
   scroller: Scroller = new Scroller()
-  @State message: string = '点我'
+  @State message: Resource = $r('app.string.click')
   @State encode: string = '0'
   @State deco: string = '0'
   build() {
