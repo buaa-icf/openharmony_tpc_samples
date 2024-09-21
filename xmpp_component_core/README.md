@@ -1,34 +1,33 @@
-
 # @ohos/xmpp_component_core
 
-## 简介
+## Introduction
 
->本软件是参照开源软件 [@xmpp/component-core](https://github.com/xmppjs/xmpp.js/tree/main/packages/component-core)源码并用 TypeScript 语言实现了相关功能，在OpenHarmony上提供了一个用于创建XMPP(Extensible Messaging and Presence Protocol)组件并连接到 XMPP 服务器的library
+>Based on the open source software [@xmpp/component-core](https://github.com/xmppjs/xmpp.js/tree/main/packages/component-core), this project uses TypeScript to implement similar capabilities. It provides OpenHarmony with a library for creating Extensible Messaging and Presence Protocol (XMPP) components and connecting to the XMPP server.
 
-## 已支持功能
+## Supported Features
 
-- 构建的组件或服务器与其他 XMPP 实体兼容
-- 提供了一些基本的 XMPP 功能，例如身份验证、连接管理和元素发送/接收
+- The constructed component or server is compatible with other XMPP entities.
+- Some basic XMPP functions, such as authentication, connection management, and element sending/receiving, are provided.
 
-## 下载安装
+## How to Install
 
-1. 参考安装教程 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+1. [Install an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-2. 安装命令如下：
+2. Run the installation command:
 
-```
- ohpm install @ohos/xmpp_component_core
-```
+   ```
+    ohpm install @ohos/xmpp_component_core
+   ```
 
-## 接口和属性列表
+## Available APIs
 
-接口列表
+APIs
 
-| **接口**                  | 参数                                                      | 功能                                                         |
+| Name                 | Parameter                                                     | Description                                                        |
 | ------------------------- | --------------------------------------------------------- | ------------------------------------------------------------ |
-| authenticate(id,password) | `id`是组件或服务器的 JID，`password` 是组件或服务器的密码 | 执行身份验证，通过计算 SHA1 哈希值来验证输入的 id 和 password。 |
+| authenticate(id,password) | `id`: JID of the component or server; `password`: password of the component or server.| Performs authentication and verifies the passed-in ID and password by calculating the SHA-1 hash value.|
 
-## 使用示例
+## Example
 ```
 import Component  from "@ohos/xmpp_component_core";
 const component = new Component({
@@ -36,75 +35,75 @@ const component = new Component({
   password: 'mypassword'
 });
 
-// 监听连接成功事件
+// Listen for connection success events.
 component.on('connect', () => {
-  console.log('已连接到 XMPP 服务器');
+  console.log('Connected to the XMPP server.');
 });
 
-// 监听接收到消息事件
+// Listen for events indicating that a message is received.
 component.on('message', (msg) => {
-  console.log('收到消息:', msg);
+  console.log('Message received:', msg);
 });
 
-// 连接到 XMPP 服务器
+// Connect to the XMPP server.
 component.connect().catch((err) => {
-  console.error('连接失败:', err);
+  console.error('Connection failed:', err);
 });
 ```
 
-## 使用说明
+## How to Use
 
 ```
-@@ohos/xmpp_component_core用于构建 XMPP 组件或服务器。它是 @xmpp 项目的一部分,
+@@ohos/xmpp_component_core is used to build an XMPP component or server. It is part of the @xmpp project.
 import Component  from "@ohos/xmpp_component_core";
 const component = new Component({
   jid: 'mycomponent@domain.tld',
   password: 'mypassword'
 });
 
-// 监听连接成功事件
+// Listen for connection success events.
 component.on('connect', () => {
-  console.log('已连接到 XMPP 服务器');
+  console.log('Connected to the XMPP server.');
 });
 
-// 监听接收到消息事件
+// Listen for events indicating that a message is received.
 component.on('message', (msg) => {
-  console.log('收到消息:', msg);
+  console.log('Message received:', msg);
 });
 
-// 连接到 XMPP 服务器
+// Connect to the XMPP server.
 component.connect().catch((err) => {
-  console.error('连接失败:', err);
+  console.error('Connection failed:', err);
 });
-引入 @xmpp/component-core 模块，然后创建一个新的 Component 实例，并传入 JID 和密码作为参数。接着我们监听了连接成功事件和接收到消息事件，并在控制台打印相关信息。最后调用 connect() 方法连接到 XMPP 服务器
+Import the @xmpp/component-core module, create a Component instance, and pass in the JID and password. Then, listen for the connection success events and message receiving events, and print related information on the console. Call the connect() function to connect to the XMPP server.
 ```
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+This project has been verified in the following version:
 
-- DevEco Studio 版本： 5.0.3.200,OpenHarmony SDK:API12 (5.0.0.21-Canary2)。
+DevEco Studio: 5.0.3.200, OpenHarmony SDK: API 12 (5.0.0.21-Canary2)
 
-## 目录结构
+## Directory Structure
 ````
 |---- @ohos/xmpp_component_core 
-|     |---- entry  # 示例代码文件夹
+|     |---- entry  # Sample code
 |           |---- src  
-|                   |---- main  #sample示例代码
-|                   |---- ohosTest  #xts示例代码
-|     |---- library  # @ohos/xmpp_component_core 库文件夹
+|                   |---- main  # Sample code
+|                   |---- ohosTest  # xts code
+|     |---- library  # @ohos/xmpp_component_core library folder
 |           |---- ets
-|                 |---- lib  # 主要依赖
-|                 |---- types  # 对外接口文件夹
-|           |---- index.js  # 主入口文件
-|           |---- index.d.ts  # 主对外接口声明文件
-|     |---- README.md  # 安装使用方法                    
+|                 |---- lib  # Main dependencies
+|                 |---- types  # External APIs
+|           |---- index.js  # Main entry file
+|           |---- index.d.ts  # Main declaration file of the external APIs
+|     |---- README.md  # Readme                   
 ````
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提[Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们提[PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem during the use, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-本项目基于ISC，请自由地享受和参与开源。
+This project is licensed under the terms of the ISC license.
