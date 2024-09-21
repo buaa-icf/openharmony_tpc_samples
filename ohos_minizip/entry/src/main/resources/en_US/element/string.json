@@ -11,6 +11,22 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "input_password",
+      "value": "input password"
+    },
+    {
+      "name": "Extract",
+      "value": "extract files"
+    },
+    {
+      "name": "Extract_folder",
+      "value": "Extract to folder"
+    },
+    {
+      "name": "Extract_disk",
+      "value": "Extract files to disk\n"
     }
   ]
 }

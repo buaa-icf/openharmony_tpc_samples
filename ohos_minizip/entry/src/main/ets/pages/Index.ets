@@ -85,13 +85,13 @@ struct Index {
     Row() {
       Column() {
 
-        TextInput({ placeholder: "输入密码" })
+        TextInput({ placeholder: $r('app.string.input_password')})
           .margin(10)
           .onChange((value: string) => {
             this.password = value;
           })
         Button() {
-          Text('解压文件')
+          Text($r('app.string.Extract'))
             .fontSize(20)
             .fontWeight(FontWeight.Bold)
             .fontColor(Color.White)
@@ -106,14 +106,14 @@ struct Index {
           this.asyncGet(this.selectFilePath, this.password);
         })
 
-        TextInput({ placeholder: "解压到文件夹" })
+        TextInput({ placeholder: $r('app.string.Extract_folder')})
           .margin(10)
           .onChange((value: string) => {
             this.directory = value;
           })
 
         Button() {
-          Text('解压文件到磁盘')
+          Text($r('app.string.Extract_disk'))
             .fontSize(20)
             .fontWeight(FontWeight.Bold)
             .fontColor(Color.White)

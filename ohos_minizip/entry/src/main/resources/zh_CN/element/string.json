@@ -11,6 +11,22 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "input_password",
+      "value": "输入密码"
+    },
+    {
+      "name": "Extract",
+      "value": "解压文件"
+    },
+    {
+      "name": "Extract_folder",
+      "value": "解压到文件夹"
+    },
+    {
+      "name": "Extract_disk",
+      "value": "解压文件到磁盘"
     }
   ]
 }

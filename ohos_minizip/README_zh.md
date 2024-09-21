@@ -95,6 +95,7 @@ DevEco Studio: NEXT Developer Beta1-5.0.3.320, SDK: API12(5.0.0.23)
 |                      |---- types # 接口声明
 |           |---- index.ets  # 对外接口
 |     |---- README.md  # 安装使用方法
+|     |---- README_zh.md  # 安装使用方法   
 ````
 
 ## 贡献代码

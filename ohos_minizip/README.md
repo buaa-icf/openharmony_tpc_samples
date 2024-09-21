@@ -95,6 +95,7 @@ DevEco Studio: NEXT Developer Beta1-5.0.3.320, SDK: API 12 (5.0.0.23)
 |                      |---- types # API declaration
 |           |---- index.ets  # External APIs
 |     |---- README.md  # Readme
+|     |---- README_zh.md  # Readme
 ````
 
 ## How to Contribute
