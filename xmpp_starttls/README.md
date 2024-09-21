@@ -1,36 +1,35 @@
-
-
 # @ohos/xmpp_starttls
 
-## 简介
+## Introduction
 
->本软件是参照开源软件 [@xmpp/starttls](https://github.com/xmppjs/xmpp.js/tree/main/packages/starttls)源码并用 TypeScript 语言实现了相关功能，在OpenHarmony上提供了一个用于与xmpp（Extensible Messaging and Presence Protocol）服务器建立加密TLS连接的library
+>Based on the open source software [@xmpp/starttls](https://github.com/xmppjs/xmpp.js/tree/main/packages/starttls), this project uses TypeScript to implement similar capabilities. It provides OpenHarmony with a library for establishing encrypted TLS connections with the Extensible Messaging and Presence Protocol (XMPP) server.
 
-## 已支持功能
+## Supported Features
 
-- TLS (Transport Layer Security) 握手：在 XMPP 连接中启用 TLS 加密，以确保安全的通信。
-- 自动 STARTTLS：自动检测服务器是否支持 StartTLS，以进行有条件地安全连接。
-- 错误处理：捕捉和处理 StartTLS 过程中可能发生的错误和异常。
+- Transport Layer Security (TLS) handshake: enables TLS encryption in XMPP connections to ensure secure communication.
+- Automatic STARTTLS: automatically checks whether the server supports STARTTLS for conditionally secure connection.
+- Error handling: captures and handles errors and exceptions that may occur during STARTTLS.
 
-## 下载安装
+## How to Install
 
-1. 参考安装教程 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+1. [Install an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-2. 安装命令如下：
+2. Run the installation command:
 
-```
- ohpm install @ohos/xmpp_starttls
-```
-## 接口和属性列表
-接口列表
+   ```
+    ohpm install @ohos/xmpp_starttls
+   ```
 
-| **接口**                     | 参数                                                         | 功能                                               |
+## Available APIs
+APIs
+
+| Name                    | Parameter                                                        | Description                                              |
 | ---------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-| negotiate(entity)            | `entity` 是一个对象，包含了与 XMPP 服务器通信所需的各种信息和方法，如发送和接收 XML 节点的能力。 | 用于与 XMPP 服务器协商是否可以进行 StartTLS 握手   |
-| starttls({ streamFeatures }) | `{ streamFeatures }` 是一个对象，包含了当前 XMPP 连接的流特征，如认证方法、加密选项等。 | 用于处理 XMPP 流特征中的 StartTLS 特征             |
-| canUpgrade(socket)           | `socket` 是当前的网络套接字对象。                            | 检查当前的网络套接字 (`socket`) 是否支持升级到 TLS |
-| upgrade(service)             | `service` 是一个服务对象，可能包含了用于升级到 TLS 所需的信息和方法 | 将网络套接字升级到 TLS 连接                        |
-## 使用示例
+| negotiate(entity)            | `entity`: an object that contains various information and methods required for communicating with the XMPP server, such as the capabilities of sending and receiving XML nodes.| Negotiates with the XMPP server about whether a STARTTLS HANDSHAKE can be performed.  |
+| starttls({ streamFeatures }) | `{ streamFeatures }`: an object that contains the stream features of the current XMPP connection, such as the authentication method and encryption options.| Processes the STARTTLS feature in XMPP streams.            |
+| canUpgrade(socket)           | `socket`: the current network socket object.                           | Checks whether the current network socket supports an upgrade to TLS.|
+| upgrade(service)             | `service`: a service object that may contain the information and methods required for upgrading to TLS.| Upgrades a network socket to a TLS connection.                       |
+## Example
 ```
 import { xml, jid, Client as ClientCore } from "@ohos/xmpp_client_core";
 import { getDomain } from "./src/main/client/lib/getDomain";
@@ -111,16 +110,16 @@ function client(options = {}) {
     });
 }
 export { xml, jid, client };
-//starttls主要用于将tcp连接升级成为TLS加密连接
+// STARTTLS is used to upgrade a TCP connection to a TLS connection.
 ```
-## 使用说明
-#### 在XMPP连接的流（stream）上注册一个中间件（middleware）处理函数
+## How to Use
+#### Registering a Middleware Processing Function on the Stream of the XMPP Connection
 ```
-//判断现有Socket连接如果是TCP并且不是TLS就可以进行升级
+// Check whether the socket connection is TCP, and if so, trigger an upgrade to TLS.
 function canUpgrade(socket) {
     return socket instanceof TcpSocket && !(socket instanceof TlsSocket)
 }
-//创建一个新的TLS，用于TCP升级
+// Create a TLS socket for TCP upgrade.
 async function upgrade(service) {
   const tlsSocket = new TlsSocket();
         tlsSocket.connect(service);
@@ -143,30 +142,33 @@ export default function starttls({ streamFeatures }) {
     await negotiate(entity);
     const tlsSocket = await upgrade(entity.service);
     entity._attachSocket(tlsSocket);
-	//升级完成重启服务
+	// Restart the service after the upgrade is complete.
     await entity.restart();
   });
 };
 ```
-## 约束与限制
-在下述版本验证通过：
-- DevEco Studio 版本： 5.0.3.200,OpenHarmony SDK:API12 (5.0.0.21-Canary2)。
-## 目录结构
+## Constraints
+This project has been verified in the following version:
+
+DevEco Studio: 5.0.3.200, OpenHarmony SDK: API 12 (5.0.0.21-Canary2)
+
+## Directory Structure
 ````
 |---- @ohos/xmpp_starttls
-|     |---- entry  # 示例代码文件夹
+|     |---- entry  # Sample code
 |           |---- src  
-|                   |---- main  #sample示例代码
-|                   |---- ohosTest  #xts示例代码
-|     |---- library  # @ohos/xmpp_starttls 库文件夹
+|                   |---- main  # Sample code
+|                   |---- ohosTest  # xts code
+|     |---- library  # @ohos/xmpp_starttls library folder
 |           |---- ets
-|                 |---- lib  # 主要依赖
-|                 |---- types  # 对外接口文件夹
-|           |---- index.js  # 主入口文件
-|           |---- index.d.ts  # 主对外接口声明文件
-|     |---- README.md  # 安装使用方法                    
+|                 |---- lib  # Main dependencies
+|                 |---- types  # External APIs
+|           |---- index.js  # Main entry file
+|           |---- index.d.ts  # Main declaration file of the external APIs
+|     |---- README.md  # Readme
+|     |---- README_zh.md  # Readme                   
 ````
-## 贡献代码
-使用过程中发现任何问题都可以提[Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们提[PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
-## 开源协议
-本项目基于ISC，请自由地享受和参与开源。
+## How to Contribute
+If you find any problem during the use, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+## License
+This project is licensed under the terms of the ISC license.
