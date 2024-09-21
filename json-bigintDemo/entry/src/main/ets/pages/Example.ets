@@ -31,7 +31,7 @@ struct Example {
       Row() {
         Column() {
           //原生JSON.parse  JSON.stringify的基本使用
-          Button('Test whether native JSON conversion supports bigint')
+          Button($r('app.string.Test_whether_native_JSON_conversion_supports_bigint'))
             .fontSize(15)
             .fontWeight(FontWeight.Bold)
             .margin({ top: 40 })
@@ -42,7 +42,7 @@ struct Example {
               console.log(`JSON.stringify(JSON.parse(input)):${stringifyValue}`); //{"big":9223372036854776000,"small":123}
             })
           // json_bigint 基本使用
-          Button('Test whether the json digit conversion supports bigint')
+          Button($r('app.string.Test_whether_the_json_digit_conversion_supports_bigint'))
             .fontSize(15)
             .fontWeight(FontWeight.Bold)
             .margin({ top: 40 })
@@ -55,7 +55,7 @@ struct Example {
             })
           // json_bigint
           // 添加strict：true 指定解析为‘严格的’，如果有重复键值则在此类重复键出现时失效，从而提前警告可能丢失的信息。
-          Button('Test to enable strict in json: true')
+          Button($r('app.string.Test_to_enable_strict_in_json_true'))
             .fontSize(15)
             .fontWeight(FontWeight.Bold)
             .margin({ top: 40 })
@@ -76,7 +76,7 @@ struct Example {
           // json_bigint
           // 指定是否应将BigInts作为字符串存储在对象中，而不是默认的BigNumber。
           // 请注意，这是一个危险的行为，因为它破坏了能够在不更改数据类型的情况下来回转换的默认功能（因为这会将所有BigInt转换为前后字符串）。
-          Button('Test the opening of storeAsString using json digit: true')
+          Button($r('app.string.Test_the_opening_of_storeAsString_using_json_digit_true'))
             .fontSize(15)
             .fontWeight(FontWeight.Bold)
             .margin({ top: 40 })
@@ -88,7 +88,7 @@ struct Example {
             });
           // json_bigint
           // 指定解析器是否使用本机BigInt而不是bignumber.js
-          Button('Test to enable useNativeBigInt for json digit: true')
+          Button($r('app.string.Test_to_enable_useNativeBigInt_for_json_digit_true'))
             .fontSize(15)
             .fontWeight(FontWeight.Bold)
             .margin({ top: 40 })
@@ -100,7 +100,7 @@ struct Example {
             })
           // json_bigint
           // 指定是否应将所有数字存储为BigNumber。
-          Button('Test the opening of alwaysPaseAsBig using json digit: true ')
+          Button($r('app.string.Test_the_opening_of_alwaysPaseAsBig_using_json_digit_true'))
             .fontSize(15)
             .fontWeight(FontWeight.Bold)
             .margin({ top: 40 })

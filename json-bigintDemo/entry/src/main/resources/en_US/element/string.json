@@ -11,6 +11,34 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Quick_access",
+      "value": "Quick-access"
+    },
+    {
+      "name": "Test_whether_native_JSON_conversion_supports_bigint",
+      "value": "Test whether native JSON conversion supports bigint"
+    },
+    {
+      "name": "Test_whether_the_json_digit_conversion_supports_bigint",
+      "value": "Test whether the json digit conversion supports bigint"
+    },
+    {
+      "name": "Test_to_enable_strict_in_json_true",
+      "value": "Test to enable strict in json: true"
+    },
+    {
+      "name": "Test_the_opening_of_storeAsString_using_json_digit_true",
+      "value": "Test the opening of storeAsString using json digit: true"
+    },
+    {
+      "name": "Test_to_enable_useNativeBigInt_for_json_digit_true",
+      "value": "Test to enable useNativeBigInt for json digit: true"
+    },
+    {
+      "name": "Test_the_opening_of_alwaysPaseAsBig_using_json_digit_true",
+      "value": "Test the opening of alwaysPaseAsBig using json digit: true"
     }
   ]
 }
