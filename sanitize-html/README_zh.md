@@ -1,20 +1,20 @@
 # sanitize-html
 
-## Introduction
+## 简介
 
-sanitize-html provides HTML sanitization APIs, with support for cleaning up HTML fragments. It allows for HTML sanitization based on default settings of built-in tags, attributes, and more. Additionally, it supports custom rules for specific sanitization requirements.
+sanitize-html 提供了HTML清理API，支持HTML片段清理。内置默认的标签、属性等、可根据默认属性进行HTML清理，同时也可进行自行配置，根据用户需求进行自定义HTML清理规则。
 
-## How to Install
+## 下载安装
 
 ```
 ohpm install @ohos/sanitize-html
 ```
 
-For details about the OpenHarmony ohpm environment configuration, see [Installing the OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+ohpm 环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
-## How to Use
+## 使用说明
 
-Import sanitizeHtml HTML to obtain different cleaning results based on various configuration rules.
+引入HTML清理接口，根据不同配置规则，获取不同的清理结果。
 
 ```
 import sanitizeHtml from 'sanitize-html';
@@ -22,7 +22,7 @@ import sanitizeHtml from 'sanitize-html';
 
 
 ```
-Default configuration:
+默认配置：
 sanitizeHtml.defaults = {
   allowedTags: [
     // Content sectioning
@@ -58,185 +58,181 @@ sanitizeHtml.defaults = {
 
 
 
-### 1. Configuring Allowed Labels
+### 1. 配置允许的标签
 
-1. Override the default list of allowed tags:
+1. 覆盖默认允许的标签集合
 
    ```
    sanitizeHtml.defaults.allowedTags = ['img','iframe']
    sanitizeHtml(html)
-   Or
+   或
    sanitizeHtml(html,{allowedTags:['img','iframe']})
    ```
 
-2. Add to the default allowed tags:
+2. 追加默认允许的标签
 
    ```
    sanitizeHtml.defaults.allowedTags.push('img')
    sanitizeHtml(html)
-   Or
+   或
    sanitizeHtml.defaults.allowedTags.concat(['img','iframe'])
    sanitizeHtml(html)
    ```
 
-3. Allow all tags:
+3. 配置允许所有标签
 
    ```
    sanitizeHtml(html,{allowedTags:false})
-   Or
+   或
    sanitizeHtml(html,{allowedTags:undefined})
    ```
 
-### 2. Configuring Allowed Attributes
+### 2. 配置允许的属性
 
-1. Override the default list of allowed attributes:
+1. 覆盖默认允许的属性集合
 
    ```
-   sanitizeHtml.defaults.allowedAttributes = {'a':['href', 'src']}
+   sanitizeHtml.defaults.allowedAttributes = {'a':['href'，'src']}
    sanitizeHtml(html)
-   Or
-   sanitizeHtml(html,{allowedAttributes:{'a':['href', 'src']}})
+   或
+   sanitizeHtml(html,{allowedAttributes:{'a':['href'，'src']}})
    
-   // To add attributes for all tags, use the asterisk (*) as the key
+   // 为所有标签添加属性使用 * 作为key值
    sanitizeHtml(html,{allowedAttributes:{'*':['id','class']}})
    ```
 
-2. Add default allowed attributes:
+2. 追加默认允许的属性
 
    ```
-   // Obtain the tag for which you want to add attributes. Note: The tag must be included in allowedTags.
+   // 获取到想要追加属性的标签，注意：需要allowedTags中允许该标签
    let attrs = sanitizeHtml.defaults.allowedAttributes['a']
    
    attrs.push('name')
    sanitizeHtml(html)
-   Or
+   或 
    attrs.concat(['name','id'])
    sanitizeHtml(html)
    ```
 
-3. Allow all attributes.
+3. 配置允许所有属性
 
    ```
    sanitizeHtml(html,{allowedAttributes:false})
-   Or
+   或
    sanitizeHtml(html,{allowedAttributes:undefined})
    ```
 
-### 3. Configuring Allowed Schemes
+### 3. 配置允许的协议
 
-1. Override the default list of allowed schemes:
+1. 覆盖默认允许的属性集合
 
    ```
    sanitizeHtml.defaults.allowedSchemes = ['http', 'https', 'sms'];
    sanitizeHtml(html)
-   Or
+   或
    sanitizeHtml(html,{allowedSchemes:['http', 'https', 'sms']})
    ```
 
-2. Add default allowed schemes:
+2. 追加默认允许的属性
 
    ```
    sanitizeHtml.defaults.allowedSchemes.push('sms')
    sanitizeHtml(html)
-   Or
+   或
    sanitizeHtml.defaults.allowedSchemes.concat(['sms','data'])
    sanitizeHtml(html)
    ```
 
-### 4. Configuring Allowed Schemes for a Specified Tag
+### 4. 为指定标签配置允许的协议
 
-1. Override the allowed schemes for a specific tag, which must be one in **allowedTags**.
+1. 覆盖已配置的特定标签允许的协议，注意：需要allowedTags中允许该标签
 
    ```
    sanitizeHtml(html,{allowedSchemesByTag:{a:['sms','data']}})
    ```
 
-2. Set allowed schemes for a specific tag, which must be one in **allowedTags**.
+2. 为特定标签设置允许的协议，注意：需要allowedTags中允许该标签
 
    ```
    sanitizeHtml.defaults.allowedSchemesByTag['a'] = ['sms', 'data'];
    sanitizeHtml(html)
    ```
 
-### 5. Configuring Attributes Allowed to Use Scheme Links
+### 5.配置允许使用协议链接的属性
 
-1. Override the default list of attributes allowed to use scheme links.<br>Note: The attributes must be the ones allowed for tags.
+1. 覆盖默认允许使用协议链接的属性集合，注意：需要标签允许设置的属性
 
    ```
    sanitizeHtml.defaults.allowedSchemesAppliedToAttributes = ['href','src'];
    sanitizeHtml(html)
-   Or
+   或
    sanitizeHtml(html,{allowedSchemesAppliedToAttributes:['href','src']})
    ```
 
-2. Add the attributes allowed to use scheme links.<br>Note: The attributes must be the ones allowed for tags.
+2. 追加默认允许使用协议链接的属性，注意：需要标签允许设置的属性
 
    ```
    sanitizeHtml.defaults.allowedSchemesAppliedToAttributes.push('src')
    sanitizeHtml(html)
-   Or
+   或
    sanitizeHtml.defaults.allowedSchemesAppliedToAttributes.concat(['src','href'])
    sanitizeHtml(html)
    ```
 
-### 6. Configuring Self-Closing Tags
+### 6.配置自关闭的标签
 
-1. Override the default list of self-closing tags.
+1. 覆盖默认自关闭标签集合
 
    ```
    sanitizeHtml.defaults.selfClosing =['img','br']
    sanitizeHtml(html) 
-   Or
+   或
    sanitizeHtml(html,{selfClosing:['img','br']})
    ```
 
-2. Add self-closing tags.
+2. 追加自关闭的标签
 
    ```
    sanitizeHtml.defaults.selfClosing.push('sms')
    sanitizeHtml(html) 
-   Or
+   或
    sanitizeHtml.defaults.selfClosing.concat(['sms','data'])
    sanitizeHtml(html) 
    ```
 
-### 7. Configuring Handling Mode for Disallowed Tags
+### 7.配置不允许标签的处理模式
 
-The following modes are available:
-
-- **discard** (default): Discard disallowed tags.
-- **escape**: Escape disallowed tags. (Child tags are not escaped if they are allowed; only the disallowed tags are escaped)
-- **recursiveEscape**: Escape disallowed tags and all their child tags, regardless of whether the child tags are allowed.
+默认discard：删除不允许的标签，escape：转义不允许的标签（子标签是被允许的时候，不进行转义，只转义不允许的标签），recursiveEscape 转义不允许的标签及其所有子标签，不管子标签是否被允许
 
 ```
 sanitizeHtml(html,{disallowedTagsMode:'discard'})
-Or
+或
 sanitizeHtml(html,{disallowedTagsMode:'escape'})
-Or
+或
 sanitizeHtml(html,{disallowedTagsMode:'recursiveEscape'})
 ```
 
-### 8. Configuring Whether to Allow Scheme Links to Use Relative Paths
+### 8.配置是否允许协议链接使用相对路径
 
-The default value is **true**, indicating that schemes links can use relative paths.
+默认为true，允许协议使用相对路径
 
 ```
 sanitizeHtml(html,{allowProtocolRelative:true})
-Or
+或
 sanitizeHtml(html,{allowProtocolRelative:false})
 ```
 
-### 9. Configuring Whether to Enforce HTML Boundary
+### 9.配置是否强制限制HTML边界
 
-The value **true** means to enforce HTML boundaries and discard content outside the HTML tags, and **false** (default value) means the opposite.
+默认false,不强制限制HTML边界，设置为true时，强制限制HTML边界，丢弃HTML标签外的内容
 
 ```
 sanitizeHtml(html,{enforceHtmlBoundary:false})
-Or
+或
 sanitizeHtml(html,{enforceHtmlBoundary:true})
 ```
 
-### 10. Configuring Allowed Styles for Tags
+### 10.配置标签允许的样式
 
 ```
 sanitizeHtml(html,{
@@ -247,13 +243,13 @@ sanitizeHtml(html,{
 	}})
 ```
 
-### 11. Configuring Allowed Classes for Tags
+### 11.配置标签允许的class
 
 ```
 sanitizeHtml(html,{allowedClasses:{'a':['class1','class2']}})
 ```
 
-### 12. Configuring Allowed Hostnames for iframe src Attribute
+### 12.配置iframe标签src属性中链接内允许的主机地址
 
 ```
 sanitizeHtml(html,{
@@ -265,7 +261,7 @@ sanitizeHtml(html,{
 })
 ```
 
-### 13. Configuring Allowed Domains for iframe src Attribute
+### 13.配置iframe标签src属性中链接内允许的域名
 
 ```
 sanitizeHtml(html,{
@@ -277,7 +273,7 @@ sanitizeHtml(html,{
 })
 ```
 
-### 14. Configuring Whether Relative URLs Are Allowed for iframe src Attribute
+### 14.配置iframe标签src属性中链接是否允许相对路径
 
 ```
 sanitizeHtml(html,{
@@ -289,7 +285,7 @@ sanitizeHtml(html,{
 })
 ```
 
-### 15. Configuring Allowed Hostnames for script src Attribute
+### 15.配置script标签中src属性中链接内允许的主机地址
 
 ```
 sanitizeHtml(html,{
@@ -301,7 +297,7 @@ sanitizeHtml(html,{
 })
 ```
 
-### 16. Configuring Allowed Domains for script src Attribute
+### 16.配置script标签src属性中链接内允许的域名
 
 ```
 sanitizeHtml(html,{
@@ -313,7 +309,7 @@ sanitizeHtml(html,{
 })
 ```
 
-### 17. Configuring Text Filters
+### 17.配置文本过滤器
 
 ```
 sanitizeHtml(html,{
@@ -322,7 +318,7 @@ sanitizeHtml(html,{
     }})
 ```
 
-### 18. Configuring Tag Filters
+### 18.设置标签过滤器
 
 ```
 sanitizeHtml(html, {
@@ -332,21 +328,21 @@ sanitizeHtml(html, {
     })
 ```
 
-### 19. Configuring Disallowed Tags Not to Preserve Text
+### 19.设置不允许标签不保留文本
 
 ```
 sanitizeHtml(html,{nonTextTags:['tagName']})
 ```
 
-### 20. Configuring Tag Transformations
+### 20.配置转换标签
 
-1. Transforming Tags Without Attributes
+1. 无属性标签转换
 
    ```
    sanitizeHtml(html,{transformTags:{ol:'ul'}})
    ```
 
-2. Transforming Tags With Attributes
+2. 带属性标签转换
 
    ```
    sanitizeHtml(html,{
@@ -364,7 +360,7 @@ sanitizeHtml(html,{nonTextTags:['tagName']})
 
 
 
-### 21. Configuring HTML Parsing Rules
+### 21.配置HTML解析规则
 
 ```
 sanitizeHtml(html,{parser:{recognizeCDATA: true}})
@@ -372,54 +368,54 @@ sanitizeHtml(html,{parser:{recognizeCDATA: true}})
 
 
 
-## Available APIs
+## 接口说明
 
 ```
 function sanitize(dirty: string, options?: sanitize.IOptions): string;
 
 interface IOptions {
-	// Sets allowed tags. false or undefined means no validation.
+	// 设置允许的标签，false|undefined表示不验证
     allowedTags?: string[] | false | undefined; 
-    // Sets allowed attributes. false or undefined means no validation.
+    // 设置允许的属性，false|undefined表示不验证
     allowedAttributes?: Record<string, AllowedAttribute[]> | false | undefined;
-    // Sets allowed scheme names.
+    // 设置允许的协议名称
     allowedSchemes?: string[];
-    // Sets allowed tags that can have URLs.
+    // 设置允许有链接的标签
     allowedSchemesByTag?: { [tagName: string]: string[] };
-    // Sets allowed attributes that can have URLs.
+    // 设置允许有链接的属性
     allowedSchemesAppliedToAttributes?: string[];
-    // Sets self-closing tags.
+    // 设置自关闭标签
     selfClosing?: string[];
-    // Sets the mode for handling disallowed tags: discard, escape (child tags are not escaped if they are allowed),
-    // recursiveEscape (the disallowed tag and all its child tags are escaped, regardless of whether the children are allowed).
+    // 设置不允许标签处理模式：discard:丢弃，escape:转义不允许的标签，
+    // recursiveEscape转义不允许标签及其子标签，不管子标签是否是被允许的
     disallowedTagsMode?: DisallowedTagsModes;
-    // Sets whether to allow relative URLs.
+    // 链接地址是否允许相对路径
     allowProtocolRelative?: boolean;
-    // Sets whether to enforce HTML boundaries.
+    // 是否强制限制HTML边界
     enforceHtmlBoundary?: boolean;
-    // Sets allowed styles for tags.
+    // 设置允许的样式
     allowedStyles?: { [tagName: string]: { [styleKey: string]: RegExp[] } };
-    // Sets allowed classes for tags.
+    // 设置允许的class
     allowedClasses?: { [tagName: string]: Array<string | RegExp> };
-    // Sets allowed hostnames for the iframe src attribute.
+    // 设置iframe标签的src属性中链接内允许的主机地址
     allowedIframeHostnames?: string[];
-    // Sets allowed domains for the iframe src attribute.
+    // 设置iframe标签的src属性中链接内允许的域名
     allowedIframeDomains?: string[];
-    // Sets whether relative URLs are allowed for the iframe src attribute.
+    // 设置iframe标签的src属性中链接是否允许相对地址
     allowIframeRelativeUrls?: boolean;
-    // Sets allowed hostnames for the script src attribute.
+    // 设置script标签的src属性中链接内允许的主机地址
     allowedScriptHostnames?: string[];
-    // Sets allowed domains for the script src attribute.
+    // 设置script标签的src属性中链接内允许的域名
     allowedScriptDomains?: string[];
-    // Sets a text filter.
+    // 设置文本过滤器
     textFilter?: ((text: string, tagName: string) => string);
-    // Sets a tag filter.
+    // 设置标签过滤器
     exclusiveFilter?: ((frame: IFrame) => boolean);
-    // Sets disallowed tags not to preserve text.
+    // 设置不允许标签不保留文本
     nonTextTags?: string[];
-    // Sets tag transformation rules.
+    // 设置转换标签
     transformTags?: { [tagName: string]: string | Transformer };
-    // Sets HTML parsing rules.
+    // 设置HTML解析规则
     parser?: ParserOptions;
   }
   
@@ -437,28 +433,28 @@ interface IOptions {
   function simpleTransform(tagName: string, attribs: Attributes, merge?: boolean): Transformer;
 ```
 
-## Constraints
-This project has been verified in the following versions:
+## 约束与限制
+在下述版本验证通过：
 
-- DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API 11 (4.1.0.36)
+- DevEco Studio 版本： 4.1 Canary(4.1.3.317),OpenHarmony SDK:API11 (4.1.0.36)。
 
-## Directory Structure
+## 目录
 
 ```
-/SanitizeHtml       # Root directory of the project
-├── entry                  # Sample code
-├── library    # Library source code
+/SanitizeHtml       # 工程根目录
+├── entry                  # 示例代码文件夹
+├── library    # 三方库源码文件夹
 │   └── src
-│       ├── index.ets      # File exposed externally
+│       ├── index.ets      # 对外暴露文件的存放目录
 │       └──main
 │          ├── js          # sanitize-html 
-               ├── index.js          # Source code     
+               ├── index.js          # 源代码      
 ```
 
-## How to Contribute
+## 贡献代码
 
-If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
-## License
+## 开源协议
 
-This project is licensed under [MIT License](./LICENSE).
+本项目遵循 [MIT License](./LICENSE)。
