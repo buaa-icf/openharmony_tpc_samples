@@ -11,6 +11,22 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Analyze_start",
+      "value": "Analyze start: "
+    },
+    {
+      "name": "Analyze_element",
+      "value": "Analyze element:"
+    },
+    {
+      "name": "Analyze_end",
+      "value": "Analyze end:"
+    },
+    {
+      "name": "Analyze",
+      "value": "Analyze"
     }
   ]
 }
