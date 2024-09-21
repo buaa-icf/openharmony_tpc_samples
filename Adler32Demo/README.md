@@ -1,33 +1,34 @@
 ## adler32Demo
 
-### 介绍
+### Overview
 
-adler32Demo是一个在Openharmony系统上验证adler-32（一个在js环境中实现ADLER-32的校验和算法的三方库）校验和算法的能力。
+adler32Demo is a third-party library used to verify the adler-32 checksum algorithm in a JS environment on OpenHarmony.
 
-### 下载安装
-1、安装
+### How to Install
+
+1. Install adler32Demo.
 ```
 $ ohpm install adler-32
 ```
-2、导入
+2. Import the package.
 ```
 import adler32 from 'adler-32'
 ```
 
-### 接口说明
-| 接口 | 功能描述 |
+### Available APIs
+| Name| Description|
 | :-----| :------|
-|`buf(data:number[] or Unit8Array, seed?:number)`|`根据字节byte数组或buffer数据，获取校验和值`|
-|`bstr(data:string,seed?:number)` | `根据二进制字符串（ucs-2编码字符）获取校验和值`|
-|`str(data:string, seed?:number)`|`根据标准的js字符串获取校验和值`|
-|`version:string`|`获取adler-32的版本号`|
+|`buf(data:number[] or Unit8Array, seed?:number)`|Obtains the checksum value based on the byte array or buffer data.|
+|`bstr(data:string,seed?:number)` | Obtains the checksum value based on the binary string (ucs-2 encoded string).|
+|`str(data:string, seed?:number)`|Obtains the checksum value based on the standard JS string.|
+|`version:string`|Obtains the adler-32 version number.|
 
-单元测试用例详情见[TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Adler32Demo/TEST.md)
+For details about unit test cases, see [TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Adler32Demo/TEST.md).
 
-### 样例说明
-参照该Demo工程[Index](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Adler32Demo/entry/src/main/ets/pages/Index.ets)页面
+### Example
+For details, see the [Index](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Adler32Demo/entry/src/main/ets/pages/Index.ets) page of the demo project.
 
-如：
+For example:
 ```
   Text(this.strBtn)
     .width('90%')
@@ -38,31 +39,31 @@ import adler32 from 'adler-32'
     .textAlign(TextAlign.Center)
     .margin({ top: 10 })
     .onClick(() => {
-      let par = "foo bar baz٪☃🍣";
+      let par = "foo bar baz٪☃��";
       let result = adler32.str(par);
       this.message = result + "";
     })
 ```
-### 软件架构
+### Directory Architecture
 ```
 |-ets
 |   |-entryability
 |           |-EntryAbility.ts
 |   |-pages
-|           |-Index.ets             #主页demo
+|           |-Index.ets             # Homepage demo
 ```
 
-### 约束与限制
-在下述版本验证通过：
+### Constraints
 
-DevEco Studio: 3.1 Beta2(3.1.0.400), SDK: API9 Release(3.2.11.9)
+This project has been verified in the following version:
 
-### 贡献代码
+DevEco Studio: 3.1 Beta2 (3.1.0.400), SDK: API9 Release (3.2.11.9)
 
-使用过程中发现任何问题，都可以提[Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
-给我们，当然，我们也非常欢迎给我们发[PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls)
+### How to Contribute
 
-### 开源协议
+If you find any problem when using adler32Demo, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or
+a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
 
-本项目基于[Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Adler32Demo/LICENSE),请自由的享受和参与开源
+### License
 
+This project is licensed under [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Adler32Demo/LICENSE).

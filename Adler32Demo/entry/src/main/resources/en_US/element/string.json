@@ -11,6 +11,26 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "array_input",
+      "value": "input byte array"
+    },
+    {
+      "name": "string_input",
+      "value": "input ucs-2"
+    },
+    {
+      "name": "js_string_input",
+      "value": "input js string（utf-8)"
+    },
+    {
+      "name": "get_version",
+      "value": "get adler32js version"
+    },
+    {
+      "name": "output_result",
+      "value": "output result：%s"
     }
   ]
 }

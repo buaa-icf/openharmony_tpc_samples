@@ -11,6 +11,26 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "array_input",
+      "value": "byte数组输入"
+    },
+    {
+      "name": "string_input",
+      "value": "ucs-2字符串输入"
+    },
+    {
+      "name": "js_string_input",
+      "value": "js正常字符串（utf-8）输入"
+    },
+    {
+      "name": "get_version",
+      "value": "获取adler32js版本号"
+    },
+    {
+      "name": "output_result",
+      "value": "输出结果：%s"
     }
   ]
 }
