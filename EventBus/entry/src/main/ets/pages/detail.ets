@@ -39,7 +39,7 @@ struct Detail {
       let TestClass = new TestA()
       TestClass.className = "TestClass2";
       TestClass.ready = () => {
-        console.log(TAG + this.getResourceString('app.string.send_refreshComeFromDetail_event'));
+        console.log(TAG + this.getResourceString('send_refreshComeFromDetail_event'));
         EventBus.dispatch("refreshComeFromDetail", TestClass, "javascript events", " come from detail params");
       }
       return {className:TestClass.className,ready:TestClass.ready }
@@ -49,6 +49,6 @@ struct Detail {
   }
 
   getResourceString(resourceName:string) {
-    return getContext().resourceManager.getStringSync($r(resourceName).id)
+    return getContext().resourceManager.getStringByNameSync(resourceName)
   }
 }
