@@ -11,6 +11,34 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "comparison_result",
+      "value": "比较得结果是："
+    },
+    {
+      "name": "Numeric_comparison",
+      "value": "数字类型比较"
+    },
+    {
+      "name": "String_comparison",
+      "value": "String type comparison"
+    },
+    {
+      "name": "Boolean_comparison",
+      "value": "布尔类型比较"
+    },
+    {
+      "name": "Array_comparison",
+      "value": "数组类型比较"
+    },
+    {
+      "name": "Object_comparison",
+      "value": "对象类型比较"
+    },
+    {
+      "name": "Comparison_a_b",
+      "value": "a和b比较结果"
     }
   ]
 }
