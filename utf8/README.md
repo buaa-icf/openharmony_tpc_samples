@@ -1,20 +1,20 @@
 # utf8
 
-## 简介
+## Introduction
 
-> 在OpenHarmony环境下,提供了UTF-8的编码能力和解码能力。此库是一个经过充分测试的用 JavaScript 编写的 UTF-8 编码器/解码器。与许多其他 JavaScript 解决方案不同，它被设计为一个合适的 UTF-8 编码器/解码器：它可以按照编码标准对任何标量 Unicode 码位值进行编码/解码。
+This library provides the capability of encoding and decoding text in UTF-8 format. As a fully tested UTF-8 encoder/decoder written in JavaScript, it can represent any character in the Unicode standard.
 
-## 下载安装
+## How to Install
 
 ```shell
 ohpm install utf8
-ohpm install @types/utf8@3.0.3 --save-dev //import utf8 的时候语法报错。其原因是utf8包内不含类型声明，需要 @types/utf8 下载这个包的声明文件，从而解决语法的报错。
+ohpm install @types/utf8@3.0.3 --save-dev // Install @types/utf8@3.0.3 to prevent import syntax errors due to missing type declarations in the utf8 package.
 ```
 
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
-## 使用说明
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+## How to Use
 
-### UTF8编解码使用
+### Encoding and Decoding in UTF-8
 
 ```typescript
 import utf8 from "utf8";
@@ -27,11 +27,11 @@ struct Index {
   build() {
     Row() {
       Column() {
-        Button("编码(encode)").onClick(() => {
+        Button ("Encode (encode)").onClick(() ==> {
           this.showMessage(utf8.encode('\xA9'));
           this.showMessage(utf8.encode('\uD800\uDC01'));
         })
-        Button("解码(decoded)").onClick(() => {
+        Button ("Decode (decoded)").onClick(() ==> {
           this.showMessage(utf8.decode('\xC2\xA9'));
           this.showMessage(utf8.decode('\xF0\x90\x80\x81'));
         })
@@ -47,37 +47,38 @@ showMessage(message:string){
 }
 ```
 
-## 接口说明
-encode：编码
+## Available APIs
+| API    | Description   |
+| ------ | ------------- |
+| encode | Encodes data. |
+| decode | Decodes data. |
 
-decode：解码
 
-## 约束与限制
 
-在下述版本验证通过：
+## Constraints
 
-DevEco Studio版本: 4.0Canary2(4.0.1.300), SDK: API10(4.0.9.6)
+This project has been verified in the following version:
 
-## 目录结构
+- DevEco Studio: 4.0 Canary2 (4.0.1.300); SDK: API10(4.0.9.6)
+
+
+## Directory Structure
 
 ```
 
 /entry/src/
 - main/ets/     
-    - pages                        # 测试page页面列表
-       - Index.ets                    	# 测试UTF8编解码能力
+    - pages                        # List of test pages
+       - Index.ets                    	# Code for encoding/decoding text in UTF-8 format.
 ```
 
-单元测试用例详情见[TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/utf8/TEST.md)
+For details about unit test cases, see [TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/utf8/TEST.md).
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
-给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-本项目基于 [MIT License]() ，请自由地享受和参与开源。
-
-
+The project is licensed under MIT License.
 

@@ -11,6 +11,14 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "encode",
+      "value": "编码"
+    },
+    {
+      "name": "decode",
+      "value": "解码"
     }
   ]
 }
