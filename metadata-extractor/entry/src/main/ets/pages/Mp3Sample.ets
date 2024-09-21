@@ -55,7 +55,7 @@ struct Mp3Sample {
           .padding(20).height("10%")
           .textAlign(TextAlign.Center)
 
-        Text("$r('app.string.Resource_path9')).fontSize(22).width('100%')
+        Text($r('app.string.Resource_path9')).fontSize(22).width('100%')
           .textAlign(TextAlign.Start)
 
         Column() {
