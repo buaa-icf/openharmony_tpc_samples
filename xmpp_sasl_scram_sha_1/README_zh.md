@@ -1,28 +1,28 @@
+
+
 # @ohos/xmpp_sasl_scram_sha_1
 
-## Introduction
+## 简介
 
->Based on the open source software [@xmpp/sasl-scram-sha-1](https://github.com/xmppjs/xmpp.js/tree/main/packages/sasl-scram-sha-1), this project uses TypeScript to implement similar capabilities. It provides OpenHarmony with the Simple Authentication and Security Layer (SASL) framework in the Extensible Messaging and Presence Protocol (XMPP). It uses the SCRAM-SHA-1 hash function for user authentication.
+>本软件是参照开源软件 [@xmpp/sasl-scram-sha-1](https://github.com/xmppjs/xmpp.js/tree/main/packages/sasl-scram-sha-1)源码并用 TypeScript 语言实现了相关功能，在OpenHarmony上提供了一个用于 XMPP 协议的 SASL（安全认证层）机制，它基于 SCRAM 协议使用 SHA-1 哈希函数进行用户认证的library
 
-## Supported Features
-- **Security authentication**: provides a security authentication mechanism based on the Salted Challenge Response Authentication Mechanism (SCRAM) to secure identity authentication during XMPP-based communication.
-- **Hash encryption**: uses the SHA-1 hash algorithm to encrypt user passwords, enhancing password transmission security and preventing passwords from being intercepted or cracked during transmission.
-## How to Install
-1. [Install an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
-2. Run the installation command:
+## 已支持功能
+- **安全认证**：提供了基于 SCRAM（Salted Challenge Response Authentication Mechanism）的安全认证机制，确保用户在 XMPP 通信中的身份验证安全。
+- **哈希加密**：该模块使用 SHA-1 哈希算法对用户密码进行加密处理，增强了密码传输过程中的安全性，防止密码在传输过程中被截获和破解。
+## 下载安装
+1. 参考安装教程 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+2. 安装命令如下：
+```
+ ohpm install @ohos/xmpp_sasl_scram_sha_1
+```
+## 接口和属性列表
+接口列表
 
-   ```
-    ohpm install @ohos/xmpp_sasl_scram_sha_1
-   ```
+| **接口**                                | 参数                | 功能                       |
+| --------------------------------------- | ------------------- | -------------------------- |
+|  saslScramSha1（sasl）        | `sasl`: XMPP SASL 上下文对象，用于处理认证流程。 | 将 SCRAM-SHA-1 认证机制添加到 XMPP SASL 上下文对象中，使其能够使用这种认证方法来进行用户身份验证。           |
 
-## Available APIs
-APIs
-
-| Name             | Parameter                                            | Description                                                        |
-| --------------------- | ------------------------------------------------ | ------------------------------------------------------------ |
-| saslScramSha1 (sasl)| `sasl`: XMPP SASL context object, which is used to process the authentication process.| Adds the SCRAM-SHA-1 authentication mechanism to an XMPP SASL context object, so that the object can use this authentication method for user authentication.|
-
-## Example
+## 使用示例
 ```
 "use strict";
 import { xml, jid, Client as ClientCore } from "@ohos/xmpp_client_core";
@@ -105,37 +105,36 @@ function client(options = {}) {
 }
 export { xml, jid, client };
 ```
-## How to Use
-#### Using scramSha1 for User Login Authentication
+## 使用说明
+#### 用户登录验证使用scramSha1的认证方式
 ```
    const mechanisms = Object.entries({
         saslScramSha1,
         plain,
         anonymous,
     }).map(([k, v]) => ({ [k]: v(sasl) }));
-    Three encryption modes are available: saslScramSha1, plain, and anonymous.
+    传入三种加密方式 saslScramSha1、plain、anonymous
 ```
-## Constraints
-This project has been verified in the following version:
-
-DevEco Studio: 5.0.3.200, OpenHarmony SDK: API 12 (5.0.0.21-Canary2)
-
-## Directory Structure
+## 约束与限制
+在下述版本验证通过：
+- DevEco Studio 版本： 5.0.3.200,OpenHarmony SDK:API12 (5.0.0.21-Canary2)。
+## 目录结构
 ````
 |---- @ohos/xmpp_sasl_scram_sha_1
-|     |---- entry  # Sample code
+|     |---- entry  # 示例代码文件夹
 |           |---- src  
-|                   |---- main  # Sample code
-|                   |---- ohosTest  # xts code
-|     |---- library  # @ohos/xmpp_sasl_scram_sha_1 library folder
+|                   |---- main  #sample示例代码
+|                   |---- ohosTest  #xts示例代码
+|     |---- library  # @ohos/xmpp_sasl_scram_sha_1 库文件夹
 |           |---- ets
-|                 |---- lib  # Main dependencies
-|                 |---- types  # External APIs
-|           |---- index.js  # Main entry file
-|           |---- index.d.ts  # Main declaration file of the external APIs
-|     |---- README_EN.md  # Readme                   
+|                 |---- lib  # 主要依赖
+|                 |---- types  # 对外接口文件夹
+|           |---- index.js  # 主入口文件
+|           |---- index.d.ts  # 主对外接口声明文件
+|     |---- README.md  # 安装使用方法
+|     |---- README_zh.md  # 安装使用方法                    
 ````
-## How to Contribute
-If you find any problem during the use, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
-## License
-This project is licensed under the terms of the ISC license.
+## 贡献代码
+使用过程中发现任何问题都可以提[Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们提[PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+## 开源协议
+本项目基于ISC，请自由地享受和参与开源。
