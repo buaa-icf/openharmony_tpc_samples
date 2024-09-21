@@ -11,6 +11,42 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "ws_connection",
+      "value": "ws 连接"
+    },
+    {
+      "name": "tcp_connection",
+      "value": "tcp 连接"
+    },
+    {
+      "name": "tls_connection",
+      "value": "tls 连接"
+    },
+    {
+      "name": "Current_state",
+      "value": "当前状态： "
+    },
+    {
+      "name": "Receive_a_message",
+      "value": "收到消息： "
+    },
+    {
+      "name": "connect",
+      "value": "连接"
+    },
+    {
+      "name": "Please_enter_a_message",
+      "value": "请输入消息"
+    },
+    {
+      "name": "sending",
+      "value": "发送"
+    },
+    {
+      "name": "disconnect",
+      "value": "断开"
     }
   ]
 }

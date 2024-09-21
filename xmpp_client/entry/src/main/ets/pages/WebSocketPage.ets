@@ -93,19 +93,19 @@ struct WebSocketPage {
   build() {
     Row() {
       Column() {
-        Text("Current state：" + this.status)
+        Text(getContext().resourceManager.getStringByNameSync("Current_state") + this.status)
           .fontSize(30)
           .fontWeight(FontWeight.Bold)
-        Text("Receive a message：" + this.message)
+        Text(getContext().resourceManager.getStringByNameSync("Receive_a_message") + this.message)
           .fontSize(30)
           .fontWeight(FontWeight.Bold)
           .margin({ top: 30 })
-        Button("connect").fontSize(30)
+        Button($r('app.string.connect')).fontSize(30)
           .width("60%")
           .onClick(() => {
             this.xmpp.start();
           }).margin({ top: 30 })
-        TextInput({ placeholder: "Please enter a message" })
+        TextInput({ placeholder:$r('app.string.Please_enter_a_message') })
           .margin({ top: 30 })
           .fontSize(30)
           .width("60%")
@@ -113,13 +113,13 @@ struct WebSocketPage {
           .onChange((value: string) => {
             this.sendMessage = value;
           })
-        Button("sending").fontSize(30)
+        Button($r('app.string.sending')).fontSize(30)
           .width("60%")
           .onClick(() => {
             const message:Element  = xml("message", { type: "chat", to: this.contact }, xml("body", {}, this.sendMessage));
             this.xmpp.send(message)
           }).margin({ top: 30 })
-        Button("disconnect").fontSize(30)
+        Button($r('app.string.disconnect')).fontSize(30)
           .width("60%")
           .onClick(() => {
             try {
