@@ -51,7 +51,7 @@ struct Index {
   build() {
     Row() {
       Column() {
-        TextInput({ placeholder: "请输入base64解码字符" })
+        TextInput({ placeholder: getContext().resourceManager.getStringByNameSync('Text_String1')  })
           .onChange((v) => {
             this.encode(v)
           })

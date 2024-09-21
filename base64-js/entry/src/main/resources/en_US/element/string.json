@@ -11,6 +11,10 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Text_String1",
+      "value": "Please enter base64 decoded characters"
     }
   ]
 }
