@@ -1,26 +1,26 @@
 # behaviortree
 
-## 介绍
+## Introduction
 
-[behaviortree](https://github.com/Calamari/BehaviorTree.js)，是行为树 javascript 版实现，可以运行 node.js 和浏览器中，本库基于 [behaviortree](https://github.com/Calamari/BehaviorTree.js)原库 v2.1.0 版本进行验证。
+behaviortree is a JavaScript implementation of behavior trees, workable in both Node.js and browsers. It is verified against [behaviortree](https://github.com/Calamari/BehaviorTree.js) v2.1.0.
 
-## 下载安装
+## How to Install
 
 ```javascript
 ohpm install behaviortree
 ```
 
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 
 ```javascript
 import { BehaviorTree } from "behaviortree";
 ```
 
-## 示例
+## Example
 
-### 1.创建一个简单的任务
+### 1. Creating a Simple Task
 
 ```javascript
 import { Task, SUCCESS } from "behaviortree";
@@ -46,13 +46,13 @@ const myTask = new Task({
 });
 ```
 
-方法：
+Methods:
 
-- start - 在调用运行之前调用。但如果任务在以 this.running()结束后恢复,则不会
-- end - 在调用运行后调用。但如果任务以 this.running()结束,则不会
-- run - 包含你希望任务做的事情
+- **start**: called before the **run** method. However, if the task resumes after ending with **this.running()**, it will not be called.
+- **end**: called after the **run** method. However, if the task ends with **this.running()**, it will not be called.
+- **run**: contains what you want the task to do.
 
-### 2.创建序列
+### 2. Creating a Sequence
 
 ```javascript
 import { Sequence } from "behaviortree";
@@ -65,7 +65,7 @@ const mySequence = new Sequence({
 });
 ```
 
-### 3.创建优先级选择器
+### 3. Creating a Priority Selector
 
 ```javascript
 import { Selector } from "behaviortree";
@@ -78,7 +78,7 @@ const mySelector = new Selector({
 });
 ```
 
-### 4.创建随机选择器
+### 4. Creating a Random Selector
 
 ```javascript
 import { Random } from "behaviortree";
@@ -91,7 +91,7 @@ const mySelector = new Random({
 });
 ```
 
-### 5.创建行为树实例
+### 5. Creating a BehaviorTree Instance
 
 ```javascript
 import { BehaviorTree } from "behaviortree";
@@ -102,37 +102,35 @@ var bTree = new BehaviorTree({
 });
 ```
 
-### 6.遍历行为树
+### 6. Traversing the Behavior Tree
 
 ```javascript
 bTree.step();
 ```
 
-[单元测试用例](https://gitee.com/tybrave/openharmony_tpc_samples/tree/master/behaviortree/TEST.md)详情可参考
+For details about unit test cases, see [TEST.md](https://gitee.com/tybrave/openharmony_tpc_samples/tree/master/behaviortree/TEST.md).
 
-## 接口说明
+## Available APIs
 
-| 方法名       |             接口描述              |
-|:------------------------:|:-----------------------------:|
-|  Sequence             |            创建序列            |
-| Selector            |             创建优先级选择器             |
-|    Random                 |            创建随机选择器            |
-|   BehaviorTree                 |           创建行为树实例          |
-|    step     |        遍历行为树          |
+|    API   |     Description    |
+| :----------: | :--------------: |
+|   Sequence   |     Creates a sequence.    |
+|   Selector   | Creates a priority selector.|
+|    Random    |  Creates a random selector. |
+| BehaviorTree |  Creates a **BehaviorTree** instance. |
+|     step     |    Traverses the behavior tree.   |
 
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
-- DevEco Studio: 4.0 (4.0.3.512), SDK: API10 (4.0.10.9)
-- DevEco Studio: 3.1 Beta1(3.1.0.400)，OpenHarmony SDK: API9（3.2.11.9）。
+This project has been verified in the following versions:
+- DevEco Studio: 4.0 (4.0.3.512), SDK: API 10 (4.0.10.9)
+- DevEco Studio: 3.1 Beta1 (3.1.0.400), OpenHarmony SDK: API 9 (3.2.11.9)
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
-给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/behaviortreeDemo/LICENSE)
-，请自由地享受和参与开源。
+This project is licensed under [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/behaviortreeDemo/LICENSE).
