@@ -11,6 +11,82 @@
     {
       "name": "EntryAbility_label",
       "value": "icu4j"
+    },
+    {
+      "name": "parse_test",
+      "value": "parse测试"
+    },
+    {
+      "name": "isLiteralElement",
+      "value": "isLiteralElement测试"
+    },
+    {
+      "name": "test_successful",
+      "value": "测试成功"
+    },
+    {
+      "name": "isArgumentElement",
+      "value": "isArgumentElement测试"
+    },
+    {
+      "name": "isNumberElement",
+      "value": "isNumberElement测试"
+    },
+    {
+      "name": "isDateElement",
+      "value": "isDateElement测试"
+    },
+    {
+      "name": "isTimeElement",
+      "value": "isTimeElement测试"
+    },
+    {
+      "name": "isSelectElement",
+      "value": "isSelectElement测试"
+    },
+    {
+      "name": "isPluralElement",
+      "value": "isPluralElement测试"
+    },
+    {
+      "name": "isPoundElement",
+      "value": "isPoundElement测试"
+    },
+    {
+      "name": "isTagElement",
+      "value": "isTagElement测试"
+    },
+    {
+      "name": "isNumberSkeleton",
+      "value": "isNumberSkeleton测试"
+    },
+    {
+      "name": "isDateTimeSkeleton",
+      "value": "isDateTimeSkeleton测试"
+    },
+    {
+      "name": "createLiteralElement",
+      "value": "createLiteralElement测试"
+    },
+    {
+      "name": "createNumberElement",
+      "value": "createNumberElement测试"
+    },
+    {
+      "name": "parseDateTimeSkeleton",
+      "value": "parseDateTimeSkeleton测试"
+    },
+    {
+      "name": "convertNumberSkeletonToNumberFormatOptions",
+      "value": "convertNumberSkeletonToNumberFormatOptions测试"
+    },
+    {
+      "name": "test_result",
+      "value": "测试结果"
+    },
+    {
+      "name": "ok",
+      "value": "确定"
     }
   ]
 }

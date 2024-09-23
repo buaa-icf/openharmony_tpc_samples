@@ -11,6 +11,82 @@
     {
       "name": "EntryAbility_label",
       "value": "icu4j"
+    },
+    {
+      "name": "parse_test",
+      "value": "Parse"
+    },
+    {
+      "name": "isLiteralElement",
+      "value": "isLiteralElement"
+    },
+    {
+      "name": "test_successful",
+      "value": "Test successful"
+    },
+    {
+      "name": "isArgumentElement",
+      "value": "isArgumentElement"
+    },
+    {
+      "name": "isNumberElement",
+      "value": "isNumberElement"
+    },
+    {
+      "name": "isDateElement",
+      "value": "isDateElement"
+    },
+    {
+      "name": "isTimeElement",
+      "value": "isTimeElement"
+    },
+    {
+      "name": "isSelectElement",
+      "value": "isSelectElement"
+    },
+    {
+      "name": "isPluralElement",
+      "value": "isPluralElement"
+    },
+    {
+      "name": "isPoundElement",
+      "value": "isPoundElement"
+    },
+    {
+      "name": "isTagElement",
+      "value": "isTagElement"
+    },
+    {
+      "name": "isNumberSkeleton",
+      "value": "isNumberSkeleton"
+    },
+    {
+      "name": "isDateTimeSkeleton",
+      "value": "isDateTimeSkeleton"
+    },
+    {
+      "name": "createLiteralElement",
+      "value": "createLiteralElement"
+    },
+    {
+      "name": "createNumberElement",
+      "value": "createNumberElement"
+    },
+    {
+      "name": "parseDateTimeSkeleton",
+      "value": "parseDateTimeSkeleton"
+    },
+    {
+      "name": "convertNumberSkeletonToNumberFormatOptions",
+      "value": "convertNumberSkeletonToNumberFormatOptions"
+    },
+    {
+      "name": "test_result",
+      "value": "Test Result"
+    },
+    {
+      "name": "ok",
+      "value": "OK"
     }
   ]
 }
