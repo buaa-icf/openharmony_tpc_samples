@@ -11,6 +11,74 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Get_Pinyin_with_Tone",
+      "value": "获取带音调拼音"
+    },
+    {
+      "name": "Obtain_pinyin_without_tones",
+      "value": "获取不带声调的拼音"
+    },
+    {
+      "name": "Obtain_Pinyin_for_converting_tones_to_numerical_suffixes",
+      "value": "获取声调转换为数字后缀的拼音"
+    },
+    {
+      "name": "Initial_style_one",
+      "value": "首字母风格一"
+    },
+    {
+      "name": "Initial_style_2",
+      "value": "首字母风格二"
+    },
+    {
+      "name": "Do_not_enable_surname_mode",
+      "value": "不开启姓氏模式"
+    },
+    {
+      "name": "Enable_surname_mode",
+      "value": "开启姓氏模式"
+    },
+    {
+      "name": "Array_to_Symbol_Conversion",
+      "value": "数组转符号"
+    },
+    {
+      "name": "Convert_symbols_to_numbers",
+      "value": "符号转数字"
+    },
+    {
+      "name": "Eliminate_symbols",
+      "value": "消除符号"
+    },
+    {
+      "name": "characters",
+      "value": "文字"
+    },
+    {
+      "name": "Pinyin",
+      "value": "拼音"
+    },
+    {
+      "name": "Normal_Match",
+      "value": "普通匹配:"
+    },
+    {
+      "name": "continuous_matching",
+      "value": "连续匹配:"
+    },
+    {
+      "name": "Space_participation_in_matching",
+      "value": "空格参与匹配:"
+    },
+    {
+      "name": "Do_not_use_custom_pinyin",
+      "value": "不使用自定义拼音"
+    },
+    {
+      "name": "Use_custom_pinyin",
+      "value": "使用自定义拼音"
     }
   ]
 }
