@@ -19,13 +19,13 @@ import { InputCustomDialog } from '../components/InputCustomDialog'
 @Entry
 @Component
 struct BottomScrollDialogExample {
-  @State arr: string[] = ["这是一个自定义Bottom类型的评论弹框！",
-    "这是一个自定义Bottom类型的评论弹框！",
-    "这是一个自定义Bottom类型的评论弹框！",
-    "这是一个自定义Bottom类型的评论弹框！",
-    "这是一个自定义Bottom类型的评论弹框！",
-    "这是一个自定义Bottom类型的评论弹框！",
-    "这是一个自定义Bottom类型的评论弹框！"]
+  @State arr: string[] = [getContext().resourceManager.getStringByNameSync('BottomScroll_String1') ,
+    getContext().resourceManager.getStringByNameSync('BottomScroll_String1'),
+    getContext().resourceManager.getStringByNameSync('BottomScroll_String1'),
+    getContext().resourceManager.getStringByNameSync('BottomScroll_String1'),
+    getContext().resourceManager.getStringByNameSync('BottomScroll_String1'),
+    getContext().resourceManager.getStringByNameSync('BottomScroll_String1'),
+    getContext().resourceManager.getStringByNameSync('BottomScroll_String1')]
   @Builder ListDataComponent(item:Object, itemIndex:number) {
     Column() {
       RelativeContainer(){
@@ -38,7 +38,7 @@ struct BottomScrollDialogExample {
             left: {anchor: "__container__", align: HorizontalAlign.Start}
           })
           .id("avatar")
-        Text("评论人" + itemIndex.toString()).fontColor('#111')
+        Text(getContext().resourceManager.getStringByNameSync('BottomScroll_String2') + itemIndex.toString()).fontColor('#111')
           .fontSize(17)
           .alignRules({left:{anchor:"avatar",align:HorizontalAlign.End}})
           .id("name")
@@ -48,7 +48,7 @@ struct BottomScrollDialogExample {
           .alignRules({left:{anchor:"avatar",align:HorizontalAlign.End},top:{anchor:"name",align:VerticalAlign.Bottom}})
           .id("comment")
         Column(){
-          Button("删除").backgroundColor("#ddd").width(150).height(36)
+          Button("Delete").backgroundColor("#ddd").width(150).height(36)
             .onClick(() => {
               this.arr.splice(itemIndex, 1)
             })
@@ -89,7 +89,7 @@ struct BottomScrollDialogExample {
   }
   build() {
       Column() {
-        Button("显示自定义Bottom弹窗(自带拖拽交互)").onClick(() => {
+        Button(getContext().resourceManager.getStringByNameSync('BottomScroll_String3') ).onClick(() => {
           this.dialogController.open()
         })
       }

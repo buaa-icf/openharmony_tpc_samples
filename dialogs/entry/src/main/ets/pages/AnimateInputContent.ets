@@ -19,8 +19,8 @@ import { AnimateInputDialog,AnimateEffect,AnimateDialogOptions } from '@ohos/dia
 @Component
 struct AnimateInputContent {
   @State inputValue: string = ''
-  @State title: string = '标题'
-  @State placeholder: string = '请输入'
+  @State title: string = 'Title'
+  @State placeholder: string = 'Please input'
   @State animateOption: AnimateDialogOptions = { animate:AnimateEffect.ScaleCenterLeft}
   // CheckDialogController: CustomDialogController = new CustomDialogController
   InputController: CustomDialogController = new CustomDialogController({
@@ -44,7 +44,7 @@ struct AnimateInputContent {
 
   build() {
     Column(){
-      Button('input弹窗').onClick(() => {
+      Button(getContext().resourceManager.getStringByNameSync('AnimateInputContent_String1') ).onClick(() => {
         this.InputController.open()
       })
     }

@@ -21,7 +21,7 @@ struct indexPage {
   @State data: LoadingDialogModel = new LoadingDialogModel();
   dialogController1: CustomDialogController = new CustomDialogController({
     builder: LoadingDialog({
-      loadingTitle: '正在加载中...'
+      loadingTitle: getContext().resourceManager.getStringByNameSync('Loading_String1')
     }),
     cancel: this.existApp,
     autoCancel: true,
@@ -49,19 +49,19 @@ struct indexPage {
 
   build() {
     Column() {
-      Button('打开loading').onClick(() => {
+      Button(getContext().resourceManager.getStringByNameSync('Loading_String2') ).onClick(() => {
         this.dialogController1.open()
       })
 
-      Button('菊花loading').onClick(() => {
+      Button(getContext().resourceManager.getStringByNameSync('Loading_String3')).onClick(() => {
         let time: number = 0;
         this.showLoadingDialog = true;
         this.isOpenLoadingDialog = !this.isOpenLoadingDialog;
         let timeId = setInterval(() => {
           if (time === 1) {
-            this.messageText = "加载中的长度变长了哟"
+            this.messageText = getContext().resourceManager.getStringByNameSync('Loading_String4')
           } else if (time == 2) {
-            this.messageText = "变短了"
+            this.messageText = getContext().resourceManager.getStringByNameSync('Loading_String5')
           }
           else if (time == 3) {
             this.messageText = ""

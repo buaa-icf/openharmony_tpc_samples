@@ -21,8 +21,8 @@ import { SelectInput } from '../components/SelectInput'
 @Component
 struct InputDialogExample {
   @State inputValue: string = ''
-  @State title: string = '标题'
-  @State placeholder: string = '请输入'
+  @State title: string = 'Title'
+  @State placeholder: string = 'Please input'
   @State model: inputModel = new inputModel()
   @State select: SelectParam = new SelectParam()
   aboutToAppear() {
@@ -71,10 +71,10 @@ struct InputDialogExample {
     this.model.confirm = this.confirm
     this.model.customCallback = {
       beforeAppear: () => {
-        console.log('inputContent', 'beforeAppear回调')
+        console.log('inputContent', 'beforeAppear Callback')
       },
       beforeDisappear: () => {
-        console.log('inputContent', 'beforeDisappear回调')
+        console.log('inputContent', 'beforeDisappear Callback')
       }
     }
     this.model.dialogWidth = '80%'
@@ -91,7 +91,7 @@ struct InputDialogExample {
 
   build() {
     Column(){
-      Button('input弹窗').onClick(() => {
+      Button(getContext().resourceManager.getStringByNameSync('AnimateInputContent_String1') ).onClick(() => {
         this.InputController = new CustomDialogController({
           builder: InputDialog({
             model: this.model,

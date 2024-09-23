@@ -21,16 +21,16 @@ import { TestType } from '@ohos/hypium'
 @Entry
 @Component
 struct ConfirmExample {
-  @State textValue: string = '我是标题'
-  @State contentValue: string = '床前明月光，疑是地上霜，举头望明月，低头思故乡。床前明月光，疑是地上霜，举头望明月，低头思故乡。'
+  @State textValue: string = getContext().resourceManager.getStringByNameSync('Confirm_String1')
+  @State contentValue: string = getContext().resourceManager.getStringByNameSync('Confirm_String2')
   @State inputValue: string = 'click me'
   @State positionDialog: string = 'center'
   @State animitionMove:string = 'center'
   @State model:BaseCenterMode = new BaseCenterMode()
 
   aboutToAppear(){
-    this.model.title = '我是标题'
-    this.model.contentValue = '床前明月光，疑是地上霜，举头望明月，低头思故乡。床前明月光，疑是地上霜，举头望明月，低头思故乡。'
+    this.model.title = getContext().resourceManager.getStringByNameSync('Confirm_String1')
+    this.model.contentValue = getContext().resourceManager.getStringByNameSync('Confirm_String1')
     // this.model.contentMargin = 20
     this.model.titleMargin = { top: 30,bottom: 10 }
     this.model.btnWidth = '100%'
@@ -82,7 +82,7 @@ struct ConfirmExample {
 
 
   @Builder componentBuilder() {
-    Text('床前明月光，疑是地上霜，举头望明月，低头思故乡。床前明月光，疑是地上霜，举头望明月，低头思故乡。')
+    Text(getContext().resourceManager.getStringByNameSync('Confirm_String2'))
       .fontSize(this.model.contentFontSize)
       .margin(20)
       .textAlign(this.model.contentTextAlign)
@@ -90,7 +90,7 @@ struct ConfirmExample {
 
   build() {
     Column() {
-      Button('显示confirm弹窗').onClick(() => {
+      Button(getContext().resourceManager.getStringByNameSync('Index_Button_String1')).onClick(() => {
         if(this.dialogController != undefined) {
           this.dialogController.open()
         }

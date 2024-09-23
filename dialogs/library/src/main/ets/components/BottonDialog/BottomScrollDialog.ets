@@ -24,8 +24,8 @@ export struct BottomScrollDialog {
   scroller: Scroller = new Scroller()
   model: BaseMode = new BaseMode()
   @Link arr: string[]   // 列表数据
-  @Prop dialogTitle: string = "全部评论" // 列表标题
-  @Prop inputTextPlaceholder: string = "请输入" // 输入框的提示语句
+  @Prop dialogTitle: string = "Comments" // 列表标题
+  @Prop inputTextPlaceholder: string = "Please Input" // 输入框的提示语句
   @State dialogTitleFontSize: number = 20 // 标题字体大小
   @State scrollEmptyHeight: number = 20  // 控件内部使用，滑动控制
   scrollMinHeight: Length = '10%'

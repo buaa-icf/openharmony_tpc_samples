@@ -30,7 +30,7 @@ export struct SelectInput {
           })
           .width(30)
           .height(30)
-        Text('设置点击蒙层是否退出').fontSize(20)
+        Text(getContext().resourceManager.getStringByNameSync('Selectinput_String1') ).fontSize(20)
       }.backgroundColor('#ffcfcccc')
 
       Flex({ justifyContent: FlexAlign.Center, alignItems: ItemAlign.Center }) {
@@ -42,21 +42,21 @@ export struct SelectInput {
           })
           .width(30)
           .height(30)
-        Text('确认后是否关闭弹窗').fontSize(20)
+        Text(getContext().resourceManager.getStringByNameSync('Selectinput_String2')).fontSize(20)
       }.backgroundColor('#ffcfcccc')
 
       Flex({ justifyContent: FlexAlign.Center, alignItems: ItemAlign.Center }) {
         TextInput().onChange((value: string) => {
           this.select.maskColor = value
         }).backgroundColor(Color.White).margin({ right: 20 })
-        Text('自定义蒙层颜色').fontSize(20)
+        Text(getContext().resourceManager.getStringByNameSync('Selectinput_String3')).fontSize(20)
       }.backgroundColor('#ffcfcccc')
 
       Flex({ justifyContent: FlexAlign.Center, alignItems: ItemAlign.Center }) {
         TextInput().onChange((value: string) => {
           this.select.borderRadius = Number.parseInt(value)
         }).backgroundColor(Color.White).margin({ right: 20 })
-        Text('圆角弧度').fontSize(20)
+        Text(getContext().resourceManager.getStringByNameSync('Selectinput_String4')).fontSize(20)
       }.backgroundColor('#ffcfcccc')
 
       Flex({ justifyContent: FlexAlign.Center, alignItems: ItemAlign.Center }) {
@@ -68,7 +68,7 @@ export struct SelectInput {
           })
           .width(30)
           .height(30)
-        Text('包含输入法的弹框拉起输入法').fontSize(20)
+        Text(getContext().resourceManager.getStringByNameSync('Selectinput_String5')).fontSize(20)
       }.backgroundColor('#ffcfcccc')
 
       Column() {
@@ -93,7 +93,7 @@ export struct SelectInput {
             .height(30)
         }.height(50)
 
-        Text('设置偏移量offset').fontSize(20)
+        Text(getContext().resourceManager.getStringByNameSync('Selectinput_String6')).fontSize(20)
       }.backgroundColor('#ffcfcccc')
 
       Flex({ justifyContent: FlexAlign.Center, alignItems: ItemAlign.Center }) {
@@ -105,7 +105,7 @@ export struct SelectInput {
           })
           .width(30)
           .height(30)
-        Text('弹出退出时删除对象').fontSize(20)
+        Text(getContext().resourceManager.getStringByNameSync('Selectinput_String7')).fontSize(20)
       }.backgroundColor('#ffcfcccc')
     }
   }

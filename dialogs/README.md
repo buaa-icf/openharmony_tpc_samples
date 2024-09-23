@@ -1,108 +1,108 @@
 # dialogs
 
-## 介绍
-本项目是基于OpenHarmony的弹框基础能力和自定义能力，针对通用的弹框业务场景进行封装组合，实现了确认输入弹窗、列表展示选择弹窗、自定义底部、顶部弹窗、自定义动画弹窗、自定义全屏弹窗、
-消息类弹窗、抽屉类弹、联想类弹窗、图片浏览弹窗等相关组件弹窗功能，提供一款OpenHarmony版的三方UI库。
+## Introduction
+This project is a UI library that encapsulates and combines the basic and custom  dialog box capabilities in OpenHarmony. It implements a variety of dialog boxes that address different purposes (such as confirmation, selection, information presentation, and image browsing) and come in a wide range of styles (animated, slider, and more) and locations (top, bottom, or full-screen).
 
-## demo样例
 
-1.支持内容确认弹窗
+## Demos
+
+1. Confirm dialog box.
 
 <img src="screenshot/confirm.gif" width="50%"/>
 
-2.支持input弹窗
+2. Input dialog box.
 
 <img src="screenshot/input.gif" width="50%"/>
 
-3.支持列表list弹窗
+3. List dialog box.
 
-<img src="screenshot/list.gif" width="50%"/>
+<img src="screenshot/list.gif" width_EN="50%"/>
 
-4.支持loading动画弹窗
+4. Loading dialog box.
 
-<img src="screenshot/position.gif" width="50%"/>
+<img src="screenshot/loading.gif" width="50%"/>
 
-5.支持bottom列表互弹窗
+5. Bottom dialog box containing a list.
 
-<img src="screenshot/position.gif" width="50%"/>
+<img src="screenshot/bottomList.gif" width="50%"/>
 
-6.支持bottom自定义弹窗
+6. Custom bottom dialog.
 
 <img src="screenshot/bottomListScroll.gif" width="50%"/>
 
-7.支持bottom复杂交互弹窗
+7. Bottom dialog box with complex interactions.
 
 <img src="screenshot/complexBottom.gif" width="50%"/>
 
-8.支持气泡类弹窗
+8. Bubble dialog box.
 
 <img src="screenshot/popup.gif" width="50%"/>
 
-9.支持自定义全屏弹窗
+9. Custom full-screen dialog box.
 
 <img src="screenshot/fullScreen.gif" width="50%"/>
 
-10.支持消息类弹窗
+10. Message dialog box.
 
 <img src="screenshot/message.gif" width="50%"/>
 
-11.支持顶部弹窗
+11. Top dialog box.
 
 <img src="screenshot/topDialog.gif" width="50%"/>
 
-12.支持联想类弹窗
+12. Real-time input dialog box.
 
 <img src="screenshot/realtimeInput.gif" width="50%"/>
 
-13.支持抽屉类弹窗
+13. Sidebar dialog box.
 
 <img src="screenshot/sideBar.gif" width="50%"/>
 
-14.支持自定义动画弹窗
+14. Custom animated dialog box.
 
 <img src="screenshot/position.gif" width="50%"/>
 
-15.支持大图浏览弹窗
+15. Large image browsing dialog box.
 
 <img src="screenshot/imageBrowser.gif" width="50%"/>
 
 
-## 下载安装
+## How to Install
 
-1.安装
+1. Install @ohos/dialogs.
 
 ```
 ohpm install @ohos/dialogs
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage_en.md).
 
-2.在需要使用的页面导入需要的组件，如ConfirmDialog.ets:
+2. Import the required components to the page, for example, **ConfirmDialog.ets**.
 
 ```
 import { ConfirmDialog } from '@ohos/dialogs'
 ```
 
-## 使用说明
+## How to Use
 
-以Confirm为例
+Example of using the confirm dialog box.
    ```typescript
 import { ConfirmDialog } from '@ohos/dialogs'
-import { BaseCenterMode } from '@ohos/dialogs'  //自定义属性
+import { BaseCenterMode } from '@ohos/dialogs' // Custom property.
 import { TestType } from '@ohos/hypium'
 
 @Entry
 @Component
 struct ConfirmExample {
-  @State textValue: string = '我是标题'
-  @State contentValue: string = '床前明月光，疑是地上霜，举头望明月，低头思故乡。床前明月光，疑是地上霜，举头望明月，低头思故乡。'
+  @State textValue: string = 'Title'
+  @State contentValue: string ='Before my bed a pool of light. Can it be hoarfrost on the ground? Looking up, I find the moon bright; Bowing, in homesickness I'm drowned.'
   @State inputValue: string = 'click me'
   @State positionDialog: string = 'center'
   @State animitionMove:string = 'center'
   @State model:BaseCenterMode = new BaseCenterMode()
 
   aboutToAppear(){
-    this.model.title = '我是标题',
-    this.model.contentValue = '床前明月光，疑是地上霜，举头望明月，低头思故乡。床前明月光，疑是地上霜，举头望明月，低头思故乡。'
+    this.model.title ='Title',
+    this.model.contentValue ='Before my bed a pool of light. Can it be hoarfrost on the ground? Looking up, I find the moon bright; Bowing, in homesickness I'm drowned.'
     // this.model.contentMargin = 20
     this.model.titleMargin = { top: 30,bottom: 10 }
 this.model.btnWidth = '100%'
@@ -134,10 +134,10 @@ dialogController: CustomDialogController = new CustomDialogController({
   customStyle: true
 })
 
-// 在自定义组件即将析构销毁时将dialogControlle删除和置空
+// Delete dialogController and set it to undefined when the custom component is about to be destroyed.
 aboutToDisappear() {
-  delete this.dialogController, // 删除dialogController
-  this.dialogController = undefined // 将dialogController置空
+  delete this.dialogController, // Delete dialogController.
+  this.dialogController = undefined // Set dialogController to undefined.
 }
 
 onAccept() {
@@ -148,9 +148,9 @@ existApp() {
   console.info('Click the callback in the blank area')
 }
 
-//自定义内容
+// Custom content
 @Builder componentBuilder() {
-  Text('床前明月光，疑是地上霜，举头望明月，低头思故乡。床前明月光，疑是地上霜，举头望明月，低头思故乡。')
+  Text ('Before my bed a pool of light. Can it be hoarfrost on the ground? Looking up, I find the moon bright; Bowing, in homesickness I'm drowned.')
     .fontSize(this.model.contentFontSize)
     .margin(20)
     .textAlign(this.model.contentTextAlign)
@@ -158,7 +158,7 @@ existApp() {
 
 build() {
     Column() {
-      Button('显示confirm弹窗').onClick(() => {
+      Button ('Display confirm dialog box').onClick (() => {
         this.dialogController.open()
       })
     }
@@ -166,242 +166,242 @@ build() {
 }
    ```
 
-## 全局属性说明
-| 属性名                 | 属性类型             | 属性描述                           |
+## Global Properties
+| Name                | Type            | Description                          |
 |---------------------|------------------|--------------------------------|
-| autoClose           | function         | 是否允许操作后关闭弹窗，用于确认，选择按钮场景        |
-| popupAnimation      | TransitionEffect | 弹窗动画器，支持自定义能力                  |
-| positionDialog      | string           | 弹窗弹出后的位置 Left-Right-Top-Bottom |
-| isSupportGesture    | boolean          | 是否支持手势拖拽                       |
-| isDeleteOnDisappear | boolean          | 是否在弹框退出时，删除对象，释放资源                       |
-| customCallback      | CustomCallback   | 设置弹窗build前和build后的回调                       |
+| autoClose           | function         | Whether to close the dialog box after an operation. This property is used for confirmation and selection scenarios.       |
+| popupAnimation      | TransitionEffect | Dialog animator, which can be customized.                 |
+| positionDialog      | string           | Position of the dialog. The value can be **Left**, **Right**, **Top**, or **Bottom**.|
+| isSupportGesture    | boolean          | Whether to support dragging gestures.                      |
+| isDeleteOnDisappear | boolean          | Whether to delete objects and release resources when the dialog box is closed.                      |
+| customCallback      | CustomCallback   | Callback before and after the dialog is built.                      |
 
-#### 组件属性说明
+#### Components
 
 **confirmDialog**
 
-确认弹窗
+Defines a confirm dialog box.
 
-参数：
+Parameters
 
-| 参数名             | 类型                          | 必填 | 说明                |
+| Name            | Type                         | Mandatory| Description               |
 | ------------------ | ----------------------------- | ---- |-------------------|
-| slotContent | @Builder                      | 是   | confirm组件的内容布局插槽。 |
+| slotContent | @Builder                      | Yes  | Container of the confirm dialog box.|
 
 **inputDialog**
 
-带输入框弹窗
+Defines an input dialog box.
 
-参数：
+Parameters
 
-| 参数名             | 类型                         | 必填 | 说明                |
+| Name            | Type                        | Mandatory| Description               |
 | ------------------ | ---------------------------- | ---- |-------------------|
-| inputValue | string                      | 是   | 弹窗输入框值。 |
+| inputValue | string                      | Yes  | Value of the input dialog box.|
 
 
 **listSelectDialog**
 
-列表弹窗，支持单选、多选
+Defines a list dialog box, with support for single selection or multiple selections.
 
-参数：
+Parameters
 
-| 参数名             | 类型            | 必填 | 说明   |
+| Name            | Type           | Mandatory| Description  |
 | ------------------ |---------------| ---- |------|
-| arrList | object[]      | 是   | 列表数据 |
+| arrList | object[]      | Yes  | List.|
 
 **loadingDialog**
 
-加载动画弹窗
+Defines a loading dialog box.
 
-参数：
+Parameters
 
-| 参数名             | 类型     | 必填 | 说明   |
+| Name            | Type    | Mandatory| Description  |
 | ------------------ |--------| ---- |------|
-| loadingTitle | string | 是   | 加载标题 |
+| loadingTitle | string | Yes  | Title of the loading dialog box.|
 
-**bottom自定义**
+**Custom Bottom Dialog**
 
-底部自定义弹窗
+Defines a custom bottom dialog.
 
-参数：
+Parameters
 
-| 参数名             | 类型     | 必填 | 说明                 |
+| Name            | Type    | Mandatory| Description                |
 | ------------------ |--------| ---- |--------------------|
-| customComponent | function | 是   | 返回一个Builder，用做内容插槽 |
-| arr | string[] | 是   | 列表内容描述             |
-| dialogInput | CustomDialog | 是   | 用来做二次弹窗            |
+| customComponent | function | Yes  | Function used to return a builder as a container.|
+| arr | string[] | Yes  | List content.            |
+| dialogInput | CustomDialog | Yes  | Secondary dialog.           |
 
 
-customComponent参数：
+customComponent
 
-| 方法名    | 参数                            | 说明     |
+| API   | Parameter                           | Description    |
 | --------- |-------------------------------|--------|
-| customComponent  | item：string, itemIndex：number | 插槽内容显示 |
+| customComponent  | item: string, itemIndex: number| Content of the container.|
 
-返回值：
+Return value
 
-| 类型                  | 说明          |
+| Type                 | Description         |
 | --------------------- |-------------|
-|  @Builder   | 返回一个自定义插槽内容 |
+|  @Builder   | Returns the content of a custom container.|
 
 
-**复杂交互bottom**
+**Complex Interaction Bottom Dialog**
 
-参数：
+Parameters
 
-| 参数名             | 类型       | 必填  | 说明                 |
+| Name            | Type      | Mandatory | Description                |
 | ------------------ |----------|-----|--------------------|
-| customComponent | function | 是   | 返回一个Builder，用做内容插槽 |
-| arr | string[] | 是   | 列表内容描述             |
-| dialogTitle | string   | 是   | 弹窗标题               |
-| scrollEmptyHeight | number   | 否   | 控件内部使用，滑动控制，默认值20  |
+| customComponent | function | Yes  | Function used to return a builder as a container.|
+| arr | string[] | Yes  | List content.            |
+| dialogTitle | string   | Yes  | Title of the dialog.              |
+| scrollEmptyHeight | number   | No  | Scroll height, which is used internally. The default value is **20**. |
 
 
 **popopDialog**
 
-气泡类型弹窗
+Defines a bubble dialog.
 
-参数：
+Parameters
 
-| 参数名             | 类型        | 必填 | 说明    |
+| Name            | Type       | Mandatory| Description   |
 | ------------------ |-----------| ---- |-------|
-| placement | Placement | 是   | 消息弹出位置 |
-| firstText | string    | 是   | 左侧文字  |
-| secondText | string    | 是   | 右侧文字  |
+| placement | Placement | Yes  | Position of the dialog box.|
+| firstText | string    | Yes  | Text on the left. |
+| secondText | string    | Yes  | Text on the right. |
 
 **fullScreen**
 
-全屏弹窗
+Defines a full-screen dialog.
 
-参数：
+Parameters
 
-| 参数名             | 类型                        | 必填    | 说明           |
+| Name            | Type                       | Mandatory   | Description          |
 | ------------------ | --------------------------- |-------|--------------|
-| slotContent | @Builder                    | 是     | 全屏组件的内容布局插槽。 |
-| slotBgColor | string | 否            | 弹窗背景色，默认为白色  |
+| slotContent | @Builder                    | Yes    | Container of the full-screen component.|
+| slotBgColor | string | No           | Background color of the dialog. The default color is white. |
 
 **message**
 
-消息弹出
+Defines a message dialog box.
 
-参数：
+Parameters
 
-| 参数名             | 类型     | 必填  | 说明                           |
+| Name            | Type    | Mandatory | Description                          |
 | ------------------ |--------|-----|------------------------------|
-| positionDialog | string | 是   | 消息显示位置 top-left-right-bottom |
-| blurValue | number | 是   | 背景模糊值                        |
+| positionDialog | string | Yes  | Position of the dialog box, which can be top, left, right, and bottom.|
+| blurValue | number | Yes  | Background blur value.                       |
 
 **topDialog**
 
-顶部弹窗
+Defines a top dialog.
 
-参数：
+Parameters
 
-| 参数名             | 类型       | 必填  | 说明                           |
+| Name            | Type      | Mandatory | Description                          |
 | ------------------ |----------|-----|------------------------------|
-| slotContent | @Builder | 是   | 顶部组件的内容布局插槽。                 |
-| isAnimation | boolean  | 是   | 是否动画显示弹窗，true不显示动画，false显示动画 |
+| slotContent | @Builder | Yes  | Container of the top component.                |
+| isAnimation | boolean  | Yes  | Whether to display the animation effect. If the value is set to **true**, the animation effect is displayed; otherwise, the animation effect is not displayed|
 
 **realtimeInput**
 
-联想类型弹窗
+Defines a real-time input dialog box.
 
-参数：
+Parameters
 
-| 参数名             | 类型     | 必填  | 说明    |
+| Name            | Type    | Mandatory | Description   |
 | ------------------ |--------|-----|-------|
-| inputVal | string | 是   | 输入值   |
+| inputVal | string | Yes  | Input value.  |
 
 **sideBarCustomDialog**
 
-抽屉类弹窗
+Defines a sidebar dialog box.
 
-参数：
+Parameters
 
-| 参数名             | 类型     | 必填  | 说明   |
+| Name            | Type    | Mandatory | Description  |
 | ------------------ |--------|-----|------|
-| customComponent | @Builder | 是   | 内容插槽 |
+| customComponent | @Builder | Yes  | Container.|
 
 
 **positionDialog**
 
-自定义动画弹窗
+Defines a custom animated dialog.
 
-参数：
+Parameters
 
-| 参数名             | 类型                  | 必填  | 说明     |
+| Name            | Type                 | Mandatory | Description    |
 | ------------------ |---------------------|-----|--------|
-| slotContent | @Builder            | 是   | 内容插槽   |
-| animateOptions | AnimateDialogOptions | 是   | 默认弹窗动画 |
-| duration | number              | 是   | 动画时长   |
-| curve | Curve              | 是   | 动画方式   |
+| slotContent | @Builder            | Yes  | Container.  |
+| animateOptions | AnimateDialogOptions | Yes  | Default animation options.|
+| duration | number              | Yes  | Duration of the animation.  |
+| curve | Curve              | Yes  | Animation curve.  |
 
 **imageBrowser**
 
-大图浏览弹窗
+Defines a large image browsing dialog.
 
-参数：
+Parameters
 
-| 参数名       | 类型    | 必填  | 说明     |
+| Name      | Type   | Mandatory | Description    |
 |-----------|-------|-----|--------|
-| imageList | Resource[] | 是   | 图片列表资源 |
-| index     | number              | 是   | 显示图片下标 |
+| imageList | Resource[] | Yes  | Image list.|
+| index     | number              | Yes  | Image index.|
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+This project has been verified in the following versions:
 
 DevEco Studio: NEXT Beta1-5.0.3.806, SDK: API12 Release(5.0.0.66)
-DevEco Studio: 5.0 Canary3(5.0.3.320)，OpenHarmony SDK:API11 (4.1.0.36)
+DevEco Studio: 5.0 Canary3(5.0.3.320), OpenHarmony SDK: API 11 (4.1.0.36)
 
 
-## 软件架构
-软件架构说明
+## Directory Structure
+Below is the software architecture.
 ```
 
 |---- Xpopup 
-|    |----Dialog  #组件文件夹
-        |----src #组件入口文件夹
+|    |----Dialog # Component
+        |----src # Component entry
             |----main
                 |----ets
-                    |----components #组件库
-                        |----confirmDialog #显示confirm弹窗
-                        |----InputDialog  #显示带输入框的弹窗
-                        |----listSelectDialog  #显示列表弹窗
-                        |----loadingDialog  #显示loading弹窗
-                        |----bottonDialog 
-                            |----BottomListDialog #显示bottom类型的列表弹窗
-                            |----BottomScrollDialog #显示bottom类型的自定义弹窗 #复杂交互的bottom弹窗
-                        |----popupBottom  #显示气泡类弹窗
-                        |----fullScreenDialog  #显示自定义全屏弹窗
-                        |----messageDialog  #显示消息类弹窗
-                        |----topDialog   #显示顶部打开弹窗
-                        |----realtimeInputPopup  #显示联想类弹窗
-                        |----sliderdialog   #显示抽屉类弹窗  #大图浏览类弹窗
-                        |----positionDialog   #显示自定义动画弹窗
-                        |----imageBrowser   #显示大图浏览弹窗
+                    |----components # Component library
+                        |----confirmDialog # Confirm dialog box
+                        |----InputDialog # Input dialog box
+                        |----listSelectDialog # List dialog box
+                        |----loadingDialog # Loading dialog box
+                        |----bottomDialog
+                            |----BottomListDialog # Bottom list dialog box
+                            |----BottomScrollDialog # Custom bottom dialog
+                        |----popupBottom # Bubble dialog box
+                        |----fullScreenDialog #Custom full-screen dialog box
+                        |----messageDialog # Message dialog box
+                        |----topDialog # Top dialog box
+                        |----realtimeInputPopup # Real-time input dialog box
+                        |----sliderdialog # Slider dialog box
+                        |----positionDialog # Custom animated dialog box
+                        |----imageBrowser # Large image browsing dialog box
         |----resource
-        |----index   #组件向外暴露组件
-|    |----entry  #页面入口文件夹
-        |----src #组件入口文件夹
+        |----index # External components
+| |----entry # Page entry
+        |----src # Component entry
             |----main
                 |----ets
-                    |----components #页面公用组件文件夹
-                    |----entryability #组件页面配置
-                    |----pages  #页面入口文件夹
-                    |----utils #页面公用方法文件夹
-                |----resource #项目资源配置
+                    |----components # Common components
+                    |----entryability # Page configuration of the components
+                    |----pages # Page entry
+                    |----utils # Common methods
+                |----resource # Project resource configuration
                     |----base
                         |----profile 
-                            |----main_pages.json #页面路由配置文件
+                            |----main_pages.json # Page route configuration
 
 ```
 
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-本项目基于 [Apache-2.0 License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/dialogs/LICENSE) ，请自由地享受和参与开源。
+This project is licensed under [Apache-2.0 License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/dialogs/LICENSE).

@@ -11,6 +11,302 @@
     {
       "name": "EntryAbility_label",
       "value": "dialogs"
+    },
+    {
+      "name": "Index_Button_String1",
+      "value": "Confirm dialog box"
+    },
+    {
+      "name": "Index_Button_String2",
+      "value": "Input dialog box"
+    },
+    {
+      "name": "Index_Button_String3",
+      "value": "List dialog box"
+    },
+    {
+      "name": "Index_Button_String4",
+      "value": "Loading dialog box"
+    },
+    {
+      "name": "Index_Button_String5",
+      "value": "Bottom dialog box containing a list"
+    },
+    {
+      "name": "Index_Button_String6",
+      "value": "Custom bottom dialog"
+    },
+    {
+      "name": "Index_Button_String7",
+      "value": "Bottom dialog box with complex interactions"
+    },
+    {
+      "name": "Index_Button_String8",
+      "value": "Bubble dialog box"
+    },
+    {
+      "name": "Index_Button_String9",
+      "value": "Custom full-screen dialog box"
+    },
+    {
+      "name": "Index_Button_String10",
+      "value": "Message dialog box"
+    },
+    {
+      "name": "Index_Button_String11",
+      "value": "Top dialog box"
+    },
+    {
+      "name": "Index_Button_String12",
+      "value": "Real-time input dialog box"
+    },
+    {
+      "name": "Index_Button_String13",
+      "value": "Sidebar dialog box"
+    },
+    {
+      "name": "Index_Button_String14",
+      "value": "Custom animated dialog box"
+    },
+    {
+      "name": "Index_Button_String15",
+      "value": "Large image browsing dialog box"
+    },
+    {
+      "name": "AnimateContent_Input_String1",
+      "value": "Click to display percentage of numbers"
+    },
+    {
+      "name": "AnimateContent_Input_String2",
+      "value": "Click to display the circular ring"
+    },
+    {
+      "name": "AnimateInputContent_String1",
+      "value": "Input dialog box"
+    },
+    {
+      "name": "BottomList_String1",
+      "value": "Bottom dialog box containing a list(Choose)"
+    },
+    {
+      "name": "BottomList_String2",
+      "value": "Bottom dialog box containing a list"
+    },
+    {
+      "name": "BottomScroll_String1",
+      "value": "Custom bottom dialog box for comments"
+    },
+    {
+      "name": "BottomScroll_String2",
+      "value": "Commenter"
+    },
+    {
+      "name": "BottomScroll_String3",
+      "value": "Custom bottom dialog (supporting dragging interaction)"
+    },
+    {
+      "name": "BottomText_String1",
+      "value": "In XPopup, the Fragment component is loaded through the View class.\nTo implement dialog boxes in openHarmony, it is necessary to use CustomDialog for the implementation of custom components."
+    },
+    {
+      "name": "BottomText_String2",
+      "value": "The following is a field for custom text component."
+    },
+    {
+      "name": "Confirm_String1",
+      "value": "Title"
+    },
+    {
+      "name": "Confirm_String2",
+      "value": "Before my bed a pool of light. Can it be hoarfrost on the ground? Looking up, I find the moon bright; Bowing, in homesickness I'm drowned."
+    },
+    {
+      "name": "FullScreen_String1",
+      "value": "Test soft keyboard interaction"
+    },
+    {
+      "name": "FullScreen_String2",
+      "value": "Title"
+    },
+    {
+      "name": "FullScreen_String3",
+      "value": "Custom full-screen dialog box supporting all animators. This dialog box looks like an Activity that pops up from the bottom and can be used for login, selection interfaces."
+    },
+    {
+      "name": "FullScreen_String4",
+      "value": "Custom full-screen dialog box"
+    },
+    {
+      "name": "ListSelect_String1",
+      "value": "List dialog box"
+    },
+    {
+      "name": "ListSelect_String2",
+      "value": "Please choose one option"
+    },
+    {
+      "name": "ListSelect_String3",
+      "value": "List dialog box"
+    },
+    {
+      "name": "ListSelect_String4",
+      "value": "List dialog box with multiple selections"
+    },
+    {
+      "name": "ListSelect_String5",
+      "value": "List dialog box with single selection"
+    },
+    {
+      "name": "Loading_String1",
+      "value": "Loading..."
+    },
+    {
+      "name": "Loading_String2",
+      "value": "Loading dialog box"
+    },
+    {
+      "name": "Loading_String3",
+      "value": "Flower-shaped loading dialog box"
+    },
+    {
+      "name": "Loading_String4",
+      "value": "The length of text can be longer"
+    },
+    {
+      "name": "Loading_String5",
+      "value": "The length of text can be shorter"
+    },
+    {
+      "name": "Message_String1",
+      "value": "Content of the message"
+    },
+    {
+      "name": "Message_String2",
+      "value": "Message dialog box"
+    },
+    {
+      "name": "Message_String3",
+      "value": "Blur effect"
+    },
+    {
+      "name": "Popup_String1",
+      "value": "Like"
+    },
+    {
+      "name": "Popup_String2",
+      "value": "Content of the comment"
+    },
+    {
+      "name": "Position_String1",
+      "value": "You can select any animation for the dialog box, but it's not necessary because the best animation for each type of dialog box is set by default! For the custom dialog box, you can select an animation as required."
+    },
+    {
+      "name": "Position_String2",
+      "value": "Please select an animation："
+    },
+    {
+      "name": "Position_String3",
+      "value": "Drop down selection"
+    },
+    {
+      "name": "Repeat_String1",
+      "value": "Reuse existing components of the project"
+    },
+    {
+      "name": "Repeat_String2",
+      "value": "Use built-in dialog box to bind existing layouts of projects"
+    },
+    {
+      "name": "SideBar_String1",
+      "value": "Click to test LiveData"
+    },
+    {
+      "name": "SideBar_String2",
+      "value": "Home"
+    },
+    {
+      "name": "SideBar_String3",
+      "value": "Entertainment"
+    },
+    {
+      "name": "SideBar_String4",
+      "value": "Automobile"
+    },
+    {
+      "name": "SideBar_String5",
+      "value": "Gossip"
+    },
+    {
+      "name": "SideBar_String6",
+      "value": "Funny"
+    },
+    {
+      "name": "SideBar_String7",
+      "value": "Internet"
+    },
+    {
+      "name": "SideBar_String8",
+      "value": " Current page:"
+    },
+    {
+      "name": "SideBar_String9",
+      "value": "Please input to interact..."
+    },
+    {
+      "name": "SideBar_String10",
+      "value": "Left sidebar"
+    },
+    {
+      "name": "SideBar_String11",
+      "value": "Right sidebar"
+    },
+    {
+      "name": "TopContent_String1",
+      "value": "Top dialog box with custom positions, which supports notification interactions."
+    },
+    {
+      "name": "TopContent_String2",
+      "value": "This is a custom top dialog box for demonstration."
+    },
+    {
+      "name": "TopContent_String3",
+      "value": "OK"
+    },
+    {
+      "name": "TopContent_String4",
+      "value": "Top dialog box"
+    },
+    {
+      "name": "InputCistom_String1",
+      "value": "Pop up window with input box and input method attached"
+    },
+    {
+      "name": "Selectinput_String1",
+      "value": "Set whether clicking on the mask will exit"
+    },
+    {
+      "name": "Selectinput_String2",
+      "value": "Do you want to close the dialog box after confirmation"
+    },
+    {
+      "name": "Selectinput_String3",
+      "value": "Custom Mask Color"
+    },
+    {
+      "name": "Selectinput_String4",
+      "value": "Round corner curvature"
+    },
+    {
+      "name": "Selectinput_String5",
+      "value": "Pop up input method with pop-up box containing input method"
+    },
+    {
+      "name": "Selectinput_String6",
+      "value": "Set offset offset"
+    },
+    {
+      "name": "Selectinput_String7",
+      "value": "Delete objects when popping out"
     }
   ]
 }

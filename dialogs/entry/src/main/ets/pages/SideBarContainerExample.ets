@@ -21,7 +21,7 @@ struct SideBarContainerExample {
   normalIcon: Resource = $r("app.media.icon")
   selectedIcon: Resource = $r("app.media.icon")
   @State arrRight: number[] = []
-  @State textRight: string = '点击测试LIVEDATA'
+  @State textRight: string = getContext().resourceManager.getStringByNameSync('SideBar_String1')
   @State current: number = 1
   @State currentIndex: number = 0
   @State fontColor: string = '#fff'
@@ -47,7 +47,12 @@ struct SideBarContainerExample {
   }
 
   private controller: TabsController = new TabsController()
-  leftTitles = ['首页', '娱乐', '汽车', '八卦', '搞笑', '互联网']
+  leftTitles = [getContext().resourceManager.getStringByNameSync('SideBar_String2') ,
+    getContext().resourceManager.getStringByNameSync('SideBar_String3'),
+    getContext().resourceManager.getStringByNameSync('SideBar_String4'),
+    getContext().resourceManager.getStringByNameSync('SideBar_String5'),
+    getContext().resourceManager.getStringByNameSync('SideBar_String6'),
+    getContext().resourceManager.getStringByNameSync('SideBar_String7')]
 
   @Builder MySideBarComponentLeft() {
 
@@ -64,7 +69,7 @@ struct SideBarContainerExample {
         ForEach(this.leftTitles, (item:Object, index:number) => {
           TabContent() {
             Column() {
-              Text(`当前界面是：${item}`)
+              Text(getContext().resourceManager.getStringByNameSync('SideBar_String8')+`${item}`)
             }.width('100%').height('100%').backgroundColor(Color.White)
           }.tabBar(this.TabBuilder(index, `${item}`))
         })
@@ -107,7 +112,7 @@ struct SideBarContainerExample {
           this.textRight = nextInputValue + ''
         })
 
-      TextInput({ text: this.text1, placeholder: '输入框交互...', controller: this.controller1 })
+      TextInput({ text: this.text1, placeholder: getContext().resourceManager.getStringByNameSync('SideBar_String9') , controller: this.controller1 })
         .placeholderColor(Color.Grey)
         .placeholderFont({ size: 14, weight: 400 })
         .caretColor(Color.Blue)
@@ -139,7 +144,7 @@ struct SideBarContainerExample {
       .height('80%')
 
 
-      TextInput({ text: this.text2, placeholder: '输入框交互...', controller: this.controller2 })
+      TextInput({ text: this.text2, placeholder: getContext().resourceManager.getStringByNameSync('SideBar_String9'), controller: this.controller2 })
         .placeholderColor(Color.Grey)
         .placeholderFont({ size: 14, weight: 400 })
         .caretColor(Color.Blue)
@@ -201,7 +206,7 @@ struct SideBarContainerExample {
 
   build() {
     Row() {
-      Button("左边弹窗")
+      Button(getContext().resourceManager.getStringByNameSync('SideBar_String10') )
         .width('30%')
         .height(50)
         .margin({ left: 30 })
@@ -217,7 +222,7 @@ struct SideBarContainerExample {
           }
         })
         .backgroundColor(0x317aff)
-      Button("右边弹窗")
+      Button(getContext().resourceManager.getStringByNameSync('SideBar_String11'))
         .width('30%')
         .height(50)
         .margin({ right: 30 })

@@ -48,14 +48,14 @@ struct Index {
 
   build() {
     Column({ space: 20 }) {
-      this.buildButton('显示Confirm弹框', 'Confirm', '显示带输入框的弹框', 'InputContent')
-      this.buildButton('显示List弹框', 'ListSelect', '显示Loading弹框', 'Loading')
-      this.buildButton('Bottom类型的List弹框', 'BottomListDialogExample', 'Bottom类型的自定义弹框', 'BottomScrollDialogExample')
-      this.buildButton('复杂交互的Bottom弹框', 'BottomTextDialogExample', '显示气泡类型弹框', 'PopupButtonExample')
-      this.buildButton('自定义全屏弹框', 'FullScreen', '消息类型弹框', 'Message')
-      this.buildButton('顶部打开的弹框', 'TopContent', '联想类弹框', 'RealtimeInput')
-      this.buildButton('抽屉类弹框', 'SideBarContainerExample', '弹框动画展示', 'PositionContent')
-      this.buildButton('大图浏览类弹框', 'ImageBrowser', null, null)
+      this.buildButton(getContext().resourceManager.getStringByNameSync('Index_Button_String1') , 'Confirm', getContext().resourceManager.getStringByNameSync('Index_Button_String2'), 'InputContent')
+      this.buildButton(getContext().resourceManager.getStringByNameSync('Index_Button_String3'), 'ListSelect', getContext().resourceManager.getStringByNameSync('Index_Button_String4'), 'Loading')
+      this.buildButton(getContext().resourceManager.getStringByNameSync('Index_Button_String5'), 'BottomListDialogExample', getContext().resourceManager.getStringByNameSync('Index_Button_String6'), 'BottomScrollDialogExample')
+      this.buildButton(getContext().resourceManager.getStringByNameSync('Index_Button_String7'), 'BottomTextDialogExample', getContext().resourceManager.getStringByNameSync('Index_Button_String8'), 'PopupButtonExample')
+      this.buildButton(getContext().resourceManager.getStringByNameSync('Index_Button_String9'), 'FullScreen', getContext().resourceManager.getStringByNameSync('Index_Button_String10'), 'Message')
+      this.buildButton(getContext().resourceManager.getStringByNameSync('Index_Button_String11'), 'TopContent', getContext().resourceManager.getStringByNameSync('Index_Button_String12'), 'RealtimeInput')
+      this.buildButton(getContext().resourceManager.getStringByNameSync('Index_Button_String13'), 'SideBarContainerExample', getContext().resourceManager.getStringByNameSync('Index_Button_String14'), 'PositionContent')
+      this.buildButton(getContext().resourceManager.getStringByNameSync('Index_Button_String15'), 'ImageBrowser', null, null)
     }
     .backgroundColor(Color.White).margin({ top: 20 })
   }

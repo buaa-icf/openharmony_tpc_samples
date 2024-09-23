@@ -26,7 +26,7 @@ struct RepeatDialogExample {
   aboutToAppear(){
     this.model.dialogPadding={left:10,right:10}
     this.model.dialogBgColor = '#F0A0CA'
-    this.model.title='复用项目已有组件'
+    this.model.title=getContext().resourceManager.getStringByNameSync('Repeat_String1')
     this.model.titleFontColor = Color.Red
     this.model.contentHeight = 100
     this.model.titleMargin = { top: 10, bottom: 10 }
@@ -55,7 +55,7 @@ struct RepeatDialogExample {
     Stack({ alignContent: Alignment.TopStart }) {
       Scroll(this.scroller){
         Column(){
-          Text( '你可以为弹窗选择任意一种动画，但这并不必要，因为我已经默认给每种弹窗设定了最佳动画！对于你自定义的弹窗，可以随心选中心仪的动画方案。')
+          Text( getContext().resourceManager.getStringByNameSync('Position_String1') )
             .fontColor(Color.Black)
             .fontSize(20)
         }
@@ -101,7 +101,7 @@ struct RepeatDialogExample {
   build() {
     Column() {
       Flex({direction:FlexDirection.Row,alignItems: ItemAlign.Center}){
-        Button('使用内置弹窗绑定项目已有布局').onClick(()=>{
+        Button(getContext().resourceManager.getStringByNameSync('Repeat_String2') ).onClick(()=>{
           if(this.dialogController!= undefined) {
             this.dialogController.open()
           }
