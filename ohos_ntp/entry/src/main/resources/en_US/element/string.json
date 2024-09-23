@@ -11,6 +11,22 @@
         {
             "name": "EntryAbility_label",
             "value": "label"
+        },
+        {
+            "name": "NTP_server_address",
+            "value": "NTP server address"
+        },
+        {
+            "name": "remote_port_number",
+            "value": "remote port number"
+        },
+        {
+            "name": "waiting_response_time",
+            "value": "waiting response time (in ms)."
+        },
+        {
+            "name": "Request_NTP",
+            "value": "Request NTP"
         }
     ]
 }

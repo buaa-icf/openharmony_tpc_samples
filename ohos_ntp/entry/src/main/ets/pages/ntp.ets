@@ -40,22 +40,24 @@ struct NtpClient {
     this.ntpResult = undefined
     this.timeoutResult = undefined
   }
-
+  getResourceString(res:Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
   build() {
     Column() {
-      Text('NTP服务器地址:ntp.aliyun.com')
+      Text(this.getResourceString($r('app.string.NTP_server_address'))+':ntp.aliyun.com')
         .width('100%')
         .padding({ left: 10 })
 
-      Text('远端端口:123')
+      Text(this.getResourceString($r('app.string.remote_port_number'))+':123')
         .width('100%')
         .padding({ left: 10 })
 
-      Text('等待响应时长(ms):2000')
+      Text(this.getResourceString($r('app.string.waiting_response_time'))+':2000')
         .width('100%')
         .padding({ left: 10 })
 
-      Button('请求NTP')
+      Button($r('app.string.Request_NTP'))
         .margin(10)
         .width('95%')
         .height('100px')
