@@ -1,38 +1,38 @@
 # epublib
 
-## 简介
+## Introduction
 
-> Epublib是一个用于读取/写入/操作epub文件的ets库
-
-
-## 效果展示：
-![动画](epublib.jpeg)
+> Epublib is an ETS library used to read, write, or operate EPUB files.
 
 
-## 下载安装
+## Effect
+![Animation](epublib.jpeg)
+
+
+## How to Install
 
 ```shell
 ohpm install @ohos/epublib
 ```
-OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 
-## 使用说明
-### 示例代码
-1.在entryAbility中引入GlobalContext
+## How to Use
+### Sample Code
+1. Import GlobalContext to entryAbility.
 ```
 import { GlobalContext } from '@ohos/epublib'
 
 onWindowStageCreate(windowStage: window.WindowStage) {
-// Main window is created, set main page for this ability
+// The main window is created. Set a main page for this ability.
 GlobalContext.getContext().setValue('filePath',this.context.filesDir)
 }
- ```
-2.在page页面中引入epublib
+```
+2. Import epublib to the page.
 ```
 import {DOMParser,EpubReader,EpubWriter, Book,Author,EpubResource,MediaType,Metadata,MediatypeService} from "@ohos/epublib"
 ```
-3.使用
+3. Use the project.
 
 ```
   funcStart(input: string) {
@@ -54,69 +54,69 @@ import {DOMParser,EpubReader,EpubWriter, Book,Author,EpubResource,MediaType,Meta
 
 ```
 
-## 接口说明
-1. 获取Book实例
+## Available APIs
+1. Obtains a book instance.
    `readEpub(inPath:string, encoding?:string, lazyLoadedTypes?: Array<MediaType>):Book`
-2. 通过resources读取电子书
+2. Reads the eBook through resources.
    `readEpubToBook(resources:Resources, result?:Book):Book`
-3. 惰性地从EPUB文件中读取并解析EPUB电子书
+3. Reads and parses the EPUB ebook from EPUB files in a lazy manner.
    `readEpubLazy(inPath: string, encoding?: string, lazyLoadedTypes?: Array<MediaType>): Book `
-4. 获取构成该书的所有图像、章节、章节、xhtml文件、样式表等的集合
+4. Obtains the collection of all images, chapters, sections, XHTML files, and style sheets of the book.
    `getResources(): Resources `
-5. 获取该书内容。
+5. Obtains the book content.
    `getStrData()`
-6. 写入Book内容 
+6. Writes the book content.
    `write(book: Book, fileName: string)`
-7. 获取EPUB电子书的内容顺序
+7. Obtains the content sequence of the EPUB eBook.
    `getSpine()`
-8. 获取EPUB电子书的元数据
+8. Obtains the metadata of the EPUB eBook.
    `getMetadata()`
-9. 向EPUB电子书中添加一个资源
+9. Adds a resource to the EPUB eBook.
    `addResource(resource: EpubResource): EpubResource`
-10. 获取epub文件在文件夹中的位置
-   `getHref()`
-11. 通过压缩文件加载资源 
-   `loadResources(ZipFile zipFile, String defaultHtmlEncoding, List<MediaType> lazyLoadedTypes) `
-12. 截取输出目录 
-   `outFile(inZipPath: string): string`
-13. 设置作者
-   `addAuthor(author: Author)`
-14. 添加标题
-   `addTitle(title: string): string`
-15. 设置语言 
-   `setLanguage(language: string)`
+10. Obtains the location of the EPUB file in the folder.
+       `getHref()`
+11. Loads resources through compressed files.
+       `loadResources(ZipFile zipFile, String defaultHtmlEncoding, List<MediaType> lazyLoadedTypes) `
+12. Captures the output directory.
+       `outFile(inZipPath: string): string`
+13. Sets the author.
+       `addAuthor(author: Author)`
+14. Adds the title.
+       `addTitle(title: string): string`
+15. Sets the language.
+       `setLanguage(language: string)`
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+This project has been verified in the following version:
 
 
-- DevEco Studio 版本： 4.1 Canary(4.1.3.521),OpenHarmony SDK:API11 (4.1.0.65)
+- DevEco Studio: 4.1 Canary (4.1.3.521), OpenHarmony SDK: API 11 (4.1.0.65)
 
-## 目录结构
+## Directory Structure
 
 ````
 |---- epublib  
-|     |---- entry  # 示例代码文件夹
-|     |---- epublib   # 电子书库文件夹
-|         |---- index.ets 提供外部接口文件    
+|     |---- entry  # Sample code
+|     |---- epublib   # eBook library
+|         |---- index.ets External APIs   
 |             |---- src
 |                 |---- main
 |                     |---- ets
 |                         |---- components
-|                             |---- domain # 相关的book一系列数据model
-|                             |---- epub   # 解析处理 
-|                             |---- service # 定义了支持的媒体类型
-|                             |---- util # 通用方法库
-|                             |---- Constants.ets # 常量定义
-|     |---- README.md  # 安装使用方法                    
+|                             |---- domain # Book data models
+|                             |---- epub   # Parsing and processing
+|                             |---- service # Supported media types
+|                             |---- util # Common method library
+|                             |---- Constants.ets # Constant definition
+|     |---- README.md  # Readme                   
 ````
 
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-本项目基于 [LGPL License 3.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/epublib/LICENSE) ，请自由地享受和参与开源。
+This project is licensed under [LGPL License 3.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/epublib/LICENSE).
