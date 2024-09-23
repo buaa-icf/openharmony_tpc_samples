@@ -111,7 +111,7 @@ struct Index {
             try {
               xmlParse(null);
             } catch (error) {
-              this.printLog('请检查输入字符，捕捉到异常： ' + error);
+              this.printLog(this.getResourceString('Please_check_the_input_characters_and_catch_an_exception') + error);
             }
           })
 
@@ -122,18 +122,18 @@ struct Index {
             try {
               xmlParse(undefined);
             } catch (error) {
-              this.printLog('请检查输入字符，捕捉到异常： ' + error);
+              this.printLog(this.getResourceString('Please_check_the_input_characters_and_catch_an_exception') + error);
             }
           })
 
-        Button('xmlParse:特殊字符')
+        Button($r('app.string.Special_characters'))
           .width('90%')
           .height('100px')
           .onClick(() => {
             try {
-              xmlParse('<xml>内容包含特殊字符：<></xml>');
+              xmlParse(this.getResourceString('The_content_contains_special_characters'));
             } catch (error) {
-              this.printLog('请检查输入字符，捕捉到异常： ' + error);
+              this.printLog(this.getResourceString('Please_check_the_input_characters_and_catch_an_exception') + error);
             }
           })
 
@@ -144,7 +144,7 @@ struct Index {
             try {
               xsltProcess(null);
             } catch (error) {
-              this.printLog('请检查输入参数，捕捉到异常： ' + error);
+              this.printLog(this.getResourceString('Please_check_the_input_characters_and_catch_an_exception') + error);
             }
           })
 
@@ -155,18 +155,18 @@ struct Index {
             try {
               xsltProcess(undefined);
             } catch (error) {
-              this.printLog('请检查输入参数，捕捉到异常： ' + error);
+              this.printLog(this.getResourceString('Please_check_the_input_characters_and_catch_an_exception') + error);
             }
           })
 
-        Button('xsltProcess:特殊字符')
+        Button($r('app.string.XSLT_Process_Special_Characters'))
           .width('90%')
           .height('100px')
           .onClick(() => {
             try {
-              xsltProcess('<xml>内容包含特殊字符：<></xml>');
+              xsltProcess(this.getResourceString('The_content_contains_special_characters'));
             } catch (error) {
-              this.printLog('请检查输入参数，捕捉到异常： ' + error);
+              this.printLog(this.getResourceString('Please_check_the_input_characters_and_catch_an_exception') + error);
             }
           })
 
@@ -177,7 +177,7 @@ struct Index {
             try {
               xpathParse(null);
             } catch (error) {
-              this.printLog('请检查输入字符，捕捉到异常： ' + error);
+              this.printLog(this.getResourceString('Please_check_the_input_characters_and_catch_an_exception') + error);
             }
           })
 
@@ -188,30 +188,30 @@ struct Index {
             try {
               xpathParse(undefined);
             } catch (error) {
-              this.printLog('请检查输入字符，捕捉到异常： ' + error);
+              this.printLog(this.getResourceString('Please_check_the_input_characters_and_catch_an_exception') + error);
             }
           })
 
-        Button('xpathParse:特殊字符')
+        Button($r('app.string.xpathParse'))
           .width('90%')
           .height('100px')
           .onClick(() => {
             try {
-              xpathParse('内容包含特殊字符<>');
+              xpathParse(this.getResourceString('The_content_contains'));
             } catch (error) {
-              this.printLog('请检查输入字符，捕捉到异常： ' + error);
+              this.printLog(this.getResourceString('Please_check_the_input_characters_and_catch_an_exception') + error);
             }
           })
 
-        Button('解析XML')
+        Button($r('app.string.parse_xml'))
           .width('90%')
           .height('100px')
           .onClick(() => {
             const originXMLObj:xmlParse = xmlParse(this.originTextXML);
-            this.printLog('原始XML根节点内有' + originXMLObj.childNodes[0].childNodes.length + '个子节点');
+            this.printLog(this.getResourceString('The_original_XML_root_node_contains') + originXMLObj.childNodes[0].childNodes.length + this.getResourceString('Child_nodes'));
           })
 
-        Button('XSLT 转换 TEXT')
+        Button($r('app.string.XSLT_Transform_Text'))
           .width('90%')
           .height('100px')
           .onClick(() => {
@@ -221,7 +221,7 @@ struct Index {
             this.printLog(text);
           })
 
-        Button('XSLT 转换 HTML')
+        Button($r('app.string.XSLT_Transform_HTML'))
           .width('90%')
           .height('100px')
           .onClick(() => {
@@ -231,7 +231,7 @@ struct Index {
             this.printLog(html);
           })
 
-        Button('XSLT转换带参数')
+        Button($r('app.string.XSLT_transformation_with_parameters'))
           .width('90%')
           .height('100px')
           .onClick(() => {
@@ -249,7 +249,7 @@ struct Index {
             this.printLog(outXmlString);
           })
 
-        Button('Xpath计算表达式/page')
+        Button($r('app.string.Xpath_calculation_expression_page'))
           .width('90%')
           .height('100px')
           .onClick(() => {
@@ -258,10 +258,10 @@ struct Index {
             const ctx:ExprContext = new ExprContext(xmlParse(this.xpathXML));
             const e:xpathParse = expr1.evaluate(ctx);
             const nodeSet:xpathParse = e.nodeSetValue();
-            this.printLog('XML文档中的page节点数为：' + nodeSet.length);
+            this.printLog(this.getResourceString('The_number_of_page_nodes_in_the_XML_document_is') + nodeSet.length);
           })
 
-        Button('Xpath计算表达式/page/location/@lat')
+        Button($r('app.string.Xpath_calculation_expression_page_location_lat'))
           .width('90%')
           .height('100px')
           .onClick(() => {
@@ -272,7 +272,7 @@ struct Index {
             const ctx:ExprContext = new ExprContext(xmlParse(this.xpathXML));
             const result:xpathParse = expr1.evaluate(ctx);
             const nodeSet:xpathParse = result.nodeSetValue();
-            this.printLog('当前节点属性为：' + nodeSet[0].nodeName + "=" + nodeSet[0].nodeValue);
+            this.printLog(this.getResourceString('The_current_node_attribute_is') + nodeSet[0].nodeName + "=" + nodeSet[0].nodeValue);
           })
       }
       .width('100%')
@@ -283,5 +283,9 @@ struct Index {
   private printLog(msg: string) {
     hilog.info(0x0000, this.tag, '%{public}s', msg);
     promptAction.showToast({ message: msg })
+  }
+
+  getResourceString(resourceName:string) {
+    return getContext().resourceManager.getStringByNameSync(resourceName)
   }
 }
