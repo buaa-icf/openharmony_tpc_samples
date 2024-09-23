@@ -1,19 +1,19 @@
 # pcx-js
 
-## 简介
+## Introduction
 
-本软件是使用开源软件 [pcx-js](https://github.com/warpdesign/pcx-js)， 在OpenHarmony环境下,提供了PCX图像格式解码的能力。
+This library uses the open-source [pcx-js](https://github.com/warpdesign/pcx-js) to provide the PCX image decoding capability in OpenHarmony.
 
-## 下载安装
+## How to Install
 
 ```shell
 ohpm install pcx-js
 ```
 
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
-## 使用说明
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+## How to Use
 
-### PCX解码使用
+### PCX Decoding
 
 ```typescript
 import image from '@ohos.multimedia.image';
@@ -26,11 +26,11 @@ typedArrayToBuffer(array: Uint8ClampedArray): ArrayBuffer {
         
 getContext(this).resourceManager.getMediaContent($r("app.media.thimbleweed").id).then((uint8Array) => {
 	let pcxDecoder = new PCX(uint8Array.buffer);
-    // 获取到pcx图片的解码后的像素点数据 默认RGBA
+    // Obtain the pixel data of the decoded PCX image. The default value is RGBA.
 	let decodeData = pcxDecoder.decode();
-    // 转换成BGRA
+    // Convert the format to BGRA.
 	this.RBGA2BGRA(decodeData.pixelArray)
-	// 通过image能力转换成PixelMap
+	// Convert the image into a pixel map.
     image.createPixelMap(this.typedArrayToBuffer(decodeData.pixelArray), {
 		'size': {
 		'width':  decodeData.width,
@@ -42,37 +42,33 @@ getContext(this).resourceManager.getMediaContent($r("app.media.thimbleweed").id)
 	})
 ```
 
-## 接口说明
-| 接口名称               |                 参数                 |功能描述|
+## Available APIs
+| API              |                 Parameter                |Description|
 |:-------------------|:----------------------------------:| -----:|
-| new PCX(buffer)    | Buffer：用于解码PCX数据的Buffer |初始化pcx对象|
-| decode             |                                    |解码接口|
+| new PCX(buffer)    | **Buffer**: buffer for decoding PCX data.|Creates a PCX decoder instance.|
+| decode             |                                    |Decodes a PCX image.|
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
-- DevEco Studio: 4.1Canary2(4.1.3.322),SDK: API11(4.1.0.36)
+This project has been verified in the following version:
+- DevEco Studio: 4.1Canary2 (4.1.3.322), SDK: API11 (4.1.0.36)
 
-## 目录结构
+## Directory Structure
 
 ```
 
 /entry/src/
 - main/ets/     
-    - pages                        # 测试page页面列表
-       - index.ets                    	# 测试解析PCX图片格式
+    - pages                        # List of test pages
+       - index.ets                 # APIs for PCX image decoding.
 ```
 
-单元测试用例详情见[TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/pcx-js/TEST.md)
+For details about unit test cases, see [TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/pcx-js/TEST.md).
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
-给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-本项目基于 [MIT License]() ，请自由地享受和参与开源。
-
-
-
+The project is licensed under MIT License.
