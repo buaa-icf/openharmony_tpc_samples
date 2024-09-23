@@ -11,6 +11,26 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "message_Messages_that_are_listened_to",
+      "value": "message Messages that are listened to:"
+    },
+    {
+      "name": "Listen_for_message_messages",
+      "value": "Listen for message messages"
+    },
+    {
+      "name": "Send_message_to_Message",
+      "value": "Send a message to Message"
+    },
+    {
+      "name": "A_message",
+      "value": "A message"
+    },
+    {
+      "name": "Disable_the_listening_for_messages",
+      "value": "Disable the listening for messages"
     }
   ]
 }
