@@ -28,14 +28,16 @@ import { now } from "lodash";
 @Component
 struct Index {
   @State date: number = 0;
-
+  getResourceString(res: Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
-      Text('Unix 纪元 (1 January 1970 00:00:00 UTC) 直到现在的毫秒数: '+ this.date);
-      Button('获得 Unix 纪元 (1 January 1970 00:00:00 UTC) 直到现在的毫秒数')
+      Text(this.getResourceString($r('app.string.The_number_of_milliseconds')) + this.date);
+      Button($r('app.string.Obtain_the_number'))
         .onClick(() => {
           this.date = now();
-          console.log('获得 Unix 纪元 (1 January 1970 00:00:00 UTC) 直到现在的毫秒数:' + this.date)
+          console.log(this.getResourceString($r('app.string.Obtain_the_number')) + this.date)
         }).margin(10)
     }
     .width('100%')

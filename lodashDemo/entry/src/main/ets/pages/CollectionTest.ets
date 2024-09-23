@@ -30,25 +30,27 @@ struct Index {
   @State resultArray: number[] = [];
   @State sampleArray: number[] = [];
   // @State resultArray: number[] = [];
-
+  getResourceString(res: Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
-      Button('遍历集合中的每个元素')
+      Button($r('app.string.Traverse_every_element'))
         .onClick(() => {
           forEach([1, 2, 'a', 'b'], (value: number) =>
           console.log("forEach:" + value)
           )
         }).margin(10)
 
-      Text("显示集合中一个随机元素:" + JSON.stringify(this.sampleArray))
-      Button('将获得集合中一个随机元素')
+      Text(this.getResourceString($r('app.string.Display_a_random')) + JSON.stringify(this.sampleArray))
+      Button($r('app.string.Obtain_a_random'))
         .onClick(() => {
           this.sampleArray = sample([0, undefined, 1, false, 2, 'string', 3, true, null])
           console.log('sample:' + JSON.stringify(this.sampleArray))
         }).margin(10)
 
-      Text("显示新扁平化数组:" + JSON.stringify(this.resultArray))
-      Button('展示新扁平化数组')
+      Text($r('app.string.Display_new_flattened') + JSON.stringify(this.resultArray))
+      Button($r('app.string.Display_the_newy'))
         .onClick(() => {
           let duplicate: (n: number) => void = (n: number): number[] => {
              return [n, n]

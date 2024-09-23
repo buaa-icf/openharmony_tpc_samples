@@ -40,7 +40,7 @@ struct Index {
 
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
-      Button('获取新函数，并作为filter的参数筛选出对应的内容')
+      Button($r('app.string.Get_corresponding_content'))
         .onClick(() => {
           let objects: conformsObject[] = [
             { a: 2, b: 1 },
@@ -53,14 +53,14 @@ struct Index {
           console.log('conforms：' + JSON.stringify(result));
         }).margin(10);
 
-      Button('检查值，以确定一个默认值是否应被返回')
+      Button($r('app.string.Check_be_returned'))
         .onClick(() => {
           let isDefault: ESObject = defaultTo(undefined, 10);
           // => 10
           console.log('如果检查值为NaN, null, 或者 undefined，返回默认值，否则返回检查值：' + JSON.stringify(isDefault));
         }).margin(10)
 
-      Button('获取接收的第一个参数')
+      Button($r('app.string.Get_parameter_received'))
         .onClick(() => {
           let user: identityObject[] = [
             { name:'XXXX', age: 36, active:true },
@@ -70,14 +70,14 @@ struct Index {
           console.log('获取接收的第一个参数:' + JSON.stringify(parameter));
         }).margin(10)
 
-      Button('创建一个函数，这个函数返回第n个参数')
+      Button($r('app.string.Create_function_parameter'))
         .onClick(() => {
           let func: ESObject = nthArg(2);
           // 'c'
           console.log('创建一个函数，这个函数返回第n个参数为:' + JSON.stringify(func('a', 'b', 'c', 'd')));
         }).margin(10)
 
-      Button('获取一个空对象')
+      Button($r('app.string.Get_an_empty_object'))
         .onClick(() => {
           let objects: ESObject = times(2, stubObject);
           // => [{}, {}]

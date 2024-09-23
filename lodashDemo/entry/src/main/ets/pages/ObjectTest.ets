@@ -54,14 +54,14 @@ struct Index {
 
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
-      Button('遍历并继承分配来源对象的可枚举属性到目标对象上')
+      Button($r('app.string.Traverse_target_object'))
         .onClick(() => {
           let object: object = assignIn( { a:4 }, {b: 1}, {c: 3});
           // => {"a":4,"b":1,"c":3}
           console.log('遍历并继承分配来源对象的可枚举属性到目标对象上：' + JSON.stringify(object));
         }).margin(10);
 
-      Button('访问集合的每个值,在一定条件下获取匹配的元素')
+      Button($r('app.string.Accessing_certain_conditions'))
         .onClick(() => {
           class User {
             salary: number = 0
@@ -84,7 +84,7 @@ struct Index {
           console.log('访问集合的每个值,在一定条件下获取匹配的元素为：' + found_elem);
         }).margin(10)
 
-      Button('遍历对象')
+      Button($r('app.string.Traverse_objects'))
         .onClick(() => {
           let object: ABC = {a: 'a', b: 'b', c: 'c'}
           let item: string = forIn(object, (value: ESObject, key: ESObject) => {
@@ -93,7 +93,7 @@ struct Index {
           console.log('遍历的对象:' + JSON.stringify(item));
         }).margin(10)
 
-      Button('创建一个object自身和继承的可枚举属性名为数组')
+      Button($r('app.string.Create_enumerable_properties'))
         .onClick(() => {
           let obj: Info = {
             Name:"Geeks for Geeks",
@@ -104,7 +104,7 @@ struct Index {
           console.log('创建一个object自身和继承的可枚举属性名为数组:' + JSON.stringify(keys(obj)));
         }).margin(10)
 
-      Button('根据对象的path路径获取值')
+      Button($r('app.string.Obtain_values_based_object'))
         .onClick(() => {
           let object: Objects = { a: [{ b: { c: 3 } }] };
 
@@ -119,7 +119,7 @@ struct Index {
           console.log('根据对象的path路径获取值:' + get1 + ' ' + get2 + ' ' + get3);
         }).margin(10)
 
-      Button('创建一个object键值倒置后的对象')
+      Button($r('app.string.Create_key_values'))
         .onClick(() => {
           class AObject {
             a: number = 0

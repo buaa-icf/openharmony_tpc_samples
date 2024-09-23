@@ -30,42 +30,42 @@ struct Index {
 
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
-      Button('转换字符串为驼峰写法')
+      Button($r('app.string.Convert_string'))
         .onClick(() => {
           let camelCaseString: string = camelCase('__FOO_BAR__');
           // => 'fooBar'
           console.log('转换字符串为驼峰写法为：' + JSON.stringify(camelCaseString));
         }).margin(10);
 
-      Button('转换字符串首字母为大写，剩下为小写')
+      Button($r('app.string.Convert_rest_to_lowercase'))
         .onClick(() => {
           let capitalizeString: string = capitalize('FRED');
           // => 'Fred'
           console.log('转换字符串首字母为大写，剩下为小写为：' + JSON.stringify(capitalizeString));
         }).margin(10)
 
-      Button('将给定字符串的字符“&”，“ <”，“>”，“”和“‘”转换为它们相应的HTML实体')
+      Button($r('app.string.Convert_the_characters'))
         .onClick(() => {
           let escapeString: string = escape('fred, barney, & pebbles');
           // => 'fred, barney, &amp; pebbles'
           console.log('转换为:' + JSON.stringify(escapeString));
         }).margin(10)
 
-      Button('转换字符串为kebab case')
+      Button($r('app.string.Convert_kebab_case'))
         .onClick(() => {
           let kebabCaseString: string = kebabCase('__FOO_BAR__');
           // => 'foo-bar'
           console.log('转换字符串为kebab case为:' + JSON.stringify(kebabCaseString));
         }).margin(10)
 
-      Button('从左侧和右侧填充字符')
+      Button($r('app.string.Fill_right_sides'))
         .onClick(() => {
           let paddingString: string = pad('abc', 8, '_-');
           // => '_-abc_-_'
           console.log('如果字符串长度小于length则从左侧和右侧填充字符为:' + JSON.stringify(paddingString));
         }).margin(10)
 
-      Button('转换字符串为指定基数的整数')
+      Button($r('app.string.Convert_cardinality'))
         .onClick(() => {
           let array: number[] = map(['6', '08', '10'], parseInt);
           // => [6, 8, 10]
