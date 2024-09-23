@@ -1,21 +1,21 @@
 # box2d
 
-## 简介
+## Overview
 
-> 用于游戏开发，使物体的运动更加真实，让游戏场景看起来更具交互性，比如愤怒的小鸟
+This library is used for game development to make the object motion more realistic and the game scenes more interactive, such as Angry Birds.
 
-## 效果展示
-<img src="screenshot/效果展示.gif"/>
+## Display Effects
+<img src="screenshot/box2d.gif"/>
 
-## 下载安装
+## How to Install
 
 ```shell
 ohpm install @ohos/box2d
 ```
 
-OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 
    ```
    import * as box2d from '@ohos/box2d'
@@ -27,9 +27,9 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
     for (let i: number = 0; i < g_testEntries.length; ++i) {
       let o = {};
       o['value'] = g_testEntries[i].name;
-      selectArr[i] = o;//初始化数据
+      selectArr[i] = o;// Initialize data.
     }
-        //循环调用渲染
+        // Invoke rendering cyclically.
         this.init();
     }
     private init() {
@@ -45,7 +45,7 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
     }
 
    ...
-       //动画切换
+       // Switch the animation.
        Select(selectArr)
               .selected(this.index)
               .value(selectArr[this.index].value)
@@ -56,98 +56,99 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
                 this.index = index;
                 if (app) {
                   app.m_test_index = index;
-                  //加载动画
+                  // Load the animation.
                   app.LoadTest();
                 }
               })
    ```
 
-## 接口说明
+## Available APIs
 
-### b2Body类接口 
-1. 创建夹具
+### b2Body APIs 
+1. Creates a fixture.
    `CreateFixture()`
-2. 销毁夹具
+2. Destroys a fixture.
    `DestroyFixture()`
-3. 设置变换
+3. Sets the transformation.
    `SetTransform()`
-4. 获取变换
+4. Obtains the transformation.
    `GetTransform()`
-5. 获取位置
+5. Obtains the position.
    `GetPosition()`
-6. 设置位置
+6. Sets the position.
    `SetPosition()`
-7. 获取世界中心
+7. Obtains the world center.
    `GetWorldCenter()`
-8. 获取本地中心
+8. Obtains the local center.
    `GetLocalCenter()`
-9. 设置线性速度
+9. Sets the linear speed.
    `SetLinearVelocity()`
 
-### b2World类接口
-1. 设置子步长
+### b2World APIs
+1. Sets the substep.
    `setSubStepping()`
-2. 设置销毁侦听器
+2. Sets the destruction listener.
    `SetDestructionListener()`
-3. 设置接触筛选器
+3. Sets the contact filter.
    `SetContactFilter()`
-4. 设置接触监听
+4. Sets the contact listener.
    `SetContactListener()`
-5. 设置调试绘图
+5. Sets the debugging drawing.
    `SetDebugDraw()`
-6. 创建刚体
+6. Creates a rigid body.
    `CreateBody()`
-7. 销毁刚体
+7. Destroys a rigid body.
    `DestroyBody()`
-8. 创建关节
+8. Creates a joint.
    `CreateJoint()`
-9. 销毁关节
+9. Destroys a joint.
    `DestroyJoint()`
 
-### b2Contact类接口
-1. 重置
+### b2Contact APIs
+1. Performs a reset.
    `Reset`
-2. 获取歧管
+2. Obtains the manifold.
    `GetManifold`
-3. 获取世界歧管
+3. Obtains the world manifold.
    `GetWorldManifold`
-4. 设置切线速度
+4. Sets the tangent speed.
    `SetTangentSpeed`
-5. 重置摩擦力
+5. Resets the friction.
    `ResetFriction`
-6. 设置摩擦力
+6. Set the friction.
    `SetFriction`
-7. 设置是否启用
+7. Specifies whether to enable the function.
    `SetEnabled`
-8. 获取夹器A
+8. Obtains fixture A.
    `GetFixtureA`
 
-### b2Shape类接口
-1. 光线投射
+### b2Shape APIs
+1. Performs a ray cast.
    `RayCast`
-2. 获取类型
+2. Obtains the type.
    `GetType`
-3. 拷贝
+3. Performs a copy.
    `Copy`
-4. 获取孩子数量
+4. Obtains the child count.
    `GetChildCount`
-5. 计算AABB
+5. Computes AABB.
    `ComputeAABB`
-6. 计算质量
+6. Computes the quality.
    `ComputeMass`
-7. 计算距离
+7. Computes the distance.
    `ComputeDistance`
-8. 克隆
+8. Performs a clone.
    `clone`
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+box2d has been verified in the following version:
 
-- DevEco Studio: NEXT Beta1-5.0.3.806, SDK: API12 Release (5.0.0.66)
-- DevEco Studio 版本： 4.1 Canary(4.1.3.317) OpenHarmony SDK:API11 (4.1.0.36)
+- DevEco Studio Version: 4.1 Canary (4.1.3.317)
 
-## 目录结构
+- OpenHarmony SDK: API11 (4.1.0.36)
+
+## Directory Structure
 ````
 |---- box2d
 |     |---- entry
@@ -155,79 +156,79 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
 |                |----main
 |                     |----ets
 |                          |----pages
-|                               |----Index.ets                          # 效果主页面
+|                               |----Index.ets                          # Main page
 |                          |----Testbed
 |                               |----Framework 
-|                                    |----DebugDraw.ets                 # 效果绘制具体实现
-|                                    |----FullscreenUI.ts               # 全局页面初始化，是否启用粒子参数
-|                                    |----Main.ets                      # 效果绘制入口
-|                                    |----ParticleEmitter.ts            # 粒子发射器
-|                                    |----ParticleParameter.ts          # 粒子参数
-|                                    |----Test.ets                      # canvas相关初始化设置
-|                               |----Tests                              # 所有效果具体实现
-|                               |----Testbed.ts                         # 对外接口
-|     |---- library                                                       # box2d核心库
+|                                    |----DebugDraw.ets                 # Core code for effect drawing
+|                                    |----FullscreenUI.ts               # Global page initiaization with particle parameters
+|                                    |----Main.ets                      # Entry to effect drawing
+|                                    |----ParticleEmitter.ts            # Particle emitter
+|                                    |----ParticleParameter.ts          # Particle parameters
+|                                    |----Test.ets                      # Canvas initialization settings
+|                               |----Tests                              # Implementation of all effects
+|                               |----Testbed.ts                         # External APIs
+|     |---- library                                                       # box2d core library
 |	        |----src
 |                |----main
 |                     |----ets
 |                          |----Box2D
-|                               |----Collision                          # 碰撞目录
-|                                    |----Shapes                        # 形状目录
-|                                         |----b2ChainShape.ts          # 链条形状
-|                                         |----b2CircleShape.ts         # 圆形状
-|                                         |----b2EdgeShape.ts           # 边缘形状
-|                                         |----b2PolygonShape.ts        # 多边形形状
-|                                         |----b2Shape.ts               # 形状抽象类
-|                                    |----b2BroadPhase.ts               # 广义定义
-|                                    |----b2CollideCircle.ts            # 圆形碰撞
-|                                    |----b2CollideEdge.ts              # 边缘碰撞
-|                                    |----b2CollidePolygon.ts           # 多边形碰撞
-|                                    |----b2Collision.ts                # 碰撞类
-|                                    |----b2Distance.ts                 # 距离类
-|                                    |----b2DynamicTree.ts              # 动态树
-|                                    |----b2TimeOfImpact.ts             # 影响时间
-|                               |----Common                             # 通用代码：绘制、设置、定时器等
-|                                    |----b2BlockAllocator.ts           # 块分配器
-|                                    |----b2Draw.ts                     # 绘制类
-|                                    |----b2GrowableStack.ts            # 生长堆栈
-|                                    |----b2Math.ts                     # 数学计算类
-|                                    |----b2Settings.ts                 # 设置类
-|                                    |----b2StackAllocator.ts           # 堆栈分配器
-|                                    |----b2Timer.ts                    # 计时器类
-|                               |----Controllers                        # 控制器目录
-|                                    |----b2BuoyancyController.ts       # 浮力控制器
-|                                    |----b2ConstantAccelController.ts  # 恒定加速度控制器
-|                                    |----b2ConstantForceController.ts  # 恒力控制器
-|                                    |----b2Controller.ts               # 重力控制器
-|                                    |----b2GravityController.ts        # 张量阻尼控制器
+|                               |----Collision                          # Collision directory
+|                                    |----Shapes                        # Shape directory
+|                                         |----b2ChainShape.ts          # Chain shape
+|                                         |----b2CircleShape.ts         # Circle shape
+|                                         |----b2EdgeShape.ts           # Edge shape
+|                                         |----b2PolygonShape.ts        # Polygon shape
+|                                         |----b2Shape.ts               # Shape abstraction class
+|                                    |----b2BroadPhase.ts               # Broad-phase
+|                                    |----b2CollideCircle.ts            # Circle collision
+|                                    |----b2CollideEdge.ts              # Edge collision
+|                                    |----b2CollidePolygon.ts           # Polygon collision
+|                                    |----b2Collision.ts                # Collision class
+|                                    |----b2Distance.ts                 # Distance class
+|                                    |----b2DynamicTree.ts              # Dynamic tree
+|                                    |----b2TimeOfImpact.ts             # Time of impact
+|                               |----Common                             # Common code: drawing, setting, and timer
+|                                    |----b2BlockAllocator.ts           # Block allocator
+|                                    |----b2Draw.ts                     # Drawing class
+|                                    |----b2GrowableStack.ts            # Growable stack
+|                                    |----b2Math.ts                     # Math class
+|                                    |----b2Settings.ts                 # Setting class
+|                                    |----b2StackAllocator.ts           # Stack allocator
+|                                    |----b2Timer.ts                    # Timer class
+|                               |----Controllers                        # Controller directory
+|                                    |----b2BuoyancyController.ts       # Buoyancy controller
+|                                    |----b2ConstantAccelController.ts  # Constant acceleration controller
+|                                    |----b2ConstantForceController.ts  # Constant force controller
+|                                    |----b2Controller.ts               # Gravity controller
+|                                    |----b2GravityController.ts        # Tensor damping controller
 |                               |----Dynamics
-|                                    |----Contacts                      # 接触类目录
-|                                    |----Joints                        # 关节目录
-|                                    |----b2Body.ts                     # 刚体类
-|                                    |----b2ContactManager.ts           # 接触管理类
-|                                    |----b2Fixture.ts                  # 夹具类
-|                                    |----b2Island.ts                   # 岛类
-|                                    |----b2TimeStep.ts                 # 时间步类
-|                                    |----b2World.ts                    # 世界类
-|                                    |----b2WorldCallbacks.ts           # 世界回调类
-|                               |----Particle                           # 粒子目录
-|                                    |----b2Particle.ts                 # 粒子类
-|                                    |----b2ParticleGroup.ts            # 粒子群类
-|                                    |----b2ParticleSystem.ts           # 粒子系统类
-|                                    |----b2StackQueue.ts               # 堆栈队列类
-|                                    |----b2VoronoiDiagram.ts           # 诺图类
-|                               |----Rope                               # 绳索目录
-|                                    |----b2Rope.ts                     # 绳索
-|                               |----Box2D.ts                           # 所有接口导出类
-|                               |----box2d.umd.js                       # 所有接口导出实现类
-|     |---- README.md                                                   # 安装使用方法                    
+|                                    |----Contacts                      # Contact directory
+|                                    |----Joints                        # Joints
+|                                    |----b2Body.ts                     # Body
+|                                    |----b2ContactManager.ts           # Contact management
+|                                    |----b2Fixture.ts                  # Fixtures
+|                                    |----b2Island.ts                   # Islands
+|                                    |----b2TimeStep.ts                 # Time steps
+|                                    |----b2World.ts                    # World
+|                                    |----b2WorldCallbacks.ts           # World callbacks
+|                               |----Particle                           # Particle directory
+|                                    |----b2Particle.ts                 # Particles
+|                                    |----b2ParticleGroup.ts            # Particle groups
+|                                    |----b2ParticleSystem.ts           # Particle systems
+|                                    |----b2StackQueue.ts               # Stack queues
+|                                    |----b2VoronoiDiagram.ts           # Voronoi diagrams
+|                               |----Rope                               # Rope directory
+|                                    |----b2Rope.ts                     # Ropes
+|                               |----Box2D.ts                           # API export
+|                               |----box2d.umd.js                       # API export implementation
+|     |---- README.md                                                   # Readme  
+|     |---- README_zh.md                                                # Readme                   
 ````
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem when using box2d, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-本项目基于 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/box2d/LICENSE) ，请自由地享受和参与开源。
-
+This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/box2d/LICENSE).

@@ -243,7 +243,7 @@ struct Index {
       })
 
       Flex() {
-        Button('图层切换')
+        Button($r('app.string.switch_layer'))
           .fontColor(Color.White)
           .margin({ left: '10', top: '10' })
           .padding({ left: 20, right: 20, bottom: 10, top: 10 })
