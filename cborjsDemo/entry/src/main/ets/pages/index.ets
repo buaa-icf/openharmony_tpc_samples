@@ -20,12 +20,28 @@ import prompt from '@ohos.prompt';
 @Entry
 @Component
 struct Index {
-  @State onChangeText: string = '默认 testWorld'
-
+  @State onChangeText: string = this.getResourceString($r('app.string.Default_testWorld'))
+  getResourceString(res:Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
+  testCbor(initial:string) {
+    let encoded:ArrayBuffer = CBOR.encode(initial)
+    let decoded:ArrayBuffer = CBOR.decode(encoded)
+    if (initial.toString() == decoded.toString()) {
+      console.log(this.getResourceString($r('app.string.same_value')));
+      prompt.showToast({ message: this.getResourceString($r('app.string.same_value')), duration: 200 })
+    } else if (initial === decoded.toString()) {
+      console.log(this.getResourceString($r('app.string.same_value')));
+      prompt.showToast({ message: this.getResourceString($r('app.string.same_value')), duration: 200 })
+    } else {
+    console.log(this.getResourceString($r('app.string.different_value')));
+    prompt.showToast({ message: this.getResourceString($r('app.string.different_value')), duration: 200 })
+    }
+  }
   build() {
     Row() {
       Column() {
-        TextInput({ placeholder: '请输入', text: '默认 testWorld' })
+        TextInput({ placeholder: $r('app.string.Please_enter'), text: $r('app.string.Default_testWorld') })
           .placeholderColor('rgb(0, 0, 255)')
           .placeholderFont({ size: 15, weight: 100, family: 'cursive', style: FontStyle.Italic })
           .caretColor(Color.Blue)
@@ -47,10 +63,10 @@ struct Index {
           .margin('10')
           .onClick(() => {
             if (this.onChangeText == '') {
-              prompt.showToast({ message: '请输入需要编码的值', duration: 200 })
+              prompt.showToast({ message: this.getResourceString($r('app.string.Test_cbor_codec')), duration: 200 })
               return
             } else {
-              testCbor(this.onChangeText)
+              this.testCbor(this.onChangeText)
             }
           })
       }
@@ -60,18 +76,18 @@ struct Index {
   }
 }
 
-function testCbor(initial:string) {
-  let encoded:ArrayBuffer = CBOR.encode(initial)
-  let decoded:ArrayBuffer = CBOR.decode(encoded)
-  if (initial.toString() == decoded.toString()) {
-    console.log('解码值和原值相同');
-    prompt.showToast({ message: '解码值和原值相同', duration: 200 })
-  } else if (initial === decoded.toString()) {
-    console.log('解码值和原值相同');
-    prompt.showToast({ message: '解码值和原值相同', duration: 200 })
-  } else {
-    console.log('解码值和原值不同');
-    prompt.showToast({ message: '解码值和原值不同', duration: 200 })
-  }
-}
+// function testCbor(initial:string) {
+//   let encoded:ArrayBuffer = CBOR.encode(initial)
+//   let decoded:ArrayBuffer = CBOR.decode(encoded)
+//   if (initial.toString() == decoded.toString()) {
+//     console.log('解码值和原值相同');
+//     prompt.showToast({ message: '解码值和原值相同', duration: 200 })
+//   } else if (initial === decoded.toString()) {
+//     console.log('解码值和原值相同');
+//     prompt.showToast({ message: '解码值和原值相同', duration: 200 })
+//   } else {
+//     console.log('解码值和原值不同');
+//     prompt.showToast({ message: '解码值和原值不同', duration: 200 })
+//   }
+// }
 
