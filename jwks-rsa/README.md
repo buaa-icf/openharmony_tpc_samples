@@ -1,18 +1,18 @@
 # jwks-rsa
 
-## 简介
+## Introduction
 
-从 JWKS（JSON Web 密钥集）端点检索密钥来生成公钥的库，其加密方式采用了非对称公钥加密算法（RSA）和非对称椭圆曲线加密算法(ECC)。
+jwks-rsa is a library that retrieves keys from JSON Web Key Set (JWKS) endpoints to generate public keys. It uses the asymmetric public key encryption algorithm (RSA) and asymmetric elliptic curve encryption algorithm (ECC) for encryption.
 
-## 下载安装
+## How to Install
 
 ```shell
 ohpm install @ohos/jwks-rsa 
 ```
-OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
-1. 初始化：实例化JwksClient和设置对应的属性
+## How to Use
+1. Instantiate **JwksClient** and set the corresponding attributes.
 
  ```
 this.client = new JwksClient({
@@ -25,9 +25,9 @@ this.client = new JwksClient({
 },
 ```
  
-2. 获取publicKey和属性值：
+2. Obtain **publicKey** and the attribute value.
 
-  公钥加密实现是使用OH子系统的加密框架（@ohos.security.cryptoFramework）。具体实现参考(https://gitee.com/openharmony/docs/blob/master/zh-cn/application-dev/security/CryptoArchitectureKit/crypto-rsa-asym-encrypt-decrypt-pkcs1_oaep.md) 。
+  Public key encryption is implemented using the encryption framework (@ohos.security.cryptoFramework) of OpenHarmony. For details, see [Encryption and Decryption with an RSA Asymmetric Key Pair (PKCS1_OAEP)](https://gitee.com/openharmony/docs/blob/master/en/application-dev/security/CryptoArchitectureKit/crypto-rsa-asym-encrypt-decrypt-pkcs1_oaep.md).
 ```
   function compareRsaPubKeyBySpec(rsaKeySpec, n, e) {
     if (typeof n === 'string' || typeof e === 'string') {
@@ -62,14 +62,14 @@ this.client = new JwksClient({
       params : commonSpec,
       pk :BigInt(eN),
   }
-  //根据RSA密钥对参数生成RSA密钥对
+  // Generate an RSA key pair based on the RSA key pair parameter.
   asyKeyGenerator = cryptoFramework.createAsyKeyGeneratorBySpec(rsaSpec);
-  //生成公钥实例
+  // Generate a publicKey instance.
   const  pubKey = await asyKeyGenerator.generatePubKey()
-  //获取公钥的指定参数
+  // Obtain the specified parameters of publicKey.
   let nBN = pubKey.getAsyKeySpec(cryptoFramework.AsyKeySpecItem.RSA_N_BN);
   let eBN = pubKey.getAsyKeySpec(cryptoFramework.AsyKeySpecItem.RSA_PK_BN);
-  将RSA公钥规范与预期值进行比较
+  Compare the RSA public key specifications with the expected value.
   if (compareRsaPubKeyBySpec(rsaSpec, nBN, eBN) != true) {
       console.error("jwks_rsa error pub key big number")
   } else {
@@ -78,7 +78,7 @@ this.client = new JwksClient({
   }
 ```
 
-  获取publicKey和属性值
+  Obtain publicKey and the attribute value.
 ```
   let signingKey = await this.client.getSigningKey(kid)
   this.kid = signingKey.kid
@@ -88,48 +88,49 @@ this.client = new JwksClient({
   this.publicKey = await signingKey.getPublicKey()
 ```
 
-## 约束与限制
-在下述版本验证通过：
-- DevEco Studio 版本： 4.1 Canary(4.1.3.317)
+## Constraints
+This project has been verified in the following version:
+- DevEco Studio: 4.1 Canary (4.1.3.317)
 
 - OpenHarmony SDK:API11 (4.1.0.36)
 
-## 目录结构
+## Directory Structure
 
 ````
 |---- OHOS_APP_jwks-rsa
-|   |---- entry                                                # 示例代码文件夹
-|   |---- jwks-rsa                                             # OHOS_APP_jwks-rsa库文件夹
+|   |---- entry                                                # Sample code
+|   |---- jwks-rsa                                             # OHOS_APP_jwks-rsa library
 |       |---- src
             |----main
                 |----js
                     |----components
                         |----errors
-                            |----ArgumentError.js              #错误日志
-                            |----JwksError.js                  #错误日志
-                            |----JwksRateLimitError.js         #错误日志
-                            |----SigningKeyNotFoundError.js    #错误日志
+                            |----ArgumentError.js              # Error logs
+                            |----JwksError.js                  # Error logs
+                            |----JwksRateLimitError.js         # Error logs
+                            |----SigningKeyNotFoundError.js    # Error logs
                         |----integrations
-                            |----config.js                     #支持的加密算法
-                            |----express.js                    #expressJwtSecret生成秘密提供者
-                            |----hapi.js                       #hapiJwtSecret生成秘密提供者
-                            |----koa.js                        #koaJwtSecret生成秘密提供者
-                            |----passport.js                   #passportJwtSecret生成秘密提供者
+                            |----config.js                     # Encryption algorithms
+                            |----express.js                    # Secret provider generation by expressJwtSecret
+                            |----hapi.js                       # Secret provider generation by hapiJwtSecret
+                            |----koa.js                        # Secret provider generation by koaJwtSecret
+                            |----passport.js                   # Secret provider generation by passportJwtSecret
                         |----wrappers
-                            |----cache.js                      #从缓存中获取密钥
-                            |----callbackSupport.js            #回调方法
-                            |----interceptor.js                #回调方法
-                            |----rateLimit.js                  #设置请求密钥的速率
-                            |----request.js                    #网路请求
-                        |----JwksClient.js                     #构造方法
-                        |----utils.js                          #加密算法
-|   |---- README.md                                            #使用方法
+                            |----cache.js                      # Key acquisition from the cache
+                            |----callbackSupport.js            # Callbacks
+                            |----interceptor.js                # Callbacks
+                            |----rateLimit.js                  # Key requesting rate
+                            |----request.js                    # Network requests
+                        |----JwksClient.js                     # JwksClient constructor
+                        |----utils.js                          # Encryption algorithms
+|   |---- README.md                                            # Readme
+|   |---- README_zh.md                                            # Readme
 ````
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/hihopeorg/jwks-rsa/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/hihopeorg/jwks-rsa/pulls) 。
+If you find any problem when using jwks-rsa, you can submit an [Issue](https://gitee.com/hihopeorg/jwks-rsa/issues) or a [PR](https://gitee.com/hihopeorg/jwks-rsa/pulls) to us.
 
-## 开源协议
+## License
 
-本项目基于 [MIT License](https://gitee.com/hihopeorg/jwks-rsa/blob/master/LICENSE) ，请自由地享受和参与开源。
+This project is licensed under the terms of the [MIT License](https://gitee.com/hihopeorg/jwks-rsa/blob/master/LICENSE).

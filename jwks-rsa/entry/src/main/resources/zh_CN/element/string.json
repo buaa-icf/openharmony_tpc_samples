@@ -27,6 +27,10 @@
     {
       "name": "internet_permission",
       "value": "obtain internet  resource"
+    },
+    {
+      "name": "generate_public_key",
+      "value": "点击生成公钥"
     }
   ]
 }
