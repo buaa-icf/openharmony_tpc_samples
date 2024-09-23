@@ -24,18 +24,20 @@ struct Index {
   @State element: string = '';
   @State end: string = '';
 
-
+  getResourceString(res: Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
   private parser:ESObject =new Parser();
   build() {
     Row() {
       Column() {
-        Text("解析start："+this.start)
+        Text(this.getResourceString($r('app.string.Analyze_start'))+this.start)
           .fontSize(30)
-        Text("解析element："+this.element)
+        Text(this.getResourceString($r('app.string.Analyze_element'))+this.element)
           .fontSize(30)
-        Text("解析end："+this.end)
+        Text(this.getResourceString($r('app.string.Analyze_end'))+this.end)
           .fontSize(30)
-        Button("解析")
+        Button($r('app.string.Analyze'))
           .fontSize(40)
           .fontWeight(FontWeight.Bold)
           .onClick(()=>{

@@ -11,6 +11,22 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Analyze_start",
+      "value": "解析start："
+    },
+    {
+      "name": "Analyze_element",
+      "value": "解析element："
+    },
+    {
+      "name": "Analyze_end",
+      "value": "解析end："
+    },
+    {
+      "name": "Analyze",
+      "value": "解析"
     }
   ]
 }
