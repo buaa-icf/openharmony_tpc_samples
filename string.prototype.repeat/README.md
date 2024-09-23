@@ -1,47 +1,52 @@
 # String.prototype.repeat
 
-## 简介
-> 重复生成指定字符串功能库。
+## Introduction
+This library allows creation of a new string containing the specified number of copies of the string concatenated together.
 
-## 下载安装
+## How to Install
 ```shell
 ohpm install string.prototype.repeat
 ```
-OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
-1. 引入文件及代码依赖
+## How to Use
+Import dependencies and create a string that has "abc" repeated twice.
+
  ```
 import repeat from 'string.prototype.repeat'
 
 let repeatValue= 'abc'.repeat(2) //abcabc
  ```
 
-## 接口说明
-* 重复生成指定字符串
-  `repeat()`
+## Available APIs
+| API        | Description                                                  |
+| ---------- | ------------------------------------------------------------ |
+| `repeat()` | Creates a new string containing the specified number of copies of the given string concatenated together. |
 
-## 目录结构
+
+
+## Directory Structure
 ````
 |---- string.prototype.repeat
-|     |---- entry  # 示例代码文件夹
+|     |---- entry  # Sample code
               ├── src  
                  ├── main   
                    ├── ets
                        ├── pages
-                             ├── Index.ets  sample代码
-|     |---- README.md  # 安装使用方法                    
+                             ├── Index.ets  # Sample code
+|     |---- README.md  # Readme                   
+|     |---- README_zh.md  # Readme                   
 ````
 
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+This project has been verified in the following version:
 
-- DevEco Studio 版本： 4.1 Canary(4.1.3.317) OpenHarmony SDK:API11 (4.1.0.36)
+- DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API 11 (4.1.0.36)
 
-## 贡献代码
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+## How to Contribute
+If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
-本项目基于 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/string.prototype.repeat/LICENSE) ，请自由地享受和参与开源。
+## License
+This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/string.prototype.repeat/LICENSE).
