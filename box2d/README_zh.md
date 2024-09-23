@@ -220,7 +220,8 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
 |                                    |----b2Rope.ts                     # 绳索
 |                               |----Box2D.ts                           # 所有接口导出类
 |                               |----box2d.umd.js                       # 所有接口导出实现类
-|     |---- README.md                                                   # 安装使用方法                    
+|     |---- README.md                                                   # 安装使用方法   
+|     |---- README_zh.md                                                # 安装使用方法                    
 ````
 
 ## 贡献代码

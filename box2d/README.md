@@ -221,7 +221,8 @@ box2d has been verified in the following version:
 |                                    |----b2Rope.ts                     # Ropes
 |                               |----Box2D.ts                           # API export
 |                               |----box2d.umd.js                       # API export implementation
-|     |---- README_EN.md                                             # Readme                   
+|     |---- README.md                                                   # Readme  
+|     |---- README_zh.md                                                # Readme                   
 ````
 
 ## How to Contribute
