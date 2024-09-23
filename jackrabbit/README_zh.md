@@ -1,74 +1,74 @@
 # Jackrabbit
 
-## Introduction
+## 简介
 
-Jackrabbit uses TypeScript to implement functions similar to [jackrabbit](https://github.com/pagerinc/jackrabbit) on OpenHarmony. It supports the Advanced Message Queuing Protocol (AMQP) and can transmit asynchronous messages across processes.
+> 本软件是参照开源软件 [jackrabbit](https://github.com/pagerinc/jackrabbit) 源码并用 TypeScript 语言实现了相关功能，在OpenHarmony上支持AMQP（Advanced Message Queuing Protocol）网络通信协议的library，可以在一个进程间传递异步消息。
 
-Jackrabbit depends on the **amqplib** library and implements multiple message transfer modes on RabbitMQ.
+> Jackrabbit底层依赖amqplib库，在RabbitMQ上实现了多种消息传递模式。
 
-## How to Install
+## 下载安装
 
-1. [Install an OpenHarmony HAR.](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+1. 参考安装教程 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
-2. Run the installation command:
+2. 安装命令如下：
 
    ```
    ohpm install @ohos/jackrabbit
    ```
-## Main Functions
-1. Message publishing: Send messages of the JSON and string types, and set the configuration information for publishing messages.
-2. Message consumption: Set the callback for receiving messages and configure consumption information.
-3. Switch configuration: Set the switch type (direct, fanout, or topic), switch name, persistence status, and timeout status.
-4. Queue configuration: Set the queue name, persistence status, and maximum length.
-5. Easy-to-use amqp communication API: Compared with the APIs provided by amqplib, jackrabbit provides simple and easy-to-use APIs for switch and queue operations. The class abstraction of **Exchange** and **Queue** is added to the client. Compared with amqplib, amqplib needs to specify the switch or queue to be operated on the server through string parameters each time. Jackrabbit can obtain an Exchange/Queue object immediately after creating a switch or queue, and you only need to call the APIs of this object later.
-6. Reconnection mechanism: Provide the reconnection mechanism that is not available in amqplib.
+## 主要功能
+1. 发布消息：支持json及string类型的消息发送，同时也支持设置相关的发布消息的配置信息
+2. 消费消息：支持设置接收消息的回调函数，也支持设置相关消费信息的配置信息
+3. 交换机配置：支持设置direct、fanout、topic共三种类型的交换机、支持设置交换机名称、是否持久化、是否超时等配置信息
+4. 队列配置：支持设置队列名称、是否持久化、最大长度等配置信息
+5. 更为精简的amqp通信接口：相对于amqplib提供的接口，jackrabbit在交换机和队列操作方面提供了更为精简易用的接口；客户端增加了Exchange和Queue的类抽象，相比于amqplib每次都需要通过字符串参数向服务端指定对哪个交换机/队列进行操作，jackrabbit在创建完交换机/队列后立刻就能拿到一个Exchange/Queue对象，以后只需要调用此对象的方法即可
+6. 增加重连机制：增加了amqplib原本不支持的重连机制
 
-## How to Use
-### Geting Started
-1. You first need to set up the RabbitMQ environment.
+## 使用说明
+### 使用前言
+1. 需要搭建RabbitMQ环境，请根据该参考链接安装环境：https://zhuanlan.zhihu.com/p/381644577
 
-2. There is a version mapping between RabbitMQ and Erlang. Unexpected problems may arise if the two versions do not match. For details, see [Erlang Version Requirements](https://www.rabbitmq.com/which-erlang.html).
+2. RabbitMQ与Erlang是存在版本对应关系，两者版本如果不对应会出现许多问题，详见：https://www.rabbitmq.com/which-erlang.html
 
-3. Version mapping:
+3. 可参考版本对应关系：
 
-   1. RabbitMQ version **rabbitmq-server-3.10.7.exe**: https://github.com/rabbitmq/rabbitmq-server/releases/tag/v3.10.7
-   2. Erlang version **otp_win64_25.0.exe**: https://www.erlang.org/patches/otp-25.0
+   1. RabbitMQ版本为"rabbitmq-server-3.10.7.exe"，下载链接：https://github.com/rabbitmq/rabbitmq-server/releases/tag/v3.10.7
+   2. Erlang版本为"otp_win64_25.0.exe"，下载链接：https://www.erlang.org/patches/otp-25.0
 
-4. By default, the guest of RabbitMQ can only be connected from localhost. The official solution is to modify the RabbitMQ configuration in the configuration file. The procedure is as follows:
+4. 由于RabbitMQ默认的guest只能从localhost连接不能使用远程连接，官方给出的解决方案是通过配置文件修改RabbitMQ的配置，以下是修改步骤：
 
-   1. Find the RabbitMQ installation directory, for example, **rabbitmq-server-3.10.7**.
+   1. 找到RabbitMQ的安装目录，以rabbitmq-server-3.10.7为例；
 
-   2. In the **README.txt** file in **\rabbitmq_server-3.10.7\etc**, find the real RabbitMQ.
+   2. 在\rabbitmq_server-3.10.7\etc下有个README.txt文件，通过文件指引找到"真正"的RabbitMQ；
 
-   3. Create the configuration file **rabbitmq.config** in **C:\Users\ %USERNAME %\AppData\Roaming\RabbitMQ** and write the following information into the file:
+   3. 在C:\Users\%USERNAME%\AppData\Roaming\RabbitMQ目录下新建一个配置文件：rabbitmq.config，并写入：
 
       ```
       [{rabbit, [{loopback_users, []}]}].
       ```
 
-   4. Save and exit.
+   4. 保存并退出；
 
-   5. Restart the RabbitMQ service.
+   5. 重启RabbitMQ服务：
 
-      1. Press Win+R and enter cmd to open the CLI.
+      1. win键+R输入cmd，打开命令行窗口；
 
-      2. Launch the Services Manager.
+      2. 输入以下命令打开电脑服务；
 
          ```
          SERVICES.MSC
          ```
 
-      3. Find RabbitMQ and click Restart to restart the service.
+      3. 找到RabbitMQ单击并点击重启动此服务；
 
-5. Connect test PC to the network. Make sure that its IP address is the same as that of the server.
+5. 测试机需联网并且与服务器的ip地址需要相同；
 
-6. The library implementation depends on node modules such as buffer, stream, and events. The compilation can be performed only after polyfill is configured. For details about how to configure polyfill, see [openharmony-polyfill](https://gitee.com/openharmony-sig/openharmony-polyfill).
+6. 库实现依赖buffer、stream、events等node模块，需配置polyfill后才能通过编译，配置方法参考： [OpenHarmony-SIG/openharmony-polyfill (gitee.com)](https://gitee.com/openharmony-sig/openharmony-polyfill) ；
 
-7. Compile and install the HAP on the test PC to perform the test cases.
+7. 编译并安装hap包到测试机即可进行用例测试；
 
-8. For details about how to use the demo, see the implementation of the sample page.
+8. 具体使用demo请参考开源库sample页面的实现；
 
-### 1. Default switch
+### 1.默认交换机
 
 ```
   receive(console: Console.Model) {
@@ -103,7 +103,7 @@ Jackrabbit depends on the **amqplib** library and implements multiple message tr
   }
 ```
 
-### 2. Direct-connection switch
+### 2.直连交换机
 
 ```
   receiveEnglish(console: Console.Model) {
@@ -142,7 +142,7 @@ Jackrabbit depends on the **amqplib** library and implements multiple message tr
   }
 ```
 
-### 3. Fanout switch
+### 3.扇形交换机
 
 ```
   receive(console: Console.Model) {
@@ -180,7 +180,7 @@ Jackrabbit depends on the **amqplib** library and implements multiple message tr
   }
 ```
 
-### 4. Multi-queue matching
+### 4.多队列匹配
 
 ```
   receive(console: Console.Model) {
@@ -227,7 +227,7 @@ Jackrabbit depends on the **amqplib** library and implements multiple message tr
   }
 ```
 
-### 5. Topic switch
+### 5.主题交换机
 
 ```
   receive(console: Console.Model) {
@@ -283,7 +283,7 @@ Jackrabbit depends on the **amqplib** library and implements multiple message tr
   }
 ```
 
-### 6. One-to-one connection
+### 6.一对一连接
 
 ```
   startServer(console: Console.Model) {
@@ -341,7 +341,7 @@ Jackrabbit depends on the **amqplib** library and implements multiple message tr
   }
 ```
 
-### 7. Timeout check
+### 7.超时检查
 
 ```
   startClientTimeout(console: Console.Model) {
@@ -380,40 +380,41 @@ Jackrabbit depends on the **amqplib** library and implements multiple message tr
   }
 ```
 
-## Constraints
+## 约束与限制
 
-Jackrabbit has been verified in the following version:
+在下述版本验证通过：
 
-- DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API11 (4.1.0.36)
-- IDE: DevEco Studio Next, Developer Beta1 (5.0.3.121), SDK: API12 (5.0.0.16)
+- DevEco Studio: NEXT Beta1-5.0.3.806, SDK: API12 Release (5.0.0.66)
+- DevEco Studio 版本： 4.1 Canary(4.1.3.317) OpenHarmony SDK:API11 (4.1.0.36)
+- IDE：DevEco Studio Next ,Developer Beta1(5.0.3.121),SDK:API12 (5.0.0.16)
 
-## Directory Structure
+## 目录结构
 
 ```
 |---- Jackrabbit
-|     |---- amqplib  # amqplib library
+|     |---- amqplib  # amqplib库文件夹
 |           |---- ets
-|                 |---- lib  # Main dependencies
-|                 |---- types  # External APIs
-|                 |---- callback_api.js  # Callback scripts
-|                 |---- channel_api.js  # Promise scripts
-|     |---- entry  # Sample code
-|     |---- library  # Jackrabbit library
+|                 |---- lib  # 主要依赖
+|                 |---- types  # 对外接口文件夹
+|                 |---- callback_api.js  # callback回调脚本
+|                 |---- channel_api.js  # promise回调脚本
+|     |---- entry  # 示例代码文件夹
+|     |---- library  # Jackrabbit库文件夹
 |           |----ets    
-|                 |---- compat  # Compatibility utility
-|                 |---- node_modules  # amqplib library
-|                 |---- types  # External APIs
-|                 |---- exchange.js  # Switch scripts
-|                 |---- jackrabbit.js  # Jackrabbit scripts
-|                 |---- queue.js  # Queue scripts
-|     |---- screenshot  # Screenshots
-|     |---- README_EN.md  # Readme
+|                 |---- compat  # 兼容工具文件夹
+|                 |---- node_modules  # 依赖amqplib库
+|                 |---- types  # 对外接口文件夹
+|                 |---- exchange.js  # 交换机脚本
+|                 |---- jackrabbit.js  # jackrabbit脚本
+|                 |---- queue.js  # 队列脚本
+|     |---- screenshot  # 效果展示截图
+|     |---- README.md  # 安装使用方法
 ```
 
-## How to Contribute
+## 贡献代码
 
-If you find any problem when using Jackrabbit, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
-## License
+## 开源协议
 
-This project is licensed under [MIT LICENSE](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/jackrabbit/LICENSE).
+本项目基于 [MIT LICENSE](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/jackrabbit/LICENSE) ，请自由地享受和参与开源。

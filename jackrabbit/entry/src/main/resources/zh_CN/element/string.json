@@ -11,6 +11,34 @@
     {
       "name": "EntryAbility_label",
       "value": "jackrabbit"
+    },
+    {
+      "name": "HelloWorld",
+      "value": "Hello World (默认交换机)"
+    },
+    {
+      "name": "WorkQueues",
+      "value": "WorkQueue (直连交换机)"
+    },
+    {
+      "name": "PubSub",
+      "value": "PubSub (扇形交换机)"
+    },
+    {
+      "name": "Routing",
+      "value": "Routing (多队列匹配)"
+    },
+    {
+      "name": "Topics",
+      "value": "Topics (主题交换机)"
+    },
+    {
+      "name": "Rpc",
+      "value": "Rpc (一对一连接)"
+    },
+    {
+      "name": "TimeoutRpc",
+      "value": "TimeoutRpc (超时检查)"
     }
   ]
 }

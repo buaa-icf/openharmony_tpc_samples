@@ -11,6 +11,34 @@
     {
       "name": "EntryAbility_label",
       "value": "jackrabbit"
+    },
+    {
+      "name": "HelloWorld",
+      "value": "Hello World (default switch)"
+    },
+    {
+      "name": "WorkQueues",
+      "value": "WorkQueue (Direct Connect Switch)"
+    },
+    {
+      "name": "PubSub",
+      "value": "PubSub (Fan Switch)"
+    },
+    {
+      "name": "Routing",
+      "value": "Routing (multi queue matching)"
+    },
+    {
+      "name": "Topics",
+      "value": "Topics (Topic Switch)"
+    },
+    {
+      "name": "Rpc",
+      "value": "Rpc (one to one connection)"
+    },
+    {
+      "name": "TimeoutRpc",
+      "value": "TimeoutRpc (timeout check)"
     }
   ]
 }

@@ -34,34 +34,38 @@ struct Index {
   @State serverIp: string = '10.50.40.18';
   routes: routeBean[] = [
     {
-      name: 'HelloWorld(默认交换机)',
+      name: this.getResourceStr($r("app.string.HelloWorld")),
       path: 'pages/HelloWorld'
     },
     {
-      name: 'WorkQueues(直连交换机)',
+      name: this.getResourceStr($r("app.string.WorkQueues")),
       path: 'pages/WorkQueues'
     },
     {
-      name: 'PubSub(扇形交换机)',
+      name: this.getResourceStr($r("app.string.PubSub")),
       path: 'pages/PubSub'
     } ,
     {
-      name: 'Routing(多队列匹配)',
+      name: this.getResourceStr($r("app.string.Routing")),
       path: 'pages/Routing'
     },
     {
-      name: 'Topics(主题交换机)',
+      name: this.getResourceStr($r("app.string.Topics")),
       path: 'pages/Topics'
     },
     {
-      name: 'Rpc(一对一连接)',
+      name: this.getResourceStr($r("app.string.Rpc")),
       path: 'pages/Rpc'
     },
     {
-      name: 'TimeoutRpc(超时检查)',
+      name: this.getResourceStr($r("app.string.TimeoutRpc")),
       path: 'pages/TimeoutRpc'
     }
   ]
+
+  private getResourceStr(data:Resource):string{
+    return getContext().resourceManager.getStringSync(data)
+  }
 
   build() {
 
@@ -74,7 +78,7 @@ struct Index {
       }.width('100%').height('10%')
 
       ForEach(this.routes, (item: routeBean) => {
-        Text(item.name)
+        Button(item.name)
           .fontSize(30)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
