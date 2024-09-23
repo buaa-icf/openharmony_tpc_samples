@@ -36,7 +36,7 @@ export class ModelController {
     return ModelController.instance;
   }
 
-  public getModelArrayList(): Array<Model> {
-    return Model.buildModel();
+  public getModelArrayList(describe:Array<string>): Array<Model> {
+    return Model.buildModel(describe);
   }
 }

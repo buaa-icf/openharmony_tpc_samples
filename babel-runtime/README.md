@@ -1,16 +1,16 @@
 # @babel/runtime
 
-## 简介
-> 本软件是参照开源软件 [@babel/runtime](https://babeljs.io/docs/babel-runtime) 源码并用 TypeScript 语言实现了相关功能，在OpenHarmony上支持一个 Babel 运行时的辅助库，用于在转换 ES6+ 代码时提供必要的运行时支持。
+## Introduction
+> Based on the source code of open-source software [@babel/runtime](https://babeljs.io/docs/babel-runtime), this software uses the TypeScript language to implement related functions. It supports a Babel-runtime auxiliary library to provide necessary runtime support during ES6+ code conversion.
 
-## 下载安装
+## How to Install
 ```shell
 ohpm install @babel/runtime@7.22.6
 ```
-OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
-1. 引入文件及代码依赖
+## How to Use
+1. Import files and code dependencies.
  ```
 import _createRawReactElement from '@babel/runtime/helpers/esm/jsx';
 import _iterableToArrayLimit from '@babel/runtime/helpers/esm/iterableToArrayLimit';
@@ -19,58 +19,59 @@ import _typeof from '@babel/runtime/helpers/esm/typeof';
 import _get from '@babel/runtime/helpers/esm/get';
  ```
 
-## 接口说明
-* classCallCheck -用于在类的构造函数中检查是否使用了 new 关键字来实例化类。
-* defineProperties -用于定义对象的多个属性。
-* defineProperty -用于定义对象的单个属性。
-* extends -用于实现类之间的继承。
-* get -用于获取对象的属性值。
-* inherits -用于实现原型链继承。
-* instanceof -用于检查对象是否是某个类的实例。
-* interopRequireDefault -用于处理模块导入时的默认导出。
-* interopRequireWildcard  -用于处理模块导入时的通配符导出。
-* newArrowCheck  -用于在箭头函数中检查是否使用了 new 关键字。
-* objectDestructuringEmpty  -用于处理对象解构时的空对象。
-* objectWithoutPropertiesLoose  -用于从对象中排除指定的属性。
-* possibleConstructorReturn  -用于在构造函数中返回实例。
-* set  -用于设置对象的属性值。
-* slicedToArray  -用于将类数组对象转换为数组。
-* slicedToArrayLoose  -与 slicedToArray 类似，但对于非数组对象也能正常工作。
-* superPropBase  -用于在子类中调用父类的属性。
-* toArray  -用于将类数组对象转换为数组。
-* toConsumableArray  -用于将可迭代对象转换为数组。
-* typeof  -用于获取变量的类型。
-* unsupportedIterableToArray  -用于将不可迭代对象转换为数组。
-* wrapNativeSuper  -用于包装原生的 JavaScript 类。
-* asyncGeneratorDelegate  -用于生成异步迭代器的委托。
-* asyncIterator  -用于创建异步迭代器。
-* asyncToGenerator  -用于将异步函数转换为生成器函数。
-* classPrivateFieldGet  -用于获取类的私有字段。
-* classPrivateFieldSet  -用于设置类的私有字段。
-* createSuper  -用于创建类的超类。
-* getPrototypeOf  -用于获取对象的原型。
-* inheritsLoose  -与 inherits 类似，但对于非函数对象也能正常工作。
+## Available APIs
+* classCallCheck: Checks whether the keyword **new** is used to instantiate a class in the constructor function of the class.
+* defineProperties: Defines multiple attributes of an object.
+* defineProperty: Defines a single property of an object.
+* extends: Implement class inheritance.
+* get: Obtains the attribute value of an object.
+* inherits: Implements prototype chain inheritance.
+* instanceof: Checks whether an object is an instanceof a class.
+* interopRequireDefault: Processes the default export during module import.
+* interopRequireWildcard: Processes wildcard export during module import.
+* newArrowCheck: Checks whether the keyword **new** is used in the arrow function.
+* objectDestructuringEmpty: Processes empty objects during object deconstruction.
+* objectWithoutPropertiesLoose: Excludes a specified property from an object.
+* possibleConstructorReturn: Returns an instance in the constructor.
+* set: Sets the attribute value of an object.
+* slicedToArray: Converts a class array object to an array.
+* slicedToArrayLoose: Provides functions similar to slicedToArray, but works properly for non-array objects.
+* superPropBase: Calls the attributes of the parent class in a child class.
+* toArray: Converts a class array object to an array.
+* toConsumableArray: Converts an iterable object to an array.
+* typeof: Obtains the type of an variable.
+* unsupportedIterableToArray: Converts a non-iterative object to an array.
+* wrapNativeSuper: Wraps native JavaScript classes.
+* asyncGeneratorDelegate: Generates a delegate for an asynchronous iterator.
+* asyncIterator: Creates an asynchronous iterator.
+* asyncToGenerator: Converts an asynchronous function to a generator function.
+* classPrivateFieldGet: Obtains the private fields of a class.
+* classPrivateFieldSet: Sets the private fields of a class.
+* createSuper: Indicates a superclass used to create a class.
+* getPrototypeOf: Obtains the prototype of an object.
+* inheritsLoose: Provides functions similar to **inherits**, but works properly for non-function objects.
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过  -
+This project has been verified in the following version:
 
-- DevEco Studio 版本  - 4.1 Canary(4.1.3.317),OpenHarmony SDK:API11 (4.1.0.36)
+- DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API11 (4.1.0.36)
 
-## 目录结构
+## Directory Structure
 ````
 |---- babel-runtime
-|     |---- entry  # 示例代码文件夹
+|     |---- entry  # Sample code
               ├── src  
                  ├── main   
                    ├── ets
                        ├── pages
-                             ├── Index.ets  sample代码
-|     |---- README.md  # 安装使用方法                
+                             ├── Index.ets  # Sample code
+|     |---- README.md  # Readme 
+|     |---- README_zh.md  # Readme               
 ````
 
-## 贡献代码
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+## How to Contribute
+If you find any problem during the use, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
 
-## 开源协议
-本项目基于 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/babel-runtime/LICENSE) ，请自由地享受和参与开源。
+## License
+This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/babel-runtime/LICENSE).

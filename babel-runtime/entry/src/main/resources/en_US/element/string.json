@@ -11,6 +11,38 @@
     {
       "name": "EntryAbility_label",
       "value": "babel-runtime"
+    },
+    {
+      "name": "Result",
+      "value": "Display results："
+    },
+    {
+      "name": "View_results",
+      "value": "Click the button below to view the results"
+    },
+    {
+      "name": "Function_ability",
+      "value": "Function ability： "
+    },
+    {
+      "name": "parameters",
+      "value": "This function takes four parameters: type, props, key, and children. It creates an object containing information such as element type, properties, keys, and child elements based on these parameters, and returns the object as the result"
+    },
+    {
+      "name": "maximum_length",
+      "value": "Specify the maximum length of an iterable algebraic group"
+    },
+    {
+      "name": "properties",
+      "value": "Merge the properties of multiple objects into the target object and return the merged target object."
+    },
+    {
+      "name": "given_object",
+      "value": "Used to obtain the type of a given object."
+    },
+    {
+      "name": "values_object",
+      "value": "Used to obtain the property values of an object."
     }
   ]
 }

@@ -34,11 +34,19 @@ struct Index {
   private modelList: Array<Model> = new Array(0);
   private hilog: HiLog = HiLog.getHiLogInstance();
   @State result: string = "";
+  @State describeData: Array<string> =
+    [this.getResourceStr($r('app.string.parameters')), this.getResourceStr($r('app.string.maximum_length')),
+      this.getResourceStr($r('app.string.properties')), this.getResourceStr($r('app.string.given_object')),
+      this.getResourceStr($r('app.string.values_object'))]
+
+  private getResourceStr(data: Resource): string {
+    return getContext().resourceManager.getStringSync(data)
+  }
 
   build() {
     Column() {
       Row() {
-        Text("显示结果： " + this.result)
+        Text(this.getResourceStr($r('app.string.Result')) + this.result)
           .width('80%')
           .fontSize(16)
           .textAlign(TextAlign.Start)
@@ -47,10 +55,10 @@ struct Index {
       Stack({ alignContent: Alignment.TopStart }) {
         Scroll(this.scroller) {
           Column() {
-            Text("点击下面的按钮查看结果").fontColor(Color.Red).fontSize(px2fp(20))
+            Text(this.getResourceStr($r('app.string.View_results'))).fontColor(Color.Red).fontSize(16).height(20)
             ForEach(this.modelList, (item: Model) => {
               Column() {
-                Text(item.name + "" + "\n函数功能： " + item.describe)
+                Text(item.name + "" + "\n" + this.getResourceStr($r('app.string.Function_ability')) + item.describe)
                   .width('80%')
                   .backgroundColor('#3366CC')
                   .fontSize(16)
@@ -84,7 +92,8 @@ struct Index {
   }
 
   aboutToAppear() {
-    this.modelList = this.contrl.getModelArrayList();
-    this.hilog.HILOG_INFO("[Sample_babel-runtime]", "index page getModelArrayList length is : " + this.modelList.length);
+    this.modelList = this.contrl.getModelArrayList(this.describeData);
+    this.hilog.HILOG_INFO("[Sample_babel-runtime]",
+      "index page getModelArrayList length is : " + this.modelList.length);
   }
 }

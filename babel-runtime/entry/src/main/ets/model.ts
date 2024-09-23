@@ -27,7 +27,6 @@ import _objectSpread2 from "@babel/runtime/helpers/esm/objectSpread2";
 import _typeof from '@babel/runtime/helpers/esm/typeof';
 import _get from '@babel/runtime/helpers/esm/get';
 
-
 export class Model {
   public name: string;
   public describe: string;
@@ -41,16 +40,16 @@ export class Model {
     this.fun = fun;
   }
 
-  public static buildModel(): Array<Model> {
+  public static buildModel(describe:Array<string>): Array<Model> {
     let modelList: Array<Model> = new Array();
     const modelObj: Model = new Model("", "", () => {
     });
     // asyncIterator
-    modelList.push(new Model("_createRawReactElement()", "该函数接受四个参数：type、props、key 和 children。它根据这些参数创建了一个包含元素类型、属性、键、子元素等信息的对象，并返回该对象作为结果", modelObj._createRawReactElement));
-    modelList.push(new Model("_iterableToArrayLimit()", "指定可迭代数组的极限长度", modelObj._iterableToArrayLimit));
-    modelList.push(new Model("_objectSpread2()", "将多个对象的属性合并到目标对象中，并返回合并后的目标对象。", modelObj._objectSpread2));
-    modelList.push(new Model("_typeof()", "用于获取给定对象的类型。", modelObj._typeof));
-    modelList.push(new Model("_get()", "用于获取对象的属性值。", modelObj._get));
+    modelList.push(new Model("_createRawReactElement()", describe[0], modelObj._createRawReactElement));
+    modelList.push(new Model("_iterableToArrayLimit()", describe[1], modelObj._iterableToArrayLimit));
+    modelList.push(new Model("_objectSpread2()", describe[2], modelObj._objectSpread2));
+    modelList.push(new Model("_typeof()", describe[3], modelObj._typeof));
+    modelList.push(new Model("_get()", describe[4], modelObj._get));
     return modelList;
   }
 
