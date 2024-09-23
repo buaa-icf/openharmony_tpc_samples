@@ -50,7 +50,7 @@
     },
     {
       "name": "Result_display",
-      "value": "Result display (oldStr, newStr as parameters, resultData as results)"
+      "value": "---------------------------------------Result display (oldStr, newStr as parameters, resultData as results)------------------------------------------------------"
     }
   ]
 }

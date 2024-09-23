@@ -1,26 +1,26 @@
 # jsDiff
 
-## 简介
+## Introduction
 
-本demo是基于openHarmony系统下使用三方js库[jsdiff](https://github.com/kpdecker/jsdiff)，jsdiff是一个用于比较两个文件或字符串差异的JavaScript库。
+This project is an OpenHarmony development example based on the [jsdiff](https://github.com/kpdecker/jsdiff) library, a JavaScript text differencing implementation.
 
-## 下载安装
+## How to Install
 
 ```
 ohpm install diff
-ohpm install @types/diff --save-dev //import diff 的时候语法报错.其原因是diff包内不含类型声明,需要 @types/diff 下载这个包的声明文件,从而解决语法的报错.
+ohpm install @types/diff --save-dev // Install @types/diff to prevent import syntax errors due to missing type declarations in the diff package.
 
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 
 ```
   import { diffChars} from 'diff'
 
 
-  const one = 'beep boop   afff阿三是技术';
-  const other = 'beepboob 啊发撒烦烦烦 e ';
+  const one = 'beep boop   It's a technology';
+  const other = 'beepboob See how it works';
   const diff = diffChars(one, other);
 
   diff.forEach((part) => {
@@ -31,45 +31,44 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
       } else {
      //do something
       }
-      let str = part.value; //比较的字符或字符串
+      let str = part.value; // Character or string to compare
   });
     
-    // 更多的用法參考index.ets 文件
+    // For details, see the index.ets file.
     
 ```
 
-## part对象属性说明
-##### value: 文字内容
-##### added：如果值被插入到新字符串中，则为真
-##### removed：如果值已从旧字符串中删除，则为真
+## part Object Properties
+**value**: text content
+**added**: **true** if the value was inserted into the new string.
+**removed**: **true** if the value was removed from the old string.
 
-## 接口
-|模块名 | 功能 | 备注 |
-|---|---|---|
-| diffChars(oldStr, newStr[, options]) |  区分两个文本块，逐个字符进行比较 | ignoreCase:true忽略大小写差异。默认为false |
-| diffWords(oldStr, newStr[, options]) |  区分两个文本块，逐字比较，忽略空格 | ignoreCase: 同中diffChars |
-| diffWordsWithSpace(oldStr, newStr[, options]) |   区分两个文本块，逐字比较，将空格视为重要 | ignoreWhitespace:true忽略前导和尾随空格。这与diffTrimmedLines；newlineIsToken:true将换行符视为单独的标记|
-| diffLines(oldStr, newStr[, options]) |   区分两个文本块，逐行比较| |
-| diffTrimmedLines(oldStr, newStr[, options]) |  区分两个文本块，逐行比较，忽略前导和尾随空格|
-| diffSentences(oldStr, newStr[, options]) |  区分两个文本块，逐句比较 |
-| diffCss(oldStr, newStr[, options]) |  区分两个文本块，比较 CSS 标记 |
-| diffJson(oldObj, newObj[, options]) |   比较两个 JSON 对象，比较每个对象上定义的字段 |
-| diffArrays(oldArr, newArr[, options]) |  区分两个数组，比较每个项目是否严格相等 (===) |
+## Available APIs
+| Module                                       | Description                                        | Remarks                                                        |
+| --------------------------------------------- | -------------------------------------------- | ------------------------------------------------------------ |
+| diffChars(oldStr, newStr[, options])          | Diffs two blocks of text, comparing character by character.            | **ignoreCase**: The value **true** means to ignore casing difference. The default value is **false**.                  |
+| diffWords(oldStr, newStr[, options])          | Diffs two blocks of text, comparing word by word, ignoring whitespace.          | **ignoreCase**: same as in **diffChars**.                                   |
+| diffWordsWithSpace(oldStr, newStr[, options]) | Diffs two blocks of text, comparing word by word, treating whitespace as significant.    | **ignoreWhitespace**: The value **true** means to ignore leading and trailing whitespace. This is the same as **diffTrimmedLines**.<br>**newlineIsToken**: The value **true** means to treat newline characters as separate tokens.|
+| diffLines(oldStr, newStr[, options])          | Diffs two blocks of text, comparing line by line.                    |                                                              |
+| diffTrimmedLines(oldStr, newStr[, options])   | Diffs two blocks of text, comparing line by line, ignoring leading and trailing whitespace.|                                                              |
+| diffSentences(oldStr, newStr[, options])      | Diffs two blocks of text, comparing sentence by sentence.                    |                                                              |
+| diffCss(oldStr, newStr[, options])            | Diffs two blocks of text, comparing CSS tokens.               |                                                              |
+| diffJson(oldObj, newObj[, options])           | Diffs two JSON objects, comparing the fields defined on each.|                                                              |
+| diffArrays(oldArr, newArr[, options])         | Diffs two arrays, comparing each item for strict equality (===).|                                                              |
 
-更多模块的使用可参考[官方文档](https://github.com/kpdecker/jsdiff/blob/master/README.md)，单元测试用例详情见[TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/jsDiffDemo/TEST.md)
+For more details, see [Official Documentation](https://github.com/kpdecker/jsdiff/blob/master/README.md) and [Unit Test Cases](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/jsDiffDemo/TEST.md).
 
-## 约束与限制
-在下述版本验证通过：
-DevEco Studio: 4.0 Release(4.0.3.600), SDK: API10 (4.0.10.11)
+## Constraints
+This project has been verified in the following version:
 
-DevEco Studio: 4.0 Beta2(4.0.3.512), SDK: API10 (4.0.10.9)
+- DevEco Studio: 4.0 Release (4.0.3.600), SDK: API 10 (4.0.10.11)
+- DevEco Studio: 4.0 Beta2 (4.0.3.512), SDK: API 10 (4.0.10.9)
+- DevEco Studio: 3.1 Beta2 (3.1.0.400), SDK: API 9 Release (3.2.11.9)
 
-DevEco Studio: 3.1 Beta2(3.1.0.400), SDK: API9 Release(3.2.11.9)
+## How to Contribute
 
-## 贡献代码
+If you find any problem during the use, submit an issue or a PR to us.
 
-使用过程中发现任何问题都可以提 Issue 给我们，当然，我们也非常欢迎你给我们发 PR 
+## License
 
-## 开源协议
-
-该项目基于 [ Apache License 2.0 ](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/jsDiffDemo/LICENSE) ，请自由地享受和参与开源
+This project is licensed under [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/jsDiffDemo/LICENSE).

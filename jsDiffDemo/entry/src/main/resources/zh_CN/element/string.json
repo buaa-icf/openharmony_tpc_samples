@@ -14,43 +14,43 @@
     },
     {
       "name": "Text_block_comparison",
-      "value": "Text block comparison"
+      "value": "文本块比较"
     },
     {
       "name": "Text_BlockIgnore_Spaces",
-      "value": "Text BlockIgnore Spaces"
+      "value": "文本块_忽略空格"
     },
     {
       "name": "considered_important",
-      "value": "Text Block_Space is considered important"
+      "value": "文本块_空格视为重要"
     },
     {
       "name": "Compare_line_by_line",
-      "value": "Compare line by line"
+      "value": "逐行比较"
     },
     {
       "name": "Compare_line_ignore",
-      "value": "Compare line by line _ ignore leading and trailing spaces"
+      "value": "逐行比较_忽略前尾空格"
     },
     {
       "name": "Compare_sentence_by_sentence",
-      "value": "Compare sentence by sentence"
+      "value": "逐句比较"
     },
     {
       "name": "Compare_CSS_tags",
-      "value": "Compare CSS tags"
+      "value": "比较CSS标记"
     },
     {
       "name": "Compare_JSON",
-      "value": "Compare JSON"
+      "value": "比较JSON"
     },
     {
       "name": "Compare_two_arrays",
-      "value": "Compare two arrays"
+      "value": "比较两个数组"
     },
     {
       "name": "Result_display",
-      "value": "Result display (oldStr, newStr as parameters, resultData as results)"
+      "value": "---------------------------------------结果展示(oldStr,newStr为参数，resultData为结果)------------------------------------------------------"
     }
   ]
 }
