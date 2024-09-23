@@ -1,22 +1,22 @@
 # eventsource
-# 简介
-eventsource三方库是EventSource客户端的纯JavaScript实现。它提供了一种在客户端与服务器之间建立单向持续连接的机制，服务器可以使用这个连接向客户端发送事件更新，而客户端能够实时接收并处理这些更新。
+# Introduction
+The eventsource third-party library is a pure JavaScript implementation of the EventSource client. It provides a mechanism for establishing a one-way continuous connection between the client and the server. The server can use this connection to send event updates to the client, and the client can receive and process the updates in real time.
 
-![](./img/GIF.gif)
+![](./img/GIF_EN.gif)
 
-# 下载安装
+# How to Install
     ohpm install @ohos/eventsource
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 
-# 使用说明
-1、引入依赖
+# How to Use
+1. Import the dependency.
 ```javascript
 import EventSource from '@ohos/eventsource';
 ```
 
 
-2、在module.json5中添加权限
+2. Add permissions in the `module.json5` file.
 ```javascript
 "requestPermissions": [
     {
@@ -24,9 +24,9 @@ import EventSource from '@ohos/eventsource';
     }
 ]
 ```
-### 需要SSE服务器配合使用
-#### 服务端示例代码
-创建一个可以传输事件流数据的node服务器，具体请看[server目录](./server)
+### SSE Server Required for Co-working
+#### Server sample code
+Create a node server that can transmit event stream data. For details, see the server directory (./server).
 ```javascript
 const express = require('express');
 const serveStatic = require('serve-static');
@@ -58,7 +58,7 @@ app.listen(8080, (err) => {
   console.log('server ready on http://localhost:8080');
 })
 ```
-#### 客户端端示例代码
+#### Client sample code
 
 ```javascript
 import promptAction from '@ohos.promptAction';
@@ -68,53 +68,54 @@ import EventSource from '@ohos/eventsource'
 eventListener = (e: Record<"data", string>) => {
   this.simpleList.push(e.data);
 }
-// 创建连接
+// Create a connection.
 this.es = new EventSource(this.url)
 
-// 开启监听
+// Enable a listener.
 this.es.addEventListener("server-time", this.eventListener);
 
-// 取消监听
+// Remove the listener.
 this.es.removeEventListener("server-time", this.eventListener);
 
-// 断开连接
+// Disconnect from the server.
 this.es.close();
 
-// 错误监听
+// Error listener.
 this.es.onFailure((e: Record<"message", string>) => {
-    // 得到错误消息，对错误消息做处理
+    // Obtain and process the error message.
 })
 ```
-错误监听需在创建连接开启的时候同步开启
+Error listening needs to be enabled when a connection is created.
 
 
-# 接口说明
-### 接口列表
-| 名称 | 参数类型                          | 说明                   |
+# Available APIs
+### API list
+| API| Type                         | Description                  |
 | -------- |-------------------------------|----------------------|
-| addEventListener | (type:string,callback:()=>{}) | 添加监听事件，当事件被触发的时候做出处理 |
-| removeEventListener | (type:string,callback:()=>{}) |  移除监听事件               |
-| close | 无传参                           | 断开连接                 |
-| onFailure | ((e:object)=>{})              |  e为错误对象，捕获错误          |
+| addEventListener | (type:string,callback:()=>{}) | Adds a listening event. |
+| removeEventListener | (type:string,callback:()=>{}) |  Removes the listening event.              |
+| close | No parameter is transferred.                          | Stops a connection.                |
+| onFailure | ((e:object)=>{})              |  Captures an error. **e** indicates an error object.          |
 
 
-**单元测试用例详见**[TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/eventsource/TEST.md)
+For details about unit test cases, see [TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/eventsource/TEST.md).
 
-# 约束与限制
-- DevEco Studio版本: 4.1.3.500, SDK: API11 Release(4.1.0)
+# Constraints
+- DevEco Studio: 4.1.3.500; SDK: API11 Release (4.1.0)
 
-# 目录结构
+# Directory Structure
     |---- eventsource 
-    |     |---- entry  # 示例代码文件夹
-          |---- library # eventsource库文件
+    |     |---- entry  # Sample code
+          |---- library # eventsource library file
             |---- src
     |             |---- main
     |                  |---- ets
     |                       |---- eventsource.js  #eventsource           
-    |     |---- README.md  # 安装使用方法     
+    |     |---- README.md  # Readme
+    |     |---- README_zh.md  # Readme
 
-# 贡献代码
-使用过程中发现任何问题都可以提[ Issue ](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)给我们，当然，我们也欢迎你给我们发[PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls)
+# How to Contribute
+If you find any problem during the use, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
 
-# 开源协议
-本项目基于 [ MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/eventsource/LICENSE) ，请自由地享受和参与开源。
+# License
+This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/eventsource/LICENSE).
