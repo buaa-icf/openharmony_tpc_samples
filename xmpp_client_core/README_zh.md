@@ -100,6 +100,7 @@ client.send("<message>Hello</message>");
 |           |---- index.js  # 主入口文件
 |           |---- index.d.ts  # 主对外接口声明文件
 |     |---- README.md  # 安装使用方法                    
+|     |---- README_zh.md  # 安装使用方法                    
 ````
 ## 贡献代码
 
