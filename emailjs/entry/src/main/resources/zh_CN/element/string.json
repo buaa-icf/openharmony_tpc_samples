@@ -19,6 +19,250 @@
     {
       "name": "Reason_File",
       "value": "Operate file in application file system"
+    },
+    {
+      "name": "Please_enter_email_type",
+      "value": "请输入邮箱类型"
+    },
+    {
+      "name": "Tips_Please_enter_the_email_type_in_the_correct_format_such_as_email",
+      "value": "Tips:请输入正确格式的邮箱类型，例如@qq.com或者@163.com"
+    },
+    {
+      "name": "Cancel",
+      "value": "取消"
+    },
+    {
+      "name": "Confirm",
+      "value": "确定"
+    },
+    {
+      "name": "The_dialog_box_has_been_closed_and_the_option_to_enter_a_different_type_of_email_has_been_unselected",
+      "value": "关闭了对话框，取消选输入其它类型邮箱"
+    },
+    {
+      "name": "Email_type_cannot_be_empty",
+      "value": "邮箱类型不可为空"
+    },
+    {
+      "name": "Email_type_must_contain_one_and_can_only_contain_one",
+      "value": "邮箱类型必须含有一个@，且只能含有一个@"
+    },
+    {
+      "name": "The_email_type_must_contain_a_And_it_can_only_contain_one",
+      "value": "邮箱类型必须含有一个.，且只能含有一个."
+    },
+    {
+      "name": "In_email_types_needs_to_be_before_such_as_mail",
+      "value": "邮箱类型中@需要在.之前，例如@qq.com,@163.com这些"
+    },
+    {
+      "name": "Except_for_and_in_email_types_Must_contain_other_characters",
+      "value": "邮箱类型中除了@和.，必须含有其它字符"
+    },
+    {
+      "name": "must_be_first_in_the_email_type",
+      "value": "邮箱类型中@必须在首一位"
+    },
+    {
+      "name": "Enter_other_types_of_email_addresses",
+      "value": "输入其它类型邮箱"
+    },
+    {
+      "name": "test",
+      "value": "测试"
+    },
+    {
+      "name": "other",
+      "value": "其它"
+    },
+    {
+      "name": "Click_on_the_email_after_the_account_to_switch_email_types",
+      "value": "点击账号后面的邮箱可以切换邮箱类型"
+    },
+    {
+      "name": "Account",
+      "value": "账号："
+    },
+    {
+      "name": "Please_enter_your_account",
+      "value": "请输入账号"
+    },
+    {
+      "name": "Password_Authorization_Code",
+      "value": "密码/授权码："
+    },
+    {
+      "name": "Please_enter_password_Authorization_code",
+      "value": "'请输入密码/授权码"
+    },
+    {
+      "name": "Do_you_want_to_enable_SSL_TLS_tip",
+      "value": "是否开启SSL/TLS(当前仅需支持SMTP,无需支持SMTPS,此按钮暂不可用)"
+    },
+    {
+      "name": "Do_you_want_to_enable_SSL_TLS",
+      "value": "是否开启SSL/TLS"
+    },
+    {
+      "name": "Currently_only_SMTP_support_is_required_no_SMTPS_support_is_needed",
+      "value": "当前仅需支持SMTP,无需支持SMTPS"
+    },
+    {
+      "name": "Skip_ordinary_attachments",
+      "value": "跳普通附件"
+    },
+    {
+      "name": "Jump_to_large_attachments",
+      "value": "跳转大附件"
+    },
+    {
+      "name": "Account_login_successful",
+      "value": "账号登录成功"
+    },
+    {
+      "name": "Account_login_failed",
+      "value": "账号登录失败"
+    },
+    {
+      "name": "Account_already_logged_in_no_need_to_login_again",
+      "value": "账号已登录，无需重新登录"
+    },
+    {
+      "name": "Account_login_error",
+      "value": "账号登录出错"
+    },
+    {
+      "name": "OH_email_client",
+      "value": "OH邮件客户端"
+    },
+    {
+      "name": "This_is_the_OH_testing_topic",
+      "value": "这是OH测试主题"
+    },
+    {
+      "name": "This_is_the_text_of_the_OpenHarmony_email_for_testing",
+      "value": "这是测试的鸿蒙邮件正文，邮件的收件人，抄送，密件抄送的格式为：someone <someone@your-email.com>, another <another@your-email.com>，多个账号以英文逗号,连接。"
+    },
+    {
+      "name": "No_attachments_available_at_the_moment",
+      "value": "暂无附件"
+    },
+    {
+      "name": "Add_information_send_email",
+      "value": "添加信息，发送邮件"
+    },
+    {
+      "name": "Please_enter_sender_nickname",
+      "value": "请输入发件人昵称"
+    },
+    {
+      "name": "Recipient",
+      "value": "收件人："
+    },
+    {
+      "name": "Format",
+      "value": "Format: xx<xx@yxx.com>, xx<xx@yxx.com> Multiple accounts are connected by commas in English."
+    },
+    {
+      "name": "Email_CC",
+      "value": "抄送："
+    },
+    {
+      "name": "BCC_Blind_Carbon_Copy",
+      "value": "密件抄送抄送："
+    },
+    {
+      "name": "Theme",
+      "value": "主题："
+    },
+    {
+      "name": "Please_enter_the_email_subject",
+      "value": "请输入邮件主题"
+    },
+    {
+      "name": "Body",
+      "value": "正文："
+    },
+    {
+      "name": "Please_enter_the_email_body",
+      "value": "请输入邮件正文"
+    },
+    {
+      "name": "Large_attachments_need_to_be_manually_pushed_into_the_device_sandbox",
+      "value": "大附件需要手动推入设备沙箱，多个大附件仅选取首一个"
+    },
+    {
+      "name": "Add_large_attachment",
+      "value": "添加大附件"
+    },
+    {
+      "name": "Send_mail",
+      "value": "发送邮件"
+    },
+    {
+      "name": "Email_sent_successfully",
+      "value": "邮件发送成功"
+    },
+    {
+      "name": "Account_not_logged_in_please_login_again",
+      "value": "账号未登录，请需重新登录"
+    },
+    {
+      "name": "Email_sending_error",
+      "value": "邮件发送出错"
+    },
+    {
+      "name": "Start_detecting_large_attachments_in_the_cache_directory",
+      "value": "开始检测cache目录下的大附件"
+    },
+    {
+      "name": "Please_push_in_the_large_attachment_first",
+      "value": "请先推入大附件"
+    },
+    {
+      "name": "Obtain_the_large_attachment",
+      "value": "获取到大附件"
+    },
+    {
+      "name": "Add_attachment",
+      "value": "添加附件"
+    },
+    {
+      "name": "Attachment_size",
+      "value": "附件大小"
+    },
+    {
+      "name": "byte",
+      "value": " byte"
+    },
+    {
+      "name": "Start_generating_a_single_local_file",
+      "value": "开始生成单个本地文件"
+    },
+    {
+      "name": "Please_check_the_information_sent_from_the_client_to_the_server",
+      "value": "客户端发送到服务端的信息，请查收"
+    },
+    {
+      "name": "Successfully_generated_local_single_file",
+      "value": "生成本地单个文件成功"
+    },
+    {
+      "name": "Failed_to_generate_local_single_file",
+      "value": "开始生成单个本地文件"
+    },
+    {
+      "name": "due_to",
+      "value": "原因"
+    },
+    {
+      "name": "Currently_only_supports_testing_text",
+      "value": "暂时只支持测试文本，图片，文档，表格，其它类型的文件等待测试开放"
+    },
+    {
+      "name": "Failed_to_generate_a_single_local_file",
+      "value": "生成本地单个文件失败:"
     }
   ]
 }

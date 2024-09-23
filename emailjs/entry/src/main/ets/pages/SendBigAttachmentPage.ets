@@ -25,13 +25,13 @@ const BASE_COUNT = 1
 struct SendBigAttachmentPage {
   @State message: string = 'Hello World'
   @State from: string = ''
-  @State accountName: string = 'OH email client'
+  @State accountName: string = this.getResourceString('OH_email_client')
   @State to: string = 'xxx@qq.com'
   @State cc: string = 'xxx@163.com'
   @State bcc: string = 'xxx@139.com'
-  @State subject: string = 'This is the OH testing topic'
-  @State content: string = 'This is the text of the OpenHarmony email for testing. The format for the recipient, cc, and confidential cc of the email is: someone<someone@your-email.com>, another<another@your-email.com> Multiple accounts are connected by commas in English.'
-  @State bigFileInfo: string = 'No attachments available at the moment'
+  @State subject: string = this.getResourceString('This_is_the_OH_testing_topic')
+  @State content: string = this.getResourceString('This_is_the_text_of_the_OpenHarmony_email_for_testing')
+  @State bigFileInfo: string = this.getResourceString('No_attachments_available_at_the_moment')
   @State bigFileName: string = ''
   @State attachment: Array<MessageAttachment> = []
   @State mailType: string = '@qq.com'
@@ -69,7 +69,7 @@ struct SendBigAttachmentPage {
             alignContent: FlexAlign.Center,
             direction: FlexDirection.Column
           }) {
-            Text('Add information, send email')
+            Text($r('app.string.Add_information_send_email'))
               .fontSize(20)
               .height(50)
               .textAlign(TextAlign.Center)
@@ -88,7 +88,7 @@ struct SendBigAttachmentPage {
                 .textAlign(TextAlign.Center)
                 .margin({ right: 5 })
 
-              TextInput({ placeholder: 'Please enter sender nickname', text: this.accountName })
+              TextInput({ placeholder: $r('app.string.Please_enter_sender_nickname'), text: this.accountName })
                 .layoutWeight(1)
                 .fontSize(20)
                 .height(50)
@@ -109,14 +109,14 @@ struct SendBigAttachmentPage {
               alignContent: FlexAlign.Start,
               direction: FlexDirection.Row
             }) {
-              Text('Recipient：')
+              Text($r('app.string.Recipient'))
                 .fontSize(20)
                 .height(50)
                 .textAlign(TextAlign.Center)
                 .margin({ right: 5 })
 
               TextInput({
-                placeholder: 'Format: xx<xx@yxx.com>, xx<xx@yxx.com> Multiple accounts are connected by commas in English.',
+                placeholder: $r('app.string.Format'),
                 text: this.to
               })
                 .layoutWeight(1)
@@ -138,14 +138,14 @@ struct SendBigAttachmentPage {
               alignContent: FlexAlign.Start,
               direction: FlexDirection.Row
             }) {
-              Text('Email CC：')
+              Text($r('app.string.Email_CC'))
                 .fontSize(20)
                 .height(50)
                 .textAlign(TextAlign.Center)
                 .margin({ right: 5 })
 
               TextInput({
-                placeholder: 'Format: xx<xx@yxx.com>, xx<xx@yxx.com> Multiple accounts are connected by commas in English.',
+                placeholder: $r('app.string.Format'),
                 text: this.cc
               })
                 .layoutWeight(1)
@@ -166,14 +166,14 @@ struct SendBigAttachmentPage {
               alignContent: FlexAlign.Start,
               direction: FlexDirection.Row
             }) {
-              Text('BCC Blind Carbon Copy：')
+              Text($r('app.string.BCC_Blind_Carbon_Copy'))
                 .fontSize(20)
                 .height(50)
                 .textAlign(TextAlign.Center)
                 .margin({ right: 5 })
 
               TextInput({
-                placeholder: 'Format: xx<xx@yxx.com>, xx<xx@yxx.com> Multiple accounts are connected by commas in English.',
+                placeholder: $r('app.string.Format'),
                 text: this.bcc
               })
                 .layoutWeight(1)
@@ -196,13 +196,13 @@ struct SendBigAttachmentPage {
               alignContent: FlexAlign.Start,
               direction: FlexDirection.Row
             }) {
-              Text('Theme：')
+              Text($r('app.string.Theme'))
                 .fontSize(20)
                 .height(50)
                 .textAlign(TextAlign.Center)
                 .margin({ right: 5 })
 
-              TextInput({ placeholder: 'Please enter the email subject', text: this.subject })
+              TextInput({ placeholder: $r('app.string.Please_enter_the_email_subject'), text: this.subject })
                 .layoutWeight(1)
                 .fontSize(20)
                 .height(50)
@@ -222,14 +222,14 @@ struct SendBigAttachmentPage {
               alignContent: FlexAlign.Start,
               direction: FlexDirection.Column
             }) {
-              Text('Body：')
+              Text($r('app.string.Body'))
                 .fontSize(20)
                 .height(50)
                 .textAlign(TextAlign.Center)
                 .margin({ right: 5 })
 
               TextInput({
-                placeholder: 'Please enter the email body',
+                placeholder: $r('app.string.Please_enter_the_email_body'),
                 text: this.content
               })
                 .layoutWeight(1)
@@ -247,7 +247,7 @@ struct SendBigAttachmentPage {
             .height(160)
             .margin({ top: 10, right: 10 })
 
-            Text('Large attachments need to be manually pushed into the device sandbox, and only the first one should be selected from multiple large attachments')
+            Text($r('app.string.Large_attachments_need_to_be_manually_pushed_into_the_device_sandbox'))
               .fontSize(20)
               .height(50)
               .textAlign(TextAlign.Center)
@@ -259,7 +259,7 @@ struct SendBigAttachmentPage {
               alignContent: FlexAlign.Start,
               direction: FlexDirection.Row
             }) {
-              Button('Add large attachment')
+              Button($r('app.string.Add_large_attachment'))
                 .fontSize(20)
                 .height(50)
                 .onClick(() => {
@@ -276,7 +276,7 @@ struct SendBigAttachmentPage {
 
             }.margin({ right: 10 })
 
-            Button('Send mail')
+            Button($r('app.string.Send_mail'))
               .margin(20)
               .width('80%')
               .height(50)
@@ -315,21 +315,21 @@ struct SendBigAttachmentPage {
           let endTime1 = new Date().getTime();
           let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
           console.log("sendAsync averageTime : " + averageTime1 + "us")
-          this.showToast('Email sent successfully', 'sendmail-smtp')
+          this.showToast(this.getResourceString('Email_sent_successfully'), 'sendmail-smtp')
           if (GlobalObj?.getInstance()?.getClient()?.isQuitAfterSendDone()) {
             GlobalObj?.getInstance()?.getClient()?.close(true);
             GlobalObj?.getInstance()?.setClient(null);
           }
         } else {
-          this.showToast('Account not logged in, please login again', 'sendmail-smtp')
+          this.showToast(this.getResourceString('Account_not_logged_in_please_login_again'), 'sendmail-smtp')
         }
 
       } else {
-        this.showToast('Account not logged in, please login again', 'sendmail-smtp')
+        this.showToast(this.getResourceString('Account_not_logged_in_please_login_again'), 'sendmail-smtp')
       }
 
     } catch (err) {
-      this.showToast(`Email sending error：${err.message}`, 'sendmail-smtp')
+      this.showToast(this.getResourceString('Email_sending_error') + `：${err.message}`, 'sendmail-smtp')
     }
   }
 
@@ -337,8 +337,8 @@ struct SendBigAttachmentPage {
     const ctx = this
     try {
       ctx.bigFileName = ''
-      ctx.bigFileInfo = 'No attachments available at the moment'
-      ctx.showToast('Start detecting large attachments in the cache directory', 'createSingleFile')
+      ctx.bigFileInfo = this.getResourceString('No_attachments_available_at_the_moment')
+      ctx.showToast(this.getResourceString('Start_detecting_large_attachments_in_the_cache_directory'), 'createSingleFile')
       let context = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext()
       if (!context) {
         return;
@@ -346,7 +346,7 @@ struct SendBigAttachmentPage {
       let fileDir = context?.cacheDir
       let fileList = fs.listFileSync(fileDir)
       if (!fileList || fileList.length < 1) {
-        ctx.showToast('Please push in the large attachment first', 'addBigFile-imapclient')
+        ctx.showToast(this.getResourceString('Please_push_in_the_large_attachment_first'), 'addBigFile-imapclient')
         return
       }
       for (let i = 0; i < fileList.length; i++) {
@@ -357,7 +357,7 @@ struct SendBigAttachmentPage {
       }
       let filePath = fileDir + '/' + ctx.bigFileName
       let stat = fs.statSync(filePath)
-      ctx.bigFileInfo = `Attachment Name：${ctx.bigFileName}, Attachment size：${stat.size}`
+      ctx.bigFileInfo = this.getResourceString('Add_attachment') + `：${ctx.bigFileName},` + this.getResourceString('Attachment_size') + `：${stat.size}`
       let index = ctx.bigFileName.indexOf('.')
       let fileType = ctx.bigFileName.substring(index + 1, ctx.bigFileName.length)
 
@@ -368,9 +368,9 @@ struct SendBigAttachmentPage {
         size: stat.size
       }
       this.attachment.push(attach)
-      ctx.showToast(`Obtain the large attachment  ${ctx.bigFileName}`, 'addBigFile-imapclient')
+      ctx.showToast(this.getResourceString('Obtain_the_large_attachment') + `  ${ctx.bigFileName}`, 'addBigFile-imapclient')
     } catch (err) {
-      ctx.showToast('Please push in the large attachment first', 'addBigFile-imapclient')
+      ctx.showToast(this.getResourceString('Please_push_in_the_large_attachment_first'), 'addBigFile-imapclient')
     }
   }
 
@@ -414,5 +414,9 @@ struct SendBigAttachmentPage {
 
   onBackPress() {
     GlobalObj?.getInstance()?.getContext()?.terminateSelf()
+  }
+
+  getResourceString(resourceName:string) {
+    return getContext().resourceManager.getStringByNameSync(resourceName)
   }
 }

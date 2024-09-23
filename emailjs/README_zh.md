@@ -1,42 +1,42 @@
 ## emailjs
 
-### Overview
+### 介绍
 
-emailjs is a component developed on OpenHarmony to send HTML emails and attachments to an SMTP server.
+emailjs是一个基于OpenHarmony系统适配开发的，提供一个向任何 SMTP 服务器发送 HTML 电子邮件和附件能力的组件。
 
-### How to Download
+### 下载
 
 ```
 $ ohpm install @ohos/emailjs
 ```
 
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
-### How to Import
+### 导入
 
 ```
 import { AUTH_METHODS, SMTPClient } from '@ohos/emailjs'
 ```
 
-### How to Use
+### 使用说明
 
-See the [demo](./entry/src/main/ets/pages/LoginPage.ets) project.
+参考该[Demo](./entry/src/main/ets/pages/LoginPage.ets)工程
 
-Note: Globally search *xxx* in the project and replace them with the actual email address and account password. To test an email carrying an attachment, generate `test.docx` and `test.xlsx` and store them in the `src/main/resources/rawfile` folder in the `entry` directory.
+注意：全局搜索项目中的‘xxx’，需要替换修改为真实的邮箱，账号密码。如果需要测试附件，需要预先生成test.docx,test.xlsx文档放置于entry目录下的src/main/resources/rawfile文件夹中
 
-### Available APIs
+### 接口说明
 
-|                    API                    |                   Parameter                   |         Description        |
-| :-------------------------------------------: | :---------------------------------------: | :----------------------: |
-|           new SMTPClient({options})           | options (For details, see the parameter description of `new SMTPClient`.)|      Creates an SMTP client.     |
-| login(callBack: (err: Error, result: boolean) |       (err: Error, result: boolean)       |           Logs in.          |
-|      SMTPClient#send(message, callback)       |             message, callback             | Sends a message and callback.|
-|             new Message(headers)              |  headers (For details, see the parameter description of `new Message`.)  |         Creates a message.        |
-|            Message#attach(options)            |     options (For details, see the parameter description of `attach`.)    |       Adds an attachment.      |
-|            Message#checkValidity()            |                    N/A                    |   Checks whether the message format is correct.  |
-|        new SMTPConnection(options={})         | options (For details, see the parameter description of `SMTPConnection`.)|      Creates an SMTPC connection.      |
+|                      方法名                      |                入参                 |       接口描述       |
+|:---------------------------------------------:|:---------------------------------:|:----------------:|
+|           new SMTPClient({options})           | options(参照如下 new SMTPClient 参数说明) |    创建SMTP客户端     |
+| login(callBack: (err: Error, result: boolean) |   (err: Error, result: boolean)   |        登录        |
+|      SMTPClient#send(message, callback)       |         message, callback         | 发送信息及其回调callback |
+|             new Message(headers)              |  headers(参照如下 new Message 参数说明)   |       构建信息       |
+|            Message#attach(options)            |     options(参照如下 attach 参数说明)     |      添加附件信息      |
+|            Message#checkValidity()            |                 无                 |    验证消息格式是否正确    |
+|        new SMTPConnection(options={})         | options(参照如下 SMTPConnection 参数说明) |    构建SMTPC链接     |
 
-#### Parameter Description of `new SMTPClient`
+#### new SMTPClient 参数说明
 
 ```
   // options is an object with the following recognized schema:
@@ -54,7 +54,7 @@ const options = {
 };
 ```
 
-#### Parameter Description of `new Message`
+#### new Message 参数说明
 
 ```
 const headers = {
@@ -68,7 +68,7 @@ const headers = {
 };
 ```
 
-#### Parameter Description of `attach`
+#### attach 参数说明
 
 ```
 const options = {
@@ -92,7 +92,7 @@ const options = {
 };
 ```
 
-#### Parameter Description of `SMTPConnection`
+#### SMTPConnection 参数说明
 
 ```
 const options = {
@@ -109,17 +109,17 @@ const options = {
 };
 ```
 
-For more details, see [Official Documentation](https://github.com/eleith/emailjs/blob/main/README.md) and [Unit Test Cases](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/emailjs/TEST.md).
+更多模块的使用可参考[官方文档](https://github.com/eleith/emailjs/blob/main/README.md)，[单元测试用例](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/emailjs/TEST.md)详情可参考
 
-### Constraints
+### 约束与限制
 
-This project has been verified in the following version:
+在下述版本验证通过：
 
 DevEco Studio:4.0 Release(4.0.3.600),SDK API10(4.0.10.11)
 
-The following mailbox types are supported: QQ, 163, 126, Sina, and Sohu mailboxes.
+支持的邮箱类型：QQ邮箱、163邮箱、126邮箱、新浪邮箱、搜狐邮箱。
 
-### Directory Structure
+### 目录结构
 
 ```
 |-entry 
@@ -127,17 +127,18 @@ The following mailbox types are supported: QQ, 163, 126, Sina, and Sohu mailboxe
     |   |-entryability
     |           |-EntryAbility.ts
     |   |-pages
-    |           |-LoginPage.ets             # Homepage demo
+    |           |-LoginPage.ets             #主页demo
     |           |-SendMailPage.ets
 |-SMTP
-    |-ets # Processes HTML emails and attachments sent to any SMTP server.
-    |-js   # Adapts to the polyfill solution of the node.
+    |-ets  # 用于处理向任何 SMTP 服务器发送 HTML 电子邮件和附件
+    |-js   # 用于适配node的polyfill方案 
 ```
 
-### How to Contribute
+### 贡献代码
 
-If you find any problem during the use, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎给发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls)共建 。
 
-### License
+### 开源协议
 
-This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/emailjs/LICENSE).
+本项目基于 [MIT license](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/emailjs/LICENSE) ，请自由地享受和参与开源。
+
