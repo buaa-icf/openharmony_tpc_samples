@@ -15,6 +15,9 @@
 import * as math from 'mathjs';
 import router from '@ohos.router';
 
+interface maths{
+  x:number
+}
 @Entry
 @Component
 struct Index {
@@ -83,7 +86,7 @@ struct Index {
   mathsimplifyConstantStr = '2 * 2^ (2 - 1)'
   mathnumsimplifyConstant: math.SimplifyOptions = { exactFractions: true }
   mathsimplifyStr = '2 * 1 * x ^ (2 - 1)'
-  mathnumsimplify: ESObject = { x: 4 }
+  mathnumsimplify: maths = { x: 4 }
   mathnumsimplify1: math.SimplifyOptions = { exactFractions: true }
   mathlsolveArr = this.arrays
   mathnumlsolve = '[1,2,3]'
@@ -97,14 +100,19 @@ struct Index {
   mathapplybitXor1 = '1'
   mathnum = '0'
 
+  getResourceString(res: Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
+
+
   build() {
     Scroll(this.scroller) {
       Column() {
-        Text(this.message)
+        Text($r('app.string.mathjs_test'))
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入数值' })
+        TextInput({ placeholder: $r('app.string.Please_enter_value') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -112,7 +120,7 @@ struct Index {
             this.mathBitwise = value
           })
 
-        TextInput({ placeholder: '请输入数值' })
+        TextInput({ placeholder: $r('app.string.Please_enter_value') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -134,15 +142,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.bitwiseMath)
+        Text(this.getResourceString($r('app.string.Result')) + this.bitwiseMath)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeBitwise)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimeBitwise)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入数值' })
+        TextInput({ placeholder: $r('app.string.Please_enter_value') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -164,15 +172,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathbitNot)
+        Text(this.getResourceString($r('app.string.Result')) + this.mathbitNot)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimebitNot)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimebitNot)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入数值' })
+        TextInput({ placeholder: $r('app.string.Please_enter_value') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -180,7 +188,7 @@ struct Index {
             this.mathapplybitOr = value
           })
 
-        TextInput({ placeholder: '请输入数值' })
+        TextInput({ placeholder: $r('app.string.Please_enter_value') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -194,7 +202,8 @@ struct Index {
           .onClick(() => {
             try {
               let time = Date.now()
-              this.mathbitOr = math.bitOr(math.evaluate(this.mathapplybitOr), math.evaluate(this.mathapplybitOr1)).toString()
+              this.mathbitOr =
+                math.bitOr(math.evaluate(this.mathapplybitOr), math.evaluate(this.mathapplybitOr1)).toString()
               let time1 = Date.now()
               this.mathTimebitOr = (time1 - time).toString()
             } catch (err) {
@@ -202,15 +211,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathbitOr)
+        Text(this.getResourceString($r('app.string.Result')) + this.mathbitOr)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimebitOr)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimebitOr)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入数值' })
+        TextInput({ placeholder: $r('app.string.Please_enter_value') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -218,7 +227,7 @@ struct Index {
             this.mathapplybitXor = value
           })
 
-        TextInput({ placeholder: '请输入数值' })
+        TextInput({ placeholder: $r('app.string.Please_enter_value') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -232,7 +241,8 @@ struct Index {
           .onClick(() => {
             try {
               let time = Date.now()
-              this.mathbitXor = math.bitXor(math.evaluate(this.mathapplybitXor), math.evaluate(this.mathapplybitXor1)).toString()
+              this.mathbitXor =
+                math.bitXor(math.evaluate(this.mathapplybitXor), math.evaluate(this.mathapplybitXor1)).toString()
               let time1 = Date.now()
               this.mathTimebitXor = (time1 - time).toString()
             } catch (err) {
@@ -240,15 +250,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathbitXor)
+        Text(this.getResourceString($r('app.string.Result')) + this.mathbitXor)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimebitXor)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimebitXor)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入对称矩阵 如： [10,1,10]' })
+        TextInput({ placeholder: $r('app.string.Please_symmetric') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -270,15 +280,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathIsZero)
+        Text(this.getResourceString($r('app.string.Result')) + this.mathIsZero)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeIsZero)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimeIsZero)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入number| [10,1,10]' })
+        TextInput({ placeholder: $r('app.string.Please_enter_number') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -300,15 +310,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathIsPrime)
+        Text(this.getResourceString($r('app.string.Result')) + this.mathIsPrime)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeIsPrime)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimeIsPrime)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入number| [10,1,10]' })
+        TextInput({ placeholder: $r('app.string.Please_enter_number') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -330,15 +340,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathIsNumeric)
+        Text(this.getResourceString($r('app.string.Result')) + this.mathIsNumeric)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeIsNumeric)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimeIsNumeric)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入number | [10,1,10]' })
+        TextInput({ placeholder: $r('app.string.Please_enter_number') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -360,15 +370,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathIsNaN)
+        Text(this.getResourceString($r('app.string.Result')) + this.mathIsNaN)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeIsNaN)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimeIsNaN)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入number| [10,1,10]' })
+        TextInput({ placeholder: $r('app.string.Please_enter_number') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -390,15 +400,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathIsInteger)
+        Text(this.getResourceString($r('app.string.Result')) + this.mathIsInteger)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeIsInteger)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimeIsInteger)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入对称矩阵 如： [10,1,10]' })
+        TextInput({ placeholder: $r('app.string.Please_symmetric') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -420,15 +430,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathHasNumericValue)
+        Text(this.getResourceString($r('app.string.Result')) + this.mathHasNumericValue)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeHasNumericValue)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimeHasNumericValue)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入对称矩阵 如： [10,1,10]' })
+        TextInput({ placeholder: $r('app.string.Please_symmetric') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -450,15 +460,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathVariance)
+        Text(this.getResourceString($r('app.string.Result')) + this.mathVariance)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeVariance)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimeVariance)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入对称矩阵 如： [10,1,10]' })
+        TextInput({ placeholder: $r('app.string.Please_symmetric') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -480,15 +490,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathSum)
+        Text(this.getResourceString($r('app.string.Result')) + this.mathSum)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeSum)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimeSum)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入对称矩阵 如： [10,1,10]' })
+        TextInput({ placeholder: $r('app.string.Please_symmetric') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -510,15 +520,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathProd)
+        Text(this.getResourceString($r('app.string.Result')) + this.mathProd)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeProd)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimeProd)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入数组 如： [[2,5],[6,3],[1,7]]' })
+        TextInput({ placeholder: $r('app.string.Please_input') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -526,7 +536,7 @@ struct Index {
             this.mathmeanArr = value
           })
 
-        TextInput({ placeholder: '请输入数值或者不输入' })
+        TextInput({ placeholder: $r('app.string.Please_blank') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -552,15 +562,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathmean)
+        Text(this.getResourceString($r('app.string.Result')) + this.mathmean)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimemean)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimemean)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入对称矩阵 如： [[10,1,10],[1,10,1],[10,1,10]]' })
+        TextInput({ placeholder: $r('app.string.Please_matrix') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -582,15 +592,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathmad)
+        Text(this.getResourceString($r('app.string.Result')) + this.mathmad)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimemad)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimemad)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入对称矩阵 如： [[10,1,10],[1,10,1],[10,1,10]]' })
+        TextInput({ placeholder: $r('app.string.Please_matrix') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -612,15 +622,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathcumsum)
+        Text(this.getResourceString($r('app.string.Result')) + this.mathcumsum)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimecumsum)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimecumsum)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入对称矩阵 如：[[10, 1, 10], [1, 10, 1], [10, 1, 10]]' })
+        TextInput({ placeholder: $r('app.string.Please_matrix') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -628,7 +638,7 @@ struct Index {
             this.mathusolveArr = value
           })
 
-        TextInput({ placeholder: '请输入矩阵 如：[[1, 2, 3]' })
+        TextInput({ placeholder: $r('app.string.Please_such') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -642,7 +652,8 @@ struct Index {
           .onClick(() => {
             try {
               let time = Date.now()
-              this.mathusolve = math.usolve(math.evaluate(this.mathusolveArr), math.evaluate(this.mathnumusolve)).toString()
+              this.mathusolve =
+                math.usolve(math.evaluate(this.mathusolveArr), math.evaluate(this.mathnumusolve)).toString()
               let time1 = Date.now()
               this.mathTimeusolve = (time1 - time).toString()
             } catch (err) {
@@ -650,15 +661,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathusolve)
+        Text(this.getResourceString($r('app.string.Result')) + this.mathusolve)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimeusolve)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimeusolve)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入表达式 如： 2 * 2 ^ (2 - 1)' })
+        TextInput({ placeholder: $r('app.string.Please_expression') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -666,7 +677,7 @@ struct Index {
             this.mathsimplifyConstantStr = value
           })
 
-        TextInput({ placeholder: '请输入如： Boolean值 或者不输入' })
+        TextInput({ placeholder: $r('app.string.Please_leave_blank') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -680,7 +691,8 @@ struct Index {
           .onClick(() => {
             try {
               let time = Date.now()
-              this.mathsimplifyConstant = math.simplifyConstant(this.mathsimplifyConstantStr, this.mathnumsimplifyConstant).toString()
+              this.mathsimplifyConstant =
+                math.simplifyConstant(this.mathsimplifyConstantStr, this.mathnumsimplifyConstant).toString()
               let time1 = Date.now()
               this.mathTimesimplifyConstant = (time1 - time).toString()
             } catch (err) {
@@ -688,15 +700,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathsimplifyConstant)
+        Text(this.getResourceString($r('app.string.Result')) + this.mathsimplifyConstant)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimesimplifyConstant)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimesimplifyConstant)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入表达式 如： 2 * 1 * x ^ (2 - 1)' })
+        TextInput({ placeholder: $r('app.string.Please_expression') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -704,7 +716,7 @@ struct Index {
             this.mathsimplifyStr = value
           })
 
-        TextInput({ placeholder: '请输入数值 或者 不输入' })
+        TextInput({ placeholder: $r('app.string.Please_blank') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -712,7 +724,7 @@ struct Index {
             this.mathnumsimplify.x = Number(value)
           })
 
-        TextInput({ placeholder: '请输入如：{exactFractions: true} 或者不输入' })
+        TextInput({ placeholder: $r('app.string.Please_example_blank') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -726,7 +738,8 @@ struct Index {
           .onClick(() => {
             try {
               let time = Date.now()
-              this.mathsimplify = math.simplify(this.mathsimplifyStr, this.mathnumsimplify, this.mathnumsimplify1).toString()
+              this.mathsimplify =
+                math.simplify(this.mathsimplifyStr, this.mathnumsimplify, this.mathnumsimplify1).toString()
               let time1 = Date.now()
               this.mathTimesimplify = (time1 - time).toString()
             } catch (err) {
@@ -734,15 +747,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathsimplify)
+        Text(this.getResourceString($r('app.string.Result')) + this.mathsimplify)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimesimplify)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimesimplify)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        TextInput({ placeholder: '请输入数组 如：[[-2, 3], [2, 1]]' })
+        TextInput({ placeholder: $r('app.string.Please_input2') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -750,7 +763,7 @@ struct Index {
             this.mathlusolveArr = value
           })
 
-        TextInput({ placeholder: '请输入数组 如：[11, 9]' })
+        TextInput({ placeholder: $r('app.string.Please_input3') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -764,7 +777,8 @@ struct Index {
           .onClick(() => {
             try {
               let time = Date.now()
-              this.mathlusolve = math.lusolve(math.evaluate(this.mathlusolveArr), math.evaluate(this.mathnumlusolve)).toString()
+              this.mathlusolve =
+                math.lusolve(math.evaluate(this.mathlusolveArr), math.evaluate(this.mathnumlusolve)).toString()
               let time1 = Date.now()
               this.mathTimelusolve = (time1 - time).toString()
             } catch (err) {
@@ -772,16 +786,16 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathlusolve)
+        Text(this.getResourceString($r('app.string.Result')) + this.mathlusolve)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimelusolve)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimelusolve)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
 
-        TextInput({ placeholder: '请输入数组 如：[[10, 1, 10], [1, 10, 1], [10, 1, 10]]' })
+        TextInput({ placeholder: $r('app.string.Please_input4') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -789,7 +803,7 @@ struct Index {
             this.mathlsolveArr = value
           })
 
-        TextInput({ placeholder: '请输入数组 如：[1,2,3]' })
+        TextInput({ placeholder: $r('app.string.Please_input5') })
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -803,7 +817,8 @@ struct Index {
           .onClick(() => {
             try {
               let time = Date.now()
-              this.mathlsolve = math.lsolve(math.evaluate(this.mathlsolveArr), math.evaluate(this.mathnumlsolve)).toString()
+              this.mathlsolve =
+                math.lsolve(math.evaluate(this.mathlsolveArr), math.evaluate(this.mathnumlsolve)).toString()
               let time1 = Date.now()
               this.mathTimelsolve = (time1 - time).toString()
             } catch (err) {
@@ -811,15 +826,15 @@ struct Index {
             }
           })
 
-        Text("结果：" + this.mathlsolve)
+        Text(this.getResourceString($r('app.string.Result')) + this.mathlsolve)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text("时间：" + this.mathTimelsolve)
+        Text(this.getResourceString($r('app.string.Time')) + this.mathTimelsolve)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text('跳转到首页')
+        Text($r('app.string.Jump_to_homepage'))
           .fontSize(20)
           .padding(8)
           .margin({ top: 32 })
@@ -846,6 +861,7 @@ struct Index {
       console.info('Scroll Stop')
     })
   }
+
   onPageHide(): void {
     console.log('lllllllllllll消失')
   }
