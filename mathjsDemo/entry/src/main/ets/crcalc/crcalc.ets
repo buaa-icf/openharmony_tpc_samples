@@ -123,7 +123,7 @@ struct Index {
   }
 
   build() {
-    Scroll("crcalc test") {
+    Scroll(this.scroller) {
       Column() {
 
         Text(this.message)

@@ -15,6 +15,9 @@
 import * as math from 'mathjs';
 import router from '@ohos.router';
 
+interface maths{
+  x:number
+}
 @Entry
 @Component
 struct Index {
@@ -83,7 +86,7 @@ struct Index {
   mathsimplifyConstantStr = '2 * 2^ (2 - 1)'
   mathnumsimplifyConstant: math.SimplifyOptions = { exactFractions: true }
   mathsimplifyStr = '2 * 1 * x ^ (2 - 1)'
-  mathnumsimplify: ESObject = { x: 4 }
+  mathnumsimplify: maths = { x: 4 }
   mathnumsimplify1: math.SimplifyOptions = { exactFractions: true }
   mathlsolveArr = this.arrays
   mathnumlsolve = '[1,2,3]'
@@ -100,6 +103,7 @@ struct Index {
   getResourceString(res: Resource) {
     return getContext().resourceManager.getStringSync(res.id)
   }
+
 
   build() {
     Scroll(this.scroller) {
