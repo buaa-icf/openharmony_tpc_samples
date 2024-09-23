@@ -1,52 +1,52 @@
 # @protobufjs/utf8
 
-## 简介
-> @protobufjs/pool 是一个用于数字数组的最小UTF8实现
+## Introduction
+> @protobufjs/pool is a minimal UTF8 implementation for number arrays.
 
-## 下载安装
+## How to Install
 ```shell
 ohpm install @protobufjs/utf8
 ```
-OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 
-### 引用及使用
+### Importing and Using the Library
 ```
 import utf8 from "@protobufjs/utf8"
 
-//计算字符串的UTF8字节长度
+// Calculate the UTF8 byte length of a string.
 let uint8:Uint8Array
 utf8.length(uint8.toString())
 
-//将UTF8字节作为字符串读取
+// Read UTF8 bytes as a string.
 let uint8:Uint8Array
 utf8.read(data, 0, data.byteLength);
 
-//将字符串写成UTF8字节
+// Write a string as UTF8 bytes.
 let data:Uint8Array
 let len = utf8.length(Utf8ArrayToStr(data));
 let buf = buffer.alloc(len);
 utf8.write(Utf8ArrayToStr(data),new Uint8Array(buf.buffer), 0)
 ```
 
-## 接口说明
-1. 计算字符串的UTF8字节长度
+## Available APIs
+1. Calculates the UTF8 byte length of a string.
    `length(string: string): number`
-2. 将UTF8字节作为字符串读取
+2. Reads UTF8 bytes as a string.
    `read(buffer: Uint8Array, start: number, end: number): string`
-3. 将字符串写成UTF8字节。
+3. Writes a string as UTF8 bytes.
    `write(string: string, buffer: Uint8Array, offset: number): number`
 
-## 约束与限制
-在下述版本验证通过：
+## Constraints
+This project has been verified in the following versions:
 
-- DevEco Studio 版本：4.1 Canary(4.1.3.317)，OpenHarmony SDK:API11 (4.1.0.36)
+- DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API 11 (4.1.0.36)
 
-## 目录结构
+## Directory Structure
 ````
 |---- protobufjs_utf8
-|     |---- entry  # 示例代码文件夹
+|     |---- entry  # Sample code
 |           |---- src
 |                 |---- main
 |                        |---- ets
@@ -55,16 +55,15 @@ utf8.write(Utf8ArrayToStr(data),new Uint8Array(buf.buffer), 0)
 |                 |---- ohosTest
 |                       |---- ets
 |                             |---- test
-|                                   |---- Ability.test.ets  # 单元测试
+|                                   |---- Ability.test.ets  # Unit test
 
-|     |---- README.md  # 安装使用方法
-|     |---- README.OpenSource  # 开源说明
-|     |---- CHANGELOG.md  # 更新日志                
+|     |---- README.md  # Readme
+|     |---- README.OpenSource  # Open source description
+|     |---- CHANGELOG.md  # Changelog               
 ````
 
-## 贡献代码
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+## How to Contribute
+If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
-本项目基于 [BSD License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/protobufjs_utf8/LICENSE) ，请自由地享受和参与开源。
-
+## License
+This project is licensed under [BSD License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/protobufjs_utf8/LICENSE).
