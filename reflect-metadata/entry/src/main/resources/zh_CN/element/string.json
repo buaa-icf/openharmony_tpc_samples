@@ -11,6 +11,38 @@
     {
       "name": "EntryAbility_label",
       "value": "reflect_metadata"
+    },
+    {
+      "name": "Classes_with_metadata",
+      "value": "带有元数据的类:"
+    },
+    {
+      "name": "Check_presence_metadata_keys_prototype_chain",
+      "value": "检查原型链上是否存在元数据键:"
+    },
+    {
+      "name": "Check_you_have_your_own_metadata_key",
+      "value": "检查是否存在自己的元数据键:"
+    },
+    {
+      "name": "Get_metadata_value_the_metadata_key_on_prototype_chain",
+      "value": "获取原型链上元数据键的元数据值:"
+    },
+    {
+      "name": "Gets_metadata_value_our_own_metadata_key",
+      "value": "获取自己的元数据键的元数据值:"
+    },
+    {
+      "name": "Get_all_metadata_keys_on_prototype_chain",
+      "value": "获取原型链上的所有元数据键:"
+    },
+    {
+      "name": "Get_all_your_own_metadata_keys",
+      "value": "获取所有自己的元数据键:"
+    },
+    {
+      "name": "Delete_metadata",
+      "value": "删除元数据:"
     }
   ]
 }

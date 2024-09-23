@@ -11,6 +11,38 @@
     {
       "name": "EntryAbility_label",
       "value": "reflect_metadata"
+    },
+    {
+      "name": "Classes_with_metadata",
+      "value": "Class with metadata:"
+    },
+    {
+      "name": "Check_presence_metadata_keys_prototype_chain",
+      "value": "Check whether the metadata with the given key exists in the prototype chain:"
+    },
+    {
+      "name": "Check_you_have_your_own_metadata_key",
+      "value": "Check whether the metadata with the given key exists in the target object:"
+    },
+    {
+      "name": "Get_metadata_value_the_metadata_key_on_prototype_chain",
+      "value": "Obtain the metadata value with the give key from the prototype chain:"
+    },
+    {
+      "name": "Gets_metadata_value_our_own_metadata_key",
+      "value": "Obtain the metadata value with the give key from the target object:"
+    },
+    {
+      "name": "Get_all_metadata_keys_on_prototype_chain",
+      "value": "Obtain all the metadata keys in the prototype chain:"
+    },
+    {
+      "name": "Get_all_your_own_metadata_keys",
+      "value": "Obtain all the metadata keys defined in the target object:"
+    },
+    {
+      "name": "Delete_metadata",
+      "value": "Delete metadata:"
     }
   ]
 }

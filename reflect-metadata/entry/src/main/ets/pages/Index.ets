@@ -26,6 +26,10 @@ struct Index {
   @State result6: string = '';
   @State result7: string = '';
 
+  private getResourceString(res:Resource){
+    return getContext().resourceManager.getStringSync(res.id)
+  }
+
   build() {
     Column () {
       Button('Click', { type: ButtonType.Capsule, stateEffect: true })
@@ -50,35 +54,35 @@ struct Index {
         })
 
       Column() {
-        Text('带有元数据的类: demo-metadata {name: John Doe; age: 30}')
+        Text(`${this.getResourceString($r("app.string.Classes_with_metadata"))} demo-metadata {name: John Doe; age: 30}`)
           .fontSize(20)
           .margin({ bottom: 20 })
 
-        Text('检查原型链上是否存在元数据键: ' + this.result1)
+        Text(`${this.getResourceString($r("app.string.Classes_with_metadata"))} ${this.result1}`)
           .fontSize(20)
           .margin({ bottom: 20 })
 
-        Text('检查是否存在自己的元数据键: ' + this.result2)
+        Text(`${this.getResourceString($r("app.string.Check_you_have_your_own_metadata_key"))} ${this.result2}`)
           .fontSize(20)
           .margin({ bottom: 20 })
 
-        Text('获取原型链上元数据键的元数据值: ' + this.result3)
+        Text(`${this.getResourceString($r("app.string.Get_metadata_value_the_metadata_key_on_prototype_chain"))} ${this.result3}`)
           .fontSize(20)
           .margin({ bottom: 20 })
 
-        Text('获取自己的元数据键的元数据值: ' + this.result4)
+        Text(`${this.getResourceString($r("app.string.Gets_metadata_value_our_own_metadata_key"))} ${this.result4}`)
           .fontSize(20)
           .margin({ bottom: 20 })
 
-        Text('获取原型链上的所有元数据键: ' + this.result5)
+        Text(`${this.getResourceString($r("app.string.Get_all_metadata_keys_on_prototype_chain"))} ${this.result5}`)
           .fontSize(20)
           .margin({ bottom: 20 })
 
-        Text('获取所有自己的元数据键: ' + this.result6)
+        Text(`${this.getResourceString($r("app.string.Get_all_your_own_metadata_keys"))} ${this.result6}`)
           .fontSize(20)
           .margin({ bottom: 20 })
 
-        Text('删除元数据: ' + this.result7)
+        Text(`${this.getResourceString($r("app.string.Delete_metadata"))} ${this.result7}`)
           .fontSize(20)
           .margin({ bottom: 20 })
       }
