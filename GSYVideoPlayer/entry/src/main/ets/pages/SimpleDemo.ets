@@ -31,7 +31,7 @@ let screenWidth = 0;
 @Entry
 @Component
 struct SimpleDemo {
-  @State cropHint: string = '视频裁剪中...'
+  @State cropHint: string = this.getResourceString($r('app.string.Video_cropping'))
   @State screenHeight: string = '30%';
   videoModel: StandardGSYVideoModel = new StandardGSYVideoModel();
   dialogController: CustomDialogController = new CustomDialogController({
@@ -53,7 +53,9 @@ struct SimpleDemo {
     this.changeOrientation();
   }
   private videoUrl = "http://1251017968.vod2.myqcloud.com/3eb04eefvodtransgzp1251017968/8782b1285285890810009576163/v.f30.mp4"
-
+  getResourceString(res:Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
   build() {
     Row() {
       Column() {
@@ -61,15 +63,15 @@ struct SimpleDemo {
           videoModel: this.videoModel
         }).height(this.screenHeight)
 
-        Button("点击截图").onClick(() => {
+        Button($r('app.string.take_screenshot')).onClick(() => {
           let player = GlobalContext.getContext().getObject("currentPlayer") as BaseVideoPlayer;
           if (player) {
             this.testSetFramePerformance();
             let path = getContext(this).cacheDir + "/test.jpeg";
             player.saveFrame(path, {
-              shotResult(code: number) {
+              shotResult:(code: number)=> {
                 promptAction.showToast({
-                  message: code == 0 ? "截图操作成功" : "截图操作失败"
+                  message: code == 0 ? this.getResourceString($r('app.string.Screenshot_operation_successful')) : this.getResourceString($r('app.string.Screenshot_operation_failed'))
                 });
               }
             })
@@ -86,7 +88,7 @@ struct SimpleDemo {
             let aStartGifTime = eStartGifTime - sStartGifTime;
             LogUtils.getInstance().LOGI('startGifTime:' + aStartGifTime + 'us');
             promptAction.showToast({
-              message: "开始gif截图"
+              message: this.getResourceString($r('app.string.Start_gif_screenshot'))
             });
           }
         })
@@ -99,10 +101,10 @@ struct SimpleDemo {
             let that = this;
             let sStopGifTime = systemDateTime.getTime(true) / 1000;
             player.stopGif(path, {
-              gifResult(code: number) {
+              gifResult:(code: number)=> {
                 that.dialogController.close();
                 promptAction.showToast({
-                  message: code == 0 ? "gif截图成功" : "gif截图失败"
+                  message: code == 0 ? this.getResourceString($r('app.string.gif_screenshot_successful')) : this.getResourceString($r('app.string.gif_screenshot_failed'))
                 });
               }
             })
@@ -119,14 +121,14 @@ struct SimpleDemo {
   async aboutToAppear() {
     this.testModelPerformance();
     this.videoModel.setUrl(this.videoUrl, false);
-    this.videoModel.setTitle("这是测试视频的标题");
+    this.videoModel.setTitle(this.getResourceString($r('app.string.title')));
     this.videoModel.setBackClickListener(this.backClickListener);
     this.videoModel.setFullClickListener(this.fullClickListener);
     this.videoModel.setCoverImage($r('app.media.app_icon'));
     mDirection = this.getDirection();
     screenWidth = px2vp(display.getDefaultDisplaySync().width);
   }
-  
+
   private testSetFramePerformance() {
     let player = GlobalContext.getContext().getObject("currentPlayer") as BaseVideoPlayer;
     if (player) {
@@ -141,7 +143,7 @@ struct SimpleDemo {
       let eFrameTime = systemDateTime.getTime(true) / 1000;
       let aFrameTime = (eFrameTime - sFrameTime) / 10;
       LogUtils.getInstance().LOGI('setFrameTime:' + aFrameTime + 'us');
-      
+
     }
   }
 
@@ -156,7 +158,7 @@ struct SimpleDemo {
 
     sTime = systemDateTime.getTime(true) / 1000;
     for (let i = 0; i < 2000; i++) {
-      this.videoModel.setTitle("这是测试视频的标题");
+      this.videoModel.setTitle(this.getResourceString($r('app.string.title')));
     }
     endTime = systemDateTime.getTime(true) / 1000;
     aTime = (endTime - sTime) / 2000;

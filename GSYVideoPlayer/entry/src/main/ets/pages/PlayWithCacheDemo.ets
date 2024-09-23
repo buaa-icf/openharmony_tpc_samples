@@ -20,10 +20,10 @@ struct PlayWithCacheDemo {
   build() {
     Row() {
       Column() {
-        Button('边播放边缓存').margin(10).onClick(() => {
+        Button($r('app.string.Cache_playing')).margin(10).onClick(() => {
           router.pushUrl({ url: 'pages/PlayNetWithCacheDemo' })
         })
-        Button('播放不缓存').margin(10).onClick(() => {
+        Button($r('app.string.Play_without_caching')).margin(10).onClick(() => {
           router.pushUrl({ url: 'pages/PlayNetWithNoCacheDemo' })
         })
       }.width('100%')

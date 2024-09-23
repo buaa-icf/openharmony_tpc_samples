@@ -11,6 +11,90 @@
     {
       "name": "EntryAbility_label",
       "value": "gsyvideoplayer_demo"
+    },
+    {
+      "name": "NET_REQUEST_PERMISSION",
+      "value": "api apply net request permission."
+    },
+    {
+      "name": "Switch_kernel_player",
+      "value": "切换内核播放器"
+    },
+    {
+      "name": "Simple_player",
+      "value": "简单播放器，全屏功能，截图，gif功能"
+    },
+    {
+      "name": "Cache_playing",
+      "value": "边播放边缓存功能"
+    },
+    {
+      "name": "Play_without_caching",
+      "value": "播放不缓存"
+    },
+    {
+      "name": "Simple_list_function",
+      "value": "简单列表功能"
+    },
+    {
+      "name": "Danmaku_player_function",
+      "value": "弹幕播放器功能"
+    },
+    {
+      "name": "ijkPlayer_player",
+      "value": "切换到ijkPlayer播放器"
+    },
+    {
+      "name": "avplayer_player",
+      "value": "切换到avplayer播放器"
+    },
+    {
+      "name": "Video_cropping",
+      "value": "视频裁剪中..."
+    },
+    {
+      "name": "take_screenshot",
+      "value": "点击截图"
+    },
+    {
+      "name": "Screenshot_operation_successful",
+      "value": "截图操作成功"
+    },
+    {
+      "name": "Screenshot_operation_failed",
+      "value": "截图操作失败"
+    },
+    {
+      "name": "Start_gif_screenshot",
+      "value": "开始gif截图"
+    },
+    {
+      "name": "gif_screenshot_successful",
+      "value": "gif截图成功"
+    },
+    {
+      "name": "gif_screenshot_failed",
+      "value": "gif截图失败"
+    },
+    {
+      "name": "title",
+      "value": "这是测试视频的标题"
+    },
+    {
+      "name": "Close_barrage",
+      "value": "关弹幕"
+    },
+    {
+      "name": "Open_barrage",
+      "value": "开弹幕"
+    },
+    {
+      "name": "Send_barrages",
+      "value": "发送弹幕"
+    },
+    {
+      "name": "barrage",
+      "value": "这是一条弹幕"
     }
   ]
 }

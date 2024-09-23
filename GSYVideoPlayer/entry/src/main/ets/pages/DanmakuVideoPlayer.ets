@@ -87,7 +87,7 @@ export struct DanmakuVideoPlayer {
   @State loadingVisible: Visibility = Visibility.None;
   @State mDirection: number = 0;
   @State screenIsFull: boolean = false;
-  @State danMuText: string = "弹幕关";
+  @State danMuText: string = this.getResourceString($r('app.string.Close_barrage'));
   // 是否显示音量数值的布局
   @State showVolumeUi: boolean = false;
   // 是否显示亮度数值的布局
@@ -146,7 +146,7 @@ export struct DanmakuVideoPlayer {
   private addDanmaku(isLive: Boolean) {
     if (this.mContext) {
       let danmaku: BaseDanmaku = this.mContext.mDanmakuFactory.createDanmaku(BaseDanmaku.TYPE_SCROLL_RL);
-      danmaku.text = "这是一条弹幕" + SystemClock.uptimeMillis();
+      danmaku.text = this.getResourceString($r('app.string.barrage')) + SystemClock.uptimeMillis();
       danmaku.padding = 5;
       danmaku.priority = 0; // 可能会被各种过滤器过滤并隐藏显示
       danmaku.isLive = isLive.valueOf();
@@ -160,7 +160,9 @@ export struct DanmakuVideoPlayer {
       this.model.addDanmaku(danmaku);
     }
   }
-
+  getResourceString(res:Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
   @Builder
   topTitle() {
     Flex({ direction: FlexDirection.Row, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Start }) {
@@ -313,8 +315,8 @@ export struct DanmakuVideoPlayer {
             if (this.mIVideoPlayer) {
               switch (mode) {
                 case SliderChangeMode.Begin:
-                // 通知的回调会到的慢一点，导致下面设置的showPause = true无效
-                // 使用isSeek参数去控制pause通知里面的状态操作
+                  // 通知的回调会到的慢一点，导致下面设置的showPause = true无效
+                  // 使用isSeek参数去控制pause通知里面的状态操作
                   this.mIVideoPlayer.pause();
                   this.isSeek = true;
                   this.stopProgressTask();
@@ -347,7 +349,7 @@ export struct DanmakuVideoPlayer {
       .backgroundColor($r('app.color.bottom_controls_color'))
 
       Row() {
-        Text("发送弹幕")
+        Text($r('app.string.Send_barrages'))
           .backgroundColor($r('app.color.color_add_danmu'))
           .width("90%")
           .textAlign(TextAlign.Center)
@@ -362,13 +364,13 @@ export struct DanmakuVideoPlayer {
           .onClick(() => {
             if (this.danMuShow) {
               this.model.hide();
-              this.danMuText = '弹幕开';
+              this.danMuText = this.getResourceString($r('app.string.Open_barrage'));
             } else {
               this.model.setWidth(vp2px(changeWidth));
               this.model.setHeight(vp2px(changeHeight - 1));
               this.model.hide();
               this.model.show();
-              this.danMuText = '弹幕关';
+              this.danMuText = this.getResourceString($r('app.string.Close_barrage'));
             }
             this.danMuShow = !this.danMuShow;
           })
@@ -509,7 +511,7 @@ export struct DanmakuVideoPlayer {
           }
           if (event && event.fingerList && event.fingerList[0]) {
             LogUtils.getInstance().LOGI('TapGesture event.onActionStart start x: ' + event.fingerList[0].localX +
-            " ---event.onActionStart start y: " + event.fingerList[0].localY);
+              " ---event.onActionStart start y: " + event.fingerList[0].localY);
           }
         }
       }),
@@ -527,7 +529,7 @@ export struct DanmakuVideoPlayer {
             touchStartX = event.fingerList[0].localX;
             touchStartY = event.fingerList[0].localY;
             LogUtils.getInstance().LOGI('VerticalPanBrightAndVolume event.onActionStart start x: ' + touchStartX +
-            ' event.onActionStart start y: ' + touchStartY);
+              ' event.onActionStart start y: ' + touchStartY);
           }
         })
         .onActionUpdate((event: GestureEvent | undefined) => {
@@ -620,7 +622,7 @@ export struct DanmakuVideoPlayer {
             this.mSeekTimePosition = this.progressValue;
             LogUtils.getInstance()
               .LOGI('HorizontalSeekProgress event.onActionStart start x: ' + event.fingerList[0].localX +
-              ' event.onActionStart start y: ' + event.fingerList[0].localY);
+                ' event.onActionStart start y: ' + event.fingerList[0].localY);
           }
         })
         .onActionUpdate((event: GestureEvent | undefined) => {

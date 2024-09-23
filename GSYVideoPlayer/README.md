@@ -1,114 +1,113 @@
 # GSYVideoPlayer
 
-## 简介
+## Introduction
 
-GSYVideoPlayer是一个视频播放器库，支持切换内核播放器（IJKPlayer、avplayer），并且支持视频截图能力、
-视频生成gif能力、边播边缓存能力、视频全屏能力等多种能力。
+GSYVideoPlayer is a video player library that supports switching between core players (IJKPlayer and AVPlayer). It also provides capabilities such as video screenshot, video to GIF conversion, caching while playing, and full-screen video playback.
 
-## 效果展示：
+## Effect
 ![gif](screenshot/gsyvideoplayer.gif)
 
-## 下载安装
+## How to Install
 
 ```
 ohpm install @ohos/gsyvideoplayer
 ```
 
 OpenHarmony ohpm
-环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
-## 使用说明
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-### 规格说明
-目前支持音视频规格：
-由于本库播放音视频能力底层是avplayer或者ijkplayer去播放视频，所以支持的音视频规格跟随这两个库音视频规格。
+## How to Use
 
-[avplayer规格说明](https://gitee.com/openharmony/docs/blob/master/zh-cn/application-dev/media/avplayer-avrecorder-overview.md#%E6%94%AF%E6%8C%81%E7%9A%84%E6%A0%BC%E5%BC%8F%E4%B8%8E%E5%8D%8F%E8%AE%AE)
+### Specifications
 
-[ijkplayer规格说明](https://gitee.com/openharmony-sig/ohos_ijkplayer/blob/master/README.md)
+This library uses the AVPlayer or IJKPlayer at the bottom layer for audio and video playback. Therefore, the supported audio and video specifications are the same as those of the two libraries. For details, see the following:
 
-
-### 使用标准播放器
-
-1. 设置内核播放器
-
-可以在视频播放之前选择使用avplayer或者ijkplayer去播放视频。
+- [AVPlayer Specifications](https://gitee.com/openharmony/docs/blob/master/en/application-dev/media/media/media-kit-intro.md#supported-formats-and-protocols)
+- [ijkplayer Specifications](https://gitee.com/openharmony-sig/ohos_ijkplayer/blob/master/README.md)
 
 
-  ```typescript
-import { GlobalContext } from '@ohos/gsyvideoplayer'
+### Using the Standard Player
 
-aboutToAppear() {
-  GlobalContext.getContext().setObject("playType", PlayerType.SYSTEM_AVPLAYER);
-}
-  ```
+1. Set the core player.
 
-2. 构建StandardGSYVideoModel对象:
+   You can select the AVPlayer or IJKPlayer.
+   
+   
+      ```typescript
+      import { GlobalContext } from '@ohos/gsyvideoplayer'
+   
+      aboutToAppear() {
+        GlobalContext.getContext().setObject("playType", PlayerType.SYSTEM_AVPLAYER);
+      }
+      ```
+   
+2. Construct a **StandardGSYVideoModel** object.
+
+   ```typescript
+     videoModel: StandardGSYVideoModel = new StandardGSYVideoModel();
+     aboutToAppear() {
+     // Set the playback URL and configure not to cache data while playing.
+     this.videoModel.setUrl(this.videoUrl, false);
+     this.videoModel.setTitle("This is the title of the test video.");
+     this.videoModel.setBackClickListener(this.backClickListener);
+     this.videoModel.setFullClickListener(this.fullClickListener);
+     this.videoModel.setCoverImage($r('app.media.app_icon'));
+   }
+   ```
+
+3. Use **StandardGSYVideoPlayer** in **build()** and pass the **StandardGSYVideoModel** object to the API.
+
+   ```typescript
+     build() {
+       Row() {
+         Column() {
+           StandardGSYVideoPlayer({
+             videoModel: this.videoModel
+           }).height(this.screenHeight)
+   
+         }.width('100%')
+   }
+   }
+   ```
+
+4. Control the player state in the lifecycle of the page with the @Entry tag.
+
+   ```typescript
+   aboutToDisappear() {
+     let player = GlobalContext.getContext().getObject("currentPlayer") as BaseVideoPlayer;
+     if (player) {
+       player.stop();
+     }
+   }
+   
+   onPageShow() {
+     let player = GlobalContext.getContext().getObject("currentPlayer") as BaseVideoPlayer;
+     if (player) {
+       player.resumePlay();
+     }
+   }
+   
+   onPageHide() {
+     let player = GlobalContext.getContext().getObject("currentPlayer") as BaseVideoPlayer;
+     if (player) {
+       player.pause();
+     }
+   }
+   ```
+
+
+### Video Screenshot
 
 ```typescript
-  videoModel: StandardGSYVideoModel = new StandardGSYVideoModel();
-  aboutToAppear() {
-  // 设置播放的url，设置播放不缓存
-  this.videoModel.setUrl(this.videoUrl, false);
-  this.videoModel.setTitle("这是测试视频的标题");
-  this.videoModel.setBackClickListener(this.backClickListener);
-  this.videoModel.setFullClickListener(this.fullClickListener);
-  this.videoModel.setCoverImage($r('app.media.app_icon'));
-}
-```
-
-3. 界面build()中使用StandardGSYVideoPlayer组件，传入StandardGSYVideoModel对象
-
-```typescript
-  build() {
-    Row() {
-      Column() {
-        StandardGSYVideoPlayer({
-          videoModel: this.videoModel
-        }).height(this.screenHeight)
-
-      }.width('100%')
-}
-}
-```
-
-4. 在@Entry标签的界面生命周期需要控制播放器的播放状态
-
-```typescript
-aboutToDisappear() {
-  let player = GlobalContext.getContext().getObject("currentPlayer") as BaseVideoPlayer;
-  if (player) {
-    player.stop();
-  }
-}
-
-onPageShow() {
-  let player = GlobalContext.getContext().getObject("currentPlayer") as BaseVideoPlayer;
-  if (player) {
-    player.resumePlay();
-  }
-}
-
-onPageHide() {
-  let player = GlobalContext.getContext().getObject("currentPlayer") as BaseVideoPlayer;
-  if (player) {
-    player.pause();
-  }
-}
-```
-
-
-### 视频截图能力
-
-```typescript
-Button("点击截图").onClick(() => {
+Button("Click to take a screenshot").onClick (() => {
   let player = GlobalContext.getContext().getObject("currentPlayer") as BaseVideoPlayer;
   if (player) {
     let path = getContext(this).cacheDir + "/test.jpeg";
     player.saveFrame(path, {
       shotResult(code: number) {
         promptAction.showToast({
-          message: code == 0 ? "截图操作成功" : "截图操作失败"
+          message: code = = 0? "Screenshot taken successfully": "Failed to take a screenshot."
         });
       }
     })
@@ -116,7 +115,7 @@ Button("点击截图").onClick(() => {
 })
 ```
 
-### 视频生成gif能力
+### Video to GIF Conversion
 
 ```typescript
 Button("startGif").onClick(() => {
@@ -125,7 +124,7 @@ Button("startGif").onClick(() => {
     let path = getContext(this).cacheDir + "/tempGif";
     player.startGif(path);
     promptAction.showToast({
-      message: "开始gif截图"
+      message: "Start to take a GIF screenshot."
     });
   }
 })
@@ -140,7 +139,7 @@ Button("stopGif").onClick(() => {
       gifResult(code: number) {
         that.dialogController.close();
         promptAction.showToast({
-          message: code == 0 ? "gif截图成功" : "gif截图失败"
+          message: code = = 0? "GIF screenshot taken successfully": "Failed to take a GIF screenshot."
         });
       }
     })
@@ -148,100 +147,98 @@ Button("stopGif").onClick(() => {
 })
 ```
 
-### 边播边缓存能力
-可以在构建StandardGSYVideoModel对象时，控制是否需要边播边缓存。
+### Caching While Playing
+When constructing the **StandardGSYVideoModel** object, you can determine whether to cache data while playing.
 ```typescript
   videoModel: StandardGSYVideoModel = new StandardGSYVideoModel();
   aboutToAppear() {
-  // 设置播放的url，设置播放不缓存
+  // Set the playback URL and configure not to cache data while playing.
   this.videoModel.setUrl(this.videoUrl, false);
 }
 ```
 
-### 视频全屏能力
-可以在构建StandardGSYVideoModel对象时，设置全屏回调接口，全屏逻辑由用户控制。
+### Full-Screen Video Playback
+When constructing the **StandardGSYVideoModel** object, you can set the full-screen callback. The full-screen logic is controlled by the end user.
 ```typescript
     fullClickListener: () => void = () => {
       
     }
   videoModel: StandardGSYVideoModel = new StandardGSYVideoModel();
   aboutToAppear() {
-  // 设置播放的url，设置播放不缓存
+  // Set the playback URL and configure not to cache data while playing.
   this.videoModel.setUrl(this.videoUrl, false);
   this.videoModel.setFullClickListener(this.fullClickListener);
 }
 ```
 
-## 接口说明
+## Available APIs
 
 ### StandardGSYVideoModel
-| 方法名                                      | 入参        | 接口描述              |
-|------------------------------------------|-----------|-------------------|
-| setUrl(videoUrl: string, cacheWithPlay?: boolean) |      videoUrl: string, cacheWithPlay?: boolean     | 设置播放url,设置是否边播边缓存 |
-| setTitle(title: string)                  | title: string | 设置视频全屏时的标题        |
-| setBackClickListener(backClickListener: () => void)                             | backClickListener: () => void         | 设置点击播放器返回按钮的回调接口  |
-| setFullClickListener(fullClickListener: () => void)                           | fullClickListener: () => void        | 设置点击播放器全屏按钮的回调接口  |
-| setCoverImage(coverImage:Resource)                           | coverImage:Resource        | 设置封面接口            |
+| API                                             | Parameter                                     | Description                        |
+| --------------------------------------------------- | ----------------------------------------- | -------------------------------- |
+| setUrl(videoUrl: string, cacheWithPlay?: boolean)   | videoUrl: string, cacheWithPlay?: boolean | Sets the playback URL and configures whether to cache data while playing.  |
+| setTitle(title: string)                             | title: string                             | Sets the title of a full-screen video.            |
+| setBackClickListener(backClickListener: () => void) | backClickListener: () => void             | Sets a callback for the touch event on the back button of the player.|
+| setFullClickListener(fullClickListener: () => void) | fullClickListener: () => void             | Sets a callback for the touch event on the full-screen button of the player.|
+| setCoverImage(coverImage:Resource)                  | coverImage:Resource                       | Sets the cover.                    |
 ### IVideoPlayer
-| 方法名          | 入参  | 接口描述           |
-|--------------|-----|----------------|
-| play();      | 无   | 视频开始播放         |
-| resumePlay() | 无   | 视频恢复播放         |
-| pause()      | 无   | 视频暂停播放         |
-| stop()       | 无   | 视频停止播放         |
-| saveFrame(fileSavePath: string, gsyVideoShotSaveListener: GSYVideoShotSaveListener)| fileSavePath: string, gsyVideoShotSaveListener: GSYVideoShotSaveListener   | 视频截图           |
-| startGif(tmpPicPath?: string)      | tmpPicPath?: string   | 视频开始gif        |
-| stopGif(saveGifPath: string, gsyVideoGifSaveListener: GSYVideoGifSaveListener)      | 无   | 视频结束gif,并生成gif |
-## 约束与限制
+| API                                                      | Parameter                                                        | Description             |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | --------------------- |
+| play();                                                      | N/A                                                          | Starts video playback.         |
+| resumePlay()                                                 | N/A                                                          | Resumes video playback.         |
+| pause()                                                      | N/A                                                          | Pauses video playback.         |
+| stop()                                                       | N/A                                                          | Stops video playback.         |
+| saveFrame(fileSavePath: string, gsyVideoShotSaveListener: GSYVideoShotSaveListener) | fileSavePath: string, gsyVideoShotSaveListener: GSYVideoShotSaveListener | Takes a video screenshot.             |
+| startGif(tmpPicPath?: string)                                | tmpPicPath?: string                                          | Starts to convert the video to a GIF image.          |
+| stopGif(saveGifPath: string, gsyVideoGifSaveListener: GSYVideoGifSaveListener) | N/A                                                          | Ends the video to GIF conversion and generates a GIF image.|
+## Constraints
 
-在下述版本验证通过：
+This project has been verified in the following version:
 
-DevEco Studio:NEXT Developer Beta1(5.0.3.326), SDK: API12 (5.0.0.25)
-DevEco Studio:NEXT Beta1-5.0.3.806, SDK: API12 Release (5.0.0.66)
+DevEco Studio: NEXT Developer Beta1 (5.0.3.326), SDK: API 12 (5.0.0.25)
 
-## 目录结构
+## Directory Structure
 
 ```typescript
 |---- GSYVideoPlayer  
-|     |---- entry  # 示例代码文件夹
+|     |---- entry  # Sample code
             |---- pages
-                |---- BiliDanmukuParser.ets  # 弹幕解析类
-                |---- DanmakuData.ets  # 弹幕数据
-                |---- DanmakuVideoDemo.ets  # 弹幕demo
-                |---- DanmakuVideoPlayer.ets  # 弹幕播放器
-                |---- Index.ets  # 首页
-                |---- PlayNetWithCacheDemo.ets  # 边播放边缓存demo
-                |---- PlayNetWithNoCacheDemo.ets  # 边播放不缓存demo
-                |---- PlayWithCacheDemo.ets  # 播放缓存入口
-                |---- SimpleDemo.ets  # 简单播放测试demo
-                |---- SimpleList.ets  # 简单视频列表demo
-|     |---- library  # GSYVideoPlayer核心代码
-            |---- listener  # 接口回调类
-                |---- GSYVideoGifSaveListener.ets  # stopGif接口回调类
-                |---- GSYVideoShotSaveListener.ets  # 截图接口回调类
-            |---- mainpage  # 核心实现
-                |---- AvPlayerControl.ets  # avplayer逻辑控制类
-                |---- AvVideoPlayer.ets  # avplayer播放器
-                |---- BaseVideoPlayer.ets  # 播放器控制基类
-                |---- CommonConstants.ets # 常量类
-                |---- GlobalContext.ts  # 全局配置类
-                |---- IjkPlayerControl.ets  # ijkplayer逻辑控制类
-                |---- IjkVideoPlayer.ets  # ijkplayer播放器
-                |---- StandardForListGSYVideoPlayer.ets  # 为list页面使用的播放器
-                |---- StandardGSYVideoModel.ets  # 标准播放器
-                |---- StandardGSYVideoPlayer.ets  # 播放器数据配置类
-            |---- utils  # 工具类
-                |---- OrientationUtil.ets  # 屏幕方向控制类
-                |---- LogUtils.ets  # log工具类
-|     |---- README.md  # 安装使用方法                 
+                |---- BiliDanmukuParser.ets  # Bullet comment parsing class
+                |---- DanmakuData.ets  # Bullet comment data
+                |---- DanmakuVideoDemo.ets  # Bullet comment demo
+                |---- DanmakuVideoPlayer.ets  # Bullet comment player
+                |---- Index.ets  # Homepage
+                |---- PlayNetWithCacheDemo.ets  # Demo of caching while playing
+                |---- PlayNetWithNoCacheDemo.ets  # Demo of no caching while playing
+                |---- PlayWithCacheDemo.ets  # Playback cache entry
+                |---- SimpleDemo.ets  # Demo of simple playback test
+                |---- SimpleList.ets  # Demo of simple video list
+|     |---- library  # GSYVideoPlayer core code
+            |---- listener  # Callback class
+                |---- GSYVideoGifSaveListener.ets  # Callback class of the stopGif API
+                |---- GSYVideoShotSaveListener.ets  # Callback class of the screenshot APIs
+            |---- mainpage  # Core implementation
+                |---- AvPlayerControl.ets  # AVPlayer logic control class
+                |---- AvVideoPlayer.ets  # AVPlayer
+                |---- BaseVideoPlayer.ets  # Player control base class
+                |---- CommonConstants.ets # Constant class
+                |---- GlobalContext.ts  # Global configuration class
+                |---- IjkPlayerControl.ets  # IJKPlayer logic control class
+                |---- IjkVideoPlayer.ets  # IJKPlayer player
+                |---- StandardForListGSYVideoPlayer.ets  # Player used by the list page
+                |---- StandardGSYVideoModel.ets  # Standard player
+                |---- StandardGSYVideoPlayer.ets  # Player data configuration class
+            |---- utils  # Utility class
+                |---- OrientationUtil.ets # Screen orientation control class
+                |---- LogUtils.ets # Log utility class
+|     |---- README.md  # Readme
+|     |---- README_zh.md  # Readme
 ```
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提[Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
-给我们，当然，我们也非常欢迎你给我们提[PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls)。
+If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-本项目基于 [Apache License ](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/GSYVideoPlayer/LICENSE)，请自由地享受和参与开源。
-
+This project is licensed under [Apache License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/GSYVideoPlayer/LICENSE).

@@ -42,12 +42,14 @@ struct SimpleList {
       })
     }
   }
-
+  getResourceString(res:Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
   async aboutToAppear() {
     for (let i = 0; i < this.items.length; i++) {
       let model = new StandardGSYVideoModel();
       model.setUrl(this.items[i], false);
-      model.setTitle("这是测试视频的标题");
+      model.setTitle(this.getResourceString($r('app.string.title')));
       model.setCoverImage($r('app.media.app_icon'));
       this.videoModels[i] = model;
     }
