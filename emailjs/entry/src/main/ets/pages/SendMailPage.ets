@@ -26,12 +26,12 @@ const BASE_COUNT = 1
 struct SendMailPage {
   @State message: string = 'Hello World'
   @State from: string = ''
-  @State accountName: string = 'OH email client'
+  @State accountName: string = this.getResourceString('OH_email_client')
   @State to: string = 'xxx@qq.com'
   @State cc: string = 'xxx@163.com'
   @State bcc: string = 'xxx@139.com'
-  @State subject: string = 'This is the OH testing topic'
-  @State content: string = 'This is the text of the OpenHarmony email for testing. The format for the recipient, cc, and confidential cc of the email is: someone<someone@your-email.com>, another<another@your-email.com> Multiple accounts are connected by commas in English.'
+  @State subject: string = this.getResourceString('This_is_the_OH_testing_topic')
+  @State content: string = this.getResourceString('This_is_the_text_of_the_OpenHarmony_email_for_testing')
   @State attachment: Array<MessageAttachment> = []
   @State mailType: string = '@qq.com'
   @State textValue: string = ''
@@ -68,7 +68,7 @@ struct SendMailPage {
             alignContent: FlexAlign.Center,
             direction: FlexDirection.Column
           }) {
-            Text('Add information, send email')
+            Text($r('app.string.Add_information_send_email'))
               .fontSize(20)
               .height(50)
               .textAlign(TextAlign.Center)
@@ -87,7 +87,7 @@ struct SendMailPage {
                 .textAlign(TextAlign.Center)
                 .margin({ right: 5 })
 
-              TextInput({ placeholder: 'Please enter sender nickname', text: this.accountName })
+              TextInput({ placeholder: $r('app.string.Please_enter_sender_nickname'), text: this.accountName })
                 .layoutWeight(1)
                 .fontSize(20)
                 .height(50)
@@ -108,14 +108,14 @@ struct SendMailPage {
               alignContent: FlexAlign.Start,
               direction: FlexDirection.Row
             }) {
-              Text('Recipient：')
+              Text($r('app.string.Recipient'))
                 .fontSize(20)
                 .height(50)
                 .textAlign(TextAlign.Center)
                 .margin({ right: 5 })
 
               TextInput({
-                placeholder: 'Format: xx<xx@yxx.com>, xx<xx@yxx.com> Multiple accounts are connected by commas in English.',
+                placeholder: $r('app.string.Format'),
                 text: this.to
               })
                 .layoutWeight(1)
@@ -137,14 +137,14 @@ struct SendMailPage {
               alignContent: FlexAlign.Start,
               direction: FlexDirection.Row
             }) {
-              Text('Email CC：')
+              Text($r('app.string.Email_CC'))
                 .fontSize(20)
                 .height(50)
                 .textAlign(TextAlign.Center)
                 .margin({ right: 5 })
 
               TextInput({
-                placeholder: 'Format: xx<xx@yxx.com>, xx<xx@yxx.com> Multiple accounts are connected by commas in English.',
+                placeholder: $r('app.string.Format'),
                 text: this.cc
               })
                 .layoutWeight(1)
@@ -165,14 +165,14 @@ struct SendMailPage {
               alignContent: FlexAlign.Start,
               direction: FlexDirection.Row
             }) {
-              Text('BCC Blind Carbon Copy：')
+              Text($r('app.string.BCC_Blind_Carbon_Copy'))
                 .fontSize(20)
                 .height(50)
                 .textAlign(TextAlign.Center)
                 .margin({ right: 5 })
 
               TextInput({
-                placeholder: 'Format: xx<xx@yxx.com>, xx<xx@yxx.com> Multiple accounts are connected by commas in English.',
+                placeholder: $r('app.string.Format'),
                 text: this.bcc
               })
                 .layoutWeight(1)
@@ -195,13 +195,13 @@ struct SendMailPage {
               alignContent: FlexAlign.Start,
               direction: FlexDirection.Row
             }) {
-              Text('Theme：')
+              Text($r('app.string.Theme'))
                 .fontSize(20)
                 .height(50)
                 .textAlign(TextAlign.Center)
                 .margin({ right: 5 })
 
-              TextInput({ placeholder: 'Please enter the email subject', text: this.subject })
+              TextInput({ placeholder: $r('app.string.Please_enter_the_email_subject'), text: this.subject })
                 .layoutWeight(1)
                 .fontSize(20)
                 .height(50)
@@ -221,14 +221,14 @@ struct SendMailPage {
               alignContent: FlexAlign.Start,
               direction: FlexDirection.Column
             }) {
-              Text('Body：')
+              Text($r('app.string.Body'))
                 .fontSize(20)
                 .height(50)
                 .textAlign(TextAlign.Center)
                 .margin({ right: 5 })
 
               TextInput({
-                placeholder: 'Please enter the email body',
+                placeholder: $r('app.string.Please_enter_the_email_body'),
                 text: this.content
               })
                 .layoutWeight(1)
@@ -252,7 +252,7 @@ struct SendMailPage {
               alignContent: FlexAlign.Start,
               direction: FlexDirection.Row
             }) {
-              Button('Add attachment')
+              Button($r('app.string.Add_attachment'))
                 .fontSize(20)
                 .height(50)
                 .backgroundColor(Color.Blue)
@@ -312,7 +312,7 @@ struct SendMailPage {
                           .maxLines(1)
                           .textAlign(TextAlign.Center)
 
-                        Text(item.size + " byte")
+                        Text(item.size + this.getResourceString('byte'))
                           .fontSize(14)
                           .width(100)
                           .textOverflow({ overflow: TextOverflow.Ellipsis })
@@ -336,7 +336,7 @@ struct SendMailPage {
             .margin({ top: 10 })
 
 
-            Button('Send mail')
+            Button(this.getResourceString('Send_mail'))
               .margin(20)
               .width('80%')
               .height(50)
@@ -375,21 +375,21 @@ struct SendMailPage {
           let endTime1 = new Date().getTime();
           let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
           console.log("sendAsync averageTime : " + averageTime1 + "us")
-          this.showToast('Email sent successfully', 'sendmail-smtp')
+          this.showToast(this.getResourceString('Email_sent_successfully'), 'sendmail-smtp')
           if (GlobalObj?.getInstance()?.getClient()?.isQuitAfterSendDone()) {
             GlobalObj?.getInstance()?.getClient()?.close(true);
             GlobalObj?.getInstance()?.setClient(null);
           }
         } else {
-          this.showToast('Account not logged in, please login again', 'sendmail-smtp')
+          this.showToast(this.getResourceString('Account_not_logged_in_please_login_again'), 'sendmail-smtp')
         }
 
       } else {
-        this.showToast('Account not logged in, please login again', 'sendmail-smtp')
+        this.showToast(this.getResourceString('Account_not_logged_in_please_login_again'), 'sendmail-smtp')
       }
 
     } catch (err) {
-      this.showToast(`Email sending error：${err.message}`, 'sendmail-smtp')
+      this.showToast(this.getResourceString('Email_sending_error') + `：${err.message}`, 'sendmail-smtp')
     }
   }
 
@@ -397,12 +397,12 @@ struct SendMailPage {
     const ctx = this
     try {
       if (ctx.attachment && ctx.attachment.length == 0) {
-        ctx.showToast('Start generating a single local file', 'createSingleFile')
+        ctx.showToast(this.getResourceString('Start_generating_a_single_local_file'), 'createSingleFile')
         let context = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext()
         let randomNum = Math.round(Math.random() * 1024 + 1);
         let filePath = context?.cacheDir + '/' + 'attachment-' + randomNum + '.txt'
         let file = fs.openSync(filePath, fs.OpenMode.CREATE | fs.OpenMode.READ_WRITE)
-        let str = "Please check the information sent from the client to the server\r\n"
+        let str = this.getResourceString('Please_check_the_information_sent_from_the_client_to_the_server') + "\r\n"
         fs.writeSync(file.fd, str)
         fs.fsyncSync(file.fd)
         fs.closeSync(file)
@@ -413,9 +413,9 @@ struct SendMailPage {
           size: str.length
         }
         this.attachment.push(attach)
-        ctx.showToast('Successfully generated local single file' + filePath, 'createSingleFile')
+        ctx.showToast(this.getResourceString('Successfully_generated_local_single_file') + filePath, 'createSingleFile')
       } else if (ctx.attachment && ctx.attachment.length == 1) {
-        ctx.showToast('Start generating a single local file', 'createSingleFile')
+        ctx.showToast(this.getResourceString('Start_generating_a_single_local_file'), 'createSingleFile')
         let context: Context | null = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext()
         let filePath = context?.cacheDir + '/icon.png'
         context?.resourceManager?.getRawFileContent('icon.png')?.then((imageData) => {
@@ -432,14 +432,14 @@ struct SendMailPage {
             }
             this.attachment.push(attach)
           } else {
-            ctx.showToast(`Failed to generate local single file ${'icon.png'} ` + filePath, 'createSingleFile')
+            ctx.showToast(this.getResourceString('Failed_to_generate_local_single_file') + ` ${'icon.png'} ` + filePath, 'createSingleFile')
           }
         })?.catch((err: Error) => {
-          ctx.showToast(`Failed to generate local single file ${'icon.png'} due to：${err.message}` + filePath, 'createSingleFile')
+          ctx.showToast(this.getResourceString('Failed_to_generate_local_single_file') + ` ${'icon.png'}`+ this.getResourceString('due_to') + `：${err.message}` + filePath, 'createSingleFile')
         })
-        ctx.showToast('Successfully generated local single file' + filePath, 'createSingleFile')
+        ctx.showToast(this.getResourceString('Successfully_generated_local_single_file') + filePath, 'createSingleFile')
       } else if (ctx.attachment && ctx.attachment.length == 2) {
-        ctx.showToast('Start generating a single local file', 'createSingleFile')
+        ctx.showToast(this.getResourceString('Start_generating_a_single_local_file'), 'createSingleFile')
         let context: Context | null = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext()
         let filePath = context?.cacheDir + '/test.docx'
         context?.resourceManager?.getRawFileContent('test.docx')?.then((wordData) => {
@@ -456,14 +456,14 @@ struct SendMailPage {
             }
             this.attachment.push(attach)
           } else {
-            ctx.showToast(`Failed to generate local single file ${'test.docx'} ` + filePath, 'createSingleFile')
+            ctx.showToast(this.getResourceString('Failed_to_generate_local_single_file') + ` ${'test.docx'} ` + filePath, 'createSingleFile')
           }
         })?.catch((err: Error) => {
-          ctx.showToast(`Failed to generate local single file ${'test.docx'} due to：${err.message}` + filePath, 'createSingleFile')
+          ctx.showToast(this.getResourceString('Failed_to_generate_local_single_file') + ` ${'test.docx'}` + this.getResourceString('due_to') + `：${err.message}` + filePath, 'createSingleFile')
         })
-        ctx.showToast('Successfully generated local single file' + filePath, 'createSingleFile')
+        ctx.showToast(this.getResourceString('Successfully_generated_local_single_file') + filePath, 'createSingleFile')
       } else if (ctx.attachment && ctx.attachment.length == 3) {
-        ctx.showToast('Start generating a single local file', 'createSingleFile')
+        ctx.showToast(this.getResourceString('Start_generating_a_single_local_file'), 'createSingleFile')
         let context: Context | null = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext()
         if (!context) {
           return
@@ -483,19 +483,19 @@ struct SendMailPage {
             }
             this.attachment.push(attach)
           } else {
-            ctx.showToast(`Failed to generate local single file ${'test.xlsx'} ` + filePath, 'createSingleFile')
+            ctx.showToast(this.getResourceString('Failed_to_generate_local_single_file') + ` ${'test.xlsx'} ` + filePath, 'createSingleFile')
           }
         }).catch((err: Error) => {
-          ctx.showToast(`Failed to generate local single file ${'test. xlsx'} due to：${err.message}` + filePath, 'createSingleFile')
+          ctx.showToast(this.getResourceString('Failed_to_generate_local_single_file') + ` ${'test. xlsx'}` + this.getResourceString('due_to') + `：${err.message}` + filePath, 'createSingleFile')
         })
-        ctx.showToast('Successfully generated local single file' + filePath, 'createSingleFile')
+        ctx.showToast(this.getResourceString('Successfully_generated_local_single_file') + filePath, 'createSingleFile')
       } else {
-        ctx.showToast('Currently only supports testing text, images, documents, tables, and other types of files waiting for testing to be opened', 'createSingleFile')
+        ctx.showToast(this.getResourceString('Currently_only_supports_testing_text'), 'createSingleFile')
 
       }
 
     } catch (err) {
-      ctx.showToast('Failed to generate a single local file:' + JSON.stringify(err), 'createSingleFile')
+      ctx.showToast(this.getResourceString('Failed_to_generate_a_single_local_file') + JSON.stringify(err), 'createSingleFile')
     }
   }
 
@@ -539,5 +539,9 @@ struct SendMailPage {
 
   onBackPress() {
     GlobalObj?.getInstance()?.getContext()?.terminateSelf()
+  }
+
+  getResourceString(resourceName:string) {
+    return getContext().resourceManager.getStringByNameSync(resourceName)
   }
 }
