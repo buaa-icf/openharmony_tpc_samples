@@ -1,16 +1,15 @@
 # inversify-binding-decoratorsDemo
 
-#### Overview
+#### 介绍
+inversify-binding-decoratorsDemo是一个在OpenHarmony系统上验证inversify-binding-decoratorsDemo（一个实用程序，允许开发人员使用 ES2016 装饰器声明 InversifyJS 绑定）能力的代码示例。
 
-inversify-binding-decoratorsDemo is a utility that helps to verify the function of declaring InversifyJS binding by using the ES2016 decorator on OpenHarmony.
-
-#### How to Install
+#### 安装
 ```shell
 ohpm install inversify-binding-decorators
 ```
-For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
-#### How to Use
+#### 使用说明
 
 ````
 import { injectable, Container } from "inversify";
@@ -88,31 +87,31 @@ expect(ninja.fight()).eql("cut!");
 expect(ninja.sneak()).eql("hit!");
 ````
 
-For details about unit test cases, see [TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/inversify-binding-decorators-demo/TEST.md).
+单元测试用例详情见[TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/inversify-binding-decorators-demo/TEST.md)
 
-For details on how to use inversify-binding-decoratorsDemo, see [inversify-binding-decorators](https://github.com/inversify/inversify-binding-decorators).
+更多使用方式请参考[inversify-binding-decorators](https://github.com/inversify/inversify-binding-decorators)
 
-### Constraints
+### 约束和限制
 
-inversify-binding-decoratorsDemo has been verified in the following version:
+在下述版本验证通过：
 
-DevEco Studio: 4.0 Beta1 (4.0.3.400), SDK API10 (4.0.9.6)
+DevEco Studio: 4.0 Beta1(4.0.3.400) SDK API10(4.0.9.6)
 
-### Directory Structure
+### 目录结构
 
 ````
 |---- inversify-binding-decorators-demo  [README.md](..%2FEasyrelpace%2FREADME.md)
-|     |---- entry  # Sample code
-|     |---- ohosTest # Unit test cases
-|     |---- README.MD  # Readme
-|     |---- README_zh.MD  # Readme
+|     |---- entry  # 示例代码文件夹
+|     |---- ohosTest # 单元测试文件夹
+|     |---- README.MD  # 安装使用方法
+|     |---- README_zh.MD  # 安装使用方法  
 ````
 
-## How to Contribute
+## 贡献代码
 
-If you find any problem when using inversify-binding-decoratorsDemo, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or
-a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
+使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
+给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
-## License
+## 开源协议
 
-This project is licensed under the terms of the [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/inversify-binding-decorators-demo/LICENSE).
+本项目基于 [ MIT License ](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/inversify-binding-decorators-demo/LICENSE) ，请自由地享受和参与开源。
