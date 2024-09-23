@@ -51,7 +51,7 @@ struct Index {
       Scroll() {
         Column({ space: 5 }) {
           Row() {
-            Button('点击生成公钥').fontSize($r('app.string.button_font_size')).width('70%').height('70%').padding($r('app.string.margin')).onClick(() => {
+            Button($r('app.string.generate_public_key')).fontSize($r('app.string.button_font_size')).width('70%').height('70%').padding($r('app.string.margin')).onClick(() => {
               console.info("===== get publicKey start =====")
               const kid = 'RkI5MjI5OUY5ODc1N0Q4QzM0OUYzNkVGMTJDOUEzQkFCOTU3NjE2Rg';
               //根据kid从秘钥集中获取对应的jwk
