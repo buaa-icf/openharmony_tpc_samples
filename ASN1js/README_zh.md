@@ -1,19 +1,19 @@
 # ASN1js
 
-## Introduction
+## 简介
 
-> Syntax Notation One (ASN.1) is a standard and symbol that describes the rules and structures for data representation, encoding, transmission, and decoding on telecommunications and computer networks.
-> [ASN1js](https://github.com/PeculiarVentures/ASN1.js) is a pure JavaScript library that implements this standard. ASN.1 is the basis for all X.509-related data structures and many other protocols used on the network.
+> ASN.1 (Syntax Notation One)是一种描述电信和计算机网络中数据表示、编码、传输和解码的规则和结构的标准和符号。
+> [ASN1js](https://github.com/PeculiarVentures/ASN1.js)是一个实现此标准的纯JavaScript库。ASN.1是所有X.509相关数据结构和网络上使用的许多其他协议的基础。
 
-## How to Install
+## 下载安装
 
 ```shell
 ohpm  install @fortanix/asn1js@1.52.0
 ```
 
-For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
-## How to Use
+## 使用说明
 
 
 ```
@@ -104,43 +104,44 @@ For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-t
 
 ```
 
-## Available APIs
+## 接口说明
 
-| API|                                  Parameter                                  |
+| 接口名 |                                  参数                                   |
 |:---:|:---------------------------------------------------------------------:|
-|  BaseBlock   | parameters: object, primitiveSchema:object, name:string, optional:boolean|
+|  BaseBlock   | parameters：object,primitiveSchema:object,name:string,optional:boolean |
 |  OctetString   |                           parameters:object                           |
-|  toJSON   |                                   N/A                                  |
+|  toJSON   |                                   无                                   |
 |  toBER   |                           sizeOnly:boolean                            |
 |  Integer   |                           parameters:object                           |
 |  GeneralizedTime   |            parameters:object ,value:string,valueDate:Data             |
 |  ObjectIdentifier   |                parameters:object,valueHex:ArrayBuffer                 |
 
-## Constraints
+## 约束与限制
 
-This project has been verified in the following version:
+在下述版本验证通过：
 
-- DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API11 (4.1.0.36)
+- DevEco Studio 版本： 4.1 Canary(4.1.3.317),OpenHarmony SDK:API11 (4.1.0.36)。
 
-## Directory Structure
+## 目录结构
 
 ````
 |---- ASN1js
-|     |---- entry  # Sample code
+|     |---- entry  # 示例代码文件夹
               ├── src  
                  ├── main   
                    ├── ets
                        ├── pages
-                             ├── Index.ets  # Sample code
-|     |---- README_EN.md  # Readme                   
+                             ├── Index.ets  sample代码
+|     |---- README.md  # 安装使用方法                    
 ````
 
-## How to Contribute
+## 贡献代码
 
-If you find any problem during the use, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
+使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
+给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
-## License
+## 开源协议
 
-This project is licensed under [BSD-3-Clause License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ASN1js/LICENSE).
-Welcome to enjoy and participate in the open source.
+本项目基于 [BSD-3-Clause License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ASN1js/LICENSE)
+，请自由地享受和参与开源。
     
