@@ -11,6 +11,22 @@
     {
       "name": "EntryAbility_label",
       "value": "hex-encode-decodeDemo"
+    },
+    {
+      "name": "hex_encode_decode",
+      "value": "hex-encode-decode的编码与解码"
+    },
+    {
+      "name": "encode",
+      "value": "编码"
+    },
+    {
+      "name": "decode",
+      "value": "解码"
+    },
+    {
+      "name": "input",
+      "value": "请输入内容"
     }
   ]
 }
