@@ -116,7 +116,8 @@ This project has been verified in the following version:
 |                 |---- types  # External APIs
 |           |---- index.js  # Main entry file
 |           |---- index.d.ts  # Main declaration file of the external APIs
-|     |---- README_EN.md  # Readme                   
+|     |---- README.md  # Readme                   
+|     |---- README_zh.md  # Readme                   
 ````
 
 ## How to Contribute
