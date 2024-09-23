@@ -35,7 +35,9 @@ struct Collections {
   @State reduceResult: string = ''
   @State filterResult: string = ''
   @State invokeResult: string = ''
-
+  getResourceString(res: Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
   build() {
     Column() {
       Button('Click', { type: ButtonType.Capsule, stateEffect: true })
@@ -59,7 +61,7 @@ struct Collections {
         })
 
       Column() {
-        Text('数据：[1, 2, 3]')
+        Text(this.getResourceString($r('app.string.data'))+'：[1, 2, 3]')
           .fontSize(20)
           .margin({ bottom: 10 })
         Text('each: ' + this.eachResult)
@@ -72,14 +74,14 @@ struct Collections {
           .fontSize(25)
           .margin({ bottom: 30 })
 
-        Text('数据：[1, 2, 3, 4, 5, 6]')
+        Text(this.getResourceString($r('app.string.data'))+'：[1, 2, 3, 4, 5, 6]')
           .fontSize(20)
           .margin({ bottom: 10 })
         Text('filter(return num % 2 == 0): ' + this.filterResult)
           .fontSize(25)
           .margin({ bottom: 30 })
 
-        Text('数据：[[5, 1, 7], [3, 2, 1]], sort')
+        Text(this.getResourceString($r('app.string.data'))+'：[[5, 1, 7], [3, 2, 1]], sort')
           .fontSize(20)
           .margin({ bottom: 10 })
         Text('invoke: ' + this.invokeResult)
