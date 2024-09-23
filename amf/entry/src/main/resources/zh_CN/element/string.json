@@ -11,6 +11,89 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },{
+      "name": "AMFstringify_and_AMFparse_click_see_display",
+      "value": "AMF.stringify和AMF.parse,点击后看展示"
+    },
+    {
+      "name": "AMFserialize_and_AMFdeserialize_click_see_display",
+      "value": "AMF.serialize和AMF.deserialize,点击后看展示"
+    },
+    {
+      "name": "To_be_converted",
+      "value": "待转换"
+    },
+    {
+      "name": "Transformed_data",
+      "value": "转换后数据："
+    },
+    {
+      "name": "Source_input",
+      "value": "`源输入"
+    },
+    {
+      "name": "After_AMFstringify_and_AMFparse_conversions",
+      "value": "经过AMF.stringify和AMF.parse转换后"
+    },
+    {
+      "name": "After_AMFserialize_and_AMFdeserialize_conversions",
+      "value": "经过AMF.serialize和AMF.deserialize转换后"
+    },
+    {
+      "name": "Enter_any_data",
+      "value": "输入任意数据"
+    },
+    {
+      "name": "After_filling_data_click_here_view_amf_stringify_parse_data",
+      "value": "填入数据后,点击此处查看amf stringify parse后数据"
+    },
+    {
+      "name": "After_filling_data_click_here_view_AMF_Serialize_deserialize_data",
+      "value": "填入数据后,点击此处查看amf serialize deserialize后数据"
+    },
+    {
+      "name": "Jump_to_next_page_test_more_types",
+      "value": "跳转至下一个页面测试更多类型"
+    },
+    {
+      "name": "The_response_time_of_test_interface",
+      "value": "测试接口响应时长"
+    },
+    {
+      "name": "Test_the_underlying_data_type",
+      "value": "测试基础数据类型"
+    },
+    {
+      "name": "Test_string",
+      "value": "测试string"
+    },
+    {
+      "name": "Test_date",
+      "value": "测试date"
+    },
+    {
+      "name": "Test_array",
+      "value": "测试array"
+    },
+    {
+      "name": "Test_object",
+      "value": "测试object"
+    },
+    {
+      "name": "Test_class_mapping",
+      "value": "测试class mapping"
+    },
+    {
+      "name": "Test_class_mapping_serializable",
+      "value": "测试class mapping + serializable"
+    },
+    {
+      "name": "Test_the_bytearray",
+      "value": "测试bytearray"
+    },
+    {
+      "name": "Test_Exception",
+      "value": "测试Exception"
     }
   ]
 }

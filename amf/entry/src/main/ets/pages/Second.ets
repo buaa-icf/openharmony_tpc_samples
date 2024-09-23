@@ -41,59 +41,57 @@ struct Index {
   build() {
     Scroll() {
       Column() {
-        Button('测试接口响应时长')
+        Button($r("app.string.The_response_time_of_test_interface"))
           .onClick(() => {
             test1();
           })
 
-        Button('测试基础数据类型')
+        Button($r("app.string.Test_the_underlying_data_type"))
           .onClick(() => {
             test2()
           })
           .margin({ top: 15 })
-        Button('测试string')
+        Button($r("app.string.Test_string"))
           .onClick(() => {
             test3()
           })
           .margin({ top: 15 })
-        Button('测试date')
+        Button($r("app.string.Test_date"))
           .onClick(() => {
             test4()
           })
           .margin({ top: 15 })
-        Button('测试array')
+        Button($r("app.string.Test_array"))
           .onClick(() => {
             test5()
           })
           .margin({ top: 15 })
-        Button('测试object')
+        Button($r("app.string.Test_object"))
           .onClick(() => {
             test6()
           })
           .margin({ top: 15 })
-        Button('测试class mapping')
+        Button($r("app.string.Test_class_mapping"))
           .onClick(() => {
             test7()
           })
           .margin({ top: 15 })
-        Button('测试class mapping + serializable')
+        Button($r("app.string.Test_class_mapping_serializable"))
           .onClick(() => {
             test8()
           })
           .margin({ top: 15 })
-        Button('测试bytearray')
+        Button($r("app.string.Test_the_bytearray"))
           .onClick(() => {
             test9()
           })
           .margin({ top: 15 })
-        Button('测试Exception')
+        Button($r("app.string.Test_Exception"))
           .onClick(() => {
             test10()
 
           })
           .margin({ top: 15 })
-
-
       }
     }
     .width('100%')

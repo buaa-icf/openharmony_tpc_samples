@@ -1,50 +1,51 @@
 # amf-convert
 
-## 简介
-> amf-convert在javascript环境中可以实现AMF格式的serialization/deserialization。
+## Introduction
+**amf-convert** provides APIs for serializing and deserializing data in AMF format in JavaScript.
 
 
-## 下载安装
+## How to Install
 ```shell
 ohpm install amf-convert
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 
-### 序列化/反序列化
+### Serialization and Deserialization
 ```javascript
 import AMF,{ Spec,ByteArray } from "amf-convert";
 var data = {
     any: 'data',
     you: 'like!'
 };
-// 序列化
+// Implement serialization.
 var encodedData = AMF.stringify(data);
 var encodedData2 = AMF.serialize(data, true, Spec.AMF3_OBJECT)
-// 反序列化
+// Implement deserialization.
 var decodeData = AMF.parse(encodedData);
 var decodeData2 = AMF.deserialize(data, Spec.AMF3_OBJECT)
 ```
 
 
-## 目录结构
+## Directory Structure
 ````
 |---- amf  
-|     |---- entry  # 示例代码文件夹
-|           |---- Index.ets  # 使用demo展示
-|     |---- README.MD  # 安装使用方法                    
+|     |---- entry            # Sample code
+|           |---- Index.ets  # Demo
+|     |---- README.MD        # Readme                   
+|     |---- README_zh.MD        # Readme                   
 ````
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+This project has been verified in the following version:
 
-DevEco Studio版本: 4.0Canary2(4.0.1.300), SDK: API10(4.0.9.6)
+DevEco Studio version: 4.0 Canary2 (4.0.1.300); SDK: API10 (4.0.9.6)
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
-本项目基于 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/amf/LICENSE) ，请自由地享受和参与开源。
+## License
+This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/amf/LICENSE).
