@@ -21,7 +21,7 @@ struct Index {
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
       Column() {
-        Button("图片", { type: ButtonType.Normal, stateEffect: true })
+        Button($r('app.string.picture'), { type: ButtonType.Normal, stateEffect: true })
           .borderRadius(8).width("70%").height("8%").margin("2%")
           .onClick(() => {
             router.pushUrl({
@@ -29,7 +29,7 @@ struct Index {
             })
           })
 
-        Button("音频", { type: ButtonType.Normal, stateEffect: true })
+        Button($r('app.string.audio_frequency'), { type: ButtonType.Normal, stateEffect: true })
           .borderRadius(8).width("70%").height("8%").margin("2%")
           .onClick(() => {
             router.pushUrl({
@@ -37,14 +37,14 @@ struct Index {
             })
           })
 
-        Button("视频", { type: ButtonType.Normal, stateEffect: true })
+        Button($r('app.string.video'), { type: ButtonType.Normal, stateEffect: true })
           .borderRadius(8).width("70%").height("8%").margin("2%")
           .onClick(() => {
             router.push({
               url: "pages/Videos"
             })
           })
-        Button("其他", { type: ButtonType.Normal, stateEffect: true })
+        Button($r('app.string.other'), { type: ButtonType.Normal, stateEffect: true })
           .borderRadius(8).width("70%").height("8%").margin("2%")
           .onClick(() => {
             router.pushUrl({

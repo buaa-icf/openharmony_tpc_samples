@@ -11,6 +11,202 @@
     {
       "name": "EntryAbility_label",
       "value": "metadata_extractor"
+    },
+    {
+      "name": "Extract_AdobeJpegReader_metadata",
+      "value": "提取AdobeJpegReader元数据"
+    },
+    {
+      "name": "Resource_path1",
+      "value": "资源路径:/resource/adobeJpeg1.jpg.appe"
+    },
+    {
+      "name": "Metadata",
+      "value": "元数据:"
+    },
+    {
+      "name": "Extract_AVI_metadata",
+      "value": "提取AVI元数据"
+    },
+    {
+      "name": "Resource_path2",
+      "value": "资源路径:/resource/AVITest.avi"
+    },
+    {
+      "name": "Display_metadata1",
+      "value": "显示AVI文件的元数据"
+    },
+    {
+      "name": "Extract_Bmp_metadata",
+      "value": "提取Bmp元数据"
+    },
+    {
+      "name": "Resource_path3",
+      "value": "资源路径:/resource/Test_01.bmp"
+    },
+    {
+      "name": "Display_the_metadata2",
+      "value": "显示Bmp文件的元数据"
+    },
+    {
+      "name": "Extract_Eps_metadata",
+      "value": "提取Eps元数据"
+    },
+    {
+      "name": "Resource_path4",
+      "value": "资源路径:/resource/adobeJpeg1.eps"
+    },
+    {
+      "name": "Display_metadata2",
+      "value": "显示Eps文件的元数据"
+    },
+    {
+      "name": "Extract_exif_metadata",
+      "value": "提取exif元数据"
+    },
+    {
+      "name": "Resource_path5",
+      "value": "资源路径:/resource/manuallyAddedThumbnail.jpg.app1"
+    },
+    {
+      "name": "Display_metadata",
+      "value": "显示元数据"
+    },
+    {
+      "name": "Extract_gif_metadata",
+      "value": "提取GIF元数据"
+    },
+    {
+      "name": "Resource_path6",
+      "value": "资源路径:/resource/metadata.gif"
+    },
+    {
+      "name": "Display_metadata3",
+      "value": "显示GIF文件的元数据"
+    },
+    {
+      "name": "Extract_ico_metadata",
+      "value": "提取ICO元数据"
+    },
+    {
+      "name": "Resource_path7",
+      "value": "资源路径:/resource/metadata.ico"
+    },
+    {
+      "name": "Display_metadata4",
+      "value": "显示ICO文件的元数据"
+    },
+    {
+      "name": "picture",
+      "value": "图片"
+    },
+    {
+      "name": "audio_frequency",
+      "value": "音频"
+    },
+    {
+      "name": "video",
+      "value": "视频"
+    },
+    {
+      "name": "other",
+      "value": "其他"
+    },
+    {
+      "name": "Extract_jpg_metadata",
+      "value": "提取JPG元数据"
+    },
+    {
+      "name": "Resource_path8",
+      "value": "资源路径:/resource/metadata.JPG"
+    },
+    {
+      "name": "Display_metadata5",
+      "value": "显示JPG文件的元数据"
+    },
+    {
+      "name": "Extract_mp3_metadata",
+      "value": "提取mp3元数据"
+    },
+    {
+      "name": "Resource_path9",
+      "value": "资源路径:/resource/test.mp3"
+    },
+    {
+      "name": "Display_metadata6",
+      "value": "显示mp3文件的元数据"
+    },
+    {
+      "name": "Extract_mp4_metadata",
+      "value": "提取mp4元数据"
+    },
+    {
+      "name": "Resource_path10",
+      "value": "资源路径:/resource/test.mp4"
+    },
+    {
+      "name": "Display_metadata7",
+      "value": "显示mp4文件的元数据"
+    },
+    {
+      "name": "Extract_PCX_metadata",
+      "value": "提取PCX元数据"
+    },
+    {
+      "name": "Resource_path11",
+      "value": "资源路径:/resource/metadata.PCX"
+    },
+    {
+      "name": "Display_metadata8",
+      "value": "显示PCX文件的元数据"
+    },
+    {
+      "name": "Extract_PNG_metadata",
+      "value": "提取PNG元数据"
+    },
+    {
+      "name": "Resource_path12",
+      "value": "资源路径:/resource/favicon-48px.png"
+    },
+    {
+      "name": "Display_metadata9",
+      "value": "显示PNG文件的元数据"
+    },
+    {
+      "name": "Extract_Psd_metadata",
+      "value": "提取Psd元数据"
+    },
+    {
+      "name": "Resource_path13",
+      "value": "资源路径:/resource/8x4x8bit-Grayscale.psd"
+    },
+    {
+      "name": "Display_metadata10",
+      "value": "显示Psd文件的元数据"
+    },
+    {
+      "name": "Extract_wav_metadata",
+      "value": "提取wav元数据"
+    },
+    {
+      "name": "Resource_path14",
+      "value": "资源路径:/resource/test.wav"
+    },
+    {
+      "name": "Display_metadata11",
+      "value": "显示wav文件的元数据"
+    },
+    {
+      "name": "Extract_WEBP_metadata",
+      "value": "Extract WEBP metadata"
+    },
+    {
+      "name": "Resource_path15",
+      "value": "Resource path:/resource/metadata.WEBP"
+    },
+    {
+      "name": "Display_metadata13",
+      "value": "Display metadata of WEBP files"
     }
   ]
 }

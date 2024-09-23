@@ -50,25 +50,25 @@ struct AdobeJpeg {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
       Column() {
 
-        Text("提取AdobeJpegReader元数据")
+        Text($r('app.string.Extract_AdobeJpegReader_metadata'))
           .fontSize(25)
           .fontColor(Color.Gray)
           .padding(20)
           .height("10%")
           .textAlign(TextAlign.Center)
 
-        Text("资源路径:/resource/adobeJpeg1.jpg.appe").fontSize(22).width('100%')
+        Text($r('app.string.Resource_path1')).fontSize(22).width('100%')
           .textAlign(TextAlign.Start)
 
         Column() {
-          Text("元数据:").fontSize(20).width('100%')
+          Text($r('app.string.Metadata')).fontSize(20).width('100%')
             .textAlign(TextAlign.Start)
           Text("" + JSON.stringify(this.data)).fontSize(20).width('100%')
             .textAlign(TextAlign.Start)
             .visibility(this.isVisibility)
         }.height("80%").padding({ bottom: 10 })
 
-        Button("显示AdobeJpeg文件的元数据", { type: ButtonType.Normal, stateEffect: true })
+        Button($r('app.string.Extract_AdobeJpegReader_metadata'), { type: ButtonType.Normal, stateEffect: true })
           .borderRadius(8).width("70%").height("8%")
           .onClick(() => {
             this.getMetaData()

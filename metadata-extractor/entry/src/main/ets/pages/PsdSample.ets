@@ -53,13 +53,13 @@ struct PsdSample{
   build() {
 
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
-      Text("提取Psd元数据").fontSize(25).fontColor(Color.Gray)
+      Text($r('app.string.Extract_Psd_metadata')).fontSize(25).fontColor(Color.Gray)
         .padding({ left:10,right:10,top:10,bottom:10 })
         .textAlign(TextAlign.Center)
 
-      Text("资源路径:/resource/8x4x8bit-Grayscale.psd" ).fontSize(22).width('100%')
+      Text($r('app.string.Resource_path13')).fontSize(22).width('100%')
         .textAlign(TextAlign.Start)
-      Text("元数据:" ).fontSize(20).width('100%')
+      Text($r('app.string.Metadata')).fontSize(20).width('100%')
         .textAlign(TextAlign.Start)
       Scroll(this.scroller) {
         Column() {
@@ -71,7 +71,7 @@ struct PsdSample{
       .scrollBarColor(Color.Gray).scrollBarWidth(1).height('80%')
 
 
-      Button("显示Psd文件的元数据", { type: ButtonType.Normal, stateEffect: true })
+      Button($r('app.string.Display_metadata10'), { type: ButtonType.Normal, stateEffect: true })
         .borderRadius(8).width("100%").height(60)
         .onClick(() => {
           this.getMetaData()
