@@ -11,6 +11,18 @@
     {
       "name": "EntryAbility_label",
       "value": "Base64"
+    },
+    {
+      "name": "Results",
+      "value": "Results："
+    },
+    {
+      "name": "Encode",
+      "value": "Encode"
+    },
+    {
+      "name": "Decode",
+      "value": "Decode"
     }
   ]
 }

@@ -9,8 +9,16 @@
       "value": "description"
     },
     {
-      "name": "EntryAbility_label",
-      "value": "Base64"
+      "name": "Results",
+      "value": "显示结果："
+    },
+    {
+      "name": "Encode",
+      "value": "编码"
+    },
+    {
+      "name": "Decode",
+      "value": "解码"
     }
   ]
 }
