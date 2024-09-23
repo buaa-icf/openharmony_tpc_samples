@@ -16,20 +16,22 @@ import leven from 'leven'
 @Entry
 @Component
 struct Index {
-  @State message: string = 'ABCDEF与ABCDGH的字符串的不同个数'
-
+  @State message: Resource = $r('app.string.different_strings')
+  getResourceString(res:Resource){
+    return getContext().resourceManager.getStringSync(res.id)
+  }
   build() {
     Row() {
       Column() {
         Text(this.message)
           .fontSize(25)
-        Button('字符串的不同个数').fontSize(25).width(300).margin(20).onClick(() => {
+        Button($r('app.string.Different_numbers_of_strings')).fontSize(25).width(300).margin(20).onClick(() => {
           let data1:string = "ABCDEF";
           let data2:string = "ABCDGH";
           let s:number = leven(data1,data2);
           AlertDialog.show({
             title:'',
-            message: 'ABCDEF与ABCDGH的字符串的不同个数是：'+s,
+            message: this.getResourceString($r('app.string.What_are_the_different_numbers'))+s,
             confirm:{
                 value:'OK',
                 action:() => {

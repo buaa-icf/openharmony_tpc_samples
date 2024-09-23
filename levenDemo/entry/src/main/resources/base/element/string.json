@@ -11,6 +11,18 @@
     {
       "name": "EntryAbility_label",
       "value": "levenDemo"
+    },
+    {
+      "name": "different_strings",
+      "value": "The number of different strings in ABCDEF and ABCDGH"
+    },
+    {
+      "name": "What_are_the_different_numbers",
+      "value": "What are the different numbers of strings between ABCDEF and ABCDGH："
+    },
+    {
+      "name": "Different_numbers_of_strings",
+      "value": "Different numbers of strings"
     }
   ]
 }

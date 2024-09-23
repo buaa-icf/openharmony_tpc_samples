@@ -11,6 +11,18 @@
     {
       "name": "EntryAbility_label",
       "value": "levenDemo"
+    },
+    {
+      "name": "different_strings",
+      "value": "ABCDEF与ABCDGH的字符串的不同个数"
+    },
+    {
+      "name": "What_are_the_different_numbers",
+      "value": "ABCDEF与ABCDGH的字符串的不同个数是："
+    },
+    {
+      "name": "Different_numbers_of_strings",
+      "value": "字符串的不同个数"
     }
   ]
 }
