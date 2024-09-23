@@ -20,7 +20,7 @@ struct Index {
 
   build() {
     RelativeContainer() {
-      Text(this.message)
+      Text($r('app.string.Hello_World'))
         .id('HelloWorld')
         .fontSize(50)
         .fontWeight(FontWeight.Bold)
