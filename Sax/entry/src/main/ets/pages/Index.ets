@@ -47,7 +47,7 @@ struct Index {
           .padding(10)
           .backgroundColor(Color.Red)
           .fontColor(Color.White)
-        Text('解析xml中信息')
+        Text($r("app.string.Parsing"))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
           .width('100%')
@@ -60,7 +60,7 @@ struct Index {
           .onClick(() => {
             this.saxParseXml()
           })
-        Text('解析html中信息')
+        Text($r("app.string.Parsing"))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
           .width('100%')

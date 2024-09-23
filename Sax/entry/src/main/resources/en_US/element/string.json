@@ -11,6 +11,10 @@
     {
       "name": "EntryAbility_label",
       "value": "sax"
+    },
+    {
+      "name": "Parsing",
+      "value": "Parsing information in XML"
     }
   ]
 }
