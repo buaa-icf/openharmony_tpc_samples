@@ -19,6 +19,9 @@ import {isPlainObject} from 'is-plain-object'
 struct Index {
   @State message: string = 'Test'
   @State public result: Boolean = false
+  getResourceString(res:Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
   build() {
     Row() {
       Column() {
@@ -34,7 +37,7 @@ struct Index {
           .onClick(() => {
             this.click()
           })
-        Text("结果 :" + this.result)
+        Text(this.getResourceString($r('app.string.result')) + this.result)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
           .margin({ top: "30px" })
