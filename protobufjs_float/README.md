@@ -1,23 +1,23 @@
 # @protobufjs/float
 
-## 简介
+## Introduction
 
-> @protobufjs/float 是一个从缓冲区读取和写入浮点数以及双精度浮点数的工具库。
+> @protobufjs/float is a tool library for reading floats and doubles from buffers and writing floats and doubles to buffers.
 
-## 下载安装
+## How to Install
 
 ```shell
 ohpm install @protobufjs/float
 ```
 
 OpenHarmony
-ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 
-### 引用及使用
+### Importing and Using the Library
 
-1、使用小端字节序将32位浮点数写入缓冲区
+1. Write a 32-bit float to a buffer using little endian byte order.
 
 ```
 import EventEmitter from "@protobufjs/float"
@@ -26,7 +26,7 @@ const buffer = new Uint8Array(4)
 writeFloatLE(value, buffer, 0);
 ```
 
-2、使用大端字节序将32位浮点数写入缓冲区
+2. Write a 32-bit float to a buffer using big endian byte order.
 
 ```
 const value = 1.1754943508222875e-38;
@@ -34,7 +34,7 @@ const buffer = new Uint8Array(4)
 writeDoubleLE(value, buffer, 0);
 ```
 
-3、使用小端字节序从缓冲区读取32位浮点数
+3. Read a 32-bit float from a buffer using little endian byte order.
 
 ```
 const value = 1.1754943508222875e-38;
@@ -42,7 +42,7 @@ const buffer = new Uint8Array(4)
 writeDoubleBE(value, buffer, 0);
 ```
 
-4、使用大端字节序从缓冲区读取32位浮点数
+4. Read a 32-bit float from a buffer using big endian byte order.
 
 ```
 const value = 2.2250738585072014e-309;
@@ -51,7 +51,7 @@ writeFloatLE(value, buffer, 0);
 readFloatLE(buffer, 0);
 ```
 
-5、使用小端字节序将64位双精度浮点数写入缓冲区
+5. Write a 64-bit double to a buffer using little endian byte order.
 
 ```
 const value = 2.2250738585072014e-309;
@@ -60,7 +60,7 @@ writeFloatLE(value, buffer, 0);
 readFloatLE(buffer, 0);
 ```
 
-6、使用大端字节序将64位双精度浮点数写入缓冲区
+6. Write a 64-bit double to a buffer using big endian byte order.
 
 ```
 const value = 2.2250738585072014e-309;
@@ -69,7 +69,7 @@ writeFloatBE(value, buffer, 0);
 readFloatBE(buffer, 0);
 ```
 
-7、使用小端字节序从缓冲区读取64位双精度浮点数
+7. Read a 64-bit double from a buffer using little endian byte order.
 
 ```
 const value = 3.4028234663852886e+38;
@@ -78,7 +78,7 @@ writeDoubleBE(value, buffer, 0);
 readDoubleBE(buffer, 0);
 ```
 
-8、使用大端字节序从缓冲区读取64位双精度浮点数
+8. Read a 64-bit double from a buffer using big endian byte order.
 
 ```
 const value = 3.4028234663852886e+38;
@@ -87,57 +87,55 @@ writeDoubleLE(value, buffer, 0);
 readDoubleLE(buffer, 0);
 ```
 
-## 接口说明
+## Available APIs
 
-1. 使用小端字节序将32位浮点数写入缓冲区
+1. Writes a 32-bit float to a buffer using little endian byte order.
    `writeFloatLE(val: number, buf: Uint8Array, pos: number): void`
-2. 使用大端字节序将32位浮点数写入缓冲区
+2. Writes a 32-bit float to a buffer using big endian byte order.
    `writeFloatBE(val: number, buf: Uint8Array, pos: number): void`
-3. 使用小端字节序从缓冲区读取32位浮点数
+3. Reads a 32-bit float from a buffer using little endian byte order.
    `readFloatLE(buf: Uint8Array, pos: number): number`
-4. 使用大端字节序从缓冲区读取32位浮点数
+4. Reads a 32-bit float from a buffer using big endian byte order.
    `readFloatBE(buf: Uint8Array, pos: number): number`
-5. 使用小端字节序将64位双精度浮点数写入缓冲区
+5. Writes a 64-bit double to a buffer using little endian byte order.
    `writeDoubleLE(val: number, buf: Uint8Array, pos: number): void`
-6. 使用大端字节序将64位双精度浮点数写入缓冲区
+6. Writes a 64-bit double to a buffer using big endian byte order.
    `writeDoubleBE(val: number, buf: Uint8Array, pos: number): void`
-7. 使用小端字节序从缓冲区读取64位双精度浮点数
+7. Reads a 64-bit double from a buffer using little endian byte order.
    `readDoubleLE(buf: Uint8Array, pos: number): number`
-8. 使用大端字节序从缓冲区读取64位双精度浮点数
+8. Reads a 64-bit double from a buffer using big endian byte order.
    `readDoubleBE(buf: Uint8Array, pos: number): number`
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+This project has been verified in the following versions:
 
-- DevEco Studio 版本：4.1 Canary(4.1.3.317)，OpenHarmony SDK:API11 (4.1.0.36)
+- DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API 11 (4.1.0.36)
 
-## 目录结构
+## Directory Structure
 
 ````
 |---- protobufjs_float
-|     |---- entry  # 示例代码文件夹
+|     |---- entry  # Sample code
 |           |---- src
 |                 |---- main
 |                        |---- ets
 |                              |---- pages
-|                                    |---- Index # sample
+|                                    |---- Index # Sample
 |                 |---- ohosTest
 |                       |---- ets
 |                             |---- test
-|                                   |---- Ability.test.ets  # 单元测试
+|                                   |---- Ability.test.ets  # Unit test
 
-|     |---- README.md  # 安装使用方法
-|     |---- README.OpenSource  # 开源说明
-|     |---- CHANGELOG.md  # 更新日志                
+|     |---- README.md  # Readme
+|     |---- README.OpenSource  # Open source description
+|     |---- CHANGELOG.md  # Changelog               
 ````
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-本项目基于 [BSD License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/protobufjs_float/LICENSE)
-，请自由地享受和参与开源。
-
+This project is licensed under [BSD License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/protobufjs_float/LICENSE).
