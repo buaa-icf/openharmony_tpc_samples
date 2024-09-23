@@ -11,6 +11,34 @@
     {
       "name": "EntryAbility_label",
       "value": "socketio"
+    },
+    {
+      "name": "Successfully",
+      "value": "Successfully connected to the server"
+    },
+    {
+      "name": "Failed",
+      "value": "Failed to connect to server"
+    },
+    {
+      "name": "Connected_server",
+      "value": "Not yet connected to the server"
+    },
+    {
+      "name": "Enter_message",
+      "value": "Enter messages to chat. Type exit to exit the chat room."
+    },
+    {
+      "name": "Enter_messages",
+      "value": "Please enter a message"
+    },
+    {
+      "name": "Server_address",
+      "value": "Please enter the socket.io server address"
+    },
+    {
+      "name": "User_name",
+      "value": "Enter your username"
     }
   ]
 }

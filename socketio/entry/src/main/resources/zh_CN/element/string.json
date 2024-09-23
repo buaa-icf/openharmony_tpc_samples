@@ -11,6 +11,34 @@
     {
       "name": "EntryAbility_label",
       "value": "socketio"
+    },
+    {
+      "name": "Successfully",
+      "value": "连接服务器成功"
+    },
+    {
+      "name": "Failed",
+      "value": "连接服务器失败"
+    },
+    {
+      "name": "Connected_server",
+      "value": "暂未连接服务器"
+    },
+    {
+      "name": "Enter_message",
+      "value": "请输入消息,退出聊天室请输入exit"
+    },
+    {
+      "name": "Enter_messages",
+      "value": "请输入消息"
+    },
+    {
+      "name": "Server_address",
+      "value": "请输入socket.io服务端地址"
+    },
+    {
+      "name": "User_name",
+      "value": "请输入用户名"
     }
   ]
 }
