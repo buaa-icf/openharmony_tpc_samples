@@ -19,31 +19,35 @@ import promptAction from '@ohos.promptAction';
 struct Index {
   @State message: string = 'Hello World'
 
+  private getResourceString(res:Resource){
+    return getContext().resourceManager.getStringSync(res.id)
+  }
+
   build() {
     Row() {
       Column() {
-        Button("编码(encode) '\xA9'").onClick(() => {
+        Button(`${this.getResourceString($r("app.string.encode"))}(encode) '\xA9'`).onClick(() => {
           let src:string = utf8.encode('\xA9')
           let dst = '\xC2\xA9'
           console.log('dodo encode1='+ src);
           console.log('dodo encode2 ='+dst)
           this.showMessage('src='+src + '  ===||===  dst='+dst);
         }).margin(10)
-        Button("编码(encode) '\uD800\uDC01'").onClick(() => {
+        Button(`${this.getResourceString($r("app.string.encode"))}(encode) '\uD800\uDC01'`).onClick(() => {
           let src:string = utf8.encode('\uD800\uDC01')
           let dst = '\xF0\x90\x80\x81'
           console.log('dodo encode1='+ src);
           console.log('dodo encode2 ='+dst)
           this.showMessage('src='+src + '  ===||===  dst='+dst);
         }).margin(10)
-        Button("解码(decoded) '\xC2\xA9'").onClick(() => {
+        Button(`${this.getResourceString($r("app.string.decode"))}(decoded) '\xC2\xA9'`).onClick(() => {
           let src:string = utf8.decode('\xC2\xA9')
           let dst = '\xA9'
           console.log('dodo decoded1='+ src);
           console.log('dodo decoded2 ='+dst)
           this.showMessage('src='+src + '  ===||===  dst='+dst);
         }).margin(10)
-        Button("解码(decoded) '\xF0\x90\x80\x81'").onClick(() => {
+        Button(`${this.getResourceString($r("app.string.decode"))}(decoded) '\xF0\x90\x80\x81'`).onClick(() => {
           let src:string = utf8.decode('\xF0\x90\x80\x81')
           let dst = '\uD800\uDC01'
           console.log('dodo decoded1='+ src);
