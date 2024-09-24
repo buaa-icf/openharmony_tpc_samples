@@ -1,17 +1,17 @@
 # @protobufjs/aspromise
 
-## Introduction
-> @protobufjs/aspromise is a tool library that returns a promise from a node-style callback function.
+## 简介
+> @protobufjs/aspromise 是一个可以从Node风格的回调函数中返回一个Promise的工具库。
 
-## How to Install
+## 下载安装
 ```shell
 ohpm install @protobufjs/aspromise
 ```
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
-## How to Use
+## 使用说明
 
-### Importing and Using the Library
+### 引用及使用
 ```
 import { asPromise } from '@protobufjs/aspromise'
 
@@ -38,35 +38,36 @@ import { asPromise } from '@protobufjs/aspromise'
 
 ```
 
-## Available APIs
-1. Returns a promise.
+## 接口说明
+1. 返回一个promise
    `asPromise(fn: asPromiseCallback, ctx: any, ...params: any[]): Promise<any>`
 
-## Constraints
-This project has been verified in the following versions:
+## 约束与限制
+在下述版本验证通过：
 
-- DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API 11 (4.1.0.36)
+- DevEco Studio 版本：4.1 Canary(4.1.3.317)，OpenHarmony SDK:API11 (4.1.0.36)
 
-## Directory Structure
+## 目录结构
 ````
 |---- protobufjs_aspromise
-|     |---- entry  # Sample code
+|     |---- entry  # 示例代码文件夹
 |           |---- src
 |                 |---- main
 |                        |---- ets
 |                              |---- pages
-|                                    |---- Index # Sample
+|                                    |---- Index # sample
 |                 |---- ohosTest
 |                       |---- ets
 |                             |---- test
-|                                   |---- Ability.test.ets  # Unit test
+|                                   |---- Ability.test.ets  # 单元测试
 
-|     |---- README.md  # Readme         
-|     |---- README_zh.md  # Readme             
+|     |---- README.md  # 安装使用方法        
+|     |---- README_zh.md  # 安装使用方法              
 ````
 
-## How to Contribute
-If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+## 贡献代码
+使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls)共建。
 
-## License
-This project is licensed under [BSD License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/protobufjs_aspromise/LICENSE).
+## 开源协议
+本项目基于 [BSD License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/protobufjs_aspromise/LICENSE) ，请自由地享受和参与开源。
+
