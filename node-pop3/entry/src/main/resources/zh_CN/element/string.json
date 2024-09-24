@@ -19,6 +19,374 @@
     {
       "name": "Reason_File",
       "value": "Operate file in application file system"
+    },
+    {
+      "name": "Test",
+      "value": "测试"
+    },
+    {
+      "name": "STAT_command",
+      "value": "STAT命令"
+    },
+    {
+      "name": "NOOP_command",
+      "value": "NOOP命令"
+    },
+    {
+      "name": "QUIT_command",
+      "value": "QUIT命令"
+    },
+    {
+      "name": "LIST_command",
+      "value": "LIST命令"
+    },
+    {
+      "name": "TOP_rows",
+      "value": "输入TOP行数"
+    },
+    {
+      "name": "TOP_command",
+      "value": "TOP命令"
+    },
+    {
+      "name": "UIDL_command",
+      "value": "UIDL命令"
+    },
+    {
+      "name": "DELE_command",
+      "value": "DELE命令"
+    },
+    {
+      "name": "RSET_command",
+      "value": "RSET命令"
+    },
+    {
+      "name": "RETR_command",
+      "value": "RETR命令"
+    },
+    {
+      "name": "LIST_command_data",
+      "value": "仅LIST命令获取的数据可选择"
+    },
+    {
+      "name": "STAT_command_result",
+      "value": "获取到STAT命令的结果"
+    },
+    {
+      "name": "Getresult_empty",
+      "value": "获取到的结果为空"
+    },
+    {
+      "name": "Please_login_again",
+      "value": "账号未登录，请需重新登录"
+    },
+    {
+      "name": "STAT_command_result_failed",
+      "value": "获取STAT命令结果失败"
+    },
+    {
+      "name": "LIST_command_result",
+      "value": "获取到LIST命令的结果"
+    },
+    {
+      "name": "List_serial_number",
+      "value": "列表条目，序号："
+    },
+    {
+      "name": "Size",
+      "value": "大小"
+    },
+    {
+      "name": "LIST_command_Failed",
+      "value": "获取到LIST命令的结果解析失败，"
+    },
+    {
+      "name": "LIST_command_result_Failed",
+      "value": "获取LIST命令结果失败："
+    },
+    {
+      "name": "NOOP_command_result",
+      "value": "获取到NOOP命令的结果"
+    },
+    {
+      "name": "NOOP_Command_Result_Success",
+      "value": "获取到NOOP命令的结果：成功"
+    },
+    {
+      "name": "NOOP_Command_Result_Failed",
+      "value": "获取NOOP命令结果失败："
+    },
+    {
+      "name": "Please_Select_list",
+      "value": "请先选择一个列表项目"
+    },
+    {
+      "name": "Please_Enter_Number",
+      "value": "请先输入Top行数"
+    },
+    {
+      "name": "TOP_Command_Result",
+      "value": "获取到TOP命令的结果"
+    },
+    {
+      "name": "TOP_Command_Result_Failed",
+      "value": "获取TOP命令结果失败："
+    },
+    {
+      "name": "UIDL_Command_Result",
+      "value": "获取到UIDL命令的结果"
+    },
+    {
+      "name": "UIDL_Command_Result_Failed",
+      "value": "获取UIDL命令结果失败："
+    },
+    {
+      "name": "LAST_Command_Result",
+      "value": "获取到LAST命令的结果"
+    },
+    {
+      "name": "LAST_Command_Result_Failed",
+      "value": "获取LAST命令结果失败："
+    },
+    {
+      "name": "DELE_Command_Result",
+      "value": "获取到DELE命令的结果"
+    },
+    {
+      "name": "DELE_Command_Result_Failed",
+      "value": "获取DELE命令结果失败："
+    },
+    {
+      "name": "RSETE_Command_Result",
+      "value": "获取到RSETE命令的结果"
+    },
+    {
+      "name": "RSETE_Command_Result_Failed",
+      "value": "获取RSET命令结果失败："
+    },
+    {
+      "name": "RETR_Command_Result",
+      "value": "获取到RETR命令的结果"
+    },
+    {
+      "name": "RSETE_Command_Result_Length",
+      "value": "获取到RETR命令的结果，结果长度为："
+    },
+    {
+      "name": "RSETE_Command_Result_1000",
+      "value": "由于RETR命令的结果太长text无法完全显示，取最后1000字节显示："
+    },
+    {
+      "name": "ETR_command_displays",
+      "value": "ETR命令的结果显示："
+    },
+    {
+      "name": "RETR_Command_Result_Failed",
+      "value": "获取RETR命令结果失败："
+    },
+    {
+      "name": "QUIT_Command_Result",
+      "value": "获取到QUIT命令的结果"
+    },
+    {
+      "name": "QUIT_Command_Result_Failed",
+      "value": "获取RETR命令结果失败："
+    },
+    {
+      "name": "Send_RSET",
+      "value": "发送RSET命令取消删除操作的结果："
+    },
+    {
+      "name": "LAST_Command",
+      "value": "LAST命令"
+    },
+    {
+      "name": "Email_sening_error",
+      "value": "邮件发送出错："
+    },
+    {
+      "name": "Enter_Email_Type",
+      "value": "请输入邮箱类型"
+    },
+    {
+      "name": "Correct_Email_Type_Format",
+      "value": "Tips:请输入正确格式的邮箱类型，例如@qq.com或者@163.com"
+    },
+    {
+      "name": "Cancel",
+      "value": "取消"
+    },
+    {
+      "name": "Confirm",
+      "value": "确定"
+    },
+    {
+      "name": "Dialog_Closed",
+      "value": "关闭了对话框，取消选输入其他类型邮箱"
+    },
+    {
+      "name": "Other_types_email",
+      "value": "输入其他类型邮箱："
+    },
+    {
+      "name": "Other",
+      "value": "其他"
+    },
+    {
+      "name": "Switch_Email_Types",
+      "value": "点击账号后面的邮箱可以切换邮箱类型"
+    },
+    {
+      "name": "Account",
+      "value": "账号："
+    },
+    {
+      "name": "Enter_Account",
+      "value": "请输入账号"
+    },
+    {
+      "name": "Authorization",
+      "value": "密码/授权码："
+    },
+    {
+      "name": "Enter_Authorization",
+      "value": "请输入密码/授权码"
+    },
+    {
+      "name": "Want_Enable_SSL_TLS",
+      "value": "是否开启SSL/TLS(当前仅需支持SMTP,无需支持SMTPS,此按钮暂不可用)"
+    },
+    {
+      "name": "Enable_SSL_TLS",
+      "value": "是否开启SSL/TLS"
+    },
+    {
+      "name": "Currently_SMTP_SMTPS",
+      "value": "当前仅需支持SMTP,无需支持SMTPS"
+    },
+    {
+      "name": "Precautions",
+      "value": "命令说明及注意事项"
+    },
+    {
+      "name": "Test_Login",
+      "value": "测试自己调用登陆并通过command获取邮件"
+    },
+    {
+      "name": "Test_Login_commands",
+      "value": "测试通过library登录以及使用已有的指令"
+    },
+    {
+      "name": "Account_login_successful",
+      "value": "账号登录成功"
+    },
+    {
+      "name": "Account_login_error",
+      "value": "账号登录出错："
+    },
+    {
+      "name": "Parameters_Failed",
+      "value": "配置登录参数失败："
+    },
+    {
+      "name": "Pop3_Precautions",
+      "value": "pop3命令说明及注意事项"
+    },
+    {
+      "name": "Command_Description",
+      "value": "命令说明："
+    },
+    {
+      "name": "USER_username",
+      "value": "USER        username        认证用户名"
+    },
+    {
+      "name": "PASS_password",
+      "value": "PASS         password        认证密码认证，认证通过则状态转换"
+    },
+    {
+      "name": "APOP_Name",
+      "value": "APOP        name,digest    认可一种安全传输口令的办法，执行成功导致状态转换，请参见 RFC 1321"
+    },
+    {
+      "name": "STAT",
+      "value": "STAT         回送邮箱统计资料，如邮件数、 邮件总字节数 "
+    },
+    {
+      "name": "UIDL",
+      "value": "UIDL n       返回用于该指定邮件的唯一标识， 如果没有指定，返回所有的 "
+    },
+    {
+      "name": "LIST",
+      "value": "LIST n       返回指定邮件的大小等，如果没有指定，返回所有的"
+    },
+    {
+      "name": "RETR",
+      "value": "RETR n     返回邮件的全部文本，如果没有指定，返回所有的"
+    },
+    {
+      "name": "DELE",
+      "value": "DELE n      删除，QUIT 命令执行时才真正删除"
+    },
+    {
+      "name": "RSET",
+      "value": "RSET         撤消所有的 DELE 命令"
+    },
+    {
+      "name": "TOP",
+      "value": "TOP n,m     返回 n 号邮件的前 m 行内容，m 必须是自然数"
+    },
+    {
+      "name": "NOOP",
+      "value": "NOOP        返回一个肯定的响应"
+    },
+    {
+      "name": "QUIT",
+      "value": "QUIT          结束会话"
+    },
+    {
+      "name": "Note",
+      "value": "注意事项："
+    },
+    {
+      "name": "USER",
+      "value": "USER 用于发送邮箱账号"
+    },
+    {
+      "name": "PASS",
+      "value": "PASS 用于发送邮箱密码，部分邮箱需要的是授权码，例如QQ 163"
+    },
+    {
+      "name": "Used_STAT",
+      "value": "STAT 用于返回邮箱里的所有邮件个数以及大小，目前QQ邮箱仅返回当天的邮件统计"
+    },
+    {
+      "name": "Used_LIST",
+      "value": "LIST 用于返回邮箱里的邮件序号以及大小，不传邮件的序号则是返回所有邮件的序号以及大小，传某个邮件的序号则是当前这邮件的信息"
+    },
+    {
+      "name": "Used_DELE",
+      "value": "DELE 用于删除邮件 但是需要在DELE成功之后再次发布QUIT才会生效，目前测试的QQ邮箱发送DELE即可生效"
+    },
+    {
+      "name": "Used_RSET",
+      "value": "RSET 用于撤销删除邮件操作 但是需要在DELE成功之后执行，然后发布QUIT才会生效，目前测试的QQ邮箱发送DELE直接删除了"
+    },
+    {
+      "name": "Used_RETR",
+      "value": "RETR 用于获取邮件详情，返回的数据是经过加密以及编码的 需要解码才可以显示正常的内容 内容数据过多的时候在文本上面是不显示的，需要阶段部分数据"
+    },
+    {
+      "name": "Used_TOP",
+      "value": "TOP 用于获取邮件信息的前几行"
+    },
+    {
+      "name": "Used_NOOP",
+      "value": "NOOP 用于确认和服务器连接是否正常，类似与websocket的ping/pong"
+    },
+    {
+      "name": "Used_QUIT",
+      "value": "QUIT 退出登录，并开始执行删除等操作"
     }
   ]
 }

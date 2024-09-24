@@ -18,6 +18,7 @@ import router from '@ohos.router'
 import socket from '@ohos.net.socket'
 import Pop3Command, { Pop3LoginBean } from '@ohos/node-pop3'
 import GlobalObj from '../GlobalObj'
+import { getResourceStr } from './GetResourceStr'
 
 @CustomDialog
 struct CustomDialogDiy {
@@ -31,23 +32,23 @@ struct CustomDialogDiy {
 
   build() {
     Column() {
-      Text('Please enter email type').fontSize(20).margin({ top: 10, bottom: 10 }).width('90%')
+      Text($r("app.string.Enter_Email_Type")).fontSize(20).margin({ top: 10, bottom: 10 }).width('90%')
       TextInput({ placeholder: '', text: this.textValue }).height(60).width('90%')
         .onChange((value: string) => {
           this.textValue = value;
         })
-      Text('Tips: Please enter the correct email type format, such as @qq.com or @163.com')
+      Text($r("app.string.Correct_Email_Type_Format"))
         .margin({ top: 10, bottom: 10 })
         .width('90%')
         .fontSize(8)
         .fontColor(Color.Red)
       Flex({ justifyContent: FlexAlign.SpaceAround }) {
-        Button('Cancel')
+        Button($r("app.string.Cancel"))
           .onClick(() => {
             this.controller.close()
             this.cancel()
           })
-        Button('Confirm')
+        Button($r("app.string.Confirm"))
           .onClick(() => {
             this.inputValue = this.textValue
             this.controller.close()
@@ -71,11 +72,11 @@ struct Index {
   dialogController: CustomDialogController | null = new CustomDialogController({
     builder: CustomDialogDiy({
       cancel: () => {
-        this.showToast(`The dialog box has been closed, and the option to enter a different type of email has been unselected`, 'mailType-cancel')
+        this.showToast(getResourceStr($r("app.string.Dialog_Closed")), 'mailType-cancel')
       },
       confirm: () => {
         this.mailType = this.inputValue
-        this.showToast(`Enter other types of email addresses：${this.mailType}`, 'mailType-confirm')
+        this.showToast(`${getResourceStr($r("app.string.Other_types_email"))}${this.mailType}`, 'mailType-confirm')
       },
       textValue: $textValue,
       inputValue: $inputValue
@@ -89,7 +90,7 @@ struct Index {
     GlobalObj?.getInstance()?.getClient()?.QUIT();
   }
 
-  showToast(text: string, name = 'test') {
+  showToast(text: string, name = getResourceStr($r("app.string.Test"))) {
     console.log(`zdy---${name}--->${text}`)
     promptAction.showToast({
       message: text,
@@ -128,7 +129,7 @@ struct Index {
             this.mailType = '@sina.com'
           }
         })
-      MenuItem({ content: 'other', labelInfo: 'other' })
+      MenuItem({ content: $r("app.string.Other"), labelInfo: 'other' })
         .onChange((selected) => {
           if (selected) {
             if (this.dialogController) {
@@ -147,7 +148,7 @@ struct Index {
         alignContent: FlexAlign.Center,
         direction: FlexDirection.Column
       }) {
-        Text('Click on the email after the account to switch email types')
+        Text($r("app.string.Switch_Email_Types"))
           .fontSize(20)
           .height(50)
           .textAlign(TextAlign.Center)
@@ -161,13 +162,13 @@ struct Index {
           alignContent: FlexAlign.Start,
           direction: FlexDirection.Row
         }) {
-          Text('Account：')
+          Text($r("app.string.Account"))
             .fontSize(20)
             .height(50)
             .textAlign(TextAlign.Center)
             .margin({ right: 5 })
 
-          TextInput({ placeholder: 'Please enter your account', text: this.account })
+          TextInput({ placeholder: $r("app.string.Enter_Account"), text: this.account })
             .layoutWeight(1)
             .fontSize(20)
             .height(50)
@@ -195,13 +196,13 @@ struct Index {
           alignContent: FlexAlign.Start,
           direction: FlexDirection.Row
         }) {
-          Text('Password/Authorization Code：')
+          Text($r("app.string.Authorization"))
             .fontSize(20)
             .height(50)
             .textAlign(TextAlign.Center)
             .margin({ right: 5 })
 
-          TextInput({ placeholder: 'Please enter password/Authorization code', text: this.password })
+          TextInput({ placeholder: $r("app.string.Enter_Authorization"), text: this.password })
             .layoutWeight(1)
             .fontSize(20)
             .height(50)
@@ -217,7 +218,7 @@ struct Index {
         .margin({ left: 15, top: 20 })
 
         Flex({ justifyContent: FlexAlign.Start, direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
-          Text('Do you want to enable SSL/TLS (currently only supporting SMTP, not SMTPS, this button is temporarily unavailable)')
+          Text($r("app.string.Want_Enable_SSL_TLS"))
             .fontSize(20)
             .height(50)
             .margin({})
@@ -225,11 +226,11 @@ struct Index {
             .fontWeight(FontWeight.Bold)
 
 
-          Checkbox({ name: 'Do you want to enable SSL/TLS', group: 'ssl' })
+          Checkbox({ name: getResourceStr($r("app.string.Enable_SSL_TLS")), group: 'ssl' })
             .height(40)
             .select(false)
             .onClick((event) => {
-              this.showToast('Currently, only SMTP support is required, no SMTPS support is needed')
+              this.showToast(getResourceStr($r("app.string.Currently_SMTP_SMTPS")))
             })
             .enabled(false)
             .margin({ left: 10 })
@@ -241,7 +242,7 @@ struct Index {
         .margin({ left: 15, top: 20 })
 
         Flex({ justifyContent: FlexAlign.Center, direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
-          Button('Command instructions and precautions')
+          Button($r("app.string.Precautions"))
             .margin(20)
             .layoutWeight(1)
             .height(50)
@@ -252,7 +253,7 @@ struct Index {
                 url: 'pages/TipsPage'
               })
             })
-          Button('Test calling login and obtaining emails through command')
+          Button($r("app.string.Test_Login"))
             .margin(20)
             .layoutWeight(1)
             .height(50)
@@ -262,7 +263,7 @@ struct Index {
             .onClick(() => {
               this.diyLogin()
             })
-          Button('Test logging in through library and using existing commands')
+          Button($r("app.string.Test_Login_commands"))
             .margin(20)
             .layoutWeight(1)
             .height(50)
@@ -368,7 +369,7 @@ struct Index {
         await GlobalObj?.getInstance()?.getClient()?.connect();
         await GlobalObj?.getInstance()?.getClient()?.command('USER', ctx.account + ctx.mailType);
         await GlobalObj?.getInstance()?.getClient()?.command('PASS', ctx.password);
-        this.showToast('Account login successful', 'login-pop3')
+        this.showToast(getResourceStr($r("app.string.Account_login_successful")), 'login-pop3')
         router.pushUrl({
           url: 'pages/CommandPage',
           params: {
@@ -377,7 +378,7 @@ struct Index {
         })
       }
     } catch (err) {
-      this.showToast(`Account login error：${err.message}`, 'login-pop3')
+      this.showToast(`${getResourceStr($r("app.string.Account_login_error"))}${err.message}`, 'login-pop3')
     }
   }
 
@@ -464,7 +465,7 @@ struct Index {
         }
       })
     } catch (err) {
-      this.showToast(`Failed to configure login parameters：${err.message}`, 'login-pop3')
+      this.showToast(`${getResourceStr($r("app.string.Parameters_Failed"))}${err.message}`, 'login-pop3')
     }
   }
 }
