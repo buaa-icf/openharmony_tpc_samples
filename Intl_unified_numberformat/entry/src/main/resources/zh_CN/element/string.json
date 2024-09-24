@@ -11,6 +11,22 @@
     {
       "name": "EntryAbility_label",
       "value": "intl_unified_numberformat"
+    },
+    {
+      "name": "isUnitSupported_test",
+      "value": "isUnitSupported测试"
+    },
+    {
+      "name": "successful",
+      "value": "测试成功"
+    },
+    {
+      "name": "test_result",
+      "value": "测试结果"
+    },
+    {
+      "name": "ok",
+      "value": "确定"
     }
   ]
 }

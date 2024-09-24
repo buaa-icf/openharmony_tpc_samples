@@ -13,9 +13,9 @@
  * limitations under the License.
  */
 
-let tempValue:string
+let tempValue:Resource
 
-export function setData(value: string, controller: CustomDialogController) {
+export function setData(value: Resource, controller: CustomDialogController) {
   tempValue = value
   controller.open()
 }
@@ -26,9 +26,9 @@ export struct CustomDialogExample {
 
   build() {
     Column() {
-      Text('测试结果').fontSize(20).margin({ top: 10, bottom: 10 })
+      Text($r('app.string.test_result')).fontSize(20).margin({ top: 10, bottom: 10 })
       Text(tempValue).fontSize(20).margin({ top: 10, bottom: 10 })
-      Button('确定')
+      Button($r('app.string.ok'))
         .onClick(() => {
           if (this.controller != undefined) {
             this.controller.close()
