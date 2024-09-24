@@ -1,14 +1,15 @@
 # inversifyDemo
 
-## 简介
-本demo是基于openHarmony系统下使用三方js库[inversify](https://github.com/inversify/InversifyJS)，inversify是一个强大而轻量级的控制反转容器，用于JavaScript和Node.js由TypeScript提供支持的应用程序。
+## Overview
 
-## 下载安装
+Inversify is a powerful lightweight inversion control container. inversifyDemo illustrates how to use the third-party JavaScript library [inversify](https://github.com/inversify/InversifyJS) on OpenHarmony. The library is applicable to JavaScript and Node.js applications supported by TypeScript.
+
+## How to Install
 ```
 ohpm install inversify reflect-metadata
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
-## 使用说明
+For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+## How to Use
 
 ```
    import { injectable, inject } from "inversify";
@@ -53,25 +54,25 @@ OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装 OpenHarmo
    export { Ninja, Katana, Shuriken };
 ```
 
-## 接口说明
+## Available APIs
 
-|       方法名        |      入参       |    接口描述    |
+|       Name       |      Parameter      |    Description   |
 |:----------------:|:-------------:|:----------:|
-|   injectable()   |               |    装饰器     |
-|     inject()     |    |    进口注入    |
-|   Container()    |   |     容器     |
+|   injectable()   |               |    Decorator    |
+|     inject()     |    |    Injection   |
+|   Container()    |   |     Container    |
 
-更多接口的使用可参考[官方文档](https://github.com/inversify/InversifyJS/tree/master/wiki)，单元测试用例详情见[TEST.md](./TEST.md)
+For details, see the [Official Documentation](https://github.com/inversify/InversifyJS/tree/master/wiki) and [Unit Test Cases](./TEST.md).
 
-## 约束与限制
-在下述版本验证通过：
+## Constraints
+inversifyDemo has been verified in the following version:
 
-DevEco Studio: 4.0 Beta1(4.0.3.400), SDK: API10 (4.0.9.6)。
+DevEco Studio: 4.0 Beta1 (4.0.3.400), SDK: API10 (4.0.9.6)
 
-## 开源协议
+## License
 
-本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/inversifyDemo/LICENSE) ，请自由地享受和参与开源。
+This project is licensed under [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/inversifyDemo/LICENSE).
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem when using inversifyDemo, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
