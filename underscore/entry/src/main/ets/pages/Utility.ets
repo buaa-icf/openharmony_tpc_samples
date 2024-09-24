@@ -33,7 +33,9 @@ struct Utility {
   @State randomResult: string = ''
   @State nowResult: string = ''
   @State escapeResult: string = ''
-
+  getResourceString(res: Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
   build() {
     Column () {
       Button('Click', { type: ButtonType.Capsule, stateEffect: true })
@@ -47,14 +49,14 @@ struct Utility {
         })
 
       Column() {
-        Text('随机数范围：0 ~ 100')
+        Text($r('app.string.random_number'))
           .fontSize(20)
           .margin({ bottom: 10 })
         Text('random: ' + this.randomResult)
           .fontSize(25)
           .margin({ bottom: 20 })
 
-        Text('时间戳')
+        Text($r('app.string.timestamp'))
           .fontSize(20)
           .margin({ bottom: 10 })
         Text('now: ' + this.nowResult)
@@ -74,7 +76,7 @@ struct Utility {
         })
 
       Column() {
-        Text('数据：Curly, Larry &amp; Moe')
+        Text(this.getResourceString($r('app.string.data'))+'：Curly, Larry &amp; Moe')
           .fontSize(20)
           .margin({ bottom: 10 })
         Text('escape: ' + this.escapeResult)

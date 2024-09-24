@@ -31,7 +31,9 @@ import { chain } from 'underscore'
 @Component
 struct Chain {
   @State chainResult: string = ''
-
+  getResourceString(res: Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
   build() {
     Column () {
       Button('Click', { type: ButtonType.Capsule, stateEffect: true })
@@ -52,7 +54,7 @@ struct Chain {
         })
 
       Column() {
-        Text('数据：[{ name: curly, age: 25 }, { name: moe, age: 21 }, { name: larry, age: 23 }]')
+        Text(this.getResourceString($r('app.string.data'))+'：[{ name: curly, age: 25 }, { name: moe, age: 21 }, { name: larry, age: 23 }]')
           .fontSize(20)
           .margin({ bottom: 10 })
         Text('chain: ' + this.chainResult)

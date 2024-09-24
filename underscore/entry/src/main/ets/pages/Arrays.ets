@@ -35,7 +35,9 @@ struct Array {
   @State unionResult: string = ''
   @State indexOfResult: string = ''
   @State rangeResult: string = ''
-
+  getResourceString(res: Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
   build() {
     Column () {
       Button('Click', { type: ButtonType.Capsule, stateEffect: true })
@@ -52,7 +54,7 @@ struct Array {
         })
 
       Column() {
-        Text('数据：[5, 4, 3, 2, 1]')
+        Text(this.getResourceString($r('app.string.data'))+'：[5, 4, 3, 2, 1]')
           .fontSize(20)
           .margin({ bottom: 10 })
         Text('first: ' + this.firstResult)
@@ -62,21 +64,21 @@ struct Array {
           .fontSize(25)
           .margin({ bottom: 30 })
 
-        Text('数据：[1, 2, 3], [101, 2, 1, 10], [2, 1]')
+        Text(this.getResourceString($r('app.string.data'))+'：[1, 2, 3], [101, 2, 1, 10], [2, 1]')
           .fontSize(20)
           .margin({ bottom: 10 })
         Text('union: ' + this.unionResult)
           .fontSize(25)
           .margin({ bottom: 30 })
 
-        Text('数据：[1, 2, 3], 2')
+        Text(this.getResourceString($r('app.string.data'))+'：[1, 2, 3], 2')
           .fontSize(20)
           .margin({ bottom: 10 })
         Text('indexOf: ' + this.indexOfResult)
           .fontSize(25)
           .margin({ bottom: 30 })
 
-        Text('数据：10')
+        Text(this.getResourceString($r('app.string.data'))+'：10')
           .fontSize(20)
           .margin({ bottom: 10 })
         Text('range: ' + this.rangeResult)
