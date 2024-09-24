@@ -1,18 +1,18 @@
 # fraction_js
 
-## 简介
+## Introduction
 
 > A rational number library
 
-## 下载安装
+## How to Install
 
 ```shell
 ohpm  install fraction.js@4.2.0
 ```
 
-OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 
 
 ```js
@@ -40,32 +40,33 @@ x.valueOf()
 x.toContinued()
 
 ```
-单元测试用例详情见[TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/fraction_js/TEST.md)
+For details about unit test cases, see [TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/fraction_js/TEST.md).
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+This project has been verified in the following version:
 
-- DevEco Studio 版本： 4.1 Canary(4.1.3.317),OpenHarmony SDK:API11 (4.1.0.36)。
+- DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API11 (4.1.0.36)
 
-## 目录结构
+## Directory Structure
 
 ````
 |---- fraction_js
-|     |---- entry  # 示例代码文件夹
+|     |---- entry  # Sample code
               ├── src  
                  ├── main   
                    ├── ets
                        ├── pages
-                             ├── Index.ets  sample代码
-|     |---- README.md  # 安装使用方法                    
+                             ├── Index.ets  # Sample code
+|     |---- README.md  # Readme                
+|     |---- README_zh.md  # Readme      
 ````
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem during the use, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
 
-## 开源协议
+## License
 
-本项目基于 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/fraction_js/LICENSE)，请自由地享受和参与开源。
+This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/fraction_js/LICENSE).
     
