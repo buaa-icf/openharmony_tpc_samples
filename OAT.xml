@@ -202,10 +202,14 @@
                 <filteritem type="filename" name="app_icon.png" desc="应用icon，文件较小，不建议使用git lfs"/>
                 <filteritem type="filename" name=".*.d.ts" desc="typescript源码问题，误报"/>
                 <filteritem type="filename" name="*.json5" desc="工程配置文件"/>
+                <filteritem type="filename" name="*.gif" desc="gif图片格式文件,用于展示示例"/>
                 <filteritem type="filename" name="*.zip" desc="工程配置文件"/>
                 <filteritem type="filename" name="*.PNG" desc="PNG图片格式文件，用于展示示例"/>
                 <filteritem type="filename" name="*.epub" desc="工程配置文件"/>
+                <filteritem type="filepath" name="*eventsource/img/GIF_EN.gif" desc="gif图片格式文件，用于展示示例"/>
                 <filteritem type="filepath" name="*eventsource/img/GIF.gif" desc="gif图片格式文件，用于展示示例"/>
+                <filteritem type="filepath" name="*underscore/screenshot/effect.gif" desc="gif图片格式文件，用于展示示例"/>
+                <filteritem type="filepath" name="*underscore/screenshot/effect_zh.gif" desc="gif图片格式文件，用于展示示例"/>
                 <filteritem type="filepath" name="unrar/entry/src/main/resources/base/media/.*.png" desc="测试用途的小图片，亦不会变化"/>
 				<filteritem type="filepath" name="pakoDemo/entry/src/ohosTest/resources/base/media/.*" desc="第三方开源软件资源文件，不进行侵入式修改，只用于单元测试文件，忽略"/>
                 <filteritem type="filepath" name="SmartRefreshLayout/library/src/main/resources/base/media/ic_loading.gif" desc="代码资源文件，用于部分效果展示"/>
@@ -218,6 +222,8 @@
                 <filteritem type="filepath" name="socketio_2.x/socketio服务搭建.pdf" desc="服务搭建文件，无需检查"/>
                 <filteritem type="filepath" name="socketio_2.x/screenshot/效果展示_登陆页面.jpg" desc="效果展示文件，无需检查"/>
                 <filteritem type="filepath" name="socketio_2.x/screenshot/效果展示_聊天页面.jpg" desc="效果展示文件，无需检查"/>
+                <filteritem type="filepath" name="ohos_ntp/img/ntpGIF.gif" desc="效果展示文件，无需检查"/>
+                <filteritem type="filepath" name="ohos_ntp/img/ntpGIF_EN.gif" desc="效果展示文件，无需检查"/>
                 <filteritem type="filepath" name="parserHtmlJsonDemo/demo.gif" desc="演示效果动图，用于readme展示，无需检查"/>
                 <filteritem type="filepath" name="apng/APNG.gif" desc="演示效果动图，用于readme展示，无需检查"/>
 <filteritem type="filepath" name="ohos_luaarkts/entry/src/main/ets/common/assets/bg_3.jpg" desc="演示效果动图，用于readme展示，无需检查"/>

@@ -11,6 +11,22 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Establish_connection",
+      "value": "创建连接"
+    },
+    {
+      "name": "Start_Listening",
+      "value": "开始监听"
+    },
+    {
+      "name": "Listening_cancelled",
+      "value": "取消监听"
+    },
+    {
+      "name": "Disconnect",
+      "value": "断开连接"
     }
   ]
 }

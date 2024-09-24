@@ -19,6 +19,94 @@
     {
       "name": "Reason_File",
       "value": "Operate file in application file system"
+    },
+    {
+      "name": "Settings_completed",
+      "value": "设置完毕，可以开始播放了"
+    },
+    {
+      "name": "Current_cache_progress",
+      "value": "当前缓存进度："
+    },
+    {
+      "name": "maximum_number",
+      "value": "输入最大缓存个数："
+    },
+    {
+      "name": "automatically_delete",
+      "value": "请输入最大缓存文件个数，超过此值，将会自动删除多余的缓存文件"
+    },
+    {
+      "name": "set_maximum_cache",
+      "value": "请先设置最大缓存大小，然后点击键盘的下一步按钮"
+    },
+    {
+      "name": "maximum_cache",
+      "value": "输入最大缓存大小："
+    },
+    {
+      "name": "maximum_cache_capacity",
+      "value": "请输入最大缓存容量，超过此值，将会自动删除多余的缓存文件"
+    },
+    {
+      "name": "Set_maximum_cache_capacity",
+      "value": "请先设置最大缓存容量，然后点击键盘的下一步按钮"
+    },
+    {
+      "name": "Ijkplayer_player",
+      "value": "ijkplayer播放器"
+    },
+    {
+      "name": "play",
+      "value": "播放"
+    },
+    {
+      "name": "suspend",
+      "value": "暂停"
+    },
+    {
+      "name": "cease",
+      "value": "停止"
+    },
+    {
+      "name": "switch",
+      "value": "切换"
+    },
+    {
+      "name": "times_speed",
+      "value": "1.5 倍速"
+    },
+    {
+      "name": "times_speed2",
+      "value": "2 倍速"
+    },
+    {
+      "name": "Dear",
+      "value": "亲，视频播放异常，系统开小差咯"
+    },
+    {
+      "name": "AvPlayer",
+      "value": "AvPlayer缓存播放示例"
+    },
+    {
+      "name": "IjkPlayer",
+      "value": "IjkPlayer缓存播放示例"
+    },
+    {
+      "name": "Example_of_custom_cache",
+      "value": "自定义缓存容量大小策略示例"
+    },
+    {
+      "name": "quantity_strategy",
+      "value": "自定义缓存个数策略示例"
+    },
+    {
+      "name": "injector",
+      "value": "使用自定义请求头注入器示例"
+    },
+    {
+      "name": "conventions",
+      "value": "使用自定义命名规则示例"
     }
   ]
 }

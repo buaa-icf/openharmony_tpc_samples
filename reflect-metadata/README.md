@@ -1,30 +1,30 @@
 # reflect-metadata
 
-## 简介
+## Introduction
 
-reflect-metadata用于在TypeScript中操作类的元数据，允许在声明类和属性时添加和读取元数据。
+**reflect-metadata** provides APIs for manipulating metadata in TypeScript. You can use the APIs to add and read metadata when declaring classes and properties.
 
-## 效果展示
-<img height="400" src="./screenshot/效果展示.gif"/>
+## Effect
+<img height="400" src="./screenshot/effect_EN.gif"/>
 
-## 下载安装
+## How to Install
 
 ````
 ohpm install reflect-metadata@0.1.13
 ````
 
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 
 ```typescript
-//引入reflect-metadata
+// Import reflect-metadata.
 import("reflect-metadata").then((reflectMetadata) => {
   @Reflect.metadata(METADATA_KEY, 'John Doe')
   class Person {
     name: string = 'John Doe';
   }
-  //接口调用
+  // Call APIs.
   Reflect.hasMetadata(METADATA_KEY, Person);
   Reflect.hasOwnMetadata(METADATA_KEY, Person);
   Reflect.getMetadata(METADATA_KEY, Person);
@@ -35,34 +35,36 @@ import("reflect-metadata").then((reflectMetadata) => {
 })
 ```
 
-## 接口说明
+## Available APIs
 
-1. 检查原型链上是否存在元数据键: Reflect.hasMetadata
-2. 检查是否存在自己的元数据键: Reflect.hasOwnMetadata
-3. 获取原型链上元数据键的元数据值: Reflect.getMetadata
-4. 获取自己的元数据键的元数据值: Reflect.getOwnMetadata
-5. 获取原型链上的所有元数据键: Reflect.getMetadataKeys
-6. 获取所有自己的元数据键: Reflect.getOwnMetadataKeys
-7. 删除元数据: Reflect.deleteMetadata
+| API                        | Description                    |
+| -------------------------- | ------------------------------ |
+| Reflect.hasMetadata        | Checks whether the metadata with the given key exists in the prototype chain.  |
+| Reflect.hasOwnMetadata     | Checks whether the metadata with the given key exists in the target object.    |
+| Reflect.getMetadata        | Obtains the metadata value with the give key from the prototype chain.|
+| Reflect.getOwnMetadata     | Obtains the metadata value with the give key from the target object.  |
+| Reflect.getMetadataKeys    | Obtains all the metadata keys in the prototype chain.    |
+| Reflect.getOwnMetadataKeys | Obtains all the metadata keys defined in the target object.        |
+| Reflect.deleteMetadata     | Deletes metadata.                    |
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+This project has been verified in the following version:
 
-- DevEco Studio 版本： 4.1 Canary(4.1.3.317)
+- DevEco Studio: 4.1 Canary (4.1.3.317); OpenHarmony SDK: API11 (4.1.0.36)
 
-- OpenHarmony SDK:API11 (4.1.0.36)
 
-## 目录结构
+## Directory Structure
 
 ````
 |---- reflect-metadata 
-|     |---- entry  # 示例代码文件夹
-|     |---- README.md  # 安装使用方法      
+|     |---- entry      # Sample code
+|     |---- README.md  # Readme     
+|     |---- README_zh.md  # Readme     
 ````
 
-## 贡献代码
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+## How to Contribute
+If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
-本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/reflect-metadata/blob/master/LICENSE) ，请自由地享受和参与开源。
+## License
+This project is licensed under [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/reflect-metadata/blob/master/LICENSE).

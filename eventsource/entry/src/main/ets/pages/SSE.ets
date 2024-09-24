@@ -34,7 +34,7 @@ import promptAction from '@ohos.promptAction';
 struct Parent {
   @State simpleList: Array<string> = [];
   @State es: null | Eventsource = null;
-  @State text: string = 'http://192.168.8.129:8080/sse';
+  @State text: string = 'http://139.9.217.131:8000/sse';
   eventListener:null|((e: Record<"data", string>)=>void) = (e: Record<"data", string>) => {
     this.simpleList.push(e.data);
   }
@@ -58,7 +58,7 @@ struct Parent {
         TextInput({text:this.text}).onChange((value:string)=>{
           this.text = value;
         }).margin({top:20})
-        Button('创建连接')
+        Button($r('app.string.Establish_connection'))
           .margin({ top: 20, bottom: 10 })
           .size({
             width: 200,
@@ -71,7 +71,7 @@ struct Parent {
               promptAction.showToast({ message: JSON.stringify(e.message) });
             })
           })
-        Button('开始监听')
+        Button($r('app.string.Start_Listening'))
           .margin({ top: 20, bottom: 10 })
           .size({
             width: 200,
@@ -80,10 +80,10 @@ struct Parent {
           .onClick(() => {
             if (!this.es) return;
             this.es.addEventListener("server-time", this.eventListener);
-            promptAction.showToast({ message: '监听开始' });
+            promptAction.showToast({ message: $r('app.string.Start_Listening') });
 
           })
-        Button('取消监听')
+        Button($r('app.string.Listening_cancelled'))
           .margin({ top: 20, bottom: 10 })
           .size({
             width: 200,
@@ -92,9 +92,9 @@ struct Parent {
           .onClick(() => {
             if (!this.es) return;
             this.es.removeEventListener("server-time", this.eventListener);
-            promptAction.showToast({ message: '监听取消' });
+            promptAction.showToast({ message: $r('app.string.Listening_cancelled') });
           })
-        Button('断开连接')
+        Button($r('app.string.Disconnect'))
           .margin({ top: 20, bottom: 10 })
           .size({
             width: 200,
@@ -103,7 +103,7 @@ struct Parent {
           .onClick(() => {
             if (!this.es) return;
             this.es.close();
-            promptAction.showToast({ message: '连接断开' });
+            promptAction.showToast({ message: $r('app.string.Disconnect') });
           })
         Scroll() {
           Column() {

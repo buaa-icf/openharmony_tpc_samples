@@ -32,23 +32,23 @@ struct CustomDialogDiy {
 
   build() {
     Column() {
-      Text('Please enter email type').fontSize(20).margin({ top: 10, bottom: 10 }).width('90%')
+      Text($r('app.string.Please_enter_email_type')).fontSize(20).margin({ top: 10, bottom: 10 }).width('90%')
       TextInput({ placeholder: '', text: this.textValue }).height(60).width('90%')
         .onChange((value: string) => {
           this.textValue = value;
         })
-      Text('Tips:Please enter the email type in the correct format, such as @qq.com or @163.com')
+      Text($r('app.string.Tips_Please_enter_the_email_type_in_the_correct_format_such_as_email'))
         .margin({ top: 10, bottom: 10 })
         .width('90%')
         .fontSize(8)
         .fontColor(Color.Red)
       Flex({ justifyContent: FlexAlign.SpaceAround }) {
-        Button('Cancel')
+        Button($r('app.string.Cancel'))
           .onClick(() => {
             this.controller.close()
             this.cancel()
           })
-        Button('Confirm')
+        Button($r('app.string.Confirm'))
           .onClick(() => {
             this.inputValue = this.textValue
             this.controller.close()
@@ -74,35 +74,35 @@ struct LoginPage {
   dialogController: CustomDialogController | null = new CustomDialogController({
     builder: CustomDialogDiy({
       cancel: () => {
-        this.showToast(`The dialog box has been closed, and the option to enter a different type of email has been unselected`, 'mailType-cancel')
+        this.showToast(this.getResourceString('The_dialog_box_has_been_closed_and_the_option_to_enter_a_different_type_of_email_has_been_unselected'), 'mailType-cancel')
       },
       confirm: () => {
         if (!this.inputValue || this.inputValue.length < 1) {
-          this.showToast(`Email type cannot be empty`, 'mailType-confirm')
+          this.showToast(this.getResourceString('Email_type_cannot_be_empty'), 'mailType-confirm')
           return
         }
         if (this.inputValue.indexOf('@') == -1 && this.inputValue.indexOf('@') != this.inputValue.lastIndexOf('@')) {
-          this.showToast(`Email type must contain one @ and can only contain one @`, 'mailType-confirm')
+          this.showToast(this.getResourceString('Email_type_must_contain_one_and_can_only_contain_one'), 'mailType-confirm')
           return
         }
         if (this.inputValue.indexOf('.') == -1 && this.inputValue.indexOf('.') != this.inputValue.lastIndexOf('.')) {
-          this.showToast(`The email type must contain a, And it can only contain one.`, 'mailType-confirm')
+          this.showToast(this.getResourceString('The_email_type_must_contain_a_And_it_can_only_contain_one'), 'mailType-confirm')
           return
         }
         if (this.inputValue.indexOf('@') != -1 && this.inputValue.indexOf('.') != -1 && this.inputValue.indexOf('@') > this.inputValue.indexOf('.')) {
-          this.showToast(`In email types, @ needs to be before., such as @qq.com, @163.com, etc`, 'mailType-confirm')
+          this.showToast(this.getResourceString('In_email_types_needs_to_be_before_such_as_mail'), 'mailType-confirm')
           return
         }
         if (this.inputValue.indexOf('@') - this.inputValue.indexOf('.') == 1) {
-          this.showToast(`Except for @ and. in email types, Must contain other characters`, 'mailType-confirm')
+          this.showToast(this.getResourceString('Except_for_and_in_email_types_Must_contain_other_characters'), 'mailType-confirm')
           return
         }
         if (this.inputValue.indexOf('@') != 0) {
-          this.showToast(`@ must be first in the email type`, 'mailType-confirm')
+          this.showToast(this.getResourceString('must_be_first_in_the_email_type'), 'mailType-confirm')
           return
         }
         this.mailType = this.inputValue
-        this.showToast(`Enter other types of email addresses：${this.mailType}`, 'mailType-confirm')
+        this.showToast(this.getResourceString('Enter_other_types_of_email_addresses') + `：${this.mailType}`, 'mailType-confirm')
       },
       textValue: $textValue,
       inputValue: $inputValue
@@ -174,7 +174,7 @@ struct LoginPage {
         alignContent: FlexAlign.Center,
         direction: FlexDirection.Column
       }) {
-        Text('Click on the email after the account to switch email types')
+        Text($r('app.string.Click_on_the_email_after_the_account_to_switch_email_types'))
           .fontSize(20)
           .height(50)
           .textAlign(TextAlign.Center)
@@ -188,13 +188,13 @@ struct LoginPage {
           alignContent: FlexAlign.Start,
           direction: FlexDirection.Row
         }) {
-          Text('Account：')
+          Text($r('app.string.Account'))
             .fontSize(20)
             .height(50)
             .textAlign(TextAlign.Center)
             .margin({ right: 5 })
 
-          TextInput({ placeholder: 'Please enter your account', text: 'xxx' })
+          TextInput({ placeholder: $r('app.string.Please_enter_your_account'), text: 'xxx' })
             .layoutWeight(1)
             .fontSize(20)
             .height(50)
@@ -222,13 +222,13 @@ struct LoginPage {
           alignContent: FlexAlign.Start,
           direction: FlexDirection.Row
         }) {
-          Text('Password/Authorization Code：')
+          Text($r('app.string.Password_Authorization_Code'))
             .fontSize(20)
             .height(50)
             .textAlign(TextAlign.Center)
             .margin({ right: 5 })
 
-          TextInput({ placeholder: 'Please enter password/Authorization code', text: 'xxx' })
+          TextInput({ placeholder: $r('app.string.Please_enter_password_Authorization_code'), text: 'xxx' })
             .layoutWeight(1)
             .fontSize(20)
             .height(50)
@@ -244,19 +244,18 @@ struct LoginPage {
         .margin({ left: 15, top: 20 })
 
         Flex({ justifyContent: FlexAlign.Start, direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
-          Text('Do you want to enable SSL/TLS (currently only supporting SMTP, not SMTPS, this button is temporarily unavailable)')
+          Text($r('app.string.Do_you_want_to_enable_SSL_TLS_tip'))
             .fontSize(20)
             .height(50)
             .margin({})
             .textAlign(TextAlign.Center)
             .fontWeight(FontWeight.Bold)
 
-
-          Checkbox({ name: 'Do you want to enable SSL/TLS', group: 'ssl' })
+          Checkbox({ name: this.getResourceString('Do_you_want_to_enable_SSL_TLS'), group: 'ssl' })
             .height(40)
             .select(false)
             .onClick((event) => {
-              this.showToast('Currently, only SMTP support is required, no SMTPS support is needed')
+              this.showToast(this.getResourceString('Currently_only_SMTP_support_is_required_no_SMTPS_support_is_needed'))
             })
             .enabled(false)
             .margin({ left: 10 })
@@ -267,7 +266,7 @@ struct LoginPage {
         }
         .margin({ left: 15, top: 20 })
 
-        Button('Skip ordinary attachments')
+        Button($r('app.string.Skip_ordinary_attachments'))
           .margin(20)
           .width('80%')
           .height(50)
@@ -276,7 +275,7 @@ struct LoginPage {
           .onClick(() => {
             this.login()
           })
-        Button('Jump to large attachments')
+        Button($r('app.string.Jump_to_large_attachments'))
           .margin(20)
           .width('80%')
           .height(50)
@@ -381,7 +380,7 @@ struct LoginPage {
         if (GlobalObj?.getInstance()?.getClient()?.isLogin() === false) {
           GlobalObj?.getInstance()?.getClient()?.login((err, result) => {
             if (!err && result == true) {
-              this.showToast('Account login successful', 'login-smtp')
+              this.showToast(this.getResourceString('Account_login_successful'), 'login-smtp')
               router.pushUrl({
                 url: 'pages/SendMailPage',
                 params: {
@@ -389,16 +388,16 @@ struct LoginPage {
                 }
               })
             } else {
-              this.showToast('Account login failed', 'login-smtp')
+              this.showToast(this.getResourceString('Account_login_failed'), 'login-smtp')
             }
           })
         } else {
-          this.showToast('Account already logged in, no need to login again', 'login-smtp')
+          this.showToast(this.getResourceString('Account_already_logged_in_no_need_to_login_again'), 'login-smtp')
         }
 
       }
     } catch (err) {
-      this.showToast(`Account login error：${err.message}`, 'login-smtp')
+      this.showToast(this.getResourceString('Account_login_error') + `：${err.message}`, 'login-smtp')
     }
   }
 
@@ -491,7 +490,7 @@ struct LoginPage {
         if (GlobalObj?.getInstance()?.getClient()?.isLogin() === false) {
           GlobalObj?.getInstance()?.getClient()?.login((err, result) => {
             if (!err && result == true) {
-              this.showToast('Account login successful', 'login-smtp')
+              this.showToast(this.getResourceString('Account_login_successful'), 'login-smtp')
               router.pushUrl({
                 url: 'pages/SendBigAttachmentPage',
                 params: {
@@ -499,16 +498,20 @@ struct LoginPage {
                 }
               })
             } else {
-              this.showToast('Account login failed', 'login-smtp')
+              this.showToast(this.getResourceString('Account_login_failed'), 'login-smtp')
             }
           })
         } else {
-          this.showToast('Account already logged in, no need to login again', 'login-smtp')
+          this.showToast(this.getResourceString('Account_already_logged_in_no_need_to_login_again'), 'login-smtp')
         }
 
       }
     } catch (err) {
-      this.showToast(`Account login error：${err.message}`, 'login-smtp')
+      this.showToast(this.getResourceString('Account_login_error') + `：${err.message}`, 'login-smtp')
     }
+  }
+
+  getResourceString(resourceName:string) {
+    return getContext().resourceManager.getStringByNameSync(resourceName)
   }
 }

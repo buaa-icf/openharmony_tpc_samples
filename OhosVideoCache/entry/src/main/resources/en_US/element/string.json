@@ -19,6 +19,94 @@
     {
       "name": "Reason_File",
       "value": "Operate file in application file system"
+    },
+    {
+      "name": "Settings_completed",
+      "value": "Settings are complete, you can start playing now"
+    },
+    {
+      "name": "Current_cache_progress",
+      "value": "Current cache progress："
+    },
+    {
+      "name": "maximum_number",
+      "value": "Enter the maximum number of caches："
+    },
+    {
+      "name": "automatically_delete",
+      "value": "Please enter the maximum number of cache files. Exceeding this value will automatically delete excess cache files"
+    },
+    {
+      "name": "set_maximum_cache",
+      "value": "Please set the maximum cache size first, and then click the next button on the keyboard"
+    },
+    {
+      "name": "maximum_cache",
+      "value": "Enter maximum cache size:"
+    },
+    {
+      "name": "maximum_cache_capacity",
+      "value": "Please enter the maximum cache capacity. Exceeding this value will automatically delete excess cache files"
+    },
+    {
+      "name": "Set_maximum_cache_capacity",
+      "value": "Please set the maximum cache capacity first, and then click the next button on the keyboard"
+    },
+    {
+      "name": "Ijkplayer_player",
+      "value": "Ijkplayer player"
+    },
+    {
+      "name": "play",
+      "value": "play"
+    },
+    {
+      "name": "suspend",
+      "value": "suspend"
+    },
+    {
+      "name": "cease",
+      "value": "cease"
+    },
+    {
+      "name": "switch",
+      "value": "switch"
+    },
+    {
+      "name": "times_speed",
+      "value": "1.5 times speed"
+    },
+    {
+      "name": "times_speed2",
+      "value": "2 times speed"
+    },
+    {
+      "name": "Dear",
+      "value": "Dear, the video playback is abnormal and the system is malfunctioning"
+    },
+    {
+      "name": "AvPlayer",
+      "value": "AvPlayer Cache Play Example"
+    },
+    {
+      "name": "IjkPlayer",
+      "value": "IjkPlayer Cache Play Example"
+    },
+    {
+      "name": "Example_of_custom_cache",
+      "value": "Example of custom cache capacity size strategy"
+    },
+    {
+      "name": "quantity_strategy",
+      "value": "Example of custom cache quantity strategy"
+    },
+    {
+      "name": "injector",
+      "value": "Example of using custom request header injector"
+    },
+    {
+      "name": "conventions",
+      "value": "Example of using custom naming conventions"
     }
   ]
 }

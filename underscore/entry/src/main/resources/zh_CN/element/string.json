@@ -11,6 +11,22 @@
     {
       "name": "EntryAbility_label",
       "value": "underscore"
+    },
+    {
+      "name": "data",
+      "value": "数据"
+    },
+    {
+      "name": "delay_starts",
+      "value": "delay 从零开始，每次值 +1"
+    },
+    {
+      "name": "random_number",
+      "value": "随机数范围：0 ~ 100  "
+    },
+    {
+      "name": "timestamp",
+      "value": "时间戳"
     }
   ]
 }

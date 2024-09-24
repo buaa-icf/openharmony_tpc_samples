@@ -602,7 +602,7 @@ struct DiyCacheSizePage {
         .alignItems(VerticalAlign.Center)
 
         Row() {
-          Text('当前缓存进度：').fontSize(15).width('15%').textAlign(TextAlign.Center)
+          Text($r("app.string.Current_cache_progress")).fontSize(15).width('15%').textAlign(TextAlign.Center)
           Progress({ value: 0, total: 100, type: ProgressType.Linear })
             .color(Color.Red)
             .backgroundColor(Color.Gray)
@@ -614,10 +614,10 @@ struct DiyCacheSizePage {
         .alignItems(VerticalAlign.Center)
 
         Row() {
-          Text('输入最大缓存大小：').fontSize(15).width('15%').textAlign(TextAlign.Center)
+          Text($r("app.string.maximum_cache")).fontSize(15).width('15%').textAlign(TextAlign.Center)
           TextInput({
             text: this.currentCacheSize,
-            placeholder: '请输入最大缓存容量，超过此值，将会自动删除多余的缓存文件',
+            placeholder: $r("app.string.maximum_cache_capacity"),
             controller: this.controller
           })
             .enterKeyType(EnterKeyType.Next)
@@ -652,7 +652,7 @@ struct DiyCacheSizePage {
             .onClick(() => {
               if (!this.isSetFinish) {
                 promptAction.showToast({
-                  message: "请先设置最大缓存容量，然后点击键盘的下一步按钮"
+                  message: $r("app.string.Set_maximum_cache_capacity")
                 })
                 return;
               }
@@ -666,7 +666,7 @@ struct DiyCacheSizePage {
             .onClick(() => {
               if (!this.isSetFinish) {
                 promptAction.showToast({
-                  message: "请先设置最大缓存容量，然后点击键盘的下一步按钮"
+                  message: $r("app.string.Set_maximum_cache_capacity")
                 })
                 return;
               }
@@ -685,7 +685,7 @@ struct DiyCacheSizePage {
             .onClick(() => {
               if (!this.isSetFinish) {
                 promptAction.showToast({
-                  message: "请先设置最大缓存容量，然后点击键盘的下一步按钮"
+                  message: $r("app.string.Set_maximum_cache_capacity")
                 })
                 return;
               }
@@ -699,7 +699,7 @@ struct DiyCacheSizePage {
             .onClick(() => {
               if (!this.isSetFinish) {
                 promptAction.showToast({
-                  message: "请先设置最大缓存容量，然后点击键盘的下一步按钮"
+                  message: $r("app.string.Set_maximum_cache_capacity")
                 })
                 return;
               }

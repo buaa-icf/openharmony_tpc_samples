@@ -1,60 +1,60 @@
-﻿# protobuf_format
+# protobuf_format
 
-## 介绍
+## Introduction
 
-基于@ohos/protobufjs 1.0.2版本的Message，提供格式转换能力，允许将Message输出重写为基本文本格式，如xml,json,html。
+protobuf_format can convert formats and rewrite the message output of @ohos/protobufjs 1.0.2 to basic text formats, such as XML, JSON, and HTML.
 
-## 下载安装
+## How to Install
 
-1.安装
+1. Install the project.
 
 ```
 ohpm install @ohos/protobuf_format
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-2.在需要使用的页面导入protobuf_format库,如Index.ets:
+2. Import the protobuf_format library on the target page, for example, **Index.ets**.
 
 ```
 import  { Format, Protobuf } from '@ohos/protobuf_format'
 ```
 
-## 使用说明
+## How to Use
 
-**输入说明：**
+**Input:**
 
-本组件基于@ohos/protobufjs 1.0.2版本，以下简称Protobuf。实现Protobuf.Message转换为xml,json,html格式，需要先构建Protobuf.Message。
+The project is based on @ohos/protobufjs 1.0.2. To convert Protobuf.Message to the XML, JSON, or HTML format, you need to build Protobuf.Message first.
 
-Protobuf支持加载解析proto字符串，proto json字符串，proto文件，proto json 文件；
+Protobuf can load and parse proto strings, proto JSON strings, .proto files, and proto.json files.
 
-可以通过以下接口构建Protobuf.Builder:
+You can build Protobuf.Builder using the following APIs:
 
-| 接口名称        | 参数                                                         |
+| API       | Parameter                                                        |
 | --------------- | ------------------------------------------------------------ |
-| loadProto       | proto:string<br/>builder?:Protobuf.Builder&#124;string&#124;{root:string,file:string} <br/>fileName?:string&#124;{root:string,file:string} |
-| protoFromString | proto:string<br/>builder?:Protobuf.Builder &#124;string&#124;{root:string,file:string} <br/>fileName?:string&#124;{root:string,file:string} |
-| loadProtoFile   | fileName:string&#124;{root:string,file:string}<br/>callback?:(err:Error,builder:Protobut.Builder)=>{}<br/>builder?:Protobuf.Builder<br/>resManager:@ohos.resourceManager.ResourceManager |
-| protoFromFile   | fileName:string&#124;{root:string,file:string}<br/>callback?:(err:Error,builder:Protobut.Builder)=>{}<br/>builder?:Protobuf.Builder<br/>resManager:@ohos.resourceManager.ResourceManager |
-| loadJson        | json:string\|Object<br/>builder?:Protobuf.Builder<br/>fileName?:string&#124;{root:string,file:string} |
-| loadJsonFile    | fileName:string&#124;{root:string,file:string}<br/>callback?:(err:Error,builder:Protobut.Builder)=>{}<br/>builder?:Protobuf.Builder<br/>resManager:@ohos.resourceManager.ResourceManager |
+| loadProto       | proto:string<br>builder?:Protobuf.Builder&#124;string&#124;{root:string,file:string} <br>fileName?:string&#124;{root:string,file:string} |
+| protoFromString | proto:string<br>builder?:Protobuf.Builder &#124;string&#124;{root:string,file:string} <br>fileName?:string&#124;{root:string,file:string} |
+| loadProtoFile   | fileName:string&#124;{root:string,file:string}<br>callback?:(err:Error,builder:Protobut.Builder)=>{}<br>builder?:Protobuf.Builder<br>resManager:@ohos.resourceManager.ResourceManager |
+| protoFromFile   | fileName:string&#124;{root:string,file:string}<br>callback?:(err:Error,builder:Protobut.Builder)=>{}<br>builder?:Protobuf.Builder<br>resManager:@ohos.resourceManager.ResourceManager |
+| loadJson        | json:string\|Object<br>builder?:Protobuf.Builder<br>fileName?:string&#124;{root:string,file:string} |
+| loadJsonFile    | fileName:string&#124;{root:string,file:string}<br>callback?:(err:Error,builder:Protobut.Builder)=>{}<br>builder?:Protobuf.Builder<br>resManager:@ohos.resourceManager.ResourceManager |
 
-通过Protobuf.Builder.lookup()接口查找已构建的消息体：
+Use the **Protobuf.Builder.lookup()** API to search for a constructed message body.
 
-| 接口名称 | 参数                                          | 返回值                                  |
+| API| Parameter                                         | Return Value                                 |
 | -------- | --------------------------------------------- | --------------------------------------- |
-| lookup   | path?:string<br/>excludeNonNamespace?:boolean | Protobuf.Reflect.T<br/>//协议消息体泛型 |
+| lookup   | path?:string<br>excludeNonNamespace?:boolean | Protobuf.Reflect.T<br>// Generic protocol message body|
 
-通过Protobuf.Builder.build()接口构建消息体:
+Use the **Protobuf.Builder.build()** API to construct a message body.
 
-| 接口名称 | 参数                       | 返回值                                                |
+| API| Parameter                      | Return Value                                               |
 | -------- | -------------------------- | ----------------------------------------------------- |
-| build    | path?:string&#124;string[] | Protobuf.Builder.Message&#124;Object //协议消息体泛型 |
+| build    | path?:string&#124;string[] | Protobuf.Builder.Message&#124;Object // Generic protocol message body|
 
-[更多Protobuf接口。](https://gitee.com/openharmony-tpc/protobuf/tree/1.x)
+[More Protobuf APIs](https://gitee.com/openharmony-tpc/protobuf/tree/1.x)
 
-**构建Message示例**
+**Example of Building a Message**
 
-1.在resource->rawfile文件夹下按照 .proto文件格式定义消息体结构，如：userproto.proto文件。
+1. Choose **resource** > **rawfile**, and define the message body structure based on the format of a .proto file, for example, **userproto.proto** file.
 
 ```
 syntax = "proto3";
@@ -68,16 +68,16 @@ message UserLoginResponse{
 }
 ```
 
-2.读取.proto 文件
+2. Read the .proto file.
 
 ```
 let builder:ESObject = await Protobuf.loadProtoFile("userproto.proto", null, null, getContext(this).resourceManager)
 ```
 
-3.构建消息体
+3. Construct a message body.
 
 ```
-// 构建消息体
+// Construct a message body.
 let UserLoginResponse:ESObject = builder.build("com.user.UserLoginResponse");
 class UserInfo {
   sessionId: string = '';
@@ -92,19 +92,19 @@ let userLoginData:UserInfo = {
     formatTimestamp: "12342222"
   };
 
-// 可对Message进行序列化与反序列化操作，也可进行格式转换
+// Serialize and deserialize the message, and convert the format.
 let message:ESObject = new UserLoginResponse(userLoginData);
 ```
 
-**主要接口示例：**
+**API Examples**
 
-**Message转json**
+**Converting a Message to a JSON String**
 
-构建消息体 ==》 转换为json字符串
+Construct a message body. ==> Convert the message body to a JSON string.
 
 ```
 const protoStr:string = 'syntax = "proto3"; package com.user;message UserLoginResponse{string sessionId = 1;string userPrivilege = 2;bool isTokenType = 3;string formatTimestamp = 4;}';
-// 解析proto文件，获取消息体构建工具类Builder
+// Parse the .proto file to obtain the message body builder.
 let root: ESObject = await Protobuf.loadProto(protoStr, null, 'user.proto');
 
 let UserLoginResponse: ESObject  = root.build("com.user.UserLoginResponse");
@@ -120,19 +120,19 @@ const userLogin: UserInfo = {
   isTokenType: false,
   formatTimestamp: "12342222"
 };
-// 构建消息体
+// Construct a message body.
 let msg: ESObject  = new UserLoginResponse(userLogin);
-// Message转换为json字符串
+// Convert the message into a JSON string.
 let json: string = Format.messageToJson(msg);
 ```
 
-**json转Message**
+**Converting a JSON String to a Message**
 
-构建消息体构建工具类Builder， 组合消息体路径：包名+类名，定义json数据 ==》构建消息体
+Construct the message body builder, combine the message body path as bundle name + class name, and define JSON data. ==> Construct the message body.
 
 ```
 const protoStr:string = 'syntax = "proto3"; package com.user;message UserLoginResponse{string sessionId = 1;string userPrivilege = 2;bool isTokenType = 3;string formatTimestamp = 4;}';
-// 构建消息体构建工具类Builder
+// Construct the message body builder.
 let root: ESObject = await Protobuf.loadProto(protoStr, null, 'user.proto');
 class UserInfo {
   sessionId: string = '';
@@ -150,13 +150,13 @@ const userLogin:UserInfo = {
 let message: ESObject = Format.jsonToMessage(root,"com.user.UserLoginResponse",userLogin);
 ```
 
-**Message转xml**
+**Converting a Message to an XML String**
 
-构建消息体 ==》 转换为xml字符串
+Construct a message body. ==> Convert the message body to an XML string.
 
 ```
 const protoStr:string = 'syntax = "proto3"; package com.user;message UserLoginResponse{string sessionId = 1;string userPrivilege = 2;bool isTokenType = 3;string formatTimestamp = 4;}';
-// 解析proto文件，获取消息体构建工具类Builder
+// Parse the .proto file to obtain the message body builder.
 let root: ESObject = await Protobuf.loadProto(protoStr, null, 'user.proto');
 
 let UserLoginResponse: ESObject = root.build("com.user.UserLoginResponse");
@@ -172,32 +172,32 @@ const userLogin:UserInfo = {
   isTokenType: false,
   formatTimestamp: "12342222"
 };
-// 构建消息体
+// Construct a message body.
 let msg: ESObject = new UserLoginResponse(userLogin);
-// Message转换为xml字符串
+// Convert the message into an XML string.
 let xml:string = Format.messageToXml(msg);
 ```
 
-**xml转Message**
+**Converting an XML String to a Message**
 
-构建消息体构建工具类Builder， 组合消息体路径：包名+类名，定义xml数据 ==》构建消息体
+Construct the message body builder, combine the message body path as bundle name + class name, and define XML data. ==> Construct the message body.
 
 ```
 const protoStr:string = 'syntax = "proto3"; package com.user;message UserLoginResponse{string sessionId = 1;string userPrivilege = 2;bool isTokenType = 3;string formatTimestamp = 4;}';
-// 构建消息体构建工具类Builder
+// Construct the message body builder.
 let root: ESObject = await Protobuf.loadProto(protoStr, null, 'user.proto');
 
 let xml = '<UserLoginResponse><sessionId>xml_to_message</sessionId><userPrivilege>John123</userPrivilege><isTokenType>false</isTokenType><formatTimestamp>12342222</formatTimestamp></UserLoginResponse>';
 let msg: ESObject = Format.xmlToMessage(root, 'com.user.UserLoginResponse', xml); 
 ```
 
-**Message转html**
+**Converting a Message to an HTML String**
 
-构建消息体 ==》 转换为html字符串
+Construct a message body. ==> Convert the message body to an HTML string.
 
 ```
 const protoStr:string = 'syntax = "proto3"; package com.user;message UserLoginResponse{string sessionId = 1;string userPrivilege = 2;bool isTokenType = 3;string formatTimestamp = 4;}';
-// 解析proto文件，获取消息体构建工具类Builder
+// Parse the .proto file to obtain the message body builder.
 let root:ESObject = await Protobuf.loadProto(protoStr, null, 'user.proto');
 
 let UserLoginResponse:ESObject = root.build("com.user.UserLoginResponse");
@@ -213,135 +213,136 @@ const userLogin:UserInfo = {
   isTokenType: false,
   formatTimestamp: "12342222"
 };
-// 构建消息体
+// Construct a message body.
 let msg:ESObject = new UserLoginResponse(userLogin);
-// Message转换为html字符串
+// Convert the message into an HTML string.
 let xml:string = Format.messageToHtml(msg);
 ```
 
-## 接口说明
+## Available APIs
 
 **messageToJson**
 
 static messageToJson(message: Protobuf.Builder.Message): string;
 
-解析Message,将消息体及数据转换为json字符串。
+Parses a message and converts the message body and data into a JSON string.
 
-参数：
+Parameter:
 
-| 参数名  | 类型                     | 必填 | 说明                               |
+| Name | Type                    | Mandatory| Description                              |
 | ------- | ------------------------ | ---- | ---------------------------------- |
-| message | Protobuf.Builder.Message | 是   | 构建成功的Proto文件对应的Message。 |
+| message | Protobuf.Builder.Message | Yes  | Message to parse.|
 
-返回值：
+Return value:
 
-| 类型   | 说明                         |
+| Type  | Description                        |
 | ------ | ---------------------------- |
-| string | 协议消息体对应的json字符串。 |
+| string | JSON string corresponding to the message body.|
 
 **jsonToMessage**
 
 static jsonToMessage(builder: Protobuf.Builder, path: string, json: string | Object): Protobuf.Builder.Message;
 
-将json字符串通过消息体构建器，结合数据，重新构建为Message消息体。
+Uses the message body builder to rebuild a JSON string into a message body based on the data.
 
-参数
+Parameters:
 
-| 参数名  | 类型                 | 必填 | 说明                                                  |
+| Name | Type                | Mandatory| Description                                                 |
 | ------- | -------------------- | ---- | ----------------------------------------------------- |
-| builder | Protobuf.Builder     | 是   | 协议消息体构建器，其内部需要包含Message解析后的结构。 |
-| path    | string               | 是   | 协议消息体的路径：包名+路径。                         |
-| json    | string &#124; Object | 是   | 协议消息体对应的json字符串或json对象。                |
+| builder | Protobuf.Builder     | Yes  | Message body builder, which must contain the structure of the parsed message.|
+| path    | string               | Yes  | Path of the message body: bundle name + path.                        |
+| json    | string &#124; Object | Yes  | JSON string or JSON object corresponding to the message body.               |
 
-返回值：
+Return value:
 
-| 类型                     | 说明         |
+| Type                    | Description        |
 | ------------------------ | ------------ |
-| Protobuf.Builder.Message | 协议消息体。 |
+| Protobuf.Builder.Message | Message body.|
 
 **messageToXml**
 
 static messageToXml(message: Protobuf.Builder.Message): string;
 
-解析Message,将消息体及数据转换为xml字符串。
+Parses a message and converts the message body and data into an XML string.
 
-| 参数名  | 类型                     | 必填 | 说明                               |
+| Name | Type                    | Mandatory| Description                              |
 | ------- | ------------------------ | ---- | ---------------------------------- |
-| message | Protobuf.Builder.Message | 是   | 构建成功的Proto文件对应的Message。 |
+| message | Protobuf.Builder.Message | Yes  | Message to parse.|
 
-返回值：
+Return value:
 
-| 类型   | 说明                                               |
+| Type  | Description                                              |
 | ------ | -------------------------------------------------- |
-| string | 协议消息体对应的xml字符串,xml根节点为Message类名。 |
+| string | XML string corresponding to the message body. The XML root node is the message class name.|
 
 **xmlToMessage**
 
 static xmlToMessage(builder: Protobuf.Builder, path: string, xml: string): Protobuf.Builder.Message;
 
-将xml字符串通过消息体构建器，结合数据，重新构建为Message消息体。
+Uses the message body builder to rebuild an XML string into a message body based on the data.
 
-| 参数名  | 类型             | 必填 | 说明                                                   |
+| Name | Type            | Mandatory| Description                                                  |
 | ------- | ---------------- | ---- | ------------------------------------------------------ |
-| builder | Protobuf.Builder | 是   | 协议消息体构建器，其内部需要包含Message解析后的结构。  |
-| path    | string           | 是   | 协议消息体的路径：包名+路径。                          |
-| xml     | string           | 是   | 协议消息体对应的xml字符串，xml数据节点从类名节点开始。 |
+| builder | Protobuf.Builder | Yes  | Message body builder, which must contain the structure of the parsed message. |
+| path    | string           | Yes  | Path of the message body: bundle name + path.                         |
+| xml     | string           | Yes  | XML string corresponding to the message body. The XML data node starts from the class name node.|
 
-返回值：
+Return value:
 
-| 类型                     | 说明         |
+| Type                    | Description        |
 | ------------------------ | ------------ |
-| Protobuf.Builder.Message | 协议消息体。 |
+| Protobuf.Builder.Message | Message body.|
 
 **messageToHtml**
 
 static messageToHtml(message: Protobuf.Builder.Message): string;
 
-解析Message,将消息体及数据转换为html字符串。
+Parses a message and converts the message body and data into an HTML string.
 
-参数：
+Parameter:
 
-| 参数名  | 类型                     | 必填 | 说明                               |
+| Name | Type                    | Mandatory| Description                              |
 | ------- | ------------------------ | ---- | ---------------------------------- |
-| message | Protobuf.Builder.Message | 是   | 构建成功的Proto文件对应的Message。 |
+| message | Protobuf.Builder.Message | Yes  | Message to parse.|
 
-返回值：
+Return value:
 
-| 类型   | 说明                         |
+| Type  | Description                        |
 | ------ | ---------------------------- |
-| string | 协议消息体对应的html字符串。 |
+| string | HTML string corresponding to the message body.|
 
-## 约束与限制
-在下述版本验证通过：
+## Constraints
+This project has been verified in the following versions:
 
-DevEco Studio: 4.1 Canary2(4.1.3.400), SDK: API11 (4.1.0.36)
+DevEco Studio: 4.1 Canary2 (4.1.3.400), SDK: API 11 (4.1.0.36)
 
-DevEco Studio: 4.0 Release(4.0.3.413), SDK: API10 (4.0.10.3)
+DevEco Studio: 4.0 Release (4.0.3.413), SDK: API 10 (4.0.10.3)
 
-## 目录结构
+## Directory Structure
 
 ```
 |---- protobuf-format
-|     |---- AppScrope  # 工程信息文件夹
-|     |---- entry  # 示例代码文件夹
-|     |---- protobufformat  # Message格式转换
-|           |---- src/main  # 模块代码
-|                |---- ets/   # 模块代码
-|                     |---- ProtoBufFormat.ts     # 格式转换对外接口实现类
-|                     |---- Util.ts     # 格式转换工具类
-|            |---- index.ts          # 入口文件
-|            |---- *.json5      # 配置文件
-|     |---- sax  # xml解析工具
-|     |---- xml-js  # xml与js转换类
-|     |---- README.md  # 安装使用方法
-|     |---- README.OpenSource  # 开源说明
-|     |---- CHANGELOG.md  # 更新日志
+|     |---- AppScrope  # Project information
+|     |---- entry  # Sample code
+|     |---- protobufformat  # Message format conversion
+|           |---- src/main  # Module code
+|                |---- ets/   # Module code
+|                     |---- ProtoBufFormat.ts     # Implementation class of external APIs for format conversion
+|                     |---- Util.ts     # Util class for format conversion
+|            |---- index.ts          # Entry file
+|            |---- *.json5      # Configuration file
+|     |---- sax  # XML parsing tool
+|     |---- xml-js  # Conversion class of XML and JS
+|     |---- README.md  # Readme
+|     |---- README_zh.md  # Readme
+|     |---- README.OpenSource  # Open Source Description
+|     |---- CHANGELOG.md  # Changelog
 ```
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-本项目基于 [Apache-2.0 License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/protobuf_format/LICENSE) ，请自由地享受和参与开源。
+This project is licensed under [Apache-2.0 License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/protobuf_format/LICENSE).

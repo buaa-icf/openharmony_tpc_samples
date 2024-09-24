@@ -11,6 +11,10 @@
     {
       "name": "EntryAbility_label",
       "value": "protobuf_format"
+    },
+    {
+      "name": "Fill_default",
+      "value": "Fill default"
     }
   ]
 }

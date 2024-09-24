@@ -1,16 +1,16 @@
 # textEncodingDemo
 
-## 简介
-本demo是基于openHarmony系统下使用三方js库[text-encoding](https://github.com/inexorabletash/text-encoding)，text-encoding提供文本数据进行编码和解码功能
+## Introduction
+This demo describes how to use the third-party JavaScript library [text-encoding](https://github.com/inexorabletash/text-encoding) in OpenHarmony for encoding and decoding text data.
 
-## 下载安装
+## How to Install
 ```
 ohpm install text-encoding
-ohpm install @types/text-encoding --save-dev //import text-encoding 的时候语法报错。其原因是text-encoding包内不含类型声明，需要 @types/text-encoding 下载这个包的声明文件，从而解决语法的报错。
+ohpm install @types/text-encoding --save-dev // Install @types/text-encoding to prevent import syntax errors due to missing type declarations in the text-encoding package.
 
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
-## 使用说明
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+## How to Use
 
 ```javascript
 import { TextEncoder, TextDecoder } from 'text-encoding';
@@ -20,26 +20,25 @@ let encode =new TextEncoder().encode(content) ;
 let deco = new TextDecoder().decode(encode);
 ```
 
-## 接口说明
+## Available APIs
 
-|        方法名        |    入参     | 接口描述  |
-|:-----------------:|:---------:|:-----:|
-| TextEncoder(data) | data:编码内容 | 文本编码器 |
-|   TextDecoder(data)   | data：解码内容 | 文本解码器 |
-|   encode(data)    | data:编码内容 | 编码 |
-|   decode(data)    | data：解码内容 |  解码   |
+| API               | Parameter                | Description   |
+| :---------------- | :----------------------- | :------------ |
+| TextEncoder(data) | **data**: data to encode | Encodes text. |
+| TextDecoder(data) | **data**: data to decode | Decodes text. |
+| encode(data)      | **data**: data to encode | Encodes data. |
+| decode(data)      | **data**: data to decode | Decodes data. |
 
-## 约束与限制
-在下述版本验证通过：
+## Constraints
+This project has been verified in the following versions:
 
-DevEco Studio: 4.0 (4.0.3.512), SDK: API10 (4.0.10.9)
+- DevEco Studio: 4.0 (4.0.3.512), SDK: API 10 (4.0.10.9)
+- DevEco Studio: 3.1 Beta2 (3.1.0.400), SDK: API 9 Release (3.2.11.9)
 
-DevEco Studio: 3.1 Beta2(3.1.0.400), SDK: API9 Release(3.2.11.9)。
+## License
 
-## 开源协议
+This project is licensed under [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/textEncodingDemo/LICENSE).
 
-本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/textEncodingDemo/LICENSE) ，请自由地享受和参与开源。
+## How to Contribute
 
-## 贡献代码
-
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).

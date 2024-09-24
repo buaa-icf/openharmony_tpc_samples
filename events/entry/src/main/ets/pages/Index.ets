@@ -32,18 +32,19 @@ import * as events from 'events/'
 struct Index {
   @State message: string = 'Hello World'
   count: number = 0
+  messageResourceString: string = this.getResourceString($r("app.string.message_Messages_that_are_listened_to"))
   messageCb = (text: string) => {
-    this.message = 'message监听到的消息：' + text
+    this.message = this.messageResourceString + text
+  }
+  event: ESObject
+
+  private getResourceString(res: Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
   }
 
-  event:ESObject
-
-  aboutToAppear(){
+  aboutToAppear() {
     this.event = new events.EventEmitter();
   }
-
-
-
 
   build() {
     Row() {
@@ -51,24 +52,25 @@ struct Index {
         Text(this.message)
           .fontSize(25)
 
-        Button('监听message消息')
-          .fontSize(25)
+        Button($r("app.string.Listen_for_message_messages"))
+          // .fontSize(25)
+          .margin({ bottom: 10 })
           .onClick(() => {
             this.event.on('message', this.messageCb)
           })
-        Button('向message发送一个消息')
-          .fontSize(25)
+        Button($r("app.string.Send_message_to_Message"))
+          // .fontSize(25)
+          .margin({ bottom: 10 })
           .onClick(() => {
-            this.event.emit('message', '一个消息' + this.count)
+            this.event.emit('message', this.getResourceString($r("app.string.A_message")) + this.count)
             this.count++
           })
-        Button('取消监听message消息 ')
-          .fontSize(25)
+        Button($r("app.string.Disable_the_listening_for_messages"))
+          // .fontSize(25)
+          .margin({ bottom: 10 })
           .onClick(() => {
             this.event.off('message', this.messageCb)
           })
-
-
       }
       .width('100%')
     }

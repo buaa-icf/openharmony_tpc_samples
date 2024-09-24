@@ -1,6 +1,6 @@
 # jwks-rsa
 
-## Overview
+## Introduction
 
 jwks-rsa is a library that retrieves keys from JSON Web Key Set (JWKS) endpoints to generate public keys. It uses the asymmetric public key encryption algorithm (RSA) and asymmetric elliptic curve encryption algorithm (ECC) for encryption.
 
@@ -9,7 +9,7 @@ jwks-rsa is a library that retrieves keys from JSON Web Key Set (JWKS) endpoints
 ```shell
 ohpm install @ohos/jwks-rsa 
 ```
-For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ## How to Use
 1. Instantiate **JwksClient** and set the corresponding attributes.
@@ -89,8 +89,8 @@ this.client = new JwksClient({
 ```
 
 ## Constraints
-jwks-rsa has been verified in the following version:
-- DevEco Studio Version: 4.1 Canary (4.1.3.317)
+This project has been verified in the following version:
+- DevEco Studio: 4.1 Canary (4.1.3.317)
 
 - OpenHarmony SDK: API11 (4.1.0.36)
 
@@ -124,7 +124,7 @@ jwks-rsa has been verified in the following version:
                         |----JwksClient.js                     # JwksClient constructor
                         |----utils.js                          # Encryption algorithms
 |   |---- README.md                                            # Readme
-|   |---- README_zh.MD                                         # Readme 
+|   |---- README_zh.md                                            # Readme
 ````
 
 ## How to Contribute

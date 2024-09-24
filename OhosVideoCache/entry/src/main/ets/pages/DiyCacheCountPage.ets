@@ -382,7 +382,7 @@ struct DiyCacheCountPage {
     }
     this.isSetFinish = true;
     promptAction.showToast({
-      message: "设置完毕，可以开始播放了"
+      message: $r("app.string.Settings_completed")
     })
   }
 
@@ -603,7 +603,7 @@ struct DiyCacheCountPage {
         .alignItems(VerticalAlign.Center)
 
         Row() {
-          Text('当前缓存进度：').fontSize(15).width('15%').textAlign(TextAlign.Center)
+          Text($r("app.string.Current_cache_progress")).fontSize(15).width('15%').textAlign(TextAlign.Center)
           Progress({ value: 0, total: 100, type: ProgressType.Linear })
             .color(Color.Red)
             .backgroundColor(Color.Gray)
@@ -615,10 +615,10 @@ struct DiyCacheCountPage {
         .alignItems(VerticalAlign.Center)
 
         Row() {
-          Text('输入最大缓存个数：').fontSize(15).width('15%').textAlign(TextAlign.Center)
+          Text($r("app.string.maximum_number")).fontSize(15).width('15%').textAlign(TextAlign.Center)
           TextInput({
             text: this.currentCacheCount,
-            placeholder: '请输入最大缓存文件个数，超过此值，将会自动删除多余的缓存文件',
+            placeholder: $r("app.string.automatically_delete"),
             controller: this.controller
           })
             .enterKeyType(EnterKeyType.Next)
@@ -667,7 +667,7 @@ struct DiyCacheCountPage {
             .onClick(() => {
               if (!this.isSetFinish) {
                 promptAction.showToast({
-                  message: "请先设置最大缓存大小，然后点击键盘的下一步按钮"
+                  message: $r('app.string.set_maximum_cache')
                 })
                 return;
               }
@@ -686,7 +686,7 @@ struct DiyCacheCountPage {
             .onClick(() => {
               if (!this.isSetFinish) {
                 promptAction.showToast({
-                  message: "请先设置最大缓存大小，然后点击键盘的下一步按钮"
+                  message:  $r('app.string.set_maximum_cache')
                 })
                 return;
               }
@@ -700,7 +700,7 @@ struct DiyCacheCountPage {
             .onClick(() => {
               if (!this.isSetFinish) {
                 promptAction.showToast({
-                  message: "请先设置最大缓存大小，然后点击键盘的下一步按钮"
+                  message:  $r('app.string.set_maximum_cache')
                 })
                 return;
               }

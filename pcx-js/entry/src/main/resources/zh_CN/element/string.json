@@ -11,6 +11,66 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Text_reminder_of_test_time",
+      "value": "测试耗时文字提醒"
+    },
+    {
+      "name": "The_test_object_is_empty",
+      "value": "测试对象为空情况"
+    },
+    {
+      "name": "Test_the_PCX_image_with_problem_with_parameters",
+      "value": "测试pcx图片入参有问题情况"
+    },
+    {
+      "name": "Decode_thimbleweed_pcx_585KB",
+      "value": "解码thimbleweed.pcx_585KB"
+    },
+    {
+      "name": "Decode_small_pcx_1KB",
+      "value": "解码small.pcx_1KB"
+    },
+    {
+      "name": "Decode_parrot_pcx_25KB",
+      "value": "解码parrot.pcx_25KB"
+    },
+    {
+      "name": "Decode_16col_pcx_40KB",
+      "value": "解码16col.pcx_40KB"
+    },
+    {
+      "name": "Decode_clown_pcx_73KB",
+      "value": "解码clown.pcx 73KB"
+    },
+    {
+      "name": "Click_on_small_first_and_then_click_test_time_button",
+      "value": "先点击small再点击这个测试耗时按钮"
+    },
+    {
+      "name": "smallUint8smallPcx_empty_please_click_small_load_before_continuing_test",
+      "value": "smallUint8&smallPcx为空,请先点击small加载,才能继续测试"
+    },
+    {
+      "name": "Click_the_empty_object_PCX_call_decode",
+      "value": "点击空对象PCX调用decode"
+    },
+    {
+      "name": "The_pcx_object_empty_and_cannot_called",
+      "value": "pcx对象为空无法继续调用"
+    },
+    {
+      "name": "If_pcx_object_empty_and_small_data_decode_method_can_called",
+      "value": "pcx对象不为空并且small有数据则能够调用decode方法"
+    },
+    {
+      "name": "Click_invoke_the_parsing_parameterless_PCX",
+      "value": "点击调用无参数PCX的解析"
+    },
+    {
+      "name": "If_PCX_does_not_parse_data_decoding_will_cause_program_abnormal",
+      "value": "pcx没有解析数据调用解码会程序异常,如果存在这种场景请主动捕获异常"
     }
   ]
 }

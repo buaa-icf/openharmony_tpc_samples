@@ -1,52 +1,52 @@
 # @protobufjs/path
 
-## 简介
+## Introduction
 
-> @protobufjs/path 是一个最小路径模块，用于解析Unix、Windows和URL路径。
+> @protobufjs/path is a minimal path module to resolve Unix, Windows, and URL paths.
 
-## 下载安装
+## How to Install
 
 ```shell
 ohpm install @protobufjs/path
 ```
 
 OpenHarmony
-ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 
-### 引用及使用
+### Importing and Using the Library
 
 ```
 import path from "@protobufjs/path"
-  //测试指定的路径是否为绝对路径
+  // Test whether a specified path is an absolute path.
   path.isAbsolute("X:\\some\\path\\file.js")
-  //规范化指定的路径
+  // Normalize a specified path.
   path.normalize("X:\\some\\..\\.\\path\\\\file.js")
-  //根据指定的原始路径解析指定的包含路径
+  // Resolve a specified include path based on the specified original path.
   path.resolve("/path/origin.js", "/some/.././path//file.js")
 ```
 
-## 接口说明
+## Available APIs
 
-1. 测试指定的路径是否为绝对路径
+1. Tests whether a specified path is an absolute path.
    `isAbsolute(path: string): boolean`
-2. 规范化指定的路径
+2. Normalizes a specified path.
    `normalize(path: string): string`
-3. 根据指定的原始路径解析指定的包含路径
+3. Resolves a specified include path based on the specified origin path.
    `resolve(originPath: string, includePath: string, alreadyNormalized?: boolean): string`
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+This project has been verified in the following versions:
 
-- DevEco Studio 版本：4.1 Canary(4.1.3.317)，OpenHarmony SDK:API11 (4.1.0.36)
+- DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API 11 (4.1.0.36)
 
-## 目录结构
+## Directory Structure
 
 ````
 |---- protobuf_path
-|     |---- entry  # 示例代码文件夹
+|     |---- entry  # Sample code
 |           |---- src
 |                 |---- main
 |                        |---- ets
@@ -55,20 +55,17 @@ import path from "@protobufjs/path"
 |                 |---- ohosTest
 |                       |---- ets
 |                             |---- test
-|                                   |---- Ability.test.ets  # 单元测试
+|                                   |---- Ability.test.ets  # Unit test
 
-|     |---- README.md  # 安装使用方法
-|     |---- README.OpenSource  # 开源说明
-|     |---- CHANGELOG.md  # 更新日志                
+|     |---- README.md  # Readme
+|     |---- README.OpenSource  # Open source description
+|     |---- CHANGELOG.md  # Changelog               
 ````
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
-给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-本项目基于 [BSD License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/protobuf_path/LICENSE)
-，请自由地享受和参与开源。
-
+This project is licensed under [BSD License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/protobuf_path/LICENSE).

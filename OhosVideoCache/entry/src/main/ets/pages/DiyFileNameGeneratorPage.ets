@@ -592,7 +592,7 @@ struct DiyFileNameGeneratorPage {
         .alignItems(VerticalAlign.Center)
 
         Row() {
-          Text('当前缓存进度：').fontSize(15).width('15%').textAlign(TextAlign.Center)
+          Text($r('app.string.Current_cache_progress')).fontSize(15).width('15%').textAlign(TextAlign.Center)
           Progress({ value: 0, total: 100, type: ProgressType.Linear })
             .color(Color.Red)
             .backgroundColor(Color.Gray)

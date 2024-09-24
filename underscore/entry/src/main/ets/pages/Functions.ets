@@ -50,7 +50,7 @@ struct Utility {
         })
 
       Column() {
-        Text('delay 从零开始，每次值 +1')
+        Text($r('app.string.delay_starts'))
           .fontSize(20)
           .margin({ bottom: 10 })
         Text('delay: ' + this.delayResult)

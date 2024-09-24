@@ -30,7 +30,7 @@
     },
     {
       "name": "generate_public_key",
-      "value": "点击生成公钥"
+      "value": "Click to generate public key"
     }
   ]
 }

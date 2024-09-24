@@ -33,15 +33,15 @@ struct Index {
   @State p5Pixels: PixelMap | undefined = undefined;
   smallUint8: Uint8Array | undefined = undefined;
   smallPcx: PCX | undefined = undefined;
-  @State testTimeHint: string = '测试耗时文字提醒'
+  @State testTimeHint: Resource = $r("app.string.Text_reminder_of_test_time")
   @State testTimeHint2: string = ''
-  @State testNilPcx: string = '测试对象为空情况'
-  @State testNoDataPcx: string = '测试pcx图片入参有问题情况'
+  @State testNilPcx: Resource = $r("app.string.The_test_object_is_empty")
+  @State testNoDataPcx: Resource = $r("app.string.Test_the_PCX_image_with_problem_with_parameters")
 
   build() {
     Scroll() {
       Column() {
-        Button('解码thimbleweed.pcx_585KB').fontSize(20).onClick(() => {
+        Button($r("app.string.Decode_thimbleweed_pcx_585KB")).fontSize(20).onClick(() => {
 
           getContext(this).resourceManager.getMediaContent($r("app.media.thimbleweed").id).then((uint8Array) => {
             let pcxDecoder: PCX = new PCX(uint8Array.buffer);
@@ -64,7 +64,7 @@ struct Index {
           .height(200)
           .backgroundColor(Color.Pink)
           .margin(10)
-        Button('解码small.pcx_1KB').fontSize(20).onClick(() => {
+        Button($r("app.string.Decode_small_pcx_1KB")).fontSize(20).onClick(() => {
 
           getContext(this).resourceManager.getMediaContent($r('app.media.small').id).then((uint8Array) => {
             this.smallUint8 = uint8Array;
@@ -89,7 +89,7 @@ struct Index {
           .height(200)
           .backgroundColor(Color.Pink)
           .margin(10)
-        Button('解码parrot.pcx_25KB').fontSize(20).onClick(() => {
+        Button($r("app.string.Decode_parrot_pcx_25KB")).fontSize(20).onClick(() => {
           getContext(this).resourceManager.getMediaContent($r('app.media.parrot').id).then((uint8Array) => {
             let pcxDecoder: PCX = new PCX(uint8Array.buffer);
             let decodeData: DecodeType = pcxDecoder.decode();
@@ -112,7 +112,7 @@ struct Index {
           .backgroundColor(Color.Pink)
           .margin(10)
 
-        Button('解码16col.pcx_40KB').fontSize(20).onClick(() => {
+        Button($r("app.string.Decode_16col_pcx_40KB")).fontSize(20).onClick(() => {
           getContext(this).resourceManager.getMediaContent($r('app.media.16col').id).then((uint8Array) => {
             let pcxDecoder: PCX = new PCX(uint8Array.buffer);
             let decodeData: DecodeType = pcxDecoder.decode();
@@ -134,7 +134,7 @@ struct Index {
           .height(200)
           .backgroundColor(Color.Pink)
           .margin(10)
-        Button('解码clown.pcx 73KB').fontSize(20).onClick(() => {
+        Button($r("app.string.Decode_clown_pcx_73KB")).fontSize(20).onClick(() => {
           getContext(this).resourceManager.getMediaContent($r('app.media.clown').id).then((uint8Array) => {
             let pcxDecoder: PCX = new PCX(uint8Array.buffer);
             let decodeData: DecodeType = pcxDecoder.decode();
@@ -159,30 +159,30 @@ struct Index {
 
         Text(this.testTimeHint).margin({ top: 5, bottom: 5 })
         Text(this.testTimeHint2).margin({ top: 5, bottom: 5 })
-        Button('先点击small再点击这个测试耗时按钮').onClick(() => {
+        Button($r("app.string.Click_on_small_first_and_then_click_test_time_button")).onClick(() => {
           if (this.smallUint8 && this.smallPcx) {
             this.clickTestTime()
           } else {
-            this.testTimeHint = 'smallUint8&smallPcx为空,请先点击small加载,才能继续测试'
+            this.testTimeHint = $r("app.string.smallUint8smallPcx_empty_please_click_small_load_before_continuing_test")
           }
         })
           .margin({ top: 5, bottom: 5 })
         Text(this.testNilPcx)
           .margin({ top: 5, bottom: 5 })
-        Button('点击空对象PCX调用decode').onClick(() => {
+        Button($r("app.string.Click_the_empty_object_PCX_call_decode")).onClick(() => {
           let pcx: PCX | null = null
           if (!pcx) {
-            this.testNilPcx = 'pcx对象为空无法继续调用'
+            this.testNilPcx = $r("app.string.The_pcx_object_empty_and_cannot_called")
           } else if (this.smallUint8) {
             let pcx: PCX = new PCX(this.smallUint8);
-            this.testNilPcx = 'pcx对象不为空并且small有数据则能够调用decode方法'
+            this.testNilPcx = $r("app.string.If_pcx_object_empty_and_small_data_decode_method_can_called")
             let decodeData: DecodeType = pcx.decode();
           }
         })
           .margin({ top: 5, bottom: 5 })
         Text(this.testNoDataPcx)
           .margin({ top: 5, bottom: 5 })
-        Button('点击调用无参数PCX的解析').onClick(() => {
+        Button($r("app.string.Click_invoke_the_parsing_parameterless_PCX")).onClick(() => {
           this.testErrorInput();
         }).margin({ top: 5, bottom: 5 })
 
@@ -202,7 +202,7 @@ struct Index {
       let pcx: PCX = new PCX();
       let decodeData: DecodeType = pcx.decode();
     } catch (err) {
-      this.testNoDataPcx = 'pcx没有解析数据调用解码会程序异常,如果存在这种场景请主动捕获异常'
+      this.testNoDataPcx = $r("app.string.If_PCX_does_not_parse_data_decoding_will_cause_program_abnormal")
     }
   }
 

@@ -2,32 +2,32 @@
 
 ## d3.js easing Functions
 
-## 简介
+## Introduction
 
-该库为UI动画组件 easing 缓动函数是用来描述数值的变化速率，这些数值可以是动画对象的宽高，透明度，旋转，缩放等属性值，它们的变化率可以用函数曲线来表示,制作出更加符合直觉的UI动效,使动画看上去更加真实。已经实现的函数如下所示：
+The library is a UI animation component. The easing function is used to describe a change rate of a value. The value may be an attribute value such as a width, a height, transparency, rotation, or scaling of an animation object. The change rate may be represented by a function curve, to produce a UI animation effect that is more intuitive, makes the animation look more realistic. Below are the implemented functions.
 
 ![preview1](preview/preview1.gif)
 ![preview2](preview/preview2.gif)
 
 
-## 下载安装
+## How to Install
 
 ```javascript
 ohpm install d3-ease
 ```
 
-OpenHarmony ohpm环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage_en.md).
 
 
-## 使用说明
+## How to Use
 
 ```
 import * as Easing from 'd3-ease';
 ```
 
-使用示例
+Example
 
-### 第一步：创建自己需要的动画
+### Step 1: Create an animation as required.
 
   ```javascript
 import Animator, { AnimatorResult } from '@ohos.animator';
@@ -44,7 +44,7 @@ backAnimator: AnimatorResult = Animator.create({
 });
   ```
 
-### 第二步，实现onframe方法，并调用函数方法进行计算(小球动画示例)
+### Step 2: Implement the **onframe** method and call the function method for calculation (example of ball animation).
 
 ```javascript
 
@@ -60,7 +60,7 @@ backAnimator: AnimatorResult = Animator.create({
   build() {
         Column() {
               Stack({alignContent: Alignment.TopStart}) {
-                  // 小球 动画作用在 margin left 属性
+                  // The ball animation is applied to the **margin left** attribute.
                   Column(){}.width(28).height(28)
                       .backgroundColor('#ff0991ec')
                       .borderRadius(14)
@@ -70,60 +70,60 @@ backAnimator: AnimatorResult = Animator.create({
   }
 ```
 
-## 接口说明
+## Available APIs
 
 ### Easing
 
-| 接口名              | 参数类型   | 返回值类型  | 说明                   |
+| API             | Type  | Return Value Type | Description                  |
 |------------------|--------|--------|----------------------|
-| easeBackIn       | number | number | 偏移动画估值               |
-| easeBackOut      | number | number | 偏移动画估值               |
-| easeBackInOut    | number | number | 偏移动画估值               |
-| easeBounceIn     | number | number | 弹簧动画估值               |
-| easeBounceOut    | number | number | 弹簧动画估值               |
-| easeBounceInOut  | number | number | 弹簧动画估值               |
-| easeCircleIn     | number | number | 圆弧的动画估值              |
-| easeCircleOut    | number | number | 圆弧的动画估值              |
-| easeCircleInOut  | number | number | 圆弧的动画估值              |
-| easeCubicIn      | number | number | 三次曲线动画估值             |
-| easeCubicOut     | number | number | 三次曲线动画估值             |
-| easeCubicInOut   | number | number | 三次曲线动画估值             |
-| easeElasticIn    | number | number | 心电图动画估值              |
-| easeElasticOut   | number | number | 心电图动画估值              |
-| easeElasticInOut | number | number | 心电图动画估值              |
-| easeExpIn        | number | number | 外露函数动画估值             |
-| easeExpOut       | number | number | 外露函数动画估值             |
-| easeExpInOut     | number | number | 外露函数动画估值             |
-| easeQuadIn       | number | number | 四次曲线动画估值             |
-| easeQuadOut      | number | number | 四次曲线动画估值             |
-| easeQuadInOut    | number | number | 四次曲线动画估值             |
-| easePolyIn       | number | number | 五次曲线动画估值             |
-| easePolyOut      | number | number | 五次曲线动画估值             |
-| easePolyInOut    | number | number | 五次曲线动画估值             |
-| easeSinIn        | number | number | 正弦函数动画估值             |
-| easeSinOut       | number | number | 正弦函数动画估值             |
-| easeSinInOut     | number | number | 正弦函数动画估值             |
-| easeLinear   | number | number | 直线动画估值               |
+| easeBackIn       | number | number | Anticipatory easing, similar to a dancer bending their knees before jumping. The overshoot is configurable. If not specified, it defaults to 1.70158.              |
+| easeBackOut      | number | number | Reverse anticipatory easing; equivalent to `1 - backIn(1 - t)`.              |
+| easeBackInOut    | number | number | Symmetric anticipatory easing; uses `backIn` when `t` is in `[0, 0.5]` and `backOut` when `t` is in `[0.5, 1]`.              |
+| easeBounceIn     | number | number | Bounce easing, like a rubber ball.              |
+| easeBounceOut    | number | number | Reverse Bounce easing, equivalent to `1 - bounceIn(1 - t)`.              |
+| easeBounceInOut  | number | number | Symmetric Bounce easing; uses `bounceIn` when `t` is in `[0, 0.5]` and `bounceOut` when `t` is in `[0.5, 1]`.              |
+| easeCircleIn     | number | number | Circular easing.             |
+| easeCircleOut    | number | number | Reverse Circular easing, equivalent to `1 - circleIn(1 - t)`.             |
+| easeCircleInOut  | number | number | Symmetric Circular easing; uses `circleIn` when `t` is in `[0, 0.5]` and `circleOut` when `t` is in `[0.5, 1]`.             |
+| easeCubicIn      | number | number | Cubic easing; equivalent to `polyIn.exponent(3)`.            |
+| easeCubicOut     | number | number | Reverse cubic easing; equivalent to `1 - cubicIn(1 - t)`. Also equivalent to `polyOut.exponent(3)`.            |
+| easeCubicInOut   | number | number | Symmetric cubic easing; uses `cubicIn` when `t` is in `[0, 0.5]` and `cubicOut` when `t` is in `[0.5, 1]`. Also equivalent to `poly.exponent(3)`.            |
+| easeElasticIn    | number | number | Elastic easing, like a bouncing rubber band. The amplitude and period of the oscillation are configurable; if not specified, they default to 1 and 0.3, respectively.             |
+| easeElasticOut   | number | number | Reverse elastic easing, equivalent to `1 - elasticIn(1 - t)`.             |
+| easeElasticInOut | number | number | Symmetric elastic easing; uses `elasticIn` when `t` is in `[0, 0.5]` and `elasticOut` when `t` is in `[0.5, 1]`.             |
+| easeExpIn        | number | number | Exponential easing; maps to `2^(10 * (t - 1))`.            |
+| easeExpOut       | number | number | Reverse exponential easing, equivalent to `1 - expIn(1 - t)`.            |
+| easeExpInOut     | number | number | Symmetric exponential easing; uses `expIn` when `t` is in `[0, 0.5]` and `expOut` when `t` is in `[0.5, 1]`.            |
+| easeQuadIn       | number | number | Quadratic easing; equivalent to `polyIn.exponent(2)`.            |
+| easeQuadOut      | number | number | Reverse quadratic easing; equivalent to `1 - quadIn(1 - t)`. Also equivalent to `polyOut.exponent(2)`.            |
+| easeQuadInOut    | number | number | Symmetric quadratic easing; uses `quadIn` when `t` is in `[0, 0.5]` and `quadOut` when `t` is in `[0.5, 1]`. Also equivalent to `poly.exponent(2)`.            |
+| easePolyIn       | number | number | Polynomial easing; raises `t` to the power of `exponent`. If the exponent is not specified, it defaults to 3, equivalent to `cubicIn`.            |
+| easePolyOut      | number | number | Reverse polynomial easing; equivalent to `1 - polyIn(1 - t)`. If the exponent is not specified, it defaults to 3, equivalent to `cubicOut`.            |
+| easePolyInOut    | number | number | Symmetric polynomial easing; uses `polyIn` when `t` is in `[0, 0.5]` and `polyOut` when `t` is in `[0.5, 1]`. If the exponent is not specified, it defaults to 3, equivalent to `cubic`.            |
+| easeSinIn        | number | number | Sinusoidal easing; returns `sin(t)`.            |
+| easeSinOut       | number | number | Reverse sinusoidal easing; equivalent to `1 - sinIn(1 - t)`.            |
+| easeSinInOut     | number | number | Symmetric sinusoidal easing; uses `sinIn` when `t` is in `[0, 0.5]` and `sinOut` when `t` is in `[0.5, 1]`.            |
+| easeLinear   | number | number | Linear easing. The identity function, `linear(t)` returns `t`.              |
 
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+This project has been verified in the following version:
 
-DevEco Studio 版本： 4.1 Canary(4.1.3.500), OpenHarmony SDK: API11 (4.1.3.1)
+DevEco Studio: 4.1 Canary(4.1.3.500), OpenHarmony SDK: API11 (4.1.3.1)
 
-## 目录结构
+## Directory Structure
 
 ```javascript
 |---- animationFunction  
-|     |---- entry  # 示例代码文件夹
-|     |---- README.MD  # 安装使用方法                   
+|     |---- entry  # Sample code
+|     |---- README.MD  # Readme                  
 ```
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem during the use, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-本项目基于 [BSD 3-Clause License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/d3JsEasingDemo/LICENSE)，请自由地享受和参与开源。
+This project is licensed under [BSD 3-Clause License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/d3JsEasingDemo/LICENSE).

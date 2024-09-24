@@ -9,6 +9,34 @@
       "value": "description"
     },
     {
+      "name": "Test_the_many_interfaces",
+      "value": "Test the every interfaces"
+    },
+    {
+      "name": "Test_the_DO_interface",
+      "value": "Test the DO interface"
+    },
+    {
+      "name": "Callbacks_every_second",
+      "value": "Callbacks every second"
+    },
+    {
+      "name": "The_do_interface_callback_called_section",
+      "value": "The do interface callback is called in section"
+    },
+    {
+      "name": "times",
+      "value": "times"
+    },
+    {
+      "name": "Test_the_stop_interface",
+      "value": "Test the stop interface"
+    },
+    {
+      "name": "The_do_interface_has_stopped",
+      "value": "The do interface has been stopped"
+    },
+    {
       "name": "EntryAbility_label",
       "value": "label"
     }

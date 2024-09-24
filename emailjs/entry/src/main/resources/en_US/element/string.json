@@ -10,7 +10,7 @@
     },
     {
       "name": "EntryAbility_label",
-      "value": "label"
+      "value": "emailjs"
     },
     {
       "name": "Reason_Internet",
@@ -19,6 +19,250 @@
     {
       "name": "Reason_File",
       "value": "Operate file in application file system"
+    },
+    {
+      "name": "Please_enter_email_type",
+      "value": "Please enter email type"
+    },
+    {
+      "name": "Tips_Please_enter_the_email_type_in_the_correct_format_such_as_email",
+      "value": "Tips:Please enter the email type in the correct format, such as @qq.com or @163.com"
+    },
+    {
+      "name": "Cancel",
+      "value": "Cancel"
+    },
+    {
+      "name": "Confirm",
+      "value": "Confirm"
+    },
+    {
+      "name": "The_dialog_box_has_been_closed_and_the_option_to_enter_a_different_type_of_email_has_been_unselected",
+      "value": "The dialog box has been closed, and the option to enter a different type of email has been unselected"
+    },
+    {
+      "name": "Email_type_cannot_be_empty",
+      "value": "Email type cannot be empty"
+    },
+    {
+      "name": "Email_type_must_contain_one_and_can_only_contain_one",
+      "value": "Email type must contain one @ and can only contain one @"
+    },
+    {
+      "name": "The_email_type_must_contain_a_And_it_can_only_contain_one",
+      "value": "The email type must contain a, And it can only contain one"
+    },
+    {
+      "name": "In_email_types_needs_to_be_before_such_as_mail",
+      "value": "In email types, @ needs to be before., such as @qq.com, @163.com, etc"
+    },
+    {
+      "name": "Except_for_and_in_email_types_Must_contain_other_characters",
+      "value": "Except for @ and. in email types, Must contain other characters"
+    },
+    {
+      "name": "must_be_first_in_the_email_type",
+      "value": "@ must be first in the email type"
+    },
+    {
+      "name": "Enter_other_types_of_email_addresses",
+      "value": "Enter other types of email addresses"
+    },
+    {
+      "name": "test",
+      "value": "test"
+    },
+    {
+      "name": "other",
+      "value": "other"
+    },
+    {
+      "name": "Click_on_the_email_after_the_account_to_switch_email_types",
+      "value": "Click on the email after the account to switch email types"
+    },
+    {
+      "name": "Account",
+      "value": "Account："
+    },
+    {
+      "name": "Please_enter_your_account",
+      "value": "Please enter your account"
+    },
+    {
+      "name": "Password_Authorization_Code",
+      "value": "Password/Authorization Code："
+    },
+    {
+      "name": "Please_enter_password_Authorization_code",
+      "value": "Please enter password/Authorization code"
+    },
+    {
+      "name": "Do_you_want_to_enable_SSL_TLS_tip",
+      "value": "Do you want to enable SSL/TLS (currently only supporting SMTP, not SMTPS, this button is temporarily unavailable)"
+    },
+    {
+      "name": "Do_you_want_to_enable_SSL_TLS",
+      "value": "Do you want to enable SSL/TLS"
+    },
+    {
+      "name": "Currently_only_SMTP_support_is_required_no_SMTPS_support_is_needed",
+      "value": "Currently, only SMTP support is required, no SMTPS support is needed"
+    },
+    {
+      "name": "Skip_ordinary_attachments",
+      "value": "Skip ordinary attachments"
+    },
+    {
+      "name": "Jump_to_large_attachments",
+      "value": "Jump to large attachments"
+    },
+    {
+      "name": "Account_login_successful",
+      "value": "Account login successful"
+    },
+    {
+      "name": "Account_login_failed",
+      "value": "Account login failed"
+    },
+    {
+      "name": "Account_already_logged_in_no_need_to_login_again",
+      "value": "Account already logged in, no need to login again"
+    },
+    {
+      "name": "Account_login_error",
+      "value": "Account login error"
+    },
+    {
+      "name": "OH_email_client",
+      "value": "OH email client"
+    },
+    {
+      "name": "This_is_the_OH_testing_topic",
+      "value": "This is the OH testing topic"
+    },
+    {
+      "name": "This_is_the_text_of_the_OpenHarmony_email_for_testing",
+      "value": "This is the text of the OpenHarmony email for testing. The format for the recipient, cc, and confidential cc of the email is: someone<someone@your-email.com>, another<another@your-email.com> Multiple accounts are connected by commas in English."
+    },
+    {
+      "name": "No_attachments_available_at_the_moment",
+      "value": "No attachments available at the moment"
+    },
+    {
+      "name": "Add_information_send_email",
+      "value": "Add information, send email"
+    },
+    {
+      "name": "Please_enter_sender_nickname",
+      "value": "Please enter sender nickname"
+    },
+    {
+      "name": "Recipient",
+      "value": "Recipient："
+    },
+    {
+      "name": "Format",
+      "value": "Format: xx<xx@yxx.com>, xx<xx@yxx.com> Multiple accounts are connected by commas in English."
+    },
+    {
+      "name": "Email_CC",
+      "value": "Email CC："
+    },
+    {
+      "name": "BCC_Blind_Carbon_Copy",
+      "value": "BCC Blind Carbon Copy："
+    },
+    {
+      "name": "Theme",
+      "value": "Theme："
+    },
+    {
+      "name": "Please_enter_the_email_subject",
+      "value": "Please enter the email subject"
+    },
+    {
+      "name": "Body",
+      "value": "Body："
+    },
+    {
+      "name": "Please_enter_the_email_body",
+      "value": "Please enter the email body"
+    },
+    {
+      "name": "Large_attachments_need_to_be_manually_pushed_into_the_device_sandbox",
+      "value": "Large attachments need to be manually pushed into the device sandbox, and only the first one should be selected from multiple large attachments"
+    },
+    {
+      "name": "Add_large_attachment",
+      "value": "Add large attachment"
+    },
+    {
+      "name": "Send_mail",
+      "value": "Send mail"
+    },
+    {
+      "name": "Email_sent_successfully",
+      "value": "Email sent successfully"
+    },
+    {
+      "name": "Account_not_logged_in_please_login_again",
+      "value": "Account not logged in, please login again"
+    },
+    {
+      "name": "Email_sending_error",
+      "value": "Email sending error"
+    },
+    {
+      "name": "Start_detecting_large_attachments_in_the_cache_directory",
+      "value": "Start detecting large attachments in the cache directory"
+    },
+    {
+      "name": "Please_push_in_the_large_attachment_first",
+      "value": "Please push in the large attachment first"
+    },
+    {
+      "name": "Obtain_the_large_attachment",
+      "value": "Obtain the large attachment"
+    },
+    {
+      "name": "Add_attachment",
+      "value": "Add attachment"
+    },
+    {
+      "name": "Attachment_size",
+      "value": "Attachment size"
+    },
+    {
+      "name": "byte",
+      "value": " byte"
+    },
+    {
+      "name": "Start_generating_a_single_local_file",
+      "value": "Start generating a single local file"
+    },
+    {
+      "name": "Please_check_the_information_sent_from_the_client_to_the_server",
+      "value": "Please check the information sent from the client to the server"
+    },
+    {
+      "name": "Successfully_generated_local_single_file",
+      "value": "Successfully generated local single file"
+    },
+    {
+      "name": "Failed_to_generate_local_single_file",
+      "value": "Failed to generate local single file"
+    },
+    {
+      "name": "due_to",
+      "value": "due to"
+    },
+    {
+      "name": "Currently_only_supports_testing_text",
+      "value": "Currently only supports testing text, images, documents, tables, and other types of files waiting for testing to be opened"
+    },
+    {
+      "name": "Failed_to_generate_a_single_local_file",
+      "value": "Failed to generate a single local file:"
     }
   ]
 }

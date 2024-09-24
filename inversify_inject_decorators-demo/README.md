@@ -1,23 +1,24 @@
 # inversify_inject_decorators-demo
 
-### 介绍
-inversify_inject_decorators-demo是一个在OpenHarmony系统上验证inversify-inject-decorators（一个工具库，主要提供了lazyInject之类的方法，除了字面上所说的惰性，另外一个非常重要的功能就是允许将inversifyJs集成到任何自己控制类实例创建的库或者框架，比如react。）能力的代码示例。
+### Overview
+
+inversify_inject_decorators-demo is a utility library that provides methods such as lazyInject on OpenHarmony. In addition to literally lazy, another important function of inversify-inject-decorators is to allow inversifyJs to be integrated into any library or framework created by its own control class instance, such as react.  
 
 
-### 安装教程
+### How to Install
 
 ```shell
 ohpm install inversify-inject-decorators inversify reflect-metadata
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-inversify-inject-decorators库依赖inversify、reflect-metadata两个库
+inversify-inject-decorators depends on the **inversify** and **reflect-metadata** libraries.
 
-### 使用说明
+### How to Use
 
 #### 1.lazyInject
 
-下面的示例演示如何注入到属性中 使用装饰器：@lazyInject
+The following example shows how to inject dependencies in lazy mode.
 ````typescript
 import getDecorators from "inversify-inject-decorators/es/index";
 import { Container, injectable, tagged, named } from "inversify";
@@ -82,7 +83,7 @@ struct LazyInjectPage {
 
 #### 2.lazyInjectNamed
 
-下面的示例演示如何注入到命名属性中 使用装饰器：@lazyInjectNamed
+The following example shows how to inject dependencies based on the name.
 ````typescript
 import getDecorators from "inversify-inject-decorators/es/index";
 import { Container, injectable, tagged, named } from "inversify";
@@ -174,7 +175,7 @@ struct LazyInjectNamedPage {
 
 #### 3.lazyInjectTagged
 
-下面的示例演示如何注入标记的属性 使用装饰器：@lazyInjectTagged
+The following example shows how to inject dependencies based on the tag.
 ````typescript
 import getDecorators from "inversify-inject-decorators/es/index";
 import { Container, injectable, tagged, named } from "inversify";
@@ -266,7 +267,7 @@ struct LazyInjectTaggedPage {
 
 #### 4.lazyMultiInject
 
-以下示例演示如何对属性进行多注入 使用装饰器：@lazyMultiInject
+The following example shows how to inject multiple dependencies.
 ````typescript
 import getDecorators from "inversify-inject-decorators/es/index";
 import { Container, injectable, tagged, named } from "inversify";
@@ -350,40 +351,40 @@ struct LazyMultiInjectPage {
   }
 }
 ````
-单元测试用例详情见[TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/inversify-inject-decorators-demo/TEST.md)
+For details about unit test cases, see [TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/inversify-inject-decorators-demo/TEST.md).
 
-更多使用方式请参考[inversify-inject-decorators](https://github.com/inversify/inversify-inject-decorators)
+For details on how to use inversify-binding-decoratorsDemo, see [inversify-binding-decorators][inversify-inject-decorators](https://github.com/inversify/inversify-inject-decorators).
 
-## 接口说明
+## Available APIs
 
-|          方法名           |                                           接口描述                                            |
+|          Name          |                                           Description                                           |
 |:----------------------:|:-----------------------------------------------------------------------------------------:|
-|      @lazyInject       |           用于在类的属性上声明依赖，而不是在构造函数中。该装饰器会延迟到真正需要时才从 InversifyJS 容器中获取依赖，实现所谓的“懒加载”           |
-|    @lazyInjectNamed    |                                       根据名称来选择要注入的依赖                                       |
-|   @lazyInjectTagged    |                      使用标签（tag）而不是名称来选择要注入的依赖。这允许你根据特定的元数据或标签来区分不同的依赖                      |
+|      @lazyInject       |           Declares dependencies on the attributes of a class, but not in a constructor. This decorator delays acquisition of dependencies from the InversifyJS container until it is really needed, implementing the so-called lazy loading.          |
+|    @lazyInjectNamed    |                                       Selects the dependency to be injected based on the name.                                      |
+|   @lazyInjectTagged    |                      Selects the dependency to be injected based on the tag instead of name. This allows you to distinguish dependencies based on specific metadata or tags.                     |
 
 
-### 约束和限制
+### Constraints
 
-在下述版本验证通过：
+inversify-inject-decorators has been verified in the following version:
 
-DevEco Studio: 4.0 Beta1(4.0.3.400) SDK API10(4.0.9.6)
+DevEco Studio: 4.0 Beta1 (4.0.3.400), SDK: API10 (4.0.9.6)
 
-### 目录结构
+### Directory Structure
 
 ````
 |---- inversify-inject-decorators-demo  
-|     |---- entry  # 示例代码文件夹
-|     |---- ohosTest # 单元测试文件夹
-|     |---- README.MD  # 安装使用方法  
+|     |---- entry  # Sample code
+|     |---- ohosTest # Unit test cases
+|     |---- README.MD  # Readme 
+|     |---- README_zh.MD  # Readme 
 ````
 
-### 贡献代码
+### How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
-给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem when using inversify-inject-decoratorsDemo, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or
+a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
 
-### 开源协议
+### License
 
-本项目基于 [ MIT License ](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/inversify_inject_decorators-demo/LICENSE) ，请自由地享受和参与开源。
-
+This project is licensed under the terms of the [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/inversify_inject_decorators-demo/LICENSE).

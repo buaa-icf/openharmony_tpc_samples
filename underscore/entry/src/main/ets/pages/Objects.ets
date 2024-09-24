@@ -35,7 +35,9 @@ struct Objects {
   @State pairsResult: string = ''
   @State extendResult: string = ''
   @State cloneResult: string = ''
-
+  getResourceString(res: Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
   build() {
     Column() {
       Button('Click', { type: ButtonType.Capsule, stateEffect: true })
@@ -52,7 +54,7 @@ struct Objects {
         })
 
       Column() {
-        Text('数据：{ one: 1, two: 2, three: 3 }')
+        Text(this.getResourceString($r('app.string.data'))+'：{ one: 1, two: 2, three: 3 }')
           .fontSize(20)
           .margin({ bottom: 10 })
         Text('keys: ' + this.keysResult)
@@ -65,14 +67,14 @@ struct Objects {
           .fontSize(25)
           .margin({ bottom: 30 })
 
-        Text('数据：{}, { a: b }')
+        Text(this.getResourceString($r('app.string.data'))+'：{}, { a: b }')
           .fontSize(20)
           .margin({ bottom: 10 })
         Text('extend: ' + this.extendResult)
           .fontSize(25)
           .margin({ bottom: 30 })
 
-        Text('数据：{ name: moe }')
+        Text(this.getResourceString($r('app.string.data'))+'：{ name: moe }')
           .fontSize(20)
           .margin({ bottom: 10 })
         Text('clone: ' + this.cloneResult)
