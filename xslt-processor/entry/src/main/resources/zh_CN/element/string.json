@@ -11,6 +11,70 @@
     {
       "name": "EntryAbility_label",
       "value": "xslt-processor"
+    },
+    {
+      "name": "Please_check_the_input_characters_and_catch_an_exception",
+      "value": "请检查输入字符，捕捉到异常："
+    },
+    {
+      "name": "Special_characters",
+      "value": "xmlParse:特殊字符"
+    },
+    {
+      "name": "The_content_contains_special_characters",
+      "value": "<xml>内容包含特殊字符：<></xml>"
+    },
+    {
+      "name": "XSLT_Process_Special_Characters",
+      "value": "xsltProcess:特殊字符"
+    },
+    {
+      "name": "xpathParse",
+      "value": "xpathParse:特殊字符"
+    },
+    {
+      "name": "The_content_contains",
+      "value": "内容包含特殊字符<>"
+    },
+    {
+      "name": "parse_xml",
+      "value": "解析XML"
+    },
+    {
+      "name": "The_original_XML_root_node_contains",
+      "value": "原始XML根节点内有"
+    },
+    {
+      "name": "Child_nodes",
+      "value": "个子节点"
+    },
+    {
+      "name": "XSLT_Transform_Text",
+      "value": "XSLT 转换 TEXT"
+    },
+    {
+      "name": "XSLT_Transform_HTML",
+      "value": "XSLT 转换 HTML"
+    },
+    {
+      "name": "XSLT_transformation_with_parameters",
+      "value": "XSLT转换带参数"
+    },
+    {
+      "name": "Xpath_calculation_expression_page",
+      "value": "Xpath计算表达式/page"
+    },
+    {
+      "name": "Xpath_calculation_expression_page_location_lat",
+      "value": "Xpath计算表达式/page/location/@lat"
+    },
+    {
+      "name": "The_number_of_page_nodes_in_the_XML_document_is",
+      "value": "XML文档中的page节点数为："
+    },
+    {
+      "name": "The_current_node_attribute_is",
+      "value": "当前节点属性为："
     }
   ]
 }

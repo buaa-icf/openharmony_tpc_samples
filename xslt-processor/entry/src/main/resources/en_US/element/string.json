@@ -11,6 +11,70 @@
     {
       "name": "EntryAbility_label",
       "value": "xslt-processor"
+    },
+    {
+      "name": "Please_check_the_input_characters_and_catch_an_exception",
+      "value": "Please check the input characters and catch an exception:"
+    },
+    {
+      "name": "Special_characters",
+      "value": "XMLParse: Special Characters"
+    },
+    {
+      "name": "The_content_contains_special_characters",
+      "value": "<xml>The content contains special characters:<></xml>"
+    },
+    {
+      "name": "XSLT_Process_Special_Characters",
+      "value": "XSLT Process: Special Characters"
+    },
+    {
+      "name": "xpathParse",
+      "value": "XpathParse: Special Characters"
+    },
+    {
+      "name": "The_content_contains",
+      "value": "The content contains special characters<>"
+    },
+    {
+      "name": "parse_xml",
+      "value": "parse xml"
+    },
+    {
+      "name": "The_original_XML_root_node_contains",
+      "value": "The original XML root node contains"
+    },
+    {
+      "name": "Child_nodes",
+      "value": "Child nodes"
+    },
+    {
+      "name": "XSLT_Transform_Text",
+      "value": "XSLT Transform Text"
+    },
+    {
+      "name": "XSLT_Transform_HTML",
+      "value": "XSLT Transform HTML"
+    },
+    {
+      "name": "XSLT_transformation_with_parameters",
+      "value": "XSLT transformation with parameters"
+    },
+    {
+      "name": "Xpath_calculation_expression_page",
+      "value": "Xpath calculation expression/page"
+    },
+    {
+      "name": "Xpath_calculation_expression_page_location_lat",
+      "value": "Xpath calculation expression/page/location/@ lat"
+    },
+    {
+      "name": "The_number_of_page_nodes_in_the_XML_document_is",
+      "value": "The number of page nodes in the XML document is:"
+    },
+    {
+      "name": "The_current_node_attribute_is",
+      "value": "The current node attribute is:"
     }
   ]
 }
