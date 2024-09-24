@@ -50,7 +50,7 @@ struct Index {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
 
       Row() {
-        TextInput({ placeholder: '获取带音调拼音', text: this.v1t })
+        TextInput({ placeholder: $r('app.string.Get_Pinyin_with_Tone'), text: this.v1t })
           .onChange((value: string) => {
             this.v1t = value;
           })
@@ -63,7 +63,7 @@ struct Index {
       }
 
       Row() {
-        TextInput({ placeholder: '获取不带声调的拼音', text: this.v2t })
+        TextInput({ placeholder: $r('app.string.Obtain_pinyin_without_tones'), text: this.v2t })
           .onChange((value: string) => {
             this.v2t = value;
           })
@@ -76,7 +76,7 @@ struct Index {
       }
 
       Column() {
-        TextInput({ placeholder: '获取声调转换为数字后缀的拼音', text: this.v3t })
+        TextInput({ placeholder: $r('app.string.Obtain_Pinyin_for_converting_tones_to_numerical_suffixes'), text: this.v3t })
           .onChange((value: string) => {
             this.v3t = value;
           })
@@ -92,7 +92,7 @@ struct Index {
       }
 
       Row() {
-        TextInput({ placeholder: '首字母风格一', text: this.v4t })
+        TextInput({ placeholder: $r('app.string.Initial_style_one'), text: this.v4t })
           .onChange((value: string) => {
             this.v4t = value;
           })
@@ -105,7 +105,7 @@ struct Index {
       }
 
       Row() {
-        TextInput({ placeholder: '首字母风格二', text: this.v5t })
+        TextInput({ placeholder: $r('app.string.Initial_style_2'), text: this.v5t })
           .onChange((value: string) => {
             this.v5t = value;
           })
@@ -118,7 +118,7 @@ struct Index {
       }
 
       Row() {
-        TextInput({ placeholder: '不开启姓氏模式', text: this.v6t })
+        TextInput({ placeholder: $r('app.string.Do_not_enable_surname_mode'), text: this.v6t })
           .onChange((value: string) => {
             this.v6t = value;
           })
@@ -131,7 +131,7 @@ struct Index {
       }
 
       Row() {
-        TextInput({ placeholder: '开启姓氏模式', text: this.v7t })
+        TextInput({ placeholder: $r('app.string.Enable_surname_mode'), text: this.v7t })
           .onChange((value: string) => {
             this.v7t = value;
           })
@@ -144,7 +144,7 @@ struct Index {
 
       }
       Row() {
-        TextInput({ placeholder: '数组转符号', text: this.v8t })
+        TextInput({ placeholder: $r('app.string.Array_to_Symbol_Conversion'), text: this.v8t })
           .onChange((value: string) => {
             this.v8t = value;
           })
@@ -158,7 +158,7 @@ struct Index {
       }
 
       Row() {
-        TextInput({ placeholder: '符号转数字', text: this.v9t })
+        TextInput({ placeholder: $r('app.string.Convert_symbols_to_numbers'), text: this.v9t })
           .onChange((value: string) => {
             this.v9t = value;
           })
@@ -172,7 +172,7 @@ struct Index {
       }
 
       Row() {
-        TextInput({ placeholder: '消除符号', text: this.vat })
+        TextInput({ placeholder: $r('app.string.Eliminate_symbols'), text: this.vat })
           .onChange((value: string) => {
             this.vat = value;
           })
@@ -187,13 +187,13 @@ struct Index {
       }
 
       Row() {
-        TextInput({ placeholder: '文字', text: this.vbt })
+        TextInput({ placeholder: $r('app.string.characters'), text: this.vbt })
           .onChange((value: string) => {
             this.vbt = value;
           })
           .width(150)
           .margin(10)
-        TextInput({ placeholder: '拼音', text: this.vct })
+        TextInput({ placeholder: $r('app.string.Pinyin'), text: this.vct })
           .onChange((value: string) => {
             this.vct = value;
           })
@@ -203,21 +203,21 @@ struct Index {
 
       }
       Row(){
-        Text('普通匹配:'+this.vb)
+        Text(this.getResourceString('Normal_Match') + this.vb)
           .fontSize(15)
           .fontWeight(FontWeight.Normal)
           .margin(2)
-        Text('连续匹配:'+this.vd)
+        Text(this.getResourceString('continuous_matching') + this.vd)
           .fontSize(15)
           .fontWeight(FontWeight.Normal)
           .margin(2)
-        Text('空格参与匹配:'+this.ve)
+        Text(this.getResourceString('Space_participation_in_matching') + this.ve)
           .fontSize(15)
           .fontWeight(FontWeight.Normal)
           .margin(2)
       }
       Row() {
-        TextInput({ placeholder: '不使用自定义拼音', text: this.vft })
+        TextInput({ placeholder: this.getResourceString('Do_not_use_custom_pinyin'), text: this.vft })
           .onChange((value: string) => {
             this.vft = value;
           })
@@ -230,7 +230,7 @@ struct Index {
       }
 
       Row() {
-        TextInput({ placeholder: '使用自定义拼音', text: this.vgt })
+        TextInput({ placeholder: this.getResourceString('Use_custom_pinyin'), text: this.vgt })
           .onChange((value: string) => {
             this.vgt = value;
           })
@@ -318,5 +318,9 @@ struct Index {
     }
     .width('100%')
     .height('100%')
+  }
+
+  getResourceString(resourceName:string) {
+    return getContext().resourceManager.getStringByNameSync(resourceName)
   }
 }

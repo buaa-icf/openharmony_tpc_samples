@@ -11,6 +11,74 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Get_Pinyin_with_Tone",
+      "value": "Get Pinyin with Tone"
+    },
+    {
+      "name": "Obtain_pinyin_without_tones",
+      "value": "Obtain pinyin without tones"
+    },
+    {
+      "name": "Obtain_Pinyin_for_converting_tones_to_numerical_suffixes",
+      "value": "Obtain Pinyin for converting tones to numerical suffixes"
+    },
+    {
+      "name": "Initial_style_one",
+      "value": "Initial style one"
+    },
+    {
+      "name": "Initial_style_2",
+      "value": "Initial style 2"
+    },
+    {
+      "name": "Do_not_enable_surname_mode",
+      "value": "Do not enable surname mode"
+    },
+    {
+      "name": "Enable_surname_mode",
+      "value": "Enable surname mode"
+    },
+    {
+      "name": "Array_to_Symbol_Conversion",
+      "value": "Array to Symbol Conversion"
+    },
+    {
+      "name": "Convert_symbols_to_numbers",
+      "value": "Convert symbols to numbers"
+    },
+    {
+      "name": "Eliminate_symbols",
+      "value": "Eliminate symbols"
+    },
+    {
+      "name": "characters",
+      "value": "characters"
+    },
+    {
+      "name": "Pinyin",
+      "value": "Pinyin"
+    },
+    {
+      "name": "Normal_Match",
+      "value": "Normal Match:"
+    },
+    {
+      "name": "continuous_matching",
+      "value": "continuous matching:"
+    },
+    {
+      "name": "Space_participation_in_matching",
+      "value": "Space participation in matching"
+    },
+    {
+      "name": "Do_not_use_custom_pinyin",
+      "value": "Do not use custom pinyin"
+    },
+    {
+      "name": "Use_custom_pinyin",
+      "value": "Use custom pinyin"
     }
   ]
 }
