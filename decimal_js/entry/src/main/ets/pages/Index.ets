@@ -39,7 +39,7 @@ struct Index {
             let x = new Decimal(123.4567);
             this.result = x.toString();
           })
-        Text("结果:"+this.result)
+        Text(this.getResourceString('result') + this.result)
           .fontSize(30)
 
         Text('new Decimal(123.7).add(33)')
@@ -50,7 +50,7 @@ struct Index {
             let x = new Decimal(123.7);
             this.addResult = x.add(33).toString();
           })
-        Text("结果:"+this.addResult)
+        Text(this.getResourceString('result') + this.addResult)
           .fontSize(30)
 
         Text('new Decimal(123.7).div(33)')
@@ -61,11 +61,15 @@ struct Index {
             let x = new Decimal(123.7);
             this.divResult = x.div(33).toString();
           })
-        Text("结果:"+this.divResult)
+        Text(this.getResourceString('result') + this.divResult)
           .fontSize(30)
       }
       .width('100%')
     }
     .height('100%')
+  }
+
+  getResourceString(resourceName:string) {
+    return getContext().resourceManager.getStringByNameSync(resourceName)
   }
 }
