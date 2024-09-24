@@ -17,7 +17,12 @@ import { PresenceRoomType, Smack } from '@ohos/smack'
 @Entry
 @Component
 export struct Setting {
-  private states: string[] = ['空闲', '在线', '离开', '长时间离开', '请勿打扰']
+  private states: string[] = [
+    getContext().resourceManager.getStringByNameSync('GroupMember_String2') ,
+    getContext().resourceManager.getStringByNameSync('GroupMember_String1') ,
+    getContext().resourceManager.getStringByNameSync('GroupMember_String3') ,
+    getContext().resourceManager.getStringByNameSync('GroupMember_String5') ,
+    getContext().resourceManager.getStringByNameSync('GroupMember_String4') ]
   @State select: number = 1
   dialogController: CustomDialogController = new CustomDialogController({
     builder: CustomDialogExample(),
@@ -27,10 +32,10 @@ export struct Setting {
 
   build() {
     Column() {
-      Toolbar({ title: '设置' })
+      Toolbar({ title: 'Setting' })
 
       Column() {
-        Text('修改密码')
+        Text('Change Password')
           .width('100%')
           .padding(px2vp(30))
           .fontSize(px2fp(30))
@@ -40,7 +45,7 @@ export struct Setting {
           })
           .backgroundColor('#ffffff')
 
-        Text('设置状态 （' + this.states[this.select] + '）')
+        Text('Setting State （' + this.states[this.select] + '）')
           .width('100%')
           .padding(px2vp(30))
           .fontSize(px2fp(30))
@@ -64,17 +69,17 @@ export struct Setting {
         Divider().color('#ffe7e7e7')
 
         Flex({ direction: FlexDirection.Row, justifyContent: FlexAlign.Center, alignItems: ItemAlign.Center }) {
-          Button('退出登录')
+          Button('log Out')
             .backgroundColor('red')
             .height(px2vp(80))
             .width('30%')
             .fontSize(px2fp(30))
             .onClick(e => {
               AlertDialog.show({
-                title: '提示',
-                message: '确定退出登录吗？',
+                title: 'TIP',
+                message: 'Are you sure to log out?',
                 confirm: {
-                  value: '确定',
+                  value: 'Yes',
                   action: () => {
                     this.onExitAccount()
                   }
@@ -82,7 +87,7 @@ export struct Setting {
               })
             })
 
-          Button('账号注销')
+          Button('Account cancellation')
             .margin({ left: 20 })
             .backgroundColor('red')
             .height(px2vp(80))
@@ -90,10 +95,10 @@ export struct Setting {
             .width('30%')
             .onClick(e => {
               AlertDialog.show({
-                title: '提示',
-                message: '确定注销账号吗？',
+                title: 'TIP',
+                message: 'Are you sure to cancel your account？',
                 confirm: {
-                  value: '确定',
+                  value: 'Yes',
                   action: () => {
                     this.onDeleteAccount()
                   }
@@ -153,24 +158,24 @@ struct CustomDialogExample {
   private onChangPassword() {
     if (this.pass1 == '' || this.pass2 == '') {
       prompt.showToast({
-        message: "请输入数据"
+        message: "Please Input data"
       })
     } else if (this.pass1 !== this.pass2) {
       prompt.showToast({
-        message: "密码不一致"
+        message: "Password error"
       })
     } else {
       Smack.changPwd(this.pass1)
       prompt.showToast({
-        message: "修改成功"
+        message: "Modified successfully"
       })
-      console.log('密码修改结束');
+      console.log('Password modification completed');
     }
   }
 
   build() {
     Flex({ direction: FlexDirection.Column }) {
-      Text('请输入新密码')
+      Text('Please Input New Password')
         .height(px2vp(80))
         .fontSize(px2fp(30)).padding(px2vp(10))
       TextInput()
@@ -180,7 +185,7 @@ struct CustomDialogExample {
         .onChange(v => {
           this.pass1 = v
         })
-      Text('请再次输入新密码')
+      Text('Please Input New Password Again')
         .height(px2vp(80))
         .fontSize(px2fp(30))
         .padding(px2vp(10))
@@ -191,7 +196,7 @@ struct CustomDialogExample {
         .onChange(v => {
           this.pass2 = v
         })
-      Button('确定')
+      Button('Confirm')
         .height(px2vp(80))
         .fontSize(px2fp(30))
         .onClick(e => {

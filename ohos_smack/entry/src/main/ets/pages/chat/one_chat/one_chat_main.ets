@@ -31,7 +31,7 @@ struct One_chat_main {
   @State chatContentList: Array<ChatContentEntity> = []
   private userName: string = ''
   @State inputMessage: string = ''
-  @State message: string = '请把我加入会议中'
+  @State message: string = 'Join Meeting'
   beInviteDialog: CustomDialogController = new CustomDialogController({
     builder: BeInvitedDialog({ user: users,
       Message: this.message, accept: () => {
@@ -45,7 +45,7 @@ struct One_chat_main {
             })
           } else {
             prompt.showToast({
-              message: '进入房间失败'
+              message: 'Join room fail'
             })
           }
         }, 1000)
@@ -59,7 +59,7 @@ struct One_chat_main {
   })
 
   aboutToAppear() {
-    console.log('解析参数');
+    console.log('Analyze parameters');
     this.userName =(router.getParams() as Record<string, Object>)['userName'] as string
     let that = this
     Smack.registerInvitationListener((v0:string) => {
@@ -78,7 +78,7 @@ struct One_chat_main {
         }, 500)
       } else if (reason == "room inviation refuesd") { // 拒绝邀请
         prompt.showToast({
-          message: '对方拒绝邀请'
+          message: 'Invitation rejected'
         })
       }
     })
@@ -130,15 +130,15 @@ struct One_chat_main {
                       .borderRadius(10)
                   }.width('100%')
                 } else {
-                  Flex({ justifyContent: item.author == '我' ? FlexAlign.End : FlexAlign.Start }) {
+                  Flex({ justifyContent: item.author == getContext().resourceManager.getStringByNameSync('OneChat_Stirng1')  ? FlexAlign.End : FlexAlign.Start }) {
                     Flex({ direction: FlexDirection.Column }) {
-                      Text(item.author == '我' ? '我' : item.author)
+                      Text(item.author == getContext().resourceManager.getStringByNameSync('OneChat_Stirng1')  ? getContext().resourceManager.getStringByNameSync('OneChat_Stirng1')  : item.author)
                         .fontSize(px2fp(25))
                         .padding(5)
-                        .alignSelf(item.author == '我' ? ItemAlign.End : ItemAlign.Start)
+                        .alignSelf(item.author == getContext().resourceManager.getStringByNameSync('OneChat_Stirng1')  ? ItemAlign.End : ItemAlign.Start)
                       if (item.messageType == 1) {
                         Text(item.message)
-                          .backgroundColor(item.author != '我' ? '#ffffff' : '#95ec69')
+                          .backgroundColor(item.author != getContext().resourceManager.getStringByNameSync('OneChat_Stirng1')  ? '#ffffff' : '#95ec69')
                           .padding({ left: 15, top: 10, right: 15, bottom: 10 })
                           .alignSelf(ItemAlign.End)
                           .fontSize(px2fp(30))
@@ -161,7 +161,7 @@ struct One_chat_main {
 
 
         Flex({ direction: FlexDirection.Row, justifyContent: FlexAlign.Center, alignItems: ItemAlign.Center }) {
-          TextInput({ placeholder: '请输入', text: this.inputMessage })
+          TextInput({ placeholder: 'Please Input', text: this.inputMessage })
             .height(px2vp(90))
             .padding({left: 10})
             .fontSize(px2fp(25))
@@ -170,7 +170,7 @@ struct One_chat_main {
             })
             .placeholderFont({size: px2fp(25)})
 
-          Button('发 送')
+          Button('Send')
             .width(150)
             .margin({ left: 8 })
             .height(px2vp(80))
@@ -194,7 +194,7 @@ struct One_chat_main {
   onSendSingleMessage() {
     if (this.inputMessage !== '') {
       Smack.send(this.userName + "@" + Constant.HOST_DOMAIN, this.inputMessage)
-      this.chatContentList.push(new ChatContentEntity('我', this.inputMessage))
+      this.chatContentList.push(new ChatContentEntity(getContext().resourceManager.getStringByNameSync('OneChat_Stirng1') , this.inputMessage))
       this.inputMessage = ''
     }
   }
@@ -223,7 +223,7 @@ struct BeInvitedDialog {
         .width('100%')
         .textAlign(TextAlign.Center)
       Row() {
-        Text("(A)接受")
+        Text("Accept")
           .fontColor(Color.Green)
           .fontSize(16)
           .onClick(v => {
@@ -232,7 +232,7 @@ struct BeInvitedDialog {
           })
           .textAlign(TextAlign.Center)
           .layoutWeight(1)
-        Text("拒绝")
+        Text("reject")
           .fontColor(Color.Red)
           .fontSize(16)
           .onClick(v => {

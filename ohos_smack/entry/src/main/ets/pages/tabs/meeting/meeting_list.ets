@@ -35,14 +35,14 @@ export struct Meeting_list {
   // todo 获取所有会议列表
   getAllMeetings() {
     for (let i = 0; i < 10; i++) {
-      this.meetingsList.push('线上会议名称 ' + (i + 1))
+      this.meetingsList.push('Online Meeting Name ' + (i + 1))
     }
   }
 
   build() {
     Column() {
       Toolbar({
-        title: '会议',
+        title: 'Meeting',
         rightIcon: $r('app.media.add'),
         rightClickCallBack: () => {
           this.dialogController.open()
@@ -78,11 +78,11 @@ struct TextDialog {
 
   build() {
     Flex({ direction: FlexDirection.Column }) {
-      Text('昵称').fontSize(15).padding(10)
+      Text('Name ').fontSize(15).padding(10)
       TextInput()
-      Text('密码').fontSize(15).padding(10)
+      Text('Password').fontSize(15).padding(10)
       TextInput()
-      Button('确 定').onClick(e => {
+      Button('Confirm').onClick(e => {
         this.onJoinInMeeting()
         this.controller.close()
       }).margin({ top: 20 })
@@ -109,7 +109,7 @@ struct CustomDialogExample {
 
   build() {
     Column() {
-      Text('创建会议')
+      Text('Create Meeting')
         .fontSize(16)
         .padding(10)
         .onClick(() => {
@@ -127,7 +127,7 @@ struct CustomDialogExample {
         .width('100%')
         .backgroundColor('#ececec')
 
-      Text('加入会议')
+      Text('Join Meeting')
         .fontSize(16)
         .padding(10)
         .onClick(() => {

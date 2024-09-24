@@ -52,10 +52,10 @@ struct One_chat_setting {
     Flex({ direction: FlexDirection.Column }) {
       Toolbar({
         isBack: true,
-        title: '好友设置',
+        title: getContext().resourceManager.getStringByNameSync('OneChat_Stirng2') ,
       })
 
-      Text('更改好友分组')
+      Text(getContext().resourceManager.getStringByNameSync('OneChat_Stirng3'))
         .padding(15)
         .backgroundColor('#ffffff')
         .fontSize(18)
@@ -63,7 +63,7 @@ struct One_chat_setting {
           this.textDialog.open()
         })
       Line().width('100%').height(1).backgroundColor('#ececec').margin({ left: 20 })
-      Text('邀请到会议').padding(15).fontSize(18).backgroundColor('#ffffff')
+      Text(getContext().resourceManager.getStringByNameSync('OneChat_Stirng4')).padding(15).fontSize(18).backgroundColor('#ffffff')
         .onClick(e => {
           let roomName:string = Smack.username()+ this.RandomStr(3)
           Smack.createOrJoinRoom(roomName, Constant.HOST_DOMAIN, Constant.SERVICE_NAME/*, password?: string*/)
@@ -78,14 +78,14 @@ struct One_chat_setting {
               })
             } else {
               prompt.showToast({
-                message: '创建房间失败'
+                message: 'Create room error'
               })
             }
           }, 800)
         })
       Line().width('100%').height(1).backgroundColor('#ececec').margin({ left: 20 })
       Column() {
-        Button('删 除 好 友')
+        Button('Delete Friends')
           .height(40)
           .fontSize(15)
           .width('50%')
@@ -105,7 +105,7 @@ struct One_chat_setting {
     Smack.delfriend(this.userName + "@" + Constant.HOST_DOMAIN);
 
     prompt.showToast({
-      message: '删除完成'
+      message: 'Delete Success'
     })
 
     router.clear()
@@ -122,7 +122,7 @@ struct TextDialog {
 
   build() {
     Flex({ direction: FlexDirection.Column }) {
-      Text('请输入新的分组名称').fontSize(px2vp(30)).margin({top: 10})
+      Text('Please enter a new group name').fontSize(px2vp(30)).margin({top: 10})
       TextInput()
         .margin({ bottom: 20, top: 10})
         .height(px2vp(80))
@@ -130,7 +130,7 @@ struct TextDialog {
         .onChange(v => {
           this.newGroup = v
         })
-      Button('修 改')
+      Button('Change')
         .height(px2vp(80))
         .fontSize(px2fp(30))
         .onClick(e => {
@@ -149,14 +149,14 @@ struct TextDialog {
   onChangeFriendsGroup() {
     if (this.newGroup == '') {
       prompt.showToast({
-        message: '请输入完整'
+        message: 'Please enter the complete information'
       })
     } else {
       let name: string = (router.getParams() as Record<string, Object>)['userName'] as string
       Smack.changeFriendGroup(name + "@" + Constant.HOST_DOMAIN, this.newGroup);
 
       prompt.showToast({
-        message: '更改完成'
+        message: 'Success'
       })
     }
   }

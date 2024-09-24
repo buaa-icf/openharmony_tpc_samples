@@ -24,25 +24,25 @@ struct Add_friends {
   build() {
     Flex({ direction: FlexDirection.Column }) {
       Toolbar({
-        title: '添加好友',
+        title: 'Add Friends',
         isBack: true
       })
       Flex({ direction: FlexDirection.Column }) {
-        Text('名称').fontSize(30).padding(10)
+        Text('Name').fontSize(30).padding(10)
 
         TextInput({ text: this.name }).height(80)
           .fontSize(30)
           .onChange(value => {
             this.name = value
           })
-        Text('分组').fontSize(30).padding(10)
+        Text('Group Name').fontSize(30).padding(10)
         TextInput({ text: this.group }).height(80)
           .fontSize(30)
           .onChange(value => {
             this.group = value
           })
 
-        Button('添 加')
+        Button('Add')
           .height(80)
           .fontSize(30)
           .onClick(e => {
@@ -59,12 +59,12 @@ struct Add_friends {
   onAddFriends() {
     if (this.name == '' || this.group == '') {
       prompt.showToast({
-        message: '请输入完整'
+        message: 'Please enter the complete information'
       })
     } else {
       Smack.addFriends(this.name + "@" + Constant.HOST_DOMAIN, this.name, this.group)
       prompt.showToast({
-        message: '已发送好友请求'
+        message: 'Friend request sent'
       })
     }
   }

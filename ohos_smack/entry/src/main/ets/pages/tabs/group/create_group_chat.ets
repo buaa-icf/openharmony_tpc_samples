@@ -31,28 +31,28 @@ struct Create_group_chat {
   build() {
     Flex({ direction: FlexDirection.Column }) {
       Toolbar({
-        title: '创建群聊',
+        title: 'Create a group chat',
         isBack: true
       })
       Flex({ direction: FlexDirection.Column }) {
-        Text('群聊名称').fontSize(15).padding(10)
+        Text('Group chat name').fontSize(15).padding(10)
         TextInput().onChange(v => {
           this.inputName = v
         })
-        Button('创 建').onClick(e => {
+        Button('Create').onClick(e => {
           if (this.inputName != '') {
             this.onCreateGroupChat(this.inputName)
           } else {
-            prompt.showToast({ message: "请输入房间名" })
+            prompt.showToast({ message: "Please enter the room name" })
           }
         }).margin({ top: 20 })
-        Button('加入密码房').onClick(e => {
+        Button('Join the password room').onClick(e => {
           if (this.inputName) {
             Smack.createRoom(GlobalContext.getContext().getValue('userName') as string, this.inputName, Constant.HOST_DOMAIN, Constant.SERVICE_NAME);
             this.passWordDialog.open()
           } else {
             prompt.showToast({
-              message: '输入房间名称'
+              message: 'Enter room name'
             })
           }
         }).margin({ top: 20 })
@@ -73,14 +73,14 @@ struct Create_group_chat {
     setTimeout(() => {
       if (Smack.isJoined() == '1') {
         prompt.showToast({
-          message: '房间创建成功'
+          message: 'Room created successfully'
         })
         router.replace({
           url: 'pages/chat/group_chat/group_chat_main'
         })
       } else {
         prompt.showToast({
-          message: '进入房间失败'
+          message: 'Failed to enter the room'
         })
       }
     }, 1200)
@@ -94,11 +94,11 @@ struct PassWordDialog {
 
   build() {
     Flex({ direction: FlexDirection.Column }) {
-      Text('密码').fontSize(15).padding(10)
+      Text('Password').fontSize(15).padding(10)
       TextInput().onChange(v => {
         this.inputStr = v
       })
-      Button('确 定').onClick(e => {
+      Button('Confirm').onClick(e => {
         Smack.setPassword(this.inputStr)
         this.onJoinInMeeting()
         if(this.controller != null)
@@ -129,7 +129,7 @@ struct PassWordDialog {
           })
         } else {
           prompt.showToast({
-            message: '进入房间失败'
+            message: 'Failed to enter the room'
           })
         }
       }, 1000)

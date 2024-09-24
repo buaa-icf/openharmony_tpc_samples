@@ -1,85 +1,85 @@
 ## 2.0.2
 
-- 发布正式版本 2.0.2
+- Release official version 2.0.2
 
 ## 2.0.1
 
-- 发布正式版本 2.0.1
+- Release official version 2.0.1
 
 ## 2.0.1-rc.0
 
-- 修改 XTS appfreeze 问题, 主线程卡死6s导致appfreeze问题，解决方案：使用napi安全函数实现子线程主线程数据传递
-- 1.支持x86编译
+- Modify the XTS app freeze issue, where the main thread freezes for 6 seconds causing the app freeze problem. Solution: Use Napi security functions to implement data transfer between sub threads and the main thread
+- 1.Support x86 compilation
 
 ## 2.0.0
 
-- 1.修改仓库链接地址
-- 2.DevEco Studio 版本： 4.1 Canary(4.1.3.317)
+- 1.Modify the warehouse link address
+- 2.DevEco Studio version: 4.1 Canary (4.1.3.317)
 - 3.OpenHarmony SDK:API11 (4.1.0.36)
-- 4、修改单聊接收消息、邀请加入会议、添加好友闪退问题
-- 5、修改cmakelist编译执行脚本逻辑
-- 6、解决napi群聊以及房间管理相关接口无法收发消息的问题
+- 4.Modify single chat to receive messages, invite to join meetings, add friends, and flash back issues
+- 5.Modify cmakelist compilation and execution script logic
+- 6.Resolve the issue of Napi group chat and room management related interfaces being unable to send and receive messages
 
 ## v2.0.0-rc.0
 
-- 1.适配DevEco Studio 版本：4.0.3.600，OpenHarmony SDK: 4.0.10.11
-- 2.ArkTS新语法适配
+- 1.Compatible with DevEco Studio version 4.0.3.600, OpenHarmony SDK: 4.0.10.11
+- 2.ArkTS new syntax adaptation
 
 ## 1.0.0
 
-- 实现聊天的基本功能 
+- Implement the basic functions of chatting
 
- 1. 注册用户
- 2. 注销用户
- 3. 用户登录
- 4. 用户登出
- 5. 修改密码
- 6. 设置用户状态（空闲、在线、离开等）
- 7. 发送消息
- 8. 接收消息
- 9. 添加好友到指定分组
- 10. 删除好友
- 11. 好友列表
- 12. 更改分组名称
- 13. 更改好友分组
- 14. 创建群聊群组
- 15. 加入群组
- 16. 离开群组
- 17. 发送群组消息
- 18. 设置群组主题
- 19. 销毁群组
- 20. 踢出群组
- 21. 踢出群组并拉进黑名单
- 22. 授予发言权限
- 23. 移除发言权限
- 24. 岗位设置
- 25. 角色设置
- 26. 邀请成员
- 27. 获取全部群组成员
- 28. 过滤群组成员
- 29.  拒绝加入群组
- 30.  创建并加入群组
- 31. 加入密码群组时使用密码
- 32. 获取加入群聊的群组信息
- 33. 获取群组配置
- 34.  设置群聊配置
- 35. 从该聊天室踢出用户群
- 36. 更改聊天室成员的昵称
- 37.  目前是否在多人聊天中
- 38.  返回房间里用户的昵称
- 39. 是否连接
- 40. 用户名称
- 41. 建立连接
- 42. 设置域名或ip
- 43.  输入用户名和密码
- 44. 设置端口号
- 45. 获取密码
- 46. 设置Resource
- 47. 多人从属关系设置
- 48. 多人语音授权
- 49. 多人语音授权撤销
- 50. 多人从属关系设置
- 51. 获取端口号
- 52. 获取ip或域名
- 53. 接受好友添加请求
- 54. 拒绝好友添加请求
+1. Registered User
+2. Cancel user
+3. log in
+4. User logout
+5. Change password
+6. Set user status (idle, online, away, etc.)
+7. Send a message
+8. Receive messages
+9. Add friends to the designated group
+10. Delete friends
+11. Friend List
+12. Change the group name
+13. Change friend group
+14. Create a group chat group
+15. Join the group
+16. Leave the group
+17. Send group messages
+18. Set group theme
+19. Destruction of groups
+20. Kick out the group
+21. Kick out the group and add it to the blacklist
+22. Granting speaking authority
+23. Remove speaking permission
+24. Job Setting
+25. Role setting
+26. Invite members
+27. Get all group members
+28. Filter group members
+29. Refuse to join the group
+30. Create and join a group
+31. Use password when joining password group
+32. Obtain group information for joining the group chat
+33. Obtain group configuration
+34. Set up group chat configuration
+35. Kick out the user group from this chat room
+36. Change the nickname of chat room members
+37. Are you currently chatting with multiple people
+38. Return the nickname of the user in the room
+39. Is it connected
+40. User Name
+41. Establish a connection
+42. Set domain name or IP address
+43. Enter username and password
+44. Set port number
+45. Obtain password
+46. Set Resource
+47. Setting up multiple subordinate relationships
+48. Multi person voice authorization
+49. Revocation of voice authorization for multiple people
+50. Setting up multiple subordinate relationships
+51. Obtain port number
+52. Obtain IP or domain name
+53. Accept friend addition requests
+54. Reject friend addition request

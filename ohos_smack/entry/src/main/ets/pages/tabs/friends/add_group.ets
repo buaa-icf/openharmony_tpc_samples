@@ -23,18 +23,18 @@ struct Add_group {
   build() {
     Flex({ direction: FlexDirection.Column }) {
       Toolbar({
-        title: '创建好友分组',
+        title: 'Create a friend group',
         isBack: true
       })
       Flex({ direction: FlexDirection.Column }) {
-        Text('分组名称').fontSize(30).padding(10)
-        TextInput({ text: this.groupName , placeholder: '请输入'})
+        Text('Group name').fontSize(30).padding(10)
+        TextInput({ text: this.groupName , placeholder: 'Please Input'})
           .height(80)
           .fontSize(30)
           .onChange(v => {
             this.groupName = v
           })
-        Button('创 建')
+        Button('Create')
           .height(80)
           .fontSize(30)
           .onClick(e => {
@@ -51,13 +51,13 @@ struct Add_group {
   onAddGroup() {
     if (this.groupName == '') {
       prompt.showToast({
-        message: '请输入完整'
+        message: 'Please enter the complete information'
       })
     } else {
       Smack.createGroup(this.groupName + '@' + Constant.HOST_IP)
 
       prompt.showToast({
-        message: '已创建'
+        message: 'Success'
       })
     }
   }

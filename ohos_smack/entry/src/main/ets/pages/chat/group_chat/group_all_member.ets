@@ -25,7 +25,7 @@ struct Group_all_member {
   @State roomName: string = ''
   @State memberNumber:number=0
   @State IsBatch: boolean = false
-  @State rightTxt: string = '批量操作'
+  @State rightTxt: string = getContext().resourceManager.getStringByNameSync('Page_String40')
   private ownerList: Array<string> = [];
   private userName: string = '';
 
@@ -122,10 +122,10 @@ struct Group_all_member {
   build() {
     Flex({ direction: FlexDirection.Column }) {
       Toolbar({
-        title: '群成员',
+        title: getContext().resourceManager.getStringByNameSync('GroupAll_String1'),
         isBack: true,
       })
-      Text("管理员")
+      Text(getContext().resourceManager.getStringByNameSync('GroupAll_String2'))
         .width('100%')
         .fontSize(18)
         .alignSelf(ItemAlign.Center)
@@ -144,7 +144,7 @@ struct Group_all_member {
               .onClick(v => {
                 if (!this.isOwner()) {
                   prompt.showToast({
-                    message: '非拥有者不可操作'
+                    message: getContext().resourceManager.getStringByNameSync('GroupAll_String3')
                   })
                   return;
                 }
@@ -159,14 +159,14 @@ struct Group_all_member {
 
       Row() {
 
-        Text("成员 ("+this.memberNumber+")")
+        Text(getContext().resourceManager.getStringByNameSync('GroupAll_String4')+ "("+this.memberNumber+")")
           .width('60%')
           .fontSize(18)
           .alignSelf(ItemAlign.Center)
           .backgroundColor(Color.White)
           .height(40)
           .padding({ left: 20 })
-        Text(this.IsBatch ? "完成" : "批量操作")
+        Text(this.IsBatch ? getContext().resourceManager.getStringByNameSync('GroupAll_String5') : getContext().resourceManager.getStringByNameSync('Page_String40'))
           .height(40)
           .padding({ right: 20 })
           .fontSize(18)
@@ -177,7 +177,7 @@ struct Group_all_member {
           .onClick(v => {
             if (!this.isOprationer()) {
               prompt.showToast({
-                message: '非拥有者和管理员不可操作'
+                message: getContext().resourceManager.getStringByNameSync('GroupAll_String6')
               })
               return;
             }
@@ -215,7 +215,7 @@ struct Group_all_member {
                 .onClick(v => {
                   if (!this.isOprationer()) {
                     prompt.showToast({
-                      message: '非拥有者和管理员不可操作'
+                      message: getContext().resourceManager.getStringByNameSync('GroupAll_String6')
                     })
                     return;
                   }

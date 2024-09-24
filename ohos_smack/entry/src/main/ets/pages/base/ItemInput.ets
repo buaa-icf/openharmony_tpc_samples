@@ -26,7 +26,7 @@ export struct ItemInput {
       Row() {
         Text(this.title).width(this.widthStr).height('100%').fontSize(18)
         if (!this.radio) {
-          TextInput({ text: this.value, placeholder: '请输入' })
+          TextInput({ text: this.value, placeholder: 'Please Input' })
             .type(
                 this.typeStr == "1" ? InputType.Normal : this.typeStr == "2" ? InputType.Password : this.typeStr == "3" ? InputType.Email : InputType.Number
             )

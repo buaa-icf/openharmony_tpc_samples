@@ -11,6 +11,474 @@
     {
       "name": "EntryAbility_label",
       "value": "smack"
+    },
+    {
+      "name": "Index_String1",
+      "value": "欢迎使用"
+    },
+    {
+      "name": "Index_String2",
+      "value": "聊天室"
+    },
+    {
+      "name": "Main_String1",
+      "value": "收到好友添加申请"
+    },
+    {
+      "name": "Main_String2",
+      "value": "好友"
+    },
+    {
+      "name": "Main_String3",
+      "value": "群聊"
+    },
+    {
+      "name": "Main_String4",
+      "value": "设置"
+    },
+    {
+      "name": "Main_String5",
+      "value": "昵称："
+    },
+    {
+      "name": "Main_String6",
+      "value": "分组："
+    },
+    {
+      "name": "Main_String7",
+      "value": "请输入好友分组"
+    },
+    {
+      "name": "Main_String8",
+      "value": "(A)接受"
+    },
+    {
+      "name": "Main_String9",
+      "value": "请输入信息"
+    },
+    {
+      "name": "Main_String10",
+      "value": "拒绝"
+    },
+    {
+      "name": "Page_String1",
+      "value": "群聊消息接收到了"
+    },
+    {
+      "name": "Page_String2",
+      "value": "群聊邀請接收到了"
+    },
+    {
+      "name": "Page_String3",
+      "value": "我在群中的状态变化（踢出、禁止、授予权限等）"
+    },
+    {
+      "name": "Page_String4",
+      "value": "发送单人消息"
+    },
+    {
+      "name": "Page_String5",
+      "value": "发送单人消息"
+    },
+    {
+      "name": "Page_String6",
+      "value": "修改密码"
+    },
+    {
+      "name": "Page_String7",
+      "value": "创建分组"
+    },
+    {
+      "name": "Page_String8",
+      "value": "获取好友列表"
+    },
+    {
+      "name": "Page_String9",
+      "value": "添加好友"
+    },
+    {
+      "name": "Page_String10",
+      "value": "删除好友"
+    },
+    {
+      "name": "Page_String11",
+      "value": "修改登录状态"
+    },
+    {
+      "name": "Page_String12",
+      "value": "修改登录状态"
+    },
+    {
+      "name": "Page_String13",
+      "value": "修改好友分组名称"
+    },
+    {
+      "name": "Page_String14",
+      "value": "创建群组"
+    },
+    {
+      "name": "Page_String15",
+      "value": "加入群组"
+    },
+    {
+      "name": "Page_String16",
+      "value": "离开群组"
+    },
+    {
+      "name": "Page_String17",
+      "value": "发送群组消息"
+    },
+    {
+      "name": "Page_String18",
+      "value": "设置群组主题"
+    },
+    {
+      "name": "Page_String19",
+      "value": "销毁群组"
+    },
+    {
+      "name": "Page_String20",
+      "value": "踢出群组"
+    },
+    {
+      "name": "Page_String21",
+      "value": "踢出群组并拉进黑名单"
+    },
+    {
+      "name": "Page_String22",
+      "value": "授予发言权限"
+    },
+    {
+      "name": "Page_String23",
+      "value": "移除发言权限"
+    },
+    {
+      "name": "Page_String24",
+      "value": "岗位设置"
+    },
+    {
+      "name": "Page_String25",
+      "value": "角色设置 RoleModerator"
+    },
+    {
+      "name": "Page_String26",
+      "value": "更改登录状态 Away"
+    },
+    {
+      "name": "Page_String27",
+      "value": "邀请成员"
+    },
+    {
+      "name": "Page_String28",
+      "value": "获取全部群聊成员"
+    },
+    {
+      "name": "Page_String29",
+      "value": "过滤群聊成员"
+    },
+    {
+      "name": "Page_String30",
+      "value": "拒绝加入群聊"
+    },
+    {
+      "name": "Page_String31",
+      "value": "创建并加入房间"
+    },
+    {
+      "name": "Page_String32",
+      "value": "房间设置密码"
+    },
+    {
+      "name": "Page_String33",
+      "value": "设置群聊配置"
+    },
+    {
+      "name": "Page_String34",
+      "value": "从该聊天室踢出用户群"
+    },
+    {
+      "name": "Page_String35",
+      "value": "更改聊天室成员的昵称"
+    },
+    {
+      "name": "Page_String36",
+      "value": "目前是否在多人聊天中"
+    },
+    {
+      "name": "Page_String37",
+      "value": "返回房间里用户的昵称"
+    },
+    {
+      "name": "Page_String38",
+      "value": "是否连接"
+    },
+    {
+      "name": "Page_String39",
+      "value": "用户名称"
+    },
+    {
+      "name": "Page_String40",
+      "value": "批量操作"
+    },
+    {
+      "name": "GroupAll_String1",
+      "value": "群成员"
+    },
+    {
+      "name": "GroupAll_String2",
+      "value": "管理员"
+    },
+    {
+      "name": "GroupAll_String3",
+      "value": "非拥有者不可操作"
+    },
+    {
+      "name": "GroupAll_String4",
+      "value": "成员"
+    },
+    {
+      "name": "GroupAll_String5",
+      "value": "完成"
+    },
+    {
+      "name": "GroupAll_String6",
+      "value": "非拥有者和管理员不可操作"
+    },
+    {
+      "name": "GroupChat_String1",
+      "value": "任何人"
+    },
+    {
+      "name": "GroupChat_String2",
+      "value": "审核者"
+    },
+    {
+      "name": "GroupChat_String3",
+      "value": "参与者"
+    },
+    {
+      "name": "GroupChat_String4",
+      "value": "房间配置"
+    },
+    {
+      "name": "GroupChat_String5",
+      "value": "保存"
+    },
+    {
+      "name": "GroupChat_String6",
+      "value": "房间名称"
+    },
+    {
+      "name": "GroupChat_String7",
+      "value": "房间描述"
+    },
+    {
+      "name": "GroupChat_String8",
+      "value": "房间最大人数"
+    },
+    {
+      "name": "GroupChat_String9",
+      "value": "密码"
+    },
+    {
+      "name": "GroupChat_String10",
+      "value": "能够发现成员真实 JID 的角色"
+    },
+    {
+      "name": "GroupChat_String11",
+      "value": "房间管理员"
+    },
+    {
+      "name": "GroupChat_String12",
+      "value": "房间拥有者"
+    },
+    {
+      "name": "GroupChat_String13",
+      "value": "广播其存在的角色"
+    },
+    {
+      "name": "GroupChat_String14",
+      "value": "在目录中列出房间"
+    },
+    {
+      "name": "GroupChat_String15",
+      "value": "永久房间"
+    },
+    {
+      "name": "GroupChat_String16",
+      "value": "房间仅对成员开放"
+    },
+    {
+      "name": "GroupChat_String17",
+      "value": "房间需要审核"
+    },
+    {
+      "name": "GroupChat_String18",
+      "value": "允许成员邀请其他人进群"
+    },
+    {
+      "name": "GroupChat_String19",
+      "value": "允许成员更改主题"
+    },
+    {
+      "name": "GroupChat_String20",
+      "value": "仅允许注册昵称登陆"
+    },
+    {
+      "name": "GroupChat_String21",
+      "value": "允许成员修改昵称"
+    },
+    {
+      "name": "GroupChat_String22",
+      "value": "允许成员注册房间"
+    },
+    {
+      "name": "GroupChat_String23",
+      "value": "记录房间聊天"
+    },
+    {
+      "name": "GroupChat_String24",
+      "value": "被踢出了群聊"
+    },
+    {
+      "name": "GroupChat_String25",
+      "value": "被群聊屏蔽了"
+    },
+    {
+      "name": "GroupChat_String26",
+      "value": "查看所有群成员"
+    },
+    {
+      "name": "GroupChat_String27",
+      "value": "编辑房间配置（仅房间拥有者可执行）"
+    },
+    {
+      "name": "GroupChat_String28",
+      "value": "修改房间主题(打开设置的情况下非访客都可执行)"
+    },
+    {
+      "name": "GroupMember_String1",
+      "value": "在线"
+    },
+    {
+      "name": "GroupMember_String2",
+      "value": "空闲"
+    },
+    {
+      "name": "GroupMember_String3",
+      "value": "离开"
+    },
+    {
+      "name": "GroupMember_String4",
+      "value": "请勿打扰"
+    },
+    {
+      "name": "GroupMember_String5",
+      "value": "长时间离开"
+    },
+    {
+      "name": "GroupMember_String6",
+      "value": "离线"
+    },
+    {
+      "name": "GroupMember_String7",
+      "value": "撤销设为主持人"
+    },
+    {
+      "name": "GroupMember_String8",
+      "value": "设为主持人"
+    },
+    {
+      "name": "GroupMember_String9",
+      "value": "设置用户状态"
+    },
+    {
+      "name": "GroupMember_String10",
+      "value": "撤销管理员身份"
+    },
+    {
+      "name": "GroupMember_String11",
+      "value": "设置为群管理员"
+    },
+    {
+      "name": "GroupMember_String12",
+      "value": "取消会员身份"
+    },
+    {
+      "name": "GroupMember_String13",
+      "value": "设为会员"
+    },
+    {
+      "name": "GroupMember_String14",
+      "value": "撤销设为群主"
+    },
+    {
+      "name": "GroupMember_String15",
+      "value": "设为群主"
+    },
+    {
+      "name": "GroupMember_String16",
+      "value": "取消禁言"
+    },
+    {
+      "name": "GroupMember_String17",
+      "value": "禁言"
+    },
+    {
+      "name": "OneChat_Stirng1",
+      "value": "我"
+    },
+    {
+      "name": "OneChat_Stirng2",
+      "value": "好友设置"
+    },
+    {
+      "name": "OneChat_Stirng3",
+      "value": "更改好友分组"
+    },
+    {
+      "name": "OneChat_Stirng4",
+      "value": "邀请到会议"
+    },
+    {
+      "name": "Login_String1",
+      "value": "登录"
+    },
+    {
+      "name": "Login_String2",
+      "value": "请输入用户名"
+    },
+    {
+      "name": "Login_String3",
+      "value": "请输入密码"
+    },
+    {
+      "name": "Login_String4",
+      "value": "连接服务"
+    },
+    {
+      "name": "Login_String5",
+      "value": "注 册"
+    },
+    {
+      "name": "Login_String6",
+      "value": "请输入用户名"
+    },
+    {
+      "name": "Login_String7",
+      "value": "请输入登陆密码"
+    },
+    {
+      "name": "Login_String8",
+      "value": "请输入完整信息"
+    },
+    {
+      "name": "Search_String1",
+      "value": "搜索"
+    },
+    {
+      "name": "Search_String2",
+      "value": "搜索之后的结果"
     }
   ]
 }

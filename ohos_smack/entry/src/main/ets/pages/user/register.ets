@@ -24,10 +24,10 @@ struct Register {
 
   build() {
     Column() {
-      Toolbar({ title: '注册', isBack: true })
+      Toolbar({ title: getContext().resourceManager.getStringByNameSync('Login_String5'), isBack: true })
       Column() {
         Column() {
-          TextInput({ placeholder: '请输入用户名' })
+          TextInput({ placeholder: getContext().resourceManager.getStringByNameSync('Login_String6') })
             .margin({ bottom: 20 })
             .height(px2vp(100))
             .fontSize(px2fp(30))
@@ -35,7 +35,7 @@ struct Register {
             .onChange(v => {
               this.userName = v
             })
-          TextInput({ placeholder: '请输入密码' })
+          TextInput({ placeholder:getContext().resourceManager.getStringByNameSync('Login_String7') })
             .margin({ bottom: 20 })
             .height(px2vp(100))
             .fontSize(px2fp(30))
@@ -44,7 +44,7 @@ struct Register {
               this.passWord = v
             })
 
-          Button('注 册')
+          Button(getContext().resourceManager.getStringByNameSync('Login_String5'))
             .width('100%')
             .margin({ top: 25 })
             .height(px2vp(80))
@@ -66,7 +66,7 @@ struct Register {
   private onRegister() {
     if (this.userName == '' || this.passWord == '') {
       prompt.showToast({
-        message: '请输入完整信息'
+        message: getContext().resourceManager.getStringByNameSync('Login_String8')
       })
     } else {
       Smack.registers(Constant.HOST_IP, this.userName, this.passWord,(result: number)=>{

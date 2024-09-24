@@ -80,34 +80,34 @@ struct Group_chat_setting {
     Flex({ direction: FlexDirection.Column }) {
       Toolbar({
         isBack: true,
-        title: '群聊设置',
+        title: 'Setting',
       })
-      ItemText({title:"查看所有群成员",clickEvent:()=>{
+      ItemText({title:getContext().resourceManager.getStringByNameSync('GroupChat_String26') ,clickEvent:()=>{
         router.push({
           url: 'pages/chat/group_chat/group_all_member'
         })
       }})
-      ItemText({title:"编辑房间配置（仅房间拥有者可执行）",clickEvent:()=>{
+      ItemText({title:getContext().resourceManager.getStringByNameSync('GroupChat_String27'),clickEvent:()=>{
         if (this.isRoomOwner()) {
           router.push({
             url: 'pages/chat/group_chat/group_chat_edit'
           })
         } else {
           prompt.showToast({
-            message: '不是房间拥有者不能执行操作'
+            message: 'operation failed'
           })
         }
       }})
       // ItemText({title:"邀请新用户",clickEvent:()=>{
       //   this.InviteDialog.open()
       // }})
-      ItemText({title:"修改房间主题(打开设置的情况下非访客都可执行)",clickEvent:()=>{
+      ItemText({title:getContext().resourceManager.getStringByNameSync('GroupChat_String28'),clickEvent:()=>{
         this.updateThemeDialog.open()
       }})
 
       Column() {
         Row(){
-          Text("我在群聊中的昵称")
+          Text("Name in Group")
             .fontSize(15)
             .width('60%')
             .height(50)
@@ -131,7 +131,7 @@ struct Group_chat_setting {
       .width('100%').backgroundColor(Color.White)
 
 
-      Button('销 毁 群 聊（仅房间创建者可执行）').backgroundColor('red').margin({ top: 30 })
+      Button('Destroy group chat').backgroundColor('red').margin({ top: 30 })
         .onClick(e => {
           this.onExitGroup()
         })
@@ -159,14 +159,14 @@ struct UpdateThemeDialog {
   private onChangTheme() {
     if (this.theme == '') {
       prompt.showToast({
-        message: "请输入新的群聊主题"
+        message: "Input New Group Chat"
       })
     }
   }
 
   build() {
     Flex({ direction: FlexDirection.Column }) {
-      Text('请输入群聊主题')
+      Text('Input Group Chat')
         .height(40)
         .fontSize(15).padding(10)
       TextInput()
@@ -176,7 +176,7 @@ struct UpdateThemeDialog {
           this.theme = v
         })
 
-      Button('确定')
+      Button('Confirm')
         .height(40)
         .fontSize(15)
         .onClick(e => {
@@ -204,14 +204,14 @@ struct UpdateNickDialog {
   private onChangTheme() {
     if (this.nickStr == '') {
       prompt.showToast({
-        message: "请输入新的群内昵称"
+        message: "Input New Name in Group"
       })
     }
   }
 
   build() {
     Flex({ direction: FlexDirection.Column }) {
-      Text('请输入群内昵称')
+      Text('Input Name in Group')
         .height(40)
         .fontSize(15).padding(10)
       TextInput({})
@@ -221,7 +221,7 @@ struct UpdateNickDialog {
           this.nickStr = v
         })
 
-      Button('确定')
+      Button('Confirm')
         .height(40)
         .fontSize(15)
         .onClick(e => {
@@ -247,14 +247,14 @@ struct InviteDialog {
   private onChangTheme() {
     if (this.invite == '') {
       prompt.showToast({
-        message: "请输入被邀请用户名"
+        message: "Please enter the invited username"
       })
     }
   }
 
   build() {
     Flex({ direction: FlexDirection.Column }) {
-      Text('请输入被邀请用户名')
+      Text('Please enter the invited username')
         .height(40)
         .fontSize(15).padding(10)
       TextInput()
@@ -264,7 +264,7 @@ struct InviteDialog {
           this.invite = v
         })
 
-      Button('确定')
+      Button('Confirm')
         .height(40)
         .fontSize(15)
         .onClick(e => {
