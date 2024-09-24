@@ -1,3 +1,3 @@
 ## 2.1.0
 
-1. 一个小型（小于1k）事件发射器库
+1. A small (less than 1k) event emitter library

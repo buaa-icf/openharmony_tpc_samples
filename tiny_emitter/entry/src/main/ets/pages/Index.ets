@@ -44,7 +44,7 @@ struct Index {
             mEmitter.emit('some-event', 'arg1 value', 'arg2 value', 'arg3 value');
             console.log('test page click result:'+this.result)
           })
-        Text('结果: ' + this.result)
+        Text('Result: ' + this.result)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
           .margin({ top: 10 })
@@ -60,7 +60,7 @@ struct Index {
             emitter.emit('some-event', 'arg1 value', 'arg2 value', 'arg3 value');
             console.log('test page click result:'+this.result1)
           })
-        Text('结果: ' + this.result1)
+        Text('Result: ' + this.result1)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
           .margin({ top: 10 })
