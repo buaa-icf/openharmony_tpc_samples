@@ -1,29 +1,29 @@
 # ohos_ntp
 
 
-## 简介
+## Introduction
 
-> ohos_ntp是一个用于网络时间协议(NTP)服务器同步事件的TypeScript库。它允许你的应用程序通过与NTP服务器通信来获取准确的事件信息，以确保你的设备具有准确的系统时钟，或确保能获取到准确时间信息用来调试。
+> ohos_ntp is a TypeScript library for Network Time Protocol (NTP) server synchronization events. It allows your application to obtain accurate event information by communicating with the NTP server to ensure that your device has an accurate system clock or can obtain accurate time information for debugging.
 >
-> ![GIF](./img/ntpGIF.gif)
+> ![GIF](./img/ntpGIF_EN.gif)
 
-## 下载安装
+## How to Install
 
 ```shell
 ohpm install @ohos/ntp
 ```
 
-OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 
-1、引入依赖
+1. Import the dependency.
 
  ``` 
  import { getNetworkTime, NTPConfig } from '@ohos/ntp';
  ```
 
-2、在module.json5中添加权限
+2. Add permissions in the **module.json5** file.
 
  ```
  "requestPermissions": [
@@ -33,13 +33,13 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
  ]
  ```
 
-3、在事件或钩子函数中创建NTPClient实例化对象，调用getNetworkTime方法，不传参为默认值
+3. Create an NTPClient instance object in the event or hook function, call **getNetworkTime**, and use the default value if no parameter is transferred.
 
  ```
 const ntpConfig: NTPConfig = {
-    server: ntp.aliyun.com(NTP服务器),
-	port: 123(远端端口号),
-	delayTime: 3000(等待响应时长(ms))
+    server: ntp.aliyun.com (NTP server)
+	port: 123 (remote port number)
+	delayTime: 3000 (response waiting duration (ms))
 }
  
 getNetworkTime(ntpConfig)
@@ -51,36 +51,37 @@ getNetworkTime(ntpConfig)
 })
  ```
 
-## 接口说明
+## Available APIs
 
-| 接口名         | 参数                               | 返回值          | 说明        |
+| API        | Parameter                              | Return Value         | Description       |
 | -------------- | ---------------------------------- | --------------- | ----------- |
-| getNetworkTime | {server,port,delayTime}:NTPConfig | Promise< Date > | 获取NTP时间 |
+| getNetworkTime | {server,port,delayTime}:NTPConfig | Promise< Date > | Time to obtain NTP info|
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+This project has been verified in the following version:
 
-- DevEco Studio版本: 4.1.3.500, SDK: API11 Release(4.1.0)
+- DevEco Studio: 4.1.3.500; SDK: API11 Release (4.1.0)
 
-## 目录结构
+## Directory Structure
 
 ````
 |---- ntpclient
-|     |---- entry  # 示例代码文件夹
-|     |---- library  # ntp库文件夹
+|     |---- entry  # Sample code
+|     |---- library  # NTP library
 |         |---- src
 |             |---- main
 |                  |---- ets
 |                       |---- index.ts  #ntp
-|         |---- index.ts  # 对外接口
-|     |---- README.md  # 安装使用方法                    
+|         |---- index.ts  # External APIs
+|     |---- README.md  # Readme
+|     |---- README_zh.md  # Readme                   
 ````
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls)。
+If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
 
-## 开源协议
+## License
 
-本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_ntp/LICENSE) ，请自由地享受和参与开源。
+This project is licensed under [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_ntp/LICENSE).
