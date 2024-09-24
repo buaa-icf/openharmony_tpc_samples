@@ -63,7 +63,9 @@ struct InputInfoPage {
     field7: 703.1215926,
     field8: 803.1415926
   }
-
+  getResourceString(res:Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
   build() {
     Row() {
       Column() {
@@ -102,7 +104,7 @@ struct InputInfoPage {
 
         Scroll() {
           Column() {
-            Button('填充默认proto info')
+            Button(this.getResourceString($r('app.string.Fill_default'))+'proto info')
               .onClick(() => {
                 this.protoInfo = this.defaultUserProto;
               }).alignSelf(ItemAlign.Start)
@@ -116,7 +118,7 @@ struct InputInfoPage {
                 this.protoInfo = value;
               })
 
-            Button('填充默认proto path')
+            Button(this.getResourceString($r('app.string.Fill_default'))+'proto path')
               .onClick(() => {
                 this.protoPath = this.defaultUserPath;
               }).alignSelf(ItemAlign.Start)
@@ -130,7 +132,7 @@ struct InputInfoPage {
                 this.protoPath = value;
               })
 
-            Button('填充默认proto data')
+            Button(this.getResourceString($r('app.string.Fill_default'))+'proto data')
               .onClick(() => {
                 this.protoData = JSON.stringify(this.defaultUserData);
               }).alignSelf(ItemAlign.Start)
