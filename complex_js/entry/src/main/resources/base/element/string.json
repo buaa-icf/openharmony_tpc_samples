@@ -11,6 +11,10 @@
     {
       "name": "EntryAbility_label",
       "value": "complex_js"
+    },
+    {
+      "name": "result",
+      "value": "result:"
     }
   ]
 }
