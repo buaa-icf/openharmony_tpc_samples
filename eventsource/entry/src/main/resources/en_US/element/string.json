@@ -11,6 +11,22 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Establish_connection",
+      "value": "Establish connection"
+    },
+    {
+      "name": "Start_Listening",
+      "value": "Start Listening"
+    },
+    {
+      "name": "Listening_cancelled",
+      "value": "Listening cancelled"
+    },
+    {
+      "name": "Disconnect",
+      "value": "Disconnect"
     }
   ]
 }

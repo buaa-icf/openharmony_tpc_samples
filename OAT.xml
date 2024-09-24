@@ -206,6 +206,7 @@
                 <filteritem type="filename" name="*.zip" desc="工程配置文件"/>
                 <filteritem type="filename" name="*.PNG" desc="PNG图片格式文件，用于展示示例"/>
                 <filteritem type="filename" name="*.epub" desc="工程配置文件"/>
+                <filteritem type="filepath" name="*eventsource/img/GIF_EN.gif" desc="gif图片格式文件，用于展示示例"/>
                 <filteritem type="filepath" name="*eventsource/img/GIF.gif" desc="gif图片格式文件，用于展示示例"/>
                 <filteritem type="filepath" name="unrar/entry/src/main/resources/base/media/.*.png" desc="测试用途的小图片，亦不会变化"/>
 				<filteritem type="filepath" name="pakoDemo/entry/src/ohosTest/resources/base/media/.*" desc="第三方开源软件资源文件，不进行侵入式修改，只用于单元测试文件，忽略"/>
