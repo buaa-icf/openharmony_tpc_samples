@@ -31,7 +31,9 @@ async function routePage(index: number) {
 @Component
 struct Index {
   @State message: string = 'Hello World'
-  private arrStr: string[] = JumpPathConfig.getText();
+  private arrStr: Resource[] =
+    [$r("app.string.AvPlayer"), $r("app.string.IjkPlayer"), $r("app.string.Example_of_custom_cache"),
+      $r("app.string.quantity_strategy"), $r("app.string.injector"), $r("app.string.conventions")]
   private arrIndex: number[] = JumpPathConfig.getIndex();
 
   build() {

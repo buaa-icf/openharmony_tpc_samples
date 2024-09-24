@@ -25,7 +25,7 @@ import {
   OnVideoSizeChangedListener
 } from '@ohos/ijkplayer';
 import { PlayStatus } from '../PlayStatus';
-import prompt from '@ohos.prompt';
+import prompt from '@ohos.promptAction';
 import { CommonConstants } from '../CommonConstants';
 import { CacheListener, HttpProxyCacheServer, HttpProxyCacheServerBuilder } from '@ohos/video-cache';
 import GlobalProxyServer from '../GlobalProxyServer';
@@ -102,7 +102,7 @@ struct IjkVideoPlayerPage {
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Auto, justifyContent: FlexAlign.Start }) {
       Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
-        Text("ijkplayer播放器")
+        Text($r("app.string.Ijkplayer_player"))
           .fontSize('30px')
           .fontColor(Color.White)
           .margin('10px')
@@ -176,14 +176,14 @@ struct IjkVideoPlayerPage {
       }
 
       Flex({ direction: FlexDirection.Row, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Start }) {
-        Button('播放')
+        Button($r("app.string.play"))
           .onClick(() => {
             this.startPlayOrResumePlay();
           })
           .width('400px')
           .height('80px')
           .margin('15px')
-        Button('暂停')
+        Button($r("app.string.suspend"))
           .onClick(() => {
             this.pause();
           })
@@ -193,7 +193,7 @@ struct IjkVideoPlayerPage {
       }
 
       Flex({ direction: FlexDirection.Row, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Start }) {
-        Button('停止')
+        Button($r("app.string.cease"))
           .onClick(() => {
             this.stop();
           })
@@ -201,7 +201,7 @@ struct IjkVideoPlayerPage {
           .height('80px')
           .margin('15px')
 
-        Button('切换')
+        Button($r("app.string.switch"))
           .onClick(() => {
             this.playNext();
           })
@@ -211,7 +211,7 @@ struct IjkVideoPlayerPage {
       }
 
       Flex({ direction: FlexDirection.Row, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Start }) {
-        Button('1.5倍速')
+        Button($r("app.string.times_speed"))
           .onClick(() => {
             this.playSpeed = '1.5f'
             this.stop();
@@ -221,7 +221,7 @@ struct IjkVideoPlayerPage {
           .height('80px')
           .margin('15px')
 
-        Button('2 倍速')
+        Button($r("app.string.times_speed2"))
           .onClick(() => {
             this.playSpeed = '2f'
             this.stop();
@@ -233,7 +233,7 @@ struct IjkVideoPlayerPage {
       }
 
       Flex({ direction: FlexDirection.Row, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Start }) {
-        Text('当前缓存进度：').fontSize(15).width('15%').textAlign(TextAlign.Center)
+        Text($r("app.string.Current_cache_progress")).fontSize(15).width('15%').textAlign(TextAlign.Center)
         Progress({ value: 0, total: 100, type: ProgressType.Linear })
           .color(Color.Red)
           .backgroundColor(Color.Gray)
@@ -437,7 +437,7 @@ struct IjkVideoPlayerPage {
         LogUtils.getInstance().LOGI("OnErrorListener-->go:" + what + "===" + extra)
         that.hideLoadIng();
         prompt.showToast({
-          message: "亲，视频播放异常，系统开小差咯"
+          message: $r("app.string.Dear")
         });
       }
     }
