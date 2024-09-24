@@ -26,14 +26,18 @@ import * as qs from 'querystringify'
 @Component
 struct Index {
 
+  private getResourceStr(data:Resource):string{
+    return getContext().resourceManager.getStringSync(data)
+  }
+
   build() {
     Row() {
       Column() {
-        Text('parse: 输入 ?foo=bar \n\t\t\t\t输出:' + JSON.stringify(qs.parse('?foo=bar')))
+        Text(`parse: ${this.getResourceStr($r("app.string.Input"))} ?foo=bar \n\t\t\t\t${this.getResourceStr($r("app.string.Output"))}:` + JSON.stringify(qs.parse('?foo=bar')))
           .fontSize(20)
           .width('100%')
           .fontWeight(FontWeight.Bold)
-        Text('stringify: 输入 { foo: bar }, \'#\' \n\t\t\t\t输出:' + qs.stringify({ foo: 'bar' }, '#'))
+        Text(`stringify: ${this.getResourceStr($r("app.string.Input"))} { foo: bar }, \'#\' \n\t\t\t\t${this.getResourceStr($r("app.string.Output"))}:` + qs.stringify({ foo: 'bar' }, '#'))
           .fontSize(20)
           .width('100%')
           .fontWeight(FontWeight.Bold)

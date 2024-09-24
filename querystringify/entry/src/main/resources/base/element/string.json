@@ -11,6 +11,14 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Input",
+      "value": "input"
+    },
+    {
+      "name": "Output",
+      "value": "output"
     }
   ]
 }
