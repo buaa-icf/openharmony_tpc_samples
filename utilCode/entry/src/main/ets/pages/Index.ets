@@ -14,6 +14,7 @@
  */
 
 import router from '@ohos.router';
+
 @Entry
 @Component
 struct Index {
@@ -22,46 +23,50 @@ struct Index {
   build() {
     Column() {
       Row() {
-        Button('缓存测试')
+        Button($r("app.string.Caching_tests"))
           .fontSize(18)
           .margin({ left: 18 })
           .onClick(() => {
             router.pushUrl({ url: 'pages/CachePage' })
           })
 
-        Button('坐标测试')
+        Button($r("app.string.Coordinate_test"))
           .fontSize(18)
           .margin({ left: 18 })
           .onClick(() => {
             router.pushUrl({ url: 'pages/GcoordPage' })
           })
 
-        Button('颜色测试')
+
+      }
+
+      Row() {
+        Button($r("app.string.Color_test"))
           .fontSize(18)
           .margin({ left: 18 })
           .onClick(() => {
             router.pushUrl({ url: 'pages/ColorDemo' })
           })
-
-      }
-
-      Row() {
-
-        Button('时间测试')
+        Button($r("app.string.Time_test"))
           .fontSize(18)
           .margin({ left: 18 })
           .onClick(() => {
             router.pushUrl({ url: 'pages/TimePage' })
           })
 
-        Button('图片测试')
+      }.margin({ top: 18 })
+
+      Row() {
+
+
+        Button($r("app.string.Image_test"))
           .fontSize(18)
           .margin({ left: 18 })
           .onClick(() => {
             router.pushUrl({ url: 'pages/PicturePage' })
           })
 
-        Button('国家码测试')
+        Button($r("app.string.Country_code_test"))
           .fontSize(18)
           .margin({ left: 18 })
           .onClick(() => {
@@ -72,7 +77,7 @@ struct Index {
       .margin({ top: 18 })
 
 
-      Button('温度测试')
+      Button($r("app.string.Temperature_test"))
         .fontSize(18)
         .margin({ left: 18 })
         .onClick(() => {
@@ -83,5 +88,4 @@ struct Index {
     }
     .padding({ top: 18, bottom: 18 })
   }
-
 }

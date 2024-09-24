@@ -11,6 +11,363 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Caching_tests",
+      "value": "Caching tests"
+    },
+    {
+      "name": "Coordinate_test",
+      "value": "Coordinate test"
+    },
+    {
+      "name": "Color_test",
+      "value": "Color test"
+    },
+    {
+      "name": "Time_test",
+      "value": "Time test"
+    },
+    {
+      "name": "Image_test",
+      "value": "Image test"
+    },
+    {
+      "name": "Country_code_test",
+      "value": "Country code test"
+    },
+    {
+      "name": "Temperature_test",
+      "value": "Temperature test"
+    },
+    {
+      "name": "Celsius_to_Fahrenheit",
+      "value": "Celsius to Fahrenheit"
+    },
+    {
+      "name": "Please_enter_degrees_Celsius",
+      "value": "Please enter degrees Celsius"
+    },
+    {
+      "name": "celsius",
+      "value": "celsius"
+    },
+    {
+      "name": "degree_Fahrenheit",
+      "value": "degree Fahrenheit"
+    },
+    {
+      "name": "for",
+      "value": "for"
+    },
+    {
+      "name": "Fahrenheit_to_Celsius",
+      "value": "Fahrenheit to Celsius"
+    },
+    {
+      "name": "Please_enter_Fahrenheit",
+      "value": "Please enter Fahrenheit"
+    },
+    {
+      "name": "Is_it_JPG",
+      "value": "Is it JPG："
+    },
+    {
+      "name": "Is_it_PNG",
+      "value": "Is it PNG："
+    },
+    {
+      "name": "Is_it_GIF",
+      "value": "Is it GIF："
+    },
+    {
+      "name": "Is_it_TIF",
+      "value": "Is it TIF："
+    },
+    {
+      "name": "Is_it_BMP",
+      "value": "Is it BMP："
+    },
+    {
+      "name": "Text_testing",
+      "value": "Text testing"
+    },
+    {
+      "name": "Random_color_test",
+      "value": "Random color test"
+    },
+    {
+      "name": "Please_enter_longitude",
+      "value": "Please enter longitude"
+    },
+    {
+      "name": "Please_enter_latitude",
+      "value": "Please enter a latitude"
+    },
+    {
+      "name": "Convert_them_all",
+      "value": "Convert them all"
+    },
+    {
+      "name": "BD09_coordinates_to_GCJ02_coordinates",
+      "value": "BD09 coordinates to GCJ02 coordinates"
+    },
+    {
+      "name": "GCJ02_coordinates_to_BD09_coordinates",
+      "value": "GCJ02 coordinates to BD09 coordinates"
+    },
+    {
+      "name": "GCJ02_coordinates_to_WGS84_coordinates",
+      "value": "GCJ02 coordinates to WGS84 coordinates"
+    },
+    {
+      "name": "WGS84_coordinates_to_GCJ02_coordinates",
+      "value": "WGS84 coordinates to GCJ02 coordinates"
+    },
+    {
+      "name": "BD09_coordinates_to_WGS84_coordinates",
+      "value": "BD09 coordinates to WGS84 coordinates"
+    },
+    {
+      "name": "WGS84_coordinates_to_BD09_coordinates",
+      "value": "WGS84 coordinates to BD09 coordinates"
+    },
+    {
+      "name": "For_leap_year_test_click_button_to_determine_leap_year",
+      "value": "For leap year test, click the button to determine whether it is a leap year"
+    },
+    {
+      "name": "Please_enter_year_year_range_greater_than_1581",
+      "value": "Please enter the year, year range, greater than 1581"
+    },
+    {
+      "name": "Please_enter_a_year_greater_than_1581",
+      "value": "Please enter a year greater than 1581"
+    },
+    {
+      "name": "Determine_whether_the_year_is_leap_year",
+      "value": "is a leap year judgment"
+    },
+    {
+      "name": "It_a_leap_year",
+      "value": "is a leap year"
+    },
+    {
+      "name": "Not_a_leap_year",
+      "value": "is not a leap year"
+    },
+    {
+      "name": "Morning_and_afternoon_tests_judging_corresponding_time_is_morning_or_afternoon",
+      "value": "Morning and afternoon tests, judging the corresponding time is in the morning or afternoon"
+    },
+    {
+      "name": "dot_is",
+      "value": "o'clock:"
+    },
+    {
+      "name": "dot_for",
+      "value": "for:"
+    },
+    {
+      "name": "current_system_region_gets_the_prefix",
+      "value": "The current system region gets the prefix"
+    },
+    {
+      "name": "SIM_card_gets_dial_prefix_mock_test_simulating_test_items",
+      "value": "SIM card gets dial prefix mock test, simulating test items"
+    },
+    {
+      "name": "The_prefix_of_the_dialer_is",
+      "value": "dialword prefix is："
+    },
+
+    {
+      "name": "Test_data",
+      "value": "Test data"
+    },
+    {
+      "name": "Write_10_pieces_data_key0_9_no_corresponding_interface_convenient_testing",
+      "value": "Write 10 pieces of data, key0~9, no corresponding interface, convenient for testing"
+    },
+    {
+      "name": "put_writes_cached_data",
+      "value": "put: writes cached data"
+    },
+    {
+      "name": "Hello",
+      "value": "Hello"
+    },
+    {
+      "name": "The_write_succeeded",
+      "value": "The write succeeded"
+    },
+    {
+      "name": "Put_test_write_data_pass_key_write_value",
+      "value": "Put test, write data, pass key, write value"
+    },
+    {
+      "name": "Please_enter_key",
+      "value": "Please enter a key"
+    },
+    {
+      "name": "Please_enter_value",
+      "value": "Please enter a value"
+    },
+    {
+      "name": "The_key_cannot_be_empty",
+      "value": "The key cannot be empty"
+    },
+    {
+      "name": "Write_value",
+      "value": "Write value"
+    },
+    {
+      "name": "succeed",
+      "value": "succeed"
+    },
+    {
+      "name": "Write_failed",
+      "value": "Write failed"
+    },
+    {
+      "name": "get_the_test_get_value_by_key",
+      "value": "get the test, get the value by key"
+    },
+    {
+      "name": "get_reads_data",
+      "value": "get: reads data"
+    },
+    {
+      "name": "Read_failed",
+      "value": "Read failed"
+    },
+    {
+      "name": "The_values_obtained_are",
+      "value": "The values obtained are:"
+    },
+    {
+      "name": "del_test_remove_value_by_key",
+      "value": "del test, remove the value by key"
+    },
+    {
+      "name": "del_deletes_data",
+      "value": "del: deletes data"
+    },
+    {
+      "name": "Delete_the_results",
+      "value": "Delete the results"
+    },
+    {
+      "name": "clear_test_delete_values_delete_size_and_set_memsize_to_0",
+      "value": "clear test, delete all values, delete size, and set memsize to 0"
+    },
+    {
+      "name": "clear_Deletes_all_values",
+      "value": "clear: Deletes all values"
+    },
+    {
+      "name": "Deletion_failed",
+      "value": "Deletion failed"
+    },
+    {
+      "name": "size_test_which_entries_in_cache",
+      "value": "size test, which returns the current number of entries in the cache"
+    },
+    {
+      "name": "The_number_entries_currently_in_cache",
+      "value": "The number of entries currently in the cache: "
+    },
+    {
+      "name": "memsize_test_returns_entries_that_occupy_cache_space_usually_size",
+      "value": "memsize test, returns the number of entries that occupy cache space, usually == size()"
+    },
+    {
+      "name": "memsize_test_returns_entries_that_occupy_cache_space",
+      "value": "memsize test: Returns the number of entries that occupy the cache space"
+    },
+    {
+      "name": "The_number_of_entries_that_occupy_cache_space",
+      "value": "The number of entries that occupy cache space"
+    },
+    {
+      "name": "debug_test_debug_switch",
+      "value": "debug test, debug switch"
+    },
+    {
+      "name": "Turn_on_debug",
+      "value": "Turn on debug"
+    },
+    {
+      "name": "Turn_on_debug_mode",
+      "value": "Turn on debug mode"
+    },
+    {
+      "name": "Turn_off_debugging",
+      "value": "Turn off debugging"
+    },
+    {
+      "name": "Disable_debug_mode",
+      "value": "Disable debug mode"
+    },
+    {
+      "name": "Hits_test_returns_cached_hits_only_available_in_debug_mode",
+      "value": "Hits test, returns cached hits (only available in debug mode)"
+    },
+    {
+      "name": "Cache_clicks",
+      "value": "Cache clicks："
+    },
+    {
+      "name": "misses_test_returns_cache_no_clicks_monitored_in_debug_mode_only",
+      "value": "misses test, returns cache no clicks (monitored in debug mode only)"
+    },
+    {
+      "name": "The_number_of_cache_unclicks",
+      "value": "The number of cache unclicks："
+    },
+    {
+      "name": "keys_test_returns_all_cached_keys",
+      "value": "keys test, which returns all cached keys"
+    },
+    {
+      "name": "All_cache_keys",
+      "value": "All cache keys"
+    },
+    {
+      "name": "exportJson_test_returns_all_cached_data_JSON_strings",
+      "value": "exportJson test, which returns all cached data as JSON strings"
+    },
+    {
+      "name": "exportJson_test_returns_all_cached_data",
+      "value": "exportJson test: returns all cached data"
+    },
+    {
+      "name": "All_cached_data",
+      "value": "All cached data:"
+    },
+    {
+      "name": "importJson_test_import_data_Json_format",
+      "value": "importJson test, import data in Json format, existing data will be overwritten, if skipduplicate is true, existing data will not be overwritten, default false"
+    },
+    {
+      "name": "importJson_test_override_test",
+      "value": "importJson test: override test"
+    },
+    {
+      "name": "Please_enter_your_data",
+      "value": "Please enter your data"
+    },
+    {
+      "name": "importJson_test_imports_data_in_Json_format",
+      "value": "importJson test: imports data in Json format"
+    },
+    {
+      "name": "Please_enter_the_data_in_JSON_format",
+      "value": "Please enter the data in JSON format"
+    },
+    {
+      "name": "current_number_of_entries_the_cache_after_successful_write",
+      "value": "The current number of entries in the cache after a successful write"
     }
   ]
 }

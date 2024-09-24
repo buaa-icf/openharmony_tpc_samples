@@ -25,12 +25,14 @@ struct PicturePage {
   @State tif: boolean = false;
   @State bmp: boolean = false;
 
+  private getResourceString(res: Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
+
   build() {
 
     Column() {
-
-
-      Button('是否jpg:' + this.jpg)
+      Button(this.getResourceString($r("app.string.Is_it_JPG")) + this.jpg)
         .fontSize(18)
         .margin({ left: 18 })
         .onClick(() => {
@@ -38,7 +40,7 @@ struct PicturePage {
         })
         .margin({ top: 18 })
 
-      Button('是否png:' + this.png)
+      Button(this.getResourceString($r("app.string.Is_it_PNG")) + this.png)
         .fontSize(18)
         .margin({ left: 18 })
         .onClick(() => {
@@ -47,7 +49,7 @@ struct PicturePage {
         .margin({ top: 18 })
 
 
-      Button('是否gif:' + this.gif)
+      Button(this.getResourceString($r("app.string.Is_it_GIF")) + this.gif)
         .fontSize(18)
         .margin({ left: 18 })
         .onClick(() => {
@@ -55,7 +57,7 @@ struct PicturePage {
         })
         .margin({ top: 18 })
 
-      Button('是否tif:' + this.tif)
+      Button(this.getResourceString($r("app.string.Is_it_TIF")) + this.tif)
         .fontSize(18)
         .margin({ left: 18 })
         .onClick(() => {
@@ -63,7 +65,7 @@ struct PicturePage {
         })
         .margin({ top: 18 })
 
-      Button('是否bmp:' + this.bmp)
+      Button(this.getResourceString($r("app.string.Is_it_BMP")) + this.bmp)
         .fontSize(18)
         .margin({ left: 18 })
         .onClick(() => {
@@ -71,7 +73,7 @@ struct PicturePage {
         })
         .margin({ top: 18 })
 
-      Button('文本测试')
+      Button($r("app.string.Text_testing"))
         .fontSize(18)
         .margin({ left: 18 })
         .onClick(() => {

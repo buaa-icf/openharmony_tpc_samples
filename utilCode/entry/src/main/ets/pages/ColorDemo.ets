@@ -33,7 +33,7 @@ struct ColorDemo {
   build() {
     Column() {
       Row() {
-        Button('随机颜色测试')
+        Button($r("app.string.Random_color_test"))
           .margin({ left: 18 })
           .onClick(() => {
              this.color = randomColor(formatFn('hex'));

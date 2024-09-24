@@ -24,6 +24,9 @@ struct TimePage {
   time24: string[] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"];
   time12: string[] = ["12 am", "1 am", "2 am", "3 am", "4 am", "5 am", "6 am", "7 am", "8 am", "9 am", "10 am", "11 am", "12 pm", "1 pm", "2 pm", "3 pm", "4 pm", "5 pm", "6 pm", "7 pm", "8 pm", "9 pm", "10 pm", "11 pm", "11.59 pm"];
   @State year: number = 2014
+  private getResourceString(res: Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
 
   scroller: Scroller = new Scroller()
   build() {
@@ -34,10 +37,11 @@ struct TimePage {
 
 
         Column({ space: 12 }) {
-          Text('闰年测试，点击按钮判断是否为闰年')
+          Text($r("app.string.For_leap_year_test_click_button_to_determine_leap_year"))
             .margin({ top: 5 })
             .fontSize(16)
-          TextInput({ text: this.year.toString(), placeholder: '请输入年份,年份范围，大于1581' })
+            . textAlign(TextAlign.Center)
+          TextInput({ text: this.year.toString(), placeholder: $r("app.string.Please_enter_year_year_range_greater_than_1581") })
             .height(60)
             .fontSize(18)
             .type(InputType.Number)
@@ -47,12 +51,12 @@ struct TimePage {
               if (value.length > 0 && Number.parseInt(value) > 1581  ) {
                 this.year = Number.parseInt(value)
               } else {
-                prompt.showToast({ message: '请输入大于1581的年份', duration: 3000 })
+                prompt.showToast({ message: $r("app.string.Please_enter_a_year_greater_than_1581"), duration: 3000 })
               }
             })
 
-          Button(this.year+'年是否闰年判断'+isLeapYear(this.year), { type: ButtonType.Normal })
-            .fontSize(18)
+          Button(this.year+" " + this.getResourceString($r("app.string.Determine_whether_the_year_is_leap_year"))+"：" +isLeapYear(this.year), { type: ButtonType.Normal })
+            // .fontSize(18)
             .fontColor('#000')
             .height(60)
             .width(300)
@@ -61,32 +65,32 @@ struct TimePage {
             .onClick(() => {
 
               if ( this.year == 0){
-                prompt.showToast({ message: '请输入大于1581的年份', duration: 3000 })
+                prompt.showToast({ message: $r("app.string.Please_enter_a_year_greater_than_1581"), duration: 3000 })
               }
 
               if (isLeapYear(this.year)) {
-                prompt.showToast({ message: this.year+'是闰年', duration: 3000 })
+                prompt.showToast({ message: this.year+ " " + this.getResourceString($r("app.string.It_a_leap_year")), duration: 3000 })
               }else {
-                prompt.showToast({ message: this.year+'不是闰年', duration: 3000 })
+                prompt.showToast({ message: this.year+ " " + this.getResourceString($r("app.string.Not_a_leap_year")), duration: 3000 })
               }
 
             })
 
           Column() {
 
-            Text('上下午测试，判断对应时间为上午或下午')
+            Text($r("app.string.Morning_and_afternoon_tests_judging_corresponding_time_is_morning_or_afternoon"))
               .margin({ top: 5 })
               .fontSize(16)
             ForEach(this.time24, (item:string, index?: number) => {
               Row() {
-                Text(item + '点为：' + get12(item))
+                Text(item + " " + this.getResourceString($r("app.string.dot_is")) + get12(item))
                   .margin({ top: 5 })
                   .fontSize(16)
               }
             })
             ForEach(this.time12, (item:string, index?: number) => {
               Row() {
-                Text(item + '点为：' + get24(item))
+                Text(item + " " + this.getResourceString($r("app.string.dot_for")) + get24(item))
                   .margin({ top: 5 })
                   .fontSize(16)
               }
