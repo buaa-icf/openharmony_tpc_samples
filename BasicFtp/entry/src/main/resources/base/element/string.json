@@ -19,6 +19,190 @@
     {
       "name": "Reason_File",
       "value": "Operate file in application file system"
+    },
+    {
+      "name": "enter_folder_name",
+      "value": "Please enter the folder name"
+    },
+    {
+      "name": "Tips",
+      "value": "Tips: If the input folder does not exist, it will be automatically created on the remote server, and it will be created in the current working directory. After calling this method, the working directory will automatically switch to this directory"
+    },
+    {
+      "name": "cancel",
+      "value": "Cancel"
+    },
+    {
+      "name": "ok",
+      "value": "Confirm"
+    },
+    {
+      "name": "Cancel_create_folder_on_server",
+      "value": "Cancel creating a new folder on the server"
+    },
+    {
+      "name": "Create_folder_on_server",
+      "value": "Create a new folder on the server"
+    },
+    {
+      "name": "Unknown_operation",
+      "value": "Unknown operation"
+    },
+    {
+      "name": "Get_working_directory",
+      "value": "Get the current working directory"
+    },
+    {
+      "name": "Go_Back",
+      "value": "Go Back"
+    },
+    {
+      "name": "Get_File_Size",
+      "value": "Get File Size"
+    },
+    {
+      "name": "Get_last_modification_time",
+      "value": "Retrieve the last modification time of the file"
+    },
+    {
+      "name": "Ability_to_obtain_server_support",
+      "value": "Ability to obtain server support"
+    },
+    {
+      "name": "Delete_individual_files",
+      "value": "Delete individual files"
+    },
+    {
+      "name": "ensureRemotePath",
+      "value": "Ensure that the server file address exists (if not, it will be automatically generated)"
+    },
+    {
+      "name": "remove_empty_directories",
+      "value": "remove empty directories"
+    },
+    {
+      "name": "remove_folders",
+      "value": "remove folders"
+    },
+    {
+      "name": "Clear_current_working_directory",
+      "value": "Clear the current working directory"
+    },
+    {
+      "name": "rename_file",
+      "value": "rename file"
+    },
+    {
+      "name": "Test",
+      "value": "Test"
+    },
+    {
+      "name": "Current_upload_length",
+      "value": "Current upload length"
+    },
+    {
+      "name": "Current_download_length",
+      "value": "Current download length"
+    },
+    {
+      "name": "Server_address",
+      "value": "Server address:"
+    },
+    {
+      "name": "Port",
+      "value": "Port:"
+    },
+    {
+      "name": "Username",
+      "value": "Username:"
+    },
+    {
+      "name": "Password",
+      "value": "Password:"
+    },
+    {
+      "name": "TLS",
+      "value": "SSL/TLS"
+    },
+    {
+      "name": "Login",
+      "value": "Login"
+    },
+    {
+      "name": "current_folder",
+      "value": "current folder"
+    },
+    {
+      "name": "Log_out",
+      "value": "Log Out"
+    },
+    {
+      "name": "View_file_list",
+      "value": "View file list"
+    },
+    {
+      "name": "View_log",
+      "value": "View log"
+    },
+    {
+      "name": "Generate_files",
+      "value": "Generate files"
+    },
+    {
+      "name": "Upload_a_file",
+      "value": "Upload a file"
+    },
+    {
+      "name": "Add_upload",
+      "value": "Add upload"
+    },
+    {
+      "name": "Generate_folder",
+      "value": "Generate folder"
+    },
+    {
+      "name": "Upload_folder",
+      "value": "Upload folder"
+    },
+    {
+      "name": "Download_a_file",
+      "value": "Download a single file"
+    },
+    {
+      "name": "Download_folder",
+      "value": "Download folder"
+    },
+    {
+      "name": "Init",
+      "value": "Initialize parameters and prepare for login"
+    },
+    {
+      "name": "please_login",
+      "value": "Client not logged in, please login first"
+    },
+    {
+      "name": "get_working_directory_failed",
+      "value": "Failed to retrieve the current working directory"
+    },
+    {
+      "name": "get_working_directory_start",
+      "value": "Get the current working directory to start"
+    },
+    {
+      "name": "get_working_directory_success",
+      "value": "Successfully obtained the current working directory"
+    },
+    {
+      "name": "get_file_list_failed",
+      "value": "Failed to retrieve file list"
+    },
+    {
+      "name": "get_file_list_start",
+      "value": "Get the file list start"
+    },
+    {
+      "name": "get_file_list_success",
+      "value": "Retrieve file list successfully"
     }
   ]
 }
