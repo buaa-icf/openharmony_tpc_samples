@@ -33,7 +33,7 @@ struct Index {
     Row() {
       Column() {
 
-        TextInput({ placeholder: '请输入数组 如： [1,2,3]' })
+        TextInput({ placeholder: $r('app.string.String1')})
           .caretColor(Color.Blue)
           .height(50)
           .fontSize(30)
@@ -43,12 +43,12 @@ struct Index {
             console.info('test change:'+value)
           })
 
-        Text('无输入默认值为 [1,2,3]')
+        Text($r('app.string.String2'))
           .fontSize(20)
           .fontWeight(FontWeight.Normal)
           .margin({ top: 10 })
 
-        Text('是否是数组判断：')
+        Text($r('app.string.String3'))
           .fontSize(30)
           .height(50)
           .fontWeight(FontWeight.Bold)
@@ -67,7 +67,7 @@ struct Index {
             }
           })
 
-        Text('结果: ' + this.result)
+        Text(getContext().resourceManager.getStringByNameSync('String4')  + this.result)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
           .margin({ top: 10 })
