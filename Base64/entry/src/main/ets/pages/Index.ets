@@ -30,21 +30,25 @@ import { btoa, atob } from 'Base64'
 struct Index {
   @State message: string = '';
 
+  private getResourceStr(data: Resource): string {
+    return getContext().resourceManager.getStringSync(data)
+  }
+
   build() {
     Row() {
       Column() {
-        Text('显示结果：'+ this.message)
+        Text(this.getResourceStr($r("app.string.Results"))+ this.message)
           .fontSize(16)
-        Button("编码 'hello Base64'")
+        Button(this.getResourceStr($r("app.string.Encode"))+" hello Base64")
           .width(200)
           .onClick((event: ClickEvent) => {
             this.message = btoa('hello Base64');
-            console.log("编码 'hello Base64'：" + this.message)
+            console.log(this.getResourceStr($r("app.string.Encode"))+" hello Base64：" + this.message)
           }).margin(20)
-        Button("解码 'aGVsbG8gQmFzZTY0'")
+        Button(this.getResourceStr($r("app.string.Decode"))+" aGVsbG8gQmFzZTY0")
           .onClick((event: ClickEvent) => {
             this.message = atob('aGVsbG8gQmFzZTY0');
-            console.log("解码 'aGVsbG8gQmFzZTY0'：" + this.message)
+            console.log(this.getResourceStr($r("app.string.Decode"))+" aGVsbG8gQmFzZTY0：" + this.message)
           }).margin(20)
       }
       .width('100%')
