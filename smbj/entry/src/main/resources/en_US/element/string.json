@@ -19,6 +19,54 @@
     {
       "name": "get_wifi_info_permission",
       "value": "get internet permission"
+    },
+    {
+      "name": "server_ip",
+      "value": "Server IP"
+    },
+    {
+      "name": "client_ip",
+      "value": "Client IP"
+    },
+    {
+      "name": "folder_name",
+      "value": "Folder Name"
+    },
+    {
+      "name": "file_ame",
+      "value": "file name"
+    },
+    {
+      "name": "new_file_name",
+      "value": "New file name"
+    },
+    {
+      "name": "file_content",
+      "value": "File Content"
+    },
+    {
+      "name": "folder_or_file_is_exist",
+      "value": "Does the folder or file exist:"
+    },
+    {
+      "name": "enter_server_ip_address",
+      "value": "Please enter the server IP address"
+    },
+    {
+      "name": "enter_client_ip_address",
+      "value": "Please enter the client IP address"
+    },
+    {
+      "name": "enter_share",
+      "value": "Please enter share"
+    },
+    {
+      "name": "enter_user_name",
+      "value": "Please enter user name"
+    },
+    {
+      "name": "input_password",
+      "value": "Please input password"
     }
   ]
 }

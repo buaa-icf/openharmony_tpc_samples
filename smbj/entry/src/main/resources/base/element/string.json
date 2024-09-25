@@ -19,6 +19,54 @@
     {
       "name": "get_wifi_info_permission",
       "value": "get internet permission"
+    },
+    {
+      "name": "server_ip",
+      "value": "服务器ip"
+    },
+    {
+      "name": "client_ip",
+      "value": "客户端ip"
+    },
+    {
+      "name": "folder_name",
+      "value": "文件夹名称"
+    },
+    {
+      "name": "file_ame",
+      "value": "文件名"
+    },
+    {
+      "name": "new_file_name",
+      "value": "新文件名称"
+    },
+    {
+      "name": "file_content",
+      "value": "文件内容"
+    },
+    {
+      "name": "folder_or_file_is_exist",
+      "value": "文件夹或文件是否存在:"
+    },
+    {
+      "name": "enter_server_ip_address",
+      "value": "请输入服务器ip"
+    },
+    {
+      "name": "enter_client_ip_address",
+      "value": "请输入客户端ip"
+    },
+    {
+      "name": "enter_share",
+      "value": "请输入share"
+    },
+    {
+      "name": "enter_user_name",
+      "value": "请输入用户名"
+    },
+    {
+      "name": "input_password",
+      "value": "请输入密码"
     }
   ]
 }

@@ -35,7 +35,7 @@ struct Index {
 
   build() {
     Column() {
-      TextInput({ placeholder: '服务器ip', text: this.serverIP })
+      TextInput({ placeholder: getContext(this).resourceManager.getStringSync($r('app.string.server_ip').id) , text: this.serverIP})
         .placeholderColor(Color.Gray)
         .caretColor(Color.Blue)
         .height(50)
@@ -48,7 +48,7 @@ struct Index {
         .onChange((value: string) => {
           this.serverIP = value
         })
-      TextInput({ placeholder: '客户端ip', text: this.clientIP })
+      TextInput({ placeholder: getContext(this).resourceManager.getStringSync($r('app.string.client_ip').id), text: this.clientIP })
         .placeholderColor(Color.Gray)
         .caretColor(Color.Blue)
         .height(50)
@@ -102,7 +102,7 @@ struct Index {
           this.password = value
         })
 
-      TextInput({ placeholder: '文件夹名称', text: this.foldName })
+      TextInput({ placeholder: getContext(this).resourceManager.getStringSync($r('app.string.folder_name').id), text: this.foldName })
         .placeholderColor(Color.Gray)
         .caretColor(Color.Blue)
         .height(50)
@@ -115,7 +115,7 @@ struct Index {
         .onChange((value: string) => {
           this.foldName = value
         })
-      TextInput({ placeholder: '文件名', text: this.fileName })
+      TextInput({ placeholder: getContext(this).resourceManager.getStringSync($r('app.string.file_ame').id), text: this.fileName })
         .placeholderColor(Color.Gray)
         .caretColor(Color.Blue)
         .height(50)
@@ -129,7 +129,7 @@ struct Index {
           this.fileName = value
 
         })
-      TextInput({ placeholder: '新文件名称', text: this.newFileName })
+      TextInput({ placeholder:getContext(this).resourceManager.getStringSync($r('app.string.new_file_name').id), text: this.newFileName })
         .placeholderColor(Color.Gray)
         .caretColor(Color.Blue)
         .height(50)
@@ -143,7 +143,7 @@ struct Index {
           this.newFileName = value
         })
 
-      TextInput({ placeholder: '文件内容', text: this.content })
+      TextInput({ placeholder: getContext(this).resourceManager.getStringSync($r('app.string.file_content').id), text: this.content })
         .placeholderColor(Color.Gray)
         .caretColor(Color.Blue)
         .height(50)
@@ -171,7 +171,11 @@ struct Index {
                   prompt.showToast({message:err.message,duration:5000})
                   smbClient!.close()
                 }else{
-                  prompt.showToast({message:"文件夹或文件是否存在:"+exit,duration:5000})
+                  prompt.showToast({
+                    message:getContext(this).resourceManager.getStringSync($r('app.string.folder_or_file_is_exist')) +
+                    exit,
+                    duration:5000
+                  })
                   console.log("smb exit:" + exit);
                 }
               })
@@ -318,23 +322,23 @@ struct Index {
 
   public getClient(){
     if(!this.serverIP){
-      prompt.showToast({message:'请输入服务器ip',duration:2000})
+      prompt.showToast({message:$r('app.string.enter_server_ip_address'),duration:2000})
       return
     }
     if(!this.clientIP){
-      prompt.showToast({message:'请输入客户端ip',duration:2000})
+      prompt.showToast({message:$r('app.string.enter_client_ip_address'),duration:2000})
       return
     }
     if(!this.basePath){
-      prompt.showToast({message:'请输入share',duration:2000})
+      prompt.showToast({message:$r('app.string.enter_share'),duration:2000})
       return
     }
     if(!this.userName){
-      prompt.showToast({message:'请输入用户名',duration:2000})
+      prompt.showToast({message:$r('app.string.enter_user_name'),duration:2000})
       return
     }
     if(!this.password){
-      prompt.showToast({message:'请输入密码',duration:2000})
+      prompt.showToast({message:$r('app.string.input_password'),duration:2000})
       return
     }
     let option:Options = new Options('\\\\'+this.serverIP+'\\'+this.basePath,'DOMAIN',this.userName,this.password,this.clientIP)
