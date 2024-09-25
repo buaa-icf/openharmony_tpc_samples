@@ -28,29 +28,39 @@ import { deserializeDemo } from "../methods/deserialize"
 struct Index {
   @State message: string = 'Hello World'
 
-  @Builder BuildButton(text:string,callback:() => void,remake?:string){
+  @Builder
+  BuildButton(text: string, callback: () => void, remake?: string | Resource) {
     Button(text).onClick(callback).width("90%")
-    Text(remake).margin({top:4,bottom:10}).width("90%")
+    Text(remake).margin({ top: 4, bottom: 10 }).width("90%")
   }
 
   build() {
-    Scroll(){
+    Scroll() {
       Column() {
-        this.BuildButton("plainToClassDemo",plainToClassDemo,"此方法将普通javascript对象转换为特定类的实例")
-        this.BuildButton("plainToInstanceDemo",plainToInstanceDemo,"此方法将普通javascript对象转换为特定类的实例")
+        this.BuildButton("plainToClassDemo", plainToClassDemo,
+          $r("app.string.This_method_converts_normal_JavaScript_object_into_instance_specific_class"))
+        this.BuildButton("plainToInstanceDemo", plainToInstanceDemo,
+          $r("app.string.This_method_converts_normal_JavaScript_object_into_instance_specific_class"))
 
-        this.BuildButton("classToPlainDemo",classToPlainDemo,"这个方法将类对象转换回普通javascript对象")
-        this.BuildButton("instanceToPlainDemo",instanceToPlainDemo,"这个方法将类对象转换回普通javascript对象")
+        this.BuildButton("classToPlainDemo", classToPlainDemo,
+          $r("app.string.This_method_converts_class_object_back_normal_JavaScript_object"))
+        this.BuildButton("instanceToPlainDemo", instanceToPlainDemo,
+          $r("app.string.This_method_converts_class_object_back_normal_JavaScript_object"))
 
-        this.BuildButton("classToPlainFromExistDemo",classToPlainFromExistDemo,"将类实例与普通javascript对象合并")
-        this.BuildButton("plainToClassFromExistDemo",plainToClassFromExistDemo,"此方法使用已填充的对象（目标类中的实例）将普通对象转换为实例")
-        this.BuildButton("instanceToInstanceDemo",instanceToInstanceDemo,"将类（构造函数）对象转换为新的类（构造器）对象。也适用于数组。")
-        this.BuildButton("classToClassFromExistDemo",classToClassFromExistDemo,"将类（构造函数）对象转换为纯（文字）对象。")
-        this.BuildButton("serializeDemo",serializeDemo,"将给定对象序列化为JSON字符串。。")
-        this.BuildButton("deserializeDemo",deserializeDemo,"将对象字符串转换为一个类的实例")
+        this.BuildButton("classToPlainFromExistDemo", classToPlainFromExistDemo,
+          $r("app.string.Merge_class_instance_with_normal_JavaScript_object"))
+        this.BuildButton("plainToClassFromExistDemo", plainToClassFromExistDemo,
+          $r("app.string.This_method_converts_normal_object_instance_using_populated_object"))
+        this.BuildButton("instanceToInstanceDemo", instanceToInstanceDemo,
+          $r("app.string.Converts_class_object_to_new_class"))
+        this.BuildButton("classToClassFromExistDemo", classToClassFromExistDemo,
+          $r("app.string.Converts_a_class_object_to_plain_object"))
+        this.BuildButton("serializeDemo", serializeDemo, $r("app.string.Serialize_given_object_as_JSON_string"))
+        this.BuildButton("deserializeDemo", deserializeDemo,
+          $r("app.string.Converts_object_string_to_instance_of_class"))
       }
       .width('100%')
-      .padding({top:10})
+      .padding({ top: 10 })
     }
     .width("100%")
     .height("100%")

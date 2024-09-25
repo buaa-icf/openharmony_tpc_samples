@@ -11,6 +11,38 @@
     {
       "name": "EntryAbility_label",
       "value": "class-transformer"
+    },
+    {
+      "name": "This_method_converts_normal_JavaScript_object_into_instance_specific_class",
+      "value": "This method converts a normal JavaScript object into an instance of a specific class"
+    },
+    {
+      "name": "This_method_converts_class_object_back_normal_JavaScript_object",
+      "value": "This method converts the class object back to a normal JavaScript object"
+    },
+    {
+      "name": "Merge_class_instance_with_normal_JavaScript_object",
+      "value": "Merge a class instance with a normal JavaScript object"
+    },
+    {
+      "name": "This_method_converts_normal_object_instance_using_populated_object",
+      "value": "This method converts a normal object to an instance using a populated object (an instance in the target class."
+    },
+    {
+      "name": "Converts_class_object_to_new_class",
+      "value": "Converts a class (constructor) object to a new class (constructor) object. Also works with arrays."
+    },
+    {
+      "name": "Converts_a_class_object_to_plain_object",
+      "value": "Converts a class (constructor) object to a plain (literal) object."
+    },
+    {
+      "name": "Serialize_given_object_as_JSON_string",
+      "value": "Serialize a given object as a JSON string."
+    },
+    {
+      "name": "Converts_object_string_to_instance_of_class",
+      "value": "Converts an object string to an instance of a class"
     }
   ]
 }
