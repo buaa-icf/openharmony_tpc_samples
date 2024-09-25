@@ -11,6 +11,38 @@
     {
       "name": "EntryAbility_label",
       "value": "babel-runtime"
+    },
+    {
+      "name": "Result",
+      "value": "显示结果："
+    },
+    {
+      "name": "View_results",
+      "value": "点击下面的按钮查看结果"
+    },
+    {
+      "name": "Function_ability",
+      "value": "函数功能： "
+    },
+    {
+      "name": "parameters",
+      "value": "该函数接受四个参数：type、props、key 和 children。它根据这些参数创建了一个包含元素类型、属性、键、子元素等信息的对象，并返回该对象作为结果"
+    },
+    {
+      "name": "maximum_length",
+      "value": "指定可迭代数组的极限长度"
+    },
+    {
+      "name": "properties",
+      "value": "将多个对象的属性合并到目标对象中，并返回合并后的目标对象。"
+    },
+    {
+      "name": "given_object",
+      "value": "用于获取给定对象的类型。"
+    },
+    {
+      "name": "values_object",
+      "value": "用于获取对象的属性值。"
     }
   ]
 }
