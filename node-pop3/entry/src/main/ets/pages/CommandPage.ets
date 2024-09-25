@@ -17,6 +17,8 @@ import promptAction from '@ohos.promptAction'
 import router from '@ohos.router'
 import fs from '@ohos.file.fs';
 import GlobalObj from '../GlobalObj'
+import { getResourceStr } from './GetResourceStr';
+
 @Entry
 @Component
 struct CommandPage {
@@ -35,7 +37,7 @@ struct CommandPage {
     await GlobalObj?.getInstance()?.getClient()?.QUIT()
   }
 
-  showToast(text: string, name = 'test') {
+  showToast(text: string, name = getResourceStr($r("app.string.Test"))) {
     console.log(`zdy---${name}--->${text}`)
     promptAction.showToast({
       message: text,
@@ -68,7 +70,7 @@ struct CommandPage {
               alignContent: FlexAlign.Start,
               direction: FlexDirection.Row
             }) {
-              Button('STAT command')
+              Button($r("app.string.STAT_command"))
                 .margin(20)
                 .height(50)
                 .backgroundColor(Color.Blue)
@@ -78,7 +80,7 @@ struct CommandPage {
                 })
                 .margin({ top: 10 })
 
-              Button('LIST command')
+              Button($r("app.string.LIST_command"))
                 .margin(20)
                 .height(50)
                 .backgroundColor(Color.Blue)
@@ -87,7 +89,7 @@ struct CommandPage {
                   this.sendMail()
                 })
                 .margin({ top: 10 })
-              Button('TOP command')
+              Button($r("app.string.TOP_command"))
                 .margin(20)
                 .height(50)
                 .backgroundColor(Color.Blue)
@@ -96,7 +98,7 @@ struct CommandPage {
                   this.sendMail()
                 })
                 .margin({ top: 10 })
-              Button('UIDL command')
+              Button($r("app.string.UIDL_command"))
                 .margin(20)
                 .height(50)
                 .backgroundColor(Color.Blue)
@@ -105,17 +107,7 @@ struct CommandPage {
                   this.sendMail()
                 })
                 .margin({ top: 10 })
-              Button('LAST command')
-                .margin(20)
-                .height(50)
-                .backgroundColor(Color.Blue)
-                .fontColor(Color.White)
-                .onClick(() => {
-                  this.sendMail()
-                })
-                .margin({ top: 10 })
-
-              Button('NOOP command')
+              Button($r("app.string.LAST_Command"))
                 .margin(20)
                 .height(50)
                 .backgroundColor(Color.Blue)
@@ -125,7 +117,7 @@ struct CommandPage {
                 })
                 .margin({ top: 10 })
 
-              Button('DELE command')
+              Button($r("app.string.NOOP_command"))
                 .margin(20)
                 .height(50)
                 .backgroundColor(Color.Blue)
@@ -135,7 +127,7 @@ struct CommandPage {
                 })
                 .margin({ top: 10 })
 
-              Button('RSET command')
+              Button($r("app.string.DELE_command"))
                 .margin(20)
                 .height(50)
                 .backgroundColor(Color.Blue)
@@ -145,7 +137,7 @@ struct CommandPage {
                 })
                 .margin({ top: 10 })
 
-              Button('RETR command')
+              Button($r("app.string.RSET_command"))
                 .margin(20)
                 .height(50)
                 .backgroundColor(Color.Blue)
@@ -155,7 +147,17 @@ struct CommandPage {
                 })
                 .margin({ top: 10 })
 
-              Button('QUIT command')
+              Button($r("app.string.RETR_command"))
+                .margin(20)
+                .height(50)
+                .backgroundColor(Color.Blue)
+                .fontColor(Color.White)
+                .onClick(() => {
+                  this.sendMail()
+                })
+                .margin({ top: 10 })
+
+              Button($r("app.string.QUIT_command"))
                 .margin(20)
                 .height(50)
                 .backgroundColor(Color.Blue)
@@ -199,11 +201,11 @@ struct CommandPage {
       if (GlobalObj?.getInstance()?.getClient()) {
 
       } else {
-        this.showToast('Account not logged in, Please login again', 'sendmail-smtp')
+        this.showToast(getResourceStr($r("app.string.Please_login_again")), 'sendmail-smtp')
       }
 
     } catch (err) {
-      this.showToast(`Email sending error：${err.message}`, 'sendmail-smtp')
+      this.showToast(`${getResourceStr($r("app.string.Email_sening_error"))}${err.message}`, 'sendmail-smtp')
     }
   }
 }
