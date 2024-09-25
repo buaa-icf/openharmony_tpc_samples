@@ -33,7 +33,7 @@ struct Index {
           .onClick(() => {
             this.click()
           })
-        Text("结果 :" + this.result)
+        Text(getContext(this).resourceManager.getStringSync($r('app.string.result').id,this.result))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
           .margin({ top: "30px" })

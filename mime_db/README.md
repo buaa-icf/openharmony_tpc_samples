@@ -1,54 +1,54 @@
 # mime-db
 
-## 简介
-这是一个mime类型和有关它们的信息的大型数据库。
-它由一个单一的公共JSON文件组成，不包含任何逻辑，
-允许它在使用API时尽可能保持不固执己见。
-它汇集了以下来源的数据:
+## Introduction
+mime-db is a large database that stores mime data and related information.
+It consists of a single public JSON file and does not contain any logic.
+This allows it to remain as un-opinionated as possible with an API.
+It gathers data from the following sources:
 https://www.iana.org/assignments/media-types/media-types.xhtml
 https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types
 https://hg.nginx.org/nginx/raw-file/default/conf/mime.types
 
-## 下载安装
+## How to Install
 
 ```
 ohpm install mime-db@1.52.0
 ```
 OpenHarmony
-ohpm 环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+For details about the ohpm environment configuration, see [Installing the OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 
 ```js
 import * as db from 'mime-db'
 // grab data on .js files
 let data = db['application/javascript']
 ```
-## 接口说明
+## Available APIs
 
 db['application/javascript']
 
-## 约束与限制
-在下述版本验证通过：
+## Constraints
+This project has been verified in the following version:
 
-- DevEco Studio 版本： 4.1 Canary(4.1.3.317),OpenHarmony SDK:API11 (4.1.0.36)。
+- DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API11 (4.1.0.36)
 
-## 目录
+## Directory Structure
 
 ```
-|mime_db       # 工程根目录
-      ├── entry                  # 示例代码文件夹   
+|mime_db       # Root directory of the project
+      ├── entry                  # Sample code  
           ├── src  
               ├── main   
                    ├── ets
                        ├── pages
-                             ├── Index.ets  sample代码
+                             ├── Index.ets  # Sample code
 ```
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem during the use, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
 
-## 开源协议
+## License
 
-本项目基于 [MIT](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/LICENSE) 协议，请自由地享受和参与开源。
+This project is licensed under [MIT](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/LICENSE).
