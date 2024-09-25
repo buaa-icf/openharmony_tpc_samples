@@ -83,6 +83,34 @@
     {
       "name": "right_side",
       "value": "输入到数组，右侧过滤"
+    },
+    {
+      "name": "A_horse_X",
+      "value": "a马cx马x"
+    },
+    {
+      "name": "horse",
+      "value": "马"
+    },
+    {
+      "name": "heart",
+      "value": "心"
+    },
+    {
+      "name": "horse_heart",
+      "value": "马心"
+    },
+    {
+      "name": "String_difference",
+      "value": "字符串相差"
+    },
+    {
+      "name": "difference",
+      "value": "个"
+    },
+    {
+      "name": "A_horse_i",
+      "value": "马i心马ii心i"
     }
   ]
 }
