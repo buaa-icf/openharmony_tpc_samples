@@ -341,7 +341,7 @@ DevEco Studio: 4.0 Release(4.0.3.413), SDK: API10 (4.0.10.3)
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-sig/ohos_ftp_srv/issues) 给组件，当然，也非常欢迎发 [PR](https://gitee.com/openharmony-sig/ohos_ftp_srv/pulls)共建 。
+使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls)共建 。
 
 ## 开源协议
 
