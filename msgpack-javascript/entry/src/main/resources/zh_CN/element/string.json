@@ -11,6 +11,22 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Basic_Encode_Decode",
+      "value": "简单编码解码"
+    },
+    {
+      "name": "Constructor_Encode_Decode",
+      "value": "构造器编码解码"
+    },
+    {
+      "name": "Multi_Encode_Decode",
+      "value": "复杂Multi编码解码"
+    },
+    {
+      "name": "Special_character_Encode_Decode",
+      "value": "特殊字符扩展编解码"
     }
   ]
 }
