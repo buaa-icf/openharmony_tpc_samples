@@ -26,7 +26,7 @@ struct Index {
   @State TextString: string = "Text entry"
   @State messaged: string= "e"
   @State ReplaceString: string= "t"
-  @State StringResults: string = "马心"
+  @State StringResults: string = this.getResourceString($r('app.string.horse_heart'))
   @State Text: string= ""
   dialogController: CustomDialogController = new CustomDialogController({
     builder: CustomDialogExample({}),
@@ -72,7 +72,7 @@ struct Index {
         })
       Button($r('app.string.Compare_strings'))
         .onClick(() => {
-          this.messagevl = `字符串相差${leven(this.TextString, this.messaged)}个`
+          this.messagevl =this.getResourceString($r('app.string.String_difference'))+ `${leven(this.TextString, this.messaged)}`+this.getResourceString($r('app.string.difference'))
           setData(this.messagevl)
           this.dialogController.open()
         })

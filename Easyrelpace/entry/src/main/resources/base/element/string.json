@@ -83,6 +83,34 @@
     {
       "name": "right_side",
       "value": "Input to array, filter on the right side"
+    },
+    {
+      "name": "A_horse_X",
+      "value": "A horse CX horse X"
+    },
+    {
+      "name": "horse",
+      "value": "horse"
+    },
+    {
+      "name": "heart",
+      "value": "heart"
+    },
+    {
+      "name": "horse_heart",
+      "value": "horse heart"
+    },
+    {
+      "name": "String_difference",
+      "value": "String difference"
+    },
+    {
+      "name": "difference",
+      "value": " "
+    },
+    {
+      "name": "A_horse_i",
+      "value": "horse i heart horse ii heart i"
     }
   ]
 }

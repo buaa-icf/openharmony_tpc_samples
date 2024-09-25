@@ -23,16 +23,18 @@ interface T {
 @Entry
 @Component
 struct Index {
-  @State TextString: string = "a马cx马x"
-  @State Replace: string= "马"
-  @State StringResults: string = "心"
+  @State TextString: string = this.getResourceString($r('app.string.A_horse_X'))
+  @State Replace: string= this.getResourceString($r('app.string.horse'))
+  @State StringResults: string = this.getResourceString($r('app.string.heart'))
   @State Text: string= ""
   @State rightOutside: T= {data: ['c', 'd']}
   dialogController: CustomDialogController = new CustomDialogController({
     builder: CustomDialogExample({}),
     autoCancel: true
   });
-
+  getResourceString(res: Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
       Flex({ justifyContent: FlexAlign.Start, alignItems: ItemAlign.Start }) {
