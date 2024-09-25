@@ -1,25 +1,25 @@
 # sax
 
-## 简介
+## Introduction
 
-> sax是一个用于解析 XML或HTML 文档的 JavaScript 库。
+> sax is a JavaScript library for parsing XML or HTML documents.
 
-## 下载安装
+## How to Install
 
 ````
 ohpm install sax@0.6.0
 ````
 
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony har 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 
-### 解析xml信息
+### Parsing XML information
 
 ```
   saxParseXml() {
     let _this = this;
-    let parser: ESObject = sax.parser(true); // 创建一个新的解析器实例
+    let parser: ESObject = sax.parser(true); // Create a parser instance.
     parser.onopentag = (node: ESObject) => {
       hilog.info(0x0000, 'testTag', '%{public}s', node);
     };
@@ -41,12 +41,12 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
   }
 ```
 
-### 解析html信息
+### Parsing HTML information
 
 ```
   saxParseHtml() {
     let _this = this;
-    let parser: ESObject = sax.parser(true); // 创建一个新的解析器实例
+    let parser: ESObject = sax.parser(true); // Create a parser instance.
     parser.onopentag = (node: ESObject) => {
       hilog.info(0x0000, 'testTag', '%{public}s', node);
     };
@@ -68,42 +68,42 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
   }
 ```
 
-## 接口说明
+## Available APIs
 
-| **接口**                         | 功能             |
+| API                        | Description            |
 |--------------------------------|----------------|
-| parser(a:boolean): Parser      | 创建一个新的解析器实例    |
-| onopentag(node: ESObject)      | 开始解析tag标签时回调接口 |
-| onclosetag(nodeName: ESObject) | 结束解析tag标签时回调接口 |
-| ontext(text: ESObject)         | 解析tag内容回调接口    |
-| onend(ondeEnd: ESObject)       | 解析结束回调接口       |
-| onerror(error: ESObject)       | 解析出错回调接口       |
-| write(str: String)             | 写入解析内容         |
-| onattribute(a: ESObject)       | 解析到属性值接口回调     |
-| end()                          | 解析器写入结束接口      |
-| close()                        | 解析器关闭接口        |
+| parser(a:boolean): Parser      | Creates a parser instance.   |
+| onopentag(node: ESObject)      | Callback API when tag parsing starts.|
+| onclosetag(nodeName: ESObject) | Callback API when tag parsing ends.|
+| ontext(text: ESObject)         | Callback API for parsing tag content   |
+| onend(ondeEnd: ESObject)       | Callback API for parsing ending      |
+| onerror(error: ESObject)       | Callback API for parsing errors      |
+| write(str: String)             | Writes the parsed content.        |
+| onattribute(a: ESObject)       | Callback API for parsing the attribute value.    |
+| end()                          | Ends parser write.     |
+| close()                        | Closes the parser.       |
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：适配DevEco Studio:4.1 Canary(4.1.3.317)，OpenHarmony SDK:API version 11 (4.1.0.36).
+lodash.isequal has been verified in the following version: DevEco Studio 4.1 Canary (4.1.3.317), OpenHarmony SDK: API11 (4.1.0.36)
 
-## 目录结构
+## Directory Structure
 
 ````
 |---- Sax  
-|     |---- entry  # 示例代码文件夹
+|     |---- entry  # Sample code
 |           |---- src  
-|                   |---- main  #sample示例代码
-|                   |---- ohosTest  #xts示例代码
-|     |---- README.md  # 安装使用方法                    
+|                   |---- main  # Sample code
+|                   |---- ohosTest  # xts code
+|     |---- README.md  # Readme  
+|     |---- README_zh.md  # Readme                  
 ````
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
-给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem during the use, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
 
-## 开源协议
+## License
 
-本项目基于 [BSD LICENSE](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Sax/LICENSE)
-，请自由地享受和参与开源。
+This project is licensed under [BSD LICENSE](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Sax/LICENSE).
+
