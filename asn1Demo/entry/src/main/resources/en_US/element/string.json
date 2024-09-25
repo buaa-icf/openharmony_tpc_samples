@@ -11,6 +11,66 @@
     {
       "name": "EntryAbility_label",
       "value": "asn1Demo"
+    },
+    {
+      "name": "Assembly_data",
+      "value": "Assembly data: "
+    },
+    {
+      "name": "To_convert",
+      "value": "To convert data from toBER to hexadecimal:"
+    },
+    {
+      "name": "From_BER",
+      "value": "From BER data:"
+    },
+    {
+      "name": "Asn1_data",
+      "value": "Asn1 assembly raw data:"
+    },
+    {
+      "name": "Base64_encoding",
+      "value": "Base64 encoding"
+    },
+    {
+      "name": "Hex_encoding",
+      "value": "Hex encoding"
+    },
+    {
+      "name": "Base64_decoding",
+      "value": "Base64 decoding"
+    },
+    {
+      "name": "Hex_decoding",
+      "value": "Hex decoding"
+    },
+    {
+      "name": "Asn1_serializes",
+      "value": "Asn1 serializes data"
+    },
+    {
+      "name": "Asn1_deserializes",
+      "value": "Asn1 deserializes data"
+    },
+    {
+      "name": "Serialize",
+      "value": "Serialize data first"
+    },
+    {
+      "name": "DER_data",
+      "value": "DER original abstract data:"
+    },
+    {
+      "name": "DER_serialized",
+      "value": "DER serialized data:"
+    },
+    {
+      "name": "DER_deserialization",
+      "value": "DER deserialization data:"
+    },
+    {
+      "name": "Test_BER",
+      "value": "Test BER"
     }
   ]
 }

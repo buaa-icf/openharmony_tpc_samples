@@ -283,12 +283,16 @@ struct berTest {
     .height('100%')
   }
 
+  getResourceString(res: Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
+
   berHandle(asn:ESObject , name: string) {
     const ber:ESObject  = asn.toBER();
     const asnParsed:ESObject  = asn1js.fromBER(ber);
-    this.strPrototypeText = name + "组装数据：" + JSON.stringify(asn);
-    this.strEncodingText = "toBER ArrayBuffer数据转换十六进制：" + bufferToHexCodes(ber);
-    this.strDecodingText = "fromBER数据：" + JSON.stringify(asnParsed);
+    this.strPrototypeText = name + this.getResourceString($r('app.string.Assembly_data')) + JSON.stringify(asn);
+    this.strEncodingText = this.getResourceString($r('app.string.To_convert')) + bufferToHexCodes(ber);
+    this.strDecodingText = this.getResourceString($r('app.string.From_BER')) + JSON.stringify(asnParsed);
     console.debug(this.strPrototypeText +":"+this.strEncodingText+":"+this.strDecodingText)
   }
 }
