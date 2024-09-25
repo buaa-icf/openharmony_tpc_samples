@@ -1,22 +1,22 @@
 # parser-html-json
 
-## 简介
+## Introduction
 
-将字符串的html解析为json数据，获取其中相关内容
+This project provides APIs to parse HTML data of a string into JSON data and obtain related content.
 
-<img src="https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/parserHtmlJsonDemo/demo.gif" alt="演示示例" style="zoom:30%;" />
+![Demo](./demo_EN.gif)
 
-## 安装
+## Installation
 
 ```
 ohpm install parser-html-json
 ```
 
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 
-### 提取css
+### Extracting a CSS String
 
 ```
 import * as ParserHTMLJson from 'parser-html-json';
@@ -25,7 +25,7 @@ let parserJson = new ParserHTMLJson.default(html);
 let result = JSON.stringify(parserJson.getClassStyleJson());
 ```
 
-### 获取json格式的html
+### Obtaining HTML Data in JSON Format
 
 ```
 import * as ParserHTMLJson from 'parser-html-json';
@@ -34,29 +34,29 @@ let parserJson = new ParserHTMLJson.default(html);
 let result = JSON.stringify(parserJson.getHtmlJson());
 ```
 
-### 接口说明
-|          接口名          |接口说明	|备注|
-|:---------------------:|:---:|:---:|
-|         getClassStyleJson         |获取html的css的json数据   |        |
-|        getHtmlJson        |输出转换成json格式的html数据   |        |
+### Available APIs
+|      API      |           Description          |
+| :---------------: | :--------------------------: |
+| getClassStyleJson |   Obtains the JSON object converted from a CSS string.   |
+|    getHtmlJson    | Obtains HTML data in JSON format.|
 
-## 目录结构
+## Directory Structure
 
 ```
 |---- parserHtmlJsonDemo
-|     |---- entry/src/main/ets  # 示例代码文件夹
+|     |---- entry/src/main/ets  # Sample code
 |           |---- entryability
 |                            |---- EntryAbility.ets
 |           |---- pages
 |                     |---- Index.ets
-|     |---- README.md  # 安装使用方法
-|     |---- demo.gif  # 演示示例
+|     |---- README_EN.md  # Readme
+|     |---- demo_EN.gif  # Demo
 ```
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提[Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们提[PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls)。
+If you find any problem when using parser-html-json, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-本项目基于 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/parserHtmlJsonDemo/LICENSE)，请自由地享受和参与开源。
+This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/parserHtmlJsonDemo/LICENSE).

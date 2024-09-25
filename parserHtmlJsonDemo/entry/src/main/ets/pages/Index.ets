@@ -46,7 +46,11 @@ const html = `
 @Entry
 @Component
 struct Index {
-  @State message: string = '请点击按钮';
+  @State message: string = this.getResourceString($r('app.string.please_click_button'));
+
+  getResourceString(res:Resource){
+    return getContext().resourceManager.getStringSync(res.id)
+  }
 
   build() {
     Row() {
@@ -71,7 +75,7 @@ struct Index {
             console.log(result)
             this.message = result
           })
-        Text('执行结果:\n' + this.message)
+        Text(this.getResourceString($r('app.string.result')) + ':\n' + this.message)
           .fontSize(20)
       }
       .width('100%')
