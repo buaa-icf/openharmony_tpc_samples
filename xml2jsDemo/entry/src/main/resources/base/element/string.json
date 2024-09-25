@@ -11,6 +11,46 @@
     {
       "name": "EntryAbility_label",
       "value": "xml2js"
+    },
+    {
+      "name": "Simple_parsing_of_XML",
+      "value": "Simple parsing of XML"
+    },
+    {
+      "name": "PromiseUsage",
+      "value": "Resolve using Promise Usage method"
+    },
+    {
+      "name": "Building_XML",
+      "value": "Building XML"
+    },
+    {
+      "name": "attributes",
+      "value": "Process attributes, tag names, and values"
+    },
+    {
+      "name": "XML_convert_uppercase",
+      "value": "Parse XML, convert to uppercase"
+    },
+    {
+      "name": "XML_convert_to_lowercase",
+      "value": "Parse XML, convert to lowercase"
+    },
+    {
+      "name": "character_lowercase",
+      "value": "Parse XML and convert the first character to lowercase"
+    },
+    {
+      "name": "namespace_prefixes",
+      "value": "Parse XML and remove XML namespace prefixes"
+    },
+    {
+      "name": "analysis_integer",
+      "value": "Parse XML to convert class integer strings into integers"
+    },
+    {
+      "name": "Boolean_values",
+      "value": "Parse XML to convert Boolean like character beds into Boolean values"
     }
   ]
 }

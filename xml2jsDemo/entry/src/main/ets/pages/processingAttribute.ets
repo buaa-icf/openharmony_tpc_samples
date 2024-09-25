@@ -37,37 +37,37 @@ struct processingAttribute {
           .margin(10)
           .enabled(false)
 
-        Button("解析XML，转大写")
+        Button($r("app.string.XML_convert_uppercase"))
           .fontSize(30)
           .margin(10)
           .onClick(() => {
             this.processingAttribute()
           })
-        Button("解析XML，转小写")
+        Button($r("app.string.XML_convert_to_lowercase"))
           .fontSize(30)
           .margin(10)
           .onClick(() => {
             this.processingAttribute2()
           })
-        Button("解析XML，将第一个字符转换为小写")
+        Button($r("app.string.character_lowercase"))
           .fontSize(30)
           .margin(10)
           .onClick(() => {
             this.processingAttribute3()
           })
-        Button("解析XML，去除xml命名空间前缀")
+        Button($r("app.string.namespace_prefixes"))
           .fontSize(30)
           .margin(10)
           .onClick(() => {
             this.processingAttribute4()
           })
-        Button("解析XML，将类整数字符串解析为整数")
+        Button($r("app.string.analysis_integer"))
           .fontSize(30)
           .margin(10)
           .onClick(() => {
             this.processingAttribute5()
           })
-        Button("解析XML，将类似布尔的字符床解析为布尔值")
+        Button($r("app.string.Boolean_values"))
           .fontSize(30)
           .margin(10)
           .onClick(() => {

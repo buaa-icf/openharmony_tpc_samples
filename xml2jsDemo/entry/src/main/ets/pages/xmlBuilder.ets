@@ -20,28 +20,32 @@ struct xmlBuilder {
   @State message: string = ""
   controller: TextAreaController = new TextAreaController()
 
+  private getResourceStr(data: Resource): string {
+    return getContext().resourceManager.getStringSync(data)
+  }
+
   build() {
     Row() {
       Column() {
-        Button("构建XML1")
+        Button(this.getResourceStr($r("app.string.Building_XML"))+"1")
           .fontSize(30)
           .margin(10)
           .onClick(() => {
             this.xmlBuilder()
           })
-        Button("构建XML2")
+        Button(this.getResourceStr($r("app.string.Building_XML"))+"2")
           .fontSize(30)
           .margin(10)
           .onClick(() => {
             this.xmlBuilder2()
           })
-        Button("构建XML3")
+        Button(this.getResourceStr($r("app.string.Building_XML"))+"3")
           .fontSize(30)
           .margin(10)
           .onClick(() => {
             this.xmlBuilder3()
           })
-        Button("构建XML4")
+        Button(this.getResourceStr($r("app.string.Building_XML"))+"4")
           .fontSize(30)
           .margin(10)
           .onClick(() => {
