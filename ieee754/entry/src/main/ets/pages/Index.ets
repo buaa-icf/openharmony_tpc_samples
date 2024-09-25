@@ -38,6 +38,11 @@ struct Index {
   @State message: string = 'MIT';
   @State public result: number = 0
   @State public writeResult:number = 0;
+
+  getResourceString(res:Resource){
+    return getContext().resourceManager.getStringSync(res.id)
+  }
+
   build() {
     Row() {
       Column() {
@@ -53,7 +58,7 @@ struct Index {
           .onClick(() => {
             this.click()
           })
-        Text("结果 :" + this.result)
+        Text(this.getResourceString($r('app.string.Result')) + ": " + this.result)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
           .margin({ top: "30px" })
@@ -66,7 +71,7 @@ struct Index {
           .onClick(() => {
             this.writeclick()
           })
-        Text("结果 :" + this.writeResult)
+        Text(this.getResourceString($r('app.string.Result')) + ": " + this.writeResult)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
           .margin({ top: "30px" })
