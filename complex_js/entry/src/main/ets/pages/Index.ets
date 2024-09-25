@@ -38,12 +38,16 @@ struct Index {
             let r = c.mul({re: 3, im: 9}).div(4.9).sub(3, 2);
             this.result = r.toString();
           })
-        Text("结果："+this.result)
+        Text(this.getResourceString('result') + this.result)
           .margin({top: 15})
           .fontSize(30)
       }
       .width('100%')
     }
     .height('100%')
+  }
+
+  getResourceString(resourceName:string) {
+    return getContext().resourceManager.getStringByNameSync(resourceName)
   }
 }
