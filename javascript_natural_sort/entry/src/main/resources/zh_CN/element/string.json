@@ -11,6 +11,10 @@
     {
       "name": "EntryAbility_label",
       "value": "javascript_natural_sort"
+    },
+    {
+      "name": "result",
+      "value": "结果:"
     }
   ]
 }

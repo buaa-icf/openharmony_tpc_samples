@@ -1,18 +1,18 @@
 # javascript_natural_sort
 
-## Introduction
+## 简介
 
 > Natural Sort algorithm for Javascript
 
-## How to Install
+## 下载安装
 
 ```shell
 ohpm  install javascript-natural-sort@0.7.1
 ```
 
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
-## How to Use
+## 使用说明
 
 
 ```js
@@ -52,39 +52,39 @@ naturalSort.insensitive = true;
 ['a', 'B'].sort(naturalSort);
 // ['a', 'B']
 ```
-For details about unit test cases, see [TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/javascript_natural_sort/TEST.md).
+单元测试用例详情见[TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/javascript_natural_sort/TEST.md)
 
-## Constraints
+## 约束与限制
 
-This project has been verified in the following version:
+在下述版本验证通过：
 
-- DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API 11 (4.1.0.36)
+- DevEco Studio 版本： 4.1 Canary(4.1.3.317),OpenHarmony SDK:API11 (4.1.0.36)。
 
-## Available APIs
+## 接口说明
 
-| API        | Parameter | Description     |
+| **接口**         | 参数  | 功能      |
 |----------------|-----|---------|
-| naturalSort()  | N/A  |  Natural sorting  |
+| naturalSort()  | 无   |  自然排序   |
 
-## Directory Structure
+## 目录结构
 
 ````
 |---- javascript_natural_sort
-|     |---- entry  # Sample code
+|     |---- entry  # 示例代码文件夹
               ├── src  
                  ├── main   
                    ├── ets
                        ├── pages
-                             ├── Index.ets  # Sample code
-|     |---- README.md  # Readme    
-|     |---- README_zh.md  # Readme               
+                             ├── Index.ets  sample代码
+|     |---- README.md  # 安装使用方法       
+|     |---- README_zh.md  # 安装使用方法              
 ````
 
-## How to Contribute
+## 贡献代码
 
-If you find any problem during the use, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
+使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)给组件，当然，也非常欢迎给发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls)共建。
 
-## License
+## 开源协议
 
-This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/javascript_natural_sort/LICENSE).
+本项目基于 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/javascript_natural_sort/LICENSE)，请自由地享受和参与开源。
     

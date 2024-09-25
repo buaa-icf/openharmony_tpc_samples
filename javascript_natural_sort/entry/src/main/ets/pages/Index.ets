@@ -38,7 +38,7 @@ struct Index {
             this.result = ['10',9,2,'1','4'].sort(naturalSort).toString();
             console.log('test page click result:'+this.result)
           })
-        Text('结果: ' + this.result)
+        Text(this.getResourceString('result') + this.result)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
           .margin({ top: 10 })
@@ -46,5 +46,9 @@ struct Index {
       .width('100%')
     }
     .height('100%')
+  }
+
+  getResourceString(resourceName:string) {
+    return getContext().resourceManager.getStringByNameSync(resourceName)
   }
 }
