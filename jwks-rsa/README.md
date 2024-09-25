@@ -92,7 +92,7 @@ this.client = new JwksClient({
 This project has been verified in the following version:
 - DevEco Studio: 4.1 Canary (4.1.3.317)
 
-- OpenHarmony SDK:API11 (4.1.0.36)
+- OpenHarmony SDK: API11 (4.1.0.36)
 
 ## Directory Structure
 
