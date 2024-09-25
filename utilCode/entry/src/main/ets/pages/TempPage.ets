@@ -21,14 +21,18 @@ struct TempPage {
   @State C:number = 0;
   @State F:number = 0;
 
+  private getResourceString(res: Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
+
   build() {
     Column() {
 
       Column({ space: 12 }) {
-        Text('摄氏度转华氏度')
+        Text($r("app.string.Celsius_to_Fahrenheit"))
           .margin({ top: 5 })
           .fontSize(16)
-        TextInput({ placeholder: '请输入摄氏度' })
+        TextInput({ placeholder: $r("app.string.Please_enter_degrees_Celsius") })
           .height(60)
           .fontSize(18)
           .maxLength(5)
@@ -40,7 +44,7 @@ struct TempPage {
               this.C = 0
             }
           })
-        Text('摄氏度：'+this.C+'为华氏度：'+TempUtils.C2F(this.C),)
+        Text(`${this.getResourceString($r("app.string.celsius"))}：${this.C} ${this.getResourceString($r("app.string.for"))} ${this.getResourceString($r("app.string.degree_Fahrenheit"))} ${TempUtils.C2F(this.C)}`)
           .fontSize(18)
           .fontColor('#000')
           .margin({ top: 20 })
@@ -52,10 +56,10 @@ struct TempPage {
 
 
       Column({ space: 12 }) {
-        Text('华氏度转摄氏度')
+        Text($r("app.string.Fahrenheit_to_Celsius"))
           .margin({ top: 5 })
           .fontSize(16)
-        TextInput({ placeholder: '请输入华氏度' })
+        TextInput({ placeholder: $r("app.string.Please_enter_Fahrenheit") })
           .height(60)
           .fontSize(18)
           .maxLength(5)
@@ -67,11 +71,12 @@ struct TempPage {
               this.F = 0
             }
           })
-        Text('华氏度：'+this.F+'为摄氏度：'+TempUtils.F2C(this.F),)
+        Text(`${this.getResourceString($r("app.string.degree_Fahrenheit"))}：${this.F} ${this.getResourceString($r("app.string.for"))} ${this.getResourceString($r("app.string.celsius"))} ${TempUtils.F2C(this.F)}`)
           .fontSize(18)
           .fontColor('#000')
           .margin({ top: 20 })
           .backgroundColor('#12939f')
+          .textAlign(TextAlign.Center)
 
         Divider().strokeWidth(2).color('#F1F3F5').margin({ top: 8, bottom: 8 })
       }.margin({ top: 10 })

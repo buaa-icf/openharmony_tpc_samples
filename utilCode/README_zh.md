@@ -1180,10 +1180,8 @@ DevEco Studio: 4.0(4.0.3.512),SDK: API10（4.0.10.9）
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
-给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)给组件，当然，也非常欢迎发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 共建。
 
 ## 开源协议
 
-本项目基于 [Apache License 2.0](https://gitee.com/zdy09/openharmony_tpc_samples/blob/master/utilCode/LICENSE)
-，请自由地享受和参与开源。
+本项目基于 [Apache License 2.0](https://gitee.com/zdy09/openharmony_tpc_samples/blob/master/utilCode/LICENSE)，请自由地享受和参与开源。

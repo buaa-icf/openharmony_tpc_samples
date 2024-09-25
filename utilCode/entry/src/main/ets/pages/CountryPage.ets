@@ -21,12 +21,15 @@ struct CountryPage {
   @State err: string = ''
   private simKey: string[] = [];
   private simValue: string[] = [];
+  private getResourceString(res: Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
 
   scroller: Scroller = new Scroller()
   build() {
     Scroll(this.scroller){
       Column() {
-        Text('当前系统地区获取拨号字冠' + CountryUtils.getCountryCodeByLanguage())
+        Text(this.getResourceString($r("app.string.current_system_region_gets_the_prefix")) + CountryUtils.getCountryCodeByLanguage())
           .fontSize(18)
           .margin({ left: 18, top: 18 })
 
@@ -34,13 +37,13 @@ struct CountryPage {
         Divider().strokeWidth(2).color('#F1F3F5').margin({ top: 8, bottom: 8 })
 
 
-        Text('sim卡获取拨号字冠模拟测试，模拟测试项目')
+        Text($r("app.string.SIM_card_gets_dial_prefix_mock_test_simulating_test_items"))
           .fontSize(18)
           .margin({ left: 18, top: 18 })
 
         ForEach(this.simKey, (item:string, index?: number) => {
           Row() {
-            Text(item + '拨号字冠为：' + CountryUtils.getCountryCode(item))
+            Text(item + " "+ this.getResourceString($r("app.string.The_prefix_of_the_dialer_is")) + CountryUtils.getCountryCode(item))
               .margin({ top: 5 })
               .fontSize(16)
           }

@@ -11,6 +11,363 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Caching_tests",
+      "value": "缓存测试"
+    },
+    {
+      "name": "Coordinate_test",
+      "value": "坐标测试"
+    },
+    {
+      "name": "Color_test",
+      "value": "颜色测试"
+    },
+    {
+      "name": "Time_test",
+      "value": "时间测试"
+    },
+    {
+      "name": "Image_test",
+      "value": "图片测试"
+    },
+    {
+      "name": "Country_code_test",
+      "value": "国家码测试"
+    },
+    {
+      "name": "Temperature_test",
+      "value": "温度测试"
+    },
+    {
+      "name": "Celsius_to_Fahrenheit",
+      "value": "摄氏度转华氏度"
+    },
+    {
+      "name": "Please_enter_degrees_Celsius",
+      "value": "请输入摄氏度"
+    },
+    {
+      "name": "celsius",
+      "value": "摄氏度"
+    },
+    {
+      "name": "degree_Fahrenheit",
+      "value": "华氏度"
+    },
+    {
+      "name": "for",
+      "value": "为"
+    },
+    {
+      "name": "Fahrenheit_to_Celsius",
+      "value": "华氏度转摄氏度"
+    },
+    {
+      "name": "Please_enter_Fahrenheit",
+      "value": "请输入华氏度"
+    },
+    {
+      "name": "Is_it_JPG",
+      "value": "是否jpg："
+    },
+    {
+      "name": "Is_it_PNG",
+      "value": "是否png："
+    },
+    {
+      "name": "Is_it_GIF",
+      "value": "是否gif："
+    },
+    {
+      "name": "Is_it_TIF",
+      "value": "是否tif："
+    },
+    {
+      "name": "Is_it_BMP",
+      "value": "是否bmp："
+    },
+    {
+      "name": "Text_testing",
+      "value": "文本测试"
+    },
+    {
+      "name": "Random_color_test",
+      "value": "随机颜色测试"
+    },
+    {
+      "name": "Please_enter_longitude",
+      "value": "请输入经度"
+    },
+    {
+      "name": "Please_enter_latitude",
+      "value": "请输入纬度"
+    },
+    {
+      "name": "Convert_them_all",
+      "value": "全部转换"
+    },
+    {
+      "name": "BD09_coordinates_to_GCJ02_coordinates",
+      "value": "BD09 坐标转 GCJ02 坐标"
+    },
+    {
+      "name": "GCJ02_coordinates_to_BD09_coordinates",
+      "value": "GCJ02 坐标转 BD09 坐标"
+    },
+    {
+      "name": "GCJ02_coordinates_to_WGS84_coordinates",
+      "value": "GCJ02  坐标转 WGS84  坐标"
+    },
+    {
+      "name": "WGS84_coordinates_to_GCJ02_coordinates",
+      "value": "WGS84  坐标转 GCJ02  坐标"
+    },
+    {
+      "name": "BD09_coordinates_to_WGS84_coordinates",
+      "value": "BD09  坐标转 WGS84  坐标"
+    },
+    {
+      "name": "WGS84_coordinates_to_BD09_coordinates",
+      "value": "WGS84  坐标转 BD09  坐标"
+    },
+    {
+      "name": "For_leap_year_test_click_button_to_determine_leap_year",
+      "value": "闰年测试，点击按钮判断是否为闰年"
+    },
+    {
+      "name": "Please_enter_year_year_range_greater_than_1581",
+      "value": "请输入年份,年份范围，大于1581"
+    },
+    {
+      "name": "Please_enter_a_year_greater_than_1581",
+      "value": "请输入大于1581的年份"
+    },
+    {
+      "name": "Determine_whether_the_year_is_leap_year",
+      "value": "年是否闰年判断"
+    },
+    {
+      "name": "It_a_leap_year",
+      "value": "是闰年"
+    },
+    {
+      "name": "Not_a_leap_year",
+      "value": "不是闰年"
+    },
+    {
+      "name": "Morning_and_afternoon_tests_judging_corresponding_time_is_morning_or_afternoon",
+      "value": "上下午测试，判断对应时间为上午或下午"
+    },
+    {
+      "name": "dot_is",
+      "value": "点为："
+    },
+    {
+      "name": "dot_for",
+      "value": "f点为："
+    },
+    {
+      "name": "current_system_region_gets_the_prefix",
+      "value": "当前系统地区获取拨号字冠"
+    },
+    {
+      "name": "SIM_card_gets_dial_prefix_mock_test_simulating_test_items",
+      "value": "sim卡获取拨号字冠模拟测试，模拟测试项目"
+    },
+    {
+      "name": "The_prefix_of_the_dialer_is",
+      "value": "拨号字冠为："
+    },
+
+    {
+      "name": "Test_data",
+      "value": "测试数据"
+    },
+    {
+      "name": "Write_10_pieces_data_key0_9_no_corresponding_interface_convenient_testing",
+      "value": "写入10条数据，key0~9，无对应接口，方便测试"
+    },
+    {
+      "name": "put_writes_cached_data",
+      "value": "put：写入缓存数据"
+    },
+    {
+      "name": "Hello",
+      "value": "你好"
+    },
+    {
+      "name": "The_write_succeeded",
+      "value": "写入成功"
+    },
+    {
+      "name": "Put_test_write_data_pass_key_write_value",
+      "value": "put测试，写入数据，通过键，写入值"
+    },
+    {
+      "name": "Please_enter_key",
+      "value": "请输入key"
+    },
+    {
+      "name": "Please_enter_value",
+      "value": "请输入value"
+    },
+    {
+      "name": "The_key_cannot_be_empty",
+      "value": "键不能为空"
+    },
+    {
+      "name": "Write_value",
+      "value": "写入值"
+    },
+    {
+      "name": "succeed",
+      "value": "成功"
+    },
+    {
+      "name": "Write_failed",
+      "value": "写入失败"
+    },
+    {
+      "name": "get_the_test_get_value_by_key",
+      "value": "get测试，通过键获取值"
+    },
+    {
+      "name": "get_reads_data",
+      "value": "get：读取数据"
+    },
+    {
+      "name": "Read_failed",
+      "value": "读取失败"
+    },
+    {
+      "name": "The_values_obtained_are",
+      "value": "获取的值为："
+    },
+    {
+      "name": "del_test_remove_value_by_key",
+      "value": "del测试，通过键删除值"
+    },
+    {
+      "name": "del_deletes_data",
+      "value": "del：删除数据"
+    },
+    {
+      "name": "Delete_the_results",
+      "value": "删除结果"
+    },
+    {
+      "name": "clear_test_delete_values_delete_size_and_set_memsize_to_0",
+      "value": "clear测试，删除所有值，删除后size，memsize为0"
+    },
+    {
+      "name": "clear_Deletes_all_values",
+      "value": "clear：删除所有值"
+    },
+    {
+      "name": "Deletion_failed",
+      "value": "删除失败"
+    },
+    {
+      "name": "size_test_which_entries_in_cache",
+      "value": "size测试：返回缓存中的当前条目数"
+    },
+    {
+      "name": "The_number_entries_currently_in_cache",
+      "value": "缓存中的当前条目数："
+    },
+    {
+      "name": "memsize_test_returns_entries_that_occupy_cache_space_usually_size",
+      "value": "memsize测试，返回占用缓存空间的条目数,通常== size()"
+    },
+    {
+      "name": "memsize_test_returns_entries_that_occupy_cache_space",
+      "value": "memsize测试：返回占用缓存空间的条目数"
+    },
+    {
+      "name": "The_number_of_entries_that_occupy_cache_space",
+      "value": "占用缓存空间的条目数"
+    },
+    {
+      "name": "debug_test_debug_switch",
+      "value": "debug测试，debug开关"
+    },
+    {
+      "name": "Turn_on_debug",
+      "value": "打开debug"
+    },
+    {
+      "name": "Turn_on_debug_mode",
+      "value": "打开debug模式"
+    },
+    {
+      "name": "Turn_off_debugging",
+      "value": "关闭debug"
+    },
+    {
+      "name": "Disable_debug_mode",
+      "value": "关闭debug模式"
+    },
+    {
+      "name": "Hits_test_returns_cached_hits_only_available_in_debug_mode",
+      "value": "hits测试，返回缓存点击次数(仅在调试模式下可用)"
+    },
+    {
+      "name": "Cache_clicks",
+      "value": "缓存点击次数："
+    },
+    {
+      "name": "misses_test_returns_cache_no_clicks_monitored_in_debug_mode_only",
+      "value": "misses测试，返回缓存未点击次数(仅在调试模式下监控)"
+    },
+    {
+      "name": "The_number_of_cache_unclicks",
+      "value": "缓存未点击次数："
+    },
+    {
+      "name": "keys_test_returns_all_cached_keys",
+      "value": "keys测试：返回所有缓存键"
+    },
+    {
+      "name": "All_cache_keys",
+      "value": "所有缓存键"
+    },
+    {
+      "name": "exportJson_test_returns_all_cached_data_JSON_strings",
+      "value": "exportJson测试，返回所有缓存数据以JSON字符串表示"
+    },
+    {
+      "name": "exportJson_test_returns_all_cached_data",
+      "value": "exportJson测试：返回所有缓存数据"
+    },
+    {
+      "name": "All_cached_data",
+      "value": "所有缓存数据:"
+    },
+    {
+      "name": "importJson_test_import_data_Json_format",
+      "value": "importJson测试，Json格式导入数据，存在数据将会被覆盖，如果skipduplicate为true，存在的数据将不会覆盖，默认false"
+    },
+    {
+      "name": "importJson_test_override_test",
+      "value": "importJson测试：不覆盖测试"
+    },
+    {
+      "name": "Please_enter_your_data",
+      "value": "请输入数据"
+    },
+    {
+      "name": "importJson_test_imports_data_in_Json_format",
+      "value": "importJson测试：Json格式导入数据"
+    },
+    {
+      "name": "Please_enter_the_data_in_JSON_format",
+      "value": "请输入json格式数据"
+    },
+    {
+      "name": "current_number_of_entries_the_cache_after_successful_write",
+      "value": "成功写入后的缓存中的当前条目数"
     }
   ]
 }

@@ -48,8 +48,11 @@ struct CachePage {
   @State cacheExportJson: string = '';
   @State cacheImportJson: string = '';
   @State cacheImportJsonSize: number = 0;
-  private default: string = " {\"0\":{\"value\":\"测试数据\",\"expire\":\"NaN\"}}"
+  private default: string = " {\"0\":{\"value\":\""+this.getResourceString($r("app.string.Test_data"))+"\",\"expire\":\"NaN\"}}"
   scroller: Scroller = new Scroller()
+  private getResourceString(res: Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
 
   build() {
 
@@ -60,10 +63,10 @@ struct CachePage {
 
         //写入数据
         Column({ space: 12 }) {
-          Text('写入10条数据，key0~9，无对应接口，方便测试')
+          Text($r("app.string.Write_10_pieces_data_key0_9_no_corresponding_interface_convenient_testing"))
             .margin({ top: 5 })
             .fontSize(16)
-          Button('put：写入缓存数据', { type: ButtonType.Normal })
+          Button(this.getResourceString($r("app.string.put_writes_cached_data")), { type: ButtonType.Normal })
             .fontSize(18)
             .fontColor('#000')
             .height(60)
@@ -72,8 +75,8 @@ struct CachePage {
             .backgroundColor('#12939f')
             .onClick(() => {
               for (let i = 0; i < 10; i++) {
-                cache.put(i, '你好' + i);
-                prompt.showToast({ message: '写入成功', duration: 3000 })
+                cache.put(i, this.getResourceString($r("app.string.Hello")) + i);
+                prompt.showToast({ message: this.getResourceString($r("app.string.The_write_succeeded")), duration: 3000 })
               }
             })
           Divider().strokeWidth(2).color('#F1F3F5').margin({ top: 8, bottom: 8 })
@@ -81,22 +84,22 @@ struct CachePage {
 
         //put
         Column({ space: 12 }) {
-          Text('put测试，写入数据，通过键，写入值')
+          Text($r("app.string.Put_test_write_data_pass_key_write_value"))
             .margin({ top: 5 })
             .fontSize(16)
-          TextInput({ placeholder: '请输入key' })
+          TextInput({ placeholder: $r("app.string.Please_enter_key") })
             .height(60)
             .fontSize(18)
             .onChange((value: string) => {
               this.putKey = value
             })
-          TextInput({ placeholder: '请输入value' })
+          TextInput({ placeholder: $r("app.string.Please_enter_value") })
             .height(60)
             .fontSize(18)
             .onChange((value: string) => {
               this.putValue = value
             })
-          Button('put：写入缓存数据', { type: ButtonType.Normal })
+          Button($r("app.string.put_writes_cached_data"), { type: ButtonType.Normal })
             .fontSize(18)
             .fontColor('#000')
             .height(60)
@@ -106,13 +109,13 @@ struct CachePage {
             .onClick(() => {
               try {
                 if (this.putKey == undefined || this.putKey.length == 0) {
-                  prompt.showToast({ message: '键不能为空', duration: 3000 })
+                  prompt.showToast({ message: $r("app.string.The_key_cannot_be_empty"), duration: 3000 })
                   return
                 }
                 let value:number = cache.put(this.putKey, this.putValue);
-                prompt.showToast({ message: '写入值' + value + '成功', duration: 3000 })
+                prompt.showToast({ message: this.getResourceString($r("app.string.Write_value")) + " "+ value + " "+ this.getResourceString($r("app.string.succeed")), duration: 3000 })
               } catch (err) {
-                prompt.showToast({ message: '写入失败', duration: 3000 })
+                prompt.showToast({ message: this.getResourceString($r("app.string.succeed")), duration: 3000 })
               }
             })
           Divider().strokeWidth(2).color('#F1F3F5').margin({ top: 8, bottom: 8 })
@@ -120,16 +123,16 @@ struct CachePage {
 
         //get
         Column({ space: 12 }) {
-          Text('get测试，通过键获取值')
+          Text($r("app.string.get_the_test_get_value_by_key"))
             .margin({ top: 5 })
             .fontSize(16)
-          TextInput({ placeholder: '请输入key' })
+          TextInput({ placeholder:$r("app.string.Please_enter_key") })
             .height(60)
             .fontSize(18)
             .onChange((value: string) => {
               this.getKey = value
             })
-          Button('get：读取数据', { type: ButtonType.Normal })
+          Button(this.getResourceString($r("app.string.get_reads_data")), { type: ButtonType.Normal })
             .fontSize(18)
             .fontColor('#000')
             .height(60)
@@ -140,11 +143,11 @@ struct CachePage {
               try {
                 this.getValue = cache.get(this.getKey)
               } catch (err) {
-                prompt.showToast({ message: '读取失败', duration: 3000 })
+                prompt.showToast({ message: $r("app.string.Read_failed"), duration: 3000 })
               }
 
             })
-          Text('获取的值为：' + this.getValue)
+          Text(this.getResourceString($r("app.string.Read_failed")) + " " + this.getValue)
             .margin({ top: 5 })
             .fontSize(16)
           Divider().strokeWidth(2).color('#F1F3F5').margin({ top: 8, bottom: 8 })
@@ -152,14 +155,14 @@ struct CachePage {
 
         //del
         Column({ space: 12 }) {
-          Text('del测试，通过键删除值')
-          TextInput({ placeholder: '请输入key' })
+          Text($r("app.string.del_test_remove_value_by_key"))
+          TextInput({ placeholder: $r("app.string.Please_enter_key") })
             .height(60)
             .fontSize(18)
             .onChange((value: string) => {
               this.delKey = value
             })
-          Button('del：删除数据', { type: ButtonType.Normal })
+          Button(this.getResourceString($r("app.string.del_deletes_data")), { type: ButtonType.Normal })
             .fontSize(18)
             .fontColor('#000')
             .height(60)
@@ -168,7 +171,7 @@ struct CachePage {
             .backgroundColor('#12939f')
             .onClick(() => {
               let is:boolean = cache.del(this.delKey)
-              prompt.showToast({ message: '删除结果' + is, duration: 3000 })
+              prompt.showToast({ message: this.getResourceString($r("app.string.Delete_the_results")) + " "+ is, duration: 3000 })
 
             })
           Divider().strokeWidth(2).color('#F1F3F5').margin({ top: 8, bottom: 8 })
@@ -176,8 +179,8 @@ struct CachePage {
 
         //clear
         Column({ space: 12 }) {
-          Text('clear测试，删除所有值，删除后size，memsize为0')
-          Button('clear：删除所有值', { type: ButtonType.Normal })
+          Text($r("app.string.clear_test_delete_values_delete_size_and_set_memsize_to_0"))
+          Button($r("app.string.clear_Deletes_all_values"), { type: ButtonType.Normal })
             .fontSize(18)
             .fontColor('#000')
             .height(60)
@@ -188,7 +191,7 @@ struct CachePage {
               try {
                 cache.clear()
               } catch (err) {
-                prompt.showToast({ message: '删除失败', duration: 3000 })
+                prompt.showToast({ message: $r("app.string.Deletion_failed"), duration: 3000 })
               }
             })
           Divider().strokeWidth(2).color('#F1F3F5').margin({ top: 8, bottom: 8 })
@@ -196,8 +199,8 @@ struct CachePage {
 
         //size
         Column({ space: 12 }) {
-          Text('size测试，返回缓存中的当前条目数')
-          Button('size测试：返回缓存中的当前条目数', { type: ButtonType.Normal })
+          Text($r("app.string.size_test_which_entries_in_cache"))
+          Button($r("app.string.size_test_which_entries_in_cache"), { type: ButtonType.Normal })
             .fontSize(18)
             .fontColor('#000')
             .height(60)
@@ -207,7 +210,7 @@ struct CachePage {
             .onClick(() => {
               this.cacheSize = cache.size()
             })
-          Text('缓存中的当前条目数：' + this.cacheSize)
+          Text(this.getResourceString($r("app.string.The_number_entries_currently_in_cache")) + this.cacheSize)
             .height(60)
             .fontSize(18)
           Divider().strokeWidth(2).color('#F1F3F5').margin({ top: 8, bottom: 8 })
@@ -215,8 +218,8 @@ struct CachePage {
 
         //memsize
         Column({ space: 12 }) {
-          Text('memsize测试，返回占用缓存空间的条目数,通常== size()')
-          Button('memsize测试：返回占用缓存空间的条目数', { type: ButtonType.Normal })
+          Text($r("app.string.memsize_test_returns_entries_that_occupy_cache_space_usually_size"))
+          Button($r("app.string.memsize_test_returns_entries_that_occupy_cache_space"), { type: ButtonType.Normal })
             .fontSize(18)
             .fontColor('#000')
             .height(60)
@@ -226,7 +229,7 @@ struct CachePage {
             .onClick(() => {
               this.cacheMemsize = cache.memsize()
             })
-          Text('占用缓存空间的条目数：' + this.cacheMemsize)
+          Text(this.getResourceString($r("app.string.The_number_of_entries_that_occupy_cache_space")) + this.cacheMemsize)
             .height(60)
             .fontSize(18)
           Divider().strokeWidth(2).color('#F1F3F5').margin({ top: 8, bottom: 8 })
@@ -234,8 +237,8 @@ struct CachePage {
 
         //debug
         Column({ space: 12 }) {
-          Text('debug测试，debug开关')
-          Button('打开debug', { type: ButtonType.Normal })
+          Text($r("app.string.debug_test_debug_switch"))
+          Button($r("app.string.Turn_on_debug"), { type: ButtonType.Normal })
             .fontSize(18)
             .fontColor('#000')
             .height(60)
@@ -244,9 +247,9 @@ struct CachePage {
             .backgroundColor('#12939f')
             .onClick(() => {
               cache.debug(true)
-              prompt.showToast({ message: '打开debug模式', duration: 3000 })
+              prompt.showToast({ message: this.getResourceString($r("app.string.Turn_on_debug_mode")), duration: 3000 })
             })
-          Button('关闭debug', { type: ButtonType.Normal })
+          Button($r("app.string.Turn_off_debugging"), { type: ButtonType.Normal })
             .fontSize(18)
             .fontColor('#000')
             .height(60)
@@ -255,15 +258,15 @@ struct CachePage {
             .backgroundColor('#12939f')
             .onClick(() => {
               cache.debug(false)
-              prompt.showToast({ message: '关闭debug模式', duration: 3000 })
+              prompt.showToast({ message: $r("app.string.Disable_debug_mode"), duration: 3000 })
             })
           Divider().strokeWidth(2).color('#F1F3F5').margin({ top: 8, bottom: 8 })
         }.margin({ top: 10 })
 
         //hits
         Column({ space: 12 }) {
-          Text('hits测试，返回缓存点击次数(仅在调试模式下可用)')
-          Button('hits测试，返回缓存点击次数(仅在调试模式下可用)', { type: ButtonType.Normal })
+          Text($r("app.string.Hits_test_returns_cached_hits_only_available_in_debug_mode"))
+          Button($r("app.string.Hits_test_returns_cached_hits_only_available_in_debug_mode"), { type: ButtonType.Normal })
             .fontSize(18)
             .fontColor('#000')
             .height(60)
@@ -273,7 +276,7 @@ struct CachePage {
             .onClick(() => {
               this.cacheHits = cache.hits()
             })
-          Text('缓存点击次数：' + this.cacheHits)
+          Text(this.getResourceString($r("app.string.Cache_clicks")) + this.cacheHits)
             .height(60)
             .fontSize(18)
           Divider().strokeWidth(2).color('#F1F3F5').margin({ top: 8, bottom: 8 })
@@ -281,8 +284,8 @@ struct CachePage {
 
         //misses
         Column({ space: 12 }) {
-          Text('misses测试，返回缓存未点击次数(仅在调试模式下监控)')
-          Button('misses测试，返回缓存未点击次数(仅在调试模式下监控)', { type: ButtonType.Normal })
+          Text($r("app.string.misses_test_returns_cache_no_clicks_monitored_in_debug_mode_only"))
+          Button($r("app.string.misses_test_returns_cache_no_clicks_monitored_in_debug_mode_only"), { type: ButtonType.Normal })
             .fontSize(18)
             .fontColor('#000')
             .height(60)
@@ -292,7 +295,7 @@ struct CachePage {
             .onClick(() => {
               this.cacheMisses = cache.misses()
             })
-          Text('缓存未点击次数：' + this.cacheMisses)
+          Text(this.getResourceString($r("app.string.The_number_of_cache_unclicks")) + this.cacheMisses)
             .height(60)
             .fontSize(18)
           Divider().strokeWidth(2).color('#F1F3F5').margin({ top: 8, bottom: 8 })
@@ -300,8 +303,8 @@ struct CachePage {
 
         //keys
         Column({ space: 12 }) {
-          Text('keys测试，返回所有缓存键')
-          Button('keys测试：返回所有缓存键', { type: ButtonType.Normal })
+          Text($r("app.string.keys_test_returns_all_cached_keys"))
+          Button($r("app.string.keys_test_returns_all_cached_keys"), { type: ButtonType.Normal })
             .fontSize(18)
             .fontColor('#000')
             .height(60)
@@ -311,7 +314,7 @@ struct CachePage {
             .onClick(() => {
               this.cacheKeys = cache.keys();
             })
-          Text('所有缓存键：' + this.cacheKeys)
+          Text(this.getResourceString($r("app.string.All_cache_keys")) + this.cacheKeys)
             .height(60)
             .fontSize(18)
           Divider().strokeWidth(2).color('#F1F3F5').margin({ top: 8, bottom: 8 })
@@ -319,8 +322,8 @@ struct CachePage {
 
         //exportJson
         Column({ space: 12 }) {
-          Text('exportJson测试，返回所有缓存数据以JSON字符串表示')
-          Button('exportJson测试：返回所有缓存数据', { type: ButtonType.Normal })
+          Text($r("app.string.exportJson_test_returns_all_cached_data"))
+          Button($r("app.string.exportJson_test_returns_all_cached_data"), { type: ButtonType.Normal })
             .fontSize(18)
             .fontColor('#000')
             .height(60)
@@ -331,7 +334,7 @@ struct CachePage {
               this.cacheExportJson = cache.exportJson();
               console.log(this.cacheExportJson);
             })
-          Text('所有缓存数据：' + this.cacheExportJson)
+          Text(this.getResourceString($r("app.string.All_cached_data")) + this.cacheExportJson)
             .height(60)
             .fontSize(18)
           Divider().strokeWidth(2).color('#F1F3F5').margin({ top: 8, bottom: 8 })
@@ -340,19 +343,19 @@ struct CachePage {
 
         //importJson
         Column({ space: 12 }) {
-          Text('importJson测试，Json格式导入数据，存在数据将会被覆盖，如果skipduplicate为true，存在的数据将不会覆盖，默认false')
+          Text($r("app.string.importJson_test_import_data_Json_format"))
             .margin({ top: 5 })
             .fontSize(16)
-          Text('importJson测试：覆盖测试')
+          Text($r("app.string.importJson_test_override_test"))
             .margin({ top: 5 })
             .fontSize(16)
-          TextInput({ text: this.default, placeholder: '请输入数据' })
+          TextInput({ text: this.default, placeholder:$r("app.string.importJson_test_override_test") })
             .height(60)
             .fontSize(18)
             .onChange((value: string) => {
               this.cacheImportJson = value
             })
-          Button('importJson测试：Json格式导入数据', { type: ButtonType.Normal })
+          Button($r("app.string.importJson_test_imports_data_in_Json_format"), { type: ButtonType.Normal })
             .fontSize(18)
             .fontColor('#000')
             .height(60)
@@ -362,13 +365,13 @@ struct CachePage {
             .onClick(() => {
               try {
                 this.cacheImportJsonSize = cache.importJson(this.cacheImportJson,skipFn(false));
-                prompt.showToast({ message: '写入成功', duration: 3000 })
+                prompt.showToast({ message: $r("app.string.The_write_succeeded"), duration: 3000 })
               } catch (err) {
                 prompt.showToast({ message: '请输入json格式数据', duration: 3000 })
               }
 
             })
-          Text('成功写入后的缓存中的当前条目数' + this.cacheImportJsonSize)
+          Text(this.getResourceString($r("app.string.current_number_of_entries_the_cache_after_successful_write"))+ this.cacheImportJsonSize)
             .margin({ top: 5 })
             .fontSize(16)
           Divider().strokeWidth(2).color('#F1F3F5').margin({ top: 8, bottom: 8 })
@@ -377,19 +380,19 @@ struct CachePage {
 
         //importJson
         Column({ space: 12 }) {
-          Text('importJson测试，Json格式导入数据，存在数据将会被覆盖，如果skipduplicate为true，存在的数据将不会覆盖，默认false')
+          Text($r("app.string.importJson_test_import_data_Json_format"))
             .margin({ top: 5 })
             .fontSize(16)
-          Text('importJson测试：不覆盖测试')
+          Text($r("app.string.importJson_test_override_test"))
             .margin({ top: 5 })
             .fontSize(16)
-          TextInput({ text: this.default, placeholder: '请输入数据' })
+          TextInput({ text: this.default, placeholder:  $r("app.string.Please_enter_your_data") })
             .height(60)
             .fontSize(18)
             .onChange((value: string) => {
               this.cacheImportJson = value
             })
-          Button('importJson测试：Json格式导入数据', { type: ButtonType.Normal })
+          Button($r("app.string.importJson_test_imports_data_in_Json_format"), { type: ButtonType.Normal })
             .fontSize(18)
             .fontColor('#000')
             .height(60)
@@ -399,13 +402,13 @@ struct CachePage {
             .onClick(() => {
               try {
                 this.cacheImportJsonSize = cache.importJson(this.cacheImportJson, skipFn(true));
-                prompt.showToast({ message: '写入成功', duration: 3000 })
+                prompt.showToast({ message:  $r("app.string.The_write_succeeded"), duration: 3000 })
               } catch (err) {
-                prompt.showToast({ message: '请输入json格式数据', duration: 3000 })
+                prompt.showToast({ message: $r("app.string.Please_enter_the_data_in_JSON_format"), duration: 3000 })
               }
 
             })
-          Text('成功写入后的缓存中的当前条目数' + this.cacheImportJsonSize)
+          Text(this.getResourceString($r("app.string.current_number_of_entries_the_cache_after_successful_write")) + this.cacheImportJsonSize)
             .margin({ top: 5 })
             .fontSize(16)
           Divider().strokeWidth(2).color('#F1F3F5').margin({ top: 8, bottom: 8 })

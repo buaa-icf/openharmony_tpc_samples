@@ -39,7 +39,7 @@ struct GcoordPage {
 
         Column() {
 
-          TextInput({text: this.lon.toString(), placeholder: '请输入经度' })
+          TextInput({text: this.lon.toString(), placeholder: $r("app.string.Please_enter_longitude") })
             .height(60)
             .fontSize(18)
             .type(InputType.Number)
@@ -53,7 +53,7 @@ struct GcoordPage {
               }
             })
 
-          TextInput({text: this.lat.toString(), placeholder: '请输入维度' })
+          TextInput({text: this.lat.toString(), placeholder: $r("app.string.Please_enter_latitude") })
             .height(60)
             .fontSize(18)
             .margin(18)
@@ -67,10 +67,9 @@ struct GcoordPage {
             })
 
 
-          Button('全部转换')
+          Button($r("app.string.Convert_them_all"))
             .fontSize(18)
             .onClick(() => {
-
               this.BD092GCJ02 = gcoord.transform<Position>(
                 [this.lon, this.lat], // 经纬度坐标
                 gcoord.BD09, // 当前坐标系
@@ -108,7 +107,7 @@ struct GcoordPage {
         Divider().strokeWidth(1).color('#F1F3F5').margin({ top: 8, bottom: 8 })
 
         Column() {
-          Button('BD09 坐标转 GCJ02 坐标')
+          Button($r("app.string.BD09_coordinates_to_GCJ02_coordinates"))
             .fontSize(18)
             .onClick(() => {
               this.BD092GCJ02 = gcoord.transform<Position>(
@@ -124,7 +123,7 @@ struct GcoordPage {
         Divider().strokeWidth(1).color('#F1F3F5').margin({ top: 8, bottom: 8 })
 
         Column() {
-          Button('GCJ02 坐标转 BD09 坐标')
+          Button($r("app.string.GCJ02_coordinates_to_BD09_coordinates"))
             .fontSize(18)
             .onClick(() => {
               this.GCJ022BD09 = gcoord.transform<Position>(
@@ -140,7 +139,7 @@ struct GcoordPage {
         Divider().strokeWidth(1).color('#F1F3F5').margin({ top: 8, bottom: 8 })
 
         Column() {
-          Button('GCJ02  坐标转 WGS84  坐标')
+          Button($r("app.string.GCJ02_coordinates_to_WGS84_coordinates"))
             .fontSize(18)
             .onClick(() => {
               this.GCJ022WGS84 = gcoord.transform<Position>(
@@ -156,7 +155,7 @@ struct GcoordPage {
         Divider().strokeWidth(1).color('#F1F3F5').margin({ top: 8, bottom: 8 })
 
         Column() {
-          Button('WGS84  坐标转 GCJ02  坐标')
+          Button($r("app.string.WGS84_coordinates_to_GCJ02_coordinates"))
             .fontSize(18)
             .onClick(() => {
               this.WGS842GCJ02 = gcoord.transform<Position>(
@@ -172,7 +171,7 @@ struct GcoordPage {
         Divider().strokeWidth(1).color('#F1F3F5').margin({ top: 8, bottom: 8 })
 
         Column() {
-          Button('BD09  坐标转 WGS84  坐标')
+          Button($r("app.string.BD09_coordinates_to_WGS84_coordinates"))
             .fontSize(18)
             .onClick(() => {
               this.BD092WGS84 = gcoord.transform<Position>(
@@ -188,7 +187,7 @@ struct GcoordPage {
         Divider().strokeWidth(1).color('#F1F3F5').margin({ top: 8, bottom: 8 })
 
         Column() {
-          Button('WGS84  坐标转 BD09  坐标')
+          Button($r("app.string.WGS84_coordinates_to_BD09_coordinates"))
             .fontSize(18)
             .onClick(() => {
               this.WGS842BD09 = gcoord.transform<Position>(
