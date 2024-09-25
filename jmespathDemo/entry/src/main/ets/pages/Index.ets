@@ -26,7 +26,7 @@ interface TestExample {
 @Component
 struct Index {
   defaultExampleArray: TestExample[] = [{
-    name: '基本表达式',
+    name: getContext(this).resourceManager.getStringSync($r('app.string.basic_expression').id),
     expression: 'a.b.c[0].d[1][0]',
     case: `{"a": {
       "b": {
@@ -38,7 +38,7 @@ struct Index {
     }}`,
     result: '1'
   }, {
-    name: '切片',
+    name: getContext(this).resourceManager.getStringSync($r('app.string.section').id),
     expression: '[0:5]',
     case: '[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]',
     result: `[
@@ -49,7 +49,7 @@ struct Index {
     4
     ]`
   }, {
-    name: '列表和切片投影',
+    name: getContext(this).resourceManager.getStringSync($r('app.string.list_and_slice_projection').id),
     expression: 'people[*].first',
     case: `{
     "people": [
@@ -66,7 +66,7 @@ struct Index {
     "Jayden"
     ]`
   }, {
-    name: '对象投影',
+    name: getContext(this).resourceManager.getStringSync($r('app.string.object_projection').id),
     expression: 'ops.*.numArgs',
     case: `{
       "ops": {
@@ -80,7 +80,7 @@ struct Index {
       3
     ]`
   }, {
-    name: '展平投影',
+    name: getContext(this).resourceManager.getStringSync($r('app.string.zhan_ping_projection').id),
     expression: 'reservations[*].instances[*].state',
     case: `{
       "reservations": [
@@ -109,7 +109,7 @@ struct Index {
       ]
     ]`
   }, {
-    name: '过滤投影',
+    name: getContext(this).resourceManager.getStringSync($r('app.string.filter_projection').id),
     expression: "machines[?state=='running'].name",
     case: `{
     "machines": [
@@ -123,7 +123,7 @@ struct Index {
       "c"
     ]`
   }, {
-    name: '管道表达式',
+    name: getContext(this).resourceManager.getStringSync($r('app.string.pipeline_expression').id),
     expression: 'people[*].first | [0]',
     case: `{
       "people": [
@@ -136,7 +136,7 @@ struct Index {
     }`,
     result: '"James"'
   }, {
-    name: '多选',
+    name: getContext(this).resourceManager.getStringSync($r('app.string.multiple_choice').id),
     expression: 'people[].{Name: name, State: state.name}',
     case: `{
       "people": [
@@ -169,7 +169,7 @@ struct Index {
       }
     ]`
   }, {
-    name: '函数',
+    name: getContext(this).resourceManager.getStringSync($r('app.string.function').id),
     expression: 'max_by(people, &age).name',
     case: `{
       "people": [
@@ -196,20 +196,20 @@ struct Index {
   build() {
     Scroll() {
       Column() {
-        Text('选择示例：')
+        Text($r('app.string.select_example'))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
-        Select([{ value: '基本表达式' },
-          { value: '切片' },
-          { value: '列表和切片投影' },
-          { value: '对象投影' },
-          { value: '展平投影' },
-          { value: '过滤投影' },
-          { value: '管道表达式' },
-          { value: '多选' },
-          { value: '函数' }])
+        Select([{ value: $r('app.string.basic_expression') },
+          { value: $r('app.string.section') },
+          { value: $r('app.string.list_and_slice_projection') },
+          { value: $r('app.string.object_projection') },
+          { value: $r('app.string.zhan_ping_projection') },
+          { value: $r('app.string.filter_projection') },
+          { value: $r('app.string.pipeline_expression') },
+          { value: $r('app.string.multiple_choice') },
+          { value: $r('app.string.function') }])
           .selected(0)
-          .value('基本表达式')
+          .value(getContext(this).resourceManager.getStringSync($r('app.string.basic_expression').id))
           .font({ size: 16, weight: 500 })
           .fontColor('#182431')
           .selectedOptionFont({ size: 16, weight: 400 })
@@ -219,11 +219,11 @@ struct Index {
             this.caseText = this.defaultExampleArray[index].case
             this.resultText = this.defaultExampleArray[index].result
           })
-        Text('输入表达式：')
+        Text($r('app.string.input_expression'))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
         Search({ value: this.expressionText })
-          .searchButton('搜索')
+          .searchButton(getContext(this).resourceManager.getStringSync($r('app.string.search').id))
           .width('95%')
           .height(40)
           .backgroundColor('#F5F5F5')
@@ -232,7 +232,7 @@ struct Index {
           .textFont({ size: 14, weight: 400 })
           .onSubmit((value: string) => {
             if (!value || value === '') {
-              this.resultText = '表达式为空，请输入表达式'
+              this.resultText = getContext(this).resourceManager.getStringSync($r('app.string.expression_empty').id)
               return
             }
             try {
@@ -240,14 +240,14 @@ struct Index {
               if (result) {
                 this.resultText = JSON.stringify(result)
               } else {
-                this.resultText = '没有找到对应结果'
+                this.resultText = getContext(this).resourceManager.getStringSync($r('app.string.no_corresponding_results_found').id)
               }
             } catch (error) {
               console.error(`Search exception, error: ${error.message}.`)
-              this.resultText = '搜索异常，请检查表达式是否正确'
+              this.resultText = getContext(this).resourceManager.getStringSync($r('app.string.search_exception').id)
             }
           })
-        Text('测试数据：')
+        Text($r('app.string.test_data'))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
         TextArea({ text: this.caseText })
@@ -260,7 +260,7 @@ struct Index {
           .onChange((value: string) => {
             this.caseText = value
           })
-        Text('测试结果：')
+        Text($r('app.string.test_result'))
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
         Text(this.resultText)

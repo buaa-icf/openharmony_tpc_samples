@@ -11,6 +11,74 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "basic_expression",
+      "value": "Basic expression"
+    },
+    {
+      "name": "section",
+      "value": "section"
+    },
+    {
+      "name": "list_and_slice_projection",
+      "value": "List and Slice Projection"
+    },
+    {
+      "name": "object_projection",
+      "value": "Object Projection"
+    },
+    {
+      "name": "zhan_ping_projection",
+      "value": "Zhan Ping Projection"
+    },
+    {
+      "name": "filter_projection",
+      "value": "Filter Projection"
+    },
+    {
+      "name": "pipeline_expression",
+      "value": "Pipeline expression"
+    },
+    {
+      "name": "multiple_choice",
+      "value": "Multiple Choice"
+    },
+    {
+      "name": "function",
+      "value": "function"
+    },
+    {
+      "name": "select_example",
+      "value": "Select Example："
+    },
+    {
+      "name": "input_expression",
+      "value": "Input expression："
+    },
+    {
+      "name": "search",
+      "value": "search："
+    },
+    {
+      "name": "expression_empty",
+      "value": "The expression is empty, please enter an expression"
+    },
+    {
+      "name": "no_corresponding_results_found",
+      "value": "No corresponding results found"
+    },
+    {
+      "name": "search_exception",
+      "value": "Search exception, please check if the expression is correct"
+    },
+    {
+      "name": "test_data",
+      "value": "test data："
+    },
+    {
+      "name": "test_result",
+      "value": "test result："
     }
   ]
 }

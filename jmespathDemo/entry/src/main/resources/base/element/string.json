@@ -11,6 +11,74 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "basic_expression",
+      "value": "基本表达式"
+    },
+    {
+      "name": "section",
+      "value": "切片"
+    },
+    {
+      "name": "list_and_slice_projection",
+      "value": "列表和切片投影"
+    },
+    {
+      "name": "object_projection",
+      "value": "对象投影"
+    },
+    {
+      "name": "zhan_ping_projection",
+      "value": "展平投影"
+    },
+    {
+      "name": "filter_projection",
+      "value": "过滤投影"
+    },
+    {
+      "name": "pipeline_expression",
+      "value": "管道表达式"
+    },
+    {
+      "name": "multiple_choice",
+      "value": "多选"
+    },
+    {
+      "name": "function",
+      "value": "函数"
+    },
+    {
+      "name": "select_example",
+      "value": "选择示例："
+    },
+    {
+      "name": "input_expression",
+      "value": "输入表达式："
+    },
+    {
+      "name": "search",
+      "value": "搜索："
+    },
+    {
+      "name": "expression_empty",
+      "value": "表达式为空，请输入表达式"
+    },
+    {
+      "name": "no_corresponding_results_found",
+      "value": "没有找到对应结果"
+    },
+    {
+      "name": "search_exception",
+      "value": "搜索异常，请检查表达式是否正确"
+    },
+    {
+      "name": "test_data",
+      "value": "测试数据："
+    },
+    {
+      "name": "test_result",
+      "value": "测试结果："
     }
   ]
 }
