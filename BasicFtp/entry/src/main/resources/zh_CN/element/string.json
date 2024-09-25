@@ -19,6 +19,190 @@
     {
       "name": "Reason_File",
       "value": "Operate file in application file system"
+    },
+    {
+      "name": "enter_folder_name",
+      "value": "请输入文件夹名称"
+    },
+    {
+      "name": "Tips",
+      "value": "Tips:输入的文件夹如果不存在则会自动在远程服务器创建，并且是在当前工作目录里面创建，调用该方法之后工作目录会自动切换到该目录"
+    },
+    {
+      "name": "cancel",
+      "value": "取消"
+    },
+    {
+      "name": "ok",
+      "value": "确定"
+    },
+    {
+      "name": "Cancel_create_folder_on_server",
+      "value": "关闭了对话框，取消在服务器创建新的文件夹"
+    },
+    {
+      "name": "Create_folder_on_server",
+      "value": "在服务器创建新的文件夹"
+    },
+    {
+      "name": "Unknown_operation",
+      "value": "未知操作类型"
+    },
+    {
+      "name": "Get_working_directory",
+      "value": "获取当前工作目录"
+    },
+    {
+      "name": "Go_Back",
+      "value": "返回上一级"
+    },
+    {
+      "name": "Get_File_Size",
+      "value": "获取文件大小"
+    },
+    {
+      "name": "Get_last_modification_time",
+      "value": "获取文件最后修改时间"
+    },
+    {
+      "name": "Ability_to_obtain_server_support",
+      "value": "获取服务器支持的能力"
+    },
+    {
+      "name": "Delete_individual_files",
+      "value": "删除单个文件"
+    },
+    {
+      "name": "ensureRemotePath",
+      "value": "确保服务器文件地址是否存在(若不存在会自动生成)"
+    },
+    {
+      "name": "remove_empty_directories",
+      "value": "删除空目录"
+    },
+    {
+      "name": "remove_folders",
+      "value": "删除文件夹"
+    },
+    {
+      "name": "Clear_current_working_directory",
+      "value": "清空当前工作目录"
+    },
+    {
+      "name": "rename_file",
+      "value": "重命名文件"
+    },
+    {
+      "name": "Test",
+      "value": "测试"
+    },
+    {
+      "name": "Current_upload_length",
+      "value": "当前上传长度"
+    },
+    {
+      "name": "Current_download_length",
+      "value": "当前下载长度"
+    },
+    {
+      "name": "Server_address",
+      "value": "服务器地址:"
+    },
+    {
+      "name": "Port",
+      "value": "端口号:"
+    },
+    {
+      "name": "Username",
+      "value": "账号:"
+    },
+    {
+      "name": "Password",
+      "value": "密码:"
+    },
+    {
+      "name": "TLS",
+      "value": "是否开启SSL/TLS"
+    },
+    {
+      "name": "Login",
+      "value": "登录"
+    },
+    {
+      "name": "current_folder",
+      "value": "当前文件夹"
+    },
+    {
+      "name": "Log_out",
+      "value": "退出登录"
+    },
+    {
+      "name": "View_file_list",
+      "value": "查看列表"
+    },
+    {
+      "name": "View_log",
+      "value": "查看日志"
+    },
+    {
+      "name": "Generate_files",
+      "value": "生成本地文件"
+    },
+    {
+      "name": "Upload_a_file",
+      "value": "上传单个本地文件"
+    },
+    {
+      "name": "Add_upload",
+      "value": "追加上传"
+    },
+    {
+      "name": "Generate_folder",
+      "value": "生成本地文件夹"
+    },
+    {
+      "name": "Upload_folder",
+      "value": "上传本地文件夹"
+    },
+    {
+      "name": "Download_a_file",
+      "value": "下载单个文件"
+    },
+    {
+      "name": "Download_folder",
+      "value": "下载文件夹"
+    },
+    {
+      "name": "Init",
+      "value": "初始化参数，准备登录"
+    },
+    {
+      "name": "please_login",
+      "value": "客户端未登录，请先登录"
+    },
+    {
+      "name": "get_working_directory_failed",
+      "value": "获取当前工作目录失败"
+    },
+    {
+      "name": "get_working_directory_start",
+      "value": "获取当前工作目录开始"
+    },
+    {
+      "name": "get_working_directory_success",
+      "value": "获取当前工作目录成功"
+    },
+    {
+      "name": "get_file_list_failed",
+      "value": "获取文件列表是吧"
+    },
+    {
+      "name": "get_file_list_start",
+      "value": "获取文件列表开始"
+    },
+    {
+      "name": "get_file_list_success",
+      "value": "获取文件列表成功"
     }
   ]
 }

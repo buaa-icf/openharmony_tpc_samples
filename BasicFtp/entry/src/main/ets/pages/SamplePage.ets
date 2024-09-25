@@ -29,6 +29,10 @@ import GlobalObj from '../GlobalObj'
  */
 const TAG = 'zdy'
 
+function getResourceString(res:Resource){
+  return getContext().resourceManager.getStringSync(res.id)
+}
+
 @CustomDialog
 struct CustomDialogDiy {
   @Link textValue: string
@@ -41,23 +45,23 @@ struct CustomDialogDiy {
 
   build() {
     Column() {
-      Text('请输入文件夹名称').fontSize(20).margin({ top: 10, bottom: 10 }).width('90%')
+      Text($r('app.string.enter_folder_name')).fontSize(20).margin({ top: 10, bottom: 10 }).width('90%')
       TextInput({ placeholder: '', text: this.textValue }).height(60).width('90%')
         .onChange((value: string) => {
           this.textValue = value;
         })
-      Text('Tips:输入的文件夹如果不存在则会自动在远程服务器创建，并且是在当前工作目录里面创建，调用该方法之后工作目录会自动切换到该目录')
+      Text($r('app.string.Tips'))
         .margin({ top: 10, bottom: 10 })
         .width('90%')
         .fontSize(8)
         .fontColor(Color.Red)
       Flex({ justifyContent: FlexAlign.SpaceAround }) {
-        Button('取消')
+        Button($r('app.string.cancel'))
           .onClick(() => {
             this.controller.close()
             this.cancel()
           })
-        Button('确定')
+        Button($r('app.string.ok'))
           .onClick(() => {
             this.inputValue = this.textValue
             this.controller.close()
@@ -115,21 +119,21 @@ struct SamplePage {
   dialogController: CustomDialogController | null = new CustomDialogController({
     builder: CustomDialogDiy({
       cancel: () => {
-        this.showToast(`关闭了对话框，取消在服务器创建新的文件夹`, 'CustomDialogDiy-cancel')
+        this.showToast(getResourceString($r('app.string.Cancel_create_folder_on_server')), 'CustomDialogDiy-cancel')
       },
       confirm: () => {
         if (this.operationType === 'dir') {
-          this.showToast(`在服务器创建新的文件夹`, 'CustomDialogDiy-cancel')
+          this.showToast(getResourceString($r('app.string.Create_folder_on_server')), 'CustomDialogDiy-cancel')
           this.ensureRemotePath()
         } else if (this.operationType === 'rename') {
-          this.showToast(`在服务器创建新的文件夹`, 'CustomDialogDiy-cancel')
+          this.showToast(getResourceString($r('app.string.Create_folder_on_server')), 'CustomDialogDiy-cancel')
           this.renameFile()
         } else if (this.operationType === 'uploadSingleFile') {
           this.uploadSingleFile()
         } else if (this.operationType === 'uploadDir') {
           this.uploadDir()
         } else {
-          this.showToast(`未知操作类型`, 'CustomDialogDiy-unknow')
+          this.showToast(getResourceString($r('app.string.Unknown_operation')), 'CustomDialogDiy-unknow')
         }
 
       },
@@ -143,21 +147,21 @@ struct SamplePage {
   @Builder
   SubMenu() {
     Menu() {
-      MenuItem({ content: '获取当前工作目录', labelInfo: 'getCurrentDirectory' })
+      MenuItem({ content: $r('app.string.Get_working_directory'), labelInfo: 'getCurrentDirectory' })
         .onChange((selected) => {
           if (selected) {
             this.getCurrentDirectory()
           }
         })
 
-      MenuItem({ content: '返回上一级', labelInfo: 'back' })
+      MenuItem({ content: $r('app.string.Go_Back'), labelInfo: 'back' })
         .onChange((selected) => {
           if (selected) {
             this.backToParent()
           }
         })
 
-      MenuItem({ content: '获取文件大小', labelInfo: 'getFileSize' })
+      MenuItem({ content: $r('app.string.Get_File_Size'), labelInfo: 'getFileSize' })
         .onChange((selected) => {
           if (selected) {
             this.getFileSize()
@@ -165,27 +169,27 @@ struct SamplePage {
         })
 
 
-      MenuItem({ content: '获取文件最后修改时间', labelInfo: 'getLastModifyTime' })
+      MenuItem({ content: $r('app.string.Get_last_modification_time'), labelInfo: 'getLastModifyTime' })
         .onChange((selected) => {
           if (selected) {
             this.getLastModifyTime()
           }
         })
 
-      MenuItem({ content: '获取服务器支持的能力', labelInfo: 'getServerFeatures' })
+      MenuItem({ content: $r('app.string.Ability_to_obtain_server_support'), labelInfo: 'getServerFeatures' })
         .onChange((selected) => {
           if (selected) {
             this.getServerFeatures()
           }
         })
 
-      MenuItem({ content: '删除单个文件', labelInfo: 'deleteSingleFile' })
+      MenuItem({ content: $r('app.string.Delete_individual_files'), labelInfo: 'deleteSingleFile' })
         .onChange((selected) => {
           if (selected) {
             this.deleteSingleFile()
           }
         })
-      MenuItem({ content: '确保服务器文件地址是否存在(若不存在会自动生成)', labelInfo: 'ensureRemotePath' })
+      MenuItem({ content: $r('app.string.ensureRemotePath'), labelInfo: 'ensureRemotePath' })
         .onChange((selected) => {
           if (selected) {
             this.operationType = 'dir'
@@ -196,25 +200,25 @@ struct SamplePage {
             this.operationType = ''
           }
         })
-      MenuItem({ content: '删除空目录', labelInfo: 'deleteEmptyDirectory' })
+      MenuItem({ content: $r('app.string.remove_empty_directories'), labelInfo: 'deleteEmptyDirectory' })
         .onChange((selected) => {
           if (selected) {
             this.deleteEmptyDirectory()
           }
         })
-      MenuItem({ content: '删除文件夹', labelInfo: 'deleteAll' })
+      MenuItem({ content: $r('app.string.remove_folders'), labelInfo: 'deleteAll' })
         .onChange((selected) => {
           if (selected) {
             this.deleteAll()
           }
         })
-      MenuItem({ content: '清空当前工作目录', labelInfo: 'deleteAllButSelf' })
+      MenuItem({ content: $r('app.string.Clear_current_working_directory'), labelInfo: 'deleteAllButSelf' })
         .onChange((selected) => {
           if (selected) {
             this.deleteAllButSelf()
           }
         })
-      MenuItem({ content: '重命名文件', labelInfo: 'renameFile' })
+      MenuItem({ content: $r('app.string.rename_file'), labelInfo: 'renameFile' })
         .onChange((selected) => {
           if (selected) {
             this.operationType = 'rename'
@@ -242,17 +246,17 @@ struct SamplePage {
     }
   }
 
-  showToast(text: string, name = '测试') {
+  showToast(text: string, name = getResourceString($r('app.string.Test'))) {
     const ctx = this
     if (ctx.ftpUtil) {
       ctx.isLogin = ctx.ftpUtil.getLogin();
     }
     let index = ctx.message.lastIndexOf("\r\n")
     let newStr = ctx.message.substring(index, ctx.message.length)
-    if (newStr.indexOf('当前上传长度') != -1) {
+    if (newStr.indexOf(getResourceString($r('app.string.Current_upload_length'))) != -1) {
       let front = ctx.message.substring(0, index)
       ctx.message = front + "\r\n" + text;
-    } else if (newStr.indexOf('当前下载长度') != -1) {
+    } else if (newStr.indexOf(getResourceString($r('app.string.Current_download_length'))) != -1) {
       let index = ctx.message.lastIndexOf("\r\n")
       let front = ctx.message.substring(0, index)
       ctx.message = front + "\r\n" + text
@@ -273,7 +277,7 @@ struct SamplePage {
       Row() {
         Column() {
           Flex({ justifyContent: FlexAlign.Start, direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
-            Text('服务器地址：')
+            Text($r('app.string.Server_address'))
               .fontSize(20)
               .height(50)
               .width(200)
@@ -281,7 +285,7 @@ struct SamplePage {
               .textAlign(TextAlign.Center)
               .fontWeight(FontWeight.Bold)
 
-            TextInput({ placeholder: '请输入服务器地址', text: this.host })
+            TextInput({ placeholder: 'Please enter the server address', text: this.host })
               .width('100%')
               .height(50)
               .margin({ left: 15 })
@@ -294,7 +298,7 @@ struct SamplePage {
           }
 
           Flex({ justifyContent: FlexAlign.Start, direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
-            Text('端口号：')
+            Text($r('app.string.Port'))
               .fontSize(20)
               .height(50)
               .width(200)
@@ -302,7 +306,7 @@ struct SamplePage {
               .textAlign(TextAlign.Center)
               .fontWeight(FontWeight.Bold)
 
-            TextInput({ placeholder: '请输入端口号址', text: '21' })
+            TextInput({ placeholder: 'Please enter the port', text: '21' })
               .width('100%')
               .height(50)
               .margin({ left: 15 })
@@ -315,7 +319,7 @@ struct SamplePage {
           }
 
           Flex({ justifyContent: FlexAlign.Start, direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
-            Text('账号：')
+            Text($r('app.string.Username'))
               .fontSize(20)
               .height(50)
               .width(80)
@@ -323,7 +327,7 @@ struct SamplePage {
               .textAlign(TextAlign.Center)
               .fontWeight(FontWeight.Bold)
 
-            TextInput({ placeholder: '请输入账号', text: this.user })
+            TextInput({ placeholder: 'Please enter the username', text: this.user })
               .width('100%')
               .height(50)
               .margin({ left: 15 })
@@ -337,7 +341,7 @@ struct SamplePage {
           .margin({ top: 20 })
 
           Flex({ justifyContent: FlexAlign.Start, direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
-            Text('密码：')
+            Text($r('app.string.Password'))
               .fontSize(20)
               .height(50)
               .width(80)
@@ -345,7 +349,7 @@ struct SamplePage {
               .textAlign(TextAlign.Center)
               .fontWeight(FontWeight.Bold)
 
-            TextInput({ placeholder: '请输入密码', text: this.password })
+            TextInput({ placeholder: 'Please enter the password', text: this.password })
               .width('100%')
               .height(50)
               .borderWidth(2)
@@ -360,7 +364,7 @@ struct SamplePage {
 
 
           Flex({ justifyContent: FlexAlign.Start, direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
-            Text('是否开启SSL/TLS')
+            Text($r('app.string.TLS'))
               .fontSize(20)
               .height(50)
               .margin({ left: 15 })
@@ -379,7 +383,7 @@ struct SamplePage {
           }
           .margin({ top: 20 })
 
-          Button('登录')
+          Button($r('app.string.Login'))
             .margin(20)
             .width('80%')
             .height(50)
@@ -407,7 +411,7 @@ struct SamplePage {
             })
               .bindMenu(this.SubMenu)
 
-            Text(`当前文件夹：${this.remoteRoot}`)
+            Text(`${getResourceString($r('app.string.current_folder'))}：${this.remoteRoot}`)
               .layoutWeight(1)
               .fontSize(12)
               .textAlign(TextAlign.Start)
@@ -499,14 +503,14 @@ struct SamplePage {
                 .parallelGesture(TapGesture().onAction((event) => {
                   if (this.currentFileList && this.currentFileList.length > 0 && item) {
                     let name = item.name
-                    this.showToast(`点击了：${name}`, `ListItem---${item}`)
+                    this.showToast(`${name}`, `ListItem---${item}`)
                     if (item.type != FileType.Directory) {
                       if (this.selectFilePath == undefined) {
                         this.selectFilePath = name
-                        this.showToast(`选择了 selectFilePath ${this.selectFilePath}`, 'selectFilePath')
+                        this.showToast(`selectFilePath ${this.selectFilePath}`, 'selectFilePath')
                       } else {
                         this.selectFilePath = null;
-                        this.showToast(`取消了选择 `, 'selectFilePath')
+                        this.showToast(`select cancle `, 'selectFilePath')
                       }
                     } else {
                       this.enterChildDir(item.name)
@@ -559,7 +563,7 @@ struct SamplePage {
           .margin(20)
 
           Flex({ justifyContent: FlexAlign.Start, direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
-            Button(this.isShowLog ? '查看列表' : '查看日志')
+            Button(this.isShowLog ? getResourceString($r('app.string.View_file_list')) : getResourceString($r('app.string.View_log')))
               .fontSize(14)
               .height(30)
               .margin({ left: 10 })
@@ -568,7 +572,7 @@ struct SamplePage {
                 this.isShowLog = !this.isShowLog;
               })
 
-            Button('退出登陆')
+            Button($r('app.string.Log_out'))
               .fontSize(14)
               .height(30)
               .margin({ left: 10 })
@@ -587,7 +591,7 @@ struct SamplePage {
 
 
           Flex({ justifyContent: FlexAlign.Start, direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
-            Button('生成本地文件')
+            Button($r('app.string.Generate_files'))
               .fontSize(14)
               .height(30)
               .margin({ left: 10 })
@@ -595,7 +599,7 @@ struct SamplePage {
               .onClick(() => {
                 this.createSingleFile()
               })
-            Button('上传单个本地文件')
+            Button($r('app.string.Upload_a_file'))
               .fontSize(14)
               .height(30)
               .margin({ left: 10 })
@@ -617,7 +621,7 @@ struct SamplePage {
           .margin({ top: 10 })
 
           Flex({ justifyContent: FlexAlign.Start, direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
-            Button('生成本地文件')
+            Button($r('app.string.Generate_files'))
               .fontSize(14)
               .height(30)
               .margin({ left: 10 })
@@ -625,7 +629,7 @@ struct SamplePage {
               .onClick(() => {
                 this.createSingleFile()
               })
-            Button('追加上传')
+            Button($r('app.string.Add_upload'))
               .fontSize(14)
               .height(30)
               .margin({ left: 10 })
@@ -646,7 +650,7 @@ struct SamplePage {
 
           Flex({ justifyContent: FlexAlign.Start, direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
 
-            Button('生成本地文件夹')
+            Button($r('app.string.Generate_folder'))
               .fontSize(14)
               .height(30)
               .margin({ left: 10 })
@@ -654,7 +658,7 @@ struct SamplePage {
               .onClick(() => {
                 this.createFileDir()
               })
-            Button('上传本地文件夹')
+            Button($r('app.string.Upload_folder'))
               .fontSize(14)
               .height(30)
               .margin({ left: 10 })
@@ -675,7 +679,7 @@ struct SamplePage {
           .margin({ top: 10 })
 
           Flex({ justifyContent: FlexAlign.Start, direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
-            Button('下载单个文件')
+            Button($r('app.string.Download_a_file'))
               .fontSize(14)
               .height(30)
               .margin({ left: 10 })
@@ -684,7 +688,7 @@ struct SamplePage {
                 this.downloadSingleFile()
               })
 
-            Button('下载文件夹')
+            Button($r('app.string.Download_folder'))
               .fontSize(14)
               .height(30)
               .margin({ left: 10 })
@@ -712,7 +716,7 @@ struct SamplePage {
 
   async loginServer() {
     const ctx = this
-    ctx.message = '初始化参数，准备登录'
+    ctx.message = getResourceString($r('app.string.Init'))
     let loginInfo: AccessOptions | null = null
     if (ctx.secure) {
       let context = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext(this)
@@ -798,18 +802,18 @@ struct SamplePage {
     const ctx = this
     if (ctx.ftpUtil) {
       if (!ctx.ftpUtil.getLogin()) {
-        ctx.showToast('客户端未登录，请先登录', 'isLogin')
+        ctx.showToast(getResourceString($r('app.string.please_login')), 'isLogin')
         return
       }
       ctx.ftpUtil.getCurrentDirectory({
         currentDirectoryErr(err: Error) {
-          ctx.showToast(`获取当前工作目录失败：${err.message}`, 'currentDirectoryErr')
+          ctx.showToast(`${getResourceString($r('app.string.get_working_directory_failed'))}：${err.message}`, 'currentDirectoryErr')
         },
         currentDirectoryStart(info: string) {
-          ctx.showToast(`获取当前工作目录开始：${info}`, 'currentDirectoryStart')
+          ctx.showToast(`${getResourceString($r('app.string.get_working_directory_start'))}：${info}`, 'currentDirectoryStart')
         },
         currentDirectorySuccess(msg: string) {
-          ctx.showToast(`获取当前工作目录成功：${msg}`, 'currentDirectorySuccess')
+          ctx.showToast(`${getResourceString($r('app.string.get_working_directory_success'))}：${msg}`, 'currentDirectorySuccess')
           ctx.remoteRoot = msg
         }
       })
@@ -820,18 +824,18 @@ struct SamplePage {
     const ctx = this
     if (ctx.ftpUtil) {
       if (!ctx.ftpUtil?.getLogin()) {
-        ctx.showToast('客户端未登录，请先登录', 'isLogin')
+        ctx.showToast(getResourceString($r('app.string.please_login')), 'isLogin')
         return
       }
       ctx.ftpUtil?.getCurrentDirectory({
         currentDirectoryErr(err: Error) {
-          ctx.showToast(`获取当前工作目录失败：${err.message}`, 'currentDirectoryErr')
+          ctx.showToast(`${getResourceString($r('app.string.get_working_directory_failed'))}：${err.message}`, 'currentDirectoryErr')
         },
         currentDirectoryStart(info: string) {
-          ctx.showToast(`获取当前工作目录开始：${info}`, 'currentDirectoryStart')
+          ctx.showToast(`${getResourceString($r('app.string.get_working_directory_start'))}：${info}`, 'currentDirectoryStart')
         },
         currentDirectorySuccess(msg: string) {
-          ctx.showToast(`获取当前工作目录成功：${msg}`, 'currentDirectorySuccess')
+          ctx.showToast(`${getResourceString($r('app.string.get_working_directory_success'))}：${msg}`, 'currentDirectorySuccess')
           ctx.remoteRoot = msg
           let listName = '';
           if (ctx.remoteRoot == '' || ctx.remoteRoot == '\\' || ctx.remoteRoot == '/') {
@@ -841,14 +845,14 @@ struct SamplePage {
           }
           ctx.ftpUtil?.getList(listName, {
             getListErr(err: Error) {
-              ctx.showToast(`获取文件列表失败：${err.message}`, 'getListErr')
+              ctx.showToast(`${getResourceString($r('app.string.get_file_list_failed'))}：${err.message}`, 'getListErr')
               ctx.currentFileList = []
             },
             getListStart(info: string) {
-              ctx.showToast(`获取文件列表开始：${info}`, 'getListStart')
+              ctx.showToast(`${getResourceString($r('app.string.get_file_list_start'))}：${info}`, 'getListStart')
             },
             getListSuccess(result: FileInfo[]) {
-              ctx.showToast(`获取当文件列表成功：${JSON.stringify(result)}`, 'getListSuccess')
+              ctx.showToast(`${getResourceString($r('app.string.get_file_list_success'))}：${JSON.stringify(result)}`, 'getListSuccess')
               if (!result) {
                 ctx.currentFileList = []
               } else {
@@ -866,7 +870,7 @@ struct SamplePage {
   createSingleFile() {
     const ctx = this
     try {
-      ctx.showToast('开始生成单个本地文件', 'createSingleFile')
+      ctx.showToast('Start generating a single local file', 'createSingleFile')
       let context: Context | null = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext(ctx)
       ctx.localUploadFilePath = context?.cacheDir + '/' + (new Date().getTime()) + '.txt'
       let file = fs.openSync(ctx.localUploadFilePath, fs.OpenMode.CREATE | fs.OpenMode.READ_WRITE)
@@ -877,17 +881,17 @@ struct SamplePage {
       fs.writeSync(file.fd, str)
       fs.fsyncSync(file.fd)
       fs.closeSync(file)
-      ctx.showToast('生成本地单个文件成功', 'createSingleFile')
+      ctx.showToast('Successfully generated local single file', 'createSingleFile')
     } catch (err) {
       ctx.localUploadFilePath = null
-      ctx.showToast('生成本地单个文件失败:' + JSON.stringify(err), 'createSingleFile')
+      ctx.showToast('Failed to generate a single local file:' + JSON.stringify(err), 'createSingleFile')
     }
   }
 
   createFileDir() {
     const ctx = this
     try {
-      ctx.showToast('开始生成本地文件夹', 'createFileDir')
+      ctx.showToast('Start generating local folder', 'createFileDir')
       let context: Context | null = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext(ctx)
       ctx.localUploadFileDir = context?.cacheDir + '/' + (new Date().getTime())
       let localPath1 = ctx.localUploadFileDir + '/' + 'test1.txt'
@@ -918,10 +922,10 @@ struct SamplePage {
       fs.closeSync(file3)
 
 
-      ctx.showToast('生成本地文件夹成功', 'createFileDir')
+      ctx.showToast('Successfully generated local folder', 'createFileDir')
     } catch (err) {
       ctx.localUploadFileDir = null;
-      ctx.showToast('生成本地文件夹失败:' + JSON.stringify(err), 'createFileDir')
+      ctx.showToast('Failed to generate local folder:' + JSON.stringify(err), 'createFileDir')
     }
   }
 
@@ -930,58 +934,58 @@ struct SamplePage {
     if (ctx.ftpUtil) {
       if (!this.ftpUtil?.getLogin()) {
         ctx.operationType = ''
-        ctx.showToast('客户端未登录，请先登录', 'uploadSingleFile')
+        ctx.showToast(`${getResourceString($r('app.string.please_login'))}`, 'uploadSingleFile')
         return
       }
       if (!ctx.localUploadFilePath || ctx.localUploadFilePath.length < 1) {
         ctx.operationType = ''
-        ctx.showToast('未生成本地单个文件，请先点击 生成本地文件  按钮', 'appendFile')
+        ctx.showToast('Local individual file not generated, please generate file first', 'appendFile')
         return
       }
       if (!ctx.remoteRoot || ctx.remoteRoot.length < 1) {
         ctx.operationType = ''
-        ctx.showToast('未获取当前工作目录，请先获取当前工作目录', 'appendFile')
+        ctx.showToast('The current working directory has not been obtained. Please obtain the current working directory first', 'appendFile')
         return
       }
       if (!ctx.selectFilePath || ctx.selectFilePath.length < 1) {
         ctx.operationType = ''
-        ctx.showToast('未选择需要附加上传的文件，请先选择需要附加上传的文件', 'appendFile')
+        ctx.showToast('No files to be uploaded have been selected. Please select the files to be uploaded first', 'appendFile')
         return
       }
       ctx.ftpUtil?.getFileSize(ctx.selectFilePath, {
         getSizeErr(err: Error) {
-          ctx.showToast(`附加上传之前先获取原文件大小失败，${err.message}`, 'appendFile')
+          ctx.showToast(`${err.message}`, 'appendFile')
         },
         getSizeStart(info: string) {
-          ctx.showToast(`附加上传之前先获取原文件大小开始，${info}`, 'appendFile')
+          ctx.showToast(`${info}`, 'appendFile')
         },
         getSizeSuccess(result: number) {
-          ctx.showToast(`附加上传之前先获取原文件${ctx.selectFilePath}大小:${result}`, 'appendFile')
+          ctx.showToast(`${ctx.selectFilePath}大小:${result}`, 'appendFile')
           ctx.ftpUtil?.appendFile(ctx.localUploadFilePath, ctx.selectFilePath, {
             appendErr(err: Error) {
-              ctx.showToast(`附加上传单个文件失败： ${JSON.stringify(err)}`, 'appendFile')
+              ctx.showToast(`Failed to attach and upload a single file： ${JSON.stringify(err)}`, 'appendFile')
             },
             appendStart(info: string) {
               ctx.showToast(info, 'uploadSingleFile')
             },
             appendSuccess(msg: FTPResponse) {
-              ctx.showToast(`附加上传成功，返回的信息是:` + JSON.stringify(msg), 'appendFile')
+              ctx.showToast(`Attached upload successful:` + JSON.stringify(msg), 'appendFile')
               ctx.ftpUtil?.getFileSize(ctx.selectFilePath, {
                 getSizeErr(err: Error) {
-                  ctx.showToast(`附加上传之后获取原文件大小失败，${err.message}`, 'appendFile')
+                  ctx.showToast(`Failed to retrieve the original file size after attaching upload，${err.message}`, 'appendFile')
                 },
                 getSizeStart(info: string) {
-                  ctx.showToast(`附加上传之后获取原文件大小开始，${info}`, 'appendFile')
+                  ctx.showToast(`Starting from obtaining the original file size after attaching the upload，${info}`, 'appendFile')
                 },
                 getSizeSuccess(result: number) {
-                  ctx.showToast(`附加上传之后获取原文件${ctx.selectFilePath}大小:${result}`, 'appendFile')
+                  ctx.showToast(`Obtain the original file after attaching the upload ${ctx.selectFilePath} size:${result}`, 'appendFile')
                   ctx.refreshScreen()
                 }
               })
 
             },
             appendProgress(currentSize: number, totalSize: number) {
-              ctx.showToast(`附加当前上传长度:${currentSize}，上次文件总长度：${totalSize}`, 'appendFile')
+              ctx.showToast(`${currentSize}，${totalSize}`, 'appendFile')
             }
           })
         }
@@ -996,37 +1000,37 @@ struct SamplePage {
     if (ctx.ftpUtil) {
       if (!this.ftpUtil?.getLogin()) {
         ctx.operationType = ''
-        ctx.showToast('客户端未登录，请先登录', 'uploadSingleFile')
+        ctx.showToast(getResourceString($r('app.string.please_login')), 'uploadSingleFile')
         return
       }
       if (!ctx.localUploadFilePath || ctx.localUploadFilePath.length < 1) {
         ctx.operationType = ''
-        ctx.showToast('未生成本地单个文件，请先点击 生成本地文件  按钮', 'uploadSingleFile')
+        ctx.showToast('Local individual file not generated, please generate local file first', 'uploadSingleFile')
         return
       }
       if (!ctx.remoteRoot || ctx.remoteRoot.length < 1) {
         ctx.operationType = ''
-        ctx.showToast('未获取当前工作目录，请先获取当前工作目录', 'uploadSingleFile')
+        ctx.showToast('The current working directory has not been obtained. Please obtain the current working directory first', 'uploadSingleFile')
         return
       }
       if (!ctx.inputValue || ctx.inputValue.length < 1) {
         ctx.operationType = ''
-        ctx.showToast('未输入文件名，请先输入文件名', 'uploadSingleFile')
+        ctx.showToast('File name not entered, please enter file name first', 'uploadSingleFile')
         return
       }
       ctx.ftpUtil?.uploadSingleFile(ctx.localUploadFilePath, ctx.inputValue, {
         uploadErr(err: Error) {
-          ctx.showToast(`上传单个文件失败： ${JSON.stringify(err)}`, 'uploadSingleFile')
+          ctx.showToast(`Failed to upload a single file： ${JSON.stringify(err)}`, 'uploadSingleFile')
         },
         uploadStart(info: string) {
           ctx.showToast(info, 'uploadSingleFile')
         },
         uploadSuccess(msg: FTPResponse) {
-          ctx.showToast(`上传成功，返回的信息是:` + JSON.stringify(msg), 'uploadSingleFile')
+          ctx.showToast(`Upload successful:` + JSON.stringify(msg), 'uploadSingleFile')
           ctx.refreshScreen()
         },
         uploadProgress(currentSize: number, totalSize: number) {
-          ctx.showToast(`当前上传长度:${currentSize}，上次文件总长度：${totalSize}`, 'uploadSingleFile')
+          ctx.showToast(`Current upload length:${currentSize}，The total length of the last file：${totalSize}`, 'uploadSingleFile')
         }
       })
     }
@@ -1038,22 +1042,22 @@ struct SamplePage {
     if (ctx.ftpUtil) {
       if (!this.ftpUtil?.getLogin()) {
         ctx.operationType = ''
-        ctx.showToast('客户端未登录，请先登录', 'uploadDir')
+        ctx.showToast(getResourceString($r('app.string.please_login')), 'uploadDir')
         return
       }
       if (!ctx.localUploadFileDir || ctx.localUploadFileDir.length < 1) {
         ctx.operationType = ''
-        ctx.showToast('未生成本地文件夹，请先点击 生成本地文件夹 按钮', 'uploadDir')
+        ctx.showToast('Local folder not generated, please create a local folder first', 'uploadDir')
         return
       }
       if (!ctx.remoteRoot || ctx.remoteRoot.length < 1) {
         ctx.operationType = ''
-        ctx.showToast('未获取当前工作目录，请先获取当前工作目录', 'uploadDir')
+        ctx.showToast('The current working directory has not been obtained. Please obtain the current working directory first', 'uploadDir')
         return
       }
       if (!ctx.inputValue || ctx.inputValue.length < 1) {
         ctx.operationType = ''
-        ctx.showToast('未输入文件名，请先输入文件名', 'uploadDir')
+        ctx.showToast('Please enter the file name first', 'uploadDir')
         return
       }
       ctx.ftpUtil?.uploadDir(ctx.localUploadFileDir, ctx.inputValue, {
@@ -1064,7 +1068,7 @@ struct SamplePage {
           ctx.showToast(info, 'uploadDir')
         },
         uploadDirSuccess(msg: string) {
-          ctx.showToast(`上传文件夹成功，返回的信息是:${'\r\n'}` + JSON.stringify(msg), 'uploadDir')
+          ctx.showToast(`Upload folder successfully，result is:${'\r\n'}` + JSON.stringify(msg), 'uploadDir')
           ctx.refreshScreen()
         },
         uploadDirProgress(currentSize: number, totalSize: number) {
@@ -1080,27 +1084,27 @@ struct SamplePage {
 
     if (this.ftpUtil) {
       if (!this.ftpUtil?.getLogin()) {
-        ctx.showToast('客户端未登录，请先登录', 'downloadSingleFile')
+        ctx.showToast(getResourceString($r('app.string.please_login')), 'downloadSingleFile')
         return
       }
       if (!ctx.remoteRoot || ctx.remoteRoot.length < 1) {
-        ctx.showToast('未获取当前工作目录，请先获取当前工作目录', 'downloadSingleFile')
+        ctx.showToast('Please obtain the current working directory first', 'downloadSingleFile')
         return
       }
       if (!ctx.selectFilePath || ctx.selectFilePath.length < 1) {
-        ctx.showToast('未选择文件，请先选择文件', 'getFileSize')
+        ctx.showToast('Please select the file first', 'getFileSize')
         return
       }
       let localPath = context?.cacheDir + '/' + ctx.selectFilePath
       this.ftpUtil?.downloadSingleFile(localPath, ctx.selectFilePath, {
         downloadErr(err: Error) {
-          ctx.showToast(`下载单个文件失败，${err.message}`, 'downloadSingleFile')
+          ctx.showToast(`Failed to download a single file，${err.message}`, 'downloadSingleFile')
         },
         downloadStart(info: string) {
-          ctx.showToast(`下载单个文件开始，${info}`, 'downloadSingleFile')
+          ctx.showToast(`Start downloading a single file，${info}`, 'downloadSingleFile')
         },
         downloadSuccess(msg: FTPResponse) {
-          ctx.showToast(`下载成功，返回的信息是:` + JSON.stringify(msg), 'downloadSingleFile')
+          ctx.showToast(`Download successful，result is:` + JSON.stringify(msg), 'downloadSingleFile')
         },
         downloadProgress(currentSize: number, totalSize: number) {
           ctx.showToast(`currentSize：${currentSize}，totalSize：${totalSize}`, 'uploadDir')
@@ -1115,31 +1119,31 @@ struct SamplePage {
 
     if (this.ftpUtil) {
       if (!this.ftpUtil?.getLogin()) {
-        ctx.showToast('客户端未登录，请先登录', 'downloadDir')
+        ctx.showToast(getResourceString($r('app.string.please_login')), 'downloadDir')
         return
       }
       if (!ctx.remoteRoot || ctx.remoteRoot.length < 1) {
-        ctx.showToast('未获取当前工作目录，请先获取当前工作目录', 'downloadDir')
+        ctx.showToast('Please obtain the current working directory first', 'downloadDir')
         return
       }
       if (!ctx.selectDirPath || ctx.selectDirPath.length < 1) {
-        ctx.showToast('请先长按选中某个文件夹再进行本操作', 'deleteEmptyDirectory')
+        ctx.showToast('Please long press and select a folder before performing this operation', 'deleteEmptyDirectory')
         return
       }
       let localDir = context?.cacheDir + ctx.selectDirPath
 
       this.ftpUtil?.downloadDir(localDir, ctx.selectDirPath, {
         downloadDirErr(err: Error) {
-          ctx.showToast(`下载文件夹失败，${err.message}`, 'downloadDir')
+          ctx.showToast(`Download folder failed，${err.message}`, 'downloadDir')
         },
         downloadDirStart(info: string) {
-          ctx.showToast(`下载文件夹开始，${info}`, 'downloadDir')
+          ctx.showToast(`Download folder started，${info}`, 'downloadDir')
         },
         downloadDirSuccess(msg: string) {
-          ctx.showToast(`下载文件夹成功，返回的信息是:${'\r\n'}` + JSON.stringify(msg), 'downloadDir')
+          ctx.showToast(`Download folder successfully，result is:${'\r\n'}` + JSON.stringify(msg), 'downloadDir')
         },
         downloadDirProgress(currentSize: number, totalSize: number) {
-          ctx.showToast(`当前下载长度：currentSize：${currentSize}，totalSize：${totalSize}`, 'downloadDir')
+          ctx.showToast(`Current download length：currentSize：${currentSize}，totalSize：${totalSize}`, 'downloadDir')
         }
       })
     }
@@ -1149,26 +1153,26 @@ struct SamplePage {
     const ctx = this
     if (this.ftpUtil) {
       if (!this.ftpUtil?.getLogin()) {
-        ctx.showToast('客户端未登录，请先登录', 'getFileSize')
+        ctx.showToast(getResourceString($r('app.string.please_login')), 'getFileSize')
         return
       }
       if (!ctx.remoteRoot || ctx.remoteRoot.length < 1) {
-        ctx.showToast('未获取当前工作目录，请先获取当前工作目录', 'getFileSize')
+        ctx.showToast('Please obtain the current working directory first', 'getFileSize')
         return
       }
       if (!ctx.selectFilePath || ctx.selectFilePath.length < 1) {
-        ctx.showToast('未选择文件，请先选择文件', 'getFileSize')
+        ctx.showToast('Please select the file first', 'getFileSize')
         return
       }
       this.ftpUtil?.getFileSize(ctx.selectFilePath, {
         getSizeErr(err: Error) {
-          ctx.showToast(`获取文件大小失败，${err.message}`, 'getFileSize')
+          ctx.showToast(`Failed to retrieve file size，${err.message}`, 'getFileSize')
         },
         getSizeStart(info: string) {
-          ctx.showToast(`获取文件大小开始，${info}`, 'getFileSize')
+          ctx.showToast(`Starting from obtaining file size，${info}`, 'getFileSize')
         },
         getSizeSuccess(result: number) {
-          ctx.showToast(`获取的文件${ctx.selectFilePath}大小:${result}`, 'getFileSize')
+          ctx.showToast(`Obtained file ${ctx.selectFilePath} size:${result}`, 'getFileSize')
         }
       })
     }
@@ -1178,18 +1182,18 @@ struct SamplePage {
     const ctx = this
     if (this.ftpUtil) {
       if (!this.ftpUtil?.getLogin()) {
-        ctx.showToast('客户端未登录，请先登录', 'getServerFeatures')
+        ctx.showToast(getResourceString($r('app.string.please_login')), 'getServerFeatures')
         return
       }
       this.ftpUtil.getServerFeatures({
         featuresErr(err: Error) {
-          ctx.showToast(`获取服务端能力失败，${err.message}`, 'getFileSize')
+          ctx.showToast(`Failed to obtain server capability，${err.message}`, 'getFileSize')
         },
         featuresStart(info: string) {
-          ctx.showToast(`获取服务端能力开始，${info}`, 'getFileSize')
+          ctx.showToast(`Starting to acquire server capabilities，${info}`, 'getFileSize')
         },
         featuresSuccess(msg: Map<string, string>) {
-          ctx.showToast(`服务器能力获取成功，返回的信息是:${'\r\n'}${JSON.stringify(msg)}`, 'getFileSize')
+          ctx.showToast(`Server capability acquisition successful，result is:${'\r\n'}${JSON.stringify(msg)}`, 'getFileSize')
         }
       })
     }
@@ -1199,26 +1203,26 @@ struct SamplePage {
     const ctx = this
     if (ctx.ftpUtil) {
       if (!ctx.ftpUtil?.getLogin()) {
-        ctx.showToast('客户端未登录，请先登录', 'getLastModifyTime')
+        ctx.showToast(getResourceString($r('app.string.please_login')), 'getLastModifyTime')
         return
       }
       if (!ctx.remoteRoot || ctx.remoteRoot.length < 1) {
-        ctx.showToast('未获取当前工作目录，请先获取当前工作目录', 'getLastModifyTime')
+        ctx.showToast('Please obtain the current working directory first', 'getLastModifyTime')
         return
       }
       if (!ctx.selectFilePath || ctx.selectFilePath.length < 1) {
-        ctx.showToast('未选择文件，请先选择文件', 'getLastModifyTime')
+        ctx.showToast('Please select the file first', 'getLastModifyTime')
         return
       }
       ctx.ftpUtil?.getLastModify(ctx.selectFilePath, {
         lastModifyErr(err: Error) {
-          ctx.showToast(`切换到工作目录的父目录失败，${err.message}`, 'getLastModifyTime')
+          ctx.showToast(`Failed to switch to the parent directory of the working directory，${err.message}`, 'getLastModifyTime')
         },
         lastModifyStart(info: string) {
-          ctx.showToast(`切换到工作目录的父目录开始，${info}`, 'getLastModifyTime')
+          ctx.showToast(`Starting from switching to the parent directory of the working directory，${info}`, 'getLastModifyTime')
         },
         lastModifySuccess(msg: Date) {
-          ctx.showToast(`切换到工作目录的父目录成功，返回的信息是:${'\r\n'}` + msg.toLocaleString(), 'getLastModifyTime')
+          ctx.showToast(`Successfully switched to the parent directory of the working directory, the returned result is:${'\r\n'}` + msg.toLocaleString(), 'getLastModifyTime')
         }
       })
     }
@@ -1228,26 +1232,26 @@ struct SamplePage {
     const ctx = this
     if (ctx.ftpUtil) {
       if (!ctx.ftpUtil?.getLogin()) {
-        ctx.showToast('客户端未登录，请先登录', 'deleteSingleFile')
+        ctx.showToast(getResourceString($r('app.string.please_login')), 'deleteSingleFile')
         return
       }
       if (!ctx.remoteRoot || ctx.remoteRoot.length < 1) {
-        ctx.showToast('未获取当前工作目录，请先获取当前工作目录', 'deleteSingleFile')
+        ctx.showToast('Please obtain the current working directory first', 'deleteSingleFile')
         return
       }
       if (!ctx.selectFilePath || ctx.selectFilePath.length < 1) {
-        ctx.showToast('未选择文件，请先选择文件', 'deleteSingleFile')
+        ctx.showToast('Please select the file first', 'deleteSingleFile')
         return
       }
       ctx.ftpUtil?.deleteFile(ctx.selectFilePath, {
         deleteFileErr(err: Error) {
-          ctx.showToast(`删除文件失败，${err.message}`, 'deleteSingleFile')
+          ctx.showToast(`Failed to delete file，${err.message}`, 'deleteSingleFile')
         },
         deleteFileStart(info: string) {
-          ctx.showToast(`删除文件开始，${info}`, 'deleteSingleFile')
+          ctx.showToast(`Starting to delete files，${info}`, 'deleteSingleFile')
         },
         deleteFileSuccess(msg: FTPResponse) {
-          ctx.showToast(`删除文件成功，返回的信息是:${'\r\n'}` + JSON.stringify(msg), 'deleteSingleFile')
+          ctx.showToast(`The file deletion was successful, and the returned result is:${'\r\n'}` + JSON.stringify(msg), 'deleteSingleFile')
           ctx.refreshScreen()
         }
       })
@@ -1258,22 +1262,22 @@ struct SamplePage {
     const ctx = this
     if (ctx.ftpUtil) {
       if (!ctx.ftpUtil?.getLogin()) {
-        ctx.showToast('客户端未登录，请先登录', 'backToParent')
+        ctx.showToast(getResourceString($r('app.string.please_login')), 'backToParent')
         return
       }
       if (!ctx.remoteRoot || ctx.remoteRoot.length < 1) {
-        ctx.showToast('未获取当前工作目录，请先获取当前工作目录', 'backToParent')
+        ctx.showToast('Please obtain the current working directory first', 'backToParent')
         return
       }
       ctx.ftpUtil?.cdToParentDirectory({
         cdToParentDirectoryErr(err: Error) {
-          ctx.showToast(`切换到工作目录的父目录失败，${err.message}`, 'backToParent')
+          ctx.showToast(`Failed to switch to the parent directory of the working directory，${err.message}`, 'backToParent')
         },
         cdToParentDirectoryStart(info: string) {
-          ctx.showToast(`切换到工作目录的父目录开始，${info}`, 'backToParent')
+          ctx.showToast(`Starting from switching to the parent directory of the working directory，${info}`, 'backToParent')
         },
         cdToParentDirectorySuccess(res: FTPResponse) {
-          ctx.showToast(`切换到工作目录的父目录成功，返回的信息是:${'\r\n'}` + JSON.stringify(res), 'backToParent')
+          ctx.showToast(`Successfully switched to the parent directory of the working directory, the returned result is:${'\r\n'}` + JSON.stringify(res), 'backToParent')
           ctx.refreshScreen()
         }
       })
@@ -1285,31 +1289,31 @@ struct SamplePage {
     if (this.ftpUtil) {
       if (!this.ftpUtil?.getLogin()) {
         ctx.operationType = ''
-        ctx.showToast('客户端未登录，请先登录', 'ensureRemotePath')
+        ctx.showToast(getResourceString($r('app.string.please_login')), 'ensureRemotePath')
         return
       }
       if (!ctx.remoteRoot || ctx.remoteRoot.length < 1) {
         ctx.operationType = ''
-        ctx.showToast('未获取当前工作目录，请先获取当前工作目录', 'ensureRemotePath')
+        ctx.showToast('Please obtain the current working directory first', 'ensureRemotePath')
         return
       }
       if (!ctx.inputValue || ctx.inputValue.length < 1) {
         ctx.operationType = ''
-        ctx.showToast('未输入文件夹名，请先输入输入文件夹名', 'ensureRemotePath')
+        ctx.showToast('Please enter the folder name first', 'ensureRemotePath')
         return
       }
       this.ftpUtil?.ensureRemotePath(ctx.inputValue, {
         ensureRemotePathErr(err: Error) {
           ctx.operationType = ''
-          ctx.showToast(`确保远程服务器存在给定的目录失败，${err.message}`, 'ensureRemotePath')
+          ctx.showToast(`Failed to ensure the existence of the given directory on the remote server，${err.message}`, 'ensureRemotePath')
         },
         ensureRemotePathStart(info: string) {
           ctx.operationType = ''
-          ctx.showToast(`确保远程服务器存在给定的目录开始，${info}`, 'ensureRemotePath')
+          ctx.showToast(`Ensure that the remote server starts with the given directory，${info}`, 'ensureRemotePath')
         },
         ensureRemotePathSuccess(result: string) {
           ctx.operationType = ''
-          ctx.showToast(`确保远程服务器存在给定的目录成功:${result}}`, 'ensureRemotePath')
+          ctx.showToast(`Ensure that the given directory exists successfully on the remote server:${result}}`, 'ensureRemotePath')
           ctx.refreshScreen()
         }
       })
@@ -1320,27 +1324,27 @@ struct SamplePage {
     const ctx = this
     if (this.ftpUtil) {
       if (!this.ftpUtil?.getLogin()) {
-        ctx.showToast('客户端未登录，请先登录', 'deleteEmptyDirectory')
+        ctx.showToast(getResourceString($r('app.string.please_login')), 'deleteEmptyDirectory')
         return
       }
       if (!ctx.remoteRoot || ctx.remoteRoot.length < 1) {
-        ctx.showToast('未获取当前工作目录，请先获取当前工作目录', 'deleteEmptyDirectory')
+        ctx.showToast('Please obtain the current working directory first', 'deleteEmptyDirectory')
         return
       }
       if (!ctx.selectDirPath || ctx.selectDirPath.length < 1) {
-        ctx.showToast('请先长按选中某个文件夹再进行本操作', 'deleteEmptyDirectory')
+        ctx.showToast('Please long press and select a folder before performing this operation', 'deleteEmptyDirectory')
         return
       }
 
       this.ftpUtil?.deleteEmptyDirectory(ctx.selectDirPath, {
         deleteEmptyDirectoryErr(err: Error) {
-          ctx.showToast(`删除空目录失败，${err.message}`, 'deleteEmptyDirectory')
+          ctx.showToast(`Failed to delete empty directory，${err.message}`, 'deleteEmptyDirectory')
         },
         deleteEmptyDirectoryStart(info: string) {
-          ctx.showToast(`删除空目录开始，${info}`, 'deleteEmptyDirectory')
+          ctx.showToast(`Starting from deleting an empty directory，${info}`, 'deleteEmptyDirectory')
         },
         deleteEmptyDirectorySuccess(result: FTPResponse) {
-          ctx.showToast(`删除空目录成功:${JSON.stringify(result)}}`, 'deleteEmptyDirectory')
+          ctx.showToast(`Delete empty directory successfully:${JSON.stringify(result)}}`, 'deleteEmptyDirectory')
           ctx.refreshScreen()
         }
       })
@@ -1351,27 +1355,27 @@ struct SamplePage {
     const ctx = this
     if (this.ftpUtil) {
       if (!this.ftpUtil?.getLogin()) {
-        ctx.showToast('客户端未登录，请先登录', 'deleteEmptyDirectory')
+        ctx.showToast(getResourceString($r('app.string.please_login')), 'deleteEmptyDirectory')
         return
       }
       if (!ctx.remoteRoot || ctx.remoteRoot.length < 1) {
-        ctx.showToast('未获取当前工作目录，请先获取当前工作目录', 'deleteEmptyDirectory')
+        ctx.showToast('Please obtain the current working directory first', 'deleteEmptyDirectory')
         return
       }
       if (!ctx.selectDirPath || ctx.selectDirPath.length < 1) {
-        ctx.showToast('请先长按选中某个文件夹再进行本操作', 'deleteEmptyDirectory')
+        ctx.showToast('Please long press and select a folder before performing this operation', 'deleteEmptyDirectory')
         return
       }
 
       this.ftpUtil?.deleteAll(ctx.selectDirPath, {
         deleteAllErr(err: Error) {
-          ctx.showToast(`删除目录及其所有内容失败，${err.message}`, 'deleteEmptyDirectory')
+          ctx.showToast(`Failed to delete directory and all its contents，${err.message}`, 'deleteEmptyDirectory')
         },
         deleteAllStart(info: string) {
-          ctx.showToast(`删除目录及其所有内容开始，${info}`, 'deleteEmptyDirectory')
+          ctx.showToast(`Start deleting the directory and all its contents，${info}`, 'deleteEmptyDirectory')
         },
         deleteAllSuccess(result: string) {
-          ctx.showToast(`删除目录及其所有内容成功:${result}}`, 'deleteEmptyDirectory')
+          ctx.showToast(`Successfully deleted directory and all its contents:${result}}`, 'deleteEmptyDirectory')
           ctx.refreshScreen()
         }
       })
@@ -1382,22 +1386,22 @@ struct SamplePage {
     const ctx = this
     if (this.ftpUtil) {
       if (!this.ftpUtil?.getLogin()) {
-        ctx.showToast('客户端未登录，请先登录', 'deleteEmptyDirectory')
+        ctx.showToast(getResourceString($r('app.string.please_login')), 'deleteEmptyDirectory')
         return
       }
       if (!ctx.remoteRoot || ctx.remoteRoot.length < 1) {
-        ctx.showToast('未获取当前工作目录，请先获取当前工作目录', 'deleteEmptyDirectory')
+        ctx.showToast('Please obtain the current working directory first', 'deleteEmptyDirectory')
         return
       }
       this.ftpUtil?.deleteAllButSelf({
         deleteAllButSelfErr(err: Error) {
-          ctx.showToast(`清空当前工作目录失败，${err.message}`, 'deleteEmptyDirectory')
+          ctx.showToast(`Clearing the current working directory failed，${err.message}`, 'deleteEmptyDirectory')
         },
         deleteAllButSelfStart(info: string) {
-          ctx.showToast(`清空当前工作目录开始，${info}`, 'deleteEmptyDirectory')
+          ctx.showToast(`Starting from clearing the current working directory，${info}`, 'deleteEmptyDirectory')
         },
         deleteAllButSelfSuccess(result: string) {
-          ctx.showToast(`清空当前工作目录成功:${result}}`, 'deleteEmptyDirectory')
+          ctx.showToast(`Clearing the current working directory successfully:${result}}`, 'deleteEmptyDirectory')
           ctx.refreshScreen()
         }
       })
@@ -1409,36 +1413,36 @@ struct SamplePage {
     if (this.ftpUtil) {
       if (!this.ftpUtil?.getLogin()) {
         ctx.operationType = ''
-        ctx.showToast('客户端未登录，请先登录', 'renameFile')
+        ctx.showToast(getResourceString($r('app.string.please_login')), 'renameFile')
         return
       }
       if (!ctx.remoteRoot || ctx.remoteRoot.length < 1) {
         ctx.operationType = ''
-        ctx.showToast('未获取当前工作目录，请先获取当前工作目录', 'renameFile')
+        ctx.showToast('Please obtain the current working directory first', 'renameFile')
         return
       }
       if (!ctx.inputValue || ctx.inputValue.length < 1) {
         ctx.operationType = ''
-        ctx.showToast('未输入文件名，请先输入输入文件名', 'renameFile')
+        ctx.showToast('Please enter the input file name first', 'renameFile')
         return
       }
       if (!ctx.selectFilePath || ctx.selectFilePath.length < 1) {
-        ctx.showToast('未选择文件，请先选择文件', 'deleteSingleFile')
+        ctx.showToast('Please select the file first', 'deleteSingleFile')
         return
       }
 
       this.ftpUtil?.renameFile(ctx.inputValue, ctx.selectFilePath, {
         renameFileErr(err: Error) {
           ctx.operationType = ''
-          ctx.showToast(`重命名文件失败，${err.message}`, 'deleteEmptyDirectory')
+          ctx.showToast(`Renaming file failed，${err.message}`, 'deleteEmptyDirectory')
         },
         renameFileStart(info: string) {
           ctx.operationType = ''
-          ctx.showToast(`重命名文件开始，${info}`, 'deleteEmptyDirectory')
+          ctx.showToast(`Rename file starts，${info}`, 'deleteEmptyDirectory')
         },
         renameFileSuccess(result: FTPResponse) {
           ctx.operationType = ''
-          ctx.showToast(`重命名文件成功:${result}}`, 'deleteEmptyDirectory')
+          ctx.showToast(`Rename file successfully:${result}}`, 'deleteEmptyDirectory')
           ctx.refreshScreen()
         }
       })
@@ -1449,27 +1453,27 @@ struct SamplePage {
     const ctx = this
     if (this.ftpUtil) {
       if (!this.ftpUtil?.getLogin()) {
-        ctx.showToast('客户端未登录，请先登录', 'enterChildDir')
+        ctx.showToast(getResourceString($r('app.string.please_login')), 'enterChildDir')
         return
       }
       if (!ctx.remoteRoot || ctx.remoteRoot.length < 1) {
-        ctx.showToast('未获取当前工作目录，请先获取当前工作目录', 'enterChildDir')
+        ctx.showToast('Please obtain the current working directory first', 'enterChildDir')
         return
       }
       if (!remoteChildPath || remoteChildPath.length < 1) {
-        ctx.showToast('文件夹名不合法,不可以为空', 'enterChildDir')
+        ctx.showToast('The folder name cannot be empty', 'enterChildDir')
         return
       }
 
       this.ftpUtil?.setWorkingDirectory(remoteChildPath, {
         setWorkingDirectoryErr(err: Error) {
-          ctx.showToast(`进入子文件夹失败，${err.message}`, 'ensureRemotePath')
+          ctx.showToast(`Failed to enter subfolders，${err.message}`, 'ensureRemotePath')
         },
         setWorkingDirectoryStart(info: string) {
-          ctx.showToast(`进入子文件夹开始，${info}`, 'ensureRemotePath')
+          ctx.showToast(`Enter subfolders to start，${info}`, 'ensureRemotePath')
         },
         setWorkingDirectorySuccess(result: FTPResponse) {
-          ctx.showToast(`进入子文件夹成功:${result}}`, 'ensureRemotePath')
+          ctx.showToast(`Successfully entered subfolders:${result}}`, 'ensureRemotePath')
           ctx.refreshScreen()
         }
       })

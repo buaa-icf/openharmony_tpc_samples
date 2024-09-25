@@ -2,22 +2,24 @@
 
 ## BasicFtp
 
-## Introduction
+## 简介
 
-BasicFtp is a client that supports FTP and FTPS transfer protocols.
+BasicFtp是一个提供FTP/FTPS传输协议的客户端。
 
-## How to Install
+## 下载安装
 
 ```javascript
 ohpm install @ohos/basic-ftp
 ```
 
 OpenHarmony ohpm
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
-## How to Use
 
-Note: Globally search *xxx* in the project and replace them with the actual email address, account password, and server address. To test FTPS encrypted transfers, you need to place a self-signed certificate in **src/main/resources/rawfile** and replace the certificate name of **loginServer** in the **SamplePage.ets** file with the self-signed certificate name.
+
+## 使用说明
+
+注意：全局搜索项目中的‘xxx’，需要替换修改为真实的邮箱，账号密码,服务器地址。 如需测试ftps加密传输，需要提前准备好自签名证书放置于src/main/resources/rawfile文件夹下，同时替换SamplePage.ets文件的loginServer方法的证书名称。
 
 ```
 import { AccessOptions, FileInfo, FileType, FTPResponse, UnixPermissions } from '@ohos/basic-ftp'
@@ -27,7 +29,7 @@ import NoTlsUtil from '../utils/FtpApiUtil'
 ```
 
 
-### Logging In to the FTP Server
+### 登录FTP服务器
 
   ```javascript
 	var loginInfo: AccessOptions = null
@@ -49,7 +51,7 @@ import NoTlsUtil from '../utils/FtpApiUtil'
      		 cipherSuite: "AES256-SHA256"
     	}
   	}
-	// FTPS with a certificate supports implicit TLS encryption transmission.
+	// FTPS 带证书 支持隐式tls加密传输
     if (ctx.secure) {
       loginInfo = {
         host: 'x.x.x.x',
@@ -60,7 +62,7 @@ import NoTlsUtil from '../utils/FtpApiUtil'
         secureOptions: option
       }
     } else {
-        // FTP without a certificate.
+        // FTP 不带证书 
       loginInfo = {
         host: 'x.x.x.x',
         user: 'xxxxx',
@@ -82,7 +84,7 @@ import NoTlsUtil from '../utils/FtpApiUtil'
        
   ```
 
-### Obtaining the File List
+### 获取文件列表
 
 ```javascript
 if (ftpUtil) {
@@ -118,7 +120,7 @@ if (ftpUtil) {
 }
 ```
 
-### Uploading a Single File
+### upload单个文件
 
   ```javascript
 if (ftpUtil) {
@@ -153,7 +155,7 @@ if (ftpUtil) {
 }
   ```
 
-### Uploading a Folder
+### upload文件夹
 
 ```javascript
  if (ftpUtil) {
@@ -174,7 +176,7 @@ if (ftpUtil) {
           operationType = ''
           return
         }
-        let regex = new RegExp(`^(?!_)(?!.*?_$)[a-zA-Z0-9_u4e00-u9fa5]+$`); // Regular expression.
+        let regex = new RegExp(`^(?!_)(?!.*?_$)[a-zA-Z0-9_u4e00-u9fa5]+$`); //正则表达式
         if (!regex.test(inputValue)) {
           operationType = ''
           return
@@ -192,7 +194,7 @@ if (ftpUtil) {
 }
 ```
 
-### Downloading a Single File
+### 下载单个文件
 
 ```javascript
  if (ftpUtil) {
@@ -221,7 +223,7 @@ if (ftpUtil) {
 }
 ```
 
-### Downloading a Folder
+### 下载文件夹
 
 ```javascript
   if (ftpUtil) {
@@ -250,7 +252,7 @@ if (ftpUtil) {
 }
 ```
 
-### Obtaining the File Size
+### 获取文件大小
 
 ```javascript
 if (ftpUtil) {
@@ -274,7 +276,7 @@ if (ftpUtil) {
         })
 }
 ```
-### Obtaining Server Capabilities
+### 获取服务器能力
 
 ```javascript
  if (ftpUtil) {
@@ -291,7 +293,7 @@ if (ftpUtil) {
         })
 }
 ```
-### Obtaining the Last Modification Time
+### 获取最后修改时间
 
 ```javascript
  if (ftpUtil) {
@@ -316,7 +318,7 @@ if (ftpUtil) {
         })
  }
 ```
-### Renaming a File
+### 重命名文件
 
 ```javascript
   if (ftpUtil) {
@@ -350,7 +352,7 @@ if (ftpUtil) {
           })
         }
 ```
-### Switching the Directory
+### 切换目录
 
 ```javascript
   if (ftpUtil) {
@@ -372,7 +374,7 @@ if (ftpUtil) {
         })
   }
 ```
-### Confirming the Remote Path
+### 确认远端路径
 
 ```javascript
   if (ftpUtil) {
@@ -389,7 +391,7 @@ if (ftpUtil) {
           operationType = ''
           return
         }
-        let regex = new RegExp(`^(?!_)(?!.*?_$)[a-zA-Z0-9_u4e00-u9fa5]+$`); // Regular expression.
+        let regex = new RegExp(`^(?!_)(?!.*?_$)[a-zA-Z0-9_u4e00-u9fa5]+$`); //正则表达式
         if (!regex.test(inputValue)) {
           operationType = ''
           return
@@ -406,7 +408,7 @@ if (ftpUtil) {
         })
       }
 ```
-### Deleting an Empty Directory
+### 删除空目录
 
 ```javascript
 if (ftpUtil) {
@@ -434,7 +436,7 @@ if (ftpUtil) {
         })
       }
 ```
-### Deleting a Single File
+### 删除单个文件
 
 ```javascript
  if (ftpUtil) {
@@ -461,7 +463,7 @@ if (ftpUtil) {
 }
 ```
 
-### Deleting All Files
+### 删除所有文件
 
 ```javascript
   if (ftpUtil) {
@@ -490,7 +492,7 @@ if (ftpUtil) {
       }
 ```
 
-### Deleting All Files in the Current Directory
+### 删除当前目录下的所有文件
 
 ```javascript
   if (ftpUtil) {
@@ -525,7 +527,7 @@ if (ftpUtil) {
       }
 ```
 
-### Setting a Working Directory
+### 设置工作目录
 
 ```javascript
    if (ftpUtil) {
@@ -553,52 +555,58 @@ if (ftpUtil) {
   }
 ```
 
-## Available APIs
+## 接口说明
 
 
 
-| API              | Parameters                            | Return Value               | Description                                      |
+| 接口名               | 参数                             | 返回值                | 说明                                       |
 | ----------------- | ------------------------------ | ------------------ | ---------------------------------------- |
-| access    | AccessOptions                   | FTPResponse | Logs in to the FTP server.|
-| list     | string                 | FileInfo | Obtains the file list.      |
-| size | string                  | number | Obtains the file size.                      |
-| uploadFrom    | string, string                  | FTPResponse | Uploads a file.                      |
-| downloadTo   | string, string                 | FTPResponse | Downloads a file.                      |
-| features       | NA| Map<string, string> | Obtains server capabilities.|
-| cd             | string                             | FTPResponse | Sets a working directory.                           |
-| cdup               | NA                           | FTPResponse | Switches from the current working directory to the parent directory.            |
-| remove               | string                            | FTPResponse | Removes a file.                         |
-| lastMod               | string                            | Date | Obtains the last modification time.                         |
-| pwd               | NA                           | string | Obtains the current directory.                         |
-| ensureDir               | string                            | void | Checks whether the remote directory exists. If the directory does not exist, it will be created.               |
-| removeEmptyDir               | string                            | FTPResponse | Removes the selected folder. If the folder is not empty, an error is reported.      |
-| removeDir               | string                            | void | Removes the selected folder and all subfolders and files in it. |
-| clearWorkingDir               | NA                           | void | Removes all folders and files in the current working directory, but retains the directory itself. |
-| rename               | string, string                            | FTPResponse | Renames a file.                         |
-| uploadFromDir               | string, string                            | void | Uploads a directory.                         |
-| downloadToDir               | string, string                            | void | Downloads a directory.                         |
+| access    | AccessOptions                   | FTPResponse | 登录FTP服务器|
+| list     | string                 | FileInfo | 获取文件列表       |
+| size | string                  | number | 获取文件大小                       |
+| uploadFrom    | string, string                  | FTPResponse | 上传文件                       |
+| downloadTo   | string, string                 | FTPResponse | 下载文件                       |
+| features       | 无 | Map<string, string> | 获取服务器能力 |
+| cd             | string                             | FTPResponse | 设置工作目录                            |
+| cdup               | 无                            | FTPResponse | 从当前工作目录切换到父目录             |
+| remove               | string                            | FTPResponse | 删除文件                          |
+| lastMod               | string                            | Date | 获取最后修改的时间                          |
+| pwd               | 无                            | string | 获取当前目录                          |
+| ensureDir               | string                            | void | 确认远程是否存在目录，不存在则会自动创建                |
+| removeEmptyDir               | string                            | FTPResponse | 删除选择的文件夹，文件夹不为空则会失败报错       |
+| removeDir               | string                            | void | 删除选择的文件夹中所有子文件夹和文件，同时删除选择的文件夹  |
+| clearWorkingDir               | 无                            | void | 清空当前文件夹中所有子文件夹和文件，但是保留当前的文件夹  |
+| rename               | string, string                            | FTPResponse | 重命名文件                          |
+| uploadFromDir               | string, string                            | void | 上传目录                          |
+| downloadToDir               | string, string                            | void | 下载目录                          |
 
 
-## Constraints
-This project has been verified in the following versions:
+## 约束与限制
+在下述版本验证通过：
 DevEco Studio: NEXT Beta1-5.0.3.806, SDK: API12 Release(5.0.0.66)
-DevEco Studio: 4.0 Release (4.0.3.413), SDK: (4.0.10.3)
+DevEco Studio版本: 4.0 Release(4.0.3.413), SDK: (4.0.10.3)
 
-Currently, the library supports the FTP passive mode and FTPS with implicit TLS encryption, the parsing of directory lists in MLSD, Unix, and DOS formats, the file types supported by the **@ohos.file.fs** module, and data transmission in binary mode.
+本库当前支持ftp被动模式，不支持主动模式；支持FTP,隐式tls加密的FTPS。
 
-## Directory Structure
+本库支持MLSD、Unix、DOS格式的目录列表解析。
+
+本库支持@ohos.file.fs模块支持的文件类型。
+
+本库支持Binary模式传输数据。
+
+## 目录结构
 
 ```javascript
 |---- BasicFtp  
-|     |---- entry  # Sample code
-|     |---- BasicFtp  # BasicFtp library
-|     |---- README.MD  # Readme                  
+|     |---- entry  # 示例代码文件夹
+|     |---- BasicFtp  # BasicFtp 库文件夹
+|     |---- README.MD  # 安装使用方法                   
 ```
 
-## How to Contribute
+## 贡献代码
 
-If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) ，当然，也非常欢迎发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 共建。
 
-## License
+## 开源协议
 
-This project is licensed under [MIT](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/BasicFtp/LICENSE.txt).
+本项目基于 [MIT](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/BasicFtp/LICENSE.txt) ，请自由地享受和参与开源。

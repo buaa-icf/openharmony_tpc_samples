@@ -23,7 +23,7 @@ struct Index {
   build() {
     Row() {
       Column() {
-        Button('去示例界面')
+        Button('sample page')
           .fontSize(14)
           .height(30)
           .margin({ left: 10, top: 50 })
@@ -33,7 +33,7 @@ struct Index {
               url: 'pages/SamplePage'
             })
           })
-        Button('去压测界面')
+        Button('press page')
           .fontSize(14)
           .height(30)
           .visibility(Visibility.Hidden)
