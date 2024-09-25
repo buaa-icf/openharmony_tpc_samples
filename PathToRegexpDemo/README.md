@@ -1,26 +1,26 @@
 # path-to-regexp
 
-## 简介
+## Overview
 
-path-to-regexp是一个将路径字符串(如/user/:name)转换为正则表达式的库。
+path-to-regexp is a library that converts path strings (such as **/user/:name**) into regular expressions.
 
-## 下载安装
+## How to Install
 
 ```
 ohpm install path-to-regexp 
 ```
 
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## Usage
 
-安装path-to-regexp库之后，在需要使用的界面先导入path-to-regexp提供的API
+After installing path-to-regexp library, import the APIs provided by path-to-regexp before use.
 
 ```typescript
 import { compile, Key, match, parse, pathToRegexp } from 'path-to-regexp';
 ```
 
-### pathToRegexp---路径转换
+### pathToRegexp
 
   ```typescript
 const keys = [];
@@ -29,11 +29,11 @@ const regexp = pathToRegexp("/foo/:bar", keys);
 // keys = [{ name: 'bar', prefix: '/', suffix: '', pattern: '[^\\/#\\?]+?', modifier: '' }]
   ```
 
-将提供的路径参数转换为正则表达式，返回一个RegExp对象，里面包含了正则表达式的相关信息，用于验证或者路径拼接转换。
+This function converts the provided path into a regular expression and returns a **RegExp** object that contains information related to the regular expression for validation or path concatenation and conversion.
 
-### Parameters---参数
+### Parameters
 
-#### Named Parameters---命名参数
+#### Named Parameters
 
 ```typescript
 const regexp = pathToRegexp("/:foo/:bar");
@@ -43,9 +43,9 @@ regexp.exec("/test/route");
 //=> [ '/test/route', 'test', 'route', index: 0, input: '/test/route', groups: undefined ]
 ```
 
-通过在参数名称之前添加冒号来定义，例如:foo，:bar。使用exec可以解析出路径中符合条件的命名参数。
+You can define a parameter by adding a colon (:) before the parameter name, for example, **:foo,:bar**. You can use **exec** to parse the named parameters that meet the conditions in the path.
 
-#### Custom Matching Parameters---自定义Regexp
+#### Custom Matching Parameters
 
   ```typescript
 const regexpNumbers = pathToRegexp("/icon-:foo(\\d+).png");
@@ -67,9 +67,9 @@ regexpWord.exec("/users");
 //=> null
   ```
 
-参数中具有自定义regexp，如\\d+，去匹配路径中的数字或者名称。
+The parameter contains a custom regexp, for example, **\\d+**, to match the number or name in the path.
 
-#### Custom Prefix and Suffix---自定义前缀和后缀
+#### Custom Prefix and Suffix
 
   ```typescript
  const regexp = pathToRegexp("/:attr1?{-:attr2}?{-:attr3}?");
@@ -81,9 +81,9 @@ regexp.exec("/test-test");
 // => ['/test-test', 'test', 'test', null]
   ```
 
-通过包装在{}里面的参数来实现为路径参数添加自定义的前后缀。
+Parameters enclosed in {} are used to add custom prefixes and suffixes to path parameters.
 
-#### Unnamed Parameters---未命名参数
+#### Unnamed Parameters
 
   ```typescript
 const regexp = pathToRegexp("/:foo/(.*)");
@@ -93,11 +93,11 @@ regexp.exec("/test/route");
 //=> [ '/test/route', 'test', 'route']
   ```
 
-与命名参数原理相同，仅由regexp组成，例如(.*)，在生成的Regexp里面被数字索引（{ name: 0, ... }），用以匹配任意参数。
+The principle is the same as that for named parameters. An unnamed parameter is composed only of regexp, for example, (.*), which is indexed by numbers in the generated Regexp, for example, ({ name: 0, ... }), to match any parameters.
 
-#### Modifiers---修饰器
+#### Modifiers
 
-##### Optional---可选参数
+##### Optional
 
   ```typescript
 const regexp = pathToRegexp("/:foo/:bar?");
@@ -110,9 +110,9 @@ regexp.exec("/test/route");
 //=> [ '/test/route', 'test', 'route' ]
   ```
 
-在参数后面加上?，可以使得该参数变为可选参数，该参数可传可不传，匹配校验的时候不会失败。
+A parameter becomes optional if it is followed by a question mark (?). It is up to you whether to pass the parameter, and an error will not be thrown for this parameter during verification.
 
-如果参数中含有字符?，它的意义是查询而不是可选参数的时候，需要将?转义，如下所示：
+If the character ? in a parameter means query rather than an optional parameter, the ? needs to be escaped as follows:
 
 ```typescript
 const regexp = pathToRegexp("/search/:tableName\\?useIndex=true&term=amazing");
@@ -125,7 +125,7 @@ regexp.exec("/search/people?term=amazing&useIndex=true");
 //=> null
 ```
 
-##### Zero or more---零个或者多个参数
+##### Zero or More
 
 ```typescript
 const regexp = pathToRegexp("/:foo*");
@@ -138,9 +138,9 @@ regexp.exec("/bar/baz");
 //=> [ '/bar/baz', 'bar/baz' ]
 ```
 
-参数以星号*结尾，表示0个或者多个参数匹配。返回值均为结果数组，匹配到0个则数组里面的值包含null。
+A parameter ending with an asterisk (*) indicates that zero or multiple parameters are matched. The return value is a result array. If no value is matched, the value in the result array contains null.
 
-##### One or more---一个或者多个参数
+##### One or More
 
 ```typescript
 const regexp = pathToRegexp("/:foo+");
@@ -153,9 +153,9 @@ regexp.exec("/bar/baz");
 //=> [ '/bar/baz','bar/baz']
 ```
 
-参数以加号+结尾，表示1个或者多个参数匹配。匹配不到结果返回null而不是匹配结果数组，匹配到了则显示结果数组。
+A parameter ending with a plus sign (+) indicates that one or more parameters are matched. If no parameter is matched, null instead of the matching result array is returned. If any parameter is matched, the result array is returned.
 
-### Match---匹配
+### Match
 
   ```typescript
 // Make sure you consistently `decode` segments.
@@ -166,9 +166,9 @@ fn("/invalid"); //=> false
 fn("/user/caf%C3%A9"); //=> { path: '/user/caf%C3%A9', index: 0, params: { id: 'café' } }
   ```
 
-根据指定的规则，经过一系列变换之后，返回一个用于将路径转换为参数的函数。
+This function converts a path to parameters after a series of transformations according to the specified rules.
 
-match也可用于自定义匹配命名参数，如下方所示的tab(home|photos|bio)：
+The function can also be used to customize named parameters, for example, **tab(home|photos|bio)**.
 
 ```typescript
 const urlMatch = match("/users/:id/:tab(home|photos|bio)", {
@@ -185,7 +185,7 @@ urlMatch("/users/1234/otherstuff");
 //=> false
 ```
 
-#### Process Pathname---路径预处理
+#### Process Pathname
 
 ```typescript
 const fn = match("/café", { encode: encodeURI });
@@ -193,9 +193,9 @@ const fn = match("/café", { encode: encodeURI });
 fn("/caf%C3%A9"); //=> { path: '/caf%C3%A9', index: 0, params: {} }
 ```
 
-有时候匹配的结果是经过特殊编码的，为了确保匹配结果正确，可以通过可选参数 { encode: encodeURI }预先设置转换函数的编码。
+Sometimes, the matching result is specially encoded. To ensure that the matching result is correct, you can use the optional parameter **{encode: encodeURI}** to set the encoding for the conversion function.
 
-#### Alternative Using Normalize---替代方案
+#### Alternative Using Normalize
 
 ```typescript
 /**
@@ -222,11 +222,11 @@ re.test(input); //=> false
 re.test(normalizePathname(input)); //=> true
 ```
 
-如果当前可选的encode方式没有符合要求，我们可以使用normalize方法自己提前预处理传入的路径。
+If the current optional encoding mode does not meet the requirements, you can use the **normalize** method to preprocess the input path.
 
-### Parse---解析
+### Parse
 
-解析函数负责解析传入的路径字符串，并返回各个参数的解析结果字符串和key的列表。
+This function is used to parse the input path and returns the parsing result and key list of each parameter.
 
 ```typescript
 const tokens = parse("/route/:foo/(.*)");
@@ -241,9 +241,9 @@ console.log(tokens[2]);
 //=> { name: 0, prefix: '/', suffix: '', pattern: '.*', modifier: '' }
 ```
 
-### Compile ---编译
+### Compile
 
-Compile将路径规则转换为一个函数，该函数可以将传入的参数拼接为一个有效的路径。
+This function converts path rules into a function that can concatenate input parameters into a valid path.
 
 ```typescript
  // Make sure you encode your path segments consistently.
@@ -274,54 +274,53 @@ const toPathRegexpVali = compile("/user/:id(\\d+)", { validate: false });
 toPathRegexpVali({ id: "abc" }); //=> "/user/abc"
 ```
 
-## 接口说明
+## Available APIs
 
 ### path-to-regexp
 
-| 接口名           | 参数                                                                          | 返回值           | 说明                                                 |
+| Name          | Parameter                                                                         | Return Value          | Description                                                |
 | ---------------- |-----------------------------------------------------------------------------| ---------------- | ---------------------------------------------------- |
-| pathToRegexp     | path: Path,<br/>keys?: Key[],<br/>options?: TokensToRegexpOptions & ParseOptions | RegExp           | 标准化处理给定的路径字符串，返回处理好的正则表达式。 |
-| match            | str: Path,<br/>options?: ParseOptions & TokensToRegexpOptions & RegexpToFunctionOptions | MatchFunction<P> | 根据path-to-regexp规范创建路径匹配函数。             |
-| parse            | str: string,<br/>options?: ParseOptions                                     | Token[]          | 解析字符串返回原始tokens                             |
-| compile          | str: string,<br/>options?: ParseOptions & TokensToFunctionOptions           | PathFunction<P>  | 将字符串编译为路径模版函数                           |
-| tokensToFunction | tokens: Token[],<br/>options: TokensToFunctionOptions = {}                  | PathFunction<P>  | 将token转换为路径函数。                              |
-| regexpToFunction | re: RegExp,<br/>keys: Key[],<br/>options: RegexpToFunctionOptions = {}      | MatchFunction<P> | 从“path to regexp”输出创建一个路径匹配函数。         |
-| tokensToRegexp   | tokens: Token[],<br/>keys?: Key[],<br/>options: TokensToRegexpOptions = {}  | RegExp           | 将token转换为RegExp。                                |
+| pathToRegexp     | path: Path,<br>keys?: Key[],<br>options?: TokensToRegexpOptions & ParseOptions | RegExp           | Standardizes the given path and returns the processed regular expression. |
+| match            | str: Path,<br>options?: ParseOptions & TokensToRegexpOptions & RegexpToFunctionOptions | MatchFunction<P> | Creates a path matching function according to the path-to-regexp rules.            |
+| parse            | str: string,<br>options?: ParseOptions                                     | Token[]          | Parses the provided string and returns the original tokens.                            |
+| compile          | str: string,<br>options?: ParseOptions & TokensToFunctionOptions           | PathFunction<P>  | Compiles a string into a path template function.                          |
+| tokensToFunction | tokens: Token[],<br>options: TokensToFunctionOptions = {}                  | PathFunction<P>  | Converts a token into a path function.                             |
+| regexpToFunction | re: RegExp,<br>keys: Key[],<br>options: RegexpToFunctionOptions = {}      | MatchFunction<P> | Creates a path matching function from the path-to-regexp output.        |
+| tokensToRegexp   | tokens: Token[],<br>keys?: Key[],<br>options: TokensToRegexpOptions = {}  | RegExp           | Converts a token to RegExp.                               |
 
 ### RegExp
 
-| 接口名 | 参数           | 返回值                  | 说明                                                   |
+| API | Parameter          | Return Value                 | Description                                                  |
 | ------ | -------------- | ----------------------- | ------------------------------------------------------ |
-| exec   | string: string | RegExpExecArray \| null | 使用正则表达式模式校验字符串，返回包含校验结果的数组。 |
-| test   | string: string | boolean                 | 校验传入的字符串是否符合规则，返回布尔值。             |
+| exec   | string: string | RegExpExecArray \| null | Verifies a string using the regular expression pattern and returns an array containing the verification result. |
+| test   | string: string | boolean                 | Checks whether the input string complies with the specified rules and returns a Boolean value indicating the result.            |
 
-更多模块的使用可参考[官方文档](https://github.com/pillarjs/path-to-regexp/blob/master/Readme.md)，[单元测试用例](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/PathToRegexpDemo/TEST.md)详情可参考
+For more details, see [Official Documentation](https://github.com/pillarjs/path-to-regexp/blob/master/Readme.md) and [Unit Test Cases](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/PathToRegexpDemo/TEST.md).
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+path-to-regexp has been verified in the following versions:
 
-DevEco Studio: 4.0 Beta2(4.0.3.512), SDK: API10 (4.0.10.9)
+DevEco Studio: 4.0 Beta2 (4.0.3.512), SDK: API10 (4.0.10.9)
 
-DevEco Studio: 3.1 Beta2(3.1.0.400), SDK: API9 Release(3.2.11.9)
+DevEco Studio: 3.1 Beta2 (3.1.0.400), SDK: API9 Release (3.2.11.9)
 
-## 目录结构
+## Directory Structure
 
 ```javascript
 |---- PathToRegexpDemo  
-|     |---- entry  # 示例代码文件夹
-			|---- pages  # 应用页面，根据测试的不同API分为不同页面。
-			|---- CommonResultBean  # 参数包装类，用于组装跳转到公共结果显示界面携带的参数
-            |---- JumpPathConfig  # 页面跳转辅助类，用于首页列表的数据显示以及点击跳转参数获取
-            |---- TestApi  # PathToRegexp的API调用类 返回API调用处理结果
-|     |---- README.MD  # 安装使用方法                   
+|     |---- entry  # Sample code
+			|---- pages  # Application pages, which may vary depending on the API
+			|---- CommonResultBean # Parameter wrapper class, which is used to wrap the parameters that need to be redirected to and displayed on the UI
+            |---- JumpPathConfig # Page redirection configuration, which is used to display list data on the homepage and obtain redirection parameters
+            |---- TestApi  # Classes for calling PathToRegexp APIs
+|     |---- README_EN.MD  # Readme file                  
 ```
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提[Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们提[PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls)。
+If you find any problem when using path-to-regexp, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-本项目基于 [MIT License ](https://gitee.com/zdy09/openharmony_tpc_samples/blob/master/PathToRegexpDemo/LICENSE)，请自由地享受和参与开源。
-
+This project is licensed under the terms of the [MIT License ](https://gitee.com/zdy09/openharmony_tpc_samples/blob/master/PathToRegexpDemo/LICENSE).

@@ -11,6 +11,82 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Jump_to_AlternativePage",
+      "value": "跳转AlternativePage"
+    },
+    {
+      "name": "Jump_to_PathToRegexpPage",
+      "value": "跳转PathToRegexpPage"
+    },
+    {
+      "name": "Jump_to_NamedParamtersPage",
+      "value": "跳转NamedParamtersPage"
+    },
+    {
+      "name": "Jump_to_CustomMatchingParamtersPage",
+      "value": "跳转CustomMatchingParamtersPage"
+    },
+    {
+      "name": "Jump_to_CustomPrefixSuffixPagee",
+      "value": "跳转CustomPrefixSuffixPage"
+    },
+    {
+      "name": "Jump_to_UnnamedParametersPage",
+      "value": "跳转UnnamedParametersPage"
+    },
+    {
+      "name": "Jump_to_ModifiersPage",
+      "value": "跳转ModifiersPage"
+    },
+    {
+      "name": "Jump_to_OptionalPage",
+      "value": "跳转OptionalPage"
+    },
+    {
+      "name": "Jump_to_ZeroPage",
+      "value": "跳转ZeroPage"
+    },
+    {
+      "name": "Jump_to_OnePage",
+      "value": "跳转OnePage"
+    },
+    {
+      "name": "Jump_to_MatchPage",
+      "value": "跳转MatchPage"
+    },
+    {
+      "name": "Jump_to_ProcessPathnamePage",
+      "value": "跳转ProcessPathnamePage"
+    },
+    {
+      "name": "Jump_to_ParsePage",
+      "value": "跳转ParsePage"
+    },
+    {
+      "name": "Jump_to_CompilePage",
+      "value": "跳转CompilePage"
+    },
+    {
+      "name": "Raw_data",
+      "value": "原始数据"
+    },
+    {
+      "name": "Start_convert",
+      "value": "开始转换"
+    },
+    {
+      "name": "Expected_results",
+      "value": "期望结果"
+    },
+    {
+      "name": "After_convert",
+      "value": "转换后"
+    },
+    {
+      "name": "The_data_processing_results_do_not_match_expectations",
+      "value": "数据处理结果与预期不符"
     }
   ]
 }

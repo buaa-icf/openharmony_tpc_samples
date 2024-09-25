@@ -26,6 +26,10 @@ struct CommonResultPage {
   @State afterIndex: Array<number> = new Array<number>();
   @State afterStr: Array<string> = new Array<string>();
 
+  getResourceString(res:Resource){
+    return getContext().resourceManager.getStringSync(res.id)
+  }
+
   aboutToAppear() {
     interface RouterParams{
       dataObj:CommonResultBean
@@ -100,7 +104,7 @@ struct CommonResultPage {
           List({ space: 5, initialIndex: 0 }) {
             ForEach(this.afterIndex, (item:string) => {
               ListItem() {
-                Text('转换后： \r\n' + this.afterStr[item])
+                Text(this.getResourceString($r('app.string.After_convert')) + '： \r\n' + this.afterStr[item])
                   .width('100%')
                   .height(100)
                   .fontSize(16)

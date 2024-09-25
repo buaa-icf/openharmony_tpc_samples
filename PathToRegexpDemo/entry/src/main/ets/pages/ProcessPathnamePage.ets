@@ -21,8 +21,12 @@ import router from '@ohos.router';
 @Entry
 @Component
 struct ProcessPathnamePage {
-  @State message0: string = '原始数据：const fn = match("/café", { encode: encodeURI });'
-  @State message1: string = '原始数据：fn("/caf%C3%A9");'
+  @State message0: string = this.getResourceString($r('app.string.Raw_data')) + '：const fn = match("/café", { encode: encodeURI });'
+  @State message1: string = this.getResourceString($r('app.string.Raw_data')) + '：fn("/caf%C3%A9");'
+
+  getResourceString(res:Resource){
+    return getContext().resourceManager.getStringSync(res.id)
+  }
 
   build() {
     Row() {
@@ -44,7 +48,7 @@ struct ProcessPathnamePage {
           .fontColor(Color.Black)
 
 
-        Button('开始转换')
+        Button($r('app.string.Start_convert'))
           .backgroundColor(Color.Blue)
           .fontColor(Color.White)
           .width('80%')
@@ -54,14 +58,14 @@ struct ProcessPathnamePage {
             let result = api.processPathnameTest()
             if (!result || result.length < 1) {
               promptAction.showToast({
-                message: '数据处理结果与预期不符',
+                message: $r('app.string.The_data_processing_results_do_not_match_expectations'),
                 duration: 6000
               })
               return;
             }
             let bean = new CommonResultBean();
             let arrBefore = new Array<string>();
-            arrBefore.push('fn("/caf%C3%A9") 期待结果: \r\n ' + `{ path: '/caf%C3%A9', index: 0, params: {} }`);
+            arrBefore.push('fn("/caf%C3%A9") ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `{ path: '/caf%C3%A9', index: 0, params: {} }`);
             bean.setBefore(arrBefore);
             let arrAfter = new Array<string>();
             arrAfter.push(JSON.stringify(result[0]));
