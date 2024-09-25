@@ -40,7 +40,7 @@ struct Index {
           .onClick(() => {
             this.parseClick()
           })
-        Text("结果 :" + this.result)
+        Text(this.getResourceString($r('app.string.result')) + " :" + this.result)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
           .margin({ top: "30px" })
@@ -51,5 +51,8 @@ struct Index {
   }
   parseClick(){
     this.result = JSON.stringify(parseSrcset('&#x9;&#x9;data:,a&#x9;&#x9;1x&#x9;&#x9'));
+  }
+  getResourceString(res:Resource){
+    return getContext().resourceManager.getStringSync(res.id)
   }
 }
