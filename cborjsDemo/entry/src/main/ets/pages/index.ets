@@ -56,7 +56,7 @@ struct Index {
             this.onChangeText = value
           })
 
-        Button('测试cbor编解码', { type: ButtonType.Normal, stateEffect: true })
+        Button($r('app.string.Test_cbor_codec'), { type: ButtonType.Normal, stateEffect: true })
           .borderRadius(8)
           .backgroundColor(0x317aff)
           .width('50%')
