@@ -39,61 +39,79 @@ struct Combine {
     Scroll() {
       Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center }) {
         MyButton({
-          content: "combineAll:当源observable完成时，对收集的observables使用combineLatest",
+          content: $r("app.string.CombineAll_content"),
           onClickListener: () => {
             this.combineAll();
           }
         })
 
         MyButton({
-          content: "combineLatest:当任意observable发出值时，发出每个observable的最新值",
+          content: $r("app.string.CombineLatest_content"),
           onClickListener: () => {
             this.combineLatest();
           }
         })
 
         MyButton({
-          content: "concat:按照顺序，前一个observable完成了再订阅下一个observable并发出值",
+          content: $r("app.string.Concat_content"),
           onClickListener: () => {
             this.concatObservable();
           }
         })
 
-        MyButton({ content: "concatAll:收集observables，当前一个完成时订阅下一个", onClickListener: () => {
-          this.concatAll();
-        } })
+        MyButton({
+          content: $r("app.string.ConcatAll_content"), onClickListener: () => {
+            this.concatAll();
+          }
+        })
 
-        MyButton({ content: "forkJoin:当所有observables完成时，发出每个observable的最新值", onClickListener: () => {
-          this.forkJoin();
-        } })
+        MyButton({
+          content: $r("app.string.ForkJoin_content"), onClickListener: () => {
+            this.forkJoin();
+          }
+        })
 
-        MyButton({ content: "merge:将多个observables转换成单个observable", onClickListener: () => {
-          this.merge();
-        } })
+        MyButton({
+          content: $r("app.string.Merge_content"), onClickListener: () => {
+            this.merge();
+          }
+        })
 
-        MyButton({ content: "mergeAll:收集并订阅所有的observables", onClickListener: () => {
-          this.mergeAll();
-        } })
+        MyButton({
+          content: $r("app.string.MergeAll_content"), onClickListener: () => {
+            this.mergeAll();
+          }
+        })
 
-        MyButton({ content: "pairwise:将前一个值和当前值作为数组发出", onClickListener: () => {
-          this.pairwise();
-        } })
+        MyButton({
+          content: $r("app.string.Pairwise_content"), onClickListener: () => {
+            this.pairwise();
+          }
+        })
 
-        MyButton({ content: "race:使用首先发出值的observable", onClickListener: () => {
-          this.race();
-        } })
+        MyButton({
+          content: $r("app.string.Race_content"), onClickListener: () => {
+            this.race();
+          }
+        })
 
-        MyButton({ content: "startWith:发出给定的第一个值", onClickListener: () => {
-          this.startWith();
-        } })
+        MyButton({
+          content: $r("app.string.StartWith_content"), onClickListener: () => {
+            this.startWith();
+          }
+        })
 
-        MyButton({ content: "withLatestFrom:还提供另一个observable的最新值", onClickListener: () => {
-          this.withLatestFrom();
-        } })
+        MyButton({
+          content: $r("app.string.WithLatestFrom_content"), onClickListener: () => {
+            this.withLatestFrom();
+          }
+        })
 
-        MyButton({ content: "zip:在所有observables发出后将它们的值作为数组发出", onClickListener: () => {
-          this.zip();
-        } })
+        MyButton({
+          content: $r("app.string.zip_content"), onClickListener: () => {
+            this.zip();
+          }
+        })
       }.padding({ bottom: 10 })
     }
     .width('100%')

@@ -23,20 +23,28 @@ import { MyButton } from '../common/MyButton'
 struct Multicast {
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center }) {
-      MyButton({ content: "publish:共享源observable并通过调用connect方法使其变成热的", onClickListener: () => {
-        this.publish();
-      } })
+      MyButton({
+        content: $r("app.string.Publish_content"), onClickListener: () => {
+          this.publish();
+        }
+      })
 
-      MyButton({ content: "multicast:使用提供的Subject来共享源observable", onClickListener: () => {
-        this.multicast();
-      } })
+      MyButton({
+        content: $r("app.string.Multicasts_content"), onClickListener: () => {
+          this.multicast();
+        }
+      })
 
-      MyButton({ content: "share:在多个订阅者间共享源observable", onClickListener: () => {
-        this.share();
-      } })
-      MyButton({ content: "shareReplay:共享源observable并重放指定次数的发出", onClickListener: () => {
-        this.shareReplay();
-      } })
+      MyButton({
+        content: $r("app.string.Share_content"), onClickListener: () => {
+          this.share();
+        }
+      })
+      MyButton({
+        content: $r("app.string.ShareReplay_content"), onClickListener: () => {
+          this.shareReplay();
+        }
+      })
     }
     .width('100%')
     .height('100%')

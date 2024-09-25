@@ -43,81 +43,109 @@ struct Create {
     Scroll() {
       Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center }) {
         MyButton({
-          content: "debounce:根据一个选择器函数，舍弃掉在两次输出之间小于指定时间的发出值",
+          content: $r("app.string.Debounce_content"),
           onClickListener: () => {
             this.debounce();
           }
         })
 
-        MyButton({ content: "debounceTime:舍弃掉在两次输出之间小于指定时间的发出值", onClickListener: () => {
-          this.debounceTime();
-        } })
+        MyButton({
+          content: $r("app.string.DebounceTime_content"), onClickListener: () => {
+            this.debounceTime();
+          }
+        })
 
         MyButton({
-          content: "distinctUntilChanged:只有当当前值与之前最后一个值不同时才将其发出",
+          content: $r("app.string.DistinctUntilChanged_content"),
           onClickListener: () => {
             this.distinctUntilChanged();
           }
         })
 
-        MyButton({ content: "filter:发出符合给定条件的值", onClickListener: () => {
-          this.filter();
-        } })
-
-        MyButton({ content: "first:发出第一个值或第一个通过给定表达式的值", onClickListener: () => {
-          this.first();
-        } })
-
-        MyButton({ content: "ignoreElements:忽略所有通知，除了complete和error", onClickListener: () => {
-          this.ignoreElements();
-        } })
-
-        MyButton({ content: "last:根据提供的表达式，在源 observable 完成时发出它的最后一个值", onClickListener: () => {
-          this.last();
-        } })
-
-        MyButton({ content: "sample:当提供的observable发出时从源observable中取样", onClickListener: () => {
-          this.sample();
-        } })
-
-        MyButton({ content: "single:发出通过表达式的单一项", onClickListener: () => {
-          this.single();
-        } })
-
-        MyButton({ content: "skip:跳过N个(由参数提供)发出值", onClickListener: () => {
-          this.skip();
-        } })
-
-        MyButton({ content: "skipUntil:跳过源observable发出的值，直到提供的observable发出值", onClickListener: () => {
-          this.skipUntil();
-        } })
-
-        MyButton({ content: "skipWhile:跳过源observable发出的值，直到提供的表达式结果为 false", onClickListener: () => {
-          this.skipWhile();
-        } })
-
-        MyButton({ content: "take:在完成前发出N个值(N由参数决定)", onClickListener: () => {
-          this.take();
-        } })
-
-        MyButton({ content: "takeUntil:发出值，直到提供的observable发出值，它便完成", onClickListener: () => {
-          this.takeUntil();
-        } })
-
-        MyButton({ content: "takeWhile:发出值，直到提供的表达式结果为 false ", onClickListener: () => {
-          this.takeWhile();
-        } })
+        MyButton({
+          content: $r("app.string.Filter_content"), onClickListener: () => {
+            this.filter();
+          }
+        })
 
         MyButton({
-          content: "throttle:以某个时间间隔为阈值，在durationSelector 完成前将抑制新值的发出",
+          content: $r("app.string.First_content"), onClickListener: () => {
+            this.first();
+          }
+        })
+
+        MyButton({
+          content: $r("app.string.IgnoreElements_content"), onClickListener: () => {
+            this.ignoreElements();
+          }
+        })
+
+        MyButton({
+          content: $r("app.string.Last_content"), onClickListener: () => {
+            this.last();
+          }
+        })
+
+        MyButton({
+          content: $r("app.string.Sample_content"), onClickListener: () => {
+            this.sample();
+          }
+        })
+
+        MyButton({
+          content: $r("app.string.Single_content"), onClickListener: () => {
+            this.single();
+          }
+        })
+
+        MyButton({
+          content: $r("app.string.Skip_content"), onClickListener: () => {
+            this.skip();
+          }
+        })
+
+        MyButton({
+          content: $r("app.string.SkipUntil_content"), onClickListener: () => {
+            this.skipUntil();
+          }
+        })
+
+        MyButton({
+          content: $r("app.string.SkipWhile_content"), onClickListener: () => {
+            this.skipWhile();
+          }
+        })
+
+        MyButton({
+          content: $r("app.string.Take_content"), onClickListener: () => {
+            this.take();
+          }
+        })
+
+        MyButton({
+          content: $r("app.string.TakeUntil_content"), onClickListener: () => {
+            this.takeUntil();
+          }
+        })
+
+        MyButton({
+          content: $r("app.string.TakeWhile_content"), onClickListener: () => {
+            this.takeWhile();
+          }
+        })
+
+        MyButton({
+          content: $r("app.string.Throttle_content"),
           onClickListener: () => {
             this.throttle();
           }
         })
 
-        MyButton({ content: "throttleTime:当指定的持续时间经过后发出最新值", onClickListener: () => {
-          this.throttleTime();
-        } })
+        MyButton({
+          content: $r("app.string.ThrottleTime_content"), onClickListener: () => {
+            this.throttleTime();
+          }
+        })
       }
     }
     .width('100%')

@@ -23,13 +23,17 @@ import { MyButton } from '../common/MyButton'
 struct Condition {
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center }) {
-      MyButton({ content: "defaultIfEmpty:如果在完成前没有发出任何通知，那么发出给定的值", onClickListener: () => {
-        this.defaultIfEmpty();
-      } })
+      MyButton({
+        content: $r("app.string.DefaultIfEmpty_content"), onClickListener: () => {
+          this.defaultIfEmpty();
+        }
+      })
 
-      MyButton({ content: "every:如果完成时所有的值都能通过断言，那么发出 true，否则发出false", onClickListener: () => {
-        this.every();
-      } })
+      MyButton({
+        content: $r("app.string.Every_content"), onClickListener: () => {
+          this.every();
+        }
+      })
     }
     .width('100%')
     .height('100%')
