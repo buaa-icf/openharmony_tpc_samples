@@ -1,17 +1,17 @@
 # url-parse
 
-## 简介
-> 占用空间小的URL解析器，可以在Node.js和浏览器环境中无缝工作。
+## Introduction
+> A small-space URL parser that can work seamlessly in Node.js and browser environments.
 
-## 下载安装
+## How to Install
 ```shell
 ohpm install url-parse
-ohpm install @types/url-parse  // import url-parse 的时候语法报错, 其原因是url-parse包内不含类型声明, 需要 @types/url-parse 下载这个包的声明文件, 从而解决语法的报错.
+ohpm install @types/url-parse  // If a syntax error is reported, the url-parse package does not contain the type declaration. You need to download the declaration file of the package from @types/url-parse to rectify the syntax error.
 ```
-OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
-1. 绝对或相对URL的字符串
+## How to Use
+1. Absolute or relative URL string
  ```
  import URLParse from "url-parse"
  
@@ -19,32 +19,33 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
  
  ```
 
-## 接口说明
-- Url(address, location, parser) 根据入参生成一个Url对象
-- set(part, value, fn) 设置URL的指定部分的值
-- toString(stringify):string 将属性转换回有效的完整URL字符串
-- lolcation(loc) 解析了一个URL字符串，并将解析后的对象赋值给urlObj变量。然后，我们可以通过访问urlObj的属性来获取URL的各个部分，例如协议、主机、端口、路径和查询参数等
-- extractProtocol(address, location) 用于从给定的URL地址中提取协议部分
+## Available APIs
+- Url(address, location, parser): Generates a URL object based on input parameters.
+- set(part, value, fn): Sets the value of a specified part of a URL.
+- toString(stringify):string: Converts the attribute back to a valid complete URL string.
+- location(loc): Parses a URL string and assigns the parsed object to the **urlObj** variable. Then, we can access the attributes of **urlObj** to obtain the parts of the URL, such as the protocol, host, port, path, and query parameters.
+- extractProtocol(address, location): Extracts the protocol part from a specified URL.
 
-## 目录结构
+## Directory Structure
 ````
 |---- url_parse
-|     |---- entry  # 示例代码文件夹
+|     |---- entry  # Sample code
               ├── src  
                  ├── main   
                    ├── ets
                        ├── pages
-                             ├── Index.ets  sample代码
-|     |---- README.md  # 安装使用方法                    
+                             ├── Index.ets  # Sample code
+|     |---- README.md  # Readme  
+|     |---- README_zh.md  # Readme                   
 ````
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+This project has been verified in the following version:
 
-- DevEco Studio 版本： 4.1 Canary(4.1.3.317), OpenHarmony SDK:API11 (4.1.0.36)
+- DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API11 (4.1.0.36)
 
-## 贡献代码
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
-## 开源协议
-本项目基于 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/url_parse/LICENSE) ，请自由地享受和参与开源。
+## How to Contribute
+If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
+## License
+This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/url_parse/LICENSE).
