@@ -1,18 +1,18 @@
 # ml_array_rescale
 
-## 简介
+## Introduction
 
-> 将数组重新缩放到一个范围
+> This project provides an API to rescale an array to a range.
 
-## 下载安装
+## How to Install
 
 ```shell
 ohpm  install ml-array-rescale@1.3.7
 ```
 
-OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 
 
 ```js
@@ -22,41 +22,40 @@ const result = rescale([0, 1, 2, 3, 4]);
 // [0, 0.25, 0.5, 0.75, 1]
 
 ```
-单元测试用例详情见[TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ml_array_rescale/TEST.md)
+For details about unit test cases, see [TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ml_array_rescale/TEST.md).
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+This project has been verified in the following version:
 
-- DevEco Studio 版本： 4.1 Canary(4.1.3.317),OpenHarmony SDK:API11 (4.1.0.36)。
+- DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API 11 (4.1.0.36)
 
-## 接口说明
+## Available APIs
 
-| **接口**                                                               | 参数                                | 功能        |
-|----------------------------------------------------------------------|-----------------------------------|-----------|
-| rescale( array: T, options?: mlArrayRescale.ArrayRescaleOptions<T>)  | array: 数组<br/> options: 数组重新缩放选项  |   数组重新缩放    |
+| API                                                    | Parameter                                      | Description        |
+| ------------------------------------------------------------ | ------------------------------------------ | ------------ |
+| rescale( array: T, options?: mlArrayRescale.ArrayRescaleOptions<T>) | **array**: array to rescale.<br>**options**: options for rescaling the array. | Rescales an array.|
 
 
-## 目录结构
+## Directory Structure
 
 ````
 |---- ml_array_rescale
-|     |---- entry  # 示例代码文件夹
+|     |---- entry  # Sample code
               ├── src  
                  ├── main   
                    ├── ets
                        ├── pages
-                             ├── Index.ets  sample代码
-|     |---- README.md  # 安装使用方法                    
+                             ├── Index.ets  # Sample code
+|     |---- README_EN.md  # Readme                   
 ````
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
-给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem when using ml_array_rescale, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-本项目基于 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ml_array_rescale/LICENSE)
-，请自由地享受和参与开源。
-    
+This project is licensed under [MIT LICENSE](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ml_array_rescale/LICENSE).
+
+​    

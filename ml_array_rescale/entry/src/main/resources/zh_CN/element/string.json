@@ -11,6 +11,74 @@
     {
       "name": "EntryAbility_label",
       "value": "ml_array_rescale"
+    },
+    {
+      "name": "text_click_calculation",
+      "value": "点击，运算"
+    },
+    {
+      "name": "text_default_value",
+      "value": "无输入默认值为 [1,2,3]"
+    },
+    {
+      "name": "text_result",
+      "value": "结果："
+    },
+    {
+      "name": "text_result_max",
+      "value": "无输入max默认值为 2"
+    },
+    {
+      "name": "text_result_min",
+      "value": "无输入min默认值为 0"
+    },
+    {
+      "name": "placeholder_input",
+      "value": "请输入有效数据："
+    },
+    {
+      "name": "placeholder_max",
+      "value": "请输入max值"
+    },
+    {
+      "name": "placeholder_min",
+      "value": "请输入min值"
+    },
+    {
+      "name": "placeholder_array",
+      "value": "请输入数组 如： [1,2,3]"
+    },
+    {
+      "name": "text_demo_array",
+      "value": "rescale(array)使用示例"
+    },
+    {
+      "name": "text_demo_outputArray",
+      "value": "rescale(array, { outputArray })使用示例"
+    },
+    {
+      "name": "text_demo_output",
+      "value": "rescale(array, { output: array })使用示例"
+    },
+    {
+      "name": "text_demo_min",
+      "value": "rescale(array, { min })使用示例"
+    },
+    {
+      "name": "text_demo_max",
+      "value": "rescale(array, { max })使用示例"
+    },
+    {
+      "name": "text_demo_min_autoMinMax",
+      "value": "rescale(array, { min, autoMinMax: true })使用示例"
+    },
+    {
+      "name": "text_demo_max_autoMinMax",
+      "value": "rescale(array, { max, autoMinMax: true })使用示例"
+    },
+    {
+      "name": "text_demo_minMax",
+      "value": "rescale(array, { min, max })使用示例"
     }
   ]
 }
