@@ -1,29 +1,29 @@
 # newsie
 
-## 介绍
+## Introduction
 
-newsie 是一款实现了 NNTP 客户端协议的三方库，适用于openharmony。
+newsie is a library that implements the Network News Transfer Protocol (NNTP) client for use with OpenHarmony.
 
-## 下载
+## How to Download
 
-1 丶安装
+1. Install the library.
 
 ```
     ohpm install @ohos/newsie
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-2 丶导入
+2. Import the **Client**.
 
 ```
     import Client from '@ohos/newsie'
 ```
 
-## Demo 样例
+## Demo Code Sample
 
-API：connect
+connect
 
-描述：连接服务器(为保证demo和XTS正常运行，需要全局搜素项目中的xxx，替换为正确的服务器ip)
+Connects to the server. To run the demo and XTS properly, search for **xxx** in the project globally and replace it with the correct server IP address.
 
 ```js
 this.client = new Client({
@@ -33,40 +33,40 @@ this.client = new Client({
 await this.client.connect();
 ```
 
-API：list
+list
 
-描述：获取新闻组列表
+Obtains the newsgroup list.
 
 ```js
 await this.client.list();
 ```
 
-API：group
+group
 
-描述：获取指定新闻组信息，并选中
+Obtains the information about a specified newsgroup and selects the newsgroup.
 
 ```js
 await this.client.group(this.select_group);
 ```
 
-API：newgroups
+newgroups
 
-描述：获取某个时间后的新闻组
+Obtains newsgroups after a specified time.
 ```js
 await this.client.newgroups(new Date());
 ```
 
-API：date
+date
 
-描述：获取服务器日期
+Obtains the server date.
 
 ```js
 await this.client.date();
 ```
 
-更多样例参照该 Demo 工程中[Index](./entry/src/main/ets/pages/Index.ets)页面
+For more sample code, see the [Index](./entry/src/main/ets/pages/Index.ets) page in the demo project.
 
-### 软件架构
+### Directory Structure
 
 ```
 |-entry
@@ -74,61 +74,61 @@ await this.client.date();
     |   |-entryability
     |           |-EntryAbility.ts
     |   |-pages
-    |           |-Index.ets             #主页demo
-|-library   # newsie组件
+    |           |-Index.ets             # Homepage demo
+|-library # newsie library
 ```
 
-## 接口
+## Available APIs
 
-| 模块名          | 功能                          | 备注            |
+| Name         | Description                         | Remarks           |
 | --------------- |-----------------------------| --------------- |
-| connect         | 连接服务器                       |
-| list            | 获取全部新闻组                     |
-| group           | 获取并选中文章                     |
-| newgroups       | 获取某个时间后的新闻组                 | 时间为 UTC 时间 |
-| newnews         | 获取某个新闻组下，某个时间后的文章           |
-| listActive      | 文章列表                        |
-| listNewsgroups  | 获取新闻组                       |
-| listOverviewFmt | 获取新闻组的部分信息                  |
-| hdr             | 发送 HDR 指令                   |
-| listGroup       | 获取全部文章号                     |
-| article         | 文章详情                        |
-| head            | 文章头信息                       |
-| body            | 文章主体信息                      |
-| stat            | 判断文章是否存在                    |
-| over            | 文章的全部信息                     |
-| help            | 获取帮助指令                      |
-| capabilities    | 返回服务端能力列表                   |
-| date            | 返回服务端日期                     |
-| modeReader      | 模式切换                        |
-| quit            | 结束会话                        |
-| listHeaders     | 发送 LISTHEADERS 指令           |
-| last            | 上一篇文章                       |
-| next            | 下一篇文章                       |
-| listDistribPats | 发送 LISTDISTRIBPATS 指令       |
-| listActiveTimes | 发送 LISTACTIVETIMES 指令       |
-| ihave           | 知会服务端有这样一篇文章，如果服务端需要就返回 335 |
-| check           | 检查                          |
-| modeStream      | 发送 MODESTREAM 指令            |
-| slave           | 发送 SLAVE 指令                 |
-| compressDeflate | 压缩                          |
-| post            | 提交                          |
+| connect         | Connects to the server.                      |
+| list            | Obtains all newsgroups.                    |
+| group           | Obtains and selects a newsgroup.                    |
+| newgroups       | Obtains newsgroups after a specified time.                | The time is in the UTC format.|
+| newnews         | Obtains articles in a newsgroup after a specified time.          |
+| listActive      | Obtains the article list.                       |
+| listNewsgroups  | Obtains newsgroups.                      |
+| listOverviewFmt | Obtains partial information of a newsgroup.                 |
+| hdr             | Sends an HDR command.                  |
+| listGroup       | Obtains all article IDs.                    |
+| article         | Obtains article details.                       |
+| head            | Obtains the header information of an article.                      |
+| body            | Obtains the body information of an article.                     |
+| stat            | Checks whether an article exists.                   |
+| over            | Obtains all information of an article.                    |
+| help            | Obtains the help information.                     |
+| capabilities    | Returns the server capability list.                  |
+| date            | Returns the server date.                    |
+| modeReader      | Switches the mode.                       |
+| quit            | Ends a session.                       |
+| listHeaders     | Sends the **LISTHEADERS** command.          |
+| last            | Obtains the last article.                      |
+| next            | Obtains the next article.                      |
+| listDistribPats | Sends the **LISTDISTRIBPATS** command.      |
+| listActiveTimes | Sends the **LISTACTIVETIMES** command.      |
+| ihave           | Notifies the server that there is such an article. If the server requires the article, it returns 335.|
+| check           | Checks.                         |
+| modeStream      | Sends the **MODESTREAM** command.           |
+| slave           | Sends the **SLAVE** command.                |
+| compressDeflate | Compresses.                         |
+| post            | Posts.                         |
 
-更多模块的使用可参考[官方文档](https://gitlab.com/timrs2998/newsie/-/blob/master/README.md)，单元测试用例详情见[TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/newsie/TEST.md)
+For more details, see [Official Documentation](https://gitlab.com/timrs2998/newsie/-/blob/master/README.md) and [Unit Test Cases](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/newsie/TEST.md).
 
-### 约束与限制
+### Constraints
 
-在下述版本验证通过：
+This project has been verified in the following versions:
 
-DevEco Studio: 4.1 Canary2(4.1.3.313), SDK: API11 (4.1.3.1)
-DevEco Studio: 4.0.1.400, SDK: API10 (4.0.0.24)
+DevEco Studio: 4.1 Canary2 (4.1.3.313), SDK: API 11 (4.1.3.1)
+DevEco Studio: 4.0.1.400, SDK: API 10 (4.0.0.24)
 
-### 开源协议
+### License
 
-本项目基于 [GNU AFFERO GENERAL](./LICENSE)
-，请自由地享受和参与开源。
+This project is licensed under [GNU AFFERO GENERAL](./LICENSE).
+ 
 
-### 贡献代码
+### How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
-给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem when using the project, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or
+a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).

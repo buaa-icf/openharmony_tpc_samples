@@ -52,29 +52,29 @@ struct Index {
     Column(){
       Column() {
         Row() {
-          this.BuildLabel("当前连接状态：")
+          this.BuildLabel("Current connection status：")
           if (this.status) {
-            Text("成功").fontColor(Color.Green)
+            Text("Success").fontColor(Color.Green)
           } else {
-            Text("未连接/失败").fontColor(Color.Red)
+            Text("Failed").fontColor(Color.Red)
           }
         }.width("100%")
 
 
         Row() {
-          this.BuildButton("点击连接", this.safeCallFunc((async () => {
+          this.BuildButton("Connect", this.safeCallFunc((async () => {
             this.client = new Client({
               host: "xxx.xxx.xxx.xxx",
               port: 8084
             })
             await this.client.connect();
             this.status = true;
-            return "连接成功";
+            return "Connect success";
           })))
         }.margin({ top: 10 }).width("100%")
 
         Row() {
-          this.BuildLabel("当前时间：")
+          this.BuildLabel("Time：")
           DatePicker({ selected: this.selected_date_time })
             .onChange((value: DatePickerResult) => {
               if (value && value.year !== undefined) {
@@ -92,7 +92,7 @@ struct Index {
           // 新闻组
           Column() {
             Row() {
-              this.BuildLabel("新闻组：")
+              this.BuildLabel("News group：")
               Select(this.groups)
                 .value(this.select_group)
                 .font({ size: 16, weight: 500 })
@@ -105,21 +105,21 @@ struct Index {
             }.width("100%")
 
             Flex({ wrap: FlexWrap.Wrap }) {
-              this.BuildButton("list()-加载全部新闻组", this.safeCallFunc(async () => {
+              this.BuildButton("list()-Load all news group", this.safeCallFunc(async () => {
                 const res: ESObject = await this.client.list()
                 this.groups = res.newsgroups.map((v: ESObject) => ({ value: v.name } as Value))
                 return res;
               }))
-              this.BuildButton("group(group)-获取并选中文章", this.safeCallFunc(async () => {
+              this.BuildButton("group(group)-Retrieve and select articles", this.safeCallFunc(async () => {
                 return await this.client.group(this.select_group)
 
               }),Color.Orange)
 
-              this.BuildButton("newgroups(isoDateTime)-获取时间(后)的新闻组", this.safeCallFunc(async () => {
+              this.BuildButton("newgroups(isoDateTime)-Get the news group for the time (later)", this.safeCallFunc(async () => {
                 return await this.client.newgroups(this.selected_date_time)
               }),Color.Orange)
 
-              this.BuildButton("newnews(wildmat,isoDateTime)-获取新闻组、时间(后)的文章", this.safeCallFunc(async () => {
+              this.BuildButton("newnews(wildmat,isoDateTime)-Retrieve articles from the news group and time (later)", this.safeCallFunc(async () => {
                 return await this.client.newnews(this.select_group, this.selected_date_time)
               }),Color.Orange)
 
@@ -181,7 +181,7 @@ struct Index {
           // 文章号
           Column() {
             Row() {
-              this.BuildLabel("文章号：")
+              this.BuildLabel("Article：")
               Select(this.articles)
                 .value(this.select_article)
                 .font({ size: 16, weight: 500 })
@@ -196,14 +196,14 @@ struct Index {
             Flex({ wrap: FlexWrap.Wrap }) {
 
 
-              this.BuildButton("listGroup(group)-加载全部文章", this.safeCallFunc(async () => {
+              this.BuildButton("listGroup(group)-Load all articles", this.safeCallFunc(async () => {
                 const res: ESObject = await this.client.listGroup(this.select_group)
                 this.articles = res.group.articleNumbers.map((v: ESObject) => ({ value: v + "" } as Value));
                 return res
               }),Color.Orange)
 
 
-              this.BuildButton("article(messageId)-文章详情", this.safeCallFunc(async () => {
+              this.BuildButton("article(messageId)-Article Details", this.safeCallFunc(async () => {
                 return await this.client.article(this.select_article);
               }),Color.Orange)
 
@@ -211,11 +211,11 @@ struct Index {
                 return await this.client.head(this.select_article);
               }),Color.Orange)
 
-              this.BuildButton("body(messageId)-主体", this.safeCallFunc(async () => {
+              this.BuildButton("body(messageId)-Main body", this.safeCallFunc(async () => {
                 return await this.client.body(this.select_article);
               }),Color.Orange)
 
-              this.BuildButton("stat(messageId)-是否存在", this.safeCallFunc(async () => {
+              this.BuildButton("stat(messageId)-Is or not exist", this.safeCallFunc(async () => {
                 return await this.client.stat(this.select_article);
               }),Color.Orange)
               this.BuildButton("over(messageId?)", this.safeCallFunc(async () => {
@@ -245,22 +245,22 @@ struct Index {
           // 会话相关命令
 
           Column() {
-            Text("会话相关命令：").fontSize(14).width("100%")
+            Text("Session related commands：").fontSize(14).width("100%")
             Flex({ wrap: FlexWrap.Wrap }) {
-              this.BuildButton("help()-帮助指令", this.safeCallFunc(async () => {
+              this.BuildButton("help()-Help Instructions", this.safeCallFunc(async () => {
                 return await this.client.help();
               }))
-              this.BuildButton("capabilities()-能力列表", this.safeCallFunc(async () => {
+              this.BuildButton("capabilities()-capability list", this.safeCallFunc(async () => {
                 const res: ESObject = await this.client.capabilities(); // 客户端获取服务端提供的能力列表
                 return res;
               }))
-              this.BuildButton("date()-获取服务器时间", this.safeCallFunc(async () => {
+              this.BuildButton("date()-Get server time", this.safeCallFunc(async () => {
                 return await this.client.date();
               }))
-              this.BuildButton("modeReader()-模式切换", this.safeCallFunc(async () => {
+              this.BuildButton("modeReader()-Mode switching", this.safeCallFunc(async () => {
                 return await this.client.modeReader(); //触发服务端进行模式切换
               }))
-              this.BuildButton("quit()-终止会话", this.safeCallFunc(async () => {
+              this.BuildButton("quit()-Terminate session", this.safeCallFunc(async () => {
                 return await this.client.quit(); //触发服务端进行模式切换
               }))
 
@@ -303,9 +303,9 @@ struct Index {
       try {
         const result: ESObject = await func();
         this.log(JSON.stringify(result));
-        this.showMessage(`操作成功 执行结果：${JSON.stringify(result) || "无"}`)
+        this.showMessage(`success, result：${JSON.stringify(result) || "null"}`)
       } catch (err) {
-        this.showMessage(`操作失败 错误消息为：${err.comment}`)
+        this.showMessage(`failed, error message：${err.comment}`)
       }
     }
 
