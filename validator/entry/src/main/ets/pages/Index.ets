@@ -64,6 +64,10 @@ struct Index {
   ]
   @State data1: string | false = '';
 
+  notEmptyText: string = getContext().resourceManager.getStringByNameSync('placeholder_input_not_empty').toString();
+  letterText: string = getContext().resourceManager.getStringByNameSync('placeholder_input_letters').toString();
+  intText: string = getContext().resourceManager.getStringByNameSync('placeholder_input_int').toString();
+
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start }) {
       List({ space: 20, initialIndex: 0 }) {
@@ -73,14 +77,14 @@ struct Index {
               Text(item.text)
                 .fontSize(16)
                 .margin({ top: 5 })
-              TextInput({ text: item.str, placeholder: '请输入字符串' })
+              TextInput({ text: item.str, placeholder: $r("app.string.placeholder_input") })
                 .height(60)
                 .fontSize(18)
                 .onChange((value: string) => {
                   item.str = value
                 })
               if (item.str1) {
-                TextInput({ text: item.str1, placeholder: '请输入字符串' })
+                TextInput({ text: item.str1, placeholder: $r("app.string.placeholder_input") })
                   .height(60)
                   .fontSize(18)
                   .onChange((value: string) => {
@@ -88,7 +92,7 @@ struct Index {
                   })
               }
               if (item.min) {
-                TextInput({ text: item.min.toString(), placeholder: '请输入字符串' })
+                TextInput({ text: item.min.toString(), placeholder: $r("app.string.placeholder_input") })
                   .height(60)
                   .fontSize(18)
                   .onChange((value: string) => {
@@ -96,7 +100,7 @@ struct Index {
                   })
               }
               if (item.IPVersion) {
-                TextInput({ text: item.IPVersion.toString(), placeholder: '请输入字符串' })
+                TextInput({ text: item.IPVersion.toString(), placeholder: $r("app.string.placeholder_input") })
                   .height(60)
                   .fontSize(18)
                   .onChange((value: string) => {
@@ -104,7 +108,7 @@ struct Index {
                   })
               }
               if (item.max) {
-                TextInput({ text: item.max.toString(), placeholder: '请输入字符串' })
+                TextInput({ text: item.max.toString(), placeholder: $r("app.string.placeholder_input") })
                   .height(60)
                   .fontSize(18)
                   .onChange((value: string) => {
@@ -112,7 +116,7 @@ struct Index {
                   })
               }
               if (item.values) {
-                TextInput({ text: item.values.toString(), placeholder: '请输入字符串' })
+                TextInput({ text: item.values.toString(), placeholder: $r("app.string.placeholder_input") })
                   .height(60)
                   .fontSize(18)
                   .onChange((value: string) => {
@@ -136,7 +140,7 @@ struct Index {
               item.mode == "toDate") {
                 Text('' + this.data1).fontSize(25).fontColor(Color.Gray).padding(20)
               }
-              Button('验证', { type: ButtonType.Normal })
+              Button($r("app.string.button_verify"), { type: ButtonType.Normal })
                 .fontSize(18)
                 .fontColor('#000')
                 .height(60)
@@ -281,7 +285,7 @@ struct Index {
         let minMax:minMaxType={ min:item.min, max:item.max }
         result = validator.isInt(item.str,minMax)
       }else {
-        result = "请输入整数"
+        result = this.intText
       }
 
     }
@@ -289,12 +293,12 @@ struct Index {
       if(validator.isInt(item.str) && validator.isInt(item.min.toString())){
         result = validator.isDivisibleBy(item.str, item.min)
       }else {
-        result = "请输入整数"
+        result = this.intText
       }
     }
     if (item.mode == "isIn") {
       if(item.values.toString() == ''){
-        result = "不能输入空值"
+        result = this.notEmptyText
       }else {
         result = validator.isIn(item.str, item.values)
       }
@@ -328,9 +332,9 @@ struct Index {
     }
     if (item.mode == "isLowercase") {
       if(item.str == ''){
-        result = "不能输入空值"
+        result = this.notEmptyText
       }else if(!validator.isAlpha(item.str)){
-        result = '请仅输入英文字母'
+        result = this.letterText
       }else {
         result = validator.isLowercase(item.str)
       }
@@ -394,9 +398,9 @@ struct Index {
     }
     if (item.mode == "isUppercase") {
       if(item.str == ''){
-        result = "不能为空值"
+        result = this.notEmptyText
       }else if(!validator.isAlpha(item.str)) {
-        result = "请仅输入英文字母"
+        result = this.letterText
       } else {
         result = validator.isUppercase(item.str)
       }
@@ -433,21 +437,21 @@ struct Index {
     }
     if (item.mode == "trim") {
       if(item.str == ''){
-        result = "不能输入空值"
+        result = this.notEmptyText
       }else {
         result = validator.trim(item.str, item.str1)
       }
     }
     if (item.mode == "ltrim") {
       if(item.str == ''){
-        result = "不能输入空值"
+        result = this.notEmptyText
       }else {
         result = validator.ltrim(item.str, item.str1)
       }
     }
     if (item.mode == "rtrim") {
       if(item.str == ''){
-        result = "不能输入空值"
+        result = this.notEmptyText
       }else {
         result = validator.rtrim(item.str, item.str1)
       }
@@ -462,7 +466,7 @@ struct Index {
     }
     if (item.mode == "stripLow") {
       if(item.str == ''){
-        result = "不能输入空值"
+        result = this.notEmptyText
       }else{
         result = validator.stripLow(item.str)
       }
@@ -471,7 +475,7 @@ struct Index {
       if(validator.isNumeric(item.str)){
         result = validator.toInt(item.str)
       }else {
-        result = '请输入int值'
+        result = this.intText
       }
     }
     if (item.mode == "toFloat") {
