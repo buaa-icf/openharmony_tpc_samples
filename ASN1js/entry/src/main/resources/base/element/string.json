@@ -11,6 +11,18 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Assembly_data",
+      "value": "Assembly data："
+    },
+    {
+      "name": "Hexadecimal",
+      "value": "To convert data from toBER to hexadecimal:"
+    },
+    {
+      "name": "FromBER_data",
+      "value": "From BER data："
     }
   ]
 }

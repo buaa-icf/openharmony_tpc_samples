@@ -11,6 +11,18 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Assembly_data",
+      "value": "组装数据："
+    },
+    {
+      "name": "Hexadecimal",
+      "value": "toBER ArrayBuffer数据转换十六进制："
+    },
+    {
+      "name": "FromBER_data",
+      "value": "fromBER数据："
     }
   ]
 }
