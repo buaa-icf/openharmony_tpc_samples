@@ -1,18 +1,18 @@
 # buffer
 
-## 简介
+## Introduction
 
->提供一个与node的Buffer API 100%相同的API
+>This project provides the same APIs as Node.js buffer.
 
-## 下载安装
+## How to Install
 
 ```shell
 ohpm  install buffer@6.0.3
 ```
 
-OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 
 
 ```
@@ -28,64 +28,61 @@ let utf8Slice = b.toString('utf8', 0, Buffer.byteLength(utf8String));
 const d = Buffer.from([23, 42, 255]);
 ```
 
-## 接口说明
+## Available APIs
 
-| 使用方法            | 参数                                                              | 相关描述                                                                   |
-|-----------------|-----------------------------------------------------------------|------------------------------------------------------------------------|
-| write()         | string, offset?, length?, encoding?                             | 将参数 string 数据写入buffer                                                  |
-| toString()      | encoding?, start?, end?                                         | 根据 encoding参数（默认是 'utf8'）返回一个解码过的 string 类型                            |
-| toJSON()        | 无                                                               | 将Buffer实例转换为JSON对象                                                     |
-| equals()        | otherBuffer                                                     | 比较两个缓冲区是否相等                                                            |
-| compare()       | otherBuffer, targetStart?, targetEnd?, sourceStart?, sourceEnd? | 比较两个Buffer对象，返回一个数字，表示 buf 在 otherBuffer 之前，之后或相同。                     |
-| copy()          | targetBuffer, targetStart?, sourceStart?, sourceEnd?            | buffer拷贝                                                               |
-| slice()         | start?, end?                                                    | 剪切 Buffer对象                                                            |
-| readUIntLE()    | offset, byteLength, noAssert?                                   | 支持读取 48 位以下的无符号数字，小端对齐                                                 |
-| readUIntBE()    | offset, byteLength, noAssert?                                   | 支持读取 48 位以下的无符号数字，大端对齐                                                 |
-| readIntLE()     | offset, byteLength, noAssert?                                   | 支持读取 48 位以下的有符号数字，小端对齐                                                 |
-| readIntBE()     | offset, byteLength, noAssert?                                   | 支持读取 48 位以下的有符号数字，大端对齐                                                 |
-| readUInt8()     | offset, noAssert?                                               | 根据指定的偏移量，读取一个无符号 8 位整数                                                 |
-| writeInt8()     | value, offset, noAssert?                                        | 根据传入的offset偏移量将value写入buffer，value 必须是一个合法的无符号 8 位整数。                  |
-| readInt8()      | offset, noAssert?                                               | 根据指定的偏移量，读取一个有符号 8 位整数                                                 |
-| swap16()        | 无                                                               | 将 buffer 解释为无符号 16 位整数数组并就地交换字节顺序                                      |
-| swap32()        | 无                                                               | 将 buffer 解释为无符号 32 位整数数组并就地交换字节顺序                                      |
-| swap64()        | 无                                                               | 将 buffer 解释为无符号 64 位整数数组并就地交换字节顺序                                      |
-| writeUInt8()    | value, offset, noAssert?                                        | 根据传入的 offset 偏移量将 value 写入 buffer，value 必须是一个合法的无符号 8 位整数              |
-| writeUInt16LE() | value, offset, noAssert?                                        | 根据传入的 offset 偏移量和指定的 endian 格式将 value 写入 buffer，value 必须是一个合法的无符号16位整数 |
-| writeUInt32LE() | value, offset, noAssert?                                        | 根据传入的 offset 偏移量和指定的 endian 格式将 value 写入 buffer，value 必须是一个合法的无符号32位整数 |
-| writeUInt32BE() | value, offset, noAssert?                                        | 根据传入的 offset 偏移量和指定的 endian 格式将 value 写入 buffer，value 必须是一个合法的无符号32位整数 |
-| writeDoubleLE() | value, offset, noAssert?                                        | 将值以指定的字节序格式以指定的偏移量写入缓冲区                                                |
-| fill()          | value, offset?, end?                                            | 用指定的值填充缓冲区                                                             |
-| indexOf()       | value, byteOffset?, encoding?                                   | 检查缓冲区中是否存在指定值并返回位置                                                     |
-| lastIndexOf()   | value, byteOffset?, encoding?                                   | 检查缓冲区中是否存在指定值并返回位置                                                     |
-| includes()      | value, byteOffset?, encoding?                                   | 检查缓冲区中是否包含指定的值                                                         |
- 
+| API       | Parameter                                                        | Description                                                    |
+| --------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| write()         | string, offset?, length?, encoding?                          | Writes a string to the buffer.                                |
+| toString()      | encoding?, start?, end?                                      | Returns a decoded string based on the encoding parameter (**'utf8'** by default).|
+| toJSON()        | N/A                                                          | Converts a buffer instance into a JSON object.                                  |
+| equals()        | otherBuffer                                                  | Checks whether two buffers are equal.                                      |
+| compare()       | otherBuffer, targetStart?, targetEnd?, sourceStart?, sourceEnd? | Compares two buffer objects (**buf** and **otherBuffer**) and returns a number, indicating that **buf** is before, after, or the same as **otherBuffer**.|
+| copy()          | targetBuffer, targetStart?, sourceStart?, sourceEnd?         | Copies a buffer.                                                  |
+| slice()         | start?, end?                                                 | Slices a buffer.                                             |
+| readUIntLE()    | offset, byteLength, noAssert?                                | Reads a 48-bit (or less) unsigned number in little-endian format.                    |
+| readUIntBE()    | offset, byteLength, noAssert?                                | Reads a 48-bit (or less) unsigned number in big-endian format.                    |
+| readIntLE()     | offset, byteLength, noAssert?                                | Reads a 48-bit (or less) signed number in little-endian format.                    |
+| readIntBE()     | offset, byteLength, noAssert?                                | Reads a 48-bit (or less) signed number in big-endian format.                    |
+| readUInt8()     | offset, noAssert?                                            | Reads an 8-bit unsigned integer based on the specified offset.                   |
+| writeInt8()     | value, offset, noAssert?                                     | Writes an 8-bit signed integer to the buffer based on the specified offset.|
+| readInt8()      | offset, noAssert?                                            | Reads an 8-bit signed integer based on the specified offset.                   |
+| swap16()        | N/A                                                          | Interprets the buffer as an array of 16-bit unsigned integers and swaps the byte order in place.      |
+| swap32()        | N/A                                                          | Interprets the buffer as an array of 32-bit unsigned integers and swaps the byte order in place.      |
+| swap64()        | N/A                                                          | Interprets the buffer as an array of 64-bit unsigned integers and swaps the byte order in place.      |
+| writeUInt8()    | value, offset, noAssert?                                     | Writes an 8-bit unsigned integer to the buffer based on the specified offset.|
+| writeUInt16LE() | value, offset, noAssert?                                     | Writes a 16-bit unsigned integer to the buffer based on the specified offset and endian format.|
+| writeUInt32LE() | value, offset, noAssert?                                     | Writes a 32-bit unsigned integer to the buffer based on the specified offset and endian format.|
+| writeUInt32BE() | value, offset, noAssert?                                     | Writes a 32-bit unsigned integer to the buffer based on the specified offset and endian format.|
+| writeDoubleLE() | value, offset, noAssert?                                     | Writes a value in a given byte order format to the buffer based on the specified offset.              |
+| fill()          | value, offset?, end?                                         | Fills the buffer with a value.                                        |
+| indexOf()       | value, byteOffset?, encoding?                                | Checks whether a value exists in the buffer and returns the position.                        |
+| lastIndexOf()   | value, byteOffset?, encoding?                                | Checks whether a value exists in the buffer and returns the position.                        |
+| includes()      | value, byteOffset?, encoding?                                | Checks whether the buffer contains a value.                                |
 
-## 约束与限制
 
-在下述版本验证通过：
+## Constraints
 
-- DevEco Studio 版本： 4.1 Canary(4.1.3.317),OpenHarmony SDK:API11 (4.1.0.36)。
+This project has been verified in the following version:
 
-## 目录结构
+- DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API 11 (4.1.0.36)
+
+## Directory Structure
 
 ````
 |---- buffer
-|     |---- entry  # 示例代码文件夹
+|     |---- entry  # Sample code
               ├── src  
                  ├── main   
                    ├── ets
                        ├── pages
-                             ├── Index.ets  sample代码
-|     |---- README.md  # 安装使用方法                    
+                             ├── Index.ets  # Sample code
+|     |---- README.md  # Readme                   
 ````
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
-给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-本项目基于 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/buffer/LICENSE)
-，请自由地享受和参与开源。
-    
+This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/buffer/LICENSE).

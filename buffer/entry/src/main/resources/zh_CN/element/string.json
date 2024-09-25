@@ -11,6 +11,22 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Create_buffer",
+      "value": "创建一个长度5的数组buffer"
+    },
+    {
+      "name": "Result",
+      "value": "结果"
+    },
+    {
+      "name": "Character_and_JavaScript_Conversion",
+      "value": "字符编码和JavaScript字符串转换"
+    },
+    {
+      "name": "Insert_buffer1_into_buffer2",
+      "value": "将buffer1插入到另一个buffer指定位置上"
     }
   ]
 }

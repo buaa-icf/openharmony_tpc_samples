@@ -11,6 +11,22 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Create_buffer",
+      "value": "Create an array buffer of length 5"
+    },
+    {
+      "name": "Result",
+      "value": "Result"
+    },
+    {
+      "name": "Character_and_JavaScript_Conversion",
+      "value": "Character Encoding and JavaScript String Conversion"
+    },
+    {
+      "name": "Insert_buffer1_into_buffer2",
+      "value": "Insert buffer 1 into another buffer at the specified location"
     }
   ]
 }
