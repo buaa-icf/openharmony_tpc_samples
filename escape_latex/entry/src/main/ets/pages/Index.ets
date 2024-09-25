@@ -39,7 +39,7 @@ struct Index {
             this.result = lescape("String to be escaped here #yolo");
             console.info('test page click result:'+JSON.stringify(this.result))
           })
-        Text('结果: ' + this.result)
+        Text(this.getResourceString('result') + this.result)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
           .margin({ top: 10 })
@@ -53,7 +53,7 @@ struct Index {
             this.result1 = lescape("Hello   World", { preserveFormatting: true });
             console.info('test page click 1 result:'+JSON.stringify(this.result1))
           })
-        Text('结果: ' + this.result1)
+        Text(this.getResourceString('result') + this.result1)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
           .margin({ top: 10 })
@@ -61,5 +61,9 @@ struct Index {
       .width('100%')
     }
     .height('100%')
+  }
+
+  getResourceString(resourceName:string) {
+    return getContext().resourceManager.getStringByNameSync(resourceName)
   }
 }
