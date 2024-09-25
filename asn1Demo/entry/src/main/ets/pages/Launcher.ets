@@ -49,12 +49,15 @@ struct Index {
   private btnBase64Clicked: boolean = false;
   private btnHexClicked: boolean = false;
   private scroller: Scroller = new Scroller();
-  @State btn64Text: string = "base64 编码";
-  @State btnHexText: string = "Hex 编码";
+  @State btn64Text: string = this.getResourceString($r('app.string.Base64_encoding'));
+  @State btnHexText: string = this.getResourceString($r('app.string.Hex_encoding'));
   @State btnDerText: string = "DER"
 
   onPageShow(){
     // findType(1)
+  }
+  getResourceString(res: Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
   }
   build() {
     Row() {
@@ -63,7 +66,7 @@ struct Index {
           Text(this.message)
             .fontSize(16)
 
-          Button("asn1 序列化数据")
+          Button($r('app.string.Asn1_serializes'))
             .fontSize(16)
             .margin({ top: "20px" })
             .onClick((event) => {
@@ -81,12 +84,12 @@ struct Index {
             .margin({ top: "20px" })
             .fontSize(16)
 
-          Button("asn1 反序列化数据")
+          Button($r('app.string.Asn1_deserializes'))
             .fontSize(16)
             .margin({ top: "20px" })
             .onClick((event) => {
               if(!this.json){
-                prompt.showToast({message:'先序列化数据',duration:2000})
+                prompt.showToast({message:this.getResourceString($r('app.string.Serialize')),duration:2000})
                 return;
               }
               const deserialize:JSONDeserializer = new JSONDeserializer();
@@ -121,7 +124,7 @@ struct Index {
                 this.deserializeJsonTextBase64 = atob(this.deserializeJsonTextBase64);
                 this.btnBase64Clicked = false;
               }
-              this.btn64Text = this.btnBase64Clicked ? "base64 解码" : "base64 编码";
+              this.btn64Text = this.btnBase64Clicked ? this.getResourceString($r('app.string.Base64_decoding')) : this.getResourceString($r('app.string.Base64_encoding'));
 
               let endTime=new Date().getMilliseconds()
               console.info("asn1Demo-- end get Base64 time:"+(endTime))
@@ -146,7 +149,7 @@ struct Index {
                 this.btnHexClicked = false;
               }
 
-              this.btnHexText = this.btnHexClicked ? "Hex 解码" : "Hex 编码";
+              this.btnHexText = this.btnHexClicked ? this.getResourceString($r('app.string.Hex_decoding')) : this.getResourceString($r('app.string.Hex_encoding'));
               let endTime=new Date().getMilliseconds()
               console.info("asn1Demo-- end get hex time:"+(endTime))
               console.info("asn1Demo-- hex time consuming:"+(endTime-startTime))
@@ -176,9 +179,9 @@ struct Index {
                 new Universal.PrintableString('Hello World'),
               ]);
 
-              this.deserializeJsonTextDer = "DER 原抽象数据:" + JSON.stringify(asn1Sequence);
+              this.deserializeJsonTextDer = this.getResourceString($r('app.string.DER_data')) + JSON.stringify(asn1Sequence);
               const bufferContainingDEREncodedASN1:ESObject = serialize(asn1Sequence);
-              this.deserializeJsonTextDerS = "DER 序列化数据：" + JSON.stringify(bufferContainingDEREncodedASN1);
+              this.deserializeJsonTextDerS = this.getResourceString($r('app.string.DER_serialized')) + JSON.stringify(bufferContainingDEREncodedASN1);
 
               let endTime=new Date().getMilliseconds()
               console.info("asn1Demo-- end get DERSerializer time:"+(endTime))
@@ -192,10 +195,10 @@ struct Index {
               let endTime1=new Date().getMilliseconds()
               console.info("asn1Demo-- der end get DERDeserializer time:"+(endTime1))
               console.info("asn1Demo-- der DERDeserializer time consuming:"+(endTime1-startTime1))
-              this.deserializeJsonTextDerD = "DER 反序列化数据:" + JSON.stringify(des);
+              this.deserializeJsonTextDerD = this.getResourceString($r('app.string.DER_deserialization'))  + JSON.stringify(des);
             })
 
-          Button("测试BER")
+          Button($r('app.string.Test_BER'))
             .fontSize(16)
             .margin({ top: "20px" })
             .onClick((event) => {

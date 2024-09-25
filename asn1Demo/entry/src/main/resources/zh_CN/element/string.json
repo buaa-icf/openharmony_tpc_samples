@@ -11,6 +11,66 @@
     {
       "name": "EntryAbility_label",
       "value": "asn1Demo"
+    },
+    {
+      "name": "Assembly_data",
+      "value": "组装数据："
+    },
+    {
+      "name": "To_convert",
+      "value": "toBER ArrayBuffer数据转换十六进制："
+    },
+    {
+      "name": "From_BER",
+      "value": "fromBER数据："
+    },
+    {
+      "name": "Asn1_data",
+      "value": "asn1 组装原数据："
+    },
+    {
+      "name": "Base64_encoding",
+      "value": "base64 编码"
+    },
+    {
+      "name": "Hex_encoding",
+      "value": "Hex 编码"
+    },
+    {
+      "name": "Base64_decoding",
+      "value": "Base64 解码"
+    },
+    {
+      "name": "Hex_decoding",
+      "value": "Hex 解码"
+    },
+    {
+      "name": "Asn1_serializes",
+      "value": "asn1 序列化数据"
+    },
+    {
+      "name": "Asn1_deserializes",
+      "value": "asn1 反序列化数据"
+    },
+    {
+      "name": "Serialize",
+      "value": "先序列化数据"
+    },
+    {
+      "name": "DER_data",
+      "value": "DER 原抽象数据:"
+    },
+    {
+      "name": "DER_serialized",
+      "value": "DER 序列化数据："
+    },
+    {
+      "name": "DER_deserialization",
+      "value": "DER 反序列化数据:"
+    },
+    {
+      "name": "Test_BER",
+      "value": "测试BER"
     }
   ]
 }
