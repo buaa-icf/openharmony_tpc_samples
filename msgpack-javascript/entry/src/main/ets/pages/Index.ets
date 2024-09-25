@@ -20,21 +20,21 @@ struct Index {
   build() {
     Row() {
       Column() {
-        Button('简单编码解码')
+        Button($r('app.string.Basic_Encode_Decode'))
           .onClick(() => {
             router.push({ url: 'pages/EncodeDecodePage' })
           })
-        Button('构造器编码解码')
+        Button($r('app.string.Constructor_Encode_Decode'))
           .margin({ top: 10 })
           .onClick(() => {
             router.push({ url: 'pages/EncodeDecodeConstructorPage' })
           })
-        Button('复杂Multi编码解码')
+        Button($r('app.string.Multi_Encode_Decode'))
           .margin({ top: 10 })
           .onClick(() => {
             router.push({ url: 'pages/MultiDecodePage' })
           })
-        Button('特殊字符扩展编解码')
+        Button($r('app.string.Special_character_Encode_Decode'))
           .margin({ top: 10 })
           .onClick(() => {
             router.push({ url: 'pages/ExamPage' })

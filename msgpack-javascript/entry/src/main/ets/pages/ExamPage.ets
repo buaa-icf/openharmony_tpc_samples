@@ -22,7 +22,7 @@ import Util from './Util';
 @Entry
 @Component
 struct Index {
-  @State message: string = '点击查看log编码输入和解码输出'
+  @State message: string = 'Click to view log'
   m1: Massage = {
     string: "Кириллица",
     msgpack: [
@@ -77,7 +77,7 @@ struct Index {
     Row() {
       Column() {
         Button(this.message)
-          .fontSize(50)
+          .fontSize(20)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
             this.testSpecString();
@@ -108,20 +108,20 @@ struct Index {
   }
 
   checkEncodeAndDecode(value: string, array1: number[], array2: number[]) {
-    console.log("dodo 输入value=" + value);
+    console.log("dodo value=" + value);
     let extensionCodec = new ExtensionCodec<undefined>();
     extensionCodec.register(Util.register);
     let b1 = encode<undefined>(value, { extensionCodec });
     let u8 = b1;
     for (let i = 0; i < u8.length; i++) {
-      console.log(`dodo 编码后buffer[${i}]=${u8[i]}`)
+      console.log(`dodo after encode the buffer is[${i}]=${u8[i]}`)
     }
     let encode1 = ohBuffer.from(array1);
     let encode2 = ohBuffer.from(array2);
 
-    console.log("dodo 解码后 array1 对应 decode1=" + decode<undefined>(encode1.buffer, {
+    console.log("dodo after decode array1 : decode1=" + decode<undefined>(encode1.buffer, {
       extensionCodec
-    }) + " array2 对应 decode2=" + decode<undefined>(encode2.buffer, { extensionCodec }));
+    }) + " array2 : decode2=" + decode<undefined>(encode2.buffer, { extensionCodec }));
   }
 }
 

@@ -11,6 +11,22 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Basic_Encode_Decode",
+      "value": "Basic Encode & Decode"
+    },
+    {
+      "name": "Constructor_Encode_Decode",
+      "value": "Constructor Encode/Decode"
+    },
+    {
+      "name": "Multi_Encode_Decode",
+      "value": "Multi Encode/Decode"
+    },
+    {
+      "name": "Special_character_Encode_Decode",
+      "value": "Special character Encode/Decode"
     }
   ]
 }

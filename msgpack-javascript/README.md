@@ -1,44 +1,45 @@
 # msgpack-javascript
 
-## 简介
-> MessagePack是一个非常高效的对象序列化库。它像JSON，但速度很快，而且很小。
-> 现在MessagePack已经适配了3.0版本，可用于实现int64的复杂性编码。
+## Introduction
+MessagePack is a library that provides efficient object serialization. It is like JSON but offers higher efficiency and smaller data size.
+
+Currently, MessagePack 3.0 can be used to implement complex int64 encoding.
 
 
-<img src="screenshot/msgpack.gif" width="40%"/>
+<img src="screenshot/msgpack_en.gif" width="40%"/>
 
-## 下载安装
+## How to Install
 ```shell
 ohpm install @msgpack/msgpack
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 
-### 编解码
+### Encoding and Decoding
 ```javascript
 import { encode,decode } from "@msgpack/msgpack";
 
-// 编码
+// Encode.
 let encoded:Uint8Array = encode({ foo: "bar" });
-// 解码
+// Decode.
 let decodedObject = decode(encoded);
 ```
 
-### 构造器编解码
+### Encoding and Decoding Using Constructors
 ```javascript
 import { Encoder,Decoder } from "@msgpack/msgpack";
-// 编码可复用构造器
+// Construct a reusable encoder.
 let encoder = new Encoder()
-// 解码可复用构造器
+// Construct a reusable decoder.
 let decoder = new Decoder()
-// 编码
+// Encode.
 let encoded:Uint8Array = encoder.encode({ foo: "bar" });
-// 解码
+// Decode.
 let decodedObject = decoder.decode(encoded);
 ```
 
-### 数组对象编解码
+### Encoding and Decoding an Array Object
 
 ```javascript
 import { encode,decodeMulti } from "@msgpack/msgpack";
@@ -51,55 +52,55 @@ let items = [
   },
   [1, 2, 3],
 ];
-// 将数组编码
+// Encode the item array.
 let encodedItems = items.map((item) => encode(item));
-// 创建空白缓存区用来后续存数据流
+// Create a blank buffer for storing streams.
 let encoded = new Uint8Array(encodedItems.reduce((p, c) => p + c.byteLength, 0));
 let offset = 0;
-// 空白缓存区存入数据流
+// Store the encoded items in the buffer.
 for (let encodedItem of encodedItems) {
   encoded.set(encodedItem, offset);
   offset += encodedItem.byteLength;
 }
 let result: Array<unknown> = [];
-// 解码后将数据存入result数组中
+// Store the decoded items in the result array.
 for (let item of decodeMulti(encoded)) {
   result.push(item);
 }
-// result与items一致
+// The value of result is the same as that of items.
 expect(result).assertDeepEquals(items);
 ```
-## 接口说明
+## Available APIs
 
-| 方法名称                                                               |                    参数                     |                  功能描述 |
-|:----------------------------------------------------------------------|:-----------------------------------------:|----------------------:|
-| encode(object: unknown)                                               |                object:编码内容               | 对象进行编码并返回编码器内部缓冲区的副本。 |
-| decode(buffer: ArrayLike<number>)                                     |               buffer:解码内容 。             |               对象进行解码。 |
-| new Encoder()                                                         |                                             |             编码可复用构造器。 |
-| new Decoder()                                                         |                                             |            解码可复用构造器。 |
+| API                          |        Parameter       |                                   Description|
+| :--------------------------------- | :----------------: | -----------------------------------------: |
+| encode(object: unknown)            |  **object**: content to encode  | Encodes the object and returns a copy of the encoder's internal buffer.|
+| decode(buffer: ArrayLike\<number>) | **buffer**: content to decode|                             Decodes the content from the buffer.|
+| new Encoder()                      |                    |                         Constructs a reusable encoder.|
+| new Decoder()                      |                    |                         Constructs a reusable decoder.|
 
-## 目录结构
+## Directory Structure
 ````
 |---- msgpackJavaScript  
-|     |---- entry  # 示例代码文件夹
-|           |---- Index.ets  # 对外接口介绍
-			|---- EncodeDecodePage.ets  # 普通编解码
-			|---- EncodeDecodeConstructorPage.ets  # 通过构造器编解码
-			|---- MultiDecodePage.ets  # 复杂对象解码
-|     |---- README.MD  # 安装使用方法                    
+|     |---- entry  # Sample code
+|           |---- Index.ets  # External APIs
+			|---- EncodeDecodePage.ets  # Basic encoding and decoding
+			|---- EncodeDecodeConstructorPage.ets # Encoding and decoding using constructors
+			|---- MultiDecodePage.ets # Decoding complex objects
+|     |---- README.MD  # Readme                   
 ````
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+This project has been verified in the following versions:
 
-- DevEco Studio: 4.1 (4.1.3.322), SDK: API11 (4.1.0.36)
-- DevEco Studio: 4.0 (4.0.3.513), SDK: API10 (4.0.10.10)
-- DevEco Studio: 3.1 Beta2(3.1.0.400), SDK: API9 Release(3.2.11.9)
+- DevEco Studio: 4.1 (4.1.3.322), SDK: API 11 (4.1.0.36)
+- DevEco Studio: 4.0 (4.0.3.513), SDK: API 10 (4.0.10.10)
+- DevEco Studio: 3.1 Beta2 (3.1.0.400), SDK: API 9 Release (3.2.11.9)
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples) 。
+If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples).
 
-## 开源协议
-本项目基于 [ISC License](https://github.com/msgpack/msgpack-javascript/blob/main/LICENSE) ，请自由地享受和参与开源。
+## License
+This project is licensed under [ISC License](https://github.com/msgpack/msgpack-javascript/blob/main/LICENSE).

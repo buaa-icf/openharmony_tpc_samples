@@ -18,14 +18,14 @@ import Util from './Util';
 @Entry
 @Component
 struct MultiDecodePage {
-  @State message: string = "展示原数据"
-  @State message2: string = "decodeMulti解码后的数据展示"
+  @State message: string = "Hello World"
+  @State message2: string = "Hello World"
   encodedUint8: Uint8Array | undefined = undefined;
 
   build() {
     Row() {
       Column() {
-        Button('对象展示').onClick(() => {
+        Button('Object Display').onClick(() => {
           console.log('dodo click on!')
           let bar: Bar = {
             name: "bar",
@@ -40,7 +40,7 @@ struct MultiDecodePage {
         Text(this.message)
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
-        Button('点击MultiDecode').onClick(() => {
+        Button('MultiDecode').onClick(() => {
           let bar: Bar = {
             name: "bar",
           }

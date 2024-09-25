@@ -18,31 +18,31 @@ import { decode,Decoder } from "@msgpack/msgpack";
 @Component
 struct EncodeDecodeConstructorPage {
 
-  @State message:string = "编码后的数据展示"
-  @State message2:string = "解码后的数据展示"
-  @State message3:string = "错误提示"
+  @State message:string = "Hello World"
+  @State message2:string = "Hello World"
+  @State message3:string = "Hello World"
 
   encodedUint8?: Uint8Array = undefined;
 
   build() {
     Row() {
       Column() {
-        Button('点击构造器编码').onClick(()=>{
+        Button('Encode').onClick(()=>{
           console.log("dodo click on!")
           let encodeletructor = new Encoder<Encoder>();
           this.encodedUint8 = encodeletructor.encode(data)
-          this.message = "编码后的数据="+this.encodedUint8;
+          this.message = "Result="+this.encodedUint8;
         })
         Text(this.message)
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
-        Button('点击构造器解码').onClick(()=>{
+        Button('Encode').onClick(()=>{
           if(this.encodedUint8) {
             let decodeletructor = new Decoder<Decoder>();
             //let decodeObj = decodeletructor.decode(this.encodedUint8)
-            this.message2 = "解码后的数据=" + JSON.stringify(decodeletructor.decode(this.encodedUint8));
+            this.message2 = "Result=" + JSON.stringify(decodeletructor.decode(this.encodedUint8));
           }else{
-            this.message3 = '解码数据为undefined, 请先点击编码'
+            this.message3 = 'Result is undefined, please encode first'
           }
         })
         Text(this.message2)
