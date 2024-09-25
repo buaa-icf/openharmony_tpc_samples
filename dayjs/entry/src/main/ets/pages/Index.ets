@@ -63,7 +63,13 @@ let apisIndex:Array<ModuleItem>=[
           showMessage(dayjs( '2018-05-02 11:12:13').valueOf().toString())
         }
       },
-
+      {
+        apiName: "dayjs().toJSON()",
+        des:$r('app.string.Get_toJSON'),
+        func: () => {
+          showMessage(dayjs().toJSON())
+        }
+      },
       {
         apiName: "dayjs('2018-05-02 11:12:13.998').valueOf()",
         des:$r('app.string.Parse_hours_minutes_seconds_milliseconds'),
@@ -126,6 +132,34 @@ let apisIndex:Array<ModuleItem>=[
         des:$r('app.string.Get_the_current_year'),
         func: () => {
           showMessage(dayjs().year() + "")
+        }
+      },
+      {
+        apiName: 'dayjs("2024-01-10 20:00:00").startOf("day").subtract(1,"hour").format()',
+        des:$r('app.string.Set_startOf'),
+        func: () => {
+          showMessage(dayjs("2024-01-10 02:00:00").startOf("day").subtract(1,"hour").format() + "")
+        }
+      },
+      {
+        apiName: 'dayjs("2024-01-10 20:00:00").endOf("day").add(1,"hour").format()',
+        des:$r('app.string.Set_endOf'),
+        func: () => {
+          showMessage(dayjs("2024-01-10 20:00:00").endOf("day").add(1,"hour").format() + "")
+        }
+      },
+      {
+        apiName: 'dayjs("2023-12-31").diff("2024-01-10","days")',
+        des:$r('app.string.Get_difference_days'),
+        func: () => {
+          showMessage(dayjs("2023-12-31").diff("2024-01-10","days") + "")
+        }
+      },
+      {
+        apiName: 'dayjs().daysInMonth()',
+        des:$r('app.string.Get_days_month'),
+        func: () => {
+          showMessage(dayjs().daysInMonth() + "")
         }
       },
       {

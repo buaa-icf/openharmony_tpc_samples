@@ -83,6 +83,26 @@
     {
       "name": "describe",
       "value": "描述"
+    },
+    {
+      "name": "Get_toJSON",
+      "value": "通过同toJSON获取当前时间"
+    },
+    {
+      "name": "Set_startOf",
+      "value": "通过startOf设置某天的开始"
+    },
+    {
+      "name": "Set_endOf",
+      "value": "通过endOf设置某天的结束"
+    },
+    {
+      "name": "Get_difference_days",
+      "value": "获取时间差(天)"
+    },
+    {
+      "name": "Get_days_month",
+      "value": "获取当前月天数"
     }
   ]
 }

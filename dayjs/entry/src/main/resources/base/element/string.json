@@ -83,6 +83,26 @@
     {
       "name": "describe",
       "value": "describe"
+    },
+    {
+      "name": "Get_toJSON",
+      "value": "Get the current time through toJSON"
+    },
+    {
+      "name": "Set_startOf",
+      "value": "Set the start of a day with startOf"
+    },
+    {
+      "name": "Set_endOf",
+      "value": "Set the end of a day with endOf"
+    },
+    {
+      "name": "Get_difference_days",
+      "value": "Get the time difference (days)"
+    },
+    {
+      "name": "Get_days_month",
+      "value": "Get the number of days in the current month"
     }
   ]
 }
