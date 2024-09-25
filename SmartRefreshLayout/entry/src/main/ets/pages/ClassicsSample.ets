@@ -19,7 +19,15 @@ import {ClassicsBottom} from "@ohos/smartrefreshlayout"
 @ComponentV2
 struct ClassicsSample {
   @Local model: SmartRefresh.Model = new SmartRefresh.Model()
-  arr: string[] = ['显示时间', '隐藏时间', '默认主题', '橙色主题', '红色主题', '绿色主题', '蓝色主题']
+  arr: string[] = [
+    getContext(this).resourceManager.getStringSync($r('app.string.display_time').id),
+    getContext(this).resourceManager.getStringSync($r('app.string.hide_time').id),
+    getContext(this).resourceManager.getStringSync($r('app.string.default_theme').id),
+    getContext(this).resourceManager.getStringSync($r('app.string.orange_theme').id),
+    getContext(this).resourceManager.getStringSync($r('app.string.red_theme').id),
+    getContext(this).resourceManager.getStringSync($r('app.string.green_theme').id),
+    getContext(this).resourceManager.getStringSync($r('app.string.blue_theme').id)
+  ]
   aboutToAppear(){
     this.model.setBackgroundColor(Color.White)
   }

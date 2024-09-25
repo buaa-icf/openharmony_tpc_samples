@@ -11,6 +11,147 @@
     {
       "name": "EntryAbility_label",
       "value": "smartRefreshLayout"
+    },
+    {
+      "name": "default_theme",
+      "value": "默认主题"
+    },
+    {
+      "name": "blue_theme",
+      "value": "蓝色主题"
+    },
+    {
+      "name": "green_theme",
+      "value": "绿色主题"
+    },
+    {
+      "name": "red_theme",
+      "value": "红色主题"
+    },
+    {
+      "name": "orange_theme",
+      "value": "橙色主题"
+    },
+    {
+      "name": "default_theme_color",
+      "value": "默认主题颜色"
+    },
+    {
+      "name": "blue_theme_color",
+      "value": "蓝色主题颜色"
+    },
+    {
+      "name": "green_theme_color",
+      "value": "绿色主题颜色"
+    },
+    {
+      "name": "red_theme_color",
+      "value": "红色主题颜色"
+    },
+    {
+      "name": "orange_theme_color",
+      "value": "橙色主题颜色"
+    },
+    {
+      "name": "change_color",
+      "value": "更改为%s颜色"
+    },
+    {
+      "name": "no_offset",
+      "value": "内容不偏移"
+    },
+    {
+      "name": "open_sliding",
+      "value": "打开左右拖动"
+    },
+    {
+      "name": "close_sliding",
+      "value": "关闭左右拖动"
+    },
+    {
+      "name": "follow_offset",
+      "value": "内容跟随偏移"
+    },
+    {
+      "name": "display_chinese",
+      "value": "显示中文"
+    },
+    {
+      "name": "display_english",
+      "value": "显示英文"
+    },
+    {
+      "name": "display_icon",
+      "value": "显示图标"
+    },
+    {
+      "name": "display_brand",
+      "value": "显示商标"
+    },
+    {
+      "name": "display_digit",
+      "value": "显示数字"
+    },
+    {
+      "name": "change_color_default",
+      "value": "更改为默认主题颜色"
+    },
+    {
+      "name": "change_color_green",
+      "value": "更改为绿色主题颜色"
+    },
+    {
+      "name": "change_color_blue",
+      "value": "更改为蓝色主题颜色"
+    },
+    {
+      "name": "change_color_red",
+      "value": "更改为红色主题颜色"
+    },
+    {
+      "name": "change_color_orange",
+      "value": "更改为橙色主题颜色"
+    },
+    {
+      "name": "collapse",
+      "value": "折叠"
+    },
+    {
+      "name": "collapse_description",
+      "value": "折叠AppBarLayout，变成正常的列表页面"
+    },
+    {
+      "name": "expand",
+      "value": "展开"
+    },
+    {
+      "name": "expand_description",
+      "value": "展开AppBarLayout，变成可伸展头部的页面"
+    },
+    {
+      "name": "refreshing",
+      "value": "刷新"
+    },
+    {
+      "name": "updated_time",
+      "value": "更新于%s"
+    },
+    {
+      "name": "display_time",
+      "value": "显示时间"
+    },
+    {
+      "name": "hide_time",
+      "value": "掩藏时间"
+    },
+    {
+      "name": "golden_campus",
+      "value": "金色校园"
+    },
+    {
+      "name": "reaching_clouds",
+      "value": "冲上云霄"
     }
+
   ]
 }

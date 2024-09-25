@@ -19,7 +19,17 @@ import {BezierCircle} from "@ohos/smartrefreshlayout"
 @ComponentV2
 struct ABottomBezierCircleSample {
   @Local model: SmartRefreshSecond.Model = new SmartRefreshSecond.Model(false)
-  arr: string[] = ['内容不偏移 ', '内容跟随偏移', '橙色主题', '红色主题', '绿色主题', '蓝色主题', '蓝色主题', '蓝色主题', '蓝色主题']
+  arr: string[] = [
+    getContext(this).resourceManager.getStringSync($r('app.string.no_offset').id),
+    getContext(this).resourceManager.getStringSync($r('app.string.follow_offset').id),
+    getContext(this).resourceManager.getStringSync($r('app.string.orange_theme').id),
+    getContext(this).resourceManager.getStringSync($r('app.string.red_theme').id),
+    getContext(this).resourceManager.getStringSync($r('app.string.green_theme').id),
+    getContext(this).resourceManager.getStringSync($r('app.string.blue_theme').id),
+    getContext(this).resourceManager.getStringSync($r('app.string.blue_theme').id),
+    getContext(this).resourceManager.getStringSync($r('app.string.blue_theme').id),
+    getContext(this).resourceManager.getStringSync($r('app.string.blue_theme').id)
+  ]
 
   pickColor(SelectColorParam: string) {
     this.model.setBackgroundShadowColor(Color.Gray)

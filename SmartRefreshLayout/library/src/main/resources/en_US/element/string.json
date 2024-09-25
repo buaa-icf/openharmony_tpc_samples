@@ -3,6 +3,66 @@
     {
       "name": "page_show",
       "value": "page from npm package"
+    },
+    {
+      "name": "refreshing",
+      "value": "Refreshing"
+    },
+    {
+      "name": "updated_time",
+      "value": "updated to %s"
+    },
+    {
+      "name": "pull_up_refresh",
+      "value": "Pull up refresh"
+    },
+    {
+      "name": "pull_down_refresh",
+      "value": "Pull down refresh"
+    },
+    {
+      "name": "release_refresh",
+      "value": "Release refresh"
+    },
+    {
+      "name": "complete_refresh",
+      "value": "Complete refresh"
+    },
+    {
+      "name": "refresh_failed",
+      "value": "Refresh failed"
+    },
+    {
+      "name": "play_game",
+      "value": "Play game"
+    },
+    {
+      "name": "game_over",
+      "value": "Game over"
+    },
+    {
+      "name": "slide_control_the_game",
+      "value": "Slide up and down to control the game"
+    },
+    {
+      "name": "display_chinese",
+      "value": "Display Chinese"
+    },
+    {
+      "name": "display_english",
+      "value": "Display English"
+    },
+    {
+      "name": "display_icon",
+      "value": "Display Icon"
+    },
+    {
+      "name": "display_brand",
+      "value": "Display Brand"
+    },
+    {
+      "name": "display_digit",
+      "value": "brand Digit"
     }
   ]
 }

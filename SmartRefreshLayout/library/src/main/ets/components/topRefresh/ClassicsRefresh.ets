@@ -102,7 +102,7 @@ export struct Classics {
     this.EnglishMonth.forEach((item: string) => {
       index += 1
       if (item == month) {
-        this.information = index + "月" + day + "日"
+        this.information = index + "month" + day + "day"
       }
     })
     // let morningOrAfternoon = Number.parseInt(str[0])
@@ -242,7 +242,8 @@ export struct Classics {
             }
             if (this.model.getTimeShowState()) {
               Row() {
-                Text("更新于" + this.information)
+
+                Text(getContext(this).resourceManager.getStringSync($r('app.string.updated_time').id,this.information))
                   .fontSize(this.model.textSizeTime)
                   .align(Alignment.Center)
                   .height(50)
@@ -271,7 +272,7 @@ export struct Classics {
               }
               if (this.model.getTimeShowState()) {
                 Row() {
-                  Text("更新于" + this.information)
+                  Text(getContext(this).resourceManager.getStringSync($r('app.string.updated_time').id,this.information))
                     .fontSize(this.model.textSizeTime)
                     .fontColor(this.model.getAccentColor())
                     .height(50)

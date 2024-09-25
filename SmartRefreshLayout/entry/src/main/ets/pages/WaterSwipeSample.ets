@@ -12,14 +12,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {SmartRefresh} from "@ohos/smartrefreshlayout"
-import {WaterSwipe} from "@ohos/smartrefreshlayout"
+import { SmartRefresh } from "@ohos/smartrefreshlayout"
+import { WaterSwipe } from "@ohos/smartrefreshlayout"
 
 @Entry
 @ComponentV2
 struct WaterSwipeSample {
-   @Local model: SmartRefresh.Model = new SmartRefresh.Model()
-  arr: string[] = ['默认主题', '橙色主题', '红色主题', '绿色主题', '蓝色主题', '默认主题', '橙色主题', '红色主题', '绿色主题', '蓝色主题']
+  @Local model: SmartRefresh.Model = new SmartRefresh.Model()
+  arr: string[] = [
+    getContext(this).resourceManager.getStringSync($r('app.string.default_theme').id),
+    getContext(this).resourceManager.getStringSync($r('app.string.orange_theme').id),
+    getContext(this).resourceManager.getStringSync($r('app.string.red_theme').id),
+    getContext(this).resourceManager.getStringSync($r('app.string.green_theme').id),
+    getContext(this).resourceManager.getStringSync($r('app.string.blue_theme').id),
+    getContext(this).resourceManager.getStringSync($r('app.string.default_theme').id),
+    getContext(this).resourceManager.getStringSync($r('app.string.orange_theme').id),
+    getContext(this).resourceManager.getStringSync($r('app.string.red_theme').id),
+    getContext(this).resourceManager.getStringSync($r('app.string.green_theme').id),
+    getContext(this).resourceManager.getStringSync($r('app.string.blue_theme').id)
+  ]
+
   pickColor(SelectColorParam: string) {
     let SelectColor = SelectColorParam.trim()
     if (SelectColor == this.arr[0].trim()) {
@@ -38,12 +50,18 @@ struct WaterSwipeSample {
       this.model.setBackgroundColor(Color.Blue)
     }
   }
-  @Builder testHeader() {
-    WaterSwipe({ model: this.model!!})
+
+  @Builder
+  testHeader() {
+    WaterSwipe({ model: this.model!! })
   }
-  @Builder card(item: string) {
+
+  @Builder
+  card(item: string) {
     Row() {
-     Button(item).onClick(()=> {this.pickColor(item)}).fontSize(40).width("100%").height("100%")
+      Button(item).onClick(() => {
+        this.pickColor(item)
+      }).fontSize(40).width("100%").height("100%")
     }
     .width("100%")
     .height("280lpx")
@@ -53,11 +71,13 @@ struct WaterSwipeSample {
     .alignItems(VerticalAlign.Top)
     .border({ width: "2lpx", color: "#aaaaaa", style: BorderStyle.Solid })
   }
-  @Builder testMain() {
+
+  @Builder
+  testMain() {
     Column() {
-      ForEach(this.arr, (item:string) => {
+      ForEach(this.arr, (item: string) => {
         this.card(item)
-      }, (item:string) => item)
+      }, (item: string) => item)
     }.width("100%").padding("20lpx")
   }
 
@@ -65,10 +85,17 @@ struct WaterSwipeSample {
     Column() {
       SmartRefresh({
         model: this.model!!,
-        header:()=> {this.testHeader()},
-        main:()=> {this.testMain()},
-        footer: ()=> {} })
+        header: () => {
+          this.testHeader()
+        },
+        main: () => {
+          this.testMain()
+        },
+        footer: () => {
+        }
+      })
     }.backgroundColor("#dddddd")
   }
 }
+
 export default WaterSwipeSample;

@@ -11,6 +11,146 @@
     {
       "name": "EntryAbility_label",
       "value": "smartRefreshLayout"
+    },
+    {
+      "name": "default_theme",
+      "value": "Default Theme"
+    },
+    {
+      "name": "blue_theme",
+      "value": "Blue Theme"
+    },
+    {
+      "name": "green_theme",
+      "value": "Green Theme"
+    },
+    {
+      "name": "red_theme",
+      "value": "Red Theme"
+    },
+    {
+      "name": "orange_theme",
+      "value": "Orange Theme"
+    },
+    {
+      "name": "default_theme_color",
+      "value": "Default Theme"
+    },
+    {
+      "name": "blue_theme_color",
+      "value": "Blue Theme"
+    },
+    {
+      "name": "green_theme_color",
+      "value": "Green Theme"
+    },
+    {
+      "name": "red_theme_color",
+      "value": "Red Theme"
+    },
+    {
+      "name": "orange_theme_color",
+      "value": "Orange Theme"
+    },
+    {
+      "name": "change_color",
+      "value": "Change to %s color"
+    },
+    {
+      "name": "no_offset",
+      "value": "No Offset"
+    },
+    {
+      "name": "open_sliding",
+      "value": "Open sliding"
+    },
+    {
+      "name": "close_sliding",
+      "value": "Close sliding"
+    },
+    {
+      "name": "follow_offset",
+      "value": "Follow Offset"
+    },
+    {
+      "name": "display_chinese",
+      "value": "Display Chinese"
+    },
+    {
+      "name": "display_english",
+      "value": "Display English"
+    },
+    {
+      "name": "display_icon",
+      "value": "Display Icon"
+    },
+    {
+      "name": "display_brand",
+      "value": "Display Brand"
+    },
+    {
+      "name": "display_digit",
+      "value": "brand Digit"
+    },
+    {
+      "name": "change_color_default",
+      "value": "Change to the color of the default theme"
+    },
+    {
+      "name": "change_color_green",
+      "value": "Change to the color of the green theme"
+    },
+    {
+      "name": "change_color_blue",
+      "value": "Change to the color of the blue theme"
+    },
+    {
+      "name": "change_color_red",
+      "value": "Change to the color of the red theme"
+    },
+    {
+      "name": "change_color_orange",
+      "value": "Change to the color of the orange theme"
+    },
+    {
+      "name": "collapse",
+      "value": "Collapse"
+    },
+    {
+      "name": "collapse_description",
+      "value": "Collapse AppBarLayout to show the list page"
+    },
+    {
+      "name": "expand",
+      "value": "expand"
+    },
+    {
+      "name": "expand_description",
+      "value": "Expand AppBarLayout to show the stretchable title bar"
+    },
+    {
+      "name": "refreshing",
+      "value": "Refreshing"
+    },
+    {
+      "name": "updated_time",
+      "value": "Updated on %s"
+    },
+    {
+      "name": "display_time",
+      "value": "Display Time"
+    },
+    {
+      "name": "hide_time",
+      "value": "Hide Time"
+    },
+    {
+      "name": "golden_campus",
+      "value": "Golden Campus"
+    },
+    {
+      "name": "reaching_clouds",
+      "value": "Reaching for the Clouds"
     }
   ]
 }

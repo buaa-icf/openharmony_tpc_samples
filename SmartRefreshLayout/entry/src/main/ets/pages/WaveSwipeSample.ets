@@ -20,7 +20,18 @@ import {SmartRefresh} from "@ohos/smartrefreshlayout"
 struct WaterSwipeSample {
   @Local model: SmartRefresh.Model = new SmartRefresh.Model()
   @Local needScroller: boolean = false
-  private arr: string[] = ['默认主题', '橙色主题', '红色主题', '绿色主题', '蓝色主题', '默认主题', '橙色主题', '红色主题', '绿色主题', '蓝色主题']
+  private arr: string[] = [
+    getContext(this).resourceManager.getStringSync($r('app.string.default_theme').id),
+    getContext(this).resourceManager.getStringSync($r('app.string.orange_theme').id),
+    getContext(this).resourceManager.getStringSync($r('app.string.red_theme').id),
+    getContext(this).resourceManager.getStringSync($r('app.string.green_theme').id),
+    getContext(this).resourceManager.getStringSync($r('app.string.blue_theme').id),
+    getContext(this).resourceManager.getStringSync($r('app.string.default_theme').id),
+    getContext(this).resourceManager.getStringSync($r('app.string.orange_theme').id),
+    getContext(this).resourceManager.getStringSync($r('app.string.red_theme').id),
+    getContext(this).resourceManager.getStringSync($r('app.string.green_theme').id),
+    getContext(this).resourceManager.getStringSync($r('app.string.blue_theme').id)
+  ]
 
   @Builder testHeader() {
       WaveSwipe({ model: this.model!!})

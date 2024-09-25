@@ -3,6 +3,66 @@
     {
       "name": "page_show",
       "value": "page from npm package"
+    },
+    {
+      "name": "refreshing",
+      "value": "正在刷新"
+    },
+    {
+      "name": "updated_time",
+      "value": "更新于%s"
+    },
+    {
+      "name": "pull_up_refresh",
+      "value": "上拉刷新"
+    },
+    {
+      "name": "pull_down_refresh",
+      "value": "下拉刷新"
+    },
+    {
+      "name": "release_refresh",
+      "value": "释放刷新"
+    },
+    {
+      "name": "complete_refresh",
+      "value": "完成刷新"
+    },
+    {
+      "name": "refresh_failed",
+      "value": "刷新失败"
+    },
+    {
+      "name": "play_game",
+      "value": "玩个游戏解解闷"
+    },
+    {
+      "name": "game_over",
+      "value": "游戏结束"
+    },
+    {
+      "name": "slide_control_the_game",
+      "value": "上下滑动控制游戏"
+    },
+    {
+      "name": "display_chinese",
+      "value": "显示中文"
+    },
+    {
+      "name": "display_english",
+      "value": "显示英文"
+    },
+    {
+      "name": "display_icon",
+      "value": "显示图标"
+    },
+    {
+      "name": "display_brand",
+      "value": "显示商标"
+    },
+    {
+      "name": "display_digit",
+      "value": "显示数字"
     }
   ]
 }

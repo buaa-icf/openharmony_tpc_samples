@@ -48,23 +48,23 @@ export struct StoreHouse {
         this.storeHouseModel.setMargin(25)
         this.storeHouseModel.setScale(4)
         this.storeHouseModel.change()
-      } else if (this.model.getDemand() == "显示英文") {
+      } else if (this.model.getDemand() == getContext(this).resourceManager.getStringSync($r('app.string.display_chinese'))) {
         this.storeHouseModel.setDemand("E")
         this.storeHouseModel.setEnglish("StoreHouse")
         this.storeHouseModel.setMargin(35)
         this.storeHouseModel.setScale(1.5)
         this.storeHouseModel.change()
-      } else if (this.model.getDemand() == "显示图标") {
+      } else if (this.model.getDemand() == getContext(this).resourceManager.getStringSync($r('app.string.display_icon'))) {
         this.storeHouseModel.setDemand("I")
         this.storeHouseModel.setMargin(15)
         this.storeHouseModel.setScale(7)
         this.storeHouseModel.change()
-      } else if (this.model.getDemand() == "显示商标") {
+      } else if (this.model.getDemand() == getContext(this).resourceManager.getStringSync($r('app.string.display_brand'))) {
         this.storeHouseModel.setDemand("T")
         this.storeHouseModel.setMargin(33)
         this.storeHouseModel.setScale(4)
         this.storeHouseModel.change()
-      } else if (this.model.getDemand() == "显示数字") {
+      } else if (this.model.getDemand() == getContext(this).resourceManager.getStringSync($r('app.string.display_digit'))) {
         this.storeHouseModel.setDemand("N")
         this.storeHouseModel.setNumber(3.1415926)
         this.storeHouseModel.setMargin(33)

@@ -16,27 +16,67 @@
 import { SmartRefreshForGame } from "@ohos/smartrefreshlayout"
 import { BattleCity } from "@ohos/smartrefreshlayout"
 
-class ThemeParam{
-  color:string = "";
-  name:string = "";
-  index:number = 0;
+class ThemeParam {
+  color: string = "";
+  name: string = "";
+  index: number = 0;
 }
 
 @Entry
 @ComponentV2
 struct BattleCitySample {
   arr: Array<ThemeParam> = [
-    {index: 1, name: '默认主题', color: '#ffffff' },
-    {index: 2, name: '蓝色主题', color: '#2299ee' },
-    {index: 3, name: '绿色主题', color: '#99cc00' },
-    {index: 4, name: '红色主题', color: '#ff4444' },
-    {index: 5, name: '橙色主题', color: '#ffbb33' },
-    {index: 6, name: '橙色主题', color: '#ffbb33' },
-    {index: 7, name: '橙色主题', color: '#ffbb33' },
-    {index: 8, name: '橙色主题', color: '#ffbb33' },
-    {index: 9, name: '橙色主题', color: '#ffbb33' },
-    {index: 10, name: '橙色主题', color: '#ffbb33' },
-    {index: 11, name: '橙色主题', color: '#ffbb33' },
+    {
+      index: 1,
+      name: getContext(this).resourceManager.getStringSync($r('app.string.default_theme').id),
+      color: '#ffffff'
+    },
+    {
+      index: 2,
+      name: getContext(this).resourceManager.getStringSync($r('app.string.blue_theme').id),
+      color: '#2299ee'
+    },
+    {
+      index: 3,
+      name: getContext(this).resourceManager.getStringSync($r('app.string.green_theme').id),
+      color: '#99cc00'
+    },
+    { index: 4, name: getContext(this).resourceManager.getStringSync($r('app.string.red_theme').id), color: '#ff4444' },
+    {
+      index: 5,
+      name: getContext(this).resourceManager.getStringSync($r('app.string.orange_theme').id),
+      color: '#ffbb33'
+    },
+    {
+      index: 6,
+      name: getContext(this).resourceManager.getStringSync($r('app.string.orange_theme').id),
+      color: '#ffbb33'
+    },
+    {
+      index: 7,
+      name: getContext(this).resourceManager.getStringSync($r('app.string.orange_theme').id),
+      color: '#ffbb33'
+    },
+    {
+      index: 8,
+      name: getContext(this).resourceManager.getStringSync($r('app.string.orange_theme').id),
+      color: '#ffbb33'
+    },
+    {
+      index: 9,
+      name: getContext(this).resourceManager.getStringSync($r('app.string.orange_theme').id),
+      color: '#ffbb33'
+    },
+    {
+      index: 10,
+      name: getContext(this).resourceManager.getStringSync($r('app.string.orange_theme').id),
+      color: '#ffbb33'
+    },
+    {
+      index: 11,
+      name: getContext(this).resourceManager.getStringSync($r('app.string.orange_theme').id),
+      color: '#ffbb33'
+    },
   ]
   @Local model: SmartRefreshForGame.Model = new SmartRefreshForGame.Model()
 
@@ -44,37 +84,37 @@ struct BattleCitySample {
     this.model.setBackgroundColor('#ffffff')
   }
 
-
-
-  @Builder testHeader() {
+  @Builder
+  testHeader() {
     BattleCity({ model: this.model!! })
   }
 
-  @Builder testMain() {
+  @Builder
+  testMain() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
-        ForEach(this.arr, (itemOther:ThemeParam) => {
-          Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
-            Text(itemOther.name)
-              .fontSize(30)
-              .fontColor('#282828')
-              .padding({ left: 10, top: 10 })
+      ForEach(this.arr, (itemOther: ThemeParam) => {
+        Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
+          Text(itemOther.name)
+            .fontSize(30)
+            .fontColor('#282828')
+            .padding({ left: 10, top: 10 })
 
-            Text('更改为' + itemOther.name + '颜色')
-              .fontSize(25)
-              .fontColor('#8c8c8c')
-              .padding({ left: 10, top: 5 })
+          Text(getContext(this).resourceManager.getStringSync($r('app.string.change_color').id, itemOther.name))
+            .fontSize(25)
+            .fontColor('#8c8c8c')
+            .padding({ left: 10, top: 5 })
 
-            Text('')
-              .backgroundColor('#ececec')
-              .height(0.5)
-              .width('100%')
-              .margin({ top: 10, bottom: 5 })
-          }
-          .onClick(e => {
-            this.model.setBackgroundColor(itemOther.color)
-            this.model.autoRefresh()
-          })
-        }, (item:ThemeParam) => item.index.toString())
+          Text('')
+            .backgroundColor('#ececec')
+            .height(0.5)
+            .width('100%')
+            .margin({ top: 10, bottom: 5 })
+        }
+        .onClick(e => {
+          this.model.setBackgroundColor(itemOther.color)
+          this.model.autoRefresh()
+        })
+      }, (item: ThemeParam) => item.index.toString())
     }
     .width("100%")
     .backgroundColor("#ffffff")
@@ -90,7 +130,8 @@ struct BattleCitySample {
         main: () => {
           this.testMain()
         },
-        footer: ()=>{}
+        footer: () => {
+        }
       })
     }
   }

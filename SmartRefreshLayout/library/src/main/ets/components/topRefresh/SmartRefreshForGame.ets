@@ -203,13 +203,13 @@ namespace SmartRefreshForGame {
     @Trace initHeaderHeight: number = 200 // 头部高度
     refreshCallback: () => void = ()=>{}// 刷新监听器
     @Trace refreshState: SmartRefreshForGame.REFRESHSTATE = SmartRefreshForGame.REFRESHSTATE.NONE // 刷新状态
-    @Trace textGameOver: string = '游戏结束'
-    @Trace textLoading: string = '玩个游戏解解闷'
-    @Trace textLoadingFinish: string = '刷新完成'
-    @Trace textLoadingFailed: string = '刷新失败'
-    @Trace maskTextTopPull: string = '下拉开始游戏!'
-    @Trace maskTextTopRelease: string = '释放立刻开始!'
-    @Trace maskTextBottom: string = '上下滑动控制游戏'
+    @Trace textGameOver: string = getContext(this).resourceManager.getStringSync($r('app.string.game_over'))
+    @Trace textLoading: string = getContext(this).resourceManager.getStringSync($r('app.string.play_game'))
+    @Trace textLoadingFinish: string = getContext(this).resourceManager.getStringSync($r('app.string.complete_refresh'))
+    @Trace textLoadingFailed: string = getContext(this).resourceManager.getStringSync($r('app.string.refresh_failed'))
+    @Trace maskTextTopPull: string = getContext(this).resourceManager.getStringSync($r('app.string.pull_down_refresh'))
+    @Trace maskTextTopRelease: string = getContext(this).resourceManager.getStringSync($r('app.string.release_refresh'))
+    @Trace maskTextBottom: string = getContext(this).resourceManager.getStringSync($r('app.string.slide_control_the_game'))
     @Trace maskTextSizeTop: number = 20
     @Trace maskTextSizeBottom: number = 20
     @Trace blockHorizontalNum: number = 3

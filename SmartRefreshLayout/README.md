@@ -1,32 +1,34 @@
 # smartrefreshlayout
 
-## 简介
-> smartrefreshlayout以打造一个强大，稳定，成熟的下拉刷新框架为目标，并集成各种的炫酷、多样、实用、美观的Header。 集成了各种炫酷的 Header。
-> smartrefreshlayout可包含的信息有：BezierRadar样式、BezierCircle样式、FlyRefresh样式、Classics样式，Phoenix样式，Taurus样式，Taurus样式，HitBlock样式，WaveSwipe等众多样式。
+## Overview
 
-#### 效果展示：
-![gif](preview.gif)
+SmartRefreshLayout is a library that integrates various cool, diversified, practical, and beautiful headers. It aims to build a powerful, stable, and mature pull-down refresh framework.  
 
-## 下载安装
+SmartRefreshLayout contains the following information: BezierRadar, BezierCircle, FlyRefresh, Classics, Phoenix, Taurus, Taurus, HitBlock, and WaveSwipe.
+
+#### Display Effects
+![smartrefreshlayout](smartrefreshlayout.gif)
+
+## How to Install
 
 ```shell
 ohpm install @ohos/smartrefreshlayout
 ```
-OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 
-### 生成smartrefreshlayout头部刷新
+### Generate a **smartrefreshlayout** instance.
 ```
 import {SmartRefresh} from "@ohos/smartrefreshlayout"
 import {Material} from "@ohos/smartrefreshlayout"
 
-  @Local model: SmartRefresh.Model = new SmartRefresh.Model()
+  @State model: SmartRefresh.Model = new SmartRefresh.Model()
   this.model.setBackgroundColor()
   this.model.setFixedContent()
   
   @Builder testHeader() {
-    Material({ model: this.model!!})
+    Material({ model: this.model})
   }
   
   @Builder testMain() {
@@ -39,67 +41,68 @@ import {Material} from "@ohos/smartrefreshlayout"
   
   build() {
     Column() {
-      SmartRefresh({ model: this.model!!, header:() => {this.testHeader()}, main:() => {this.testMain()} })
+      SmartRefresh({ model: this.model, header:() => {this.testHeader()}, main:() => {this.testMain()} })
     }.backgroundColor("#dddddd")
   }
 
 ```
 
-## 接口说明
-`@Local model: SmartRefresh.Model = new SmartRefresh.Model()`
-1. 背景颜色
+## Available APIs
+`@State model: SmartRefresh.Model = new SmartRefresh.Model()`
+1. Background color
    `model.setBackgroundShadowColor()`
-2. 字体颜色
+2. Font color
    `model.setBackgroundColor()`
-3. 头部默认高度
+3. Default header height
    `model.setInitHeaderHeight()`
-4. 头部是否固定
+4. Whether the header is fixed
    `model.setFixedContent()`
-5. 头部刷新位置
+5. Header refresh position
    `model.setRefreshPosition()`
-6. 刷新时间是否显示
+6. Whether to display the refresh time.
    `model.setTimeShowState()`
 
-## 约束与限制
-DevEco Studio: NEXT Developer Beta3-5.0.3.530, SDK: API12 (5.0.0.35)
+## Compatibility
+DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API11 (4.1.0.36)
 
-## 目录结构
+## Directory Structure
 ````
 
 |---- SmartRefreshLayout
-|     |---- entry  # 示例代码文件夹
-|     |---- smartRefreshLayout #库文件夹
+|     |---- entry  # Sample code
+|     |---- smartRefreshLayout # Library folder
 |         |----src
 |            |----main
 |               |----ets
 |                  |----components
-|                     |----topRefresh #刷新样式库
-|                        |----BattleCity.ets           #BattleCity刷新样式
-|                        |----BattleCityGameBody.ets   #BattleCity实体类
-|                        |----BattleCityGameCover.ets  #BattleCity刷新样式
-|                        |----BezierCircleRefresh.ets  #BezierCircle刷新|样式
-|                        |----BezierRadarRefresh.ets   #BezierRadar刷新样式
-|                        |----ClassicsRefresh.ets      #Classics刷新样式
-|                        |----Delivery.ets             #Delivery刷新样式
-|                        |----DropBox.ets              #DropBox刷新样式
-|                        |----FlyRefreshHeader.ets     #FlyRefresh刷新样式
-|                        |----HitBlock.ets             #HitBlock刷新样式
-|                        |----HitBlockGameBody.ets     #HitBlock实体类
-|                        |----HitBlockGameCover.ets    #HitBlock互动
-|                        |----MaterialRefresh.ets      #Material刷新样式
-|                        |----Phoenix.ets              #Phoenix刷新样式
-|                        |----SmartRefresh.ets         #嵌入刷新样式
-|                        |----SmartRefreshEntry.ets    #SmartRefresh实体类
-|                        |----StackSmartRefresh.ets    #StackSmart刷新样式
-|                        |----StoreHouseRefresh.ets    #StoreHouse刷新样式
-|                        |----Taurus.ets               #Taurus刷新样式
-|                        |----WaterSwipeRefresh.ets    #WaterSwipe刷新样式
-|                        |----WaveSwipeRefresh.ets     #WaveSwipe样式刷新
-|     |---- README.md  # 安装使用方法                    
+|                     |----topRefresh # Style library
+|                        |----BattleCity.ets           # BattleCity refresh style
+|                        |----BattleCityGameBody.ets   # BattleCity entity class
+|                        |----BattleCityGameCover.ets  # BattleCity refresh style
+|                        |----BezierCircleRefresh.ets  # BezierCircle refresh style
+|                        |----BezierRadarRefresh.ets   # BezierRadar refresh style
+|                        |----ClassicsRefresh.ets      # Classics refresh style
+|                        |----Delivery.ets             # Delivery refresh style
+|                        |----DropBox.ets              #DropBox refresh style
+|                        |----FlyRefreshHeader.ets     # FlyRefresh refresh style
+|                        |----HitBlock.ets             # HitBlock refresh style
+|                        |----HitBlockGameBody.ets     # HitBlock entity class
+|                        |----HitBlockGameCover.ets    # HitBlock interaction
+|                        |----MaterialRefresh.ets      # Material refresh style
+|                        |----Phoenix.ets              # Phoenix refresh style
+|                        |----SmartRefresh.ets         # Embedded refresh style
+|                        |----SmartRefreshEntry.ets    # SmartRefresh entity class
+|                        |----StackSmartRefresh.ets    # StackSmart refresh style
+|                        |----StoreHouseRefresh.ets    # StoreHouse refresh style
+|                        |----Taurus.ets               # Taurus refresh style
+|                        |----WaterSwipeRefresh.ets    # WaterSwipe refresh style
+|                        |----WaveSwipeRefresh.ets     # WaveSwipe refresh style
+|     |---- README.md  # Readme      
+|     |---- README_zh.md  # Readme                
 ````
 
-## 贡献代码
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/hihopeorg/SmartRefreshLayout/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/hihopeorg/SmartRefreshLayout/pulls) 。
+## How to Contribute
+If you find any problem when using SmartRefreshLayout, you can submit an [Issue](https://gitee.com/hihopeorg/SmartRefreshLayout/issues) or a [PR](https://gitee.com/hihopeorg/SmartRefreshLayout/pulls) to us.
 
-## 开源协议
-本项目基于 [Apache License 2.0](https://gitee.com/hihopeorg/SmartRefreshLayout/blob/master/LICENSE) ，请自由地享受和参与开源。
+## License
+This project is licensed under [Apache License 2.0](https://gitee.com/hihopeorg/SmartRefreshLayout/blob/master/LICENSE).

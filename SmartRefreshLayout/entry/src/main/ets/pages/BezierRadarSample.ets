@@ -15,22 +15,34 @@
 import { SmartRefreshForBezierRadarSample } from "@ohos/smartrefreshlayout"
 import { BezierRadar } from "@ohos/smartrefreshlayout"
 
-class arrParam{
-  index:number = 0;
-  content:string = "";
+class arrParam {
+  index: number = 0;
+  content: string = "";
 }
 
 @Entry
 @ComponentV2
 struct BezierRadarSample {
   @Local model: SmartRefreshForBezierRadarSample.Model = new SmartRefreshForBezierRadarSample.Model()
-  arr: arrParam[] = [{index:2,content:'蓝色主题'}, {index:3,content:'绿色主题'}, {index:4,content:'红色主题'}, {index:5,content:'橙色主题'},
-    {index:8,content:'橙色主题'}, {index:9,content:'橙色主题'}, {index:10,content:'橙色主题'},{index:11,content:'橙色主题'}, {index:12,content:'橙色主题'},
-    {index:13,content:'橙色主题'}, {index:14,content:'橙色主题'}, {index:15,content:'橙色主题'}]
+  arr: arrParam[] = [
+    { index: 2, content: getContext(this).resourceManager.getStringSync($r('app.string.blue_theme').id) },
+    { index: 3, content: getContext(this).resourceManager.getStringSync($r('app.string.green_theme').id) },
+    { index: 4, content: getContext(this).resourceManager.getStringSync($r('app.string.red_theme').id) },
+    { index: 5, content: getContext(this).resourceManager.getStringSync($r('app.string.orange_theme').id) },
+    { index: 8, content: getContext(this).resourceManager.getStringSync($r('app.string.orange_theme').id) },
+    { index: 9, content: getContext(this).resourceManager.getStringSync($r('app.string.orange_theme').id) },
+    { index: 10, content: getContext(this).resourceManager.getStringSync($r('app.string.orange_theme').id) },
+    { index: 11, content: getContext(this).resourceManager.getStringSync($r('app.string.orange_theme').id) },
+    { index: 12, content: getContext(this).resourceManager.getStringSync($r('app.string.orange_theme').id) },
+    { index: 13, content: getContext(this).resourceManager.getStringSync($r('app.string.orange_theme').id) },
+    { index: 14, content: getContext(this).resourceManager.getStringSync($r('app.string.orange_theme').id) },
+    { index: 15, content: getContext(this).resourceManager.getStringSync($r('app.string.orange_theme').id) }
+  ]
 
-  @Builder testMain() {
+  @Builder
+  testMain() {
     Column() {
-      ForEach(this.arr, (item:arrParam) => {
+      ForEach(this.arr, (item: arrParam) => {
         Column() {
           Text(item.content).fontSize("60lpx")
         }.width("100%").alignItems(HorizontalAlign.Start)
@@ -64,12 +76,13 @@ struct BezierRadarSample {
         })
 
         Divider().strokeWidth(2).color(Color.Grey)
-      }, (item:arrParam) => item.index.toString())
+      }, (item: arrParam) => item.index.toString())
     }.width("100%").padding("20lpx").backgroundColor(Color.White)
   }
 
-  @Builder testHeader() {
-    BezierRadar({ model: this.model!!})
+  @Builder
+  testHeader() {
+    BezierRadar({ model: this.model!! })
   }
 
   build() {
@@ -82,7 +95,8 @@ struct BezierRadarSample {
         main: () => {
           this.testMain()
         },
-        footer: ()=> {}
+        footer: () => {
+        }
       })
     }.backgroundColor("#ffffff")
   }

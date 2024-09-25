@@ -26,8 +26,19 @@ class ThemeParam{
 struct MaterialRefreshSample {
   @Local model: SmartRefresh.Model = new SmartRefresh.Model()
 
-  arr: Array<ThemeParam> = [{index:0,name: '红色主题'}, {index:1,name: '绿色主题'}, {index:2,name: '蓝色主题'}, {index:3,name: '橙色主题'}, {index:4,name: '橙色主题'},
-    {index:5,name: '橙色主题'}, {index:6,name: '橙色主题'}, {index:7,name: '橙色主题'}, {index:8,name: '橙色主题'}, {index:9,name: '橙色主题'}, {index:10,name: '橙色主题'}]
+  arr: Array<ThemeParam> = [
+    {index:0,name: getContext(this).resourceManager.getStringSync($r('app.string.red_theme').id)},
+    {index:1,name: getContext(this).resourceManager.getStringSync($r('app.string.green_theme').id)},
+    {index:2,name: getContext(this).resourceManager.getStringSync($r('app.string.blue_theme').id)},
+    {index:3,name: getContext(this).resourceManager.getStringSync($r('app.string.orange_theme').id)},
+    {index:4,name: getContext(this).resourceManager.getStringSync($r('app.string.orange_theme').id)},
+    {index:5,name: getContext(this).resourceManager.getStringSync($r('app.string.orange_theme').id)},
+    {index:6,name: getContext(this).resourceManager.getStringSync($r('app.string.orange_theme').id)},
+    {index:7,name: getContext(this).resourceManager.getStringSync($r('app.string.orange_theme').id)},
+    {index:8,name: getContext(this).resourceManager.getStringSync($r('app.string.orange_theme').id)},
+    {index:9,name: getContext(this).resourceManager.getStringSync($r('app.string.orange_theme').id)},
+    {index:10,name: getContext(this).resourceManager.getStringSync($r('app.string.orange_theme').id)}
+  ]
 
   pickColor(SelectColorParam: string) {
     let SelectColor = SelectColorParam.trim()

@@ -17,37 +17,57 @@ import { Phoenix } from "@ohos/smartrefreshlayout"
 import { PhoenixBottomRefresh } from "@ohos/smartrefreshlayout"
 
 class ArrParam {
-  index:number = 0;
-  name:string = "";
-  color:string = "";
+  index: number = 0;
+  name: string = "";
+  color: string = "";
 }
+
 @Entry
 @ComponentV2
 struct PhoenixSample {
   @Local model: SmartRefreshForTaurus.Model = new SmartRefreshForTaurus.Model()
   private arr: Array<ArrParam> = [
-    {index:11, name: '折叠', color: '1' },
-    {index:22, name: '展开', color: '2' },
-    {index:44, name: '红色主题', color: '#ff4444' },
-    {index:55, name: '绿色主题', color: '#99cc00' },
-    {index:66, name: '蓝色主题', color: '#2299ee' },
-    {index:33, name: '橙色主题', color: '#ffbb33' },
+    { index: 11, name: getContext(this).resourceManager.getStringSync($r('app.string.collapse').id), color: '1' },
+    { index: 22, name: getContext(this).resourceManager.getStringSync($r('app.string.expand').id), color: '2' },
+    {
+      index: 44,
+      name: getContext(this).resourceManager.getStringSync($r('app.string.red_theme').id),
+      color: '#ff4444'
+    },
+    {
+      index: 55,
+      name: getContext(this).resourceManager.getStringSync($r('app.string.green_theme').id),
+      color: '#99cc00'
+    },
+    {
+      index: 66,
+      name: getContext(this).resourceManager.getStringSync($r('app.string.blue_theme').id),
+      color: '#2299ee'
+    },
+    {
+      index: 33,
+      name: getContext(this).resourceManager.getStringSync($r('app.string.orange_theme').id),
+      color: '#ffbb33'
+    },
 
   ]
-  private arrNumberOfCycles: Array<number> = [1,2,3,4,5,6]
+  private arrNumberOfCycles: Array<number> = [1, 2, 3, 4, 5, 6]
+
   aboutToAppear() {
     this.model.setBackgroundColor('#ffbb33')
     this.model.setExpand(true)
-    this.model.setTitleName('金色校园')
+    this.model.setTitleName(getContext(this).resourceManager.getStringSync($r('app.string.golden_campus').id))
   }
 
-  @Builder testHeader() {
+  @Builder
+  testHeader() {
     Phoenix({ model: this.model!! })
   }
 
-  @Builder testMain() {
+  @Builder
+  testMain() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
-      ForEach(this.arr, (itemOther:ArrParam) => {
+      ForEach(this.arr, (itemOther: ArrParam) => {
         Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
           Text(itemOther.name)
             .fontSize(30)
@@ -55,9 +75,12 @@ struct PhoenixSample {
             .padding({ left: 10, top: 10 })
 
           Text(
-              itemOther.color == '1' ? '折叠AppBarLayout，变成正常的列表页面' :
-                itemOther.color == '2' ? '展开AppBarLayout，变成可伸展头部的页面' :
-                '更改为' + itemOther.name + '颜色')
+            itemOther.color == '1' ?
+            getContext(this).resourceManager.getStringSync($r('app.string.collapse_description').id) :
+              itemOther.color == '2' ?
+              getContext(this).resourceManager.getStringSync($r('app.string.expand_description').id) :
+              getContext(this).resourceManager.getStringSync($r('app.string.change_color').id, itemOther.name))
+
             .fontSize(25)
             .fontColor('#8c8c8c')
             .padding({ left: 10, top: 5 })
@@ -78,16 +101,16 @@ struct PhoenixSample {
           }
         })
 
-      }, (item:ArrParam) => item.index.toString())
-      ForEach(this.arrNumberOfCycles, (item:ArrParam) => {
+      }, (item: ArrParam) => item.index.toString())
+      ForEach(this.arrNumberOfCycles, (item: ArrParam) => {
 
         Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
-          Text("橙色主题")
+          Text( getContext(this).resourceManager.getStringSync($r('app.string.orange_theme').id))
             .fontSize(30)
             .fontColor('#282828')
             .padding({ left: 10, top: 10 })
 
-          Text('更改为橙色主题颜色')
+          Text( getContext(this).resourceManager.getStringSync($r('app.string.change_color_orange').id))
             .fontSize(25)
             .fontColor('#8c8c8c')
             .padding({ left: 10, top: 5 })
@@ -99,15 +122,16 @@ struct PhoenixSample {
             .margin({ top: 10, bottom: 5 })
         }
         .onClick(e => {
-            this.model.setBackgroundColor('#ffbb33')
+          this.model.setBackgroundColor('#ffbb33')
         })
-      }, (item:number) => item.toString())
+      }, (item: number) => item.toString())
     }
     .width("100%")
     .backgroundColor("#ffffff")
   }
 
-  @Builder testFooter() {
+  @Builder
+  testFooter() {
     Column() {
       PhoenixBottomRefresh({ model: this.model!! })
     }.width("100%")
