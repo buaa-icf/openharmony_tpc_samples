@@ -1,43 +1,43 @@
 # socket-io
 
-## 简介
+## Overview
 
-> socket.io是一个在客户端和服务器之间实现低延迟、双向和基于事件的通信的库。建立在 WebSocket 协议之上，并提供额外的保证，例如回退到 HTTP 长轮询或自动重新连接。
+socket.io is a library that implements low-latency, two-way, and event-based communication between clients and servers. It is built on the WebSocket protocol and provides additional protection, such as fallback to HTTP long polling or automatic reconnection.
 
-## 效果展示
+## Display Effects
 
-![avatar](screenshot/效果展示_登陆页面.jpg)
+![avatar](screenshot/effect_login.png)
 
-![avatar](screenshot/效果展示_聊天页面.jpg)
+![avatar](screenshot/effect_chat.png)
 
-## 下载安装
+## How to Install
 
 ```shell
 ohpm install @ohos/socketio 
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 
-## X86模拟器配置
+## Configuring the x86 Simulator
 
-[使用模拟器运行应用/服务](https://developer.huawei.com/consumer/cn/deveco-developer-suite/enabling/kit?currentPage=1&pageSize=100)
+See [Running Your App/Service on an Emulator](https://developer.huawei.com/consumer/cn/deveco-developer-suite/enabling/kit?currentPage=1&pageSize=100).
 
 
-## 使用说明
+## How to Use
 
-1. 导入依赖库
+1. Import the dependency libraries.
 
 ```typescript
 import { client_socket } from '@ohos/socketio';
 ```
 
-2. 初始化socket.io客户端
+2. Initialize the socket.io client.
 
 ```typescript
 client: client_socket = new client_socket();
 ```
 
-3. 设置监听事件
+3. Set listening events.
 
 ```typescript
 this.client.set_open_listener(this.on_open.bind(this));
@@ -49,23 +49,23 @@ this.client.set_socket_open_listener(this.on_socket_open.bind(this));
 this.client.set_socket_close_listener(this.on_socket_close.bind(this));
 ```
 
-4. 连接服务器
+4. Connect to the server.
 
 ```typescript
-this.client.connect(uri) //uri: socket.io服务端地址
+this.client.connect(uri) // uri: socket.io server address
 ```
 
-5. 设置用户消息监听以及用户加入离开监听
+5. Enable listening for user joining and leaving events.
 
-- 监听事件实现
+- Implementation of event listening
 
 ```typescript
 on_user_left_listener(event_json: string): void {
-	//回调数据处理
+	// Callback data processing
 }
 ```
 
-- 设置监听
+- Set the listener.
 
 ```typescript
 this.client.on("new message", this.on_new_message_listener.bind(this));
@@ -74,168 +74,167 @@ this.client.on("user left", this.on_user_left_listener.bind(this));
 this.client.on("login", this.on_login_listener.bind(this));
 ```
 
-6. 登录服务器，并设置登录成功回调
+6. Log in to the server, and set the login success callback.
 
 ```typescript
 this.client.emit("add user", username, this.on_emit_callback.bind(this));
 ```
 
-7. 发送消息并设置发送消息监听
+7. Send a message, and set the listener for message sending events.
 
 ```typescript
 this.client.emit("new message", message, this.on_emit_callback);
 ```
 
-8. 关闭服务器链接并清理监听事件
+8. Close the server connection, and clear the listening events.
 
 ```typescript
 this.client.socket_close();
 this.client.clear_socket_listeners();
 ```
 
-## 接口说明
+## Available APIs
 
-- 初始化客户端
+- Initialize the client.
 
 ```typescript
 client: client_socket = new client_socket();
 ```
 
-- 设置客户端监听器
+- Set the listener for client open events.
 
 ```typescript
 set_open_listener(on_open: () => void)
 ```
 
-- 设置客户端失败监听器
+- Set the listener for client failure events.
 
 ```typescript
 set_fail_listener(on_fail: () => void)
 ```
 
-- 设置客户端正在重新连接监听器
+- Set the listener for client reconnecting events.
 
 ```typescript
 set_reconnecting_listener(on_reconnecting: () => void)
 ```
 
-- 设置客户端重新连接监听器
+- Set the listener for client reconnection events.
 
 ```typescript
 set_reconnect_listener(on_reconnect: () => void)
 ```
-- 设置客户端关闭监听器
+- Set the listener for client close events.
 ```typescript
 set_close_listener(on_close: (reason: string) => void)
 ```
-- 设置socket打开监听
+- Set the listener for client open events.
 ```typescript
 set_socket_open_listener(on_socket_open: (nsp: string) => void)
 ```
-- 设置socket关闭监听
+- Set the listener for client close events.
 ```typescript
 set_socket_close_listener(on_socket_close: (nsp: string) => void)
 ```
-- 设置 header
+- Set the header.
 ```typescript
 set_headers(headers: string)
 ```
-- 连接服务器
+- Connect to the server.
 ```typescript
 connect(uri: string)
 ```
-- 清除所有监听器
+- Clear all listeners.
 ```typescript
 clear_con_listeners()
 ```
-- 清除所有socket监听器
+- Clear all socket listeners.
 ```typescript
 clear_socket_listeners()
 ```
-- 设置重连次数
+- Set the number of reconnection times.
 ```typescript
 set_reconnect_attempts(attempts: number)
 ```
-- 设置重新连接尝试的延迟时间
+- Set the delay for reconnection attempts.
 ```typescript
 set_reconnect_delay(millis: number)
 ```
-- 设置重新连接的最大延迟。
+- Set the maximum delay for reconnection.
 ```typescript
 set_reconnect_delay_max(millis: number)
 ```
-- 关闭连接
+- Close the connection.
 ```typescript
 close()
 ```
-- 同步关闭
+- Disable synchronization.
 ```typescript
 sync_close()
 ```
-- 判断是否打开
+- Check whether the function is enabled.
 ```typescript
 opened(): boolean
 ```
-- 获取sessionID
+- Obtain the session ID.
 ```typescript
 get_sessionid(): string
 ```
-- 注册一个新的响应服务器事件的事件处理器
+- Register a new event handler for server events.
 ```typescript
 on(event_name: string, on_event_listener: (event_json: string) => void)
 ```
-- 设置socket监听关闭
+- Disable listening for socket events.
 ```typescript
 socket_close()
 ```
-- 设置错误监听
+- Set the listener for errors.
 ```typescript
 on_error(on_error_listener: (message: string) => void)
 ```
-- 关闭错误监听
+- Disable the listener for errors.
 ```typescript
 off_error()
 ```
-- 通过提供的name事件名称向socket标志发送事件
-说明: 响应服务器用来确认消息的应答
+- Send an event with the specified name to the socket with the specified flag.
+This is the response used by the response server to confirm the message.
 ```typescript
 emit(name: string, message: string, on_emit_callback?: (emit_callback_json: string) => void)
 ```
 
-## 源码下载
-1. 本项目依赖 socket.io-client-cpp 库，通过`git submodule`引入，下载代码时需加上`--recursive`参数。
+## Source Code Downloading
+1. This project depends on the **socket.io-client-cpp** library, which is introduced through `git submodule`. You need to add the `--recursive` parameter when downloading code.
   ```
   git clone --recursive https://gitee.com/openharmony-tpc/openharmony_tpc_samples.git
   ```
-2. Linux环境无需执行该步骤，如果是windows环境下，代码下载完成后合入OHOS适配的代码，cd 进入到socketio/library/src/main/cpp/thirdModule 目录下，执行 modify.sh 脚本，将本目录下的 patch 文件合入到 socket.io-client-cpp 源码中。
-3. 开始编译项目。
+2. Skip this step in the Linux environment. In the Windows environment, after the code is downloaded, integrate the OpenHarmony adaptation code. Run the `cd` command to go to the **socketio/library/src/main/cpp/thirdModule** directory and run the `modify.sh` script, integrate the patch file in this directory into the** socket.io-client-cpp** source code.
+3. Start project building.
 
-## 约束与限制
-在下述版本验证通过：
+## Constraints
+socket-io has been verified in the following versions:
 
-- IDE：DevEco Studio 4.1.3.532; SDK: 4.1.0.67(SP3)。
-- IDE：DevEco Studio Next ,Developer Beta1(5.0.3.121); SDK:API12 (5.0.0.16)。
-- IDE：DevEco Studio NEXT Developer Beta2(5.0.3.500); SDK: API12 (5.0.0.31)。
+- IDE: DevEco Studio 4.1.3.532, SDK: 4.1.0.67(SP3)
+- IDE: DevEco Studio Next, Developer Beta1 (5.0.3.121), SDK:API12 (5.0.0.16)
+- IDE: DevEco Studio NEXT Developer Beta2 (5.0.3.500); SDK: API12 (5.0.0.31).
 
-## 目录结构
+## Directory Structure
 ````
 |---- socketio  
-|     |---- entry  # 示例代码文件夹
-|     |---- library  # socket.io库
-|           |---- ets #对外接口目录
-				  |---- client_socket.ets # 对外接口
-            |---- cpp # 组件代码目录
-                  |---- src # 核心类目录
-                  |---- client_socket.cpp # socket.io客户端NAPI层
-|     |---- README.md  # 安装使用方法                    
+|     |---- entry  # Sample code
+|     |---- library  # socket.io library
+|           |---- ets # External APIs
+				  |---- client_socket.ets # External APIs
+            |---- cpp # Module code
+                  |---- src # Core class
+                  |---- client_socket.cpp # NAPI layer of the socket.io client
+|     |---- README_EN.md  # Readme                   
 ````
 
-## 贡献代码
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然也非常欢迎您
-发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 给我们。
+## How to Contribute
+If you find any problem when using socket-io, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or
+a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
 
-## 开源协议
-本项目基于 [MIT LICENSE](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/socketio/LICENSE) ，请自由地享受和参与开源。
+## License
+This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/socketio/LICENSE).
 
   
-

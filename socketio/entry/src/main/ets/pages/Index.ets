@@ -30,12 +30,12 @@ struct Index {
   on_open(): void {
     console.log("SOCKET_IO_INDEX on_open");
     this.connect_finish = true;
-    prompt.showToast({ message: "连接服务器成功" });
+    prompt.showToast({ message: $r("app.string.Successfully") });
   }
 
   on_fail(): void {
     console.log("SOCKET_IO_INDEX on_fail");
-    prompt.showToast({ message: "连接服务器失败" });
+    prompt.showToast({ message: $r("app.string.Failed") });
   }
 
   on_reconnecting(): void {
@@ -149,18 +149,22 @@ struct Index {
   login(username: string) {
     console.log("SOCKET_IO_INDEX login");
     if (!this.connect_finish) {
-      prompt.showToast({ message: "暂未连接服务器" });
+      prompt.showToast({ message: $r("app.string.Connected_server")  });
       return;
     }
     this.client.emit("add user", username);
     this.login_finish = !this.login_finish;
   }
 
+  getResourceString(resourceName:Resource) {
+    return getContext().resourceManager.getStringSync(resourceName.id)
+  }
+
   //发送消息
   sendMessage(message: string) {
     console.log("SOCKET_IO_INDEX sendMessage");
     if (!this.connect_finish) {
-      console.log("SOCKET_IO_INDEX 暂未连接服务器");
+      console.log(`SOCKET_IO_INDEX ${this.getResourceString($r("app.string.Connected_server"))}`);
       return;
     }
     this.client.emit("new message", message, this.on_emit_callback);
@@ -170,7 +174,7 @@ struct Index {
   close() {
     console.log("SOCKET_IO_INDEX close");
     if (!this.connect_finish) {
-      console.log("SOCKET_IO_INDEX 暂未连接服务器");
+      console.log(`SOCKET_IO_INDEX ${this.getResourceString($r("app.string.Connected_server"))}`);
       return;
     }
     console.log("SOCKET_IO_INDEX close start 1");
@@ -197,7 +201,7 @@ struct Index {
           .width('100%')
 
           Row() {
-            TextInput({ placeholder: "请输入消息,退出聊天室请输入exit", text: this.message })
+            TextInput({ placeholder: $r('app.string.Enter_message'), text: this.message })
               .width('80%')
               .onChange((message) => {
                 this.message = message
@@ -208,7 +212,7 @@ struct Index {
                   this.close()
                   this.login_finish = false
                 } else if (this.message == "") {
-                  prompt.showToast({ message: "请输入消息" });
+                  prompt.showToast({ message: $r('app.string.Enter_messages') });
                 } else {
                   this.sendMessage(this.message)
                   let clientMessage: ESObject = { username: this.username, message: this.message, id: 2 }
@@ -221,7 +225,7 @@ struct Index {
           .height('10%')
           .width('100%')
         } else {
-          TextInput({ placeholder: "请输入socket.io服务端地址", text: this.uri })
+          TextInput({ placeholder: $r('app.string.Server_address'), text: this.uri })
             .onChange((uri) => {
               this.uri = uri
             })
@@ -231,7 +235,7 @@ struct Index {
               this.initClient(this.uri)
               this.initSocket()
             })
-          TextInput({ placeholder: "请输入用户名" })
+          TextInput({ placeholder: $r('app.string.User_name') })
             .onChange((username) => {
               this.username = username
             })
