@@ -38,9 +38,13 @@ function unmarshall(instance, schema){
 
 const v = new Validator();
 const res = v.validate(value, schema, {rewrite: unmarshall});`
-  @State message1: string = `验证对象：--`
-  @State message2: string = `期待结果：暂无`
-  @State message3: string = `实际结果：--`
+  @State message1: string = `${this.getResourceString($r('app.string.Verify_Object'))}`
+  @State message2: string = `${this.getResourceString($r('app.string.Verify_Object'))}`
+  @State message3: string = `${this.getResourceString($r('app.string.Actual_results'))}`
+
+  getResourceString(res:Resource){
+    return getContext().resourceManager.getStringSync(res.id)
+  }
 
   build() {
     Row() {
@@ -86,7 +90,7 @@ const res = v.validate(value, schema, {rewrite: unmarshall});`
             top: 20
           })
 
-        Button('验证')
+        Button($r('app.string.Verify'))
           .backgroundColor(Color.Blue)
           .fontColor(Color.White)
           .width("80%")
@@ -106,10 +110,10 @@ const res = v.validate(value, schema, {rewrite: unmarshall});`
 
   validate() {
     const ctx = this;
-    ctx.message2 = `期待结果  使用rewrite：${true} ${'\r\n'}
-       不使用rewrite：${true} ${'\r\n'}
-       使用rewrite res.instance.date 是否是Date类型：${true}
-       不使用rewrite res.instance.date 是否是Date类型：${false} `
+    ctx.message2 = `${this.getResourceString($r('app.string.Verify_Object'))}  use rewrite：${true} ${'\r\n'}
+       do not use rewrite：${true} ${'\r\n'}
+       use rewrite res.instance.date is Date type? ${true}
+       do not use rewrite res.instance.date s Date type? ${false} `
     try {
 
       let v0 :ESObject=new Validator();
@@ -122,15 +126,15 @@ const res = v.validate(value, schema, {rewrite: unmarshall});`
 
       let str = JSON.stringify(result10);
       console.log(`jsonschema ------> 测试结果是：${str}`);
-      ctx.message1 = `验证对象： ${str}`;
-      ctx.message3 = `实际结果：使用rewrite：${result10.valid} ${'\r\n'}
-          不使用rewrite：${result00.valid} ${'\r\n'}
-          使用rewrite res.instance.date 是否是Date类型：${result11}
-          不使用rewrite res.instance.date 是否是Date类型：${result01}`
+      ctx.message1 = `${this.getResourceString($r('app.string.Verify_Object'))} ${str}`;
+      ctx.message3 = `${this.getResourceString($r('app.string.Actual_results'))} use rewrite：${result10.valid} ${'\r\n'}
+          do not use rewrite：${result00.valid} ${'\r\n'}
+          use rewrite res.instance.date is date type? ${result11}
+          do not use rewrite res.instance.date is date type? ${result01}`
     } catch (err) {
       let str = JSON.stringify(err);
       console.log(`jsonschema ------> 验证出错：${str}`);
-      ctx.message3 = `验证出错：${str}`
+      ctx.message3 = `error：${str}`
     }
   }
 

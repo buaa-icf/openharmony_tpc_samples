@@ -20,9 +20,13 @@ import { SchemaError, validate, ValidationError, Validator, ValidatorResult } fr
 struct VerySimpleValidatePage {
   @State message0: string = `let validate = require('jsonschema').validate;
 validate(4, {"type": "number"})`
-  @State message1: string = `验证对象：--`
-  @State message2: string = `期待结果：暂无`
-  @State message3: string = `实际结果：--`
+  @State message1: string = `${this.getResourceString($r('app.string.Verify_Object'))}`
+  @State message2: string = `${this.getResourceString($r('app.string.Expected_results'))}`
+  @State message3: string = `${this.getResourceString($r('app.string.Actual_results'))}`
+
+  getResourceString(res:Resource){
+    return getContext().resourceManager.getStringSync(res.id)
+  }
 
   build() {
     Row() {
@@ -67,7 +71,7 @@ validate(4, {"type": "number"})`
             top: 20
           })
 
-        Button('验证')
+        Button($r('app.string.Verify'))
           .backgroundColor(Color.Blue)
           .fontColor(Color.White)
           .width("80%")
@@ -87,18 +91,18 @@ validate(4, {"type": "number"})`
 
   validate() {
     const ctx = this;
-    ctx.message2 = `期待结果：${true}`
+    ctx.message2 = `${this.getResourceString($r('app.string.Expected_results'))}${true}`
     try {
 
 
       let str = JSON.stringify(new Validator().validate(4, { "type": "number" }));
       console.log(`jsonschema ------> 测试结果是：${str}`);
-      ctx.message1 = `验证对象： ${str}`;
-      ctx.message3 = `实际结果：${new Validator().validate(4, { "type": "number" }).valid}`
+      ctx.message1 = `${this.getResourceString($r('app.string.Verify_Object'))} ${str}`;
+      ctx.message3 = `${this.getResourceString($r('app.string.Actual_results'))}${new Validator().validate(4, { "type": "number" }).valid}`
     } catch (err) {
       let str = JSON.stringify(err);
       console.log(`jsonschema ------> 验证出错：${str}`);
-      ctx.message3 = `验证出错：${str}`
+      ctx.message3 = `error：${str}`
     }
   }
 }

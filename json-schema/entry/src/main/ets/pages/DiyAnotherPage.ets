@@ -24,9 +24,13 @@ struct DiyAnotherPage {
     result.addError('fails some validation test');
   }
   return result;`
-  @State message1: string = `验证对象：--`
-  @State message2: string = `期待结果：暂无`
-  @State message3: string = `实际结果：--`
+  @State message1: string = `${this.getResourceString($r('app.string.Verify_Object'))}`
+  @State message2: string = `${this.getResourceString($r('app.string.Expected_results'))}`
+  @State message3: string = `${this.getResourceString($r('app.string.Actual_results'))}`
+
+  getResourceString(res:Resource){
+    return getContext().resourceManager.getStringSync(res.id)
+  }
 
   build() {
     Row() {
@@ -72,7 +76,7 @@ struct DiyAnotherPage {
             top: 20
           })
 
-        Button('验证')
+        Button($r('app.string.Verify'))
           .backgroundColor(Color.Blue)
           .fontColor(Color.White)
           .width("80%")
@@ -92,7 +96,7 @@ struct DiyAnotherPage {
 
   validate() {
     const ctx = this;
-    ctx.message2 = `期待结果：${false}`
+    ctx.message2 = `${this.getResourceString($r('app.string.Expected_results'))}${false}`
     try {
       let v :ESObject= new Validator()
        v.attributes.contains = Validator.validateContains=(instance:string, schema:Schema, options:string, ctx:string):string =>{
@@ -122,12 +126,12 @@ struct DiyAnotherPage {
       let resultValidate:ESObject = v.validate("I am an instance", { type: "string", contains: "I am" })
       let str = JSON.stringify(resultValidate);
       console.log(`jsonschema ------> 测试结果是：${str}`);
-      ctx.message1 = `验证对象： ${str}`;
-      ctx.message3 = `实际结果：${resultValidate.valid}`
+      ctx.message1 = `${this.getResourceString($r('app.string.Verify_Object'))} ${str}`;
+      ctx.message3 = `${this.getResourceString($r('app.string.Actual_results'))}${resultValidate.valid}`
     } catch (err) {
       let str = JSON.stringify(err);
       console.log(`jsonschema ------> 验证出错：${str}`);
-      ctx.message3 = `验证出错：${str}`
+      ctx.message3 = `error：${str}`
     }
   }
 }

@@ -60,52 +60,52 @@ export default class JumpPathConfig {
       this.dataList = new Array<JumpBean>();
     }
     if (this.dataList.length < 1) {
-      let bean0 = new JumpBean('简单对象验证', 'pages/SimpleValidatePage');
+      let bean0 = new JumpBean('Simple Object Validation', 'pages/SimpleValidatePage');
       this.dataList.push(bean0)
 
-      let bean1 = new JumpBean('更简单对象验证', 'pages/VerySimpleValidatePage');
+      let bean1 = new JumpBean('Very Simple Object Validation', 'pages/VerySimpleValidatePage');
       this.dataList.push(bean1)
 
-      let bean2 = new JumpBean('复杂示例', 'pages/ComplicatedValidatePage');
+      let bean2 = new JumpBean('Complicated Object Validate', 'pages/ComplicatedValidatePage');
       this.dataList.push(bean2)
 
-      let bean3 = new JumpBean('验证全部功能', 'pages/AllValidatePage');
+      let bean3 = new JumpBean('Validate all functions', 'pages/AllValidatePage');
       this.dataList.push(bean3)
 
-      let bean4 = new JumpBean('处理undefined', 'pages/UnDefinedValidatePage');
+      let bean4 = new JumpBean('Handling undefined', 'pages/UnDefinedValidatePage');
       this.dataList.push(bean4)
 
-      let bean5 = new JumpBean('Format验证', 'pages/FormatValidatePage');
+      let bean5 = new JumpBean('Validate Format', 'pages/FormatValidatePage');
       this.dataList.push(bean5)
 
-      let bean6 = new JumpBean('嵌套错误验证', 'pages/NestedErrorsValidatePage');
+      let bean6 = new JumpBean('Nested Error Validation', 'pages/NestedErrorsValidatePage');
       this.dataList.push(bean6)
 
-      let bean7 = new JumpBean('本地化错误信息', 'pages/LocalErrorMessagePage');
+      let bean7 = new JumpBean('Local Error Message', 'pages/LocalErrorMessagePage');
       this.dataList.push(bean7)
 
-      let bean8 = new JumpBean('自定义关键词', 'pages/DiyKeyWordValidatePage');
+      let bean8 = new JumpBean('Custom Keywords', 'pages/DiyKeyWordValidatePage');
       this.dataList.push(bean8)
 
-      let bean9 = new JumpBean('验证自定义关键词validateContains函数返回值的改变对于验证结果的影响', 'pages/DiyAnotherPage');
+      let bean9 = new JumpBean('Verify the impact of changes in the return value of the validateContains function on the results', 'pages/DiyAnotherPage');
       this.dataList.push(bean9)
 
-      let bean10 = new JumpBean('移除schema', 'pages/DereferencingSchemasPage');
+      let bean10 = new JumpBean('Remove Schema', 'pages/DereferencingSchemasPage');
       this.dataList.push(bean10)
 
-      let bean11 = new JumpBean('默认基础URI', 'pages/DefaultBaseUriPage');
+      let bean11 = new JumpBean('Default Base URI', 'pages/DefaultBaseUriPage');
       this.dataList.push(bean11)
 
-      let bean12 = new JumpBean('验证ReWrite', 'pages/ReWritePage');
+      let bean12 = new JumpBean('Verify ReWrite', 'pages/ReWritePage');
       this.dataList.push(bean12)
 
-      let bean13 = new JumpBean('验证前属性预处理', 'pages/PrePropertyValidatePage');
+      let bean13 = new JumpBean('Pre processing of attributes before verification', 'pages/PrePropertyValidatePage');
       this.dataList.push(bean13)
 
-      let bean14 = new JumpBean('是否允许未知关键字失败', 'pages/AllowUnknownPage');
+      let bean14 = new JumpBean('Allow unknown keyword failure attribute preprocessing before verification', 'pages/AllowUnknownPage');
       this.dataList.push(bean14)
 
-      let bean15 = new JumpBean('跳过关键字验证', 'pages/SkipAttributesPage');
+      let bean15 = new JumpBean('Skip keyword validation', 'pages/SkipAttributesPage');
       this.dataList.push(bean15)
     }
   }
