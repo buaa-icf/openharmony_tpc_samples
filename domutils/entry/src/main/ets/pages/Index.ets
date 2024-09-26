@@ -72,7 +72,7 @@ struct Index {
   build() {
     Column() {
       Row() {
-        Button('解析HTML标签并获取属性')
+        Button($r('app.string.Parse_attributes'))
           .fontSize(25)
           .margin(15)
           .height(46)

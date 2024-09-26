@@ -11,6 +11,10 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Parse_attributes",
+      "value": "Parse HTML tags and retrieve attributes"
     }
   ]
 }
