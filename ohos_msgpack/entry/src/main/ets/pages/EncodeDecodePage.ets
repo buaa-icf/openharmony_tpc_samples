@@ -19,28 +19,28 @@ import { encode,decode } from "@ohos/msgpack";
 @Component
 struct EncodeDecodePage {
 
-  @State message:string = "编码后的数据展示"
-  @State message2:string = "解码后的数据展示"
-  @State message3:string = "解码后的数据展示"
+  @State message: string = '';
+  @State message2:string = '';
+  @State message3:string = '';
 
   encodedUint8?: Uint8Array = undefined;
 
   build() {
     Row() {
       Column() {
-        Button('点击对象编码').onClick(()=>{
+        Button($r('app.string.Object_encoding')).onClick(()=>{
           console.log("dodo click on!")
           this.encodedUint8 = encode<string>(data);
-          this.message = "编码后的数据="+this.encodedUint8;
+          this.message = this.getResourceString($r('app.string.Encoded_data'))+this.encodedUint8;
         })
         Text(this.message)
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
-        Button('点击解码').onClick(()=>{
+        Button($r('app.string.decode')).onClick(()=>{
           if(this.encodedUint8) {
-            this.message2 = "解码后的数据=" + JSON.stringify(decode<string[]>(this.encodedUint8));
+            this.message2 = this.getResourceString($r('app.string.Decoded_data'))  + JSON.stringify(decode<string[]>(this.encodedUint8));
           }else{
-            this.message3 = '解码数据为undefined, 请先点击编码'
+            this.message3 = this.getResourceString($r('app.string.undefined'));
           }
         })
         Text(this.message2)
@@ -51,8 +51,14 @@ struct EncodeDecodePage {
     }
     .height('100%')
   }
-  aboutToAppear(){
+  aboutToAppear() {
+    this.message = this.getResourceString($r('app.string.Display_encoded_data'));
+    this.message2 = this.getResourceString($r('app.string.Display_decoded_data'));
+    this.message3 = this.getResourceString($r('app.string.Display_decoded_data'));
+  }
 
+  getResourceString(res: Resource) {
+    return getContext().resourceManager.getStringSync(res.id);
   }
 }
 

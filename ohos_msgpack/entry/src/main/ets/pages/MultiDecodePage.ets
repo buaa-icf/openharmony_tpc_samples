@@ -20,14 +20,23 @@ import Util from './Util';
 @Entry
 @Component
 struct MultiDecodePage {
-  @State message: string = "展示原数据"
-  @State message2: string = "decodeMulti解码后的数据展示"
+  @State message: string = '';
+  @State message2: string = '';
   encodedUint8: Uint8Array | undefined = undefined;
+
+  aboutToAppear(): void {
+    this.message = this.getResourceString($r('app.string.Display_original_data'));
+    this.message2 = this.getResourceString($r('app.string.Data_display_after_decodeMulti_decoding'));
+  }
+
+  getResourceString(res: Resource) {
+    return getContext().resourceManager.getStringSync(res.id);
+  }
 
   build() {
     Row() {
       Column() {
-        Button('对象展示').onClick(() => {
+        Button($r('app.string.Object_Display')).onClick(() => {
           console.log('dodo click on!')
           let bar: Bar = {
             name: "bar",
@@ -42,7 +51,7 @@ struct MultiDecodePage {
         Text(this.message)
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
-        Button('点击MultiDecode').onClick(() => {
+        Button($r("app.string.MultiDecoder")).onClick(() => {
           let bar: Bar = {
             name: "bar",
           }
