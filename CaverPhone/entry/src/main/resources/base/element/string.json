@@ -11,6 +11,26 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Parse_null_button_text",
+      "value": "parse null"
+    },
+    {
+      "name": "Parse_undefined_button_text",
+      "value": "parse undefined"
+    },
+    {
+      "name": "Parse_emptyString_button_text",
+      "value": "parse empty string"
+    },
+    {
+      "name": "Parse_chinese_button_text",
+      "value": "parse chinese characters"
+    },
+    {
+      "name": "Parse_cailean_button_text",
+      "value": "parse Cailean"
     }
   ]
 }
