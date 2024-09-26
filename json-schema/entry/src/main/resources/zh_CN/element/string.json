@@ -11,6 +11,30 @@
     {
       "name": "EntryAbility_label",
       "value": "jsonschema"
+    },
+    {
+      "name": "Verify_Object",
+      "value": "验证对象："
+    },
+    {
+      "name": "Expected_results",
+      "value": "期待结果："
+    },
+    {
+      "name": "Actual_results",
+      "value": "实际结果："
+    },
+    {
+      "name": "Do_not_set_required_expected_results",
+      "value": "不设置required期待结果："
+    },
+    {
+      "name": "Set_required_expected_results",
+      "value": "设置required期待结果："
+    },
+    {
+      "name": "Verify",
+      "value": "验证"
     }
   ]
 }

@@ -43,9 +43,13 @@ function preValidateProperty(object, key, schema, options, ctx) {
 
 // And now, to actually perform validation with the coercion hook!
 v.validate(instance, schema, { preValidateProperty });`
-  @State message1: string = `验证对象：--`
-  @State message2: string = `期待结果：暂无`
-  @State message3: string = `实际结果：--`
+  @State message1: string = `${this.getResourceString($r('app.string.Verify_Object'))}`
+  @State message2: string = `${this.getResourceString($r('app.string.Expected_results'))}`
+  @State message3: string = `${this.getResourceString($r('app.string.Actual_results'))}`
+
+  getResourceString(res:Resource){
+    return getContext().resourceManager.getStringSync(res.id)
+  }
 
   build() {
     Row() {
@@ -91,7 +95,7 @@ v.validate(instance, schema, { preValidateProperty });`
             top: 20
           })
 
-        Button('验证')
+        Button($r('app.string.Verify'))
           .backgroundColor(Color.Blue)
           .fontColor(Color.White)
           .width("80%")
@@ -111,8 +115,8 @@ v.validate(instance, schema, { preValidateProperty });`
 
   validate() {
     const ctx = this;
-    ctx.message2 = `期待结果：使用预处理 ${true} ${'\r\n'}
-        不使用预处理 ${false} ${'\r\n'}`
+    ctx.message2 = `${this.getResourceString($r('app.string.Expected_results'))}Use preprocessing ${true} ${'\r\n'}
+        Do not use preprocessing ${false} ${'\r\n'}`
     try {
 
 
@@ -121,13 +125,13 @@ v.validate(instance, schema, { preValidateProperty });`
 
       let str = JSON.stringify(result1);
       console.log(`jsonschema ------> 测试结果是：${str}`);
-      ctx.message1 = `验证对象： ${str}`;
-      ctx.message3 = `实际结果：使用预处理 ${result1.valid} ${'\r\n'}
-        不使用预处理 ${ result0.valid} ${'\r\n'}`
+      ctx.message1 = `${this.getResourceString($r('app.string.Verify_Object'))} ${str}`;
+      ctx.message3 = `${this.getResourceString($r('app.string.Actual_results'))}Use preprocessing ${result1.valid} ${'\r\n'}
+        Do not use preprocessing ${ result0.valid} ${'\r\n'}`
     } catch (err) {
       let str = JSON.stringify(err);
       console.log(`jsonschema ------> 验证出错：${str}`);
-      ctx.message3 = `验证出错：${str}`
+      ctx.message3 = `error：${str}`
     }
   }
   // See examples/coercion.js

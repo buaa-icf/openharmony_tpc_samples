@@ -11,6 +11,30 @@
     {
       "name": "EntryAbility_label",
       "value": "jsonschema"
+    },
+    {
+      "name": "Verify_Object",
+      "value": "Verify Object:"
+    },
+    {
+      "name": "Expected_results",
+      "value": "Expected results:"
+    },
+    {
+      "name": "Actual_results",
+      "value": "Actual results:"
+    },
+    {
+      "name": "Do_not_set_required_expected_results",
+      "value": "Do not set required expected results:"
+    },
+    {
+      "name": "Set_required_expected_results",
+      "value": "Set required expected results:"
+    },
+    {
+      "name": "Verify",
+      "value": "Verify"
     }
   ]
 }

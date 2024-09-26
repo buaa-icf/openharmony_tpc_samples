@@ -1,33 +1,33 @@
 # jsonschema
 
-## 简介
-jsonschema是一个轻便易用的JSON模式验证器，它全量支持到draft-07以及之前版本的所有规则。
+## Introduction
+jsonschema is a lightweight and easy-to-use JSON schema validator that fully supports JSON Schema versions through draft-07.
 
-## 下载安装
+## How to Install
 ```shell
 ohpm install @ohos/jsonschema 
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
-安装jsonschema之后，在需要使用的界面先导入jsonschema并初始化
+## How to Use
+After jsonschema is installed, import jsonschema on the target page and initialize it.
 
  ```typescript
 import { Validator, ValidatorResult, ValidationError, SchemaError, validate } from '@ohos/jsonschema'
 let v = new Validator();
  ```
 
-### 简单对象验证
+### Performing Simple Object Validation
 
 ```typescript
   let instance = 4;
-  let schema = { "type": "number" }; // 设置规则
-  let result = v.validate(instance, schema).valid;  // 启动验证并获取结果
+  let schema = { "type": "number" }; // Define the schema.
+  let result = v.validate(instance, schema).valid; // Start validation and obtain the result.
 ```
 
-将提供的路径参数转换为正则表达式，返回一个RegExp对象，里面包含了正则表达式的相关信息，用于验证或者路径拼接转换。
+This function converts the provided path into a regular expression and returns a **RegExp** object that contains information related to the regular expression for validation or path concatenation and conversion.
 
-### 复杂验证---带有自规则和规则引用
+### Performing Complex Validation with Custom Rules and Schema References
 
 ```typescript
       // Address, to be embedded on Person
@@ -73,25 +73,25 @@ let v = new Validator();
   let result = v.validate(p, schema).valid;
 ```
 
-### 支持自定义格式
+### Setting Custom Formats
 
 ```typescript
-// 添加自定义的格式函数 
+// Add a custom format.
 Validator.prototype.customFormats.myFormat = function (input) {
   return input === 'myFormat';
 };
 
 let v1 = new Validator();
 
-// 验证格式名myFormat 结果为true
+// Validate format name myFormat. The result is true.
 let result1 = v1.validate('myFormat', { type: 'string', format: 'myFormat' }).valid;
-// 验证格式名foo 结果为false
+// Validate format name foo. The result is false.
 let result2 = v1.validate('foo', { type: 'string', format: 'myFormat' }).valid;
 ```
 
-设置的Validator.prototype.customFormats只会影响当前实例化的验证器，所以可以创建多个验证器来处理程序中具有不同格式的多个模式。
+The **Validator.prototype.customFormats** settings only affect the specific validator instance to which they are applied, so you can create multiple validator instances to handle various formats in different schemas throughout your application.
 
-### 嵌套错误
+### Using Nested Errors
 
 ```typescript
    let schema = {
@@ -102,30 +102,30 @@ let result2 = v1.validate('foo', { type: 'string', format: 'myFormat' }).valid;
      ]
    };
  let result = v.validate('This string is 28 chars long', schema, { nestedErrors: true });
-// result.toString()的值如下：
+// The value of result.toString() is as follows:
 // 0: instance does not meet minimum length of 32
 // 1: instance does not meet maximum length of 16
 // 2: instance is not of a type(s) number
 // 3: instance is not exactly one from [subschema 0],[subschema 1],[subschema 2]
 ```
 
-设置多种验证项并且nestedErrors设置为true之后，当有多个属性验证未通过的时候，result里面会包含美格未通过验证的错误信息。整个校验过程不会在第一个校验项未通过验证的时候就返回错误信息结束验证。
+When multiple validation items are set and **nestedErrors** is set to **true**, the result contains detailed error information for each validation item that fails. The validation process does not terminate after the first failed check, allowing it to capture and report on all validation errors.
 
-### 自定义关键词
+### Setting Custom Keywords
 
 ```typescript
 v.attributes.contains = function validateContains(instance, schema, options, ctx) {
   if(typeof instance !== 'string') return;
-  // @ts-ignore   自定义关键字类型判断
+  // @ts-ignore Check the type of the custom keyword.
   if(typeof schema.contains !== 'string'){
      throw new SchemaError('"contains" expects a string', schema);
   }
-  // @ts-ignore  判断是否包含自定义关键字
+  // @ts-ignore Check whether the instance contains the custom keyword.
   if(instance.indexOf(schema.contains)<0){
      // @ts-ignore
      return 'does not contain the string ' + JSON.stringify(schema.contains);
    }
-   // @ts-ignore  自定义关键字长度判断
+   // @ts-ignore Check the length of the custom keyword.
    if (schema.contains.length < 2) {
      return '"contains" length must more than 2 ' ;
    }
@@ -135,11 +135,11 @@ v.attributes.contains = function validateContains(instance, schema, options, ctx
 let result = v.validate("I am an instance", { type:"string", contains: "I am" }).valid;
 ```
 
-可以在配置里面通过contains来设置自定义关键字(例如：I am)，并为该关键字设置验证规则(例如：function validateContains())。
+You can set a custom keyword (for example, **I am**) using **contains** in the configuration and define validation rules (or example, **function validateContains()**) for that keyword.
 
-### 移除校验规则
+### Removing Validation Rules
 
-初始化数据
+Initialize data.
 
 ```typescript
   schemaArr: object[] = [
@@ -170,7 +170,7 @@ let result = v.validate("I am an instance", { type:"string", contains: "I am" })
   @State isFinish: boolean = false;
 ```
 
-开始添加/移除规则
+Start to add or remove rules.
 
 ```typescript
   let initSchema = {
@@ -182,14 +182,14 @@ let result = v.validate("I am an instance", { type:"string", contains: "I am" })
           "votes": { "type": "integer", "minimum": 1 }
         }
       }
-  v.addSchema(initSchema); // 添加初始化规则
-  this.importNextSchema(v); // 启动递归方法 开始移除/添加校验规则
-  let result = this.cacheSchemaNum >= 0; // 通过cacheSchemaNum数量变动来检测移除添加过程是否执行
+  v.addSchema(initSchema); // Add an initialization schema.
+  this.importNextSchema(v); // Initiate the recursive method to start removing or adding validation rules.
+  let result = this.cacheSchemaNum > = 0; // Detect whether the removal and addition process is executed by monitoring the change in cacheSchemaNum.
 ```
 
 ```typescript
   importNextSchema(v: Validator) {
-    let nextSchema = v.unresolvedRefs.shift(); // 移除校验规则
+    let nextSchema = v.unresolvedRefs.shift(); // Remove the validation rule.
     if (this.cacheSchemaNum >= this.schemaArr.length) {
       this.isFinish = true;
       return
@@ -198,18 +198,18 @@ let result = v.validate("I am an instance", { type:"string", contains: "I am" })
       this.isFinish = true;
       return;
     }
-    console.log(`nextSchema：${JSON.stringify(nextSchema)}`)  // 打印被移除校验规则
-    v.addSchema(this.schemaArr[this.cacheSchemaNum]);  // 继续添加校验规则
+    console.log ('nextSchema: ${JSON.stringify(nextSchema) }') // Print the removed validation rule.
+    v.addSchema(this.schemaArr[this.cacheSchemaNum]); // Continue to add the next validation rule.
     this.cacheSchemaNum++;
-    this.importNextSchema(v); // 递归本方法 不断移除/添加校验规则
+    this.importNextSchema(v); // Recursively call this method to keep removing and adding validation rules.
   }
 ```
 
-通过Validator.unresolvedRefs.shift()可以将设置给验证器的某些规则移除，然后添加其他的规则，这样就可以使用同一个验证器组合出多种多样的校验规则，适用于复杂的校验场景。
+By using **Validator.unresolvedRefs.shift()**, you can remove certain rules set for the validator, and then add different rules. In this way, you can create a diverse set of validation rules with a single validator for complex validation scenarios.
 
-### 属性预处理
+### Preprocessing Attributes
 
-在校验之前对需要校验的属性值进行预处理，包括判空、类型转换等。
+Preprocess the attribute values to be validated before the actual validation, including null checks and type conversions.
 
 ```typescript
 preValidate(object, key, schema, options, ctx) {
@@ -232,7 +232,7 @@ preValidate(object, key, schema, options, ctx) {
 };
 ```
 
-设置规则并开始校验
+Set validation rules and start the validation process.
 
 ```typescript
  const schema = { 
@@ -247,15 +247,15 @@ preValidate(object, key, schema, options, ctx) {
  }
  let v0 = new Validator();
  let v1 = new Validator();
-// 属性不预处理
+// No attribute preprocessing
  let result0 = v0.validate(instance, schema).valid;
-// 属性预处理
+// Attribute preprocessing
  let result1 = v1.validate(instance, schema, { preValidateProperty: this.preValidate }).valid;
 ```
 
-提前处理某些属性可以避免设置过于复杂的校验规则，提高校验成功率。
+Preprocessing certain attributes can simplify the validation rules and improve the validation success rate.
 
-### 跳过关键字验证
+### Skipping Keyword Validation
 
 ```typescript
 let schema = {
@@ -269,7 +269,7 @@ let schema = {
 };
 
  let p = {
-   "name": "张三",
+   "name": "Zhang San",
    "sex": 45,
    "votes": 22
  };
@@ -277,9 +277,9 @@ let schema = {
  let result0 = v0.validate(p, schema, { skipAttributes: ["minimum"] }).valid;
 ```
 
-使用"skipAttributes"选项跳过某些关键字的验证，可以防止某些导入的模板校验规则中的某一条非必要校验规则导致的验证失败。如上所示，如果校验规则模板中age属性有最小值限制为50，但是我们项目中无此限制则可以设置跳过age关键字的最小值校验。
+Using the **skipAttributes** option to skip the validation for certain keywords can prevent validation failures caused by unnecessary rules in imported template validation schemas. For example, if the template specifies a minimum age of 50, but your project does not impose such a limit, you can skip the minimum value validation for the **age** attribute.
 
-### 允许未知关键字失败
+### Allowing Failures for Unknown Keywords
 
 ```typescript
 let v0 = new Validator();
@@ -295,48 +295,48 @@ let result1 = v1.validate("Name", schema, { allowUnknownAttributes: false });
 // result1  throw err
 ```
 
-默认情况下，jsonSchema会忽略未知的模式关键字，校验不通过不会抛出错误信息而是返回false的校验结果；如果用户需要处理该校验不通过的场景则可以设置allowUnknownAttributes: false来抛出异常错误信息中断校验过程，并针对返回的错误信息做出相应的处理。
+By default, jsonschema ignores unknown schema keywords, and validation failures return a **false** result without throwing an error. To handle validation failures as exceptions, set **allowUnknownAttributes** to **false** to interrupt the validation process and respond to the error messages accordingly.
 
-## 接口说明
+## Available APIs
 
-| 接口名                     | 参数                                                         | 返回值                  | 说明                                |
+| API                    | Parameter                                                        | Return Value                 | Description                               |
 | -------------------------- | ------------------------------------------------------------ | ----------------------- | ----------------------------------- |
-| new Validator()            | 暂无                                                         | Validator               | 生成校验器对象                      |
-| Validator.validate()       | instance: any,<br/>schema: Schema,<br/>options?: Options,<br/>ctx?: SchemaContext | ValidatorResult         | 验证schema                          |
-| Validator.addSchema()      | schema?: Schema,<br/>uri?: string                            | Schema\|void            | 添加schema到校验器                  |
-| validate()                 | instance: any,<br/> schema: any,<br/>options?: Options       | ValidatorResult         | 验证schema                          |
-| rewrite()                  | instance: any,<br/> schema: Schema, <br/>options: Options,<br/> ctx: SchemaContext | any                     | 在成功验证实例后更改实例的值        |
-| preValidateProperty()      | instance: any, <br/>key: string, <br/>schema: Schema, <br/>options: Options, <br/>ctx: SchemaContext | any                     | 在验证之前需要对属性进行一些处理    |
-| customFormats()            | input: any                                                   | boolean                 | 添加自己的自定义格式函数            |
-| attributes()               | instance: any, schema: Schema, options: Options, ctx: SchemaContext | string\|ValidatorResult | 指定关键字                          |
-| ValidatorResult.addError() | detail: string\|ErrorDetail                                  | ValidationError         | ValidatorResult对象添加错误信息错误 |
-| ValidatorResult.toString() | 暂无                                                         | string                  | ValidatorResult对象转化为字符串     |
-| ValidationError.toString() | 暂无                                                         | string                  | ValidationError对象转化为字符串     |
-| shift()                    | 暂无                                                         | T \| undefined          | 移除并返回添加的验证规则            |
+| new Validator()            | N/A                                                        | Validator               | Creates a validator object.                     |
+| Validator.validate()       | instance: any,<br>schema: Schema,<br>options?: Options,<br>ctx?: SchemaContext | ValidatorResult         | Validates a schema.                         |
+| Validator.addSchema()      | schema?: Schema,<br>uri?: string                            | Schema\|void            | Adds a schema to the validator.                 |
+| validate()                 | instance: any,<br> schema: any,<br>options?: Options       | ValidatorResult         | Validates a schema.                         |
+| rewrite()                  | instance: any,<br> schema: Schema, <br>options: Options,<br> ctx: SchemaContext | any                     | Alters the instance value after successful validation.       |
+| preValidateProperty()      | instance: any, <br>key: string, <br>schema: Schema, <br>options: Options, <br>ctx: SchemaContext | any                     | Processes this property before validation.   |
+| customFormats()            | input: any                                                   | boolean                 | Adds custom formats.           |
+| attributes()               | instance: any, schema: Schema, options: Options, ctx: SchemaContext | string\|ValidatorResult | Specifies validation keywords.                         |
+| ValidatorResult.addError() | detail: string\|ErrorDetail                                  | ValidationError         | Adds error information to this **ValidatorResult** object.|
+| ValidatorResult.toString() | N/A                                                        | string                  | Converts this **ValidatorResult** object to a string.    |
+| ValidationError.toString() | N/A                                                        | string                  | Converts this **ValidationError** object to a string.    |
+| shift()                    | N/A                                                        | T \| undefined          | Removes and returns the added validation rule.           |
 
-更多模块的使用可参考[官方文档](https://github.com/tdegrunt/jsonschema/blob/master/README.md)，[单元测试用例](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/json-schema/TEST.md)详情可参考
+For more information, see [jsonschema](https://github.com/tdegrunt/jsonschema/blob/master/README.md) and [Unit Test Cases](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/json-schema/TEST.md).
 
-## 约束与限制
-在下述版本验证通过：
+## Constraints
+This project has been verified in the following versions:
 
-- DevEco Studio: NEXT Beta1-5.0.3.806, SDK: API12 Release(5.0.0.66)
+- DevEco Studio: NEXT Beta1-5.0.3.806, SDK: API 12 Release (5.0.0.66)
 
-- DevEco Studio: 4.0 (4.0.3.513), SDK: API10 (4.0.10.10)
+- DevEco Studio: 4.0 (4.0.3.513), SDK: API 10 (4.0.10.10)
 
 
-## 目录结构
+## Directory Structure
 ````
 |---- json-schema  
-|     |---- entry  # 示例代码文件夹
-|     	|---- pages  # 应用页面，根据测试的json-schema的不同功能特性分为不同页面
-|       |---- AllFuntionString.ts  # 用于返回用于界面显示的字符串
-|       |---- JumpPathConfig.ts # 页面跳转辅助类，用于首页列表的数据显示以及点击跳转参数获取
+|     |---- entry                  # Sample code
+|     	|---- pages                # Application pages, divided based on the features of json-schema
+|       |---- AllFuntionString.ts  # Strings for display on the UI
+|       |---- JumpPathConfig.ts    # Page redirection configuration, which is used to display list data on the homepage and obtain redirection parameters
 |          
-|     |---- README.md  # 安装使用方法                    
+|     |---- README.md              # Readme                   
 ````
 
-## 贡献代码
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+## How to Contribute
+If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
-本项目基于 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/json-schema/LICENSE) ，请自由地享受和参与开源。
+## License
+This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/json-schema/LICENSE).
