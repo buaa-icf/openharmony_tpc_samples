@@ -124,7 +124,7 @@ const decodeData = decode(deserializeJsonTextHex);
 ```
  DERSerializer
 ```
-9. Deserializes ASN.1 string data.
+9. Deserializes ASN.1 string data. 
 ```
  DERDeserializer
 ```
