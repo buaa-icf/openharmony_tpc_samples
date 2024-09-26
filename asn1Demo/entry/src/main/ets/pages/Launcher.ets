@@ -36,7 +36,7 @@ let sequence:Universal.Sequence = new Universal.Sequence([
 @Entry
 @Component
 struct Index {
-  @State message: string = 'asn1 组装原数据：' + JSON.stringify(sequence);
+  @State message: string = this.getResourceString($r('app.string.Asn1_data')) + JSON.stringify(sequence);
   @State strText: string = "";
   @State serializeJsonText: string = "";
   @State deserializeJsonText: string = "";
