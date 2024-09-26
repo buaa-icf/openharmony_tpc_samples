@@ -19,6 +19,10 @@
     {
       "name": "Please_enter_a_string",
       "value": "Please enter a string"
+    },
+    {
+      "name": "Execute_Secure",
+      "value": "Execute Secure Hash Algorithm 1"
     }
   ]
 }

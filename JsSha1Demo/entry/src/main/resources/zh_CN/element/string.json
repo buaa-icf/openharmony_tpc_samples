@@ -19,6 +19,10 @@
     {
       "name": "Please_enter_a_string",
       "value": "请输入字符串"
+    },
+    {
+      "name": "Execute_Secure",
+      "value": "执行安全散列算法1"
     }
   ]
 }

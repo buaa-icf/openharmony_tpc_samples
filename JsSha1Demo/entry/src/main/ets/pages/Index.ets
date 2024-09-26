@@ -45,7 +45,7 @@ struct Index {
         .margin(15)
 
       Button() {
-        Text("执行安全散列算法1").textFancy(16, Color.White, false)
+        Text($r('app.string.Execute_Secure')).textFancy(16, Color.White, false)
       }
       .buttonFancy()
       .onClick(() => {
