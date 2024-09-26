@@ -1,48 +1,48 @@
 # caverphone
 
-## 简介
+## Introduction
 
->CaverPhone算法(语音匹配算法)的JavaScript实现，规则为：将关键字转换为小写，移除不是a-z的字符，按照规则替换指定字符(如字符串起始、结束，文本中包含cq等)，在结尾放置6个1，返回前十个字符，具体参照CaverPhone算法规则。
+>A JavaScript implementation of the Caverphone phonetic matching algorithm, which can convert keywords to lowercase letters, remove characters that are not a–z, replace specified characters according to rules (for example, at the beginning or end of strings or when the text contains **cq**), place six 1s at the end, and return the first ten characters. For details, refer to Caverphone algorithm rules.
 
-## 下载安装
+## How to Install
 ```shell
 ohpm install caverphone 
-ohpm install @types/caverphone@1.0.0  // import caverphone 的时候语法报错, 其原因是caverphone包内不含类型声明, 需要 @types/caverphone 下载这个包的声明文件, 从而解决语法的报错. 
+ohpm install @types/caverphone@1.0.0  // Install @types/caverphone to prevent import syntax errors due to missing type declarations in the caverphone package.
 ```
 
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 
 ### caverPhone
 
    ```
     let result = caverPhone('Cailean');
    ```
-## 接口说明
+## Available APIs
 
    ```
-   // 获取语音匹配算法结果代码
+   // Obtain the result of the Caverphone algorithm.
    public caverPhone(src: string)
    ```
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+This project has been verified in the following version:
 
-- DevEco Studio: 4.0 Canary1(4.0.0.112), SDK: API10 (4.0.7.2)
+- DevEco Studio: 4.0 Canary1 (4.0.0.112), SDK: API 10 (4.0.7.2)
 
-## 目录结构
+## Directory Structure
 
 ````
 |---- CaverPhone
-|   |---- entry # 示例代码文件夹                
-|   |---- README.md  # 安装使用方法
+|   |---- entry # Sample code               
+|   |---- README.md  # Readme
 ````
 
-## 贡献代码
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-sig/subsampling-scale-image-view/pulls) 。
+## How to Contribute
+If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-sig/subsampling-scale-image-view/pulls).
 
-## 开源协议
-本项目基于 [ISC License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/CaverPhone/LICENSE) ，请自由地享受和参与开源。
+## License
+This project is licensed under [ISC License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/CaverPhone/LICENSE).
 
   

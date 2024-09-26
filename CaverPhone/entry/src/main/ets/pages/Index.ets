@@ -21,7 +21,7 @@ struct Index {
   build() {
     Row() {
       Column({ space: 10 }) {
-        Button('解析null')
+        Button($r('app.string.Parse_null_button_text'))
           .width('80%')
           .height('100px')
           .onClick(() => {
@@ -33,7 +33,7 @@ struct Index {
             }
           })
 
-        Button('解析undefined')
+        Button($r('app.string.Parse_undefined_button_text'))
           .width('80%')
           .height('100px')
           .onClick(() => {
@@ -45,7 +45,7 @@ struct Index {
             }
           })
 
-        Button('解析空字符串')
+        Button($r('app.string.Parse_emptyString_button_text'))
           .width('80%')
           .height('100px')
           .onClick(() => {
@@ -53,7 +53,7 @@ struct Index {
             hilog.info(0x0000, 'caverPhone', '%{public}s', result)
           })
 
-        Button('解析汉字')
+        Button($r('app.string.Parse_chinese_button_text'))
           .width('80%')
           .height('100px')
           .onClick(() => {
@@ -61,7 +61,7 @@ struct Index {
             hilog.info(0x0000, 'caverPhone', '%{public}s', result)
           })
 
-        Button('解析Cailean')
+        Button($r('app.string.Parse_cailean_button_text'))
           .width('80%')
           .height('100px')
           .onClick(() => {
