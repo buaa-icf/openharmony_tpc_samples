@@ -11,6 +11,10 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Pronunciation_code_button_text",
+      "value": "获取发音代码"
     }
   ]
 }

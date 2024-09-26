@@ -19,6 +19,7 @@ import hilog from '@ohos.hilog'
 @Component
 struct Index {
   @State message: string = 'Hello World'
+  @State buttonText: string = getContext().resourceManager.getStringByNameSync('Pronunciation_code_button_text')
 
   build() {
     Row() {
@@ -27,21 +28,21 @@ struct Index {
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
 
-        Button('获取发音代码:undefined')
+        Button(this.buttonText + ':undefined')
           .width('80%')
           .height('100px')
           .onClick(() => {
             let result = metaphone(undefined);
             hilog.info(0x0000, 'metaPhone', '%{public}s', "result: " + result)
           })
-        Button('获取发音代码:null')
+        Button(this.buttonText + ':null')
           .width('80%')
           .height('100px')
           .onClick(() => {
             let result = metaphone(null);
             hilog.info(0x0000, 'metaPhone', '%{public}s', "result: " + result)
           })
-        Button("获取发音代码：''")
+        Button(this.buttonText + "：''")
           .width('80%')
           .height('100px')
           .onClick(() => {
@@ -49,7 +50,7 @@ struct Index {
             hilog.info(0x0000, 'metaPhone', '%{public}s', "result: " + result)
           })
 
-        Button('获取发音代码：0 1 2')
+        Button(this.buttonText + '：0 1 2')
           .width('80%')
           .height('100px')
           .onClick(() => {
@@ -57,7 +58,7 @@ struct Index {
             hilog.info(0x0000, 'metaPhone', '%{public}s', "result: " + result)
           })
 
-        Button('获取发音代码： f o ')
+        Button(this.buttonText + '： f o ')
           .width('80%')
           .height('100px')
           .onClick(() => {
@@ -65,7 +66,7 @@ struct Index {
             hilog.info(0x0000, 'metaPhone', '%{public}s', "result: " + result)
           })
 
-        Button('获取发音代码:0f1o2')
+        Button(this.buttonText + ':0f1o2')
           .width('80%')
           .height('100px')
           .onClick(() => {
@@ -73,7 +74,7 @@ struct Index {
             hilog.info(0x0000, 'metaPhone', '%{public}s', "result: " + result)
           })
 
-        Button('获取发音代码:Agrippa')
+        Button(this.buttonText + ':Agrippa')
           .width('80%')
           .height('100px')
           .onClick(() => {

@@ -1,46 +1,46 @@
 # metaphone
 
-## 简介
+## Introduction
 
->语音算法，支持将一个特定的字符串（通常是一个英文单词），将其转化为一个代码，然后可以将其与其他代码（或其他单词）进行比较，以检查他们是否（可能）发音相同。
+>Metaphone can convert a specific string (usually an English word) into a code and compare it with other codes (or other words) to check whether they are (possibly) pronounced the same.
 
-## 下载安装
+## How to Install
 ```shell
 ohpm install metaphone 
 ```
 
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用说明
+## How to Use
 
 ### metaphone
 
    ```
     let result = metaphone('Agrippa');
    ```
-## 接口说明
+## Available APIs
    ```
-   // 获取单词的发音代码
+   // Obtain the pronunciation code of a word.
    public metaphone(src: string)
    ```
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
+This project has been verified in the following versions:
 
-- DevEco Studio: 4.0 Canary1(4.0.0.112), SDK: API10 (4.0.7.2)
-- DevEco Studio: 4.0 (4.0.3.512), SDK: API10 (4.0.10.9)
-## 目录结构
+- DevEco Studio: 4.0 Canary1 (4.0.0.112), SDK: API 10 (4.0.7.2)
+- DevEco Studio: 4.0 (4.0.3.512), SDK: API 10 (4.0.10.9)
+## Directory Structure
 
 ````
 |---- MetaPhone
-|   |---- entry # 示例代码文件夹                
-|   |---- README.md  # 安装使用方法
+|   |---- entry # Sample code               
+|   |---- README.md  # Readme
 ````
 
-## 贡献代码
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-sig/subsampling-scale-image-view/pulls) 。
+## How to Contribute
+If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-sig/subsampling-scale-image-view/pulls).
 
-## 开源协议
-本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/MetaPhone/LICENSE) ，请自由地享受和参与开源。
+## License
+This project is licensed under [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/MetaPhone/LICENSE).
 
   
