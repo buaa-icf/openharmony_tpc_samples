@@ -29,66 +29,66 @@ struct Index {
   build() {
     Scroll() {
       Column({ space: 20 }) {
-        Button('parse测试').fontSize(24).onClick(() => {
+        Button($r('app.string.parse_test')).fontSize(24).onClick(() => {
           let input = 'On{takenDate,date,short} {name} took {numPhotos,plural, =0 {no photos.} =1{one photo.} other {# photos}}';
           let ast: MessageFormatElement[] = intl_messageformat_parser.parse(input);
           setData(JSON.stringify(ast), this.dialogController)
         })
-        Button('isLiteralElement测试').fontSize(24).onClick(() => {
+        Button($r('app.string.isLiteralElement')).fontSize(24).onClick(() => {
           let input: intl_messageformat_parser.LiteralElement = {
             type: intl_messageformat_parser.TYPE.literal, value: 'testValue'
           };
           let typesResult: boolean = intl_messageformat_parser.isLiteralElement(input);
           if (typesResult) {
-            setData('测试成功', this.dialogController)
+            setData($r('app.string.test_successful'), this.dialogController)
           }
         })
-        Button('isArgumentElement测试').fontSize(24).onClick(() => {
+        Button($r('app.string.isArgumentElement')).fontSize(24).onClick(() => {
           let input: intl_messageformat_parser.ArgumentElement = {
             type: intl_messageformat_parser.TYPE.argument, value: 'testValue'
           };
           let typesResult: boolean = intl_messageformat_parser.isArgumentElement(input);
           if (typesResult) {
-            setData('测试成功', this.dialogController)
+            setData($r('app.string.test_successful'), this.dialogController)
           }
         })
-        Button('isNumberElement测试').fontSize(24).onClick(() => {
+        Button($r('app.string.isNumberElement')).fontSize(24).onClick(() => {
           let input: intl_messageformat_parser.NumberElement = {
             type: intl_messageformat_parser.TYPE.number, value: 'testValue'
           };
           let typesResult: boolean = intl_messageformat_parser.isNumberElement(input);
           if (typesResult) {
-            setData('测试成功', this.dialogController)
+            setData($r('app.string.test_successful'), this.dialogController)
           }
         })
-        Button('isDateElement测试').fontSize(24).onClick(() => {
+        Button($r('app.string.isDateElement')).fontSize(24).onClick(() => {
           let input: intl_messageformat_parser.DateElement = {
             type: intl_messageformat_parser.TYPE.date, value: 'testValue'
           };
           let typesResult: boolean = intl_messageformat_parser.isDateElement(input);
           if (typesResult) {
-            setData('测试成功', this.dialogController)
+            setData($r('app.string.test_successful'), this.dialogController)
           }
         })
-        Button('isTimeElement测试').fontSize(24).onClick(() => {
+        Button($r('app.string.isTimeElement')).fontSize(24).onClick(() => {
           let input: intl_messageformat_parser.TimeElement = {
             type: intl_messageformat_parser.TYPE.time, value: 'testValue'
           };
           let typesResult: boolean = intl_messageformat_parser.isTimeElement(input);
           if (typesResult) {
-            setData('测试成功', this.dialogController)
+            setData($r('app.string.test_successful'), this.dialogController)
           }
         })
-        Button('isSelectElement测试').fontSize(24).onClick(() => {
+        Button($r('app.string.isSelectElement')).fontSize(24).onClick(() => {
           let input: intl_messageformat_parser.SelectElement = {
             type: intl_messageformat_parser.TYPE.select, value: 'testValue', options: {} as ESObject
           };
           let typesResult: boolean = intl_messageformat_parser.isSelectElement(input);
           if (typesResult) {
-            setData('测试成功', this.dialogController)
+            setData($r('app.string.test_successful'), this.dialogController)
           }
         })
-        Button('isPluralElement测试').fontSize(24).onClick(() => {
+        Button($r('app.string.isPluralElement')).fontSize(24).onClick(() => {
           let input: intl_messageformat_parser.PluralElement = {
             type: intl_messageformat_parser.TYPE.plural,
             value: 'testValue',
@@ -98,71 +98,71 @@ struct Index {
           };
           let typesResult: boolean = intl_messageformat_parser.isPluralElement(input)
           if (typesResult) {
-            setData('测试成功', this.dialogController)
+            setData($r('app.string.test_successful'), this.dialogController)
           }
         })
-        Button('isPoundElement测试').fontSize(24).onClick(() => {
+        Button($r('app.string.isPoundElement')).fontSize(24).onClick(() => {
           let input: intl_messageformat_parser.PoundElement = {
             type: intl_messageformat_parser.TYPE.pound
           };
           let typesResult: boolean = intl_messageformat_parser.isPoundElement(input);
           if (typesResult) {
-            setData('测试成功', this.dialogController)
+            setData($r('app.string.test_successful'), this.dialogController)
           }
         })
-        Button('isTagElement测试').fontSize(24).onClick(() => {
+        Button($r('app.string.isTagElement')).fontSize(24).onClick(() => {
           let input: intl_messageformat_parser.TagElement = {
             type: intl_messageformat_parser.TYPE.tag, value: 'testValue', children: []
           };
           const typesResult: boolean = intl_messageformat_parser.isTagElement(input);
           if (typesResult) {
-            setData('测试成功', this.dialogController)
+            setData($r('app.string.test_successful'), this.dialogController)
           }
         })
-        Button('isNumberSkeleton测试').fontSize(24).onClick(() => {
+        Button($r('app.string.isNumberSkeleton')).fontSize(24).onClick(() => {
           let input: intl_messageformat_parser.NumberSkeleton = {
             type: intl_messageformat_parser.SKELETON_TYPE.number, tokens: []
           };
           let typesResult: boolean = intl_messageformat_parser.isNumberSkeleton(input);
           if (typesResult) {
-            setData('测试成功', this.dialogController)
+            setData($r('app.string.test_successful'), this.dialogController)
           }
         })
-        Button('isDateTimeSkeleton测试').fontSize(24).onClick(() => {
+        Button($r('app.string.isDateTimeSkeleton')).fontSize(24).onClick(() => {
           let input: intl_messageformat_parser.DateTimeSkeleton = {
             type: intl_messageformat_parser.SKELETON_TYPE.dateTime, pattern: ''
           };
           let typesResult: boolean = intl_messageformat_parser.isDateTimeSkeleton(input);
           if (typesResult) {
-            setData('测试成功', this.dialogController)
+            setData($r('app.string.test_successful'), this.dialogController)
           }
         })
-        Button('createLiteralElement测试').fontSize(24).onClick(() => {
+        Button($r('app.string.createLiteralElement')).fontSize(24).onClick(() => {
           let typesResult: intl_messageformat_parser.LiteralElement = intl_messageformat_parser.createLiteralElement('testValue');
           if (typesResult.value == 'testValue') {
-            setData('测试成功', this.dialogController)
+            setData($r('app.string.test_successful'), this.dialogController)
           }
         })
-        Button('createNumberElement测试').fontSize(24).onClick(() => {
+        Button($r('app.string.createNumberElement')).fontSize(24).onClick(() => {
           let typesResult: intl_messageformat_parser.NumberElement = intl_messageformat_parser.createNumberElement('testValue');
           if (typesResult.value == 'testValue') {
-            setData('测试成功', this.dialogController)
+            setData($r('app.string.test_successful'), this.dialogController)
           }
         })
-        Button('parseDateTimeSkeleton测试').fontSize(24).onClick(() => {
+        Button($r('app.string.parseDateTimeSkeleton')).fontSize(24).onClick(() => {
           let input = 'ymd';
           let skeletonResult: ExtendedDateTimeFormatOptions = intl_messageformat_parser.parseDateTimeSkeleton(input);
           if (skeletonResult != null) {
-            setData('测试成功', this.dialogController)
+            setData($r('app.string.test_successful'), this.dialogController)
           }
         })
-        Button('convertNumberSkeletonToNumberFormatOptions测试').fontSize(24).onClick(() => {
+        Button($r('app.string.convertNumberSkeletonToNumberFormatOptions')).fontSize(24).onClick(() => {
           let skeletonTokens: intl_messageformat_parser.NumberSkeletonToken[] = [{
             stem: 'percent', options: ['testOptions']
           }];
           let skeletonResult: ESObject = intl_messageformat_parser.convertNumberSkeletonToNumberFormatOptions(skeletonTokens);
           if (skeletonResult != null) {
-            setData('测试成功', this.dialogController)
+            setData($r('app.string.test_successful'), this.dialogController)
           }
         })
       }
