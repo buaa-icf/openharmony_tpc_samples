@@ -10,7 +10,55 @@
     },
     {
       "name": "EntryAbility_label",
-      "value": "label"
+      "value": "compare-versions"
+    },
+    {
+      "name": "text_version_a",
+      "value": "版本A："
+    },
+    {
+      "name": "text_version_b",
+      "value": "版本B："
+    },
+    {
+      "name": "placeholder_input",
+      "value": "请输入版本号"
+    },
+    {
+      "name": "text_arithmetic_operators",
+      "value": "算术运算符："
+    },
+    {
+      "name": "text_quick_operators",
+      "value": "快捷操作："
+    },
+    {
+      "name": "text_operators",
+      "value": "操作："
+    },
+    {
+      "name": "button_compare_version",
+      "value": "compareVersions(比较版本号)"
+    },
+    {
+      "name": "button_compare_operators",
+      "value": "compare(比较版本号(运算符))"
+    },
+    {
+      "name": "button_compare_satisfies",
+      "value": "satisfies(比较版本号(范围))"
+    },
+    {
+      "name": "button_version_sort",
+      "value": "版本号排序"
+    },
+    {
+      "name": "button_strict",
+      "value": "validateStrict严格模式(A)"
+    },
+    {
+      "name": "button_validate",
+      "value": "validate(A)"
     }
   ]
 }

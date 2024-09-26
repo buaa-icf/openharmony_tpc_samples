@@ -43,7 +43,7 @@ struct Index {
     "||",">=","<=","-","<",">","=","^","~"
   ]
 
-  @Builder BuildButton(text: string, callback: () => void) {
+  @Builder BuildButton(text: Resource, callback: () => void) {
     Button(text).onClick(callback).margin({ right: 4, bottom: 4 })
   }
 
@@ -67,8 +67,8 @@ struct Index {
   build() {
     Column() {
       Row() {
-        Text("版本A：")
-        TextInput({ placeholder: "请输入版本号", text: this.versionA, })
+        Text($r("app.string.text_version_a"))
+        TextInput({ placeholder: $r("app.string.placeholder_input"), text: this.versionA, })
           .width("50%")
           .onChange((value: string) => {
             this.versionA = value;
@@ -80,8 +80,8 @@ struct Index {
       }.margin({ bottom: 20 })
 
       Row() {
-        Text("版本B：")
-        TextInput({ placeholder: "请输入版本号", text: this.versionB })
+        Text($r("app.string.text_version_b"))
+        TextInput({ placeholder: $r('app.string.placeholder_input'), text: this.versionB })
           .width("50%")
           .onChange((value: string) => {
             this.versionB = value;
@@ -93,7 +93,7 @@ struct Index {
       }.margin({ bottom: 20 })
 
       Row() {
-        Text("算术运算符：")
+        Text($r("app.string.text_arithmetic_operators"))
         Row() {
           Row() {
             Radio({ value: 'Radio1', group: 'radioGroup' }).checked(this.operator === ">")
@@ -157,7 +157,7 @@ struct Index {
       }.margin({ bottom: 20 })
 
       Column() {
-        Text("快捷操作：").width("100%").margin({ bottom: 10 }).fontSize(16)
+        Text($r("app.string.text_quick_operators")).width("100%").margin({ bottom: 10 }).fontSize(16)
         Flex({ wrap: FlexWrap.Wrap }) {
           ForEach(this.quickTexts,(text:string) => {
             this.BuildQuickText(text);
@@ -165,30 +165,30 @@ struct Index {
         }
       }.margin({ bottom: 20 }).width("100%")
 
-      Text("操作：").width("100%").margin({ top: 30, bottom: 20 })
+      Text($r("app.string.text_operators")).width("100%").margin({ top: 30, bottom: 20 })
       Flex({ wrap: FlexWrap.Wrap }) {
-        this.BuildButton("compareVersions(比较版本号)", () => {
+        this.BuildButton($r("app.string.button_compare_version"), () => {
           try {
             this.showMessage(compareVersions(this.versionA, this.versionB) + "")
           } catch (err) {
             this.showMessage(err.message);
           }
         })
-        this.BuildButton("compare(比较版本号(运算符))", () => {
+        this.BuildButton($r("app.string.button_compare_operators"), () => {
           try {
             this.showMessage(compare(this.versionA, this.versionB, this.operator) + "")
           } catch (err) {
             this.showMessage(err.message);
           }
         })
-        this.BuildButton("satisfies(比较版本号(范围))", () => {
+        this.BuildButton($r("app.string.button_compare_satisfies"), () => {
           try {
             this.showMessage(satisfies(this.versionA, this.versionB) + "")
           } catch (err) {
             this.showMessage(err.message);
           }
         })
-        this.BuildButton("版本号排序", () => {
+        this.BuildButton($r("app.string.button_version_sort"), () => {
 
 
           try {
@@ -201,12 +201,12 @@ struct Index {
 
         })
 
-        this.BuildButton("validate(A)", () => {
+        this.BuildButton($r("app.string.button_validate"), () => {
           this.showMessage(validate(this.versionA) + "")
         })
 
 
-        this.BuildButton("validateStrict严格模式(A)", () => {
+        this.BuildButton($r("app.string.button_strict"), () => {
           this.showMessage(validateStrict(this.versionA) + "")
         })
 

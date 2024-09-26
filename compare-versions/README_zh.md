@@ -1,18 +1,17 @@
 # compare_versions
 
-## Introduction
+## 简介
 
-compare-versions is a library for comparing version numbers, offering a simple and reliable method to determine the order of two versions. This library supports various version formats, including numeric, semantic, and other common notations. With compare-versions, you can easily ascertain whether one version number is greater than, equal to, or less than another, facilitating version management and control.
-
-## How to Install
+compare-versions 是一个用于比较版本号的库，提供了一种简单且可靠的方式来比较两个版本号的大小。此库支持多种版本号格式，如数字形式、语义化以及其它常见格式。通过使用 compare-versions，开发者可以轻松判断一个版本号是否大于、等于或小于另一个版本号，从而实现版本的有效管理和控制。
+## 安装
 
 ```
 ohpm install compare_versions
 ```
 
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+对于OpenHarmony ohpm环境配置的详细信息，请参阅[OpenHarmony环境配置指南](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)。
 
-## How to Use
+## 使用说明
 
 ```
 import { compareVersions, compare, satisfies, validate, validateStrict } from "compare-versions";
@@ -48,24 +47,24 @@ validate('foo');        // false
 validateStrict('11.0.0') // true
 ```
 
-## Constraints
+## 约束与限制
 
-This project has been verified in the following versions:
+在下述版本验证通过：
+DevEco Studio: 4.1 Canary(4.1.3.213), SDK: API11 4.1.2.3
 
-DevEco Studio: 4.1 Canary (4.1.3.213), SDK: API 11 4.1.2.3
-
-## Directory Structure
+## 目录结构
 
 ```
 |---- compare-versions
-|     |---- entry      # Sample code
-|     |---- README.md  # Readme
+|     |---- entry  # 示例代码文件夹
+|     |---- README.md     # 安装使用方法
+|     |---- README_zh.md  # 安装使用方法
 ```
 
-## How to Contribute
+## 贡献代码
 
-If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+使用过程中发现任何问题都可以提交 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)，当然，也非常欢迎提交 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
-## License
+## 开源协议
 
-This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/compare-versions/LICENSE).
+本项目遵循 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/compare-versions/LICENSE)。
