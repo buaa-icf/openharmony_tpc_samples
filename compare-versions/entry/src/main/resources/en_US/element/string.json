@@ -10,7 +10,55 @@
     },
     {
       "name": "EntryAbility_label",
-      "value": "label"
+      "value": "compare-versions"
+    },
+    {
+      "name": "text_version_a",
+      "value": "Version A:"
+    },
+    {
+      "name": "text_version_b",
+      "value": "Version B:"
+    },
+    {
+      "name": "placeholder_input",
+      "value": "Please enter the version number"
+    },
+    {
+      "name": "text_arithmetic_operators",
+      "value": "Arithmetic operators:"
+    },
+    {
+      "name": "text_quick_operators",
+      "value": "Quick operation:"
+    },
+    {
+      "name": "text_operators",
+      "value": "Operation:"
+    },
+    {
+      "name": "button_compare_version",
+      "value": "Comparing version numbers"
+    },
+    {
+      "name": "button_compare_operators",
+      "value": "Comparing version numbers(operator)"
+    },
+    {
+      "name": "button_compare_satisfies",
+      "value": "Comparing version numbers(ranges)"
+    },
+    {
+      "name": "button_version_sort",
+      "value": "Version number sorting"
+    },
+    {
+      "name": "button_strict",
+      "value": "Validate version numbers of A(strict)"
+    },
+    {
+      "name": "button_validate",
+      "value": "validate(A)"
     }
   ]
 }
