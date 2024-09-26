@@ -21,9 +21,6 @@
 [submodule "compare-versions"]
 	path = compare-versions/compare-versions
 	url = https://gitee.com/cuijiaojiao1/compare-versions.git
-[submodule "class-transformer/class_transformer"]
-	path = class-transformer/class_transformer
-	url = https://gitee.com/Young-zhiqiang/class_transformer.git
 [submodule "ohos_smack/library/src/main/cpp/gloox"]
 	path = ohos_smack/library/src/main/cpp/gloox
 	url = https://gitee.com/mirrors/gloox.git

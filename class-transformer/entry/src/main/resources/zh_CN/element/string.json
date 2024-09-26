@@ -11,6 +11,38 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "This_method_converts_normal_JavaScript_object_into_instance_specific_class",
+      "value": "此方法将普通javascript对象转换为特定类的实例"
+    },
+    {
+      "name": "This_method_converts_class_object_back_normal_JavaScript_object",
+      "value": "这个方法将类对象转换回普通javascript对象"
+    },
+    {
+      "name": "Merge_class_instance_with_normal_JavaScript_object",
+      "value": "将类实例与普通javascript对象合并"
+    },
+    {
+      "name": "This_method_converts_normal_object_instance_using_populated_object",
+      "value": "此方法使用已填充的对象（目标类中的实例）将普通对象转换为实例"
+    },
+    {
+      "name": "Converts_class_object_to_new_class",
+      "value": "将类（构造函数）对象转换为新的类（构造器）对象。也适用于数组。"
+    },
+    {
+      "name": "Converts_a_class_object_to_plain_object",
+      "value": "将类（构造函数）对象转换为纯（文字）对象。"
+    },
+    {
+      "name": "Serialize_given_object_as_JSON_string",
+      "value": "将给定对象序列化为JSON字符串。"
+    },
+    {
+      "name": "Converts_object_string_to_instance_of_class",
+      "value": "将对象字符串转换为一个类的实例"
     }
   ]
 }
