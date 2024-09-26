@@ -27,9 +27,13 @@ struct FormatValidatePage {
 let validator = new Validator();
 validator.validate('myFormat', {type: 'string', format: 'myFormat'}).valid; // true
 validator.validate('foo', {type: 'string', format: 'myFormat'}).valid; // false`
-  @State message1: string = `验证对象：--`
-  @State message2: string = `期待结果：暂无`
-  @State message3: string = `实际结果：--`
+  @State message1: string = `${this.getResourceString($r('app.string.Verify_Object'))}`
+  @State message2: string = `${this.getResourceString($r('app.string.Expected_results'))}`
+  @State message3: string = `${this.getResourceString($r('app.string.Actual_results'))}`
+
+  getResourceString(res:Resource){
+    return getContext().resourceManager.getStringSync(res.id)
+  }
 
   build() {
     Row() {
@@ -75,7 +79,7 @@ validator.validate('foo', {type: 'string', format: 'myFormat'}).valid; // false`
             top: 20
           })
 
-        Button('验证')
+        Button($r('app.string.Verify'))
           .backgroundColor(Color.Blue)
           .fontColor(Color.White)
           .width("80%")
@@ -95,18 +99,18 @@ validator.validate('foo', {type: 'string', format: 'myFormat'}).valid; // false`
 
   validate() {
     const ctx = this;
-    ctx.message2 = `myFormat期待结果：${true}，foo期待结果：${false}`
+    ctx.message2 = `myFormat ${this.getResourceString($r('app.string.Expected_results'))}${true}，foo ${this.getResourceString($r('app.string.Expected_results'))}${false}`
     try {
 
       let str1 = JSON.stringify(new Validator().validate('myFormat', { type: 'string', format: 'myFormat' }));
       let str2 = JSON.stringify(new Validator().validate('foo', { type: 'string', format: 'myFormat' }));
       console.log(`jsonschema ------> myFormat 测试结果是：${str1}，foo 测试结果是：${str2}`);
-      ctx.message1 = `myFormat 验证对象： ${str1}，foo 验证对象： ${str2}`;
-      ctx.message3 = `myFormat 实际结果：${new Validator().validate('myFormat', { type: 'string', format: 'myFormat' }).valid}，foo 实际结果：${new Validator().validate('foo', { type: 'string', format: 'myFormat' }).valid}`
+      ctx.message1 = `myFormat ${this.getResourceString($r('app.string.Verify_Object'))} ${str1}，foo ${this.getResourceString($r('app.string.Verify_Object'))} ${str2}`;
+      ctx.message3 = `myFormat ${this.getResourceString($r('app.string.Actual_results'))}${new Validator().validate('myFormat', { type: 'string', format: 'myFormat' }).valid}，foo ${this.getResourceString($r('app.string.Actual_results'))}${new Validator().validate('foo', { type: 'string', format: 'myFormat' }).valid}`
     } catch (err) {
       let str = JSON.stringify(err);
       console.log(`jsonschema ------> 验证出错：${str}`);
-      ctx.message3 = `验证出错：${str}`
+      ctx.message3 = `error：${str}`
     }
   }
 }

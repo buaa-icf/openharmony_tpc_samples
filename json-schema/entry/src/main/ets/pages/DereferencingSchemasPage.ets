@@ -31,12 +31,16 @@ function importNextSchema(){
   });
 }
 importNextSchema();`
-  @State message1: string = `验证对象：--`
-  @State message2: string = `期待结果：暂无`
-  @State message3: string = `实际结果：--`
+  @State message1: string = `${this.getResourceString($r('app.string.Verify_Object'))}`
+  @State message2: string = `${this.getResourceString($r('app.string.Expected_results'))}`
+  @State message3: string = `${this.getResourceString($r('app.string.Actual_results'))}`
   schemaArr: object[] = [dereferdata, dereferdapro, dereferaddress,]
   @State cacheSchemaNum: number = 0;
   @State isFinish: boolean = false;
+
+  getResourceString(res:Resource){
+    return getContext().resourceManager.getStringSync(res.id)
+  }
 
   build() {
     Row() {
@@ -82,7 +86,7 @@ importNextSchema();`
             top: 20
           })
 
-        Button('验证')
+        Button($r('app.string.Verify'))
           .backgroundColor(Color.Blue)
           .fontColor(Color.White)
           .width("80%")
@@ -102,18 +106,18 @@ importNextSchema();`
 
   validate() {
     const ctx = this;
-    ctx.message2 = `期待结果：${true}`
+    ctx.message2 = `${this.getResourceString($r('app.string.Expected_results'))}${true}`
     try {
       new Validator().addSchema(initSchema)
       ctx.importNextSchema( new Validator());
       let str = JSON.stringify( new Validator());
       console.log(`jsonschema ------> 测试结果是：${str}`);
-      ctx.message1 = `验证对象： ${str}`;
-      ctx.message3 = `实际结果：${(ctx.cacheSchemaNum >= 0)}`
+      ctx.message1 = `${this.getResourceString($r('app.string.Verify_Object'))} ${str}`;
+      ctx.message3 = `${this.getResourceString($r('app.string.Actual_results'))}${(ctx.cacheSchemaNum >= 0)}`
     } catch (err) {
       let str = JSON.stringify(err);
       console.log(`jsonschema ------> 验证出错：${str}`);
-      ctx.message3 = `验证出错：${str}`
+      ctx.message3 = `error：${str}`
     }
   }
 
@@ -122,7 +126,7 @@ importNextSchema();`
       this.isFinish = true;
       return
     }
-    this.message1 = `验证对象： ${JSON.stringify(v)}`
+    this.message1 = `${this.getResourceString($r('app.string.Verify_Object'))} ${JSON.stringify(v)}`
     if (!v.unresolvedRefs.shift()) {
       this.isFinish = true;
       return;

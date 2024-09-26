@@ -28,9 +28,13 @@ struct NestedErrorsValidatePage {
 };
 let validator = new Validator();
 let result = validator.validate('This string is 28 chars long', schema, {nestedErrors: true});`
-  @State message1: string = `验证对象：--`
-  @State message2: string = `期待结果：暂无`
-  @State message3: string = `实际结果：--`
+  @State message1: string = `${this.getResourceString($r('app.string.Verify_Object'))}`
+  @State message2: string = `${this.getResourceString($r('app.string.Expected_results'))}`
+  @State message3: string = `${this.getResourceString($r('app.string.Actual_results'))}`
+
+  getResourceString(res:Resource){
+    return getContext().resourceManager.getStringSync(res.id)
+  }
 
   build() {
     Row() {
@@ -76,7 +80,7 @@ let result = validator.validate('This string is 28 chars long', schema, {nestedE
             top: 20
           })
 
-        Button('验证')
+        Button($r('app.string.Verify'))
           .backgroundColor(Color.Blue)
           .fontColor(Color.White)
           .width("80%")
@@ -96,7 +100,7 @@ let result = validator.validate('This string is 28 chars long', schema, {nestedE
 
   validate() {
     const ctx = this;
-    ctx.message2 = `期待结果：
+    ctx.message2 = `${this.getResourceString($r('app.string.Expected_results'))}
 0: instance does not meet minimum length of 32
 1: instance does not meet maximum length of 16
 2: instance is not of a type(s) number
@@ -105,12 +109,12 @@ let result = validator.validate('This string is 28 chars long', schema, {nestedE
 
       let str = JSON.stringify(new Validator().validate('This string is 28 chars long', nesteschema, { nestedErrors: true }));
       console.log(`jsonschema ------> 测试结果是：${str}`);
-      ctx.message1 = `验证对象： ${str}`;
-      ctx.message3 = `实际结果：${'\r\n'} ${new Validator().validate('This string is 28 chars long', nesteschema, { nestedErrors: true }).toString()}`
+      ctx.message1 = `${this.getResourceString($r('app.string.Verify_Object'))} ${str}`;
+      ctx.message3 = `${this.getResourceString($r('app.string.Actual_results'))}${'\r\n'} ${new Validator().validate('This string is 28 chars long', nesteschema, { nestedErrors: true }).toString()}`
     } catch (err) {
       let str = JSON.stringify(err);
       console.log(`jsonschema ------> 验证出错：${str}`);
-      ctx.message3 = `验证出错：${str}`
+      ctx.message3 = `error：${str}`
     }
   }
 }

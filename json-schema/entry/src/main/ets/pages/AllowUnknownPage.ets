@@ -25,9 +25,13 @@ struct AllowUnknownPage {
   example: "foo",
 };
 var result = validate("Name", schema, { allowUnknownAttributes: false });`
-  @State message1: string = `验证对象：--`
-  @State message2: string = `期待结果：暂无`
-  @State message3: string = `实际结果：--`
+  @State message1: string = `${this.getResourceString($r('app.string.Verify_Object'))}`
+  @State message2: string = `${this.getResourceString($r('app.string.Expected_results'))}`
+  @State message3: string = `${this.getResourceString($r('app.string.Actual_results'))}`
+
+  getResourceString(res:Resource){
+    return getContext().resourceManager.getStringSync(res.id)
+  }
 
   build() {
     Row() {
@@ -73,7 +77,7 @@ var result = validate("Name", schema, { allowUnknownAttributes: false });`
             top: 20
           })
 
-        Button('验证')
+        Button($r('app.string.Verify'))
           .backgroundColor(Color.Blue)
           .fontColor(Color.White)
           .width("80%")
@@ -93,33 +97,33 @@ var result = validate("Name", schema, { allowUnknownAttributes: false });`
 
   validate() {
     const ctx = this;
-    ctx.message2 = `期待结果：不允许未知关键字 ${'验证出错：{}'}  ${'\r\n'}
-        允许未知关键字 ${false}  ${'\r\n'}`
+    ctx.message2 = `${this.getResourceString($r('app.string.Expected_results'))}Unknown keywords are not allowed ${'error：{}'}  ${'\r\n'}
+        Unknown keywords are allowed ${false}  ${'\r\n'}`
     let allowResult:string='';
     try {
 
       let str = JSON.stringify(new Validator().validate("Name", allowschema, { allowUnknownAttributes: true }));
       console.log(`jsonschema ------> 测试结果是：${str}`);
-      ctx.message1 = `验证对象： ${str}`;
+      ctx.message1 = `${this.getResourceString($r('app.string.Verify_Object'))} ${str}`;
       allowResult = new Validator().validate("Name", allowschema, { allowUnknownAttributes: true }).valid
-      //      ctx.message3 = `实际结果：${result0.valid}`
+      //      ctx.message3 = `${this.getResourceString($r('app.string.Actual_results'))}${result0.valid}`
     } catch (err) {
       let str = JSON.stringify(err);
       console.log(`jsonschema ------> 验证出错：${str}`);
-      ctx.message3 = `验证出错：${str}`
+      ctx.message3 = `error：${str}`
     }
     let notAllowResult:string;
     try {
       let str1 = JSON.stringify(new Validator().validate("Name", allowschema, { allowUnknownAttributes: false }));
       console.log(`jsonschema ------> 测试结果是：${str1}`);
       notAllowResult = new Validator().validate("Name", allowschema, { allowUnknownAttributes: false }).valid
-      ctx.message3 = `实际结果：不允许未知关键字 ${notAllowResult}  ${'\r\n'}
-        允许未知关键字 ${allowResult}  ${'\r\n'}`
+      ctx.message3 = `${this.getResourceString($r('app.string.Actual_results'))}Unknown keywords are not allowed ${notAllowResult}  ${'\r\n'}
+        Unknown keywords are allowed ${allowResult}  ${'\r\n'}`
     } catch (err) {
       let str = JSON.stringify(err);
       console.log(`jsonschema ------> 验证出错：${str}`);
-      ctx.message3 = `不允许未知关键字 验证出错：{} ${'\r\n'}
-      允许未知关键字 ${allowResult}  `
+      ctx.message3 = `Unknown keywords are not allowed error：{} ${'\r\n'}
+      Unknown keywords are allowed ${allowResult}  `
     }
 
   }
