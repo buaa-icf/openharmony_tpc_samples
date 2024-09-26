@@ -11,6 +11,14 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Please_input_the_buffer_pool_size",
+      "value": "Please input the buffer pool size"
+    },
+    {
+      "name": "Generate_a_generic_buffer_pool",
+      "value": "Generate a generic buffer pool"
     }
   ]
 }

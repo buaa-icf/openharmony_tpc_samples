@@ -39,7 +39,7 @@ struct Index {
     build() {
         Scroll() {
             Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center }) {
-                TextInput({ text: this.poolSize + "", placeholder: '请输入缓冲池大小' })
+                TextInput({ text: this.poolSize + "", placeholder: $r('app.string.Please_input_the_buffer_pool_size') })
                     .height(60)
                     .fontSize(18)
                     .fontSize(16)
@@ -48,7 +48,7 @@ struct Index {
                         this.poolSize = Number.parseInt(value)
                     })
 
-                Button("生成一个通用缓冲池")
+                Button($r('app.string.Generate_a_generic_buffer_pool'))
                     .fontSize(24)
                     .fontWeight(FontWeight.Bold)
                     .margin({ top: 15 })
