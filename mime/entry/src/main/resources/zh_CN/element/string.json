@@ -2,7 +2,7 @@
   "string": [
     {
       "name": "module_desc",
-      "value": "模块描述"
+      "value": "module description"
     },
     {
       "name": "EntryAbility_desc",
@@ -10,7 +10,31 @@
     },
     {
       "name": "EntryAbility_label",
-      "value": "label"
+      "value": "mime"
+    },
+    {
+      "name": "Text_String1",
+      "value": "文件类型："
+    },
+    {
+      "name": "Text_String2",
+      "value": "FILE类型示例："
+    },
+    {
+      "name": "Button_String1",
+      "value": "getType(通过文件类型获取MIME类型)："
+    },
+    {
+      "name": "Text_String3",
+      "value": "媒体类型："
+    },
+    {
+      "name": "Text_String4",
+      "value": "MIME类型示例："
+    },
+    {
+      "name": "Button_String2",
+      "value": "getExtension(通过MIME类型获取文件拓展名)："
     }
   ]
 }
