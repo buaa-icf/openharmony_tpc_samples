@@ -57,7 +57,7 @@ struct Index {
             .onClick(() => {
               this.ruleClick()
             })
-          Text("结果 :" + this.rule)
+          Text("result :" + this.rule)
             .fontSize(20)
             .fontWeight(FontWeight.Bold)
             .margin({ top: "30px" })
@@ -70,7 +70,7 @@ struct Index {
             .onClick(() => {
               this.commentClick()
             })
-          Text("结果 :" + this.comment)
+          Text("result :" + this.comment)
             .fontSize(20)
             .fontWeight(FontWeight.Bold)
             .margin({ top: "30px" })
@@ -83,7 +83,7 @@ struct Index {
             .onClick(() => {
               this.containerClick()
             })
-          Text("结果 :" + this.container)
+          Text("result :" + this.container)
             .fontSize(20)
             .fontWeight(FontWeight.Bold)
             .margin({ top: "30px" })
@@ -96,7 +96,7 @@ struct Index {
             .onClick(() => {
               this.declarationClick()
             })
-          Text("结果 :" + this.declaration)
+          Text("result :" + this.declaration)
             .fontSize(20)
             .fontWeight(FontWeight.Bold)
             .margin({ top: "30px" })
@@ -109,7 +109,7 @@ struct Index {
             .onClick(() => {
               this.fromJsonClick()
             })
-          Text("结果 :" + this.fromJson)
+          Text("result :" + this.fromJson)
             .fontSize(20)
             .fontWeight(FontWeight.Bold)
             .margin({ top: "30px" })
@@ -122,7 +122,7 @@ struct Index {
             .onClick(() => {
               this.lazyResultClick()
             })
-          Text("结果 :" + this.lazyResult)
+          Text("result :" + this.lazyResult)
             .fontSize(20)
             .fontWeight(FontWeight.Bold)
             .margin({ top: "30px" })
@@ -135,7 +135,7 @@ struct Index {
             .onClick(() => {
               this.listClick()
             })
-          Text("结果 :" + this.list)
+          Text("result :" + this.list)
             .fontSize(20)
             .fontWeight(FontWeight.Bold)
             .margin({ top: "30px" })
@@ -148,7 +148,7 @@ struct Index {
             .onClick(() => {
               this.nodeClick()
             })
-          Text("结果 :" + this.node)
+          Text("result :" + this.node)
             .fontSize(20)
             .fontWeight(FontWeight.Bold)
             .margin({ top: "30px" })
@@ -161,7 +161,7 @@ struct Index {
             .onClick(() => {
               this.parseClick()
             })
-          Text("结果 :" + this.parse)
+          Text("result :" + this.parse)
             .fontSize(20)
             .fontWeight(FontWeight.Bold)
             .margin({ top: "30px" })
@@ -174,7 +174,7 @@ struct Index {
             .onClick(() => {
               this.postcssClick()
             })
-          Text("结果 :" + this.postcss)
+          Text("result :" + this.postcss)
             .fontSize(20)
             .fontWeight(FontWeight.Bold)
             .margin({ top: "30px" })
@@ -187,7 +187,7 @@ struct Index {
             .onClick(() => {
               this.previousClick()
             })
-          Text("结果 :" + this.previous)
+          Text("result :" + this.previous)
             .fontSize(20)
             .fontWeight(FontWeight.Bold)
             .margin({ top: "30px" })
@@ -200,7 +200,7 @@ struct Index {
             .onClick(() => {
               this.processorClick()
             })
-          Text("结果 :" + this.processor)
+          Text("result :" + this.processor)
             .fontSize(20)
             .fontWeight(FontWeight.Bold)
             .margin({ top: "30px" })
@@ -213,7 +213,7 @@ struct Index {
             .onClick(() => {
               this.resultClick()
             })
-          Text("结果 :" + this.result)
+          Text("result :" + this.result)
             .fontSize(20)
             .fontWeight(FontWeight.Bold)
             .margin({ top: "30px" })
