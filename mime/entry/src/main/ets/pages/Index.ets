@@ -54,15 +54,15 @@ struct Index {
     Column() {
 
       Row() {
-        Text("文件类型：")
-        TextInput({ placeholder: "请输入文件类型", text: this.file })
+        Text($r('app.string.Text_String1'))
+        TextInput({ placeholder: "Input file type", text: this.file })
           .width("50%")
           .onChange((value: string) => {
             this.file = value;
           })
       }.margin({ bottom: 20 })
 
-      Text("FILE类型示例：").width("100%").textAlign(TextAlign.Start)
+      Text($r('app.string.Text_String2')).width("100%").textAlign(TextAlign.Start)
       Flex({ wrap: FlexWrap.Wrap }) {
         ForEach(this.files, (v: string) => {
           Text(v).onClick(() => {
@@ -71,21 +71,21 @@ struct Index {
         })
       }
 
-      Button("getType(通过文件类型获取MIME类型)").onClick(() => {
-        this.showMessage(mime.getType(this.file) || "不支持的媒体类型")
+      Button($r('app.string.Button_String1')).onClick(() => {
+        this.showMessage(mime.getType(this.file) || "unsupported media type")
       }).width("80%").margin({ top:20,bottom: 20 })
 
 
       Row() {
-        Text("媒体类型：")
-        TextInput({ placeholder: "请输入媒体类型", text: this.mime })
+        Text($r('app.string.Text_String3'))
+        TextInput({ placeholder: "Input Media Type", text: this.mime })
           .width("50%")
           .onChange((value: string) => {
             this.mime = value;
           })
       }.margin({ bottom: 20 })
 
-      Text("MIME类型示例：").width("100%").textAlign(TextAlign.Start)
+      Text($r('app.string.Text_String4')).width("100%").textAlign(TextAlign.Start)
       Flex({ wrap: FlexWrap.Wrap }) {
         ForEach(this.mimes, (v: string) => {
           Text(v).onClick(() => {
@@ -93,8 +93,8 @@ struct Index {
           }).padding(8)
         })
       }
-      Button("getExtension(通过MIME类型获取文件拓展名)").onClick(() => {
-        this.showMessage(mime.getExtension(this.mime) || "不支持的媒体类型")
+      Button($r('app.string.Button_String2')).onClick(() => {
+        this.showMessage(mime.getExtension(this.mime) || "unsupported media type")
       }).width("80%").margin({ top:20,bottom: 20 })
 
     }

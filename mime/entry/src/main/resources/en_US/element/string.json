@@ -11,6 +11,30 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Text_String1",
+      "value": "file type："
+    },
+    {
+      "name": "Text_String2",
+      "value": "Example of FILE type："
+    },
+    {
+      "name": "Button_String1",
+      "value": "GetType (Get MIME type through file type)："
+    },
+    {
+      "name": "Text_String3",
+      "value": "media type："
+    },
+    {
+      "name": "Text_String4",
+      "value": "Example of MIME Types："
+    },
+    {
+      "name": "Button_String2",
+      "value": "GetExtension (obtaining file extension through MIME type)："
     }
   ]
 }

@@ -15,9 +15,6 @@
 [submodule "dayjs/entry/src/ohosTest/ets/moment"]
 	path = dayjs/entry/src/ohosTest/ets/moment
 	url = https://github.com/moment/moment.git
-[submodule "mime/mime"]
-	path = mime/mime
-	url = https://gitee.com/cuijiaojiao1/mime.git
 [submodule "ohos_smack/library/src/main/cpp/gloox"]
 	path = ohos_smack/library/src/main/cpp/gloox
 	url = https://gitee.com/mirrors/gloox.git
