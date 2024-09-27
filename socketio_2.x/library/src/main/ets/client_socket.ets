@@ -129,6 +129,10 @@ export class client_socket {
     client_socket_c.once(event_name, on_event_listener);
   }
 
+  public on_binary(event_name: string, on_event_listener: (event_data: Uint8Array) => void) {
+    client_socket_c.on_binary(event_name, on_event_listener);
+  }
+
   public off(event_name: string) {
     client_socket_c.off(event_name);
   }
@@ -151,10 +155,8 @@ export class client_socket {
 
   public emit(name: string, message: ESObject, on_emit_callback?: (emit_callback_json: string) => void) {
     if (message instanceof Uint8Array) {
-      console.log("SOCKET_IO_INDEX  jk---- 0")
       client_socket_c.emit(name, buffer_util.uint8ArrayToString(message), true, on_emit_callback);
     } else {
-      console.log("SOCKET_IO_INDEX  jk---- 1")
       client_socket_c.emit(name, message, false, on_emit_callback);
     }
   }

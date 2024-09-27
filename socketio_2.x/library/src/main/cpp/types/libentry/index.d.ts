@@ -59,6 +59,8 @@ export const on: (event_name: string, on_event_listener: (event_json: string) =>
 
 export const once: (event_name: string, on_event_listener: (event_json: string) => void) => void;
 
+export const on_binary: (event_name: string, on_event_listener: (event_data: Uint8Array) => void) => void;
+
 export const off: (close: any) => void;
 
 export const off_all: () => void;

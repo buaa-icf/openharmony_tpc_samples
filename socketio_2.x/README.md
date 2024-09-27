@@ -34,7 +34,7 @@ import { client_socket } from '@ohos/socketio_2.x';
 2. 初始化socket.io客户端
 
 ```typescript
-client: client_socket = new client_socket();
+client: client_socket = new client_socket(uri); //uri: socket.io服务端地址
 ```
 
 3. 设置监听事件
