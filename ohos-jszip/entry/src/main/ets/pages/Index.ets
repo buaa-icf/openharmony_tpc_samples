@@ -186,7 +186,7 @@ struct Index {
       loadAsyncFromRawFile(this.rawFileName).then((res: Uint8Array | void) => {
         if (!res) {
           promptAction.showToast({
-            message:  getContext().resourceManager.getStringByNameSync('No_Find') 
+            message:  getContext().resourceManager.getStringByNameSync('No_Find')
           })
           this.closeLoading()
           return
@@ -371,13 +371,13 @@ struct Index {
             .onClick(() => {
               if (!this.filePath || this.filePath.length < 1) {
                 promptAction.showToast({
-                  message: getContext().resourceManager.getStringByNameSync('No_file_used') 
+                  message: getContext().resourceManager.getStringByNameSync('No_file_used')
                 })
                 return;
               }
               if (!this.password || this.password.length < 1) {
                 promptAction.showToast({
-                  message:  getContext().resourceManager.getStringByNameSync('Input_zip_Password') 
+                  message:  getContext().resourceManager.getStringByNameSync('Input_zip_Password')
                 })
                 return;
               }
@@ -409,13 +409,13 @@ struct Index {
             .onClick(() => {
               if (!this.filePath || this.filePath.length < 1) {
                 promptAction.showToast({
-                  message: getContext().resourceManager.getStringByNameSync('No_zip_use') 
+                  message: getContext().resourceManager.getStringByNameSync('No_zip_use')
                 })
                 return;
               }
               if (!this.password || this.password.length < 1) {
                 promptAction.showToast({
-                  message: getContext().resourceManager.getStringByNameSync('Input_zip_Password') 
+                  message: getContext().resourceManager.getStringByNameSync('Input_zip_Password')
                 })
                 return;
               }
@@ -446,13 +446,13 @@ struct Index {
             .onClick(() => {
               if (!this.rawFileName || this.rawFileName.length < 1) {
                 promptAction.showToast({
-                  message: getContext().resourceManager.getStringByNameSync('No_raw_use') 
+                  message: getContext().resourceManager.getStringByNameSync('No_raw_use')
                 })
                 return;
               }
               if (!this.password || this.password.length < 1) {
                 promptAction.showToast({
-                  message: getContext().resourceManager.getStringByNameSync('Input_zip_Password') 
+                  message: getContext().resourceManager.getStringByNameSync('Input_zip_Password')
                 })
                 return;
               }
@@ -468,10 +468,12 @@ struct Index {
           Text(getContext().resourceManager.getStringByNameSync('Choose_Folder')  + `${this.currentFolder || getContext().resourceManager.getStringByNameSync('Root_path') }`)
             .fontSize(20)
             .fontColor(Color.Red)
+            .width("60%")
             .textAlign(TextAlign.Start)
-            .margin({ right: 10 });
+            .margin({ right: 2 });
+
           this.BuildButton(getContext().resourceManager.getStringByNameSync('Choose_Root_Path') , () => this.currentFolder = "");
-        }.justifyContent(FlexAlign.Start).padding({ left: 8, right: 8, top: 24, bottom: 24 }).width("100%")
+        }.justifyContent(FlexAlign.Start).padding({ left: 8, right: 8, top: 8, bottom: 24 }).width("100%")
 
         List() {
           ForEach(this.directory, (item: JSZipObject) => {

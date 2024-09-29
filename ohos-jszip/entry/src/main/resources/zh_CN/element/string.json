@@ -2,7 +2,7 @@
   "string": [
     {
       "name": "module_desc",
-      "value": "模块描述"
+      "value": "module description"
     },
     {
       "name": "EntryAbility_desc",
@@ -167,6 +167,18 @@
     {
       "name": "cancel",
       "value": "取消"
+    },
+    {
+      "name": "Log_String1",
+      "value": "保存文件成功，请在设备管理器中查看!"
+    },
+    {
+      "name": "Log_String2",
+      "value": "加载rawfile目录下面的文件成功!"
+    },
+    {
+      "name": "Log_String3",
+      "value": "加载rawfile目录下面的文件失败!"
     }
   ]
 }

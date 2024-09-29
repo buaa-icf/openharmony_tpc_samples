@@ -201,6 +201,7 @@ This project has been verified in the following versions:
 |            |---- *.json5      # Configuration file
 |           |---- rollup.config.js      # Rollup configuration file
 |     |---- README.md  # Readme
+|     |---- README_zh.md  # Readme        
 |     |---- README.OpenSource  # Open source description
 |     |---- CHANGELOG.md  # Changelog
 ```
