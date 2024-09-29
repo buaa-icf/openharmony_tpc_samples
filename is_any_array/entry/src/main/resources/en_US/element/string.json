@@ -11,6 +11,22 @@
     {
       "name": "EntryAbility_label",
       "value": "is_any_array"
+    },
+    {
+      "name": "String1",
+      "value": "Please input an array as follows： [1,2,3]"
+    },
+    {
+      "name": "String2",
+      "value": "The default value is [1,2,3]"
+    },
+    {
+      "name": "String3",
+      "value": "Is it an array judgment："
+    },
+    {
+      "name": "String4",
+      "value": "result："
     }
   ]
 }

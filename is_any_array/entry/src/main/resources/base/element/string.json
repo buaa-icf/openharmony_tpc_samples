@@ -11,6 +11,22 @@
     {
       "name": "EntryAbility_label",
       "value": "is_any_array"
+    },
+    {
+      "name": "String1",
+      "value": "请输入数组 如： [1,2,3]"
+    },
+    {
+      "name": "String2",
+      "value": "无输入默认值为 [1,2,3]"
+    },
+    {
+      "name": "String3",
+      "value": "是否是数组判断："
+    },
+    {
+      "name": "String4",
+      "value": "结果："
     }
   ]
 }
