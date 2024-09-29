@@ -26,9 +26,13 @@ struct DefaultBaseUriPage {
     item: { type: "string" },
   },
 }, { base: 'http://example.com/' });`
-  @State message1: string = `验证对象：--`
-  @State message2: string = `期待结果：暂无`
-  @State message3: string = `实际结果：--`
+  @State message1: string = `${this.getResourceString($r('app.string.Verify_Object'))}`
+  @State message2: string = `${this.getResourceString($r('app.string.Expected_results'))}`
+  @State message3: string = `${this.getResourceString($r('app.string.Verify_Object'))}`
+
+  getResourceString(res:Resource){
+    return getContext().resourceManager.getStringSync(res.id)
+  }
 
   build() {
     Row() {
@@ -74,7 +78,7 @@ struct DefaultBaseUriPage {
             top: 20
           })
 
-        Button('验证')
+        Button($r('app.string.Verify'))
           .backgroundColor(Color.Blue)
           .fontColor(Color.White)
           .width("80%")
@@ -94,7 +98,7 @@ struct DefaultBaseUriPage {
 
   validate() {
     const ctx = this;
-    ctx.message2 = `期待结果：${true}`
+    ctx.message2 = `${this.getResourceString($r('app.string.Expected_results'))}${true}`
     try {
       let str = JSON.stringify(new Validator().validate(["Name"], {
         id: "/schema.json",
@@ -103,8 +107,8 @@ struct DefaultBaseUriPage {
         definitions: { item: { type: "string" }, },
       }, { base: 'http://example.com/' }));
       console.log(`jsonschema ------> 测试结果是：${str}`);
-      ctx.message1 = `验证对象： ${str}`;
-      ctx.message3 = `实际结果：${new Validator().validate(["Name"], {
+      ctx.message1 = `${this.getResourceString($r('app.string.Verify_Object'))} ${str}`;
+      ctx.message3 = `${this.getResourceString($r('app.string.Verify_Object'))}${new Validator().validate(["Name"], {
         id: "/schema.json",
         type: "array",
         items: { $ref: "http://example.com/schema.json#/definitions/item" },
@@ -113,7 +117,7 @@ struct DefaultBaseUriPage {
     } catch (err) {
       let str = JSON.stringify(err);
       console.log(`jsonschema ------> 验证出错：${str}`);
-      ctx.message3 = `验证出错：${str}`
+      ctx.message3 = `error：${str}`
     }
   }
 }
