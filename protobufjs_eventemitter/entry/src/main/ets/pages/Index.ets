@@ -98,7 +98,7 @@ struct Index {
                             this.result += "on eventB arg1=" + result + "\r\n"
                         });
 
-                    Text("结果 :\r\n  " + this.result)
+                    Text("Result :\r\n  " + this.result)
                         .fontSize(15)
                         .margin({ top: 55, left: 10, right: 10 })
 

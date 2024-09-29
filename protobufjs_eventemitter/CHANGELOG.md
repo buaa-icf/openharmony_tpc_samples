@@ -1,2 +1,2 @@
 ## v1.1.0
-  1.一个简单的事件发射器
+  1.A simple event emitter
