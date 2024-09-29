@@ -25,8 +25,8 @@ struct PopupButtonExample {
 
   aboutToAppear() {
     this.model1.placement = Placement.Right
-    this.model1.firstText = '赞'
-    this.model1.secondText = '评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论'
+    this.model1.firstText = getContext().resourceManager.getStringByNameSync('Popup_String1')
+    this.model1.secondText = getContext().resourceManager.getStringByNameSync('Popup_String2')
     this.model1.secondWidth = 150
     this.model1.firstAction = () => {
       Prompt.showToast({ message: JSON.stringify(this.model1.firstText) })
@@ -37,8 +37,8 @@ struct PopupButtonExample {
 
     this.model2.placement = Placement.Top
     this.model3.placement = Placement.Left
-    this.model3.firstText = '赞'
-    this.model3.secondText = '评论评论评论评论评论'
+    this.model3.firstText = getContext().resourceManager.getStringByNameSync('Popup_String1')
+    this.model3.secondText = getContext().resourceManager.getStringByNameSync('Popup_String2')
     this.model3.secondWidth = 150
   }
 

@@ -40,7 +40,7 @@ export class BaseCenterMode extends BaseMode {
 
   // 基本属性
 
-  title?: string = '标题'                           // 弹窗标题
+  title?: string = 'Title'                           // 弹窗标题
 
   titleFontSize?: number = 24                      // 弹窗标题文字尺寸
 
@@ -58,7 +58,7 @@ export class BaseCenterMode extends BaseMode {
 
   contentHeight?: string | number = 200             // 内容高度
 
-  contentValue?: string = '这里是内容区域'            // 内容文字
+  contentValue?: string = 'Content area'            // 内容文字
 
   contentFontColor?: string = '#ffffff'            // 内容文字颜色
 
@@ -72,7 +72,7 @@ export class BaseCenterMode extends BaseMode {
 
   /* ---------------------------按钮设置--------------------------- */
 
-  cancelBtnTitle?: string = '取消'                // 取消按钮标题
+  cancelBtnTitle?: string = 'Cancel'                // 取消按钮标题
 
   cancelBtnFontColor?: string = '#000000'        // 取消字体颜色
 
@@ -80,7 +80,7 @@ export class BaseCenterMode extends BaseMode {
 
   cancelBtnBorderRadius?: Length|BorderRadiuses = {bottomLeft:10}         // 取消按钮边框弧度
 
-  confirmBtnTitle?: string = '确认'                                       // 确认按钮标题
+  confirmBtnTitle?: string = 'OK'                                       // 确认按钮标题
 
   confirmBtnFontColor?: Color | string = '#317aff'                          // 确认字体颜色
 

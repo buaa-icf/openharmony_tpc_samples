@@ -23,7 +23,7 @@ export class inputModel extends BaseCenterMode {
 
   inputBgColor?: string = '#ffffff'              // 输入框背景颜色
 
-  placeholder?: string = '请输入'                 // 输入框提示文字
+  placeholder?: string = 'Please Input'                 // 输入框提示文字
 
   placeholderColor?: string = '#000000'          // 输入框placeholder提示文字颜色
 

@@ -11,6 +11,302 @@
     {
       "name": "EntryAbility_label",
       "value": "dialogs"
+    },
+    {
+      "name": "Index_Button_String1",
+      "value": "显示Confirm弹框"
+    },
+    {
+      "name": "Index_Button_String2",
+      "value": "显示带输入框的弹框"
+    },
+    {
+      "name": "Index_Button_String3",
+      "value": "显示List弹框"
+    },
+    {
+      "name": "Index_Button_String4",
+      "value": "显示Loading弹框"
+    },
+    {
+      "name": "Index_Button_String5",
+      "value": "Bottom类型的List弹框"
+    },
+    {
+      "name": "Index_Button_String6",
+      "value": "Bottom类型的自定义弹框"
+    },
+    {
+      "name": "Index_Button_String7",
+      "value": "复杂交互的Bottom弹框"
+    },
+    {
+      "name": "Index_Button_String8",
+      "value": "显示气泡类型弹框"
+    },
+    {
+      "name": "Index_Button_String9",
+      "value": "自定义全屏弹框"
+    },
+    {
+      "name": "Index_Button_String10",
+      "value": "消息类型弹框"
+    },
+    {
+      "name": "Index_Button_String11",
+      "value": "顶部打开的弹框"
+    },
+    {
+      "name": "Index_Button_String12",
+      "value": "联想类弹框"
+    },
+    {
+      "name": "Index_Button_String13",
+      "value": "抽屉类弹框"
+    },
+    {
+      "name": "Index_Button_String14",
+      "value": "弹框动画展示"
+    },
+    {
+      "name": "Index_Button_String15",
+      "value": "大图浏览类弹框"
+    },
+    {
+      "name": "AnimateContent_Input_String1",
+      "value": "点击展示数字百分比"
+    },
+    {
+      "name": "AnimateContent_Input_String2",
+      "value": "点击展示圆环"
+    },
+    {
+      "name": "AnimateInputContent_String1",
+      "value": "input弹窗"
+    },
+    {
+      "name": "BottomList_String1",
+      "value": "显示Bottom类型的List弹窗(带选择效果)"
+    },
+    {
+      "name": "BottomList_String2",
+      "value": "显示Bottom类型的List弹窗"
+    },
+    {
+      "name": "BottomScroll_String1",
+      "value": "这是一个自定义Bottom类型的评论弹框！"
+    },
+    {
+      "name": "BottomScroll_String2",
+      "value": "评论人"
+    },
+    {
+      "name": "BottomScroll_String3",
+      "value": "显示自定义Bottom弹窗(自带拖拽交互)"
+    },
+    {
+      "name": "BottomText_String1",
+      "value": "XPopup中通过View来加载Fragment的功能。\n\n在openHarmony中要实现弹框的功能，必须使用CustomDialog来进行自定义控件的实现"
+    },
+    {
+      "name": "BottomText_String2",
+      "value": "下面是： 只给单独的Text控件的场景"
+    },
+    {
+      "name": "Confirm_String1",
+      "value": "我是标题"
+    },
+    {
+      "name": "Confirm_String2",
+      "value": "床前明月光，疑是地上霜，举头望明月，低头思故乡。床前明月光，疑是地上霜，举头望明月，低头思故乡。"
+    },
+    {
+      "name": "FullScreen_String1",
+      "value": "测试软键盘交互"
+    },
+    {
+      "name": "FullScreen_String2",
+      "value": "这里是标题"
+    },
+    {
+      "name": "FullScreen_String3",
+      "value": "我是全屏弹窗，可以设置任意的动画器。我看起来就像一个从底部弹出的Actvity，可以用来做一些登录，选择界面"
+    },
+    {
+      "name": "FullScreen_String4",
+      "value": "自定义全屏弹窗"
+    },
+    {
+      "name": "ListSelect_String1",
+      "value": "列表弹窗"
+    },
+    {
+      "name": "ListSelect_String2",
+      "value": "请选择一项"
+    },
+    {
+      "name": "ListSelect_String3",
+      "value": "打开列表弹窗"
+    },
+    {
+      "name": "ListSelect_String4",
+      "value": "打开多选列表弹窗"
+    },
+    {
+      "name": "ListSelect_String5",
+      "value": "打开单选列表弹窗"
+    },
+    {
+      "name": "Loading_String1",
+      "value": "正在加载中..."
+    },
+    {
+      "name": "Loading_String2",
+      "value": "打开loading"
+    },
+    {
+      "name": "Loading_String3",
+      "value": "菊花loading"
+    },
+    {
+      "name": "Loading_String4",
+      "value": "加载中的长度变长了哟"
+    },
+    {
+      "name": "Loading_String5",
+      "value": "变短了"
+    },
+    {
+      "name": "Message_String1",
+      "value": "这里是消息内容"
+    },
+    {
+      "name": "Message_String2",
+      "value": "消息弹窗"
+    },
+    {
+      "name": "Message_String3",
+      "value": "模糊效果"
+    },
+    {
+      "name": "Popup_String1",
+      "value": "赞"
+    },
+    {
+      "name": "Popup_String2",
+      "value": "评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论评论"
+    },
+    {
+      "name": "Position_String1",
+      "value": "你可以为弹窗选择任意一种动画，但这并不必要，因为我已经默认给每种弹窗设定了最佳动画！对于你自定义的弹窗，可以随心选中心仪的动画方案。"
+    },
+    {
+      "name": "Position_String2",
+      "value": "请选择动画："
+    },
+    {
+      "name": "Position_String3",
+      "value": "下拉选择"
+    },
+    {
+      "name": "Repeat_String1",
+      "value": "复用项目已有组件"
+    },
+    {
+      "name": "Repeat_String2",
+      "value": "使用内置弹窗绑定项目已有布局"
+    },
+    {
+      "name": "SideBar_String1",
+      "value": "点击测试LIVEDATA"
+    },
+    {
+      "name": "SideBar_String2",
+      "value": "首页"
+    },
+    {
+      "name": "SideBar_String3",
+      "value": "娱乐"
+    },
+    {
+      "name": "SideBar_String4",
+      "value": "汽车"
+    },
+    {
+      "name": "SideBar_String5",
+      "value": "八卦"
+    },
+    {
+      "name": "SideBar_String6",
+      "value": "搞笑"
+    },
+    {
+      "name": "SideBar_String7",
+      "value": "互联网"
+    },
+    {
+      "name": "SideBar_String8",
+      "value": "当前界面是："
+    },
+    {
+      "name": "SideBar_String9",
+      "value": "输入框交互..."
+    },
+    {
+      "name": "SideBar_String10",
+      "value": "左边弹窗"
+    },
+    {
+      "name": "SideBar_String11",
+      "value": "右边弹窗"
+    },
+    {
+      "name": "TopContent_String1",
+      "value": "我是从顶部向下弹窗的自由定位弹窗，可以做一些通知的UI交互"
+    },
+    {
+      "name": "TopContent_String2",
+      "value": "这里只是用自由定位position弹窗来演示"
+    },
+    {
+      "name": "TopContent_String3",
+      "value": "我知道了"
+    },
+    {
+      "name": "TopContent_String4",
+      "value": "打开顶部弹窗"
+    },
+    {
+      "name": "InputCistom_String1",
+      "value": "带有输入框并贴着输入法的弹窗"
+    },
+    {
+      "name": "Selectinput_String1",
+      "value": "设置点击蒙层是否退出"
+    },
+    {
+      "name": "Selectinput_String2",
+      "value": "确认后是否关闭弹窗"
+    },
+    {
+      "name": "Selectinput_String3",
+      "value": "自定义蒙层颜色"
+    },
+    {
+      "name": "Selectinput_String4",
+      "value": "圆角弧度"
+    },
+    {
+      "name": "Selectinput_String5",
+      "value": "包含输入法的弹框拉起输入法"
+    },
+    {
+      "name": "Selectinput_String6",
+      "value": "设置偏移量offset"
+    },
+    {
+      "name": "Selectinput_String7",
+      "value": "弹出退出时删除对象"
     }
   ]
 }

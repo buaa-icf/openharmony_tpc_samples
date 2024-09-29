@@ -30,7 +30,7 @@ struct CustomDialogExample2 {
   @State curve:Curve = Curve.EaseIn  //动画曲线
   customDialogController?: CustomDialogController = undefined
   aboutToAppear(){
-    this.model.title='标题'
+    this.model.title='Title'
     this.model.titleMargin = { top: 10, bottom: 10 }
     this.model.contentMargin = { left:10,right:10, bottom: 30 }
     let btnContentBorder:BtnContentBorder = {
@@ -52,7 +52,7 @@ struct CustomDialogExample2 {
     Stack({ alignContent: Alignment.TopStart }) {
       Scroll(this.scroller){
         Column(){
-          Text( '你可以为弹窗选择任意一种动画，但这并不必要，因为我已经默认给每种弹窗设定了最佳动画！对于你自定义的弹窗，可以随心选中心仪的动画方案。')
+          Text(getContext().resourceManager.getStringByNameSync('Position_String1') )
             .fontColor(Color.Black)
             .fontSize(20)
           Column().height(200).width('100%').backgroundColor(Color.Pink)
@@ -102,7 +102,7 @@ struct CustomDialogExample2 {
   existApp() {
     console.info('Click the callback in the blank area')
   }
-  @State text: string = "下拉选择"
+  @State text: string = getContext().resourceManager.getStringByNameSync('Position_String3')
   @State index: number = 2
   @State space: number = 8
   @State arrowPosition: ArrowPosition = ArrowPosition.END
@@ -110,7 +110,7 @@ struct CustomDialogExample2 {
   build() {
     Column() {
      Flex({direction:FlexDirection.Row,alignItems: ItemAlign.Center}){
-       Text('请选择动画：')
+       Text(getContext().resourceManager.getStringByNameSync('Position_String2') )
        Select([
          { value: 'TranslateFromCenter'},
          { value: 'TranslateFromTop'},

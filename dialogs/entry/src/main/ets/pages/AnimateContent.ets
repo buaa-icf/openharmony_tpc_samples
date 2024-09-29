@@ -57,18 +57,18 @@ struct CustomDialogExample2 {
         .width(100)
         .height(100)
       Row(){
-        Button('时间0.5s').onClick(()=>{
+        Button('Time 0.5s').onClick(()=>{
           this.ringAnimatedManager = {
             animatedSwitch: Switch.OPEN
           }
         })
-        Button('时间5s').onClick(()=>{
+        Button('Time 5s').onClick(()=>{
           this.ringAnimatedManager = {
             animatedSwitch: Switch.OPEN,
             duration: 5000
           }
         })
-        Button('关闭').onClick(()=>{
+        Button('Close').onClick(()=>{
           this.ringAnimatedManager = {
             animatedSwitch: Switch.CLOSE
           }
@@ -87,8 +87,8 @@ struct CustomDialogExample2 {
 @Entry
 @Component
 struct AnimateContent {
-  @State inputValue: string = '点击展示数字百分比'
-  @State inputValue2: string = '点击展示圆环'
+  @State inputValue: string = getContext().resourceManager.getStringByNameSync('AnimateContent_Input_String1')
+  @State inputValue2: string = getContext().resourceManager.getStringByNameSync('AnimateContent_Input_String2')
   dialogProgressNumberController: CustomDialogController = new CustomDialogController({
     builder: CustomDialogExample({
       percentValue: $percentValue

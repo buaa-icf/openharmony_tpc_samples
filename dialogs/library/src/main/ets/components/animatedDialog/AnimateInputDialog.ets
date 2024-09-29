@@ -20,8 +20,8 @@ import { AnimateEffect } from './AnimateEffect'
 @CustomDialog
 export struct AnimateInputDialog {
   controller: CustomDialogController
-  inputValue: string = '测试动画内容'
-  title: string = '测试动画'
+  inputValue: string = 'Test animation content'
+  title: string = 'Test animation'
 
   isDisplay: boolean = true
 

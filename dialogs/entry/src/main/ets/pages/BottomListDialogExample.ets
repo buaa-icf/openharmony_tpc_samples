@@ -18,11 +18,11 @@ import { BottomListDialog } from '@ohos/dialogs';
 @Entry
 @Component
 struct BottomListDialogExample {
-  @State message: string = '显示Bottom类型的List弹窗(带选择效果)'
+  @State message: string = getContext().resourceManager.getStringByNameSync('BottomList_String1')
   @State showDialog: boolean = false;
   @State isOpenDialog: boolean = false;
   @State selectIndex: number = 2;
-  @State message1: string = '显示Bottom类型的List弹窗'
+  @State message1: string = getContext().resourceManager.getStringByNameSync('BottomList_String2')
   @State showDialog1: boolean = false;
   @State isOpenDialog1: boolean = false;
   @State selectIndex1: number = 2;
@@ -42,12 +42,12 @@ struct BottomListDialogExample {
           openDialog: $isOpenDialog,
           mListData: ['aa','bb','cc','dd','ee','ff'],
           mDialogItemHeight: 40,
-          dialogTitle: "标题可以没有",
+          dialogTitle: "Title is not necessary",
           dialogTitleSize: 25,
           dialogTitleColor: Color.Black,
           mDialogMaskColor: 0x33000000,
           mDialogTitleHeight: 60,
-          dialogCancel: "取消",
+          dialogCancel: "cancel",
           dialogCancelSize: 20,
           dialogCancelColor: Color.White,
           mDialogItemTextColor: '#000000',
@@ -85,12 +85,12 @@ struct BottomListDialogExample {
           openDialog: $isOpenDialog1,
           mListData: ['aa','bb','cc','dd','ee','ff'],
           mDialogItemHeight: 40,
-          dialogTitle: "标题可以没有",
+          dialogTitle: "Title is not necessary",
           dialogTitleSize: 25,
           dialogTitleColor: Color.Black,
           mDialogMaskColor: 0x33000000,
           mDialogTitleHeight: 60,
-          dialogCancel: "取消",
+          dialogCancel: "cancel",
           dialogCancelSize: 20,
           dialogCancelColor: Color.White,
           mDialogItemTextColor: '#000000',

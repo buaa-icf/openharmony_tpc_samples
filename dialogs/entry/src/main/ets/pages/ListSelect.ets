@@ -23,12 +23,12 @@ class obj  {
 @Entry
 @Component
 struct CheckComp {
-  @State message: string = '列表弹窗'
+  @State message: string = getContext().resourceManager.getStringByNameSync('ListSelect_String1')
   @State model:listSelectModel = new listSelectModel()
 
   aboutToAppear(){
     this.model.dialogBgColor = '#232323'
-    this.model.title = '请选择一项'
+    this.model.title = getContext().resourceManager.getStringByNameSync('ListSelect_String2')
     this.model.titleFontColor = '#ffffff'
     this.model.titleMargin = 10
     this.model.titleBorder = {
@@ -76,27 +76,27 @@ struct CheckComp {
 
   @State list: obj[] = [
     {
-      name:'我是第1条数据',
+      name:'Item 1',
       id: 1,
       isSelect:false
     },
     {
-      name:'我是第2条数据',
+      name:'Item 2',
       id: 2,
       isSelect:false
     },
     {
-      name:'我是第3条数据',
+      name:'Item 3',
       id: 3,
       isSelect:false
     },
     {
-      name:'我是第4条数据',
+      name:'Item 4',
       id: 4,
       isSelect:false
     },
     {
-      name:'我是第5条数据',
+      name:'Item 5',
       id: 5,
       isSelect:false
     }
@@ -139,19 +139,19 @@ struct CheckComp {
 
   build(){
     Column(){
-      Button('打开列表弹窗')
+      Button(getContext().resourceManager.getStringByNameSync('ListSelect_String3') )
         .onClick(() => {
           this.model.isDisplayBtn = false
           this.model.selectMode = 'normal'
           this.CheckDialogController.open()
         }).margin({bottom:20})
-      Button('打开多选列表弹窗')
+      Button(getContext().resourceManager.getStringByNameSync('ListSelect_String4') )
         .onClick(() => {
           this.model.isDisplayBtn = true
           this.model.selectMode = 'checkbox'
           this.CheckDialogController.open()
         }).margin({bottom:20})
-      Button('打开单选列表弹窗')
+      Button(getContext().resourceManager.getStringByNameSync('ListSelect_String5'))
         .onClick(() => {
           this.model.isDisplayBtn = false
           this.model.selectMode = 'radio'

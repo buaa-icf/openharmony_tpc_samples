@@ -44,14 +44,14 @@ struct TopContent {
     Stack({ alignContent: Alignment.TopStart }) {
       Scroll(this.scroller){
         Column(){
-          Text( '我是从顶部向下弹窗的自由定位弹窗，可以做一些通知的UI交互')
+          Text(getContext().resourceManager.getStringByNameSync('TopContent_String1') )
             .fontColor(Color.White)
             .fontSize(20)
-          Text( '这里只是用自由定位position弹窗来演示')
+          Text( getContext().resourceManager.getStringByNameSync('TopContent_String2') )
             .fontColor(Color.White)
             .fontSize(20)
           Column().height(200).width('100%').backgroundColor('#f6f6f6').margin({top: 20})
-          Button('我知道了').backgroundColor(Color.White).margin({top: 20}).fontColor(Color.Black)
+          Button(getContext().resourceManager.getStringByNameSync('TopContent_String3')).backgroundColor(Color.White).margin({top: 20}).fontColor(Color.Black)
             .onClick(()=>{
               this.topController.close()
               this.isAnimation = false
@@ -62,7 +62,7 @@ struct TopContent {
 
   }
   build(){
-      Button('打开顶部弹窗').onClick(() => {
+      Button(getContext().resourceManager.getStringByNameSync('TopContent_String4')).onClick(() => {
         this.topController.open()
       })
   }

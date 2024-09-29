@@ -1,10 +1,10 @@
 ### 1.0.2
 
-1.发布1.0.2正式版
+1. Release 1.0.2 official version
 
 ### 1.0.2-rc.0
 
-1.修复弹框动画展示中部分选项与弹窗效果不匹配的问题
+1. Fix the issue where some options in the pop-up animation display do not match the pop-up effect
 
 ### 1.0.1
 
@@ -12,8 +12,8 @@
 
 ### 1.0.0
 
-1. 基于OpenHarmony的弹框基础能力和自定义能力，针对通用的弹框业务场景进行封装组合。
+1. Based on OpenHarmony's basic and customization capabilities for bullet boxes, encapsulate and combine them for general bullet box business scenarios.
 
-2. 提供多种弹窗组件，可对弹窗进行自定义封装，如确认输入弹窗、列表展示选择弹窗、自定义底部、顶部弹窗、自定义动画弹窗等。
+2. Provide multiple pop-up components that can be customized and packaged, such as confirmation input pop-up, list display selection pop-up, custom bottom and top pop-up, custom animation pop-up, etc.
 
 

@@ -19,14 +19,14 @@ import { MessageDialog, BaseCenterMode } from '@ohos/dialogs'
 @Component
 struct Message {
   @State model:BaseCenterMode = new BaseCenterMode()
-  @State textValue: string = '这里是消息内容'
-  @State inputValue: string = '消息弹窗'
+  @State textValue: string = getContext().resourceManager.getStringByNameSync('Message_String1')
+  @State inputValue: string = getContext().resourceManager.getStringByNameSync('Message_String2')
   @State isFixPosition: boolean = true
   @State positionDialog: string = 'top'
   @State blurValue: number = 0
 
   aboutToAppear(){
-    this.model.contentValue = '这里是消息内容'
+    this.model.contentValue = getContext().resourceManager.getStringByNameSync('Message_String1')
     this.model.contentPadding = 10
     this.model.dialogWidth = 300
     this.model.dialogBgColor = Color.Pink
@@ -55,7 +55,7 @@ struct Message {
   build() {
     Column() {
       Column().height(200).width(200).backgroundColor(Color.Yellow)
-      Text('模糊效果')
+      Text(getContext().resourceManager.getStringByNameSync('Message_String3'))
       Button(this.inputValue)
         .onClick(() => {
           if (this.dialogController != undefined) {

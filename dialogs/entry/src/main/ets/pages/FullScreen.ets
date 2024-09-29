@@ -46,7 +46,7 @@ struct SlotExample {
   scroller: Scroller = new Scroller()
   @State arr: number[] = [10, 20, 30];
   @State isOpen:boolean = false
-  @State placeholder:string = '测试软键盘交互'
+  @State placeholder:string = getContext().resourceManager.getStringByNameSync('FullScreen_String1')
   @State inputValue:string = ''
   dialogController: CustomDialogController = new CustomDialogController({
     builder: fullScreenDialog({
@@ -62,9 +62,9 @@ struct SlotExample {
     Stack({ alignContent: Alignment.TopStart }){
       Scroll(this.scroller) {
         Column(){
-          Text('这里是标题').fontSize(24).textAlign(TextAlign.Center).margin(30)
+          Text(getContext().resourceManager.getStringByNameSync('FullScreen_String2')).fontSize(24).textAlign(TextAlign.Center).margin(30)
           Column(){
-            Text('我是全屏弹窗，可以设置任意的动画器。我看起来就像一个从底部弹出的Actvity，可以用来做一些登录，选择界面').fontSize(20)
+            Text(getContext().resourceManager.getStringByNameSync('FullScreen_String3')).fontSize(20)
           }.margin({left:10,right:10})
           BlockContent({placeholder: this.placeholder,inputValue: this.inputValue})
 
@@ -124,7 +124,7 @@ struct SlotExample {
 
   build() {
     Column(){
-      Button('自定义全屏弹窗')
+      Button(getContext().resourceManager.getStringByNameSync('FullScreen_String4') )
         .onClick(() => {
           this.dialogController.open()
         })
