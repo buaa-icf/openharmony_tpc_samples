@@ -204,6 +204,7 @@ DevEco Studio: 4.1.3.313, SDK: API11(4.1.2.1)
 |           |---- *.json5      # 配置文件
 |           |---- rollup.config.js      # rollup配置文件
 |     |---- README.md  # 安装使用方法
+|     |---- README_zh.md  # 安装使用方法    
 |     |---- README.OpenSource  # 开源说明
 |     |---- CHANGELOG.md  # 更新日志
 ```
@@ -214,4 +215,4 @@ DevEco Studio: 4.1.3.313, SDK: API11(4.1.2.1)
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues ) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls ) 。
+使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls)共建。

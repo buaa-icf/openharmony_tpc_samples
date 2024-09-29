@@ -21,8 +21,8 @@ export function writeCacheDirFile(fileName: string, fileData: string | ArrayBuff
   const path = `${context.cacheDir}/${fileName}`;
   const openInfo = fs.openSync(path, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
   fs.writeSync(openInfo.fd, fileData);
-  promptAction.showToast({ message: "保存文件成功，请在设备管理器中查看!" });
-  console.log("保存文件成功，请在设备管理器中查看!  " + path)
+  promptAction.showToast({ message: getContext().resourceManager.getStringByNameSync('Log_String1') });
+  console.log(getContext().resourceManager.getStringByNameSync('Log_String1') + path)
   return path
 }
 
@@ -30,10 +30,10 @@ export async function loadAsyncFromRawFile(fileName: string): Promise<Uint8Array
   const resourceManager = context.resourceManager;
   try {
     const data = await resourceManager.getRawFileContent(fileName);
-    promptAction.showToast({ message: "加载rawfile目录下面的文件成功!" });
+    promptAction.showToast({ message: getContext().resourceManager.getStringByNameSync('Log_String2') });
 
     return data;
   } catch (err) {
-    promptAction.showToast({ message: "加载rawfile目录下面的文件失败!" });
+    promptAction.showToast({ message: getContext().resourceManager.getStringByNameSync('Log_String3')});
   }
 }
