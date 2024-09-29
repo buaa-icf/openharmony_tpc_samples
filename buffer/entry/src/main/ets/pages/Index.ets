@@ -88,7 +88,7 @@ struct Index {
         Text('ucs2：'+ this.ucs2String);
         Text('latin1：'+ this.latin1String);
 
-        Button('将buffer1插入到另一个buffer指定位置上').onClick(()=> {
+        Button($r('app.string.Insert_buffer1_into_buffer2')).onClick(()=> {
           let buf1 = Buffer.from('hi buffer');
           let buf2 = Buffer.from('openHarmony');
           //将 buf2 插入到 buf1 指定位置上
