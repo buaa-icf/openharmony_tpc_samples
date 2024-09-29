@@ -1,3 +1,3 @@
 ##0.13.11
 
-1. regeneratorRuntime是 ES6 提供的一种异步编程解决方案，语法行为与传统函数完全不同,是一种解决异步方案。
+1. RegeneratorRuntime is an asynchronous programming solution provided by ES6, with syntax and behavior completely different from traditional functions, and is a solution to asynchronous programming.

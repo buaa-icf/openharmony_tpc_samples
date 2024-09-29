@@ -1,27 +1,27 @@
 # regeneratorRuntime
 
-# 简介
+# Introduction
 
-regeneratorRuntime是 ES6 提供的一种异步编程解决方案，语法行为与传统函数完全不同,是一种解决异步方案
+regeneratorRuntime is an asynchronous programming solution provided by ES6 and uses a syntax behavior completely different from that of traditional functions.
 
-## 下载安装
+## How to Install
 
 ```
  ohpm install regenerator-runtime
- ohpm install @types/regenerator-runtime  // import regenerator-runtime 的时候语法报错, 其原因是regenerator-runtime包内不含类型声明, 需要 @types/regenerator-runtime 下载这个包的声明文件, 从而解决语法的报错.
+ ohpm install @types/regenerator-runtime  // If a syntax error is reported, the regenerator-runtime package does not contain the type declaration. You need to download the declaration file of the package from @types/regenerator-runtime to rectify the syntax error.
 ```
 
-OpenHarmony ohpm环境配置等更多内容，请参考[如何安装OpenHarmony ohpm](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-### 接口说明
-单元测试用例详情见[TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/regeneratorRuntime/TEST.md)
+### Available APIs
+For details about unit test cases, see [TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/regeneratorRuntime/TEST.md).
 
-# 使用说明
+# How to Use
 ```
 import regeneratorRuntime from "regenerator-runtime";
 ```
 
-调用流程。
+API Calling Process
 
 ```javascript
 var marked = regeneratorRuntime.mark(foo);
@@ -47,28 +47,28 @@ export default function foo() {
 }
 ```
 
-## 约束与限制
-在下述版本验证通过：
+## Constraints
+This project has been verified in the following version:
 
-DevEco Studio 版本： 4.1 Canary(4.1.3.317),OpenHarmony SDK:API11 (4.1.0.36)。
+DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API11 (4.1.0.36)
 
-## 目录结构
+## Directory Structure
 
 ```
 |---- Domhandler  
-|     |---- entry  # 示例代码文件夹
-            |---src # sample代码
+|     |---- entry  # Sample code
+            |---src # Sample code
             |---ohosTest
                 |---ets 
-                    |---test #测试用例
-|     |---- README.MD  # 安装使用方法                   
+                    |---test # Test case
+|     |---- README.MD  # Readme    
+|     |---- README_zh.MD  # Readme                 
 ```
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提[Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们提[PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls)。
+If you find any problem when using parser-html-json, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
 
-## 开源协议
+## License
 
-本项目基于 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/regeneratorruntime/LICENSE)，请自由地享受和参与开源。
-
+This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/regeneratorruntime/LICENSE).
