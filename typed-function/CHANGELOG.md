@@ -1,9 +1,9 @@
 ## V4.1.0
 
--支持输入参数的运行时类型检查。
+-Support runtime type checking of input parameters.
 
--支持参数的自动类型转换。
+-Support automatic type conversion of parameters.
 
--支持编写具有多个签名的类型化函数。
+-Support writing typed functions with multiple signatures.
 
--支持并集类型、任意类型和变量参数。
+-Supports union types, arbitrary types, and variable parameters.
