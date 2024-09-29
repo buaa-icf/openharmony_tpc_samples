@@ -90,6 +90,7 @@ import {DOMParser,EpubReader,EpubWriter, Book,Author,EpubResource,MediaType,Meta
 
 This project has been verified in the following version:
 
+- DevEco Studio: NEXT Beta1-5.0.3.806, SDK: API12 Release(5.0.0.66)
 
 - DevEco Studio: 4.1 Canary (4.1.3.521), OpenHarmony SDK: API 11 (4.1.0.65)
 
