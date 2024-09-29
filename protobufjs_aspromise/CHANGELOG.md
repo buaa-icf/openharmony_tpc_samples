@@ -1,2 +1,2 @@
 ## v1.1.2
-  1.一个从节点风格的回调函数返回一个promise.
+1. A callback function with node style returns a promise
