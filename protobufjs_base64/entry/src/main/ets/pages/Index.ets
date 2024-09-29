@@ -25,7 +25,7 @@ struct Index {
     build() {
         Row() {
             Column() {
-                TextInput({ text: this.testString, placeholder: '请输入内容' })
+                TextInput({ text: this.testString, placeholder: 'Please Input' })
                     .fontSize(16)
                     .onChange((value: string) => {
                         this.testString = value
