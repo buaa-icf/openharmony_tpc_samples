@@ -38,7 +38,7 @@ struct Main {
   aboutToAppear() {
 
     Smack.handleSubscriptionRequestListener((json:ESObject) => {
-      console.info("收到好友添加申请"+json)
+      console.info(getContext().resourceManager.getStringByNameSync('Main_String1') +json)
       setTimeout(()=>{
         let obj:ESObject=JSON.parse(json)
         this.mbare = obj.jid
@@ -58,12 +58,12 @@ struct Main {
           TabContent() {
             Friends_list()
           }
-          .tabBar('好友')
+          .tabBar(getContext().resourceManager.getStringByNameSync('Main_String2'))
 
           TabContent() {
             Group_list()
           }
-          .tabBar('群聊')
+          .tabBar(getContext().resourceManager.getStringByNameSync('Main_String3'))
 
           //          TabContent() {
           //            Meeting_list()
@@ -73,7 +73,7 @@ struct Main {
           TabContent() {
             Setting()
           }
-          .tabBar('设置')
+          .tabBar(getContext().resourceManager.getStringByNameSync('Main_String4'))
         }
 
       }
@@ -101,19 +101,19 @@ struct AddFriendsDialog {
         .textAlign(TextAlign.Center)
         .margin({ top: px2vp(20) })
       Row() {
-        Text("昵称:").fontSize(px2fp(30)).width('20%')
+        Text(getContext().resourceManager.getStringByNameSync('Main_String5')).fontSize(px2fp(30)).width('20%')
         TextInput({ text: this.user }).fontSize(px2fp(30)).width('70%')
       }.margin({ top: px2vp(20) }).padding({ left: px2vp(10), right:  px2vp(10) })
 
       Row() {
-        Text("分组:").fontSize(px2fp(30)).width('20%')
-        TextInput({ text: this.groupName, placeholder: "请输入好友分组" }).fontSize(px2fp(30)).onChange(v=>{
+        Text(getContext().resourceManager.getStringByNameSync('Main_String6')).fontSize(px2fp(30)).width('20%')
+        TextInput({ text: this.groupName, placeholder: getContext().resourceManager.getStringByNameSync('Main_String7') }).fontSize(px2fp(30)).onChange(v=>{
           this.groupName=v
         }).width('70%')
       }.margin({ top:  px2vp(10) }).padding({ left:  px2vp(10), right:  px2vp(10) })
 
       Row() {
-        Text("(A)接受")
+        Text(getContext().resourceManager.getStringByNameSync('Main_String8'))
           .fontColor(Color.Green)
           .fontSize(px2fp(40))
           .onClick(v => {
@@ -122,13 +122,13 @@ struct AddFriendsDialog {
               this.controller.close()
             } else {
               prompt.showToast({
-                message: '请输入信息'
+                message: getContext().resourceManager.getStringByNameSync('Main_String9')
               })
             }
           })
           .textAlign(TextAlign.Center)
           .layoutWeight(1)
-        Text("拒绝")
+        Text(getContext().resourceManager.getStringByNameSync('Main_String10'))
           .fontColor(Color.Red)
           .fontSize(px2fp(40))
           .onClick(v => {

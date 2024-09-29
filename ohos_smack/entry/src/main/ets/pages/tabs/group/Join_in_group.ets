@@ -23,20 +23,20 @@ struct Join_in_group {
   build() {
     Flex({ direction: FlexDirection.Column }) {
       Toolbar({
-        title: '加入群聊',
+        title: 'Join group chat',
         isBack: true
       })
       Flex({ direction: FlexDirection.Column }) {
-        Text('群聊名称').fontSize(15).padding(10)
+        Text('Group chat name').fontSize(15).padding(10)
         TextInput().onChange((str: string) => {
           this.room = str;
         })
-        Button('加 入').onClick(e => {
+        Button('Join').onClick(e => {
           if (this.room) {
             this.onJoinInGroup()
           } else {
             prompt.showToast({
-              message: '输入房间名称'
+              message: 'Input room name'
             })
           }
         }).margin({ top: 20 })
@@ -58,7 +58,7 @@ struct Join_in_group {
         })
       } else {
         prompt.showToast({
-          message: '进入房间失败'
+          message: 'Failed to enter the room'
         })
       }
     }, 500)

@@ -24,17 +24,17 @@ struct Meeting_chat_setting {
 
   // todo 查看所有会议成员
   onGetAllMeetingMember() {
-    this.allList.push('花花')
-    this.allList.push('娜娜')
-    this.allList.push('丽丽')
-    this.allList.push('木木')
-    this.allList.push('贱贱')
+    this.allList.push('huahua')
+    this.allList.push('nana')
+    this.allList.push('lili')
+    this.allList.push('mumu')
+    this.allList.push('jianjian')
   }
 
   build() {
     Flex({ direction: FlexDirection.Column }) {
       Toolbar({
-        title: '会议成员',
+        title: 'Meeting members',
         isBack: true
       })
 

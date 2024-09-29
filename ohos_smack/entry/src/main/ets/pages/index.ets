@@ -38,9 +38,9 @@ struct Index {
   build() {
     Row() {
       Column() {
-        Text("欢迎使用")
+        Text(getContext().resourceManager.getStringByNameSync('Index_String1'))
           .fontSize(30)
-        Text("聊天室")
+        Text(getContext().resourceManager.getStringByNameSync('Index_String2'))
           .fontSize(50)
           .fontWeight(600)
           .margin({ top: 20 })

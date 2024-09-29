@@ -11,6 +11,474 @@
     {
       "name": "EntryAbility_label",
       "value": "smack"
+    },
+    {
+      "name": "Index_String1",
+      "value": "Welcome to use"
+    },
+    {
+      "name": "Index_String2",
+      "value": "chat room"
+    },
+    {
+      "name": "Main_String1",
+      "value": "Received friend addition request"
+    },
+    {
+      "name": "Main_String2",
+      "value": "Friend"
+    },
+    {
+      "name": "Main_String3",
+      "value": "group chat"
+    },
+    {
+      "name": "Main_String4",
+      "value": "Setting"
+    },
+    {
+      "name": "Main_String5",
+      "value": "Name："
+    },
+    {
+      "name": "Main_String6",
+      "value": "Group："
+    },
+    {
+      "name": "Main_String7",
+      "value": "Please enter friend group"
+    },
+    {
+      "name": "Main_String8",
+      "value": "Accept"
+    },
+    {
+      "name": "Main_String9",
+      "value": "Please enter information"
+    },
+    {
+      "name": "Main_String10",
+      "value": "Reject"
+    },
+    {
+      "name": "Page_String1",
+      "value": "The group chat message has been received"
+    },
+    {
+      "name": "Page_String2",
+      "value": "The group chat invitation has been received"
+    },
+    {
+      "name": "Page_String3",
+      "value": "My status changes in the group (kicked out, banned, granted permissions, etc.)"
+    },
+    {
+      "name": "Page_String4",
+      "value": "Send a single message"
+    },
+    {
+      "name": "Page_String5",
+      "value": "Send a single message"
+    },
+    {
+      "name": "Page_String6",
+      "value": "Change Password"
+    },
+    {
+      "name": "Page_String7",
+      "value": "Create a group"
+    },
+    {
+      "name": "Page_String8",
+      "value": "Get friend list"
+    },
+    {
+      "name": "Page_String9",
+      "value": "Add friend"
+    },
+    {
+      "name": "Page_String10",
+      "value": "Delete Friends"
+    },
+    {
+      "name": "Page_String11",
+      "value": "Modify login status"
+    },
+    {
+      "name": "Page_String12",
+      "value": "Modify login status"
+    },
+    {
+      "name": "Page_String13",
+      "value": "Change friend group name"
+    },
+    {
+      "name": "Page_String14",
+      "value": "Create Group"
+    },
+    {
+      "name": "Page_String15",
+      "value": "Join a group"
+    },
+    {
+      "name": "Page_String16",
+      "value": "Leave the group"
+    },
+    {
+      "name": "Page_String17",
+      "value": "Send group messages"
+    },
+    {
+      "name": "Page_String18",
+      "value": "Set group theme"
+    },
+    {
+      "name": "Page_String19",
+      "value": "Destroy group"
+    },
+    {
+      "name": "Page_String20",
+      "value": "Kick out the group"
+    },
+    {
+      "name": "Page_String21",
+      "value": "Kick out of the group and add to the blacklist"
+    },
+    {
+      "name": "Page_String22",
+      "value": "Granting speaking permission"
+    },
+    {
+      "name": "Page_String23",
+      "value": "Remove speaking permission"
+    },
+    {
+      "name": "Page_String24",
+      "value": "post setting"
+    },
+    {
+      "name": "Page_String25",
+      "value": "Role setting RoleModerator"
+    },
+    {
+      "name": "Page_String26",
+      "value": "Change login status Away"
+    },
+    {
+      "name": "Page_String27",
+      "value": "Invite members"
+    },
+    {
+      "name": "Page_String28",
+      "value": "Get all group chat members"
+    },
+    {
+      "name": "Page_String29",
+      "value": "Filter group chat members"
+    },
+    {
+      "name": "Page_String30",
+      "value": "Refuse to join group chat"
+    },
+    {
+      "name": "Page_String31",
+      "value": "Create and add a room"
+    },
+    {
+      "name": "Page_String32",
+      "value": "Room setting password"
+    },
+    {
+      "name": "Page_String33",
+      "value": "Set up group chat configuration"
+    },
+    {
+      "name": "Page_String34",
+      "value": "Kick out the user group from this chat room"
+    },
+    {
+      "name": "Page_String35",
+      "value": "Change the nickname of chat room members"
+    },
+    {
+      "name": "Page_String36",
+      "value": "Are you currently chatting with multiple people"
+    },
+    {
+      "name": "Page_String37",
+      "value": "Return the nickname of the user in the room"
+    },
+    {
+      "name": "Page_String38",
+      "value": "Is it connected"
+    },
+    {
+      "name": "Page_String39",
+      "value": "User Name"
+    },
+    {
+      "name": "Page_String40",
+      "value": "bulk operation"
+    },
+    {
+      "name": "GroupAll_String1",
+      "value": "Group members"
+    },
+    {
+      "name": "GroupAll_String2",
+      "value": "administrators"
+    },
+    {
+      "name": "GroupAll_String3",
+      "value": "Not operable by non owners"
+    },
+    {
+      "name": "GroupAll_String4",
+      "value": "member"
+    },
+    {
+      "name": "GroupAll_String5",
+      "value": "complete"
+    },
+    {
+      "name": "GroupAll_String6",
+      "value": "Non owners and administrators are not allowed to operate"
+    },
+    {
+      "name": "GroupChat_String1",
+      "value": "anyone"
+    },
+    {
+      "name": "GroupChat_String2",
+      "value": "Reviewer"
+    },
+    {
+      "name": "GroupChat_String3",
+      "value": "participant"
+    },
+    {
+      "name": "GroupChat_String4",
+      "value": "Room Configuration"
+    },
+    {
+      "name": "GroupChat_String5",
+      "value": "save"
+    },
+    {
+      "name": "GroupChat_String6",
+      "value": "Room name"
+    },
+    {
+      "name": "GroupChat_String7",
+      "value": "Room Description"
+    },
+    {
+      "name": "GroupChat_String8",
+      "value": "Maximum number of people in the room"
+    },
+    {
+      "name": "GroupChat_String9",
+      "value": "password"
+    },
+    {
+      "name": "GroupChat_String10",
+      "value": "Being able to discover the true JID roles of members"
+    },
+    {
+      "name": "GroupChat_String11",
+      "value": "Room Manager"
+    },
+    {
+      "name": "GroupChat_String12",
+      "value": "Room Owner"
+    },
+    {
+      "name": "GroupChat_String13",
+      "value": "Broadcast its role in existence"
+    },
+    {
+      "name": "GroupChat_String14",
+      "value": "List rooms in the directory"
+    },
+    {
+      "name": "GroupChat_String15",
+      "value": "Permanent Room"
+    },
+    {
+      "name": "GroupChat_String16",
+      "value": "The room is only open to members"
+    },
+    {
+      "name": "GroupChat_String17",
+      "value": "The room needs to be reviewed"
+    },
+    {
+      "name": "GroupChat_String18",
+      "value": "Allow members to invite others to join the group"
+    },
+    {
+      "name": "GroupChat_String19",
+      "value": "Allow members to change the theme"
+    },
+    {
+      "name": "GroupChat_String20",
+      "value": "Only allow login with registered nickname"
+    },
+    {
+      "name": "GroupChat_String21",
+      "value": "Allow members to modify their nicknames"
+    },
+    {
+      "name": "GroupChat_String22",
+      "value": "Allow members to register rooms"
+    },
+    {
+      "name": "GroupChat_String23",
+      "value": "Record room chats"
+    },
+    {
+      "name": "GroupChat_String24",
+      "value": "Kick out group chat"
+    },
+    {
+      "name": "GroupChat_String25",
+      "value": "Blocked by group chat"
+    },
+    {
+      "name": "GroupChat_String26",
+      "value": "View all group members"
+    },
+    {
+      "name": "GroupChat_String27",
+      "value": "Edit room configuration (only available to room owners)"
+    },
+    {
+      "name": "GroupChat_String28",
+      "value": "Modify the room theme (can be executed by non visitors when the settings are open)"
+    },
+    {
+      "name": "GroupMember_String1",
+      "value": "on line"
+    },
+    {
+      "name": "GroupMember_String2",
+      "value": "Free"
+    },
+    {
+      "name": "GroupMember_String3",
+      "value": "leave"
+    },
+    {
+      "name": "GroupMember_String4",
+      "value": "Do not disturb"
+    },
+    {
+      "name": "GroupMember_String5",
+      "value": "Long term departure"
+    },
+    {
+      "name": "GroupMember_String6",
+      "value": "offline"
+    },
+    {
+      "name": "GroupMember_String7",
+      "value": "Revoke as host"
+    },
+    {
+      "name": "GroupMember_String8",
+      "value": "Set as the host"
+    },
+    {
+      "name": "GroupMember_String9",
+      "value": "Set user status"
+    },
+    {
+      "name": "GroupMember_String10",
+      "value": "Revoke administrator status"
+    },
+    {
+      "name": "GroupMember_String11",
+      "value": "Set as group administrator"
+    },
+    {
+      "name": "GroupMember_String12",
+      "value": "Cancel membership status"
+    },
+    {
+      "name": "GroupMember_String13",
+      "value": "Set as a member"
+    },
+    {
+      "name": "GroupMember_String14",
+      "value": "Revoke being set as the group leader"
+    },
+    {
+      "name": "GroupMember_String15",
+      "value": "Set as group leader"
+    },
+    {
+      "name": "GroupMember_String16",
+      "value": "Cancel the ban"
+    },
+    {
+      "name": "GroupMember_String17",
+      "value": "Forbidden speech"
+    },
+    {
+      "name": "OneChat_Stirng1",
+      "value": "Me"
+    },
+    {
+      "name": "OneChat_Stirng2",
+      "value": "Friend settings"
+    },
+    {
+      "name": "OneChat_Stirng3",
+      "value": "Change friend group"
+    },
+    {
+      "name": "OneChat_Stirng4",
+      "value": "Invite to the meeting"
+    },
+    {
+      "name": "Login_String1",
+      "value": "Login"
+    },
+    {
+      "name": "Login_String2",
+      "value": "Enter user name"
+    },
+    {
+      "name": "Login_String3",
+      "value": "Enter password"
+    },
+    {
+      "name": "Login_String4",
+      "value": "Connectivity Service"
+    },
+    {
+      "name": "Login_String5",
+      "value": "Register"
+    },
+    {
+      "name": "Login_String6",
+      "value": "Enter user name"
+    },
+    {
+      "name": "Login_String7",
+      "value": "Enter password"
+    },
+    {
+      "name": "Login_String8",
+      "value": "Please enter complete information"
+    },
+    {
+      "name": "Search_String1",
+      "value": "search"
+    },
+    {
+      "name": "Search_String2",
+      "value": "The results after searching"
     }
   ]
 }

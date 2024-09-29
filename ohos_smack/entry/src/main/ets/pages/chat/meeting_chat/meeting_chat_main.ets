@@ -25,7 +25,7 @@ struct Meeting_chat_main {
   build() {
     Flex({ direction: FlexDirection.Column }) {
       Toolbar({
-        title: '120会议',
+        title: '120 Meeting',
         isBack: true,
         rightIcon: $r('app.media.more'),
         rightClickCallBack: () => {
@@ -52,7 +52,7 @@ struct Meeting_chat_main {
                 } else {
                   Flex({ justifyContent: item.author == '1' ? FlexAlign.End : FlexAlign.Start }) {
                     Flex({ direction: FlexDirection.Column }) {
-                      Text(item.author == '1' ? '我' : item.author)
+                      Text(item.author == '1' ? 'My' : item.author)
                         .fontSize(15)
                         .padding(5)
                         .alignSelf(item.author == '1' ? ItemAlign.End : ItemAlign.Start)
@@ -79,8 +79,8 @@ struct Meeting_chat_main {
         .margin({ bottom: 60 })
 
         Flex({ direction: FlexDirection.Row, justifyContent: FlexAlign.Center, alignItems: ItemAlign.Center }) {
-          TextInput({ placeholder: '请输入' })
-          Button('发 送').width(100).margin({ left: 8 })
+          TextInput({ placeholder: 'Please Input' })
+          Button('Send').width(100).margin({ left: 8 })
             .onClick(e => {
               this.onSendMeetingMessage()
             })

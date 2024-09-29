@@ -33,13 +33,13 @@ export struct Group_list {
   // todo 获取所有群聊列表
   getAllGroup() {
     for (let i = 0; i < 10; i++) {
-      this.groupList.push('群聊名称 ' + (i + 1))
+      this.groupList.push('Group chat name ' + (i + 1))
     }
   }
 
   build() {
     Column() {
-      Toolbar({ title: '群聊',
+      Toolbar({ title: 'Group chat',
         rightIcon: $r('app.media.add'),
         rightClickCallBack: () => {
           this.dialogController.open()
@@ -96,7 +96,7 @@ struct CustomDialogExample {
         .width('100%')
         .backgroundColor('#ececec')
 
-      Text('加入群聊')
+      Text('Join group chat')
         .fontSize(36)
         .padding(10)
         .onClick(() => {

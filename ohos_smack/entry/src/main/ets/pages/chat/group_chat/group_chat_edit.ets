@@ -25,8 +25,8 @@ import { GlobalContext } from '../../../entity/GlobalContext';
 struct Group_chat_edit {
   private passwordprotectedroom: string = ''
   @State temp: string = ''
-  @State JidVal: string = '任何人'
-  @State PrivateVal: string = '任何人'
+  @State JidVal: string = getContext().resourceManager.getStringByNameSync('GroupChat_String1')
+  @State PrivateVal: string = getContext().resourceManager.getStringByNameSync('GroupChat_String1')
   @State roomName: string = ''
   @State roomDesc: string = ''
   @State roomMaxusers: string = ''
@@ -36,29 +36,29 @@ struct Group_chat_edit {
   @State roomPresencebroadcast: Array<string> = []
   @State whois_options: Array<SelectOptionsEntity> = [
     {
-      "label": "任何人",
+      "label": getContext().resourceManager.getStringByNameSync('GroupChat_String1'),
       "value": "anyone"
     },
     {
-      "label": "审核者",
+      "label": getContext().resourceManager.getStringByNameSync('GroupChat_String2'),
       "value": "moderators"
     }
   ]
   @State allowpm_options: Array<SelectOptionsEntity> = [
     {
-      "label": "任何人",
+      "label": getContext().resourceManager.getStringByNameSync('GroupChat_String1'),
       "value": "anyone"
     },
     {
-      "label": "参与者",
+      "label": getContext().resourceManager.getStringByNameSync('GroupChat_String3'),
       "value": "participants"
     },
     {
-      "label": "审核者",
+      "label": getContext().resourceManager.getStringByNameSync('GroupChat_String2'),
       "value": "moderators"
     },
     {
-      "label": "无",
+      "label": "None",
       "value": "none"
     }
   ]
@@ -88,16 +88,16 @@ struct Group_chat_edit {
   switchAllowpm(str: string) {
     switch (str) {
       case "anyone":
-        this.PrivateVal = "任何人"
+        this.PrivateVal = getContext().resourceManager.getStringByNameSync('GroupChat_String1')
         break
       case "participants":
-        this.PrivateVal = "参与者"
+        this.PrivateVal = getContext().resourceManager.getStringByNameSync('GroupChat_String3')
         break
       case "moderators":
-        this.PrivateVal = "审核者"
+        this.PrivateVal = getContext().resourceManager.getStringByNameSync('GroupChat_String2')
         break
       case "none":
-        this.PrivateVal = "无"
+        this.PrivateVal = "None"
         break
     }
   }
@@ -105,16 +105,16 @@ struct Group_chat_edit {
   switchAllowpmStr(str: string): string{
     let val = 'anyone'
     switch (str) {
-      case "任何人":
+      case getContext().resourceManager.getStringByNameSync('GroupChat_String1'):
         val = "anyone"
         break
-      case "参与者":
+      case getContext().resourceManager.getStringByNameSync('GroupChat_String3'):
         val = "participants"
         break
-      case "审核者":
+      case getContext().resourceManager.getStringByNameSync('GroupChat_String2'):
         val = "moderators"
         break
-      case "无":
+      case "None":
         val = "none"
         break
     }
@@ -124,7 +124,7 @@ struct Group_chat_edit {
   public getRoomConfig() {
     Smack.getRoomConfig((result: string) => {
       this.roomConfig= JSON.parse(result) as RoomConfig;
-      this.JidVal = this.roomConfig.whois == "anyone" ? "任何人" : "审核者"
+      this.JidVal = this.roomConfig.whois == "anyone" ? getContext().resourceManager.getStringByNameSync('GroupChat_String1') : getContext().resourceManager.getStringByNameSync('GroupChat_String2')
       this.switchAllowpm(this.roomConfig.allowpm)
       this.roomName = this.roomConfig.roomname
       this.roomDesc = this.roomConfig.roomdesc
@@ -143,7 +143,7 @@ struct Group_chat_edit {
   //todo 修改房间配置
   updateRoomConfig() {
     this.roomConfig.allowpm = this.switchAllowpmStr(this.PrivateVal)
-    this.roomConfig.whois = (this.JidVal == "任何人") ? "anyone" : "moderators"
+    this.roomConfig.whois = (this.JidVal == getContext().resourceManager.getStringByNameSync('GroupChat_String1')) ? "anyone" : "moderators"
     this.roomConfig.roomname = this.roomName
     this.roomConfig.roomdesc = this.roomDesc
     this.roomConfig.maxusers = this.roomMaxusers
@@ -156,7 +156,7 @@ struct Group_chat_edit {
 
     console.info('update roomConfig-----------//' + JSON.stringify(this.roomConfig))
     Smack.setRoomConfig(JSON.stringify(this.roomConfig))
-    prompt.showToast({ message: "更新成功" })
+    prompt.showToast({ message: "update Success" })
     setTimeout(() => {
       router.back()
     }, 500)
@@ -166,30 +166,30 @@ struct Group_chat_edit {
     Flex({ direction: FlexDirection.Column }) {
       Toolbar({
         isBack: true,
-        title: '房间配置',
-        rightText: '保存',
+        title: getContext().resourceManager.getStringByNameSync('GroupChat_String4'),
+        rightText: getContext().resourceManager.getStringByNameSync('GroupChat_String5'),
         rightClickCallBack: () => {
           this.updateRoomConfig()
         }
       })
       Scroll(this.scroller) {
         Column() {
-          ItemInput({ title: "房间名称", value: $roomName, val: $temp })
-          ItemInput({ title: "房间描述", value: $roomDesc, val: $temp })
+          ItemInput({ title: getContext().resourceManager.getStringByNameSync('GroupChat_String6'), value: $roomName, val: $temp })
+          ItemInput({ title: getContext().resourceManager.getStringByNameSync('GroupChat_String7'), value: $roomDesc, val: $temp })
           ItemInput({
-            title: "房间最大人数",
+            title: getContext().resourceManager.getStringByNameSync('GroupChat_String8'),
             value: $roomMaxusers,
             val: $temp,
             typeStr: "4"
           })
           ItemInput({
-            title: "密码",
+            title: getContext().resourceManager.getStringByNameSync('GroupChat_String9'),
             value: $roomPassword,
             typeStr: "2",
             val: $temp
           })
           ItemInput({
-            title: "能够发现成员真实 JID 的角色",
+            title: getContext().resourceManager.getStringByNameSync('GroupChat_String10'),
             widthStr: '65%',
             widthInput: '30%',
             value: $temp,
@@ -211,7 +211,7 @@ struct Group_chat_edit {
             }
           })
           ItemInput({
-            title: "房间管理员",
+            title: getContext().resourceManager.getStringByNameSync('GroupChat_String11'),
             widthStr: '30%',
             widthInput: '65%',
             value: $roomAdmins,
@@ -222,7 +222,7 @@ struct Group_chat_edit {
             }
           })
           ItemInput({
-            title: "房间拥有者",
+            title: getContext().resourceManager.getStringByNameSync('GroupChat_String12'),
             widthStr: '30%',
             widthInput: '65%',
             value: $roomOwners,
@@ -233,7 +233,7 @@ struct Group_chat_edit {
             }
           })
           Row() {
-            Text("广播其存在的角色").width('35%').height('100%').fontSize(18)
+            Text(getContext().resourceManager.getStringByNameSync('GroupChat_String13')).width('35%').height('100%').fontSize(18)
             Row() {
               Checkbox({ name: 'checkbox1', group: 'checkboxGroup' })
                 .select(this.roomPresencebroadcast.indexOf("moderator") == 0)
@@ -244,7 +244,7 @@ struct Group_chat_edit {
                   this.roomPresencebroadcast[0] = (value ? 'moderator' : '')
 
                 })
-              Text("审核者").fontSize(16)
+              Text(getContext().resourceManager.getStringByNameSync('GroupChat_String2')).fontSize(16)
               Checkbox({ name: 'checkbox2', group: 'checkboxGroup' })
                 .select(this.roomPresencebroadcast.indexOf("participant") == 1)
                 .selectedColor(0x39a2db)
@@ -252,7 +252,7 @@ struct Group_chat_edit {
                   console.info('Checkbox2 change is' + value)
                   this.roomPresencebroadcast[1] = (value  ? 'participant' : '')
                 })
-              Text("参与者").fontSize(16)
+              Text(getContext().resourceManager.getStringByNameSync('GroupChat_String3')).fontSize(16)
               Checkbox({ name: 'checkbox3', group: 'checkboxGroup' })
                 .select(this.roomPresencebroadcast.indexOf("visitor") == 2)
                 .selectedColor(0x39a2db)
@@ -260,7 +260,7 @@ struct Group_chat_edit {
                   console.info('Checkbox3 change is' + value)
                   this.roomPresencebroadcast[2] = (value ? 'visitor' : '')
                 })
-              Text("访客").fontSize(16)
+              Text("Guest").fontSize(16)
             }.width('55%').justifyContent(FlexAlign.End)
           }
           .padding({ left: 15 })
@@ -269,34 +269,34 @@ struct Group_chat_edit {
           .margin({ top: 1 })
           .width('100%')
 
-          Switches({ isOn: this.roomConfig.publicroom, title: '在目录中列出房间', onToggleChange: (HisOn:string) => {
+          Switches({ isOn: this.roomConfig.publicroom, title: getContext().resourceManager.getStringByNameSync('GroupChat_String14'), onToggleChange: (HisOn:string) => {
             this.roomConfig.publicroom = HisOn
           } })
-          Switches({ isOn: this.roomConfig.persistentroom, title: '永久房间', onToggleChange: (HisOn:string) => {
+          Switches({ isOn: this.roomConfig.persistentroom, title: getContext().resourceManager.getStringByNameSync('GroupChat_String15'), onToggleChange: (HisOn:string) => {
             this.roomConfig.persistentroom = HisOn
           } })
-          Switches({ isOn: this.roomConfig.membersonly, title: '房间仅对成员开放', onToggleChange: (HisOn:string) => {
+          Switches({ isOn: this.roomConfig.membersonly, title: getContext().resourceManager.getStringByNameSync('GroupChat_String16'), onToggleChange: (HisOn:string) => {
             this.roomConfig.membersonly = HisOn
           } })
-          Switches({ isOn: this.roomConfig.moderatedroom, title: '房间需要审核', onToggleChange: (HisOn:string) => {
+          Switches({ isOn: this.roomConfig.moderatedroom, title: getContext().resourceManager.getStringByNameSync('GroupChat_String17'), onToggleChange: (HisOn:string) => {
             this.roomConfig.moderatedroom = HisOn
           } })
-          Switches({ isOn: this.roomConfig.allowinvites, title: '允许成员邀请其他人进群', onToggleChange: (HisOn:string) => {
+          Switches({ isOn: this.roomConfig.allowinvites, title: getContext().resourceManager.getStringByNameSync('GroupChat_String18'), onToggleChange: (HisOn:string) => {
             this.roomConfig.allowinvites = HisOn
           } })
-          Switches({ isOn: this.roomConfig.changesubject, title: '允许成员更改主题', onToggleChange: (HisOn:string) => {
+          Switches({ isOn: this.roomConfig.changesubject, title: getContext().resourceManager.getStringByNameSync('GroupChat_String19'), onToggleChange: (HisOn:string) => {
             this.roomConfig.changesubject = HisOn
           } })
-          Switches({ isOn: this.roomConfig.reservednick, title: '仅允许注册昵称登陆', onToggleChange: (HisOn:string) => {
+          Switches({ isOn: this.roomConfig.reservednick, title: getContext().resourceManager.getStringByNameSync('GroupChat_String20'), onToggleChange: (HisOn:string) => {
             this.roomConfig.reservednick = HisOn
           } })
-          Switches({ isOn: this.roomConfig.canchangenick, title: '允许成员修改昵称', onToggleChange: (HisOn:string) => {
+          Switches({ isOn: this.roomConfig.canchangenick, title: getContext().resourceManager.getStringByNameSync('GroupChat_String21'), onToggleChange: (HisOn:string) => {
             this.roomConfig.canchangenick = HisOn
           } })
-          Switches({ isOn: this.roomConfig.canchangenick, title: '允许成员注册房间', onToggleChange: (HisOn:string) => {
+          Switches({ isOn: this.roomConfig.canchangenick, title: getContext().resourceManager.getStringByNameSync('GroupChat_String22'), onToggleChange: (HisOn:string) => {
             this.roomConfig.canchangenick = HisOn
           } })
-          Switches({ isOn: this.roomConfig.enablelogging, title: '记录房间聊天', onToggleChange: (HisOn:string) => {
+          Switches({ isOn: this.roomConfig.enablelogging, title: getContext().resourceManager.getStringByNameSync('GroupChat_String23'), onToggleChange: (HisOn:string) => {
             this.roomConfig.enablelogging = HisOn
           } })
 

@@ -24,13 +24,13 @@ struct page {
   service:string="@"+Constant.HOST_DOMAIN+Constant.HOST_RES
   aboutToAppear() {
     Smack.registerGroupMessageCallback((id:ESObject, msg:ESObject) => {
-      console.info('群聊消息接收到了  id = ' + id + '   msg = ' + msg)
+      console.info(getContext().resourceManager.getStringByNameSync('Page_String1') +'  id = ' + id + '   msg = ' + msg)
     })
     Smack.registerInvitationListener((v0:string) => {
-      console.info('群聊邀請接收到了  v0 = ' + v0 )
+      console.info(getContext().resourceManager.getStringByNameSync('Page_String2') +'  v0 = ' + v0 )
     })
     Smack.registerMUCParticipantPresenceListener((nike: string, presenceType: string) => {
-      console.info('我在群中的状态变化（踢出、禁止、授予权限等）  nike = ' + nike + '   presenceType = ' + presenceType )
+      console.info(getContext().resourceManager.getStringByNameSync('Page_String3') +'  nike = ' + nike + '   presenceType = ' + presenceType )
     })
     Smack.handleSubscriptionRequestListener((resultStr:ESObject) => {
       console.info('handleSubscriptionRequestListener  resultStr = ' + resultStr)
@@ -43,175 +43,175 @@ struct page {
         Column() {
 
           Item({
-            text: '发送单人消息',
+            text: getContext().resourceManager.getStringByNameSync('Page_String4') ,
             click: () => {
               Smack.send('test3'+this.service, 'hello from test2 abc');
             }
           })
 
           Item({
-            text: '注销',
+            text: getContext().resourceManager.getStringByNameSync('Page_String5'),
             click: () => {
               Smack.unregister();
             }
           })
 
           Item({
-            text: '修改密码',
+            text: getContext().resourceManager.getStringByNameSync('Page_String6'),
             click: () => {
               Smack.changPwd("test");
             }
           })
 
           Item({
-            text: '创建分组',
+            text: getContext().resourceManager.getStringByNameSync('Page_String7'),
             click: () => {
               Smack.createGroup("foo");
             }
           })
 
           Item({
-            text: '获取好友列表',
+            text: getContext().resourceManager.getStringByNameSync('Page_String8'),
             click: () => {
               console.log("Test NAPI getFriends result:" + Smack.getFriendList());
             }
           })
 
           Item({
-            text: '添加好友',
+            text: getContext().resourceManager.getStringByNameSync('Page_String9'),
             click: () => {
               Smack.addFriends("test@"+Constant.HOST_DOMAIN, "test", "group");
             }
           })
 
           Item({
-            text: '删除好友',
+            text: getContext().resourceManager.getStringByNameSync('Page_String10'),
             click: () => {
               Smack.delfriend("test3"+this.service);
             }
           })
 
           Item({
-            text: '修改登录状态',
+            text:getContext().resourceManager.getStringByNameSync('Page_String11'),
             click: () => {
-              Smack.changePresence(PresenceType.Away, '在线');
+              Smack.changePresence(PresenceType.Away, 'Online');
             }
           })
 
           Item({
-            text: '修改好友分组',
+            text: getContext().resourceManager.getStringByNameSync('Page_String12'),
             click: () => {
               Smack.changeFriendGroup("test3@"+Constant.HOST_DOMAIN, "friend");
             }
           })
 
           Item({
-            text: '修改好友分组名称',
+            text: getContext().resourceManager.getStringByNameSync('Page_String13'),
             click: () => {
               Smack.changeGroup("ts", "friend");
             }
           })
 
           Item({
-            text: '创建群组',
+            text: getContext().resourceManager.getStringByNameSync('Page_String14'),
             click: () => {
               Smack.createRoom("444@"+Constant.HOST_IP+Constant.HOST_RES, "room1", Constant.HOST_DOMAIN, Constant.SERVICE_NAME);
             }
           })
 
           Item({
-            text: '加入群组',
+            text: getContext().resourceManager.getStringByNameSync('Page_String15'),
             click: () => {
               Smack.join();
             }
           })
 
           Item({
-            text: '离开群组',
+            text: getContext().resourceManager.getStringByNameSync('Page_String16'),
             click: () => {
               Smack.leave("leave msg");
             }
           })
 
           Item({
-            text: '发送群组消息',
+            text: getContext().resourceManager.getStringByNameSync('Page_String17'),
             click: () => {
               Smack.sendGroupMessage("group msg test");
             }
           })
 
           Item({
-            text: '设置群组主题',
+            text: getContext().resourceManager.getStringByNameSync('Page_String18'),
             click: () => {
               Smack.setSubject("subject");
             }
           })
 
           Item({
-            text: '销毁群组',
+            text: getContext().resourceManager.getStringByNameSync('Page_String19'),
             click: () => {
               Smack.destroy("999@"+Constant.HOST_IP+Constant.HOST_RES, "123");
             }
           })
 
           Item({
-            text: '踢出群组',
+            text: getContext().resourceManager.getStringByNameSync('Page_String20'),
             click: () => {
               Smack.kick("555", "kick");
             }
           })
 
           Item({
-            text: '踢出群组并拉进黑名单',
+            text: getContext().resourceManager.getStringByNameSync('Page_String21'),
             click: () => {
               Smack.ban("555", "ban");
             }
           })
 
           Item({
-            text: '授予发言权限',
+            text: getContext().resourceManager.getStringByNameSync('Page_String22'),
             click: () => {
               Smack.grantVoice("555", "grantVoice");
             }
           })
 
           Item({
-            text: '移除发言权限',
+            text: getContext().resourceManager.getStringByNameSync('Page_String23'),
             click: () => {
               Smack.revokeVoice("555", "revokeVoice");
             }
           })
 
           Item({
-            text: '岗位设置 ',
+            text: getContext().resourceManager.getStringByNameSync('Page_String24'),
             click: () => {
               Smack.setAffiliation("555", MUCRoomAffiliation.AffiliationOwner, "AffiliationOwner");
             }
           })
 
           Item({
-            text: '角色设置 RoleModerator',
+            text: getContext().resourceManager.getStringByNameSync('Page_String25'),
             click: () => {
               Smack.setRole("888", MUCRoomRole.RoleModerator, "RoleModerator");
             }
           })
 
           Item({
-            text: '更改登录状态 Away',
+            text: getContext().resourceManager.getStringByNameSync('Page_String26'),
             click: () => {
               Smack.setPresence(PresenceRoomType.Away, "Away");
             }
           })
 
           Item({
-            text: '邀请成员 ',
+            text: getContext().resourceManager.getStringByNameSync('Page_String27'),
             click: () => {
               Smack.invite("777"+this.service, "invite");
             }
           })
 
           Item({
-            text: '获取全部群聊成员',
+            text: getContext().resourceManager.getStringByNameSync('Page_String28'),
             click: () => {
               let number:ESObject = Smack.getRoomItems();
               console.info('getRoomItems = ' + JSON.stringify(number))
@@ -219,7 +219,7 @@ struct page {
           })
 
           Item({
-            text: '过滤群聊成员',
+            text: getContext().resourceManager.getStringByNameSync('Page_String29'),
             click: () => {
               let list:ESObject = Smack.requestList(MUCOperation.RequestOwnerList);
               console.info('requestList = ' + JSON.stringify(list))
@@ -227,28 +227,28 @@ struct page {
           })
 
           Item({
-            text: '拒绝加入群聊',
+            text: getContext().resourceManager.getStringByNameSync('Page_String30'),
             click: () => {
               Smack.declineInvitation("888_room@"+Constant.SERVICE_NAME+"."+Constant.HOST_DOMAIN, "888@"+Constant.HOST_DOMAIN, "room inviation refuesd");
             }
           })
 
           Item({
-            text: '创建并加入房间',
+            text: getContext().resourceManager.getStringByNameSync('Page_String31'),
             click: () => {
               let info:ESObject = Smack.createOrJoinRoom("room4", Constant.HOST_DOMAIN, Constant.SERVICE_NAME, "123");
             }
           })
 
           Item({
-            text: '房间设置密码',
+            text: getContext().resourceManager.getStringByNameSync('Page_String32'),
             click: () => {
               let info:ESObject = Smack.setPassword("123123");
             }
           })
 
           Item({
-            text: '设置群聊配置',
+            text: getContext().resourceManager.getStringByNameSync('Page_String33'),
             click: () => {
               console.info("test page setRoomConfig");
               let roomConfig: RoomConfig = new RoomConfig();
@@ -277,21 +277,21 @@ struct page {
           })
 
           Item({
-            text: '从该聊天室踢出用户群',
+            text: getContext().resourceManager.getStringByNameSync('Page_String34'),
             click: () => {
               let info:ESObject = Smack.bans("888,555", "bans");
             }
           })
 
           Item({
-            text: '更改聊天室成员的昵称',
+            text: getContext().resourceManager.getStringByNameSync('Page_String35'),
             click: () => {
               let info:ESObject = Smack.setNick("new_nike_name");
             }
           })
 
           Item({
-            text: '目前是否在多人聊天中',
+            text: getContext().resourceManager.getStringByNameSync('Page_String36'),
             click: () => {
               let isJoined:ESObject = Smack.isJoined();
               console.info('isJoined = ' + isJoined)
@@ -299,24 +299,24 @@ struct page {
           })
 
           Item({
-            text: '返回房间里用户的昵称',
+            text: getContext().resourceManager.getStringByNameSync('Page_String37'),
             click: () => {
               let nick:ESObject = Smack.nick();
               console.info('nick = ' + nick)
             }
           })
           Item({
-            text: '是否连接',
+            text: getContext().resourceManager.getStringByNameSync('Page_String38'),
             click: () => {
               let isConnected:ESObject = Smack.isConnected();
-              console.info('连接状态 = ' + isConnected)
+              console.info('State = ' + isConnected)
             }
           })
           Item({
-            text: '用户名称',
+            text: getContext().resourceManager.getStringByNameSync('Page_String38'),
             click: () => {
               let username:ESObject = Smack.username();
-              console.info('连接状态 = ' + username)
+              console.info('Connect State = ' + username)
             }
           })
           Item({

@@ -33,10 +33,10 @@ struct Login {
 
   build() {
     Column() {
-      Toolbar({ title: '登录' })
+      Toolbar({ title: getContext().resourceManager.getStringByNameSync('Login_String1')  })
       Column() {
         Column() {
-          TextInput({ placeholder: '请输入用户名', text: this.userName })
+          TextInput({ placeholder: getContext().resourceManager.getStringByNameSync('Login_String2'), text: this.userName })
             .margin({ bottom: 20 })
             .height(px2vp(100))
             .fontSize(px2fp(20))
@@ -45,7 +45,7 @@ struct Login {
             .onChange(v => {
               this.userName = v
             })
-          TextInput({ placeholder: '请输入密码', text: this.passWord })
+          TextInput({ placeholder: getContext().resourceManager.getStringByNameSync('Login_String3'), text: this.passWord })
             .type(InputType.Password)
             .height(px2vp(100))
             .fontSize(px2fp(20))
@@ -54,7 +54,7 @@ struct Login {
               this.passWord = v
             })
 
-          Button('登 录')
+          Button(getContext().resourceManager.getStringByNameSync('Login_String1') )
             .width('100%')
             .height(px2vp(50))
             .fontSize(px2fp(20))
@@ -69,7 +69,7 @@ struct Login {
 //                })
 //              }
             })
-          Button('连接服务')
+          Button(getContext().resourceManager.getStringByNameSync('Login_String4'))
             .width('100%')
             .height(px2vp(50))
             .fontSize(px2fp(20))
@@ -80,7 +80,7 @@ struct Login {
               }
             })
 
-          Button('注 册')
+          Button(getContext().resourceManager.getStringByNameSync('Login_String5'))
             .margin({ top: 10 })
             .width('100%')
             .height(px2vp(50))
@@ -129,7 +129,7 @@ struct Login {
   private onLogin() {
     if (this.check()) {
       prompt.showToast({
-        message: '登陆中..'
+        message: 'Logging in..'
       })
       setTimeout(()=>{
         this.connectService()
@@ -144,7 +144,7 @@ struct Login {
               })
             } else {
               prompt.showToast({
-                message: "登录失败"
+                message: "Login failed"
               })
             }
           });
@@ -159,13 +159,13 @@ struct Login {
   public check(): boolean {
     if (this.userName == '') {
       prompt.showToast({
-        message: "请输入用户名"
+        message: getContext().resourceManager.getStringByNameSync('Login_String6')
       })
       return false
     }
     if (this.passWord == '') {
       prompt.showToast({
-        message: "请输入登陆密码"
+        message: getContext().resourceManager.getStringByNameSync('Login_String7')
       })
       return false
     }

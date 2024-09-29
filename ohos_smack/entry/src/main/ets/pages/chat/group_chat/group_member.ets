@@ -27,7 +27,12 @@ struct group_all_member {
   @State isOwner: boolean = false //是否为群主
   @State isBanned: boolean = false //是否禁言
   @State isCompere: boolean = false //是否为主持人
-  private states: string[] = ['在线', '空闲', '离开', '请勿打扰', '长时间离开', '离线']
+  private states: string[] = [getContext().resourceManager.getStringByNameSync('GroupMember_String1') ,
+    getContext().resourceManager.getStringByNameSync('GroupMember_String2') ,
+    getContext().resourceManager.getStringByNameSync('GroupMember_String3') ,
+    getContext().resourceManager.getStringByNameSync('GroupMember_String4') ,
+    getContext().resourceManager.getStringByNameSync('GroupMember_String5') ,
+    getContext().resourceManager.getStringByNameSync('GroupMember_String6') ]
   @State select: number = 0
   @State users: Array<GroupUserEntity> = []
 
@@ -96,7 +101,7 @@ struct group_all_member {
 
       }.height(100).margin({ left: 20, top: 20 })
 
-      ItemText({ title: "踢出群聊", clickEvent: () => {
+      ItemText({ title: "Kick out group chat", clickEvent: () => {
         if (this.users.length == 1) {
           Smack.kick(this.users[0].name, "kick");
         } else {
@@ -105,13 +110,13 @@ struct group_all_member {
         router.back()
       } })
 
-      ItemText({ title: "加入黑名单", clickEvent: () => {
+      ItemText({ title: "JOIN IN BLACKLIST", clickEvent: () => {
         Smack.ban(this.users[0].name, "ban");
       } })
 
       if (this.isCompere) {
 
-        ItemText({ title: "撤销设为主持人", clickEvent: () => {
+        ItemText({ title:getContext().resourceManager.getStringByNameSync('GroupMember_String7'), clickEvent: () => {
           this.isCompere = !this.isCompere
           if (this.users.length > 1) {
             Smack.setRoles(this.getUsers(), MUCRoomRole.RoleParticipant, "RoleParticipant");
@@ -121,7 +126,7 @@ struct group_all_member {
         } })
 
       } else {
-        ItemText({ title: "设为主持人", clickEvent: () => {
+        ItemText({ title: getContext().resourceManager.getStringByNameSync('GroupMember_String8'), clickEvent: () => {
           this.isCompere = !this.isCompere
           if (this.users.length > 1) {
             Smack.setRoles(this.getUsers(), MUCRoomRole.RoleModerator, "RoleModerator");
@@ -130,7 +135,7 @@ struct group_all_member {
           }
         } })
       }
-      ItemText({ title: "设置用户状态", clickEvent: () => {
+      ItemText({ title: getContext().resourceManager.getStringByNameSync('GroupMember_String9'), clickEvent: () => {
         TextPickerDialog.show({
           range: this.states,
           selected: this.select,
@@ -146,7 +151,7 @@ struct group_all_member {
 
       if (this.isAdministrator) {
 
-        ItemText({ title: "撤销管理员身份", clickEvent: () => {
+        ItemText({ title: getContext().resourceManager.getStringByNameSync('GroupMember_String10'), clickEvent: () => {
           this.isAdministrator = !this.isAdministrator
           if (this.users.length > 1) {
             Smack.setAffiliations(this.getUsers(), MUCRoomAffiliation.AffiliationNone, "AffiliationNone");
@@ -156,7 +161,7 @@ struct group_all_member {
         } })
 
       } else {
-        ItemText({ title: "设置为群管理员", clickEvent: () => {
+        ItemText({ title: getContext().resourceManager.getStringByNameSync('GroupMember_String11'), clickEvent: () => {
           this.isAdministrator = !this.isAdministrator
           if (this.users.length > 1) {
             Smack.setAffiliations(this.getUsers(), MUCRoomAffiliation.AffiliationAdmin, "AffiliationAdmin");
@@ -167,7 +172,7 @@ struct group_all_member {
 
       }
       if (this.isMember) {
-        ItemText({ title: "取消会员身份", clickEvent: () => {
+        ItemText({ title: getContext().resourceManager.getStringByNameSync('GroupMember_String12'), clickEvent: () => {
           this.isMember = !this.isMember
           if (this.users.length > 1) {
             Smack.setAffiliations(this.getUsers(), MUCRoomAffiliation.AffiliationNone, "AffiliationNone");
@@ -177,7 +182,7 @@ struct group_all_member {
         } })
 
       } else {
-        ItemText({ title: "设为会员", clickEvent: () => {
+        ItemText({ title: getContext().resourceManager.getStringByNameSync('GroupMember_String13'), clickEvent: () => {
           this.isMember = !this.isMember
           if (this.users.length > 1) {
             Smack.setAffiliations(this.getUsers(), MUCRoomAffiliation.AffiliationMember, "AffiliationMember");
@@ -187,7 +192,7 @@ struct group_all_member {
         } })
       }
       if (this.isOwner) {
-        ItemText({ title: "撤销设为群主", clickEvent: () => {
+        ItemText({ title: getContext().resourceManager.getStringByNameSync('GroupMember_String14'), clickEvent: () => {
           this.isOwner = !this.isOwner
           if (this.users.length > 1) {
             Smack.setAffiliations(this.getUsers(), MUCRoomAffiliation.AffiliationNone, "AffiliationNone");
@@ -196,7 +201,7 @@ struct group_all_member {
           }
         } })
       } else {
-        ItemText({ title: "设为群主", clickEvent: () => {
+        ItemText({ title: getContext().resourceManager.getStringByNameSync('GroupMember_String15'), clickEvent: () => {
           this.isOwner = !this.isOwner
           if (this.users.length > 1) {
             Smack.setAffiliations(this.getUsers(), MUCRoomAffiliation.AffiliationOwner, "AffiliationOwner");
@@ -207,7 +212,7 @@ struct group_all_member {
 
       }
       if (this.isBanned) {
-        ItemText({ title: "取消禁言", clickEvent: () => {
+        ItemText({ title: getContext().resourceManager.getStringByNameSync('GroupMember_String16'), clickEvent: () => {
           this.isBanned = !this.isBanned
           if (this.users.length > 1) {
             Smack.grantVoices(this.getUsers(), "grantVoices");
@@ -218,7 +223,7 @@ struct group_all_member {
         })
 
       } else {
-        ItemText({ title: "禁言", clickEvent: () => {
+        ItemText({ title: getContext().resourceManager.getStringByNameSync('GroupMember_String17'), clickEvent: () => {
           this.isBanned = !this.isBanned
           if (this.users.length > 1) {
             Smack.revokeVoices(this.getUsers(), "revokeVoices");

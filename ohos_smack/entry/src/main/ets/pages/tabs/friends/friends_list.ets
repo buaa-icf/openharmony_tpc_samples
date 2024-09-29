@@ -37,7 +37,7 @@ export struct Friends_list {
   build() {
     Column() {
       // 标题栏
-      Toolbar({ title: '好友', rightIcon: $r("app.media.add"), rightClickCallBack: () => {
+      Toolbar({ title: 'Friends', rightIcon: $r("app.media.add"), rightClickCallBack: () => {
         this.menuDialog.open()
       } })
 
@@ -143,7 +143,7 @@ export struct Friends_list {
       }
       GlobalContext.getContext().setValue('groupList',JSON.stringify(groups));
       prompt.showToast({
-        message: '刷新完成'
+        message: 'Success'
       })
     }, 300)
   }
@@ -155,7 +155,7 @@ struct MenuDialog {
 
   build() {
     Column() {
-      Text('添加好友')
+      Text('Add Friends')
         .fontSize(20)
         .padding(20)
         .onClick(() => {
@@ -170,7 +170,7 @@ struct MenuDialog {
         .width('100%')
         .backgroundColor('#ececec')
 
-      Text('创建分组')
+      Text('Creat Group')
         .fontSize(30)
         .padding(20)
         .onClick(() => {

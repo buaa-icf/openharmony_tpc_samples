@@ -30,7 +30,7 @@ struct Group_chat_main {
   private voiceList: Array<string> = [];//群可发言列表
   private ownerList: Array<string> = [];
   private leaveFlag: boolean = false; //离开标志
-  @State message: string = '请把我加入会议中'
+  @State message: string = 'Join Meeting'
 
 
   //获取房间配置信息
@@ -114,7 +114,7 @@ struct Group_chat_main {
 
       } else if (reason == "room inviation refuesd") { // 拒绝邀请
         prompt.showToast({
-          message: '对方拒绝邀请'
+          message: 'This invitation has been refused'
         })
       }
     })
@@ -138,7 +138,7 @@ struct Group_chat_main {
       if (room == this.roomName && user == this.userName && presence == '5' && !this.leaveFlag) {
         Smack.leave("leave");
         prompt.showToast({
-          message: '房间被销毁'
+          message: 'The room was destroyed'
         })
         router.clear();
         router.push({
@@ -152,16 +152,16 @@ struct Group_chat_main {
       setTimeout(() => {
         switch (obj.flags) {
           case '1':
-            this.chatContentList.push(new ChatContentEntity(name, name + "操作成功", 1, true))
+            this.chatContentList.push(new ChatContentEntity(name, name + "Operation successful", 1, true))
             break;
           case '2':
-            this.chatContentList.push(new ChatContentEntity(name, name + "修改了昵称", 1, true))
+            this.chatContentList.push(new ChatContentEntity(name, name + "Change Name", 1, true))
             break;
           case '3':
-            this.chatContentList.push(new ChatContentEntity(name, name + "被踢出了群聊", 1, true))
+            this.chatContentList.push(new ChatContentEntity(name, name + getContext().resourceManager.getStringByNameSync('GroupChat_String24') , 1, true))
             break;
           case '4':
-            this.chatContentList.push(new ChatContentEntity(name, name + "被群聊屏蔽了", 1, true))
+            this.chatContentList.push(new ChatContentEntity(name, name + getContext().resourceManager.getStringByNameSync('GroupChat_String25') , 1, true))
             break;
 
         }
@@ -287,10 +287,10 @@ struct Group_chat_main {
         .height('100%')
 
         Flex({ direction: FlexDirection.Row, justifyContent: FlexAlign.Center, alignItems: ItemAlign.Center }) {
-          TextInput({ placeholder: '请输入', text: this.inputMessage }).onChange(v => {
+          TextInput({ placeholder: 'Please Input', text: this.inputMessage }).onChange(v => {
             this.inputMessage = v
           })
-          Button('发 送').width(100).margin({ left: 8 })
+          Button('Send').width(100).margin({ left: 8 })
             .onClick(e => {
               this.onSendGroupMessage()
             })

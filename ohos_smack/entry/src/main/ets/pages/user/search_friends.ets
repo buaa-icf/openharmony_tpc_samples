@@ -23,10 +23,10 @@ struct Search_friends {
 
   build() {
     Column() {
-      Toolbar({ title: '搜索', isBack: true })
+      Toolbar({ title: getContext().resourceManager.getStringByNameSync('Search_String1') , isBack: true })
 
       Column() {
-        TextInput({ placeholder: '搜 索' })
+        TextInput({ placeholder: getContext().resourceManager.getStringByNameSync('Search_String1') })
           .width('100%')
           .padding(px2vp(10))
           .fontSize(px2fp(30))
@@ -65,7 +65,7 @@ struct Search_friends {
   // 搜索好友
   private onSearch() {
     for (let i = 0; i < 20; i++) {
-      this.resultList.push('我是搜索之后的结果')
+      this.resultList.push(getContext().resourceManager.getStringByNameSync('Search_String2'))
     }
   }
 }

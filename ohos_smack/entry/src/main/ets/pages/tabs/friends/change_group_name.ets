@@ -27,21 +27,21 @@ struct Change_group_name {
   build() {
     Flex({ direction: FlexDirection.Column }) {
       Toolbar({
-        title: '修改分组名称',
+        title: 'Change group name',
         isBack: true
       })
       Flex({ direction: FlexDirection.Column }) {
-        Text('原始名称：' + this.oldName).fontSize(30).padding(10)
+        Text('Original name：' + this.oldName).fontSize(30).padding(10)
 
-        Text('新的名称').fontSize(30).padding(10)
-        TextInput({ placeholder: "请输入" })
+        Text('New Name').fontSize(30).padding(10)
+        TextInput({ placeholder: "Please Input" })
           .height(80)
           .fontSize(30)
           .onChange(value => {
             this.newName = value
           })
 
-        Button('修 改')
+        Button('Change')
           .height(80)
           .fontSize(30)
           .onClick(e => {
@@ -58,12 +58,12 @@ struct Change_group_name {
   onChangeName() {
     if (this.newName == '') {
       prompt.showToast({
-        message: '请输入完整'
+        message: 'Please enter the complete information'
       })
     } else {
       Smack.changeGroup(this.oldName, this.newName);
       prompt.showToast({
-        message: '已修改'
+        message: 'Success'
       })
     }
   }
