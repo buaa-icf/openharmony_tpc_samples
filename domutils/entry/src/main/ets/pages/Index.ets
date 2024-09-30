@@ -72,13 +72,13 @@ struct Index {
   build() {
     Column() {
       Row() {
-        Button('解析HTML标签并获取属性')
+        Button($r('app.string.Parse_attributes'))
           .fontSize(25)
           .margin(15)
           .height(46)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
-            let content: ESObject = [];
+            let content: Array<string> = [];
             let dom: Document = parseDocument(html);
             this.addLog(content, 'domUtils length= ' + dom.children.length);
             let element:Element[] = DomUtils.getElementsByTagName('style', dom);

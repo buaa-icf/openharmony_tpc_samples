@@ -11,6 +11,10 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Parse_attributes",
+      "value": "解析HTML标签并获取属性"
     }
   ]
 }
