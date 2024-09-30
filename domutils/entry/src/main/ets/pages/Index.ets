@@ -78,7 +78,7 @@ struct Index {
           .height(46)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
-            let content: ESObject = [];
+            let content: Array<string> = [];
             let dom: Document = parseDocument(html);
             this.addLog(content, 'domUtils length= ' + dom.children.length);
             let element:Element[] = DomUtils.getElementsByTagName('style', dom);
