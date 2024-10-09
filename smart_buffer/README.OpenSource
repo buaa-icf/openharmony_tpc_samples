@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "smart-buffer",
+        "License": "MIT License",
+        "License File": " LICENSE ",
+        "Version Number": "4.2.0",
+        "Owner" : "xiafeng@huawei.com",
+        "Upstream URL": "https://github.com/JoshGlazebrook/smart-buffer",
+        "Description": "smart-buffer is a Buffer wrapper that adds automatic read & write offset tracking, string operations, data insertions, and more."
+    }
+]
