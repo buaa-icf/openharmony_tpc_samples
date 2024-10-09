@@ -50,6 +50,38 @@ static std::map<std::string, std::string> g_headerMap = {};
 static std::map<std::string, std::string> g_optionMap = {};
 static bool g_isOnce = false;
 
+
+static std::string extract_string_from_message(sio::message::ptr const &message)
+{
+    std::string strResult;
+    size_t pos;
+    // 当服务端返回的是json字符串的情况下，无需拼接转义符 \",直接将数据返回拼接即可
+    if (message->get_string().size() > 0 && message->get_string()[0] == '{') {
+        return message->get_string();
+    }
+    // 当服务端返回的是字符串，首先先将转义符替换为正常字符串，然后返回给应用侧，应用侧解析才会正常无异常，
+    // 目前只处理了 \" 和 \n 两个。
+    strResult = message->get_string();
+    pos = strResult.find("\"");
+    while (pos != std::string::npos) {
+        // 替换 "\"" 为 "\\\""
+        strResult.replace(pos, 1, "\\\"");
+        // 更新查找位置, 2 是 "\\\"" 的长度(不算转义符的占位)
+        pos = strResult.find("\"", pos + 2);
+    }
+
+    pos = strResult.find("\n");
+    while (pos != std::string::npos) {
+        // 替换 "\n" 为 "\\n"
+        strResult.replace(pos, 1, "\\n");
+        // 更新查找位置, 2 是 "\\n" 的长度(不算转义符的占位)
+        pos = strResult.find("\n", pos + 2);
+    }
+
+    // 拼接转义符 \" 返回组装 json 串
+    return std::string("\"") + strResult + "\"";
+}
+
 static std::string get_message_value(sio::message::ptr const &message)
 {
     std::string message_json;
@@ -62,7 +94,7 @@ static std::string get_message_value(sio::message::ptr const &message)
         case sio::message::flag_double:
             return std::to_string(message->get_double());
         case sio::message::flag_string:
-            return std::string("\"") + message->get_string() + "\"";
+            return extract_string_from_message(message);
         case sio::message::flag_binary:
             return std::string("\"") + *message->get_binary() + "\"" + ",\"binary\":true";
         case sio::message::flag_object:
