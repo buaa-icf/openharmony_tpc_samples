@@ -45,6 +45,7 @@ static constexpr const int ARG_INDEX_1 = 1;
 static constexpr const int ARG_INDEX_2 = 2;
 
 static struct ThreadSafeInfo g_threadSafeInfo = {};
+static struct BinaryInfo g_binaryInfo = {};
 static std::map<std::string, std::string> g_headerMap = {};
 static std::map<std::string, std::string> g_optionMap = {};
 static bool g_isOnce = false;
@@ -127,6 +128,30 @@ static void handler_event_listener_aux(OHOS::SocketIO::SocketIOContext context, 
         
         if (g_isOnce) {
             on_event_listener_call_aux_ref_map[name.c_str()] = nullptr;
+        }
+    }
+}
+
+static void handler_binary_event_listener_aux(OHOS::SocketIO::SocketIOContext context, const std::string &name,
+                                              sio::message::ptr const &message, bool needAck,
+                                              sio::message::list &ack_message)
+{
+    napi_ref on_event_listener_call_aux_ref = on_event_listener_call_aux_ref_map[name.c_str()];
+    if (on_event_listener_call_aux_ref != nullptr) {
+        if (message->get_flag() == sio::message::flag_binary) {
+            auto binary_str = *message->get_binary();
+            
+            BinaryInfo* data = &g_binaryInfo;
+            if (data == nullptr) {
+                OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[event_listener]g_threadSafeInfo is null");
+                return;
+            }
+            data->result = binary_str;
+            context.CallTsFunction(data);
+            
+            if (g_isOnce) {
+                on_event_listener_call_aux_ref_map[name.c_str()] = nullptr;
+            }
         }
     }
 }
@@ -234,6 +259,14 @@ public:
     {
         g_isOnce = false;
         handler_event_listener_aux(context, name, message, needAck,
+            ack_message);
+    }
+    
+    void on_binary_event_listener_aux(const OHOS::SocketIO::SocketIOContext &context, const std::string &name,
+                               sio::message::ptr const &message, bool needAck, sio::message::list &ack_message)
+    {
+        g_isOnce = false;
+        handler_binary_event_listener_aux(context, name, message, needAck,
             ack_message);
     }
 
@@ -696,6 +729,31 @@ static napi_value once(napi_env env, napi_callback_info info)
     return 0;
 }
 
+static napi_value on_binary(napi_env env, napi_callback_info info)
+{
+    initEnv(env);
+    size_t argc = 2;
+    napi_value args[ARG_INDEX_2] = {nullptr};
+    napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
+    char eventName[MAX_BUF_SIZE];
+    napi_get_value_string_utf8(env, args[0], eventName, MAX_BUF_SIZE, &result);
+    napi_value on_event_listener_call_aux = args[1];
+    napi_ref on_event_listener_call_aux_ref;
+    napi_create_reference(env_global, on_event_listener_call_aux, 1, &on_event_listener_call_aux_ref);
+    on_event_listener_call_aux_ref_map.insert(
+        {eventName, on_event_listener_call_aux_ref});
+    
+    auto tsfunc_context = new OHOS::SocketIO::SocketIOContext(env);
+    
+    tsfunc_context->CreateTsFunction(on_event_listener_call_aux, "on_binary", tsfunc_context, CallJsBinary);
+
+    get_socket()->on(eventName, *tsfunc_context,
+                     std::bind(&ClientSocket::on_binary_event_listener_aux, &g_clientSocket, std::placeholders::_1,
+                               std::placeholders::_2, std::placeholders::_3, std::placeholders::_4,
+                               std::placeholders::_5));
+    return 0;
+}
+
 static napi_value off(napi_env env, napi_callback_info info)
 {
     size_t argc = 1;
@@ -872,6 +930,7 @@ static napi_value Init(napi_env env, napi_value exports)
         {"set_nsp", nullptr, set_nsp, nullptr, nullptr, nullptr, napi_default, nullptr},
         {"on", nullptr, on, nullptr, nullptr, nullptr, napi_default, nullptr},
         {"once", nullptr, once, nullptr, nullptr, nullptr, napi_default, nullptr},
+        {"on_binary", nullptr, on_binary, nullptr, nullptr, nullptr, napi_default, nullptr},
         {"off", nullptr, off, nullptr, nullptr, nullptr, napi_default, nullptr},
         {"off_all", nullptr, off_all, nullptr, nullptr, nullptr, napi_default, nullptr},
         {"socket_close", nullptr, socket_close, nullptr, nullptr, nullptr, napi_default, nullptr},

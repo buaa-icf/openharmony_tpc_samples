@@ -10,7 +10,7 @@
  */
 
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-import { client_socket ,buffer_util} from '@ohos/socketio';
+import { client_socket ,buffer_util} from '@ohos/socketio_2.x';
 import hilog from '@ohos.hilog';
 
 export default function abilityTest() {
@@ -355,10 +355,10 @@ export default function abilityTest() {
 
     it('test_buffer_util', 0, () => {
       let uArray =  Uint8Array.from([1234])
-      let bufString = buffer_util.uint8ArrayToString(uArray)
+      let bufString: string = buffer_util.uint8ArrayToString(uArray)
       expect(bufString).not().assertEqual('')
 
-      let buf = buffer_util.stringToUint8Array(bufString)
+      let buf: Uint8Array = buffer_util.stringToUint8Array(bufString)
       expect(buf.length).not().assertEqual(0)
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'test_buffer_util finished');
     })
