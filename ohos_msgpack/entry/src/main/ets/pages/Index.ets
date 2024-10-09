@@ -22,7 +22,7 @@ struct Index {
   build() {
     Row() {
       Column() {
-        Button('简单编码解码')
+        Button($r('app.string.Simple_encoding_and_decoding'))
           .onClick(() => {
             router.pushUrl({ url: 'pages/EncodeDecodePage' })
           })
@@ -46,17 +46,17 @@ struct Index {
           .onClick(() => {
             router.pushUrl({ url: 'pages/Encoding64DemoFour' })
           })
-        Button('构造器编码解码')
+        Button($r('app.string.Constructor_encoding_and_decoding'))
           .margin({ top: 10 })
           .onClick(() => {
             router.pushUrl({ url: 'pages/EncodeDecodeConstructorPage' })
           })
-        Button('复杂Multi编码解码')
+        Button($r('app.string.Complex_encoding_decoding'))
           .margin({ top: 10 })
           .onClick(() => {
             router.push({ url: 'pages/MultiDecodePage' })
           })
-        Button('特殊字符扩展编解码')
+        Button($r('app.string.Special_Character'))
           .margin({ top: 10 })
           .onClick(() => {
             router.pushUrl({ url: 'pages/ExamPage' })

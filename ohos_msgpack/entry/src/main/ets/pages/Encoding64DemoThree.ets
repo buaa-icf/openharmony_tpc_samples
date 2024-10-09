@@ -19,15 +19,25 @@ import { encode, decode, ExtensionCodec } from '@ohos/msgpack';
 @Entry
 @Component
 struct Encoding64DemoThree {
-  @State message: string = '编码后的数据展示';
-  @State encodedMessage: string = '解码后的数据展示';
-  @State decodeMessage: string = '解码后的数据展示';
+  @State message: string = '';
+  @State encodedMessage: string = '';
+  @State decodeMessage: string = '';
   encodedUint8?: Uint8Array = undefined;
+
+  aboutToAppear(): void {
+    this.message = this.getResourceString($r('app.string.Display_encoded_data'));
+    this.encodedMessage = this.getResourceString($r('app.string.Display_decoded_data'));
+    this.decodeMessage = this.getResourceString($r('app.string.Display_decoded_data'));
+  }
+
+  getResourceString(res: Resource) {
+    return getContext().resourceManager.getStringSync(res.id);
+  }
 
   build() {
     Row() {
       Column() {
-        Button('点击对象编码').onClick(() => {
+        Button($r('app.string.Object_encoding')).onClick(() => {
           const extensionCodec = new ExtensionCodec<undefined>();
           extensionCodec.register({
             type: 0,
@@ -53,16 +63,16 @@ struct Encoding64DemoThree {
           this.encodedUint8 = encode<undefined>(data(), { useBigInt64: true,
             extensionCodec
           });
-          this.message = '编码后的数据=' + this.encodedUint8;
+          this.message = this.getResourceString($r('app.string.Encoded_data')) + this.encodedUint8;
         })
         Text(this.message)
           .fontSize(25)
           .fontWeight(FontWeight.Bold)
-        Button('点击解码').onClick(() => {
+        Button($r('app.string.decode')).onClick(() => {
           if (this.encodedUint8) {
-            this.encodedMessage = '解码后的数据=' + JSON.stringify(decode<string[]>(this.encodedUint8));
+            this.encodedMessage = this.getResourceString($r('app.string.Decoded_data')) + JSON.stringify(decode<string[]>(this.encodedUint8));
           } else {
-            this.decodeMessage = '解码数据为undefined, 请先点击编码';
+            this.decodeMessage = this.getResourceString($r('app.string.undefined'));
           }
         })
         Text(this.encodedMessage)

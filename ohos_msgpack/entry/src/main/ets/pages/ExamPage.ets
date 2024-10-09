@@ -24,7 +24,7 @@ import Util from './Util';
 @Entry
 @Component
 struct Index {
-  @State message: string = '点击查看log编码输入和解码输出'
+  @State message: Resource = $r('app.string.log')
   m1: Massage = {
     string: "Кириллица",
     msgpack: [
