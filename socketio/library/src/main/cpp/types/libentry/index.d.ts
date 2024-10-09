@@ -9,60 +9,76 @@
  * This software is distributed without any warranty.
  */
 
-export const set_headers: (headers: string) => void;
-export const connect: (uri: string) => void;
-export const set_nsp: (set_nsp: string) => void;
-export const set_open_listener: (open: any) => void;
+export class newSocketIOClient {
+  classId: number;
+  set_headers: (headers: string, classId: number) => void;
 
-export const set_fail_listener: (fail: any) => void;
+  set_option: (opts: string, classId: number) => void;
 
-export const set_reconnecting_listener: (reconnecting: any) => void;
+  connect: (uri: string, classId: number) => void;
 
-export const set_reconnect_listener: (reconnect: any) => void;
+  set_nsp: (set_nsp: string, classId: number) => void;
 
-export const set_close_listener: (closeListener: any) => void;
+  set_open_listener: (open: any, classId: number) => void;
 
-export const set_socket_open_listener: (socket_open_listener: any) => void;
+  set_fail_listener: (fail: any, classId: number) => void;
 
-export const set_socket_close_listener: (socket_close_listener: any) => void;
+  set_reconnecting_listener: (reconnecting: any, classId: number) => void;
 
-export const clear_con_listeners: () => void;
+  set_reconnect_listener: (reconnect: any, classId: number) => void;
 
-export const clear_socket_listeners: () => void;
+  set_close_listener: (closeListener: any, classId: number) => void;
 
-export const set_reconnect_attempts: (reconnect_attempts: any) => void;
+  set_socket_open_listener: (socket_open_listener: any, classId: number) => void;
 
-export const set_reconnect_delay: (reconnect_delay: any) => void;
+  set_socket_close_listener: (socket_close_listener: any, classId: number) => void;
 
-export const set_reconnect_delay_max: (reconnect_delay_max: any) => void;
+  clear_con_listeners: (classId: number) => void;
 
-export const set_logs_default: () => void;
+  clear_socket_listeners: (classId: number) => void;
+
+  set_reconnect_attempts: (reconnect_attempts: any, classId: number) => void;
+
+  set_reconnect_delay: (reconnect_delay: any, classId: number) => void;
+
+  set_reconnect_delay_max: (reconnect_delay_max: any, classId: number) => void;
+
+  set_logs_default: (classId: number) => void;
 
 
-export const set_logs_quiet: () => void;
-export const set_logs_verbose: () => void;
+  set_logs_quiet: (classId: number) => void;
 
-export const close: () => void;
+  set_logs_verbose: (classId: number) => void;
 
-export const sync_close: () => void;
+  close: (classId: number) => void;
 
-export const set_proxy_basic_auth: (uri: string, username: string, password: string) => void;
+  sync_close: (classId: number) => void;
 
-export const opened: () => boolean;
+  set_proxy_basic_auth: (uri: string, username: string, password: string, classId: number) => void;
 
-export const get_sessionid: () => string;
+  opened: (classId: number) => boolean;
 
-export const on: (event_name: string, on_event_listener: (event_json: string) => void) => void;
+  get_sessionid: (classId: number) => string;
 
-export const once: (event_name: string, on_event_listener: (event_json: string) => void) => void;
+  on: (event_name: string, on_event_listener: (event_json: string, classId: number) => void, classId: number) => void;
 
-export const off: (close: any) => void;
+  on_binary: (event_name: string, on_event_listener: (event_data: Uint8Array) => void, classId: number) => void;
 
-export const off_all: () => void;
+  once: (event_name: string, on_event_listener: (event_json: string) => void, classId: number) => void;
 
-export const socket_close: () => void;
+  off: (close: any, classId: number) => void;
 
-export const off_error: () => void;
-export const on_error: (on_error_listener: (message: string) => void) => void;
+  off_all: (classId: number) => void;
 
-export const emit: (name: string, message: any, b: boolean, on_emit_callback: (emit_callback_json: string) => void) => void;
+  socket_close: (classId: number) => void;
+
+  off_error: (classId: number) => void;
+
+  on_error: (on_error_listener: (message: string) => void, classId: number) => void;
+
+  emit: (name: string, message: any, b: boolean,
+    on_emit_callback: (emit_callback_json: string) => void, classId: number) => void;
+
+  emitAckBinary: (name: string, message: any, b: boolean,
+    on_emit_callback: (code: number, emit_callback_data: Uint8Array) => void, classId: number) => void;
+}
