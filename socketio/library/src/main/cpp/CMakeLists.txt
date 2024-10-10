@@ -26,14 +26,17 @@ endif()
 
 set(NATIVERENDER_ROOT_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 
+add_subdirectory(boundscheck)
 add_subdirectory(socket.io-client-cpp)
 
 include_directories(${NATIVERENDER_ROOT_PATH}
                     ${NATIVERENDER_ROOT_PATH}/socket.io-client-cpp/src
                     ${NATIVERENDER_ROOT_PATH}/socket.io-client-cpp/src/internal
+                    ${NATIBERENDER_ROOT_PATH}/boundscheck
                     )
 
 add_library(client_socket_c SHARED
-        client_socket.cpp)
+        native-bridge.cpp
+        socketio_module_napi.cpp)
 
-target_link_libraries(client_socket_c PUBLIC sioclient libace_napi.z.so libc++.a libhilog_ndk.z.so)
+target_link_libraries(client_socket_c PUBLIC boundscheck sioclient libace_napi.z.so libc++.a libhilog_ndk.z.so)

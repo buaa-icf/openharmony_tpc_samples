@@ -8,143 +8,167 @@
  *
  * This software is distributed without any warranty.
  */
+import { newSocketIOClient } from 'libclient_socket_c.so';
 
-import client_socket_c from 'libclient_socket_c.so';
-import { buffer_util } from './buffer_util'
+import { buffer_util } from './buffer_util';
 
 export class client_socket {
+  private mSocketIOClient: newSocketIOClient;
+  private classId = 0;
+
   constructor() {
+    this.mSocketIOClient = new newSocketIOClient();
+    this.classId = this.mSocketIOClient.classId;
+    console.log("LibSocketIOClient constructor classId:" + this.classId);
   }
 
   //client相关接口
 
   public set_open_listener(on_open: () => void) {
-    client_socket_c.set_open_listener(on_open);
+    this.mSocketIOClient.set_open_listener(on_open, this.classId);
   }
 
   public set_fail_listener(on_fail: () => void) {
-    client_socket_c.set_fail_listener(on_fail);
+    this.mSocketIOClient.set_fail_listener(on_fail, this.classId);
   }
 
   public set_reconnecting_listener(on_reconnecting: () => void) {
-    client_socket_c.set_reconnecting_listener(on_reconnecting);
+    this.mSocketIOClient.set_reconnecting_listener(on_reconnecting, this.classId);
   }
 
   public set_reconnect_listener(on_reconnect: () => void) {
-    client_socket_c.set_reconnect_listener(on_reconnect);
+    this.mSocketIOClient.set_reconnect_listener(on_reconnect, this.classId);
   }
 
   public set_close_listener(on_close: (reason: string) => void) {
-    client_socket_c.set_close_listener(on_close);
+    this.mSocketIOClient.set_close_listener(on_close, this.classId);
   }
 
   public set_socket_open_listener(on_socket_open: (nsp: string) => void) {
-    client_socket_c.set_socket_open_listener(on_socket_open);
+    this.mSocketIOClient.set_socket_open_listener(on_socket_open, this.classId);
   }
 
   public set_socket_close_listener(on_socket_close: (nsp: string) => void) {
-    client_socket_c.set_socket_close_listener(on_socket_close);
+    this.mSocketIOClient.set_socket_close_listener(on_socket_close, this.classId);
   }
 
   public set_headers(headers: string) {
-    client_socket_c.set_headers(headers);
+    this.mSocketIOClient.set_headers(headers, this.classId);
+  }
+
+  public set_option(opt: string) {
+    this.mSocketIOClient.set_option(opt, this.classId);
   }
 
   public connect(uri: string) {
-    client_socket_c.connect(uri);
+    this.mSocketIOClient.connect(uri, this.classId);
   }
 
   public clear_con_listeners() {
-    client_socket_c.clear_con_listeners();
+    this.mSocketIOClient.clear_con_listeners(this.classId);
   }
 
   public clear_socket_listeners() {
-    client_socket_c.clear_socket_listeners();
+    this.mSocketIOClient.clear_socket_listeners(this.classId);
   }
 
   public set_reconnect_attempts(attempts: number) {
-    client_socket_c.set_reconnect_attempts(attempts);
+    this.mSocketIOClient.set_reconnect_attempts(attempts, this.classId);
   }
 
   public set_reconnect_delay(millis: number) {
-    client_socket_c.set_reconnect_delay(millis);
+    this.mSocketIOClient.set_reconnect_delay(millis, this.classId);
   }
 
   public set_reconnect_delay_max(millis: number) {
-    client_socket_c.set_reconnect_delay_max(millis);
+    this.mSocketIOClient.set_reconnect_delay_max(millis, this.classId);
   }
 
   public set_logs_default() {
-    client_socket_c.set_logs_default();
+    this.mSocketIOClient.set_logs_default(this.classId);
   }
 
   public set_logs_quiet() {
-    client_socket_c.set_logs_quiet();
+    this.mSocketIOClient.set_logs_quiet(this.classId);
   }
 
   public set_logs_verbose() {
-    client_socket_c.set_logs_verbose();
+    this.mSocketIOClient.set_logs_verbose(this.classId);
   }
 
   public close() {
-    client_socket_c.close();
+    this.mSocketIOClient.close(this.classId);
   }
 
   public sync_close() {
-    client_socket_c.sync_close();
+    this.mSocketIOClient.sync_close(this.classId);
   }
 
   public set_proxy_basic_auth(uri: string, username: string, password: string) {
-    client_socket_c.set_proxy_basic_auth(uri, username, password);
+    this.mSocketIOClient.set_proxy_basic_auth(uri, username, password, this.classId);
   }
 
   public opened(): boolean {
-    return client_socket_c.opened();
+    return this.mSocketIOClient.opened(this.classId);
   }
 
   public get_sessionid(): string {
-    return client_socket_c.get_sessionid();
+    return this.mSocketIOClient.get_sessionid(this.classId);
   }
 
   //socket相关接口
 
   public set_nsp(nsp: string) {
-    client_socket_c.set_nsp(nsp);
+    this.mSocketIOClient.set_nsp(nsp, this.classId);
   }
 
   public on(event_name: string, on_event_listener: (event_json: string) => void) {
-    client_socket_c.on(event_name, on_event_listener);
+    this.mSocketIOClient.on(event_name, on_event_listener, this.classId);
+  }
+
+  public on_binary(event_name: string, on_event_listener: (event_data: Uint8Array) => void) {
+    this.mSocketIOClient.on_binary(event_name, on_event_listener, this.classId);
   }
 
   public once(event_name: string, on_event_listener: (event_json: string) => void) {
-    client_socket_c.once(event_name, on_event_listener);
+    this.mSocketIOClient.once(event_name, on_event_listener, this.classId);
   }
 
   public off(event_name: string) {
-    client_socket_c.off(event_name);
+    this.mSocketIOClient.off(event_name, this.classId);
   }
 
   public off_all() {
-    client_socket_c.off_all();
+    this.mSocketIOClient.off_all(this.classId);
   }
 
   public socket_close() {
-    client_socket_c.socket_close();
+    this.mSocketIOClient.socket_close(this.classId);
   }
 
   public on_error(on_error_listener: (message: string) => void) {
-    client_socket_c.on_error(on_error_listener);
+    this.mSocketIOClient.on_error(on_error_listener, this.classId);
   }
 
   public off_error() {
-    client_socket_c.off_error();
+    this.mSocketIOClient.off_error(this.classId);
   }
 
   public emit(name: string, message: ESObject, on_emit_callback?: (emit_callback_json: string) => void) {
     if (message instanceof Uint8Array) {
-      client_socket_c.emit(name, buffer_util.uint8ArrayToString(message), true, on_emit_callback);
+      this.mSocketIOClient.emit(name, buffer_util.uint8ArrayToString(message), true, on_emit_callback, this.classId);
     } else {
-      client_socket_c.emit(name, message, false, on_emit_callback);
+      this.mSocketIOClient.emit(name, message, false, on_emit_callback, this.classId);
+    }
+  }
+
+  public emitAckBinary(name: string, message: ESObject,
+    on_emit_callback?: (code: number, emit_callback_data: Uint8Array) => void) {
+    if (message instanceof Uint8Array) {
+      this.mSocketIOClient.emitAckBinary(name, buffer_util.uint8ArrayToString(message), true, on_emit_callback,
+        this.classId);
+    } else {
+      this.mSocketIOClient.emitAckBinary(name, message, false, on_emit_callback, this.classId);
     }
   }
 }
