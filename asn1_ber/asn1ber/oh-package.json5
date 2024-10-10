@@ -1,0 +1,16 @@
+{
+  "name": "@ohos/asn1_ber",
+  "version": "1.0.0",
+  "description": "provides the ability to generate and parse ASN1.BER objects.",
+  "main": "Index.ts",
+  "author": "hihope",
+  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/asn1_ber",
+
+  "keywords": [
+    "OpenHarmony",
+    "smart_buffer",
+    "HarmonyOS"
+  ],
+  "license": "MIT License",
+  "dependencies": {}
+}

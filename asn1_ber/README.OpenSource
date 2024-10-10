@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "node_asn1_ber",
+        "License": "MIT License",
+        "License File": " LICENSE ",
+        "Version Number": "1.2.2",
+        "Owner" : "xiafeng@huawei.com",
+        "Upstream URL": "https://github.com/markabrahams/node-asn1-ber",
+        "Description": "node_asn1_ber provides the ability to generate and parse ASN1.BER objects."
+    }
+]
