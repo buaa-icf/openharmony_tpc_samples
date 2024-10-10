@@ -1,5 +1,5 @@
 {
-  "name": "@ohos/asn1_ber",
+  "name": "@ohos/asn1-ber",
   "version": "1.0.0",
   "description": "provides the ability to generate and parse ASN1.BER objects.",
   "main": "Index.ts",
@@ -8,7 +8,7 @@
 
   "keywords": [
     "OpenHarmony",
-    "smart_buffer",
+    "Asn1Ber",
     "HarmonyOS"
   ],
   "license": "MIT License",
