@@ -216,6 +216,7 @@ emit(name: string, message: string, on_emit_callback?: (emit_callback_json: stri
 - IDE：DevEco Studio 4.1.3.532; SDK: 4.1.0.67(SP3)。
 - IDE：DevEco Studio Next ,Developer Beta1(5.0.3.121); SDK:API12 (5.0.0.16)。
 - IDE：DevEco Studio NEXT Developer Beta2(5.0.3.500); SDK: API12 (5.0.0.31)。
+- IDE：DevEco Studio NEXT Developer Beta1(5.0.3.810); SDK: API12 (5.0.0.68)。
 
 ## 目录结构
 ````
@@ -231,8 +232,8 @@ emit(name: string, message: string, on_emit_callback?: (emit_callback_json: stri
 ````
 
 ## 贡献代码
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然也非常欢迎您
-发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 给我们。
+使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎
+发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 共建。
 
 ## 开源协议
 本项目基于 [MIT LICENSE](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/socketio/LICENSE) ，请自由地享受和参与开源。

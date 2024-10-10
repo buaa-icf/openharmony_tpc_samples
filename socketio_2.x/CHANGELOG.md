@@ -1,3 +1,8 @@
+## v1.0.1
+
+- Fixed an issue when the server returned json strings containing special characters.
+- Binary data reception is supported.
+
 ## v1.0.0
 
 - 实现功能
