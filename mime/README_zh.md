@@ -25,6 +25,9 @@ mime.getExtension('text/plain')  // txt;
 ## 约束与限制
 
 在下述版本验证通过：
+
+DevEco Studio: NEXT Beta1-5.0.3.806, SDK: API12 Release (5.0.0.66)
+
 DevEco Studio: 4.1 Canary(4.1.3.213), SDK: API11 4.1.2.3
 
 ## 目录结构
