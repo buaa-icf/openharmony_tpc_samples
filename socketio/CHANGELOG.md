@@ -1,3 +1,16 @@
+## v2.1.0
+- Socketio objects can be created in multiple scenarios.
+- Support custom event name.
+- Support to receive binary messages.
+- Added set_headers for setting request headers.
+- Added set_option for setting request parameter.
+- Fixed server return json string parsing failure.
+- Fixed client crash when server sends empty message.
+- Fixed client failed to send array data.
+- Fixed server failed to send array data.
+- Fixed a data exception caused by the client receiving data buffer being too small.
+- Fixed the exception of the client sending callback messages.
+
 ## v2.0.1
 - 发布正式版本
 
