@@ -74,6 +74,7 @@ For details about the OpenHarmony ohpm environment configuration, see [OpenHarmo
 ## Constraints
 
 This project has been verified in the following versions:
+- DevEco Studio: NEXT Developer Beta1(5.0.3.122), SDK: API12(5.0.0.18)
 - DevEco Studio: 4.1 (4.1.3.413), SDK: API 11 (4.1.0.53)
 - DevEco Studio: 4.0 (4.0.3.512), SDK: API 10 (4.0.10.9)
 - DevEco Studio: IDE Canary1 (4.0.3.212), SDK API 10 (4.0.8.3)
