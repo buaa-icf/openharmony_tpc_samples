@@ -40,6 +40,7 @@ x.toFixed();                        // "1111222233334444555566"
 For details, see the [Official Documentation](https://mikemcl.github.io/bignumber.js/) and [Unit Test Cases](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/bignumberjsDemo/TEST.md).
 ## Constraints
 This project has been verified in the following versions:
+- DevEco Studio: NEXT Beta1-5.0.3.806, SDK: API12 Release (5.0.0.66)
 - DevEco Studio: 4.0 (4.0.3.512), SDK: API 10 (4.0.10.9)
 - DevEco Studio: 3.1 Beta2 (3.1.0.400), SDK: API 9 Release (3.2.11.9)
 
