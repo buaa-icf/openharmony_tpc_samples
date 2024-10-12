@@ -2,7 +2,7 @@
 
 ## 简介
 
-本项目是OpenHarmony系统下使用cbor-js的示例，cbor-js是以简明二进制对象表示 (CBOR) 数据格式 ( RFC8949 )编码和解析数据的Javascript开源库。
+本项目是OpenHarmony系统下使用cbor-js的示例，cbor-js是以简明二进制对象表示 (CBOR) 数据格式 ( RFC 7049 )编码和解析数据的Javascript开源库。
 
 ## 下载安装
 
