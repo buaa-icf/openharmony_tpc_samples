@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This project is an OpenHarmony development example based on the cbor-js library, which is is an open-source JavaScript library for encoding and parsing data in the Concise Binary Object Representation (CBOR) data format (RFC 8949).
+This project is an OpenHarmony development example based on the cbor-js library, which is is an open-source JavaScript library for encoding and parsing data in the Concise Binary Object Representation (CBOR) data format (RFC 7049).
 
 ## How to Install
 
