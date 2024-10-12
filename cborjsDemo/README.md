@@ -32,6 +32,8 @@ var decoded = CBOR.decode(encoded)
 ## Constraints
 
 This project has been verified in the following versions:
+- DevEco Studio: NEXT Beta1-5.0.3.806, SDK: API12 Release (5.0.0.66)
+
 - Deveco Studio: 4.0 (4.0.3.512), SDK: API 10 (4.0.10.9)
 
 - DevEco Studio: 3.1 Beta2 (3.1.0.400), SDK: API 9 Release (3.2.11.9)
