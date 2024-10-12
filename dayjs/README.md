@@ -75,6 +75,7 @@ Not supported: 2021-1-4 0:0:0.000-0500
 ## Constraints
 
 This project has been verified in the following versions:
+- DevEco Studio: NEXT Beta1-5.0.3.806, SDK: API12 Release(5.0.0.66)
 - DevEco Studio: 4.0 (4.0.3.512), SDK: API 10 (4.0.10.9)
 - DevEco Studio: 3.2 Release (3.1.3.400), OpenHarmony SDK: API 9 Release (3.2.11.5)
 
