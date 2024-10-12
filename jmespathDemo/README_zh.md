@@ -30,6 +30,8 @@ if (result) {
 更多接口的使用可参考[官方文档](https://github.com/jmespath/jmespath.js)
 ## 约束与限制
 在下述版本验证通过：
+- DevEco Studio: NEXT Release(5.0.3.900), SDK: API12 (5.0.0.71)
+- DevEco Studio: NEXT Developer Beta3(5.0.3.524), SDK: API12 (5.0.0.25)
 - DevEco Studio: 4.0 (4.0.3.512), SDK: API10 (4.0.10.9)。
 - DevEco Studio: 3.1 Beta2(3.1.0.400), SDK: API9 Release(3.2.11.9)。
 
