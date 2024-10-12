@@ -52,7 +52,8 @@ validateStrict('11.0.0') // true
 
 This project has been verified in the following versions:
 
-DevEco Studio: 4.1 Canary (4.1.3.213), SDK: API 11 4.1.2.3
+- DevEco Studio: NEXT Beta1-5.0.3.806, SDK: API12 Release(5.0.0.66)
+- DevEco Studio: 4.1 Canary (4.1.3.213), SDK: API 11 4.1.2.3
 
 ## Directory Structure
 
