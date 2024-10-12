@@ -52,6 +52,10 @@ let result = JSON.stringify(parserJson.getHtmlJson());
 |     |---- README_EN.md  # Readme
 |     |---- demo_EN.gif  # Demo
 ```
+## Constraints
+This project has been verified in the following version:
+- DevEco Studio: NEXT Release(5.0.3.900), SDK: API12 (5.0.0.71)
+- DevEco Studio: NEXT Developer Beta3(5.0.3.524), SDK: API12 (5.0.0.25)
 
 ## How to Contribute
 
