@@ -30,6 +30,8 @@ if (result) {
 For details about how to use more APIs, see [Official Document] (https://github.com/jmespath/jmespath.js).
 ## Constraints
 This project has been verified in the following version:
+- DevEco Studio: NEXT Release(5.0.3.900), SDK: API12 (5.0.0.71)
+- DevEco Studio: NEXT Developer Beta3(5.0.3.524), SDK: API12 (5.0.0.25)
 - DevEco Studio: 4.0 (4.0.3.512), SDK: API 10 (4.0.10.9)
 - DevEco Studio: 3.1 Beta2 (3.1.0.400), SDK: API 9 Release (3.2.11.9)
 
