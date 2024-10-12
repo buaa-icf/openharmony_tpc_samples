@@ -73,6 +73,8 @@ For details about unit test cases, see [TEST.md](https://gitee.com/openharmony-t
 | alwaysParseAsBig: true | Specifies whether to store all numbers as big numbers.                           |
 
 # Constraints
+- DevEco Studio: NEXT Release(5.0.3.900), SDK: API12 (5.0.0.71)
+- DevEco Studio: NEXT Developer Beta3(5.0.3.524), SDK: API12 (5.0.0.25)
 - DevEco Studio: 4.0 (4.1.3.313), SDK: API 10 (4.0.10.10)
 
 # Directory Structure
