@@ -28,7 +28,8 @@ let deco = base32.decode(encode);
 ## Constraints
 This project has been verified in the following version:
 
-DevEco Studio: 4.0 (4.0.3.512), SDK: API 10 (4.0.10.9)
+- DevEco Studio: NEXT Beta1-5.0.3.806, SDK:API12 Release(5.0.0.66)
+- DevEco Studio: 4.0 (4.0.3.512), SDK: API 10 (4.0.10.9)
 
 ## License
 
