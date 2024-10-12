@@ -5,7 +5,7 @@
   "main": "Index.ts",
   "keywords": [
     "OpenHarmony",
-    "smart_buffer",
+    "SmartBuffer",
     "HarmonyOS"
   ],
   "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/smart_buffer",
