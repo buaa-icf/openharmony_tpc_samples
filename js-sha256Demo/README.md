@@ -34,7 +34,7 @@ let mess5 = sha256.digest(content);
 
 ## Constraints
 This project has been verified in the following versions:
-
+DevEco Studio: NEXT Beta1-5.0.3.806, SDK: API12 Release(5.0.0.66)
 DevEco Studio: 3.1 Beta2 (3.1.0.400), SDK: API 9 Release (3.2.11.9)
 
 ## License
