@@ -73,6 +73,8 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装OpenHarmony
 | alwaysParseAsBig: true | 指定是否将所有数字存储为bignumber|
 
 # 约束与限制
+- DevEco Studio: NEXT Release(5.0.3.900), SDK: API12 (5.0.0.71)
+- DevEco Studio: NEXT Developer Beta3(5.0.3.524), SDK: API12 (5.0.0.25)
 - DevEco Studio: 4.0 (4.1.3.313), SDK: API10 (4.0.10.10)
 
 # 目录结构
