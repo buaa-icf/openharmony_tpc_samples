@@ -40,6 +40,7 @@ x.toFixed();                        // "1111222233334444555566"
 更多接口的使用可参考[官方文档](https://mikemcl.github.io/bignumber.js/)，单元测试用例详情见[TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/bignumberjsDemo/TEST.md)
 ## 约束与限制
 在下述版本验证通过：
+- DevEco Studio: NEXT Beta1-5.0.3.806, SDK: API12 Release (5.0.0.66)
 - DevEco Studio: 4.0 (4.0.3.512), SDK: API10 (4.0.10.9)。
 - DevEco Studio: 3.1 Beta2(3.1.0.400), SDK: API9 Release(3.2.11.9)。
 
