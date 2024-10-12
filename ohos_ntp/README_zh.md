@@ -60,7 +60,8 @@ getNetworkTime(ntpConfig)
 ## 约束与限制
 
 在下述版本验证通过：
-
+- DevEco Studio: NEXT Release(5.0.3.900), SDK: API12 (5.0.0.71)
+- DevEco Studio: NEXT Developer Beta3(5.0.3.524), SDK: API12 (5.0.0.25)
 - DevEco Studio版本: 4.1.3.500, SDK: API11 Release(4.1.0)
 
 ## 目录结构
