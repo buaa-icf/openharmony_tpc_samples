@@ -168,6 +168,8 @@ RxJS 操作符的完整列表
 ## 约束与限制
 在下述版本验证通过：
 
+DevEco Studio: NEXT Release(5.0.3.900), SDK: API12 (5.0.0.71)
+
 DevEco Studio:DevEco Studio 4.1 Canary2(4.1.3.400), SDK: API11 (4.1.0.36(SP6))
 
 ## 目录

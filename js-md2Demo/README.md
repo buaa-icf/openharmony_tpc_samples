@@ -26,6 +26,8 @@ let mess = md2 (content);
 ## Constraints
 This project has been verified in the following version:
 
+DevEco Studio: NEXT Release(5.0.3.900), SDK: API12 (5.0.0.71)
+
 DevEco Studio: 4.0 Beta2(4.0.3.512), SDK: API10 (4.0.10.9)
 
 DevEco Studio: 3.1 Beta2 (3.1.0.400), SDK: API 9 Release (3.2.11.9)
