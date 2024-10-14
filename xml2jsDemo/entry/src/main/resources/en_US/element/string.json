@@ -51,6 +51,10 @@
     {
       "name": "Boolean_values",
       "value": "Parse XML to convert Boolean like character beds into Boolean values"
+    },
+    {
+      "name": "Parse_XML",
+      "value": "Parse XML"
     }
   ]
 }
