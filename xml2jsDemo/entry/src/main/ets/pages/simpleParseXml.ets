@@ -37,7 +37,7 @@ struct simpleParseXml {
           .margin(10)
           .enabled(false)
 
-        Button("解析XML")
+        Button($r("app.string.Parse_XML"))
           .fontSize(30)
           .margin(10)
           .onClick(() => {

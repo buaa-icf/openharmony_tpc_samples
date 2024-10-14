@@ -51,6 +51,10 @@
     {
       "name": "Boolean_values",
       "value": "解析XML，将类似布尔的字符床解析为布尔值"
+    },
+    {
+      "name": "Parse_XML",
+      "value": "解析 XML"
     }
   ]
 }
