@@ -115,7 +115,9 @@ For more details, see [Official Documentation](https://github.com/eleith/emailjs
 
 This project has been verified in the following version:
 
-DevEco Studio:4.0 Release(4.0.3.600),SDK API10(4.0.10.11)
+- DevEco Studio: NEXT Beta1-5.0.3.806, SDK: API12 Release(5.0.0.66)
+
+- DevEco Studio:4.0 Release(4.0.3.600),SDK API10(4.0.10.11)
 
 The following mailbox types are supported: QQ, 163, 126, Sina, and Sohu mailboxes.
 

@@ -115,7 +115,9 @@ const options = {
 
 在下述版本验证通过：
 
-DevEco Studio:4.0 Release(4.0.3.600),SDK API10(4.0.10.11)
+- DevEco Studio: NEXT Beta1-5.0.3.806, SDK: API12 Release(5.0.0.66)
+
+- DevEco Studio:4.0 Release(4.0.3.600),SDK API10(4.0.10.11)
 
 支持的邮箱类型：QQ邮箱、163邮箱、126邮箱、新浪邮箱、搜狐邮箱。
 
