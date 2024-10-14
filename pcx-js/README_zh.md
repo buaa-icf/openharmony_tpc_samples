@@ -51,6 +51,7 @@ getContext(this).resourceManager.getMediaContent($r("app.media.thimbleweed").id)
 ## 约束与限制
 
 在下述版本验证通过：
+- DevEco Studio: NEXT Beta1-5.0.3.806, SDK:API12 Release(5.0.0.66)
 - DevEco Studio: 4.1Canary2(4.1.3.322),SDK: API11(4.1.0.36)
 
 ## 目录结构
@@ -68,7 +69,7 @@ getContext(this).resourceManager.getMediaContent($r("app.media.thimbleweed").id)
 ## 贡献代码
 
 使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
-给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+给组件，当然，也非常欢迎给组件发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
 ## 开源协议
 
