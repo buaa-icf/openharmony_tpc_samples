@@ -32,9 +32,9 @@ let deco = new TextDecoder().decode(encode);
 ## 约束与限制
 在下述版本验证通过：
 
-DevEco Studio: 4.0 (4.0.3.512), SDK: API10 (4.0.10.9)
-
-DevEco Studio: 3.1 Beta2(3.1.0.400), SDK: API9 Release(3.2.11.9)。
+- DevEco Studio: NEXT Beta1-5.0.3.806, SDK:API12 Release(5.0.0.66)
+- DevEco Studio: 4.0 (4.0.3.512), SDK: API10 (4.0.10.9)
+- DevEco Studio: 3.1 Beta2(3.1.0.400), SDK: API9 Release(3.2.11.9)
 
 ## 开源协议
 
@@ -42,4 +42,4 @@ DevEco Studio: 3.1 Beta2(3.1.0.400), SDK: API9 Release(3.2.11.9)。
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎给组件发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
