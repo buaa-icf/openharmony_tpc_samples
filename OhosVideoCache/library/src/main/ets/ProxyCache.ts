@@ -45,10 +45,16 @@ export default class ProxyCache {
       throw new Error('cache is null,can not read any thing')
     }
     let self = this;
+    let lastAvailable: number = - 1;
     while (!self.cache.isCompleted() && self.cache.available() < (offset + length) && !self.stopped) {
       this.readSourceAsync();
       await self.waitForSourceData();
       self.checkReadSourceErrorsCount();
+      if(self.cache?.available() == lastAvailable) {
+        this.tryComplete();
+      } else {
+        lastAvailable = self.cache?.available();
+      }
     }
     return new Promise<number>((resolve, reject) => {
       let read = self.cache?.read(buffer, offset, length);
