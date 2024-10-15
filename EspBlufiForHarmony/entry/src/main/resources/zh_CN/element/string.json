@@ -1,0 +1,132 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "模块描述"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "label"
+    },
+    {
+      "name": "reason",
+      "value": " "
+    },
+    {
+      "name": "string_Enter_user_defined_data",
+      "value": "请输入自定义数据"
+    },
+    {
+      "name": "scan",
+      "value": "扫描"
+    },
+    {
+      "name": "scanning",
+      "value": "扫描中"
+    },
+    {
+      "name": "setting",
+      "value": "设置"
+    },
+    {
+      "name": "deviceName",
+      "value": "设备名 "
+    },
+    {
+      "name": "deviceID",
+      "value": "设备ID "
+    },
+    {
+      "name": "deviceRSSI",
+      "value": "设备RSSI "
+    },
+    {
+      "name": "ok",
+      "value": "确定"
+    },
+    {
+      "name": "cancel",
+      "value": "取消"
+    },
+    {
+      "name": "connect",
+      "value": "连接"
+    },
+    {
+      "name": "disconnect",
+      "value": "断开"
+    },
+    {
+      "name": "encryption",
+      "value": "加密"
+    },
+    {
+      "name": "version",
+      "value": "版本"
+    },
+    {
+      "name": "wifiNetwork",
+      "value": "配网"
+    },
+    {
+      "name": "status",
+      "value": "状态"
+    },
+    {
+      "name": "widgets",
+      "value": "自定义"
+    },
+    {
+      "name": "Select_Device_Mode",
+      "value": "选择设备模式"
+    },
+    {
+      "name": "SoftAP_encryption",
+      "value": "SoftAP 加密"
+    },
+    {
+      "name": "SoftAP_channel",
+      "value": "SoftAP 信道"
+    },
+    {
+      "name": "SoftAP_max_connect",
+      "value": "SoftAP 最大连接数"
+    },
+    {
+      "name": "SoftAP_password",
+      "value": "SoftAP 密码"
+    },
+    {
+      "name": "select_wifi",
+      "value": "选择WiFi"
+    },
+    {
+      "name": "wifi_password",
+      "value": "WiFi密码"
+    },
+    {
+      "name": "Please_enter_the_name_of_the_Bluetooth_device",
+      "value": "请输入蓝牙设备名称"
+    },
+    {
+      "name": "BluFi_Device_Filtering",
+      "value": "BluFi 设备过滤"
+    },
+    {
+      "name": "APP_version",
+      "value": "APP 版本"
+    },
+    {
+      "name": "API_version",
+      "value": "API 版本"
+    },
+    {
+      "name": "check_for_updates",
+      "value": "检查更新"
+    }
+  ]
+}

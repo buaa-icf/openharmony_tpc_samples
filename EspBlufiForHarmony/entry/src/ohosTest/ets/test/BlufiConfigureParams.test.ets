@@ -1,0 +1,97 @@
+/**
+ * MIT License
+ *
+ * Copyright (c) 2024 Huawei Device Co., Ltd.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the 'Software'), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to all conditions.
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, } from '@ohos/hypium'
+import { BlufiUtil, BlufiConfigureParams } from '@ohos/espblufiforharmony'
+
+export default function BlufiConfigureParamsTest() {
+  describe('BlufiConfigureParamsTest', () => {
+
+    // Defines a test suite. Two parameters are supported: test suite name and test suite function.
+    beforeAll(() => {
+
+      // Presets an action, which is performed only once before all test cases of the test suite start.
+      // This API supports only one parameter: preset action function.
+    })
+    beforeEach(() => {
+
+      // Presets an action, which is performed before each unit test case starts.
+      // The number of execution times is the same as the number of test cases defined by **it**.
+      // This API supports only one parameter: preset action function.
+    })
+    afterEach(() => {
+
+      // Presets a clear action, which is performed after each unit test case ends.
+      // The number of execution times is the same as the number of test cases defined by **it**.
+      // This API supports only one parameter: clear action function.
+    })
+    afterAll(() => {
+
+      // Presets a clear action, which is performed after all test cases of the test suite end.
+      // This API supports only one parameter: clear action function.
+    })
+    it('BlufiConfigureParams', 0, () => {
+
+      let params: BlufiConfigureParams = new BlufiConfigureParams();
+
+      let softAPSecrity: number = 1;
+      params.setSoftAPSecurity(softAPSecrity);
+      let newSoftAPSecrity: number = params.getSoftAPSecurity();
+      expect(newSoftAPSecrity).assertEqual(softAPSecrity);
+
+      let softAPChannel: number = 1;
+      params.setSoftAPChannel(softAPChannel);
+      let newSPChannel: number = params.getSoftAPChannel();
+      expect(newSPChannel).assertEqual(softAPChannel);
+
+      let ssid: string = 'she other wifi';
+      let pwd: string = '123456789';
+      params.setSoftAPPassword(pwd);
+      let newSPPwd: string = params.getSoftAPPassword();
+      expect(newSPPwd).assertEqual(pwd);
+
+      params.setSoftAPSSID(ssid);
+      let newSPSSid: string = params.getSoftAPSSID();
+      expect(newSPSSid).assertEqual(ssid);
+
+      let bssid: string = 'cdfDD';
+      params.setStaBSSID(bssid);
+      let newStaBSSid: string = params.getStaBSSID();
+      expect(newStaBSSid).assertEqual(bssid);
+
+      let ssIdBytes: Uint8Array = BlufiUtil.stringToUint8Array(ssid);
+      params.setStaSSIDBytes(ssIdBytes);
+      let newStaSSid: Uint8Array | null
+        = params.getStaSSIDBytes();
+      expect(newStaSSid).assertEqual(ssIdBytes);
+
+      params.setStaPassword(pwd);
+      let newStaPwd: string = params.getStaPassword();
+      expect(newStaPwd).assertEqual(pwd);
+
+      let response: string = params.toString();
+      expect(response.length).assertLarger(0);
+    })
+  })
+}

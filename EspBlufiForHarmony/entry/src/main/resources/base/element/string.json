@@ -1,0 +1,132 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "label"
+    },
+    {
+      "name": "reason",
+      "value": " "
+    },
+    {
+      "name": "string_Enter_user_defined_data",
+      "value": "Please enter user-defined data."
+    },
+    {
+      "name": "scan",
+      "value": "scan"
+    },
+    {
+      "name": "scanning",
+      "value": "scanning"
+    },
+    {
+      "name": "setting",
+      "value": "setting"
+    },
+    {
+      "name": "deviceName",
+      "value": "deviceName "
+    },
+    {
+      "name": "deviceID",
+      "value": "deviceID "
+    },
+    {
+      "name": "deviceRSSI",
+      "value": "deviceRSSI "
+    },
+    {
+      "name": "ok",
+      "value": "ok"
+    },
+    {
+      "name": "cancel",
+      "value": "cancel"
+    },
+    {
+      "name": "connect",
+      "value": "connect"
+    },
+    {
+      "name": "disconnect",
+      "value": "disconnect"
+    },
+    {
+      "name": "encryption",
+      "value": "Encrypted"
+    },
+    {
+      "name": "version",
+      "value": "version"
+    },
+    {
+      "name": "wifiNetwork",
+      "value": "Distribution network"
+    },
+    {
+      "name": "status",
+      "value": "status"
+    },
+    {
+      "name": "widgets",
+      "value": "Customization"
+    },
+    {
+      "name": "Select_Device_Mode",
+      "value": "Selecting a device mode"
+    },
+    {
+      "name": "SoftAP_encryption",
+      "value": "SoftAP encryption"
+    },
+    {
+      "name": "SoftAP_channel",
+      "value": "SoftAP channel"
+    },
+    {
+      "name": "SoftAP_max_connect",
+      "value": "SoftAP max connect"
+    },
+    {
+      "name": "SoftAP_password",
+      "value": "SoftAP password"
+    },
+    {
+      "name": "select_wifi",
+      "value": "select wifi"
+    },
+    {
+      "name": "wifi_password",
+      "value": "WiFi password"
+    },
+    {
+      "name": "Please_enter_the_name_of_the_Bluetooth_device",
+      "value": "Please enter the name of the bluetooth device"
+    },
+    {
+      "name": "BluFi_Device_Filtering",
+      "value": "BluFi device filtering"
+    },
+    {
+      "name": "APP_version",
+      "value": "APP version"
+    },
+    {
+      "name": "API_version",
+      "value": "API version"
+    },
+    {
+      "name": "check_for_updates",
+      "value": "check for updates"
+    }
+  ]
+}
