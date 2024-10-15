@@ -1,3 +1,7 @@
+## 1.0.2-rc.0
+1. Fix the occasional stuttering issue during video playback.
+2. Fix the issue where the cache capacity limit does not take effect after customizing the cache path.
+
 ## 1.0.1
 1. 发布正式版本
 2. 更新crypto-js 2.0.4版本

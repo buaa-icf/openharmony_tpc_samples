@@ -132,6 +132,7 @@ export default class HttpProxyCacheServerBuilder {
     if (!this.cacheRoot && this.context) {
       this.cacheRoot = StorageUtils.getIndividualCacheDirectory(this.context);
     }
+    StorageUtils.DEFAULT_DIR = this.cacheRoot;
     if (!this.diskUsage) {
       this.diskUsage = new TotalSizeLruDiskUsage(this.DEFAULT_MAX_SIZE);
     }
