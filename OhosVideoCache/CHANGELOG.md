@@ -1,3 +1,6 @@
+## 1.0.2
+Update version 1.0.2
+
 ## 1.0.2-rc.0
 1. Fix the occasional stuttering issue during video playback.
 2. Fix the issue where the cache capacity limit does not take effect after customizing the cache path.
