@@ -14,7 +14,8 @@
  */
 
 import { hilog } from '@kit.PerformanceAnalysisKit';
-import {SetLogShowState, init, UnitTest} from '@ohos/luaarkts';
+import { init, SetLogShowState } from '../utils/main'
+import { UnitTest } from '../utils/unitTest'
 
 //运行模式
 enum EnumRunMode{

@@ -1,5 +1,8 @@
 **CHANGELOG.md**
 
+## 1.0.1-rc.1
+- Remove useless demo code from luaarks module
+
 ## 1.0.1-rc.0
 - 在entry模块下增加XTS文件
 

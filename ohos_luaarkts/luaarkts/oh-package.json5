@@ -1,6 +1,6 @@
 {
   "name": "@ohos/luaarkts",
-  "version": "1.0.1-rc.0",
+  "version": "1.0.1-rc.1",
   "description": "Implement the ability to access Lua scripts and TS scripts through LuaJIT and NAPI, and simplify C++and Arkts\
       development through the AKI library",
   "main": "Index.ets",
