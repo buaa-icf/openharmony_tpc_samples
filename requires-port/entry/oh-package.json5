@@ -7,6 +7,7 @@
   "main": "",
   "version": "1.0.0",
   "dependencies": {
-    "requires-port": "^1.0.0"
+    "requires-port": "^1.0.0",
+    "@types/requires-port": "^1.0.0"
   }
 }
