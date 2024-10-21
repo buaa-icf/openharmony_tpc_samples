@@ -1,3 +1,6 @@
+## v1.0.2
+- 修复包中缺失parse类型导出文件的问题
+
 ## v1.0.1
 - 在DevEco Studio: NEXT Beta1-5.0.3.806, SDK:API12 Release(5.0.0.66)验证通过
 
