@@ -85,8 +85,9 @@ For details about the OpenHarmony ohpm environment configuration, see [OpenHarmo
 
 ## Constraints
 
-lodash.isequal has been verified in the following version: DevEco Studio 4.1 Canary (4.1.3.317), OpenHarmony SDK: API11 (4.1.0.36)
-
+lodash.isequal has been verified in the following version:
+- DevEco Studio: NEXT Beta1-5.0.3.806, SDK:API12 Release(5.0.0.66)
+- DevEco Studio 4.1 Canary (4.1.3.317), OpenHarmony SDK: API11 (4.1.0.36)
 ## Directory Structure
 
 ````
