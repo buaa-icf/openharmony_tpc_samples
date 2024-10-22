@@ -318,9 +318,7 @@ For more information, see [jsonschema](https://github.com/tdegrunt/jsonschema/bl
 
 ## Constraints
 This project has been verified in the following versions:
-
 - DevEco Studio: NEXT Beta1-5.0.3.806, SDK: API 12 Release (5.0.0.66)
-
 - DevEco Studio: 4.0 (4.0.3.513), SDK: API 10 (4.0.10.10)
 
 
