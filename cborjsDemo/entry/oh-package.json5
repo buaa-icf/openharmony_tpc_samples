@@ -3,9 +3,10 @@
   "devDependencies": {},
   "name": "entry",
   "description": "example description",
-  "repository": {},
+  "repository": "",
   "version": "2.0.0",
   "dependencies": {
-    "cbor-js": "^0.1.0"
+    "cbor-js": "^0.1.0",
+    "@types/cbor-js": "^0.1.0"
   }
 }
