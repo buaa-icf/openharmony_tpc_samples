@@ -144,7 +144,7 @@ struct Index {
             .fontSize(18)
             .height(80)
             .onClick(() => {
-              router.push({ url: "pages/detail" })
+              router.pushUrl({ url: "pages/detail" })
             }).margin({ bottom: 20 })
         }
         .width('100%')
