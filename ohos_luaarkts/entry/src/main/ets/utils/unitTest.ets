@@ -14,7 +14,7 @@
  */
 import {gameControl} from '../common/ts/index'
 import { hilog } from '@kit.PerformanceAnalysisKit';
-import harNAPI  from 'libluaarkts.so';
+import { harNAPI } from '@ohos/luaarkts';
 
 export function UnitTest(context:CanvasRenderingContext2D, canvasWidth:number, canvasHeight:number, pathLuaMain:string){
     hilog.info(0x0000, 'testTag', '0.触发har包init接口');
