@@ -842,48 +842,105 @@ static napi_value off_error(napi_env env, napi_callback_info info)
     return 0;
 }
 
-static sio::object_message::ptr get_object_message(napi_env env, napi_value napi_object_value)
+uint32_t get_length(napi_env env, napi_value value)
+{
+    uint32_t length;
+    napi_get_array_length(env, value, &length);
+    return length;
+}
+
+napi_value get_property(napi_env env, napi_value value)
 {
     napi_value keys;
-    napi_get_property_names(env, napi_object_value, &keys);
-    uint32_t key_length;
-    napi_get_array_length(env, keys, &key_length);
+    napi_get_property_names(env, value, &keys);
+    return keys;
+}
+
+napi_value get_element(napi_env env, napi_value value, uint32_t index)
+{
+    napi_value key;
+    napi_get_element(env, value, index, &key);
+    return key;
+}
+
+sio::message::ptr handle_array_value(napi_env env, napi_value value);
+
+static sio::object_message::ptr get_object_message(napi_env env, napi_value napi_object_value)
+{
+    napi_value keys = get_property(env, napi_object_value);
+    uint32_t key_length = get_length(env, keys);
     sio::object_message::ptr message_item = sio::object_message::create();
     for (uint32_t i = 0; i < key_length; i++) {
         // 获取key
-        napi_value napi_key;
-        napi_get_element(env, keys, i, &napi_key);
+        napi_value napi_key = get_element(env, keys, i);
         char char_key[MAX_BUF_SIZE];
         napi_get_value_string_utf8(env, napi_key, char_key, MAX_BUF_SIZE, &result);
         // 获取value
-        napi_value napi_value;
-        napi_get_named_property(env, napi_object_value, char_key, &napi_value);
+        napi_value value;
+        napi_get_named_property(env, napi_object_value, char_key, &value);
         napi_valuetype valueType;
-        napi_typeof(env, napi_value, &valueType);
+        napi_typeof(env, value, &valueType);
         switch (valueType) {
             case napi_string:
                 char char_value[MAX_MESSAGE_SIZE];
-                napi_get_value_string_utf8(env, napi_value, char_value, MAX_MESSAGE_SIZE, &result);
+                napi_get_value_string_utf8(env, value, char_value, MAX_MESSAGE_SIZE, &result);
                 ((sio::object_message *)message_item.get())->insert(char_key, std::string(char_value));
                 break;
             case napi_number:
                 double num_value;
-                napi_get_value_double(env, napi_value, &num_value);
+                napi_get_value_double(env, value, &num_value);
                 ((sio::object_message *)message_item.get())->insert(char_key, (int64_t)num_value);
                 break;
             case napi_boolean:
                 bool bool_value;
-                napi_get_value_bool(env, napi_value, &bool_value);
+                napi_get_value_bool(env, value, &bool_value);
                 ((sio::object_message *)message_item.get())->insert(char_key, bool_value);
                 break;
             case napi_object:
-                sio::object_message::ptr message_object = get_object_message(env, napi_value);
-                ((sio::object_message *)message_item.get())->insert(char_key, message_object);
-                message_object = nullptr;
+                bool isArray;
+                napi_is_array(env, value, &isArray);
+                if (!isArray) {
+                    sio::object_message::ptr message_object = get_object_message(env, value);
+                    ((sio::object_message *)message_item.get())->insert(char_key, message_object);
+                    message_object = nullptr;
+                    break;
+                }
+
+                sio::message::ptr array = handle_array_value(env, value);
+                ((sio::object_message *)message_item.get())->insert(char_key, array);
                 break;
         }
     }
     return message_item;
+}
+
+sio::message::ptr handle_array_value(napi_env env, napi_value value)
+{
+    sio::message::ptr array = sio::array_message::create();
+    // 获取数组的长度
+    uint32_t length = get_length(env, value);
+    for (size_t i = 0; i < length; i++) {
+        napi_value element = get_element(env, value, i);
+        napi_valuetype valueType;
+        napi_typeof(env, element, &valueType);
+        switch (valueType) {
+            case napi_number:
+                double num_value;
+                napi_get_value_double(env, element, &num_value);
+                array->get_vector().push_back(sio::double_message::create(num_value));
+                break;
+            case napi_string:
+                char char_value[MAX_BUF_SIZE];
+                napi_get_value_string_utf8(env, element, char_value, MAX_BUF_SIZE, &result);
+                array->get_vector().push_back(sio::string_message::create(char_value));
+                break;
+            case napi_object:
+                sio::object_message::ptr message_object = get_object_message(env, element);
+                array->get_vector().push_back(message_object);
+                break;
+        }
+    }
+    return array;
 }
 
 static napi_value emit(napi_env env, napi_callback_info info)
