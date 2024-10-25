@@ -1,0 +1,12 @@
+{
+  "module": {
+    "name": "library",
+    "type": "har",
+    "description": "$string:module_desc",
+    "mainElement": "LibraryAbility",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}

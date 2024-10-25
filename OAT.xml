@@ -237,6 +237,8 @@
                 <filteritem type="filepath" name="ohos_luaarkts/luaarkts/src/main/cpp/thirdparty/LuaJIT/armeabi-v7a/lib/libluajit-5.1.a" desc="三方库编译文件"/>
                 <filteritem type="filepath" name="ohos_luaarkts/entry/src/main/ets/common/assets/bg_4.jpg" desc="演示效果动图，用于readme展示，无需检查"/>
                 <filteritem type="filepath" name="ohos_luaarkts/hvigor/hvigor-4.3.0.tgz" desc="演示效果动图，用于readme展示，无需检查"/>
+				<filteritem type="filepath" name="EspBlufiForHarmony/entry/src/main/resources/base/media/*.png" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+				<filteritem type="filepath" name="EspBlufiForHarmony/library/src/main/resources/base/media/*.png" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
             </filefilter>
         </filefilterlist>
         <policylist>
@@ -347,7 +349,9 @@
                 <policyitem type="license" name="NoLicenseHeader" path="box2d/entry/src/main/ets/Testbed/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改" />
                 <policyitem type="license" name="NoLicenseHeader" path="box2d/library/src/main/ets/Box2D/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改" />
 				<policyitem type="license" name="MIT" path="jwks-rsa/library/.*" rule="may" group="defaultGroup" filefilter="defaultPolicyFilter" desc="源开源项目的LICENSE,  符合开源要求"/>
-                <policyitem type="license" name="MIT" path="smbj/library/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>		
+                <policyitem type="copyright" name="Copyright (C) 2024 Huawei Device Co., Ltd." path="EspBlufiForHarmony/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="源开源项目的LICENSE,  符合开源要求"/>
+				<policyitem type="license" name="MIT" path="EspBlufiForHarmony/.*" rule="may" group="defaultGroup" filefilter="defaultPolicyFilter" desc="源开源项目的LICENSE,  符合开源要求"/>
+				<policyitem type="license" name="MIT" path="smbj/library/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>		
                 <policyitem type="license" name="MIT" path="underscore/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>	
                 <policyitem type="license" name="MIT" path="postcss/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
 				<policyitem type="license" name="MIT" path="smbj/library/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>

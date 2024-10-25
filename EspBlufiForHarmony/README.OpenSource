@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "EspBlufiForAndroid",
+        "License": "MIT License",
+        "License File": "LICENSE",
+        "Version Number": "2.3.7",
+        "Owner" : "xiafeng@huawei.com",
+        "Upstream URL": "https://github.com/EspressifApp/EspBlufiForAndroid",
+        "Description": "This is a demo app to control the ESP device which run BluFi"
+    }
+]
