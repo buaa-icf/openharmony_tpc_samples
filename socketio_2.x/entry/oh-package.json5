@@ -10,7 +10,7 @@
   },
   "description": "example description",
   "main": "",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "dependencies": {
     "@ohos/socketio_2.x": "file:../library",
     "@ohos/axios": "^2.2.2"

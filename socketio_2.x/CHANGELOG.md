@@ -1,3 +1,9 @@
+## v1.0.2
+
+- Fix the problem that the set_option interface cannot be connected with {}.
+- fix the problem that the array content is lost when sending the array data.
+- Fix the problem that the client parses json string data when the server sends data with escape characters.
+
 ## v1.0.1
 
 - Fixed an issue when the server returned json strings containing special characters.
