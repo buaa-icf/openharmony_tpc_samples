@@ -8,6 +8,8 @@
 
 ```
 ohpm install ahocorasick
+ohpm install @types/ahocorasick --save-dev //import ahocorasick 的时候语法报错。其原因是ahocorasick包内不含类型声明，需要 @types/ahocorasick 下载这个包的声明文件，从而解决语法的报错。
+
 ```
 
 ## 使用说明
