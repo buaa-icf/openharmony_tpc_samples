@@ -37,7 +37,7 @@ export default function PortTimeTest() {
     it('randomColorFormat_rgb', TestType.PERFORMANCE, async (done:Function) => { //第一个参数自定义
       let startTime = new Date().getTime() //毫秒值
       for (let index = 0; index < BASE_COUNT; index++) {
-        randomColor.randomColor()
+        randomColor()
       }
       let endTime = new Date().getTime()
       console.info(TAG + "randomColorFormat_rgb endTime:" + endTime)

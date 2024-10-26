@@ -15,7 +15,7 @@
 | [Memory cache](https://github.com/ptarjan/node-cache)|Reads and writes data in the cache.    | ohpm install memory-cache |
 |Time|Formats date and time.    | ohpm i time-ampm <br>ohpm i leap-year |
 | [Data type](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/arkui-ts/ts-pixel-units.md)|Converts between basic data types.    |None|
-| [Image](https://gitee.com/openharmony-tpc/ImageKnife)|Processes images.    |ohpm install @ohos/imageknife <br> ohpm i imagetype |
+| [Image](https://gitee.com/openharmony-tpc/ImageKnife)|Processes images.    |ohpm install @ohos/imageknife <br> ohpm i imtype |
 
 ## How to Install
 ```shell
@@ -185,7 +185,7 @@ CountryUtils.getCountryCode('CN')
 
 ### Color Utility
 
-This module is developed based on [randomcolor](https://github.com/fatelei/imagetype).
+This module is developed based on [randomcolor](https://github.com/davidmerfield/randomColor).
 
 #### Obtaining Random Colors
 
@@ -877,7 +877,7 @@ struct Example {
 
 ### Image Utility
 
-This module is developed based on [ImageKnife](https://gitee.com/openharmony-tpc/ImageKnife) [imagetype](https://github.com/fatelei/imagetype).
+This module is developed based on [ImageKnife](https://gitee.com/openharmony-tpc/ImageKnife) [imtype](https://github.com/fatelei/imagetype).
 
 #### Converting a PixelMap to an ArrayBuffer
 
