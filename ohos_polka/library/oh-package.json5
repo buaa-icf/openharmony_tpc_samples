@@ -1,0 +1,28 @@
+{
+  "name": "@ohos/polka",
+  "version": "1.0.0-rc.3",
+  "keywords": [
+    "OpenHarmony",
+    "polka",
+    "http",
+    "HarmonyOS"
+  ],
+  "description": "专门为OpenHarmony打造的一款本地http服务库，致力于更高效、更轻便、更简单.",
+  "main": "src/main/ets/polka/index.js",
+  "types": "src/main/ets/polka/index.d.ts",
+  "author": "ohos-tpc",
+  "license": "MIT",
+  "tags": [
+    "Http",
+    "FileServer"
+  ],
+  "ohos": {
+    "org": "opensource"
+  },
+  "type": "module",
+  "repository": "https://gitee.com/openharmony-sig/ohos_polka",
+  "devDependencies": {},
+  "dependencies": {
+    "@ohos/node-polyfill": "1.0.0"
+  }
+}

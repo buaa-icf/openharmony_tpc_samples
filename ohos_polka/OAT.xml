@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    The MIT License (MIT)
+    Copyright (C) 2024 Huawei Device Co., Ltd.
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+    -->
+<configuration>
+    <oatconfig>
+        <licensefile></licensefile>
+        <policylist>
+            <policy name="projectPolicy" desc="">
+                <policyitem type="copyright" name="Huawei Device Co., Ltd." path=".*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc=""/>
+                <policyitem type="license" name="MIT" path=".*" rule="may" group="defaultGroup" filefilter="defaultPolicyFilter" desc=""/>
+                <policyitem type="filetype" name="!archive" path=".*" rule="must" group="defaultGroup" filefilter="binaryFileTypePolicyFilter" desc=""/>
+            </policy>
+        </policylist>
+        <filefilterlist>
+            <filefilter name="copyrightPolicyFilter" desc="Filters for compatibility，license header policies">
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="*.json5" type="filename"/>
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="*.json5.ftl" type="filename"/>
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="hvigor-wrapper.js" type="filename"/>
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="hvigorw" type="filename"/>
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="hvigorw.bat" type="filename"/>
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="hvigorfile.ts" type="filename"/>
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="*.json" type="filename"/>
+                <filteritem desc="源库文件" name="library/src/main/ets/polka/.*" type="filepath"/>
+                <filteritem desc="源库文件" name="library/src/main/ets/polka/url/.*" type="filepath"/>
+                <filteritem desc="源库文件" name="library/src/main/ets/polka/trouter/.*" type="filepath"/>
+                <filteritem desc="源库文件" name="library/src/main/ets/polka/regexparam/.*" type="filepath"/>
+                <filteritem desc="源库文件" name="library/src/main/ets/node-static/.*" type="filepath"/>
+                <filteritem desc="源库文件" name="library/src/main/ets/node-static/mime/.*" type="filepath"/>
+                <filteritem desc="源库文件" name="library/src/main/ets/node-static/node-static/.*" type="filepath"/>
+                <filteritem desc="运行demo所需的服务端代码" name="entry/.*" type="filepath"/>
+            </filefilter>
+            <filefilter name="defaultPolicyFilter" desc="Filters for compatibility，license header policies">
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="*.json5" type="filename"/>
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="*.json5.ftl" type="filename"/>
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="hvigor-wrapper.js" type="filename"/>
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="hvigorw" type="filename"/>
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="hvigorw.bat" type="filename"/>
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="hvigorfile.ts" type="filename"/>
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="*.json" type="filename"/>
+                <filteritem desc="源库文件" name="library/src/main/ets/polka/.*" type="filepath"/>
+                <filteritem desc="源库文件" name="library/src/main/ets/polka/url/.*" type="filepath"/>
+                <filteritem desc="源库文件" name="library/src/main/ets/polka/trouter/.*" type="filepath"/>
+                <filteritem desc="源库文件" name="library/src/main/ets/polka/regexparam/.*" type="filepath"/>
+                <filteritem desc="源库文件" name="library/src/main/ets/node-static/.*" type="filepath"/>
+                <filteritem desc="源库文件" name="library/src/main/ets/node-static/mime/.*" type="filepath"/>
+                <filteritem desc="源库文件" name="library/src/main/ets/node-static/node-static/.*" type="filepath"/>
+                <filteritem desc="运行demo所需的服务端代码" name="entry/.*" type="filepath"/>
+            </filefilter>
+            <filefilter name="binaryFileTypePolicyFilter" desc="Filters for copyright header policies">
+                <filteritem type="filepath" name="entry/src/main/resources/base/media/icon.png" desc="项目工程默认图片文件"/>
+                <filteritem type="filepath" name="entry/src/ohosTest/resources/base/media/icon.png" desc="项目工程默认图片文件"/>
+                <filteritem type="filepath" name="AppScope/resources/base/media/app_icon.png" desc="项目工程默认图片文件"/>
+            </filefilter>
+        </filefilterlist>
+    </oatconfig>
+</configuration>

@@ -1,0 +1,316 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "label"
+    },
+    {
+      "name": "page_show",
+      "value": "page from npm package"
+    },
+    {
+      "name": "configuration",
+      "value": "服务器配置"
+    },
+    {
+      "name": "web",
+      "value": "请输入网址"
+    },
+    {
+      "name": "key",
+      "value": "请输入Key"
+    },
+    {
+      "name": "add",
+      "value": "增加"
+    },
+    {
+      "name": "reduce",
+      "value": "减少"
+    },
+    {
+      "name": "reset",
+      "value": "重置"
+    },
+    {
+      "name": "confirm",
+      "value": "确认"
+    },
+    {
+      "name": "result",
+      "value": "服务器返回结果"
+    },
+    {
+      "name": "address",
+      "value": "地址"
+    },
+    {
+      "name": "generateIndexHtml",
+      "value": "生成index.html文件"
+    },
+    {
+      "name": "load",
+      "value": "加载"
+    },
+    {
+      "name": "pleaseVisit",
+      "value": "请访问"
+    },
+    {
+      "name": "local",
+      "value": "本机"
+    },
+    {
+      "name": "pleaseVisit2",
+      "value": "在浏览器访问后，若该文件夹下存在index.html，则重定向url中添加/，并访问index.html文件。目录不存在则返回 Not Found。"
+    },
+    {
+      "name": "generateFolder",
+      "value": "生成目录"
+    },
+    {
+      "name": "generateFile",
+      "value": "生成文件"
+    },
+    {
+      "name": "showOperateMethod",
+      "value": "显示操作方式"
+    },
+    {
+      "name": "respContent",
+      "value": "响应内容"
+    },
+    {
+      "name": "reqFailed",
+      "value": "请求失败"
+    },
+    {
+      "name": "testDeflateOne",
+      "value": "测试Deflate接口1"
+    },
+    {
+      "name": "respectResult",
+      "value": "预期结果"
+    },
+    {
+      "name": "realResult",
+      "value": "实际结果"
+    },
+    {
+      "name": "testDeflateTwo",
+      "value": "测试Deflate接口2"
+    },
+    {
+      "name": "testDeflateThree",
+      "value": "测试Deflate接口3"
+    },
+    {
+      "name": "testInflate",
+      "value": "测试Inflate接口"
+    },
+    {
+      "name": "testinflateRaw",
+      "value": "测试inflateRaw接口"
+    },
+    {
+      "name": "testungzip",
+      "value": "测试ungzip接口"
+    },
+    {
+      "name": "gzipAbout",
+      "value": "gzip相关功能"
+    },
+    {
+      "name": "generateHello",
+      "value": "点击生成hello.txt"
+    },
+    {
+      "name": "zipHello",
+      "value": "点击压缩hello.txt为gz文件"
+    },
+    {
+      "name": "unZipFile",
+      "value": "点击解压gz文件"
+    },
+    {
+      "name": "generateSuccess",
+      "value": "生成成功"
+    },
+    {
+      "name": "checkSandBox",
+      "value": "请查看沙箱路径"
+    },
+    {
+      "name": "zipSuccess",
+      "value": "压缩成功"
+    },
+    {
+      "name": "unzipSuccess",
+      "value": "解缩成功"
+    },
+    {
+      "name": "testEtagResp",
+      "value": "1：测试Etags响应："
+    },
+    {
+      "name": "observeRespEtag",
+      "value": "查看响应体中存在 Etag 信息"
+    },
+    {
+      "name": "testGzipResp",
+      "value": "2：测试Gzip响应："
+    },
+    {
+      "name": "observeRespContent",
+      "value": "查看响应体中返回的 content-length是否为压缩后的长度，content-encoding为gzip"
+    },
+    {
+      "name": "testFluidTransfer",
+      "value": "3：测试流式传输和继续下载：点击发送1获取原文件的前段部分，点击发送2获取原文件的后段部分，点击生成新文件得到新文件，内容与原文件相同"
+    },
+    {
+      "name": "newFileSuffiexName",
+      "value": "新文件后缀名："
+    },
+    {
+      "name": "one",
+      "value": "发送1"
+    },
+    {
+      "name": "two",
+      "value": "发送2"
+    },
+    {
+      "name": "genNewFile",
+      "value": "生成新文件"
+    },
+    {
+      "name": "responseStatus",
+      "value": "响应状态"
+    },
+    {
+      "name": "responseHeader",
+      "value": "响应头"
+    },
+    {
+      "name": "gainFileContent",
+      "value": "获取文件内容"
+    },
+    {
+      "name": "genNewFileSucceed",
+      "value": "新文件生成成功"
+    },
+    {
+      "name": "pleaseCheckSandBoxPath",
+      "value": "请查看沙箱路径"
+    },
+    {
+      "name": "genNewFileFailed",
+      "value": "新文件生成失败"
+    },
+    {
+      "name": "originFileNotExisted",
+      "value": "原文件不存在"
+    },
+    {
+      "name": "headerName",
+      "value": "header名"
+    },
+    {
+      "name": "headerValue",
+      "value": "header值"
+    },
+    {
+      "name": "paramsName",
+      "value": "参数名"
+    },
+    {
+      "name": "paramsValue",
+      "value": "参数值"
+    },
+    {
+      "name": "respCode",
+      "value": "响应码"
+    },
+    {
+      "name": "respFailed",
+      "value": "请求失败"
+    },
+    {
+      "name": "params",
+      "value": "参数"
+    },
+    {
+      "name": "reqAddress",
+      "value": "请求地址"
+    },
+    {
+      "name": "back",
+      "value": "返回"
+    },
+    {
+      "name": "reqMethod",
+      "value": "请求方式"
+    },
+    {
+      "name": "send",
+      "value": "发送"
+    },
+    {
+      "name": "colon",
+      "value": "："
+    },
+    {
+      "name": "startLocalServer",
+      "value": "启动本地服务器"
+    },
+    {
+      "name": "serverStarted",
+      "value": "服务器启动成功，"
+    },
+    {
+      "name": "costed",
+      "value": "用时为："
+    },
+    {
+      "name": "basicHttpRequest",
+      "value": "基础http请求"
+    },
+    {
+      "name": "staticFileServer",
+      "value": "静态文件服务器"
+    },
+    {
+      "name": "uploadFile",
+      "value": "文件上传"
+    },
+    {
+      "name": "foldrRedirect",
+      "value": "目录重定向"
+    },
+    {
+      "name": "testETagsAndGzip",
+      "value": "测试etags,gzip等功能"
+    },
+    {
+      "name": "testGzip",
+      "value": "测试Gzip"
+    },
+    {
+      "name": "closeLocalServer",
+      "value": "关闭本地服务器"
+    },
+    {
+      "name": "serverClosed",
+      "value": "服务器已关闭"
+    }
+  ]
+}

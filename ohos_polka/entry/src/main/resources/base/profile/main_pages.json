@@ -1,0 +1,12 @@
+{
+  "src": [
+    "pages/Index",
+    "pages/demo/Client",
+    "pages/demo/WebView",
+    "pages/demo/Upload",
+    "pages/demo/Gzip",
+    "pages/demo/PakoTest",
+    "pages/demo/Redirect",
+    "pages/demo/FileServerTest"
+  ]
+}
