@@ -24,17 +24,33 @@ struct Index {
   @State connect_finish: boolean = false;
   @State login_finish: boolean = false;
   private chatDetailData = new ChatDetailData();
-  private client: client_socket = new client_socket(this.uri);
+  private client: client_socket|null = null
   private scroller: Scroller = new Scroller();
 
+  checkUrl(uri: string): boolean {
+    let isValid: boolean = false;
+    if (uri.length == 0) {
+      console.error("服务器地址不能为空");
+      isValid =  false;
+    }
+
+    if (uri.startsWith("http://") || uri.startsWith("https://") || uri.startsWith("ws://") ||
+    uri.startsWith("wss://")) {
+      isValid = true;
+    } else {
+      isValid = false;
+    }
+    return isValid;
+  }
+
   on_open(): void {
-    console.log("SOCKET_IO_INDEX on_open");
+    console.log("SOCKET_IO_INDEX on_open：连接服务器成功");
     this.connect_finish = true;
     prompt.showToast({ message: "连接服务器成功" });
   }
 
   on_fail(): void {
-    console.log("SOCKET_IO_INDEX on_fail");
+    console.log("SOCKET_IO_INDEX on_fail：连接服务器失败");
     prompt.showToast({ message: "连接服务器失败" });
   }
 
@@ -105,45 +121,46 @@ struct Index {
   //配置client
   initClient(uri: string) {
     console.log("SOCKET_IO_INDEX initClient");
-    this.client.set_open_listener(()=> {
+    this.client = new client_socket(this.uri);
+    this.client?.set_open_listener(()=> {
       this.on_open();
     });
-    this.client.set_fail_listener(()=>{
+    this.client?.set_fail_listener(()=>{
       this.on_fail();
     });
-    this.client.set_reconnecting_listener(()=>{
+    this.client?.set_reconnecting_listener(()=>{
       this.on_reconnecting();
     });
-    this.client.set_reconnect_listener(()=>{
+    this.client?.set_reconnect_listener(()=>{
       this.on_reconnect();
     });
-    this.client.set_close_listener((reason: string)=>{
+    this.client?.set_close_listener((reason: string)=>{
       this.on_close(reason);
     });
-    this.client.set_socket_open_listener((nsp: string)=>{
+    this.client?.set_socket_open_listener((nsp: string)=>{
       this.on_socket_open(nsp);
     });
-    this.client.set_socket_close_listener((nsp: string)=>{
+    this.client?.set_socket_close_listener((nsp: string)=>{
       this.on_socket_close(nsp);
     });
-    this.client.set_headers("{myKey1:myValue1,myKey2:myValue2}");
-    this.client.set_option("{myKey:myValue'}");
-    this.client.connect(uri);
+    this.client?.set_headers("{myKey1:myValue1,myKey2:myValue2}");
+    this.client?.set_option("{myKey:myValue}");
+    this.client?.connect(uri);
   }
 
   //配置socket
   initSocket() {
     console.log("SOCKET_IO_INDEX initSocket");
-    this.client.on("new message", (event_json: string)=>{
+    this.client?.on("new message", (event_json: string)=>{
       this.on_new_message_listener(event_json);
     });
-    this.client.on("user joined", (event_json: string)=>{
+    this.client?.on("user joined", (event_json: string)=>{
       this.on_user_joined_listener(event_json);
     });
-    this.client.on("user left", (event_json: string)=>{
+    this.client?.on("user left", (event_json: string)=>{
       this.on_user_left_listener(event_json);
     });
-    this.client.on("login", (event_json: string)=>{
+    this.client?.on("login", (event_json: string)=>{
       this.on_login_listener(event_json);
     });
   }
@@ -155,7 +172,7 @@ struct Index {
       prompt.showToast({ message: "暂未连接服务器" });
       return;
     }
-    this.client.emit("add user", username);
+    this.client?.emit("add user", username);
     this.login_finish = !this.login_finish;
   }
 
@@ -166,7 +183,7 @@ struct Index {
       console.log("SOCKET_IO_INDEX 暂未连接服务器");
       return;
     }
-    this.client.emit("new message", message, this.on_emit_callback);
+    this.client?.emit("new message", message, this.on_emit_callback);
   }
 
   //退出连接
@@ -177,9 +194,9 @@ struct Index {
       return;
     }
     console.log("SOCKET_IO_INDEX close start 1");
-    this.client.socket_close();
+    this.client?.socket_close();
     console.log("SOCKET_IO_INDEX close start 2");
-    this.client.close();
+    this.client?.close();
     console.log("SOCKET_IO_INDEX close stop");
   }
 
@@ -231,8 +248,13 @@ struct Index {
           Button('Connect')
             .margin(20)
             .onClick(() => {
-              this.initClient(this.uri)
-              this.initSocket()
+              if(this.checkUrl(this.uri)){
+                this.initClient(this.uri)
+                this.initSocket()
+              } else {
+                console.error("服务器地址异常，请检查url信息。");
+                prompt.showToast({ message: "服务器地址异常，请检查url信息" });
+              }
             })
           TextInput({ placeholder: "请输入用户名" })
             .onChange((username) => {

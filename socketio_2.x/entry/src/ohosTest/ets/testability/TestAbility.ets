@@ -31,7 +31,7 @@ export default class TestAbility extends UIAbility {
 
     onWindowStageCreate(windowStage: ESObject) {
         console.log('TestAbility onWindowStageCreate')
-        windowStage.loadContent("TestAbility/pages/index", (err: ESObject, data: ESObject) => {
+        windowStage.loadContent("TestAbility/pages/Index", (err: ESObject, data: ESObject) => {
             if (err.code) {
                 console.error('Failed to load the content. Cause:' + JSON.stringify(err));
                 return;
