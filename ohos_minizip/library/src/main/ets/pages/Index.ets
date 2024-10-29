@@ -42,6 +42,7 @@ export function unzipToDirectory(selectPath: string, targetPath: string, passwor
             fs.mkdirSync(path, true);
           }
         } else {
+          createFolders(path);
           let file = fs.openSync(path, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
           let arrBuffer: ArrayBuffer | undefined = minizipEntry.ExtractFileToJS(entryNames[i], password);
           if(arrBuffer != undefined) {
@@ -53,8 +54,7 @@ export function unzipToDirectory(selectPath: string, targetPath: string, passwor
               fs.closeSync(file);
             })
           } else {
-            // reject("ExtractFileToJS failed: " + entryNames[i])
-            console.log("minizip ExtractFileToJS failed:" + entryNames[i])
+            console.debug("minizip ExtractFileToJS failed:" + entryNames[i])
           }
         }
       }
@@ -63,4 +63,15 @@ export function unzipToDirectory(selectPath: string, targetPath: string, passwor
       reject("Open failed")
     }
   })
+}
+
+function createFolders(path: string) {
+  const parts = path.split('/');
+  if (parts.length <= 1) {
+    return
+  }
+  const folders = parts.slice(0, -1).join('/');
+  if (!fs.accessSync(folders)) {
+    fs.mkdirSync(folders, true);
+  }
 }
