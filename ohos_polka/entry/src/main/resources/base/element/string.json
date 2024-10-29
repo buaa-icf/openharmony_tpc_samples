@@ -1,0 +1,316 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "label"
+    },
+    {
+      "name": "page_show",
+      "value": "page from npm package"
+    },
+    {
+      "name": "configuration",
+      "value": "Server Configuration"
+    },
+    {
+      "name": "web",
+      "value": "Please enter the URL"
+    },
+    {
+      "name": "key",
+      "value": "Enter a key"
+    },
+    {
+      "name": "add",
+      "value": "add"
+    },
+    {
+      "name": "reduce",
+      "value": "reduce"
+    },
+    {
+      "name": "reset",
+      "value": "reset"
+    },
+    {
+      "name": "confirm",
+      "value": "confirm"
+    },
+    {
+      "name": "result",
+      "value": "Result returned by the server"
+    },
+    {
+      "name": "address",
+      "value": "address"
+    },
+    {
+      "name": "generateIndexHtml",
+      "value": "Generating the index.html File"
+    },
+    {
+      "name": "load",
+      "value": "load"
+    },
+    {
+      "name": "pleaseVisit",
+      "value": "Please visit"
+    },
+    {
+      "name": "local",
+      "value": "Local machine"
+    },
+    {
+      "name": "pleaseVisit2",
+      "value": "If index.html exists in the folder, add / to the redirection URL and access the index.html file. If the directory does not exist, Not Found is returned."
+    },
+    {
+      "name": "generateFolder",
+      "value": "Generating a Directory"
+    },
+    {
+      "name": "generateFile",
+      "value": "Generating a File"
+    },
+    {
+      "name": "showOperateMethod",
+      "value": "Display operation mode"
+    },
+    {
+      "name": "respContent",
+      "value": "Response Content"
+    },
+    {
+      "name": "reqFailed",
+      "value": "Request failed."
+    },
+    {
+      "name": "testDeflateOne",
+      "value": "Test Deflate interface 1"
+    },
+    {
+      "name": "respectResult",
+      "value": "Expected Result"
+    },
+    {
+      "name": "realResult",
+      "value": "Actual Results"
+    },
+    {
+      "name": "testDeflateTwo",
+      "value": "Test Deflate interface 2"
+    },
+    {
+      "name": "testDeflateThree",
+      "value": "Test Deflate interface 3"
+    },
+    {
+      "name": "testInflate",
+      "value": "testInflateInterface"
+    },
+    {
+      "name": "testinflateRaw",
+      "value": "Test Deflate interface"
+    },
+    {
+      "name": "testungzip",
+      "value": "testungzip"
+    },
+    {
+      "name": "gzipAbout",
+      "value": "gzipAbout"
+    },
+    {
+      "name": "generateHello",
+      "value": "Click to generate the hello.txt file"
+    },
+    {
+      "name": "zipHello",
+      "value": "Click to compress hello.txt into a .gz file"
+    },
+    {
+      "name": "unZipFile",
+      "value": "unZipFile"
+    },
+    {
+      "name": "generateSuccess",
+      "value": "generateSuccess"
+    },
+    {
+      "name": "checkSandBox",
+      "value": "checkSandBox"
+    },
+    {
+      "name": "zipSuccess",
+      "value": "zipSuccess"
+    },
+    {
+      "name": "unzipSuccess",
+      "value": "unzipSuccess"
+    },
+    {
+      "name": "testEtagResp",
+      "value": "1：testEtagResponse："
+    },
+    {
+      "name": "observeRespEtag",
+      "value": "Check whether the response body contains Etag information."
+    },
+    {
+      "name": "testGzipResp",
+      "value": "2: Test the Gzip response."
+    },
+    {
+      "name": "observeRespContent",
+      "value": "Check whether the value of content-length in the response body is the length after compression. The value of content-encoding is gzip."
+    },
+    {
+      "name": "testFluidTransfer",
+      "value": "3: Test streaming transmission and continue downloading. Click Send 1 to obtain the first part of the original file, click Send 2 to obtain the second part of the original file, and click Generate New to obtain a new file with the same content as the original file."
+    },
+    {
+      "name": "newFileSuffiexName",
+      "value": "newFileSuffiexName："
+    },
+    {
+      "name": "one",
+      "value": "1"
+    },
+    {
+      "name": "two",
+      "value": "2"
+    },
+    {
+      "name": "genNewFile",
+      "value": "genNewFile"
+    },
+    {
+      "name": "responseStatus",
+      "value": "responseStatus"
+    },
+    {
+      "name": "responseHeader",
+      "value": "Response header"
+    },
+    {
+      "name": "gainFileContent",
+      "value": "gainFileContent"
+    },
+    {
+      "name": "genNewFileSucceed",
+      "value": "genNewFileSucceed"
+    },
+    {
+      "name": "pleaseCheckSandBoxPath",
+      "value": "pleaseCheckSandBoxPath"
+    },
+    {
+      "name": "genNewFileFailed",
+      "value": "genNewFileFailed"
+    },
+    {
+      "name": "originFileNotExisted",
+      "value": "originFileNotExisted"
+    },
+    {
+      "name": "headerName",
+      "value": "headerName"
+    },
+    {
+      "name": "headerValue",
+      "value": "headerValue"
+    },
+    {
+      "name": "paramsName",
+      "value": "paramsName"
+    },
+    {
+      "name": "paramsValue",
+      "value": "paramsValue"
+    },
+    {
+      "name": "respCode",
+      "value": "responseCode"
+    },
+    {
+      "name": "respFailed",
+      "value": "requestFailed"
+    },
+    {
+      "name": "params",
+      "value": "params"
+    },
+    {
+      "name": "reqAddress",
+      "value": "reqAddress"
+    },
+    {
+      "name": "back",
+      "value": "back"
+    },
+    {
+      "name": "reqMethod",
+      "value": "reqMethod"
+    },
+    {
+      "name": "send",
+      "value": "send"
+    },
+    {
+      "name": "colon",
+      "value": "："
+    },
+    {
+      "name": "startLocalServer",
+      "value": "startLocalServer"
+    },
+    {
+      "name": "serverStarted",
+      "value": "serverStarted，"
+    },
+    {
+      "name": "costed",
+      "value": "costed："
+    },
+    {
+      "name": "basicHttpRequest",
+      "value": "basicHttpRequest"
+    },
+    {
+      "name": "staticFileServer",
+      "value": "staticFileServer"
+    },
+    {
+      "name": "uploadFile",
+      "value": "uploadFile"
+    },
+    {
+      "name": "foldrRedirect",
+      "value": "foldrRedirect"
+    },
+    {
+      "name": "testETagsAndGzip",
+      "value": "testETagsAndGzip"
+    },
+    {
+      "name": "testGzip",
+      "value": "testGzip"
+    },
+    {
+      "name": "closeLocalServer",
+      "value": "closeLocalServer"
+    },
+    {
+      "name": "serverClosed",
+      "value": "serverClosed"
+    }
+  ]
+}

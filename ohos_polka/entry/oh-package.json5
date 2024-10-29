@@ -1,0 +1,13 @@
+{
+  "name": "entry",
+  "version": "1.0.0-rc.3",
+  "description": "专门为OpenHarmony打造的一款本地http服务库，致力于更高效、更轻便、更简单.",
+  "main": "",
+  "author": "ohos-tpc",
+  "license": "",
+  "dependencies": {
+    "polka": "file:../library",
+    "pako": "2.1.0"
+  }
+}
+
