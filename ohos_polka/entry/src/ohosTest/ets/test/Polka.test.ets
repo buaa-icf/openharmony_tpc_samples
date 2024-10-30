@@ -63,6 +63,8 @@ function onError(err: Error, req: SelfRequest, res: ServerResponse, next: NextFu
   res.end('error');
 }
 
+const BASE_COUNT = 1;
+
 export default function polkaTest() {
   describe('PolkaTest', async () => {
     beforeAll(() => {
@@ -77,9 +79,22 @@ export default function polkaTest() {
       let app = polka();
 
       expect(typeof app.server).assertUndefined;
+
+      let startTime1: number = new Date().getTime();
       app.listen();
+      let endTime1 = new Date().getTime();
+      let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+      console.log("BasicListenTest : listen averageTime : " + averageTime1 + "us")
+
+
       expect(app.server).assertInstanceOf('Object');
+
+      let startTime2: number = new Date().getTime();
       app.server?.stop();
+      let endTime2 = new Date().getTime();
+      let averageTime2 = ((endTime2 - startTime2) * 1000) / BASE_COUNT;
+      console.log("BasicStopTest : stop averageTime : " + averageTime2 + "us");
+
       expect(typeof app.parse).assertEqual('function');
       expect(typeof app.handler).assertEqual('function');
       expect(typeof app.use).assertEqual('function');
@@ -110,14 +125,28 @@ export default function polkaTest() {
     })
 
     it('polka::usage::variadic', 0, async (done: Function) => {
+
+      let startTime1: number = new Date().getTime();
       let app = polka<SelfRequest>({ onError }).use(foo, bar)
-        .get('/one', foo, bar, (req: SelfRequest, res: ServerResponse) => {
-          expect(req.foo).assertEqual(500);
-          expect(req.bar).assertEqual('barbar');
-          res.setHeader('Content-Type', "text/plain");
-          res.end('one');
-        })
-        .get('/two', foo, (req, res, next) => {
+      let endTime1 = new Date().getTime();
+      let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+      console.log("BasicUseTest : use averageTime : " + averageTime1 + "us");
+
+
+
+      let startTime2: number = new Date().getTime();
+      app.get('/one', foo, bar, (req: SelfRequest, res: ServerResponse) => {
+        expect(req.foo).assertEqual(500);
+        expect(req.bar).assertEqual('barbar');
+        res.setHeader('Content-Type', "text/plain");
+        res.end('one');
+      })
+      let endTime2 = new Date().getTime();
+      let averageTime2 = ((endTime2 - startTime2) * 1000) / BASE_COUNT;
+      console.log("BasicUseTest : get averageTime : " + averageTime2 + "us");
+
+
+      app.get('/two', foo, (req, res, next) => {
           expect(req.foo).assertEqual(500);
           expect(req.bar).assertEqual('bar');
           req.hello = 'world';
@@ -158,6 +187,7 @@ export default function polkaTest() {
     })
 
     it('polka::usage::middleware', 0, async (done: Function) => {
+
       let app = polka<SelfRequest>().use((req: SelfRequest, res: ServerResponse, next: NextFunction) => {
         (req.one='hello') && next();
       }).use('/', (req: SelfRequest, res: ServerResponse, next: NextFunction) => {
@@ -191,16 +221,28 @@ export default function polkaTest() {
       let opt: http.HttpRequestOptions = {
         method: http.RequestMethod.GET,
       }
+
       // 发送http请求
+      let startTime3: number = new Date().getTime();
       const res: http.HttpResponse = await httpRequest.request("http://0.0.0.0:9991/", opt);
       expect(res.responseCode).assertEqual(200);
       expect(res.result).assertEqual('Hello');
       expect(res.header['x-type']).assertEqual('text/foo');
+      let endTime3 = new Date().getTime();
+      let averageTime3 = ((endTime3 - startTime3) * 1000) / BASE_COUNT;
+      console.log("BasicHttpTest : http averageTime : " + averageTime3 + "us");
 
+
+
+      let startTime4: number = new Date().getTime();
       const res1: http.HttpResponse = await httpRequest.request("http://0.0.0.0:9991/about", opt);
       expect(res1.responseCode).assertEqual(200);
       expect(res1.result).assertEqual('About');
+      let endTime4 = new Date().getTime();
+      let averageTime4 = ((endTime4 - startTime4) * 1000) / BASE_COUNT;
+      console.log("BasicHttpTest : http res1 averageTime : " + averageTime4 + "us");
 
+      let startTime5: number = new Date().getTime();
       const res2: http.HttpResponse =
         await httpRequest.request("http://0.0.0.0:9991/subgroup", {
           method: http.RequestMethod.POST,
@@ -208,12 +250,23 @@ export default function polkaTest() {
         });
       expect(res2.responseCode).assertEqual(200);
       expect(res2.result).assertEqual('POST /subgroup');
+      let endTime5 = new Date().getTime();
+      let averageTime5 = ((endTime5 - startTime5) * 1000) / BASE_COUNT;
+      console.log("BasicHttpTest : http res2 averageTime : " + averageTime5 + "us");
 
+      let startTime6: number = new Date().getTime();
       const res3: http.HttpResponse = await httpRequest.request("http://0.0.0.0:9991/subgroup/foo", opt);
       expect(res3.responseCode).assertEqual(200);
       expect(res3.result).assertEqual('GET /subgroup/foo');
+      let endTime6 = new Date().getTime();
+      let averageTime6 = ((endTime6 - startTime6) * 1000) / BASE_COUNT;
+      console.log("BasicHttpTest : http res3 averageTime : " + averageTime6 + "us");
 
+      let startTime7: number = new Date().getTime();
       app.server?.stop();
+      let endTime7 = new Date().getTime();
+      let averageTime7 = ((endTime7 - startTime7) * 1000) / BASE_COUNT;
+      console.log("BasicStopTest : stop averageTime : " + averageTime7 + "us");
       done();
     })
 
@@ -241,8 +294,13 @@ export default function polkaTest() {
       let opt: http.HttpRequestOptions = {
         method: http.RequestMethod.GET,
       }
+
       // 发送http请求
+      let startTime1: number = new Date().getTime();
       const res: http.HttpResponse = await httpRequest.request("http://0.0.0.0:9992/", opt);
+      let endTime1 = new Date().getTime();
+      let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+      console.log("BasicHttpTest : http-middleware-sync averageTime : " + averageTime1 + "us");
       expect(res.responseCode).assertEqual(200);
       expect(res.result).assertEqual('Hello');
       expect(res.header['x-type']).assertEqual('text/foo');
@@ -299,32 +357,55 @@ export default function polkaTest() {
         method: http.RequestMethod.GET,
       }
       // 发送http请求
+      let startTime1: number = new Date().getTime();
       const res: http.HttpResponse = await httpRequest.request("http://0.0.0.0:9993/", opt);
+      let endTime1 = new Date().getTime();
+      let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+      console.log("BasicHttpTest : http-middleware-sync averageTime : " + averageTime1 + "us");
+
       expect(res.responseCode).assertEqual(200);
       expect(res.result).assertEqual('hello from main');
 
       // Test (GET /foo)
       chk = true;
+      let startTime2: number = new Date().getTime();
       const res1: http.HttpResponse = await httpRequest.request("http://0.0.0.0:9993/foo", opt);
+      let endTime2 = new Date().getTime();
+      let averageTime2 = ((endTime2 - startTime2) * 1000) / BASE_COUNT;
+      console.log("BasicHttpTest : http-middleware-sync averageTime : " + averageTime2 + "us");
       expect(res1.responseCode).assertEqual(200);
       expect(res1.result).assertEqual('hello from foo');
 
       // Test (POST /foo/items?this=123)
       chk = true;
+
+      let startTime3: number = new Date().getTime();
       const res2: http.HttpResponse = await httpRequest.request("http://0.0.0.0:9993/foo/items?this=123", {
         method: http.RequestMethod.POST,
         extraData: 'data to send',
       });
+      let endTime3 = new Date().getTime();
+      let averageTime3 = ((endTime3 - startTime3) * 1000) / BASE_COUNT;
+      console.log("BasicHttpTest : http-middleware-sync averageTime : " + averageTime3 + "us");
       expect(res2.responseCode).assertEqual(200);
       expect(res2.result).assertEqual('hello from foo');
 
       // Test (GET /bar/hello)
+      let startTime4: number = new Date().getTime();
       const res3: http.HttpResponse = await httpRequest.request("http://0.0.0.0:9993/bar/hello", opt);
+      let endTime4 = new Date().getTime();
+      let averageTime4 = ((endTime4 - startTime4) * 1000) / BASE_COUNT;
+      console.log("BasicHttpTest : http-res3: " + averageTime4 + "us");
+
       expect(res3.responseCode).assertEqual(200);
       expect(res3.result).assertEqual('hello from bar');
 
       // Test (GET 404)
+      let startTime5: number = new Date().getTime();
       const res4: http.HttpResponse = await httpRequest.request("http://0.0.0.0:9993/foobar", opt);
+      let endTime5 = new Date().getTime();
+      let averageTime5 = ((endTime5 - startTime5) * 1000) / BASE_COUNT;
+      console.log("BasicHttpTest : http-res4: " + averageTime5 + "us");
       expect(res4.responseCode).assertEqual(404);
       expect(res4.result).assertEqual('Not Found');
 
@@ -362,25 +443,47 @@ export default function polkaTest() {
 
       exp = '/';
       // 发送http请求
+      let startTime1: number = new Date().getTime();
       const res: http.HttpResponse = await httpRequest.request(`http://0.0.0.0:9994${exp}`, opt);
+      let endTime1 = new Date().getTime();
+      let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+      console.log("BasicHttpTest : http-res averageTime : " + averageTime1 + "us");
       expect(res.responseCode).assertEqual(200);
       expect(res.result).assertEqual('hello from wildcard');
 
       exp = '/hello';
+
+      let startTime2: number = new Date().getTime();
       const res1: http.HttpResponse = await httpRequest.request(`http://0.0.0.0:9994${exp}`, opt);
+      let endTime2 = new Date().getTime();
+      let averageTime2 = ((endTime2 - startTime2) * 1000) / BASE_COUNT;
+      console.log("BasicHttpTest : http-res1 averageTime : " + averageTime2 + "us");
       expect(res1.responseCode).assertEqual(200);
       expect(res1.result).assertEqual('hello from wildcard');
 
       exp = '/a/b/c';
+      let startTime3: number = new Date().getTime();
       const res2: http.HttpResponse = await httpRequest.request(`http://0.0.0.0:9994${exp}`, opt);
+      let endTime3 = new Date().getTime();
+      let averageTime3 = ((endTime3 - startTime3) * 1000) / BASE_COUNT;
+      console.log("BasicHttpTest : http-res2 averageTime : " + averageTime3 + "us");
       expect(res2.responseCode).assertEqual(200);
       expect(res2.result).assertEqual('hello from wildcard');
 
+
+      let startTime4: number = new Date().getTime();
       const res3: http.HttpResponse = await httpRequest.request(`http://0.0.0.0:9994/bar`, opt);
+      let endTime4 = new Date().getTime();
+      let averageTime4 = ((endTime4 - startTime4) * 1000) / BASE_COUNT;
+      console.log("BasicHttpTest : http-res3 averageTime : " + averageTime4 + "us");
       expect(res3.responseCode).assertEqual(200);
       expect(res3.result).assertEqual('hello from bar');
 
+      let startTime5: number = new Date().getTime();
       const res4: http.HttpResponse = await httpRequest.request(`http://0.0.0.0:9994/bar/extra`, opt);
+      let endTime5 = new Date().getTime();
+      let averageTime5 = ((endTime5 - startTime5) * 1000) / BASE_COUNT;
+      console.log("BasicHttpTest : http-res4 averageTime : " + averageTime5 + "us");
       expect(res4.responseCode).assertEqual(200);
       expect(res4.result).assertEqual('hello from bar');
 
