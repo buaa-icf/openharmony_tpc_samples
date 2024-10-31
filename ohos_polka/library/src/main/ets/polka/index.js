@@ -6,7 +6,7 @@ import parser from './url';
 
 export { default as statik } from '../node-static';
 export { createFile } from '../common/util/fs';
-export { http, Server, IncomingMessage, ServerResponse, fileUploadHtml } from '../http';
+export { http, Server, IncomingMessage, ServerResponse } from '../http';
 
 function lead(x) {
   return x.charCodeAt(0) === 47 ? x : ('/' + x);
