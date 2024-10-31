@@ -29,6 +29,13 @@
 				<filteritem type="filepath" name="js-tokens/entry/src/ohosTest/resources/base/media/division.js" desc="此文件第三方开源软件源码，只用于单元测试，不修改版权头，以防有修改版权风险"/>
 				<filteritem type="filepath" name="js-tokens/entry/src/ohosTest/resources/base/media/errors.js" desc="此文件第三方开源软件源码，只用于单元测试，不修改版权头，以防有修改版权风险"/>
 				<filteritem type="filepath" name="js-tokens/entry/src/ohosTest/resources/base/media/regex.js" desc="此文件第三方开源软件源码，只用于单元测试，不修改版权头，以防有修改版权风险"/>
+				<filteritem type="filepath" name="socketio_tls/library/src/main/cpp/socketio_module_napi.cpp" desc="此文件版权内容按照源库去描述，不修改版权头，以防有修改版权风险"/>
+				<filteritem type="filepath" name="socketio_tls/library/src/main/ets/client_socket.ets" desc="此文件版权内容按照源库去描述，不修改版权头，以防有修改版权风险"/>
+				<filteritem type="filepath" name="socketio_tls/library/src/main/cpp/types/libentry/index.d.ts" desc="此文件版权内容按照源库去描述，不修改版权头，以防有修改版权风险"/>
+				<filteritem type="filepath" name="socketio_tls/library/src/main/cpp/client_socket.h" desc="此文件版权内容按照源库去描述，不修改版权头，以防有修改版权风险"/>
+				<filteritem type="filepath" name="socketio_tls/library/src/main/ets/buffer_util.ets" desc="此文件版权内容按照源库去描述，不修改版权头，以防有修改版权风险"/>
+				<filteritem type="filepath" name="socketio_tls/library/src/main/cpp/thirdModule/modify.sh" desc="此文件版权内容按照源库去描述，不修改版权头，以防有修改版权风险"/>
+				<filteritem type="filepath" name="socketio_tls/library/src/main/cpp/socketio_module_napi.h" desc="此文件版权内容按照源库去描述，不修改版权头，以防有修改版权风险"/>
                 <filteritem type="filename" name="SMTPClient/LICENSE" desc="原库版权，不修改"/>
                 <filteritem type="filename" name="eventsource/LICENSE" desc="原库版权，不修改"/>
                 <filteritem type="filepath" name="jsDiffDemo/LICENSE-BSD-3-Clause" desc="原库版权，不修改"/>
@@ -232,6 +239,8 @@
                 <filteritem type="filepath" name="socketio_2.x/socketio服务搭建.pdf" desc="服务搭建文件，无需检查"/>
                 <filteritem type="filepath" name="socketio_2.x/screenshot/效果展示_登陆页面.jpg" desc="效果展示文件，无需检查"/>
                 <filteritem type="filepath" name="socketio_2.x/screenshot/效果展示_聊天页面.jpg" desc="效果展示文件，无需检查"/>
+				<filteritem type="filepath" name="socketio_tls/screenshot/效果展示_登陆页面.jpg" desc="效果展示文件，无需检查"/>
+                <filteritem type="filepath" name="socketio_tls/screenshot/效果展示_聊天页面.jpg" desc="效果展示文件，无需检查"/>
                 <filteritem type="filepath" name="ohos_ntp/img/ntpGIF.gif" desc="效果展示文件，无需检查"/>
                 <filteritem type="filepath" name="ohos_ntp/img/ntpGIF_EN.gif" desc="效果展示文件，无需检查"/>
                 <filteritem type="filepath" name="parserHtmlJsonDemo/demo.gif" desc="演示效果动图，用于readme展示，无需检查"/>
@@ -294,6 +303,7 @@
                 <policyitem type="license" name="MIT" path="xml2jsDemo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
 				<policyitem type="license" name="MIT" path="MetaPhone/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="unrar/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+				<policyitem type="license" name="MIT License" path="socketio_tls/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="当前项目兼容此协议" />
                 <policyitem type="license" name="MIT" path="js-tokens/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="BSD-3-Clause" path="protobuf/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="ThirdPartyNotice" path=".*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="误报，非协议名称" />
@@ -347,6 +357,7 @@
                 <policyitem type="license" name="MIT" path="socketio_2.x/.*" rule="may" group="defaultGroup" filefilter="defaultPolicyFilter" desc="源开源项目的LICENSE,  符合开源要求"/>
                 <policyitem type="license" name="ThirdPartyNotice" path="socketio_2.x/.*" rule="may" group="defaultGroup" filefilter="defaultPolicyFilter" desc="源开源项目的LICENSE,  符合开源要求"/>
                 <policyitem type="license" name="Copyright (C) 2023 Huawei Device Co., Ltd." path="socketio_2.x/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+				<policyitem type="license" name="Copyright (C) 2023 Huawei Device Co., Ltd." path="socketio_tls/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="zlib-acknowledgement" path="box2d/entry/src/main/ets/Testbed/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="当前项目兼容此协议" />
                 <policyitem type="license" name="zlib-acknowledgement" path="box2d/library/src/main/ets/Box2D/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="当前项目兼容此协议" />
                 <policyitem type="license" name="NoLicenseHeader" path="box2d/entry/src/main/ets/Testbed/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改" />
@@ -461,6 +472,19 @@
             </policy>
         </policylist>
         <licensematcherlist>
+		    <licensematcher name="MIT License" desc="License for MIT">
+                <licensetext name="
+               /**
+                *
+                * This software is distributed under a license. The full license
+                * agreement can be found in the file LICENSE in this distribution.
+                * This software may not be copied, modified, sold or distributed
+                * other than expressed in the named license agreement.
+                *
+                * This software is distributed without any warranty.
+                */
+                " desc="这段头内容实际指向了license文件，license文件是MIT协议的" />
+            </licensematcher>
             <licensematcher name="BSD-2-Clause" desc="License for BSD">
                 <licensetext name="
                 /**
