@@ -134,7 +134,8 @@ export default class FileCache implements Cache {
   append(fileData: ArrayBuffer, length: number) {
     try {
       if (this.isCompleted()) {
-        throw new Error("Error append cache: cache file " + this.tempFilePath + " is completed!");
+        console.error("Error append cache: cache file " + this.tempFilePath + " is completed!");
+        return;
       }
       if (!fileData) {
         return
