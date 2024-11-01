@@ -29,7 +29,7 @@ export class Files {
       }
     } else {
       try {
-        fs.mkdirSync(directory);
+        fs.mkdirSync(directory, true);
       } catch (err) {
         throw new Error(`Directory ${directory} can't be created,reason is :${err.message}`);
       }

@@ -48,7 +48,7 @@ export default class FileCache implements Cache {
       self.parentPath = directory;
       let fileName = filePath.substring(last + 1, filePath.length)
       if (!fs.accessSync(directory)) {
-        fs.mkdirSync(directory)
+        fs.mkdirSync(directory, true);
       }
       let completed: boolean = fs.accessSync(filePath)
       self.tempFilePath = completed ? filePath : directory + '/' + fileName + self.TEMP_POSTFIX
