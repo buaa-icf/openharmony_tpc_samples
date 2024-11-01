@@ -48,27 +48,23 @@ export default function abilityTest() {
       // This API supports only one parameter: clear action function.
     })
     it('should_encode_a_URL', 0, () => {
-      const encoded: ESObject = encode('Hello, world!');
+      const encoded: string = encode('Hello, world!');
       expect(encoded).assertEqual('Hello,%20world!');
     });
 
     it('should_decode_a_URL', 0, () => {
-      const decoded: ESObject = decode('Hello%20world%21');
+      const decoded: string = decode('Hello%20world%21');
       expect(decoded).assertEqual('Hello world!');
     });
 
     it('should_encode_a_URL_with_custom_options', 0, () => {
-      const encoded: ESObject = encode('Hello, world!', {
-        encodeEverything: true
-      });
-      expect(encoded).assertEqual('Hello,%20world!');
+      const encoded: string = encode('Hello, world!', '', true);
+      expect(encoded).assertEqual('Hello%2C%20world%21');
     });
 
     it('should_decode_a_URL_with_custom_options', 0, () => {
-      const decoded: ESObject = decode('Hello%2C%20world%21', {
-        decodeEverything: true
-      });
-      expect(decoded).assertEqual('Hello%2C world!');
+      const decoded: string = decode('Hello%2C%20world%21', "true");
+      expect(decoded).assertEqual('Hello, world!');
     });
 
     it('should_format_a_URL_object_to_a_string', 0, () => {
@@ -78,7 +74,7 @@ export default function abilityTest() {
         pathname: '/path/to/resource',
         search: 'query=value',
       };
-      const formattedUrl: ESObject = format(urlObject);
+      const formattedUrl: string = format(urlObject);
       expect(formattedUrl).assertEqual('httpswww.example.com/path/to/resourcequery=value');
     });
 
