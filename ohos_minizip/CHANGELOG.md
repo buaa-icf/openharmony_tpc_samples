@@ -1,3 +1,7 @@
+## 1.0.2-rc.0
+
+- Fix the issue of failed file creation for unzippToDirectory interface decompression
+
 ## 1.0.1
 
 - Update the version to 1.0.1.
