@@ -42,6 +42,7 @@ export default class HttpUrlSource implements Source {
   private isDataFinish: boolean = false;
   private cacheData: Queue<ArrayBuffer> = new Queue();
   private interId: number = (0 - Number.MAX_VALUE);
+  private lastLocation: string = '';
 
   // private inputStream: InputStream;
 
@@ -287,16 +288,23 @@ export default class HttpUrlSource implements Source {
           return reject(new Error('sourceInfo is null'))
         }
         console.debug("Read content info from " + this.sourceInfo!!.url);
-        urlConnection?.once('headersReceive', async (headers: Object) => {
+        urlConnection?.on('headersReceive', async (headers: Object) => {
           if (headers) {
             let length = self.getContentLength(headers);
             let temp = headers as Record<string, Object>
             let mime = temp['content-type'] as string ? temp['content-type'] as string : temp['Content-Type'] as string;
-            self.sourceInfo = new SourceInfo(self.sourceInfo!!.url, length, mime);
-            await self.sourceInfoStorage?.put(self.sourceInfo!!.url, self.sourceInfo);
-            console.debug("Source info fetched: " + self.sourceInfo);
+            const lastLocation = temp['location'] as string;
+            if (lastLocation == undefined || this.lastLocation == lastLocation) {
+              self.sourceInfo = new SourceInfo(self.sourceInfo!!.url, length, mime);
+              await self.sourceInfoStorage?.put(self.sourceInfo!!.url, self.sourceInfo);
+              console.debug("Source info fetched: " + self.sourceInfo);
+              urlConnection?.off('headersReceive');
+              return resolve();
+            }
+            this.lastLocation = lastLocation ? lastLocation : '';
+          } else {
+            return resolve();
           }
-          return resolve()
         })
         let option = self.initRequestParam(0, 10000)
         urlConnection.requestInStream(self.sourceInfo!!.url, option)
