@@ -28,7 +28,7 @@ const TAG: string = 'MediaDemo HttpPlayer:';
 @Entry
 @Component
 struct DiyCacheSizePage {
-  @State ratio: number = 1.0;
+  @State ratio: number = 2.0;
   @State mediaLibUtils: MediaLibraryUtils = new MediaLibraryUtils();
   @State isPlaying: boolean = true;
   @State currentTime: string = '0';
