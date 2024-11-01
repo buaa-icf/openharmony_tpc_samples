@@ -6,8 +6,6 @@ The **entities** library provides APIs for quickly encoding and decoding HTML an
 ## How to Install
 ```shell
 ohpm install entities
-ohpm install @types/entities --save-dev // Install @types/entities to prevent import syntax errors due to missing type declarations in the entities package.
-
 ```
 For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
