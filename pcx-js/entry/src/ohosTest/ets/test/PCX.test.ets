@@ -47,7 +47,7 @@ export default function PCXTest() {
       let decodeVal = base64.decodeSync(small)
       expect(268).assertEqual(decodeVal.byteLength)
       //      let pcx  = require('pcx-js')
-      let pcxDecoder:PCX = new PCX(decodeVal.buffer);
+      let pcxDecoder:PCX = new PCX(decodeVal.buffer as ArrayBuffer);
       let decodeData:DecodeType = pcxDecoder.decode();
       expect(104).assertEqual(decodeData.pixelArray.buffer.byteLength);
       expect(2).assertEqual(decodeData.width)
@@ -61,7 +61,7 @@ export default function PCXTest() {
       let decodeVal = base64.decodeSync(parrot)
       expect(25361).assertEqual(decodeVal.byteLength)
       //      let pcx  = require('pcx-js')
-      let pcxDecoder:PCX = new PCX(decodeVal.buffer);
+      let pcxDecoder:PCX = new PCX(decodeVal.buffer as ArrayBuffer);
       let decodeData:DecodeType = pcxDecoder.decode();
       expect(120000).assertEqual(decodeData.pixelArray.buffer.byteLength);
       expect(150).assertEqual(decodeData.width)
