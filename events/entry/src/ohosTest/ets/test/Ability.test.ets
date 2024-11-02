@@ -26,7 +26,8 @@
  */
 
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-import * as event from 'events/'
+import * as event from 'events'
+import {EventEmitter} from 'events'
 
 export default function abilityTest() {
   describe('ActsAbilityTest', () => {
@@ -42,7 +43,7 @@ export default function abilityTest() {
     });
 
     it('test1', 0, () => {
-      expect(event.listenerCount(emitter, 'foo')).assertEqual(2)
+      expect(EventEmitter.listenerCount(emitter, 'foo')).assertEqual(2)
     })
     it('test2', 0, () => {
       expect(emitter.listenerCount('foo')).assertEqual(2)
