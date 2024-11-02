@@ -13,26 +13,21 @@
  * limitations under the License.
  */
 
-import fileio from '@ohos.fileio';
+import { fileIo as fs } from '@kit.CoreFileKit';
 import pako from 'pako';
-import { GlobalContext } from '../entryability/GlobalContext'
-
-interface optionsType {
-  deflate: boolean,
-  level: number
-}
+import { GlobalContext } from '../entryability/GlobalContext';
 
 export async function DeflateFile(src: string, dest: string): Promise<boolean> {
   try {
-    let stat = fileio.statSync(src);
-    const buf = new ArrayBuffer(stat.size);
-    const reader = fileio.openSync(src, 0o2);
-    fileio.readSync(reader, buf);
-    const writer = fileio.openSync(dest, 0o102, 0o666);
-    const options: optionsType = { deflate: true, level: 9 };
-    fileio.writeSync(writer, pako.deflate(new Uint8Array(buf), options)?.buffer);
-    fileio.closeSync(reader);
-    fileio.closeSync(writer);
+    let stat = fs.statSync(src);
+    let buf = new ArrayBuffer(stat.size);
+    let reader = fs.openSync(src, fs.OpenMode.READ_ONLY);
+    fs.readSync(reader.fd, buf);
+    let writer = fs.openSync(dest, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
+    let options: pako.DeflateFunctionOptions = { level: 9 };
+    fs.writeSync(writer.fd, pako.deflate(new Uint8Array(buf), options)?.buffer);
+    fs.closeSync(reader);
+    fs.closeSync(writer);
     return true;
   } catch (error) {
     return false;
@@ -42,19 +37,19 @@ export async function DeflateFile(src: string, dest: string): Promise<boolean> {
 
 export async function InflateFile(src: string, target: string): Promise<boolean> {
   try {
-    const reader = fileio.openSync(src, 0o2);
-    const stat = fileio.statSync(src);
-    const buf = new ArrayBuffer(stat.size);
-    const res = await fileio.read(reader, buf);
-    const options: optionsType = { deflate: true, level: 9 };
-    const data: string | Uint8Array | undefined = pako.inflate(new Uint8Array(res.buffer), options);
+    let reader = fs.openSync(src, fs.OpenMode.READ_ONLY);
+    let stat = fs.statSync(src);
+    let buf = new ArrayBuffer(stat.size);
+    await fs.read(reader.fd, buf);
+    let options: pako.DeflateFunctionOptions = { level: 9 };
+    let data: string | Uint8Array | undefined = pako.inflate(new Uint8Array(buf), options);
     if (typeof data == 'string') {
       return false
     }
-    const writer = fileio.openSync(target, 0o102, 0o666);
-    fileio.writeSync(writer, data?.buffer);
-    fileio.closeSync(writer);
-    fileio.closeSync(reader);
+    let writer = fs.openSync(target, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
+    fs.writeSync(writer.fd, data?.buffer);
+    fs.closeSync(writer);
+    fs.closeSync(reader);
     return true;
   } catch (error) {
     return false;
@@ -165,8 +160,8 @@ export struct DeflateTest {
     let context: Context = GlobalContext.getContext().getObject("context") as Context
     try {
       let data = context.filesDir
-      const writer = fileio.openSync(data + '/hello.txt', 0o102, 0o666);
-      fileio.writeSync(writer, "hello, world!  adjasjdakjdakjdkjakjdakjskjasdkjaskjdajksdkjasdkjaksjdkja\n"
+      let writer = fs.openSync(data + '/hello.txt', fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
+      fs.writeSync(writer.fd, "hello, world!  adjasjdakjdakjdkjakjdakjskjasdkjaskjdajksdkjasdkjaksjdkja\n"
         + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
         + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
         + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
@@ -180,7 +175,7 @@ export struct DeflateTest {
         + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
         + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs"
       );
-      fileio.closeSync(writer);
+      fs.closeSync(writer);
       AlertDialog.show({
         title: $r("app.string.Build_succeeded"),
         message: this.getResourceString($r("app.string.Check_out_sandbox_path")) + data + '/hello.txt',

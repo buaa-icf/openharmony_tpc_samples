@@ -41,7 +41,7 @@ export default function MiscTest() {
 
     it('DeflateArrayBuffer', 0, () => {
       let context: Context = GlobalContext.getContext().getObject("context") as Context
-      context.createModuleContext('entry_test')
+      context
         .resourceManager
         .getMediaContent($r('app.media.lorem_utf_100k').id)
         .then(uint8 => {
@@ -53,7 +53,7 @@ export default function MiscTest() {
     })
     it('InflateArrayBuffer', 1, () => {
       let context: Context = GlobalContext.getContext().getObject("context") as Context
-      context.createModuleContext('entry_test')
+      context
         .resourceManager
         .getMediaContent($r('app.media.lorem_utf_100k').id)
         .then(uint8 => {

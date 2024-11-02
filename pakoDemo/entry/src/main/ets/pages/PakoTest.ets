@@ -13,21 +13,8 @@
  * limitations under the License.
  */
 
-import pako, { constants } from 'pako'
+import pako, { constants } from 'pako';
 import prompt from '@ohos.promptAction';
-
-
-interface levelType {
-  level: number
-}
-
-interface optionsType {
-  gzip: boolean,
-  level: number
-}
-
-let levelData: levelType = { level: 3 }
-let ungzipTestData: optionsType = { gzip: true, level: 9 }
 
 @Entry
 @Component
@@ -169,9 +156,10 @@ export default struct deflateDemo {
   }
 
   DeflateTest1() {
-    let chunk1 = new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9])
+    let chunk1 = new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9]);
     let chunk2 = new Uint8Array([10, 11, 12, 13, 14, 15, 16, 17, 18, 19]);
-    const deflate: pako.Deflate = new pako.Deflate(levelData);
+    let deflateOptions:pako.DeflateOptions = { level: 3 };
+    const deflate: pako.Deflate = new pako.Deflate(deflateOptions);
     deflate.push(chunk1, false);
     deflate.push(chunk2, true);
     let deflateArray: Uint8Array | undefined = deflate.result
@@ -202,7 +190,7 @@ export default struct deflateDemo {
   InflateInflateTest() {
     const chunk1 = new Uint8Array([120, 94, 99, 100, 98, 102, 97, 101, 99, 231, 224])
     const chunk2 = new Uint8Array([228, 226, 230, 225, 229, 227, 23, 16, 20, 18, 6, 0, 5, 69, 0, 191]);
-    const inflate: pako.Inflate = new pako.Inflate(levelData);
+    const inflate: pako.Inflate = new pako.Inflate();
 
     inflate.push(chunk1, false);
     inflate.push(chunk2, true); // true -> last chunk
@@ -222,11 +210,12 @@ export default struct deflateDemo {
   }
 
   ungzipTest() {
-    let array = new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9])
+    let array = new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    let ungzipTestData:pako.DeflateOptions = { gzip: true, level: 9 };
     let gzip: Uint8Array | undefined = pako.gzip(array, ungzipTestData);
-    let ungzip: string | Uint8Array | undefined = pako.ungzip(gzip, ungzipTestData);
-    this.ungzip1 = ungzip?.toString()
-    let result: Boolean = (ungzip?.toString() === array.toString())
-    prompt.showToast({ message: result.toString(), duration: 4000 })
+    let ungzip: string | Uint8Array | undefined = pako.ungzip(gzip);
+    this.ungzip1 = ungzip?.toString();
+    let result: Boolean = (ungzip?.toString() === array.toString());
+    prompt.showToast({ message: result.toString(), duration: 4000 });
   }
 }

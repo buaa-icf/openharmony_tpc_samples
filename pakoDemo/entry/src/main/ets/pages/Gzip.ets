@@ -12,35 +12,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import fileio from '@ohos.fileio';
+import { fileIo as fs } from '@kit.CoreFileKit';
 import pako from 'pako';
-import { GlobalContext } from '../entryability/GlobalContext'
-
-/**
- * 指定文件路径压缩文件gz方法
- *
- * @since 7
- * @permission N
- * @param {string} path - path.
- * @param {string} dest -path and file name after the .gz file is generated.
- * @returns {void | Promise<boolean>} callback return Promise otherwise return true or false.
- */
-interface optionsType {
-  gzip: boolean,
-  level: number
-}
+import { GlobalContext } from '../entryability/GlobalContext';
 
 export async function gzipFile(src: string, dest: string): Promise<boolean> {
   try {
-    let stat = fileio.statSync(src);
+    let stat = fs.statSync(src);
     const buf = new ArrayBuffer(stat.size);
-    const reader = fileio.openSync(src, 0o2);
-    fileio.readSync(reader, buf);
-    const writer = fileio.openSync(dest, 0o102, 0o666);
-    const options: optionsType = { gzip: true, level: 9 };
-    fileio.writeSync(writer, pako.gzip(new Uint8Array(buf), options)?.buffer);
-    fileio.closeSync(reader);
-    fileio.closeSync(writer);
+    const reader = fs.openSync(src, fs.OpenMode.READ_ONLY);
+    fs.readSync(reader.fd, buf);
+    const writer = fs.openSync(dest, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
+    const options: pako.DeflateOptions = { gzip: true, level: 9 };
+    fs.writeSync(writer.fd, pako.gzip(new Uint8Array(buf), options)?.buffer);
+    fs.closeSync(reader);
+    fs.closeSync(writer);
     return true;
   } catch (error) {
     return false;
@@ -58,19 +44,18 @@ export async function gzipFile(src: string, dest: string): Promise<boolean> {
  */
 export async function unGzipFile(src: string, target: string): Promise<boolean> {
   try {
-    const reader = fileio.openSync(src, 0o2);
-    const stat = fileio.statSync(src);
+    const reader = fs.openSync(src, fs.OpenMode.READ_ONLY);
+    const stat = fs.statSync(src);
     const buf = new ArrayBuffer(stat.size);
-    const res = await fileio.read(reader, buf);
-    const options: optionsType = { gzip: true, level: 9 };
-    const data: string | Uint8Array | undefined = pako.inflate(new Uint8Array(res.buffer), options);
+    await fs.read(reader.fd, buf);
+    const data: string | Uint8Array | undefined = pako.ungzip(new Uint8Array(buf));
     if (typeof data == 'string') {
       return false
     }
-    const writer = fileio.openSync(target, 0o102, 0o666);
-    fileio.writeSync(writer, data?.buffer);
-    fileio.closeSync(writer);
-    fileio.closeSync(reader);
+    const writer = fs.openSync(target, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
+    fs.writeSync(writer.fd, data?.buffer);
+    fs.closeSync(writer);
+    fs.closeSync(reader);
     return true;
   } catch (error) {
     return false;
@@ -84,7 +69,7 @@ export struct GzipTest {
   @State isDeCompressGZipShow: boolean = false;
   preTimestamp: number = 0;
 
-  getResourceString(res:Resource){
+  getResourceString(res:Resource) {
     return getContext().resourceManager.getStringSync(res.id)
   }
 
@@ -139,8 +124,8 @@ export struct GzipTest {
     let context: Context = GlobalContext.getContext().getObject("context") as Context
     try {
       let data = context.filesDir
-      const writer = fileio.openSync(data + '/hello.txt', 0o102, 0o666);
-      fileio.writeSync(writer,
+      const writer = fs.openSync(data + '/hello.txt', fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
+      fs.writeSync(writer.fd,
         "hello, world! 你好你是什么认为呢 打烂打烂大龙胆大大家记得那几年的 adjasjdakjdakjdkjakjdakjskjasdkjaskjdajksdkjasdkjaksjdkja\n"
           + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
           + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
@@ -155,7 +140,7 @@ export struct GzipTest {
           + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs\n"
           + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs"
       );
-      fileio.closeSync(writer);
+      fs.closeSync(writer);
       AlertDialog.show({
         title: $r("app.string.Build_succeeded"),
         message: this.getResourceString($r("app.string.Check_out_sandbox_path")) + data + '/hello.txt',

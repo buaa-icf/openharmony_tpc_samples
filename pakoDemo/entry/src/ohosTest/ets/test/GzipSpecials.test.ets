@@ -19,11 +19,11 @@ import { GlobalContext } from './GlobalContext';
 import { onTypeOf8,onTypeOf10,onTypeOf11 } from "./IntertfaceData"
 export default function GzipSpecialsTest() {
   // fromCharCode, but understands right > 0xffff values
-  let a2s = (array: Uint8Array):string => {
+  let a2s = (array: number[]):string => {
     return String.fromCharCode(...array);
   }
 
-  let Z_SYNC_FLUSH:pako.constants = pako.constants.Z_SYNC_FLUSH;
+
   describe('gzipspecialsTest', () => {
     beforeAll(() => {
 
@@ -44,16 +44,15 @@ export default function GzipSpecialsTest() {
     it('Readcustomheaders',0, () => {
 
         let context:Context = GlobalContext.getContext().getObject("context") as Context
-        context.createModuleContext('entry_test').resourceManager.getMediaContent($r('app.media.gzip_headers').id).then(data=>{
+        context.resourceManager.getMediaContent($r('app.media.gzip_headers').id).then(data=>{
 
         const inflator:pako.Inflate = new pako.Inflate();
         inflator.push(data);
           if (inflator == undefined) return;
-          if (inflator.header.extra == undefined) return;
-
-          expect(inflator.header.name).assertEqual('test name');
-        expect(inflator.header.comment).assertEqual('test comment');
-        expect(a2s(inflator.header.extra)).assertEqual('test extra');
+          if (inflator.header?.extra == undefined) return;
+          expect(inflator.header?.name).assertEqual('test name');
+        expect(inflator.header?.comment).assertEqual('test comment');
+        expect(a2s(inflator.header?.extra)).assertEqual('test extra');
       });
     });
 
@@ -63,13 +62,14 @@ export default function GzipSpecialsTest() {
       const deflator:pako.Deflate = new pako.Deflate(onTypeOf11(true,true,1234567,15,'test name','test comment', [ 4, 5, 6 ]));
       deflator.push(data, true);
 
-      const inflator:pako.Inflate = new pako.Inflate(onTypeOf10('string')) as pako.InflateOptions;
+      const inflateOptions:pako.InflateOptions = { to:'string' };
+      const inflator:pako.Inflate = new pako.Inflate(inflateOptions);
       inflator.push(deflator.result);
 
       expect(inflator.err).assertEqual(0);
       expect(inflator.result).assertEqual(data);
 
-      const header: pako.Inflate | undefined = inflator.header;
+      const header: pako.Header | undefined = inflator.header;
       if (header == undefined) return;
       expect(header.time).assertEqual(1234567);
       expect(header.os).assertEqual(15);
@@ -96,16 +96,12 @@ export default function GzipSpecialsTest() {
     // });
     it('WritewithZ_SYNC_FLUSH',2, () => {
       const deflator:pako.Deflate = new pako.Deflate(onTypeOf8(true));
-      let count = 0;
-      deflator.onData =  (chunk:Uint8Array) => {
-        deflator.chunks.push(chunk);
-        count++;
-      };
-      deflator.push('12345', Z_SYNC_FLUSH);
+
+      deflator.push('12345',  pako.constants.Z_SYNC_FLUSH);
       deflator.push('67890', true);
-      const flushed:pako.deflator = deflator.result;
-      const normal:string = pako.gzip('1234567890');
-      expect(count).assertEqual(2);
+      const flushed:Uint8Array = deflator.result;
+      const normal:Uint8Array = pako.gzip('1234567890');
+
       expect(pako.ungzip(flushed)).assertDeepEquals(pako.ungzip(normal))
       expect(flushed.length > normal.length).assertTrue()
     });

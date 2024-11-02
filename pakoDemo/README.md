@@ -8,6 +8,7 @@ This demo allows you to use the third-party JavaScript library [pako](https://gi
 
 ```
   ohpm install pako
+  ohpm install @types/pako --save-dev
 ```
 For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 

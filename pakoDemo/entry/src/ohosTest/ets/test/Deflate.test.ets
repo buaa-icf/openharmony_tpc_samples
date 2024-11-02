@@ -42,13 +42,15 @@ export default function DeflateTest() {
 
     it('handlesmultiplepushes', 0, () => {
       const dict = buffer.from('abcd');
-      const deflate: pako.Deflate= new pako.Deflate(onTypeOf1(dict));
+      const deflate: pako.Deflate = new pako.Deflate(onTypeOf1(dict));
 
       deflate.push(buffer.from('hello').buffer, false);
       deflate.push(buffer.from('hello').buffer, false);
       deflate.push(buffer.from(' world').buffer, true);
-
-      const uncompressed:string = pako.inflate(buffer.from(deflate.result), onTypeOf1(dict));
+      let options:pako.InflateOptions = {
+        dictionary: dict
+      }
+      const uncompressed:Uint8Array = pako.inflate(deflate.result, options);
       expect(new Uint8Array(buffer.from('hellohello world').buffer)).assertDeepEquals(uncompressed)
 
     });
@@ -56,7 +58,7 @@ export default function DeflateTest() {
 
     it('issue78',1, () => {
         let context:Context = GlobalContext.getContext().getObject("context") as Context
-        context.createModuleContext('entry_test').resourceManager.getMediaContent($r('app.media.issue_78').id).then(data=>{
+        context.resourceManager.getMediaContent($r('app.media.issue_78').id).then(data=>{
 
         const deflatedPakoData:Uint8Array = pako.deflate(data,  onTypeOf12(1));
         const inflatedPakoData:Uint8Array = pako.inflate(deflatedPakoData);
