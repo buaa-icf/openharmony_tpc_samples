@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 import image from '@ohos.multimedia.image';
-import { DecodeType } from "./utils/decode"
+
 import PCX from 'pcx-js'
 
 interface Tests {
@@ -44,8 +44,8 @@ struct Index {
         Button($r("app.string.Decode_thimbleweed_pcx_585KB")).fontSize(20).onClick(() => {
 
           getContext(this).resourceManager.getMediaContent($r("app.media.thimbleweed").id).then((uint8Array) => {
-            let pcxDecoder: PCX = new PCX(uint8Array.buffer);
-            let decodeData: DecodeType = pcxDecoder.decode();
+            let pcxDecoder: PCX = new PCX(uint8Array.buffer as ArrayBuffer);
+            let decodeData: PCX.DecodeType = pcxDecoder.decode();
             this.RBGA2BGRA(decodeData.pixelArray)
             image.createPixelMap(this.typedArrayToBuffer(decodeData.pixelArray), {
               'size': {
@@ -68,9 +68,9 @@ struct Index {
 
           getContext(this).resourceManager.getMediaContent($r('app.media.small').id).then((uint8Array) => {
             this.smallUint8 = uint8Array;
-            let pcxDecoder: PCX = new PCX(uint8Array.buffer);
+            let pcxDecoder: PCX = new PCX(uint8Array.buffer as ArrayBuffer);
             this.smallPcx = pcxDecoder;
-            let decodeData: DecodeType = pcxDecoder.decode();
+            let decodeData: PCX.DecodeType = pcxDecoder.decode();
             this.RBGA2BGRA(decodeData.pixelArray)
             image.createPixelMap(this.typedArrayToBuffer(decodeData.pixelArray), {
               'size': {
@@ -91,8 +91,8 @@ struct Index {
           .margin(10)
         Button($r("app.string.Decode_parrot_pcx_25KB")).fontSize(20).onClick(() => {
           getContext(this).resourceManager.getMediaContent($r('app.media.parrot').id).then((uint8Array) => {
-            let pcxDecoder: PCX = new PCX(uint8Array.buffer);
-            let decodeData: DecodeType = pcxDecoder.decode();
+            let pcxDecoder: PCX = new PCX(uint8Array.buffer as ArrayBuffer);
+            let decodeData: PCX.DecodeType = pcxDecoder.decode();
             this.RBGA2BGRA(decodeData.pixelArray)
             image.createPixelMap(this.typedArrayToBuffer(decodeData.pixelArray), {
               'size': {
@@ -114,8 +114,8 @@ struct Index {
 
         Button($r("app.string.Decode_16col_pcx_40KB")).fontSize(20).onClick(() => {
           getContext(this).resourceManager.getMediaContent($r('app.media.16col').id).then((uint8Array) => {
-            let pcxDecoder: PCX = new PCX(uint8Array.buffer);
-            let decodeData: DecodeType = pcxDecoder.decode();
+            let pcxDecoder: PCX = new PCX(uint8Array.buffer as ArrayBuffer);
+            let decodeData: PCX.DecodeType = pcxDecoder.decode();
             this.RBGA2BGRA(decodeData.pixelArray)
             image.createPixelMap(this.typedArrayToBuffer(decodeData.pixelArray), {
               'size': {
@@ -136,8 +136,8 @@ struct Index {
           .margin(10)
         Button($r("app.string.Decode_clown_pcx_73KB")).fontSize(20).onClick(() => {
           getContext(this).resourceManager.getMediaContent($r('app.media.clown').id).then((uint8Array) => {
-            let pcxDecoder: PCX = new PCX(uint8Array.buffer);
-            let decodeData: DecodeType = pcxDecoder.decode();
+            let pcxDecoder: PCX = new PCX(uint8Array.buffer as ArrayBuffer);
+            let decodeData: PCX.DecodeType = pcxDecoder.decode();
             this.RBGA2BGRA(decodeData.pixelArray)
             image.createPixelMap(this.typedArrayToBuffer(decodeData.pixelArray), {
               'size': {
@@ -173,10 +173,10 @@ struct Index {
           let pcx: PCX | null = null
           if (!pcx) {
             this.testNilPcx = $r("app.string.The_pcx_object_empty_and_cannot_called")
-          } else if (this.smallUint8) {
-            let pcx: PCX = new PCX(this.smallUint8);
+          } else if (this.smallUint8 && this.smallUint8 instanceof Uint8Array) {
+            let pcx: PCX = new PCX(this.smallUint8.buffer as ArrayBuffer);
             this.testNilPcx = $r("app.string.If_pcx_object_empty_and_small_data_decode_method_can_called")
-            let decodeData: DecodeType = pcx.decode();
+            let decodeData: PCX.DecodeType = pcx.decode();
           }
         })
           .margin({ top: 5, bottom: 5 })
@@ -200,7 +200,7 @@ struct Index {
   testErrorInput() {
     try {
       let pcx: PCX = new PCX();
-      let decodeData: DecodeType = pcx.decode();
+      let decodeData: PCX.DecodeType = pcx.decode();
     } catch (err) {
       this.testNoDataPcx = $r("app.string.If_PCX_does_not_parse_data_decoding_will_cause_program_abnormal")
     }
@@ -247,7 +247,9 @@ struct Index {
     {
       name: 'new PCX()',
       func: () => {
-        let encoder: PCX = new PCX(this.smallUint8);
+        if (this.smallUint8 instanceof Uint8Array) {
+          let encoder: PCX = new PCX(this.smallUint8.buffer as ArrayBuffer);
+        }
       }
     },
     {

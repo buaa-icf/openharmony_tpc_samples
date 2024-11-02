@@ -8,6 +8,7 @@ This library uses the open-source [pcx-js](https://github.com/warpdesign/pcx-js)
 
 ```shell
 ohpm install pcx-js
+ohpm install @types/pcx-js --save-dev
 ```
 
 For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
