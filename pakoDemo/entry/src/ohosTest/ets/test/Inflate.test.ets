@@ -58,13 +58,13 @@ export default function InflateTest() {
       ]
       for (let i=0; i<nameRes.length; i++){
         let context:Context = GlobalContext.getContext().getObject("context") as Context
-        context.createModuleContext('entry_test').resourceManager.getMediaContent(nameRes[i].id).then(uint8=>{
+        context.resourceManager.getMediaContent(nameRes[i].id).then(uint8=>{
           samples[name[i]] = uint8;
         });
       }
 
       let context:Context = GlobalContext.getContext().getObject("context") as Context
-      context.createModuleContext('entry_test').resourceManager.getMediaContent($r('app.media.spdy_dict').id).then(uint8=>{
+      context.resourceManager.getMediaContent($r('app.media.spdy_dict').id).then(uint8=>{
         entryTestUint8Data = uint8;
       })
     })
@@ -79,9 +79,9 @@ export default function InflateTest() {
     })
     it('Forceusemaxwindowsizebydefault',0, () => {
       let context:Context = GlobalContext.getContext().getObject("context") as Context
-      context.createModuleContext('entry_test').resourceManager.getMediaContent($r('app.media.bad_wbits1').id).then(uint81=>{
+      context.resourceManager.getMediaContent($r('app.media.bad_wbits1').id).then(uint81=>{
 
-        context.createModuleContext('entry_test').resourceManager.getMediaContent($r('app.media.bad_wbits').id).then(uint82=>{
+        context.resourceManager.getMediaContent($r('app.media.bad_wbits').id).then(uint82=>{
 
           expect(pako.inflate(uint81)).assertDeepEquals(new Uint8Array(uint82));
         })

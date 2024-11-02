@@ -1,4 +1,3 @@
-import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 import pako from  'pako'
 
 export function loadSamples(basename, resid, callback) {

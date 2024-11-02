@@ -8,6 +8,7 @@
 
 ```
   ohpm install pako
+  ohpm install @types/pako --save-dev
 ```
 OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
@@ -98,4 +99,4 @@ DevEco Studio: 5.0 Canary3(5.0.3.228), SDK: API12(5.0.0.18) 。
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎给发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 共建。

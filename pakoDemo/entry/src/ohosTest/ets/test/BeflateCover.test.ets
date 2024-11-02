@@ -12,7 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import hilog from '@ohos.hilog';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 
 import pako from 'pako';
@@ -56,8 +55,7 @@ export default function BeflateCoverTest() {
     it('fast', 1, () => {
       let context: Context = GlobalContext.getContext().getObject("context") as Context
       testDeflate(short_sample, onTypeOf13(1, 10), 5);
-      context.createModuleContext('entry_test')
-        .resourceManager
+      context.resourceManager
         .getMediaContent($r('app.media.lorem_en_100k').id)
         .then((uint8: Uint8Array) => {
           long_sample = uint8
@@ -68,7 +66,7 @@ export default function BeflateCoverTest() {
     it('slow', 2, () => {
       let context: Context = GlobalContext.getContext().getObject("context") as Context
       testDeflate(short_sample, onTypeOf13(4, 10), 5);
-      context.createModuleContext('entry_test')
+      context
         .resourceManager
         .getMediaContent($r('app.media.lorem_en_100k').id)
         .then((uint8: Uint8Array) => {
@@ -81,7 +79,7 @@ export default function BeflateCoverTest() {
       testDeflate(short_sample, onTypeOf5(3), 0);
       testDeflate(short_sample, onTypeOf15(3, 10), 5);
 
-      context.createModuleContext('entry_test')
+      context
         .resourceManager
         .getMediaContent($r('app.media.lorem_en_100k').id)
         .then((uint8: Uint8Array) => {
@@ -93,7 +91,7 @@ export default function BeflateCoverTest() {
       let context: Context = GlobalContext.getContext().getObject("context") as Context
       testDeflate(short_sample, onTypeOf5(2), 0);
       testDeflate(short_sample, onTypeOf15(2, 10), 5);
-      context.createModuleContext('entry_test')
+      context
         .resourceManager
         .getMediaContent($r('app.media.lorem_en_100k').id)
         .then((uint8: Uint8Array) => {

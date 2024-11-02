@@ -31,7 +31,7 @@ export default function BinaryCmpareTest() {
     let sample:Uint8Array;
     let testSample = (pako_method: Function, sample: Uint8Array, options: object, resid: number | string): void => {
         let context:Context = GlobalContext.getContext().getObject("context") as Context
-        context.createModuleContext('entry_test').resourceManager.getMediaContent(resid as number).then(uint8 => {
+        context.resourceManager.getMediaContent(resid as number).then(uint8 => {
         let zlib_result: Uint8Array = uint8;
         let pako_result: Uint8Array = pako_method(sample, options);
         // One more hack: gzip header contains OS code, that can vary.
@@ -47,7 +47,7 @@ export default function BinaryCmpareTest() {
 
     beforeEach(() =>{
       let context:Context = GlobalContext.getContext().getObject("context") as Context
-      context.createModuleContext('entry_test').resourceManager.getMediaContent($r('app.media.lorem_en_100k').id).then(uint8 => {
+      context.resourceManager.getMediaContent($r('app.media.lorem_en_100k').id).then(uint8 => {
         sample = uint8;
       });
     })
@@ -195,7 +195,7 @@ export default function BinaryCmpareTest() {
     it('spdydictionary', 39, () => {
       let spdyDict:Uint8Array;
       let context:Context = GlobalContext.getContext().getObject("context") as Context
-        context.createModuleContext('entry_test').resourceManager.getMediaContent($r('app.media.spdy_dict').id).then(uint8 => {
+        context.resourceManager.getMediaContent($r('app.media.spdy_dict').id).then(uint8 => {
         spdyDict = uint8;
         testSample(pako.deflate, sample, onTypeOf1(spdyDict), 'deflate_dictionary=spdy.bin');
       });

@@ -19,8 +19,6 @@ import { GlobalContext } from './GlobalContext';
 import { testChunk } from './utils'
 
 export default function ChunksTest() {
-  // fromCharCode, but understands right > 0xffff values
-
   describe('chunksTest', () =>{
     beforeAll(() => {
 
@@ -85,11 +83,11 @@ export default function ChunksTest() {
     it('deflateend', 4, () => {
        let context:Context = GlobalContext.getContext().getObject("context") as Context
       // const data = samples['lorem_utf_100k'];
-        context.createModuleContext('entry_test').resourceManager.getMediaContent($r('app.media.lorem_utf_100k').id).then(data => {
+        context.resourceManager.getMediaContent($r('app.media.lorem_utf_100k').id).then(data => {
         console.log("dodoTag data =" + data.byteLength)
         const deflator:pako.Deflate = new pako.Deflate();
         deflator.push(data);
-        deflator.push([], true);
+        deflator.push(new Uint8Array([]), true);
         expect(deflator.result).assertDeepEquals(pako.deflate(data))
       });
 
@@ -98,7 +96,7 @@ export default function ChunksTest() {
 
     it('inflateend', 5, () => {
         let context:Context = GlobalContext.getContext().getObject("context") as Context
-        context.createModuleContext('entry_test').resourceManager.getMediaContent($r('app.media.lorem_utf_100k').id).then(data => {
+        context.resourceManager.getMediaContent($r('app.media.lorem_utf_100k').id).then(data => {
         const inflator: pako.Inflate = new pako.Inflate();
         inflator.push(data);
         expect(inflator.result).assertDeepEquals(pako.inflate(data))
@@ -114,9 +112,9 @@ export default function ChunksTest() {
         data[i] = Math.floor(Math.random() * 255.999);
       }
 
-      const deflated:pako.deflate = pako.deflate(data);
+      const deflated:Uint8Array = pako.deflate(data);
 
-      const inflator: pako.Inflate= new pako.Inflate();
+      const inflator: pako.Inflate = new pako.Inflate();
 
       for (i = 0; i < deflated.length; i++) {
         inflator.push(deflated.subarray(i, i + 1), false);

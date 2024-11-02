@@ -1,11 +1,14 @@
 {
   "license": "ISC",
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/pako": "^2.0.0"
+  },
   "name": "entry",
   "description": "example description",
-  "repository": {},
+  "repository": "",
   "version": "1.0.0",
   "dependencies": {
     "pako": "2.1.0"
-  }
+  },
+  "dynamicDependencies": {}
 }

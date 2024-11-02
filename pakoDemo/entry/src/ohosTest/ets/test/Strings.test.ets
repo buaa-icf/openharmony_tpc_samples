@@ -23,13 +23,8 @@ interface dataType {
   to: string,
   chunkSize: number
 };
-let dataObje: dataType = { to: 'string', chunkSize: 99 }
 
-interface Utf8border {
-  utf8border: (buf: Uint8Array, max: number) => number
-  string2buf: (str: string) => Uint8Array
-  buf2string: (buf: Uint8Array, max?: number) => string
-}
+let dataObje: dataType = { to: 'string', chunkSize: 99 }
 
 export default function StringsTest() {
   // fromCharCode, but understands right > 0xffff values
@@ -119,7 +114,7 @@ export default function StringsTest() {
 
     it('Deflatejavascriptstringutf16oninput', 4, () => {
       let context: Context = GlobalContext.getContext().getObject("context") as Context
-      context.createModuleContext('entry_test')
+      context
         .resourceManager
         .getMediaContent($r('app.media.lorem_utf_100k').id)
         .then(uint8 => {
@@ -129,13 +124,11 @@ export default function StringsTest() {
           let sampleArray = new Uint8Array(uint8);
           expect(pako.deflate(sampleString)).assertDeepEquals(pako.deflate(sampleArray))
         });
-
-
     });
 
     it('Inflatewithjavascriptstringutf16output', 5, () => {
       let context: Context = GlobalContext.getContext().getObject("context") as Context
-      context.createModuleContext('entry_test')
+      context
         .resourceManager
         .getMediaContent($r('app.media.lorem_utf_100k').id)
         .then((uint8) => {
@@ -145,7 +138,7 @@ export default function StringsTest() {
           if (deflatedArray != undefined) {
             console.log("dodoTag= deflate length" + deflatedArray.length);
           }
-          let data: string | Uint8Array | undefined = pako.inflate(deflatedArray, dataObje);
+          let data: string | Uint8Array | undefined = pako.inflate(deflatedArray);
           if (data != undefined) {
             console.log("dodoTag= inflate length" + data.length);
           }
