@@ -56,7 +56,7 @@ export default function abilityTest() {
       expect(lescape("")).assertEqual('')
     })
     it('lescape4', 0, () => {
-      expect(lescape(1)).assertEqual('1')
+      expect(lescape("1")).assertEqual('1')
     })
     it('lescape5', 0, () => {
       expect(lescape("There is no opening bracket for this }")).assertEqual("There is no opening bracket for this \\}")
