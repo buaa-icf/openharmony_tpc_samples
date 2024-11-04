@@ -22,18 +22,18 @@ export default function PictureTest() {
     const BASE_COUNT = 2000 //循环次数，测试普通接口性能
     const BASELINE_HASSIMECASR = 300 //性能基线
     interface formatType {
-      format:string
+      format: "hsvArray" | "hslArray" | "hsl" | "hsla" | "rgbArray" | "rgb" | "rgba" | "hex" | undefined;
     }
     let formatData:formatType = {format:'hex'}
     it('randomColorFormat_rgb1', 0, () => { //第一个参数自定义
-      expect(randomColor.randomColor(formatData)).not().assertNull()
+      expect(randomColor(formatData)).not().assertNull()
     })
 
 
     it('randomColorFormat_rgb2', TestType.PERFORMANCE, async  (done:Function) => { //第一个参数自定义
       let startTime = new Date().getTime() //毫秒值
       for (let index = 0; index < BASE_COUNT; index++) {
-        randomColor.randomColor()
+        randomColor()
       }
       let endTime = new Date().getTime()
       console.info("randomColorFormat_rgb endTime:" + endTime)

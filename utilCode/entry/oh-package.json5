@@ -1,6 +1,10 @@
 {
   "license": "ISC",
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/randomcolor": "^0.5.9",
+    "@types/memory-cache": "^0.2.6",
+    "@types/imtype": "1.0.0"
+  },
   "name": "entry",
   "description": "example description",
   "repository": {},
@@ -13,6 +17,5 @@
     "@ohos/util_code": "file:../library",
     "imtype": "^1.0.0",
     "time-ampm": "^2.0.0",
-    "@types/imtype": "1.0.0"
   }
 }

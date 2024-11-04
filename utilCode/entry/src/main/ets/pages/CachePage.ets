@@ -112,7 +112,7 @@ struct CachePage {
                   prompt.showToast({ message: $r("app.string.The_key_cannot_be_empty"), duration: 3000 })
                   return
                 }
-                let value:number = cache.put(this.putKey, this.putValue);
+                let value:string = cache.put(this.putKey, this.putValue);
                 prompt.showToast({ message: this.getResourceString($r("app.string.Write_value")) + " "+ value + " "+ this.getResourceString($r("app.string.succeed")), duration: 3000 })
               } catch (err) {
                 prompt.showToast({ message: this.getResourceString($r("app.string.succeed")), duration: 3000 })

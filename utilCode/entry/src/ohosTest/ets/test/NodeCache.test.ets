@@ -55,11 +55,12 @@ export default function NodeCacheTest() {
       }).not().assertFail();
     });
 
-    it('shouldThrowAnErrorGivenANonNumericTimeout', 0, () => {
-      expect(() => {
-        cache.put('key', 'value', 'foo');
-      }).not().assertFail();
-    });
+    // 该用例想去验证put方法第三个参数设置不符合类型时是否会执行assertFail函数，但是Arkts会在编写时就会对参数类型进行校验，所以无需该用例测试
+    // it('shouldThrowAnErrorGivenANonNumericTimeout', 0, () => {
+    //   expect(() => {
+    //     cache.put('key', 'value', 'foo');
+    //   }).not().assertFail();
+    // });
 
     it('shouldThrowAnErrorGivenATimeoutOfNaN', 0, () => {
       expect(() => {
@@ -79,11 +80,12 @@ export default function NodeCacheTest() {
       }).not().assertFail();
     });
 
-    it('shouldThrowAnErrorGivenANonFunctionTimeoutCallback', 0, () => {
-      expect(() => {
-        cache.put('key', 'value', 100, 'foo');
-      }).not().assertFail();
-    });
+    //该用例想去验证put方法第四个参数设置不符合类型时是否会执行assertFail函数，但是Arkts会在编写时就会对参数类型进行校验，所以无需该用例测试
+    // it('shouldThrowAnErrorGivenANonFunctionTimeoutCallback', 0, () => {
+    //   expect(() => {
+    //     cache.put('key', 'value', 100, 'foo');
+    //   }).not().assertFail();
+    // });
 
     it('shouldReturnTheCachedValue', 0, () => {
       expect(cache.put('key', 'value')).assertEqual('value');

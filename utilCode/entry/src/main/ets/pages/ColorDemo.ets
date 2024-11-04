@@ -15,11 +15,14 @@
 
 
 import randomColor from 'randomcolor';
-interface formatType{
-  format:string
+
+type formatType = "hsvArray" | "hslArray" | "hsl" | "hsla" | "rgbArray" | "rgb" | "rgba" | "hex" | undefined;
+
+interface formatDataType{
+  format: formatType
 }
-let formatFn = (data:string):formatType => {
-  const  formatData:formatType= {
+let formatFn = (data:formatType):formatDataType => {
+  const  formatData:formatDataType= {
     format:data
   }
   return formatData
@@ -28,7 +31,7 @@ let formatFn = (data:string):formatType => {
 @Component
 struct ColorDemo {
 
-  @State color: number = 0xff0000
+  @State color: number | string = 0xff0000
 
   build() {
     Column() {
