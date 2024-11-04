@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "google-libphonenumber",
+        "License": "MIT License",
+        "License File": "LICENSE",
+        "Version Number": "3.2.37",
+        "Owner" : "xiafeng@huawei.com",
+        "Upstream URL": "https://github.com/ruimarinho/google-libphonenumber",
+        "Description": "The up-to-date and reliable Google's libphonenumber package for node.js."
+    }
+]
