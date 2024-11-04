@@ -20,9 +20,9 @@
  * SOFTWARE.
  * */
 
-import * as URLParse from "url-parse"
+import URLParse from "url-parse"
 
-const url:ESObject = new URLParse('https://www.example.com:8080/path?param1=value1&param2=value2#section');
+const url = new URLParse('https://www.example.com:8080/path?param1=value1&param2=value2#section');
 
 @Entry
 @Component

@@ -6,7 +6,7 @@
 ## 下载安装
 ```shell
 ohpm install url-parse
-ohpm install @types/url-parse  // import url-parse 的时候语法报错, 其原因是url-parse包内不含类型声明, 需要 @types/url-parse 下载这个包的声明文件, 从而解决语法的报错.
+ohpm install @types/url-parse@1.4.11  // import url-parse 的时候语法报错, 其原因是url-parse包内不含类型声明, 需要 @types/url-parse 下载这个包的声明文件, 从而解决语法的报错.
 ```
 OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 

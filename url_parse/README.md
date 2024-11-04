@@ -6,7 +6,7 @@
 ## How to Install
 ```shell
 ohpm install url-parse
-ohpm install @types/url-parse  // If a syntax error is reported, the url-parse package does not contain the type declaration. You need to download the declaration file of the package from @types/url-parse to rectify the syntax error.
+ohpm install @types/url-parse@1.4.11  // If a syntax error is reported, the url-parse package does not contain the type declaration. You need to download the declaration file of the package from @types/url-parse to rectify the syntax error.
 ```
 For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 

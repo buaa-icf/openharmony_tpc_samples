@@ -20,10 +20,10 @@
  * SOFTWARE.
  * */
 
-import * as URL from "url-parse"
+import  URL from "url-parse"
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 
-const parse:ESObject = URL;
+const parse = URL;
 export default function abilityTest() {
   describe('ActsAbilityTest', ()=> {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
@@ -48,7 +48,7 @@ export default function abilityTest() {
 
     it('url_correctly', 0, ()=> {
       const url = 'https://www.example.com/path/to/page.html?query=test#hash';
-      const parsedUrl:ESObject = new URL(url);
+      const parsedUrl = new URL(url);
 
       expect(parsedUrl.protocol).assertEqual('https:');
       expect(parsedUrl.host).assertEqual('www.example.com');
@@ -60,14 +60,14 @@ export default function abilityTest() {
 
     it('parameters_correctly', 0, ()=> {
       const url = 'https://www.example.com/path/to/page.html?query=test&page=1&sort=asc';
-      const parsedUrl:ESObject = new URL(url);
+      const parsedUrl = new URL(url);
 
       expect(parsedUrl.query).assertEqual("?query=test&page=1&sort=asc");
     })
 
     it('array_format_correctly', 0, ()=> {
       const url = 'https://www.example.com/path/to/page.html?colors=red,green,blue';
-      const parsedUrl:ESObject = new URL(url);
+      const parsedUrl = new URL(url);
 
       expect(parsedUrl.query).assertEqual("?colors=red,green,blue");
     })
@@ -159,7 +159,7 @@ export default function abilityTest() {
 
     it('parses_the_query_string_into_an_object', 0, ()=> {
       let url = 'http://google.com/?foo=bar'
-      let data :ESObject = parse(url, true);
+      let data = parse(url, true);
 
       expect(typeof data.query).assertEqual('object');
       expect(data.query.foo).assertEqual('bar');
@@ -172,14 +172,14 @@ export default function abilityTest() {
 
     it('does_not_add_question_mark_to_href_if_query_string_is_empty', 0, ()=> {
       let url = 'http://google.com/'
-       let data:ESObject = parse(url, true);
+       let data = parse(url, true);
 
       expect(data.href).assertEqual(url);
     });
 
     it('allows_a_custom_function_as_parser', 0, ()=> {
       let url = 'http://google.com/?foo=bar'
-       let data:ESObject = parse(url, ()=> {
+       let data = parse(url, ()=> {
           return '1337';
         });
 
@@ -188,7 +188,7 @@ export default function abilityTest() {
 
     it('allows_a_custom_stringify_function', 0, ()=> {
       let url = 'http://google.com/?foo=bar'
-      let data:ESObject = parse(url, true)
+      let data = parse(url, true)
       let str:string = data.toString(()=> {
         return 'lolcakes';
       });
@@ -197,7 +197,7 @@ export default function abilityTest() {
 
     it('allows_a_custom_location_object', 0, ()=> {
       let url = '/foo?foo=bar'
-       let data:ESObject = parse(url, parse('http://google.com'));
+       let data = parse(url, parse('http://google.com'));
 
       expect(data.href).assertEqual('http://google.com/foo?foo=bar');
     });
@@ -216,7 +216,7 @@ export default function abilityTest() {
 
     it('removes_default_port_numbers', 0, ()=> {
       let url = 'http://example.com:80'
-      let parsed:ESObject = parse(url);
+      let parsed = parse(url);
 
       expect(parsed.port).assertEqual('');
       expect(parsed.pathname).assertEqual('/');
@@ -227,7 +227,7 @@ export default function abilityTest() {
 
     it('understands_an_as_pathname', 0, ()=> {
       let url = 'http://example.com:80/'
-      let parsed:ESObject = parse(url);
+      let parsed = parse(url);
 
       expect(parsed.port).assertEqual('');
       expect(parsed.username).assertEqual('');
@@ -240,7 +240,7 @@ export default function abilityTest() {
 
     it('correctly_parses_pathnames_for_relative_paths', 0, ()=> {
       let url = '/dataApi/PROD/ws'
-       let parsed:ESObject = parse(url, 'http://localhost:3000/PROD/trends');
+       let parsed = parse(url, 'http://localhost:3000/PROD/trends');
 
       expect(parsed.pathname).assertEqual('/dataApi/PROD/ws');
 
@@ -254,7 +254,7 @@ export default function abilityTest() {
 
     it('does_not_care_about_spaces', 0, ()=> {
       let url = 'http://x.com/path?that\'s#all, folks'
-       let parsed:ESObject = parse(url);
+       let parsed = parse(url);
 
       expect(parsed.port).assertEqual('');
       expect(parsed.username).assertEqual('');
@@ -268,7 +268,7 @@ export default function abilityTest() {
 
     it('accepts_in_the_url', 0, ()=> {
       let url = 'http://x.y.com+a/b/c'
-       let parsed:ESObject = parse(url);
+       let parsed = parse(url);
 
       expect(parsed.protocol).assertEqual('http:');
       expect(parsed.host).assertEqual('x.y.com+a');
@@ -278,7 +278,7 @@ export default function abilityTest() {
 
     it('ignores_in_pathnames', 0, ()=> {
       let url = 'http://google.com:80\\@yahoo.com/#what\\is going on'
-       let parsed:ESObject = parse(url);
+       let parsed = parse(url);
 
       expect(parsed.port).assertEqual('');
       expect(parsed.username).assertEqual('');
@@ -292,7 +292,7 @@ export default function abilityTest() {
 
     it('correctly_ignores_multiple_slashes', 0, ()=> {
       let url = '////what-is-up.com'
-       let parsed :ESObject= parse(url, parse('http://google.com'));
+       let parsed = parse(url, parse('http://google.com'));
 
       expect(parsed.host).assertEqual('what-is-up.com');
       expect(parsed.href).assertEqual('http://what-is-up.com/');
@@ -306,7 +306,7 @@ export default function abilityTest() {
 
     it('ignores_slashes_after_the_protocol_for_special_URLs', 0, ()=> {
       let url = 'https:\\/github.com/foo/bar'
-       let parsed:ESObject = parse(url);
+       let parsed = parse(url);
 
       expect(parsed.host).assertEqual('github.com');
       expect(parsed.hostname).assertEqual('github.com');
@@ -352,7 +352,7 @@ export default function abilityTest() {
     });
 
     it('does_not_readd_slashes_to_href_if_there_is_no_protocol', 0, ()=> {
-      let parsed:ESObject = parse('//example.com', {});
+      let parsed = parse('//example.com', {});
 
       expect(parsed.pathname).assertEqual('//example.com');
       expect(parsed.href).assertEqual('//example.com');
@@ -360,27 +360,27 @@ export default function abilityTest() {
 
     it('generates_an_origin_property', 0, ()=> {
       let url = 'http://google.com:80/pathname'
-        let parsed:ESObject = parse(url);
+        let parsed = parse(url);
 
       expect(parsed.origin).assertEqual('http://google.com');
     });
 
     it('is_lowercased', 0, ()=> {
       let url = 'HTTP://gOogle.cOm:80/pathname'
-      let parsed:ESObject = parse(url);
+      let parsed = parse(url);
 
       expect(parsed.origin).assertEqual('http://google.com');
     });
 
     it('sets_null_if_no_hostname_is_specified', 0, ()=> {
       let url = 'http://'
-      let parsed:ESObject = parse(url, {});
+      let parsed = parse(url, {});
 
       expect(parsed.origin).assertEqual('null');
     });
 
     it('is_null_for_non_special_URLs', 0, ()=> {
-      let o:ESObject = parse('foo://example.com/pathname');
+      let o = parse('foo://example.com/pathname');
       expect(o.hostname).assertEqual('example.com');
       expect(o.pathname).assertEqual('/pathname');
       expect(o.origin).assertEqual('null');
@@ -393,7 +393,7 @@ export default function abilityTest() {
     });
 
     it('correctly_adds_to_protocol_in_final_url_string', 0, ()=> {
-      let data:ESObject = parse('google.com/foo', {});
+      let data = parse('google.com/foo', {});
       data.set('protocol', 'https');
       expect(data.href).assertEqual('https://google.com/foo');
 
@@ -403,7 +403,7 @@ export default function abilityTest() {
     });
 
     it('updates_the_host_when_updating_hostname', 0, ()=> {
-      let data:ESObject = parse('http://google.com:808/?foo=bar');
+      let data = parse('http://google.com:808/?foo=bar');
 
       expect(data.set('hostname', 'yahoo.com')).assertEqual(data);
 
@@ -415,7 +415,7 @@ export default function abilityTest() {
     });
 
     it('updates_slashes_when_updating_protocol', 0, ()=> {
-      let data:ESObject = parse('sip:alice@atlanta.com');
+      let data = parse('sip:alice@atlanta.com');
 
       expect(data.set('protocol', 'https')).assertEqual(data);
 
@@ -427,7 +427,7 @@ export default function abilityTest() {
     });
 
     it('unsets_the_port_when_port_is_missing_IPv6', 0, ()=> {
-      let data:ESObject = parse('http://google.com/?foo=bar');
+      let data = parse('http://google.com/?foo=bar');
 
       expect(data.set('host', '[56h7::1]')).assertEqual(data);
 
@@ -439,7 +439,7 @@ export default function abilityTest() {
     });
 
     it('unsets_the_port_when_the_port_is_missing_from_host', 0, ()=> {
-      let data:ESObject = parse('http://google.com:8000/?foo=bar');
+      let data = parse('http://google.com:8000/?foo=bar');
 
       expect(data.set('host', 'yahoo.com')).assertEqual(data);
 
@@ -452,7 +452,7 @@ export default function abilityTest() {
 
     it('should_correctly_handle_relative_URLs',0, () => {
       const urlString = '/path/to/resource';
-      const parsedUrl:ESObject = new URL(urlString);
+      const parsedUrl = new URL(urlString);
 
       expect(parsedUrl.protocol).assertEqual('');
       expect(parsedUrl.hostname).assertEqual('');
