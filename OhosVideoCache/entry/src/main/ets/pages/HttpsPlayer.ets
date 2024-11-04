@@ -205,8 +205,8 @@ struct HttpPlayer {
             this.duration = this.avPlayer?.duration;
             this.durationTimeText = this.mediaLibUtils.getShowTime(this.duration);
             Logger.info(TAG, 'state prepared called ：' + this.getCurrentTime());
+            this.play();
             if (this.isNext) {
-              this.play();
               this.isNext = false;
             }
           }
