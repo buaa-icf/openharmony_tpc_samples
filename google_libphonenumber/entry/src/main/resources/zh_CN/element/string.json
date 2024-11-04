@@ -1,0 +1,24 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "模块描述"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "label"
+    },
+    {
+      "name": "check_number",
+      "value": "请输入手机号"
+    },
+    {
+      "name": "check_area_code",
+      "value": "请输入地区代码"
+    }
+  ]
+}

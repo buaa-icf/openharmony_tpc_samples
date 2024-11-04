@@ -458,6 +458,7 @@
                 <policyitem type="license" name="MIT" path="smart_buffer/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求" />
                 <policyitem type="license" name="MIT" path="asn1_ber/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求" />
                 <policyitem type="license" name="MIT" path="ohos_polka/.*" rule="may" group="defaultGroup" filefilter="defaultPolicyFilter" desc="源开源项目的LICENSE,  符合开源要求"/>
+                <policyitem type="license" name="MIT" path="google_libphonenumber/.*" rule="may" group="defaultGroup" filefilter="defaultPolicyFilter" desc="源开源项目的LICENSE,  符合开源要求"/>
             </policy>
         </policylist>
         <licensematcherlist>

@@ -1,0 +1,13 @@
+{
+  "name": "entry",
+  "version": "1.0.0",
+  "description": "The up-to-date and reliable Google's libphonenumber package for node.js. Zero dependencies.",
+  "main": "",
+  "author": "ohos_tpc",
+  "license": "MIT License",
+  "dependencies": {
+    "google-libphonenumber": "^3.2.37",
+    "google-closure-library": "^20230802.0.0"
+  }
+}
+
