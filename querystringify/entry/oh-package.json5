@@ -7,6 +7,7 @@
   "main": "",
   "version": "1.0.0",
   "dependencies": {
-    "querystringify": "^2.1.1"
+    "querystringify": "^2.1.1",
+    "@types/querystringify": "^2.0.2"
   }
 }
