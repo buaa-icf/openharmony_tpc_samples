@@ -17,8 +17,36 @@
       "value": "Please enter your phone number"
     },
     {
+      "name": "submit",
+      "value": "submit"
+    },
+    {
+      "name": "reset",
+      "value": "reset"
+    },
+    {
       "name": "check_area_code",
       "value": "Please enter the area code"
+    },
+    {
+      "name": "specify_phone_number",
+      "value": "Specify a Phone Number:"
+    },
+    {
+      "name": "specify_country",
+      "value": "Specify a Default Country:"
+    },
+    {
+      "name": "specify_carrier_code",
+      "value": "Specify a Carrier Code:"
+    },
+    {
+      "name": "input_country_prompt",
+      "value": "(CLDR two-letter region code)"
+    },
+    {
+      "name": "input_carrier_code_prompt",
+      "value": "(optional, only valid for some countries)"
     }
   ]
 }

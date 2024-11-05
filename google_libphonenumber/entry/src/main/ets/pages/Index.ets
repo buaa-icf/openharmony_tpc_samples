@@ -217,30 +217,30 @@ struct Index {
   build() {
     Scroll(this.scroller) {
       Column() {
-        Text('Specify a Phone Number:')
+        Text($r('app.string.specify_phone_number'))
           .fontSize(25)
         TextInput({ text: this.phoneNumber })
           .onChange((v) => {
             this.phoneNumber = v
           }).fontSize(25)
-        Text('Specify a Default Country:')
+        Text($r('app.string.specify_country'))
           .fontSize(25)
         TextInput({
           text: this.defaultCountry,
-          placeholder: '(CLDR two-letter region code)'
+          placeholder: $r('app.string.input_country_prompt')
         }).onChange((v) => {
           this.defaultCountry = v
         }).fontSize(25)
-        Text('Specify a Carrier Code:')
+        Text($r('app.string.specify_carrier_code'))
           .fontSize(25)
         TextInput({
           text: this.carrierCode,
-          placeholder: '(optional, only valid for some countries)'
+          placeholder: $r('app.string.input_carrier_code_prompt')
         }).onChange((v) => {
           this.carrierCode = v
         })
           .fontSize(25)
-        Button('Submit')
+        Button($r('app.string.submit'))
           .id('submit')
           .onClick(() => {
             if (this.phoneNumber && this.defaultCountry) {
@@ -256,7 +256,7 @@ struct Index {
               }
             }
           })
-        Button('reset')
+        Button($r('app.string.reset'))
           .onClick(() => {
             this.phoneNumber = ''
             this.defaultCountry = ''

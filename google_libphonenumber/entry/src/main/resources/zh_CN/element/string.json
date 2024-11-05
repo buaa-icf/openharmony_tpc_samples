@@ -13,12 +13,40 @@
       "value": "label"
     },
     {
+      "name": "submit",
+      "value": "提交"
+    },
+    {
+      "name": "reset",
+      "value": "重置"
+    },
+    {
       "name": "check_number",
       "value": "请输入手机号"
     },
     {
       "name": "check_area_code",
       "value": "请输入地区代码"
+    },
+    {
+      "name": "specify_phone_number",
+      "value": "指定手机号:"
+    },
+    {
+      "name": "specify_country",
+      "value": "指定国家:"
+    },
+    {
+      "name": "specify_carrier_code",
+      "value": "指定运营商代码:"
+    },
+    {
+      "name": "input_country_prompt",
+      "value": "(两个字母的地区代码)"
+    },
+    {
+      "name": "input_carrier_code_prompt",
+      "value": "(可选，仅对部分国家有效)"
     }
   ]
 }
