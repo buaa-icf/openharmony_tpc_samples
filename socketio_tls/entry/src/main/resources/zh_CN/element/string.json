@@ -1,0 +1,64 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "模块描述"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "socketio"
+    },
+    {
+      "name": "Successfully",
+      "value": "连接服务器成功"
+    },
+    {
+      "name": "Failed",
+      "value": "连接服务器失败"
+    },
+    {
+      "name": "Connected_server",
+      "value": "暂未连接服务器"
+    },
+    {
+      "name": "Enter_message",
+      "value": "请输入消息,退出聊天室请输入exit"
+    },
+    {
+      "name": "Enter_messages",
+      "value": "请输入消息"
+    },
+    {
+      "name": "Server_address",
+      "value": "请输入socket.io服务端地址"
+    },
+    {
+      "name": "User_name",
+      "value": "请输入用户名"
+    },
+    {
+      "name": "connect_unfinished",
+      "value": "暂未连接服务器"
+    },
+    {
+      "name": "enter_message",
+      "value": "请输入消息"
+    },
+    {
+      "name": "connect_success",
+      "value": "连接服务器成功"
+    },
+    {
+      "name": "connect_failed",
+      "value": "连接服务器成功"
+    },
+    {
+      "name": "url_error",
+      "value": "服务器地址异常，请检查url信息"
+    }
+  ]
+}
