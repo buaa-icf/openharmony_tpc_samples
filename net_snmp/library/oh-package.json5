@@ -1,0 +1,20 @@
+{
+  "name": "@ohos/net-snmp",
+  "version": "1.0.0",
+  "description": "this is a implements versions 1, 2c and 3 of the Simple Network Management Protocol (SNMP).",
+  "main": "Index.js",
+  "author": "hihope",
+  "keywords": [
+    "OpenHarmony",
+    "net-snmp",
+    "HarmonyOS"
+  ],
+  "license": "MIT License",
+  "dependencies": {
+    "@ohos/node-polyfill": "^1.0.0",
+    "@ohos/smart-buffer": "^1.0.0",
+    "@ohos/asn1-ber": "^1.0.0",
+
+  },
+  "devDependencies": {}
+}
