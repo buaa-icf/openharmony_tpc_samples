@@ -51,6 +51,50 @@ static struct ThreadSafeInfo g_threadSafeInfo = {};
 static struct BinaryInfo g_binaryInfo = {};
 static bool g_isOnce = false;
 
+// 处理带有转义字符的字符串
+static std::string transfer_characters(const std::string &str)
+{
+    std::string transChar;
+    for (auto ch : str) {
+        switch (ch) {
+            case '\"':
+                transChar += "\\\"";
+                break;
+            case '\\':
+                transChar += "\\\\";
+                break;
+            case '\b':
+                transChar += "\\b";
+                break; // 退格
+            case '\f':
+                transChar += "\\f";
+                break; // 换页
+            case '\n':
+                transChar += "\\n";
+                break;
+            case '\r':
+                transChar += "\\r";
+                break;
+            case '\t':
+                transChar += "\\t";
+                break;
+            default:
+                transChar += ch;
+                break; // 其他字符直接添加
+        }
+    }
+    return transChar;
+}
+
+static std::string extract_string_from_message(sio::message::ptr const &message)
+{
+    // 当服务端返回的是json字符串的情况下，无需拼接转义符 \",直接将数据返回拼接即可
+    if (message->get_string().size() > 0 && message->get_string()[0] == '{') {
+        return message->get_string();
+    }
+    // 拼接转义符 \" 返回组装 json 串
+    return std::string("\"") + transfer_characters(message->get_string()) + "\"";
+}
 
 static std::string get_message_value(sio::message::ptr const &message)
 {
@@ -64,10 +108,7 @@ static std::string get_message_value(sio::message::ptr const &message)
         case sio::message::flag_double:
             return std::to_string(message->get_double());
         case sio::message::flag_string:
-            if (message->get_string().size() > 0 && message->get_string()[0] == '{') {
-                return message->get_string();
-            }
-            return std::string("\"") + message->get_string() + "\"";
+            return extract_string_from_message(message);
         case sio::message::flag_binary:
             return std::string("\"") + *message->get_binary() + "\"" + ",\"binary\":true";
         case sio::message::flag_object:
@@ -1163,6 +1204,7 @@ sio::message::ptr handle_array_value(napi_env env, napi_value value)
                 break;
         }
     }
+    return array;
 }
 
 napi_value SocketIOClient::emit(napi_env env, napi_callback_info info)
