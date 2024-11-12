@@ -8,6 +8,8 @@ This project is an OpenHarmony development example based on the [ahocorasick](ht
 
 ```
 ohpm install ahocorasick
+ohpm install @types/ahocorasick --save-dev // A syntax error is reported for the import ahocorasick instruction if the ahocorasick package does not contain the type declaration. You need to download the declaration file of the package using @types/ahocorasick to rectify the syntax error.
+
 ```
 
 ## How to Use

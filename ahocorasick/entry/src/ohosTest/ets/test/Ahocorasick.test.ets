@@ -28,7 +28,7 @@ export default function ahocorasickTest() {
 
         it('AhoCorasick_search_keys' + count, 0, ()=> {
           let aho:AhoCorasick = ahoCorasick(keys);
-          expect(aho.searchKeyWord(text)).assertDeepEquals(expected);
+          expect(aho.search(text)).assertDeepEquals(expected);
         });
         count++;
       });
@@ -36,7 +36,7 @@ export default function ahocorasickTest() {
 
     it('AhoCorasick_search_emoji', 0, ()=> {
       let aho:AhoCorasick = ahoCorasick(['bla', '😁', '😀', '😀😁😀']);
-      expect(aho.searchKeyWord('Bla 😁 bla 😀 1 😀 - 😀😁😀-')).assertDeepEquals([
+      expect(aho.search('Bla 😁 bla 😀 1 😀 - 😀😁😀-')).assertDeepEquals([
       [5, ['😁']],
       [9, ['bla']],
       [12, ['😀']],
@@ -49,7 +49,7 @@ export default function ahocorasickTest() {
 
     it('AhoCorasick_search_emoji2', 0, ()=> {
       let aho:AhoCorasick = ahoCorasick(['bla', '😁', '😀', '°□°', 'w', '┻━┻']);
-      expect(aho.searchKeyWord("-  (╯°□°）╯︵ ┻━┻ ")).assertDeepEquals([
+      expect(aho.search("-  (╯°□°）╯︵ ┻━┻ ")).assertDeepEquals([
       [7, ['°□°']],
       [14, ['┻━┻']],
       ]);

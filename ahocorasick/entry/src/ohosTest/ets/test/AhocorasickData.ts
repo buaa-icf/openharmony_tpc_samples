@@ -102,7 +102,7 @@ export let testCases = data.map((ts) => {
 });
 
 let _s = AhoCorasick.prototype.search;
-AhoCorasick.prototype.searchKeyWord = function (string) {
+AhoCorasick.prototype.search = function (string) {
   var results = _s.call(this, string).map(function (result) {
     if (typeof result[1] == "object" && Array.isArray(result[1])) {
       result[1] = result[1].sort();
