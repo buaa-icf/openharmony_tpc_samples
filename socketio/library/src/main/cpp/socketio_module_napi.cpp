@@ -417,39 +417,133 @@ public:
 static ClientSocket g_clientSocket;
 
 // client相关napi接口
-static std::map<std::string, std::string> parseConfigString(const std::string& config)
+// 定义一个结构体来包含状态信息
+struct ParseState {
+    bool inQuotes = false;
+    bool escape = false;
+    bool readingKey = true;
+    std::string key;
+    std::string value;
+};
+
+// 处理嵌套的对象和数组
+void parseNested(const std::string& jsonString, size_t& i, std::string& value, char openChar, char closeChar)
 {
-    std::map<std::string, std::string> map;
-    std::string str = config;
-    str = str.replace(str.find_last_of("}"), 1, "");
-    str = str.replace(str.find_last_of("{"), 1, "");
-
-    char* p1 = new char[str.size() + 1];
-    std::copy(str.begin(), str.end(), p1);
-    int len = strlen(p1);
-    char *p2;
-    char *p3;
-    int pos = 1;
-
-    while ((len > 0) && (p2 = strtok(p1, ",")) != nullptr) {
-        p1 += strlen(p2) + 1;
-        len -= strlen(p2) + 1;
-
-        char *k;
-        char *v;
-        while ((p3 = strtok(p2, ":")) != nullptr) {
-            p2 = nullptr;
-            if (pos % EXPECT_NUMBER == ODD_NUMBER) {
-                k = p3;
-            } else {
-                v = p3;
-            }
-            pos++;
+    size_t bracketCount = 1;
+    value += jsonString[i];
+    for (++i; i < jsonString.length(); ++i) {
+        if (jsonString[i] == openChar) {
+            bracketCount++;
         }
-        if (k && v) {
-            map[k] = v;
+        if (jsonString[i] == closeChar) {
+            bracketCount--;
+        }
+        value += jsonString[i];
+        if (bracketCount == 0) {
+            break;
         }
     }
+}
+
+// 处理转义字符
+void handleEscapeCharacter(char currentChar, std::string& value)
+{
+    switch (currentChar) {
+        case '"':
+            value += '"';
+            break;
+        case '\\':
+            value += '\\';
+            break;
+        case 'n':
+            value += '\n';
+            break;
+        case 'r':
+            value += '\r';
+            break;
+        case 't':
+            value += '\t';
+            break;
+        default:
+            value += currentChar;
+            break;
+    }
+}
+
+// 处理键值对
+void processKeyValuePair(std::map<std::string, std::string>& result, std::string& key, std::string& value)
+{
+    if (!key.empty() && !value.empty()) {
+        result[key] = value;
+    }
+    key.clear();
+    value.clear();
+}
+
+// 处理当前字符并处理键值对
+bool processCurrentCharAndKeyValuePair(char currentChar, ParseState& state, std::map<std::string, std::string>& result)
+{
+    if (state.inQuotes) {
+        (state.readingKey ? state.key : state.value) += currentChar;
+    } else {
+        if (currentChar == ':') {
+            state.readingKey = false;
+        } else if (currentChar == ',') {
+            processKeyValuePair(result, state.key, state.value);
+            state.readingKey = true;
+        } else if (currentChar == '}') {
+            processKeyValuePair(result, state.key, state.value);
+            state.readingKey = true;
+            return true; // 结束标志
+        } else {
+            (state.readingKey ? state.key : state.value) += currentChar;
+        }
+    }
+    return false;
+}
+
+// 标准与非标准的json字符串转map
+void stringToMap(const std::string& jsonString, std::map<std::string, std::string>& result)
+{
+    ParseState state;
+    for (size_t i = (jsonString[0] == '{') ? 1 : 0; i < jsonString.length(); i++) {
+        char currentChar = jsonString[i];
+        if (state.escape) {
+            if (state.inQuotes) {
+                handleEscapeCharacter(currentChar, state.value);
+            }
+            state.escape = false;
+            continue;
+        }
+        if (currentChar == '\\') {
+            state.escape = true;
+            continue;
+        }
+        if (currentChar == '"') {
+            state.inQuotes = !state.inQuotes;
+            continue;
+        }
+        if ((currentChar == '{' || currentChar == '[') && !state.inQuotes) {
+            parseNested(jsonString, i, state.value, currentChar,
+                        currentChar == '{' ? '}' : ']');
+            continue;
+        }
+
+        if (processCurrentCharAndKeyValuePair(currentChar, state, result)) {
+            break;
+        }
+    }
+    processKeyValuePair(result, state.key, state.value);
+}
+
+// 标准与非标准的json字符串转map
+static std::map<std::string, std::string> parseConfigString(const std::string& jsonString)
+{
+    // 定义一个 map 来存储结果
+    std::map<std::string, std::string> map;
+    
+    // 处理 JSON 对象
+    stringToMap(jsonString, map);
     return map;
 }
 
