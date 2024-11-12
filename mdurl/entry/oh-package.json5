@@ -1,6 +1,8 @@
 {
   "license": "",
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/mdurl": "^2.0.0"
+  },
   "author": "",
   "name": "entry",
   "description": "Please describe the basic information.",

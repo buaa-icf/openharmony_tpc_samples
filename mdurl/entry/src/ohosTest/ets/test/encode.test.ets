@@ -70,11 +70,11 @@ export default function encodeTest() {
     });
 
     it('encode_string.keepEscaped_true_',0, ()=> {
-      expect(encode('%20%2G', true)).assertEqual('%20%252G');
+      expect(encode('%20%2G', "", true)).assertEqual('%20%252G');
     });
 
     it('encode_string.keepEscaped_false_',0, ()=> {
-      expect(encode('%20%2G', false)).assertEqual( '%2520%252G');
+      expect(encode('%20%2G',"", false)).assertEqual( '%2520%252G');
     });
 
     it('encode_string.unescapedSet.keepEscaped_',0, ()=> {
