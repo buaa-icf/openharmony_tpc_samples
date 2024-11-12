@@ -1,6 +1,8 @@
 {
   "license": "ISC",
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/lz4js": "^0.2.1"
+  },
   "name": "entry",
   "description": "example description",
   "repository": {},

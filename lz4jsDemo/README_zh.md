@@ -8,6 +8,7 @@
 
 ```
   ohpm install lz4js
+  ohpm install @types/lz4js --save-dev //import lz4js 的时候语法报错。其原因是lz4js包内不含类型声明，需要 @types/lz4js 下载这个包的声明文件，从而解决语法的报错。
 ```
 OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 

@@ -8,6 +8,8 @@ This demo allows you to use the third-party JavaScript library [lz4js](https://g
 
 ```
   ohpm install lz4js
+  ohpm install @types/lz4js --save-dev // A syntax error is reported for the import lz4js instruction if the lz4js package does not contain the type declaration. You need to download the declaration file of the package using @types/lz4js
+ to rectify the syntax error.
 ```
 For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
