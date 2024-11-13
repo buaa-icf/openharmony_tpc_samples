@@ -1,6 +1,8 @@
 {
   "license": "Apache-2.0",
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/he": "^1.2.3"
+  },
   "author": "ohos_tpc",
   "name": "entry",
   "description": "Please describe the basic information.",

@@ -469,7 +469,7 @@ export default function heTest() {
         he.encode('a<\u223E>', dTaT)).assertEqual(
         'a<&#8766;>');
       try {
-        (he.encode('a<\xE4>', dTaF))()
+        he.encode('a<\xE4>', dTaF)
       } catch (error) {
         expect(false).assertFalse()
       }
