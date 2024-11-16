@@ -25,7 +25,7 @@ import parse from 'minimist'
 export default function defaultBoolTest() {
   describe('minimist_default_bool', ()=> {
     it('boolean_default_true', 0, ()=> {
-      let argv: ESObject = parse([], {
+      let argv = parse([], {
         boolean: 'sometrue',string:"_",
         default: {
           sometrue: true
@@ -35,7 +35,7 @@ export default function defaultBoolTest() {
     });
 
     it('boolean_default_false', 0, ()=> {
-      let argv: ESObject = parse([], {
+      let argv = parse([], {
         boolean: 'somefalse',string:"_",
         default: {
           somefalse: false
@@ -45,14 +45,14 @@ export default function defaultBoolTest() {
     });
 
     it('boolean_default_to_null', 0, ()=> {
-      let argv: ESObject = parse([], {
+      let argv = parse([], {
         boolean: 'maybe',string:"_",
         default: {
           maybe: null
         }
       });
       expect(argv.maybe).assertNull()
-      let argv1: ESObject = parse(['--maybe'], {
+      let argv1 = parse(['--maybe'], {
         boolean: 'maybe',string:"_",
         default: {
           maybe: null

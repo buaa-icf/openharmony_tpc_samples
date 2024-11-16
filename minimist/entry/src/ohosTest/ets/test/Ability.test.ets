@@ -45,7 +45,7 @@ export default function abilityTest() {
       // This API supports only one parameter: clear action function.
     })
     it('flag_boolean_true_only_affects_double_hyphen_arguments_without_equals_signs',0, ()=> {
-      let argv:ESObject = minimist(['moo', '--honk', 'cow', '-p', '55', '--tacos=good'], {
+      let argv = minimist(['moo', '--honk', 'cow', '-p', '55', '--tacos=good'], {
         boolean: true,string:'_'
       });
 
@@ -59,7 +59,7 @@ export default function abilityTest() {
     });
 
     it('flag_boolean_true_default_all_args_to_boolean',0, ()=> {
-      let argv:ESObject = minimist(['moo', '--honk', 'cow'], {
+      let argv = minimist(['moo', '--honk', 'cow'], {
         boolean: true, string: "_"
       });
 
@@ -72,7 +72,7 @@ export default function abilityTest() {
     });
 
     it('flag_boolean_default_false',0, ()=> {
-      let argv:ESObject = minimist(['moo'], {
+      let argv = minimist(['moo'], {
         boolean: ['t', 'verbose'],string:"_",
         default: { verbose: false, t: false }
       });
@@ -88,7 +88,7 @@ export default function abilityTest() {
     });
 
     it('boolean_groups',0, ()=> {
-      let argv :ESObject= minimist([ '-x', '-z', 'one', 'two', 'three' ], {
+      let argv = minimist([ '-x', '-z', 'one', 'two', 'three' ], {
         boolean: ['x','y','z'],string:"_"
       });
 

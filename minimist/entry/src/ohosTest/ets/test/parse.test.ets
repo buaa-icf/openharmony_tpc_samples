@@ -25,13 +25,13 @@ import parse from 'minimist'
 export default function parseTest() {
   describe('minimist_parse', ()=> {
     it('flag_boolean', 0, ()=> {
-      let argv: ESObject = parse([ '-t', 'moo' ], { boolean: 't',string:"_" });
+      let argv = parse([ '-t', 'moo' ], { boolean: 't',string:"_" });
       expect(argv).assertDeepEquals({ t : true, _ : [ 'moo' ] })
       expect(typeof argv.t).assertEqual('boolean')
     });
 
     it('flag_boolean_value', 0, ()=> {
-      let argv: ESObject = parse(['--verbose', 'false', 'moo', '-t', 'true'], {
+      let argv = parse(['--verbose', 'false', 'moo', '-t', 'true'], {
         boolean: ['t', 'verbose'],string:"_",
         default: {
           verbose: true
@@ -48,7 +48,7 @@ export default function parseTest() {
 
     });
     it('stringArgs', 0, ()=> {
-      let s: ESObject = parse(['  ', '  '], {
+      let s: string[] = parse(['  ', '  '], {
         string: '_',boolean:"t"
       })._;
       expect(s.length).assertEqual(2);

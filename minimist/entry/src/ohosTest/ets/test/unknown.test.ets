@@ -25,17 +25,17 @@ import parse from 'minimist'
 export default function unknownTest() {
   describe('minimist_unknown', ()=> {
     it('boolean_and_alias_is_not_unknown', 0, ()=> {
-      let unknown: ESObject = [];
-      let unknownFn = (arg: ESObject) => {
+      let unknown: string[] = [];
+      let unknownFn = (arg: string) => {
         unknown.push(arg);
         return false;
       }
       let aliased = ['-h', 'true', '--derp', 'true'];
       let regular = ['--herp', 'true', '-d', 'true'];
-      let opts: ESObject = {
+      let opts: parse.Opts = {
         alias: {
           h: 'herp'
-        } as ESObject,
+        },
         boolean: 'h',
         string:"_",
         unknown: unknownFn
@@ -47,12 +47,12 @@ export default function unknownTest() {
     });
 
     it('flag_boolean_true_any_double_hyphen_argument_is_not_unknown', 0, ()=> {
-      let unknown : ESObject= [];
-      let unknownFn = (arg: ESObject) => {
+      let unknown : string[] = [];
+      let unknownFn = (arg: string) => {
         unknown.push(arg);
         return false;
       }
-      let argv :string[] = parse(['--honk', '--tacos=good', 'cow', '-p', '55'], {
+      let argv: parse.ParsedArgs = parse(['--honk', '--tacos=good', 'cow', '-p', '55'], {
         boolean: true,string:"_",
         unknown: unknownFn
       });

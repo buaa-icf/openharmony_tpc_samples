@@ -26,7 +26,7 @@ export default function boolTest() {
 
   describe('minimist_bool', ()=> {
     it('flag_boolean_default_false', 0, ()=> {
-     let argv:ESObject= parse(['moo'], {
+     let argv = parse(['moo'], {
         boolean: ['t', 'verbose'] as string[], string: "_",
         default: {
           verbose: false, t: false
@@ -36,13 +36,13 @@ export default function boolTest() {
         verbose: false,
         t: false,
         _: ['moo']
-      } as ESObject)
+      })
       expect(typeof argv.verbose).assertEqual('boolean')
       expect(typeof argv.t).assertEqual('boolean')
     });
 
     it('boolean_groups', 0, ()=> {
-      let argv: ESObject = parse(['-x', '-z', 'one', 'two', 'three'], {
+      let argv = parse(['-x', '-z', 'one', 'two', 'three'], {
         boolean: ['x', 'y', 'z'], string: "_"
       });
       expect(argv).assertDeepEquals({
@@ -59,24 +59,31 @@ export default function boolTest() {
     it('boolean_and_alias_with_chainable_api', 0, ()=> {
       let aliased: string[] = ['-h', 'derp'];
       let regular: string[] = ['--herp', 'derp'];
-      let opts: ESObject = {
+      class commonType {
+        herp?:herpType
+      }
+      class herpType {
+        alias?: string
+        boolean?: boolean
+      }
+      let opts: commonType  = {
         herp: {
           alias: 'h', boolean: true
-        } as ESObject
+        }
       };
-      let aliasedArgv: ESObject = parse(aliased, {
-        boolean: 'herp', string: "_",
-        alias: {
-          h: 'herp'
-        } as ESObject
-      });
-      let propertyArgv: ESObject = parse(regular, {
+      let aliasedArgv = parse(aliased, {
         boolean: 'herp', string: "_",
         alias: {
           h: 'herp'
         }
       });
-      let expected: ESObject = {
+      let propertyArgv = parse(regular, {
+        boolean: 'herp', string: "_",
+        alias: {
+          h: 'herp'
+        }
+      });
+      let expected: parse.ParsedArgs = {
         herp: true,
         h: true,
         _: ['derp']
@@ -89,16 +96,16 @@ export default function boolTest() {
     it('boolean_and_alias_with_options_hash', 0, ()=> {
       let aliased: string[] = ['-h', 'derp'];
       let regular: string[] = ['--herp', 'derp'];
-      let opts: ESObject = {
+      let opts: parse.Opts = {
         string: "_",
         alias: {
           h: 'herp'
-        } as ESObject,
+        },
         boolean: 'herp'
       };
-      let aliasedArgv: ESObject = parse(aliased, opts);
-      let propertyArgv: ESObject = parse(regular, opts);
-      let expected: ESObject = {
+      let aliasedArgv = parse(aliased, opts);
+      let propertyArgv = parse(regular, opts);
+      let expected: parse.ParsedArgs = {
         herp: true,
         h: true,
         _: ['derp']
@@ -111,16 +118,16 @@ export default function boolTest() {
       let aliased: string[] = ['-h', 'derp'];
       let regular: string[] = ['--herp', 'derp'];
       let alt: string[] = ['--harp', 'derp'];
-      let opts: ESObject = {
+      let opts: parse.Opts = {
         alias: {
           h: ['herp', 'harp']
-        } as ESObject,
+        },
         boolean: 'h', string: "_"
       };
-      let aliasedArgv: ESObject = parse(aliased, opts);
-      let propertyArgv: ESObject = parse(regular, opts);
-      let altPropertyArgv: ESObject = parse(alt, opts);
-      let expected: ESObject = {
+      let aliasedArgv = parse(aliased, opts);
+      let propertyArgv = parse(regular, opts);
+      let altPropertyArgv = parse(alt, opts);
+      let expected: parse.ParsedArgs = {
         harp: true,
         herp: true,
         h: true,
@@ -135,15 +142,15 @@ export default function boolTest() {
     it('boolean_and_alias_using_explicit_true', 0, ()=> {
       let aliased: string[] = ['-h', 'true'];
       let regular: string[] = ['--herp', 'true'];
-      let opts: ESObject = {
+      let opts: parse.Opts = {
         alias: {
           h: 'herp'
-        } as ESObject,
+        },
         boolean: 'h', string: "_"
       };
-      let aliasedArgv: ESObject = parse(aliased, opts);
-      let propertyArgv: ESObject = parse(regular, opts);
-      let expected: ESObject = {
+      let aliasedArgv = parse(aliased, opts);
+      let propertyArgv = parse(regular, opts);
+      let expected: parse.ParsedArgs = {
         herp: true,
         h: true,
         _: []
@@ -155,7 +162,7 @@ export default function boolTest() {
 
     // regression, see https://github.com/substack/node-optimist/issues/71
     it('boolean_and_x_true', 0, ()=> {
-      let parsed: ESObject = parse(['--boool', '--other=true'], {
+      let parsed = parse(['--boool', '--other=true'], {
         boolean: 'boool', string: "_"
       });
       expect(parsed.boool).assertTrue()
@@ -170,7 +177,7 @@ export default function boolTest() {
     });
 
     it('boolean_boool_true', 0, ()=> {
-      let parsed: ESObject = parse(['--boool=true'], {
+      let parsed = parse(['--boool=true'], {
         default: {
           boool: false
         },
@@ -182,7 +189,7 @@ export default function boolTest() {
     });
 
     it('boolean_boool_false', 0, ()=> {
-      let parsed: ESObject = parse(['--boool=false'], {
+      let parsed = parse(['--boool=false'], {
         default: {
           boool: true
         },
@@ -193,11 +200,11 @@ export default function boolTest() {
     });
 
     it('boolean_using_something_similar_to_true', 0, ()=> {
-      let opts: ESObject = {
+      let opts: parse.Opts = {
         boolean: 'h', string: "_"
       };
-      let result: ESObject = parse(['-h', 'true.txt'], opts);
-      let expected: ESObject = {
+      let result = parse(['-h', 'true.txt'], opts);
+      let expected: parse.ParsedArgs = {
         h: true,
         _: ['true.txt']
       };
