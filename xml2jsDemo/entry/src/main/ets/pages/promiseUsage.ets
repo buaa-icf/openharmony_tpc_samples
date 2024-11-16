@@ -57,12 +57,12 @@ struct promiseUsage {
   private promiseParse() {
     console.log('PromiseParse')
     // With parser
-    let parser:ESObject = new xml2js.Parser( /* options */
+    let parser:xml2js.Parser = new xml2js.Parser( /* options */
       { trim: true });
     parser.parseStringPromise(this.xml).then((result:ESObject) => {
       this.message = JSON.stringify(result)
       console.log('Done')
-    }).catch((err:ESObject) => {
+    }).catch((err:Error) => {
       // Fail
     })
   }
@@ -73,7 +73,7 @@ struct promiseUsage {
       { trim: true }).then((result:ESObject) => {
       this.message = JSON.stringify(result)
       console.log('Done')
-    }).catch((err:ESObject) => {
+    }).catch((err:Error) => {
     })
   }
 }

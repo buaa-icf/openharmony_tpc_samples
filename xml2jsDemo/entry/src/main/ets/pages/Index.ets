@@ -30,11 +30,9 @@ async function routePage(index: number) {
       path = 'pages/processingAttribute';
       break
   }
-  let options:ESObject = {
-    url: path
-  }as ESObject
+
   try {
-    await router.push(options)
+    await router.push({ url: path })
   } catch (err) {
     console.error(`fail callback,code:${err.code},msg:${err.msg}`)
   }
