@@ -27,25 +27,25 @@ struct xmlBuilder {
   build() {
     Row() {
       Column() {
-        Button(this.getResourceStr($r("app.string.Building_XML"))+"1")
+        Button(this.getResourceStr($r("app.string.Building_XML")) + "1")
           .fontSize(30)
           .margin(10)
           .onClick(() => {
             this.xmlBuilder()
           })
-        Button(this.getResourceStr($r("app.string.Building_XML"))+"2")
+        Button(this.getResourceStr($r("app.string.Building_XML")) + "2")
           .fontSize(30)
           .margin(10)
           .onClick(() => {
             this.xmlBuilder2()
           })
-        Button(this.getResourceStr($r("app.string.Building_XML"))+"3")
+        Button(this.getResourceStr($r("app.string.Building_XML")) + "3")
           .fontSize(30)
           .margin(10)
           .onClick(() => {
             this.xmlBuilder3()
           })
-        Button(this.getResourceStr($r("app.string.Building_XML"))+"4")
+        Button(this.getResourceStr($r("app.string.Building_XML")) + "4")
           .fontSize(30)
           .margin(10)
           .onClick(() => {
@@ -63,45 +63,99 @@ struct xmlBuilder {
   }
 
   private xmlBuilder() {
-    let obj: ESObject = { name: "Super", Surname: "Man", age: 23 } as ESObject;
-    let builder : ESObject= new xml2js.Builder();
+    interface ObjType {
+      name: string,
+      Surname: string,
+      age: number
+    }
+
+    let obj: ObjType = { name: "Super", Surname: "Man", age: 23 };
+    let builder: xml2js.Builder = new xml2js.Builder();
     this.message = builder.buildObject(obj);
   }
 
   private xmlBuilder2() {
-    let obj: ESObject = { root: { $: { id: "my id" } as ESObject, _: "my inner text" } as ESObject } as ESObject;
-    let builder: ESObject = new xml2js.Builder();
+    interface ObjType {
+      root: RootType
+    }
+
+    interface RootType {
+      $: IdType,
+      _: string
+    }
+
+    interface IdType {
+      id: string
+    }
+
+    let obj: ObjType = { root: { $: { id: "my id" }, _: "my inner text" }};
+    let builder: xml2js.Builder = new xml2js.Builder();
     this.message = builder.buildObject(obj);
   }
 
   private xmlBuilder3() {
+    interface ObjType {
+      Foo: FooType
+    }
+
+    interface FooType {
+      $: XmlnsType
+    }
+
+    interface XmlnsType {
+      xmlns: string
+    }
+
     // 在根元素上声明默认命名空间的示例
-    let obj: ESObject = {
+    let obj: ObjType = {
       Foo: {
         $: {
           xmlns: "http://foo.com"
-        } as ESObject
-      } as ESObject
-    } as ESObject;
-    let builder: ESObject = new xml2js.Builder();
+        }
+      }
+    };
+
+    let builder: xml2js.Builder = new xml2js.Builder();
     this.message = builder.buildObject(obj);
   }
 
   private xmlBuilder4() {
+    interface ObjType {
+      foo: FooType,
+    }
+
+    interface FooType {
+      $: FooInnerType,
+      bar: BarType
+    }
+
+    interface FooInnerType {
+      foo: string
+    }
+
+    interface BarType {
+      $: BarInnerType
+    }
+
+    interface BarInnerType {
+      bar: string
+    }
+
     // 在非根元素上声明默认命名空间的示例
-    let obj: ESObject = {
+    let obj: ObjType = {
       foo: {
         $: {
           foo: 'http://foo.com'
-        } as ESObject,
+        },
         bar: {
           $: {
             bar: 'http://bar.com'
-          } as ESObject
-        } as ESObject
-      } as ESObject
-    } as ESObject
-    let builder: ESObject = new xml2js.Builder();
+          }
+        }
+      }
+    }
+
+    let builder: xml2js.Builder = new xml2js.Builder();
     this.message = builder.buildObject(obj);
   }
 }

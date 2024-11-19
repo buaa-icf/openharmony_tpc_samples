@@ -55,7 +55,7 @@ struct simpleParseXml {
   }
 
   private simpleParseXml() {
-    xml2js.parseString(this.xml, (err:ESObject, result:ESObject) => {
+    xml2js.parseString(this.xml, (err:Error, result:ESObject) => {
       this.message = JSON.stringify(result)
     })
   }

@@ -21,28 +21,28 @@ export default function abilityTest() {
 
     it('parseString_1', 0, () => {
       let xmlString: string = '<root>Hello xml2js!</root>'
-      xml2js.parseString(xmlString, (err: ESObject, result: ESObject) => {
+      xml2js.parseString(xmlString, (err: Error, result: ESObject) => {
         expect('Hello xml2js!').assertEqual(result.root)
       })
     })
 
     it('parseString_2', 0, () => {
       let xmlString: string = ''
-      xml2js.parseString(xmlString, (err: ESObject, result: ESObject) => {
+      xml2js.parseString(xmlString, (err: Error, result: ESObject) => {
         expect(result).assertNull()
       })
     })
 
     it('parseString_3', 0, () => {
       let xmlString: string = '1'
-      xml2js.parseString(xmlString, (err: ESObject, result: ESObject) => {
+      xml2js.parseString(xmlString, (err: Error, result: ESObject) => {
         expect(result).assertUndefined()
       })
     })
 
     it('parseString_4', 0, () => {
       let xmlString: string = '<root>Hello xml2js!<root>'
-      xml2js.parseString(xmlString, (err: ESObject, result: ESObject) => {
+      xml2js.parseString(xmlString, (err: Error, result: ESObject) => {
         expect(result).assertUndefined()
       })
     })
@@ -60,7 +60,7 @@ export default function abilityTest() {
         attrNameProcessors: [nameToUpperCase],
         valueProcessors: [nameToUpperCase],
         attrValueProcessors: [nameToUpperCase]
-      }, (err: ESObject, result: ESObject) => {
+      }, (err: Error, result: ESObject) => {
         expect(result.ROOT.TEXT.length).assertEqual(1)
       })
     })
@@ -73,7 +73,7 @@ export default function abilityTest() {
         attrNameProcessors: [xml2js.processors.normalize],
         valueProcessors: [xml2js.processors.normalize],
         attrValueProcessors: [xml2js.processors.normalize]
-      }, (err: ESObject, result: ESObject) => {
+      }, (err: Error, result: ESObject) => {
         expect(result.root.text.length).assertEqual(1)
       })
     })
@@ -108,51 +108,106 @@ export default function abilityTest() {
     })
 
     it('xmlBuilder_1', 0, () => {
-      let obj: ESObject = {
+      interface ObjType {
+        name: string,
+        Surname: string,
+        age: number
+      }
+
+      let obj: ObjType = {
         name: "Super", Surname: "Man", age: 23
-      } as ESObject;
-      let builder: ESObject = new xml2js.Builder();
+      };
+      let builder: xml2js.Builder = new xml2js.Builder();
       expect(builder.buildObject(obj)).assertContain('name')
     })
 
     it('xmlBuilder_2', 0, () => {
-      let obj: ESObject = {
+      interface ObjType {
+        root: RootType
+      }
+
+      interface RootType {
+        $: IdType,
+        _: string
+      }
+
+      interface IdType {
+        id: string
+      }
+
+      let obj: ObjType = {
         root: {
           $: {
             id: "my id"
-          } as ESObject, _: "my inner text"
-        } as ESObject
-      } as ESObject;
-      let builder: ESObject = new xml2js.Builder();
+          }, _: "my inner text"
+        }
+      };
+
+      let builder: xml2js.Builder = new xml2js.Builder();
       expect(builder.buildObject(obj)).assertContain('id')
     })
 
     it('xmlBuilder_3', 0, () => {
-      let obj: ESObject = {
+      interface ObjType {
+        Foo: FooType
+      }
+
+      interface FooType {
+        $: XmlnsType
+      }
+
+      interface XmlnsType {
+        xmlns: string
+      }
+
+      let obj: ObjType = {
         Foo: {
           $: {
             xmlns: "http://foo.com"
-          } as ESObject
-        } as ESObject
-      } as ESObject;
-      let builder: ESObject = new xml2js.Builder();
+          }
+        }
+      };
+
+      let builder: xml2js.Builder = new xml2js.Builder();
       expect(builder.buildObject(obj)).assertContain('Foo')
     })
 
     it('xmlBuilder_4', 0, () => {
-      let obj: ESObject = {
+      interface ObjType {
+        foo: FooType,
+      }
+
+      interface FooType {
+        $: FooInnerType,
+        bar: BarType
+      }
+
+      interface FooInnerType {
+        foo: string
+      }
+
+      interface BarType {
+        $: BarInnerType
+      }
+
+      interface BarInnerType {
+        bar: string
+      }
+
+      let obj: ObjType = {
         foo: {
           $: {
             foo: 'http://foo.com'
-          } as ESObject,
+          },
           bar: {
             $: {
               bar: 'http://bar.com'
-            } as ESObject
-          } as ESObject
-        } as ESObject
-      } as ESObject
-      let builder: ESObject = new xml2js.Builder();
+            }
+          }
+        }
+      }
+
+      let builder: xml2js.Builder = new xml2js.Builder();
       expect(builder.buildObject(obj)).assertContain('bar')
     })
 
@@ -170,23 +225,27 @@ export default function abilityTest() {
 
       let xmlString: string = '<root>Hello xml2js!<root>'
       printTime(false)
-      xml2js.parseString(xmlString, (err: ESObject, result: ESObject) => {})
+      xml2js.parseString(xmlString, (err: Error, result: ESObject) => {})
       printTime(true, 'parseString')
 
       printTime(false)
       xml2js.parseStringPromise(xmlString)
       printTime(true, 'parseStringPromise')
 
+      interface ObjType {
+        name: string,
+        Surname: string,
+        age: number
+      }
 
-      let obj: ESObject = {
+      let obj: ObjType = {
         name: "Super", Surname: "Man", age: 23
-      } as ESObject;
-      let builder: ESObject = new xml2js.Builder();
+      };
+      let builder: xml2js.Builder = new xml2js.Builder();
 
       printTime(false)
       builder.buildObject(obj)
       printTime(true, 'buildObject')
-
     })
   })
 }
