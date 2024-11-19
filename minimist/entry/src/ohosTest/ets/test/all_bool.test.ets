@@ -25,7 +25,7 @@ import parse from 'minimist'
 export default function allBoolTest() {
   describe('minimist_all_bool', () => {
     it('flag_boolean_true', 0, () => {
-      let argv:ESObject = parse(['moo', '--honk', 'cow'], {
+      let argv = parse(['moo', '--honk', 'cow'], {
         boolean: true, string: "_"
       });
       expect(argv).assertDeepEquals({
@@ -36,7 +36,7 @@ export default function allBoolTest() {
     });
 
     it('flag_boolean_true_only_affects_double_hyphen_arguments_without_equals_signs', 0, () => {
-      let argv: ESObject = parse(['moo', '--honk', 'cow', '-p', '55', '--tacos=good'], {
+      let argv = parse(['moo', '--honk', 'cow', '-p', '55', '--tacos=good'], {
         boolean: true, string: "_"
       });
       expect(argv).assertDeepEquals({
