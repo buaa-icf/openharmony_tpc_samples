@@ -23,7 +23,7 @@
  */
 
 import { buffer } from '@kit.ArkTS';
-import polka, { IncomingMessage, ServerResponse, statik, createFile, Request } from 'polka';
+import polka, { createFile, IncomingMessage, Request, ServerResponse, statik } from 'polka';
 import wantAgent from '@ohos.app.ability.wantAgent';
 import backgroundTaskManager from '@ohos.resourceschedule.backgroundTaskManager';
 import { BusinessError } from '@ohos.base';
@@ -180,11 +180,17 @@ export async function start(context): Promise<String> {
         });
         res.end('get 请求参数为：' + Array.from(req.parameters));
       })
+      .get('/redirect', (req: IncomingMessage, res: ServerResponse) => {
+        res.writeHead(302, {
+          'Location': 'https://www.baidu.com',
+        });
+        res.end();
+      })
       .head('/head-test', (req: IncomingMessage, res: ServerResponse) => {
         res.writeHead(200, {
           'Content-Type': statik.mime.getType('.html'),
         });
-        res.end('请求方式为：head');
+        res.end();
       })
       .put('/put-test', (req: IncomingMessage, res: ServerResponse) => {
         res.writeHead(200, {
@@ -219,7 +225,7 @@ export async function start(context): Promise<String> {
       .post('/test-redirect', (req: IncomingMessage, res: ServerResponse) => {
         res.writeHead(302, {
           'Content-Type': statik.mime.getType('.html'),
-          'Location':'wwww.baidu.com'
+          'Location': 'wwww.baidu.com'
         });
         res.end('请求方式为：CONNECT');
       })
@@ -230,6 +236,7 @@ export async function start(context): Promise<String> {
 }
 
 export async function stop(context): Promise<String> {
+
   function callback(err: BusinessError, data: void) {
     if (err) {
       console.error("Operation stopBackgroundRunning failed Cause: " + err);
@@ -237,6 +244,7 @@ export async function stop(context): Promise<String> {
       console.info("Operation stopBackgroundRunning succeeded");
     }
   }
+
   backgroundTaskManager.stopBackgroundRunning(context, callback);
 
   return new Promise(function (resolve, reject) {
@@ -310,7 +318,8 @@ Content-Transfer-Encoding: binary
 ... binary data of the jpg ...
 --ZnGpDtePMx0KrHh_G0X99Yef9r8JZsRJSXC--`
 
-const realGetData = `GET / HTTP/1.1\r\nHost: 127.0.0.1:9990\r\nConnection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7\r\nAccept-Language: zh-CN,zh;q=0.9\r\nSec-Fetch-Site: none\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\nAccept-Encoding: gzip, deflate, br\r\n\r\n"`
+const realGetData =
+  `GET / HTTP/1.1\r\nHost: 127.0.0.1:9990\r\nConnection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7\r\nAccept-Language: zh-CN,zh;q=0.9\r\nSec-Fetch-Site: none\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\nAccept-Encoding: gzip, deflate, br\r\n\r\n"`
 
 export const jsonResponse = `
 {"status":200,"data":[],"message":null}

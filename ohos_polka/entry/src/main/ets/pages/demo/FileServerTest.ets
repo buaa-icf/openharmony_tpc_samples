@@ -105,7 +105,7 @@ struct FileServerTest {
         .width('100%')
         .padding(10)
 
-        Flex({ justifyContent: FlexAlign.Start, alignItems: ItemAlign.Center }) {
+        Flex({ justifyContent: FlexAlign.Start, alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
           Text(`${getContext(this).resourceManager.getStringSync($r('app.string.testEtagResp').id)}${getContext(this)
             .resourceManager
             .getStringSync($r('app.string.observeRespEtag').id)}`)
@@ -116,7 +116,7 @@ struct FileServerTest {
             .onClick(() => {
               this.testEtags()
             })
-            .width(150)
+            .width(200)
             .fontSize(14)
             .flexGrow(0)
             .margin({ left: 10 })
@@ -124,7 +124,7 @@ struct FileServerTest {
         .width('100%')
         .padding(10)
 
-        Flex({ justifyContent: FlexAlign.Start, alignItems: ItemAlign.Center }) {
+        Flex({ justifyContent: FlexAlign.Start, alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
           Text(`${getContext(this).resourceManager.getStringSync($r('app.string.testGzipResp').id)}${getContext(this)
             .resourceManager
             .getStringSync($r('app.string.observeRespContent').id)}`)
@@ -135,7 +135,7 @@ struct FileServerTest {
             .onClick(() => {
               this.testGzip()
             })
-            .width(150)
+            .width(200)
             .fontSize(14)
             .flexGrow(0)
             .margin({ left: 10 })
@@ -151,17 +151,17 @@ struct FileServerTest {
         }
         .width('100%')
 
-        Flex({ justifyContent: FlexAlign.Start, alignItems: ItemAlign.Center }) {
+        Flex({ justifyContent: FlexAlign.Start, alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
           Text($r('app.string.newFileSuffiexName'))
             .fontSize(16)
             .fontWeight('blonder')
-            .width(120)
+            .width(150)
 
           TextInput({ text: this.fileExtension })
             .onChange((value) => {
               this.fileExtension = value
             })
-            .width(120)
+            .width(150)
             .fontSize(11)
 
           Button($r('app.string.one'))
@@ -171,7 +171,7 @@ struct FileServerTest {
             .width(100)
             .fontSize(14)
             .flexGrow(0)
-            .margin({ left: 10 })
+            .margin({ left: 10, top: 10 })
           Button($r('app.string.two'))
             .onClick(() => {
               this.post2()
@@ -179,7 +179,7 @@ struct FileServerTest {
             .width(100)
             .fontSize(14)
             .flexGrow(0)
-            .margin({ left: 10 })
+            .margin({ left: 10, top: 10 })
           Button($r('app.string.genNewFile'))
             .onClick(() => {
               this.createNewFile()
@@ -187,7 +187,7 @@ struct FileServerTest {
             .width(150)
             .fontSize(14)
             .flexGrow(0)
-            .margin({ left: 10 })
+            .margin({ left: 10, top: 10 })
         }
         .width('100%')
         .padding(10)
@@ -224,8 +224,10 @@ struct FileServerTest {
     }
     httpRequest.request(this.loginUrl, opt)
       .then((resp) => {
-        const responseStatus: string = context.resourceManager.getStringSync($r('app.string.responseStatus').id) + colon;
-        const responseHeader: string = context.resourceManager.getStringSync($r('app.string.responseHeader').id) + colon;
+        const responseStatus: string =
+          context.resourceManager.getStringSync($r('app.string.responseStatus').id) + colon;
+        const responseHeader: string =
+          context.resourceManager.getStringSync($r('app.string.responseHeader').id) + colon;
         this.msgHistory = `${responseStatus}${JSON.stringify(resp.responseCode)} \r\n`;
         this.msgHistory += `${responseHeader}${JSON.stringify(resp.header)} \r\n`;
         this.buf1 = buffer.from(resp.result as ArrayBuffer);
@@ -248,8 +250,10 @@ struct FileServerTest {
     }
     httpRequest.request(this.loginUrl, opt)
       .then((resp) => {
-        const responseStatus: string = context.resourceManager.getStringSync($r('app.string.responseStatus').id) + colon;
-        const responseHeader: string = context.resourceManager.getStringSync($r('app.string.responseHeader').id) + colon;
+        const responseStatus: string =
+          context.resourceManager.getStringSync($r('app.string.responseStatus').id) + colon;
+        const responseHeader: string =
+          context.resourceManager.getStringSync($r('app.string.responseHeader').id) + colon;
         this.msgHistory = `${responseStatus}${JSON.stringify(resp.responseCode)} \r\n`;
         this.msgHistory += `${responseHeader}${JSON.stringify(resp.header)} \r\n`;
         this.buf1 = buffer.from(resp.result as ArrayBuffer);

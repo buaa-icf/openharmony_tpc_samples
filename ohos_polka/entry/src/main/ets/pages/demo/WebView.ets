@@ -1,34 +1,27 @@
-/**
- * MIT License
- *
- * Copyright (c) 2024 Huawei Device Co., Ltd.
+/*
+ * The MIT License (MIT)
+ * Copyright (C) 2024 Huawei Device Co., Ltd.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the 'Software'), to deal
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to all conditions.
+ * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  */
 
-import web_webview from '@ohos.web.webview'
+import web_webview from '@ohos.web.webview';
 import common from '@ohos.app.ability.common';
 import Want from '@ohos.app.ability.Want';
 import { BusinessError } from '@ohos.base';
 import wifiManager from '@ohos.wifiManager';
 import router from '@ohos.router';
 import { createFile } from 'polka';
+
+let context = getContext(this) as common.UIAbilityContext;
 
 @Entry
 @Component
@@ -71,24 +64,24 @@ struct WebView {
             .fontSize(14)
             .flexGrow(0)
         }
-        Flex({ justifyContent: FlexAlign.Start, alignItems: ItemAlign.Center }) {
+
+        Flex({
+          direction: FlexDirection.Row,
+          alignItems: ItemAlign.Start,
+          justifyContent: FlexAlign.Start,
+          wrap: FlexWrap.Wrap
+        }) {
           Text($r('app.string.address'))
-            .fontSize(14)
-            .width(50)
-            .flexGrow(0)
-          Text($r('app.string.colon'))
             .fontSize(14)
             .flexGrow(0)
           TextInput({ text: this.loadUrl })
             .onChange((value) => {
               this.loadUrl = value
             })
-            .width(400)
             .fontSize(11)
             .flexGrow(0)
           Button($r('app.string.generateIndexHtml'))
             .onClick(() => {
-              let context = getContext(this) as common.UIAbilityContext;
               createFile(context.filesDir, 'index.html', `<!doctype html><html lang=""><head>
                 <meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge">
                 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -102,11 +95,10 @@ struct WebView {
                 Please enable it to continue.</strong>
                 </noscript><div id="app">index.html file exists</div></body></html>`)
             })
-            .width(200)
             .fontSize(14)
             .flexGrow(0)
-            .margin({ right: 10, left: 10})
-          Button($r('app.string.back'))
+            .margin({ right: 10, left: 10 })
+          Button($r('app.string.load'))
             .onClick(() => {
               try {
                 this.controller.loadUrl(this.loadUrl);
@@ -114,13 +106,11 @@ struct WebView {
                 console.error(`ErrorCode: ${error.code},  Message: ${error.message}`);
               }
             })
-            .width(70)
             .fontSize(14)
             .flexGrow(0)
-            .margin({ left: 10})
+            .margin({ left: 10 })
           Button($r('app.string.local'))
             .onClick(() => {
-              let context = getContext(this) as common.UIAbilityContext;
               let wantInfo: Want = {
                 action: 'ohos.want.action.viewData',
                 entities: ['entity.system.browsable'],
@@ -133,6 +123,7 @@ struct WebView {
             .width(70)
             .fontSize(14)
             .flexGrow(0)
+            .margin({ left: 10 })
         }
         .width('100%')
         .padding(10)

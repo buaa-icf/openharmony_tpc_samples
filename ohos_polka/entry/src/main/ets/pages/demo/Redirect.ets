@@ -28,8 +28,7 @@ import fs from '@ohos.file.fs';
 import common from '@ohos.app.ability.common';
 import Want from '@ohos.app.ability.Want';
 import { BusinessError } from '@ohos.base';
-import polka from 'polka';
-import { createFile } from 'polka';
+import polka, { createFile } from 'polka';
 
 @Entry
 @Component
@@ -66,12 +65,12 @@ struct Redirect {
             .lineHeight(30)
         }
 
-        Flex({ justifyContent: FlexAlign.Start, alignItems: ItemAlign.Center }) {
+        Flex({ justifyContent: FlexAlign.Start, alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
           Button($r('app.string.generateFolder'))
             .onClick(() => {
               this.generateDir()
             })
-            .width(170)
+            .width(150)
             .fontSize(14)
             .flexGrow(0)
             .margin({ top: 10 })
@@ -79,7 +78,7 @@ struct Redirect {
             .onClick(() => {
               this.generateIndexHtml()
             })
-            .width(170)
+            .width(150)
             .fontSize(14)
             .flexGrow(0)
             .margin({ top: 10, left: 10 })
