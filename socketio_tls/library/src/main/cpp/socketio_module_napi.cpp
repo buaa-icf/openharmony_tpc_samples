@@ -148,8 +148,6 @@ static void handler_event_listener_aux(OHOS::SocketIO::SocketIOContext context, 
 {
     napi_ref on_event_listener_call_aux_ref = on_event_listener_call_aux_ref_map[name.c_str()];
     if (on_event_listener_call_aux_ref != nullptr) {
-        ThreadSafeInfo* data = &g_threadSafeInfo;
-        
         std::string message_json = std::string("{") + "\"eventName\":\"" + name + "\"";
         if (message->get_flag() == sio::message::flag_object) {
             std::map<std::string, sio::message::ptr> messageMap = message->get_map();
@@ -160,13 +158,14 @@ static void handler_event_listener_aux(OHOS::SocketIO::SocketIOContext context, 
             message_json += std::string(",\"") + "message" + "\":" + get_message_value(message);
         }
         message_json += "}";
-        
-        if (data == nullptr) {
-            OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[event_listener]g_threadSafeInfo is null");
+
+        ThreadSafeInfo* localThreadSafeInfo = new ThreadSafeInfo();
+        if (localThreadSafeInfo == nullptr) {
+            OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[event_listener]localThreadSafeInfo is null");
             return;
         }
-        data->result = message_json;
-        context.CallTsFunction(data);
+        localThreadSafeInfo->result = message_json;
+        context.CallTsFunction(static_cast<void*>(localThreadSafeInfo));
         
         if (g_isOnce) {
             on_event_listener_call_aux_ref_map[name.c_str()] = nullptr;
