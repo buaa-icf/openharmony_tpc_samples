@@ -163,13 +163,13 @@ static void handler_event_listener_aux(OHOS::SocketIO::SocketIOContext context, 
             message_json += std::string(",\"") + "message" + "\":\"\"}";
         }
         
-        ThreadSafeInfo* data = &g_threadSafeInfo;
-        if (data == nullptr) {
-            OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[event_listener]g_threadSafeInfo is null");
+        ThreadSafeInfo* localThreadSafeInfo = new ThreadSafeInfo();
+        if (localThreadSafeInfo == nullptr) {
+            OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[event_listener]localThreadSafeInfo is null");
             return;
         }
-        data->result = message_json;
-        context.CallTsFunction(data);
+        localThreadSafeInfo->result = message_json;
+        context.CallTsFunction(static_cast<void*>(localThreadSafeInfo));
         
         if (g_isOnce) {
             on_event_listener_call_aux_ref_map[name.c_str()] = nullptr;
