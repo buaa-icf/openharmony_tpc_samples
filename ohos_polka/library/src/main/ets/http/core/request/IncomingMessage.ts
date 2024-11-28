@@ -347,7 +347,7 @@ export class IncomingMessage {
     response.client = client;
     response.bufferPool = bufferPool;
     response.keepAlive = keepAlive;
-
+    
     // 处理请求
     this.httpd.serve(this, response);
   }
@@ -372,7 +372,7 @@ export class IncomingMessage {
           } else {
             // 创建一个buffer来存储请求体数据
             let postLine: buffer.Buffer =
-              buffer.allocUninitializedFromPool(this.bufferPool.dataWritePos - this.bufferPool.headPos);
+              buffer.from(new ArrayBuffer(this.bufferPool.dataWritePos - this.bufferPool.headPos));
             this.bufferPool.buffer.copy(postLine, 0, this.bufferPool.headPos, this.bufferPool.dataWritePos);
             // 如果content-type是application/x-www-form-urlencoded，解析表单数据
             logger.log(`postLine length: ${postLine.length}`);
@@ -392,7 +392,7 @@ export class IncomingMessage {
         if (this.method === 'PUT') {
           // 创建一个buffer来存储请求体数据
           let postLine: buffer.Buffer =
-            buffer.allocUninitializedFromPool(this.bufferPool.dataWritePos - this.bufferPool.headPos);
+            buffer.from(new ArrayBuffer(this.bufferPool.dataWritePos - this.bufferPool.headPos));
           this.bufferPool.buffer.copy(postLine, 0, this.bufferPool.headPos, this.bufferPool.dataWritePos);
           // 如果请求方法是PUT，将请求体数据存储到files中
           files.set('content', postLine);
@@ -566,7 +566,7 @@ export class IncomingMessage {
     for (let boundaryIdx = 0; boundaryIdx < boundaryIdxs.length - 1; boundaryIdx++) {
       // 把每个boundary之间的数据块解析出来
       let mpBlock: buffer.Buffer =
-        buffer.allocUninitializedFromPool(boundaryIdxs[boundaryIdx + 1] - boundaryIdxs[boundaryIdx]);
+        buffer.from(new ArrayBuffer(boundaryIdxs[boundaryIdx + 1] - boundaryIdxs[boundaryIdx]));
       this.bufferPool.buffer.copy(mpBlock, 0, boundaryIdxs[boundaryIdx], boundaryIdxs[boundaryIdx + 1]);
       const mpBlockString = mpBlock.toString('utf-8', 0, mpBlock.length);
       let mpLines: string[] = mpBlockString.split(/\r\n/);
@@ -629,7 +629,8 @@ export class IncomingMessage {
         values = new Array<string>();
         params.set(partName, values);
       }
-      let data: buffer.Buffer = buffer.allocUninitializedFromPool(partDataEnd - partDataStart);
+      let data: buffer.Buffer =
+        buffer.from(new ArrayBuffer(partDataEnd - partDataStart));
       this.bufferPool.buffer.copy(data, 0, partDataStart, partDataEnd);
       if (!partContentType) {
         // Read the part into a string

@@ -66,7 +66,7 @@ export class BufferPool extends EventEmitter {
   constructor(bufferSize: number) {
     super();
     this.bufferSize = this.defaultBufferSize = bufferSize || (size * size);
-    this.buffer = buffer.alloc(bufferSize);
+    this.buffer  = buffer.from(new ArrayBuffer(bufferSize));
     this.dataLength = 0;
     this.dataReadPos = 0;
     this.dataWritePos = 0;
@@ -80,7 +80,7 @@ export class BufferPool extends EventEmitter {
    */
   public reset(): void {
     this.buffer = null;
-    this.buffer = buffer.alloc(this.defaultBufferSize);
+    this.buffer = buffer.from(new ArrayBuffer(this.defaultBufferSize));
     this.dataLength = 0;
     this.dataReadPos = 0;
     this.dataWritePos = 0;
@@ -123,7 +123,7 @@ export class BufferPool extends EventEmitter {
     if (msgLength > availLength) {
       // 以1M为基数扩展Buffer空间
       let exLength = Math.ceil((this.dataLength + msgLength) / (size * size)) * (size * size);
-      let tempBuffer = buffer.alloc(exLength);
+      let tempBuffer  = buffer.from(new ArrayBuffer(exLength));
       this.bufferSize = exLength;
 
       this.buffer.copy(tempBuffer, 0, this.dataReadPos, this.dataWritePos);
