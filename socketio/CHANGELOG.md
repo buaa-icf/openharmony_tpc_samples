@@ -1,3 +1,6 @@
+## v2.1.1-rc.1
+- Fixed the issue of duplicate emit messages.
+
 ## v2.1.1-rc.0
 - Fixed the format of incoming parameters in the set_option and set_header interfaces.
 - Fixed an issue where received messages contained special escape characters causing the program to crash.
