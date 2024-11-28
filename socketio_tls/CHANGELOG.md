@@ -1,3 +1,7 @@
+## v1.0.1-rc.0
+
+- Fixed the issue of duplicate emit messages.
+
 ## v1.0.0
 
 The following functions are supported:
