@@ -1,3 +1,7 @@
+## v1.0.3-rc.0
+
+- Fixed the issue of duplicate emit messages.
+
 ## v1.0.2
 
 - Fix the problem that the set_option interface cannot be connected with {}.

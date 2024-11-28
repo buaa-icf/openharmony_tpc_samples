@@ -8,6 +8,6 @@
   "name": "OHOS_APP_socket.io",
   "description": "example description",
   "main": "",
-  "version": "1.0.2",
+  "version": "1.0.3-rc.0",
   "dependencies": {}
 }
