@@ -375,4 +375,6 @@ app
 This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/ohos_polka/blob/master/LICENSE).
 
 ## 遗留问题
-1.目前不支持websocket
+1. 目前不支持websocket
+2. 当前不支持手动关闭服务器
+3. 当前文件上传不支持超过20MB的文件(底座影响,后续rom版本会修复)
