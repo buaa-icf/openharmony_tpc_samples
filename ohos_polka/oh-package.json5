@@ -1,7 +1,7 @@
 {
   "modelVersion": "5.0.0",
   "name": "polka",
-  "version": "1.0.0-rc.3",
+  "version": "1.0.0",
   "description": "专门为OpenHarmony打造的一款本地http服务库，致力于更高效、更轻便、更简单.",
   "main": "",
   "author": "ohos_tpc",

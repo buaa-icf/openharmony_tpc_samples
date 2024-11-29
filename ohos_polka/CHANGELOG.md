@@ -1,3 +1,9 @@
+## v1.0.0
+## fixes
+1. There is a memory leak and the repair buffer cannot be released.
+2. Modify repository address
+3. Modify the LICENSE link in the README document
+
 ## v1.0.0-rc.3
 ## fixes
 1. The POST or PUT request is responded twice.
