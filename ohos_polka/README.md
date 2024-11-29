@@ -372,7 +372,7 @@ app
 
 ## 开源协议
 
-This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/ohos_polka/blob/master/LICENSE).
+This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ohos_polka/LICENSE).
 
 ## 遗留问题
 1. 目前不支持websocket

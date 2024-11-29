@@ -49,7 +49,6 @@ export class NanoHTTPD extends EventEmitter {
   public listeningListener: (message?: string) => void;
   public myServerSocket: socket.TCPSocketServer;
   public serverConnectArray: socket.TCPSocketConnection[] = [];
-  public serverClient: socket.TCPSocketConnection;
   public hostname: string;
   public myPort: number;
   private serverIsStarted: boolean = false;
@@ -250,7 +249,6 @@ export class NanoHTTPD extends EventEmitter {
       logger.error(`setExtraOptions fail ${err}`);
     });
     this.callback = (client: socket.TCPSocketConnection): void => {
-      this.serverClient = client;
       this.serverConnectArray.push(client);
       let bufferPool: BufferPool = new BufferPool(IncomingMessage.BUFSIZE);
       this.bufferPoolArray.push(bufferPool);
@@ -262,7 +260,10 @@ export class NanoHTTPD extends EventEmitter {
         bufferPool.pushMsg(buffer.from(value.message));
       });
       client.on('close', () => {
+        this.bufferPoolArray = this.bufferPoolArray.filter(pool => pool === bufferPool)
+        this.serverConnectArray.filter(tmpClient => tmpClient === client)
         bufferPool.removeAllListeners();
+        client.off('message')
       });
     };
     this.myServerSocket.on('connect', this.callback);

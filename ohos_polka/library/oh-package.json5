@@ -1,6 +1,6 @@
 {
   "name": "@ohos/polka",
-  "version": "1.0.0-rc.3",
+  "version": "1.0.0",
   "keywords": [
     "OpenHarmony",
     "polka",
@@ -20,7 +20,7 @@
     "org": "opensource"
   },
   "type": "module",
-  "repository": "https://gitee.com/openharmony-sig/ohos_polka",
+  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_polka",
   "devDependencies": {},
   "dependencies": {
     "@ohos/node-polyfill": "1.0.0"
