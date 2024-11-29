@@ -264,6 +264,7 @@ export class NanoHTTPD extends EventEmitter {
         this.serverConnectArray.filter(tmpClient => tmpClient === client)
         bufferPool.removeAllListeners();
         client.off('message')
+        client.off('close')
       });
     };
     this.myServerSocket.on('connect', this.callback);
