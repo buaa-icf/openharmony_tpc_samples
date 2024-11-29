@@ -81,10 +81,9 @@ void CallJsEmit(napi_env env, napi_value jsCb, void *context, void *data)
     napi_value ret;
     napi_value argv;
     
-    // 解析参数 data
-    ThreadSafeInfo *arg = (ThreadSafeInfo *)data;
+    std::unique_ptr<ThreadSafeInfo> arg(static_cast<ThreadSafeInfo*>(data));
     if (arg == nullptr) {
-        OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[CallJsEmit]g_threadSafeInfo is null");
+        OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[CallJsEmit]ThreadSafeInfo is null");
         return;
     }
 
@@ -106,10 +105,9 @@ void CallJsBinary(napi_env env, napi_value jsCb, void *context, void *data)
     napi_value ret;
     napi_value argv;
     
-    // 解析参数 data
-    BinaryInfo *arg = (BinaryInfo *)data;
+    std::unique_ptr<BinaryInfo> arg(static_cast<BinaryInfo*>(data));
     if (arg == nullptr) {
-        OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[CallJsBinary]g_threadSafeInfo is null");
+        OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[CallJsBinary]BinaryInfo is null");
         return;
     }
     size_t length = arg->result.size();
