@@ -53,7 +53,7 @@ struct Index {
         let hexResults = "sha1.hex: " + sha1.hex(this.statement);
         let arrayResults = "sha1.array: " + JSON.stringify(sha1.array(this.statement));
         let digestResults = "sha1.digest: " + JSON.stringify(sha1.digest(this.statement));
-        let arrayBuffer:number[] = sha1.arrayBuffer(this.statement);
+        let arrayBuffer:ArrayBuffer = sha1.arrayBuffer(this.statement);
         let arrayBufferResults :string = "sha1.arrayBuffer: ";
         if (arrayBuffer instanceof ArrayBuffer) {
           arrayBufferResults = arrayBufferResults + JSON.stringify((new Uint8Array(arrayBuffer)).slice());
