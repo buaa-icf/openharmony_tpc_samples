@@ -1,6 +1,6 @@
 {
   "name": "entry",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "专门为OpenHarmony打造的一款本地http服务库，致力于更高效、更轻便、更简单.",
   "main": "",
   "author": "ohos-tpc",
