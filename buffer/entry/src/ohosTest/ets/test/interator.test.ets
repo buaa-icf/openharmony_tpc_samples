@@ -75,7 +75,7 @@ export default function interatorTest() {
         arr.push(b);
 
 
-      expect(arr).assertDeepEquals([1, 2, 3, 4, 5])
+      expect(arr).assertDeepEquals([0, 1, 2, 3, 4])
     })
     it('test04', 0, () => {
       arr = [];
