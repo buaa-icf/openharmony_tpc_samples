@@ -23,7 +23,7 @@ For details about the OpenHarmony ohpm environment configuration, see [OpenHarmo
 
 This library uses the AVPlayer or IJKPlayer at the bottom layer for audio and video playback. Therefore, the supported audio and video specifications are the same as those of the two libraries. For details, see the following:
 
-- [AVPlayer Specifications](https://gitee.com/openharmony/docs/blob/master/en/application-dev/media/media/media-kit-intro.md#supported-formats-and-protocols)
+- [AVPlayer Specifications](https://gitee.com/openharmony/docs/blob/master/zh-cn/application-dev/reference/apis-media-kit/js-apis-media.md#avplayer9)
 - [ijkplayer Specifications](https://gitee.com/openharmony-sig/ohos_ijkplayer/blob/master/README.md)
 
 
