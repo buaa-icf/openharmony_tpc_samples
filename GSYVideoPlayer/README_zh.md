@@ -23,7 +23,7 @@ OpenHarmony ohpm
 目前支持音视频规格：
 由于本库播放音视频能力底层是avplayer或者ijkplayer去播放视频，所以支持的音视频规格跟随这两个库音视频规格。
 
-[avplayer规格说明](https://gitee.com/openharmony/docs/blob/master/zh-cn/application-dev/media/avplayer-avrecorder-overview.md#%E6%94%AF%E6%8C%81%E7%9A%84%E6%A0%BC%E5%BC%8F%E4%B8%8E%E5%8D%8F%E8%AE%AE)
+[avplayer规格说明](https://gitee.com/openharmony/docs/blob/master/zh-cn/application-dev/reference/apis-media-kit/js-apis-media.md#avplayer9)
 
 [ijkplayer规格说明](https://gitee.com/openharmony-sig/ohos_ijkplayer/blob/master/README.md)
 
