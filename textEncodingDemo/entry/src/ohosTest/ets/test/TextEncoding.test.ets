@@ -50,7 +50,7 @@ export default function textEncodingTest() {
       // Defines a test case. This API supports three parameters: test case name, filter parameter, and test case function.
       let content: string = 'ABCDEFGHIJKabcdefj123456+/AA==!@';
 
-      let encode: string = new TextEncoder().encode(content);
+      let encode: Uint8Array = new TextEncoder().encode(content);
 
       let deco: string = new TextDecoder().decode(encode)
 

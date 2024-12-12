@@ -1,6 +1,8 @@
 {
   "license": "",
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/text-encoding": "^0.0.40"
+  },
   "author": "",
   "name": "entry",
   "description": "Please describe the basic information.",
