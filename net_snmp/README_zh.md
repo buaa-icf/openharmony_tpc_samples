@@ -104,7 +104,7 @@ session.get (oids, function (error, letbinds) {
 }); 
 ```
 
-6.获取MIB树中一个或多个OID后按词法排列的OID的值
+6.获取MIB树中一个或多个OID后按词法排列的OID的值(方式一)
 ```
 let oids = [
     "1.3.6.1.2.1.1.4.0",
@@ -144,7 +144,7 @@ session.getBulk (oids, nonRepeaters, function (error, letbinds) {
 });
 ```
 
-7.获取MIB树中一个或多个OID后按词法排列的OID的值
+7.获取MIB树中一个或多个OID后按词法排列的OID的值(方式二)
 ```
 let oids = [
     "1.3.6.1.2.1.1.1.0",
@@ -354,7 +354,7 @@ let authorizer=receiver.getAuthorizer ()
 在接收者的社区授权列表中添加一个社区字符串。如果社区已经在列表中，则不做任何操作，确保列表中任何给定的社区字符串只出现一次。
 authorizer.addCommunity (community)
 
-如果接收者的社区授权列表中存储了一个社区字符串，则返回 "null"，否则返回 "null"。
+如果接收者的社区授权列表中存储了一个社区字符串，则返回该字符串，否则返回null。
 authorizer.getCommunity (community)
 
 返回接收者的社区授权列表。
@@ -375,7 +375,7 @@ authorizer.getUsers ()
 从接收方的用户授权列表中删除一个用户。如果提供的用户名称不在列表中，则不做任何操作。
 authorizer.deleteUser (userName)
 
-返回该授权器的snmp.AccessControlModelType，它是其中之一。
+返回该授权器的snmp.AccessControlModelType。
 authorizer.getAccessControlModelType ()
 
 返回访问控制模型对象。
@@ -553,7 +553,7 @@ lstore.loadFromFile (fileName)
 以JSON对象的形式从存储中检索命名的MIB模块。
 store.getModule (moduleName)
 
-从store中检索所有的MIB模块，如果includeBaseboolean被设置为true，那么基本的MIB模块就会被包含在列表中。如果 "includeBase "布尔值被设置为true，那么基本的MIB模块就被包含在列表中。模块作为一个单一的JSON "对象中的对象 "返回，以模块名称为键，其值是整个JSON模块的表示。
+从store中检索所有的MIB模块，如果 "includeBase "布尔值被设置为true，那么基本的MIB模块就被包含在列表中。模块作为一个单一的JSON 对象的形式返回，以模块名称为键，其值是整个JSON模块的表示。
 store.getModules (includeBase)
 
 检索商店中加载的所有MIB模块名称的列表。如果 "includeBase "布尔值被设置为true，那么MIB模块的基本名称就会被包含在列表中。
@@ -681,11 +681,11 @@ subagent.removeAgentCaps (oid, callback)
 | getCommunities | 无         | [any]  | 返回接收者的社区授权列表。                                                         |
 | deleteCommunity | community | void   | 从接收者的社区授权列表中删除一个社区字符串。如果社区不在列表中，则不做任何操作                               |
 | addUser       | user      | 无      | 在接收方的用户授权列表中添加一个用户。如果列表中存在同名用户,则该调用将删除现有用户，并以提供的用户取而代之，确保列表中只存在一个同名用户 |
-| getUser       | userName      | any    | 如果接收者的用户授权列表中存储了一个使用所提供名字的用户，则返回一个用户对象，否则返回null。                                                   |
-| getUsers       | user      | [any]  | 返回接收方的用户授权列表                                                    |
-| deleteUser     | userName      | 无      | 从接收方的用户授权列表中删除一个用户。如果提供的用户名称不在列表中，则不做任何操作。                                                    |
-| getAccessControlModelType | 无         | number | 返回该授权器的snmp.AccessControlModelType，它是其中之一。                                                  |
-| getAccessControlModel  | 无        | 无      | 返回访问控制模型对象。                                                    |
+| getUser       | userName      | any    | 如果接收者的用户授权列表中存储了一个使用所提供名字的用户，则返回一个用户对象，否则返回null。                      |
+| getUsers       | user      | [any]  | 返回接收方的用户授权列表                                                          |
+| deleteUser     | userName      | 无      | 从接收方的用户授权列表中删除一个用户。如果提供的用户名称不在列表中，则不做任何操作。                            |
+| getAccessControlModelType | 无         | number | 返回该授权器的snmp.AccessControlModelType。                                   |
+| getAccessControlModel  | 无        | 无      | 返回访问控制模型对象。                                                           |
 
 ### SimpleAccessControlModel
 
