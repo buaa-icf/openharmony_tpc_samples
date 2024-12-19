@@ -80,7 +80,7 @@ import { BerWriter,BerReader } from '@ohos/asn1_ber'
                       |----error.js # 定义Error
                       |----index.js # 导出文件
                       |----reader.js # 提供了一系列方法来读取特定类型的数据
-                      |----wirter.js # 提供了一系列方法来写入不同类型的 BER
+                      |----writer.js # 提供了一系列方法来写入不同类型的 BER
                       |----types.js # 定义ASN1.ber  类型
 |           |---- index.ets  # 对外接口
 |     |---- README.md  # 安装使用方法                    
