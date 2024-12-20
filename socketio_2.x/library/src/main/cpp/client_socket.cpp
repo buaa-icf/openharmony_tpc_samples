@@ -43,9 +43,6 @@ static size_t result = 0;
 static constexpr const int ARG_INDEX_0 = 0;
 static constexpr const int ARG_INDEX_1 = 1;
 static constexpr const int ARG_INDEX_2 = 2;
-
-static struct ThreadSafeInfo g_threadSafeInfo = {};
-static struct BinaryInfo g_binaryInfo = {};
 static std::map<std::string, std::string> g_headerMap = {};
 static std::map<std::string, std::string> g_optionMap = {};
 static bool g_isOnce = false;
@@ -162,14 +159,14 @@ static void handler_event_listener_aux(OHOS::SocketIO::SocketIOContext context, 
         } else {
             message_json += std::string(",\"") + "message" + "\":\"\"}";
         }
-        
-        ThreadSafeInfo* localThreadSafeInfo = new ThreadSafeInfo();
-        if (localThreadSafeInfo == nullptr) {
+
+        std::unique_ptr<ThreadSafeInfo> localThreadSafeInfo = std::make_unique<ThreadSafeInfo>();
+        if (!localThreadSafeInfo) {
             OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[event_listener]localThreadSafeInfo is null");
             return;
         }
         localThreadSafeInfo->result = message_json;
-        context.CallTsFunction(static_cast<void*>(localThreadSafeInfo));
+        context.CallTsFunction(static_cast<void*>(localThreadSafeInfo.release()));
         
         if (g_isOnce) {
             on_event_listener_call_aux_ref_map[name.c_str()] = nullptr;
@@ -186,13 +183,13 @@ static void handler_binary_event_listener_aux(OHOS::SocketIO::SocketIOContext co
         if (message->get_flag() == sio::message::flag_binary) {
             auto binary_str = *message->get_binary();
             
-            BinaryInfo* data = &g_binaryInfo;
-            if (data == nullptr) {
-                OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[event_listener]g_threadSafeInfo is null");
+            std::unique_ptr<BinaryInfo> localBinaryInfo = std::make_unique<BinaryInfo>();
+            if (!localBinaryInfo) {
+                OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[event_listener]localBinaryInfo is null");
                 return;
             }
-            data->result = binary_str;
-            context.CallTsFunction(data);
+            localBinaryInfo->result = binary_str;
+            context.CallTsFunction(static_cast<void*>(localBinaryInfo.release()));
             
             if (g_isOnce) {
                 on_event_listener_call_aux_ref_map[name.c_str()] = nullptr;
@@ -252,16 +249,16 @@ public:
         }
         OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> on_close ");
         
-        ThreadSafeInfo* data = &g_threadSafeInfo;
-        if (data == nullptr) {
-            OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[on_close]g_threadSafeInfo is null");
+        std::unique_ptr<ThreadSafeInfo> localThreadSafeInfo = std::make_unique<ThreadSafeInfo>();
+        if (!localThreadSafeInfo) {
+            OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[on_close]localThreadSafeInfo is null");
             return;
         }
-        data->result = reasonString;
+        localThreadSafeInfo->result = reasonString;
         
         napi_acquire_threadsafe_function(g_tsfnCloseCall);
-        // 调用主线程函数，传入 Data
-        napi_call_threadsafe_function(g_tsfnCloseCall, data, napi_tsfn_blocking);
+        
+        napi_call_threadsafe_function(g_tsfnCloseCall, localThreadSafeInfo.release(), napi_tsfn_blocking);
     }
 
     void on_socket_open(std::string const &nsp)
@@ -269,34 +266,32 @@ public:
         OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------>0 on_socket_open %{public}s",
                      nsp.c_str());
         
-        ThreadSafeInfo* data = &g_threadSafeInfo;
-        if (data == nullptr) {
-            OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[on_socket_open]g_threadSafeInfo is null");
+        std::unique_ptr<ThreadSafeInfo> localThreadSafeInfo = std::make_unique<ThreadSafeInfo>();
+        if (!localThreadSafeInfo) {
+            OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[on_socket_open]localThreadSafeInfo is null");
             return;
         }
-        data->result = nsp;
-        
-        OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG,
-                     "SOCKETIO_TAG------>2 on_socket_open %{public}s", (data->result).c_str());
+        localThreadSafeInfo->result = nsp;
         
         napi_acquire_threadsafe_function(g_tsfnOnSocketioOpenCall);
-        // 调用主线程函数，传入 Data
-        napi_call_threadsafe_function(g_tsfnOnSocketioOpenCall, data, napi_tsfn_blocking);
+        
+        napi_call_threadsafe_function(g_tsfnOnSocketioOpenCall, localThreadSafeInfo.release(), napi_tsfn_blocking);
     }
 
     void on_socket_close(std::string const &nsp)
     {
         OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> on_socket_close ");
-        ThreadSafeInfo* data = &g_threadSafeInfo;
-        if (data == nullptr) {
-            OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[on_socket_close]g_threadSafeInfo is null");
+        
+        std::unique_ptr<ThreadSafeInfo> localThreadSafeInfo = std::make_unique<ThreadSafeInfo>();
+        if (!localThreadSafeInfo) {
+            OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[on_socket_close]localThreadSafeInfo is null");
             return;
         }
-        data->result = nsp;
-        
+        localThreadSafeInfo->result = nsp;
+
         napi_acquire_threadsafe_function(g_tsfnOnCloseCall);
-        // 调用主线程函数，传入 Data
-        napi_call_threadsafe_function(g_tsfnOnCloseCall, data, napi_tsfn_blocking);
+        
+        napi_call_threadsafe_function(g_tsfnOnCloseCall, localThreadSafeInfo.release(), napi_tsfn_blocking);
     }
 
     void on_event_listener_aux(const OHOS::SocketIO::SocketIOContext &context, const std::string &name,
@@ -327,19 +322,16 @@ public:
     {
         std::string error_string = "on error";
         
-        ThreadSafeInfo* data = &g_threadSafeInfo;
-        if (data == nullptr) {
-            OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[on_error_listener]g_threadSafeInfo is null");
+        std::unique_ptr<ThreadSafeInfo> localThreadSafeInfo = std::make_unique<ThreadSafeInfo>();
+        if (!localThreadSafeInfo) {
+            OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[on_error_listener]localThreadSafeInfo is null");
             return;
         }
-        data->result = error_string;
-        
-        OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG,
-                     "SOCKETIO_TAG------> on_error_listener %{public}s", (data->result).c_str());
+        localThreadSafeInfo->result = error_string;
         
         napi_acquire_threadsafe_function(g_tsfnOnErrorCall);
-        // 调用主线程函数，传入 Data
-        napi_call_threadsafe_function(g_tsfnOnErrorCall, data, napi_tsfn_blocking);
+        
+        napi_call_threadsafe_function(g_tsfnOnErrorCall, localThreadSafeInfo.release(), napi_tsfn_blocking);
     }
 
     void on_emit_callback(std::string const &ack_name, sio::message::list const &list)
@@ -368,16 +360,16 @@ public:
         OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> 1 on_emit_callback %{public}s",
                      message_json.c_str());
 
-        ThreadSafeInfo *data = &g_threadSafeInfo;
-        if (data == nullptr) {
-            OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[on_emit_callback]g_threadSafeInfo is null");
+        std::unique_ptr<ThreadSafeInfo> localThreadSafeInfo = std::make_unique<ThreadSafeInfo>();
+        if (!localThreadSafeInfo) {
+            OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[on_emit_callback]localThreadSafeInfo is null");
             return;
         }
-        data->result = message_json;
-
+        localThreadSafeInfo->result = message_json;
+        
         napi_acquire_threadsafe_function(g_tsfnEmitCall);
-        // 调用主线程函数，传入 Data
-        napi_call_threadsafe_function(g_tsfnEmitCall, data, napi_tsfn_blocking);
+        
+        napi_call_threadsafe_function(g_tsfnEmitCall, localThreadSafeInfo.release(), napi_tsfn_blocking);
     }
 };
 
