@@ -47,6 +47,9 @@ static std::map<std::string, std::string> g_headerMap = {};
 static std::map<std::string, std::string> g_optionMap = {};
 static bool g_isOnce = false;
 
+// 添加全局变量，保存path
+static std::string g_path = "";
+
 // 处理带有转义字符的字符串
 static std::string transfer_characters(const std::string &str)
 {
@@ -550,9 +553,24 @@ static napi_value set_path(napi_env env, napi_callback_info info)
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     char path[MAX_BUF_SIZE];
     napi_get_value_string_utf8(env, args[0], path, MAX_BUF_SIZE, &result);
-    
-    std::string myString(path);
-    
+
+    std::string inputPath(path);
+    // 去除开头和结尾的 '/'
+    size_t start = 0;
+    size_t end = inputPath.length();
+
+    if (!inputPath.empty() && inputPath.front() == '/') {
+        start = 1;
+    }
+    if (!inputPath.empty() && inputPath.back() == '/') {
+        end -= 1;
+    }
+    if (start < end) {
+        inputPath = inputPath.substr(start, end - start);
+    } else {
+        inputPath = "";
+    }
+    g_path = inputPath;
     return 0;
 }
 
@@ -563,8 +581,23 @@ static napi_value connect(napi_env env, napi_callback_info info)
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     char uri[MAX_BUF_SIZE];
     napi_get_value_string_utf8(env, args[0], uri, MAX_BUF_SIZE, &result);
-    clientInstance->connect(uri, g_optionMap, g_headerMap);
-    
+    std::string uriString(uri);
+    // 检查并拼接路径
+    if (!g_path.empty()) {
+        // 规范化 uriString，确保以 '/' 结尾
+        if (!uriString.empty() && uriString.back() != '/') {
+            uriString += '/';
+        }
+        // 拼接路径，确保最终以 '/' 结尾
+        uriString += g_path + '/';
+    } else {
+        // 如果不拼接路径，确保 uriString 以 '/' 结尾
+        if (!uriString.empty() && uriString.back() != '/') {
+            uriString += '/';
+        }
+    }
+    // 调用 connect，使用拼接后的url
+    clientInstance->connect(uriString, g_optionMap, g_headerMap);
     return 0;
 }
 
@@ -807,6 +840,7 @@ static napi_value set_nsp(napi_env env, napi_callback_info info)
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     char charNsp[MAX_BUF_SIZE];
     napi_get_value_string_utf8(env, args[0], charNsp, MAX_BUF_SIZE, &result);
+    
     nsp = charNsp;
     return 0;
 }
