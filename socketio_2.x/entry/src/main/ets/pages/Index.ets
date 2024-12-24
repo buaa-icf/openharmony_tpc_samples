@@ -145,6 +145,13 @@ struct Index {
     });
     this.client?.set_headers("{myKey1:myValue1,myKey2:myValue2}");
     this.client?.set_option("{myKey:myValue}");
+
+    // set_path接口的参数支持：xxx, /xxx, xxx/, /xxx/四种写法。(该接口暂时注释，若要使用需要服务端适配)
+    // this.client?.set_path("/chat");
+
+    // (该接口暂时注释，若要使用需要服务端适配)
+    // this.client?.set_nsp("/nsp");
+
     this.client?.connect(uri);
   }
 
