@@ -1,0 +1,11 @@
+{
+  "modelVersion": "5.0.0",
+  "description": "Please describe the basic information.",
+  "dependencies": {
+    "vap_module": "file:vap_module/build/default/outputs/default/vap_module.har"
+  },
+  "devDependencies": {
+    "@ohos/hypium": "1.0.18"
+  },
+  "dynamicDependencies": {}
+}
