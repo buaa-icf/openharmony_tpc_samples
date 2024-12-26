@@ -215,7 +215,7 @@ struct Index {
           .width('100%')
 
           Row() {
-            TextInput({ placeholder: "请输入消息,退出聊天室请输入exit", text: this.message })
+            TextInput({ placeholder: $r('app.string.Enter_message'), text: this.message })
               .width('80%')
               .onChange((message) => {
                 this.message = message
@@ -226,7 +226,7 @@ struct Index {
                   this.close()
                   this.login_finish = false
                 } else if (this.message == "") {
-                  prompt.showToast({ message: getContext().resourceManager.getStringSync($r('app.string.enter_message')) });
+                  prompt.showToast({ message: getContext().resourceManager.getStringSync($r('app.string.Enter_messages')) });
                 } else {
                   this.sendMessage(this.message)
                   let clientMessage: ESObject = { username: this.username, message: this.message, id: 2 }

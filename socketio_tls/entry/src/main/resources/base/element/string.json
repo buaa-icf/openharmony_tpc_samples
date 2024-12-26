@@ -42,23 +42,23 @@
     },
     {
       "name": "connect_unfinished",
-      "value": "暂未连接服务器"
+      "value": "Not yet connected to the server"
     },
     {
       "name": "enter_message",
-      "value": "请输入消息"
+      "value": "Please enter a message"
     },
     {
       "name": "connect_success",
-      "value": "连接服务器成功"
+      "value": "Successfully connected to the server"
     },
     {
       "name": "connect_failed",
-      "value": "连接服务器成功"
+      "value": "Failed to connect to server"
     },
     {
       "name": "url_error",
-      "value": "服务器地址异常，请检查url信息"
+      "value": "Invalid URL"
     }
   ]
 }
