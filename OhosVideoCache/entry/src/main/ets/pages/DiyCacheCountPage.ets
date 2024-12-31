@@ -23,6 +23,7 @@ import GlobalProxyServer from '../GlobalProxyServer';
 import fs from '@ohos.file.fs';
 import promptAction from '@ohos.promptAction';
 import photoAccessHelper from '@ohos.file.photoAccessHelper';
+import { display } from '@kit.ArkUI';
 
 const TAG: string = 'MediaDemo HttpPlayer:';
 
@@ -528,6 +529,16 @@ struct DiyCacheCountPage {
           type: 'surface',
           controller: this.mXcomponentController
         })
+          .onAreaChange(() => {
+            let orientation = display.getDefaultDisplaySync().orientation;
+            if (orientation % 2 !== 0) {
+              //横屏状态
+              this.ratio = 5;
+            } else {
+              //竖屏状态
+              this.ratio = 2;
+            }
+          })
           .onLoad(() => {
             // 加载完成后调用初始化播放器函数
             this.initAVPlayer();
@@ -570,7 +581,7 @@ struct DiyCacheCountPage {
             .height('80px')
             .visibility(this.isBuffering ? Visibility.Hidden : Visibility.Visible)
             .color(Color.Blue)
-          Text(this.videoName).fontSize(15).width('50%').textAlign(TextAlign.Center)
+          Text(this.videoName).fontSize(15).width('80%').textAlign(TextAlign.Center)
           Image($r('app.media.icon_info'))
             .width('60px')
             .height('60px')
@@ -647,8 +658,8 @@ struct DiyCacheCountPage {
         Row() {
           // 点击执行上一个视频播放
           Image($r('app.media.icon_Previous'))
-            .width('45vp')
-            .height('45vp')
+            .width(CommonConstants.buttonSize)
+            .aspectRatio(1)
             .margin({ left: '10vp' })
             .onClick(() => {
               if (!this.isSetFinish) {
@@ -661,8 +672,8 @@ struct DiyCacheCountPage {
             })
           // 根据状态不同设置播放暂停图标显示
           Image(this.isPlaying ? $r('app.media.icon_pause') : $r('app.media.icon_play'))
-            .width('45vp')
-            .height('45vp')
+            .width(CommonConstants.buttonSize)
+            .aspectRatio(1)
             .margin({ left: '10vp' })
             .onClick(() => {
               if (!this.isSetFinish) {
@@ -680,8 +691,8 @@ struct DiyCacheCountPage {
             })
           // 点击执行下一个视频播放
           Image($r('app.media.icon_next'))
-            .width('45vp')
-            .height('45vp')
+            .width(CommonConstants.buttonSize)
+            .aspectRatio(1)
             .margin({ left: '10vp' })
             .onClick(() => {
               if (!this.isSetFinish) {
@@ -694,8 +705,8 @@ struct DiyCacheCountPage {
             })
           // 点击图标设置是否循环播放
           Image(this.isLoop ? $r('app.media.icon_single') : $r('app.media.icon_repeatplay'))
-            .width('45vp')
-            .height('45vp')
+            .width(CommonConstants.buttonSize)
+            .aspectRatio(1)
             .margin({ left: '10vp' })
             .onClick(() => {
               if (!this.isSetFinish) {
