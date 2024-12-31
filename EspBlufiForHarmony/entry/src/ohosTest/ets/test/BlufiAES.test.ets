@@ -50,7 +50,7 @@ export default function BlufiAESTest() {
     })
     it('BlufiAES', 0, async () => {
 
-      let mAESKeyStr: string = '99999999';
+      let mAESKeyStr: string = '9999999999999999';
       let SIXTEEN: number = 16;
       let mAESKey: Uint8Array = BlufiUtil.stringToUint8Array(mAESKeyStr, SIXTEEN);
       let transform: string = 'AES128|CBC|PKCS5';
@@ -75,7 +75,7 @@ export default function BlufiAESTest() {
       expect(decryptData).assertInstanceOf('Object');
 
       let decrypDataStr = '';
-      if (!decryptData) {
+      if (decryptData) {
         decryptData!.data.forEach((value) => {
           decrypDataStr += String.fromCharCode(value);
         });
@@ -92,9 +92,9 @@ export default function BlufiAESTest() {
       expect(decryptDataSyn).assertInstanceOf('Object');
 
       let decrypDataSynStr: string = '';
-      if (!decryptDataSyn) {
+      if (decryptDataSyn) {
         decryptData?.data.forEach((item) => {
-          decrypDataStr += String.fromCharCode(item);
+          decrypDataSynStr += String.fromCharCode(item);
         });
       }
       expect(decrypDataSynStr.length).assertLarger(0);
