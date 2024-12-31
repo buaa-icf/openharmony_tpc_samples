@@ -509,9 +509,9 @@ struct HttpPlayer {
           type: 'surface',
           controller: this.mXcomponentController
         })
-          .onAreaChange(()=>{
+          .onAreaChange(() => {
             let orientation = display.getDefaultDisplaySync().orientation;
-            if(orientation % 2 !== 0) {
+            if (orientation % 2 !== 0) {
               //横屏状态
               this.ratio = 4;
             } else {
@@ -609,14 +609,14 @@ struct HttpPlayer {
         Row() {
           // 点击执行上一个视频播放
           Image($r('app.media.icon_Previous'))
-            .width(CommonConstants.buttonSize).height(CommonConstants.buttonSize)
+            .width(CommonConstants.buttonSize).aspectRatio(1)
             .margin({ left: '10vp' })
             .onClick(() => {
               this.preVideo();
             })
           // 根据状态不同设置播放暂停图标显示
           Image(this.isPlaying ? $r('app.media.icon_pause') : $r('app.media.icon_play'))
-            .width(CommonConstants.buttonSize).height(CommonConstants.buttonSize)
+            .width(CommonConstants.buttonSize).aspectRatio(1)
             .margin({ left: '10vp' })
             .onClick(() => {
               if (this.isPlaying) {
@@ -628,14 +628,14 @@ struct HttpPlayer {
             })
           // 点击执行下一个视频播放
           Image($r('app.media.icon_next'))
-            .width(CommonConstants.buttonSize).height(CommonConstants.buttonSize)
+            .width(CommonConstants.buttonSize).aspectRatio(1)
             .margin({ left: '10vp' })
             .onClick(() => {
               this.nextVideo();
             })
           // 点击图标设置是否循环播放
           Image(this.isLoop ? $r('app.media.icon_single') : $r('app.media.icon_repeatplay'))
-            .width(CommonConstants.buttonSize).height(CommonConstants.buttonSize)
+            .width(CommonConstants.buttonSize).aspectRatio(1)
             .margin({ left: '10vp' })
             .onClick(() => {
               this.isLoop = !this.isLoop;
