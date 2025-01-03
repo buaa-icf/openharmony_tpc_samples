@@ -14,7 +14,7 @@
   },
   "main": "Index.ets",
   "author": "ohos_tpc",
-  "repository": "https://gitee.com/openharmony-tpc/EspBlufiForHarmony",
+  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/EspBlufiForHarmony",
   "license": "MIT License",
   "dependencies": {}
 }
