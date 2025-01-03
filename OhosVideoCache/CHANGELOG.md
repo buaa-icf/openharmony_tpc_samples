@@ -1,3 +1,6 @@
+## 1.0.3-rc.1
+1. Fix the issue of excessive data usage
+
 ## 1.0.3-rc.0
 1. Fixed the issue of app crashing.
 2. Resolved the problem of failing to create cache folders.

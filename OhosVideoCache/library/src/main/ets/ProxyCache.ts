@@ -179,7 +179,6 @@ export default class ProxyCache {
       self.source.setDataListener(new MyDataBackListener())
       self.readingInProgress = true;
       await self.source.open(offset);
-      self.readingInProgress = false;
       return Promise.resolve();
     } catch (err) {
       self.readingInProgress = false;
