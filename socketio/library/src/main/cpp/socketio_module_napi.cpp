@@ -559,6 +559,27 @@ napi_value SocketIOClient::set_headers(napi_env env, napi_callback_info info)
     return 0;
 }
 
+napi_value SocketIOClient::get_current_state(napi_env env, napi_callback_info info)
+{
+    size_t argc = 1;
+    napi_value args[1] = {nullptr};
+    napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
+
+    char classId[CLASSID_BUF_SIZE] = {0};
+    size_t charLen = 0;
+    napi_get_value_string_utf8(env, args[0], classId, CLASSID_BUF_SIZE, &charLen);
+    std::string classIdStr = classId;
+
+    SocketIOClient* client = getClient(classIdStr);
+    if (!client) {
+        return nullptr;
+    }
+
+    napi_value state;
+    napi_create_int32(env, static_cast<int32_t>(client->clientInstance.get_current_state()), &state);
+    return state;
+}
+
 napi_value SocketIOClient::set_option(napi_env env, napi_callback_info info)
 {
     size_t argc = 2;
