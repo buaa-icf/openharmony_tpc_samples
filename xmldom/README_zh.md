@@ -17,7 +17,7 @@ ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](ht
 
 1. 引入文件及代码依赖
 
- ```
+ ```javascript
  import { DOMParser, XMLSerializer, DOMImplementation } from '@ohos/xmldom'
  
  const source = `<xml xmlns="a">

@@ -18,7 +18,7 @@ For details about the ohpm environment configuration, see [Installing the OpenHa
 
 Import files and code dependencies.
 
-```
+```javascript
  import { DOMParser, XMLSerializer, DOMImplementation } from '@ohos/xmldom'
  
  const source = `<xml xmlns="a">
