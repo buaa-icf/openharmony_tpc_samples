@@ -30,7 +30,7 @@
 #include <string>
 
 #define _UNIX
-
+#define NM  2048
 #define LOG(...) OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, "wtf_c", __VA_ARGS__);
 using namespace std;
 
