@@ -2,22 +2,28 @@
 # Introduction
 json-bigint allows parsing and stringifying JSON with BigInts, based on JSON.js and bignumber.js.
 # How to Install
+```shell
     ohpm install json-bigint
     ohpm install @types/json-bigint --save-dev // A syntax error is reported for the import json-bigint instruction if the json-bigint package does not contain the type declaration. You need to download the declaration file of the package using @types/json-bigint to rectify the syntax error.
+```
 For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 # How to Use
 After json-bigint is installed, import json-bigint on the target page and call it.
-
+```typescript
     import  jsonBigint from 'json-bigint'
     let bigint = jsonBigint()
+```
 ## Simple Usage
+```typescript
     @State input:string = '{"bigValue":9223372036854775807,"SmallValue":123}'; // No data to be tested.
     let parseValue:Record<string, string > = bigint.parse(this.input)
     console.log(`JSON.parse : ${ typeof parseValue.bigValue }`)// JSON.parse :9223372036854775807
     let stringifyValue:string = bigint.stringify(parseValue)
     console.log(`JSONbig.stringify(JSONbig.parse(input)):${stringifyValue}`)// JSONbig.stringify(JSONbig.parse(input)):{"big":9223372036854775807,"small":123}
-## Enabling Strict Mode
+```
 
+## Enabling Strict Mode
+```typescript
     @State strictInput:string = '{ "dupkey": "value 1", "dupkey": "value 2"}'; // Data to be tested in strict mode.
     let bigint = jsonBigint({strict:true})
     try {
@@ -26,17 +32,22 @@ After json-bigint is installed, import json-bigint on the target page and call i
         } catch (e) {
             console.log('Succesfully catched expected exception on duplicate keys: %j',JSON.stringify(e))// Succesfully catched expected exception on duplicate keys: {"name":"SyntaxError","message":"Duplicate key \"dupkey\"","at":33,"text":"{ \"dupkey\": \"value 1\", \"dupkey\": \"value 2\"}"}
         }
+```
+
 Use `strict: true` in the call of json_bigint to specify the strict mode, in which errors are reported for duplicate keys.
 ## Converting a BigInt to a String
-
+```typescript
      @State storeAsStringInput:string = '{ "key": 1234567890123456789 }' // Data to be tested during the conversion from a BigInt to a string.
     let bigint = jsonBigint({ storeAsString: true })
     let  withString:Record<string, string > = bigint.parse(this.storeAsStringInput);
             console.log(`${withString.key}`)//1234567890123456789
             console.log(`Default type: %s, With option type: %s, ${typeof withString.key}`);// Default type: object, With option type: string
             })
+```
+
 Use `storeAsString: true` in the call of json_bigint to specify whether a BigInt should be stored in an object as a string instead of the default big number. Note that this action is risky because it results in the failure of reverting the conversion without altering the data type, (because this action converts all BigInts to the preceding and succeeding string representations).
 ## Enabling Native BigInts
+```typescript
     @State useNativeBigIntInput:string = '{ "key": 993143214321423154315154321 }' // Data to be tested when the local BigInts are used.
     let bigint = jsonBigint({ useNativeBigInt: true } )
     let  JSONbigNative:Record<string, string > = bigint.parse(this.useNativeBigIntInput);
@@ -44,10 +55,12 @@ Use `storeAsString: true` in the call of json_bigint to specify whether a BigInt
             console.log(
                 `Default type: %s, With option type: %s, ${typeof JSONbigNative.key}`);// Default type: %s, With option type: %s, bigint
             })
+```
+
 Use `useNativeBigInt: true` in the call of json_bigint to specify whether the parser uses native BigInts instead of bignumber.js.
 
 ## Storing All Numbers as Big Numbers
-
+```typescript
     @State alwaysParseAsBigInput:string = '{ "key": 12312312312 }'// Store all numbers as big numbers.
     let bigint = jsonBigint({ alwaysParseAsBig: true } )
     let  JSONbigAlways:Record<string, string > = bigint.parse(this.alwaysParseAsBigInput);
@@ -55,6 +68,8 @@ Use `useNativeBigInt: true` in the call of json_bigint to specify whether the pa
             console.log(
                 `Default type: %s, With option type: %s, ${typeof JSONbigAlways.key}`);// Default type: %s, With option type: %s, object
             })
+```
+
 Use `alwaysParseAsBig: true` in the call of json_bigint to specify whether all numbers should be stored as big numbers.
 
 # Available APIs
