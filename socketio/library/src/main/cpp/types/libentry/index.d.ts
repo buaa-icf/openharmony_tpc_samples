@@ -81,4 +81,6 @@ export class newSocketIOClient {
 
   emitAckBinary: (name: string, message: any, b: boolean,
     on_emit_callback: (code: number, emit_callback_data: Uint8Array) => void, classId: number) => void;
+
+  get_current_state: (classId: number) => number;
 }

@@ -57,6 +57,7 @@ public:
     static napi_value off_error(napi_env env, napi_callback_info info);
     static napi_value emit(napi_env env, napi_callback_info info);
     static napi_value emitAckBinary(napi_env env, napi_callback_info info);
+    static napi_value get_current_state(napi_env env, napi_callback_info info);
     
     std::string classIdStr;
     std::string nsp = "";
