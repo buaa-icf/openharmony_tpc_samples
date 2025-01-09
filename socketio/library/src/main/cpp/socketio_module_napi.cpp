@@ -1414,8 +1414,6 @@ napi_value SocketIOClient::JsConstructor(napi_env env, napi_callback_info info)
     uintptr_t classId = reinterpret_cast<uintptr_t>(classBind);
     std::string classIdStrTemp = std::to_string(classId);
     classBind->classIdStr = classIdStrTemp;
-    OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, "LOG_TAG", "JsConstructor classIdStr: %{public}s",
-                 classIdStrTemp.data());
 
     napi_value napiClassId;
     napi_create_string_utf8(env, classIdStrTemp.c_str(), classIdStrTemp.length(), &napiClassId);
