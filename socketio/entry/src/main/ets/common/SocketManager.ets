@@ -164,12 +164,12 @@ class SocketManager {
     this.client?.on("login", (event_json: string)=>{
       this.on_login_listener(event_json);
     });
-    this.client?.on("disconnect", (data) => {
-      console.log("断连:",data);
+    this.client?.on("disconnect", (data: string) => {
+      console.log("disconnect:", data);
       this.checkConnectionState("disconnect")
     });
-    this.client?.on("ping_pong", (data) => {
-      console.log("心跳:",data);
+    this.client?.on("ping_pong", (data: string) => {
+      console.log("ping_pong:", data);
     });
   }
 
