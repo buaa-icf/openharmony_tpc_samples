@@ -33,8 +33,7 @@ export default function ApiTest() {
 
     it('KeysTest', 0, () => {
       let startTime1 = new Date().getTime();
-      const keys: Key[] = [];
-      const regexp = pathToRegexp("/foo/:bar", keys);
+      const regexp = pathToRegexp("/foo/:bar");
       let options: Options = {
         name: 'bar',
         prefix: '/',
@@ -42,7 +41,7 @@ export default function ApiTest() {
         pattern: '[^\\/#\\?]+?',
         modifier: ''
       }
-      let keyStr = JSON.stringify(keys);
+      let keyStr = JSON.stringify(regexp.keys);
       let objStr = JSON.stringify([options]);
       let endTime1 = new Date().getTime();
       let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
@@ -53,9 +52,8 @@ export default function ApiTest() {
 
     it('NamedParametersTest', 0, () => {
       let startTime1 = new Date().getTime();
-      const keys: Key[] = [];
-      const regexp = pathToRegexp("/:foo/:bar", keys);
-      let testStr = JSON.stringify(regexp.exec("/test/route"));
+      const regexp = pathToRegexp("/:foo/:bar");
+      let testStr = JSON.stringify(regexp.regexp.exec("/test/route"));
       let objStr = JSON.stringify(['/test/route', 'test', 'route']);
       let endTime1 = new Date().getTime();
       let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
@@ -66,14 +64,14 @@ export default function ApiTest() {
     it('CustomMatchingParametersTest', 0, () => {
       let startTime1 = new Date().getTime();
       const regexpNumbers = pathToRegexp("/icon-:foo(\\d+).png");
-      let testStr1 = JSON.stringify(regexpNumbers.exec("/icon-123.png"));
+      let testStr1 = JSON.stringify(regexpNumbers.regexp.exec("/icon-123.png"));
       let objStr1 = JSON.stringify(['/icon-123.png', '123']);
       let endTime1 = new Date().getTime();
       let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
       console.log("regexp : CustomMatchingParametersTest1 averageTime : " + averageTime1 + "us")
       expect(testStr1).assertEqual(objStr1)
       let startTime2 = new Date().getTime();
-      let testStr2 = regexpNumbers.exec("/icon-abc.png");
+      let testStr2 = regexpNumbers.regexp.exec("/icon-abc.png");
       let endTime2 = new Date().getTime();
       let averageTime2 = ((endTime2 - startTime2) * 1000) / BASE_COUNT;
       console.log("regexp : CustomMatchingParametersTest2 averageTime : " + averageTime2 + "us")
@@ -83,7 +81,7 @@ export default function ApiTest() {
 
       let startTime3 = new Date().getTime();
       const regexpWord = pathToRegexp("/(user|u)");
-      let testStr3 = JSON.stringify(regexpWord.exec("/u"));
+      let testStr3 = JSON.stringify(regexpWord.regexp.exec("/u"));
       let objStr3 = JSON.stringify(['/u', 'u']);
       let endTime3 = new Date().getTime();
       let averageTime3 = ((endTime3 - startTime3) * 1000) / BASE_COUNT;
@@ -91,7 +89,7 @@ export default function ApiTest() {
       expect(testStr3).assertEqual(objStr3)
 
       let startTime4 = new Date().getTime();
-      let testStr4 = regexpWord.exec("/users");
+      let testStr4 = regexpWord.regexp.exec("/users");
       let endTime4 = new Date().getTime();
       let averageTime4 = ((endTime4 - startTime4) * 1000) / BASE_COUNT;
       console.log("regexp : CustomMatchingParametersTest4 averageTime : " + averageTime4 + "us")
@@ -102,14 +100,14 @@ export default function ApiTest() {
     it('CustomPrefixAndSuffixTest', 0, () => {
       let startTime1 = new Date().getTime();
       const regexp = pathToRegexp("/:attr1?{-:attr2}?{-:attr3}?");
-      let testStr1 = JSON.stringify(regexp.exec("/test"));
+      let testStr1 = JSON.stringify(regexp.regexp.exec("/test"));
       let objStr1 = JSON.stringify(['/test', 'test', null, null]);
       let endTime1 = new Date().getTime();
       let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
       console.log("regexp : CustomPrefixAndSuffixTest1 averageTime : " + averageTime1 + "us")
       expect(testStr1).assertEqual(objStr1)
       let startTime2 = new Date().getTime();
-      let testStr2 = JSON.stringify(regexp.exec("/test-test"));
+      let testStr2 = JSON.stringify(regexp.regexp.exec("/test-test"));
       let objStr2 = JSON.stringify(['/test-test', 'test', 'test', null]);
       let endTime2 = new Date().getTime();
       let averageTime2 = ((endTime2 - startTime2) * 1000) / BASE_COUNT;
@@ -120,7 +118,7 @@ export default function ApiTest() {
     it('UnnamedParametersTest', 0, () => {
       let startTime1 = new Date().getTime();
       const regexp = pathToRegexp("/:foo/(.*)");
-      let testStr1 = JSON.stringify(regexp.exec("/test/route"));
+      let testStr1 = JSON.stringify(regexp.regexp.exec("/test/route"));
       let objStr1 = JSON.stringify(['/test/route', 'test', 'route']);
       let endTime1 = new Date().getTime();
       let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
@@ -131,7 +129,7 @@ export default function ApiTest() {
     it('ModifiersTest', 0, () => {
       let startTime1 = new Date().getTime();
       const regexp = pathToRegexp("/:foo/:bar?");
-      let testStr1 = JSON.stringify(regexp.exec("/test"));
+      let testStr1 = JSON.stringify(regexp.regexp.exec("/test"));
       let objStr1 = JSON.stringify(['/test', 'test', null]);
       let endTime1 = new Date().getTime();
       let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
@@ -139,7 +137,7 @@ export default function ApiTest() {
       expect(testStr1).assertEqual(objStr1)
 
       let startTime2 = new Date().getTime();
-      let testStr2 = JSON.stringify(regexp.exec("/test/route"));
+      let testStr2 = JSON.stringify(regexp.regexp.exec("/test/route"));
       let objStr2 = JSON.stringify(['/test/route', 'test', 'route']);
       let endTime2 = new Date().getTime();
       let averageTime2 = ((endTime2 - startTime2) * 1000) / BASE_COUNT;
@@ -150,14 +148,14 @@ export default function ApiTest() {
     it('OptionalTest', 0, () => {
       let startTime1 = new Date().getTime();
       const regexp = pathToRegexp("/search/:tableName\\?useIndex=true&term=amazing");
-      let testStr1 = JSON.stringify(regexp.exec("/search/people?useIndex=true&term=amazing"));
+      let testStr1 = JSON.stringify(regexp.regexp.exec("/search/people?useIndex=true&term=amazing"));
       let objStr1 = JSON.stringify(['/search/people?useIndex=true&term=amazing', 'people']);
       let endTime1 = new Date().getTime();
       let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
       console.log("regexp : OptionalTest1 averageTime : " + averageTime1 + "us")
       expect(testStr1).assertEqual(objStr1)
       let startTime2 = new Date().getTime();
-      let testStr2 = regexp.exec("/search/people?term=amazing&useIndex=true");
+      let testStr2 = regexp.regexp.exec("/search/people?term=amazing&useIndex=true");
       let endTime2 = new Date().getTime();
       let averageTime2 = ((endTime2 - startTime2) * 1000) / BASE_COUNT;
       console.log("regexp : OptionalTest2 averageTime : " + averageTime2 + "us")
@@ -168,14 +166,14 @@ export default function ApiTest() {
     it('ZeroOrMoreTest', 0, () => {
       let startTime1 = new Date().getTime();
       const regexp = pathToRegexp("/:foo*");
-      let testStr1 = JSON.stringify(regexp.exec("/"));
+      let testStr1 = JSON.stringify(regexp.regexp.exec("/"));
       let objStr1 = JSON.stringify(['/', undefined]);
       let endTime1 = new Date().getTime();
       let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
       console.log("regexp : ZeroOrMoreTest1 averageTime : " + averageTime1 + "us")
       expect(testStr1).assertEqual(objStr1)
       let startTime2 = new Date().getTime();
-      let testStr2 = JSON.stringify(regexp.exec("/bar/baz"));
+      let testStr2 = JSON.stringify(regexp.regexp.exec("/bar/baz"));
       let objStr2 = JSON.stringify(['/bar/baz', 'bar/baz']);
       let endTime2 = new Date().getTime();
       let averageTime2 = ((endTime2 - startTime2) * 1000) / BASE_COUNT;
@@ -186,14 +184,14 @@ export default function ApiTest() {
     it('OneOrMoreTest', 0, () => {
       let startTime1 = new Date().getTime();
       const regexp = pathToRegexp("/:foo+");
-      let testStr1 = regexp.exec("/");
+      let testStr1 = regexp.regexp.exec("/");
       let endTime1 = new Date().getTime();
       let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
       console.log("regexp : OneOrMoreTest1 averageTime : " + averageTime1 + "us")
       let objStr1: null = null;
       expect(testStr1).assertEqual(objStr1)
       let startTime2 = new Date().getTime();
-      let testStr2 = JSON.stringify(regexp.exec("/bar/baz"));
+      let testStr2 = JSON.stringify(regexp.regexp.exec("/bar/baz"));
       let objStr2 = JSON.stringify(['/bar/baz', 'bar/baz']);
       let endTime2 = new Date().getTime();
       let averageTime2 = ((endTime2 - startTime2) * 1000) / BASE_COUNT;
@@ -277,14 +275,14 @@ export default function ApiTest() {
       const re = pathToRegexp("/caf\u00E9");
       const input = encodeURI("/cafe\u0301");
 
-      let testStr1 = re.test(input);
+      let testStr1 = re.regexp.test(input);
       let objStr1 = false;
       let endTime1 = new Date().getTime();
       let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
       console.log("regexp : AlternativeUsingNormalizeTest1 averageTime : " + averageTime1 + "us")
       expect(testStr1).assertEqual(objStr1)
       let startTime2 = new Date().getTime();
-      let testStr2 = re.test(normalizePathname(input));
+      let testStr2 = re.regexp.test(normalizePathname(input));
       let objStr2 = true;
       let endTime2 = new Date().getTime();
       let averageTime2 = ((endTime2 - startTime2) * 1000) / BASE_COUNT;
@@ -298,7 +296,7 @@ export default function ApiTest() {
       let endTime1 = new Date().getTime();
       let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
       console.log("regexp : ParseTest averageTime : " + averageTime1 + "us")
-      let testStr1 = tokens[0];
+      let testStr1 = tokens.tokens[0];
       let objStr1 = "/route";
 
       expect(testStr1).assertEqual(objStr1)
@@ -331,7 +329,7 @@ export default function ApiTest() {
       let startTime1 = new Date().getTime();
 
       let testStr1 = toPath({
-        id: 123
+        id: "123"
       });
       let endTime1 = new Date().getTime();
       let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
@@ -378,10 +376,7 @@ export default function ApiTest() {
       expect(testStr5).assertEqual(objStr5);
 
       let startTime6 = new Date().getTime();
-      let options: Options = {
-        validate: false
-      }
-      const toPathRaw1 = compile("/user/:id", options);
+      const toPathRaw1 = compile("/user/:id");
       let testStr6 = toPathRaw1({
         id: ":/"
       });
@@ -415,7 +410,7 @@ export default function ApiTest() {
       let startTime9 = new Date().getTime();
       const toPathRegexp = compile("/user/:id(\\d+)");
       let testStr9 = toPathRegexp({
-        id: 123
+        id: "123"
       });
       let objStr9 = "/user/123";
       let endTime9 = new Date().getTime();
@@ -449,7 +444,7 @@ export default function ApiTest() {
         expect(isTypeErr).assertTrue();
       }
       let startTime12 = new Date().getTime();
-      const toPathRegexp1 = compile("/user/:id(\\d+)", options);
+      const toPathRegexp1 = compile("/user/:id(\\d+)");
 
       let testStr11 = toPathRegexp1({
         id: "abc"

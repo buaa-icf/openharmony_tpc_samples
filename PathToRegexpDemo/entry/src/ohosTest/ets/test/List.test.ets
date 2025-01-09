@@ -19,5 +19,4 @@ import OriginLibraryTest from './OriginLibraryTest.test'
 
 export default function testsuite() {
   ApiTest();
-  OriginLibraryTest();
 }

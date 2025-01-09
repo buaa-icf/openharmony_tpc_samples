@@ -13,15 +13,20 @@
  * limitations under the License.
  */
 
-import { compile, Key, match, parse, pathToRegexp } from 'path-to-regexp';
+import { compile, Key, Keys, match, parse, pathToRegexp } from 'path-to-regexp';
+
+interface result  {
+  regexp:RegExp;
+  keys:Keys;
+}
 
 export default class TestApi {
   constructor() {
   }
 
-  public pathToRegexpTest(param?: string, keys?: Key[]): RegExp {
+  public pathToRegexpTest(param?: string): result {
     try {
-      const regexp = pathToRegexp(param, keys);
+      const regexp = pathToRegexp(param);
       return regexp;
     } catch (err) {
       throw err
@@ -30,8 +35,8 @@ export default class TestApi {
 
   public namedParametersTest(param?: string): object {
     try {
-      const regexp = pathToRegexp(param);
-      const result = regexp.exec('/test/route')
+      const res = pathToRegexp(param);
+      const result = res.regexp.exec('/test/route')
       return result;
     } catch (err) {
       return err
@@ -41,15 +46,15 @@ export default class TestApi {
   public customMatchingParametersTest(param?: string, keys?: Key[]): Array<object> {
     const result = []
     try {
-      const regexpNumbers = pathToRegexp('/icon-:foo(\\d+).png');
-      const firstResult = regexpNumbers.exec('/icon-123.png');
+      const regexpNumbers = pathToRegexp('/icon-:foo.png');
+      const firstResult = regexpNumbers.regexp.exec('/icon-123.png');
       result.push(firstResult);
-      const secondResult = regexpNumbers.exec('/icon-abc.png')
+      const secondResult = regexpNumbers.regexp.exec('/icon-abc.png')
       result.push(secondResult);
-      const regexpWord = pathToRegexp('/(user|u)');
-      const thirdResult = regexpWord.exec('/u');
+      const regexpWord = pathToRegexp('/:foo');
+      const thirdResult = regexpWord.regexp.exec('/u');
       result.push(thirdResult);
-      const fourResult = regexpWord.exec('/users');
+      const fourResult = regexpWord.regexp.exec('/users');
       result.push(fourResult);
 
       return result;
@@ -63,10 +68,10 @@ export default class TestApi {
   public customPrefixSuffixTest(param?: string, keys?: Key[]): Array<object> {
     const result = []
     try {
-      const regexp = pathToRegexp("/:attr1?{-:attr2}?{-:attr3}?");
-      const single = regexp.exec('/test');
+      const res = pathToRegexp("/:attr");
+      const single = res.regexp.exec('/test');
       result.push(single);
-      const double = regexp.exec('/test-test')
+      const double = res.regexp.exec('/test-test')
       result.push(double);
       return result;
     } catch (err) {
@@ -77,8 +82,8 @@ export default class TestApi {
 
   public unNamedParametersTest(param?: string, keys?: Key[]): object {
     try {
-      const regexp = pathToRegexp("/:foo/(.*)");
-      const unNamed = regexp.exec('/test/route');
+      const res = pathToRegexp("/:foo/:bar");
+      const unNamed = res.regexp.exec('/test/route');
       return unNamed;
     } catch (err) {
       return err
@@ -88,10 +93,10 @@ export default class TestApi {
   public modifiersPageTest(param?: string, keys?: Key[]): Array<object> {
     const result = []
     try {
-      const regexp = pathToRegexp('/:foo/:bar?');
-      const single = regexp.exec('/test');
+      const res = pathToRegexp('/:foo/:bar');
+      const single = res.regexp.exec('/test');
       result.push(single);
-      const double = regexp.exec('/test/route')
+      const double = res.regexp.exec('/test/route')
       result.push(double);
       return result;
     } catch (err) {
@@ -103,10 +108,10 @@ export default class TestApi {
   public optionalTest(param?: string, keys?: Key[]): Array<object> {
     const result = []
     try {
-      const regexpNew = pathToRegexp('/search/:tableName\\?useIndex=true&term=amazing');
-      const positive = regexpNew.exec('/search/people?useIndex=true&term=amazing');
+      const res = pathToRegexp('/search/:tableName\\?useIndex=true&term=amazing');
+      const positive = res.regexp.exec('/search/people?useIndex=true&term=amazing');
       result.push(positive);
-      const reverse = regexpNew.exec('/search/people?term=amazing&useIndex=true');
+      const reverse = res.regexp.exec('/search/people?term=amazing&useIndex=true');
       result.push(reverse);
       return result;
     } catch (err) {
@@ -118,10 +123,10 @@ export default class TestApi {
   public zeroTest(param?: string, keys?: Key[]): Array<object> {
     const result = []
     try {
-      const regexp = pathToRegexp("/:foo*");
-      const single = regexp.exec('/');
+      const res = pathToRegexp("/:foo");
+      const single = res.regexp.exec('/');
       result.push(single);
-      const double = regexp.exec('/bar/baz')
+      const double = res.regexp.exec('/bar/baz')
       result.push(double);
       return result;
     } catch (err) {
@@ -133,10 +138,10 @@ export default class TestApi {
   public oneTest(param?: string, keys?: Key[]): Array<object> {
     const result = []
     try {
-      const regexp = pathToRegexp('/:foo+');
-      const single = regexp.exec('/');
+      const res = pathToRegexp('/:foo');
+      const single = res.regexp.exec('/');
       result.push(single);
-      const double = regexp.exec('/bar/baz')
+      const double = res.regexp.exec('/bar/baz')
       result.push(double);
       return result;
     } catch (err) {
@@ -159,7 +164,7 @@ export default class TestApi {
       const decode = fn('/user/caf%c3%A9')
       result.push(decode);
 
-      const urlMatch = match('/users/:id/:tab(home|photos|bio)', {
+      const urlMatch = match('/users/:id/:tab', {
         decode: decodeURIComponent
       });
       const photos = urlMatch('/users/1234/photos');
@@ -179,7 +184,7 @@ export default class TestApi {
     const result = []
     try {
       const fn = match("/café", {
-        encode: encodeURI
+        encodePath: encodeURI
       });
       const number = fn("/caf%C3%A9");
       result.push(number);
@@ -196,9 +201,9 @@ export default class TestApi {
       const re = pathToRegexp('/caf\u00E9');
       const input = encodeURI('/cafe\u0301');
 
-      const testPath = re.test(input);
+      const testPath = re.regexp.test(input);
       result.push(testPath);
-      const testDiy = re.test(this.normalizePathname(input));
+      const testDiy = re.regexp.test(this.normalizePathname(input));
       result.push(testDiy);
       return result;
     } catch (err) {
@@ -210,7 +215,7 @@ export default class TestApi {
   public parseTest(param?: string, keys?: Key[]): Array<object> {
     const result = []
     try {
-      const tokens = parse('/route/:foo/(.*)');
+      const tokens = parse('/route/:foo/:bar');
       result.push(tokens[0]);
       result.push(tokens[1]);
       result.push(tokens[2]);
@@ -228,7 +233,7 @@ export default class TestApi {
         encode: encodeURIComponent
       });
       let number = toPath({
-        id: 123
+        id: "123"
       })
       result.push(number);
       let words = toPath({
@@ -250,41 +255,25 @@ export default class TestApi {
       })
       result.push(decode);
 
-      const toPathRaw1 = compile('/user/:id', {
-        validate: false
-      });
-      let double = toPathRaw1({
-        id: ':/'
-      })
-      result.push(double);
-
-      const toPathRepeated = compile('/:segment+');
+      const toPathRepeated = compile('/:segment');
       let segment = toPathRepeated({
         segment: 'foo'
       })
       result.push(segment);
       let segments = toPathRepeated({
-        segment: ['a', 'b', 'c']
+        segment: "a"
       })
       result.push(segments);
 
-      const toPathRegexp = compile('/user/:id(\\d+)');
+      const toPathRegexp = compile('/user/:id');
       let numberRegexp = toPathRegexp({
-        id: 123
+        id: "123"
       })
       result.push(numberRegexp);
       let wordRegexp = toPathRegexp({
         id: '123'
       })
       result.push(wordRegexp);
-
-      const toPathValidateRegexp = compile('/user/:id(\\d+)', {
-        validate: false
-      });
-      let lettersValidateRegexp = toPathValidateRegexp({
-        id: 'abc'
-      })
-      result.push(lettersValidateRegexp);
 
       let lettersRegexp = toPathRegexp({
         id: 'abc'

@@ -21,9 +21,9 @@ import router from '@ohos.router';
 @Entry
 @Component
 struct OnePage {
-  @State message0: string = this.getResourceString($r('app.string.Raw_data')) + '：const regexp = pathToRegexp("/:foo+");'
-  @State message1: string = this.getResourceString($r('app.string.Raw_data')) + '：regexp.exec("/");'
-  @State message2: string = this.getResourceString($r('app.string.Raw_data')) + '：regexp.exec("/bar/baz");'
+  @State message0: string = this.getResourceString($r('app.string.Raw_data')) + '：const res = pathToRegexp("/:foo+");'
+  @State message1: string = this.getResourceString($r('app.string.Raw_data')) + '：res.regexp.exec("/");'
+  @State message2: string = this.getResourceString($r('app.string.Raw_data')) + '：res.regexp.exec("/bar/baz");'
 
   getResourceString(res:Resource){
     return getContext().resourceManager.getStringSync(res.id)
@@ -73,8 +73,8 @@ struct OnePage {
             }
             let bean = new CommonResultBean();
             let arrBefore = new Array<string>();
-            arrBefore.push('regexp.exec("/") ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `null`);
-            arrBefore.push('regexp.exec("/bar/baz") ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `['/bar/baz','bar/baz']`);
+            arrBefore.push('res.regexp.exec("/") ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `null`);
+            arrBefore.push('res.regexp.exec("/bar/baz") ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `['/bar/baz','bar/baz']`);
             bean.setBefore(arrBefore);
             let arrAfter = new Array<string>();
             arrAfter.push(JSON.stringify(result[0]));
