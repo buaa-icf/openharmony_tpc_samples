@@ -21,9 +21,9 @@ import router from '@ohos.router';
 @Entry
 @Component
 struct OptionalPage {
-  @State message0: string = this.getResourceString($r('app.string.Raw_data')) + '：const regexp = pathToRegexp("/search/:tableName\\?useIndex=true&term=amazing");'
-  @State message1: string = this.getResourceString($r('app.string.Raw_data')) + '：regexp.exec("/search/people?useIndex=true&term=amazing");'
-  @State message2: string = this.getResourceString($r('app.string.Raw_data')) + '：regexp.exec("/search/people?term=amazing&useIndex=true");'
+  @State message0: string = this.getResourceString($r('app.string.Raw_data')) + '：const res = pathToRegexp("/search/:tableName\\?useIndex=true&term=amazing");'
+  @State message1: string = this.getResourceString($r('app.string.Raw_data')) + '：res.regexp.exec("/search/people?useIndex=true&term=amazing");'
+  @State message2: string = this.getResourceString($r('app.string.Raw_data')) + '：res.regexp.exec("/search/people?term=amazing&useIndex=true");'
 
   getResourceString(res:Resource){
     return getContext().resourceManager.getStringSync(res.id)

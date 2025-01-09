@@ -22,8 +22,7 @@ import {  Key } from 'path-to-regexp';
 @Entry
 @Component
 struct PathToRegexpPage {
-  @State message0: string = this.getResourceString($r('app.string.Raw_data')) + '：const keys = [];'
-  @State message1: string = this.getResourceString($r('app.string.Raw_data')) + '：const regexp = pathToRegexp("/foo/:bar", keys);'
+  @State message1: string = this.getResourceString($r('app.string.Raw_data')) + '：const regexp = pathToRegexp("/foo/:bar");'
 
   getResourceString(res:Resource){
     return getContext().resourceManager.getStringSync(res.id)
@@ -32,14 +31,6 @@ struct PathToRegexpPage {
   build() {
     Row() {
       Column() {
-        Text(this.message0)
-          .fontSize(16)
-          .textAlign(TextAlign.Center)
-          .fontWeight(FontWeight.Bold)
-          .backgroundColor('#22E1E1E1')
-          .fontColor(Color.Black)
-
-
         Text(this.message1)
           .fontSize(16)
           .textAlign(TextAlign.Center)
@@ -54,9 +45,8 @@ struct PathToRegexpPage {
           .width('80%')
           .height(100)
           .onClick((event) => {
-            const keys:Key[] = [];
             let api = new TestApi()
-            let result = api.pathToRegexpTest("/foo/:bar", keys)
+            let result = api.pathToRegexpTest("/foo/:bar")
             if (!result) {
               promptAction.showToast({
                 message: $r('app.string.The_data_processing_results_do_not_match_expectations'),
@@ -70,8 +60,8 @@ struct PathToRegexpPage {
             arrBefore.push(`keys   ${this.getResourceString($r('app.string.Expected_results'))}: ${'\r\n'}  ${`[{ name: 'bar', prefix: '/', suffix: '', pattern: '[^\\/#\\?]+?', modifier: '' }]`}`);
             bean.setBefore(arrBefore);
             let arrAfter = new Array<string>();
-            arrAfter.push(result.toString());
-            arrAfter.push(JSON.stringify(keys));
+            arrAfter.push(result.regexp.toString());
+            arrAfter.push(JSON.stringify(result.keys));
             bean.setAfter(arrAfter);
 
             router.pushUrl({

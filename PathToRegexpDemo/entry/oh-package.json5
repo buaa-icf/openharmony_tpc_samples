@@ -3,9 +3,8 @@
   "devDependencies": {},
   "name": "entry",
   "description": "example description",
-  "repository": {},
-  "version": "6.2.1",
+  "repository": "",
+  "version": "8.2.0",
   "dependencies": {
-    "path-to-regexp": "file:../regexp"
   }
 }

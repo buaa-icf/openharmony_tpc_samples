@@ -21,8 +21,8 @@ import router from '@ohos.router';
 @Entry
 @Component
 struct UnnamedParametersPage {
-  @State message0: string = this.getResourceString($r('app.string.Raw_data')) + '：const regexp = pathToRegexp("/:foo/(.*)");'
-  @State message1: string = this.getResourceString($r('app.string.Raw_data')) + '：regexp.exec("/test/route");'
+  @State message0: string = this.getResourceString($r('app.string.Raw_data')) + '：const res = pathToRegexp("/:foo/(.*)");'
+  @State message1: string = this.getResourceString($r('app.string.Raw_data')) + '：res.regexp.exec("/test/route");'
 
   getResourceString(res:Resource){
     return getContext().resourceManager.getStringSync(res.id)

@@ -28,7 +28,6 @@ struct CompilePage {
   @State message4: string = this.getResourceString($r('app.string.Raw_data')) + '：toPath({ id: ":/" })'
   @State message5: string = this.getResourceString($r('app.string.Raw_data')) + '：const toPathRaw = compile("/user/:id");'
   @State message6: string = this.getResourceString($r('app.string.Raw_data')) + '：toPathRaw({ id: "%3A%2F" });'
-  @State message7: string = this.getResourceString($r('app.string.Raw_data')) + '：toPathRaw({ id: ":/" }, { validate: false });'
   @State message8: string = this.getResourceString($r('app.string.Raw_data')) + '：const toPathRepeated = compile("/:segment+");'
   @State message9: string = this.getResourceString($r('app.string.Raw_data')) + '：toPathRepeated({ segment: "foo" });'
   @State message10: string = this.getResourceString($r('app.string.Raw_data')) + '：toPathRepeated({ segment: ["a", "b", "c"] });'
@@ -36,8 +35,6 @@ struct CompilePage {
   @State message12: string = this.getResourceString($r('app.string.Raw_data')) + '：toPathRegexp({ id: 123 });'
   @State message13: string = this.getResourceString($r('app.string.Raw_data')) + '：toPathRegexp({ id: "123" });'
   @State message14: string = this.getResourceString($r('app.string.Raw_data')) + '：toPathRegexp({ id: "abc" });'
-  @State message15: string = this.getResourceString($r('app.string.Raw_data')) + '：toPathRegexp({ id: "abc" }, { validate: false });'
-
   getResourceString(res:Resource){
     return getContext().resourceManager.getStringSync(res.id)
   }
@@ -121,17 +118,6 @@ struct CompilePage {
           })
 
 
-        Text(this.message7)
-          .fontSize(16)
-          .textAlign(TextAlign.Center)
-          .fontWeight(FontWeight.Bold)
-          .backgroundColor(Color.Grey)
-          .backgroundColor('#66E1E1E1')
-          .fontColor(Color.Black)
-          .margin({
-            top: 5
-          })
-
         Text(this.message8)
           .fontSize(16)
           .textAlign(TextAlign.Center)
@@ -212,17 +198,6 @@ struct CompilePage {
             top: 5
           })
 
-        Text(this.message15)
-          .fontSize(16)
-          .textAlign(TextAlign.Center)
-          .fontWeight(FontWeight.Bold)
-          .backgroundColor(Color.Grey)
-          .backgroundColor('#66E1E1E1')
-          .fontColor(Color.Black)
-          .margin({
-            top: 5
-          })
-
         Button($r('app.string.Start_convert'))
           .backgroundColor(Color.Blue)
           .fontColor(Color.White)
@@ -234,7 +209,7 @@ struct CompilePage {
           .onClick((event) => {
             let api = new TestApi()
             let result = api.compileTest()
-            if (!result || result.length < 12) {
+            if (!result || result.length < 10) {
               promptAction.showToast({
                 message: $r('app.string.The_data_processing_results_do_not_match_expectations'),
                 duration: 6000
@@ -243,17 +218,15 @@ struct CompilePage {
             }
             let bean = new CommonResultBean();
             let arrBefore = new Array<string>();
-            arrBefore.push('toPath({ id: 123 }) ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `/user/123`);
+            arrBefore.push('toPath({ id: "123" }) ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `/user/123`);
             arrBefore.push('toPath({ id: "café" }) ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `/user/caf%C3%A9`);
             arrBefore.push('toPath({ id: "/" }) ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `/user/%2F`);
             arrBefore.push('toPath({ id: ":/" }) ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `/user/%3A%2F`);
             arrBefore.push('toPathRaw({ id: "%3A%2F" }) ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `/user/%3A%2F`);
-            arrBefore.push('toPathRaw({ id: ":/" }, { validate: false }) ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `/user/:/`);
             arrBefore.push('toPathRepeated({ segment: "foo" }) ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `/foo`);
-            arrBefore.push('toPathRepeated({ segment: ["a", "b", "c"] }) ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `/a/b/c`);
-            arrBefore.push('toPathRegexp({ id: 123 }) ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `/user/123`);
+            arrBefore.push('toPathRepeated({ segment: "a" }) ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `/a/b/c`);
             arrBefore.push('toPathRegexp({ id: "123" }) ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `/user/123`);
-            arrBefore.push('toPathRegexp({ id: "abc" }, { validate: false }) ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `/user/abc`);
+            arrBefore.push('toPathRegexp({ id: "123" }) ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `/user/123`);
             arrBefore.push('toPathRegexp({ id: "abc" }) ' + this.getResourceString($r('app.string.Expected_results')) + ': \r\n ' + `Throws TypeError`);
             bean.setBefore(arrBefore);
             let arrAfter = new Array<string>();

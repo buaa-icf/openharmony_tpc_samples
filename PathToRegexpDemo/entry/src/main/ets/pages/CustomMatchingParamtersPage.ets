@@ -21,12 +21,12 @@ import router from '@ohos.router';
 @Entry
 @Component
 struct CustomMatchingParamtersPage {
-  @State message0: string = this.getResourceString($r('app.string.Raw_data')) + '：const regexpNumbers = pathToRegexp("/icon-:foo(\\d+).png");'
-  @State message1: string = this.getResourceString($r('app.string.Raw_data')) + '：regexpNumbers.exec("/icon-123.png");'
-  @State message2: string = this.getResourceString($r('app.string.Raw_data')) + '：regexpNumbers.exec("/icon-abc.png");'
-  @State message3: string = this.getResourceString($r('app.string.Raw_data')) + '：const regexpWord = pathToRegexp("/(user|u)");'
-  @State message4: string = this.getResourceString($r('app.string.Raw_data')) + '：regexpWord.exec("/u");'
-  @State message5: string = this.getResourceString($r('app.string.Raw_data')) + '：regexpWord.exec("/users");'
+  @State message0: string = this.getResourceString($r('app.string.Raw_data')) + '：const regexpNumbers = pathToRegexp("/icon-:foo.png");'
+  @State message1: string = this.getResourceString($r('app.string.Raw_data')) + '：regexpNumbers.regexp.exec("/icon-123.png");'
+  @State message2: string = this.getResourceString($r('app.string.Raw_data')) + '：regexpNumbers.regexp.exec("/icon-abc.png");'
+  @State message3: string = this.getResourceString($r('app.string.Raw_data')) + '：const regexpWord = pathToRegexp("/:foo;'
+  @State message4: string = this.getResourceString($r('app.string.Raw_data')) + '：regexpWord.regexp.exec("/u");'
+  @State message5: string = this.getResourceString($r('app.string.Raw_data')) + '：regexpWord.regexp.exec("/users");'
 
   getResourceString(res:Resource){
     return getContext().resourceManager.getStringSync(res.id)

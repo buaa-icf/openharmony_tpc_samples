@@ -15,18 +15,13 @@
 
 import {
   Match,
-  MyPath,
   ParseOptions,
-  RegexpToFunctionOptions,
   Token,
-  TokensToFunctionOptions,
-  TokensToRegexpOptions,
   match,
   compile
 } from 'path-to-regexp';
 
 type Test = [
-  MyPath,
   (TokensToRegexpOptions & ParseOptions) | undefined,
   Token[],
   Array<[

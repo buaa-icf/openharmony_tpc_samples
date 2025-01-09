@@ -21,8 +21,7 @@ import {
   match,
   parse,
   pathToRegexp,
-  tokensToFunction,
-  tokensToRegexp,
+  Token
 } from 'path-to-regexp';
 import { Options } from './interface';
 import { TESTS, diff, exec, ToPath } from './utils'

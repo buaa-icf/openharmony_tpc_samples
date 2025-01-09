@@ -64,8 +64,8 @@ struct AlternativePage {
             }
             let bean = new CommonResultBean();
             let arrBefore = new Array<string>();
-            arrBefore.push('re.test(input) ' + this.getResourceString($r('app.string.Expected_results')) + ':false');
-            arrBefore.push('re.test(normalizePathname(input)) ' + this.getResourceString($r('app.string.Expected_results')) + ':true');
+            arrBefore.push('re.regexp.test(input) ' + this.getResourceString($r('app.string.Expected_results')) + ':false');
+            arrBefore.push('re.regexp.test(normalizePathname(input)) ' + this.getResourceString($r('app.string.Expected_results')) + ':true');
             bean.setBefore(arrBefore);
             let arrAfter = new Array<string>();
             arrAfter.push(JSON.stringify(result[0]));
