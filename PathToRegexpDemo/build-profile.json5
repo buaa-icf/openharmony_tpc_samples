@@ -4,25 +4,11 @@
       {
         "name": "default",
         "signingConfig": "default",
-        "compatibleSdkVersion": "5.0.1(13)",
-        "runtimeOS": "HarmonyOS"
+        "compatibleSdkVersion": 10,
+        "compileSdkVersion": 10,
+        "runtimeOS": "OpenHarmony"
       }
     ],
-    "signingConfigs": [
-      {
-        "name": "default",
-        "type": "HarmonyOS",
-        "material": {
-          "certpath": "C:\\Users\\zhf\\.ohos\\config\\default_PathToRegexpDemo_-ycuHoG7hrGWHHtzid-paJHly0VcXTVx013ViHUPS8M=.cer",
-          "storePassword": "0000001B0751E11AD29373F3D7AF615EB8D7A1F6AB1E791C40B68EAA897BACA81C11325D731A0ACE72076D",
-          "keyAlias": "debugKey",
-          "keyPassword": "0000001BC42CEB1394C962BF81B9443F27269F86C4B4209038D144D30446C795FD9C46BF6F36744A480C5A",
-          "profile": "C:\\Users\\zhf\\.ohos\\config\\default_PathToRegexpDemo_-ycuHoG7hrGWHHtzid-paJHly0VcXTVx013ViHUPS8M=.p7b",
-          "signAlg": "SHA256withECDSA",
-          "storeFile": "C:\\Users\\zhf\\.ohos\\config\\default_PathToRegexpDemo_-ycuHoG7hrGWHHtzid-paJHly0VcXTVx013ViHUPS8M=.p12"
-        }
-      }
-    ]
   },
   "modules": [
     {
