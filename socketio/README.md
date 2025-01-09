@@ -86,12 +86,17 @@ this.client.emit("add user", username, this.on_emit_callback.bind(this));
 this.client.emit("new message", message, this.on_emit_callback);
 ```
 
-8. Close the server connection, and clear the listening events.
+8. Close the server connection
 
 ```typescript
-this.client.socket_close();
-this.client.clear_socket_listeners();
+this.client.close();
 ```
+
+9. Supplementary Information
+
+- This sample code provides a simple encapsulation that can be used as a reference.
+- In addition, the sample code adds processing for switching between the foreground and background.
+- You can modify the code according to your requirements.
 
 ## Available APIs
 
@@ -196,10 +201,31 @@ on_error(on_error_listener: (message: string) => void)
 ```typescript
 off_error()
 ```
-- Send an event with the specified name to the socket with the specified flag.
+- Send an event with the specified name to the socket with the specified flag.  
 This is the response used by the response server to confirm the message.
 ```typescript
 emit(name: string, message: string, on_emit_callback?: (emit_callback_json: string) => void)
+```
+- Get the current connection status.
+0: Not connected, 1: Disconnected, 2: Connecting, 3: Connected
+```typescript
+get_current_state(): number 
+```
+- Fixed Event: disconnect  
+Description: The disconnect event is triggered when the client disconnects.
+```typescript
+// Demo example
+this.client.on("disconnect", data: string => {
+    console.log("disconnect", data);
+});
+```
+- Fixed Event: ping_pong  
+Description: The ping_pong event is a heartbeat check between the client and the server.
+```typescript
+// Demo example
+this.client.on("ping_pong", data: string => {
+    console.log("ping_pong", data);
+});
 ```
 
 ## Source Code Downloading
@@ -216,6 +242,7 @@ socket-io has been verified in the following versions:
 - IDE: DevEco Studio 4.1.3.532, SDK: 4.1.0.67(SP3)
 - IDE: DevEco Studio Next, Developer Beta1 (5.0.3.121), SDK:API12 (5.0.0.16)
 - IDE: DevEco Studio NEXT Developer Beta2 (5.0.3.500); SDK: API12 (5.0.0.31).
+- IDE：DevEco Studio 5.0.1 Release(5.0.5.310); SDK: API13 (5.0.1.115)
 
 ## Directory Structure
 ````
