@@ -1118,6 +1118,14 @@ static napi_value set_connection_mode(napi_env env, napi_callback_info info)
     clientInstance = new sio::client(charUrip);
     return 0;
 }
+
+napi_value get_current_state(napi_env env, napi_callback_info info)
+{
+    auto state = clientInstance->get_current_state();
+    napi_value napi_state;
+    napi_create_int32(env, static_cast<int32_t>(state), &napi_state);
+    return napi_state;
+}
 EXTERN_C_START
 static napi_value Init(napi_env env, napi_value exports)
 {
@@ -1159,8 +1167,8 @@ static napi_value Init(napi_env env, napi_value exports)
         {"on_error", nullptr, on_error, nullptr, nullptr, nullptr, napi_default, nullptr},
         {"off_error", nullptr, off_error, nullptr, nullptr, nullptr, napi_default, nullptr},
         {"emit", nullptr, emit, nullptr, nullptr, nullptr, napi_default, nullptr},
-        {"set_connection_mode", nullptr, set_connection_mode, nullptr, nullptr, nullptr, napi_default,
-         nullptr},
+        {"set_connection_mode", nullptr, set_connection_mode, nullptr, nullptr, nullptr, napi_default, nullptr},
+        {"get_current_state", nullptr, get_current_state, nullptr, nullptr, nullptr, napi_default, nullptr},
     };
     napi_define_properties(env, exports, sizeof(desc) / sizeof(desc[0]), desc);
     return exports;

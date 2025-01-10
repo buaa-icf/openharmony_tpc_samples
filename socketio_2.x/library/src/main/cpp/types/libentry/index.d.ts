@@ -71,3 +71,5 @@ export const off_error: () => void;
 export const on_error: (on_error_listener: (message: string) => void) => void;
 
 export const emit: (name: string, message: any, b: boolean, on_emit_callback: (emit_callback_json: string) => void) => void;
+
+export const get_current_state: () => number;
