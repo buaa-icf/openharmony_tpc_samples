@@ -53,14 +53,14 @@ function stringifySrcset(parsedSrcset) {
 
     return (
       part.url +
-      (part.w ? ` ${part.w}w` : '') +
-      (part.h ? ` ${part.h}h` : '') +
-      (part.d ? ` ${part.d}x` : '')
+        (part.w ? ` ${part.w}w` : '') +
+        (part.h ? ` ${part.h}h` : '') +
+        (part.d ? ` ${part.d}x` : '')
     );
   }).join(', ');
 }
 
-export default  sanitizeHtml;
+export default sanitizeHtml;
 
 // A valid attribute name.
 // We use a tolerant definition based on the set of strings defined by
@@ -82,6 +82,9 @@ const VALID_HTML_ATTRIBUTE_NAME = /^[^\0\t\n\f\r /<=>]+$/;
 function sanitizeHtml(html, options, _recursing) {
   if (html == null) {
     return '';
+  }
+  if (typeof html === 'number') {
+    html = html.toString();
   }
 
   let result = '';
@@ -114,12 +117,13 @@ function sanitizeHtml(html, options, _recursing) {
   options = Object.assign({}, sanitizeHtml.defaults, options);
   options.parser = Object.assign({}, htmlParserDefaults, options.parser);
 
+  const tagAllowed = function (name) {
+    return options.allowedTags === false || (options.allowedTags || []).indexOf(name) > -1;
+  };
+
   // vulnerableTags
   vulnerableTags.forEach(function (tag) {
-    if (
-      options.allowedTags && options.allowedTags.indexOf(tag) > -1 &&
-      !options.allowVulnerableTags
-    ) {
+    if (tagAllowed(tag) && !options.allowVulnerableTags) {
       console.warn(`\n\n⚠️ Your \`allowedTags\` option includes, \`${tag}\`, which is inherently\nvulnerable to XSS attacks. Please remove it from \`allowedTags\`.\nOr, to disable this warning, add the \`allowVulnerableTags\` option\nand ensure you are accounting for this risk.\n\n`);
     }
   });
@@ -166,20 +170,24 @@ function sanitizeHtml(html, options, _recursing) {
       allowedAttributesMap[tag].push('class');
     }
 
-    allowedClassesMap[tag] = [];
-    allowedClassesRegexMap[tag] = [];
-    const globRegex = [];
-    classes.forEach(function(obj) {
-      if (typeof obj === 'string' && obj.indexOf('*') >= 0) {
-        globRegex.push(escapeStringRegexp(obj).replace(/\\\*/g, '.*'));
-      } else if (obj instanceof RegExp) {
-        allowedClassesRegexMap[tag].push(obj);
-      } else {
-        allowedClassesMap[tag].push(obj);
+    allowedClassesMap[tag] = classes;
+
+    if (Array.isArray(classes)) {
+      const globRegex = [];
+      allowedClassesMap[tag] = [];
+      allowedClassesRegexMap[tag] = [];
+      classes.forEach(function(obj) {
+        if (typeof obj === 'string' && obj.indexOf('*') >= 0) {
+          globRegex.push(escapeStringRegexp(obj).replace(/\\\*/g, '.*'));
+        } else if (obj instanceof RegExp) {
+          allowedClassesRegexMap[tag].push(obj);
+        } else {
+          allowedClassesMap[tag].push(obj);
+        }
+      });
+      if (globRegex.length) {
+        allowedClassesGlobMap[tag] = new RegExp('^(' + globRegex.join('|') + ')$');
       }
-    });
-    if (globRegex.length) {
-      allowedClassesGlobMap[tag] = new RegExp('^(' + globRegex.join('|') + ')$');
     }
   });
 
@@ -251,10 +259,10 @@ function sanitizeHtml(html, options, _recursing) {
         }
       }
 
-      if ((options.allowedTags && options.allowedTags.indexOf(name) === -1) || (options.disallowedTagsMode === 'recursiveEscape' && !isEmptyObject(skipMap)) || (options.nestingLimit != null && depth >= options.nestingLimit)) {
+      if (!tagAllowed(name) || (options.disallowedTagsMode === 'recursiveEscape' && !isEmptyObject(skipMap)) || (options.nestingLimit != null && depth >= options.nestingLimit)) {
         skip = true;
         skipMap[depth] = true;
-        if (options.disallowedTagsMode === 'discard') {
+        if (options.disallowedTagsMode === 'discard' || options.disallowedTagsMode === 'completelyDiscard') {
           if (nonTextTagsArray.indexOf(name) !== -1) {
             skipText = true;
             skipTextDepth = 1;
@@ -264,8 +272,17 @@ function sanitizeHtml(html, options, _recursing) {
       }
       depth++;
       if (skip) {
-        if (options.disallowedTagsMode === 'discard') {
+        if (options.disallowedTagsMode === 'discard' || options.disallowedTagsMode === 'completelyDiscard') {
           // We want the contents but not this tag
+          if (frame.innerText && !hasText) {
+            const escaped = escapeHtml(frame.innerText);
+            if (options.textFilter) {
+              result += options.textFilter(escaped, name);
+            } else {
+              result += escapeHtml(frame.innerText);
+            }
+            addedText = true;
+          }
           return;
         }
         tempResult = result;
@@ -284,6 +301,14 @@ function sanitizeHtml(html, options, _recursing) {
           if (!VALID_HTML_ATTRIBUTE_NAME.test(a)) {
             // This prevents part of an attribute name in the output from being
             // interpreted as the end of an attribute, or end of a tag.
+            delete frame.attribs[a];
+            return;
+          }
+          // If the value is empty, check if the attribute is in the allowedEmptyAttributes array.
+          // If it is not in the allowedEmptyAttributes array, and it is a known non-boolean attribute, delete it
+          // List taken from https://html.spec.whatwg.org/multipage/indices.html#attributes-3
+          if (value === '' && (!options.allowedEmptyAttributes.includes(a)) &&
+            (options.nonBooleanAttributes.includes(a) || options.nonBooleanAttributes.includes('*'))) {
             delete frame.attribs[a];
             return;
           }
@@ -415,12 +440,13 @@ function sanitizeHtml(html, options, _recursing) {
               const allowedWildcardClasses = allowedClassesMap['*'];
               const allowedSpecificClassesGlob = allowedClassesGlobMap[name];
               const allowedSpecificClassesRegex = allowedClassesRegexMap[name];
+              const allowedWildcardClassesRegex = allowedClassesRegexMap['*'];
               const allowedWildcardClassesGlob = allowedClassesGlobMap['*'];
               const allowedClassesGlobs = [
                 allowedSpecificClassesGlob,
                 allowedWildcardClassesGlob
               ]
-                .concat(allowedSpecificClassesRegex)
+                .concat(allowedSpecificClassesRegex, allowedWildcardClassesRegex)
                 .filter(function (t) {
                   return t;
                 });
@@ -435,24 +461,33 @@ function sanitizeHtml(html, options, _recursing) {
               }
             }
             if (a === 'style') {
-              try {
-                const abstractSyntaxTree = postcss.parse(name + ' {' + value + '}');
-                const filteredAST = filterCss(abstractSyntaxTree, options.allowedStyles);
+              if (options.parseStyleAttributes) {
+                try {
+                  const abstractSyntaxTree = postcss.parse(name + ' {' + value + '}', { map: false });
+                  const filteredAST = filterCss(abstractSyntaxTree, options.allowedStyles);
 
-                value = stringifyStyleAttributes(filteredAST);
+                  value = stringifyStyleAttributes(filteredAST);
 
-                if (value.length === 0) {
+                  if (value.length === 0) {
+                    delete frame.attribs[a];
+                    return;
+                  }
+                } catch (e) {
+                  if (typeof window !== 'undefined') {
+                    console.warn('Failed to parse "' + name + ' {' + value + '}' + '", If you\'re running this in a browser, we recommend to disable style parsing: options.parseStyleAttributes: false, since this only works in a node environment due to a postcss dependency, More info: https://github.com/apostrophecms/sanitize-html/issues/547');
+                  }
                   delete frame.attribs[a];
                   return;
                 }
-              } catch (e) {
-                delete frame.attribs[a];
-                return;
+              } else if (options.allowedStyles) {
+                throw new Error('allowedStyles option cannot be used together with parseStyleAttributes: false.');
               }
             }
             result += ' ' + a;
             if (value && value.length) {
               result += '="' + escapeHtml(value, true) + '"';
+            } else if (options.allowedEmptyAttributes.includes(a)) {
+              result += '=""';
             }
           } else {
             delete frame.attribs[a];
@@ -486,7 +521,9 @@ function sanitizeHtml(html, options, _recursing) {
         text = lastFrame.innerText !== undefined ? lastFrame.innerText : text;
       }
 
-      if (options.disallowedTagsMode === 'discard' && ((tag === 'script') || (tag === 'style'))) {
+      if (options.disallowedTagsMode === 'completelyDiscard' && !tagAllowed(tag)) {
+        text = '';
+      } else if ((options.disallowedTagsMode === 'discard' || options.disallowedTagsMode === 'completelyDiscard') && ((tag === 'script') || (tag === 'style'))) {
         // htmlparser2 gives us these as-is. Escaping them ruins the content. Allowing
         // script tags is, by definition, game over for XSS protection, so if that's
         // your concern, don't allow them. The same is essentially true for style tags
@@ -505,7 +542,7 @@ function sanitizeHtml(html, options, _recursing) {
         frame.text += text;
       }
     },
-    onclosetag: function(name) {
+    onclosetag: function(name, isImplied) {
 
       if (skipText) {
         skipTextDepth--;
@@ -521,12 +558,20 @@ function sanitizeHtml(html, options, _recursing) {
         // Do not crash on bad markup
         return;
       }
+
+      if (frame.tag !== name) {
+        // Another case of bad markup.
+        // Push to stack, so that it will be used in future closing tags.
+        stack.push(frame);
+        return;
+      }
+
       skipText = options.enforceHtmlBoundary ? name === 'html' : false;
       depth--;
       const skip = skipMap[depth];
       if (skip) {
         delete skipMap[depth];
-        if (options.disallowedTagsMode === 'discard') {
+        if (options.disallowedTagsMode === 'discard' || options.disallowedTagsMode === 'completelyDiscard') {
           frame.updateParentNodeText();
           return;
         }
@@ -547,8 +592,12 @@ function sanitizeHtml(html, options, _recursing) {
       frame.updateParentNodeMediaChildren();
       frame.updateParentNodeText();
 
-      if (options.selfClosing.indexOf(name) !== -1) {
-        // Already output />
+      if (
+      // Already output />
+        options.selfClosing.indexOf(name) !== -1 ||
+          // Escaped tag, closing tag is implied
+          (isImplied && !tagAllowed(name) && [ 'escape', 'recursiveEscape' ].indexOf(options.disallowedTagsMode) >= 0)
+      ) {
         if (skip) {
           result = tempResult;
           tempResult = '';
@@ -725,17 +774,17 @@ function sanitizeHtml(html, options, _recursing) {
   }
 
   /**
-    * Filters the existing attributes for the given property. Discards any attributes
-    * which don't match the allowlist.
-    *
-    * @param  {object} selectedRule             - Example: { color: red, font-family: helvetica }
-    * @param  {array} allowedDeclarationsList   - List of declarations which pass the allowlist.
-    * @param  {object} attributeObject          - Object representing the current css property.
-    * @property {string} attributeObject.type   - Typically 'declaration'.
-    * @property {string} attributeObject.prop   - The CSS property, i.e 'color'.
-    * @property {string} attributeObject.value  - The corresponding value to the css property, i.e 'red'.
-    * @return {function}                        - When used in Array.reduce, will return an array of Declaration objects
-    */
+   * Filters the existing attributes for the given property. Discards any attributes
+   * which don't match the allowlist.
+   *
+   * @param  {object} selectedRule             - Example: { color: red, font-family: helvetica }
+   * @param  {array} allowedDeclarationsList   - List of declarations which pass the allowlist.
+   * @param  {object} attributeObject          - Object representing the current css property.
+   * @property {string} attributeObject.type   - Typically 'declaration'.
+   * @property {string} attributeObject.prop   - The CSS property, i.e 'color'.
+   * @property {string} attributeObject.value  - The corresponding value to the css property, i.e 'red'.
+   * @return {function}                        - When used in Array.reduce, will return an array of Declaration objects
+   */
   function filterDeclarations(selectedRule) {
     return function (allowedDeclarationsList, attributeObject) {
       // If this property is allowlisted...
@@ -774,16 +823,16 @@ const htmlParserDefaults = {
 };
 sanitizeHtml.defaults = {
   allowedTags: [
-    // Sections derived from MDN element categories and limited to the more
-    // benign categories.
-    // https://developer.mozilla.org/en-US/docs/Web/HTML/Element
-    // Content sectioning
+  // Sections derived from MDN element categories and limited to the more
+  // benign categories.
+  // https://developer.mozilla.org/en-US/docs/Web/HTML/Element
+  // Content sectioning
     'address', 'article', 'aside', 'footer', 'header',
     'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hgroup',
     'main', 'nav', 'section',
     // Text content
     'blockquote', 'dd', 'div', 'dl', 'dt', 'figcaption', 'figure',
-    'hr', 'li', 'main', 'ol', 'p', 'pre', 'ul',
+    'hr', 'li', 'menu', 'ol', 'p', 'pre', 'ul',
     // Inline text semantics
     'a', 'abbr', 'b', 'bdi', 'bdo', 'br', 'cite', 'code', 'data', 'dfn',
     'em', 'i', 'kbd', 'mark', 'q',
@@ -793,6 +842,49 @@ sanitizeHtml.defaults = {
     'caption', 'col', 'colgroup', 'table', 'tbody', 'td', 'tfoot', 'th',
     'thead', 'tr'
   ],
+  // Tags that cannot be boolean
+  nonBooleanAttributes: [
+    'abbr', 'accept', 'accept-charset', 'accesskey', 'action',
+    'allow', 'alt', 'as', 'autocapitalize', 'autocomplete',
+    'blocking', 'charset', 'cite', 'class', 'color', 'cols',
+    'colspan', 'content', 'contenteditable', 'coords', 'crossorigin',
+    'data', 'datetime', 'decoding', 'dir', 'dirname', 'download',
+    'draggable', 'enctype', 'enterkeyhint', 'fetchpriority', 'for',
+    'form', 'formaction', 'formenctype', 'formmethod', 'formtarget',
+    'headers', 'height', 'hidden', 'high', 'href', 'hreflang',
+    'http-equiv', 'id', 'imagesizes', 'imagesrcset', 'inputmode',
+    'integrity', 'is', 'itemid', 'itemprop', 'itemref', 'itemtype',
+    'kind', 'label', 'lang', 'list', 'loading', 'low', 'max',
+    'maxlength', 'media', 'method', 'min', 'minlength', 'name',
+    'nonce', 'optimum', 'pattern', 'ping', 'placeholder', 'popover',
+    'popovertarget', 'popovertargetaction', 'poster', 'preload',
+    'referrerpolicy', 'rel', 'rows', 'rowspan', 'sandbox', 'scope',
+    'shape', 'size', 'sizes', 'slot', 'span', 'spellcheck', 'src',
+    'srcdoc', 'srclang', 'srcset', 'start', 'step', 'style',
+    'tabindex', 'target', 'title', 'translate', 'type', 'usemap',
+    'value', 'width', 'wrap',
+    // Event handlers
+    'onauxclick', 'onafterprint', 'onbeforematch', 'onbeforeprint',
+    'onbeforeunload', 'onbeforetoggle', 'onblur', 'oncancel',
+    'oncanplay', 'oncanplaythrough', 'onchange', 'onclick', 'onclose',
+    'oncontextlost', 'oncontextmenu', 'oncontextrestored', 'oncopy',
+    'oncuechange', 'oncut', 'ondblclick', 'ondrag', 'ondragend',
+    'ondragenter', 'ondragleave', 'ondragover', 'ondragstart',
+    'ondrop', 'ondurationchange', 'onemptied', 'onended',
+    'onerror', 'onfocus', 'onformdata', 'onhashchange', 'oninput',
+    'oninvalid', 'onkeydown', 'onkeypress', 'onkeyup',
+    'onlanguagechange', 'onload', 'onloadeddata', 'onloadedmetadata',
+    'onloadstart', 'onmessage', 'onmessageerror', 'onmousedown',
+    'onmouseenter', 'onmouseleave', 'onmousemove', 'onmouseout',
+    'onmouseover', 'onmouseup', 'onoffline', 'ononline', 'onpagehide',
+    'onpageshow', 'onpaste', 'onpause', 'onplay', 'onplaying',
+    'onpopstate', 'onprogress', 'onratechange', 'onreset', 'onresize',
+    'onrejectionhandled', 'onscroll', 'onscrollend',
+    'onsecuritypolicyviolation', 'onseeked', 'onseeking', 'onselect',
+    'onslotchange', 'onstalled', 'onstorage', 'onsubmit', 'onsuspend',
+    'ontimeupdate', 'ontoggle', 'onunhandledrejection', 'onunload',
+    'onvolumechange', 'onwaiting', 'onwheel'
+  ],
   disallowedTagsMode: 'discard',
   allowedAttributes: {
     a: [ 'href', 'name', 'target' ],
@@ -800,6 +892,9 @@ sanitizeHtml.defaults = {
     // these attributes would make sense if we did.
     img: [ 'src', 'srcset', 'alt', 'title', 'width', 'height', 'loading' ]
   },
+  allowedEmptyAttributes: [
+    'alt'
+  ],
   // Lots of these won't come up by default because we don't allow them
   selfClosing: [ 'img', 'br', 'hr', 'area', 'base', 'basefont', 'input', 'link', 'meta' ],
   // URL schemes we permit
@@ -807,7 +902,8 @@ sanitizeHtml.defaults = {
   allowedSchemesByTag: {},
   allowedSchemesAppliedToAttributes: [ 'href', 'src', 'cite' ],
   allowProtocolRelative: true,
-  enforceHtmlBoundary: false
+  enforceHtmlBoundary: false,
+  parseStyleAttributes: true
 };
 
 sanitizeHtml.simpleTransform = function(newTagName, newAttribs, merge) {
