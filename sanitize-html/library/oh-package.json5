@@ -12,7 +12,7 @@
   "description": "sanitize-html 提供了HTML清理API，支持HTML片段清理。内置默认的标签、属性等、可根据默认属性进行HTML清理，同时也可进行自行配置，根据用户需求进行自定义HTML清理规则。",
   "main": "Index.ets",
   "repository": "https://gitee.com/openharmony-tpc/sanitize-html",
-  "version": "2.0.0",
+  "version": "2.1.0-rc.0",
   "dependencies": {
     "source-map-js": "^0.6.2",
     "escape-string-regexp": "^4.0.0",

@@ -1,3 +1,6 @@
+## Version 2.1.0-rc.0
+1.升级源库sanitize-html版本至2.14.0 解决cve-2024-21501漏洞
+
 ## Version 2.0.0
 1.适配DevEco Studio 版本： 4.1 Canary(4.1.3.317),OpenHarmony SDK:API11 (4.1.0.36)。
 

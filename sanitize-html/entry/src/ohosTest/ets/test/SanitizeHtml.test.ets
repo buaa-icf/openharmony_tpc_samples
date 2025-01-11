@@ -84,22 +84,22 @@ export default function sanitizeHtmlTest() {
     it('test07', 0, ()=> {
       expect(sanitizeHtml('<div><wiggly worms="ewww">hello</wiggly></div>', {
         allowedTags: undefined
-      })).assertEqual('<div><wiggly>hello</wiggly></div>');
+      })).assertEqual('hello');
     });
     it('test08', 0, ()=> {
       expect(sanitizeHtml('<div><wiggly worms="ewww">hello</wiggly></div>', {
         allowedTags: 0
-      })).assertEqual('<div><wiggly>hello</wiggly></div>');
+      })).assertEqual('hello');
     });
     it('test09', 0, ()=> {
       expect(sanitizeHtml('<div><wiggly worms="ewww">hello</wiggly></div>', {
         allowedTags: null
-      })).assertEqual('<div><wiggly>hello</wiggly></div>');
+      })).assertEqual('hello');
     });
     it('test10', 0, ()=> {
       expect(sanitizeHtml('<div><wiggly worms="ewww">hello</wiggly></div>', {
         allowedTags: ''
-      })).assertEqual('<div><wiggly>hello</wiggly></div>');
+      })).assertEqual('hello');
     });
     it('test11', 0, ()=> {
       expect(sanitizeHtml('Blah blah blah<p>Whee!</p>')).assertEqual('Blah blah blah<p>Whee!</p>');
