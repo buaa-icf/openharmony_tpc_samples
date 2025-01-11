@@ -14,9 +14,12 @@
  */
 
 import abilityTest from './Ability.test'
-import ApiTest from './ApiTest.test'
-import OriginLibraryTest from './OriginLibraryTest.test'
-
+import ParseErrorTest from './ParseErrorTest.test'
+import CompileErrorTest from './CompileErrorTest.test'
+import OriginTest from './OriginTest.test'
 export default function testsuite() {
-  ApiTest();
+  abilityTest()
+  ParseErrorTest();
+  CompileErrorTest()
+  OriginTest()
 }
