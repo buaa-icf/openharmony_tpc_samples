@@ -42,6 +42,13 @@ export default function parseTest() {
       expect(css.first?.source?.input.from).assertDeepEquals('http://example.com/a.css')
     })
 
+    it('test05',0, () => {
+      try{
+        postcss.parse('@font-face{ font:(\r/*);} body { a: "a*/)} a{}"}')
+      } catch (err) {
+        expect(err.message).assertDeepEquals("<css input>:1:46: Unclosed string")
+      }
+    })
 
     it('test06',0, () => {
       let root = postcss.parse('a { p: ()) }')
