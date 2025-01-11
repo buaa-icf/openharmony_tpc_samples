@@ -12,9 +12,9 @@
   },
   "description": "example description",
   "main": "",
-  "repository": {},
+  "repository": "",
   "version": "1.0.0",
   "dependencies": {
-    "xml2js": "^0.4.23",
+    "xml2js": "^0.6.2",
   }
 }
