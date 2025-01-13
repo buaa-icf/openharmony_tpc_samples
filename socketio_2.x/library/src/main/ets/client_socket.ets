@@ -160,5 +160,9 @@ export class client_socket {
       client_socket_c.emit(name, message, false, on_emit_callback);
     }
   }
+
+  public get_current_state(): number {
+    return client_socket_c.get_current_state();
+  }
 }
 
