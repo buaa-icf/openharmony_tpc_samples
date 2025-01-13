@@ -9,201 +9,26 @@
  * This software is distributed without any warranty.
  */
 
-import { BasicDataSource } from '../common/BasicDataSource';
 import prompt from '@ohos.promptAction';
-import { client_socket } from '@ohos/socketio_tls';
+import { socketManager } from '../common/SocketManager';
+import { chatDetailData } from '../common/ChatDetailData';
 
 @Entry
 @Component
 struct Index {
-  @State uri: string = "";
-  @State username: string = "";
+  @State uri: string = socketManager.uri;
+  @State username: string = socketManager.username;
   @State message: string = "";
-  @State connect_finish: boolean = false;
-  @State login_finish: boolean = false;
-  private chatDetailData = new ChatDetailData();
-  private client: client_socket|null = null
+  @State connect_finish: boolean = socketManager.connect_finish;
+  @State login_finish: boolean = socketManager.login_finish;
   private scroller: Scroller = new Scroller();
-
-  checkUrl(uri: string): boolean {
-    let isValid: boolean = false;
-    if (uri.length == 0) {
-      console.error("服务器地址不能为空");
-      isValid =  false;
-    }
-
-    if (uri.startsWith("http://") || uri.startsWith("https://") || uri.startsWith("ws://") ||
-    uri.startsWith("wss://")) {
-      isValid = true;
-    } else {
-      isValid = false;
-    }
-    return isValid;
-  }
-
-  on_open(): void {
-    console.log("SOCKET_IO_INDEX on_open：连接服务器成功");
-    this.connect_finish = true;
-    prompt.showToast({ message: getContext().resourceManager.getStringSync($r('app.string.connect_success')) });
-  }
-
-  on_fail(): void {
-    console.log("SOCKET_IO_INDEX on_fail：连接服务器失败");
-    prompt.showToast({ message: getContext().resourceManager.getStringSync($r('app.string.connect_failed')) });
-  }
-
-  on_reconnecting(): void {
-    console.log("SOCKET_IO_INDEX on_reconnecting");
-  }
-
-  on_reconnect(): void {
-    console.log("SOCKET_IO_INDEX on_reconnect");
-  }
-
-  on_close(reason: string): void {
-    this.connect_finish = false;
-    console.log("SOCKET_IO_INDEX on_close: " + reason);
-  }
-
-  on_socket_open(nsp: string): void {
-    console.log("SOCKET_IO_INDEX on_socket_open: " + nsp);
-  }
-
-  on_socket_close(nsp: string): void {
-    console.log("SOCKET_IO_INDEX on_socket_close: " + nsp);
-  }
-
-  on_login_listener(event_json: string): void {
-    console.log("SOCKET_IO_INDEX on_login_listener: " + event_json);
-    let loginCall: ESObject = JSON.parse(event_json);
-
-    let notice = "Welcome to Socket.IO Chat,there " + (loginCall.numUsers != 1 ? " are " : "\'s ") + loginCall.numUsers + (loginCall.numUsers != 1 ? " participants" : " participant");
-    let serviceMessage: ESObject = { message: notice, id: 0 };
-    this.pushData(serviceMessage);
-  }
-
-  on_new_message_listener(event_json: string): void {
-    console.log("SOCKET_IO_INDEX on_new_message_listener: " + event_json);
-    let messageCall: ESObject = JSON.parse(event_json);
-    let serviceMessage: ESObject = { username: messageCall.username, message: messageCall.message, id: 1 };
-    this.pushData(serviceMessage);
-  }
-
-  on_user_joined_listener(event_json: string): void {
-    console.log("SOCKET_IO_INDEX on_user_joined_listener: " + event_json);
-    let userJoinCall: ESObject = JSON.parse(event_json);
-    let notice = userJoinCall.username + " joined" + ",there" + (userJoinCall.numUsers != 1 ? " are " : "\'s ") + userJoinCall.numUsers + (userJoinCall.numUsers != 1 ? " participants" : " participant");
-    let serviceMessage: ESObject = { message: notice, id: 0 };
-    this.pushData(serviceMessage);
-  }
-
-  on_user_left_listener(event_json: string): void {
-    console.log("SOCKET_IO_INDEX on_user_left_listener: " + event_json);
-    let userLeftCall: ESObject = JSON.parse(event_json);
-    let notice = userLeftCall.username + " left" + ",there" + (userLeftCall.numUsers != 1 ? "are " : "\'s ") + userLeftCall.numUsers + (userLeftCall.numUsers != 1 ? " participants" : " participant");
-    let serviceMessage: ESObject = { message: notice, id: 0 };
-    this.pushData(serviceMessage);
-  }
-
-  on_emit_callback(emit_callback_json: string): void {
-    console.log("SOCKET_IO_INDEX on_emit_callback： " + emit_callback_json);
-  }
-
-  pushData(any: ESObject) {
-    this.chatDetailData.pushData(any);
-    // setTimeout(() => {
-    //   this.chatDetailData.pushData(any);
-    // }, 10);
-  }
-
-  //配置client
-  initClient(uri: string) {
-    console.log("SOCKET_IO_INDEX initClient");
-    this.client = new client_socket();
-    this.client?.set_open_listener(()=> {
-      this.on_open();
-    });
-    this.client?.set_fail_listener(()=>{
-      this.on_fail();
-    });
-    this.client?.set_reconnecting_listener(()=>{
-      this.on_reconnecting();
-    });
-    this.client?.set_reconnect_listener(()=>{
-      this.on_reconnect();
-    });
-    this.client?.set_close_listener((reason: string)=>{
-      this.on_close(reason);
-    });
-    this.client?.set_socket_open_listener((nsp: string)=>{
-      this.on_socket_open(nsp);
-    });
-    this.client?.set_socket_close_listener((nsp: string)=>{
-      this.on_socket_close(nsp);
-    });
-    this.client?.set_headers("{myKey1:myValue1,myKey2:myValue2}");
-    this.client?.set_option("{myKey:myValue}");
-    this.client?.connect(uri);
-  }
-
-  //配置socket
-  initSocket() {
-    console.log("SOCKET_IO_INDEX initSocket");
-    this.client?.on("new message", (event_json: string)=>{
-      this.on_new_message_listener(event_json);
-    });
-    this.client?.on("user joined", (event_json: string)=>{
-      this.on_user_joined_listener(event_json);
-    });
-    this.client?.on("user left", (event_json: string)=>{
-      this.on_user_left_listener(event_json);
-    });
-    this.client?.on("login", (event_json: string)=>{
-      this.on_login_listener(event_json);
-    });
-  }
-
-  //登录
-  login(username: string) {
-    console.log("SOCKET_IO_INDEX login");
-    if (!this.connect_finish) {
-      prompt.showToast({ message: getContext().resourceManager.getStringSync($r('app.string.connect_unfinished')) });
-      return;
-    }
-    this.client?.emit("add user", username);
-    this.login_finish = !this.login_finish;
-  }
-
-  //发送消息
-  sendMessage(message: string) {
-    console.log("SOCKET_IO_INDEX sendMessage");
-    if (!this.connect_finish) {
-      console.log("SOCKET_IO_INDEX 暂未连接服务器");
-      return;
-    }
-    this.client?.emit("new message", message, this.on_emit_callback);
-  }
-
-  //退出连接
-  close() {
-    console.log("SOCKET_IO_INDEX close");
-    if (!this.connect_finish) {
-      console.log("SOCKET_IO_INDEX 暂未连接服务器");
-      return;
-    }
-    console.log("SOCKET_IO_INDEX close start 1");
-    this.client?.socket_close();
-    console.log("SOCKET_IO_INDEX close start 2");
-    this.client?.close();
-    console.log("SOCKET_IO_INDEX close stop");
-  }
 
   build() {
     Row() {
       Column() {
         if (this.login_finish) {
           List({ scroller: this.scroller }) {
-            LazyForEach(this.chatDetailData, (message: ESObject) => {
+            LazyForEach(chatDetailData, (message: ESObject) => {
               ListItem() {
                 ChatItemView({ message: message })
               }
@@ -223,14 +48,14 @@ struct Index {
             Button('Send')
               .onClick(() => {
                 if (this.message == "exit") {
-                  this.close()
-                  this.login_finish = false
+                  socketManager.close()
+                  this.login_finish = socketManager.login_finish
                 } else if (this.message == "") {
                   prompt.showToast({ message: getContext().resourceManager.getStringSync($r('app.string.Enter_messages')) });
                 } else {
-                  this.sendMessage(this.message)
+                  socketManager.sendMessage(this.message)
                   let clientMessage: ESObject = { username: this.username, message: this.message, id: 2 }
-                  this.pushData(clientMessage)
+                  chatDetailData.pushData(clientMessage)
                   this.message = ""
                 }
               })
@@ -242,13 +67,13 @@ struct Index {
           TextInput({ placeholder: "请输入socket.io服务端地址", text: this.uri })
             .onChange((uri) => {
               this.uri = uri
+              socketManager.setUri(uri)
             })
           Button('Connect')
             .margin(20)
             .onClick(() => {
-              if(this.checkUrl(this.uri)){
-                this.initClient(this.uri)
-                this.initSocket()
+              if(socketManager.checkUrl(socketManager.uri)){
+                socketManager.commonInit()
               } else {
                 console.error("服务器地址异常，请检查url信息。");
                 prompt.showToast({ message: getContext().resourceManager.getStringSync($r('app.string.url_error')) });
@@ -256,12 +81,14 @@ struct Index {
             })
           TextInput({ placeholder: "请输入用户名" })
             .onChange((username) => {
-              this.username = username
+              socketManager.username = username
             })
           Button('Login')
             .margin(20)
             .onClick(() => {
-              this.login(this.username)
+              socketManager.login(socketManager.username)
+              // 更新状态
+              this.login_finish = socketManager.login_finish;
             })
 
         }
@@ -307,28 +134,5 @@ struct ChatItemView {
         .margin({ top: 15 })
       }
     }
-  }
-}
-
-
-class ChatDetailData extends BasicDataSource {
-  private msgList: Array<ESObject> = [];
-
-  public totalCount(): number {
-    return this.msgList.length;
-  }
-
-  public getData(index: number): number {
-    return this.msgList[index];
-  }
-
-  public addData(index: number, data: ESObject): void {
-    this.msgList.splice(index, 0, data);
-    this.notifyDataAdd(index);
-  }
-
-  public pushData(data: ESObject): void {
-    this.msgList.push(data);
-    this.notifyDataAdd(this.msgList.length - 1);
   }
 }
