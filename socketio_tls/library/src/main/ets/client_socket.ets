@@ -171,5 +171,8 @@ export class client_socket {
       this.mSocketIOClient.emitAckBinary(name, message, false, on_emit_callback, this.classId);
     }
   }
+  public get_current_state(): number {
+    return this.mSocketIOClient.get_current_state(this.classId);
+  }
 }
 

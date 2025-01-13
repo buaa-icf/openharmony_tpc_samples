@@ -1381,6 +1381,27 @@ napi_value SocketIOClient::emitAckBinary(napi_env env, napi_callback_info info)
     return 0;
 }
 
+napi_value SocketIOClient::get_current_state(napi_env env, napi_callback_info info)
+{
+    size_t argc = 1;
+    napi_value args[1] = {nullptr};
+    napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
+
+    char classId[CLASSID_BUF_SIZE] = {0};
+    size_t charLen = 0;
+    napi_get_value_string_utf8(env, args[0], classId, CLASSID_BUF_SIZE, &charLen);
+    std::string classIdString = classId;
+
+    SocketIOClient* client = getClient(classIdString);
+    if (!client) {
+        return nullptr;
+    }
+
+    napi_value state;
+    napi_create_int32(env, static_cast<int32_t>(client->clientInstance.get_current_state()), &state);
+    return state;
+}
+
 napi_value SocketIOClient::JsConstructor(napi_env env, napi_callback_info info)
 {
     napi_value targetObj = nullptr;
@@ -1393,8 +1414,6 @@ napi_value SocketIOClient::JsConstructor(napi_env env, napi_callback_info info)
     uintptr_t classId = reinterpret_cast<uintptr_t>(classBind);
     std::string classIdStrTemp = std::to_string(classId);
     classBind->classIdStr = classIdStrTemp;
-    OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, "LOG_TAG", "JsConstructor classIdStr: %{public}s",
-                 classIdStrTemp.data());
 
     napi_value napiClassId;
     napi_create_string_utf8(env, classIdStrTemp.c_str(), classIdStrTemp.length(), &napiClassId);

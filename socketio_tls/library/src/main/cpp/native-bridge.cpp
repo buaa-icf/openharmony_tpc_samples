@@ -63,6 +63,7 @@ static napi_property_descriptor classProp[] = {
     {"off_error", nullptr, SocketIOClient::off_error, nullptr, nullptr, nullptr, napi_default, nullptr},
     {"emit", nullptr, SocketIOClient::emit, nullptr, nullptr, nullptr, napi_default, nullptr},
     {"emitAckBinary", nullptr, SocketIOClient::emitAckBinary, nullptr, nullptr, nullptr, napi_default, nullptr},
+    {"get_current_state", nullptr, SocketIOClient::get_current_state, nullptr, nullptr, nullptr, napi_default, nullptr}
 };
 
 static napi_value Init(napi_env env, napi_value exports)
