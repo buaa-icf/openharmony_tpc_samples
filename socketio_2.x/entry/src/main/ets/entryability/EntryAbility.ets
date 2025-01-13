@@ -13,9 +13,13 @@ import UIAbility from '@ohos.app.ability.UIAbility';
 import hilog from '@ohos.hilog';
 import window from '@ohos.window';
 import { GlobalContext } from '../common/GlobalContext';
+import { socketManager } from '../common/SocketManager';
 
 export default class EntryAbility extends UIAbility {
-  onCreate(want, launchParam) {
+  isBack: boolean = false;
+  isFirst: boolean = true;
+
+  onCreate(want: ESObject, launchParam: ESObject) {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
     GlobalContext.getContext().setValue('abilityWant',want);
   }
@@ -45,10 +49,25 @@ export default class EntryAbility extends UIAbility {
   onForeground() {
     // Ability has brought to foreground
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');
+    if (this.isFirst) {
+      socketManager.login_finish = false;
+      this.isFirst = false;
+    }
+    if (this.isBack) {
+      socketManager.login_finish = false;
+      this.initSocket()
+      this.isBack = false;
+    }
   }
-
+  initSocket() {
+    if(!socketManager.connect_finish) {
+      socketManager.commonInit()
+    }
+  }
   onBackground() {
     // Ability has back to background
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');
+    this.isBack = true;
+    socketManager.close();
   }
 }

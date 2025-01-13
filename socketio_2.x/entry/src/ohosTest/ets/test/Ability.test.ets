@@ -362,7 +362,43 @@ export default function abilityTest() {
       expect(buf.length).not().assertEqual(0)
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'test_buffer_util finished');
     })
+  /**
+   * 状态转换时序:
+   * NOTCONNECTED(0) [同步]
+   *   → CONNECTING(2) [异步等待]
+   *   → CONNECTED(3) [异步回调]
+   *   → DISCONNECTED(1) [同步]
+   */
+  it('client_socket_test_get_current_state', 0, async (done:ESObject) => {
+
+    let uri: string = "http://10.50.80.27:3000/";
+    let client: client_socket = new client_socket(uri);
+
+    // 异步成功回调: 连接成功后执行状态验证
+    client.set_open_listener(() => {
+      let state = client.get_current_state();
+      expect(state).assertEqual(3); // CONNECTED
+
+      // 测试断开连接
+      client.close();
+      state = client.get_current_state();
+      expect(state).assertEqual(1); // DISCONNECTED
+      hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_get_current_state finished');
+      done();
+    });
+
+    client.set_fail_listener(() => {
+      done();
+    });
+
+    // 初始状态测试
+    let state: number = client.get_current_state();
+    expect(state).assertEqual(0); // NOTCONNECTED
+
+    // 触发异步连接
+    client.connect(uri);
+    state = client.get_current_state();
+    expect(state).assertEqual(2); // CONNECTING
   })
-
-
+})
 }
