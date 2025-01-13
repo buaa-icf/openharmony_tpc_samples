@@ -45,6 +45,10 @@
                     desc="socketio开源库代码，原本就无版权头，不做侵入式修改"
                     name="*.h"
                     type="filename"/>
+                <filteritem
+                        desc="readme 库指导文档"
+                        name="*.pdf"
+                        type="filename"/>
             </filefilter>
             <filefilter name="binaryFileTypePolicyFilter" desc="Filters for resources files policies">
                 <filteritem type="filepath" name="entry/src/main/resources/base/media/icon.png" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
@@ -57,6 +61,10 @@
                 <filteritem type="filepath" name="screenshot/effect_chat.png" desc="readme 效果图展示"/>
                 <filteritem type="filepath" name="screenshot/effect_login.png" desc="readme 效果图展示"/>
                 <filteritem type="filename" name="*.json5" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem
+                        desc="readme 库指导文档"
+                        name="*.pdf"
+                        type="filename"/>
             </filefilter>
             <filefilter name="copyrightPolicyFilter" desc="Filters for copyright header policies">
                 <filteritem type="filepath" name="socketio/src/main/cpp/socket.io-client-cpp/examples/Console/main.cpp" desc="socketio开源库代码，原本就无版权头，不做侵入式修改"/>
@@ -183,6 +191,17 @@
                  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
                  * SOFTWARE.
                 " desc="" />
+                <licensetext name="
+               /**
+                *
+                * This software is distributed under a license. The full license
+                * agreement can be found in the file LICENSE in this distribution.
+                * This software may not be copied, modified, sold or distributed
+                * other than expressed in the named license agreement.
+                *
+                * This software is distributed without any warranty.
+                */
+                " desc="这段头内容实际指向了license文件，license文件是MIT协议的" />
             </licensematcher>
         </licensematcherlist>
     </oatconfig>
