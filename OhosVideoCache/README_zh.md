@@ -257,6 +257,9 @@ OhosVideoCache同一个音视频url只会发起一个下载请求，当这个请
 
 OhosVideoCache支持拖动播放。如果拖动之后的位置减去当前播放的位置小于或者等于整个音视频大小的20%，那么OhosVideoCache会等待到音视频下载缓存到拖动之后的位置才开始读取本地缓存文件的数据返回给播放器播放；如果拖动之后的位置减去当前播放的位置大于整个音视频大小的20%，那么OhosVideoCache会直接返回请求到的音视频数据给播放器而不是从本地的缓存文件中读取数据返回给播放器。
 
+OhosVideoCache 在播放过程当中，断开网络，播放到缓存的位置停止播放，这个时候AvPlayer会报错5400103错误这个时候可以在AvPlayer的on('error', async (err) => {}回调中调用AvPlayer的reset方法进行重置播放并重新初始化AvPlayer,重新执行一遍播放流程重新开始播放。
+
+
 ## 接口说明
 
 ### OhosVideoCache

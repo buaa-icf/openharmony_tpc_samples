@@ -21,6 +21,8 @@ import InterruptedProxyCacheException from './InterruptedProxyCacheException';
 import { DataBackListener } from './interfaces/DataBackListener';
 import emitter from '@ohos.events.emitter';
 import { VideoCacheConstant } from './constant/VideoCacheConstant';
+import { connection } from '@kit.NetworkKit';
+import { BusinessError } from '@kit.BasicServicesKit';
 
 
 export default class ProxyCache {
@@ -32,11 +34,49 @@ export default class ProxyCache {
   private readingInProgress: boolean = false;
   private percentsAvailable: number = -1;
   private timeoutId: number = (0 - Number.MAX_VALUE);
+  private netIValidated = false
+  private currentOffset = 0
+  private currentLength = 0
 
   constructor(source: Source, cache: Cache) {
     this.source = Preconditions.checkNotNull(source);
     this.cache = Preconditions.checkNotNull(cache);
     this.stopped = false;
+    this.judgeHasNet()
+  }
+
+  protected async judgeHasNet(): Promise<boolean> {
+    let self = this;
+    try {
+      let netHandle = connection.getDefaultNetSync();
+      if (!netHandle || netHandle.netId === 0) {
+        return false;
+      }
+      let netCapability = connection.getNetCapabilitiesSync(netHandle);
+      let cap = netCapability.networkCap || [];
+      if (cap.includes(connection.NetCap.NET_CAPABILITY_VALIDATED)) {
+        let lastAvailable: number = -1;
+        while (!self.cache.isCompleted() &&
+          self.cache.available() < (this.currentOffset + this.currentLength) && !self.stopped &&
+        this.netIValidated) {
+          this.readSourceAsync();
+          await self.waitForSourceData();
+          self.checkReadSourceErrorsCount();
+          if (self.cache?.available() == lastAvailable) {
+            this.tryComplete();
+          } else {
+            lastAvailable = self.cache?.available();
+          }
+        }
+        this.netIValidated = true;
+      } else {
+        this.netIValidated = false;
+      }
+    } catch (e) {
+      let err = e as BusinessError;
+      console.error("videoCache-->" + JSON.stringify(err));
+    }
+    return false;
   }
 
   public async read(buffer: ArrayBuffer, offset: number, length: number): Promise<number> {
@@ -46,7 +86,7 @@ export default class ProxyCache {
     }
     let self = this;
     let lastAvailable: number = - 1;
-    while (!self.cache.isCompleted() && self.cache.available() < (offset + length) && !self.stopped) {
+    while (!self.cache.isCompleted() && self.cache.available() < (offset + length) && !self.stopped && this.netIValidated) {
       this.readSourceAsync();
       await self.waitForSourceData();
       self.checkReadSourceErrorsCount();

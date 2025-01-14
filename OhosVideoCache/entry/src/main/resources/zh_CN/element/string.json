@@ -107,6 +107,46 @@
     {
       "name": "conventions",
       "value": "使用自定义命名规则示例"
+    },
+    {
+      "name": "reconnect",
+      "value": "断开重连"
+    },
+    {
+      "name": "video_warn",
+      "value": "退出程序，请检查网络是否连接或可用！"
+    },
+    {
+      "name": "dialog_play_speed",
+      "value": "播放倍速"
+    },
+    {
+      "name": "dialog_cancel",
+      "value": "取消"
+    },
+    {
+      "name": "playing",
+      "value": "当前播放"
+    },
+    {
+      "name": "default_track",
+      "value": "默认轨道"
+    },
+    {
+      "name": "track_name",
+      "value": "轨道:"
+    },
+    {
+      "name": "track_name_1",
+      "value": "轨道:1"
+    },
+    {
+      "name": "subtitle_on",
+      "value": "开"
+    },
+    {
+      "name": "subtitle_off",
+      "value": "关"
     }
   ]
 }

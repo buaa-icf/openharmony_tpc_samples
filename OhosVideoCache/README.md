@@ -257,6 +257,8 @@ OhosVideoCache initiates only one download request for the same media URL. The s
 
 OhosVideoCache supports drag-and-play. If the difference between the destination position and the current playback position is less than or equal to 20% of the media, OhosVideoCache starts to read the data in the local cached file and returns the data to the player for playback only when the file download cache reaches the destination position. If the destination position minus the current playback position is greater than 20% of the entire media, OhosVideoCache directly returns the requested media data to the player.
 
+During the playback process of OhosVideoCache, if the network is disconnected, the playback will stop at the cached position. At this point, AvPlayer will report an error 5400103. To handle this, you can call the reset method of AvPlayer within the on('error', async (err) => {} callback to reset the playback and reinitialize AvPlayer. Then, re-execute the playback process to start playing again from the beginning.
+
 ## Available APIs
 
 ### OhosVideoCache

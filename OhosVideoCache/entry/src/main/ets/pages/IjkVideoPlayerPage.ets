@@ -239,6 +239,8 @@ struct IjkVideoPlayerPage {
           .backgroundColor(Color.Gray)
           .value(this.currentCachePercent)
           .width('65%')
+        Text(this.currentCachePercent.toFixed(1)+'%').fontSize(15).width('15%').textAlign(TextAlign.Center).fontColor(Color.Black)
+
 
         Text('').fontSize(15).width('15%').textAlign(TextAlign.Center)
       }
