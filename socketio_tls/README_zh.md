@@ -86,13 +86,15 @@ this.client.emit("add user", username, this.on_emit_callback.bind(this));
 this.client.emit("new message", message, this.on_emit_callback);
 ```
 
-8. 关闭服务器链接并清理监听事件
+8. 关闭服务器链接
 
 ```typescript
-this.client.socket_close();
-this.client.clear_socket_listeners();
+this.client.close();
 ```
 
+9. 补充说明
+
+- 本示例代码中提供了一个简单的封装，可以作为参考，另外在示例代码中，增加了前后台切换时的处理，具体使用时可以根据自己的需求进行修改。
 ## 接口说明
 
 - 初始化客户端
@@ -196,10 +198,31 @@ on_error(on_error_listener: (message: string) => void)
 ```typescript
 off_error()
 ```
-- 通过提供的name事件名称向socket标志发送事件
+- 通过提供的name事件名称向socket标志发送事件  
 说明: 响应服务器用来确认消息的应答
 ```typescript
 emit(name: string, message: string, on_emit_callback?: (emit_callback_json: string) => void)
+```
+- 获取当前连接状态  
+  说明：0: 未连接，1: 断开连接，2: 正在连接，3: 已连接
+```typescript
+get_current_state(): number 
+```
+- 固定事件：disconnect  
+  说明：disconnect事件是在客户端断开连接时触发
+```typescript
+// demo示例
+this.client.on("disconnect", data: string => {
+    console.log("disconnect", data);
+});
+```
+- 固定事件：ping_pong  
+  说明：ping_pong事件是在客户端与服务器之间的心跳检测
+```typescript
+// demo示例
+this.client.on("ping_pong", data: string => {
+    console.log("ping_pong", data);
+});
 ```
 
 ## 源码下载
@@ -217,6 +240,7 @@ emit(name: string, message: string, on_emit_callback?: (emit_callback_json: stri
 - IDE：DevEco Studio Next ,Developer Beta1(5.0.3.121); SDK:API12 (5.0.0.16)。
 - IDE：DevEco Studio NEXT Developer Beta2(5.0.3.500); SDK: API12 (5.0.0.31)。
 - IDE：DevEco Studio NEXT Developer Beta1(5.0.3.810); SDK: API12 (5.0.0.68)。
+- IDE：DevEco Studio 5.0.1 Release(5.0.5.310); SDK: API13 (5.0.1.115)。
 
 ## 目录结构
 ````
