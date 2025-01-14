@@ -22,7 +22,7 @@ import { CacheListener, HttpProxyCacheServer, HttpProxyCacheServerBuilder } from
 import GlobalProxyServer from '../GlobalProxyServer';
 import fs from '@ohos.file.fs';
 import photoAccessHelper from '@ohos.file.photoAccessHelper';
-import { display } from '@kit.ArkUI';
+import { display, promptAction } from '@kit.ArkUI';
 
 const TAG: string = 'MediaDemo HttpPlayer:';
 
@@ -88,9 +88,21 @@ struct HttpPlayer {
   // 设置错误监听
   setErrorCallback(): void {
     this.avPlayer?.on('error', (error) => {
-      Logger.error(TAG, 'error happened,message is :' + error.message);
+      const errorInfo = 'error happened,message is :' + error.message;
+      this.playError(errorInfo);
+      Logger.error(TAG, errorInfo);
       // 当error上报时自动播放下一个视频或者音频 this.nextVideo();
     })
+  }
+
+  /**
+   * An error is reported during network video playback.
+   */
+  playError(errorInfo: string) {
+    promptAction.showToast({
+      duration: 3000,
+      message: errorInfo
+    });
   }
 
   // 注销回调函数接口

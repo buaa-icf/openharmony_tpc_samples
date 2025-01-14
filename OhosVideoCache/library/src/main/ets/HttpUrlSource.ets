@@ -38,15 +38,15 @@ export default class HttpUrlSource implements Source {
   private connection: http.HttpRequest | null = null;
   private callBack: DataBackListener | null = null;
   private isInitFinish: boolean = false;
+  private interId: number = (0 - Number.MAX_VALUE);
+  private lastLocation: string = '';
   private isHeaderDealFinish: boolean = false;
   private isDataFinish: boolean = false;
   private cacheData: Queue<ArrayBuffer> = new Queue();
-  private interId: number = (0 - Number.MAX_VALUE);
-  private lastLocation: string = '';
-
   // private inputStream: InputStream;
+  private useInterVal: boolean = false;
 
-  constructor(args: string | Array<string | Object>) {
+  constructor(args: string | Array<string | ESObject>, useInterVal?: boolean) {
     if (!args || args.length < 1) {
       throw new Error('params can not be null')
     }
@@ -120,25 +120,28 @@ export default class HttpUrlSource implements Source {
       self.notifyInitFinish()
     }
 
-    self.interId = setInterval(() => {
-      if (!self.callBack) {
-        return;
-      }
-      if (!self.isHeaderDealFinish) {
-        return
-      }
-      if (self?.sourceInfo?.url?.indexOf('ping') != -1) {
-        return;
-      }
-      if (self?.cacheData?.length > 0) {
-        self?.callBack?.onDataReceive(self?.cacheData?.pop())
-      } else {
-        if (self.isDataFinish) {
-          self.isHeaderDealFinish = false;
-          self.callBack?.onDataEnd()
+    if (useInterVal) {
+      this.useInterVal = true;
+      self.interId = setInterval(() => {
+        if (!self.callBack) {
+          return;
         }
-      }
-    }, 20)
+        if (!self.isHeaderDealFinish) {
+          return
+        }
+        if (self?.sourceInfo?.url?.indexOf('ping') != -1) {
+          return;
+        }
+        if (self?.cacheData?.length > 0) {
+          self?.callBack?.onDataReceive(self?.cacheData?.pop())
+        } else {
+          if (self.isDataFinish) {
+            self.isHeaderDealFinish = false;
+            self.callBack?.onDataEnd()
+          }
+        }
+      }, 20)
+    }
   }
 
   notifyInitFinish() {
@@ -151,12 +154,16 @@ export default class HttpUrlSource implements Source {
 
   close(): void {
     try {
-      this.cacheData = new Queue();
+      if(this.useInterVal){
+        this.cacheData = new Queue();
+      }
       if (this.interId != 0 - Number.MAX_VALUE) {
         clearInterval(this.interId)
       }
       emitter.off(VideoCacheConstant.HTTP_URL_SOURCE_READY_ID)
-      this.isHeaderDealFinish = false;
+      if(this.useInterVal){
+        this.isHeaderDealFinish = false;
+      }
       this.connection?.off('headersReceive');
       this.connection?.off('dataReceive');
       this.connection?.off('dataReceiveProgress');
@@ -188,7 +195,7 @@ export default class HttpUrlSource implements Source {
       await this.fetchContentInfo();
     }
     return new Promise((resolve, reject) => {
-      resolve(this.sourceInfo?.length)
+      resolve(this.sourceInfo?.length?? -1);
     });
   }
 
@@ -209,8 +216,10 @@ export default class HttpUrlSource implements Source {
 
   async open(offset: number): Promise<void> {
     const self = this
-    self.isHeaderDealFinish = false;
-    self.isDataFinish = false;
+    if (this.useInterVal) {
+      self.isHeaderDealFinish = false;
+      self.isDataFinish = false;
+    }
     await self.checkInit()
     try {
       return new Promise<void>(async (resolve, reject) => {
@@ -237,14 +246,20 @@ export default class HttpUrlSource implements Source {
               await self.sourceInfoStorage?.put(self.sourceInfo!.url, self.sourceInfo);
               self?.callBack?.onDataStart();
             }
-            self.isHeaderDealFinish = true;
+            if (this.useInterVal) {
+              self.isHeaderDealFinish = true;
+            }
           }
         })
         self.connection?.on('dataReceive', (data: ArrayBuffer) => {
           if (self?.sourceInfo?.url?.indexOf('ping') != -1) {
             self?.callBack?.onDataReceive(data);
           } else {
-            self?.cacheData?.add(data);
+            if (this.useInterVal) {
+              self?.cacheData?.add(data);
+            } else {
+              self?.callBack?.onDataReceive(data);
+            }
           }
         })
         self.connection?.on('dataReceiveProgress', (progress: ProgressValue) => {
@@ -253,19 +268,27 @@ export default class HttpUrlSource implements Source {
         self.connection!!.on('dataEnd', () => {
           if (self?.sourceInfo?.url?.indexOf('ping') != -1) {
             self?.callBack?.onDataEnd();
-          } else if (self?.cacheData?.length > 1) {
-            self.isDataFinish = true;
+          } else {
+            if (this.useInterVal && self?.cacheData?.length > 1) {
+              self.isDataFinish = true;
+            } else {
+              self.callBack?.onDataEnd();
+            }
           }
         })
         let option: http.HttpRequestOptions = self.initRequestParam(offset, -1)
-        self.cacheData = new Queue();
+        if (this.useInterVal) {
+          self.cacheData = new Queue();
+        }
         await self.connection?.requestInStream(self.sourceInfo!!.url, option)
         return resolve()
       })
 
 
     } catch (err) {
-      self.isHeaderDealFinish = false;
+      if (this.useInterVal) {
+        self.isHeaderDealFinish = false;
+      }
       self.connection?.destroy()
       return new Promise<void>((resolve, reject) => {
         return reject(new ProxyCacheException("Error opening connection for " + self.sourceInfo!!.url + " with offset " + offset + err.message))
@@ -309,7 +332,9 @@ export default class HttpUrlSource implements Source {
         let option = self.initRequestParam(0, 10000)
         urlConnection.requestInStream(self.sourceInfo!!.url, option)
       })
-      urlConnection?.destroy();
+      if(urlConnection !== null){
+        (urlConnection as http.HttpRequest).destroy();
+      }
       return Promise.resolve();
     } catch (err) {
       console.error("Error fetching info from " + self.sourceInfo!!.url + err.message);
@@ -419,6 +444,6 @@ export default class HttpUrlSource implements Source {
   }
 
   public toString(): string {
-    return "HttpUrlSource{sourceInfo='" + this.sourceInfo.toString() + "}";
+    return "HttpUrlSource{sourceInfo='" + this.sourceInfo?.toString() + "}";
   }
 }

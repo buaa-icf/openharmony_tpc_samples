@@ -29,11 +29,11 @@ import SourceInfoStorageFactory from './sourcestorage/SourceInfoStorageFactory';
 import StorageUtils from './StorageUtils';
 export default class HttpProxyCacheServerBuilder {
   private DEFAULT_MAX_SIZE: number = 512 * 1024 * 1024;
-  private cacheRoot: string;
-  private fileNameGenerator: FileNameGenerator;
-  private diskUsage: DiskUsage;
-  private sourceInfoStorage: SourceInfoStorage;
-  private headerInjector: HeaderInjector;
+  private cacheRoot: string = '';
+  private fileNameGenerator: FileNameGenerator | undefined = undefined;
+  private diskUsage: DiskUsage | undefined = undefined;
+  private sourceInfoStorage: SourceInfoStorage | undefined = undefined;
+  private headerInjector: HeaderInjector | undefined = undefined;
   private context: Context;
 
   public constructor(context: Context) {
@@ -147,6 +147,6 @@ export default class HttpProxyCacheServerBuilder {
   }
 
   public buildConfig(): Config {
-    return new Config(this.cacheRoot, this.fileNameGenerator, this.diskUsage, this.sourceInfoStorage, this.headerInjector);
+    return new Config(this.cacheRoot, this.fileNameGenerator!, this.diskUsage!, this.sourceInfoStorage!, this.headerInjector!);
   }
 }

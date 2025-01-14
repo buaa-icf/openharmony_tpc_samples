@@ -20,7 +20,7 @@ export interface Cache {
 
   read(buffer: ArrayBuffer, offset: number, length: number): number;
 
-  append(data: ArrayBuffer, length: number);
+  append(data: ArrayBuffer, length: number): void;
 
   close(): Promise<void>;
 

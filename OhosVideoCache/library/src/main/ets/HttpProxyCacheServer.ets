@@ -94,8 +94,7 @@ export default class HttpProxyCacheServer {
       this.serverSocket?.on("connect", async (clientSocket: socket.TCPSocketConnection) => {
         clientSocket?.on("message", (data: MessageCallBackBean) => {
           if (data && data.message) {
-            let info = buffer.from(data.message).toString();
-            self.processSocket(info, clientSocket)
+            self.processSocket(data.message, clientSocket)
           }
         })
         clientSocket?.on("error", (err: Error) => {
@@ -118,10 +117,10 @@ export default class HttpProxyCacheServer {
     }
   }
 
-  async processSocket(requestInfo: string, severConnect: socket.TCPSocketConnection) {
+  async processSocket(requestInfo: ArrayBuffer, severConnect: socket.TCPSocketConnection) {
     let self = this;
     try {
-      let request = GetRequest.read(buffer.from(requestInfo).buffer);
+      let request = GetRequest.read(requestInfo);
       let url = ProxyCacheUtils.decode(request.uri);
       if (self.pinger && self.pinger.isPingRequest(url)) {
         await self.pinger?.responseToPing(severConnect);
@@ -336,7 +335,7 @@ export default class HttpProxyCacheServer {
     this.closeSocket(severConnect, isCloseByClient);
   }
 
-  private closeSocket(severConnect: socket.TCPSocketConnection, isCloseByClient: boolean): void {
+  private closeSocket(severConnect: socket.TCPSocketConnection | null, isCloseByClient: boolean): void {
     // 客户端主动断开连接的情况下 不做处理 否则可能将正在执行的其他连接断开
     try {
       // 暂不处理 该方法关闭可能会关掉当前传输数据的severConnect而不是已经不再使用的severConnect 改为在HttpProxyCache里面关闭。

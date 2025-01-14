@@ -16,7 +16,7 @@
 import Source from './Source';
 
 export class ByteArraySource implements Source {
-  private data: ArrayBuffer = undefined;
+  private data: ArrayBuffer | undefined = undefined;
   private offset: number = 0;
 
   // private ByteArrayInputStream arrayInputStream;
@@ -25,6 +25,9 @@ export class ByteArraySource implements Source {
   }
 
   read(buffer: ArrayBuffer): number {
+    if(!this.data) {
+      return -1;
+    }
     if (this.offset >= this.data.byteLength) {
       return -1;
     }
@@ -42,15 +45,17 @@ export class ByteArraySource implements Source {
     if (len <= 0) {
       return 0;
     }
-    for (let i = 0; i < len; i++) {
-      buffer[i] = this.data[this.offset+i]
-    }
+    // 创建 Uint8Array 视图
+    const bufferView = new Uint8Array(buffer);
+    const dataView = new Uint8Array(this.data, this.offset, len);
+    // 复制数据
+    bufferView.set(dataView);
     return len;
   }
 
   length(): Promise<number> {
     return new Promise<number>((resolve, reject) => {
-      resolve(this.data.byteLength)
+      resolve(this.data?.byteLength??-1);
     })
   }
 

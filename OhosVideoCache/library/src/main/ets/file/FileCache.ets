@@ -75,6 +75,9 @@ export default class FileCache implements Cache {
         return;
       }
       self.isRenamedEnd = false;
+      if(!self.dataFile){
+        return;
+      }
       fs.fsyncSync(self.dataFile.fd);
       fs.closeSync(self.dataFile.fd);
       fs.renameSync(this.tempFilePath, this.trueFilePath);
@@ -122,6 +125,9 @@ export default class FileCache implements Cache {
           })
         })
       }
+      if(!this.dataFile) {
+        return;
+      }
       emitter.off(VideoCacheConstant.RENAME_FINISH_ID)
       fs.fsyncSync(this.dataFile.fd)
       fs.closeSync(this.dataFile.fd)
@@ -141,9 +147,8 @@ export default class FileCache implements Cache {
         return
       }
 
-      this.dataFile?.write(fileData).then(() => {
-        fs.fsync(this.dataFile?.fd)
-      })
+      this.dataFile?.writeSync(fileData);
+      fs.fsyncSync(this.dataFile?.fd);
 
     } catch (e) {
       let format = `Error writing ${length} bytes to ${this.tempFilePath}from buffer with size ${fileData.byteLength},reason is : ${e.message}`;

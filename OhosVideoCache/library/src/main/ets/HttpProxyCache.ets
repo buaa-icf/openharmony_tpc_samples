@@ -121,7 +121,7 @@ export default class HttpProxyCache extends ProxyCache {
     }
     const ctx = this;
     await new Promise<void>((resolve, reject) => {
-      let newSourceNoCache = new HttpUrlSource([this.source]);
+      let newSourceNoCache = new HttpUrlSource([this.source], true);
       try {
         class TempDataBackListener implements DataBackListener {
           onDataEnd() {
@@ -135,6 +135,10 @@ export default class HttpProxyCache extends ProxyCache {
 
           onDataReceive(data: ArrayBuffer) {
             ctx.receiveSize += data.byteLength;
+            if (ctx.stopped) {
+              newSourceNoCache.close();
+              return;
+            }
             let msg: socket.TCPSendOptions = {
               data: data
             }

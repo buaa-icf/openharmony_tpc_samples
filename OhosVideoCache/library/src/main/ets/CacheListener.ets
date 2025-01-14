@@ -14,5 +14,5 @@
  */
 
 export interface CacheListener {
-  onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number);
+  onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number): void;
 }
