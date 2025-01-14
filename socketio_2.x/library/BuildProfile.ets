@@ -1,4 +1,15 @@
 /**
+ * Copyright (C) 2023 Huawei Device Co., Ltd.
+ *
+ * This software is distributed under a license. The full license
+ * agreement can be found in the file LICENSE in this distribution.
+ * This software may not be copied, modified, sold or distributed
+ * other than expressed in the named license agreement.
+ *
+ * This software is distributed without any warranty.
+ */
+
+/**
  * Use these variables when you tailor your ArkTS code. They must be of the const type.
  */
 export const HAR_VERSION = '1.0.2';
