@@ -45,7 +45,7 @@ class SocketManager {
   }
 
   on_open(): void {
-    console.log("SOCKET_IO_INDEX on_open");
+    console.log("SOCKET_IO_INDEX on_open：连接服务器成功");
     this.connect_finish = true;
     prompt.showToast({ message: $r("app.string.Successfully") });
     this.checkConnectionState("on_open")
@@ -82,6 +82,7 @@ class SocketManager {
   }
 
   on_login_listener(event_json: string): void {
+    console.log("SOCKET_IO_INDEX on_login_listener: " + event_json);
     let loginCall: ESObject = JSON.parse(event_json);
     let notice =
       "Welcome to Socket.IO Chat,there " + (loginCall.numUsers != 1 ? " are " : "\'s ") + loginCall.numUsers +
@@ -147,6 +148,9 @@ class SocketManager {
       this.on_socket_close(nsp);
     });
     this.client.connect(this.uri);
+
+    // 通过set_option设置服务器重连功能：开启自动重连，重连尝试次数：5，// 初始重连延迟1000（毫秒），// 最大重连延迟5000（毫秒）
+    this.client?.set_option('{reconnection: true, reconnectionAttempts: 5, reconnectionDelay: 1000, reconnectionDelayMax: 5000}');
   }
 
   //配置socket
