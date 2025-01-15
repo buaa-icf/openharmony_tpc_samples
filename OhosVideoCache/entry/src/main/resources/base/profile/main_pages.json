@@ -6,6 +6,7 @@
     "pages/DiyCacheSizePage",
     "pages/DiyCacheCountPage",
     "pages/DiyCacheHeaderPage",
-    "pages/DiyFileNameGeneratorPage"
+    "pages/DiyFileNameGeneratorPage",
+    "pages/Reconnect"
   ]
 }

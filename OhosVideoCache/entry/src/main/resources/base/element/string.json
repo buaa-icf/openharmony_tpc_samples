@@ -89,6 +89,10 @@
       "value": "AvPlayer Cache Play Example"
     },
     {
+      "name": "reconnect",
+      "value": "Disconnect and reconnect from the internet"
+    },
+    {
       "name": "IjkPlayer",
       "value": "IjkPlayer Cache Play Example"
     },
@@ -107,6 +111,78 @@
     {
       "name": "conventions",
       "value": "Example of using custom naming conventions"
+    },
+    {
+      "name": "video_res_1",
+      "value": "test1.mp4"
+    },
+    {
+      "name": "video_res_2",
+      "value": "test2.mp4"
+    },
+    {
+      "name": "video_res_3",
+      "value": "network.mp4"
+    },
+    {
+      "name": "video_res_4",
+      "value": "pre_download_network.mp4"
+    },
+    {
+      "name": "video_res_5",
+      "value": "pre_download_dash.mpd"
+    },
+    {
+      "name": "video_speed_1_0X",
+      "value": "1.0X"
+    },
+    {
+      "name": "video_speed_1_25X",
+      "value": "1.25X"
+    },
+    {
+      "name": "video_speed_1_75X",
+      "value": "1.75X"
+    },
+    {
+      "name": "video_speed_2_0X",
+      "value": "2.0X"
+    },
+    {
+      "name": "video_warn",
+      "value": "Exit the program, please check if the network is connected or available！"
+    },
+    {
+      "name": "dialog_play_speed",
+      "value": "speed"
+    },
+    {
+      "name": "dialog_cancel",
+      "value": "cancel"
+    },
+    {
+      "name": "playing",
+      "value": "CurrentPlaying"
+    },
+    {
+      "name": "default_track",
+      "value": "Default track"
+    },
+    {
+      "name": "track_name",
+      "value": "track:"
+    },
+    {
+      "name": "track_name_1",
+      "value": "track:1"
+    },
+    {
+      "name": "subtitle_on",
+      "value": "on"
+    },
+    {
+      "name": "subtitle_off",
+      "value": "off"
     }
   ]
 }

@@ -50,6 +50,9 @@ export default class JumpPathConfig {
       this.dataList = new Array<JumpBean>();
     }
     if (this.dataList.length < 1) {
+      let bean = new JumpBean('pages/Reconnect');
+      this.dataList.push(bean)
+
       let bean0 = new JumpBean('pages/HttpsPlayer');
       this.dataList.push(bean0)
 
