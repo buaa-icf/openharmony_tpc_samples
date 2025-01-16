@@ -13,9 +13,10 @@
  * limitations under the License.
  */
 
-import { MinizipNative } from "libminizip_ng.so"
+import { MinizipNative } from "libminizip_ng.so";
 import fs from '@ohos.file.fs';
 import { BusinessError } from '@ohos.base';
+import { LogUtil } from '../utils/LogUtil';
 
 export function unzipToDirectory(selectPath: string, targetPath: string, password?: string, charEncoding?: number): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -54,7 +55,7 @@ export function unzipToDirectory(selectPath: string, targetPath: string, passwor
               fs.closeSync(file);
             })
           } else {
-            console.debug("minizip ExtractFileToJS failed:" + entryNames[i])
+            LogUtil.debug("minizip ExtractFileToJS failed:" + entryNames[i])
           }
         }
       }
