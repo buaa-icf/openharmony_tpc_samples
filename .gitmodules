@@ -50,4 +50,4 @@
 	url = https://gitee.com/openharmony/third_party_bounds_checking_function.git
 [submodule "vap/vap_module/src/main/cpp/include/util/json"]
 	path = vap/vap_module/src/main/cpp/include/util/json
-	url = https://github.com/nlohmann/json.git
+	url = https://gitee.com/lycium_pkg_mirror/json.git
