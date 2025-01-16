@@ -20,6 +20,6 @@ export class CommonConstants {
   static readonly VIDEO_HTTPS_LISTS: Array<string> = [
     'https://vd3.bdstatic.com/mda-nmh2004d24kf4bjh/hd/h264/1671326683061787710/mda-nmh2004d24kf4bjh.mp4',
     'https://video.chinanews.com/flv/2019/04/23/400/111773_web.mp4',
-    'https://assets.mixkit.co/videos/preview/mixkit-white-cat-lying-among-the-grasses-seen-up-close-22732-large.mp4']
+    'https://developer.huawei.com/'];
   static readonly buttonSize: string = '30vp';
 }

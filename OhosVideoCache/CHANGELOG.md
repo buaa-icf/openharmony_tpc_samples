@@ -1,3 +1,6 @@
+## 1.0.3-rc.2
+1. Optimize video caching and playback speed
+
 ## 1.0.3-rc.1
 1. Fix the issue of excessive data usage
 

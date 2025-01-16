@@ -18,7 +18,7 @@ import Preconditions from './Preconditions';
 
 export default class ByteArrayCache implements Cache {
   private data: ArrayBuffer;
-  private completed: boolean;
+  private completed: boolean = false;
 
   constructor(data?: ArrayBuffer) {
     this.data = Preconditions.checkNotNull(data ? data : new ArrayBuffer(0));
@@ -48,7 +48,7 @@ export default class ByteArrayCache implements Cache {
     let temp = new Uint8Array(this.data.byteLength + length)
     temp.set(new Uint8Array(this.data), 0)
     temp.set(new Uint8Array(newData), this.data.byteLength)
-    this.data = temp.buffer;
+    this.data = temp.buffer as ArrayBuffer;
   }
 
   read(buffer: ArrayBuffer, offset: number, length: number): number {

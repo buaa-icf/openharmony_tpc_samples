@@ -14,5 +14,5 @@
  */
 
 export default interface AutoCloseable {
-  close()
+  close(): void;
 }

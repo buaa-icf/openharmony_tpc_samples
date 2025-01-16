@@ -22,8 +22,9 @@ const VIDEOSELECT = 2; // 网络视频索引
 export struct VideoPanel {
   @State videoList: string[] = ['test1.mp4',
     'https://vd3.bdstatic.com/mda-pdc2kmwtd2vxhiy4/cae_h264/1681502407203843413/mda-pdc2kmwtd2vxhiy4.mp4',
+    'http://music.163.com/song/media/outer/url?id=447925558.mp3',
     'https://vd3.bdstatic.com/mda-nmh2004d24kf4bjh/hd/h264/1671326683061787710/mda-nmh2004d24kf4bjh.mp4',
-    'http://vjs.zencdn.net/v/oceans.mp4'];
+    'https://video.chinanews.com/flv/2019/04/23/400/111773_web.mp4'];
   @State selectColor: boolean = true;
   @Link show: boolean;
   @Link videoSelect: number; // 当前选择项的索引

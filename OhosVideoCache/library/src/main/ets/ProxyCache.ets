@@ -42,7 +42,7 @@ export default class ProxyCache {
     this.source = Preconditions.checkNotNull(source);
     this.cache = Preconditions.checkNotNull(cache);
     this.stopped = false;
-    this.judgeHasNet()
+    this.judgeHasNet();
   }
 
   protected async judgeHasNet(): Promise<boolean> {
@@ -56,7 +56,7 @@ export default class ProxyCache {
       let cap = netCapability.networkCap || [];
       if (cap.includes(connection.NetCap.NET_CAPABILITY_VALIDATED)) {
         let lastAvailable: number = -1;
-        while (!self.cache.isCompleted() &&
+        while (self.cache && !self.cache.isCompleted() &&
           self.cache.available() < (this.currentOffset + this.currentLength) && !self.stopped &&
         this.netIValidated) {
           this.readSourceAsync();
@@ -65,7 +65,7 @@ export default class ProxyCache {
           if (self.cache?.available() == lastAvailable) {
             this.tryComplete();
           } else {
-            lastAvailable = self.cache?.available();
+            lastAvailable = self.cache?.available()?? -1;
           }
         }
         this.netIValidated = true;
@@ -86,17 +86,17 @@ export default class ProxyCache {
     }
     let self = this;
     let lastAvailable: number = - 1;
-    while (!self.cache.isCompleted() && self.cache.available() < (offset + length) && !self.stopped && this.netIValidated) {
+    while (self.cache && !self.cache.isCompleted() && self.cache.available() < (offset + length) && !self.stopped && this.netIValidated) {
       this.readSourceAsync();
       await self.waitForSourceData();
       self.checkReadSourceErrorsCount();
       if(self.cache?.available() == lastAvailable) {
         this.tryComplete();
       } else {
-        lastAvailable = self.cache?.available();
+        lastAvailable = self.cache?.available() ?? -1;
       }
     }
-    return new Promise<number>((resolve, reject) => {
+    return new Promise<number>(async (resolve, reject) => {
       let read = self.cache?.read(buffer, offset, length);
       if (self.cache?.isCompleted() && self.percentsAvailable != 100) {
         self.percentsAvailable = 100;
@@ -105,7 +105,7 @@ export default class ProxyCache {
       if (self.stopped) {
         return resolve(-1);
       } else {
-        return resolve(read);
+        return resolve(read?? -1);
       }
     })
   }
@@ -155,7 +155,7 @@ export default class ProxyCache {
           self.timeoutId = (0 - Number.MAX_VALUE)
           return resolve()
         }
-      }, 1000)
+      }, 200)
     })
   }
 
@@ -199,7 +199,7 @@ export default class ProxyCache {
         }
 
         async onDataStart() {
-          sourceAvailable = await self?.source?.length();
+          sourceAvailable = await self?.source?.length()?? -1;
           self.setFileLength(sourceAvailable);
         }
 
