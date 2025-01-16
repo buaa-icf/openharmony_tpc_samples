@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "stringtemplate-js",
+        "License": "BSD-3-Clause License",
+        "License File": "LICENSE.txt",
+        "Version Number": "0.1.1",
+        "Owner" : "xiafeng@huawei.com",
+        "Upstream URL": "https://github.com/jsnyders/StringTemplate-js",
+        "Description": "StringTemplate v4 for JavaScript."
+    }
+]

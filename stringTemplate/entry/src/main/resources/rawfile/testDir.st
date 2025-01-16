@@ -1,0 +1,1 @@
+testDir(color) ::= <<my favourite color is $color$.>>

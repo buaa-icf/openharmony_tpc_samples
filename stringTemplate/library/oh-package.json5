@@ -1,0 +1,21 @@
+{
+  "main": "Index.ets",
+  "keywords": [
+    "OpenHarmony",
+    "HarmonyOS",
+    "Template",
+    "StringTemplate"
+  ],
+  "author": "ohos_tpc",
+  "ohos": {
+    "org": "opensource"
+  },
+  "description": "StringTemplate v4 for JavaScript",
+  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/stringTemplate",
+  "type": "module",
+  "version": "1.0.0",
+  "dependencies": { "@ohos/node-polyfill": "1.0.0" },
+  "license": "BSD-3-Clause",
+  "devDependencies": {},
+  "name": "@ohos/stringtemplate",
+}
