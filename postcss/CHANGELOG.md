@@ -1,3 +1,6 @@
+## 1.0.1-rc.0
+* 1 Fixed the CVE-2023-44270 vulnerability
+
 ## 1.0.0 
 * 1 新增postcss鸿蒙化工程
 * 2 新增xts和sample
