@@ -1,314 +1,234 @@
-/*
- * Copyright (C) 2022 Huawei Device Co., Ltd.
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-the Software, and to permit persons to whom the Software is furnished to do so,
-subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+/**
+ * MIT License
+ *
+ * Copyright (c) 2024 Huawei Device Co., Ltd.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the 'Software'), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to all conditions.
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
-import postcss from '@ohos/postcss'
-import Rule from '@ohos/postcss/src/main/ets/components/lib/rule'
-import LazyResult from '@ohos/postcss/src/main/ets/components/lib/lazy-result'
-import Processor from '@ohos/postcss/src/main/ets/components/lib/processor'
-import {
-  Root,
-} from '@ohos/postcss/src/main/ets/components/lib/postcss'
+
+import { postcss, CSSParser } from '@ohos/postcss';
+import common from '@ohos.app.ability.common';
+
 @Entry
 @Component
 struct Index {
-  @State message: string = 'test'
-  @State public rule:string = ''
-  @State public parse:boolean |undefined = false
-  @State public comment:string = ''
-  @State public container:number = 0
-  @State public declaration:string = ''
-  @State public fromJson:string = ''
-  @State public lazyResult:string = ''
-  @State public list:Array<string> = []
-  @State public node:string = ''
-  @State public postcss:Array<ESObject> = []
-  @State public previous:boolean |undefined = false
-  @State public processor:string = ''
-  @State public result:string = ''
-  build() {
-    Scroll() {
-      Row() {
-        Column() {
-          Text(this.message)
-            .fontSize(50)
-            .fontWeight(FontWeight.Bold)
-          Button('rule')
-            .width('90%')
-            .height(50)
-            .margin({
-              bottom: 10
-            })
-            .onClick(() => {
-              this.ruleClick()
-            })
-          Text("result :" + this.rule)
-            .fontSize(20)
-            .fontWeight(FontWeight.Bold)
-            .margin({ top: "30px" })
-          Button('comment')
-            .width('90%')
-            .height(50)
-            .margin({
-              bottom: 10
-            })
-            .onClick(() => {
-              this.commentClick()
-            })
-          Text("result :" + this.comment)
-            .fontSize(20)
-            .fontWeight(FontWeight.Bold)
-            .margin({ top: "30px" })
-          Button('container')
-            .width('90%')
-            .height(50)
-            .margin({
-              bottom: 10
-            })
-            .onClick(() => {
-              this.containerClick()
-            })
-          Text("result :" + this.container)
-            .fontSize(20)
-            .fontWeight(FontWeight.Bold)
-            .margin({ top: "30px" })
-          Button('declaration')
-            .width('90%')
-            .height(50)
-            .margin({
-              bottom: 10
-            })
-            .onClick(() => {
-              this.declarationClick()
-            })
-          Text("result :" + this.declaration)
-            .fontSize(20)
-            .fontWeight(FontWeight.Bold)
-            .margin({ top: "30px" })
-          Button('fromJson')
-            .width('90%')
-            .height(50)
-            .margin({
-              bottom: 10
-            })
-            .onClick(() => {
-              this.fromJsonClick()
-            })
-          Text("result :" + this.fromJson)
-            .fontSize(20)
-            .fontWeight(FontWeight.Bold)
-            .margin({ top: "30px" })
-          Button('lazyResult')
-            .width('90%')
-            .height(50)
-            .margin({
-              bottom: 10
-            })
-            .onClick(() => {
-              this.lazyResultClick()
-            })
-          Text("result :" + this.lazyResult)
-            .fontSize(20)
-            .fontWeight(FontWeight.Bold)
-            .margin({ top: "30px" })
-          Button('list')
-            .width('90%')
-            .height(50)
-            .margin({
-              bottom: 10
-            })
-            .onClick(() => {
-              this.listClick()
-            })
-          Text("result :" + this.list)
-            .fontSize(20)
-            .fontWeight(FontWeight.Bold)
-            .margin({ top: "30px" })
-          Button('node')
-            .width('90%')
-            .height(50)
-            .margin({
-              bottom: 10
-            })
-            .onClick(() => {
-              this.nodeClick()
-            })
-          Text("result :" + this.node)
-            .fontSize(20)
-            .fontWeight(FontWeight.Bold)
-            .margin({ top: "30px" })
-          Button('parse')
-            .width('90%')
-            .height(50)
-            .margin({
-              bottom: 10
-            })
-            .onClick(() => {
-              this.parseClick()
-            })
-          Text("result :" + this.parse)
-            .fontSize(20)
-            .fontWeight(FontWeight.Bold)
-            .margin({ top: "30px" })
-          Button('postcss')
-            .width('90%')
-            .height(50)
-            .margin({
-              bottom: 10
-            })
-            .onClick(() => {
-              this.postcssClick()
-            })
-          Text("result :" + this.postcss)
-            .fontSize(20)
-            .fontWeight(FontWeight.Bold)
-            .margin({ top: "30px" })
-          Button('previous-map')
-            .width('90%')
-            .height(50)
-            .margin({
-              bottom: 10
-            })
-            .onClick(() => {
-              this.previousClick()
-            })
-          Text("result :" + this.previous)
-            .fontSize(20)
-            .fontWeight(FontWeight.Bold)
-            .margin({ top: "30px" })
-          Button('processor')
-            .width('90%')
-            .height(50)
-            .margin({
-              bottom: 10
-            })
-            .onClick(() => {
-              this.processorClick()
-            })
-          Text("result :" + this.processor)
-            .fontSize(20)
-            .fontWeight(FontWeight.Bold)
-            .margin({ top: "30px" })
-          Button('result')
-            .width('90%')
-            .height(50)
-            .margin({
-              bottom: 10
-            })
-            .onClick(() => {
-              this.resultClick()
-            })
-          Text("result :" + this.result)
-            .fontSize(20)
-            .fontWeight(FontWeight.Bold)
-            .margin({ top: "30px" })
-        }
-        .width('100%')
+  @State cssFileContent: string = 'CSS File Content';
+  @State propertyValueMessage: string = 'PropertyValue';
+  @State selectorMessage: string = 'Selector';
+  @State mediaMessage: string = 'Media';
+  @State ruleMessage: string = 'Rule Message';
+  @State declarationMessage: string = 'Declaration';
+  @State parentSheetMessage: string = 'Get Parent Sheet'
+  @State cssStyle: string = `
+      body {
+        background-color: '#fff';
+        color: black;
       }
-    }
-  }
-  ruleClick(){
-    let rule = new postcss.AtRule({ name: 'encoding', params: '"utf-8"' })
-    this.rule =  rule.name
-  }
-  commentClick(){
-    let comment = new postcss.Comment({ text: 'hi' })
-    this.comment = comment.toString()
-  }
-  containerClick(){
-    let rule = postcss.parse('a { a: 1; b: 2 }').first as Rule
-    let size = 0
-
-    rule.each(() => {
-      rule.prepend({ prop: 'color', value: 'aqua' })
-      size += 1
-    })
-    this.container = size
-  }
-  declarationClick(){
-    let decl = new postcss.Declaration({ prop: 'color', value: 'black' })
-    this.declaration = decl.prop
-  }
-  fromJsonClick(){
-    try {
-      let result = postcss.fromJSON({ type: 'not-a-node-type' })
-      if (result) {
-      } else {
-      }
-    } catch (err) {
-      this.fromJson = `${err}`
-    }
-  }
-  lazyResultClick(){
-    let processor = new Processor()
-    let result = new LazyResult(processor, 'a {}', {})
-    this.lazyResult = result.root.type
-  }
-  listClick(){
-    this.list = postcss.list.space('a b')
-  }
-  nodeClick(){
-    let rule = new postcss.Rule({ selector: 'a' })
-    let error = rule.error('Test')
-    this.node = error.message
-  }
-  parseClick(){
-    let css = postcss.parse('\uFEFF@host { a {\f} }')
-    this.parse = css.first?.source?.input.hasBOM
-  }
-  postcssClick(){
-    let a = (): void => {}
-    let b = (): void => {}
-    this.postcss = postcss(a,b).plugins
-  }
-  previousClick(){
-    let map2: ESObject = {
-      version: 3,
-      file: 'b',
-      sources: ['a'],
-      names: [],
-      mappings: ''
-    }
-    this.previous = postcss.parse('a{}', {
-      map: {
-        prev: map2
-      }
-    }).source?.input.map.withContent()
-  }
-  processorClick(){
-    let beforeFix = new Processor([
-      (root: Root) => {
-        root.walkRules(rule => {
-          if (!rule.selector.match(new RegExp('::(before|after)'))) return
-          if (!rule.some(i => i.type === 'decl' && i.prop === 'content')) {
-            rule.prepend({ prop: 'content', value: '""' })
+      @media screen and (max-width: 768px) {
+          .container {
+              width: 100%;
           }
-        })
+          aside {
+              width: 80%;
+              float: none;
+          }
       }
-    ])
-    let result = beforeFix.process('a::before{top:0}')
-    this.processor = result.css
+      @media print and (max-width: 600px) {
+        h6 {
+          font-size: 14px;
+        }
+     }
+     .root{
+        font-size: 1rem;
+        margin: 2rem;
+        padding: 0.5rem;
+        border-radius: 50%;
+      }
+       #bar{
+        color: red;
+        border-radius: 5px;
+      }
+    `;
+  @State cssInsertTest: string = `
+      .box {
+        z-index: 10;
+      }
+    `;
+
+  build() {
+    List() {
+      ListItem() {
+        Button('parseStyleSheet')
+          .fontSize(16)
+          .width(180)
+          .onClick((e: ClickEvent) => {
+            this.cssFileContent = this.readFile("style.css");
+          })
+
+      }
+
+      ListItem() {
+        TextArea({ text: this.cssFileContent })
+          .fontSize(20)
+          .padding(10)
+          .width('100%')
+          .height(100)
+      }
+
+      ListItem() {
+        Button('propertyValue')
+          .fontSize(16)
+          .width(180)
+          .onClick((e: ClickEvent) => {
+            this.propertyValueMessage = this.propertyValueTest();
+          })
+
+      }
+
+      ListItem() {
+        TextArea({ text: this.propertyValueMessage })
+          .fontSize(20)
+          .padding(10)
+          .height(50)
+      }
+
+      ListItem() {
+        Button('selector')
+          .fontSize(16)
+          .width(180)
+          .onClick((e: ClickEvent) => {
+            this.selectorMessage = this.selectorTest();
+          })
+      }
+
+      ListItem() {
+        TextArea({ text: this.selectorMessage })
+          .fontSize(20)
+          .padding(10)
+          .height(100)
+      }
+
+      ListItem() {
+        Button('media')
+          .fontSize(16)
+          .width(180)
+          .onClick((e: ClickEvent) => {
+            this.mediaMessage = this.mediaTest();
+          })
+      }
+
+      ListItem() {
+        TextArea({ text: this.mediaMessage })
+          .fontSize(20)
+          .padding(10)
+          .height(100)
+      }
+
+      ListItem() {
+        Button('Rule')
+          .fontSize(16)
+          .width(180)
+          .onClick((e: ClickEvent) => {
+            this.RuleTest();
+          })
+      }
+
+      ListItem() {
+        TextArea({ text: this.ruleMessage })
+          .fontSize(20)
+          .padding(10)
+          .height(100)
+      }
+
+      ListItem() {
+        Button('Declaration')
+          .fontSize(16)
+          .width(180)
+          .onClick((e: ClickEvent) => {
+            this.declarationTest();
+          })
+      }
+
+      ListItem() {
+        TextArea({ text: this.declarationMessage })
+          .fontSize(20)
+          .padding(10)
+          .height(100)
+      }
+    }
+    .height('100%')
+    .width('100%')
+
   }
-  resultClick(){
-    let processor = new Processor()
-    let css = postcss.parse('a{}')
-    let result = new postcss.Result(processor, css, {})
-    result.warn('TT', { node: css.first })
-    this.result = result.messages[0].toString()
+
+  readFile(path: string) {
+    let context = getContext(this) as common.UIAbilityContext;
+    let cssStr = context.resourceManager.getRawFileContentSync(path);
+    let retStr = CSSParser.readFile(cssStr);
+    return retStr
+  }
+
+  propertyValueTest(): string {
+    let result = postcss().process(this.cssStyle);
+    let valueList = CSSParser.getValueByProperty(result.root, 'width');
+    this.propertyValueMessage = `prop: width; valueList: ${valueList}`
+    return this.propertyValueMessage;
+  }
+
+  selectorTest(): string {
+    let result = postcss().process(this.cssStyle);
+    let selectorList = CSSParser.getSelectorList(result.root);
+    this.selectorMessage = `selectorList: ${selectorList}`
+    return this.selectorMessage;
+  }
+
+  mediaTest(): string {
+    let result = postcss().process(this.cssStyle);
+    let mediaList = CSSParser.getMediaList(result.root);
+    this.mediaMessage = `mediaList: ${mediaList}`
+    return this.mediaMessage;
+  }
+
+  RuleTest() {
+    postcss().process(this.cssStyle, {}).then(result => {
+      let rule = result.root;
+      let rule0 = rule.first;
+      let insertAfterRule = rule.insertAfter(rule0, this.cssInsertTest);
+      let index = rule.index(result.root.nodes.length);
+      let replaceValuesRule = rule.replaceValues(/\d+rem/, { fast: 'rem' }, string => {
+        return 15 * parseInt(string) + 'px'
+      })
+      let ruleLast = rule.last;
+      let pushRule = rule.removeChild(ruleLast);
+
+      this.ruleMessage =
+        `---first rule---: ${'\n'} ${rule0} ${'\n'} ---index---: ${'\n'} ${index} ${'\n'} ---insertAfter---: ${'\n'} ${insertAfterRule} ${'\n'}
+      ---replaceValues---: ${'\n'} ${replaceValuesRule} ${'\n'} ---pushRule---: ${'\n'} ${pushRule}`
+      return this.ruleMessage;
+    })
+  }
+
+  declarationTest() {
+    let decl = 'width: 10px;'
+    let declarationList = CSSParser.getStyleDeclaration(decl);
+    this.declarationMessage = `declarationList: ${declarationList}`
+    return this.declarationMessage;
   }
 }
+

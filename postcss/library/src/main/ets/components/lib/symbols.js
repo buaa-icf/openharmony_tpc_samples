@@ -1,6 +1,7 @@
-
 'use strict'
 
-module.exports.isClean = Symbol('isClean')
+let isClean = Symbol('isClean')
+export {isClean}
 
-module.exports.my = Symbol('my')
+let my = Symbol('my')
+export {my}
