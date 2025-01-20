@@ -13,6 +13,7 @@ import prompt from '@ohos.promptAction';
 import { client_socket } from '@ohos/socketio';
 import { ConnState } from './Constants';
 import { chatDetailData } from './ChatDetailData';
+import hilog from '@ohos.hilog';
 
 class SocketManager {
   private client: client_socket | null = null;
@@ -34,55 +35,78 @@ class SocketManager {
     this.uri = uri;
   }
 
+  destroyCurrentClient(): void {
+    if (this.client) {
+      this.client.close();
+      this.client = null;
+      this._connect_finish = false;
+      this.login_finish = false;
+    }
+  }
+
   commonInit() {
-    this.initClient()
-    this.initSocket()
+    // 销毁当前连接
+    this.destroyCurrentClient();
+    // 创建新连接
+    this.client = new client_socket();
+    if(this.client) {
+      hilog.info(0x0000, 'testTag', '%{public}s', 'client instance created successfully');
+      this.initClient();
+      this.initSocket();
+    } else {
+      hilog.error(0x0000, 'testTag', '%{public}s', 'client instance creation failed');
+      return;
+    }
   }
 
   checkConnectionState(func:string) {
+    if (!this.client) {
+      hilog.info(0x0000, 'testTag', '%{public}s', 'no active connection');
+      return;
+    }
     this.currentState = this.client?.get_current_state() ?? 0;
-    console.log(func + " 当前连接状态: " + ConnState[this.currentState]);
+    hilog.info(0x0000, 'testTag', '%{public}s', func + ' current connection state: ' + ConnState[this.currentState]);
   }
 
   on_open(): void {
-    console.log("SOCKET_IO_INDEX on_open：连接服务器成功");
+    hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX on_open：连接服务器成功');
     this.connect_finish = true;
     prompt.showToast({ message: $r("app.string.Successfully") });
     this.checkConnectionState("on_open")
   }
 
   on_fail(): void {
-    console.log("SOCKET_IO_INDEX on_fail");
+    hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX on_fail');
     prompt.showToast({ message: $r("app.string.Failed") });
     this.checkConnectionState("on_fail")
   }
 
   on_reconnecting(): void {
-    console.log("SOCKET_IO_INDEX on_reconnecting");
+    hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX on_reconnecting');
     this.checkConnectionState("on_reconnecting")
   }
 
   on_reconnect(): void {
-    console.log("SOCKET_IO_INDEX on_reconnect");
+    hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX on_reconnect');
     this.checkConnectionState("on_reconnect")
   }
 
   on_close(reason: string): void {
     this.connect_finish = false;
-    console.log("SOCKET_IO_INDEX on_close: " + reason);
+    hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX on_close: ' + reason);
   }
 
   on_socket_open(nsp: string): void {
-    console.log("SOCKET_IO_INDEX on_socket_open: " + nsp);
+    hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX on_socket_open: ' + nsp);
   }
 
   on_socket_close(nsp: string): void {
-    console.log("SOCKET_IO_INDEX on_socket_close: " + nsp);
+    hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX on_socket_close: ' + nsp);
     this.checkConnectionState("on_socket_close")
   }
 
   on_login_listener(event_json: string): void {
-    console.log("SOCKET_IO_INDEX on_login_listener: " + event_json);
+    hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX on_login_listener: ' + event_json);
     let loginCall: ESObject = JSON.parse(event_json);
     let notice =
       "Welcome to Socket.IO Chat,there " + (loginCall.numUsers != 1 ? " are " : "\'s ") + loginCall.numUsers +
@@ -92,14 +116,14 @@ class SocketManager {
   }
 
   on_new_message_listener(event_json: string): void {
-    console.log("SOCKET_IO_INDEX on_new_message_listener: " + event_json);
+    hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX on_new_message_listener: ' + event_json);
     let messageCall: ESObject = JSON.parse(event_json);
     let serviceMessage: ESObject = { username: messageCall.username, message: messageCall.message, id: 1 };
     chatDetailData.pushData(serviceMessage);
   }
 
   on_user_joined_listener(event_json: string): void {
-    console.log("SOCKET_IO_INDEX on_user_joined_listener: " + event_json);
+    hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX on_user_joined_listener: ' + event_json);
     let userJoinCall: ESObject = JSON.parse(event_json);
     let notice = userJoinCall.username + " joined" + ",there" + (userJoinCall.numUsers != 1 ? " are " : "\'s ") +
     userJoinCall.numUsers + (userJoinCall.numUsers != 1 ? " participants" : " participant");
@@ -108,7 +132,7 @@ class SocketManager {
   }
 
   on_user_left_listener(event_json: string): void {
-    console.log("SOCKET_IO_INDEX on_user_left_listener: " + event_json);
+    hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX on_user_left_listener: ' + event_json);
     let userLeftCall: ESObject = JSON.parse(event_json);
     let notice = userLeftCall.username + " left" + ",there" + (userLeftCall.numUsers != 1 ? "are " : "\'s ") +
     userLeftCall.numUsers + (userLeftCall.numUsers != 1 ? " participants" : " participant");
@@ -117,45 +141,42 @@ class SocketManager {
   }
 
   on_emit_callback(emit_callback_json: string): void {
-    console.log("SOCKET_IO_INDEX on_emit_callback： " + emit_callback_json);
+    hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX on_emit_callback：' + emit_callback_json);
   }
 
   private initClient() {
-    console.log("SOCKET_IO_INDEX initClient");
+    hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX initClient');
 
-    // 创建新的客户端实例
-    this.client = new client_socket();
-
-    this.client.set_open_listener(() => {
+    this.client?.set_open_listener(() => {
       this.on_open();
     });
-    this.client.set_fail_listener(() => {
+    this.client?.set_fail_listener(() => {
       this.on_fail();
     });
-    this.client.set_reconnecting_listener(() => {
+    this.client?.set_reconnecting_listener(() => {
       this.on_reconnecting();
     });
-    this.client.set_reconnect_listener(() => {
+    this.client?.set_reconnect_listener(() => {
       this.on_reconnect();
     });
-    this.client.set_close_listener((reason: string) => {
+    this.client?.set_close_listener((reason: string) => {
       this.on_close(reason);
     });
-    this.client.set_socket_open_listener((nsp: string) => {
+    this.client?.set_socket_open_listener((nsp: string) => {
       this.on_socket_open(nsp);
     });
-    this.client.set_socket_close_listener((nsp: string) => {
+    this.client?.set_socket_close_listener((nsp: string) => {
       this.on_socket_close(nsp);
     });
-    this.client.connect(this.uri);
+    this.client?.connect(this.uri);
 
     // 通过set_option设置服务器重连功能：开启自动重连，重连尝试次数：5，// 初始重连延迟1000（毫秒），// 最大重连延迟5000（毫秒）
-    this.client?.set_option('{reconnection: true, reconnectionAttempts: 5, reconnectionDelay: 1000, reconnectionDelayMax: 5000}');
+    // this.client?.set_option('{reconnection: true, reconnectionAttempts: 5, reconnectionDelay: 1000, reconnectionDelayMax: 5000}');
   }
 
   //配置socket
   private initSocket() {
-    console.log("SOCKET_IO_INDEX initSocket");
+    hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX initSocket');
     this.client?.on("new message", (event_json: string)=>{
       this.on_new_message_listener(event_json);
     });
@@ -169,17 +190,17 @@ class SocketManager {
       this.on_login_listener(event_json);
     });
     this.client?.on("disconnect", (data: string) => {
-      console.log("disconnect:", data);
+      hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX disconnect: ' + data);
       this.checkConnectionState("disconnect")
     });
     this.client?.on("ping_pong", (data: string) => {
-      console.log("ping_pong:", data);
+      hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX ping_pong: ' + data);
     });
   }
 
   //登录
   login(username: string) {
-    console.log("SOCKET_IO_INDEX login");
+    hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX login');
     if (!this.connect_finish) {
       prompt.showToast({ message: "暂未连接服务器" });
       return;
@@ -191,18 +212,12 @@ class SocketManager {
 
   close() {
     if (!this._connect_finish) {
-      console.log("SOCKET_IO_INDEX 暂未连接服务器");
+      hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX 暂未连接服务器');
       return;
     }
-
-    // 安全地关闭客户端
-    if (this.client) {
-      this.client.close(); // 异步关闭
-      this.checkConnectionState("close")
-      this.client = null; // 关闭引用
-    }
-    this._connect_finish = false;
-    this.login_finish = false;
+    hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX close');
+    this.destroyCurrentClient();
+    this.checkConnectionState("close");
   }
 
   getResourceString(resourceName:Resource) {
@@ -211,9 +226,9 @@ class SocketManager {
 
   //发送消息
   sendMessage(message: string) {
-    console.log("SOCKET_IO_INDEX sendMessage");
+    hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX sendMessage');
     if (!this.connect_finish) {
-      console.log(`SOCKET_IO_INDEX ${this.getResourceString($r("app.string.Connected_server"))}`);
+      hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX 暂未连接服务器');
       return;
     }
     this.client?.emit("new message", message, this.on_emit_callback);
