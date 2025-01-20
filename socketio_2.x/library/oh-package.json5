@@ -14,7 +14,7 @@
   "main": "index.ets",
   "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/socketio",
   "type": "module",
-  "version": "1.0.3-rc.0",
+  "version": "1.0.3",
   "dependencies": {},
   "tags": [
     "OpenHarmony",
