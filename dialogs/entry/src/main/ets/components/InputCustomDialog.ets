@@ -22,7 +22,7 @@ export struct InputCustomDialog {
   build() {
     Column() {
       Column() {
-        Text(getContext().resourceManager.getStringByNameSync('带有输入框并贴着输入法的弹窗') ).fontSize(18).fontColor('#333').fontWeight(FontWeight.Bold)
+        Text($r("app.string.InputCistom_String1")).fontSize(18).fontColor('#333').fontWeight(FontWeight.Bold)
       }
       .width('100%').height(48).backgroundColor('#eee').justifyContent(FlexAlign.Center)
       Column(){
