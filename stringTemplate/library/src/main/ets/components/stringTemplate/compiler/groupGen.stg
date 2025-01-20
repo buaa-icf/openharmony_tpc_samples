@@ -1,0 +1,312 @@
+/*
+ [The "BSD licence"]
+ Copyright (c) 2015, John Snyders
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 1. Redistributions of source code must retain the above copyright
+ notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+ notice, this list of conditions and the following disclaimer in the
+ documentation and/or other materials provided with the distribution.
+ 3. The name of the author may not be used to endorse or promote products
+ derived from this software without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+/*
+ * Template to generate compiled JavaScript group
+ */
+
+compiledGroup(g) ::= <<
+/*
+ * Template group $g.fileName$
+ * Compiled on $g.date$
+ */
+var path = require("path");
+var base = path.dirname(module.filename);
+
+function getInstance(st, group) {
+    "use strict";
+var r;
+var gFile = "$g.fileName;format="string"$"; $!xxx want extension and possibly path or relative path!$
+
+group.name = "$g.fileName;format="string"$";
+
+$imports(g.imports)$
+
+$dictionaries(g.dictionaries)$
+
+$templates(g.templates)$
+
+$aliases(g.aliases)$
+return group;
+}
+getInstance.base = base;
+
+module.exports = getInstance;
+>>
+
+imports(im) ::= <<
+$im:importFile()$
+>>
+
+importFile(file) ::= <<
+group.addImport(st.loadImport(base, "$file;format="string"$"));
+
+>>
+
+dictionaries(d) ::= <<
+$d:{k | $dictionary(d.(k))$};separator="\n"$
+>>
+
+dictionary(d) ::= <<
+group.addDictionary("$d.name;format="string"$", new st.Dictionary({
+    $d.map : {k | $props(k, d.map.(k))$};separator=",\n"$
+}$if(d.default)$, $({value$d.default.type$})(d.default.value)$$endif$));
+>>
+
+props(k, v) ::= <<
+    $k;format="key"$: $({value$v.type$})(v.value)$
+>>
+
+templates(t) ::= <<
+$t : { k | $templateDef(k, t.(k))$ };separator="\n"$
+>>
+
+templateDef(name, t) ::= <<
+//
+// Template $name$
+//
+r = function(w, rc) {
+    var g = this.owningGroup,
+        s = this.scope;
+    $strip(t.template):templateElement()$
+};
+r.args = [
+    $if(g.raw)$$\\$
+    {name:"it"}
+    $else$$\\$
+    $t.args:formalArgs();separator=",\n"$
+    $endif$$\\$
+];
+group.addTemplate("$name;format="string"$", r);
+>>
+
+formalArgs(arg) ::= <%
+    { name: "$arg.name;format="string"$"$\\$
+    $if(arg.defaultValue)$$\\$
+    , default: $({expr$arg.defaultValue.type$})(arg.defaultValue)$$\\$
+    $endif$ }
+%>
+
+templateElement(e) ::= <<
+$if(e)$
+$({template$e.type$})(e)$$endif$
+>>
+
+templateTEXT(e) ::= <<
+w.write("$e.value;format="string"$");
+>>
+
+templateEXPR(e) ::= <<
+st.write(w, s, g, rc, $({expr$e.expr.type$})(e.expr)$$if(e.options)$, $exprOptions(e.options)$$endif$);
+>>
+
+templateINDENTED_EXPR(e) ::= <<
+w.pushIndentation("$e.indent;format="string"$");
+$({template$e.value.type$})(e.value)$
+w.popIndentation();
+>>
+
+templateNEWLINE(e) ::= <<
+w.write("\n");$! todo track position in current line for tracing? !$
+>>
+
+templateIF(e) ::= <<
+if (st.test($({expr$e.condition.type$})(e.condition)$)) {
+    $e.template:templateElement()$
+$if(e.elseifPart)$
+$e.elseifPart:elseifPart();separator="\n"$
+$endif$
+$if(e.elsePart)$
+} else {
+    $e.elsePart.template:templateElement()$
+$endif$
+}
+>>
+
+elseifPart(eib) ::= <<
+} else if($({expr$eib.condition.type$})(eib.condition)$) {
+    $eib.template:templateElement()$
+>>
+
+exprOR(a) ::= <%
+st.test($({expr$a.left.type$})(a.left)$) || st.test($({expr$a.right.type$})(a.right)$)
+%>
+
+exprAND(a) ::= <%
+st.test($({expr$a.left.type$})(a.left)$) && st.test($({expr$a.right.type$})(a.right)$)
+%>
+
+exprNOT(a) ::= <%
+! st.test($({expr$a.value.type$})(a.value)$)
+%>
+
+exprFUNCTION(a) ::= <%
+st.fn.$a.name$($({expr$a.arg.type$})(a.arg)$)
+%>
+
+exprATTRIBUTE(a) ::= <%
+s.$a.name$
+%>
+
+// a.foo.bar
+// becomes:
+// st.prop(st.prop(a, "foo"), "bar")
+exprMEMBER_EXPR(a) ::= <%
+$memberRef(({expr$a.object.type$})(a.object), a.properties)$
+%>
+
+memberRef(o, p) ::= <%
+$if(trunc(p))$
+st.prop(s, g, rc, $memberRef(o, trunc(p))$, $property(last(p))$$location(last(p).loc)$)
+$else$
+st.prop(s, g, rc, $o$, $property(first(p))$$location(last(p).loc)$)
+$endif$
+%>
+
+property(p) ::= <%
+$({property$p.type$})(p.property)$
+%>
+
+propertyPROP(p) ::= <%"$p;format="string"$"%>
+
+propertyPROP_IND(p) ::= <%$({expr$p.type$})(p)$%>
+
+/* 
+returns a template with arguments added 
+todo optimize to remove call to setArgs if there are no args to set
+*/
+exprINCLUDE(a) ::= <<
+(function() {
+    var t = g.getTemplate("$a.templateName;format="string"$", s);
+    t.setArgs($\\$
+    $if(a.argsNamed)${ $else$[ $endif$$\\$
+    $a.args:includeArgs();separator=",\n"$
+    $if(a.argsNamed)$ }$else$ ]$endif$$\\$
+    $if(a.argsPassThrough)$, true$endif$);
+    return t;
+})()
+>>
+
+/* 
+returns a template with arguments added 
+todo optimize to remove call to setArgs if there are no args to set
+*/
+exprINCLUDE_IND(a) ::= <<
+(function() {
+    var name = st.toString(s, g, rc, $({expr$a.expr.type$})(a.expr)$),
+        t = g.getTemplate(name, s);
+    t.setArgs($\\$
+    $if(a.argsNamed)${ $else$[ $endif$$\\$
+    $a.args:includeArgs();separator=",\n"$
+    $if(a.argsNamed)$ }$else$ ]$endif$$\\$
+    $if(a.argsPassThrough)$, true$endif$);
+    return t;
+})()
+>>
+
+includeArgs(a) ::= <%
+$if(a.argName)$
+"$a.argName;format="string"$": $({expr$a.type$})(a)$
+$else$
+$({expr$a.type$})(a)$
+$endif$
+%>
+
+/* returns an array of templates where each one is an element of the input expression applied to the template */
+exprMAP(a) ::= <<
+(function() {
+    var tp = [],
+        attr = $({expr$a.expr.type$})(a.expr)$;
+    $first(a.using):{u|tp.push($({expr$u.type$})(u)$);}$ $!xxx for now only handle one level of : i.e. get rid of call to first, stst may be broken !$
+    return st.map(attr, tp);
+})()
+>>
+
+exprZIP(a) ::= <<
+(function() {
+    var attrs = [];
+    $a.expr:{e|attrs.push($({expr$e.type$})(e)$);};separator="\n"$
+    return st.zipMap(attrs, $({expr$a.using.type$})(a.using)$);
+})()
+>>
+
+exprBOOLEAN(a) ::= <<$a.value$>>
+
+exprSTRING(a) ::= <<"$a.value;format="string"$">>
+
+exprLIST(a) ::= <<[ $a.value:listItem();separator=", "$ ]>>
+
+listItem(item) ::= <<$({expr$item.type$})(item)$>>
+
+exprSUBTEMPLATE(a) ::= <<st.makeSubTemplate(g, function(w, rc) {
+         var g = this.owningGroup,
+             s = this.scope;
+         $strip(a.template):templateElement()$
+     }, [
+        $a.args:formalArgs();separator=",\n"$
+     ])>>
+
+
+exprOptions(opts) ::= <%
+{
+    $opts:{o|$exprOption(o.name, o.value)$};separator=",\n"$
+}
+%>
+
+exprOption(k, v) ::= <%
+    $k;format="key"$: $({expr$v.type$})(v);format="string"$
+%>
+
+valueBOOLEAN(v) ::= <<$v$>>
+
+valueSTRING(v) ::= <<"$v;format="string"$">>
+
+valueANON_TEMPLATE(v) ::= <<st.makeAnonTemplate(group, function(w, rc) {
+        var g = this.owningGroup,
+            s = this.scope;
+        $strip(v):templateElement()$
+    })>>
+
+valueDICT_KEY_VALUE(v) ::= <<st.Dictionary.DICT_KEY_VALUE>>
+
+valueEMPTY_LIST(v) ::= <<[]>>
+
+aliases(a) ::= <<
+$a : { k | $alias(k, a.(k))$ }$
+>>
+
+alias(a, t) ::= <<
+group.addTemplateAlias("$a$", "$t$");
+>>
+
+
+// xxx consider move this to a debug group
+location(l) ::= <%
+$if(l)$
+, { file: gFile, line: $l.line$, column: $l.column$ }
+$endif$
+%>

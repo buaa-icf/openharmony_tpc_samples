@@ -1,0 +1,1 @@
+introduce(name, like) ::= <<my name is $name$.I like $like$!>>
