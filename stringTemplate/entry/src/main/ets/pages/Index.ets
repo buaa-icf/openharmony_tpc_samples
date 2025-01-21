@@ -79,7 +79,7 @@ struct Index {
     try {
       fs.mkdirSync(dir);
     } catch (e) {
-      console.error("mkdir failed with error message: " + e.message + ", error code: " + e.code);
+      hilog.error(0x0001, "StringTemplate TEST:", "mkdir failed with error message: %{public}s", e.message);
     }
     srcFileNameList.forEach( item => {
       let rawfileContent = context.resourceManager.getRawFileContentSync(item);
@@ -141,9 +141,9 @@ struct Index {
           // 输出编译好的文件
           .borderRadius(8)
           .backgroundColor(0x317aff)
-          .width(200)
-          .height(60)
-          .margin({ left: 90, right: 80, top: 20, bottom: 20 })
+          .width("70%")
+          .height("8%")
+          .margin({ left: "15%", right: "15%", top: "1%", bottom: "1%" })
           .onClick(() => {
             let stc = new Stc();
             let stcVersion = stc.version;
@@ -166,9 +166,9 @@ struct Index {
           // 输出编译好的文件
           .borderRadius(8)
           .backgroundColor(0x317aff)
-          .width(200)
-          .height(60)
-          .margin({ left: 90, right: 80, top: 20, bottom: 20 })
+          .width("70%")
+          .height("8%")
+          .margin({ left: "15%", right: "15%", top: "1%", bottom: "1%" })
           .onClick(() => {
             // 1. 将resource/rawfile文件夹下待编译文件传入沙箱 并返回其沙箱路径
             let compilePath = this.pushRawFile('hello.st');
@@ -182,9 +182,9 @@ struct Index {
           // 输出替换好的模版
           .borderRadius(8)
           .backgroundColor(0x317aff)
-          .width(200)
-          .height(60)
-          .margin({ left: 90, right: 80, top: 20, bottom: 20 })
+          .width("70%")
+          .height("8%")
+          .margin({ left: "15%", right: "15%", top: "1%", bottom: "1%" })
           .onClick(() => {
             // 1. 将resource/rawfile文件夹下json文件传入沙箱 并返回json数据
             let data = this.getJson('hello.json');
@@ -197,9 +197,9 @@ struct Index {
           // 输出替换好的模版
           .borderRadius(8)
           .backgroundColor(0x317aff)
-          .width(200)
-          .height(60)
-          .margin({ left: 90, right: 80, top: 20, bottom: 20 })
+          .width("70%")
+          .height("8%")
+          .margin({ left: "15%", right: "15%", top: "1%", bottom: "1%" })
           .onClick(() => {
             // 1. 将resource/rawfile文件夹下json文件传入沙箱 并返回json数据
             let data = this.getJson('hello_empty.json');
@@ -212,9 +212,9 @@ struct Index {
           // 不使用json文件 在工程文件中 输出替换好的模版
           .borderRadius(8)
           .backgroundColor(0x317aff)
-          .width(200)
-          .height(60)
-          .margin({ left: 90, right: 80, top: 20, bottom: 20 })
+          .width("70%")
+          .height("8%")
+          .margin({ left: "15%", right: "15%", top: "1%", bottom: "1%" })
           .onClick(() => {
             let temData = new Object({audience: "wwwww"});
             let temRes = this.processTemplateInCode(helloInstance, 'hello', temData);
@@ -224,9 +224,9 @@ struct Index {
           // 输出编译好的文件
           .borderRadius(8)
           .backgroundColor(0x317aff)
-          .width(200)
-          .height(60)
-          .margin({ left: 90, right: 80, top: 20, bottom: 20 })
+          .width("70%")
+          .height("8%")
+          .margin({ left: "15%", right: "15%", top: "1%", bottom: "1%" })
           .onClick(() => {
             // 1. 将resource/rawfile文件夹下待编译文件传入沙箱 并返回其沙箱路径
             let compilePath = this.pushRawFile('introduce.st');
@@ -240,9 +240,9 @@ struct Index {
           // 不使用json文件 在工程文件中 输出替换好的模版
           .borderRadius(8)
           .backgroundColor(0x317aff)
-          .width(200)
-          .height(60)
-          .margin({ left: 90, right: 80, top: 20, bottom: 20 })
+          .width("70%")
+          .height("8%")
+          .margin({ left: "15%", right: "15%", top: "1%", bottom: "1%" })
           .onClick(() => {
             // 1. 将resource/rawfile文件夹下json文件传入沙箱 并返回json数据
             let data = this.getJson('introduce.json');
@@ -255,9 +255,9 @@ struct Index {
           // 不使用json文件 在工程文件中 输出替换好的模版
           .borderRadius(8)
           .backgroundColor(0x317aff)
-          .width(200)
-          .height(60)
-          .margin({ left: 90, right: 80, top: 20, bottom: 20 })
+          .width("70%")
+          .height("8%")
+          .margin({ left: "15%", right: "15%", top: "1%", bottom: "1%" })
           .onClick(() => {
             let temData = new Object({ name: "LiHua", like: "Orange" });
             let temRes = this.processTemplateInCode(introInstance, 'introduce', temData);
@@ -268,9 +268,9 @@ struct Index {
           // test for dir
           .borderRadius(8)
           .backgroundColor(0x317aff)
-          .width(200)
-          .height(60)
-          .margin({ left: 90, right: 80, top: 20, bottom: 20 })
+          .width("70%")
+          .height("8%")
+          .margin({ left: "15%", right: "15%", top: "1%", bottom: "1%" })
           .onClick(() => {
             // 1. 将resource/rawfile文件夹下待编译文件全部传入沙箱文件夹内 并返回其沙箱路径
             let compilePathList = ['hello.st', 'introduce.st', 'testDir.st'];
@@ -286,9 +286,9 @@ struct Index {
           // test for dir
           .borderRadius(8)
           .backgroundColor(0x317aff)
-          .width(200)
-          .height(60)
-          .margin({ left: 90, right: 80, top: 20, bottom: 20 })
+          .width("70%")
+          .height("8%")
+          .margin({ left: "15%", right: "15%", top: "1%", bottom: "1%" })
           .onClick(() => {
             let temData1 = new Object({name: "LiHua", like: "Orange" });
             let temRes1 = this.processTemplateInCode(processTemplateDir, 'introduce', temData1);
