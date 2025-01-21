@@ -1,3 +1,11 @@
+## v1.0.3
+
+- Optimized the memory problem in the emit message processing process.
+- Added fixed events "ping_pong" and "disconnect" to listen for heartbeat and disconnection events.
+- Added an interface "get_current_state" to get the current state.
+- Simple packaging of demo to match new features and interfaces.
+- Modified the readme file to add descriptions of new interfaces and features.
+
 ## v1.0.3-rc.0
 
 - Fixed the issue of duplicate emit messages.
