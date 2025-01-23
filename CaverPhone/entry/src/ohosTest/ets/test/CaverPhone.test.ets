@@ -15,6 +15,12 @@
 import hilog from '@ohos.hilog';
 import { describe, expect, it } from '@ohos/hypium'
 import caverphone from 'caverphone'
+import { taskpool } from '@kit.ArkTS';
+
+@Concurrent
+function testCaverphone(input: string) {
+  return caverphone(input);
+}
 
 export default function caverPhoneTest() {
 
@@ -22,8 +28,9 @@ export default function caverPhoneTest() {
     const testcases = ieds;
 
     it('test_caverPhone', 0, () => {
-      testcases.forEach((testcase) => {
-        expect(caverphone(testcase.input)).assertEqual(testcase.expected);
+      testcases.forEach(async (testcase) => {
+        let result = await taskpool.execute(testCaverphone, testcase.input);
+        expect(result).assertEqual(testcase.expected);
         hilog.info(0x0000, 'commons-codec CaverPhone', `input=${testcase.input} expected=${testcase.expected} actual=${caverphone(testcase.input)}`);
       });
     })
