@@ -49,7 +49,7 @@ export default function containerTest() {
     })
     it('test02',0, () => {
       let rule = postcss.parse('a { a: 1; b: 2 }').first as postcss.Rule
-      expect(rule).assertDeepEquals('a { a: 1; b: 2 }');
+      expect(rule.toString()).assertEqual('a { a: 1; b: 2 }');
     })
     it('test03',0, () => {
       let rule = postcss.parse('a { a: 1; b: 2 }').first as postcss.Rule
@@ -84,17 +84,22 @@ export default function containerTest() {
       expect(rule.nodes.length).assertDeepEquals(1)
     })
     it('test09',0, () => {
+      let indexes: number[] = []
       let rule = postcss.parse('a { a: 1; b: 2 }').first as postcss.Rule
-      let result =  rule.each((decl, index: number) => {});
+      let result =  rule.each((decl, i) => {
+        indexes.push(i)
+        return false
+      });
+      expect(indexes).assertDeepEquals([0])
       expect(result).assertDeepEquals(false)
     })
     it('test10',0, () => {
       let rule = postcss.parse('a { a: 1; b: 2 }').first as postcss.Rule
-      let decl: postcss.Declaration[] = [];
-      postcss.parse(example).walkDecls((node, i) => {
-        decl.push(node)
+      let decl: string[] = [];
+      rule.walkDecls((node, i) => {
+        decl.push(node.toString())
       })
-      expect(decl).assertDeepEquals(['a', 'a'])
+      expect(decl[0]).assertEqual('a: 1')
     })
     it('test11',0, () => {
       let types: string[] = []
