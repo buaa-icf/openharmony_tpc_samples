@@ -3,6 +3,7 @@
     <oatconfig>
         <filefilterlist>
             <filefilter name="copyrightPolicyFilter" desc="版权头过滤器，按文件名或路径屏蔽无需检查的文件，需要通过desc备注说明原因">
+			    <filteritem type="filepath" name="postcss/library/src/main/ets/components/lib/.*" desc="此文件第三方开源软件源码，不修改版权头"/>
                 <filteritem type="filename" name="hvigorfile.js" desc="IDE生成的默认构建脚本文件，建议无需手动修改"/>
                 <filteritem type="filename" name="hvigorfile.ts" desc="IDE生成的默认构建脚本文件，建议无需手动修改"/>
                 <filteritem type="filename" name="*.json5" desc="IDE生成的构建配置文件，格式为JSON，不支持注释方式添加版权头"/>
@@ -125,6 +126,7 @@
                 <filteritem type="filepath" name="stringTemplate/entry/src/main/resources/rawfile/.*" desc="演示效果素材，不添加许可头"/>
 			</filefilter>
             <filefilter name="defaultPolicyFilter" desc="许可头过滤器，按文件名或路径屏蔽无需检查的文件，需要通过desc备注说明原因">
+			    <filteritem type="filepath" name="postcss/library/src/main/ets/components/lib/.*" desc="原库版权，不修改"/>
                 <filteritem type="filename" name="hvigorfile.js" desc="IDE生成的默认构建脚本文件，建议无需手动修改"/>
                 <filteritem type="filename" name="hvigorfile.ts" desc="IDE生成的默认构建脚本文件，建议无需手动修改"/>
                 <filteritem type="filename" name="*.json5" desc="IDE生成的构建配置文件，格式为JSON，不支持注释方式添加许可头"/>

@@ -1,23 +1,29 @@
-
 'use strict'
 
 import Container from './container'
 
 class AtRule extends Container {
-  constructor(defaults) {
-    super(defaults)
-    this.type = 'atrule'
-  }
+    constructor(defaults) {
+        super(defaults)
+        this.type = 'atrule'
+    }
 
-  append(...children) {
-    if (!this.proxyOf.nodes) this.nodes = []
-    return super.append(...children)
-  }
+    append(...children) {
+        if (!this.proxyOf.nodes) {
+            this.nodes = []
+        }
+        return super.append(...children)
+    }
 
-  prepend(...children) {
-    if (!this.proxyOf.nodes) this.nodes = []
-    return super.prepend(...children)
-  }
+    prepend(...children) {
+        if (!this.proxyOf.nodes) {
+            this.nodes = []
+        }
+        return super.prepend(...children)
+    }
 }
 
+export { AtRule }
+
 export default AtRule
+Container.registerAtRule(AtRule)

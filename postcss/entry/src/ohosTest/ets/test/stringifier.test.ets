@@ -1,26 +1,33 @@
-/*
- * Copyright (C) 2022 Huawei Device Co., Ltd.
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-the Software, and to permit persons to whom the Software is furnished to do so,
-subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+/**
+ * MIT License
+ *
+ * Copyright (c) 2024 Huawei Device Co., Ltd.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the 'Software'), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to all conditions.
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
-import hilog from '@ohos.hilog';
+
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-import postcss from '@ohos/postcss'
-import Stringifier from '../../../../../library/src/main/ets/components/lib/stringifier'
+import { postcss, Rule } from '@ohos/postcss'
+import { ContainerProps } from '@ohos/postcss/src/main/ets/components/lib/container'
+import { AnyNode } from '@ohos/postcss/src/main/ets/components/lib/node'
+import Stringifier from '@ohos/postcss/src/main/ets/components/lib/stringifier'
+
 export default function stringifierTest() {
   describe('StringifierTest', () => {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
@@ -44,22 +51,26 @@ export default function stringifierTest() {
     })
     let str: ESObject
     beforeAll(() => {
-      str = new Stringifier()
+      const myBuilder: postcss.Builder = (part: string, node?: AnyNode, type?: "end" | "start") => {
+        // 实现你的构建逻辑
+        console.log(`Part: ${part}, Node: ${node ? node.toString() : 'none'}, Type: ${type}`);
+      };
+      str = new Stringifier(myBuilder);
     })
 
     it('uses_node_raw',0, () => {
-      let rule = new postcss.Rule({ selector: 'a', raws: { between: '\n' } })
+      let rule = new Rule({ selector: 'a', raws: { between: '\n' } })
       expect(str.raw(rule, 'between', 'beforeOpen')).assertEqual('\n')
     })
 
     it('hacks_before_for_nodes_without_parent',0, () => {
-      let rule = new postcss.Rule({ selector: 'a' })
+      let rule = new Rule({ selector: 'a' })
       expect(str.raw(rule, 'before')).assertEqual('')
     })
 
     it('hacks_before_for_first_node',0, () => {
       let root = new postcss.Root()
-      root.append(new postcss.Rule({ selector: 'a' }))
+      root.append(new Rule({ selector: 'a' }))
       expect(str.raw(root.first, 'before')).assertEqual('')
     })
 
@@ -67,26 +78,26 @@ export default function stringifierTest() {
       let decl = new postcss.Declaration({ prop: 'color', value: 'black' })
       expect(str.raw(decl, 'before')).assertEqual('')
 
-      let rule = new postcss.Rule({ selector: 'a' })
+      let rule = new Rule({ selector: 'a' })
       rule.append(decl)
       expect(str.raw(decl, 'before')).assertEqual('\n    ')
     })
 
     it('uses_defaults_without_parent',0, () => {
-      let rule = new postcss.Rule({ selector: 'a' })
+      let rule = new Rule({ selector: 'a' })
       expect(str.raw(rule, 'between', 'beforeOpen')).assertEqual(' ')
     })
 
     it('uses_defaults_for_unique_node',0, () => {
       let root = new postcss.Root()
-      root.append(new postcss.Rule({ selector: 'a' }))
+      root.append(new Rule({ selector: 'a' }))
       expect(str.raw(root.first, 'between', 'beforeOpen')).assertEqual(' ')
     })
 
     it('clones_raw_from_first_node',0, () => {
       let root = new postcss.Root()
-      root.append(new postcss.Rule({ selector: 'a', raws: { between: '' } }))
-      root.append(new postcss.Rule({ selector: 'b' }))
+      root.append(new Rule({ selector: 'a', raws: { between: '' } }))
+      root.append(new Rule({ selector: 'b' }))
 
       expect(str.raw(root.last, 'between', 'beforeOpen')).assertEqual('')
     })
@@ -94,7 +105,7 @@ export default function stringifierTest() {
     it('indents_by_default',0, () => {
       let root: ESObject = new postcss.Root()
       root.append(new postcss.AtRule({ name: 'page' }))
-      root.first.append(new postcss.Rule({ selector: 'a' }))
+      root.first.append(new Rule({ selector: 'a' }))
       root.first.first.append({ prop: 'color', value: 'black' })
 
       expect(root.toString()).assertEqual(
@@ -133,14 +144,14 @@ export default function stringifierTest() {
 
     it('clones_indent_by_types',0, () => {
       let css: ESObject  = postcss.parse('a {\n  *color: black\n}\n\nb {\n}')
-      css.append(new postcss.Rule({ selector: 'em' }))
+      css.append(new Rule({ selector: 'em' }))
       css.last.append({ prop: 'z-index', value: '1' })
       expect(css.last.first.raw('before')).assertEqual('\n  ')
     })
 
     it('ignores_non_space_symbols_in_indent_cloning',0, () => {
       let css: ESObject = postcss.parse('a {\n  color: black\n}\n\nb {\n}')
-      css.append(new postcss.Rule({ selector: 'em' }))
+      css.append(new Rule({ selector: 'em' }))
       css.last.append({ prop: 'z-index', value: '1' })
 
       expect(css.last.raw('before')).assertEqual('\n\n')
@@ -149,7 +160,7 @@ export default function stringifierTest() {
 
     it('clones_indent_by_before_and_after',0, () => {
       let css: ESObject = postcss.parse('@page{\n\n a{\n  color: black}}')
-      css.first.append(new postcss.Rule({ selector: 'b' }))
+      css.first.append(new Rule({ selector: 'b' }))
       css.first.last.append({ prop: 'z-index', value: '1' })
 
       expect(css.first.last.raw('before')).assertEqual('\n\n ')
@@ -240,7 +251,7 @@ export default function stringifierTest() {
       root1.append(new postcss.AtRule({ name: 'foo' }))
 
       let root2 = new postcss.Root()
-      root2.append(new postcss.Rule({ selector: 'a' }))
+      root2.append(new Rule({ selector: 'a' }))
 
       let root3 = new postcss.Root()
       root3.append(new postcss.Declaration({ prop: 'color', value: 'black' }))
@@ -257,13 +268,13 @@ export default function stringifierTest() {
 
     it('handles_document_with_three_roots_with_before_and_after_raws',0, () => {
       let root1 = new postcss.Root({ raws: { after: 'AFTER_ONE' } })
-      root1.append(new postcss.Rule({ selector: 'a.one' }))
+      root1.append(new Rule({ selector: 'a.one' }))
 
       let root2 = new postcss.Root({ raws: { after: 'AFTER_TWO' } })
-      root2.append(new postcss.Rule({ selector: 'a.two' }))
+      root2.append(new Rule({ selector: 'a.two' }))
 
       let root3 = new postcss.Root({ raws: { after: 'AFTER_THREE' } })
-      root3.append(new postcss.Rule({ selector: 'a.three' }))
+      root3.append(new Rule({ selector: 'a.three' }))
 
       let document = postcss.document()
       document.append(root1)

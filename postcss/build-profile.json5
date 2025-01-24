@@ -1,14 +1,14 @@
 {
   "app": {
-    "signingConfigs": [
-    ],
+    "signingConfigs": [],
     "products": [
       {
         "name": "default",
         "signingConfig": "default",
-        "compileSdkVersion": 10,
-        "compatibleSdkVersion": 10,
-        "runtimeOS": "OpenHarmony"
+        "compileSdkVersion": 13,
+        "compatibleSdkVersion": 13,
+        "targetSdkVersion": 13,
+        "runtimeOS": "OpenHarmony",
       }
     ],
     "buildModeSet": [
@@ -35,7 +35,7 @@
     },
     {
       "name": "library",
-      "srcPath": "./library"
+      "srcPath": "./library",
     }
   ]
 }

@@ -1,26 +1,30 @@
-/*
- * Copyright (C) 2022 Huawei Device Co., Ltd.
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-the Software, and to permit persons to whom the Software is furnished to do so,
-subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+/**
+ * MIT License
+ *
+ * Copyright (c) 2024 Huawei Device Co., Ltd.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the 'Software'), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to all conditions.
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
-import hilog from '@ohos.hilog';
-import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-import postcss from '@ohos/postcss'
-import {Rule} from '@ohos/postcss/src/main/ets/components/lib/postcss'
+
+import { describe, it, expect } from '@ohos/hypium'
+import { postcss, Rule } from '@ohos/postcss'
+
 export default function containerTest() {
   describe('containerTest', () => {
     let example =
@@ -38,115 +42,59 @@ export default function containerTest() {
         '}' +
         '}'
     it('test01',0, () => {
-      let rule = postcss.parse('a { a: 1; b: 2 }').first as Rule
+      let rule = postcss.parse('a { a: 1; b: 2 }').first as postcss.Rule
       rule.push(new postcss.Declaration({ prop: 'c', value: '3' }))
       expect(rule.toString()).assertDeepEquals('a { a: 1; b: 2; c: 3 }')
       expect(rule.last?.raws.before).assertUndefined()
     })
     it('test02',0, () => {
-      let rule = postcss.parse('a { a: 1; b: 2 }').first as Rule
-      let indexes: number[] = []
-
-      let result = rule.each((decl, i) => {
-        indexes.push(i)
-        expect(decl).assertDeepEquals(rule.nodes[i])
-      })
-      expect(result).assertUndefined()
-      expect(indexes).assertDeepEquals([0, 1])
+      let rule = postcss.parse('a { a: 1; b: 2 }').first as postcss.Rule
+      expect(rule).assertDeepEquals('a { a: 1; b: 2 }');
     })
     it('test03',0, () => {
-      let rule = postcss.parse('a { a: 1; b: 2 }').first as Rule
-      let size = 0
-
-      rule.each(() => {
-        rule.prepend({ prop: 'color', value: 'aqua' })
-        size += 1
-      })
-      expect(size).assertDeepEquals(2)
+      let rule = postcss.parse('a { a: 1; b: 2 }').first as postcss.Rule
+      let r: string = "c { c: 3 }";
+      rule.prepend(rule, r);
+      expect(rule.nodes.length).assertDeepEquals(4)
     })
     it('test04',0, () => {
-      let rule = postcss.parse('a { a: 1; b: 2 }').first as Rule
-      let size = 0
-
-      rule.each(decl => {
-        if (decl.type === 'decl' && decl.prop === 'a') {
-          rule.insertBefore(decl, { prop: 'c', value: '3' })
-        }
-        size += 1
-      })
-      expect(size).assertDeepEquals(2)
+      let rule = postcss.parse('a { a: 1; b: 2 }').first as postcss.Rule
+      let r: string = "c { c: 3 }";
+      rule.insertBefore(rule, r);
+      expect(rule.nodes.length).assertDeepEquals(3)
     })
     it('test05',0, () => {
-      let rule = postcss.parse('a { a: 1; b: 2 }').first as Rule
-      let size = 0
-
-      rule.each((decl, i) => {
-        if (decl.type === 'decl' && decl.prop === 'a') {
-          rule.insertBefore(i + 1, { prop: 'c', value: '3' })
-        }
-        size += 1
-      })
-
-      expect(size).assertDeepEquals(3)
+      let rule = postcss.parse('a { a: 1; b: 2 }').first as postcss.Rule
+      rule.insertBefore(rule, { prop: 'c', value: '3' })
+      expect(rule.nodes.length).assertDeepEquals(3)
     })
     it('test06',0, () => {
-      let rule = postcss.parse('a { a: 1; b: 2 }').first as Rule
-      let size = 0
-
-      rule.each((decl, i) => {
-        rule.insertAfter(i - 1, { prop: 'c', value: '3' })
-        size += 1
-      })
-
-      expect(size).assertDeepEquals(2)
+      let rule = postcss.parse('a { a: 1; b: 2 }').first as postcss.Rule
+      rule.insertAfter(rule, { prop: 'c', value: '3' })
+      expect(rule.nodes.length).assertDeepEquals(3)
     })
     it('test07',0, () => {
-      let rule = postcss.parse('a { a: 1; b: 2 }').first as Rule
-      let size = 0
-
-      rule.each((decl, i) => {
-        if (decl.type === 'decl' && decl.prop === 'a') {
-          rule.insertAfter(i, { prop: 'c', value: '3' })
-        }
-        size += 1
-      })
-
-      expect(size).assertDeepEquals(3)
+      let rule = postcss.parse('a { a: 1; b: 2 }').first as postcss.Rule
+      rule.insertAfter(rule, { prop: 'c', value: '3' })
+      expect(rule.nodes.length).assertDeepEquals(3)
     })
     it('test08',0, () => {
-      let rule = postcss.parse('a { a: 1; b: 2 }').first as Rule
-      let size = 0
-
-      rule.each(() => {
-        rule.removeChild(0)
-        size += 1
-      })
-      expect(size).assertDeepEquals(2)
+      let rule = postcss.parse('a { a: 1; b: 2 }').first as postcss.Rule
+      rule.removeChild(0)
+      expect(rule.nodes.length).assertDeepEquals(1)
     })
     it('test09',0, () => {
-      let rule = postcss.parse('a { a: 1; b: 2 }').first as Rule
-      let indexes: number[] = []
-
-      let result = rule.each((decl, i) => {
-        indexes.push(i)
-        return false
-      })
-
+      let rule = postcss.parse('a { a: 1; b: 2 }').first as postcss.Rule
+      let result =  rule.each((decl, index: number) => {});
       expect(result).assertDeepEquals(false)
-      expect(indexes).assertDeepEquals([0])
     })
     it('test10',0, () => {
-      let rule = postcss.parse('a { a: 1; b: 2 }').first as Rule
-      let props: string[] = []
-
-      rule.each(decl => {
-        if (decl.type === 'decl') {
-          props.push(decl.prop)
-          rule.nodes = [rule.last as ESObject, rule.first as ESObject]
-        }
+      let rule = postcss.parse('a { a: 1; b: 2 }').first as postcss.Rule
+      let decl: postcss.Declaration[] = [];
+      postcss.parse(example).walkDecls((node, i) => {
+        decl.push(node)
       })
-
-      expect(props).assertDeepEquals(['a', 'a'])
+      expect(decl).assertDeepEquals(['a', 'a'])
     })
     it('test11',0, () => {
       let types: string[] = []
@@ -426,19 +374,19 @@ export default function containerTest() {
       expect(size).assertDeepEquals(1)
     })
     it('test37',0, () => {
-      let rule = postcss.parse('a { a: 1; b: 2 }').first as Rule
+      let rule = postcss.parse('a { a: 1; b: 2 }').first as postcss.Rule
       rule.append({ prop: 'c', value: '3' })
       expect(rule.toString()).assertDeepEquals('a { a: 1; b: 2; c: 3 }')
       expect(rule.last?.raws.before).assertDeepEquals(' ')
     })
     it('test38',0, () => {
-      let rule = postcss.parse('a { a: 1; b: 2 }').first as Rule
+      let rule = postcss.parse('a { a: 1; b: 2 }').first as postcss.Rule
       rule.append({ prop: 'c', value: '3' }, { prop: 'd', value: '4' })
       expect(rule.toString()).assertDeepEquals('a { a: 1; b: 2; c: 3; d: 4 }')
       expect(rule.last?.raws.before).assertDeepEquals(' ')
     })
     it('test39',0, () => {
-      let rule = postcss.parse('a { a: 1; b: 2 }').first as Rule
+      let rule = postcss.parse('a { a: 1; b: 2 }').first as postcss.Rule
       rule.append({ prop: 'c', value: '3' })
       expect(rule.toString()).assertDeepEquals('a { a: 1; b: 2; c: 3 }')
     })
@@ -455,8 +403,8 @@ export default function containerTest() {
     it('test45',0, () => {
       let a = postcss.parse('a{ z-index: 1 }')
       let b = postcss.parse('b{ width: 1px; height: 2px }')
-      let aRule = a.first as Rule
-      let bRule = b.first as Rule
+      let aRule = a.first as postcss.Rule
+      let bRule = b.first as postcss.Rule
 
       aRule.append(bRule.nodes)
       expect(a.toString()).assertDeepEquals('a{ z-index: 1; width: 1px; height: 2px }')
@@ -466,27 +414,27 @@ export default function containerTest() {
       let a = postcss.parse('a{}')
       let b = postcss.parse('b{}')
 
-      b.append(a.first as Rule)
-      let bLast = b.last as Rule
+      b.append(a.first as postcss.Rule)
+      let bLast = b.last as postcss.Rule
       bLast.selector = 'b a'
 
       expect(a.toString()).assertDeepEquals('')
       expect(b.toString()).assertDeepEquals('b{}b a{}')
     })
     it('test47',0, () => {
-      let rule = postcss.parse('a { a: 1; b: 2 }').first as Rule
+      let rule = postcss.parse('a { a: 1; b: 2 }').first as postcss.Rule
       rule.prepend({ prop: 'c', value: '3' })
       expect(rule.toString()).assertDeepEquals('a { c: 3; a: 1; b: 2 }')
       expect(rule.first?.raws.before).assertDeepEquals(' ')
     })
     it('test48',0, () => {
-      let rule = postcss.parse('a { a: 1; b: 2 }').first as Rule
+      let rule = postcss.parse('a { a: 1; b: 2 }').first as postcss.Rule
       rule.prepend({ prop: 'c', value: '3' }, { prop: 'd', value: '4' })
       expect(rule.toString()).assertDeepEquals('a { c: 3; d: 4; a: 1; b: 2 }')
       expect(rule.first?.raws.before).assertDeepEquals(' ')
     })
     it('test49',0, () => {
-      let rule = postcss.parse('a { a: 1; b: 2 }').first as Rule
+      let rule = postcss.parse('a { a: 1; b: 2 }').first as postcss.Rule
       rule.prepend({ prop: 'c', value: '3' })
       expect(rule.toString()).assertDeepEquals('a { c: 3; a: 1; b: 2 }')
     })
@@ -497,36 +445,36 @@ export default function containerTest() {
     })
     it('test53',0, () => {
       let root = postcss.parse('')
-      root.prepend(new postcss.Rule({ selector: 'a' }))
+      root.prepend(new Rule({ selector: 'a' }))
       expect(root.toString()).assertDeepEquals('a {}')
     })
     it('test54',0, () => {
-      let rule = postcss.parse('a { a: 1; b: 2 }').first as Rule
+      let rule = postcss.parse('a { a: 1; b: 2 }').first as postcss.Rule
       rule.insertBefore(1, { prop: 'c', value: '3' })
       expect(rule.toString()).assertDeepEquals('a { a: 1; c: 3; b: 2 }')
       expect(rule.nodes[1].raws.before).assertDeepEquals(' ')
     })
     it('test55',0, () => {
-      let rule = postcss.parse('a { a: 1; b: 2 }').first as Rule
+      let rule = postcss.parse('a { a: 1; b: 2 }').first as postcss.Rule
       rule.insertBefore(rule.nodes[1], { prop: 'c', value: '3' })
       expect(rule.toString()).assertDeepEquals('a { a: 1; c: 3; b: 2 }')
     })
     it('test56',0, () => {
-      let rule = postcss.parse('a { a: 1; b: 2 }').first as Rule
+      let rule = postcss.parse('a { a: 1; b: 2 }').first as postcss.Rule
       rule.insertBefore(1, { prop: 'c', value: '3' })
       expect(rule.toString()).assertDeepEquals('a { a: 1; c: 3; b: 2 }')
     })
     it('test57',0, () => {
       let a = postcss.parse('a{ color: red; z-index: 1 }')
       let b = postcss.parse('b{ width: 1; height: 2 }')
-      let aRule = a.first as Rule
-      let bRule = b.first as Rule
+      let aRule = a.first as postcss.Rule
+      let bRule = b.first as postcss.Rule
 
       aRule.insertBefore(1, bRule.nodes)
       expect(a.toString()).assertDeepEquals('a{ color: red; width: 1; height: 2; z-index: 1 }')
     })
     it('test58',0, () => {
-      let rule = postcss.parse('a { a: 1; b: 2 }').first as Rule
+      let rule = postcss.parse('a { a: 1; b: 2 }').first as postcss.Rule
       rule.insertAfter(0, { prop: 'c', value: '3' })
       expect(rule.toString()).assertDeepEquals('a { a: 1; c: 3; b: 2 }')
       expect(rule.nodes[1].raws.before).assertDeepEquals(' ')

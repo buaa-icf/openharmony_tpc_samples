@@ -1,0 +1,218 @@
+/**
+ * MIT License
+ *
+ * Copyright (c) 2024 Huawei Device Co., Ltd.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the 'Software'), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to all conditions.
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+/* Reset */
+@import url('./parent.css');
+/* Container */
+.container {
+    width: 80%;
+    margin: 0 auto;
+    overflow: hidden;
+}
+/* Header */
+header {
+    background: #35424a;
+    color: #fff;
+    padding-top: 30px;
+    min-height: 70px;
+    border-bottom: #e8491d 3px solid;
+}
+header a {
+    color: #fff;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 16px;
+}
+header ul {
+    padding: 0;
+    list-style: none;
+}
+header li {
+    display: inline;
+    padding: 0 20px 0 20px;
+}
+header #branding {
+    float: left;
+}
+header #branding h1 {
+    margin: 0;
+}
+header nav {
+    float: right;
+    margin-top: 10px;
+}
+/* Showcase */
+#showcase {
+    min-height: 400px;
+    background: #e8491d;
+    color: #fff;
+    text-align: center;
+    padding-top: 100px;
+}
+#showcase h1 {
+    font-size: 55px;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+#showcase p {
+    font-size: 20px;
+}
+/* Main */
+main {
+    padding: 20px 0;
+}
+/* Sections */
+section {
+    margin-bottom: 20px;
+    padding: 20px;
+    background: #fff;
+    color: #333;
+}
+section h2 {
+    margin-top: 0;
+    padding-top: 20px;
+}
+/* Sidebar */
+aside {
+    background: #35424a;
+    color: #fff;
+    padding: 15px;
+    float: right;
+    width: 30%;
+    margin-top: 20px;
+}
+aside a {
+    color: #fff;
+    text-decoration: none;
+}
+aside a:hover {
+    text-decoration: underline;
+}
+/* Footer */
+footer {
+    background: #35424a;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 20px;
+}
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.btn-primary {
+    background-color: #4CAF50; /* Green */
+    color: white;
+}
+.btn-primary:hover {
+    background-color: #45a049;
+}
+.btn-secondary {
+    background-color: #e8491d; /* Orange */
+    color: white;
+}
+.btn-secondary:hover {
+    background-color: #d3390e;
+}
+.btn-danger {
+    background-color: #f44336; /* Red */
+    color: white;
+}
+.btn-danger:hover {
+    background-color: #da190b;
+}
+/* Forms */
+form {
+    padding: 20px;
+    background: #fff;
+    color: #333;
+    margin-bottom: 20px;
+}
+form .form-group {
+    margin-bottom: 15px;
+}
+form .form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+form .form-group input,
+form .form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+form .form-group input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+form .form-group input[type="submit"]:hover {
+    background-color: #45a049;
+}
+/* Cards */
+.card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background: #fff;
+}
+.card img {
+    width: 100%;
+    border-radius: 5px 5px 0 0;
+}
+.card h3 {
+    margin-top: 0;
+}
+.card p {
+    color: #666;
+}
+/* Utilities */
+.text-center {
+    text-align: center;
+}
+.border-radius-5 {
+    border-radius: 5px;
+}
+/* Responsive */
+@media(max-width: 768px) {
+    .container {
+        width: 100%;
+    }
+    aside {
+        width: 100%;
+        float: none;
+        margin-top: 20px;
+    }
+}
