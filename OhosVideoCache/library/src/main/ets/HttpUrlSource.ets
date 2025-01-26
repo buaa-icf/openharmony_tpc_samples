@@ -269,8 +269,10 @@ export default class HttpUrlSource implements Source {
           if (self?.sourceInfo?.url?.indexOf('ping') != -1) {
             self?.callBack?.onDataEnd();
           } else {
-            if (this.useInterVal && self?.cacheData?.length > 1) {
-              self.isDataFinish = true;
+            if (this.useInterVal) {
+              if (self?.cacheData?.length > 1) {
+                self.isDataFinish = true;
+              }
             } else {
               self.callBack?.onDataEnd();
             }

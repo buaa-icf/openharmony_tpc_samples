@@ -1,3 +1,6 @@
+## 1.0.3-rc.3
+1. Fix the issue of some videos getting stuck during playback
+
 ## 1.0.3-rc.2
 1. Optimize video caching and playback speed
 
