@@ -1,7 +1,7 @@
 [
     {
          "Name": "postcss",
-         "License": "MIT License",
+         "License": "MIT",
          "License File": "LICENSE",
          "Version Number": "8.3.11",
          "Owner" : "xiafeng@huawei.com",
