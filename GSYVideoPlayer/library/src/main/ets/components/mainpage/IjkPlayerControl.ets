@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { Callback } from '@ohos.base';
 import {
   IjkMediaPlayer,
   OnCompletionListener,
@@ -19,7 +20,11 @@ import {
   OnInfoListener,
   OnPreparedListener,
   OnSeekCompleteListener,
-  OnVideoSizeChangedListener
+  OnVideoSizeChangedListener,
+  AudioInterrupt,
+  InterruptEvent,
+  InterruptHintType,
+  DeviceChangeReason
 } from '@ohos/ijkplayer';
 import { LogUtils } from '../utils/LogUtils';
 import { BaseVideoPlayer } from './BaseVideoPlayer';
@@ -188,6 +193,28 @@ export class IjkPlayerControl extends BaseVideoPlayer {
           }
         }
       }
+
+      let event: Callback<InterruptEvent> = (event) => {
+        LogUtils.getInstance().LOGI(`event: ${JSON.stringify(event)}`);
+        if (event.hintType === InterruptHintType.INTERRUPT_HINT_PAUSE) {
+          this.pause();
+        } else if (event.hintType === InterruptHintType.INTERRUPT_HINT_RESUME) {
+
+        } else if (event.hintType === InterruptHintType.INTERRUPT_HINT_STOP) {
+          this.stop();
+        }
+      }
+      this.mIjkMediaPlayer.on('audioInterrupt', event);
+
+      let deviceChangeEvent: Callback<InterruptEvent> = (event) => {
+        LogUtils.getInstance().LOGI(`deviceChange event: ${JSON.stringify(event)}`);
+        if (event.reason === DeviceChangeReason.REASON_NEW_DEVICE_AVAILABLE) {
+        } else if (event.reason === DeviceChangeReason.REASON_OLD_DEVICE_UNAVAILABLE) {
+          this.pause();
+        }
+      }
+      this.mIjkMediaPlayer.on('deviceChange', deviceChangeEvent);
+
       this.mIjkMediaPlayer.setOnInfoListener(mOnInfoListener);
       let mOnErrorListener: OnErrorListener = {
         onError: (what: number, extra: number) => {
@@ -215,6 +242,8 @@ export class IjkPlayerControl extends BaseVideoPlayer {
     LogUtils.getInstance().LOGI("IjkPlayerVideoPlayer ijkStop");
     this.playStatus = PlayStatus.INIT;
     if (this.mIjkMediaPlayer) {
+      this.mIjkMediaPlayer.off("audioInterrupt");
+      this.mIjkMediaPlayer.off("deviceChange");
       this.mIjkMediaPlayer.stop();
       this.mIjkMediaPlayer.release();
     }
@@ -225,5 +254,17 @@ export class IjkPlayerControl extends BaseVideoPlayer {
       return this.mIjkMediaPlayer.getDuration();
     }
     return 0;
+  }
+
+  public on(type: AudioInterrupt,  callback: Callback<InterruptEvent>) : void {
+    if (this.mIjkMediaPlayer) {
+      this.mIjkMediaPlayer?.on(type, callback)
+    }
+  }
+
+  public off(type: AudioInterrupt): void {
+    if (this.mIjkMediaPlayer) {
+      this.mIjkMediaPlayer?.off(type)
+    }
   }
 }
