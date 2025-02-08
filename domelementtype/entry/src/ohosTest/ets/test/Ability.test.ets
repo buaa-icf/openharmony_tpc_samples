@@ -29,16 +29,59 @@ import { ElementType, isTag } from 'domelementtype'
 
 export default function abilityTest() {
     describe('ActsAbilityTest', () => {
-        it('isTag', 0, () => {
+        it('isTag_ElementType.CDATA', 0, () => {
+            expect(isTag({
+                type: ElementType.CDATA
+            })).assertFalse()
+        })
+
+        it('isTag_ElementType.Root', 0, () => {
+            expect(isTag({
+                type: ElementType.Root
+            })).assertFalse()
+        })
+
+        it('isTag_ElementType.Text', 0, () => {
             expect(isTag({
                 type: ElementType.Text
             })).assertFalse()
         })
 
-        it('isNotTag', 0, () => {
+        it('isTag_ElementType.Directive', 0, () => {
+            expect(isTag({
+                type: ElementType.Directive
+            })).assertFalse()
+        })
+
+        it('isTag_ElementType.Script', 0, () => {
+            expect(isTag({
+                type: ElementType.Script
+            })).assertTrue()
+        })
+
+        it('isTag_ElementType.Style', 0, () => {
             expect(isTag({
                 type: ElementType.Style
             })).assertTrue()
+        })
+
+        it('isTag_ElementType.Tag', 0, () => {
+            expect(isTag({
+                type: ElementType.Tag
+            })).assertTrue()
+        })
+
+        it('isTag_ElementType.Doctype', 0, () => {
+            expect(isTag({
+                type: ElementType.Doctype
+            })).assertFalse()
+        })
+
+
+        it('isTag_ElementType.Comment', 0, () => {
+            expect(isTag({
+                type: ElementType.Comment
+            })).assertFalse()
         })
 
         it('testNull', 0, () => {
