@@ -13,8 +13,8 @@
       "value": "label"
     },
     {
-      "name": "Parse_attributes",
-      "value": "解析HTML标签并获取属性"
+      "name": "getNode",
+      "value": "获取节点"
     }
   ]
 }

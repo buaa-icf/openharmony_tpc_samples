@@ -13,8 +13,8 @@
       "value": "label"
     },
     {
-      "name": "Parse_attributes",
-      "value": "Parse HTML tags and retrieve attributes"
+      "name": "getNode",
+      "value": "get node"
     }
   ]
 }
