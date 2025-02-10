@@ -212,7 +212,6 @@ static napi_value changpwd(napi_env env, napi_callback_info info)
  */
 static napi_value registers(napi_env env, napi_callback_info info)
 {
-    LOGI("-->registers: %d", __LINE__);
     size_t argc = 4;
     napi_value args[4] = {nullptr};
 
@@ -431,9 +430,20 @@ static napi_value registerMessageCallback(napi_env env, napi_callback_info info)
     napi_value args[1] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     napi_value on_call_back = args[0];
-    LOGW("SMACK_TAG--------->registerMessageCallback: %p:  %d", on_call_back, __LINE__);
     g_smack->RecvMsg(env, on_call_back);
     
+    return NULL;
+}
+
+static napi_value registerXMLCallback(napi_env env, napi_callback_info info)
+{
+    size_t argc = 1;
+    napi_value args[1] = {nullptr};
+    napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
+    napi_value on_call_back = args[0];
+    LOGW("SMACK_TAG--------->registerXMLCallback: %p:  %d", on_call_back, __LINE__);
+    g_smack->RecvXML(env, on_call_back);
+
     return NULL;
 }
 
@@ -1852,7 +1862,9 @@ static napi_property_descriptor g_desc[] = {
     {"unregisterNonrosterPresenceCallback", nullptr, unregisterNonrosterPresenceCallback, nullptr, nullptr, nullptr,
      napi_default, nullptr},
     {"getRole", nullptr, getRole, nullptr, nullptr, nullptr, napi_default, nullptr},
-    {"getAffiliation", nullptr, getAffiliation, nullptr, nullptr, nullptr, napi_default, nullptr}};
+    {"getAffiliation", nullptr, getAffiliation, nullptr, nullptr, nullptr, napi_default, nullptr},
+    {"registerXMLCallback", nullptr, registerXMLCallback, nullptr, nullptr, nullptr, napi_default, nullptr }
+};
 
 EXTERN_C_START
 static napi_value Init(napi_env env, napi_value exports)

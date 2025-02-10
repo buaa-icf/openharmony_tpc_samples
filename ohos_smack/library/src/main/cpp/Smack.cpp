@@ -196,12 +196,12 @@ static struct ThreadSafeInfoRecvMsg g_threadInfoRecvMsg = {};
 static struct ThreadSafeInfoSub g_threadInfoSub = {};
 static struct ThreadSafeInfoNonrosterPresence g_threadInfoNonrosterPresence = {};
 static napi_threadsafe_function tsfn_recv_msg;
+static napi_threadsafe_function tsfn_recv_xml;
 static napi_threadsafe_function tsfn_sub;
 static napi_threadsafe_function tsfn_nonroster_presence;
 
 static void CallJs(napi_env env, napi_value jsCb, void *context, void *data)
 {
-    LOGI("SMACK_TAG--------->smack CallJs0: %s:  %d", "CallJs: ", __LINE__);
     napi_value undefined;
     napi_status undefinedStatus = napi_get_null(env, &undefined);
     if (undefinedStatus != napi_ok) {
@@ -217,27 +217,36 @@ static void CallJs(napi_env env, napi_value jsCb, void *context, void *data)
         LOGE("SMACK_TAG---------> [Smack.CallJs]arg is null");
         return;
     }
-    LOGI("SMACK_TAG---------> smack CallJs1: %s:  %d", (arg->id).c_str(), __LINE__);
-    LOGI("SMACK_TAG---------> smack CallJs2: %s:  %d", (arg->msg).c_str(), __LINE__);
     napi_create_string_utf8(env, (arg->id).c_str(), NAPI_AUTO_LENGTH, &argv[0]);
-    LOGI("SMACK_TAG---------> smack CallJs3: %s:  %d", "CallJs: ", __LINE__);
     napi_create_string_utf8(env, (arg->msg).c_str(), NAPI_AUTO_LENGTH, &argv[1]);
-    LOGI("SMACK_TAG---------> smack CallJs4: %s:  %d", "CallJs: ", __LINE__);
     napi_create_string_utf8(env, (arg->type).c_str(), NAPI_AUTO_LENGTH, &argv[CALL_JS_ARGV_SIZE_INDEX2]);
-    LOGI("SMACK_TAG------------> smack CallJs4: %s:  %d", "CallJs: ", __LINE__);
     // 调用 js 回调函数
     napi_status status;
     if (jsCb != nullptr && argv != nullptr) {
-        LOGI("SMACK_TAG---------> smack CallJs4: %s:  %d", "CallJs 1 ", __LINE__);
         status = napi_call_function(env, undefined, jsCb, CALL_JS_ARGV_SIZE, argv, &ret);
-        LOGI("SMACK_TAG---------> smack CallJs4: %s:  %d", "CallJs 2 ", __LINE__);
     }
-    LOGI("SMACK_TAG---------> smack CallJs5: %d:  %d", status, __LINE__);
+}
+
+// XML 回调处理函数
+static void CallXMLJs(napi_env env, napi_value jsCb, void *context, void *data)
+{
+    ThreadSafeInfoRecvMsg *arg = (ThreadSafeInfoRecvMsg *)data;
+    if (arg == nullptr) {
+        return;
+    }
+
+    napi_value undefined;
+    napi_get_undefined(env, &undefined);
+
+    napi_value argv[1];
+    napi_create_string_utf8(env, arg->xml.c_str(), NAPI_AUTO_LENGTH, &argv[0]);
+
+    napi_value ret;
+    napi_call_function(env, undefined, jsCb, 1, argv, &ret);
 }
 
 static void CallJs_Sub(napi_env env, napi_value jsCb, void *context, void *data)
 {
-    LOGI("SMACK_TAG---------> smack CallJs_Sub: %s:  %d", "CallJs: ", __LINE__);
     napi_value undefined;
     napi_status undefinedStatus = napi_get_null(env, &undefined);
     if (undefinedStatus != napi_ok) {
@@ -253,13 +262,10 @@ static void CallJs_Sub(napi_env env, napi_value jsCb, void *context, void *data)
         return;
     }
     napi_create_string_utf8(env, (arg->result).c_str(), NAPI_AUTO_LENGTH, &argv);
-    LOGI("SMACK_TAG---------> smack CallJs_Sub: %s:  %d", "CallJs_Sub: ", __LINE__);
     // 调用 js 回调函数
     napi_status status;
     if (jsCb != nullptr && argv != nullptr) {
-        LOGI("SMACK_TAG---------> smack CallJs_Sub: %s:  %d", "CallJs_Sub 1 ", __LINE__);
         status = napi_call_function(env, undefined, jsCb, 1, &argv, &ret);
-        LOGI("SMACK_TAG---------> smack CallJs_Sub: %s:  %d", "CallJs_Sub 2 ", __LINE__);
     }
     
     LOGI("SMACK_TAG---------> smack CallJs_Sub: %d:  %d", status, __LINE__);
@@ -267,7 +273,6 @@ static void CallJs_Sub(napi_env env, napi_value jsCb, void *context, void *data)
 
 static void CallJs_Login(napi_env env, napi_value jsCb, void *context, void *data)
 {
-    LOGI("SMACK_TAG--------->CallJs_Login:", "%{public}d", __LINE__);
     napi_value undefined;
     napi_status undefinedStatus = napi_get_null(env, &undefined);
     if (undefinedStatus != napi_ok) {
@@ -289,53 +294,48 @@ static void CallJs_Login(napi_env env, napi_value jsCb, void *context, void *dat
     // 调用 js 回调函数
     napi_status status;
     if (jsCb != nullptr && argv != nullptr) {
-        LOGI("SMACK_TAG--------->Login CallJs_Login3:  %{public}d", __LINE__);
         status = napi_call_function(env, undefined, jsCb, 1, &argv, &ret);
-        LOGI("SMACK_TAG--------->Login CallJs_Login4:  %{public}d", __LINE__);
     }
     tsfn = nullptr;
-    LOGI("SMACK_TAG--------->Login CallJs_Login5: %d:  %d", status, __LINE__);
 }
 
 void Smack::RecvMsg(napi_env env, napi_value jsCb)
 {
     napi_value workName;
     napi_create_string_utf8(env, "recvMsg", NAPI_AUTO_LENGTH, &workName);
-    LOGI("SMACK_TAG--------->: %s:  %d", "recvMsg: ", __LINE__);
     napi_create_threadsafe_function(env, jsCb, nullptr, workName, 0, 1, nullptr, nullptr, nullptr,
         CallJs, &tsfn_recv_msg);
-    LOGI("SMACK_TAG--------->: %s:  %d", "recvMsg: ", __LINE__);
+}
+
+void Smack::RecvXML(napi_env env, napi_value jsCb)
+{
+    napi_value workName;
+    napi_create_string_utf8(env, "recvXML", NAPI_AUTO_LENGTH, &workName);
+    napi_create_threadsafe_function(env, jsCb, nullptr, workName, 0, 1, nullptr, nullptr, nullptr,
+        CallXMLJs, &tsfn_recv_xml);
 }
 
 void Smack::RecvSubscriptionRequestListener(napi_env env, napi_value jsCb)
 {
     napi_value workName;
     napi_create_string_utf8(env, "recvSubscriptionRequestListener", NAPI_AUTO_LENGTH, &workName);
-    LOGI("SMACK_TAG--------->: %s:  %d", "recvSubscriptionRequestListener: ", __LINE__);
     napi_create_threadsafe_function(env, jsCb, nullptr, workName, 0, 1, nullptr, nullptr, nullptr,
                                     CallJs_Sub, &tsfn_sub);
-    LOGI("SMACK_TAG--------->: %s:  %d", "recvSubscriptionRequestListener: ", __LINE__);
 }
 
 static void CallJsNonrosterPresence(napi_env env, napi_value jsCb, void *context, void *data)
 {
-    LOGI("SMACK_TAG------------> smack CallJs_Sub: %s:  %d", "CallJs: ", __LINE__);
     napi_value undefined;
     napi_value ret;
     napi_value argv[] = {nullptr, nullptr, nullptr};
 
     // 解析参数 data
     ThreadSafeInfoNonrosterPresence *arg = (ThreadSafeInfoNonrosterPresence *)data;
-    LOGI("SMACK_TAG------------> smack CallJsNonrosterPresence: %s:  %d", (arg->from).c_str(), __LINE__);
     napi_create_string_utf8(env, (arg->from).c_str(), NAPI_AUTO_LENGTH, &argv[0]);
-    LOGI("SMACK_TAG------------> smack CallJsNonrosterPresence: %s:  %d", (arg->to).c_str(), __LINE__);
     napi_create_string_utf8(env, (arg->to).c_str(), NAPI_AUTO_LENGTH, &argv[1]);
-    LOGI("SMACK_TAG------------> smack CallJsNonrosterPresence: %s:  %d", (arg->presence).c_str(), __LINE__);
     napi_create_string_utf8(env, (arg->presence).c_str(), NAPI_AUTO_LENGTH, &argv[CALL_JS_ARGV_SIZE_INDEX2]);
-    LOGI("SMACK_TAG------------> smack CallJsNonrosterPresence: %s:  %d", "CallJsNonrosterPresence: ", __LINE__);
     // 调用 js 回调函数
     napi_status status = napi_call_function(env, undefined, jsCb, 3, argv, &ret);
-    LOGI("SMACK_TAG------------> smack CallJsNonrosterPresence: %d:  %d", status, __LINE__);
 }
 
 
@@ -343,10 +343,8 @@ void Smack::RegisterNonrosterPresenceCallback(napi_env env, napi_value jsCb)
 {
     napi_value workName;
     napi_create_string_utf8(env, "registerNonrosterPresenceCallback", NAPI_AUTO_LENGTH, &workName);
-    LOGI("SMACK_TAG------------>: %s:  %d", "registerNonrosterPresenceCallback: ", __LINE__);
     napi_create_threadsafe_function(env, jsCb, nullptr, workName, 0, 1, nullptr, nullptr, nullptr,
                                     CallJsNonrosterPresence, &tsfn_nonroster_presence);
-    LOGI("SMACK_TAG------------>: %s:  %d", "registerNonrosterPresenceCallback: ", __LINE__);
 }
 
 void Smack::UnregisterMessageCallback()
@@ -371,9 +369,7 @@ void Smack::Login(napi_env env, const std::string &jidStr, const std::string &pw
 {
     napi_value workName;
     napi_create_string_utf8(env, "Login", NAPI_AUTO_LENGTH, &workName);
-    LOGI("SMACK_TAG--------->Login 1: %{public}d", __LINE__);
     napi_create_threadsafe_function(env, jsCb, nullptr, workName, 0, 1, nullptr, nullptr, nullptr, CallJs_Login, &tsfn);
-    LOGI("SMACK_TAG--------->Login 2: %{public}d", __LINE__);
 
     JID jid(jidStr);
     m_jid = jid;
@@ -663,9 +659,7 @@ void Smack::handleLog(LogLevel level, LogArea area, const std::string &message)
 void Smack::handleMessage(const Message &msg, MessageSession *session)
 {
     auto body = msg.body();
-    LOGI("SMACK_TAG--------->: %s:  %d", msg.from().full().c_str(),  __LINE__);
     auto type = msg.subtype();
-    LOGI("SMACK_TAG------------>:handleMessage type %d:|  %d", type, __LINE__);
     ThreadSafeInfoRecvMsg *data = &g_threadInfoRecvMsg;
     if (data == nullptr) {
         LOGE("SMACK_TAG---------> [Smack.handleMessage]data is null");
@@ -700,14 +694,16 @@ void Smack::handleMessage(const Message &msg, MessageSession *session)
     }
     
     data->type = message.c_str();
-    LOGI("SMACK_TAG------------>: handleMessage %s:  %d", data->type.c_str(), __LINE__);
-
-    LOGI("SMACK_TAG------------>: handleMessage %s:  %d", (data->msg).c_str(), __LINE__);
     napi_acquire_threadsafe_function(tsfn_recv_msg);
-    LOGI("SMACK_TAG--------->: %s:  %d", "handleMessage: ", __LINE__);
     // 调用主线程函数，传入 Data
     napi_call_threadsafe_function(tsfn_recv_msg, data, napi_tsfn_blocking);
-    LOGI("SMACK_TAG--------->: %s:  %d", "handleMessage: ", __LINE__);
+
+    // 处理XML回调
+    if (tsfn_recv_xml != nullptr) {
+        data->xml = msg.tag()->xml();
+        napi_acquire_threadsafe_function(tsfn_recv_xml);
+        napi_call_threadsafe_function(tsfn_recv_xml, data, napi_tsfn_blocking);
+    }
 }
 
 void Smack::handleMessageEvent(const JID &from, MessageEventType event)
@@ -726,7 +722,6 @@ void Smack::handleMessageSession(MessageSession *session)
         LOGE("SMACK_TAG---------> [Smack.handleMessageSession]session is null");
         return;
     }
-    LOGI("got new session");
     j->disposeMessageSession(m_session);
     m_session = session;
     m_session->registerMessageHandler(this);
@@ -768,13 +763,9 @@ void Smack::handlePresence(const Presence &presence)
         return;
     }
     data->result = presence.presence();
-    LOGI("SMACK_TAG--------->: %s:  %d", "handlePresence: ", __LINE__);
-    LOGI("SMACK_TAG---------> handlePresence 2 行号：", "%{public}d", __LINE__);
     napi_acquire_threadsafe_function(tsfn);
-    LOGI("SMACK_TAG--------->: %s:  %d", "handlePresence: ", __LINE__);
     // 调用主线程函数，传入 Data
     napi_call_threadsafe_function(tsfn, data, napi_tsfn_blocking);
-    LOGI("SMACK_TAG--------->: %s:  %d", "handlePresence: ", __LINE__);
 
     presenceType = presence.presence();
 }
@@ -873,10 +864,8 @@ bool Smack::handleSubscriptionRequest(const JID &jid, const std::string &msg)
     LOGI("smack handleSubscriptionRequest jid:%s msg:%s  %d", jid.full().c_str(), msg.c_str(), __LINE__);
 
     if (tsfn_sub == nullptr) {
-        LOGI("smack handleSubscriptionRequest  %s:  %d", "handleSubscriptionRequest return  ", __LINE__);
         return true;
     }
-    LOGI("smack handleSubscriptionRequest  %s:  %d", "handleSubscriptionRequest work  ", __LINE__);
 
     std::string resultStr = "";
     resultStr.append("{");
@@ -899,12 +888,9 @@ bool Smack::handleSubscriptionRequest(const JID &jid, const std::string &msg)
         return false;
     }
     data->result = resultStr.c_str();
-    LOGI("SMACK_TAG--------->: %s:  %d", "handleSubscriptionRequest: ", __LINE__);
     napi_acquire_threadsafe_function(tsfn_sub);
-    LOGI("SMACK_TAG--------->: %s:  %d", "handleSubscriptionRequest: ", __LINE__);
     // 调用主线程函数，传入 Data
     napi_call_threadsafe_function(tsfn_sub, data, napi_tsfn_blocking);
-    LOGI("SMACK_TAG--------->: %s:  %d", "handleSubscriptionRequest: ", __LINE__);
     return true;
 }
 
@@ -972,14 +958,11 @@ void Smack::handleNonrosterPresence(const Presence &presence)
     LOGI("handleNonrosterPresence received presence from entity not in the roster: %s to %s state: %d\n",
         presence.from().full().c_str(), presence.to().full().c_str(), presence.presence());
 
-    LOGI("SMACK_TAG------------>: handleNonrosterPresence %s:  %d", "ssss ", __LINE__);
     if (tsfn_nonroster_presence != nullptr) {
-        LOGI("SMACK_TAG------------>: handleNonrosterPresence %s:  %d", "ssss1 ", __LINE__);
         ThreadSafeInfoNonrosterPresence *data = &g_threadInfoNonrosterPresence;
         data->from = presence.from().full().c_str();
         data->to = presence.to().full().c_str();
 
-        LOGI("SMACK_TAG------------>: handleNonrosterPresence %s:  %d", "ssss2 ", __LINE__);
         std::string message;
         switch (presence.presence()) {
             case gloox::Presence::PresenceType::Available: // Available
@@ -1013,13 +996,9 @@ void Smack::handleNonrosterPresence(const Presence &presence)
                 break;
         }
         data->presence = message.c_str();
-        LOGI("SMACK_TAG------------>: handleNonrosterPresence %s:  %d", "ssss3 ", __LINE__);
         napi_acquire_threadsafe_function(tsfn_nonroster_presence);
-        LOGI("SMACK_TAG------------>: handleNonrosterPresence %s:  %d", "ssss4 ", __LINE__);
         napi_call_threadsafe_function(tsfn_nonroster_presence, data, napi_tsfn_blocking);
-        LOGI("SMACK_TAG------------>: %s:  %d", "handleNonrosterPresence: ", __LINE__);
     }
-    LOGI("SMACK_TAG------------>: handleNonrosterPresence %s:  %d", "aaa ", __LINE__);
 }
 
 void Smack::handleSubscription(const Subscription &subscription)

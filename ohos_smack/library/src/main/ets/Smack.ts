@@ -203,6 +203,10 @@ export class Smack {
         testNapi.unregisterMessageCallback();
     }
 
+    public static registerXMLCallback(callback: (xml: string) => void): void {
+        testNapi.registerXMLCallback(callback);
+    }
+
     public static onMessageRecived(fromId: number, msg: string): void {
         console.info("onMessageRecived fromId:" + fromId + ", msg:" + msg + ",size ");
     }
