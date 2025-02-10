@@ -38,6 +38,7 @@ export const changeGroup: (oldGroup: string, newGroup: string) => number;
 
 
 export const registerMessageCallback: (register: any) => number;
+export const registerXMLCallback: (register: (xml: string) => void) => number;
 export const register_message: (status: boolean, register: any) => number;
 /**
  * jid: 当前登录用户id标识, roomStr: 房间名称, domain: 标识符, serviceName: 不知道

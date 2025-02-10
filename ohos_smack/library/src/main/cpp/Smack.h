@@ -44,6 +44,7 @@ public:
     Smack();
     void Login(napi_env env, const std::string &jidStr, const std::string &pwd, napi_value jsCbconst);
     void RecvMsg(napi_env env, napi_value jsCb);
+    void RecvXML(napi_env env, napi_value jsCb);
     void RecvSubscriptionRequestListener(napi_env env, napi_value jsCb);
     void RegisterNonrosterPresenceCallback(napi_env env, napi_value jsCb);
     void UnregisterMessageCallback();
@@ -145,6 +146,7 @@ struct ThreadSafeInfoRecvMsg {
     std::string id;
     std::string msg;
     std::string type;
+    std::string xml;
 };
 
 struct ThreadSafeInfoSub {
