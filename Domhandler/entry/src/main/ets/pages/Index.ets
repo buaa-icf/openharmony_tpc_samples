@@ -25,14 +25,30 @@
  */
 
 
-import { Element } from 'domhandler';
 import {
-  Parser,
-  parseDocument,
-  DomUtils,
+  Node,
+  DataNode,
+  Comment,
+  ProcessingInstruction,
+  NodeWithChildren,
+  CDATA,
+  ParentNode,
   Document,
-  createDocumentStream,
-} from '@ohos/htmlparser2'
+  Element,
+  isTag,
+  isCDATA,
+  isText,
+  isComment,
+  isDirective,
+  isDocument,
+  hasChildren,
+  ChildNode,
+  cloneNode,
+  DomHandler
+} from "domhandler"
+
+import { Parser, parseDocument, DomUtils, createDocumentStream, } from '@ohos/htmlparser2'
+import * as helper from './helper'
 
 const html = `
 <!DOCTYPE html>
@@ -66,72 +82,129 @@ const html = `
 </body>
 </html>
 `
+
 @Entry
 @Component
 struct Index {
   @State result: string = "";
-  getResourceString(res:Resource){
+  scroller: Scroller = new Scroller()
+  getResourceString(res: Resource) {
     return getContext().resourceManager.getStringSync(res.id)
   }
+
   build() {
     Row() {
       Column() {
-        Text( this.getResourceString($r('app.string.Analysis_results'))+"\r\n  " + this.result)
-          .fontSize(15)
-          .margin({ top: 55, left: 10, right: 10 })
-        Text($r('app.string.parseDocument'))
-          .width('90%')
-          .height(60)
-          .backgroundColor(0xFFFFFF)
-          .borderRadius(15)
-          .border({ width: 2, color: '#666666', radius: 6 })
-          .fontSize(16)
-          .textAlign(TextAlign.Center)
-          .margin({ top: 20 })
-          .onClick(event => {
-            this.result = ""
-            let dom: Document = parseDocument(html);
-            let element: Element[] = DomUtils.getElementsByTagName('style', dom);
-            let text:string = DomUtils.textContent(element);
-            this.result += "text:" + text + "\r\n"
-            let isTag :boolean= DomUtils.isTag(element[0]);
-            this.result += "isTag:" + isTag + "\r\n"
-            let isCDATA:boolean = DomUtils.isCDATA(element[0]);
-            this.result += "isCDATA:" + isCDATA + "\r\n"
-            let isText:boolean = DomUtils.isText(element[0]);
-            this.result += "isText:" + isText + "\r\n"
-            let isComment :boolean= DomUtils.isComment(element[0]);
-            this.result += "isComment:" + isComment + "\r\n"
-            this.result += "isComment:" + element[0].name + "\r\n"
-          });
+        Scroll(this.scroller) {
+          Text(this.getResourceString($r('app.string.Analysis_results')) + "\r\n  " + this.result)
+            .fontSize(15)
+            .margin({ top: 55, left: 10, right: 10 })
+        }.height("80%")
+
         Column() {
-          Text($r('app.string.createDocumentStream'))
+          Button($r('app.string.createDocumentStream'))
             .width('90%')
             .height(60)
+            .fontColor(Color.Black)
             .backgroundColor(0xFFFFFF)
             .borderRadius(15)
             .fontSize(16)
             .border({ width: 2, color: '#666666', radius: 6 })
-            .textAlign(TextAlign.Center)
             .margin({ top: 20 })
-            .onClick(event => {
+            .onClick(() => {
               this.result = ""
               let parser: Parser = createDocumentStream((error: Error | null, dom: Document) => {
                 if (!!error) {
                   this.result = JSON.stringify(error)
                   return
                 }
-                let element : Element[]= DomUtils.getElementsByTagName('style', dom);
-                let text:string = DomUtils.textContent(element);
+                let element: Element[] = DomUtils.getElementsByTagName('style', dom);
+                let text: string = DomUtils.textContent(element);
                 this.result += "text:" + text + "\r\n"
-                let isTag :boolean= DomUtils.isTag(element[0]);
-                this.result += "isTag:" + isTag + "\r\n"
-                let isCDATA :boolean= DomUtils.isCDATA(element[0]);
-                this.result += "isCDATA:" + isCDATA + "\r\n"
-                let isText:boolean = DomUtils.isText(element[0]);
-                this.result += "isText:" + isText + "\r\n"
-                let isComment :boolean= DomUtils.isComment(element[0]);
-                this.result += "isComment:" + isComment + "\r\n"
+
+                let isTag1: boolean = isTag(element[0]);
+                this.result += "isTag:" + isTag1 + "\r\n"
+
+                let isCDATA1: boolean = isCDATA(element[0]);
+                this.result += "isCDATA:" + isCDATA1 + "\r\n"
+
+                let isText1: boolean = isText(element[0]);
+                this.result += "isText:" + isText1 + "\r\n"
+
+                let isComment1: boolean = isComment(element[0]);
+                this.result += "isComment:" + isComment1 + "\r\n"
+
+                let isDirectiveResult: boolean = isDirective(element[0]);
+                this.result += "isDirective:" + isDirectiveResult + "\r\n"
+
+                let isDocumentResult: boolean = isDocument(element[0]);
+                this.result += "isDocument:" + isDocumentResult + "\r\n"
+
+                let hasChildrenResult: boolean = hasChildren(element[0]);
+                this.result += "hasChildren:" + hasChildrenResult + "\r\n"
+
+                let cloneNodeResult = cloneNode(element[0]);
+                this.result += "cloneNode:" + JSON.stringify(cloneNodeResult) + "\r\n"
+
+                let firstChild: ChildNode | null = element[0].firstChild
+                this.result += "firstChild:" + (firstChild != null) + "\r\n"
+
+                let lastChild: ChildNode | null = element[0].lastChild
+                this.result += "lastChild:" + (lastChild != null) + "\r\n"
+
+                let childNodes: ChildNode[] = element[0].childNodes
+                this.result += "childNodes:" + (childNodes.length > 0) + "\r\n"
+
+                let processingInstruction: ProcessingInstruction = new ProcessingInstruction("china", "Chinese")
+                this.result += "ProcessingInstruction.nodeType:" + (processingInstruction.nodeType) + "\r\n"
+                this.result += "ProcessingInstruction.data:" + (processingInstruction.data) + "\r\n"
+
+                this.result += "Element.nodeType:" + (element[0].nodeType) + "\r\n"
+
+                this.result += "Element.tagName:" + (element[0].tagName) + "\r\n"
+
+                element[0].tagName="style1"
+                this.result += "Element.tagName:" + (element[0].tagName) + "\r\n"
+
+                this.result += "Element.attribs:" + (JSON.stringify(element[0].attributes)) + "\r\n"
+
+                this.result += "Node.parentNode:" + (element[0].parentNode!=null) + "\r\n"
+                this.result += "Node.nextSibling:" + (element[0].nextSibling!=null) + "\r\n"
+                this.result += "Node.previousSibling:" + (element[0].previousSibling!=null) + "\r\n"
+                this.result += "Node.cloneNode:" + (JSON.stringify(element[0].cloneNode())) + "\r\n"
+
+                const rawHtml =
+                  "Xyz <script language= javascript>var foo = '<<bar>>';</script><!--<!-- Waah! -- -->";
+                const handler = new DomHandler((error, dom) => {
+                  if (error) {
+                  } else {
+                    this.result += "DomHandler:" + (dom[0].nodeType) + "\r\n"
+                  }
+                });
+                const parser = new Parser(handler);
+                parser.write(rawHtml);
+                parser.end();
+
+
+                let arr: Array<string> = new Array()
+                const handler1 = helper.getEventCollector((error, actual: ESObject) => {
+                  if (error) {
+                    this.result = this.result + getContext().resourceManager.getStringByNameSync('Parse_fail') + "：" + JSON.stringify(error)
+                    return
+                  }
+
+                  if (actual.$event == "text") {
+                    arr.push(actual.data)
+                  }
+
+                  if (actual.$event == "end") {
+                    this.result += "callback:" + (JSON.stringify(arr)) + "\r\n"
+                  }
+                });
+                const parser1: Parser = new Parser(handler1);
+                parser1.write("china <script type='text/javascript'>const foo = '<<bar>>';</script>",);
+                parser1.end();
+
               });
               parser.write(html);
               parser.end();
@@ -143,3 +216,8 @@ struct Index {
     .height('100%')
   }
 }
+
+
+
+
+
