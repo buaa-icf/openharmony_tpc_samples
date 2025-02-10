@@ -91,6 +91,7 @@ static HOST_DOMAIN: string = "he-202101111234"
   52. Obtain the IP address or domain name: Smack.server()
   53. Accept friend request: Smack.receiveFriends("444@"+Constant.HOST_DOMAIN, "group", msg: "accept")
   54. Reject friend request: Smack.rejectFriends("444@"+Constant.HOST_DOMAIN, "reject")
+  55. Get the complete xml message: Smack.registerXMLCallback((xml)=>{})
   
  ```
 
@@ -151,6 +152,7 @@ static HOST_DOMAIN: string = "he-202101111234"
 52. Obtains the IP address or domain name: `Smack.server();`
 53. Accepts friend request: `Smack.receiveFriends("444@"+Constant.HOST_DOMAIN, "group", msg: "accept")`
 54. Rejects friend request: `Smack.rejectFriends("444@"+Constant.HOST_DOMAIN, "reject")`
+55. Get the complete xml message: `Smack.registerXMLCallback((xml)=>{})`
 
 ## Downloading Source Code
 1. This project depends on the gloox library, which is introduced through `git submodule`. The `--recursive` parameter needs to be added when the code is downloaded.
@@ -165,6 +167,7 @@ This project has been verified in the following versions:
 
 - DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API 11 (4.1.0.36)
 - IDE: DevEco Studio Next Developer Preview2, 4.1.3.600; OpenHarmony SDK: API 12 (5.0.0.19)
+- DevEco Studio: 5.0.1 Release(5.0.5.315), SDK: API 13 Release(5.0.1.115)
 
 ## Directory Structure
 ```
