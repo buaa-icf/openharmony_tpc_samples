@@ -14,6 +14,7 @@ import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from
 import { Constant } from '../../../main/ets/entity/Constant';
 import { FriendsEntity, MUCOperation, MUCRoomAffiliation, MUCRoomRole, PresenceType,
   RoomConfig, Smack } from '@ohos/smack'
+import { RoomInfo } from '@ohos/smack/src/main/ets/RoomInfo';
 export default function abilityTest() {
   let userName :string|null= ''
   let userPassword :string|null= ''
@@ -365,6 +366,14 @@ export default function abilityTest() {
       })
     })
 
+    it('test_register_xml_callback',0,() => {
+      // 注册XML回调
+      Smack.registerXMLCallback((xml) => {
+        // 验证收到的XML数据格式
+        expect(xml).assertContains('<message');  // 验证是否包含message标签
+      })
+    })
+
     it('test_send_msg_second',0, () => {
       let sendMsgResult = Smack.send('test'+ "@" + Constant.HOST_DOMAIN, 'testOthermsg')
       expect(sendMsgResult).assertUndefined();
@@ -617,7 +626,7 @@ export default function abilityTest() {
     })
 
     it('test_getRoom_memeber',0, () => {
-      let roomitems: Array<ESObject> = JSON.parse(Smack.getRoomItems())
+      let roomitems: Array<RoomInfo> = JSON.parse(Smack.getRoomItems())
       expect(roomitems.length).assertLargerOrEqual(0);
     })
 
@@ -762,7 +771,7 @@ export default function abilityTest() {
         if(xmlResult == ""){
           expect(xmlResult).assertEqual("");
         }else{
-          let jsonXML:ESObject = JSON.parse(xmlResult);
+          let jsonXML:RoomInfo = JSON.parse(xmlResult);
           expect(jsonXML.description).assertContain('roomthird');
         }
       });
