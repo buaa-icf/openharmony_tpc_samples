@@ -290,6 +290,7 @@
         </filefilterlist>
         <policylist>
             <policy name="projectPolicy" desc="配置兼容的协议等，需要指定具体的path和通过desc说明原因">
+                <policyitem type="license" name="MIT" path="exprParser/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
 				<policyitem type="license" name="MIT" path="amqplib/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="utilCode/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
 				<policyitem type="license" name="MIT" path="base64-js/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>

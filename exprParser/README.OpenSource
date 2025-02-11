@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "expr-parser",
+        "License": "MIT",
+        "License File": "LICENSE",
+        "Version Number": "1.0.0",
+        "Owner" : "xiafeng@huawei.com",
+        "Upstream URL": "https://github.com/JuneAndGreen/expr-parser",
+        "Description": "this is a simple javascript expression parser"
+    }
+]

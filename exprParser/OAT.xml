@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <oatconfig>
+        <filefilterlist>
+            <filefilter name="binaryFileTypePolicyFilter" desc="Filters for resources files policies">
+                <filteritem type="filename" name="icon.png" desc="hvigor构建脚本，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filename" name="app_icon.png" desc="hvigor构建脚本，DevEco Studio自动生成，不手动修改"/>
+                <filteritem desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" name="hvigor/hvigor-wrapper.js"
+                            type="filepath"/>
+                <filteritem type="filename" name="*.json5" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filepath" name="AppScope/resources/base/media/*.png" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filepath" name="AppScope/*.json5" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filepath" name="entry/.*" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filepath" name="hvigor/hvigor-wrapper.*" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" />
+                <filteritem type="filepath" name="hvigor/hvigor-config.json5" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改" />
+                <filteritem type="filepath" name="entry/src/main/resources/base/media/*.png" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+            </filefilter>
+            <filefilter name="copyrightPolicyFilter" desc="Filters for compatibility，license header policies">
+                <filteritem type="filename" name="hvigor.js" desc="hvigor构建脚本，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filename" name="hvigorfile.*" desc="hvigor构建脚本，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filename" name="*.json5" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filename" name="LICENSE" desc="原开源项目的LICENSE，不手动修改"/>
+                <filteritem type="filename" name="NOTICE" desc="NOTICE文件，不添加版权头"/>
+                <filteritem type="filename" name="hvigorw" desc="hvigorw配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filename" name="hvigorw.bat" desc="hvigorw配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filename" name="hvigor-wrapper.js"
+                            desc="hvigorw配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filepath" name="entry/.*" desc="DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filepath" name="entry/src/mock/.*" desc="DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filepath" name="entry/src/test/.*" desc="DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filepath" name="entry/src/ohosTest/ets/test/.*"
+                            desc="DevEco Studio自动生成，不手动修改"/>
+
+            </filefilter>
+            <filefilter name="defaultPolicyFilter" desc="Filters for compatibility，license header policies">
+            <filteritem type="filename" name="hvigor.js" desc="hvigor构建脚本，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filename" name="hvigorfile.*" desc="hvigor构建脚本，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filename" name="*.json5" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filename" name="LICENSE" desc="原开源项目的LICENSE，不手动修改"/>
+                <filteritem type="filename" name="NOTICE" desc="NOTICE文件，不添加版权头"/>
+                <filteritem type="filename" name="hvigorw" desc="hvigorw配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filename" name="hvigorw.bat" desc="hvigorw配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filename" name="hvigor-wrapper.js"
+                            desc="hvigorw配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filepath" name="entry/src/test/.*" desc="DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filepath" name="entry/src/ohosTest/ets/test/.*"
+                            desc="DevEco Studio自动生成，不手动修改"/>
+            </filefilter>
+        </filefilterlist>
+        <policylist>
+            <policy desc="协议相关策略" name="projectPolicy">
+                <policyitem type="license" name="MIT" path="entry/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+            </policy>
+        </policylist>
+    </oatconfig>
+</configuration>
