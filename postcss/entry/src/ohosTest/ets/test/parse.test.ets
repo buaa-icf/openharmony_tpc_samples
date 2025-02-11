@@ -50,7 +50,7 @@ export default function parseTest() {
       try{
         postcss.parse('@font-face{ font:(\r/*);} body { a: "a*/)} a{}"}')
       } catch (err) {
-        expect(err.message).assertDeepEquals("process is not defined")
+        expect(err.message).assertDeepEquals("<css input>:1:46: Unclosed string")
       }
     })
 
