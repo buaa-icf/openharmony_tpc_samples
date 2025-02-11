@@ -25,6 +25,20 @@ For details about the OpenHarmony ohpm environment configuration, see [OpenHarmo
     escapeUTF8,
     decodeHTMLAttribute
 } from 'entities';
+encode("&#38; ü", EntityLevel.HTML)
+encode("&#38; ü")
+encodeXML("&#38; ü")
+encodeHTML("&#38; ü")
+encodeNonAsciiHTML("&#38; ü")
+decode("asdf &amp; &#xFF; &#xFC; &apos;", EntityLevel.HTML)
+decodeHTMLAttribute("asdf &amp; &#xFF; &#xFC; &apos;")
+decode("asdf &amp; &#xFF; &#xFC; &apos;")
+decodeXML("asdf &amp; &#xFF; &#xFC; &apos;")
+decodeHTML("asdf &amp; &#xFF; &#xFC; &apos;")
+decodeHTMLStrict("asdf &amp; &#xFF")
+escapeUTF8("(&>)")
+escapeAttribute("(&>)")
+escapeText("(&>)")
  ```
 
 ## Available APIs
