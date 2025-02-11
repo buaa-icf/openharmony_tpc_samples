@@ -410,8 +410,8 @@ export default function dommhandler() {
 
     it('nextElementSibling', 0, () => {
       let element: Element[] = DomUtils.getElementsByTagName('style', dom);
-      // let textResult: Element | null = nextElementSibling(element[0]);
-      // expect(textResult != null).assertTrue();
+      let textResult: Element | null = nextElementSibling(element[0]);
+      expect(textResult != null).assertTrue();
     })
 
     it('prevElementSibling', 0, () => {
