@@ -25,6 +25,21 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
     escapeUTF8,
     decodeHTMLAttribute
 } from 'entities';
+
+encode("&#38; ü", EntityLevel.HTML)
+encode("&#38; ü")
+encodeXML("&#38; ü")
+encodeHTML("&#38; ü")
+encodeNonAsciiHTML("&#38; ü")
+decode("asdf &amp; &#xFF; &#xFC; &apos;", EntityLevel.HTML)
+decodeHTMLAttribute("asdf &amp; &#xFF; &#xFC; &apos;")
+decode("asdf &amp; &#xFF; &#xFC; &apos;")
+decodeXML("asdf &amp; &#xFF; &#xFC; &apos;")
+decodeHTML("asdf &amp; &#xFF; &#xFC; &apos;")
+decodeHTMLStrict("asdf &amp; &#xFF")
+escapeUTF8("(&>)")
+escapeAttribute("(&>)")
+escapeText("(&>)")
  ```
 
 ## 接口说明
@@ -57,15 +72,15 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
 9. 解码HTML属性
 
    `decodeHTMLAttribute(str: string): string`
-10. 转义xml中UTF-8编码的转义字符
+10.  转义xml中UTF-8编码的转义字符
 
-   `escapeUTF8: (data: string) => string`
+     `escapeUTF8: (data: string) => string`
 11. 转义HTML属性中需要转义的字符
 
-   `escapeAttribute: (data: string) => string`
+    `escapeAttribute: (data: string) => string`
 12. 转义HTML文本中需要转义的字符
 
-   `escapeText: (data: string) => string`
+    `escapeText: (data: string) => string`
 
 ## 约束与限制
 
