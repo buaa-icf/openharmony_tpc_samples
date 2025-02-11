@@ -24,7 +24,7 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { parseDocument, DomUtils, Document, ElementType, parseDOM } from '@ohos/htmlparser2'
+import { parseDocument, Document, ElementType, parseDOM } from '@ohos/htmlparser2'
 import { Element, ChildNode, ParentNode } from 'domhandler';
 import {
   append,
@@ -231,11 +231,11 @@ struct Index {
 
             this.addLog(content, `innerText = ${innerText(fixture[1])}`);
 
-            let element3: Element[] = DomUtils.getElementsByTagName('style', dom);
+            let element3: Element[] = getElementsByTagName('style', dom);
             let getChildrenResult: ChildNode[] = getChildren(element3[0]);
             this.addLog(content, `getChildren = ${getChildrenResult.length > 0}`);
 
-            let element4: Element[] = DomUtils.getElementsByTagName('style', dom);
+            let element4: Element[] = getElementsByTagName('style', dom);
             let textResult: ParentNode | null = getParent(element4[0].children[0]);
             this.addLog(content, `getParent = ${textResult != null}`);
 
@@ -251,11 +251,11 @@ struct Index {
 
             this.addLog(content, `getName = ${getName(parseDOM("<div>")[0] as Element)}`);
 
-            let element6: Element[] = DomUtils.getElementsByTagName('style', dom);
+            let element6: Element[] = getElementsByTagName('style', dom);
             let textResult6: Element | null = nextElementSibling(element6[0]);
             this.addLog(content, `nextElementSibling = ${textResult6 != null}`);
 
-            let element7: Element[] = DomUtils.getElementsByTagName('style', dom);
+            let element7: Element[] = getElementsByTagName('style', dom);
             let textResult7: Element | null = prevElementSibling(element7[0]);
             this.addLog(content, `prevElementSibling = ${textResult7 != null}`);
 
