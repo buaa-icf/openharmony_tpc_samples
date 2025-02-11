@@ -92,6 +92,10 @@ struct One_chat_main {
         }, 100)
       }
     })
+
+    Smack.registerXMLCallback((xml) => {
+      console.log("registerXMLCallback xml:" + xml)
+    })
   }
   aboutToDisappear() {
     Smack.unregisterInvitationListener();

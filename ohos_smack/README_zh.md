@@ -91,6 +91,7 @@ static HOST_DOMAIN: string = "he-202101111234"
   52. 获取ip或域名 Smack.server();
   53. 接受好友添加请求 Smack.receiveFriends("444@"+Constant.HOST_DOMAIN, "group", msg: "accept")
   54. 拒绝好友添加请求 Smack.rejectFriends("444@"+Constant.HOST_DOMAIN, “reject”)
+  55. 获取消息完整的xml Smack.registerXMLCallback((xml)=>{})
   
  ```
 
@@ -151,6 +152,7 @@ static HOST_DOMAIN: string = "he-202101111234"
 52. 获取ip或域名 `Smack.server();`
 53. 接受好友添加请求 `Smack.receiveFriends("444@"+Constant.HOST_DOMAIN, "group", msg: "accept")`
 54. 拒绝好友添加请求 `Smack.rejectFriends("444@"+Constant.HOST_DOMAIN, “reject”)`
+55. 获取消息完整的xml `Smack.registerXMLCallback((xml)=>{})`
 
 ## 源码下载
 1. 本项目依赖 gloox 库，通过`git submodule`引入，下载代码时需加上`--recursive`参数。
@@ -166,6 +168,7 @@ static HOST_DOMAIN: string = "he-202101111234"
 - DevEco Studio: NEXT Beta1-5.0.3.806, SDK: API12 Release(5.0.0.66)
 - DevEco Studio 版本： 4.1 Canary(4.1.3.317); OpenHarmony SDK:API11 (4.1.0.36)
 - IDE：DevEco Studio Next Developer Preview2, 4.1.3.600; OpenHarmony SDK:API12 (5.0.0.19)
+- DevEco Studio: 5.0.1 Release(5.0.5.315), SDK: API13 Release(5.0.1.115)
 
 ## 目录结构
 ```
