@@ -1,0 +1,28 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "label"
+    },
+    {
+      "name": "parse",
+      "value": "解析器:"
+    },
+    {
+      "name": "stringify",
+      "value": "转回字符串:"
+    },
+    {
+      "name": "isTraversal",
+      "value": "是否为遍历器:"
+    }
+  ]
+}
