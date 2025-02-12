@@ -18,6 +18,7 @@ import { BaseVideoPlayer } from './BaseVideoPlayer';
 import { AvPlayerStatus, Events } from './CommonConstants';
 import { GlobalContext } from './GlobalContext';
 import { PlayStatus } from './CommonConstants';
+import { audio } from '@kit.AudioKit';
 
 export class AvPlayerControl extends BaseVideoPlayer {
   private avPlayer: media.AVPlayer | null = null;
@@ -85,6 +86,25 @@ export class AvPlayerControl extends BaseVideoPlayer {
 
     this.avPlayer.on(Events.ERROR, () => {
       this.onInitStatus();
+    })
+
+    this.avPlayer.on(Events.AUDIO_OUTPUT_DEVICECHANGE_WITH_INFO, (data:audio.AudioStreamDeviceChangeInfo) => {
+      LogUtils.getInstance().LOGI(`avPlayer deviceChange reason = ${data.changeReason}`)
+      if (data.changeReason === audio.AudioStreamDeviceChangeReason.REASON_NEW_DEVICE_AVAILABLE) {
+      } else if (data.changeReason === audio.AudioStreamDeviceChangeReason.REASON_OLD_DEVICE_UNAVAILABLE) {
+        this.pause();
+      }
+    })
+
+    this.avPlayer.on(Events.AUDIO_INTERRUPT, (data: audio.InterruptEvent) => {
+      LogUtils.getInstance().LOGI(`avPlayer audioInterrupt : ${JSON.stringify(data.hintType)}`);
+      if (data.hintType === audio.InterruptHint.INTERRUPT_HINT_PAUSE) {
+        this.pause();
+      } else if (data.hintType === audio.InterruptHint.INTERRUPT_HINT_RESUME) {
+
+      } else if (data.hintType === audio.InterruptHint.INTERRUPT_HINT_STOP) {
+        this.stop();
+      }
     })
   }
 

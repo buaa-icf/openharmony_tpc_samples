@@ -34,6 +34,8 @@ export enum AvPlayerStatus {
 export enum Events {
   STATE_CHANGE = 'stateChange',
   TIME_UPDATE = 'timeUpdate',
+  AUDIO_INTERRUPT = 'audioInterrupt',
+  AUDIO_OUTPUT_DEVICECHANGE_WITH_INFO = 'audioOutputDeviceChangeWithInfo',
   ERROR = 'error'
 }
 
