@@ -24,53 +24,75 @@
 
 import { describe, it, expect } from '@ohos/hypium'
 import { postcss } from '@ohos/postcss'
-
 import Processor from '@ohos/postcss/src/main/ets/components/lib/processor'
+
 export default function postCssTest() {
   describe('postCssTest', () => {
-    it('test01',0, () => {
+    it('test01', 0, () => {
       let processor = postcss()
       expect(processor instanceof Processor).assertDeepEquals(true)
       expect(processor.plugins).assertDeepEquals([])
     })
-    it('test02',0, () => {
-      let a = (): void => {}
-      let b = (): void => {}
+    it('test02', 0, () => {
+      let a = (): void => {
+      }
+      let b = (): void => {
+      }
       expect(postcss(a, b).plugins).assertDeepEquals([a, b])
     })
-    it('test03',0, () => {
-      let a = (): void => {}
-      let b = (): void => {}
+    it('test03', 0, () => {
+      let a = (): void => {
+      }
+      let b = (): void => {
+      }
       expect(postcss([a, b]).plugins).assertDeepEquals([a, b])
     })
-    it('test04',0, () => {
-      let a = (): void => {}
-      let b = (): void => {}
-      let c = (): void => {}
+    it('test04', 0, () => {
+      let a = (): void => {
+      }
+      let b = (): void => {
+      }
+      let c = (): void => {
+      }
       let other = postcss([a, b])
       expect(postcss([other, c]).plugins).assertDeepEquals([a, b, c])
     })
-    it('test05',0, () => {
-      let a = (): void => {}
-      let b = (): void => {}
-      let c = (): void => {}
+    it('test05', 0, () => {
+      let a = (): void => {
+      }
+      let b = (): void => {
+      }
+      let c = (): void => {
+      }
       let other = postcss([a, b])
       let meta = (() => other) as postcss.PluginCreator<void>
       meta.postcss = true
       expect(postcss([other, c]).plugins).assertDeepEquals([a, b, c])
     })
-    it('test06',0, () => {
+    it('test06', 0, () => {
       expect(postcss.parse('').type).assertDeepEquals('root')
     })
-    it('test07',0, () => {
+    it('test07', 0, () => {
       expect(typeof postcss.stringify).assertDeepEquals('function')
     })
-    it('test08',0, () => {
-      let root = postcss.root({ raws: { after: '\n' } })
-      let comment = postcss.comment({ text: 'Example' })
-      let media = postcss.atRule({ name: 'media', params: 'screen' })
-      let rule = postcss.rule({ selector: 'a' })
-      let decl = postcss.decl({ prop: 'color', value: 'black' })
+    it('test08', 0, () => {
+      let root = postcss.root({
+        raws: {
+          after: '\n'
+        }
+      })
+      let comment = postcss.comment({
+        text: 'Example'
+      })
+      let media = postcss.atRule({
+        name: 'media', params: 'screen'
+      })
+      let rule = postcss.rule({
+        selector: 'a'
+      })
+      let decl = postcss.decl({
+        prop: 'color', value: 'black'
+      })
 
       root.append(comment)
       rule.append(decl)
@@ -86,13 +108,25 @@ export default function postCssTest() {
           '}\n'
       )
     })
-    it('test09',0, () => {
+    it('test09', 0, () => {
       let document = postcss.document()
-      let root = postcss.root({ raws: { after: '\n' } })
-      let comment = postcss.comment({ text: 'Example' })
-      let media = postcss.atRule({ name: 'media', params: 'screen' })
-      let rule = postcss.rule({ selector: 'a' })
-      let decl = postcss.decl({ prop: 'color', value: 'black' })
+      let root = postcss.root({
+        raws: {
+          after: '\n'
+        }
+      })
+      let comment = postcss.comment({
+        text: 'Example'
+      })
+      let media = postcss.atRule({
+        name: 'media', params: 'screen'
+      })
+      let rule = postcss.rule({
+        selector: 'a'
+      })
+      let decl = postcss.decl({
+        prop: 'color', value: 'black'
+      })
 
       root.append(comment)
       rule.append(decl)
@@ -109,10 +143,10 @@ export default function postCssTest() {
           '}\n'
       )
     })
-    it('test10',0, () => {
+    it('test10', 0, () => {
       expect(postcss.list.space('a b')).assertDeepEquals(['a', 'b'])
     })
-    it('test11',0, () => {
+    it('test11', 0, () => {
       expect(postcss.list.space('a b')).assertDeepEquals(['a', 'b'])
     })
   })

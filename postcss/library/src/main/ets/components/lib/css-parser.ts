@@ -26,6 +26,8 @@ import postcss from "./postcss";
 import { util } from '@kit.ArkTS';
 
 class CSSParser {
+  static parentStyleSheet_: string;
+
   constructor() {
 
   }
@@ -75,6 +77,13 @@ class CSSParser {
     let decl: postcss.Declaration;
     decl = declaration;
     return decl;
+  }
+
+  static setParentStyleSheet(parentStyleSheet){
+    this.parentStyleSheet_ = parentStyleSheet;
+  }
+  static getParentStyleSheet(): string {
+    return this.parentStyleSheet_;
   }
 }
 

@@ -42,6 +42,9 @@ import ruleTest from './rule.test'
 import stringifierTest from './stringifier.test'
 import tokenizeTest from './tokenize.test'
 import warningTest from './warning.test'
+import documentTest from './document.test'
+import locationTest from './location.test'
+import mapTest from './map.test'
 
 export default function testsuite() {
   abilityTest();
@@ -64,4 +67,7 @@ export default function testsuite() {
   stringifierTest()
   tokenizeTest()
   warningTest()
+  documentTest()
+  locationTest()
+  mapTest()
 }

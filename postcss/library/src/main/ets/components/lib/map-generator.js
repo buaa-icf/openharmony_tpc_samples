@@ -285,10 +285,10 @@ class MapGenerator {
             from = path.dirname(path.resolve(from, this.mapOpts.annotation))
         }
 
-        let path = path.relative(from, file)
-        this.memoizedPaths.set(file, path)
+        let relativePath = path.relative(from, file)
+        this.memoizedPaths.set(file, relativePath)
 
-        return path
+        return relativePath
     }
 
     previous() {

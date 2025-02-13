@@ -30,28 +30,40 @@ export default function resultTest() {
   let processor = new Processor()
   let root = new postcss.Root()
   describe('resultTest', () => {
-    it('test01',0, () => {
+    it('test01', 0, () => {
       let result = new postcss.Result(processor, root, {})
       result.css = 'a{}'
       expect(`${result}`).assertDeepEquals(result.css)
     })
-    it('test02',0, () => {
+    it('test02', 0, () => {
       let css = postcss.parse('a{}')
       let result = new postcss.Result(processor, css, {})
-      result.warn('TT', { node: css.first })
+      result.warn('TT', {
+        node: css.first
+      })
 
       expect(result.messages[0].toString()).assertDeepEquals('<css input>:1:1: TT')
     })
-    it('test03',0, () => {
+    it('test03', 0, () => {
       let result = new postcss.Result(processor, root, {})
       result.messages = [
-        { type: 'warning', text: 'a' },
-        { type: 'custom' },
-        { type: 'warning', text: 'b' }
+        {
+          type: 'warning', text: 'a'
+        },
+        {
+          type: 'custom'
+        },
+        {
+          type: 'warning', text: 'b'
+        }
       ]
       expect(result.warnings()).assertDeepEquals([
-        { type: 'warning', text: 'a' },
-        { type: 'warning', text: 'b' }
+        {
+          type: 'warning', text: 'a'
+        },
+        {
+          type: 'warning', text: 'b'
+        }
       ])
     })
   })

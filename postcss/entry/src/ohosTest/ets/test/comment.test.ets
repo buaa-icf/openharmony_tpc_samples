@@ -27,13 +27,17 @@ import { postcss } from '@ohos/postcss'
 
 export default function commentTest() {
   describe('commentTest', () => {
-    it('test01',0, () => {
-      let comment = new postcss.Comment({ text: 'hi' })
+    it('test01', 0, () => {
+      let comment = new postcss.Comment({
+        text: 'hi'
+      })
       expect(comment.toString()).assertDeepEquals('/* hi */')
     })
-    it('test02',0, () => {
+    it('test02', 0, () => {
       let root = postcss.parse('a{} /*hello*/')
-      let comment = new postcss.Comment({ text: 'world' })
+      let comment = new postcss.Comment({
+        text: 'world'
+      })
       root.append(comment)
 
       expect(root.toString()).assertDeepEquals('a{} /*hello*/ /*world*/')

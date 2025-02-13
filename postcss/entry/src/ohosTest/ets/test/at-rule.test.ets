@@ -27,25 +27,60 @@ import { postcss } from '@ohos/postcss'
 
 export default function atRuleTest() {
   describe('atRuleTest', () => {
-    it('test01',0, () => {
-      let rule = new postcss.AtRule({ name: 'encoding', params: '"utf-8"' })
+    it('test01', 0, () => {
+      let rule = new postcss.AtRule({
+        name: 'encoding', params: '"utf-8"'
+      })
       expect(rule.name).assertDeepEquals('encoding')
     })
-    it('test02',0, () => {
-      let rule = new postcss.AtRule({ name: 'encoding', params: '"utf-8"' })
+    it('test02', 0, () => {
+      let rule = new postcss.AtRule({
+        name: 'encoding', params: '"utf-8"'
+      })
       expect(rule.params).assertDeepEquals('"utf-8"')
     })
-    it('test03',0, () => {
-      let rule = new postcss.AtRule({ name: 'encoding', params: '"utf-8"' })
+    it('test03', 0, () => {
+      let rule = new postcss.AtRule({
+        name: 'encoding', params: '"utf-8"'
+      })
       expect(rule.toString()).assertDeepEquals('@encoding "utf-8"')
     })
-    it('test04',0, () => {
+    it('test04', 0, () => {
+      let rule = new postcss.AtRule()
+      rule.each(() => {
+        throw new Error('AtRule has no children')
+      })
+    })
+    it('test05', 0, () => {
       let rule = new postcss.AtRule()
       expect(rule.nodes).assertUndefined()
+      rule.prepend('color: black')
+      expect(rule.nodes?.length).assertDeepEquals(1)
     })
-    it('test05',0, () => {
-      let rule = new postcss.AtRule({ name: 'page', params: 1, nodes: [] })
+    it('test06', 0, () => {
+      let rule = new postcss.AtRule()
+      expect(rule.nodes).assertUndefined()
+      rule.append('color: black')
+      expect(rule.nodes?.length).assertDeepEquals(1)
+    })
+    it('test07', 0, () => {
+      let rule = new postcss.AtRule({
+        name: 'page', nodes: [], params: 1
+      })
       expect(rule.toString()).assertDeepEquals('@page 1 {}')
+    })
+    it('test08', 0, () => {
+      let root = postcss.parse('@page{}a{}')
+      let rule = new postcss.AtRule({
+        name: 'page', nodes: [], params: 1
+      })
+      root.append(rule)
+      expect(rule.toString()).assertDeepEquals('@page 1{}')
+    })
+    it('test09', 0, () => {
+      let root = postcss.parse('@layer a, b, c;')
+      let layer = root.first as postcss.AtRule
+      expect(layer.nodes).assertUndefined()
     })
   })
 }

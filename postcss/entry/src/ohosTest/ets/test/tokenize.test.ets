@@ -48,7 +48,7 @@ export default function tokenizeTest() {
       // This API supports only one parameter: clear action function.
     })
 
-    let tokenize: (css?: ESObject, opts?: ESObject)=> void = (css?: ESObject, opts?: ESObject): ESObject[]=> {
+    let tokenize: (css?: ESObject, opts?: ESObject) => void = (css?: ESObject, opts?: ESObject): ESObject[] => {
       let processor = tokenizer(new Input(css), opts)
       let tokens: ESObject[] = [];
       while (!processor.endOfFile()) {
@@ -57,13 +57,38 @@ export default function tokenizeTest() {
       return tokens
     }
 
+    it('throws_error_on_unclosed_string', 0, () => {
+      try {
+        tokenize(' "')
+      } catch (err) {
+        expect(err.message).assertEqual('<css input>:1:2: Unclosed string')
+      }
+    })
 
-    it('ignore_unclosed_per_token_request',0, () => {
+    it('throws_error_on_unclosed_comment', 0, () => {
+      try {
+        tokenize(' /*')
+      } catch (err) {
+        expect(err.message).assertEqual('<css input>:1:2: Unclosed comment')
+      }
+    })
+
+    it('throws_error_on_unclosed_url', 0, () => {
+      try {
+        tokenize('url(')
+      } catch (err) {
+        expect(err.message).assertEqual('<css input>:1:4: Unclosed bracket')
+      }
+    })
+
+    it('ignore_unclosed_per_token_request', 0, () => {
       let tokn: (css: ESObject, opts: ESObject) => void = (css: ESObject, opts: ESObject): ESObject[] => {
         let processor = tokenizer(new Input(css), opts)
         let tokens: ESObject[] = []
         while (!processor.endOfFile()) {
-          tokens.push(processor.nextToken({ ignoreUnclosed: true }))
+          tokens.push(processor.nextToken({
+            ignoreUnclosed: true
+          }))
         }
         return tokens
       }
@@ -84,7 +109,7 @@ export default function tokenizeTest() {
       expect(JSON.stringify(tokens)).assertEqual(JSON.stringify(expected))
     })
 
-    it('provides_correct_position',0, () => {
+    it('provides_correct_position', 0, () => {
       let css = 'Three tokens'
       let processor: ESObject = tokenizer(new postcss.Input(css))
       expect(processor.position()).assertEqual(0)

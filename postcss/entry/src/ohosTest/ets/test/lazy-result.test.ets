@@ -29,25 +29,25 @@ import Processor from '@ohos/postcss/src/main/ets/components/lib/processor'
 export default function lazyResultTest() {
   describe('lazyResultTest', () => {
     let processor = new Processor()
-    it('test01',0, () => {
+    it('test01', 0, () => {
       let result = new LazyResult(processor, 'a {}', {})
       expect(result.root.type).assertDeepEquals('root')
     })
-    it('test02',0, () => {
+    it('test02', 0, () => {
       let result = new LazyResult(processor, 'a {}', {})
       expect(result.css).assertDeepEquals('a {}')
     })
-    it('test03', 0,() => {
+    it('test03', 0, () => {
       let result = new LazyResult(processor, 'a {}', {})
       expect(`${result}`).assertDeepEquals(result.css)
     })
 
-    it('test04',0, () => {
+    it('test04', 0, () => {
       let result = new LazyResult(processor, 'a {}', {})
       expect(result.content).assertDeepEquals('a {}')
     })
 
-    it('test05',0, async () => {
+    it('test05', 0, async () => {
       let result1 = await new LazyResult(processor, '', {})
       expect(result1.map).assertUndefined()
 
@@ -55,19 +55,31 @@ export default function lazyResultTest() {
       expect(result2.map).assertUndefined()
     })
 
-    it('test06',0, () => {
-      let result = new LazyResult(processor, 'a {}',  {})
-      expect(result.opts).assertDeepEquals({ })
+    it('test06', 0, () => {
+      let result = new LazyResult(processor, 'a {}', {})
+      expect(result.opts).assertDeepEquals({})
     })
 
-    it('test07',0, () => {
+    it('test07', 0, () => {
       let result = new LazyResult(processor, 'a {}', {})
       expect(result.warnings()).assertDeepEquals([])
     })
 
-    it('test08',0, () => {
+    it('test08', 0, () => {
       let result = new LazyResult(processor, 'a {}', {})
       expect(result.messages).assertDeepEquals([])
+    })
+
+    it('executes_on_finally_callback', 0, () => {
+      let callbackHaveBeenCalled = 0
+      let mockCallback = (): void => {
+        callbackHaveBeenCalled++
+      }
+      return new LazyResult(processor, 'a {}', {})
+        .finally(mockCallback)
+        .then(() => {
+          expect(callbackHaveBeenCalled).assertDeepEquals(1)
+        })
     })
   })
 }

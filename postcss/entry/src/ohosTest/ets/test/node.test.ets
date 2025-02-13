@@ -30,47 +30,66 @@ function stringify(node: postcss.AnyNode, builder: (str: string) => void): void 
     builder(node.selector)
   }
 }
+
 export default function nodeTest() {
   describe('nodeTest', () => {
-    it('test01',0, () => {
-      let rule = new Rule({ selector: 'a' })
+    it('test01', 0, () => {
+      let rule = new Rule({
+        selector: 'a'
+      })
       let error = rule.error('Test')
       expect(error.message).assertDeepEquals('<css input>: Test')
     })
-    it('test02',0, () => {
+    it('test02', 0, () => {
       let root = postcss.parse('a { b: c }')
       let a = root.first as postcss.Rule
       let b = a.first as postcss.Declaration
-      let error = b.error('Bad semicolon', { index: 1 })
+      let error = b.error('Bad semicolon', {
+        index: 1
+      })
       expect(error.showSourceCode(false)).assertDeepEquals(
         '> 1 | a { b: c }\n' + '    |      ^'
       )
     })
-    it('test03',0, () => {
+    it('test03', 0, () => {
       let root = postcss.parse('a { color: x red }')
       let a = root.first as postcss.Rule
       let color = a.first as postcss.Declaration
-      let error = color.error('Wrong color', { word: 'x' })
+      let error = color.error('Wrong color', {
+        word: 'x'
+      })
       expect(error.showSourceCode(false)).assertDeepEquals(
         '> 1 | a { color: x red }\n' + '    |            ^'
       )
     })
-    it('test04',0, () => {
+    it('test04', 0, () => {
       let root = postcss.parse('a { color: red\n           x }')
       let a = root.first as postcss.Rule
       let color = a.first as postcss.Declaration
-      let error = color.error('Wrong color', { word: 'x' })
+      let error = color.error('Wrong color', {
+        word: 'x'
+      })
       expect(error.showSourceCode(false)).assertDeepEquals(
         '  1 | a { color: red\n' + '> 2 |            x }\n' + '    |            ^'
       )
     })
-    it('test05',0, () => {
-      let rule = new Rule({ selector: 'a' })
-      rule.append({ prop: 'color', value: 'black' })
-      rule.append({ prop: 'width', value: '1px' })
-      rule.append({ prop: 'height', value: '1px' })
+    it('test05', 0, () => {
+      let rule = new Rule({
+        selector: 'a'
+      })
+      rule.append({
+        prop: 'color', value: 'black'
+      })
+      rule.append({
+        prop: 'width', value: '1px'
+      })
+      rule.append({
+        prop: 'height', value: '1px'
+      })
 
-      let node = new postcss.Declaration({ prop: 'min-width', value: '1px' })
+      let node = new postcss.Declaration({
+        prop: 'min-width', value: '1px'
+      })
       let width = rule.nodes[1]
       let result = width.replaceWith(node)
 
@@ -83,61 +102,88 @@ export default function nodeTest() {
           '}'
       )
     })
-    it('test06',0, () => {
+    it('test06', 0, () => {
       let root = new postcss.Root()
-      root.append(new postcss.AtRule({ name: 'import', params: '"a.css"' }))
+      root.append(new postcss.AtRule({
+        name: 'import', params: '"a.css"'
+      }))
 
       let a = new postcss.Root()
-      a.append(new Rule({ selector: 'a' } as postcss.Rule.RuleProps))
-      a.append(new Rule({ selector: 'b' }))
+      a.append(new Rule({
+        selector: 'a'
+      } as postcss.Rule.RuleProps))
+      a.append(new Rule({
+        selector: 'b'
+      }))
 
       root.first?.replaceWith(a)
       expect(root.toString()).assertDeepEquals('a {}\nb {}')
     })
-    it('test07',0, () => {
+    it('test07', 0, () => {
       let css = postcss.parse('a{one:1;two:2}')
       let a = css.first as postcss.Rule
       let one = a.first as postcss.Declaration
-      let result = one.replaceWith({ prop: 'fix', value: 'fixed' })
+      let result = one.replaceWith({
+        prop: 'fix', value: 'fixed'
+      })
 
       expect(result.prop).assertDeepEquals('one')
       expect(result.parent).assertUndefined()
       expect(css.toString()).assertDeepEquals('a{fix:fixed;two:2}')
     })
-    it('test08',0, () => {
+    it('test08', 0, () => {
       class b {
-        prop:string = ''
-        value:string = ''
+        prop: string = ''
+        value: string = ''
       }
+
       let css = postcss.parse('a{one:1;two:2}')
       let a = css.first as postcss.Rule
       let one = a.first as postcss.Declaration
-      let beforeDecl:b={ prop: 'fix1', value: 'fixedOne' }
-      let afterDecl:b ={ prop: 'fix2', value: 'fixedTwo' }
+      let beforeDecl: b = {
+        prop: 'fix1', value: 'fixedOne'
+      }
+      let afterDecl: b = {
+        prop: 'fix2', value: 'fixedTwo'
+      }
       one.replaceWith(beforeDecl, one, afterDecl)
 
       expect(css.toString()).assertDeepEquals('a{fix1:fixedOne;one:1;fix2:fixedTwo;two:2}')
     })
-    it('test09',0, () => {
-      expect(new Rule({ selector: 'a' }).toString(stringify)).assertDeepEquals('a')
+    it('test09', 0, () => {
+      expect(new Rule({
+        selector: 'a'
+      }).toString(stringify)).assertDeepEquals('a')
     })
-    it('test10',0, () => {
-      expect(new Rule({ selector: 'a' }).toString({ stringify })).assertDeepEquals('a')
+    it('test10', 0, () => {
+      expect(new Rule({
+        selector: 'a'
+      }).toString({
+        stringify
+      })).assertDeepEquals('a')
     })
-    it('test11',0, () => {
-      let decl = new postcss.Declaration({ prop: 'white-space', value: 'overflow-wrap' })
+    it('test11', 0, () => {
+      let decl = new postcss.Declaration({
+        prop: 'white-space', value: 'overflow-wrap'
+      })
 
       expect(decl.prop).assertDeepEquals('white-space')
       expect(decl.value).assertDeepEquals('overflow-wrap')
 
-      decl.assign({ prop: 'word-wrap', value: 'break-word' })
+      decl.assign({
+        prop: 'word-wrap', value: 'break-word'
+      })
 
       expect(decl.prop).assertDeepEquals('word-wrap')
       expect(decl.value).assertDeepEquals('break-word')
     })
-    it('test12',0, () => {
-      let rule = new Rule({ selector: 'a' })
-      rule.append({ prop: 'color', value: '/**/black' })
+    it('test12', 0, () => {
+      let rule = new Rule({
+        selector: 'a'
+      })
+      rule.append({
+        prop: 'color', value: '/**/black'
+      })
 
       let clone = rule.clone()
 
@@ -145,59 +191,91 @@ export default function nodeTest() {
 
       expect(rule.first?.parent).assertDeepEquals(rule)
       expect(clone.first?.parent).assertDeepEquals(clone)
+      clone.append({
+        prop: 'z-index', value: '1'
+      })
+      expect(rule.nodes.length).assertDeepEquals(1)
     })
-    it('test13',0, () => {
-      let rule = new Rule({ selector: 'a' })
-      let clone = rule.clone({ selector: 'b' })
+    it('test13', 0, () => {
+      let rule = new Rule({
+        selector: 'a'
+      })
+      let clone = rule.clone({
+        selector: 'b'
+      })
       expect(clone.selector).assertDeepEquals('b')
     })
-    it('test14',0, () => {
+    it('test14', 0, () => {
       let css = postcss.parse('@page 1{a{color:black;}}')
       expect(css.clone().toString()).assertDeepEquals('@page 1{a{color:black;}}')
     })
-    it('test15',0, () => {
-      let rule = new Rule({ selector: 'a', raws: { after: '' } })
-      rule.append({ prop: 'z-index', value: '1', raws: { before: '' } })
+    it('test15', 0, () => {
+      let rule = new Rule({
+        selector: 'a', raws: {
+          after: ''
+        }
+      })
+      rule.append({
+        prop: 'z-index', value: '1', raws: {
+          before: ''
+        }
+      })
 
-      let result = rule.first?.cloneBefore({ value: '2' } as ESObject)
+      let result = rule.first?.cloneBefore({
+        value: '2'
+      } as ESObject)
 
       expect(result).assertDeepEquals(rule.first)
       expect(rule.toString()).assertDeepEquals('a {z-index: 2;z-index: 1}')
     })
-    it('test16',0, () => {
-      let rule = new Rule({ selector: 'a', raws: { after: '' } })
-      rule.append({ prop: 'z-index', value: '1', raws: { before: '' } })
+    it('test16', 0, () => {
+      let rule = new Rule({
+        selector: 'a', raws: {
+          after: ''
+        }
+      })
+      rule.append({
+        prop: 'z-index', value: '1', raws: {
+          before: ''
+        }
+      })
 
-      let result = rule.first?.cloneAfter({ value: '2' } as ESObject)
+      let result = rule.first?.cloneAfter({
+        value: '2'
+      } as ESObject)
 
       expect(result).assertDeepEquals(rule.last)
       expect(rule.toString()).assertDeepEquals('a {z-index: 1;z-index: 2}')
     })
-    it('test19',0, () => {
+    it('test19', 0, () => {
       let css = postcss.parse('a{one:1;two:2}')
       let a = css.first as postcss.Rule
       expect(a.first?.next()).assertDeepEquals(a.last)
       expect(a.last?.next()).assertUndefined()
     })
-    it('test20',0, () => {
+    it('test20', 0, () => {
       let css = postcss.parse('')
       expect(css.next()).assertUndefined()
     })
-    it('test21',0, () => {
+    it('test21', 0, () => {
       let css = postcss.parse('a{one:1;two:2}')
       let a = css.first as postcss.Rule
       expect(a.last?.prev()).assertDeepEquals(a.first)
       expect(a.first?.prev()).assertUndefined()
     })
-    it('test22',0, () => {
+    it('test22', 0, () => {
       let css = postcss.parse('')
       expect(css.prev()).assertUndefined()
     })
-    it('test23',0, () => {
-      let rule = new Rule({ selector: 'a' })
-      rule.append({ prop: 'color', value: 'b' })
+    it('test23', 0, () => {
+      let rule = new Rule({
+        selector: 'a'
+      })
+      rule.append({
+        prop: 'color', value: 'b'
+      })
 
-      let json:ESObject = rule.toJSON() as ESObject
+      let json: ESObject = rule.toJSON() as ESObject
       expect(json.parent).assertUndefined()
       expect(json.nodes[0].parent).assertUndefined()
 
@@ -207,8 +285,8 @@ export default function nodeTest() {
           '],"inputs":[]}'
       )
     })
-    it('test24',0, () => {
-      let root:ESObject = new postcss.Root() as ESObject
+    it('test24', 0, () => {
+      let root: ESObject = new postcss.Root() as ESObject
       root._cache = [1]
       root._hack = {
         toJSON() {
@@ -225,27 +303,35 @@ export default function nodeTest() {
         _cache: [1]
       })
     })
-    it('test25',0, () => {
-      let rule = new Rule({ selector: 'a' })
-      expect(rule.raw('before')).assertDeepEquals('')
+    it('test25', 0, () => {
+      let rule = new Rule({
+        selector: 'a'
       })
-    it('test26',0, () => {
+      expect(rule.raw('before')).assertDeepEquals('')
+    })
+    it('test26', 0, () => {
       let css = postcss.parse('@page{a{color:black}}')
       let page = css.first as postcss.AtRule
       let a = page.first as postcss.Rule
       let color = a.first as postcss.Declaration
       expect(color.root()).assertDeepEquals(css)
     })
-    it('test27',0, () => {
-      let rule = new Rule({ selector: 'a' })
-      rule.append({ prop: 'color', value: 'black' })
+    it('test27', 0, () => {
+      let rule = new Rule({
+        selector: 'a'
+      })
+      rule.append({
+        prop: 'color', value: 'black'
+      })
       expect(rule.first?.root()).assertDeepEquals(rule)
     })
-    it('test28',0, () => {
-      let rule = new Rule({ selector: 'a' })
+    it('test28', 0, () => {
+      let rule = new Rule({
+        selector: 'a'
+      })
       expect(rule.root()).assertDeepEquals(rule)
     })
-    it('test29',0, () => {
+    it('test29', 0, () => {
       let css = postcss.parse('@page{a{color:black}}')
       css.cleanRaws()
 
@@ -261,23 +347,423 @@ export default function nodeTest() {
       expect(color.raws.between).assertUndefined()
       expect(page.raws.after).assertUndefined()
     })
-    it('test31',0, () => {
+    it('test31', 0, () => {
       let css = postcss.parse('a {  one: X  }')
       let a = css.first as postcss.Rule
       let one = a.first as postcss.Declaration
-      expect(one.positionInside(6)).assertDeepEquals({ line: 1, column: 12 })
+      expect(one.positionInside(6)).assertDeepEquals({
+        line: 1, column: 12
+      })
     })
-    it('test32',0, () => {
+    it('test32', 0, () => {
       let css = postcss.parse('a {\n  one: X}')
       let a = css.first as postcss.Rule
       let one = a.first as postcss.Declaration
-      expect(one.positionInside(6)).assertDeepEquals({ line: 2, column: 9 })
+      expect(one.positionInside(6)).assertDeepEquals({
+        line: 2, column: 9
+      })
     })
-    it('test33',0, () => {
+    it('test33', 0, () => {
       let css = postcss.parse('a {\n\tone: 1\n\t\tX\n3}')
       let a = css.first as postcss.Rule
       let one = a.first as postcss.Declaration
-      expect(one.positionInside(10)).assertDeepEquals({ line: 3, column: 4 })
+      expect(one.positionInside(10)).assertDeepEquals({
+        line: 3, column: 4
+      })
+    })
+    it('remove()_removes_node_from_parent', 0, () => {
+      let rule = new Rule({
+        selector: 'a'
+      })
+      let decl = new postcss.Declaration({
+        prop: 'color', value: 'black'
+      })
+      rule.append(decl)
+
+      decl.remove()
+      expect(rule.nodes.length).assertDeepEquals(0)
+      expect(decl.parent).assertUndefined()
+    })
+    it('before()_insert_before_current_node', 0, () => {
+      let rule = new Rule({
+        raws: {
+          after: ''
+        }, selector: 'a'
+      })
+      rule.append({
+        prop: 'z-index', raws: {
+          before: ''
+        }, value: '1'
+      })
+
+      let result = rule.first?.before('color: black')
+      expect(result).assertDeepEquals(rule.last)
+      expect(rule.toString()).assertDeepEquals('a {color: black;z-index: 1}')
+    })
+    it('after()_insert_after_current_node', 0, () => {
+      let rule = new Rule({
+        raws: {
+          after: ''
+        }, selector: 'a'
+      })
+      rule.append({
+        prop: 'z-index', raws: {
+          before: ''
+        }, value: '1'
+      })
+
+      let result = rule.first?.after('color: black')
+      expect(result).assertDeepEquals(rule.first)
+      expect(rule.toString()).assertDeepEquals('a {z-index: 1;color: black}')
+    })
+    it('root()_returns_root_in_document', 0, () => {
+      let css = new postcss.Document({
+        nodes: [postcss.parse('@page{a{color:black}}')]
+      })
+
+      let root = css.first as postcss.Root
+      let page = root.first as postcss.AtRule
+      let a = page.first as Rule
+      let color = a.first as postcss.Declaration
+      expect(color.root()).assertDeepEquals(root)
+    })
+    it('root()_on_root_in_document_returns_same_root', 0, () => {
+      let document = new postcss.Document()
+      let root = new postcss.Root()
+      document.append(root)
+      expect(document.first?.root()).assertDeepEquals(root)
+    })
+    it('root()_returns_self_on_document', 0, () => {
+      let document = new postcss.Document()
+      expect(document.root()).assertDeepEquals(document)
+    })
+    it('cleanRaws()_keeps_between_on_request', 0, () => {
+      let css = postcss.parse('@page{a{color:black}}')
+      css.cleanRaws(true)
+      expect(css.toString()).assertDeepEquals('@page{\n    a{\n        color:black\n    }\n}')
+      let page = css.first as postcss.AtRule
+      let a = page.first as Rule
+      let color = a.first as postcss.Declaration
+      expect(!page.raws.between).assertEqual(true)
+      expect(!color.raws.between).assertEqual(false)
+
+      expect(page.raws.before).assertUndefined()
+      expect(color.raws.before).assertUndefined()
+      expect(page.raws.after).assertUndefined()
+    })
+    it('positionInside()_returns_position_after_AST_mutations', 0, () => {
+      let css = postcss.parse('a {\n\tone: 1;\n\ttwo: 2;}')
+      let a = css.first as Rule
+      let one = a.first as postcss.Declaration
+      let two = one.next() as postcss.Declaration
+      expect(a.positionInside(15)).assertDeepEquals({
+        line: 3, column: 3
+      })
+      expect(two.positionInside(1)).assertDeepEquals({
+        line: 3, column: 3
+      })
+
+      one.remove()
+      expect(a.positionInside(15)).assertDeepEquals({
+        column: 3, line: 3
+      })
+      expect(two.positionInside(1)).assertDeepEquals({
+        line: 3, column: 3
+      })
+    })
+    it('positionBy()_returns_position_for_word', 0, () => {
+      let css = postcss.parse('a {  one: X  }')
+      let a = css.first as Rule
+      let one = a.first as postcss.Declaration
+      expect(one.positionBy({
+        word: 'one'
+      })).assertDeepEquals({
+        column: 6, line: 1
+      })
+      expect(one.positionBy({
+        word: 'X'
+      })).assertDeepEquals({
+        column: 11, line: 1
+      })
+      expect(one.positionBy({
+        word: '}'
+      })).assertDeepEquals({
+        column: 6, line: 1, offset: 5
+      })
+    })
+    it('positionBy()_returns_position_for_word_after_AST_mutations', 0, () => {
+      let css = postcss.parse('a {\n\tone: 1;\n\ttwo: 2;}')
+      let a = css.first as Rule
+      let one = a.first as postcss.Declaration
+      let two = one.next() as postcss.Declaration
+      expect(a.positionBy({
+        word: 'two'
+      })).assertDeepEquals({
+        column: 2, line: 3
+      })
+      expect(two.positionBy({
+        word: 'two'
+      })).assertDeepEquals({
+        column: 2, line: 3
+      })
+
+      one.remove()
+      expect(a.positionBy({
+        word: 'two'
+      })).assertDeepEquals({
+        column: 2, line: 3
+      })
+      expect(two.positionBy({
+        word: 'two'
+      })).assertDeepEquals({
+        column: 2, line: 3
+      })
+    })
+    it('positionBy()_returns_position_for_index', 0, () => {
+      let css = postcss.parse('a {  one: X  }')
+      let a = css.first as Rule
+      let one = a.first as postcss.Declaration
+      expect(one.positionBy({
+        index: 1
+      })).assertDeepEquals({
+        column: 7, line: 1
+      })
+    })
+    it('positionBy()_returns_position_for_index_after_AST_mutations', 0, () => {
+      let css = postcss.parse('a {\n\tone: 1;\n\ttwo: 2;}')
+      let a = css.first as Rule
+      let one = a.first as postcss.Declaration
+      let two = one.next() as postcss.Declaration
+      expect(a.positionBy({
+        index: 15
+      })).assertDeepEquals({
+        column: 3, line: 3
+      })
+      expect(two.positionBy({
+        index: 1
+      })).assertDeepEquals({
+        column: 3, line: 3
+      })
+
+      one.remove()
+      expect(a.positionBy({
+        index: 15
+      })).assertDeepEquals({
+        column: 3, line: 3
+      })
+      expect(two.positionBy({
+        index: 1
+      })).assertDeepEquals({
+        column: 3, line: 3
+      })
+    })
+    it('rangeBy()_returns_range_for_word', 0, () => {
+      let css = postcss.parse('a {  one: X  }')
+      let a = css.first as Rule
+      let one = a.first as postcss.Declaration
+      expect(one.rangeBy({
+        word: 'one'
+      })).assertDeepEquals({
+        end: {
+          column: 9, line: 1
+        },
+        start: {
+          column: 6, line: 1
+        }
+      })
+    })
+    it('rangeBy()_returns_range_for_word_even_after_AST_mutations', 0, () => {
+      let css = postcss.parse('a {\n\tone: 1;\n\ttwo: 2;}')
+      let a = css.first as Rule
+      let one = a.first as postcss.Declaration
+      let two = one.next() as postcss.Declaration
+      expect(a.rangeBy({
+        word: 'two'
+      })).assertDeepEquals({
+        end: {
+          column: 5, line: 3
+        },
+        start: {
+          column: 2, line: 3
+        }
+      })
+      expect(two.rangeBy({
+        word: 'two'
+      })).assertDeepEquals({
+        end: {
+          column: 5, line: 3
+        },
+        start: {
+          column: 2, line: 3
+        }
+      })
+
+      one.remove()
+      expect(a.rangeBy({
+        word: 'two'
+      })).assertDeepEquals({
+        end: {
+          column: 5, line: 3
+        },
+        start: {
+          column: 2, line: 3
+        }
+      })
+      expect(two.rangeBy({
+        word: 'two'
+      })).assertDeepEquals({
+        end: {
+          column: 5, line: 3
+        },
+        start: {
+          column: 2, line: 3
+        }
+      })
+    })
+    it('rangeBy()_returns_range_for_word_even_after_AST_mutations_when_offsets_are_missing', 0, () => {
+      let css = postcss.parse('a {\n\tone: 1;\n\ttwo: 2;}')
+      let a = css.first as Rule
+      let one = a.first as postcss.Declaration
+      let two = one.next() as postcss.Declaration
+
+      if (a.source?.start) {
+        a.source.start.offset = 0;
+      }
+      if (a.source?.end) {
+        a.source.end.offset = 0;
+      }
+      if (two.source?.start) {
+        two.source.start.offset = 0;
+      }
+      if (two.source?.end) {
+        two.source.end.offset = 0;
+      }
+      expect(a.rangeBy({
+        word: 'two'
+      })).assertDeepEquals({
+        end: {
+          column: 10, line: 3
+        },
+        start: {
+          column: 1, line: 1
+        }
+      })
+      expect(two.rangeBy({
+        word: 'two'
+      })).assertDeepEquals({
+        end: {
+          column: 9, line: 3
+        },
+        start: {
+          column: 2, line: 3
+        }
+      })
+
+      one.remove()
+      expect(a.rangeBy({
+        word: 'two'
+      })).assertDeepEquals({
+        end: {
+          column: 10, line: 3
+        },
+        start: {
+          column: 1, line: 1
+        }
+      })
+      expect(two.rangeBy({
+        word: 'two'
+      })).assertDeepEquals({
+        end: {
+          column: 9, line: 3
+        },
+        start: {
+          column: 2, line: 3
+        }
+      })
+    })
+    it('rangeBy()_returns_range_for_index_and_endIndex', 0, () => {
+      let css = postcss.parse('a {  one: X  }')
+      let a = css.first as Rule
+      let one = a.first as postcss.Declaration
+      expect(one.rangeBy({
+        endIndex: 3, index: 1
+      })).assertDeepEquals({
+        end: {
+          column: 9, line: 1
+        },
+        start: {
+          column: 7, line: 1
+        }
+      })
+    })
+    it('rangeBy()_returns_range_for_index_and_endIndex_when_offsets_are_missing', 0, () => {
+      let css = postcss.parse('a {  one: X  }')
+      let a = css.first as Rule
+      let one = a.first as postcss.Declaration
+
+      if (one.source?.start) {
+        one.source.start.offset = 0;
+      }
+      if (one.source?.end) {
+        one.source.end.offset = 0;
+      }
+      expect(one.rangeBy({
+        endIndex: 3, index: 1
+      })).assertDeepEquals({
+        end: {
+          column: 9, line: 1
+        },
+        start: {
+          column: 7, line: 1
+        }
+      })
+    })
+    it('rangeBy()_returns_range_for_index_and_endIndex_after_AST_mutations', 0, () => {
+      let css = postcss.parse('a {\n\tone: 1;\n\ttwo: 2;}')
+      let a = css.first as Rule
+      let one = a.first as postcss.Declaration
+      let two = one.next() as postcss.Declaration
+      expect(a.rangeBy({
+        endIndex: 17, index: 15
+      })).assertDeepEquals({
+        end: {
+          column: 5, line: 3
+        },
+        start: {
+          column: 3, line: 3
+        }
+      })
+      expect(two.rangeBy({
+        endIndex: 3, index: 1
+      })).assertDeepEquals({
+        end: {
+          column: 5, line: 3
+        },
+        start: {
+          column: 3, line: 3
+        }
+      })
+      one.remove()
+      expect(a.rangeBy({
+        endIndex: 17, index: 15
+      })).assertDeepEquals({
+        end: {
+          column: 5, line: 3
+        },
+        start: {
+          column: 3, line: 3
+        }
+      })
+      expect(two.rangeBy({
+        endIndex: 3, index: 1
+      })).assertDeepEquals({
+        end: {
+          column: 5, line: 3
+        },
+        start: {
+          column: 3, line: 3
+        }
+      })
     })
   })
 }

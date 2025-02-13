@@ -27,55 +27,78 @@ import { postcss } from '@ohos/postcss'
 
 export default function list2Test() {
   describe('list2Test', () => {
-    it('test01',0, () => {
+    it('test01', 0, () => {
       expect(postcss.list.space('a b')).assertDeepEquals(['a', 'b'])
     })
 
-    it('test02',0, () => {
+    it('test02', 0, () => {
       expect(postcss.list.space(' a  b ')).assertDeepEquals(['a', 'b'])
     })
 
-    it('test03',0, () => {
+    it('test03', 0, () => {
       expect(postcss.list.space('"a b\\"" \'\'')).assertDeepEquals(['"a b\\""', "''"])
     })
 
-    it('test04',0, () => {
+    it('test04', 0, () => {
       expect(postcss.list.space('f( )) a( () )')).assertDeepEquals(['f( ))', 'a( () )'])
     })
 
-    it('test05',0, () => {
+    it('test05', 0, () => {
       expect(postcss.list.space('a\\ b')).assertDeepEquals(['a\\ b'])
     })
 
-    it('test06',0, () => {
+    it('test06', 0, () => {
       let space = postcss.list.space
       expect(space('a b')).assertDeepEquals(['a', 'b'])
     })
 
-    it('test07',0, () => {
+    it('test07', 0, () => {
       expect(postcss.list.comma('a, b')).assertDeepEquals(['a', 'b'])
     })
 
-    it('test08',0, () => {
+    it('test08', 0, () => {
       expect(postcss.list.comma('a, b,')).assertDeepEquals(['a', 'b', ''])
     })
 
-    it('test09',0, () => {
+    it('test09', 0, () => {
       expect(postcss.list.comma('"a,b\\"", \'\'')).assertDeepEquals(['"a,b\\""', "''"])
     })
 
-    it('test10',0, () => {
+    it('test10', 0, () => {
       expect(postcss.list.comma('f(,)), a(,(),)')).assertDeepEquals(['f(,))', 'a(,(),)'])
     })
 
-    it('test11',0, () => {
+    it('test11', 0, () => {
       expect(postcss.list.comma('a\\, b')).assertDeepEquals(['a\\, b'])
     })
 
-    it('test12',0, () => {
+    it('test12', 0, () => {
       let comma = postcss.list.comma
       expect(comma('a, b')).assertDeepEquals(['a', 'b'])
     })
+    it('comma()_splits_list_by_spaces', 0, () => {
+      expect(postcss.list.comma('a, b')).assertDeepEquals(['a', 'b'])
+    })
 
+    it('comma()_adds_last_empty', 0, () => {
+      expect(postcss.list.comma('a, b,')).assertDeepEquals(['a', 'b', ''])
+    })
+
+    it('comma()_checks_quotes', 0, () => {
+      expect(postcss.list.comma('"a,b\\"", \'\'')).assertDeepEquals(['"a,b\\""', "''"])
+    })
+
+    it('comma()_checks_functions', 0, () => {
+      expect(postcss.list.comma('f(,)), a(,(),)')).assertDeepEquals(['f(,))', 'a(,(),)'])
+    })
+
+    it('comma()_does_not_split_on_escaped_commas', 0, () => {
+      expect(postcss.list.comma('a\\, b')).assertDeepEquals(['a\\, b'])
+    })
+
+    it('comma()_works_from_variable', 0, () => {
+      let comma = postcss.list.comma
+      expect(comma('a, b')).assertDeepEquals(['a', 'b'])
+    })
   })
 }
