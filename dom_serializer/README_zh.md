@@ -29,7 +29,14 @@ import { Document, DomUtils, parseDocument } from "@ohos/htmlparser2";
 ## 接口说明
 
 1. 将DOM节点或DOM节点数组呈现为字符串
+
    `render(node: AnyNode | ArrayLike<AnyNode>, options?: DomSerializerOptions): string`
+
+| 参数名     | 类型                                                          | 必填 | 说明                                                                                                                                                                                        |
+|---------|-------------------------------------------------------------| ---- |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| node    | AnyNode &#124;  ArrayLike<AnyNode>                                           | 是   | AnyNode对象或者数组                                                                                                                                                                             |
+| options | DomSerializerOptions                                           | 否   | 序列化选项  <br/>{ emptyAttrs：打印空的自闭合标签。<br/>selfClosingTags：将输入视为XML文档；启用emptyAttrs和selfClosingTags选项。<br/>xmlMode：对在HTML或XML中保留的字符进行编码。<br/>encodeEntities：从解析中继承的选项；将用作encodeEntities的默认值。} |
+
 
 ## 约束与限制
 
