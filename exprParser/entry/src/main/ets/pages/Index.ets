@@ -44,7 +44,7 @@ struct Index {
   build() {
     RelativeContainer() {
       Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
-        Button('a.value + 12 - (2 * 14 / 4)', { type: ButtonType.Normal, stateEffect: true })
+        Button($r('app.string.parseOperators'), { type: ButtonType.Normal, stateEffect: true })
           .borderRadius(8)
           .backgroundColor(0x317aff)
           .width("60%")
@@ -65,7 +65,7 @@ struct Index {
             hilog.info(0x0001, "expr-parser TEST:", "value = 1 result: %{public}d", res1);
             hilog.info(0x0001, "expr-parser TEST:", "value = 3 result: %{public}d", res2);
           })
-        Button('a.list[i + 1]', { type: ButtonType.Normal, stateEffect: true })
+        Button($r('app.string.parseArray'), { type: ButtonType.Normal, stateEffect: true })
           .borderRadius(8)
           .backgroundColor(0x317aff)
           .width("60%")
@@ -86,7 +86,7 @@ struct Index {
             hilog.info(0x0001, "expr-parser TEST:", "result1: %{public}d", res1);
             hilog.info(0x0001, "expr-parser TEST:", "result2: %{public}d", res2);
           })
-        Button('a % b == 1 && c % d == 2 && e % f != 1', { type: ButtonType.Normal, stateEffect: true })
+        Button($r('app.string.parseBool'), { type: ButtonType.Normal, stateEffect: true })
           .borderRadius(8)
           .backgroundColor(0x317aff)
           .width("60%")
@@ -102,7 +102,7 @@ struct Index {
             let res: number = expr({ a: 21, b: 2, c: 8, d: 3, e: 3, f: 3 }); // true
             hilog.info(0x0001, "expr-parser TEST:", "result: %{public}s", res);
           })
-        Button('"\\u2605haha"', { type: ButtonType.Normal, stateEffect: true })
+        Button($r('app.string.parseNomal'), { type: ButtonType.Normal, stateEffect: true })
           .borderRadius(8)
           .backgroundColor(0x317aff)
           .width("60%")
@@ -117,7 +117,7 @@ struct Index {
             let expr: Function = new Expression('"\\u2605haha"').parse();
             hilog.info(0x0001, "expr-parser TEST:", "result: %{public}s", expr({}));
           })
-        Button('error', { type: ButtonType.Normal, stateEffect: true })
+        Button($r('app.string.error'), { type: ButtonType.Normal, stateEffect: true })
           .borderRadius(8)
           .backgroundColor(0x317aff)
           .width("60%")
