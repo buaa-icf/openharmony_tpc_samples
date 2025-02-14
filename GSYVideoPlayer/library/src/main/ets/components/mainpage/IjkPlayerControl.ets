@@ -37,7 +37,7 @@ export class IjkPlayerControl extends BaseVideoPlayer {
 
   public constructor() {
     super();
-    this.mIjkMediaPlayer = IjkMediaPlayer.getInstance();
+    this.mIjkMediaPlayer = new IjkMediaPlayer();
   }
 
   isPlaying(): boolean {
