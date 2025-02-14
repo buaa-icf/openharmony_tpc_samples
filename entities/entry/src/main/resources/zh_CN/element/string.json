@@ -11,6 +11,62 @@
     {
       "name": "EntryAbility_label",
       "value": "entities"
+    },
+    {
+      "name": "escapeText",
+      "value": "转义文本"
+    },
+    {
+      "name": "escapeAttribute",
+      "value": "转义属性"
+    },
+    {
+      "name": "escapeUTF8",
+      "value": "转义UTF8"
+    },
+    {
+      "name": "decodeHTMLStrict",
+      "value": "严格解码HTML"
+    },
+    {
+      "name": "decodeHTML",
+      "value": "解码HTML"
+    },
+    {
+      "name": "decodeXML",
+      "value": "解码XML"
+    },
+    {
+      "name": "decodeNoOption",
+      "value": "无选项解码"
+    },
+    {
+      "name": "decodeHTMLAttribute",
+      "value": "解码HTML属性"
+    },
+    {
+      "name": "decode",
+      "value": "解码"
+    },
+    {
+      "name": "encodeNonAsciiHTML",
+      "value": "编码非ASCII字符为HTML"
+    },
+    {
+      "name": "encodeHTML",
+      "value": "编码为HTML"
+    },
+    {
+      "name": "encodeXML",
+      "value": "编码为XML"
+    },
+    {
+      "name": "encodeNoOptions",
+      "value": "无选项编码"
+    },
+    {
+      "name": "encode",
+      "value": "编码"
     }
   ]
 }
