@@ -11,6 +11,62 @@
     {
       "name": "EntryAbility_label",
       "value": "entities"
+    },
+    {
+      "name": "escapeText",
+      "value": "escapeText"
+    },
+    {
+      "name": "escapeAttribute",
+      "value": "escapeAttribute"
+    },
+    {
+      "name": "escapeUTF8",
+      "value": "escapeUTF8"
+    },
+    {
+      "name": "decodeHTMLStrict",
+      "value": "decodeHTMLStrict"
+    },
+    {
+      "name": "decodeHTML",
+      "value": "decodeHTML"
+    },
+    {
+      "name": "decodeXML",
+      "value": "decodeXML"
+    },
+    {
+      "name": "decodeNoOption",
+      "value": "decodeNoOption"
+    },
+    {
+      "name": "decodeHTMLAttribute",
+      "value": "decodeHTMLAttribute"
+    },
+    {
+      "name": "decode",
+      "value": "decode"
+    },
+    {
+      "name": "encodeNonAsciiHTML",
+      "value": "encodeNonAsciiHTML"
+    },
+    {
+      "name": "encodeHTML",
+      "value": "encodeHTML"
+    },
+    {
+      "name": "encodeXML",
+      "value": "encodeXML"
+    },
+    {
+      "name": "encodeNoOptions",
+      "value": "encodeNoOptions"
+    },
+    {
+      "name": "encode",
+      "value": "encode"
     }
   ]
 }

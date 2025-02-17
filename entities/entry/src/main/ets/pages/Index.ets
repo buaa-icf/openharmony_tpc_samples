@@ -48,7 +48,7 @@ struct Index {
         Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start }) {
             List({ initialIndex: 0 }) {
                 ListItem() {
-                    Button('encode', { type: ButtonType.Normal })
+                    Button($r('app.string.encode'), { type: ButtonType.Normal })
                         .fontSize(18)
                         .fontColor('#000')
                         .height(50)
@@ -62,7 +62,7 @@ struct Index {
                 }
 
                 ListItem() {
-                    Button('encodeNoOptions', { type: ButtonType.Normal })
+                    Button($r('app.string.encodeNoOptions'), { type: ButtonType.Normal })
                         .fontSize(18)
                         .fontColor('#000')
                         .height(50)
@@ -76,7 +76,7 @@ struct Index {
                 }
 
                 ListItem() {
-                    Button('encodeXML', { type: ButtonType.Normal })
+                    Button($r('app.string.encodeXML'), { type: ButtonType.Normal })
                         .fontSize(18)
                         .fontColor('#000')
                         .height(50)
@@ -90,7 +90,7 @@ struct Index {
                 }
 
                 ListItem() {
-                    Button('encodeHTML', { type: ButtonType.Normal })
+                    Button($r('app.string.encodeHTML'), { type: ButtonType.Normal })
                         .fontSize(18)
                         .fontColor('#000')
                         .height(50)
@@ -104,7 +104,7 @@ struct Index {
                 }
 
                 ListItem() {
-                    Button('encodeNonAsciiHTML', { type: ButtonType.Normal })
+                    Button($r('app.string.encodeNonAsciiHTML'), { type: ButtonType.Normal })
                         .fontSize(18)
                         .fontColor('#000')
                         .height(50)
@@ -118,7 +118,7 @@ struct Index {
                 }
 
                 ListItem() {
-                    Button('decode', { type: ButtonType.Normal })
+                    Button($r('app.string.decode'), { type: ButtonType.Normal })
                         .fontSize(18)
                         .fontColor('#000')
                         .height(50)
@@ -132,7 +132,7 @@ struct Index {
                 }
 
                 ListItem() {
-                    Button('decodeHTMLAttribute', { type: ButtonType.Normal })
+                    Button($r('app.string.decodeHTMLAttribute'), { type: ButtonType.Normal })
                         .fontSize(18)
                         .fontColor('#000')
                         .height(50)
@@ -146,7 +146,7 @@ struct Index {
                 }
 
                 ListItem() {
-                    Button('decodeNoOption', { type: ButtonType.Normal })
+                    Button($r('app.string.decodeNoOption'), { type: ButtonType.Normal })
                         .fontSize(18)
                         .fontColor('#000')
                         .height(50)
@@ -160,7 +160,7 @@ struct Index {
                 }
 
                 ListItem() {
-                    Button('decodeXML', { type: ButtonType.Normal })
+                    Button($r('app.string.decodeXML'), { type: ButtonType.Normal })
                         .fontSize(18)
                         .fontColor('#000')
                         .height(50)
@@ -174,7 +174,7 @@ struct Index {
                 }
 
                 ListItem() {
-                    Button('decodeHTML', { type: ButtonType.Normal })
+                    Button($r('app.string.decodeHTML'), { type: ButtonType.Normal })
                         .fontSize(18)
                         .fontColor('#000')
                         .height(50)
@@ -188,7 +188,7 @@ struct Index {
                 }
 
                 ListItem() {
-                    Button('decodeHTMLStrict', { type: ButtonType.Normal })
+                    Button($r('app.string.decodeHTMLStrict'), { type: ButtonType.Normal })
                         .fontSize(18)
                         .fontColor('#000')
                         .height(50)
@@ -202,7 +202,7 @@ struct Index {
                 }
 
                 ListItem() {
-                    Button('escapeUTF8', { type: ButtonType.Normal })
+                    Button($r('app.string.escapeUTF8'), { type: ButtonType.Normal })
                         .fontSize(18)
                         .fontColor('#000')
                         .height(50)
@@ -216,7 +216,7 @@ struct Index {
                 }
 
                 ListItem() {
-                    Button('escapeAttribute', { type: ButtonType.Normal })
+                    Button($r('app.string.escapeAttribute'), { type: ButtonType.Normal })
                         .fontSize(18)
                         .fontColor('#000')
                         .height(50)
@@ -230,7 +230,7 @@ struct Index {
                 }
 
                 ListItem() {
-                    Button('escapeText', { type: ButtonType.Normal })
+                    Button($r('app.string.escapeText'), { type: ButtonType.Normal })
                         .fontSize(18)
                         .fontColor('#000')
                         .height(50)
