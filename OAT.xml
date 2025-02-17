@@ -296,6 +296,7 @@
 				<policyitem type="license" name="MIT" path="base64-js/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
 				<policyitem type="license" name="MIT" path="utf8/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="mime/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+			    <policyitem type="license" name="ISC" path=".*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="当前项目兼容此协议"/>
 			    <policyitem type="license" name="ISC" path="msgpack-javascript/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
 				<policyitem type="license" name="ISC" path="CaverPhone/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="pcx-js/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>

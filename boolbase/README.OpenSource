@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "boolbase",
+        "License": "ISC",
+        "License File": "LICENSE",
+        "Version Number": "1.0.0",
+        "Owner" : "xiafeng@huawei.com",
+        "Upstream URL": "https://github.com/fb55/boolbase",
+        "Description": "provides two basic functions, one that always returns true (trueFunc) and one that always returns false (falseFunc)."
+    }
+]
