@@ -15,6 +15,7 @@
 import { LogUtils } from '../utils/LogUtils';
 import { IVideoPlayer } from './IVideoPlayer';
 import { IjkPlayerControl } from './IjkPlayerControl';
+import { PlayStatus } from './CommonConstants';
 
 @Component
 export struct IjkVideoPlayer {
@@ -36,6 +37,12 @@ export struct IjkVideoPlayer {
           this.initDelayPlay(context);
         })
         .onDestroy(() => {
+        })
+        .onVisibleAreaChange([0.0, 1.0], (isExpanding: boolean, currentRatio: number) => {
+          if(isExpanding === false && currentRatio === 0 && this.mIVideoPlayer?.playStatus === PlayStatus.PLAY) {
+            LogUtils.getInstance().LOGI("onVisibleAreaChange mIVideoPlayer pause xComponentId: "+ this.xComponentId);
+            this.mIVideoPlayer?.pause()
+          }
         })
         .width("100%")
         .height("100%")

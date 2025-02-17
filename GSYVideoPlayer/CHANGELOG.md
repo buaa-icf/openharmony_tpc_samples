@@ -1,9 +1,5 @@
-## 1.0.2-rc.0
-
+## 1.0.1-rc.2
 1.adds focus change pause and device disconnection pause functions
-
-## 1.0.1
-1.发布正式版本
 
 ## 1.0.1-rc.1
 
