@@ -34,19 +34,27 @@ const check_sequence = sequence("2n+3");
 @Entry
 @Component
 struct Index {
+  getResourceString(res: Resource) {
+    return getContext().resourceManager.getStringSync(res.id)
+  }
+
   build() {
     RelativeContainer() {
       Column() {
-        Text("nth-check: " + check(0) + " " + check(1) + " " + check(2) + " " + check(3))
+        Text(this.getResourceString($r('app.string.nth_check')) + check(0) + " " + check(1) + " " + check(2) + " " +
+        check(3))
           .fontSize(20)
-        Text("nth-check: " + "check_compile " + check_compile(0) + " " + check_compile(1) + " " + check_compile(2))
+        Text(this.getResourceString($r('app.string.compile')) + check_compile(0) + " " + check_compile(1) + " " +
+        check_compile(2) + " " + check_compile(3))
           .fontSize(20)
-        Text("nth-check: " + "check_parse " + JSON.stringify(parse("2n+3")))
+        Text(this.getResourceString($r('app.string.parse')) + JSON.stringify(parse("3n+5")))
           .fontSize(20)
-        Text("nth-check: " + "check_generate " + check_generate() + " " + check_generate() + " " + check_generate() +
+        Text(this.getResourceString($r('app.string.generate')) + check_generate() + " " + check_generate() + " " +
+        check_generate() +
           " " + check_generate())
           .fontSize(20)
-        Text("nth-check: " + "check_sequence " + check_sequence() + " " + check_sequence() + " " + check_sequence()+
+        Text(this.getResourceString($r('app.string.sequence')) + check_sequence() + " " + check_sequence() + " " +
+        check_sequence() +
           " " + check_sequence())
           .fontSize(20)
       }

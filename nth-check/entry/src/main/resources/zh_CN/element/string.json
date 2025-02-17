@@ -2,7 +2,7 @@
   "string": [
     {
       "name": "module_desc",
-      "value": "module description"
+      "value": "模块描述"
     },
     {
       "name": "EntryAbility_desc",
@@ -14,23 +14,23 @@
     },
     {
       "name": "nth_check",
-      "value": "nth_check��"
+      "value": "高度优化："
     },
     {
       "name": "compile",
-      "value": "compile:"
+      "value": "编写:"
     },
     {
       "name": "parse",
-      "value": "parse:"
+      "value": "解析:"
     },
     {
       "name": "generate",
-      "value": "generate:"
+      "value": "产生:"
     },
     {
       "name": "sequence",
-      "value": "sequence:"
+      "value": "序列:"
     }
   ]
 }
