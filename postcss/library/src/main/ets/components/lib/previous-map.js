@@ -4,7 +4,6 @@ import { fileIo as fs } from '@ohos.file.fs';
 import { path } from '@ohos/node-polyfill';
 import { SourceMapConsumer, SourceMapGenerator } from 'source-map-js';
 
-
 function fromBase64(str) {
     if (Buffer) {
         return Buffer.from(str, 'base64').toString()

@@ -82,6 +82,70 @@ export default function previousMapTest() {
           prev: map2
         }
       }).source?.input.map.withContent()).assertDeepEquals(false)
+      map2.sourcesContent = ['a{}']
+      expect(postcss.parse('a{}', {
+        map: {
+          prev: map2
+        }
+      }).source?.input.map.withContent()).assertDeepEquals(true)
     })
+
+    it('creates_property_if_map_present', 0, () => {
+      let root = postcss.parse('a{}', {
+        map: {
+          prev: map
+        }
+      })
+      expect(root.source?.input.map.text).assertDeepEquals(map)
     })
-  }
+
+    it('decodes_URI_maps', 0, () => {
+      let uri = 'data:application/json,' + decodeURI(map)
+      let css = `a{}\n/*# sourceMappingURL=${uri} */`
+      expect(postcss.parse(css).source?.input.map.text).assertDeepEquals(map)
+    })
+
+    it('decodes_URI_UTF-8_maps', 0, () => {
+      let uri = decodeURI(map)
+      let css =
+        'a{}\n/*# sourceMappingURL=data:application/json;' +
+          'charset=utf-8,' +
+          uri +
+          ' */'
+      expect(postcss.parse(css).source?.input.map.text).assertDeepEquals(map)
+    })
+
+    it('accepts_different_name_for_URI_maps_with_UTF-8_encoding', 0, () => {
+      let uri = decodeURI(map)
+      let css =
+        'a{}\n/*# sourceMappingURL=data:application/json;' +
+          'charset=utf8,' +
+          uri +
+          ' */'
+      expect(postcss.parse(css).source?.input.map.text).assertDeepEquals(map)
+    })
+
+    it('removes_map_on_request', 0, () => {
+      let uri = 'data:application/json,' + decodeURI(map)
+      let css = `a{}\n/*# sourceMappingURL=${uri} */`
+
+      let input = postcss.parse(css, {
+        map: {
+          prev: false
+        }
+      }).source?.input
+      expect(input?.map).assertUndefined()
+    })
+
+    it('raises_on_unknown_inline_encoding', 0, () => {
+      let css =
+        'a { }\n/*# sourceMappingURL=data:application/json;' +
+          'md5,68b329da9893e34099c7d8ad5cb9c940*/'
+      try {
+        postcss.parse(css)
+      } catch (err) {
+        expect(err.message).assertDeepEquals('Unsupported source map encoding md5')
+      }
+    })
+  })
+}

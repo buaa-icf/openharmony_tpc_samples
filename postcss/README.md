@@ -17,10 +17,13 @@ For details about the ohpm environment configuration, see [Installing the OpenHa
 ```js
 import postcss from '@ohos/postcss'
 let cssStyle: string = `
-      .box {
+    .box {
         z-index: 10;
-      }
     `;
+let parentStyleSheet: string = `
+    body{
+        width: 100%;
+    }`
 let rule = new postcss.AtRule({ name: 'encoding', params: '"utf-8"' })
 let comment = new postcss.Comment({ text: 'hi' })
 let decl = new postcss.Declaration({ prop: 'color', value: 'black' })
@@ -34,22 +37,26 @@ CSSParser.getSelectorList(result.root);
 CSSParser.getMediaList(result.root);
 let decl = 'width: 10px;';
 let declarationList = CSSParser.getStyleDeclaration(decl);
+CSSParser.setParentStyleSheet(parentStyleSheet);
+let getParentStyleSheet = CSSParser.getParentStyleSheet();
 ```
 ## Available APIs
-| Interface       | Parameter                                           | Parameter Description                                                    | Return Value                                                         | Interface Description                                     |
-|-----------------|-----------------------------------------------------|--------------------------------------------------------------------------|----------------------------------------------------------------------|-----------------------------------------------------------|
-| postcss.AtRule  | { name: string, params: string }                    | The name of AtRule, The parameters of AtRule                             | AtRule                                                               | Create rules for @ type                                   |
-| postcss.Comment | { text: string }                                    | The content of the comment                                               | Comment                                                              | Create a new comment                                      |
-| postcss.Declaration | { prop: string, value: string }                     | Declaration property name, Declaration property value                    | Declaration                                                          | Create Declaration                                        |
-| postcss.fromJSON | { jsonAst：{} }                                      | An object representing the JSON AST to be converted back to PostCSS AST  | AtRule \| Comment \| Declaration\| Rule \| Root                      | Convert JSON formatted data back to PostCSS Abstract Syntax Tree (AST) nodes                        |
-| postcss.parse   | { css: string, opt?: {} }                           | CSS string, opt： An object used to configure the parsing process                                                                         | Parse.root                                                           | Parse CSS strings and generate Abstract Syntax Tree (AST) |
-| postcss.Root    | void                                               | void                                                                     | Root                                                                 |         Return the root node of the Abstract Syntax Tree (AST)                                                  |
-| CSSParser.readFile | cssStr: Uint8Array                                  | The original file resources corresponding to the specified resource path | string                                                               | Read CSS file content                                     |
-| CSSParser.getValueByProperty | root：postcss.Document \|  postcss.Root, prop：string | Node to be parsedd,Attribute Name                                        | Array:string[]                                                       | Retrieve attribute values based on attribute names        |
-| CSSParser.getSelectorList | root: postcss.Document \| postcss.Root              | Node to be parsed                                                        | Array:string[]                                                       | Retrieve selectors from styles                            |
-| CSSParser.getMediaList | root: postcss.Document \| postcss.Root              | Node to be parsed                                                        | Array:string[]                                                       | Retrieve the media query list from the style              |
-| CSSParser.getStyleDeclaration | declaration: string                                 | style declaration                                                        | postcss.Declaration                                                  | Get style declaration                                     |
-| postcss().process | css:string                                          | css string                                                               | postcss.LazyResult<postcss.Document \| postcss.Root> \| NoWorkResult | Parse the incoming string as AST                          |
+| Interface       | Parameter                                                                            | Parameter Description                                                                      | Return Value                                                         | Interface Description                                                                          |
+|-----------------|--------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------|----------------------------------------------------------------------|------------------------------------------------------------------------------------------------|
+| postcss.AtRule  | defaults：AtRuleProps                                                                 | Properties for the new node                                                                | AtRule_                                                              | Creates a new AtRule node                                                                      |
+| postcss.Comment | defaults：CommentProps                                                                | Properties for the new node                                                                | Comment_                                                             | Creates a new Comment node                                                                     |
+| postcss.Declaration | defaults：DeclarationProps                                                            | Properties for the new node                                                                | Declaration_                                                         | Creates a new Declaration node                                                                 |
+| postcss.fromJSON | data: object \| object[]                                                             | An object or an object array representing the JSON AST to be converted back to PostCSS AST | Node                                                                 | Rehydrate a JSON AST(from Node#toJSON) back into the AST classes                               |
+| postcss.parse   | css: string \| Object, opt?: Pick<ProcessOptions<Docement) \| Root>,"map" \| "from"> | CSS string \| Object, opt： An object used to configure the parsing process                 | Root                                                                 | Parses source css and returns a new Root or Document node, which contains the source CSS nodes |
+| postcss.Root    | defaults：RootProps                                                                   | Properties for the new node                                                                | Root                                                                 | Creates a new Root node                                                                        |
+| CSSParser.readFile | cssStr: Uint8Array                                                                   | The original file resources corresponding to the specified resource path                   | string                                                               | Read CSS file content                                                                          |
+| CSSParser.getValueByProperty | root：postcss.Document \|  postcss.Root, prop：string                                  | Node to be parsedd,Attribute Name                                                          | Array:string[]                                                       | Retrieve attribute values based on attribute names                                             |
+| CSSParser.getSelectorList | root: postcss.Document \| postcss.Root                                               | Node to be parsed                                                                          | Array:string[]                                                       | Retrieve selectors from styles                                                                 |
+| CSSParser.getMediaList | root: postcss.Document \| postcss.Root                                               | Node to be parsed                                                                          | Array:string[]                                                       | Retrieve the media query list from the style                                                   |
+| CSSParser.getStyleDeclaration | declaration: string                                                                  | style declaration                                                                          | postcss.Declaration                                                  | Get style declaration                                                                          |
+| postcss().process | css:string                                                                           | css string                                                                                 | postcss.LazyResult<postcss.Document \| postcss.Root> \| NoWorkResult | Parse the incoming string as AST                                                               |
+| CSSParser.setParentStyleSheet | css: string                                                                          | css string                                                                                 | None                                                                 | Set parent style sheet                                                                         |
+| CSSParser.getParentStyleSheet | None                                                                                 | None                                                                                       | css: string                                                          | Get parent style sheet                                                                         |
 
 ## Constraints
 This project has been verified in the following version:

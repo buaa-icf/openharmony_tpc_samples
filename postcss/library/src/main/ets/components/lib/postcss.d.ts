@@ -1,3 +1,4 @@
+import { RawSourceMap, SourceMapGenerator } from 'source-map-js'
 import AtRule, { AtRuleProps } from './at-rule.js'
 import Comment, { CommentProps } from './comment.js'
 import Container, { ContainerProps, NewChild } from './container.js'
@@ -168,8 +169,12 @@ declare namespace postcss {
     RuleProps,
     Source,
     Warning,
-    WarningOptions
+    WarningOptions,
   }
+
+  export type SourceMap = {
+    toJSON(): RawSourceMap
+  } & SourceMapGenerator
 
   export type Helpers = { postcss: Postcss; result: Result } & Postcss
 

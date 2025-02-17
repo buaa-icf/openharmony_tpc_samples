@@ -46,78 +46,106 @@ export default function ruleTest() {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    it('initializes_with_properties',0, () => {
-      let rule = new Rule({ selector: 'a' })
+    it('initializes_with_properties', 0, () => {
+      let rule = new Rule({
+        selector: 'a'
+      })
       expect(rule.selector).assertEqual('a')
     })
 
-    it('returns_array_in_selectors',0, () => {
-      let rule = new Rule({ selector: 'a,b' })
+    it('returns_array_in_selectors', 0, () => {
+      let rule = new Rule({
+        selector: 'a,b'
+      })
       expect(JSON.stringify(rule.selectors)).assertEqual('["a","b"]')
     })
 
-    it('trims_selectors',0, () => {
-      let rule = new Rule({ selector: '.a\n, .b  , .c' })
+    it('trims_selectors', 0, () => {
+      let rule = new Rule({
+        selector: '.a\n, .b  , .c'
+      })
       expect(JSON.stringify(rule.selectors)).assertEqual('[".a",".b",".c"]')
     })
 
-    it('is_smart_about_selectors_commas',0, () => {
+    it('is_smart_about_selectors_commas', 0, () => {
       let rule = new Rule({
         selector: "[foo='a, b'], a:-moz-any(:focus, [href*=','])"
       })
       expect(JSON.stringify(rule.selectors)).assertEqual(`["[foo='a, b']","a:-moz-any(:focus, [href*=','])"]`)
     })
 
-    it('receive_array_in_selectors',0, () => {
-      let rule = new Rule({ selector: 'i, b' })
+    it('receive_array_in_selectors', 0, () => {
+      let rule = new Rule({
+        selector: 'i, b'
+      })
       rule.selectors = ['em', 'strong']
       expect(rule.selector).assertEqual('em, strong')
     })
 
-    it('saves_separator_in_selectors',0, () => {
-      let rule = new Rule({ selector: 'i,\nb' })
+    it('saves_separator_in_selectors', 0, () => {
+      let rule = new Rule({
+        selector: 'i,\nb'
+      })
       rule.selectors = ['em', 'strong']
       expect(rule.selector).assertEqual('em,\nstrong')
     })
 
-    it('uses_between_to_detect_separator_in_selectors',0, () => {
-      let rule = new Rule({ selector: 'b', raws: { between: '' } })
+    it('uses_between_to_detect_separator_in_selectors', 0, () => {
+      let rule = new Rule({
+        selector: 'b', raws: {
+          between: ''
+        }
+      })
       rule.selectors = ['b', 'strong']
       expect(rule.selector).assertEqual('b,strong')
     })
 
-    it('uses_space_in_separator_be_default_in_selectors',0, () => {
-      let rule = new Rule({ selector: 'b' })
+    it('uses_space_in_separator_be_default_in_selectors', 0, () => {
+      let rule = new Rule({
+        selector: 'b'
+      })
       rule.selectors = ['b', 'strong']
       expect(rule.selector).assertEqual('b, strong')
     })
 
-    it('selectors_works_in_constructor',0, () => {
-      let rule = new Rule({ selectors: ['a', 'b'] })
+    it('selectors_works_in_constructor', 0, () => {
+      let rule = new Rule({
+        selectors: ['a', 'b']
+      })
       expect(rule.selector).assertEqual('a, b')
     })
 
-    it('inserts_default_spaces',0, () => {
-      let rule = new Rule({ selector: 'a' })
+    it('inserts_default_spaces', 0, () => {
+      let rule = new Rule({
+        selector: 'a'
+      })
       expect(rule.toString()).assertEqual('a {}')
-      rule.append({ prop: 'color', value: 'black' })
+      rule.append({
+        prop: 'color', value: 'black'
+      })
       expect(rule.toString()).assertEqual('a {\n    color: black\n}')
     })
 
-    it('clones_spaces_from_another_rule',0, () => {
+    it('clones_spaces_from_another_rule', 0, () => {
       let root = postcss.parse('b{\n  }')
-      let rule = new Rule({ selector: 'em' })
+      let rule = new Rule({
+        selector: 'em'
+      })
       root.append(rule)
       expect(root.toString()).assertEqual('b{\n  }\nem{\n  }')
     })
 
-    it('uses_different_spaces_for_empty_rules',0, () => {
+    it('uses_different_spaces_for_empty_rules', 0, () => {
       let root = postcss.parse('a{}\nb{\n a:1\n}')
-      let rule = new Rule({ selector: 'em' })
+      let rule = new Rule({
+        selector: 'em'
+      })
       root.append(rule)
       expect(root.toString()).assertEqual('a{}\nb{\n a:1\n}\nem{}')
 
-      rule.append({ prop: 'top', value: '0' })
+      rule.append({
+        prop: 'top', value: '0'
+      })
       expect(root.toString()).assertEqual('a{}\nb{\n a:1\n}\nem{\n top:0\n}')
     })
 

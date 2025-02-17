@@ -24,7 +24,6 @@
 
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 import { postcss, Rule } from '@ohos/postcss'
-import { ContainerProps } from '@ohos/postcss/src/main/ets/components/lib/container'
 import { AnyNode } from '@ohos/postcss/src/main/ets/components/lib/node'
 import Stringifier from '@ohos/postcss/src/main/ets/components/lib/stringifier'
 
@@ -58,163 +57,233 @@ export default function stringifierTest() {
       str = new Stringifier(myBuilder);
     })
 
-    it('uses_node_raw',0, () => {
-      let rule = new Rule({ selector: 'a', raws: { between: '\n' } })
+    it('uses_node_raw', 0, () => {
+      let rule = new Rule({
+        selector: 'a', raws: {
+          between: '\n'
+        }
+      })
       expect(str.raw(rule, 'between', 'beforeOpen')).assertEqual('\n')
     })
 
-    it('hacks_before_for_nodes_without_parent',0, () => {
-      let rule = new Rule({ selector: 'a' })
+    it('hacks_before_for_nodes_without_parent', 0, () => {
+      let rule = new Rule({
+        selector: 'a'
+      })
       expect(str.raw(rule, 'before')).assertEqual('')
     })
 
-    it('hacks_before_for_first_node',0, () => {
+    it('hacks_before_for_first_node', 0, () => {
       let root = new postcss.Root()
-      root.append(new Rule({ selector: 'a' }))
+      root.append(new Rule({
+        selector: 'a'
+      }))
       expect(str.raw(root.first, 'before')).assertEqual('')
     })
 
-    it('hacks_before_for_first_decl',0, () => {
-      let decl = new postcss.Declaration({ prop: 'color', value: 'black' })
+    it('hacks_before_for_first_decl', 0, () => {
+      let decl = new postcss.Declaration({
+        prop: 'color', value: 'black'
+      })
       expect(str.raw(decl, 'before')).assertEqual('')
 
-      let rule = new Rule({ selector: 'a' })
+      let rule = new Rule({
+        selector: 'a'
+      })
       rule.append(decl)
       expect(str.raw(decl, 'before')).assertEqual('\n    ')
     })
 
-    it('uses_defaults_without_parent',0, () => {
-      let rule = new Rule({ selector: 'a' })
+    it('uses_defaults_without_parent', 0, () => {
+      let rule = new Rule({
+        selector: 'a'
+      })
       expect(str.raw(rule, 'between', 'beforeOpen')).assertEqual(' ')
     })
 
-    it('uses_defaults_for_unique_node',0, () => {
+    it('uses_defaults_for_unique_node', 0, () => {
       let root = new postcss.Root()
-      root.append(new Rule({ selector: 'a' }))
+      root.append(new Rule({
+        selector: 'a'
+      }))
       expect(str.raw(root.first, 'between', 'beforeOpen')).assertEqual(' ')
     })
 
-    it('clones_raw_from_first_node',0, () => {
+    it('clones_raw_from_first_node', 0, () => {
       let root = new postcss.Root()
-      root.append(new Rule({ selector: 'a', raws: { between: '' } }))
-      root.append(new Rule({ selector: 'b' }))
+      root.append(new Rule({
+        selector: 'a', raws: {
+          between: ''
+        }
+      }))
+      root.append(new Rule({
+        selector: 'b'
+      }))
 
       expect(str.raw(root.last, 'between', 'beforeOpen')).assertEqual('')
     })
 
-    it('indents_by_default',0, () => {
+    it('indents_by_default', 0, () => {
       let root: ESObject = new postcss.Root()
-      root.append(new postcss.AtRule({ name: 'page' }))
-      root.first.append(new Rule({ selector: 'a' }))
-      root.first.first.append({ prop: 'color', value: 'black' })
+      root.append(new postcss.AtRule({
+        name: 'page'
+      }))
+      root.first.append(new Rule({
+        selector: 'a'
+      }))
+      root.first.first.append({
+        prop: 'color', value: 'black'
+      })
 
       expect(root.toString()).assertEqual(
         '@page {\n' + '    a {\n' + '        color: black\n' + '    }\n' + '}'
       )
     })
 
-    it('clones_style',0, () => {
+    it('clones_style', 0, () => {
       let compress: ESObject = postcss.parse('@page{ a{ } }')
       let spaces: ESObject = postcss.parse('@page {\n  a {\n  }\n}')
 
-      compress.first.first.append({ prop: 'color', value: 'black' })
+      compress.first.first.append({
+        prop: 'color', value: 'black'
+      })
       expect(compress.toString()).assertEqual('@page{ a{ color: black } }')
 
-      spaces.first.first.append({ prop: 'color', value: 'black' })
+      spaces.first.first.append({
+        prop: 'color', value: 'black'
+      })
       expect(spaces.toString()).assertEqual('@page {\n  a {\n    color: black\n  }\n}')
     })
 
-    it('clones_indent',0, () => {
+    it('clones_indent', 0, () => {
       let root: ESObject = postcss.parse('a{\n}')
-      root.first.append({ text: 'a' })
-      root.first.append({ text: 'b', raws: { before: '\n\n ' } })
+      root.first.append({
+        text: 'a'
+      })
+      root.first.append({
+        text: 'b', raws: {
+          before: '\n\n '
+        }
+      })
       expect(root.toString()).assertEqual('a{\n\n /* a */\n\n /* b */\n}')
     })
 
-    it('clones_declaration_before_for_comment',0, () => {
+    it('clones_declaration_before_for_comment', 0, () => {
       let root: ESObject = postcss.parse('a{\n}')
-      root.first.append({ text: 'a' })
+      root.first.append({
+        text: 'a'
+      })
       root.first.append({
         prop: 'a',
         value: '1',
-        raws: { before: '\n\n ' }
+        raws: {
+          before: '\n\n '
+        }
       })
       expect(root.toString()).assertEqual('a{\n\n /* a */\n\n a: 1\n}')
     })
 
-    it('clones_indent_by_types',0, () => {
-      let css: ESObject  = postcss.parse('a {\n  *color: black\n}\n\nb {\n}')
-      css.append(new Rule({ selector: 'em' }))
-      css.last.append({ prop: 'z-index', value: '1' })
+    it('clones_indent_by_types', 0, () => {
+      let css: ESObject = postcss.parse('a {\n  *color: black\n}\n\nb {\n}')
+      css.append(new Rule({
+        selector: 'em'
+      }))
+      css.last.append({
+        prop: 'z-index', value: '1'
+      })
       expect(css.last.first.raw('before')).assertEqual('\n  ')
     })
 
-    it('ignores_non_space_symbols_in_indent_cloning',0, () => {
+    it('ignores_non_space_symbols_in_indent_cloning', 0, () => {
       let css: ESObject = postcss.parse('a {\n  color: black\n}\n\nb {\n}')
-      css.append(new Rule({ selector: 'em' }))
-      css.last.append({ prop: 'z-index', value: '1' })
+      css.append(new Rule({
+        selector: 'em'
+      }))
+      css.last.append({
+        prop: 'z-index', value: '1'
+      })
 
       expect(css.last.raw('before')).assertEqual('\n\n')
       expect(css.last.first.raw('before')).assertEqual('\n  ')
     })
 
-    it('clones_indent_by_before_and_after',0, () => {
+    it('clones_indent_by_before_and_after', 0, () => {
       let css: ESObject = postcss.parse('@page{\n\n a{\n  color: black}}')
-      css.first.append(new Rule({ selector: 'b' }))
-      css.first.last.append({ prop: 'z-index', value: '1' })
+      css.first.append(new Rule({
+        selector: 'b'
+      }))
+      css.first.last.append({
+        prop: 'z-index', value: '1'
+      })
 
       expect(css.first.last.raw('before')).assertEqual('\n\n ')
       expect(css.first.last.raw('after')).assertEqual('')
     })
 
-    it('clones_semicolon_only_from_rules_with_children',0, () => {
+    it('clones_semicolon_only_from_rules_with_children', 0, () => {
       let css = postcss.parse('a{}b{one:1;}')
       expect(str.raw(css.first, 'semicolon')).assertEqual(true)
     })
 
-    it('clones_only_spaces_in_between',0, () => {
+    it('clones_only_spaces_in_between', 0, () => {
       let css: ESObject = postcss.parse('a{one/**/:1}')
-      css.first.append({ prop: 'two', value: '2' })
+      css.first.append({
+        prop: 'two', value: '2'
+      })
       expect(css.toString()).assertEqual('a{one/**/:1;two:2}')
     })
 
-    it('handles_nested_roots',0, () => {
+    it('handles_nested_roots', 0, () => {
       let root = new postcss.Root()
       let subRoot = new postcss.Root()
-      subRoot.append(new postcss.AtRule({ name: 'foo' }))
+      subRoot.append(new postcss.AtRule({
+        name: 'foo'
+      }))
       root.append(subRoot)
 
       expect(root.toString()).assertEqual('@foo')
     })
 
-    it('handles_root',0, () => {
+    it('handles_root', 0, () => {
       let root = new postcss.Root()
-      root.append(new postcss.AtRule({ name: 'foo' }))
+      root.append(new postcss.AtRule({
+        name: 'foo'
+      }))
 
       let s = root.toString()
 
       expect(s).assertEqual('@foo')
     })
 
-    it('handles_root_with_after',0, () => {
-      let root = new postcss.Root({ raws: { after: '   ' } })
-      root.append(new postcss.AtRule({ name: 'foo' }))
+    it('handles_root_with_after', 0, () => {
+      let root = new postcss.Root({
+        raws: {
+          after: '   '
+        }
+      })
+      root.append(new postcss.AtRule({
+        name: 'foo'
+      }))
 
       let s = root.toString()
 
       expect(s).assertEqual('@foo   ')
     })
 
-    it('pass_nodes_to_document',0, () => {
+    it('pass_nodes_to_document', 0, () => {
       let root = new postcss.Root()
-      let document = postcss.document({ nodes: [root] })
+      let document = postcss.document({
+        nodes: [root]
+      })
 
       expect(document.toString()).assertEqual('')
     })
 
-    it('handles_document_with_one_root',0, () => {
+    it('handles_document_with_one_root', 0, () => {
       let root = new postcss.Root()
-      root.append(new postcss.AtRule({ name: 'foo' }))
+      root.append(new postcss.AtRule({
+        name: 'foo'
+      }))
 
       let document = postcss.document()
       document.append(root)
@@ -224,10 +293,16 @@ export default function stringifierTest() {
       expect(s).assertEqual('@foo')
     })
 
-    it('handles_document_with_one_root_and_after_raw',0, () => {
+    it('handles_document_with_one_root_and_after_raw', 0, () => {
       let document = postcss.document()
-      let root = new postcss.Root({ raws: { after: '   ' } })
-      root.append(new postcss.AtRule({ name: 'foo' }))
+      let root = new postcss.Root({
+        raws: {
+          after: '   '
+        }
+      })
+      root.append(new postcss.AtRule({
+        name: 'foo'
+      }))
       document.append(root)
 
       let s = document.toString()
@@ -235,10 +310,16 @@ export default function stringifierTest() {
       expect(s).assertEqual('@foo   ')
     })
 
-    it('handles_document_with_one_root_and_before_and_after',0, () => {
+    it('handles_document_with_one_root_and_before_and_after', 0, () => {
       let document = postcss.document()
-      let root = new postcss.Root({ raws: { after: 'AFTER' } })
-      root.append(new postcss.AtRule({ name: 'foo' }))
+      let root = new postcss.Root({
+        raws: {
+          after: 'AFTER'
+        }
+      })
+      root.append(new postcss.AtRule({
+        name: 'foo'
+      }))
       document.append(root)
 
       let s = document.toString()
@@ -246,15 +327,21 @@ export default function stringifierTest() {
       expect(s).assertEqual('@fooAFTER')
     })
 
-    it('handles_document_with_three_roots_without_raws',0, () => {
+    it('handles_document_with_three_roots_without_raws', 0, () => {
       let root1 = new postcss.Root()
-      root1.append(new postcss.AtRule({ name: 'foo' }))
+      root1.append(new postcss.AtRule({
+        name: 'foo'
+      }))
 
       let root2 = new postcss.Root()
-      root2.append(new Rule({ selector: 'a' }))
+      root2.append(new Rule({
+        selector: 'a'
+      }))
 
       let root3 = new postcss.Root()
-      root3.append(new postcss.Declaration({ prop: 'color', value: 'black' }))
+      root3.append(new postcss.Declaration({
+        prop: 'color', value: 'black'
+      }))
 
       let document = postcss.document()
       document.append(root1)
@@ -266,15 +353,33 @@ export default function stringifierTest() {
       expect(s).assertEqual('@fooa {}color: black')
     })
 
-    it('handles_document_with_three_roots_with_before_and_after_raws',0, () => {
-      let root1 = new postcss.Root({ raws: { after: 'AFTER_ONE' } })
-      root1.append(new Rule({ selector: 'a.one' }))
+    it('handles_document_with_three_roots_with_before_and_after_raws', 0, () => {
+      let root1 = new postcss.Root({
+        raws: {
+          after: 'AFTER_ONE'
+        }
+      })
+      root1.append(new Rule({
+        selector: 'a.one'
+      }))
 
-      let root2 = new postcss.Root({ raws: { after: 'AFTER_TWO' } })
-      root2.append(new Rule({ selector: 'a.two' }))
+      let root2 = new postcss.Root({
+        raws: {
+          after: 'AFTER_TWO'
+        }
+      })
+      root2.append(new Rule({
+        selector: 'a.two'
+      }))
 
-      let root3 = new postcss.Root({ raws: { after: 'AFTER_THREE' } })
-      root3.append(new Rule({ selector: 'a.three' }))
+      let root3 = new postcss.Root({
+        raws: {
+          after: 'AFTER_THREE'
+        }
+      })
+      root3.append(new Rule({
+        selector: 'a.three'
+      }))
 
       let document = postcss.document()
       document.append(root1)
@@ -284,6 +389,25 @@ export default function stringifierTest() {
       let s = document.toString()
 
       expect(s).assertEqual('a.one {}AFTER_ONEa.two {}AFTER_TWOa.three {}AFTER_THREE')
+    })
+
+    it('works_without_rawValue_magic', 0, () => {
+      let b = new postcss.Node()
+      b.raws.one = '1'
+      expect(b.raws.one).assertEqual('1')
+      expect(str.rawValue(b, 'one')).assertUndefined()
+    })
+
+    it('uses_optional_raws.indent', 0, () => {
+      let rule = new Rule({
+        raws: {
+          indent: ' '
+        }, selector: 'a'
+      })
+      rule.append({
+        prop: 'color', value: 'black'
+      })
+      expect(rule.toString()).assertEqual('a {\n color: black\n}')
     })
   })
 }

@@ -47,53 +47,184 @@ export default function warningTest() {
       // This API supports only one parameter: clear action function.
     })
 
-    it('outputs_simple_warning',0,  () => {
+    it('outputs_simple_warning', 0, () => {
       let warning = new postcss.Warning('text');
       expect(warning.toString()).assertEqual('text');
     })
 
-    it('outputs_warning_with_plugin',0, () => {
-      let warning = new postcss.Warning('text', { plugin: 'plugin' })
+    it('outputs_warning_with_plugin', 0, () => {
+      let warning = new postcss.Warning('text', {
+        plugin: 'plugin'
+      })
       expect(warning.toString()).assertEqual('plugin: text')
     })
 
-    it('outputs_warning_with_position',0, () => {
+    it('outputs_warning_with_position', 0, () => {
       let root = postcss.parse('a{}')
-      let warning = new postcss.Warning('text', { node: root.first })
+      let warning = new postcss.Warning('text', {
+        node: root.first
+      })
       expect(warning.toString()).assertEqual('<css input>:1:1: text')
     })
 
-    it('generates_warning_without_source',0, () => {
-      let node: ESObject = postcss.decl({ prop: 'color', value: 'black' })
-      let warning = new postcss.Warning('text', { node })
+    it('generates_warning_without_source', 0, () => {
+      let node: ESObject = postcss.decl({
+        prop: 'color', value: 'black'
+      })
+      let warning = new postcss.Warning('text', {
+        node
+      })
       expect(warning.toString()).assertEqual('<css input>: text')
     })
 
-    it('has_line_and_column_is_undefined_by_default',0, () => {
+    it('has_line_and_column_is_undefined_by_default', 0, () => {
       let warning = new postcss.Warning('text')
       expect(warning.line).assertUndefined()
       expect(warning.column).assertUndefined()
+      expect(warning.endLine).assertUndefined()
+      expect(warning.endColumn).assertUndefined()
     })
 
-    it('gets_position_from_node',0, () => {
+    it('gets_position_from_node', 0, () => {
       let root = postcss.parse('a{}')
-      let warning = new postcss.Warning('text', { node: root.first })
+      let warning = new postcss.Warning('text', {
+        node: root.first
+      })
       expect(warning.line).assertEqual(1)
       expect(warning.column).assertEqual(1)
+      expect(warning.endLine).assertEqual(1)
+      expect(warning.endColumn).assertEqual(4)
     })
 
-    it('gets_position_from_word',0, () => {
+    it('gets_range_from_node_without_end', 0, () => {
+      let root = postcss.parse('a{}')
+      root.first!.source!.end = undefined
+      let warning = new postcss.Warning('text', {
+        node: root.first
+      })
+      expect(warning.line).assertEqual(1)
+      expect(warning.column).assertEqual(1)
+      expect(warning.endLine).assertEqual(1)
+      expect(warning.endColumn).assertEqual(2)
+    })
+
+    it('gets_range_from_node_with_endIndex_3', 0, () => {
+      let root = postcss.parse('a{}')
+      let warning = new postcss.Warning('text', {
+        endIndex: 3, index: 0, node: root.first
+      })
+      expect(warning.line).assertEqual(1)
+      expect(warning.column).assertEqual(1)
+      expect(warning.endLine).assertEqual(1)
+      expect(warning.endColumn).assertEqual(4)
+    })
+
+    it('gets_range_from_node_with_endIndex_0', 0, () => {
+      let root = postcss.parse('a{}')
+      let warning = new postcss.Warning('text', {
+        endIndex: 0, index: 0, node: root.first
+      })
+      expect(warning.line).assertEqual(1)
+      expect(warning.column).assertEqual(1)
+      expect(warning.endLine).assertEqual(1)
+      expect(warning.endColumn).assertEqual(2)
+    })
+
+    it('gets_position_from_word', 0, () => {
       let root = postcss.parse('a b{}')
-      let warning = new postcss.Warning('text', { node: root.first, word: 'b' })
+      let warning = new postcss.Warning('text', {
+        node: root.first, word: 'b'
+      })
       expect(warning.line).assertEqual(1)
       expect(warning.column).assertEqual(3)
     })
 
-    it('gets_position_from_index',0, () => {
+    it('gets_position_from_index', 0, () => {
       let root = postcss.parse('a b{}')
-      let warning = new postcss.Warning('text', { node: root.first, index: 2 })
+      let warning = new postcss.Warning('text', {
+        node: root.first, index: 2
+      })
       expect(warning.line).assertEqual(1)
       expect(warning.column).assertEqual(3)
+      expect(warning.endLine).assertEqual(1)
+      expect(warning.endColumn).assertEqual(4)
+    })
+    it('gets_range_from_index_and_endIndex', 0, () => {
+      let root = postcss.parse('a b{}')
+      let warning = new postcss.Warning('text', {
+        endIndex: 3, index: 2, node: root.first
+      })
+      expect(warning.line).assertEqual(1)
+      expect(warning.column).assertEqual(3)
+      expect(warning.endLine).assertEqual(1)
+      expect(warning.endColumn).assertEqual(4)
+    })
+
+    it('gets_range_from_start', 0, () => {
+      let root = postcss.parse('a b{}')
+      let warning = new postcss.Warning('text', {
+        node: root.first,
+        start: {
+          column: 3, line: 1
+        }
+      })
+      expect(warning.line).assertEqual(1)
+      expect(warning.column).assertEqual(3)
+      expect(warning.endLine).assertEqual(1)
+      expect(warning.endColumn).assertEqual(6)
+    })
+
+    it('gets_range_from_end', 0, () => {
+      let root = postcss.parse('a b{}')
+      let warning = new postcss.Warning('text', {
+        end: {
+          column: 3, line: 1
+        },
+        node: root.first
+      })
+      expect(warning.line).assertEqual(1)
+      expect(warning.column).assertEqual(1)
+      expect(warning.endLine).assertEqual(1)
+      expect(warning.endColumn).assertEqual(3)
+    })
+
+    it('gets_range_from_start_and_end', 0, () => {
+      let root = postcss.parse('a b{}')
+      let warning = new postcss.Warning('text', {
+        end: {
+          column: 4, line: 1
+        },
+        node: root.first,
+        start: {
+          column: 3, line: 1
+        }
+      })
+      expect(warning.line).assertEqual(1)
+      expect(warning.column).assertEqual(3)
+      expect(warning.endLine).assertEqual(1)
+      expect(warning.endColumn).assertEqual(4)
+    })
+
+    it('always_returns_exclusive_ends', 0, () => {
+      let root = postcss.parse('a b{}')
+      let warning = new postcss.Warning('text', {
+        endIndex: 1, index: 1, node: root.first
+      })
+      expect(warning.line).assertEqual(1)
+      expect(warning.column).assertEqual(2)
+      expect(warning.endLine).assertEqual(1)
+      expect(warning.endColumn).assertEqual(3)
+    })
+
+    it('always_returns_valid_ranges', 0, () => {
+      let root = postcss.parse('a b{}')
+      let warning = new postcss.Warning('text', {
+        endIndex: 1, index: 2, node: root.first
+      })
+      expect(warning.line).assertEqual(1)
+      expect(warning.column).assertEqual(3)
+      expect(warning.endLine).assertEqual(1)
+      expect(warning.endColumn).assertEqual(4)
     })
   })
 }

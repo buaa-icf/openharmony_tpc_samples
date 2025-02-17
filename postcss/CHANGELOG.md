@@ -1,3 +1,6 @@
+## 1.0.2-rc.0
+* 1 Added setParentStyleSheet and getParentStyleSheet interfaces
+
 ## 1.0.1
 * 1 Replace the URL module of the node module with the @ohos/node polyfill library
 * 2 Upgrade PostCSS to version 8.4.49

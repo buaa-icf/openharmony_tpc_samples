@@ -122,5 +122,15 @@ export default function abilityTest() {
       let declarationList = CSSParser.getStyleDeclaration(decl);
       expect('width: 10px;').assertEqual(declarationList);
     })
+    it('cssParser07', 0, () => {
+      let parentStyleSheet: string = `
+        body {
+          background-color: #f4f4f4;
+        }
+      `;
+      CSSParser.setParentStyleSheet(parentStyleSheet);
+      let getParentSheet = CSSParser.getParentStyleSheet();
+      expect(parentStyleSheet).assertEqual(getParentSheet);
+    })
   })
 }

@@ -27,39 +27,57 @@ import { postcss, Rule } from '@ohos/postcss'
 
 export default function declarationTest() {
   describe('declarationTest', () => {
-    it('test01',0, () => {
-      let decl = new postcss.Declaration({ prop: 'color', value: 'black' })
+    it('test01', 0, () => {
+      let decl = new postcss.Declaration({
+        prop: 'color', value: 'black'
+      })
       expect(decl.prop).assertDeepEquals('color')
       expect(decl.value).assertDeepEquals('black')
     })
-    it('test02',0, () => {
-      let decl = new postcss.Declaration({ prop: 'color', value: 'black' })
+    it('test02', 0, () => {
+      let decl = new postcss.Declaration({
+        prop: 'color', value: 'black'
+      })
       decl.important = true
       expect(decl.toString()).assertDeepEquals('color: black !important')
     })
-    it('test03',0, () => {
-      let decl = new postcss.Declaration({ prop: 'color', value: 'black' })
-      let rule = new Rule({ selector: 'a' })
+    it('test03', 0, () => {
+      let decl = new postcss.Declaration({
+        prop: 'color', value: 'black'
+      })
+      let rule = new Rule({
+        selector: 'a'
+      })
       rule.append(decl)
       expect(rule.toString()).assertDeepEquals('a {\n    color: black\n}')
     })
-    it('test04',0, () => {
+    it('test04', 0, () => {
       let root = postcss.parse('a{color:black}')
       let rule = root.first as postcss.Rule
-      let decl = new postcss.Declaration({ prop: 'margin', value: '0' })
+      let decl = new postcss.Declaration({
+        prop: 'margin', value: '0'
+      })
       rule.append(decl)
       expect(root.toString()).assertDeepEquals('a{color:black;margin:0}')
     })
-    it('test05',0, () => {
-      let decl = new postcss.Declaration({ prop: 'color', value: '1' })
+    it('test05', 0, () => {
+      let decl = new postcss.Declaration({
+        prop: 'color', value: '1'
+      })
       expect(decl.value).assertDeepEquals('1')
     })
-    it('test06',0, () => {
-      let prop = new postcss.Declaration({ prop: '--color', value: 'black' })
+    it('test06', 0, () => {
+      let prop = new postcss.Declaration({
+        prop: '--color', value: 'black'
+      })
       expect(prop.variable).assertDeepEquals(true)
-      let sass = new postcss.Declaration({ prop: '$color', value: 'black' })
+      let sass = new postcss.Declaration({
+        prop: '$color', value: 'black'
+      })
       expect(sass.variable).assertDeepEquals(true)
-      let decl = new postcss.Declaration({ prop: 'color', value: 'black' })
+      let decl = new postcss.Declaration({
+        prop: 'color', value: 'black'
+      })
       expect(decl.variable).assertDeepEquals(false)
     })
   })

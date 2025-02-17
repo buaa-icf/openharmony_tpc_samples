@@ -23,60 +23,90 @@
  */
 
 import { describe, it, expect } from '@ohos/hypium'
-import { postcss } from '@ohos/postcss'
+import { path } from '@ohos/node-polyfill'
+import { postcss, Rule } from '@ohos/postcss'
 
 export default function parseTest() {
   describe('parseTest', () => {
-    it('test01',0, () => {
+    it('test01', 0, () => {
       let css = postcss.parse('\uFEFF@host { a {\f} }')
       expect(css.nodes[0].raws.before).assertDeepEquals('')
     })
-    it('test02',0, () => {
+    it('test02', 0, () => {
       let css = postcss.parse('\uFEFF@host { a {\f} }')
       expect(css.first?.source?.input.hasBOM).assertDeepEquals(true)
     })
-    it('test03',0, () => {
+    it('test03', 0, () => {
       let css = postcss.parse('@host { a {\f} }')
       expect(css.first?.source?.input.hasBOM).assertDeepEquals(false)
     })
 
-    it('test04',0, () => {
-      let css = postcss.parse('a {}', { from: 'http://example.com/a.css' })
+    it('test04', 0, () => {
+      let css = postcss.parse('a {}', {
+        from: 'http://example.com/a.css'
+      })
       expect(css.first?.source?.input.file).assertDeepEquals('http://example.com/a.css')
       expect(css.first?.source?.input.from).assertDeepEquals('http://example.com/a.css')
     })
 
-    it('test05',0, () => {
-      try{
+    it('test05', 0, () => {
+      try {
         postcss.parse('@font-face{ font:(\r/*);} body { a: "a*/)} a{}"}')
       } catch (err) {
         expect(err.message).assertDeepEquals("<css input>:1:46: Unclosed string")
       }
     })
 
-    it('test06',0, () => {
+    it('test06', 0, () => {
       let root = postcss.parse('a { p: ()) }')
       let a = root.first as postcss.Rule
       let decl = a.first as postcss.Declaration
       expect(decl.value).assertDeepEquals('())')
     })
 
-    it('test07',0, () => {
+    it('test07', 0, () => {
       let root = postcss.parse(':root { --x { color: pink; }; }')
       let rule = root.first as postcss.Rule
       let prop = rule.first as postcss.Rule
       expect(prop.selector).assertDeepEquals('--x')
     })
 
-    it('test08',0, () => {
+    it('test08', 0, () => {
       let root = postcss.parse('a { :one: 1 }')
       let a = root.first as postcss.Rule
       let prop = a.first as postcss.Declaration
       expect(prop.raws.before).assertDeepEquals(' :')
     })
 
-    it('test09',0, () => {
+    it('test09', 0, () => {
       expect(postcss.parse('a { };;').toString()).assertDeepEquals('a { };;')
+    })
+
+    it('saves_source_file', 0, () => {
+      let css = postcss.parse('a {}', {
+        from: 'a.css'
+      })
+      expect(css.first?.source?.input.css).assertDeepEquals('a {}')
+      expect(css.first?.source?.input.file).assertDeepEquals(path.resolve('a.css'))
+      expect(css.first?.source?.input.from).assertDeepEquals(path.resolve('a.css'))
+    })
+
+    it('parses_a_functional_property', 0, () => {
+      let root = postcss.parse('a { b(c): d }')
+      let a = root.first as Rule
+      let b = a.first as postcss.Declaration
+      expect(b.prop).assertDeepEquals('b(c)')
+    })
+
+    it('parses_a_functional_tagname', 0, () => {
+      let root = postcss.parse('a { b(c): d {} }')
+      let a = root.first as Rule
+      let b = a.first as Rule
+      expect(b.selector).assertDeepEquals('b(c): d')
+    })
+
+    it('do_not_throws_on_comment_in_between', 0, () => {
+      postcss.parse('a { b/* c */: 1 }')
     })
   })
 }

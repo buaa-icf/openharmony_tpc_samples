@@ -34,7 +34,9 @@ struct Index {
   @State mediaMessage: string = 'Media';
   @State ruleMessage: string = 'Rule Message';
   @State declarationMessage: string = 'Declaration';
-  @State parentSheetMessage: string = 'Get Parent Sheet'
+  @State parentSheetMessage: string = 'Get Parent Sheet';
+  @State setParentSheetMessage: string = 'Set Parent Sheet Message';
+  @State getParentSheetMessage: string = 'Get Parent Sheet Message';
   @State cssStyle: string = `
       body {
         background-color: '#fff';
@@ -171,6 +173,38 @@ struct Index {
           .padding(10)
           .height(100)
       }
+
+      ListItem() {
+        Button('SetParentStyleSheet')
+          .fontSize(16)
+          .width(180)
+          .onClick((e: ClickEvent) => {
+            this.setParentSheet(this.cssStyle);
+          })
+      }
+
+      ListItem() {
+        TextArea({ text: this.setParentSheetMessage })
+          .fontSize(20)
+          .padding(10)
+          .height(100)
+      }
+
+      ListItem() {
+        Button('GetParentStyleSheet')
+          .fontSize(16)
+          .width(180)
+          .onClick((e: ClickEvent) => {
+            this.getParentSheet();
+          })
+      }
+
+      ListItem() {
+        TextArea({ text: this.getParentSheetMessage })
+          .fontSize(20)
+          .padding(10)
+          .height(100)
+      }
     }
     .height('100%')
     .width('100%')
@@ -229,6 +263,17 @@ struct Index {
     let declarationList = CSSParser.getStyleDeclaration(decl);
     this.declarationMessage = `declarationList: ${declarationList}`
     return this.declarationMessage;
+  }
+
+  setParentSheet(parentStyleSheet: string) {
+    CSSParser.setParentStyleSheet(parentStyleSheet);
+    this.setParentSheetMessage = parentStyleSheet;
+    return this.setParentSheetMessage;
+  }
+
+  getParentSheet() {
+    this.getParentSheetMessage = CSSParser.getParentStyleSheet();
+    return this.getParentSheetMessage;
   }
 }
 

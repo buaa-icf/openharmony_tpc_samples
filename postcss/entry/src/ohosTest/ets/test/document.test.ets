@@ -24,15 +24,18 @@
 
 import { describe, it, expect } from '@ohos/hypium'
 import { postcss } from '@ohos/postcss'
+import Document from '@ohos/postcss/src/main/ets/components/lib/document'
+import Result from '@ohos/postcss/src/main/ets/components/lib/result'
 
-export default function fromJsonTest() {
-  describe('fromJsonTest', () => {
-    it('test01', 0, () => {
-      expect(() => {
-        postcss.fromJSON({
-          type: 'not-a-node-type'
-        })
-      }).assertThrowError('Unknown node type: not-a-node-type')
+export default function documentTest() {
+  describe('documentTest', () => {
+    it('generates_result_without_map', 0, () => {
+      let root = postcss.parse('a {}')
+      let document = new Document()
+      document.append(root)
+      let result: postcss.Result<string> = document.toResult()
+      expect(result instanceof Result).assertDeepEquals(true)
+      expect(result.css).assertDeepEquals('a {}')
     })
   })
 }

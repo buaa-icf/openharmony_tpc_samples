@@ -47,20 +47,22 @@ export default function rootTest() {
       // This API supports only one parameter: clear action function.
     })
 
-    it('append_sets_new_line_between_rules_in_multiline_files',0, () => {
+    it('append_sets_new_line_between_rules_in_multiline_files', 0, () => {
       let a = postcss.parse('a {}\n\na {}\n')
       let b = postcss.parse('b {}\n')
       expect(a.append(b).toString()).assertDeepEquals('a {}\n\na {}\n\nb {}\n')
     })
 
-    it('fixes_spaces_on_removing_first_rule',0, () => {
+    it('fixes_spaces_on_removing_first_rule', 0, () => {
       let css = postcss.parse('a{}\nb{}\n')
-      if (!css.first) throw new Error('No nodes were parsed')
+      if (!css.first) {
+        throw new Error('No nodes were parsed')
+      }
       css.first.remove()
       expect(css.toString()).assertDeepEquals('b{}\n')
     })
 
-    it('keeps_spaces_on_moving_root',0, () => {
+    it('keeps_spaces_on_moving_root', 0, () => {
       let css1 = postcss.parse('a{}\nb{}\n')
 
       let css2 = postcss.parse('')
@@ -70,6 +72,43 @@ export default function rootTest() {
       let css3 = postcss.parse('\n')
       css3.append(css2.nodes)
       expect(css3.toString()).assertDeepEquals('a{}\nb{}\n')
+    })
+    it('prepend()_fixes_spaces_on_insert_before_first', 0, () => {
+      let css = postcss.parse('a {} b {}')
+      css.prepend({
+        selector: 'em'
+      })
+      expect(css.toString()).assertDeepEquals('em {} a {} b {}')
+    })
+
+    it('prepend()_fixes_spaces_on_multiple_inserts_before_first', 0, () => {
+      let css = postcss.parse('a {} b {}')
+      css.prepend({
+        selector: 'em'
+      }, {
+        selector: 'strong'
+      })
+      expect(css.toString()).assertDeepEquals('em {} strong {} a {} b {}')
+    })
+
+    it('prepend()_uses_default_spaces_on_only_first', 0, () => {
+      let css = postcss.parse('a {}')
+      css.prepend({
+        selector: 'em'
+      })
+      expect(css.toString()).assertDeepEquals('em {}\na {}')
+    })
+    it('insertAfter()_does_not_use_before_of_first_rule', 0, () => {
+      let css = postcss.parse('a{} b{}')
+      css.insertAfter(0, {
+        selector: '.a'
+      })
+      css.insertAfter(2, {
+        selector: '.b'
+      })
+      expect(css.nodes[1].raws.before).assertUndefined()
+      expect(css.nodes[3].raws.before).assertDeepEquals(' ')
+      expect(css.toString()).assertDeepEquals('a{} .a{} b{} .b{}')
     })
   })
 }

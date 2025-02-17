@@ -1,4 +1,5 @@
 import Document from './document.js'
+import { SourceMap } from './postcss.js'
 import Processor from './processor.js'
 import Result, { Message, ResultOptions } from './result.js'
 import Root from './root.js'
@@ -139,7 +140,7 @@ implements PromiseLike<Result<RootNode>> {
    *
    * PostCSS runners should always use `LazyResult#then`.
    */
-  // get map(): SourceMap
+  get map(): SourceMap
 
   /**
    * Processes input CSS through synchronous plugins
