@@ -332,6 +332,7 @@
                 <policyitem type="license" name="BSD-2-Clause" path="entities/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="BSD-2-Clause" path="nth-check/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="BSD-2-Clause" path="css-what/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="BSD-2-Clause" path="css-select/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="BSD-2-Clause" path="utilCode/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="LibphoneNumber/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="GNU AFFERO GENERAL PUBLIC LICENSE" path="newsie/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>

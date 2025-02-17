@@ -1,0 +1,36 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "label"
+    },
+    {
+      "name": "compile",
+      "value": "Throw exception:"
+    },
+    {
+      "name": "selectAll",
+      "value": "Matching elements length:"
+    },
+    {
+      "name": "selectOne",
+      "value": "The first matching elements name:"
+    },
+    {
+      "name": "is",
+      "value": "Whether or not an element is matched by query:"
+    },
+    {
+      "name": "_compileUnsafe",
+      "value": "Compiles the query, returns a function:"
+    }
+  ]
+}

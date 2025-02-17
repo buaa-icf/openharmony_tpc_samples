@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "css-select",
+        "License": "BSD-2-Clause",
+        "License File": "LICENSE",
+        "Version Number": "5.1.0",
+        "Owner" : "xiafeng@huawei.com",
+        "Upstream URL": "https://github.com/fb55/css-select",
+        "Description": "A CSS selector compiler and engine."
+    }
+]s
