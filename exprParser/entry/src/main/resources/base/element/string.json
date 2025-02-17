@@ -11,6 +11,26 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "parseOperators",
+      "value": "Parse operator"
+    },
+    {
+      "name": "parseArray",
+      "value": "Parse operator"
+    },
+    {
+      "name": "parseBool",
+      "value": "Parse bool"
+    },
+    {
+      "name": "parseNomal",
+      "value": "Parse ordinary expressions"
+    },
+    {
+      "name": "error",
+      "value": "Error handling"
     }
   ]
 }

@@ -1,0 +1,36 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "模块描述"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "能力描述"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "标签"
+    },
+    {
+      "name": "parseOperators",
+      "value": "解析操作符"
+    },
+    {
+      "name": "parseArray",
+      "value": "解析数组"
+    },
+    {
+      "name": "parseBool",
+      "value": "解析布尔表达式"
+    },
+    {
+      "name": "parseNomal",
+      "value": "解析普通表达式"
+    },
+    {
+      "name": "error",
+      "value": "错误处理"
+    }
+  ]
+}
