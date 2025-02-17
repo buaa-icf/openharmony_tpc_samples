@@ -1,0 +1,36 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "模块描述："
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "label"
+    },
+    {
+      "name": "compile",
+      "value": "抛出异常:"
+    },
+    {
+      "name": "selectAll",
+      "value": "匹配元素长度:"
+    },
+    {
+      "name": "selectOne",
+      "value": "第一个匹配元素的名称："
+    },
+    {
+      "name": "is",
+      "value": "是否通过查询匹配元素："
+    },
+    {
+      "name": "_compileUnsafe",
+      "value": "编译查询，返回一个函数："
+    }
+  ]
+}
