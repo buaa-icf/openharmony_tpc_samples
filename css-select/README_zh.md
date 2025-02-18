@@ -155,7 +155,8 @@ _由CSS 4和/或jQuery定义。_
 
 css-select已在以下版本验证：
 
-- DevEco Studio版本：5.0.1 Release (5.0.5.310)，OpenHarmony SDK：13（5.0.0(13)）
+- DevEco Studio 版本：5.0.1 Release (5.0.5.310)，OpenHarmony SDK：13（5.0.0(13)）
+- DevEco Studio 版本：DevEco Studio 5.1.0 Canary1(5.1.0.229)，OpenHarmony SDK:5.1.0.229 API16（5.1.0.46）
 
 ## 目录结构
 ```
