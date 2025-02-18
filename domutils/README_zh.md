@@ -227,6 +227,8 @@ let textResult7: Element | null = prevElementSibling(element7[0]);
 
 DevEco Studio 版本： 4.1 Canary(4.1.3.317),OpenHarmony SDK:API11 (4.1.0.36)。
 
+DevEco Studio 版本：DevEco Studio 5.1.0 Canary1(5.1.0.229)，OpenHarmony SDK:5.1.0.229 API16（5.1.0.46）。
+
 ## 目录结构
 
 ```
