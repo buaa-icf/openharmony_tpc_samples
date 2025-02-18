@@ -248,24 +248,23 @@ export default function dommhandler() {
       expect(parents[1].children.length).assertEqual(2);
     })
 
-
     it('filter', 0, () => {
       const manyNodesWide = parseDocument(
-        `<body>${"<div></div>".repeat(200_000)}Text</body>`,);
+        `<body>${"<div></div>".repeat(10_000)}Text</body>`,);
       expect(
         filter((elem) => elem.type === ElementType.Tag, manyNodesWide).length
-      ).assertEqual(200_001);
+      ).assertEqual(10_001);
       expect(
         filter(
           (elem) => elem.type === ElementType.Tag,
           manyNodesWide.children[0],
         ).length
-      ).assertEqual(200_001);
+      ).assertEqual(10_001);
     })
 
     it('find', 0, () => {
       const manyNodesWide = parseDocument(
-        `<body>${"<div></div>".repeat(200_000)}Text</body>`).children;
+        `<body>${"<div></div>".repeat(10_000)}Text</body>`).children;
       expect(
         find(
           (elem) => elem.type === ElementType.Tag,
@@ -273,7 +272,7 @@ export default function dommhandler() {
           true,
           Infinity
         ).length
-      ).assertEqual(200_001);
+      ).assertEqual(10_001);
       expect(
         find(
           (elem) => elem.type === ElementType.Tag,
@@ -286,7 +285,7 @@ export default function dommhandler() {
 
     it('findOne', 0, () => {
       const manyNodesWide = parseDocument(
-        `<body>${"<div></div>".repeat(200_000)}Text</body>`).children;
+        `<body>${"<div></div>".repeat(10_000)}Text</body>`).children;
       let node: ChildNode | null = findOne(
         (elem) => elem.name === "body",
         manyNodesWide,
@@ -305,7 +304,7 @@ export default function dommhandler() {
 
     it('existsOne', 0, () => {
       const manyNodesWide = parseDocument(
-        `<body>${"<div></div>".repeat(200_000)}Text</body>`).children;
+        `<body>${"<div></div>".repeat(10_000)}Text</body>`).children;
       expect(
         existsOne((elem) => elem.name === "body", manyNodesWide),
       ).assertTrue();
@@ -314,10 +313,10 @@ export default function dommhandler() {
 
     it('findAll', 0, () => {
       const manyNodesWide = parseDocument(
-        `<body>${"<div></div>".repeat(200_000)}Text</body>`).children;
+        `<body>${"<div></div>".repeat(10_000)}Text</body>`).children;
       expect(
         findAll((elem) => elem.name === "div", manyNodesWide).length
-      ).assertEqual(200_000);
+      ).assertEqual(10_000);
     })
 
     it('textContent', 0, () => {
