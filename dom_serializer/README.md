@@ -33,6 +33,12 @@ Renders a DOM node or an array of DOM nodes into a string.
 
 `render(node: AnyNode | ArrayLike<AnyNode>, options?: DomSerializerOptions): string`
 
+
+| Name | Type    | Mandatory | Description      |
+|---------|-------------------------------------------------------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| node    | AnyNode &#124;? ArrayLike<AnyNode>                                           | YES       | AnyNode object or array                                                                                                                                                                             |
+| options | DomSerializerOptions                                           | NO        | Serialization options  <br/>{ emptyAttrs£ºPrint an empty attribute's value¡£<br/>selfClosingTags£ºPrint self-closing tags for tags without contents.¡£<br/>xmlMode£ºTreat the input as an XML document; enables the `emptyAttrs` and `selfClosingTags` options.¡£<br/>encodeEntities£ºEncode characters that are either reserved in HTML or XML¡£} |
+
 ## Constraints
 
 This project has been verified in the following version:
