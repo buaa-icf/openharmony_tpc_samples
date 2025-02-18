@@ -43,7 +43,9 @@ Renders a DOM node or an array of DOM nodes into a string.
 
 This project has been verified in the following version:
 
-- DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API 11 (4.1.0.36)
+- DevEco Studio Version: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API 11 (4.1.0.36)
+
+- DevEco Studio Version£ºDevEco Studio 5.1.0 Canary1(5.1.0.229)£¬OpenHarmony SDK:5.1.0.229 API16£¨5.1.0.46£©¡£
 
 ## Directory Structure
 
