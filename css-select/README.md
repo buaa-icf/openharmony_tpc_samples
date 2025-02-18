@@ -239,6 +239,7 @@ _As defined by CSS 4 and / or jQuery._
 css-select has been verified in the following version:
 
 - DevEco Studio Version: 5.0.1 Release (5.0.5.310), OpenHarmony SDK: 13 (5.0.0(13))
+- DevEco Studio Version: DevEco Studio 5.1.0 Canary1(5.1.0.229)，OpenHarmony SDK:5.1.0.229 API16（5.1.0.46）
 
 ## Directory Structure
 ```
