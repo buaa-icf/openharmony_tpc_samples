@@ -37,8 +37,6 @@ CSSselect.selectAll("div", dom,{ xmlMode: true,
 CSSselect.selectOne(":contains(foo)", [dom[0]],{ quirksMode :true })
 // 将选择器编译为可执行函数，否则抛出异常
 Compile() == notYet;
-// 将选择器编译为可执行函数
-CSSselect._compileUnsafe(":not(*)")
 // 测试元素是否匹配查询
 CSSselect.is(dom[0], (elem) => elem.attribs["id"] === "foo")
 ```
@@ -60,14 +58,8 @@ import * as CSSselect from 'css-select';
 别名：默认导出、`CSSselect.iterate(query, elems)`。
 
 #### `CSSselect.compile(query, options)`
-#### `CSSselect._compileUnsafe(query, options)`
-#### `CSSselect._compileToken(query, options)`
 
 编译查询，返回一个函数。
-
-#### `prepareContext(elems, adapter, shouldTestNextSiblings)`
-
-通过调用适配器方法来对元素集合进行必要的处理，准备好查询所需的上下文。
 
 #### `CSSselect.is(elem, query, options)`
 

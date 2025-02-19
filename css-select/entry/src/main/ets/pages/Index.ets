@@ -28,6 +28,7 @@ import * as CSSselect from 'css-select';
 import { parseDOM } from '@ohos/htmlparser2';
 import type { Element } from 'domhandler';
 import boolbase from 'boolbase';
+import { AttributeAction, parse, SelectorType } from 'css-what';
 
 const dom = parseDOM("<div id=foo><p>foo</p></div>") as Element[];
 const notYet = "not yet supported by css-select";
@@ -51,26 +52,29 @@ struct Index {
   build() {
     RelativeContainer() {
       Column() {
-        Text((this.getResourceString($r('app.string.selectAll'))) + CSSselect.selectAll("div", dom).length)
-          .fontSize(20)
-        Text((this.getResourceString($r('app.string.selectAll'))) +
-        CSSselect.selectAll("div:is(DiV#FOO):not([ID]):foo", dom, {
-          xmlMode: true,
-          lowerCaseTags: true,
-          quirksMode: true,
-          pseudos: { foo: "#fOO" },
-        }).length)
+        Text((this.getResourceString($r('app.string.selectAll'))) + CSSselect.selectAll(":matches(> p)", dom)[0].name)
           .fontSize(20)
         Text((this.getResourceString($r('app.string.selectOne'))) +
           CSSselect.selectOne(":contains(foo)", [dom[0]], { quirksMode: true })?.name)
           .fontSize(20)
         Text((this.getResourceString($r('app.string.compile'))) + Compile() + " == " + notYet)
           .fontSize(20)
-        Text((this.getResourceString($r('app.string._compileUnsafe'))) +
-          (CSSselect._compileUnsafe(":not(*)") === boolbase.falseFunc))
-          .fontSize(20)
         Text((this.getResourceString($r('app.string.is'))) +
         CSSselect.is(dom[0], (elem) => elem.attribs["id"] === "foo"))
+          .fontSize(20)
+        Text((this.getResourceString($r('app.string.is'))) +
+        CSSselect.is(dom[0], [
+          [
+            {
+              type: SelectorType.Attribute,
+              action: AttributeAction.Equals,
+              ignoreCase: false,
+              name: "id",
+              namespace: null,
+              value: "213",
+            },
+          ],
+        ]))
           .fontSize(20)
       }
     }

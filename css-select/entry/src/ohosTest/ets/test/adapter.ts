@@ -24,7 +24,10 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import { DomUtils } from '@ohos/htmlparser2';
 import * as CSSselect from 'css-select';
+import { AnyNode, Element } from 'domhandler';
+import type { Adapter } from 'css-select/lib/types';
 
 export default class AdapterClass {
   static adapterfunc() {
@@ -33,3 +36,5 @@ export default class AdapterClass {
     return CSSselect;
   }
 }
+
+export const adapter: Adapter<AnyNode, Element> = { ...DomUtils };

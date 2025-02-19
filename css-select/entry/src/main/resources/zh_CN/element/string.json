@@ -14,11 +14,11 @@
     },
     {
       "name": "compile",
-      "value": "抛出异常:"
+      "value": "编译查询，返回一个函数,没有则会抛出异常:"
     },
     {
       "name": "selectAll",
-      "value": "匹配元素长度:"
+      "value": "匹配元素名称:"
     },
     {
       "name": "selectOne",
@@ -27,10 +27,6 @@
     {
       "name": "is",
       "value": "是否通过查询匹配元素："
-    },
-    {
-      "name": "_compileUnsafe",
-      "value": "编译查询，返回一个函数："
     }
   ]
 }
