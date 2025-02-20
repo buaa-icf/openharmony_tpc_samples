@@ -45,7 +45,7 @@ struct Index {
   @State deserializeJsonTextDer: string = "";
   @State deserializeJsonTextDerS: string = "";
   @State deserializeJsonTextDerD: string = "";
-  private json: ESObject|null = null;
+  private json: string|null = null;
   private btnBase64Clicked: boolean = false;
   private btnHexClicked: boolean = false;
   private scroller: Scroller = new Scroller();
@@ -173,14 +173,14 @@ struct Index {
             .onClick((event) => {
               let startTime =new Date().getMilliseconds()
               console.info("asn1Demo-- der start get DERSerializer :"+startTime)
-              const serialize:ESObject = new DERSerializer();
-              const asn1Sequence :ESObject= new Universal.Sequence([
+              const serialize:DERSerializer = new DERSerializer();
+              const asn1Sequence :Universal.Sequence= new Universal.Sequence([
                 new Universal.Integer(123),
                 new Universal.PrintableString('Hello World'),
               ]);
 
               this.deserializeJsonTextDer = this.getResourceString($r('app.string.DER_data')) + JSON.stringify(asn1Sequence);
-              const bufferContainingDEREncodedASN1:ESObject = serialize(asn1Sequence);
+              const bufferContainingDEREncodedASN1:string = serialize(asn1Sequence);
               this.deserializeJsonTextDerS = this.getResourceString($r('app.string.DER_serialized')) + JSON.stringify(bufferContainingDEREncodedASN1);
 
               let endTime=new Date().getMilliseconds()
@@ -190,7 +190,7 @@ struct Index {
 
               let startTime1 =new Date().getMilliseconds()
               console.info("asn1Demo-- der start get DERDeserializer :"+startTime1)
-              const deserialize:ESObject = new DERDeserializer();
+              const deserialize:DERDeserializer = new DERDeserializer();
               const des:ESObject = deserialize(bufferContainingDEREncodedASN1);
               let endTime1=new Date().getMilliseconds()
               console.info("asn1Demo-- der end get DERDeserializer time:"+(endTime1))

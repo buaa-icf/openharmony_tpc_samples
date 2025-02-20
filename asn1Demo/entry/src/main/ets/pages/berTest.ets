@@ -39,7 +39,7 @@ struct berTest {
             .height("45vp")
             .onClick((event) => {
               console.log("sasa:Boolean click");
-              const asn:ESObject = new asn1js.Boolean({
+              const asn:asn1js.Boolean = new asn1js.Boolean({
                 value: true,
               });
               this.berHandle(asn, "Boolean");
@@ -51,7 +51,7 @@ struct berTest {
             .onClick((event) => {
               console.log("sasa:BmpString click");
               const testValue = "test message текст"
-              const asn:ESObject  = new asn1js.BmpString({
+              const asn:asn1js.BmpString  = new asn1js.BmpString({
                 value: testValue,
               });
               this.berHandle(asn, "BmpString");
@@ -62,7 +62,7 @@ struct berTest {
             .height("45vp")
             .onClick((event) => {
               console.log("sasa:BitString click");
-              const asn:ESObject  = new asn1js.BitString({
+              const asn:asn1js.BitString  = new asn1js.BitString({
                 value: [
                   new asn1js.BitString({
                     valueHex: new Uint8Array([0x01])
@@ -81,7 +81,7 @@ struct berTest {
             .height("45vp")
             .onClick((event) => {
               console.log("sasa:Integer click");
-              const asn:ESObject  = new asn1js.Integer({
+              const asn:asn1js.Integer  = new asn1js.Integer({
                 value: 97196,
                 valueHex: new Uint8Array([0x01, 0x7b, 0xac]),
               });
@@ -95,7 +95,7 @@ struct berTest {
             .onClick((event) => {
               console.log("sasa:CharacterString click");
               const testString = "some string";
-              const asn:ESObject  = new asn1js.CharacterString({
+              const asn:asn1js.CharacterString  = new asn1js.CharacterString({
                 value: testString,
               });
               this.berHandle(asn, "CharacterString");
@@ -108,7 +108,7 @@ struct berTest {
             .onClick((event) => {
               console.log("sasa:UniversalString click");
               const testString = "My test text";
-              const asn:ESObject  = new asn1js.UniversalString({
+              const asn:asn1js.UniversalString  = new asn1js.UniversalString({
                 value: testString,
               });
               this.berHandle(asn, "UniversalString");
@@ -120,7 +120,7 @@ struct berTest {
             .onClick((event) => {
               console.log("sasa:Utf8String click")
               const testString = "My test Utf8String";
-              const asn:ESObject  = new asn1js.Utf8String({
+              const asn:asn1js.Utf8String  = new asn1js.Utf8String({
                 value: testString,
               });
               this.berHandle(asn, "Utf8String");
@@ -132,7 +132,7 @@ struct berTest {
             .onClick((event) => {
               console.log("sasa:DATE click");
               const testString = "2000-01-02";
-              const asn:ESObject  = new asn1js.DATE({
+              const asn:asn1js.DATE  = new asn1js.DATE({
                 value: testString,
               });
               this.berHandle(asn, "DATE");
@@ -145,7 +145,7 @@ struct berTest {
             .onClick((event) => {
               console.log("sasa:DateTime click");
               const testString = "2000-01-02 12:00";
-              const asn:ESObject  = new asn1js.DateTime({
+              const asn:asn1js.DateTime  = new asn1js.DateTime({
                 value: testString,
               });
               this.berHandle(asn, "DateTime");
@@ -157,7 +157,7 @@ struct berTest {
             .onClick((event) => {
               console.log("sasa:Duration click");
               const testString = "1000";
-              const asn:ESObject  = new asn1js.Duration({
+              const asn:asn1js.Duration  = new asn1js.Duration({
                 value: testString,
               });
               this.berHandle(asn, "Duration");
@@ -169,7 +169,7 @@ struct berTest {
             .height("45vp")
             .onClick((event) => {
               const testString = "some text";
-              const asn:ESObject  = new asn1js.GeneralString({
+              const asn:asn1js.GeneralString  = new asn1js.GeneralString({
                 value: testString,
               });
               this.berHandle(asn, "GeneralString");
@@ -181,7 +181,7 @@ struct berTest {
             .height("45vp")
             .onClick((event) => {
               const testString = "some text";
-              const asn:ESObject  = new asn1js.GraphicString({
+              const asn:asn1js.GraphicString  = new asn1js.GraphicString({
                 value: testString,
               });
               this.berHandle(asn, "GraphicString");
@@ -192,7 +192,7 @@ struct berTest {
             .height("45vp")
             .onClick((event) => {
               const testString = "1234567890";
-              const asn:ESObject  = new asn1js.NumericString({
+              const asn:asn1js.NumericString  = new asn1js.NumericString({
                 value: testString,
               });
               this.berHandle(asn, "NumericString");
@@ -203,7 +203,7 @@ struct berTest {
             .height("45vp")
             .onClick((event) => {
               const testString = "0.2.3.4.5";
-              const asn:ESObject  = new asn1js.ObjectIdentifier({
+              const asn:asn1js.ObjectIdentifier  = new asn1js.ObjectIdentifier({
                 value: testString,
               });
               this.berHandle(asn, "ObjectIdentifier");
@@ -213,7 +213,7 @@ struct berTest {
             .fontSize(18)
             .height("45vp")
             .onClick((event) => {
-              const asn:ESObject  = new asn1js.OctetString({
+              const asn:asn1js.OctetString  = new asn1js.OctetString({
                 value: [
                   new asn1js.OctetString({
                     valueHex: new Uint8Array([0x01])
@@ -232,7 +232,7 @@ struct berTest {
             .fontSize(18)
             .height("45vp")
             .onClick((event) => {
-              const asn:ESObject  = new asn1js.Null({
+              const asn:asn1js.Null  = new asn1js.Null({
                 name: "block2",
               });
               this.berHandle(asn, "Null");
@@ -243,7 +243,7 @@ struct berTest {
             .fontSize(18)
             .height("45vp")
             .onClick((event) => {
-              const asn:ESObject  = new asn1js.Sequence({
+              const asn:asn1js.Sequence  = new asn1js.Sequence({
                 name: "block1",
                 value: [
                   new asn1js.Null({
@@ -287,8 +287,8 @@ struct berTest {
     return getContext().resourceManager.getStringSync(res.id)
   }
 
-  berHandle(asn:ESObject , name: string) {
-    const ber:ESObject  = asn.toBER();
+  berHandle(asn:asn1js.Boolean, name: string) {
+    const ber:ArrayBuffer  = asn.toBER();
     const asnParsed:ESObject  = asn1js.fromBER(ber);
     this.strPrototypeText = name + this.getResourceString($r('app.string.Assembly_data')) + JSON.stringify(asn);
     this.strEncodingText = this.getResourceString($r('app.string.To_convert')) + bufferToHexCodes(ber);
