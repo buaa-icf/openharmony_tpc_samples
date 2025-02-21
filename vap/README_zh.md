@@ -100,7 +100,7 @@ ohpm install .\vap_module\build\default\outputs\default\vap_module.har
 在使用文件中进行头文件的引入
 
 ```typescript
-import { VAPPlayer,MixData } from 'vap_module';
+import { VAPPlayer,MixData } from '@ohos/vap';
 ```
 
 ### 定义 VAPPlayer 组件

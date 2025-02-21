@@ -13,11 +13,11 @@
  * limitations under the License.
  */
 
-import { VAPPlayer } from 'vap_module';
+import { VAPPlayer } from '@ohos/vap';
 import { systemDateTime } from '@kit.BasicServicesKit';
 import { LogUtil } from '../common/LogUtil';
 import { util } from '@kit.ArkTS';
-import { VAPComponent, FitType, MixData, VideoMode } from 'vap_module';
+import { VAPComponent, FitType, MixData, VideoMode } from '@ohos/vap';
 
 @Entry
 @Component

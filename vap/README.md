@@ -97,7 +97,7 @@ Install the previously generated Har package.
 Import header files in the usage file.
 
 ```typescript
-import { VAPPlayer,MixData } from 'vap_module';
+import { VAPPlayer,MixData } from '@ohos/vap';
 ```
 
 ### Define VAPPlayer Component

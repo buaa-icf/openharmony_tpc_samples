@@ -13,11 +13,11 @@
  * limitations under the License.
  */
 
-import { VAPPlayer, VapState } from 'vap_module';
+import { VAPPlayer, VapState } from '@ohos/vap';
 import { systemDateTime } from '@kit.BasicServicesKit';
 import { LogUtil } from '../common/LogUtil';
 import { util } from '@kit.ArkTS';
-import { FitType, MixData, VideoMode } from 'vap_module';
+import { FitType, MixData, VideoMode } from '@ohos/vap';
 import { router } from '@kit.ArkUI';
 
 // 场景： 应用开屏效果， 可点击跳过

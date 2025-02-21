@@ -13,14 +13,14 @@
  * limitations under the License.
  */
 
-import { MixData, VAPPlayer, VAPColor } from 'vap_module';
+import { MixData, VAPPlayer, VAPColor } from '@ohos/vap';
 import { systemDateTime } from '@kit.BasicServicesKit';
 import { LogUtil } from '../common/LogUtil';
 import { util } from '@kit.ArkTS';
-import { FitType } from 'vap_module';
-import { VAPFontWeight } from 'vap_module';
-import { VAPTextAlign } from 'vap_module';
-import { SrcInfo, SrcType } from 'vap_module';
+import { FitType } from '@ohos/vap';
+import { VAPFontWeight } from '@ohos/vap';
+import { VAPTextAlign } from '@ohos/vap';
+import { SrcInfo, SrcType } from '@ohos/vap';
 import text from '@ohos.graphics.text';
 
 class ColorBean implements VAPColor {
