@@ -53,7 +53,7 @@ struct Index {
             let session: snmp.Session = snmp.createSession(this.ip, "public");
             let oids = ["1.3.6.1.2.1.1.5.0", "1.3.6.1.2.1.1.6.0"];
             this.result = " RESULT:\r\n"
-            session.get(oids, (error: ESObject, varbinds: ESObject) => {
+            session.get(oids, (error: Error, varbinds: ESObject) => {
               if (error) {
                 this.result += JSON.stringify(error)
                 console.error("SNMP-->" + JSON.stringify(error));
@@ -90,7 +90,7 @@ struct Index {
             let nonRepeaters = 2;
             let session: snmp.Session = snmp.createSession(this.ip, "public");
             this.result = " RESULT:\r\n"
-            session.getBulk(oids, nonRepeaters, (error: ESObject, varbinds: ESObject) => {
+            session.getBulk(oids, nonRepeaters, (error: Error, varbinds: ESObject) => {
               if (error) {
                 this.result += JSON.stringify(error)
                 console.error("SNMP-->error " + JSON.stringify(error));
@@ -139,7 +139,7 @@ struct Index {
 
             this.result = " RESULT:\r\n"
             let session: snmp.Session = snmp.createSession(this.ip, "public");
-            session.getNext(oids, (error: ESObject, varbinds: ESObject) => {
+            session.getNext(oids, (error: Error, varbinds: ESObject) => {
               if (error) {
                 this.result += JSON.stringify(error)
                 console.error("SNMP-->error " + JSON.stringify(error));
@@ -181,7 +181,7 @@ struct Index {
                   console.log(varbinds[i].oid + "|" + varbinds[i].value);
                 }
               }
-            }, (error: ESObject) => {
+            }, (error: Error) => {
               if (error) {
                 this.result += JSON.stringify(error)
                 console.error("SNMP-->subtree error " + JSON.stringify(error));
@@ -202,7 +202,7 @@ struct Index {
             let oid = "1.3.6.1.2.1.2.2";
             let session: snmp.Session = snmp.createSession(this.ip, "public");
             let maxRepetitions = 20;
-            session.table(oid, maxRepetitions, (error: ESObject, table: ESObject) => {
+            session.table(oid, maxRepetitions, (error: Error, table: ESObject) => {
               if (error) {
                 this.result += JSON.stringify(error)
                 console.error("SNMP-->" + JSON.stringify(error));
@@ -245,7 +245,7 @@ struct Index {
             let oid = "1.3.6.1.2.1.2.2";
             let columns = [2, 6];
             let session: snmp.Session = snmp.createSession(this.ip, "public");
-            session.tableColumns(oid, columns, 20, (error: ESObject, table: ESObject) => {
+            session.tableColumns(oid, columns, 20, (error: Error, table: ESObject) => {
               if (error) {
                 this.result += JSON.stringify(error)
                 console.error("SNMP-->tableColumns error " + JSON.stringify(error));
@@ -297,10 +297,10 @@ struct Index {
                 type: snmp.ObjectType.OctetString,
                 value: "status-error"
               }
-            ], (error: ESObject) => {
+            ], (error: Error) => {
               if (error) {
                 this.result += JSON.stringify(error)
-                console.error(error);
+                console.dir(error);
               } else {
                 this.result += "trap success"
               }
@@ -328,7 +328,7 @@ struct Index {
                   console.log(varbinds[i].oid + "|" + varbinds[i].value);
                 }
               }
-            }, (error: ESObject) => {
+            }, (error: Error) => {
               if (error) {
                 console.error(JSON.stringify(error));
               }
@@ -353,10 +353,10 @@ struct Index {
               disableAuthorization: true,
               accessControlModelType: snmp.AccessControlModelType.Simple,
               port: 1062
-            }, (error: ESObject, trap: ESObject) => {
+            }, (error: Error, trap: ESObject) => {
               if (error) {
                 this.result += "createReceiver error:" + JSON.stringify(error)
-                console.error(error);
+                console.dir(error);
               } else {
                 this.result += "createReceiver success:" + JSON.stringify(trap, null, 2)
                 console.log(JSON.stringify(trap, null, 2));
