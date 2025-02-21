@@ -9,14 +9,12 @@
  * This software is distributed without any warranty.
  */
 
-export abstract class BasicDataSource implements IDataSource {
+export abstract class BasicDataSource<T> implements IDataSource {
   private listeners: DataChangeListener[] = []
 
-  public abstract totalCount()
+  public abstract totalCount():number
 
-  public getData(index: number): number {
-    return 0
-  }
+  public abstract getData(index: number): T
 
   registerDataChangeListener(listener: DataChangeListener): void {
     if (this.listeners.indexOf(listener) < 0) {
