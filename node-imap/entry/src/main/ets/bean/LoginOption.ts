@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import socket from '@ohos.net.socket'
+import { socket } from '@kit.NetworkKit'
 
 export default class LoginOption {
   account: string = '';
