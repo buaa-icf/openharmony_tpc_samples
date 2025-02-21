@@ -1,5 +1,5 @@
 # the minimum version of CMake.
-cmake_minimum_required(VERSION 3.4.1)
+cmake_minimum_required(VERSION 3.5)
 project(client_socket_c)
 
 # 判断操作系统类型

@@ -12,8 +12,22 @@
 import prompt from '@ohos.promptAction';
 import { client_socket } from '@ohos/socketio_2.x';
 import { ConnState } from './Constants';
-import { chatDetailData } from './ChatDetailData';
+import { chatDetailData, Message , MessageType} from './ChatDetailData';
 import hilog from '@ohos.hilog';
+
+export interface LoginResponse {
+  numUsers: number;
+}
+
+export interface MessageResponse {
+  username: string;
+  message: string;
+}
+
+export interface UserEvent {
+  username: string;
+  numUsers: number;
+}
 
 class SocketManager {
   private client: client_socket | null = null;
@@ -122,37 +136,37 @@ class SocketManager {
 
   on_login_listener(event_json: string): void {
     hilog.info(0x0000, 'testTag', '%{public}s', "SOCKET_IO_INDEX on_login_listener: " + event_json);
-    let loginCall: ESObject = JSON.parse(event_json);
+    let loginCall: LoginResponse = JSON.parse(event_json);
 
     let notice =
       "Welcome to Socket.IO Chat,there " + (loginCall.numUsers != 1 ? " are " : "\'s ") + loginCall.numUsers +
         (loginCall.numUsers != 1 ? " participants" : " participant");
-    let serviceMessage: ESObject = { message: notice, id: 0 };
+    let serviceMessage: Message = { message: notice, id: MessageType.SYSTEM };
     chatDetailData.pushData(serviceMessage);
   }
 
   on_new_message_listener(event_json: string): void {
     hilog.info(0x0000, 'testTag', '%{public}s', "SOCKET_IO_INDEX on_new_message_listener: " + event_json);
-    let messageCall: ESObject = JSON.parse(event_json);
-    let serviceMessage: ESObject = { username: messageCall.username, message: messageCall.message, id: 1 };
+    let messageCall: MessageResponse = JSON.parse(event_json);
+    let serviceMessage: Message = { username: messageCall.username, message: messageCall.message, id: MessageType.OTHER };
     chatDetailData.pushData(serviceMessage);
   }
 
   on_user_joined_listener(event_json: string): void {
     hilog.info(0x0000, 'testTag', '%{public}s', "SOCKET_IO_INDEX on_user_joined_listener: " + event_json);
-    let userJoinCall: ESObject = JSON.parse(event_json);
+    let userJoinCall: UserEvent = JSON.parse(event_json);
     let notice = userJoinCall.username + " joined" + ",there" + (userJoinCall.numUsers != 1 ? " are " : "\'s ") +
     userJoinCall.numUsers + (userJoinCall.numUsers != 1 ? " participants" : " participant");
-    let serviceMessage: ESObject = { message: notice, id: 0 };
+    let serviceMessage: Message = { message: notice, id: MessageType.SYSTEM };
     chatDetailData.pushData(serviceMessage);
   }
 
   on_user_left_listener(event_json: string): void {
     hilog.info(0x0000, 'testTag', '%{public}s', "SOCKET_IO_INDEX on_user_left_listener: " + event_json);
-    let userLeftCall: ESObject = JSON.parse(event_json);
+    let userLeftCall: UserEvent = JSON.parse(event_json);
     let notice = userLeftCall.username + " left" + ",there" + (userLeftCall.numUsers != 1 ? "are " : "\'s ") +
     userLeftCall.numUsers + (userLeftCall.numUsers != 1 ? " participants" : " participant");
-    let serviceMessage: ESObject = { message: notice, id: 0 };
+    let serviceMessage: Message = { message: notice, id: MessageType.SYSTEM };
     chatDetailData.pushData(serviceMessage);
   }
 

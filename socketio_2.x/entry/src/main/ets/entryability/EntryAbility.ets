@@ -14,12 +14,14 @@ import hilog from '@ohos.hilog';
 import window from '@ohos.window';
 import { GlobalContext } from '../common/GlobalContext';
 import { socketManager } from '../common/SocketManager';
+import Want from '@ohos.app.ability.Want';
+import AbilityConstant from '@ohos.app.ability.AbilityConstant';
 
 export default class EntryAbility extends UIAbility {
   isBack: boolean = false;
   isFirst: boolean = true;
 
-  onCreate(want: ESObject, launchParam: ESObject) {
+  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam) {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
     GlobalContext.getContext().setValue('abilityWant',want);
   }

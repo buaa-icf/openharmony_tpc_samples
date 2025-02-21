@@ -15,7 +15,9 @@
   "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/socketio",
   "type": "module",
   "version": "1.0.3",
-  "dependencies": {},
+  "dependencies": {
+    "libclient_socket_c.so": "file:./src/main/cpp/types/libentry"
+  },
   "tags": [
     "OpenHarmony",
     "HarmonyOS",
@@ -23,8 +25,5 @@
     "Network"
   ],
   "license": "MIT License",
-  "devDependencies": {
-    "@types/libclient_socket_c.so": "file:./src/main/cpp/types/libentry"
-  },
   "name": "@ohos/socketio_2.x"
 }

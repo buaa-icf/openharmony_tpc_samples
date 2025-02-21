@@ -13,7 +13,7 @@ import { BasicDataSource } from '../common/BasicDataSource';
 // import { ServiceMessage, ClientMessage, UserCall } from './MessageInfo';
 import prompt from '@ohos.promptAction';
 import { socketManager } from '../common/SocketManager';
-import { chatDetailData } from '../common/ChatDetailData';
+import { chatDetailData, Message, MessageType } from '../common/ChatDetailData';
 @Entry
 @Component
 struct Index {
@@ -30,7 +30,7 @@ struct Index {
       Column() {
         if (this.login_finish) {
           List({ scroller: this.scroller }) {
-            LazyForEach(chatDetailData, (message: ESObject) => {
+            LazyForEach(chatDetailData, (message: Message) => {
               ListItem() {
                 ChatItemView({ message: message })
               }
@@ -56,7 +56,7 @@ struct Index {
                   prompt.showToast({ message: "请输入消息" });
                 } else {
                   socketManager.sendMessage(this.message)
-                  let clientMessage: ESObject = { username: socketManager.username, message: this.message, id: 2 }
+                  let clientMessage: Message = { username: socketManager.username, message: this.message, id: MessageType.SELF }
                   chatDetailData.pushData(clientMessage)
                   this.message = ""
                 }
@@ -103,11 +103,14 @@ struct Index {
 
 @Component
 struct ChatItemView {
-  private message: ESObject
+  public message: Message = {
+    id: MessageType.SYSTEM,
+    message: '',
+  }
 
   build() {
     Column() {
-      if (this.message.id == 0) {
+      if (this.message.id == MessageType.SYSTEM) {
         Row() {
           Text(this.message.message)
         }
@@ -115,7 +118,7 @@ struct ChatItemView {
         .justifyContent(FlexAlign.Center)
         .margin({ top: 15 })
       }
-      else if (this.message.id == 1) {
+      else if (this.message.id == MessageType.OTHER) {
         // 聊天页面对方的消息
         Row() {
           Text(this.message.username + ":" + this.message.message)
