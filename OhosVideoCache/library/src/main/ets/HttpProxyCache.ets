@@ -120,8 +120,8 @@ export default class HttpProxyCache extends ProxyCache {
       return Promise.reject(new Error("source is null"));
     }
     const ctx = this;
+    let newSourceNoCache = new HttpUrlSource([this.source], true);
     await new Promise<void>((resolve, reject) => {
-      let newSourceNoCache = new HttpUrlSource([this.source], true);
       try {
         class TempDataBackListener implements DataBackListener {
           onDataEnd() {

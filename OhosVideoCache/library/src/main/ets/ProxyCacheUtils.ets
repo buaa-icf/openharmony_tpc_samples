@@ -83,7 +83,7 @@ export default class ProxyCacheUtils {
       let decoder = util.TextDecoder.create("utf-8", {
         ignoreBOM: true
       })
-      return decoder.decodeWithStream(new Uint8Array(buffer.from(url).buffer), {
+      return decoder.decodeToString(new Uint8Array(buffer.from(url).buffer), {
         stream: false
       });
     } catch (err) {

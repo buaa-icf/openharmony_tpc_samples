@@ -59,7 +59,7 @@ struct Index {
   private xComponentController: XComponentController = new XComponentController();
   @State avPlayManage: avPlayManage = new avPlayManage();
   @State isSwiping: boolean = false; // 用户滑动过程中
-  @State isClickScreen: boolean = false; // 是否点击
+  @State isClickScreen: boolean = true; // 是否点击
   @State flag: boolean = true; // 暂停播放
   @State XComponentFlag: boolean = false;
   @State speedSelect: number = 0; // 倍速选择
