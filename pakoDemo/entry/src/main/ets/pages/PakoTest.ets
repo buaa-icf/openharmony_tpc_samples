@@ -18,7 +18,7 @@ import prompt from '@ohos.promptAction';
 
 @Entry
 @Component
-export default struct deflateDemo {
+struct deflateDemo {
   @State Deflate1: string | undefined = "0"
   @State Deflate2: string | undefined = "0"
   @State Deflate3: string | undefined = "0"

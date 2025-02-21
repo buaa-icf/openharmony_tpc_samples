@@ -58,7 +58,7 @@ export async function InflateFile(src: string, target: string): Promise<boolean>
 
 @Entry
 @Component
-export struct DeflateTest {
+struct DeflateTest {
   @State isCompressGZipFileShow: boolean = false;
   @State isDeCompressGZipShow: boolean = false;
   preTimestamp: number = 0;

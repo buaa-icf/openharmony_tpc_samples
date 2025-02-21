@@ -64,7 +64,7 @@ export async function unGzipFile(src: string, target: string): Promise<boolean> 
 
 @Entry
 @Component
-export struct GzipTest {
+struct GzipTest {
   @State isCompressGZipFileShow: boolean = false;
   @State isDeCompressGZipShow: boolean = false;
   preTimestamp: number = 0;
