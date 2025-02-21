@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { LOCATION } from "./SmartRefreshEnum"
 
 @ComponentV2
 struct SmartRefreshForFlyRefresh {
@@ -24,7 +25,7 @@ struct SmartRefreshForFlyRefresh {
   @Local headerIsVisibleLoadMore :boolean = true
   @Local footerIsVisibleLoadMore :boolean = false
 
-  refreshClose(location:ESObject) { //重置Scroller
+  refreshClose(location:LOCATION) { //重置Scroller
     this.needScroller = true
     this.modelFly.refreshState = SmartRefreshForFlyRefresh.REFRESHSTATE.NONE
   }
@@ -109,7 +110,7 @@ struct SmartRefreshForFlyRefresh {
               this.modelFly.scrollLocation = SmartRefreshForFlyRefresh.LOCATION.FOOT
             }
           })
-          .onScroll((xOffset: number, yOffset: number) => {
+          .onWillScroll((xOffset: number, yOffset: number) => {
             if (this.modelFly.fixedContent != this.modelFly.oldFixedContent) {//内容固定
               this.needScroller = true
               this.modelFly.oldFixedContent = this.modelFly.fixedContent
@@ -120,7 +121,7 @@ struct SmartRefreshForFlyRefresh {
             }
             this.scrollerEventFunction()
           })
-          .onScrollEnd(() => {
+          .onScrollStop(() => {
             if (this.modelFly.scrollerEndState) {
               this.modelFly.scrollerEndState = false
               this.modelFly.scroller.scrollTo({
@@ -195,7 +196,7 @@ struct SmartRefreshForFlyRefresh {
         this.modelFly.downY = event.touches[0].y
         break
       case TouchType.Move: // 手指移动
-        this.modelFly.currentMouseX = event.touches[0].screenX;
+        this.modelFly.currentMouseX = event.touches[0].windowX;
         this.modelFly.downYOffset = event.touches[0].y - this.modelFly.downY
       //记录拖拽方向
         this.modelFly.dragDirection = this.modelFly.downYOffset > 0 ? true : false

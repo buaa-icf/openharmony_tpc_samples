@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { LOCATION } from "./SmartRefreshEnum"
 
 @ComponentV2
 struct SmartRefreshForStoreHouseSample {
@@ -33,7 +34,7 @@ struct SmartRefreshForStoreHouseSample {
   private scrollAreaChangeHeight : number = 0
   private columnAreaChangeHeight: number = 0
 
-  refreshClose(location:ESObject) { //重置Scroller
+  refreshClose(location:LOCATION) { //重置Scroller
     this.needScroller = true
     this.modelStoreHouse.refreshState = SmartRefreshForStoreHouseSample.REFRESHSTATE.NONE
   }
@@ -110,7 +111,7 @@ struct SmartRefreshForStoreHouseSample {
           this.modelStoreHouse.scrollLocation = SmartRefreshForStoreHouseSample.LOCATION.FOOT
         }
       })
-      .onScroll((xOffset: number, yOffset: number) => {
+      .onWillScroll((xOffset: number, yOffset: number) => {
         if(!this.modelStoreHouse.disableContentWhenRefresh && (this.modelStoreHouse.refreshState == SmartRefreshForStoreHouseSample.REFRESHSTATE.REFRESHING || this.modelStoreHouse.refreshState == SmartRefreshForStoreHouseSample.REFRESHSTATE.REFRESHFINISH)) {
           //do nothing->设置下拉刷新过程中不可以拖动
         } else {
@@ -218,7 +219,7 @@ struct SmartRefreshForStoreHouseSample {
         this.modelStoreHouse.downY = event.touches[0].y
         break
       case TouchType.Move: // 手指移动
-        this.modelStoreHouse.currentMouseX = event.touches[0].screenX;
+        this.modelStoreHouse.currentMouseX = event.touches[0].windowX;
         this.modelStoreHouse.downYOffset = event.touches[0].y - this.modelStoreHouse.downY
       //记录拖拽方向
         this.modelStoreHouse.dragDirection = this.modelStoreHouse.downYOffset > 0 ? true : false

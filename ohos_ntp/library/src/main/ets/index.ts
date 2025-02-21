@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import socket from '@ohos.net.socket';
+import { socket } from '@kit.NetworkKit';
 import buffer from '@ohos.buffer';
 import { BusinessError } from '@ohos.base';
 

@@ -21,7 +21,7 @@ export struct HitBlockGameCover {
   @Event $modelCover: (value: SmartRefreshForGame.Model) => void = (value: SmartRefreshForGame.Model) => {}
   @Param gameState: boolean = false
   @Monitor('gameState')
-  onGameChange(value:ESObject) {
+  onGameChange() {
     if (this.gameState) {
       this.bottomAnimY = 0
       this.topAnimY = 0

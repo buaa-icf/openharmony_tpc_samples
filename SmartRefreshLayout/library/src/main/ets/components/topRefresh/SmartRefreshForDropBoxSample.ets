@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { LOCATION } from "./SmartRefreshEnum"
 
 @ComponentV2
 struct SmartRefreshForDropBoxSample {
@@ -33,7 +34,7 @@ struct SmartRefreshForDropBoxSample {
   private scrollAreaChangeHeight : number = 0
   private columnAreaChangeHeight: number = 0
 
-  refreshClose(location:ESObject) { //重置Scroller
+  refreshClose(location:LOCATION) { //重置Scroller
     this.needScroller = true
     this.modelDropBox.refreshState = SmartRefreshForDropBoxSample.REFRESHSTATE.NONE
   }
@@ -110,7 +111,7 @@ struct SmartRefreshForDropBoxSample {
           this.modelDropBox.scrollLocation = SmartRefreshForDropBoxSample.LOCATION.FOOT
         }
       })
-      .onScroll((xOffset: number, yOffset: number) => {
+      .onWillScroll((xOffset: number, yOffset: number) => {
         if(!this.modelDropBox.disableContentWhenRefresh && (this.modelDropBox.refreshState == SmartRefreshForDropBoxSample.REFRESHSTATE.REFRESHING || this.modelDropBox.refreshState == SmartRefreshForDropBoxSample.REFRESHSTATE.REFRESHFINISH)) {
           //do nothing->设置下拉刷新过程中不可以拖动
         } else {
@@ -218,7 +219,7 @@ struct SmartRefreshForDropBoxSample {
         this.modelDropBox.downY = event.touches[0].y
         break
       case TouchType.Move: // 手指移动
-        this.modelDropBox.currentMouseX = event.touches[0].screenX;
+        this.modelDropBox.currentMouseX = event.touches[0].windowX;
         this.modelDropBox.downYOffset = event.touches[0].y - this.modelDropBox.downY
       //记录拖拽方向
         this.modelDropBox.dragDirection = this.modelDropBox.downYOffset > 0 ? true : false

@@ -52,7 +52,7 @@ struct Index {
               .width("100%")
               .textAlign(TextAlign.Center)
               .onClick(() => {
-                 router.push({ url: item.url})
+                 router.pushUrl({ url: item.url})
               })
           }, (item:RefreshTypeMapParam) => item.id.toString())
         }

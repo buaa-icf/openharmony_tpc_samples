@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { LOCATION } from "./SmartRefreshEnum"
 
 @ComponentV2
 struct SmartRefreshForBezierRadarSample {
@@ -33,7 +34,7 @@ struct SmartRefreshForBezierRadarSample {
   private scrollAreaChangeHeight : number = 0
   private columnAreaChangeHeight: number = 0
 
-  refreshClose(location:ESObject) { //重置Scroller
+  refreshClose(location:LOCATION) { //重置Scroller
     this.needScroller = true
     this.modelBezierRadar.refreshState = SmartRefreshForBezierRadarSample.REFRESHSTATE.NONE
   }
@@ -110,7 +111,7 @@ struct SmartRefreshForBezierRadarSample {
           this.modelBezierRadar.scrollLocation = SmartRefreshForBezierRadarSample.LOCATION.FOOT
         }
       })
-      .onScroll((xOffset: number, yOffset: number) => {
+      .onWillScroll((xOffset: number, yOffset: number) => {
         if(!this.modelBezierRadar.disableContentWhenRefresh && (this.modelBezierRadar.refreshState == SmartRefreshForBezierRadarSample.REFRESHSTATE.REFRESHING || this.modelBezierRadar.refreshState == SmartRefreshForBezierRadarSample.REFRESHSTATE.REFRESHFINISH)) {
           //do nothing->设置下拉刷新过程中不可以拖动
         } else {
@@ -218,7 +219,7 @@ struct SmartRefreshForBezierRadarSample {
         this.modelBezierRadar.downY = event.touches[0].y
         break
       case TouchType.Move: // 手指移动
-        this.modelBezierRadar.currentMouseX = event.touches[0].screenX;
+        this.modelBezierRadar.currentMouseX = event.touches[0].windowX;
         this.modelBezierRadar.downYOffset = event.touches[0].y - this.modelBezierRadar.downY
       //记录拖拽方向
         this.modelBezierRadar.dragDirection = this.modelBezierRadar.downYOffset > 0 ? true : false

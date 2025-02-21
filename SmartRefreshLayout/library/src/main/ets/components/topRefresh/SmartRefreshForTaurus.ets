@@ -98,14 +98,14 @@ struct SmartRefreshForTaurus {
             this.model.scrollLocation = SmartRefreshForTaurus.LOCATION.FOOT
           }
         })
-        .onScroll((xOffset: number, yOffset: number) => {
+        .onWillScroll((xOffset: number, yOffset: number) => {
           if (this.model.fixedContent != this.model.oldFixedContent) {//内容固定
             this.needScroller = true
             this.model.oldFixedContent = this.model.fixedContent
           }
           this.model.latestYOffset = this.model.scroller.currentOffset().yOffset
         })
-        .onScrollEnd(() => {
+        .onScrollStop(() => {
           if (this.model.scrollerEndState) {
             this.model.scrollerEndState = false
             this.model.scroller.scrollTo({
@@ -190,7 +190,7 @@ struct SmartRefreshForTaurus {
         this.model.downY = event.touches[0].y
         break
       case TouchType.Move: // 手指移动
-        this.model.currentMouseX = event.touches[0].screenX;
+        this.model.currentMouseX = event.touches[0].windowX;
         this.model.downYOffset = event.touches[0].y - this.model.downY
       //记录拖拽方向
         this.model.dragDirection = this.model.downYOffset > 0 ? true : false

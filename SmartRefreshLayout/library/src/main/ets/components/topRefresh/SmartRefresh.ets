@@ -33,7 +33,7 @@ struct SmartRefresh {
   private scrollAreaChangeHeight : number = 0
   private columnAreaChangeHeight: number = 0
 
-  refreshClose(location:ESObject) { //重置Scroller
+  refreshClose(location:SmartRefresh.LOCATION) { //重置Scroller
     this.needScroller = true
     this.model.refreshState = SmartRefresh.REFRESHSTATE.NONE
   }
@@ -108,7 +108,7 @@ struct SmartRefresh {
           this.model.scrollLocation = SmartRefresh.LOCATION.FOOT
         }
       })
-      .onScroll((xOffset: number, yOffset: number) => {
+      .onWillScroll((xOffset: number, yOffset: number) => {
         if(!this.model.disableContentWhenRefresh && (this.model.refreshState == SmartRefresh.REFRESHSTATE.REFRESHING || this.model.refreshState == SmartRefresh.REFRESHSTATE.REFRESHFINISH)) {
           //do nothing->设置下拉刷新过程中不可以拖动
         } else {
@@ -216,7 +216,7 @@ struct SmartRefresh {
         this.model.downY = event.touches[0].y
         break
       case TouchType.Move: // 手指移动
-        this.model.currentMouseX = event.touches[0].screenX;
+        this.model.currentMouseX = event.touches[0].windowX;
         this.model.downYOffset = event.touches[0].y - this.model.downY
         //记录拖拽方向
         this.model.dragDirection = this.model.downYOffset > 0 ? true : false
