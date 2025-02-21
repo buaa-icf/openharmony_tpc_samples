@@ -25,6 +25,7 @@ export class VAPPlayer implements XComponentContext {
   private uri = ''
   private mixData: Array<MixData> = []
   public sandDir = ''
+  private isRunning : boolean = false
 
   setContext(context: object): void {
     this.vapContext = context as XComponentContext;
@@ -46,10 +47,16 @@ export class VAPPlayer implements XComponentContext {
     } else {
       this.loops = 1
       this.jsCbfn ? this.jsCbfn() : ''
+      this.isRunning = false
     }
   }
 
   async play(uri: string, mixData?: Array<MixData>, cbFn?: () => void): Promise<void> {
+    if (this.isRunning == true) {
+      console.log("video is playing")
+      return;
+    }
+    this.isRunning = true;
     if (mixData) {
       this.mixData = []
       for (let element of mixData) {

@@ -31,6 +31,7 @@ struct GeneralAnimation {
 
   aboutToDisappear(): void {
     LogUtil.info('aboutToDisappear')
+    this.vapPlayer?.stop()
   }
 
   onPageShow(): void {
