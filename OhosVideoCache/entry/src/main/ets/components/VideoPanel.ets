@@ -40,90 +40,101 @@ export struct VideoPanel {
     return true;
   }
 
-  build() {
-    Panel(this.show) {
-      Column() {
-        RelativeContainer() {
-          Text(this.videoList[this.videoSelect].substring(this.videoList[this.videoSelect].length - 20,
-            this.videoList[this.videoSelect].length))
-            .fontColor(Color.White)
-            .fontSize($r('app.float.size_18'))
-            .fontWeight(FontWeight.Regular)
-            .alignRules({
-              middle: { anchor: '__container__', align: HorizontalAlign.Center },
-              center: { anchor: '__container__', align: VerticalAlign.Center }
-            })
-            .id('test1')
-          Image($r('app.media.ic_video_list_down'))
-            .width($r('app.float.size_30'))
-            .height($r('app.float.size_20'))
-            .alignRules({
-              right: { anchor: '__container__', align: HorizontalAlign.End },
-              center: { anchor: '__container__', align: VerticalAlign.Center }
-            }).id('test2')
-        }
-        .height($r('app.float.size_20'))
-        .width('90%')
-        .margin({ top: $r('app.float.size_20'), bottom: $r('app.float.size_20') })
+  @Builder
+  myBuilder(){
+    Column() {
+      RelativeContainer() {
+        Text(this.videoList[this.videoSelect].substring(this.videoList[this.videoSelect].length - 20,
+          this.videoList[this.videoSelect].length))
+          .fontColor(Color.White)
+          .fontSize($r('app.float.size_18'))
+          .fontWeight(FontWeight.Regular)
+          .alignRules({
+            middle: { anchor: '__container__', align: HorizontalAlign.Center },
+            center: { anchor: '__container__', align: VerticalAlign.Center }
+          })
+          .id('test1')
+        Image($r('app.media.ic_video_list_down'))
+          .width($r('app.float.size_30'))
+          .height($r('app.float.size_20'))
+          .alignRules({
+            right: { anchor: '__container__', align: HorizontalAlign.End },
+            center: { anchor: '__container__', align: VerticalAlign.Center }
+          }).id('test2')
+      }
+      .height($r('app.float.size_20'))
+      .width('90%')
+      .margin({ top: $r('app.float.size_20'), bottom: $r('app.float.size_20') })
 
-        List() {
-          ForEach(this.videoList, (item: string, index: number) => {
-            ListItem() {
-              Column() {
-                Row() {
-                  Text(item)
-                    .fontSize($r('app.float.size_12'))
-                    .fontColor(Color.White)
+      List() {
+        ForEach(this.videoList, (item: string, index: number) => {
+          ListItem() {
+            Column() {
+              Row() {
+                Text(item)
+                  .fontSize($r('app.float.size_12'))
+                  .fontColor(Color.Black)
+                  .fontWeight(FontWeight.Regular)
+                  .textAlign(TextAlign.Center)
+                  .width('80%')
+
+                Blank()
+
+                if (this.videoSelect === index) {
+                  Text($r('app.string.playing'))
+                    .fontSize($r('app.float.size_16'))
+                    .fontColor(Color.Black)
+                    .opacity($r('app.float.size_zero_six'))
                     .fontWeight(FontWeight.Regular)
                     .textAlign(TextAlign.Center)
-                    .width('80%')
-
-                  Blank()
-
-                  if (this.videoSelect === index) {
-                    Text($r('app.string.playing'))
-                      .fontSize($r('app.float.size_16'))
-                      .fontColor(Color.White)
-                      .opacity($r('app.float.size_zero_six'))
-                      .fontWeight(FontWeight.Regular)
-                      .textAlign(TextAlign.Center)
-                      .width('20%')
-                  }
+                    .width('20%')
                 }
-                .width('90%')
               }
-              .width('100%')
+              .width('90%')
             }
-            .backgroundColor(this.videoSelect === index ? $r('app.color.video_play_selected') : '')
             .width('100%')
-            .height($r('app.float.size_64'))
-            .onClick(async () => {
-              this.videoSelect = index;
-              AppStorage.setOrCreate('videoName', this.videoList[this.videoSelect]);
-              AppStorage.setOrCreate('videoIndex', this.videoSelect);
-              this.show = false;
-              let str: string = this.videoList[this.videoSelect];
-              if (this.avPlayManage) {
-                this.avPlayManage.videoChoose(str, this.videoSelect);
-              }
-            })
+          }
+          .backgroundColor(this.videoSelect === index ? $r('app.color.video_play_selected') : '')
+          .width('100%')
+          .height($r('app.float.size_64'))
+          .onClick(async () => {
+            this.videoSelect = index;
+            AppStorage.setOrCreate('videoName', this.videoList[this.videoSelect]);
+            AppStorage.setOrCreate('videoIndex', this.videoSelect);
+            this.show = false;
+            let str: string = this.videoList[this.videoSelect];
+            if (this.avPlayManage) {
+              this.avPlayManage.videoChoose(str, this.videoSelect);
+            }
           })
-        }
-        .width('100%')
+        })
       }
+      .width('100%')
     }
+  }
+
+  build() {
+    Button("")
+      .margin({top:300})
     .onClick(() => {
-      this.show = false;
+      this.show = true;
+    }).backgroundColor(Color.Transparent)
+    .bindSheet($$this.show, this.myBuilder(), {
+      height: SheetSize.MEDIUM,
+      blurStyle: BlurStyle.Thick,
+      showClose: true,
+      title: { title: "", subtitle: "" },
+      preferType: SheetType.CENTER,
+      onWillDismiss: ((DismissSheetAction: DismissSheetAction) => {
+        if (DismissSheetAction.reason == DismissReason.SLIDE_DOWN) {
+          DismissSheetAction.dismiss() //注册dismiss行为
+        }
+      }),
+
+      onWillSpringBackWhenDismiss: ((SpringBackAction: SpringBackAction) => {
+        //没有注册springBack, 下拉半模态页面无回弹行为
+        SpringBackAction.springBack()
+      }),
     })
-    .onChange(() => {
-      this.show = false;
-    })
-    .backgroundColor($r('app.color.video_play'))
-    .type(PanelType.Foldable)
-    .mode(PanelMode.Half)
-    .dragBar(false)
-    .halfHeight(400)
-    .width('100%')
-    .padding({ top: $r('app.float.size_5') })
   }
 }

@@ -46,7 +46,7 @@ export default class HttpUrlSource implements Source {
   // private inputStream: InputStream;
   private useInterVal: boolean = false;
 
-  constructor(args: string | Array<string | ESObject>, useInterVal?: boolean) {
+  constructor(args: string | Array<string | SourceInfoStorage| HeaderInjector |HttpUrlSource>, useInterVal?: boolean) {
     if (!args || args.length < 1) {
       throw new Error('params can not be null')
     }

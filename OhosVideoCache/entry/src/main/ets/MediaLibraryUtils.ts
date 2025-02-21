@@ -16,8 +16,6 @@
 import media from '@ohos.multimedia.media';
 import common from '@ohos.app.ability.common';
 import Logger from './Logger';
-import photoAccessHelper from '@ohos.file.photoAccessHelper';
-import dataSharePredicates from '@ohos.data.dataSharePredicates';
 
 const TAG = 'MediaDemo MediaLibraryUtils:';
 const MS_TIME: number = 1000;
@@ -27,24 +25,6 @@ const TEN_NUMBER: number = 10;
 export default class MediaLibraryUtils {
   // @ts-ignore
   private context = getContext(this) as common.UIAbilityContext;
-  private phAccessHelper = photoAccessHelper.getPhotoAccessHelper(this.context);
-  // 根据文件id查寻文件对象
-  async findFile(uri: string, displayName: string): Promise<photoAccessHelper.PhotoAsset> {
-    let predicates: dataSharePredicates.DataSharePredicates = new dataSharePredicates.DataSharePredicates();
-    predicates.equalTo(photoAccessHelper.PhotoKeys.DISPLAY_NAME, displayName);
-
-    const fetchOptions: photoAccessHelper.FetchOptions  = {
-      fetchColumns: [],
-      predicates: predicates
-    };
-    let fetchResult: photoAccessHelper.FetchResult<photoAccessHelper.PhotoAsset> = await this.phAccessHelper.getAssets(fetchOptions);
-    let fileAsset:photoAccessHelper.PhotoAsset;
-    fileAsset = await fetchResult.getFirstObject();
-    if (fetchResult.getCount() > 0) {
-      fileAsset = await fetchResult.getFirstObject();
-    }
-    return fileAsset;
-  }
 
   async openFileDescriptor(name: string): Promise<media.AVFileDescriptor> {
     let fileDescriptor: media.AVFileDescriptor;
@@ -60,7 +40,7 @@ export default class MediaLibraryUtils {
   }
 
   async closeFileDescriptor(name: string): Promise<void> {
-    await this.context.resourceManager.closeRawFileDescriptor(name).then(() => {
+    await this.context.resourceManager.closeRawFd(name).then(() => {
       Logger.info(TAG, 'case closeRawFileDescriptor ' + name);
     }).catch(error => {
       Logger.info(TAG, 'case closeRawFileDescriptor err: ' + error);

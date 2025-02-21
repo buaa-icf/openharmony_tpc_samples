@@ -290,12 +290,6 @@ struct DiyFileNameGeneratorPage {
     return ret;
   }
 
-  // 播放文件打开函数
-  async openMediaFile(fileName: string): Promise<photoAccessHelper.PhotoAsset> {
-    let fileAsset = await this.mediaLibUtils.findFile('0', fileName);
-    return fileAsset;
-  }
-
   // 调用播放接口
   async play(): Promise<void> {
     if (!this.isPrepare) {
