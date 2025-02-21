@@ -21,7 +21,7 @@ export struct AirplaneGameCover {
   @Event $model: (value: SmartRefreshForGame.Model) => void = (value: SmartRefreshForGame.Model) => {}
   @Param gameState: boolean = false
   @Monitor('gameState')
-  private onGameChange(value:ESObject) {
+  private onGameChange() {
     if (this.gameState) {
       this.bottomAnimY = 0
       this.topAnimY = 0

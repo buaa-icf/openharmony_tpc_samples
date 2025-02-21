@@ -52,7 +52,7 @@ export struct DropBox {
     content: "M6,2.1L6,11.3C5.4,11.3 4.8,11.4 4.2,11.6C2.6,12.3 1.6,13.7 2.1,14.8C2.6,15.9 4.2,16.2 5.8,15.6C7.1,15.1 7.8,14.1 7.9,13.2L7.9,4.3L15,3L15,9.4C14.4,9.3 13.7,9.4 13,9.7C11.4,10.3 10.5,11.7 11,12.8C11.4,13.9 13.1,14.3 14.7,13.6C15.9,13.1 16.8,12.2 16.9,11.3L16.9,0L6,2.1L6,2.1Z"
   }];
   drawable3Colors: Array<number> = [0xff98d761];
-  private lastRefreshState:ESObject = SmartRefreshForDropBoxSample.REFRESHSTATE.NONE
+  private lastRefreshState:number = SmartRefreshForDropBoxSample.REFRESHSTATE.NONE
 
   aboutToAppear() {
     this.model.setRefreshHeaderCallback(() => this.draw())

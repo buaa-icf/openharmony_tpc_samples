@@ -24,7 +24,7 @@ export struct HitBlock {
   @Local welcomeIsStart: boolean = false
   @Local gameIsStart: boolean = false
 
-  private changeState(state:ESObject) {
+  private changeState(state:SmartRefreshForGame.REFRESHSTATE) {
     if (state == SmartRefreshForGame.REFRESHSTATE.TOREFRESH ) { // 下拉中
 
     } else if (state == SmartRefreshForGame.REFRESHSTATE.REFRESHING) { // 刷新中

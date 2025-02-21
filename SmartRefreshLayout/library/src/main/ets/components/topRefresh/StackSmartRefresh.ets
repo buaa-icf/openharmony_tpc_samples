@@ -79,7 +79,7 @@ struct StackSmartRefresh {
     //        this.model.scrollLocation = StackSmartRefresh.LOCATION.HEAD
     //      }
     //    })
-    .onScroll((xOffset: number, yOffset: number) => {
+    .onWillScroll((xOffset: number, yOffset: number) => {
       let that = this
       this.model.latestYOffset = this.model.scroller.currentOffset().yOffset
       if (!this.model.init) { //初始化刷新
