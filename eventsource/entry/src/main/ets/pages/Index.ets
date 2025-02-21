@@ -37,7 +37,7 @@ struct Index {
         Button('SSE')
           .width(200)
           .onClick(() => {
-            router.push({ url: 'pages/SSE' })
+            router.pushUrl({ url: 'pages/SSE' })
           })
       }
       .width('100%')
