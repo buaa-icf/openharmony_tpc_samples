@@ -94,7 +94,7 @@ struct group_all_member {
                   .backgroundColor('#ffffff')
                   .fontSize(18)
               }
-            }.editable(true)
+            }.enabled(true)
           }, (item : GroupUserEntity) => item.name)
         }.width('100%')
         .listDirection(Axis.Horizontal) // 排列方向

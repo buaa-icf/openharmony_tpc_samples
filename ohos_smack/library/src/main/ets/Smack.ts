@@ -106,7 +106,7 @@ export class Smack {
         let res: string = testNapi.getFriendList();
         console.info('ssss-getFriendList' + JSON.stringify(res))
         if (res.length > 3) {
-            res = res.substr(0, res.length - 2) + ']'
+            res = res.substring(0, res.length - 2) + ']'
         }
         let data: Array<any> = JSON.parse(res)
         console.info("ssss-getFriendList-" + JSON.stringify(data))
@@ -451,10 +451,9 @@ export class Smack {
             nameKey: "_name",
             elementsKey: "_elements"
         }
-        let result = JSON.stringify(conv.convert(ml, options));
+        let result = JSON.stringify(conv.convertToJSObject(ml, options));
         return result
     }
-
     public static requestRoomConfig(callBack: any): string{
         let value = testNapi.requestRoomConfig(callBack)
         return value

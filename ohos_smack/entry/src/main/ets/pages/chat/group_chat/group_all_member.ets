@@ -16,6 +16,14 @@ import { GroupUserEntity } from '../../../entity/GroupUserEntity';
 import { Smack } from '@ohos/smack'
 import { GlobalContext } from '../../../entity/GlobalContext';
 import prompt from '@ohos.prompt';
+import { promptAction } from '@kit.ArkUI';
+import { GroupMember } from './group_chat_main';
+
+export interface RoomItem {
+  room: string;         // 房间完整路径
+  name?: string;        // 成员名称（可选）
+  affiliation?: string; // 成员身份（可选）
+}
 
 @Entry
 @Component
@@ -73,7 +81,7 @@ struct Group_all_member {
     this.ownerList = []
     let roomitems = Smack.requestList(MUCOperation.RequestOwnerList)
     if (roomitems) {
-      let items:Array<ESObject>=JSON.parse(roomitems)
+      let items:Array<GroupMember>=JSON.parse(roomitems)
       for (let index = 0; index < items.length; index++) {
         let str :string= items[index].jid.replace(" ", "")
         this.ownerList.push(str);
@@ -84,7 +92,7 @@ struct Group_all_member {
   // todo 查看所有群成员
   onGetAllMemberFriends() {
     this.allList = []
-    let roomitems: Array<ESObject> = JSON.parse(Smack.getRoomItems())
+    let roomitems: Array<RoomItem> = JSON.parse(Smack.getRoomItems())
     if (roomitems) {
       for (let index = 0; index < roomitems.length; index++) {
         let str :string= roomitems[index].room.replace(" ", "")
@@ -99,7 +107,7 @@ struct Group_all_member {
     this.adminList = []
     let roomitems = Smack.requestList(MUCOperation.RequestAdminList)
     if (roomitems) {
-      let items:Array<ESObject>=JSON.parse(roomitems)
+      let items:Array<GroupMember>=JSON.parse(roomitems)
       for (let index = 0; index < items.length; index++) {
         let str :string= items[index].jid.replace(" ", "")
         this.adminList.push(str);
@@ -143,12 +151,12 @@ struct Group_all_member {
               .margin({ top: 1 })
               .onClick(v => {
                 if (!this.isOwner()) {
-                  prompt.showToast({
+                  promptAction.showToast({
                     message: getContext().resourceManager.getStringByNameSync('GroupAll_String3')
                   })
                   return;
                 }
-                router.push({
+                router.pushUrl({
                   url: 'pages/chat/group_chat/group_member',
                   params: { userData: [item] }
                 })
@@ -176,7 +184,7 @@ struct Group_all_member {
           .textAlign(TextAlign.End)
           .onClick(v => {
             if (!this.isOprationer()) {
-              prompt.showToast({
+              promptAction.showToast({
                 message: getContext().resourceManager.getStringByNameSync('GroupAll_String6')
               })
               return;
@@ -184,7 +192,7 @@ struct Group_all_member {
             if (this.IsBatch) {
               let users : Array<GroupUserEntity> = this.onGetOperations();
               if (users && users.length>0) {
-                router.push({
+                router.pushUrl({
                   url: 'pages/chat/group_chat/group_member',
                   params: { userData: users}
                 })
@@ -214,12 +222,12 @@ struct Group_all_member {
                 .margin({ top: 1 })
                 .onClick(v => {
                   if (!this.isOprationer()) {
-                    prompt.showToast({
+                    promptAction.showToast({
                       message: getContext().resourceManager.getStringByNameSync('GroupAll_String6')
                     })
                     return;
                   }
-                  router.push({
+                  router.pushUrl({
                     url: 'pages/chat/group_chat/group_member',
                     params: { userData: [item] }
                   })

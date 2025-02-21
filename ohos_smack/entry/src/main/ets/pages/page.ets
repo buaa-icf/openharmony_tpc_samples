@@ -23,7 +23,7 @@ struct page {
 
   service:string="@"+Constant.HOST_DOMAIN+Constant.HOST_RES
   aboutToAppear() {
-    Smack.registerGroupMessageCallback((id:ESObject, msg:ESObject) => {
+    Smack.registerGroupMessageCallback((id:number, msg:string) => {
       console.info(getContext().resourceManager.getStringByNameSync('Page_String1') +'  id = ' + id + '   msg = ' + msg)
     })
     Smack.registerInvitationListener((v0:string) => {
@@ -32,7 +32,7 @@ struct page {
     Smack.registerMUCParticipantPresenceListener((nike: string, presenceType: string) => {
       console.info(getContext().resourceManager.getStringByNameSync('Page_String3') +'  nike = ' + nike + '   presenceType = ' + presenceType )
     })
-    Smack.handleSubscriptionRequestListener((resultStr:ESObject) => {
+    Smack.handleSubscriptionRequestListener((resultStr:string) => {
       console.info('handleSubscriptionRequestListener  resultStr = ' + resultStr)
     })
   }
@@ -213,7 +213,7 @@ struct page {
           Item({
             text: getContext().resourceManager.getStringByNameSync('Page_String28'),
             click: () => {
-              let number:ESObject = Smack.getRoomItems();
+              let number:string = Smack.getRoomItems();
               console.info('getRoomItems = ' + JSON.stringify(number))
             }
           })
@@ -221,7 +221,7 @@ struct page {
           Item({
             text: getContext().resourceManager.getStringByNameSync('Page_String29'),
             click: () => {
-              let list:ESObject = Smack.requestList(MUCOperation.RequestOwnerList);
+              let list:string = Smack.requestList(MUCOperation.RequestOwnerList);
               console.info('requestList = ' + JSON.stringify(list))
             }
           })
@@ -236,14 +236,14 @@ struct page {
           Item({
             text: getContext().resourceManager.getStringByNameSync('Page_String31'),
             click: () => {
-              let info:ESObject = Smack.createOrJoinRoom("room4", Constant.HOST_DOMAIN, Constant.SERVICE_NAME, "123");
+              let info:number = Smack.createOrJoinRoom("room4", Constant.HOST_DOMAIN, Constant.SERVICE_NAME, "123");
             }
           })
 
           Item({
             text: getContext().resourceManager.getStringByNameSync('Page_String32'),
             click: () => {
-              let info:ESObject = Smack.setPassword("123123");
+              let info:number = Smack.setPassword("123123");
             }
           })
 
@@ -272,28 +272,28 @@ struct page {
               roomConfig.roomsecret = "123"
               roomConfig.presencebroadcast = ["participant", "moderator", "visitor"];
               console.info("test page setRoomConfig str:"+JSON.stringify(roomConfig))
-              let info:ESObject = Smack.setRoomConfig(JSON.stringify(roomConfig));
+              let info:string = Smack.setRoomConfig(JSON.stringify(roomConfig));
             }
           })
 
           Item({
             text: getContext().resourceManager.getStringByNameSync('Page_String34'),
             click: () => {
-              let info:ESObject = Smack.bans("888,555", "bans");
+              let info:number = Smack.bans("888,555", "bans");
             }
           })
 
           Item({
             text: getContext().resourceManager.getStringByNameSync('Page_String35'),
             click: () => {
-              let info:ESObject = Smack.setNick("new_nike_name");
+              let info:number = Smack.setNick("new_nike_name");
             }
           })
 
           Item({
             text: getContext().resourceManager.getStringByNameSync('Page_String36'),
             click: () => {
-              let isJoined:ESObject = Smack.isJoined();
+              let isJoined:string = Smack.isJoined();
               console.info('isJoined = ' + isJoined)
             }
           })
@@ -301,28 +301,28 @@ struct page {
           Item({
             text: getContext().resourceManager.getStringByNameSync('Page_String37'),
             click: () => {
-              let nick:ESObject = Smack.nick();
+              let nick:string = Smack.nick();
               console.info('nick = ' + nick)
             }
           })
           Item({
             text: getContext().resourceManager.getStringByNameSync('Page_String38'),
             click: () => {
-              let isConnected:ESObject = Smack.isConnected();
+              let isConnected:boolean = Smack.isConnected();
               console.info('State = ' + isConnected)
             }
           })
           Item({
             text: getContext().resourceManager.getStringByNameSync('Page_String38'),
             click: () => {
-              let username:ESObject = Smack.username();
+              let username:string = Smack.username();
               console.info('Connect State = ' + username)
             }
           })
           Item({
             text: 'connect',
             click: () => {
-              let connect:ESObject = Smack.connect();
+              let connect:boolean = Smack.connect();
               console.info('connect = ' + connect)
             }
           })
@@ -336,42 +336,42 @@ struct page {
           Item({
             text: 'setUsernameAndPassword',
             click: () => {
-              let value:ESObject=Smack.setUsernameAndPassword("zhang", "123456");
+              let value:number = Smack.setUsernameAndPassword("zhang", "123456");
               console.info('setUsernameAndPassword = '+value)
             }
           })
           Item({
             text: 'setPort',
             click: () => {
-              let value:ESObject=Smack.setPort(Constant.HOST_PORT);
+              let value:number = Smack.setPort(Constant.HOST_PORT);
               console.info('setUsernameAndPassword = '+value)
             }
           })
           Item({
             text: 'password',
             click: () => {
-              let value:ESObject=Smack.password();
+              let value:string = Smack.password();
               console.info('password = '+value)
             }
           })
           Item({
             text: 'setResource',
             click: () => {
-              let value:ESObject=Smack.setResource(Constant.HOST_RES.replace("/",""));
+              let value:string = Smack.setResource(Constant.HOST_RES.replace("/",""));
               console.info('password = '+value)
             }
           })
           Item({
             text: 'receiveFriends',
             click: () => {
-              let value:ESObject=Smack.receiveFriends("555@"+Constant.HOST_DOMAIN, "group", "receive request");
+              let value:string = Smack.receiveFriends("555@"+Constant.HOST_DOMAIN, "group", "receive request");
             }
           })
 
           Item({
             text: 'rejectFriends',
             click: () => {
-              let value:ESObject=Smack.rejectFriends("555@"+Constant.HOST_DOMAIN, "reject request");
+              let value:string = Smack.rejectFriends("555@"+Constant.HOST_DOMAIN, "reject request");
             }
           })
         }

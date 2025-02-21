@@ -16,6 +16,8 @@ import { ItemText } from '../../base/ItemText';
 import { Constant } from '../../../entity/Constant';
 import { Smack, MUCOperation } from '@ohos/smack'
 import { GlobalContext } from '../../../entity/GlobalContext';
+import { promptAction } from '@kit.ArkUI';
+import { GroupMember } from './group_chat_main';
 
 @Entry
 @Component
@@ -52,7 +54,7 @@ struct Group_chat_setting {
     this.ownerList = []
     let roomitems = Smack.requestList(MUCOperation.RequestOwnerList)
     if (roomitems) {
-      let items:Array<ESObject>=JSON.parse(roomitems)
+      let items:Array<GroupMember>=JSON.parse(roomitems)
       for (let index = 0; index < items.length; index++) {
         let str :string= items[index].jid.replace(" ", "")
         this.ownerList.push(str);
@@ -83,17 +85,17 @@ struct Group_chat_setting {
         title: 'Setting',
       })
       ItemText({title:getContext().resourceManager.getStringByNameSync('GroupChat_String26') ,clickEvent:()=>{
-        router.push({
+        router.pushUrl({
           url: 'pages/chat/group_chat/group_all_member'
         })
       }})
       ItemText({title:getContext().resourceManager.getStringByNameSync('GroupChat_String27'),clickEvent:()=>{
         if (this.isRoomOwner()) {
-          router.push({
+          router.pushUrl({
             url: 'pages/chat/group_chat/group_chat_edit'
           })
         } else {
-          prompt.showToast({
+          promptAction.showToast({
             message: 'operation failed'
           })
         }
@@ -147,7 +149,7 @@ struct Group_chat_setting {
     let options: router.RouterOptions = {
       url: 'pages/main'
     };
-    router.replace(options)
+    router.replaceUrl(options)
   }
 }
 @CustomDialog
@@ -158,7 +160,7 @@ struct UpdateThemeDialog {
   // todo 修改主题
   private onChangTheme() {
     if (this.theme == '') {
-      prompt.showToast({
+      promptAction.showToast({
         message: "Input New Group Chat"
       })
     }
@@ -203,7 +205,7 @@ struct UpdateNickDialog {
   // todo 修改昵称
   private onChangTheme() {
     if (this.nickStr == '') {
-      prompt.showToast({
+      promptAction.showToast({
         message: "Input New Name in Group"
       })
     }
@@ -246,7 +248,7 @@ struct InviteDialog {
   // todo 邀请新用户
   private onChangTheme() {
     if (this.invite == '') {
-      prompt.showToast({
+      promptAction.showToast({
         message: "Please enter the invited username"
       })
     }

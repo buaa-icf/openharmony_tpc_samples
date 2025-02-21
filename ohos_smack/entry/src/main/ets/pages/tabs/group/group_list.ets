@@ -15,9 +15,8 @@ import {Constant} from '../../../entity/Constant'
 import { Smack } from '@ohos/smack'
 import { GlobalContext } from '../../../entity/GlobalContext';
 
-@Entry
 @Component
-export struct Group_list {
+struct GroupListComponent  {
   @State groupList: Array<string> = []
   dialogController: CustomDialogController = new CustomDialogController({
     builder: CustomDialogExample({}),
@@ -83,7 +82,7 @@ struct CustomDialogExample {
         .fontSize(36)
         .padding(10)
         .onClick(() => {
-          router.push({
+          router.pushUrl({
             url: 'pages/tabs/group/create_group_chat'
           })
           if(this.controller != null){
@@ -100,7 +99,7 @@ struct CustomDialogExample {
         .fontSize(36)
         .padding(10)
         .onClick(() => {
-          router.push({
+          router.pushUrl({
             url: 'pages/tabs/group/Join_in_group'
           })
           if(this.controller != null) {
@@ -123,4 +122,17 @@ struct CustomDialogExample {
   }
 }
 
+@Entry
+@Component
+struct GroupList {
+  build() {
+    Column() {
+      GroupListComponent()
+    }
+    .width('100%')
+    .height('100%')
+  }
+}
 
+
+export { GroupListComponent };

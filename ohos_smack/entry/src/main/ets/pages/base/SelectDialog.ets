@@ -29,7 +29,7 @@ export struct SelectDialog {
               .textAlign(TextAlign.Center)
               .borderRadius(10)
               .backgroundColor(0xFFFFFF)
-          }.editable(true).onClick(v => {
+          }.enabled(true).onClick(v => {
             this.vue = item.label
             this.controller.close()
           })

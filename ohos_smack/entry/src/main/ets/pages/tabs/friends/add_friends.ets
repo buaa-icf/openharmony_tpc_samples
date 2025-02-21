@@ -14,6 +14,7 @@ import router from '@ohos.router';
 import prompt from '@ohos.prompt';
 import { Constant } from '../../../entity/Constant'
 import { Smack } from '@ohos/smack'
+import { promptAction } from '@kit.ArkUI';
 
 @Entry
 @Component
@@ -58,12 +59,12 @@ struct Add_friends {
   // todo 添加好友
   onAddFriends() {
     if (this.name == '' || this.group == '') {
-      prompt.showToast({
+      promptAction.showToast({
         message: 'Please enter the complete information'
       })
     } else {
       Smack.addFriends(this.name + "@" + Constant.HOST_DOMAIN, this.name, this.group)
-      prompt.showToast({
+      promptAction.showToast({
         message: 'Friend request sent'
       })
     }

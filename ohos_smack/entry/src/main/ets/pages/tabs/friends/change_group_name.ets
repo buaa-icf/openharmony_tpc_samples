@@ -13,6 +13,7 @@ import { Toolbar } from '../../base/toolbar'
 import router from '@ohos.router';
 import prompt from '@ohos.prompt';
 import { Smack } from '@ohos/smack'
+import { promptAction } from '@kit.ArkUI';
 
 @Entry
 @Component
@@ -57,12 +58,12 @@ struct Change_group_name {
   // todo 修改分组名称
   onChangeName() {
     if (this.newName == '') {
-      prompt.showToast({
+      promptAction.showToast({
         message: 'Please enter the complete information'
       })
     } else {
       Smack.changeGroup(this.oldName, this.newName);
-      prompt.showToast({
+      promptAction.showToast({
         message: 'Success'
       })
     }

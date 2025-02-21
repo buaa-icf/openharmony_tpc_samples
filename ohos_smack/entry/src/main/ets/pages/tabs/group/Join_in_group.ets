@@ -14,6 +14,7 @@ import router from '@ohos.router';
 import { Smack } from '@ohos/smack'
 import { Constant } from '../../../entity/Constant'
 import prompt from '@ohos.prompt';
+import { promptAction } from '@kit.ArkUI';
 
 @Entry
 @Component
@@ -35,7 +36,7 @@ struct Join_in_group {
           if (this.room) {
             this.onJoinInGroup()
           } else {
-            prompt.showToast({
+            promptAction.showToast({
               message: 'Input room name'
             })
           }
@@ -53,11 +54,11 @@ struct Join_in_group {
     setTimeout(() => {
       let isJoined = Smack.isJoined();
       if (isJoined == '1') {
-        router.replace({
+        router.replaceUrl({
           url: 'pages/chat/group_chat/group_chat_main'
         })
       } else {
-        prompt.showToast({
+        promptAction.showToast({
           message: 'Failed to enter the room'
         })
       }

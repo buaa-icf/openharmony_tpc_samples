@@ -14,6 +14,7 @@ import router from '@ohos.router';
 import prompt from '@ohos.prompt';
 import { Constant } from '../../../entity/Constant'
 import { Smack } from '@ohos/smack'
+import { promptAction } from '@kit.ArkUI';
 
 @Entry
 @Component
@@ -50,13 +51,13 @@ struct Add_group {
   // todo 创建好友分组
   onAddGroup() {
     if (this.groupName == '') {
-      prompt.showToast({
+      promptAction.showToast({
         message: 'Please enter the complete information'
       })
     } else {
       Smack.createGroup(this.groupName + '@' + Constant.HOST_IP)
 
-      prompt.showToast({
+      promptAction.showToast({
         message: 'Success'
       })
     }

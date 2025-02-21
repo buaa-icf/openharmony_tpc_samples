@@ -15,6 +15,7 @@ import prompt from '@ohos.prompt';
 import { Constant } from '../../entity/Constant'
 import { Smack } from '@ohos/smack'
 import { GlobalContext } from '../../entity/GlobalContext';
+import { promptAction } from '@kit.ArkUI';
 
 @Entry
 @Component
@@ -128,7 +129,7 @@ struct Login {
   // todo 登录
   private onLogin() {
     if (this.check()) {
-      prompt.showToast({
+      promptAction.showToast({
         message: 'Logging in..'
       })
       setTimeout(()=>{
@@ -139,11 +140,11 @@ struct Login {
           Smack.Login(LoginName, this.uPassword, (res: number)=>{
             console.log("login result： " + res);
             if (res != 7 && res != 8) {
-              router.replace({
+              router.replaceUrl({
                 url: 'pages/main'
               })
             } else {
-              prompt.showToast({
+              promptAction.showToast({
                 message: "Login failed"
               })
             }
@@ -158,13 +159,13 @@ struct Login {
 
   public check(): boolean {
     if (this.userName == '') {
-      prompt.showToast({
+      promptAction.showToast({
         message: getContext().resourceManager.getStringByNameSync('Login_String6')
       })
       return false
     }
     if (this.passWord == '') {
-      prompt.showToast({
+      promptAction.showToast({
         message: getContext().resourceManager.getStringByNameSync('Login_String7')
       })
       return false
@@ -173,7 +174,7 @@ struct Login {
   }
 
   private onRegister() {
-    router.push({
+    router.pushUrl({
       url: 'pages/user/register'
     })
   }

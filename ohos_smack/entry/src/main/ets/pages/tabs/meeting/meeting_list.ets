@@ -12,9 +12,8 @@
 import { Toolbar } from '../../base/toolbar'
 import router from '@ohos.router';
 
-@Entry
 @Component
-export struct Meeting_list {
+struct MeetingListComponent {
   dialogController: CustomDialogController = new CustomDialogController({
     builder: CustomDialogExample({}),
     customStyle: true,
@@ -97,7 +96,7 @@ struct TextDialog {
   // todo 从会议列表里进入会议
   onJoinInMeeting() {
 
-    router.push({
+    router.pushUrl({
       url: 'pages/chat/meeting_chat/meeting_chat_main'
     })
   }
@@ -113,7 +112,7 @@ struct CustomDialogExample {
         .fontSize(16)
         .padding(10)
         .onClick(() => {
-          router.push({
+          router.pushUrl({
             url: 'pages/tabs/meeting/create_meeting'
           })
           if(this.controller != null)
@@ -131,7 +130,7 @@ struct CustomDialogExample {
         .fontSize(16)
         .padding(10)
         .onClick(() => {
-          router.push({
+          router.pushUrl({
             url: 'pages/tabs/meeting/Join_in_meeting'
           })
           if(this.controller != null)
@@ -145,3 +144,17 @@ struct CustomDialogExample {
     .width(100)
   }
 }
+
+@Entry
+@Component
+struct Meeting_list {
+  build() {
+    Column() {
+      MeetingListComponent()
+    }
+    .width('100%')
+    .height('100%')
+  }
+}
+
+export { MeetingListComponent }

@@ -15,6 +15,7 @@ import { Constant } from '../../../entity/Constant'
 import router from '@ohos.router';
 import { Smack } from '@ohos/smack'
 import { GlobalContext } from '../../../entity/GlobalContext';
+import { promptAction } from '@kit.ArkUI';
 
 
 @Entry
@@ -73,11 +74,11 @@ struct One_chat_setting {
             if (isJoined == '1') {
               Smack.invite(this.userName+"@"+Constant.HOST_DOMAIN+Constant.HOST_RES, "invite");
               router.back();
-              router.replace({
+              router.replaceUrl({
                 url: 'pages/chat/group_chat/group_chat_main'
               })
             } else {
-              prompt.showToast({
+              promptAction.showToast({
                 message: 'Create room error'
               })
             }
@@ -104,12 +105,12 @@ struct One_chat_setting {
   onDeleteFriend() {
     Smack.delfriend(this.userName + "@" + Constant.HOST_DOMAIN);
 
-    prompt.showToast({
+    promptAction.showToast({
       message: 'Delete Success'
     })
 
     router.clear()
-    router.replace({
+    router.replaceUrl({
       url: 'pages/main'
     })
   }
@@ -148,14 +149,14 @@ struct TextDialog {
   // todo 修改好友分组信息
   onChangeFriendsGroup() {
     if (this.newGroup == '') {
-      prompt.showToast({
+      promptAction.showToast({
         message: 'Please enter the complete information'
       })
     } else {
       let name: string = (router.getParams() as Record<string, Object>)['userName'] as string
       Smack.changeFriendGroup(name + "@" + Constant.HOST_DOMAIN, this.newGroup);
 
-      prompt.showToast({
+      promptAction.showToast({
         message: 'Success'
       })
     }
