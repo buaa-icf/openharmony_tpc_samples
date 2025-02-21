@@ -34,9 +34,6 @@ import { AttributeAction, SelectorType } from 'css-what';
 import AdapterClass from './adapter';
 
 const dom = parseDOM("<div id=foo><p>foo</p></div>") as Element[];
-const xmlDom = parseDOM("<DiV id=foo><P>foo</P></DiV>", {
-  xmlMode: true,
-}) as Element[];
 const notYet = "not yet supported by css-select";
 
 export default function abilityTest() {
@@ -64,6 +61,7 @@ export default function abilityTest() {
     it("between_identical_trees", 0, () => {
       expect((CSSselect.selectAll("div", dom)).length).assertEqual(1);
     });
+
     it("subset", 0, () => {
       expect(CSSselect.selectAll("p", dom).length).assertEqual(1);
     });
@@ -192,7 +190,9 @@ export default function abilityTest() {
       const dom = parseDOM(
         '<div><div class="foo">a</div><div class="bar">b</div></div>',
       ) as Element[];
-      const a = CSSselect.selectAll(".foo:has(+.bar)", dom,{ quirksMode :true });
+      const a = CSSselect.selectAll(".foo:has(+.bar)", dom, {
+        quirksMode: true
+      });
       expect(a.length).assertEqual(1);
       expect(a[0]).assertEqual(dom[0].firstChild);
     });
@@ -211,26 +211,32 @@ export default function abilityTest() {
         })).assertNull();
     });
 
-    it("should_recognize_contexts", 0,() => {
+    it("should_recognize_contexts", 0, () => {
       const div = CSSselect.selectAll("div", dom);
       const p = CSSselect.selectAll("p", dom);
-      expect(CSSselect.selectOne("div", div, { context: p })).assertNull();
+      expect(CSSselect.selectOne("div", div, {
+        context: p
+      })).assertNull();
     });
 
-    it("should_not_crash_when_siblings_repeat", 0,() => {
+    it("should_not_crash_when_siblings_repeat", 0, () => {
       const dom = parseDOM(`<div></div>`.repeat(51)) as Element[];
       expect(
-        CSSselect.selectAll("+div", dom, { context: dom }).length).assertEqual(50);
+        CSSselect.selectAll("+div", dom, {
+          context: dom
+        }).length).assertEqual(50);
     });
 
 
-    it("should_pass_options_to_sub_selectors", 0,() => {
+    it("should_pass_options_to_sub_selectors", 0, () => {
       expect(
         CSSselect.selectAll("div:is(DiV#FOO):not([ID]):foo", dom, {
           xmlMode: true,
           lowerCaseTags: true,
           quirksMode: true,
-          pseudos: { foo: "#fOO" },
+          pseudos: {
+            foo: "#fOO"
+          },
         }).length,
       ).assertEqual(1);
     });

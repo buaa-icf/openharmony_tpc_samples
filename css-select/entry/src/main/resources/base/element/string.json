@@ -14,11 +14,11 @@
     },
     {
       "name": "compile",
-      "value": "Throw exception:"
+      "value": "Compile the query, return a function, and throw an exception if none:"
     },
     {
       "name": "selectAll",
-      "value": "Matching elements length:"
+      "value": "Matching elements name:"
     },
     {
       "name": "selectOne",
@@ -27,10 +27,6 @@
     {
       "name": "is",
       "value": "Whether or not an element is matched by query:"
-    },
-    {
-      "name": "_compileUnsafe",
-      "value": "Compiles the query, returns a function:"
     }
   ]
 }

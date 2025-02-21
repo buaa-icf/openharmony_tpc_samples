@@ -37,8 +37,6 @@ CSSselect.selectAll("div", dom,{ xmlMode: true,
 CSSselect.selectOne(":contains(foo)", [dom[0]],{ quirksMode :true })
 //Compile the selector as an executable function, otherwise an exception is thrown
 Compile() == notYet;
-//Compiles a selector to an executable function.
-CSSselect._compileUnsafe(":not(*)")
 //Tests whether or not an element is matched by query.
 CSSselect.is(dom[0], (elem) => elem.attribs["id"] === "foo")
 ```
@@ -62,14 +60,8 @@ Queries `elems`, returns an array containing all matches.
 Aliases: `default` export, `CSSselect.iterate(query, elems)`.
 
 #### `CSSselect.compile(query, options)`
-#### `CSSselect._compileUnsafe(query, options)`
-#### `CSSselect._compileToken(query, options)`
 
 Compiles the query, returns a function.
-
-#### `prepareContext(elems, adapter, shouldTestNextSiblings)`
-
-The necessary processing of the collection of elements is done by calling the adapter method to prepare the context required for the query.
 
 #### `CSSselect.is(elem, query, options)`
 
