@@ -36,7 +36,7 @@ struct Index {
   messageCb = (text: string) => {
     this.message = this.messageResourceString + text
   }
-  event: ESObject
+  event: events.EventEmitter | null = null
 
   private getResourceString(res: Resource) {
     return getContext().resourceManager.getStringSync(res.id)
@@ -56,20 +56,20 @@ struct Index {
           // .fontSize(25)
           .margin({ bottom: 10 })
           .onClick(() => {
-            this.event.on('message', this.messageCb)
+            this.event?.on('message', this.messageCb)
           })
         Button($r("app.string.Send_message_to_Message"))
           // .fontSize(25)
           .margin({ bottom: 10 })
           .onClick(() => {
-            this.event.emit('message', this.getResourceString($r("app.string.A_message")) + this.count)
+            this.event?.emit('message', this.getResourceString($r("app.string.A_message")) + this.count)
             this.count++
           })
         Button($r("app.string.Disable_the_listening_for_messages"))
           // .fontSize(25)
           .margin({ bottom: 10 })
           .onClick(() => {
-            this.event.off('message', this.messageCb)
+            this.event?.off('message', this.messageCb)
           })
       }
       .width('100%')
