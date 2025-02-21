@@ -24,7 +24,7 @@ const ERRORS = {
  *
  * @param { String } encoding The encoding string to check.
  */
-function checkEncoding(encoding: Buffer.BufferEncoding) {
+function checkEncoding(encoding: Buffer.BufferEncoding | string) {
   if (!Buffer.isEncoding(encoding)) {
     throw new Error(ERRORS.INVALID_ENCODING);
   }

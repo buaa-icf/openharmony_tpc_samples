@@ -487,7 +487,7 @@ struct Index {
     this.result += '-->isFiniteInteger NaN : ' + JSON.stringify(isFiniteInteger(NaN)) + '\r\n'
     this.result += '-->isFiniteInteger: 10.1 ' + JSON.stringify(isFiniteInteger(10.1)) + '\r\n'
     try {
-      const invalidEncoding: ESObject = 'sdfdf';
+      const invalidEncoding: string = 'sdfdf';
       checkEncoding(invalidEncoding)
       this.result += '-->checkEncoding success : '
     } catch (err) {
