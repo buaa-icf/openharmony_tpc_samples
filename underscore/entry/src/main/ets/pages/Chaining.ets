@@ -27,6 +27,12 @@
 
 import { chain } from 'underscore'
 
+interface Stooge {
+  age: number | string
+  name: string
+}
+
+
 @Entry
 @Component
 struct Chain {
@@ -43,10 +49,10 @@ struct Chain {
         .margin({ bottom: 30, top: 50 })
         .onClick(() => {
           this.chainResult = chain([{ name: 'curly', age: 25 }, { name: 'moe', age: 21 }, { name: 'larry', age: 23 }])
-            .sortBy((stooge: ESObject): ESObject => {
+            .sortBy((stooge: Stooge): number | string => {
               return stooge.age;
             })
-            .map((stooge: ESObject) => {
+            .map((stooge: Stooge) => {
               return stooge.name + ' is ' + stooge.age;
             })
             .first()

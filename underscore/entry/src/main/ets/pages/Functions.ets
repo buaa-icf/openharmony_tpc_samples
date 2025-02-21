@@ -67,14 +67,14 @@ struct Utility {
         .margin({ bottom: 30, top: 50 })
         .onClick(() => {
           let num: number = 0;
-          let increment: ESObject = once(() => {
+          let increment: (()=>number) = once(() => {
             return ++num;
           })
-          this.onceResult = increment(); //1
+          this.onceResult = String(increment()); //1
 
-          let testAfter = (afterAmount: ESObject, timesCalled: ESObject) => {
+          let testAfter = (afterAmount: number, timesCalled: number) => {
             let afterCalled = 0;
-            let after1: ESObject = after(afterAmount, () => {
+            let after1: ()=>void = after(afterAmount, () => {
               afterCalled++;
             });
             while (timesCalled--) after1();
@@ -82,13 +82,13 @@ struct Utility {
           };
           this.afterResult = testAfter(5, 5).toString() //1
 
-          let greet = (name: ESObject) => {
+          let greet = (name: number|string) => {
             return "hi: " + name;
           };
-          let exclaim = (statement: ESObject) => {
+          let exclaim = (statement: string) => {
             return statement.toUpperCase() + "!";
           };
-          let welcome: ESObject = compose(greet, exclaim);
+          let welcome: (greet:string, exclaim?:string)=>string = compose(greet, exclaim);
           this.composeResult = welcome('moe'); //'hi: MOE!
         })
 

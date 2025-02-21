@@ -48,13 +48,13 @@ struct Collections {
         .onClick(() => {
           this.eachResult = each([1, 2, 3], () => {
           }); //1,2,3
-          this.mapResult = map([1, 2, 3], (num: ESObject) => {
+          this.mapResult = map([1, 2, 3], (num: number) => {
             return num * 3;
           }); //3,6,9
-          this.reduceResult = reduce([1, 2, 3], (memo: ESObject, num: ESObject): ESObject => {
+          this.reduceResult = reduce([1, 2, 3], (memo: number, num: number): number => {
             return memo + num;
           }, 0); //6
-          this.filterResult = filter([1, 2, 3, 4, 5, 6], (num: ESObject) => {
+          this.filterResult = filter([1, 2, 3, 4, 5, 6], (num: number) => {
             return num % 2 == 0;
           }); //2,4,6
           this.invokeResult = invoke([[5, 1, 7], [3, 2, 1]], 'sort'); //1,5,7,1,2,3
