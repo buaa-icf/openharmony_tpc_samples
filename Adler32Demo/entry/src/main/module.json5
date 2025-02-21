@@ -10,7 +10,6 @@
     ],
     "deliveryWithInstall": true,
     "installationFree": false,
-    "uiSyntax": "ets",
     "metadata": [
       {
         "name": "ArkTSPartialUpdate",
