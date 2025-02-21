@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import router from '@system.router';
+import router from '@ohos.router';
 import leven from "leven";
 import { setData, CustomDialogExample } from './loding'
 import { er, version } from 'easy-replace'
@@ -44,7 +44,7 @@ struct Index {
           .fontSize(16)
           .height(30)
           .onClick(() => {
-            router.push({ uri: "pages/HomePage", })
+            router.pushUrl({ url: "pages/HomePage", })
           })
       }
 

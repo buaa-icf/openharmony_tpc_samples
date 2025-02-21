@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import router from '@system.router';
+import router from '@ohos.router';
 
 @Entry
 @Component
@@ -22,7 +22,7 @@ struct Index {
       Flex({ direction: FlexDirection.Column }) {
         Button('index', { type: ButtonType.Normal, stateEffect: true })
           .onClick(() => {
-            router.push({ uri: "pages/index", })
+            router.pushUrl({ url: "pages/index", })
           })
           .borderRadius(8)
           .backgroundColor(0x317aff)
@@ -30,7 +30,7 @@ struct Index {
           .margin({ top: "10" })
         Button('third', { type: ButtonType.Normal, stateEffect: true })
           .onClick(() => {
-            router.push({ uri: "pages/third", })
+            router.pushUrl({ url: "pages/third", })
           })
           .borderRadius(8)
           .backgroundColor(0x317aff)
@@ -38,7 +38,7 @@ struct Index {
           .margin({ top: "10" })
         Button('space', { type: ButtonType.Normal, stateEffect: true })
           .onClick(() => {
-            router.push({ uri: "pages/space", })
+            router.pushUrl({ url: "pages/space", })
           })
           .borderRadius(8)
           .backgroundColor(0x317aff)
@@ -46,7 +46,7 @@ struct Index {
           .margin({ top: "10" })
         Button('Complicated', { type: ButtonType.Normal, stateEffect: true })
           .onClick(() => {
-            router.push({ uri: "pages/Complicated", })
+            router.pushUrl({ url: "pages/Complicated", })
           })
           .borderRadius(8)
           .backgroundColor(0x317aff)
@@ -54,7 +54,7 @@ struct Index {
           .margin({ top: "10" })
         Button('completes', { type: ButtonType.Normal, stateEffect: true })
           .onClick(() => {
-            router.push({ uri: "pages/completes", })
+            router.pushUrl({ url: "pages/completes", })
           })
           .borderRadius(8)
           .backgroundColor(0x317aff)
