@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 import { er } from 'easy-replace'
-import router from '@system.router';
+import router from '@ohos.router';
 import { setData, CustomDialogExample } from './loding'
 
 @Entry
@@ -36,7 +36,7 @@ struct Index {
           .fontSize(16)
           .height(30)
           .onClick(() => {
-            router.push({ uri: "pages/HomePage", })
+            router.pushUrl({ url: "pages/HomePage", })
           })
       }
 

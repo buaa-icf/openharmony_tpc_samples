@@ -14,7 +14,7 @@
  */
 import { er } from 'easy-replace'
 import { setData, CustomDialogExample } from './loding'
-import router from '@system.router';
+import router from '@ohos.router';
 interface T {
   data:string|string[]
 }
@@ -41,7 +41,7 @@ struct Index {
           .fontSize(16)
           .height(30)
           .onClick(() => {
-            router.push({ uri: "pages/HomePage", })
+            router.pushUrl({ url: "pages/HomePage", })
           })
       }
 
