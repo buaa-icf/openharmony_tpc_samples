@@ -10,7 +10,6 @@
     "deliveryWithInstall": true,
     "installationFree": false,
     "pages": "$profile:main_pages",
-    "uiSyntax": "ets",
     "metadata": [
       {
         "name": "ArkTSPartialUpdate",
