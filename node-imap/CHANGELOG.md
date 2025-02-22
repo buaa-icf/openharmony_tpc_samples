@@ -1,3 +1,6 @@
+## 1.0.2-rc.0
+- Compile and build alarm modification.
+
 ## 1.0.1
 
 - Ark syntax adaptation
