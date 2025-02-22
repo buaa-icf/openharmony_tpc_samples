@@ -1,3 +1,6 @@
+## 1.0.2-rc.0
+- Compile and build alarm modification.
+
 ## 1.0.1
 - Ark syntax adaptation
 - Compatible with DevEco Studio: 4.0 Release(4.0.3.600), SDK API10(4.0.10.11)
