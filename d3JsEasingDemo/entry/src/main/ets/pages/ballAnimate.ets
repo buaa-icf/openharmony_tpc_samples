@@ -91,18 +91,18 @@ struct BallAnimatePage {
 
   createAnimation() {
     // normalized 归一化的时间
-    this.animator.onframe = (normalizedTime) => {
+    this.animator.onFrame = (normalizedTime) => {
       if (this.currentEasingFunction) {
         this.updateBallValue(normalizedTime);
         this.updateRotateValue(normalizedTime);
       }
     }
-    this.animator2.onframe = (normalizedTime) => {
+    this.animator2.onFrame = (normalizedTime) => {
       if (this.currentEasingFunction) {
         this.updateWHRadius(normalizedTime);
       }
     }
-    this.animator2.onfinish = () => {
+    this.animator2.onFinish = () => {
       this.isPlaying = false;
     }
   }

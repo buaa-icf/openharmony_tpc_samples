@@ -86,13 +86,13 @@ struct LineAnimatePage {
   createAnimation() {
     const xDistance = this.endPoint.x - this.beginPoint.x;
     const yDistance = this.endPoint.y - this.beginPoint.y;
-    this.animator.onframe = (value) => {
+    this.animator.onFrame = (value) => {
       this.lineToParams.x = this.beginPoint.x + value * xDistance;
       const f: number = Easing[this.easingFunctionName](value);
       this.lineToParams.y = this.beginPoint.y + f * yDistance;
       this.onAnimateUpdate();
     };
-    this.animator.onfinish = () => {
+    this.animator.onFinish = () => {
       this.isPlaying = false;
     };
   }
