@@ -1226,13 +1226,13 @@ struct Index {
     .scrollBar(BarState.On)
     .scrollBarColor(Color.Gray)
     .scrollBarWidth(30)
-    .onScroll((xOffset: number, yOffset: number) => {
+    .onWillScroll((xOffset: number, yOffset: number) => {
       console.info(xOffset + ' ' + yOffset)
     })
     .onScrollEdge((side: Edge) => {
       console.info('To the edge')
     })
-    .onScrollEnd(() => {
+    .onScrollStop(() => {
       console.info('Scroll Stop')
     })
   }
