@@ -15,17 +15,19 @@
 
 import {JwksClient} from "@ohos/jwks_rsa"
 import util from '@ohos.util';
+import cryptoFramework from "@ohos.security.cryptoFramework";
+
 
 // let that:ESObject;
 class Option{
   jwksUri:string;
-  requestHeaders: ESObject; // Optional
+  requestHeaders: null | object; // Optional
   timeout:number=5000; // Defaults to 30s
   cache:boolean;
   rateLimit: boolean
 
   constructor(jwksUri:string,
-  requestHeaders: ESObject, // Optional
+  requestHeaders: null | object, // Optional
   timeout:number, // Defaults to 30s
   cache:boolean,
   rateLimit: boolean) {
@@ -85,19 +87,32 @@ struct Index {
 
 
     if(this.client != null){
-      let signingKey:ESObject|null = await this.client.getSigningKey(kid)
+      let signingKey: Single = await this.client.getSigningKey(kid)
       console.info("jwks_rsa signingKey:"+JSON.stringify(signingKey))
       this.kid = signingKey.kid
       this.alg = signingKey.algorithm
       this.kty = signingKey.type
       this.usage = signingKey.usage
-      let pubKey:ESObject = await signingKey.getPublicKey()
-      let publicData:ESObject  = pubKey.getEncoded().data;
+      let pubKey:cryptoFramework.PubKey | undefined = await signingKey.getPublicKey()
+      let publicData:Uint8Array | undefined  = pubKey?.getEncoded().data;
       console.info("jwks_rsa public key encode  = " + publicData)
       let base64:util.Base64Helper = new util.Base64Helper();
       this.publicKey = base64.encodeToStringSync(publicData);
       console.info("jwks_rsa publicKey = " + this.publicKey)
     }
 
+  }
+}
+
+class Single{
+  kid: string = "";
+  algorithm: string = "";
+  type:string = "";
+  usage: string = "";
+  x5u: undefined | string | string[] = undefined;
+  x5c: undefined | string | string[] = undefined;
+  x5t: undefined | string | string[] = undefined;
+  getPublicKey():cryptoFramework.PubKey | undefined {
+    return undefined
   }
 }
