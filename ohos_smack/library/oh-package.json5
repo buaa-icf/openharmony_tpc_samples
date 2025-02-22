@@ -18,10 +18,9 @@
     "smack",
     "Tool"
   ],
-  "dependencies": {},
-  "license": "GPL 3.0",
-  "devDependencies": {
-    "@types/libentry.so": "file:./src/main/cpp/types/libentry"
+  "dependencies": {
+    "libentry.so": "file:./src/main/cpp/types/libentry"
   },
+  "license": "GPL 3.0",
   "name": "@ohos/smack"
 }

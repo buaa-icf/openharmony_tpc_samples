@@ -16,6 +16,37 @@ import { MUCOperation, RoomConfig, Smack } from '@ohos/smack'
 import { GlobalContext } from '../../../entity/GlobalContext';
 import prompt from '@ohos.prompt';
 import { Constant } from '../../../entity/Constant';
+import { promptAction } from '@kit.ArkUI';
+
+export interface GroupMember {
+  jid: string;       // 成员的完整JID
+  name?: string;     // 成员名称（可选）
+  role?: string;     // 成员角色（可选）
+  affiliation?: string; // 成员关系（可选）
+}
+
+export interface GroupInvitation {
+  reason: string;     // 邀请原因："invite" 或 "room inviation refuesd"
+  room?: string;      // 房间标识
+  from?: string;      // 邀请人
+  password?: string;  // 可选的房间密码
+}
+
+export interface ParticipantPresence {
+  flags: string;          // 状态标志：1-操作成功，2-更改名称，3-进入房间，4-离开房间
+  name?: string;          // 参与者名称（可选）
+  presenceType?: string;  // 在线状态类型（可选）
+  message?: string;       // 状态消息（可选）
+}
+
+export interface RoomInfo {
+  description: string;     // 房间名称/描述
+  roomName?: string;      // 房间标识
+  subject?: string;       // 房间主题
+  occupantsCount?: number; // 成员数量
+  persistent?: boolean;    // 是否为持久房间
+  moderated?: boolean;     // 是否为主持人控制
+}
 
 @Entry
 @Component
@@ -66,7 +97,7 @@ struct Group_chat_main {
     this.ownerList = []
     let roomitems = Smack.requestList(MUCOperation.RequestOwnerList)
     if (roomitems) {
-      let items:Array<ESObject>=JSON.parse(roomitems)
+      let items:Array<GroupMember>=JSON.parse(roomitems)
       for (let index = 0; index < items.length; index++) {
         let str :string= items[index].jid.replace(" ", "")
         this.ownerList.push(str);
@@ -79,7 +110,7 @@ struct Group_chat_main {
     this.voiceList = []
     let roomitems = Smack.requestList(MUCOperation.RequestVoiceList)
     if (roomitems) {
-      let items:Array<ESObject>=JSON.parse(roomitems)
+      let items:Array<GroupMember>=JSON.parse(roomitems)
       for (let index = 0; index < items.length; index++) {
         let str :string= items[index].jid.replace(" ", "")
         this.voiceList.push(str);
@@ -107,13 +138,13 @@ struct Group_chat_main {
 
     let that = this
     Smack.registerInvitationListener((v0:string) => {
-      let info :ESObject= JSON.parse(v0)
+      let info : GroupInvitation= JSON.parse(v0)
 
       let reason: string = info.reason;
       if (reason && reason == "invite") { // 接受邀请
 
       } else if (reason == "room inviation refuesd") { // 拒绝邀请
-        prompt.showToast({
+        promptAction.showToast({
           message: 'This invitation has been refused'
         })
       }
@@ -137,18 +168,18 @@ struct Group_chat_main {
 
       if (room == this.roomName && user == this.userName && presence == '5' && !this.leaveFlag) {
         Smack.leave("leave");
-        prompt.showToast({
+        promptAction.showToast({
           message: 'The room was destroyed'
         })
         router.clear();
-        router.push({
+        router.pushUrl({
           url: 'pages/main'
         })
       }
     });
 
     Smack.registerMUCParticipantPresenceListener((name:string,jsonStr: string) => {
-      let obj:ESObject=JSON.parse(jsonStr)
+      let obj:ParticipantPresence=JSON.parse(jsonStr)
       setTimeout(() => {
         switch (obj.flags) {
           case '1':
@@ -194,7 +225,7 @@ struct Group_chat_main {
 
     Smack.parseXML((result: string)=>{
       GlobalContext.getContext().setValue('roomInfo', result)
-      let roominfo: ESObject = JSON.parse(result)
+      let roominfo: RoomInfo = JSON.parse(result)
       this.roomName = roominfo.description
       try {
         this.onGetAllOwnerList();
@@ -236,7 +267,7 @@ struct Group_chat_main {
         isBack: true,
         rightIcon: $r('app.media.more'),
         rightClickCallBack: () => {
-          router.push({
+          router.pushUrl({
             url: "pages/chat/group_chat/group_chat_setting"
           })
         }

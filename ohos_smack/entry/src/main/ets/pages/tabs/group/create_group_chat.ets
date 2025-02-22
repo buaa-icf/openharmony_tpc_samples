@@ -15,6 +15,7 @@ import prompt from '@ohos.prompt';
 import { Constant } from '../../../entity/Constant'
 import { Smack } from '@ohos/smack'
 import { GlobalContext } from '../../../entity/GlobalContext';
+import { promptAction } from '@kit.ArkUI';
 
 
 @Entry
@@ -43,7 +44,7 @@ struct Create_group_chat {
           if (this.inputName != '') {
             this.onCreateGroupChat(this.inputName)
           } else {
-            prompt.showToast({ message: "Please enter the room name" })
+            promptAction.showToast({ message: "Please enter the room name" })
           }
         }).margin({ top: 20 })
         Button('Join the password room').onClick(e => {
@@ -51,7 +52,7 @@ struct Create_group_chat {
             Smack.createRoom(GlobalContext.getContext().getValue('userName') as string, this.inputName, Constant.HOST_DOMAIN, Constant.SERVICE_NAME);
             this.passWordDialog.open()
           } else {
-            prompt.showToast({
+            promptAction.showToast({
               message: 'Enter room name'
             })
           }
@@ -72,14 +73,14 @@ struct Create_group_chat {
 
     setTimeout(() => {
       if (Smack.isJoined() == '1') {
-        prompt.showToast({
+        promptAction.showToast({
           message: 'Room created successfully'
         })
-        router.replace({
+        router.replaceUrl({
           url: 'pages/chat/group_chat/group_chat_main'
         })
       } else {
-        prompt.showToast({
+        promptAction.showToast({
           message: 'Failed to enter the room'
         })
       }
@@ -124,11 +125,11 @@ struct PassWordDialog {
       }
       setTimeout(() => {
         if (Smack.isJoined() == '1') {
-          router.replace({
+          router.replaceUrl({
             url: 'pages/chat/group_chat/group_chat_main'
           })
         } else {
-          prompt.showToast({
+          promptAction.showToast({
             message: 'Failed to enter the room'
           })
         }

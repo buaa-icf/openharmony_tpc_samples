@@ -14,10 +14,10 @@ import router from '@ohos.router';
 import prompt from '@ohos.prompt';
 import { FriendsEntity,UserEntity,Smack } from "@ohos/smack"
 import { GlobalContext } from '../../../entity/GlobalContext';
+import { promptAction } from '@kit.ArkUI';
 
-@Entry
 @Component
-export struct Friends_list {
+struct FriendsListComponent {
   @State myFriendList: Array<FriendsEntity> = []
   menuDialog: CustomDialogController = new CustomDialogController({
     builder: MenuDialog({}),
@@ -79,7 +79,7 @@ export struct Friends_list {
                   .padding(5)
                   .margin({ right: 20 })
                   .onClick(e => {
-                    router.push({
+                    router.pushUrl({
                       url: "pages/tabs/friends/change_group_name",
                       params: {
                         name: item.groupName
@@ -96,7 +96,7 @@ export struct Friends_list {
                     .margin({ left: 50 })
                     .padding(20)
                     .onClick(e => {
-                      router.push({
+                      router.pushUrl({
                         url: 'pages/chat/one_chat/one_chat_main',
                         params: { userName: item2.userName }
                       })
@@ -142,7 +142,7 @@ export struct Friends_list {
 
       }
       GlobalContext.getContext().setValue('groupList',JSON.stringify(groups));
-      prompt.showToast({
+      promptAction.showToast({
         message: 'Success'
       })
     }, 300)
@@ -159,7 +159,7 @@ struct MenuDialog {
         .fontSize(20)
         .padding(20)
         .onClick(() => {
-          router.push({
+          router.pushUrl({
             url: 'pages/tabs/friends/add_friends'
           })
           this.controller.close()
@@ -174,7 +174,7 @@ struct MenuDialog {
         .fontSize(30)
         .padding(20)
         .onClick(() => {
-          router.push({
+          router.pushUrl({
             url: 'pages/tabs/friends/add_group'
           })
           this.controller.close()
@@ -185,3 +185,16 @@ struct MenuDialog {
     .width(200)
   }
 }
+@Entry
+@Component
+struct Friends_list {
+  build() {
+    Column() {
+      FriendsListComponent()
+    }
+    .width('100%')
+    .height('100%')
+  }
+}
+
+export { FriendsListComponent }

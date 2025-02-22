@@ -24,11 +24,11 @@ struct Index {
     let isLogin:boolean = Smack.onLogin();
     setTimeout(() => {
       if (isLogin) {
-        router.replace({
+        router.replaceUrl({
           url: 'pages/main'
         })
       } else {
-        router.replace({
+        router.replaceUrl({
           url: 'pages/user/login'
         })
       }

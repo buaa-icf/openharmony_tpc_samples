@@ -14,9 +14,10 @@ import { PresenceType } from '@ohos/smack'
 import prompt from '@ohos.prompt';
 import router from '@ohos.router';
 import { PresenceRoomType, Smack } from '@ohos/smack'
-@Entry
+import { promptAction } from '@kit.ArkUI';
+
 @Component
-export struct Setting {
+struct SettingComponent {
   private states: string[] = [
     getContext().resourceManager.getStringByNameSync('GroupMember_String2') ,
     getContext().resourceManager.getStringByNameSync('GroupMember_String1') ,
@@ -117,7 +118,7 @@ export struct Setting {
   private onExitAccount() {
     Smack.loginout();
     router.clear()
-    router.replace({
+    router.replaceUrl({
       url: 'pages/user/login'
     })
   }
@@ -125,7 +126,7 @@ export struct Setting {
   // todo 账号删除
   private onDeleteAccount() {
     Smack.unregister()
-    router.replace({
+    router.replaceUrl({
       url: 'pages/user/login'
     })
   }
@@ -157,16 +158,16 @@ struct CustomDialogExample {
   // todo 修改密码
   private onChangPassword() {
     if (this.pass1 == '' || this.pass2 == '') {
-      prompt.showToast({
+      promptAction.showToast({
         message: "Please Input data"
       })
     } else if (this.pass1 !== this.pass2) {
-      prompt.showToast({
+      promptAction.showToast({
         message: "Password error"
       })
     } else {
       Smack.changPwd(this.pass1)
-      prompt.showToast({
+      promptAction.showToast({
         message: "Modified successfully"
       })
       console.log('Password modification completed');
@@ -213,3 +214,17 @@ struct CustomDialogExample {
     .width('80%')
   }
 }
+
+@Entry
+@Component
+struct Setting {
+  build() {
+    Column() {
+      SettingComponent()
+    }
+    .width('100%')
+    .height('100%')
+  }
+}
+
+export { SettingComponent }

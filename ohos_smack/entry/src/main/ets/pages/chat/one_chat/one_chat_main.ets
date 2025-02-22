@@ -16,6 +16,14 @@ import { Constant } from '../../../entity/Constant'
 import { MUCRoomAffiliation, MUCRoomRole, Smack } from '@ohos/smack'
 import { GlobalContext } from '../../../entity/GlobalContext';
 import prompt from '@ohos.prompt';
+import { promptAction } from '@kit.ArkUI';
+
+export interface InvitationMessage {
+  reason: string;     // 邀请原因："invite" 或 "room inviation refuesd"
+  room: string;       // 房间完整地址
+  from: string;       // 邀请人
+  password?: string;  // 可选的房间密码
+}
 
 let jid: string = ''
 let service: string = ''
@@ -39,12 +47,12 @@ struct One_chat_main {
         setTimeout(() => {
           let isJoined = Smack.isJoined();
           if (isJoined == '1') {
-            router.replace({
+            router.replaceUrl({
               url: 'pages/chat/group_chat/group_chat_main',
               params: { roomData: roomName }
             })
           } else {
-            prompt.showToast({
+            promptAction.showToast({
               message: 'Join room fail'
             })
           }
@@ -63,7 +71,7 @@ struct One_chat_main {
     this.userName =(router.getParams() as Record<string, Object>)['userName'] as string
     let that = this
     Smack.registerInvitationListener((v0:string) => {
-      let info :ESObject= JSON.parse(v0)
+      let info :InvitationMessage = JSON.parse(v0)
       let reason: string = info.reason;
       if (reason && reason == "invite") { // 接受邀请
         roomName = info.room.substring(0, info.room.indexOf("@"))
@@ -72,12 +80,12 @@ struct One_chat_main {
         jid = GlobalContext.getContext().getValue('userName') as string;
         users = info.from
         vInfo = info.room
-        vPassword = info.password
+        vPassword = info.password || ""
         setTimeout(() => {
           that.beInviteDialog.open()
         }, 500)
       } else if (reason == "room inviation refuesd") { // 拒绝邀请
-        prompt.showToast({
+        promptAction.showToast({
           message: 'Invitation rejected'
         })
       }
@@ -110,7 +118,7 @@ struct One_chat_main {
         isBack: true,
         rightIcon: $r('app.media.more'),
         rightClickCallBack: () => {
-          router.push({
+          router.pushUrl({
             url: "pages/chat/one_chat/one_chat_setting",
             params: {
               userName: this.userName

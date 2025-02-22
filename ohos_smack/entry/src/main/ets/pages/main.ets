@@ -9,13 +9,20 @@
  * This software is distributed without any warranty.
  */
 
-import { Friends_list } from './tabs/friends/friends_list'
-import { Group_list } from './tabs/group/group_list'
-import { Meeting_list } from './tabs/meeting/meeting_list'
-import { Setting } from './tabs/setting'
+import { FriendsListComponent } from './tabs/friends/friends_list'
+import { GroupListComponent } from './tabs/group/group_list'
+import { MeetingListComponent } from './tabs/meeting/meeting_list'
+import { SettingComponent } from './tabs/setting'
 import {Constant} from '../entity/Constant'
 import { Smack } from '@ohos/smack'
 import prompt from '@ohos.prompt'
+import { promptAction } from '@kit.ArkUI'
+
+export interface SubscriptionRequest {
+  jid: string;        // 联系人的唯一标识符
+  name: string;       // 联系人名称
+  msg: string;        // 订阅消息
+}
 
 @Entry
 @Component
@@ -37,10 +44,10 @@ struct Main {
 
   aboutToAppear() {
 
-    Smack.handleSubscriptionRequestListener((json:ESObject) => {
+    Smack.handleSubscriptionRequestListener((json:string) => {
       console.info(getContext().resourceManager.getStringByNameSync('Main_String1') +json)
       setTimeout(()=>{
-        let obj:ESObject=JSON.parse(json)
+        let obj:SubscriptionRequest=JSON.parse(json)
         this.mbare = obj.jid
         this.musername = obj.name
         this.mmsg = obj.msg
@@ -56,12 +63,12 @@ struct Main {
       Column() {
         Tabs({ barPosition: BarPosition.End }) {
           TabContent() {
-            Friends_list()
+            FriendsListComponent()
           }
           .tabBar(getContext().resourceManager.getStringByNameSync('Main_String2'))
 
           TabContent() {
-            Group_list()
+            GroupListComponent()
           }
           .tabBar(getContext().resourceManager.getStringByNameSync('Main_String3'))
 
@@ -71,7 +78,7 @@ struct Main {
           //          .tabBar('会议')
 
           TabContent() {
-            Setting()
+            SettingComponent()
           }
           .tabBar(getContext().resourceManager.getStringByNameSync('Main_String4'))
         }
@@ -121,7 +128,7 @@ struct AddFriendsDialog {
               Smack.receiveFriends(this.bare, this.groupName, "receive request");
               this.controller.close()
             } else {
-              prompt.showToast({
+              promptAction.showToast({
                 message: getContext().resourceManager.getStringByNameSync('Main_String9')
               })
             }

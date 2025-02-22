@@ -19,6 +19,7 @@ import { SelectDialog } from '../../base/SelectDialog'
 import { Smack } from '@ohos/smack'
 import { SelectOptionsEntity } from '../../../entity/SelectOptionsEntity';
 import { GlobalContext } from '../../../entity/GlobalContext';
+import { promptAction } from '@kit.ArkUI';
 
 @Entry
 @Component
@@ -156,7 +157,7 @@ struct Group_chat_edit {
 
     console.info('update roomConfig-----------//' + JSON.stringify(this.roomConfig))
     Smack.setRoomConfig(JSON.stringify(this.roomConfig))
-    prompt.showToast({ message: "update Success" })
+    promptAction.showToast({ message: "update Success" })
     setTimeout(() => {
       router.back()
     }, 500)

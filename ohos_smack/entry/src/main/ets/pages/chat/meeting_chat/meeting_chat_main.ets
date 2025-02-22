@@ -29,7 +29,7 @@ struct Meeting_chat_main {
         isBack: true,
         rightIcon: $r('app.media.more'),
         rightClickCallBack: () => {
-          router.push({
+          router.pushUrl({
             url: "pages/chat/meeting_chat/meeting_chat_setting"
           })
         }

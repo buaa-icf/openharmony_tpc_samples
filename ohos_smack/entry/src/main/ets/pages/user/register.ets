@@ -14,6 +14,7 @@ import { Toolbar } from '../base/toolbar'
 import { Constant } from '../../entity/Constant'
 import prompt from '@ohos.prompt';
 import { Smack } from '@ohos/smack'
+import { promptAction } from '@kit.ArkUI';
 
 @Entry
 @Component
@@ -65,7 +66,7 @@ struct Register {
   // 注册
   private onRegister() {
     if (this.userName == '' || this.passWord == '') {
-      prompt.showToast({
+      promptAction.showToast({
         message: getContext().resourceManager.getStringByNameSync('Login_String8')
       })
     } else {
