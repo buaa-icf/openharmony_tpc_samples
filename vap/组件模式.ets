@@ -13,13 +13,13 @@
  * limitations under the License.
  */
 
-import { MixInputData } from 'vap_module';
+import { MixInputData } from '@ohos/vap';
 import { systemDateTime } from '@kit.BasicServicesKit';
 import { LogUtil } from '../common/LogUtil';
 import { util } from '@kit.ArkTS';
-import { VAPComponentController } from 'vap_module';
-import { VAPComponent, FitType } from 'vap_module';
-import { MixData } from 'vap_module';
+import { VAPComponentController } from '@ohos/vap';
+import { VAPComponent, FitType } from '@ohos/vap';
+import { MixData } from '@ohos/vap';
 
 @Entry
 @Component

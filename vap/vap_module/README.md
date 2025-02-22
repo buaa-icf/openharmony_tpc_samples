@@ -11,7 +11,7 @@
 ## 下载安装
 
 ```bash
-ohpm install vap_module
+ohpm install @ohos/vap
 ```
 
 ## 接口
@@ -37,7 +37,7 @@ ohpm install vap_module
 在应用文件中添加头文件
 
 ```typescript
-import { VAPPlayer,MixData } from 'vap_module';
+import { VAPPlayer,MixData } from '@ohos/vap';
 ```
 
 ### 定义 VAPPlayer 组件
