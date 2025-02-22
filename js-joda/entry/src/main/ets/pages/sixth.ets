@@ -71,7 +71,7 @@ function testFormatter(): string {
 
 
   // 按照英语格式进行日期时间格式化 2021-10-05T17:08:24+01:00[GMT]
-  const dateTimeFormatter:ESObject = DateTimeFormatter.ofPattern('EEE, dd MMM yyyy HH:mm:ss z').withLocale(Locale.ENGLISH);
+  const dateTimeFormatter = DateTimeFormatter.ofPattern('EEE, dd MMM yyyy HH:mm:ss z').withLocale(Locale.ENGLISH);
   const zoneDateTime = ZonedDateTime.parse('Tue, 05 Oct 2021 17:08:24 GMT', dateTimeFormatter);
   console.log(zoneDateTime.toString());
 

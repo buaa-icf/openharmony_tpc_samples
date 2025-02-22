@@ -60,7 +60,7 @@ struct Fourth {
             .backgroundColor(0x317aff)
             .width(240)
             .onClick(() => {
-              router.push({ url: 'pages/fifth' })
+              router.pushUrl({ url: 'pages/fifth' })
             })
         }
       }
