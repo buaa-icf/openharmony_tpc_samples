@@ -81,7 +81,7 @@ struct Index {
         })
         Button($r('app.string.isSelectElement')).fontSize(24).onClick(() => {
           let input: intl_messageformat_parser.SelectElement = {
-            type: intl_messageformat_parser.TYPE.select, value: 'testValue', options: {} as ESObject
+            type: intl_messageformat_parser.TYPE.select, value: 'testValue', options: {}
           };
           let typesResult: boolean = intl_messageformat_parser.isSelectElement(input);
           if (typesResult) {
@@ -92,7 +92,7 @@ struct Index {
           let input: intl_messageformat_parser.PluralElement = {
             type: intl_messageformat_parser.TYPE.plural,
             value: 'testValue',
-            options: {} as ESObject,
+            options: {},
             offset: 0,
             pluralType: undefined
           };
