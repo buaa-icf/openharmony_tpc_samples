@@ -26,7 +26,54 @@
  */
 
 import cloneDeep from 'lodash.clonedeep';
+import { assign } from './utils'
 
+interface InObject {
+  a?: number | string | Resource,
+  b?: number,
+  fn?: (a: number, b: number) => number,
+  gender?: string,
+  city?: string
+}
+
+interface  OutObject {
+  inObj?: InObject,
+  id?: number,
+  name?: InObject,
+  c?: InObject,
+  gender?: string,
+  city?: string,
+  b?: null | OutObject1
+}
+
+interface OutObject1 {
+  name?: string,
+  age?: number,
+  skills?: string[],
+  gender?: string,
+  city?: string,
+  others?: OutObject,
+  a?: OutObject
+}
+
+interface obj1 {
+  a?: string,
+  b?: obj2,
+  e?: boolean,
+  f?: obj2,
+  i?: string,
+  j?: obj2
+}
+
+interface obj2 {
+  c?: number,
+  d?: obj1,
+  g?: number[],
+  h?: obj1,
+  name?: string | Resource,
+  age?: number,
+  sex?: string
+}
 @Entry
 @Component
 struct Index {
@@ -164,16 +211,22 @@ struct Index {
 
   commonCopy() {
     this.message = this.getResourceString($r('app.string.The_copy_result_is'))
-    let outObj: ESObject = {
-      inObj: { a: 1, b: 2 } as ESObject
+    let outObj: OutObject = {
+      inObj: { a: 1, b: 2 }
     }
-    let newObj: ESObject = (Object as ESObject).assign({}, outObj);
+    let newObj: OutObject = assign(outObj);
+    if (!newObj?.inObj?.a) {
+      return;
+    }
     newObj.inObj.a = 2;
 
     this.message = this.getResourceString($r('app.string.The_copy_result_is'))+'\n' + this.getResourceString($r('app.string.Shallow_outObj_Object_assign'))+"= {inObj:{a:1,b:2}}，"+this.getResourceString($r('app.string.Get_newObj')) + JSON.stringify(outObj)
 
-    let outObj1: ESObject = { inObj: { a: 1, b: 2 } as ESObject }
-    let deep: ESObject = cloneDeep(outObj1);
+    let outObj1: OutObject = { inObj: { a: 1, b: 2 }}
+    let deep: OutObject = cloneDeep(outObj1);
+    if (!deep?.inObj?.a) {
+      return;
+    }
     deep.inObj.a = 2;
     this.message = this.message + '\n' + '\n'
       + this.getResourceString($r('app.string.Deep_cloneDeep'))+" = { inObj: { a: 1, b: 2 } }，"+this.getResourceString($r('app.string.Get_deep')) + JSON.stringify(outObj1)
@@ -181,13 +234,16 @@ struct Index {
 
   functionCopy() {
     this.message = this.getResourceString($r('app.string.The_copy_result_is'))
-    let obj: ESObject = { id: 1, name: { a: 'xx' } as ESObject, c: {
+    let obj: OutObject = { id: 1, name: { a: 'xx' }, c: {
       fn: (a: number, b: number) => {
         return a + b
       }
-    } as ESObject };
+    }};
 
-    let newObj: ESObject = (Object as ESObject).assign({}, obj);
+    let newObj: OutObject = assign(obj);
+    if (!newObj.name?.a || !newObj.c?.fn || !obj.c?.fn) {
+      return;
+    }
     newObj.id = 999;
     newObj.name.a = this.getResourceString($r('app.string.LiXiaoyao'));
     newObj.c.fn = (a: number, b: number) => {
@@ -197,14 +253,17 @@ struct Index {
 
     this.message = this.message + "\n"
       + "obj = { id: 1, name: { a: 'xx' }, c:{fn: function add(a, b) {return a + b}} }"+this.getResourceString($r('app.string.After_shallow'))+
-    `obj.id：${obj.id}, obj.name.a：${obj.name.a}, obj.fn：${addResult},  `
+    `obj.id：${obj.id}, obj.name.a：${obj.name?.a}, obj.fn：${addResult},  `
 
 
-    let obj1: ESObject = { id: 1, name: { a: 'xx' } as ESObject, c: { fn: (a: number, b: number) => {
+    let obj1: OutObject = { id: 1, name: { a: 'xx' }, c: { fn: (a: number, b: number) => {
       return a + b
-    } } as ESObject };
+    } } };
 
-    let newObj1: ESObject = cloneDeep(obj1);
+    let newObj1: OutObject = cloneDeep(obj1);
+    if (!newObj1.name?.a || !newObj1.c?.fn || !obj1.c?.fn) {
+      return;
+    }
     newObj1.id = 777;
     newObj1.name.a = $r('app.string.WangFugui');
     newObj1.c.fn = (a: number, b: number) => {
@@ -214,7 +273,7 @@ struct Index {
 
     this.message = this.message + "\n" + "\n"
       + " obj1 = { id: 1, name: { a: 'xx' }, fn: function add(a, b) {return a + b} } "+this.getResourceString($r('app.string.After_deep_copying'))+
-    `obj1.id：${obj1.id}, obj1.name.a：${obj1.name.a}, obj1.fn：${addResult1},  `
+    `obj1.id：${obj1.id}, obj1.name.a：${obj1.name?.a}, obj1.fn：${addResult1},  `
 
   }
 
@@ -225,9 +284,9 @@ struct Index {
       name: string
       age: number
       skills: string[]
-      others: ESObject
+      others: OutObject1
 
-      constructor(name: string, age: number, skills: string[], others: ESObject) {
+      constructor(name: string, age: number, skills: string[], others: OutObject1) {
         this.name = name
         this.age = age
         this.skills = skills
@@ -238,7 +297,7 @@ struct Index {
     // 浅拷贝
     let obj1 = new Obj('Tom', 20, ['JavaScript', 'CSS', 'HTML'], { gender: 'male',
       city: 'New York'
-    } as ESObject)
+    })
 
     let obj2 = new Obj(obj1.name, obj1.age, obj1.skills, obj1.others);
     obj2.age = 666
@@ -254,18 +313,21 @@ struct Index {
       + '\n'+this.getResourceString($r('app.string.object_obtained'))+' obj2.skills:  ' + JSON.stringify(obj2.skills)
       + '\n'+this.getResourceString($r('app.string.object_obtained'))+' obj2.others:  ' + JSON.stringify(obj2.others)
 
-    let obj11: ESObject = {
+    let obj11: OutObject1 = {
       name: 'Tom',
       age: 20,
       skills: ['JavaScript', 'CSS', 'HTML'],
       others: {
         gender: 'male',
         city: 'New York'
-      } as ESObject
+      }
     };
 
     // 深拷贝
-    let obj3: ESObject = cloneDeep(obj11);
+    let obj3: OutObject1 = cloneDeep(obj11);
+    if (!obj3.skills) {
+      return;
+    }
     obj3.skills.push('React');
     // obj1.skins 仍然是原来的 ['JavaScript', 'CSS', 'HTML']
     // obj1.others 没有被修改
@@ -283,8 +345,8 @@ struct Index {
   circularReference() {
     this.message = 'const objb = { b: null };\n const obja = { a: objb }; \nobjb.b = obja;\n'+this.getResourceString($r('app.string.The_copy_result_is'))+'\n'
     try {
-      const objb: ESObject = { b: (null as ESObject) };
-      const obja: ESObject = { a: objb };
+      const objb: OutObject = { b: null };
+      const obja: OutObject1 = { a: objb };
       objb.b = obja;
       let origin = JSON.stringify(objb)
       console.log('ZDY---不使用拷贝--->' + origin);
@@ -294,10 +356,10 @@ struct Index {
       this.message = this.message + "\n"+this.getResourceString($r('app.string.circular_reference_error')) + err
     }
     try {
-      const objb: ESObject = {
-        b: (null as ESObject)
+      const objb: OutObject = {
+        b: null
       };
-      const obja: ESObject = {
+      const obja: OutObject1 = {
         a: objb
       };
       objb.b = cloneDeep(obja);
@@ -311,7 +373,7 @@ struct Index {
   }
 
   multiChildCopy() {
-    let origin: ESObject = {
+    let origin: obj1 = {
       a: "123",
       b: {
         c: 56,
@@ -325,14 +387,17 @@ struct Index {
                 name: "test",
                 age: 25,
                 sex: "man"
-              } as ESObject
-            } as ESObject
-          } as ESObject
-        } as ESObject
-      } as ESObject
+              }
+            }
+          }
+        }
+      }
     }
     let originStr: string = `{a: "123",b: {c: 56,d: {e: false,f: {g: [7, 8, 9],h: {i: "hello",j: {name: "test",age: 25,sex: "man"}}}}}}`
-    let newObj: ESObject = (Object as ESObject).assign({} as ESObject, origin);
+    let newObj: obj1 = assign(origin);
+    if (!newObj?.a ||!newObj.b?.c || !newObj.b?.d?.f?.h?.j?.name) {
+      return;
+    }
     newObj.a = '9527';
     newObj.b.c = 99;
     newObj.b.d.f.h.j.name = $r('app.string.ZhangSan');
@@ -340,7 +405,7 @@ struct Index {
 
     this.message = this.getResourceString($r('app.string.The_copy_result_is'))+'\n' + this.getResourceString($r('app.string.Shallow_Object_assign'))+`= ${originStr}，`+this.getResourceString($r('app.string.Get_newObj')) + JSON.stringify(origin)
 
-    let outObj1: ESObject = {
+    let outObj1: obj1 = {
       a: "123",
       b: {
         c: 56,
@@ -354,13 +419,16 @@ struct Index {
                 name: "test",
                 age: 25,
                 sex: "man"
-              } as ESObject
-            } as ESObject
-          } as ESObject
-        } as ESObject
-      } as ESObject
+              }
+            }
+          }
+        }
+      }
     }
-    let deep: ESObject = cloneDeep(outObj1);
+    let deep: obj1 = cloneDeep(outObj1);
+    if (!deep.b?.c || !deep.b?.d?.f?.h?.j?.name) {
+      return;
+    }
     deep.b.d.f.h.j.name = this.getResourceString($r('app.string.LiSi'));
     deep.b.c = 11;
     deep.a = '8520';
