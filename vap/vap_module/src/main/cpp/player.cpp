@@ -104,13 +104,12 @@ void Player::InitControlSignal()
 
 int32_t Player::Init(VAPInfo &info)
 {
-    std::lock_guard<std::mutex> lock(mutex_);
     CallBackJS(VapState::READY, CallbackType::STATE_CHANGE);
     if (isStarted_) {
         LOGE("Already started.");
         return AV_ERR_UNKNOWN;
     }
-    
+    std::lock_guard<std::mutex> lock(mutex_);
     if (OpenFile(info) != AV_ERR_OK) {
         CallBackJS(VapState::FAILED, CallbackType::STATE_CHANGE, AV_ERR_UNKNOWN);
         return AV_ERR_UNKNOWN;
@@ -202,7 +201,6 @@ int32_t Player::Start()
         Release();
         return AV_ERR_UNKNOWN;
     }
-    CallBackJS(VapState::START, CallbackType::STATE_CHANGE);
     return AV_ERR_OK;
 }
 
@@ -354,6 +352,8 @@ void Player::RenderThread()
         LOGE("Player: Unable to init eglContext");
     }
     InitJSAnimConfig();
+    
+    CallBackJS(VapState::START, CallbackType::STATE_CHANGE);
     
     while (!isStop_ && isStarted_) {
         thread_local auto lastPushTime = std::chrono::system_clock::now();
@@ -575,7 +575,7 @@ void Player::DecAudioOutputThread()
         }
         GetPCMData(bufferInfo);
         lock.unlock();
-        int32_t ret = audioDecoder_->FreeOutputData(bufferInfo.bufferIndex);
+        int32_t ret = audioDecoder_->FreeOutputData(bufferInfo.bufferIndex, false);
         if (ret != AV_ERR_OK) {
             break;
         }

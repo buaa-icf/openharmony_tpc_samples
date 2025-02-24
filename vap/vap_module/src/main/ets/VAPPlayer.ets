@@ -53,7 +53,6 @@ export class VAPPlayer implements XComponentContext {
 
   async play(uri: string, mixData?: Array<MixData>, cbFn?: () => void): Promise<void> {
     if (this.isRunning == true) {
-      console.log("video is playing")
       return;
     }
     this.isRunning = true;

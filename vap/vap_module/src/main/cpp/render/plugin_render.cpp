@@ -183,7 +183,7 @@ std::string PluginRender::GetXComponentId(napi_env env, napi_callback_info info)
     napi_value thisArg;
     napi_value exportInstance;
     OH_NativeXComponent *nativeXComponent = nullptr;
-    std::string id;
+    std::string id = "";
 
     napi_get_cb_info(env, info, NULL, NULL, &thisArg, NULL);
     if (napi_ok != napi_get_named_property(env, thisArg, OH_NATIVE_XCOMPONENT_OBJ, &exportInstance)) {
@@ -193,6 +193,10 @@ std::string PluginRender::GetXComponentId(napi_env env, napi_callback_info info)
     
     if (napi_ok != napi_unwrap(env, exportInstance, reinterpret_cast<void **>(&nativeXComponent))) {
         LOGE("Play: napi_unwrap fail");
+        return id;
+    }
+    
+    if (nativeXComponent == nullptr) {
         return id;
     }
 
@@ -717,13 +721,16 @@ static void CreateAnimConfig(napi_env env, JSAnimConfig &jsAnimConfig, NVal &ani
 
 void Callback(void *asyncContext)
 {
+    LOGD("enter Callback");
     if (asyncContext == nullptr) {
+        LOGE("Callback asyncContext is nullptr");
         return;
     }
     uv_loop_s *loop = nullptr;
     CallbackContext *context = (CallbackContext *)asyncContext;
     napi_status status = napi_get_uv_event_loop(context->env, &loop);
     if (status != napi_ok) {
+        LOGE("Callback con not napi_get_uv_event_loop %{public}d", status);
         delete context;
         return;
     }
