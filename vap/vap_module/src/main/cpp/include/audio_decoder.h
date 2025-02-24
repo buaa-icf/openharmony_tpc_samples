@@ -30,7 +30,7 @@ public:
     int32_t Config(const VAPInfo &sampleInfo, ADecSignal *signal);
     int32_t StartAudioDecoder();
     int32_t PushInputData(AudioCodecBufferInfo &info);
-    int32_t FreeOutputData(uint32_t bufferIndex);
+    int32_t FreeOutputData(uint32_t bufferIndex, bool render);
     int32_t Release();
 
 private:

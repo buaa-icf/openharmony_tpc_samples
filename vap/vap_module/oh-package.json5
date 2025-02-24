@@ -5,6 +5,6 @@
   "main": "Index.ets",
   "author": "ohos_tpc",
   "license": "Apache-2.0",
-  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/vap",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/vap",
   "dependencies": {}
 }

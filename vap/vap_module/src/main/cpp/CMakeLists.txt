@@ -44,7 +44,7 @@ add_library(vap SHARED
     resource_request.cpp
     vap_callback.cpp
 )
-
+target_compile_definitions(vap PUBLIC -DNAPI_VERSION=16)
 target_link_libraries(vap PUBLIC EGL)
 target_link_libraries(vap PUBLIC GLESv3)
 target_link_libraries(vap PUBLIC hilog_ndk.z)

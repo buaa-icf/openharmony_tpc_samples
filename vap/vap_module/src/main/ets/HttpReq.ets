@@ -43,7 +43,7 @@ export async function downloadFile(url: string, dir?: string) {
     return url;
   }
   const fileName = extractFileName(url);
-  let filePath = '/storage/Users/currentUser/Documents/' + fileName
+  let filePath = `${getContext().filesDir}/${fileName}`;
   if(dir) {
     filePath = dir + '/' + fileName
   }
