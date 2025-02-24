@@ -44,7 +44,6 @@ struct Index {
   private contentScroller: Scroller = new Scroller();
 
   build() {
-
     Column() {
       Scroll(this.scroller) {
         Row() {
