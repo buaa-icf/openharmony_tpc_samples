@@ -46,8 +46,9 @@
                             type="license"/>
             </policy>
         </policylist>
-        <licensematcher desc="License for BSD" name="BSD-2-Clause">
-            <licensetext desc="" name="
+        <licensematcherlist>
+            <licensematcher desc="License for BSD" name="BSD-2-Clause">
+                <licensetext desc="" name="
                 /**
                  *
                  * Copyright (c) 2024 Huawei Device Co., Ltd.
@@ -74,6 +75,7 @@
                  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                  */
                 "/>
-        </licensematcher>
+            </licensematcher>
+        </licensematcherlist>
     </oatconfig>
 </configuration>
