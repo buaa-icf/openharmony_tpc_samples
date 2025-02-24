@@ -46,6 +46,7 @@ struct VAPXAnimation {
   private pauseTimes: number = 0;
   private colorIdx: number = 0;
   private xComponentId: string = 'xcomponentId_' + util.generateRandomUUID()
+  private videoPath: string = getContext(this).filesDir + "/123.mp4";
 
   @Styles tipTxt() {
     .backgroundColor('#fff')
@@ -86,25 +87,31 @@ struct VAPXAnimation {
       } else {
         console.log('error not get srcInfo')
       }
-      let opts: Array<MixData> = [{
-        tag: 'sImg1',
-        imgUri: getContext(this).filesDir + '/head1.png'
-      }, {
-        tag: 'abc',
-        txt: "星河Harmony NEXT",
-        imgUri: getContext(this).filesDir + '/head1.png'
-      }, {
-        tag: 'sTxt1',
-        txt: "星河Harmony NEXT",
-        textAlign: this.textAlign,
-        fontWeight: this.fontWeight,
-        color: this.color
-      }];
+
+      let opts: Array<MixData> = [];
+      if (this.srcInfo != undefined) {
+        for (let s of this.srcInfo) {
+          if (s.type == SrcType.IMG) {
+            opts.push({
+              tag: s.tag,
+              imgUri: getContext(this).filesDir + '/head1.png'
+            })
+          } else if (s.type == SrcType.TXT) {
+            opts.push({
+              tag: s.tag,
+              txt: "星河Harmony NEXT 星河Harmony NEXT",
+              textAlign: this.textAlign, // VAPTextAlign.TEXT_ALIGN_JUSTIFY对齐方式规格见 https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/ts-basic-components-text-V5#textalign
+              fontWeight: this.fontWeight,
+              color: this.color
+            })
+          }
+        }
+      }
       this.buttonEnabled = false;
 
       let startTime = systemDateTime.getTime(true)
 
-      this.vapPlayer?.play(getContext(this).filesDir + "/123.mp4", opts, () => {
+      this.vapPlayer?.play(this.videoPath, opts, () => {
         LogUtil.info("js get callback")
         this.buttonEnabled = true;
       });
@@ -152,7 +159,7 @@ struct VAPXAnimation {
             if (context) {
               this.vapPlayer = new VAPPlayer(this.xComponentId);
               this.vapPlayer.setContext(context);
-              let info = this.vapPlayer.getVideoInfo(getContext(this).filesDir + "/123.mp4")
+              let info = this.vapPlayer.getVideoInfo(this.videoPath)
               console.log('getVideoInfo info ' + JSON.stringify(info))
               this.srcInfo = info?.srcInfos
             }

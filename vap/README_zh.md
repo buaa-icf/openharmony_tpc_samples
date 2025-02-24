@@ -59,36 +59,12 @@
 │  └─libvap	# so文件接口声明
 └─util					# 工具类的实现0
 ```
-## 构建工程生成 Har 包
-
-打开工程首先运行命令生成 Har 包请参考下方
-
-### 在 IDE 的 Terminal 运行以下命令
-
-```bash
-hvigorw assembleHar --mode module -p module=vap_module@default -p product=default -p buildMode=release --no-daemon
+## 源码下载
+1. 本项目依赖 json 库，通过`git submodule`引入，下载代码时需加上`--recursive`参数。
+```shell
+git clone --recursive https://gitcode.com/openharmony-tpc/openharmony_tpc_samples.git
 ```
-
-会在`.\vap_module\build\default\outputs\default\vap_module.har` 目录生成一个 Har 包
-
-## 启动项目
-
-对于测试人员可快速启动项目，直接在 IDE 连接设备后一键启动
-
-按照官方流程添加签名信息，就可正确安装测试应用到终端设备
-
-## 引用步骤
-
-对于开发人员，可把生成的 Har 包引入其工程
-
-### 在 IDE 的 Terminal 运行以下命令
-
-```bash
-ohpm install .\vap_module\build\default\outputs\default\vap_module.har
-```
-安装之前生成的 Har 包
-
-
+2. 开始编译项目。
 
 ## 快速使用
 1. api模式 可参考示例代码 [api模式](./示例代码.ets)

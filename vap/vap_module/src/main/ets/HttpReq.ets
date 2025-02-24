@@ -14,7 +14,6 @@
  */
 
 import { http } from '@kit.NetworkKit';
-import { AsyncCallback, BusinessError } from '@kit.BasicServicesKit';
 import fs from '@ohos.file.fs';
 
 function extractFileName(url: string): string {
