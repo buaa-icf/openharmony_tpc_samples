@@ -16,15 +16,19 @@
 import sim from '@ohos.telephony.sim';
 import I18n from '@ohos.i18n';
 import { Callback } from "./basic";
+import { deviceInfo } from '@kit.BasicServicesKit';
 
 export class CountryUtils {
 
     private static countryCodeMap;
 
     public static getCountryCodeBySim( callback: Callback<string>) {
-        sim.getISOCountryCodeForSim(0, (err, data) => {
-            callback(err.message, this.getCountryCode(data))
-        });
+        let deviceTypeArr: string[] = ["2in1","tv","wearable","car"]
+        if(!deviceTypeArr.includes(deviceInfo.deviceType)) {
+            sim.getISOCountryCodeForSim(0, (err, data) => {
+                callback(err.message, this.getCountryCode(data))
+            });
+        }
     }
 
     public static getCountryCodeByLanguage(): string {
