@@ -40,7 +40,7 @@ export default class EntryAbility extends UIAbility {
     });
 
     let fileDir: string = this.context.filesDir
-    this.context.resourceManager.getRawFile("test.zip", (error, value) => {
+    this.context.resourceManager.getRawFileContent("test.zip", (error, value) => {
       if (error != null) {
         return;
       }
