@@ -167,7 +167,7 @@ const TEXT_DECODER_THRESHOLD = 200;
 
 export function utf8DecodeTD(bytes: Uint8Array, inputOffset: number, byteLength: number): string {
   const stringBytes = bytes.subarray(inputOffset, inputOffset + byteLength);
-  return sharedTextDecoder.decodeWithStream(stringBytes);
+  return sharedTextDecoder.decodeToString(stringBytes);
 }
 
 export function utf8Decode(bytes: Uint8Array, inputOffset: number, byteLength: number): string {
