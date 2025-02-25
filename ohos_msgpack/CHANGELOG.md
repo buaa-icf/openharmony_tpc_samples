@@ -1,3 +1,6 @@
+## 1.0.2-rc.0
+- Fix Compilation Warnings
+
 ## 1.0.1
 - 发布正式版本1.0.1
 

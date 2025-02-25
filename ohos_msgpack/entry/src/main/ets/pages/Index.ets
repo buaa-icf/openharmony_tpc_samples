@@ -54,7 +54,7 @@ struct Index {
         Button($r('app.string.Complex_encoding_decoding'))
           .margin({ top: 10 })
           .onClick(() => {
-            router.push({ url: 'pages/MultiDecodePage' })
+            router.pushUrl({ url: 'pages/MultiDecodePage' })
           })
         Button($r('app.string.Special_Character'))
           .margin({ top: 10 })

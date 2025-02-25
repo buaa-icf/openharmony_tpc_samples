@@ -61,7 +61,7 @@ struct MultiDecodePage {
             bar,
             [1, 2, 3],
           ]
-          let encodedItems: Uint8Array[]  = items.map((item: ESObject): Uint8Array => encode<undefined>(item));
+          let encodedItems: Uint8Array[]  = items.map((item): Uint8Array => encode<undefined>(item));
           let encoded = new Uint8Array(encodedItems.reduce((p: number, c: Uint8Array) => p + c.byteLength, 0));
           let offset = 0;
           for (let encodedItem of encodedItems) {

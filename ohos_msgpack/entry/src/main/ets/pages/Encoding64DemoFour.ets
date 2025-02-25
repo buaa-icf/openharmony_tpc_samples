@@ -85,8 +85,14 @@ struct Encoding64DemoFour {
   }
 }
 
-function data(): ESObject {
-  let data: ESObject =
+interface CustomData {
+  ints: number[];
+  nums: number[];
+  bigints: bigint[];
+}
+
+function data() {
+  let data: CustomData =
     {
       ints: [0, Number.MAX_SAFE_INTEGER, Number.MIN_SAFE_INTEGER],
       nums: [Number.NaN, Math.PI, Math.E, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY],
