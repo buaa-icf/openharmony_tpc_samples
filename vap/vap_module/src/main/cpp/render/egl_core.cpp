@@ -278,6 +278,11 @@ bool EGLCore::CreateEnvironment()
         LOGE("m_eglWindow is null");
         return false;
     }
+    
+    if (m_eglDisplay == EGL_NO_DISPLAY || m_eglConfig == nullptr) {
+        return false;
+    }
+    
     m_eglSurface = eglCreateWindowSurface(m_eglDisplay, m_eglConfig, m_eglWindow, NULL);
     if (nullptr == m_eglSurface) {
         LOGE("eglCreateWindowSurface: unable to create surface");

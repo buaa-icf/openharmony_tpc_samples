@@ -28,6 +28,7 @@ struct GeneralAnimation {
   @State showVideo: boolean = true;
   @State fitType: FitType = FitType.CENTER_CROP;
   private videoName: string = "demo.mp4";
+  private xComponentId: string = 'xComponentId_xx';
 
   aboutToDisappear(): void {
     LogUtil.info('aboutToDisappear')
@@ -129,13 +130,13 @@ struct GeneralAnimation {
           .height('100%')
         } else {
           XComponent({
-            id: 'xComponentId_xx',
+            id: this.xComponentId,
             type: 'surface',
             libraryname: 'vap'
           })
             .onLoad((context?: object) => {
               if (context) {
-                this.vapPlayer = new VAPPlayer;
+                this.vapPlayer = new VAPPlayer(this.xComponentId);
                 this.vapPlayer.setContext(context);
               }
               this.play()

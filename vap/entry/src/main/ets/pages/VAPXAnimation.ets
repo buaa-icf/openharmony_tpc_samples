@@ -44,7 +44,8 @@ struct VAPXAnimation {
   private playTimes: number = 0;
   private stopTimes: number = 0;
   private pauseTimes: number = 0;
-  private colorIdx: number = 0
+  private colorIdx: number = 0;
+  private xComponentId: string = 'xcomponentId_' + util.generateRandomUUID()
 
   @Styles tipTxt() {
     .backgroundColor('#fff')
@@ -143,13 +144,13 @@ struct VAPXAnimation {
     Column() {
       Stack() {
         XComponent({
-          id: 'xcomponentId_' + util.generateRandomUUID(),
+          id: this.xComponentId,
           type: 'surface',
           libraryname: 'vap'
         })
           .onLoad((context?: object) => {
             if (context) {
-              this.vapPlayer = new VAPPlayer;
+              this.vapPlayer = new VAPPlayer(this.xComponentId);
               this.vapPlayer.setContext(context);
               let info = this.vapPlayer.getVideoInfo(getContext(this).filesDir + "/123.mp4")
               console.log('getVideoInfo info ' + JSON.stringify(info))

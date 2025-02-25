@@ -22,9 +22,6 @@
 #include <js_native_api.h>
 #include <js_native_api_types.h>
 #include <log.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <fcntl.h>
 #include <uv.h>
 #include <optional>
 
@@ -47,7 +44,6 @@ static void OnSurfaceCreatedCB(OH_NativeXComponent *component, void *window)
         LOGE("OnSurfaceCreatedCB: Unable to get XComponent id");
         return;
     }
-    
     std::string id(idStr);
     auto render = PluginRender::GetInstance(id);
     uint64_t width;
@@ -180,13 +176,20 @@ std::shared_ptr<PluginRender> PluginRender::GetInstance(std::string &id)
 
 std::string PluginRender::GetXComponentId(napi_env env, napi_callback_info info)
 {
-    napi_value thisArg;
-    napi_value exportInstance;
+    napi_value thisArg = nullptr;
+    napi_value exportInstance = nullptr;
     OH_NativeXComponent *nativeXComponent = nullptr;
     std::string id = "";
 
     napi_get_cb_info(env, info, NULL, NULL, &thisArg, NULL);
-    if (napi_ok != napi_get_named_property(env, thisArg, OH_NATIVE_XCOMPONENT_OBJ, &exportInstance)) {
+    bool isExit = false;
+    napi_has_named_property(env, thisArg, OH_NATIVE_XCOMPONENT_OBJ, &isExit);
+    if (!isExit || (napi_ok != napi_get_named_property(env, thisArg, OH_NATIVE_XCOMPONENT_OBJ, &exportInstance))) {
+        LOGE("Play: napi_get_named_property fail");
+        return id;
+    }
+    
+    if (exportInstance == nullptr) {
         LOGE("Play: napi_get_named_property fail");
         return id;
     }
@@ -213,12 +216,15 @@ std::string PluginRender::GetXComponentId(napi_env env, napi_callback_info info)
 napi_value PluginRender::Pause(napi_env env, napi_callback_info info)
 {
     LOGD("enter pause");
-    std::string idStr = GetXComponentId(env, info);
-    if (idStr.empty()) {
-        LOGE("GetXComponentId error");
+    NFuncArg funcArg(env, info);
+    if (!funcArg.InitArgs(NARG_CNT::ZERO, NARG_CNT::ONE)) {
         return nullptr;
     }
-    std::string id(idStr);
+    napi_value v1 = funcArg.GetArg(NARG_POS::FIRST);
+    NVal nVal(env, v1);
+    auto [succ, resData, length] = nVal.ToUTF8String();
+    std::string id = resData.get();
+
     LOGD("Pause render id:%{public}s", id.c_str());
     std::shared_ptr<PluginRender>render = PluginRender::GetInstance(id);
     if (render) {
@@ -231,12 +237,14 @@ napi_value PluginRender::Pause(napi_env env, napi_callback_info info)
 napi_value PluginRender::Stop(napi_env env, napi_callback_info info)
 {
     LOGD("enter Stop");
-    std::string idStr = GetXComponentId(env, info);
-    if (idStr.empty()) {
-        LOGE("GetXComponentId error");
+    NFuncArg funcArg(env, info);
+    if (!funcArg.InitArgs(NARG_CNT::ZERO, NARG_CNT::ONE)) {
         return nullptr;
     }
-    std::string id(idStr);
+    napi_value v1 = funcArg.GetArg(NARG_POS::FIRST);
+    NVal nVal(env, v1);
+    auto [succ, resData, length] = nVal.ToUTF8String();
+    std::string id = resData.get();
     std::shared_ptr<PluginRender>render = PluginRender::GetInstance(id);
     if (render && render->player_) {
         render->player_->Stop();
@@ -248,12 +256,15 @@ napi_value PluginRender::Stop(napi_env env, napi_callback_info info)
 napi_value PluginRender::SetLoop(napi_env env, napi_callback_info info)
 {
     LOGD("enter SetLoop");
-    std::string idStr = GetXComponentId(env, info);
-    if (idStr.empty()) {
-        LOGE("GetXComponentId error");
+    NFuncArg funcArg(env, info);
+    if (!funcArg.InitArgs(NARG_CNT::ONE, NARG_CNT::TWO)) {
         return nullptr;
     }
-    std::string id(idStr);
+    napi_value v1 = funcArg.GetArg(NARG_POS::SECOND);
+    NVal nVal(env, v1);
+    auto [succ, resData, length] = nVal.ToUTF8String();
+    std::string id = resData.get();
+    
     LOGD("SetLoop render id:%{public}s", id.c_str());
     std::shared_ptr<PluginRender>render = PluginRender::GetInstance(id);
     if (render) {
@@ -313,22 +324,21 @@ static void GenSrcInfo(napi_env env, std::map<std::string, Src> &src, napi_value
 napi_value PluginRender::GetVideoInfo(napi_env env, napi_callback_info info)
 {
     LOGD("enter GetVideoInfo");
-    std::string idStr = GetXComponentId(env, info);
-    if (idStr.empty()) {
-        LOGE("GetXComponentId error");
+    NFuncArg funcArg(env, info);
+    if (!funcArg.InitArgs(NARG_CNT::ONE, NARG_CNT::TWO)) {
         return nullptr;
     }
-    std::string id(idStr);
+    napi_value jsId = funcArg.GetArg(NARG_POS::SECOND);
+    NVal jsIdVal(env, jsId);
+    auto [jsIdSucc, jsIdResData, jsIdLength] = jsIdVal.ToUTF8String();
+    std::string id = jsIdResData.get();
+
     std::shared_ptr<PluginRender>render = PluginRender::GetInstance(id);
     if (!render) {
         LOGE("get env error");
         return nullptr;
     }
-    NFuncArg funcArg(env, info);
-    if (!funcArg.InitArgs(NARG_CNT::ONE)) {
-        LOGE("invalid arg");
-        return nullptr;
-    }
+
     napi_value v1 = funcArg.GetArg(NARG_POS::FIRST);
     NVal nVal(env, v1);
     auto [succ, resStr, length] = nVal.ToUTF8String();
@@ -362,18 +372,20 @@ napi_value PluginRender::GetVideoInfo(napi_env env, napi_callback_info info)
 napi_value PluginRender::SetFitType(napi_env env, napi_callback_info info)
 {
     LOGD("enter SetFitType");
-    std::string idStr = GetXComponentId(env, info);
-    if (idStr.empty()) {
-        LOGE("GetXComponentId error");
+    NFuncArg funcArg(env, info);
+    if (!funcArg.InitArgs(NARG_CNT::ONE, NARG_CNT::TWO)) {
         return nullptr;
     }
-    std::string id(idStr);
+    napi_value jsId = funcArg.GetArg(NARG_POS::SECOND);
+    NVal jsIdVal(env, jsId);
+    auto [jsIdSucc, jsIdResData, jsIdLength] = jsIdVal.ToUTF8String();
+    std::string id = jsIdResData.get();
+    
     std::shared_ptr<PluginRender>render = PluginRender::GetInstance(id);
     if (!render) {
         LOGE("Not get render");
         return nullptr;
     }
-    NFuncArg funcArg(env, info);
     if (!funcArg.InitArgs(NARG_CNT::ONE)) {
         LOGE("InitArgs render");
         return nullptr;
@@ -403,18 +415,20 @@ napi_value PluginRender::SetFitType(napi_env env, napi_callback_info info)
 napi_value PluginRender::SetVideoMode(napi_env env, napi_callback_info info)
 {
     LOGD("enter SetVideoMode");
-    std::string idStr = GetXComponentId(env, info);
-    if (idStr.empty()) {
-        LOGE("GetXComponentId error");
+    NFuncArg funcArg(env, info);
+    if (!funcArg.InitArgs(NARG_CNT::ONE, NARG_CNT::TWO)) {
         return nullptr;
     }
-    std::string id(idStr);
+    napi_value jsId = funcArg.GetArg(NARG_POS::SECOND);
+    NVal jsIdVal(env, jsId);
+    auto [jsIdSucc, jsIdResData, jsIdLength] = jsIdVal.ToUTF8String();
+    std::string id = jsIdResData.get();
+
     std::shared_ptr<PluginRender>render = PluginRender::GetInstance(id);
     if (!render) {
         LOGE("Not get render");
         return nullptr;
     }
-    NFuncArg funcArg(env, info);
     if (!funcArg.InitArgs(NARG_CNT::ONE)) {
         LOGE("InitArgs render");
         return nullptr;
@@ -444,18 +458,20 @@ napi_value PluginRender::SetVideoMode(napi_env env, napi_callback_info info)
 napi_value PluginRender::SetSpeed(napi_env env, napi_callback_info info)
 {
     LOGD("enter SetSpeed");
-    std::string idStr = GetXComponentId(env, info);
-    if (idStr.empty()) {
-        LOGE("GetXComponentId error");
+    NFuncArg funcArg(env, info);
+    if (!funcArg.InitArgs(NARG_CNT::ONE, NARG_CNT::TWO)) {
         return nullptr;
     }
-    std::string id(idStr);
+    napi_value jsId = funcArg.GetArg(NARG_POS::SECOND);
+    NVal jsIdVal(env, jsId);
+    auto [jsIdSucc, jsIdResData, jsIdLength] = jsIdVal.ToUTF8String();
+    std::string id = jsIdResData.get();
+
     std::shared_ptr<PluginRender>render = PluginRender::GetInstance(id);
     if (!render) {
         LOGE("Not get render");
         return nullptr;
     }
-    NFuncArg funcArg(env, info);
     if (!funcArg.InitArgs(NARG_CNT::ONE)) {
         LOGE("InitArgs render");
         return nullptr;
@@ -790,19 +806,28 @@ void PluginRender::ParseCallback(napi_ref &callbackRef, napi_env env, napi_value
 napi_value PluginRender::Play(napi_env env, napi_callback_info info)
 {
     LOGD("enter Play");
+    std::string id = "";
     NFuncArg funcArg(env, info);
-    if (!funcArg.InitArgs(NARG_CNT::ONE, NARG_CNT::THREE)) {
+    if (!funcArg.InitArgs(NARG_CNT::ONE, NARG_CNT::FOUR)) {
         return nullptr;
     }
+
     napi_value v1 = funcArg.GetArg(NARG_POS::FIRST);
     NVal nVal(env, v1);
     auto [succ, resData, length] = nVal.ToUTF8String();
     std::string str = resData.get();
-    std::string idStr = GetXComponentId(env, info);
-    if (idStr.empty()) {
+    
+    if (funcArg.GetMaxArgc() >= FOUR) {
+        napi_value jsId = funcArg.GetArg(NARG_POS::FOURTH);
+        NVal idVal(env, jsId);
+        auto [succ, resData, length] = idVal.ToUTF8String();
+        id = resData.get();
+    }
+
+    if (id.empty()) {
         return nullptr;
     }
-    std::string id(idStr);
+
     std::shared_ptr<PluginRender>render = PluginRender::GetInstance(id);
     if (render) {
         std::string uri = str;
@@ -814,6 +839,9 @@ napi_value PluginRender::Play(napi_env env, napi_callback_info info)
         std::map<std::string, MixInputData> mixData;
         if (funcArg.GetMaxArgc() >= TWO) {
             ParseMixParam(mixData, env, funcArg);
+        }
+        if (render->player_ == nullptr) {
+            return nullptr;
         }
         if (funcArg.GetMaxArgc() >= THREE) {
             std::string type = "playDone";
@@ -838,19 +866,17 @@ napi_value PluginRender::Play(napi_env env, napi_callback_info info)
 napi_value PluginRender::On(napi_env env, napi_callback_info info)
 {
     NFuncArg funcArg(env, info);
-    if (!funcArg.InitArgs(NARG_CNT::TWO)) {
-        LOGE("func 'on' Init args error.");
+    if (!funcArg.InitArgs(NARG_CNT::TWO, NARG_CNT::THREE)) {
         return nullptr;
     }
-    napi_value thisArg = funcArg.GetThisVar();
-    std::string idStr = GetXComponentId(env, info);
-    if (idStr.empty()) {
-        LOGE("GetXComponentId error");
-        return nullptr;
-    }
-    std::string id(idStr);
-    std::shared_ptr<PluginRender>render = PluginRender::GetInstance(id);
-    if (render) {
+
+    napi_value v1 = funcArg.GetArg(NARG_POS::THIRD);
+    NVal nVal(env, v1);
+    auto [succ, resData, length] = nVal.ToUTF8String();
+    std::string id = resData.get();
+
+    std::shared_ptr<PluginRender> render = PluginRender::GetInstance(id);
+    if (render && render->player_) {
         if (render->player_->IsRunning()) {
             LOGE("the player is running...plz call this func before play.");
             return nullptr;
@@ -891,7 +917,6 @@ napi_value PluginRender::Off(napi_env env, napi_callback_info info)
         LOGE("func 'off' Init args error.");
         return nullptr;
     }
-    napi_value thisArg = funcArg.GetThisVar();
     std::string idStr = GetXComponentId(env, info);
     if (idStr.empty()) {
         LOGE("GetXComponentId error");
