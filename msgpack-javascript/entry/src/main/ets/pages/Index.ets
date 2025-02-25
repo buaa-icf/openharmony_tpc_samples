@@ -22,22 +22,22 @@ struct Index {
       Column() {
         Button($r('app.string.Basic_Encode_Decode'))
           .onClick(() => {
-            router.push({ url: 'pages/EncodeDecodePage' })
+            router.pushUrl({ url: 'pages/EncodeDecodePage' })
           })
         Button($r('app.string.Constructor_Encode_Decode'))
           .margin({ top: 10 })
           .onClick(() => {
-            router.push({ url: 'pages/EncodeDecodeConstructorPage' })
+            router.pushUrl({ url: 'pages/EncodeDecodeConstructorPage' })
           })
         Button($r('app.string.Multi_Encode_Decode'))
           .margin({ top: 10 })
           .onClick(() => {
-            router.push({ url: 'pages/MultiDecodePage' })
+            router.pushUrl({ url: 'pages/MultiDecodePage' })
           })
         Button($r('app.string.Special_character_Encode_Decode'))
           .margin({ top: 10 })
           .onClick(() => {
-            router.push({ url: 'pages/ExamPage' })
+            router.pushUrl({ url: 'pages/ExamPage' })
           })
       }
       .width('100%')
