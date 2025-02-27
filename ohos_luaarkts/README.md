@@ -22,6 +22,15 @@ ohpm install @ohos/luaarkts
 
 OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
+## 使用说明
+1.获取so文件  
+方式1:找到最新的编译通过的pr，评论区中会有门禁报告链接；  
+方式2:自己提一个pr，触发门禁，编译成功后的门禁报告链接；   
+2.点进门禁报告，可以看到tpc_component编译通过，点击通过后，选择日志详情，展开version，下面就有一个压缩包，
+这个压缩包中就有所需so和a文件  
+3、把so和a文件放入路径ohos_luaarkts/luaarkts/src/main/cpp/thirdparty下.
+
+
 ## har包引用
 
 自建项目,然后在Hap包的`oh-package.json5`文件的`dependencies`字段,增加类似下面的引用
