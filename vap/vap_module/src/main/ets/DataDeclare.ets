@@ -139,22 +139,22 @@ export enum VAPSpeed {
 };
 
 export interface XComponentContext {
-  play(uri: string, mixData?: Array<MixData>, cbFn?: () => void): void
+  play(uri: string, mixData?: Array<MixData>, cbFn?: () => void, id?:string): void
 
-  on(type: string, callback: (state?: VapState | string, ret?: number | AnimConfig | undefined) => void): void
+  on(type: string, callback: (state?: VapState | string, ret?: number | AnimConfig | undefined) => void, id?: string): void
 
-  pause(): void
+  pause(id?:string): void
 
-  stop(): void
+  stop(id?:string): void
 
-  setLoop(loops: number): void
+  setLoop(loops: number, id?: string): void
 
-  getVideoInfo(uri: string): VideoInfo | undefined
+  getVideoInfo(uri: string, id?: string): VideoInfo | undefined
 
-  setFitType(fitType: FitType): void
+  setFitType(fitType: FitType, id?: string): void
 
-  setVideoMode(videoMode: VideoMode): void
+  setVideoMode(videoMode: VideoMode, id?: string): void
 
-  setSpeed(speed: VAPSpeed): void
+  setSpeed(speed: VAPSpeed, id?: string): void
 }
 ;

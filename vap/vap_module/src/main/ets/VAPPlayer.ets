@@ -25,7 +25,11 @@ export class VAPPlayer implements XComponentContext {
   private uri = ''
   private mixData: Array<MixData> = []
   public sandDir = ''
-  private isRunning : boolean = false
+  private id: string = ''
+
+  constructor(id: string) {
+    this.id = id
+  }
 
   setContext(context: object): void {
     this.vapContext = context as XComponentContext;
@@ -33,7 +37,7 @@ export class VAPPlayer implements XComponentContext {
 
   getVideoInfo(uri: string): VideoInfo | undefined {
     if (this.vapContext) {
-      return this.vapContext.getVideoInfo(uri);
+      return this.vapContext.getVideoInfo(uri, this.id);
     }
     return undefined
   }
@@ -47,15 +51,10 @@ export class VAPPlayer implements XComponentContext {
     } else {
       this.loops = 1
       this.jsCbfn ? this.jsCbfn() : ''
-      this.isRunning = false
     }
   }
 
   async play(uri: string, mixData?: Array<MixData>, cbFn?: () => void): Promise<void> {
-    if (this.isRunning == true) {
-      return;
-    }
-    this.isRunning = true;
     if (mixData) {
       this.mixData = []
       for (let element of mixData) {
@@ -69,19 +68,19 @@ export class VAPPlayer implements XComponentContext {
 
     this.jsCbfn = cbFn
     console.log('mPlayOption ' + JSON.stringify(this.mixData))
-    this.vapContext?.play(this.uri, this.mixData, this.doneFn);
+    this.vapContext?.play(this.uri, this.mixData, this.doneFn, this.id);
   }
 
   on(type: string, callback: (state?: VapState | string, ret?: number | AnimConfig | undefined) => void) {
-    this.vapContext?.on(type, callback);
+    this.vapContext?.on(type, callback, this.id);
   }
 
   pause(): void {
-    this.vapContext?.pause();
+    this.vapContext?.pause(this.id);
   }
 
   stop(): void {
-    this.vapContext?.stop();
+    this.vapContext?.stop(this.id);
     this.loops = 1;
   }
 
@@ -90,14 +89,14 @@ export class VAPPlayer implements XComponentContext {
   }
 
   setFitType(fitType: FitType): void {
-    this.vapContext?.setFitType(fitType);
+    this.vapContext?.setFitType(fitType, this.id);
   }
 
   setVideoMode(videoMode: VideoMode): void {
-    this.vapContext?.setVideoMode(videoMode);
+    this.vapContext?.setVideoMode(videoMode, this.id);
   }
 
   setSpeed(speed: VAPSpeed): void {
-    this.vapContext?.setSpeed(speed);
+    this.vapContext?.setSpeed(speed, this.id);
   }
 }

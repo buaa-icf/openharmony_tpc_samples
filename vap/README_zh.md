@@ -121,14 +121,15 @@ let dir = context.filesDir
 ### 界面
 
 ```typescript
+private xComponentId: string = 'xcomponentId_' + util.generateRandomUUID()
 XComponent({
-  id: 'xcomponentId', // 唯一标识
+  id: this.xComponentId, // 唯一标识
   type: 'surface',
   libraryname: 'vap'
 })
   .onLoad((xComponentContext?: object | Record<string, () => void>) => {
     if (xComponentContext) {
-      this.vapPlayer = new VAPPlayer
+      this.vapPlayer = new VAPPlayer(this.xComponentId)
       this.vapPlayer.setContext(xComponentContext)
       this.vapPlayer.sandDir = dir // 设置存储路径
     }

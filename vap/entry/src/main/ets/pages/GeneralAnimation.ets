@@ -28,6 +28,7 @@ struct GeneralAnimation {
   private playTimes: number = 0;
   private stopTimes: number = 0;
   private pauseTimes: number = 0;
+  private xComponentId: string = 'xcomponentId_' + util.generateRandomUUID();
 
   aboutToDisappear(): void {
     LogUtil.info('aboutToDisappear')
@@ -96,13 +97,13 @@ struct GeneralAnimation {
     Column() {
       Stack() {
         XComponent({
-          id: 'xcomponentId_' + util.generateRandomUUID(),
+          id: this.xComponentId,
           type: 'surface',
           libraryname: 'vap'
         })
           .onLoad((context?: object) => {
             if (context) {
-              this.vapPlayer = new VAPPlayer;
+              this.vapPlayer = new VAPPlayer(this.xComponentId);
               this.vapPlayer.setContext(context);
             }
           })

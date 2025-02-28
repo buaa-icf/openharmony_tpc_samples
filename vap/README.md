@@ -119,14 +119,15 @@ let dir = context.filesDir
 ### Interface
 
 ```typescript
+private xComponentId: string = 'xcomponentId_' + util.generateRandomUUID()
 XComponent({
-  id: 'xcomponentId', // Unique identifier
+  id: this.xComponentId, // Unique identifier
   type: 'surface',
   libraryname: 'vap'
 })
   .onLoad((xComponentContext?: object | Record<string, () => void>) => {
     if (xComponentContext) {
-      this.vapPlayer = new VAPPlayer
+      this.vapPlayer = new VAPPlayer(this.xComponentId)
       this.vapPlayer.setContext(xComponentContext)
       this.vapPlayer.sandDir = dir // Set storage path
     }
