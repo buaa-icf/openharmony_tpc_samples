@@ -103,6 +103,14 @@ private createClient() {
 15. Disable a STUN client.
     `close(callback)`
 
+## About obfuscation
+- Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- If you want the stun library not to be obfuscated during code obfuscation, you need to add corresponding exclusion rules in the obfuscation rule configuration file obfuscation-rules.txt：
+```
+-keep
+./oh_modules/@ohos/stun
+```
+
 ## Constraints
 
 stun has been verified in the following versions:
