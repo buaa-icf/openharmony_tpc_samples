@@ -1065,38 +1065,55 @@ sio::message::ptr handle_array_value(napi_env env, napi_value value)
 
 static napi_value emit(napi_env env, napi_callback_info info)
 {
-    initEnv(env);
-    size_t argc = 4;
-    napi_value args[4] = {nullptr};
+    size_t argc = 3;
+    napi_value args[3] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
-    char eventName[MAX_BUF_SIZE];
-    napi_get_value_string_utf8(env, args[0], eventName, MAX_BUF_SIZE, &result);
-    napi_valuetype messageType;
-    napi_typeof(env, args[1], &messageType);
-    napi_value on_emit_listener_call = args[3];
+
+    // 获取参数 1 事件名称
+    char eventName[MAX_MESSAGE_SIZE];
+    napi_get_value_string_utf8(env, args[0], eventName, MAX_MESSAGE_SIZE, &result);
+
+    // 获取参数 3 callback
+    napi_value on_emit_listener_call = args[2];
     napi_ref on_emit_listener_call_ref;
     napi_create_reference(env_global, on_emit_listener_call, 1, &on_emit_listener_call_ref);
     on_emit_listener_call_ref_map.insert(
         {eventName, on_emit_listener_call_ref});
     sio::message::list *messageList = new sio::message::list();
-    if (messageType == napi_string) {
-        OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, "LOG_TAG", "SOCKETIO_TAG------> 0 napi_value emit ");
-        char message[MAX_MESSAGE_SIZE];
-        napi_get_value_string_utf8(env, args[1], message, MAX_MESSAGE_SIZE, &result);
-        bool isArraybuffer;
-        napi_get_value_bool(env, args[ARG_INDEX_2], &isArraybuffer);
-        if (isArraybuffer) {
-            std::shared_ptr<std::string> message_binary = std::make_shared<std::string>(message);
-            messageList->push(message_binary);
-            message_binary = nullptr;
-        } else {
+
+    // 获取参数 2 的数据类型是否是 Uint8Array 类型
+    bool is_arraybuffer;
+    napi_is_typedarray(env, args[1], &is_arraybuffer);
+    // 客户端发送一般消息和二进制消息处理逻辑
+    if (is_arraybuffer) {
+        // 获取 Uint8Array 信息
+        void* data;
+        size_t byte_length;
+        napi_typedarray_type type;
+        napi_value array_buffer;
+        size_t offset;
+        napi_get_typedarray_info(env, args[1], &type, &byte_length, &data, &array_buffer, &offset);
+
+        // 将 Uint8Array 数据转化为 std::string 用于底层库
+        std::string uint8Array_str(static_cast<char*>(data), byte_length);
+
+        std::shared_ptr<std::string> message_binary = std::make_shared<std::string>(uint8Array_str);
+        messageList->push(message_binary);
+        message_binary = nullptr;
+    } else {
+        // 客户端发送非二进制消息处理逻辑，备注：这里只支持object,string。
+        napi_valuetype messageType;
+        napi_typeof(env, args[1], &messageType);
+
+        if (messageType == napi_string) {
+            char message[MAX_MESSAGE_SIZE] = {};
+            napi_get_value_string_utf8(env, args[1], message, MAX_MESSAGE_SIZE, &result);
             messageList->push(message);
+        } else if(messageType == napi_object){
+            sio::object_message::ptr message_item = get_object_message(env, args[1]);
+            messageList->push(message_item);
+            message_item = nullptr;
         }
-    } else if (messageType == napi_object) {
-        sio::object_message::ptr message_item = get_object_message(env, args[1]);
-        OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, "LOG_TAG", "SOCKETIO_TAG------> 1 napi_value emit ");
-        messageList->push(message_item);
-        message_item = nullptr;
     }
     
     NapiCreateThreadsafe(env, on_emit_listener_call, CallJsEmit, &g_tsfnEmitCall);
