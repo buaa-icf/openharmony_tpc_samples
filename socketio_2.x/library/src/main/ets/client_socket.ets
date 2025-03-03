@@ -10,7 +10,6 @@
  */
 
 import client_socket_c from 'libclient_socket_c.so';
-import { buffer_util } from './buffer_util'
 
 export type SocketMessage = number | string | boolean | Array<number>
     | Array<string> | Array<boolean> | Uint8Array | object | bigint;
@@ -158,11 +157,7 @@ export class client_socket {
   }
 
   public emit(name: string, message: SocketMessage, on_emit_callback?: (emit_callback_json: string) => void) {
-    if (message instanceof Uint8Array) {
-      client_socket_c.emit(name, buffer_util.uint8ArrayToString(message), true, on_emit_callback);
-    } else {
-      client_socket_c.emit(name, message, false, on_emit_callback);
-    }
+    client_socket_c.emit(name, message, on_emit_callback);
   }
 
   public get_current_state(): number {
