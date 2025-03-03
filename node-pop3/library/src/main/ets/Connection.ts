@@ -6,6 +6,7 @@ import { EventEmitter } from '../polyfill/events';
 import { Readable } from '../polyfill/stream';
 import to from './await-to-js'
 import Pop3Error from './Pop3Error'
+import Pop3LoginBean from './Pop3LoginBean';
 import {
   CRLF,
   CRLF_BUFFER,
