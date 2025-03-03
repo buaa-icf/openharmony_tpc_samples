@@ -9,7 +9,7 @@ jwks-rsa is a library that retrieves keys from JSON Web Key Set (JWKS) endpoints
 ```shell
 ohpm install @ohos/jwks-rsa 
 ```
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ## How to Use
 1. Instantiate **JwksClient** and set the corresponding attributes.
@@ -27,7 +27,7 @@ this.client = new JwksClient({
  
 2. Obtain **publicKey** and the attribute value.
 
-  Public key encryption is implemented using the encryption framework (@ohos.security.cryptoFramework) of OpenHarmony. For details, see [Encryption and Decryption with an RSA Asymmetric Key Pair (PKCS1_OAEP)](https://gitee.com/openharmony/docs/blob/master/en/application-dev/security/CryptoArchitectureKit/crypto-rsa-asym-encrypt-decrypt-pkcs1_oaep.md).
+  Public key encryption is implemented using the encryption framework (@ohos.security.cryptoFramework) of OpenHarmony. For details, see [Encryption and Decryption with an RSA Asymmetric Key Pair (PKCS1_OAEP)](https://gitcode.com/openharmony/docs/blob/master/en/application-dev/security/CryptoArchitectureKit/crypto-rsa-asym-encrypt-decrypt-pkcs1_oaep.md).
 ```
   function compareRsaPubKeyBySpec(rsaKeySpec, n, e) {
     if (typeof n === 'string' || typeof e === 'string') {
@@ -127,10 +127,19 @@ This project has been verified in the following version:
 |   |---- README_zh.md                                            # Readme
 ````
 
+## About obfuscation
+- Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- If you want the jwks_rsa library not to be obfuscated during code obfuscation, you need to add corresponding exclusion rules in the obfuscation rule configuration file obfuscation-rules.txt：
+
+```
+-keep
+./oh_modules/@ohos/jwks_rsa
+```
+
 ## How to Contribute
 
-If you find any problem when using jwks-rsa, you can submit an [Issue](https://gitee.com/hihopeorg/jwks-rsa/issues) or a [PR](https://gitee.com/hihopeorg/jwks-rsa/pulls) to us.
+If you find any problem when using jwks-rsa, you can submit an [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
 
 ## License
 
-This project is licensed under the terms of the [MIT License](https://gitee.com/hihopeorg/jwks-rsa/blob/master/LICENSE).
+This project is licensed under the terms of the [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/jwks-rsa/LICENSE).

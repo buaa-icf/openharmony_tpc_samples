@@ -11,7 +11,7 @@
     "org": "opensource"
   },
   "main": "index.ets",
-  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/jwks-rsa",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/jwks-rsa",
   "type": "module",
   "version": "2.0.0",
   "dependencies": {
