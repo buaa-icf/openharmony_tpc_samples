@@ -4,6 +4,7 @@ import Pop3Connection from '../ets/Connection';
 
 import { listify, stream2String } from '../ets/helper';
 import to, { to } from './await-to-js';
+import Pop3LoginBean from './Pop3LoginBean';
 
 const BASE_COUNT = 1
 
