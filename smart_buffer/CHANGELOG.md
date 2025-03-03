@@ -1,3 +1,8 @@
+## v1.0.1-rc.0
+- Code obfuscation
+
+- Modified the compilation and build warning prompt
+
 ## v1.0.0
 
 - Implemented Features
