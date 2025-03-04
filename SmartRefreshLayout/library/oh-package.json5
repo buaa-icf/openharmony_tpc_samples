@@ -5,14 +5,14 @@
   "name": "@ohos/smartrefreshlayout",
   "description": "带有动画的上拉刷新BezierRadar样式下拉刷新(BezierRadar样式、BezierCircle样式、FlyRefresh样式、WaterDrop样式等）和下拉加载的滑动列表库.",
   "main": "Index.ets",
-  "version": "2.1.0-rc.1",
+  "version": "2.1.0-rc.2",
   "dependencies": {},
   "keywords": [
     "smartRefresh",
     "顶部刷新",
     "多种刷新样式"
   ],
-  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples",
   "tags": [
     "UI",
     "smartRefreshLayout"
