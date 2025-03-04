@@ -6,7 +6,7 @@ eventsource三方库是EventSource客户端的纯JavaScript实现。它提供了
 
 # 下载安装
     ohpm install @ohos/eventsource
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装OpenHarmony ohpm 包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
 
 # 使用说明
@@ -98,7 +98,7 @@ this.es.onFailure((e: Record<"message", string>) => {
 | onFailure | ((e:object)=>{})              |  e为错误对象，捕获错误          |
 
 
-**单元测试用例详见**[TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/eventsource/TEST.md)
+**单元测试用例详见**[TEST.md](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/eventsource/TEST.md)
 
 # 约束与限制
 - DevEco Studio版本: 4.1.3.500, SDK: API11 Release(4.1.0)
@@ -114,8 +114,19 @@ this.es.onFailure((e: Record<"message", string>) => {
     |     |---- README.md  # 安装使用方法  
     |     |---- README_zh.md  # 安装使用方法
 
+
+## 关于混淆
+- 代码混淆，请查看[代码混淆简介](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- 如果希望eventsource库在代码混淆过程中不会被混淆，需要在混淆规则配置文件obfuscation-rules.txt中添加相应的排除规则：
+
+```
+-keep
+./oh_modules/@ohos/eventsource
+```
+
+
 # 贡献代码
-使用过程中发现任何问题都可以提[ Issue ](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)给我们，当然，我们也欢迎你给我们发[PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls)
+使用过程中发现任何问题都可以提[ Issue ](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues)给我们，当然，我们也欢迎你给我们发[PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls)
 
 # 开源协议
-本项目基于 [ MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/eventsource/LICENSE) ，请自由地享受和参与开源。
+本项目基于 [ MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/eventsource/LICENSE) ，请自由地享受和参与开源。
