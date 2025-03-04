@@ -9,7 +9,7 @@
 ```shell
 ohpm install @ohos/jwks-rsa 
 ```
-OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
 ## 使用说明
 1. 初始化：实例化JwksClient和设置对应的属性
@@ -27,7 +27,7 @@ this.client = new JwksClient({
  
 2. 获取publicKey和属性值：
 
-  公钥加密实现是使用OH子系统的加密框架（@ohos.security.cryptoFramework）。具体实现参考(https://gitee.com/openharmony/docs/blob/master/zh-cn/application-dev/security/CryptoArchitectureKit/crypto-rsa-asym-encrypt-decrypt-pkcs1_oaep.md) 。
+  公钥加密实现是使用OH子系统的加密框架（@ohos.security.cryptoFramework）。具体实现参考(https://gitcode.com/openharmony/docs/blob/master/zh-cn/application-dev/security/CryptoArchitectureKit/crypto-rsa-asym-encrypt-decrypt-pkcs1_oaep.md) 。
 ```
   function compareRsaPubKeyBySpec(rsaKeySpec, n, e) {
     if (typeof n === 'string' || typeof e === 'string') {
@@ -127,10 +127,19 @@ this.client = new JwksClient({
 |   |---- README_zh.md                                            #使用方法
 ````
 
+## 关于混淆
+- 代码混淆，请查看[代码混淆简介](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- 如果希望jwks_rsa库在代码混淆过程中不会被混淆，需要在混淆规则配置文件obfuscation-rules.txt中添加相应的排除规则：
+
+```
+-keep
+./oh_modules/@ohos/jwks_rsa
+```
+
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls)共建 。
+使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls)共建 。
 
 ## 开源协议
 
-本项目基于 [MIT License](https://gitee.com/hihopeorg/jwks-rsa/blob/master/LICENSE) ，请自由地享受和参与开源。
+本项目基于 [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/jwks-rsa/LICENSE) ，请自由地享受和参与开源。
