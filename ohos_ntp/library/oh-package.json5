@@ -6,11 +6,11 @@
         "OpenHarmony",
         "HarmonyOS"
     ],
-    "version": "1.0.0",
+    "version": "1.0.1-rc.0",
     "description": "ohos_ntp是一个用于网络时间协议(NTP)服务器同步事件的TypeScript库。",
     "main": "index.ts",
     "author": "ohos_tpc",
-    "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_ntp",
+    "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_ntp",
     "license": "Apache License 2.0",
     "dependencies": {}
 }
