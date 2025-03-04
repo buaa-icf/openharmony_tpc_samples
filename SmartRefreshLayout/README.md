@@ -14,7 +14,7 @@ SmartRefreshLayout contains the following information: BezierRadar, BezierCircle
 ```shell
 ohpm install @ohos/smartrefreshlayout
 ```
-For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details, see [Installing an OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ## How to Use
 
@@ -101,8 +101,19 @@ DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API11 (4.1.0.36)
 |     |---- README_zh.md  # Readme                
 ````
 
+start build
+
+## About obfuscation
+- Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- If you want the SmartRefreshLayout library not to be obfuscated during code obfuscation, you need to add corresponding exclusion rules in the obfuscation rule configuration file obfuscation-rules.txt：
+
+```
+-keep
+./oh_modules/@ohos/smartrefreshlayout
+```
+
 ## How to Contribute
-If you find any problem when using SmartRefreshLayout, you can submit an [Issue](https://gitee.com/hihopeorg/SmartRefreshLayout/issues) or a [PR](https://gitee.com/hihopeorg/SmartRefreshLayout/pulls) to us.
+If you find any problem when using SmartRefreshLayout, you can submit an [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
 
 ## License
-This project is licensed under [Apache License 2.0](https://gitee.com/hihopeorg/SmartRefreshLayout/blob/master/LICENSE).
+This project is licensed under [Apache License 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/jwks-rsa/LICENSE).

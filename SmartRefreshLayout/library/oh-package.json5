@@ -12,7 +12,7 @@
     "顶部刷新",
     "多种刷新样式"
   ],
-  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples",
   "tags": [
     "UI",
     "smartRefreshLayout"
