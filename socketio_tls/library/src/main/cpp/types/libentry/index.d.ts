@@ -75,7 +75,7 @@ export class newSocketIOClient {
 
   on_error: (on_error_listener: (message: string) => void, classId: number) => void;
 
-  emit: (name: string, message: any, b: boolean,
+  emit: (name: string, message: any,
     on_emit_callback: (emit_callback_json: string) => void, classId: number) => void;
 
   emitAckBinary: (name: string, message: any, b: boolean,
