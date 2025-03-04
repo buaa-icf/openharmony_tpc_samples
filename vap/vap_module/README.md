@@ -26,7 +26,7 @@ ohpm install @ohos/vap
 | setFitType   | 设置视频对齐方式      |
 | setVideoMode | 设置视频格式（兼容老视频） |
 | getVideoInfo | 获取融合动画配置信息    |
- 详细使用可参考  [demo工程](https://gitee.com/ma65/vap)
+ 详细使用可参考  [demo工程](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/vap)
 
 ## 使用
 

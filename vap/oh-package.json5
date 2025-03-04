@@ -1,9 +1,7 @@
 {
   "modelVersion": "5.0.0",
   "description": "Please describe the basic information.",
-  "dependencies": {
-    "@ohos/vap": "file:vap_module"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@ohos/hypium": "1.0.19"
   },

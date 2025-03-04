@@ -59,34 +59,13 @@ In the era of digital entertainment and online interaction, the quality of visua
 │  └─libvap	# so file interface declarations
 └─util					# Implementation of utility classes
 ```
-## Build Project to Generate Har Package
 
-Open the project and first run the command to generate the Har package as referenced below.
-
-### Run the following command in the Terminal of the IDE
-
-```bash
-hvigorw assembleHar --mode module -p module=vap_module@default -p product=default -p buildMode=release --no-daemon
+## Source code download
+1. This project relies on json library, which is introduced by `git submodule`, and `--recursive` parameter should be added when downloading code.
+```shell
+git clone --recursive https://gitcode.com/openharmony-tpc/openharmony_tpc_samples.git
 ```
-
-A Har package will be generated in the `.\vap_module\build\default\outputs\default\vap_module.har` directory.
-
-## Start Project
-
-For testers, the project can be quickly started with a one-click launch after connecting to the device in the IDE.
-
-Follow the official process to add signing information to correctly install the test application on the terminal device.
-
-## Referencing Steps
-
-For developers, you can bring the generated Har package into their project.
-
-### Run the following command in the Terminal of the IDE
-
-```bash
-ohpm install .\vap_module\build\default\outputs\default\vap_module.har
-```
-Install the previously generated Har package.
+2. Start compiling the project.
 
 ## Quick Start
 1. For API mode, refer to the example code [API Mode](./示例代码.ets)

@@ -286,29 +286,13 @@ napi_value PluginRender::SetLoop(napi_env env, napi_callback_info info)
     return nullptr;
 }
 
-std::string RemoveSurroundingChars(const std::string& str, char startChar, char endChar)
-{
-    size_t start = str.find_first_not_of(startChar);
-    if (start == std::string::npos) {
-        return ""; // 如果字符串中没有找到非startChar的字符，返回空字符串
-    }
-
-    size_t end = str.find_last_not_of(endChar);
-    if (end == std::string::npos) {
-        return ""; // 如果字符串中没有找到非endChar的字符，返回空字符串
-    }
-
-    return str.substr(start, end - start + 1);
-}
-
 static void GenSrcInfo(napi_env env, std::map<std::string, Src> &src, napi_value &srcInfos)
 {
     size_t i = 0;
     for (auto ele: src) {
         auto srcInfo = NVal::CreateObject(env);
         auto srcId = NVal::CreateInt64(env, atoi(ele.first.c_str()));
-        std::string tagDeal = RemoveSurroundingChars(ele.second.srcTag, '[', ']');
-        auto tag = NVal::CreateUTF8String(env, tagDeal);
+        auto tag = NVal::CreateUTF8String(env, ele.second.srcTag);
         auto type = NVal::CreateInt64(env, static_cast<int>(ele.second.srcType));
         srcInfo.AddProp("srcId", srcId.val_);
         srcInfo.AddProp("tag", tag.val_);
@@ -566,7 +550,6 @@ static void ParseMixParamTag(NVal &nValOneOpt, std::string &tag)
         if (succ) {
             LOGD("parse mix tag %{public}s", resData.get());
             tag = resData.get();
-            tag = "[" + tag + "]";
         } else {
             LOGE("parse mix tag not set");
             return;
