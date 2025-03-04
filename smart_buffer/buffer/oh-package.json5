@@ -1,6 +1,6 @@
 {
   "name": "@ohos/smart-buffer",
-  "version": "1.0.0",
+  "version": "1.0.1-rc.0",
   "description": "smart-buffer is a Buffer wrapper that adds automatic read & write offset tracking, string operations, data insertions, and more.",
   "main": "Index.ts",
   "keywords": [
@@ -8,7 +8,7 @@
     "SmartBuffer",
     "HarmonyOS"
   ],
-  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/smart_buffer",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/smart_buffer",
   "author": "hihope",
   "license": "MIT License",
   "dependencies": {}
