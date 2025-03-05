@@ -1,7 +1,7 @@
-[
+﻿[
   {
    "Name":"domUtils",
-   "License":"BSD-2-license",
+   "License":"BSD-2-Clause",
    "License File":"LICENSE",
    "Version Number":"v3.1.0",
    "Owner":"xiafeng@huawei.com",
