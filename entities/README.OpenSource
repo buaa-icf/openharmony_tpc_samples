@@ -1,7 +1,7 @@
 [
     {
         "Name": "entities",
-        "License": "BSD License",
+        "License": "BSD-2-Clause",
         "License File": " LICENSE ",
         "Version Number": "4.5.0",
         "Owner" : "xiafeng@huawei.com",
