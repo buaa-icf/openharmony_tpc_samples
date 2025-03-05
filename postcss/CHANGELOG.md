@@ -1,3 +1,6 @@
+## 1.0.2-rc.1
+* Code obfuscation
+
 ## 1.0.2-rc.0
 * 1 Added setParentStyleSheet and getParentStyleSheet interfaces
 

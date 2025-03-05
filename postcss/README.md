@@ -10,7 +10,7 @@ PostCSS is used by industry leaders including Wikipedia, Twitter, Alibaba, and J
 ```
 ohpm install @ohos/postcss
 ```
-For details about the ohpm environment configuration, see [Installing the OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details about the ohpm environment configuration, see [Installing the OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ## How to Use
 
@@ -81,10 +81,19 @@ This project has been verified in the following version:
                          ├── lib # Source Library Files    
 ```
 
+## About obfuscation
+- Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- If you want the postcss library not to be obfuscated during code obfuscation, you need to add corresponding exclusion rules in the obfuscation rule configuration file obfuscation-rules.txt：
+
+```
+-keep
+./oh_modules/@ohos/postcss
+```
+
 ## How to Contribute
 
-If you find any problem during the use, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
+If you find any problem during the use, submit an [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
 
 ## License
 
-This project is licensed under [MIT](https://github.com/postcss/postcss/blob/main/LICENSE).
+This project is licensed under [MIT](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/postcss/LICENSE).
