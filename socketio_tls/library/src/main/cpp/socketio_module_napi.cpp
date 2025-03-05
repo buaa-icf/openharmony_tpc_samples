@@ -355,7 +355,7 @@ public:
             message_json += handler_message_json(list);
         }
         message_json += "}";
-        OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, "LOG_TAG", "SOCKETIO_TAG------> 1 on_emit_callback %{public}s",
+        OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> 1 on_emit_callback %{public}s",
                      message_json.c_str());
 
         std::unique_ptr<ThreadSafeInfo> localThreadSafeInfo = std::make_unique<ThreadSafeInfo>();
@@ -367,7 +367,7 @@ public:
         napi_acquire_threadsafe_function(g_tsfnEmitCall);
         napi_call_threadsafe_function(g_tsfnEmitCall, localThreadSafeInfo.release(), napi_tsfn_blocking);
     }
-    
+
     void on_emit_callback_binary(std::string const &ack_name, sio::message::list const &list)
     {
         napi_ref on_emit_listener_call_ref = on_emit_listener_call_ref_map[ack_name.c_str()];
@@ -1284,49 +1284,74 @@ sio::message::ptr handle_array_value(napi_env env, napi_value value)
 
 napi_value SocketIOClient::emit(napi_env env, napi_callback_info info)
 {
-    size_t argc = 5;
-    napi_value args[5] = {nullptr};
+    // 四个参数: eventName, message, callback, classId
+    size_t argc = 4;
+    napi_value args[4] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
+
+    // 获取参数1: 事件名称
     char eventName[MAX_BUF_SIZE];
     napi_get_value_string_utf8(env, args[0], eventName, MAX_BUF_SIZE, &result);
-    napi_valuetype messageType;
-    napi_typeof(env, args[1], &messageType);
-    napi_value on_emit_listener_call = args[3];
+
+    // 获取参数3: 回调函数
+    napi_value on_emit_listener_call = args[2];
     napi_ref on_emit_listener_call_ref;
     napi_create_reference(env, on_emit_listener_call, 1, &on_emit_listener_call_ref);
-    on_emit_listener_call_ref_map.insert(
-        {eventName, on_emit_listener_call_ref});
+    on_emit_listener_call_ref_map.insert({eventName, on_emit_listener_call_ref});
+
     sio::message::list *messageList = new sio::message::list();
-    if (messageType == napi_string) {
-        char message[MAX_MESSAGE_SIZE];
-        napi_get_value_string_utf8(env, args[1], message, MAX_MESSAGE_SIZE, &result);
-        bool isArraybuffer;
-        napi_get_value_bool(env, args[ARG_INDEX_2], &isArraybuffer);
-        if (isArraybuffer) {
-            std::shared_ptr<std::string> message_binary = std::make_shared<std::string>(message);
-            messageList->push(message_binary);
-            message_binary = nullptr;
-        } else {
+
+    // 检测参数2是否为TypedArray(二进制数据)
+    bool is_arraybuffer;
+    napi_is_typedarray(env, args[1], &is_arraybuffer);
+
+    // 处理消息数据
+    if (is_arraybuffer) {
+        // TypedArray二进制数据处理
+        void* data;
+        size_t byte_length;
+        napi_typedarray_type type;
+        napi_value array_buffer;
+        size_t offset;
+        napi_get_typedarray_info(env, args[1], &type, &byte_length, &data, &array_buffer, &offset);
+
+        // 将TypedArray数据转换为std::string
+        std::string uint8Array_str(static_cast<char*>(data), byte_length);
+        std::shared_ptr<std::string> message_binary = std::make_shared<std::string>(uint8Array_str);
+        messageList->push(message_binary);
+        message_binary = nullptr;
+    } else {
+        // 非二进制数据处理
+        napi_valuetype messageType;
+        napi_typeof(env, args[1], &messageType);
+
+        if (messageType == napi_string) {
+            char message[MAX_MESSAGE_SIZE];
+            napi_get_value_string_utf8(env, args[1], message, MAX_MESSAGE_SIZE, &result);
             messageList->push(message);
+        } else if (messageType == napi_object) {
+            sio::object_message::ptr message_item = get_object_message(env, args[1]);
+            messageList->push(message_item);
+            message_item = nullptr;
         }
-    } else if (messageType == napi_object) {
-        sio::object_message::ptr message_item = get_object_message(env, args[1]);
-        messageList->push(message_item);
-        message_item = nullptr;
     }
 
+    // 获取参数4: classId
     size_t charLen = 0;
     char classId[CLASSID_BUF_SIZE] = {0};
-    napi_get_value_string_utf8(env, args[ARG_INDEX_4], classId, CLASSID_BUF_SIZE, &charLen);
+    napi_get_value_string_utf8(env, args[3], classId, CLASSID_BUF_SIZE, &charLen);
     std::string classIdStr = classId;
-    
+
+    // 创建线程安全回调
     NapiCreateThreadsafe(env, on_emit_listener_call, CallJsEmit, &g_tsfnEmitCall);
 
-    get_socket(classIdStr)
-        ->emit(eventName,
-               *messageList,
-               std::bind(&ClientSocket::on_emit_callback, &g_clientSocket, std::placeholders::_1,
-                         std::placeholders::_2));
+    // 通过classId获取socket并发送消息
+    get_socket(classIdStr)->emit(
+        eventName,
+        *messageList,
+        std::bind(&ClientSocket::on_emit_callback, &g_clientSocket, std::placeholders::_1, std::placeholders::_2)
+    );
+
     delete messageList;
     messageList = nullptr;
     return 0;
