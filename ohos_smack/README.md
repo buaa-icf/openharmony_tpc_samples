@@ -9,7 +9,7 @@
 ```
 ohpm install @ohos/smack
 ```
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 
 ## Configuring the x86 Emulator
@@ -21,7 +21,7 @@ See [Running Your App/Service on an Emulator](https://developer.huawei.com/consu
 
 1. Create a background service.
 ```
-Download Openfire from https://igniterealtime.org/downloads/ and install it as a server.
+Download Openfire v4.7.1 x64 from https://igniterealtime.org/downloads/ and install it as a server.
 ```
 
 
@@ -157,7 +157,7 @@ static HOST_DOMAIN: string = "he-202101111234"
 ## Downloading Source Code
 1. This project depends on the gloox library, which is introduced through `git submodule`. The `--recursive` parameter needs to be added when the code is downloaded.
   ```
-  git clone --recursive https://gitee.com/openharmony-tpc/openharmony_tpc_samples.git
+  git clone --recursive https://gitcode.com/openharmony-tpc/openharmony_tpc_samples.git
   ```
 2. Skip this step in the Linux environment. In the Windows environment, after the code is downloaded, integrate the OpenHarmony adaptation code. Run the cd command to go to the **ohos_smack/library/src/main/cpp/thirdModule** directory, run the modify.sh script, and integrate the patch file in this directory into the **gloox** source code.
 3. Start building the project.
@@ -184,8 +184,8 @@ This project has been verified in the following versions:
 ```
 
 ## How to Contribute
-If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or
-a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+If you find any problem when using the project, submit an [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or
+a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
 ## License
-This project is licensed under [GPL 3.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_smack/LICENSE).
+This project is licensed under [GPL 3.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ohos_smack/LICENSE).
