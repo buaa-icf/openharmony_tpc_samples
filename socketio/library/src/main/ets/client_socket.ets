@@ -155,11 +155,7 @@ export class client_socket {
   }
 
   public emit(name: string, message: ESObject, on_emit_callback?: (emit_callback_json: string) => void) {
-    if (message instanceof Uint8Array) {
-      this.mSocketIOClient.emit(name, buffer_util.uint8ArrayToString(message), true, on_emit_callback, this.classId);
-    } else {
-      this.mSocketIOClient.emit(name, message, false, on_emit_callback, this.classId);
-    }
+    this.mSocketIOClient.emit(name, message,  on_emit_callback, this.classId);
   }
 
   public emitAckBinary(name: string, message: ESObject,
