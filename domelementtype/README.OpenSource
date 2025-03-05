@@ -1,7 +1,7 @@
 [
     {
         "Name": "domelementtype",
-        "License": "BSD License",
+        "License": "BSD-2-Clause",
         "License File": " LICENSE ",
         "Version Number": "2.3.0",
         "Owner" : "xiafeng@huawei.com",
