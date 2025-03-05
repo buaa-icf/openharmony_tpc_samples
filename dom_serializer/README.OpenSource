@@ -1,7 +1,7 @@
 [
     {
         "Name": "dom-serializer",
-        "License": "MIT License",
+        "License": "MIT",
         "License File": " LICENSE ",
         "Version Number": "2.0.0",
         "Owner" : "xiafeng@huawei.com",
