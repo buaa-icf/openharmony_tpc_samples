@@ -7,13 +7,13 @@
 
 ## 已支持功能
 
-- 组件连接： 该库允许你与XMPP服务器和其它组件建立和管理连接，包括处理认证、流特性以及错误处理。
+- 组件连接： 该库允许与XMPP服务器和其它组件建立和管理连接，包括处理认证、流特性以及错误处理。
 - 消息路由： 它提供了处理接收和发送消息的功能，包括处理消息stanza（XML消息）、元数据以及错误。
 - 组件发现： 包含组件发现协议支持，用于组件之间展示自身能力和功能。
 
 ## 下载安装
 
-1. 参考安装教程 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+1. 参考安装教程 [如何安装OpenHarmony ohpm包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
 2. 安装命令如下：
 
@@ -103,6 +103,14 @@ xml("foo");
 xml("foo", { foo: "bar" }, "bar");
 ```
 
+## 关于混淆
+- 代码混淆，请查看[代码混淆简介](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- 如果希望xmpp_component库在代码混淆过程中不会被混淆，需要在混淆规则配置文件obfuscation-rules.txt中添加相应的排除规则：
+```
+-keep
+./oh_modules/@ohos/xmpp_component
+```
+
 ## 约束与限制
 
 在下述版本验证通过：
@@ -127,7 +135,7 @@ xml("foo", { foo: "bar" }, "bar");
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提[Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们提[PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+使用过程中发现任何问题都可以提[Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) ，当然，也非常欢迎提[PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
 ## 开源协议
 
