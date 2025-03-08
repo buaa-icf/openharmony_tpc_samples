@@ -9,7 +9,7 @@
 - HTTP path resolution
 
 ## How to Install
-1. Configure the OpenHarmony ohpm environment. For details, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+1. Configure the OpenHarmony ohpm environment. For details, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 2. Run the following installation command:
 
@@ -45,6 +45,14 @@ It returns a promise, which uses an array to contain the DNS SRV record and HTTP
 If DNS resolution is supported, you can use dns.resolve independently.
 ```
 
+## About obfuscation
+- Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- If you want the xmpp_resolve library not to be obfuscated during code obfuscation, you need to add corresponding exclusion rules in the obfuscation rule configuration file obfuscation-rules.txt：
+```
+-keep
+./oh_modules/@ohos/xmpp_resolve
+```
+
 ## Constraints
 
 This project has been verified in the following version:
@@ -69,7 +77,7 @@ This project has been verified in the following version:
 ````
 ## How to Contribute
 
-If you find any problem when using @ohos/xmpp_resolve, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+If you find any problem when using @ohos/xmpp_resolve, submit an [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
 ## License
 
