@@ -13,7 +13,7 @@
 
 ## How to Install
 
-1. [Install an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+1. [Install an OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 2. Run the installation command:
 
@@ -72,6 +72,14 @@ function client(options = {}) {
 resourceBinding({ streamFeatures, iqCaller }, resource): main function of the module. It receives two parameters: streamFeatures and iqCaller. streamFeatures is an object that may contain the stream features of the XMPP server. iqCaller is a tool used to send IQ messages. This function binds a resource with stream features. Resource binding is automatically processed during the connection of a client.
 ```
 
+## About obfuscation
+- Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- If you want the xmpp_resoure_binding library not to be obfuscated during code obfuscation, you need to add corresponding exclusion rules in the obfuscation rule configuration file obfuscation-rules.txt：
+```
+-keep
+./oh_modules/@ohos/xmpp_resoure_binding
+```
+
 ## Constraints
 
 This project has been verified in the following version:
@@ -96,7 +104,7 @@ DevEco Studio: 5.0.3.200, OpenHarmony SDK: API 12 (5.0.0.21-Canary2)
 
 ## How to Contribute
 
-If you find any problem during the use, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+If you find any problem during the use, submit an [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
 ## License
 
