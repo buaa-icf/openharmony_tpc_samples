@@ -8,7 +8,7 @@
 - **Security authentication**: provides a security authentication mechanism based on the Salted Challenge Response Authentication Mechanism (SCRAM) to secure identity authentication during XMPP-based communication.
 - **Hash encryption**: uses the SHA-1 hash algorithm to encrypt user passwords, enhancing password transmission security and preventing passwords from being intercepted or cracked during transmission.
 ## How to Install
-1. [Install an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+1. [Install an OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 2. Run the installation command:
 
    ```
@@ -115,6 +115,15 @@ export { xml, jid, client };
     }).map(([k, v]) => ({ [k]: v(sasl) }));
     Three encryption modes are available: saslScramSha1, plain, and anonymous.
 ```
+
+## About obfuscation
+- Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- If you want the xmpp_sasl_scram_sha_1 library not to be obfuscated during code obfuscation, you need to add corresponding exclusion rules in the obfuscation rule configuration file obfuscation-rules.txt：
+```
+-keep
+./oh_modules/@ohos/xmpp_sasl_scram_sha_1
+```
+
 ## Constraints
 This project has been verified in the following version:
 
@@ -137,6 +146,6 @@ DevEco Studio: 5.0.3.200, OpenHarmony SDK: API 12 (5.0.0.21-Canary2)
 |     |---- README_zh.md  # Readme               
 ````
 ## How to Contribute
-If you find any problem during the use, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+If you find any problem during the use, submit an [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 ## License
 This project is licensed under the terms of the ISC license.
