@@ -7,7 +7,7 @@ jwks-rsa is a library that retrieves keys from JSON Web Key Set (JWKS) endpoints
 ## How to Install
 
 ```shell
-ohpm install @ohos/jwks-rsa 
+ohpm install @ohos/jwks_rsa 
 ```
 For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
