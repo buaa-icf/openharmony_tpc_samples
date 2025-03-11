@@ -20,7 +20,7 @@
     "HarmonyOS"
   ],
   "dependencies": {
-    "@ohos/xmldom": "1.0.0"
+    "@ohos/xmldom": "2.0.0"
   },
   "license": "LGPL-3.0",
   "devDependencies": {},
