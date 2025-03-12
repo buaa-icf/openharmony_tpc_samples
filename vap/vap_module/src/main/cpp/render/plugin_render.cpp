@@ -268,10 +268,6 @@ napi_value PluginRender::SetLoop(napi_env env, napi_callback_info info)
     LOGD("SetLoop render id:%{public}s", id.c_str());
     std::shared_ptr<PluginRender>render = PluginRender::GetInstance(id);
     if (render) {
-        NFuncArg funcArg(env, info);
-        if (!funcArg.InitArgs(NARG_CNT::ONE)) {
-            return nullptr;
-        }
         napi_value v1 = funcArg.GetArg(NARG_POS::FIRST);
         NVal nVal(env, v1);
         auto [succ, resData] = nVal.ToInt32();
@@ -371,7 +367,6 @@ napi_value PluginRender::GetVideoInfo(napi_env env, napi_callback_info info)
 
 napi_value PluginRender::SetFitType(napi_env env, napi_callback_info info)
 {
-    LOGD("enter SetFitType");
     NFuncArg funcArg(env, info);
     if (!funcArg.InitArgs(NARG_CNT::ONE, NARG_CNT::TWO)) {
         return nullptr;
@@ -386,10 +381,7 @@ napi_value PluginRender::SetFitType(napi_env env, napi_callback_info info)
         LOGE("Not get render");
         return nullptr;
     }
-    if (!funcArg.InitArgs(NARG_CNT::ONE)) {
-        LOGE("InitArgs render");
-        return nullptr;
-    }
+    
     napi_value v1 = funcArg.GetArg(NARG_POS::FIRST);
     NVal nVal(env, v1);
     auto [succ, res] = nVal.ToInt32();
@@ -397,7 +389,6 @@ napi_value PluginRender::SetFitType(napi_env env, napi_callback_info info)
         LOGE("cont first int arg error");
         return nullptr;
     }
-    
     VideoFitType fitType = VideoFitType::FIT_XY;
     if (res == static_cast<int>(VideoFitType::FIT_XY) ||
        res == static_cast<int>(VideoFitType::FIT_CENTER) ||
@@ -427,10 +418,6 @@ napi_value PluginRender::SetVideoMode(napi_env env, napi_callback_info info)
     std::shared_ptr<PluginRender>render = PluginRender::GetInstance(id);
     if (!render) {
         LOGE("Not get render");
-        return nullptr;
-    }
-    if (!funcArg.InitArgs(NARG_CNT::ONE)) {
-        LOGE("InitArgs render");
         return nullptr;
     }
     napi_value v1 = funcArg.GetArg(NARG_POS::FIRST);
@@ -470,10 +457,6 @@ napi_value PluginRender::SetSpeed(napi_env env, napi_callback_info info)
     std::shared_ptr<PluginRender>render = PluginRender::GetInstance(id);
     if (!render) {
         LOGE("Not get render");
-        return nullptr;
-    }
-    if (!funcArg.InitArgs(NARG_CNT::ONE)) {
-        LOGE("InitArgs render");
         return nullptr;
     }
     napi_value v1 = funcArg.GetArg(NARG_POS::FIRST);
