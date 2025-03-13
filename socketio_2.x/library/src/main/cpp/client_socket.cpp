@@ -50,24 +50,98 @@ static bool g_isOnce = false;
 // 添加全局变量，保存path
 static std::string g_path = "";
 
-// 处理带有转义字符的字符串
+// UTF-8编码位掩码
+static constexpr const unsigned char UTF8_2BYTES_MASK = 0xE0;   // 用于检测2字节UTF-8序列的第一个字节
+static constexpr const unsigned char UTF8_2BYTES_PREFIX = 0xC0; // 2字节UTF-8序列的第一个字节特征值
+static constexpr const unsigned char UTF8_3BYTES_MASK = 0xF0;   // 用于检测3字节UTF-8序列的第一个字节
+static constexpr const unsigned char UTF8_3BYTES_PREFIX = 0xE0; // 3字节UTF-8序列的第一个字节特征值
+static constexpr const unsigned char UTF8_4BYTES_MASK = 0xF8;   // 用于检测4字节UTF-8序列的第一个字节
+static constexpr const unsigned char UTF8_4BYTES_PREFIX = 0xF0; // 4字节UTF-8序列的第一个字节特征值
+static constexpr const unsigned char UTF8_CONT_MASK = 0xC0;     // 用于检测UTF-8后续字节
+static constexpr const unsigned char UTF8_CONT_PREFIX = 0x80;   // UTF-8后续字节特征值
+
+// 字符相关常量
+static constexpr const unsigned char ASCII_PRINTABLE_START = 32;   // 可打印ASCII字符的起始值
+static constexpr const unsigned char ASCII_PRINTABLE_END = 127;    // 可打印ASCII字符的结束值
+static constexpr const unsigned char ASCII_DEL = 127;              // ASCII删除字符
+
+// 格式化相关常量
+static constexpr const int UTF8_ESCAPE_BUF_SIZE = 7;  // \uXXXX\0 需要7个字节
+static constexpr const int HEX_DIGITS = 4;           // 十六进制转义序列的位数
+
+//  处理 UTF-8 多字节序列
+static std::string handle_utf8_sequence(const std::string &str, size_t &i)
+{
+    std::string result;
+    unsigned char ch = static_cast<unsigned char>(str[i]);
+
+    // 检查是否是有效的UTF-8序列
+    if ((ch & UTF8_2BYTES_MASK) == UTF8_2BYTES_PREFIX && i + 1 < str.length() &&
+        (str[i + 1] & UTF8_CONT_MASK) == UTF8_CONT_PREFIX) {
+        // 2字节UTF-8序列
+        result += ch;
+        result += str[++i];
+        i++;
+    } else if ((ch & UTF8_3BYTES_MASK) == UTF8_3BYTES_PREFIX && i + 2 < str.length() &&
+               (str[i + 1] & UTF8_CONT_MASK) == UTF8_CONT_PREFIX &&
+               (str[i + 2] & UTF8_CONT_MASK) == UTF8_CONT_PREFIX) {
+        // 3字节UTF-8序列 (大多数汉字)
+        result += ch;
+        result += str[++i];
+        result += str[++i];
+        i++;
+    } else if ((ch & UTF8_4BYTES_MASK) == UTF8_4BYTES_PREFIX && i + 3 < str.length() &&
+               (str[i + 1] & UTF8_CONT_MASK) == UTF8_CONT_PREFIX &&
+               (str[i + 2] & UTF8_CONT_MASK) == UTF8_CONT_PREFIX &&
+               (str[i + 3] & UTF8_CONT_MASK) == UTF8_CONT_PREFIX) {
+        // 4字节UTF-8序列
+        result += ch;
+        result += str[++i];
+        result += str[++i];
+        result += str[++i];
+        i++;
+    } else {
+        // 无效UTF-8或二进制数据，使用十六进制转义序列
+        char buf[UTF8_ESCAPE_BUF_SIZE];
+        snprintf(buf, sizeof(buf), "\\u%04x", (unsigned int)ch);
+        result += buf;
+        i++;
+    }
+
+    return result;
+}
+
+// 处理带有转义字符的字符串，保留汉字等UTF-8字符
 static std::string transfer_characters(const std::string &str)
 {
     std::string transChar;
-    for (auto ch : str) {
-        switch (ch) {
+    size_t i = 0;
+
+    while (i < str.length()) {
+        unsigned char ch = static_cast<unsigned char>(str[i]);
+
+        if (ch >= ASCII_PRINTABLE_START && ch < ASCII_PRINTABLE_END) { // 可打印ASCII字符
+            switch (ch) {
             case '\"':
                 transChar += "\\\"";
                 break;
             case '\\':
                 transChar += "\\\\";
                 break;
+            default:
+                transChar += ch;
+                break;
+            }
+            i++;
+        } else if (ch < ASCII_PRINTABLE_START || ch == ASCII_DEL) { // 控制字符
+            // 特殊控制字符单独处理
+            switch (ch) {
             case '\b':
                 transChar += "\\b";
-                break; // 退格
+                break;
             case '\f':
                 transChar += "\\f";
-                break; // 换页
+                break;
             case '\n':
                 transChar += "\\n";
                 break;
@@ -78,19 +152,24 @@ static std::string transfer_characters(const std::string &str)
                 transChar += "\\t";
                 break;
             default:
-                transChar += ch;
-                break; // 其他字符直接添加
+                // 使用十六进制转义序列表示其他控制字符
+                char buf[UTF8_ESCAPE_BUF_SIZE];
+                snprintf(buf, sizeof(buf), "\\u%04x", (unsigned int)ch);
+                transChar += buf;
+                break;
+            }
+            i++;
+        } else { // UTF-8多字节序列或二进制数据
+            // 将 UTF-8 处理委托给专门的函数
+            transChar += handle_utf8_sequence(str, i);
         }
     }
+
     return transChar;
 }
 
 static std::string extract_string_from_message(sio::message::ptr const &message)
 {
-    // 当服务端返回的是json字符串的情况下，无需拼接转义符 \",直接将数据返回拼接即可
-    if (message->get_string().size() > 0 && message->get_string()[0] == '{') {
-        return message->get_string();
-    }
     // 拼接转义符 \" 返回组装 json 串
     return std::string("\"") + transfer_characters(message->get_string()) + "\"";
 }
