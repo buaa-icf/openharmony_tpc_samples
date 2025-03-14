@@ -1,3 +1,8 @@
+## v1.0.4-rc.0
+
+- Fix the problem that the client sends Uint8Array binary messages to the server and the data cannot be parsed
+- Fix the problem that the client crashes when receiving special strings containing binary data from the server
+
 ## v1.0.3
 
 - Optimized the memory problem in the emit message processing process.
