@@ -62,7 +62,7 @@ class NCXDocument {
             }
             console.debug("-----------NXCDocument.ets---read------ResourceUtil.getAsDocument---------" + ncxResource.toString())
             let ncxDocument: ESObject = ResourceUtil.getAsDocument(ncxResource);
-
+            if(ncxDocument == null) return;
             let navMapElement = DOMUtil.getFirstElementByTagNameNS(ncxDocument.documentElement, NCXDocument.NAMESPACE_NCX, NCXTags.navMap);
             let tableOfContents = new TableOfContents(NCXDocument.readTOCReferences(navMapElement.childNodes, book));
             book.setTableOfContents(tableOfContents);
@@ -103,6 +103,10 @@ class NCXDocument {
         let reference: string = StringUtil.collapsePathDots(tocResourceRoot + NCXDocument.readNavReference(navPointElement));
         let href: string = StringUtil.substringBefore(reference, Constants.FRAGMENT_SEPARATOR_CHAR);
         let fragmentId: string = StringUtil.substringAfter(reference, Constants.FRAGMENT_SEPARATOR_CHAR);
+        if(href.includes('/')){
+            let splits=href.split('/');
+            href= splits[splits.length-1];
+        }
         let resourceNew: EpubResource = book.getResources().getByHref(href);
         if (resourceNew == null) {
             console.error("Resource with href " + href + " in NCX document not found");
