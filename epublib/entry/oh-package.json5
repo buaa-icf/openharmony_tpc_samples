@@ -5,7 +5,7 @@
   "name": "entry",
   "description": "example description",
   "main": "",
-  "version": "2.0.1",
+  "version": "2.0.3",
   "dependencies": {
     "@ohos/epublib": "file:../library"
   }

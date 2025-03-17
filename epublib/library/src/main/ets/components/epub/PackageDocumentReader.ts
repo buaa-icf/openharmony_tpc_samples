@@ -49,7 +49,14 @@ class PackageDocumentReader extends PackageDocumentBase {
     }
 
     public static read(packageResource: EpubResource, epubReader: EpubReader, book: Book, resources: Resources): void {
+       if(packageResource==null){
+           return;
+       }
         let packageDocument:ESObject = ResourceUtil.getAsDocument(packageResource);
+
+        if(packageDocument==null){
+            return;
+        }
         let packageHref: string = packageResource.getHref();
         resources = this.fixHrefs(packageHref, resources);
         this.readGuide(packageDocument, epubReader, book, resources);
@@ -97,6 +104,10 @@ class PackageDocumentReader extends PackageDocumentBase {
                 console.error(e);
             }
             let mediaTypeName = DOMUtil.getAttribute(itemElement, PackageDocumentBase.NAMESPACE_OPF, OPFAttributes.media_type);
+            if(href.includes('/')){
+               let hrefnames=href.split('/');
+                href= hrefnames[hrefnames.length-1];
+            }
             let resource = resources.remove(href);
             if (resource == null) {
                 console.error("resource with href '" + href + "' not found")

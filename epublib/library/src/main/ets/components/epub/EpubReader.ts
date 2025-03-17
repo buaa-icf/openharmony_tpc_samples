@@ -118,6 +118,10 @@ class EpubReader {
     }
 
     private static processPackageResource(packageResourceHref: string, book: Book, resources: Resources): EpubResource {
+        if(packageResourceHref.includes('/')){
+            let splits=packageResourceHref.split('/');
+            packageResourceHref=splits[splits.length-1];
+        }
         let packageResource = resources.remove(packageResourceHref);
         try {
             PackageDocumentReader.read(packageResource, this, book, resources);
