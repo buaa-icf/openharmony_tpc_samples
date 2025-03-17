@@ -41,6 +41,7 @@ public:
     ~MinizipCompressNative();
 
     int32_t Open();
+    void Close();
     void SetCompressMethod(uint16_t compressMethod);
     void SetCompressLevel(int16_t compressLevel);
     int32_t Compress(std::vector<std::string> entries, std::string password);

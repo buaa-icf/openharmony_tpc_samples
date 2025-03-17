@@ -29,6 +29,8 @@ export class MinizipCompressNative{
   constructor(path : string);
   // 打开文件路径
   Open : () => number;
+  // 关闭文件路径
+  Close : () => void;
   // 设置压缩方法
   SetCompressMethod : (compressMethod : number) => void;
   // 设置压缩等级

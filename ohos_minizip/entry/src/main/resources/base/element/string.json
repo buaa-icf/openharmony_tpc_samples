@@ -27,6 +27,22 @@
     {
       "name": "Extract_disk",
       "value": "解压文件到磁盘"
+    },
+    {
+      "name": "input_password_compress",
+      "value": "输入密码"
+    },
+    {
+      "name": "Compress",
+      "value": "压缩文件"
+    },
+    {
+      "name": "Compress_folder",
+      "value": "需要压缩的文件夹"
+    },
+    {
+      "name": "Compress_disk",
+      "value": "压缩文件到磁盘"
     }
   ]
 }

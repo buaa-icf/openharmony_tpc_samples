@@ -75,6 +75,11 @@ int32_t MinizipCompressNative::Open()
     return MZ_OK;
 }
 
+void MinizipCompressNative::Close()
+{
+    Release();
+}
+
 bool MinizipCompressNative::isAbsolutePath(std::string path)
 {
     if (path.empty())   return false;
@@ -342,6 +347,7 @@ JSBIND_CLASS(MinizipCompressNative)
 {
     JSBIND_CONSTRUCTOR<std::string>();
     JSBIND_METHOD(Open);
+    JSBIND_METHOD(Close);
     JSBIND_METHOD(SetCompressMethod);
     JSBIND_METHOD(SetCompressLevel);
     JSBIND_METHOD(Compress);

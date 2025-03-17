@@ -14,7 +14,8 @@
  */
 
 export {
-  MinizipNative
+  MinizipNative,
+  MinizipCompressNative
 } from 'libminizip_ng.so'
 
 export {
