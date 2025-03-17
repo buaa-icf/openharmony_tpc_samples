@@ -75,10 +75,86 @@ int32_t MinizipCompressNative::Open()
     return MZ_OK;
 }
 
+bool MinizipCompressNative::isAbsolutePath(std::string path)
+{
+    if (path.empty())   return false;
+
+    return path[0] == '/';
+}
+
 int32_t MinizipCompressNative::addFileToZip(std::string inputpath)
 {
+    int32_t err;
+    bool is_dir = false;
+    if (mz_os_is_dir(inputpath.c_str()) == MZ_OK)
+    {
+        is_dir = true;
+    }
+    else if(mz_os_is_symlink(inputpath.c_str()) == MZ_OK)
+    {
+        char actual_path[1024];
+        std::vector<std::string> tmpVec;
+        bool loop = false;
+        
+        memset(actual_path, 0, sizeof(actual_path));
+        strncpy(actual_path, inputpath.c_str(), sizeof(actual_path) - 1);
+        actual_path[sizeof(actual_path) - 1] = '\0';
+
+        while (mz_os_is_symlink(actual_path) == MZ_OK && !loop)
+        {
+            char tmp_path[1024];
+            tmpVec.push_back(actual_path);
+            mz_os_read_symlink(actual_path, tmp_path, sizeof(actual_path));
+            if(!isAbsolutePath(tmp_path))
+            {
+                char path_dir[1024];
+                strncpy(path_dir, actual_path, sizeof(path_dir) - 1);
+                path_dir[sizeof(path_dir) - 1] = 0;
+                mz_path_remove_filename(path_dir);
+                mz_path_combine(path_dir, tmp_path, sizeof(path_dir));
+                memset(tmp_path, 0, sizeof(tmp_path));
+                strncpy(tmp_path, path_dir, sizeof(tmp_path) - 1);
+                tmp_path[sizeof(tmp_path) - 1] = '\0';
+            }
+            memset(actual_path, 0, sizeof(actual_path));
+            strncpy(actual_path, tmp_path, sizeof(actual_path) - 1);
+            actual_path[sizeof(actual_path) - 1] = '\0';
+            for(int i = 0; i < tmpVec.size(); i++)
+            {
+                if (strcmp(actual_path, tmpVec[i].c_str()) == 0)
+                {
+                    OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOGNAME_COM,
+                        "symlink : %{public}s is loop link\n", inputpath.c_str());
+                    loop = true;
+                }
+            }
+        }
+        
+        if(!loop)
+        {
+            err = mz_zip_writer_add_file(zipWriter_, actual_path, inputpath.c_str());
+            if(err != MZ_OK)
+            {
+                OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOGNAME_COM,
+                    "mz_zip_writer_add_file faild\n");
+            }
+        }
+    }
+    else
+    {
+        err = mz_zip_writer_add_file(zipWriter_, inputpath.c_str(), inputpath.c_str());
+        if(err != MZ_OK)
+        {
+            OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOGNAME_COM,
+                "mz_zip_writer_add_file faild\n");
+        }
+    }
+
+    if(!is_dir)
+        return err;
+
     std::queue<std::string> dirQueue;
-    dirQueue.push(dirPath);
+    dirQueue.push(inputpath);
 
     while (!dirQueue.empty()) {
         std::string currentDir = dirQueue.front();
@@ -107,14 +183,55 @@ int32_t MinizipCompressNative::addFileToZip(std::string inputpath)
             else if(mz_os_is_symlink(fullpPath.c_str()) == MZ_OK)
             {
                 char actual_path[1024];
-                mz_os_read_symlink(fullpPath.c_str(), actual_path, sizeof(actual_path));
-                err = mz_zip_writer_add_file(zipWriter_, actual_path, fullpPath.c_str());
-                if(err != MZ_OK)
+                std::vector<std::string> tmpVec;
+                bool loop = false;
+                
+                memset(actual_path, 0, sizeof(actual_path));
+                strncpy(actual_path, fullpPath.c_str(), sizeof(actual_path) - 1);
+                actual_path[sizeof(actual_path) - 1] = '\0';
+
+                while (mz_os_is_symlink(actual_path) == MZ_OK && !loop)
                 {
-                    OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOGNAME_COM,
-                        "mz_zip_writer_add_file faild\n");
-                    mz_os_close_dir(dir);
-                    return err;
+                    char tmp_path[1024];
+                    tmpVec.push_back(actual_path);
+                    mz_os_read_symlink(actual_path, tmp_path, sizeof(actual_path));
+                    if(!isAbsolutePath(tmp_path))
+                    {
+                        char path_dir[1024];
+                        strncpy(path_dir, actual_path, sizeof(path_dir) - 1);
+                        path_dir[sizeof(path_dir) - 1] = 0;
+                        mz_path_remove_filename(path_dir);
+                        mz_path_combine(path_dir, tmp_path, sizeof(path_dir));
+
+                        memset(tmp_path, 0, sizeof(tmp_path));
+                        strncpy(tmp_path, path_dir, sizeof(tmp_path) - 1);
+                        tmp_path[sizeof(tmp_path) - 1] = '\0';
+                    }
+                    memset(actual_path, 0, sizeof(actual_path));
+                    strncpy(actual_path, tmp_path, sizeof(actual_path) - 1);
+                    actual_path[sizeof(actual_path) - 1] = '\0';
+
+                    for(int i = 0; i < tmpVec.size(); i++)
+                    {
+                        if (strcmp(actual_path, tmpVec[i].c_str()) == 0)
+                        {
+                            OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOGNAME_COM,
+                                "symlink : %{public}s is loop link\n", fullpPath.c_str());
+                            loop = true;
+                        }
+                    }
+                }
+                
+                if(!loop)
+                {
+                    err = mz_zip_writer_add_file(zipWriter_, actual_path, fullpPath.c_str());
+                    if(err != MZ_OK)
+                    {
+                        OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOGNAME_COM,
+                            "mz_zip_writer_add_file faild\n");
+                        mz_os_close_dir(dir);
+                        return err;
+                    }
                 }
             }
             else

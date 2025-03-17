@@ -54,6 +54,7 @@ private:
     std::string zipFilePath_;
 
     void Release();
+    bool isAbsolutePath(std::string path);
     int32_t addFileToZip(std::string inputpath);
     int64_t getStreamSize(void *stream);
     int32_t CompressToMemory(void *stream, char *buffer, int64_t size);
