@@ -14,7 +14,7 @@
  */
 
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium';
-import { MinizipNative, unzipToDirectory } from '@ohos/minizip'
+import { MinizipNative, unzipToDirectory, MinizipCompressNative } from '@ohos/minizip'
 import { GlobalContext } from './globalThis'
 
 export default function miniZipTest() {
@@ -63,6 +63,36 @@ export default function miniZipTest() {
       let charEncoding: number = 936
       let result: string = await unzipToDirectory(selectFilePath, targetPath, password, charEncoding)
       expect(result).assertEqual("unzip success")
+    })
+
+    it("MinizipCompressNative", 0, () => {
+      let selectFilePath : string = filesDir + '/test_compress.zip';
+      let targetPath: string[] = [];
+      const element = filesDir + "/test.zip";
+      targetPath.push(element);
+      let password: string = "123456";
+      let minizipCompressEntry = new MinizipCompressNative(selectFilePath);
+      if(minizipCompressEntry.Open() == 0){
+        let code : number = minizipCompressEntry.Compress(targetPath, password);
+        expect(code == 0).assertTrue();
+      }
+    })
+
+    it("MinizipCompressNativeToJS", 0, () => {
+      let selectFilePath : string = filesDir + '/test_compress.zip';
+      let targetPath: string[] = [];
+      const element = filesDir + "/test.zip";
+      targetPath.push(element);
+      let password: string = "123456";
+      let minizipCompressEntry = new MinizipCompressNative(selectFilePath);
+      if(minizipCompressEntry.Open() == 0){
+        let code : number = minizipCompressEntry.Compress(targetPath, password);
+        if(code == 0){
+          minizipCompressEntry.Close();
+          let arrBuffer = minizipCompressEntry.CompressToJS();
+          expect(arrBuffer?.byteLength !== 0).assertTrue()
+        }
+      }
     })
   })
 }

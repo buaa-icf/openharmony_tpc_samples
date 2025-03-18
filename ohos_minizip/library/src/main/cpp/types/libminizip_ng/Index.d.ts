@@ -32,11 +32,11 @@ export class MinizipCompressNative{
   // 关闭文件路径
   Close : () => void;
   // 设置压缩方法
-  SetCompressMethod : (compressMethod : number) => void;
+  SetCompressMethod : (compressMethod : number) => number;
   // 设置压缩等级
-  SetCompressLevel : (compressLevel : number) => void;
+  SetCompressLevel : (compressLevel : number) => number;
   // 压缩文件
-  Compress : ( entries : Array<string>, password : string) => number;
+  Compress : ( entries : Array<string>, password : string = "") => number;
   // 获取压缩包二进制流
   CompressToJS : () => ArrayBuffer | undefined;
 }

@@ -19,8 +19,6 @@
 #include <string>
 #include <vector>
 #include <queue>
-// #include <bits/alltypes.h>
-// #include <unistd.h>
 #include <aki/jsbind.h>
 
 #include "mz.h"
@@ -37,14 +35,14 @@
 
 class MinizipCompressNative{
 public:
-    explicit MinizipCompressNative(std::string zipFilePath);
+    explicit MinizipCompressNative(const std::string& zipFilePath);
     ~MinizipCompressNative();
 
     int32_t Open();
     void Close();
-    void SetCompressMethod(uint16_t compressMethod);
-    void SetCompressLevel(int16_t compressLevel);
-    int32_t Compress(std::vector<std::string> entries, std::string password);
+    int32_t SetCompressMethod(uint16_t compressMethod);
+    int32_t SetCompressLevel(int16_t compressLevel);
+    int32_t Compress(const std::vector<std::string>& entries, const std::string& password = "");
 
     napi_value CompressToJS();
 
@@ -55,9 +53,10 @@ private:
     std::string zipFilePath_;
 
     void Release();
-    bool isAbsolutePath(std::string path);
-    int32_t addFileToZip(std::string inputpath);
-    int64_t getStreamSize(void *stream);
+    bool isAbsolutePath(const std::string& path);
+    int32_t AddSymlinkFile(const std::string& inputpath);
+    int32_t AddFile(const std::string& inputpath);
+    int64_t GetStreamSize(void *stream);
     int32_t CompressToMemory(void *stream, char *buffer, int64_t size);
 };
 

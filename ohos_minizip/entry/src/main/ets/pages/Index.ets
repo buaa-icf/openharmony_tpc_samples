@@ -161,7 +161,7 @@ struct Index {
   @State selectFilePathCompress: string = getContext().filesDir + '/test_compress.zip'
   @State targetPathCompress: string = getContext().filesDir;
   @State passwordCompress: string = ""; //测试资源密码： 123456
-  @State directoryCompress: string[] = [];
+  @State directoryCompress: string = "";
 
   build() {
     Row() {
@@ -219,11 +219,7 @@ struct Index {
         TextInput({ placeholder: $r('app.string.Compress_folder')})
           .margin(10)
           .onChange((value: string) => {
-            let tmparray = value.split(",");
-            for (let index = 0; index < tmparray.length; index++) {
-              const element = this.targetPathCompress + "/" + tmparray[index];
-              this.directoryCompress.push(element);
-            }
+            this.directoryCompress = value;
           })
 
         Button() {
@@ -239,7 +235,13 @@ struct Index {
         .width("100%")
         .margin({ right: 8, bottom: 10 })
         .onClick(() => {
-          this.asyncGetCompress(this.selectFilePathCompress, this.directoryCompress, this.passwordCompress);
+          let dirarray :string[] = [];
+          let tmparray = this.directoryCompress.split(",");
+          for (let index = 0; index < tmparray.length; index++) {
+            const element = this.targetPathCompress + "/" + tmparray[index];
+            dirarray.push(element);
+          }
+          this.asyncGetCompress(this.selectFilePathCompress, dirarray, this.passwordCompress);
         })
 
         Button() {
@@ -255,7 +257,13 @@ struct Index {
         .width("100%")
         .margin({ right: 8 })
         .onClick(() => {
-          this.asyncGet1Compress(this.selectFilePathCompress, this.directoryCompress, this.passwordCompress);
+          let dirarray :string[] = [];
+          let tmparray = this.directoryCompress.split(",");
+          for (let index = 0; index < tmparray.length; index++) {
+            const element = this.targetPathCompress + "/" + tmparray[index];
+            dirarray.push(element);
+          }
+          this.asyncGet1Compress(this.selectFilePathCompress, dirarray, this.passwordCompress);
         })
 
 

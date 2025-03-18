@@ -17,9 +17,9 @@
 
 static const char *LOGNAME_COM = "minizipcompressInfo";
 
-MinizipCompressNative::MinizipCompressNative(std::string zipFilePath)
+MinizipCompressNative::MinizipCompressNative(const std::string& zipFilePath)
+    : zipFilePath_(zipFilePath)
 {
-    zipFilePath_ = zipFilePath;
 }
 
 MinizipCompressNative::~MinizipCompressNative()
@@ -36,39 +36,48 @@ void MinizipCompressNative::Release()
     }
 }
 
-void MinizipCompressNative::SetCompressMethod(uint16_t compressMethod)
+int32_t MinizipCompressNative::SetCompressMethod(uint16_t compressMethod)
 {
-    compressMethod_ = compressMethod;
+    int32_t err = MZ_OK;
+    if(compressMethod == 0 || compressMethod == 8 || compressMethod == 12 ||
+         compressMethod == 14 || compressMethod == 93 || compressMethod == 95){
+        compressMethod_ = compressMethod;
+    } else 
+        err = MZ_SUPPORT_ERROR;
+
+    return err;
 }
 
-void MinizipCompressNative::SetCompressLevel(int16_t compressLevel)
+int32_t MinizipCompressNative::SetCompressLevel(int16_t compressLevel)
 {
-    compressLevel_ = compressLevel;
+    int32_t err = MZ_OK;
+    if(compressLevel == -1 || compressLevel == 2 || compressLevel == 6 || compressLevel == 9)
+        compressLevel_ = compressLevel;
+    else 
+        err = MZ_SUPPORT_ERROR;
+
+    return err;
 }
 
 int32_t MinizipCompressNative::Open()
 {
-    if(zipWriter_)
-    {
-        OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOGNAME_COM,
+    if(zipWriter_) {
+        OH_LOG_Print(LOG_APP, LOG_WARN, LOG_DOMAIN, LOGNAME_COM,
                 "zipWriter_ exist\n");
         return MZ_OK;
     }
-    int32_t err = MZ_OK;
 
     zipWriter_ = mz_zip_writer_create();
-    if(!zipWriter_)
-    {
+    if(!zipWriter_) {
         OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOGNAME_COM,
-                "create zipWriter_ faild\n");
+                "create zipWriter_ failed\n");
         return MZ_MEM_ERROR;
     }
 
-    err = mz_zip_writer_open_file(zipWriter_, zipFilePath_.c_str(), 0, 0);
-    if(err != MZ_OK)
-    {
+    int32_t err = mz_zip_writer_open_file(zipWriter_, zipFilePath_.c_str(), 0, 0);
+    if(err != MZ_OK) {
         OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOGNAME_COM,
-                "open writer file faild\n");
+                "open writer file failed\n");
         return err;
     }
     
@@ -80,78 +89,83 @@ void MinizipCompressNative::Close()
     Release();
 }
 
-bool MinizipCompressNative::isAbsolutePath(std::string path)
+bool MinizipCompressNative::isAbsolutePath(const std::string& path)
 {
-    if (path.empty())   return false;
+    if (path.empty())
+        return false;
 
-    return path[0] == '/';
+    size_t start = path.find_first_not_of(' ');
+    if (start == std::string::npos) {
+        return false;
+    }
+
+    return path[start] == '/';
 }
 
-int32_t MinizipCompressNative::addFileToZip(std::string inputpath)
+int32_t MinizipCompressNative::AddSymlinkFile(const std::string& inputpath)
 {
-    int32_t err;
-    bool is_dir = false;
-    if (mz_os_is_dir(inputpath.c_str()) == MZ_OK)
-    {
-        is_dir = true;
-    }
-    else if(mz_os_is_symlink(inputpath.c_str()) == MZ_OK)
-    {
-        char actual_path[1024];
-        std::vector<std::string> tmpVec;
-        bool loop = false;
-        
+    char actual_path[1024];
+    
+    memset(actual_path, 0, sizeof(actual_path));
+    strncpy(actual_path, inputpath.c_str(), sizeof(actual_path) - 1);
+    actual_path[sizeof(actual_path) - 1] = '\0';
+
+    std::vector<std::string> tmpVec;
+    bool loop = false;
+    while (mz_os_is_symlink(actual_path) == MZ_OK && !loop) {
+        char tmp_path[1024];
+        tmpVec.push_back(actual_path);
+        mz_os_read_symlink(actual_path, tmp_path, sizeof(actual_path));
+        if(!isAbsolutePath(tmp_path)) {
+            char path_dir[1024];
+            strncpy(path_dir, actual_path, sizeof(path_dir) - 1);
+            path_dir[sizeof(path_dir) - 1] = 0;
+            mz_path_remove_filename(path_dir);
+            mz_path_combine(path_dir, tmp_path, sizeof(path_dir));
+
+            memset(tmp_path, 0, sizeof(tmp_path));
+            strncpy(tmp_path, path_dir, sizeof(tmp_path) - 1);
+            tmp_path[sizeof(tmp_path) - 1] = '\0';
+        }
         memset(actual_path, 0, sizeof(actual_path));
-        strncpy(actual_path, inputpath.c_str(), sizeof(actual_path) - 1);
+        strncpy(actual_path, tmp_path, sizeof(actual_path) - 1);
         actual_path[sizeof(actual_path) - 1] = '\0';
 
-        while (mz_os_is_symlink(actual_path) == MZ_OK && !loop)
-        {
-            char tmp_path[1024];
-            tmpVec.push_back(actual_path);
-            mz_os_read_symlink(actual_path, tmp_path, sizeof(actual_path));
-            if(!isAbsolutePath(tmp_path))
-            {
-                char path_dir[1024];
-                strncpy(path_dir, actual_path, sizeof(path_dir) - 1);
-                path_dir[sizeof(path_dir) - 1] = 0;
-                mz_path_remove_filename(path_dir);
-                mz_path_combine(path_dir, tmp_path, sizeof(path_dir));
-                memset(tmp_path, 0, sizeof(tmp_path));
-                strncpy(tmp_path, path_dir, sizeof(tmp_path) - 1);
-                tmp_path[sizeof(tmp_path) - 1] = '\0';
-            }
-            memset(actual_path, 0, sizeof(actual_path));
-            strncpy(actual_path, tmp_path, sizeof(actual_path) - 1);
-            actual_path[sizeof(actual_path) - 1] = '\0';
-            for(int i = 0; i < tmpVec.size(); i++)
-            {
-                if (strcmp(actual_path, tmpVec[i].c_str()) == 0)
-                {
-                    OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOGNAME_COM,
-                        "symlink : %{public}s is loop link\n", inputpath.c_str());
-                    loop = true;
-                }
-            }
-        }
-        
-        if(!loop)
-        {
-            err = mz_zip_writer_add_file(zipWriter_, actual_path, inputpath.c_str());
-            if(err != MZ_OK)
-            {
+        for(int i = 0; i < tmpVec.size(); i++) {
+            if (strcmp(actual_path, tmpVec[i].c_str()) == 0) {
                 OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOGNAME_COM,
-                    "mz_zip_writer_add_file faild\n");
+                    "symlink : %{public}s is loop link\n", inputpath.c_str());
+                loop = true;
             }
         }
     }
-    else
-    {
+    
+    int32_t err = MZ_OK;
+    if(!loop) {
+        err = mz_zip_writer_add_file(zipWriter_, actual_path, inputpath.c_str());
+        if(err != MZ_OK) {
+            OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOGNAME_COM,
+                "mz_zip_writer_add_file failed\n");
+        }
+    }
+
+    return err;
+}
+
+int32_t MinizipCompressNative::AddFile(const std::string& inputpath)
+{
+    int32_t err = MZ_OK;
+    bool is_dir = false;
+    if (mz_os_is_dir(inputpath.c_str()) == MZ_OK) {
+        is_dir = true;
+    } else if(mz_os_is_symlink(inputpath.c_str()) == MZ_OK) {
+        err = AddSymlinkFile(inputpath);
+    } else {
         err = mz_zip_writer_add_file(zipWriter_, inputpath.c_str(), inputpath.c_str());
         if(err != MZ_OK)
         {
             OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOGNAME_COM,
-                "mz_zip_writer_add_file faild\n");
+                "mz_zip_writer_add_file failed\n");
         }
     }
 
@@ -165,101 +179,43 @@ int32_t MinizipCompressNative::addFileToZip(std::string inputpath)
         std::string currentDir = dirQueue.front();
         dirQueue.pop();
 
-        int32_t err;
-        DIR *dir = mz_os_open_dir(inputpath.c_str());
-        if(!dir)
-        {
+        DIR *dir = mz_os_open_dir(currentDir.c_str());
+        if(!dir) {
             OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOGNAME_COM,
-                    "%{public}s is no exist\n", inputpath.c_str());
+                    "%{public}s is no exist\n", currentDir.c_str());
             return err;
         }
 
         struct dirent *entry = NULL;
-        while((entry = mz_os_read_dir(dir)))
-        {
+        while((entry = mz_os_read_dir(dir))) {
             std::string name = entry->d_name;
             if(name == "." || name == "..") continue;
 
-            std::string fullpPath = inputpath + "/" + name;
-            if(mz_os_is_dir(fullpPath.c_str()) == MZ_OK)
-            {
+            std::string fullpPath = currentDir + "/" + name;
+            if(mz_os_is_dir(fullpPath.c_str()) == MZ_OK) {
                 dirQueue.push(fullpPath);
-            }
-            else if(mz_os_is_symlink(fullpPath.c_str()) == MZ_OK)
-            {
-                char actual_path[1024];
-                std::vector<std::string> tmpVec;
-                bool loop = false;
-                
-                memset(actual_path, 0, sizeof(actual_path));
-                strncpy(actual_path, fullpPath.c_str(), sizeof(actual_path) - 1);
-                actual_path[sizeof(actual_path) - 1] = '\0';
-
-                while (mz_os_is_symlink(actual_path) == MZ_OK && !loop)
-                {
-                    char tmp_path[1024];
-                    tmpVec.push_back(actual_path);
-                    mz_os_read_symlink(actual_path, tmp_path, sizeof(actual_path));
-                    if(!isAbsolutePath(tmp_path))
-                    {
-                        char path_dir[1024];
-                        strncpy(path_dir, actual_path, sizeof(path_dir) - 1);
-                        path_dir[sizeof(path_dir) - 1] = 0;
-                        mz_path_remove_filename(path_dir);
-                        mz_path_combine(path_dir, tmp_path, sizeof(path_dir));
-
-                        memset(tmp_path, 0, sizeof(tmp_path));
-                        strncpy(tmp_path, path_dir, sizeof(tmp_path) - 1);
-                        tmp_path[sizeof(tmp_path) - 1] = '\0';
-                    }
-                    memset(actual_path, 0, sizeof(actual_path));
-                    strncpy(actual_path, tmp_path, sizeof(actual_path) - 1);
-                    actual_path[sizeof(actual_path) - 1] = '\0';
-
-                    for(int i = 0; i < tmpVec.size(); i++)
-                    {
-                        if (strcmp(actual_path, tmpVec[i].c_str()) == 0)
-                        {
-                            OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOGNAME_COM,
-                                "symlink : %{public}s is loop link\n", fullpPath.c_str());
-                            loop = true;
-                        }
-                    }
+            } else if(mz_os_is_symlink(fullpPath.c_str()) == MZ_OK) {
+                err = AddSymlinkFile(fullpPath);
+                if(err != MZ_OK) {
+                    mz_os_close_dir(dir);
+                    return err;
                 }
-                
-                if(!loop)
-                {
-                    err = mz_zip_writer_add_file(zipWriter_, actual_path, fullpPath.c_str());
-                    if(err != MZ_OK)
-                    {
-                        OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOGNAME_COM,
-                            "mz_zip_writer_add_file faild\n");
-                        mz_os_close_dir(dir);
-                        return err;
-                    }
-                }
-            }
-            else
-            {
+            } else {
                 err = mz_zip_writer_add_file(zipWriter_, fullpPath.c_str(), fullpPath.c_str());
-                if(err != MZ_OK)
-                {
+                if(err != MZ_OK) {
                     OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOGNAME_COM,
-                        "mz_zip_writer_add_file faild\n");
+                        "mz_zip_writer_add_file failed\n");
                     mz_os_close_dir(dir);
                     return err;
                 }
             }
-
         }
         mz_os_close_dir(dir);
     }
-
-
     return err;
 }
 
-int32_t MinizipCompressNative::Compress(std::vector<std::string> entries, std::string password)
+int32_t MinizipCompressNative::Compress(const std::vector<std::string>& entries, const std::string& password)
 {
     int32_t err = MZ_OK;
     int32_t tmp_err = MZ_OK;
@@ -270,19 +226,17 @@ int32_t MinizipCompressNative::Compress(std::vector<std::string> entries, std::s
     mz_zip_writer_set_compress_method(zipWriter_, compressMethod_);
     mz_zip_writer_set_compress_level(zipWriter_, compressLevel_);
 
-    for(int i = 0; i < entries.size(); i++)
-    {
-        tmp_err = addFileToZip(entries[i]);
-        if(tmp_err != MZ_OK)
-        {
-            err = tmp_err
+    for(int i = 0; i < entries.size(); i++) {
+        tmp_err = AddFile(entries[i]);
+        if(tmp_err != MZ_OK) {
+            err = tmp_err;
         }
     }
 
     return err;
 }
 
-int64_t MinizipCompressNative::getStreamSize(void *stream)
+int64_t MinizipCompressNative::GetStreamSize(void *stream)
 {
     int64_t file_size = 0;
 
@@ -300,10 +254,9 @@ int64_t MinizipCompressNative::getStreamSize(void *stream)
 int32_t MinizipCompressNative::CompressToMemory(void *stream, char *buffer, int64_t size)
 {
     int32_t err = MZ_OK;
-    int32_t read = 0;
     
     if (buffer) {
-        read = mz_stream_os_read(stream, buffer, size);
+        int32_t read = mz_stream_os_read(stream, buffer, size);
         if (read != size)
             err = MZ_BUF_ERROR;
     }
@@ -313,27 +266,24 @@ int32_t MinizipCompressNative::CompressToMemory(void *stream, char *buffer, int6
 
 napi_value MinizipCompressNative::CompressToJS()
 {
-    int32_t err = MZ_OK;
-    void *stream = NULL;
-    char *buffer = nullptr;
-    napi_value napiArrayBuffer = nullptr;
     napi_env env = aki::JSBind::GetScopedEnv();
-    
-    stream = mz_stream_os_create();
-    err = mz_stream_os_open(stream, zipFilePath_.c_str(), MZ_OPEN_MODE_READ);
+    void *stream = mz_stream_os_create();
+    int32_t err = mz_stream_os_open(stream, zipFilePath_.c_str(), MZ_OPEN_MODE_READ);
     if (err != MZ_OK) {
-        OH_LOG_Print(LOG_APP, LOG_WARN, LOG_DOMAIN, LOGNAME_COM, 
+        OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOGNAME_COM, 
                      "Cannot open file %{public}s in zip archive, err:%{public}d", zipFilePath_.c_str(), err);
         napi_value undefined = nullptr;
         napi_get_undefined(env, &undefined);
         return undefined;
     }
 
-    int64_t size = this->getStreamSize(stream);
+    int64_t size = this->GetStreamSize(stream);
+    char *buffer = nullptr;
+    napi_value napiArrayBuffer = nullptr;
     napi_create_arraybuffer(env, size, (void **)(&buffer), &napiArrayBuffer);
     err = this->CompressToMemory(stream, buffer, size);
     if (err != MZ_OK) {
-        OH_LOG_Print(LOG_APP, LOG_WARN, LOG_DOMAIN, LOGNAME_COM, "CompressToMemory Failed: %{public}d", err);
+        OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOGNAME_COM, "CompressToMemory Failed: %{public}d", err);
         napi_value undefined = nullptr;
         napi_get_undefined(env, &undefined);
         
