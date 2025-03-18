@@ -75,6 +75,52 @@ function myAsyncFunction1(selectFilePath: string, targetPath: string, password: 
 @Concurrent
 function myAsyncFunctionCompress(selectFilePath: string, targetPath: string[], password: string) {
   let startTime: number = Date.now();
+  let code : number = 1;
+  let minizipCompressEntry = new MinizipCompressNative(selectFilePath);
+  if (minizipCompressEntry.Open() == 0) {
+    code = minizipCompressEntry.Compress(targetPath, password);
+    if(code == 0){
+      console.log('' + code);
+    } else {
+      console.log('' + code);
+      promptAction.showToast({
+        message: 'zip failed',
+        duration: 1000,
+      });
+      return;
+    }
+    promptAction.showToast({
+      message: 'zip success',
+      duration: 1000,
+    });
+  } else {
+    promptAction.showToast({
+      message: 'zip failed',
+      duration: 1000,
+    });
+  }
+  minizipCompressEntry.Close();
+  if(code == 0)
+  {
+    let arrBuffer = minizipCompressEntry.CompressToJS();
+    if (arrBuffer != undefined) {
+      console.log('' + arrBuffer.byteLength);
+    } else {
+      console.log('' + arrBuffer);
+      promptAction.showToast({
+        message: 'zip failed',
+        duration: 1000,
+      });
+      return;
+    }
+  }
+  let endTime: number = Date.now();
+  console.log("zip time: " + (endTime - startTime));
+}
+
+@Concurrent
+function myAsyncFunction1Compress(selectFilePath: string, targetPath: string[], password: string) {
+  let startTime: number = Date.now();
   let minizipCompressEntry = new MinizipCompressNative(selectFilePath);
   if (minizipCompressEntry.Open() == 0) {
     let code : number = minizipCompressEntry.Compress(targetPath, password);
@@ -88,19 +134,19 @@ function myAsyncFunctionCompress(selectFilePath: string, targetPath: string[], p
       });
       return;
     }
-    let endTime: number = Date.now();
-    console.log("zip time: " + (endTime - startTime));
     promptAction.showToast({
       message: 'zip success',
       duration: 1000,
     });
   } else {
     promptAction.showToast({
-      message: 'unzip failed',
+      message: 'zip failed',
       duration: 1000,
     });
   }
   minizipCompressEntry.Close();
+  let endTime: number = Date.now();
+  console.log("zip time: " + (endTime - startTime));
 }
 
 @Entry
@@ -181,6 +227,22 @@ struct Index {
           })
 
         Button() {
+          Text($r('app.string.Compress_toJS'))
+            .fontSize(20)
+            .fontWeight(FontWeight.Bold)
+            .fontColor(Color.White)
+            .maxLines(1)
+            .textAlign(TextAlign.Center)
+
+        }
+        .backgroundColor(Color.Blue)
+        .width("100%")
+        .margin({ right: 8, bottom: 10 })
+        .onClick(() => {
+          this.asyncGetCompress(this.selectFilePathCompress, this.directoryCompress, this.passwordCompress);
+        })
+
+        Button() {
           Text($r('app.string.Compress'))
             .fontSize(20)
             .fontWeight(FontWeight.Bold)
@@ -193,8 +255,10 @@ struct Index {
         .width("100%")
         .margin({ right: 8 })
         .onClick(() => {
-          this.asyncGetCompress(this.selectFilePathCompress, this.directoryCompress, this.passwordCompress);
+          this.asyncGet1Compress(this.selectFilePathCompress, this.directoryCompress, this.passwordCompress);
         })
+
+
       }
       .width('100%')
     }
@@ -215,6 +279,12 @@ struct Index {
 
   async asyncGetCompress(selectFilePath: string, targetPath: string[], password: string): Promise<void> {
     let task: taskpool.Task = new taskpool.Task(myAsyncFunctionCompress, selectFilePath, targetPath, password);
+    await taskpool.execute(task);
+    console.info("taskpool: task end");
+  }
+
+  async asyncGet1Compress(selectFilePath: string, targetPath: string[], password: string): Promise<void> {
+    let task: taskpool.Task = new taskpool.Task(myAsyncFunction1Compress, selectFilePath, targetPath, password);
     await taskpool.execute(task);
     console.info("taskpool: task end");
   }

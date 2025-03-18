@@ -27,6 +27,22 @@
     {
       "name": "Extract_disk",
       "value": "Extract files to disk\n"
+    },
+    {
+      "name": "input_password_compress",
+      "value": "input password"
+    },
+    {
+      "name": "Compress_folder",
+      "value": "Compress folder"
+    },
+    {
+      "name": "Compress_toJS",
+      "value": "Compress to JS"
+    },
+    {
+      "name": "Compress",
+      "value": "Compress"
     }
   ]
 }

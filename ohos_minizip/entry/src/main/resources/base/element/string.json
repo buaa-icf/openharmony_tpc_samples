@@ -33,16 +33,16 @@
       "value": "输入密码"
     },
     {
-      "name": "Compress",
-      "value": "压缩文件"
-    },
-    {
       "name": "Compress_folder",
       "value": "需要压缩的文件夹"
     },
     {
-      "name": "Compress_disk",
-      "value": "压缩文件到磁盘"
+      "name": "Compress_toJS",
+      "value": "压缩文件到JS"
+    },
+    {
+      "name": "Compress",
+      "value": "压缩文件"
     }
   ]
 }

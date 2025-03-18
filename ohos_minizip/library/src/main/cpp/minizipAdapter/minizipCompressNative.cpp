@@ -262,6 +262,7 @@ int32_t MinizipCompressNative::addFileToZip(std::string inputpath)
 int32_t MinizipCompressNative::Compress(std::vector<std::string> entries, std::string password)
 {
     int32_t err = MZ_OK;
+    int32_t tmp_err = MZ_OK;
     const char *pwd = password.empty() ? NULL : password.c_str();
 
     mz_zip_writer_set_password(zipWriter_, pwd);
@@ -271,10 +272,14 @@ int32_t MinizipCompressNative::Compress(std::vector<std::string> entries, std::s
 
     for(int i = 0; i < entries.size(); i++)
     {
-        addFileToZip(entries[i]);
+        tmp_err = addFileToZip(entries[i]);
+        if(tmp_err != MZ_OK)
+        {
+            err = tmp_err
+        }
     }
 
-    return MZ_OK;
+    return err;
 }
 
 int64_t MinizipCompressNative::getStreamSize(void *stream)

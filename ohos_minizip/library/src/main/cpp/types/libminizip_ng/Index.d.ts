@@ -38,6 +38,6 @@ export class MinizipCompressNative{
   // 压缩文件
   Compress : ( entries : Array<string>, password : string) => number;
   // 获取压缩包二进制流
-  CompressionToJS : () => ArrayBuffer | undefined;
+  CompressToJS : () => ArrayBuffer | undefined;
 }
 
