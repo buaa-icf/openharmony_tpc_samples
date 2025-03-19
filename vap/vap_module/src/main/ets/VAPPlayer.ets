@@ -75,6 +75,10 @@ export class VAPPlayer implements XComponentContext {
     this.vapContext?.on(type, callback, this.id);
   }
 
+  off(type: string) {
+    this.vapContext?.off(type, this.id)
+  }
+
   pause(): void {
     this.vapContext?.pause(this.id);
   }
