@@ -143,6 +143,8 @@ export interface XComponentContext {
 
   on(type: string, callback: (state?: VapState | string, ret?: number | AnimConfig | undefined) => void, id?: string): void
 
+  off(type: string, id?:string): void
+
   pause(id?:string): void
 
   stop(id?:string): void

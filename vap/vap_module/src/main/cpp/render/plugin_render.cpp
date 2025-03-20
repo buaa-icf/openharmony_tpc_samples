@@ -467,6 +467,7 @@ void PluginRender::Export(napi_env env, napi_value exports)
     napi_property_descriptor desc[] = {
         { "play", nullptr, PluginRender::Play, nullptr, nullptr, nullptr, napi_default, nullptr },
         { "on", nullptr, PluginRender::On, nullptr, nullptr, nullptr, napi_default, nullptr },
+        { "off", nullptr, PluginRender::Off, nullptr, nullptr, nullptr, napi_default, nullptr },
         { "pause", nullptr, PluginRender::Pause, nullptr, nullptr, nullptr, napi_default, nullptr },
         { "stop", nullptr, PluginRender::Stop, nullptr, nullptr, nullptr, napi_default, nullptr },
         { "setLoop", nullptr, PluginRender::SetLoop, nullptr, nullptr, nullptr, napi_default, nullptr },
@@ -879,16 +880,19 @@ napi_value PluginRender::On(napi_env env, napi_callback_info info)
 napi_value PluginRender::Off(napi_env env, napi_callback_info info)
 {
     NFuncArg funcArg(env, info);
-    if (!funcArg.InitArgs(NARG_CNT::ONE)) {
+    if (!funcArg.InitArgs(NARG_CNT::ONE, NARG_CNT::TWO)) {
         LOGE("func 'off' Init args error.");
         return nullptr;
     }
-    std::string idStr = GetXComponentId(env, info);
-    if (idStr.empty()) {
+    napi_value jsId = funcArg.GetArg(NARG_POS::SECOND);
+    NVal nVal(env, jsId);
+    auto [succ, resData, length] = nVal.ToUTF8String();
+    std::string id = resData.get();
+    LOGD("Off listener id:%{public}s", id.c_str());
+    if (id.empty()) {
         LOGE("GetXComponentId error");
         return nullptr;
     }
-    std::string id(idStr);
     std::shared_ptr<PluginRender>render = PluginRender::GetInstance(id);
     if (render) {
         if (render->player_->IsRunning()) {
