@@ -71,27 +71,22 @@ export default function miniZipTest() {
       const element = filesDir + "/test.zip";
       targetPath.push(element);
       let password: string = "123456";
-      let minizipCompressEntry = new MinizipCompressNative(selectFilePath);
-      if(minizipCompressEntry.Open() == 0){
+      let minizipCompressEntry = new MinizipCompressNative(filesDir, selectFilePath);
+      if(minizipCompressEntry.Create() == 0){
         let code : number = minizipCompressEntry.Compress(targetPath, password);
         expect(code == 0).assertTrue();
       }
     })
 
     it("MinizipCompressNativeToJS", 0, () => {
-      let selectFilePath : string = filesDir + '/test_compress.zip';
       let targetPath: string[] = [];
       const element = filesDir + "/test.zip";
       targetPath.push(element);
       let password: string = "123456";
-      let minizipCompressEntry = new MinizipCompressNative(selectFilePath);
-      if(minizipCompressEntry.Open() == 0){
-        let code : number = minizipCompressEntry.Compress(targetPath, password);
-        if(code == 0){
-          minizipCompressEntry.Close();
-          let arrBuffer = minizipCompressEntry.CompressToJS();
-          expect(arrBuffer?.byteLength !== 0).assertTrue()
-        }
+      let minizipCompressEntry = new MinizipCompressNative(filesDir);
+      if(minizipCompressEntry.Create() == 0){
+        let arrBuffer = minizipCompressEntry.CompressToJS(targetPath, password);
+        expect(arrBuffer?.byteLength !== 0).assertTrue();
       }
     })
   })

@@ -75,14 +75,13 @@ function myAsyncFunction1(selectFilePath: string, targetPath: string, password: 
 @Concurrent
 function myAsyncFunctionCompress(selectFilePath: string, targetPath: string[], password: string) {
   let startTime: number = Date.now();
-  let code : number = 1;
   let minizipCompressEntry = new MinizipCompressNative(selectFilePath);
-  if (minizipCompressEntry.Open() == 0) {
-    code = minizipCompressEntry.Compress(targetPath, password);
-    if(code == 0){
-      console.log('' + code);
+  if (minizipCompressEntry.Create() == 0) {
+    let arrBuffer = minizipCompressEntry.CompressToJS(targetPath, password);
+    if (arrBuffer != undefined) {
+      console.log('' + arrBuffer.byteLength);
     } else {
-      console.log('' + code);
+      console.log('' + arrBuffer);
       promptAction.showToast({
         message: 'zip failed',
         duration: 1000,
@@ -99,21 +98,6 @@ function myAsyncFunctionCompress(selectFilePath: string, targetPath: string[], p
       duration: 1000,
     });
   }
-  minizipCompressEntry.Close();
-  if(code == 0)
-  {
-    let arrBuffer = minizipCompressEntry.CompressToJS();
-    if (arrBuffer != undefined) {
-      console.log('' + arrBuffer.byteLength);
-    } else {
-      console.log('' + arrBuffer);
-      promptAction.showToast({
-        message: 'zip failed',
-        duration: 1000,
-      });
-      return;
-    }
-  }
   let endTime: number = Date.now();
   console.log("zip time: " + (endTime - startTime));
 }
@@ -121,8 +105,8 @@ function myAsyncFunctionCompress(selectFilePath: string, targetPath: string[], p
 @Concurrent
 function myAsyncFunction1Compress(selectFilePath: string, targetPath: string[], password: string) {
   let startTime: number = Date.now();
-  let minizipCompressEntry = new MinizipCompressNative(selectFilePath);
-  if (minizipCompressEntry.Open() == 0) {
+  let minizipCompressEntry = new MinizipCompressNative(selectFilePath, selectFilePath);
+  if (minizipCompressEntry.Create() == 0) {
     let code : number = minizipCompressEntry.Compress(targetPath, password);
     if(code == 0){
       console.log('' + code);
@@ -241,7 +225,7 @@ struct Index {
             const element = this.targetPathCompress + "/" + tmparray[index];
             dirarray.push(element);
           }
-          this.asyncGetCompress(this.selectFilePathCompress, dirarray, this.passwordCompress);
+          this.asyncGetCompress(this.targetPathCompress, dirarray, this.passwordCompress);
         })
 
         Button() {

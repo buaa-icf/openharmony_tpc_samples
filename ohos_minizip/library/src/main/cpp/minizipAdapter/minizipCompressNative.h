@@ -33,29 +33,37 @@
 #include "napi/native_api.h"
 #include "hilog/log.h"
 
+
+enum CompressError {
+    CompressPathIsNull = -1,
+};
+
 class MinizipCompressNative{
 public:
-    explicit MinizipCompressNative(const std::string& zipFilePath);
+    explicit MinizipCompressNative(const std::string& catchPath, const std::string& zipFilePath = "");
     ~MinizipCompressNative();
 
-    int32_t Open();
+    int32_t Create();
     void Close();
     int32_t SetCompressMethod(uint16_t compressMethod);
     int32_t SetCompressLevel(int16_t compressLevel);
+    int32_t SetzipFilePath(const std::string& zipFilePath);
     int32_t Compress(const std::vector<std::string>& entries, const std::string& password = "");
-
-    napi_value CompressToJS();
+    napi_value CompressToJS(const std::vector<std::string>& entries, const std::string& password = "");
 
 private:
     uint16_t compressMethod_ {MZ_COMPRESS_METHOD_DEFLATE};
     int16_t compressLevel_ {MZ_COMPRESS_LEVEL_DEFAULT};
     void *zipWriter_ {nullptr};
     std::string zipFilePath_;
+    std::string catchPath_;
+    bool isDiskCompress_ {true};
 
     void Release();
     bool isAbsolutePath(const std::string& path);
     int32_t AddSymlinkFile(const std::string& inputpath);
     int32_t AddFile(const std::string& inputpath);
+    int32_t CompressInternal(const std::vector<std::string>& entries, const std::string& zipFilePath, const std::string& password = "");
     int64_t GetStreamSize(void *stream);
     int32_t CompressToMemory(void *stream, char *buffer, int64_t size);
 };
