@@ -23,7 +23,7 @@ export function UnitTest(context:CanvasRenderingContext2D, canvasWidth:number, c
     gameControl.Instance = new gameControl(context, canvasWidth, canvasHeight)
 
     hilog.info(0x0000, 'testTag', '2.arkts->c++, 测试har包中napi接口及返回值TestHelloWorld');
-    let strHello = harNAPI.TestHelloWorld("testTag, helloWorld");
+    let strHello: string = harNAPI.TestHelloWorld("testTag, helloWorld");
     hilog.info(0x0000, 'testTag', '2.测试har包中napi接口及返回值=%{public}s', strHello);
 
     hilog.info(0x0000, 'testTag', '3.初始化lua环境');
@@ -36,31 +36,31 @@ export function UnitTest(context:CanvasRenderingContext2D, canvasWidth:number, c
     hilog.info(0x0000, 'testTag', '5.arkts->lua,start t2lSetVarInt');
     harNAPI.T2lSetVarInt("testValInt", 12);
     hilog.info(0x0000, 'testTag', '5.arkts->lua,start t2lGetVarInt,获取lua中testValInt值');
-    let tmpValInt = harNAPI.T2lGetVarInt("testValInt");
+    let tmpValInt: number = harNAPI.T2lGetVarInt("testValInt");
     hilog.info(0x0000, 'testTag', '5.1返回值 =%{public}d', tmpValInt);
 
     hilog.info(0x0000, 'testTag', '5.arkts->lua,start t2lSetVarLong');
     harNAPI.T2lSetVarLong("testValLong", 1234567890);
     hilog.info(0x0000, 'testTag', '5.arkts->lua,start t2lGetVarLong,获取lua中testValLong值');
-    let tmpValLong = harNAPI.T2lGetVarLong("testValLong");
+    let tmpValLong: number = harNAPI.T2lGetVarLong("testValLong");
     hilog.info(0x0000, 'testTag', '5.2返回值 =%{public}d', tmpValLong);
 
     hilog.info(0x0000, 'testTag', '5.arkts->lua,start t2lSetVarDouble');
     harNAPI.T2lSetVarDouble("testValDouble", 3.13456);
     hilog.info(0x0000, 'testTag', '5.arkts->lua,start t2lGetVarDouble,获取lua中testValDouble值');
-    let tmpValDouble = harNAPI.T2lGetVarDouble("testValDouble");
+    let tmpValDouble: number = harNAPI.T2lGetVarDouble("testValDouble");
     console.info(`testTag, 5.3返回值 =${tmpValDouble}`);
 
     hilog.info(0x0000, 'testTag', '5.arkts->lua,start t2lSetVarChar');
     harNAPI.T2lSetVarChar("testValChar", "hello world123");
     hilog.info(0x0000, 'testTag', '5.arkts->lua,start t2lGetVarChar,获取lua中testValChar值');
-    let tmpValChar = harNAPI.T2lGetVarChar("testValChar");
+    let tmpValChar: number = harNAPI.T2lGetVarChar("testValChar");
     hilog.info(0x0000, 'testTag', '5.4返回值 =%{public}s', tmpValChar);
 
     hilog.info(0x0000, 'testTag', '5.arkts->lua,start t2lSetVarBool');
     harNAPI.T2lSetVarBool("testValBool", false);
     hilog.info(0x0000, 'testTag', '5.arkts->lua,start t2lGetVarBool,获取lua中testValBool值');
-    let tmpValBool = harNAPI.T2lGetVarBool("testValBool");
+    let tmpValBool: number = harNAPI.T2lGetVarBool("testValBool");
     hilog.info(0x0000, 'testTag', '5.5返回值 =%{public}d', tmpValBool);
 
     hilog.info(0x0000, 'testTag', '6.arkts->lua,start t2lSetTableInt');
@@ -98,7 +98,7 @@ export function UnitTest(context:CanvasRenderingContext2D, canvasWidth:number, c
     hilog.info(0x0000, 'testTag', '8.测试arkts->lua接口,无返回值');
     harNAPI.T2lCallFunction("testLuaHelloWorld");
 
-    hilog.info(0x0000, 'testTag', '8.测试arkts->lua接口,有返回值');
-    let c = harNAPI.T2lCallFunction("testcallback", 100, 200);
-    hilog.info(0x0000, 'testTag', '8.返回值 =%{public}d', c);
+    hilog.info(0x0000, 'testTag', '8.测试arkts->lua接口,无返回值');
+    harNAPI.T2lCallFunction("testcallback", 100, 200);
+    hilog.info(0x0000, 'testTag', '8.返回值 =%{public}d');
 }

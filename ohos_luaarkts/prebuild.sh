@@ -17,7 +17,7 @@
 ROOT_DIR=$(pwd)
 API_VERSION=12                                                              # 三方库对应API版本，用于记录SDK路径,必须和"compileSdkVersion"字段表示的API版本保持一致
 SDK_DIR=$ROOT_DIR/../../ohos-sdk-$API_VERSION/linux/$API_VERSION            # SDK路径（流水线环境中SDK路径）
-LYCIUM_TOOLS_URL=https://gitee.com/openharmony-sig/tpc_c_cplusplus.git
+LYCIUM_TOOLS_URL=https://gitcode.com/openharmony-sig/tpc_c_cplusplus.git
 LYCIUM_ROOT_DIR=$ROOT_DIR/tpc_c_cplusplus
 LYCIUM_TOOLS_DIR=$LYCIUM_ROOT_DIR/lycium
 LYCIUM_THIRDPARTY_DIR=$LYCIUM_ROOT_DIR/thirdparty
@@ -34,10 +34,10 @@ function prepare_lycium_tools()
 {
     local commands=("gcc" "make" "cmake" "pkg-config" "autoconf" "autoreconf" "automake" "patch" "libtool" "autopoint" "gperf" \
     "tcl8.6-dev" "wget" "unzip" "gccgo-go" "flex " "bison" "premake4" "python3" "python3-pip" \
-    "ninja-build" "meson" "sox" "gfortran" "subversion" "build-essential" "module-assistant" " gcc-multilib" \
-    "g++-multilib" "libltdl7-dev" "cabextract" "libboost-all-dev" "libxml2-utils" "gettext" "libxml-libxml-perl" \
+    "ninja-build" "meson" "sox" "gfortran" "subversion" "build-essential" "module-assistant"  \
+    "libltdl7-dev" "cabextract" "libboost-all-dev" "libxml2-utils" "gettext" "libxml-libxml-perl" \
     "libxml2" "libxml2-dev" "libxml-parser-perl" "texinfo" "libtool-bin" "xmlto" "po4a" "yasm" "nasm" "xutils-dev" \
-    "libx11-dev" "xtrans-dev" "gfortran-arm-linux-gnueabi" "gfortran-aarch64-linux-gnu")
+    "libx11-dev" "xtrans-dev" "gfortran-arm-linux-gnueabi" "gfortran-aarch64-linux-gnu" "gcc-multilib" "g++-multilib")
 
     apt update >> /dev/null
 
@@ -59,7 +59,7 @@ function prepare_lycium()
         rm -rf $LYCIUM_ROOT_DIR
     fi
 
-    git clone $LYCIUM_TOOLS_URL -b support_x86 --depth=1
+    git clone $LYCIUM_TOOLS_URL --depth=1
     if [ $? -ne 0 ]
     then
         return 1
@@ -97,7 +97,7 @@ function copy_depends()
 
 function prepare_depends()
 {
-    copy_depends $LYCIUM_COMMUNITY_DIR/$LUAJIT_NAME $LUAJIT_NAME
+    copy_depends $LYCIUM_COMMUNITY_DIR $LUAJIT_NAME
 }
 
 function check_sdk()
@@ -149,8 +149,8 @@ function start_build()
 
 function install_depends()
 {
-    local install_dir=$ROOT_DIR/library/src/main/cpp/thirdparty/
-    mkdir $ROOT_DIR/library/src/main/cpp/thirdparty/
+    local install_dir=$ROOT_DIR/luaarkts/src/main/cpp/thirdparty/
+    mkdir $ROOT_DIR/luaarkts/src/main/cpp/thirdparty/
     cp -arf $LYCIUM_TOOLS_DIR/usr/$LUAJIT_NAME $install_dir/$LUAJIT_NAME
     if [ $? -ne 0 ]
     then
