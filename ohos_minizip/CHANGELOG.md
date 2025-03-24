@@ -1,3 +1,7 @@
+## 1.0.2-rc.1
+
+- Fixed an issue in unzipToDirectory where fs.write was returned without execution
+
 ## 1.0.2-rc.0
 
 - Fix the issue of failed file creation for unzippToDirectory interface decompression

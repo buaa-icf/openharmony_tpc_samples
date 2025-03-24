@@ -47,13 +47,12 @@ export function unzipToDirectory(selectPath: string, targetPath: string, passwor
           let file = fs.openSync(path, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
           let arrBuffer: ArrayBuffer | undefined = minizipEntry.ExtractFileToJS(entryNames[i], password);
           if(arrBuffer != undefined) {
-            fs.write(file.fd, arrBuffer).then((writeLen: number) => {
-
-            }).catch((err: BusinessError) => {
+            try {
+              fs.writeSync(file.fd,arrBuffer)
+            }catch (err){
               reject("fs.write failed: " + entryNames[i])
-            }).finally(() => {
-              fs.closeSync(file);
-            })
+            }
+            fs.closeSync(file);
           } else {
             LogUtil.debug("minizip ExtractFileToJS failed:" + entryNames[i])
           }
