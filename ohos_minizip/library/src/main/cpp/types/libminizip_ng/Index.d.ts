@@ -25,4 +25,21 @@ export class MinizipNative{
   ExtractFileToJS : (entryName : string, password : string) => ArrayBuffer | undefined;
 }
 
+export class MinizipCompressNative{
+  constructor(catchPath : string, zipFilePath : string = "");
+  // 打开文件路径
+  Create : () => number;
+  // 关闭文件路径
+  Close : () => void;
+  // 设置压缩方法
+  SetCompressMethod : (compressMethod : number) => number;
+  // 设置压缩等级
+  SetCompressLevel : (compressLevel : number) => number;
+  // 设置压缩包名
+  SetzipFilePath : (zipFilePath : string) => number
+  // 压缩文件
+  Compress : (entries : Array<string>, password : string = "") => number;
+  // 获取压缩包二进制流
+  CompressToJS : (entries : Array<string>, password : string = "") => ArrayBuffer | undefined;
+}
 

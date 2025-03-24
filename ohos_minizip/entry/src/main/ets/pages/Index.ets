@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import { MinizipNative, unzipToDirectory } from '@ohos/minizip'
+import { MinizipNative, unzipToDirectory, MinizipCompressNative } from '@ohos/minizip'
 import taskpool from '@ohos.taskpool';
 import promptAction from '@ohos.promptAction'
 
@@ -72,6 +72,67 @@ function myAsyncFunction1(selectFilePath: string, targetPath: string, password: 
   });
 }
 
+@Concurrent
+function myAsyncFunctionCompress(selectFilePath: string, targetPath: string[], password: string) {
+  let startTime: number = Date.now();
+  let minizipCompressEntry = new MinizipCompressNative(selectFilePath);
+  if (minizipCompressEntry.Create() == 0) {
+    let arrBuffer = minizipCompressEntry.CompressToJS(targetPath, password);
+    if (arrBuffer != undefined) {
+      console.log('' + arrBuffer.byteLength);
+    } else {
+      console.log('' + arrBuffer);
+      promptAction.showToast({
+        message: 'zip failed',
+        duration: 1000,
+      });
+      return;
+    }
+    promptAction.showToast({
+      message: 'zip success',
+      duration: 1000,
+    });
+  } else {
+    promptAction.showToast({
+      message: 'zip failed',
+      duration: 1000,
+    });
+  }
+  let endTime: number = Date.now();
+  console.log("zip time: " + (endTime - startTime));
+}
+
+@Concurrent
+function myAsyncFunction1Compress(selectFilePath: string, targetPath: string[], password: string) {
+  let startTime: number = Date.now();
+  let minizipCompressEntry = new MinizipCompressNative(selectFilePath, selectFilePath);
+  if (minizipCompressEntry.Create() == 0) {
+    let code : number = minizipCompressEntry.Compress(targetPath, password);
+    if(code == 0){
+      console.log('' + code);
+    } else {
+      console.log('' + code);
+      promptAction.showToast({
+        message: 'zip failed',
+        duration: 1000,
+      });
+      return;
+    }
+    promptAction.showToast({
+      message: 'zip success',
+      duration: 1000,
+    });
+  } else {
+    promptAction.showToast({
+      message: 'zip failed',
+      duration: 1000,
+    });
+  }
+  minizipCompressEntry.Close();
+  let endTime: number = Date.now();
+  console.log("zip time: " + (endTime - startTime));
+}
+
 @Entry
 @Component
 struct Index {
@@ -80,6 +141,11 @@ struct Index {
   @State targetPath: string = getContext().filesDir;
   @State password: string = ""; //测试资源密码： 123456
   @State directory: string = "";
+
+  @State selectFilePathCompress: string = getContext().filesDir + '/test_compress.zip'
+  @State targetPathCompress: string = getContext().filesDir;
+  @State passwordCompress: string = ""; //测试资源密码： 123456
+  @State directoryCompress: string = "";
 
   build() {
     Row() {
@@ -127,6 +193,64 @@ struct Index {
         .onClick(() => {
           this.asyncGet1(this.selectFilePath, this.targetPath + "/" + this.directory, this.password)
         })
+
+        TextInput({ placeholder: $r('app.string.input_password_compress')})
+          .margin(10)
+          .onChange((value: string) => {
+            this.passwordCompress = value;
+          })
+
+        TextInput({ placeholder: $r('app.string.Compress_folder')})
+          .margin(10)
+          .onChange((value: string) => {
+            this.directoryCompress = value;
+          })
+
+        Button() {
+          Text($r('app.string.Compress_toJS'))
+            .fontSize(20)
+            .fontWeight(FontWeight.Bold)
+            .fontColor(Color.White)
+            .maxLines(1)
+            .textAlign(TextAlign.Center)
+
+        }
+        .backgroundColor(Color.Blue)
+        .width("100%")
+        .margin({ right: 8, bottom: 10 })
+        .onClick(() => {
+          let dirarray :string[] = [];
+          let tmparray = this.directoryCompress.split(",");
+          for (let index = 0; index < tmparray.length; index++) {
+            const element = this.targetPathCompress + "/" + tmparray[index];
+            dirarray.push(element);
+          }
+          this.asyncGetCompress(this.targetPathCompress, dirarray, this.passwordCompress);
+        })
+
+        Button() {
+          Text($r('app.string.Compress'))
+            .fontSize(20)
+            .fontWeight(FontWeight.Bold)
+            .fontColor(Color.White)
+            .maxLines(1)
+            .textAlign(TextAlign.Center)
+
+        }
+        .backgroundColor(Color.Blue)
+        .width("100%")
+        .margin({ right: 8 })
+        .onClick(() => {
+          let dirarray :string[] = [];
+          let tmparray = this.directoryCompress.split(",");
+          for (let index = 0; index < tmparray.length; index++) {
+            const element = this.targetPathCompress + "/" + tmparray[index];
+            dirarray.push(element);
+          }
+          this.asyncGet1Compress(this.selectFilePathCompress, dirarray, this.passwordCompress);
+        })
+
+
       }
       .width('100%')
     }
@@ -141,6 +265,18 @@ struct Index {
 
   async asyncGet1(selectFilePath: string, targetPath: string, password: string): Promise<void> {
     let task: taskpool.Task = new taskpool.Task(myAsyncFunction1, selectFilePath, targetPath, password);
+    await taskpool.execute(task);
+    console.info("taskpool: task end");
+  }
+
+  async asyncGetCompress(selectFilePath: string, targetPath: string[], password: string): Promise<void> {
+    let task: taskpool.Task = new taskpool.Task(myAsyncFunctionCompress, selectFilePath, targetPath, password);
+    await taskpool.execute(task);
+    console.info("taskpool: task end");
+  }
+
+  async asyncGet1Compress(selectFilePath: string, targetPath: string[], password: string): Promise<void> {
+    let task: taskpool.Task = new taskpool.Task(myAsyncFunction1Compress, selectFilePath, targetPath, password);
     await taskpool.execute(task);
     console.info("taskpool: task end");
   }
