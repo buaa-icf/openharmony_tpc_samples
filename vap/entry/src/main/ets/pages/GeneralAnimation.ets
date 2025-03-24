@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import { VAPPlayer } from '@ohos/vap';
+import { DownloadData, VAPPlayer } from '@ohos/vap';
 import { systemDateTime } from '@kit.BasicServicesKit';
 import { LogUtil } from '../common/LogUtil';
 import { util } from '@kit.ArkTS';
@@ -54,6 +54,10 @@ struct GeneralAnimation {
     try {
       let opts: Array<MixData> = new Array();
       this.buttonEnabled = false;
+
+      this.vapPlayer?.setDownloadAttribute(50000, (data: DownloadData) => {
+        console.log(`download progress: ${JSON.stringify(data)}`);
+      });
 
       let startTime = systemDateTime.getTime(true)
 

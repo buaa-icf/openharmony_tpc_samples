@@ -14,7 +14,7 @@
  */
 import { AnimConfig, FitType, MixData,
   VAPSpeed,
-  VapState, VideoInfo, VideoMode, XComponentContext } from './DataDeclare';
+  VapState, VideoInfo, VideoMode, XComponentContext, DownloadData } from './DataDeclare';
 
 import { downloadFile } from './HttpReq';
 
@@ -26,6 +26,8 @@ export class VAPPlayer implements XComponentContext {
   private mixData: Array<MixData> = []
   public sandDir = ''
   private id: string = ''
+  private downloadTimeout: number = 60000; // ms
+  private downloadCallback: (data: DownloadData) => void = (data: DownloadData) => {};
 
   constructor(id: string) {
     this.id = id
@@ -54,17 +56,24 @@ export class VAPPlayer implements XComponentContext {
     }
   }
 
+  setDownloadAttribute(dTime: number, downloadProgress?: (data: DownloadData) => void) {
+    this.downloadTimeout = dTime;
+    if (downloadProgress) {
+      this.downloadCallback = downloadProgress;
+    }
+  }
+
   async play(uri: string, mixData?: Array<MixData>, cbFn?: () => void): Promise<void> {
     if (mixData) {
       this.mixData = []
       for (let element of mixData) {
         if (element.imgUri) {
-          element.imgUri = await downloadFile(element.imgUri, this.sandDir)
+          element.imgUri = await downloadFile(element.imgUri, this.downloadTimeout, this.sandDir, this.downloadCallback)
         }
         this.mixData.push(element)
       }
     }
-    this.uri = await downloadFile(uri, this.sandDir)
+    this.uri = await downloadFile(uri, this.downloadTimeout, this.sandDir, this.downloadCallback)
 
     this.jsCbfn = cbFn
     console.log('mPlayOption ' + JSON.stringify(this.mixData))
