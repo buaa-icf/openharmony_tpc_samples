@@ -8,16 +8,16 @@
 ```shell
 ohpm install @ohos/minizip
 ```
-- OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+- OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
 ### 编译运行
 
 本项目依赖minizip_ng库，编译产物.a文件和头文件通过`git submodule`引入，下载代码时需加上`--recursive`参数。
   ```
-  git clone --recursive https://gitee.com/openharmony-tpc/openharmony_tpc_samples.git
+  git clone --recursive https://gitcode.com/openharmony-tpc/openharmony_tpc_samples.git
   ```
 
-如果想要在本地编译minizip_ng，参考[minizip_ng集成到应用hap](https://gitee.com/openharmony-sig/tpc_c_cplusplus/tree/master/thirdparty/minizip-ng)
+如果想要在本地编译minizip_ng，参考[minizip_ng集成到应用hap](https://gitcode.com/openharmony-sig/tpc_c_cplusplus/tree/master/community/minizip-ng)
 
 在cpp目录下新增third_party目录，并将编译生成的库拷贝到该目录下，如下图所示
 
@@ -101,10 +101,10 @@ DevEco Studio: NEXT Developer Beta1-5.0.3.320, SDK: API12(5.0.0.23)
 ````
 
 ## 贡献代码
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
 ## 开源协议
-本项目基于 [Apache License License - v 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ohos_minizip/LICENSE) ，请自由地享受和参与开源。 
+本项目基于 [Apache License License - v 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ohos_minizip/LICENSE) ，请自由地享受和参与开源。 
     
 
 

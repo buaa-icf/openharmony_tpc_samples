@@ -8,16 +8,16 @@ This project provides a decompression library based on minizip_ng.
 ```shell
 ohpm install @ohos/minizip
 ```
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage_en.md).
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md).
 
 ### How to Build
 
 This project depends on the minizip_ng library. The build products, .a file and header file, are imported through **git submodule**. The **--recursive** parameter must be carried in the command used to download the project code.
   ```
-  git clone --recursive https://gitee.com/openharmony-tpc/openharmony_tpc_samples.git
+  git clone --recursive https://gitcode.com/openharmony-tpc/openharmony_tpc_samples.git
   ```
 
-For details about how to build minizip_ng locally, see [Integrating minizip_ng into Your HAP](https://gitee.com/openharmony-sig/tpc_c_cplusplus/tree/master/thirdparty/minizip-ng).
+For details about how to build minizip_ng locally, see [Integrating minizip_ng into Your HAP](https://gitcode.com/openharmony-sig/tpc_c_cplusplus/tree/master/community/minizip-ng).
 
 Add the **third_party** directory to the **cpp** directory, and copy the library generated after compilation to the **third_party** directory.
 
@@ -101,8 +101,8 @@ DevEco Studio: NEXT Developer Beta1-5.0.3.320, SDK: API 12 (5.0.0.23)
 ````
 
 ## How to Contribute
-If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+If you find any problem when using the project, submit an [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
 ## License
-This project is licensed under [Apache License License - v 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ohos_minizip/LICENSE).
+This project is licensed under [Apache License License - v 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ohos_minizip/LICENSE).
     
