@@ -60,6 +60,35 @@ unzipToDirectory(this.selectFilePath, this.targetPath, this.password).then(() =>
 });
 ```
 
+### 将文件压缩成zip包并获取文件内容
+
+```typescript
+import { MinizipCompressNative } from '@ohos/minizip'
+
+let minizipCompressEntry = new MinizipCompressNative(this.selectFilePath);
+if (minizipCompressEntry.Create() == 0) {
+  let arrBuffer = minizipCompressEntry.CompressToJS(this.targetPath, this.password);
+  console.log("Minizip arrBuffer: " + arrBuffer?.byteLength)
+}
+```
+
+1. 使用三方库压缩文件内容到zip包中，并返回至JS。
+2. CompressToJS(entryname, password),压缩指定的文件并将内容返回至JS侧，若文件没有密码参考如下
+
+CompressToJS(entryname, “”)；
+
+### 压缩zip包到磁盘
+
+```typescript
+import { MinizipCompressNative } from '@ohos/minizip'
+
+let minizipCompressEntry = new MinizipCompressNative(this.selectFilePath， this.selectFilePath);
+if (minizipCompressEntry.Create() == 0) {
+  let code : number = minizipCompressEntry.Compress(this.targetPath, this.password);
+  console.log("" + code);
+  minizipCompressEntry.Close();
+}
+```
 
 ## 接口说明
 
@@ -71,6 +100,19 @@ unzipToDirectory(this.selectFilePath, this.targetPath, this.password).then(() =>
 | GetEntryNames      | 无                                                                                | 无                                                                                                                                | Array< string > 获取文件列表，如果调用过SetCharEncoding设置字符编码，则返回的文件名字符串为utf8编码 | 获取文件列表            |
 | ExtractFileToJS    | entryName : string, password : string                                            | entryName：文件名， password：密码                                                                                                       | ArrayBuffer或者undefined 解压文件内容，密码错误或entryName为文件夹名时，返回undefined      | 解压文件内容            |
 | unzipToDirectory   | selectPath: string, targetPath: string, password?: string, charEncoding?: number | selectPath: 待解压文件路径, targetPath: 解压到此路径下, password?: 密码,<br> charEncoding?: 字符编码类型                                               | Promise< string > 是否解压成功                                            | 解压缩文件到文件夹         |
+
+| 接口                  | 参数                                 | 参数说明                                                     | 返回值                                                       | 接口说明                      |
+| --------------------- | ------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ----------------------------- |
+| MinizipCompressNative | catchPath:string, zipFilePath:string | catchPath获取压缩包内容时压缩包暂存路径，zipFilePath压缩包路径 | MinizipCompressNative实例                                    | 创建MinizipCompressNative实例 |
+| Create                | 无                                   | 无                                                           | 当返回值为0时，创建文件成功                                  | 创建zip文件                   |
+| Close                 | 无                                   | 无                                                           | 无返回值                                                     | 关闭zip文件                   |
+| SetCompressMethod     | compressMethod:number                | compressMethod: 压缩方法，可设置为 0(不压缩) 8(Deflate 压缩) 12(Bzip2 压缩) 14(LZMA1 压缩) 93(ZSTD 压缩) 95(XZ 压缩) | 当返回值为0时，设置成功                                      | 设置压缩方法                  |
+| SetCompressLevel      | compressLevel:number                 | compressLevel：压缩等级，可设置为 -1(默认等级) 2(Fast 压缩等级) 6(Mid 压缩等级) 9(Slow 压缩等级) | 当返回值为0时，设置成功                                      | 设置压缩等级                  |
+| SetzipFilePath        | zipFilePath:string                   | zipFilePath：压缩包名                                        | 无返回值。重新设置压缩包名                                   | 设置压缩包名                  |
+| Compress              | entries : Array, password : string   | entries : 需要压缩的文件, password : 密码                    | 当返回值为0时，压缩成功                                      | 压缩文件                      |
+| CompressToJS          | eentries : Array, password : string  | entries：需要压缩的文件， password：密码                     | ArrayBuffer或者undefined 压缩文件内容，密码错误或压缩失败时，返回undefined | 压缩文件并获取文件内容        |
+
+
 
 ## 注意事项
 - 创建minizipNative对象需要传入完整的文件路径:**文件路径**+**文件名**

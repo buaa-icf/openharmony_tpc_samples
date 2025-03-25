@@ -1,3 +1,7 @@
+## 1.0.2-rc.2
+
+- Added the encryption compression interface and the compression to "arrarybuffer" interface
+
 ## 1.0.2-rc.1
 
 - Fixed an issue in unzipToDirectory where fs.write was returned without execution
