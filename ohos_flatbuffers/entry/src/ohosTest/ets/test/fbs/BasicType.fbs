@@ -1,0 +1,18 @@
+// 基本标量类型定义示例
+namespace Example;
+
+table BasicScalars {
+    int8: byte;      // 1字节有符号
+    int16: short;    // 2字节有符号
+    int32: int;      // 4字节有符号
+    int64: long;     // 8字节有符号
+    uint8: ubyte;    // 1字节无符号
+    uint16: ushort;  // 2字节无符号
+    uint32: uint;    // 4字节无符号
+    uint64: ulong;   // 8字节无符号
+    float32: float;  // 4字节浮点
+    float64: double; // 8字节浮点
+    bool: bool;   // 布尔值
+}
+
+root_type BasicScalars;

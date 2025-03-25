@@ -1,0 +1,13 @@
+{
+  "name": "flatbuffers",
+  "version": "1.0.0",
+  "description": "Memory Efficient Serialization Library",
+  "main": "src/main/ets/flatbuffers.ts",
+  "keywords": [
+    "flatbuffers"
+  ],
+  "author": "",
+  "repository": "",
+  "license": "Apache-2.0",
+  "dependencies": {}
+}

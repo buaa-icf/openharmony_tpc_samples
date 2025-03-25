@@ -1,0 +1,33 @@
+// Union类型示例Schema
+namespace Notification;
+
+// 事件类型枚举
+enum EventType : ubyte {
+    Unknown = 0,
+    Message = 1,
+    Status = 2
+}
+
+// 消息事件表
+table MessageEvent {
+    text: string;
+    priority: int;
+}
+
+// 状态事件表
+table StatusEvent {
+    code: ushort;
+    description: string (deprecated);
+}
+
+// 定义Union类型
+union EventUnion { MessageEvent, StatusEvent }
+
+// 主数据结构
+table EventLog {
+    timestamp: long;
+    event_type: EventType;  // 类型标识符
+    event_data: EventUnion;      // Union数据
+}
+
+root_type EventLog;
