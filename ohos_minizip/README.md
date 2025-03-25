@@ -60,6 +60,35 @@ unzipToDirectory(this.selectFilePath, this.targetPath, this.password).then(() =>
 });
 ```
 
+### Compress the file into a ZIP package and retrieve the file content
+
+```typescript
+import { MinizipCompressNative } from '@ohos/minizip'
+
+let minizipCompressEntry = new MinizipCompressNative(this.selectFilePath);
+if (minizipCompressEntry.Create() == 0) {
+  let arrBuffer = minizipCompressEntry.CompressToJS(this.targetPath, this.password);
+  console.log("Minizip arrBuffer: " + arrBuffer?.byteLength)
+}
+```
+
+1. Use a third-party library to compress file contents into a zip package and return the result to JS.
+2. CompressToJS(entryname, password),Compresses the specified file(s) and returns the content to the JS side. If the file has no password, pass an empty string, e.g.:
+
+CompressToJS(entryname, “”)；
+
+### Compress the ZIP package to disk
+
+```typescript
+import { MinizipCompressNative } from '@ohos/minizip'
+
+let minizipCompressEntry = new MinizipCompressNative(this.selectFilePath， this.selectFilePath);
+if (minizipCompressEntry.Create() == 0) {
+  let code : number = minizipCompressEntry.Compress(this.targetPath, this.password);
+  console.log("" + code);
+  minizipCompressEntry.Close();
+}
+```
 
 ## Available APIs
 
@@ -71,6 +100,17 @@ unzipToDirectory(this.selectFilePath, this.targetPath, this.password).then(() =>
 | GetEntryNames    | N/A                                                          | N/A                                                          | **Array\<string>**: list of files obtained. If **SetCharEncoding** has been called to set the character encoding type, the file name string encoded in UTF-8 format is returned.| Obtains the file list.         |
 | ExtractFileToJS  | entryName : string, password : string                        | **entryName**: file name.<br>**password**: password.                          | **ArrayBuffer** or **undefined**: decompressed file content. If the password is incorrect or **entryName** is a folder name, **undefined** is returned.| Decompresses a file.         |
 | unzipToDirectory | selectPath: string, targetPath: string, password?: string, charEncoding?: number | **selectPath**: path of the file to decompress.<br>**targetPath**: path to which the file is decompressed.<br>**password?**: password.<br>**charEncoding?**: character encoding format. | **Promise\< string >**: whether the file is decompressed successfully.                              | Decompresses a file to a folder.   |
+
+| API                   | Parameter                            | Parameter Description                                        | Return Value                                                 | API Description                          |
+| --------------------- | ------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ---------------------------------------- |
+| MinizipCompressNative | catchPath:string, zipFilePath:string | catchPath:Temporary storage path for the zip content，zipFilePath:Path to the zip file | MinizipCompressNative instance                               | Creates a MinizipCompressNative instance |
+| Create                | N/A                                  | N/A                                                          | Returns `0` on successful file creation                      | Creates a zip file                       |
+| Close                 | N/A                                  | N/A                                                          | N/A                                                          | Closes the zip file                      |
+| SetCompressMethod     | compressMethod:number                | compressMethod: Compression method，The value can be 0(No compression) 8(Deflate compression) 12(Bzip2 compression) 14(LZMA1 compression) 93(ZSTD compression) 95(XZ compression) | Returns `0` on success                                       | Sets the compression method              |
+| SetCompressLevel      | compressLevel:number                 | compressLevel：Compression level，The value can be -1(Default compression  level) 2(Fast compression  level) 6(Mid compression  level) 9(Slow compression  level) | Returns `0` on success                                       | Sets the compression level               |
+| SetzipFilePath        | zipFilePath:string                   | zipFilePath：Name of the zip file                            | N/A                                                          | Sets the zip file name                   |
+| Compress              | entries : Array, password : string   | entries : Files to compress, password : Password             | Returns `0` on success                                       | Compresses files                         |
+| CompressToJS          | entries : Array,  password : string  | entries :Files to compress， password：Password              | Returns an `ArrayBuffer` (compressed data) or `undefined` (if failed or wrong password) | Compresses files and retrieves content.  |
 
 ## Precautions
 - To create a **minizipNative** object, you must pass in a complete file path, which consists of the file path and file name.
