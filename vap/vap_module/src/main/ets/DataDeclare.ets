@@ -158,5 +158,9 @@ export interface XComponentContext {
   setVideoMode(videoMode: VideoMode, id?: string): void
 
   setSpeed(speed: VAPSpeed, id?: string): void
-}
-;
+};
+
+export class DownloadData {
+  receiveSize: number = 0;
+  totalSize: number = 0;
+};

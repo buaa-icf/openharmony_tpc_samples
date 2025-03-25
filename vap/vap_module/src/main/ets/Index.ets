@@ -23,7 +23,8 @@ import {
   XComponentContext,
   VAPColor,
   VAPTextAlign,
-  VAPFontWeight
+  VAPFontWeight,
+  DownloadData
 } from './DataDeclare';
 import { LogUtil } from './LogUtil';
 import { downloadFile } from './HttpReq'
@@ -77,6 +78,8 @@ export struct VAPComponent {
   @State containerWidth: number = 0;
   @State containerHeight: number = 0
   @State vapPosition: MaPosition = new MaPosition
+  private downloadTimeout: number = 60000; // ms
+  private downloadCallback: (data: DownloadData) => void = (data: DownloadData) => {};
 
   aboutToDisappear() {
     LogUtil.info('[lifeCycle] VAPComponent aboutToDisappear')
@@ -97,17 +100,24 @@ export struct VAPComponent {
     }
   }
 
+  setDownloadAttribute(dTime: number, downloadProgress?: (data: DownloadData) => void) {
+    this.downloadTimeout = dTime;
+    if (downloadProgress) {
+      this.downloadCallback = downloadProgress;
+    }
+  }
+
   async play(uri: string, mixData?: Array<MixData>, cbFn?: () => void) {
     if (this.isRunning) {
       return
     }
     this.isRunning = true;
 
-    this.uri = await downloadFile(uri, this.sandDir)
+    this.uri = await downloadFile(uri, this.downloadTimeout ,this.sandDir, this.downloadCallback)
     if (mixData) {
       for (let element of mixData) {
         if (element.imgUri) {
-          element.imgUri = await downloadFile(element.imgUri, this.sandDir)
+          element.imgUri = await downloadFile(element.imgUri, this.downloadTimeout, this.sandDir, this.downloadCallback)
         }
         this.mixData.push(element)
       }

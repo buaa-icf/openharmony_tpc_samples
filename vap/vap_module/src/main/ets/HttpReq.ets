@@ -15,6 +15,7 @@
 
 import { http } from '@kit.NetworkKit';
 import fs from '@ohos.file.fs';
+import { DownloadData } from './DataDeclare'
 
 function extractFileName(url: string): string {
   // 使用正则表达式匹配 URL 中的文件名部分
@@ -36,7 +37,7 @@ function writeFile(filePath: string, buf: ArrayBuffer) {
   fs.closeSync(file);
 }
 
-export async function downloadFile(url: string, dir?: string) {
+export async function downloadFile(url: string, downloadTimeout: number, dir?: string, callback?: (data: DownloadData) => void) {
   console.log('enter downloadFile: ' + JSON.stringify(url));
   if(!startsWithHttp(url)) {
     return url;
@@ -53,12 +54,31 @@ export async function downloadFile(url: string, dir?: string) {
 
   let httpRequest = http.createHttp();
   try {
-    let data = await httpRequest.request(url, {
-      method: http.RequestMethod.GET,
-      expectDataType: http.HttpDataType.ARRAY_BUFFER,
+    let res = new ArrayBuffer(0);
+    httpRequest.on('dataReceive', (data: ArrayBuffer) => {
+      const newRes = new ArrayBuffer(res.byteLength + data.byteLength);
+      const resView = new Uint8Array(newRes);
+      resView.set(new Uint8Array(res));
+      resView.set(new Uint8Array(data), res.byteLength);
+      res = newRes;
+    });
+
+    httpRequest.on('dataReceiveProgress', (data: DownloadData) => {
+      if (callback) {
+        callback(data);
+      }
+    });
+
+    await httpRequest.requestInStream(url, {
+        method: http.RequestMethod.GET,
+        expectDataType: http.HttpDataType.ARRAY_BUFFER,
+        readTimeout: downloadTimeout,
+      }).then((data: number) => {
+      console.info('ResponseCode :' + JSON.stringify(data));
+      httpRequest.off('dataReceive');
+      httpRequest.off('dataReceiveProgress');
     })
-    let buf:ArrayBuffer = data.result as ArrayBuffer;
-    writeFile(filePath, buf)
+    writeFile(filePath, res)
   } catch (err) {
     console.error("accessSync failed with error message: " + err.message + ", error code: " + err.code);
     filePath = ''
