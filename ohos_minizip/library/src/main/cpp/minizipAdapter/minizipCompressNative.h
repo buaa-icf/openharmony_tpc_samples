@@ -60,9 +60,6 @@ private:
     bool isDiskCompress_ {true};
 
     void Release();
-    bool isAbsolutePath(const std::string& path);
-    int32_t AddSymlinkFile(const std::string& inputpath);
-    int32_t AddFile(const std::string& inputpath);
     int32_t CompressInternal(const std::vector<std::string>& entries, const std::string& zipFilePath, const std::string& password = "");
     int64_t GetStreamSize(void *stream);
     int32_t CompressToMemory(void *stream, char *buffer, int64_t size);
