@@ -1,0 +1,17 @@
+// 枚举类型示例Schema
+namespace Example;
+
+enum Color : ubyte {
+    Red = 0,
+    Green = 1,
+    Blue = 2,
+    Alpha = 255  // 演示显式赋值
+}
+
+table Shape {
+    id: uint;
+    color: Color;  // 枚举字段
+    visible: bool = true;
+}
+
+root_type Shape;  // 正确声明table为根类型

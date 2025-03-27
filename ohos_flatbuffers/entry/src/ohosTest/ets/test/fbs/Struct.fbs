@@ -1,0 +1,16 @@
+// 结构体示例Schema
+namespace Example;
+
+struct Transform {  // 结构体用于固定数据
+    x: float;
+    y: float;
+    z: float;
+}
+
+table GameObject {  // 根类型必须为table
+    id: uint;
+    pos: Transform;  // 嵌套结构体
+    active: bool = true;
+}
+
+root_type GameObject;  // 正确声明table为根类型
