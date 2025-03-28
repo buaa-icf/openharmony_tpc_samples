@@ -1,7 +1,14 @@
 # flatbuffers
 
 ## 简介
-本软件是移植开源软件 [flatbuffers](https://github.com/google/flatbuffers) 源码在OpenHarmony上进行功能适配，在OpenHarmony上已支持原库flatbuffers的序列化和反序列化功能.
+本软件是移植开源软件 [flatbuffers](https://github.com/google/flatbuffers) (版本:25.2.10) 源码在OpenHarmony上进行功能适配，在OpenHarmony上已支持原库flatbuffers的序列化和反序列化功能.
+
+## 下载安装
+
+```shell
+ohpm install @ohos/flatbuffers
+```
+- OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
 ## 使用说明
 1.定义数据结构：使用.fbs文件定义数据结构。在.fbs文件中，可以使用table、struct、enum等关键字来定义数据模型。  
@@ -29,4 +36,15 @@ flatc --ts monster.fbs
  ```
 3.生成Example.ts和example文件夹
 4.在entry目录下新建文件夹,例如common,把Example.ts和example文件夹的内容复制进来
-5.打开entry/src/main/ets/common/example/person.ts,将引用改为import * as flatbuffers from 'library';
+5.打开entry/src/main/ets/common/example/person.ts,将引用改为import * as flatbuffers from '@ohos/flatbuffers';
+
+## 约束与限制
+在下述版本验证通过：
+
+DevEco Studio: 5.0.11.24, SDK: API16 Release (5.0.4.150)
+
+## 贡献代码
+使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+
+## 开源协议
+本项目基于 [Apache License License - v 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ohos_flatbuffers/LICENSE) ，请自由地享受和参与开源。 

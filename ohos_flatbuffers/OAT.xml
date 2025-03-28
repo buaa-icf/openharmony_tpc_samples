@@ -32,7 +32,7 @@
                     type="filename"/>
                 <filteritem
                     desc="资源文件，不需要添加版权头"
-                    name="*.proto"
+                    name="*.fbs"
                     type="filename"/>
                 <filteritem
                     desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"
@@ -78,7 +78,7 @@
                     type="filename"/>
                 <filteritem
                     desc="资源文件，不需要添加版权头"
-                    name="*.proto"
+                    name="*.fbs"
                     type="filename"/>
 
                 <filteritem
@@ -117,7 +117,7 @@
                     type="filename"/>
                 <filteritem
                     desc="资源文件，不需要添加版权头"
-                    name="*.proto"
+                    name="*.fbs"
                     type="filename"/>
             </filefilter>
         </filefilterlist>

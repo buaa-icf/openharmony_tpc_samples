@@ -6,7 +6,7 @@
   "author": "",
   "license": "",
   "dependencies": {
-    'flatbuffers': 'file:../library'
+    '@ohos/flatbuffers': 'file:../library'
   }
 }
 

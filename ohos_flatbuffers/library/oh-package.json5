@@ -1,13 +1,13 @@
 {
-  "name": "flatbuffers",
+  "name": "@ohos/flatbuffers",
   "version": "1.0.0",
   "description": "Memory Efficient Serialization Library",
   "main": "src/main/ets/flatbuffers.ts",
   "keywords": [
     "flatbuffers"
   ],
-  "author": "",
-  "repository": "",
+  "author": "ohos_tpc",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_flatbuffers",
   "license": "Apache-2.0",
   "dependencies": {}
 }
