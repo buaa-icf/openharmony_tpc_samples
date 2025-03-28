@@ -115,8 +115,6 @@ private:
     VDecSignal *signal_ = nullptr;
 
     std::atomic<bool> isStop_{false};
-    std::atomic<bool> isVideoEnd_{false};
-    std::atomic<bool> isAudioEnd_{false};
     std::atomic<bool> isStarted_{false};
     std::atomic<bool> isReleased_{false};
     std::atomic<bool> isVideoEndOfFile_{false};

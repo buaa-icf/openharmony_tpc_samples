@@ -106,6 +106,8 @@ static void OnSurfaceDestroyedCB(OH_NativeXComponent *component, void *window)
         render->player_->NoticeDestroyed();
     }
     PluginRender::Release(id);
+    render->deleteRenderCallback_(id);
+    PluginRender::m_instance.erase(id);
 }
 
 static void DispatchTouchEventCB(OH_NativeXComponent *component, void *window)
@@ -163,8 +165,12 @@ PluginRender::PluginRender(std::string &id)
     renderCallback->DispatchTouchEvent = DispatchTouchEventCB;
 }
 
-std::shared_ptr<PluginRender> PluginRender::GetInstance(std::string &id)
+std::shared_ptr<PluginRender> PluginRender::GetInstance(std::string &id, bool onlyFind)
 {
+    if (onlyFind) {
+        return m_instance.find(id) == m_instance.end() ? nullptr : m_instance[id];
+    }
+
     if (m_instance.find(id) == m_instance.end()) {
         std::shared_ptr<PluginRender> instance = std::make_shared<PluginRender>(id);
         m_instance[id] = instance;
@@ -226,7 +232,7 @@ napi_value PluginRender::Pause(napi_env env, napi_callback_info info)
     std::string id = resData.get();
 
     LOGD("Pause render id:%{public}s", id.c_str());
-    std::shared_ptr<PluginRender>render = PluginRender::GetInstance(id);
+    std::shared_ptr<PluginRender> render = PluginRender::GetInstance(id);
     if (render) {
         render->player_->PauseAndResume();
     }
@@ -245,7 +251,7 @@ napi_value PluginRender::Stop(napi_env env, napi_callback_info info)
     NVal nVal(env, v1);
     auto [succ, resData, length] = nVal.ToUTF8String();
     std::string id = resData.get();
-    std::shared_ptr<PluginRender>render = PluginRender::GetInstance(id);
+    std::shared_ptr<PluginRender> render = PluginRender::GetInstance(id);
     if (render && render->player_) {
         render->player_->Stop();
     }
@@ -266,7 +272,7 @@ napi_value PluginRender::SetLoop(napi_env env, napi_callback_info info)
     std::string id = resData.get();
     
     LOGD("SetLoop render id:%{public}s", id.c_str());
-    std::shared_ptr<PluginRender>render = PluginRender::GetInstance(id);
+    std::shared_ptr<PluginRender> render = PluginRender::GetInstance(id);
     if (render) {
         napi_value v1 = funcArg.GetArg(NARG_POS::FIRST);
         NVal nVal(env, v1);
@@ -313,7 +319,7 @@ napi_value PluginRender::GetVideoInfo(napi_env env, napi_callback_info info)
     auto [jsIdSucc, jsIdResData, jsIdLength] = jsIdVal.ToUTF8String();
     std::string id = jsIdResData.get();
 
-    std::shared_ptr<PluginRender>render = PluginRender::GetInstance(id);
+    std::shared_ptr<PluginRender> render = PluginRender::GetInstance(id);
     if (!render) {
         LOGE("get env error");
         return nullptr;
@@ -360,7 +366,7 @@ napi_value PluginRender::SetFitType(napi_env env, napi_callback_info info)
     auto [jsIdSucc, jsIdResData, jsIdLength] = jsIdVal.ToUTF8String();
     std::string id = jsIdResData.get();
     
-    std::shared_ptr<PluginRender>render = PluginRender::GetInstance(id);
+    std::shared_ptr<PluginRender> render = PluginRender::GetInstance(id);
     if (!render) {
         LOGE("Not get render");
         return nullptr;
@@ -399,7 +405,7 @@ napi_value PluginRender::SetVideoMode(napi_env env, napi_callback_info info)
     auto [jsIdSucc, jsIdResData, jsIdLength] = jsIdVal.ToUTF8String();
     std::string id = jsIdResData.get();
 
-    std::shared_ptr<PluginRender>render = PluginRender::GetInstance(id);
+    std::shared_ptr<PluginRender> render = PluginRender::GetInstance(id);
     if (!render) {
         LOGE("Not get render");
         return nullptr;
@@ -438,7 +444,7 @@ napi_value PluginRender::SetSpeed(napi_env env, napi_callback_info info)
     auto [jsIdSucc, jsIdResData, jsIdLength] = jsIdVal.ToUTF8String();
     std::string id = jsIdResData.get();
 
-    std::shared_ptr<PluginRender>render = PluginRender::GetInstance(id);
+    std::shared_ptr<PluginRender> render = PluginRender::GetInstance(id);
     if (!render) {
         LOGE("Not get render");
         return nullptr;
@@ -749,6 +755,10 @@ void Callback(void *asyncContext)
                 napi_value res = nullptr;
                 napi_call_function(context->env, nullptr, callback, 1, &rev, &res);
             }
+
+            if (context->vapState == VapState::UNKNOWN) {
+                napi_delete_reference(context->env, context->callbackRef);
+            }
             napi_close_handle_scope(context->env, scope);
             delete context;
             delete work;
@@ -795,7 +805,7 @@ napi_value PluginRender::Play(napi_env env, napi_callback_info info)
         return nullptr;
     }
 
-    std::shared_ptr<PluginRender>render = PluginRender::GetInstance(id);
+    std::shared_ptr<PluginRender> render = PluginRender::GetInstance(id);
     if (render) {
         std::string uri = str;
         if (uri.empty()) {
@@ -893,7 +903,7 @@ napi_value PluginRender::Off(napi_env env, napi_callback_info info)
         LOGE("GetXComponentId error");
         return nullptr;
     }
-    std::shared_ptr<PluginRender>render = PluginRender::GetInstance(id);
+    std::shared_ptr<PluginRender> render = PluginRender::GetInstance(id);
     if (render) {
         if (render->player_->IsRunning()) {
             LOGE("the player is running...plz call this func before play.");
@@ -920,7 +930,7 @@ napi_value PluginRender::Off(napi_env env, napi_callback_info info)
 
 void PluginRender::Release(std::string &id)
 {
-    std::shared_ptr<PluginRender>render = PluginRender::GetInstance(id);
+    std::shared_ptr<PluginRender> render = PluginRender::GetInstance(id);
     if (nullptr != render) {
         render->surfaceDestroyed_ = true;
     }

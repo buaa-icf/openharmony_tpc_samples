@@ -36,11 +36,11 @@ using namespace std::chrono_literals;
 Player::~Player()
 {
     callbackAll_ = nullptr;
-    for (auto it = callbackRefs_.begin(); it != callbackRefs_.end();) {
-        napi_delete_reference(env_, it->second);
-        it = callbackRefs_.erase(it);
+    Stop();
+    StartRelease();
+    if (renderThread_ && renderThread_->joinable()) {
+        renderThread_->join();
     }
-    callbackRefs_.clear();
 }
 
 static int32_t OpenFile(VAPInfo &info)
@@ -95,8 +95,6 @@ void Player::InitControlSignal()
     }
     sampleInfo_.frameInterval = MICROSECOND / int64_t(sampleInfo_.frameRate);
     isReleased_ = false;
-    isAudioEnd_ = false;
-    isVideoEnd_ = false;
     isStop_ = false;
     isPause_ = false;
     isVideoEndOfFile_ = false;
@@ -189,12 +187,14 @@ int32_t Player::Start()
             ReleaseAudio();
             return AV_ERR_UNKNOWN;
         }
-    } else {
-        isAudioEnd_ = true;
     }
-    
+
     decInputThread_ = std::make_unique<std::thread>(&Player::DecInputThread, this);
     decOutputThread_ = std::make_unique<std::thread>(&Player::DecOutputThread, this);
+
+    if (renderThread_ && renderThread_->joinable()) {
+        renderThread_->join();
+    }
     renderThread_ = std::make_unique<std::thread>(&Player::RenderThread, this);
     if (decInputThread_ == nullptr || decOutputThread_ == nullptr || renderThread_ == nullptr) {
         LOGE("Create thread failed");
@@ -206,18 +206,12 @@ int32_t Player::Start()
 
 void Player::StartRelease()
 {
-    LOGD("StartRelease %{public}d %{public}d", isVideoEnd_.load(), isAudioEnd_.load());
-
     std::unique_lock<std::mutex> lock(mutex_);
     if (isReleased_) return;
-    
-    if (!isVideoEnd_ || !isAudioEnd_) return;
-    
-    if (!isReleased_) {
-        CallBackJS(VapState::COMPLETE, CallbackType::STATE_CHANGE);
-        ReleaseAudio();
-        Release();
-    }
+
+    CallBackJS(VapState::COMPLETE, CallbackType::STATE_CHANGE);
+    ReleaseAudio();
+    Release();
 }
 
 void Player::ReleaseAudio()
@@ -237,7 +231,7 @@ void Player::ReleaseAudio()
     }
     
     if (decAudioOutputThread_ && decAudioOutputThread_->joinable()) {
-        decAudioOutputThread_->detach();
+        decAudioOutputThread_->join();
         decAudioOutputThread_.reset();
     }
 
@@ -263,11 +257,6 @@ void Player::Release()
         decOutputThread_->join();
     }
     decOutputThread_.reset();
-
-    if (renderThread_ && renderThread_->joinable()) {
-        renderThread_->detach();
-        renderThread_.reset();
-    }
     
     if (videoDecoder_ != nullptr) {
         videoDecoder_->Release();
@@ -281,10 +270,6 @@ void Player::Release()
     if (sampleInfo_.inputFd != -1) {
         close(sampleInfo_.inputFd);
         sampleInfo_.inputFd = -1;
-    }
-    if (eglCore_ != nullptr) {
-        eglCore_->Release();
-        eglCore_.reset();
     }
     auto emptyQueue = std::queue<std::vector<uint8_t>>();
     renderQueue_.swap(emptyQueue);
@@ -313,6 +298,7 @@ void Player::ResetControlSignal()
         context->callbackRef = callbackRefs_[CallbackType::PLAY_DONE];
         context->env = env_;
         callbackAll_(context);
+        callbackRefs_.erase(CallbackType::PLAY_DONE);
         LOGD("play end callback");
     }
 }
@@ -385,7 +371,6 @@ void Player::RenderThread()
         }
     }
     LOGW("RenderThread exit");
-    isVideoEnd_ = true;
     if (eglCore_ != nullptr) {
         eglCore_->Release();
         eglCore_.reset();
@@ -584,9 +569,7 @@ void Player::DecAudioOutputThread()
             return audioSignal_->renderQueue.size() < AUDIO_CACHE * bufferInfo.attr.size;
         });
     }
-    isAudioEnd_ = true;
     OH_AudioRenderer_Stop(audioRenderer_);
-    StartRelease();
 }
 
 void Player::InitAudioPlayer(AudioInitData audioInitData)

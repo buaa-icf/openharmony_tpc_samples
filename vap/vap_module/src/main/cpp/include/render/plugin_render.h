@@ -42,7 +42,7 @@ public:
         }
         m_instance.clear();
     }
-    static std::shared_ptr<PluginRender> GetInstance(std::string &id);
+    static std::shared_ptr<PluginRender> GetInstance(std::string &id, bool onlyFind = true);
     static void Release(std::string &id);
     static std::string GetXComponentId(napi_env env, napi_callback_info info);
     
@@ -65,6 +65,7 @@ public:
     void ParseCallback(napi_ref &callbackRef, napi_env env, napi_value val, std::string type);
     
     std::string m_id;
+    std::function<void(const std::string&)> deleteRenderCallback_ {nullptr};
     void *m_window = nullptr;
     OH_NativeXComponent *m_component = nullptr;
     uint64_t m_width;

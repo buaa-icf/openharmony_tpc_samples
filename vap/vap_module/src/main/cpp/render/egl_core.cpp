@@ -420,6 +420,11 @@ void EGLCore::Release()
         LOGE("Release eglDestroyContext failed");
     }
 
+    if ((nullptr == m_eglDisplay) || !eglMakeCurrent(m_eglDisplay, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT)) {
+        LOGE("eglMakeCurrent failed");
+    }
+
     if ((nullptr == m_eglDisplay) || (!eglTerminate(m_eglDisplay))) {
+        LOGE("Release eglTerminate failed");
     }
 }

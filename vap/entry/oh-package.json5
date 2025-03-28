@@ -10,7 +10,7 @@
   },
   "description": "example description",
   "main": "",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "dependencies": {
     "@ohos/vap": "file:../vap_module"
   }
