@@ -25,7 +25,7 @@
 
 import EpubResource from "../domain/EpubResource"
 import { DOMParser } from '@ohos/xmldom'
-import util from '@ohos.util';
+import { util } from "@kit.ArkTS"
 
 class ResourceUtil {
 
@@ -33,10 +33,10 @@ class ResourceUtil {
 
 	public static createResource(href:string, data:Uint8Array) {
 		console.debug("createResource-------------"+href)
-		var textDecoder = new util.TextDecoder("utf-8",{ignoreBOM:true});
+		let textDecoder = new util.TextDecoder()
 		console.debug("createResource----------textDecoder---"+textDecoder)
 		console.debug("createResource----==="+href+"----strData---start===="+data)
-		let strData = textDecoder.decode(data);
+		let strData = textDecoder.decodeToString(data);
 		console.debug("createResource-----==="+href+"---strData--end===="+strData)
 		return new EpubResource(href, null, null, data, strData)
 	}

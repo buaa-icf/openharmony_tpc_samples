@@ -1,3 +1,6 @@
+## 2.0.4
+- Fixed the problem that some images failed to be parsed
+
 ## 2.0.3
 - 修复部分文件解析失败
 
