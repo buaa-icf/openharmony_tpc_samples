@@ -1,6 +1,8 @@
 {
   "modelVersion": "5.0.0",
+  "name": "@ohos/net-snmp",
   "description": "Please describe the basic information.",
+  "version": "1.0.1",
   "dependencies": {
   },
   "devDependencies": {
