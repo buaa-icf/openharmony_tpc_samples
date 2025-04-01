@@ -1,9 +1,14 @@
 {
   "name": "@ohos/net-snmp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "this is a implements versions 1, 2c and 3 of the Simple Network Management Protocol (SNMP).",
   "main": "Index.js",
-  "author": "hihope",
+  "homepage": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples.git",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples.git",
+  "author": "ohos_tpc",
+  "ohos": {
+    "org": "opensource"
+  },
   "keywords": [
     "OpenHarmony",
     "net-snmp",
