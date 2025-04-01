@@ -1,3 +1,7 @@
+## 2.1.0
+
+- Release 2.1.0 official version
+
 ## 2.1.0-rc.2
 
 - Code obfuscation
