@@ -1,3 +1,6 @@
+## 2.0.5
+- Fixed the TS syntax error
+
 ## 2.0.4
 - Fixed the problem that some images failed to be parsed
 

@@ -27,15 +27,21 @@ import EpubResource from "./EpubResource"
 import ZipFile from "./Resources"
 import InputStream from "./Resources"
 
-
+/**
+ * @deprecated
+ */
 class ResourceInputStream {
     constructor() {
     }
 
-    public readonly zipFile: ZipFile;
-
+    public static zipFile: ZipFile;
+    /**
+     * @deprecated
+     * @param input
+     * @param zipFile
+     */
     public static ResourceInputStream(input: InputStream, zipFile: ZipFile) {
-        this.super(input);
+
         this.zipFile = zipFile;
     }
 
