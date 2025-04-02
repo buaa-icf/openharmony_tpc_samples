@@ -7,7 +7,7 @@ jsonschema是一个轻便易用的JSON模式验证器，它全量支持到draft-
 ```shell
 ohpm install @ohos/jsonschema 
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
 ## 使用说明
 安装jsonschema之后，在需要使用的界面先导入jsonschema并初始化
@@ -314,7 +314,7 @@ let result1 = v1.validate("Name", schema, { allowUnknownAttributes: false });
 | ValidationError.toString() | 暂无                                                         | string                  | ValidationError对象转化为字符串     |
 | shift()                    | 暂无                                                         | T \| undefined          | 移除并返回添加的验证规则            |
 
-更多模块的使用可参考[官方文档](https://github.com/tdegrunt/jsonschema/blob/master/README.md)，[单元测试用例](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/json-schema/TEST.md)详情可参考
+更多模块的使用可参考[官方文档](https://github.com/tdegrunt/jsonschema/blob/master/README.md)，[单元测试用例](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/json-schema/TEST.md)详情可参考
 
 ## 约束与限制
 在下述版本验证通过：
@@ -334,7 +334,7 @@ let result1 = v1.validate("Name", schema, { allowUnknownAttributes: false });
 ````
 
 ## 贡献代码
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) ，当然，也非常欢迎发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 共建。
+使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) ，当然，也非常欢迎发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) 共建。
 
 ## 开源协议
-本项目基于 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/json-schema/LICENSE) ，请自由地享受和参与开源。
+本项目基于 [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/json-schema/LICENSE) ，请自由地享受和参与开源。

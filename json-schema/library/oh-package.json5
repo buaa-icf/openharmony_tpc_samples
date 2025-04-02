@@ -13,8 +13,8 @@
   },
   "main": "index.ts",
   "type": "module",
-  "repository": "https://gitee.com/zdy09/openharmony_tpc_samples/tree/master/json-schema",
-  "version": "2.0.1",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/json-schema",
+  "version": "2.0.2",
   "dependencies": {},
   "tags": [
     "Tool"

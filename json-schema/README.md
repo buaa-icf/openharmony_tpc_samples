@@ -7,7 +7,7 @@ jsonschema is a lightweight and easy-to-use JSON schema validator that fully sup
 ```shell
 ohpm install @ohos/jsonschema 
 ```
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ## How to Use
 After jsonschema is installed, import jsonschema on the target page and initialize it.
@@ -314,7 +314,7 @@ By default, jsonschema ignores unknown schema keywords, and validation failures 
 | ValidationError.toString() | N/A                                                        | string                  | Converts this **ValidationError** object to a string.    |
 | shift()                    | N/A                                                        | T \| undefined          | Removes and returns the added validation rule.           |
 
-For more information, see [jsonschema](https://github.com/tdegrunt/jsonschema/blob/master/README.md) and [Unit Test Cases](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/json-schema/TEST.md).
+For more information, see [jsonschema](https://github.com/tdegrunt/jsonschema/blob/master/README.md) and [Unit Test Cases](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/json-schema/TEST.md).
 
 ## Constraints
 This project has been verified in the following versions:
@@ -334,7 +334,7 @@ This project has been verified in the following versions:
 ````
 
 ## How to Contribute
-If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+If you find any problem when using the project, submit an [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
 ## License
-This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/json-schema/LICENSE).
+This project is licensed under [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/json-schema/LICENSE).
