@@ -13,7 +13,7 @@
   "main": "index.ets",
   "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/jwks-rsa",
   "type": "module",
-  "version": "2.0.1-rc.0",
+  "version": "2.0.1",
   "dependencies": {
     "limiter": "^1.1.5"
   },
