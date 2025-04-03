@@ -63,6 +63,8 @@ int32_t MinizipCompressNative::SetCompressLevel(int16_t compressLevel)
 int32_t MinizipCompressNative::SetzipFilePath(const std::string& zipFilePath)
 {
     zipFilePath_ = zipFilePath;
+    
+    return 0;
 }
 
 int32_t MinizipCompressNative::Create()

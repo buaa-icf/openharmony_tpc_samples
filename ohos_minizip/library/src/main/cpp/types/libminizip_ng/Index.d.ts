@@ -36,7 +36,7 @@ export class MinizipCompressNative{
   // 设置压缩等级
   SetCompressLevel : (compressLevel : number) => number;
   // 设置压缩包名
-  SetzipFilePath : (zipFilePath : string) => number
+  SetzipFilePath : (zipFilePath : string) => number;
   // 压缩文件
   Compress : (entries : Array<string>, password : string = "") => number;
   // 获取压缩包二进制流
