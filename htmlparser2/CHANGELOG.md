@@ -1,3 +1,6 @@
+## v1.0.3
+- fix repository from gitee to gitcode in oh-packaage.json5
+
 ## v1.0.2
 - 修复包中缺失parse类型导出文件的问题
 
