@@ -1,3 +1,7 @@
+## v1.0.2
+## chore
+1. fix repository from gitee to gitcode in oh-packaage.json5. 
+
 ## v1.0.1
 ## fixes
 1. Clean up potential buffer objects and close the close service.
