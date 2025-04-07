@@ -8,7 +8,7 @@
 ```shell
 ohpm install @ohos/msgpack
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
 ## 使用说明
 
@@ -96,6 +96,14 @@ expect(result).assertDeepEquals(items);
 |     |---- README.MD  # 安装使用方法                    
 ````
 
+## 关于混淆
+- 代码混淆，请查看[代码混淆简介](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- 如果希望msgpack-javascript库在代码混淆过程中不会被混淆，需要在混淆规则配置文件obfuscation-rules.txt中添加相应的排除规则：
+```
+-keep
+./oh_modules/@ohos/msgpack
+```
+
 ## 约束与限制
 
 在下述版本验证通过：
@@ -105,7 +113,7 @@ expect(result).assertDeepEquals(items);
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples) 共建。
+使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples) 共建。
 
 ## 开源协议
-本项目基于 [ISC License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ohos_msgpack/LICENSE) ，请自由地享受和参与开源。
+本项目基于 [ISC License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ohos_msgpack/LICENSE) ，请自由地享受和参与开源。
