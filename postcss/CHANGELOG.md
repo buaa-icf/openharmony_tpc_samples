@@ -1,3 +1,6 @@
+## 1.0.2
+* Release 1.0.2
+
 ## 1.0.2-rc.1
 * Code obfuscation
 
