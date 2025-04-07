@@ -8,7 +8,7 @@
 ```shell
 ohpm install @ohos/msgpack
 ```
-For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details, see [Installing an OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ## How to Use
 
@@ -112,7 +112,7 @@ MessagePack has been verified only in the following version:
 
 ## How to Contribute
 
-If you find any problem during the use, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples) to us.
+If you find any problem during the use, submit an [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples) to us.
 
 ## License
-This project is licensed under [ISC License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ohos_msgpack/LICENSE).
+This project is licensed under [ISC License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ohos_msgpack/LICENSE).
