@@ -8,14 +8,14 @@
 | :----------- |:---------------|:---------------|
 | Temperature| Converts temperature between degrees Celsius and Fahrenheit.|None|
 | [Coordinate](https://github.com/star-nodejs/gcoord)| Converts coordinates to solve the problem of inconsistent coordinate systems used by different Internet maps.|ohpm install gcoord|
-| [Country code](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-sim.md#simgetisocountrycodeforsim) | Obtains the country code.|None|
-| [Color](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/arkui-ts/ts-universal-attributes-opacity.md)|Obtains the color.   |ohpm install randomcolor|
-| [HAP](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-bundleManager-bundleInfo.md#reqpermissiondetail) |Obtains and manipulates HAPs.    |None|
+| [Country code](https://gitcode.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-sim.md#simgetisocountrycodeforsim) | Obtains the country code.|None|
+| [Color](https://gitcode.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/arkui-ts/ts-universal-attributes-opacity.md)|Obtains the color.   |ohpm install randomcolor|
+| [HAP](https://gitcode.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-bundleManager-bundleInfo.md#reqpermissiondetail) |Obtains and manipulates HAPs.    |None|
 | [Regular expression](https://github.com/validatorjs/validator.js)|Validates regular expressions.    |ohpm install validator |
 | [Memory cache](https://github.com/ptarjan/node-cache)|Reads and writes data in the cache.    | ohpm install memory-cache |
 |Time|Formats date and time.    | ohpm i time-ampm <br>ohpm i leap-year |
-| [Data type](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/arkui-ts/ts-pixel-units.md)|Converts between basic data types.    |None|
-| [Image](https://gitee.com/openharmony-tpc/ImageKnife)|Processes images.    |ohpm install @ohos/imageknife <br> ohpm i imtype |
+| [Data type](https://gitcode.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/arkui-ts/ts-pixel-units.md)|Converts between basic data types.    |None|
+| [Image](https://gitcode.com/openharmony-tpc/ImageKnife)|Processes images.    |ohpm install @ohos/imageknife <br> ohpm i imtype |
 
 ## How to Install
 ```shell
@@ -31,7 +31,7 @@ ohpm install @types/imtype@1.0.0  // Install @types/imtype@1.0.0 to prevent impo
 
 
 ```
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 
 ## How to Use
@@ -132,7 +132,7 @@ This module is developed based on [gcoord](https://github.com/star-nodejs/gcoord
 
 #### Obtaining the ISO Country Code Based on the SIM
 
-[getISOCountryCodeForSim(slotId: number, callback: AsyncCallback<string>): void](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/apis/js-apis-sim.md#simgetisocountrycodeforsim
+[getISOCountryCodeForSim(slotId: number, callback: AsyncCallback<string>): void](https://gitcode.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/apis/js-apis-sim.md#simgetisocountrycodeforsim
 )
 
 Obtains the ISO country code of the SIM card in the specified slot. This API uses an asynchronous callback to return the result.
@@ -147,7 +147,7 @@ Obtains the ISO country code of the SIM card in the specified slot. This API use
 
 #### Obtaining the System Region
 
-[static getSystemRegion(): string](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/apis/js-apis-i18n.md#getsystemregion9)
+[static getSystemRegion(): string](https://gitcode.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/reference/apis/js-apis-i18n.md#getsystemregion9)
 
 Obtains the system region. For details about the region, see the **Locale** instance.
 
@@ -254,7 +254,7 @@ randomColor({
 
 #### Obtaining Colors
 
-You can use **$r('sys.type.resource_id')** to [reference a system resource](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/quick-start/resource-categories-and-access.md#%E7%B3%BB%E7%BB%9F%E8%B5%84%E6%BA%90). 
+You can use **$r('sys.type.resource_id')** to [reference a system resource](https://gitcode.com/openharmony/docs/blob/OpenHarmony-3.2-Release/zh-cn/application-dev/quick-start/resource-categories-and-access.md#%E7%B3%BB%E7%BB%9F%E8%B5%84%E6%BA%90). 
 
 - **sys** indicates a system resource. 
 - **type** specifies the resource type, which can be **color**, **float**, **string**, or **media**. 
@@ -268,13 +268,13 @@ Text($r('app.string.message_arrive', "five of the clock"))
 
 #### Setting the Color Opacity
 
-For details, see [Opacity](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/arkui-ts/ts-universal-attributes-opacity.md).
+For details, see [Opacity](https://gitcode.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/arkui-ts/ts-universal-attributes-opacity.md).
 
 **Properties**
 
 | Name     | Type                                    | Description                                      |
 | ------- | ---------------------------------------- | ---------------------------------------- |
-| opacity | number I [Resource](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/arkui-ts/ts-types.md#resource)| Opacity of the color, which ranges from 0 to 1.<br/>The value **1** means opaque, and **0** means completely transparent. When being completely transparent, the component is hidden but still takes up space in the layout.<br>Default value: **1**<br/>**NOTE**<br>A component can inherit the opacity setting from its parent component.<br>This API can be used in ArkTS widgets since API version 9. |
+| opacity | number I [Resource](https://gitcode.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/arkui-ts/ts-types.md#resource)| Opacity of the color, which ranges from 0 to 1.<br/>The value **1** means opaque, and **0** means completely transparent. When being completely transparent, the component is hidden but still takes up space in the layout.<br>Default value: **1**<br/>**NOTE**<br>A component can inherit the opacity setting from its parent component.<br>This API can be used in ArkTS widgets since API version 9. |
 
 ``` ts
 // xxx.ets
@@ -302,7 +302,7 @@ struct OpacityExample {
 
 #### Obtaining Colors Red, Green, and Blue
 
-For details, see [Color](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/arkui-ts/ts-appendix-enums.md).
+For details, see [Color](https://gitcode.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/arkui-ts/ts-appendix-enums.md).
 
 
 | Color                | Value  | Illustration                                                    |
@@ -326,7 +326,7 @@ For details, see [Color](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2
 
 #### Listening for Application Transition from Foreground to Background
 
-[onBackground(): void;](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-app-ability-uiAbility.md#uiabilityonbackground)
+[onBackground(): void;](https://gitcode.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-app-ability-uiAbility.md#uiabilityonbackground)
 
 Called when this ability is switched from the foreground to the background.
 
@@ -341,7 +341,7 @@ class myAbility extends Ability {
 
 #### Listening for Application Transition from Background to Foreground
 
-[onForeground(): void;](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-app-ability-uiAbility.md#uiabilityonforeground)
+[onForeground(): void;](https://gitcode.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-app-ability-uiAbility.md#uiabilityonforeground)
 
 Called when this ability is switched from the background to the foreground.
 
@@ -358,7 +358,7 @@ class myAbility extends Ability {
 
 #### Checking Application Status
 
-[onForeground(): void;](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-app-ability-uiAbility.md#uiabilityonforeground)
+[onForeground(): void;](https://gitcode.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-app-ability-uiAbility.md#uiabilityonforeground)
 
 Called when this ability is switched from the background to the foreground. 
 
@@ -378,7 +378,7 @@ class myAbility extends Ability {
 
 #### Starting an Ability
 
-[startAbility(want: Want, callback: AsyncCallback<void>): void;](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-inner-application-uiAbilityContext.md#uiabilitycontextstartability)
+[startAbility(want: Want, callback: AsyncCallback<void>): void;](https://gitcode.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-inner-application-uiAbilityContext.md#uiabilitycontextstartability)
 
 Starts an ability. This API uses an asynchronous callback to return the result.
 
@@ -420,7 +420,7 @@ try {
 
 #### Terminating an Ability
 
-[terminateSelf(callback: AsyncCallback<void>): void;](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-inner-application-uiAbilityContext.md#uiabilitycontextterminateself)
+[terminateSelf(callback: AsyncCallback<void>): void;](https://gitcode.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-inner-application-uiAbilityContext.md#uiabilitycontextterminateself)
 
 Terminates this ability. This API uses an asynchronous callback to return the result.
 
@@ -443,7 +443,7 @@ this.context.terminateSelf((error) => {
 
 #### Obtaining Ability Information
 
-[queryAbilityInfo(want: Want, abilityFlags: number, userId: number, callback: AsyncCallback<Array<AbilityInfo>>): void;](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-bundleManager.md#bundlemanagerqueryabilityinfo)
+[queryAbilityInfo(want: Want, abilityFlags: number, userId: number, callback: AsyncCallback<Array<AbilityInfo>>): void;](https://gitcode.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-bundleManager.md#bundlemanagerqueryabilityinfo)
 
 Obtains an array of ability information based on the given want, ability flags, and user ID. This API uses an asynchronous callback to return the result.
 
@@ -453,7 +453,7 @@ Obtains an array of ability information based on the given want, ability flags, 
 
 **System capability**: SystemCapability.BundleManager.BundleFramework.Core
 
-[AbilityInfo](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-bundleManager-abilityInfo.md)
+[AbilityInfo](https://gitcode.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-bundleManager-abilityInfo.md)
 
 
 **System capability**: SystemCapability.BundleManager.BundleFramework.Core
@@ -510,7 +510,7 @@ try {
 
 #### Obtaining HAP Information
 
-[getBundleInfo(bundleName: string, bundleFlags: number, userId: number, callback: AsyncCallback<BundleInfo>): void;](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-bundleManager.md#/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-bundleManager-bundleInfo.md)
+[getBundleInfo(bundleName: string, bundleFlags: number, userId: number, callback: AsyncCallback<BundleInfo>): void;](https://gitcode.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-bundleManager.md#/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-bundleManager-bundleInfo.md)
 
 Obtains the bundle information based on the given bundle name, bundle flags, and user ID. This API uses an asynchronous callback to return the result.
 
@@ -522,7 +522,7 @@ No permission is required for obtaining the caller's own information.
 
 **System capability**: SystemCapability.BundleManager.BundleFramework.Core
 
-[BundleInfo](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-bundleManager-bundleInfo.md)
+[BundleInfo](https://gitcode.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-bundleManager-bundleInfo.md)
 
 
 **System capability**: SystemCapability.BundleManager.BundleFramework.Core
@@ -564,7 +564,7 @@ try {
 
 #### Obtaining HAP Signature Information
 
-[BundleInfo](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-bundleManager-bundleInfo.md) includes [SignatureInfo](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-bundleManager-bundleInfo.md), which can be obtained by **getBundleInfo**.
+[BundleInfo](https://gitcode.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-bundleManager-bundleInfo.md) includes [SignatureInfo](https://gitcode.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-bundleManager-bundleInfo.md), which can be obtained by **getBundleInfo**.
 
 **System capability**: SystemCapability.BundleManager.BundleFramework.Core
 
@@ -604,7 +604,7 @@ Obtains information about all bundles based on the given bundle flags and user I
 
 **System capability**: SystemCapability.BundleManager.BundleFramework.Core
 
-[BundleInfo](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-bundleManager-bundleInfo.md)
+[BundleInfo](https://gitcode.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-bundleManager-bundleInfo.md)
 
 ``` javascript
 import bundleManager from '@ohos.bundle.bundleManager';
@@ -813,7 +813,7 @@ console.log(parseInt(str1));// Convert the string 12 to an integer using the def
 
 #### Pixel Unit Utility
 
-[Pixel Unit Conversion](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/arkui-ts/ts-pixel-units.md/#%E5%83%8F%E7%B4%A0%E5%8D%95%E4%BD%8D%E8%BD%AC%E6%8D%A2)
+[Pixel Unit Conversion](https://gitcode.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/arkui-ts/ts-pixel-units.md/#%E5%83%8F%E7%B4%A0%E5%8D%95%E4%BD%8D%E8%BD%AC%E6%8D%A2)
 
 | Name  | Description                                      |
 | ---- | ---------------------------------------- |
@@ -877,11 +877,11 @@ struct Example {
 
 ### Image Utility
 
-This module is developed based on [ImageKnife](https://gitee.com/openharmony-tpc/ImageKnife) [imtype](https://github.com/fatelei/imagetype).
+This module is developed based on [ImageKnife](https://gitcode.com/openharmony-tpc/ImageKnife) [imtype](https://github.com/fatelei/imagetype).
 
 #### Converting a PixelMap to an ArrayBuffer
 
-[readPixelsToBuffer(dst: ArrayBuffer): Promise<void>](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-image.md#readpixelstobuffer7)
+[readPixelsToBuffer(dst: ArrayBuffer): Promise<void>](https://gitcode.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-image.md#readpixelstobuffer7)
 
 Reads the image pixel data and writes the data to an ArrayBuffer. This API uses a promise to return the result. If the pixel map is created in the BGRA_8888 format, the data read is the same as the original data.
 
@@ -925,7 +925,7 @@ image.createPixelMap(color, opts)
 
 #### Obtaining a PixelMap
 
-[writePixels(area: PositionArea): Promise<void>](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-image.md#writepixels7)
+[writePixels(area: PositionArea): Promise<void>](https://gitcode.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-image.md#writepixels7)
 
 Writes the pixels to an area. This API uses a promise to return the result.
 
@@ -945,7 +945,7 @@ pixelmap.readPixels(area).then(() => {
 
 #### Resizing an Image
 
-[scale(x: number, y: number, callback: AsyncCallback<void>): void](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-image.md#scale9)
+[scale(x: number, y: number, callback: AsyncCallback<void>): void](https://gitcode.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-image.md#scale9)
 
 Scales this image based on a given scaling multiple of the width and height. This API uses an asynchronous callback to return the result.
 
@@ -957,7 +957,7 @@ async function Demo() {
 
 #### Cropping an Image
 
-[crop(region: Region, callback: AsyncCallback<void>): void](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-image.md#crop9)
+[crop(region: Region, callback: AsyncCallback<void>): void](https://gitcode.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-image.md#crop9)
 
 Crops this image based on a given size. This API uses an asynchronous callback to return the result.
 
@@ -969,7 +969,7 @@ async function Demo() {
 
 #### Rotating an Image
 
-[rotate(angle: number, callback: AsyncCallback<void>): void](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-image.md#rotate9)
+[rotate(angle: number, callback: AsyncCallback<void>): void](https://gitcode.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-image.md#rotate9)
 
 Rotates this image based on a given angle. This API uses an asynchronous callback to return the result.
 
@@ -987,7 +987,7 @@ pixelmap.rotate(angle, (err) => {
 
 #### Cropping an Image into a Circular Shape
 
-[Crop an image into a circular shape](https://gitee.com/openharmony-tpc/ImageKnife#%E5%9B%BE%E7%89%87%E5%8F%98%E6%8D%A2%E7%9B%B8%E5%85%B3).
+[Crop an image into a circular shape](https://gitcode.com/openharmony-tpc/ImageKnife#%E5%9B%BE%E7%89%87%E5%8F%98%E6%8D%A2%E7%9B%B8%E5%85%B3).
 
 ``` javascript
 import AbilityStage from "@ohos.application.AbilityStage"
@@ -1005,7 +1005,7 @@ request.cropCircle()
 
 #### Applying Rounded Corners to an Image
 
-[Apply rounded corners to an image](https://gitee.com/openharmony-tpc/ImageKnife#%E5%9B%BE%E7%89%87%E5%8F%98%E6%8D%A2%E7%9B%B8%E5%85%B3).
+[Apply rounded corners to an image](https://gitcode.com/openharmony-tpc/ImageKnife#%E5%9B%BE%E7%89%87%E5%8F%98%E6%8D%A2%E7%9B%B8%E5%85%B3).
 
 ``` javascript
 import AbilityStage from "@ohos.application.AbilityStage"
@@ -1023,7 +1023,7 @@ request.roundedCorners()
 
 #### Adding Rounded Borders
 
-[Add rounded borders](https://gitee.com/openharmony-tpc/ImageKnife#1%E5%8A%A0%E8%BD%BD%E6%99%AE%E9%80%9A%E5%9B%BE%E7%89%87).
+[Add rounded borders](https://gitcode.com/openharmony-tpc/ImageKnife#1%E5%8A%A0%E8%BD%BD%E6%99%AE%E9%80%9A%E5%9B%BE%E7%89%87).
 
 ``` javascript
 import {ImageKnifeComponent} from '@ohos/imageknife'
@@ -1060,7 +1060,7 @@ struct Index {
 
 #### Applying a Grayscale Effect to an Image
 
-[Apply grayscale transformation to an image](https://gitee.com/openharmony-tpc/ImageKnife#%E5%9B%BE%E7%89%87%E5%8F%98%E6%8D%A2%E7%9B%B8%E5%85%B3).
+[Apply grayscale transformation to an image](https://gitcode.com/openharmony-tpc/ImageKnife#%E5%9B%BE%E7%89%87%E5%8F%98%E6%8D%A2%E7%9B%B8%E5%85%B3).
 
 ``` javascript
 import AbilityStage from "@ohos.application.AbilityStage"
@@ -1078,7 +1078,7 @@ request.grayscale()
 
 #### Blurring an Image
 
-[Blur an image](https://gitee.com/openharmony-tpc/ImageKnife#%E5%9B%BE%E7%89%87%E5%8F%98%E6%8D%A2%E7%9B%B8%E5%85%B3).
+[Blur an image](https://gitcode.com/openharmony-tpc/ImageKnife#%E5%9B%BE%E7%89%87%E5%8F%98%E6%8D%A2%E7%9B%B8%E5%85%B3).
 
 ``` javascript
 import AbilityStage from "@ohos.application.AbilityStage"
@@ -1107,15 +1107,15 @@ imagePackerApi.packing(imageSourceApi, packOpts, data => {})
 
 #### Obtaining Image Size
 
-[Image](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-image.md#image9) provides APIs for basic image operations, including obtaining image information and reading and writing image data. The image is returned when **readNextImage** or **readLatestImage** is called.
+[Image](https://gitcode.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-image.md#image9) provides APIs for basic image operations, including obtaining image information and reading and writing image data. The image is returned when **readNextImage** or **readLatestImage** is called.
 
 **System capability**: SystemCapability.Multimedia.Image.Core
 
 | Name    | Type              | Readable| Writable| Description                                              |
 | -------- | ------------------ | ---- | ---- | -------------------------------------------------- |
-| clipRect | [Region](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-image.md#region7) | Yes  | Yes  | Image area to be cropped.                                |
-| size     | [Size](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-image.md#size)      | Yes  | No  | Image size.                                        |
-| format   | number             | Yes  | No  | Image format. For details, see [PixelMapFormat](https://gitee.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-image.md#pixelmapformat7). |
+| clipRect | [Region](https://gitcode.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-image.md#region7) | Yes  | Yes  | Image area to be cropped.                                |
+| size     | [Size](https://gitcode.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-image.md#size)      | Yes  | No  | Image size.                                        |
+| format   | number             | Yes  | No  | Image format. For details, see [PixelMapFormat](https://gitcode.com/openharmony/docs/blob/OpenHarmony-3.2-Release/en/application-dev/reference/apis/js-apis-image.md#pixelmapformat7). |
 
 ``` javascript
 import image from '@ohos.multimedia.image';
@@ -1178,8 +1178,8 @@ This project has been verified in the following versions:
 
 ## How to Contribute
 
-If you find any problem during the use, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+If you find any problem during the use, submit an [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
 ## License
 
-This project is licensed under [Apache License 2.0](https://gitee.com/zdy09/openharmony_tpc_samples/blob/master/utilCode/LICENSE).
+This project is licensed under [Apache License 2.0](https://gitcode.com/zdy09/openharmony_tpc_samples/blob/master/utilCode/LICENSE).

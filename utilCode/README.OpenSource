@@ -41,7 +41,7 @@
      "License File":"LICENSE",
      "Version Number":"0.2.0",
      "Owner":"xiafeng@huawei.com",
-     "Upstream URL":"https://gitee.com/openharmony-tpc/ImageKnife",
+     "Upstream URL":"https://gitcode.com/openharmony-tpc/ImageKnife",
      "Description": "专门为OpenHarmony打造的一款图像加载缓存库，致力于更高效、更轻便、更简单。"
     },
     {
