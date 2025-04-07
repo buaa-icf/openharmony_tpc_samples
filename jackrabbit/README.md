@@ -8,7 +8,7 @@ Jackrabbit depends on the **amqplib** library and implements multiple message tr
 
 ## How to Install
 
-1. [Install an OpenHarmony HAR.](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+1. [Install an OpenHarmony HAR.](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 2. Run the installation command:
 
@@ -62,7 +62,7 @@ Jackrabbit depends on the **amqplib** library and implements multiple message tr
 
 5. Connect test PC to the network. Make sure that its IP address is the same as that of the server.
 
-6. The library implementation depends on node modules such as buffer, stream, and events. The compilation can be performed only after polyfill is configured. For details about how to configure polyfill, see [openharmony-polyfill](https://gitee.com/openharmony-sig/openharmony-polyfill).
+6. The library implementation depends on node modules such as buffer, stream, and events. The compilation can be performed only after polyfill is configured. For details about how to configure polyfill, see [openharmony-polyfill](https://gitcode.com/openharmony-sig/ohos_polyfill).
 
 7. Compile and install the HAP on the test PC to perform the test cases.
 
@@ -412,8 +412,8 @@ Jackrabbit has been verified in the following version:
 
 ## How to Contribute
 
-If you find any problem when using Jackrabbit, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+If you find any problem when using Jackrabbit, submit an [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
 ## License
 
-This project is licensed under [MIT LICENSE](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/jackrabbit/LICENSE).
+This project is licensed under [MIT LICENSE](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/jackrabbit/LICENSE).

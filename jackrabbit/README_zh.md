@@ -8,7 +8,7 @@
 
 ## 下载安装
 
-1. 参考安装教程 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+1. 参考安装教程 [如何安装OpenHarmony ohpm包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
 2. 安装命令如下：
 
@@ -62,7 +62,7 @@
 
 5. 测试机需联网并且与服务器的ip地址需要相同；
 
-6. 库实现依赖buffer、stream、events等node模块，需配置polyfill后才能通过编译，配置方法参考： [OpenHarmony-SIG/openharmony-polyfill (gitee.com)](https://gitee.com/openharmony-sig/openharmony-polyfill) ；
+6. 库实现依赖buffer、stream、events等node模块，需配置polyfill后才能通过编译，配置方法参考： [OpenHarmony-SIG/openharmony-polyfill (gitcode.com)](https://gitcode.com/openharmony-sig/ohos_polyfill) ；
 
 7. 编译并安装hap包到测试机即可进行用例测试；
 
@@ -413,8 +413,8 @@
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
 ## 开源协议
 
-本项目基于 [MIT LICENSE](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/jackrabbit/LICENSE) ，请自由地享受和参与开源。
+本项目基于 [MIT LICENSE](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/jackrabbit/LICENSE) ，请自由地享受和参与开源。
