@@ -11,7 +11,7 @@ ohpm install @ohos/video-cache
 ```
 
 OpenHarmony ohpm
-For details about the environment configuration, see [Installing the OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details about the environment configuration, see [Installing the OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ## Usage
 
@@ -279,7 +279,7 @@ During the playback process of OhosVideoCache, if the network is disconnected, t
 
 
 
-For details, see [Official Documentation](https://github.com/danikula/AndroidVideoCache/blob/master/README.md) and [Unit Test Cases](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/OhosVideoCache/TEST.md).
+For details, see [Official Documentation](https://github.com/danikula/AndroidVideoCache/blob/master/README.md) and [Unit Test Cases](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/OhosVideoCache/TEST.md).
 
 
 ## Constraints
@@ -327,9 +327,9 @@ DevEco Studio:NEXT Beta1-5.0.3.806, SDK: API12 Release (5.0.0.66)
 
 ## How to Contribute
 
-If you find any problem when using OhosVideoCache, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or
-a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
+If you find any problem when using OhosVideoCache, submit an [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or
+a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
 
 ## License
 
-This project is licensed under the terms of the [Apache License ](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/OhosVideoCache/LICENSE).
+This project is licensed under the terms of the [Apache License ](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/OhosVideoCache/LICENSE).
