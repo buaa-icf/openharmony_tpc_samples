@@ -1,3 +1,6 @@
+## v1.0.2
+gitee Switches to gitcode
+
 ## v1.0.1
 ArkTs 语法适配
 适配DevEco Studio: 4.0(4.0.3.512),SDK: API10（4.0.10.9）
