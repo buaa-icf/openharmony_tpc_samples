@@ -13,7 +13,7 @@
     "org": "opensource"
   },
   "main": "index.ets",
-  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/smbj",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/smbj",
   "type": "module",
   "version": "2.0.1",
   "dependencies": {
