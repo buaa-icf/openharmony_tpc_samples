@@ -1,6 +1,6 @@
 {
   "name": "@ohos/vap",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A cool video animation playback solution.",
   "main": "Index.ets",
   "author": "ohos_tpc",

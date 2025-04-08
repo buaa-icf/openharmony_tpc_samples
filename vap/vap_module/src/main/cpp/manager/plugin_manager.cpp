@@ -34,14 +34,6 @@ enum ContextType {
 PluginManager::~PluginManager()
 {
     LOGD("~PluginManager");
-    for (auto iter = m_nativeXComponentMap.begin(); iter != m_nativeXComponentMap.end(); ++iter) {
-        if (nullptr != iter->second) {
-            // delete iter->second;
-            iter->second = nullptr;
-        }
-    }
-    m_nativeXComponentMap.clear();
-    
     m_pluginRenderMap.clear();
 }
 
@@ -163,7 +155,6 @@ void PluginManager::Export(napi_env env, napi_value exports)
     std::string id(idStr);
     auto context = PluginManager::GetInstance();
     if ((nullptr != context) && (nullptr != nativeXComponent)) {
-        context->SetNativeXComponent(id, nativeXComponent);
         auto render = context->GetRender(id);
         OH_NativeXComponent_RegisterCallback(nativeXComponent, &PluginRender::m_callback);
         if (nullptr != render) {
@@ -172,26 +163,16 @@ void PluginManager::Export(napi_env env, napi_value exports)
     }
 }
 
-void PluginManager::SetNativeXComponent(std::string &id, OH_NativeXComponent *nativeXComponent)
+void PluginManager::DeletePluginRender(const std::string& id)
 {
-    if (nullptr == nativeXComponent) {
-        return;
-    }
-
-    if (m_nativeXComponentMap.find(id) == m_nativeXComponentMap.end()) {
-        m_nativeXComponentMap[id] = nativeXComponent;
-        return;
-    }
-
-    if (m_nativeXComponentMap[id] != nativeXComponent) {
-        m_nativeXComponentMap[id] = nativeXComponent;
-    }
+    m_pluginRenderMap.erase(id);
 }
 
 std::shared_ptr<PluginRender> PluginManager::GetRender(std::string &id)
 {
     if (m_pluginRenderMap.find(id) == m_pluginRenderMap.end()) {
-        std::shared_ptr<PluginRender> instance = PluginRender::GetInstance(id);
+        std::shared_ptr<PluginRender> instance = PluginRender::GetInstance(id, false);
+        instance->deleteRenderCallback_ = std::bind(&PluginManager::DeletePluginRender, this, std::placeholders::_1);
         m_pluginRenderMap[id] = instance;
         return instance;
     }

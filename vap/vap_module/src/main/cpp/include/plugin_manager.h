@@ -49,9 +49,9 @@ public:
     static napi_value NapiOnPageShow(napi_env env, napi_callback_info info);
     static napi_value NapiOnPageHide(napi_env env, napi_callback_info info);
 
-    void SetNativeXComponent(std::string &id, OH_NativeXComponent *nativeXComponent);
     std::shared_ptr<PluginRender> GetRender(std::string &id);
     void Export(napi_env env, napi_value exports);
+    void DeletePluginRender(const std::string& id);
 
 private:
     static void RegisterLifecycle(napi_env env, napi_value exports, int64_t value);
@@ -59,7 +59,6 @@ private:
 private:
     static PluginManager m_pluginManager;
 
-    std::unordered_map<std::string, OH_NativeXComponent *> m_nativeXComponentMap;
     std::unordered_map<std::string, std::shared_ptr<PluginRender>> m_pluginRenderMap;
 };
 #endif // VAP_PLUGIN_MANAGER_H
