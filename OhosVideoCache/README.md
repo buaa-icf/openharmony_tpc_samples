@@ -281,6 +281,13 @@ During the playback process of OhosVideoCache, if the network is disconnected, t
 
 For details, see [Official Documentation](https://github.com/danikula/AndroidVideoCache/blob/master/README.md) and [Unit Test Cases](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/OhosVideoCache/TEST.md).
 
+## About obfuscation
+- Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- If you want the video-cache library not to be obfuscated during code obfuscation, you need to add corresponding exclusion rules in the obfuscation rule configuration file obfuscation-rules.txt：
+```
+-keep
+./oh_modules/@ohos/video-cache
+```
 
 ## Constraints
 
