@@ -380,6 +380,14 @@ Jackrabbit depends on the **amqplib** library and implements multiple message tr
   }
 ```
 
+## About obfuscation
+- Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- If you want the jackrabbit library not to be obfuscated during code obfuscation, you need to add corresponding exclusion rules in the obfuscation rule configuration file obfuscation-rules.txt：
+```
+-keep
+./oh_modules/@ohos/jackrabbit
+```
+
 ## Constraints
 
 Jackrabbit has been verified in the following version:
