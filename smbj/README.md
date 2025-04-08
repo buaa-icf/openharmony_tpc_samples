@@ -76,6 +76,14 @@ For details about the OpenHarmony ohpm environment configuration, see [OpenHarmo
    public sendFile(filename, data, callback) 
    ```
 
+## About obfuscation
+- Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- If you want the smbj library not to be obfuscated during code obfuscation, you need to add corresponding exclusion rules in the obfuscation rule configuration file obfuscation-rules.txt：
+```
+-keep
+./oh_modules/@ohos/smbj
+```
+
 ## Constraints
 
 This project has been verified in the following versions:
