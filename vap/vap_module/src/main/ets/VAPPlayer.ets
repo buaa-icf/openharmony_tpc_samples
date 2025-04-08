@@ -20,7 +20,7 @@ import { downloadFile } from './HttpReq';
 
 export class VAPPlayer implements XComponentContext {
   private vapContext: XComponentContext | null = null;
-  public loops: number = 1;
+  private loops: number = 1;
   private jsCbfn?: () => void;
   private uri = ''
   private mixData: Array<MixData> = []
@@ -48,7 +48,7 @@ export class VAPPlayer implements XComponentContext {
     console.log('enter doneFn loops ' + this.loops)
     this.loops--;
     if (this.loops > 0) {
-      this.vapContext?.play(this.uri, this.mixData, this.doneFn);
+      this.vapContext?.play(this.uri, this.mixData, this.doneFn, this.id);
       console.log('loops ' + this.loops)
     } else {
       this.loops = 1

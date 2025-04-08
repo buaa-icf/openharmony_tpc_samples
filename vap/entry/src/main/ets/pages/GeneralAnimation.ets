@@ -61,6 +61,7 @@ struct GeneralAnimation {
 
       let startTime = systemDateTime.getTime(true)
 
+      this.vapPlayer?.setLoop(3); // 动画循环播放3次
       this.vapPlayer?.play(getContext(this).filesDir + "/great_gift.mp4", opts, () => {
         LogUtil.info("js get callback")
         this.buttonEnabled = true;
