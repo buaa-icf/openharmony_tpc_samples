@@ -19,6 +19,11 @@
 
 ## How to Install
 ```shell
+ohpm i @ohos/util_code
+```
+
+## Related library error processing
+```shell
 ohpm install randomcolor
 ohpm install @types/randomcolor --save-dev // Install @types/randomcolor to prevent import syntax errors due to missing type declarations in the randomcolor package.
 
