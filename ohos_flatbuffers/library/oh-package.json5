@@ -1,6 +1,6 @@
 {
   "name": "@ohos/flatbuffers",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Memory Efficient Serialization Library",
   "main": "src/main/ets/flatbuffers.ts",
   "keywords": [
