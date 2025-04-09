@@ -220,7 +220,7 @@ export class ByteBuffer {
       if (opt_encoding === Encoding.UTF8_BYTES)
         return utf8bytes;
       else
-        return this.text_decoder_.decode(utf8bytes);
+        return this.text_decoder_.decodeToString(utf8bytes);
     }
   
     /**

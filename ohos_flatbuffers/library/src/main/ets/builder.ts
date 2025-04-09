@@ -550,7 +550,7 @@ export class Builder {
       if (s instanceof Uint8Array) {
         utf8 = s;
       } else {
-        utf8 = this.text_encoder.encode(s);
+        utf8 = this.text_encoder.encodeInto(s);
       }
   
       this.addInt8(0);
