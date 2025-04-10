@@ -14,7 +14,7 @@ This project describes how to use the third-party IMAP library in OpenHarmony. I
 ```
 ohpm install @ohos/node-imap
 ```
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ## How to Use
 1. Log in. (LoginPage login)
@@ -1091,7 +1091,15 @@ For details about the OpenHarmony ohpm environment configuration, see [OpenHarmo
 | getBoxes(nsPrefix:string,callback:(error:Error,maiboxes:Connection.MailBoxes)=>void) | nsPrefix:string,callback:(error:Error,maiboxes:Connection.MailBoxes)=>void | Obtains the complete list of mailboxes. If **nsPrefix** is not specified, the primary personal namespace is used. |
 | append(msgData:any,options:Connection.AppendOptions,callback:(error:Error)=>void) | msgData:any,options:Connection.AppendOptions,callback:(error:Error)=>void | Appends a message to a mailbox. **msgData** is a string or buffer containing RFC822 compatible MIME messages.|
 
-For more details, see [Official Documentation](https://github.com/mscdex/node-imap/blob/master/README.md) and [Unit Test Cases](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/node-imap/TEST.md).
+For more details, see [Official Documentation](https://github.com/mscdex/node-imap/blob/master/README.md) and [Unit Test Cases](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/node-imap/TEST.md).
+
+## About obfuscation
+- Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- If you want the node-imap library not to be obfuscated during code obfuscation, you need to add corresponding exclusion rules in the obfuscation rule configuration file obfuscation-rules.txt：
+```
+-keep
+./oh_modules/@ohos/node-imap
+```
 
 ## Constraints
 
@@ -1127,8 +1135,8 @@ The following mailbox types are supported: QQ, Sina, Sohu, and 126 mailboxes.
 
 ## How to Contribute
 
-If you find any problem when using IMAP, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
+If you find any problem when using IMAP, submit an [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
 
 ## License
 
-This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/node-imap/LICENSE).
+This project is licensed under [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/node-imap/LICENSE).
