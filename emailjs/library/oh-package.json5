@@ -1,6 +1,6 @@
 {
   "name": "@ohos/emailjs",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
   "types": "",
   "description": "send text/html emails and attachments (files, streams and strings) from node.js to any smtp server",
@@ -9,7 +9,7 @@
   "ohos": {
     "org": "opensource"
   },
-  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/emailjs",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/emailjs",
   "license": "MIT",
   "dependencies": {},
   "keywords": [

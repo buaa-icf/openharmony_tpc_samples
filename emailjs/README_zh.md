@@ -10,7 +10,7 @@ emailjs是一个基于OpenHarmony系统适配开发的，提供一个向任何 S
 $ ohpm install @ohos/emailjs
 ```
 
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
 ### 导入
 
@@ -109,7 +109,15 @@ const options = {
 };
 ```
 
-更多模块的使用可参考[官方文档](https://github.com/eleith/emailjs/blob/main/README.md)，[单元测试用例](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/emailjs/TEST.md)详情可参考
+更多模块的使用可参考[官方文档](https://github.com/eleith/emailjs/blob/main/README.md)，[单元测试用例](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/emailjs/TEST.md)详情可参考
+
+## 关于混淆
+- 代码混淆，请查看[代码混淆简介](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- 如果希望emailjs库在代码混淆过程中不会被混淆，需要在混淆规则配置文件obfuscation-rules.txt中添加相应的排除规则：
+```
+-keep
+./oh_modules/@ohos/emailjs
+```
 
 ### 约束与限制
 
@@ -138,9 +146,9 @@ const options = {
 
 ### 贡献代码
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎给发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls)共建 。
+使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎给发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls)共建 。
 
 ### 开源协议
 
-本项目基于 [MIT license](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/emailjs/LICENSE) ，请自由地享受和参与开源。
+本项目基于 [MIT license](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/emailjs/LICENSE) ，请自由地享受和参与开源。
 
