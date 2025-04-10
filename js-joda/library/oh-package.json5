@@ -14,9 +14,9 @@
   "author": "ohos_tpc",
   "description": "prebuilt js-joda locale package for locales: en,en-US",
   "main": "src/main/ets/dist/index.esm.js",
-  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/js-joda",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/js-joda",
   "type": "module",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "dependencies": {
     "@js-joda/timezone": "^2.15.0",
     "@js-joda/core": "^5.4.2"

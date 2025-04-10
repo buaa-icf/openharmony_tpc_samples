@@ -1,3 +1,8 @@
+## 2.0.2
+
+- Fix repository from gitee to gitcode in oh-packaage.json5
+- Release the official version
+
 ## 2.0.1
 
 - 在DevEco Studio: NEXT Beta1-5.0.3.806, SDK:API12 Release(5.0.0.66)验证通过
