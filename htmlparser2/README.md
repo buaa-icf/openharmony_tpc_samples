@@ -307,6 +307,15 @@ For details about the OpenHarmony ohpm environment configuration, see [OpenHarmo
     `resume(): void`
 14. Resets the parser.
     `reset(): void`
+
+## About obfuscation
+- Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- If you want the htmlparser2 library not to be obfuscated during code obfuscation, you need to add corresponding exclusion rules in the obfuscation rule configuration file obfuscation-rules.txt：
+```
+-keep
+./oh_modules/@ohos/htmlparser2
+```
+
 ## Constraints
 This project has been verified in the following version:
 
