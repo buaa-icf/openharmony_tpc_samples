@@ -15,7 +15,7 @@ socket.io is a library that implements low-latency, two-way, and event-based com
 ```shell
 ohpm install @ohos/socketio 
 ```
-For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details, see [Installing an OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 
 ## Configuring the x86 Simulator
@@ -231,10 +231,18 @@ this.client.on("ping_pong", data: string => {
 ## Source Code Downloading
 1. This project depends on the **socket.io-client-cpp** library, which is introduced through `git submodule`. You need to add the `--recursive` parameter when downloading code.
   ```
-  git clone --recursive https://gitee.com/openharmony-tpc/openharmony_tpc_samples.git
+  git clone --recursive https://gitcode.com/openharmony-tpc/openharmony_tpc_samples.git
   ```
 2. Skip this step in the Linux environment. In the Windows environment, after the code is downloaded, integrate the OpenHarmony adaptation code. Run the `cd` command to go to the **socketio/library/src/main/cpp/thirdModule** directory and run the `modify.sh` script, integrate the patch file in this directory into the** socket.io-client-cpp** source code.
 3. Start project building.
+
+## About obfuscation
+- Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- If you want the socketio library not to be obfuscated during code obfuscation, you need to add corresponding exclusion rules in the obfuscation rule configuration file obfuscation-rules.txt：
+```
+-keep
+./oh_modules/@ohos/socketio
+```
 
 ## Constraints
 socket-io has been verified in the following versions:
@@ -258,10 +266,10 @@ socket-io has been verified in the following versions:
 ````
 
 ## How to Contribute
-If you find any problem when using socket-io, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or
-a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
+If you find any problem when using socket-io, submit an [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or
+a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
 
 ## License
-This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/socketio/LICENSE).
+This project is licensed under [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/socketio/LICENSE).
 
   
