@@ -10,11 +10,11 @@
     "org": "opensource"
   },
   "name": "@ohos/node-pop3",
-  "version": "1.0.2-rc.0",
+  "version": "1.0.2",
   "description": "pop3 command support for node. Supports Promise and stream.",
   "main": "index.ts",
   "type": "module",
-  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/node-pop3",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/node-pop3",
   "tags": [
     "Network",
     "Tool"
