@@ -1,6 +1,6 @@
 {
   "name": "@ohos/node-imap",
-  "version": "1.0.2-rc.0",
+  "version": "1.0.2",
   "type": "module",
   "types": "",
   "description": "@ohos/node-imap is an IMAP client module for OpenHarmony",
@@ -9,7 +9,7 @@
   "ohos": {
     "org": "opensource"
   },
-  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/node-imap",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/node-imap",
   "license": "MIT",
   "dependencies": {},
   "keywords": [

@@ -1,3 +1,7 @@
+## 1.0.2
+- Release the official version
+- Fix repository from gitee to gitcode in oh-packaage.json5
+
 ## 1.0.2-rc.0
 - Compile and build alarm modification.
 

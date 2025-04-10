@@ -14,7 +14,7 @@
 ```
 ohpm install @ohos/node-imap
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
 ## 使用说明
 1.登录  LoginPage login
@@ -1091,7 +1091,15 @@ aboutToAppear() {
 | getBoxes(nsPrefix:string,callback:(error:Error,maiboxes:Connection.MailBoxes)=>void) | nsPrefix:string,callback:(error:Error,maiboxes:Connection.MailBoxes)=>void | 获取邮箱的完整列表。如果未指定nsPrefix,则使用主个人命名空间  |
 | append(msgData:any,options:Connection.AppendOptions,callback:(error:Error)=>void) | msgData:any,options:Connection.AppendOptions,callback:(error:Error)=>void | 将消息附加到选定的邮箱。msgData是包含RFC-822兼容MIME消息的字符串或者缓冲区 |
 
-更多模块的使用可参考[官方文档](https://github.com/mscdex/node-imap/blob/master/README.md)，[单元测试用例](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/node-imap/TEST.md)详情可参考
+更多模块的使用可参考[官方文档](https://github.com/mscdex/node-imap/blob/master/README.md)，[单元测试用例](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/node-imap/TEST.md)详情可参考
+
+## 关于混淆
+- 代码混淆，请查看[代码混淆简介](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- 如果希望node-imap库在代码混淆过程中不会被混淆，需要在混淆规则配置文件obfuscation-rules.txt中添加相应的排除规则：
+```
+-keep
+./oh_modules/@ohos/node-imap
+```
 
 ## 约束与限制
 
@@ -1127,8 +1135,8 @@ DevEco Studio: 4.0 Release(4.0.3.413), SDK: API10 (4.0.10.3)
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+使用过程中发现任何问题都可以提 [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
 ## 开源协议
 
-本项目基于 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/node-imap/LICENSE) ，请自由的享受和参与开源。
+本项目基于 [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/node-imap/LICENSE) ，请自由的享受和参与开源。
