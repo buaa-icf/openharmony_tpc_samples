@@ -1,3 +1,7 @@
+## 2.0.1
+- Fix repository from gitee to gitcode in oh-packaage.json5
+- Release the official version
+
 ## 2.0.0
 - Upgrade the original JS library from 0.8.2 to 0.9.0-beta.4 and adapt it.
 
