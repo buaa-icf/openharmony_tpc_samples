@@ -1,3 +1,7 @@
+### 1.0.2
+1. Fix repository from gitee to gitcode in oh-packaage.json5
+2. Release the official version
+
 ### 1.0.1
 1. Ark syntax adaptation
 2. Compatible with DevEco Studio: 4.0 Release(4.0.3.600), SDK API10(4.0.10.11)
