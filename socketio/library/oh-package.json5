@@ -12,9 +12,9 @@
     "org": "opensource"
   },
   "main": "index.ets",
-  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/socketio",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/socketio",
   "type": "module",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "dependencies": {},
   "tags": [
     "OpenHarmony",

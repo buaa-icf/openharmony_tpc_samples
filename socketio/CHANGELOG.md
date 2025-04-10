@@ -1,3 +1,7 @@
+## v2.1.2
+- Fix repository from gitee to gitcode in oh-packaage.json5
+- Release the official version
+
 ## v2.1.1
 - Optimized the memory problem in the emit message processing process.
 - Added fixed events "ping_pong" and "disconnect" to listen for heartbeat and disconnection events.
