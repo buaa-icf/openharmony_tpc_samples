@@ -11,7 +11,7 @@ newsie is a library that implements the Network News Transfer Protocol (NNTP) cl
 ```
     ohpm install @ohos/newsie
 ```
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 2. Import the **Client**.
 
@@ -114,8 +114,14 @@ For more sample code, see the [Index](./entry/src/main/ets/pages/Index.ets) page
 | compressDeflate | Compresses.                         |
 | post            | Posts.                         |
 
-For more details, see [Official Documentation](https://gitlab.com/timrs2998/newsie/-/blob/master/README.md) and [Unit Test Cases](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/newsie/TEST.md).
-
+For more details, see [Official Documentation](https://gitlab.com/timrs2998/newsie/-/blob/master/README.md) and [Unit Test Cases](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/newsie/TEST.md).
+## About obfuscation
+- Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- If you want the library not to be obfuscated during code obfuscation, you need to add corresponding exclusion rules in the obfuscation rule configuration file obfuscation-rules.txt：
+```
+-keep
+./oh_modules/@ohos/newsie
+```
 ### Constraints
 
 This project has been verified in the following versions:
@@ -130,5 +136,5 @@ This project is licensed under [GNU AFFERO GENERAL](./LICENSE).
 
 ### How to Contribute
 
-If you find any problem when using the project, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or
-a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+If you find any problem when using the project, submit an [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or
+a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).

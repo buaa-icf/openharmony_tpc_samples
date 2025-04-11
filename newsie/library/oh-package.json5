@@ -6,7 +6,7 @@
     org: "opensource",
   },
   main: "index.ets",
-  repository: "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/newsie",
+  repository: "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/newsie",
   type: "module",
   version: "1.0.1",
   tags: ["Tool"],
