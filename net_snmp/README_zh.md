@@ -754,7 +754,15 @@ subagent.removeAgentCaps (oid, callback)
 | addAgentCaps | oid, descr, callback          | void | 将一个由oid和descr组成的代理能力添加到主代理的sysORTable中。 |
 | removeAgentCaps | oid, callback                 | void | 从主代理的sysORTable中删除之前添加的能力。 |
 
-  
+## 关于混淆
+- 代码混淆，请查看[代码混淆简介](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- 如果希望net-snmp库在代码混淆过程中不会被混淆，需要在混淆规则配置文件obfuscation-rules.txt中添加相应的排除规则：
+
+```
+-keep
+./oh_modules/@ohos/net-snmp
+```
+
 ## 约束与限制
 
 - DevEco Studio 版本： 5.0.3.300SP2  OpenHarmony SDK:API12 (5.0.0.22)
