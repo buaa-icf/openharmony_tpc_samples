@@ -11,7 +11,7 @@
 ```
 ohpm install @ohos/protobuf_format
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
 2.在需要使用的页面导入protobuf_format库,如Index.ets:
 
@@ -50,7 +50,7 @@ Protobuf支持加载解析proto字符串，proto json字符串，proto文件，p
 | -------- | -------------------------- | ----------------------------------------------------- |
 | build    | path?:string&#124;string[] | Protobuf.Builder.Message&#124;Object //协议消息体泛型 |
 
-[更多Protobuf接口。](https://gitee.com/openharmony-tpc/protobuf/tree/1.x)
+[更多Protobuf接口。](https://gitcode.com/openharmony-tpc/protobuf/tree/1.x)
 
 **构建Message示例**
 
@@ -310,7 +310,13 @@ static messageToHtml(message: Protobuf.Builder.Message): string;
 | 类型   | 说明                         |
 | ------ | ---------------------------- |
 | string | 协议消息体对应的html字符串。 |
-
+## About obfuscation
+- Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- If you want the library not to be obfuscated during code obfuscation, you need to add corresponding exclusion rules in the obfuscation rule configuration file obfuscation-rules.txt：
+```
+-keep
+./oh_modules/@ohos/protobuf_format
+```
 ## 约束与限制
 在下述版本验证通过：
 
@@ -341,8 +347,8 @@ DevEco Studio: 4.0 Release(4.0.3.413), SDK: API10 (4.0.10.3)
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls)共建 。
+使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls)共建 。
 
 ## 开源协议
 
-本项目基于 [Apache-2.0 License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/protobuf_format/LICENSE) ，请自由地享受和参与开源。
+本项目基于 [Apache-2.0 License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/protobuf_format/LICENSE) ，请自由地享受和参与开源。
