@@ -119,6 +119,14 @@ if (minizipCompressEntry.Create() == 0) {
 
 - **创建对象**之后**一定要调用Open函数**，并且每一次new minizipNative**只能调用一次Open**，若Open函数返回值非0则是打开文件失败
 
+## 关于混淆
+- 代码混淆，请查看[代码混淆简介](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- 如果希望minizip库在代码混淆过程中不会被混淆，需要在混淆规则配置文件obfuscation-rules.txt中添加相应的排除规则：
+
+```
+-keep
+./oh_modules/@ohos/minizip
+```
 
 ## 约束与限制
 在下述版本验证通过：
