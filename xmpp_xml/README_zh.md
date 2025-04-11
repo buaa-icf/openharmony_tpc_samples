@@ -128,13 +128,19 @@ parser.on('error', (error) => {
   console.error('Error:', error.message);
 });
 ```
-
+## 关于混淆
+- 代码混淆，请查看[代码混淆简介](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- 如果希望三方库在代码混淆过程中不会被混淆，需要在混淆规则配置文件obfuscation-rules.txt中添加相应的排除规则：
+```
+-keep
+./oh_modules/@ohos/xmpp_xml
+```
 在下述版本验证通过：
 DevEco Studio:5.0.3.200, 5.0.0.22-Canary2, SDK: API12
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提[Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们提[PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+使用过程中发现任何问题都可以提[Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们提[PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
 ## 开源协议
 
