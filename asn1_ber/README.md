@@ -10,7 +10,7 @@ asn1_ber is provide the ability to generate and parse ASN.1 BER objects.
 ohpm install @ohos/asn1-ber
 ```
 
-For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details, see [Installing an OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ## How to Use
 
@@ -61,6 +61,14 @@ import { BerWriter,BerReader } from '@ohos/asn1_ber'
 | readOID | 无            | string/null     | Read an object identifier in dotted decimal notation.            
 
 
+## About obfuscation
+- Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- If you want the asn1-ber library not to be obfuscated during code obfuscation, you need to add corresponding exclusion rules in the obfuscation rule configuration file obfuscation-rules.txt：
+```
+-keep
+./oh_modules/@ohos/asn1-ber
+```
+
 ## Constraints
 
 - DevEco Studio ： 5.0.3.300SP2
@@ -88,10 +96,10 @@ import { BerWriter,BerReader } from '@ohos/asn1_ber'
 
 ## How to Contribute
 
-If you find any problem during the use, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
+If you find any problem during the use, submit an [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
 
 
 ## License
 
-This project is licensed under [MIT LICENSE](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/LICENSE).
+This project is licensed under [MIT LICENSE](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/LICENSE).
 Welcome to enjoy and participate in the open source.
