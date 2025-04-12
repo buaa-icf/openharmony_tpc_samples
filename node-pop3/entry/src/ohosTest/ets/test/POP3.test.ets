@@ -22,6 +22,7 @@ import Pop3Command, { Pop3LoginBean } from '@ohos/node-pop3'
 import AbilityDelegatorRegistry from '@ohos.app.ability.abilityDelegatorRegistry';
 import MsgBean from '../../../../../entry/src/main/ets/MsgBean'
 import GlobalObj from '../../../main/ets/GlobalObj'
+import { XTS_CONFIG } from '../../../main/ets/common/Common';
 
 async function login(account: string, mailType: string, password: string, secure: boolean, done: Function) {
   let jumpOption: Pop3LoginBean | null = null;
@@ -80,12 +81,12 @@ async function login(account: string, mailType: string, password: string, secure
       }
     } else {
       jumpOption = {
-        host: 'pop.qq.com',
+        host: 'pop.139.com',
         port: 110,
         user: account + mailType,
         password: password,
         timeout: 30000,
-        servername: 'pop.qq.com',
+        servername: 'pop.139.com',
         tls: false,
         tlsOptions: null
       }
@@ -102,9 +103,9 @@ async function login(account: string, mailType: string, password: string, secure
 export default function POP3Test() {
 
   let message = 'Hello World'
-  let account = 'xxx'
-  let password = 'xxx'
-  let mailType = '@qq.com'
+  let account = XTS_CONFIG.user
+  let password = XTS_CONFIG.password
+  let mailType = '@139.com'
   let textValue = ''
   let inputValue = 'click me'
   let secure = false
