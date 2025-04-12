@@ -28,6 +28,8 @@ import DetailCallback from '../../../main/ets/bean/DetailCallback';
 import { ImapMessageAttributes } from '../../../main/ets/bean/ImapMessage';
 import MsgSendBean from '../../../main/ets/bean/MsgSendBean';
 import AppendOptions from '../../../main/ets/bean/AppendOptions';
+import { XTS_CONFIG } from '../../../main/ets/common/Common'
+
 
 export default function IMAPClientTest() {
   let isLogin = false;
@@ -43,9 +45,9 @@ export default function IMAPClientTest() {
       try {
         if (!GlobalObj?.getInstance()?.getClient()) {
           let client = new Imap({
-            user: 'xxx@qq.com',
-            password: 'xxx',
-            host: 'imap.qq.com',
+            user: XTS_CONFIG.user,
+            password: XTS_CONFIG.password,
+            host: 'imap.139.com',
             port: 143,
             tls: false,
             tlsOptions: undefined,
@@ -77,7 +79,7 @@ export default function IMAPClientTest() {
         expect(1).assertEqual(2)
         done()
       }
-      let checkResult: boolean = GlobalObj?.getInstance()?.getClient()?.serverSupports('IMAP4') ? GlobalObj?.getInstance()?.getClient()?.serverSupports('IMAP4') : false;
+      let checkResult: boolean = GlobalObj?.getInstance()?.getClient()?.serverSupports('IMAP4REV1') ? GlobalObj?.getInstance()?.getClient()?.serverSupports('IMAP4REV1') : false;
       expect(checkResult).assertEqual(true)
       done()
     })

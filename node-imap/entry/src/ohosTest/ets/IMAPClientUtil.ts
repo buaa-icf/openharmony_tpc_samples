@@ -27,7 +27,6 @@ import {
 
 export default class IMAPClientUtil {
   async login(readyCallback: () => void, errorCallback: (err: Error) => void, endCallback: () => void) {
-    const ctx = this;
     try {
       if (GlobalObj?.getInstance()?.getClient()) {
         GlobalObj?.getInstance()?.getClient()?.once('ready', readyCallback);
