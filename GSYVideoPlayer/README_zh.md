@@ -15,7 +15,7 @@ ohpm install @ohos/gsyvideoplayer
 ```
 
 OpenHarmony ohpm
-环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
 ## 使用说明
 
@@ -23,9 +23,9 @@ OpenHarmony ohpm
 目前支持音视频规格：
 由于本库播放音视频能力底层是avplayer或者ijkplayer去播放视频，所以支持的音视频规格跟随这两个库音视频规格。
 
-[avplayer规格说明](https://gitee.com/openharmony/docs/blob/master/zh-cn/application-dev/reference/apis-media-kit/js-apis-media.md#avplayer9)
+[avplayer规格说明](https://gitcode.com/openharmony/docs/blob/master/zh-cn/application-dev/reference/apis-media-kit/js-apis-media.md#avplayer9)
 
-[ijkplayer规格说明](https://gitee.com/openharmony-sig/ohos_ijkplayer/blob/master/README.md)
+[ijkplayer规格说明](https://gitcode.com/openharmony-sig/ohos_ijkplayer/blob/master/README.md)
 
 
 ### 使用标准播放器
@@ -192,6 +192,14 @@ Button("stopGif").onClick(() => {
 | saveFrame(fileSavePath: string, gsyVideoShotSaveListener: GSYVideoShotSaveListener)| fileSavePath: string, gsyVideoShotSaveListener: GSYVideoShotSaveListener   | 视频截图           |
 | startGif(tmpPicPath?: string)      | tmpPicPath?: string   | 视频开始gif        |
 | stopGif(saveGifPath: string, gsyVideoGifSaveListener: GSYVideoGifSaveListener)      | 无   | 视频结束gif,并生成gif |
+## 关于混淆
+- 代码混淆，请查看[代码混淆简介](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- 如果希望gsyvideoplayer库在代码混淆过程中不会被混淆，需要在混淆规则配置文件obfuscation-rules.txt中添加相应的排除规则：
+```
+-keep
+./oh_modules/@ohos/gsyvideoplayer
+```
+
 ## 约束与限制
 
 在下述版本验证通过：
@@ -239,10 +247,10 @@ DevEco Studio:NEXT Beta1-5.0.3.806, SDK: API12 Release (5.0.0.66)
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提[Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
-给我们，当然，我们也非常欢迎你给我们提[PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls)。
+使用过程中发现任何问题都可以提[Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues)
+给我们，当然，我们也非常欢迎你给我们提[PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls)。
 
 ## 开源协议
 
-本项目基于 [Apache License ](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/GSYVideoPlayer/LICENSE)，请自由地享受和参与开源。
+本项目基于 [Apache License ](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/GSYVideoPlayer/LICENSE)，请自由地享受和参与开源。
 
