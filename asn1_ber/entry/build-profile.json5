@@ -11,11 +11,12 @@
             "enable": true,
             "files": [
               "./obfuscation-rules.txt"
+              // 混淆规则文件
             ]
           }
         }
       }
-    },
+    }
   ],
   "targets": [
     {
