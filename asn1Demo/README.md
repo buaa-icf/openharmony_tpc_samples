@@ -13,7 +13,7 @@ This project is modified based on the open-source libraries asn1 and asn1-der to
 | base64 | Implements Base64 encoding and decoding. | ohpm install Base64            |
 | hex-encode-decode | Implements Hex encoding and decoding. | ohpm install hex-encode-decode |
 
-For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details, see [Installing an OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ## How to Use
 
@@ -129,6 +129,15 @@ const decodeData = decode(deserializeJsonTextHex);
  DERDeserializer
 ```
 
+## About obfuscation
+- Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- If you want the asn1 library not to be obfuscated during code obfuscation, you need to add corresponding exclusion rules in the obfuscation rule configuration file obfuscation-rules.txt：
+```
+-keep
+./oh_modules/@ohos/asn1
+./oh_modules/@ohos/asn1-der
+```
+
 ## Constraints
 
 asn1Demo has been verified in the following version:
@@ -137,8 +146,8 @@ asn1Demo has been verified in the following version:
 
 ## How to Contribute
 
-If you find any problem when using asn1Demo, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+If you find any problem when using asn1Demo, submit an [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
 ## License
 
-This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/asn1Demo/LICENSE).
+This project is licensed under [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/asn1Demo/LICENSE).
