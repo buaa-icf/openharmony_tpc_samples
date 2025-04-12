@@ -1,9 +1,12 @@
+## 1.0.1
+1. Release the official version
+
 ## 1.0.1-rc.2
-1.adds focus change pause and device disconnection pause functions
+1. adds focus change pause and device disconnection pause functions
 
 ## 1.0.1-rc.1
 
-1.修改ijkPlayer的版本为2.0.4，解决视频播放卡顿问题
+1. 修改ijkPlayer的版本为2.0.4，解决视频播放卡顿问题
 
 ## 1.0.1-rc.0
 

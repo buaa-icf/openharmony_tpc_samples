@@ -15,7 +15,7 @@ ohpm install @ohos/gsyvideoplayer
 
 OpenHarmony ohpm
 
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ## How to Use
 
@@ -23,8 +23,8 @@ For details about the OpenHarmony ohpm environment configuration, see [OpenHarmo
 
 This library uses the AVPlayer or IJKPlayer at the bottom layer for audio and video playback. Therefore, the supported audio and video specifications are the same as those of the two libraries. For details, see the following:
 
-- [AVPlayer Specifications](https://gitee.com/openharmony/docs/blob/master/zh-cn/application-dev/reference/apis-media-kit/js-apis-media.md#avplayer9)
-- [ijkplayer Specifications](https://gitee.com/openharmony-sig/ohos_ijkplayer/blob/master/README.md)
+- [AVPlayer Specifications](https://gitcode.com/openharmony/docs/blob/master/zh-cn/application-dev/reference/apis-media-kit/js-apis-media.md#avplayer9)
+- [ijkplayer Specifications](https://gitcode.com/openharmony-sig/ohos_ijkplayer/blob/master/README.md)
 
 
 ### Using the Standard Player
@@ -191,6 +191,14 @@ When constructing the **StandardGSYVideoModel** object, you can set the full-scr
 | saveFrame(fileSavePath: string, gsyVideoShotSaveListener: GSYVideoShotSaveListener) | fileSavePath: string, gsyVideoShotSaveListener: GSYVideoShotSaveListener | Takes a video screenshot.             |
 | startGif(tmpPicPath?: string)                                | tmpPicPath?: string                                          | Starts to convert the video to a GIF image.          |
 | stopGif(saveGifPath: string, gsyVideoGifSaveListener: GSYVideoGifSaveListener) | N/A                                                          | Ends the video to GIF conversion and generates a GIF image.|
+## About obfuscation
+- Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- If you want the gsyvideoplayer library not to be obfuscated during code obfuscation, you need to add corresponding exclusion rules in the obfuscation rule configuration file obfuscation-rules.txt：
+```
+-keep
+./oh_modules/@ohos/gsyvideoplayer
+```
+
 ## Constraints
 
 This project has been verified in the following version:
@@ -237,8 +245,8 @@ DevEco Studio: NEXT Developer Beta1 (5.0.3.326), SDK: API 12 (5.0.0.25)
 
 ## How to Contribute
 
-If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+If you find any problem when using the project, submit an [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
 ## License
 
-This project is licensed under [Apache License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/GSYVideoPlayer/LICENSE).
+This project is licensed under [Apache License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/GSYVideoPlayer/LICENSE).
