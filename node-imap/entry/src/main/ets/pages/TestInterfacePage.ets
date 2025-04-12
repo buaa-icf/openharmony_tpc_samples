@@ -27,7 +27,7 @@ import DetailCallback from '../bean/DetailCallback'
 import MsgSendBean from '../bean/MsgSendBean'
 import AppendOptions from '../bean/AppendOptions'
 import { ImapMessageAttributes } from '../bean/ImapMessage'
-
+import { DEMO_CONFIG } from '../common/Common'
 
 const BASE_COUNT = 1
 
@@ -45,15 +45,15 @@ struct TestInterfacePage {
   @State subFolderList: Array<string> = [] //邮件列表数据集合
   @State folderList: Array<string> = [] //邮件列表数据集合
   @State listData: Array<MsgListBean> = [] //邮件列表数据集合
-  @State account: string = 'xxx@qq.com'
-  @State password: string = 'xxx';
+  @State account: string = DEMO_CONFIG.user;
+  @State password: string = DEMO_CONFIG.password;
   private util: TestInterfaceUtil = new TestInterfaceUtil();
   pageSize: number = 10 //请求时的每页多少条信息，用于分页请求
   folderName: string = 'INBOX'
   private option: socket.TLSConnectOptions = {
     ALPNProtocols: ["spdy/1", "http/1.1"],
     address: {
-      address: 'imap.qq.com',
+      address: 'imap.139.com',
       port: 993,
       family: 1
     },
@@ -503,7 +503,7 @@ struct TestInterfacePage {
     }
 
     let startTime1 = new Date().getTime();
-    let checkResult: boolean = GlobalObj?.getInstance()?.getClient()?.serverSupports('IMAP4') ? GlobalObj?.getInstance()?.getClient()?.serverSupports('IMAP4') : false;
+    let checkResult: boolean = GlobalObj?.getInstance()?.getClient()?.serverSupports('IMAP4REV1') ? GlobalObj?.getInstance()?.getClient()?.serverSupports('IMAP4REV1') : false;
     let endTime1 = new Date().getTime();
     let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
     console.log("IMAPClientTest : serverSupports averageTime : " + averageTime1 + "us")
