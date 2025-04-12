@@ -19,6 +19,7 @@ import socket from '@ohos.net.socket'
 import Pop3Command, { Pop3LoginBean } from '@ohos/node-pop3'
 import GlobalObj from '../GlobalObj'
 import { getResourceStr } from './GetResourceStr'
+import { DEMO_CONFIG } from '../common/Common'
 
 @CustomDialog
 struct CustomDialogDiy {
@@ -63,9 +64,9 @@ struct CustomDialogDiy {
 @Component
 struct Index {
   @State message: string = 'Hello World'
-  @State account: string = 'xxx'
-  @State password: string = 'xxx'
-  @State mailType: string = '@qq.com'
+  @State account: string = DEMO_CONFIG.user
+  @State password: string = DEMO_CONFIG.password
+  @State mailType: string = '@139.com'
   @State textValue: string = ''
   @State inputValue: string = 'click me'
   @State secure: boolean = false
