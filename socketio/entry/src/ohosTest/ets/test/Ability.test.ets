@@ -34,230 +34,233 @@ export default function abilityTest() {
       // Presets a clear action, which is performed after all test cases of the test suite end.
       // This API supports only one parameter: clear action function.
     })
-    it('client_socket_test_connect_open', 0, () => {
+    it('client_socket_test_connect_open', 0, async (done: Function) => {
       let connect_finish: boolean = false;
       let client: client_socket = new client_socket();
-      client.set_open_listener(() => {
-        connect_finish = true;
+      await new Promise<void>((resolve, reject) => {
+        client.set_open_listener(() => {
+          connect_finish = true;
+          resolve();
+        });
+        let uri: string = "http://113.45.193.209:3100"
+        client.connect(uri);
       });
-      client.set_fail_listener(() => {
-        connect_finish = false;
-      });
-      let uri: string = "http://10.50.40.37:3000"
-      client.connect(uri);
-      setTimeout(() => {
-        expect(connect_finish).assertEqual(true);
-      }, 1000);
+      expect(connect_finish).assertEqual(true);
+      done()
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_connect_open finished');
     })
 
-    it('client_socket_test_connect_fail', 0, () => {
+    it('client_socket_test_connect_fail', 0, async (done:Function) => {
       let connect_finish: boolean = false;
       let client: client_socket = new client_socket();
-      client.set_open_listener(() => {
-        connect_finish = true;
+      await new Promise<void>((resolve, reject) => {
+        client.set_fail_listener(() => {
+          connect_finish = false;
+          resolve();
+        });
+        let uri: string = ""
+        client.connect(uri);
       });
-      client.set_fail_listener(() => {
-        connect_finish = false;
-      });
-      let uri: string = ""
-      client.connect(uri);
-      setTimeout(() => {
-        expect(connect_finish).assertEqual(false);
-      }, 1000);
+      expect(connect_finish).assertEqual(false);
+      done()
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_connect_fail finished');
     })
 
-    it('client_socket_test_login', 0, () => {
+    it('client_socket_test_login', 0, async (done:Function) => {
       let connect_finish: boolean = false;
       let login_finish: boolean = false;
       let client: client_socket = new client_socket();
-      client.set_open_listener(() => {
-        connect_finish = true;
+      await new Promise<void>((resolve, reject) => {
+        client.set_open_listener(() => {
+          connect_finish = true;
+          client.on("login", () => {
+            login_finish = true;
+            resolve();
+          });
+          client.emit("add user", "username");
+        });
+        let uri: string = "http://113.45.193.209:3100";
+        client.connect(uri);
       });
-      client.on("login", () => {
-        login_finish = true;
-      });
-      let uri: string = "http://10.50.40.37:3000";
-      client.connect(uri);
-      setTimeout(() => {
-        expect(connect_finish).assertEqual(false);
-        client.emit("add user", "username");
-        setTimeout(() => {
-          expect(login_finish).assertEqual(true);
-        }, 1000);
-      }, 1000);
+      expect(connect_finish).assertEqual(true);
+      expect(login_finish).assertEqual(true);
+      done()
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_login finished');
     })
 
-    it('client_socket_test_emit', 0, () => {
+    it('client_socket_test_emit', 0, async (done: Function) => {
       let connect_finish: boolean = false;
       let login_finish: boolean = false;
       let message: string = "";
       let client: client_socket = new client_socket();
-      client.set_open_listener(() => {
-        connect_finish = true;
+      await new Promise<void>((resolve, reject) => {
+        client.set_open_listener(() => {
+          connect_finish = true;
+          client.on("new message", (event_json: string) => {
+            message = event_json;
+            resolve();
+          });
+          client.on("login", () => {
+            login_finish = true;
+            client.emit("new message", "message");
+          });
+          client.emit("add user", "username");
+        });
+        let uri: string = "http://113.45.193.209:3100";
+        client.connect(uri);
       });
-      client.on("login", () => {
-        login_finish = true;
-      });
-      client.on("new message", (event_json: string) => {
-        message = event_json;
-      });
-      let uri: string = "http://10.50.40.37:3000";
-      client.connect(uri);
-      setTimeout(() => {
-        expect(connect_finish).assertEqual(false);
-        client.emit("add user", "username");
-        setTimeout(() => {
-          expect(login_finish).assertEqual(true);
-          client.emit("new message", "message");
-          expect(message != null).assertEqual(true);
-          setTimeout(() => {
-            expect(message != "").assertEqual(true);
-          }, 1000);
-        }, 1000);
-      }, 1000);
+      expect(connect_finish).assertEqual(true);
+      expect(login_finish).assertEqual(true);
+      expect(message != null).assertEqual(true);
+      expect(message != "").assertEqual(true);
+      done()
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_emit finished');
     })
 
-    it('client_socket_test_clear_listener', 0, () => {
+    it('client_socket_test_clear_listener', 0, async (done: Function) => {
       let is_call_open_listener: boolean = false;
       let client: client_socket = new client_socket();
-      client.clear_con_listeners();
       client.set_open_listener(() => {
         is_call_open_listener = true;
       });
-      let uri: string = "http://10.50.40.37:3000";
+      client.clear_con_listeners();
+      let uri: string = "http://113.45.193.209:3100";
       client.connect(uri);
       setTimeout(() => {
-        setTimeout(() => {
-          expect(is_call_open_listener).assertEqual(false);
-        }, 1000);
+        expect(is_call_open_listener).assertEqual(false);
+        done()
       }, 1000);
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_clear_listener finished');
     })
 
-    it('client_socket_test_socket_open_close', 0, () => {
-      let socket_status: boolean = false;
+    it('client_socket_test_socket_open_close', 0, async (done: Function) => {
       let client: client_socket = new client_socket();
-      client.set_socket_open_listener((nsp: string) => {
-        socket_status = true;
+      await new Promise<void>((resolve, reject) => {
+        client.set_socket_open_listener((nsp: string) => {
+          client.set_socket_close_listener((nsp: string) => {
+            done()
+            resolve()
+          });
+          client.socket_close();
+        });
+        let uri: string = "http://113.45.193.209:3100";
+        client.connect(uri);
       });
-      client.set_socket_close_listener((nsp: string) => {
-        socket_status = false;
-      });
-      let uri: string = "http://10.50.40.37:3000";
-      client.connect(uri);
-      setTimeout(() => {
-        expect(socket_status).assertEqual(true);
-        client.socket_close();
-        setTimeout(() => {
-          expect(socket_status).assertEqual(false);
-        }, 1000);
-      }, 1000);
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_socket_open_close finished');
     })
 
-    it('client_socket_test_close', 0, () => {
+    it('client_socket_test_close', 0, async (done: Function) => {
       let connect_close: boolean = false;
       let client: client_socket = new client_socket();
-      client.set_close_listener((reason: string) => {
-        connect_close = true;
+      await new Promise<void>((resolve, reject) => {
+        client.set_open_listener(() => {
+          client.close();
+        })
+        client.set_close_listener((reason: string) => {
+          connect_close = true;
+          resolve();
+        });
+        let uri: string = "http://113.45.193.209:3100";
+        client.connect(uri);
       });
-      let uri: string = "http://10.50.40.37:3000";
-      client.connect(uri);
-      setTimeout(() => {
-        client.close();
-        setTimeout(() => {
-          expect(connect_close).assertEqual(true);
-        }, 1000);
-      }, 1000);
+      expect(connect_close).assertEqual(true);
+      done()
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_close finished');
     })
 
-    it('client_socket_test_sync_close', 0, () => {
+    it('client_socket_test_sync_close', 0, (done: Function) => {
       let connect_sync_close: boolean = false;
+      let is_open: boolean = false;
       let client: client_socket = new client_socket();
+      client.set_open_listener(() => {
+        is_open = true;
+      })
       client.set_close_listener((reason: string) => {
         connect_sync_close = true;
       });
-      let uri: string = "http://10.50.40.37:3000";
+      let uri: string = "http://113.45.193.209:3100";
       client.connect(uri);
       setTimeout(() => {
         client.sync_close();
         setTimeout(() => {
           expect(connect_sync_close).assertEqual(true);
+          expect(is_open).assertEqual(true);
+          done();
         }, 1000);
       }, 1000);
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_sync_close finished');
     })
 
-    it('client_socket_test_opened', 0, () => {
+    it('client_socket_test_opened', 0, (done: Function) => {
       let client: client_socket = new client_socket();
-      let uri: string = "http://10.50.40.37:3000";
-      client.connect(uri);
-      setTimeout(() => {
+      client.set_open_listener(() => {
         expect(client.opened()).assertEqual(true);
-      }, 1000);
+        done()
+      })
+      let uri: string = "http://113.45.193.209:3100";
+      client.connect(uri);
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_opened finished');
     })
 
-    it('client_socket_test_get_sessionid', 0, () => {
+    it('client_socket_test_get_sessionid', 0, (done: Function) => {
       let client: client_socket = new client_socket();
-      let uri: string = "http://10.50.40.37:3000";
-      client.connect(uri);
-      setTimeout(() => {
+      client.set_open_listener(() => {
         client.emit("add user", "username");
-        setTimeout(() => {
-          expect(client.get_sessionid() != null && client.get_sessionid() != "").assertEqual(true);
-        }, 1000);
-      }, 1000);
+      })
+      client.on("login", () => {
+        expect(client.get_sessionid() != null && client.get_sessionid() != "").assertEqual(true);
+        done()
+      });
+      let uri: string = "http://113.45.193.209:3100";
+      client.connect(uri);
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_get_sessionid finished');
     })
 
-    it('client_socket_test_off', 0, () => {
+    it('client_socket_test_off', 0, (done: Function) => {
       let is_call_login_listener: boolean = false;
+      let is_open: boolean = false;
       let client: client_socket = new client_socket();
+      client.set_open_listener(() => {
+        is_open = true
+      })
       client.on("login", () => {
         is_call_login_listener = true;
       });
-      let uri: string = "http://10.50.40.37:3000";
+      client.off("login");
+      let uri: string = "http://113.45.193.209:3100";
       client.connect(uri);
+      client.emit("add user", "username");
       setTimeout(() => {
-        client.off("add user");
-        client.emit("add user", "username");
-        setTimeout(() => {
-          expect(is_call_login_listener).assertEqual(false);
-        }, 1000);
-      }, 1000);
+        expect(is_call_login_listener).assertEqual(false);
+        expect(is_open).assertEqual(true);
+        done();
+      }, 2000);
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_off finished');
     })
 
-    it('client_socket_test_off_all', 0, () => {
+    it('client_socket_test_off_all', 0, (done: Function) => {
       let is_call_login_listener: boolean = false;
-      let is_error :boolean = false;
+      let message :boolean = false;
       let client: client_socket = new client_socket();
       client.on("login", () => {
         is_call_login_listener = true;
       });
-      client.on_error(() => {
-        is_error = true;
-      })
-      let uri: string = "http://10.50.40.37:3000";
+      client.on("new message", (event_json: string) => {
+        message = true;
+      });
+      client.off_all();
+      let uri: string = "http://113.45.193.209:3100";
       client.connect(uri);
+      client.emit("add user", "username");
       setTimeout(() => {
-        client.off_all();
-        client.emit("add user", "username");
-        setTimeout(() => {
-          expect(is_call_login_listener).assertEqual(false);
-          expect(is_error).assertEqual(true);
-        }, 1000);
-      }, 1000);
+        expect(is_call_login_listener).assertEqual(false);
+        expect(message).assertEqual(false);
+        done();
+      }, 2000);
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_off_all finished');
     })
 
-    it('client_socket_test_reconnect_attempts', 0, () => {
+    it('client_socket_test_reconnect_attempts', 0, (done: Function) => {
       let reconnect_num: number = 0;
       let connect_fail: boolean = false;
       let client: client_socket = new client_socket();
@@ -265,91 +268,88 @@ export default function abilityTest() {
       client.set_reconnect_attempts(1);
       client.set_reconnect_listener(() => {
         reconnect_num++;
+        client.set_fail_listener(() => {
+          connect_fail = true;
+          expect(reconnect_num == 1 && connect_fail).assertEqual(true);
+          done();
+        });
       });
-      client.set_fail_listener(() => {
-        connect_fail = true;
-      });
-      let uri: string = ""
+      let uri: string = "http://113.45.193.209:3102"
       client.connect(uri);
-      setTimeout(() => {
-        expect(reconnect_num == 1 && connect_fail).assertEqual(true);
-      }, 15000);
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_reconnect_attempts finished');
     })
 
-    it('client_socket_test_reconnecting', 0, () => {
+    it('client_socket_test_reconnect', 0, (done: Function) => {
       let reconnect_num: number = 0;
-      let reconnecting_num: number = 0;
       let client: client_socket = new client_socket();
       client.set_reconnect_delay(1000);
       client.set_reconnect_delay_max(1000);
       client.set_reconnect_listener(() => {
         reconnect_num++;
+        expect(reconnect_num > 0).assertEqual(true);
+        done();
       });
-      client.set_reconnecting_listener(() => {
-        reconnecting_num++;
-      });
-      let uri: string = ""
+      let uri: string = "http://113.45.193.209:3102"
       client.connect(uri);
-      setTimeout(() => {
-        expect(reconnect_num > 0 && reconnecting_num > 0).assertEqual(true);
-      }, 15000);
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_reconnecting finished');
     })
 
-    it('client_socket_test_clear_socket_listeners', 0, () => {
+    it('client_socket_test_reconnecting', 0, (done: Function) => {
+      let reconnecting_num: number = 0;
+      let client: client_socket = new client_socket();
+      client.set_reconnect_delay(1000);
+      client.set_reconnect_delay_max(1000);
+      client.set_reconnecting_listener(() => {
+        reconnecting_num++;
+        expect(reconnecting_num > 0).assertEqual(true);
+        done();
+      });
+      let uri: string = "http://113.45.193.209:3102"
+      client.connect(uri);
+      hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_reconnecting finished');
+    })
+
+    it('client_socket_test_clear_socket_listeners', 0, (done:Function) => {
       let is_call_open_listener: boolean = false;
       let client: client_socket = new client_socket();
-      client.clear_socket_listeners();
       client.set_socket_open_listener((nsp: string) => {
         is_call_open_listener = true;
       });
-      let uri: string = "http://10.50.40.37:3000";
+      client.clear_socket_listeners();
+      let uri: string = "http://113.45.193.209:3100";
       client.connect(uri);
       setTimeout(() => {
-        setTimeout(() => {
-          expect(is_call_open_listener).assertEqual(false);
-        }, 1000);
+        expect(is_call_open_listener).assertEqual(false);
+        done()
       }, 1000);
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_clear_socket_listeners finished');
     })
 
-    it('client_socket_test_nsp', 0, () => {
+    it('client_socket_test_nsp', 0, (done: Function) => {
       let chat: string = '';
       let client: client_socket = new client_socket();
       client.set_nsp("chat")
       client.set_socket_open_listener((nsp: string) => {
         chat = nsp;
+        expect(chat).not().assertEqual('');
+        done()
       });
-      let uri: string = "http://10.50.40.37:3000";
+      let uri: string = "http://113.45.193.209:3100";
       client.connect(uri);
-      setTimeout(() => {
-        setTimeout(() => {
-          expect(chat).not().assertEqual('');
-        }, 1000);
-      }, 1000);
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_nsp finished');
     })
 
-    it('client_socket_test_once', 0, () => {
+    it('client_socket_test_once', 0, (done: Function) => {
       let once: boolean = false;
       let client: client_socket = new client_socket();
-      client.on("login", () => {
-      });
       client.once("login",(event_json:string) => {
         once = true;
+        expect(once).assertEqual(true);
+        done();
       })
-      let uri: string = "http://10.50.40.37:3000";
+      let uri: string = "http://113.45.193.209:3100";
       client.connect(uri);
-      setTimeout(() => {
-        client.emit("add user", "username");
-        setTimeout(()=>{
-          client.off("login");
-        },1000)
-        setTimeout(() => {
-          expect(once).assertEqual(false);
-        }, 2000);
-      }, 1000);
+      client.emit("add user", "username");
       hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_once finished');
     })
 
@@ -370,20 +370,22 @@ export default function abilityTest() {
      *   → CONNECTED(3) [异步回调]
      *   → DISCONNECTED(1) [同步]
      */
-    it('client_socket_test_get_current_state', 0, async (done:ESObject) => {
+    it('client_socket_test_get_current_state', 0, async (done:Function) => {
       let client: client_socket = new client_socket();
 
       // 异步成功回调: 连接成功后执行状态验证
       client.set_open_listener(() => {
         let state = client.get_current_state();
         expect(state).assertEqual(3); // CONNECTED
-
         // 测试断开连接
+        client.set_close_listener(() => {
+          state = client.get_current_state();
+          expect(state).assertEqual(1); // DISCONNECTED
+          done();
+        })
         client.close();
-        state = client.get_current_state();
-        expect(state).assertEqual(1); // DISCONNECTED
         hilog.info(0x0000, 'socketioTest', '%{public}s', 'client_socket_test_get_current_state finished');
-        done();
+
       });
 
       client.set_fail_listener(() => {
@@ -395,7 +397,7 @@ export default function abilityTest() {
       expect(state).assertEqual(0); // NOTCONNECTED
 
       // 触发异步连接
-      let uri: string = "http://10.50.40.37:3000";
+      let uri: string = "http://113.45.193.209:3100";
       client.connect(uri);
       state = client.get_current_state();
       expect(state).assertEqual(2); // CONNECTING
