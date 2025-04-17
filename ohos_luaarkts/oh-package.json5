@@ -1,7 +1,7 @@
 {
   "modelVersion": "5.0.0",
   "name": "@ohos/luaarkts",
-  "version": "1.0.1-rc.1",
+  "version": "1.0.1",
   "description": "Please describe the basic information.",
   "main": "",
   "author": "ohos_tpc",
@@ -10,5 +10,5 @@
     "@ohos/hypium": "1.0.17",
     "@ohos/hamock": "1.0.0"
   },
-  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/ohos_luaarkts"
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/ohos_luaarkts"
 }
