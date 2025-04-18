@@ -11,7 +11,7 @@
 
 ## How to Install
 
-1. Configure the OpenHarmony ohpm environment. For details, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+1. Configure the OpenHarmony ohpm environment. For details, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 2. Run the following installation command:
 
@@ -56,7 +56,13 @@ function tcp({ entity }) {
 };
 // This function adds an array named transports to the entity object and adds an object named ConnectionTCP to the array. The purpose is to configure a new connection mode on the entity object, that is, to use the TCP connection.
 ```
-
+## About obfuscation
+- Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- If you want the library not to be obfuscated during code obfuscation, you need to add corresponding exclusion rules in the obfuscation rule configuration file obfuscation-rules.txt：
+```
+-keep
+./oh_modules/@ohos/xmpp_tcp
+```
 ## Constraints
 
 This project has been verified in the following version:
@@ -82,7 +88,7 @@ This project has been verified in the following version:
 
 ## How to Contribute
 
-If you find any problem when using @ohos/xmpp_tcp, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+If you find any problem when using @ohos/xmpp_tcp, submit an [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
 ## License
 
