@@ -11,7 +11,7 @@
 - 重新连接
 
 ## 下载安装
-1. 参考安装教程 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+1. 参考安装教程 [如何安装OpenHarmony ohpm包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
 2. 安装命令如下：
 
@@ -78,7 +78,13 @@ start():  初始化重新连接模块，设置了一个监听器来监听 entity
 ```
 stop(): 停止重新连接模块，移除了断开连接的监听器并清除超时计时器
 ```
-
+## 关于混淆
+- 代码混淆，请查看[代码混淆简介](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- 如果希望三方库在代码混淆过程中不会被混淆，需要在混淆规则配置文件obfuscation-rules.txt中添加相应的排除规则：
+```
+-keep
+./oh_modules/@ohos/xmpp_reconnect
+```
 ## 约束与限制
 
 在下述版本验证通过：
@@ -100,7 +106,7 @@ stop(): 停止重新连接模块，移除了断开连接的监听器并清除超
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提[Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们提[PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+使用过程中发现任何问题都可以提[Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们提[PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
 ## 开源协议
 
