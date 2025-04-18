@@ -17,7 +17,7 @@
     "org": "opensource"
   },
   "type": "module",
-  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/BasicFtp",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/BasicFtp",
   "version": "1.0.2",
   "devDependencies": {
   }
