@@ -161,7 +161,13 @@ static HOST_DOMAIN: string = "he-202101111234"
   ```
 2. Skip this step in the Linux environment. In the Windows environment, after the code is downloaded, integrate the OpenHarmony adaptation code. Run the cd command to go to the **ohos_smack/library/src/main/cpp/thirdModule** directory, run the modify.sh script, and integrate the patch file in this directory into the **gloox** source code.
 3. Start building the project.
-
+## About obfuscation
+- Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- If you want the library not to be obfuscated during code obfuscation, you need to add corresponding exclusion rules in the obfuscation rule configuration file obfuscation-rules.txt：
+```
+-keep
+./oh_modules/@ohos/smack
+```
 ## Constraints
 This project has been verified in the following versions:
 
