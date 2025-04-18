@@ -19,7 +19,7 @@
   "ohos": {
     "org": "opensource"
   },
-  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/protobuf_format",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/protobuf_format",
   "type": "module",
   "tags": [
     "Tool"

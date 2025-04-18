@@ -11,7 +11,7 @@ protobuf_format can convert formats and rewrite the message output of @ohos/prot
 ```
 ohpm install @ohos/protobuf_format
 ```
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 2. Import the protobuf_format library on the target page, for example, **Index.ets**.
 
@@ -50,7 +50,7 @@ Use the **Protobuf.Builder.build()** API to construct a message body.
 | -------- | -------------------------- | ----------------------------------------------------- |
 | build    | path?:string&#124;string[] | Protobuf.Builder.Message&#124;Object // Generic protocol message body|
 
-[More Protobuf APIs](https://gitee.com/openharmony-tpc/protobuf/tree/1.x)
+[More Protobuf APIs](https://gitcode.com/openharmony-tpc/protobuf/tree/1.x)
 
 **Example of Building a Message**
 
@@ -310,7 +310,13 @@ Return value:
 | Type  | Description                        |
 | ------ | ---------------------------- |
 | string | HTML string corresponding to the message body.|
-
+## About obfuscation
+- Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- If you want the library not to be obfuscated during code obfuscation, you need to add corresponding exclusion rules in the obfuscation rule configuration file obfuscation-rules.txt：
+```
+-keep
+./oh_modules/@ohos/protobuf_format
+```
 ## Constraints
 This project has been verified in the following versions:
 
@@ -341,8 +347,8 @@ DevEco Studio: 4.0 Release (4.0.3.413), SDK: API 10 (4.0.10.3)
 
 ## How to Contribute
 
-If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+If you find any problem when using the project, submit an [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
 ## License
 
-This project is licensed under [Apache-2.0 License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/protobuf_format/LICENSE).
+This project is licensed under [Apache-2.0 License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/protobuf_format/LICENSE).

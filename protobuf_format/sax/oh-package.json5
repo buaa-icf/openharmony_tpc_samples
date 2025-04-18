@@ -16,7 +16,7 @@
   "ohos": {
     "org": "opensource"
   },
-  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/protobuf_format/sax",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/protobuf_format/sax",
   "type": "module",
   "tags": [
     "Tool"
