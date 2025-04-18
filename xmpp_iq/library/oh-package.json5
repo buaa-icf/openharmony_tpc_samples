@@ -1,7 +1,7 @@
 {
   "name": "@ohos/xmpp_iq",
   "version": "1.0.1",
-  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/xmpp_iq",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/xmpp_iq",
   "description": "处理XMPP协议中IQ（Info/Query）的模块library",
   "main": "index.js",
   "type": "module",
