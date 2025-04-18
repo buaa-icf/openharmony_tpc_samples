@@ -128,6 +128,13 @@ parser.on('error', (error) => {
   console.error('Error:', error.message);
 });
 ```
+## About obfuscation
+- Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- If you want the library not to be obfuscated during code obfuscation, you need to add corresponding exclusion rules in the obfuscation rule configuration file obfuscation-rules.txt：
+```
+-keep
+./oh_modules/@ohos/xmpp_xml
+```
 ## Constraints
 
 This project has been verified in the following version:
@@ -136,7 +143,7 @@ DevEco Studio: 5.0.3.200, 5.0.0.22-Canary2, SDK: API 12
 
 ## How to Contribute
 
-If you find any problem when using @xmpp/xml, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+If you find any problem when using @xmpp/xml, submit an [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
 ## License
 
