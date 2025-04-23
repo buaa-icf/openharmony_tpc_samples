@@ -10,7 +10,7 @@
 
 2、开发板选择RK3568，ROM下载地址. 选择开发板类型是rk3568，请使用最新的版本
 
-3、使用git clone下载源码，不要直接通过gitee网页的方式下载
+3、使用git clone下载源码，不要直接通过gitcode网页的方式下载
 
 ## 库使用
 
@@ -20,7 +20,7 @@
 ohpm install @ohos/luaarkts
 ```
 
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
 ## 使用说明
 1.获取so文件  

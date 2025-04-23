@@ -1,5 +1,8 @@
 **CHANGELOG.md**
 
+## 1.0.1
+- Switch the repository address to gitcode
+
 ## 1.0.1-rc.1
 - Remove useless demo code from luaarks module
 
