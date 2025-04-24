@@ -46,10 +46,6 @@ export default function abilityTest() {
       expect(getDomain("ws://123.156.123.5:123/foobar")).assertEqual("123.156.123.5")
     });
 
-    it('getDomain_ws', 0, () => {
-      expect(getDomain("ws://123.156.123.5:123/foobar")).assertEqual("123.156.123.5")
-    });
-
     it('getDomain_xmpp', 0, () => {
       expect(getDomain("xmpp://foo:123/foobar")).assertEqual("foo")
     });
