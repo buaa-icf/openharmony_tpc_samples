@@ -126,7 +126,8 @@ export struct VideoPanel {
       title: { title: "", subtitle: "" },
       preferType: SheetType.CENTER,
       onWillDismiss: ((DismissSheetAction: DismissSheetAction) => {
-        if (DismissSheetAction.reason == DismissReason.SLIDE_DOWN) {
+        if (DismissSheetAction.reason === DismissReason.SLIDE_DOWN || DismissSheetAction.reason === DismissReason.CLOSE_BUTTON) {
+          this.show = false;
           DismissSheetAction.dismiss() //注册dismiss行为
         }
       }),
