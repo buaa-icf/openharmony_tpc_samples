@@ -371,10 +371,6 @@ struct DiyCacheCountPage {
       self.currentCachePercent = 100;
     }
     this.fdPath = newUrl;
-    // 由于createAVPlayer方法里面已经设置了url 这里必须重置一下才会生效 直接设置url不生效
-    if (this.avPlayer && this.getState() == 'idle') {
-      this.avPlayer.url = newUrl;
-    }
     this.isSetFinish = true;
     promptAction.showToast({
       message: $r("app.string.Settings_completed")
@@ -535,7 +531,12 @@ struct DiyCacheCountPage {
           })
           .onLoad(() => {
             // 加载完成后调用初始化播放器函数
-            this.initAVPlayer();
+            let id = setInterval(() => {
+              if (this.isSetFinish) {
+                clearInterval(id);
+                this.initAVPlayer();
+              }
+            }, 20)
           })
           .width('100%')
           .aspectRatio(this.ratio)
