@@ -131,6 +131,9 @@ export struct BezierRadar {
         this.index++;
       } else if (this.bezierRadarModel.lastTime - this.bezierRadarModel.firstTime > 800 && this.bezierRadarModel.lastTime - this.bezierRadarModel.firstTime <= this.model.getRefreshDuration() - 200) {
         this.bezierRadarModel.drawRadar(canvas, width, height);
+        this.bezierRadarModel.mWaveHeight = this.bezierRadarModel.Arr[this.index];
+        this.bezierRadarModel.drawWave(canvas, width);
+        this.index++;
       } else if (this.bezierRadarModel.lastTime - this.bezierRadarModel.firstTime > this.model.getRefreshDuration() - 200) {
         this.bezierRadarModel.mRippleRadius += this.bezierRadarModel.mRippleRadiusAdd;
         this.bezierRadarModel.drawRipple(canvas, width, height);
@@ -187,7 +190,7 @@ namespace BezierRadarModel {
     @Trace firstTime: number = 0; //第一次获取的时间
     @Trace lastTime: number = 0; //最后一次获取的时间
     @Trace isFirstGetTime: boolean = true
-    @Trace location: number = 17; //表示绘制中心在整个高度的位置，height / location
+    @Trace location: number = 6; //表示绘制中心在整个高度的位置，height / location
     @Trace Arr: Array<number> = [-30, -60, -80, -100, -120, -130, -20, -80, -60, -40, -20,];
 
     init() {
@@ -195,7 +198,7 @@ namespace BezierRadarModel {
       this.mRadarRadius = vp2px(20);
       this.mRadarCircle = vp2px(7);
       this.mRadarScale = 1.35;
-      this.mWaveTop = 150;
+      this.mWaveTop = 400;
       this.mRippleRadius = 480;
       this.mAccentColor = "#ffffff";
       this.mPrimaryColor = "#33aaff";
@@ -393,7 +396,6 @@ namespace BezierRadarModel {
      * @param width 宽度
      */
     drawWave(canvas: CanvasRenderingContext2D, width: number) {
-      canvas.clearRect(0, 0, this.mWidth, this.mHeight);
       canvas.beginPath();
       canvas.moveTo(0, 0);
       canvas.lineTo(0, px2vp(this.mWaveTop));

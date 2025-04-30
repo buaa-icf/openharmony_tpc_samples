@@ -8,6 +8,6 @@
   "name": "smartrefreshlayout",
   "description": "A sliding list library with animated pull-up refresh and pull-down loading",
   "main": "",
-  "version": "2.1.0",
+  "version": "2.1.1-rc.0",
   "dependencies": {}
 }
