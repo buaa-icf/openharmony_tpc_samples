@@ -16,7 +16,7 @@
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium';
 import Connection from "@ohos/xmpp_connection";
-import iqCaller from "@ohos/xmpp_iq/src/main/iq/caller";
+import iqCaller from "@ohos/xmpp_iq/src/main/lib/caller";
 import middleware from "@ohos/xmpp_middleware";
 import sessionEstablishment from "@ohos/xmpp_session_establishment";
 import streamFeatures from "@ohos/xmpp_stream_features";
