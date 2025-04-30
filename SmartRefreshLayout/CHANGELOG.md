@@ -1,3 +1,7 @@
+## 2.1.1-rc.0
+
+- Fix BezierRadar Head Refresh Background Issue
+
 ## 2.1.0
 
 - Release 2.1.0 official version
