@@ -1,5 +1,6 @@
+import hilog from '@ohos.hilog';
 'use strict';
-
+const TAG = 'asn1Demo-serializer-json';
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -22,9 +23,11 @@ function jsonify(content) {
         if (typeof content.toString === 'function' && !(content instanceof _types.Type)) {
           return content.toString();
         }
+        hilog.error(0x0000, TAG, '%{public}s', `No mechanism to serialize content object: "${content}"`);
         throw new Error(`No mechanism to serialize content object: "${content}"`);
       }
     default:
+      hilog.error(0x0000, TAG, '%{public}s', `Illegal ASN.1 object model content type "${contentType}"`);
       throw new Error(`Illegal ASN.1 object model content type "${contentType}"`);
   }
 }

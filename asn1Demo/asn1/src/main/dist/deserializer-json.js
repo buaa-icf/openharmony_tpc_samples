@@ -1,3 +1,5 @@
+import hilog from '@ohos.hilog';
+
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -10,17 +12,29 @@ var _deserializer = require('./deserializer');
 var _types = require('./types');
 var _encodings = require('./encodings');
 
+const TAG = 'asn1Demo-deserializer-json';
 
 function validateJSON(json, root = true) {
-  if (json === null) throw new Error('ASN.1 abstract JSON must not be null');
-  if (json === undefined) throw new Error('ASN.1 abstract JSON must not be undefined');
-  if (typeof json !== 'object') throw new Error('ASN.1 abstract JSON must be an object');
-  if (!Array.isArray(json) && Object.keys(json).length < 1) {
-    throw new Error('ASN.1 abstract JSON must not be empty object');
-  }
-  if (root && Array.isArray(json) && json.length < 1) {
-    throw new Error('ASN.1 abstract JSON root must not be empty array');
-  }
+    if (json === null) {
+        hilog.error(0x0000, TAG, '%{public}s', 'ASN.1 abstract JSON must not be null');
+        throw new Error('ASN.1 abstract JSON must not be null');
+    }
+    if (json === undefined) {
+        hilog.error(0x0000, TAG, '%{public}s', 'ASN.1 abstract JSON must not be undefined');
+        throw new Error('ASN.1 abstract JSON must not be undefined');
+    }
+    if (typeof json !== 'object') {
+        hilog.error(0x0000, TAG, '%{public}s', 'ASN.1 abstract JSON must be an object');
+        throw new Error('ASN.1 abstract JSON must be an object');
+    }
+    if (!Array.isArray(json) && Object.keys(json).length < 1) {
+        hilog.error(0x0000, TAG, '%{public}s', 'ASN.1 abstract JSON must not be empty object');
+        throw new Error('ASN.1 abstract JSON must not be empty object');
+    }
+    if (root && Array.isArray(json) && json.length < 1) {
+        hilog.error(0x0000, TAG, '%{public}s', 'ASN.1 abstract JSON root must not be empty array');
+        throw new Error('ASN.1 abstract JSON root must not be empty array');
+    }
   // TODO schema validation
 }
 

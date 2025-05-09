@@ -1,3 +1,4 @@
+import hilog from '@ohos.hilog';
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -11,6 +12,7 @@ exports.findType = findType;
 
 var BigInteger = require('./BigInteger');
 
+const TAG = 'asn1Demo-types';
 
 class Type {}
 
@@ -68,8 +70,10 @@ function importInteger(content) {
   }
   if (contentType === 'object') {
     if (content.constructor.name === 'BigInteger') return content;
+    hilog.error(0x0000, TAG, '%{public}s', 'integer objects must be instance of BigInteger');
     throw new Error('integer objects must be instance of BigInteger');
   }
+  hilog.error(0x0000, TAG, '%{public}s', `cannot import an integer from "${contentType}"`);
   throw new Error(`cannot import an integer from "${contentType}"`);
 }
 
@@ -122,6 +126,7 @@ function findTagClass(value) {
     case 'number':
       return TagClasses.find(tagClass => tagClass.value === value);
     default:
+      hilog.error(0x0000, TAG, '%{public}s', `Must use string or number to lookup tag class, not "${valueType}"`);
       throw new Error(`Must use string or number to lookup tag class, not "${valueType}"`);
   }
 }
@@ -134,6 +139,7 @@ function findType(value) {
     case 'number':
       return Types.find(AType => new AType().value === value);
     default:
+      hilog.error(0x0000, TAG, '%{public}s', `Must use string or number to lookup type, not "${valueType}"`);
       throw new Error(`Must use string or number to lookup type, not "${valueType}"`);
   }
 }

@@ -1,9 +1,11 @@
+import hilog from '@ohos.hilog';
+
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-
+const TAG = 'asn1Demo-BigInteger';
 var Long = require('./long')
 
 var MIN_RADIX = 2;
@@ -37,8 +39,10 @@ var MAX_CONSTANT = 16;
 
  function copyOfRange(original, from, to) {
     var newLength = to - from;
-    if (newLength < 0)
+    if (newLength < 0) {
+        hilog.error(0x0000, TAG, '%{public}s', from + " > " + to);
         throw new Error(from + " > " + to);
+    }
     var copy = new Array(newLength);
     arraycopy(original, from, copy, 0, Math.min(original.length - from, newLength));
     return copy;
@@ -89,14 +93,18 @@ BigInteger.fromBuffer = function (signum, magnitude) {
     var _bigInteger = new BigInteger();
     _bigInteger.mag = _bigInteger._stripLeadingZeroBytes(magnitude);
 
-    if (signum < -1 || signum > 1)
+    if (signum < -1 || signum > 1) {
+        hilog.error(0x0000, TAG, '%{public}s', "Invalid signum value");
         throw new Error("Invalid signum value");
+    }
 
     if (_bigInteger.mag.length==0) {
         _bigInteger.signum = 0;
     } else {
-        if (signum == 0)
+        if (signum == 0) {
+            hilog.error(0x0000, TAG, '%{public}s', "signum-magnitude mismatch");
             throw new Error("signum-magnitude mismatch");
+        }
         _bigInteger.signum = signum;
     }
     return _bigInteger;
@@ -127,9 +135,11 @@ BigInteger.fromString = function (val, radix) {
     var numDigits;
     var len = val.length;
     if (radix < MIN_RADIX || radix > MAX_RADIX) {
+        hilog.error(0x0000, TAG, '%{public}s', 'Radix out of range');
         throw new Error('Radix out of range');
     }
     if (len === 0) {
+        hilog.error(0x0000, TAG, '%{public}s', "Zero length BigInteger");
         throw new Error("Zero length BigInteger");
     }
     var sign = 1;
@@ -139,6 +149,7 @@ BigInteger.fromString = function (val, radix) {
         if (index1 === 0 || index2 === 0) {
             cursor = 1;
             if (len === 1) {
+                hilog.error(0x0000, TAG, '%{public}s', "Zero length BigInteger");
                 throw new Error("Zero length BigInteger");
             }
         }
@@ -146,6 +157,7 @@ BigInteger.fromString = function (val, radix) {
             sign = -1;
         }
     } else {
+        hilog.error(0x0000, TAG, '%{public}s', "Illegal embedded sign character");
         throw new Error("Illegal embedded sign character");
     }
     var _bigInteger = new BigInteger();
@@ -177,8 +189,10 @@ BigInteger.fromString = function (val, radix) {
     var group = val.substring(cursor, cursor += firstGroupLen);
 
     magnitude[numWords - 1] = parseInt(group, radix);
-    if (magnitude[numWords - 1] < 0)
+    if (magnitude[numWords - 1] < 0) {
+        hilog.error(0x0000, TAG, '%{public}s', "Illegal digit");
         throw new Error("Illegal digit");
+    }
 
     // Process remaining digit groups
     var superRadix = intRadix[radix];
@@ -187,8 +201,10 @@ BigInteger.fromString = function (val, radix) {
         group = val.substring(cursor, cursor += digitsPerInt[radix]);
         groupVal = parseInt(group, radix);
 
-        if (groupVal < 0)
+        if (groupVal < 0) {
+            hilog.error(0x0000, TAG, '%{public}s', "Illegal digit");
             throw new Error("Illegal digit");
+        }
          _bigInteger._destructiveMulAdd(magnitude, superRadix, groupVal);
     }
 
@@ -266,8 +282,10 @@ BigInteger.fromMag = function (magnitude, signum) {
 
     if (typeof signum === 'undefined') {
         // @see BigInteger(int[] val)
-        if (magnitude.length == 0)
+        if (magnitude.length == 0) {
+            hilog.error(0x0000, TAG, '%{public}s', "Zero length BigInteger");
             throw new Error("Zero length BigInteger");
+        }
 
         if (magnitude[0] < 0) {
             _bigInteger.mag = makePositive(magnitude);
