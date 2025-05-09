@@ -1,6 +1,7 @@
 import { ASN1 } from './types';
 import { Errors } from './errors';
 import Buffer from '@ohos.buffer';
+import hilog from '@ohos.hilog';
 
 ///--- Globals
 
@@ -10,10 +11,11 @@ var DEFAULT_OPTS = {
 	size: 1024,
 	growthFactor: 8
 };
-
+const TAG = 'asn1_ber_writer';
 function merge(from, to) {
 	// 确保 from 和 to 都是对象
 	if (typeof from !== 'object' || from === null || typeof to !== 'object' || to === null) {
+		hilog.error(0x0000, TAG, '%{public}s', 'Both arguments must be objects and not null');
 		throw new TypeError('Both arguments must be objects and not null');
 	}
 
@@ -57,6 +59,7 @@ Object.defineProperty(Writer.prototype, 'buffer', {
 
 Writer.prototype.writeByte = function (b) {
 	if (typeof (b) !== 'number') {
+		hilog.error(0x0000, TAG, '%{public}s', 'argument must be a Number');
 		throw new TypeError('argument must be a Number');
 	}
 
@@ -66,6 +69,7 @@ Writer.prototype.writeByte = function (b) {
 
 Writer.prototype.writeInt = function (i, tag) {
 	if (!Number.isInteger(i)) {
+		hilog.error(0x0000, TAG, '%{public}s', 'argument must be an integer');
 		throw new TypeError('argument must be an integer');
 	}
 	if (typeof (tag) !== 'number') {
@@ -96,6 +100,7 @@ Writer.prototype.writeNull = function () {
 
 Writer.prototype.writeEnumeration = function (i, tag) {
 	if (typeof (i) !== 'number') {
+		hilog.error(0x0000, TAG, '%{public}s', 'argument must be a Number');
 		throw new TypeError('argument must be a Number');
 	}
 	if (typeof (tag) !== 'number') {
@@ -108,6 +113,7 @@ Writer.prototype.writeEnumeration = function (i, tag) {
 
 Writer.prototype.writeBoolean = function (b, tag) {
 	if (typeof (b) !== 'boolean') {
+		hilog.error(0x0000, TAG, '%{public}s', 'argument must be a Boolean');
 		throw new TypeError('argument must be a Boolean');
 	}
 	if (typeof (tag) !== 'number') {
@@ -123,6 +129,7 @@ Writer.prototype.writeBoolean = function (b, tag) {
 
 Writer.prototype.writeString = function (s, tag) {
 	if (typeof (s) !== 'string') {
+		hilog.error(0x0000, TAG, '%{public}s', 'argument must be a string (was: ' + typeof (s) + ')');
 		throw new TypeError('argument must be a string (was: ' + typeof (s) + ')');
 	}
 	if (typeof (tag) !== 'number') {
@@ -142,6 +149,7 @@ Writer.prototype.writeString = function (s, tag) {
 
 Writer.prototype.writeBuffer = function (buf, tag) {
 	if (!Buffer.isBuffer(buf)) {
+		hilog.error(0x0000, TAG, '%{public}s', 'argument must be a buffer');
 		throw new TypeError('argument must be a buffer');
 	}
 
@@ -161,6 +169,7 @@ Writer.prototype.writeBuffer = function (buf, tag) {
 
 Writer.prototype.writeStringArray = function (strings, tag) {
 	if (!(strings instanceof Array)) {
+		hilog.error(0x0000, TAG, '%{public}s', 'argument must be an Array[String]');
 		throw new TypeError('argument must be an Array[String]');
 	}
 
@@ -173,6 +182,7 @@ Writer.prototype.writeStringArray = function (strings, tag) {
 // This is really to solve DER cases, but whatever for now
 Writer.prototype.writeOID = function (s, tag) {
 	if (typeof (s) !== 'string') {
+		hilog.error(0x0000, TAG, '%{public}s', 'argument must be a string');
 		throw new TypeError('argument must be a string');
 	}
 	if (typeof (tag) !== 'number') {
@@ -226,6 +236,7 @@ Writer.prototype.writeOID = function (s, tag) {
 
 Writer.prototype.writeLength = function (len) {
 	if (typeof (len) !== 'number') {
+		hilog.error(0x0000, TAG, '%{public}s', 'argument must be a Number');
 		throw new TypeError('argument must be a Number');
 	}
 
@@ -292,16 +303,19 @@ Writer.prototype.endSequence = function () {
 Writer.prototype._shift = function (start, len, shift) {
 	// 检查 start 是否被定义
 	if (start === undefined) {
+		hilog.error(0x0000, TAG, '%{public}s', 'Missing required parameter "start"');
 		throw new Error('Missing required parameter "start"');
 	}
 
 	// 检查 len 是否被定义
 	if (len === undefined) {
+		hilog.error(0x0000, TAG, '%{public}s', 'Missing required parameter "len"');
 		throw new Error('Missing required parameter "len"');
 	}
 
 	// 检查 shift 是否为有效值（这里假设非零或负数即为有效）
 	if (shift >= 0) {
+		hilog.error(0x0000, TAG, '%{public}s', 'Invalid shift value, must be a positive number');
 		throw new Error('Invalid shift value, must be a positive number');
 	}
 
@@ -314,6 +328,7 @@ Writer.prototype._ensure = function (len) {
 	// assert.ok(len);
 
 	if (!len || len <= 0) {
+		hilog.error(0x0000, TAG, '%{public}s', 'Invalid length, must be a positive number');
 		// 抛出错误或进行其他错误处理
 		throw new Error('Invalid length, must be a positive number');
 	}

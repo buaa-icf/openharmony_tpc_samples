@@ -1,6 +1,7 @@
 import {ASN1} from './types';
 import {  Errors} from './errors';
 import Buffer from '@ohos.buffer';
+import hilog from '@ohos.hilog';
 
 
 ///--- Globals
@@ -8,12 +9,14 @@ import Buffer from '@ohos.buffer';
 var InvalidAsn1Error = Errors.InvalidAsn1Error;
 
 
-
+const TAG = 'asn1_ber_reader';
 ///--- API
 
 function Reader(data) {
-	if (!data || !Buffer.isBuffer(data))
-		throw new TypeError('data must be a node Buffer');
+    if (!data || !Buffer.isBuffer(data)) {
+        hilog.error(0x0000, TAG, '%{public}s', 'data must be a node Buffer');
+        throw new TypeError('data must be a node Buffer');
+    }
 
 	this._buf = data;
 	this._size = data.length;
