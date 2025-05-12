@@ -1,3 +1,6 @@
+### 1.0.3-rc.0
+1. Modify export *
+
 ### 1.0.2
 1. Fix repository from gitee to gitcode in oh-packaage.json5
 2. Release the official version
