@@ -6,7 +6,7 @@
     "blufi配网"
   ],
   "name": "@ohos/espblufiforharmony",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "专门为OpenHarmony环境下，为了方便用户进行 Blufi 的二次开发提供了一些基本API接口",
   "type": "module",
   "ohos": {

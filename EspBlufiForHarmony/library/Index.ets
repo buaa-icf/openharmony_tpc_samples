@@ -26,35 +26,35 @@ import DLogger from './src/main/ets/Logger'
 
 export const Logger = DLogger;
 
-export * from './src/main/ets/BlufiClient'
+export { BlufiClient } from './src/main/ets/BlufiClient'
 
-export * from './src/main/ets/BlufiClientImpl'
+export { BlufiClientImpl } from './src/main/ets/BlufiClientImpl'
 
-export * from './src/main/ets/BlufiCallback'
+export { BlufiGattStatus, BlufiGattCallback, BlufiCallback } from './src/main/ets/BlufiCallback'
 
-export * from './src/main/ets/BlufiNotifyData'
+export { BlufiNotifyData } from './src/main/ets/BlufiNotifyData'
 
-export * from './src/main/ets/BlufiUtil'
+export { BlufiUtil } from './src/main/ets/BlufiUtil'
 
-export * from './src/main/ets/FrameCtrlData'
+export { FrameCtrlData } from './src/main/ets/FrameCtrlData'
 
-export * from './src/main/ets/params/BlufiConfigureParams'
+export { BlufiConfigureParams } from './src/main/ets/params/BlufiConfigureParams'
 
-export * from './src/main/ets/params/BlufiParameter'
+export { BlufiParameter } from './src/main/ets/params/BlufiParameter'
 
-export * from './src/main/ets/response/BlufiScanResult'
+export { BlufiScanResult } from './src/main/ets/response/BlufiScanResult'
 
-export * from './src/main/ets/response/BlufiStatusResponse'
+export { BlufiStatusResponse } from './src/main/ets/response/BlufiStatusResponse'
 
-export * from './src/main/ets/response/BlufiVersionResponse'
+export { BlufiVersionResponse } from './src/main/ets/response/BlufiVersionResponse'
 
-export * from './src/main/ets/security/BlufiAES'
+export { BlufiAES } from './src/main/ets/security/BlufiAES'
 
-export * from './src/main/ets/security/BlufiCRC'
+export { BlufiCRC } from './src/main/ets/security/BlufiCRC'
 
-export * from './src/main/ets/security/BlufiDH'
+export { BlufiDH } from './src/main/ets/security/BlufiDH'
 
-export * from './src/main/ets/security/BlufiMD5'
+export { BlufiMD5 } from './src/main/ets/security/BlufiMD5'
 
 
 
