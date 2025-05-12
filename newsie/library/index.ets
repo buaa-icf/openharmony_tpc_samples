@@ -14,5 +14,5 @@
  */
 
 export {default as default} from "./src/main/ets/dist/newsie-new";
-export * from "./src/main/ets/dist/newsie-new";
+export { CapabilityLabel, Command, addHandler, build, Client, fetch } from "./src/main/ets/dist/newsie-new";
 
