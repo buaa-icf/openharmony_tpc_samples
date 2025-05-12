@@ -1,3 +1,5 @@
+### 1.0.2
+- fix "export *" to improve performance
 ### 1.0.1
 - 发布release版
 ### 1.0.1-rc.1

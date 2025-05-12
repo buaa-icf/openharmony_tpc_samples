@@ -8,7 +8,7 @@
   main: "index.ets",
   repository: "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/newsie",
   type: "module",
-  version: "1.0.1",
+  version: "1.0.2",
   tags: ["Tool"],
   license: "GNU AFFERO GENERAL",
   "dependencies": {},
