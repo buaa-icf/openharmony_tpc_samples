@@ -13,11 +13,42 @@
  * limitations under the License.
  */
 
-export * from './src/main/ets/address';
-export * from './src/main/ets/client';
-export * from './src/main/ets/connection';
-export * from './src/main/ets/date';
-export * from './src/main/ets/error';
-export * from './src/main/ets//message';
-export * from './src/main/ets/mime';
-export * from './src/main/ets/response';
+import { addressparser } from './src/main/ets/address';
+import { SMTPClient } from './src/main/ets/client';
+import { SMTPConnection, SMTPState, AUTH_METHODS, DEFAULT_TIMEOUT } from './src/main/ets/connection';
+import { getRFC2822Date, getRFC2822DateUTC, isRFC2822Date } from './src/main/ets/date';
+import { SMTPErrorStates, SMTPError } from './src/main/ets/error';
+import {
+  Message,
+  MIMECHUNK,
+  BUFFERSIZE,
+  MIME64CHUNK,
+  MessageAttachmentHeaders,
+  MessageAttachment,
+  MessageHeaders
+} from './src/main/ets//message';
+import { mimeEncode, mimeWordEncode } from './src/main/ets/mime';
+import { SMTPResponseMonitor } from './src/main/ets/response';
+
+
+export { MessageAttachmentHeaders,
+  MessageAttachment,
+  MessageHeaders,
+  AUTH_METHODS,
+  BUFFERSIZE,
+  DEFAULT_TIMEOUT,
+  MIME64CHUNK,
+  MIMECHUNK,
+  Message,
+  SMTPClient,
+  SMTPConnection,
+  SMTPError,
+  SMTPErrorStates,
+  SMTPResponseMonitor,
+  SMTPState,
+  addressparser,
+  getRFC2822Date,
+  getRFC2822DateUTC,
+  isRFC2822Date,
+  mimeEncode,
+  mimeWordEncode };
