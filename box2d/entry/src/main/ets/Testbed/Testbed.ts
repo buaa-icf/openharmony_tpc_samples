@@ -16,10 +16,27 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-export * from "./Framework/DebugDraw";
+export { Camera, DebugDraw, g_debugDraw, g_camera } from "./Framework/DebugDraw";
+
 // #if B2_ENABLE_PARTICLE
-export * from "./Framework/FullscreenUI";
-export * from "./Framework/ParticleEmitter";
-export * from "./Framework/ParticleParameter";
+export { FullScreenUI } from "./Framework/FullscreenUI";
+
+export { EmittedParticleCallback, RadialEmitter } from "./Framework/ParticleEmitter";
+
+export {
+  ParticleParameterOptions,
+  ParticleParameterValue,
+  ParticleParameterDefinition,
+  ParticleParameter
+} from "./Framework/ParticleParameter";
+
 // #endif
-export * from "./Framework/Test";
+export {
+  DRAW_STRING_NEW_LINE,
+  RandomFloat,
+  Settings,
+  TestEntry,
+  DestructionListener,
+  ContactPoint,
+  Test
+} from "./Framework/Test";
