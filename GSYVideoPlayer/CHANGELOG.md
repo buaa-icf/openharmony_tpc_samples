@@ -1,3 +1,6 @@
+## 1.0.2
+1. Change code repository address
+
 ## 1.0.1
 1. Release the official version
 

@@ -11,9 +11,9 @@
   },
   "description": "gsyvideoplayer是一款ohos视频播放器三方库。",
   "main": "Index.ets",
-  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/GSYVideoPlayer",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/GSYVideoPlayer",
   "type": "module",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "dependencies": {
     "@ohos/mp4parser": "^2.0.3-rc.0",
     "@ohos/ijkplayer": "^2.0.6-rc.5",
