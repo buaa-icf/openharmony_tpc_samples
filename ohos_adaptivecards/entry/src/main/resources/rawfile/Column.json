@@ -1,0 +1,117 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "body": [
+    {
+      "columns": [
+        {
+          "width": "auto",
+          "verticalContentAlignment": "Center",
+          "type": "Column",
+          "items": [
+            {
+              "width": "18px",
+              "type": "Image",
+              "url": "https://adaptivecards.io/content/adaptive-card-50.png",
+              "height": "18px"
+            }
+          ]
+        },
+        {
+          "spacing": "Small",
+          "width": "stretch",
+          "verticalContentAlignment": "Center",
+          "type": "Column",
+          "items": [
+            {
+              "horizontalAlignment": "Left",
+              "size": "Small",
+              "color": "Default",
+              "weight": "Default",
+              "text": "appName",
+              "type": "TextBlock",
+              "wrap": true,
+              "isSubtle": true
+            }
+          ]
+        }
+      ],
+      "type": "ColumnSet"
+    },
+    {
+      "spacing": "Medium",
+      "size": "Medium",
+      "weight": "Bolder",
+      "text": "title",
+      "type": "TextBlock",
+      "wrap": true,
+      "maxLines": 3
+    },
+    {
+      "type": "Container",
+      "items": [
+        {
+          "type": "Container",
+          "$data": "contentBlocks",
+          "items": [
+            {
+              "type": "ColumnSet",
+              "columns": [
+                {
+                  "type": "Column",
+                  "width": "auto",
+                  "items": [
+                    {
+                      "type": "Image",
+                      "width": "3px",
+                      "height": "18px",
+                      "url": "https://adaptivecards.io/content/adaptive-card-50.png"
+                    }
+                  ],
+                  "verticalContentAlignment": "Center"
+                },
+                {
+                  "type": "Column",
+                  "width": "stretch",
+                  "items": [
+                    {
+                      "type": "TextBlock",
+                      "text": "title",
+                      "wrap": true,
+                      "maxLines": 1,
+                      "weight": "Bolder"
+                    }
+                  ],
+                  "spacing": "Small"
+                }
+              ]
+            },
+            {
+              "type": "TextBlock",
+              "text": "content",
+              "wrap": true,
+              "spacing": "None",
+              "maxLines": 3
+            }
+          ],
+          "spacing": "Medium"
+        }
+      ],
+      "spacing": "ExtraLarge",
+      "separator": true
+    },
+    {
+      "spacing": "Large",
+      "type": "ActionSet",
+      "actions": [
+        {
+          "type": "Action.OpenUrl",
+          "title": "buttonTitle",
+          "url": "https://adaptivecards.io",
+          "style": "positive"
+        }
+      ]
+    }
+  ],
+  "version": "1.4"
+}

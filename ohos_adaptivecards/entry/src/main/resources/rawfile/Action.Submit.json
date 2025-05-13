@@ -1,0 +1,57 @@
+{
+  "type": "AdaptiveCard",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "title",
+      "wrap": true,
+      "size": "Medium",
+      "weight": "Bolder"
+    },
+    {
+      "type": "TextBlock",
+      "text": "content",
+      "wrap": true,
+      "spacing": "Medium"
+    },
+    {
+      "type": "ActionSet",
+      "spacing": "Medium",
+      "orientation":"Vertical",
+      "actions": [
+        {
+          "type": "Action.Submit",
+          "$when": "${state == 0}",
+          "title": "agree",
+          "style": "positive",
+          "data": "agreeData"
+        },
+        {
+          "type": "Action.Submit",
+          "$when": "${state == 0}",
+          "title": "decline",
+          "data": "declineData"
+        },
+        {
+          "type": "Action.Submit",
+          "$when": "${state == 1}",
+          "title": "agreed",
+          "isEnabled": false
+        },
+        {
+          "type": "Action.Submit",
+          "$when": "${state == 2}",
+          "title": "declined",
+          "isEnabled": false
+        }
+      ]
+    }
+  ],
+  "selectAction": {
+    "type": "Action.OpenUrl",
+    "url": "https://adaptivecards.io"
+  },
+  "style": "default",
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version": "1.4"
+}

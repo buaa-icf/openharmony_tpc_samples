@@ -1,0 +1,28 @@
+## 1.0.0
+- Support AdaptiveCard
+- Support Column
+- Support ColumnSet
+- Support Container
+- Support TextBlock
+- Support Image
+- Support RichTextBlock
+- Support Input.Text
+- Support TextRun
+- Support ActionSet
+- Support Action.Submit
+- Support Action.OpenURL
+- Support Action.TogleVisibility
+- Support ImageSet
+- Support FactSet
+- Support Input.Number
+- Support Action.ShowCard
+- Support Action.Execute
+- Support Carousel
+- Support Table
+- Not Support Markdown
+- Not Support Media
+- Not Support Input.Date
+- Not Support Input.Time
+- Not Support Input.ChoiceSet
+- Not Support Input.Touggle
+

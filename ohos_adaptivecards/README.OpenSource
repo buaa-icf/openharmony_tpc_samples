@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "adaptivecards",
+        "License": "MIT License",
+        "License File": "LICENSE",
+        "Version Number": "3.0.5",
+        "Owner": "xiafeng@huawei.com",
+        "Upstream URL": "https://github.com/microsoft/AdaptiveCards",
+        "Description": "Adaptive Cards are a new way for developers to exchange content in a common and consistent way."
+    }
+]
