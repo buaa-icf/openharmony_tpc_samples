@@ -13,15 +13,15 @@
  * limitations under the License.
  */
 
-export * from "./src/main/ets/Client"
+export { AccessOptions, TransferStrategy, RawListParser, UploadOptions, Client } from "./src/main/ets/Client"
 
-export * from "./src/main/ets/FtpContext"
+export { TaskResolver, FTPResponse, ResponseHandler, FTPError, ClientError, FTPContext } from "./src/main/ets/FtpContext"
 
-export * from "./src/main/ets/FileInfo"
+export { UnixPermissions, FileInfo, FileType } from "./src/main/ets/FileInfo"
 
-export * from "./src/main/ets/parseList"
+export { parseList } from "./src/main/ets/parseList"
 
-export * from "./src/main/ets/StringEncoding"
+export { StringEncoding } from "./src/main/ets/StringEncoding"
 
 export { to } from "./src/main/ets/PathUtil"
 
