@@ -1,4 +1,4 @@
-## 1.0.3
+## 1.0.3-rc.0
 - The export mode is updated
 
 ## 1.0.2

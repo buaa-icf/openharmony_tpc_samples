@@ -18,7 +18,7 @@
   },
   "type": "module",
   "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/BasicFtp",
-  "version": "1.0.3",
+  "version": "1.0.3-rc.0",
   "devDependencies": {
   }
 }
