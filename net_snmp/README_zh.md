@@ -18,6 +18,7 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
 ```
   let session :snmp.Session= snmp.createSession ("10.50.40.26", "public");
   let oids = ["1.3.6.1.2.1.1.5.0", "1.3.6.1.2.1.1.6.0"];
+  //get请求
   session.get (oids,  (error:ESObject, letbinds:ESObject) =>{
     if (error) {
       console.error (error);
@@ -35,6 +36,33 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
     if (error)
       console.error (error);
   });
+  
+  var varbinds = [
+    {
+        oid: "1.3.6.1.2.1.1.5.0",
+        type: snmp.ObjectType.OctetString,
+        value: "host1"
+    }, {
+        oid: "1.3.6.1.2.1.1.6.0",
+        type: snmp.ObjectType.OctetString,
+        value: "somewhere"
+    }
+  ];
+
+  //set请求
+  session.set (varbinds, function (error, varbinds) {
+      if (error) {
+          console.error (error.toString ());
+      } else {
+          for (var i = 0; i < varbinds.length; i++) {
+              console.log (varbinds[i].oid + "|" + varbinds[i].value);
+              if (snmp.isVarbindError (varbinds[i]))
+                  console.error (snmp.varbindError (varbinds[i]));
+              else
+                  console.log (varbinds[i].oid + "|" + varbinds[i].value);
+          }
+      }
+  }); 
 ```
 
 2.创建v3 Session会话
