@@ -22,7 +22,7 @@ import socket from '@ohos.net.socket'
 import AbilityDelegatorRegistry from '@ohos.app.ability.abilityDelegatorRegistry';
 import fs from '@ohos.file.fs';
 
-export default function SMTPPressTest() {
+export default function SMTPPressDeplayTime() {
 
   let from: string = 'xxx'
   let accountName: string = 'xxx'
@@ -35,10 +35,10 @@ export default function SMTPPressTest() {
   const BASE_COUNT = 10000
   //每个用例延迟时间执行毫秒单位
   const deplayTime=500
-  describe('SMTPPressTest', ()=> {
+  describe('SMTPPressDeplayTime', ()=> {
 
-    for(let i=1;i<=BASE_COUNT;i++){
-      it('new_SMTPClient', 0, function (done) {
+
+      it('new_SMTPClient', 0, ()=>{
         setTimeout(()=>{
           let client = new SMTPClient({
             user: 'xxx',
@@ -50,12 +50,10 @@ export default function SMTPPressTest() {
             ssl: false,
             tls: undefined
           });
-          console.log("new_SMTPClient count:"+i)
-          done()
         },deplayTime)
       })
 
-      it('sendAsync', 0, function (done) {
+      it('sendAsync', 0,  ()=>{
         setTimeout(()=>{
           let client = new SMTPClient({
             user: '',
@@ -75,13 +73,11 @@ export default function SMTPPressTest() {
             cc: cc,
             bcc: cc,
             subject: subject,
-            attachment: null
+            attachment: undefined
           }
           client.sendAsync(msg)
-          console.log("sendAsync count:"+i)
-          done()
         },deplayTime)
       })
-    }
+
   })
 }

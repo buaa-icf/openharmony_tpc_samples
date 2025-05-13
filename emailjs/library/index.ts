@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import { addressparser } from './src/main/ets/address';
+import { addressparser, AddressObject } from './src/main/ets/address';
 import { SMTPClient } from './src/main/ets/client';
 import { SMTPConnection, SMTPState, AUTH_METHODS, DEFAULT_TIMEOUT } from './src/main/ets/connection';
 import { getRFC2822Date, getRFC2822DateUTC, isRFC2822Date } from './src/main/ets/date';
@@ -47,6 +47,7 @@ export { MessageAttachmentHeaders,
   SMTPResponseMonitor,
   SMTPState,
   addressparser,
+  AddressObject,
   getRFC2822Date,
   getRFC2822DateUTC,
   isRFC2822Date,
