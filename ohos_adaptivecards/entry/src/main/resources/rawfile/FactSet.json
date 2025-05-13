@@ -1,0 +1,28 @@
+{
+  "type": "AdaptiveCard",
+  "version": "1.6",
+  "body": [
+    {
+      "type": "FactSet",
+      "minWidth": "800px",
+      "facts": [
+        {
+          "title": "Fact 1",
+          "value": "Value 1"
+        },
+        {
+          "title": "Fact 2",
+          "value": "Value 2"
+        },
+        {
+          "title": "Fact 3",
+          "value": "Value 3"
+        },
+        {
+          "title": "Fact 4",
+          "value": "Value 5"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "type": "AdaptiveCard",
+  "body": [
+    {
+      "type": "ActionSet",
+      "actions": [
+        {
+          "type": "Action.ToggleVisibility",
+          "title": "ToggleVisibility1",
+          "$when": "${state == 0}",
+          "targetElements": [
+            "agreeDeclineContainer",
+            "declineReasonContainer"
+          ]
+        }
+      ],
+      "id": "agreeDeclineContainer",
+      "spacing": "Large"
+    },
+    {
+      "type": "Container",
+      "id": "declineReasonContainer",
+      "items": [
+        {
+          "type": "Input.Text",
+          "placeholder": "输入",
+          "id": "refuseText",
+          "isMultiline": true
+        },
+        {
+          "type": "ActionSet",
+          "actions": [
+            {
+              "type": "Action.ToggleVisibility",
+              "title": "ToggleVisibility2",
+              "targetElements": [
+                "agreeDeclineContainer",
+                "declineReasonContainer"
+              ]
+            }
+          ],
+          "spacing": "Medium"
+        }
+      ],
+      "isVisible": false,
+      "spacing": "Large",
+      "$when": "${state == 0}"
+    }
+  ],
+  "version": "1.4"
+}

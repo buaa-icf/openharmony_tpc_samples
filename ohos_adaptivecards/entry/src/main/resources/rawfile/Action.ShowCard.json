@@ -1,0 +1,47 @@
+{
+  "type": "AdaptiveCard",
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version": "1.5",
+  "body": [
+    {
+      "type": "Input.Text",
+      "id": "textLabelId",
+      "style": "text",
+      "label": "A random textblock",
+      "errorMessage": "Error message",
+      "maxLength": 10
+    },
+    {
+      "type": "TextBlock",
+      "text": "qqqYou can see this show card!",
+      "wrap": true
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.ShowCard",
+      "title": "Enabled",
+      "card": {
+        "type": "AdaptiveCard",
+        "body": [
+          {
+            "columns": [
+              {
+                "width": "auto",
+                "verticalContentAlignment": "Center",
+                "type": "Column",
+                "items": [
+                  {
+                    "text": "You can see this show card!",
+                    "type": "TextBlock",
+                    "wrap": true
+                  }
+                ]
+              }],
+            "type": "ColumnSet"
+          }
+        ]
+      }
+    }
+  ]
+}

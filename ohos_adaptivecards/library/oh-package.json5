@@ -1,0 +1,28 @@
+{
+  "name": "@ohos/adaptivecards",
+  "version": "1.0.0",
+  "type": "module",
+  "types": "",
+  "description": "自适应卡片是一种开放式的卡片格式，让开发人员能够使用JSON生成 UI 内容",
+  "main": "Index.ets",
+  "license": "MIT",
+  "ohos": {
+    "org": "opensource"
+  },
+  "keywords": [
+    "OpenHarmony",
+    "HarmonyOS",
+    "cards",
+    "adaptive",
+    "adaptivecards",
+    "adaptive-cards"
+  ],
+  "tags": [
+    "UI",
+  ],
+  "author": "ohos_tpc",
+  "repository": "https://gitcode.com/openharmony_tpc_samples/oh_adaptivecards.git",
+  "type": "module",
+  "dependencies": {
+  }
+}
