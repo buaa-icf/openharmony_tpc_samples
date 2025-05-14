@@ -36,7 +36,7 @@ export default function SMTPPressTest() {
 
   describe('SMTPPressTest', ()=> {
 
-    for(let i=1;i<=BASE_COUNT;i++){
+
       it('new_SMTPClient', 0, ()=> {
         let client = new SMTPClient({
           user: '',
@@ -48,7 +48,6 @@ export default function SMTPPressTest() {
           ssl: false,
           tls: undefined
         });
-        console.log("new_SMTPClient count:"+i)
       })
 
       it('sendAsync', 0, ()=> {
@@ -70,11 +69,10 @@ export default function SMTPPressTest() {
           cc: cc,
           bcc: cc,
           subject: subject,
-          attachment: null
+          attachment: undefined
         }
         client.sendAsync(msg)
-        console.log("sendAsync count:"+i)
       })
-    }
+
   })
 }

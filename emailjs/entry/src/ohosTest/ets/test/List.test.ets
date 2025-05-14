@@ -17,9 +17,14 @@
  import connectionTest from './Connection.test'
  import dateTest from './Date.test'
  import mimeTest from './Mime.test'
+ import SMTPPressTest from './SMTPPress.test'
+ import SMTPPressDeplayTime from './SMTPPressDeplayTime.test'
+
 export default function testsuite() {
    addressTest()
    connectionTest()
    dateTest()
    mimeTest()
+   SMTPPressTest()
+   SMTPPressDeplayTime()
 }
