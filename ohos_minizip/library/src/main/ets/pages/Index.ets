@@ -55,6 +55,8 @@ export function unzipToDirectory(selectPath: string, targetPath: string, passwor
             fs.closeSync(file);
           } else {
             LogUtil.debug("minizip ExtractFileToJS failed:" + entryNames[i])
+            fs.closeSync(file)
+            reject("unzip failed")
           }
         }
       }

@@ -15,7 +15,7 @@
   "main": "index.ets",
   "type": "module",
   "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_minizip",
-  "version": "1.0.2-rc.2",
+  "version": "1.0.2",
   "tags": [
 
   ],
