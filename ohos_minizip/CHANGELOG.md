@@ -1,3 +1,7 @@
+## 1.0.2
+
+- Fixed the issue where the unzipToDirectory interface did not return an error when the password error failed
+
 ## 1.0.2-rc.2
 
 - Added the encryption compression interface and the compression to "arrarybuffer" interface
