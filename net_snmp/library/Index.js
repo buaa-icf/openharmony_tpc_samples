@@ -2,7 +2,7 @@
 
 import * as ber from '@ohos/asn1-ber';
 import * as smartbuffer from '@ohos/smart-buffer';
-import { createConnection, crypto, events, util } from '@ohos/node-polyfill';
+import { createConnection, crypto, events, util, buffer } from '@ohos/node-polyfill';
 import { MIB } from './src/main/ets/mib';
 import Buffer from '@ohos.buffer';
 import dgram from './src/main/ets/dgram';
@@ -320,12 +320,12 @@ function RequestTimedOutError(message) {
 
 util.inherits(RequestTimedOutError, Error);
 
-function ProcessingError(message, error, rinfo, buffer) {
+function ProcessingError(message, error, rinfo, buf) {
 	Object.setPrototypeOf(this, RequestTimedOutError.prototype);
 	this.name = "ProcessingError";
 	this.message = message;
 	this.rinfo = rinfo;
-	this.buffer = buffer;
+	this.buffer = buf;
 	this.error = error;
 	this.stack = error.stack;
 }
@@ -403,8 +403,8 @@ function oidInSubtree(oidString, nextString) {
 	return true;
 }
 
-function readInt32(buffer) {
-	var parsedInt = buffer.readInt();
+function readInt32(buf) {
+	var parsedInt = buf.readInt();
 	if (!Number.isInteger(parsedInt)) {
 		throw new TypeError('Value read as integer ' + parsedInt + ' is not an integer');
 	}
@@ -414,8 +414,8 @@ function readInt32(buffer) {
 	return parsedInt;
 }
 
-function readUint32(buffer) {
-	var parsedInt = buffer.readInt();
+function readUint32(buf) {
+	var parsedInt = buf.readInt();
 	if (!Number.isInteger(parsedInt)) {
 		throw new TypeError('Value read as integer ' + parsedInt + ' is not an integer');
 	}
@@ -426,13 +426,13 @@ function readUint32(buffer) {
 	return parsedInt;
 }
 
-function readUint64(buffer) {
-	var value = buffer.readString(ObjectType.Counter64, true);
+function readUint64(buf) {
+	var value = buf.readString(ObjectType.Counter64, true);
 	return value;
 }
 
-function readIpAddress(buffer) {
-	var bytes = buffer.readString(ObjectType.IpAddress, true);
+function readIpAddress(buf) {
+	var bytes = buf.readString(ObjectType.IpAddress, true);
 	if (bytes.length != 4) {
 		throw new ResponseInvalidError("Length '" + bytes.length
 			+ "' of IP address '" + bytes.toString("hex")
@@ -442,45 +442,45 @@ function readIpAddress(buffer) {
 	return value;
 }
 
-function readVarbindValue(buffer, type) {
+function readVarbindValue(buf, type) {
 	var value;
 	if (type == ObjectType.Boolean) {
-		value = buffer.readBoolean();
+		value = buf.readBoolean();
 	} else if (type == ObjectType.Integer) {
-		value = readInt32(buffer);
+		value = readInt32(buf);
 	} else if (type == ObjectType.BitString) {
-		value = buffer.readBitString();
+		value = buf.readBitString();
 	} else if (type == ObjectType.OctetString) {
-		value = buffer.readString(null, true);
+		value = buf.readString(null, true);
 	} else if (type == ObjectType.Null) {
-		buffer.readByte();
-		buffer.readByte();
+		buf.readByte();
+		buf.readByte();
 		value = null;
 	} else if (type == ObjectType.OID) {
-		value = buffer.readOID();
+		value = buf.readOID();
 	} else if (type == ObjectType.IpAddress) {
-		value = readIpAddress(buffer);
+		value = readIpAddress(buf);
 	} else if (type == ObjectType.Counter) {
-		value = readUint32(buffer);
+		value = readUint32(buf);
 	} else if (type == ObjectType.Gauge) {
-		value = readUint32(buffer);
+		value = readUint32(buf);
 	} else if (type == ObjectType.TimeTicks) {
-		value = readUint32(buffer);
+		value = readUint32(buf);
 	} else if (type == ObjectType.Opaque) {
-		value = buffer.readString(ObjectType.Opaque, true);
+		value = buf.readString(ObjectType.Opaque, true);
 	} else if (type == ObjectType.Counter64) {
-		value = readUint64(buffer);
+		value = readUint64(buf);
 	} else if (type == ObjectType.NoSuchObject) {
-		buffer.readByte();
-		buffer.readByte();
+		buf.readByte();
+		buf.readByte();
 		value = null;
 	} else if (type == ObjectType.NoSuchInstance) {
-		buffer.readByte();
-		buffer.readByte();
+		buf.readByte();
+		buf.readByte();
 		value = null;
 	} else if (type == ObjectType.EndOfMibView) {
-		buffer.readByte();
-		buffer.readByte();
+		buf.readByte();
+		buf.readByte();
 		value = null;
 	} else {
 		throw new ResponseInvalidError("Unknown type '" + type
@@ -489,22 +489,22 @@ function readVarbindValue(buffer, type) {
 	return value;
 }
 
-function readVarbinds(buffer, varbinds) {
-	buffer.readSequence();
+function readVarbinds(buf, varbinds) {
+	buf.readSequence();
 
 	while (1) {
-		buffer.readSequence();
-		if (buffer.peek() != ObjectType.OID) {
+		buf.readSequence();
+		if (buf.peek() != ObjectType.OID) {
 			break;
 		}
-		var oid = buffer.readOID();
-		var type = buffer.peek();
+		var oid = buf.readOID();
+		var type = buf.peek();
 
 		if (type == null) {
 			break;
 		}
 
-		var value = readVarbindValue(buffer, type);
+		var value = readVarbindValue(buf, type);
 
 		varbinds.push({
 			oid: oid,
@@ -514,58 +514,58 @@ function readVarbinds(buffer, varbinds) {
 	}
 }
 
-function writeInt32(buffer, type, value) {
+function writeInt32(buf, type, value) {
 	if (!Number.isInteger(value)) {
 		throw new TypeError('Value to write as integer ' + value + ' is not an integer');
 	}
 	if (value < MIN_SIGNED_INT32 || value > MAX_SIGNED_INT32) {
 		throw new RangeError('Integer to write ' + value + ' is outside the signed 32-bit range');
 	}
-	buffer.writeInt(value, type);
+	buf.writeInt(value, type);
 }
 
-function writeUint32(buffer, type, value) {
+function writeUint32(buf, type, value) {
 	if (!Number.isInteger(value)) {
 		throw new TypeError('Value to write as integer ' + value + ' is not an integer');
 	}
 	if (value < MIN_UNSIGNED_INT32 || value > MAX_UNSIGNED_INT32) {
 		throw new RangeError('Integer to write ' + value + ' is outside the unsigned 32-bit range');
 	}
-	buffer.writeInt(value, type);
+	buf.writeInt(value, type);
 }
 
-function writeUint64(buffer, value) {
-	buffer.writeBuffer(value, ObjectType.Counter64);
+function writeUint64(buf, value) {
+	buf.writeBuffer(value, ObjectType.Counter64);
 }
 
-function writeVarbinds(buffer, varbinds) {
-	buffer.startSequence();
+function writeVarbinds(buf, varbinds) {
+	buf.startSequence();
 	for (var i = 0; i < varbinds.length; i++) {
-		buffer.startSequence();
-		buffer.writeOID(varbinds[i].oid);
+		buf.startSequence();
+		buf.writeOID(varbinds[i].oid);
 
 		if (varbinds[i].type && varbinds[i].hasOwnProperty("value")) {
 			var type = varbinds[i].type;
 			var value = varbinds[i].value;
 			switch (type) {
 				case ObjectType.Boolean:
-					buffer.writeBoolean(value ? true : false);
+					buf.writeBoolean(value ? true : false);
 					break;
 				case ObjectType.Integer: // also Integer32
-					writeInt32(buffer, ObjectType.Integer, value);
+					writeInt32(buf, ObjectType.Integer, value);
 					break;
 				case ObjectType.OctetString:
 					if (typeof value == "string") {
-						buffer.writeString(value);
+						buf.writeString(value);
 					} else {
-						buffer.writeBuffer(value, ObjectType.OctetString);
+						buf.writeBuffer(value, ObjectType.OctetString);
 					}
 					break;
 				case ObjectType.Null:
-					buffer.writeNull();
+					buf.writeNull();
 					break;
 				case ObjectType.OID:
-					buffer.writeOID(value);
+					buf.writeOID(value);
 					break;
 				case ObjectType.IpAddress:
 					var bytes = value.split(".");
@@ -573,39 +573,39 @@ function writeVarbinds(buffer, varbinds) {
 						throw new RequestInvalidError("Invalid IP address '"
 							+ value + "'");
 					}
-					buffer.writeBuffer(Buffer.from(bytes), 64);
+					buf.writeBuffer(buffer.Buffer.from(bytes), 64);
 					break;
 				case ObjectType.Counter: // also Counter32
-					writeUint32(buffer, ObjectType.Counter, value);
+					writeUint32(buf, ObjectType.Counter, value);
 					break;
 				case ObjectType.Gauge: // also Gauge32 & Unsigned32
-					writeUint32(buffer, ObjectType.Gauge, value);
+					writeUint32(buf, ObjectType.Gauge, value);
 					break;
 				case ObjectType.TimeTicks:
-					writeUint32(buffer, ObjectType.TimeTicks, value);
+					writeUint32(buf, ObjectType.TimeTicks, value);
 					break;
 				case ObjectType.Opaque:
-					buffer.writeBuffer(value, ObjectType.Opaque);
+					buf.writeBuffer(value, ObjectType.Opaque);
 					break;
 				case ObjectType.Counter64:
-					writeUint64(buffer, value);
+					writeUint64(buf, value);
 					break;
 				case ObjectType.NoSuchObject:
 				case ObjectType.NoSuchInstance:
 				case ObjectType.EndOfMibView:
-					buffer.writeByte(type);
-					buffer.writeByte(0);
+					buf.writeByte(type);
+					buf.writeByte(0);
 					break;
 				default:
 					throw new RequestInvalidError("Unknown type '" + type
 						+ "' in request");
 			}
 		} else {
-			buffer.writeNull();
+			buf.writeNull();
 		}
-		buffer.endSequence();
+		buf.endSequence();
 	}
-	buffer.endSequence();
+	buf.endSequence();
 }
 
 /*****************************************************************************
@@ -615,20 +615,20 @@ function writeVarbinds(buffer, varbinds) {
 var SimplePdu = function () {
 };
 
-SimplePdu.prototype.toBuffer = function (buffer) {
-	buffer.startSequence(this.type);
-	writeInt32(buffer, ObjectType.Integer, this.id);
-	writeInt32(buffer, ObjectType.Integer,
+SimplePdu.prototype.toBuffer = function (buf) {
+	buf.startSequence(this.type);
+	writeInt32(buf, ObjectType.Integer, this.id);
+	writeInt32(buf, ObjectType.Integer,
 		(this.type == PduType.GetBulkRequest)
 			? (this.options.nonRepeaters || 0)
 			: 0);
-	writeInt32(buffer, ObjectType.Integer,
+	writeInt32(buf, ObjectType.Integer,
 		(this.type == PduType.GetBulkRequest)
 			? (this.options.maxRepetitions || 0)
 			: 0);
-	writeVarbinds(buffer, this.varbinds);
+	writeVarbinds(buf, this.varbinds);
 
-	buffer.endSequence();
+	buf.endSequence();
 };
 
 SimplePdu.prototype.initializeFromVariables = function (id, varbinds, options) {
@@ -744,20 +744,20 @@ var TrapPdu = function () {
 	this.upTime = process.uptime() * 100;
 };
 
-TrapPdu.prototype.toBuffer = function (buffer) {
+TrapPdu.prototype.toBuffer = function (buf) {
 	console.info('SNMP--> TrapPdu toBuffer' + JSON.stringify());
-	buffer.startSequence(this.type);
+	buf.startSequence(this.type);
 
-	buffer.writeOID(this.enterprise);
-	buffer.writeBuffer(Buffer.from(this.agentAddr.split(".")),
+	buf.writeOID(this.enterprise);
+	buf.writeBuffer(buffer.Buffer.from(this.agentAddr.split(".")),
 		ObjectType.IpAddress);
-	writeInt32(buffer, ObjectType.Integer, this.generic);
-	writeInt32(buffer, ObjectType.Integer, this.specific);
-	writeUint32(buffer, ObjectType.TimeTicks,
+	writeInt32(buf, ObjectType.Integer, this.generic);
+	writeInt32(buf, ObjectType.Integer, this.specific);
+	writeUint32(buf, ObjectType.TimeTicks,
 		this.upTime || Math.floor(process.uptime() * 100));
-	writeVarbinds(buffer, this.varbinds);
+	writeVarbinds(buf, this.varbinds);
 
-	buffer.endSequence();
+	buf.endSequence();
 };
 
 TrapPdu.createFromBuffer = function (reader) {
@@ -991,7 +991,7 @@ Authentication.passwordToKey = function (authProtocol, authPasswordString, engin
 		return Authentication.authToKeyCache[cacheKey];
 	}
 
-	buf = Buffer.alloc(Authentication.HMAC_BUFFER_SIZE, authPasswordString);
+	buf = buffer.Buffer.alloc(Authentication.HMAC_BUFFER_SIZE, authPasswordString);
 
 	hashAlgorithm = crypto.createHash(cryptoAlgorithm);
 	hashAlgorithm.update(buf);
@@ -1013,37 +1013,56 @@ Authentication.getParametersLength = function (authProtocol) {
 	return Authentication.algorithms[authProtocol].AUTHENTICATION_CODE_LENGTH;
 };
 
-Authentication.writeParameters = function (messageBuffer, authProtocol, authPassword, engineID, digestInMessage) {
-	var digestToAdd;
-
-	digestToAdd = Authentication.calculateDigest(messageBuffer, authProtocol, authPassword, engineID);
-	digestToAdd.copy(digestInMessage);
-	// debug ("Added Auth Parameters: " + digestToAdd.toString('hex'));
-};
+Authentication.writeParameters = function (messageBuffer, authProtocol, authPassword, engineID, msgAuthenticationParametersOffset) {
+		let digestToAdd;
+		digestToAdd = Authentication.calculateDigest(messageBuffer, authProtocol, authPassword, engineID);
+		for (let i = 0; i < digestToAdd.length; i++) {
+			messageBuffer[msgAuthenticationParametersOffset + i] = digestToAdd[i];
+		}
+		// debug ("Added Auth Parameters: " + digestToAdd.toString('hex'));
+		return messageBuffer;
+	};
 
 Authentication.isAuthentic = function (messageBuffer, authProtocol, authPassword, engineID, digestInMessage) {
-	var savedDigest;
 	var calculatedDigest;
 
 	if (digestInMessage.length !== Authentication.algorithms[authProtocol].AUTHENTICATION_CODE_LENGTH) {
 		return false;
 	}
-
-	// save original authenticationParameters field in message
-	savedDigest = Buffer.from(digestInMessage);
-
-	// clear the authenticationParameters field in message
-	digestInMessage.fill(0);
-
-	calculatedDigest = Authentication.calculateDigest(messageBuffer, authProtocol, authPassword, engineID);
-
-	// replace previously cleared authenticationParameters field in message
-	savedDigest.copy(digestInMessage);
-
+	let newMessageBuffer = bufferToOhosBuffer(messageBuffer);
+	const startIndex = findBufferIndex(newMessageBuffer, digestInMessage);
+	let newDigestInMessage = Buffer.alloc(digestInMessage.length);
+	newDigestInMessage.fill(0);
+	if (startIndex !== -1) {
+		for (let i = 0; i < newDigestInMessage.length; i++) {
+			newMessageBuffer[startIndex + i] = newDigestInMessage[i];
+		}
+	}
+	calculatedDigest = Authentication.calculateDigest(newMessageBuffer, authProtocol, authPassword, engineID);
 	// debug ("Digest in message: " + digestInMessage.toString('hex'));
 	// debug ("Calculated digest: " + calculatedDigest.toString('hex'));
 	return calculatedDigest.equals(digestInMessage);
 };
+
+function findBufferIndex(sourceBuf, targetBuf) {
+    if (targetBuf.length === 0) {
+        return 0;
+    }
+    if (sourceBuf.length < targetBuf.length) {
+        return -1;
+    }
+    const maxSearchIndex = sourceBuf.length - targetBuf.length;
+    outerLoop:
+    for (let i = 0; i <= maxSearchIndex; i++) {
+        for (let j = 0; j < targetBuf.length; j++) {
+            if (sourceBuf[i + j] !== targetBuf[j]) {
+                continue outerLoop;
+            }
+        }
+        return i;
+    }
+    return -1;
+}
 
 Authentication.calculateDigest = function (messageBuffer, authProtocol, authPassword, engineID) {
 	var authKey = Authentication.passwordToKey(authProtocol, authPassword, engineID);
@@ -1086,7 +1105,7 @@ Encryption.generateLocalizedKey = function (algorithm, authProtocol, privPasswor
 	var encryptionKey;
 
 	privLocalizedKey = Authentication.passwordToKey(authProtocol, privPassword, engineID);
-	encryptionKey = Buffer.alloc(algorithm.KEY_LENGTH);
+	encryptionKey = buffer.Buffer.alloc(algorithm.KEY_LENGTH);
 	privLocalizedKey.copy(encryptionKey, 0, 0, algorithm.KEY_LENGTH);
 
 	return encryptionKey;
@@ -1103,7 +1122,7 @@ Encryption.generateLocalizedKeyBlumenthal = function (algorithm, authProtocol, p
 
 	authKeyLength = Authentication.algorithms[authProtocol].KEY_LENGTH;
 	rounds = Math.ceil(algorithm.KEY_LENGTH / authKeyLength);
-	encryptionKey = Buffer.alloc(algorithm.KEY_LENGTH);
+	encryptionKey = buffer.Buffer.alloc(algorithm.KEY_LENGTH);
 	privLocalizedKey = Authentication.passwordToKey(authProtocol, privPassword, engineID);
 	nextHash = privLocalizedKey;
 
@@ -1111,7 +1130,7 @@ Encryption.generateLocalizedKeyBlumenthal = function (algorithm, authProtocol, p
 		nextHash.copy(encryptionKey, round * authKeyLength, 0, authKeyLength);
 		if (round < rounds - 1) {
 			hashAlgorithm = crypto.createHash(Authentication.algorithms[authProtocol].CRYPTO_ALGORITHM);
-			hashInput = Buffer.alloc((round + 1) * authKeyLength);
+			hashInput = buffer.Buffer.alloc((round + 1) * authKeyLength);
 			encryptionKey.copy(hashInput, round * authKeyLength, 0, (round + 1) * authKeyLength);
 			hashAlgorithm.update(hashInput);
 			nextHash = hashAlgorithm.digest();
@@ -1130,7 +1149,7 @@ Encryption.generateLocalizedKeyReeder = function (algorithm, authProtocol, privP
 
 	authKeyLength = Authentication.algorithms[authProtocol].KEY_LENGTH;
 	rounds = Math.ceil(algorithm.KEY_LENGTH / authKeyLength);
-	encryptionKey = Buffer.alloc(algorithm.KEY_LENGTH);
+	encryptionKey = buffer.Buffer.alloc(algorithm.KEY_LENGTH);
 	nextPasswordInput = privPassword;
 
 	for (let round = 0; round < rounds; round++) {
@@ -1157,17 +1176,17 @@ Encryption.encryptPduDes = function (scopedPdu, privProtocol, privPassword, auth
 
 	encryptionKey = Encryption.generateLocalizedKey(des, authProtocol, privPassword, engine.engineID);
 	privLocalizedKey = Authentication.passwordToKey(authProtocol, privPassword, engine.engineID);
-	encryptionKey = Buffer.alloc(des.KEY_LENGTH);
+	encryptionKey = buffer.Buffer.alloc(des.KEY_LENGTH);
 	privLocalizedKey.copy(encryptionKey, 0, 0, des.KEY_LENGTH);
-	preIv = Buffer.alloc(des.BLOCK_LENGTH);
+	preIv = buffer.Buffer.alloc(des.BLOCK_LENGTH);
 	privLocalizedKey.copy(preIv, 0, des.KEY_LENGTH, des.KEY_LENGTH + des.BLOCK_LENGTH);
 
-	salt = Buffer.alloc(des.BLOCK_LENGTH);
+	salt = buffer.Buffer.alloc(des.BLOCK_LENGTH);
 	// set local SNMP engine boots part of salt to 1, as we have no persistent engine state
 	salt.fill('00000001', 0, 4, 'hex');
 	// set local integer part of salt to random
 	salt.fill(crypto.randomBytes(4), 4, 8);
-	iv = Buffer.alloc(des.BLOCK_LENGTH);
+	iv = buffer.Buffer.alloc(des.BLOCK_LENGTH);
 	for (i = 0; i < iv.length; i++) {
 		iv[i] = preIv[i] ^ salt[i];
 	}
@@ -1176,12 +1195,12 @@ Encryption.encryptPduDes = function (scopedPdu, privProtocol, privPassword, auth
 		paddedScopedPdu = scopedPdu;
 	} else {
 		paddedScopedPduLength = des.BLOCK_LENGTH * (Math.floor(scopedPdu.length / des.BLOCK_LENGTH) + 1);
-		paddedScopedPdu = Buffer.alloc(paddedScopedPduLength);
+		paddedScopedPdu = buffer.Buffer.alloc(paddedScopedPduLength);
 		scopedPdu.copy(paddedScopedPdu, 0, 0, scopedPdu.length);
 	}
 	cipher = crypto.createCipheriv(des.CRYPTO_ALGORITHM, encryptionKey, iv);
 	encryptedPdu = cipher.update(paddedScopedPdu);
-	encryptedPdu = Buffer.concat([encryptedPdu, cipher.final()]);
+	encryptedPdu = buffer.Buffer.concat([encryptedPdu, cipher.final()]);
 	// Encryption.debugEncrypt (encryptionKey, iv, paddedScopedPdu, encryptedPdu);
 
 	return {
@@ -1202,13 +1221,13 @@ Encryption.decryptPduDes = function (encryptedPdu, privProtocol, privParameters,
 	var decipher;
 
 	privLocalizedKey = Authentication.passwordToKey(authProtocol, privPassword, engine.engineID);
-	decryptionKey = Buffer.alloc(des.KEY_LENGTH);
+	decryptionKey = buffer.Buffer.alloc(des.KEY_LENGTH);
 	privLocalizedKey.copy(decryptionKey, 0, 0, des.KEY_LENGTH);
-	preIv = Buffer.alloc(des.BLOCK_LENGTH);
+	preIv = buffer.Buffer.alloc(des.BLOCK_LENGTH);
 	privLocalizedKey.copy(preIv, 0, des.KEY_LENGTH, des.KEY_LENGTH + des.BLOCK_LENGTH);
 
 	salt = privParameters;
-	iv = Buffer.alloc(des.BLOCK_LENGTH);
+	iv = buffer.Buffer.alloc(des.BLOCK_LENGTH);
 	for (i = 0; i < iv.length; i++) {
 		iv[i] = preIv[i] ^ salt[i];
 	}
@@ -1216,7 +1235,7 @@ Encryption.decryptPduDes = function (encryptedPdu, privProtocol, privParameters,
 	decipher = crypto.createDecipheriv(des.CRYPTO_ALGORITHM, decryptionKey, iv);
 	decipher.setAutoPadding(false);
 	decryptedPdu = decipher.update(encryptedPdu);
-	decryptedPdu = Buffer.concat([decryptedPdu, decipher.final()]);
+	decryptedPdu = buffer.Buffer.concat([decryptedPdu, decipher.final()]);
 	// Encryption.debugDecrypt (decryptionKey, iv, encryptedPdu, decryptedPdu);
 
 	return decryptedPdu;
@@ -1228,10 +1247,10 @@ Encryption.generateIvAes = function (aes, engineBoots, engineTime, salt) {
 	var engineTimeBuffer;
 
 	// iv = engineBoots(4) | engineTime(4) | salt(8)
-	iv = Buffer.alloc(aes.BLOCK_LENGTH);
-	engineBootsBuffer = Buffer.alloc(4);
+	iv = buffer.Buffer.alloc(aes.BLOCK_LENGTH);
+	engineBootsBuffer = buffer.Buffer.alloc(4);
 	engineBootsBuffer.writeUInt32BE(engineBoots);
-	engineTimeBuffer = Buffer.alloc(4);
+	engineTimeBuffer = buffer.Buffer.alloc(4);
 	engineTimeBuffer.writeUInt32BE(engineTime);
 	engineBootsBuffer.copy(iv, 0, 0, 4);
 	engineTimeBuffer.copy(iv, 4, 0, 4);
@@ -1250,11 +1269,11 @@ Encryption.encryptPduAes = function (scopedPdu, privProtocol, privPassword, auth
 	var encryptedPdu;
 
 	encryptionKey = localizationAlgorithm(aes, authProtocol, privPassword, engine.engineID);
-	salt = Buffer.alloc(8).fill(crypto.randomBytes(8), 0, 8);
+	salt = buffer.Buffer.alloc(8).fill(crypto.randomBytes(8), 0, 8);
 	iv = Encryption.generateIvAes(aes, engine.engineBoots, engine.engineTime, salt);
 	cipher = crypto.createCipheriv(aes.CRYPTO_ALGORITHM, encryptionKey, iv);
 	encryptedPdu = cipher.update(scopedPdu);
-	encryptedPdu = Buffer.concat([encryptedPdu, cipher.final()]);
+	encryptedPdu = buffer.Buffer.concat([encryptedPdu, cipher.final()]);
 	// Encryption.debugEncrypt (encryptionKey, iv, scopedPdu, encryptedPdu);
 
 	return {
@@ -1274,8 +1293,8 @@ Encryption.decryptPduAes = function (encryptedPdu, privProtocol, privParameters,
 	decryptionKey = localizationAlgorithm(aes, authProtocol, privPassword, engine.engineID);
 	iv = Encryption.generateIvAes(aes, engine.engineBoots, engine.engineTime, privParameters);
 	decipher = crypto.createDecipheriv(aes.CRYPTO_ALGORITHM, decryptionKey, iv);
-	decryptedPdu = decipher.update(encryptedPdu);
-	decryptedPdu = Buffer.concat([decryptedPdu, decipher.final()]);
+	decryptedPdu = decipher.update(ohosBufferToBuffer(encryptedPdu));
+	decryptedPdu = buffer.Buffer.concat([decryptedPdu, decipher.final()]);
 	// Encryption.debugDecrypt (decryptionKey, iv, encryptedPdu, decryptedPdu);
 
 	return decryptedPdu;
@@ -1380,7 +1399,7 @@ Message.prototype.toBufferV3 = function () {
 			engineBoots: this.msgSecurityParameters.msgAuthoritativeEngineBoots,
 			engineTime: this.msgSecurityParameters.msgAuthoritativeEngineTime,
 		};
-		encryptionResult = Encryption.encryptPdu(this.user.privProtocol, scopedPduWriter.buffer,
+		encryptionResult = Encryption.encryptPdu(this.user.privProtocol, ohosBufferToBuffer(scopedPduWriter.buffer),
 			this.user.privKey, this.user.authProtocol, authoritativeEngine);
 	}
 
@@ -1417,15 +1436,15 @@ Message.prototype.toBufferV3 = function () {
 	var msgAuthenticationParameters = '';
 	if (this.hasAuthentication()) {
 		var authParametersLength = Authentication.getParametersLength(this.user.authProtocol);
-		msgAuthenticationParameters = Buffer.alloc(authParametersLength);
-		writer.writeBuffer(msgAuthenticationParameters, ber.ASN1.OctetString);
+		msgAuthenticationParameters = buffer.Buffer.alloc(authParametersLength);
+		writer.writeBuffer(bufferToOhosBuffer(msgAuthenticationParameters), ber.ASN1.OctetString);
 	} else {
 		writer.writeString("");
 	}
 	var msgAuthenticationParametersOffset = writer._offset - msgAuthenticationParameters.length;
 
 	if (this.hasPrivacy()) {
-		writer.writeBuffer(encryptionResult.msgPrivacyParameters, ber.ASN1.OctetString);
+		writer.writeBuffer(bufferToOhosBuffer(encryptionResult.msgPrivacyParameters), ber.ASN1.OctetString);
 	} else {
 		writer.writeString("");
 	}
@@ -1435,7 +1454,7 @@ Message.prototype.toBufferV3 = function () {
 	msgAuthenticationParametersOffset += writer._offset;
 
 	if (this.hasPrivacy()) {
-		writer.writeBuffer(encryptionResult.encryptedPdu, ber.ASN1.OctetString);
+		writer.writeBuffer(bufferToOhosBuffer(encryptionResult.encryptedPdu), ber.ASN1.OctetString);
 	} else {
 		writer.writeBuffer(scopedPduWriter.buffer);
 	}
@@ -1447,10 +1466,9 @@ Message.prototype.toBufferV3 = function () {
 	this.buffer = writer.buffer;
 
 	if (this.hasAuthentication()) {
-		msgAuthenticationParameters = this.buffer.subarray(msgAuthenticationParametersOffset,
-			msgAuthenticationParametersOffset + msgAuthenticationParameters.length);
-		Authentication.writeParameters(this.buffer, this.user.authProtocol, this.user.authKey,
-			this.msgSecurityParameters.msgAuthoritativeEngineID, msgAuthenticationParameters);
+		this.buffer = Authentication.writeParameters(this.buffer, this.user.authProtocol, this.user.authKey,
+			this.msgSecurityParameters.msgAuthoritativeEngineID,
+			msgAuthenticationParametersOffset);
 	}
 
 	return this.buffer;
@@ -1482,7 +1500,7 @@ Message.prototype.decryptPdu = function (user, responseCb) {
 		decryptedPdu = Encryption.decryptPdu(user.privProtocol, this.encryptedPdu,
 			this.msgSecurityParameters.msgPrivacyParameters, user.privKey, user.authProtocol,
 			authoratitiveEngine);
-		decryptedPduReader = new ber.BerReader(decryptedPdu);
+		decryptedPduReader = new ber.BerReader(bufferToOhosBuffer(decryptedPdu));
 		this.pdu = readPdu(decryptedPduReader, true);
 		return true;
 	} catch (error) {
@@ -1495,7 +1513,8 @@ Message.prototype.decryptPdu = function (user, responseCb) {
 
 Message.prototype.checkAuthentication = function (user, responseCb) {
 	if (Authentication.isAuthentic(this.buffer, user.authProtocol, user.authKey,
-		this.msgSecurityParameters.msgAuthoritativeEngineID, this.msgSecurityParameters.msgAuthenticationParameters)) {
+		this.msgSecurityParameters.msgAuthoritativeEngineID,
+		ohosBufferToBuffer(this.msgSecurityParameters.msgAuthenticationParameters))) {
 		return true;
 	} else {
 		responseCb(new ResponseInvalidError("Authentication digest "
@@ -1640,7 +1659,7 @@ Message.createV3 = function (user, msgGlobalData, msgSecurityParameters, pdu) {
 	message.user = user;
 	message.msgGlobalData = msgGlobalData;
 	message.msgSecurityParameters = {
-		msgAuthoritativeEngineID: msgSecurityParameters.msgAuthoritativeEngineID || Buffer.from(""),
+		msgAuthoritativeEngineID: msgSecurityParameters.msgAuthoritativeEngineID || buffer.Buffer.from(""),
 		msgAuthoritativeEngineBoots: msgSecurityParameters.msgAuthoritativeEngineBoots || 0,
 		msgAuthoritativeEngineTime: msgSecurityParameters.msgAuthoritativeEngineTime || 0,
 		msgUserName: user.name || "",
@@ -1654,7 +1673,7 @@ Message.createV3 = function (user, msgGlobalData, msgSecurityParameters, pdu) {
 
 Message.createDiscoveryV3 = function (pdu) {
 	var msgSecurityParameters = {
-		msgAuthoritativeEngineID: Buffer.from(""),
+		msgAuthoritativeEngineID: buffer.Buffer.from(""),
 		msgAuthoritativeEngineBoots: 0,
 		msgAuthoritativeEngineTime: 0
 	};
@@ -1665,8 +1684,8 @@ Message.createDiscoveryV3 = function (pdu) {
 	return Message.createRequestV3(emptyUser, msgSecurityParameters, pdu);
 };
 
-Message.createFromBuffer = function (buffer, user) {
-	var reader = new ber.BerReader(buffer);
+Message.createFromBuffer = function (buffers, user) {
+	var reader = new ber.BerReader(buffers);
 	var message = new Message();
 
 	reader.readSequence();
@@ -1697,7 +1716,7 @@ Message.createFromBuffer = function (buffer, user) {
 		message.msgSecurityParameters.msgAuthenticationParameters =
 			msgSecurityParametersReader.readString(ber.ASN1.OctetString, true);
 		message.msgSecurityParameters.msgPrivacyParameters =
-			Buffer.from(msgSecurityParametersReader.readString(ber.ASN1.OctetString, true));
+			ohosBufferToBuffer(msgSecurityParametersReader.readString(ber.ASN1.OctetString, true));
 
 		if (message.hasPrivacy()) {
 			message.encryptedPdu = reader.readString(ber.ASN1.OctetString, true);
@@ -1707,7 +1726,7 @@ Message.createFromBuffer = function (buffer, user) {
 		}
 	}
 
-	message.buffer = buffer;
+	message.buffer = buffers;
 
 	return message;
 };
@@ -2126,9 +2145,9 @@ Session.prototype.onError = function (error) {
 	this.emit(error);
 };
 
-Session.prototype.onMsg = function (buffer) {
+Session.prototype.onMsg = function (buf) {
 	try {
-		var message = Message.createFromBuffer(buffer);
+		var message = Message.createFromBuffer(buf);
 	} catch (error) {
 		this.emit("error", error);
 		return;
@@ -2236,9 +2255,9 @@ Session.prototype.registerRequest = function (req) {
 Session.prototype.send = function (req, noWait) {
 	try {
 		var me = this;
-		var buffer = req.message.toBuffer();
-		console.info('SNMP--> send buffer' + JSON.stringify(buffer));
-		this.dgram.send(buffer, 0, buffer.length, req.port, this.target, function (error, bytes) {
+		var buf = req.message.toBuffer();
+		console.info('SNMP--> send buffer' + JSON.stringify(buf));
+		this.dgram.send(buf, 0, buf.length, req.port, this.target, function (error, bytes) {
 			if (error) {
 				req.responseCb(error);
 			} else {
@@ -2787,9 +2806,10 @@ Session.createV3 = function (target, user, options) {
 
 var Engine = function (engineID, engineBoots, engineTime) {
 	if (engineID) {
-		if (!(engineID instanceof Buffer.Buffer)) {
+		if (!(engineID instanceof buffer.Buffer)) {
 			engineID = engineID.replace('0x', '');
-			this.engineID = Buffer.from((engineID.toString().length % 2 == 1 ? '0' : '') + engineID.toString(), 'hex');
+			this.engineID =
+				buffer.Buffer.from((engineID.toString().length % 2 == 1 ? '0' : '') + engineID.toString(), 'hex');
 		} else {
 			this.engineID = engineID;
 		}
@@ -2803,7 +2823,7 @@ var Engine = function (engineID, engineBoots, engineTime) {
 Engine.prototype.generateEngineID = function () {
 	// generate a 17-byte engine ID in the following format:
 	// 0x80 | 0x00B983 (enterprise OID) | 0x80 (enterprise-specific format) | 12 bytes of random
-	this.engineID = Buffer.alloc(17);
+	this.engineID = buffer.Buffer.alloc(17);
 	// this.engineID.fill ('8000B98380', 'hex', 0, 5);
 	this.engineID.fill(crypto.randomBytes(12), 5, 17, 'hex');
 };
@@ -2854,9 +2874,9 @@ Listener.prototype.startListening = function () {
 Listener.prototype.send = function (message, rinfo, socket) {
 	// var me = this;
 
-	var buffer = message.toBuffer();
+	var buf = message.toBuffer();
 
-	socket.send(buffer, 0, buffer.length, rinfo.port, rinfo.address, function (error, bytes) {
+	socket.send(buf, 0, buf.length, rinfo.port, rinfo.address, function (error, bytes) {
 		if (error) {
 			// me.callback (error);
 			console.error("Error sending: " + error.message);
@@ -2878,8 +2898,8 @@ Listener.formatCallbackData = function (pdu, rinfo) {
 	};
 };
 
-Listener.processIncoming = function (buffer, authorizer, callback) {
-	var message = Message.createFromBuffer(buffer);
+Listener.processIncoming = function (buf, authorizer, callback) {
+	var message = Message.createFromBuffer(buf);
 	var community;
 
 	// Authorization
@@ -3154,14 +3174,14 @@ Receiver.prototype.getAuthorizer = function () {
 	return this.authorizer;
 };
 
-Receiver.prototype.onMsg = function (socket, buffer, rinfo) {
+Receiver.prototype.onMsg = function (socket, buf, rinfo) {
 
 	let message;
 
 	try {
-		message = Listener.processIncoming(buffer, this.authorizer, this.callback);
+		message = Listener.processIncoming(buf, this.authorizer, this.callback);
 	} catch (error) {
-		this.callback(new ProcessingError("Failure to process incoming message", error, rinfo, buffer));
+		this.callback(new ProcessingError("Failure to process incoming message", error, rinfo, buf));
 		return;
 	}
 
@@ -4271,7 +4291,7 @@ Mib.prototype.getOidAddressFromValue = function (value, indexPart) {
 			oidComponents = value.split(".");
 			break;
 		case ObjectType.OctetString:
-			if (value instanceof Buffer.Buffer) {
+			if (value instanceof buffer.Buffer) {
 				// Buffer
 				oidComponents = Array.prototype.slice.call(value);
 			} else {
@@ -4667,7 +4687,7 @@ var Agent = function (options, callback, mib) {
 	this.callback = callback || function () {
 	};
 	this.mib = mib || new Mib();
-	this.context   = "";
+	this.context = "";
 	this.forwarder = new Forwarder(this.listener, this.callback);
 };
 
@@ -4755,14 +4775,14 @@ Agent.prototype.tableRowStatusHandlerInternal = function (createRequest) {
 	return missingDefVal ? undefined : values;
 };
 
-Agent.prototype.onMsg = function (socket, buffer, rinfo) {
+Agent.prototype.onMsg = function (socket, buf, rinfo) {
 
 	let message;
 
 	try {
-		message = Listener.processIncoming(buffer, this.authorizer, this.callback);
+		message = Listener.processIncoming(buf, this.authorizer, this.callback);
 	} catch (error) {
-		this.callback(new ProcessingError("Failure to process incoming message", error, rinfo, buffer));
+		this.callback(new ProcessingError("Failure to process incoming message", error, rinfo, buf));
 		return;
 	}
 
@@ -4808,7 +4828,7 @@ Agent.prototype.castSetValue = function (type, value) {
 			return typeof value == "number" ? value : parseInt(value, 10);
 
 		case ObjectType.OctetString:
-			if (value instanceof Buffer.Buffer) {
+			if (value instanceof buffer.Buffer) {
 				return value.toString();
 			} else if (typeof value != "string") {
 				throw new Error("Invalid OctetString", value);
@@ -4824,12 +4844,12 @@ Agent.prototype.castSetValue = function (type, value) {
 
 		case ObjectType.Counter:
 		case ObjectType.Counter64:
-		// Counters should be initialized to 0 (RFC2578, end of section 7.9)
-		// We'll do so.
+			// Counters should be initialized to 0 (RFC2578, end of section 7.9)
+			// We'll do so.
 			return 0;
 
 		case ObjectType.IpAddress:
-		// A 32-bit internet address represented as OCTET STRING of length 4
+			// A 32-bit internet address represented as OCTET STRING of length 4
 			var bytes = value.split(".");
 			if (typeof value != "string" || bytes.length != 4) {
 				throw new Error("Invalid IpAddress", value);
@@ -5007,13 +5027,13 @@ Agent.prototype.isAllowed = function (pduType, provider, instanceNode) {
 
 	switch (PduType[pduType]) {
 		case "SetRequest":
-		// SetRequest requires at least read-write access
+			// SetRequest requires at least read-write access
 			return maxAccess >= MaxAccess["read-write"];
 
 		case "GetRequest":
 		case "GetNextRequest":
 		case "GetBulkRequest":
-		// GetRequests require at least read-only access
+			// GetRequests require at least read-only access
 			return maxAccess >= MaxAccess["read-only"];
 
 		default:
@@ -5129,16 +5149,16 @@ Agent.prototype.request = function (socket, requestMessage, rinfo) {
 				switch (requestPdu.varbinds[i].value) {
 					case RowStatus["active"]:
 					case RowStatus["notInService"]:
-					// Setting either of these states, when the
-					// row already exists, is fine
+						// Setting either of these states, when the
+						// row already exists, is fine
 						break;
 
 					case RowStatus["destroy"]:
-					// This case is handled later
+						// This case is handled later
 						break;
 
 					case RowStatus["createAndGo"]:
-					// Valid if this was a new row creation, but now set to active
+						// Valid if this was a new row creation, but now set to active
 						if (instanceNode.value === RowStatus["createAndGo"]) {
 							requestPdu.varbinds[i].value = RowStatus["active"];
 						} else {
@@ -5152,7 +5172,7 @@ Agent.prototype.request = function (socket, requestMessage, rinfo) {
 						break;
 
 					case RowStatus["createAndWait"]:
-					// Valid if this was a new row creation, but now set to notInService
+						// Valid if this was a new row creation, but now set to notInService
 						if (instanceNode.value === RowStatus["createAndWait"]) {
 							requestPdu.varbinds[i].value = RowStatus["notInService"];
 						} else {
@@ -5555,82 +5575,82 @@ var AgentXPdu = function () {
 };
 
 AgentXPdu.prototype.toBuffer = function () {
-	var buffer = new smartbuffer.SmartBuffer();
-	this.writeHeader(buffer);
+	var buf = new smartbuffer.SmartBuffer();
+	this.writeHeader(buf);
 	switch (this.pduType) {
 		case AgentXPduType.Open:
-			buffer.writeUInt32BE(this.timeout);
-			AgentXPdu.writeOid(buffer, this.oid);
-			AgentXPdu.writeOctetString(buffer, this.descr);
+			buf.writeUInt32BE(this.timeout);
+			AgentXPdu.writeOid(buf, this.oid);
+			AgentXPdu.writeOctetString(buf, this.descr);
 			break;
 		case AgentXPduType.Close:
-			buffer.writeUInt8(5); // reasonShutdown == 5
-			buffer.writeUInt8(0); // 3 x reserved bytes
-			buffer.writeUInt8(0);
-			buffer.writeUInt8(0);
+			buf.writeUInt8(5); // reasonShutdown == 5
+			buf.writeUInt8(0); // 3 x reserved bytes
+			buf.writeUInt8(0);
+			buf.writeUInt8(0);
 			break;
 		case AgentXPduType.Register:
-			buffer.writeUInt8(this.timeout);
-			buffer.writeUInt8(this.priority);
-			buffer.writeUInt8(this.rangeSubid);
-			buffer.writeUInt8(0);
-			AgentXPdu.writeOid(buffer, this.oid);
+			buf.writeUInt8(this.timeout);
+			buf.writeUInt8(this.priority);
+			buf.writeUInt8(this.rangeSubid);
+			buf.writeUInt8(0);
+			AgentXPdu.writeOid(buf, this.oid);
 			break;
 		case AgentXPduType.Unregister:
-			buffer.writeUInt8(0); // reserved
-			buffer.writeUInt8(this.priority);
-			buffer.writeUInt8(this.rangeSubid);
-			buffer.writeUInt8(0); // reserved
-			AgentXPdu.writeOid(buffer, this.oid);
+			buf.writeUInt8(0); // reserved
+			buf.writeUInt8(this.priority);
+			buf.writeUInt8(this.rangeSubid);
+			buf.writeUInt8(0); // reserved
+			AgentXPdu.writeOid(buf, this.oid);
 			break;
 		case AgentXPduType.AddAgentCaps:
-			AgentXPdu.writeOid(buffer, this.oid);
-			AgentXPdu.writeOctetString(buffer, this.descr);
+			AgentXPdu.writeOid(buf, this.oid);
+			AgentXPdu.writeOctetString(buf, this.descr);
 			break;
 		case AgentXPduType.RemoveAgentCaps:
-			AgentXPdu.writeOid(buffer, this.oid);
+			AgentXPdu.writeOid(buf, this.oid);
 			break;
 		case AgentXPduType.Notify:
-			AgentXPdu.writeVarbinds(buffer, this.varbinds);
+			AgentXPdu.writeVarbinds(buf, this.varbinds);
 			break;
 		case AgentXPduType.Ping:
 			break;
 		case AgentXPduType.Response:
-			buffer.writeUInt32BE(this.sysUpTime);
-			buffer.writeUInt16BE(this.error);
-			buffer.writeUInt16BE(this.index);
-			AgentXPdu.writeVarbinds(buffer, this.varbinds);
+			buf.writeUInt32BE(this.sysUpTime);
+			buf.writeUInt16BE(this.error);
+			buf.writeUInt16BE(this.index);
+			AgentXPdu.writeVarbinds(buf, this.varbinds);
 			break;
 		default:
 	// unknown PDU type - should never happen as we control these
 	}
-	buffer.writeUInt32BE(buffer.length - 20, 16);
-	return buffer.toBuffer();
+	buf.writeUInt32BE(buf.length - 20, 16);
+	return buf.toBuffer();
 };
 
-AgentXPdu.prototype.writeHeader = function (buffer) {
+AgentXPdu.prototype.writeHeader = function (buf) {
 	this.flags = this.flags | 0x10; // set NETWORK_BYTE_ORDER
 
-	buffer.writeUInt8(1); // h.version = 1
-	buffer.writeUInt8(this.pduType);
-	buffer.writeUInt8(this.flags);
-	buffer.writeUInt8(0); // reserved byte
-	buffer.writeUInt32BE(this.sessionID);
-	buffer.writeUInt32BE(this.transactionID);
-	buffer.writeUInt32BE(this.packetID);
-	buffer.writeUInt32BE(0);
-	return buffer;
+	buf.writeUInt8(1); // h.version = 1
+	buf.writeUInt8(this.pduType);
+	buf.writeUInt8(this.flags);
+	buf.writeUInt8(0); // reserved byte
+	buf.writeUInt32BE(this.sessionID);
+	buf.writeUInt32BE(this.transactionID);
+	buf.writeUInt32BE(this.packetID);
+	buf.writeUInt32BE(0);
+	return buf;
 };
 
-AgentXPdu.prototype.readHeader = function (buffer) {
-	this.version = buffer.readUInt8();
-	this.pduType = buffer.readUInt8();
-	this.flags = buffer.readUInt8();
-	buffer.readUInt8(); // reserved byte
-	this.sessionID = buffer.readUInt32BE();
-	this.transactionID = buffer.readUInt32BE();
-	this.packetID = buffer.readUInt32BE();
-	this.payloadLength = buffer.readUInt32BE();
+AgentXPdu.prototype.readHeader = function (buf) {
+	this.version = buf.readUInt8();
+	this.pduType = buf.readUInt8();
+	this.flags = buf.readUInt8();
+	buf.readUInt8(); // reserved byte
+	this.sessionID = buf.readUInt32BE();
+	this.transactionID = buf.readUInt32BE();
+	this.packetID = buf.readUInt32BE();
+	this.payloadLength = buf.readUInt32BE();
 };
 
 AgentXPdu.prototype.getResponsePduForRequest = function () {
@@ -5703,26 +5723,26 @@ AgentXPdu.createFromVariables = function (vars) {
 AgentXPdu.createFromBuffer = function (socketBuffer) {
 	var pdu = new AgentXPdu();
 
-	var buffer = smartbuffer.SmartBuffer.fromBuffer(socketBuffer);
-	pdu.readHeader(buffer);
+	var buf = smartbuffer.SmartBuffer.fromBuffer(socketBuffer);
+	pdu.readHeader(buf);
 
 	switch (pdu.pduType) {
 		case AgentXPduType.Response:
-			pdu.sysUpTime = buffer.readUInt32BE();
-			pdu.error = buffer.readUInt16BE();
-			pdu.index = buffer.readUInt16BE();
+			pdu.sysUpTime = buf.readUInt32BE();
+			pdu.error = buf.readUInt16BE();
+			pdu.index = buf.readUInt16BE();
 			break;
 		case AgentXPduType.Get:
 		case AgentXPduType.GetNext:
-			pdu.searchRangeList = AgentXPdu.readSearchRangeList(buffer, pdu.payloadLength);
+			pdu.searchRangeList = AgentXPdu.readSearchRangeList(buf, pdu.payloadLength);
 			break;
 		case AgentXPduType.GetBulk:
-			pdu.nonRepeaters = buffer.readUInt16BE();
-			pdu.maxRepetitions = buffer.readUInt16BE();
-			pdu.searchRangeList = AgentXPdu.readSearchRangeList(buffer, pdu.payloadLength - 4);
+			pdu.nonRepeaters = buf.readUInt16BE();
+			pdu.maxRepetitions = buf.readUInt16BE();
+			pdu.searchRangeList = AgentXPdu.readSearchRangeList(buf, pdu.payloadLength - 4);
 			break;
 		case AgentXPduType.TestSet:
-			pdu.varbinds = AgentXPdu.readVarbinds(buffer, pdu.payloadLength);
+			pdu.varbinds = AgentXPdu.readVarbinds(buf, pdu.payloadLength);
 			break;
 		case AgentXPduType.CommitSet:
 		case AgentXPduType.UndoSet:
@@ -5736,7 +5756,7 @@ AgentXPdu.createFromBuffer = function (socketBuffer) {
 	return pdu;
 };
 
-AgentXPdu.writeOid = function (buffer, oid, include = 0) {
+AgentXPdu.writeOid = function (buf, oid, include = 0) {
 	var prefix;
 	if (oid) {
 		var address = oid.split('.').map(Number);
@@ -5746,49 +5766,49 @@ AgentXPdu.writeOid = function (buffer, oid, include = 0) {
 		} else {
 			prefix = 0;
 		}
-		buffer.writeUInt8(address.length);
-		buffer.writeUInt8(prefix);
-		buffer.writeUInt8(include);
-		buffer.writeUInt8(0); // reserved
+		buf.writeUInt8(address.length);
+		buf.writeUInt8(prefix);
+		buf.writeUInt8(include);
+		buf.writeUInt8(0); // reserved
 		for (let addressPart of address) {
-			buffer.writeUInt32BE(addressPart);
+			buf.writeUInt32BE(addressPart);
 		}
 	} else {
-		buffer.writeUInt32BE(0); // row of zeros for null OID
+		buf.writeUInt32BE(0); // row of zeros for null OID
 	}
 };
 
-AgentXPdu.writeOctetString = function (buffer, octetString) {
-	buffer.writeUInt32BE(octetString.length);
-	buffer.writeString(octetString);
+AgentXPdu.writeOctetString = function (buf, octetString) {
+	buf.writeUInt32BE(octetString.length);
+	buf.writeString(octetString);
 	var paddingOctets = (4 - octetString.length % 4) % 4;
 	for (let i = 0; i < paddingOctets; i++) {
-		buffer.writeUInt8(0);
+		buf.writeUInt8(0);
 	}
 };
 
-AgentXPdu.writeVarBind = function (buffer, varbind) {
-	buffer.writeUInt16BE(varbind.type);
-	buffer.writeUInt16BE(0); // reserved
-	AgentXPdu.writeOid(buffer, varbind.oid);
+AgentXPdu.writeVarBind = function (buf, varbind) {
+	buf.writeUInt16BE(varbind.type);
+	buf.writeUInt16BE(0); // reserved
+	AgentXPdu.writeOid(buf, varbind.oid);
 
 	if (varbind.type && varbind.oid) {
 
 		switch (varbind.type) {
 			case ObjectType.Integer: // also Integer32 (signed 32-bit)
-				buffer.writeInt32BE(varbind.value);
+				buf.writeInt32BE(varbind.value);
 				break;
 			case ObjectType.Counter: // also Counter32
 			case ObjectType.Gauge: // also Gauge32 & Unsigned32
 			case ObjectType.TimeTicks:
-				buffer.writeUInt32BE(varbind.value);
+				buf.writeUInt32BE(varbind.value);
 				break;
 			case ObjectType.OctetString:
 			case ObjectType.Opaque:
-				AgentXPdu.writeOctetString(buffer, varbind.value);
+				AgentXPdu.writeOctetString(buf, varbind.value);
 				break;
 			case ObjectType.OID:
-				AgentXPdu.writeOid(buffer, varbind.value);
+				AgentXPdu.writeOid(buf, varbind.value);
 				break;
 			case ObjectType.IpAddress:
 				var bytes = varbind.value.split(".");
@@ -5796,10 +5816,10 @@ AgentXPdu.writeVarBind = function (buffer, varbind) {
 					throw new RequestInvalidError("Invalid IP address '"
 						+ varbind.value + "'");
 				}
-				buffer.writeOctetString(buffer, Buffer.from(bytes));
+				buf.writeOctetString(buf, buffer.Buffer.from(bytes));
 				break;
 			case ObjectType.Counter64:
-				buffer.writeUint64(varbind.value);
+				buf.writeUint64(varbind.value);
 				break;
 			case ObjectType.Null:
 			case ObjectType.EndOfMibView:
@@ -5814,20 +5834,20 @@ AgentXPdu.writeVarBind = function (buffer, varbind) {
 	}
 };
 
-AgentXPdu.writeVarbinds = function (buffer, varbinds) {
+AgentXPdu.writeVarbinds = function (buf, varbinds) {
 	if (varbinds) {
 		for (var i = 0; i < varbinds.length; i++) {
 			var varbind = varbinds[i];
-			AgentXPdu.writeVarBind(buffer, varbind);
+			AgentXPdu.writeVarBind(buf, varbind);
 		}
 	}
 };
 
-AgentXPdu.readOid = function (buffer) {
-	var subidLength = buffer.readUInt8();
-	var prefix = buffer.readUInt8();
-	var include = buffer.readUInt8();
-	buffer.readUInt8(); // reserved
+AgentXPdu.readOid = function (buf) {
+	var subidLength = buf.readUInt8();
+	var prefix = buf.readUInt8();
+	var include = buf.readUInt8();
+	buf.readUInt8(); // reserved
 
 	// Null OID check
 	if (subidLength == 0 && prefix == 0 && include == 0) {
@@ -5840,43 +5860,43 @@ AgentXPdu.readOid = function (buffer) {
 		address = [1, 3, 6, 1, prefix];
 	}
 	for (let i = 0; i < subidLength; i++) {
-		address.push(buffer.readUInt32BE());
+		address.push(buf.readUInt32BE());
 	}
 	var oid = address.join('.');
 	return oid;
 };
 
-AgentXPdu.readSearchRange = function (buffer) {
+AgentXPdu.readSearchRange = function (buf) {
 	return {
-		start: AgentXPdu.readOid(buffer),
-		end: AgentXPdu.readOid(buffer)
+		start: AgentXPdu.readOid(buf),
+		end: AgentXPdu.readOid(buf)
 	};
 };
 
-AgentXPdu.readSearchRangeList = function (buffer, payloadLength) {
+AgentXPdu.readSearchRangeList = function (buf, payloadLength) {
 	var bytesLeft = payloadLength;
-	var bufferPosition = (buffer.readOffset + 1);
+	var bufferPosition = (buf.readOffset + 1);
 	var searchRangeList = [];
 	while (bytesLeft > 0) {
-		searchRangeList.push(AgentXPdu.readSearchRange(buffer));
-		bytesLeft -= (buffer.readOffset + 1) - bufferPosition;
-		bufferPosition = buffer.readOffset + 1;
+		searchRangeList.push(AgentXPdu.readSearchRange(buf));
+		bytesLeft -= (buf.readOffset + 1) - bufferPosition;
+		bufferPosition = buf.readOffset + 1;
 	}
 	return searchRangeList;
 };
 
-AgentXPdu.readOctetString = function (buffer) {
-	var octetStringLength = buffer.readUInt32BE();
+AgentXPdu.readOctetString = function (buf) {
+	var octetStringLength = buf.readUInt32BE();
 	var paddingOctets = (4 - octetStringLength % 4) % 4;
-	var octetString = buffer.readString(octetStringLength);
-	buffer.readString(paddingOctets);
+	var octetString = buf.readString(octetStringLength);
+	buf.readString(paddingOctets);
 	return octetString;
 };
 
-AgentXPdu.readVarbind = function (buffer) {
-	var vtype = buffer.readUInt16BE();
-	buffer.readUInt16BE(); // reserved
-	var oid = AgentXPdu.readOid(buffer);
+AgentXPdu.readVarbind = function (buf) {
+	var vtype = buf.readUInt16BE();
+	buf.readUInt16BE(); // reserved
+	var oid = AgentXPdu.readOid(buf);
 	var value;
 
 	switch (vtype) {
@@ -5884,18 +5904,18 @@ AgentXPdu.readVarbind = function (buffer) {
 		case ObjectType.Counter:
 		case ObjectType.Gauge:
 		case ObjectType.TimeTicks:
-			value = buffer.readUInt32BE();
+			value = buf.readUInt32BE();
 			break;
 		case ObjectType.OctetString:
 		case ObjectType.IpAddress:
 		case ObjectType.Opaque:
-			value = AgentXPdu.readOctetString(buffer);
+			value = AgentXPdu.readOctetString(buf);
 			break;
 		case ObjectType.OID:
-			value = AgentXPdu.readOid(buffer);
+			value = AgentXPdu.readOid(buf);
 			break;
 		case ObjectType.Counter64:
-			value = readUint64(buffer);
+			value = readUint64(buf);
 			break;
 		case ObjectType.Null:
 		case ObjectType.NoSuchObject:
@@ -5916,14 +5936,14 @@ AgentXPdu.readVarbind = function (buffer) {
 	};
 };
 
-AgentXPdu.readVarbinds = function (buffer, payloadLength) {
+AgentXPdu.readVarbinds = function (buf, payloadLength) {
 	var bytesLeft = payloadLength;
-	var bufferPosition = (buffer.readOffset + 1);
+	var bufferPosition = (buf.readOffset + 1);
 	var varbindList = [];
 	while (bytesLeft > 0) {
-		varbindList.push(AgentXPdu.readVarbind(buffer));
-		bytesLeft -= (buffer.readOffset + 1) - bufferPosition;
-		bufferPosition = buffer.readOffset + 1;
+		varbindList.push(AgentXPdu.readVarbind(buf));
+		bytesLeft -= (buf.readOffset + 1) - bufferPosition;
+		bufferPosition = buf.readOffset + 1;
 	}
 	return varbindList;
 };
@@ -5960,7 +5980,7 @@ Subagent.prototype.getMib = function () {
 
 Subagent.prototype.connectSocket = function () {
 	var me = this;
-	this.socket = createConnection( this.masterPort,this.master)
+	this.socket = createConnection(this.masterPort, this.master)
 	this.socket.on("data", me.onMsg.bind(me));
 	this.socket.on("error", me.onError.bind(me));
 	this.socket.on("close", me.onClose.bind(me));
@@ -6084,8 +6104,8 @@ Subagent.prototype.ping = function (callback) {
 Subagent.prototype.sendPdu = function (pdu, callback) {
 	debug("Sending AgentX " + AgentXPduType[pdu.pduType] + " PDU");
 	debug(pdu);
-	var buffer = pdu.toBuffer();
-	this.socket.write(buffer);
+	var buf = pdu.toBuffer();
+	this.socket.write(buf);
 	if (pdu.pduType != AgentXPduType.Response && !this.requestPdus[pdu.packetID]) {
 		pdu.callback = callback;
 		this.requestPdus[pdu.packetID] = pdu;
@@ -6105,8 +6125,8 @@ Subagent.prototype.sendPdu = function (pdu, callback) {
 
 };
 
-Subagent.prototype.onMsg = function (buffer, rinfo) {
-	var pdu = AgentXPdu.createFromBuffer(buffer);
+Subagent.prototype.onMsg = function (buf, rinfo) {
+	var pdu = AgentXPdu.createFromBuffer(buf);
 
 	debug("Received AgentX " + AgentXPduType[pdu.pduType] + " PDU");
 	debug(pdu);
@@ -6425,6 +6445,23 @@ Subagent.create = function (options) {
 	return subagent;
 };
 
+function bufferToOhosBuffer(buf) {
+    let arr = [];
+    for (let i = 0; i < buf.length; i++) {
+        arr.push(buf[i]);
+    }
+    let newBuffer = Buffer.from(arr);
+    return newBuffer;
+}
+
+function ohosBufferToBuffer(buf) {
+    let arr = [];
+    for (let i = 0; i < buf.length; i++) {
+        arr.push(buf[i]);
+    }
+    let newBuffer = buffer.Buffer.from(arr);
+    return newBuffer;
+}
 
 /*****************************************************************************
  ** Exports
