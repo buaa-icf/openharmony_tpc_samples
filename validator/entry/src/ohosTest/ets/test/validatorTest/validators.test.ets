@@ -2995,11 +2995,11 @@ export default function ValidatorsTest() {
         validator: 'isPassportNumber',
         args: ['AZ'],
         valid: [
-          'AZE16175905',
-          'AA1617595',
+          'A16175905',
+          'A16175958',
         ],
         invalid: [
-          'A12345843',
+          'AZ1234584',
         ],
       });
 
@@ -3715,6 +3715,21 @@ export default function ValidatorsTest() {
           'US0123456',
           '0123456US',
           '7903699371',
+        ],
+      });
+
+      test({
+        validator: 'isPassportNumber',
+        args: ['ZA'],
+        valid: [
+          'T12345678',
+          'A12345678',
+          'M12345678',
+          'D12345678',
+        ],
+        invalid: [
+          '123456789',
+          'Z12345678',
         ],
       });
     });
@@ -4830,16 +4845,16 @@ export default function ValidatorsTest() {
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb3JlbSI6Imlwc3VtIn0.ymiJSsMJXR6tMSr8G9usjQ15_8hKPDv_CArLhxw28MI',
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkb2xvciI6InNpdCIsImFtZXQiOlsibG9yZW0iLCJpcHN1bSJdfQ.rRpe04zbWbbJjwM43VnHzAboDzszJtGrNsUxaqQ-GQ8',
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqb2huIjp7ImFnZSI6MjUsImhlaWdodCI6MTg1fSwiamFrZSI6eyJhZ2UiOjMwLCJoZWlnaHQiOjI3MH19.YRLPARDmhGMC3BBk_OhtwwK21PIkVCqQe8ncIRPKo-E',
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ',// No signature
         ],
         invalid: [
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NSIsIm5hbWUiOiJKb2huIERvZSIsImlhdCI6MTUxNjIzOTAyMn0',
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NSIsIm5hbWUiOiJKb2huIERvZSIsImlhdCI6MTYxNjY1Mzg3Mn0.eyJpc3MiOiJodHRwczovL2V4YW1wbGUuY29tIiwiaWF0IjoxNjE2NjUzODcyLCJleHAiOjE2MTY2NTM4ODJ9.a1jLRQkO5TV5y5ERcaPAiM9Xm2gBdRjKrrCpHkGr_8M',
           '$Zs.ewu.su84',
           'ks64$S/9.dy$§kz.3sd73b',
         ],
         error: [
           [],
-          new Object(),
           null,
           undefined,
         ],
@@ -5107,13 +5122,17 @@ export default function ValidatorsTest() {
       test({
         validator: 'isUUID',
         valid: [
-          'A987FBC9-4BED-3078-CF07-9141BA07C9F3',
+          '9deb20fe-a6e0-355c-81ea-288b009e4f6d',
           'A987FBC9-4BED-4078-8F07-9141BA07C9F3',
           'A987FBC9-4BED-5078-AF07-9141BA07C9F3',
+          'A987FBC9-4BED-6078-AF07-9141BA07C9F3',
+          '018C544A-D384-7000-BB74-3B1738ABE43C',
+          'A987FBC9-4BED-8078-AF07-9141BA07C9F3',
         ],
         invalid: [
           '',
           'xxxA987FBC9-4BED-3078-CF07-9141BA07C9F3',
+          'A987FBC9-4BED-3078-CF07-9141BA07C9F3',
           'A987FBC9-4BED-3078-CF07-9141BA07C9F3xxx',
           'A987FBC94BED3078CF079141BA07C9F3',
           '934859',
@@ -5125,11 +5144,13 @@ export default function ValidatorsTest() {
         validator: 'isUUID',
         args: [undefined],
         valid: [
-          'A117FBC9-4BED-3078-CF07-9141BA07C9F3',
+          '9deb20fe-a6e0-355c-81ea-288b009e4f6d',
           'A117FBC9-4BED-5078-AF07-9141BA07C9F3',
+          '018C544A-D384-7000-BB74-3B1738ABE43C',
         ],
         invalid: [
           '',
+          'A117FBC9-4BED-3078-CF07-9141BA07C9F3',
           'xxxA987FBC9-4BED-3078-CF07-9141BA07C9F3',
           'A987FBC94BED3078CF079141BA07C9F3',
           'A11AAAAA-1111-1111-AAAG-111111111111',
@@ -5139,11 +5160,13 @@ export default function ValidatorsTest() {
         validator: 'isUUID',
         args: [null],
         valid: [
-          'A127FBC9-4BED-3078-CF07-9141BA07C9F3',
+          'A127FBC9-4BED-3078-AF07-9141BA07C9F3',
+          '018C544A-D384-7000-BB74-3B1738ABE43C',
         ],
         invalid: [
           '',
           'xxxA987FBC9-4BED-3078-CF07-9141BA07C9F3',
+          'A127FBC9-4BED-3078-CF07-9141BA07C9F3',
           'A127FBC9-4BED-3078-CF07-9141BA07C9F3xxx',
           '912859',
           'A12AAAAA-1111-1111-AAAG-111111111111',
@@ -5161,36 +5184,41 @@ export default function ValidatorsTest() {
           'AAAAAAAA-1111-2222-AAAG-111111111111',
           'A987FBC9-4BED-4078-8F07-9141BA07C9F3',
           'A987FBC9-4BED-5078-AF07-9141BA07C9F3',
+          '018C544A-D384-7000-BB74-3B1738ABE43C',
         ],
       });
       test({
         validator: 'isUUID',
         args: [2],
         valid: [
-          'A987FBC9-4BED-2078-CF07-9141BA07C9F3',
+          'A987FBC9-4BED-2078-AF07-9141BA07C9F3',
         ],
         invalid: [
           '',
           'xxxA987FBC9-4BED-3078-CF07-9141BA07C9F3',
           '11111',
           'AAAAAAAA-1111-1111-AAAG-111111111111',
+          'A987FBC9-4BED-2078-CF07-9141BA07C9F3',
           'A987FBC9-4BED-4078-8F07-9141BA07C9F3',
           'A987FBC9-4BED-5078-AF07-9141BA07C9F3',
+          '018C544A-D384-7000-BB74-3B1738ABE43C',
         ],
       });
       test({
         validator: 'isUUID',
         args: [3],
         valid: [
-          'A987FBC9-4BED-3078-CF07-9141BA07C9F3',
+          '9deb20fe-a6e0-355c-81ea-288b009e4f6d',
         ],
         invalid: [
           '',
+          'A987FBC9-4BED-3078-CF07-9141BA07C9F3',
           'xxxA987FBC9-4BED-3078-CF07-9141BA07C9F3',
           '934859',
           'AAAAAAAA-1111-1111-AAAG-111111111111',
           'A987FBC9-4BED-4078-8F07-9141BA07C9F3',
           'A987FBC9-4BED-5078-AF07-9141BA07C9F3',
+          '018C544A-D384-7000-BB74-3B1738ABE43C',
         ],
       });
       test({
@@ -5209,6 +5237,7 @@ export default function ValidatorsTest() {
           'AAAAAAAA-1111-1111-AAAG-111111111111',
           'A987FBC9-4BED-5078-AF07-9141BA07C9F3',
           'A987FBC9-4BED-3078-CF07-9141BA07C9F3',
+          '018C544A-D384-7000-BB74-3B1738ABE43C',
         ],
       });
       test({
@@ -5227,18 +5256,65 @@ export default function ValidatorsTest() {
           'AAAAAAAA-1111-1111-AAAG-111111111111',
           '9c858901-8a57-4791-81fe-4c455b099bc9',
           'A987FBC9-4BED-3078-CF07-9141BA07C9F3',
+          '018C544A-D384-7000-BB74-3B1738ABE43C',
         ],
       });
       test({
         validator: 'isUUID',
         args: [6],
-        valid: [],
+        valid: [
+          '1ef29908-cde1-69d0-be16-bfc8518a95f0',
+        ],
         invalid: [
           '987FBC97-4BED-1078-AF07-9141BA07C9F3',
           '987FBC97-4BED-2078-AF07-9141BA07C9F3',
           '987FBC97-4BED-3078-AF07-9141BA07C9F3',
           '987FBC97-4BED-4078-AF07-9141BA07C9F3',
           '987FBC97-4BED-5078-AF07-9141BA07C9F3',
+          '018C544A-D384-7000-BB74-3B1738ABE43C',
+          '987FBC97-4BED-8078-AF07-9141BA07C9F3',
+        ],
+      });
+      test({
+        validator: 'isUUID',
+        args: [7],
+        valid: [
+          '018C544A-D384-7000-BB74-3B1738ABE43C',
+        ],
+        invalid: [
+          '',
+          'xxxA987FBC9-4BED-3078-CF07-9141BA07C9F3',
+          '934859',
+          'AAAAAAAA-1111-1111-AAAG-111111111111',
+          'A987FBC9-4BED-5078-AF07-9141BA07C9F3',
+          'A987FBC9-4BED-3078-CF07-9141BA07C9F3',
+          'A987FBC9-4BED-6078-AF07-9141BA07C9F3',
+          'A987FBC9-4BED-8078-AF07-9141BA07C9F3',
+          '713ae7e3-cb32-45f9-adcb-7c4fa86b90c1',
+          '625e63f3-58f5-40b7-83a1-a72ad31acffb',
+          '57b73598-8764-4ad0-a76a-679bb6640eb1',
+          '9c858901-8a57-4791-81fe-4c455b099bc9',
+        ],
+      });
+      test({
+        validator: 'isUUID',
+        args: [8],
+        valid: [
+          '018C544A-D384-8000-BB74-3B1738ABE43C',
+        ],
+        invalid: [
+          '',
+          'xxxA987FBC9-4BED-3078-CF07-9141BA07C9F3',
+          '934859',
+          'AAAAAAAA-1111-1111-AAAG-111111111111',
+          'A987FBC9-4BED-5078-AF07-9141BA07C9F3',
+          'A987FBC9-4BED-3078-CF07-9141BA07C9F3',
+          'A987FBC9-4BED-6078-AF07-9141BA07C9F3',
+          'A987FBC9-4BED-7078-AF07-9141BA07C9F3',
+          '713ae7e3-cb32-45f9-adcb-7c4fa86b90c1',
+          '625e63f3-58f5-40b7-83a1-a72ad31acffb',
+          '57b73598-8764-4ad0-a76a-679bb6640eb1',
+          '9c858901-8a57-4791-81fe-4c455b099bc9',
         ],
       });
     });
@@ -6658,20 +6734,39 @@ export default function ValidatorsTest() {
         {
           locale: 'am-AM',
           valid: [
+            '+37433123456',
+            '+37441123456',
+            '+37443123456',
+            '+37444123456',
+            '+37455123456',
+            '+37477123456',
+            '+37488123456',
+            '+37491123456',
+            '+37493123456',
+            '+37494123456',
+            '+37495123456',
+            '+37496123456',
+            '+37498123456',
+            '+37499123456',
+            '055123456',
+            '37455123456',
+          ],
+          invalid: [
+            '12345',
+            '+37403498855',
+            '+37416498123',
+            '05614988556',
+            '',
+            '37456789000',
+            '37486789000',
+            '+37431312345',
+            '+37430312345',
+            '+37460123456',
             '+37410324123',
             '+37422298765',
             '+37431276521',
             '022698763',
-            '37491987654',
-            '+37494567890',
-          ],
-          invalid: [
-            '12345',
-            '+37411498855',
-            '+37411498123',
-            '05614988556',
-            '',
-            '37456789000',
+            '+37492123456',
           ],
         },
         {
@@ -6973,6 +7068,24 @@ export default function ValidatorsTest() {
             '+9665626626262',
             '+96633221097',
             '0114152198',
+          ],
+        },
+        {
+          locale: 'ar-SD',
+          valid: [
+            '0128652312',
+            '+249919425113',
+            '249123212345',
+            '0993212345',
+          ],
+          invalid: [
+            '12345',
+            '',
+            '+249972662622',
+            '+24946266262',
+            '+24933221097',
+            '0614152198',
+            '096554',
           ],
         },
         {
@@ -7459,6 +7572,7 @@ export default function ValidatorsTest() {
             '0502345671',
             '0242345671',
             '0542345671',
+            '0532345671',
             '0272345671',
             '0572345671',
             '0262345671',
@@ -7469,6 +7583,7 @@ export default function ValidatorsTest() {
             '+233502345671',
             '+233242345671',
             '+233542345671',
+            '+233532345671',
             '+233272345671',
             '+233572345671',
             '+233262345671',
@@ -7603,6 +7718,31 @@ export default function ValidatorsTest() {
           ],
         },
         {
+          locale: 'fr-CF',
+          valid: [
+            '+23670850000',
+            '+23675038756',
+            '+23677859002',
+            '+23672854202',
+            '+23621854052',
+            '+23622854072',
+            '72234650',
+            '70045902',
+            '77934567',
+            '21456794',
+            '22452389',
+          ],
+          invalid: [
+            '+23689032',
+            '123456789',
+            '+236723845987',
+            '022452389',
+            '+236772345678',
+            '+236700456794',
+
+          ],
+        },
+        {
           locale: 'en-KI',
           valid: [
             '+68673140000',
@@ -7697,6 +7837,25 @@ export default function ValidatorsTest() {
             '+25589032',
             '123456789',
             '+255800723845',
+          ],
+        },
+        {
+          locale: 'en-MW',
+          valid: [
+            '+265994563785',
+            '+265111785436',
+            '+265318596857',
+            '0320008744',
+            '01256258',
+            '0882541896',
+            '+265984563214',
+          ],
+          invalid: [
+            '58563',
+            '+2658256258',
+            '0896328741',
+            '0708574896',
+            '+26570857489635',
           ],
         },
         {
@@ -7938,6 +8097,32 @@ export default function ValidatorsTest() {
           ],
         },
         {
+          locale: 'fr-WF',
+          valid: [
+            '+681408500',
+            '+681499387',
+            '+681728590',
+            '+681808542',
+            '+681828540',
+            '+681832014',
+            '408500',
+            '499387',
+            '728590',
+            '808542',
+            '828540',
+            '832014',
+          ],
+          invalid: [
+            '+68189032',
+            '123456789',
+            '+681723845987',
+            '022452389',
+            '+681772345678',
+            '+681700456794',
+
+          ],
+        },
+        {
           locale: 'ka-GE',
           valid: [
             '+995500011111',
@@ -8038,6 +8223,9 @@ export default function ValidatorsTest() {
             '+443003434751',
             '05073456754',
             '08001123123',
+            '07043425232',
+            '01273884231',
+            '03332654034',
           ],
         },
         {
@@ -8110,6 +8298,8 @@ export default function ValidatorsTest() {
             '+260966684590',
             '+260976684590',
             '260976684590',
+            '+260779493521',
+            '+260760010936',
           ],
           invalid: [
             '12345',
@@ -8117,6 +8307,7 @@ export default function ValidatorsTest() {
             'Vml2YW11cyBmZXJtZtesting123',
             '010-38238383',
             '966684590',
+            '760010936',
           ],
         },
         {
@@ -8469,6 +8660,7 @@ export default function ValidatorsTest() {
             '',
             'abc',
             '+535123457',
+            '56043029304',
           ],
         },
         {
@@ -8729,6 +8921,7 @@ export default function ValidatorsTest() {
             '+48 56 6572724',
             '+48 67 621 5461',
             '48 67 621 5461',
+            '+48 45 621 5461',
           ],
           invalid: [
             '+48  67 621 5461',
@@ -8739,6 +8932,7 @@ export default function ValidatorsTest() {
             '1800-88-8687',
             '+6019-5830837',
             '357562855',
+            '+48 44 621 5461',
           ],
         },
         {
@@ -8896,15 +9090,44 @@ export default function ValidatorsTest() {
         {
           locale: 'ky-KG',
           valid: [
-            '+7 727 123 4567',
-            '+7 714 2396102',
-            '77271234567',
-            '0271234567',
+            '+996553033300',
+            '+996 222 123456',
+            '+996 500 987654',
+            '+996 555 111222',
+            '+996 700 333444',
+            '+996 770 555666',
+            '+996 880 777888',
+            '+996 990 999000',
+            '+996 995 555666',
+            '+996 996 555666',
+            '+996 997 555666',
+            '+996 998 555666',
           ],
           invalid: [
-            '02188565377',
-            '09386932778',
-            '0938693277vadggjdsaasdgj8',
+            '+996 201 123456',
+            '+996 312 123456',
+            '+996 3960 12345',
+            '+996 3961 12345',
+            '+996 3962 12345',
+            '+996 3963 12345',
+            '+996 3964 12345',
+            '+996 3965 12345',
+            '+996 3966 12345',
+            '+996 3967 12345',
+            '+996 3968 12345',
+            '+996 511 123456',
+            '+996 522 123456',
+            '+996 561 123456',
+            '+996 571 123456',
+            '+996 624 123456',
+            '+996 623 123456',
+            '+996 622 123456',
+            '+996 609 123456',
+            '+996 100 12345',
+            '+996 100 1234567',
+            '996 100 123456',
+            '0 100 123456',
+            '0 100 123abc',
           ],
         },
         {
@@ -9238,16 +9461,67 @@ export default function ValidatorsTest() {
         {
           locale: 'uk-UA',
           valid: [
-            '+380982345679',
-            '380982345679',
-            '80982345679',
-            '0982345679',
+            '+380501234567',
+            '+380631234567',
+            '+380661234567',
+            '+380671234567',
+            '+380681234567',
+            '+380731234567',
+            '+380751234567',
+            '+380771234567',
+            '+380911234567',
+            '+380921234567',
+            '+380931234567',
+            '+380941234567',
+            '+380951234567',
+            '+380961234567',
+            '+380971234567',
+            '+380981234567',
+            '+380991234567',
+            '380501234567',
+            '380631234567',
+            '380661234567',
+            '380671234567',
+            '380681234567',
+            '380731234567',
+            '380751234567',
+            '380771234567',
+            '380911234567',
+            '380921234567',
+            '380931234567',
+            '380941234567',
+            '380951234567',
+            '380961234567',
+            '380971234567',
+            '380981234567',
+            '380991234567',
+            '0501234567',
+            '0631234567',
+            '0661234567',
+            '0671234567',
+            '0681234567',
+            '0731234567',
+            '0751234567',
+            '0771234567',
+            '0911234567',
+            '0921234567',
+            '0931234567',
+            '0941234567',
+            '0951234567',
+            '0961234567',
+            '0971234567',
+            '0981234567',
+            '0991234567',
           ],
           invalid: [
             '+30982345679',
+            '+380321234567',
+            '+380441234567',
             '982345679',
+            '80982345679',
             '+380 98 234 5679',
             '+380-98-234-5679',
+            '+380 (98) 234-56-79',
             '',
             'ASDFGJKLmZXJtZtesting123',
             '123456',
@@ -9520,17 +9794,50 @@ export default function ValidatorsTest() {
           ],
         },
         {
+          locale: 'so-SO',
+          valid: [
+            '+252601234567',
+            '+252650101010',
+            '+252794567120',
+            '252650647388',
+            '252751234567',
+            '0601234567',
+            '0609876543',
+          ],
+          invalid: [
+            '',
+            'not a number',
+            '+2526012345678',
+            '25260123456',
+            '+252705555555',
+            '+0601234567',
+            '06945454545',
+          ],
+        },
+        {
           locale: 'sq-AL',
           valid: [
-            '067123456',
-            '+35567123456',
+            '0621234567',
+            '0661234567',
+            '0671234567',
+            '0681234567',
+            '0691234567',
+            '+355621234567',
+            '+355651234567',
+            '+355661234567',
+            '+355671234567',
+            '+355681234567',
+            '+355691234567',
           ],
           invalid: [
             '67123456',
             '06712345',
+            '067123456',
             '06712345678',
-            '065123456',
-            '057123456',
+            '0571234567',
+            '+3556712345',
+            '+35565123456',
+            '+35157123456',
             'NotANumber',
           ],
         },
@@ -9894,17 +10201,65 @@ export default function ValidatorsTest() {
 
           ],
         },
+        {
+          locale: 'es-GT',
+          valid: [
+            '+50221234567',
+            '+50277654321',
+            '50226753421',
+            '50272332468',
+            '50278984455',
+            '+50273472492',
+            '71234567',
+            '21132398',
+          ],
+          invalid: [
+            '44',
+            '+5022712345678',
+            '1234567899',
+            '502712345678',
+            'This should fail',
+            '5021931234567',
+            '+50281234567',
+          ],
+        },
+        {
+          locale: 'mk-MK',
+          valid: [
+            '+38923234567',
+            '38931234567',
+            '022123456',
+            '22234567',
+            '71234567',
+            '31234567',
+            '+38923091500',
+            '80091234',
+            '81123456',
+            '54123456',
+          ],
+          invalid: [
+            '38912345678',
+            '+389123456789',
+            '21234567',
+            '123456789',
+            '+3891234567',
+            '700012345',
+            '510123456',
+            'This should fail',
+            '+389123456',
+            '389123456',
+            '80912345',
+          ],
+        },
       ];
 
       let allValid: string[] = [];
 
       fixtures.forEach((fixture) => {
         // to be used later on for validating 'any' locale
-        if (fixture.valid) {
-          allValid = allValid.concat(fixture.valid);
-        }
+        if (fixture.valid) allValid = allValid.concat(fixture.valid);
 
-        if (isArray(fixture.locale)) {
+        if (Array.isArray(fixture.locale)) {
           test({
             validator: 'isMobilePhone',
             valid: fixture.valid,
@@ -9949,9 +10304,7 @@ export default function ValidatorsTest() {
           '766667206',
           '0766670206',
         ],
-        args: ['any', {
-          strictMode: true
-        }],
+        args: ['any', { strictMode: true }],
       });
 
       // falsey locale defaults to 'any'
@@ -11365,13 +11718,16 @@ export default function ValidatorsTest() {
           'AED',
           'aed',
           'AUD',
-          'CUC',
+          'CUP',
           'EUR',
           'GBP',
           'LYD',
           'MYR',
           'SGD',
+          'SLE',
           'USD',
+          'VED',
+          'SLE',
         ],
         invalid: [
           '',
@@ -11383,6 +11739,8 @@ export default function ValidatorsTest() {
           'RWA',
           'EURO',
           'euro',
+          'HRK',
+          'CUC',
         ],
       });
     });
@@ -13805,10 +14163,24 @@ export default function ValidatorsTest() {
         validator: 'isVAT',
         args: ['AU'],
         valid: [
-          'AU12345678901',
-          '12345678901',
+          'AU53004085616',
+          '53004085616',
+          'AU65613309809',
+          '65613309809',
+          'AU34118972998',
+          '34118972998',
         ],
         invalid: [
+          'AU65613309808',
+          '65613309808',
+          'AU55613309809',
+          '55613309809',
+          'AU65613319809',
+          '65613319809',
+          'AU34117972998',
+          '34117972998',
+          'AU12345678901',
+          '12345678901',
           'AU 12345678901',
           '1234567890',
         ],
@@ -13891,11 +14263,11 @@ export default function ValidatorsTest() {
         validator: 'isVAT',
         args: ['KZ'],
         valid: [
-          'KZ123456789',
-          '123456789',
+          'KZ123456789012',
+          '123456789012',
         ],
         invalid: [
-          'KZ 123456789',
+          'KZ 123456789012',
           '12345678',
         ],
       });
@@ -14005,18 +14377,30 @@ export default function ValidatorsTest() {
         validator: 'isVAT',
         args: ['CH'],
         valid: [
-          'CH123456TVA',
-          '123456TVA',
-          'CH123456789MWST',
-          '123456789MWST',
-          'CH123.456IVA',
-          '123.456IVA',
-          'CH123.456.789TVA',
-          '123.456.789TVA',
+        // strictly valid
+          'CHE-116.281.710 MWST',
+          'CHE-116.281.710 IVA',
+          'CHE-116.281.710 TVA',
+          // loosely valid presentation variants
+          'CHE 116 281 710 IVA', // all separators are spaces
+          'CHE-191.398.369MWST', // no space before suffix
+          'CHE-116281710 MWST', // no number separators
+          'CHE-116281710MWST', // no number separators and no space before suffix
+          'CHE105854263MWST', // no separators
+          'CHE-116.285.524', // no suffix (vat abbreviation)
+          'CHE116281710', // no suffix and separators
+          '116.281.710 TVA', // no prefix (CHE, ISO-3166-1 Alpha-3)
+          '116281710MWST', // no prefix and separators
+          '100.218.485', // no prefix and suffix
+          '123456788', // no prefix, separators and suffix
         ],
         invalid: [
-          'CH 123456',
-          '12345',
+          'CH-116.281.710 MWST', // invalid prefix (should be CHE)
+          'CHE-116.281 MWST', // invalid number of digits (should be 9)
+          'CHE-123.456.789 MWST', // invalid last digit (should match the calculated check-number 8)
+          'CHE-123.356.780 MWST', // invalid check-number (there are no swiss UIDs with the calculated check number 10)
+          'CH-116.281.710 VAT', // invalid suffix (should be MWST, IVA or TVA)
+          'CHE-116/281/710 IVA', // invalid number separators (should be all dots or all spaces)
         ],
       });
       test({
