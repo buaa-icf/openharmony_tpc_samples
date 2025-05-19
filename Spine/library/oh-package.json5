@@ -1,0 +1,22 @@
+{
+  "name": "@ohos/spine",
+  "keywords": [
+    "OpenHarmony",
+    "HarmonyOS",
+    "Spine"
+  ],
+  "author": "ohos_tpc",
+  "ohos": {
+    "org": "opensource"
+  },
+  "version": "1.0.0-rc.0",
+  "description": "2D skeletal animation runtimes for Spine.",
+  "main": "Index.ets",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/Spine",
+  "type": "module",
+  "license": "Apache-2.0",
+  "tags": [
+    "Animation"
+  ],
+  "dependencies": {}
+}
