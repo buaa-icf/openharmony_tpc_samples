@@ -109,9 +109,9 @@ struct Index {
 
   checkEncodeAndDecode(value: string, array1: number[], array2: number[]) {
     console.log("dodo value=" + value);
-    let extensionCodec = new ExtensionCodec<undefined>();
+    let extensionCodec:ExtensionCodec = new ExtensionCodec<undefined>();
     extensionCodec.register(Util.register);
-    let b1 = encode<undefined>(value, { extensionCodec });
+    let b1:Uint8Array = encode<undefined>(value, { extensionCodec });
     let u8 = b1;
     for (let i = 0; i < u8.length; i++) {
       console.log(`dodo after encode the buffer is[${i}]=${u8[i]}`)

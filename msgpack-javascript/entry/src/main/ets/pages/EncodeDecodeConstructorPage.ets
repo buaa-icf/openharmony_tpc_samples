@@ -29,7 +29,7 @@ struct EncodeDecodeConstructorPage {
       Column() {
         Button('Encode').onClick(()=>{
           console.log("dodo click on!")
-          let encodeletructor = new Encoder<Encoder>();
+          let encodeletructor:Encoder  = new Encoder<Encoder>();
           this.encodedUint8 = encodeletructor.encode(data)
           this.message = "Result="+this.encodedUint8;
         })
@@ -38,7 +38,7 @@ struct EncodeDecodeConstructorPage {
           .fontWeight(FontWeight.Bold)
         Button('Encode').onClick(()=>{
           if(this.encodedUint8) {
-            let decodeletructor = new Decoder<Decoder>();
+            let decodeletructor:Decoder  = new Decoder<Decoder>();
             //let decodeObj = decodeletructor.decode(this.encodedUint8)
             this.message2 = "Result=" + JSON.stringify(decodeletructor.decode(this.encodedUint8));
           }else{
