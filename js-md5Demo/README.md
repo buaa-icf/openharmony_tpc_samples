@@ -1,7 +1,7 @@
 # js-md5Demo
 
 ## Introduction
-This demo allows you to use the third-party JavaScript library [js-md2](https://github.com/emn178/js-md5) with OpenHarmony. The simple MD5 hash function of JavaScript supports UTF-8 encoding.
+This demo allows you to use the third-party JavaScript library [js-md5](https://github.com/emn178/js-md5) with OpenHarmony. The simple MD5 hash function of JavaScript supports UTF-8 encoding.
 
 ## How to Install
 ```
@@ -12,7 +12,7 @@ For details about the OpenHarmony ohpm environment configuration, see [OpenHarmo
 ## How to Use
 
 ```javascript
-import md5 from 'js-md5';
+import { md5 } from 'js-md5';
 
 let content:string = 'ABCDEFGHI';
 let mess = md5(content);
@@ -22,13 +22,18 @@ let mess3 = md5.base64(content);
 
 ## Available APIs
 
-|    API   |    Parameter    | Description|
-|:---------|:---------|:----|
-| md5(data) | data|  Algorithm. |
-| md5.hex(data) | data|  Algorithm. |
-| md5.base64(data) | data|  Algorithm. |
-| md5.digest(data) | data|  Algorithm. |
-| md5.array(data) | data|  Algorithm. |
+| API                                | Parameter                | Description |
+|:-----------------------------------|:-------------------------|:------------|
+| md5(data)                          | data:内容                  | 算法          |
+| md5.hex(data)                      | data:内容                  | 算法          |
+| md5.base64(data)                   | data:内容                  | 算法          |
+| md5.digest(data)                   | data:内容                  | 算法          |
+| md5.array(data)                    | data:内容                  | 算法          |
+| md5.hmac(secretKey,message)        | secretKey:密钥, message:内容 | HMAC-MD5 算法 |
+| md5.hmac.hex(secretKey,message)    | secretKey:密钥, message:内容 | HMAC-MD5 算法 |
+| md5.hmac.base64(secretKey,message) | secretKey:密钥, message:内容 | HMAC-MD5 算法 |
+| md5.hmac.digest(secretKey,message) | secretKey:密钥, message:内容 | HMAC-MD5 算法 |
+| md5.hmac.array(secretKey,message)  | secretKey:密钥, message:内容 | HMAC-MD5 算法 |
 
 
 ## Constraints

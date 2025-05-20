@@ -7,7 +7,7 @@
   "main": "",
   "version": "1.0.0",
   "dependencies": {
-    "js-md5": "^0.7.3",
-    "@types/js-md5": "^0.7.2"
+    "js-md5": "^0.8.3",
+    "@types/js-md5": "^0.8.0"
   }
 }
