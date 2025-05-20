@@ -138,6 +138,7 @@ struct NetWorkExample {
 
   async loadAnimation() {
     let skeletonRenderer = new SkeletonRenderer(this.canvasRenderingContext);
+    skeletonRenderer.triangleRendering = true; // true是使用drawTriangle方式渲染 false是使用drawImages方式渲染
 
     // Load the assets.
     let assetManager = new AssetManager("https://esotericsoftware.com/files/examples/4.0/spineboy/export/");

@@ -37,10 +37,14 @@ import {
 } from '@ohos/spine'
 
 import { Animator as animator, AnimatorResult, AnimatorOptions } from '@kit.ArkUI';
+import { common } from '@kit.AbilityKit';
+import { resourceManager } from '@kit.LocalizationKit';
+import fs from '@ohos.file.fs';
+import { BusinessError } from '@kit.BasicServicesKit';
 
 @Entry
 @Component
-struct Example1 {
+struct Example3 {
   // 渲染构建上下文
   private renderingSettings: RenderingContextSettings = new RenderingContextSettings(true);
   private canvasRenderingContext: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.renderingSettings);
@@ -49,6 +53,7 @@ struct Example1 {
   private animations: Array<string> = ['death', 'aim', 'idle', 'jump', 'run', 'shoot', 'walk'];
   private currentIndex: number = 0;
   private animationName: string = '';
+  context = getContext(this) as common.UIAbilityContext;
 
   aboutToDisappear() {
     this._animator?.finish();
@@ -60,11 +65,17 @@ struct Example1 {
       Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
         Row({ space: 10 }) {
           // 关联画布
+          Text('加载沙箱路径下的资源：'+this.context.filesDir)
+            .fontSize('20fp')
+            .fontWeight(FontWeight.Bold)
+
+        }
+        Row({ space: 10 }) {
+          // 关联画布
           Canvas(this.canvasRenderingContext)
             .width('100%')
             .height('100%')
             .onReady(() => {
-              this.loadAnimation();
             }).onClick(() => {
             if (this.currentIndex < this.animations.length) {
               this.animationName = this.animations[this.currentIndex];
@@ -73,6 +84,19 @@ struct Example1 {
             }
           })
         }
+
+        // 加载网络Img
+        Row() {
+          Button('存储沙箱动画')
+            .onClick(() => {
+              this.copyBundledRealmFiles();
+            });
+          Button('加载沙箱动画')
+            .onClick(() => {
+              this.loadAnimation();
+            });
+
+        }.margin({ top: 5 })
       }
       .width('100%')
       .height('100%')
@@ -88,15 +112,15 @@ struct Example1 {
 
     // 2. 创建资源管理器并加载资源
     let assetManager = new AssetManager("animation/"); // 创建 AssetManager 实例，设置资源基础路径为 "animation/"
-    assetManager.loadText("spineboy-ess.json"); // 加载 Spine 动画所需的 JSON 数据文件 ("spineboy-ess.json")
-    assetManager.loadTextureAtlas("spineboy.atlas"); // 加载纹理图集文件 ("spineboy.atlas")
+    assetManager.loadText("sspineboy-ess.json"); // 加载 Spine 动画所需的 JSON 数据文件 ("spineboy-ess.json")
+    assetManager.loadTextureAtlas("sspineboy.atlas"); // 加载纹理图集文件 ("spineboy.atlas")
     await assetManager.loadAll(); // 等待所有资源加载完成
 
     // 3. 创建纹理图集和骨骼数据
-    let atlas: TextureAtlas = assetManager.require("spineboy.atlas"); // 从资源管理器获取纹理图集
+    let atlas: TextureAtlas = assetManager.require("sspineboy.atlas"); // 从资源管理器获取纹理图集
     let atlasLoader = new AtlasAttachmentLoader(atlas); // 创建 AtlasAttachmentLoader 用于加载附件
     let skeletonJson = new SkeletonJson(atlasLoader); // 创建 SkeletonJson 解析器
-    let skeletonData = skeletonJson.readSkeletonData(assetManager.require("spineboy-ess.json")); // 读取并解析骨骼动画数据文件，生成 skeletonData
+    let skeletonData = skeletonJson.readSkeletonData(assetManager.require("sspineboy-ess.json")); // 读取并解析骨骼动画数据文件，生成 skeletonData
 
     // 4. 创建骨骼实例
     let skeleton = new Skeleton(skeletonData); // 基于骨骼数据创建新的骨骼实例
@@ -180,6 +204,77 @@ struct Example1 {
 
     let result: Delay = { time: lastFrameTime, isFinish: true };
     return result;
+  }
+
+  copyBundledRealmFiles(): void {
+    const resourceMgr: resourceManager.ResourceManager = this.context.resourceManager;
+    let arr: Array<string> = resourceMgr.getRawFileListSync("");
+    let defaultRealmDirectory: string = this.context.filesDir;
+
+    if (arr && arr.length > 0) {
+      for (let name of arr) {
+        let destFileName = defaultRealmDirectory + '/' + name;
+        let isFile = this.isFile(name);
+        if (isFile) {
+          this.copyFile(resourceMgr, name, destFileName);
+        } else if (this.isDirectory(name)) {
+          this.mkDirAndCopy(resourceMgr, name, destFileName);
+        }
+      }
+    }
+  }
+
+  private isFile(path: string): boolean {
+    const resourceMgr : resourceManager.ResourceManager = this.context.resourceManager;
+    try {
+      resourceMgr.getRawFileContentSync(path);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  private isDirectory(path: string): boolean {
+    const resourceMgr : resourceManager.ResourceManager = this.context.resourceManager;
+    try {
+      let files: Array<string> = resourceMgr.getRawFileListSync(path);
+      return files && files.length > 0;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  private copyFile(resourceMgr : resourceManager.ResourceManager, name: string, destFileName: string) {
+    // let dest_filename = defaultRealmDirectory + '/' + name;
+    if (!fs.accessSync(destFileName, 0)) {
+      // let out: fs.File = fs.openSync(dest_filename, fs.AccessModeType.READ_WRITE);
+      let out: fs.File = fs.openSync(destFileName, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
+      resourceMgr.getRawFileContent(name).then((fileData : Uint8Array) => {
+        const buffer = fileData.buffer.slice(0);
+        let n = fs.writeSync(out.fd, buffer);
+      }).catch((err : BusinessError) => {
+      });
+    }
+  }
+
+  private mkDirAndCopy(resourceMgr : resourceManager.ResourceManager, name: string, destFileName: string){
+    try {
+      fs.mkdirSync(destFileName);
+    } catch (e) {
+    }
+    let arr: Array<string> = resourceMgr.getRawFileListSync(name);
+    if (arr && arr.length > 0) {
+      for (let name1 of arr) {
+        let childDestFileName = destFileName +'/s' +name1;
+        let childPath = name +'/' + name1;
+        let isFile = this.isFile(childPath);
+        if (isFile) {
+          this.copyFile(resourceMgr, childPath, childDestFileName);
+        } else if (this.isDirectory(childPath)) {
+          this.mkDirAndCopy(resourceMgr, childPath, childDestFileName);
+        }
+      }
+    }
   }
 
   onBackPress(): boolean | void {

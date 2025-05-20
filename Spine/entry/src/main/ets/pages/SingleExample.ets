@@ -92,6 +92,18 @@ struct SingleExample {
                 this.canvasRenderingContext.height);
             });
 
+          Button('资源6')
+            .onClick(() => {
+              this.rawfilePath = 'animation6/';
+              this.sourcesData.json = 'stretchyman-pro.json';
+              this.sourcesData.atlas = 'stretchyman-pma.atlas';
+              this.animations = ['idle', 'sneak'];
+              this.currentIndex = 0;
+              this.loadAnimation();
+              this.animationName = 'idle';
+              this.animationState?.setAnimation(0, this.animationName, true);
+            });
+
         }.margin({ top: 5 })
 
         Row() {
@@ -166,6 +178,8 @@ struct SingleExample {
   loadAnimation() {
     let skeletonRenderer = new SkeletonRenderer(this.canvasRenderingContext);
 
+    skeletonRenderer.triangleRendering = true; // true是使用drawTriangle方式渲染 false是使用drawImages方式渲染
+
     // 加载动画资源
     let assetManager = new AssetManager(this.rawfilePath);
     assetManager.loadText(this.sourcesData.json);
@@ -236,7 +250,7 @@ struct SingleExample {
 
     // Center the skeleton and resize it so it fits inside the canvas.
     skeleton.x = context.width / 2; // 将骨骼水平居中（Canvas 宽度的一半）
-    skeleton.y = context.height - context.height * 0.1; // 垂直位置：靠近 Canvas 底部（留 10% 边距）
+    skeleton.y = context.height - context.height * 0.2; // 垂直位置：靠近 Canvas 底部（留 20% 边距）
     let scale = context.height / bounds.height * 0.5; // 计算缩放比例（基于 Canvas 高度和动画边界框高度）
     skeleton.scaleX = scale; // 水平缩放
     skeleton.scaleY = -scale; // 垂直缩放（负值表示 Y 轴翻转，使动画朝上）

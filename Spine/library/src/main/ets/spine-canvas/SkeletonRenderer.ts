@@ -219,9 +219,9 @@ export class SkeletonRenderer {
 		const f = y0 - b * u0 - d * v0;
 
 		ctx.save();
-		ctx.transform(a, b, c, d, e, f);
 		ctx.clip();
-		ctx.drawImage(img, 0, 0);
+		ctx.transform(a, b, c, d, e, f);
+		ctx.drawImage(img, 0, 0, width, height);
 		ctx.restore();
 	}
 

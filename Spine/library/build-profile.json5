@@ -4,11 +4,21 @@
   },
   "buildOptionSet": [
     {
-      "name": "default",
-      "signingConfig": "default",
-      "compileSdkVersion": 12,
-      "compatibleSdkVersion": 12
-    }
+      "name": "release",
+      "arkOptions": {
+        "obfuscation": {
+          "ruleOptions": {
+            "enable": false,
+            "files": [
+              "./obfuscation-rules.txt"
+            ]
+          },
+          "consumerFiles": [
+            "./consumer-rules.txt"
+          ]
+        }
+      },
+    },
   ],
   "targets": [
     {

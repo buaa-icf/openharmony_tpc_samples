@@ -33,6 +33,7 @@ import { Disposable, StringMap, LogUtil } from "./Utils";
 import image from '@ohos.multimedia.image';
 import util from '@ohos.util';
 import http from '@ohos.net.http';
+import fs from '@ohos.file.fs';
 
 export class AssetManagerBase implements Disposable {
 	private pathPrefix: string = "";
@@ -164,19 +165,42 @@ export class AssetManagerBase implements Disposable {
 			});
 
 		} else {
-			try{
-				let data = getContext()?.resourceManager.getRawFileContentSync(path);
-				let image_source = image.createImageSource(data.buffer);
-				//piexlmap改成不可编辑状态，优化图形图像端读取速度
-				let opts = {
-					editable: false,
-					desiredPixelFormat: image.PixelMapFormat.RGBA_8888
-				};
-				//创建pixel_map
-				let pixel_map = image_source?.createPixelMapSync(opts);
-				this.success(success, path, this.textureLoader(pixel_map));
-			}catch (e) {
-				this.error(error, path, `Couldn't load image: ${path}`);
+			try {
+				let filePath = getContext()?.filesDir + '/' + path;
+				let isExist = fs.accessSync(filePath); //判断图片资源是否存在
+				if (isExist) {
+					let file = fs.openSync(filePath, fs.OpenMode.READ_ONLY);
+					let stat = fs.statSync(filePath);
+					let arrayBuffer = new ArrayBuffer(stat.size);
+					fs.readSync(file.fd, arrayBuffer);
+					let image_source = image.createImageSource(arrayBuffer);
+					//piexlmap改成不可编辑状态，优化图形图像端读取速度
+					let opts = {
+						editable: false,
+						desiredPixelFormat: image.PixelMapFormat.RGBA_8888
+					};
+					//创建pixel_map
+					let pixel_map = image_source?.createPixelMapSync(opts);
+					this.success(success, path, this.textureLoader(pixel_map));
+					fs.close(file);
+				} else {
+					try {
+						let data = getContext()?.resourceManager.getRawFileContentSync(path);
+						let image_source = image.createImageSource(data.buffer);
+						//piexlmap改成不可编辑状态，优化图形图像端读取速度
+						let opts = {
+							editable: false,
+							desiredPixelFormat: image.PixelMapFormat.RGBA_8888
+						};
+						//创建pixel_map
+						let pixel_map = image_source?.createPixelMapSync(opts);
+						this.success(success, path, this.textureLoader(pixel_map));
+					} catch (e) {
+						this.error(error, path, `Couldn't load image: ${path}`);
+					}
+				}
+			} catch (err) {
+				LogUtil.error(`Couldn't load image: ${path}`);
 			}
 		}
 	}
@@ -355,14 +379,31 @@ export class Downloader {
 				httpRequest.destroy();
 				this.finish(url, 400, `Couldn't load file: ${url}`);
 			});
-		}else {
+		} else {
 			try {
-				let resStr = util.TextDecoder.create('utf-8',{ignoreBOM: true});
-				let datas = getContext()?.resourceManager.getRawFileContentSync(url);
-				let fileStr = resStr.decodeToString(new Uint8Array(datas.buffer));
-				this.finish(url, 200, fileStr);
-			} catch (e) {
-				this.finish(url, 400, JSON.stringify(e));
+				let filePath = getContext()?.filesDir + '/' + url;
+				let isExist = fs.accessSync(filePath); //判断资源是否存在
+				if (isExist) {
+					let file = fs.openSync(filePath, fs.OpenMode.READ_ONLY);
+					let stat = fs.statSync(filePath);
+					let arrayBuffer = new ArrayBuffer(stat.size);
+					fs.readSync(file.fd, arrayBuffer);
+					let resStr = util.TextDecoder.create('utf-8', { ignoreBOM: true });
+					let fileStr = resStr.decodeToString(new Uint8Array(arrayBuffer));
+					this.finish(url, 200, fileStr);
+					fs.close(file);
+				} else {
+					try {
+						let resStr = util.TextDecoder.create('utf-8', { ignoreBOM: true });
+						let datas = getContext()?.resourceManager.getRawFileContentSync(url);
+						let fileStr = resStr.decodeToString(new Uint8Array(datas.buffer));
+						this.finish(url, 200, fileStr);
+					} catch (e) {
+						this.finish(url, 400, JSON.stringify(e));
+					}
+				}
+			} catch (err) {
+				this.finish(url, 400, JSON.stringify(err));
 			}
 		}
 	}
@@ -412,11 +453,26 @@ export class Downloader {
 				httpRequest.destroy();
 				this.finish(url, 400, `Couldn't load file: ${url}`);
 			});
-		}else {
+		} else {
 			try {
-				let datas = getContext()?.resourceManager.getRawFileContentSync(url);
-				this.finish(url, 200, new Uint8Array(datas.buffer));
-			} catch (e) {
+				let filePath = getContext()?.filesDir + '/' + url;
+				let isExist = fs.accessSync(filePath); //判断资源是否存在
+				if (isExist) {
+					let file = fs.openSync(filePath, fs.OpenMode.READ_ONLY);
+					let stat = fs.statSync(filePath);
+					let arrayBuffer = new ArrayBuffer(stat.size);
+					fs.readSync(file.fd, arrayBuffer);
+					this.finish(url, 200, new Uint8Array(arrayBuffer));
+					fs.close(file);
+				} else {
+					try {
+						let datas = getContext()?.resourceManager.getRawFileContentSync(url);
+						this.finish(url, 200, new Uint8Array(datas.buffer));
+					} catch (e) {
+						this.finish(url, 400, `Couldn't load file: ${url}`);
+					}
+				}
+			} catch (err) {
 				this.finish(url, 400, `Couldn't load file: ${url}`);
 			}
 		}

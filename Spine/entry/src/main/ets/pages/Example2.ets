@@ -28,7 +28,7 @@ import {
   AnimationState,
   AnimationStateData,
   SkeletonRenderer,
-  SkeletonJson,
+  SkeletonBinary,
   Skeleton,
   TextureAtlas,
   Physics,
@@ -46,9 +46,6 @@ struct Example1 {
   private canvasRenderingContext: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.renderingSettings);
   private _animator: AnimatorResult | undefined;
   private animationState: AnimationState | undefined;
-  private animations: Array<string> = ['death', 'aim', 'idle', 'jump', 'run', 'shoot', 'walk'];
-  private currentIndex: number = 0;
-  private animationName: string = '';
 
   aboutToDisappear() {
     this._animator?.finish();
@@ -65,13 +62,7 @@ struct Example1 {
             .height('100%')
             .onReady(() => {
               this.loadAnimation();
-            }).onClick(() => {
-            if (this.currentIndex < this.animations.length) {
-              this.animationName = this.animations[this.currentIndex];
-              this.animationState?.setAnimation(0, this.animationName, true);
-              this.currentIndex = (this.currentIndex + 1) % this.animations.length;
-            }
-          })
+            })
         }
       }
       .width('100%')
@@ -87,16 +78,16 @@ struct Example1 {
     skeletonRenderer.triangleRendering = true; // true是使用drawTriangle方式渲染 false是使用drawImages方式渲染
 
     // 2. 创建资源管理器并加载资源
-    let assetManager = new AssetManager("animation/"); // 创建 AssetManager 实例，设置资源基础路径为 "animation/"
-    assetManager.loadText("spineboy-ess.json"); // 加载 Spine 动画所需的 JSON 数据文件 ("spineboy-ess.json")
-    assetManager.loadTextureAtlas("spineboy.atlas"); // 加载纹理图集文件 ("spineboy.atlas")
+    let assetManager = new AssetManager("animation5/"); // 创建 AssetManager 实例，设置资源基础路径为 "animation/"
+    assetManager.loadBinary("dragon-ess.skel");; // 加载 Spine 动画所需的 skel 数据文件
+    assetManager.loadTextureAtlas("dragon-pma.atlas"); // 加载纹理图集文件 ("spineboy.atlas")
     await assetManager.loadAll(); // 等待所有资源加载完成
 
     // 3. 创建纹理图集和骨骼数据
-    let atlas: TextureAtlas = assetManager.require("spineboy.atlas"); // 从资源管理器获取纹理图集
+    let atlas: TextureAtlas = assetManager.require("dragon-pma.atlas"); // 从资源管理器获取纹理图集
     let atlasLoader = new AtlasAttachmentLoader(atlas); // 创建 AtlasAttachmentLoader 用于加载附件
-    let skeletonJson = new SkeletonJson(atlasLoader); // 创建 SkeletonJson 解析器
-    let skeletonData = skeletonJson.readSkeletonData(assetManager.require("spineboy-ess.json")); // 读取并解析骨骼动画数据文件，生成 skeletonData
+    let skeletonBinary = new SkeletonBinary(atlasLoader);; // 创建 SkeletonBinary 解析器
+    let skeletonData = skeletonBinary.readSkeletonData(assetManager.require("dragon-ess.skel")); // 读取并解析骨骼动画数据文件，生成 skeletonData
 
     // 4. 创建骨骼实例
     let skeleton = new Skeleton(skeletonData); // 基于骨骼数据创建新的骨骼实例
@@ -166,7 +157,7 @@ struct Example1 {
 
     // Center the skeleton and resize it so it fits inside the canvas.
     skeleton.x = context.width / 2; // 将骨骼水平居中（Canvas 宽度的一半）
-    skeleton.y = context.height - context.height * 0.1; // 垂直位置：靠近 Canvas 底部（留 10% 边距）
+    skeleton.y = context.height - context.height * 0.3; // 垂直位置：靠近 Canvas 底部（留 30% 边距）
     let scale = context.height / bounds.height * 0.5; // 计算缩放比例（基于 Canvas 高度和动画边界框高度）
     skeleton.scaleX = scale; // 水平缩放
     skeleton.scaleY = -scale; // 垂直缩放（负值表示 Y 轴翻转，使动画朝上）
