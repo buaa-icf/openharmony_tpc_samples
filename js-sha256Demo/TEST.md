@@ -4,10 +4,12 @@
 
 单元测试用例覆盖情况
 
-|   接口名    |是否通过	|备注|
-|:--------:|:---:|:---:|
-|    sha256()    |pass||
-|    sha224()    |pass||
-|    sha256.hex()    |pass||
-|  sha256.digest()   |pass||
-|   sha256.array()   |pass||
+|         接口名          |是否通过	|备注|
+|:--------------------:|:---:|:---:|
+|       sha256()       |pass||
+|       sha224()       |pass||
+|    sha256.hmac()     |pass||
+|     sha256.hex()     |pass||
+|   sha256.digest()    |pass||
+|    sha256.array()    |pass||
+| sha256.arrayBuffer() |pass||

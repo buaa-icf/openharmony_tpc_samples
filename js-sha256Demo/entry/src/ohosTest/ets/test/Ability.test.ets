@@ -84,7 +84,36 @@ export default function abilityTest() {
 
       expect(s1).assertEqual(expected)
     })
+    // ArrayBuffer输入测试
+    it('sha256.arrayBuffer', 0, () => {
+      const buffer = new ArrayBuffer(4);
+      const view = new Uint32Array(buffer);
+      view[0] = 0xdeadbeef;
 
+      const hash = sha256.arrayBuffer(buffer);
+      const hexHash = Array.from(new Uint8Array(hash))
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('');
+
+      expect(hexHash).assertEqual('d9e0d4c3850aa130f909e1bcafebea98a16700e02171c1df5a2fe31789d94b0f');
+    });
+    // HMAC测试用例
+    it('sha256.hmac', 0, () => {
+      // 空密钥测试
+      const h1 = sha256.hmac('', 'message');
+      expect(h1).assertEqual('eb08c1f56d5ddee07f7bdf80468083da06b64cf4fac64fe3a90883df5feacae4');
+
+      // 标准RFC 4231测试用例
+      const key = new Uint8Array(20).fill(0x0b);
+      const msg = 'Hi There';
+      const h2 = sha256.hmac(key, msg);
+      expect(h2).assertEqual('b0344c61d8db38535ca8afceaf0bf12b881dc200c9833da726e9376c2e32cff7');
+
+      // 长密钥测试
+      const longKey = new Uint8Array(131).fill(0xaa);
+      const h3 = sha256.hmac(longKey, 'Test Using Larger Than Block-Size Key - Hash Key First');
+      expect(h3).assertEqual('60e431591ee0b67f0d8a26aacbf5b77f8e0bc6213728c5140546040f0ee37f54');
+    });
 
 
   })

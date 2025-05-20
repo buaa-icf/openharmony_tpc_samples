@@ -11,26 +11,41 @@ For details about the OpenHarmony ohpm environment configuration, see [OpenHarmo
 ## How to Use
 
 ```javascript
-import { sha256, sha224 } from 'js-sha256';
+sha256('Message to hash');
+sha224('Message to hash');
 
-let content:string = 'ABCDEFGHI';
-let mess = sha256(content);
-let mess2 = sha224(content);
-let mess3 = sha256.hex(content);
-let mess4 = sha256.array(content);
-let mess5 = sha256.digest(content);
+var hash = sha256.create();
+hash.update('Message to hash');
+hash.hex();
+
+var hash2 = sha256.update('Message to hash');
+hash2.update('Message2 to hash');
+hash2.array();
+
+// HMAC
+sha256.hmac('key', 'Message to hash');
+sha224.hmac('key', 'Message to hash');
+
+var hash = sha256.hmac.create('key');
+hash.update('Message to hash');
+hash.hex();
+
+var hash2 = sha256.hmac.update('key', 'Message to hash');
+hash2.update('Message2 to hash');
+hash2.array();
 ```
 
 ## Available APIs
 
-|       API       |   Parameter   | Description|
-| :------------------ | :-------- | :------- |
-|    sha256(data)     | **data**: content|   Computes the SHA-256 hash of the content.  |
-|    sha224(data)     | **data**: content|   Computes the SHA-224 hash of the content.  |
-|  sha256.hex(data)   | **data**: content|   Returns the SHA-256 hash of the content as a hexadecimal string.  |
-| sha256.digest(data) | **data**: content|  Returns the SHA-256 hash of the content as a digest.  |
-| sha256.array(data)  | **data**: content|   Returns the SHA-256 hash of the content as an array.  |
-
+| API                             | Parameter                               | Description                                                      |
+|:--------------------------------|:----------------------------------------|:-----------------------------------------------------------------|
+| sha256(data)                    | **data**: content                       | Computes the SHA-256 hash of the content.                        |
+| sha224(data)                    | **data**: content                       | Computes the SHA-224 hash of the content.                        |
+| sha256.hmac(secretKey, message) | **secretKey**: key **message**: content | HMAC interface                                                   |
+| sha256.hex(data)                | **data**: content                       | Returns the SHA-256 hash of the content as a hexadecimal string. |
+| sha256.digest(data)             | **data**: content                       | Returns the SHA-256 hash of the content as a digest.             |
+| sha256.array(data)              | **data**: content                       | Returns the SHA-256 hash of the content as an array.             |
+| sha256.arrayBuffer(data)        | **data**: content                       | Returns the SHA-256 hash of the content as an arrayBuffer.       |
 
 ## Constraints
 This project has been verified in the following versions:
