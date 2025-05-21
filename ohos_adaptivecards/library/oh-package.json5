@@ -21,7 +21,7 @@
     "UI",
   ],
   "author": "ohos_tpc",
-  "repository": "https://gitcode.com/openharmony_tpc_samples/oh_adaptivecards.git",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_adaptivecards",
   "type": "module",
   "dependencies": {
   }
