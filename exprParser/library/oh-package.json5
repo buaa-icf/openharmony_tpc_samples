@@ -13,7 +13,7 @@
   },
   "name": "@ohos/expr-parser",
   "version": "1.0.0",
-  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/exprParser",
   "description": "a simple javascript expression parser",
   "main": "Index.ets",
   "license": "MIT",
