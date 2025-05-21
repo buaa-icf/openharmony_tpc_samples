@@ -25,7 +25,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import Expression from "expr-parser";
+import { Expression } from "@ohos/expr-parser";
 import hilog from '@ohos.hilog';
 
 @Entry

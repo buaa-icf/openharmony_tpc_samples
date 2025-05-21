@@ -5,14 +5,22 @@
 
 ## 下载安装
 ```shell
-ohpm install expr-parser
+ohpm install @ohos/expr-parser
 ```
 OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装 OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+
+### Tips
+
+该库是在expr-parser 1.0.0基础上进行了封装，如想使用源库，可通过ohpm install expr-parser方式引入。
+
+```javascript
+import Expression from "expr-parser";//导包稍有差异，具体使用方式不变
+```
 
 ## 使用说明
 
    ```typescript
-   import Expression from "expr-parser";
+   import { Expression } from "@ohos/expr-parser";
    import hilog from '@ohos.hilog';
 
    const exprCalc = new Expression('a.value + 12 - (2 * 14 / 4)').parse(); // 传入表达式
@@ -45,8 +53,9 @@ const exprCalc = new Expression('a.value + 12 - (2 * 14 / 4)').parse();
 |                        |---- pages
 |                             |---- Index.ets  # sample示例代码
 |              |---- ohosTest  # xts示例代码
+|    |---- library  # expr-parser核心实现
 |    |---- README.md  # 安装使用方法
-|    |---- README_zh.md  # 安装使用方法
+|    |---- README_zh.md  # 中文安装使用方法
 ```
 
 ## 贡献代码

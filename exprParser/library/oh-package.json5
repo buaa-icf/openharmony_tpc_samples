@@ -1,0 +1,21 @@
+{
+  "types": "",
+  "keywords": [
+    "expr-parser",
+    "OpenHarmony",
+    "HarmonyOs"
+  ],
+  "author": {
+    "name": "ohos_tpc"
+  },
+  "ohos": {
+    "org": "opensource"
+  },
+  "name": "@ohos/expr-parser",
+  "version": "1.0.0",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples",
+  "description": "a simple javascript expression parser",
+  "main": "Index.ets",
+  "license": "MIT",
+  "dependencies": {}
+}
