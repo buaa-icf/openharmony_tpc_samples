@@ -1,3 +1,6 @@
+## 1.0.3
+1. Release official version
+
 ## 1.0.3-rc.3
 1. Fix the issue of some videos getting stuck during playback
 

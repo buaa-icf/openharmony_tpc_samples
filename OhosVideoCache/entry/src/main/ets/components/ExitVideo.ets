@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 import common from '@ohos.app.ability.common';
+import { router } from '@kit.ArkUI';
 
 @Component
 export struct ExitVideo {
@@ -34,7 +35,7 @@ export struct ExitVideo {
     }
     .margin({ top: $r('app.float.size_20'), left: $r('app.float.size_25') })
     .onClick(() => {
-      (getContext(this) as common.UIAbilityContext).terminateSelf();
+      router.back();
     })
   }
 }
