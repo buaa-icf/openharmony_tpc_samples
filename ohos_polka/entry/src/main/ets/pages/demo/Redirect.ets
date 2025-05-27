@@ -28,7 +28,7 @@ import fs from '@ohos.file.fs';
 import common from '@ohos.app.ability.common';
 import Want from '@ohos.app.ability.Want';
 import { BusinessError } from '@ohos.base';
-import polka, { createFile } from 'polka';
+import polka, { createFile } from '@ohos/polka';
 
 @Entry
 @Component

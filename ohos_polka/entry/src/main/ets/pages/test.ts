@@ -23,7 +23,7 @@
  */
 
 import { buffer } from '@kit.ArkTS';
-import polka, { createFile, IncomingMessage, Request, ServerResponse, statik } from 'polka';
+import polka, { createFile, IncomingMessage, Request, ServerResponse, statik } from '@ohos/polka';
 import wantAgent from '@ohos.app.ability.wantAgent';
 import backgroundTaskManager from '@ohos.resourceschedule.backgroundTaskManager';
 import { BusinessError } from '@ohos.base';
@@ -61,7 +61,7 @@ export async function start(context): Promise<String> {
   // 申请后台任务
   let wantAgentInfo = {
     wants: [{
-      bundleName: 'com.rnoh.tester1',
+      bundleName: 'com.rnoh.polka',
       abilityName: 'EntryAbility',
     }],
     actionType: wantAgent.OperationType.START_ABILITY,

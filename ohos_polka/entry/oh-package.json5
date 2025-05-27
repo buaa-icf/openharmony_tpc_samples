@@ -6,7 +6,7 @@
   "author": "ohos-tpc",
   "license": "",
   "dependencies": {
-    "polka": "file:../library",
+    "@ohos/polka": "file:../library",
     "pako": "2.1.0"
   }
 }

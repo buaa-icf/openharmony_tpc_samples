@@ -41,7 +41,7 @@ ohos.permission.INTERNET
 
 - 在pages页面中使用
 ```
-import polka, { IncomingMessage, ServerResponse, statik, Request, fileUploadHtml } from 'polka';
+import polka, { IncomingMessage, ServerResponse, statik, Request } from '@ohos/polka';
 
 const app = new polka();
 
@@ -50,12 +50,12 @@ interface SelfRequest extends Request {
   foo: string;
 }
 
-function one(req: IncomingMessage, res: ServerResponse, next) {
+function one(req: SelfRequest, res: ServerResponse, next) {
     req.hello = 'world';
     next();
 }
 
-function two(req: IncomingMessage, res: ServerResponse, next) {
+function two(req: SelfRequest, res: ServerResponse, next) {
     req.foo = '...needs better demo';
     next();
 }
@@ -104,6 +104,53 @@ app
   
 // 当polka().listen()执行后，服务开启，server属性会被同步更新，server.stop()则用来关闭当前服务
 app.server?.stop();
+
+export const fileUploadHtml = `
+<html>
+ <body>
+  <p>This is a file upload test for NanoHTTPD.</p>
+   <form action="/upload" enctype="multipart/form-data" method="post" id="test_form">
+    <label for="file">File:</label>
+       <input type="file" id="datafile1" name="file" size="40"><br>
+       <input type="hidden" name="time" id='time' value=''><br>
+       <button type="button" onclick='doSubmitForm()'>提交</button>
+   </form>
+   <br>
+   <button onclick="test()">test</button>
+   <script>
+
+   function doSubmitForm(){
+      let form = document.getElementById('test_form');
+      let time = document.getElementById('time');
+      time.value = new Date().getTime();
+      form.submit();
+  }
+   function test() {
+      const time1 = new Date().getTime();
+      alert('testinner');
+      // 请求的网址
+      let url = 'http://172.20.10.10:9990/post-params';
+      // 发起请求
+      let _fetch = fetch(url, {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: 'id=1&name=zhangsan&age=23}'}).then(function (response) {
+          // response.status表示响应的http状态码
+          alert('response.status === ' + response.status);
+          const time2 = new Date().getTime();
+          const time = time2 - time1;
+          alert(time + 'ms');
+          if (response.status === 200) {
+            // json是返回的response提供的一个方法,
+            // 会把返回的json字符串反序列化成对象,也被包装成一个Promise了
+            return response.text();
+          }
+      });
+      _fetch.then(function(e){
+        alert(e);
+      })
+    }
+   </script>
+ </body>
+</html>`
+
 ```
 - 使用场景说明
     - get('/get-params', (req: IncomingMessage, res: ServerResponse) => {})
@@ -205,7 +252,7 @@ app.METHOD(pattern, handler);
 - handler是匹配模式时要执行的函数
 
 ```
-import polka, { IncomingMessage, ServerResponse, statik, Request } from 'polka';
+import polka, { IncomingMessage, ServerResponse, statik, Request } from '@ohos/polka';
 
 const app = polka();
 
@@ -246,7 +293,7 @@ polka().use(logger, authorize).get('*', (req, res) => {
 ```
 // Create a node-static server instance to serve the './public' folder
 
-import polka, { IncomingMessage, ServerResponse, statik, Request } from 'polka';
+import polka, { IncomingMessage, ServerResponse, statik, Request } from '@ohos/polka';
 
 const app = polka();
 
