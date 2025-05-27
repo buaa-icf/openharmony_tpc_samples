@@ -25,7 +25,7 @@
 import { describe, it, expect, beforeAll } from '@ohos/hypium'
 import http from '@ohos.net.http';
 import common from '@ohos.app.ability.common';
-import polka, { IncomingMessage, ServerResponse, statik, createFile } from 'polka';
+import polka, { IncomingMessage, ServerResponse, statik, createFile } from '@ohos/polka';
 import fs from '@ohos.file.fs';
 import { context } from '../testability/TestAbility';
 import pako from '../../../../oh_modules/pako';

@@ -26,7 +26,7 @@ import hilog from '@ohos.hilog';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 import http from '@ohos.net.http';
 import { common } from '@kit.AbilityKit';
-import polka, { IncomingMessage, NextFunction, Request, ServerResponse } from 'polka'
+import polka, { IncomingMessage, NextFunction, Request, ServerResponse } from '@ohos/polka';
 import { Methods } from '../../../../../library/src/main/ets/polka/trouter/index.js';
 
 interface SelfRequest extends Request {

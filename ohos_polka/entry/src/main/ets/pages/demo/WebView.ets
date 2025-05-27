@@ -19,7 +19,7 @@ import Want from '@ohos.app.ability.Want';
 import { BusinessError } from '@ohos.base';
 import wifiManager from '@ohos.wifiManager';
 import router from '@ohos.router';
-import { createFile } from 'polka';
+import { createFile } from '@ohos/polka';
 
 let context = getContext(this) as common.UIAbilityContext;
 
