@@ -1,0 +1,9 @@
+{
+  "name": "@ohos/spine",
+  "description": "2D skeletal animation runtimes for Spine.",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@ohos/hypium": "1.0.6"
+  }
+}

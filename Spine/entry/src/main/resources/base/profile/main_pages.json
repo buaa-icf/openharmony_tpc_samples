@@ -1,0 +1,11 @@
+{
+  "src": [
+    "pages/Index",
+    "pages/SingleExample",
+    "pages/NetworkExample",
+    "pages/Example1",
+    "pages/Example2",
+    "pages/Example3"
+
+  ]
+}
