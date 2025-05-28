@@ -43,11 +43,13 @@ export class AssetManagerBase implements Disposable {
 	private errors: StringMap<string> = {};
 	private toLoad = 0;
 	private loaded = 0;
+	private context = null;
 
 	constructor (textureLoader: (image: image.PixelMap) => Texture, pathPrefix: string = "", downloader: Downloader = new Downloader()) {
 		this.textureLoader = textureLoader;
 		this.pathPrefix = pathPrefix;
 		this.downloader = downloader;
+		this.context = getContext();
 	}
 
 	private start (path: string): string {
@@ -166,7 +168,7 @@ export class AssetManagerBase implements Disposable {
 
 		} else {
 			try {
-				let filePath = getContext()?.filesDir + '/' + path;
+				let filePath = this.context?.filesDir + '/' + path;
 				let isExist = fs.accessSync(filePath); //判断图片资源是否存在
 				if (isExist) {
 					let file = fs.openSync(filePath, fs.OpenMode.READ_ONLY);
@@ -185,7 +187,7 @@ export class AssetManagerBase implements Disposable {
 					fs.close(file);
 				} else {
 					try {
-						let data = getContext()?.resourceManager.getRawFileContentSync(path);
+						let data = this.context?.resourceManager.getRawFileContentSync(path);
 						let image_source = image.createImageSource(data.buffer);
 						//piexlmap改成不可编辑状态，优化图形图像端读取速度
 						let opts = {
@@ -296,6 +298,7 @@ export class AssetManagerBase implements Disposable {
 export class Downloader {
 	private callbacks: StringMap<Array<Function>> = {};
 	rawDataUris: StringMap<string> = {};
+	private context = getContext();
 
 	dataUriToString (dataUri: string) {
 		if (!dataUri.startsWith("data:")) {
@@ -381,7 +384,7 @@ export class Downloader {
 			});
 		} else {
 			try {
-				let filePath = getContext()?.filesDir + '/' + url;
+				let filePath = this.context?.filesDir + '/' + url;
 				let isExist = fs.accessSync(filePath); //判断资源是否存在
 				if (isExist) {
 					let file = fs.openSync(filePath, fs.OpenMode.READ_ONLY);
@@ -395,7 +398,7 @@ export class Downloader {
 				} else {
 					try {
 						let resStr = util.TextDecoder.create('utf-8', { ignoreBOM: true });
-						let datas = getContext()?.resourceManager.getRawFileContentSync(url);
+						let datas = this.context?.resourceManager.getRawFileContentSync(url);
 						let fileStr = resStr.decodeToString(new Uint8Array(datas.buffer));
 						this.finish(url, 200, fileStr);
 					} catch (e) {
@@ -455,7 +458,7 @@ export class Downloader {
 			});
 		} else {
 			try {
-				let filePath = getContext()?.filesDir + '/' + url;
+				let filePath = this.context?.filesDir + '/' + url;
 				let isExist = fs.accessSync(filePath); //判断资源是否存在
 				if (isExist) {
 					let file = fs.openSync(filePath, fs.OpenMode.READ_ONLY);
@@ -466,7 +469,7 @@ export class Downloader {
 					fs.close(file);
 				} else {
 					try {
-						let datas = getContext()?.resourceManager.getRawFileContentSync(url);
+						let datas = this.context?.resourceManager.getRawFileContentSync(url);
 						this.finish(url, 200, new Uint8Array(datas.buffer));
 					} catch (e) {
 						this.finish(url, 400, `Couldn't load file: ${url}`);

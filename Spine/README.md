@@ -375,8 +375,8 @@ import {
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提交 [Issue]()，当然，也非常欢迎提交 [PR]() 。
+使用过程中发现任何问题都可以提交 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues)，当然，也非常欢迎提交 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
 ## 开源协议
 
-本项目遵循 [Apache-2.0]()。
+本项目遵循 [Apache-2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Spine/LICENSE)。
