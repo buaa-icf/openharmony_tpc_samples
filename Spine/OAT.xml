@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <oatconfig>
+        <filefilterlist>
+            <filefilter name="copyrightPolicyFilter" desc="Filters for compatibility，license header policies">
+                <filteritem type="filename" name="hvigorfile.js" desc="hvigor构建脚本，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filepath" name="library/hvigorfile.ts" desc="hvigor构建脚本，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filepath" name="sharedLibrary/hvigorfile.ts" desc="hvigor构建脚本，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filepath" name="entry/hvigorfile.js" desc="hvigor构建脚本，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filename" name="*.json5" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+         	    <filteritem type="filename" name="LICENSE" desc="版权文件，不添加版权头"/>
+         	    <filteritem type="filename" name="index.d.ts" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="hvigorw" desc="工程模板，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="hvigorw.bat" desc="工程模板，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="hvigor/hvigor-wrapper.js" desc="工程模板，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library/src/main/ets/spine-canvas/.*" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library/src/main/ets/spine-core/.*" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="entry/src/main/resources/rawfile/.*" desc="第三方开源图片文件"/>
+                <filteritem type="filepath" name="entry/hvigorfile.ts" desc="工程模板，不添加许可证头"/>
+                <filteritem type="filepath" name="hvigorfile.ts" desc="工程模板，不添加许可证头"/>
+
+            </filefilter>
+            <filefilter name="defaultPolicyFilter" desc="Filters for compatibility，license header policies">
+                <filteritem type="filename" name="hvigorfile.js" desc="hvigor构建脚本，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filepath" name="library/hvigorfile.ts" desc="hvigor构建脚本，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filepath" name="sharedLibrary/hvigorfile.ts" desc="hvigor构建脚本，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filepath" name="entry/hvigorfile.js" desc="hvigor构建脚本，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filename" name="*.json5" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+   	            <filteritem type="filename" name="LICENSE" desc="版权文件，不添加许可证头"/>
+   	            <filteritem type="filename" name="NOTICE" desc="NOTICE文件，不添加许可证头"/>
+                <filteritem type="filepath" name="hvigorw" desc="工程模板，不添加许可证头"/>
+                <filteritem type="filepath" name="hvigorw.bat" desc="工程模板，不添加许可证头"/>
+                <filteritem type="filename" name="index.d.ts" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="hvigor/hvigor-wrapper.js" desc="工程模板，不添加许可证头"/>
+                <filteritem type="filepath" name="library/src/main/ets/spine-canvas/.*" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="library/src/main/ets/spine-core/.*" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="entry/src/main/resources/rawfile/.*" desc="第三方开源图片文件"/>
+                <filteritem type="filepath" name="entry/hvigorfile.ts" desc="工程模板，不添加许可证头"/>
+                <filteritem type="filepath" name="hvigorfile.ts" desc="工程模板，不添加许可证头"/>
+
+            </filefilter>
+
+            <filefilter name="binaryFileTypePolicyFilter" desc="Filters for copyright header policies">
+                <filteritem type="filepath" name="library/oh-package.json5" desc="工程文件，不需要设置"/>
+                <filteritem type="filepath" name="sharedLibrary/oh-package.json5" desc="工程文件，不需要设置"/>
+                <filteritem type="filename" name="icon.png" desc="项目工程默认图片文件"/>
+                <filteritem type="filename" name="arrow_right.png" desc="项目工程默认图片文件"/>
+                <filteritem type="filename" name="img_4.png" desc="项目工程图片文件，资料合规排查，为原创图片"/>
+                <filteritem type="filepath" name="AppScope/resources/base/media/app_icon.png" desc="项目工程默认图片文件"/>
+                <filteritem type="filepath" name="entry/src/main/resources/base/media/.*" desc="项目工程默认图片文件"/>
+                <filteritem type="filepath" name="entry/src/main/resources/rawfile/.*" desc="第三方开源图片文件"/>
+                <filteritem type="filepath" name="screenshot/spine.gif" desc="项目工程图片文件，资料合规排查，为原创图片"/>
+            </filefilter>
+        </filefilterlist>
+        <policylist>
+            <policy name="projectPolicy" desc="">
+                <policyitem type="license" name="Apache" path="entry/.*" desc="license under the Apache"/>
+            </policy>
+        </policylist>
+    </oatconfig>
+</configuration>
