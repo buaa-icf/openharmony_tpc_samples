@@ -13,14 +13,10 @@
  * limitations under the License.
  */
 
-import tokens from 'js-tokens'
+import jsTokens, { Token } from 'js-tokens'
 
-let jsTokens: RegExp = tokens.default
-
-interface Result {
-  closed: boolean
-  type: string
-  value: string
+interface Option {
+  jsx: boolean
 }
 
 @Entry
@@ -33,11 +29,8 @@ struct Index {
   @State resultStr: string = '';
 
   exclResult(content: string) {
-    let regexResult = jsTokens.exec(content);
-    if (regexResult === null || regexResult === undefined || regexResult.length === 0) {
-      return;
-    }
-    let result: Result = tokens.matchToToken(regexResult)
+    let option: Option = { jsx: true }
+    let result: Token[] = Array.from(jsTokens(content));
     this.resultStr = JSON.stringify(result);
   }
 
