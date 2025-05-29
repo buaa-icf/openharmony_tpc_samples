@@ -15,7 +15,7 @@
 
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect, diff } from '../utils/my_hypium'
 import { config } from "../utils/config"
-import Client from "ohos_newsie"
+import Client from "@ohos/newsie"
 
 export default function integrationTest() {
   let client: Client;

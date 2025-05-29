@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import Client from "ohos_newsie"
+import Client from "@ohos/newsie"
 import promptAction from '@ohos.promptAction';
 
 const tag = "dudu----"
