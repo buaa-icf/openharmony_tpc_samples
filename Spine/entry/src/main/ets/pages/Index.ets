@@ -51,6 +51,11 @@ struct Index {
           .onClick(() => {
             router.pushUrl({ url: "pages/Example3" });
           })
+        Button('其它接口')
+          .margin({ top: 10 })
+          .onClick(() => {
+            router.pushUrl({ url: "pages/Example4" });
+          })
       }
       .padding(10)
     }
