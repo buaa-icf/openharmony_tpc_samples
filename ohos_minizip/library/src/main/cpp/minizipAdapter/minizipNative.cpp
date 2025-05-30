@@ -92,6 +92,9 @@ bool MinizipNative::AddEntryInfo(mz_zip_file *fileInfo)
     if (fileInfo->flag & MZ_ZIP_FLAG_ENCRYPTED) {
         minizipEntryInfo.isEncryptedFlag = true;
     }
+    if (fileInfo->flag & MZ_ZIP_FLAG_UTF8) {
+        minizipEntryInfo.isUtf8Flag = true;   
+    }
 
     std::string entryName;
     if (charEncoding_ > 0) {
@@ -228,6 +231,15 @@ napi_value MinizipNative::ExtractFileToJS(std::string entryName, std::string pas
     return napiArrayBuffer;
 }
 
+bool MinizipNative::IsEncrypto(const std::string &entryPath)
+{
+    return entryInfoMap_[entryPath].isEncryptedFlag;
+}
+bool MinizipNative::IsUtf8(const std::string &entryPath)
+{
+    return entryInfoMap_[entryPath].isUtf8Flag;
+}
+
 JSBIND_CLASS(MinizipNative)
 {
     JSBIND_CONSTRUCTOR<std::string>();
@@ -235,6 +247,8 @@ JSBIND_CLASS(MinizipNative)
     JSBIND_METHOD(SetCharEncoding);
     JSBIND_METHOD(GetEntryNames);
     JSBIND_METHOD(ExtractFileToJS);
+    JSBIND_METHOD(IsEncrypto);
+    JSBIND_METHOD(IsUtf8);
 }
 
 JSBIND_ADDON(minizip_ng)
