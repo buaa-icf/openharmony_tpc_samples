@@ -23,6 +23,10 @@ export class MinizipNative{
   GetEntryNames : () => Array<string>;
   //解压文件
   ExtractFileToJS : (entryName : string, password : string) => ArrayBuffer | undefined;
+  //判断是否加密
+  IsEncrypto : (entryName : string) => boolean;
+  //判断编码格式
+  IsUtf8 : (entryName : string) => boolean;
 }
 
 export class MinizipCompressNative{

@@ -33,8 +33,9 @@
 
 struct MinizipEntryInfo {
     uint16_t entryNameSize = 0;
-    int64_t uncompressedSize = 0;
     bool isEncryptedFlag = false;
+    bool isUtf8Flag = false;
+    int64_t uncompressedSize = 0;
     std::string originName;
 };
 
@@ -46,6 +47,8 @@ public:
     void SetCharEncoding(int32_t charEncoding);
     std::vector<std::string> GetEntryNames();
     napi_value ExtractFileToJS(std::string entryName, std::string password);
+    bool IsEncrypto(const std::string &entryPath);
+    bool IsUtf8(const std::string &entryPath);
 private:
     MinizipNative() = delete;
     void Release();

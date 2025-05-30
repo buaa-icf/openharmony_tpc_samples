@@ -27,7 +27,7 @@ include_directories(${NATIVERENDER_ROOT_PATH}
 add_library(minizip_ng SHARED ${MINIZIP_ADAPTER_PATH}/minizipNative.cpp
                               ${MINIZIP_ADAPTER_PATH}/minizipCompressNative.cpp)
 
-target_link_libraries(minizip_ng PUBLIC libace_napi.z.so libhilog_ndk.z.so -s -ftrapv)
+target_link_libraries(minizip_ng PUBLIC libace_napi.z.so libhilog_ndk.z.so -ftrapv)
 target_link_libraries(minizip_ng PUBLIC Aki::libjsbind) # 链接二进制依赖 & 头文件
 target_link_libraries(minizip_ng PUBLIC ${THIRDPARTY_PATH}/minizip-ng/${OHOS_ARCH}/lib/libminizip.a)
 target_link_libraries(minizip_ng PUBLIC ${THIRDPARTY_PATH}/bzip2/${OHOS_ARCH}/lib/libbz2.a)
