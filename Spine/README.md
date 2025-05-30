@@ -352,7 +352,19 @@ import {
 
 
 ## 接口说明
-
+| class | Name             | Parameter  | Description             |
+|-------|------------------|------------|-------------------------|
+|  AssetManager     | loadText         | path       | 加载 Spine 动画所需的 文本 数据文件  |
+|  AssetManager     | loadBinary       | path       | 加载 Spine 动画所需的 二进制 数据文件 |
+|  AssetManager     | loadTextureAltas | path       | 加载纹理图集文件                |
+|  AssetManager     | require          | path       | 从assets数组中获取数据          |
+|  AnimationState   | update           | delta      | 更新动画状态                  |
+|  AnimationState   | apply            | skeleton   | 将动画状态应用到骨骼              |
+|  SkeletonRenderer | draw             | 无         | 动画渲染                    |
+| Skeleton  | setToSetupPose            | 无         | 将骨骼、约束和插槽设置为其设置姿势值      |
+| Skeleton  | updateWorldTransform      |  physics      | 更新每个骨骼的世界变换并应用所有约束      |
+| Skeleton  | getBoundsRect             | clipper       | 将当前姿势的区域和网格附件的轴对齐边界框并返回 |
+| SkeletonJson  | readSkeletonData      | json         | 读取并解析骨骼动画数据文件，生成 skeletonData     |
 
 ## 约束与限制
 
