@@ -7,7 +7,7 @@ This project is an OpenHarmony development example based on the [bignumber.js](h
 ```
 ohpm install bignumber.js
 ```
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 ## How to Use
 If the package name **bignumber.js** with the .js extension is not supported, see [Example](./entry/src/main/ets/pages) for the solution.
 ```javascript
@@ -37,7 +37,7 @@ x.toFixed();                        // "1111222233334444555566"
 |     shiftedBy(data)      |  **data**: number of bits to shift  |    Shifts the bits of this number.   |
 |       squareRoot()       | N/A |      Calculates the square root of this number.     |
 
-For details, see the [Official Documentation](https://mikemcl.github.io/bignumber.js/) and [Unit Test Cases](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/bignumberjsDemo/TEST.md).
+For details, see the [Official Documentation](https://mikemcl.github.io/bignumber.js/) and [Unit Test Cases](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/bignumberjsDemo/TEST.md).
 ## Constraints
 This project has been verified in the following versions:
 - DevEco Studio: NEXT Beta1-5.0.3.806, SDK: API12 Release (5.0.0.66)
@@ -46,8 +46,8 @@ This project has been verified in the following versions:
 
 ## License
 
-This project is licensed under [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/bignumberjsDemo/LICENSE).
+This project is licensed under [Apache License 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/bignumberjsDemo/LICENSE).
 
 ## How to Contribute
 
-If you find any problem during the use, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
+If you find any problem during the use, submit an [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
