@@ -56,7 +56,7 @@ dayjs.extend(advancedFormat); // 使用插件
 dayjs().format("Q Do k kk X x"); // 使用扩展后的API
 ```
 
-[单元测试用例](https://gitee.com/tybrave/openharmony_tpc_samples/tree/master/dayjs/TEST.md)详情可参考
+[单元测试用例](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/dayjs/TEST.md)详情可参考
 
 ## 时间格式规范
 
@@ -82,10 +82,10 @@ dayjs().format("Q Do k kk X x"); // 使用扩展后的API
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
-给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues)
+给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
 ## 开源协议
 
-本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/dayjs/LICENSE)
+本项目基于 [Apache License 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/dayjs/LICENSE)
 ，请自由地享受和参与开源。~~~~~~
