@@ -70,13 +70,21 @@ struct Example3 {
             .width('100%')
             .height('100%')
             .onReady(() => {
-            }).onClick(() => {
-            if (this.currentIndex < this.animations.length) {
-              this.animationName = this.animations[this.currentIndex];
-              this.animationState?.setAnimation(0, this.animationName, true);
-              this.currentIndex = (this.currentIndex + 1) % this.animations.length;
-            }
-          })
+            })
+            .onClick(() => {
+              if (this.currentIndex < this.animations.length) {
+                this.animationName = this.animations[this.currentIndex];
+                this.animationState?.setAnimation(0, this.animationName, true);
+                this.currentIndex = (this.currentIndex + 1) % this.animations.length;
+              }
+            })
+            .onVisibleAreaChange([0], (isVisible: boolean) => {
+              if (isVisible) {
+                this._animator?.play();
+              } else {
+                this._animator?.pause();
+              }
+            })
         }
 
         // 加载网络Img

@@ -1246,14 +1246,21 @@ export class BinaryInput {
 		return chars;
 	}
 
-	readFloat (): number {
-		let value = this.buffer.getFloat32(this.index);
+	readFloat(): number {
+		let value = this.customGetFloat32(this.buffer.getUint32(this.index));
 		this.index += 4;
 		return value;
 	}
 
 	readBoolean (): boolean {
 		return this.readByte() != 0;
+	}
+
+	customGetFloat32(value: number) {
+		const transbuff = new ArrayBuffer(4);
+		let data = new DataView(transbuff);
+		data.setUint32(0, value, true);
+		return data.getFloat32(0, true);
 	}
 }
 
