@@ -66,6 +66,13 @@ struct SingleExample {
                 this.currentIndex = (this.currentIndex + 1) % this.animations.length;
               }
             })
+            .onVisibleAreaChange([0], (isVisible: boolean) => {
+              if (isVisible) {
+                this._animator?.play();
+              } else {
+                this._animator?.pause();
+              }
+            })
         }
 
         // 加载网络Img

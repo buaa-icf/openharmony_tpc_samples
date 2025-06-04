@@ -79,6 +79,13 @@ struct SingleExample {
           Canvas(this.canvasRenderingContext)
             .width('100%')
             .height('100%')
+            .onVisibleAreaChange([0], (isVisible: boolean) => {
+              if (isVisible) {
+                this._animator?.play();
+              } else {
+                this._animator?.pause();
+              }
+            })
         }
 
         // 加载网络Img

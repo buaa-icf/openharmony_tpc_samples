@@ -57,6 +57,13 @@ struct Example1 {
             .onReady(() => {
               this.loadAnimation();
             })
+            .onVisibleAreaChange([0], (isVisible: boolean) => {
+              if (isVisible) {
+                this._animator?.play();
+              } else {
+                this._animator?.pause();
+              }
+            })
         }
       }
       .width('100%')
@@ -72,16 +79,16 @@ struct Example1 {
     skeletonRenderer.triangleRendering = true; // true是使用drawTriangle方式渲染 false是使用drawImages方式渲染
 
     // 2. 创建资源管理器并加载资源
-    let assetManager = new AssetManager("animation5/"); // 创建 AssetManager 实例，设置资源基础路径为 "animation/"
-    assetManager.loadBinary("dragon-ess.skel");; // 加载 Spine 动画所需的 skel 数据文件
-    assetManager.loadTextureAtlas("dragon-pma.atlas"); // 加载纹理图集文件 ("spineboy.atlas")
+    let assetManager = new AssetManager("animation/"); // 创建 AssetManager 实例，设置资源基础路径为 "animation/"
+    assetManager.loadBinary("spineboy-pro.skel");; // 加载 Spine 动画所需的 skel 数据文件
+    assetManager.loadTextureAtlas("spineboy.atlas"); // 加载纹理图集文件 ("spineboy.atlas")
     await assetManager.loadAll(); // 等待所有资源加载完成
 
     // 3. 创建纹理图集和骨骼数据
-    let atlas: TextureAtlas = assetManager.require("dragon-pma.atlas"); // 从资源管理器获取纹理图集
+    let atlas: TextureAtlas = assetManager.require("spineboy.atlas"); // 从资源管理器获取纹理图集
     let atlasLoader = new AtlasAttachmentLoader(atlas); // 创建 AtlasAttachmentLoader 用于加载附件
     let skeletonBinary = new SkeletonBinary(atlasLoader);; // 创建 SkeletonBinary 解析器
-    let skeletonData = skeletonBinary.readSkeletonData(assetManager.require("dragon-ess.skel")); // 读取并解析骨骼动画数据文件，生成 skeletonData
+    let skeletonData = skeletonBinary.readSkeletonData(assetManager.require("spineboy-pro.skel")); // 读取并解析骨骼动画数据文件，生成 skeletonData
 
     // 4. 创建骨骼实例
     let skeleton = new Skeleton(skeletonData); // 基于骨骼数据创建新的骨骼实例
@@ -137,6 +144,8 @@ struct Example1 {
     }
     // 播放动画
     this._animator.play();
+
+    this.animationState?.setAnimation(0, 'walk', true);
   }
 
   render(context: CanvasRenderingContext2D, lastFrameTime: number, skeleton: Skeleton, animationState: AnimationState,
