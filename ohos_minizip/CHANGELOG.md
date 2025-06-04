@@ -1,3 +1,7 @@
+## 1.0.3-rc.0
+
+- MinizipNative add IsEncrypto() & IsUtf8() functions.
+
 ## 1.0.2
 
 - Fixed the issue where the unzipToDirectory interface did not return an error when the password error failed
