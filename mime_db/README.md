@@ -12,7 +12,7 @@ https://hg.nginx.org/nginx/raw-file/default/conf/mime.types
 ## How to Install
 
 ```
-ohpm install mime-db@1.52.0
+ohpm install mime-db@1.54.0
 ```
 OpenHarmony
 For details about the ohpm environment configuration, see [Installing the OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
