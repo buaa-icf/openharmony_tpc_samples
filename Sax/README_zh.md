@@ -7,7 +7,7 @@
 ## 下载安装
 
 ````
-ohpm install sax@0.6.0
+ohpm install sax@1.4.1
 ````
 
 OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony har 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
