@@ -14,56 +14,62 @@
  */
 
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
-import { xmlParse } from 'xslt-processor/src/dom.js'
-import { xmlText } from 'xslt-processor/src/util.js'
+import { XmlParser, xmlText } from 'xslt-processor/dom'
+
 
 export default function escapeTest() {
+  let xmlParser: XmlParser;
+
+  beforeAll(() => {
+    xmlParser = new XmlParser();
+  });
+  
   describe('EscapeTest', () => {
     it('accepts_already_escaped_ampersand', 0, () => {
       const xmlString: string = '<root>Fish&amp;pie</root>';
-      const outXmlString: string = xmlText(xmlParse(xmlString))
+      const outXmlString: string = xmlText(xmlParser.xmlParse(xmlString))
       expect(outXmlString).assertEqual(xmlString);
     })
 
     it('escapes_non_escaped_ampersand', 0, () => {
       const xmlString: string = '<root>Fish&pie</root>';
-      const outXmlString: string = xmlText(xmlParse(xmlString))
+      const outXmlString: string = xmlText(xmlParser.xmlParse(xmlString))
       expect(outXmlString).assertEqual('<root>Fish&amp;pie</root>');
     })
 
     it('accepts_non_escaped_greater_than_sign_between_elements', 0, () => {
       const xmlString = '<root>Fish>pie</root>';
-      const outXmlString: string = xmlText(xmlParse(xmlString))
+      const outXmlString: string = xmlText(xmlParser.xmlParse(xmlString))
       expect(outXmlString).assertEqual('<root>Fish&gt;pie</root>');
     })
 
     it('accepts_non_escaped_single_quotation_mark_between_elements', 0, () => {
       const xmlString = '<root>Fish\'pie</root>';
-      const outXmlString: string = xmlText(xmlParse(xmlString))
+      const outXmlString: string = xmlText(xmlParser.xmlParse(xmlString))
       expect(outXmlString).assertEqual('<root>Fish\'pie</root>');
     })
 
     it('accepts_non_escaped_double_quotation_mark_between_elements', 0, () => {
       const xmlString = '<root>Fish"pie</root>';
-      const outXmlString: string = xmlText(xmlParse(xmlString))
+      const outXmlString: string = xmlText(xmlParser.xmlParse(xmlString))
       expect(outXmlString).assertEqual('<root>Fish"pie</root>');
     })
 
     it('accepts_non_escaped_greater_than_sign_in_attributes', 0, () => {
       const xmlString = '<root dish="eat>hunger">Fish</root>';
-      const outXmlString: string = xmlText(xmlParse(xmlString))
+      const outXmlString: string = xmlText(xmlParser.xmlParse(xmlString))
       expect(outXmlString).assertEqual('<root dish="eat&gt;hunger">Fish</root>');
     })
 
     it('accepts_non_escaped_single_quotation_mark_in_attributes', 0, () => {
       const xmlString = '<root dish="eat\'hunger">Fish</root>';
-      const outXmlString:string = xmlText(xmlParse(xmlString))
+      const outXmlString:string = xmlText(xmlParser.xmlParse(xmlString))
       expect(outXmlString).assertEqual('<root dish="eat\'hunger">Fish</root>');
     })
 
     it('accepts_non_escaped_double_quotation_mark_in_attributes', 0, () => {
       const xmlString = "<root dish='eat\"hunger'>Fish</root>";
-      const outXmlString: string = xmlText(xmlParse(xmlString))
+      const outXmlString: string = xmlText(xmlParser.xmlParse(xmlString))
       expect(outXmlString).assertEqual('<root dish="eat&quot;hunger">Fish</root>');
     })
   })

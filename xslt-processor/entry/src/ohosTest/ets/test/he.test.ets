@@ -14,9 +14,9 @@
  */
 
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
-import { xmlParse } from 'xslt-processor/src/dom.js'
+import { XmlParser, xmlText } from 'xslt-processor/dom'
 import he from 'he'
-import { xmlText } from 'xslt-processor/src/util.js'
+
 import { forOwn, officialData, encodeData, A, D, E, S, U, IA, AE, AS, AU, DA, DE, DS, DU, ED, EU, SiA,
   DAS,
   DAU,

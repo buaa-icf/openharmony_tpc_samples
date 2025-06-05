@@ -14,12 +14,12 @@
  */
 
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
-import { xmlParse } from 'xslt-processor/src/dom'
-import { xsltProcess } from 'xslt-processor/src/xslt'
+import { XmlParser } from 'xslt-processor/dom'
+import { Xslt, XsltOptions } from 'xslt-processor/xslt'
 
 export default function variablesAsParametersTest() {
   describe('VariablesAsParametersTest', () => {
-    it('variables_as_parameters_1', 0, () => {
+    it('variables_as_parameters_1', 0, async () => {
       const xmlString = `<root>
       <test name="test1"/>
     </root> `;
@@ -40,11 +40,20 @@ export default function variablesAsParametersTest() {
       </xsl:stylesheet>`;
 
       const expectedOutString = `<root><span>hugo</span></root>`;
-
-      expect(xsltProcess(xmlParse(xmlString), xmlParse(xsltString),
-        {
-          test: "hugo"
-        }
+      const options: XsltOptions = {
+        cData: true,
+        escape: true,
+        selfClosingTags: true,
+        parameters: [{
+          name: 'test', value: 'hugo'
+        }]
+      }
+      const xsltClass = new Xslt(options);
+      const xmlParser = new XmlParser();
+      expect(
+        await xsltClass.xsltProcess(
+        xmlParser.xmlParse(xmlString),
+        xmlParser.xmlParse(xsltString),
       )).assertEqual(expectedOutString);
     })
 

@@ -14,12 +14,12 @@
  */
 
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
-import { XDocument, xmlParse } from 'xslt-processor/src/dom'
-import { xsltProcess } from 'xslt-processor/src/xslt'
+import { XDocument, XmlParser } from 'xslt-processor/dom'
+import { Xslt } from 'xslt-processor/xslt'
 
 export default function simpleTest() {
   describe('SimpleTest', () => {
-    it('simple_test', 0, () => {
+    it('simple_test', 0, async () => {
       const xmlString = `<root>
 			<test name="test1" />
 			<test name="test2" />
@@ -46,9 +46,11 @@ export default function simpleTest() {
       '<span>test4</span>' +
       '</div>';
 
-      let xml1: XDocument = xmlParse(xmlString);
-      let xml2: XDocument = xmlParse(xsltString);
-      const outXmlString: string = xsltProcess(xml1, xml2);
+      const xsltClass = new Xslt();
+      const xmlParser = new XmlParser();
+      let xml1: XDocument = xmlParser.xmlParse(xmlString);
+      let xml2: XDocument = xmlParser.xmlParse(xsltString);
+      const outXmlString: string = await xsltClass.xsltProcess(xml1, xml2);
       expect(outXmlString).assertEqual(expectedOutString);
     })
   })
