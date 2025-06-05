@@ -1,3 +1,5 @@
 ## Support feature:
+## 6.1.1
+Fix ESM module browser support by appending .js extension to imports.
 ## 6.1.0
-比较两个版本字符串，找出哪个更大、相等或更小。
+Add new function validateStrict to validate according to strict semver rules.

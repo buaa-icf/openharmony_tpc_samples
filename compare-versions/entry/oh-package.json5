@@ -6,7 +6,7 @@
   "author": "ohos_tpc",
   "license": "MIT License",
   "dependencies": {
-    "compare-versions":"^6.1.0"
+    "compare-versions":"^6.1.1"
   }
 }
 
