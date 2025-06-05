@@ -1,3 +1,4 @@
+import hilog from '@ohos.hilog';
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21,6 +22,7 @@ class Constructed extends Encoding('constructed', 0x20) {}
 
 exports.Constructed = Constructed;
 const Encodings = [Primitive, Constructed];
+const TAG = 'asn1Demo-encodings';
 
 function findEncoding(value) {
   const valueType = typeof value;
@@ -30,6 +32,7 @@ function findEncoding(value) {
     case 'number':
       return Encodings.find(encoding => encoding.value === value);
     default:
+      hilog.error(0x0000, TAG, '%{public}s', `Must use string or number to lookup encoding, not "${valueType}"`);
       throw new Error(`Must use string or number to lookup encoding, not "${valueType}"`);
   }
 }
