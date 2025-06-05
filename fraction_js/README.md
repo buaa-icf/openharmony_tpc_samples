@@ -7,7 +7,7 @@
 ## How to Install
 
 ```shell
-ohpm  install fraction.js@4.2.0
+ohpm  install fraction.js@5.2.2
 ```
 
 For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).

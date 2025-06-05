@@ -3,7 +3,7 @@
          "Name": "fraction.js",
          "License": "MIT License",
          "License File": "LICENSE",
-         "Version Number": "4.2.0",
+         "Version Number": "5.2.2",
          "Owner" : "xiafeng@huawei.com",
          "Upstream URL": "https://github.com/rawify/Fraction.js",
          "Description": "A rational number library"
