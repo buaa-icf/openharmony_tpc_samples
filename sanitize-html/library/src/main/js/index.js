@@ -97,6 +97,7 @@ function sanitizeHtml(html, options, _recursing) {
     this.attribs = attribs || {};
     this.tagPosition = result.length;
     this.text = ''; // Node inner text
+    this.openingTagLength = 0;
     this.mediaChildren = [];
 
     this.updateParentNodeText = function() {
@@ -219,6 +220,10 @@ function sanitizeHtml(html, options, _recursing) {
 
   const parser = new htmlparser.Parser({
     onopentag: function(name, attribs) {
+      if (options.onOpenTag) {
+        options.onOpenTag(name, attribs);
+      }
+
       // If `enforceHtmlBoundary` is `true` and this has found the opening
       // `html` tag, reset the state.
       if (options.enforceHtmlBoundary && name === 'html') {
@@ -268,7 +273,6 @@ function sanitizeHtml(html, options, _recursing) {
             skipTextDepth = 1;
           }
         }
-        skipMap[depth] = true;
       }
       depth++;
       if (skip) {
@@ -279,7 +283,7 @@ function sanitizeHtml(html, options, _recursing) {
             if (options.textFilter) {
               result += options.textFilter(escaped, name);
             } else {
-              result += escapeHtml(frame.innerText);
+              result += escaped;
             }
             addedText = true;
           }
@@ -296,7 +300,14 @@ function sanitizeHtml(html, options, _recursing) {
         }
       }
 
-      if (!allowedAttributesMap || has(allowedAttributesMap, name) || allowedAttributesMap['*']) {
+      const isBeingEscaped = skip && (options.disallowedTagsMode === 'escape' || options.disallowedTagsMode === 'recursiveEscape');
+      const shouldPreserveEscapedAttributes = isBeingEscaped && options.preserveEscapedAttributes;
+
+      if (shouldPreserveEscapedAttributes) {
+        each(attribs, function(value, a) {
+          result += ' ' + a + '="' + escapeHtml((value || ''), true) + '"';
+        });
+      } else if (!allowedAttributesMap || has(allowedAttributesMap, name) || allowedAttributesMap['*']) {
         each(attribs, function(value, a) {
           if (!VALID_HTML_ATTRIBUTE_NAME.test(a)) {
             // This prevents part of an attribute name in the output from being
@@ -463,7 +474,7 @@ function sanitizeHtml(html, options, _recursing) {
             if (a === 'style') {
               if (options.parseStyleAttributes) {
                 try {
-                  const abstractSyntaxTree = postcss.parse(name + ' {' + value + '}', { map: false });
+                  const abstractSyntaxTree = postcssParse(name + ' {' + value + '}', { map: false });
                   const filteredAST = filterCss(abstractSyntaxTree, options.allowedStyles);
 
                   value = stringifyStyleAttributes(filteredAST);
@@ -507,6 +518,7 @@ function sanitizeHtml(html, options, _recursing) {
         result = tempResult + escapeHtml(result);
         tempResult = '';
       }
+      frame.openingTagLength = result.length - frame.tagPosition;
     },
     ontext: function(text) {
       if (skipText) {
@@ -529,11 +541,11 @@ function sanitizeHtml(html, options, _recursing) {
         // your concern, don't allow them. The same is essentially true for style tags
         // which have their own collection of XSS vectors.
         result += text;
-      } else {
+      } else if (!addedText) {
         const escaped = escapeHtml(text, false);
-        if (options.textFilter && !addedText) {
+        if (options.textFilter) {
           result += options.textFilter(escaped, tag);
-        } else if (!addedText) {
+        } else {
           result += escaped;
         }
       }
@@ -543,6 +555,9 @@ function sanitizeHtml(html, options, _recursing) {
       }
     },
     onclosetag: function(name, isImplied) {
+      if (options.onCloseTag) {
+        options.onCloseTag(name, isImplied);
+      }
 
       if (skipText) {
         skipTextDepth--;
@@ -584,19 +599,31 @@ function sanitizeHtml(html, options, _recursing) {
         delete transformMap[depth];
       }
 
-      if (options.exclusiveFilter && options.exclusiveFilter(frame)) {
-        result = result.substr(0, frame.tagPosition);
-        return;
+      if (options.exclusiveFilter) {
+        const filterResult = options.exclusiveFilter(frame);
+        if (filterResult === 'excludeTag') {
+          if (skip) {
+            // no longer escaping the tag since it's not added at all
+            result = tempResult;
+            tempResult = '';
+          }
+          // remove the opening tag from the result
+          result = result.substring(0, frame.tagPosition) + result.substring(frame.tagPosition + frame.openingTagLength);
+          return;
+        } else if (filterResult) {
+          result = result.substring(0, frame.tagPosition);
+          return;
+        }
       }
 
       frame.updateParentNodeMediaChildren();
       frame.updateParentNodeText();
 
       if (
-      // Already output />
+        // Already output />
         options.selfClosing.indexOf(name) !== -1 ||
-          // Escaped tag, closing tag is implied
-          (isImplied && !tagAllowed(name) && [ 'escape', 'recursiveEscape' ].indexOf(options.disallowedTagsMode) >= 0)
+        // Escaped tag, closing tag is implied
+        (isImplied && !tagAllowed(name) && [ 'escape', 'recursiveEscape' ].indexOf(options.disallowedTagsMode) >= 0)
       ) {
         if (skip) {
           result = tempResult;
@@ -774,17 +801,17 @@ function sanitizeHtml(html, options, _recursing) {
   }
 
   /**
-   * Filters the existing attributes for the given property. Discards any attributes
-   * which don't match the allowlist.
-   *
-   * @param  {object} selectedRule             - Example: { color: red, font-family: helvetica }
-   * @param  {array} allowedDeclarationsList   - List of declarations which pass the allowlist.
-   * @param  {object} attributeObject          - Object representing the current css property.
-   * @property {string} attributeObject.type   - Typically 'declaration'.
-   * @property {string} attributeObject.prop   - The CSS property, i.e 'color'.
-   * @property {string} attributeObject.value  - The corresponding value to the css property, i.e 'red'.
-   * @return {function}                        - When used in Array.reduce, will return an array of Declaration objects
-   */
+    * Filters the existing attributes for the given property. Discards any attributes
+    * which don't match the allowlist.
+    *
+    * @param  {object} selectedRule             - Example: { color: red, font-family: helvetica }
+    * @param  {array} allowedDeclarationsList   - List of declarations which pass the allowlist.
+    * @param  {object} attributeObject          - Object representing the current css property.
+    * @property {string} attributeObject.type   - Typically 'declaration'.
+    * @property {string} attributeObject.prop   - The CSS property, i.e 'color'.
+    * @property {string} attributeObject.value  - The corresponding value to the css property, i.e 'red'.
+    * @return {function}                        - When used in Array.reduce, will return an array of Declaration objects
+    */
   function filterDeclarations(selectedRule) {
     return function (allowedDeclarationsList, attributeObject) {
       // If this property is allowlisted...
@@ -823,10 +850,10 @@ const htmlParserDefaults = {
 };
 sanitizeHtml.defaults = {
   allowedTags: [
-  // Sections derived from MDN element categories and limited to the more
-  // benign categories.
-  // https://developer.mozilla.org/en-US/docs/Web/HTML/Element
-  // Content sectioning
+    // Sections derived from MDN element categories and limited to the more
+    // benign categories.
+    // https://developer.mozilla.org/en-US/docs/Web/HTML/Element
+    // Content sectioning
     'address', 'article', 'aside', 'footer', 'header',
     'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hgroup',
     'main', 'nav', 'section',
@@ -903,7 +930,8 @@ sanitizeHtml.defaults = {
   allowedSchemesAppliedToAttributes: [ 'href', 'src', 'cite' ],
   allowProtocolRelative: true,
   enforceHtmlBoundary: false,
-  parseStyleAttributes: true
+  parseStyleAttributes: true,
+  preserveEscapedAttributes: false
 };
 
 sanitizeHtml.simpleTransform = function(newTagName, newAttribs, merge) {

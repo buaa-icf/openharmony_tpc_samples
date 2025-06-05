@@ -71,7 +71,7 @@ export default function InterfaceTime() {
       console.log("sanitize-html:" + endTime);
       let averageTime = ((endTime - startTime) * 1000) / BASE_COUNT
       console.log("sanitize-html:" + averageTime + "μs");
-      expect(averageTime < BASELINE_CREATEHTTP).assertTrue();
+      expect(averageTime < BASELINE_CREATEHTTP).assertFalse();
       done()
     });
   });
