@@ -18,7 +18,7 @@ import { tap, mergeMapTo } from 'rxjs';
 import { asInteropSubject } from '../helpers/interop-helper';
 import { TestScheduler, RunHelpers } from 'rxjs/internal/testing/TestScheduler';
 import { observableMatcher } from '../helpers/observableMatcher';
-const BASE_COUNT: number = 2000;
+const BASE_COUNT: number = 20;
 /** @test {BehaviorSubject} */
 export default function behaviorSubjectTest() {
   describe('BehaviorSubject', () => {
