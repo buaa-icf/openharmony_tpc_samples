@@ -12,7 +12,7 @@
 ohpm install leven;
 ohpm install easy-replace;
 ```
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ## How to Use
 
@@ -88,8 +88,15 @@ This project has been verified in the following versions:
 |     |---- README_zh.md  # Readme                   
 ````
 
+## Available APIs
+
+| API                                                      | Parameter                                                                                                                                                                            | Description                                                                                                                                                                                                                                                  |
+|----------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| leven(str1:string, str2:string)                          | str1: String 1.<br/>    str2: String 2.<br/>                                                                                                                                         | Indicates the minimum number of editing operations required to convert one string into another string.                                                                                                                                                       |
+| er(source:string, opts:Plain Object, replacement:String) | source: Original string<br/>  opts: Required option object<br/> replacement: Use this string to replace all results. If not specified, the library will run in a deletion mode.<br/> | Performs complex string replacement operations. It allows you to define replacement rules through a configuration object, including search patterns, replacement content, and case sensitivity, etc. [More information](https://codsen.com/os/easy-replace/) |
+
 ## How to Contribute
-If you find any problem during the use, submit an issue or a PR.
+If you find any problem during the use, submit an [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) .
 
 ## License
-The project is licensed under Apache License 2.0.
+The project is licensed under [Apache License 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Easyrelpace/LICENSE).
