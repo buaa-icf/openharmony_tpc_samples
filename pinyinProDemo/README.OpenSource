@@ -3,7 +3,7 @@
         "Name": "pinyin-pro",
         "License": "MIT License",
         "License File": " LICENSE-MIT ",
-        "Version Number": "3.18.3",
+        "Version Number": "3.26.0",
         "Owner": "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/zh-lx/pinyin-pro",
         "Description": "Chinese to pinyin, pinyin tone, pinyin initials, pinyin finals, polyphonic pinyin, surname pinyin, pinyin matching"

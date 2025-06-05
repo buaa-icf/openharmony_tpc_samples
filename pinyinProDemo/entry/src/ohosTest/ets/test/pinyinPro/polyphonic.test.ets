@@ -52,6 +52,7 @@ export default function polyphonicTest() {
             num: 3,
             origin: '好',
             pinyin: 'hǎo',
+            inZhRange: true,
           },
           {
             final: 'ào',
@@ -64,6 +65,7 @@ export default function polyphonicTest() {
             num: 4,
             origin: '好',
             pinyin: 'hào',
+            inZhRange: true,
           },
         ],
         [
@@ -78,6 +80,7 @@ export default function polyphonicTest() {
             num: 3,
             origin: '好',
             pinyin: 'hǎo',
+            inZhRange: true,
           },
           {
             final: 'ào',
@@ -90,6 +93,7 @@ export default function polyphonicTest() {
             num: 4,
             origin: '好',
             pinyin: 'hào',
+            inZhRange: true,
           },
         ],
         [
@@ -104,6 +108,7 @@ export default function polyphonicTest() {
             num: 2,
             origin: '学',
             pinyin: 'xué',
+            inZhRange: true,
           },
         ],
         [
@@ -118,6 +123,7 @@ export default function polyphonicTest() {
             num: 2,
             origin: '习',
             pinyin: 'xí',
+            inZhRange: true,
           },
         ],
       ]);
@@ -131,7 +137,7 @@ export default function polyphonicTest() {
 
     it('polyphonic_nonzh', 0,() => {
       const result = polyphonic('好好学习s');
-      expect(result).assertDeepEquals(['hǎo hào', 'hǎo hào', 'xué', 'xí', '']);
+      expect(result).assertDeepEquals(['hǎo hào', 'hǎo hào', 'xué', 'xí', 's']);
     });
 
     it('polyphonic_allnonZh', 0,() => {
@@ -151,6 +157,7 @@ export default function polyphonicTest() {
             num: 3,
             origin: '好',
             pinyin: 'hǎo',
+            inZhRange: true,
           },
           {
             final: 'ào',
@@ -163,6 +170,7 @@ export default function polyphonicTest() {
             num: 4,
             origin: '好',
             pinyin: 'hào',
+            inZhRange: true,
           },
         ],
         [
@@ -177,6 +185,7 @@ export default function polyphonicTest() {
             num: 3,
             origin: '好',
             pinyin: 'hǎo',
+            inZhRange: true,
           },
           {
             final: 'ào',
@@ -189,6 +198,7 @@ export default function polyphonicTest() {
             num: 4,
             origin: '好',
             pinyin: 'hào',
+            inZhRange: true,
           },
         ],
         [
@@ -203,6 +213,7 @@ export default function polyphonicTest() {
             num: 2,
             origin: '学',
             pinyin: 'xué',
+            inZhRange: true,
           },
         ],
         [
@@ -217,6 +228,7 @@ export default function polyphonicTest() {
             num: 2,
             origin: '习',
             pinyin: 'xí',
+            inZhRange: true,
           },
         ],
         [
@@ -225,12 +237,13 @@ export default function polyphonicTest() {
             finalBody: '',
             finalHead: '',
             finalTail: '',
-            first: '',
+            first: 's',
             initial: '',
             isZh: false,
             num: 0,
             origin: 's',
             pinyin: '',
+            inZhRange: false,
           },
         ],
       ]);

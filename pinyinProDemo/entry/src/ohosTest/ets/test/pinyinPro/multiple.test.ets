@@ -64,7 +64,7 @@ export default function multipleTest() {
       const result = pinyin('能', {
         mode: 'surname', multiple: true
       });
-      expect(result).assertEqual('nài');
+      expect(result).assertEqual('nài néng');
     });
 
     it('multiple_base',0, () => {

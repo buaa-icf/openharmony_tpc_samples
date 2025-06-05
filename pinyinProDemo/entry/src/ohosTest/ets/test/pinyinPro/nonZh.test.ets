@@ -20,28 +20,28 @@ export default function nonZhTest() {
   describe('nonZh', () => {
     it('nonZh_init',0, () => {
       const result1 = pinyin('我very喜欢你');
-      expect(result1).assertEqual('wǒ v e r y xǐ huān nǐ');
+      expect(result1).assertEqual('wǒ v e r y xǐ huan nǐ');
     });
 
     it('nonZh_spaced',0, () => {
       const result2 = pinyin('我very喜欢你', {
         nonZh: 'spaced'
       });
-      expect(result2).assertEqual('wǒ v e r y xǐ huān nǐ');
+      expect(result2).assertEqual('wǒ v e r y xǐ huan nǐ');
     });
 
     it('nonZh_consecutive',0, () => {
       const result3 = pinyin('我very喜欢你', {
         nonZh: 'consecutive'
       });
-      expect(result3).assertEqual('wǒ very xǐ huān nǐ');
+      expect(result3).assertEqual('wǒ very xǐ huan nǐ');
     });
 
     it('nonZh_removed',0, () => {
       const result4 = pinyin('我very喜欢你', {
         nonZh: 'removed'
       });
-      expect(result4).assertEqual('wǒ xǐ huān nǐ');
+      expect(result4).assertEqual('wǒ xǐ huan nǐ');
     });
 
     it('nonZh_hapace',0, () => {

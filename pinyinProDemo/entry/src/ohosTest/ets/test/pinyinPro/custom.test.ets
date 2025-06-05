@@ -134,7 +134,7 @@ export default function customConfigTest() {
     it('custom_custom_none', 0, async (done: Function) => {
       try {
         let result: ESObject = await taskpool.execute(customNone);
-        expect(result).assertEqual('gān yī xíng xíng yī xíng');
+        expect(result).assertEqual('gàn yì háng xíng yì háng');
         customPinyin({});
       } finally {
         done()
@@ -261,7 +261,7 @@ export default function customConfigTest() {
     it('_custom_double_unicode', 0, async (done: Function) => {
       try {
         let result: ESObject = await taskpool.execute(customUnicodes);
-        expect(result).assertEqual('𧒽 shā fā lei ke 𧒽 suàn fǎ shì');
+        expect(result).assertEqual('lei shā fā lei lei ke suàn fǎ shì');
         customPinyin({});
       } finally {
         done()
