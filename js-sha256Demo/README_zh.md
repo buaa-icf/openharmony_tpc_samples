@@ -11,25 +11,41 @@ OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装 OpenHarmo
 ## 使用说明
 
 ```javascript
-import { sha256, sha224 } from 'js-sha256';
+sha256('Message to hash');
+sha224('Message to hash');
 
-let content:string = 'ABCDEFGHI';
-let mess = sha256(content);
-let mess2 = sha224(content);
-let mess3 = sha256.hex(content);
-let mess4 = sha256.array(content);
-let mess5 = sha256.digest(content);
+var hash = sha256.create();
+hash.update('Message to hash');
+hash.hex();
+
+var hash2 = sha256.update('Message to hash');
+hash2.update('Message2 to hash');
+hash2.array();
+
+// HMAC
+sha256.hmac('key', 'Message to hash');
+sha224.hmac('key', 'Message to hash');
+
+var hash = sha256.hmac.create('key');
+hash.update('Message to hash');
+hash.hex();
+
+var hash2 = sha256.hmac.update('key', 'Message to hash');
+hash2.update('Message2 to hash');
+hash2.array();
 ```
 
 ## 接口说明
 
-|    方法名    |    入参     | 接口描述 |
-|:---------:|:---------:|:----:|
-| sha256(data) | data:内容 |  算法  |
-| sha224(data) | data:内容 |  算法  |
-| sha256.hex(data) | data:内容 |  算法  |
-| sha256.digest(data) | data:内容 |  算法  |
-| sha256.array(data) | data:内容 |  算法  |
+|              方法名               |           入参            | 接口描述 |
+|:------------------------------:|:-----------------------:|:----:|
+|          sha256(data)          |         data:内容         |  算法  |
+|          sha224(data)          |         data:内容         |  算法  |
+| sha256.hmac(secretKey,Message) | secretKey:密钥 Message：内容 |  算法  |
+|        sha256.hex(data)        |         data:内容         |  算法  |
+|      sha256.digest(data)       |         data:内容         |  算法  |
+|       sha256.array(data)       |         data:内容         |  算法  |
+|    sha256.arrayBuffer(data)    |         data:内容         |  算法  |
 
 
 ## 约束与限制
