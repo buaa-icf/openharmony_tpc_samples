@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import sha1 from 'js-sha1';
+import { sha1 } from 'js-sha1';
 
 @Extend(Text) function textFancy(fontSize: number, textColor: Color, isBold: Boolean) {
   .fontSize(fontSize)
