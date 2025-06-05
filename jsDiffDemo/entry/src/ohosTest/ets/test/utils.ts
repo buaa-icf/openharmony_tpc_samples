@@ -38,9 +38,7 @@ const result = [
         "newStart": 1,
         "newLines": 4,
         "lines":
-        [" line2", " line3", "+line4", " line5"],
-        "linedelimiters": ["\n", "\n", "\n", "\n"
-        ]
+        [" line2", " line3", "+line4", " line5"]
       }
     ]
   }

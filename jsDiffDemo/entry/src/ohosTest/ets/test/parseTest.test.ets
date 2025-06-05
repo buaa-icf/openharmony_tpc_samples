@@ -32,12 +32,6 @@ export default function parseTest() {
               ' line3',
               '+line4',
               ' line5'
-            ],
-            linedelimiters: [
-              '\n',
-              '\n',
-              '\n',
-              '\n'
             ]
           }
         ]
@@ -60,10 +54,6 @@ export default function parseTest() {
             lines: [
               '-line3',
               '+line4'
-            ],
-            linedelimiters: [
-              '\n',
-              '\n'
             ]
           }
         ]
@@ -78,39 +68,23 @@ export default function parseTest() {
       let expected: Patch[] = [{
         hunks: [
           {
-            oldStart: 1,
-            oldLines: 3,
-            newStart: 1,
-            newLines: 4,
+            oldStart: 1, oldLines: 3,
+            newStart: 1, newLines: 4,
             lines: [
               ' line2',
               ' line3',
               '+line4',
               ' line5'
-            ],
-            linedelimiters: [
-              '\n',
-              '\n',
-              '\n',
-              '\n'
             ]
           },
           {
-            oldStart: 4,
-            oldLines: 3,
-            newStart: 1,
-            newLines: 4,
+            oldStart: 4, oldLines: 4,
+            newStart: 1, newLines: 3,
             lines: [
               ' line2',
               ' line3',
               '-line4',
               ' line5'
-            ],
-            linedelimiters: [
-              '\n',
-              '\n',
-              '\n',
-              '\n'
             ]
           }
         ]
@@ -121,7 +95,7 @@ export default function parseTest() {
  line3
 +line4
  line5
-@@ -4,3 +1,4 @@
+@@ -4,4 +1,3 @@
  line2
  line3
 -line4

@@ -403,23 +403,45 @@ export default function applyTest() {
         fuzzFactor: 1
       }
       expect(applyPatch(
-        'line2\n'
+        'line1\n'
           + 'line2\n'
-          + 'line5\n',
+          + 'line2.5\n'
+          + 'line3\n'
+          + 'line4\n'
+          + 'line6\n'
+          + 'line7\n'
+          + 'line8\n'
+          + 'line8.5\n'
+          + 'line9\n'
+          + 'line10\n',
 
-        '--- test\theader1\n'
-          + '+++ test\theader2\n'
-          + '@@ -1,3 +1,4 @@\n'
+        '--- foo.txt\t2024-07-19 09:58:02.489059795 +0100\n'
+          + '+++ bar.txt\t2024-07-19 09:58:24.768153252 +0100\n'
+          + '@@ -2,8 +2,8 @@\n'
           + ' line2\n'
           + ' line3\n'
-          + '+line4\n'
-          + ' line5\n',
-        options))
+          + ' line4\n'
+          + '+line5\n'
+          + ' line6\n'
+          + ' line7\n'
+          + ' line8\n'
+          + '-line9\n'
+          + ' line10\n',
+
+        {fuzzFactor: 2}
+      ))
         .assertEqual(
-          'line2\n'
+          'line1\n'
             + 'line2\n'
+            + 'line2.5\n'
+            + 'line3\n'
             + 'line4\n'
-            + 'line5\n');
+            + 'line5\n'
+            + 'line6\n'
+            + 'line7\n'
+            + 'line8\n'
+            + 'line8.5\n'
+            + 'line10\n',);
     });
 
     it('should_succeed_when_hunk_needs_a_negative_offset', 0, () => {

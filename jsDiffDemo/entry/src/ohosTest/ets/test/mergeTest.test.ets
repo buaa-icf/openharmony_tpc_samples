@@ -42,7 +42,7 @@ export default function mergeTest() {
           + '+foo4\n'
           + ' foo5\n';
 
-      const expected: Patch = {
+      const expected : Patch= {
         index: 'test',
         oldFileName: 'test',
         oldHeader: 'header1',
@@ -50,10 +50,8 @@ export default function mergeTest() {
         newHeader: 'header2',
         hunks: [
           {
-            oldStart: 1,
-            oldLines: 3,
-            newStart: 1,
-            newLines: 4,
+            oldStart: 1, oldLines: 3,
+            newStart: 1, newLines: 4,
             lines: [
               ' line2',
               ' line3',
@@ -62,10 +60,8 @@ export default function mergeTest() {
             ]
           },
           {
-            oldStart: 25,
-            oldLines: 3,
-            newStart: 26,
-            newLines: 4,
+            oldStart: 25, oldLines: 3,
+            newStart: 26, newLines: 4,
             lines: [
               ' foo2',
               ' foo3',
@@ -85,7 +81,7 @@ export default function mergeTest() {
           + '===================================================================\n'
           + '--- test\theader1\n'
           + '+++ test\theader2\n'
-          + '@@ -1,3 +1,4 @@\n'
+          + '@@ -1,3 +1,5 @@\n'
           + ' line2\n'
           + ' line3\n'
           + '+line4-1\n'
@@ -110,10 +106,8 @@ export default function mergeTest() {
         newHeader: 'header2',
         hunks: [
           {
-            oldStart: 1,
-            oldLines: 3,
-            newStart: 1,
-            newLines: 6,
+            oldStart: 1, oldLines: 3,
+            newStart: 1, newLines: 6,
             lines: [
               ' line2',
               ' line3',
@@ -132,27 +126,25 @@ export default function mergeTest() {
 
     it('merge_should_merge_removal_supersets', 0, () => {
       const mine =
-        '@@ -1,3 +1,4 @@\n'
+        '@@ -1,5 +1,3 @@\n'
           + ' line2\n'
           + ' line3\n'
           + '-line4\n'
           + '-line4\n'
           + ' line5\n';
       const theirs =
-        '@@ -1,3 +1,4 @@\n'
+        '@@ -1,5 +1,4 @@\n'
           + ' line2\n'
           + ' line3\n'
           + '-line4\n'
           + ' line4\n'
           + ' line5\n';
 
-      const expected: Patch = {
+      const expected : Patch = {
         hunks: [
           {
-            oldStart: 1,
-            oldLines: 5,
-            newStart: 1,
-            newLines: 3,
+            oldStart: 1, oldLines: 5,
+            newStart: 1, newLines: 3,
             lines: [
               ' line2',
               ' line3',
