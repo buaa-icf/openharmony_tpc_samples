@@ -221,10 +221,13 @@ class Node {
         if (opts.index) {
             pos = this.positionInside(opts.index)
         } else if (opts.word) {
-            let stringRepresentation = this.source.input.css.slice(
-                sourceOffset(this.source.input.css, this.source.start),
-                sourceOffset(this.source.input.css, this.source.end)
-            )
+      let inputString = ('document' in this.source.input)
+        ? this.source.input.document
+        : this.source.input.css
+      let stringRepresentation = inputString.slice(
+        sourceOffset(inputString, this.source.start),
+        sourceOffset(inputString, this.source.end)
+      )
             let index = stringRepresentation.indexOf(opts.word)
             if (index !== -1) {
                 pos = this.positionInside(index)
@@ -275,10 +278,13 @@ class Node {
             }
 
         if (opts.word) {
-            let stringRepresentation = this.source.input.css.slice(
-                sourceOffset(this.source.input.css, this.source.start),
-                sourceOffset(this.source.input.css, this.source.end)
-            )
+      let inputString = ('document' in this.source.input)
+        ? this.source.input.document
+        : this.source.input.css
+      let stringRepresentation = inputString.slice(
+        sourceOffset(inputString, this.source.start),
+        sourceOffset(inputString, this.source.end)
+      )
             let index = stringRepresentation.indexOf(opts.word)
             if (index !== -1) {
                 start = this.positionInside(index)
