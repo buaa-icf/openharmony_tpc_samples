@@ -7,7 +7,7 @@
 ## How to Install
 
 ```shell
-ohpm  install complex.js@2.1.1
+ohpm  install complex.js@2.4.2
 ```
 
 For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
