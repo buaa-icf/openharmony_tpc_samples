@@ -1,18 +1,31 @@
+'use strict';
+
 import * as conventions from './conventions'
 import * as dom from './dom'
 import * as entities from './entities'
 import * as sax from './sax'
+import * as errors from "./errors"
+
+// var conventions = require('./conventions');
+// var dom = require('./dom');
+// var errors = require('./errors');
+// var entities = require('./entities');
+// var sax = require('./sax');
 
 var DOMImplementation = dom.DOMImplementation;
 
+var hasDefaultHTMLNamespace = conventions.hasDefaultHTMLNamespace;
+var isHTMLMimeType = conventions.isHTMLMimeType;
+var isValidMimeType = conventions.isValidMimeType;
 var MIME_TYPE = conventions.MIME_TYPE;
 var NAMESPACE = conventions.NAMESPACE;
+var ParseError = errors.ParseError;
 
-var ParseError = sax.ParseError;
 var XMLReader = sax.XMLReader;
 
 /**
- * Normalizes line ending according to <https://www.w3.org/TR/xml11/#sec-line-ends>:
+ * Normalizes line ending according to <https://www.w3.org/TR/xml11/#sec-line-ends>,
+ * including some Unicode "newline" characters:
  *
  * > XML parsed entities are often stored in computer files which,
  * > for editing convenience, are organized into lines.
@@ -21,19 +34,21 @@ var XMLReader = sax.XMLReader;
  * >
  * > To simplify the tasks of applications, the XML processor must behave
  * > as if it normalized all line breaks in external parsed entities (including the document entity)
- * > on input, before parsing, by translating all of the following to a single #xA character:
+ * > on input, before parsing, by translating the following to a single #xA character:
  * >
- * > 1. the two-character sequence #xD #xA
- * > 2. the two-character sequence #xD #x85
- * > 3. the single character #x85
- * > 4. the single character #x2028
- * > 5. any #xD character that is not immediately followed by #xA or #x85.
+ * > 1. the two-character sequence #xD #xA,
+ * > 2. the two-character sequence #xD #x85,
+ * > 3. the single character #x85,
+ * > 4. the single character #x2028,
+ * > 5. the single character #x2029,
+ * > 6. any #xD character that is not immediately followed by #xA or #x85.
  *
  * @param {string} input
  * @returns {string}
+ * @prettierignore
  */
 function normalizeLineEndings(input) {
-	return input.replace(/\r[\n\u0085]/g, '\n').replace(/[\r\u0085\u2028]/g, '\n');
+	return input.replace(/\r[\n\u0085]/g, '\n').replace(/[\r\u0085\u2028\u2029]/g, '\n');
 }
 
 /**
@@ -44,73 +59,109 @@ function normalizeLineEndings(input) {
 
 /**
  * @typedef DOMParserOptions
- * @property {typeof conventions.assign} [assign=Object.assign || conventions.assign]
- * The method to use instead of `Object.assign` (or if not available `conventions.assign`),
- * which is used to copy values from the options before they are used for parsing.
+ * @property {typeof assign} [assign]
+ * The method to use instead of `conventions.assign`, which is used to copy values from
+ * `options` before they are used for parsing.
  * @property {typeof DOMHandler} [domHandler]
- * For internal testing: The class for creating an instance for handling events from the SAX parser.
- * Warning: By configuring a faulty implementation, the specified behavior can completely be broken.
+ * For internal testing: The class for creating an instance for handling events from the SAX
+ * parser.
+ * *****Warning: By configuring a faulty implementation, the specified behavior can completely
+ * be broken.*****.
  * @property {Function} [errorHandler]
+ * DEPRECATED! use `onError` instead.
+ * @property {function(level:ErrorLevel, message:string, context: DOMHandler):void}
+ * [onError]
+ * A function invoked for every error that occurs during parsing.
+ *
+ * If it is not provided, all errors are reported to `console.error`
+ * and only `fatalError`s are thrown as a `ParseError`,
+ * which prevents any further processing.
+ * If the provided method throws, a `ParserError` is thrown,
+ * which prevents any further processing.
+ *
+ * Be aware that many `warning`s are considered an error that prevents further processing in
+ * most implementations.
  * @property {boolean} [locator=true]
- * Configures if the nodes created during parsing
- * will have a `lineNumber` and a `columnNumber` attribute
- * describing their location in the XML string.
+ * Configures if the nodes created during parsing will have a `lineNumber` and a `columnNumber`
+ * attribute describing their location in the XML string.
  * Default is true.
  * @property {(string) => string} [normalizeLineEndings]
- * used to replace line endings before parsing, defaults to `normalizeLineEndings`
- * @property {object} [xmlns]
+ * used to replace line endings before parsing, defaults to exported `normalizeLineEndings`,
+ * which normalizes line endings according to <https://www.w3.org/TR/xml11/#sec-line-ends>,
+ * including some Unicode "newline" characters.
+ * @property {Object} [xmlns]
  * The XML namespaces that should be assumed when parsing.
  * The default namespace can be provided by the key that is the empty string.
  * When the `mimeType` for HTML, XHTML or SVG are passed to `parseFromString`,
  * the default namespace that will be used,
  * will be overridden according to the specification.
- *
- * @see normalizeLineEndings
+ * @see {@link normalizeLineEndings}
  */
 
 /**
- * The DOMParser interface provides the ability to parse XML or HTML source code
- * from a string into a DOM `Document`.
+ * The DOMParser interface provides the ability to parse XML or HTML source code from a string
+ * into a DOM `Document`.
  *
- * _xmldom is different from the spec in that it allows an `options` parameter,
- * to control the behavior._
+ * ***xmldom is different from the spec in that it allows an `options` parameter,
+ * to control the behavior***.
  *
+ * @class
  * @param {DOMParserOptions} [options]
- * @constructor
- *
  * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMParser
  * @see https://html.spec.whatwg.org/multipage/dynamic-markup-insertion.html#dom-parsing-and-serialization
  */
 function DOMParser(options) {
-	options = options || { locator: true };
+	options = options || {};
+	if (options.locator === undefined) {
+		options.locator = true;
+	}
 
 	/**
-	 * The method to use instead of `Object.assign` (or if not available `conventions.assign`),
-	 * which is used to copy values from the options before they are used for parsing.
+	 * The method to use instead of `conventions.assign`, which is used to copy values from
+	 * `options`
+	 * before they are used for parsing.
 	 *
-	 * @type {function (target: object, source: object | null | undefined): object}
-	 * @readonly
+	 * @type {conventions.assign}
 	 * @private
-	 * @see conventions.assign
+	 * @see {@link conventions.assign}
+	 * @readonly
 	 */
-	this.assign = options.assign || Object.assign || conventions.assign;
+	this.assign = options.assign || conventions.assign;
 
 	/**
-	 * For internal testing: The class for creating an instance for handling events from the SAX parser.
-	 * __**Warning: By configuring a faulty implementation, the specified behavior can completely be broken.**__
+	 * For internal testing: The class for creating an instance for handling events from the SAX
+	 * parser.
+	 * *****Warning: By configuring a faulty implementation, the specified behavior can completely
+	 * be broken*****.
 	 *
 	 * @type {typeof DOMHandler}
-	 * @readonly
 	 * @private
+	 * @readonly
 	 */
 	this.domHandler = options.domHandler || DOMHandler;
 
 	/**
-	 * A function that can be invoked as the errorHandler instead of the default ones.
-	 * @type {Function | undefined}
-	 * @readonly
+	 * A function that is invoked for every error that occurs during parsing.
+	 *
+	 * If it is not provided, all errors are reported to `console.error`
+	 * and only `fatalError`s are thrown as a `ParseError`,
+	 * which prevents any further processing.
+	 * If the provided method throws, a `ParserError` is thrown,
+	 * which prevents any further processing.
+	 *
+	 * Be aware that many `warning`s are considered an error that prevents further processing in
+	 * most implementations.
+	 *
+	 * @type {function(level:ErrorLevel, message:string, context: DOMHandler):void}
+	 * @see {@link onErrorStopParsing}
+	 * @see {@link onWarningStopParsing}
 	 */
-	this.errorHandler = options.errorHandler;
+	this.onError = options.onError || options.errorHandler;
+	if (options.errorHandler && typeof options.errorHandler !== 'function') {
+		throw new TypeError('errorHandler object is no longer supported, switch to onError!');
+	} else if (options.errorHandler) {
+		options.errorHandler('warning', 'The `errorHandler` option has been deprecated, use `onError` instead!', this);
+	}
 
 	/**
 	 * used to replace line endings before parsing, defaults to `normalizeLineEndings`
@@ -121,10 +172,11 @@ function DOMParser(options) {
 	this.normalizeLineEndings = options.normalizeLineEndings || normalizeLineEndings;
 
 	/**
-	 * Configures if the nodes created during parsing
-	 * will have a `lineNumber` and a `columnNumber` attribute
-	 * describing their location in the XML string.
+	 * Configures if the nodes created during parsing will have a `lineNumber` and a
+	 * `columnNumber`
+	 * attribute describing their location in the XML string.
 	 * Default is true.
+	 *
 	 * @type {boolean}
 	 * @readonly
 	 */
@@ -135,45 +187,50 @@ function DOMParser(options) {
 	 * When the `mimeType` for HTML, XHTML or SVG are passed to `parseFromString`,
 	 * the default namespace that will be used,
 	 * will be overridden according to the specification.
-	 * @type {Readonly<object>}
+	 *
+	 * @type {Readonly<Object>}
 	 * @readonly
 	 */
-	this.xmlns = options.xmlns || {};
+	this.xmlns = this.assign(Object.create(null), options.xmlns);
 }
 
 /**
- * Parses `source` using the options in the way configured by the `DOMParserOptions` of `this` `DOMParser`.
- * If `mimeType` is `text/html` an HTML `Document` is created, otherwise an XML `Document` is created.
+ * Parses `source` using the options in the way configured by the `DOMParserOptions` of `this`
+ * `DOMParser`. If `mimeType` is `text/html` an HTML `Document` is created,
+ * otherwise an XML `Document` is created.
  *
- * __It behaves very different from the description in the living standard__:
- * - Only allows the first argument to be a string (calls `error` handler otherwise.)
- * - The second parameter is optional (defaults to `application/xml`) and can be any string,
- *   no `TypeError` will be thrown for values not listed in the spec.
- * - Uses the `options` passed to the `DOMParser` constructor to modify the behavior/implementation.
- * - Instead of creating a Document containing the error message,
- *   it triggers `errorHandler`(s) when unexpected input is found, which means it can return `undefined`.
- *   All error handlers can throw an `Error`, by default only the `fatalError` handler throws (a `ParserError`).
- * - All errors thrown during the parsing that are not a `ParserError` are caught and reported using the `error` handler.
- * - If no `ParserError` is thrown, this method returns the `DOMHandler.doc`,
- *   which most likely is the `Document` that has been created during parsing, or `undefined`.
- *   __**Warning: By configuring a faulty DOMHandler implementation,
- *   the specified behavior can completely be broken.**__
+ * __It behaves different from the description in the living standard__:
+ * - Uses the `options` passed to the `DOMParser` constructor to modify the behavior.
+ * - Any unexpected input is reported to `onError` with either a `warning`,
+ * `error` or `fatalError` level.
+ * - Any `fatalError` throws a `ParseError` which prevents further processing.
+ * - Any error thrown by `onError` is converted to a `ParseError` which prevents further
+ * processing - If no `Document` was created during parsing it is reported as a `fatalError`.
+ * *****Warning: By configuring a faulty DOMHandler implementation,
+ * the specified behavior can completely be broken*****.
  *
- * @param {string} source Only string input is possible!
+ * @param {string} source
+ * The XML mime type only allows string input!
  * @param {string} [mimeType='application/xml']
- *        the mimeType or contentType of the document to be created
- *        determines the `type` of document created (XML or HTML)
- * @returns {Document | undefined}
- * @throws ParseError for specific errors depending on the configured `errorHandler`s and/or `domBuilder`
- *
+ * the mimeType or contentType of the document to be created determines the `type` of document
+ * created (XML or HTML)
+ * @returns {Document}
+ * The `Document` node.
+ * @throws {ParseError}
+ * for any `fatalError` or anything that is thrown by `onError`
+ * @throws {TypeError}
+ * for any invalid `mimeType`
  * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMParser/parseFromString
  * @see https://html.spec.whatwg.org/#dom-domparser-parsefromstring-dev
  */
 DOMParser.prototype.parseFromString = function (source, mimeType) {
-	var defaultNSMap = this.assign({}, this.xmlns);
+	if (!isValidMimeType(mimeType)) {
+		throw new TypeError('DOMParser.parseFromString: the provided mimeType "' + mimeType + '" is not valid.');
+	}
+	var defaultNSMap = this.assign(Object.create(null), this.xmlns);
 	var entityMap = entities.XML_ENTITIES;
 	var defaultNamespace = defaultNSMap[''] || null;
-	if (MIME_TYPE.hasDefaultHTMLNamespace(mimeType)) {
+	if (hasDefaultHTMLNamespace(mimeType)) {
 		entityMap = entities.HTML_ENTITIES;
 		defaultNamespace = NAMESPACE.HTML;
 	} else if (mimeType === MIME_TYPE.XML_SVG_IMAGE) {
@@ -185,6 +242,7 @@ DOMParser.prototype.parseFromString = function (source, mimeType) {
 	var domBuilder = new this.domHandler({
 		mimeType: mimeType,
 		defaultNamespace: defaultNamespace,
+		onError: this.onError,
 	});
 	var locator = this.locator ? {} : undefined;
 	if (this.locator) {
@@ -192,60 +250,32 @@ DOMParser.prototype.parseFromString = function (source, mimeType) {
 	}
 
 	var sax = new XMLReader();
-	sax.errorHandler = buildErrorHandler(this.errorHandler, domBuilder, locator);
+	sax.errorHandler = domBuilder;
 	sax.domBuilder = domBuilder;
-	if (source && typeof source === 'string') {
-		sax.parse(this.normalizeLineEndings(source), defaultNSMap, entityMap);
-	} else {
-		sax.errorHandler.error('invalid doc source');
+	var isXml = !conventions.isHTMLMimeType(mimeType);
+	if (isXml && typeof source !== 'string') {
+		sax.errorHandler.fatalError('source is not a string');
+	}
+	sax.parse(this.normalizeLineEndings(String(source)), defaultNSMap, entityMap);
+	if (!domBuilder.doc.documentElement) {
+		sax.errorHandler.fatalError('missing root element');
 	}
 	return domBuilder.doc;
 };
-function buildErrorHandler(errorImpl, domBuilder, locator) {
-	if (!errorImpl) {
-		if (domBuilder instanceof DOMHandler) {
-			return domBuilder;
-		}
-		errorImpl = domBuilder;
-	}
-	var errorHandler = {};
-	var isCallback = errorImpl instanceof Function;
-	locator = locator || {};
-	function build(key) {
-		var fn = errorImpl[key];
-		if (!fn && isCallback) {
-			fn =
-				errorImpl.length == 2
-					? function (msg) {
-							errorImpl(key, msg);
-					  }
-					: errorImpl;
-		}
-		errorHandler[key] =
-			(fn &&
-				function (msg) {
-					fn('[xmldom ' + key + ']\t' + msg + _locator(locator));
-				}) ||
-			function () {};
-	}
-	build('warning');
-	build('error');
-	build('fatalError');
-	return errorHandler;
-}
 
 /**
  * @typedef DOMHandlerOptions
  * @property {string} [mimeType=MIME_TYPE.XML_APPLICATION]
- * @property {string|null} [defaultNamespace=null]
+ * @property {string | null} [defaultNamespace=null]
  */
 /**
- * The class that is used to handle events from the SAX parser to create the related DOM elements.
+ * The class that is used to handle events from the SAX parser to create the related DOM
+ * elements.
  *
  * Some methods are only implemented as an empty function,
  * since they are (at least currently) not relevant for xmldom.
  *
- * @constructor
+ * @class
  * @param {DOMHandlerOptions} [options]
  * @see http://www.saxproject.org/apidoc/org/xml/sax/ext/DefaultHandler2.html
  */
@@ -257,8 +287,8 @@ function DOMHandler(options) {
 	 * It defaults to MIME_TYPE.XML_APPLICATION.
 	 *
 	 * @type {string}
+	 * @see {@link MIME_TYPE}
 	 * @readonly
-	 * @see MIME_TYPE
 	 */
 	this.mimeType = opt.mimeType || MIME_TYPE.XML_APPLICATION;
 
@@ -266,21 +296,23 @@ function DOMHandler(options) {
 	 * The namespace to use to create an XML document.
 	 * For the following reasons this is required:
 	 * - The SAX API for `startDocument` doesn't offer any way to pass a namespace,
-	 *   since at that point there is no way for the parser to know what the default namespace from the document will be.
-	 * - When creating using `DOMImplementation.createDocument` it is required to pass a namespace,
-	 *   to determine the correct `Document.contentType`, which should match `this.mimeType`.
+	 * since at that point there is no way for the parser to know what the default namespace from
+	 * the document will be.
+	 * - When creating using `DOMImplementation.createDocument` it is required to pass a
+	 * namespace,
+	 * to determine the correct `Document.contentType`, which should match `this.mimeType`.
 	 * - When parsing an XML document with the `application/xhtml+xml` mimeType,
-	 *   the HTML namespace needs to be the default namespace.
+	 * the HTML namespace needs to be the default namespace.
 	 *
-	 * @type {string|null}
-	 * @readonly
+	 * @type {string | null}
 	 * @private
+	 * @readonly
 	 */
 	this.defaultNamespace = opt.defaultNamespace || null;
 
 	/**
-	 * @private
 	 * @type {boolean}
+	 * @private
 	 */
 	this.cdata = false;
 
@@ -306,21 +338,28 @@ function DOMHandler(options) {
 
 	/**
 	 * The locator is stored as part of setDocumentLocator.
-	 * It is controlled and mutated by the SAX parser
-	 * to store the current parsing position.
+	 * It is controlled and mutated by the SAX parser to store the current parsing position.
 	 * It is used by DOMHandler to set `columnNumber` and `lineNumber`
 	 * on the DOM nodes.
 	 *
 	 * @type {Readonly<Locator> | undefined}
-	 * @readonly (the sax parser currently sometimes set's it)
 	 * @private
+	 * @readonly (the
+	 * sax parser currently sometimes set's it)
 	 */
 	this.locator = undefined;
+	/**
+	 * @type {function (level:ErrorLevel ,message:string, context:DOMHandler):void}
+	 * @readonly
+	 */
+	this.onError = opt.onError;
 }
+
 function position(locator, node) {
 	node.lineNumber = locator.lineNumber;
 	node.columnNumber = locator.columnNumber;
 }
+
 DOMHandler.prototype = {
 	/**
 	 * Either creates an XML or an HTML document and stores it under `this.doc`.
@@ -328,11 +367,11 @@ DOMHandler.prototype = {
 	 * and it will not contain any `childNodes`.
 	 * If it is an HTML document, it will be created without any `childNodes`.
 	 *
-	 * @see  http://www.saxproject.org/apidoc/org/xml/sax/ContentHandler.html
+	 * @see http://www.saxproject.org/apidoc/org/xml/sax/ContentHandler.html
 	 */
 	startDocument: function () {
 		var impl = new DOMImplementation();
-		this.doc = MIME_TYPE.isHTML(this.mimeType) ? impl.createHTMLDocument(false) : impl.createDocument(this.defaultNamespace, '');
+		this.doc = isHTMLMimeType(this.mimeType) ? impl.createHTMLDocument(false) : impl.createDocument(this.defaultNamespace, '');
 	},
 	startElement: function (namespaceURI, localName, qName, attrs) {
 		var doc = this.doc;
@@ -413,34 +452,57 @@ DOMHandler.prototype = {
 		this.cdata = false;
 	},
 
-	startDTD: function (name, publicId, systemId) {
+	startDTD: function (name, publicId, systemId, internalSubset) {
 		var impl = this.doc.implementation;
 		if (impl && impl.createDocumentType) {
-			var dt = impl.createDocumentType(name, publicId, systemId);
+			var dt = impl.createDocumentType(name, publicId, systemId, internalSubset);
 			this.locator && position(this.locator, dt);
 			appendElement(this, dt);
 			this.doc.doctype = dt;
 		}
 	},
+	reportError: function (level, message) {
+		if (typeof this.onError === 'function') {
+			try {
+				this.onError(level, message, this);
+			} catch (e) {
+				throw new ParseError('Reporting ' + level + ' "' + message + '" caused ' + e, this.locator);
+			}
+		} else {
+			console.error('[xmldom ' + level + ']\t' + message, _locator(this.locator));
+		}
+	},
 	/**
-	 * @see org.xml.sax.ErrorHandler
-	 * @link http://www.saxproject.org/apidoc/org/xml/sax/ErrorHandler.html
+	 * @see http://www.saxproject.org/apidoc/org/xml/sax/ErrorHandler.html
 	 */
-	warning: function (error) {
-		console.warn('[xmldom warning]\t' + error, _locator(this.locator));
+	warning: function (message) {
+		this.reportError('warning', message);
 	},
-	error: function (error) {
-		console.error('[xmldom error]\t' + error, _locator(this.locator));
+	error: function (message) {
+		this.reportError('error', message);
 	},
-	fatalError: function (error) {
-		throw new ParseError(error, this.locator);
+	/**
+	 * This function reports a fatal error and throws a ParseError.
+	 *
+	 * @param {string} message
+	 * - The message to be used for reporting and throwing the error.
+	 * @returns {never}
+	 * This function always throws an error and never returns a value.
+	 * @throws {ParseError}
+	 * Always throws a ParseError with the provided message.
+	 */
+	fatalError: function (message) {
+		this.reportError('fatalError', message);
+		throw new ParseError(message, this.locator);
 	},
 };
+
 function _locator(l) {
 	if (l) {
 		return '\n@#[line:' + l.lineNumber + ',col:' + l.columnNumber + ']';
 	}
 }
+
 function _toString(chars, start, length) {
 	if (typeof chars == 'string') {
 		return chars.substr(start, length);
@@ -494,13 +556,40 @@ function _toString(chars, start, length) {
 );
 
 /* Private static helpers treated below as private instance methods, so don't need to add these to the public API; we might use a Relator to also get rid of non-standard public properties */
-function appendElement(hander, node) {
-	if (!hander.currentElement) {
-		hander.doc.appendChild(node);
+function appendElement(handler, node) {
+	if (!handler.currentElement) {
+		handler.doc.appendChild(node);
 	} else {
-		hander.currentElement.appendChild(node);
+		handler.currentElement.appendChild(node);
 	}
-} //appendChild and setAttributeNS are preformance key
+}
 
-let __DOMHandler = DOMHandler
-export { __DOMHandler, normalizeLineEndings, DOMParser }
+/**
+ * A method that prevents any further parsing when an `error`
+ * with level `error` is reported during parsing.
+ *
+ * @see {@link DOMParserOptions.onError}
+ * @see {@link onWarningStopParsing}
+ */
+function onErrorStopParsing(level) {
+	if (level === 'error') throw 'onErrorStopParsing';
+}
+
+/**
+ * A method that prevents any further parsing when any `error` is reported during parsing.
+ *
+ * @see {@link DOMParserOptions.onError}
+ * @see {@link onErrorStopParsing}
+ */
+function onWarningStopParsing() {
+	throw 'onWarningStopParsing';
+}
+
+export {
+	DOMHandler,
+	DOMParser,
+	normalizeLineEndings,
+	onErrorStopParsing,
+	onWarningStopParsing,
+}
+

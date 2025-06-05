@@ -1,15 +1,20 @@
-import { isHTMLRawTextElement,isHTMLEscapableRawTextElement,NAMESPACE,MIME_TYPE } from './conventions'
+'use strict';
 
-//[4]   	NameStartChar	   ::=   	":" | [A-Z] | "_" | [a-z] | [#xC0-#xD6] | [#xD8-#xF6] | [#xF8-#x2FF] | [#x370-#x37D] | [#x37F-#x1FFF] | [#x200C-#x200D] | [#x2070-#x218F] | [#x2C00-#x2FEF] | [#x3001-#xD7FF] | [#xF900-#xFDCF] | [#xFDF0-#xFFFD] | [#x10000-#xEFFFF]
-//[4a]   	NameChar	   ::=   	NameStartChar | "-" | "." | [0-9] | #xB7 | [#x0300-#x036F] | [#x203F-#x2040]
-//[5]   	Name	   ::=   	NameStartChar (NameChar)*
-var nameStartChar =
-	/[A-Z_a-z\xC0-\xD6\xD8-\xF6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD]/; //\u10000-\uEFFFF
-var nameChar = new RegExp('[\\-\\.0-9' + nameStartChar.source.slice(1, -1) + '\\u00B7\\u0300-\\u036F\\u203F-\\u2040]');
-var tagNamePattern = new RegExp(
-	'^' + nameStartChar.source + nameChar.source + '*(?::' + nameStartChar.source + nameChar.source + '*)?$'
-);
-//var tagNamePattern = /^[a-zA-Z_][\w\-\.]*(?:\:[a-zA-Z_][\w\-\.]*)?$/
+import * as conventions from "./conventions";
+import * as g from "./grammar";
+import * as errors from "./errors";
+// var conventions = require('./conventions');
+// var g = require('./grammar');
+// var errors = require('./errors');
+
+var isHTMLEscapableRawTextElement = conventions.isHTMLEscapableRawTextElement;
+var isHTMLMimeType = conventions.isHTMLMimeType;
+var isHTMLRawTextElement = conventions.isHTMLRawTextElement;
+var hasOwn = conventions.hasOwn;
+var NAMESPACE = conventions.NAMESPACE;
+var ParseError = errors.ParseError;
+var DOMException = errors.DOMException;
+
 //var handlers = 'resolveEntity,getExternalSubset,characters,endDocument,endElement,endPrefixMapping,ignorableWhitespace,processingInstruction,setDocumentLocator,skippedEntity,startDocument,startElement,startPrefixMapping,notationDecl,unparsedEntityDecl,error,fatalError,warning,attributeDecl,elementDecl,externalEntityDecl,internalEntityDecl,comment,endCDATA,endDTD,endEntity,startCDATA,startDTD,startEntity'.split(',')
 
 //S_TAG,	S_ATTR,	S_EQ,	S_ATTR_NOQUOT_VALUE
@@ -23,34 +28,33 @@ var S_ATTR_END = 5; //attr value end and no space(quot end)
 var S_TAG_SPACE = 6; //(attr value end || tag end ) && (space offer)
 var S_TAG_CLOSE = 7; //closed el<el />
 
-/**
- * Creates an error that will not be caught by XMLReader aka the SAX parser.
- *
- * @param {string} message
- * @param {any?} locator Optional, can provide details about the location in the source
- * @constructor
- */
-function ParseError(message, locator) {
-	this.message = message;
-	this.locator = locator;
-	if (Error.captureStackTrace) Error.captureStackTrace(this, ParseError);
-}
-ParseError.prototype = new Error();
-ParseError.prototype.name = ParseError.name;
-
 function XMLReader() {}
 
 XMLReader.prototype = {
 	parse: function (source, defaultNSMap, entityMap) {
 		var domBuilder = this.domBuilder;
 		domBuilder.startDocument();
-		_copy(defaultNSMap, (defaultNSMap = {}));
+		_copy(defaultNSMap, (defaultNSMap = Object.create(null)));
 		parse(source, defaultNSMap, entityMap, domBuilder, this.errorHandler);
 		domBuilder.endDocument();
 	},
 };
+
+/**
+ * Detecting everything that might be a reference,
+ * including those without ending `;`, since those are allowed in HTML.
+ * The entityReplacer takes care of verifying and transforming each occurrence,
+ * and reports to the errorHandler on those that are not OK,
+ * depending on the context.
+ */
+var ENTITY_REG = /&#?\w+;?/g;
+
 function parse(source, defaultNSMapCopy, entityMap, domBuilder, errorHandler) {
-	var isHTML = MIME_TYPE.isHTML(domBuilder.mimeType);
+	var isHTML = isHTMLMimeType(domBuilder.mimeType);
+	if (source.indexOf(g.UNICODE_REPLACEMENT_CHARACTER) >= 0) {
+		errorHandler.warning('Unicode replacement character detected, source encoding issues?');
+	}
+
 	function fixedFromCharCode(code) {
 		// String.prototype.fromCharCode does not supports
 		// > 2 bytes unicode chars directly
@@ -64,102 +68,131 @@ function parse(source, defaultNSMapCopy, entityMap, domBuilder, errorHandler) {
 			return String.fromCharCode(code);
 		}
 	}
+
 	function entityReplacer(a) {
-		var k = a.slice(1, -1);
-		if (Object.hasOwnProperty.call(entityMap, k)) {
+		var complete = a[a.length - 1] === ';' ? a : a + ';';
+		if (!isHTML && complete !== a) {
+			errorHandler.error('EntityRef: expecting ;');
+			return a;
+		}
+		var match = g.Reference.exec(complete);
+		if (!match || match[0].length !== complete.length) {
+			errorHandler.error('entity not matching Reference production: ' + a);
+			return a;
+		}
+		var k = complete.slice(1, -1);
+		if (hasOwn(entityMap, k)) {
 			return entityMap[k];
 		} else if (k.charAt(0) === '#') {
-			return fixedFromCharCode(parseInt(k.substr(1).replace('x', '0x')));
+			return fixedFromCharCode(parseInt(k.substring(1).replace('x', '0x')));
 		} else {
 			errorHandler.error('entity not found:' + a);
 			return a;
 		}
 	}
+
 	function appendText(end) {
 		//has some bugs
 		if (end > start) {
-			var xt = source.substring(start, end).replace(/&#?\w+;/g, entityReplacer);
+			var xt = source.substring(start, end).replace(ENTITY_REG, entityReplacer);
 			locator && position(start);
 			domBuilder.characters(xt, 0, end - start);
 			start = end;
 		}
 	}
+
+	var lineStart = 0;
+	var lineEnd = 0;
+	var linePattern = /\r\n?|\n|$/g;
+	var locator = domBuilder.locator;
+
 	function position(p, m) {
 		while (p >= lineEnd && (m = linePattern.exec(source))) {
-			lineStart = m.index;
-			lineEnd = lineStart + m[0].length;
+			lineStart = lineEnd;
+			lineEnd = m.index + m[0].length;
 			locator.lineNumber++;
 		}
 		locator.columnNumber = p - lineStart + 1;
 	}
-	var lineStart = 0;
-	var lineEnd = 0;
-	var linePattern = /.*(?:\r\n?|\n)|.*$/g;
-	var locator = domBuilder.locator;
 
 	var parseStack = [{ currentNSMap: defaultNSMapCopy }];
-	var closeMap = {};
+	var unclosedTags = [];
 	var start = 0;
 	while (true) {
 		try {
 			var tagStart = source.indexOf('<', start);
 			if (tagStart < 0) {
-				if (!source.substr(start).match(/^\s*$/)) {
+				if (!isHTML && unclosedTags.length > 0) {
+					return errorHandler.fatalError('unclosed xml tag(s): ' + unclosedTags.join(', '));
+				}
+				if (!source.substring(start).match(/^\s*$/)) {
 					var doc = domBuilder.doc;
-					var text = doc.createTextNode(source.substr(start));
+					var text = doc.createTextNode(source.substring(start));
+					if (doc.documentElement) {
+						return errorHandler.error('Extra content at the end of the document');
+					}
 					doc.appendChild(text);
 					domBuilder.currentElement = text;
 				}
 				return;
 			}
 			if (tagStart > start) {
+				var fromSource = source.substring(start, tagStart);
+				if (!isHTML && unclosedTags.length === 0) {
+					fromSource = fromSource.replace(new RegExp(g.S_OPT.source, 'g'), '');
+					fromSource && errorHandler.error("Unexpected content outside root element: '" + fromSource + "'");
+				}
 				appendText(tagStart);
 			}
 			switch (source.charAt(tagStart + 1)) {
 				case '/':
-					var config = parseStack.pop();
-					var end = source.indexOf('>', tagStart + 3);
+					var end = source.indexOf('>', tagStart + 2);
 					var tagNameRaw = source.substring(tagStart + 2, end > 0 ? end : undefined);
-					var tagNameMatch = new RegExp('(' + tagNamePattern.source.slice(0, -1) + ')').exec(tagNameRaw);
-					// for the root level the config does not contain the tagName
-					var tagName =
-						tagNameMatch && tagNameMatch[1] ? tagNameMatch[1] : config.tagName || domBuilder.doc.documentElement.tagName;
-					if (end < 0) {
-						errorHandler.error('end tag name: ' + tagName + ' is not complete');
-						end = tagStart + 1 + tagName.length;
-					} else if (tagNameRaw.match(/</) && !isHTML) {
-						errorHandler.error('end tag name: ' + tagName + ' maybe not complete');
+					if (!tagNameRaw) {
+						return errorHandler.fatalError('end tag name missing');
 					}
+					var tagNameMatch = end > 0 && g.reg('^', g.QName_group, g.S_OPT, '$').exec(tagNameRaw);
+					if (!tagNameMatch) {
+						return errorHandler.fatalError('end tag name contains invalid characters: "' + tagNameRaw + '"');
+					}
+					if (!domBuilder.currentElement && !domBuilder.doc.documentElement) {
+						// not enough information to provide a helpful error message,
+						// but parsing will throw since there is no root element
+						return;
+					}
+					var currentTagName =
+						unclosedTags[unclosedTags.length - 1] ||
+						domBuilder.currentElement.tagName ||
+						domBuilder.doc.documentElement.tagName ||
+						'';
+					if (currentTagName !== tagNameMatch[1]) {
+						var tagNameLower = tagNameMatch[1].toLowerCase();
+						if (!isHTML || currentTagName.toLowerCase() !== tagNameLower) {
+							return errorHandler.fatalError('Opening and ending tag mismatch: "' + currentTagName + '" != "' + tagNameRaw + '"');
+						}
+					}
+					var config = parseStack.pop();
+					unclosedTags.pop();
 					var localNSMap = config.localNSMap;
-					var endMatch = config.tagName == tagName;
-					var endIgnoreCaseMach = endMatch || (config.tagName && config.tagName.toLowerCase() == tagName.toLowerCase());
-					if (endIgnoreCaseMach) {
-						domBuilder.endElement(config.uri, config.localName, tagName);
-						if (localNSMap) {
-							for (var prefix in localNSMap) {
-								if (Object.prototype.hasOwnProperty.call(localNSMap, prefix)) {
-									domBuilder.endPrefixMapping(prefix);
-								}
+					domBuilder.endElement(config.uri, config.localName, currentTagName);
+					if (localNSMap) {
+						for (var prefix in localNSMap) {
+							if (hasOwn(localNSMap, prefix)) {
+								domBuilder.endPrefixMapping(prefix);
 							}
 						}
-						if (!endMatch) {
-							// No known test case
-							errorHandler.fatalError('end tag name: ' + tagName + ' is not match the current start tagName:' + config.tagName);
-						}
-					} else {
-						parseStack.push(config);
 					}
 
 					end++;
 					break;
-				// end elment
+				// end element
 				case '?': // <?...?>
 					locator && position(tagStart);
-					end = parseInstruction(source, tagStart, domBuilder);
+					end = parseProcessingInstruction(source, tagStart, domBuilder, errorHandler);
 					break;
 				case '!': // <!doctype,<![CDATA,<!--
 					locator && position(tagStart);
-					end = parseDCC(source, tagStart, domBuilder, errorHandler);
+					end = parseDoctypeCommentOrCData(source, tagStart, domBuilder, errorHandler, isHTML);
 					break;
 				default:
 					locator && position(tagStart);
@@ -169,10 +202,11 @@ function parse(source, defaultNSMapCopy, entityMap, domBuilder, errorHandler) {
 					var end = parseElementStartPart(source, tagStart, el, currentNSMap, entityReplacer, errorHandler, isHTML);
 					var len = el.length;
 
-					if (!el.closed && fixSelfClosed(source, end, el.tagName, closeMap)) {
-						el.closed = true;
-						if (!isHTML) {
-							errorHandler.warning('unclosed xml attribute');
+					if (!el.closed) {
+						if (isHTML && conventions.isHTMLVoidElement(el.tagName)) {
+							el.closed = true;
+						} else {
+							unclosedTags.push(el.tagName);
 						}
 					}
 					if (locator && len) {
@@ -203,6 +237,8 @@ function parse(source, defaultNSMapCopy, entityMap, domBuilder, errorHandler) {
 		} catch (e) {
 			if (e instanceof ParseError) {
 				throw e;
+			} else if (e instanceof DOMException) {
+				throw new ParseError(e.name + ': ' + e.message, domBuilder.locator, e);
 			}
 			errorHandler.error('element parse error: ' + e);
 			end = -1;
@@ -210,11 +246,12 @@ function parse(source, defaultNSMapCopy, entityMap, domBuilder, errorHandler) {
 		if (end > start) {
 			start = end;
 		} else {
-			//TODO: 这里有可能sax回退，有位置错误风险
+			//Possible sax fallback here, risk of positional error
 			appendText(Math.max(tagStart, start) + 1);
 		}
 	}
 }
+
 function copyLocator(f, t) {
 	t.lineNumber = f.lineNumber;
 	t.columnNumber = f.columnNumber;
@@ -222,8 +259,9 @@ function copyLocator(f, t) {
 }
 
 /**
- * @see #appendElement(source,elStartEnd,el,selfClosed,entityReplacer,domBuilder,parseStack);
- * @return end of the elementStartPart(end of elementEndPart for selfClosed el)
+ * @returns
+ * end of the elementStartPart(end of elementEndPart for selfClosed el)
+ * @see {@link #appendElement}
  */
 function parseElementStartPart(source, start, el, currentNSMap, entityReplacer, errorHandler, isHTML) {
 	/**
@@ -232,8 +270,11 @@ function parseElementStartPart(source, start, el, currentNSMap, entityReplacer, 
 	 * @param {number} startIndex
 	 */
 	function addAttribute(qname, value, startIndex) {
-		if (el.attributeNames.hasOwnProperty(qname)) {
-			errorHandler.fatalError('Attribute ' + qname + ' redefined');
+		if (hasOwn(el.attributeNames, qname)) {
+			return errorHandler.fatalError('Attribute ' + qname + ' redefined');
+		}
+		if (!isHTML && value.indexOf('<') >= 0) {
+			return errorHandler.fatalError("Unescaped '<' not allowed in attributes values");
 		}
 		el.addValue(
 			qname,
@@ -241,10 +282,11 @@ function parseElementStartPart(source, start, el, currentNSMap, entityReplacer, 
 			// since the xmldom sax parser does not "interpret" DTD the following is not implemented:
 			// - recursive replacement of (DTD) entity references
 			// - trimming and collapsing multiple spaces into a single one for attributes that are not of type CDATA
-			value.replace(/[\t\n\r]/g, ' ').replace(/&#?\w+;/g, entityReplacer),
+			value.replace(/[\t\n\r]/g, ' ').replace(ENTITY_REG, entityReplacer),
 			startIndex
 		);
 	}
+
 	var attrName;
 	var value;
 	var p = ++start;
@@ -307,7 +349,9 @@ function parseElementStartPart(source, start, el, currentNSMap, entityReplacer, 
 						el.closed = true;
 					case S_ATTR_NOQUOT_VALUE:
 					case S_ATTR:
+						break;
 					case S_ATTR_SPACE:
+						el.closed = true;
 						break;
 					//case S_EQ:
 					default:
@@ -350,9 +394,10 @@ function parseElementStartPart(source, start, el, currentNSMap, entityReplacer, 
 						}
 						break;
 					case S_EQ:
-						throw new Error('attribute value missed!!');
+						if (!isHTML) {
+							return errorHandler.fatalError('AttValue: \' or " expected');
+						}
 				}
-				//			console.log(tagName,tagNamePattern,tagNamePattern.test(tagName))
 				return p;
 			/*xml space '\x20' | #x9 | #xD | #xA; */
 			case '\u0080':
@@ -414,17 +459,17 @@ function parseElementStartPart(source, start, el, currentNSMap, entityReplacer, 
 					}
 				}
 		} //end outer switch
-		//console.log('p++',p)
 		p++;
 	}
 }
+
 /**
- * @return true if has new namespace define
+ * @returns
+ * `true` if a new namespace has been defined.
  */
 function appendElement(el, domBuilder, currentNSMap) {
 	var tagName = el.tagName;
 	var localNSMap = null;
-	//var currentNSMap = parseStack[parseStack.length-1].currentNSMap;
 	var i = el.length;
 	while (i--) {
 		var a = el[i];
@@ -446,10 +491,8 @@ function appendElement(el, domBuilder, currentNSMap) {
 		if (nsPrefix !== false) {
 			//hack!!
 			if (localNSMap == null) {
-				localNSMap = {};
-				//console.log(currentNSMap,0)
-				_copy(currentNSMap, (currentNSMap = {}));
-				//console.log(currentNSMap,1)
+				localNSMap = Object.create(null);
+				_copy(currentNSMap, (currentNSMap = Object.create(null)));
 			}
 			currentNSMap[nsPrefix] = localNSMap[nsPrefix] = value;
 			a.uri = NAMESPACE.XMLNS;
@@ -486,7 +529,7 @@ function appendElement(el, domBuilder, currentNSMap) {
 		domBuilder.endElement(ns, localName, tagName);
 		if (localNSMap) {
 			for (prefix in localNSMap) {
-				if (Object.prototype.hasOwnProperty.call(localNSMap, prefix)) {
+				if (hasOwn(localNSMap, prefix)) {
 					domBuilder.endPrefixMapping(prefix);
 				}
 			}
@@ -498,6 +541,7 @@ function appendElement(el, domBuilder, currentNSMap) {
 		return true;
 	}
 }
+
 function parseHtmlSpecialContent(source, elStartEnd, tagName, entityReplacer, domBuilder) {
 	// https://html.spec.whatwg.org/#raw-text-elements
 	// https://html.spec.whatwg.org/#escapable-raw-text-elements
@@ -509,117 +553,347 @@ function parseHtmlSpecialContent(source, elStartEnd, tagName, entityReplacer, do
 		var text = source.substring(elStartEnd + 1, elEndStart);
 
 		if (isEscapableRaw) {
-			text = text.replace(/&#?\w+;/g, entityReplacer);
+			text = text.replace(ENTITY_REG, entityReplacer);
 		}
 		domBuilder.characters(text, 0, text.length);
 		return elEndStart;
 	}
 	return elStartEnd + 1;
 }
-function fixSelfClosed(source, elStartEnd, tagName, closeMap) {
-	//if(tagName in closeMap){
-	var pos = closeMap[tagName];
-	if (pos == null) {
-		//console.log(tagName)
-		pos = source.lastIndexOf('</' + tagName + '>');
-		if (pos < elStartEnd) {
-			//忘记闭合
-			pos = source.lastIndexOf('</' + tagName);
-		}
-		closeMap[tagName] = pos;
-	}
-	return pos < elStartEnd;
-	//}
-}
 
 function _copy(source, target) {
 	for (var n in source) {
-		if (Object.prototype.hasOwnProperty.call(source, n)) {
+		if (hasOwn(source, n)) {
 			target[n] = source[n];
 		}
 	}
 }
 
-function parseDCC(source, start, domBuilder, errorHandler) {
-	//sure start with '<!'
-	var next = source.charAt(start + 2);
-	switch (next) {
-		case '-':
-			if (source.charAt(start + 3) === '-') {
-				var end = source.indexOf('-->', start + 4);
-				//append comment source.substring(4,end)//<!--
-				if (end > start) {
-					domBuilder.comment(source, start + 4, end - start - 4);
-					return end + 3;
-				} else {
-					errorHandler.error('Unclosed comment');
-					return -1;
-				}
-			} else {
-				//error
-				return -1;
-			}
-		default:
-			if (source.substr(start + 3, 6) == 'CDATA[') {
-				var end = source.indexOf(']]>', start + 9);
-				domBuilder.startCDATA();
-				domBuilder.characters(source, start + 9, end - start - 9);
-				domBuilder.endCDATA();
-				return end + 3;
-			}
-			//<!DOCTYPE
-			//startDTD(java.lang.String name, java.lang.String publicId, java.lang.String systemId)
-			var matchs = split(source, start);
-			var len = matchs.length;
-			if (len > 1 && /!doctype/i.test(matchs[0][0])) {
-				var name = matchs[1][0];
-				var pubid = false;
-				var sysid = false;
-				if (len > 3) {
-					if (/^public$/i.test(matchs[2][0])) {
-						pubid = matchs[3][0];
-						sysid = len > 4 && matchs[4][0];
-					} else if (/^system$/i.test(matchs[2][0])) {
-						sysid = matchs[3][0];
-					}
-				}
-				var lastMatch = matchs[len - 1];
-				domBuilder.startDTD(name, pubid, sysid);
-				domBuilder.endDTD();
+/**
+ * @typedef ParseUtils
+ * @property {function(relativeIndex: number?): string | undefined} char
+ * Provides look ahead access to a singe character relative to the current index.
+ * @property {function(): number} getIndex
+ * Provides read-only access to the current index.
+ * @property {function(reg: RegExp): string | null} getMatch
+ * Applies the provided regular expression enforcing that it starts at the current index and
+ * returns the complete matching string,
+ * and moves the current index by the length of the matching string.
+ * @property {function(): string} getSource
+ * Provides read-only access to the complete source.
+ * @property {function(places: number?): void} skip
+ * moves the current index by places (defaults to 1)
+ * @property {function(): number} skipBlanks
+ * Moves the current index by the amount of white space that directly follows the current index
+ * and returns the amount of whitespace chars skipped (0..n),
+ * or -1 if the end of the source was reached.
+ * @property {function(): string} substringFromIndex
+ * creates a substring from the current index to the end of `source`
+ * @property {function(compareWith: string): boolean} substringStartsWith
+ * Checks if `source` contains `compareWith`, starting from the current index.
+ * @property {function(compareWith: string): boolean} substringStartsWithCaseInsensitive
+ * Checks if `source` contains `compareWith`, starting from the current index,
+ * comparing the upper case of both sides.
+ * @see {@link parseUtils}
+ */
 
-				return lastMatch.index + lastMatch[0].length;
-			}
+/**
+ * A temporary scope for parsing and look ahead operations in `source`,
+ * starting from index `start`.
+ *
+ * Some operations move the current index by a number of positions,
+ * after which `getIndex` returns the new index.
+ *
+ * @param {string} source
+ * @param {number} start
+ * @returns {ParseUtils}
+ */
+function parseUtils(source, start) {
+	var index = start;
+
+	function char(n) {
+		n = n || 0;
+		return source.charAt(index + n);
 	}
-	return -1;
+
+	function skip(n) {
+		n = n || 1;
+		index += n;
+	}
+
+	function skipBlanks() {
+		var blanks = 0;
+		while (index < source.length) {
+			var c = char();
+			if (c !== ' ' && c !== '\n' && c !== '\t' && c !== '\r') {
+				return blanks;
+			}
+			blanks++;
+			skip();
+		}
+		return -1;
+	}
+	function substringFromIndex() {
+		return source.substring(index);
+	}
+	function substringStartsWith(text) {
+		return source.substring(index, index + text.length) === text;
+	}
+	function substringStartsWithCaseInsensitive(text) {
+		return source.substring(index, index + text.length).toUpperCase() === text.toUpperCase();
+	}
+
+	function getMatch(args) {
+		var expr = g.reg('^', args);
+		var match = expr.exec(substringFromIndex());
+		if (match) {
+			skip(match[0].length);
+			return match[0];
+		}
+		return null;
+	}
+	return {
+		char: char,
+		getIndex: function () {
+			return index;
+		},
+		getMatch: getMatch,
+		getSource: function () {
+			return source;
+		},
+		skip: skip,
+		skipBlanks: skipBlanks,
+		substringFromIndex: substringFromIndex,
+		substringStartsWith: substringStartsWith,
+		substringStartsWithCaseInsensitive: substringStartsWithCaseInsensitive,
+	};
 }
 
-function parseInstruction(source, start, domBuilder) {
-	var end = source.indexOf('?>', start);
-	if (end) {
-		var match = source.substring(start, end).match(/^<\?(\S*)\s*([\s\S]*?)\s*$/);
-		if (match) {
-			domBuilder.processingInstruction(match[1], match[2]);
-			return end + 2;
-		} else {
-			//error
-			return -1;
+/**
+ * @param {ParseUtils} p
+ * @param {DOMHandler} errorHandler
+ * @returns {string}
+ */
+function parseDoctypeInternalSubset(p, errorHandler) {
+	/**
+	 * @param {ParseUtils} p
+	 * @param {DOMHandler} errorHandler
+	 * @returns {string}
+	 */
+	function parsePI(p, errorHandler) {
+		var match = g.PI.exec(p.substringFromIndex());
+		if (!match) {
+			return errorHandler.fatalError('processing instruction is not well-formed at position ' + p.getIndex());
+		}
+		if (match[1].toLowerCase() === 'xml') {
+			return errorHandler.fatalError(
+				'xml declaration is only allowed at the start of the document, but found at position ' + p.getIndex()
+			);
+		}
+		p.skip(match[0].length);
+		return match[0];
+	}
+	// Parse internal subset
+	var source = p.getSource();
+	if (p.char() === '[') {
+		p.skip(1);
+		var intSubsetStart = p.getIndex();
+		while (p.getIndex() < source.length) {
+			p.skipBlanks();
+			if (p.char() === ']') {
+				var internalSubset = source.substring(intSubsetStart, p.getIndex());
+				p.skip(1);
+				return internalSubset;
+			}
+			var current = null;
+			// Only in external subset
+			// if (char() === '<' && char(1) === '!' && char(2) === '[') {
+			// 	parseConditionalSections(p, errorHandler);
+			// } else
+			if (p.char() === '<' && p.char(1) === '!') {
+				switch (p.char(2)) {
+					case 'E': // ELEMENT | ENTITY
+						if (p.char(3) === 'L') {
+							current = p.getMatch(g.elementdecl);
+						} else if (p.char(3) === 'N') {
+							current = p.getMatch(g.EntityDecl);
+						}
+						break;
+					case 'A': // ATTRIBUTE
+						current = p.getMatch(g.AttlistDecl);
+						break;
+					case 'N': // NOTATION
+						current = p.getMatch(g.NotationDecl);
+						break;
+					case '-': // COMMENT
+						current = p.getMatch(g.Comment);
+						break;
+				}
+			} else if (p.char() === '<' && p.char(1) === '?') {
+				current = parsePI(p, errorHandler);
+			} else if (p.char() === '%') {
+				current = p.getMatch(g.PEReference);
+			} else {
+				return errorHandler.fatalError('Error detected in Markup declaration');
+			}
+			if (!current) {
+				return errorHandler.fatalError('Error in internal subset at position ' + p.getIndex());
+			}
+		}
+		return errorHandler.fatalError('doctype internal subset is not well-formed, missing ]');
+	}
+}
+
+/**
+ * Called when the parser encounters an element starting with '<!'.
+ *
+ * @param {string} source
+ * The xml.
+ * @param {number} start
+ * the start index of the '<!'
+ * @param {DOMHandler} domBuilder
+ * @param {DOMHandler} errorHandler
+ * @param {boolean} isHTML
+ * @returns {number | never}
+ * The end index of the element.
+ * @throws {ParseError}
+ * In case the element is not well-formed.
+ */
+function parseDoctypeCommentOrCData(source, start, domBuilder, errorHandler, isHTML) {
+	var p = parseUtils(source, start);
+
+	switch (isHTML ? p.char(2).toUpperCase() : p.char(2)) {
+		case '-':
+			// should be a comment
+			var comment = p.getMatch(g.Comment);
+			if (comment) {
+				domBuilder.comment(comment, g.COMMENT_START.length, comment.length - g.COMMENT_START.length - g.COMMENT_END.length);
+				return p.getIndex();
+			} else {
+				return errorHandler.fatalError('comment is not well-formed at position ' + p.getIndex());
+			}
+		case '[':
+			// should be CDATA
+			var cdata = p.getMatch(g.CDSect);
+			if (cdata) {
+				if (!isHTML && !domBuilder.currentElement) {
+					return errorHandler.fatalError('CDATA outside of element');
+				}
+				domBuilder.startCDATA();
+				domBuilder.characters(cdata, g.CDATA_START.length, cdata.length - g.CDATA_START.length - g.CDATA_END.length);
+				domBuilder.endCDATA();
+				return p.getIndex();
+			} else {
+				return errorHandler.fatalError('Invalid CDATA starting at position ' + start);
+			}
+		case 'D': {
+			// should be DOCTYPE
+			if (domBuilder.doc && domBuilder.doc.documentElement) {
+				return errorHandler.fatalError('Doctype not allowed inside or after documentElement at position ' + p.getIndex());
+			}
+			if (isHTML ? !p.substringStartsWithCaseInsensitive(g.DOCTYPE_DECL_START) : !p.substringStartsWith(g.DOCTYPE_DECL_START)) {
+				return errorHandler.fatalError('Expected ' + g.DOCTYPE_DECL_START + ' at position ' + p.getIndex());
+			}
+			p.skip(g.DOCTYPE_DECL_START.length);
+			if (p.skipBlanks() < 1) {
+				return errorHandler.fatalError('Expected whitespace after ' + g.DOCTYPE_DECL_START + ' at position ' + p.getIndex());
+			}
+
+			var doctype = {
+				name: undefined,
+				publicId: undefined,
+				systemId: undefined,
+				internalSubset: undefined,
+			};
+			// Parse the DOCTYPE name
+			doctype.name = p.getMatch(g.Name);
+			if (!doctype.name)
+				return errorHandler.fatalError('doctype name missing or contains unexpected characters at position ' + p.getIndex());
+
+			if (isHTML && doctype.name.toLowerCase() !== 'html') {
+				errorHandler.warning('Unexpected DOCTYPE in HTML document at position ' + p.getIndex());
+			}
+			p.skipBlanks();
+
+			// Check for ExternalID
+			if (p.substringStartsWith(g.PUBLIC) || p.substringStartsWith(g.SYSTEM)) {
+				var match = g.ExternalID_match.exec(p.substringFromIndex());
+				if (!match) {
+					return errorHandler.fatalError('doctype external id is not well-formed at position ' + p.getIndex());
+				}
+				if (match.groups.SystemLiteralOnly !== undefined) {
+					doctype.systemId = match.groups.SystemLiteralOnly;
+				} else {
+					doctype.systemId = match.groups.SystemLiteral;
+					doctype.publicId = match.groups.PubidLiteral;
+				}
+				p.skip(match[0].length);
+			} else if (isHTML && p.substringStartsWithCaseInsensitive(g.SYSTEM)) {
+				// https://html.spec.whatwg.org/multipage/syntax.html#doctype-legacy-string
+				p.skip(g.SYSTEM.length);
+				if (p.skipBlanks() < 1) {
+					return errorHandler.fatalError('Expected whitespace after ' + g.SYSTEM + ' at position ' + p.getIndex());
+				}
+				doctype.systemId = p.getMatch(g.ABOUT_LEGACY_COMPAT_SystemLiteral);
+				if (!doctype.systemId) {
+					return errorHandler.fatalError(
+						'Expected ' + g.ABOUT_LEGACY_COMPAT + ' in single or double quotes after ' + g.SYSTEM + ' at position ' + p.getIndex()
+					);
+				}
+			}
+			if (isHTML && doctype.systemId && !g.ABOUT_LEGACY_COMPAT_SystemLiteral.test(doctype.systemId)) {
+				errorHandler.warning('Unexpected doctype.systemId in HTML document at position ' + p.getIndex());
+			}
+			if (!isHTML) {
+				p.skipBlanks();
+				doctype.internalSubset = parseDoctypeInternalSubset(p, errorHandler);
+			}
+			p.skipBlanks();
+			if (p.char() !== '>') {
+				return errorHandler.fatalError('doctype not terminated with > at position ' + p.getIndex());
+			}
+			p.skip(1);
+			domBuilder.startDTD(doctype.name, doctype.publicId, doctype.systemId, doctype.internalSubset);
+			domBuilder.endDTD();
+			return p.getIndex();
+		}
+		default:
+			return errorHandler.fatalError('Not well-formed XML starting with "<!" at position ' + start);
+	}
+}
+
+function parseProcessingInstruction(source, start, domBuilder, errorHandler) {
+	var match = source.substring(start).match(g.PI);
+	if (!match) {
+		return errorHandler.fatalError('Invalid processing instruction starting at position ' + start);
+	}
+	if (match[1].toLowerCase() === 'xml') {
+		if (start > 0) {
+			return errorHandler.fatalError(
+				'processing instruction at position ' + start + ' is an xml declaration which is only at the start of the document'
+			);
+		}
+		if (!g.XMLDecl.test(source.substring(start))) {
+			return errorHandler.fatalError('xml declaration is not well-formed');
 		}
 	}
-	return -1;
+	domBuilder.processingInstruction(match[1], match[2]);
+	return start + match[0].length;
 }
 
 function ElementAttributes() {
-	this.attributeNames = {};
+	this.attributeNames = Object.create(null);
 }
+
 ElementAttributes.prototype = {
 	setTagName: function (tagName) {
-		if (!tagNamePattern.test(tagName)) {
+		if (!g.QName_exact.test(tagName)) {
 			throw new Error('invalid tagName:' + tagName);
 		}
 		this.tagName = tagName;
 	},
 	addValue: function (qName, value, offset) {
-		if (!tagNamePattern.test(qName)) {
+		if (!g.QName_exact.test(qName)) {
 			throw new Error('invalid attribute:' + qName);
 		}
 		this.attributeNames[qName] = this.length;
@@ -653,16 +927,9 @@ ElementAttributes.prototype = {
 	//	getType:function(i){},
 };
 
-function split(source, start) {
-	var match;
-	var buf = [];
-	var reg = /'[^']+'|"[^"]+"|[^\s<>\/=]+=?|(\/?\s*>|<)/g;
-	reg.lastIndex = start;
-	reg.exec(source); //skip <
-	while ((match = reg.exec(source))) {
-		buf.push(match);
-		if (match[1]) return buf;
-	}
+export {
+	XMLReader,
+	parseUtils,
+	parseDoctypeCommentOrCData,
 }
 
-export { XMLReader, ParseError }
