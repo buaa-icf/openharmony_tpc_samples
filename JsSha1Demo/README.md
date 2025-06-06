@@ -10,7 +10,7 @@ This project is an OpenHarmony development example based on the [js-sha1](https:
   ohpm install js-sha1
   ohpm install @types/js-sha1 --save-dev // Install @types/js-sha1 to prevent import syntax errors due to missing type declarations in the js-sha1 package.
 ```
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ## How to Use
 
@@ -72,8 +72,8 @@ This project has been verified in the following versions:
 
 ## License
 
-This project is licensed under [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/JsSha1Demo/LICENSE).
+This project is licensed under [Apache License 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/JsSha1Demo/LICENSE).
 
 ## How to Contribute
 
-If you find any problem during the use, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+If you find any problem during the use, submit an [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
