@@ -12,7 +12,7 @@
 ohpm install leven;
 ohpm install easy-replace;
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
 ## 使用说明
 
@@ -88,8 +88,15 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 |     |---- README_zh.MD  # 安装使用方法                    
 ````
 
+## 接口说明
+
+| **接口**                                           | 参数                                                     | 功能                                                           |
+|--------------------------------------------------|--------------------------------------------------------|--------------------------------------------------------------|
+| leven(str1:string, str2:string)                  | str1：字串一。<br/>    str2：字串二。<br/>                       | 示将一个字符串转换成另一个字符串所需的最少编辑操作次数                                  |
+| er(source:string,opts:Plain Object,replacement:String) | source:原始字符串<br/>  opts:必填选项对象<br/> replacement:用此字符串替换所有结果。若未指定，则库将以删除模式运行。<br/> | 执行复杂的字符串替换操作。它允许您通过配置对象来定义替换规则，包括搜索模式、替换内容以及大小写敏感性等。[更多说明](https://codsen.com/os/easy-replace/) |
+
 ## 贡献代码
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎给组件发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎给组件发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
 ## 开源协议
-本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Easyrelpace/LICENSE) ，请自由地享受和参与开源。
+本项目基于 [Apache License 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Easyrelpace/LICENSE) ，请自由地享受和参与开源。
