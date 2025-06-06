@@ -10,7 +10,7 @@ path-to-regexp is a library that converts path strings (such as **/user/:name**)
 ohpm install path-to-regexp 
 ```
 
-For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details, see [Installing an OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ## Usage
 
@@ -295,7 +295,7 @@ toPathRegexpVali({ id: "abc" }); //=> "/user/abc"
 | exec   | string: string | RegExpExecArray \| null | Verifies a string using the regular expression pattern and returns an array containing the verification result. |
 | test   | string: string | boolean                 | Checks whether the input string complies with the specified rules and returns a Boolean value indicating the result.            |
 
-For more details, see [Official Documentation](https://github.com/pillarjs/path-to-regexp/blob/master/Readme.md) and [Unit Test Cases](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/PathToRegexpDemo/TEST.md).
+For more details, see [Official Documentation](https://github.com/pillarjs/path-to-regexp/blob/master/Readme.md) and [Unit Test Cases](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/PathToRegexpDemo/TEST.md).
 
 ## Constraints
 
@@ -321,8 +321,8 @@ DevEco Studio: 3.1 Beta2 (3.1.0.400), SDK: API9 Release (3.2.11.9)
 
 ## How to Contribute
 
-If you find any problem when using path-to-regexp, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+If you find any problem when using path-to-regexp, submit an [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
 ## License
 
-This project is licensed under the terms of the [MIT License ](https://gitee.com/zdy09/openharmony_tpc_samples/blob/master/PathToRegexpDemo/LICENSE).
+This project is licensed under the terms of the [MIT License ](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/PathToRegexpDemo/LICENSE).
