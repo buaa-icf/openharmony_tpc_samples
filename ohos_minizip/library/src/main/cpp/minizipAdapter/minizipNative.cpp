@@ -186,7 +186,6 @@ int32_t MinizipNative::ExtractFileToMemory(std::string entryName, char *buffer, 
                      "File %{public}s not found in zip archive\n", minizipEntryInfo.originName.c_str());
         return err;
     }
-    
     err = mz_zip_reader_entry_open(zipReader_);
     if (err != MZ_OK) {
         OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOGNAME,

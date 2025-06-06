@@ -47,10 +47,35 @@ export default function miniZipTest() {
       if(minizipEntry.Open() == 0){
         let entryNames = minizipEntry.GetEntryNames();
         for (let i = 0; i < entryNames.length; i++) {
-          console.log('names:' + entryNames[i]);
+          console.log('names:' + entryNames[i] + " IsEncrypto: " + minizipEntry.IsEncrypto(entryNames[i]) +
+            " IsUtf8: " + minizipEntry.IsUtf8(entryNames[i]));
           if(!entryNames[i].endsWith("/")) {
             let arrBuffer = minizipEntry.ExtractFileToJS(entryNames[i], "123456");
             expect(arrBuffer?.byteLength !== 0).assertTrue()
+          }
+        }
+      }
+    })
+    it('MinizipNative_IsUtf8', 0, () => {
+      let selectFilePath : string = filesDir + '/test.zip'
+      let minizipEntry = new MinizipNative(selectFilePath);
+      if (minizipEntry.Open() == 0) {
+        let entryNames = minizipEntry.GetEntryNames();
+        for (let i = 0; i < entryNames.length; i++) {
+          expect(minizipEntry.IsUtf8(entryNames[i])).assertFalse();
+        }
+      }
+    })
+    it('MinizipNative_IsEncrypto', 0, () => {
+      let selectFilePath : string = filesDir + '/test.zip'
+      let minizipEntry = new MinizipNative(selectFilePath);
+      if (minizipEntry.Open() == 0) {
+        let entryNames = minizipEntry.GetEntryNames();
+        for (let i = 0; i < entryNames.length; i++) {
+          if (entryNames[i] === "test/") {
+            expect(minizipEntry.IsEncrypto(entryNames[i])).assertFalse();
+          } else {
+            expect(minizipEntry.IsEncrypto(entryNames[i])).assertTrue();
           }
         }
       }
