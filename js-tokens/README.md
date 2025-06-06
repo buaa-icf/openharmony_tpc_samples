@@ -90,7 +90,7 @@ var regex = / 2/g
 
 2. jsTokens.matchToToken // Tokenizer function
 
-For details about unit test cases, see [TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/js-tokens/TEST.md).
+For details about unit test cases, see [TEST.md](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/js-tokens/TEST.md).
 
 ### Constraints
 This project has been verified in the following versions:
@@ -112,20 +112,11 @@ This project has been verified in the following versions:
 |           |-index.ets            # Home page demo
 ```
 
-### Version
-
-Current version:
-
-```
-1.0.0
-```
-
-For details about the version history, see [CHANGELOG.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/js-tokens/CHANGELOG.md).
 
 ### How to Contribute
 
-If you find any problem during the use, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
+If you find any problem during the use, submit an [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
 
 ### License
 
-This project is licensed under [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/js-tokens/LICENSE).
+This project is licensed under [Apache License 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/js-tokens/LICENSE).
