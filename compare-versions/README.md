@@ -10,7 +10,7 @@ compare-versions is a library for comparing version numbers, offering a simple a
 ohpm install compare_versions
 ```
 
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ## How to Use
 
@@ -48,6 +48,16 @@ validate('foo');        // false
 validateStrict('11.0.0') // true
 ```
 
+## Available APIs
+
+| API                                                        | Parameter                                                                                                                      | Description                                                                                                                                                                                                |
+|:-----------------------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| compareVersions(versionA:string, versionB:string)          | versionA: The first version number (string)</br>versionB: The second version number (string)                                   | Compare the sizes of two version numbers.                                                                                                                                                                  |
+| compare(versionA:string, versionB:string, operator:string) | versionA: The first version number (string)</br>versionB: The second version number (string)</br>operator: Comparison operator | Compare the size relationship of two version numbers.                                                                                                                                                      |
+| satisfies(version:string, range:string)                    | version: The version to be checked (string)</br>  range: Version range (string, such as ^1.0.0 or >=1.0.0 <2.0.0)              | Check if the version number meets the specified range                                                                                                                                                      |
+| validate(version:string)                                   | version: The version to be checked                                                                                             | Validate if the version number conforms to the SemVer specification                                                                                                                                        |
+| validateStrict(version:string)                             | version: The version to be checked                                                                                             | Strictly validate if the version number conforms to the SemVer specification, including the major version number, minor version number, patch version, and optional pre-release labels and build metadata. | |
+
 ## Constraints
 
 This project has been verified in the following versions:
@@ -65,8 +75,8 @@ This project has been verified in the following versions:
 
 ## How to Contribute
 
-If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+If you find any problem when using the project, submit an [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
 ## License
 
-This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/compare-versions/LICENSE).
+This project is licensed under [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/compare-versions/LICENSE).
