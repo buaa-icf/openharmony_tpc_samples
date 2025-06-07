@@ -43,8 +43,8 @@ soundex('A', 6) // => 'A000'
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎给组件发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+使用过程中发现任何问题都可以提 [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎给组件发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
 ## 开源协议
 
-本项目基于 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/soundex-code/LICENSE) ，请自由的享受和参与开源。
+本项目基于 [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/soundex-code/LICENSE) ，请自由的享受和参与开源。
