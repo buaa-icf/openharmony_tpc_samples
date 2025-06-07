@@ -1187,4 +1187,4 @@ If you find any problem during the use, submit an [issue](https://gitcode.com/op
 
 ## License
 
-This project is licensed under [Apache License 2.0](https://gitcode.com/zdy09/openharmony_tpc_samples/blob/master/utilCode/LICENSE).
+This project is licensed under [Apache License 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/utilCode/LICENSE).

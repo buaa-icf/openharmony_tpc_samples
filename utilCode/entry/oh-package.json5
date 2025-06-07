@@ -8,7 +8,7 @@
   "name": "entry",
   "description": "example description",
   "repository": {},
-  "version": "1.0.2",
+  "version": "1.0.3",
   "dependencies": {
     "leap-year": "^4.0.0",
     "randomcolor": "^0.6.2",
