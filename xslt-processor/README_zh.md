@@ -14,7 +14,7 @@
  ohpm install @types/he --save-dev //import he 的时候语法报错。其原因是he包内不含类型声明，需要 @types/he 下载这个包的声明文件，从而解决语法的报错。
 ```
 
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md)
 
 ## 使用说明
 
@@ -87,7 +87,7 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 
 DevEco Studio: 4.0 Canary1(4.0.3.512), SDK: API10 (4.0.10.10)
 
-[单元测试用例](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/xslt-processor/TEST.md)详情可参考
+[单元测试用例](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/xslt-processor/TEST.md)详情可参考
 
 ## 目录结构
 
@@ -103,8 +103,8 @@ DevEco Studio: 4.0 Canary1(4.0.3.512), SDK: API10 (4.0.10.10)
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls)共建 。
+使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls)共建 。
 
 ## 开源协议
 
-本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/xslt-processor/LICENSE) ，请自由地享受和参与开源。
+本项目基于 [Apache License 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/xslt-processor/LICENSE) ，请自由地享受和参与开源。

@@ -14,7 +14,7 @@ It supports the parsing and calculation of XPath expressions.
  ohpm install @types/he --save-dev // Install @types/he to prevent import syntax errors due to missing type declarations in the he package.
 ```
 
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ## How to Use
 
@@ -87,7 +87,7 @@ This project has been verified in the following version:
 
 DevEco Studio: 4.0 Canary1 (4.0.3.512), SDK: API 10 (4.0.10.10)
 
-For details, see [Unit Test Cases](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/xslt-processor/TEST.md).
+For details, see [Unit Test Cases](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/xslt-processor/TEST.md).
 
 ## Directory Structure
 
@@ -103,8 +103,8 @@ For details, see [Unit Test Cases](https://gitee.com/openharmony-tpc/openharmony
 
 ## How to Contribute
 
-If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+If you find any problem when using the project, submit an [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
 ## License
 
-This project is licensed under [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/xslt-processor/LICENSE).
+This project is licensed under [Apache License 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/xslt-processor/LICENSE).
