@@ -11,7 +11,7 @@ node-rules 是一个轻量级的正向链接规则引擎。
 ```
 ohpm install node-rules@7.2.0
 ```
-对于OpenHarmony ohpm环境配置的详细信息，请参阅[OpenHarmony环境配置指南](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)。
+对于OpenHarmony ohpm环境配置的详细信息，请参阅[OpenHarmony环境配置指南](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)。
 
 2.在需要使用的页面导入 node-rules。
 
@@ -148,9 +148,9 @@ ignoreFactChanges:true 选项将关闭此功能。
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提交 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
-给我们，当然，我们也非常欢迎你给我们提交 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+使用过程中发现任何问题都可以提交 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues)
+给我们，当然，我们也非常欢迎你给我们提交 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
 ## 开源协议
 
-本项目遵循 [Apache License 2.0](./LICENSE)
+本项目遵循 [Apache License 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/nodeRulesDemo/LICENSE)
