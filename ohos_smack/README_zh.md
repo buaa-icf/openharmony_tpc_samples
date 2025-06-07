@@ -14,7 +14,7 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
 
 ## X86模拟器配置
 
-[使用模拟器运行应用/服务](https://developer.huawei.com/consumer/cn/deveco-developer-suite/enabling/kit?currentPage=1&pageSize=100)
+[使用模拟器运行应用/服务](https://developer.huawei.com/consumer/cn/deveco-developer-suite/cooperation/intention)
 
 
 ## 使用说明
