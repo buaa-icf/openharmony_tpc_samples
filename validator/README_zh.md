@@ -7,7 +7,7 @@
 ohpm install validator
 ohpm install @types/validator --save-dev //import validator 的时候语法报错。其原因是validator包内不含类型声明，需要 @types/validator 下载这个包的声明文件，从而解决语法的报错。
 ```
-- OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+- OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
 ## 使用说明
 ```ts
@@ -127,7 +127,7 @@ let result1:boolean = validator.isAscii("foobar")
 | **unescape(input)**                    | 将HTML编码的实体替换为 `<`, `>`, `&`, `'`, `"` 和 `/`。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | **whitelist(input, chars)**            | 删除未出现在白名单中的字符。这些字符是在RegExp中使用的，因此您需要转义一些字符，例如 `whitelist(input, '\\[\\]')`。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 
-[单元测试用例详情](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/validator/TEST.md)
+[单元测试用例详情](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/validator/TEST.md)
 
 ## 约束与限制
 在下述版本验证通过：
@@ -142,8 +142,8 @@ DevEco Studio: 4.0Canary1(4.0.0.112), SDK: API10(4.0.7.2)
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提交[Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/validator/issues) 给我们，当然，我们也非常欢迎你给我们提交[PR](https://gitee.com/openharmony-tpc/rebound/pulls)。
+使用过程中发现任何问题都可以提交[Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们提交[PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls)。
 
 ## 开源协议
 
-本项目遵循 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/validator/blob/master/LICENSE)。
+本项目遵循 [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/validator/LICENSE)。
