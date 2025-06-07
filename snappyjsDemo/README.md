@@ -10,7 +10,7 @@ This demo allows you to use the third-party JavaScript library [snappyjs](https:
   ohpm install snappyjs
   ohpm install @types/snappyjs@0.7.1 // Install @types/snappyjs@0.7.1 to prevent import syntax errors due to missing type declarations in the snappyjs package.
 ```
-For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details, see [Installing an OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ## How to Use
 
@@ -19,9 +19,9 @@ For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-t
 ```
   import snappyJS from 'snappyjs'
 
-var buffer = new ArrayBuffer(100)
-var compressed = snappyJS.compress(buffer)
-var uncompressed = snappyJS.uncompress(compressed)
+let buffer = new ArrayBuffer(100)
+let compressed = snappyJS.compress(buffer)
+let uncompressed = snappyJS.uncompress(compressed)
 ```
 
 ## Available APIs
@@ -51,8 +51,8 @@ This project has been verified in the following versions:
 
 ## License
 
-This project is licensed under [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/snappyjsDemo/LICENSE).
+This project is licensed under [Apache License 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/snappyjsDemo/LICENSE).
 
 ## How to Contribute
 
-If you find any problem during the use, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+If you find any problem during the use, submit an [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
