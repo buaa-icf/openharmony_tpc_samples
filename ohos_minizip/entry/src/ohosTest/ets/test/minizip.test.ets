@@ -90,6 +90,18 @@ export default function miniZipTest() {
       expect(result).assertEqual("unzip success")
     })
 
+    it('unzipToDirectoryPasswordFails', 0, async () => {
+      let selectFilePath : string = filesDir + '/test.zip'
+      let targetPath: string = filesDir + "/target"
+      let password: string = "123"
+      let charEncoding: number = 936
+      try {
+        let result: string = await unzipToDirectory(selectFilePath, targetPath, password, charEncoding)
+      } catch (err) {
+        expect(err).assertEqual("unzip failed")
+      }
+    })
+
     it("MinizipCompressNative", 0, () => {
       let selectFilePath : string = filesDir + '/test_compress.zip';
       let targetPath: string[] = [];
