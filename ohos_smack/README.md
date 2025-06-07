@@ -14,7 +14,7 @@ For details about the OpenHarmony ohpm environment configuration, see [OpenHarmo
 
 ## Configuring the x86 Emulator
 
-See [Running Your App/Service on an Emulator](https://developer.huawei.com/consumer/en/deveco-developer-suite/enabling/kit?currentPage=1&pageSize=100).
+See [Running Your App/Service on an Emulator](https://developer.huawei.com/consumer/cn/deveco-developer-suite/cooperation/intention).
 
 
 ## How to Use
