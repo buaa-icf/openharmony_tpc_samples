@@ -11,7 +11,7 @@ ohpm install utf8
 ohpm install @types/utf8@3.0.3 --save-dev //import utf8 的时候语法报错。其原因是utf8包内不含类型声明，需要 @types/utf8 下载这个包的声明文件，从而解决语法的报错。
 ```
 
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 ## 使用说明
 
 ### UTF8编解码使用
@@ -68,16 +68,16 @@ DevEco Studio版本: 4.0Canary2(4.0.1.300), SDK: API10(4.0.9.6)
        - Index.ets                    	# 测试UTF8编解码能力
 ```
 
-单元测试用例详情见[TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/utf8/TEST.md)
+单元测试用例详情见[TEST.md](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/utf8/TEST.md)
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
-给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues)
+给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
 ## 开源协议
 
-本项目基于 [MIT License]() ，请自由地享受和参与开源。
+本项目基于 [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/utf8/LICENSE-MIT) ，请自由地享受和参与开源。
 
 
 

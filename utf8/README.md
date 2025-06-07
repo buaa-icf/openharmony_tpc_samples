@@ -11,7 +11,7 @@ ohpm install utf8
 ohpm install @types/utf8@3.0.3 --save-dev // Install @types/utf8@3.0.3 to prevent import syntax errors due to missing type declarations in the utf8 package.
 ```
 
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 ## How to Use
 
 ### Encoding and Decoding in UTF-8
@@ -72,13 +72,13 @@ This project has been verified in the following version:
        - Index.ets                    	# Code for encoding/decoding text in UTF-8 format.
 ```
 
-For details about unit test cases, see [TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/utf8/TEST.md).
+For details about unit test cases, see [TEST.md](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/utf8/TEST.md).
 
 ## How to Contribute
 
-If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+If you find any problem when using the project, submit an [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
 ## License
 
-The project is licensed under MIT License.
+The project is licensed under [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/utf8/LICENSE-MIT).
 
