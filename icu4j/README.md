@@ -11,7 +11,7 @@ ohpm install @f-fjs/intl-messageformat-parser@4.1.2
 ```
 
 OpenHarmony ohpm
-For details about the environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details about the environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ## How to Use
 
@@ -57,10 +57,10 @@ This project has been verified in the following version:
 
 ## How to Contribute
 
-If you find any problem during the use, submit an [Issue](https://gitee.com/openharmony-sig/intl_messageformat_parser/issues) or a [PR](https://gitee.com/openharmony-sig/intl_messageformat_parser/issues) to us.
+If you find any problem during the use, submit an [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) to us.
 
 ## License
 
-This project is based on [Apache LICENSE](https://gitee.com/openharmony-sig/intl_messageformat_parser/blob/master/LICENSE).
+This project is based on [Apache LICENSE](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/LICENSE).
 
   
