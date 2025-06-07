@@ -113,6 +113,28 @@ For details, see https://mljs.github.io/matrix.
 │   	    └── pages
 │       	    └── Index.ets          # Home page of the mathjs demo
 ```
+### APIS
+
+| Function         | Type              | Description |
+|------------------|-------------------|-------- |
+| math.abs         | x:number          |Calculate the absolute value of a number.|
+| math.add         | x:number          |	Add two or more values, x + y.|
+| math.cbrt        | x:number          |	Calculate the cubic root of a value.|
+| math.ceil        | x:number          |	Round a value towards plus infinity If x is complex, both real and imaginary part are rounded towards plus infinity.|
+| math.cube	    | x:number          |Compute the cube of a value, x * x * x.|
+| math.divide      | x:number,y:number          |	Divide two values, x / y.|
+| math.dotDivide   | x:number,y:number          |	Divide two matrices element wise.|
+| math.dotMultiply | x:number,y:number |	Multiply two matrices element wise.|
+| math.dotPow      | x:number,y:number |	Calculates the power of x to y element wise.|
+| math.exp         | x:number          |	Calculate the exponential of a value.|
+| math.expm1       | x:number          |	Calculate the value of subtracting 1 from the exponential value.|
+| math.fix         | x:number          |Round a value towards zero. |
+
+The above only lists a few scene interfaces: 
+- For more commonly used methods, please refer to: https://mathjs.org/docs/reference/functions.html 
+- For more BigNumber calculation methods, please refer to: https://mikemcl.github.io/bignumber.js 
+- For more Long calculation methods, please refer to: https://github.com/dcodeIO/long.js
+- For more matrix calculation methods, please refer to: https://mljs.github.io/matrix
 
 ## Constraints
 This project has been verified in the following version:

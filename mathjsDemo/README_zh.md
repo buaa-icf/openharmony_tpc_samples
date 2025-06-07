@@ -95,6 +95,28 @@ OpenHarmony ohpm环境配置等更多内容，请参考[如何安装OpenHarmony 
 更多使用方法请参照：https://mljs.github.io/matrix
 
 
+### 接口说明
+
+| Function | 参数类型              | 说明                                      |
+| -------- |-------------------|-----------------------------------------|
+| math.abs         | x:number          | 计算一个数的绝对值。                              |
+| math.add         | x:number          | 	将两个或多个值相加，x + y。                       |
+| math.cbrt        | x:number          | 	计算一个值的立方根。                             |
+| math.ceil        | x:number          | 	将一个值向正无穷方向舍入。如果 x 为复数，则实部和虚部均向正无穷方向舍入。 |
+| math.cube	    | x:number          | 计算一个值的立方，x * x * x。                     |
+| math.divide      | x:number,y:number | 	将两个值相除，x / y。                          |
+| math.dotDivide   | x:number,y:number | 	将两个矩阵逐元素相除。                            |
+| math.dotMultiply | x:number,y:number | 	将两个矩阵逐元素相乘。                            |
+| math.dotPow      | x:number,y:number | 	计算 x 到 y 的幂。                           |
+| math.exp         | x:number          | 	计算一个值的指数。                              |
+| math.expm1       | x:number          | 	计算从指数值中减 1 的值。                         |
+| math.fix         | x:number          | 将一个值向零方向舍入。                             |
+
+以上仅列举部分场景接口：
+- 更多常用使用方法请参照：https://mathjs.org/docs/reference/functions.html
+- 更多bignumber计算使用方法请参照：https://mikemcl.github.io/bignumber.js
+- 更多long计算使用方法请参照：https://github.com/dcodeIO/long.js
+- 更多matrix计算使用方法请参照：https://mljs.github.io/matrix
 
 ## 目录
 
