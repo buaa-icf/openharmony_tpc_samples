@@ -115,6 +115,62 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 
 ```
 
+## 接口说明
+### 方法
+| 方法名                           | 入参内容                                       | 接口描述                                                          |
+|-------------------------------|--------------------------------------------|---------------------------------------------------------------|
+| parsePhoneNumber()            | text: string, defaultCountry?: CountryCode | 从string中解析电话号码                                                |
+| isPossiblePhoneNumber()       | text: string, defaultCountry?: CountryCode | { defaultCountry?: CountryCode, defaultCallingCode?: string } | 检查是否可以解析为“可能的”电话号码。 |
+| isValidPhoneNumber()          | text: string, defaultCountry?: CountryCode | { defaultCountry?: CountryCode, defaultCallingCode?: string } | 检查是否可以解析为“有效”的电话号码。 |
+| validatePhoneNumberLength()   | text: string, defaultCountry?: CountryCode | { defaultCountry?: CountryCode, defaultCallingCode?: string } | 检查电话号码长度是否有效。 |
+| findPhoneNumbersInText()      | text: string, options?: CountryCode        | { defaultCountry?: CountryCode, defaultCallingCode?: string } | 在text中搜索电话号码。 |
+| getExampleNumber()            | country: CountryCode, examples: Examples   | 返回某个国家/地区的示例电话号码。                                             |
+| isSupportedCountry()          | countryCode: string                        | 检查该库是否支持某个国家。                                                 |
+| getCountries()                |                                            | 返回受支持的国家/地区的列表 。                                              |
+| getCountryCallingCode()       | countryCode: CountryCode                   | 返回某个国家/地区的国家/地区代码。                                            |
+| getExtPrefix()                | tcountryCode: CountryCode                  | 返回指定国家/地区的电话号码分机前缀 。                                       |
+| parseDigits()                 | character: string                          | 从字符串中解析数字。                                                    |
+| parseIncompletePhoneNumber()  | text: string                               | 解析电话号码字符。                                                     |
+| parsePhoneNumberCharacter()   | aracter: string                            | 解析输入字符串的下一个字符，同时解析+该字符串中的电话号码数字。                 |
+| formatIncompletePhoneNumber() | number: string, countryCode?: CountryCode  | 格式化可能不完整的电话号码。                                             |
+
+### PhoneNumber
+| 方法名                   | 入参内容                                    | 接口描述                                  |
+|-----------------------|-----------------------------------------|---------------------------------------|
+| countryCallingCode    |                                         | 国家/地区呼叫代码。例如："1"。                  |
+| country               |                                         | 国家代码。例如："US"。                         |
+| nationalNumber        |                                         | 国家（重要）号码。例如："2133734253"。           |
+| number                |                                         | E.164格式的电话号码，例如："+12133734253"。      |
+| ext                   |                                         | 电话号码分机号，例如: "1234"。                   |
+| carrierCode           |                                         | “运营商代码” ，例如: "15"。                    |
+| setExt()              |                                         | 设置电话号码的分机号。                           |
+| isPossible()          |                                         | 检查电话号码是否“可用” 。                        |
+| isValid()             |                                         | 检查电话号码是否“有效” 。                        |
+| getType()             |                                         | 返回电话号码类型（固定电话、移动电话、免费电话等。）   |
+| format()              |                                         | 根据将电话号码格式化为字符串format。               |
+| formatNational()      | options?: FormatNumberOptionsWithoutIDD | 根据将电话号码格式化为字符串format（National格式）。 | 
+| formatInternational() | options?: FormatNumberOptionsWithoutIDD | 根据将电话号码格式化为字符串format（International格式。 |
+| getURI()              | options?: FormatNumberOptionsWithoutIDD | 获取uri。                                       |
+| isNonGeographic()     |                                         | 该号码是否属于“非地理编号计划”。                     |
+| isEqual()             | phoneNumber: PhoneNumber                | 比较两个PhoneNumbers：true如果它们相等则返回，false否则。 |
+
+### AsYouType
+| 方法名                  | 入参内容         | 接口描述                     |
+|------------------------|--------------|----------------------------|
+| country                |              |                            |
+| input()                | text: string | 将文本附加到输入                   |
+| reset()                |              | 重置输入                       |
+| getNumber()            |              | 返回PhoneNumber              |
+| getNumberValue()       |              | 返回格式为E.164的电话号码            |
+| getNationalNumber()    |              | 返回电话号码                     |
+| getChars()             |              | 返回用户输入的电话号码字符              |
+| getTemplate()          |              | 返回用于格式化电话号码字符（数字和符号，如有）的模板 |
+| getCallingCode()       |              | 返回电话号码的“国家/地区代码”部分         |
+| getCountry()           |              | 返回电话号码的两字母国家代码             |
+| isInternational()      |              | 如果电话号码以国际格式输入，则返回true      |
+| isPossible()           |              | 电话号码是否“可用”                 |
+| isValid()              |              | 电话号码是否“有效”                 |
+
 ## 约束与限制
 
 - DevEco Studio 版本： 4.1 Canary(4.1.3.317)

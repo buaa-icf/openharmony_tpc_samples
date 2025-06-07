@@ -115,6 +115,62 @@ For details about the OpenHarmony ohpm environment configuration, see [OpenHarmo
 
 ```
 
+## APIS
+### Methods
+| Method                        | Parameter                                  | Description                                                                                                 |
+|-------------------------------|--------------------------------------------|-------------------------------------------------------------------------------------------------------------|
+| parsePhoneNumber()            | text: string, defaultCountry?: CountryCode | Parses a phone number from string                                                                           |
+| isPossiblePhoneNumber()       | text: string, defaultCountry?: CountryCode | { defaultCountry?: CountryCode, defaultCallingCode?: string }                                               | Checks if input can be parsed as a "possible" phone number. |
+| isValidPhoneNumber()          | text: string, defaultCountry?: CountryCode | { defaultCountry?: CountryCode, defaultCallingCode?: string }                                               | Checks if input can be parsed as a "valid" phone number. |
+| validatePhoneNumberLength()   | text: string, defaultCountry?: CountryCode | { defaultCountry?: CountryCode, defaultCallingCode?: string }                                               | Checks if input phone number length is valid. If it is, then nothing is returned. |
+| findPhoneNumbersInText()      | text: string, options?: CountryCode        | { defaultCountry?: CountryCode, defaultCallingCode?: string }                                               | Searches for phone numbers in text. |
+| getExampleNumber()            | country: CountryCode, examples: Examples   | Returns an example phone number for a country.                                                              |
+| isSupportedCountry()          | countryCode: string                        | Checks if a country is supported by this library.                                                           |
+| getCountries()                |                                            | Returns a list of supported countries.                                                                      |
+| getCountryCallingCode()       | countryCode: CountryCode                   | Returns country calling code for a country.                                                                 |
+| getExtPrefix()                | tcountryCode: CountryCode                  | Returns phone number extension prefix for a given country.                                                  |
+| parseDigits()                 | character: string                          | Parses digits from string.                                                                                  |
+| parseIncompletePhoneNumber()  | text: string                               | Parses phone number characters (+ and digits).                                                              |
+| parsePhoneNumberCharacter()   | aracter: string                            | Parses next character of an input string while parsing phone number digits (including a +) from that string. |
+| formatIncompletePhoneNumber() | number: string, countryCode?: CountryCode  | Formats a possibly incomplete phone number.                                                                 |
+
+### PhoneNumber
+| 方法名                   | Parameter                             | Description                                                                  |
+|-----------------------|-----------------------------------------|------------------------------------------------------------------------------|
+| countryCallingCode    |                                         | The country calling code. Example: "1".                                      |
+| country               |                                         | The country code. Example: "US".                                             |
+| nationalNumber        |                                         | The national (significant) number. Example: "2133734253".                    |
+| number                |                                         | The phone number in E.164 format. Example: "+12133734253".                   |
+| ext                   |                                         | The phone number extension, if any. Example: "1234".                         |
+| carrierCode           |                                         | The "carrier code", if any. Example: "15".                                   |
+| setExt()              |                                         | Sets a phone number extension of a phone number.                             |
+| isPossible()          |                                         | Checks if the phone number is "possible".                                    |
+| isValid()             |                                         | Checks if the phone number is "valid".                                       |
+| getType()             |                                         | Returns phone number type (fixed line, mobile, toll free, etc) or undefined. |
+| format()              |                                         | Formats the phone number into a string according to a format.                |
+| formatNational()      | options?: FormatNumberOptionsWithoutIDD | Formats the phone number into a string according to a format(National).      | 
+| formatInternational() | options?: FormatNumberOptionsWithoutIDD | Formats the phone number into a string according to a format(International). |
+| getURI()              | options?: FormatNumberOptionsWithoutIDD | get URI.                                                                     |
+| isNonGeographic()     |                                         | Returns true if the number belongs to a "non-geographic numbering plan".     |
+| isEqual()             | phoneNumber: PhoneNumber                | Compares two PhoneNumbers: returns true if they're equal, false otherwise.   |
+
+### AsYouType
+| 方法名                  | Parameter    | Description                                                                                                                                                                                          |
+|------------------------|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| country                |              |                                                                                                                                                                                                      |
+| input()                | text: string | Appends text to the input. Returns the formatted phone number.                                                                                                                                       |
+| reset()                |              | Resets the input.                                                                                                                                                                                    |
+| getNumber()            |              | Returns the PhoneNumber.                                                                                                                                                                             |
+| getNumberValue()       |              | Returns the phone number in E.164 format.                                                                                                                                                            |
+| getNationalNumber()    |              | Returns the PhoneNumber.                                                                                                                                                                             |
+| getChars()             |              | Returns the phone number characters entered by the user: digits and a + sign (if present).                                                                                                           |
+| getTemplate()          |              | Returns the template used to format the phone number characters (digits and a + sign, if present), which are denoted by x-es. Returns an empty string if no phone number characters have been input. |
+| getCallingCode()       |              | Returns the "country calling code" part of the phone number.                                                                                                                                         |
+| getCountry()           |              | Returns a two-letter country code of the phone number.                                                                                                                                               |
+| isInternational()      |              | Returns true if the phone number is being input in international format.                                                                                                                             |
+| isPossible()           |              | Returns true if the phone number is "possible".                                                                                                                                                      |
+| isValid()              |              | Returns true if the phone number is "valid" .                                                                                                                                                        |
+
 ## Constraints
 
 - DevEco Studio: 4.1 Canary (4.1.3.317)
