@@ -8,7 +8,7 @@
 ohpm install js-md5
 ohpm install @types/js-md5 --save-dev //import js-md5 的时候语法报错。其原因是js-md5包内不含类型声明，需要 @types/js-md5 下载这个包的声明文件，从而解决语法的报错。
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装 OpenHarmony ohpm 包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 ## 使用说明
 
 ```javascript
@@ -42,8 +42,8 @@ let mess3 = md5.base64(content);
 
 ## 开源协议
 
-本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/js-md5Demo/LICENSE) ，请自由地享受和参与开源。
+本项目基于 [Apache License 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/js-md5Demo/LICENSE) ，请自由地享受和参与开源。
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
