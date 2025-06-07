@@ -7,7 +7,7 @@ This demo shows how to use validator.js, a third-party JavaScript (JS) library t
 ohpm install validator
 ohpm install @types/validator --save-dev // If a syntax error is reported when importing validator, the validator package does not contain the type declaration. You need to download the declaration file **@types/validator** to rectify the syntax error.
 ```
-- For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+- For details, see [Installing an OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ## How to Use
 ```ts
@@ -127,7 +127,7 @@ Currently, the following sanitizers are available:
 | **unescape(input)**                    | Replaces an HTML entity with **<**, **>**, **&**, **'**, **"**, or **/**.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | **whitelist(input, chars)**            | Deletes characters that are not in the trustlist. Since the characters are used in regular expressions, some of them must be escaped, for example, **whitelist(input, '\\[\\]')**.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 
-[Unit Test Cases](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/validator/TEST.md)
+[Unit Test Cases](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/validator/TEST.md)
 
 ## Constraints
 This project has been verified in the following versions:
@@ -142,8 +142,8 @@ DevEco Studio: 4.0Canary1(4.0.0.112), SDK: API10(4.0.7.2)
 
 ## How to Contribute
 
-If you find any problem when using validator.js, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/validator/issues) or [PR](https://gitee.com/openharmony-tpc/rebound/pulls).
+If you find any problem when using validator.js, submit an [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
 ## License
 
-This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/validator/blob/master/LICENSE).
+This project is licensed under [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/validator/LICENSE).
