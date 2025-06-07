@@ -8,7 +8,7 @@ This demo uses the third-party JavaScript library percentage-regex in OpenHarmon
 ohpm install percentage-regex
 ohpm install @types/percentage-regex@3.0.0  // Install @types/percentage-regex to prevent import syntax errors due to missing type declarations in the percentage-regex package.
 ```
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ## How to Use
 
@@ -26,7 +26,7 @@ let result:boolean = percentageRegex({exact: true}).test("19%")
 | options.exact            | Whether to enable exact matching. The value is of the Boolean type and defaults to **false** (means to match any percentage within a string). This API is especially useful when used with **RegExp#test** for verifying whether a string is a percentage.|
 
 
-For details about unit test cases, see [TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/percentage-regex/TEST.md).
+For details about unit test cases, see [TEST.md](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/percentage-regex/TEST.md).
 
 ## Constraints
 This project has been verified in the following versions:
@@ -38,8 +38,8 @@ This project has been verified in the following versions:
 
 ## How to Contribute
 
-If you find any problem when using this project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/percentage-regex/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/percentage-regex/pulls).
+If you find any problem when using this project, submit an [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
 ## License
 
-This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/percentage-regex/blob/master/LICENSE).
+This project is licensed under [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/percentage-regex/LICENSE).

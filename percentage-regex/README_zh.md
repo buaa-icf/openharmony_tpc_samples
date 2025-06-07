@@ -8,7 +8,7 @@
 ohpm install percentage-regex
 ohpm install @types/percentage-regex@3.0.0  // import percentage-regex 的时候语法报错, 其原因是percentage-regex包内不含类型声明, 需要 @types/percentage-regex 下载这个包的声明文件, 从而解决语法的报错.
 ```
-- 对于OpenHarmony ohpm环境配置的详细信息，请参阅[OpenHarmony环境配置指南](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)。
+- 对于OpenHarmony ohpm环境配置的详细信息，请参阅[OpenHarmony环境配置指南](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)。
 
 ## 使用说明
 
@@ -28,7 +28,7 @@ let result:boolean = percentageRegex({exact: true}).test("19%")
 | options.exact            | 类型：`boolean `，默认值：`false`*（匹配字符串中的任何百分比）* ，只匹配一个精确的字符串。与“RegExp#test”一起检查某个字符串是否为百分比很有用。 |
 
 
-[单元测试用例详情](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/percentage-regex/TEST.md)
+[单元测试用例详情](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/percentage-regex/TEST.md)
 
 ## 约束与限制
 在下述版本验证通过：
@@ -40,8 +40,8 @@ DevEco Studio: 4.0(4.0.3.512),SDK: API10（4.0.10.9）
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提[Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/percentage-regex/issues) 给我们，当然，我们也非常欢迎你给我们提[PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/percentage-regex/pulls)。
+使用过程中发现任何问题都可以提[Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们提[PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls)。
 
 ## 开源协议
 
-本项目遵循 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/percentage-regex/blob/master/LICENSE)。
+本项目遵循 [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/percentage-regex/LICENSE)。
