@@ -9,7 +9,7 @@ inversify_inject_decorators-demo是一个在OpenHarmony系统上验证inversify-
 ```shell
 ohpm install inversify-inject-decorators inversify reflect-metadata
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装 OpenHarmony ohpm 包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
 inversify-inject-decorators库依赖inversify、reflect-metadata两个库
 
@@ -350,7 +350,7 @@ struct LazyMultiInjectPage {
   }
 }
 ````
-单元测试用例详情见[TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/inversify-inject-decorators-demo/TEST.md)
+单元测试用例详情见[TEST.md](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/inversify-inject-decorators-demo/TEST.md)
 
 更多使用方式请参考[inversify-inject-decorators](https://github.com/inversify/inversify-inject-decorators)
 
@@ -383,9 +383,9 @@ DevEco Studio: 4.0 Beta1(4.0.3.400) SDK API10(4.0.9.6)
 
 ### 贡献代码
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-sig/ohos_ftp_srv/issues) 给组件，当然，也非常欢迎发 [PR](https://gitee.com/openharmony-sig/ohos_ftp_srv/pulls)共建 。
+使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-sig/ohos_ftp_srv/issues) 给组件，当然，也非常欢迎发 [PR](https://gitcode.com/openharmony-sig/ohos_ftp_srv/pulls)共建 。
 
 ### 开源协议
 
-本项目基于 [ MIT License ](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/inversify_inject_decorators-demo/LICENSE) ，请自由地享受和参与开源。
+本项目基于 [ MIT License ](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/inversify_inject_decorators-demo/LICENSE) ，请自由地享受和参与开源。
 
