@@ -33,7 +33,7 @@ let deco = base32.decode(encode);
 
 ## 开源协议
 
-本项目基于 [Apache License 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/hi-base32Demo/LICENSE) ，请自由地享受和参与开源。
+本项目基于 [Apache License 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/hi-base32Demo/LICENSE) ，请自由地享受和参与开源。
 
 ## 贡献代码
 
