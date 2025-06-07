@@ -28,14 +28,6 @@ ohpm install @ohos/unrar
 import unrar from '@ohos/unrar'
 ```
 
-## 接口说明
-| **属性**                                                                               |                                  **入参类型**                                  | **说明**                                                     |
-|--------------------------------------------------------------------------------------|:--------------------------------------------------------------------------:| ------------------------------------------------------------ |
-| isEncrypted                                                        |                           (path:string)=>number                            | 判断文件是否加密 |
-| extract                               |          (path: string, dest: string, password?: string)=>string           | 同步解压文件                       |
-| RarFiles_Extract | (path: string, dest: string, callBack: ICallBack, password?: string)=>void | 异步步解压文件 |
-
-
 ### isEncrypted 判断压缩包名是否加密方法示例
 
 ```
@@ -78,6 +70,14 @@ unrar.RarFiles_Extract(path, globalThis.context.filesDir, passwords).then((value
                   this.showDialog('解压失败')
                 });
 ```
+
+## 接口说明
+| **属性**                                                                               |                                  **入参类型**                                  | **说明**                                                    |
+|--------------------------------------------------------------------------------------|:--------------------------------------------------------------------------:| ----------------------------------------------------------- |
+| isEncrypted                                                        |                           (path:string)=>number                            | 判断文件是否加密 |
+| extract                               |          (path: string, dest: string, password?: string)=>string           | 同步解压文件                      |
+| RarFiles_Extract | (path: string, dest: string, callBack: ICallBack, password?: string)=>void | 异步解压文件 |
+
 ## 关于混淆
 - 代码混淆，请查看[代码混淆简介](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
 - 如果希望unrar库在代码混淆过程中不会被混淆，需要在混淆规则配置文件obfuscation-rules.txt中添加相应的排除规则：

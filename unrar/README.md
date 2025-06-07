@@ -28,14 +28,6 @@ See [Running Your App/Service on an Emulator](https://developer.huawei.com/consu
 import unrar from '@ohos/unrar'
 ```
 
-## Available APIs
-| API        |                         Parameter                        | Description        |
-| ---------------- | :----------------------------------------------------------: | ---------------- |
-| isEncrypted      |                    (path:string)=>number                     | Checks whether a package is encrypted.|
-| extract          |   (path: string, dest: string, password?: string)=>string    | Synchronously decompresses a file.    |
-| RarFiles_Extract | (path: string, dest: string, callBack: ICallBack, password?: string)=>void | Asynchronously decompresses a file.  |
-
-
 ### Checking Whether a Package Is Encrypted
 
 ```
@@ -78,6 +70,14 @@ unrar.RarFiles_Extract(path, globalThis.context.filesDir, passwords).then((value
                   this.showDialog('Decompression failed.')
                 });
 ```
+
+## Available APIs
+| API        |                         Parameter                        | Description        |
+| ---------------- | :----------------------------------------------------------: | ---------------- |
+| isEncrypted      |                    (path:string)=>number                     | Checks whether a package is encrypted.|
+| extract          |   (path: string, dest: string, password?: string)=>string    | Synchronously decompresses a file.    |
+| RarFiles_Extract | (path: string, dest: string, callBack: ICallBack, password?: string)=>void | Asynchronously decompresses a file.  |
+
 ## About obfuscation
 - Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
 - If you want the unrar library not to be obfuscated during code obfuscation, you need to add corresponding exclusion rules in the obfuscation rule configuration file obfuscation-rules.txt：
