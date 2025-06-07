@@ -17,7 +17,7 @@
 ROOT_DIR=$(pwd)
 API_VERSION=10                                                              # 三方库对应API版本，用于记录SDK路径,必须和"compileSdkVersion"字段表示的API版本保持一致
 SDK_DIR=$ROOT_DIR/../../ohos-sdk-$API_VERSION/linux/$API_VERSION            # SDK路径（流水线环境中SDK路径）
-LYCIUM_TOOLS_URL=https://gitee.com/openharmony-sig/tpc_c_cplusplus.git
+LYCIUM_TOOLS_URL=https://gitcode.com/openharmony-sig/tpc_c_cplusplus.git
 LYCIUM_ROOT_DIR=$ROOT_DIR/tpc_c_cplusplus
 LYCIUM_TOOLS_DIR=$LYCIUM_ROOT_DIR/lycium
 LYCIUM_THIRDPARTY_DIR=$LYCIUM_ROOT_DIR/thirdparty
