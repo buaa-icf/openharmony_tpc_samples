@@ -33,7 +33,7 @@ This project has been verified in the following version:
 
 ## License
 
-This project is licensed under [Apache License 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/hi-base32Demo/LICENSE).
+This project is licensed under [Apache License 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/hi-base32Demo/LICENSE).
 
 ## How to Contribute
 
