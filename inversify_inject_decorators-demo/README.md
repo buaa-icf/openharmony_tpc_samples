@@ -10,7 +10,7 @@ inversify_inject_decorators-demo is a utility library that provides methods such
 ```shell
 ohpm install inversify-inject-decorators inversify reflect-metadata
 ```
-For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details, see [Installing an OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 inversify-inject-decorators depends on the **inversify** and **reflect-metadata** libraries.
 
@@ -351,7 +351,7 @@ struct LazyMultiInjectPage {
   }
 }
 ````
-For details about unit test cases, see [TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/inversify-inject-decorators-demo/TEST.md).
+For details about unit test cases, see [TEST.md](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/inversify-inject-decorators-demo/TEST.md).
 
 For details on how to use inversify-binding-decoratorsDemo, see [inversify-binding-decorators][inversify-inject-decorators](https://github.com/inversify/inversify-inject-decorators).
 
@@ -384,9 +384,9 @@ DevEco Studio: 4.0 Beta1 (4.0.3.400), SDK: API10 (4.0.9.6)
 
 ### How to Contribute
 
-If you find any problem when using inversify-inject-decoratorsDemo, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or
-a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
+If you find any problem when using inversify-inject-decoratorsDemo, submit an [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or
+a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
 
 ### License
 
-This project is licensed under the terms of the [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/inversify_inject_decorators-demo/LICENSE).
+This project is licensed under the terms of the [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/inversify_inject_decorators-demo/LICENSE).
