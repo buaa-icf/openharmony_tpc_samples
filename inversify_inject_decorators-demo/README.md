@@ -351,7 +351,7 @@ struct LazyMultiInjectPage {
   }
 }
 ````
-For details about unit test cases, see [TEST.md](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/inversify-inject-decorators-demo/TEST.md).
+For details about unit test cases, see [TEST.md](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/inversify_inject_decorators-demo/TEST.md).
 
 For details on how to use inversify-binding-decoratorsDemo, see [inversify-binding-decorators][inversify-inject-decorators](https://github.com/inversify/inversify-inject-decorators).
 
