@@ -8,10 +8,10 @@ inversify-binding-decoratorsDemo is a utility that helps to verify the function 
 ```shell
 ohpm install inversify-binding-decorators
 ```
-For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details, see [Installing an OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 #### How to Use
-
+Using ES2016 decorator to declare InversifyJS binding
 ````
 import { injectable, Container } from "inversify";
 import { provide, buildProviderModule } from "inversify-binding-decorators/es/index";
@@ -88,7 +88,7 @@ expect(ninja.fight()).eql("cut!");
 expect(ninja.sneak()).eql("hit!");
 ````
 
-For details about unit test cases, see [TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/inversify-binding-decorators-demo/TEST.md).
+For details about unit test cases, see [TEST.md](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/inversify-binding-decorators-demo/TEST.md).
 
 For details on how to use inversify-binding-decoratorsDemo, see [inversify-binding-decorators](https://github.com/inversify/inversify-binding-decorators).
 
@@ -112,9 +112,9 @@ DevEco Studio: 4.0 Beta1 (4.0.3.400), SDK API10 (4.0.9.6)
 
 ## How to Contribute
 
-If you find any problem when using inversify-binding-decoratorsDemo, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or
-a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
+If you find any problem when using inversify-binding-decoratorsDemo, submit an [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or
+a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
 
 ## License
 
-This project is licensed under the terms of the [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/inversify-binding-decorators-demo/LICENSE).
+This project is licensed under the terms of the [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/inversify-binding-decorators-demo/LICENSE).
