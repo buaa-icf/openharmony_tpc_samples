@@ -25,7 +25,8 @@ function myAsyncFunction(selectFilePath: string, password: string) {
   if (minizipEntry.Open() == 0) {
     let entryNames = minizipEntry.GetEntryNames();
     for (let i = 0; i < entryNames.length; i++) {
-      console.log('names:' + entryNames[i]);
+      console.log('names:' + entryNames[i] + " IsEncrypto: " + minizipEntry.IsEncrypto(entryNames[i]) +
+        " IsUtf8: " + minizipEntry.IsUtf8(entryNames[i]));
       if (!entryNames[i].endsWith("/")) {
         let arrBuffer = minizipEntry.ExtractFileToJS(entryNames[i], password);
         if (arrBuffer != undefined) {
@@ -137,7 +138,7 @@ function myAsyncFunction1Compress(selectFilePath: string, targetPath: string[], 
 @Component
 struct Index {
   @State message: string = 'Hello World';
-  @State selectFilePath: string = getContext().filesDir + '/test.zip'
+  @State selectFilePath: string = getContext().resourceDir + '/test.zip'
   @State targetPath: string = getContext().filesDir;
   @State password: string = ""; //测试资源密码： 123456
   @State directory: string = "";
