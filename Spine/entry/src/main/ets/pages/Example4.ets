@@ -248,8 +248,10 @@ struct SingleExample {
           Button('remove')
             .onClick(() => {
               console.info('spine demo remove obj:' + JSON.stringify(this.assetManager?.get("spineboy.png")));
-              this.assetManager?.remove("spineboy.png"); // 移除纹理（保留JSON和图集）
-              console.info('spine demo remove after obj:' + JSON.stringify(this.assetManager?.get("spineboy.png")));
+              if(this.assetManager?.get("spineboy.png")) {
+                this.assetManager?.remove("spineboy.png");
+                console.info('spine demo remove after obj:' + JSON.stringify(this.assetManager?.get("spineboy.png")));
+              }
             });
 
           Button('removeAll')

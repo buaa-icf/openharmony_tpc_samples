@@ -426,13 +426,36 @@ import {
 
 ## 接口说明
 | class | Name             | Parameter  | Description             |
-|-------|------------------|------------|-------------------------|
+|------------------|----------------------|----------------------------------------|-------------------------------------------|
 |  AssetManager     | loadText         | path       | 加载 Spine 动画所需的 文本 数据文件  |
 |  AssetManager     | loadBinary       | path       | 加载 Spine 动画所需的 二进制 数据文件 |
+| AssetManager     | loadJson             | path                                   | 加载 Spine 动画所需的 JSON 数据文件                  |
+| AssetManager     | loadTexture          | path                                   | 加载 Spine 动画所需的 数据文件                       |
 |  AssetManager     | loadTextureAltas | path       | 加载纹理图集文件                |
 |  AssetManager     | require          | path       | 从assets数组中获取数据          |
+| AssetManager     | loadAll              | 无                                      | 等待所有资源加载完成                                |
+| AssetManager     | get                  | path                                   | 获取已加载的资源                                  |
+| AssetManager     | remove               | path                                   | 移除单个缓存资源                                  |
+| AssetManager     | removeAll            | 无                                      | 清空所有缓存资源                                  |
 |  AnimationState   | update           | delta      | 更新动画状态                  |
 |  AnimationState   | apply            | skeleton   | 将动画状态应用到骨骼              |
+| AnimationState   | addListener          | AnimationStateListener                 | 添加监听                                      |
+| AnimationState   | removeListener       | AnimationStateListener                 | 移除单个监听                                    |
+| AnimationState   | clearListeners       | 无                                      | 移除所有监听                                    |
+| AnimationState   | getCurrent           | trackIndex                             | 返回当前在轨道上播放的动画的轨道条目                        |
+| AnimationState   | expandToIndex        | index                                  | 动态扩展数组长度                                  |
+| AnimationState   | setCurrent           | index, current, interrupt              | 立即中断指定轨道上的当前动画，并开始播放新动画                   |
+| AnimationState   | setAnimation         | trackIndex, animation, loop            | 通过名字设置动画                                  |
+| AnimationState   | setAnimationWith     | trackIndex, animationName, loop        | 设置轨迹的当前动画，丢弃任何排队的动画                       |
+| AnimationState   | addAnimation         | trackIndex, animationName, loop, delay | 按名称给队列中添加动画                               |
+| AnimationState   | addAnimationWith     | trackIndex, animationName, loop, delay | 在曲目的当前或最后一个排队的动画之后添加要播放的动画                |
+| AnimationState   | clearTrack           | trackIndex                             | 从轨迹中删除所有动画，使骨架保持其当前姿势                     |
+| AnimationState   | clearTracks          | 无                                      | 从所有轨迹中删除所有动画，使骨架保持其当前姿势                   |
+| AnimationState   | setEmptyAnimations   | mixDuration                            | 为每个轨迹设置一个空动画，丢弃任何排队的动画，并在指定的混合持续时间内对其进行混合 |
+| AnimationState   | clearNext            | TrackEntry                             | 清除指定动画条目的后续动画队列                           |
+| AnimationState   | setEmptyAnimation    | trackIndex, mixDuration                | 强制设置空动画到指定轨道                              |
+| AnimationState   | addEmptyAnimation    | trackIndex, mixDuration, delay         | 在动画队列末尾添加空动画                              |
+| AnimationState   | updateMixingFrom     | to, delta                              | 更新动画混合状态                                  |
 |  SkeletonRenderer | draw             | 无         | 动画渲染                    |
 | Skeleton  | setToSetupPose            | 无         | 将骨骼、约束和插槽设置为其设置姿势值      |
 | Skeleton  | updateWorldTransform      |  physics      | 更新每个骨骼的世界变换并应用所有约束      |
