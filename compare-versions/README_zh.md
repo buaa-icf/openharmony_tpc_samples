@@ -9,7 +9,7 @@ compare-versions 是一个用于比较版本号的库，提供了一种简单且
 ohpm install compare_versions
 ```
 
-对于OpenHarmony ohpm环境配置的详细信息，请参阅[OpenHarmony环境配置指南](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)。
+对于OpenHarmony ohpm环境配置的详细信息，请参阅[OpenHarmony环境配置指南](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)。
 
 ## 使用说明
 
@@ -47,6 +47,16 @@ validate('foo');        // false
 validateStrict('11.0.0') // true
 ```
 
+## 接口说明
+
+|                            方法名                            |                                  入参                                  |                          接口描述                          |
+|:---------------------------------------------------------:|:--------------------------------------------------------------------:|:------------------------------------------------------:|
+|     compareVersions(versionA:string, versionB:string)     |            versionA：第一个版本号（字符串）</br>versionB：第二个版本号（字符串）             |                      比较两个版本号的大小。                       |
+| compare(versionA:string, versionB:string,operator:string) |   versionA:第一个版本号（字符串）</br>versionB:第二个版本号（字符串）</br>operator:比较运算符   |                     比较两个版本号的大小关系.                      |
+|          satisfies(version:string, range:string)          | version：待检查的版本号（字符串）</br>  range：版本范围（字符串，如 ^1.0.0 或 >=1.0.0 <2.0.0） |                     检查版本号是否满足指定的范围                     |
+|                 validate(version:string)                  |                           version：待检查的版本号                            |                  验证版本号是否符合 SemVer 规范                   |
+|              validateStrict(version:string)               |                           version：待检查的版本号                            | 严格验证版本号是否符合 SemVer 规范，包括主版本号、次版本号、修订号以及可选的预发布标签和构建元数据。 |
+
 ## 约束与限制
 
 在下述版本验证通过：
@@ -65,8 +75,8 @@ validateStrict('11.0.0') // true
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提交 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)，当然，也非常欢迎提交 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+使用过程中发现任何问题都可以提交 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues)，当然，也非常欢迎提交 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
 ## 开源协议
 
-本项目遵循 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/compare-versions/LICENSE)。
+本项目遵循 [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/compare-versions/LICENSE)。
