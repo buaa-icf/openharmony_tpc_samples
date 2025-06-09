@@ -13,7 +13,7 @@ reflect-metadata用于在TypeScript中操作类的元数据，允许在声明类
 ohpm install reflect-metadata@0.1.13
 ````
 
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
 ## 使用说明
 
@@ -37,13 +37,17 @@ import("reflect-metadata").then((reflectMetadata) => {
 
 ## 接口说明
 
-1. 检查原型链上是否存在元数据键: Reflect.hasMetadata
-2. 检查是否存在自己的元数据键: Reflect.hasOwnMetadata
-3. 获取原型链上元数据键的元数据值: Reflect.getMetadata
-4. 获取自己的元数据键的元数据值: Reflect.getOwnMetadata
-5. 获取原型链上的所有元数据键: Reflect.getMetadataKeys
-6. 获取所有自己的元数据键: Reflect.getOwnMetadataKeys
-7. 删除元数据: Reflect.deleteMetadata
+
+| 方法名                                                                                | 入参                                                          | 接口描述            |
+|------------------------------------------------------------------------------------|-------------------------------------------------------------|-----------------|
+| Reflect.hasMetadata(metadataKey: ESObject, target: Object, propertyKey: string)    | metadataKey: 元数据键<br/>target: 目标对象<br/>propertyKey?: 可选，属性键 | 检查原型链上是否存在元数据键  |
+| Reflect.hasOwnMetadata(metadataKey: ESObject, target: Object, propertyKey: string) | metadataKey: 元数据键<br/>target: 目标对象<br/>propertyKey?: 可选，属性键 | 检查是否存在自己的元数据键   |
+| Reflect.getMetadata(metadataKey: ESObject, target: Object, propertyKey: string)    | metadataKey: 元数据键<br/>target: 目标对象<br/>propertyKey?: 可选，属性键 | 获取原型链上元数据键的元数据值 |
+| Reflect.getOwnMetadata(metadataKey: ESObject, target: Object, propertyKey: string) | metadataKey: 元数据键<br/>target: 目标对象<br/>propertyKey?: 可选，属性键 | 获取自己的元数据键的元数据值  |
+| Reflect.getMetadataKeys(target: Object, propertyKey: string )                      | target: 目标对象<br/>propertyKey?: 可选，属性键                       | 获取原型链上的所有元数据键   |
+| Reflect.getOwnMetadataKeys(target: Object, propertyKey: string)                    | target: 目标对象<br/>propertyKey?: 可选，属性键                       | 获取所有自己的元数据键     |
+| Reflect.deleteMetadata(metadataKey: ESObject, target: Object, propertyKey: string) | metadataKey: 元数据键<br/>target: 目标对象<br/>propertyKey?: 可选，属性键 | 删除元数据           |
+
 
 ## 约束与限制
 
@@ -63,7 +67,7 @@ import("reflect-metadata").then((reflectMetadata) => {
 ````
 
 ## 贡献代码
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 共建。
+使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) 共建。
 
 ## 开源协议
-本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/reflect-metadata/blob/master/LICENSE) ，请自由地享受和参与开源。
+本项目基于 [Apache License 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/reflect-metadata/LICENSE) ，请自由地享受和参与开源。
