@@ -140,8 +140,8 @@ DevEco Studio: DevEco Studio 4.0 Release(4.0.0.600), SDK: API10 (4.0.10.13)
 
 ## How to Contribute
 
-If you find any problem during the use, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
+If you find any problem during the use, submit an [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
 
 ## License
 
-This project is licensed under the terms of the [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/pinyinProDemo/LICENSE).
+This project is licensed under the terms of the [Apache License 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/pinyinProDemo/LICENSE).
