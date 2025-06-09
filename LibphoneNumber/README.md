@@ -9,7 +9,7 @@ This project demonstrates how to use **libphonenumber-js** in OpenHarmony. **lib
 ohpm install libphonenumber-js@1.9.53
 ```
 
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ## How to Use
 ```javascript
@@ -178,7 +178,7 @@ For details about the OpenHarmony ohpm environment configuration, see [OpenHarmo
 
 ## How to Contribute
 
-If you find any problem when using the project, submit an issue or a PR.
+If you find any problem when using the project, submit an [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
 ## License
 
