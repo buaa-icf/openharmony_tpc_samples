@@ -24,7 +24,7 @@
 
 2.需要修改本地hivgor rollup打包配置,具体步骤参考require rollup问题临时修改方案文件
 
-OpenHarmony ohpm环境配置等更多内容，请参照 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+OpenHarmony ohpm环境配置等更多内容，请参照 [如何安装OpenHarmony ohpm包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
 ## 使用说明
 
@@ -153,10 +153,10 @@ DevEco Studio 版本：4.1 Canary(4.1.3.414)，OpenHarmony SDK:API version 11 (4
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
-给组件，当然，也非常欢迎发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls)共建 。
+使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues)
+给组件，当然，也非常欢迎发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls)共建 。
 
 ## 开源协议
 
-本项目基于 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/xml2jsDemo/LICENSE)
+本项目基于 [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/xml2jsDemo/LICENSE)
 ，请自由地享受和参与开源。
