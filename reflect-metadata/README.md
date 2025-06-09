@@ -13,7 +13,7 @@
 ohpm install reflect-metadata@0.1.13
 ````
 
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ## How to Use
 
@@ -37,15 +37,15 @@ import("reflect-metadata").then((reflectMetadata) => {
 
 ## Available APIs
 
-| API                        | Description                    |
-| -------------------------- | ------------------------------ |
-| Reflect.hasMetadata        | Checks whether the metadata with the given key exists in the prototype chain.  |
-| Reflect.hasOwnMetadata     | Checks whether the metadata with the given key exists in the target object.    |
-| Reflect.getMetadata        | Obtains the metadata value with the give key from the prototype chain.|
-| Reflect.getOwnMetadata     | Obtains the metadata value with the give key from the target object.  |
-| Reflect.getMetadataKeys    | Obtains all the metadata keys in the prototype chain.    |
-| Reflect.getOwnMetadataKeys | Obtains all the metadata keys defined in the target object.        |
-| Reflect.deleteMetadata     | Deletes metadata.                    |
+| API                                                                                | Parameter                                                                                    | Description                                                                   |
+|------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
+| Reflect.hasMetadata(metadataKey: ESObject, target: Object, propertyKey: string)    | metadataKey: Metadata key<br/>target: target object<br/>propertyKey?: Optional, property key | Checks whether the metadata with the given key exists in the prototype chain. |
+| Reflect.hasOwnMetadata(metadataKey: ESObject, target: Object, propertyKey: string) | metadataKey: Metadata key<br/>target: target object<br/>propertyKey?: Optional, property key | Checks whether the metadata with the given key exists in the target object.   |
+| Reflect.getMetadata(metadataKey: ESObject, target: Object, propertyKey: string)    | metadataKey: Metadata key<br/>target: target object<br/>propertyKey?: Optional, property key | Obtains the metadata value with the give key from the prototype chain.        |
+| Reflect.getOwnMetadata(metadataKey: ESObject, target: Object, propertyKey: string) | metadataKey: Metadata key<br/>target: target object<br/>propertyKey?: Optional, property key | Obtains the metadata value with the give key from the target object.          |
+| Reflect.getMetadataKeys(target: Object, propertyKey: string )                      | target: target object<br/>propertyKey?: Optional, property key                               | Obtains all the metadata keys in the prototype chain.                         |
+| Reflect.getOwnMetadataKeys(target: Object, propertyKey: string)                    | target: target object<br/>propertyKey?: Optional, property key                               | Obtains all the metadata keys defined in the target object.                   |
+| Reflect.deleteMetadata(metadataKey: ESObject, target: Object, propertyKey: string) | metadataKey: Metadata key<br/>target: target object<br/>propertyKey?: Optional, property key | Deletes metadata.                                                             |
 
 ## Constraints
 
@@ -64,7 +64,7 @@ This project has been verified in the following version:
 ````
 
 ## How to Contribute
-If you find any problem when using the project, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+If you find any problem when using the project, submit an [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
 ## License
-This project is licensed under [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/reflect-metadata/blob/master/LICENSE).
+This project is licensed under [Apache License 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/reflect-metadata/LICENSE).
