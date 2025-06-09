@@ -443,7 +443,7 @@ export class IncomingMessage {
     headers: object): void {
     try {
       // 把socket字符串按照换行符分割成多行，并取出第一行
-      let lines: string[] = socket.split(/[(\r\n)\r\n]+/);
+      let lines: string[] = socket.trim().split(/\r?\n/);
       let line: string = lines.shift();
 
       // 把第一行按照空格分割，得到 一个 stringTokenizer 数组

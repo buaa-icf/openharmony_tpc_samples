@@ -75,7 +75,7 @@ export default function polkaTest() {
       expect(typeof polka).assertEqual('function');
     })
 
-    it('polka::internals', 0, async () => {
+    it('polka_internals', 0, async () => {
       let app = polka();
 
       expect(typeof app.server).assertUndefined;
@@ -105,7 +105,7 @@ export default function polkaTest() {
       });
     })
 
-    it('polka::usage::basic', 0, () => {
+    it('polka_usage_basic', 0, () => {
       let app = polka();
       let arr = [['GET','/'], ['POST','/users'], ['PUT','/users/:id']];
 
@@ -124,7 +124,7 @@ export default function polkaTest() {
       });
     })
 
-    it('polka::usage::variadic', 0, async (done: Function) => {
+    it('polka_usage_variadic', 0, async (done: Function) => {
 
       let startTime1: number = new Date().getTime();
       let app = polka<SelfRequest>({ onError }).use(foo, bar)
@@ -138,14 +138,13 @@ export default function polkaTest() {
       app.get('/one', foo, bar, (req: SelfRequest, res: ServerResponse) => {
         expect(req.foo).assertEqual(500);
         expect(req.bar).assertEqual('barbar');
+        expect(JSON.stringify(req.parameters.get("name"))).assertEqual("[\"<>@|();!+ 周深-光亮（《紫禁城》大型纪录片主题歌）(蓝光).mp4\"]");
         res.setHeader('Content-Type', "text/plain");
         res.end('one');
       })
       let endTime2 = new Date().getTime();
       let averageTime2 = ((endTime2 - startTime2) * 1000) / BASE_COUNT;
       console.log("BasicUseTest : get averageTime : " + averageTime2 + "us");
-
-
       app.get('/two', foo, (req, res, next) => {
           expect(req.foo).assertEqual(500);
           expect(req.bar).assertEqual('bar');
@@ -170,7 +169,7 @@ export default function polkaTest() {
         method: http.RequestMethod.GET,
       }
       // 发送http请求
-      const res: http.HttpResponse = await httpRequest.request("http://0.0.0.0:9990/one", opt);
+      const res: http.HttpResponse = await httpRequest.request("http://0.0.0.0:9990/one?name=<>@|();!+%20周深-光亮（《紫禁城》大型纪录片主题歌）(蓝光).mp4", opt);
       expect(res.responseCode).assertEqual(200);
       expect(res.result).assertEqual('one');
 
@@ -186,7 +185,7 @@ export default function polkaTest() {
       done();
     })
 
-    it('polka::usage::middleware', 0, async (done: Function) => {
+    it('polka_usage_middleware', 0, async (done: Function) => {
 
       let app = polka<SelfRequest>().use((req: SelfRequest, res: ServerResponse, next: NextFunction) => {
         (req.one='hello') && next();
@@ -270,7 +269,7 @@ export default function polkaTest() {
       done();
     })
 
-    it('polka::usage::middleware (async)', 0, async (done: Function) => {
+    it('polka_usage_middleware (async)', 0, async (done: Function) => {
       let app = polka<SelfRequest>().use((req: SelfRequest, res: ServerResponse, next: NextFunction) => {
         new Promise<number>((resolve, reject) => {
           resolve(10);
@@ -309,7 +308,7 @@ export default function polkaTest() {
       done();
     })
 
-    it('polka::usage::middleware (basenames)', 0, async (done: Function) => {
+    it('polka_usage_middleware (basenames)', 0, async (done: Function) => {
       let chk = false;
       let aaa = (req: SelfRequest, res: ServerResponse, next: NextFunction) => { req.aaa='aaa';next(); };
       let bbb = (req: SelfRequest, res: ServerResponse, next: NextFunction) => { req.bbb='bbb';next(); };
@@ -413,7 +412,7 @@ export default function polkaTest() {
       done();
     })
 
-    it('polka::usage::middleware (wildcard)', 0, async (done: Function) => {
+    it('polka_usage_middleware (wildcard)', 0, async (done: Function) => {
       let exp: string;
       let foo = (req: SelfRequest, res: ServerResponse, next: NextFunction) => { req.foo='foo'; next() };
 
