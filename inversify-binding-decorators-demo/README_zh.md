@@ -7,10 +7,10 @@ inversify-binding-decoratorsDemo是一个在OpenHarmony系统上验证inversify-
 ```shell
 ohpm install inversify-binding-decorators
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
 #### 使用说明
-
+使用 ES2016 装饰器声明 InversifyJS 绑定
 ````
 import { injectable, Container } from "inversify";
 import { provide, buildProviderModule } from "inversify-binding-decorators/es/index";
@@ -87,7 +87,7 @@ expect(ninja.fight()).eql("cut!");
 expect(ninja.sneak()).eql("hit!");
 ````
 
-单元测试用例详情见[TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/inversify-binding-decorators-demo/TEST.md)
+单元测试用例详情见[TEST.md](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/inversify-binding-decorators-demo/TEST.md)
 
 更多使用方式请参考[inversify-binding-decorators](https://github.com/inversify/inversify-binding-decorators)
 
@@ -111,8 +111,8 @@ DevEco Studio: 4.0 Beta1(4.0.3.400) SDK API10(4.0.9.6)
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls)共建 。
+使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls)共建 。
 
 ## 开源协议
 
-本项目基于 [ MIT License ](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/inversify-binding-decorators-demo/LICENSE) ，请自由地享受和参与开源。
+gitcode
