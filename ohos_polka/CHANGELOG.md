@@ -1,3 +1,7 @@
+## v1.0.4-rc.0
+## fixes
+1. Fix the issue of lost characters when decoding params.
+
 ## v1.0.3
 ## docs
 1. doc changes

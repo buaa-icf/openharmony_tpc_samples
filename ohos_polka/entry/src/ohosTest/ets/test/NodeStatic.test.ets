@@ -109,7 +109,7 @@ export default function nodeStaticTest() {
     beforeAll(() => {
       initFile()
     })
-    it('NodeStatic::statik::Server', 0, async (done: Function) => {
+    it('NodeStatic_statik_Server', 0, async (done: Function) => {
       const file = new statik.Server(context, '/');
       const dir = new statik.Server(context, '/', { gzip: true });
       polka()
@@ -143,7 +143,7 @@ export default function nodeStaticTest() {
       done();
     });
 
-    it('NodeStatic::statik::Server::serveFile("/file.txt")', 0, async (done: Function) => {
+    it('NodeStatic_statik_Server_serveFile("/file.txt")', 0, async (done: Function) => {
       const file = new statik.Server(context, '/');
       const dir = new statik.Server(context, '/', { gzip: true });
       polka()
@@ -178,7 +178,7 @@ export default function nodeStaticTest() {
       done();
     });
 
-    it('NodeStatic::statik.Server("/", { gzip: true })', 0, async (done: Function) => {
+    it('NodeStatic_statik.Server("/", { gzip: true })', 0, async (done: Function) => {
       const file = new statik.Server(context, '/');
       const dir = new statik.Server(context, '/', { gzip: true });
       polka()
@@ -213,7 +213,7 @@ export default function nodeStaticTest() {
       done();
     });
 
-    it('NodeStatic::statik.Server("/", { gzip: true })（客户端发送时提供head：{Range: ”bytes=0-2"}）', 0, async (done: Function) => {
+    it('NodeStatic_statik.Server("/", { gzip: true })（客户端发送时提供head：{Range: ”bytes=0-2"}）', 0, async (done: Function) => {
       const file = new statik.Server(context, '/');
       const dir = new statik.Server(context, '/', { gzip: true });
       polka()
@@ -247,7 +247,7 @@ export default function nodeStaticTest() {
       done();
     });
 
-    it('NodeStatic::statik.Server("/test", {})', 0, async (done: Function) => {
+    it('NodeStatic_statik.Server("/test", {})', 0, async (done: Function) => {
       const file = new statik.Server(context, '/');
       const dir = new statik.Server(context, '/', { gzip: true });
       polka()
