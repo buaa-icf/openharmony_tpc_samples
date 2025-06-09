@@ -115,4 +115,4 @@ DevEco Studio: 4.0 Beta1(4.0.3.400) SDK API10(4.0.9.6)
 
 ## 开源协议
 
-gitcode
+本项目基于 [ MIT License ](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/inversify-binding-decorators-demo/LICENSE) ，请自由地享受和参与开源。
