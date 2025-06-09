@@ -23,14 +23,20 @@ class ChannelModel extends EventEmitter {
     return promisify(this.connection.close.bind(this.connection))();
   }
 
-  async createChannel() {
+  updateSecret(newSecret, reason) {
+    return promisify(this.connection._updateSecret.bind(this.connection))(newSecret, reason);
+  }
+
+  async createChannel(options) {
     const channel = new Channel(this.connection);
+    channel.setOptions(options);
     await channel.open();
     return channel;
   }
 
-  async createConfirmChannel() {
+  async createConfirmChannel(options) {
     const channel = new ConfirmChannel(this.connection);
+    channel.setOptions(options);
     await channel.open();
     await channel.rpc(defs.ConfirmSelect, {nowait: false}, defs.ConfirmSelectOk);
     return channel;

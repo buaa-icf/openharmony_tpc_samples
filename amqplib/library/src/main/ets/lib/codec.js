@@ -188,15 +188,30 @@ function encodeFieldValue(buffer, value, offset) {
         tag('b');
         buffer.writeInt8(val, offset); offset++;
         break;
+    case 'unsignedbyte':
+    case 'uint8':
+        tag('B');
+        buffer.writeUInt8(val, offset); offset++;
+        break;
     case 'short':
     case 'int16':
         tag('s');
         buffer.writeInt16BE(val, offset); offset += 2;
         break;
+    case 'unsignedshort':
+    case 'uint16':
+        tag('u');
+        buffer.writeUInt16BE(val, offset); offset += 2;
+        break;
     case 'int':
     case 'int32':
         tag('I');
         buffer.writeInt32BE(val, offset); offset += 4;
+        break;
+    case 'unsignedint':
+    case 'uint32':
+        tag('i');
+        buffer.writeUInt32BE(val, offset); offset += 4;
         break;
     case 'long':
     case 'int64':
@@ -243,6 +258,9 @@ function decodeFields(slice) {
         case 'b':
             val = slice.readInt8(offset); offset++;
             break;
+        case 'B':
+            val = slice.readUInt8(offset); offset++;
+            break;
         case 'S':
             len = slice.readUInt32BE(offset); offset += 4;
             val = slice.toString('utf8', offset, offset + len);
@@ -250,6 +268,9 @@ function decodeFields(slice) {
             break;
         case 'I':
             val = slice.readInt32BE(offset); offset += 4;
+            break;
+        case 'i':
+            val = slice.readUInt32BE(offset); offset += 4;
             break;
         case 'D': // only positive decimals, apparently.
             var places = slice[offset]; offset++;
@@ -262,7 +283,7 @@ function decodeFields(slice) {
             break;
         case 'F':
             len = slice.readUInt32BE(offset); offset += 4;
-            val = decodeFields(slice.slice(offset, offset + len));
+            val = decodeFields(slice.subarray(offset, offset + len));
             offset += len;
             break;
         case 'A':
@@ -282,6 +303,9 @@ function decodeFields(slice) {
         case 's':
             val = slice.readInt16BE(offset); offset += 2;
             break;
+        case 'u':
+            val = slice.readUInt16BE(offset); offset += 2;
+            break;
         case 't':
             val = slice[offset] != 0; offset++;
             break;
@@ -290,7 +314,7 @@ function decodeFields(slice) {
             break;
         case 'x':
             len = slice.readUInt32BE(offset); offset += 4;
-            val = slice.slice(offset, offset + len);
+            val = slice.subarray(offset, offset + len);
             offset += len;
             break;
         default:

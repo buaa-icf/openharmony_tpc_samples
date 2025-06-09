@@ -44,8 +44,12 @@ inherits(Channel, EventEmitter);
 
 var C = Channel.prototype;
 
+Channel.prototype.setOptions = function(options) {
+  this.options = options;
+}
+
 Channel.prototype.allocate = function() {
-  this.ch = this.connection.freshChannel(this);
+    this.ch = this.connection.freshChannel(this, this.options);
   return this;
 }
 
