@@ -9,7 +9,7 @@ ohpm install text-encoding
 ohpm install @types/text-encoding --save-dev //import text-encoding 的时候语法报错。其原因是text-encoding包内不含类型声明，需要 @types/text-encoding 下载这个包的声明文件，从而解决语法的报错。
 
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装 OpenHarmony ohpm 包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 ## 使用说明
 
 ```javascript
@@ -38,8 +38,8 @@ let deco = new TextDecoder().decode(encode);
 
 ## 开源协议
 
-本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/textEncodingDemo/LICENSE) ，请自由地享受和参与开源。
+本项目基于 [Apache License 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/textEncodingDemo/LICENSE) ，请自由地享受和参与开源。
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎给组件发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎给组件发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
