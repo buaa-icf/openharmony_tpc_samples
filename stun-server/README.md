@@ -12,7 +12,7 @@ stun is an open-source service component based on the STUN protocol. It allows c
 ```shell
 ohpm install @ohos/stun
 ```
-For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details, see [Installing an OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ## How to Use
 
@@ -143,7 +143,7 @@ stun has been verified in the following versions:
 ````
 
 ## How to Contribute
-If you find any problem when using stun, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+If you find any problem when using stun, submit an [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
 ## License
-The ohos_coap library is based on [Apache License 2.0](https://gitee.com/hihopeorg/stun-server/blob/master/LICENSE).
+The ohos_coap library is based on [Apache License 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/stun-server/LICENSE).
