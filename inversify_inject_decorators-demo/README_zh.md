@@ -350,7 +350,7 @@ struct LazyMultiInjectPage {
   }
 }
 ````
-单元测试用例详情见[TEST.md](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/inversify-inject-decorators-demo/TEST.md)
+单元测试用例详情见[TEST.md](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/inversify_inject_decorators-demo/TEST.md)
 
 更多使用方式请参考[inversify-inject-decorators](https://github.com/inversify/inversify-inject-decorators)
 
