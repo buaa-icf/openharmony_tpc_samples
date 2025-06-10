@@ -23,7 +23,7 @@ import { StunServer, StunClient } from '@ohos/stun';
 @State serverMessage: string = "Tip: Click 'node-stun-server' to display the server log";
 stunServer: StunServer = null;
 private createServer() {
-  var self = this;
+  let self = this;
   if (self.stunServer) {
     return;
   }
@@ -39,7 +39,7 @@ private createServer() {
 @State clientMessage: string = "Tip: Click 'node-stun-client' to display the client log";
 stunClient: StunClient = null;
 private createClient() {
-  var self = this;
+  let self = this;
   self.clientMessage = "";
   prompt.showToast({ message: "node-stun-client", duration: 3000 });
   if (!self.stunClient) {
