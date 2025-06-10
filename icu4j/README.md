@@ -57,10 +57,10 @@ This project has been verified in the following version:
 
 ## How to Contribute
 
-If you find any problem during the use, submit an [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) to us.
+If you find any problem during the use, submit an [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
 
 ## License
 
-This project is based on [Apache LICENSE](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/LICENSE).
+This project is based on [Apache LICENSE](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/icu4j/LICENSE).
 
   
