@@ -182,4 +182,4 @@ If you find any problem when using the project, submit an [issue](https://gitcod
 
 ## License
 
-This project is licensed under [Apache License 2.0](https://github.com/catamphetamine/libphonenumber-js/blob/master/LICENSE).
+This project is licensed under [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/LibphoneNumber/LICENSE).
