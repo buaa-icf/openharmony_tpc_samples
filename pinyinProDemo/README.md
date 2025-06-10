@@ -11,6 +11,8 @@ pinyin-pro is a professional JavaScript library for converting Chinese to pinyin
 $ ohpm install pinyin-pro
 ```
 
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+
 ## How to Use
 
 This library supports multiple environments and modular specifications.
@@ -106,18 +108,18 @@ html ('Chinese pinyin');
 */
 ```
 
-For details about how to use pinyin-pro, see the official document [pinyin-pro](https://pinyin-pro.cn/guide/compare.htmlhttps://pinyin-pro.cn/guide/compare.html).
+For details about how to use pinyin-pro, see the official document [pinyin-pro](https://pinyin-pro.cn/guide/compare.html).
 
 ## Available APIs
 
-| API                               | Description                         |
-|-----------------------------------|-----------------------------|
-| **pinyin(text, options?)**        | Returns the converted information.            |
-| match(text, pinyin, options?)| If the matching is successful, returns the subscript array corresponding to the matched Chinese character. If the matching fails, returns null.|
-| **convert(pinyin, options?)**     | Converts the pinyin format and returns the pinyin after conversion.       |
-| **customPinyin(map)**             | You can customize the pinyin of words and sentences. When the user-defined pinyin is matched in the text, the user-defined pinyin is preferentially used.|
-| **html(text, options?)**          | Obtains the HTML string in the <ruby></ruby> format.     |
-| **polyphonic(text, options?)**    | Obtains all pronunciation of a multi-tone character.|
+| API                                                         | Description                         |
+|-------------------------------------------------------------|-----------------------------|
+| **pinyin(text: string, options?: OptionsReturnString)**     | Returns the converted information.            |
+| **match(text: string, pinyin: string, options?: MatchOptions)**             | If the matching is successful, returns the subscript array corresponding to the matched Chinese character. If the matching fails, returns null.|
+| **convert(pinyin: string, options?: ConvertOptions)**  | Converts the pinyin format and returns the pinyin after conversion.       |
+| **customPinyin(map: object)**                               | You can customize the pinyin of words and sentences. When the user-defined pinyin is matched in the text, the user-defined pinyin is preferentially used.|
+| **html(text: string, options?: OptionsReturnString)**       | Obtains the HTML string in the <ruby></ruby> format.     |
+| **polyphonic(text: string, options?: OptionsReturnString)** | Obtains all pronunciation of a multi-tone character.|
  
 
 ## Constraints
@@ -144,4 +146,4 @@ If you find any problem during the use, submit an [issue](https://gitcode.com/op
 
 ## License
 
-This project is licensed under the terms of the [Apache License 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/pinyinProDemo/LICENSE).
+This project is licensed under the terms of the [Apache License 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/pinyinProDemo/LICENSE).
