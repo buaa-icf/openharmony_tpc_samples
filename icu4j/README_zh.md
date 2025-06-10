@@ -62,7 +62,7 @@ parse(input: string, opts ? : ParseOptions):MessageFormatElement[]
 
 ## 开源协议
 
-本项目基于 [Apache LICENSE](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/LICENSE)
+本项目基于 [Apache LICENSE](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/icu4j/LICENSE)
 ，请自由地享受和参与开源。
 
   
