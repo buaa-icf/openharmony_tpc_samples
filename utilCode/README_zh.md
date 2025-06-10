@@ -1190,4 +1190,4 @@ DevEco Studio: 4.0(4.0.3.512),SDK: API10（4.0.10.9）
 
 ## 开源协议
 
-本项目基于 [Apache License 2.0](https://gitcode.com/zdy09/openharmony_tpc_samples/blob/master/utilCode/LICENSE)，请自由地享受和参与开源。
+本项目基于 [Apache License 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/utilCode/LICENSE)，请自由地享受和参与开源。
