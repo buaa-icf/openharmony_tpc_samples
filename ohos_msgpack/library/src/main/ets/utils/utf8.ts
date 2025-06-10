@@ -97,7 +97,7 @@ const sharedTextEncoder = new util.TextEncoder();
 const TEXT_ENCODER_THRESHOLD = 50;
 
 export function utf8EncodeTE(str: string, output: Uint8Array, outputOffset: number): void {
-  sharedTextEncoder.encodeIntoUint8Array(str, output.subarray(outputOffset));
+  sharedTextEncoder.encodeInto(str, output.subarray(outputOffset));
 }
 
 export function utf8Encode(str: string, output: Uint8Array, outputOffset: number): void {
@@ -159,7 +159,7 @@ export function utf8DecodeJs(bytes: Uint8Array, inputOffset: number, byteLength:
   return result;
 }
 
-const sharedTextDecoder = util.TextDecoder.create();
+const sharedTextDecoder = new util.TextDecoder();
 
 // This threshold should be determined by benchmarking, which might vary in engines and input data.
 // Run `npx ts-node benchmark/decode-string.ts` for details.
@@ -167,7 +167,7 @@ const TEXT_DECODER_THRESHOLD = 200;
 
 export function utf8DecodeTD(bytes: Uint8Array, inputOffset: number, byteLength: number): string {
   const stringBytes = bytes.subarray(inputOffset, inputOffset + byteLength);
-  return sharedTextDecoder.decodeToString(stringBytes);
+  return sharedTextDecoder.decode(stringBytes);
 }
 
 export function utf8Decode(bytes: Uint8Array, inputOffset: number, byteLength: number): string {

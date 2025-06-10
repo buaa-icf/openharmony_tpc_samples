@@ -3,16 +3,6 @@ import type { DecoderOptions } from "./Decoder";
 import type { SplitUndefined } from "./context";
 
 /**
- * @deprecated Use {@link DecoderOptions} instead.
- */
-export type DecodeOptions = never;
-
-/**
- * @deprecated No longer supported.
- */
-export const defaultDecodeOptions: never = undefined as never;
-
-/**
  * It decodes a single MessagePack object in a buffer.
  *
  * This is a synchronous decoding function.
@@ -22,7 +12,7 @@ export const defaultDecodeOptions: never = undefined as never;
  * @throws {@link DecodeError} if the buffer contains invalid data.
  */
 export function decode<ContextType = undefined>(
-  buffer: ArrayLike<number> | Uint8Array | ArrayBufferView | ArrayBuffer,
+  buffer: ArrayLike<number> | ArrayBufferView | ArrayBufferLike,
   options?: DecoderOptions<SplitUndefined<ContextType>>,
 ): unknown {
   const decoder = new Decoder(options);

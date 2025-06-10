@@ -2,7 +2,7 @@ import { prettyByte } from "./utils/prettyByte";
 import { ExtensionCodec, ExtensionCodecType } from "./ExtensionCodec";
 import { getInt64, getUint64, UINT32_MAX } from "./utils/int";
 import { utf8Decode } from "./utils/utf8";
-import { createDataView, ensureUint8Array } from "./utils/typedArrays";
+import { ensureUint8Array } from "./utils/typedArrays";
 import { CachedKeyDecoder, KeyDecoder } from "./CachedKeyDecoder";
 import { DecodeError } from "./DecodeError";
 import type { ContextOf } from "./context";
@@ -19,6 +19,17 @@ export type DecoderOptions<ContextType = undefined> = Readonly<
      * Defaults to false.
      */
     useBigInt64: boolean;
+
+    /**
+     * By default, string values will be decoded as UTF-8 strings. However, if this option is true,
+     * string values will be returned as Uint8Arrays without additional decoding.
+     *
+     * This is useful if the strings may contain invalid UTF-8 sequences.
+     *
+     * Note that this option only applies to string values, not map keys. Additionally, when
+     * enabled, raw string length is limited by the maxBinLength option.
+     */
+    rawStrings: boolean;
 
     /**
      * Maximum string length.
@@ -56,6 +67,13 @@ export type DecoderOptions<ContextType = undefined> = Readonly<
      * `null` is a special value to disable the use of the key decoder at all.
      */
     keyDecoder: KeyDecoder | null;
+
+    /**
+     * A function to convert decoded map key to a valid JS key type.
+     * 
+     * Defaults to a function that throws an error if the key is not a string or a number.
+     */
+    mapKeyConverter: (key: unknown) => MapKeyType;
   }>
 > &
   ContextOf<ContextType>;
@@ -66,8 +84,11 @@ const STATE_MAP_VALUE = "map_value";
 
 type MapKeyType = string | number;
 
-const isValidMapKeyType = (key: unknown): key is MapKeyType => {
-  return typeof key === "string" || typeof key === "number";
+const mapKeyConverter = (key: unknown): MapKeyType => {
+  if (typeof key === "string" || typeof key === "number") {
+    return key;
+  }
+  throw new DecodeError("The type of key must be string or number but " + typeof key);
 };
 
 type StackMapState = {
@@ -185,9 +206,8 @@ try {
     );
   }
 }
-export const DataViewIndexOutOfBoundsError = RangeError;
 
-const MORE_DATA = new DataViewIndexOutOfBoundsError("Insufficient data");
+const MORE_DATA = new RangeError("Insufficient data");
 
 const sharedCachedKeyDecoder = new CachedKeyDecoder();
 
@@ -195,12 +215,14 @@ export class Decoder<ContextType = undefined> {
   private readonly extensionCodec: ExtensionCodecType<ContextType>;
   private readonly context: ContextType;
   private readonly useBigInt64: boolean;
+  private readonly rawStrings: boolean;
   private readonly maxStrLength: number;
   private readonly maxBinLength: number;
   private readonly maxArrayLength: number;
   private readonly maxMapLength: number;
   private readonly maxExtLength: number;
   private readonly keyDecoder: KeyDecoder | null;
+  private readonly mapKeyConverter: (key: unknown) => MapKeyType;
 
   private totalPos = 0;
   private pos = 0;
@@ -210,17 +232,37 @@ export class Decoder<ContextType = undefined> {
   private headByte = HEAD_BYTE_REQUIRED;
   private readonly stack = new StackPool();
 
+  private entered = false;
+
   public constructor(options?: DecoderOptions<ContextType>) {
     this.extensionCodec = options?.extensionCodec ?? (ExtensionCodec.defaultCodec as ExtensionCodecType<ContextType>);
-    this.context = (options as unknown as { context: ContextType } | undefined)?.context as ContextType; // needs a type assertion because EncoderOptions has no context property when ContextType is undefined
+    this.context = (options as { context: ContextType } | undefined)?.context as ContextType; // needs a type assertion because EncoderOptions has no context property when ContextType is undefined
 
     this.useBigInt64 = options?.useBigInt64 ?? false;
+    this.rawStrings = options?.rawStrings ?? false;
     this.maxStrLength = options?.maxStrLength ?? UINT32_MAX;
     this.maxBinLength = options?.maxBinLength ?? UINT32_MAX;
     this.maxArrayLength = options?.maxArrayLength ?? UINT32_MAX;
     this.maxMapLength = options?.maxMapLength ?? UINT32_MAX;
     this.maxExtLength = options?.maxExtLength ?? UINT32_MAX;
     this.keyDecoder = options?.keyDecoder !== undefined ? options.keyDecoder : sharedCachedKeyDecoder;
+    this.mapKeyConverter = options?.mapKeyConverter ?? mapKeyConverter;
+  }
+
+  private clone(): Decoder<ContextType> {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    return new Decoder({
+      extensionCodec: this.extensionCodec,
+      context: this.context,
+      useBigInt64: this.useBigInt64,
+      rawStrings: this.rawStrings,
+      maxStrLength: this.maxStrLength,
+      maxBinLength: this.maxBinLength,
+      maxArrayLength: this.maxArrayLength,
+      maxMapLength: this.maxMapLength,
+      maxExtLength: this.maxExtLength,
+      keyDecoder: this.keyDecoder,
+    } as any);
   }
 
   private reinitializeState() {
@@ -231,13 +273,14 @@ export class Decoder<ContextType = undefined> {
     // view, bytes, and pos will be re-initialized in setBuffer()
   }
 
-  private setBuffer(buffer: ArrayLike<number> | Uint8Array | ArrayBufferView | ArrayBuffer): void {
-    this.bytes = ensureUint8Array(buffer);
-    this.view = createDataView(this.bytes);
+  private setBuffer(buffer: ArrayLike<number> | ArrayBufferView | ArrayBufferLike): void {
+    const bytes = ensureUint8Array(buffer);
+    this.bytes = bytes;
+    this.view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
     this.pos = 0;
   }
 
-  private appendBuffer(buffer: ArrayLike<number> | Uint8Array | ArrayBufferView | ArrayBuffer) {
+  private appendBuffer(buffer: ArrayLike<number> | ArrayBufferView | ArrayBufferLike): void {
     if (this.headByte === HEAD_BYTE_REQUIRED && !this.hasRemaining(1)) {
       this.setBuffer(buffer);
     } else {
@@ -265,102 +308,149 @@ export class Decoder<ContextType = undefined> {
    * @throws {@link DecodeError}
    * @throws {@link RangeError}
    */
-  public decode(buffer: ArrayLike<number> | Uint8Array | ArrayBufferView | ArrayBuffer): unknown {
-    this.reinitializeState();
-    this.setBuffer(buffer);
-
-    const object = this.doDecodeSync();
-    if (this.hasRemaining(1)) {
-      throw this.createExtraByteError(this.pos);
-    }
-    return object;
-  }
-
-  public *decodeMulti(buffer: ArrayLike<number> | Uint8Array | ArrayBufferView | ArrayBuffer): Generator<unknown, void, unknown> {
-    this.reinitializeState();
-    this.setBuffer(buffer);
-
-    while (this.hasRemaining(1)) {
-      yield this.doDecodeSync();
-    }
-  }
-
-  public async decodeAsync(stream: AsyncIterable<ArrayLike<number> | Uint8Array | ArrayBufferView | ArrayBuffer>): Promise<unknown> {
-    let decoded = false;
-    let object: unknown;
-    for await (const buffer of stream) {
-      if (decoded) {
-        throw this.createExtraByteError(this.totalPos);
-      }
-
-      this.appendBuffer(buffer);
-
-      try {
-        object = this.doDecodeSync();
-        decoded = true;
-      } catch (e) {
-        if (!(e instanceof DataViewIndexOutOfBoundsError)) {
-          throw e; // rethrow
-        }
-        // fallthrough
-      }
-      this.totalPos += this.pos;
+  public decode(buffer: ArrayLike<number> | ArrayBufferView | ArrayBufferLike): unknown {
+    if (this.entered) {
+      const instance = this.clone();
+      return instance.decode(buffer);
     }
 
-    if (decoded) {
+    try {
+      this.entered = true;
+
+      this.reinitializeState();
+      this.setBuffer(buffer);
+
+      const object = this.doDecodeSync();
       if (this.hasRemaining(1)) {
-        throw this.createExtraByteError(this.totalPos);
+        throw this.createExtraByteError(this.pos);
       }
       return object;
+    } finally {
+      this.entered = false;
+    }
+  }
+
+  public *decodeMulti(buffer: ArrayLike<number> | ArrayBufferView | ArrayBufferLike): Generator<unknown, void, unknown> {
+    if (this.entered) {
+      const instance = this.clone();
+      yield* instance.decodeMulti(buffer);
+      return;
     }
 
-    const { headByte, pos, totalPos } = this;
-    throw new RangeError(
-      `Insufficient data in parsing ${prettyByte(headByte)} at ${totalPos} (${pos} in the current buffer)`,
-    );
+    try {
+      this.entered = true;
+
+      this.reinitializeState();
+      this.setBuffer(buffer);
+
+      while (this.hasRemaining(1)) {
+        yield this.doDecodeSync();
+      }
+    } finally {
+      this.entered = false;
+    }
+  }
+
+  public async decodeAsync(stream: AsyncIterable<ArrayLike<number> | ArrayBufferView | ArrayBufferLike>): Promise<unknown> {
+    if (this.entered) {
+      const instance = this.clone();
+      return instance.decodeAsync(stream);
+    }
+
+    try {
+      this.entered = true;
+
+      let decoded = false;
+      let object: unknown;
+      for await (const buffer of stream) {
+        if (decoded) {
+          this.entered = false;
+          throw this.createExtraByteError(this.totalPos);
+        }
+
+        this.appendBuffer(buffer);
+
+        try {
+          object = this.doDecodeSync();
+          decoded = true;
+        } catch (e) {
+          if (!(e instanceof RangeError)) {
+            throw e; // rethrow
+          }
+          // fallthrough
+        }
+        this.totalPos += this.pos;
+      }
+
+      if (decoded) {
+        if (this.hasRemaining(1)) {
+          throw this.createExtraByteError(this.totalPos);
+        }
+        return object;
+      }
+
+      const { headByte, pos, totalPos } = this;
+      throw new RangeError(
+        `Insufficient data in parsing ${prettyByte(headByte)} at ${totalPos} (${pos} in the current buffer)`,
+      );
+    } finally {
+      this.entered = false;
+    }
   }
 
   public decodeArrayStream(
-    stream: AsyncIterable<ArrayLike<number> | Uint8Array | ArrayBufferView | ArrayBuffer>,
+    stream: AsyncIterable<ArrayLike<number> | ArrayBufferView | ArrayBufferLike>,
   ): AsyncGenerator<unknown, void, unknown> {
     return this.decodeMultiAsync(stream, true);
   }
 
-  public decodeStream(stream: AsyncIterable<ArrayLike<number> | Uint8Array | ArrayBufferView | ArrayBuffer>): AsyncGenerator<unknown, void, unknown> {
+  public decodeStream(stream: AsyncIterable<ArrayLike<number> | ArrayBufferView | ArrayBufferLike>): AsyncGenerator<unknown, void, unknown> {
     return this.decodeMultiAsync(stream, false);
   }
 
-  private async *decodeMultiAsync(stream: AsyncIterable<ArrayLike<number> | Uint8Array | ArrayBufferView | ArrayBuffer>, isArray: boolean) {
-    let isArrayHeaderRequired = isArray;
-    let arrayItemsLeft = -1;
+  private async *decodeMultiAsync(stream: AsyncIterable<ArrayLike<number> | ArrayBufferView | ArrayBufferLike>, isArray: boolean): AsyncGenerator<unknown, void, unknown> {
+    if (this.entered) {
+      const instance = this.clone();
+      yield* instance.decodeMultiAsync(stream, isArray);
+      return;
+    }
 
-    for await (const buffer of stream) {
-      if (isArray && arrayItemsLeft === 0) {
-        throw this.createExtraByteError(this.totalPos);
-      }
+    try {
+      this.entered = true;
 
-      this.appendBuffer(buffer);
+      let isArrayHeaderRequired = isArray;
+      let arrayItemsLeft = -1;
 
-      if (isArrayHeaderRequired) {
-        arrayItemsLeft = this.readArraySize();
-        isArrayHeaderRequired = false;
-        this.complete();
-      }
+      for await (const buffer of stream) {
+        if (isArray && arrayItemsLeft === 0) {
+          throw this.createExtraByteError(this.totalPos);
+        }
 
-      try {
-        while (true) {
-          yield this.doDecodeSync();
-          if (--arrayItemsLeft === 0) {
-            break;
+        this.appendBuffer(buffer);
+
+        if (isArrayHeaderRequired) {
+          arrayItemsLeft = this.readArraySize();
+          isArrayHeaderRequired = false;
+          this.complete();
+        }
+
+        try {
+          while (true) {
+            yield this.doDecodeSync();
+            if (--arrayItemsLeft === 0) {
+              break;
+            }
           }
+        } catch (e) {
+          if (!(e instanceof RangeError)) {
+            throw e; // rethrow
+          }
+          // fallthrough
         }
-      } catch (e) {
-        if (!(e instanceof DataViewIndexOutOfBoundsError)) {
-          throw e; // rethrow
-        }
-        // fallthrough
+        this.totalPos += this.pos;
       }
-      this.totalPos += this.pos;
+    } finally {
+      this.entered = false;
     }
   }
 
@@ -399,7 +489,7 @@ export class Decoder<ContextType = undefined> {
         } else {
           // fixstr (101x xxxx) 0xa0 - 0xbf
           const byteLength = headByte - 0xa0;
-          object = this.decodeUtf8String(byteLength, 0);
+          object = this.decodeString(byteLength, 0);
         }
       } else if (headByte === 0xc0) {
         // nil
@@ -451,15 +541,15 @@ export class Decoder<ContextType = undefined> {
       } else if (headByte === 0xd9) {
         // str 8
         const byteLength = this.lookU8();
-        object = this.decodeUtf8String(byteLength, 1);
+        object = this.decodeString(byteLength, 1);
       } else if (headByte === 0xda) {
         // str 16
         const byteLength = this.lookU16();
-        object = this.decodeUtf8String(byteLength, 2);
+        object = this.decodeString(byteLength, 2);
       } else if (headByte === 0xdb) {
         // str 32
         const byteLength = this.lookU32();
-        object = this.decodeUtf8String(byteLength, 4);
+        object = this.decodeString(byteLength, 4);
       } else if (headByte === 0xdc) {
         // array 16
         const size = this.readU16();
@@ -559,14 +649,11 @@ export class Decoder<ContextType = undefined> {
             continue DECODE;
           }
         } else if (state.type === STATE_MAP_KEY) {
-          if (!isValidMapKeyType(object)) {
-            throw new DecodeError("The type of key must be string or number but " + typeof object);
-          }
           if (object === "__proto__") {
             throw new DecodeError("The key __proto__ is not allowed");
           }
 
-          state.key = object;
+          state.key = this.mapKeyConverter(object);
           state.type = STATE_MAP_VALUE;
           continue DECODE;
         } else {
@@ -637,6 +724,16 @@ export class Decoder<ContextType = undefined> {
     this.stack.pushArrayState(size);
   }
 
+  private decodeString(byteLength: number, headerOffset: number): string | Uint8Array {
+    if (!this.rawStrings || this.stateIsMapKey()) {
+      return this.decodeUtf8String(byteLength, headerOffset);
+    }
+    return this.decodeBinary(byteLength, headerOffset);
+  }
+
+  /**
+   * @throws {@link RangeError}
+   */
   private decodeUtf8String(byteLength: number, headerOffset: number): string {
     if (byteLength > this.maxStrLength) {
       throw new DecodeError(
@@ -667,6 +764,9 @@ export class Decoder<ContextType = undefined> {
     return false;
   }
 
+  /**
+   * @throws {@link RangeError}
+   */
   private decodeBinary(byteLength: number, headOffset: number): Uint8Array {
     if (byteLength > this.maxBinLength) {
       throw new DecodeError(`Max length exceeded: bin length (${byteLength}) > maxBinLength (${this.maxBinLength})`);

@@ -10,14 +10,24 @@ export function isAsyncIterable<T>(object: ReadableStreamLike<T>): object is Asy
   return (object as any)[Symbol.asyncIterator] != null;
 }
 
-function assertNonNull<T>(value: T | null | undefined): asserts value is T {
-  if (value == null) {
-    throw new Error("Assertion Failure: value must not be null nor undefined");
-  }
-}
+// export async function* asyncIterableFromStream<T>(stream: ReadableStream<T>): AsyncIterable<T> {
+//   const reader = stream.getReader();
+//
+//   try {
+//     while (true) {
+//       const { done, value } = await reader.read();
+//       if (done) {
+//         return;
+//       }
+//       yield value;
+//     }
+//   } finally {
+//     reader.releaseLock();
+//   }
+// }
 
 export function ensureAsyncIterable<T>(streamLike: ReadableStreamLike<T>): AsyncIterable<T> {
   if (isAsyncIterable(streamLike)) {
-    return streamLike  as AsyncIterable<T>;
+    return streamLike;
   }
 }

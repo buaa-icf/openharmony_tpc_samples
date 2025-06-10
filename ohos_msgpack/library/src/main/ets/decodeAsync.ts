@@ -14,7 +14,7 @@ export async function decodeAsync<ContextType = undefined>(
 ): Promise<unknown> {
   const stream = ensureAsyncIterable(streamLike);
   const decoder = new Decoder(options);
-  return decoder.decodeAsync(stream as AsyncIterable<ArrayLike<number> | Uint8Array | ArrayBufferView | ArrayBuffer>);
+  return decoder.decodeAsync(stream);
 }
 
 /**
@@ -27,7 +27,7 @@ export function decodeArrayStream<ContextType>(
 ): AsyncGenerator<unknown, void, unknown> {
   const stream = ensureAsyncIterable(streamLike);
   const decoder = new Decoder(options);
-  return decoder.decodeArrayStream(stream as AsyncIterable<Uint8Array | ArrayBuffer | ArrayLike<number> | ArrayBufferView>);
+  return decoder.decodeArrayStream(stream);
 }
 
 /**
@@ -40,10 +40,5 @@ export function decodeMultiStream<ContextType>(
 ): AsyncGenerator<unknown, void, unknown> {
   const stream = ensureAsyncIterable(streamLike);
   const decoder = new Decoder(options);
-  return decoder.decodeStream(stream as AsyncIterable<Uint8Array | ArrayBuffer | ArrayLike<number> | ArrayBufferView>);
+  return decoder.decodeStream(stream);
 }
-
-/**
- * @deprecated Use {@link decodeMultiStream} instead.
- */
-export const decodeStream: never = undefined as never;

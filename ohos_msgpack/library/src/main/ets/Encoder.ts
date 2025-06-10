@@ -86,9 +86,11 @@ export class Encoder<ContextType = undefined> {
   private view: DataView;
   private bytes: Uint8Array;
 
+  private entered = false;
+
   public constructor(options?: EncoderOptions<ContextType>) {
     this.extensionCodec = options?.extensionCodec ?? (ExtensionCodec.defaultCodec as ExtensionCodecType<ContextType>);
-    this.context = (options as unknown as { context: ContextType } | undefined)?.context as ContextType; // needs a type assertion because EncoderOptions has no context property when ContextType is undefined
+    this.context = (options as { context: ContextType } | undefined)?.context as ContextType; // needs a type assertion because EncoderOptions has no context property when ContextType is undefined
 
     this.useBigInt64 = options?.useBigInt64 ?? false;
     this.maxDepth = options?.maxDepth ?? DEFAULT_MAX_DEPTH;
@@ -103,6 +105,23 @@ export class Encoder<ContextType = undefined> {
     this.bytes = new Uint8Array(this.view.buffer);
   }
 
+  private clone() {
+    // Because of slightly special argument `context`,
+    // type assertion is needed.
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    return new Encoder<ContextType>({
+      extensionCodec: this.extensionCodec,
+      context: this.context,
+      useBigInt64: this.useBigInt64,
+      maxDepth: this.maxDepth,
+      initialBufferSize: this.initialBufferSize,
+      sortKeys: this.sortKeys,
+      forceFloat32: this.forceFloat32,
+      ignoreUndefined: this.ignoreUndefined,
+      forceIntegerToFloat: this.forceIntegerToFloat,
+    } as any);
+  }
+
   private reinitializeState() {
     this.pos = 0;
   }
@@ -113,18 +132,40 @@ export class Encoder<ContextType = undefined> {
    * @returns Encodes the object and returns a shared reference the encoder's internal buffer.
    */
   public encodeSharedRef(object: unknown): Uint8Array {
-    this.reinitializeState();
-    this.doEncode(object, 1);
-    return this.bytes.subarray(0, this.pos);
+    if (this.entered) {
+      const instance = this.clone();
+      return instance.encodeSharedRef(object);
+    }
+
+    try {
+      this.entered = true;
+
+      this.reinitializeState();
+      this.doEncode(object, 1);
+      return this.bytes.subarray(0, this.pos);
+    } finally {
+      this.entered = false;
+    }
   }
 
   /**
    * @returns Encodes the object and returns a copy of the encoder's internal buffer.
    */
   public encode(object: unknown): Uint8Array {
-    this.reinitializeState();
-    this.doEncode(object, 1);
-    return this.bytes.slice(0, this.pos);
+    if (this.entered) {
+      const instance = this.clone();
+      return instance.encode(object);
+    }
+
+    try {
+      this.entered = true;
+
+      this.reinitializeState();
+      this.doEncode(object, 1);
+      return this.bytes.slice(0, this.pos);
+    } finally {
+      this.entered = false;
+    }
   }
 
   private doEncode(object: unknown, depth: number): void {
@@ -396,6 +437,21 @@ export class Encoder<ContextType = undefined> {
   }
 
   private encodeExtension(ext: ExtData) {
+    if (typeof ext.data === "function") {
+      const data = ext.data(this.pos + 6);
+      const size = data.length;
+
+      if (size >= 0x100000000) {
+        throw new Error(`Too large extension object: ${size}`);
+      }
+
+      this.writeU8(0xc9);
+      this.writeU32(size);
+      this.writeI8(ext.type);
+      this.writeU8a(data);
+      return;
+    }
+
     const size = ext.data.length;
     if (size === 1) {
       // fixext 1

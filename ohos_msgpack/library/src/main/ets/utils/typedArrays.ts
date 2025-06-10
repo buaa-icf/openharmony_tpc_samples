@@ -1,3 +1,9 @@
+function isArrayBufferLike(buffer: unknown): buffer is ArrayBufferLike {
+  return (
+    buffer instanceof ArrayBuffer || (typeof SharedArrayBuffer !== "undefined" && buffer instanceof SharedArrayBuffer)
+  );
+}
+
 export function ensureUint8Array(buffer: ArrayLike<number> | Uint8Array | ArrayBufferView | ArrayBuffer): Uint8Array {
   if (buffer instanceof Uint8Array) {
     return buffer;
