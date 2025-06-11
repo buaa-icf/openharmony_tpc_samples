@@ -1,0 +1,11 @@
+{
+  "name": "@ohos/oh7zip",
+  "version": "1.0.0",
+  "description": "封装7zip命令行，支持压缩和解压文件到沙箱路径",
+  "main": "Index.ets",
+  "author": "ohos_sig",
+  "license": "apache-2.0",
+  "dependencies": {
+    "liboh7zip.so": "file:./src/main/cpp/types/oh7zip"
+  }
+}

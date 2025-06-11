@@ -113,6 +113,7 @@
                 <filteritem type="filepath" name="net_snmp/library/src/main/ets/.*" desc="此文件第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
                 <filteritem type="filepath" name="net_snmp/LICENSE" desc="开源库的LICENSE文件，维持原样"/>
                 <filteritem type="filepath" name="net_snmp/library/index.js" desc="此文件第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="ohos_7zip/library/src/main/cpp/.*" desc="此文件第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
                 <filteritem type="filepath" name="ohos_polka/library/src/main/ets/node-static/.*" desc="此文件第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
                 <filteritem type="filepath" name="ohos_polka/library/src/main/ets/polka/.*" desc="此文件第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
                 <filteritem type="filepath" name="vap/LICENSE.MIT" desc="原库版权，不修改"/>
@@ -230,6 +231,7 @@
                 <filteritem type="filepath" name="net_snmp/library/src/main/ets/.*" desc="此文件第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
                 <filteritem type="filepath" name="net_snmp/LICENSE" desc="开源库的LICENSE文件，维持原样"/>
                 <filteritem type="filepath" name="net_snmp/library/index.js" desc="此文件第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+                <filteritem type="filepath" name="ohos_7zip/library/src/main/cpp/.*" desc="此文件第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
                 <filteritem type="filepath" name="ohos_polka/library/src/main/ets/node-static/.*" desc="此文件第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
                 <filteritem type="filepath" name="ohos_polka/library/src/main/ets/polka/.*" desc="此文件第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
                 <filteritem type="filepath" name="vap/LICENSE.MIT" desc="原库版权，不修改"/>
@@ -508,6 +510,7 @@
                 <policyitem type="license" name="MIT" path="smart_buffer/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求" />
                 <policyitem type="license" name="MIT" path="asn1_ber/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求" />
                 <policyitem type="license" name="MIT" path="net_snmp/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求" />
+                <policyitem type="license" name="MIT" path="ohos_7zip/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求" />
                 <policyitem type="license" name="MIT" path="ohos_polka/.*" rule="may" group="defaultGroup" filefilter="defaultPolicyFilter" desc="源开源项目的LICENSE,  符合开源要求"/>
                 <policyitem type="license" name="MIT" path="google_libphonenumber/.*" rule="may" group="defaultGroup" filefilter="defaultPolicyFilter" desc="源开源项目的LICENSE,  符合开源要求"/>
                 <policyitem type="license" name="BSD-3-Clause" path="stringTemplate/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求" />
