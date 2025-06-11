@@ -13,7 +13,7 @@ ohpm i eventbusjs
 ohpm install @types/eventbusjs --save-dev // A syntax error is reported for the import eventbusjs instruction if the eventbusjs package does not contain the type declaration. You need to download the declaration file of the package using @types/eventbusjs to rectify the syntax error.
 
 ```
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 Use the project in your code:
 
@@ -161,7 +161,7 @@ This project has been verified in the following versions:
 
 ## License
 
-This project is incensed under [Apache License 2.0](https://gitee.com/lgrong2303/openharmony_tpc_samples/blob/EventBus/EventBus/LICENSE).
+This project is incensed under [Apache License 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/EventBus/LICENSE).
 
 ## How to Contribute
 
