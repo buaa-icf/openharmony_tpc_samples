@@ -27,6 +27,11 @@
 [submodule "ohos_minizip/library/src/main/cpp/third_party"]
 	path = ohos_minizip/library/src/main/cpp/third_party
 	url = https://gitee.com/longfeng20/third_party.git
+
+[submodule "ohos_ssh/library/src/main/cpp/thirdparty"]
+	path = ohos_ssh/library/src/main/cpp/thirdparty
+	url = https://gitee.com/damonjiang/thirdparty.git
+
 [submodule "socketio/library/src/main/cpp/socket.io-client-cpp"]
 	path = socketio/library/src/main/cpp/socket.io-client-cpp
 	url = https://gitee.com/damonjiang/socket.io-client-cpp.git
