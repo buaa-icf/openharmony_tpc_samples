@@ -10,7 +10,7 @@
 ohpm install behaviortree
 ```
 
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
 ## 使用说明
 
@@ -108,7 +108,7 @@ var bTree = new BehaviorTree({
 bTree.step();
 ```
 
-[单元测试用例](https://gitee.com/tybrave/openharmony_tpc_samples/tree/master/behaviortree/TEST.md)详情可参考
+[单元测试用例](https://gitcode.com/tybrave/openharmony_tpc_samples/tree/master/behaviortree/TEST.md)详情可参考
 
 ## 接口说明
 
@@ -130,10 +130,10 @@ bTree.step();
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
-给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues)
+给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
 ## 开源协议
 
-本项目基于 [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/behaviortreeDemo/LICENSE)
+本项目基于 [Apache License 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/behaviorTree/LICENSE)
 ，请自由地享受和参与开源。
