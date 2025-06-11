@@ -1,8 +1,14 @@
-# socket-io
+# socketio
 
 ## Overview
 
-socket.io is a library that implements low-latency, two-way, and event-based communication between clients and servers. It is built on the WebSocket protocol and provides additional protection, such as fallback to HTTP long polling or automatic reconnection.
+socketio is a library that implements low-latency, two-way, and event-based communication between clients and servers. It is built on the WebSocket protocol and provides additional protection, such as fallback to HTTP long polling or automatic reconnection.
+### Notes:
+- socketio only supports HTTP-based connections and does not support HTTPS (TLS) protocol;
+- If you need to establish encrypted connections via HTTPS (TLS), please use [socket_tls](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/socketio_tls) version;
+- The two versions are designed for HTTP and HTTPS scenarios respectively and **cannot be mixed**.
+### Compatibility
+- **Compatible server versions: Socket.IO 3.x / 4.x**
 
 ## Display Effects
 
