@@ -10,7 +10,7 @@
 ohpm install @types/eventemitter3 
 ```
 
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage_en.md).
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage_en.md).
 
 ## How to Use
 
@@ -300,7 +300,7 @@ After the event is emitted, the callbacks are invoked in the sequence in which t
 | off                | event: T,<br>fn?: EventEmitter.EventListener<EventTypes, T>, <br>context?: Context,<br>once?: boolean | EventEmitter                                     | Removes a listener from an event.                    |
 | removeAllListeners | event?: EventEmitter.EventNames<EventTypes>                  | EventEmitter                                     | Removes all listeners.          |
 
-For more information, see [EventEmitter3](https://github.com/primus/eventemitter3/blob/master/README.md) and [Unit Test Cases](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/EventEmitter3Demo/TEST.md).
+For more information, see [EventEmitter3](https://github.com/primus/eventemitter3/blob/master/README.md) and [Unit Test Cases](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/EventEmitter3Demo/TEST.md).
 
 ## Constraints
 
@@ -326,8 +326,8 @@ This project has been verified in the following version:
 
 ## How to Contribute
 
-If you find any problem during the use, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+If you find any problem during the use, submit an [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
 ## License
 
-This project is licensed under [MIT License](https://gitee.com/zdy09/openharmony_tpc_samples/blob/master/EventEmitter3Demo/LICENSE).
+This project is licensed under [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/EventEmitter3Demo/LICENSE).
