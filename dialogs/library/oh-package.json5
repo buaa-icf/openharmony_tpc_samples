@@ -11,7 +11,7 @@
     "org": "opensource"
   },
   "main": "index.ets",
-  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/dialogs",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/dialogs",
   "type": "module",
   "version": "1.0.2",
   "dependencies": {
