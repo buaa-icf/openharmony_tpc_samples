@@ -1,8 +1,14 @@
-# socket-io
+# socketio_tls
 
 ## 简介
 
 > socketio_tls是一个在客户端和服务器之间实现低延迟、双向和基于事件的通信的库。它建立在 WebSocket 协议之上，并通过 OpenSSL 提供的 TLS 支持确保通信的安全性，同时提供额外的功能，例如回退到 HTTPS 长轮询或自动重新连接。
+### 注意事项：
+- socket_tls 仅支持基于 HTTPS(TLS) 的连接，不支持协议 HTTP；
+- 若需通过 HTTP 建立连接，请使用 [socketio](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/socketio) 版本；
+- 两个版本分别适用于 HTTPS 与 HTTP 场景，**不可混用**。
+### 服务器兼容性
+- **兼容服务端版本：Socket.IO 3.x / 4.x**
 
 ## 效果展示
 
