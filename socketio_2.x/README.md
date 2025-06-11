@@ -1,8 +1,12 @@
-# socket-io 2.x
+# socketio_2.x
 
 ## 简介
 
-> socketio_2.x是基于socket.io-client-cpp 2.x版本封装的一个在客户端和服务器之间实现低延迟、双向和基于事件的通信的库，兼容socketio服务端版本1.x和2.x。该客户端建立在 WebSocket 协议之上，并提供额外的保证，例如回退到 HTTP 长轮询或自动重新连接。
+> socketio_2.x是基于socket.io-client-cpp 2.x版本封装的一个在客户端和服务器之间实现低延迟、双向和基于事件的通信的库该客户端建立在 WebSocket 协议之上，并提供额外的保证，例如回退到 HTTP 长轮询或自动重新连接。
+### 注意事项：
+- socketio_2.x 支持基于 HTTPS(TLS) 和 HTTP 的连接；
+### 服务器兼容性
+- **兼容服务端版本：Socket.IO 1.x / 2.x**
 
 ## 效果展示
 
