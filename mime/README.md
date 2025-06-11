@@ -45,4 +45,4 @@ If you find any problem when using the project, submit an [issue](https://gitee.
 
 ## License
 
-This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/mime/LICENSE).
+This project is licensed under [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/mime/LICENSE).
