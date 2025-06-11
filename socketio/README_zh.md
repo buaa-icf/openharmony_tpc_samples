@@ -1,8 +1,14 @@
-# socket-io
+# socketio
 
 ## 简介
 
-> socket.io是一个在客户端和服务器之间实现低延迟、双向和基于事件的通信的库。建立在 WebSocket 协议之上，并提供额外的保证，例如回退到 HTTP 长轮询或自动重新连接。
+> socketio是一个在客户端和服务器之间实现低延迟、双向和基于事件的通信的库。建立在 WebSocket 协议之上，并提供额外的保证，例如回退到 HTTP 长轮询或自动重新连接。
+### 注意事项：
+- socketio 仅支持基于 HTTP 的连接，不支持 HTTPS（TLS）协议；
+- 若需通过 HTTPS（TLS） 建立加密连接，请使用 [socketio_tls](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/socketio_tls) 版本；
+- 两个版本分别适用于 HTTP 与 HTTPS 场景，**不可混用**。
+### 服务器兼容性
+- **兼容服务端版本：Socket.IO 3.x / 4.x**
 
 ## 效果展示
 
