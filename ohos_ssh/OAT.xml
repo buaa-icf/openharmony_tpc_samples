@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (c) 2021 Huawei Device Co., Ltd.
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+
+    This is the configuration file template for OpenHarmony OSS Audit Tool, please copy it to your project root dir and modify it refer to OpenHarmony/tools_oat/README.
+
+-->
+<configuration>
+    <oatconfig>
+        <filefilterlist>
+            <filefilter name="copyrightPolicyFilter" desc="Filters for compatibility，license header policies">
+                <filteritem type="filepath" name="entry/hvigorfile.ts" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="library/hvigorfile.ts" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filename" name="hvigorfile.ts" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filename" name="hvigorw" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filename" name="hvigorw.bat" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filename" name="*.json5" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filepath" name="*.json5" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filename" name=".gitmodules" desc="项目工程配置文件，不需要添加版权头"/>
+                <filteritem type="filename" name=".clang-tidy" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filename" name=".clangd" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filename" name="NOTICE" desc="NOTICE说明，不需要添加版权头"/>
+                <filteritem type="filename" name="LICENSE" desc="LICENSE说明，不需要添加版权头"/>
+                <filteritem type="filename" name="hvigor-wrapper.js" desc="项目工程默认文件，不需要添加版权头"/>
+
+                <filteritem type="filepath" name="library/BuildProfile.ets" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="entry/src/ohosTest/ets/test/*.*" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="entry/src/mock/Libentry.mock.ets" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="entry/src/test/LocalUnit.test.ets" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="entry/src/test/List.test.ets" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="entry/src/main/resources/base/media/*.*" desc="测试秘钥文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="entry/src/main/ets/entryability/EntryAbility.ets" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="entry/src/main/ets/entrybackupability/EntryBackupAbility.ets" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="library/src/ohosTest/ets/test/*.ets" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="library/src/test/*.*" desc="项目工程默认文件，不需要添加版权头"/>
+
+            </filefilter>
+            <filefilter name="defaultPolicyFilter" desc="Filters for compatibility，license header policies">
+                <filteritem type="filename" name="hvigorfile.ts" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filename" name=".gitmodules" desc="项目工程配置文件，不需要添加版权头"/>
+                <filteritem type="filename" name="hvigorw" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filename" name="hvigorw.bat" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filename" name="*.json5" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filepath" name="*.json5" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filepath" name="entry/hvigorfile.ts" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="library/hvigorfile.ts" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filename" name=".clang-tidy" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filename" name=".clangd" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filename" name="NOTICE" desc="NOTICE说明，不需要添加版权头"/>
+                <filteritem type="filename" name="LICENSE" desc="LICENSE说明，不需要添加版权头"/>
+                <filteritem type="filename" name="hvigor-wrapper.js" desc="项目工程默认文件，不需要添加版权头"/>
+
+                <filteritem type="filepath" name="library/BuildProfile.ets" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="entry/src/ohosTest/ets/test/*.*" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="entry/src/mock/Libentry.mock.ets" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="entry/src/test/LocalUnit.test.ets" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="entry/src/test/List.test.ets" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="entry/src/main/resources/base/media/*.*" desc="测试秘钥文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="entry/src/main/ets/entryability/EntryAbility.ets" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="entry/src/main/ets/entrybackupability/EntryBackupAbility.ets" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="library/src/ohosTest/ets/test/*.ets" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="library/src/test/*.*" desc="项目工程默认文件，不需要添加版权头"/>
+            </filefilter>
+            <filefilter name="binaryFileTypePolicyFilter" desc="Filters for copyright header policies">
+                <filteritem type="filepath" name="entry/src/main/resources/base/media/icon.png" desc="图片"/>
+                <filteritem type="filepath" name="entry/src/main/resources/base/media/startIcon.png" desc="图片"/>
+                <filteritem type="filepath" name="entry/src/ohosTest/resources/base/media/icon.png" desc="图片"/>
+                <filteritem type="filepath" name="AppScope/resources/base/media/app_icon.png" desc="图片"/>
+                <filteritem type="filepath" name="entry/src/main/resources/rawfile/test.zip" desc="测试资源"/>
+                <filteritem type="filepath" name="dir.png" desc="图片"/>
+                <filteritem type="filepath" name="entry/src/main/resources/base/media/background.png" desc="测试资源"/>
+                <filteritem type="filepath" name="entry/src/main/resources/base/media/foreground.png" desc="测试资源"/>
+                <filteritem type="filepath" name="AppScope/resources/base/media/background.png" desc="测试资源"/>
+                <filteritem type="filepath" name="AppScope/resources/base/media/foreground.png" desc="测试资源"/>
+            </filefilter>
+        </filefilterlist>
+    </oatconfig>
+</configuration>
