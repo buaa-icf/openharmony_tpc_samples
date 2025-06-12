@@ -607,4 +607,4 @@ If you find any problem when using the project, submit an [issue](https://gitcod
 
 ## License
 
-This project is licensed under [MIT](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/BasicFtp/LICENSE.txt).
+This project is licensed under [MIT](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/BasicFtp/LICENSE).

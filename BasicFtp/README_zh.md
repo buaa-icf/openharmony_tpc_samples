@@ -615,4 +615,4 @@ DevEco Studio版本: 4.0 Release(4.0.3.413), SDK: (4.0.10.3)
 
 ## 开源协议
 
-本项目基于 [MIT](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/BasicFtp/LICENSE.txt) ，请自由地享受和参与开源。
+本项目基于 [MIT](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/BasicFtp/LICENSE) ，请自由地享受和参与开源。
