@@ -2,15 +2,15 @@
 
 
 ## 简介
-本项目是OpenHarmony系统下使用puutils的示例，puutils是一组常用的实用程序函数，用于各种Peculiar Ventures基于Javascript的项目库。
+本项目是OpenHarmony系统下使用pvutils的示例，pvutils是一组常用的实用程序函数，用于各种Peculiar Ventures基于Javascript的项目库。
 
 
 ## 下载安装
 
 ```shell
-ohpm install puutils
+ohpm install pvutils
 ```
-OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
 ## 使用说明
 ```
@@ -57,8 +57,8 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
 ## 开源协议
 
-该项目基于 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/pvutils/LICENSE) ，请自由地享受和参与开源。
+该项目基于 [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/pvutils/LICENSE) ，请自由地享受和参与开源。
