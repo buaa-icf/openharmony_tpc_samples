@@ -22,6 +22,15 @@ mime.getType('js'); // application/javascript
 mime.getExtension('text/plain')  // txt;
 ```
 
+## 接口列表
+
+| 接口                              | 描述                                                |
+|---------------------------------|---------------------------------------------------|
+| `mime.getType(pathOrExtension)` | 获取给定文件路径或扩展名的mime类型。                              |
+| `mime.getExtension(type)`       | 获取给定mime类型的文件扩展名。字符集选项（通常包含在Content-Type标头中）将被忽略。 |
+| `mime.getAllExtensions(type)`   | 获取给定mime类型的所有文件扩展名。                               |
+
+
 ## 约束与限制
 
 在下述版本验证通过：

@@ -22,6 +22,14 @@ mime.getType('js'); // application/javascript
 mime.getExtension('text/plain')  // txt;
 ```
 
+## API
+
+| API                                                               | Description                                                                                                                                                                                                                                                                                                                                                                                                     |
+|-------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `mime.getType(pathOrExtension)`  |  Get mime type for the given file path or extension. |
+| `mime.getExtension(type)` | Get file extension for the given mime type. Charset options (often included in Content-Type headers) are ignored.                                                                                                                                                                                                                                                                                                                                                                                     |
+| `mime.getAllExtensions(type)`               | Get all file extensions for the given mime type.                                                                                                                                                                                                                                                                                                                                                                      |
+
 ## Constraints
 
 This project has been verified in the following version:
