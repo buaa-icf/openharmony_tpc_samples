@@ -45,4 +45,4 @@ DevEco Studio: 4.1 Canary(4.1.3.213), SDK: API11 4.1.2.3
 
 ## 开源协议
 
-本项目基于 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/mime/LICENSE) ，请自由地享受和参与开源。
+本项目基于 [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/mime/LICENSE) ，请自由地享受和参与开源。
