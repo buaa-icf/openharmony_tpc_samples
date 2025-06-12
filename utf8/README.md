@@ -48,10 +48,10 @@ showMessage(message:string){
 ```
 
 ## Available APIs
-| API    | Description   |
-| ------ | ------------- |
-| encode | Encodes data. |
-| decode | Decodes data. |
+| API     | Type         | Description   |
+|----------|------------|--------------|
+| encode() | inputString: string | Encodes data  |
+| decode() | byteString: string | Decodes data    |
 
 
 

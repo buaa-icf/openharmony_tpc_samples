@@ -48,9 +48,11 @@ showMessage(message:string){
 ```
 
 ## 接口说明
-encode：编码
+| 使用方法     | 类型         | 相关描述   |
+|----------|------------|--------------|
+| encode() | inputString: string | 编码  |
+| decode() | byteString: string | 解码    |
 
-decode：解码
 
 ## 约束与限制
 
