@@ -24,7 +24,7 @@ class SSH2Napi {
 
 
 public:
-    SSH2Napi() : _user(nullptr),_pass(nullptr),_ssh2Client(NULL),_ip(nullptr),_port(nullptr),_privateKeyPath(nullptr){}
+    SSH2Napi() : _user(""),_pass(""),_ssh2Client(NULL),_ip(""),_port(""),_privateKeyPath(""){}
     ~SSH2Napi() {}
     static napi_value ClassConstructor(napi_env env, napi_callback_info info);
     static napi_value StartSSHClient(napi_env env, napi_callback_info info);

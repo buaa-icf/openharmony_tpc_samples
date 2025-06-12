@@ -21,8 +21,8 @@ struct Index {
   ssh2Napi: libssh | undefined;
   privateKeyPath: string = getContext(this).cacheDir + "/privateKey" //沙箱路径私钥
   publicKeyPath: string = getContext(this).cacheDir + "/publicKey" //沙箱路径公钥
-  sshServerIP: string = "47.122.65.73git " //sshserver地址
-  sftpServerIP: string = "192.168.43.9" //sftpsever地址
+  sshServerIP: string = "47.122.65.73" //sshserver地址
+  sftpServerIP: string = "47.122.65.73" //sftpsever地址
   port: number = 9999 //端口
   username: string = "myuser" //账号
   password: string = "mypassword" //密码
