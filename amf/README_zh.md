@@ -27,6 +27,15 @@ var decodeData = AMF.parse(encodedData);
 var decodeData2 = AMF.deserialize(data, Spec.AMF3_OBJECT)
 ```
 
+## API
+
+| API                                                          | Description                                                                                                          |
+|--------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|
+| `AMF.stringify(data: object)`                                | 序列化                                                                                           |
+| `AMF.parse(encodedData: object)`                             | 反序列化                                                                                                        |
+| `AMF.registerClassAlias(string, object)`                     | 使用AMF.registerClassAlias注册“类别名”，将_classMapping值与其相关的类类型相关联 |
+
+
 
 ## 目录结构
 ````
