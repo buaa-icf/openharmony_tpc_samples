@@ -310,9 +310,9 @@ static messageToHtml(message: Protobuf.Builder.Message): string;
 | 类型   | 说明                         |
 | ------ | ---------------------------- |
 | string | 协议消息体对应的html字符串。 |
-## About obfuscation
-- Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
-- If you want the library not to be obfuscated during code obfuscation, you need to add corresponding exclusion rules in the obfuscation rule configuration file obfuscation-rules.txt：
+## 关于混淆
+- 代码混淆，请查看[代码混淆简介](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- 如果希望在三方库代码混淆过程中不会被混淆，需要在混淆规则配置文件obfuscation-rules.txt中添加相应的排除规则：
 ```
 -keep
 ./oh_modules/@ohos/protobuf_format
