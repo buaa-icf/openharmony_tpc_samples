@@ -11,9 +11,9 @@
     "org": "opensource"
   },
   "main": "index.ets",
-  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/dialogs",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/dialogs",
   "type": "module",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "dependencies": {
     "@ohos/subsampling-scale-image-view": "2.0.1"
   },

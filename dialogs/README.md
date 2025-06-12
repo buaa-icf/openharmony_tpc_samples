@@ -74,7 +74,7 @@ This project is a UI library that encapsulates and combines the basic and custom
 ```
 ohpm install @ohos/dialogs
 ```
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage_en.md).
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 2. Import the required components to the page, for example, **ConfirmDialog.ets**.
 
