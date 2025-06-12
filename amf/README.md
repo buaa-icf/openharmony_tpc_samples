@@ -15,17 +15,25 @@ For details about the OpenHarmony ohpm environment configuration, see [OpenHarmo
 ### Serialization and Deserialization
 ```javascript
 import AMF,{ Spec,ByteArray } from "amf-convert";
-var data = {
+let data = {
     any: 'data',
     you: 'like!'
 };
 // Implement serialization.
-var encodedData = AMF.stringify(data);
-var encodedData2 = AMF.serialize(data, true, Spec.AMF3_OBJECT)
+let encodedData = AMF.stringify(data);
+let encodedData2 = AMF.serialize(data, true, Spec.AMF3_OBJECT)
 // Implement deserialization.
-var decodeData = AMF.parse(encodedData);
-var decodeData2 = AMF.deserialize(data, Spec.AMF3_OBJECT)
+let decodeData = AMF.parse(encodedData);
+let decodeData2 = AMF.deserialize(data, Spec.AMF3_OBJECT)
 ```
+
+## API
+
+| API                                                          | Description                                                                                                          |
+|--------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|
+| `AMF.stringify(data: object)`                                | Encoding an object to AMF                                                                                            |
+| `AMF.parse(encodedData: object)`                             | Decoding to object.                                                                                                        |
+| `AMF.registerClassAlias(string, object)`                     | register a "class alias" using AMF.registerClassAlias to associate the _classMapping value to its related class type |
 
 
 ## Directory Structure
