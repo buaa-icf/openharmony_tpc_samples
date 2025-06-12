@@ -199,7 +199,6 @@ DevEco Studio: DevEco Studio 5.0.3 Beta2- 5.0.9.200, SDK: API12
 |                      |---- types # 接口声明
 |                      |---- utils # 工具类
 |           |---- index.ets  # 对外接口
-|     |---- README.md  # 安装使用方法
 |     |---- README_zh.md  # 安装使用方法   
 ````
 
