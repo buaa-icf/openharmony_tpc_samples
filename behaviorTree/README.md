@@ -108,7 +108,7 @@ var bTree = new BehaviorTree({
 bTree.step();
 ```
 
-For details about unit test cases, see [TEST.md](https://gitcode.com/tybrave/openharmony_tpc_samples/tree/master/behaviortree/TEST.md).
+For details about unit test cases, see [TEST.md](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/behaviorTree/TEST.md).
 
 ## Available APIs
 
