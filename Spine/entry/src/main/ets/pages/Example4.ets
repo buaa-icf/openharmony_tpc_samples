@@ -181,7 +181,8 @@ struct SingleExample {
             });
 
           Button('setAnimationWith')
-            .onClick(() => {
+            .onClick(async () => {
+              await this.load();
               let animation = this.skeletonData?.findAnimation('aim');
               this.animationState?.setAnimationWith(1, animation, false);
             });
@@ -189,7 +190,8 @@ struct SingleExample {
 
         Row() {
           Button('clearTrack')
-            .onClick(() => {
+            .onClick(async () => {
+              await this.load();
               this.animationState?.clearTrack(0);
             });
 
@@ -218,7 +220,8 @@ struct SingleExample {
             });
 
           Button('clearNext')
-            .onClick(() => {
+            .onClick(async () => {
+              await this.load();
               const obj = this.animationState?.setAnimation(0, "death", true);
               this.animationState?.clearNext(obj);
             });
@@ -226,12 +229,14 @@ struct SingleExample {
 
         Row() {
           Button('setEmptyAnimation')
-            .onClick(() => {
+            .onClick(async () => {
+              await this.load();
               this.animationState?.setEmptyAnimation(0, 0.5)
             });
 
           Button('addEmptyAnimation')
-            .onClick(() => {
+            .onClick(async () => {
+              await this.load();
               const obj = this.animationState?.setAnimation(1, "run", true);
               this.animationState?.clearNext(obj);
               this.animationState?.addEmptyAnimation(1, 0.3, 1.0);
@@ -240,7 +245,8 @@ struct SingleExample {
 
         Row() {
           Button('updateMixingFrom')
-            .onClick(() => {
+            .onClick(async () => {
+              await this.load();
               const obj = this.animationState?.setAnimation(0, "death", true);
               this.animationState?.updateMixingFrom(obj, 1);
             });
