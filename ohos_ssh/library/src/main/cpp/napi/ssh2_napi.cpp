@@ -389,8 +389,10 @@ napi_value SSH2Napi::StopSSHClient(napi_env env, napi_callback_info info) {
     if (!ssh2Napi) {
         return NapiUtil::SetNapiCallInt32(env, NAPI_FAILED);
     }
-    ssh2Napi->_ssh2Client->Stop();
-    LOGE("StopSSHClient ss2client success");
+    if (ssh2Napi->_ssh2Client != nullptr) {
+        ssh2Napi->_ssh2Client->Stop();
+        LOGD("StopSSHClient ss2client success");
+    }
     return NapiUtil::SetNapiCallInt32(env, NAPI_SUCCESS);
 }
 
