@@ -62,6 +62,18 @@ class-TRANSFORMER----Johny Cage
 class-TRANSFORMER----false
 ```
 
+## 接口列表
+
+| 接口                                                                 | 描述                                                  |
+|------------------------------------------------------------------|-----------------------------------------------------|
+| `plainToInstance(cls: ClassConstructor<object>, plain: objectJson)` | 此方法将普通JavaScript对象转换为特定类的实例。                        |
+| `plainToClassFromExist(clsObject: object, plain: CompareValue)`  | 此方法使用已填充的Object（目标类的实例）将普通对象转换为实例。                  |
+| `instanceToPlain(obj: object);`                                  | 此方法将你的类对象转换回普通的JavaScript对象，可以稍后再转换为JSON.stringify。 |
+| `instanceToInstance(obj: object);`        | 此方法将类对象转换为类对象的新实例。这可能被视为对象的深度克隆。                    |
+| `serialize(obj: object)`                                              | 将模型序列化为json                                         |
+| `deserialize(cls: ClassConstructor<object>, obj: object)`                                               | 从json反序列化为模型                                        |
+
+
 ## 约束与限制
 
 在下述版本验证通过：
