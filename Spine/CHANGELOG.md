@@ -1,3 +1,8 @@
+## 1.0.0
+
+- Release the official version
+
+
 ## 1.0.0-rc.1
 
 - Fix the issue of abnormal data retrieval by getFloat32 method
