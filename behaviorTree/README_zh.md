@@ -108,7 +108,7 @@ var bTree = new BehaviorTree({
 bTree.step();
 ```
 
-[单元测试用例](https://gitcode.com/tybrave/openharmony_tpc_samples/tree/master/behaviortree/TEST.md)详情可参考
+[单元测试用例](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/behaviorTree/TEST.md)详情可参考
 
 ## 接口说明
 
