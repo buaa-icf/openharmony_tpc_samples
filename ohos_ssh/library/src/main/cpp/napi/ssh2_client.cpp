@@ -247,9 +247,11 @@ std::string SSH2Client::SftpRequestRead(std::string ip, std::string port, std::s
 
 
 int SSH2Client::Stop() {
-    ssh_channel_close(this->_ssh_channel);
-    ssh_channel_free(this->_ssh_channel);
-    this->_ssh_channel = NULL;
+    if(!this->_ssh_channel) {
+        ssh_channel_close(this->_ssh_channel);
+        ssh_channel_free(this->_ssh_channel);
+        this->_ssh_channel = NULL;
+    }
 
     ssh_disconnect(this->_ssh_session);
     ssh_free(this->_ssh_session);
