@@ -11,7 +11,7 @@ ohpm install mime
 ohpm install @types/mime@3.0.3 --save-dev //import mime 的时候语法报错。其原因是mime包内不含类型声明，需要 @types/mime 下载这个包的声明文件，从而解决语法的报错。
 ```
 
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
 ## 使用说明
 
@@ -50,7 +50,7 @@ DevEco Studio: 4.1 Canary(4.1.3.213), SDK: API11 4.1.2.3
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls)共建。
+使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls)共建。
 
 ## 开源协议
 
