@@ -165,4 +165,4 @@ This project is incensed under [Apache License 2.0](https://gitcode.com/openharm
 
 ## How to Contribute
 
-If you find any problem during the use, submit an issue or a PR.
+If you find any problem during the use, submit an [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).

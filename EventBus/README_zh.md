@@ -165,4 +165,4 @@ EventBus.getEvents()
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 [Issue] 给我们，当然，我们也非常欢迎你给我们发 [PR] 。
+使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues)，当然，也非常欢迎发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
