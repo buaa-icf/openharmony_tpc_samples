@@ -10,7 +10,7 @@ typed-function支持以灵活、有组织的方式将类型检查逻辑和类型
 ## 下载安装
 
 ````
-ohpm install typed-function@4.1.0
+ohpm install typed-function@4.2.1
 ````
 
 OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
