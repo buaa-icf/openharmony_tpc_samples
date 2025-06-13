@@ -13,8 +13,20 @@
  * limitations under the License.
  */
 
-import abilityTest from './Ability.test';
+@Entry
+@Component
+struct Index {
+  @State message: string = 'Hello World';
 
-export default function testsuite() {
-  abilityTest();
+  build() {
+    Row() {
+      Column() {
+        Text(this.message)
+          .fontSize(50)
+          .fontWeight(FontWeight.Bold)
+      }
+      .width('100%')
+    }
+    .height('100%')
+  }
 }

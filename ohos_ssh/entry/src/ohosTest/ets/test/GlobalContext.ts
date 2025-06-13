@@ -13,8 +13,25 @@
  * limitations under the License.
  */
 
-import abilityTest from './Ability.test';
+export default class GlobalContext {
+  private static instance: GlobalContext;
+  private objectMaps = new Map<string, Object>();
 
-export default function testsuite() {
-  abilityTest();
+  private constructor() {
+  }
+
+  public static getContext(): GlobalContext {
+    if (!GlobalContext.instance) {
+      GlobalContext.instance = new GlobalContext();
+    }
+    return GlobalContext.instance;
+  }
+
+  getValue(value: string): Object {
+    return this.objectMaps.get(value);
+  }
+
+  setValue(key: string, objectClass: Object): void {
+    this.objectMaps.set(key, objectClass);
+  }
 }
