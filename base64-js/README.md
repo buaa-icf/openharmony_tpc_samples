@@ -7,7 +7,7 @@
 ```shell
 ohpm install base64-js@1.5.1
 ```
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage_en.md).
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ## How to Use
 1. Import files and code dependencies.
@@ -19,9 +19,9 @@ For details about the OpenHarmony ohpm environment configuration, see [OpenHarmo
 
 ## Available APIs
 
- * **byteLength**: receives a Base64 string and returns the length of a byte array.
- * **toByteArray**: receives a Base64 string and returns a byte array.
- * **fromByteArray**: receives a byte array and returns a Base64 string.
+ * **byteLength(b64: string): number**: receives a Base64 string and returns the length of a byte array.
+ * **toByteArray(b64: string): Uint8Array**: receives a Base64 string and returns a byte array.
+ * **fromByteArray(uint8: Uint8Array): string**: receives a byte array and returns a Base64 string.
 
 ## Constraints
 
@@ -49,4 +49,4 @@ base64-js
 If you find any problem when using the project, submit an [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
 ## License
-This project is licensed under [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/base64_js/LICENSE).
+This project is licensed under [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/base64-js/LICENSE).
