@@ -19,9 +19,9 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
 
 ## 接口说明
 
- * byteLength - 接受base64字符串并返回字节数组的长度
- * toByteArray - 接受base64字符串并返回一个字节数组
- * fromByteArray - 接受字节数组并返回base64字符串
+ * byteLength(b64: string): number - 接受base64字符串并返回字节数组的长度
+ * toByteArray(b64: string): Uint8Array - 接受base64字符串并返回一个字节数组
+ * fromByteArray(uint8: Uint8Array): string - 接受字节数组并返回base64字符串
 
 ## 约束与限制
 
@@ -49,7 +49,7 @@ base64-js
 使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
 ## 开源协议
-本项目基于 [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/base64_js/LICENSE) ，请自由地享受和参与开源。
+本项目基于 [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/base64-js/LICENSE) ，请自由地享受和参与开源。
 
 ## license
 
