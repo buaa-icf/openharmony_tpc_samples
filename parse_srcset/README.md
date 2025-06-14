@@ -10,7 +10,7 @@ parse-srcset is a JavaScript parser for HTML5 srcset attributes. It is based on 
 ohpm  install parse-srcset@1.0.2
 ```
 
-For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details, see [Installing an OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ## How to Use
 
@@ -42,9 +42,9 @@ parse-srcset has been verified in the following versions:
 
 ## How to Contribute
 
-If you find any problem when using parse-srcset, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or
-a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
+If you find any problem when using parse-srcset, submit an [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or
+a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
 
 ## License
 
-This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/parse-srcset/LICENSE).
+This project is licensed under [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/parse-srcset/LICENSE).

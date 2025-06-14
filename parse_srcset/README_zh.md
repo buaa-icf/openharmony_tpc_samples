@@ -12,7 +12,7 @@
 ohpm  install parse-srcset@1.0.2
 ```
 
-OpenHarmony ohpm 环境配置等更多内容，请参考 如何安装 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+OpenHarmony ohpm 环境配置等更多内容，请参考 如何安装 [如何安装OpenHarmony ohpm包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
 ## 使用说明
 
@@ -44,9 +44,9 @@ parseSrcset：解析HTML5 srcset属性
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
-给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+使用过程中发现任何问题都可以提交 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)，当然，也非常欢迎提交 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+
 
 ## 开源协议
 
-本项目基于 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/parse-srcset/LICENSE) ，请自由地享受和参与开源。
+本项目基于 [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/parse-srcset/LICENSE) ，请自由地享受和参与开源。
