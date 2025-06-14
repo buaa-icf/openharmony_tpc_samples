@@ -14,7 +14,7 @@ ohpm install seedrandom@3.0.5
 ohpm install @types/seedrandom@3.0.8  // import seedrandom 的时候语法报错, 其原因是seedrandom包内不含类型声明, 需要 @types/seedrandom 下载这个包的声明文件, 从而解决语法的报错.
 ````
 
-对于OpenHarmony ohpm环境配置的详细信息，请参阅[OpenHarmony环境配置指南](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)。
+对于OpenHarmony ohpm环境配置的详细信息，请参阅[OpenHarmony环境配置指南](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)。
 
 ## 使用说明
 
@@ -69,7 +69,7 @@ console.log(rng2());
 ````
 
 ## 贡献代码
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues)，当然，我们也非常欢迎发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
 ## 开源协议
-本项目遵循 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/seedrandom/LICENSE)。
+本项目遵循 [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/seedrandom/LICENSE)。

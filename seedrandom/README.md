@@ -14,7 +14,7 @@ ohpm install seedrandom@3.0.5
 ohpm install @types/querystringify  // A syntax error is reported if the seedrandom package does not contain the type declaration. You need to download the declaration file of the package from @types/seedrandom to rectify the syntax error.
 ````
 
-For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details, see [Installing an OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ## How to Use
 
@@ -69,7 +69,7 @@ seedrandom has been verified in the following versions:
 ````
 
 ## How to Contribute
-If you find any problem when using seedrandom, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+If you find any problem when using seedrandom, submit an [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
 ## License
-This project follows the [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/seedrandom/LICENSE).
+This project follows the [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/seedrandom/LICENSE).
