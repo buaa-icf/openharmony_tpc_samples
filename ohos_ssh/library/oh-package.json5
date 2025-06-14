@@ -4,7 +4,7 @@
   "description": "Please describe the basic information.",
   "main": "Index.ets",
   "author": "",
-  "license": "Apache-2.0",
+  "license": "GNU-2.1",
   "dependencies": {},
   "devDependencies": {
     "libssh_ohos_napi.so": "file:./src/main/cpp/types/libentry"
