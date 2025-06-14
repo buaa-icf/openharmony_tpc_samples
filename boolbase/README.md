@@ -7,7 +7,7 @@ Provides two basic functions, one that always returns true (trueFunc) and one th
 ```shell
 ohpm install boolbase
 ```
-For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details, see [Installing an OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ## How to Use
 
@@ -66,7 +66,7 @@ boolbase has been verified in the following version:
 ```
 
 ## How to Contribute
-If you find any problem when using boolbase, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/boolbase/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/boolbase/pulls).
+If you find any problem when using boolbase, submit an [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
 ## License
-This project is licensed under [ISC](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/boolbase/blob/master/LICENSE).
+This project is licensed under [ISC](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/boolbase/LICENSE).
