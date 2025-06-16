@@ -257,6 +257,7 @@ export class AssetManagerBase implements Disposable {
 	remove (path: string) {
 		path = this.pathPrefix + path;
 		let asset = this.assets[path];
+		if (!(<any>asset)) return;
 		if ((<any>asset).dispose) (<any>asset).dispose();
 		delete this.assets[path];
 		return asset;
