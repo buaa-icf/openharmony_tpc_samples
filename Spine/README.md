@@ -443,8 +443,6 @@ import {
 | AnimationState   | removeListener       | AnimationStateListener                 | 移除单个监听                                    |
 | AnimationState   | clearListeners       | 无                                      | 移除所有监听                                    |
 | AnimationState   | getCurrent           | trackIndex                             | 返回当前在轨道上播放的动画的轨道条目                        |
-| AnimationState   | expandToIndex        | index                                  | 动态扩展数组长度                                  |
-| AnimationState   | setCurrent           | index, current, interrupt              | 立即中断指定轨道上的当前动画，并开始播放新动画                   |
 | AnimationState   | setAnimation         | trackIndex, animation, loop            | 通过名字设置动画                                  |
 | AnimationState   | setAnimationWith     | trackIndex, animationName, loop        | 设置轨迹的当前动画，丢弃任何排队的动画                       |
 | AnimationState   | addAnimation         | trackIndex, animationName, loop, delay | 按名称给队列中添加动画                               |
@@ -455,7 +453,6 @@ import {
 | AnimationState   | clearNext            | TrackEntry                             | 清除指定动画条目的后续动画队列                           |
 | AnimationState   | setEmptyAnimation    | trackIndex, mixDuration                | 强制设置空动画到指定轨道                              |
 | AnimationState   | addEmptyAnimation    | trackIndex, mixDuration, delay         | 在动画队列末尾添加空动画                              |
-| AnimationState   | updateMixingFrom     | to, delta                              | 更新动画混合状态                                  |
 |  SkeletonRenderer | draw             | 无         | 动画渲染                    |
 | Skeleton  | setToSetupPose            | 无         | 将骨骼、约束和插槽设置为其设置姿势值      |
 | Skeleton  | updateWorldTransform      |  physics      | 更新每个骨骼的世界变换并应用所有约束      |

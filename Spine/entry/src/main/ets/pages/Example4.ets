@@ -174,15 +174,8 @@ struct SingleExample {
               console.info('spine demo getCurrent :' + JSON.stringify(obj));
             });
 
-          Button('expandToIndex')
-            .onClick(() => {
-              let entry: TrackEntry | null | undefined = this.animationState?.expandToIndex(0);
-              console.info('spine demo expandToIndex entry:' + JSON.stringify(entry));
-            });
-
           Button('setAnimationWith')
             .onClick(async () => {
-              await this.load();
               let animation = this.skeletonData?.findAnimation('aim');
               this.animationState?.setAnimationWith(1, animation, false);
             });
@@ -191,16 +184,8 @@ struct SingleExample {
         Row() {
           Button('clearTrack')
             .onClick(async () => {
-              await this.load();
               this.animationState?.clearTrack(0);
             });
-
-          Button('setCurrent')
-            .onClick(() => {
-              const obj = this.animationState?.setAnimation(0, "death", true);
-              this.animationState?.setCurrent(1, obj, false);
-            });
-
           Button('addAnimation')
             .onClick(() => {
               this.animationState?.addAnimation(2, 'shoot');
@@ -221,7 +206,6 @@ struct SingleExample {
 
           Button('clearNext')
             .onClick(async () => {
-              await this.load();
               const obj = this.animationState?.setAnimation(0, "death", true);
               this.animationState?.clearNext(obj);
             });
@@ -230,13 +214,11 @@ struct SingleExample {
         Row() {
           Button('setEmptyAnimation')
             .onClick(async () => {
-              await this.load();
               this.animationState?.setEmptyAnimation(0, 0.5)
             });
 
           Button('addEmptyAnimation')
             .onClick(async () => {
-              await this.load();
               const obj = this.animationState?.setAnimation(1, "run", true);
               this.animationState?.clearNext(obj);
               this.animationState?.addEmptyAnimation(1, 0.3, 1.0);
@@ -244,20 +226,11 @@ struct SingleExample {
         }.margin({ top: 5 })
 
         Row() {
-          Button('updateMixingFrom')
-            .onClick(async () => {
-              await this.load();
-              const obj = this.animationState?.setAnimation(0, "death", true);
-              this.animationState?.updateMixingFrom(obj, 1);
-            });
-
           Button('remove')
             .onClick(() => {
               console.info('spine demo remove obj:' + JSON.stringify(this.assetManager?.get("spineboy.png")));
-              if(this.assetManager?.get("spineboy.png")) {
-                this.assetManager?.remove("spineboy.png");
-                console.info('spine demo remove after obj:' + JSON.stringify(this.assetManager?.get("spineboy.png")));
-              }
+              this.assetManager?.remove("spineboy.png");
+              console.info('spine demo remove after obj:' + JSON.stringify(this.assetManager?.get("spineboy.png")));
             });
 
           Button('removeAll')
