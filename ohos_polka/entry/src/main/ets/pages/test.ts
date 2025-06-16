@@ -100,7 +100,7 @@ export async function start(context): Promise<String> {
       .get('/index', (req: SelfRequest, res: ServerResponse) => {
         console.log(`~> Hello1, ${req.parameters}`);
         res.writeHead(200, {
-          'Content-Type': statik.mime.getType('.html'),
+          'Content-Type': statik.mime.getType('.html') + '; charset=utf-8',
         });
         let name = '';
         req.parameters.forEach((name1, value) => {
@@ -110,7 +110,7 @@ export async function start(context): Promise<String> {
       })
       .get('/get-cookie', (req: IncomingMessage, res: ServerResponse) => {
         res.writeHead(200, {
-          'Content-Type': statik.mime.getType('.html'),
+          'Content-Type': statik.mime.getType('.html') + '; charset=utf-8',
         });
         const cookieString: string = req.headers["cookie"];
 
@@ -146,12 +146,12 @@ export async function start(context): Promise<String> {
           const time2 = new Date().getTime();
           const time = time2 - time1
           res.writeHead(200, {
-            'Content-Type': 'text/plain',
+            'Content-Type': 'text/plain' + '; charset=utf-8',
           });
           res.end('upload success，用时为' + time + 'ms');
         } else {
           res.writeHead(200, {
-            'Content-Type': 'text/plain',
+            'Content-Type': 'text/plain' + '; charset=utf-8',
           });
           res.end('upload failure!');
         }
@@ -164,19 +164,19 @@ export async function start(context): Promise<String> {
       })
       .get('/upload', (req: IncomingMessage, res: ServerResponse) => {
         res.writeHead(200, {
-          'Content-Type': statik.mime.getType('.html')
+          'Content-Type': statik.mime.getType('.html') + '; charset=utf-8',
         });
         res.end(fileUploadHtml);
       })
       .post('/post-params', (req: IncomingMessage, res: ServerResponse) => {
         res.writeHead(200, {
-          'Content-Type': statik.mime.getType('.html'),
+          'Content-Type': statik.mime.getType('.html') + '; charset=utf-8',
         });
         res.end('post 请求参数为：' + Array.from(req.parameters));
       })
       .get('/get-params', (req: IncomingMessage, res: ServerResponse) => {
         res.writeHead(200, {
-          'Content-Type': statik.mime.getType('.html'),
+          'Content-Type': statik.mime.getType('.html') + '; charset=utf-8',
         });
         res.end('get 请求参数为：' + Array.from(req.parameters));
       })
@@ -188,43 +188,43 @@ export async function start(context): Promise<String> {
       })
       .head('/head-test', (req: IncomingMessage, res: ServerResponse) => {
         res.writeHead(200, {
-          'Content-Type': statik.mime.getType('.html'),
+          'Content-Type': statik.mime.getType('.html') + '; charset=utf-8',
         });
         res.end();
       })
       .put('/put-test', (req: IncomingMessage, res: ServerResponse) => {
         res.writeHead(200, {
-          'Content-Type': statik.mime.getType('.html'),
+          'Content-Type': statik.mime.getType('.html') + '; charset=utf-8',
         });
         res.end('请求方式为：put');
       })
       .delete('/delete-test', (req: IncomingMessage, res: ServerResponse) => {
         res.writeHead(200, {
-          'Content-Type': statik.mime.getType('.html'),
+          'Content-Type': statik.mime.getType('.html') + '; charset=utf-8',
         });
         res.end('请求方式为：delete');
       })
       .options('/options-test', (req: IncomingMessage, res: ServerResponse) => {
         res.writeHead(200, {
-          'Content-Type': statik.mime.getType('.html'),
+          'Content-Type': statik.mime.getType('.html') + '; charset=utf-8',
         });
         res.end('请求方式为：options');
       })
       .trace('/trace-test', (req: IncomingMessage, res: ServerResponse) => {
         res.writeHead(200, {
-          'Content-Type': statik.mime.getType('.html'),
+          'Content-Type': statik.mime.getType('.html') + '; charset=utf-8',
         });
         res.end('请求方式为：trace');
       })
       .connect('/connect-test', (req: IncomingMessage, res: ServerResponse) => {
         res.writeHead(200, {
-          'Content-Type': statik.mime.getType('.html'),
+          'Content-Type': statik.mime.getType('.html') + '; charset=utf-8',
         });
         res.end('请求方式为：CONNECT');
       })
       .post('/test-redirect', (req: IncomingMessage, res: ServerResponse) => {
         res.writeHead(302, {
-          'Content-Type': statik.mime.getType('.html'),
+          'Content-Type': statik.mime.getType('.html') + '; charset=utf-8',
           'Location': 'wwww.baidu.com'
         });
         res.end('请求方式为：CONNECT');

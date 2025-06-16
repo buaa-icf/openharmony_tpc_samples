@@ -1,3 +1,7 @@
+## v1.0.4-rc.1
+## fixes
+1. Fixed the issue of incorrect decoding of Chinese files during transmission
+
 ## v1.0.4-rc.0
 ## fixes
 1. Fix the issue of lost characters when decoding params.
