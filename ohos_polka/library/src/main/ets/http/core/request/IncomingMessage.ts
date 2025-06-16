@@ -36,6 +36,7 @@ import { getLogger, type Logger } from '../../../common/util/log';
 const logger: Logger = getLogger('IncomingMessage');
 const CARRIAGE_RETURN: string = '\r';
 const NEW_LINE: string = '\n';
+const LF: number = 10;
 
 const number2 = 2;
 const number3 = 3;
@@ -618,7 +619,7 @@ export class IncomingMessage {
       // Read the part data
       let partHeaderLength: number = 0;
       while (headerLines-- > 1) {
-        partHeaderLength = this.scipOverNewLine(mpBlockString, partHeaderLength);
+        partHeaderLength = this.scipOverNewLine(mpBlock, partHeaderLength);
       }
 
       let partDataStart: number = boundaryIdxs[boundaryIdx] + partHeaderLength + number2;
@@ -686,10 +687,10 @@ export class IncomingMessage {
    * @param index 开始查找的位置
    * @return 返回新行符后一个字符的位置
    */
-  private scipOverNewLine(partHeaderBuff: string, index: number): number {
+  private scipOverNewLine(partHeaderBuff: buffer.Buffer, index: number): number {
     let newIndex: number = index;
     // 当前字符不是新行符时，继续向后查找
-    while (partHeaderBuff[newIndex] !== NEW_LINE) {
+    while (partHeaderBuff[newIndex] !== LF) {
       newIndex++;
     }
 
