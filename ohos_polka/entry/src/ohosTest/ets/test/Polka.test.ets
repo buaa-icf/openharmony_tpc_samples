@@ -26,8 +26,9 @@ import hilog from '@ohos.hilog';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 import http from '@ohos.net.http';
 import { common } from '@kit.AbilityKit';
-import polka, { IncomingMessage, NextFunction, Request, ServerResponse } from '@ohos/polka';
+import polka, { createFile, IncomingMessage, NextFunction, Request, ServerResponse } from '@ohos/polka';
 import { Methods } from '../../../../../library/src/main/ets/polka/trouter/index.js';
+import buffer from '@ohos.buffer';
 
 interface SelfRequest extends Request {
   foo: string | number;
@@ -42,6 +43,9 @@ interface SelfRequest extends Request {
 
 const context = getContext(this) as common.UIAbilityContext;
 const METHODS = ['GET', 'POST', 'PUT', 'DELETE'];
+const BASE_COUNT = 1;
+const FILE_NAME = 'polka测试文件.txt';
+const FILE_CONTENT = buffer.from('\npolka测试\nhello polka\n').buffer;
 
 function foo(req: SelfRequest, res: ServerResponse, next: NextFunction) {
   req.foo = req.foo || 0;
@@ -63,12 +67,10 @@ function onError(err: Error, req: SelfRequest, res: ServerResponse, next: NextFu
   res.end('error');
 }
 
-const BASE_COUNT = 1;
-
 export default function polkaTest() {
   describe('PolkaTest', async () => {
     beforeAll(() => {
-
+      createFile(getContext().filesDir, FILE_NAME, FILE_CONTENT)
     })
 
     it('polka', 0, () => {
@@ -485,6 +487,58 @@ export default function polkaTest() {
       console.log("BasicHttpTest : http-res4 averageTime : " + averageTime5 + "us");
       expect(res4.responseCode).assertEqual(200);
       expect(res4.result).assertEqual('hello from bar');
+
+      app.server?.stop();
+      done();
+    })
+
+    it('polka_upload_file', 0, async (done: Function) => {
+
+      let startTime1: number = new Date().getTime();
+      let app = polka<SelfRequest>({ onError }).use(foo, bar)
+      let endTime1 = new Date().getTime();
+      let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+      console.log("BasicUseTest : use averageTime : " + averageTime1 + "us");
+
+      let startTime2: number = new Date().getTime();
+      app.post('/upload', (req: IncomingMessage, res: ServerResponse) => {
+        let keys = Array.from(req.files.keys());
+        let filename: string = "";
+        filename = req.parameters.get(keys[0])!![0];
+        let bufLength = req.files.get(keys[0])?.buffer.byteLength;
+        let fileContent = req.files.get(keys[0])?.buffer
+        expect(filename).assertEqual(FILE_NAME);
+        expect(bufLength).assertEqual(FILE_CONTENT.byteLength);
+        expect(buffer.from(fileContent).toString()).assertEqual(buffer.from(FILE_CONTENT).toString());
+        res.writeHead(200, {
+          'Content-Type': 'text/plain' + '; charset=utf-8',
+        });
+        res.end('upload success');
+      })
+        .listen(9995, (e) => {
+          console.log('testrunn: ' + e)
+        });
+
+      let endTime2 = new Date().getTime();
+      let averageTime2 = ((endTime2 - startTime2) * 1000) / BASE_COUNT;
+      console.log("BasicUseTest : get averageTime : " + averageTime2 + "us");
+      let httpRequest = http.createHttp();
+      // 发送http请求
+      let res = await httpRequest.request("http://0.0.0.0:9995/upload", {
+        method: http.RequestMethod.POST,
+        connectTimeout: 60000,
+        readTimeout: 60000,
+        header: {'content-Type': 'multipart/form-data'},
+        multiFormDataList: [
+          {
+            name: 'file',
+            contentType: 'text/plain',
+            filePath: `${getContext().filesDir}/${FILE_NAME}`,
+          }
+        ]
+      })
+      expect(res.responseCode).assertEqual(200);
+      expect(res.result).assertEqual('upload success');
 
       app.server?.stop();
       done();
