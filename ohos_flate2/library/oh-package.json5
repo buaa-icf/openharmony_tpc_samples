@@ -4,21 +4,21 @@
     "OpenHarmony",
     "HarmonyOS",
     "flate2",
-    "flate"
+    "flate",
+    "compress",
+    "decompress"
   ],
   "version": "1.0.0",
-  "description": "Please describe the basic information.",
+  "description": "ArkTS bingding for rust flate2",
   "main": "Index.ets",
   "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_flate2",
-  "author": "ohos_tpc",
+  "author": "Xuanwu Community",
   "ohos": {
     "org": "opensource"
   },
-  "license": "Apache-2.0",
-  "tags": [
-    "Animation"
-  ],
+  "types": "libs/index.d.ts",
+  "license": "MIT or Apache-2.0",
   "dependencies": {
-    "liblibrary.so": "file:./src/main/cpp/types/liblibrary"
+    "libflate2.so": "file: ./libs"
   }
 }

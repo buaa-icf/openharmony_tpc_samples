@@ -1,11 +1,11 @@
 [
     {
-        "Name": "",
-        "License": "",
+        "Name": "@ohos/flate2",
+        "License": "MIT OR Apache 2.0",
         "License File": "LICENSE",
-        "Version Number": "",
-        "Owner": "xiafeng@huawei.com",
-        "Upstream URL": "",
-        "Description": ""
+        "Version Number": "1.1.1",
+        "Owner": "qilin.wang@huawei.com",
+        "Upstream URL": "https://gitcode.com/xuanwu/ohos-flate2",
+        "Description": "arkTS bingding for rust flate2"
     }
 ]
