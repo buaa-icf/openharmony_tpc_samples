@@ -1,0 +1,24 @@
+{
+  "name": "@ohos/flate2",
+  "keywords": [
+    "OpenHarmony",
+    "HarmonyOS",
+    "flate2",
+    "flate"
+  ],
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "main": "Index.ets",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_flate2",
+  "author": "ohos_tpc",
+  "ohos": {
+    "org": "opensource"
+  },
+  "license": "Apache-2.0",
+  "tags": [
+    "Animation"
+  ],
+  "dependencies": {
+    "liblibrary.so": "file:./src/main/cpp/types/liblibrary"
+  }
+}
