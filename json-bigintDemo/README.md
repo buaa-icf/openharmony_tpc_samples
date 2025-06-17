@@ -6,7 +6,7 @@ json-bigint allows parsing and stringifying JSON with BigInts, based on JSON.js 
     ohpm install json-bigint
     ohpm install @types/json-bigint --save-dev // A syntax error is reported for the import json-bigint instruction if the json-bigint package does not contain the type declaration. You need to download the declaration file of the package using @types/json-bigint to rectify the syntax error.
 ```
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 # How to Use
 After json-bigint is installed, import json-bigint on the target page and call it.
 ```typescript
@@ -78,7 +78,7 @@ Use `alwaysParseAsBig: true` in the call of json_bigint to specify whether all n
 | jsonBigint() | `options`: optional                              | optionsType | Generates an object for conversion.                                      |
 | parse()      | `value:string`: string to parse           | object      | Converts a JSON string into an object (that supports the BigInt data type).|
 | stringify()  | `value:object`: JSON object to serialize| string      | Converts a JavaScript value into a JSON string (that supports the BigInt data type).        |
-For details about unit test cases, see [TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/json-bigintDemo/TEST.md).
+For details about unit test cases, see [TEST.md](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/json-bigintDemo/TEST.md).
 ### Parameter Description of `options`
 | Parameter                  | Description                                                        |
 | ---------------------- | ------------------------------------------------------------ |
@@ -101,7 +101,7 @@ For details about unit test cases, see [TEST.md](https://gitee.com/openharmony-t
     |     |---- README_zh.md  # Readme 
 
 # How to Contribute
-If you find any problem during the use, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+If you find any problem during the use, submit an [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
 # License
-This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/json-bigint/LICENSE).
+This project is licensed under [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/json-bigintDemo/LICENSE).
