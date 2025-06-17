@@ -1,3 +1,7 @@
+## 2.0.3
+
+- Update the homepage link
+
 ## 2.0.2
 
 - Fix repository from gitee to gitcode in oh-packaage.json5
