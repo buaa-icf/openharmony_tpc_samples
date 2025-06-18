@@ -7,7 +7,7 @@ This demo uses the third-party JavaScript library [jmespath.js](https://github.c
 ```
 ohpm install jmespath
 ```
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 ## How to Use
 After jmespath is installed, import jmespath to the page to be used and call the search API.
 ```
@@ -27,7 +27,7 @@ if (result) {
 |      search(case, expression)      | **case**: test data; **expression**: query expression|   Returns query results.  |
 
 
-For details about how to use more APIs, see [Official Document] (https://github.com/jmespath/jmespath.js).
+For details about how to use more APIs, see [Official Document](https://github.com/jmespath/jmespath.js).
 ## Constraints
 This project has been verified in the following version:
 - DevEco Studio: NEXT Release(5.0.3.900), SDK: API12 (5.0.0.71)
@@ -47,8 +47,8 @@ This project has been verified in the following version:
 
 ## License
 
-This project is licensed under [Apache License 2.0](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/jmespathDemo/LICENSE).
+This project is licensed under [Apache License 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/jmespathDemo/LICENSE).
 
 ## How to Contribute
 
-If you find any problem during the use, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
+If you find any problem during the use, submit an [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
