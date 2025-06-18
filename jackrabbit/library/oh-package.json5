@@ -14,10 +14,12 @@
   "name": "@ohos/jackrabbit",
   "description": "Jackrabbit is a very opinionated abstraction built on top of amqplib focused on usability and implementing several messaging patterns on RabbitMQ.",
   "main": "./src/main/ets/jackrabbit.js",
-  "version": "2.0.1",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/jackrabbit",
+  "version": "2.0.2",
   "dependencies": {
     "lodash.assignin": "4.x",
     "@ohos/amqplib": "1.0.0",
     "@ohos/node-polyfill": "1.0.0"
-  }
+  },
+  "homepage": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/jackrabbit"
 }

@@ -380,6 +380,22 @@
   }
 ```
 
+## 接口说明
+```
+let rabbit = jackrabbit('amqp://' + this.serverIp);
+const exchange = rabbit.default();
+let hello = exchange.queue({ name: 'task_queue', durable: true });
+ exchange.publish('Hello World!', { key: 'hello_jackrabbit' });
+```
+
+|                       方法名                       |                入参                |                    接口描述                    |
+|:-----------------------------------------------:|:--------------------------------:|:------------------------------------------:|
+|             jackrabbit(url: string)             |            url:url地址             |                  创建 连接实例                   |
+|                rabbit.default()                 |                -                 |                获取默认的直连交换机实例                |
+|         exchange.queue(option: Object)          |          option:队列配置选项           | 创建队列并自动绑定到当前交换机(name:队列名称,durable:队列是否持久化) |
+| exchange.publish(message: any, options: Object) | message: 要发送的消息内容, options: 发布选项 |          创建队列并自动绑定到当前交换机(key:路由键)          |
+
+
 ## 关于混淆
 - 代码混淆，请查看[代码混淆简介](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
 - 如果希望jackrabbit库在代码混淆过程中不会被混淆，需要在混淆规则配置文件obfuscation-rules.txt中添加相应的排除规则：

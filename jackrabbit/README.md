@@ -380,6 +380,15 @@ Jackrabbit depends on the **amqplib** library and implements multiple message tr
   }
 ```
 
+## Available APIs
+
+|                       API                       |                                Parameter                                 |                                                        Description                                                         |
+|:-----------------------------------------------:|:------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------------------------------:|
+|            jackrabbit(url:  string)             |                             url:url address                              |                                                 Create connection instance                                                 |
+|                rabbit.default()                 |                                    -                                     |                                     Gets the default direct connection switch instance                                     |
+|        exchange.queue(option:  (Object)         |                    option: Queue configuration option                    | Create a queue and automatically bind it to the current switch (name: queue name,durable: whether the queue is persistent) |
+| exchange.publish(message: any, options: Object) | message: The content of the message to be sent, options: Publish Options |                     Create a queue and automatically bind it to the current switch (key: Routing key)                      |
+
 ## About obfuscation
 - Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
 - If you want the jackrabbit library not to be obfuscated during code obfuscation, you need to add corresponding exclusion rules in the obfuscation rule configuration file obfuscation-rules.txt：
