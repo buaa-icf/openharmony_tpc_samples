@@ -59,3 +59,7 @@
 [submodule "ohos_7zip/library/src/main/cpp/thirdparty"]
 	path = ohos_7zip/library/src/main/cpp/thirdparty
 	url = https://gitcode.com/wahaha949/thirdparty.git
+	
+[submodule "ohos_pjsip/library/src/main/cpp/thirdparty/pjsip"]
+	path = ohos_pjsip/library/src/main/cpp/thirdparty/pjsip
+	url = https://gitcode.com/dingchengjie/pjsip
