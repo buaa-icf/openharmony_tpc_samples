@@ -2,8 +2,8 @@
 /* eslint-disable */
 
 /**
-  * 压缩或解压缩所支持的选项，详细定义参考：https://zlib.net/manual.html#Advanced
-  * 不同函数支持的选项不同，详见各函数自身说买
+  * 压缩或解压缩所支持的选项，更详细定义参考：https://zlib.net/manual.html#Advanced
+  * 不同函数支持的选项不同，详见各函数自身说明
   */
 export interface Options {
   /** 压缩等级，0为最低（没有压缩），9为最高，默认值为6，数据有效值范围[0..9]，超出范围取默认值 */
@@ -15,15 +15,15 @@ export interface Options {
 }
 
 /**
-  * @description 使用deflate算法压缩数据
-  * @param buf - 待压缩数据
-  * @param options - 压缩选项，支持选项为level
-  * @returns 输入压缩后的数据，若压缩过程中发生错误，则返回数据大小为0
+  * @description 使用deflate格式压缩数据
+  * @param buf - 输入的待压缩数据
+  * @param options - 压缩选项，有效选项为level
+  * @returns 输出压缩后的数据，若压缩过程中发生错误，则返回数据大小为0
   */
 export declare function deflate(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
 
 /**
-  * @description 使用gzip算法压缩数据
+  * @description 使用gzip格式压缩数据
   * @param buf - 待压缩数据
   * @param options - 压缩选项，支持选项为level
   * @returns 输入压缩后的数据，若压缩过程中发生错误，则返回数据大小为0
@@ -55,10 +55,41 @@ export declare function ungzip(buf: Uint8Array, options?: Options | undefined | 
 export declare function unzlib(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
 
 /**
-  * @description 使用zlib算法压缩数据
-  * @param buf - 待压缩数据
-  * @param options - 压缩选项，支持选项为level，window_bits,dictionary
-  * @returns 输入压缩后的数据，若压缩过程中发生错误，则返回数据大小为0
+  * @description 使用zlib格式压缩数据
+  * @param buf - 输入的压缩数据
+  * @param options - 压缩选项，有效选项为level，window_bits,dictionary
+  * @returns 输出压缩后的数据，若压缩过程中发生错误，则返回数据大小为0
   */
 export declare function zlib(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
 
+export namespace pako {
+  /**
+    * 参考flate2.zlib
+    */
+  export function deflate(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
+
+  /**
+    * 参考flate2.deflate
+    */
+  export function deflateRaw(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
+
+  /**
+    * 参考flate2.gzip
+    */
+  export function gzip(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
+
+  /**
+    * 参考flate2.unzlib
+    */
+  export function inflate(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
+
+  /**
+    * 参考flate2.inflate
+    */
+  export function inflateRaw(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
+
+  /**
+    * 参考flate2.ungzip
+    */
+  export function ungzip(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
+}

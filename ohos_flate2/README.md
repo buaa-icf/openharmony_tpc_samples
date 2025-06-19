@@ -28,53 +28,86 @@ export interface Options {
   dictionary?: Uint8Array
 }
 
+export namespace pako {
+  /**
+    * 参考flate2.zlib
+    */
+  export function deflate(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
+
+  /**
+    * 参考flate2.deflate
+    */
+  export function deflateRaw(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
+
+  /**
+    * 参考flate2.gzip
+    */
+  export function gzip(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
+
+  /**
+    * 参考flate2.unzlib
+    */
+  export function inflate(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
+
+  /**
+    * 参考flate2.inflate
+    */
+  export function inflateRaw(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
+
+  /**
+    * 参考flate2.ungzip
+    */
+  export function ungzip(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
+}
+
 /**
-  * 使用deflate算法压缩数据.
+  * @description 使用deflate格式压缩数据
   * @param buf - 输入的待压缩数据
   * @param options - 压缩选项，有效选项为level
-  * @returns 输出压缩后的数据，若压缩发生错误，则返回数据大小为0
+  * @returns 输出压缩后的数据，若压缩过程中发生错误，则返回数据大小为0
   */
 export declare function deflate(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
 
 /**
-  * 使用gzip算法压缩数据.
-  * @param buf - 输入的待压缩数据
-  * @param options - 压缩选项，有效选项为level
-  * @returns 输出压缩后的数据，若压缩发生错误，则返回数据大小为0
+  * @description 使用gzip格式压缩数据
+  * @param buf - 待压缩数据
+  * @param options - 压缩选项，支持选项为level
+  * @returns 输入压缩后的数据，若压缩过程中发生错误，则返回数据大小为0
   */
 export declare function gzip(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
 
 /**
-  * 使用deflate算法解压数据.
-  * @param buf - 输入的待解压数据
-  * @param options - 解压选项，全部选项无效
-  * @returns 输出解压后的数据，若解压发生错误，则返回数据大小为0
+  * @description 使用deflate算法解压缩数据
+  * @param buf - 待解压数据
+  * @param options - 解压缩选项，当前选项无效
+  * @returns 输入解压后的数据，若解压过程中发生错误，则返回数据大小为0
   */
 export declare function inflate(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
 
 /**
-  * 使用gzip算法解压数据.
-  * @param buf - 输入的待解压数据
-  * @param options - 解压选项，全部选项无效
-  * @returns 输出解压后的数据，若解压发生错误，则返回数据大小为0
+  * @description 使用gzip算法解压缩数据
+  * @param buf - 待解压数据
+  * @param options - 解压缩选项，当前选项无效
+  * @returns 输入解压后的数据，若解压过程中发生错误，则返回数据大小为0
   */
 export declare function ungzip(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
 
 /**
-  * 使用zlib算法解压数据.
-  * @param buf - 输入的待解压数据
-  * @param options - 解压选项，有效选项为windowBits, dictionary
-  * @returns 输出解压后的数据，若解压发生错误，则返回数据大小为0
+  * @description 使用zlib算法解压缩数据
+  * @param buf - 待解压数据
+  * @param options - 解压缩选项，支持选项为window_bits,dictionary
+  * @returns 输入解压后的数据，若解压过程中发生错误，则返回数据大小为0
   */
 export declare function unzlib(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
 
 /**
-  * 使用zlib算法压缩数据.
-  * @param buf - 输入的待压缩数据
-  * @param options - 压缩选项，有效选项为level，windowBits，dictionary
-  * @returns 输出压缩后的数据，若压缩发生错误，则返回数据大小为0
+  * @description 使用zlib格式压缩数据
+  * @param buf - 输入的压缩数据
+  * @param options - 压缩选项，有效选项为level，window_bits,dictionary
+  * @returns 输出压缩后的数据，若压缩过程中发生错误，则返回数据大小为0
   */
 export declare function zlib(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
+
 ```
 
 
@@ -102,7 +135,8 @@ export declare function zlib(buf: Uint8Array, options?: Options | undefined | nu
 ## libflate2.so构建方法
 
 ### 0.预备条件
-- 构建环境已安装Rust工具链，并可以从crates.io（或镜像）下载crate包
+- 构建环境已安装Rust工具链，并可以从crates.io（或镜像）下载crate包。
+   安装工具可使用Rust原生社区（https://www.rust-lang.org/zh-CN/tools/install）安装工具或 旋武社区发行版 （https://xuanwu.beta.atomgit.com/download/）
 - 构建环境已安装OHOS SDK, 并正确设置`OHOS_NDK_HOME` 环境变量，如 `export OHOS_NDK_HOME=/path/to/ohos_sdk_home/`.
 - OpenHarmony SDK API >= 12
 - Rust 版本>= 1.80
@@ -110,9 +144,20 @@ export declare function zlib(buf: Uint8Array, options?: Options | undefined | nu
 
 ### 1. 安装ohrs工具
 
+方法1（推荐）：直接使用cargo install安装
+
 ```
 cargo install ohrs --git https://github.com/ohos-rs/ohos-rs --rev 1b93eb14dc4b9c3aed5534d6814241b0aa429f98
 ```
+
+方法2：将ohrs代码clone到本地后手动安装
+```
+git clone https://github.com/ohos-rs/ohos-rs 
+git checkout 1b93eb14dc4b9c3aed5534d6814241b0aa429f98
+cd ./ohos-rs/cli/cargo-ohrs
+cargo install ohrs --path .
+```
+
 
 ### 2. 安装ohos target
 
@@ -122,7 +167,28 @@ rustup target add x86_64-unknown-linux-ohos
 ```
 
 ### 3. 执行构建命令
+#### 3.1 linux环境
+
 ```sh
 ./library/src/main/rust/build-rust.sh
 ```
+#### 3.2 windows环境
 
+进入`ohos_flate2library/src/main/rust`文件夹,在命令行中输入如下命令
+```
+ohrs build --release --arch arm64 --arch x64 --dist ../../../libs
+```
+
+#### 4.确认构建成功
+
+`ohos_flate2/library/libs`中出现如下目录和文件，则代表构建成功
+
+```
+library/libs
+├── arm64-v8a
+│   └── libflate2.so
+├── index.d.ts
+└── x86_64
+    └── libflate2.so
+
+```
