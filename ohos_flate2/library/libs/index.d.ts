@@ -18,7 +18,7 @@ export interface Options {
   * @description 使用deflate格式压缩数据
   * @param buf - 输入的待压缩数据
   * @param options - 压缩选项，有效选项为level
-  * @returns 输出压缩后的数据，若压缩过程中发生错误，则返回数据大小为0
+  * @returns 输出压缩后的数据
   */
 export declare function deflate(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
 
@@ -26,7 +26,7 @@ export declare function deflate(buf: Uint8Array, options?: Options | undefined |
   * @description 使用gzip格式压缩数据
   * @param buf - 待压缩数据
   * @param options - 压缩选项，支持选项为level
-  * @returns 输入压缩后的数据，若压缩过程中发生错误，则返回数据大小为0
+  * @returns 输入压缩后的数据
   */
 export declare function gzip(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
 
@@ -34,7 +34,7 @@ export declare function gzip(buf: Uint8Array, options?: Options | undefined | nu
   * @description 使用deflate算法解压缩数据
   * @param buf - 待解压数据
   * @param options - 解压缩选项，当前选项无效
-  * @returns 输入解压后的数据，若解压过程中发生错误，则返回数据大小为0
+  * @returns 输入解压后的数据
   */
 export declare function inflate(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
 
@@ -42,7 +42,7 @@ export declare function inflate(buf: Uint8Array, options?: Options | undefined |
   * @description 使用gzip算法解压缩数据
   * @param buf - 待解压数据
   * @param options - 解压缩选项，当前选项无效
-  * @returns 输入解压后的数据，若解压过程中发生错误，则返回数据大小为0
+  * @returns 输入解压后的数据
   */
 export declare function ungzip(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
 
@@ -50,7 +50,7 @@ export declare function ungzip(buf: Uint8Array, options?: Options | undefined | 
   * @description 使用zlib算法解压缩数据
   * @param buf - 待解压数据
   * @param options - 解压缩选项，支持选项为window_bits,dictionary
-  * @returns 输入解压后的数据，若解压过程中发生错误，则返回数据大小为0
+  * @returns 输入解压后的数据
   */
 export declare function unzlib(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
 
@@ -58,7 +58,7 @@ export declare function unzlib(buf: Uint8Array, options?: Options | undefined | 
   * @description 使用zlib格式压缩数据
   * @param buf - 输入的压缩数据
   * @param options - 压缩选项，有效选项为level，window_bits,dictionary
-  * @returns 输出压缩后的数据，若压缩过程中发生错误，则返回数据大小为0
+  * @returns 输出压缩后的数据
   */
 export declare function zlib(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
 
@@ -92,4 +92,5 @@ export namespace pako {
     * 参考flate2.ungzip
     */
   export function ungzip(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
+
 }

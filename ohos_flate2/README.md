@@ -28,37 +28,60 @@ export interface Options {
   dictionary?: Uint8Array
 }
 
+
+// pako 兼容接口
+// 通过 import{pako} from @ohos/flate2调用
 export namespace pako {
-  /**
-    * 参考flate2.zlib
-    */
+/**
+  * @description 使用zlib格式压缩数据
+  * @param buf - 输入的压缩数据
+  * @param options - 压缩选项，有效选项为level，window_bits,dictionary
+  * @returns 输出压缩后的数据，若压缩过程中发生错误，则返回数据大小为0
+  */
   export function deflate(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
 
-  /**
-    * 参考flate2.deflate
-    */
+/**
+  * @description 使用deflate格式压缩数据
+  * @param buf - 输入的待压缩数据
+  * @param options - 压缩选项，有效选项为level
+  * @returns 输出压缩后的数据，若压缩过程中发生错误，则返回数据大小为0
+  */
   export function deflateRaw(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
 
-  /**
-    * 参考flate2.gzip
-    */
+/**
+  * @description 使用gzip格式压缩数据
+  * @param buf - 待压缩数据
+  * @param options - 压缩选项，支持选项为level
+  * @returns 输入压缩后的数据，若压缩过程中发生错误，则返回数据大小为0
+  */
   export function gzip(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
 
-  /**
-    * 参考flate2.unzlib
-    */
+/**
+  * @description 使用zlib算法解压缩数据
+  * @param buf - 待解压数据
+  * @param options - 解压缩选项，支持选项为window_bits,dictionary
+  * @returns 输入解压后的数据，若解压过程中发生错误，则返回数据大小为0
+  */
   export function inflate(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
-
-  /**
-    * 参考flate2.inflate
-    */
+/**
+  * @description 使用deflate算法解压缩数据
+  * @param buf - 待解压数据
+  * @param options - 解压缩选项，当前选项无效
+  * @returns 输入解压后的数据，若解压过程中发生错误，则返回数据大小为0
+  */
   export function inflateRaw(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
 
-  /**
-    * 参考flate2.ungzip
-    */
+/**
+  * @description 使用gzip算法解压缩数据
+  * @param buf - 待解压数据
+  * @param options - 解压缩选项，当前选项无效
+  * @returns 输入解压后的数据，若解压过程中发生错误，则返回数据大小为0
+  */
   export function ungzip(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
 }
+
+
+//flate2 接口
 
 /**
   * @description 使用deflate格式压缩数据

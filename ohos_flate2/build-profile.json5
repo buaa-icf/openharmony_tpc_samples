@@ -33,7 +33,7 @@
       ]
     },
     {
-      "name": "library",
+      "name": "flate2",
       "srcPath": "./library"
     }
   ]

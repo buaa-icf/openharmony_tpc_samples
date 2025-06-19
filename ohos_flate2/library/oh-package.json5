@@ -1,10 +1,9 @@
 {
-  "name": "@ohos/flate2",
+  "name": "flate2",
   "keywords": [
     "OpenHarmony",
     "HarmonyOS",
     "flate2",
-    "flate",
     "compress",
     "decompress"
   ],
