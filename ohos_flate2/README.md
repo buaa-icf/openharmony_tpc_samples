@@ -2,44 +2,138 @@
 
 ## 简介
 
-xxx
-
-![动态]()
-
 
 ## 下载安裝
 
 ```
- ohpm install xxx
+ ohpm install @ohos/flate2
 ```
 OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
-
-## 使用示例
- xxx
-
-## 使用说明
-xxx
-
-
-### 9.关于混淆
-- 代码混淆，请查看[代码混淆简介](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
-- 如果希望ohos_flate2库在代码混淆过程中不会被混淆，需要在混淆规则配置文件obfuscation-rules.txt中添加相应的排除规则：
-```
--keep
-./oh_modules/@ohos/flate2
-```
 
 
 
 ## 接口说明
-| class | Name | Parameter | Description |
-|-------|------|-----------|-------------|
-| xx    | xx   | xxx       | xxx         |
 
-## 约束与限制
+```ts
+/**
+  * 压缩或解压支持的选项，更详细内容请参考https://zlib.net/manual.html#Advanced
+  * 不同函数支持的选项不同，详情见各函数说明
+  */
+export interface Options {
+  /** 压缩等级，0为最低压缩等级（没有压缩），9为最高压缩等级, 必须在0..=9之间，否则会使用默认值6 */
+  level?: number
+  /** 窗口大小（历史缓冲区的大小）的底数2的对数，必须在9..=15之间，否则会使用默认值15 */
+  windowBits?: number
+  /** 初始压缩/解压缩字典, 默认为空 */
+  dictionary?: Uint8Array
+}
 
-在下述版本验证通过：
-- DevEco Studio: xxx, SDK: xxx(xx)
+
+// pako 兼容接口
+// 通过 import{pako} from '@ohos/flate2' 调用
+export namespace pako {
+/**
+  * @description 使用zlib格式压缩数据
+  * @param buf - 输入的压缩数据
+  * @param options - 压缩选项，有效选项为level，window_bits,dictionary
+  * @returns 输出压缩后的数据，若压缩过程中发生错误，则返回数据大小为0
+  */
+  export function deflate(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
+
+/**
+  * @description 使用deflate格式压缩数据
+  * @param buf - 输入的待压缩数据
+  * @param options - 压缩选项，有效选项为level
+  * @returns 输出压缩后的数据，若压缩过程中发生错误，则返回数据大小为0
+  */
+  export function deflateRaw(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
+
+/**
+  * @description 使用gzip格式压缩数据
+  * @param buf - 待压缩数据
+  * @param options - 压缩选项，支持选项为level
+  * @returns 输入压缩后的数据，若压缩过程中发生错误，则返回数据大小为0
+  */
+  export function gzip(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
+
+/**
+  * @description 使用zlib算法解压缩数据
+  * @param buf - 待解压数据
+  * @param options - 解压缩选项，支持选项为window_bits,dictionary
+  * @returns 输入解压后的数据，若解压过程中发生错误，则返回数据大小为0
+  */
+  export function inflate(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
+/**
+  * @description 使用deflate算法解压缩数据
+  * @param buf - 待解压数据
+  * @param options - 解压缩选项，当前选项无效
+  * @returns 输入解压后的数据，若解压过程中发生错误，则返回数据大小为0
+  */
+  export function inflateRaw(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
+
+/**
+  * @description 使用gzip算法解压缩数据
+  * @param buf - 待解压数据
+  * @param options - 解压缩选项，当前选项无效
+  * @returns 输入解压后的数据，若解压过程中发生错误，则返回数据大小为0
+  */
+  export function ungzip(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
+}
+
+
+//flate2 接口
+
+/**
+  * @description 使用deflate格式压缩数据
+  * @param buf - 输入的待压缩数据
+  * @param options - 压缩选项，有效选项为level
+  * @returns 输出压缩后的数据，若压缩过程中发生错误，则返回数据大小为0
+  */
+export declare function deflate(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
+
+/**
+  * @description 使用gzip格式压缩数据
+  * @param buf - 待压缩数据
+  * @param options - 压缩选项，支持选项为level
+  * @returns 输入压缩后的数据，若压缩过程中发生错误，则返回数据大小为0
+  */
+export declare function gzip(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
+
+/**
+  * @description 使用deflate算法解压缩数据
+  * @param buf - 待解压数据
+  * @param options - 解压缩选项，当前选项无效
+  * @returns 输入解压后的数据，若解压过程中发生错误，则返回数据大小为0
+  */
+export declare function inflate(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
+
+/**
+  * @description 使用gzip算法解压缩数据
+  * @param buf - 待解压数据
+  * @param options - 解压缩选项，当前选项无效
+  * @returns 输入解压后的数据，若解压过程中发生错误，则返回数据大小为0
+  */
+export declare function ungzip(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
+
+/**
+  * @description 使用zlib算法解压缩数据
+  * @param buf - 待解压数据
+  * @param options - 解压缩选项，支持选项为window_bits,dictionary
+  * @returns 输入解压后的数据，若解压过程中发生错误，则返回数据大小为0
+  */
+export declare function unzlib(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
+
+/**
+  * @description 使用zlib格式压缩数据
+  * @param buf - 输入的压缩数据
+  * @param options - 压缩选项，有效选项为level，window_bits,dictionary
+  * @returns 输出压缩后的数据，若压缩过程中发生错误，则返回数据大小为0
+  */
+export declare function zlib(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
+
+```
+
+
 
 ## 目录结构
 
@@ -47,7 +141,7 @@ xxx
 /ohos_flate2        # 项目根目录
 ├── entry      # 示例代码文件夹
 ├── library    # flate2库文件夹
-│    └─ src/main/ets   # 核心代码             
+│    └─ src/main/rust   # binding代码             
 ├── README.md     # 安装使用方法    
                    
 ````
@@ -58,4 +152,67 @@ xxx
 
 ## 开源协议
 
-本项目遵循 [Apache-2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ohos_flate2/LICENSE)。
+本项目遵循 [Apache-2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ohos_flate2/LICENSE-APACHE) 或 [MIT](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ohos_flate2/LICENSE-MIT) 协议。
+
+
+## libflate2.so构建方法
+
+### 0.预备条件
+- 构建环境已安装Rust工具链，并可以从crates.io（或镜像）下载crate包。
+   安装工具可使用Rust原生社区（https://www.rust-lang.org/zh-CN/tools/install）安装工具或 旋武社区发行版 （https://xuanwu.beta.atomgit.com/download/）
+- 构建环境已安装OHOS SDK, 并正确设置`OHOS_NDK_HOME` 环境变量，如 `export OHOS_NDK_HOME=/path/to/ohos_sdk_home/`.
+- OpenHarmony SDK API >= 12
+- Rust 版本>= 1.80
+
+
+### 1. 安装ohrs工具
+
+方法1（推荐）：直接使用cargo install安装
+
+```
+cargo install ohrs --git https://github.com/ohos-rs/ohos-rs --rev 1b93eb14dc4b9c3aed5534d6814241b0aa429f98
+```
+
+方法2：将ohrs代码clone到本地后手动安装
+```
+git clone https://github.com/ohos-rs/ohos-rs 
+git checkout 1b93eb14dc4b9c3aed5534d6814241b0aa429f98
+cd ./ohos-rs/cli/cargo-ohrs
+cargo install ohrs --path .
+```
+
+
+### 2. 安装ohos target
+
+```
+rustup target add aarch64-unknown-linux-ohos
+rustup target add x86_64-unknown-linux-ohos
+```
+
+### 3. 执行构建命令
+#### 3.1 linux环境
+
+```shell
+cd ./library/src/main/rust/
+./build-rust.sh
+```
+#### 3.2 windows环境
+
+进入`ohos_flate2/library/src/main/rust`文件夹,在命令行中输入如下命令
+```
+ohrs build --release --arch arm64 --arch x64 --dist ../../../libs
+```
+
+#### 4.确认构建成功
+
+`ohos_flate2/library/libs`中出现如下目录和文件，则代表构建成功
+
+```
+library/libs
+├── arm64-v8a
+│   └── libflate2.so
+├── index.d.ts
+└── x86_64
+    └── libflate2.so
+
+```

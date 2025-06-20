@@ -1,7 +1,7 @@
 {
   "modelVersion": "5.0.0",
   "name": "@ohos/flate2",
-  "description": "Please describe the basic information.",
+  "description": "arkTS bingding for rust flate2",
   "dependencies": {
   },
   "devDependencies": {
