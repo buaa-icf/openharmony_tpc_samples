@@ -30,7 +30,7 @@ pub fn gzip(buf: Uint8Array, options: Option<Options>) -> Result<Uint8Array,Erro
  * @returns 输出压缩后的数据
  */
 #[napi]
-pub fn deflate(buf: Uint8Array, options: Option<Options>) -> Result<Uint8Array,Error> {
+pub fn deflate_raw(buf: Uint8Array, options: Option<Options>) -> Result<Uint8Array,Error> {
     let opts = options.unwrap_or_default();
     let level = opts.compression();
     let encoder = DeflateEncoder::new(buf.as_ref(), level);
@@ -44,7 +44,7 @@ pub fn deflate(buf: Uint8Array, options: Option<Options>) -> Result<Uint8Array,E
  * @returns 输出压缩后的数据
  */
 #[napi]
-pub fn zlib(buf: Uint8Array, options: Option<Options>) -> Result<Uint8Array,Error> {
+pub fn deflate(buf: Uint8Array, options: Option<Options>) -> Result<Uint8Array,Error> {
     let opts = options.unwrap_or_default();
     let level = opts.compression();
     let window_bits = opts.window_bits();
@@ -78,7 +78,7 @@ pub fn ungzip(buf: Uint8Array, _options: Option<Options>) -> Result<Uint8Array,E
  * @returns 输入解压后的数据
  */
 #[napi]
-pub fn inflate(buf: Uint8Array, _options: Option<Options>) -> Result<Uint8Array,Error> {
+pub fn inflate_raw(buf: Uint8Array, _options: Option<Options>) -> Result<Uint8Array,Error> {
     let decoder = DeflateDecoder::new(buf.as_ref());
     decompress(decoder, buf.len() * 2)
 }
@@ -90,7 +90,7 @@ pub fn inflate(buf: Uint8Array, _options: Option<Options>) -> Result<Uint8Array,
  * @returns 输入解压后的数据
  */
 #[napi]
-pub fn unzlib(buf: Uint8Array, options: Option<Options>) -> Result<Uint8Array,Error> {
+pub fn inflate(buf: Uint8Array, options: Option<Options>) -> Result<Uint8Array,Error> {
     let opts = options.unwrap_or_default();
     let window_bits = opts.window_bits();
     let mut decomp = Decompress::new_with_window_bits(true, window_bits);
@@ -142,11 +142,11 @@ mod tests {
 
     #[test]
     fn test_deflate() {
-        test(deflate, inflate);
+        test(deflate_raw, inflate_raw);
     }
 
     #[test]
     fn test_zlib() {
-        test(zlib, unzlib);
+        test(deflate, inflate);
     }
 }

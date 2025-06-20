@@ -7,7 +7,7 @@
     "compress",
     "decompress"
   ],
-  "version": "1.0.0",
+  "version": "1.0.0-rc.0",
   "description": "ArkTS bingding for rust flate2",
   "main": "Index.ets",
   "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_flate2",
@@ -18,6 +18,6 @@
   "types": "libs/index.d.ts",
   "license": "MIT or Apache-2.0",
   "dependencies": {
-    "libflate2.so": "file: ./libs"
+    "libflate2.so": "file:./libs"
   }
 }

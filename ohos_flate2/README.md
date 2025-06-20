@@ -15,121 +15,70 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 ## 接口说明
 
 ```ts
+
+
 /**
-  * 压缩或解压支持的选项，更详细内容请参考https://zlib.net/manual.html#Advanced
-  * 不同函数支持的选项不同，详情见各函数说明
+  * 压缩或解压缩所支持的选项，更详细定义参考：https://zlib.net/manual.html#Advanced
+  * 不同函数支持的选项不同，详见各函数自身说明
   */
 export interface Options {
-  /** 压缩等级，0为最低压缩等级（没有压缩），9为最高压缩等级, 必须在0..=9之间，否则会使用默认值6 */
+  /** 压缩等级，0为最低（没有压缩），9为最高，默认值为6，数据有效值范围[0..9]，超出范围取默认值 */
   level?: number
-  /** 窗口大小（历史缓冲区的大小）的底数2的对数，必须在9..=15之间，否则会使用默认值15 */
+  /** 窗口大小（历史缓冲区的大小）的底数2的对数，默认值为15，数据有效值范围[9..15]，超出范围取默认值 */
   windowBits?: number
-  /** 初始压缩/解压缩字典, 默认为空 */
+  /** 初始压缩/解压缩字典，默认为空 */
   dictionary?: Uint8Array
 }
 
-
-// pako 兼容接口
-// 通过 import{pako} from '@ohos/flate2' 调用
-export namespace pako {
 /**
   * @description 使用zlib格式压缩数据
   * @param buf - 输入的压缩数据
   * @param options - 压缩选项，有效选项为level，window_bits,dictionary
-  * @returns 输出压缩后的数据，若压缩过程中发生错误，则返回数据大小为0
-  */
-  export function deflate(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
-
-/**
-  * @description 使用deflate格式压缩数据
-  * @param buf - 输入的待压缩数据
-  * @param options - 压缩选项，有效选项为level
-  * @returns 输出压缩后的数据，若压缩过程中发生错误，则返回数据大小为0
-  */
-  export function deflateRaw(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
-
-/**
-  * @description 使用gzip格式压缩数据
-  * @param buf - 待压缩数据
-  * @param options - 压缩选项，支持选项为level
-  * @returns 输入压缩后的数据，若压缩过程中发生错误，则返回数据大小为0
-  */
-  export function gzip(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
-
-/**
-  * @description 使用zlib算法解压缩数据
-  * @param buf - 待解压数据
-  * @param options - 解压缩选项，支持选项为window_bits,dictionary
-  * @returns 输入解压后的数据，若解压过程中发生错误，则返回数据大小为0
-  */
-  export function inflate(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
-/**
-  * @description 使用deflate算法解压缩数据
-  * @param buf - 待解压数据
-  * @param options - 解压缩选项，当前选项无效
-  * @returns 输入解压后的数据，若解压过程中发生错误，则返回数据大小为0
-  */
-  export function inflateRaw(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
-
-/**
-  * @description 使用gzip算法解压缩数据
-  * @param buf - 待解压数据
-  * @param options - 解压缩选项，当前选项无效
-  * @returns 输入解压后的数据，若解压过程中发生错误，则返回数据大小为0
-  */
-  export function ungzip(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
-}
-
-
-//flate2 接口
-
-/**
-  * @description 使用deflate格式压缩数据
-  * @param buf - 输入的待压缩数据
-  * @param options - 压缩选项，有效选项为level
-  * @returns 输出压缩后的数据，若压缩过程中发生错误，则返回数据大小为0
+  * @returns 输出压缩后的数据
   */
 export declare function deflate(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
 
 /**
+  * @description 使用deflate格式压缩数据
+  * @param buf - 输入的待压缩数据
+  * @param options - 压缩选项，有效选项为level
+  * @returns 输出压缩后的数据
+  */
+export declare function deflateRaw(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
+
+/**
   * @description 使用gzip格式压缩数据
   * @param buf - 待压缩数据
   * @param options - 压缩选项，支持选项为level
-  * @returns 输入压缩后的数据，若压缩过程中发生错误，则返回数据大小为0
+  * @returns 输入压缩后的数据
   */
 export declare function gzip(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
-
-/**
-  * @description 使用deflate算法解压缩数据
-  * @param buf - 待解压数据
-  * @param options - 解压缩选项，当前选项无效
-  * @returns 输入解压后的数据，若解压过程中发生错误，则返回数据大小为0
-  */
-export declare function inflate(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
-
-/**
-  * @description 使用gzip算法解压缩数据
-  * @param buf - 待解压数据
-  * @param options - 解压缩选项，当前选项无效
-  * @returns 输入解压后的数据，若解压过程中发生错误，则返回数据大小为0
-  */
-export declare function ungzip(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
 
 /**
   * @description 使用zlib算法解压缩数据
   * @param buf - 待解压数据
   * @param options - 解压缩选项，支持选项为window_bits,dictionary
-  * @returns 输入解压后的数据，若解压过程中发生错误，则返回数据大小为0
+  * @returns 输入解压后的数据
   */
-export declare function unzlib(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
+export declare function inflate(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
 
 /**
-  * @description 使用zlib格式压缩数据
-  * @param buf - 输入的压缩数据
-  * @param options - 压缩选项，有效选项为level，window_bits,dictionary
-  * @returns 输出压缩后的数据，若压缩过程中发生错误，则返回数据大小为0
+  * @description 使用deflate算法解压缩数据
+  * @param buf - 待解压数据
+  * @param options - 解压缩选项，当前选项无效
+  * @returns 输入解压后的数据
   */
-export declare function zlib(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
+export declare function inflateRaw(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
+
+/**
+  * @description 使用gzip算法解压缩数据
+  * @param buf - 待解压数据
+  * @param options - 解压缩选项，当前选项无效
+  * @returns 输入解压后的数据
+  */
+export declare function ungzip(buf: Uint8Array, options?: Options | undefined | null): Uint8Array
+
+
 
 ```
 
@@ -159,7 +108,7 @@ export declare function zlib(buf: Uint8Array, options?: Options | undefined | nu
 
 ### 0.预备条件
 - 构建环境已安装Rust工具链，并可以从crates.io（或镜像）下载crate包。
-   安装工具可使用Rust原生社区（https://www.rust-lang.org/zh-CN/tools/install）安装工具或 旋武社区发行版 （https://xuanwu.beta.atomgit.com/download/）
+   安装工具可使用[Rust原生社区](https://www.rust-lang.org/zh-CN/tools/install)安装工具或 [旋武社区发行版](https://xuanwu.beta.atomgit.com/download/)
 - 构建环境已安装OHOS SDK, 并正确设置`OHOS_NDK_HOME` 环境变量，如 `export OHOS_NDK_HOME=/path/to/ohos_sdk_home/`.
 - OpenHarmony SDK API >= 12
 - Rust 版本>= 1.80
