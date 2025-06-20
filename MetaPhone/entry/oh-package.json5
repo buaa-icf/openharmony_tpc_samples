@@ -7,6 +7,6 @@
   "main": "",
   "version": "1.0.0",
   "dependencies": {
-    "metaphone": "^2.0.0"
+    "metaphone": "^2.0.1"
   }
 }
