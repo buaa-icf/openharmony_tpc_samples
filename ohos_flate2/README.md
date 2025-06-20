@@ -30,7 +30,7 @@ export interface Options {
 
 
 // pako 兼容接口
-// 通过 import{pako} from @ohos/flate2调用
+// 通过 import{pako} from '@ohos/flate2' 调用
 export namespace pako {
 /**
   * @description 使用zlib格式压缩数据
@@ -192,12 +192,13 @@ rustup target add x86_64-unknown-linux-ohos
 ### 3. 执行构建命令
 #### 3.1 linux环境
 
-```sh
-./library/src/main/rust/build-rust.sh
+```shell
+cd ./library/src/main/rust/
+./build-rust.sh
 ```
 #### 3.2 windows环境
 
-进入`ohos_flate2library/src/main/rust`文件夹,在命令行中输入如下命令
+进入`ohos_flate2/library/src/main/rust`文件夹,在命令行中输入如下命令
 ```
 ohrs build --release --arch arm64 --arch x64 --dist ../../../libs
 ```
