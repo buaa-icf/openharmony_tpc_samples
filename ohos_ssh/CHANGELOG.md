@@ -1,3 +1,7 @@
+## 1.0.0
+
+- Release version 1.0.0
+
 ## 1.0.0-rc.0
 
 - A server that supports the sftp protocol
