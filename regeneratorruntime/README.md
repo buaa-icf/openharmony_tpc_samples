@@ -11,10 +11,10 @@ regeneratorRuntime is an asynchronous programming solution provided by ES6 and u
  ohpm install @types/regenerator-runtime  // If a syntax error is reported, the regenerator-runtime package does not contain the type declaration. You need to download the declaration file of the package from @types/regenerator-runtime to rectify the syntax error.
 ```
 
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ### Available APIs
-For details about unit test cases, see [TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/regeneratorRuntime/TEST.md).
+For details about unit test cases, see [TEST.md](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/regeneratorRuntime/TEST.md).
 
 # How to Use
 ```
@@ -67,8 +67,8 @@ DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API11 (4.1.0.36)
 
 ## How to Contribute
 
-If you find any problem when using parser-html-json, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
+If you find any problem when using parser-html-json, submit an [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
 
 ## License
 
-This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/regeneratorruntime/LICENSE).
+This project is licensed under [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/regeneratorruntime/LICENSE).
