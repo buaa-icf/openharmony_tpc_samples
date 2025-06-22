@@ -20,7 +20,7 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
    import { SMB2} from '@ohos/smbj'
    
    //two:
-   var client = new SMB2(
+   let client = new SMB2(
       {
         share: '\\\\10.50.40.30\\test_smbj',
         domain:'DOMAIN',
