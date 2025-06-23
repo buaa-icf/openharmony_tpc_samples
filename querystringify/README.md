@@ -12,7 +12,7 @@ ohpm install @types/querystringify  // A syntax error is reported if the queryst
 ```
 
 OpenHarmony
-For details about the ohpm environment configuration, see [Installing the OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details about the ohpm environment configuration, see [Installing the OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ## How to Use
 
@@ -54,8 +54,8 @@ querystringify has been verified in the following versions:
 
 ## How to Contribute
 
-If you find any problem when using querystringify, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or
-a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
+If you find any problem when using querystringify, submit an [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or
+a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
 
 ## License
-This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/querystringify/LICENSE).
+This project is licensed under [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/querystringify/LICENSE).
