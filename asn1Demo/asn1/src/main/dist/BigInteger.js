@@ -1,4 +1,4 @@
-import hilog from '@ohos.hilog';
+import { LogUtil } from './logUtil';
 
 'use strict';
 
@@ -40,11 +40,12 @@ var MAX_CONSTANT = 16;
  function copyOfRange(original, from, to) {
     var newLength = to - from;
     if (newLength < 0) {
-        hilog.error(0x0000, TAG, '%{public}s', from + " > " + to);
+        LogUtil.error(from + " > " + to);
         throw new Error(from + " > " + to);
     }
     var copy = new Array(newLength);
     arraycopy(original, from, copy, 0, Math.min(original.length - from, newLength));
+    LogUtil.debug(`copyOfRange: original= ${original}, from= ${from}, to= ${to} , copy= ${copy}`);
     return copy;
 }
 
@@ -52,6 +53,7 @@ var MAX_CONSTANT = 16;
     for (var i = srcPos; i < (srcPos + length); i++) {
         dest[destPos++] = src[i];
     }
+    LogUtil.debug(`arraycopy: src= ${src} , srcPos= ${srcPos} , dest= ${dest} , destPos= ${destPos} , length= ${length}`);
 };
 
   function intArray(length) {
@@ -59,6 +61,7 @@ var MAX_CONSTANT = 16;
     for (var i = 0; i < length; i++) {
         array[i] = 0;
     }
+    LogUtil.debug(`intArray: length= ${length} , array= ${array}`);
     return array;
 };
 
@@ -68,7 +71,6 @@ var zeros = intArray(64);
 zeros[63] = "000000000000000000000000000000000000000000000000000000000000000";
 for (var i = 0; i < 63; i++)
     zeros[i] = zeros[63].substring(0, i);
-
 
 function BigInteger() {
     this.signum;
@@ -90,11 +92,12 @@ function BigInteger() {
  * @throws NumberFormatException {@code val} is zero bytes long.
  */
 BigInteger.fromBuffer = function (signum, magnitude) {
+    LogUtil.debug(`fromBuffer: signum= ${signum} , magnitude = ${magnitude}`);
     var _bigInteger = new BigInteger();
     _bigInteger.mag = _bigInteger._stripLeadingZeroBytes(magnitude);
 
     if (signum < -1 || signum > 1) {
-        hilog.error(0x0000, TAG, '%{public}s', "Invalid signum value");
+        LogUtil.error("Invalid signum value");
         throw new Error("Invalid signum value");
     }
 
@@ -102,11 +105,12 @@ BigInteger.fromBuffer = function (signum, magnitude) {
         _bigInteger.signum = 0;
     } else {
         if (signum == 0) {
-            hilog.error(0x0000, TAG, '%{public}s', "signum-magnitude mismatch");
+            LogUtil.error("signum-magnitude mismatch");
             throw new Error("signum-magnitude mismatch");
         }
         _bigInteger.signum = signum;
     }
+    LogUtil.debug(`fromBuffer: _bigInteger= ${_bigInteger}`);
     return _bigInteger;
 };
 
@@ -130,16 +134,17 @@ BigInteger.fromBuffer = function (signum, magnitude) {
  * @see    Character#digit
  */
 BigInteger.fromString = function (val, radix) {
+    LogUtil.debug(`fromString: val= ${val} ,radix= ${radix}`);
     radix = radix || 10;
     var cursor = 0;
     var numDigits;
     var len = val.length;
     if (radix < MIN_RADIX || radix > MAX_RADIX) {
-        hilog.error(0x0000, TAG, '%{public}s', 'Radix out of range');
+        LogUtil.error('Radix out of range');
         throw new Error('Radix out of range');
     }
     if (len === 0) {
-        hilog.error(0x0000, TAG, '%{public}s', "Zero length BigInteger");
+        LogUtil.error("Zero length BigInteger");
         throw new Error("Zero length BigInteger");
     }
     var sign = 1;
@@ -149,7 +154,7 @@ BigInteger.fromString = function (val, radix) {
         if (index1 === 0 || index2 === 0) {
             cursor = 1;
             if (len === 1) {
-                hilog.error(0x0000, TAG, '%{public}s', "Zero length BigInteger");
+                LogUtil.error("Zero length BigInteger");
                 throw new Error("Zero length BigInteger");
             }
         }
@@ -157,7 +162,7 @@ BigInteger.fromString = function (val, radix) {
             sign = -1;
         }
     } else {
-        hilog.error(0x0000, TAG, '%{public}s', "Illegal embedded sign character");
+        LogUtil.error("Illegal embedded sign character");
         throw new Error("Illegal embedded sign character");
     }
     var _bigInteger = new BigInteger();
@@ -169,6 +174,7 @@ BigInteger.fromString = function (val, radix) {
     if (cursor === len) {
         // _bigInteger.signum = 0;
         // _bigInteger.mag = new Buffer([0]);
+        LogUtil.warn("fromString: ZERO");
         return ZERO;
     }
     numDigits = len - cursor;
@@ -190,7 +196,7 @@ BigInteger.fromString = function (val, radix) {
 
     magnitude[numWords - 1] = parseInt(group, radix);
     if (magnitude[numWords - 1] < 0) {
-        hilog.error(0x0000, TAG, '%{public}s', "Illegal digit");
+        LogUtil.error("Illegal digit");
         throw new Error("Illegal digit");
     }
 
@@ -202,13 +208,14 @@ BigInteger.fromString = function (val, radix) {
         groupVal = parseInt(group, radix);
 
         if (groupVal < 0) {
-            hilog.error(0x0000, TAG, '%{public}s', "Illegal digit");
+            LogUtil.error("Illegal digit");
             throw new Error("Illegal digit");
         }
          _bigInteger._destructiveMulAdd(magnitude, superRadix, groupVal);
     }
 
     _bigInteger.mag = trustedStripLeadingZeroInts(magnitude);
+    LogUtil.debug(`fromString: _bigInteger= ${_bigInteger}`);
     return _bigInteger;
 };
 
@@ -216,6 +223,7 @@ BigInteger.fromString = function (val, radix) {
  * Returns a copy of the input array stripped of any leading zero bytes.
  */
 BigInteger.prototype._stripLeadingZeroBytes = function (a) {
+    LogUtil.debug(`_stripLeadingZeroBytes: a= ${a}`);
     var byteLength = a.length;
     var keep;
 
@@ -234,11 +242,13 @@ BigInteger.prototype._stripLeadingZeroBytes = function (a) {
         for (var j=8; j <= (bytesToTransfer << 3); j += 8)
             result[i] |= ((a[b--] & 0xff) << j);
     }
+    LogUtil.debug(`_stripLeadingZeroBytes: result= ${result}`);
     return result;
 }
 
 // Multiply x array times word y in place, and add word z
 BigInteger.prototype._destructiveMulAdd = function (x, y, z) {
+    LogUtil.debug(`_destructiveMulAdd: x=${x} , y= ${y} , z= ${z}`);
     // Perform the multiplication word by word
     var ylong = Long.fromNumber(y >>> 32);
     var zlong = z >>> 32;
@@ -261,29 +271,32 @@ BigInteger.prototype._destructiveMulAdd = function (x, y, z) {
         x[i] = sum.low;
         carry = sum.high;
     }
-
+    LogUtil.debug(`_destructiveMulAdd: x=${x}`);
 };
 
 function trustedStripLeadingZeroInts(val) {
+    LogUtil.debug(`trustedStripLeadingZeroInts: val= ${val}`);
     var vlen = val.length;
     var keep;
     // Find first nonzero byte
     for (keep = 0; keep < vlen && val[keep] == 0; keep++)
         ;
-    return keep == 0 ? val : copyOfRange(val, keep, vlen);
+    var result = keep == 0 ? val : copyOfRange(val, keep, vlen);
+    LogUtil.debug(`trustedStripLeadingZeroInts: result= ${result}`);
+    return result;
 };
 
 
 
 
 BigInteger.fromMag = function (magnitude, signum) {
-
+    LogUtil.debug(`fromMag: magnitude= ${magnitude} , signum= ${signum}`);
     var _bigInteger = new BigInteger();
 
     if (typeof signum === 'undefined') {
         // @see BigInteger(int[] val)
         if (magnitude.length == 0) {
-            hilog.error(0x0000, TAG, '%{public}s', "Zero length BigInteger");
+            LogUtil.error("Zero length BigInteger");
             throw new Error("Zero length BigInteger");
         }
 
@@ -301,7 +314,7 @@ BigInteger.fromMag = function (magnitude, signum) {
         _bigInteger.mag = magnitude;
 
     }
-
+    LogUtil.debug(`fromMag: _bigInteger=${_bigInteger}`);
     return _bigInteger;
 
 };
@@ -313,6 +326,7 @@ BigInteger.fromMag = function (magnitude, signum) {
  * @param {int[]} a
  */
 function makePositive(a) {
+    LogUtil.debug(`makePositive: a= ${a}`);
     var keep, j;
 
     // Find first non-sign (0xffffffff) int of input
@@ -334,7 +348,7 @@ function makePositive(a) {
     // Add one to one's complement to generate two's complement
     for (var i = result.length - 1; ++result[i] === 0; i--)
         ;
-
+    LogUtil.debug(`makePositive: result= ${result}`);
     return result;
 }
 
@@ -348,6 +362,7 @@ function makePositive(a) {
  *         BigInteger whose value is numerically equal to this BigInteger.
  */
 BigInteger.prototype.equals = function (x) {
+    LogUtil.debug(`equals: x=${x}`);
     // This test is just an optimization, which may or may not help
     // if (x === this)
     //   return true;
@@ -387,6 +402,7 @@ for (var i = 1; i <= MAX_CONSTANT; i++) {
     magnitude[0] = i;
     posConst[i] = BigInteger.fromMag(magnitude,  1);
     negConst[i] = BigInteger.fromMag(magnitude, -1);
+    LogUtil.debug(`Initialize constants: i= ${i} , posConst= ${posConst[i]} , negConst= ${negConst[i]}`);
 }
 
 
