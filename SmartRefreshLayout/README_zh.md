@@ -112,4 +112,4 @@ DevEco Studio: NEXT Developer Beta3-5.0.3.530, SDK: API12 (5.0.0.35)
 使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎给发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls)共建 。
 
 ## 开源协议
-本项目基于 [Apache License 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/jwks-rsa/LICENSE) ，请自由地享受和参与开源。
+本项目基于 [Apache License 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/SmartRefreshLayout/LICENSE) ，请自由地享受和参与开源。
