@@ -143,8 +143,7 @@ struct SingleExample {
 
                 // 当此条目的动画触发事件时调用
                 event(entry: TrackEntry, event: Event) {
-                  console.info('spine listener loadAnimation event entry:' + JSON.stringify(entry) + ',event:' +
-                  JSON.stringify(event))
+                  console.info(`spine listener loadAnimation event entry: ${entry} ,event: ${event}`);
                 }
               });
               // 监听添加方式二
