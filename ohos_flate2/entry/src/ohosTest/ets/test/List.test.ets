@@ -1,5 +1,5 @@
-import abilityTest from './Ability.test';
+import flate2Test from './flate2.test';
 
 export default function testsuite() {
-  abilityTest();
+  flate2Test();
 }
