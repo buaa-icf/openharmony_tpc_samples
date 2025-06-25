@@ -11,7 +11,24 @@ ArkTS binding for rust flate2
 ```
 OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
-
+## 使用说明
+```ts
+  import { deflate, inflate, gzip, ungzip, deflateRaw, inflateRaw } from '@ohos/flate2';
+  
+  let inputData: Uint8Array = xxxx; //Uint8Array数据
+  
+  // 使用zlib格式压缩解压数据
+  const deflatedData = deflate(inputData);
+  const output1 = inflate(deflatedData);
+  
+  // 使用deflate格式压缩解压数据
+  const deflatedRawData = deflateRaw(inputData);
+  const output2 = inflateRaw(deflatedRawData);
+  
+  // 使用gzip格式压缩解压数据
+  const gzippedData = gzip(inputData);
+  const output3 = ungzip(gzippedData);
+```
 
 ## 接口说明
 
