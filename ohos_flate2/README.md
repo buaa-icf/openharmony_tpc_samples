@@ -2,6 +2,7 @@
 
 ## 简介
 
+ArkTS binding for rust flate2
 
 ## 下载安裝
 
