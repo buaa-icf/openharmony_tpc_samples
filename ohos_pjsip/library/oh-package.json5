@@ -1,0 +1,21 @@
+{
+  "name": "ohos_pjsip",
+  "version": "1.0.0",
+  "types": "",
+  "keywords": [
+    "OpenHarmony",
+    "HarmonyOS",
+    "socketio",
+    "Network"
+  ],
+  "description": "PJSIP 是一个开源的多媒体通信库，实现了 SIP、SDP、RTP、STUN、TURN 和 ICE 等协议，广泛用于构建 VoIP 和实时通信应用。",
+  "main": "Index.ets",
+  "author": "ohos_tpc",
+  "ohos": {
+    "org": "opensource"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "libohos_pjsip.so": "file:./src/main/cpp/types/libohos_pjsip"
+  }
+}

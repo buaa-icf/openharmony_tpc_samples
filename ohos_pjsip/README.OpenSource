@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "ohos_pjsip",
+        "License": "Apache-2.0",
+        "License File": "LICENSE",
+        "Version Number": "2.15.1",
+        "Owner" : "xiafeng@huawei.com",
+        "Upstream URL": "https://github.com/pjsip/pjproject",
+        "Description": "PJSIP 是一个开源的多媒体通信库，实现了 SIP、SDP、RTP、STUN、TURN 和 ICE 等协议，广泛用于构建 VoIP 和实时通信应用。"
+    }
+]
