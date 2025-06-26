@@ -34,14 +34,14 @@ root_type Person;
  ```
 flatc --ts monster.fbs
  ```
-3.生成Example.ts和example文件夹   
-4.在entry目录下新建文件夹，例如common，把Example.ts和example文件夹的内容复制进来   
-5.打开entry/src/main/ets/common/example/person.ts，将引用改为 import * as flatbuffers from '@ohos/flatbuffers'
+3.生成Example.ts和example文件夹。   
+4.在entry目录下新建文件夹，例如common，把Example.ts和example文件夹的内容复制进来。   
+5.打开entry/src/main/ets/common/example/person.ts，将引用改为 import * as flatbuffers from '@ohos/flatbuffers'。
 
 ## 约束与限制
 在下述版本验证通过：
 
-DevEco Studio: 5.0.11.24, SDK: API16 Release (5.0.4.150)
+DevEco Studio: 5.0.11.24, SDK: API16 Release (5.0.4.150)。
 
 ## 贡献代码
 使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
