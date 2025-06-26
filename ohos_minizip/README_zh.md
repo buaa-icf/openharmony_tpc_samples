@@ -8,7 +8,7 @@
 ```shell
 ohpm install @ohos/minizip
 ```
-- OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
 ### 编译运行
 
@@ -45,9 +45,10 @@ if (minizipEntry.Open() == 0) {
 
 1. 使用三方库解压zip文件内容到内存，返回至JS。
 2. GetEntryNames()获取zip文件所有的文件夹路径以及文件路径
-3. ExtractFileToJS(entryname, password),解压指定的文件并将内容返回至JS侧，若文件没有密码参考如下
-
-ExtractFileToJS(entryname, “”)；
+3. ExtractFileToJS(entryname, password)，解压指定的文件并将内容返回至JS侧，若文件没有密码参考如下
+```typescript
+ExtractFileToJS(entryname, "");
+```
 
 ### 解压zip包到磁盘
 ```typescript
@@ -73,9 +74,10 @@ if (minizipCompressEntry.Create() == 0) {
 ```
 
 1. 使用三方库压缩文件内容到zip包中，并返回至JS。
-2. CompressToJS(entryname, password),压缩指定的文件并将内容返回至JS侧，若文件没有密码参考如下
-
-CompressToJS(entryname, “”)；
+2. CompressToJS(entryname, password)，压缩指定的文件并将内容返回至JS侧，若文件没有密码参考如下
+```typescript
+CompressToJS(entryname, "");
+```
 
 ### 压缩zip包到磁盘
 
@@ -98,21 +100,21 @@ if (minizipCompressEntry.Create() == 0) {
 | Open               | 无                                                                                | 无                                                                                                                                | 当返回值为0时，打开文件成功                                         | 打开文件               |
 | SetCharEncoding    | charEncoding:number                                                              | charEncoding: 字符编码类型，可设置为 437(CP437 主要用于英文和一些西欧语言环境) 932(CP932 主要用于日语环境) 936(CP936 主要用于简体中文环境) 950(CP950 主要用于繁体中文环境) 65001(UTF8) | 无返回值。设置压缩包的字符编码类型   | 设置字符编码类型           |
 | GetEntryNames      | 无                                                                                | 无                                                                                                                                | Array< string > 获取文件列表，如果调用过SetCharEncoding设置字符编码，则返回的文件名字符串为utf8编码 | 获取文件列表             |
-| ExtractFileToJS    | entryName : string, password : string                                            | entryName：文件名， password：密码                                                                                                    | ArrayBuffer或者undefined 解压文件内容，密码错误或entryName为文件夹名时，返回undefined      | 解压文件内容             |
-| unzipToDirectory   | selectPath: string, targetPath: string, password?: string, charEncoding?: number | selectPath: 待解压文件路径, targetPath: 解压到此路径下, password?: 密码,<br> charEncoding?: 字符编码类型                                   | Promise< string > 是否解压成功                                   | 解压缩文件到文件夹          |
+| ExtractFileToJS    | entryName : string, password : string                                            | entryName：文件名， password：密码                                                                                                       | ArrayBuffer或者undefined 解压文件内容，密码错误或entryName为文件夹名时，返回undefined      | 解压文件内容             |
+| unzipToDirectory   | selectPath: string, targetPath: string, password?: string, charEncoding?: number | selectPath: 待解压文件路径， targetPath: 解压到此路径下， password?: 密码，<br> charEncoding?: 字符编码类型                                               | Promise< string > 是否解压成功                                   | 解压缩文件到文件夹          |
 | IsEncrypto         | entryName : string                                                               | entryName: entry文件名                                                                                                              | boolean 是否加密                                                | 判断entry是否加密        |
 | IsUtf8             | entryName : string                                                               | entryName: entry文件名                                                                                                              | boolean 文件路径是否utf8编码                                      | 判断entry路径名是否utf8编码 |
 
-| 接口                  | 参数                                 | 参数说明                                                     | 返回值                                                       | 接口说明                      |
-| --------------------- | ------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ----------------------------- |
-| MinizipCompressNative | catchPath:string, zipFilePath:string | catchPath获取压缩包内容时压缩包暂存路径，zipFilePath压缩包路径 | MinizipCompressNative实例                                    | 创建MinizipCompressNative实例 |
-| Create                | 无                                   | 无                                                           | 当返回值为0时，创建文件成功                                  | 创建zip文件                   |
-| Close                 | 无                                   | 无                                                           | 无返回值                                                     | 关闭zip文件                   |
+| 接口                  | 参数                                 | 参数说明                                                                                           | 返回值                                                       | 接口说明                      |
+| --------------------- | ------------------------------------ |------------------------------------------------------------------------------------------------| ------------------------------------------------------------ | ----------------------------- |
+| MinizipCompressNative | catchPath:string, zipFilePath:string | catchPath获取压缩包内容时压缩包暂存路径，zipFilePath压缩包路径                                                      | MinizipCompressNative实例                                    | 创建MinizipCompressNative实例 |
+| Create                | 无                                   | 无                                                                                              | 当返回值为0时，创建文件成功                                  | 创建zip文件                   |
+| Close                 | 无                                   | 无                                                                                              | 无返回值                                                     | 关闭zip文件                   |
 | SetCompressMethod     | compressMethod:number                | compressMethod: 压缩方法，可设置为 0(不压缩) 8(Deflate 压缩) 12(Bzip2 压缩) 14(LZMA1 压缩) 93(ZSTD 压缩) 95(XZ 压缩) | 当返回值为0时，设置成功                                      | 设置压缩方法                  |
-| SetCompressLevel      | compressLevel:number                 | compressLevel：压缩等级，可设置为 -1(默认等级) 2(Fast 压缩等级) 6(Mid 压缩等级) 9(Slow 压缩等级) | 当返回值为0时，设置成功                                      | 设置压缩等级                  |
-| SetzipFilePath        | zipFilePath:string                   | zipFilePath：压缩包名                                        | 无返回值。重新设置压缩包名                                   | 设置压缩包名                  |
-| Compress              | entries : Array, password : string   | entries : 需要压缩的文件, password : 密码                    | 当返回值为0时，压缩成功                                      | 压缩文件                      |
-| CompressToJS          | eentries : Array, password : string  | entries：需要压缩的文件， password：密码                     | ArrayBuffer或者undefined 压缩文件内容，密码错误或压缩失败时，返回undefined | 压缩文件并获取文件内容        |
+| SetCompressLevel      | compressLevel:number                 | compressLevel：压缩等级，可设置为 -1(默认等级) 2(Fast 压缩等级) 6(Mid 压缩等级) 9(Slow 压缩等级)                         | 当返回值为0时，设置成功                                      | 设置压缩等级                  |
+| SetzipFilePath        | zipFilePath:string                   | zipFilePath：压缩包名                                                                               | 无返回值。重新设置压缩包名                                   | 设置压缩包名                  |
+| Compress              | entries : Array, password : string   | entries : 需要压缩的文件， password : 密码                                                               | 当返回值为0时，压缩成功                                      | 压缩文件                      |
+| CompressToJS          | eentries : Array, password : string  | entries：需要压缩的文件， password：密码                                                                   | ArrayBuffer或者undefined 压缩文件内容，密码错误或压缩失败时，返回undefined | 压缩文件并获取文件内容        |
 
 
 
