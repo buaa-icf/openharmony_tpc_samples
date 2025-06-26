@@ -1,7 +1,7 @@
 # ohos_minizip
 
 ## 介绍
-基于minizip_ng的解压缩库
+基于minizip_ng的解压缩库。
 
 ## 下载安装
 
@@ -19,7 +19,7 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
 
 如果想要在本地编译minizip_ng，参考[minizip_ng集成到应用hap](https://gitcode.com/openharmony-sig/tpc_c_cplusplus/tree/master/community/minizip-ng)
 
-在cpp目录下新增third_party目录，并将编译生成的库拷贝到该目录下，如下图所示
+在cpp目录下新增third_party目录，并将编译生成的库拷贝到该目录下，如下图所示：
 
 ![img.png](image%2Fimg.png)
 
@@ -44,8 +44,8 @@ if (minizipEntry.Open() == 0) {
 ```
 
 1. 使用三方库解压zip文件内容到内存，返回至JS。
-2. GetEntryNames()获取zip文件所有的文件夹路径以及文件路径
-3. ExtractFileToJS(entryname, password)，解压指定的文件并将内容返回至JS侧，若文件没有密码参考如下
+2. GetEntryNames()获取zip文件所有的文件夹路径以及文件路径。
+3. ExtractFileToJS(entryname, password)，解压指定的文件并将内容返回至JS侧，若文件没有密码参考如下：
 ```typescript
 ExtractFileToJS(entryname, "");
 ```
@@ -74,7 +74,7 @@ if (minizipCompressEntry.Create() == 0) {
 ```
 
 1. 使用三方库压缩文件内容到zip包中，并返回至JS。
-2. CompressToJS(entryname, password)，压缩指定的文件并将内容返回至JS侧，若文件没有密码参考如下
+2. CompressToJS(entryname, password)，压缩指定的文件并将内容返回至JS侧，若文件没有密码参考如下：
 ```typescript
 CompressToJS(entryname, "");
 ```
@@ -119,9 +119,9 @@ if (minizipCompressEntry.Create() == 0) {
 
 
 ## 注意事项
-- 创建minizipNative对象需要传入完整的文件路径:**文件路径**+**文件名**
+- 创建minizipNative对象需要传入完整的文件路径:**文件路径**+**文件名**。
 
-- **创建对象**之后**一定要调用Open函数**，并且每一次new minizipNative**只能调用一次Open**，若Open函数返回值非0则是打开文件失败
+- **创建对象**之后**一定要调用Open函数**，并且每一次new minizipNative**只能调用一次Open**，若Open函数返回值非0则是打开文件失败。
 
 ## 关于混淆
 - 代码混淆，请查看[代码混淆简介](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
