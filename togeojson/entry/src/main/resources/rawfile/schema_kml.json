@@ -1,0 +1,51 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              12.8206124,
+              55.9654246
+            ],
+            [
+              12.8204862,
+              55.9654342
+            ],
+            [
+              12.8204902,
+              55.9654507
+            ],
+            [
+              12.8206164,
+              55.9654411
+            ],
+            [
+              12.8206124,
+              55.9654246
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "fill-opacity": 0,
+        "stroke-opacity": 1,
+        "stroke": "#ff0000",
+        "gid": 167001,
+        "plotno_plot_number": 167001,
+        "tream_treatment_number": "16",
+        "block_block_number": 1,
+        "random": 0.9,
+        "random_2": 0.4,
+        "random_trial": 96,
+        "random_2_trial": 39,
+        "random_block": 98,
+        "random_2_block": 41,
+        "cn_cv_1109": "89%"
+      }
+    }
+  ]
+}

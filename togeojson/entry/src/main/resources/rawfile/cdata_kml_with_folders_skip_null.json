@@ -1,0 +1,22 @@
+{
+  "type": "root",
+  "children": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.0822035425683,
+          37.42228990140251,
+          0
+        ]
+      },
+      "properties": {
+        "description": {
+          "@type": "html",
+          "value": "\n\n             Here is some text\n      "
+        }
+      }
+    }
+  ]
+}

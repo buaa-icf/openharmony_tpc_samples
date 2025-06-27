@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "togeojson",
+        "License": "BSD-2-Clause license",
+        "License File": " LICENSE ",
+        "Version Number": "7.1.2",
+        "Owner" : "xiafeng@huawei.com",
+        "Upstream URL": "https://github.com/placemark/togeojson",
+        "Description": "A library that supports conversion of KML, GPX, and TCX geospatial data formats to GeoJSON format."
+    }
+]
