@@ -14,9 +14,11 @@
  */
 
 import abilityTest from './Ability.test'
-import JSTOKENTest from './jstokens/test/index.test'
+import JSTokenTest from './jstokens/test/jstoken.test'
+import JSXTokenTest from './jstokens/test/jsxtoken.test'
 
 export default function testsuite() {
   abilityTest()
-  JSTOKENTest()
+  JSTokenTest()
+  JSXTokenTest()
 }
