@@ -25,6 +25,7 @@
 
 import StringUtil from "../util/StringUtil"
 import Relator from "./Relator"
+import { LogUtil } from '../util/LogUtil';
 
 class Author {
     private static readonly serialVersionUID: BigInt = BigInt( 6663408501416574200);
@@ -79,6 +80,7 @@ class Author {
             result = Relator.AUTHOR;
         }
         this.relator = result;
+        LogUtil.info('setRole result: ' + JSON.stringify(result));
         return result;
     }
 

@@ -21,33 +21,29 @@
  * acceptance of any version is permanent authorization for you to choose that version
  * for the Library.
  */
-import { LogUtil } from './LogUtil';
+import hilog from '@ohos.hilog';
 
-export class GlobalContext {
-  private constructor() {
-  }
+export class LogUtil {
+    static DOMAIN = 0x0001;
+    static TAG = '[epublib]: ';
 
-  private static instance: GlobalContext;
-  private _objects = new Map<string, Object>();
-
-  public static getContext(): GlobalContext {
-    if (!GlobalContext.instance) {
-      GlobalContext.instance = new GlobalContext();
+    static debug(message, ...args) {
+        hilog.debug(LogUtil.DOMAIN, LogUtil.TAG, message, args);
     }
-    LogUtil.info('create GlobalContext.instance');
-    return GlobalContext.instance;
-  }
 
-  getValue(value: string): Object {
-    let result = this._objects.get(value);
-    if (!result) {
-      throw new Error("this value undefined")
+    static info(message, ...args) {
+        hilog.info(LogUtil.DOMAIN, LogUtil.TAG, message, args);
     }
-    LogUtil.info('getValue result');
-    return result;
-  }
 
-  setValue(key: string, objectClass: Object): void {
-    this._objects.set(key, objectClass);
-  }
+    static log(message, ...args) {
+        hilog.debug(LogUtil.DOMAIN, LogUtil.TAG, message, args);
+    }
+
+    static warn(message, ...args) {
+        hilog.warn(LogUtil.DOMAIN, LogUtil.TAG, message, args);
+    }
+
+    static error(message, ...args) {
+        hilog.error(LogUtil.DOMAIN, LogUtil.TAG, message, args);
+    }
 }

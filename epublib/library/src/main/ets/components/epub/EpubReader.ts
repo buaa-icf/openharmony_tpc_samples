@@ -35,6 +35,7 @@ import StringUtil from '../util/StringUtil'
 import PackageDocumentReader from "./PackageDocumentReader"
 import NCXDocument from './NCXDocument'
 import fs from '@ohos.file.fs';
+import { LogUtil } from '../util/LogUtil';
 
 class EpubReader {
     constructor() {
@@ -81,6 +82,7 @@ class EpubReader {
     }
 
     public static readEpubToBook(resources: Resources, result?: Book): Book {
+        LogUtil.info('EpubReader.ts,readEpubToBook start');
         result = result || new Book();
         this.handleMimeType(resources);
         let packageResourceHref = this.getPackageResourceHref(resources);
@@ -96,6 +98,7 @@ class EpubReader {
     }
 
     private static getPackageResourceHref(resources: Resources): string {
+        LogUtil.info('EpubReader.ts,getPackageResourceHref start');
         let defaultResult: string = "content.opf";
         let result: string = defaultResult;
 
@@ -118,6 +121,7 @@ class EpubReader {
     }
 
     private static processPackageResource(packageResourceHref: string, book: Book, resources: Resources): EpubResource {
+        LogUtil.info('EpubReader.ts,processPackageResource start');
         if(packageResourceHref.includes('/')){
             let splits=packageResourceHref.split('/');
             packageResourceHref=splits[splits.length-1];

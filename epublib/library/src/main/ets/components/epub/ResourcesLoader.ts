@@ -22,7 +22,6 @@
  * for the Library.
  */
 
-
 import Zlib from "@ohos.zlib"
 import EpubResource from "../domain/EpubResource"
 import Resources from "../domain/Resources"
@@ -32,6 +31,7 @@ import ResourceUtil from "../util/ResourceUtil"
 import util from '@ohos.util';
 import Fileio from '@ohos.fileio';
 import fs from '@ohos.file.fs';
+import { LogUtil } from '../util/LogUtil';
 
 class ResourcesLoader {
     constructor() {
@@ -97,6 +97,7 @@ class ResourcesLoader {
     }
 
     private static readerFile(dirPath: string, defaultHtmlEncoding: string, dirent: any, lazyLoadedTypes?: Array<MediaType>): EpubResource {
+        LogUtil.info('ResourcesLoader.ets, readerFile start');
         let fullpath = dirPath + "/" + dirent.name;
         let stat = fs.statSync(fullpath);
         let resource: EpubResource;
@@ -118,6 +119,7 @@ class ResourcesLoader {
      * @return Whether the given href will load a mediaType that is in the collection of lazilyLoadedMediaTypes.
      */
     private static shouldLoadLazy(href: string, lazilyLoadedMediaTypes?: Array<MediaType>): boolean {
+        LogUtil.info('ResourcesLoader.ets, shouldLoadLazy start');
         if (lazilyLoadedMediaTypes == null || lazilyLoadedMediaTypes.length == 0 || (lazilyLoadedMediaTypes.length == 1 && lazilyLoadedMediaTypes[0] == null)) {
             return false;
         }
@@ -131,6 +133,7 @@ class ResourcesLoader {
      * @return Uint8Array
      */
     private static getBytesFromReadFile(filePath: string, size: number): Uint8Array{
+        LogUtil.info('ResourcesLoader.ets, getBytesFromReadFile start');
         let steam = fs.createStreamSync(filePath, "r+");
         let bytes: Uint8Array;
         steam.read(new ArrayBuffer(size), { offset: 1, length: 5 }, function (err, readOut) {
@@ -149,6 +152,7 @@ class ResourcesLoader {
      * @return Uint8Array
      */
     private static getStrFromReadFile(filePath: string, size: number): string{
+        LogUtil.info('ResourcesLoader.ets, getStrFromReadFile start');
         let steam = fs.createStreamSync(filePath, "r+");
         let strRet: string;
         steam.read(new ArrayBuffer(size), { offset: 1, length: 5 }, function (err, readOut) {
