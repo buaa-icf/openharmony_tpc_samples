@@ -7,6 +7,6 @@
   "main": "",
   "version": "2.0.0",
   "dependencies": {
-    "xmlbuilder": "~11.0.0"
+    "xmlbuilder": "~15.1.1"
   }
 }

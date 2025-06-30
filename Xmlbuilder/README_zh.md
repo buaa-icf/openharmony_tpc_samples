@@ -7,7 +7,7 @@
 ## 下载安装
 
 ````
-ohpm install xmlbuilder@11.0.0
+ohpm install xmlbuilder@15.1.1
 ````
 
 对于OpenHarmony ohpm环境配置的详细信息，请参阅[OpenHarmony环境配置指南](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)。
