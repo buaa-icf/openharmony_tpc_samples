@@ -1,0 +1,31 @@
+{
+  "types": "",
+  "keywords": [
+    "OpenHarmony",
+    "HarmonyOS",
+    "togeojson"
+  ],
+  "author": "ohos_tpc",
+  "description": "将GPX/KML/TCX格式文件转换为标准GeoJSON的组件",
+  "ohos": {
+    "org": "opensource"
+  },
+  "main": "./src/main/ets/index.ts",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/togeojson",
+  "type": "module",
+  "version": "1.0.0",
+  "dependencies": {
+
+  },
+  "tags": [
+    "OpenHarmony",
+    "HarmonyOS",
+    "togeojson"
+  ],
+  "license": "BSD-2-Clause License",
+  "devDependencies": {
+    "@types/geojson":"^7946.0.16",
+    "@xmldom/xmldom":"^0.9.8"
+  },
+  "name": "@ohos/togeojson"
+}

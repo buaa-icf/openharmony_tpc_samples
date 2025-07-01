@@ -1,0 +1,13 @@
+{
+  "type": "root",
+  "children": [
+    {
+      "type": "Feature",
+      "geometry": null,
+      "properties": {
+        "name": "Simple placemark",
+        "description": "Attached to the ground. Intelligently places itself \n       at the height of the underlying terrain."
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "type": "root",
+  "children": [
+    {
+      "type": "folder",
+      "meta": {
+        "name": "Inline style test"
+      },
+      "children": []
+    }
+  ]
+}

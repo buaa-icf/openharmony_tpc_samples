@@ -1,0 +1,16 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": null,
+      "properties": {
+        "name": "With all inline styles",
+        "fill": "#ff0011",
+        "stroke-opacity": 0,
+        "stroke": "#ff0",
+        "stroke-width": 3
+      }
+    }
+  ]
+}

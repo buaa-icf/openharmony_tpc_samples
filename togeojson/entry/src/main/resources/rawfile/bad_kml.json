@@ -1,0 +1,24 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": null,
+      "properties": {}
+    },
+    {
+      "type": "Feature",
+      "geometry": null,
+      "properties": {
+        "name": "unextruded"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": null,
+      "properties": {
+        "name": "hollow box"
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "type": "root",
+  "children": [
+    {
+      "type": "Feature",
+      "geometry": null,
+      "properties": {
+        "name": "unextruded"
+      }
+    }
+  ]
+}
