@@ -7,7 +7,7 @@
 ## How to Install
 
 ```shell
-ohpm  install decimal.js@10.4.0
+ohpm  install decimal.js@10.5.0
 ```
 
 For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
