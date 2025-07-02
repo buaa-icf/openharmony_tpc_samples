@@ -7,7 +7,7 @@
   "main": "",
   "version": "1.0.0",
   "dependencies": {
-    "domutils": "3.1.0",
+    "domutils": "3.2.2",
     "@ohos/htmlparser2": "1.0.0",
     "domhandler": "^5.0.3"
   }
