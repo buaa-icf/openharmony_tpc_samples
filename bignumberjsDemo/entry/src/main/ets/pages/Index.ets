@@ -72,7 +72,7 @@ struct Index {
   @State mathUnaryMinus: string = this.zerosStr
   @State mathTimeUnaryMinus: string = this.zerosStr
   @State mathSignum: string = this.zerosStr
-  @State mathposSignum: number = 0
+  @State mathposSignum: number | null = 0
   @State mathTimeSignum: string = this.zerosStr
   @State mathTimeSignum1: string = this.zerosStr
   mathatanSignum: string = ""
