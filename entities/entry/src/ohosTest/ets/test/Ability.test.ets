@@ -44,7 +44,7 @@ import {
     EncodingMode,
     EntityLevel,
 } from "entities";
-import { EntityDecoder, EntityErrorProducer, htmlDecodeTree } from 'entities/lib/decode.js';
+import { EntityDecoder, EntityErrorProducer, htmlDecodeTree } from 'entities/decode';
 
 export default function abilityTest() {
     describe('ActsAbilityTest', () => {
@@ -163,30 +163,30 @@ export default function abilityTest() {
 
 
         it("should_decode_decimal_entities", 0, () => {
-            const decoder = new EntityDecoder(htmlDecodeTree, cb);
+            const decoder: EntityDecoder = new EntityDecoder(htmlDecodeTree, cb);
             expect(decoder.write("&#5", 1)).assertEqual(-1);
             expect(decoder.write("8;", 0)).assertEqual(5);
         });
 
         it("should_decode_hex_entities", 0, () => {
-            const decoder = new EntityDecoder(htmlDecodeTree, cb);
+            const decoder: EntityDecoder = new EntityDecoder(htmlDecodeTree, cb);
             expect(decoder.write("&#x3a;", 1)).assertEqual(6);
         });
 
         it("should_decode_named_entities", 0, () => {
-            const decoder = new EntityDecoder(htmlDecodeTree, cb);
+            const decoder: EntityDecoder = new EntityDecoder(htmlDecodeTree, cb);
             expect(decoder.write("&amp;", 1)).assertEqual(5);
         });
 
         it("should_decode_legacy_entities", 0, () => {
-            const decoder = new EntityDecoder(htmlDecodeTree, cb);
+            const decoder: EntityDecoder = new EntityDecoder(htmlDecodeTree, cb);
             decoder.startEntity(DecodingMode.Legacy);
             expect(decoder.write("&amp", 1)).assertEqual(-1);
             expect(decoder.end()).assertEqual(4);
         });
 
         it("should_decode_named_entity_written_character_by_character", 0, () => {
-            const decoder = new EntityDecoder(htmlDecodeTree, cb);
+            const decoder: EntityDecoder = new EntityDecoder(htmlDecodeTree, cb);
             for (const c of "amp") {
                 expect(decoder.write(c, 0)).assertEqual(-1);
             }
@@ -194,7 +194,7 @@ export default function abilityTest() {
         });
 
         it("should_decode_numeric_entity_written_character_by_character", 0, () => {
-            const decoder = new EntityDecoder(htmlDecodeTree, cb);
+            const decoder: EntityDecoder = new EntityDecoder(htmlDecodeTree, cb);
             for (const c of "#x3a") {
                 expect(decoder.write(c, 0)).assertEqual(-1);
             }
@@ -202,7 +202,7 @@ export default function abilityTest() {
         });
 
         it("should_decode_hex_entities_across_several_chunks", 0, () => {
-            const decoder = new EntityDecoder(htmlDecodeTree, cb);
+            const decoder: EntityDecoder = new EntityDecoder(htmlDecodeTree, cb);
             for (const chunk of ["#x", "cf", "ff", "d"]) {
                 expect(decoder.write(chunk, 0)).assertEqual(-1);
             }
@@ -210,7 +210,7 @@ export default function abilityTest() {
         });
 
         it("should_not_fail_if_nothing_is_written", 0, () => {
-            const decoder = new EntityDecoder(htmlDecodeTree, cb);
+            const decoder: EntityDecoder = new EntityDecoder(htmlDecodeTree, cb);
             expect(decoder.end()).assertEqual(0);
         });
 
@@ -227,7 +227,7 @@ export default function abilityTest() {
                 }
             };
 
-            const decoder = new EntityDecoder(
+            const decoder: EntityDecoder = new EntityDecoder(
                 htmlDecodeTree,
                 cb,
                 errorHandlers,
@@ -251,7 +251,7 @@ export default function abilityTest() {
                     console.error(`Invalid numeric character reference: ${code}.`);
                 }
             };
-            const decoder = new EntityDecoder(
+            const decoder: EntityDecoder = new EntityDecoder(
                 htmlDecodeTree,
                 cb,
                 errorHandlers,
@@ -274,7 +274,7 @@ export default function abilityTest() {
                     console.error(`Invalid numeric character reference: ${code}.`);
                 }
             };
-            const decoder = new EntityDecoder(
+            const decoder: EntityDecoder = new EntityDecoder(
                 htmlDecodeTree,
                 cb,
                 errorHandlers,
@@ -297,7 +297,7 @@ export default function abilityTest() {
                     console.error(`Invalid numeric character reference: ${code}.`);
                 }
             };
-            const decoder = new EntityDecoder(
+            const decoder: EntityDecoder = new EntityDecoder(
                 htmlDecodeTree,
                 cb,
                 errorHandlers,

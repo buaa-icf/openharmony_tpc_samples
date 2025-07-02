@@ -12,6 +12,6 @@
   "main": "",
   "version": "1.0.0",
   "dependencies": {
-    "entities": "4.5.0"
+    "entities": "6.0.0"
   }
 }
