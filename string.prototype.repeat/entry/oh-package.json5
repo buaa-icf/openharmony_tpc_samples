@@ -7,6 +7,6 @@
   "main": "",
   "version": "1.0.0",
   "dependencies": {
-    "string.prototype.repeat": "^0.2.0"
+    "string.prototype.repeat": "^1.0.0"
   }
 }
