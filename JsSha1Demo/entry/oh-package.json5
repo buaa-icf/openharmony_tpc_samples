@@ -9,6 +9,6 @@
   "main": "",
   "version": "1.0.0",
   "dependencies": {
-    "js-sha1": "^0.6.0"
+    "js-sha1": "^0.7.0"
   }
 }

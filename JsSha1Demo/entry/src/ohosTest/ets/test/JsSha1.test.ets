@@ -14,7 +14,7 @@
  */
 
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
-import sha1 from 'js-sha1'
+import { sha1 } from 'js-sha1'
 
 export default function jsSha1Test() {
   describe('JsSha1Test', () => {
