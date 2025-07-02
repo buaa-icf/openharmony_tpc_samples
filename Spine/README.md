@@ -484,4 +484,4 @@ import {
 
 ## 开源协议
 
-本项目遵循 [Apache-2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Spine/LICENSE)。
+本项目遵循 [Spine Runtimes License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Spine/LICENSE)。
