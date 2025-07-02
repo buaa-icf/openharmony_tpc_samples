@@ -64,15 +64,15 @@ export default function abilityTest() {
     //-----------------------------------diffWords-------------------------------------------------
     it('diffWords_width_whitespace', 0, () => {
       const diffResult: Diff.Change[] = diffWords('New Value', 'New  ValueMoreData');
-      expect(convertChangesToXML(diffResult)).assertEqual('New  <del>Value</del><ins>ValueMoreData</ins>');
+      expect(convertChangesToXML(diffResult)).assertEqual('New <del>Value</del><ins> ValueMoreData</ins>');
     })
     it('diffWords_multiple_whitespace_value', 0, () => {
       const diffResult: Diff.Change[] = diffWords('New Value  ', 'New  ValueMoreData ');
-      expect(convertChangesToXML(diffResult)).assertEqual('New  <del>Value</del><ins>ValueMoreData</ins> ');
+      expect(convertChangesToXML(diffResult)).assertEqual('New <del>Value  </del><ins> ValueMoreData </ins>');
     })
     it('diffWords_on_word_boundaries', 0, () => {
       let diffResult: Diff.Change[] = diffWords('New :Value:Test', 'New  ValueMoreData ');
-      expect(convertChangesToXML(diffResult)).assertEqual('New  <del>:Value:Test</del><ins>ValueMoreData </ins>');
+      expect(convertChangesToXML(diffResult)).assertEqual('New <del>:Value:Test</del><ins> ValueMoreData </ins>');
 
       diffResult = diffWords('New Value:Test', 'New  Value:MoreData ');
       expect(convertChangesToXML(diffResult)).assertEqual('New  Value:<del>Test</del><ins>MoreData </ins>');
@@ -100,37 +100,36 @@ export default function abilityTest() {
       expect(convertChangesToXML(diffResult_old_content)).assertEqual('<ins>New Value</ins>');
       const diffResult_anchor_value: Diff.Change[] = diffWords('New Value New Value', 'Value Value New New');
       expect(convertChangesToXML(diffResult_anchor_value))
-        .assertEqual('<del>New</del><ins>Value</ins> Value New <del>Value</del><ins>New</ins>');
+        .assertEqual('<del>New </del>Value <del>New </del>Value <ins>New New</ins>');
     })
 
     it('diffWords_should_include_count_with_identity_cases', 0, () => {
       let diff1: Data[] = [{
-        value: 'foo', count: 1
+        "count":1,"added":false,"removed":false,"value":"foo"
       }]
       let diff2: Data[] = [{
-        value: 'foo bar', count: 3
+        "count":2,"added":false,"removed":false,"value":"foo bar"
       }]
       expect(diffWords('foo', 'foo')).assertDeepEquals(diff1);
       expect(diffWords('foo bar', 'foo bar')).assertDeepEquals(diff2);
     })
     it('diffWords_should_include_count_with_empty_cases', 0, () => {
       let diff1: Data = {
-        value: 'foo', count: 1, removed: true
+        "count":1,"added":false,"removed":true,"value":"foo"
       }
-      diff1.added = undefined
 
       let diff2: Data = {
-        value: 'foo bar', count: 3, removed: true
+        value: 'foo bar', count: 2, added: false, removed: true
       }
-      diff2.added = undefined
+
       let diff3: Data = {
-        value: 'foo', count: 1, added: true
+        value: 'foo', count: 1, added: true, removed: false
       }
-      diff3.removed = undefined
+
       let diff4: Data = {
-        value: 'foo bar', count: 3, added: true
+        value: 'foo bar', count: 2, added: true, removed: false
       }
-      diff4.removed = undefined
+
       expect(diffWords('foo', '')).assertDeepEquals([diff1]);
       expect(diffWords('foo bar', '')).assertDeepEquals([diff2]);
       expect(diffWords('', 'foo')).assertDeepEquals([diff3]);
@@ -138,19 +137,19 @@ export default function abilityTest() {
     })
     it('diffWords_ignore_whitespace', 0, () => {
       let diff1: Data[] = [{
-        count: 5, value: 'hase igel fuchs'
+        "count":3,"added":false,"removed":false,"value":"hase igel fuchs"
       }]
       let diff2: Data[] = [{
-        count: 5, value: 'hase igel fuchs\n'
+        "count":3,"added":false,"removed":false,"value":"hase igel fuchs\n"
       }]
       let diff3: Data[] = [{
-        count: 5, value: 'hase igel fuchs\n'
+        count: 3, value: 'hase igel fuchs', removed: false, added: false
       }]
       let diff4: Data[] = [{
-        count: 5, value: 'hase igel\nfuchs'
+        count: 3, value: 'hase igel\nfuchs', removed: false, added: false
       }]
       let diff5: Data[] = [{
-        count: 5, value: 'hase igel fuchs'
+        count: 3, value: 'hase igel fuchs', removed: false, added: false
       }]
       expect(diffWords('hase igel fuchs', 'hase igel fuchs')).assertDeepEquals(diff1);
       expect(diffWords('hase igel fuchs', 'hase igel fuchs\n')).assertDeepEquals(diff2);
@@ -173,17 +172,17 @@ export default function abilityTest() {
     })
     it('diffWords_async_whitespace', 0, () => {
       let diffResult: Diff.Change[] = diffWords('New Value', 'New  ValueMoreData');
-      expect(convertChangesToXML(diffResult)).assertEqual('New  <del>Value</del><ins>ValueMoreData</ins>');
+      expect(convertChangesToXML(diffResult)).assertEqual('New <del>Value</del><ins> ValueMoreData</ins>');
     })
 
     it('diffWords_async_multiple_whitespace_values', 0, () => {
       let diffResult: Diff.Change[] = diffWords('New Value  ', 'New  ValueMoreData ');
-      expect(convertChangesToXML(diffResult)).assertEqual('New  <del>Value</del><ins>ValueMoreData</ins> ');
+      expect(convertChangesToXML(diffResult)).assertEqual('New <del>Value  </del><ins> ValueMoreData </ins>');
     })
 
     it('diffWords_async_boundary', 0, () => {
       let diffResult: Diff.Change[] = diffWords('New :Value:Test', 'New  ValueMoreData ');
-      expect(convertChangesToXML(diffResult)).assertEqual('New  <del>:Value:Test</del><ins>ValueMoreData </ins>');
+      expect(convertChangesToXML(diffResult)).assertEqual('New <del>:Value:Test</del><ins> ValueMoreData </ins>');
     })
 
     it('diffWords_async_handle_empty', 0, () => {
@@ -209,7 +208,7 @@ export default function abilityTest() {
     it('diffWords_async_no_anchor_value', 0, () => {
       let diffResult: Diff.Change[] = diffWords('New Value New Value', 'Value Value New New');
       expect(convertChangesToXML(diffResult))
-        .assertEqual('<del>New</del><ins>Value</ins> Value New <del>Value</del><ins>New</ins>');
+        .assertEqual('<del>New </del>Value <del>New </del>Value <ins>New New</ins>');
     })
 
     //-----------------------------------diffWordsWithSpace-------------------------------------------------
@@ -220,7 +219,7 @@ export default function abilityTest() {
 
     it('diffWordsWithSpace_multiple_whitespace_values', 0, () => {
       const diffResult: Diff.Change[] = diffWordsWithSpace('New Value  ', 'New  ValueMoreData ');
-      expect(convertChangesToXML(diffResult)).assertEqual('New<ins>  ValueMoreData</ins> <del>Value  </del>');
+      expect(convertChangesToXML(diffResult)).assertEqual('New<del> Value</del>  <ins>ValueMoreData </ins>');
     })
 
     it('diffWordsWithSpace_inserts_values_in_parenthesis', 0, () => {
@@ -256,7 +255,7 @@ export default function abilityTest() {
 
     it('diffWordsWithSpace_async_operations', 0, () => {
       const diffResult: Diff.Change[] = diffWordsWithSpace('New Value  ', 'New  ValueMoreData ');
-      expect(convertChangesToXML(diffResult)).assertEqual('New<ins>  ValueMoreData</ins> <del>Value  </del>');
+      expect(convertChangesToXML(diffResult)).assertEqual('New<del> Value</del>  <ins>ValueMoreData </ins>');
     })
     it('diffWordsWithSpace_case_insensitivity', 0, () => {
       let options: Options = {
@@ -300,16 +299,16 @@ export default function abilityTest() {
         newlineIsToken: true
       }
       let diff1: Data = {
-        value: 'restaurant', count: 1
+        "count":1,"added":false,"removed":false,"value":"restaurant"
       }
       let diff2: Data = {
-        value: '\n', count: 1, added: true
+        "count":1,"added":true,"removed":false,"value":"\n"
       }
-      diff2.removed = undefined
+
       let diff3: Data = {
-        value: '\nhello', count: 2, added: true
+        "count":2,"added":true,"removed":false,"value":"\nhello"
       }
-      diff3.removed = undefined
+
       expect(diffLines('restaurant', 'restaurant\n', options)).assertDeepEquals([diff1, diff2]);
       expect(diffLines('restaurant', 'restaurant\nhello', options)).assertDeepEquals([diff1, diff3]);
     })
@@ -329,10 +328,20 @@ export default function abilityTest() {
         'line\nvalue\nline');
       expect(convertChangesToXML(diffResult2)).assertEqual('line\nvalue\nline');
       const diffResult3: Diff.Change[] = diffTrimmedLines(
-        'line\r\nold value \r\nline',
-        'line\r\nnew value\r\nline');
+        'line\nvalue\nline',
+        'line\nvalue \nline');
       expect(convertChangesToXML(diffResult3))
-        .assertEqual('line\r\n<del>old value\r\n</del><ins>new value\r\n</ins>line');
+        .assertEqual('line\nvalue \nline');
+      const diffResult4: Diff.Change[] = diffTrimmedLines(
+        'line\n value\nline',
+        'line\nvalue\nline');
+      expect(convertChangesToXML(diffResult4))
+        .assertEqual('line\nvalue\nline');
+      const diffResult5: Diff.Change[] = diffTrimmedLines(
+        'line\nvalue\nline',
+        'line\n value\nline');
+      expect(convertChangesToXML(diffResult5))
+        .assertEqual('line\n value\nline');
     })
 
     //-----------------------------------diffSentences-------------------------------------------------
@@ -364,14 +373,13 @@ export default function abilityTest() {
         a: 123, b: 456
       }
       let diff1: Data = {
-        count: 3, value: '{\n  "a": 123,\n  "b": 456,\n'
+        "count":3,"added":false,"removed":false,"value":"{\n  \"a\": 123,\n  \"b\": 456,\n"
       }
       let diff2: Data = {
-        count: 1, value: '  "c": 789\n', removed: true
+        "count":1,"added":false,"removed":true,"value":"  \"c\": 789\n"
       }
-      diff2.added = undefined
       let diff3: Data = {
-        count: 1, value: '}'
+        "count":1,"added":false,"removed":false,"value":"}"
       }
       expect(diffJson(param1, param2)).assertDeepEquals([diff1, diff2, diff3]);
     })
@@ -384,14 +392,13 @@ export default function abilityTest() {
         b: 456, a: 123
       }
       let diff1: Data = {
-        count: 3, value: '{\n  "a": 123,\n  "b": 456,\n'
+        count: 3, value: '{\n  "a": 123,\n  "b": 456,\n', removed: false, added: false
       }
       let diff2: Data = {
-        count: 1, value: '  "c": 789\n', removed: true
+        count: 1, value: '  "c": 789\n', added: false, removed: true
       }
-      diff2.added = undefined
       let diff3: Data = {
-        count: 1, value: '}'
+        count: 1, value: '}', removed: false, added: false
       }
       expect(diffJson(param1, param2)).assertDeepEquals([diff1, diff2, diff3]);
     })
@@ -401,20 +408,19 @@ export default function abilityTest() {
         foo: 'bar'
       }
       let param1: Params = {
-        a: 123, b: 456, c: [1, 2, c1, 4]
+        a: 123, b: 456, c: [1, 2, {foo: 'bar'}, 4]
       }
       let param2: Params = {
-        a: 123, b: 456, c: [1, c1, 4]
+        a: 123, b: 456, c: [1, {foo: 'bar'}, 4]
       }
       let diff1: Data = {
-        count: 5, value: '{\n  "a": 123,\n  "b": 456,\n  "c": [\n    1,\n'
+        count: 5, value: '{\n  "a": 123,\n  "b": 456,\n  "c": [\n    1,\n', removed: false, added: false
       }
       let diff2: Data = {
-        count: 1, value: '    2,\n', removed: true
+        count: 1, value: '    2,\n', added: false, removed: true
       }
-      diff2.added = undefined
       let diff3: Data = {
-        count: 6, value: '    {\n      "foo": "bar"\n    },\n    4\n  ]\n}'
+        count: 6, value: '    {\n      "foo": "bar"\n    },\n    4\n  ]\n}', removed: false, added: false
       }
       expect(diffJson(param1, param2)).assertDeepEquals([diff1, diff2, diff3]);
     })
@@ -427,25 +433,22 @@ export default function abilityTest() {
         a: new Date(124), b: new Date(456)
       }
       let diff1: Data = {
-        count: 1, value: '{\n'
+        count: 1, value: '{\n', removed: false, added: false
       }
       let diff2: Data = {
-        count: 1, value: '  "a": "1970-01-01T00:00:00.123Z",\n', removed: true
+        count: 1, value: '  "a": "1970-01-01T00:00:00.123Z",\n', added: false, removed: true
       }
-      diff2.added = undefined
       let diff3: Data = {
-        count: 1, value: '  "a": "1970-01-01T00:00:00.124Z",\n', added: true
+        count: 1, value: '  "a": "1970-01-01T00:00:00.124Z",\n', added: true, removed: false
       }
-      diff3.removed = undefined
       let diff4: Data = {
-        count: 1, value: '  "b": "1970-01-01T00:00:00.456Z",\n'
+        count: 1, value: '  "b": "1970-01-01T00:00:00.456Z",\n', removed: false, added: false
       }
       let diff5: Data = {
-        count: 1, value: '  "c": "1970-01-01T00:00:00.789Z"\n', removed: true
+        count: 1, value: '  "c": "1970-01-01T00:00:00.789Z"\n', added: false, removed: true
       }
-      diff5.added = undefined
       let diff6: Data = {
-        count: 1, value: '}'
+        count: 1, value: '}', removed: false, added: false
       }
       expect(diffJson(param1, param2)).assertDeepEquals([diff1, diff2, diff3, diff4, diff5, diff6]);
     })
@@ -463,17 +466,16 @@ export default function abilityTest() {
       }
       param3.c = undefined
       let diff1: Data = {
-        count: 3, value: '{\n  "a": 123,\n  "b": 456,\n'
+        count: 3, value: '{\n  "a": 123,\n  "b": 456,\n', removed: false, added: false
       }
       let diff2: Data = {
-        count: 1, value: '  "c": null\n', removed: true
+        count: 1, value: '  "c": null\n', added: false, removed: true
       }
-      diff2.added = undefined
       let diff3: Data = {
-        count: 1, value: '}'
+        count: 1, value: '}', removed: false, added: false
       }
       let diff4: Data = {
-        count: 4, value: '{\n  "a": 123,\n  "b": 456\n}'
+        count: 4, value: '{\n  "a": 123,\n  "b": 456\n}', removed: false, added: false
       }
       let options: Options = {
         undefinedReplacement: false
@@ -492,14 +494,13 @@ export default function abilityTest() {
         a: 123, b: 456
       }
       let diff1: Data = {
-        count: 3, value: '{\n  "a": 123,\n  "b": 456,\n'
+        "count":3,"added":false,"removed":false,"value":"{\n  \"a\": 123,\n  \"b\": 456,\n"
       }
       let diff2: Data = {
-        count: 1, value: '  "c": 789\n', removed: true
+        "count":1,"added":false,"removed":true,"value":"  \"c\": 789\n"
       }
-      diff2.added = undefined
       let diff3: Data = {
-        count: 1, value: '}'
+        "count":1,"added":false,"removed":false,"value":"}"
       }
       expect(diffJson(JSON.stringify(param1, undefined, '  '), JSON.stringify(param2, undefined, '  ')))
         .assertDeepEquals([diff1, diff2, diff3]);
@@ -545,31 +546,26 @@ export default function abilityTest() {
         a: [new Error('ohaider')]
       }
       let diff1: Data = {
-        count: 1, value: '{\n'
+        count: 1, value: '{\n', removed: false, added: false
       }
       let diff2: Data = {
-        count: 1, value: '  "a": 123\n', removed: true
+        count: 1, value: '  \"a\": 123\n', added: false, removed: true
       }
-      diff2.added = undefined
       let diff3: Data = {
-        count: 1, value: '  "a": {}\n', added: true
+        count: 1, value: '  \"a\": {}\n', added: true, removed: false
       }
-      diff3.removed = undefined
       let diff4: Data = {
-        count: 1, value: '}'
+        count: 1, value: '}', removed: false, added: false
       }
       let diff5: Data = {
-        count: 1, value: '  "a": "/foo/gi"\n', added: true
+        count: 1, value: '  \"a\": "/foo/gi"\n', added: true, removed: false
       }
-      diff5.removed = undefined
       let diff6: Data = {
-        count: 1, value: '  "a": "Error: ohaider"\n', added: true
+        count: 1, value: '  \"a\": "Error: ohaider"\n', added: true, removed: false
       }
-      diff6.removed = undefined
       let diff7: Data = {
-        count: 3, value: '  "a": [\n    "Error: ohaider"\n  ]\n', added: true
+        count: 3, value: '  \"a\": [\n    "Error: ohaider"\n  ]\n', added: true, removed: false
       }
-      diff7.removed = undefined
       let options1: Options = {
         stringifyReplacer: (k: Params, v: Params) => v instanceof RegExp ? v.toString() : v
       }
@@ -595,19 +591,18 @@ export default function abilityTest() {
         c: 2
       };
       let diff1: Data = {
-        count: 1, value: [a]
+        count: 1, value: [a], removed: false, added: false
       }
       let diff2: Data = {
-        count: 1, value: [c], added: true
+        count: 1, value: [b], removed: true, added: false
       }
-      diff2.removed = undefined
       let diff3: Data = {
-        count: 1, value: [b]
+        count: 1, value: [c], removed: false, added: false
       }
       let diff4: Data = {
-        count: 1, value: [c], removed: true
+        count: 1, value: [b], removed: false, added: true
       }
-      diff4.added = undefined
+
       const diffResult: Array<Diff.ArrayChange<Params>> = diffArrays([a, b, c], [a, c, b]);
       let result = [diff1, diff2, diff3, diff4]
       expect(result).assertDeepEquals(diffResult)
@@ -617,35 +612,31 @@ export default function abilityTest() {
       const a: boolean = false;
       const b: number = 0;
       const c: string = '';
-      const arrayA: Array<boolean | number | string> = [c, b, a, b, a, c];
-      const arrayB: Array<boolean | number | string> = [a, b, c, a, b, b, a];
+      const arrayA: Array<boolean | number | string> = [a, b, c, a, b, b, a];
+      const arrayB: Array<boolean | number | string> = [c, b, a, b, a, c];
       const diffResult: Array<Diff.ArrayChange<string | number | boolean>> = diffArrays(arrayA, arrayB)
 
       let diff1: Data = {
-        count: 2, value: [a, b], added: true
+        count: 2, value: [a, b], removed: true, added: false
       }
-      diff1.removed = undefined
       let diff2: Data = {
-        count: 1, value: [c]
+        count: 1, value: [c], removed: false, added: false
       }
       let diff3: Data = {
-        count: 1, value: [b], removed: true
+        count: 1, value: [b], removed: false, added: true
       }
-      diff3.added = undefined
       let diff4: Data = {
-        count: 2, value: [a, b]
+        count: 2, value: [a, b], removed: false, added: false
       }
       let diff5: Data = {
-        count: 1, value: [b], added: true
+        count: 1, value: [b], removed: true, added: false
       }
-      diff5.removed = undefined
       let diff6: Data = {
-        count: 1, value: [a]
+        count: 1, value: [a], removed: false, added: false
       }
       let diff7: Data = {
-        count: 1, value: [c], removed: true
+        count: 1, value: [c], removed: false, added: true
       }
-      diff7.added = undefined
       let result = [diff1, diff2, diff3, diff4, diff5, diff6, diff7]
       expect(result).assertDeepEquals(diffResult)
     })
@@ -665,16 +656,14 @@ export default function abilityTest() {
       const diffResult: Array<Diff.ArrayChange<Params>> = diffArrays([a, b, c], [a, b, d], options);
 
       let diff1: Data = {
-        count: 2, value: [a, b]
+        count: 2, value: [a, b], removed: false, added: false
       }
       let diff2: Data = {
-        count: 1, value: [c], removed: true
+        count: 1, value: [c], removed: true, added: false
       }
-      diff2.added = undefined
       let diff3: Data = {
-        count: 1, value: [d], added: true
+        count: 1, value: [d], removed: false, added: true
       }
-      diff3.removed = undefined
       let result = [diff1, diff2, diff3]
       expect(result).assertDeepEquals(diffResult)
     })
@@ -682,7 +671,7 @@ export default function abilityTest() {
     it('diffArrays_returns_correct_deep_result_for_identical_inputs', 0, () => {
       const value: number[] = [0, 1, 2];
       let diff: Data = {
-        count: value.length, value: value
+        count: value.length, value: value, removed: false, added: false
       }
       const expected = [diff];
       const input = value.slice();
@@ -750,7 +739,7 @@ export default function abilityTest() {
     })
 
     it('convertChangesToXML', 0, () => {
-      const result = "<del>beep</del><ins>beepboob</ins> <del>boop   afff测试</del><ins>2022真热</ins>样本<del>one1</del><ins> e </ins>"
+      const result = "<del>beep boop   afff测试</del><ins>beepboob 2022真热</ins>样本<del>one1</del><ins> e </ins>"
       const one = 'beep boop   afff测试样本one1';
       const other = 'beepboob 2022真热样本 e ';
       const diff: Diff.Change[] = diffWords(one, other);
@@ -761,7 +750,7 @@ export default function abilityTest() {
     it('convertChangesToDMP', 0, () => {
       const diffResult: Diff.Change[] = diffWords('New Value  ', 'New  ValueMoreData ');
       expect(JSON.stringify(convertChangesToDMP(diffResult)))
-        .assertEqual(JSON.stringify([[0, 'New  '], [-1, 'Value'], [1, 'ValueMoreData'], [0, ' ']]));
+        .assertEqual(JSON.stringify([[0,"New "],[-1,"Value  "],[1," ValueMoreData "]]));
     })
 
     it('merge', 0, () => {

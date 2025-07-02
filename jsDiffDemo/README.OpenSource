@@ -3,7 +3,7 @@
         "Name": "jsdiff",
         "License": "BSD-3-Clause license",
         "License File": " LICENSE-BSD-3-Clause ",
-        "Version Number": "v5.0.0",
+        "Version Number": "v7.0.0",
         "Owner" : "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/kpdecker/jsdiff",
         "Description": "A javascript text differencing implementation"
