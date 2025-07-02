@@ -7,7 +7,7 @@
 ## How to Install
 
 ```shell
-ohpm  install is-any-array@2.0.0
+ohpm  install is-any-array@2.0.1
 ```
 
 For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
