@@ -37,11 +37,11 @@ class CSSParser {
       fatal: false,
       ignoreBOM: true
     }
-    let decodeToStringOptions: util.DecodeToStringOptions = {
+    let decodeToStringOptions: util.DecodeWithStreamOptions = {
       stream: false
     }
     let textDecoder = util.TextDecoder.create('utf-8', textDecoderOptions);
-    let retStr = textDecoder.decodeToString(cssStr, decodeToStringOptions);
+    let retStr = textDecoder.decode(cssStr, { stream: false });
     return retStr;
   }
 
