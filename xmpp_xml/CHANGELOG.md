@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.2
+- Update the content of the repository
+
 ## 1.0.1
 - 补充repository内容
 
@@ -18,4 +21,4 @@
 - 含有特殊字符XML字符串进行转义。
 - 将转义后的XML字符串进行反转义 。
 - 将XML文本中的特殊字符进行转义。
-- 将转义后的XML文本进行反转义
+- 将转义后的XML文本进行反转
