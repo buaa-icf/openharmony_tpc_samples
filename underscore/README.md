@@ -10,7 +10,7 @@ Underscore is a JavaScript utility library that provides common functions (such 
 ## How to Install
 
 ````
-ohpm install underscore@1.13.2
+ohpm install underscore@1.13.7
 ohpm install @types/underscore  // Install @types/underscore to prevent import syntax errors due to missing type declarations in the underscore package.
 ````
 

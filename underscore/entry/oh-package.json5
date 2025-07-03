@@ -7,6 +7,6 @@
   "main": "",
   "version": "1.0.0",
   "dependencies": {
-    "underscore": "^1.13.2"
+    "underscore": "^1.13.7"
   }
 }
