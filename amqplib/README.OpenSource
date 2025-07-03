@@ -3,7 +3,7 @@
         "Name": "amqplib",
         "License": "MIT license",
         "License File": "LICENSE-MIT",
-        "Version Number": "0.10.3",
+        "Version Number": "0.10.8",
         "Owner" : "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/amqp-node/amqplib",
         "Description": "AMQP 0-9-1 library and client for Node.JS"
