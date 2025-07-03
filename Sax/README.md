@@ -7,7 +7,7 @@
 ## How to Install
 
 ````
-ohpm install sax@0.6.0
+ohpm install sax@1.4.1
 ````
 
 For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).

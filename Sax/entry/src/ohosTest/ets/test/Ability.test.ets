@@ -44,7 +44,7 @@ export default function abilityTest() {
       })
 
       parser.onopentagstart = (nodeName: ESObject) => {
-        expect(nodeName.node).assertEqual("root")
+        expect(nodeName.node).assertEqual(undefined)
       };
 
       parser.onattribute = (nodeName: ESObject) => {
@@ -397,6 +397,7 @@ export default function abilityTest() {
       let parser: ESObject = sax.parser(false, {
         unparsedEntities: true
       })
+      parser.ENTITIES.elem = '<B"/>';
       parser.write('<A ATTR="&elem;"/>').close()
       parser.onopentagstart = (a: ESObject) => {
         expect(a.name).assertEqual("A")
