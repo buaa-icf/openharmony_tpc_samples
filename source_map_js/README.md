@@ -7,7 +7,7 @@ Source Map JS is a library that generates and uses the source code mapping. It i
 ## How to Install
 
 ```shell
-ohpm  install source-map-js@0.6.2
+ohpm  install source-map-js@1.2.1
 ```
 
 For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).

@@ -7,6 +7,6 @@
   "main": "",
   "version": "1.0.0",
   "dependencies": {
-    "source-map-js": "^0.6.2"
+    "source-map-js": "^1.2.1"
   }
 }
