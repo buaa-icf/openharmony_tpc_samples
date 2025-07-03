@@ -159,4 +159,4 @@ If you find any problem when using @ohos/xmpp_connection, submit an [issue](http
 
 ## License
 
-This project is licensed under ISC License.
+This project is licensed under [ISC License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/xmpp_connection/LICENSE).
