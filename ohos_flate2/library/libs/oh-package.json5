@@ -1,6 +1,6 @@
 {
   "name": "libflate2.so",
   "types": "./index.d.ts",
-  "version": "1.0.0-rc.0",
-  "description": "ArkTS bingding for rust flate2",
+  "version": "1.0.0",
+  "description": "ArkTS binding for rust flate2",
 }

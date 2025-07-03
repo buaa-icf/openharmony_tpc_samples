@@ -7,8 +7,8 @@
     "compress",
     "decompress"
   ],
-  "version": "1.0.0-rc.0",
-  "description": "ArkTS bingding for rust flate2",
+  "version": "1.0.0",
+  "description": "ArkTS binding for rust flate2",
   "main": "Index.ets",
   "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_flate2",
   "author": "Xuanwu Community",
