@@ -97,6 +97,10 @@ const Sequences = {
     ScriptEnd: new Uint8Array([0x3c, 0x2f, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74]),
     StyleEnd: new Uint8Array([0x3c, 0x2f, 0x73, 0x74, 0x79, 0x6c, 0x65]),
     TitleEnd: new Uint8Array([0x3c, 0x2f, 0x74, 0x69, 0x74, 0x6c, 0x65]), // `</title`
+    TextareaEnd: new Uint8Array([
+        0x3c, 0x2f, 0x74, 0x65, 0x78, 0x74, 0x61, 0x72, 0x65, 0x61,
+    ]), // `</textarea`
+    XmpEnd: new Uint8Array([0x3c, 0x2f, 0x78, 0x6d, 0x70]), // `</xmp`
 };
 export default class Tokenizer {
     constructor({ xmlMode = false, decodeEntities = true, }, cbs) {
@@ -319,14 +323,17 @@ export default class Tokenizer {
         else if (this.isTagStartChar(c)) {
             const lower = c | 0x20;
             this.sectionStart = this.index;
-            if (!this.xmlMode && lower === Sequences.TitleEnd[2]) {
-                this.startSpecial(Sequences.TitleEnd, 3);
-            }
-            else {
-                this.state =
-                    !this.xmlMode && lower === Sequences.ScriptEnd[2]
-                        ? State.BeforeSpecialS
-                        : State.InTagName;
+            if (this.xmlMode) {
+                this.state = State.InTagName;
+            } else if (lower === Sequences.ScriptEnd[2]) {
+                this.state = State.BeforeSpecialS;
+            } else if (
+                lower === Sequences.TitleEnd[2] ||
+                lower === Sequences.XmpEnd[2]
+            ) {
+                this.state = State.BeforeSpecialT;
+            } else {
+                this.state = State.InTagName;
             }
         }
         else if (c === CharCodes.Slash) {
@@ -534,6 +541,32 @@ export default class Tokenizer {
             this.stateInTagName(c); // Consume the token again
         }
     }
+
+    stateBeforeSpecialT(c) {
+        const lower = c | 0x20;
+        switch (lower) {
+            case Sequences.TitleEnd[3]: {
+                this.startSpecial(Sequences.TitleEnd, 4);
+
+                break;
+            }
+            case Sequences.TextareaEnd[3]: {
+                this.startSpecial(Sequences.TextareaEnd, 4);
+
+                break;
+            }
+            case Sequences.XmpEnd[3]: {
+                this.startSpecial(Sequences.XmpEnd, 4);
+
+                break;
+            }
+            default: {
+                this.state = State.InTagName;
+                this.stateInTagName(c); // Consume the token again
+            }
+        }
+    }
+    
     startEntity() {
         this.baseState = this.state;
         this.state = State.InEntity;
@@ -660,6 +693,10 @@ export default class Tokenizer {
                 }
                 case State.BeforeSpecialS: {
                     this.stateBeforeSpecialS(c);
+                    break;
+                }
+                case State.BeforeSpecialT: {
+                    this.stateBeforeSpecialT(c);
                     break;
                 }
                 case State.InAttributeValueNq: {

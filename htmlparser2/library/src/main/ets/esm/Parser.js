@@ -125,6 +125,8 @@ export class Parser {
         this.lowerCaseTagNames = (_a = options.lowerCaseTags) !== null && _a !== void 0 ? _a : this.htmlMode;
         this.lowerCaseAttributeNames =
             (_b = options.lowerCaseAttributeNames) !== null && _b !== void 0 ? _b : this.htmlMode;
+        this.recognizeSelfClosing =
+            (_b = options.recognizeSelfClosing) !== null && _b !== void 0 ? _b : !this.htmlMode;
         this.tokenizer = new ((_c = options.Tokenizer) !== null && _c !== void 0 ? _c : Tokenizer)(this.options, this);
         this.foreignContext = [!this.htmlMode];
         (_e = (_d = this.cbs).onparserinit) === null || _e === void 0 ? void 0 : _e.call(_d, this);
@@ -246,7 +248,7 @@ export class Parser {
     /** @internal */
     onselfclosingtag(endIndex) {
         this.endIndex = endIndex;
-        if (this.options.recognizeSelfClosing || this.foreignContext[0]) {
+        if (this.recognizeSelfClosing || this.foreignContext[0]) {
             this.closeCurrentTag(false);
             // Set `startIndex` for next node
             this.startIndex = endIndex + 1;
