@@ -184,9 +184,9 @@ export default function abilityTest() {
     })
 
     it('toContinued', 0, () => {
-      let c = new Fraction("45.6");
+      let c = new Fraction(415, 93);
       let r = c.toContinued();
-      expect(JSON.stringify(r)).assertEqual('[45,1,1,2]')
+      expect(r.toString()).assertEqual('4,2,6,7')
     })
   })
 }

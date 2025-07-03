@@ -7,6 +7,6 @@
   "main": "",
   "version": "1.0.0",
   "dependencies": {
-    "fraction.js": "^4.2.0"
+    "fraction.js": "^5.2.2"
   }
 }
