@@ -734,7 +734,7 @@ export default function sanitizeHtmlTest() {
           }
         }
       )).assertEqual(
-        '<p style="text-align:center">Text</p>'
+        '<p>Text</p>'
       );
     });
     it('test76', 0, ()=> {
@@ -1006,8 +1006,7 @@ export default function sanitizeHtmlTest() {
             text: [new RegExp('left')]
           }
         }
-      })).assertEqual('<span style="color:blue"></span>'
-      );
+      })).assertEqual('<span></span>');
     });
     it('test98', 0, ()=> {
       expect(
@@ -1021,8 +1020,7 @@ export default function sanitizeHtmlTest() {
             color: [new RegExp('blue')]
           }
         }
-      })).assertEqual('<span style="color:blue !important"></span>'
-      );
+      })).assertEqual('<span></span>');
     });
     it('test99', 0, ()=> {
       expect(

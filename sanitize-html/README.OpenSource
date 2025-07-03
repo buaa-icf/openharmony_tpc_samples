@@ -3,7 +3,7 @@
         "Name": "sanitize-html",
         "License": "MIT License",
         "License File": "LICENSE",
-        "Version Number": "2.14.0",
+        "Version Number": "2.17.0",
         "Owner" : "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/apostrophecms/sanitize-html",
         "Description": "Clean up user-submitted HTML, preserving whitelisted elements and whitelisted attributes on a per-element basis. Built on htmlparser2 for speed and tolerance"
