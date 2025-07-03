@@ -10,7 +10,7 @@ typed-function supports the transfer of type checking logic and type conversion 
 ## How to Install
 
 ````
-ohpm install typed-function@4.1.0
+ohpm install typed-function@4.2.1
 ````
 
 For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
