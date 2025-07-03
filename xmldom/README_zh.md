@@ -10,8 +10,7 @@
 ohpm install @ohos/xmldom
 ```
 
-OpenHarmony
-ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
 ## 使用说明
 
@@ -31,11 +30,22 @@ ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](ht
  ```
 
 ## 接口说明
-
+### DOMParser
 * XML 字符串解析为 DOM 文档对象
- - `parseFromString()`
+- `parseFromString(source: string, mimeType?: string)`
+
+### XMLSerializer
 * 将 DOM 文档序列化为 XML 字符串
- - `serializeToString()`
+- `serializeToString(node: ESObject)`
+
+### DOMImplementation
+* 创建、访问和修改 DOM 树
+- `createDocument(namespaceURI, qualifiedName, doctype)`
+* 创建DocumentType对象
+- `createDocumentType(qualifiedName: string, publicId: string, systemId: string)`
+* 创建一个新的 HTML Document
+- `createHTMLDocument(title?: string | boolean)`
+
 
 ## 目录结构
 ````

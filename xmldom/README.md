@@ -10,9 +10,7 @@
 ohpm install @ohos/xmldom
 ```
 
-OpenHarmony
-
-For details about the ohpm environment configuration, see [Installing the OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+OpenHarmony For details about the ohpm environment configuration, see [Installing the OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ## How to Use
 
@@ -33,10 +31,21 @@ Import files and code dependencies.
 
 ## Available APIs
 
+### DOMParser
 * Parses an XML string into a DOM document.
- - `parseFromString()`
+- `parseFromString(source: string, mimeType?: string)`
+
+### XMLSerializer
 * Serializes a DOM document into an XML string.
- - `serializeToString()`
+- `serializeToString(node: ESObject)`
+
+### DOMImplementation
+* Creating, accessing, and modifying DOM trees.
+- `createDocument(namespaceURI, qualifiedName, doctype)`
+* Creating a DocumentType Object.
+- `createDocumentType(qualifiedName: string, publicId: string, systemId: string)`
+* Creates a new HTML Document.
+- `createHTMLDocument(title?: string | boolean)`
 
 ## Directory Structure
 ````
