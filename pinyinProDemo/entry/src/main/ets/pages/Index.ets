@@ -38,9 +38,9 @@ struct Index {
   @State vat: string= 'pīn yīn';
   @State vbt: string= '汉语拼音';
   @State vct: string= 'hanpin';
-  @State vb: string= '';
-  @State vd: string= '';
-  @State ve: string= '';
+  @State vb: number[] | null = [];
+  @State vd: number[] | null = [];
+  @State ve: number[] | null = [];
   @State vf: string= '他叫张会';
   @State vft: string= '他叫张会';
   @State vg: string= '他叫张会';

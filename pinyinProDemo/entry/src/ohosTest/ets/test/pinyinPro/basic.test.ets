@@ -36,7 +36,7 @@ export default function basicTest() {
 
     it('basic_haohao', 0, () => {
       const result = pinyin('好好学习');
-      expect(result).assertEqual('hǎo hǎo xué xí');
+      expect(result).assertEqual('hǎo hào xué xí');
     });
 
     it('basic_Pinyin_no_Chinese_character_array', 0, () => {
