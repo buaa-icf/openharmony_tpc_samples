@@ -7,8 +7,8 @@
   "name": "myapplication",
   "description": "Please describe the basic information.",
   "main": "",
-  "version": "7.8.1",
+  "version": "7.8.2",
   "dependencies": {
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.2"
   }
 }

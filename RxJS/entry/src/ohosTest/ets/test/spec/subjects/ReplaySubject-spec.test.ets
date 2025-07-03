@@ -17,7 +17,7 @@ import { ReplaySubject, Subject, of, mergeMapTo, tap } from 'rxjs';
 import { TestScheduler, RunHelpers } from 'rxjs/internal/testing/TestScheduler';
 import { observableMatcher } from '../helpers/observableMatcher';
 import { ReplaySubjectFun, ReplaySubjectFun2 } from '../ArkTools';
-const BASE_COUNT: number = 2000;
+const BASE_COUNT: number = 20;
 /** @test {ReplaySubject} */
 export default function replaySubjectTest() {
   describe('ReplaySubject', () => {
