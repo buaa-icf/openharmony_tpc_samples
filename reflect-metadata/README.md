@@ -10,7 +10,7 @@
 ## How to Install
 
 ````
-ohpm install reflect-metadata@0.1.13
+ohpm install reflect-metadata@0.2.1
 ````
 
 For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).

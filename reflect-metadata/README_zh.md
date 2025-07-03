@@ -10,7 +10,7 @@ reflect-metadata用于在TypeScript中操作类的元数据，允许在声明类
 ## 下载安装
 
 ````
-ohpm install reflect-metadata@0.1.13
+ohpm install reflect-metadata@0.2.1
 ````
 
 OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
