@@ -376,6 +376,10 @@ let c = harNAPI.t2lCallFunction("testcallback", 100, 200);
 |                               |----- unitTest.ets # 单元测试用例
 ```
 
-# 开源协议
+## 贡献代码
 
-本项目基于 Apache License 2.0 ，请自由的享受和参与开源。
+使用过程中发现任何问题都可以提交 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues)，当然，也非常欢迎提交 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+
+## 开源协议
+
+本项目遵循 [Apache License 2.0 ](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ohos_luaarkts/LICENSE)。
