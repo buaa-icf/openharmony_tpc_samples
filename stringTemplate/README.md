@@ -8,7 +8,7 @@ stringtemplate is a template engine for text generation that allows you to merge
 ```shell
 ohpm install @ohos/stringtemplate
 ```
-- For more information on OpenHarmony ohpm environment configuration, please refer to [How to Install OpenHarmony ohpm Package](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md).
+- For more information on OpenHarmony ohpm environment configuration, please refer to [How to Install OpenHarmony ohpm Package](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md).
 
 ## How to Use
 
@@ -87,10 +87,10 @@ DevEco Studio: 5.0.1 Release, SDK: API Version 13 Release (5.0.1.115)
 ````
 
 ## How to Contribute
-Any problems found during use can be raised [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) Give us, of course, we also welcome you to send us [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+Any problems found during use can be raised [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) Give us, of course, we also welcome you to send us [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
 ## License
-This project is licensed under [BSD-3-Clause License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/source_map_js/LICENSE).
+This project is licensed under [BSD-3-Clause License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/stringTemplate/LICENSE).
     
 
 
