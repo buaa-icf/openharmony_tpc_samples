@@ -59,34 +59,38 @@
 
 ## 接口说明
 
-* Connection - 表示AMQP连接的接口，包含了连接的方法和事件。
-* Channel - 表示AMQP通道的接口，包含了通道的方法和事件。
-* createChannel - 创建通讯管道。
-* Channel.close - 关闭通讯管道
-* Connection.close - 关闭连接
-* assertQueue - 声明队列
-* checkQueue - 检查队列
-* deleteQueue - 删除队列
-* purgeQueue - 清除队列
-* bindQueue - 绑定队列
-* unbindQueue - 解绑队列
-* assertExchange - 声明交换机
-* checkExchange - 检查交换机
-* deleteExchange - 删除交换机
-* bindExchange - 绑定交换机
-* unbindExchange - 解绑交换机
-* publish - 发送消息
-* sendToQueue - 发送消息到队列
-* consume - 订阅消息
-* cancel - 取消订阅
-* get - 获取消息体
-* ack - 确认消息已被消费
-* ackAll -  确认所有未确认的消息已被消费
-* nack -  否定消息，表示消息未被成功消费
-* nackAll - 否定所有未确认的消息，表示这些消息未被成功消费
-* reject - 拒绝消息，表示消息未被成功消费
-* prefetch - 设置消费者的预取数量，即一次从队列中获取的消息数量
-* recover - 重新投递未被确认的消息，使其重新进入队列等待消费
+---
+
+| 方法名          | 入参                                                                 | 接口描述                                                                 |
+|-----------------|----------------------------------------------------------------------|--------------------------------------------------------------------------|
+| `assertQueue`   | `(queue: string, options?: { durable?: boolean, exclusive?: boolean, autoDelete?: boolean, arguments?: Object })` | 声明队列，若不存在则创建。返回 `{ queue: string, messageCount: number, consumerCount: number }`。 |
+| `checkQueue`    | `(queue: string)`                                                    | 检查队列是否存在，返回队列信息（`messageCount` 和 `consumerCount`）。     |
+| `deleteQueue`   | `(queue: string, options?: { ifUnused?: boolean, ifEmpty?: boolean })` | 删除队列。`ifUnused`（仅当无消费者时删除）、`ifEmpty`（仅当队列为空时删除）。 |
+| `purgeQueue`    | `(queue: string)`                                                    | 清空队列中的消息，返回删除的消息数量（`{ messageCount: number }`）。      |
+| `bindQueue`     | `(queue: string, exchange: string, pattern: string, args?: Object)`  | 将队列绑定到交换器，`pattern` 为路由键（或匹配规则）。                   |
+| `unbindQueue`   | `(queue: string, exchange: string, pattern: string, args?: Object)`  | 解绑队列与交换器的绑定关系。                                             |
+| `assertExchange`  | `(exchange: string, type: 'direct' \| 'topic' \| 'headers' \| 'fanout' \| string, options?: { durable?: boolean, autoDelete?: boolean, internal?: boolean, arguments?: Object })` | 声明交换器，若不存在则创建。`type` 支持标准类型或自定义。                 |
+| `checkExchange`   | `(exchange: string)`                                                 | 检查交换器是否存在。                                                     |
+| `deleteExchange`  | `(exchange: string, options?: { ifUnused?: boolean })`               | 删除交换器。`ifUnused` 表示仅当无绑定时删除。                            |
+| `bindExchange`    | `(destination: string, source: string, pattern: string, args?: Object)` | 绑定两个交换器（目标交换器绑定到源交换器）。                             |
+| `unbindExchange`  | `(destination: string, source: string, pattern: string, args?: Object)` | 解绑两个交换器。                                                         |
+| `publish`       | `(exchange: string, routingKey: string, content: Buffer, options?: { persistent?: boolean, expiration?: string, headers?: Object, ... })` | 向交换器发布消息。`options` 支持消息属性（如持久化、TTL、优先级等）。    |
+| `sendToQueue`   | `(queue: string, content: Buffer, options?: { persistent?: boolean, ... })` | 直接发送消息到队列（绕过交换器）。                                       |
+| `consume`       | `(queue: string, onMessage: (msg: ConsumeMessage \| null) => void, options?: { noAck?: boolean, exclusive?: boolean, ... })` | 注册消费者，处理队列中的消息。返回消费者标签（`consumerTag`）。          |
+| `cancel`        | `(consumerTag: string)`                                              | 取消指定标签的消费者。                                                   |
+| `get`           | `(queue: string, options?: { noAck?: boolean })`                     | 同步获取单条消息（非推送模式）。返回 `ConsumeMessage` 或 `null`（空队列）。 |
+| `ack`      | `(message: Message, allUpTo?: boolean)`                              | 确认单条消息。`allUpTo` 为 `true` 时确认当前消费者之前所有未确认的消息。  |
+| `ackAll`   | `()`                                                                 | 确认当前 Channel 中所有未确认的消息。                                    |
+| `nack`     | `(message: Message, allUpTo?: boolean, requeue?: boolean)`           | 否定确认单条消息，可选择重新入队（`requeue`）。                           |
+| `nackAll`  | `(requeue?: boolean)`                                                | 否定确认所有未确认的消息，可选择重新入队。                               |
+| `reject`   | `(message: Message, requeue?: boolean)`                              | 拒绝单条消息（类似 `nack` 但仅针对一条）。                               |
+| `prefetch` | `(count: number, global?: boolean)`                                  | 设置 QoS 预取限制（未确认消息数上限）。`global` 为 `true` 时作用于整个连接。 |
+| `recover`  | `()`                                                                 | 重新投递未确认的消息（需服务器支持，非所有场景可用）。                   |
+
+---
+
+
+
 
 ## 关于混淆
 - 代码混淆，请查看[代码混淆简介](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
