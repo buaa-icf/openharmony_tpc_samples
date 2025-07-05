@@ -76,9 +76,9 @@ struct Index {
         Row() {
           this.BuildLabel("Time：")
           DatePicker({ selected: this.selected_date_time })
-            .onChange((value: DatePickerResult) => {
-              if (value && value.year !== undefined) {
-                this.selected_date_time.setFullYear(value.year, value.month, value.day)
+            .onDateChange((value) => {
+              if (value && value.getFullYear() !== undefined) {
+                this.selected_date_time.setFullYear(value.getFullYear(), value.getMonth(), value.getDay())
               }
             }).layoutWeight(1).height(70)
           TimePicker({ selected: this.selected_date_time }).onChange((value) => {
@@ -312,6 +312,10 @@ struct Index {
   }
 
   showMessage(message: string) {
-    promptAction.showToast({ message })
+    try {
+      this.getUIContext().getPromptAction().showToast({ message })
+    }catch (e) {
+      this.log(JSON.stringify(e));
+    }
   }
 }
