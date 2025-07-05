@@ -14,20 +14,30 @@
  */
 
 import adler32 from 'adler-32'
+import { UIContext } from '@ohos.arkui.UIContext'
+
+function getMessage(message: string): string{
+  try{
+    let context: UIContext = new UIContext()
+    return context.getHostContext()?.resourceManager.getStringSync($r('app.string.output_result').id, message)??""
+  }catch(e){
+  }
+  return ""
+}
 
 @Entry
 @Component
 struct Index {
-  @State btrBtn: string = getContext(this).resourceManager.getStringSync($r('app.string.array_input').id);
-  @State utrBtn: string = getContext(this).resourceManager.getStringSync($r('app.string.string_input').id);
-  @State strBtn: string = getContext(this).resourceManager.getStringSync($r('app.string.js_string_input').id);
-  @State vtrBtn: string = getContext(this).resourceManager.getStringSync($r('app.string.get_version').id);
+  @State btrBtn: string | undefined = this.getUIContext().getHostContext()?.resourceManager.getStringSync($r('app.string.array_input').id);
+  @State utrBtn: string | undefined = this.getUIContext().getHostContext()?.resourceManager.getStringSync($r('app.string.string_input').id);
+  @State strBtn: string | undefined = this.getUIContext().getHostContext()?.resourceManager.getStringSync($r('app.string.js_string_input').id);
+  @State vtrBtn: string | undefined = this.getUIContext().getHostContext()?.resourceManager.getStringSync($r('app.string.get_version').id);
   @State message: string = ''
 
   build() {
     Row() {
       Column() {
-        Text(getContext(this).resourceManager.getStringSync($r('app.string.output_result').id,this.message))
+        Text(getMessage(this.message))
           .fontSize(13)
           .fontWeight(FontWeight.Bold)
           .margin({ bottom: 50 })
