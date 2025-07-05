@@ -1,9 +1,12 @@
+## v1.0.2
+- Modify the document to a GitCode address and add parameter instructions.
+
 ## v1.0.1
-- 发布1.0.1正式版
+- 发布1.0.1正式版。
 
 ## v1.0.0
 
-- 已实现功能
+- 已实现功能。
 
 - 连接RabbitMQ服务器：使用amqplib可以轻松地连接到RabbitMQ服务器，创建一个AMQP连接对象。
 

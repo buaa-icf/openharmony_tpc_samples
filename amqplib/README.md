@@ -58,35 +58,36 @@
 7. For details about how to use the demo, see the implementation of the sample page.
 
 ## Available APIs
+---
 
-* **Connection**: interface related to AMQP connections, including the connection methods and events.
-* **Channel**: interface related to AMQP channels, including the channel methods and events.
-* **createChannel**: creates a channel.
-* **Channel.close**: closes a channel.
-* **Connection.close**: closes a connection.
-* **assertQueue**: asserts a queue.
-* **checkQueue**: checks a queue.
-* **deleteQueue**: deletes a queue.
-* **purgeQueue**: purges a queue.
-* **bindQueue**: binds a queue.
-* **unbindQueue**: unbinds a queue.
-* **assertExchange**: asserts an exchange.
-* **checkExchange**: checks an exchange.
-* **deleteExchange**: deletes an exchange.
-* **bindExchange**: binds an exchange.
-* **unbindExchange**: unbinds an exchange.
-* **publish**: sends a message.
-* **sendToQueue**: sends a message to a queue.
-* **consume**: consumes a message.
-* **cancel**: cancels the consumption.
-* **get**: obtains the message body.
-* **ack**: acknowledges that the message has been consumed.
-* **ackAll**: acknowledges that all unacknowledged messages have been consumed.
-* **nack**: acknowledges that the message is not successfully consumed.
-* **nackAll**: acknowledges that all unacknowledged messages are not successfully consumed.
-* **reject**: rejects a message, indicating that the message is not successfully consumed.
-* **prefetch**: prefetches a certain number of messages from the queue at a time.
-* **recover**: resends unacknowledged messages so that they enter the queue again for consumption.
+| **Method Name**       | **Parameters**                                                                 | **Description**                                                                 |
+|-----------------------|--------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
+| `assertQueue`         | `(queue: string, options?: { durable?: boolean, exclusive?: boolean, autoDelete?: boolean, arguments?: Object })` | Declares a queue, creating it if it does not exist. Returns `{ queue: string, messageCount: number, consumerCount: number }`. |
+| `checkQueue`          | `(queue: string)`                                                              | Checks if a queue exists and returns queue information (`messageCount` and `consumerCount`). |
+| `deleteQueue`         | `(queue: string, options?: { ifUnused?: boolean, ifEmpty?: boolean })`          | Deletes a queue. `ifUnused` (delete only if no consumers) or `ifEmpty` (delete only if empty). |
+| `purgeQueue`          | `(queue: string)`                                                              | Clears all messages from a queue and returns the count of deleted messages (`{ messageCount: number }`). |
+| `bindQueue`           | `(queue: string, exchange: string, pattern: string, args?: Object)`             | Binds a queue to an exchange, where `pattern` is the routing key (or matching rule). |
+| `unbindQueue`         | `(queue: string, exchange: string, pattern: string, args?: Object)`             | Unbinds a queue from an exchange.                                               |
+| `assertExchange`      | `(exchange: string, type: 'direct' \| 'topic' \| 'headers' \| 'fanout' \| string, options?: { durable?: boolean, autoDelete?: boolean, internal?: boolean, arguments?: Object })` | Declares an exchange, creating it if it does not exist. `type` supports standard or custom types. |
+| `checkExchange`       | `(exchange: string)`                                                           | Checks if an exchange exists.                                                    |
+| `deleteExchange`      | `(exchange: string, options?: { ifUnused?: boolean })`                          | Deletes an exchange. `ifUnused` means delete only if no bindings exist.          |
+| `bindExchange`        | `(destination: string, source: string, pattern: string, args?: Object)`        | Binds two exchanges (destination exchange to source exchange).                   |
+| `unbindExchange`      | `(destination: string, source: string, pattern: string, args?: Object)`        | Unbinds two exchanges.                                                          |
+| `publish`             | `(exchange: string, routingKey: string, content: Buffer, options?: { persistent?: boolean, expiration?: string, headers?: Object, ... })` | Publishes a message to an exchange. `options` supports message properties (e.g., persistence, TTL, priority). |
+| `sendToQueue`         | `(queue: string, content: Buffer, options?: { persistent?: boolean, ... })`      | Sends a message directly to a queue (bypassing exchanges).                        |
+| `consume`             | `(queue: string, onMessage: (msg: ConsumeMessage \| null) => void, options?: { noAck?: boolean, exclusive?: boolean, ... })` | Registers a consumer to process messages from a queue. Returns a consumer tag (`consumerTag`). |
+| `cancel`              | `(consumerTag: string)`                                                        | Cancels a consumer with the specified tag.                                       |
+| `get`                 | `(queue: string, options?: { noAck?: boolean })`                               | Synchronously retrieves a single message (non-push mode). Returns `ConsumeMessage` or `null` (empty queue). |
+| `ack`                 | `(message: Message, allUpTo?: boolean)`                                        | Acknowledges a single message. If `allUpTo` is `true`, acknowledges all unacknowledged messages up to the current one. |
+| `ackAll`              | `()`                                                                           | Acknowledges all unacknowledged messages in the current channel.                  |
+| `nack`                | `(message: Message, allUpTo?: boolean, requeue?: boolean)`                      | Negatively acknowledges a single message, optionally requeuing it (`requeue`).   |
+| `nackAll`             | `(requeue?: boolean)`                                                          | Negatively acknowledges all unacknowledged messages, optionally requeuing them.  |
+| `reject`              | `(message: Message, requeue?: boolean)`                                        | Rejects a single message (similar to `nack` but for one message only).           |
+| `prefetch`            | `(count: number, global?: boolean)`                                             | Sets QoS prefetch limit (max unacknowledged messages). If `global` is `true`, applies to the entire connection. |
+| `recover`             | `()`                                                                           | Redelivers unacknowledged messages (requires server support; not available in all scenarios). |
+
+---
+
 
 ## About obfuscation
 - Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
