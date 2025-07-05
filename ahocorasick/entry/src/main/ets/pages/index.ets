@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 import AhoCorasick from 'ahocorasick'
-import promptAction from '@ohos.promptAction';
 
 
 @Extend(Text) function textFancy(fontSize: number, textColor: Color, isBold: Boolean) {
@@ -63,12 +62,12 @@ struct Index {
       .buttonFancy()
       .onClick(() => {
         if (!this.statement) {
-          promptAction.showToast({ message: $r('app.string.paragraph_content') })
+          this.getUIContext().getPromptAction().showToast({ message: $r('app.string.paragraph_content') })
           this.resultText = "";
           return;
         }
         if (!this.formulate_statement) {
-          promptAction.showToast({ message: $r('app.string.the_keyword_searched') })
+          this.getUIContext().getPromptAction().showToast({ message: $r('app.string.the_keyword_searched') })
           this.resultText = "";
           return;
         }
