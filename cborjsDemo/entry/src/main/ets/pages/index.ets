@@ -14,7 +14,6 @@
  */
 
 import CBOR from 'cbor-js';
-import prompt from '@ohos.prompt';
 
 
 @Entry
@@ -22,20 +21,27 @@ import prompt from '@ohos.prompt';
 struct Index {
   @State onChangeText: string = this.getResourceString($r('app.string.Default_testWorld'))
   getResourceString(res:Resource) {
-    return getContext().resourceManager.getStringSync(res.id)
+    try{
+      return this.getUIContext().getHostContext()?.resourceManager.getStringSync(res.id)??""
+    }catch(e){
+    }
+    return ""
   }
   testCbor(initial:string) {
     let encoded:ArrayBuffer = CBOR.encode(initial)
     let decoded:ArrayBuffer = CBOR.decode(encoded)
-    if (initial.toString() == decoded.toString()) {
-      console.log(this.getResourceString($r('app.string.same_value')));
-      prompt.showToast({ message: this.getResourceString($r('app.string.same_value')), duration: 200 })
-    } else if (initial === decoded.toString()) {
-      console.log(this.getResourceString($r('app.string.same_value')));
-      prompt.showToast({ message: this.getResourceString($r('app.string.same_value')), duration: 200 })
-    } else {
-    console.log(this.getResourceString($r('app.string.different_value')));
-    prompt.showToast({ message: this.getResourceString($r('app.string.different_value')), duration: 200 })
+    try{
+      if (initial.toString() == decoded.toString()) {
+        console.log(this.getResourceString($r('app.string.same_value')));
+        this.getUIContext().getPromptAction().showToast({ message: this.getResourceString($r('app.string.same_value')), duration: 200 })
+      } else if (initial === decoded.toString()) {
+        console.log(this.getResourceString($r('app.string.same_value')));
+        this.getUIContext().getPromptAction().showToast({ message: this.getResourceString($r('app.string.same_value')), duration: 200 })
+      } else {
+        console.log(this.getResourceString($r('app.string.different_value')));
+        this.getUIContext().getPromptAction().showToast({ message: this.getResourceString($r('app.string.different_value')), duration: 200 })
+      }
+    }catch(e){
     }
   }
   build() {
@@ -63,7 +69,7 @@ struct Index {
           .margin('10')
           .onClick(() => {
             if (this.onChangeText == '') {
-              prompt.showToast({ message: this.getResourceString($r('app.string.Test_cbor_codec')), duration: 200 })
+              this.getUIContext().getPromptAction().showToast({ message: this.getResourceString($r('app.string.Test_cbor_codec')), duration: 200 })
               return
             } else {
               this.testCbor(this.onChangeText)
