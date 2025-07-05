@@ -36,7 +36,7 @@ struct CompilePage {
   @State message13: string = this.getResourceString($r('app.string.Raw_data')) + '：toPathRegexp({ id: "123" });'
   @State message14: string = this.getResourceString($r('app.string.Raw_data')) + '：toPathRegexp({ id: "abc" });'
   getResourceString(res:Resource){
-    return getContext().resourceManager.getStringSync(res.id)
+    return this.getUIContext().getHostContext()?.resourceManager.getStringSync(res.id) ?? ''
   }
 
   build() {
@@ -210,7 +210,7 @@ struct CompilePage {
             let api = new TestApi()
             let result = api.compileTest()
             if (!result || result.length < 10) {
-              promptAction.showToast({
+              this.getUIContext().getPromptAction().showToast({
                 message: $r('app.string.The_data_processing_results_do_not_match_expectations'),
                 duration: 6000
               })
@@ -243,7 +243,7 @@ struct CompilePage {
             arrAfter.push(JSON.stringify(result[10]));
             arrAfter.push(JSON.stringify(result[11]));
             bean.setAfter(arrAfter);
-            router.pushUrl({
+            this.getUIContext().getRouter().pushUrl({
               url: 'pages/CommonResultPage',
               params: {
                 dataObj: bean

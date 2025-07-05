@@ -26,7 +26,7 @@ struct CustomPrefixSuffixPage {
   @State message2: string = this.getResourceString($r('app.string.Raw_data')) + '：res.regexp.exec("/test-test");'
 
   getResourceString(res:Resource){
-    return getContext().resourceManager.getStringSync(res.id)
+    return this.getUIContext().getHostContext()?.resourceManager.getStringSync(res.id) ?? ''
   }
 
   build() {
@@ -63,7 +63,7 @@ struct CustomPrefixSuffixPage {
             let api = new TestApi()
             let result = api.customPrefixSuffixTest()
             if (!result || result.length < 2) {
-              promptAction.showToast({
+              this.getUIContext().getPromptAction().showToast({
                 message: $r('app.string.The_data_processing_results_do_not_match_expectations'),
                 duration: 6000
               })
@@ -78,7 +78,7 @@ struct CustomPrefixSuffixPage {
             arrAfter.push(JSON.stringify(result[0]));
             arrAfter.push(JSON.stringify(result[1]));
             bean.setAfter(arrAfter);
-            router.pushUrl({
+            this.getUIContext().getRouter().pushUrl({
               url: 'pages/CommonResultPage',
               params: {
                 dataObj: bean

@@ -25,7 +25,7 @@ struct ProcessPathnamePage {
   @State message1: string = this.getResourceString($r('app.string.Raw_data')) + '：fn("/caf%C3%A9");'
 
   getResourceString(res:Resource){
-    return getContext().resourceManager.getStringSync(res.id)
+    return this.getUIContext().getHostContext()?.resourceManager.getStringSync(res.id) ?? ''
   }
 
   build() {
@@ -57,7 +57,7 @@ struct ProcessPathnamePage {
             let api = new TestApi()
             let result = api.processPathnameTest()
             if (!result || result.length < 1) {
-              promptAction.showToast({
+              this.getUIContext().getPromptAction().showToast({
                 message: $r('app.string.The_data_processing_results_do_not_match_expectations'),
                 duration: 6000
               })
@@ -70,7 +70,7 @@ struct ProcessPathnamePage {
             let arrAfter = new Array<string>();
             arrAfter.push(JSON.stringify(result[0]));
             bean.setAfter(arrAfter);
-            router.pushUrl({
+            this.getUIContext().getRouter().pushUrl({
               url: 'pages/CommonResultPage',
               params: {
                 dataObj: bean

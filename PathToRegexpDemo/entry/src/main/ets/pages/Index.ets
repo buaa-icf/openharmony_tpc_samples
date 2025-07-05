@@ -16,13 +16,13 @@
 import JumpPathConfig from '../JumpPathConfig';
 import router from '@ohos.router';
 
-async function routePage(index: number) {
+async function routePage(index: number, context: UIContext) {
   try {
     let jumpUri = JumpPathConfig.getJumpPath(index);
     let options: router.RouterOptions = {
       url: jumpUri
     }
-    await router.pushUrl(options)
+    await context.getRouter().pushUrl(options)
   } catch (err) {
     // TODO  hilog
   }
@@ -50,7 +50,7 @@ struct Index {
                   .borderRadius(10)
                   .backgroundColor(0xFFFFFF)
               }.onClick((event) => {
-                routePage(Number.parseInt(item))
+                routePage(Number.parseInt(item),this.getUIContext())
               })
             }, (item:string) => item)
           }.listDirection(Axis.Vertical)

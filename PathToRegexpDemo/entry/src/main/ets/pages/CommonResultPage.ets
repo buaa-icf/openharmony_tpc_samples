@@ -27,7 +27,7 @@ struct CommonResultPage {
   @State afterStr: Array<string> = new Array<string>();
 
   getResourceString(res:Resource){
-    return getContext().resourceManager.getStringSync(res.id)
+    return this.getUIContext().getHostContext()?.resourceManager.getStringSync(res.id) ?? ''
   }
 
   aboutToAppear() {
@@ -36,8 +36,8 @@ struct CommonResultPage {
     }
     let data: CommonResultBean | null = null;
     // let dataObj:string='dataObj'
-    if (router.getParams() &&(router.getParams() as RouterParams).dataObj) {
-      data = (router.getParams() as RouterParams).dataObj;
+    if (this.getUIContext().getRouter().getParams() &&(this.getUIContext().getRouter().getParams() as RouterParams).dataObj) {
+      data = (this.getUIContext().getRouter().getParams() as RouterParams).dataObj;
       this.beforeStr = data?.beforeStr ? data?.beforeStr : [];
       this.afterStr = data?.afterStr ? data?.afterStr : [];
       this.beforeIndex = new Array<number>()
@@ -51,7 +51,7 @@ struct CommonResultPage {
     }
 
     if (!data || this.beforeIndex.length === 0 || this.afterIndex.length === 0 || this.beforeIndex.length != this.afterIndex.length) {
-      promptAction.showDialog({
+      this.getUIContext().getPromptAction().showDialog({
         title: '是否关闭本页面',
         message: '由于数据不正确，是否关闭本页面',
         buttons: [
@@ -69,7 +69,7 @@ struct CommonResultPage {
           return
         }
         if (result.index === 0) {
-          router.back({
+          this.getUIContext().getRouter().back({
             url: 'pages/Index'
           })
         } else {
