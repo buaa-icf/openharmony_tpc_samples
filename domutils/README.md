@@ -12,7 +12,7 @@ The domutils library provides an HTML/XML parser for working with the DOM genera
  ohpm install @ohos/htmlparser2
 ```
 
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 # How to Use
 ```
@@ -216,7 +216,7 @@ let textResult7: Element | null = prevElementSibling(element7[0]);
 ```
 
 ### Available APIs
-For details about unit test cases, see [TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/domutils/TEST.md).
+For details about unit test cases, see [TEST.md](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/domutils/TEST.md).
 
 
 ## Constraints
@@ -224,7 +224,7 @@ This project has been verified in the following version:
 
 DevEco Studio Version: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API 11 (4.1.0.36)
 
-DevEco Studio Version£ºDevEco Studio 5.1.0 Canary1(5.1.0.229)£¬OpenHarmony SDK:5.1.0.229 API16£¨5.1.0.46£©¡£
+DevEco Studio Versionï¿½ï¿½DevEco Studio 5.1.0 Canary1(5.1.0.229)ï¿½ï¿½OpenHarmony SDK:5.1.0.229 API16ï¿½ï¿½5.1.0.46ï¿½ï¿½ï¿½ï¿½
 
 ## Directory Structure
 
@@ -237,8 +237,8 @@ DevEco Studio Version£ºDevEco Studio 5.1.0 Canary1(5.1.0.229)£¬OpenHarmony SDK:5
 
 ## How to Contribute
 
-If you find any problem when using domutils, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+If you find any problem when using domutils, submit an [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
 ## License
 
-This project is licensed under [BSD License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/domUtils/LICENSE).
+This project is licensed under [BSD License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/domUtils/LICENSE).
