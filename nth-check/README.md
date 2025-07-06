@@ -11,7 +11,7 @@ This module can be used to parse & compile nth-checks, as they are found in CSS 
 ```shell
 ohpm install nth-check
 ```
-For details, see [Installing an OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details, see [Installing an OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ### API
 
@@ -146,7 +146,7 @@ nth-check has been verified in the following version:
 ```
 
 ## How to Contribute
-If you find any problem when using nth-check, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/nth-check/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/nth-check/pulls).
+If you find any problem when using nth-check, submit an [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
 ## License
-This project is licensed under [BSD 2-Clause](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/nth-check/blob/master/LICENSE).
+This project is licensed under [BSD 2-Clause](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/nth-check/LICENSE).
