@@ -49,7 +49,7 @@ struct Index {
   @State message: string = this.getResourceString($r('app.string.please_click_button'));
 
   getResourceString(res:Resource){
-    return getContext().resourceManager.getStringSync(res.id)
+    return this.getUIContext().getHostContext()?.resourceManager.getStringSync(res.id) || "";
   }
 
   build() {
