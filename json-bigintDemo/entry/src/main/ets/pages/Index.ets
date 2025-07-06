@@ -23,7 +23,7 @@ struct Index {
       Column() {
         Button($r('app.string.Quick_access'))
           .onClick(() => {
-            router.pushUrl({ url: 'pages/Example' });
+            this.getUIContext()?.getRouter()?.pushUrl({ url: 'pages/Example' });
           })
       }
       .width('100%')
