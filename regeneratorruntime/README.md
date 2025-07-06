@@ -14,7 +14,7 @@ regeneratorRuntime is an asynchronous programming solution provided by ES6 and u
 For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ### Available APIs
-For details about unit test cases, see [TEST.md](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/regeneratorRuntime/TEST.md).
+For details about unit test cases, see [TEST.md](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/regeneratorruntime/TEST.md).
 
 # How to Use
 ```
@@ -71,4 +71,4 @@ If you find any problem when using parser-html-json, submit an [issue](https://g
 
 ## License
 
-This project is licensed under [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/regeneratorruntime/LICENSE).
+This project is licensed under [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/regeneratorruntime/LICENSE).
