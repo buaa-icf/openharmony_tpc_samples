@@ -24,7 +24,6 @@
 import { Console } from '../components/Console';
 import ConsoleN from '../components/ConsoleN';
 import jackrabbit from '@ohos/jackrabbit';
-import router from '@ohos.router';
 
 @Entry
 @Component
@@ -36,7 +35,7 @@ struct TimeoutRpc {
   rabbitServer: ESObject;
 
   aboutToAppear() {
-    let obj: ESObject = router.getParams()
+    let obj: ESObject =  this.getUIContext().getRouter().getParams();
     if (obj.serverIp)
       this.serverIp = obj.serverIp
   }

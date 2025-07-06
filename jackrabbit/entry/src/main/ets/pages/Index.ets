@@ -64,7 +64,7 @@ struct Index {
   ]
 
   private getResourceStr(data:Resource):string{
-    return getContext().resourceManager.getStringSync(data)
+    return this.getUIContext().getHostContext()?.resourceManager.getStringSync(data) || "";
   }
 
   build() {
@@ -82,7 +82,7 @@ struct Index {
           .fontSize(30)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
-            router.pushUrl({ url: item.path, params: { serverIp: this.serverIp } } as router.RouterOptions);
+            this.getUIContext().getRouter().pushUrl({ url: item.path, params: { serverIp: this.serverIp } } as router.RouterOptions);
           })
       })
     }
