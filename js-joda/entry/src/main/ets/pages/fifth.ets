@@ -29,8 +29,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { Duration, LocalDateTime, Period } from '@js-joda/core'
-// import '@js-joda/timezone'
+import { Duration, LocalDateTime, Period } from '@js-joda/core';
 import router from '@ohos.router';
 
 @Entry
@@ -46,7 +45,8 @@ struct Fifth {
             .backgroundColor(0x317aff)
             .width(240)
             .onClick(() => {
-              this.message = testDurationTime();
+              let context: Context | undefined = this.getUIContext().getHostContext();
+              this.message = testDurationTime(context);
             })
           Text(this.message)
             .fontSize(15)
@@ -57,7 +57,7 @@ struct Fifth {
             .backgroundColor(0x317aff)
             .width(240)
             .onClick(() => {
-              router.pushUrl({ url: 'pages/sixth' })
+              this.getUIContext().getRouter().pushUrl({ url: 'pages/sixth' })
             })
         }
       }
@@ -68,7 +68,7 @@ struct Fifth {
 }
 
 // 时间量测试
-function testDurationTime(): string {
+function testDurationTime(context: Context | undefined): string {
   // 时间量 PT10H
   console.info(Duration.ofHours(10).toString());
   // 时间量 P10Y45D
@@ -78,7 +78,7 @@ function testDurationTime(): string {
 
   console.info(mDateTime.plus(Duration.ofHours(10).plusMinutes(30)).toString());
 
-  return getContext().resourceManager.getStringByNameSync("a_ten_hour_time_quantity_representation") + Duration.ofHours(10).toString() + '\n' +
-  getContext().resourceManager.getStringByNameSync('a_10_year_and_45_day_time_quantity_representation') + Period.ofYears(10).plusDays(45).toString() + '\n' +
-  getContext().resourceManager.getStringByNameSync('Given_time_plus_10_hours_and_30_minutes') + mDateTime.plus(Duration.ofHours(10).plusMinutes(30)).toString();
+  return context?.resourceManager.getStringByNameSync("a_ten_hour_time_quantity_representation") + Duration.ofHours(10).toString() + '\n' +
+  context?.resourceManager.getStringByNameSync('a_10_year_and_45_day_time_quantity_representation') + Period.ofYears(10).plusDays(45).toString() + '\n' +
+  context?.resourceManager.getStringByNameSync('Given_time_plus_10_hours_and_30_minutes') + mDateTime.plus(Duration.ofHours(10).plusMinutes(30)).toString();
 }

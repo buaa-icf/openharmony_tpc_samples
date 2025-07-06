@@ -29,9 +29,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { DateTimeFormatter, LocalDateTime, ZonedDateTime } from '@js-joda/core'
-// import '@js-joda/timezone'
-import { Locale } from '@ohos/localeenus'
+import { DateTimeFormatter, LocalDateTime, ZonedDateTime } from '@js-joda/core';
+import { Locale } from '@ohos/localeenus';
 
 @Entry
 @Component
@@ -46,7 +45,8 @@ struct Sixth {
             .backgroundColor(0x317aff)
             .width(240)
             .onClick(() => {
-              this.message = testFormatter();
+              let context: Context | undefined = this.getUIContext().getHostContext();
+              this.message = testFormatter(context);
             })
           Text(this.message)
             .fontSize(15)
@@ -61,7 +61,7 @@ struct Sixth {
 }
 
 // 日期时间格式化
-function testFormatter(): string {
+function testFormatter(context: Context | undefined): string {
   // 基础格式化
   const dateTime = LocalDateTime.parse("2018-04-28T12:34");
   // 日期格式化 4/28/2018
@@ -75,8 +75,8 @@ function testFormatter(): string {
   const zoneDateTime = ZonedDateTime.parse('Tue, 05 Oct 2021 17:08:24 GMT', dateTimeFormatter);
   console.log(zoneDateTime.toString());
 
-  return getContext().resourceManager.getStringByNameSync("Basic_date_formatting") + dateTime.format(DateTimeFormatter.ofPattern('M/d/yyyy')) + '\n' +
-  getContext().resourceManager.getStringByNameSync("Time_Format") + dateTime.format(DateTimeFormatter.ofPattern('HH:mm')) + '\n' +
-  getContext().resourceManager.getStringByNameSync("Format_given_date_and_time") + zoneDateTime.toString();
+  return context?.resourceManager.getStringByNameSync("Basic_date_formatting") + dateTime.format(DateTimeFormatter.ofPattern('M/d/yyyy')) + '\n' +
+    context?.resourceManager.getStringByNameSync("Time_Format") + dateTime.format(DateTimeFormatter.ofPattern('HH:mm')) + '\n' +
+    context?.resourceManager.getStringByNameSync("Format_given_date_and_time") + zoneDateTime.toString();
 
 }

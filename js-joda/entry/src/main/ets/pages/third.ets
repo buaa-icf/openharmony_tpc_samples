@@ -29,7 +29,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { DateTimeFormatter, LocalDateTime, ZoneId, Clock ,ZoneRegion, ZonedDateTime} from '@js-joda/core'
+import { DateTimeFormatter, LocalDateTime, ZoneId, Clock ,ZoneRegion, ZonedDateTime} from '@js-joda/core';
 import router from '@ohos.router';
 
 @Entry
@@ -45,7 +45,8 @@ struct Third {
             .backgroundColor(0x317aff)
             .width(240)
             .onClick(() => {
-              this.message = testLocalDateTime();
+              let context: Context | undefined = this.getUIContext().getHostContext();
+              this.message = testLocalDateTime(context);
             })
           Text(this.message)
             .fontSize(15)
@@ -56,7 +57,7 @@ struct Third {
             .backgroundColor(0x317aff)
             .width(240)
             .onClick(() => {
-              router.pushUrl({ url: 'pages/fourth' })
+              this.getUIContext().getRouter().pushUrl({ url: 'pages/fourth' })
             })
         }
       }
@@ -67,7 +68,7 @@ struct Third {
 }
 
 // 本地日期时间测试
-function testLocalDateTime(): string {
+function testLocalDateTime(context: Context | undefined): string {
   // 获取日期时间（默认时区 UTC协调世界时）
   console.info(LocalDateTime.now().toString());
   // 获取指定城市的日期时间
@@ -113,19 +114,19 @@ function testLocalDateTime(): string {
   console.info(mDateTime.toLocalDate().lengthOfMonth().toString());
   // 获取当前的总天数
   console.info(mDateTime.toLocalDate().lengthOfYear().toString());
-  return getContext().resourceManager.getStringByNameSync("Get_date_and_time") + LocalDateTime.now().toString() + '\n' +
-  getContext().resourceManager.getStringByNameSync("Obtain_domestic_city_date_and_time")+ LocalDateTime.now(ZoneId.systemDefault()).toString() + '\n' +
-  getContext().resourceManager.getStringByNameSync("Build_date_and_time_based_on_given_data") + LocalDateTime.of(2016, 2, 29, 12, 55, 42, 9).toString() + '\n' +
-  getContext().resourceManager.getStringByNameSync("Obtain_the_given_date_and_year")+ mDateTime.year().toString() + '\n' +
-  getContext().resourceManager.getStringByNameSync("Get_the_given_date_month") + mDateTime.month().toString() + '\n' +
-  getContext().resourceManager.getStringByNameSync("Get_the_value_of_the_given_date_and_month") + mDateTime.monthValue().toString() + '\n' +
-  getContext().resourceManager.getStringByNameSync("Get_the_given_date_on_which_day_of_the_month") + mDateTime.dayOfMonth().toString() + '\n' +
-  getContext().resourceManager.getStringByNameSync("Obtain_the_number_of_hours")+ mDateTime.hour().toString() + '\n' +
-  getContext().resourceManager.getStringByNameSync("Get_minutes") + mDateTime.minute().toString() + '\n' +
-  getContext().resourceManager.getStringByNameSync("Get_seconds") + mDateTime.second().toString() + '\n' +
-  getContext().resourceManager.getStringByNameSync("Obtain_nanosecond_count") + mDateTime.nano().toString() + '\n' +
-  getContext().resourceManager.getStringByNameSync("Obtain_the_day_of_the_week") + mDateTime.dayOfWeek().toString() + '\n' +
-  getContext().resourceManager.getStringByNameSync("Obtain_dates_within_a_year") + mDateTime.dayOfYear().toString() + '\n' +
-  getContext().resourceManager.getStringByNameSync("Get_the_total_number_of_days_in_a_given_month") + mDateTime.toLocalDate().lengthOfMonth().toString() + '\n' +
-  getContext().resourceManager.getStringByNameSync("Obtain_the_total_number_of_days_in_a_given_year") + mDateTime.toLocalDate().lengthOfYear().toString();
+  return context?.resourceManager.getStringByNameSync("Get_date_and_time") + LocalDateTime.now().toString() + '\n' +
+    context?.resourceManager.getStringByNameSync("Obtain_domestic_city_date_and_time")+ LocalDateTime.now(ZoneId.systemDefault()).toString() + '\n' +
+    context?.resourceManager.getStringByNameSync("Build_date_and_time_based_on_given_data") + LocalDateTime.of(2016, 2, 29, 12, 55, 42, 9).toString() + '\n' +
+    context?.resourceManager.getStringByNameSync("Obtain_the_given_date_and_year")+ mDateTime.year().toString() + '\n' +
+    context?.resourceManager.getStringByNameSync("Get_the_given_date_month") + mDateTime.month().toString() + '\n' +
+    context?.resourceManager.getStringByNameSync("Get_the_value_of_the_given_date_and_month") + mDateTime.monthValue().toString() + '\n' +
+    context?.resourceManager.getStringByNameSync("Get_the_given_date_on_which_day_of_the_month") + mDateTime.dayOfMonth().toString() + '\n' +
+    context?.resourceManager.getStringByNameSync("Obtain_the_number_of_hours")+ mDateTime.hour().toString() + '\n' +
+    context?.resourceManager.getStringByNameSync("Get_minutes") + mDateTime.minute().toString() + '\n' +
+    context?.resourceManager.getStringByNameSync("Get_seconds") + mDateTime.second().toString() + '\n' +
+    context?.resourceManager.getStringByNameSync("Obtain_nanosecond_count") + mDateTime.nano().toString() + '\n' +
+    context?.resourceManager.getStringByNameSync("Obtain_the_day_of_the_week") + mDateTime.dayOfWeek().toString() + '\n' +
+    context?.resourceManager.getStringByNameSync("Obtain_dates_within_a_year") + mDateTime.dayOfYear().toString() + '\n' +
+    context?.resourceManager.getStringByNameSync("Get_the_total_number_of_days_in_a_given_month") + mDateTime.toLocalDate().lengthOfMonth().toString() + '\n' +
+    context?.resourceManager.getStringByNameSync("Obtain_the_total_number_of_days_in_a_given_year") + mDateTime.toLocalDate().lengthOfYear().toString();
 }
