@@ -27,7 +27,7 @@ struct Index {
   @State result7: string = '';
 
   private getResourceString(res:Resource){
-    return getContext().resourceManager.getStringSync(res.id)
+    return this.getUIContext()?.getHostContext()?.resourceManager.getStringSync(res.id);
   }
 
   build() {
