@@ -11,7 +11,7 @@
   ],
   "description": "Javascript library for parsing Abstract Syntax Notation One (ASN.1)",
   "main": "src/main/dist/index.js",
-  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/asn1Demo",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/asn1Demo",
   "type": "module",
   "version": "1.0.1",
   "dependencies": {

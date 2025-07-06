@@ -1,7 +1,7 @@
 ## asn1Demo
 
-## 简介 
-  构建ASN.1对象模型以及JSON序列化/反序列化以及DER 序列化/反序列化，本工程基于开源库 asn1 和 asn1-der 进行修改适配OpenHarmony的组件工程
+## 简介
+构建ASN.1对象模型以及JSON序列化/反序列化以及DER 序列化/反序列化，本工程基于开源库 asn1 和 asn1-der 进行修改适配OpenHarmony的组件工程
 
 #### 下载安装
 | 库名 | 功能介绍 | 安装                             |
@@ -62,7 +62,7 @@ this.deserializeJsonTextDerD = "DER 反序列化数据:" + JSON.stringify(des);
 
 ```
 
-#### asn1js 
+#### asn1js
 ```
 const testString = "My test Utf8String";
 const asn = new asn1js.Utf8String({
@@ -92,39 +92,39 @@ const decodeData = decode(deserializeJsonTextHex);
 ## 接口说明
 1.序列化asn1数据
 ```
- JSONSerializer
+ new JSONSerializer();
 ```
 2.反序列化数据
 ```
- JSONDeserializer
+ new JSONDeserializer();
 ```
 3.构建asn1数组数据
 ```
- Universal.Sequence
+ Universal.Sequence(Array<Integer | Null | Bool | PrintableString>);
 ```
 4.构建asn1数字数据
 ```
- Universal.Integer
+ Universal.Integer(number);
 ```
 5.构建空asn1对象
 ```
- Universal.Null
+ Universal.Null();
 ```
 6.构建asn1布尔数据
 ```
- Universal.Bool
+ Universal.Bool(boolean);
 ```
 7.构建asn1字符串数据
 ```
- Universal.PrintableString
+ Universal.PrintableString(string);
 ```
 8.构建asn1布尔数据
 ```
- DERSerializer
+ DERSerializer();
 ```
 9.构建asn1字符串数据
 ```
- DERDeserializer
+ DERDeserializer()
 ```
 
 ## 关于混淆
