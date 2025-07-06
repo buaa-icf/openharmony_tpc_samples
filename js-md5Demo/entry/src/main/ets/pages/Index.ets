@@ -59,7 +59,7 @@ struct Index {
   }
 
   showDialog(message: string) {
-    AlertDialog.show({
+    this.getUIContext()?.showAlertDialog({
       title: '',
       message: message,
       confirm: {
