@@ -8,9 +8,10 @@
       "arkOptions": {
         "obfuscation": {
           "ruleOptions": {
-            "enable": false,
+            "enable": true,
             "files": [
               "./obfuscation-rules.txt"
+              // 混淆规则文件
             ]
           }
         }

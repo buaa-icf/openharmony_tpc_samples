@@ -58,28 +58,33 @@ struct Index {
 
   // 将rawfile写入沙箱 并返回写入的沙箱路径
   private pushRawFile(srcFileName: string): string {
-    let context = getContext(this) as common.UIAbilityContext;
-    let filesDir = context.filesDir;
+    let context = this.getUIContext().getHostContext() as common.UIAbilityContext;
+    let filesDir: string = context.filesDir;
 
-    // 获取rawfile内容
-    let rawfileContent = context.resourceManager.getRawFileContentSync(srcFileName);
-    // 写入沙箱
-    let destFilePath = filesDir + "/" + srcFileName;
-    let fileStream = fs.createStreamSync(destFilePath, "w+");
-    fileStream.writeSync(rawfileContent.buffer);
-    fileStream.close();
-    return destFilePath;
+    try {
+      // 获取rawfile内容
+      let rawfileContent: Uint8Array = context.resourceManager.getRawFileContentSync(srcFileName);
+      // 写入沙箱
+      let destFilePath = filesDir + "/" + srcFileName;
+      let fileStream = fs.createStreamSync(destFilePath, "w+");
+      fileStream.writeSync(rawfileContent.buffer);
+      fileStream.close();
+      return destFilePath;
+    }catch (e) {
+      hilog.info(0x0001, "StringTemplate TEST:", "pushRawFile error, message: : %{public}s", JSON.stringify(e));
+      return "";
+    }
   }
 
   // 将rawfile写入沙箱文件夹 并返回写入的沙箱路径
   private pushRawFileDir(srcFileNameList: string[], dirName: string): string {
-    let context = getContext(this) as common.UIAbilityContext;
+    let context = this.getUIContext().getHostContext() as common.UIAbilityContext;
     let filesDir = context.filesDir;
     let dir = filesDir + dirName;
     try {
       fs.mkdirSync(dir);
     } catch (e) {
-      hilog.error(0x0001, "StringTemplate TEST:", "mkdir failed with error message: %{public}s", e.message);
+      hilog.warn(0x0001, "StringTemplate TEST:", "mkdir failed with error message: %{public}s", e.message);
     }
     srcFileNameList.forEach( item => {
       let rawfileContent = context.resourceManager.getRawFileContentSync(item);
@@ -92,26 +97,36 @@ struct Index {
   }
 
   private getCompiledFileContent(compiledPath: string): string {
-    let rr = compiledPath.replace('.st', '') + '_stg.js';
-    let stat = fs.statSync(rr);
-    // 读文件
-    let file = fs.openSync(rr, fs.OpenMode.READ_WRITE);
-    let buf = new ArrayBuffer(stat.size);
-    fs.readSync(file.fd, buf);
-    fs.closeSync(file);
-    // 转为字符串
-    let decoder = util.TextDecoder.create('utf-8');
-    let str = decoder.decodeToString(new Uint8Array(buf));
-    return str;
+    try {
+      let rr = compiledPath.replace('.st', '') + '_stg.js';
+      let stat = fs.statSync(rr);
+      // 读文件
+      let file = fs.openSync(rr, fs.OpenMode.READ_WRITE);
+      let buf = new ArrayBuffer(stat.size);
+      fs.readSync(file.fd, buf);
+      fs.closeSync(file);
+      // 转为字符串
+      let decoder = util.TextDecoder.create('utf-8');
+      let str = decoder.decodeToString(new Uint8Array(buf));
+      return str;
+    }catch (e) {
+      hilog.info(0x0001, "StringTemplate TEST:", "getCompiledFileContent error, message: : %{public}s", JSON.stringify(e));
+      return "";
+    }
   }
 
   private getJson(jsonName: string): Object | null {
-    // 获取json数据
-    let context = getContext(this) as common.UIAbilityContext;
-    let jsonContent = context.resourceManager.getRawFileContentSync(jsonName);
-    let strJson = this.uint8ArrayToString(jsonContent)
-    let data = JSON.parse(strJson);
-    return data;
+    try {
+      // 获取json数据
+      let context = this.getUIContext().getHostContext() as common.UIAbilityContext;
+      let jsonContent = context.resourceManager.getRawFileContentSync(jsonName);
+      let strJson = this.uint8ArrayToString(jsonContent)
+      let data = JSON.parse(strJson);
+      return data;
+    }catch (e) {
+      hilog.info(0x0001, "StringTemplate TEST:", "getJson error, message: : %{public}s", JSON.stringify(e));
+      return null;
+    }
   }
 
   private compile(destFilePath: string) {
