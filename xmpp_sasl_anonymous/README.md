@@ -98,4 +98,4 @@ If you find any problem during the use, submit an [issue](https://gitcode.com/op
 
 ## License
 
-This project is licensed under the terms of the ISC license.
+This project is licensed under the terms of the [ISC license](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/xmpp_sasl_anonymous/LICENSE).
