@@ -83,4 +83,4 @@ resolve 函数接受一个或多个参数，包括服务器域名和服务类型
 
 ## 开源协议
 
-本项目基于ISC，请自由地享受和参与开源。
+本项目基于[ISC License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/xmpp_resolve/LICENSE)，请自由地享受和参与开源。
