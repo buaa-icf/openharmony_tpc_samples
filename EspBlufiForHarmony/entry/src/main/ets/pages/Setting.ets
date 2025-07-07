@@ -161,7 +161,7 @@ struct Setting {
           .height('100%')
           .backgroundColor(0xF1F3F5)
           .onClick(() => {
-            router.back({
+            this.getUIContext().getRouter().back({
               url: 'pages/Index',
               params: { blufiName: this.inputValue }
             })

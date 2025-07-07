@@ -6,7 +6,7 @@
     "blufi配网"
   ],
   "name": "@ohos/espblufiforharmony",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "专门为OpenHarmony环境下，为了方便用户进行 Blufi 的二次开发提供了一些基本API接口",
   "type": "module",
   "ohos": {
@@ -14,7 +14,7 @@
   },
   "main": "Index.ets",
   "author": "ohos_tpc",
-  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/EspBlufiForHarmony",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/EspBlufiForHarmony",
   "license": "MIT License",
   "dependencies": {}
 }
