@@ -57,7 +57,7 @@ function tcp({ entity }) {
 // This function adds an array named transports to the entity object and adds an object named ConnectionTCP to the array. The purpose is to configure a new connection mode on the entity object, that is, to use the TCP connection.
 ```
 ## About obfuscation
-- Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.1/en/application-dev/arkts-utils/source-obfuscation.md)
 - If you want the library not to be obfuscated during code obfuscation, you need to add corresponding exclusion rules in the obfuscation rule configuration file obfuscation-rules.txt：
 ```
 -keep
@@ -92,4 +92,4 @@ If you find any problem when using @ohos/xmpp_tcp, submit an [issue](https://git
 
 ## License
 
-This project is licensed under ISC License.
+This project is licensed under [ISC License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/xmpp_tcp/LICENSE).
