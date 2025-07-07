@@ -1,8 +1,8 @@
 ## asn1Demo
 
-## Overview 
+## Overview
 
-This project is modified based on the open-source libraries asn1 and asn1-der to adapt to OpenHarmony. It helps you to build ASN.1 object models and implement JSON serialization/deserialization and DER serialization/deserialization. 
+This project is modified based on the open-source libraries asn1 and asn1-der to adapt to OpenHarmony. It helps you to build ASN.1 object models and implement JSON serialization/deserialization and DER serialization/deserialization.
 
 #### How to Install
 | Library | Description | Installation                            |
@@ -64,7 +64,7 @@ this.deserializeJsonTextDerD = "Deserialized data for DER: "+ JSON.stringify (de
 
 ```
 
-#### asn1js 
+#### asn1js
 ```
 const testString = "My test Utf8String";
 const asn = new asn1js.Utf8String({
@@ -94,39 +94,39 @@ const decodeData = decode(deserializeJsonTextHex);
 ## Available APIs
 1. Serializes ASN.1 data.
 ```
- JSONSerializer
+ new JSONSerializer();
 ```
 2. Deserializes data.
 ```
- JSONDeserializer
+ new JSONDeserializer();
 ```
 3. Constructs ASN.1 array data.
 ```
- Universal.Sequence
+ Universal.Sequence(Array<Integer | Null | Bool | PrintableString>);
 ```
 4. Constructs ASN.1 numeral data
 ```
- Universal.Integer
+ Universal.Integer(number);
 ```
 5. Constructs an empty ASN.1 object.
 ```
- Universal.Null
+ Universal.Null();
 ```
 6. Constructs ASN.1 boolean data
 ```
- Universal.Bool
+ Universal.Bool(boolean);
 ```
 7. Deserializes ASN.1 string data.
 ```
- Universal.PrintableString
+ Universal.PrintableString(string);
 ```
 8. Deserializes ASN.1 boolean data.
 ```
- DERSerializer
+ DERSerializer();
 ```
-9. Deserializes ASN.1 string data. 
+9. Deserializes ASN.1 string data.
 ```
- DERDeserializer
+ DERDeserializer();
 ```
 
 ## About obfuscation
