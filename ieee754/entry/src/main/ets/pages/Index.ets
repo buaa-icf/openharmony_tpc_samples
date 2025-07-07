@@ -40,7 +40,7 @@ struct Index {
   @State public writeResult:number = 0;
 
   getResourceString(res:Resource){
-    return getContext().resourceManager.getStringSync(res.id)
+    return this.getUIContext().getHostContext()?.resourceManager.getStringSync(res.id)
   }
 
   build() {
