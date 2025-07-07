@@ -116,5 +116,5 @@ If you find any problem when using @ohos/xmpp_client_core, submit an [issue](htt
 
 ## License
 
-This project is licensed under ISC License.
+This project is licensed under [ISC License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/xmpp_client_core/LICENSE).
 
