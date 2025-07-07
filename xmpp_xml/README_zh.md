@@ -144,4 +144,4 @@ DevEco Studio:5.0.3.200, 5.0.0.22-Canary2, SDK: API12
 
 ## 开源协议
 
-本项目基于ISC，请自由地享受和参与开源。
+本项目基于[ISC LICENSE](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/xmpp_xml/LICENSE-ISC)，请自由地享受和参与开源。

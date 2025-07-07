@@ -1,6 +1,6 @@
 {
   "name": "@ohos/xmpp_xml",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/xmpp_xml",
   "description": "XMPP is an open technology for real-time communication, which powers a wide range of applications including instant messaging, presence, multi-party chat, voice and video calls, collaboration, lightweight middleware, content syndication, and generalized routing of XML data",
   "main": "index.js",
