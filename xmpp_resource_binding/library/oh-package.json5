@@ -1,7 +1,7 @@
 {
   "name": "@ohos/xmpp_resoure_binding",
-  "version": "1.0.1",
-  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/xmpp_resource_binding",
+  "version": "1.0.2",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/xmpp_resource_binding",
   "description": "在OpenHarmony上提供了一个用于XMPP(Extensible Messaging and Presence Protocol)客户端与XMPP服务端进行资源绑定的library",
   "main": "index.js",
   "types": "index.d.ts",
