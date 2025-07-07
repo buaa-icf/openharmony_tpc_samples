@@ -241,4 +241,4 @@ If you find any problem when using domutils, submit an [issue](https://gitcode.c
 
 ## License
 
-This project is licensed under [BSD License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/domUtils/LICENSE).
+This project is licensed under [BSD License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/domutils/LICENSE).
