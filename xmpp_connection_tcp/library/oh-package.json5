@@ -1,6 +1,6 @@
 {
   "name": "@ohos/xmpp_connection_tcp",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/xmpp_connection_tcp",
   "description": "用于建立和管理XMPP连接的库，提供了一个用于建立和管理XMPP连接的。",
   "main": "index.js",
