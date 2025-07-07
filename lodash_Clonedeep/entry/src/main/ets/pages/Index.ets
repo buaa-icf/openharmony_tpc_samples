@@ -77,9 +77,10 @@ interface obj2 {
 @Entry
 @Component
 struct Index {
-  @State message: string = this.getResourceString($r('app.string.The_copy_result_is'))
+  @State message: string = this.getResourceString($r('app.string.The_copy_result_is'));
+
   getResourceString(res:Resource) {
-    return getContext().resourceManager.getStringSync(res.id)
+    return this.getUIContext().getHostContext()?.resourceManager.getStringSync(res.id) || "";
   }
   build() {
     Row() {
