@@ -23,7 +23,6 @@
 import { Console } from '../components/Console';
 import ConsoleN from '../components/ConsoleN';
 import jackrabbit from '@ohos/jackrabbit';
-import router from '@ohos.router';
 
 
 @Entry
@@ -36,7 +35,7 @@ struct HelloWorld {
 
 
   aboutToAppear() {
-    let obj: ESObject = router.getParams()
+    let obj: ESObject = this.getUIContext().getRouter().getParams();
     if (obj.serverIp)
       this.serverIp = obj.serverIp
   }
@@ -77,7 +76,7 @@ struct HelloWorld {
   send(console: ConsoleN.Model) {
     let rabbit: ESObject = jackrabbit('amqp://' + this.serverIp);
     let exchange: ESObject = rabbit.default();
-    let hello: ESObject = exchange.queue({ name: 'hello_jackrabbit' });
+    // let hello: ESObject = exchange.queue({ name: 'hello_jackrabbit' });
 
     exchange.publish('Hello World!', { key: 'hello_jackrabbit' });
 

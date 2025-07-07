@@ -239,7 +239,7 @@ export default function abilityTest() {
       });
 
       rpc.on('ready', () => {
-        let rpc: ESObject = exchange.rpcServer('rpc_queue_jackrabbit_timeout', (data: ESObject, reply: ESObject) => {
+        let rpc: ESObject = exchange.rpcServer('rpc_queue_jackrabbit_timeout', (data: ESObject) => {
           console.log('got request for n:' + data.n);
         });
         hilog.info(0x0000, 'client_jackrabbit_test', '%{public}s', 'rpc:' + JSON.stringify(rpc) ?? '');
@@ -296,7 +296,7 @@ export default function abilityTest() {
       let hello: ESObject = exchange.queue({
         name: 'hello_jackrabbit', prefetch: 0
       });
-      let cancel: ESObject = hello.cancel((done: ESObject) => {
+      let cancel: ESObject = hello.cancel(() => {
       });
       hilog.info(0x0000, 'client_jackrabbit_test', '%{public}s', 'cancel:' + JSON.stringify(cancel) ?? '');
       expect(cancel).assertUndefined();
@@ -307,7 +307,7 @@ export default function abilityTest() {
       let hello: ESObject = exchange.queue({
         name: 'hello_jackrabbit', prefetch: 0
       });
-      let purge: ESObject = hello.purge((done: ESObject) => {
+      let purge: ESObject = hello.purge(() => {
       });
       hilog.info(0x0000, 'client_jackrabbit_test', '%{public}s', 'purge:' + JSON.stringify(purge) ?? '');
       expect(purge).assertUndefined();

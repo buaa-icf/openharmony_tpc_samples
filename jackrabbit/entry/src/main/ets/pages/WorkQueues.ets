@@ -24,7 +24,6 @@
 import { Console } from '../components/Console';
 import ConsoleN from '../components/ConsoleN';
 import jackrabbit from '@ohos/jackrabbit';
-import router from '@ohos.router';
 
 @Entry
 @Component
@@ -37,7 +36,7 @@ struct WorkQueues {
   rabbitSpanish: ESObject;
 
   aboutToAppear() {
-    let obj: ESObject = router.getParams()
+    let obj: ESObject =  this.getUIContext().getRouter().getParams();
     if (obj.serverIp)
       this.serverIp = obj.serverIp
   }
@@ -89,7 +88,7 @@ struct WorkQueues {
   publish(console: ConsoleN.Model) {
     let rabbit:ESObject = jackrabbit('amqp://' + this.serverIp);
     let exchange:ESObject = rabbit.default();
-    let hello:ESObject = exchange.queue({ name: 'task_queue', durable: true });
+    // let hello:ESObject = exchange.queue({ name: 'task_queue', durable: true });
 
     exchange.publish({ name: 'Hunter' }, { key: 'task_queue' });
     exchange.on('drain', () => {
