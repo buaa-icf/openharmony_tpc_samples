@@ -1,6 +1,6 @@
 {
   "name": "@ohos/xmpp_reconnect",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/xmpp_reconnect",
   "description": "用于 XMPP（Extensible Messaging and Presence Protocol，可扩展消息和状态协议）客户端的库，它提供了自动重连功能",
   "main": "index.js",
