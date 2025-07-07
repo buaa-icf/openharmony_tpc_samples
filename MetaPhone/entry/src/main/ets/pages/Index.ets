@@ -19,7 +19,7 @@ import hilog from '@ohos.hilog'
 @Component
 struct Index {
   @State message: string = 'Hello World'
-  @State buttonText: string = getContext().resourceManager.getStringByNameSync('Pronunciation_code_button_text')
+  @State buttonText: string = this.getUIContext().getHostContext()?.resourceManager.getStringByNameSync('Pronunciation_code_button_text') ?? ''
 
   build() {
     Row() {
