@@ -13,8 +13,6 @@
  * limitations under the License.
  */
 
-import router from '@ohos.router';
-
 @Entry
 @Component
 struct Index {
@@ -36,8 +34,8 @@ struct Index {
           .padding({ left: 10 })
           .width('150')
           .height('50')
-          .onClick((event?: ClickEvent) => {
-            router.pushUrl({ url: "pages/Gzip" })
+          .onClick(() => {
+            this.getUIContext().getRouter().pushUrl({ url: "pages/Gzip" });
           })
 
         Button($r("app.string.Jump_to_deflateDemo"), { type: ButtonType.Normal, stateEffect: true })
@@ -49,8 +47,8 @@ struct Index {
           .padding({ left: 10 })
           .width('150')
           .height('50')
-          .onClick((event?: ClickEvent) => {
-            router.pushUrl({ url: "pages/DeflateDemo" })
+          .onClick(() => {
+            this.getUIContext().getRouter().pushUrl({ url: "pages/DeflateDemo" });
           })
 
         Button($r("app.string.Jump_to_pakoTes"), { type: ButtonType.Normal, stateEffect: true })
@@ -62,8 +60,8 @@ struct Index {
           .padding({ left: 10 })
           .width('150')
           .height('50')
-          .onClick((event?: ClickEvent) => {
-            router.pushUrl({ url: "pages/PakoTest" })
+          .onClick(() => {
+            this.getUIContext().getRouter().pushUrl({ url: "pages/PakoTest" });
           })
       }
       .width('100%')

@@ -64,7 +64,11 @@ struct DeflateTest {
   preTimestamp: number = 0;
 
   getResourceString(res:Resource){
-    return getContext().resourceManager.getStringSync(res.id)
+    try {
+      return this.getUIContext().getHostContext()?.resourceManager.getStringSync(res.id) || "";
+    }catch (e) {
+      return "";
+    }
   }
 
   build() {
@@ -77,7 +81,7 @@ struct DeflateTest {
         .margin({ top: 32 })
         .padding(8)
         .border({ width: 2, color: '#535353', radius: 6 })
-        .onClick((event) => {
+        .onClick(() => {
           if (!this.isFastClick()) {
             this.generateTextFile()
           }
@@ -118,7 +122,7 @@ struct DeflateTest {
       let data = context.filesDir
       InflateFile(data + "/hello.txt.deflate", data + '/test.txt')
         .then(() => {
-          AlertDialog.show({
+          this.getUIContext().showAlertDialog({
             title: $r("app.string.Decompression_successful"),
             message: this.getResourceString($r("app.string.Check_out_sandbox_path")) + data + '/test.txt',
             confirm: {
@@ -140,7 +144,7 @@ struct DeflateTest {
       DeflateFile(data + '/hello.txt', data + '/hello.txt.deflate')
         .then((isSuccess) => {
           if (isSuccess) {
-            AlertDialog.show({
+            this.getUIContext().showAlertDialog({
               title: $r("app.string.Compression_succeeded"),
               message: this.getResourceString($r("app.string.Check_out_sandbox_path")) + data + '/test.txt.deflate',
               confirm: {
@@ -176,7 +180,7 @@ struct DeflateTest {
         + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs"
       );
       fs.closeSync(writer);
-      AlertDialog.show({
+      this.getUIContext().showAlertDialog({
         title: $r("app.string.Build_succeeded"),
         message: this.getResourceString($r("app.string.Check_out_sandbox_path")) + data + '/hello.txt',
         confirm: {

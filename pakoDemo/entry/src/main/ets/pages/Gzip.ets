@@ -70,7 +70,11 @@ struct GzipTest {
   preTimestamp: number = 0;
 
   getResourceString(res:Resource) {
-    return getContext().resourceManager.getStringSync(res.id)
+    try {
+      return this.getUIContext().getHostContext()?.resourceManager.getStringSync(res.id) || "";
+    }catch (e) {
+      return "";
+    }
   }
 
   build() {
@@ -84,7 +88,7 @@ struct GzipTest {
         .margin({ top: 32 })
         .padding(8)
         .border({ width: 2, color: '#535353', radius: 6 })
-        .onClick((event) => {
+        .onClick(() => {
           if (!this.isFastClick()) {
             this.generateTextFile()
           }
@@ -96,7 +100,7 @@ struct GzipTest {
           .margin({ top: 32 })
           .padding(8)
           .border({ width: 2, color: '#535353', radius: 6 })
-          .onClick((event) => {
+          .onClick(() => {
             if (!this.isFastClick()) {
               this.gzipFileTest()
             }
@@ -109,7 +113,7 @@ struct GzipTest {
           .margin({ top: 32 })
           .padding(8)
           .border({ width: 2, color: '#535353', radius: 6 })
-          .onClick((event) => {
+          .onClick(() => {
             if (!this.isFastClick()) {
               this.unGzipFileTest()
             }
@@ -141,7 +145,7 @@ struct GzipTest {
           + "adasajsdkjadjkakjdakjsdkjadkjakjdakjsdkjasdkjaskjdakjsdkjaskjdakjsdkjaskjakjdakjs"
       );
       fs.closeSync(writer);
-      AlertDialog.show({
+      this.getUIContext().showAlertDialog({
         title: $r("app.string.Build_succeeded"),
         message: this.getResourceString($r("app.string.Check_out_sandbox_path")) + data + '/hello.txt',
         confirm: {
@@ -163,7 +167,7 @@ struct GzipTest {
       gzipFile(data + '/hello.txt', data + '/test.txt.gz')
         .then((isSuccess) => {
           if (isSuccess) {
-            AlertDialog.show({
+            this.getUIContext().showAlertDialog({
               title: $r("app.string.Compression_succeeded"),
               message: this.getResourceString($r("app.string.Check_out_sandbox_path")) + data + '/test.txt.gz',
               confirm: {
@@ -186,7 +190,7 @@ struct GzipTest {
       unGzipFile(data + '/test.txt.gz', data + '/test.txt')
         .then((isSuccess) => {
           if (isSuccess) {
-            AlertDialog.show({
+            this.getUIContext().showAlertDialog({
               title: $r("app.string.Decompression_successful"),
               message: this.getResourceString($r("app.string.Check_out_sandbox_path")) + data + '/test.txt',
               confirm: {
