@@ -1,6 +1,6 @@
 {
   "name": "@ohos/xmpp_stream_features",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/xmpp_stream_features",
   "description": "在OpenHarmony上提供了一个用于建立和管理XMPP(Extensible Messaging and Presence Protocol)流连接的library",
   "main": "index.js",
