@@ -12,7 +12,7 @@
 ```shell
 ohpm install nth-check
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装 OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装 OpenHarmony ohpm包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
 ### API
 
@@ -147,7 +147,7 @@ gen(); // null
 ```
 
 ## 贡献代码
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/nth-check/issues) ，当然也非常欢迎直接发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/nth-check/pulls) 。
+使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) ，当然也非常欢迎直接发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
 ## 开源协议
-本项目基于 [BSD 2-Clause](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/nth-check/blob/master/LICENSE) ，请自由地享受和参与开源。
+本项目基于 [BSD 2-Clause](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/nth-check/LICENSE) ，请自由地享受和参与开源。
