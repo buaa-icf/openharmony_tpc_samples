@@ -64,81 +64,166 @@ For details, see [Installing an OpenHarmony HAR](https://gitcode.com/openharmony
 
 ## Available APIs
 
-### b2Body APIs 
+### b2Body APIs
 1. Creates a fixture.
-   `CreateFixture()`
+   `CreateFixture(def: b2FixtureDef): b2Fixture`
+   • Input: def - Fixture definition (shape, density, friction, etc.)  
+   • Output: Newly created fixture object
+
 2. Destroys a fixture.
-   `DestroyFixture()`
+   `DestroyFixture(fixture: b2Fixture): void`  
+   • Input: fixture - Fixture object to destroy  
+   • Output: None
+
 3. Sets the transformation.
-   `SetTransform()`
+   `SetTransform(position: XY): void`  
+   • Input: position - World coordinate position  
+   • Output: None
+
 4. Obtains the transformation.
-   `GetTransform()`
+   `GetTransform(): b2Transform`  
+   • Output: Current body's transformation matrix (position and angle)
+
 5. Obtains the position.
-   `GetPosition()`
+   GetPosition(): b2Vec2  
+   • Output: World coordinates of body's center
+
 6. Sets the position.
-   `SetPosition()`
+   `SetPosition(position: XY): void`  
+   • Input: position - Target world coordinates  
+   • Output: None
+
 7. Obtains the world center.
-   `GetWorldCenter()`
+   `GetWorldCenter(): b2Vec2`  
+   • Output: World coordinates of body's centroid
+
 8. Obtains the local center.
-   `GetLocalCenter()`
-9. Sets the linear speed.
-   `SetLinearVelocity()`
+   `GetLocalCenter(): b2Vec2`  
+   • Output: Offset of centroid relative to local coordinate system
+
+9. Sets the linear speed. 
+   `SetLinearVelocity(velocity: XY): void`  
+   • Input: velocity - Target linear velocity vector  
+   • Output: None
 
 ### b2World APIs
-1. Sets the substep.
-   `setSubStepping()`
+1. Sets the substep. 
+   `setSubStepping(flag: boolean): void`  
+   • Input: flag - Whether to enable sub-stepping (for complex simulations)  
+   • Output: None
+
 2. Sets the destruction listener.
-   `SetDestructionListener()`
-3. Sets the contact filter.
-   `SetContactFilter()`
+   `SetDestructionListener(listener: b2DestructionListener | null): void`  
+   • Input: listener - Callback interface (handles object destruction events)  
+   • Output: None
+
+3. Sets the contact filter. 
+   `SetContactFilter(filter: b2ContactFilter): void`  
+   • Input: filter - Callback interface (determines collision allowance)  
+   • Output: None
+
 4. Sets the contact listener.
-   `SetContactListener()`
+   `SetContactListener(listener: b2ContactListener): void`  
+   • Input: listener - Callback interface (handles collision events)  
+   • Output: None
+
 5. Sets the debugging drawing.
-   `SetDebugDraw()`
+   `SetDebugDraw(debugDraw: b2Draw | null): void`  
+   • Input: debugDraw - Debug drawing interface  
+   • Output: None
+
 6. Creates a rigid body.
-   `CreateBody()`
+   `CreateBody(def: b2BodyDef): b2Body`  
+   • Input: def - Body definition (type, position, damping, etc.)  
+   • Output: Newly created body object
+
 7. Destroys a rigid body.
-   `DestroyBody()`
+   `DestroyBody(body: b2Body): void`  
+   • Input: body - Body to destroy  
+   • Output: None
+
 8. Creates a joint.
-   `CreateJoint()`
+   `CreateJoint(def: b2JointDef): b2Joint`  
+   • Input: def - Joint definition (connected bodies, anchors, etc.)  
+   • Output: Newly created joint object
+
 9. Destroys a joint.
-   `DestroyJoint()`
+   `DestroyJoint(joint: b2Joint): void`  
+   • Input: joint - Joint to destroy  
+   • Output: None
 
 ### b2Contact APIs
 1. Performs a reset.
-   `Reset`
+   `Reset(): void`  
+   • Output: None (resets contact state)
+
 2. Obtains the manifold.
-   `GetManifold`
+   `GetManifold(): b2Manifold` 
+   • Output: Collision manifold data (contact point collection)
+
 3. Obtains the world manifold.
-   `GetWorldManifold`
+   `GetWorldManifold(worldManifold: b2WorldManifold): void`  
+   • Input/Output: worldManifold - Stores manifold data in world coordinates
+
 4. Sets the tangent speed.
-   `SetTangentSpeed`
+   `SetTangentSpeed(speed: number): void`  
+   • Input: speed - Tangential velocity value  
+   • Output: None
+
 5. Resets the friction.
-   `ResetFriction`
+   `ResetFriction(): void`  
+   • Output: None (restores default friction)
+
 6. Set the friction.
-   `SetFriction`
+   `SetFriction(friction: number): void`  
+   • Input: friction - New friction coefficient  
+   • Output: None
+
 7. Specifies whether to enable the function.
-   `SetEnabled`
+   `SetEnabled(flag: boolean): void`  
+   • Input: flag - Whether to enable contact  
+   • Output: None
+
 8. Obtains fixture A.
-   `GetFixtureA`
+   `GetFixtureA(): b2Fixture`  
+   • Output: First fixture in the contact
 
 ### b2Shape APIs
 1. Performs a ray cast.
-   `RayCast`
+   `RayCast(output: b2RayCastOutput, input: b2RayCastInput, transform: b2Transform, childIndex: number): boolean`  
+   • Input: input - Ray parameters; transform - Transformation matrix; childIndex - Child shape index  
+   • Output: output - Stores intersection info; returns whether hit occurred
+
 2. Obtains the type.
-   `GetType`
-3. Performs a copy.
-   `Copy`
-4. Obtains the child count.
-   `GetChildCount`
+   `GetType(): b2ShapeType`  
+   • Output: Shape type enum (circle, polygon, etc.)
+
+3. Performs a copy. 
+   `Copy(other: b2Shape): b2Shape`  
+   • Output: Returns a deep copy of the shape
+
+4. Obtains the child count. 
+   `GetChildCount(): number`  
+   • Output: Number of child shapes (for composite shapes)
+
 5. Computes AABB.
-   `ComputeAABB`
+   `ComputeAABB(aabb: b2AABB, xf: b2Transform, childIndex: number): void`  
+   • Input: xf - Transformation matrix; childIndex - Child shape index  
+   • Output: aabb - Stores computation results
+
 6. Computes the quality.
-   `ComputeMass`
+   `ComputeMass(massData: b2MassData, density: number): void`  
+   • Input: density - Density value  
+   • Output: massData - Stores mass, centroid, etc.
+
 7. Computes the distance.
-   `ComputeDistance`
+   `ComputeDistance(xf: b2Transform, p: b2Vec2, normal: b2Vec2, childIndex: number): number`  
+   • Input: xf - Transformation matrix; p - Point in world coordinates; normal - Direction of increasing distance; childIndex - the child shape index  
+   • Output: Minimum distance
+
 8. Performs a clone.
-   `clone`
+   `clone(): b2Shape`  
+   • Output: Returns new instance (same as Copy)
 
 ## About obfuscation
 - Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
