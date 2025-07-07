@@ -244,5 +244,5 @@ DevEco Studio 版本：DevEco Studio 5.1.0 Canary1(5.1.0.229)，OpenHarmony SDK:
 
 ## 开源协议
 
-本项目基于 [BSD License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/domUtils/LICENSE)，请自由地享受和参与开源。
+本项目基于 [BSD License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/domutils/LICENSE)，请自由地享受和参与开源。
 
