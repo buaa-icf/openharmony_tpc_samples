@@ -131,4 +131,4 @@ caller.start();
 
 ## 开源协议
 
-本项目基于ISC，请自由地享受和参与开源。
+本项目基于[ISC License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/xmpp_iq/LICENSE)，请自由地享受和参与开源。
