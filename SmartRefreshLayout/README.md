@@ -48,19 +48,53 @@ import {Material} from "@ohos/smartrefreshlayout"
 ```
 
 ## Available APIs
+Initialization
+
 `@State model: SmartRefresh.Model = new SmartRefresh.Model()`
+
+Method List
+
 1. Background color
-   `model.setBackgroundShadowColor()`
+   `model.setBackgroundShadowColor(color: Color): void`
+
+   • Input: color - Color value
+
+   • Output: None
+
 2. Font color
-   `model.setBackgroundColor()`
+   `model.setBackgroundColor(color: Color): void`
+
+   • Input: color - Color value
+
+   • Output: None
+
 3. Default header height
-   `model.setInitHeaderHeight()`
+   `model.setInitHeaderHeight(height: number): void`
+
+   • Input: height – Height value
+
+   • output: None
+   
 4. Whether the header is fixed
-   `model.setFixedContent()`
+   `model.setFixedContent(fixedContent: boolean): void`
+
+   • Input: fixedContent – Whether to fix the header (true/false)
+
+   • output: None
+
 5. Header refresh position
-   `model.setRefreshPosition()`
+   `model.setRefreshPosition(position: RefreshPositionEnum): void`
+
+   • Input: position – Position enum: TOP = 0, BOTTOM = 1, TOPANDBOTTOM = 2
+
+   • output: None
+
 6. Whether to display the refresh time.
-   `model.setTimeShowState()`
+   `model.setTimeShowState(isShow: boolean): void`
+
+   • Input: isShow – Whether to show the refresh time (true/false)
+
+   • output: None
 
 ## Compatibility
 DevEco Studio: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API11 (4.1.0.36)
