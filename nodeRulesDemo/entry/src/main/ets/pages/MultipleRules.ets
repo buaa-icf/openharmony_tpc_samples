@@ -14,21 +14,21 @@
  */
 
 import RuleEngine from "node-rules";
-import Prompt from '@system.prompt';
+import { Fact } from "./Type";
 
 @Entry
 @Component
 struct MultipleRules {
-  @State message: string = 'Hello World'
+  @State message: string = 'Hello World';
   @State setValue: string = "";
   @State typeValue: string = "other";
   @State resultStr: string = "";
   controller: TextAreaController = new TextAreaController();
-  testResult: string = getContext(this).resourceManager.getStringByNameSync('text_result').toString();
+  testResult: string = this.getUIContext().getHostContext()?.resourceManager.getStringByNameSync('text_result').toString() || "";
 
   ruleEngineExecute(): void {
     if (this.setValue === '' || Number.isNaN(Number(this.setValue))) {
-      Prompt.showToast({
+      this.getUIContext().getPromptAction().showToast({
         message: 'Enter an integer value'
       })
       return
@@ -70,7 +70,7 @@ struct MultipleRules {
 
     ruleEngine.register(rules);
 
-    let fact: ESObject = {
+    let fact: Fact = {
       name: "user4",
       application: "MOB2",
       transactionTotal: Number.parseInt(this.setValue),

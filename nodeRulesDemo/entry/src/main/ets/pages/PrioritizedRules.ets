@@ -13,21 +13,21 @@
  * limitations under the License.
  */
 import RuleEngine from "node-rules";
-import Prompt from '@system.prompt';
+import { Fact } from "./Type";
 
 @Entry
 @Component
 struct PrioritizedRules {
-  @State message: string = 'Hello World'
+  @State message: string = 'Hello World';
   @State setValue: string = "";
   @State typeValue: string = "other";
   @State resultStr: string = "";
   controller: TextAreaController = new TextAreaController();
-  testResult: string = getContext(this).resourceManager.getStringByNameSync('text_result').toString();
+  testResult: string = this.getUIContext().getHostContext()?.resourceManager.getStringByNameSync('text_result').toString() || "";
 
   ruleEngineExecute(): void {
     if (this.setValue === '' || Number.isNaN(Number(this.setValue))) {
-      Prompt.showToast({
+      this.getUIContext().getPromptAction().showToast({
         message: 'Please enter an integer value'
       })
       return
@@ -72,7 +72,8 @@ struct PrioritizedRules {
 
     let rules: ESObject[] = [new Rule1(), new Rule2()]
     ruleEngine.register(rules);
-    let fact: ESObject = {
+
+    let fact: Fact = {
       name: "user4",
       application: "MOB2",
       transactionTotal: Number.parseInt(this.setValue),

@@ -14,30 +14,30 @@
  */
 
 import RuleEngine from "node-rules";
-import Prompt from '@system.prompt';
+import { Fact } from "./Type";
 
 @Entry
 @Component
 struct RecurssionWithRules {
-  @State message: string = 'Hello World'
+  @State message: string = 'Hello World';
   @State setValue: string = "";
   @State resultStr: string = "";
   @State arrayStr: Array<string> = [];
   controller: TextAreaController = new TextAreaController();
-  testResult: string = getContext(this).resourceManager.getStringByNameSync('text_result').toString();
+  testResult: string = this.getUIContext().getHostContext()?.resourceManager.getStringByNameSync('text_result').toString() || "";
 
   ruleEngineExecute(): void {
     let value: number = Number(this.setValue)
 
     if (this.setValue === '' || Number.isNaN(value) || value >= 10 || value < 0) {
-      Prompt.showToast({
+      this.getUIContext().getPromptAction().showToast({
         message: 'Enter a value within 10'
       })
       return
     }
 
 
-    let ruleEngine: RuleEngine = new RuleEngine();
+    let ruleEngine:ESObject = new RuleEngine();
     let that = this;
 
     class Rule {
@@ -56,10 +56,9 @@ struct RecurssionWithRules {
 
     let rule: Rule = new Rule();
 
-
     ruleEngine.register(rule);
 
-    let fact: ESObject = {
+    let fact: Fact = {
       someval: Number.parseInt(this.setValue)
     };
 
@@ -94,7 +93,7 @@ struct RecurssionWithRules {
         this.ruleEngineExecute();
       })
 
-      ForEach(this.arrayStr, (item: string, index: number) => {
+      ForEach(this.arrayStr, (item: string) => {
         Text(this.testResult + item)
           .width("90%")
           .height(30)

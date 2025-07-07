@@ -19,11 +19,11 @@ import RuleEngine from "node-rules";
 @Entry
 @Component
 struct MoreRulesAndFacts {
-  @State message: string = 'Hello World'
+  @State message: string = 'Hello World';
   @State resultStr: string = "";
   controller: TextAreaController = new TextAreaController();
   @State arrayStr: Array<string> = [];
-  testResult: string = getContext(this).resourceManager.getStringByNameSync('text_result').toString();
+  testResult: string = this.getUIContext().getHostContext()?.resourceManager.getStringByNameSync('text_result').toString() || "";
 
   ruleEngineExecute(): void {
     let ruleEngine: ESObject = new RuleEngine();
@@ -237,7 +237,18 @@ struct MoreRulesAndFacts {
     ruleEngine.register(rules);
 
     /** example of cash card user, so payment blocked. ****/
-    let user1: ESObject = {
+    interface User{
+      userIP: string,
+      name: string,
+      eventRiskFactor: number,
+      userCredibility: number,
+      appCode: string,
+      userLoggedIn: boolean,
+      transactionTotal: number,
+      cardType: string,
+      cardIssuer: string
+    }
+    let user1: User = {
       userIP: "10.3.4.5",
       name: "user1",
       eventRiskFactor: 6,
@@ -249,7 +260,7 @@ struct MoreRulesAndFacts {
       cardIssuer: "OXI"
     }
 
-    let user2: ESObject = {
+    let user2: User = {
       userIP: "27.3.4.5",
       name: "user2",
       eventRiskFactor: 2,
@@ -261,7 +272,7 @@ struct MoreRulesAndFacts {
       cardIssuer: "VISA"
     }
 
-    let user3: ESObject = {
+    let user3: User = {
       userIP: "27.3.4.5",
       name: "user3",
       eventRiskFactor: 2,
@@ -273,7 +284,7 @@ struct MoreRulesAndFacts {
       cardIssuer: "VISA"
     }
 
-    let user4: ESObject = {
+    let user4: User = {
       userIP: "27.3.4.5",
       name: "user4",
       eventRiskFactor: 8,
@@ -285,7 +296,7 @@ struct MoreRulesAndFacts {
       cardIssuer: "VISA"
     }
 
-    let user5: ESObject = {
+    let user5: User = {
       userIP: "27.3.4.5",
       name: "user5",
       eventRiskFactor: 8,
@@ -297,7 +308,7 @@ struct MoreRulesAndFacts {
       cardIssuer: "VISA"
     }
 
-    let user6: ESObject = {
+    let user6: User = {
       userIP: "10.3.4.5",
       name: "user6",
       eventRiskFactor: 8,
@@ -309,7 +320,7 @@ struct MoreRulesAndFacts {
       cardIssuer: "VISA"
     }
 
-    let user7: ESObject = {
+    let user7: User = {
       userIP: "27.3.4.5",
       name: "user7",
       eventRiskFactor: 2,
@@ -321,7 +332,7 @@ struct MoreRulesAndFacts {
       cardIssuer: "VISA"
     }
 
-    let user8: ESObject = {
+    let user8: User = {
       userIP: "27.3.4.5",
       name: "user8",
       eventRiskFactor: 8,
@@ -441,7 +452,7 @@ struct MoreRulesAndFacts {
           this.ruleEngineExecute();
         })
 
-      ForEach(this.arrayStr, (item: string, index: number) => {
+      ForEach(this.arrayStr, (item: string) => {
         Text(this.testResult + item)
           .width("90%")
           .height(30)
