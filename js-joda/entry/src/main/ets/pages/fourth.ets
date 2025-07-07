@@ -33,7 +33,6 @@ import {
   ZonedDateTime,
   ZoneId
 } from '@js-joda/core'
-// import '@js-joda/timezone'
 import router from '@ohos.router';
 
 @Entry
@@ -49,7 +48,8 @@ struct Fourth {
             .backgroundColor(0x317aff)
             .width(240)
             .onClick(() => {
-              this.message = testZonedDateTime();
+              let context: Context | undefined = this.getUIContext().getHostContext();
+              this.message = testZonedDateTime(context);
             })
           Text(this.message)
             .fontSize(15)
@@ -60,7 +60,7 @@ struct Fourth {
             .backgroundColor(0x317aff)
             .width(240)
             .onClick(() => {
-              router.pushUrl({ url: 'pages/fifth' })
+              this.getUIContext().getRouter().pushUrl({ url: 'pages/fifth' })
             })
         }
       }
@@ -71,7 +71,7 @@ struct Fourth {
 }
 
 // 带时区日期时间测试
-function testZonedDateTime() {
+function testZonedDateTime(context: Context | undefined) {
   // 获取默认时区的日期时间 协调世界时
   console.info(ZonedDateTime.now().toString());
   // 转换固定偏移量日期时间
@@ -81,6 +81,6 @@ function testZonedDateTime() {
 
   console.info(ZonedDateTime.now(ZoneId.systemDefault()).toString());
 
-  return getContext().resourceManager.getStringByNameSync("Get_date_and_time_with_time_zone") + ZonedDateTime.now().toString() + '\n' +
-  getContext().resourceManager.getStringByNameSync("Obtain_domestic_Shanghai_date_and_time")+ ZonedDateTime.now(ZoneId.systemDefault()).toString() + '\n';
+  return context?.resourceManager.getStringByNameSync("Get_date_and_time_with_time_zone") + ZonedDateTime.now().toString() + '\n' +
+  context?.resourceManager.getStringByNameSync("Obtain_domestic_Shanghai_date_and_time")+ ZonedDateTime.now(ZoneId.systemDefault()).toString() + '\n';
 }
