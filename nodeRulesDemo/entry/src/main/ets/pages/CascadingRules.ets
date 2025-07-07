@@ -15,17 +15,18 @@
 
 
 import RuleEngine from "node-rules";
+import { Fact } from "./Type";
 
 
 @Entry
 @Component
 struct CascadingRules {
-  @State message: string = 'Hello World'
+  @State message: string = 'Hello World';
   @State appValue: string = "";
   @State typeValue: string = "other";
   @State resultStr: string = "";
   controller: TextAreaController = new TextAreaController();
-  testResult: string = getContext(this).resourceManager.getStringByNameSync('text_test_result').toString();
+  testResult: string = this.getUIContext().getHostContext()?.resourceManager.getStringByNameSync('text_test_result').toString() || "";
 
 
   ruleEngineExecute(): void {
@@ -64,7 +65,7 @@ struct CascadingRules {
 
     ruleEngine.register(rules);
 
-    let fact: ESObject = {
+    let fact: Fact = {
       name: "user4",
       application: this.appValue,
       transactionTotal: 600,
