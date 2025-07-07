@@ -1,6 +1,6 @@
 {
   "name": "@ohos/xmpp_client_core",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/xmpp_client_core",
   "description": "用于开发基于xmpp的实时通信应用程序的基本库，提供连接管理、消息处理和自定义功能等关键功能。",
   "main": "index.js",
