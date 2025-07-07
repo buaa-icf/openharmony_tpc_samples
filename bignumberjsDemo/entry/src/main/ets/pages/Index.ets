@@ -121,6 +121,8 @@ struct Index {
   mathAdd2: string = ""
   mathAcosStr: string = ""
   mathAbsStr: string = ""
+  result: string | undefined = this.getUIContext().getHostContext()?.resourceManager.getStringByNameSync('Result');
+  time: string | undefined = this.getUIContext().getHostContext()?.resourceManager.getStringByNameSync('Time');
 
   build() {
     Scroll(this.scroller) {
@@ -183,14 +185,14 @@ struct Index {
               tb('2263343854329.638037260235405086446634', '5122725402931741767463814.840999999', 24, 4);
               tb('218875865535828595.704079834928718536449349620686728272', '47906644514058120040043799772367208.9448736248559332241111111111111', 36, 1);
               tb('63216259733951.59', '3996295494750428253401001163.9486336398226471847', 2, 0);
-              AlertDialog.show({ title: 'squareRoot test success',
+              this.getUIContext().showAlertDialog({ title: 'squareRoot test success',
                 message: '',
                 confirm: { value: 'OK', action: () => {
                 } }
               })
             } catch (err) {
               console.log('errerr ' + err)
-              AlertDialog.show({ title: 'squareRoot test fail',
+              this.getUIContext().showAlertDialog({ title: 'squareRoot test fail',
                 message: err,
                 confirm: { value: 'OK', action: () => {
                 } }
@@ -220,11 +222,11 @@ struct Index {
             }
           })
 
-        Text( getContext().resourceManager.getStringByNameSync('Result')  + this.mathSignum)
+        Text(this.result + this.mathSignum)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeSignum)
+        Text(this.time + this.mathTimeSignum)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
@@ -257,11 +259,11 @@ struct Index {
               console.log('errerr ' + err)
             }
           })
-        Text(getContext().resourceManager.getStringByNameSync('Result') + this.mathposSignum)
+        Text("" + this.result + this.mathposSignum)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeSignum1)
+        Text(this.time + this.mathTimeSignum1)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
@@ -295,11 +297,11 @@ struct Index {
             }
           })
 
-        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathUnaryMinus)
+        Text(this.result + this.mathUnaryMinus)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text(getContext().resourceManager.getStringByNameSync('Time') + this.mathTimeUnaryMinus)
+        Text(this.time + this.mathTimeUnaryMinus)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
@@ -334,11 +336,11 @@ struct Index {
           })
 
 
-        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathTan)
+        Text(this.result + this.mathTan)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeTan)
+        Text(this.time + this.mathTimeTan)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
@@ -372,11 +374,11 @@ struct Index {
             }
           })
 
-        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathSubtract)
+        Text(this.result + this.mathSubtract)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeSubtract)
+        Text(this.time + this.mathTimeSubtract)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
@@ -411,11 +413,11 @@ struct Index {
           })
 
 
-        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathSqrt)
+        Text(this.result + this.mathSqrt)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeSqrt)
+        Text(this.time + this.mathTimeSqrt)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
@@ -442,11 +444,11 @@ struct Index {
           })
 
 
-        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathSin)
+        Text(this.result + this.mathSin)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeSin)
+        Text(this.time + this.mathTimeSin)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
@@ -481,11 +483,11 @@ struct Index {
           })
 
 
-        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathRound)
+        Text("" + this.result + this.mathRound)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeRound)
+        Text(this.time + this.mathTimeRound)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
@@ -520,11 +522,11 @@ struct Index {
           })
 
 
-        Text(getContext().resourceManager.getStringByNameSync('Result')   + this.mathRightArithShift)
+        Text("" + this.result + this.mathRightArithShift)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeRightArithShift)
+        Text(this.time + this.mathTimeRightArithShift)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
@@ -558,11 +560,11 @@ struct Index {
             }
           })
 
-        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathRadix)
+        Text("" + this.result + this.mathRadix)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeRadix)
+        Text(this.time + this.mathTimeRadix)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
@@ -596,11 +598,11 @@ struct Index {
             }
           })
 
-        Text(getContext().resourceManager.getStringByNameSync('Result') + this.mathMultiply)
+        Text(this.result + this.mathMultiply)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeMultiply)
+        Text(this.time + this.mathTimeMultiply)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
@@ -634,11 +636,11 @@ struct Index {
             }
           })
 
-        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathMin)
+        Text(this.result + this.mathMin)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeMin)
+        Text(this.time + this.mathTimeMin)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
@@ -672,11 +674,11 @@ struct Index {
             }
           })
 
-        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathMax)
+        Text(this.result + this.mathMax)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeMax)
+        Text(this.time + this.mathTimeMax)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
@@ -702,11 +704,11 @@ struct Index {
             }
           })
 
-        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathLongValue)
+        Text(this.result + this.mathLongValue)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeLongValue)
+        Text(this.time + this.mathTimeLongValue)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
@@ -740,11 +742,11 @@ struct Index {
             }
           })
 
-        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathLog)
+        Text(this.result + this.mathLog)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeLog)
+        Text(this.time + this.mathTimeLog)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
@@ -778,11 +780,11 @@ struct Index {
             }
           })
 
-        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathLeftShift)
+        Text(this.result + this.mathLeftShift)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeLeftShift)
+        Text(this.time + this.mathTimeLeftShift)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
@@ -808,11 +810,11 @@ struct Index {
             }
           })
 
-        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathIntValue)
+        Text(this.result + this.mathIntValue)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeIntValue)
+        Text(this.time + this.mathTimeIntValue)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
@@ -838,11 +840,11 @@ struct Index {
             }
           })
 
-        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathFormat)
+        Text(this.result + this.mathFormat)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeFormat)
+        Text(this.time + this.mathTimeFormat)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
@@ -876,11 +878,11 @@ struct Index {
             }
           })
 
-        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathExp)
+        Text(this.result + this.mathExp)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeExp)
+        Text(this.time + this.mathTimeExp)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
@@ -914,11 +916,11 @@ struct Index {
             }
           })
 
-        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathDivide)
+        Text(this.result + this.mathDivide)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeDivide)
+        Text(this.time + this.mathTimeDivide)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
@@ -944,11 +946,11 @@ struct Index {
             }
           })
 
-        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathCos)
+        Text("" + this.result + this.mathCos)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text(getContext().resourceManager.getStringByNameSync('Time') + this.mathTimeCos)
+        Text(this.time + this.mathTimeCos)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
@@ -982,11 +984,11 @@ struct Index {
             }
           })
 
-        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathCompare)
+        Text(this.result + this.mathCompare)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeCompare)
+        Text(this.time + this.mathTimeCompare)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
@@ -1012,11 +1014,11 @@ struct Index {
             }
           })
 
-        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathByteValue)
+        Text("" + this.result + this.mathByteValue)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeByteValue)
+        Text(this.time + this.mathTimeByteValue)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
@@ -1050,11 +1052,11 @@ struct Index {
             }
           })
 
-        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathAtan)
+        Text("" + this.result + this.mathAtan)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeAtan)
+        Text(this.time + this.mathTimeAtan)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
@@ -1080,11 +1082,11 @@ struct Index {
             }
           })
 
-        Text(getContext().resourceManager.getStringByNameSync('Result')  + this.mathAsin)
+        Text("" + this.result + this.mathAsin)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Text(getContext().resourceManager.getStringByNameSync('Time')  + this.mathTimeAsin)
+        Text(this.time + this.mathTimeAsin)
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
@@ -1095,13 +1097,13 @@ struct Index {
     .scrollBar(BarState.On)
     .scrollBarColor(Color.Gray)
     .scrollBarWidth(30)
-    .onScroll((xOffset: number, yOffset: number) => {
+    .onWillScroll((xOffset: number, yOffset: number) => {
       console.info(xOffset + ' ' + yOffset)
     })
     .onScrollEdge((side: Edge) => {
       console.info('To the edge')
     })
-    .onScrollEnd(() => {
+    .onScrollStop(() => {
       console.info('Scroll Stop')
     })
   }
