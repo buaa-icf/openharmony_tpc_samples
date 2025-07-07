@@ -115,4 +115,4 @@ If you find any problem when using @ohos/xmpp_websocket, submit an [issue](https
 
 ## License
 
-This project is licensed under ISC License.
+This project is licensed under [ISC License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/xmpp_websocket/LICENSE).

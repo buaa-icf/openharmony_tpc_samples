@@ -1,5 +1,8 @@
 # Changelog[.gitignore](entry%2F.gitignore)
 
+## 1.0.4
+- Update README url
+
 ## 1.0.3
 - 修复websocket断开重连功能
 - 补充repository内容
