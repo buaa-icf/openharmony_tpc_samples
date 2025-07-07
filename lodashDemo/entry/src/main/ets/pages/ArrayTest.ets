@@ -30,7 +30,12 @@ struct Index {
   private sampleArray = [1, 'a', 4, 7, 9, 's', 'r',2, 5, 'o', 's', 'p', 34, 'k'];
   @State resultArray: number[] = [];
   getResourceString(res: Resource) {
-    return getContext().resourceManager.getStringSync(res.id)
+    let resText = this.getUIContext()?.getHostContext()?.resourceManager.getStringSync(res.id);
+    if (resText) {
+      return resText;
+    } else {
+      return '';
+    }
   }
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {

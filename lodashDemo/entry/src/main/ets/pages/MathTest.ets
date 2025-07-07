@@ -36,7 +36,12 @@ struct Index {
   @State precision: number = 0
   @State mean: number = 0
   getResourceString(res: Resource) {
-    return getContext().resourceManager.getStringSync(res.id)
+    let resText = this.getUIContext()?.getHostContext()?.resourceManager.getStringSync(res.id);
+    if (resText) {
+      return resText;
+    } else {
+      return '';
+    }
   }
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {

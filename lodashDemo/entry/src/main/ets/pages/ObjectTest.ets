@@ -28,7 +28,7 @@ class C {
   c: number = 0
 }
 class B {
-  b: C | ESObject
+  b: C | [] = [];
 }
 class Objects {
   a: B[] = []
@@ -64,13 +64,13 @@ struct Index {
       Button($r('app.string.Accessing_certain_conditions'))
         .onClick(() => {
           class User {
-            salary: number = 0
-            active: boolean = true
+            salary?: number = 0
+            active?: boolean = true
           }
           class MeetuS {
-            meetu: User | ESObject
-            teetu: User | ESObject
-            seetu: User | ESObject
+            meetu: User = {}
+            teetu: User = {}
+            seetu: User = {}
           }
           let users: MeetuS = {
             meetu:  { salary:36000, active:true },

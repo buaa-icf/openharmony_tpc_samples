@@ -72,7 +72,7 @@ struct Index {
       Button('Math Test').backgroundColor(0x2788D9)
         .onClick((event: ClickEvent) => {
           let path = 'pages/MathTest'
-          router.pushUrl({
+          this.getUIContext()?.getRouter()?.pushUrl({
             url: path,
           });
         }).margin(5).width(200);
@@ -80,7 +80,7 @@ struct Index {
       Button('Array Test').backgroundColor(0x2788D9)
         .onClick((event: ClickEvent) => {
           let path = 'pages/ArrayTest'
-          router.pushUrl({
+          this.getUIContext()?.getRouter()?.pushUrl({
             url: path,
           });
         }).margin(5).width(200);
@@ -88,7 +88,7 @@ struct Index {
       Button('CollectionTest Test').backgroundColor(0x2788D9)
         .onClick((event: ClickEvent) => {
           let path = 'pages/CollectionTest'
-          router.pushUrl({
+          this.getUIContext()?.getRouter()?.pushUrl({
             url: path,
           });
         }).margin(5).width(200);
@@ -96,7 +96,7 @@ struct Index {
       Button('Date Test').backgroundColor(0x2788D9)
         .onClick((event: ClickEvent) => {
           let path = 'pages/DateTest'
-          router.pushUrl({
+          this.getUIContext()?.getRouter()?.pushUrl({
             url: path,
           });
         }).margin(5).width(200);
@@ -104,7 +104,7 @@ struct Index {
       Button('Function Test').backgroundColor(0x2788D9)
         .onClick((event: ClickEvent) => {
           let path = 'pages/FunctionTest'
-          router.pushUrl({
+          this.getUIContext()?.getRouter()?.pushUrl({
             url: path,
           });
         }).margin(5).width(200);
@@ -112,7 +112,7 @@ struct Index {
       Button('Lang Test').backgroundColor(0x2788D9)
         .onClick((event: ClickEvent) => {
           let path = 'pages/LangTest'
-          router.pushUrl({
+          this.getUIContext()?.getRouter()?.pushUrl({
             url: path,
           });
         }).margin(5).width(200);
@@ -120,7 +120,7 @@ struct Index {
       Button('Number Test').backgroundColor(0x2788D9)
         .onClick((event: ClickEvent) => {
           let path = 'pages/NumberTest'
-          router.pushUrl({
+          this.getUIContext()?.getRouter()?.pushUrl({
             url: path,
           });
         }).margin(5).width(200);
@@ -128,7 +128,7 @@ struct Index {
       Button('Object Test').backgroundColor(0x2788D9)
         .onClick((event: ClickEvent) => {
           let path = 'pages/ObjectTest'
-          router.pushUrl({
+          this.getUIContext()?.getRouter()?.pushUrl({
             url: path,
           });
         }).margin(5).width(200);
@@ -136,7 +136,7 @@ struct Index {
       Button('String Test').backgroundColor(0x2788D9)
         .onClick((event: ClickEvent) => {
           let path = 'pages/StringTest'
-          router.pushUrl({
+          this.getUIContext()?.getRouter()?.pushUrl({
             url: path,
           });
         }).margin(5).width(200);
@@ -144,7 +144,7 @@ struct Index {
       Button('Util Test').backgroundColor(0x2788D9)
         .onClick((event: ClickEvent) => {
           let path = 'pages/UtilTest'
-          router.pushUrl({
+          this.getUIContext()?.getRouter()?.pushUrl({
             url: path,
           });
         }).margin(5).width(200);
