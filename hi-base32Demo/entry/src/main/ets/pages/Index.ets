@@ -12,13 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import base32 from 'hi-base32'
+import base32 from 'hi-base32';
+
 @Entry
 @Component
 struct Index {
-  @State message: string = getContext(this).resourceManager.getStringByNameSync('text_label').toString()
-  @State inputText: string = ''
-  @State encodes: string = ''
+  @State message: string = this.getUIContext().getHostContext()?.resourceManager.getStringByNameSync('text_label').toString() || '';
+  @State inputText: string = '';
+  @State encodes: string = '';
 
   build() {
     Row() {
@@ -35,17 +36,17 @@ struct Index {
           .caretColor(Color.Blue)
           .enterKeyType(EnterKeyType.Search)
           .onChange((value: string) => {
-            this.inputText = value
+            this.inputText = value;
           })
 
         Button($r("app.string.encode_label")).width(300).margin(20).fontSize(25).onClick(()=>{
           this.encodes = base32.encode (this.inputText);
-          this.showDialog(this.encodes )
+          this.showDialog(this.encodes );
         })
 
         Button($r("app.string.decode_label")).width(300).margin(20).fontSize(25).onClick(()=>{
           let mess = base32.decode (this.encodes );
-          this.showDialog(mess)
+          this.showDialog(mess);
         })
 
       }
@@ -54,7 +55,7 @@ struct Index {
     .height('100%')
   }
   showDialog(message:string){
-    AlertDialog.show({
+    this.getUIContext().showAlertDialog({
       title: '',
       message: message,
       confirm: {
