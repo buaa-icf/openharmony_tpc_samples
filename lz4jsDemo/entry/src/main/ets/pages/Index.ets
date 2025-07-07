@@ -14,7 +14,6 @@
  */
 import lz4 from "lz4js"
 import fs from '@ohos.file.fs';
-import prompt from '@ohos.promptAction';
 import {GlobalContext} from "./GlobalContext"
 import common from '@ohos.app.ability.common';
 
@@ -22,10 +21,11 @@ interface  errs{
   message:string,
   code:number
 }
-let context = GlobalContext.getContext().getfindex('context' )
+let context = GlobalContext.getContext().getfindex('context' );
+
 @Entry
 @Component
-export default  struct lz4jsDemo {
+struct lz4jsDemo {
   build(){
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start }) {
       List({ space: 20, initialIndex: 0 }){
@@ -72,47 +72,49 @@ export default  struct lz4jsDemo {
           }
         }
       }
+      .height("100%")
+      .width("100%")
     }
   }
   creatTxt(){
-    const str:string = 'DevEco Studio V3.1 Canary1版本兼容性配套关系如下表所示'
-    let path = (context as common.UIAbilityContext).filesDir + '/test.txt'
+    const str:string = 'DevEco Studio V3.1 Canary1版本兼容性配套关系如下表所示';
+    let path = (context as common.UIAbilityContext).filesDir + '/test.txt';
     let file = fs.openSync(path, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
-    let writeLen = fs.writeSync(file.fd, str);
-    prompt.showToast({ message: $r("app.string.Txt_file_created"), duration: 4000 })
+    fs.writeSync(file.fd, str);
+    this.getUIContext().getPromptAction().showToast({ message: $r("app.string.Txt_file_created"), duration: 4000 });
   }
   compressTxt(){
-    let path = (context as common.UIAbilityContext).filesDir+ '/test.txt'
+    let path = (context as common.UIAbilityContext).filesDir+ '/test.txt';
     fs.stat(path).then( (stat)=> {
       let file = fs.openSync(path, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
       let buf = new ArrayBuffer(stat.size);
       fs.readSync(file.fd, buf);
-      let unitArray = new Uint8Array(buf)
-      let compressed :Uint8Array= lz4.compress(unitArray)
-      let path1 = (context as common.UIAbilityContext).filesDir + '/test.lz4'
+      let unitArray = new Uint8Array(buf);
+      let compressed :Uint8Array= lz4.compress(unitArray);
+      let path1 = (context as common.UIAbilityContext).filesDir + '/test.lz4';
       let file1 = fs.openSync(path1, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
-      let writeLen = fs.writeSync(file1.fd, compressed.buffer);
-      prompt.showToast({ message: $r("app.string.Txt_file_compressed_successfully"), duration: 4000 })
+      fs.writeSync(file1.fd, compressed.buffer);
+      this.getUIContext().getPromptAction().showToast({ message: $r("app.string.Txt_file_compressed_successfully"), duration: 4000 });
     }).catch((err:errs)=> {
       console.info("get file info failed with error message: " + err.message + ", error code: " + err.code);
-      prompt.showToast({ message: $r("app.string.Failed_compress_txt_file"), duration: 4000 })
+      this.getUIContext().getPromptAction().showToast({ message: $r("app.string.Failed_compress_txt_file"), duration: 4000 });
     });
   }
   deCompressTxt(){
-    let path = (context as common.UIAbilityContext).filesDir+ '/test.lz4'
+    let path = (context as common.UIAbilityContext).filesDir+ '/test.lz4';
     fs.stat(path).then( (stat)=> {
       let file = fs.openSync(path, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
       let buf = new ArrayBuffer(stat.size);
       fs.readSync(file.fd, buf);
-      let unitArray = new Uint8Array(buf)
-      let deCompressed :Uint8Array= lz4.decompress(unitArray)
-      let path1 = (context as common.UIAbilityContext).filesDir + '/test1.txt'
+      let unitArray = new Uint8Array(buf);
+      let deCompressed :Uint8Array= lz4.decompress(unitArray);
+      let path1 = (context as common.UIAbilityContext).filesDir + '/test1.txt';
       let file1 = fs.openSync(path1, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
-      let writeLen = fs.writeSync(file1.fd, deCompressed.buffer);
-      prompt.showToast({ message: $r("app.string.Txt_file_successfully_extracted"), duration: 4000 })
+      fs.writeSync(file1.fd, deCompressed.buffer);
+      this.getUIContext().getPromptAction().showToast({ message: $r("app.string.Txt_file_successfully_extracted"), duration: 4000 });
     }).catch( (err:errs)=> {
       console.info("get file info failed with error message: " + err.message + ", error code: " + err.code);
-      prompt.showToast({ message: $r("app.string.Failed_decompress_txt_file"), duration: 4000 })
+      this.getUIContext().getPromptAction().showToast({ message: $r("app.string.Failed_decompress_txt_file"), duration: 4000 });
     });
   }
 }
