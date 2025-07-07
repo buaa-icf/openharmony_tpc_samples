@@ -31,7 +31,7 @@ struct MatchPage {
   @State message7: string = this.getResourceString($r('app.string.Raw_data')) + '：urlMatch("/users/1234/otherstuff");'
 
   getResourceString(res:Resource){
-    return getContext().resourceManager.getStringSync(res.id)
+    return this.getUIContext().getHostContext()?.resourceManager.getStringSync(res.id) ?? ''
   }
 
   build() {
@@ -112,7 +112,7 @@ struct MatchPage {
             let api = new TestApi()
             let result = api.matchTest()
             if (!result || result.length < 6) {
-              promptAction.showToast({
+              this.getUIContext().getPromptAction().showToast({
                 message: $r('app.string.The_data_processing_results_do_not_match_expectations'),
                 duration: 6000
               })
@@ -135,7 +135,7 @@ struct MatchPage {
             arrAfter.push(JSON.stringify(result[4]));
             arrAfter.push(JSON.stringify(result[5]));
             bean.setAfter(arrAfter);
-            router.pushUrl({
+            this.getUIContext().getRouter().pushUrl({
               url: 'pages/CommonResultPage',
               params: {
                 dataObj: bean
