@@ -98,7 +98,7 @@ struct Index {
   }
 
   Scan() {
-    let routerParams: object = router.getParams();
+    let routerParams: object = this.getUIContext().getRouter().getParams();
     let scanFilterArr: ble.ScanFilter[] = [];
     if (routerParams) {
       this.scanFilterInputName = routerParams['blufiName'] as string;
@@ -136,7 +136,7 @@ struct Index {
   }
 
   aboutToAppear(): void {
-    const context: common.UIAbilityContext = getContext(this) as common.UIAbilityContext;
+    const context: common.UIAbilityContext = this.getUIContext().getHostContext() as common.UIAbilityContext;
     this.checkPermissions(context);
   }
 
@@ -164,7 +164,7 @@ struct Index {
         Text('EspBluFi')
           .backgroundImageSize({ width: '', height: '' })
         Button(this.status ? $r('app.string.scan') : $r('app.string.scanning'))
-          .onClick(this.scanBtnAction.bind(this))
+          .onClick(()=>{this.scanBtnAction()})
           .enabled(this.status)
           .backgroundColor(0x317aff)
           .borderRadius(EIGHT)
@@ -174,7 +174,7 @@ struct Index {
           .borderRadius(EIGHT)
           .width(NINETY)
           .onClick(() => {
-            router.pushUrl({
+            this.getUIContext().getRouter().pushUrl({
               url: 'pages/Setting'
             }, router.RouterMode.Standard, (error) => {
               if (error) {
@@ -258,7 +258,7 @@ struct Index {
 
   private pageTo() {
     if (this.deviceId !== null && this.deviceName !== null && this.deviceRSSI !== 0) {
-      router.pushUrl({
+      this.getUIContext().getRouter().pushUrl({
         url: 'pages/ConfigureOptions',
         params: { deviceId: this.deviceId }
       })

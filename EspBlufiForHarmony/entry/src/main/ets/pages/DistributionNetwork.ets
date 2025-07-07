@@ -88,7 +88,7 @@ struct DistributionNetwork {
 
     // 获取扫描结果
     this.getWifiResult();
-    TextPickerDialog.show({
+    this.getUIContext().showTextPickerDialog({
       range: this.wifiSSIDList,
       selected: this.select,
       onAccept: (value: TextPickerResult) => {
@@ -156,7 +156,7 @@ struct DistributionNetwork {
           .backgroundColor(0xF1F3F5)
           .onClick(() => {
             try {
-              router.back({
+              this.getUIContext().getRouter().back({
                 url: 'pages/ConfigureOptions'
               })
               Logger.info(TAG, 'Succeeded in returning to the first page.')
@@ -379,7 +379,7 @@ struct DistributionNetwork {
           .onClick(() => {
             try {
               if (this.wifiSSID.length != 0 && this.wifiPassword.length != 0) {
-                router.back({
+                this.getUIContext().getRouter().back({
                   url: 'pages/ConfigureOptions',
                   params: {
                     deviceOpMode: this.textDevice,

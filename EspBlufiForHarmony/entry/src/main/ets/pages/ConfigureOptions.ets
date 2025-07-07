@@ -172,7 +172,7 @@ struct ConfigureOptions {
   }
 
   aboutToAppear(): void {
-    const routerParams: object = router.getParams();
+    const routerParams: object = this.getUIContext().getRouter().getParams();
     this.deviceId = routerParams['deviceId'] as string;
     const test: BlufiClient = this.getSingleClient();
     let gattCk = this.gattCallback();
@@ -303,7 +303,7 @@ struct ConfigureOptions {
   }
 
   onPageShow(): void {
-    const routerParams: object = router.getParams();
+    const routerParams: object = this.getUIContext().getRouter().getParams();
     if (routerParams) {
       this.deviceOpMode = routerParams['deviceOpMode'] as string;
       this.ssid = routerParams['ssid'] as string;
@@ -407,7 +407,7 @@ struct ConfigureOptions {
       if (this.connectState === constant.ProfileConnectionState.STATE_DISCONNECTED) {
         this.getSingleClient().connect();
       }
-      router.pushUrl({ url: 'pages/DistributionNetwork' }).then(() => {
+      this.getUIContext().getRouter().pushUrl({ url: 'pages/DistributionNetwork' }).then(() => {
         Logger.info(TAG, 'wifiNetworkBtn-Succeeded in jumping to the second page.');
       }).catch((err: BusinessError) => {
         Logger.error(TAG,
@@ -461,7 +461,7 @@ struct ConfigureOptions {
           .height('100%')
           .backgroundColor(0xF1F3F5)
           .onClick(() => {
-            router.back({
+            this.getUIContext().getRouter().back({
               url: 'pages/Index'
             })
           })
@@ -504,7 +504,7 @@ struct ConfigureOptions {
           .edgeEffect(EdgeEffect.Spring)
           .onScrollIndex((firstIndex: number, lastIndex: number, centerIndex: number) => {
           })
-          .onScroll((scrollOffset: number, scrollState: ScrollState) => {
+          .onDidScroll((scrollOffset: number, scrollState: ScrollState) => {
             Logger.info(TAG, `onScroll scrollState = ScrollState` + scrollState + `, scrollOffset = ` + scrollOffset);
           })
           .width('90%')
