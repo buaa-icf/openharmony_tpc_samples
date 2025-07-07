@@ -110,4 +110,4 @@ stop(): 停止重新连接模块，移除了断开连接的监听器并清除超
 
 ## 开源协议
 
-本项目基于ISC，请自由地享受和参与开源。
+本项目基于[ISC License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/xmpp_reconnect/LICENSE)，请自由地享受和参与开源。
