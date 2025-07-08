@@ -1,4 +1,4 @@
-import hilog from '@ohos.hilog';
+import { LogUtil } from './logUtil';
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -58,22 +58,28 @@ class Private extends TagClassFactory('private', 0xC0) {}
 
 function importInteger(content) {
   const contentType = typeof content;
-  if (contentType === 'number') return content;
+  if (contentType === 'number') {
+    LogUtil.info(`Importing integer from number: ${content}`);
+    return content;
+  }
   if (contentType === 'string') {
     // big integer import
     const radix = content.startsWith('0x') ? 16 : 10;
     const intStr = radix === 16 ? content.slice(2) : content;
-
-      return BigInteger.fromString(intStr, radix);
+    LogUtil.debug(`Importing big integer from string: ${content} with radix:${radix}`);
+    return BigInteger.fromString(intStr, radix);
       // return '';
 
   }
   if (contentType === 'object') {
-    if (content.constructor.name === 'BigInteger') return content;
-    hilog.error(0x0000, TAG, '%{public}s', 'integer objects must be instance of BigInteger');
+    if (content.constructor.name === 'BigInteger') {
+        LogUtil.info(`Importing integer from BigInteger object`);
+        return content;
+    }
+    LogUtil.error('integer objects must be instance of BigInteger');
     throw new Error('integer objects must be instance of BigInteger');
   }
-  hilog.error(0x0000, TAG, '%{public}s', `cannot import an integer from "${contentType}"`);
+  LogUtil.error(`cannot import an integer from "${contentType}"`);
   throw new Error(`cannot import an integer from "${contentType}"`);
 }
 
@@ -122,11 +128,13 @@ function findTagClass(value) {
   const valueType = typeof value;
   switch (valueType) {
     case 'string':
-      return TagClasses.find(tagClass => tagClass.type === value);
+        LogUtil.debug(`Looking up tag class by string: ${value}`);
+        return TagClasses.find(tagClass => tagClass.type === value);
     case 'number':
-      return TagClasses.find(tagClass => tagClass.value === value);
+        LogUtil.debug(`Looking up tag class by number: ${value}`);
+        return TagClasses.find(tagClass => tagClass.value === value);
     default:
-      hilog.error(0x0000, TAG, '%{public}s', `Must use string or number to lookup tag class, not "${valueType}"`);
+      LogUtil.error(`Must use string or number to lookup tag class, not "${valueType}"`);
       throw new Error(`Must use string or number to lookup tag class, not "${valueType}"`);
   }
 }
@@ -135,11 +143,13 @@ function findType(value) {
   const valueType = typeof value;
   switch (valueType) {
     case 'string':
-      return Types.find(AType => new AType().type === value);
+        LogUtil.debug(`Looking up type by string: ${value}`);
+        return Types.find(AType => new AType().type === value);
     case 'number':
-      return Types.find(AType => new AType().value === value);
+        LogUtil.debug(`Looking up type by number: ${value}`);
+        return Types.find(AType => new AType().value === value);
     default:
-      hilog.error(0x0000, TAG, '%{public}s', `Must use string or number to lookup type, not "${valueType}"`);
+      LogUtil.error(`Must use string or number to lookup type, not "${valueType}"`);
       throw new Error(`Must use string or number to lookup type, not "${valueType}"`);
   }
 }
