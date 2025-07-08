@@ -1,7 +1,7 @@
 {
   "name": "@ohos/xmpp_uri",
-  "version": "1.0.1",
-  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/xmpp_uri",
+  "version": "1.0.2",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/xmpp_uri",
   "description": "提供了对XMPP协议中URI的解析和构建功能，使开发者能够方便地处理XMPP协议中的资源标识符",
   "main": "index.js",
   "types": "index.d.ts",
