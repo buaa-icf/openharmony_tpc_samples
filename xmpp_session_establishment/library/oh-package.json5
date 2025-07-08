@@ -1,7 +1,7 @@
 {
   "name": "@ohos/xmpp_session_establishment",
-  "version": "1.0.1",
-  "repository": "https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/xmpp_session_establishment",
+  "version": "1.0.2",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/xmpp_session_establishment",
   "description": "用于处理服务器发送的特性，并根据这些特性来决定如何建立会话",
   "main": "index.js",
   "types": "index.d.ts",
