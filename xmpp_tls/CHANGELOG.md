@@ -1,4 +1,8 @@
 # Changelog
+
+## 1.0.2
+- Update README url
+
 ## 1.0.1
 - Fix TLS network disconnection and reconnection function
 - Supplement repository content
