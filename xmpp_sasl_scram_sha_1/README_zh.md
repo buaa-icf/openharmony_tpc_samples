@@ -146,4 +146,4 @@ export { xml, jid, client };
 ## 贡献代码
 使用过程中发现任何问题都可以提[Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) ，当然，也非常欢迎提[PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 ## 开源协议
-本项目基于ISC，请自由地享受和参与开源。
+本项目基于[ISC license](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/xmpp_sasl_scram_sha_1/LICENSE)，请自由地享受和参与开源。
