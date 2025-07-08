@@ -7,7 +7,7 @@
 ## 下载安装
 
 ```shell
-ohpm  install is-any-array@2.0.0
+ohpm  install is-any-array@2.0.1
 ```
 
 OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。

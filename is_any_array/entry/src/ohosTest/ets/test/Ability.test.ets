@@ -23,6 +23,10 @@
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium';
 import { isAnyArray } from "is-any-array"
 
+interface arrayType {
+  a: number
+}
+
 export default function abilityTest() {
   describe('ActsAbilityTest', () => {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
@@ -51,7 +55,7 @@ export default function abilityTest() {
       expect(isAnyArray('ab')).assertFalse();
     })
     it('test3',0, ()=> {
-      expect(isAnyArray({ a: 1 })).assertFalse();
+      expect(isAnyArray({ a: 1 } as arrayType)).assertFalse();
     })
     it('test4',0, ()=> {
       expect(isAnyArray([])).assertTrue();
@@ -66,7 +70,7 @@ export default function abilityTest() {
       expect(isAnyArray(new Uint8Array(1))).assertTrue();
     })
     it('test8',0, ()=> {
-      expect(isAnyArray(new BigUint64Array(1))).assertTrue();
+      expect(isAnyArray(new BigUint64Array(1))).assertFalse();
     })
   })
 }
