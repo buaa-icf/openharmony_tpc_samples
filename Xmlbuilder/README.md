@@ -7,7 +7,7 @@
 ## How to Install
 
 ````
-ohpm install xmlbuilder@11.0.0
+ohpm install xmlbuilder@15.1.1
 ````
 
 OpenHarmony
