@@ -25,11 +25,12 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import router from '@ohos.router'
+import { Router } from '@kit.ArkUI';
 
 @Entry
 @Component
 struct Index {
+  @State router: Router  = this.getUIContext().getRouter();
 
   build() {
     Row() {
@@ -37,42 +38,42 @@ struct Index {
         Button('Collection Test').backgroundColor(0x2788D9)
           .onClick((event: ClickEvent) => {
             let path = 'pages/Collections'
-            router.pushUrl({
+            this.router.pushUrl({
               url: path,
             });
           }).margin(5).width(200);
         Button('Arrays Test').backgroundColor(0x2788D9)
           .onClick((event: ClickEvent) => {
             let path = 'pages/Arrays'
-            router.pushUrl({
+            this.router.pushUrl({
               url: path,
             });
           }).margin(5).width(200);
         Button('Functions Test').backgroundColor(0x2788D9)
           .onClick((event: ClickEvent) => {
             let path = 'pages/Functions'
-            router.pushUrl({
+            this.router.pushUrl({
               url: path,
             });
           }).margin(5).width(200);
         Button('Objects Test').backgroundColor(0x2788D9)
           .onClick((event: ClickEvent) => {
             let path = 'pages/Objects'
-            router.pushUrl({
+            this.router.pushUrl({
               url: path,
             });
           }).margin(5).width(200);
         Button('Utility Test').backgroundColor(0x2788D9)
           .onClick((event: ClickEvent) => {
             let path = 'pages/Utility'
-            router.pushUrl({
+            this.router.pushUrl({
               url: path,
             });
           }).margin(5).width(200);
         Button('Chaining Test').backgroundColor(0x2788D9)
           .onClick((event: ClickEvent) => {
             let path = 'pages/Chaining'
-            router.pushUrl({
+            this.router.pushUrl({
               url: path,
             });
           }).margin(5).width(200);

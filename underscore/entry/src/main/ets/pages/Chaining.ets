@@ -38,7 +38,12 @@ interface Stooge {
 struct Chain {
   @State chainResult: string = ''
   getResourceString(res: Resource) {
-    return getContext().resourceManager.getStringSync(res.id)
+    try {
+      return this.getUIContext().getHostContext()?.resourceManager.getStringSync(res.id) || '';
+    }catch (err) {
+      console.error("err" + JSON.stringify(err));
+      return '';
+    }
   }
   build() {
     Column () {
