@@ -1,0 +1,10 @@
+{
+  "spec_dir": "integration/test",
+  "helpers": [
+    "helper.js"
+  ],
+  "spec_files": [
+    "*Test.js"
+  ],
+  "random": true
+}
