@@ -1,37 +1,9 @@
-# Changelog
+## v1.0.0
 
-Changelogs are separated by release type for better overview.
-
-## ✅ [Stable Releases][log_release]
-
-These are the official, stable releases that you can use in your production environments.
-
-> ### “Stable for production!”
-
-Details:
-- Stability: *stable*
-- NPM channel: `@latest`
-- Branch: [release][branch_release]
-- Purpose: official release
-- Suitable environment: production
-
-## 🔥 [Alpha Releases][log_alpha]
-
-> ### “If you are curious to see what's next!”
-
-These releases contain the latest development changes, but you should be prepared for anything, including sudden breaking changes or code refactoring. Use this branch to contribute to the project and open pull requests.
-
-Details:
-- Stability: *unstable*
-- NPM channel: `@alpha`
-- Branch: [alpha][branch_alpha]
-- Purpose: product development
-- Suitable environment: experimental
-
-
-[log_release]: https://github.com/parse-community/Parse-SDK-JS/blob/release/changelogs/CHANGELOG_release.md
-[log_beta]: https://github.com/parse-community/Parse-SDK-JS/blob/beta/changelogs/CHANGELOG_beta.md
-[log_alpha]: https://github.com/parse-community/Parse-SDK-JS/blob/alpha/changelogs/CHANGELOG_alpha.md
-[branch_release]: https://github.com/parse-community/Parse-SDK-JS/tree/release
-[branch_beta]: https://github.com/parse-community/Parse-SDK-JS/tree/beta
-[branch_alpha]: https://github.com/parse-community/Parse-SDK-JS/tree/alpha
+Implemented Feature
+- 1.User registration, login, and logout login
+- 2.The file system includes creating files, querying files, saving file metadata
+- 3.Local data storage includes data creation, querying, locking
+- 4.The object system includes creating, saving, associating, and deleting objects
+- 5.The query system includes data queries, combined queries, and associated queries
+- 6.Security Control (ACL/CLP)Set object permissions

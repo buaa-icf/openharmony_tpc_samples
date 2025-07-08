@@ -1,141 +1,370 @@
-![parse-repository-header-sdk-js](https://user-images.githubusercontent.com/5673677/138293960-641c96bf-1293-4061-99a5-a4ed09868e1c.png)
+﻿# parse-sdk
 
----
+## 简介
 
-[![Build Status CI alpha](https://github.com/parse-community/Parse-SDK-JS/actions/workflows/ci.yml/badge.svg?branch=alpha&subject=alpha)](https://github.com/parse-community/Parse-SDK-JS/actions?query=workflow%3Aci+branch%3Aalpha)
-[![Build Status CI release](https://github.com/parse-community/Parse-SDK-JS/actions/workflows/ci.yml/badge.svg?branch=release)](https://github.com/parse-community/Parse-SDK-JS/actions?query=workflow%3Aci+branch%3Arelease)
-[![Snyk Badge](https://snyk.io/test/github/parse-community/Parse-SDK-JS/badge.svg)](https://snyk.io/test/github/parse-community/Parse-SDK-JS)
-[![Coverage](https://codecov.io/gh/parse-community/Parse-SDK-JS/branch/alpha/graph/badge.svg)](https://codecov.io/gh/parse-community/Parse-SDK-JS)
+Parse JavaScript SDK 是一个功能强大的客户端库，用于与 Parse Server 后端交互。
 
-[![Node Version](https://img.shields.io/badge/nodejs-18,_20,_22-green.svg?logo=node.js&style=flat)](https://nodejs.org/)
-[![auto-release](https://img.shields.io/badge/%F0%9F%9A%80-auto--release-9e34eb.svg)](https://github.com/parse-community/parse-dashboard/releases)
+## 下载安装
 
-[![npm latest version](https://img.shields.io/npm/v/parse/latest.svg)](https://www.npmjs.com/package/parse)
-[![npm alpha version](https://img.shields.io/npm/v/parse/alpha.svg)](https://www.npmjs.com/package/parse)
-
-[![Backers on Open Collective](https://opencollective.com/parse-server/backers/badge.svg)][open-collective-link]
-[![Sponsors on Open Collective](https://opencollective.com/parse-server/sponsors/badge.svg)][open-collective-link]
-[![Forum](https://img.shields.io/discourse/https/community.parseplatform.org/topics.svg)](https://community.parseplatform.org/c/client-sdks/javascript-sdk)
-[![Twitter](https://img.shields.io/twitter/follow/ParsePlatform.svg?label=Follow&style=social)](https://twitter.com/intent/follow?screen_name=ParsePlatform)
-
----
-
-A library that gives you access to the powerful Parse Server backend from your JavaScript app. For more information on Parse and its features, see [the website](https://parseplatform.org), [the JavaScript guide](https://docs.parseplatform.org/js/guide/), [the Cloud Code guide](https://docs.parseplatform.org/cloudcode/guide/) or [API Reference](https://parseplatform.org/Parse-SDK-JS/api/).
-
----
-
-- [Compatibility](#compatibility)
-  - [Parse Server](#parse-server)
-  - [Node.js](#nodejs)
-- [Getting Started](#getting-started)
-  - [Using Parse on Different Platforms](#using-parse-on-different-platforms)
-    - [Core Manager](#core-manager)
-- [3rd Party Authentications](#3rd-party-authentications)
-  - [Experimenting](#experimenting)
-- [Contributing](#contributing)
-
-## Compatibility
-
-### Parse Server
-
-Parse JS SDK is compatible with the following versions of Parse Server.
-
-| Parse JS SDK     | Parse Server     |
-|------------------|------------------|
-| >= 4.0.0 < 5.0.0 | >= 6.0.0 < 7.0.0 |
-| >= 5.0.0         | >= 7.0.0         |
-
-### Node.js
-
-Parse JS SDK is continuously tested with the most recent releases of Node.js to ensure compatibility. We follow the [Node.js Long Term Support plan](https://github.com/nodejs/Release) and only test against versions that are officially supported and have not reached their end-of-life date.
-
-| Version    | Latest Version | End-of-Life | Compatible |
-|------------|----------------|-------------|------------|
-| Node.js 18 | 18.20.3        | April 2025  | ✅ Yes      |
-| Node.js 20 | 20.15.0        | April 2026  | ✅ Yes      |
-| Node.js 22 | 22.4.0         | April 2027  | ✅ Yes      |
-
-## Getting Started
-
-The easiest way to integrate the Parse SDK into your JavaScript project is through the [npm module](https://npmjs.org/parse).
-However, if you want to use a pre-compiled file, you can fetch it from [unpkg](https://unpkg.com). The development version is available at [https://unpkg.com/parse/dist/parse.js](https://unpkg.com/parse/dist/parse.js), and the minified production version is at [https://unpkg.com/parse/dist/parse.min.js](https://unpkg.com/parse/dist/parse.min.js).
-
-### Using Parse on Different Platforms
-
-The JavaScript ecosystem is wide and incorporates a large number of platforms and execution environments. To handle this, the Parse npm module contains special versions of the SDK tailored to use in Node.js and [React Native](https://facebook.github.io/react-native/) environments. Not all features make sense in all environments, so using the appropriate package will ensure that items like local storage, user sessions, and HTTP requests use appropriate dependencies. For server side rendered applications, you may set the `SERVER_RENDERING` variable to prevent warnings at runtime.
-
-To use the npm modules for a browser based application, include it as you normally would:
-
-```js
-const Parse = require('parse');
-// ES6 Minimized
-import Parse from 'parse/dist/parse.min.js';
+```shell
+ohpm install @ohos/parse-sdk
 ```
 
-For web worker or browser applications, indexedDB storage is available:
+OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony har包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
-```js
-Parse.CoreManager.setStorageController(Parse.IndexedDB);
+## 使用说明
+
+1.使用Parse
+```
+  Parse.initialize("YOUR_APP_ID", "YOUR_JAVASCRIPT_KEY");
+  //javascriptKey is required only if you have it on server.
+
+  Parse.serverURL = 'http://YOUR_PARSE_SERVER:1337/parse'
 ```
 
-For server-side applications or Node.js command line tools, include `'parse/node'`:
+2.使用Parse.Object
+- Saving Objects
+```
+const GameScore = Parse.Object.extend("GameScore");
+const gameScore = new GameScore();
 
-```js
-// In a node.js environment
-const Parse = require('parse/node');
+gameScore.set("score", 1337);
+gameScore.set("playerName", "Sean Plott");
+gameScore.set("cheatMode", false);
+
+gameScore.save()
+.then((gameScore) => {
+  
+}, (error) => {
+  
+});
+```
+- Updating Objects
+```
+const GameScore = Parse.Object.extend("GameScore");
+const gameScore = new GameScore();
+
+gameScore.set("score", 1337);
+gameScore.set("playerName", "Sean Plott");
+gameScore.set("cheatMode", false);
+gameScore.set("skills", ["pwnage", "flying"]);
+
+gameScore.save().then((gameScore) => {
+  gameScore.set("cheatMode", true);
+  gameScore.set("score", 1338);
+  return gameScore.save();
+});
+```
+- Destroying Objects
+```
+myObject.destroy().then((myObject) => {
+  // The object was deleted from the Parse Cloud.
+}, (error) => {
+  // The delete failed.
+  // error is a Parse.Error with an error code and message.
+});
 ```
 
-For React Native applications, include `'parse/react-native.js'`:
-```js
-// In a React Native application
-const Parse = require('parse/react-native.js');
+3.使用Queries
+- Query Constraints
+```
+const GameScore = Parse.Object.extend("GameScore");
+const query = new Parse.Query(GameScore);
+query.equalTo("playerName", "Dan Stemkoski");
+const results = await query.find();
 
-// On React Native >= 0.50 and Parse >= 1.11.0, set the Async
-const AsyncStorage = require('@react-native-async-storage/async-storage');
-Parse.setAsyncStorage(AsyncStorage);
+// Do something with the returned Parse.Object values
+for (let i = 0; i < results.length; i++) {
+  const object = results[i];
+  console.log(object.id + ' - ' + object.get('playerName'))
+}
 ```
 
-For WeChat miniprogram, include `'parse/weapp'`:
-```js
-// In a WeChat miniprogram
-const Parse = require('parse/weapp');
+4.使用Parse.User
+- Signing Up
 ```
-If you want to use a pre-compiled file, you can fetch it from [unpkg](https://unpkg.com). The development version is available at [https://unpkg.com/parse/dist/parse.weapp.js](https://unpkg.com/parse/dist/parse.weapp.js), and the minified production version is at [https://unpkg.com/parse/dist/parse.weapp.min.js](https://unpkg.com/parse/dist/parse.weapp.min.js).
+const user = new Parse.User();
+user.set("username", "my name");
+user.set("password", "my pass");
+user.set("email", "email@example.com");
 
-#### Core Manager
-
-The SDK has a [Core Manager][core-manager] that handles all configurations and controllers. These modules can be swapped out for customization before you initialize the SDK. For full list of all available modules take a look at the [Core Manager Documentation][core-manager].
-
-```js
-// Configuration example
-Parse.CoreManager.set('REQUEST_ATTEMPT_LIMIT', 1)
-
-// Controller example
-Parse.CoreManager.setRESTController(MyRESTController);
+// other fields can be set just like with Parse.Object
+user.set("phone", "415-392-0202");
+try {
+  await user.signUp();
+  // Hooray! Let them use the app now.
+} catch (error) {
+  // Show the error message somewhere and let the user try again.
+}
+```
+- Logging In
+```
+const user = await Parse.User.logIn("myname", "mypass", { usePost: false });
+```
+- Current User
+```
+const currentUser = Parse.User.current();
+```
+- Logging Out
+```
+await Parse.User.logOut();
+```
+- Security For Other Objects
+```
+const Note = Parse.Object.extend("Note");
+const privateNote = new Note();
+privateNote.set("content", "This note is private!");
+privateNote.setACL(new Parse.ACL(Parse.User.current()));
+privateNote.save();
 ```
 
-## 3rd Party Authentications
+5.使用Sessions。
+- 获取当前用户Session
+```
+const currentUser = Parse.User.current();
+const sessionToken = currentUser.getSessionToken(); // 获取 Session Token
+// 检查 Session 是否可撤销
+const isRevocable = ParseSession.isCurrentSessionRevocable();
+```
+- 使用Session Token登录
+```
+const sessionToken = currentUser.getSessionToken();
+const user = await Parse.User.become(sessionToken);
+```
+- Handling Invalid Session Token Error
+```
+handleParseError(err: ESObject) {
+    switch (err.code) {
+      case Parse.Error.INVALID_SESSION_TOKEN:
+        Parse.User.logOut()
+        break;
+    }
+  }
+```
 
-Parse Server supports many [3rd Party Authenications][3rd-party-auth]. It is possible to [linkWith][link-with] any 3rd Party Authentication by creating a [custom authentication module][custom-auth-module].
+6.使用Parse.Role
+- Security for Role Objects
+```
+const roleACL = new Parse.ACL();
+roleACL.setPublicReadAccess(true);
+const role = new Parse.Role("Administrator", roleACL);
+role.save();
+```
+- Normal for Role Objects
+```
+const role = new Parse.Role('TestRole', new Parse.ACL());
+await role.save();
+```
+- Role Based Security for Other Objects
+```
+const wallPost = new Parse.Object("WallPost");
+const postACL = new Parse.ACL();
+postACL.setRoleWriteAccess("Moderators", true);
+wallPost.setACL(postACL);
+wallPost.save();
+```
 
-### Experimenting
+7.使用Files
+- Creating a Parse.File
+```
+const Post: ESObject = ParseObject.extend('Post');
+const post: ESObject = new Post();
+const textFile = new Parse.File('test.txt', { base64: base64Data });
 
-You can also use your own forks, and work in progress branches by specifying them:
+post.set('txt', textFile);
+post.save();
+```
+- Retrieving File Contents
+```
+const Post: ESObject = ParseObject.extend('Post');
+const query = new Parse.Query(Post);
+query.get(this.objectId).then((post) => {
+  const parseFile: ParseFile = post.get('txt');
+  if (parseFile) {
+    parseFile.getData().then((val) => {
+      this.message = '获取文件内容成功 ：' + val;
+    }).catch((err: ESObject) => {
+      this.message = '获取文件内容失败：' + JSON.stringify(err);
+    })
+  } else {
+    this.message = 'Post中没有关联文件';
+  }
+}).catch((err: ESObject) => {
+  this.message = '获取Post对象失败'
+})
+```
+- Adding Metadata and Tags
+```
+parseFile.addMetadata('createdById', 'some-user-id');
+parseFile.addTag('groupId', 'some-group-id');
+post.set('txt', parseFile);
+post.save();
+```
+
+8.使用GeoPoints
+- Parse.GeoPoint
+```
+const point = new Parse.GeoPoint({latitude: 40.0, longitude: -30.0});
+let placeObject = new Parse.Object("PlaceObject");
+placeObject.set("location", point);
+```
+- Geo Queries
+```
+const points = [[0,0], [0,1], [1,1], [1,0]];
+const inside = new Parse.GeoPoint(0.5, 0.5);
+const outside = new Parse.GeoPoint(10, 10);
+const polygon = new Parse.Polygon(points as Coordinate[]);
+// Returns True
+polygon.containsPoint(inside);
+// Returns False
+polygon.containsPoint(outside);
+```
+
+9.使用Local Datastore
+- Pinning
+```
+const GameScore: ESObject = Parse.Object.extend("GameScore");
+const gameScore: ESObject = new GameScore();
+await gameScore.save();
+await gameScore.pin();
+
+await Parse.Object.pinAll([gameScore]);
+```
+- Retrieving
+```
+const GameScore = Parse.Object.extend("GameScore");
+const query = new Parse.Query(GameScore);
+query.fromLocalDatastore();
+const result = await query.get(gameScore.id);
+```
+- Querying the Local Datastore
+```
+const GameScore = Parse.Object.extend("GameScore");
+const query = new Parse.Query(GameScore);
+query.equalTo('playerName', 'Joe Bob');
+query.fromLocalDatastore();
+const results = await query.find();
+```
+- Unpinning
+```
+await gameScore.unPin();
+
+await Parse.Object.unPinAllObjects();
+```
+- Dumping Contents
+```
+const LDS = await Parse.dumpLocalDatastore();
+```
+- Caching Query Results
+```
+const GameScore: ESObject = Parse.Object.extend("GameScore");
+const query = new Parse.Query(GameScore);
+query.equalTo("playerName", "foo");
+const results = await query.find();
+await Parse.Object.unPinAllObjectsWithName('HighScores');
+await Parse.Object.pinAllWithName('HighScores', results);
+let localDatastore: ESObject = await Parse.LocalDatastore._getAllContents()
+this.message += ' Caching Query Results : ' + JSON.stringify(localDatastore) + '\r\n\r\n'
+```
+- Pinning with Labels
+```
+// Add several objects with a label.
+await Parse.Object.pinAllWithName('MyScores', listOfObjects);
+
+// Add another object with the same label.
+await anotherGameScore.pinWithName('MyScores');
+```
+
+## 接口说明
+
+### Objects
+
+| 接口名                     | 参数                  | 返回值         | 说明                    |
+|-------------------------|---------------------|-------------|-----------------------|
+| save                    | 无                   | ParseObject | 创建对象                  |
+| destroy                 | 无                   | ParseObject | 删除对象                  |
+| pin                     | 无                   | 无           | 将对象固定到本地存储            |
+| pinAll                  | ParseObject[]       | 无           | 将多个对象固定到本地存储          |
+| unPin                   | 无                   | 无           | 取消固定                  |
+| unPinAllObjects         | 无                   | 无           | 从 default pin 中删除所有对象 |
+| dumpLocalDatastore      | 无                   | any         | 查看本地数据存储的内容           |
+| pinAllWithName          | name, ParseObject[] | 无           | 一组对象和标签一起存储           |
+| pinWithName             | name                | 无           | 对象和标签一起存储             |
+| unPinAllObjectsWithName | name                | 无           | 从标签中删除所有对象            |
+
+### Queries
+
+| 接口名                | 参数         | 返回值                       | 说明                    |
+|--------------------|------------|---------------------------|-----------------------|
+| get                | objectId   | ParseObject               | 根据id查找对象              |
+| find               | 无          | ParseObject[]             | 查找所有                  |
+| equalTo            | key, value | 无                         | 查找时添加的约束              |
+| fromLocalDatastore | 无          | ParseQuery<ParseObject[]> | 查找本地数据存储              |
+
+### User
+
+| 接口名     | 参数                 | 返回值       | 说明                 |
+|---------|--------------------|-----------|--------------------|
+| signUp  | 无                  | ParseUser | 注册用户               |
+| logIn   | userName, passWord | 无         | 登录                 |
+| current | 无                  | ParseUser | 获取当前用户             |
+| logOut  | 无                  | 无         | 退出登录               |
+| become  | sessionToken       | ParseUser | 使用Session Token 登录 |
+
+### Sessions
+
+| 接口名                       | 参数                 | 返回值       | 说明                |
+|---------------------------|--------------------|-----------|-------------------|
+| getSessionToken           | 无                  | string    | 获取Session Token   |
+| isCurrentSessionRevocable | 无                  | boolean   | 检查Session 是否可撤销   |
+
+### Roles
+
+| 接口名   | 参数       | 返回值       | 说明   |
+|-------|----------|-----------|------|
+| save  | 无        | ParseRole | 创建角色 |
+
+### Files
+
+| 接口名         | 参数                    | 返回值       | 说明         |
+|-------------|-----------------------|-----------|------------|
+| save        | 无                     | ParseFile | 创建文件       |
+| getData     | 无                     | string    | 获取文件内容     |
+| addMetadata | key, value            | 无         | 添加元数据      |
+| addTag      | key, value            | 无         | 添加标签       |
+
+## 关于混淆
+- 代码混淆，请查看[代码混淆简介](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- 如果希望parse-sdk库在代码混淆过程中不会被混淆，需要在混淆规则配置文件obfuscation-rules.txt中添加相应的排除规则：
 
 ```
-npm install github:myUsername/Parse-SDK-JS#my-awesome-feature
+-keep
+./oh_modules/@ohos/parse-sdk
 ```
 
-And don't forget, if you plan to deploy it remotely, you should run `npm install` with the `--save` option.
+## 约束与限制
 
-## Contributing
+- DevEco Studio 版本： 5.0.3.300SP2  OpenHarmony SDK:API12 (5.0.0.22)
 
-We really want Parse to be yours, to see it grow and thrive in the open source community. Please see the [Contributing to Parse Javascript SDK guide][contributing].
+## 目录结构
+
+````
+|---parse-sdk
+|   |---entry   # 示例代码文件夹
+|   |---library   # parse-sdk库文件夹
+|       |---src
+|           |---main  
+|               |---ets
+|                   |---Xhr.harmonyos.ts  # 和服务端通信
+|                   |---ParseObject.ts  # 核心功能
+|   |---README.md  # 安装使用方法
+````
+
+## 贡献代码
+
+使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎给发[PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls)共建 。
 
 
-[3rd-party-auth]: http://docs.parseplatform.org/parse-server/guide/#oauth-and-3rd-party-authentication
-[contributing]: https://github.com/parse-community/Parse-SDK-JS/blob/master/CONTRIBUTING.md
-[core-manager]: https://github.com/parse-community/Parse-SDK-JS/blob/alpha/src/CoreManager.ts
-[custom-auth-module]: https://docs.parseplatform.org/js/guide/#custom-authentication-module
-[link-with]: https://docs.parseplatform.org/js/guide/#linking-users
-[open-collective-link]: https://opencollective.com/parse-server
+## 开源协议
+
+本项目基于 [Apache License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/parse-sdk/LICENSE) ，请自由地享受和参与开源。

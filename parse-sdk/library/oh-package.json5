@@ -1,0 +1,16 @@
+{
+  "name": "@ohos/parser-sdk",
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "main": "Index.ets",
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@babel/runtime": "7.22.6",
+    "@ohos/node-polyfill": "^1.0.1",
+    "@ohos/crypto-js": "^2.0.4",
+    "eventemitter3": "4.0.7"
+  },
+  "devDependencies": {},
+  "dynamicDependencies": {}
+}

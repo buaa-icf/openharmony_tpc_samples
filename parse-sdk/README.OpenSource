@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "Parser-SDK-JS",
+        "License": " Apache License",
+        "License File": " LICENSE ",
+        "Version Number": "6.1.1",
+        "Owner" : "xiafeng@huawei.com",
+        "Upstream URL": "https://github.com/parse-community/Parse-SDK-JS",
+        "Description": "A library that gives you access to the powerful Parse Server backend from your JavaScript app. For more information on Parse and its features."
+    }
+]
