@@ -1,0 +1,21 @@
+{
+  "src": [
+    "pages/Index",
+    "pages/queries/QueriesPage",
+    "pages/queries/QueriesObj",
+    "pages/queries/QueriesAdd",
+    "pages/queries/QueriesModify",
+    "pages/queries/QueriesDelete",
+    "pages/User",
+    "pages/Role",
+    "pages/File",
+    "pages/object/ObjectPage",
+    "pages/object/SavingObjects",
+    "pages/object/UpdatingObjects",
+    "pages/object/DestroyingObjects",
+    "pages/MainPage",
+    "pages/GeoPoint",
+    "pages/LocalDatastore",
+    "pages/Session"
+  ]
+}
