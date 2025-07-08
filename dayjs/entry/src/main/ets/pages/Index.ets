@@ -30,7 +30,13 @@ interface ModuleItem {
   moduleName: string;
   examples: Array<ApiItem>
 }
-let apisIndex:Array<ModuleItem>=[
+
+@Entry
+@Component
+struct Index {
+  private arr: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+  @State message: string = 'Hello World'
+  @State apisIndex:Array<ModuleItem>=[
   {
     moduleName: "Parse",
     examples: [
@@ -38,21 +44,21 @@ let apisIndex:Array<ModuleItem>=[
         apiName: "dayjs('20130108').valueOf()",
         des:$r('app.string.Parse_get_timestamp'),
         func: () => {
-          showMessage(dayjs('20130108').valueOf().toString())
+          this.showMessage(dayjs('20130108').valueOf().toString())
         }
       },
       {
         apiName: "dayjs( '2018-04-24').valueOf()",
         des:$r('app.string.Parse_timestamp'),
         func: () => {
-          showMessage(dayjs( '2018-04-24').valueOf().toString())
+          this.showMessage(dayjs( '2018-04-24').valueOf().toString())
         }
       },
       {
         apiName: "dayjs('2018-04-24 11:12').format()",
         des:$r('app.string.Parse_hours_and_minutes'),
         func: () => {
-          showMessage(dayjs('2018-04-24 11:12').format())
+          this.showMessage(dayjs('2018-04-24 11:12').format())
         }
       },
 
@@ -60,21 +66,21 @@ let apisIndex:Array<ModuleItem>=[
         apiName: "dayjs( '2018-05-02 11:12:13').valueOf()",
         des:$r('app.string.Parse_hours_minutes_and_seconds'),
         func: () => {
-          showMessage(dayjs( '2018-05-02 11:12:13').valueOf().toString())
+          this.showMessage(dayjs( '2018-05-02 11:12:13').valueOf().toString())
         }
       },
       {
         apiName: "dayjs().toJSON()",
         des:$r('app.string.Get_toJSON'),
         func: () => {
-          showMessage(dayjs().toJSON())
+          this.showMessage(dayjs().toJSON())
         }
       },
       {
         apiName: "dayjs('2018-05-02 11:12:13.998').valueOf()",
         des:$r('app.string.Parse_hours_minutes_seconds_milliseconds'),
         func: () => {
-          showMessage(dayjs('2018-05-02 11:12:13.998').valueOf().toString())
+          this.showMessage(dayjs('2018-05-02 11:12:13.998').valueOf().toString())
 
         }
       },
@@ -82,130 +88,125 @@ let apisIndex:Array<ModuleItem>=[
         apiName: "dayjs( '2018-4-1').valueOf()",
         des:$r('app.string.Get_timestamp'),
         func: () => {
-          showMessage(dayjs( '2018-4-1').valueOf().toString())
+          this.showMessage(dayjs( '2018-4-1').valueOf().toString())
         }
       },
       {
         apiName: "dayjs().second()",
         des:$r('app.string.Get_current_second'),
         func: () => {
-          showMessage(dayjs().second() + "")
+          this.showMessage(dayjs().second() + "")
         }
       },
       {
         apiName: "dayjs().minute()",
         des:$r('app.string.Get_current_points'),
         func: () => {
-          showMessage(dayjs().minute() + "")
+          this.showMessage(dayjs().minute() + "")
         }
       },
       {
         apiName: "dayjs().hour()",
         des:$r('app.string.Get_current_tense'),
         func: () => {
-          showMessage(dayjs().hour() + "")
+          this.showMessage(dayjs().hour() + "")
         }
       },
       {
         apiName: "dayjs().date()",
         des:$r('app.string.Get_current_day'),
         func: () => {
-          showMessage(dayjs().date().toString())
+          this.showMessage(dayjs().date().toString())
         }
       },
       {
         apiName: "dayjs().day()",
         des:$r('app.string.Get_the_current_week'),
         func: () => {
-          showMessage(dayjs().day() + "")
+          this.showMessage(dayjs().day() + "")
         }
       },
       {
         apiName: "dayjs().month()",
         des:$r('app.string.Get_the_current_month'),
         func: () => {
-          showMessage(dayjs().month() + "")
+          this.showMessage(dayjs().month() + "")
         }
       },
       {
         apiName: "dayjs().year()",
         des:$r('app.string.Get_the_current_year'),
         func: () => {
-          showMessage(dayjs().year() + "")
+          this.showMessage(dayjs().year() + "")
         }
       },
       {
         apiName: 'dayjs("2024-01-10 20:00:00").startOf("day").subtract(1,"hour").format()',
         des:$r('app.string.Set_startOf'),
         func: () => {
-          showMessage(dayjs("2024-01-10 02:00:00").startOf("day").subtract(1,"hour").format() + "")
+          this.showMessage(dayjs("2024-01-10 02:00:00").startOf("day").subtract(1,"hour").format() + "")
         }
       },
       {
         apiName: 'dayjs("2024-01-10 20:00:00").endOf("day").add(1,"hour").format()',
         des:$r('app.string.Set_endOf'),
         func: () => {
-          showMessage(dayjs("2024-01-10 20:00:00").endOf("day").add(1,"hour").format() + "")
+          this.showMessage(dayjs("2024-01-10 20:00:00").endOf("day").add(1,"hour").format() + "")
         }
       },
       {
         apiName: 'dayjs("2023-12-31").diff("2024-01-10","days")',
         des:$r('app.string.Get_difference_days'),
         func: () => {
-          showMessage(dayjs("2023-12-31").diff("2024-01-10","days") + "")
+          this.showMessage(dayjs("2023-12-31").diff("2024-01-10","days") + "")
         }
       },
       {
         apiName: 'dayjs().daysInMonth()',
         des:$r('app.string.Get_days_month'),
         func: () => {
-          showMessage(dayjs().daysInMonth() + "")
+          this.showMessage(dayjs().daysInMonth() + "")
         }
       },
       {
         apiName: "dayjs().get('year');",
         des:$r('app.string.Get_year_through_get'),
         func: () => {
-          showMessage(dayjs().get('year') + "")
+          this.showMessage(dayjs().get('year') + "")
         }
       },
       {
         apiName: "dayjs().set('year', 2013);",
         des:$r('app.string.Get_year_through_Set'),
         func: () => {
-          showMessage(dayjs().set('year', 2013).format())
+          this.showMessage(dayjs().set('year', 2013).format())
         }
       },
       {
         apiName: "dayjs().subtract(1, 'day')",
         des:$r('app.string.Current_day_forward'),
         func: () => {
-          showMessage(dayjs().subtract(1, 'day').format())
+          this.showMessage(dayjs().subtract(1, 'day').format())
         }
       },
       {
         apiName: "dayjs().add(1, 'day')",
         des:$r('app.string.One_day_after_current'),
         func: () => {
-          showMessage(dayjs().add(1, 'day').format())
+          this.showMessage(dayjs().add(1, 'day').format())
         }
       },
     ],
   }]
-function showMessage(text: string) {
-  prompt.showToast({ message: text + "" || "no information..." });
-}
-@Entry
-@Component
-struct Index {
-  private arr: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-  @State message: string = 'Hello World'
-  @State apis: Array<ModuleItem> = apisIndex
 
+  showMessage(text: string) {
+    this.getUIContext().getPromptAction().showToast({ message: text + "" || "no information..." });
+  }
 
   getResourceString(res:Resource) {
-    return getContext().resourceManager.getStringSync(res.id)
+    return this.getUIContext().getHostContext()!.resourceManager.getStringSync(res.id)
   }
+
   @Builder BuildItemForAPI(param: ModuleItem) {
     Column() {
       Text(param.moduleName).fontSize(30)
@@ -228,7 +229,7 @@ struct Index {
   build() {
     Column() {
       List() {
-        ForEach(this.apis, (v: ModuleItem, index) => {
+        ForEach(this.apisIndex, (v: ModuleItem, index) => {
           ListItem() {
             this.BuildItemForAPI({ moduleName: v.moduleName, examples: v.examples })
           }
