@@ -48,7 +48,8 @@ struct Scheduler {
     }).pipe(
       observeOn(asyncScheduler)
     );
-    let finalObserver: ESObject = {
+    Log.showLog('async--just before subscribe');
+    observable.subscribe({
       next(x: ESObject) {
         Log.showLog('async--got value ' + x)
       },
@@ -58,9 +59,7 @@ struct Scheduler {
       complete() {
         Log.showLog('async--done');
       }
-    };
-    Log.showLog('async--just before subscribe');
-    observable.subscribe(finalObserver);
+    });
     Log.showLog('async--just after subscribe');
   }
 

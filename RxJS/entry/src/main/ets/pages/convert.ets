@@ -364,9 +364,8 @@ struct Convert {
   }
 
   pluck() {
-    let name1: ESObject = { name: 'Joe', age: 30 }
-    let name2: ESObject = { name: 'Sarah', age: 35 }
-    const source: ESObject = from([name1, name2]);
+
+    const source: ESObject = from([{ name: 'Joe', age: 30 }, { name: 'Sarah', age: 35 }]);
     const example: ESObject = source.pipe(pluck('name'));
     const subscribe: ESObject = example.subscribe((val: ESObject) => {
       Log.showLog('pluck--' + val)

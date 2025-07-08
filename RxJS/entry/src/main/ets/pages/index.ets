@@ -54,31 +54,31 @@ struct Index {
   click(eventType: number) {
     switch (eventType) {
       case 1:
-        router.pushUrl({ url: 'pages/create' })
+        this.getUIContext()?.getRouter()?.pushUrl({ url: 'pages/create' })
         break;
       case 2:
-        router.pushUrl({ url: 'pages/filter' })
+        this.getUIContext()?.getRouter()?.pushUrl({ url: 'pages/filter' })
         break;
       case 3:
-        router.pushUrl({ url: 'pages/multicast' })
+        this.getUIContext()?.getRouter()?.pushUrl({ url: 'pages/multicast' })
         break;
       case 4:
-        router.pushUrl({ url: 'pages/combine' })
+        this.getUIContext()?.getRouter()?.pushUrl({ url: 'pages/combine' })
         break;
       case 5:
-        router.pushUrl({ url: 'pages/error' })
+        this.getUIContext()?.getRouter()?.pushUrl({ url: 'pages/error' })
         break;
       case 6:
-        router.pushUrl({ url: 'pages/condition' })
+        this.getUIContext()?.getRouter()?.pushUrl({ url: 'pages/condition' })
         break;
       case 7:
-        router.pushUrl({ url: 'pages/convert' })
+        this.getUIContext()?.getRouter()?.pushUrl({ url: 'pages/convert' })
         break;
       case 8:
-        router.pushUrl({ url: 'pages/tool' })
+        this.getUIContext()?.getRouter()?.pushUrl({ url: 'pages/tool' })
         break;
       case 9:
-        router.pushUrl({ url: 'pages/scheduler' })
+        this.getUIContext()?.getRouter()?.pushUrl({ url: 'pages/scheduler' })
         break;
     }
   }
