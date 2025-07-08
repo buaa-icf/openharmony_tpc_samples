@@ -12,17 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const DOMAIN = 0xFE42;
-const TAG = 'OHOS_NTP';
 
 import { socket } from '@kit.NetworkKit';
 import buffer from '@ohos.buffer';
 import { BusinessError } from '@ohos.base';
-import { hilog } from '@kit.PerformanceAnalysisKit';
+import Logger from './utils/Logger';
 
 export const getNetworkTime = (config: NTPConfig): Promise<Date> => {
   return new Promise<Date>((resolve, reject) => {
-    hilog.info(DOMAIN, TAG, "getNetworkTime: config is %{public}s", JSON.stringify(config));
+    Logger.info("getNetworkTime: config is %{public}s", JSON.stringify(config));
     let udp: socket.UDPSocket = socket.constructUDPSocketInstance();
     let netAddress: socket.NetAddress = {
       address: config.server,
@@ -32,7 +30,7 @@ export const getNetworkTime = (config: NTPConfig): Promise<Date> => {
 
     const delayTime = setTimeout(() => {
       udp.close();
-      hilog.error(DOMAIN, TAG, "getNetworkTime: NTP response not received within the expected timeframe.");
+      Logger.error("getNetworkTime: NTP response not received within the expected timeframe.");
       reject('NTP response not received within the expected timeframe.');
       isTimeoutTriggered = true;
     }, config.delayTime);
@@ -41,7 +39,7 @@ export const getNetworkTime = (config: NTPConfig): Promise<Date> => {
       address: '0.0.0.0', port: 1234, family: 1
     }, (err) => {
       if (err) {
-        hilog.error(DOMAIN, TAG, "getNetworkTime: udp bind err! err is %{public}s", JSON.stringify(err));
+        Logger.error("getNetworkTime: udp bind err! err is %{public}s", JSON.stringify(err));
         reject(err.message);
       }
     });
@@ -49,7 +47,7 @@ export const getNetworkTime = (config: NTPConfig): Promise<Date> => {
     let isTimeoutTriggered = false;
 
     udp.on('error', err => {
-      hilog.error(DOMAIN, TAG, "getNetworkTime: udp connect err! err is %{public}s", JSON.stringify(err));
+      Logger.error("getNetworkTime: udp connect err! err is %{public}s", JSON.stringify(err));
       if (isTimeoutTriggered) {
         return;
       }
@@ -59,7 +57,7 @@ export const getNetworkTime = (config: NTPConfig): Promise<Date> => {
     });
 
     udp.on('message', message => {
-      hilog.info(DOMAIN, TAG, "getNetworkTime: udp recv msg, msg is %{public}s", JSON.stringify(message));
+      Logger.info("getNetworkTime: udp recv msg, msg is %{public}s", JSON.stringify(message));
       const messageBuffer = buffer.from(message.message);
       clearTimeout(delayTime);
       udp.close();
@@ -76,9 +74,9 @@ export const getNetworkTime = (config: NTPConfig): Promise<Date> => {
 
       const totalMilliseconds = integerPart * 1000 + (fractionalPart * 1000) / 0x100000000;
       const referenceDate = new Date(Date.UTC(1900, 0, 1));
-      hilog.info(DOMAIN, TAG, "getNetworkTime: get timestamp is %{public}d", totalMilliseconds);
+      Logger.info("getNetworkTime: get timestamp is %{public}d", totalMilliseconds);
       referenceDate.setUTCMilliseconds(referenceDate.getUTCMilliseconds() + totalMilliseconds);
-      hilog.info(DOMAIN, TAG, "getNetworkTime: set Date is %{public}s", referenceDate.toString());
+      Logger.info("getNetworkTime: set Date is %{public}s", referenceDate.toString());
       resolve(referenceDate);
     });
 
@@ -90,7 +88,7 @@ export const getNetworkTime = (config: NTPConfig): Promise<Date> => {
       data: arrayBufferNtpData, address: netAddress
     }, (err: BusinessError) => {
       if (err) {
-        hilog.error(DOMAIN, TAG, "getNetworkTime: udp send err! err is %{public}s", JSON.stringify(err));
+        Logger.error("getNetworkTime: udp send err! err is %{public}s", JSON.stringify(err));
         if (isTimeoutTriggered) {
           return;
         }
