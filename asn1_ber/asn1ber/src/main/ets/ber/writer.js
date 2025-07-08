@@ -1,8 +1,7 @@
 import { ASN1 } from './types';
 import { Errors } from './errors';
 import Buffer from '@ohos.buffer';
-import hilog from '@ohos.hilog';
-
+import { LogUtil } from './logUtil';
 ///--- Globals
 
 var InvalidAsn1Error = Errors.InvalidAsn1Error;
@@ -15,7 +14,7 @@ const TAG = 'asn1_ber_writer';
 function merge(from, to) {
 	// 确保 from 和 to 都是对象
 	if (typeof from !== 'object' || from === null || typeof to !== 'object' || to === null) {
-		hilog.error(0x0000, TAG, '%{public}s', 'Both arguments must be objects and not null');
+		LogUtil.error('Both arguments must be objects and not null');
 		throw new TypeError('Both arguments must be objects and not null');
 	}
 
@@ -28,6 +27,7 @@ function merge(from, to) {
 		var value = Object.getOwnPropertyDescriptor(from, key);
 		Object.defineProperty(to, key, value);
 	});
+	LogUtil.debug(`Merged options: ${JSON.stringify(to)}`);
 	return to;
 }
 
@@ -45,21 +45,24 @@ function Writer(options) {
 	// A list of offsets in the buffer where we need to insert
 	// sequence tag/len pairs.
 	this._seq = [];
+	LogUtil.debug(`Created new Writer with buffer size: ${this._size}`);
 }
 
 Object.defineProperty(Writer.prototype, 'buffer', {
 	get: function () {
 		if (this._seq.length) {
+			LogUtil.warn(`${this._seq.length} unended sequence(s)`);
 			throw InvalidAsn1Error(this._seq.length + ' unended sequence(s)');
 		}
 
+		LogUtil.info(`Returning buffer of length: ${this._offset}`);
 		return (this._buf.subarray(0, this._offset));
 	}
 });
 
 Writer.prototype.writeByte = function (b) {
 	if (typeof (b) !== 'number') {
-		hilog.error(0x0000, TAG, '%{public}s', 'argument must be a Number');
+		LogUtil.error(`argument must be a Number`);
 		throw new TypeError('argument must be a Number');
 	}
 
@@ -69,7 +72,7 @@ Writer.prototype.writeByte = function (b) {
 
 Writer.prototype.writeInt = function (i, tag) {
 	if (!Number.isInteger(i)) {
-		hilog.error(0x0000, TAG, '%{public}s', 'argument must be an integer');
+		LogUtil.error(`argument must be an integer`);
 		throw new TypeError('argument must be an integer');
 	}
 	if (typeof (tag) !== 'number') {
@@ -90,17 +93,19 @@ Writer.prototype.writeInt = function (i, tag) {
 	while (bytes.length) {
 		this._buf[this._offset++] = bytes.pop();
 	}
+	LogUtil.info(`Wrote integer: ${i} with tag: ${tag}`);
 };
 
 Writer.prototype.writeNull = function () {
 	this.writeByte(ASN1.Null);
 	this.writeByte(0x00);
+	LogUtil.debug(`Wrote null value`);
 };
 
 
 Writer.prototype.writeEnumeration = function (i, tag) {
 	if (typeof (i) !== 'number') {
-		hilog.error(0x0000, TAG, '%{public}s', 'argument must be a Number');
+		LogUtil.error(`argument must be a Number`);
 		throw new TypeError('argument must be a Number');
 	}
 	if (typeof (tag) !== 'number') {
@@ -113,7 +118,7 @@ Writer.prototype.writeEnumeration = function (i, tag) {
 
 Writer.prototype.writeBoolean = function (b, tag) {
 	if (typeof (b) !== 'boolean') {
-		hilog.error(0x0000, TAG, '%{public}s', 'argument must be a Boolean');
+		LogUtil.error('argument must be a Boolean');
 		throw new TypeError('argument must be a Boolean');
 	}
 	if (typeof (tag) !== 'number') {
@@ -129,7 +134,7 @@ Writer.prototype.writeBoolean = function (b, tag) {
 
 Writer.prototype.writeString = function (s, tag) {
 	if (typeof (s) !== 'string') {
-		hilog.error(0x0000, TAG, '%{public}s', 'argument must be a string (was: ' + typeof (s) + ')');
+		LogUtil.error('argument must be a string (was: ' + typeof (s) + ')');
 		throw new TypeError('argument must be a string (was: ' + typeof (s) + ')');
 	}
 	if (typeof (tag) !== 'number') {
@@ -149,7 +154,7 @@ Writer.prototype.writeString = function (s, tag) {
 
 Writer.prototype.writeBuffer = function (buf, tag) {
 	if (!Buffer.isBuffer(buf)) {
-		hilog.error(0x0000, TAG, '%{public}s', 'argument must be a buffer');
+		LogUtil.error('argument must be a buffer');
 		throw new TypeError('argument must be a buffer');
 	}
 
@@ -164,12 +169,13 @@ Writer.prototype.writeBuffer = function (buf, tag) {
 		buf.copy(this._buf, this._offset, 0, buf.length);
 		this._offset += buf.length;
 	}
+	LogUtil.debug(`Wrote buffer of length: ${buf.length} with tag: ${tag}`);
 };
 
 
 Writer.prototype.writeStringArray = function (strings, tag) {
 	if (!(strings instanceof Array)) {
-		hilog.error(0x0000, TAG, '%{public}s', 'argument must be an Array[String]');
+		LogUtil.error('argument must be an Array[String]');
 		throw new TypeError('argument must be an Array[String]');
 	}
 
@@ -177,12 +183,13 @@ Writer.prototype.writeStringArray = function (strings, tag) {
 	strings.forEach(function (s) {
 		self.writeString(s, tag);
 	});
+	LogUtil.info(`Wrote string array with tag: ${tag}`);
 };
 
 // This is really to solve DER cases, but whatever for now
 Writer.prototype.writeOID = function (s, tag) {
 	if (typeof (s) !== 'string') {
-		hilog.error(0x0000, TAG, '%{public}s', 'argument must be a string');
+		LogUtil.error('argument must be a string');
 		throw new TypeError('argument must be a string');
 	}
 	if (typeof (tag) !== 'number') {
@@ -190,6 +197,7 @@ Writer.prototype.writeOID = function (s, tag) {
 	}
 
 	if (!/^([0-9]+\.){0,}[0-9]+$/.test(s)) {
+		LogUtil.error('argument is not a valid OID string');
 		throw new Error('argument is not a valid OID string');
 	}
 
@@ -231,12 +239,13 @@ Writer.prototype.writeOID = function (s, tag) {
 	bytes.forEach(function (b) {
 		self.writeByte(b);
 	});
+	LogUtil.info(`Wrote OID: ${s} with tag: ${tag}`);
 };
 
 
 Writer.prototype.writeLength = function (len) {
 	if (typeof (len) !== 'number') {
-		hilog.error(0x0000, TAG, '%{public}s', 'argument must be a Number');
+		LogUtil.error('argument must be a Number');
 		throw new TypeError('argument must be a Number');
 	}
 
@@ -257,8 +266,10 @@ Writer.prototype.writeLength = function (len) {
 		this._buf[this._offset++] = len >> 8;
 		this._buf[this._offset++] = len;
 	} else {
+		LogUtil.error('Length too long (> 4 bytes)');
 		throw InvalidAsn1Error('Length too long (> 4 bytes)');
 	}
+	LogUtil.debug(`Wrote length: ${len}`);
 };
 
 Writer.prototype.startSequence = function (tag) {
@@ -270,6 +281,7 @@ Writer.prototype.startSequence = function (tag) {
 	this._seq.push(this._offset);
 	this._ensure(3);
 	this._offset += 3;
+	LogUtil.debug(`Started sequence with tag: ${tag}`);
 };
 
 
@@ -296,39 +308,42 @@ Writer.prototype.endSequence = function () {
 		this._buf[seq + 2] = len >> 8;
 		this._buf[seq + 3] = len;
 	} else {
+		LogUtil.error('Sequence too long');
 		throw InvalidAsn1Error('Sequence too long');
 	}
+	LogUtil.info(`Ended sequence with length: ${len}`);
 };
 
 Writer.prototype._shift = function (start, len, shift) {
 	// 检查 start 是否被定义
 	if (start === undefined) {
-		hilog.error(0x0000, TAG, '%{public}s', 'Missing required parameter "start"');
+		LogUtil.error('Missing required parameter "start"');
 		throw new Error('Missing required parameter "start"');
 	}
 
 	// 检查 len 是否被定义
 	if (len === undefined) {
-		hilog.error(0x0000, TAG, '%{public}s', 'Missing required parameter "len"');
+		LogUtil.error('Missing required parameter "len"');
 		throw new Error('Missing required parameter "len"');
 	}
 
 	// 检查 shift 是否为有效值（这里假设非零或负数即为有效）
 	if (shift >= 0) {
-		hilog.error(0x0000, TAG, '%{public}s', 'Invalid shift value, must be a positive number');
+		LogUtil.error('Invalid shift value, must be a positive number');
 		throw new Error('Invalid shift value, must be a positive number');
 	}
 
 	// 执行实际的缓冲区操作
 	this._buf.copy(this._buf, start + shift, start, start + len);
 	this._offset += shift;
+	LogUtil.debug(`Shifted buffer by: ${shift}`);
 };
 
 Writer.prototype._ensure = function (len) {
 	// assert.ok(len);
 
 	if (!len || len <= 0) {
-		hilog.error(0x0000, TAG, '%{public}s', 'Invalid length, must be a positive number');
+		LogUtil.error('Invalid length, must be a positive number');
 		// 抛出错误或进行其他错误处理
 		throw new Error('Invalid length, must be a positive number');
 	}
@@ -342,6 +357,7 @@ Writer.prototype._ensure = function (len) {
 		this._buf.copy(buf, 0, 0, this._offset);
 		this._buf = buf;
 		this._size = sz;
+		LogUtil.debug(`Expanded buffer to size: ${sz}`);
 	}
 };
 
