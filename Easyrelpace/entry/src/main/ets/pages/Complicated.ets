@@ -33,7 +33,7 @@ struct Index {
     autoCancel: true
   });
   getResourceString(res: Resource) {
-    return getContext().resourceManager.getStringSync(res.id)
+    return  this.getUIContext().getHostContext()!.resourceManager.getStringSync(res.id)
   }
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
