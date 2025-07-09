@@ -23,6 +23,7 @@ struct SavingObjects {
   @State userName: string = ''
   @State userPassword: string = ''
   @State userEmail: string = ''
+  @State message: string = ''
 
   build() {
     Column({ space: 20 }) {
@@ -59,20 +60,22 @@ struct SavingObjects {
               userName: this.userName,
               userPassword: this.userPassword,
               userEmail: this.userEmail
-            }).then((info: ESObject) => {
+            }).then((info: ParseObject) => {
               console.log('HMLog-->', JSON.stringify(info))
               this.userName = ''
               this.userPassword = ''
               this.userEmail = ''
-              promptAction.showToast({ message: '保存成功' })
+              this.message = `保存成功 ObjectId: ${info._getId()}`;
             }).catch((err: ESObject) => {
-              promptAction.showToast({ message: '保存失败' })
+              this.message = '保存失败';
               console.log('HMLog-->', JSON.stringify(err))
             })
           } else {
             promptAction.showToast({ message: '请填写用户名和密码' })
           }
         })
+
+      Text(this.message)
     }
     .width('100%')
     .height('100%')

@@ -16,6 +16,7 @@ class SocketHarmony {
     this.ws = webSocket.createWebSocket();
 
     this.ws.on('open', (err, value) => {
+      // @ts-ignore
       this.onopen();
     })
 
@@ -38,12 +39,13 @@ class SocketHarmony {
   }
 
   send(data) {
+    // @ts-ignore
     this.ws.send(data)
   }
 
   close() {
     // @ts-ignore
-    this.ws.closeSocket();
+    this.ws.close();
   }
 }
 

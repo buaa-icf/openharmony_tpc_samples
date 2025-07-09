@@ -22,7 +22,7 @@
  * @alias Parse.GeoPoint
  */
 /* global navigator */
-import { geoLocationManager } from '@kit.LocationKit';
+import geoLocationManager  from '@ohos.geolocation';
 import { BusinessError } from '@kit.BasicServicesKit';
 
 class ParseGeoPoint {
