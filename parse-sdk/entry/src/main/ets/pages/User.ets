@@ -27,11 +27,6 @@ struct User {
   @State message: string = ''
   userId: string | undefined = ''
 
-  aboutToAppear(): void {
-    Parse.initialize('wahaha', '123123'); // 使用你的 JavaScript Key
-    Parse.serverURL = 'http://192.168.0.2:1337/parse';
-  }
-
   handleParseError(err: ESObject) {
     switch (err.code) {
       case Parse.Error.INVALID_SESSION_TOKEN:

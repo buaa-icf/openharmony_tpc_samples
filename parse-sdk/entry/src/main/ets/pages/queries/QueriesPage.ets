@@ -23,7 +23,7 @@ struct Index {
 
   build() {
     Column({ space: 20 }) {
-      Button('添加')
+      Button('QueriesAdd')
         .borderRadius(4)
         .type(ButtonType.Normal)
         .width('100%')
@@ -31,7 +31,7 @@ struct Index {
           router.pushUrl({ url: 'pages/queries/QueriesAdd' })
         })
 
-      Button('修改')
+      Button('QueriesModify')
         .borderRadius(4)
         .type(ButtonType.Normal)
         .width('100%')
@@ -39,7 +39,7 @@ struct Index {
           router.pushUrl({ url: 'pages/queries/QueriesModify' })
         })
 
-      Button('删除')
+      Button('QueriesDelete')
         .borderRadius(4)
         .type(ButtonType.Normal)
         .width('100%')
@@ -47,12 +47,36 @@ struct Index {
           router.pushUrl({ url: 'pages/queries/QueriesDelete' })
         })
 
-      Button('查询')
+      Button('QueriesObj')
         .borderRadius(4)
         .type(ButtonType.Normal)
         .width('100%')
         .onClick(async () => {
           router.pushUrl({ url: 'pages/queries/QueriesObj' })
+        })
+
+      Button('QueriesRelated')
+        .borderRadius(4)
+        .type(ButtonType.Normal)
+        .width('100%')
+        .onClick(async () => {
+          router.pushUrl({ url: 'pages/queries/QueriesRelated' })
+        })
+
+      Button('QueriesArray')
+        .borderRadius(4)
+        .type(ButtonType.Normal)
+        .width('100%')
+        .onClick(async () => {
+          router.pushUrl({ url: 'pages/queries/QueriesArray' })
+        })
+
+      Button('QueriesRelationship')
+        .borderRadius(4)
+        .type(ButtonType.Normal)
+        .width('100%')
+        .onClick(async () => {
+          router.pushUrl({ url: 'pages/queries/QueriesRelationship' })
         })
     }
     .width('100%')

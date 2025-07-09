@@ -7,7 +7,7 @@ Parse JavaScript SDK 是一个功能强大的客户端库，用于与 Parse Serv
 ## 下载安装
 
 ```shell
-ohpm install @ohos/parse-sdk
+ohpm install @ohos/parser-sdk
 ```
 
 OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony har包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
@@ -23,7 +23,7 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
 ```
 
 2.使用Parse.Object
-- Saving Objects
+- 创建、保存对象
 ```
 const GameScore = Parse.Object.extend("GameScore");
 const gameScore = new GameScore();
@@ -39,7 +39,7 @@ gameScore.save()
   
 });
 ```
-- Updating Objects
+- 更新对象
 ```
 const GameScore = Parse.Object.extend("GameScore");
 const gameScore = new GameScore();
@@ -55,7 +55,7 @@ gameScore.save().then((gameScore) => {
   return gameScore.save();
 });
 ```
-- Destroying Objects
+- 删除对象
 ```
 myObject.destroy().then((myObject) => {
   // The object was deleted from the Parse Cloud.
@@ -66,7 +66,7 @@ myObject.destroy().then((myObject) => {
 ```
 
 3.使用Queries
-- Query Constraints
+- 条件查询
 ```
 const GameScore = Parse.Object.extend("GameScore");
 const query = new Parse.Query(GameScore);
@@ -81,7 +81,7 @@ for (let i = 0; i < results.length; i++) {
 ```
 
 4.使用Parse.User
-- Signing Up
+- 注册
 ```
 const user = new Parse.User();
 user.set("username", "my name");
@@ -97,19 +97,19 @@ try {
   // Show the error message somewhere and let the user try again.
 }
 ```
-- Logging In
+- 登录
 ```
 const user = await Parse.User.logIn("myname", "mypass", { usePost: false });
 ```
-- Current User
+- 获取当前用户
 ```
 const currentUser = Parse.User.current();
 ```
-- Logging Out
+- 退出登录
 ```
 await Parse.User.logOut();
 ```
-- Security For Other Objects
+- 给对象设置访问权限
 ```
 const Note = Parse.Object.extend("Note");
 const privateNote = new Note();
@@ -131,7 +131,7 @@ const isRevocable = ParseSession.isCurrentSessionRevocable();
 const sessionToken = currentUser.getSessionToken();
 const user = await Parse.User.become(sessionToken);
 ```
-- Handling Invalid Session Token Error
+- 无效会话令牌错误处理
 ```
 handleParseError(err: ESObject) {
     switch (err.code) {
@@ -143,19 +143,19 @@ handleParseError(err: ESObject) {
 ```
 
 6.使用Parse.Role
-- Security for Role Objects
+- 创建管理员角色
 ```
 const roleACL = new Parse.ACL();
 roleACL.setPublicReadAccess(true);
 const role = new Parse.Role("Administrator", roleACL);
 role.save();
 ```
-- Normal for Role Objects
+- 创建角色
 ```
 const role = new Parse.Role('TestRole', new Parse.ACL());
 await role.save();
 ```
-- Role Based Security for Other Objects
+- 为角色提供对对象的读取或写入权限
 ```
 const wallPost = new Parse.Object("WallPost");
 const postACL = new Parse.ACL();
@@ -165,7 +165,7 @@ wallPost.save();
 ```
 
 7.使用Files
-- Creating a Parse.File
+- 创建、保存文件
 ```
 const Post: ESObject = ParseObject.extend('Post');
 const post: ESObject = new Post();
@@ -174,7 +174,7 @@ const textFile = new Parse.File('test.txt', { base64: base64Data });
 post.set('txt', textFile);
 post.save();
 ```
-- Retrieving File Contents
+- 查看文件内容
 ```
 const Post: ESObject = ParseObject.extend('Post');
 const query = new Parse.Query(Post);
@@ -193,7 +193,7 @@ query.get(this.objectId).then((post) => {
   this.message = '获取Post对象失败'
 })
 ```
-- Adding Metadata and Tags
+- 添加元数据和标签
 ```
 parseFile.addMetadata('createdById', 'some-user-id');
 parseFile.addTag('groupId', 'some-group-id');
@@ -202,13 +202,13 @@ post.save();
 ```
 
 8.使用GeoPoints
-- Parse.GeoPoint
+- 添加GepPoint
 ```
 const point = new Parse.GeoPoint({latitude: 40.0, longitude: -30.0});
 let placeObject = new Parse.Object("PlaceObject");
 placeObject.set("location", point);
 ```
-- Geo Queries
+- 查询 Parse.Polygon 是否包含 Parse.GeoPoint
 ```
 const points = [[0,0], [0,1], [1,1], [1,0]];
 const inside = new Parse.GeoPoint(0.5, 0.5);
@@ -221,7 +221,7 @@ polygon.containsPoint(outside);
 ```
 
 9.使用Local Datastore
-- Pinning
+- 将对象固定到本地存储
 ```
 const GameScore: ESObject = Parse.Object.extend("GameScore");
 const gameScore: ESObject = new GameScore();
@@ -230,14 +230,14 @@ await gameScore.pin();
 
 await Parse.Object.pinAll([gameScore]);
 ```
-- Retrieving
+- 查询本地数据存储
 ```
 const GameScore = Parse.Object.extend("GameScore");
 const query = new Parse.Query(GameScore);
 query.fromLocalDatastore();
 const result = await query.get(gameScore.id);
 ```
-- Querying the Local Datastore
+- 条件查询本地数据存储
 ```
 const GameScore = Parse.Object.extend("GameScore");
 const query = new Parse.Query(GameScore);
@@ -245,17 +245,17 @@ query.equalTo('playerName', 'Joe Bob');
 query.fromLocalDatastore();
 const results = await query.find();
 ```
-- Unpinning
+- 取消固定
 ```
 await gameScore.unPin();
 
 await Parse.Object.unPinAllObjects();
 ```
-- Dumping Contents
+- 查询本地数据存储的内容
 ```
 const LDS = await Parse.dumpLocalDatastore();
 ```
-- Caching Query Results
+- 缓存查询结果
 ```
 const GameScore: ESObject = Parse.Object.extend("GameScore");
 const query = new Parse.Query(GameScore);
@@ -266,13 +266,70 @@ await Parse.Object.pinAllWithName('HighScores', results);
 let localDatastore: ESObject = await Parse.LocalDatastore._getAllContents()
 this.message += ' Caching Query Results : ' + JSON.stringify(localDatastore) + '\r\n\r\n'
 ```
-- Pinning with Labels
+- 使用标签固定
 ```
 // Add several objects with a label.
 await Parse.Object.pinAllWithName('MyScores', listOfObjects);
 
 // Add another object with the same label.
 await anotherGameScore.pinWithName('MyScores');
+```
+
+10.使用Live Queries
+- 创建订阅
+```
+let query = new Parse.Query('GameScore');
+let subscription = await query.subscribe();
+```
+- 事件处理
+```
+subscription.on('open', () => {
+ console.log('subscription opened');
+});
+subscription.on('create', (object) => {
+  console.log('object created');
+});
+subscription.on('update', (object) => {
+  console.log('object updated');
+});
+subscription.on('enter', (object) => {
+  console.log('object entered');
+});
+subscription.on('leave', (object) => {
+  console.log('object left');
+});
+subscription.on('delete', (object) => {
+  console.log('object deleted');
+});
+subscription.on('close', () => {
+  console.log('subscription closed');
+});
+```
+- 取消订阅
+```
+subscription.unsubscribe();
+```
+- 连接、关闭LiveQueryServer
+```
+let config: ESObject = {
+  serverURL: 'ws://10.20.199.239:1337',
+}
+let client = new LiveQueryClient(config);
+client.open();
+
+client.close();
+```
+- 事件处理
+```
+client.on('open', () => {
+  console.log('connection opened');
+});
+client.on('close', () => {
+  console.log('connection closed');
+});
+client.on('error', (error) => {
+  console.log('connection error');
+});
 ```
 
 ## 接口说明
@@ -333,13 +390,23 @@ await anotherGameScore.pinWithName('MyScores');
 | addMetadata | key, value            | 无         | 添加元数据      |
 | addTag      | key, value            | 无         | 添加标签       |
 
+### Live Queries
+
+| 接口名         | 参数                    | 返回值       | 说明         |
+|-------------|-----------------------|-----------|------------|
+| subscribe        | 无               | LiveQuerySubscription | 创建订阅       |
+| on     | string, any                     | 无                    | 事件处理     |
+| unsubscribe | 无            | 无         | 取消订阅      |
+| open      | 无            | 无         | 连接 LiveQueryServer       |
+| close      | 无            | 无         | 关闭 LiveQueryServer       |
+
 ## 关于混淆
 - 代码混淆，请查看[代码混淆简介](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
-- 如果希望parse-sdk库在代码混淆过程中不会被混淆，需要在混淆规则配置文件obfuscation-rules.txt中添加相应的排除规则：
+- 如果希望net-snmp库在代码混淆过程中不会被混淆，需要在混淆规则配置文件obfuscation-rules.txt中添加相应的排除规则：
 
 ```
 -keep
-./oh_modules/@ohos/parse-sdk
+./oh_modules/@ohos/parser-sdk
 ```
 
 ## 约束与限制
@@ -351,7 +418,7 @@ await anotherGameScore.pinWithName('MyScores');
 ````
 |---parse-sdk
 |   |---entry   # 示例代码文件夹
-|   |---library   # parse-sdk库文件夹
+|   |---library   # parser-sdk库文件夹
 |       |---src
 |           |---main  
 |               |---ets
@@ -363,6 +430,12 @@ await anotherGameScore.pinWithName('MyScores');
 ## 贡献代码
 
 使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎给发[PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls)共建 。
+
+## 遗留问题
+
+- [ ] push功能暂不支持(目前parse-server端不支持Harmony,需要集成HMS)
+- [ ] config功能不支持(config功能需要masterKey,源库中特别说明masterKey，只能在node环境中使用)
+- [ ] 删除文件功能不支持(删除文件功能需要masterKey,源库中特别说明masterKey，只能在node环境中使用)
 
 
 ## 开源协议

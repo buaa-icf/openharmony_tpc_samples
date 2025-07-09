@@ -22,20 +22,22 @@ import { promptAction, router } from '@kit.ArkUI';
 struct Index {
   @State searchName: string = '';
   @State name: string = '';
+  @State age: number = 0;
   @State occupation: string = '';
   @State resultsData: Array<ESObject> = [];
+  @State selectedIndex: number = -1;
 
   aboutToAppear() {
     console.info('Page is about to appear');
     // 初始化数据或订阅事件
 
-    const Personnel:ESObject = ParseObject.extend("PersonnelObject");
+    const Personnel:ESObject = ParseObject.extend('PersonnelObject');
     const query = new ParseQuery(Personnel);
     query.find()
       .then((results) => {
-        console.log('####',"查询成功:", `${JSON.stringify(results)}`);
+        console.log('####','查询成功:', `${JSON.stringify(results)}`);
         results.forEach((score) => {
-          console.log('####',score.id, score.get("name"), score.get("occupation"));
+          console.log('####',score.id, score.get('name'), score.get('occupation'));
         });
         this.resultsData = results;
       })
@@ -60,130 +62,164 @@ struct Index {
           .borderRadius(4)
           .type(ButtonType.Normal)
           .onClick(() => {
-            const Personnel:ESObject = ParseObject.extend("PersonnelObject");
+            const Personnel:ESObject = ParseObject.extend('PersonnelObject');
             const query = new ParseQuery(Personnel);
 
+            query.readPreference('SECONDARY_PREFERRED');
+
             if (this.searchName !== '') {
-              query.equalTo("name", this.searchName);
+              query.equalTo('name', this.searchName);
             }
             // 查询所有对象
             query.find()
               .then((results) => {
-                console.log('####',"查询成功:", `${JSON.stringify(results)}`);
+                console.log('####','查询成功:', `${JSON.stringify(results)}`);
                 this.resultsData = results;
               })
               .catch((error:ESObject) => {
-                console.error('####',"查询失败:", error);
+                console.error('####','查询失败:', error);
               });
           })
       }
+
+      Row(){
+        Button('修改')
+          .borderRadius(4)
+          .width('30%')
+          .type(ButtonType.Normal)
+          .enabled(this.selectedIndex >= 0) // 只在有选中项时启用
+          .onClick(() => {
+            if (this.selectedIndex < 0) {
+              promptAction.showToast({ message: '请先选择要修改的记录', duration: 2000 });
+              return;
+            }
+
+            // 获取选中的对象
+            const selected:ESObject = this.resultsData[this.selectedIndex];
+
+            // 应用修改
+            if (this.name !== '') selected.set('name', this.name);
+            if (this.age !== 0) selected.set('age', this.age);
+            if (this.occupation !== '') selected.set('occupation', this.occupation);
+
+            // 保存修改
+            selected.save()
+              .then(() => {
+                promptAction.showToast({ message: '修改成功', duration: 2000 });
+
+                // 重置输入框
+                this.name = '';
+                this.age = 0;
+                this.occupation = '';
+
+                // 刷新当前查询
+                const Personnel:ESObject = ParseObject.extend('PersonnelObject');
+                const query = new ParseQuery(Personnel);
+                if (this.searchName) query.equalTo('name', this.searchName);
+                return query.find();
+              })
+              .then((results: ESObject) => {
+                this.resultsData = results;
+                this.selectedIndex = -1; // 重置选中状态
+              })
+              .catch((error: ESObject) => {
+                console.error('修改失败:', error);
+                promptAction.showToast({ message: '修改失败', duration: 2000 });
+              });
+          })
+
+        Button('未保存修改')
+          .borderRadius(4)
+          .width('30%')
+          .type(ButtonType.Normal)
+          .enabled(this.selectedIndex >= 0) // 只在有选中项时启用
+          .margin({left: 10})
+          .onClick(() => {
+            if (this.selectedIndex < 0) return;
+
+            const selected: ESObject = this.resultsData[this.selectedIndex];
+
+            // 应用本地修改但不保存
+            if (this.name !== '') selected.set('name', this.name);
+            if (this.age !== 0) selected.set('age', this.age);
+            if (this.occupation !== '') selected.set('occupation', this.occupation);
+
+            // 只更新UI显示，不重新查询服务器数据
+            this.resultsData = [...this.resultsData]; // 触发ArkUI更新
+          });
+        // 撤销按钮
+        Button('撤销修改')
+          .borderRadius(4)
+          .width('30%')
+          .type(ButtonType.Normal)
+          .enabled(this.selectedIndex >= 0)
+          .onClick(() => {
+            const selected:ESObject = this.resultsData[this.selectedIndex];
+            selected.revert();
+            promptAction.showToast({
+              message: '已撤销修改',
+              duration: 2000
+            });
+
+            // 刷新数据
+            const Personnel:ESObject = ParseObject.extend('PersonnelObject');
+            const query = new ParseQuery(Personnel);
+            query.find().then((results) => {
+              this.resultsData = results;
+              this.selectedIndex = -1;
+            });
+          })
+          .margin({left: 10})
+      }
+      .margin({bottom: 20})
+
       Row(){
         TextInput({ placeholder: '名字' ,text: this.name})
           .borderRadius(4)
           .onChange((val) => {
             this.name = val
           })
-          .width('35%')
+          .width('30%')
+
+        TextInput({ placeholder: '年龄' })
+          .borderRadius(4)
+          .onChange((val) => {
+            this.age = parseInt(val)
+          })
+          .width('30%')
+          .margin({ left: 10})
 
         TextInput({ placeholder: '职业' ,text: this.occupation})
           .borderRadius(4)
           .onChange((val) => {
             this.occupation = val
           })
-          .width('35%')
+          .width('30%')
           .margin({ left: 10, right: 10})
-        Button('修改')
-          .borderRadius(4)
-          .type(ButtonType.Normal)
-          .onClick(() => {
-            if (this.searchName === '') {
-              promptAction.showToast({
-                message: '请先查询名字',
-                duration: 2000, // 提示持续时间，单位为毫秒
-              });
-              return;
-            }
-            const Personnel:ESObject = ParseObject.extend("PersonnelObject");
-            const query = new ParseQuery(Personnel);
-            const updatePromises = (this.resultsData as ParseObject[]).map(score => {
-              if (this.name !== '') {
-                score.set("name", this.name);
-              }
-              if (this.occupation !== '') {
-                score.set("occupation", this.occupation);
-              }
-              return score.save();
-            });
-            Promise.all(updatePromises).then( () => {
-              console.log('####',"更新成功:", `${JSON.stringify(this.resultsData)}`);
-              console.log('####',`成功更新了${this.resultsData.length}条记录`);
-              const queryNew = new ParseQuery(Personnel);
-              if (this.searchName !== '') {
-                queryNew.equalTo("name", this.searchName);
-              }
-              queryNew.find()
-                .then((results) => {
-                  this.name = '';
-                  this.occupation = '';
-                  this.resultsData = results;
-                })
-            })
-
-            // const Personnel:ESObject = ParseObject.extend("PersonnelObject");
-            // const query = new ParseQuery(Personnel);
-            //
-            // if (this.name !== '') {
-            //   query.equalTo("name", this.name);
-            // }
-            // if (this.occupation !== '') {
-            //   query.equalTo("occupation", this.occupation);
-            // }
-            // // 查询所有对象
-            // query.find()
-            //   .then((results) => {
-            //     console.log('####',"查询成功:", `${JSON.stringify(results)}`);
-            //     const updatePromises = results.map(score => {
-            //       if (this.name !== '') {
-            //         score.set("name", this.name);
-            //       }
-            //       if (this.occupation !== '') {
-            //         score.set("occupation", this.occupation);
-            //       }
-            //       return score.save();
-            //     });
-            //     Promise.all(updatePromises).then( () => {
-            //       console.log('####',"更新成功:", `${JSON.stringify(results)}`);
-            //       console.log('####',`成功更新了${results.length}条记录`);
-            //       const queryNew = new ParseQuery(Personnel);
-            //       queryNew.find()
-            //         .then((results) => {
-            //           this.name = '';
-            //           this.occupation = '';
-            //           this.resultsData = results;
-            //         })
-            //     })
-            //   })
-            //   .catch((error:ESObject) => {
-            //     console.error('####',"查询失败:", error);
-            //   });
-          })
       }
-      // Button('跳转')
-      //   .onClick(() =>{
-      //     router.replaceUrl({ url: 'pages/QueriesAdd' })
-      //   })
-      ForEach(this.resultsData, (item:ESObject) => {
+      ForEach(this.resultsData, (item:ESObject, index: number) => {
         Row(){
-          Text(item.get("name"))
-            .width('45%')
+          Text(item.get('name'))
+            .width('30%')
             .fontSize(15)
             .textAlign(TextAlign.Start)
-          Text(item.get("occupation"))
-            .width('45%')
+          Text(String(item.get('age')))
+            .width('30%')
+            .fontSize(15)
+            .textAlign(TextAlign.Start)
+          Text(item.get('occupation'))
+            .width('30%')
             .fontSize(15)
             .textAlign(TextAlign.Start)
         }
         .margin({ top: 10})
+        .onClick(() => {
+          this.selectedIndex = index ?? -1;  // 记录选中索引
+          promptAction.showToast({
+            message: '已选中: ' + item.get('name'),
+            duration: 1000
+          });
+        })
       })
       if (this.resultsData.length === 0) {
         Text('未找到人员')
