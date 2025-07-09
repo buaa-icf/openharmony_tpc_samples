@@ -118,7 +118,7 @@ struct LoginPage {
 
   showToast(text: string, name = 'test') {
     console.log(`zdy---${name}--->${text}`)
-    promptAction.showToast({
+    this.getUIContext().getPromptAction().showToast({
       message: text,
       duration: 2000,
       bottom: 50
@@ -311,7 +311,7 @@ struct LoginPage {
               useRemoteCipherPrefer: true,
             }
           }
-          let context: Context | null = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext(this)
+          let context: Context | null = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : this.getUIContext().getHostContext()!
           if (!context) {
             return
           }
@@ -381,7 +381,7 @@ struct LoginPage {
           GlobalObj?.getInstance()?.getClient()?.login((err, result) => {
             if (!err && result == true) {
               this.showToast(this.getResourceString('Account_login_successful'), 'login-smtp')
-              router.pushUrl({
+              this.getUIContext().getRouter().pushUrl({
                 url: 'pages/SendMailPage',
                 params: {
                   sendCount: ctx.account + ctx.mailType
@@ -422,7 +422,7 @@ struct LoginPage {
               useRemoteCipherPrefer: true,
             }
           }
-          let context: Context | null = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext(this)
+          let context: Context | null = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : this.getUIContext().getHostContext()!
           if (!context) {
             return
           }
@@ -491,7 +491,7 @@ struct LoginPage {
           GlobalObj?.getInstance()?.getClient()?.login((err, result) => {
             if (!err && result == true) {
               this.showToast(this.getResourceString('Account_login_successful'), 'login-smtp')
-              router.pushUrl({
+              this.getUIContext().getRouter().pushUrl({
                 url: 'pages/SendBigAttachmentPage',
                 params: {
                   sendCount: ctx.account + ctx.mailType
@@ -512,6 +512,6 @@ struct LoginPage {
   }
 
   getResourceString(resourceName:string) {
-    return getContext().resourceManager.getStringByNameSync(resourceName)
+    return this.getUIContext().getHostContext()!.resourceManager.getStringByNameSync(resourceName)
   }
 }

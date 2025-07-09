@@ -44,7 +44,7 @@ struct SendBigAttachmentPage {
 
   showToast(text: string, name = 'test') {
     console.log(`zdy---${name}--->${text}`)
-    promptAction.showToast({
+    this.getUIContext().getPromptAction().showToast({
       message: text,
       duration: 2000,
       bottom: 50
@@ -52,7 +52,7 @@ struct SendBigAttachmentPage {
   }
 
   aboutToAppear() {
-    let params = router.getParams()
+    let params = this.getUIContext().getRouter().getParams()
     let temp = params as Record<string, Object>
     if (temp && temp['sendCount'] && typeof temp['sendCount'] === 'string') {
       this.from = temp['sendCount'];
@@ -339,7 +339,7 @@ struct SendBigAttachmentPage {
       ctx.bigFileName = ''
       ctx.bigFileInfo = this.getResourceString('No_attachments_available_at_the_moment')
       ctx.showToast(this.getResourceString('Start_detecting_large_attachments_in_the_cache_directory'), 'createSingleFile')
-      let context = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext()
+      let context = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : this.getUIContext().getHostContext()!
       if (!context) {
         return;
       }
@@ -417,6 +417,6 @@ struct SendBigAttachmentPage {
   }
 
   getResourceString(resourceName:string) {
-    return getContext().resourceManager.getStringByNameSync(resourceName)
+    return this.getUIContext().getHostContext()!.resourceManager.getStringByNameSync(resourceName)
   }
 }
