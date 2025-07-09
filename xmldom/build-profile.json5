@@ -3,7 +3,7 @@
     "signingConfigs": [],
     "products": [
       {
-        "compileSdkVersion": 10,
+        "compileSdkVersion": 12,
         "compatibleSdkVersion": 10,
         "targetSdkVersion": 10,
         "runtimeOS": "OpenHarmony",
