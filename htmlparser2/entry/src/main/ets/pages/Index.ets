@@ -112,7 +112,7 @@ struct Index {
                             let arr: Array<string> = new Array()
                             const handler = helper.getEventCollector((error, actual: ESObject) => {
                                 if (error) {
-                                    this.result = this.result + getContext().resourceManager.getStringByNameSync('Parse_fail') + "：" + JSON.stringify(error)
+                                    this.result = this.result + this.getUIContext().getHostContext()!.resourceManager.getStringByNameSync('Parse_fail') + "：" + JSON.stringify(error)
                                     return
                                 }
 
@@ -145,7 +145,7 @@ struct Index {
 
                             const handler = helper.getEventCollector((error, actual: ESObject) => {
                                 if (error) {
-                                    this.result = this.result + getContext().resourceManager.getStringByNameSync('Parse_fail') + "：" + JSON.stringify(error)
+                                    this.result = this.result + this.getUIContext().getHostContext()!.resourceManager.getStringByNameSync('Parse_fail') + "：" + JSON.stringify(error)
                                     return
                                 }
 
@@ -287,7 +287,7 @@ struct Index {
                             tokenizer.end()
                         });
 
-                    Text(getContext().resourceManager.getStringByNameSync('Parse_results') + " :\r\n  " + this.result)
+                    Text(this.getUIContext().getHostContext()!.resourceManager.getStringByNameSync('Parse_results') + " :\r\n  " + this.result)
                         .fontSize(15)
                         .margin({ top: 55, left: 10, right: 10 })
 
