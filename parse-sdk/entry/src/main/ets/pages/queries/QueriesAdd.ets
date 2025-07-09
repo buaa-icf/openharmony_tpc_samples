@@ -15,12 +15,13 @@
   */
 
 import { ParseObject, ParseQuery } from '@ohos/parser-sdk';
-import { promptAction, router } from '@kit.ArkUI';
+import { promptAction } from '@kit.ArkUI';
 
 @Entry
 @Component
 struct Index {
   @State name: string = '';
+  @State age: number = 0;
   @State occupation: string = '';
   @State resultsData: Array<ESObject> = [];
 
@@ -28,13 +29,13 @@ struct Index {
     console.info('Page is about to appear');
     // 初始化数据或订阅事件
 
-    const Personnel:ESObject = ParseObject.extend("PersonnelObject");
+    const Personnel:ESObject = ParseObject.extend('PersonnelObject');
     const query = new ParseQuery(Personnel);
     query.find()
       .then((results) => {
-        console.log('####',"查询成功:", `${JSON.stringify(results)}`);
+        console.log('####','查询成功:', `${JSON.stringify(results)}`);
         results.forEach((score) => {
-          console.log('####',score.id, score.get("name"), score.get("occupation"));
+          console.log('####',score.id, score.get('name'), score.get('occupation'));
         });
         this.resultsData = results;
       })
@@ -52,16 +53,24 @@ struct Index {
           .onChange((val) => {
             this.name = val
           })
-          .width('35%')
+          .width('25%')
+
+        TextInput({ placeholder: '年龄' })
+          .borderRadius(4)
+          .onChange((val) => {
+            this.age = parseInt(val)
+          })
+          .width('25%')
+          .margin({ left: 10 })
 
         TextInput({ placeholder: '职业' ,text: this.occupation})
           .borderRadius(4)
           .onChange((val) => {
             this.occupation = val
           })
-          .width('35%')
+          .width('25%')
           .margin({ left: 10, right: 10})
-        Button('添加')
+        Button('Add')
           .borderRadius(4)
           .type(ButtonType.Normal)
           .onClick(() => {
@@ -72,11 +81,12 @@ struct Index {
               });
               return;
             }
-            const Personnel:ESObject = ParseObject.extend("PersonnelObject");
+            const Personnel:ESObject = ParseObject.extend('PersonnelObject');
             const personnel:ESObject = new Personnel();
             const query = new ParseQuery(Personnel);
-            personnel.set("name", this.name);
-            personnel.set("occupation", this.occupation);
+            personnel.set('name', this.name);
+            personnel.set('age', this.age)
+            personnel.set('occupation', this.occupation);
             personnel.save()
               .then((personnel:ESObject) => {
                 // Execute any logic that should take place after the object is saved.
@@ -85,31 +95,38 @@ struct Index {
                 query.find()
                   .then((results) => {
                     this.name = '';
+                    this.age = 0;
                     this.occupation = '';
 
-                    console.log('####',"查询成功:", `${JSON.stringify(results)}`);
+                    console.log('####','查询成功:', `${JSON.stringify(results)}`);
                     results.forEach((score) => {
-                      console.log('####',score.id, score.get("name"), score.get("occupation"));
+                      console.log('####',score.id, score.get('name'), score.get('age'), score.get('occupation'));
                     });
                     this.resultsData = results;
                   })
               }, (error:ESObject) => {
-                console.log("####",`${error}`);
-                console.log("####",JSON.stringify(error));
+                console.log('####',`${error}`);
+                console.log('####',JSON.stringify(error));
                 // Execute any logic that should take place if the save fails.
                 // error is a Parse.Error with an error code and message.
-                console.log("####",'Failed to create new object, with error code: ' + error.message);
+                console.log('####','Failed to create new object, with error code: ' + error.message);
               });
           })
       }
       ForEach(this.resultsData, (item:ESObject) => {
         Row(){
-          Text(item.get("name"))
-            .width('45%')
+          Text(item.get('name'))
+            .width('30%')
             .fontSize(15)
             .textAlign(TextAlign.Start)
-          Text(item.get("occupation"))
-            .width('45%')
+
+          Text(String(item.get('age') ))
+            .width('30%')
+            .fontSize(15)
+            .textAlign(TextAlign.Start)
+
+          Text(item.get('occupation'))
+            .width('30%')
             .fontSize(15)
             .textAlign(TextAlign.Start)
         }

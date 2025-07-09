@@ -21,11 +21,6 @@ struct GeoPoint {
 
   @State message: string = '结果：'
 
-  aboutToAppear(): void {
-    Parse.initialize('wahaha', '123123'); // 使用你的 JavaScript Key
-    Parse.serverURL = 'http://192.168.0.2:1337/parse';
-  }
-
   build() {
     Scroll() {
       Column({ space: 20 }) {

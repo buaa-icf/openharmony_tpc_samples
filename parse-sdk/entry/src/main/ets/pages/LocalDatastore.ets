@@ -27,8 +27,6 @@ struct LocalDatastore {
   userId: string | undefined = ''
 
   aboutToAppear(): void {
-    Parse.serverURL = 'http://192.168.0.2:1337/parse';
-    Parse.initialize('wahaha', '123123'); // 使用你的 JavaScript Key
     Parse.enableLocalDatastore()
   }
 
