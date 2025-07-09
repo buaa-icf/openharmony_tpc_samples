@@ -43,7 +43,7 @@ struct Index {
       Column() {
         Button($r("app.string.Decode_thimbleweed_pcx_585KB")).fontSize(20).onClick(() => {
 
-          getContext(this).resourceManager.getMediaContent($r("app.media.thimbleweed").id).then((uint8Array) => {
+          this.getUIContext().getHostContext()!.resourceManager.getMediaContent($r("app.media.thimbleweed").id).then((uint8Array) => {
             let pcxDecoder: PCX = new PCX(uint8Array.buffer as ArrayBuffer);
             let decodeData: PCX.DecodeType = pcxDecoder.decode();
             this.RBGA2BGRA(decodeData.pixelArray)
@@ -66,7 +66,7 @@ struct Index {
           .margin(10)
         Button($r("app.string.Decode_small_pcx_1KB")).fontSize(20).onClick(() => {
 
-          getContext(this).resourceManager.getMediaContent($r('app.media.small').id).then((uint8Array) => {
+          this.getUIContext().getHostContext()!.resourceManager.getMediaContent($r('app.media.small').id).then((uint8Array) => {
             this.smallUint8 = uint8Array;
             let pcxDecoder: PCX = new PCX(uint8Array.buffer as ArrayBuffer);
             this.smallPcx = pcxDecoder;
@@ -90,7 +90,7 @@ struct Index {
           .backgroundColor(Color.Pink)
           .margin(10)
         Button($r("app.string.Decode_parrot_pcx_25KB")).fontSize(20).onClick(() => {
-          getContext(this).resourceManager.getMediaContent($r('app.media.parrot').id).then((uint8Array) => {
+          this.getUIContext().getHostContext()!.resourceManager.getMediaContent($r('app.media.parrot').id).then((uint8Array) => {
             let pcxDecoder: PCX = new PCX(uint8Array.buffer as ArrayBuffer);
             let decodeData: PCX.DecodeType = pcxDecoder.decode();
             this.RBGA2BGRA(decodeData.pixelArray)
@@ -113,7 +113,7 @@ struct Index {
           .margin(10)
 
         Button($r("app.string.Decode_16col_pcx_40KB")).fontSize(20).onClick(() => {
-          getContext(this).resourceManager.getMediaContent($r('app.media.16col').id).then((uint8Array) => {
+          this.getUIContext().getHostContext()!.resourceManager.getMediaContent($r('app.media.16col').id).then((uint8Array) => {
             let pcxDecoder: PCX = new PCX(uint8Array.buffer as ArrayBuffer);
             let decodeData: PCX.DecodeType = pcxDecoder.decode();
             this.RBGA2BGRA(decodeData.pixelArray)
@@ -135,7 +135,7 @@ struct Index {
           .backgroundColor(Color.Pink)
           .margin(10)
         Button($r("app.string.Decode_clown_pcx_73KB")).fontSize(20).onClick(() => {
-          getContext(this).resourceManager.getMediaContent($r('app.media.clown').id).then((uint8Array) => {
+          this.getUIContext().getHostContext()!.resourceManager.getMediaContent($r('app.media.clown').id).then((uint8Array) => {
             let pcxDecoder: PCX = new PCX(uint8Array.buffer as ArrayBuffer);
             let decodeData: PCX.DecodeType = pcxDecoder.decode();
             this.RBGA2BGRA(decodeData.pixelArray)
