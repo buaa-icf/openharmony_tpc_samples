@@ -24,6 +24,7 @@ struct Role {
   email: string = ''
   @State message: string = ''
   userId: string | undefined = ''
+  roleName: string = ''
 
   build() {
     Scroll() {
@@ -46,6 +47,12 @@ struct Role {
             }
           })
 
+        TextInput({ placeholder: '请输入角色名称', text: 'TestRole' })
+          .borderRadius(4)
+          .onChange((val) => {
+            this.roleName = val
+          })
+
         Button('normal for Role Objects')
           .borderRadius(4)
           .type(ButtonType.Normal)
@@ -53,7 +60,7 @@ struct Role {
           .onClick(async () => {
             this.message = ''
             try {
-              const role = new Parse.Role('TestRole', new Parse.ACL());
+              const role = new Parse.Role(this.roleName, new Parse.ACL());
               await role.save();
               this.message = 'role 角色创建成功' + role.id
             } catch (e) {

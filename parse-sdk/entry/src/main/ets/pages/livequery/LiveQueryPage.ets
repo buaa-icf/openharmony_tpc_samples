@@ -13,6 +13,7 @@
   * See the License for the specific language governing permissions and
   * limitations under the License.
   */
+
 import { LiveQueryClient, Parse, ParseObject, ParseQuery } from '@ohos/parser-sdk'
 
 @Entry
@@ -32,7 +33,6 @@ struct Index {
   }
 
   async subscribeHandler() {
-    this.statusText = '连接中...' + `subscribeHandler`;
     console.log("livequery", `subscribeHandler`)
     this.subscribe.on('open', (object: ESObject) => {
       this.statusText = `subscribe open ${object}`;
@@ -74,26 +74,32 @@ struct Index {
     this.statusText = '连接中...' + "connectHandler";
     console.log("livequery", "connectHandler")
     let config: ESObject = {
-      serverURL: 'ws://10.20.199.239:1337',
+      applicationId: '123456',
+      serverURL: 'ws://8.210.151.59:1337',
     }
     this.client = new LiveQueryClient(config);
     this.client.on('open', () => {
+      this.statusText = '已连接' + "connectHandler";
       console.log("livequery", "client open")
     });
     this.client.on('close', () => {
+      this.statusText = '连接关闭' + "connectHandler";
       console.log("livequery", `client close`)
     });
     this.client.on('error', (error: ESObject) => {
+      this.statusText = '连接失败 ' + `client error ${JSON.stringify(error)}`;
       console.log("livequery", `client error ${JSON.stringify(error)}`)
     });
     this.client.open();
   }
 
-  async closeHandler() {
+  closeHandler() {
     this.statusText = '关闭连接...';
-    await this.client?.close();
-    this.statusText = '连接已关闭';
-    setTimeout(() => this.statusText = '', 2000);
+    this.client?.close().then(() => {
+      this.statusText = '连接已关闭';
+    }).catch((err: ESObject) => {
+      console.log('livequery', JSON.stringify(err));
+    })
   }
 
   async saveHandler() {

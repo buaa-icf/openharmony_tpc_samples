@@ -14,7 +14,7 @@
   * limitations under the License.
   */
 
-import { ParseObject, ParseQuery } from '@ohos/parser-sdk';
+import { Attributes, ParseObject, ParseQuery } from '@ohos/parser-sdk';
 import { promptAction } from '@kit.ArkUI';
 
 @Entry
@@ -24,9 +24,41 @@ struct UpdatingObjects {
   userName: string = ''
   userPassword: string = ''
   userEmail: string = ''
+  @State infoArr: ParseObject<Attributes>[] = []
+
+  aboutToAppear(): void {
+    this.getData();
+  }
+
+  getData() {
+    const UserInfo: ESObject = ParseObject.extend("UserInfo");
+    const query = new ParseQuery(UserInfo);
+    query.find().then((info) => {
+      this.infoArr = info;
+    }).catch((err: ESObject) => {
+      promptAction.showToast({ message: '获取数据失败' });
+      console.log('HMLog-->', JSON.stringify(err));
+    })
+  }
 
   build() {
     Column({ space: 20 }) {
+      List() {
+        ForEach(this.infoArr, (info: ParseObject) => {
+          ListItem() {
+            Row({ space: 10 }) {
+              Text(info._getId())
+              Text(info.get('userName'))
+              Text(info.get('userPassword'))
+              Text(info.get('userEmail'))
+            }
+            .width('100%')
+            .justifyContent(FlexAlign.SpaceBetween)
+          }
+        })
+      }
+      .width('100%')
+
       Text('Updating an object is simple. Just set some new data on it and call the save method.')
 
       TextInput({ placeholder: '请输入objectId' })
@@ -71,6 +103,7 @@ struct UpdatingObjects {
               }
               info.save().then(() => {
                 promptAction.showToast({ message: '修改成功' });
+                this.getData();
               }).catch((err: ESObject) => {
                 promptAction.showToast({ message: '修改失败' });
                 console.log('HMLog-->', JSON.stringify(err));

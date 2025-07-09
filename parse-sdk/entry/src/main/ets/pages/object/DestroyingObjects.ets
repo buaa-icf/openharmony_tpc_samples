@@ -15,15 +15,47 @@
   */
 
 import { promptAction } from '@kit.ArkUI'
-import { ParseObject, ParseQuery } from '@ohos/parser-sdk'
+import { Attributes, ParseObject, ParseQuery } from '@ohos/parser-sdk'
 
 @Entry
 @Component
 struct DestroyingObjects {
   objectId: string = ''
+  @State infoArr: ParseObject<Attributes>[] = []
+
+  aboutToAppear(): void {
+    this.getData();
+  }
+
+  getData() {
+    const UserInfo: ESObject = ParseObject.extend("UserInfo");
+    const query = new ParseQuery(UserInfo);
+    query.find().then((info) => {
+      this.infoArr = info;
+    }).catch((err: ESObject) => {
+      promptAction.showToast({ message: '获取数据失败' });
+      console.log('HMLog-->', JSON.stringify(err));
+    })
+  }
 
   build() {
     Column({ space: 20 }) {
+      List() {
+        ForEach(this.infoArr, (info: ParseObject) => {
+          ListItem() {
+            Row({ space: 10 }) {
+              Text(info._getId())
+              Text(info.get('userName'))
+              Text(info.get('userPassword'))
+              Text(info.get('userEmail'))
+            }
+            .width('100%')
+            .justifyContent(FlexAlign.SpaceBetween)
+          }
+        })
+      }
+      .width('100%')
+
       Text('To delete an object from the cloud')
 
       TextInput({ placeholder: '请输入objectId' })
@@ -41,6 +73,7 @@ struct DestroyingObjects {
             query.get(this.objectId).then((info) => {
               info.destroy().then(() => {
                 promptAction.showToast({ message: '删除成功' });
+                this.getData();
               }).catch((err: ESObject) => {
                 promptAction.showToast({ message: '删除失败' });
                 console.log('HMLog-->', JSON.stringify(err));
@@ -62,12 +95,14 @@ struct DestroyingObjects {
           query.find().then((info) => {
             ParseObject.destroyAll(info).then(() => {
               promptAction.showToast({ message: '删除成功' });
+              this.getData();
             }).catch((err: ESObject) => {
               promptAction.showToast({ message: '删除失败' });
               console.log('HMLog-->', JSON.stringify(err));
             })
           })
         })
+        .enabled(this.infoArr.length > 0)
     }
     .width('100%')
     .height('100%')
