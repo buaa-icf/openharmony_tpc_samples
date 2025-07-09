@@ -31,8 +31,18 @@ import { buffer } from '@kit.ArkTS';
 @Component
 struct Index {
   @State result: string = '';
-  @State message: string = getContext().resourceManager.getStringSync($r('app.string.run'));
-  private scrollerForList: Scroller = new Scroller()
+  @State message: string = '';
+  private scrollerForList: Scroller = new Scroller();
+  private TAG: string = '[asn1_ber]: ';
+
+  aboutToAppear(): void {
+    try {
+      this.message = this.getUIContext().getHostContext()?.resourceManager.getStringSync($r('app.string.run')) || '';
+    }catch (e) {
+      this.message = '';
+      console.info(this.TAG + JSON.stringify(e));
+    }
+  }
 
   build() {
     Column() {
@@ -241,16 +251,20 @@ struct Index {
   }
 
   private readString() {
-    let string = 'cn=foo,ou=unit,o=test'
-    let buffer = Buffer.alloc(string.length + 2)
-    buffer[0] = 0x04
-    buffer[1] = Buffer.byteLength(string)
-    buffer.write(string, 2)
+    try {
+      let string = 'cn=foo,ou=unit,o=test'
+      let buffer = Buffer.alloc(string.length + 2)
+      buffer[0] = 0x04
+      buffer[1] = Buffer.byteLength(string)
+      buffer.write(string, 2)
 
-    let reader = new BerReader(buffer)
-    this.result += 'readString\r\n'
-    this.result += '--> read a value: ' + (reader.readString() == string) + '\r\n'
-    this.result += '--> read a value: ' + (reader.length == string.length) + '\r\n\r\n'
+      let reader = new BerReader(buffer)
+      this.result += 'readString\r\n'
+      this.result += '--> read a value: ' + (reader.readString() == string) + '\r\n'
+      this.result += '--> read a value: ' + (reader.length == string.length) + '\r\n\r\n'
+    }catch (e) {
+      console.error(`${this.TAG}readString error, message:` + JSON.stringify(e))
+    }
   }
 
   private readSequence() {
@@ -303,20 +317,24 @@ struct Index {
   }
 
   private long_strings() {
-    let buffer = Buffer.alloc(256)
-    let string = "2;649;CN=Red Hat CS 71GA Demo,O=Red Hat CS 71GA Demo,C=US;"
-      + "CN=RHCS Agent - admin01,UID=admin01,O=redhat,C=US [1] This is "
-      + "Teena Vradmin's description."
-    buffer[0] = 0x04
-    buffer[1] = 0x81
-    buffer[2] = 0x94
-    buffer.write(string, 3)
+    try{
+      let buffer = Buffer.alloc(256)
+      let string = "2;649;CN=Red Hat CS 71GA Demo,O=Red Hat CS 71GA Demo,C=US;"
+        + "CN=RHCS Agent - admin01,UID=admin01,O=redhat,C=US [1] This is "
+        + "Teena Vradmin's description."
+      buffer[0] = 0x04
+      buffer[1] = 0x81
+      buffer[2] = 0x94
+      buffer.write(string, 3)
 
-    let reader = new BerReader(buffer.subarray(0, 3 + string.length));
-    this.result += 'long_strings\r\n'
+      let reader = new BerReader(buffer.subarray(0, 3 + string.length));
+      this.result += 'long_strings\r\n'
 
-    console.info("test--" + string)
-    this.result += '--> be parsed: ' + (reader.readString() == string) + '\r\n\r\n'
+      console.info(this.TAG + string)
+      this.result += '--> be parsed: ' + (reader.readString() == string) + '\r\n\r\n'
+    }catch (e) {
+      console.error(`${this.TAG}long_strings error, message:` + JSON.stringify(e))
+    }
   }
 
   private writeByte() {
