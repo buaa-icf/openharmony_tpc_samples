@@ -14,8 +14,17 @@ import { DOMParser, XMLSerializer, DOMImplementation } from '@ohos/xmldom'
 @Entry
 @Component
 struct Index {
-  @State text: string = getContext().resourceManager.getStringByNameSync("Display_Results_Area")
+  @State text: string = "";
+  @State uiContext: UIContext = this.getUIContext();
 
+  aboutToAppear(): void {
+    try {
+      this.getUIContext()
+      this.text = this.getUIContext().getHostContext()?.resourceManager.getStringByNameSync("Display_Results_Area") || "";
+    }catch (e) {
+      this.text = "";
+    }
+  }
   onParseFromString() {
     const XML = '<xml attr="&quot;">&lt; &amp;</xml>'
     const actual: ESObject = new DOMParser().parseFromString(XML).toString()
@@ -55,31 +64,31 @@ struct Index {
     Row() {
       Column() {
         Button($r('app.string.parseFromString'))
-          .margin({ top: px2vp(30) })
+          .margin({ top: this.uiContext.px2vp(30) })
           .onClick(() => this.onParseFromString())
         Button($r('app.string.serializeToString'))
-          .margin({ top: px2vp(30) })
+          .margin({ top: this.uiContext.px2vp(30) })
           .onClick(() => this.onSerializeToString())
         Button($r('app.string.DOMImplementation'))
-          .margin({ top: px2vp(30) })
+          .margin({ top: this.uiContext.px2vp(30) })
           .onClick(() => this.onDOMImplementation())
         Button($r('app.string.errorHandler'))
-          .margin({ top: px2vp(30) })
+          .margin({ top: this.uiContext.px2vp(30) })
           .onClick(() => this.onErrorHandler())
 
 
         TextArea({ text: this.text })
           .textAlign(TextAlign.Start)
-          .fontSize(px2fp(35))
+          .fontSize(this.uiContext.px2fp(35))
 
-          .margin({ top: px2vp(30) })
+          .margin({ top: this.uiContext.px2vp(30) })
           .width('100%')
           .backgroundColor(Color.Orange)
       }
       .height('100%')
       .width('100%')
 
-      .padding({ top: px2vp(100) })
+      .padding({ top: this.uiContext.px2vp(100) })
     }
     .height('100%')
   }
