@@ -32,7 +32,7 @@ struct Index {
     autoCancel: true
   });
   getResourceString(res: Resource) {
-    return getContext().resourceManager.getStringSync(res.id)
+    return  this.getUIContext().getHostContext()!.resourceManager.getStringSync(res.id)
   }
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
@@ -41,7 +41,7 @@ struct Index {
           .fontSize(16)
           .height(30)
           .onClick(() => {
-            router.pushUrl({ url: "pages/HomePage", })
+            this.getUIContext().getRouter().pushUrl({ url: "pages/HomePage", })
           })
       }
 

@@ -36,7 +36,7 @@ struct Index {
           .fontSize(16)
           .height(30)
           .onClick(() => {
-            router.pushUrl({ url: "pages/HomePage", })
+            this.getUIContext().getRouter().pushUrl({ url: "pages/HomePage", })
           })
       }
 
