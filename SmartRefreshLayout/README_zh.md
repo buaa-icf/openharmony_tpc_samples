@@ -46,19 +46,53 @@ import {Material} from "@ohos/smartrefreshlayout"
 ```
 
 ## 接口说明
+初始化
+
 `@Local model: SmartRefresh.Model = new SmartRefresh.Model()`
-1. 背景颜色
-   `model.setBackgroundShadowColor()`
-2. 字体颜色
-   `model.setBackgroundColor()`
-3. 头部默认高度
-   `model.setInitHeaderHeight()`
-4. 头部是否固定
-   `model.setFixedContent()`
-5. 头部刷新位置
-   `model.setRefreshPosition()`
-6. 刷新时间是否显示
-   `model.setTimeShowState()`
+
+方法列表
+
+1. 设置背景阴影颜色
+   `model.setBackgroundShadowColor(color: Color): void`
+
+   • 输入: color - 颜色值
+
+   • 输出: 无
+
+2. 设置背景颜色
+   `model.setBackgroundColor(color: Color): void`
+
+   • 输入: color - 颜色值
+
+   • 输出: 无
+
+3. 设置头部默认高度
+   `model.setInitHeaderHeight(height: number): void`
+
+   • 输入: height - 高度值
+
+   • 输出: 无
+
+4. 设置头部是否固定
+   `model.setFixedContent(fixedContent: boolean): void`
+
+   • 输入: fixedContent - 是否固定(true/false)
+
+   • 输出: 无
+
+5. 设置头部刷新位置
+   `model.setRefreshPosition(position: RefreshPositionEnum): void`
+
+   • 输入: position - 位置值  TOP = 0, BOTTOM = 1, TOPANDBOTTOM = 2
+
+   • 输出: 无
+
+6. 设置刷新时间是否显示
+   `model.setTimeShowState(isShow: boolean): void`
+
+   • 输入: isShow - 是否显示(true/false)
+
+   • 输出: 无
 
 ## 约束与限制
 DevEco Studio: NEXT Developer Beta3-5.0.3.530, SDK: API12 (5.0.0.35)
