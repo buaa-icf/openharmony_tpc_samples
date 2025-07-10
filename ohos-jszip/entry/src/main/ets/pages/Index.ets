@@ -14,7 +14,6 @@
  */
 import JSZip, { JSZipObject } from '@ohos/jszip';
 import { BuildButtonOptions, Files, ReturnValue } from '../types/type';
-import promptAction from '@ohos.promptAction';
 import { loadAsyncFromRawFile, writeCacheDirFile } from '../utils/FileSaver';
 import { log } from '../utils/log';
 import { CreateDirOrFile } from '../components/CreateDirOrFile';
@@ -33,6 +32,7 @@ struct Index {
   @State isLoading: boolean = false;
   @State filePath: string = "";
   @State rawFileName: string = "";
+  @State uiContext: UIContext = this.getUIContext();
   dialogController: CustomDialogController = new CustomDialogController({
     builder: CreateDirOrFile({
       create_type: this.create_type,
@@ -84,6 +84,14 @@ struct Index {
     }
   }
 
+  getStringByNameSync(resPath: string): string{
+    try {
+      return this.getUIContext().getHostContext()?.resourceManager.getStringByNameSync(resPath) || "";
+    }catch (e) {
+      console.info("getStringByNameSync error, message: " + JSON.stringify(e));
+      return "";
+    }
+  }
   createDir() {
     this.create_type = "DIR";
     this.openDialog();
@@ -95,10 +103,13 @@ struct Index {
   }
 
   removeDirOrFile(path: string) {
-    this.instance.remove(path);
-    this.refresh();
-    promptAction.showToast({ message: getContext().resourceManager.getStringByNameSync('Delete_sucess')  });
-
+    try{
+      this.instance.remove(path);
+      this.refresh();
+      this.uiContext.getPromptAction().showToast({ message: this.getStringByNameSync('Delete_success')  });
+    }catch(e){
+      console.error(`removeDirOrFile error, message:` + JSON.stringify(e));
+    }
   }
 
   openDialog() {
@@ -123,8 +134,8 @@ struct Index {
       this.closeDialog()
       let isAccess: boolean = fs.accessSync(this.filePath)
       if (!isAccess) {
-        promptAction.showToast({
-          message: getContext().resourceManager.getStringByNameSync('No_Permission')  + `${this.filePath}`
+        this.uiContext.getPromptAction().showToast({
+          message: this.getStringByNameSync('No_Permission')  + `${this.filePath}`
         })
         return
       }
@@ -156,8 +167,8 @@ struct Index {
       JSZip.loadAsync(cacheData, {
         password: this.password
       }).then((data: JSZip) => {
-        promptAction.showToast({
-          message: getContext().resourceManager.getStringByNameSync('Extract_suce')  + `${JSON.stringify(data)}`
+        this.uiContext.getPromptAction().showToast({
+          message: this.getStringByNameSync('Extract_suce')  + `${JSON.stringify(data)}`
         })
         this.refresh();
         this.closeLoading();
@@ -165,14 +176,22 @@ struct Index {
       }).catch((err: Error) => {
         this.closeLoading();
         this.closeDialog();
-        promptAction.showToast({
-          message:  getContext().resourceManager.getStringByNameSync('Extract_fail')  +  `${err.message}`
-        })
+        try {
+          this.uiContext.getPromptAction().showToast({
+            message: this.getStringByNameSync('Extract_fail') + `${err.message}`
+          })
+        }catch(e){
+          console.error(`unGzipFile showToast error, message:` + JSON.stringify(e));
+        }
       })
     } catch (err) {
-      promptAction.showToast({
-        message:  getContext().resourceManager.getStringByNameSync('Extract_fail')  +  `${err.message}`
-      })
+      try {
+        this.uiContext.getPromptAction().showToast({
+          message: this.getStringByNameSync('Extract_fail') + `${err.message}`
+        })
+      }catch(e){
+        console.error(`unGzipFile showToast error, message:` + JSON.stringify(e));
+      }
       this.closeLoading();
       this.closeDialog();
     }
@@ -183,10 +202,10 @@ struct Index {
       this.closeLoading();
       this.closeDialog();
       this.openLoading();
-      loadAsyncFromRawFile(this.rawFileName).then((res: Uint8Array | void) => {
+      loadAsyncFromRawFile(this.rawFileName, this.uiContext).then((res: Uint8Array | void) => {
         if (!res) {
-          promptAction.showToast({
-            message:  getContext().resourceManager.getStringByNameSync('No_Find')
+          this.uiContext.getPromptAction().showToast({
+            message:  this.getStringByNameSync('No_Find')
           })
           this.closeLoading()
           return
@@ -194,8 +213,8 @@ struct Index {
         this.instance.loadAsync(res, {
           password: this.password
         }).then((data: JSZip) => {
-          promptAction.showToast({
-            message: getContext().resourceManager.getStringByNameSync('Extract_suce')  + `${JSON.stringify(data)}`
+          this.uiContext.getPromptAction().showToast({
+            message: this.getStringByNameSync('Extract_suce')  + `${JSON.stringify(data)}`
           })
           this.refresh();
           this.closeLoading();
@@ -203,78 +222,89 @@ struct Index {
         }).catch((err: Error) => {
           this.closeLoading();
           this.closeDialog();
-          promptAction.showToast({
-            message: getContext().resourceManager.getStringByNameSync('Extract_fail')  +  `${err.message}`
-          })
+          try {
+            this.uiContext.getPromptAction().showToast({
+              message: this.getStringByNameSync('Extract_fail') + `${err.message}`
+            })
+          }catch(e){
+            console.error(`unGzipRawFile showToast error, message:` + JSON.stringify(e));
+          }
         })
       })
     } catch (err) {
-      promptAction.showToast({
-        message: getContext().resourceManager.getStringByNameSync('Extract_fail')  +  `${err.message}`
-      })
+      try {
+        this.uiContext.getPromptAction().showToast({
+          message: this.getStringByNameSync('Extract_fail') + `${err.message}`
+        })
+      }catch(e){
+        console.error(`unGzipRawFile showToast error, message:` + JSON.stringify(e));
+      }
       this.closeLoading();
       this.closeDialog();
     }
   }
 
   onConfirm(data: ReturnValue) {
-    const type = data.create_type;
-    if (type === 'DIR') {
-      if (!data.folderName) {
-        promptAction.showToast({ message:  getContext().resourceManager.getStringByNameSync('Create_fail')  });
-        return
-      }
-      const folderName = this.currentFolder + data.folderName;
-      folderName && this.instance.folder(folderName);
-      promptAction.showToast({ message:  getContext().resourceManager.getStringByNameSync('Create_suce')   });
-      this.refresh();
-      this.dialogController?.close();
-    } else if (type === "FILE") {
-      if (!data.fileName || !data.contentText) {
-        promptAction.showToast({ message: getContext().resourceManager.getStringByNameSync('Create_fail')  });
-        return
-      }
-      const fileName = this.currentFolder + data.fileName;
-      const content = data.contentText;
-      fileName && content && this.instance.file(fileName, content);
-      promptAction.showToast({ message:  getContext().resourceManager.getStringByNameSync('Create_suce')  });
-      this.refresh();
-      this.dialogController?.close();
-    } else if (type === "ZIP") {
-      const zipName = data.zipName;
-      if (!zipName) {
-        promptAction.showToast({ message:  getContext().resourceManager.getStringByNameSync('No_Null')  });
-        return;
-      }
-      loadAsyncFromRawFile(zipName).then(res => {
-        if (!res) {
-          promptAction.showToast({ message:  getContext().resourceManager.getStringByNameSync('No_Find')   });
-
-          // this.closeLoading();
+    try {
+      const type = data.create_type;
+      if (type === 'DIR') {
+        if (!data.folderName) {
+          this.uiContext.getPromptAction().showToast({ message: this.getStringByNameSync('Create_fail') });
+          return
+        }
+        const folderName = this.currentFolder + data.folderName;
+        folderName && this.instance.folder(folderName);
+        this.uiContext.getPromptAction().showToast({ message: this.getStringByNameSync('Create_suce') });
+        this.refresh();
+        this.dialogController?.close();
+      } else if (type === "FILE") {
+        if (!data.fileName || !data.contentText) {
+          this.uiContext.getPromptAction().showToast({ message: this.getStringByNameSync('Create_fail') });
+          return
+        }
+        const fileName = this.currentFolder + data.fileName;
+        const content = data.contentText;
+        fileName && content && this.instance.file(fileName, content);
+        this.uiContext.getPromptAction().showToast({ message: this.getStringByNameSync('Create_suce') });
+        this.refresh();
+        this.dialogController?.close();
+      } else if (type === "ZIP") {
+        const zipName = data.zipName;
+        if (!zipName) {
+          this.uiContext.getPromptAction().showToast({ message: this.getStringByNameSync('No_Null') });
           return;
         }
-        this.closeDialog();
+        loadAsyncFromRawFile(zipName, this.uiContext).then(res => {
+          if (!res) {
+            this.uiContext.getPromptAction().showToast({ message: this.getStringByNameSync('No_Find') });
 
-        this.openLoading();
-
-        this.instance.loadAsync(res).then(() => {
-          this.refresh();
-          promptAction.showToast({ message:  getContext().resourceManager.getStringByNameSync('Extract_suce')   });
-          this.closeLoading();
-
-
-        }).catch((err: Error) => {
-          promptAction.showToast({ message: getContext().resourceManager.getStringByNameSync('Create_fail')   + err.message })
-          log(err.message)
-          this.closeLoading();
+            // this.closeLoading();
+            return;
+          }
           this.closeDialog();
 
+          this.openLoading();
 
+          this.instance.loadAsync(res).then(() => {
+            this.refresh();
+            this.uiContext.getPromptAction().showToast({ message: this.getStringByNameSync('Extract_suce') });
+            this.closeLoading();
+
+
+          }).catch((err: Error) => {
+            this.uiContext.getPromptAction()
+              .showToast({ message: this.getStringByNameSync('Create_fail') + err.message })
+            log(err.message)
+            this.closeLoading();
+            this.closeDialog();
+
+
+          });
         });
-      });
+      }
+    }catch(e){
+      console.error(`onConfirm showToast error, message:` + JSON.stringify(e));
     }
-
-
   }
 
   onCancel() {
@@ -296,14 +326,14 @@ struct Index {
     let ctx = this;
     this.openLoading();
     this.instance.generateAsync({ type: "arraybuffer", password: this.password, encryptStrength: 3 }).then(res => {
-      ctx.filePath = writeCacheDirFile(`prod-${Date.now()}.zip`, res);
+      ctx.filePath = writeCacheDirFile(`prod-${Date.now()}.zip`, res, this.uiContext);
       this.closeLoading();
     })
       .catch((err: object) => {
         this.closeLoading();
-        promptAction.showToast({ message: getContext().resourceManager.getStringByNameSync('Create_zip_fail')  });
+        this.uiContext.getPromptAction().showToast({ message: this.getStringByNameSync('Create_zip_fail')  });
 
-        log(getContext().resourceManager.getStringByNameSync('Create_zip_fail')  +  `${err}`)
+        log(this.getStringByNameSync('Create_zip_fail')  +  `${err}`)
       })
   }
 
@@ -338,24 +368,24 @@ struct Index {
 
         Flex({ justifyContent: FlexAlign.SpaceBetween, wrap: FlexWrap.Wrap }) {
           Row({ space: 8 }) {
-            this.BuildButton(getContext().resourceManager.getStringByNameSync('New_Folder') , (): void => this.createDir())
-            this.BuildButton(getContext().resourceManager.getStringByNameSync('New_File') , (): void => this.createFile(), {
+            this.BuildButton(this.getStringByNameSync('New_Folder') , (): void => this.createDir())
+            this.BuildButton(this.getStringByNameSync('New_File') , (): void => this.createFile(), {
               bgColor: Color.White,
               color: Color.Black,
               borderOptions: { width: 2, color: Color.Black }
             })
           }.margin({ bottom: 8 })
 
-          this.BuildButton(getContext().resourceManager.getStringByNameSync('Load_zip') , (): void => this.loadAsyncFile(), { bgColor: Color.Green })
-          this.BuildButton(getContext().resourceManager.getStringByNameSync('Create_zip') , (): void => this.generateZIP(), { bgColor: Color.Orange })
+          this.BuildButton(this.getStringByNameSync('Load_zip') , (): void => this.loadAsyncFile(), { bgColor: Color.Green })
+          this.BuildButton(this.getStringByNameSync('Create_zip') , (): void => this.generateZIP(), { bgColor: Color.Orange })
           // this.BuildButton("查看文件信息",this.debugger,{bgColor:Color.Gray});
-          this.BuildButton(getContext().resourceManager.getStringByNameSync('Ergodic_all') , (): void => this.forEachZIP())
-          this.BuildButton(getContext().resourceManager.getStringByNameSync('Filter_file') , (): void => this.filterZIP())
+          this.BuildButton(this.getStringByNameSync('Ergodic_all') , (): void => this.forEachZIP())
+          this.BuildButton(this.getStringByNameSync('Filter_file') , (): void => this.filterZIP())
         }
 
         Row() {
           Text($r('app.string.Set_Password'))
-          TextInput({ placeholder: getContext().resourceManager.getStringByNameSync('Input_Password') , text: this.password || "" })
+          TextInput({ placeholder: this.getStringByNameSync('Input_Password') , text: this.password || "" })
             .height(40)
             .width('50%')
             .onChange((value: string) => {
@@ -370,14 +400,14 @@ struct Index {
             .width('50%')
             .onClick(() => {
               if (!this.filePath || this.filePath.length < 1) {
-                promptAction.showToast({
-                  message: getContext().resourceManager.getStringByNameSync('No_file_used')
+                this.uiContext.getPromptAction().showToast({
+                  message: this.getStringByNameSync('No_file_used')
                 })
                 return;
               }
               if (!this.password || this.password.length < 1) {
-                promptAction.showToast({
-                  message:  getContext().resourceManager.getStringByNameSync('Input_zip_Password')
+                this.uiContext.getPromptAction().showToast({
+                  message:  this.getStringByNameSync('Input_zip_Password')
                 })
                 return;
               }
@@ -392,9 +422,9 @@ struct Index {
         }).margin({ bottom: 12 }).padding(10)
 
         Column() {
-          Text(getContext().resourceManager.getStringByNameSync('Input_Path') )
+          Text(this.getStringByNameSync('Input_Path') )
           TextInput({
-            placeholder: getContext().resourceManager.getStringByNameSync('Input_Path')  + '...',
+            placeholder: this.getStringByNameSync('Input_Path')  + '...',
             text: this.filePath || "data/storage/el2/base/haps/entry/cache/test.zip"
           })
             .height(40)
@@ -408,14 +438,14 @@ struct Index {
             .width('50%')
             .onClick(() => {
               if (!this.filePath || this.filePath.length < 1) {
-                promptAction.showToast({
-                  message: getContext().resourceManager.getStringByNameSync('No_zip_use')
+                this.uiContext.getPromptAction().showToast({
+                  message: this.getStringByNameSync('No_zip_use')
                 })
                 return;
               }
               if (!this.password || this.password.length < 1) {
-                promptAction.showToast({
-                  message: getContext().resourceManager.getStringByNameSync('Input_zip_Password')
+                this.uiContext.getPromptAction().showToast({
+                  message: this.getStringByNameSync('Input_zip_Password')
                 })
                 return;
               }
@@ -429,9 +459,9 @@ struct Index {
         }).margin({ bottom: 12 }).padding(10)
 
         Column() {
-          Text(getContext().resourceManager.getStringByNameSync('Input_Filename') )
+          Text(this.getStringByNameSync('Input_Filename') )
           TextInput({
-            placeholder: getContext().resourceManager.getStringByNameSync('Input_Filename')  + '...',
+            placeholder: this.getStringByNameSync('Input_Filename')  + '...',
             text: this.rawFileName || "test.zip"
           })
             .height(40)
@@ -445,14 +475,14 @@ struct Index {
             .width('50%')
             .onClick(() => {
               if (!this.rawFileName || this.rawFileName.length < 1) {
-                promptAction.showToast({
-                  message: getContext().resourceManager.getStringByNameSync('No_raw_use')
+                this.uiContext.getPromptAction().showToast({
+                  message: this.getStringByNameSync('No_raw_use')
                 })
                 return;
               }
               if (!this.password || this.password.length < 1) {
-                promptAction.showToast({
-                  message: getContext().resourceManager.getStringByNameSync('Input_zip_Password')
+                this.uiContext.getPromptAction().showToast({
+                  message: this.getStringByNameSync('Input_zip_Password')
                 })
                 return;
               }
@@ -465,14 +495,14 @@ struct Index {
           style: BorderStyle.Solid
         }).margin({ bottom: 12 }).padding(10)
         Row() {
-          Text(getContext().resourceManager.getStringByNameSync('Choose_Folder')  + `${this.currentFolder || getContext().resourceManager.getStringByNameSync('Root_path') }`)
+          Text(this.getStringByNameSync('Choose_Folder')  + `${this.currentFolder || this.getStringByNameSync('Root_path') }`)
             .fontSize(20)
             .fontColor(Color.Red)
             .width("60%")
             .textAlign(TextAlign.Start)
             .margin({ right: 2 });
 
-          this.BuildButton(getContext().resourceManager.getStringByNameSync('Choose_Root_Path') , () => this.currentFolder = "");
+          this.BuildButton(this.getStringByNameSync('Choose_Root_Path') , () => this.currentFolder = "");
         }.justifyContent(FlexAlign.Start).padding({ left: 8, right: 8, top: 8, bottom: 24 }).width("100%")
 
         List() {
@@ -482,7 +512,7 @@ struct Index {
             }
           })
 
-        }.width("100%").layoutWeight(1)
+        }.height("100%").width("100%").layoutWeight(1)
 
         Flex({ justifyContent: FlexAlign.Center, alignItems: ItemAlign.Center }) {
           LoadingProgress()
