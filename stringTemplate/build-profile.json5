@@ -5,14 +5,9 @@
       {
         "name": "default",
         "signingConfig": "default",
-        "compatibleSdkVersion": "5.0.1(13)",
-        "runtimeOS": "HarmonyOS",
-        "buildOption": {
-          "strictMode": {
-            "caseSensitiveCheck": true,
-            "useNormalizedOHMUrl": true
-          }
-        }
+        "compileSdkVersion": 13,
+        "compatibleSdkVersion": 13,
+        "runtimeOS": "OpenHarmony"
       }
     ],
     "buildModeSet": [
