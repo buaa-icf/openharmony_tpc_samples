@@ -38,6 +38,21 @@ flatc --ts monster.fbs
 4.在entry目录下新建文件夹，例如common，把Example.ts和example文件夹的内容复制进来。   
 5.打开entry/src/main/ets/common/example/person.ts，将引用改为 import * as flatbuffers from '@ohos/flatbuffers'。
 
+## 接口说明
+
+
+
+| 接口名                 | 参数     | 返回值      | 说明                                                        |
+|---------------------|--------|----------|-----------------------------------------------------------|
+| Builder.startObject | number | void     | 开始在缓冲区中编码新对象。用户通常不需要直接调用它。FlatBuffers编译器将生成内部调用此方法的帮助器方法。 |
+| Builder.addInt8     | number | void | 向缓冲区添加一个int8，正确对齐，并增大缓冲区（如有必要）。                           |
+| Builder.addInt16    | number | void   | 向缓冲区添加一个int16，正确对齐，并增大缓冲区（如有必要）。                          |
+| Builder.addInt32    | number | void   | 向缓冲区添加一个int32，正确对齐，并增大缓冲区（如有必要）。                          |
+| Builder.addInt64    | number | void   | 向缓冲区添加一个int64，正确对齐，并增大缓冲区（如有必要）。                          |
+| Builder.endObject   | void   | void   | 完成正在构建的对象的写入。                                             |
+| Builder.finish   | number   | void   | 完成一个缓冲区，将其定位到给定的root_table。                                             |
+
+
 ## 约束与限制
 在下述版本验证通过：
 
