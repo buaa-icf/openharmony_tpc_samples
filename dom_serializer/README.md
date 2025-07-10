@@ -12,7 +12,7 @@ ohpm install dom-serializer
 
 OpenHarmony
 
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ## How to Use
 
@@ -37,7 +37,7 @@ Renders a DOM node or an array of DOM nodes into a string.
 | Name | Type    | Mandatory | Description      |
 |---------|-------------------------------------------------------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | node    | AnyNode &#124;? ArrayLike<AnyNode>                                           | YES       | AnyNode object or array                                                                                                                                                                             |
-| options | DomSerializerOptions                                           | NO        | Serialization options  <br/>{ emptyAttrs£ºPrint an empty attribute's value¡£<br/>selfClosingTags£ºPrint self-closing tags for tags without contents.¡£<br/>xmlMode£ºTreat the input as an XML document; enables the `emptyAttrs` and `selfClosingTags` options.¡£<br/>encodeEntities£ºEncode characters that are either reserved in HTML or XML¡£} |
+| options | DomSerializerOptions                                           | NO        | Serialization options  <br/>{ emptyAttrsï¿½ï¿½Print an empty attribute's valueï¿½ï¿½<br/>selfClosingTagsï¿½ï¿½Print self-closing tags for tags without contents.ï¿½ï¿½<br/>xmlModeï¿½ï¿½Treat the input as an XML document; enables the `emptyAttrs` and `selfClosingTags` options.ï¿½ï¿½<br/>encodeEntitiesï¿½ï¿½Encode characters that are either reserved in HTML or XMLï¿½ï¿½} |
 
 ## Constraints
 
@@ -45,7 +45,7 @@ This project has been verified in the following version:
 
 - DevEco Studio Version: 4.1 Canary (4.1.3.317), OpenHarmony SDK: API 11 (4.1.0.36)
 
-- DevEco Studio Version£ºDevEco Studio 5.1.0 Canary1(5.1.0.229)£¬OpenHarmony SDK:5.1.0.229 API16£¨5.1.0.46£©¡£
+- DevEco Studio Versionï¿½ï¿½DevEco Studio 5.1.0 Canary1(5.1.0.229)ï¿½ï¿½OpenHarmony SDK:5.1.0.229 API16ï¿½ï¿½5.1.0.46ï¿½ï¿½ï¿½ï¿½
 
 ## Directory Structure
 
@@ -70,8 +70,8 @@ This project has been verified in the following version:
 
 ## How to Contribute
 
-If you find any problem when using dom-serializer, submit an [issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls).
+If you find any problem when using dom-serializer, submit an [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
 ## License
 
-This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/dom_serializer/LICENSE).
+This project is licensed under [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/dom_serializer/LICENSE).
