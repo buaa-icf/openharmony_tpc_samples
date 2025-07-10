@@ -35,7 +35,12 @@ const check_sequence = sequence("2n+3");
 @Component
 struct Index {
   getResourceString(res: Resource) {
-    return getContext().resourceManager.getStringSync(res.id)
+    try {
+      return this.getUIContext().getHostContext()?.resourceManager.getStringSync(res.id) || "";
+    }
+    catch (e) {
+      return "";
+    }
   }
 
   build() {
