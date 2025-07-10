@@ -92,7 +92,7 @@ struct Create {
         observer.complete();
       }, 1000)
     });
-    const observer: ESObject = {
+    const subscription: ESObject = observable.subscribe({
       next: (x: ESObject) => {
         Log.showLog('create--' + x)
       },
@@ -102,8 +102,7 @@ struct Create {
       complete: () => {
         Log.showLog('create--complete')
       },
-    };
-    const subscription: ESObject = observable.subscribe(observer);
+    });
   }
 
   empty() {
