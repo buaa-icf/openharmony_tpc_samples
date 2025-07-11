@@ -14,6 +14,10 @@ regeneratorRuntime是 ES6 提供的一种异步编程解决方案，语法行为
 OpenHarmony ohpm环境配置等更多内容，请参考[如何安装OpenHarmony ohpm](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
 ### 接口说明
+* mark(genFun: Function): Function。用于标记 generator 函数
+* wrap(innerFn: Function, outerFn?: Function, self?: Object, tryLocsList?: Array): Function 。包装 generator 函数实现。
+* values(iterable: Iterable): Iterator。获取可迭代对象的值迭代器。
+* isGeneratorFunction(func:any)。<br>
 单元测试用例详情见[TEST.md](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/regeneratorruntime/TEST.md)
 
 # 使用说明
