@@ -10,7 +10,7 @@
 ohpm install xmlbuilder@11.0.0
 ````
 
-对于OpenHarmony ohpm环境配置的详细信息，请参阅[OpenHarmony环境配置指南](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)。
+对于OpenHarmony ohpm环境配置的详细信息，请参阅[OpenHarmony环境配置指南](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)。
 
 ## 使用说明
 
@@ -60,9 +60,9 @@ ohpm install xmlbuilder@11.0.0
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)
-给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues)
+给我们，当然，我们也非常欢迎你给我们发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
 
 ## 开源协议
 
-本项目遵循 [MIT 协议](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Xmlbuilder/LICENSE)。
+本项目遵循 [MIT 协议](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Xmlbuilder/LICENSE)。
