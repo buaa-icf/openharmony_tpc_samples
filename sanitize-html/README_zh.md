@@ -464,4 +464,4 @@ interface IOptions {
 
 ## 开源协议
 
-本项目遵循 [MIT License](./LICENSE)。
+本项目遵循 [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/sanitize-html/LICENSE)。
