@@ -23,7 +23,6 @@
 import { isAnyArray } from "is-any-array"
 import rescale from "ml-array-rescale"
 
-const errHint: string = getContext().resourceManager.getStringByNameSync("placeholder_input");
 const min: number = 0;
 const max: number = 2;
 
@@ -54,8 +53,22 @@ struct Index {
   private inputMax1 = "";
   private inputMax2 = "";
   private inputMax3 = "";
-  
-  private resultText: string = getContext(this).resourceManager.getStringByNameSync("text_result");
+  @State errHint: string = '';
+  @State resultText: string = '';
+
+  aboutToAppear(): void {
+    this.errHint = this.getStringByNameSync("placeholder_input");
+    this.resultText = this.getStringByNameSync("text_result");
+  }
+
+  getStringByNameSync(str: string){
+    try {
+      return this.getUIContext().getHostContext()?.resourceManager.getStringByNameSync(str) || "";
+    }catch (e) {
+      console.error("getStringByNameSync error, message: " + JSON.stringify(e));
+      return "";
+    }
+  }
 
   build() {
     Scroll(){
@@ -85,14 +98,14 @@ struct Index {
             .height(50)
             .fontWeight(FontWeight.Bold)
             .margin({ top: 10 })
-            .onClick((ev) => {
+            .onClick(() => {
               let tmpArr: Array<number> = [];
               if (this.inputStr1) {
                 try {
                   tmpArr = JSON.parse(this.inputStr1)
                 } catch (e) {
                   console.log('test page 1 e:' + e.message)
-                  this.result1 = errHint
+                  this.result1 = this.errHint
                   return;
                 }
               } else {
@@ -102,7 +115,7 @@ struct Index {
               if (isAnyArray(tmpArr) && tmpArr.length > 0) {
                 this.result1 = JSON.stringify(rescale(tmpArr))
               } else {
-                this.result1 = errHint
+                this.result1 = this.errHint
               }
             })
 
@@ -137,14 +150,14 @@ struct Index {
             .height(50)
             .fontWeight(FontWeight.Bold)
             .margin({ top: 10 })
-            .onClick((ev) => {
+            .onClick(() => {
               let tmpArr: Array<number> = [];
               if (this.inputStr2) {
                 try {
                   tmpArr = JSON.parse(this.inputStr2)
                 } catch (e) {
                   console.log('test page 2 e:'+e.message)
-                  this.result2 = errHint
+                  this.result2 = this.errHint
                   return;
                 }
               } else {
@@ -156,11 +169,11 @@ struct Index {
                 rescale(tmpArr, { output });
                 this.result2 = JSON.stringify(output)
               } else {
-                this.result2 = errHint
+                this.result2 = this.errHint
               }
             })
 
-          Text('outputArrray result: ' + this.result2)
+          Text('outputArray result: ' + this.result2)
             .fontSize(20)
             .fontWeight(FontWeight.Bold)
             .margin({ top: 10 })
@@ -191,14 +204,14 @@ struct Index {
             .height(50)
             .fontWeight(FontWeight.Bold)
             .margin({ top: 10 })
-            .onClick((ev) => {
+            .onClick(() => {
               let tmpArr: Array<number> = [];
               if (this.inputStr3) {
                 try {
                   tmpArr = JSON.parse(this.inputStr3)
                 } catch (e) {
                   console.log('test page 3 e:'+e.message)
-                  this.result3 = errHint
+                  this.result3 = this.errHint
                   return;
                 }
               } else {
@@ -209,7 +222,7 @@ struct Index {
                 rescale(tmpArr, { output: tmpArr });
                 this.result3 = JSON.stringify(tmpArr)
               } else {
-                this.result3 = errHint
+                this.result3 = this.errHint
               }
             })
 
@@ -259,7 +272,7 @@ struct Index {
             .height(50)
             .fontWeight(FontWeight.Bold)
             .margin({ top: 10 })
-            .onClick((ev) => {
+            .onClick(() => {
               console.log('test page min 1')
               let tmpArr: Array<number> = [];
               let tmpMin: number;
@@ -270,7 +283,7 @@ struct Index {
                   tmpArr = JSON.parse(this.inputStr4)
                 } catch (e) {
                   console.log('test page 4 e:'+e.message)
-                  this.result4 = errHint
+                  this.result4 = this.errHint
                   return;
                 }
               } else {
@@ -286,7 +299,7 @@ struct Index {
                 } catch (e) {
                   console.log('test page min 5')
                   console.log('test page 5 e:'+e.message)
-                  this.result4 = errHint
+                  this.result4 = this.errHint
                   return;
                 }
               } else {
@@ -304,7 +317,7 @@ struct Index {
                 }
               } else {
                 console.log('test page min 9')
-                this.result4 = errHint
+                this.result4 = this.errHint
               }
             })
 
@@ -354,7 +367,7 @@ struct Index {
             .height(50)
             .fontWeight(FontWeight.Bold)
             .margin({ top: 10 })
-            .onClick((ev) => {
+            .onClick(() => {
               let tmpArr: Array<number> = [];
               let tmpMax: number;
               this.result5 = ''
@@ -363,7 +376,7 @@ struct Index {
                   tmpArr = JSON.parse(this.inputStr5)
                 } catch (e) {
                   console.log('test page 6 e:'+e.message)
-                  this.result5 = errHint
+                  this.result5 = this.errHint
                   return;
                 }
               } else {
@@ -375,7 +388,7 @@ struct Index {
                   tmpMax = Number.parseInt(this.inputMax1)
                 } catch (e) {
                   console.log('test page 7 e:'+e.message)
-                  this.result5 = errHint
+                  this.result5 = this.errHint
                   return;
                 }
               } else {
@@ -390,7 +403,7 @@ struct Index {
                   this.result5 = e.message;
                 }
               } else {
-                this.result5 = errHint
+                this.result5 = this.errHint
               }
             })
 
@@ -439,7 +452,7 @@ struct Index {
             .height(50)
             .fontWeight(FontWeight.Bold)
             .margin({ top: 10 })
-            .onClick((ev) => {
+            .onClick(() => {
               let tmpArr: Array<number> = [];
               let tmpMin: number;
               this.result6 = ''
@@ -448,7 +461,7 @@ struct Index {
                   tmpArr = JSON.parse(this.inputStr6)
                 } catch (e) {
                   console.log('test page 8 e:'+e.message)
-                  this.result6 = errHint
+                  this.result6 = this.errHint
                   return;
                 }
               } else {
@@ -460,7 +473,7 @@ struct Index {
                   tmpMin = Number.parseInt(this.inputMin2)
                 } catch (e) {
                   console.log('test page 9 e:'+e.message)
-                  this.result6 = errHint
+                  this.result6 = this.errHint
                   return;
                 }
               } else {
@@ -475,7 +488,7 @@ struct Index {
                   this.result6 = e.message;
                 }
               } else {
-                this.result6 = errHint
+                this.result6 = this.errHint
               }
             })
 
@@ -525,7 +538,7 @@ struct Index {
             .height(50)
             .fontWeight(FontWeight.Bold)
             .margin({ top: 10 })
-            .onClick((ev) => {
+            .onClick(() => {
               let tmpArr: Array<number> = [];
               let tmpMax: number;
               this.result7 = ''
@@ -534,7 +547,7 @@ struct Index {
                   tmpArr = JSON.parse(this.inputStr7)
                 } catch (e) {
                   console.log('test page 10 e:'+e.message)
-                  this.result7 = errHint
+                  this.result7 = this.errHint
                   return;
                 }
               } else {
@@ -561,7 +574,7 @@ struct Index {
                   this.result7 = e.message;
                 }
               } else {
-                this.result7 = errHint
+                this.result7 = this.errHint
               }
             })
 
@@ -625,7 +638,7 @@ struct Index {
             .height(50)
             .fontWeight(FontWeight.Bold)
             .margin({ top: 10 })
-            .onClick((ev) => {
+            .onClick(() => {
               let tmpArr: Array<number> = [];
               let tmpMin: number;
               let tmpMax: number;
@@ -635,7 +648,7 @@ struct Index {
                   tmpArr = JSON.parse(this.inputStr8)
                 } catch (e) {
                   console.log('test page 12 e:'+e.message)
-                  this.result8 = errHint
+                  this.result8 = this.errHint
                   return;
                 }
               } else {
@@ -647,7 +660,7 @@ struct Index {
                   tmpMin = Number.parseInt(this.inputMin3)
                 } catch (e) {
                   console.log('test page 13 e:'+e.message)
-                  this.result8 = errHint
+                  this.result8 = this.errHint
                   return;
                 }
               } else {
@@ -659,7 +672,7 @@ struct Index {
                   tmpMax = Number.parseInt(this.inputMax3)
                 } catch (e) {
                   console.log('test page 14 e:'+e.message)
-                  this.result8 = errHint
+                  this.result8 = this.errHint
                   return;
                 }
               } else {
@@ -674,7 +687,7 @@ struct Index {
                   this.result8 = e.message;
                 }
               } else {
-                this.result8 = errHint
+                this.result8 = this.errHint
               }
             })
 
