@@ -10,7 +10,7 @@
   "main": "Index.ts",
   "type": "module",
   "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_msgpack",
-  "version": "1.0.2-rc.0",
+  "version": "1.0.2",
   "tags": [
     "Tool"
   ],

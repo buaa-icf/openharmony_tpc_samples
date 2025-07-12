@@ -1,3 +1,6 @@
+## 1.0.2
+- Fix the incorrect link in README
+
 ## 1.0.2-rc.0
 - Fix Compilation Warnings
 
