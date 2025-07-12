@@ -1,3 +1,6 @@
+## Version 2.1.0
+1.Fix the incorrect link in README
+
 ## Version 2.1.0-rc.0
 1.升级源库sanitize-html版本至2.14.0 解决cve-2024-21501漏洞
 
