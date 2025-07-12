@@ -10,7 +10,7 @@
 ohpm  install javascript-natural-sort@0.7.1
 ```
 
-For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ## How to Use
 
@@ -52,7 +52,7 @@ naturalSort.insensitive = true;
 ['a', 'B'].sort(naturalSort);
 // ['a', 'B']
 ```
-For details about unit test cases, see [TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/javascript_natural_sort/TEST.md).
+For details about unit test cases, see [TEST.md](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/javascript_natural_sort/TEST.md).
 
 ## Constraints
 
@@ -63,8 +63,8 @@ This project has been verified in the following version:
 ## Available APIs
 
 | API        | Parameter | Description     |
-|----------------|-----|---------|
-| naturalSort()  | N/A  |  Natural sorting  |
+|--------------|-----|---------|
+| naturalSort  | N/A  |  Natural sorting  |
 
 ## Directory Structure
 
@@ -82,9 +82,9 @@ This project has been verified in the following version:
 
 ## How to Contribute
 
-If you find any problem during the use, submit an [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
+If you find any problem during the use, submit an [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) to us.
 
 ## License
 
-This project is licensed under [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/javascript_natural_sort/LICENSE).
+This project is licensed under [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/javascript_natural_sort/LICENSE).
     

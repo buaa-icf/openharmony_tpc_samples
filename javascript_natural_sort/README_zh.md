@@ -10,7 +10,7 @@
 ohpm  install javascript-natural-sort@0.7.1
 ```
 
-OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
 ## 使用说明
 
@@ -52,7 +52,7 @@ naturalSort.insensitive = true;
 ['a', 'B'].sort(naturalSort);
 // ['a', 'B']
 ```
-单元测试用例详情见[TEST.md](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/javascript_natural_sort/TEST.md)
+单元测试用例详情见[TEST.md](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/javascript_natural_sort/TEST.md)
 
 ## 约束与限制
 
@@ -62,9 +62,9 @@ naturalSort.insensitive = true;
 
 ## 接口说明
 
-| **接口**         | 参数  | 功能      |
-|----------------|-----|---------|
-| naturalSort()  | 无   |  自然排序   |
+| **接口**                          | 参数  | 功能      |
+|---------------------------------|-----|---------|
+| naturalSort | 无   |  自然排序   |
 
 ## 目录结构
 
@@ -82,9 +82,9 @@ naturalSort.insensitive = true;
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues)给组件，当然，也非常欢迎给发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls)共建。
+使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues)给组件，当然，也非常欢迎给发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls)共建。
 
 ## 开源协议
 
-本项目基于 [MIT License](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/blob/master/javascript_natural_sort/LICENSE)，请自由地享受和参与开源。
+本项目基于 [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/javascript_natural_sort/LICENSE)，请自由地享受和参与开源。
     
