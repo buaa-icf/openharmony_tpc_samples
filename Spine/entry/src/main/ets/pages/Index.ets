@@ -27,34 +27,35 @@ struct Index {
         Button('加载一个动画')
           .margin({ top: 10 })
           .onClick(() => {
-            router.pushUrl({ url: "pages/Example1" });
+
+            this.getUIContext()?.getRouter()?.pushUrl({ url: "pages/Example1" });
           })
 
         Button('加载网络动画')
           .margin({ top: 10 })
           .onClick(() => {
-            router.pushUrl({ url: "pages/NetworkExample" });
+            this.getUIContext()?.getRouter()?.pushUrl({ url: "pages/NetworkExample" });
           })
 
         Button('加载动画')
           .margin({ top: 10 })
           .onClick(() => {
-            router.pushUrl({ url: "pages/SingleExample" });
+            this.getUIContext()?.getRouter()?.pushUrl({ url: "pages/SingleExample" });
           })
         Button('加载skel格式的动画')
           .margin({ top: 10 })
           .onClick(() => {
-            router.pushUrl({ url: "pages/Example2" });
+            this.getUIContext()?.getRouter()?.pushUrl({ url: "pages/Example2" });
           })
         Button('加载沙箱的动画')
           .margin({ top: 10 })
           .onClick(() => {
-            router.pushUrl({ url: "pages/Example3" });
+            this.getUIContext()?.getRouter()?.pushUrl({ url: "pages/Example3" });
           })
         Button('其它接口')
           .margin({ top: 10 })
           .onClick(() => {
-            router.pushUrl({ url: "pages/Example4" });
+            this.getUIContext()?.getRouter()?.pushUrl({ url: "pages/Example4" });
           })
       }
       .padding(10)

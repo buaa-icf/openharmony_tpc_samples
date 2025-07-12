@@ -12,7 +12,7 @@ SpineArkTS是一个 Spine 2D 骨骼动画运行时库，其核心目标是提供
 ```
  ohpm install @ohos/spine
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)。
 
 ## 使用示例
 ### 完整示例
@@ -29,14 +29,14 @@ import {
   Physics,
   Delay,
   Bound
-} from '@ohos/spine'
+} from '@ohos/spine';
 
 @Entry
 @Component
 struct Index {
   // 构建上下文
-  private renderingSettings: RenderingContextSettings = new RenderingContextSettings(true)
-  private canvasRenderingContext: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.renderingSettings)
+  private renderingSettings: RenderingContextSettings = new RenderingContextSettings(true);
+  private canvasRenderingContext: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.renderingSettings);
   private _animator: AnimatorResult | undefined; 
   private animationState: AnimationState | undefined;
   private animations: Array<string> = ['death', 'aim', 'idle', 'jump', 'run', 'shoot', 'walk']; 
@@ -114,7 +114,7 @@ struct Index {
       min: 0,
       max: 120,
       expected: 60
-    }
+    };
 
     // 创建动画器
     this._animator = animator.create(options);
@@ -130,7 +130,7 @@ struct Index {
         result = this.render(this.canvasRenderingContext, result.time, skeleton, this.animationState!, skeletonRenderer,
           bounds);
       }
-    }
+    };
     // 播放动画
     this._animator.play();
   }
@@ -187,7 +187,7 @@ struct Index {
       min: 0,
       max: 120,
       expected: 60
-    }
+    };
 
     // 创建动画器
     this._animator = animator.create(options);
@@ -203,7 +203,7 @@ struct Index {
         result = this.render(this.canvasRenderingContext, result.time, skeleton, this.animationState!, skeletonRenderer,
           bounds);
       }
-    }
+    };
     // 播放动画
     this._animator.play();
   }
@@ -272,14 +272,14 @@ import {
   Physics,
   Delay,
   Bound
-} from '@ohos/spine'
+} from '@ohos/spine';
 ```
 
 ### 2.构建渲染上下文
 
 ```
-  private mainRenderingSettings: RenderingContextSettings = new RenderingContextSettings(true)
-  private mainCanvasRenderingContext: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.mainRenderingSettings)
+  private mainRenderingSettings: RenderingContextSettings = new RenderingContextSettings(true);
+  private mainCanvasRenderingContext: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.mainRenderingSettings);
 ```
 
 
@@ -382,7 +382,7 @@ import {
         min: 0,
         max: 120,
         expected: 60
-      }
+      };
 ```
 - 流程：
 - 1. 记录当前时间戳（用于计算帧间隔）。
@@ -401,7 +401,7 @@ import {
           result.isFinish = false;
           result = this.render(this.canvasRenderingContext, result.time, skeleton, this.animationState!, skeletonRenderer, bounds);
         }
-      }
+      };
       this._animator.play();
 
 ```
@@ -409,7 +409,7 @@ import {
 - 1. 创建动画控制器实例（animator.create），传入配置选项。
 - 2. 设置期望的帧率范围。
 - 3. 初始化 result 对象，记录时间戳和完成状态。
-- 4. 绑定 onFrame 回调函数：当动画控制器触发新帧时，调用 this.render 方法渲染动画。 result.isFinish 防止重复渲染同一帧
+- 4. 绑定 onFrame 回调函数：当动画控制器触发新帧时，调用 this.render 方法渲染动画。 result.isFinish 防止重复渲染同一帧。
 - 5. this._animator.play() 启动动画控制器。
 
     
