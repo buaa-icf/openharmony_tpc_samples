@@ -49,6 +49,11 @@ struct Index {
   }
 
   getResourceString(resourceName:string) {
-    return getContext().resourceManager.getStringByNameSync(resourceName)
+    try {
+      return this.getUIContext().getHostContext()?.resourceManager.getStringByNameSync(resourceName)|| '';
+    }catch (e) {
+      console.error(`getResourceString error, message: ${e}`);
+      return '';
+    }
   }
 }
