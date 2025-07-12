@@ -66,79 +66,185 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
 
 ### b2Body类接口 
 1. 创建夹具
-   `CreateFixture()`
+   `CreateFixture(def: b2FixtureDef): b2Fixture`
+   • 输入：def - 夹具定义（形状、密度、摩擦力等）
+
+   • 输出：新创建的夹具对象
+
 2. 销毁夹具
-   `DestroyFixture()`
+   `DestroyFixture(fixture: b2Fixture): void`  
+   • 输入：fixture - 要销毁的夹具对象
+
+   • 输出：无
+
 3. 设置变换
-   `SetTransform()`
+   `SetTransform(position: XY): void`  
+   • 输入：position - 世界坐标位置
+
+   • 输出：无
+
 4. 获取变换
-   `GetTransform()`
+   `GetTransform(): b2Transform`  
+   • 输出：返回当前刚体的变换矩阵（位置和角度）
+
 5. 获取位置
-   `GetPosition()`
+   `GetPosition(): b2Vec2`  
+   • 输出：刚体中心的世界坐标
+
 6. 设置位置
-   `SetPosition()`
+   `SetPosition(position: XY): void`  
+   • 输入：position - 目标世界坐标
+
+   • 输出：无
+
 7. 获取世界中心
-   `GetWorldCenter()`
+   `GetWorldCenter(): b2Vec2`  
+   • 输出：刚体质心的世界坐标
+
 8. 获取本地中心
-   `GetLocalCenter()`
+   `GetLocalCenter(): b2Vec2`  
+   • 输出：刚体质心相对于本地坐标系的偏移
+
 9. 设置线性速度
-   `SetLinearVelocity()`
+   `SetLinearVelocity(velocity: XY): void`  
+   • 输入：velocity - 目标线性速度向量
+
+   • 输出：无
 
 ### b2World类接口
 1. 设置子步长
-   `setSubStepping()`
+   `setSubStepping(flag: boolean): void`  
+   • 输入：flag - 是否启用子步长（用于复杂模拟）
+
+   • 输出：无
+
 2. 设置销毁侦听器
-   `SetDestructionListener()`
+   `SetDestructionListener(listener: b2DestructionListener | null): void`  
+   • 输入：listener - 回调接口（处理对象销毁事件）
+
+   • 输出：无
+
 3. 设置接触筛选器
-   `SetContactFilter()`
+   `SetContactFilter(filter: b2ContactFilter): void`  
+   • 输入：filter - 回调接口（决定是否允许碰撞）
+
+   • 输出：无
+
 4. 设置接触监听
-   `SetContactListener()`
+   `SetContactListener(listener: b2ContactListener): void`  
+   • 输入：listener - 回调接口（处理碰撞事件）
+
+   • 输出：无
+
 5. 设置调试绘图
-   `SetDebugDraw()`
+   `SetDebugDraw(debugDraw: b2Draw | null): void`  
+   • 输入：debugDraw - 调试绘图接口
+
+   • 输出：无
+
 6. 创建刚体
-   `CreateBody()`
+   `CreateBody(def: b2BodyDef): b2Body`  
+   • 输入：def - 刚体定义（类型、位置、阻尼等）
+
+   • 输出：新创建的刚体对象
+
 7. 销毁刚体
-   `DestroyBody()`
+   `DestroyBody(body: b2Body): void`  
+   • 输入：body - 要销毁的刚体
+
+   • 输出：无
+
 8. 创建关节
-   `CreateJoint()`
+   `CreateJoint(def: b2JointDef): b2Joint`  
+   • 输入：def - 关节定义（连接体、锚点等）
+
+   • 输出：新创建的关节对象
+
 9. 销毁关节
-   `DestroyJoint()`
+   `DestroyJoint(joint: b2Joint): void`  
+   • 输入：joint - 要销毁的关节
+
+   • 输出：无
 
 ### b2Contact类接口
 1. 重置
-   `Reset`
+   `Reset(): void`  
+   • 输出：无（重置接触状态）
+
 2. 获取歧管
-   `GetManifold`
+   `GetManifold(): b2Manifold`  
+   • 输出：碰撞歧管数据（接触点集合）
+
 3. 获取世界歧管
-   `GetWorldManifold`
+   `GetWorldManifold(worldManifold: b2WorldManifold): void`  
+   • 输入/输出：worldManifold - 存储世界坐标系下的歧管数据
+
 4. 设置切线速度
-   `SetTangentSpeed`
+   `SetTangentSpeed(speed: number): void`  
+   • 输入：speed - 切线方向的速度值
+
+   • 输出：无
+
 5. 重置摩擦力
-   `ResetFriction`
+   `ResetFriction(): void`  
+   • 输出：无（恢复默认摩擦力）
+
 6. 设置摩擦力
-   `SetFriction`
+   `SetFriction(friction: number): void`  
+   • 输入：friction - 新的摩擦系数
+
+   • 输出：无
+
 7. 设置是否启用
-   `SetEnabled`
-8. 获取夹器A
-   `GetFixtureA`
+   `SetEnabled(flag: boolean): void`  
+   • 输入：flag - 是否启用接触
+
+   • 输出：无
+
+8. 获取夹具A
+   `GetFixtureA(): b2Fixture`  
+   • 输出：接触中的第一个夹具
 
 ### b2Shape类接口
 1. 光线投射
-   `RayCast`
+   `RayCast(output: b2RayCastOutput, input: b2RayCastInput, transform: b2Transform, childIndex: number): boolean`  
+   • 输入：input - 光线参数； transform - 变换矩阵； childIndex - 子形状索引
+
+   • 输出：output - 存储交点信息；返回是否命中
+
 2. 获取类型
-   `GetType`
+   `GetType(): b2ShapeType`  
+   • 输出：形状类型枚举（圆形、多边形等）
+
 3. 拷贝
-   `Copy`
+   `Copy(other: b2Shape): b2Shape`  
+   • 输出：返回形状的深拷贝
+
 4. 获取孩子数量
-   `GetChildCount`
+   `GetChildCount(): number`  
+   • 输出：子形状的数量（复合形状用）
+
 5. 计算AABB
-   `ComputeAABB`
+   `ComputeAABB(aabb: b2AABB, xf: b2Transform, childIndex: number): void`  
+   • 输入：xf - 变换矩阵；childIndex - 子形状索引
+
+   • 输出：aabb - 存储计算结果
+
 6. 计算质量
-   `ComputeMass`
+   `ComputeMass(massData: b2MassData, density: number): void`  
+   • 输入：density - 密度值
+
+   • 输出：massData - 存储质量、质心等数据
+
 7. 计算距离
-   `ComputeDistance`
+   `ComputeDistance(xf: b2Transform, p: b2Vec2, normal: b2Vec2, childIndex: number): number`  
+   • 输入：xf - 变换矩阵；p - 世界坐标系中的一个点；normal - distance返回与当前形状的距离； childIndex -  子形状索引
+
+   • 输出：返回最小距离
+
 8. 克隆
-   `clone`
+   `clone(): b2Shape`  
+   • 输出：返回新实例（同Copy）
 
 ## 关于混淆
 - 代码混淆，请查看[代码混淆简介](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
