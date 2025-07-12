@@ -15,6 +15,9 @@ limitations under the License.
 
 import fileio from '@ohos.fileio';
 import RandomAccessReader from './RandomAccessReader'
+import LogUtil from '../tools/LogUtils';
+
+const TAG: string = "RandomAccessFileReader";
 
 class RandomAccessFileReader extends RandomAccessReader {
   public static readonly MAX_VALUE = 0x7fffffff;
@@ -26,15 +29,19 @@ class RandomAccessFileReader extends RandomAccessReader {
 
   public constructor(filePath: string, baseOffset?: number) {
     super();
+    LogUtil.debug(TAG, `constructor start, filePath: ${filePath}, baseOffset: ${baseOffset}`);
     if (filePath == null) {
+      LogUtil.error(TAG, `constructor error: filePath is null`);
       throw new Error('Null Pointer Exception')
     }
     if (baseOffset == null || baseOffset == undefined) {
+      LogUtil.debug(TAG, `constructor, baseOffset is null or undefined, setting to 0`);
       baseOffset = 0
     }
     this._filePath = filePath;
     this._baseOffset = baseOffset;
     this._length = this.getFileLength(filePath);
+    LogUtil.debug(TAG, `constructor end`);
   }
 
   public toUnshiftedOffset(localOffset: number): number {
@@ -46,6 +53,7 @@ class RandomAccessFileReader extends RandomAccessReader {
   }
 
   public getByte(index: number): number {
+    LogUtil.debug(TAG, `getByte start, index: ${index}, _currentIndex: ${this._currentIndex}`);
     if (index != this._currentIndex)
     this.seek(index);
 
@@ -53,10 +61,12 @@ class RandomAccessFileReader extends RandomAccessReader {
     if (b < 0)
     throw new Error("Unexpected end of file encountered.");
     this._currentIndex++;
+    LogUtil.debug(TAG, `getByte end, b: ${b}`);
     return b;
   }
 
   public getBytes(index: number, count: number): Int8Array {
+    LogUtil.debug(TAG, `getBytes start, index: ${index}, count: ${count}, _currentIndex: ${this._currentIndex}`);
     this.validateIndex(index, count);
 
     if (index != this._currentIndex)
@@ -72,6 +82,7 @@ class RandomAccessFileReader extends RandomAccessReader {
     this._currentIndex += bytes.length;
     if (bytes.length != count)
     throw new Error("Unexpected end of file encountered.");
+    LogUtil.debug(TAG, `getBytes end, bytes: ${bytes}`);
     return bytes;
   }
 
@@ -90,6 +101,7 @@ class RandomAccessFileReader extends RandomAccessReader {
   }
 
   protected validateIndex(index: number, bytesRequested: number): void {
+    LogUtil.debug(TAG, `validateIndex start, index: ${index}, bytesRequested: ${bytesRequested}`);
     if (!this.isValidIndex(index, bytesRequested)) {
       if (index < 0) {
         throw new Error("Attempt to read from buffer using a negative index (%d)".replace(/%d/, index.toString()));
@@ -106,12 +118,15 @@ class RandomAccessFileReader extends RandomAccessReader {
         .replace(/%d/, bytesRequested.toString())
         .replace(/%d/, (this._length - 1).toString()));
     }
+    LogUtil.debug(TAG, `validateIndex end`);
   }
 
   private getFileLength(filePath: string): number {
+    LogUtil.debug(TAG, `getFileLength start, filePath: ${filePath}`);
     let fd = fileio.openSync(filePath, 0o2);
     let nread: number = fileio.readSync(fd, this.bufArray)
     this.bufArray = this.bufArray.slice(0, nread)
+    LogUtil.debug(TAG, `getFileLength end, nread: ${nread}, bufArray length: ${this.bufArray.length}`);
     return nread;
   }
 }

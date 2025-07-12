@@ -13,6 +13,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "JpegSegmentType";
+
 class JpegSegmentType {
   public static readonly APP0: JpegSegmentType = new JpegSegmentType(-32, true);
   public static readonly APP1: JpegSegmentType = new JpegSegmentType(-31, true);
@@ -80,10 +84,14 @@ class JpegSegmentType {
   }
 
   public static fromByte(segmentTypeByte: number): JpegSegmentType {
+    LogUtil.debug(TAG, `fromByte start, segmentTypeByte: ${segmentTypeByte}`);
     for (let segmentType of JpegSegmentType.enumConstants) {
-      if (segmentType.byteValue == segmentTypeByte)
-      return segmentType;
+      if (segmentType.byteValue == segmentTypeByte) {
+        LogUtil.debug(TAG, `fromByte end, segmentType: ${segmentType}`);
+        return segmentType;
+      }
     }
+  LogUtil.debug(TAG, `fromByte end, no matching segmentType found`);
     return null;
   }
 }

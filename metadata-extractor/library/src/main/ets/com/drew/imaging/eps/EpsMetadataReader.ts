@@ -16,13 +16,17 @@ limitations under the License.
 import FileSystemMetadataReader from '../../metadata/file/FileSystemMetadataReader';
 import { EpsReader } from '../../metadata/eps/EpsReader';
 import Metadata from '../../metadata/Metadata';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "EpsMetadataReader";
 
 export default class EpsMetadataReader {
  static readMetadata(file: string): Metadata{
+    LogUtil.debug(TAG, `readMetadata start`);
     let metadata = new Metadata();
     new EpsReader().extract(file, metadata);
     new FileSystemMetadataReader().read(file, metadata);
-
+    LogUtil.debug(TAG, `readMetadata end`);
     return metadata
   }
 }

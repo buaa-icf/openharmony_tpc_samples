@@ -18,9 +18,13 @@ import Metadata from '../../metadata/Metadata';
 import FileSystemMetadataReader from '../../metadata/file/FileSystemMetadataReader';
 import StreamReader from '../../lang/StreamReader';
 import Mp3Reader from '../../metadata/mp3/Mp3Reader';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "Mp3MetadataReader";
 
 class Mp3MetadataReader {
   public static readMetadata(filePath: string): Metadata {
+    LogUtil.debug(TAG, `readMetadata start, filePath: ${filePath}`);
     let inputStream = fileio.createStreamSync(filePath, 'r+');
 
     let metadata = new Metadata();
@@ -30,6 +34,7 @@ class Mp3MetadataReader {
       inputStream.closeSync();
     }
     new FileSystemMetadataReader().read(filePath, metadata);
+    LogUtil.debug(TAG, `readMetadata end`);
     return metadata;
   }
 }

@@ -21,6 +21,9 @@ import ByteTrie from '../lang/ByteTrie'
 import MpegAudioTypeChecker from './mp3/MpegAudioTypeChecker'
 import RiffTypeChecker from './riff/RiffTypeChecker'
 import QuickTimeTypeChecker from './quicktime/QuickTimeTypeChecker'
+import LogUtil from '../tools/LogUtils';
+
+const TAG: string = "FileTypeDetector";
 
 /**
  * Examines the a file's first bytes and estimates the file's type.
@@ -82,6 +85,7 @@ class FileTypeDetector {
        */
   public static detectFileType(filePath: string): FileType
   {
+    LogUtil.debug(TAG, `detectFileType start, filePath: ${filePath}`);
     for (let fixedChecker of FileTypeDetector._fixedCheckers) {
       if (fixedChecker.getByteCount() > FileTypeDetector._bytesNeeded)
       FileTypeDetector._bytesNeeded = fixedChecker.getByteCount();
@@ -90,10 +94,11 @@ class FileTypeDetector {
     try {
       inputStream = fileio.createStreamSync(filePath, 'r+');
     } catch (e) {
-      console.debug("FileTypeDetector detectFileType fail"+JSON.stringify(e))
+      LogUtil.error(TAG, `FileTypeDetector detectFileType fail`+ JSON.stringify(e));
       return null
     }
     if (inputStream == null || inputStream == undefined) {
+      LogUtil.error(TAG, `FileTypeDetector detectFileType fail, inputStream is null`);
       return null;
     }
 
@@ -116,11 +121,14 @@ class FileTypeDetector {
     if (fileType == FileType.Unknown) {
       for (let checker of this._fixedCheckers) {
         fileType = checker.checkType(new Int8Array(bytes));
-        if (fileType != FileType.Unknown)
-        return fileType;
+        if (fileType != FileType.Unknown) {
+          LogUtil.debug(TAG, `detectFileType end, found FileType: ${fileType}`);
+          return fileType;
+        }
       }
     }
 
+    LogUtil.debug(TAG, `detectFileType end, found FileType: ${fileType}`);
     return fileType;
   }
 }

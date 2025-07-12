@@ -15,6 +15,9 @@ limitations under the License.
 
 import NikonType2MakernoteDirectory from './NikonType2MakernoteDirectory';
 import TagDescriptor from '../../TagDescriptor';
+import LogUtil from '../../../tools/LogUtils';
+
+const TAG: string = 'NikonType2MakernoteDescriptor';
 
 /**
  * Provides human-readable string representations of tag values stored in a {@link NikonType2MakernoteDirectory}.
@@ -29,6 +32,7 @@ class NikonType2MakernoteDescriptor extends TagDescriptor<NikonType2MakernoteDir
   }
 
   public getDescription(tagType: number): string {
+    LogUtil.debug(TAG, `getDescription enter, tagType: ${tagType}`);
     switch (tagType) {
       case NikonType2MakernoteDirectory.TAG_PROGRAM_SHIFT:
         return this.getProgramShiftDescription();
@@ -173,10 +177,13 @@ class NikonType2MakernoteDescriptor extends TagDescriptor<NikonType2MakernoteDir
   }
 
   public getActiveDLightingDescription(): string {
+    LogUtil.debug(TAG, `getActiveDLightingDescription enter`);
     let value = this._directory.getInteger(NikonType2MakernoteDirectory.TAG_ACTIVE_D_LIGHTING);
     if (value==null) {
+      LogUtil.debug(TAG, `getActiveDLightingDescription end,  value is null`);
       return null;
     }
+    LogUtil.debug(TAG, `getActiveDLightingDescription end,  value is ${value}`);
     switch (value) {
       case 0: return "Off";
       case 1: return "Light";
@@ -189,10 +196,13 @@ class NikonType2MakernoteDescriptor extends TagDescriptor<NikonType2MakernoteDir
   }
 
   public getVignetteControlDescription(): string {
+    LogUtil.debug(TAG, `getVignetteControlDescription enter`);
     let value = this._directory.getInteger(NikonType2MakernoteDirectory.TAG_VIGNETTE_CONTROL);
     if (value==null) {
+      LogUtil.debug(TAG, `getVignetteControlDescription end,  value is null`);
       return null;
     }
+    LogUtil.debug(TAG, `getVignetteControlDescription end,  value is ${value}`);
     switch (value) {
       case 0: return "Off";
       case 1: return "Low";
@@ -203,13 +213,16 @@ class NikonType2MakernoteDescriptor extends TagDescriptor<NikonType2MakernoteDir
   }
 
   public getAutoFocusPositionDescription(): string {
+    LogUtil.debug(TAG, `getAutoFocusPositionDescription enter`);
     let values: Array<number> = this._directory.getIntArray(NikonType2MakernoteDirectory.TAG_AF_FOCUS_POSITION);
     if (values==null){
+      LogUtil.debug(TAG, `getAutoFocusPositionDescription end,  values is null`);
       return null;
     }
     if (values.length != 4 || values[0] != 0 || values[2] != 0 || values[3] != 0) {
       return "Unknown (" + this._directory.getString(NikonType2MakernoteDirectory.TAG_AF_FOCUS_POSITION) + ")";
     }
+    LogUtil.debug(TAG, `getAutoFocusPositionDescription end,  return  ${values[1]}`);
     switch (values[1]) {
       case 0:
         return "Centre";
@@ -227,10 +240,13 @@ class NikonType2MakernoteDescriptor extends TagDescriptor<NikonType2MakernoteDir
   }
 
   public getDigitalZoomDescription(): string {
+    LogUtil.debug(TAG, `getDigitalZoomDescription enter`);
     let value = this._directory.getRational(NikonType2MakernoteDirectory.TAG_DIGITAL_ZOOM);
     if (value == null) {
+      LogUtil.debug(TAG, `getDigitalZoomDescription end,  value is null`);
       return null;
     }
+    LogUtil.debug(TAG, `getDigitalZoomDescription end,  value is ${value}`);
     return value.numberValue() == 1
       ? "No digital zoom"
       : value.toSimpleString(true) + "x digital zoom";
@@ -265,11 +281,14 @@ class NikonType2MakernoteDescriptor extends TagDescriptor<NikonType2MakernoteDir
   }
 
   private getEVDescription(tagType: number): string {
+    LogUtil.debug(TAG, `getEVDescription enter, tagType: ${tagType}`);
     let values: Array<number> = this._directory.getIntArray(tagType);
     if (values == null || values.length < 2) {
+      LogUtil.debug(TAG, `getEVDescription end,  values is null or length < 2`);
       return null;
     }
     if (values.length < 3 || values[2] == 0) {
+      LogUtil.debug(TAG, `getEVDescription end,  values length < 3 or values[2] == 0`);
       return null;
     }
     let ev = values[0] * values[1] / values[2];
@@ -277,13 +296,16 @@ class NikonType2MakernoteDescriptor extends TagDescriptor<NikonType2MakernoteDir
   }
 
   public getIsoSettingDescription(): string {
+    LogUtil.debug(TAG, `getIsoSettingDescription enter`);
     let values: Array<number> = this._directory.getIntArray(NikonType2MakernoteDirectory.TAG_ISO_1);
     if (values == null) {
+      LogUtil.debug(TAG, `getIsoSettingDescription end,  values is null`);
       return null;
     }
     if (values[0] != 0 || values[1] == 0) {
       return "Unknown (" + this._directory.getString(NikonType2MakernoteDirectory.TAG_ISO_1) + ")";
     }
+    LogUtil.debug(TAG, `getIsoSettingDescription end, return ISO ${values[1]}`);
     return "ISO " + values[1];
   }
 
@@ -292,12 +314,15 @@ class NikonType2MakernoteDescriptor extends TagDescriptor<NikonType2MakernoteDir
   }
 
   public getLensFocusDistance(): string {
+    LogUtil.debug(TAG, `getLensFocusDistance enter`);
     let values: Array<number> = this._directory.getDecryptedIntArray(NikonType2MakernoteDirectory.TAG_LENS_DATA);
 
     if (values == null || values.length < 11) {
+      LogUtil.debug(TAG, `getLensFocusDistance end,  values is null or length < 11`);
       return null;
     }
 
+    LogUtil.debug(TAG, `getLensFocusDistance end`);
     return this.getDistanceInMeters(values[10]).toFixed(4) + "m"
   }
 

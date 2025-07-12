@@ -16,6 +16,9 @@ limitations under the License.
 
 import TagDescriptor from '../TagDescriptor';
 import AdobeJpegDirectory from './AdobeJpegDirectory'
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "AdobeJpegDescriptor";
 
 export default class AdobeJpegDescriptor extends TagDescriptor<AdobeJpegDirectory> {
   public constructor(directory: AdobeJpegDirectory) {
@@ -24,6 +27,7 @@ export default class AdobeJpegDescriptor extends TagDescriptor<AdobeJpegDirector
 
   public getDescription(tagType: number): string
   {
+    LogUtil.debug(TAG, `getDescription start, tagType=${tagType}`);
     switch (tagType) {
       case AdobeJpegDirectory.TAG_COLOR_TRANSFORM:
         return this.getColorTransformDescription();

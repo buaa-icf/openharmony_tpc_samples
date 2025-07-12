@@ -13,6 +13,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import LogUtil from "../../tools/LogUtils";
+
+const TAG: string = "RenderingHalftoningAlgorithm";
+
 export enum RenderingHalftoningAlgorithm {
   /** No halftoning algorithm */
   NONE = 0,
@@ -29,6 +33,7 @@ export enum RenderingHalftoningAlgorithm {
 
 export namespace RenderingHalftoningAlgorithm {
   export function typeOf(value: number) {
+    LogUtil.debug(TAG, `typeOf start, value=${value}`);
     switch (value) {
       case RenderingHalftoningAlgorithm.NONE:
         return RenderingHalftoningAlgorithm.NONE;
@@ -43,12 +48,14 @@ export namespace RenderingHalftoningAlgorithm {
         return RenderingHalftoningAlgorithm.SUPER_CIRCLE;
         break
       default:
+        LogUtil.error(TAG, `typeOf end, Unknown rendering halftoning algorithm type: ${value}`);
         return null;
         break
     }
   }
 
   export function toString(renderingHalftoningAlgorithm: RenderingHalftoningAlgorithm): string {
+    LogUtil.debug(TAG, `toString start, renderingHalftoningAlgorithm=${renderingHalftoningAlgorithm}`);
     switch (renderingHalftoningAlgorithm) {
       case RenderingHalftoningAlgorithm.NONE:
         return "No Halftoning Algorithm";
@@ -59,6 +66,7 @@ export namespace RenderingHalftoningAlgorithm {
       case RenderingHalftoningAlgorithm.SUPER_CIRCLE:
         return "Super-circle Halftoning";
       default:
+        LogUtil.error(TAG, `toString error: Unimplemented rendering halftoning algorithm type ${renderingHalftoningAlgorithm}`);
         throw new Error("Unimplemented rendering halftoning algorithm type " + renderingHalftoningAlgorithm);
     }
   }

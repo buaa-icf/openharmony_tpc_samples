@@ -17,15 +17,21 @@ import { BmpReader } from '../../metadata/bmp/BmpReader';
 import StreamReader from '../../lang/StreamReader';
 import FileSystemMetadataReader from '../../metadata/file/FileSystemMetadataReader';
 import Metadata from '../../metadata/Metadata';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "BmpMetadataReader";
 
 export default class BmpMetadataReader {
  static readMetadata(file: string): Metadata {
+   LogUtil.debug(TAG, `readMetadata start`);
    let metadata = new Metadata();
     try {
       new BmpReader().extract(new StreamReader(file), metadata);
     } catch(e){
+      LogUtil.error(TAG, `readMetadata error: ${JSON.stringify(e)}`);
     }
     new FileSystemMetadataReader().read(file, metadata);
+    LogUtil.debug(TAG, `readMetadata end`);
     return metadata
   }
 

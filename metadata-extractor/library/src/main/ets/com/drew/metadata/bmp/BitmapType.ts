@@ -13,6 +13,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import LogUtil from "../../tools/LogUtils";
+
+const TAG: string = "BitmapType";
+
 export enum BitmapType {
 
   /** "BM" - Windows or OS/2 bitmap */
@@ -38,6 +42,7 @@ export enum BitmapType {
 export namespace BitmapType {
 
   export function typeOf(value: number) {
+    LogUtil.debug(TAG, `typeOf start, value=${value}`);
     switch (value) {
       case BitmapType.BITMAP:
         return BitmapType.BITMAP
@@ -58,6 +63,7 @@ export namespace BitmapType {
   }
 
   export function toString(bitmapType: BitmapType) {
+    LogUtil.debug(TAG, `toString start`);
     switch (bitmapType) {
       case BitmapType.BITMAP:
         return "Standard";
@@ -72,7 +78,9 @@ export namespace BitmapType {
       case BitmapType.OS2_POINTER:
         return "Monochrome Pointer";
       default:
+        LogUtil.error(TAG, `toString error: Unimplemented bitmap type`);
         throw new Error("Unimplemented bitmap type ");
     }
+    LogUtil.debug(TAG, `toString end`);
   }
 }

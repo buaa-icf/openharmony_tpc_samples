@@ -14,6 +14,9 @@ limitations under the License.
 */
 
 import RandomAccessReader from './RandomAccessReader'
+import LogUtil from '../tools/LogUtils';
+
+const TAG: string = "ByteArrayReader";
 
 class ByteArrayReader extends RandomAccessReader {
   public static readonly MAX_VALUE = 0x7fffffff;
@@ -22,6 +25,7 @@ class ByteArrayReader extends RandomAccessReader {
 
   public constructor(buffer?: Int8Array, baseOffset?: number) {
     super();
+    LogUtil.debug(TAG, `ByteArrayReader constructor, buffer: ${buffer}, baseOffset: ${baseOffset}`);
     if (baseOffset == null || baseOffset == undefined) {
       baseOffset = 0;
     }
@@ -30,6 +34,7 @@ class ByteArrayReader extends RandomAccessReader {
     throw new Error("Must be zero or greater");
     this._buffer = buffer;
     this._baseOffset = baseOffset;
+    LogUtil.debug(TAG, `ByteArrayReader constructor end, _buffer: ${this._buffer}, _baseOffset: ${this._baseOffset}`);
   }
 
   public toUnshiftedOffset(localOffset: number): number {
@@ -46,6 +51,7 @@ class ByteArrayReader extends RandomAccessReader {
   }
 
   protected validateIndex(index: number, bytesRequested: number): void {
+    LogUtil.debug(TAG, `validateIndex start, index: ${index}, bytesRequested: ${bytesRequested}`);
     if (!this.isValidIndex(index, bytesRequested)) {
       let offset: number = this.toUnshiftedOffset(index)
       if (offset < 0) {
@@ -63,6 +69,7 @@ class ByteArrayReader extends RandomAccessReader {
         .replace(/%d/, bytesRequested.toString())
         .replace(/%d/, (this._buffer.byteLength - 1).toString()));
     }
+    LogUtil.debug(TAG, `validateIndex end`);
   }
 
   protected isValidIndex(index: number, bytesRequested: number): boolean {
@@ -72,10 +79,12 @@ class ByteArrayReader extends RandomAccessReader {
   }
 
   public getBytes(index: number, count: number): Int8Array {
+    LogUtil.debug(TAG, `getBytes start, index: ${index}, count: ${count}`);
     this.validateIndex(index, count);
     let bytes: Int8Array = new Int8Array(count)
     let startIndex: number = index + this._baseOffset;
     bytes = this._buffer.slice(startIndex, startIndex + count);
+    LogUtil.debug(TAG, `getBytes end, bytes: ${bytes}`);
     return bytes;
   }
 }

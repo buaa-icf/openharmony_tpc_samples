@@ -16,6 +16,9 @@ limitations under the License.
 import FileType from '../FileType'
 import StringValue from '../../metadata/StringValue'
 import TypeChecker from '../TypeChecker'
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "QuickTimeTypeChecker";
 
 class QuickTimeTypeChecker implements TypeChecker {
   private static readonly _ftypMap: Map<string, FileType> = new Map<string, FileType>([
@@ -74,6 +77,7 @@ class QuickTimeTypeChecker implements TypeChecker {
   }
 
   public checkType(bytes: Int8Array): FileType {
+    LogUtil.debug(TAG, `checkType start, bytes length: ${bytes.length}`);
     // Test at offset 4 for Base Media Format (i.e. QuickTime, MP4, etc...) identifier "ftyp"
     // plus four identifying characters.
 
@@ -86,12 +90,16 @@ class QuickTimeTypeChecker implements TypeChecker {
 
       let t: FileType = QuickTimeTypeChecker._ftypMap.get(fourCC);
 
-      if (t != null)
-      return t;
+      if (t != null) {
+        LogUtil.debug(TAG, `checkType end, found FileType: ${t}`);
+        return t;
+      }
 
+      LogUtil.debug(TAG, `checkType end, found FileType: QuickTime`);
       return FileType.QuickTime;
     }
 
+    LogUtil.debug(TAG, `checkType end, found FileType: Unknown`);
     return FileType.Unknown;
   }
 }

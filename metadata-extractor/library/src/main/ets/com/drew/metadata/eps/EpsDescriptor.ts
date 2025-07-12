@@ -15,6 +15,9 @@ limitations under the License.
 
 import { EpsDirectory } from './EpsDirectory';
 import TagDescriptor from '../TagDescriptor';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "EpsDescriptor";
 
 export class EpsDescriptor extends TagDescriptor<EpsDirectory> {
   constructor(directory: EpsDirectory) {
@@ -22,6 +25,7 @@ export class EpsDescriptor extends TagDescriptor<EpsDirectory> {
   }
 
   getDescription(tagType: number) {
+    LogUtil.debug(TAG, `getDescription start, tagType=${tagType}`);
     switch (tagType) {
       case EpsDirectory.TAG_IMAGE_WIDTH:
       case EpsDirectory.TAG_IMAGE_HEIGHT:

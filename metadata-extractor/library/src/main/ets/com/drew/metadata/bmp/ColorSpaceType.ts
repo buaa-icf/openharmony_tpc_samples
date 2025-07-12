@@ -13,6 +13,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import LogUtil from "../../tools/LogUtils";
+
+const TAG: string = "ColorSpaceType";
+
 export enum ColorSpaceType {
   /** 0 = Calibrated RGB */
   LCS_CALIBRATED_RGB = 0,
@@ -32,6 +36,7 @@ export enum ColorSpaceType {
 
 export namespace ColorSpaceType {
   export function typeOf(value: number) {
+    LogUtil.debug(TAG, `typeOf start, value=${value}`);
     switch (value) {
       case ColorSpaceType.LCS_CALIBRATED_RGB:
         return ColorSpaceType.LCS_CALIBRATED_RGB;
@@ -49,10 +54,11 @@ export namespace ColorSpaceType {
         return ColorSpaceType.PROFILE_EMBEDDED;
         break
     }
-
+    LogUtil.error(TAG, `typeOf end, Unknown color space type: ${value}`);
   }
 
   export function toString(colorSpaceType: ColorSpaceType) {
+    LogUtil.debug(TAG, `toString start, colorSpaceType=${colorSpaceType}`);
     switch (colorSpaceType) {
       case ColorSpaceType.LCS_CALIBRATED_RGB:
         return "Calibrated RGB";
@@ -65,6 +71,7 @@ export namespace ColorSpaceType {
       case ColorSpaceType.PROFILE_EMBEDDED:
         return "Embedded Profile";
       default:
+        LogUtil.error(TAG, `toString error: Unimplemented color space type ${colorSpaceType}`);
         throw new Error("Unimplemented color space type " + colorSpaceType);
     }
 

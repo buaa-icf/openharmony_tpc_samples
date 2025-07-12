@@ -20,6 +20,9 @@ import SequentialReader from '../../lang/SequentialReader';
 import SequentialByteArrayReader from '../../lang/SequentialByteArrayReader';
 import AdobeJpegDirectory from './AdobeJpegDirectory'
 import Directory from '../Directory'
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "AdobeJpegReader";
 
 export default class AdobeJpegReader implements JpegSegmentMetadataReader {
   public static readonly PREAMBLE: string = "Adobe";
@@ -31,17 +34,19 @@ export default class AdobeJpegReader implements JpegSegmentMetadataReader {
 
   public readJpegSegments(segments: Set<Int8Array>, metadata: Metadata, segmentType: JpegSegmentType): void
   {
+    LogUtil.debug(TAG, `readJpegSegments start`);
     segments.forEach((value1, value2, array) => {
 
       if (value1.length == 12 && (AdobeJpegReader.PREAMBLE.toLowerCase() == value1.subarray(0, AdobeJpegReader.PREAMBLE.length)
         .toString()))
       this.extract(new SequentialByteArrayReader(value1), metadata);
     })
-
+    LogUtil.debug(TAG, `readJpegSegments end`);
   }
 
   public extract(reader: SequentialReader, metadata: Metadata): void
   {
+    LogUtil.debug(TAG, `extract start`);
     let directory = new AdobeJpegDirectory();
     metadata.addDirectory(directory);
     try {
@@ -56,7 +61,9 @@ export default class AdobeJpegReader implements JpegSegmentMetadataReader {
       directory.setInt(AdobeJpegDirectory.TAG_APP14_FLAGS1, reader.getUInt16());
       directory.setInt(AdobeJpegDirectory.TAG_COLOR_TRANSFORM, reader.getInt8());
     } catch (err) {
+      LogUtil.error(TAG, `extract error: ${JSON.stringify(err)}`);
       directory.addError("IO exception processing data: " + JSON.stringify(err));
     }
+    LogUtil.debug(TAG, `extract end`);
   }
 }

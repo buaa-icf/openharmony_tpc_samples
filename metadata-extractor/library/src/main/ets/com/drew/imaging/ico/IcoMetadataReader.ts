@@ -18,6 +18,10 @@ import FileSystemMetadataReader from '../../metadata/file/FileSystemMetadataRead
 import IcoReader from '../../metadata/ico/IcoReader';
 import Metadata from '../../metadata/Metadata'
 import StreamReader from '../../lang/StreamReader'
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "IcoMetadataReader";
+
 /**
  * Obtains metadata from ICO (Windows Icon) files.
  *
@@ -26,6 +30,7 @@ import StreamReader from '../../lang/StreamReader'
 class IcoMetadataReader {
   public static readMetadata(filePath: string): Metadata
   {
+    LogUtil.debug(TAG, `readMetadata start, filePath:${filePath}`);
     let inputStream = fileio.createStreamSync(filePath, 'r+');
 
     let metadata = new Metadata();
@@ -35,6 +40,7 @@ class IcoMetadataReader {
       inputStream.closeSync();
     }
     new FileSystemMetadataReader().read(filePath, metadata);
+    LogUtil.debug(TAG, `readMetadata end`);
     return metadata;
   }
 }

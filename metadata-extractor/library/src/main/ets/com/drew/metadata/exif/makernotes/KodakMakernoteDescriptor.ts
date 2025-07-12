@@ -15,6 +15,9 @@ limitations under the License.
 
 import { KodakMakernoteDirectory } from './KodakMakernoteDirectory';
 import TagDescriptor from '../../TagDescriptor';
+import LogUtil from '../../../tools/LogUtils';
+
+const TAG: string = "KodakMakernoteDescriptor"
 
 export class KodakMakernoteDescriptor extends TagDescriptor<KodakMakernoteDirectory> {
   constructor(directory: KodakMakernoteDirectory) {
@@ -22,6 +25,7 @@ export class KodakMakernoteDescriptor extends TagDescriptor<KodakMakernoteDirect
   }
 
   public getDescription(tagType: number) {
+    LogUtil.debug(TAG, `getDescription start, tagType=${tagType}`);
     switch (tagType) {
       case KodakMakernoteDirectory.TAG_QUALITY:
         return this.getQualityDescription();
@@ -51,9 +55,14 @@ export class KodakMakernoteDescriptor extends TagDescriptor<KodakMakernoteDirect
   }
 
   public getColorModeDescription(): string{
+    LogUtil.debug(TAG, `getColorModeDescription start`);
     let value = this._directory.getInteger(KodakMakernoteDirectory.TAG_COLOR_MODE);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getColorModeDescription end, value is null`);
+      return null;
+    }
+
+    LogUtil.debug(TAG, `getColorModeDescription end, value=${value}`);
     switch (value) {
       case 0x001:
       case 0x2000:
@@ -82,9 +91,14 @@ export class KodakMakernoteDescriptor extends TagDescriptor<KodakMakernoteDirect
   }
 
   public getFlashModeDescription(): string{
+    LogUtil.debug(TAG, `getFlashModeDescription start`);
     let value = this._directory.getInteger(KodakMakernoteDirectory.TAG_FLASH_MODE);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getFlashModeDescription end, value is null`);
+      return null;
+    }
+
+    LogUtil.debug(TAG, `getFlashModeDescription end, value=${value}`);
     switch (value) {
       case 0x00:
         return "Auto";
@@ -111,9 +125,14 @@ export class KodakMakernoteDescriptor extends TagDescriptor<KodakMakernoteDirect
   }
 
   public getShutterModeDescription(): string{
+    LogUtil.debug(TAG, `getShutterModeDescription start`);
     let value = this._directory.getInteger(KodakMakernoteDirectory.TAG_SHUTTER_MODE);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getShutterModeDescription end, value is null`);
+      return null;
+    }
+
+    LogUtil.debug(TAG, `getShutterModeDescription end, value=${value}`);
     switch (value) {
       case 0:
         return "Auto";

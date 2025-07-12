@@ -15,6 +15,9 @@ limitations under the License.
 
 import TagDescriptor from '../../TagDescriptor';
 import AppleRunTimeMakernoteDirectory from './AppleRunTimeMakernoteDirectory'
+import LogUtil from '../../../tools/LogUtils';
+
+const TAG: string = "AppleRunTimeMakernoteDescriptor";
 
 export default class AppleRunTimeMakernoteDescriptor extends TagDescriptor<AppleRunTimeMakernoteDirectory>{
 
@@ -24,6 +27,7 @@ export default class AppleRunTimeMakernoteDescriptor extends TagDescriptor<Apple
 
     public getDescription( tagType:number):string
     {
+        LogUtil.debug(TAG, `getDescription start, tagType=${tagType}`);
         switch (tagType) {
             case AppleRunTimeMakernoteDirectory.CMTimeFlags:
                 return this.flagsDescription();
@@ -43,6 +47,7 @@ export default class AppleRunTimeMakernoteDescriptor extends TagDescriptor<Apple
 
     private  flagsDescription():string
     {
+        LogUtil.debug(TAG, `flagsDescription start`);
         try {
             let value = this._directory.getInt(AppleRunTimeMakernoteDirectory.CMTimeFlags);
 
@@ -67,19 +72,24 @@ export default class AppleRunTimeMakernoteDescriptor extends TagDescriptor<Apple
 
             return sb.toString();
         } catch (err) {
+            LogUtil.error(TAG, `flagsDescription error: ${JSON.stringify(err)}`);
             return null;
         }
+        LogUtil.debug(TAG, `flagsDescription end`);
     }
 
     private  calculateTimeInSeconds():string
     {
+        LogUtil.debug(TAG, `calculateTimeInSeconds start`);
         try {
             let value = this._directory.getLong(AppleRunTimeMakernoteDirectory.CMTimeValue);
             let scale = this._directory.getLong(AppleRunTimeMakernoteDirectory.CMTimeScale);
 
             return (value / scale)+" seconds";
         } catch (error) {
+            LogUtil.error(TAG, `calculateTimeInSeconds error: ${JSON.stringify(error)}`);
             return null;
         }
+        LogUtil.debug(TAG, `calculateTimeInSeconds end`);
     }
 }

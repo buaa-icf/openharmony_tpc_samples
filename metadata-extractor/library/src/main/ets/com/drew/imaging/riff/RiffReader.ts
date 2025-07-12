@@ -16,6 +16,9 @@ limitations under the License.
 import RiffHandler      from './RiffHandler'
 import SequentialReader from '../../lang/SequentialReader'
 import StringValue      from '../../metadata/StringValue'
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "RiffReader";
 
 class RiffReader {
   /**
@@ -28,6 +31,7 @@ class RiffReader {
    * @throws IOException an error occurred while accessing the required data
    */
   public processRiff(reader: SequentialReader, handler: RiffHandler): void {
+    LogUtil.debug(TAG, `processRiff start`);
     // RIFF files are always little-endian
     reader.setMotorolaByteOrder(false);
 
@@ -42,18 +46,23 @@ class RiffReader {
     let sizeLeft: number = fileSize;
     let identifier: string = reader.getString(4);
     sizeLeft -= 4;
-    if (!handler.shouldAcceptRiffIdentifier(identifier))
-    return;
+    if (!handler.shouldAcceptRiffIdentifier(identifier)) {
+      LogUtil.debug(TAG, `processRiff end, identifier not accepted: ${identifier}`);
+      return;
+    }
 
     // PROCESS CHUNKS
     this.processChunks(reader, sizeLeft, handler);
+    LogUtil.debug(TAG, `processRiff end`);
   }
 
   public processChunks(reader: SequentialReader, sectionSize: number, handler: RiffHandler): void {
+    LogUtil.debug(TAG, `processChunks start, sectionSize: ${sectionSize}`);
     while (reader.getPosition() < sectionSize) {
       let fourCC: string = StringValue.Int8Array2String(reader.getBytes(4), 'utf-8');
       let size: number = reader.getInt32();
       if (fourCC == "LIST" || fourCC == "RIFF") {
+        LogUtil.debug(TAG, `processChunks found LIST or RIFF FourCC: ${fourCC}, size: ${size}`);
         let listName: string = StringValue.Int8Array2String(reader.getBytes(4), 'utf-8');
         if (handler.shouldAcceptList(listName)) {
           this.processChunks(reader, size - 4, handler);
@@ -61,10 +70,12 @@ class RiffReader {
           reader.skip(size - 4);
         }
       } else if (fourCC == "IDIT") {
+        LogUtil.debug(TAG, `processChunks found IDIT FourCC: ${fourCC}, size: ${size}`);
         // Avi DateTimeOriginal
         handler.processChunk(fourCC, reader.getBytes(size - 2));
         reader.skip(2); // ?0A 00?
       } else {
+        LogUtil.debug(TAG, `processChunks found FourCC: ${fourCC}, size: ${size}`);
         if (handler.shouldAcceptChunk(fourCC)) {
           handler.processChunk(fourCC, reader.getBytes(size));
         } else {
@@ -76,6 +87,7 @@ class RiffReader {
         }
       }
     }
+    LogUtil.debug(TAG, `processChunks end`);
   }
 }
 

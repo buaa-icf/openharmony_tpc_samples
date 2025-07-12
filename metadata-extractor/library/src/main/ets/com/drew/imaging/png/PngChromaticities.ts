@@ -14,6 +14,9 @@ limitations under the License.
 */
 
 import SequentialByteArrayReader from '../../lang/SequentialByteArrayReader';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "PngChromaticities";
 
 class PngChromaticities {
   private readonly _whitePointX: number;
@@ -26,6 +29,7 @@ class PngChromaticities {
   private readonly _blueY: number;
 
   public constructor(bytes: Int8Array) {
+    LogUtil.debug(TAG, `constructor start, bytes length: ${bytes.length}`);
     if (bytes.length != 8 * 4) {
       throw new Error("Invalid number of bytes");
     }
@@ -41,8 +45,10 @@ class PngChromaticities {
       this._blueX = reader.getInt32();
       this._blueY = reader.getInt32();
     } catch (error) {
+      LogUtil.error(TAG, `constructor error: ${JSON.stringify(error)}`);
       throw new Error(error);
     }
+    LogUtil.debug(TAG, `constructor end`);
   }
 
   public getWhitePointX(): number {

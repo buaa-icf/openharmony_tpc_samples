@@ -19,6 +19,9 @@ import util from '@ohos.util';
 import {CameraSettings} from './CanonMakernoteDirectory'
 import {FocalLength} from './CanonMakernoteDirectory'
 import {AFInfo} from './CanonMakernoteDirectory'
+import LogUtil from '../../../tools/LogUtils';
+
+const TAG: string = "CanonMakernoteDescriptor";
 
 /**
  * Provides human-readable string representations of tag values stored in a {@link CanonMakernoteDirectory}.
@@ -29,6 +32,7 @@ class CanonMakernoteDescriptor extends TagDescriptor<CanonMakernoteDirectory> {
   }
 
   public getDescription(tagType: number): string {
+    LogUtil.debug(TAG, `getDescription start, tagType=${tagType}`);
     switch (tagType) {
       case CanonMakernoteDirectory.TAG_CANON_SERIAL_NUMBER:
         return this.getSerialNumberDescription();
@@ -117,20 +121,28 @@ class CanonMakernoteDescriptor extends TagDescriptor<CanonMakernoteDirectory> {
 
   public getSerialNumberDescription(): string
   {
+    LogUtil.debug(TAG, `getSerialNumberDescription start`);
     let value: number = this._directory.getInteger(CanonMakernoteDirectory.TAG_CANON_SERIAL_NUMBER);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getSerialNumberDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getSerialNumberDescription end, value=${value}`);
     return util.printf("%s%d", ((value >> 8) & 0xFF).toString(16), value & 0xFF);
   }
 
   public getFlashBiasDescription(): string
   {
+    LogUtil.debug(TAG, `getFlashBiasDescription start`);
     let value: number = this._directory.getInteger(FocalLength.TAG_FLASH_BIAS);
 
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getFlashBiasDescription end, value is null`);
+      return null;
+    }
 
     let isNegative: boolean = false;
+    LogUtil.debug(TAG, `getFlashBiasDescription end, value=${value}`);
     if (value > 0xF000) {
       isNegative = true;
       value = 0xFFFF - value;
@@ -142,14 +154,19 @@ class CanonMakernoteDescriptor extends TagDescriptor<CanonMakernoteDirectory> {
     // not
     //  0, 0.33,  0.5, 0.66,  1
 
+    LogUtil.debug(TAG, `getFlashBiasDescription end`);
     return (isNegative ? "-" : "") + (value / 32).toString() + " EV";
   }
 
   public getAfPointUsedDescription(): string
   {
+    LogUtil.debug(TAG, `getAfPointUsedDescription start`);
     let value: number = this._directory.getInteger(FocalLength.TAG_AF_POINT_USED);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getAfPointUsedDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getAfPointUsedDescription end, value=${value}`);
     if ((value & 0x7) == 0) {
       return "Right";
     } else if ((value & 0x7) == 1) {
@@ -163,9 +180,12 @@ class CanonMakernoteDescriptor extends TagDescriptor<CanonMakernoteDirectory> {
 
   public getTagAfPointsInFocus(): string
   {
+    LogUtil.debug(TAG, `getTagAfPointsInFocus start`);
     let value: number = this._directory.getInteger(AFInfo.TAG_AF_POINTS_IN_FOCUS);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getTagAfPointsInFocus end, value is null`);
+      return null;
+    }
 
     let sb: String = new String();
 
@@ -177,6 +197,7 @@ class CanonMakernoteDescriptor extends TagDescriptor<CanonMakernoteDirectory> {
       }
     }
 
+    LogUtil.debug(TAG, `getTagAfPointsInFocus end, sb=${sb}`);
     return sb.length == 0 ? "None" : sb.toString();
   }
 
@@ -200,9 +221,13 @@ class CanonMakernoteDescriptor extends TagDescriptor<CanonMakernoteDirectory> {
   }
 
   public getFlashDetailsDescription(): string {
+    LogUtil.debug(TAG, `getFlashDetailsDescription start`);
     let value: number = this._directory.getInteger(CameraSettings.TAG_FLASH_DETAILS);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getFlashDetailsDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getFlashDetailsDescription end, value=${value}`);
     if (((value >> 14) & 1) != 0) {
       return "External E-TTL";
     }
@@ -219,9 +244,13 @@ class CanonMakernoteDescriptor extends TagDescriptor<CanonMakernoteDirectory> {
   }
 
   public getFocalUnitsPerMillimetreDescription(): string {
+    LogUtil.debug(TAG, `getFocalUnitsPerMillimetreDescription start`);
     let value: number = this._directory.getInteger(CameraSettings.TAG_FOCAL_UNITS_PER_MM);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getFocalUnitsPerMillimetreDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getFocalUnitsPerMillimetreDescription end, value=${value}`);
     if (value != 0) {
       return value.toString();
     } else {
@@ -231,19 +260,27 @@ class CanonMakernoteDescriptor extends TagDescriptor<CanonMakernoteDirectory> {
 
   public getShortFocalLengthDescription(): string
   {
+    LogUtil.debug(TAG, `getShortFocalLengthDescription start`);
     let value: number = this._directory.getInteger(CameraSettings.TAG_SHORT_FOCAL_LENGTH);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getShortFocalLengthDescription end, value is null`);
+      return null;
+    }
     let units: string = this.getFocalUnitsPerMillimetreDescription();
+    LogUtil.debug(TAG, `getShortFocalLengthDescription end, value=${value}, units=${units}`);
     return value.toString() + " " + units;
   }
 
   public getLongFocalLengthDescription(): string
   {
+    LogUtil.debug(TAG, `getLongFocalLengthDescription start`);
     let value: number = this._directory.getInteger(CameraSettings.TAG_LONG_FOCAL_LENGTH);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getLongFocalLengthDescription end, value is null`);
+      return null;
+    }
     let units: string = this.getFocalUnitsPerMillimetreDescription();
+    LogUtil.debug(TAG, `getLongFocalLengthDescription end, value=${value}, units=${units}`);
     return value.toString() + " " + units;
   }
 
@@ -261,10 +298,14 @@ class CanonMakernoteDescriptor extends TagDescriptor<CanonMakernoteDirectory> {
   }
 
   public getLensTypeDescription(): string {
+    LogUtil.debug(TAG, `getLensTypeDescription start`);
     let value: number = this._directory.getInteger(CameraSettings.TAG_LENS_TYPE);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getLensTypeDescription end, value is null`);
+      return null;
+    }
 
+    LogUtil.debug(TAG, `getLensTypeDescription end, value=${value}`);
     return CanonMakernoteDescriptor._lensTypeById.has(value)
       ? CanonMakernoteDescriptor._lensTypeById.get(value)
 //      : String.format("Unknown (%d)", value);
@@ -273,23 +314,35 @@ class CanonMakernoteDescriptor extends TagDescriptor<CanonMakernoteDirectory> {
 
   public getMaxApertureDescription(): string
   {
+    LogUtil.debug(TAG, `getMaxApertureDescription start`);
     let value: number = this._directory.getInteger(CameraSettings.TAG_MAX_APERTURE);
-    if (value == null)
-    return null;
-    if (value > 512)
+    if (value == null) {
+      LogUtil.error(TAG, `getMaxApertureDescription end, value is null`);
+      return null;
+    }
+    if (value > 512) {
 //    return String.format("Unknown (%d)", value);
-    return util.printf("Unknown (%d)", value);
+      LogUtil.error(TAG, `getMaxApertureDescription end, value=${value}`);
+      return util.printf("Unknown (%d)", value);
+    }
+    LogUtil.debug(TAG, `getMaxApertureDescription end, value=${value}`);
     return TagDescriptor.getFStopDescription(Math.exp(this.decodeCanonEv(value) * Math.log(2.0) / 2.0));
   }
 
   public getMinApertureDescription(): string
   {
+    LogUtil.debug(TAG, `getMinApertureDescription start`);
     let value: number = this._directory.getInteger(CameraSettings.TAG_MIN_APERTURE);
-    if (value == null)
-    return null;
-    if (value > 512)
+    if (value == null) {
+      LogUtil.error(TAG, `getMinApertureDescription end, value is null`);
+      return null;
+    }
+    if (value > 512) {
 //    return String.format("Unknown (%d)", value);
-    return util.printf("Unknown (%d)", value);
+      LogUtil.error(TAG, `getMinApertureDescription end, value=${value}`);
+      return util.printf("Unknown (%d)", value);
+    }
+    LogUtil.debug(TAG, `getMinApertureDescription end, value=${value}`);
     return TagDescriptor.getFStopDescription(Math.exp(this.decodeCanonEv(value) * Math.log(2.0) / 2.0));
   }
 
@@ -319,15 +372,21 @@ class CanonMakernoteDescriptor extends TagDescriptor<CanonMakernoteDirectory> {
 
   public getIsoDescription(): string
   {
+    LogUtil.debug(TAG, `getIsoDescription start`);
     let value: number = this._directory.getInteger(CameraSettings.TAG_ISO);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getIsoDescription end, value is null`);
+      return null;
+    }
 
     // Canon PowerShot S3 is special
     let canonMask: number = 0x4000;
-    if ((value & canonMask) != 0)
-    return "" + (value & ~canonMask);
+    if ((value & canonMask) != 0) {
+      LogUtil.debug(TAG, `getIsoDescription end, value=${value}, canonMask=${canonMask}`);
+      return "" + (value & ~canonMask);
+    }
 
+    LogUtil.debug(TAG, `getIsoDescription end, value=${value}`);
     switch (value) {
       case 0:
         return "Not specified (see ISOSpeedRatings tag)";
@@ -348,9 +407,13 @@ class CanonMakernoteDescriptor extends TagDescriptor<CanonMakernoteDirectory> {
 
   public getSharpnessDescription(): string
   {
+    LogUtil.debug(TAG, `getSharpnessDescription start`);
     let value: number = this._directory.getInteger(CameraSettings.TAG_SHARPNESS);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getSharpnessDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getSharpnessDescription end, value=${value}`);
     switch (value) {
       case 0xFFFF:
         return "Low";
@@ -365,9 +428,13 @@ class CanonMakernoteDescriptor extends TagDescriptor<CanonMakernoteDirectory> {
 
   public getSaturationDescription(): string
   {
+    LogUtil.debug(TAG, `getSaturationDescription start`);
     let value: number = this._directory.getInteger(CameraSettings.TAG_SATURATION);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getSaturationDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getSaturationDescription end, value=${value}`);
     switch (value) {
       case 0xFFFF:
         return "Low";
@@ -382,9 +449,12 @@ class CanonMakernoteDescriptor extends TagDescriptor<CanonMakernoteDirectory> {
 
   public getContrastDescription(): string
   {
+    LogUtil.debug(TAG, `getContrastDescription start`);
     let value: number = this._directory.getInteger(CameraSettings.TAG_CONTRAST);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getContrastDescription end, value is null`);
+      return null;
+    }
     switch (value) {
       case 0xFFFF:
         return "Low";
@@ -443,25 +513,36 @@ class CanonMakernoteDescriptor extends TagDescriptor<CanonMakernoteDirectory> {
 
   public getContinuousDriveModeDescription(): string
   {
+    LogUtil.debug(TAG, `getContinuousDriveModeDescription start`);
     let value: number = this._directory.getInteger(CameraSettings.TAG_CONTINUOUS_DRIVE_MODE);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getContinuousDriveModeDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getContinuousDriveModeDescription end, value=${value}`);
     switch (value) {
       case 0:
         let delay: number = this._directory.getInteger(CameraSettings.TAG_SELF_TIMER_DELAY);
-        if (delay != null)
-        return delay == 0 ? "Single shot" : "Single shot with self-timer";
+        if (delay != null) {
+          LogUtil.debug(TAG, `getContinuousDriveModeDescription end, delay=${delay}`);
+          return delay == 0 ? "Single shot" : "Single shot with self-timer";
+        }
       case 1:
         return "Continuous";
     }
+    LogUtil.debug(TAG, `getContinuousDriveModeDescription end, value=${value}`);
     return "Unknown (" + value + ")";
   }
 
   public getFlashModeDescription(): string
   {
+    LogUtil.debug(TAG, `getFlashModeDescription start`);
     let value: number = this._directory.getInteger(CameraSettings.TAG_FLASH_MODE);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getFlashModeDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getFlashModeDescription end, value=${value}`);
     switch (value) {
       case 0:
         return "No flash fired";
@@ -487,9 +568,13 @@ class CanonMakernoteDescriptor extends TagDescriptor<CanonMakernoteDirectory> {
 
   public getSelfTimerDelayDescription(): string
   {
+    LogUtil.debug(TAG, `getSelfTimerDelayDescription start`);
     let value: number = this._directory.getInteger(CameraSettings.TAG_SELF_TIMER_DELAY);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getSelfTimerDelayDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getSelfTimerDelayDescription end, value=${value}`);
     if (value == 0) {
       return "Self timer not used";
     } else {
@@ -504,9 +589,13 @@ class CanonMakernoteDescriptor extends TagDescriptor<CanonMakernoteDirectory> {
 
   public getQualityDescription(): string
   {
+    LogUtil.debug(TAG, `getQualityDescription start`);
     let value: number = this._directory.getInteger(CameraSettings.TAG_QUALITY);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getQualityDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getQualityDescription end, value=${value}`);
     switch (value) {
       case -1:
         return "n/a";
@@ -543,9 +632,13 @@ class CanonMakernoteDescriptor extends TagDescriptor<CanonMakernoteDirectory> {
 
   public getFocusTypeDescription(): string
   {
+    LogUtil.debug(TAG, `getFocusTypeDescription start`);
     let value: number = this._directory.getInteger(CameraSettings.TAG_FOCUS_TYPE);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getFocusTypeDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getFocusTypeDescription end, value=${value}`);
     switch (value) {
       case 0:
         return "Manual";
@@ -579,12 +672,18 @@ class CanonMakernoteDescriptor extends TagDescriptor<CanonMakernoteDirectory> {
 
   public getDisplayApertureDescription(): string
   {
+    LogUtil.debug(TAG, `getDisplayApertureDescription start`);
     let value: number = this._directory.getInteger(CameraSettings.TAG_DISPLAY_APERTURE);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getDisplayApertureDescription end, value is null`);
+      return null;
+    }
 
-    if (value == 0xFFFF)
-    return value.toString();
+    if (value == 0xFFFF) {
+      LogUtil.debug(TAG, `getDisplayApertureDescription end, value is 0xFFFF`);
+      return value.toString();
+    }
+    LogUtil.debug(TAG, `getDisplayApertureDescription end, value=${value}`);
     return TagDescriptor.getFStopDescription(value / 10);
   }
 
@@ -596,9 +695,13 @@ class CanonMakernoteDescriptor extends TagDescriptor<CanonMakernoteDirectory> {
 
   public getPhotoEffectDescription(): string
   {
+    LogUtil.debug(TAG, `getPhotoEffectDescription start`);
     let value: number = this._directory.getInteger(CameraSettings.TAG_PHOTO_EFFECT);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getPhotoEffectDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getPhotoEffectDescription end, value=${value}`);
 
     switch (value) {
       case 0:
@@ -624,9 +727,13 @@ class CanonMakernoteDescriptor extends TagDescriptor<CanonMakernoteDirectory> {
 
   public getManualFlashOutputDescription(): string
   {
+    LogUtil.debug(TAG, `getManualFlashOutputDescription start`);
     let value: number = this._directory.getInteger(CameraSettings.TAG_MANUAL_FLASH_OUTPUT);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getManualFlashOutputDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getManualFlashOutputDescription end, value=${value}`);
 
     switch (value) {
       case 0:
@@ -646,9 +753,13 @@ class CanonMakernoteDescriptor extends TagDescriptor<CanonMakernoteDirectory> {
 
   public getColorToneDescription(): string
   {
+    LogUtil.debug(TAG, `getColorToneDescription start`);
     let value: number = this._directory.getInteger(CameraSettings.TAG_COLOR_TONE);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getColorToneDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getColorToneDescription end, value=${value}`);
 
     return value == 0x7fff ? "n/a" : value.toString();
   }

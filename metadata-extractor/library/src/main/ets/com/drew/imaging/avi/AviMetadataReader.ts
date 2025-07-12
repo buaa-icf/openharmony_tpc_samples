@@ -19,19 +19,25 @@ import FileSystemMetadataReader from '../../metadata/file/FileSystemMetadataRead
 import Metadata                 from '../../metadata/Metadata'
 import RiffReader               from '../riff/RiffReader'
 import StreamReader             from '../../lang/StreamReader'
+import LogUtil                  from '../../tools/LogUtils'
+
+const TAG:string = "AviMetadataReader";
 
 class AviMetadataReader {
   public static readMetadata(filePath: string): Metadata
   {
+    LogUtil.debug(TAG, `readMetadata start`);
     let inputStream = fileio.createStreamSync(filePath, 'r+');
 
     let metadata = new Metadata();
     try {
+      LogUtil.debug(TAG, `readMetadata filePath:${filePath}`);
       new RiffReader().processRiff(new StreamReader(filePath), new AviRiffHandler(metadata));
     } finally {
       inputStream.closeSync();
     }
     new FileSystemMetadataReader().read(filePath, metadata);
+    LogUtil.debug(TAG, `readMetadata end`);
     return metadata;
   }
 }

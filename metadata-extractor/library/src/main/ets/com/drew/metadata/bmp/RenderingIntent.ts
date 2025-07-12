@@ -13,6 +13,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import LogUtil from "../../tools/LogUtils";
+
+const TAG: string = "RenderingIntent";
+
 export enum RenderingIntent {
   /** Graphic, Saturation */
   LCS_GM_BUSINESS = 1,
@@ -29,6 +33,7 @@ export enum RenderingIntent {
 
 export namespace RenderingIntent {
   export function typeOf(value: number) {
+    LogUtil.debug(TAG, `typeOf start, value=${value}`);
     switch (value) {
       case RenderingIntent.LCS_GM_BUSINESS:
         return RenderingIntent.LCS_GM_BUSINESS
@@ -39,11 +44,13 @@ export namespace RenderingIntent {
       case RenderingIntent.LCS_GM_ABS_COLORIMETRIC:
         return RenderingIntent.LCS_GM_ABS_COLORIMETRIC
       default:
+        LogUtil.error(TAG, `typeOf end, Unknown rendering intent type: ${value}`);
         return null
     }
   }
 
   export function toString(renderingIntent: RenderingIntent) {
+    LogUtil.debug(TAG, `toString start, renderingIntent=${renderingIntent}`);
     switch (renderingIntent) {
       case RenderingIntent.LCS_GM_BUSINESS:
         return "Graphic, Saturation";
@@ -54,6 +61,7 @@ export namespace RenderingIntent {
       case RenderingIntent.LCS_GM_ABS_COLORIMETRIC:
         return "Match, Absolute Colorimetric";
       default:
+        LogUtil.error(TAG, `toString error: Unimplemented rendering intent ${renderingIntent}`);
         throw new Error("Unimplemented rendering intent " + renderingIntent);
     }
   }

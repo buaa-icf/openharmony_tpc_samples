@@ -13,17 +13,24 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import LogUtil from '../tools/LogUtils';
+
+const TAG: string = "StringUtil";
+
 class StringUtil {
   public static join(strings: Iterable<string>, delimiter: string): string
   {
+    LogUtil.debug(TAG, `join start, strings: ${JSON.stringify(strings)}, delimiter: ${delimiter}`);
     let result: string = ''
     for (let s of strings) {
       result += s + delimiter;
     }
+    LogUtil.debug(TAG, `join end, result: ${result}`);
     return result;
   }
 
   public static compare(s1: string, s2: string) {
+    LogUtil.debug(TAG, `compare start, s1: ${s1}, s2: ${s2}`);
     let null1 = s1 == null;
     let null2 = s2 == null;
 
@@ -49,6 +56,7 @@ class StringUtil {
         }
       }
     }
+    LogUtil.debug(TAG, `compare end, n1: ${n1}, n2: ${n2}`);
     return n1 - n2;
   }
 
@@ -64,6 +72,7 @@ class StringUtil {
    * @returns {*} utf-8编码
    */
   public static toBytes(text: string) {
+    LogUtil.debug(TAG, `toBytes start, text: ${text}`);
     let result = [], i = 0;
     text = encodeURI(text);
     while (i < text.length) {
@@ -91,6 +100,7 @@ class StringUtil {
       }
     }
 
+    LogUtil.debug(TAG, `toBytes end, result: ${JSON.stringify(result)}`);
     return result;
     //        return StringUtil.coerceArray(result);
   }
@@ -102,6 +112,7 @@ class StringUtil {
    * @returns {string}
    */
   public static utf8ByteToUnicodeStr(utf8Bytes: Int8Array): string{
+    LogUtil.debug(TAG, `utf8ByteToUnicodeStr start`);
     var unicodeStr = "";
     for (var pos = 0; pos < utf8Bytes.length; ) {
       var flag = utf8Bytes[pos];
@@ -156,6 +167,7 @@ class StringUtil {
         pos += 1;
       }
     }
+    LogUtil.debug(TAG, `utf8ByteToUnicodeStr end, unicodeStr: ${unicodeStr}`);
     return unicodeStr;
   }
 
@@ -164,21 +176,25 @@ class StringUtil {
   }
 
   public static checkInts(arrayish) {
+    LogUtil.debug(TAG, `checkInts start`);
     if (!StringUtil.checkInt(arrayish.length)) {
+      LogUtil.debug(TAG, `checkInts end, arrayish.length: ${arrayish.length} is not an integer`);
       return false;
     }
 
     for (var i = 0; i < arrayish.length; i++) {
       if (!StringUtil.checkInt(arrayish[i]) || arrayish[i] < 0 || arrayish[i] > 255) {
+        LogUtil.debug(TAG, `checkInts end, arrayish[${i}]: ${arrayish[i]} is not a valid byte`);
         return false;
       }
     }
 
+    LogUtil.debug(TAG, `checkInts end, all values are valid bytes`);
     return true;
   }
 
   public static coerceArray(arg, copy) {
-
+    LogUtil.debug(TAG, `coerceArray start`);
     // ArrayBuffer view
     if (arg.buffer && arg.name === 'Uint8Array') {
 
@@ -196,17 +212,20 @@ class StringUtil {
     // It's an array; check it is a valid representation of a byte
     if (Array.isArray(arg)) {
       if (!StringUtil.checkInts(arg)) {
+        LogUtil.debug(TAG, `coerceArray end, array contains invalid values`);
         throw new Error('Array contains invalid value: ' + arg);
       }
-
+      LogUtil.debug(TAG, `coerceArray end, returning Uint8Array from array`);
       return new Uint8Array(arg);
     }
 
     // Something else, but behaves like an array (maybe a Buffer? Arguments?)
     if (StringUtil.checkInt(arg.length) && StringUtil.checkInts(arg)) {
+      LogUtil.debug(TAG, `coerceArray end, returning Uint8Array from array-like object`);
       return new Uint8Array(arg);
     }
 
+    LogUtil.error(TAG, `coerceArray end, unsupported array-like object`);
     throw new Error('unsupported array-like object');
   }
 
@@ -214,6 +233,7 @@ class StringUtil {
     return Int8Array.from([(b | (0x01 << 8))])[0];
   }
   public static stringToBytes(str: string): number[] {
+    LogUtil.debug(TAG, `stringToBytes start, str: ${str}`);
     let bytes: number[] = new Array();
     let len, c;
     len = str.length;
@@ -235,10 +255,12 @@ class StringUtil {
         bytes.push(c & 0xFF);
       }
     }
+    LogUtil.debug(TAG, `stringToBytes end`);
     return bytes;
   }
 
   public static mergeArrayBuffer(...arrays): ArrayBuffer {
+    LogUtil.debug(TAG, `mergeArrayBuffer start`);
     let totalLen = 0
     for (let i = 0; i < arrays.length; i++) {
       arrays[i] = new Int8Array(arrays[i])
@@ -250,20 +272,23 @@ class StringUtil {
       res.set(arr, offset)
       offset += arr.length
     }
+    LogUtil.debug(TAG, `mergeArrayBuffer end`);
     return res.buffer
   }
 
 
   public static byteBufferToString(bytes: number[], offset: number, length: number): string{
+    LogUtil.debug(TAG, `byteBufferToString start, bytes: ${JSON.stringify(bytes)}, offset: ${offset}, length: ${length}`);
     try {
       if (length < 1) return "";
       let str = ""
       for (let i = 0;i < length; i++) {
         str += String.fromCharCode(bytes[offset+i]);
       }
+      LogUtil.debug(TAG, `byteBufferToString end, str: ${str}`);
       return str;
     } catch (error) {
-      console.error("mp3agic BufferTools byteBufferToString:" + error)
+      LogUtil.error(TAG, `byteBufferToString end, mp3agic BufferTools byteBufferToString:: ${JSON.stringify(error)}`);
       return null;
     }
   }

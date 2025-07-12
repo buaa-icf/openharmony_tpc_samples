@@ -18,9 +18,13 @@ import FileSystemMetadataReader from '../../metadata/file/FileSystemMetadataRead
 import PsdReader from '../../metadata/photoshop/PsdReader';
 import Metadata from '../../metadata/Metadata'
 import StreamReader from '../../lang/StreamReader'
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "PsdMetadataReader";
 
 class PsdMetadataReader {
   public static readMetadata(filePath: string): Metadata {
+    LogUtil.debug(TAG, `readMetadata start`);
     let inputStream = fileio.createStreamSync(filePath, 'r+');
     let metadata = new Metadata();
     try {
@@ -29,6 +33,7 @@ class PsdMetadataReader {
         inputStream.closeSync();
     }
     new FileSystemMetadataReader().read(filePath, metadata);
+    LogUtil.debug(TAG, `readMetadata end`);
     return metadata;
   }
 }

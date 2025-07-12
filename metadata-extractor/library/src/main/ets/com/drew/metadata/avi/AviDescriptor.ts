@@ -15,6 +15,9 @@ limitations under the License.
 
 import AviDirectory  from './AviDirectory'
 import TagDescriptor from '../TagDescriptor'
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "AviDescriptor";
 
 class AviDescriptor extends TagDescriptor<AviDirectory> {
   public constructor(directory: AviDirectory) {
@@ -22,11 +25,13 @@ class AviDescriptor extends TagDescriptor<AviDirectory> {
   }
 
   public getDescription(tagType: number): string {
+    LogUtil.debug(TAG, `getDescription start, tagType=${tagType}`);
     switch (tagType) {
       case AviDirectory.TAG_WIDTH:
       case AviDirectory.TAG_HEIGHT:
         return this.getSizeDescription(tagType);
     }
+    LogUtil.debug(TAG, `getDescription end`);
     return super.getDescription(tagType);
   }
 

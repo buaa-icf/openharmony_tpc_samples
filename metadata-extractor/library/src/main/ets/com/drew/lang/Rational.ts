@@ -13,6 +13,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import LogUtil from '../tools/LogUtils';
+
+const TAG: string = "Rational";
+
 class Rational {
   /** Holds the numerator. */
   private readonly _numerator: number;
@@ -120,6 +124,7 @@ class Rational {
   /** Returns the simplest representation of this {@link Rational}'s value possible. */
   public toSimpleString(allowDecimal: boolean): string
   {
+    LogUtil.debug(TAG, `toSimpleString start, allowDecimal: ${allowDecimal}, _numerator: ${this._numerator}, _denominator: ${this._denominator}`);
     let simplifiedInstance = this.getSimplifiedInstance();
     if (this._denominator == 0 && this._numerator != 0) {
       return this.toString();
@@ -127,16 +132,19 @@ class Rational {
       //            return this.intValue();
       return simplifiedInstance.numberValue().toString();
     } else if (this._numerator != 1 && this._denominator % this._numerator == 0) {
+      LogUtil.debug(TAG, `toSimpleString end, _denominator: ${this._denominator}, _numerator: ${this._numerator}`);
       // common factor between denominator and numerator
       let newDenominator = this._denominator / this._numerator;
       return new Rational(1, newDenominator).toSimpleString(allowDecimal);
     } else {
       if (allowDecimal) {
         let doubleString = simplifiedInstance.numberValue().toString();
+        LogUtil.debug(TAG, `toSimpleString allowDecimal, doubleString length: ${doubleString.length}`);
         if (doubleString.length < 5) {
           return doubleString;
         }
       }
+      LogUtil.debug(TAG, `toSimpleString end, simplifiedInstance: ${simplifiedInstance}`);
       return simplifiedInstance.toString();
     }
   }
@@ -154,12 +162,14 @@ class Rational {
    *         {@link Rational}.
    */
   public compareTo(that: Rational): number {
-    if (this.numberValue() < that.numberValue())
-    return -1; // Neither val is NaN, thisVal is smaller
-    if (this.numberValue() > that.numberValue())
-    return 1; // Neither val is NaN, thisVal is larger
-    if (this.numberValue() == that.numberValue())
-    return 0;
+      LogUtil.debug(TAG, `compareTo start, this.numberValue: ${this.numberValue()}, that.numberValue: ${that.numberValue()}`);
+    if (this.numberValue() < that.numberValue()) {
+      return -1; // Neither val is NaN, thisVal is smaller
+    } else if (this.numberValue() > that.numberValue()) {
+      return 1; // Neither val is NaN, thisVal is larger
+    } else {
+      return 0; // Values are numerically equal
+    }
   }
 
   /**
@@ -215,6 +225,7 @@ class Rational {
 
   private static GCD(a: number, b: number): number
   {
+    LogUtil.debug(TAG, `GCD start, a: ${a}, b: ${b}`);
     if (a < 0)
     a = -a;
     if (b < 0)
@@ -227,6 +238,7 @@ class Rational {
       b %= a;
     }
 
+    LogUtil.debug(TAG, `GCD end, a: ${a}, b: ${b}`);
     return a == 0 ? b : a;
   }
 }

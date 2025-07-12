@@ -15,6 +15,9 @@ limitations under the License.
 
 import { BmpHeaderDirectory } from './BmpHeaderDirectory';
 import TagDescriptor from '../TagDescriptor';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "BmpHeaderDescriptor";
 
 export class BmpHeaderDescriptor extends TagDescriptor<BmpHeaderDirectory> {
   constructor(directory: BmpHeaderDirectory) {
@@ -22,6 +25,7 @@ export class BmpHeaderDescriptor extends TagDescriptor<BmpHeaderDirectory> {
   }
 
   getDescription(tagType: number) {
+    LogUtil.debug(TAG, `getDescription start, tagType=${tagType}`);
     switch (tagType) {
       case BmpHeaderDirectory.TAG_BITMAP_TYPE:
         return this.getBitmapTypeDescription();
@@ -65,11 +69,14 @@ export class BmpHeaderDescriptor extends TagDescriptor<BmpHeaderDirectory> {
     // 12 = CMYK RLE-8
     // 13 = CMYK RLE-4
 
+    LogUtil.debug(TAG, `getCompressionDescription start`);
     let compression = this._directory.getCompression();
     if (compression != null) {
+      LogUtil.debug(TAG, `getCompressionDescription end, compression=${compression.toString()}`);
       return compression.toString();
     }
     let value = this._directory.getInteger(BmpHeaderDirectory.TAG_COMPRESSION);
+    LogUtil.debug(TAG, `getCompressionDescription, value=${value}`);
     return value == null ? null : "Illegal value 0x" + parseInt((value.toString()))
   }
 

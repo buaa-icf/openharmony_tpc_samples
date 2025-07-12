@@ -15,6 +15,9 @@ limitations under the License.
 
 import StringUtil from '../../lang/StringUtil'
 import buffer from '@ohos.buffer';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "PngChunkType";
 
 class PngChunkType {
   private static readonly _identifiersAllowingMultiples: Set<String> = new Set<String>()
@@ -99,14 +102,18 @@ class PngChunkType {
   private readonly _multipleAllowed: boolean;
 
   public constructor( identifier?: string, multipleAllowed?: boolean,input?:number[]) {
+      LogUtil.debug(TAG, `constructor start, identifier: ${identifier}, multipleAllowed: ${multipleAllowed}, input: ${input}`);
       if(identifier!=null && identifier!=''){
+        LogUtil.debug(TAG, `constructor identifier: ${identifier}, multipleAllowed: ${multipleAllowed}`);
         this._multipleAllowed = multipleAllowed;
         try {
           this._bytes = this.stringToAsciiBytes(identifier);
         } catch (error) {
+          LogUtil.error(TAG, `constructor error: ${JSON.stringify(error)}`);
           throw new Error("Unable to convert string code to bytes.");
         }
       }else{
+        LogUtil.debug(TAG, `constructor input: ${input}, multipleAllowed: ${multipleAllowed}`);
         PngChunkType.validateBytes(input);
         this._bytes = input;
         this._multipleAllowed = PngChunkType._identifiersAllowingMultiples.has(this.getIdentifier());
@@ -114,6 +121,7 @@ class PngChunkType {
 
   }
   stringToAsciiBytes(str) {
+    LogUtil.debug(TAG, `stringToAsciiBytes start, str: ${str}`);
   var bytes = [];
 
   for (var i = 0; i < str.length; i++) {
@@ -123,24 +131,30 @@ class PngChunkType {
     if (charCode >= 0 && charCode <= 127) {
       bytes.push(charCode);
     } else {
+      LogUtil.error(TAG, `stringToAsciiBytes error: PngChunkType String contains non-ASCII characters.`);
       throw new Error('PngChunkType String contains non-ASCII characters.');
     }
   }
 
+  LogUtil.debug(TAG, `stringToAsciiBytes end, bytes: ${bytes}`);
   return bytes;
 }
 
 
   public static validateBytes(bytes: number[]): void {
+    LogUtil.debug(TAG, `validateBytes start, bytes: ${bytes}`);
     if (bytes.length != 4) {
+      LogUtil.error(TAG, `validateBytes error: PNG chunk type identifier must be four bytes in length`);
       throw new Error("PNG chunk type identifier must be four bytes in length");
     }
 
     for (let b of bytes) {
       if (!PngChunkType.isValidByte(b)) {
+        LogUtil.error(TAG, `validateBytes error: PNG chunk type identifier may only contain alphabet characters`);
         throw new Error("PNG chunk type identifier may only contain alphabet characters");
       }
     }
+    LogUtil.debug(TAG, `validateBytes end`);
   }
 
   public isCritical(): boolean {
@@ -176,6 +190,7 @@ class PngChunkType {
   }
 
   public getIdentifier(): string {
+    LogUtil.debug(TAG, `getIdentifier start, _bytes: ${this._bytes}`);
     try {
       return buffer.from(this._bytes).toString('ascii');
     } catch (error) {

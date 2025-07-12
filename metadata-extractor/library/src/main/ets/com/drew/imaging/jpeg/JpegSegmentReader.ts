@@ -18,6 +18,9 @@ import StreamReader from '../../lang/StreamReader';
 import JpegSegmentData from './JpegSegmentData'
 import JpegSegmentType from './JpegSegmentType'
 import SequentialReader from '../../lang/SequentialReader'
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "JpegSegmentReader";
 
 class JpegSegmentReader {
   public static readonly SEGMENT_IDENTIFIER: number = -1;
@@ -25,6 +28,7 @@ class JpegSegmentReader {
   public static readonly MARKER_EOI: number = -39;
 
   public static readSegments(filePath: string, reader?: SequentialReader, segmentTypes?: Set<JpegSegmentType>): JpegSegmentData {
+    LogUtil.debug(TAG, `readSegments start, filePath: ${filePath}, segmentTypes: ${segmentTypes}`);
     let stream = fileio.createStreamSync(filePath, 'r+');
     try {
       reader = new StreamReader(filePath);
@@ -80,6 +84,7 @@ class JpegSegmentReader {
     } finally {
       stream.closeSync();
     }
+    LogUtil.debug(TAG, `readSegments end`);
   }
 
   constructor() {

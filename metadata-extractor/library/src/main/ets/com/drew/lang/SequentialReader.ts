@@ -14,6 +14,9 @@ limitations under the License.
 */
 
 import StringValue from '../metadata/StringValue';
+import LogUtil from '../tools/LogUtils';
+
+const TAG: string = "SequentialReader";
 
 abstract class SequentialReader {
   private _isMotorolaByteOrder: boolean = true;
@@ -269,11 +272,14 @@ abstract class SequentialReader {
 
   public getString(bytesRequested: number, charset?: string): string
   {
+    LogUtil.debug(TAG, `getString start, bytesRequested: ${bytesRequested}, charset: ${charset}`);
     let bytes = this.getBytes(bytesRequested);
     if (charset == null) {
+      LogUtil.debug(TAG, `getString no charset provided, using 'utf-8'`);
       return StringValue.Int8Array2String(bytes, 'utf-8');
     }
 
+    LogUtil.debug(TAG, `getString end`);
     return StringValue.Int8Array2String(bytes, charset);
 
   }
@@ -323,6 +329,7 @@ abstract class SequentialReader {
        */
   public getNullTerminatedBytes(maxLengthBytes: number): Int8Array
   {
+    LogUtil.debug(TAG, `getNullTerminatedBytes start, maxLengthBytes: ${maxLengthBytes}`);
     let buffer = new Int8Array(maxLengthBytes);
 
     // Count the number of non-null bytes
@@ -330,13 +337,16 @@ abstract class SequentialReader {
     while (length < buffer.length && (buffer[length] = this.getByte()) != 0)
     length++;
 
-    if (length == maxLengthBytes)
-    return buffer;
+    if (length == maxLengthBytes) {
+      LogUtil.debug(TAG, `getNullTerminatedBytes end, reached maxLengthBytes: ${maxLengthBytes}`);
+      return buffer;
+    }
 
     let bytes = new Int8Array(length);
     if (length > 0) {
       bytes = buffer.slice(0, length);
     }
+    LogUtil.debug(TAG, `getNullTerminatedBytes end, bytes: ${bytes}`);
     return bytes;
   }
 }

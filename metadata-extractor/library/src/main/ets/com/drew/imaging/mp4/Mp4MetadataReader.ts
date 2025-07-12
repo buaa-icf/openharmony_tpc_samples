@@ -18,10 +18,14 @@ import FileSystemMetadataReader from '../../metadata/file/FileSystemMetadataRead
 import Metadata from '../../metadata/Metadata';
 import Mp4Reader from './Mp4Reader'
 import Mp4BoxHandler from '../../metadata/mp4/Mp4BoxHandler'
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "Mp4MetadataReader";
 
 class Mp4MetadataReader {
   public static readMetadata(filePath: string): Metadata
   {
+    LogUtil.debug(TAG, `readMetadata start, filePath: ${filePath}`);
     let inputStream = fileio.createStreamSync(filePath, 'r+');
     let metadata: Metadata;
     try {
@@ -31,6 +35,7 @@ class Mp4MetadataReader {
       inputStream.closeSync();
     }
     new FileSystemMetadataReader().read(filePath, metadata);
+    LogUtil.debug(TAG, `readMetadata end`);
     return metadata;
   }
 }
