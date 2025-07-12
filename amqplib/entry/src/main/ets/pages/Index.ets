@@ -57,7 +57,7 @@ struct Index {
           .fontSize(30)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
-            router.pushUrl({ url: item.path } as router.RouterOptions);
+            this.getUIContext()?.getRouter()?.pushUrl({ url: item.path } as router.RouterOptions);
           })
       })
     }
