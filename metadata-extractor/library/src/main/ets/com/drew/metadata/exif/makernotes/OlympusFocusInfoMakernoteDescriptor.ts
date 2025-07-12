@@ -16,6 +16,9 @@ limitations under the License.
 import Rational from '../../../lang/Rational'
 import TagDescriptor from '../../TagDescriptor'
 import OlympusFocusInfoMakernoteDirectory from './OlympusFocusInfoMakernoteDirectory';
+import LogUtil from '../../../tools/LogUtils';
+
+const TAG: string = "OlympusFocusInfoMakernoteDescriptor";
 
 /**
  * Provides human-readable String representations of tag values stored in a {@link OlympusFocusInfoMakernoteDirectory}.
@@ -29,6 +32,7 @@ class OlympusFocusInfoMakernoteDescriptor extends TagDescriptor<OlympusFocusInfo
   }
 
   public getDescription(tagType: number): string {
+    LogUtil.debug(TAG, `getDescription enter, tagType = ${tagType}`);
     switch (tagType) {
       case OlympusFocusInfoMakernoteDirectory.TagFocusInfoVersion:
         return this.getFocusInfoVersionDescription();
@@ -67,36 +71,53 @@ class OlympusFocusInfoMakernoteDescriptor extends TagDescriptor<OlympusFocusInfo
   }
 
   public getFocusDistanceDescription(): string {
+    LogUtil.debug(TAG, `getFocusDistanceDescription enter`);
     let value = this._directory.getRational(OlympusFocusInfoMakernoteDirectory.TagFocusDistance);
-    if (value == null)
+    if (value == null) {
+      LogUtil.error(TAG, `getFocusDistanceDescription end, value is null`);
       return "inf";
-    if (value.getNumerator() == 0xFFFFFFFF || value.getNumerator() == 0x00000000)
+    }
+    if (value.getNumerator() == 0xFFFFFFFF || value.getNumerator() == 0x00000000) {
+      LogUtil.error(TAG, `getFocusDistanceDescription end, value is invalid`);
       return "inf";
+    }
 
+    LogUtil.debug(TAG, `getFocusDistanceDescription end, value = ${value.getNumerator()}`);
     return value.getNumerator() / 1000.0 + " m";
   }
 
   public getAfPointDescription(): string {
+    LogUtil.debug(TAG, `getAfPointDescription enter`);
     let value = this._directory.getInteger(OlympusFocusInfoMakernoteDirectory.TagAfPoint);
-    if (value == null)
+    if (value == null) {
+      LogUtil.error(TAG, `getAfPointDescription end, value is null`);
       return null;
+    }
 
+    LogUtil.debug(TAG, `getAfPointDescription end, value = ${value}`);
     return value.toString();
   }
 
   public getExternalFlashDescription(): string {
+    LogUtil.debug(TAG, `getExternalFlashDescription enter`);
     let values = this._directory.getIntArray(OlympusFocusInfoMakernoteDirectory.TagExternalFlash);
-    if (values == null || values.length < 2)
+    if (values == null || values.length < 2) {
+      LogUtil.error(TAG, `getExternalFlashDescription end, values is null or length < 2`);
       return null;
+    }
 
     let join = parseInt(values[0]).toString() + " " + parseInt(values[1]).toString();
 
-    if(join == "0 0")
+    if(join == "0 0") {
+      LogUtil.debug(TAG, `getExternalFlashDescription end, values is 0 0`);
       return "Off";
-    else if(join == "1 0")
+    } else if(join == "1 0") {
+      LogUtil.debug(TAG, `getExternalFlashDescription end, values is 1 0`);
       return "On";
-    else
+    } else {
+      LogUtil.debug(TAG, `getExternalFlashDescription end, values is ${join}`);
       return "Unknown (" + join + ")";
+    }
   }
 
   public getExternalFlashBounceDescription(): string {
@@ -105,47 +126,66 @@ class OlympusFocusInfoMakernoteDescriptor extends TagDescriptor<OlympusFocusInfo
   }
 
   public getExternalFlashZoomDescription(): string {
+    LogUtil.debug(TAG, `getExternalFlashZoomDescription enter`);
     let values = this._directory.getIntArray(OlympusFocusInfoMakernoteDirectory.TagExternalFlashZoom);
     if (values == null) {
       // check if it's only one value long also
       let value = this._directory.getInteger(OlympusFocusInfoMakernoteDirectory.TagExternalFlashZoom);
-      if(value == null)
+      if(value == null) {
+        LogUtil.error(TAG, `getExternalFlashZoomDescription end, values is null`);
         return null;
+      }
 
       values = new Array<number>();
       values[0] = value;
     }
 
-    if (values.length == 0)
+    if (values.length == 0) {
+      LogUtil.error(TAG, `getExternalFlashZoomDescription end, values is empty`);
       return null;
+    }
 
     let join = parseInt(values[0]).toString();
     if(values.length > 1)
       join += " " + parseInt(values[1]).toString();
 
-    if(join == "0")
+    if(join == "0") {
+      LogUtil.debug(TAG, `getExternalFlashZoomDescription end, join is 0`);
       return "Off";
-    else if(join == "1")
+    } else if(join == "1") {
+      LogUtil.debug(TAG, `getExternalFlashZoomDescription end, join is 1`);
       return "On";
-    else if(join == "0 0")
+    } else if(join == "0 0") {
+      LogUtil.debug(TAG, `getExternalFlashZoomDescription end, join is 0 0`);
       return "Off";
-    else if(join == "1 0")
+    } else if(join == "1 0") {
+      LogUtil.debug(TAG, `getExternalFlashZoomDescription end, join is 1 0`);
       return "On";
-    else
+    } else {
+      LogUtil.debug(TAG, `getExternalFlashZoomDescription end, join is ${join}`);
       return "Unknown (" + join + ")";
+    }
 
   }
 
   public getManualFlashDescription(): string {
+    LogUtil.debug(TAG, `getManualFlashDescription enter`);
     let values = this._directory.getIntArray(OlympusFocusInfoMakernoteDirectory.TagManualFlash);
-    if (values == null)
+    if (values == null) {
+      LogUtil.error(TAG, `getManualFlashDescription end, values is null`);
       return null;
+    }
 
-    if (values[0] == 0)
+    if (values[0] == 0) {
+      LogUtil.debug(TAG, `getManualFlashDescription end, values[0] is 0`);
       return "Off";
+    }
 
-    if (values[1] == 1)
+    if (values[1] == 1) {
+      LogUtil.debug(TAG, `getManualFlashDescription end, values[1] is 1`);
       return "Full";
+    }
+    LogUtil.debug(TAG, `getManualFlashDescription end, values[1] is ${values[1]}`);
     return "On (1/" + values[1] + " strength)";
   }
 
@@ -163,12 +203,18 @@ class OlympusFocusInfoMakernoteDescriptor extends TagDescriptor<OlympusFocusInfo
   }
 
   public getImageStabilizationDescription(): string {
+    LogUtil.debug(TAG, `getImageStabilizationDescription enter`);
     let values = this._directory.getByteArray(OlympusFocusInfoMakernoteDirectory.TagImageStabilization);
-    if (values == null)
+    if (values == null) {
+      LogUtil.error(TAG, `getImageStabilizationDescription end, values is null`);
       return null;
+    }
 
-    if((values[0] | values[1] | values[2] | values[3]) == 0x0)
+    if((values[0] | values[1] | values[2] | values[3]) == 0x0) {
+      LogUtil.debug(TAG, `getImageStabilizationDescription end, values is 0`);
       return "Off";
+    }
+    LogUtil.debug(TAG, `getImageStabilizationDescription end, values is ${values}`);
     return "On, " + ((values[43] & 1) > 0 ? "Mode 1" : "Mode 2");
   }
 }

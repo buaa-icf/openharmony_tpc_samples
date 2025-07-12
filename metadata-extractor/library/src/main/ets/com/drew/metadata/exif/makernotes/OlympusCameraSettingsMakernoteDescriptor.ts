@@ -15,6 +15,9 @@ limitations under the License.
 
 import TagDescriptor from '../../TagDescriptor';
 import OlympusCameraSettingsMakernoteDirectory from './OlympusCameraSettingsMakernoteDirectory';
+import LogUtil from '../../../tools/LogUtils';
+
+const TAG: string = "OlympusCameraSettingsMakernoteDescriptor";
 
 class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCameraSettingsMakernoteDirectory> {
   constructor(directory: OlympusCameraSettingsMakernoteDirectory) {
@@ -22,6 +25,7 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
   }
 
   public getDescription(tagType: number) {
+    LogUtil.debug(TAG, `getDescription enter, tagType: ${tagType}`);
     switch (tagType) {
       case OlympusCameraSettingsMakernoteDirectory.TagCameraSettingsVersion:
         return this.getCameraSettingsVersionDescription();
@@ -171,10 +175,14 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
 
   public getMeteringModeDescription(): string
   {
+    LogUtil.debug(TAG, `getMeteringModeDescription enter`);
     let value = this._directory.getInteger(OlympusCameraSettingsMakernoteDirectory.TagMeteringMode);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getMeteringModeDescription value is null`);
+      return null;
+    }
 
+    LogUtil.debug(TAG, `getMeteringModeDescription end, value: ${value}`);
     switch (value) {
       case 2:
         return "Center-weighted average";
@@ -210,20 +218,26 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
 
   public getFocusModeDescription(): string
   {
+    LogUtil.debug(TAG, `getFocusModeDescription enter`);
     let values = this._directory.getIntArray(OlympusCameraSettingsMakernoteDirectory.TagFocusMode);
     if (values == null) {
       // check if it's only one value long also
       let value = this._directory.getInteger(OlympusCameraSettingsMakernoteDirectory.TagFocusMode);
-      if (value == null)
-      return null;
+      if (value == null) {
+        LogUtil.error(TAG, `getFocusModeDescription values and value are null`);
+        return null;
+      }
 
       values = [value];
     }
 
-    if (values.length == 0)
-    return null;
+    if (values.length == 0) {
+      LogUtil.error(TAG, `getFocusModeDescription values is empty`);
+      return null;
+    }
 
     let sb = '';
+    LogUtil.debug(TAG, `getFocusModeDescription values[0]: ${values[0]}`);
     switch (values[0]) {
       case 0:
         sb + "Single AF";
@@ -267,26 +281,33 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
       }
     }
 
+    LogUtil.debug(TAG, `getFocusModeDescription end, sb: ${sb}`);
     return sb;
   }
 
   public getFocusProcessDescription(): string
   {
+    LogUtil.debug(TAG, `getFocusProcessDescription enter`);
     let values = this._directory.getIntArray(OlympusCameraSettingsMakernoteDirectory.TagFocusProcess);
     if (values == null) {
       // check if it's only one value long also
       let value = this._directory.getInteger(OlympusCameraSettingsMakernoteDirectory.TagFocusProcess);
-      if (value == null)
-      return null;
+      if (value == null) {
+        LogUtil.error(TAG, `getFocusProcessDescription values and value are null`);
+        return null;
+      }
 
       values = [value];
     }
 
-    if (values.length == 0)
-    return null;
+    if (values.length == 0) {
+      LogUtil.error(TAG, `getFocusProcessDescription values is empty`);
+      return null;
+    }
 
     let sb = '';
 
+    LogUtil.debug(TAG, `getFocusProcessDescription values[0]: ${values[0]}`);
     switch (values[0]) {
       case 0:
         sb + "AF not used";
@@ -302,6 +323,7 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
     if (values.length > 1)
     sb + "; " + values[1];
 
+    LogUtil.debug(TAG, `getFocusProcessDescription end, sb: ${sb}`);
     return sb;
   }
 
@@ -314,9 +336,12 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
 
   public getAfAreasDescription(): string
   {
+    LogUtil.debug(TAG, `getAfAreasDescription enter`);
     let obj = this._directory.getObject(OlympusCameraSettingsMakernoteDirectory.TagAfAreas);
-    if (obj == null || !(obj instanceof Array))
-    return null;
+    if (obj == null || !(obj instanceof Array)) {
+      LogUtil.error(TAG, `getAfAreasDescription obj is null or not an array`);
+      return null;
+    }
 
     let sb = '';
     for (let point of obj) {
@@ -343,6 +368,7 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
       //                point & 0xFF);
     }
 
+    LogUtil.debug(TAG, `getAfAreasDescription end, sb length: ${sb.length}`);
     return sb.length == 0 ? null : sb;
   }
 
@@ -350,12 +376,17 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
 
   public getAfPointSelectedDescription(): string
   {
+    LogUtil.debug(TAG, `getAfPointSelectedDescription enter`);
     let values = this._directory.getRationalArray(OlympusCameraSettingsMakernoteDirectory.TagAfPointSelected);
-    if (values == null)
-    return "n/a";
+    if (values == null) {
+      LogUtil.error(TAG, `getAfPointSelectedDescription values is null`);
+      return "n/a";
+    }
 
-    if (values.length < 4)
-    return null;
+    if (values.length < 4) {
+      LogUtil.error(TAG, `getAfPointSelectedDescription values length is less than 4`);
+      return null;
+    }
 
     let index = 0;
     if (values.length == 5 && values[0].numberValue() == 0)
@@ -366,8 +397,10 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
     let p3 = (values[index + 2].numberValue() * 100);
     let p4 = (values[index + 3].numberValue() * 100);
 
-    if (p1 + p2 + p3 + p4 == 0)
-    return "n/a";
+    if (p1 + p2 + p3 + p4 == 0) {
+      LogUtil.error(TAG, `getAfPointSelectedDescription all points are 0`);
+      return "n/a";
+    }
     return "(%d%%,%d%%) (%d%%,%d%%)".replace(/%d%%/, p1.toString())
       .replace(/%d%%/, p2.toString())
       .replace(/%d%%/, p3.toString())
@@ -382,12 +415,17 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
 
   public getFlashModeDescription(): string
   {
+    LogUtil.debug(TAG, `getFlashModeDescription enter`);
     let value = this._directory.getInteger(OlympusCameraSettingsMakernoteDirectory.TagFlashMode);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getFlashModeDescription value is null`);
+      return null;
+    }
 
-    if (value == 0)
-    return "Off";
+    if (value == 0) {
+      LogUtil.error(TAG, `getFlashModeDescription value is 0`);
+      return "Off";
+    }
 
     let sb = '';
     let v = value;
@@ -399,15 +437,20 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
     if (((v >> 4) & 1) != 0) sb + "Forced On, ";
     if (((v >> 5) & 1) != 0) sb + "2nd Curtain, ";
 
+    LogUtil.debug(TAG, `getFlashModeDescription end, sb: ${sb}`);
     return sb.substring(0, sb.length - 2);
   }
 
   public getFlashRemoteControlDescription(): string
   {
+    LogUtil.debug(TAG, `getFlashRemoteControlDescription enter`);
     let value = this._directory.getInteger(OlympusCameraSettingsMakernoteDirectory.TagFlashRemoteControl);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getFlashRemoteControlDescription value is null`);
+      return null;
+    }
 
+    LogUtil.debug(TAG, `getFlashRemoteControlDescription end, value: ${value}`);
     switch (value) {
       case 0:
         return "Off";
@@ -445,12 +488,17 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
 
   public getFlashControlModeDescription(): string
   {
+    LogUtil.debug(TAG, `getFlashControlModeDescription enter`);
     let values = this._directory.getIntArray(OlympusCameraSettingsMakernoteDirectory.TagFlashControlMode);
-    if (values == null)
-    return null;
+    if (values == null) {
+      LogUtil.error(TAG, `getFlashControlModeDescription values is null`);
+      return null;
+    }
 
-    if (values.length == 0)
-    return null;
+    if (values.length == 0) {
+      LogUtil.error(TAG, `getFlashControlModeDescription values is empty`);
+      return null;
+    }
 
     let sb = '';
 
@@ -475,6 +523,7 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
     for (let i = 1; i < values.length; i++)
     sb + "; " + values[i];
 
+    LogUtil.debug(TAG, `getFlashControlModeDescription end, sb: ${sb}`);
     return sb;
   }
 
@@ -482,52 +531,72 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
 
   public getFlashIntensityDescription(): string
   {
+    LogUtil.debug(TAG, `getFlashIntensityDescription enter`);
     let values = this._directory.getRationalArray(OlympusCameraSettingsMakernoteDirectory.TagFlashIntensity);
-    if (values == null || values.length == 0)
-    return null;
+    if (values == null || values.length == 0) {
+      LogUtil.error(TAG, `getFlashIntensityDescription values is null or empty`);
+      return null;
+    }
 
     if (values.length == 3) {
-      if (values[0].getDenominator() == 0 && values[1].getDenominator() == 0 && values[2].getDenominator() == 0)
-      return "n/a";
+      if (values[0].getDenominator() == 0 && values[1].getDenominator() == 0 && values[2].getDenominator() == 0) {
+        LogUtil.error(TAG, `getFlashIntensityDescription all values are 0`);
+        return "n/a";
+      }
     } else if (values.length == 4) {
-      if (values[0].getDenominator() == 0 && values[1].getDenominator() == 0 && values[2].getDenominator() == 0 && values[3].getDenominator() == 0)
-      return "n/a (x4)";
+      if (values[0].getDenominator() == 0 && values[1].getDenominator() == 0 && values[2].getDenominator() == 0 && values[3].getDenominator() == 0) {
+        LogUtil.error(TAG, `getFlashIntensityDescription all values are 0`);
+        return "n/a (x4)";
+      }
     }
 
     let sb = '';
     for (let t of values)
     sb + t + ", ";
 
+    LogUtil.debug(TAG, `getFlashIntensityDescription end, sb: ${sb}`);
     return sb.substring(0, sb.length - 2);
   }
 
   public getManualFlashStrengthDescription(): string
   {
+    LogUtil.debug(TAG, `getManualFlashStrengthDescription enter`);
     let values = this._directory.getRationalArray(OlympusCameraSettingsMakernoteDirectory.TagManualFlashStrength);
-    if (values == null || values.length == 0)
-    return "n/a";
+    if (values == null || values.length == 0) {
+      LogUtil.error(TAG, `getManualFlashStrengthDescription values is null or empty`);
+      return "n/a";
+    }
 
     if (values.length == 3) {
-      if (values[0].getDenominator() == 0 && values[1].getDenominator() == 0 && values[2].getDenominator() == 0)
-      return "n/a";
+      if (values[0].getDenominator() == 0 && values[1].getDenominator() == 0 && values[2].getDenominator() == 0) {
+        LogUtil.error(TAG, `getManualFlashStrengthDescription all values are 0`);
+        return "n/a";
+      }
     } else if (values.length == 4) {
-      if (values[0].getDenominator() == 0 && values[1].getDenominator() == 0 && values[2].getDenominator() == 0 && values[3].getDenominator() == 0)
-      return "n/a (x4)";
+      if (values[0].getDenominator() == 0 && values[1].getDenominator() == 0 && values[2].getDenominator() == 0 && values[3].getDenominator() == 0) {
+        LogUtil.error(TAG, `getManualFlashStrengthDescription all values are 0`);
+        return "n/a (x4)";
+      }
     }
 
     let sb = '';
     for (let t of values)
     sb + t + ", ";
 
+    LogUtil.debug(TAG, `getManualFlashStrengthDescription end, sb: ${sb}`);
     return sb.substring(0, sb.length - 2);
   }
 
   public getWhiteBalance2Description(): string
   {
+    LogUtil.debug(TAG, `getWhiteBalance2Description enter`);
     let value = this._directory.getInteger(OlympusCameraSettingsMakernoteDirectory.TagWhiteBalance2);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getWhiteBalance2Description value is null`);
+      return null;
+    }
 
+    LogUtil.debug(TAG, `getWhiteBalance2Description end, value: ${value}`);
     switch (value) {
       case 0:
         return "Auto";
@@ -582,11 +651,17 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
 
   public getWhiteBalanceTemperatureDescription(): string
   {
+    LogUtil.debug(TAG, `getWhiteBalanceTemperatureDescription enter`);
     let value = this._directory.getInteger(OlympusCameraSettingsMakernoteDirectory.TagWhiteBalanceTemperature);
-    if (value == null)
-    return null;
-    if (value == 0)
-    return "Auto";
+    if (value == null) {
+      LogUtil.error(TAG, `getWhiteBalanceTemperatureDescription value is null`);
+      return null;
+    }
+    if (value == 0) {
+      LogUtil.error(TAG, `getWhiteBalanceTemperatureDescription value is 0`);
+      return "Auto";
+    }
+    LogUtil.debug(TAG, `getWhiteBalanceTemperatureDescription end, value: ${value}`);
     return value.toString();
   }
 
@@ -622,10 +697,14 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
 
   public getSceneModeDescription(): string
   {
+    LogUtil.debug(TAG, `getSceneModeDescription enter`);
     let value = this._directory.getInteger(OlympusCameraSettingsMakernoteDirectory.TagSceneMode);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getSceneModeDescription value is null`);
+      return null;
+    }
 
+    LogUtil.debug(TAG, `getSceneModeDescription end, value: ${value}`);
     switch (value) {
       case 0:
         return "Standard";
@@ -748,12 +827,17 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
 
   public getNoiseReductionDescription(): string
   {
+    LogUtil.debug(TAG, `getNoiseReductionDescription enter`);
     let value = this._directory.getInteger(OlympusCameraSettingsMakernoteDirectory.TagNoiseReduction);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getNoiseReductionDescription value is null`);
+      return null;
+    }
 
-    if (value == 0)
-    return "(none)";
+    if (value == 0) {
+      LogUtil.error(TAG, `getNoiseReductionDescription value is 0`);
+      return "(none)";
+    }
 
     let sb = '';
     let v = value;
@@ -763,6 +847,7 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
     if (((v >> 2) & 1) != 0) sb + "Noise Filter (ISO Boost), ";
     if (((v >> 3) & 1) != 0) sb + "Auto, ";
 
+    LogUtil.debug(TAG, `getNoiseReductionDescription end, sb: ${sb}`);
     return sb.length != 0
       ? sb.substring(0, sb.length - 2)
       : "(none)";
@@ -782,9 +867,12 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
 
   public getGradationDescription(): string
   {
+    LogUtil.debug(TAG, `getGradationDescription enter`);
     let values = this._directory.getIntArray(OlympusCameraSettingsMakernoteDirectory.TagGradation);
-    if (values == null || values.length < 3)
-    return null;
+    if (values == null || values.length < 3) {
+      LogUtil.error(TAG, `getGradationDescription values is null or less than 3`);
+      return null;
+    }
 
     //        String join = String.format("%d %d %d", values[0], values[1], values[2]);
     let join = "%d %d %d".replace(/%d/, values[0]).replace(/%d/, values[1]).replace(/%d/, values[2]);
@@ -808,6 +896,7 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
       ret += "; Auto-Override";
     }
 
+    LogUtil.debug(TAG, `getGradationDescription end, ret: ${ret}`);
     return ret;
   }
 
@@ -815,18 +904,23 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
 
   public getPictureModeDescription(): string
   {
+    LogUtil.debug(TAG, `getPictureModeDescription enter`);
     let values = this._directory.getIntArray(OlympusCameraSettingsMakernoteDirectory.TagPictureMode);
     if (values == null) {
       // check if it's only one value long also
       let value = this._directory.getInteger(OlympusCameraSettingsMakernoteDirectory.TagNoiseReduction);
-      if (value == null)
-      return null;
+      if (value == null) {
+        LogUtil.error(TAG, `getPictureModeDescription values is null`);
+        return null;
+      }
 
       values = [value];
     }
 
-    if (values.length == 0)
-    return null;
+    if (values.length == 0) {
+      LogUtil.error(TAG, `getPictureModeDescription values is empty`);
+      return null;
+    }
 
     let sb = '';
     switch (values[0]) {
@@ -859,6 +953,7 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
     if (values.length > 1)
     sb + "; " + values[1];
 
+    LogUtil.debug(TAG, `getPictureModeDescription end, sb: ${sb}`);
     return sb.toString();
   }
 
@@ -891,12 +986,16 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
 
   public getNoiseFilterDescription(): string
   {
+    LogUtil.debug(TAG, `getNoiseFilterDescription enter`);
     let values = this._directory.getIntArray(OlympusCameraSettingsMakernoteDirectory.TagNoiseFilter);
-    if (values == null)
-    return null;
+    if (values == null) {
+      LogUtil.error(TAG, `getNoiseFilterDescription values is null`);
+      return null;
+    }
 
     let join = "%d %d %d".replace(/%d/, values[0]).replace(/%d/, values[1]).replace(/%d/, values[2]);
 
+    LogUtil.debug(TAG, `getNoiseFilterDescription end, join: ${join}`);
     if (join == "0 0 0")
     return "n/a";
     if (join == "-2 -2 1")
@@ -922,11 +1021,15 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
 
   public getPictureModeEffectDescription(): string
   {
+    LogUtil.debug(TAG, `getPictureModeEffectDescription enter`);
     let values = this._directory.getIntArray(OlympusCameraSettingsMakernoteDirectory.TagPictureModeEffect);
-    if (values == null)
-    return null;
+    if (values == null) {
+      LogUtil.error(TAG, `getPictureModeEffectDescription values is null`);
+      return null;
+    }
 
     let key = "%d %d %d".replace(/%d/, values[0]).replace(/%d/, values[1]).replace(/%d/, values[2]);
+    LogUtil.debug(TAG, `getPictureModeEffectDescription end, key: ${key}`);
     if (key == "0 0 0")
     return "n/a";
     if (key == "-1 -1 1")
@@ -940,9 +1043,12 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
 
   public getToneLevelDescription(): string
   {
+    LogUtil.debug(TAG, `getToneLevelDescription enter`);
     let values = this._directory.getIntArray(OlympusCameraSettingsMakernoteDirectory.TagToneLevel);
-    if (values == null || values.length == 0)
-    return null;
+    if (values == null || values.length == 0) {
+      LogUtil.error(TAG, `getToneLevelDescription values is null or empty`);
+      return null;
+    }
 
     let sb = '';
     for (let i = 0; i < values.length; i++) {
@@ -952,14 +1058,18 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
       sb + values[i] + "; ";
     }
 
+    LogUtil.debug(TAG, `getToneLevelDescription end, sb: ${sb}`);
     return sb.substring(0, sb.length - 2);
   }
 
   public getArtFilterEffectDescription(): string
   {
+    LogUtil.debug(TAG, `getArtFilterEffectDescription enter`);
     let values = this._directory.getIntArray(OlympusCameraSettingsMakernoteDirectory.TagArtFilterEffect);
-    if (values == null)
-    return null;
+    if (values == null) {
+      LogUtil.error(TAG, `getArtFilterEffectDescription values is null`);
+      return null;
+    }
 
     let sb = '';
     for (let i = 0; i < values.length; i++) {
@@ -1022,14 +1132,18 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
       }
     }
 
+    LogUtil.debug(TAG, `getArtFilterEffectDescription end, sb: ${sb}`);
     return sb.substring(0, sb.length - 2);
   }
 
   public getColorCreatorEffectDescription(): string
   {
+    LogUtil.debug(TAG, `getColorCreatorEffectDescription enter`);
     let values = this._directory.getIntArray(OlympusCameraSettingsMakernoteDirectory.TagColorCreatorEffect);
-    if (values == null)
-    return null;
+    if (values == null) {
+      LogUtil.error(TAG, `getColorCreatorEffectDescription values is null`);
+      return null;
+    }
 
     let sb = '';
     for (let i = 0; i < values.length; i++) {
@@ -1042,6 +1156,7 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
       }
     }
 
+    LogUtil.debug(TAG, `getColorCreatorEffectDescription end, sb: ${sb}`);
     return sb.substring(0, sb.length - 2);
   }
 
@@ -1049,12 +1164,17 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
 
   public getDriveModeDescription(): string
   {
+    LogUtil.debug(TAG, `getDriveModeDescription enter`);
     let values = this._directory.getIntArray(OlympusCameraSettingsMakernoteDirectory.TagDriveMode);
-    if (values == null)
-    return null;
+    if (values == null) {
+      LogUtil.error(TAG, `getDriveModeDescription values is null`);
+      return null;
+    }
 
-    if (values.length == 0 || values[0] == 0)
-    return "Single Shot";
+    if (values.length == 0 || values[0] == 0) {
+      LogUtil.error(TAG, `getDriveModeDescription values is empty or 0`);
+      return "Single Shot";
+    }
 
     let a = '';
 
@@ -1089,6 +1209,7 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
 
     a + ", Shot " + values[1];
 
+    LogUtil.debug(TAG, `getDriveModeDescription end, a: ${a}`);
     return a.toString();
   }
 
@@ -1096,12 +1217,17 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
 
   public getPanoramaModeDescription(): string
   {
+    LogUtil.debug(TAG, `getPanoramaModeDescription enter`);
     let values = this._directory.getIntArray(OlympusCameraSettingsMakernoteDirectory.TagPanoramaMode);
-    if (values == null)
-    return null;
+    if (values == null) {
+      LogUtil.error(TAG, `getPanoramaModeDescription values is null`);
+      return null;
+    }
 
-    if (values.length == 0 || values[0] == 0)
-    return "Off";
+    if (values.length == 0 || values[0] == 0) {
+      LogUtil.error(TAG, `getPanoramaModeDescription values is empty or 0`);
+      return "Off";
+    }
 
     let a;
     switch (values[0]) {
@@ -1122,6 +1248,7 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
         break;
     }
 
+    LogUtil.debug(TAG, `getPanoramaModeDescription end, a: ${a}`);
     return "%s, Shot %d".replace(/%s/, a).replace(/%d/, values[1]);
   }
 
@@ -1139,18 +1266,26 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
 
   public getStackedImageDescription(): string
   {
+    LogUtil.debug(TAG, `getStackedImageDescription enter`);
     let values = this._directory.getIntArray(OlympusCameraSettingsMakernoteDirectory.TagStackedImage);
-    if (values == null || values.length < 2)
-    return null;
+    if (values == null || values.length < 2) {
+      LogUtil.error(TAG, `getStackedImageDescription values is null or less than 2`);
+      return null;
+    }
 
     let v1 = values[0];
     let v2 = values[1];
 
-    if (v1 == 0 && v2 == 0)
-    return "No";
-    if (v1 == 9 && v2 == 8)
-    return "Focus-stacked (8 images)";
+    if (v1 == 0 && v2 == 0) {
+      LogUtil.error(TAG, `getStackedImageDescription values are 0`);
+      return "No";
+    }
+    if (v1 == 9 && v2 == 8) {
+      LogUtil.error(TAG, `getStackedImageDescription values are 9 8`);
+      return "Focus-stacked (8 images)";
+    }
 
+    LogUtil.debug(TAG, `getStackedImageDescription end, v1: ${v1}, v2: ${v2}`);
     return "Unknown (%d %d)".replace(/%d/, v1).replace(/%d/, v2);
   }
 
@@ -1161,11 +1296,15 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
 
   public getManometerPressureDescription(): string
   {
+    LogUtil.debug(TAG, `getManometerPressureDescription enter`);
     let value = this._directory.getInteger(OlympusCameraSettingsMakernoteDirectory.TagManometerPressure);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getManometerPressureDescription value is null`);
+      return null;
+    }
 
     //        return String.format("%s kPa", new DecimalFormat("#.##").format(value / 10.0));
+    LogUtil.debug(TAG, `getManometerPressureDescription end, value: ${value}`);
     return "%s kPa".replace(/%s/, (value / 10.0).toFixed(2));
   }
 
@@ -1176,14 +1315,18 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
 
   public getManometerReadingDescription(): string
   {
+    LogUtil.debug(TAG, `getManometerReadingDescription enter`);
     let values = this._directory.getIntArray(OlympusCameraSettingsMakernoteDirectory.TagManometerReading);
-    if (values == null || values.length < 2)
-    return null;
+    if (values == null || values.length < 2) {
+      LogUtil.error(TAG, `getManometerReadingDescription values is null or less than 2`);
+      return null;
+    }
 
     //        DecimalFormat format = new DecimalFormat("#.##");
     //        return String.format("%s m, %s ft",
     //            format.format(values[0] / 10.0),
     //            format.format(values[1] / 10.0));
+    LogUtil.debug(TAG, `getManometerReadingDescription end, values: ${values}`);
     return "%s m, %s ft".replace(/%s/, (values[0] / 10.0).toFixed(2)).replace(/%s/, (values[1] / 10.0).toFixed(2))
   }
 
@@ -1197,14 +1340,18 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
 
   public getRollAngleDescription(): string
   {
+    LogUtil.debug(TAG, `getRollAngleDescription enter`);
     let values = this._directory.getIntArray(OlympusCameraSettingsMakernoteDirectory.TagRollAngle);
-    if (values == null || values.length < 2)
-    return null;
+    if (values == null || values.length < 2) {
+      LogUtil.error(TAG, `getRollAngleDescription values is null or less than 2`);
+      return null;
+    }
 
     let ret = values[0] != 0
       ? (-values[0] / 10.0).toString()
       : "n/a";
 
+    LogUtil.debug(TAG, `getRollAngleDescription end, ret: ${ret}`);
     return "%s %d".replace(/%s/, ret).replace(/%d/, values[1]);
   }
 
@@ -1213,9 +1360,12 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
 
   public getPitchAngleDescription(): string
   {
+    LogUtil.debug(TAG, `getPitchAngleDescription enter`);
     let values = this._directory.getIntArray(OlympusCameraSettingsMakernoteDirectory.TagPitchAngle);
-    if (values == null || values.length < 2)
-    return null;
+    if (values == null || values.length < 2) {
+      LogUtil.error(TAG, `getPitchAngleDescription values is null or less than 2`);
+      return null;
+    }
 
     // (second value is 0 if level gauge is off)
     let ret = values[0] != 0
@@ -1228,24 +1378,35 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
 
   public getDateTimeUTCDescription(): string
   {
+    LogUtil.debug(TAG, `getDateTimeUTCDescription enter`);
     let value = this._directory.getObject(OlympusCameraSettingsMakernoteDirectory.TagDateTimeUtc);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getDateTimeUTCDescription value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getDateTimeUTCDescription end, value: ${value}`);
     return value.toString();
   }
 
   private getValueMinMaxDescription(tagId: number) {
+    LogUtil.debug(TAG, `getValueMinMaxDescription enter, tagId: ${tagId}`);
     let values = this._directory.getIntArray(tagId);
-    if (values == null || values.length < 3)
-    return null;
+    if (values == null || values.length < 3) {
+      LogUtil.error(TAG, `getValueMinMaxDescription values is null or less than 3`);
+      return null;
+    }
 
+    LogUtil.debug(TAG, `getValueMinMaxDescription end, values: ${values}`);
     return "%d (min %d, max %d)".replace(/%d/, values[0]).replace(/%d/, values[1]).replace(/%d/, values[2]);
   }
 
   private getFiltersDescription(tagId: number) {
+    LogUtil.debug(TAG, `getFiltersDescription enter, tagId: ${tagId}`);
     let values = this._directory.getIntArray(tagId);
-    if (values == null || values.length == 0)
-    return null;
+    if (values == null || values.length == 0) {
+      LogUtil.error(TAG, `getFiltersDescription values is null or empty`);
+      return null;
+    }
 
     let sb = '';
     for (let i = 0; i < values.length; i++) {
@@ -1256,6 +1417,7 @@ class OlympusCameraSettingsMakernoteDescriptor extends TagDescriptor<OlympusCame
       sb + "; "
     }
 
+    LogUtil.debug(TAG, `getFiltersDescription end, sb: ${sb}`);
     return sb.substring(0, sb.length - 2);
   }
 

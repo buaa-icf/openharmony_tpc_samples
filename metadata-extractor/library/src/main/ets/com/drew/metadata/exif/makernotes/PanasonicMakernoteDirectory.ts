@@ -19,6 +19,9 @@ import ByteArrayReader from '../../../lang/ByteArrayReader'
 import RandomAccessReader from '../../../lang/RandomAccessReader'
 import Age from '../../Age'
 import Face from '../../Face'
+import LogUtil from '../../../tools/LogUtils'
+
+const TAG: string = "PanasonicMakernoteDirectory";
 
 /**
  * Describes tags specific to Panasonic and Leica cameras.
@@ -600,17 +603,22 @@ class PanasonicMakernoteDirectory extends Directory {
   }
 
   public getDetectedFaces(): Face[] {
+    LogUtil.debug(TAG, `getDetectedFaces enter`);
     let bytes = this.getByteArray(PanasonicMakernoteDirectory.TAG_FACE_DETECTION_INFO);
-    if (bytes==null)
+    if (bytes==null) {
+      LogUtil.error(TAG, `getDetectedFacesend, bytes is null`);
       return null;
+    }
 
     let reader: RandomAccessReader = new ByteArrayReader(bytes);
     reader.setMotorolaByteOrder(false);
 
     try {
       let faceCount = reader.getUInt16(0);
-      if (faceCount==0)
+      if (faceCount==0) {
+        LogUtil.error(TAG, `getDetectedFaces end, faceCount is 0`);
         return null;
+      }
       let faces: Face[] = new Face[faceCount];
 
       for (let i = 0; i < faceCount; i++) {
@@ -622,24 +630,31 @@ class PanasonicMakernoteDirectory extends Directory {
                 reader.getUInt16(offset + 6)
                 , null, null);
       }
-       return faces;
+      LogUtil.debug(TAG, `getDetectedFaces end, faces:${JSON.stringify(faces)}`);
+      return faces;
     } catch (e) {
-       return null;
+      LogUtil.error(TAG, `getDetectedFaces end, e:${JSON.stringify(e)}`);
+      return null;
     }
   }
 
   public getRecognizedFaces(): Face[] {
+    LogUtil.debug(TAG, `getRecognizedFaces enter`);
     let bytes = this.getByteArray(PanasonicMakernoteDirectory.TAG_FACE_RECOGNITION_INFO);
-    if (bytes == null)
+    if (bytes == null) {
+      LogUtil.error(TAG, `getRecognizedFaces end, bytes is null`);
       return null;
+    }
 
     let reader: RandomAccessReader = new ByteArrayReader(bytes);
     reader.setMotorolaByteOrder(false);
 
     try {
       let faceCount = reader.getUInt16(0);
-      if (faceCount==0)
+      if (faceCount==0) {
+        LogUtil.error(TAG, `getRecognizedFaces end, faceCount is 0`);
         return null;
+      }
       let faces: Face[] = new Face[faceCount];
 
       for (let i = 0; i < faceCount; i++) {
@@ -654,9 +669,11 @@ class PanasonicMakernoteDirectory extends Directory {
                 name,
                 Age.fromPanasonicString(age));
       }
+      LogUtil.debug(TAG, `getRecognizedFaces end, faces:${JSON.stringify(faces)}`);
       return faces;
     } catch (e) {
-        return null;
+      LogUtil.error(TAG, `getRecognizedFaces end, e:${JSON.stringify(e)}`);
+      return null;
     }
   }
 
@@ -666,9 +683,13 @@ class PanasonicMakernoteDirectory extends Directory {
    * @return The parsed Age object, or null if the tag was empty of the value unable to be parsed.
    */
 	public getAge(tag: number): Age {
+    LogUtil.debug(TAG, `getAge tag:${tag}`);
     let ageString = this.getString(tag);
-    if (ageString==null)
+    if (ageString==null) {
+      LogUtil.error(TAG, `getAge end, ageString is null`);
       return null;
+    }
+    LogUtil.debug(TAG, `getAge end, ageString:${ageString}`);
     return Age.fromPanasonicString(ageString);
 	}
 }

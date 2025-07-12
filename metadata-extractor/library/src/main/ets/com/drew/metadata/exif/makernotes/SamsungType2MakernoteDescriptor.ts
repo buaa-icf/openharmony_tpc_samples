@@ -15,6 +15,9 @@ limitations under the License.
 
 import { SamsungType2MakernoteDirectory } from './SamsungType2MakernoteDirectory';
 import TagDescriptor from '../../TagDescriptor';
+import  LogUtil  from '../../../tools/LogUtils';
+
+const TAG: string = "SamsungType2MakernoteDescriptor";
 
 export class SamsungType2MakernoteDescriptor extends TagDescriptor<SamsungType2MakernoteDirectory> {
   constructor(directory: SamsungType2MakernoteDirectory) {
@@ -22,6 +25,7 @@ export class SamsungType2MakernoteDescriptor extends TagDescriptor<SamsungType2M
   }
 
   public getDescription(tagType: number): string{
+    LogUtil.debug(TAG, `getDescription enter, tagType: ${tagType}`);
     switch (tagType) {
       case SamsungType2MakernoteDirectory.TagMakerNoteVersion:
         return this.getMakernoteVersionDescription();
@@ -63,10 +67,14 @@ export class SamsungType2MakernoteDescriptor extends TagDescriptor<SamsungType2M
   }
 
   public getDeviceTypeDescription(): string{
+    LogUtil.debug(TAG, `getDeviceTypeDescription enter`);
     let value = this._directory.getInteger(SamsungType2MakernoteDirectory.TagDeviceType);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getDeviceTypeDescription end, value is null`);
+      return null;
+    }
 
+    LogUtil.debug(TAG, `getDeviceTypeDescription end, value: ${value}`);
     switch (value) {
       case 0x1000:
         return "Compact Digital Camera";
@@ -84,10 +92,14 @@ export class SamsungType2MakernoteDescriptor extends TagDescriptor<SamsungType2M
   }
 
   public getSamsungModelIdDescription(): string{
+    LogUtil.debug(TAG, `getSamsungModelIdDescription enter`);
     let value = this._directory.getInteger(SamsungType2MakernoteDirectory.TagSamsungModelId);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getSamsungModelIdDescription end, value is null`);
+      return null;
+    }
 
+    LogUtil.debug(TAG, `getSamsungModelIdDescription end, value: ${value}`);
     switch (value) {
       case 0x100101c:
         return "NX10";
@@ -189,10 +201,14 @@ export class SamsungType2MakernoteDescriptor extends TagDescriptor<SamsungType2M
   }
 
   public getRawDataCFAPatternDescription(): string{
+    LogUtil.debug(TAG, `getRawDataCFAPatternDescription enter`);
     let value = this._directory.getInteger(SamsungType2MakernoteDirectory.TagRawDataCFAPattern);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getRawDataCFAPatternDescription end, value is null`);
+      return null;
+    }
 
+    LogUtil.debug(TAG, `getRawDataCFAPatternDescription end, value: ${value}`);
     switch (value) {
       case 0:
         return "Unchanged";

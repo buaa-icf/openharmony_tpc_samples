@@ -20,6 +20,9 @@ import Charsets from '../../../lang/Charsets'
 import RandomAccessReader from '../../../lang/RandomAccessReader'
 import Age from '../../Age'
 import Face from '../../Face'
+import LogUtil from '../../../tools/LogUtils';
+
+const TAG: string = "PanasonicMakernoteDescriptor";
 
 /**
  * Provides human-readable string representations of tag values stored in a {@link PanasonicMakernoteDirectory}.
@@ -33,6 +36,7 @@ class PanasonicMakernoteDescriptor extends TagDescriptor<PanasonicMakernoteDirec
   }
 
   public getDescription(tagType: number): string {
+    LogUtil.debug(TAG, `getDescription enter, tagType: ${tagType}`);
     switch (tagType) {
       case PanasonicMakernoteDirectory.TAG_QUALITY_MODE:
         return this.getQualityModeDescription();
@@ -224,9 +228,12 @@ class PanasonicMakernoteDescriptor extends TagDescriptor<PanasonicMakernoteDirec
   }
 
   private getTransformDescription1(tag: number): string {
+    LogUtil.debug(TAG, `getTransformDescription1 enter, tag: ${tag}`);
     let values = this._directory.getByteArray(tag);
-    if (values == null)
+    if (values == null) {
+      LogUtil.error(TAG, `getTransformDescription1 end, values is null`);
       return null;
+    }
 
     let reader: RandomAccessReader = new ByteArrayReader(values);
 
@@ -234,6 +241,7 @@ class PanasonicMakernoteDescriptor extends TagDescriptor<PanasonicMakernoteDirec
       let val1 = reader.getUInt16(0);
       let val2 = reader.getUInt16(2);
 
+      LogUtil.debug(TAG, `getTransformDescription1 end, val1: ${val1}, val2: ${val2}`);
       if (val1 == -1 && val2 == 1)
         return "Slim Low";
       if (val1 == -3 && val2 == 2)
@@ -247,6 +255,7 @@ class PanasonicMakernoteDescriptor extends TagDescriptor<PanasonicMakernoteDirec
 
       return "Unknown (" + val1 + " " + val2 + ")";
     } catch (e) {
+      LogUtil.error(TAG, `getTransformDescription1 end, e: ${JSON.stringify(e)}`);
        return null;
     }
   }
@@ -303,9 +312,12 @@ class PanasonicMakernoteDescriptor extends TagDescriptor<PanasonicMakernoteDirec
 
   public getLensFirmwareVersionDescription(): string {
     // lens version has 4 parts separated by periods
+    LogUtil.debug(TAG, `getLensFirmwareVersionDescription enter`);
     let bytes = this._directory.getByteArray(PanasonicMakernoteDirectory.TAG_LENS_FIRMWARE_VERSION);
-    if (bytes == null)
+    if (bytes == null) {
+      LogUtil.error(TAG, `getLensFirmwareVersionDescription end, bytes is null`);
       return null;
+    }
 
     let sb: string = '';
     for (let i = 0; i < bytes.length; i++) {
@@ -313,6 +325,7 @@ class PanasonicMakernoteDescriptor extends TagDescriptor<PanasonicMakernoteDirec
       if (i < bytes.length - 1)
         sb.concat(".");
     }
+    LogUtil.debug(TAG, `getLensFirmwareVersionDescription end, sb: ${sb}`);
     return sb.toString();
     //return string.Join(".", bytes.Select(b => b.ToString()).ToArray());
   }
@@ -338,29 +351,39 @@ class PanasonicMakernoteDescriptor extends TagDescriptor<PanasonicMakernoteDirec
   }
 
   public getAccelerometerZDescription(): string {
+    LogUtil.debug(TAG, `getAccelerometerZDescription enter`);
     let value = this._directory.getInteger(PanasonicMakernoteDirectory.TAG_ACCELEROMETER_Z);
-    if (value == null)
-       return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getAccelerometerZDescription end, value is null`);
+      return null;
+    }
 
-     // positive is acceleration upwards
+    // positive is acceleration upwards
+    LogUtil.debug(TAG, `getAccelerometerZDescription end, value: ${value}`);
     return value.shortValue().valueOf();
   }
 
   public getAccelerometerXDescription(): string {
+    LogUtil.debug(TAG, `getAccelerometerXDescription enter`);
     let value = this._directory.getInteger(PanasonicMakernoteDirectory.TAG_ACCELEROMETER_X);
-    if (value == null)
+    if (value == null) {
       return null;
+    }
 
     // positive is acceleration to the left
+    LogUtil.debug(TAG, `getAccelerometerXDescription end, value: ${value}`);
     return value.shortValue().valueOf();
   }
 
   public getAccelerometerYDescription(): string {
+    LogUtil.debug(TAG, `getAccelerometerYDescription enter`);
     let value = this._directory.getInteger(PanasonicMakernoteDirectory.TAG_ACCELEROMETER_Y);
-    if (value == null)
+    if (value == null) {
       return null;
+    }
 
     // positive is acceleration backwards
+    LogUtil.debug(TAG, `getAccelerometerYDescription end, value: ${value}`);
     return value.shortValue().valueOf();
   }
 
@@ -370,20 +393,26 @@ class PanasonicMakernoteDescriptor extends TagDescriptor<PanasonicMakernoteDirec
   }
 
   public getRollAngleDescription(): string {
+    LogUtil.debug(TAG, `getRollAngleDescription enter`);
     let value = this._directory.getInteger(PanasonicMakernoteDirectory.TAG_ROLL_ANGLE);
-    if (value == null)
+    if (value == null) {
       return null;
+    }
 
     // converted to degrees of clockwise camera rotation
+    LogUtil.debug(TAG, `getRollAngleDescription end, value: ${value}`);
     return (value.shortValue() / 10.0).toFixed(4)
   }
 
   public getPitchAngleDescription(): string {
+    LogUtil.debug(TAG, `getPitchAngleDescription enter`);
     let value = this._directory.getInteger(PanasonicMakernoteDirectory.TAG_PITCH_ANGLE);
-    if (value == null)
+    if (value == null) {
       return null;
+    }
 
     // converted to degrees of upward camera tilt
+    LogUtil.debug(TAG, `getPitchAngleDescription end, value: ${value}`);
     return (-value.shortValue() / 10.0).toFixed(4)
   }
 
@@ -398,10 +427,13 @@ class PanasonicMakernoteDescriptor extends TagDescriptor<PanasonicMakernoteDirec
   }
 
   public getHDRDescription(): string {
+    LogUtil.debug(TAG, `getHDRDescription enter`);
     let value = this._directory.getInteger(PanasonicMakernoteDirectory.TAG_HDR);
-    if (value == null)
+    if (value == null) {
       return null;
+    }
 
+    LogUtil.debug(TAG, `getHDRDescription end, value: ${value}`);
     switch (value) {
       case 0:
         return "Off";
@@ -485,9 +517,13 @@ class PanasonicMakernoteDescriptor extends TagDescriptor<PanasonicMakernoteDirec
   }
 
   public getUptimeDescription(): string {
+    LogUtil.debug(TAG, `getUptimeDescription enter`);
     let value = this._directory.getInteger(PanasonicMakernoteDirectory.TAG_UPTIME);
-    if (value == null)
+    if (value == null) {
+      LogUtil.error(TAG, `getUptimeDescription end, value is null`);
       return null;
+    }
+    LogUtil.debug(TAG, `getUptimeDescription end, value: ${value}`);
     return value / 100 + " s";
   }
 
@@ -498,9 +534,13 @@ class PanasonicMakernoteDescriptor extends TagDescriptor<PanasonicMakernoteDirec
   }
 
   public getContrastModeDescription(): string {
+    LogUtil.debug(TAG, `getContrastModeDescription enter`);
     let value = this._directory.getInteger(PanasonicMakernoteDirectory.TAG_CONTRAST_MODE);
-    if (value == null)
+    if (value == null) {
+      LogUtil.error(TAG, `getContrastModeDescription end, value is null`);
       return null;
+    }
+    LogUtil.debug(TAG, `getContrastModeDescription end, value: ${value}`);
     switch (value) {
       case 0x0: return "Normal";
       case 0x1: return "Low";
@@ -528,9 +568,13 @@ class PanasonicMakernoteDescriptor extends TagDescriptor<PanasonicMakernoteDirec
   }
 
   public getRotationDescription(): string {
+    LogUtil.debug(TAG, `getRotationDescription enter`);
     let value = this._directory.getInteger(PanasonicMakernoteDirectory.TAG_ROTATION);
-    if (value == null)
+    if (value == null) {
+      LogUtil.error(TAG, `getRotationDescription end, value is null`);
       return null;
+    }
+    LogUtil.debug(TAG, `getRotationDescription end, value: ${value}`);
     switch (value) {
       case 1: return "Horizontal";
       case 3: return "Rotate 180";
@@ -574,14 +618,18 @@ class PanasonicMakernoteDescriptor extends TagDescriptor<PanasonicMakernoteDirec
   }
 
   private buildFacesDescription(faces: Face[]): string {
-    if (faces == null)
+    LogUtil.debug(TAG, `buildFacesDescription enter`);
+    if (faces == null) {
+      LogUtil.error(TAG, `buildFacesDescription end, faces is null`);
       return null;
+    }
 
     var result: string = '';
 
     for (let i = 0; i < faces.length; i++)
       result.concat("Face ").concat((i + 1).toString()).concat(": ").concat(faces[i].toString()).concat("\n");
 
+    LogUtil.debug(TAG, `buildFacesDescription end, result: ${result}`);
     return result.length > 0 ? result.substring(0, result.length - 1) : null;
 
   }
@@ -654,9 +702,13 @@ class PanasonicMakernoteDescriptor extends TagDescriptor<PanasonicMakernoteDirec
   }
 
   public getAfAreaModeDescription(): string {
+    LogUtil.debug(TAG, `getAfAreaModeDescription enter`);
     let value = this._directory.getIntArray(PanasonicMakernoteDirectory.TAG_AF_AREA_MODE);
-    if (value == null || value.length < 2)
+    if (value == null || value.length < 2) {
+      LogUtil.error(TAG, `getAfAreaModeDescription end, value is null or length < 2`);
       return null;
+    }
+    LogUtil.debug(TAG, `getAfAreaModeDescription end, value[0]: ${value[0]}, value[1]: ${value[1]}`);
     switch (value[0]) {
       case 0:
         switch (value[1]) {

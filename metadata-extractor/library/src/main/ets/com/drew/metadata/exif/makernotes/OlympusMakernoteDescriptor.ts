@@ -19,6 +19,9 @@ import DateUtil from '../../../lang/DateUtil';
 import TagDescriptor from '../../TagDescriptor';
 import OlympusMakernoteDirectory from './OlympusMakernoteDirectory'
 import { CameraSettings } from './OlympusMakernoteDirectory'
+import LogUtil from '../../../tools/LogUtils';
+
+const TAG: string = "OlympusMakernoteDescriptor";
 
 class OlympusMakernoteDescriptor extends TagDescriptor<OlympusMakernoteDirectory> {
 
@@ -30,6 +33,7 @@ class OlympusMakernoteDescriptor extends TagDescriptor<OlympusMakernoteDirectory
 
   public getDescription(tagType: number): string
   {
+    LogUtil.debug(TAG, `getDescription enter, tagType: ${tagType}`);
     switch (tagType) {
       case OlympusMakernoteDirectory.TAG_MAKERNOTE_VERSION:
         return this.getMakernoteVersionDescription();
@@ -250,12 +254,16 @@ class OlympusMakernoteDescriptor extends TagDescriptor<OlympusMakernoteDirectory
     // http://www.ozhiker.com/electronics/pjmt/jpeg_info/minolta_mn.html#Minolta_Camera_Settings
     // Apex Speed value = value/8-1 ,
     // ISO = (2^(value/8-1))*3.125
+    LogUtil.debug(TAG, `getApexFilmSpeedDescription enter`);
     let value = this._directory.getLongObject(CameraSettings.TAG_APEX_FILM_SPEED_VALUE);
 
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getApexFilmSpeedDescription end, value is null`);
+      return null;
+    }
 
     let iso = Math.pow((value / 8) - 1, 2) * 3.125;
+    LogUtil.debug(TAG, `getApexFilmSpeedDescription end, iso: ${iso}`);
     return iso.toFixed(2)
     //        DecimalFormat format = new DecimalFormat("0.##");
     //        format.setRoundingMode(RoundingMode.HALF_UP);
@@ -268,12 +276,16 @@ class OlympusMakernoteDescriptor extends TagDescriptor<OlympusMakernoteDirectory
     // Apex Time value = value/8-6 ,
     // ShutterSpeed = 2^( (48-value)/8 ),
     // Due to rounding error value=8 should be displayed as 30 sec.
+    LogUtil.debug(TAG, `getApexShutterSpeedTimeDescription enter`);
     let value = this._directory.getLongObject(CameraSettings.TAG_APEX_SHUTTER_SPEED_TIME_VALUE);
 
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getApexShutterSpeedTimeDescription end, value is null`);
+      return null;
+    }
 
     let shutterSpeed = Math.pow((49 - value) / 8, 2);
+    LogUtil.debug(TAG, `getApexShutterSpeedTimeDescription end, shutterSpeed: ${shutterSpeed}`);
     return shutterSpeed.toFixed(3) + " sec";
     //        DecimalFormat format = new DecimalFormat("0.###");
     //        format.setRoundingMode(RoundingMode.HALF_UP);
@@ -285,12 +297,16 @@ class OlympusMakernoteDescriptor extends TagDescriptor<OlympusMakernoteDirectory
     // http://www.ozhiker.com/electronics/pjmt/jpeg_info/minolta_mn.html#Minolta_Camera_Settings
     // Apex Aperture Value = value/8-1 ,
     // Aperture F-stop = 2^( value/16-0.5 )
+    LogUtil.debug(TAG, `getApexApertureDescription enter`);
     let value = this._directory.getLongObject(CameraSettings.TAG_APEX_APERTURE_VALUE);
 
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getApexApertureDescription end, value is null`);
+      return null;
+    }
 
     let fStop = Math.pow((value / 16) - 0.5, 2);
+    LogUtil.debug(TAG, `getApexApertureDescription end, fStop: ${fStop}`);
     return TagDescriptor.getFStopDescription(fStop);
   }
 
@@ -306,10 +322,13 @@ class OlympusMakernoteDescriptor extends TagDescriptor<OlympusMakernoteDirectory
 
   public getExposureCompensationDescription(): string
   {
+    LogUtil.debug(TAG, `getExposureCompensationDescription enter`);
     let value = this._directory.getLongObject(CameraSettings.TAG_EXPOSURE_COMPENSATION);
     if (value == null) {
-      return null
+      LogUtil.error(TAG, `getExposureCompensationDescription end, value is null`);
+      return null;
     }
+    LogUtil.debug(TAG, `getExposureCompensationDescription end, value: ${value}`);
     return ((value / 3) - 2).toFixed(2) + " EV";
     //        DecimalFormat format = new DecimalFormat("0.##");
     //        return value == null ? null : format.format((value / 3d) - 2) + " EV";
@@ -322,19 +341,27 @@ class OlympusMakernoteDescriptor extends TagDescriptor<OlympusMakernoteDirectory
 
   public getIntervalLengthDescription(): string
   {
-    if (!this._directory.isIntervalMode())
-    return "N/A";
+    LogUtil.debug(TAG, `getIntervalLengthDescription enter`);
+    if (!this._directory.isIntervalMode()) {
+      LogUtil.error(TAG, `getIntervalLengthDescription end, interval mode is not set`);
+      return "N/A";
+    }
 
     let value = this._directory.getLongObject(CameraSettings.TAG_INTERVAL_LENGTH);
+    LogUtil.debug(TAG, `getIntervalLengthDescription end, value: ${value}`);
     return value == null ? null : value + " min";
   }
 
   public getIntervalNumberDescription(): string
   {
-    if (!this._directory.isIntervalMode())
-    return "N/A";
+    LogUtil.debug(TAG, `getIntervalNumberDescription enter`);
+    if (!this._directory.isIntervalMode()) {
+      LogUtil.error(TAG, `getIntervalNumberDescription end, interval mode is not set`);
+      return "N/A";
+    }
 
     let value = this._directory.getLongObject(CameraSettings.TAG_INTERVAL_NUMBER);
+    LogUtil.debug(TAG, `getIntervalNumberDescription end, value: ${value}`);
     return value == null ? null : value.toString();
   }
 
@@ -364,17 +391,23 @@ class OlympusMakernoteDescriptor extends TagDescriptor<OlympusMakernoteDirectory
     // day = value%256,
     // month = floor( (value - floor( value/65536 )*65536 )/256 )
     // year = floor( value/65536)
+    LogUtil.debug(TAG, `getDateDescription enter`);
     let value = this._directory.getLongObject(CameraSettings.TAG_DATE);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getDateDescription end, value is null`);
+      return null;
+    }
 
     let day = (value & 0xFF);
     let month = ((value >> 16) & 0xFF);
     let year = ((value >> 8) & 0xFF) + 1970;
 
-    if (!DateUtil.isValidDate(year, month, day))
-    return "Invalid date";
+    if (!DateUtil.isValidDate(year, month, day)) {
+      LogUtil.error(TAG, `getDateDescription end, invalid date`);
+      return "Invalid date";
+    }
 
+    LogUtil.debug(TAG, `getDateDescription end, year: ${year}, month: ${month}, day: ${day}`);
     return "%04d-%02d-%02d".replace(/%04d/, year.toString())
       .replace(/%02d/, (month + 1).toString())
       .replace(/%02d/, day.toString())
@@ -386,17 +419,23 @@ class OlympusMakernoteDescriptor extends TagDescriptor<OlympusMakernoteDirectory
     // hours = floor( value/65536 ),
     // minutes = floor( ( value - floor( value/65536 )*65536 )/256 ),
     // seconds = value%256
+    LogUtil.debug(TAG, `getTimeDescription enter`);
     let value = this._directory.getLongObject(CameraSettings.TAG_TIME);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getTimeDescription end, value is null`);
+      return null;
+    }
 
     let hours = ((value >> 8) & 0xFF);
     let minutes = ((value >> 16) & 0xFF);
     let seconds = (value & 0xFF);
 
-    if (!DateUtil.isValidTime(hours, minutes, seconds))
-    return "Invalid time";
+    if (!DateUtil.isValidTime(hours, minutes, seconds)) {
+      LogUtil.error(TAG, `getTimeDescription end, invalid time`);
+      return "Invalid time";
+    }
 
+    LogUtil.debug(TAG, `getTimeDescription end, hours: ${hours}, minutes: ${minutes}, seconds: ${seconds}`);
     return "%02d:%02d:%02d".replace(/%02d/, hours.toString())
       .replace(/%02d/, minutes.toString())
       .replace(/%02d/, seconds.toString())
@@ -406,10 +445,14 @@ class OlympusMakernoteDescriptor extends TagDescriptor<OlympusMakernoteDirectory
   public getMaxApertureAtFocalLengthDescription(): string
   {
     // Aperture F-Stop = 2^(value/16-0.5)
+    LogUtil.debug(TAG, `getMaxApertureAtFocalLengthDescription enter`);
     let value = this._directory.getLongObject(CameraSettings.TAG_TIME);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getMaxApertureAtFocalLengthDescription end, value is null`);
+      return null;
+    }
     let fStop = Math.pow((value / 16) - 0.5, 2);
+    LogUtil.debug(TAG, `getMaxApertureAtFocalLengthDescription end, fStop: ${fStop}`);
     return TagDescriptor.getFStopDescription(fStop);
   }
 
@@ -617,9 +660,12 @@ class OlympusMakernoteDescriptor extends TagDescriptor<OlympusMakernoteDirectory
 
   public getColorMatrixDescription(): string
   {
+    LogUtil.debug(TAG, `getColorMatrixDescription enter`);
     let obj = this._directory.getIntArray(OlympusMakernoteDirectory.TAG_COLOUR_MATRIX);
-    if (obj == null)
-    return null;
+    if (obj == null) {
+      LogUtil.error(TAG, `getColorMatrixDescription end, obj is null`);
+      return null;
+    }
 
     let sb = '';
     for (let i = 0; i < obj.length; i++) {
@@ -627,17 +673,22 @@ class OlympusMakernoteDescriptor extends TagDescriptor<OlympusMakernoteDirectory
       if (i < obj.length - 1)
       sb + " ";
     }
+    LogUtil.debug(TAG, `getColorMatrixDescription end, sb: ${sb}`);
     return sb.length == 0 ? null : sb;
   }
 
   public getWbModeDescription(): string
   {
+    LogUtil.debug(TAG, `getWbModeDescription enter`);
     let obj = this._directory.getIntArray(OlympusMakernoteDirectory.TAG_WB_MODE);
-    if (obj == null)
-    return null;
+    if (obj == null) {
+      LogUtil.error(TAG, `getWbModeDescription end, obj is null`);
+      return null;
+    }
 
     let val = "%d %d".replace(/%d/, obj[0]).replace(/%d/, obj[1]);
 
+    LogUtil.debug(TAG, `getWbModeDescription end, val: ${val}`);
     if (val == "1 0")
     return "Auto";
     else if (val == "1 2")
@@ -666,23 +717,31 @@ class OlympusMakernoteDescriptor extends TagDescriptor<OlympusMakernoteDirectory
 
   public getRedBalanceDescription(): string
   {
+    LogUtil.debug(TAG, `getRedBalanceDescription enter`);
     let values = this._directory.getIntArray(OlympusMakernoteDirectory.TAG_RED_BALANCE);
-    if (values == null)
-    return null;
+    if (values == null) {
+      LogUtil.error(TAG, `getRedBalanceDescription end, values is null`);
+      return null;
+    }
 
     let value = values[0];
 
+    LogUtil.debug(TAG, `getRedBalanceDescription end, value: ${value}`);
     return (value / 256).toString();
   }
 
   public getBlueBalanceDescription(): string
   {
+    LogUtil.debug(TAG, `getBlueBalanceDescription enter`);
     let values = this._directory.getIntArray(OlympusMakernoteDirectory.TAG_BLUE_BALANCE);
-    if (values == null)
-    return null;
+    if (values == null) {
+      LogUtil.error(TAG, `getBlueBalanceDescription end, values is null`);
+      return null;
+    }
 
     let value = values[0];
 
+    LogUtil.debug(TAG, `getBlueBalanceDescription end, value: ${value}`);
     return (value / 256).toString();
   }
 
@@ -713,18 +772,27 @@ class OlympusMakernoteDescriptor extends TagDescriptor<OlympusMakernoteDirectory
 
   public getDigitalZoomDescription(): string
   {
+    LogUtil.debug(TAG, `getDigitalZoomDescription enter`);
     let value = this._directory.getRational(OlympusMakernoteDirectory.TAG_DIGITAL_ZOOM);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getDigitalZoomDescription end, value is null`);
+      return null;
+    }
+
+    LogUtil.debug(TAG, `getDigitalZoomDescription end, value: ${value}`);
     return value.toSimpleString(false);
   }
 
   public getFocalPlaneDiagonalDescription(): string
   {
+    LogUtil.debug(TAG, `getFocalPlaneDiagonalDescription enter`);
     let value = this._directory.getRational(OlympusMakernoteDirectory.TAG_FOCAL_PLANE_DIAGONAL);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getFocalPlaneDiagonalDescription end, value is null`);
+      return null;
+    }
 
+    LogUtil.debug(TAG, `getFocalPlaneDiagonalDescription end, value: ${value}`);
     return value.numberValue().toFixed(3) + " mm";
     //        DecimalFormat format = new DecimalFormat("0.###");
     //        return format.format(value.doubleValue()) + " mm";
@@ -732,21 +800,31 @@ class OlympusMakernoteDescriptor extends TagDescriptor<OlympusMakernoteDirectory
 
   public getCameraTypeDescription(): string
   {
+    LogUtil.debug(TAG, `getCameraTypeDescription enter`);
     let cameratype = this._directory.getString(OlympusMakernoteDirectory.TAG_CAMERA_TYPE);
-    if (cameratype == null)
-    return null;
+    if (cameratype == null) {
+      LogUtil.error(TAG, `getCameraTypeDescription end, cameratype is null`);
+      return null;
+    }
 
-    if (OlympusMakernoteDirectory.OlympusCameraTypes.has(cameratype))
-    return OlympusMakernoteDirectory.OlympusCameraTypes.get(cameratype);
+    if (OlympusMakernoteDirectory.OlympusCameraTypes.has(cameratype)) {
+      LogUtil.debug(TAG, `getCameraTypeDescription end, cameratype: ${cameratype} is found`);
+      return OlympusMakernoteDirectory.OlympusCameraTypes.get(cameratype);
+    }
 
+    LogUtil.debug(TAG, `getCameraTypeDescription end, cameratype: ${cameratype} is not found`);
     return cameratype;
   }
 
   public getCameraIdDescription(): string
   {
+    LogUtil.debug(TAG, `getCameraIdDescription enter`);
     let bytes = this._directory.getByteArray(OlympusMakernoteDirectory.TAG_CAMERA_ID);
-    if (bytes == null)
-    return null;
+    if (bytes == null) {
+      LogUtil.error(TAG, `getCameraIdDescription end, bytes is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getCameraIdDescription end, bytes: ${bytes}`);
     return StringUtil.utf8ByteToUnicodeStr(bytes);
   }
 
@@ -762,19 +840,28 @@ class OlympusMakernoteDescriptor extends TagDescriptor<OlympusMakernoteDirectory
 
   public getIsoValueDescription(): string
   {
+    LogUtil.debug(TAG, `getIsoValueDescription enter`);
     let value = this._directory.getRational(OlympusMakernoteDirectory.TAG_ISO_VALUE);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getIsoValueDescription end, value is null`);
+      return null;
+    }
 
+    LogUtil.debug(TAG, `getIsoValueDescription end, value: ${value}`);
     return Math.round(Math.pow(2, value.numberValue() - 5) * 100).toString();
   }
 
   public getApertureValueDescription(): string
   {
+    LogUtil.debug(TAG, `getApertureValueDescription enter`);
     let aperture = this._directory.getDoubleObject(OlympusMakernoteDirectory.TAG_APERTURE_VALUE);
-    if (aperture == null)
-    return null;
+    if (aperture == null) {
+      LogUtil.error(TAG, `getApertureValueDescription end, aperture is null`);
+      return null;
+    }
+
     let fStop = PhotographicConversions.apertureToFStop(aperture);
+    LogUtil.debug(TAG, `getApertureValueDescription end, fStop: ${fStop}`);
     return TagDescriptor.getFStopDescription(fStop);
   }
 
@@ -790,15 +877,19 @@ class OlympusMakernoteDescriptor extends TagDescriptor<OlympusMakernoteDirectory
 
   public getJpegQualityDescription(): string
   {
+    LogUtil.debug(TAG, `getJpegQualityDescription enter`);
     let cameratype = this._directory.getString(OlympusMakernoteDirectory.TAG_CAMERA_TYPE);
 
     if (cameratype != null) {
       let value = this._directory.getInteger(OlympusMakernoteDirectory.TAG_JPEG_QUALITY);
-      if (value == null)
-      return null;
+      if (value == null) {
+        LogUtil.error(TAG, `getJpegQualityDescription end, value is null`);
+        return null;
+      }
 
       if ((cameratype.startsWith("SX") && !cameratype.startsWith("SX151"))
       || cameratype.startsWith("D4322")) {
+        LogUtil.debug(TAG, `getJpegQualityDescription end, SX or D4322, value: ${value}`);
         switch (value) {
           case 0:
             return "Standard Quality (Low)";
@@ -813,6 +904,7 @@ class OlympusMakernoteDescriptor extends TagDescriptor<OlympusMakernoteDirectory
         }
       }
       else {
+        LogUtil.debug(TAG, `getJpegQualityDescription end, value: ${value}`);
         switch (value) {
           case 0:
             return "Standard Quality (Low)";
@@ -834,6 +926,7 @@ class OlympusMakernoteDescriptor extends TagDescriptor<OlympusMakernoteDirectory
       }
     }
     else
+      LogUtil.warn(TAG, `getJpegQualityDescription end, cameratype is null`);
     return this.getIndexedDescription(OlympusMakernoteDirectory.TAG_JPEG_QUALITY,
       1,
       "Standard Quality",
@@ -843,11 +936,16 @@ class OlympusMakernoteDescriptor extends TagDescriptor<OlympusMakernoteDirectory
 
   public getSpecialModeDescription(): string
   {
+    LogUtil.debug(TAG, `getSpecialModeDescription enter`);
     let values = this._directory.getObject(OlympusMakernoteDirectory.TAG_SPECIAL_MODE);
-    if (values == null)
-    return null;
-    if (values.length < 1)
-    return "";
+    if (values == null) {
+      LogUtil.error(TAG, `getSpecialModeDescription end, values is null`);
+      return null;
+    }
+    if (values.length < 1) {
+      LogUtil.error(TAG, `getSpecialModeDescription end, values.length < 1`);
+      return "";
+    }
     let desc = '';
 
     switch (values[0]) {
@@ -905,6 +1003,7 @@ class OlympusMakernoteDescriptor extends TagDescriptor<OlympusMakernoteDirectory
       }
     }
 
+    LogUtil.debug(TAG, `getSpecialModeDescription end, desc: ${desc}`);
     return desc.toString();
   }
 }

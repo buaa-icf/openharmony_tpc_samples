@@ -21,6 +21,9 @@ import TagDescriptor from '../TagDescriptor'
 import ExifDirectoryBase from './ExifDirectoryBase'
 import PhotographicConversions from '../../imaging/PhotographicConversions'
 import StringValue from '../StringValue'
+import LogUtil from '../../tools/LogUtils'
+
+const TAG: string = "ExifDescriptorBase";
 
 
 abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T> {
@@ -42,6 +45,7 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
 
   public getDescription(tagType: number): string
   {
+    LogUtil.debug(TAG, `getDescription enter, tagType: ${tagType}`);
     switch (tagType) {
       case ExifDirectoryBase.TAG_DATETIME:
         return this.getDate();
@@ -214,11 +218,15 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
 
   public getInteropIndexDescription(): string
   {
+    LogUtil.debug(TAG, `getInteropIndexDescription enter`);
     let value = this._directory.getString(ExifDirectoryBase.TAG_INTEROP_INDEX);
 
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getInteropIndexDescription end, value is null`);
+      return null;
+    }
 
+    LogUtil.debug(TAG, `getInteropIndexDescription end, value: ${value}`);
     return ("R98" == value.trim())
       ? "Recommended Exif Interoperability Rules (ExifR98)"
       : "Unknown (" + value + ")";
@@ -272,9 +280,13 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
 
   public getCompressionDescription(): string
   {
+    LogUtil.debug(TAG, `getCompressionDescription enter`);
     let value = this._directory.getInteger(ExifDirectoryBase.TAG_COMPRESSION);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getCompressionDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getCompressionDescription end, value: ${value}`);
     switch (value) {
       case 1:
         return "Uncompressed";
@@ -366,9 +378,13 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
   public getPhotometricInterpretationDescription(): string
   {
     // Shows the color space of the image data components
+    LogUtil.debug(TAG, `getPhotometricInterpretationDescription enter`);
     let value = this._directory.getInteger(ExifDirectoryBase.TAG_PHOTOMETRIC_INTERPRETATION);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getPhotometricInterpretationDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getPhotometricInterpretationDescription end, value: ${value}`);
     switch (value) {
       case 0:
         return "WhiteIsZero";
@@ -445,10 +461,14 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
 
   public getXResolutionDescription(): string
   {
+    LogUtil.debug(TAG, `getXResolutionDescription enter`);
     let value: Rational = this._directory.getRational(ExifDirectoryBase.TAG_X_RESOLUTION);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getXResolutionDescription end, value is null`);
+      return null;
+    }
     let unit = this.getResolutionDescription();
+    LogUtil.debug(TAG, `getXResolutionDescription end, value: ${value}, unit: ${unit}`);
     return "%s dots per %s"
       .replace(/%s/, value.toSimpleString(this._allowDecimalRepresentationOfRationals))
       .replace(/%s/, (unit == null ? "unit" : unit.toLowerCase()))
@@ -460,10 +480,14 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
 
   public getYResolutionDescription(): string
   {
+    LogUtil.debug(TAG, `getYResolutionDescription enter`);
     let value: Rational = this._directory.getRational(ExifDirectoryBase.TAG_Y_RESOLUTION);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getYResolutionDescription end, value is null`);
+      return null;
+    }
     let unit = this.getResolutionDescription();
+    LogUtil.debug(TAG, `getYResolutionDescription end, value: ${value}, unit: ${unit}`);
     return "%s dots per %s"
       .replace(/%s/, value.toSimpleString(this._allowDecimalRepresentationOfRationals))
       .replace(/%s/, (unit == null ? "unit" : unit.toLowerCase()))
@@ -494,9 +518,13 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
 
   public getJpegProcDescription(): string
   {
+    LogUtil.debug(TAG, `getJpegProcDescription enter`);
     let value = this._directory.getInteger(ExifDirectoryBase.TAG_JPEG_PROC);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getJpegProcDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getJpegProcDescription end, value: ${value}`);
     switch (value) {
       case 1:
         return "Baseline";
@@ -509,9 +537,13 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
 
   public getYCbCrSubsamplingDescription(): string
   {
+    LogUtil.debug(TAG, `getYCbCrSubsamplingDescription enter`);
     let positions = this._directory.getIntArray(ExifDirectoryBase.TAG_YCBCR_SUBSAMPLING);
-    if (positions == null || positions.length < 2)
-    return null;
+    if (positions == null || positions.length < 2) {
+      LogUtil.error(TAG, `getYCbCrSubsamplingDescription end, positions is null or length < 2`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getYCbCrSubsamplingDescription end, positions: ${positions}`);
     if (positions[0] == 2 && positions[1] == 1) {
       return "YCbCr4:2:2";
     } else if (positions[0] == 2 && positions[1] == 2) {
@@ -530,6 +562,7 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
   {
     // For some reason, sometimes this is read as a long[] and
     // getIntArray isn't able to deal with it
+    LogUtil.debug(TAG, `getReferenceBlackWhiteDescription enter`);
     let ints = this._directory.getIntArray(ExifDirectoryBase.TAG_REFERENCE_BLACK_WHITE);
     if (ints == null || ints.length < 6) {
       let o = this._directory.getObject(ExifDirectoryBase.TAG_REFERENCE_BLACK_WHITE);
@@ -554,6 +587,7 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
     let blackB = ints[4];
     let whiteB = ints[5];
 
+    LogUtil.debug(TAG, `getReferenceBlackWhiteDescription end, black: ${blackR}, ${blackG}, ${blackB}, white: ${whiteR}, ${whiteG}, ${whiteB}`);
     return "[%d,%d,%d] [%d,%d,%d]"
       .replace(/%d/, blackR)
       .replace(/%d/, blackG)
@@ -577,13 +611,18 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
 
   public getCfaPattern2Description(): string
   {
+    LogUtil.debug(TAG, `getCfaPattern2Description enter`);
     let values: Int8Array = this._directory.getByteArray(ExifDirectoryBase.TAG_CFA_PATTERN_2);
-    if (values == null)
-    return null;
+    if (values == null) {
+      LogUtil.error(TAG, `getCfaPattern2Description end, values is null`);
+      return null;
+    }
 
     let repeatPattern = this._directory.getIntArray(ExifDirectoryBase.TAG_CFA_REPEAT_PATTERN_DIM);
-    if (repeatPattern == null)
-    return "Repeat Pattern not found for CFAPattern (%s)".replace(/%s/, super.getDescription(ExifDirectoryBase.TAG_CFA_PATTERN_2))
+    if (repeatPattern == null)  {
+      LogUtil.error(TAG, `getCfaPattern2Description end, repeatPattern is null`);
+      return "Repeat Pattern not found for CFAPattern (%s)".replace(/%s/, super.getDescription(ExifDirectoryBase.TAG_CFA_PATTERN_2))
+    }
     //            return String.format("Repeat Pattern not found for CFAPattern (%s)", super.getDescription(ExifDirectoryBase.TAG_CFA_PATTERN_2));
 
     if (repeatPattern.length == 2 && values.length == (repeatPattern[0] * repeatPattern[1])) {
@@ -593,25 +632,35 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
 
       for (let i = 0; i < values.length; i++)
       intpattern[i + 2] = values[i] & 0xFF; // convert the values[i] byte to unsigned
-
+      LogUtil.debug(TAG, `getCfaPattern2Description end, intpattern: ${intpattern}`);
       return ExifDescriptorBase.formatCFAPattern(intpattern);
     }
+    LogUtil.warn(TAG, `getCfaPattern2Description end, invalid CFA pattern or repeat pattern`);
     return "Unknown Pattern (%s)".replace(/%s/, super.getDescription(ExifDirectoryBase.TAG_CFA_PATTERN_2))
     //        return String.format("Unknown Pattern (%s)", super.getDescription(ExifDirectoryBase.TAG_CFA_PATTERN_2));
   }
 
   private static formatCFAPattern(pattern: Int8Array): string
   {
-    if (pattern == null)
-    return null;
-    if (pattern.length < 2)
-    return "<truncated data>";
-    if (pattern[0] == 0 && pattern[1] == 0)
-    return "<zero pattern size>";
+    LogUtil.debug(TAG, `formatCFAPattern enter`);
+    if (pattern == null) {
+      LogUtil.error(TAG, `formatCFAPattern end, pattern is null`);
+      return null;
+    }
+    if (pattern.length < 2) {
+      LogUtil.error(TAG, `formatCFAPattern end, pattern length < 2`);
+      return "<truncated data>";
+    }
+    if (pattern[0] == 0 && pattern[1] == 0) {
+      LogUtil.error(TAG, `formatCFAPattern end, pattern size is 0`);
+      return "<zero pattern size>";
+    }
 
     let end = 2 + pattern[0] * pattern[1];
-    if (end > pattern.length)
-    return "<invalid pattern size>";
+    if (end > pattern.length) {
+      LogUtil.error(TAG, `formatCFAPattern end, pattern size is invalid`);
+      return "<invalid pattern size>";
+    }
 
     let cfaColors: Array<string> = ["Red", "Green", "Blue", "Cyan", "Magenta", "Yellow", "White"];
 
@@ -630,6 +679,7 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
     }
     ret + "]";
 
+    LogUtil.debug(TAG, `formatCFAPattern end, ret: ${ret}`);
     return ret;
   }
 
@@ -641,9 +691,13 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
 
   public getFNumberDescription(): string
   {
+    LogUtil.debug(TAG, `getFNumberDescription enter`);
     let value = this._directory.getRational(ExifDirectoryBase.TAG_FNUMBER);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getFNumberDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getFNumberDescription end, value: ${value}`);
     return TagDescriptor.getFStopDescription(value.numberValue());
   }
 
@@ -694,9 +748,12 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
 
   public getComponentConfigurationDescription(): string
   {
+    LogUtil.debug(TAG, `getComponentConfigurationDescription enter`);
     let components = this._directory.getIntArray(ExifDirectoryBase.TAG_COMPONENTS_CONFIGURATION);
-    if (components == null)
-    return null;
+    if (components == null) {
+      LogUtil.error(TAG, `getComponentConfigurationDescription end, components is null`);
+      return null;
+    }
     let componentStrings = ["", "Y", "Cb", "Cr", "R", "G", "B"];
     let componentConfig = '';
     for (let i = 0; i < Math.min(4, components.length); i++) {
@@ -705,15 +762,20 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
         componentConfig + componentStrings[j];
       }
     }
+    LogUtil.debug(TAG, `getComponentConfigurationDescription end, componentConfig: ${componentConfig}`);
     return componentConfig;
   }
 
   public getCompressedAverageBitsPerPixelDescription(): string
   {
+    LogUtil.debug(TAG, `getCompressedAverageBitsPerPixelDescription enter`);
     let value = this._directory.getRational(ExifDirectoryBase.TAG_COMPRESSED_AVERAGE_BITS_PER_PIXEL);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getCompressedAverageBitsPerPixelDescription end, value is null`);
+      return null;
+    }
     let ratio = value.toSimpleString(this._allowDecimalRepresentationOfRationals);
+    LogUtil.debug(TAG, `getCompressedAverageBitsPerPixelDescription end, value: ${value}, ratio: ${ratio}`);
     return value.isInteger() && value.numberValue() == 1
       ? ratio + " bit/pixel"
       : ratio + " bits/pixel";
@@ -726,20 +788,30 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
 
   public getApertureValueDescription(): string
   {
+    LogUtil.debug(TAG, `getApertureValueDescription enter`);
     let aperture = this._directory.getDoubleObject(ExifDirectoryBase.TAG_APERTURE);
-    if (aperture == null)
-    return null;
+    if (aperture == null) {
+      LogUtil.error(TAG, `getApertureValueDescription end, aperture is null`);
+      return null;
+    }
     let fStop = PhotographicConversions.apertureToFStop(aperture);
+    LogUtil.debug(TAG, `getApertureValueDescription end, fStop: ${fStop}`);
     return TagDescriptor.getFStopDescription(fStop);
   }
 
   public getBrightnessValueDescription(): string
   {
+    LogUtil.debug(TAG, `getBrightnessValueDescription enter`);
     let value = this._directory.getRational(ExifDirectoryBase.TAG_BRIGHTNESS_VALUE);
-    if (value == null)
-    return null;
-    if (value.getNumerator() == 0xFFFFFFFF)
-    return "Unknown";
+    if (value == null) {
+      LogUtil.error(TAG, `getBrightnessValueDescription end, value is null`);
+      return null;
+    }
+    if (value.getNumerator() == 0xFFFFFFFF) {
+      LogUtil.error(TAG, `getBrightnessValueDescription end, value is unknown`);
+      return "Unknown";
+    }
+    LogUtil.debug(TAG, `getBrightnessValueDescription end, value: ${value}`);
     return value.numberValue().toFixed(3)
     //        DecimalFormat formatter = new DecimalFormat("0.0##");
     //        return formatter.format(value.doubleValue());
@@ -748,30 +820,46 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
 
   public getExposureBiasDescription(): string
   {
+    LogUtil.debug(TAG, `getExposureBiasDescription enter`);
     let value = this._directory.getRational(ExifDirectoryBase.TAG_EXPOSURE_BIAS);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getExposureBiasDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getExposureBiasDescription end, value: ${value}`);
     return value.toSimpleString(true) + " EV";
   }
 
   public getMaxApertureValueDescription(): string
   {
+    LogUtil.debug(TAG, `getMaxApertureValueDescription enter`);
     let aperture = this._directory.getDoubleObject(ExifDirectoryBase.TAG_MAX_APERTURE);
-    if (aperture == null)
-    return null;
+    if (aperture == null) {
+      LogUtil.error(TAG, `getMaxApertureValueDescription end, aperture is null`);
+      return null;
+    }
     let fStop = PhotographicConversions.apertureToFStop(aperture);
+    LogUtil.debug(TAG, `getMaxApertureValueDescription end, fStop: ${fStop}`);
     return TagDescriptor.getFStopDescription(fStop);
   }
 
   public getSubjectDistanceDescription(): string
   {
+    LogUtil.debug(TAG, `getSubjectDistanceDescription enter`);
     let value = this._directory.getRational(ExifDirectoryBase.TAG_SUBJECT_DISTANCE);
-    if (value == null)
-    return null;
-    if (value.getNumerator() == 0xFFFFFFFF)
-    return "Infinity";
-    if (value.getNumerator() == 0)
-    return "Unknown";
+    if (value == null) {
+      LogUtil.error(TAG, `getSubjectDistanceDescription end, value is null`);
+      return null;
+    }
+    if (value.getNumerator() == 0xFFFFFFFF) {
+      LogUtil.error(TAG, `getSubjectDistanceDescription end, value is unknown`);
+      return "Infinity";
+    }
+    if (value.getNumerator() == 0) {
+      LogUtil.error(TAG, `getSubjectDistanceDescription end, value is zero`);
+      return "Unknown";
+    }
+    LogUtil.debug(TAG, `getSubjectDistanceDescription end, value: ${value}`);
     return value.numberValue().toFixed(3) + " metres"
     //        DecimalFormat formatter = new DecimalFormat("0.0##");
     //        return formatter.format(value.doubleValue()) + " metres";
@@ -781,9 +869,13 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
   {
     // '0' means unknown, '1' average, '2' center weighted average, '3' spot
     // '4' multi-spot, '5' multi-segment, '6' partial, '255' other
+    LogUtil.debug(TAG, `getMeteringModeDescription enter`);
     let value = this._directory.getInteger(ExifDirectoryBase.TAG_METERING_MODE);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getMeteringModeDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getMeteringModeDescription end, value: ${value}`);
     switch (value) {
       case 0:
         return "Unknown";
@@ -817,14 +909,16 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
 
   public static getWhiteBalanceDescription(value?: number): string
   {
+    LogUtil.debug(TAG, `getWhiteBalanceDescription enter`);
     if ((value == null) || (value == undefined)) {
-
+      LogUtil.error(TAG, `getWhiteBalanceDescription end, value is null`);
       //            let value = new Directory().getInteger(ExifDirectoryBase.TAG_WHITE_BALANCE);
       //            if (value == null)
       return null;
     }
     // See http://web.archive.org/web/20131018091152/http://exif.org/Exif2-2.PDF page 35
 
+    LogUtil.debug(TAG, `getWhiteBalanceDescription end, value: ${value}`);
     switch (value) {
       case 0:
         return "Unknown";
@@ -888,10 +982,13 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
      * 6 = red eye reduction used
      */
 
+    LogUtil.debug(TAG, `getFlashDescription enter`);
     let value = this._directory.getInteger(ExifDirectoryBase.TAG_FLASH);
 
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getFlashDescription end, value is null`);
+      return null;
+    }
 
     let sb = '';
 
@@ -915,6 +1012,7 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
     if ((value & 0x40) != 0)
     sb + ", red-eye reduction";
 
+    LogUtil.debug(TAG, `getFlashDescription end, value: ${value}, sb: ${sb}`);
     return sb;
   }
 
@@ -931,11 +1029,17 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
 
   public getTemperatureDescription(): string
   {
+    LogUtil.debug(TAG, `getTemperatureDescription enter`);
     let value = this._directory.getRational(ExifDirectoryBase.TAG_TEMPERATURE);
-    if (value == null)
-    return null;
-    if (value.getDenominator() == 0xFFFFFFFF)
-    return "Unknown";
+    if (value == null) {
+      LogUtil.error(TAG, `getTemperatureDescription end, value is null`);
+      return null;
+    }
+    if (value.getDenominator() == 0xFFFFFFFF) {
+      LogUtil.error(TAG, `getTemperatureDescription end, value is unknown`);
+      return "Unknown";
+    }
+    LogUtil.debug(TAG, `getTemperatureDescription end, value: ${value}`);
     return value.numberValue().toFixed(1) + " °C"
     //        DecimalFormat formatter = new DecimalFormat("0.0");
     //        return formatter.format(value.doubleValue()) + " °C";
@@ -943,11 +1047,17 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
 
   public getHumidityDescription(): string
   {
+    LogUtil.debug(TAG, `getHumidityDescription enter`);
     let value = this._directory.getRational(ExifDirectoryBase.TAG_HUMIDITY);
-    if (value == null)
-    return null;
-    if (value.getDenominator() == 0xFFFFFFFF)
-    return "Unknown";
+    if (value == null) {
+      LogUtil.error(TAG, `getHumidityDescription end, value is null`);
+      return null;
+    }
+    if (value.getDenominator() == 0xFFFFFFFF) {
+      LogUtil.error(TAG, `getHumidityDescription end, value is unknown`);
+      return "Unknown";
+    }
+    LogUtil.debug(TAG, `getHumidityDescription end, value: ${value}`);
     return value.numberValue().toFixed(1) + " %"
     //        DecimalFormat formatter = new DecimalFormat("0.0");
     //        return formatter.format(value.doubleValue()) + " %";
@@ -955,11 +1065,17 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
 
   public getPressureDescription(): string
   {
+    LogUtil.debug(TAG, `getPressureDescription enter`);
     let value = this._directory.getRational(ExifDirectoryBase.TAG_PRESSURE);
-    if (value == null)
-    return null;
-    if (value.getDenominator() == 0xFFFFFFFF)
-    return "Unknown";
+    if (value == null) {
+      LogUtil.error(TAG, `getPressureDescription end, value is null`);
+      return null;
+    }
+    if (value.getDenominator() == 0xFFFFFFFF) {
+      LogUtil.error(TAG, `getPressureDescription end, value is unknown`);
+      return "Unknown";
+    }
+    LogUtil.debug(TAG, `getPressureDescription end, value: ${value}`);
     return value.numberValue().toFixed(1) + " hPa"
 
     //        DecimalFormat formatter = new DecimalFormat("0.0");
@@ -968,11 +1084,17 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
 
   public getWaterDepthDescription(): string
   {
+    LogUtil.debug(TAG, `getWaterDepthDescription enter`);
     let value = this._directory.getRational(ExifDirectoryBase.TAG_WATER_DEPTH);
-    if (value == null)
-    return null;
-    if (value.getDenominator() == 0xFFFFFFFF)
-    return "Unknown";
+    if (value == null) {
+      LogUtil.error(TAG, `getWaterDepthDescription end, value is null`);
+      return null;
+    }
+    if (value.getDenominator() == 0xFFFFFFFF) {
+      LogUtil.error(TAG, `getWaterDepthDescription end, value is unknown`);
+      return "Unknown";
+    }
+    LogUtil.debug(TAG, `getWaterDepthDescription end, value: ${value}`);
     return value.numberValue().toFixed(3) + " metres"
     //        DecimalFormat formatter = new DecimalFormat("0.0##");
     //        return formatter.format(value.doubleValue()) + " metres";
@@ -980,11 +1102,17 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
 
   public getAccelerationDescription(): string
   {
+    LogUtil.debug(TAG, `getAccelerationDescription enter`);
     let value = this._directory.getRational(ExifDirectoryBase.TAG_ACCELERATION);
-    if (value == null)
-    return null;
-    if (value.getDenominator() == 0xFFFFFFFF)
-    return "Unknown";
+    if (value == null) {
+      LogUtil.error(TAG, `getAccelerationDescription end, value is null`);
+      return null;
+    }
+    if (value.getDenominator() == 0xFFFFFFFF) {
+      LogUtil.error(TAG, `getAccelerationDescription end, value is unknown`);
+      return "Unknown";
+    }
+    LogUtil.debug(TAG, `getAccelerationDescription end, value: ${value}`);
     return value.numberValue().toFixed(3) + " mGal"
     //        DecimalFormat formatter = new DecimalFormat("0.0##");
     //        return formatter.format(value.doubleValue()) + " mGal";
@@ -992,11 +1120,17 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
 
   public getCameraElevationAngleDescription(): string
   {
+    LogUtil.debug(TAG, `getCameraElevationAngleDescription enter`);
     let value = this._directory.getRational(ExifDirectoryBase.TAG_CAMERA_ELEVATION_ANGLE);
-    if (value == null)
-    return null;
-    if (value.getDenominator() == 0xFFFFFFFF)
-    return "Unknown";
+    if (value == null) {
+      LogUtil.error(TAG, `getCameraElevationAngleDescription end, value is null`);
+      return null;
+    }
+    if (value.getDenominator() == 0xFFFFFFFF) {
+      LogUtil.error(TAG, `getCameraElevationAngleDescription end, value is unknown`);
+      return "Unknown";
+    }
+    LogUtil.debug(TAG, `getCameraElevationAngleDescription end, value: ${value}`);
     return value.numberValue().toFixed(3) + " degrees"
     //        DecimalFormat formatter = new DecimalFormat("0.##");
     //        return formatter.format(value.doubleValue()) + " degrees";
@@ -1006,14 +1140,19 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
 
   private getUnicodeDescription(tag: number): string
   {
+    LogUtil.debug(TAG, `getUnicodeDescription enter`);
     let bytes: Int8Array = this._directory.getByteArray(tag);
-    if (bytes == null)
-    return null;
+    if (bytes == null) {
+      LogUtil.error(TAG, `getUnicodeDescription end, bytes is null`);
+      return null;
+    }
     try {
       // Decode the unicode string and trim the unicode zero "\0" from the end.
       //            return new String(bytes, "UTF-16LE").trim();
+      LogUtil.debug(TAG, `getUnicodeDescription end, bytes: ${bytes}`);
       return StringUtil.utf8ByteToUnicodeStr(bytes)
     } catch (e) {
+      LogUtil.error(TAG, `getUnicodeDescription end, error: ${JSON.stringify(e)}`);
       return null;
     }
   }
@@ -1050,13 +1189,21 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
 
   public getColorSpaceDescription(): string
   {
+    LogUtil.debug(TAG, `getColorSpaceDescription enter`);
     let value = this._directory.getInteger(ExifDirectoryBase.TAG_COLOR_SPACE);
-    if (value == null)
-    return null;
-    if (value == 1)
-    return "sRGB";
-    if (value == 65535)
-    return "Undefined";
+    if (value == null) {
+      LogUtil.error(TAG, `getColorSpaceDescription end, value is null`);
+      return null;
+    }
+    if (value == 1) {
+      LogUtil.debug(TAG, `getColorSpaceDescription end, value: ${value}, sRGB`);
+      return "sRGB";
+    }
+    if (value == 65535) {
+      LogUtil.debug(TAG, `getColorSpaceDescription end, value: ${value}, Uncalibrated`);
+      return "Undefined";
+    }
+    LogUtil.warn(TAG, `getColorSpaceDescription end, value: ${value}, Unknown`);
     return "Unknown (" + value + ")";
   }
 
@@ -1074,20 +1221,28 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
 
   public getFocalPlaneXResolutionDescription(): string
   {
+    LogUtil.debug(TAG, `getFocalPlaneXResolutionDescription enter`);
     let rational = this._directory.getRational(ExifDirectoryBase.TAG_FOCAL_PLANE_X_RESOLUTION);
-    if (rational == null)
-    return null;
+    if (rational == null) {
+      LogUtil.error(TAG, `getFocalPlaneXResolutionDescription end, rational is null`);
+      return null;
+    }
     let unit = this.getFocalPlaneResolutionUnitDescription();
+    LogUtil.debug(TAG, `getFocalPlaneXResolutionDescription end, rational: ${rational}, unit: ${unit}`);
     return rational.getReciprocal().toSimpleString(this._allowDecimalRepresentationOfRationals)
     + (unit == null ? "" : " " + unit.toLowerCase());
   }
 
   public getFocalPlaneYResolutionDescription(): string
   {
+    LogUtil.debug(TAG, `getFocalPlaneYResolutionDescription enter`);
     let rational = this._directory.getRational(ExifDirectoryBase.TAG_FOCAL_PLANE_Y_RESOLUTION);
-    if (rational == null)
-    return null;
+    if (rational == null) {
+      LogUtil.error(TAG, `getFocalPlaneYResolutionDescription end, rational is null`);
+      return null;
+    }
     let unit = this.getFocalPlaneResolutionUnitDescription();
+    LogUtil.debug(TAG, `getFocalPlaneYResolutionDescription end, rational: ${rational}, unit: ${unit}`);
     return rational.getReciprocal().toSimpleString(this._allowDecimalRepresentationOfRationals)
     + (unit == null ? "" : " " + unit.toLowerCase());
   }
@@ -1170,16 +1325,20 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
 
   private decodeCfaPattern(tagType: number): Int8Array
   {
+    LogUtil.debug(TAG, `decodeCfaPattern enter`);
     let ret: Int8Array;
 
     let values: Int8Array = this._directory.getByteArray(tagType);
-    if (values == null)
-    return null;
+    if (values == null) {
+      LogUtil.error(TAG, `decodeCfaPattern end, values is null`);
+      return null;
+    }
 
     if (values.length < 4) {
       ret = new Int8Array[values.length];
       for (let i = 0; i < values.length; i++)
       ret[i] = values[i];
+      LogUtil.debug(TAG, `decodeCfaPattern end, values length is less than 4, create new array: ${ret}`);
       return ret;
     }
 
@@ -1215,9 +1374,11 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
         ret[i - 2] = reader.getInt8(i);
       }
     } catch (e) {
+      LogUtil.error(TAG, `decodeCfaPattern end, error: ${JSON.stringify(e)}`);
       this._directory.addError("IO exception processing data: " + e.getMessage());
     }
 
+    LogUtil.debug(TAG, `decodeCfaPattern end, ret: ${ret}`);
     return ret;
   }
 
@@ -1341,10 +1502,13 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
 
   public getSampleFormatDescription(): string
   {
+    LogUtil.debug(TAG, `getSampleFormatDescription enter`);
     let values = this._directory.getIntArray(ExifDirectoryBase.TAG_SAMPLE_FORMAT);
 
-    if (values == null)
-    return null;
+    if (values == null) {
+      LogUtil.error(TAG, `getSampleFormatDescription end, values is null`);
+      return null;
+    }
 
     let sb = '';
 
@@ -1376,6 +1540,7 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
       }
     }
 
+    LogUtil.debug(TAG, `getSampleFormatDescription end, sb: ${sb}`);
     return sb;
   }
 }

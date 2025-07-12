@@ -15,6 +15,9 @@ limitations under the License.
 
 import Directory from '../../Directory'
 import NikonType2MakernoteDescriptor from './NikonType2MakernoteDescriptor'
+import LogUtil from '../../../tools/LogUtils'
+
+const TAG: string = "NikonType2MakernoteDirectory";
 
 /**
  * Describes tags specific to Nikon (type 2) cameras.  Type-2 applies to the E990 and D-series cameras such as the E990, D1,
@@ -935,11 +938,13 @@ class NikonType2MakernoteDirectory extends Directory {
 
     /** decryption algorithm adapted from exiftool */
   public getDecryptedIntArray(tagType: number): Array<number> {
+    LogUtil.debug(TAG,`getDecryptedIntArray enter, tagType: ${tagType}`);
     let data = this.getIntArray(tagType);
     let serial = this.getInteger(NikonType2MakernoteDirectory.TAG_CAMERA_SERIAL_NUMBER);
     let count = this.getInteger(NikonType2MakernoteDirectory.TAG_EXPOSURE_SEQUENCE_NUMBER);
 
     if (data == null || serial == null || count == null) {
+      LogUtil.debug(TAG, `getDecryptedIntArray end, data or serial or count is null`);
       return null;
     }
 
@@ -958,6 +963,7 @@ class NikonType2MakernoteDirectory extends Directory {
       data[i] ^= cj;
     }
 
+    LogUtil.debug(TAG, `getDecryptedIntArray end, data: ${data}`);
     return data;
     }
 }

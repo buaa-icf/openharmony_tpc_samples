@@ -16,6 +16,9 @@ limitations under the License.
 import SequentialByteArrayReader from '../../../lang/SequentialByteArrayReader';
 import OlympusMakernoteDescriptor from './OlympusMakernoteDescriptor';
 import Directory from '../../Directory';
+import LogUtil from '../../../tools/LogUtils';
+
+const TAG: string = "OlympusMakernoteDirectory";
 
 export class CameraSettings {
   // These 'sub'-tag values have been created for consistency -- they don't exist within the Makernote IFD
@@ -433,14 +436,17 @@ class OlympusMakernoteDirectory extends Directory {
   }
 
   public setByteArray(tagType: number, bytes: Int8Array) {
+    LogUtil.debug(TAG, `setByteArray enter, tagType: ${tagType}`);
     if (tagType == OlympusMakernoteDirectory.TAG_CAMERA_SETTINGS_1 || tagType == OlympusMakernoteDirectory.TAG_CAMERA_SETTINGS_2) {
       this.processCameraSettings(bytes);
     } else {
       super.setByteArray(tagType, bytes);
     }
+    LogUtil.debug(TAG, `setByteArray end`);
   }
 
   private processCameraSettings(bytes: Int8Array) {
+    LogUtil.debug(TAG, `processCameraSettings enter`);
     let reader = new SequentialByteArrayReader(bytes);
     reader.setMotorolaByteOrder(true);
 
@@ -452,8 +458,10 @@ class OlympusMakernoteDirectory extends Directory {
         this.setInt(CameraSettings.OFFSET + i, value);
       }
     } catch (e) {
+      LogUtil.error(TAG, `Error processing camera settings: ${JSON.stringify(e)}`);
       // Should never happen, given that we check the length of the bytes beforehand.
     }
+    LogUtil.debug(TAG, `processCameraSettings end`);
   }
 
   public isIntervalMode(): boolean

@@ -15,6 +15,9 @@ limitations under the License.
 
 import TagDescriptor from '../../TagDescriptor'
 import OlympusRawDevelopment2MakernoteDirectory from './OlympusRawDevelopment2MakernoteDirectory'
+import LogUtil from '../../../tools/LogUtils';
+
+const TAG: string = "OlympusRawDevelopment2MakernoteDescriptor";
 
 /**
  * Provides human-readable String representations of tag values stored in a {@link OlympusRawDevelopment2MakernoteDirectory}.
@@ -28,6 +31,7 @@ class OlympusRawDevelopment2MakernoteDescriptor extends TagDescriptor<OlympusRaw
   }
 
   public getDescription(tagType: number): string {
+    LogUtil.debug(TAG, `getDescription enter, tagType: ${tagType}`);
     switch (tagType) {
       case OlympusRawDevelopment2MakernoteDirectory.TagRawDevVersion:
         return this.getRawDevVersionDescription();
@@ -67,12 +71,17 @@ class OlympusRawDevelopment2MakernoteDescriptor extends TagDescriptor<OlympusRaw
   }
 
   public getRawDevNoiseReductionDescription(): string {
+    LogUtil.debug(TAG, `getRawDevNoiseReductionDescription enter`);
     let value = this._directory.getInteger(OlympusRawDevelopment2MakernoteDirectory.TagRawDevNoiseReduction);
-    if (value == null)
+    if (value == null) {
+      LogUtil.error(TAG, `getRawDevNoiseReductionDescription end, value is null`);
       return null;
+    }
 
-    if (value == 0)
+    if (value == 0) {
+      LogUtil.error(TAG, `getRawDevNoiseReductionDescription end, value is 0`);
       return "(none)";
+    }
 
     var sb: string = '';
     let v = value;
@@ -85,6 +94,7 @@ class OlympusRawDevelopment2MakernoteDescriptor extends TagDescriptor<OlympusRaw
     if (sb.length > 2) {
       sb.substr(0, sb.length - 2).concat(sb.substr(sb.length));
     }
+    LogUtil.debug(TAG, `getRawDevNoiseReductionDescription end, sb: ${sb}`);
     return sb.toString();
   }
 
@@ -94,10 +104,14 @@ class OlympusRawDevelopment2MakernoteDescriptor extends TagDescriptor<OlympusRaw
   }
 
   public getRawDevPictureModeDescription(): string {
+    LogUtil.debug(TAG, `getRawDevPictureModeDescription enter`);
     let value = this._directory.getInteger(OlympusRawDevelopment2MakernoteDirectory.TagRawDevPictureMode);
-      if (value == null)
+      if (value == null) {
+        LogUtil.error(TAG, `getRawDevPictureModeDescription end, value is null`);
         return null;
+      }
 
+    LogUtil.debug(TAG, `getRawDevPictureModeDescription end, value: ${value}`);
     switch (value)
     {
       case 1:
@@ -130,9 +144,12 @@ class OlympusRawDevelopment2MakernoteDescriptor extends TagDescriptor<OlympusRaw
   }
 
   public getFilterDescription(tag: number): string {
+    LogUtil.debug(TAG, `getFilterDescription enter, tag: ${tag}`);
     let values = this._directory.getIntArray(tag);
-    if (values == null || values.length == 0)
+    if (values == null || values.length == 0) {
+      LogUtil.error(TAG, `getFilterDescription end, values is null or empty`);
       return null;
+    }
 
     var sb: string = ''
     for (let i = 0; i < values.length; i++) {
@@ -143,6 +160,7 @@ class OlympusRawDevelopment2MakernoteDescriptor extends TagDescriptor<OlympusRaw
       sb.concat("; ");
     }
 
+    LogUtil.debug(TAG, `getFilterDescription end, sb: ${sb}`);
     return sb.substring(0, sb.length - 2);
   }
 

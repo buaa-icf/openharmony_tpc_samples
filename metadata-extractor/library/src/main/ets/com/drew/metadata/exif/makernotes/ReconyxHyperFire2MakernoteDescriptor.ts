@@ -15,6 +15,9 @@ limitations under the License.
 
 import { ReconyxHyperFire2MakernoteDirectory } from './ReconyxHyperFire2MakernoteDirectory';
 import TagDescriptor from '../../TagDescriptor';
+import LogUtil from '../../../tools/LogUtils'
+
+const TAG: string = "ReconyxHyperFire2MakernoteDescriptor";
 
 export class ReconyxHyperFire2MakernoteDescriptor extends TagDescriptor<ReconyxHyperFire2MakernoteDirectory> {
   constructor(directory: ReconyxHyperFire2MakernoteDirectory) {
@@ -22,8 +25,8 @@ export class ReconyxHyperFire2MakernoteDescriptor extends TagDescriptor<ReconyxH
   }
 
   getDescription(tagType: number) {
+    LogUtil.debug(TAG, `getDescription enter, tagType = ${tagType}`);
     switch (tagType) {
-
       case ReconyxHyperFire2MakernoteDirectory.TAG_FILE_NUMBER:
         return "" + this._directory.getInteger(tagType)
 
