@@ -31,10 +31,10 @@ struct Index {
   @State sampleArray: number[] = [];
   // @State resultArray: number[] = [];
   getResourceString(res: Resource) {
-    let resText = this.getUIContext()?.getHostContext()?.resourceManager.getStringSync(res.id);
-    if (resText) {
-      return resText;
-    } else {
+    try {
+      return this.getUIContext()?.getHostContext()?.resourceManager.getStringSync(res.id) || '';
+    } catch (e) {
+      console.error(`getResourceString error, message: ${e}`);
       return '';
     }
   }
