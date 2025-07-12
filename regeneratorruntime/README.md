@@ -14,6 +14,10 @@ regeneratorRuntime is an asynchronous programming solution provided by ES6 and u
 For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
 ### Available APIs
+* mark(genFun: Function): Function.Used to mark the generator function.
+* wrap(innerFn: Function, outerFn?: Function, self?: Object, tryLocsList?: Array): Function. Wrapper generator function implementation.
+* values(iterable: Iterable): Iterator.Gets the value iterator for an iterable object.
+* isGeneratorFunction(func:any)。<br>
 For details about unit test cases, see [TEST.md](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/regeneratorruntime/TEST.md).
 
 # How to Use
