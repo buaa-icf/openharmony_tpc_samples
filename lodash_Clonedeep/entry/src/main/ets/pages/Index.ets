@@ -27,6 +27,7 @@
 
 import cloneDeep from 'lodash.clonedeep';
 import { assign } from './utils'
+import hilog from '@ohos.hilog';
 
 interface InObject {
   a?: number | string | Resource,
@@ -80,7 +81,12 @@ struct Index {
   @State message: string = this.getResourceString($r('app.string.The_copy_result_is'));
 
   getResourceString(res:Resource) {
-    return this.getUIContext().getHostContext()?.resourceManager.getStringSync(res.id) || "";
+    try {
+      return this.getUIContext().getHostContext()?.resourceManager.getStringSync(res.id) || "";
+    }catch (e){
+      hilog.error(0x0001, "[lodash.isequal]", "getStringSync error, message %{private}d", JSON.stringify(e));
+      return "";
+    }
   }
   build() {
     Row() {
