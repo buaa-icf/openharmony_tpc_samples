@@ -190,4 +190,4 @@ If you encounter any issues while using this component, please feel free to subm
 
 ## License
 
-This project is licensed under the [BSD LICENSE](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/togeojson/LICENSE). Please feel free to enjoy and participate in open source.
+This project is licensed under the [BSD LICENSE](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/togeojson/LICENSE). Please feel free to enjoy and participate in open source.

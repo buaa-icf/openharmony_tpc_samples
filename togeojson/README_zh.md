@@ -191,6 +191,6 @@ togeojson/
 
 ## 开源协议
 
-本项目基于 [BSD LICENSE](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/togeojson/LICENSE) ，请自由地享受和参与开源。
+本项目基于 [BSD LICENSE](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/togeojson/LICENSE) ，请自由地享受和参与开源。
 
 
