@@ -147,4 +147,4 @@ If you find any problem when using @xmpp/xml, submit an [issue](https://gitcode.
 
 ## License
 
-This project is licensed under [ISC License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/xmpp_xml/LICENSE-ISC).
+This project is licensed under [ISC License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/xmpp_xml/LICENSE).
