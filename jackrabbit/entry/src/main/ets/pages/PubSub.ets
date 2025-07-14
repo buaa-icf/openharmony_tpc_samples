@@ -34,7 +34,7 @@ struct PubSub {
   rabbit: ESObject;
 
   aboutToAppear() {
-    let obj: ESObject = router.getParams()
+    let obj: ESObject = this.getUIContext().getRouter().getParams()
     if (obj.serverIp)
       this.serverIp = obj.serverIp
   }

@@ -21,6 +21,7 @@
  */
 
 import router from '@ohos.router';
+import hilog from '@ohos.hilog';
 
 
 class routeBean {
@@ -64,7 +65,12 @@ struct Index {
   ]
 
   private getResourceStr(data:Resource):string{
-    return this.getUIContext().getHostContext()?.resourceManager.getStringSync(data) || "";
+    try {
+      return this.getUIContext().getHostContext()?.resourceManager.getStringSync(data) || "";
+    }catch (e){
+      hilog.error(0x0001, "[lodash.isequal]", "getStringSync error, message %{private}d", JSON.stringify(e));
+      return "";
+    }
   }
 
   build() {

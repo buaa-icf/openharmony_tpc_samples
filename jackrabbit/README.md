@@ -1,4 +1,4 @@
-# Jackrabbit
+# @ohos/jackrabbit
 
 ## Introduction
 
