@@ -11,6 +11,8 @@ if (NOT CMAKE_BUILD_TYPE)
 set(CMAKE_BUILD_TYPE "Debug")
 endif()
 
+set(CMAKE_SKIP_RPATH TRUE)
+
 add_library(oh7zip SHARED napi_init.cpp
                           uncompress/uncompress.cpp
                           uncompress/uncompress_bridge.cpp

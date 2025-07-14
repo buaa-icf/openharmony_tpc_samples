@@ -1,6 +1,6 @@
 {
   "name": "@ohos/oh7zip",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "封装7zip命令行，支持压缩和解压文件到沙箱路径",
   "main": "Index.ets",
   "author": "ohos_sig",

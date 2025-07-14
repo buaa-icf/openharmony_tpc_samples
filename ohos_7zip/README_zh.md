@@ -63,12 +63,13 @@ uncompress.extractSync(config)
 
 ##### 结构体Config7z变量说明
 
-| 名称            | 描述                                                  |
-| --------------- | ----------------------------------------------------- |
-| std::string src | 压缩的文件或目录/解压的文件                           |
-| std::string dst | 压缩生成的目标文件/解压文件后存放的目录               |
-| std::string pwd | 压缩/解压的密码，可选                                 |
-| std::string fmt | 压缩的格式，"zip", "7z", "tar", "xz", "gzip", "bzip2" |
+| 名称                           | 描述                                                       |
+| ------------------------------ | ---------------------------------------------------------- |
+| std::vector\<std::string\> src | 压缩的文件或目录/解压的文件(解压文件仅src[0]生效)          |
+| std::string dst                | 压缩生成的目标文件/解压文件后存放的目录                    |
+| std::string pwd                | 压缩/解压的密码，可选                                      |
+| std::string fmt                | 压缩的格式，"zip", "7z", "tar", "xz", "gzip", "bzip2"      |
+| std::vector\<std::string\> xr  | 压缩时，需要排除递归子目录中的文件，例如"!hello.*", "!dir" |
 
 
 

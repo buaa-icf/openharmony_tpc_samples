@@ -49,7 +49,7 @@ static std::string TryCreateTmpFile()
     return tmp;
 }
 
-static bool HasWritePermission(std::string& path)
+static bool HasWritePermission(const std::string &path)
 {
     std::string fileName = path + "/" + TryCreateTmpFile();
     std::ofstream ofs(fileName);
@@ -69,7 +69,7 @@ static ErrorInfo CheckConfig(std::shared_ptr<Config7z> config)
     if (config->src.empty()) {
         return ErrorInfo::ILLEGAL_SRC;
     }
-    if (!std::filesystem::exists(config->src)) {
+    if (!std::filesystem::exists(config->src[0])) {
         return ErrorInfo::ILLEGAL_SRC;
     }
     if (config->dst.empty()) {
@@ -84,13 +84,79 @@ static ErrorInfo CheckConfig(std::shared_ptr<Config7z> config)
     return ErrorInfo::OK;
 }
 
+/**
+ * 检查字节序列是否为有效的 UTF-8 编码
+ * 
+ * @param data 要检查的字节序列指针
+ * @param len  字节序列长度
+ *
+ * @return bool 类型返回值含义：
+ *   - true:  数据是有效的 UTF-8 编码序列
+ *   - false: 数据包含无效的 UTF-8 序列或编码错误
+ */
+static bool IsValidUtf8(const uint8_t *data, size_t len)
+{
+    size_t i = 0;
+    while (i < len) {
+        uint8_t c = data[i];
+        if (c <= 0x7F) {
+            if (c == '/' || c == '\\' || c == '.' || c == ':' || c == '-' || c == '_' || c == '~' || c == ' ' ||
+                (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9')) {
+                i++;
+                continue;
+            }
+            if (c < 0x20 || c == 0x7F) {
+                return false;
+            }
+            i++;
+            continue;
+        }
+        size_t byteLen = 0;
+        uint32_t codePoint = 0;
+        if ((c & 0xE0) == 0xC0) {
+            byteLen = 2;
+            codePoint = c & 0x1F;
+        } else if ((c & 0xF0) == 0xE0) {
+            byteLen = 3;
+            codePoint = c & 0x0F;
+        } else if ((c & 0xF8) == 0xF0) {
+            byteLen = 4;
+            codePoint = c & 0x07;
+        } else {
+            return false;
+        }
+        if (i + byteLen > len) {
+            return false;
+        }
+        for (size_t j = 1; j < byteLen; j++) {
+            uint8_t next = data[i + j];
+            if ((next & 0xC0) != 0x80) {
+                return false;
+            }
+            codePoint = (codePoint << 6) | (next & 0x3F);
+        }
+        if ((byteLen == 2 && codePoint < 0x80) || (byteLen == 3 && codePoint < 0x800) ||
+            (byteLen == 4 && codePoint < 0x10000)) {
+            return false;
+        }
+        if (codePoint >= 0xD800 && codePoint <= 0xDFFF) {
+            return false;
+        }
+        if (codePoint > 0x10FFFF) {
+            return false;
+        }
+        i += byteLen;
+    }
+    return true;
+}
+
 static std::pair<bool, bool> CheckZipEncodeUtf8AndEncrypt(void *zipHandle)
 {
     mz_zip_file *fileInfo = NULL;
-    int32_t err = 0;
     bool isUtf8 = true;
     bool isEncrypt = false;
-    err = mz_zip_reader_goto_first_entry(zipHandle);
+    int32_t err = mz_zip_reader_goto_first_entry(zipHandle);
+
     do {
         err = mz_zip_reader_entry_get_info(zipHandle, &fileInfo);
         if (err != MZ_OK || fileInfo == NULL) {
@@ -99,8 +165,12 @@ static std::pair<bool, bool> CheckZipEncodeUtf8AndEncrypt(void *zipHandle)
         if (fileInfo->flag & MZ_ZIP_FLAG_ENCRYPTED) {
             isEncrypt = true;
         }
+        // 如果检查不是UTF8，这里需要再检查一次，某些工具生成UTF-8编码但不设置标志位
         if (!(fileInfo->flag & MZ_ZIP_FLAG_UTF8)) {
-            isUtf8 = false;
+            isUtf8 = IsValidUtf8((const uint8_t *)fileInfo->filename, fileInfo->filename_size - 1);
+            if (!isUtf8) {
+                break;
+            }
         }
         err = mz_zip_reader_goto_next_entry(zipHandle);
         if (err != MZ_OK && err != MZ_END_OF_LIST) {
@@ -113,7 +183,7 @@ static std::pair<bool, bool> CheckZipEncodeUtf8AndEncrypt(void *zipHandle)
 static ErrorInfo ExtractByZip(std::shared_ptr<Config7z> config)
 {
     void *zipHandle = mz_zip_reader_create();
-    if (mz_zip_reader_open_file(zipHandle, config->src.c_str()) != MZ_OK) {
+    if (mz_zip_reader_open_file(zipHandle, config->src[0].c_str()) != MZ_OK) {
         mz_zip_reader_delete(&zipHandle);
         return ErrorInfo::UNCOMPRESS_FAIL;
     }
@@ -125,7 +195,7 @@ static ErrorInfo ExtractByZip(std::shared_ptr<Config7z> config)
         }
         mz_zip_reader_set_password(zipHandle, config->pwd.c_str());
     }
-    // ����ֻ��֪����utf8����,��֪������ʲô���룬ֻ�ǳ���ʹ��936,����������룬��Ҫ�����������룬�û�֪���𣿿������û����룿
+    // 这里只是知道非utf8编码,不知道具体什么编码，只是尝试使用936,如果还是乱码，需要考虑其他编码，用户知道吗？考虑让用户传入？
     if (!info.first) {
         mz_zip_reader_set_encoding(zipHandle, MZ_ENCODING_CODEPAGE_936);
     }
@@ -160,7 +230,8 @@ static ErrorInfo ExtractBy7zip(std::shared_ptr<Config7z> config)
     }
     std::string dst = "-o" + config->dst;
     cmd[index++] = dst.c_str();
-    cmd[index++] = config->src.c_str();
+    cmd[index++] = config->src[0].c_str();
+
     try {
         ret = !Main2(index, (char **)cmd) ? ErrorInfo::OK : ErrorInfo::UNCOMPRESS_FAIL;
     } catch (...) {
@@ -174,7 +245,7 @@ static ErrorInfo ExtractBy7zip(std::shared_ptr<Config7z> config)
     return ret;
 }
 
-static bool IsZipFile(const std::string& path)
+static bool IsZipFile(const std::string &path)
 {
     size_t len = path.size();
     if (len < 2) {
@@ -192,7 +263,7 @@ ErrorInfo Uncompress::ExtractSync(std::shared_ptr<Config7z> config)
     if (ret != ErrorInfo::OK) {
         return ret;
     }
-    if (IsZipFile(config->src)) {
+    if (IsZipFile(config->src[0])) {
         ret = ExtractByZip(config);
     } else {
         ret = ExtractBy7zip(config);

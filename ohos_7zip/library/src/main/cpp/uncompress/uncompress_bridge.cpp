@@ -54,7 +54,7 @@ std::shared_ptr<Config7z> UncompressBridge::Parse(napi_env env, napi_value jsObj
     auto config = std::make_shared<Config7z>();
     bool isExist = help.CheckHasproperty(jsObject, "src");
     if (isExist) {
-        config->src = help.GetStringFromObject(jsObject, "src");
+        config->src = help.GetVecStringFromObject(jsObject, "src");
     }
     isExist = help.CheckHasproperty(jsObject, "dst");
     if (isExist) {

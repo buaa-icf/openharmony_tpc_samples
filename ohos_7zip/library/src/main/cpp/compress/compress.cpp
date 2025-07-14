@@ -53,8 +53,10 @@ static ErrorInfo CheckConfig(std::shared_ptr<Config7z> config)
     if (config->src.empty()) {
         return ErrorInfo::ILLEGAL_SRC;
     }
-    if (!std::filesystem::exists(config->src)) {
-        return ErrorInfo::ILLEGAL_SRC;
+    for (int i = 0; i < config->src.size(); i++) {
+        if (!std::filesystem::exists(config->src[i])) {
+            return ErrorInfo::ILLEGAL_SRC;
+        }
     }
     if (config->dst.empty()) {
         return ErrorInfo::ILLEGAL_DST;
@@ -62,7 +64,7 @@ static ErrorInfo CheckConfig(std::shared_ptr<Config7z> config)
     int ret = IsSupport(config->fmt);
     if (ret < 0) {
         return ErrorInfo::COMPRESS_FMT_NOT_SUPPURT;
-    } else if (ret == 1 && std::filesystem::is_directory(config->src)) {
+    } else if (ret == 1 && std::filesystem::is_directory(config->src[0])) {
         return ErrorInfo::COMPRESS_FMT_SRC_ILLEGAL;
     } else {
         
@@ -80,13 +82,14 @@ ErrorInfo Compress::CompressSync(std::shared_ptr<Config7z> config)
         return ret;
     }
     int index = 0;
-    const size_t Max = 10;
+    const size_t Max = 128;
     const char *cmd[Max] = {nullptr};
     std::string exe = "7zz";
     std::string option = "a";
     std::string fmt = "-t" + config->fmt;
     std::string pwd = "-p";
     std::string recursion = "-r";
+    std::vector<std::string> xr(config->xr.size(), "-xr");
     cmd[index++] = exe.c_str();
     cmd[index++] = option.c_str();
     cmd[index++] = config->dst.c_str();
@@ -96,7 +99,13 @@ ErrorInfo Compress::CompressSync(std::shared_ptr<Config7z> config)
         cmd[index++] = pwd.c_str();
     }
     cmd[index++] = recursion.c_str();
-    cmd[index++] = config->src.c_str();
+    for (int i = 0; i < config->src.size(); i++) {
+        cmd[index++] = config->src[i].c_str();
+    }
+    for (int i = 0; i < config->xr.size(); i++) {
+        xr[i] += config->xr[i];
+        cmd[index++] = xr[i].c_str();
+    }
 
     try {
         ret = !Main2(index, (char **)cmd) ? ErrorInfo::OK : ErrorInfo::COMPRESS_FAIL;

@@ -52,7 +52,7 @@ std::shared_ptr<Config7z> CompressBridge::Parse(napi_env env, napi_value jsObjec
     auto config = std::make_shared<Config7z>();
     bool isExist = help.CheckHasproperty(jsObject, "src");
     if (isExist) {
-        config->src = help.GetStringFromObject(jsObject, "src");
+        config->src = help.GetVecStringFromObject(jsObject, "src");
     }
     isExist = help.CheckHasproperty(jsObject, "dst");
     if (isExist) {
@@ -65,6 +65,10 @@ std::shared_ptr<Config7z> CompressBridge::Parse(napi_env env, napi_value jsObjec
     isExist = help.CheckHasproperty(jsObject, "fmt");
     if (isExist) {
         config->fmt = help.GetStringFromObject(jsObject, "fmt");
+    }
+    isExist = help.CheckHasproperty(jsObject, "xr");
+    if (isExist) {
+        config->xr = help.GetVecStringFromObject(jsObject, "xr");
     }
     return config;
 }
