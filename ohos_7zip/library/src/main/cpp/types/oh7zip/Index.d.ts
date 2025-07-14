@@ -14,7 +14,7 @@
  */
 
 export interface Config7z {
-  src: string
+  src: string | Array<string>
   dst: string
   pwd?: string
   /*
@@ -22,6 +22,7 @@ export interface Config7z {
   * 不加密且非目录文件，xz, gzip, bzip2
   */
   fmt?: string
+  xr?:string | Array<string>
 }
 
 /*

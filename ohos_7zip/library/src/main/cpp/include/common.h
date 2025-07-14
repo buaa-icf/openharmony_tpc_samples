@@ -21,10 +21,11 @@
 #define EXPORT_DEFAULT __attribute__((visibility("default")))
 
 struct Config7z {
-    std::string src{""};
+    std::vector<std::string> src;
     std::string dst{""};
     std::string pwd{""};
     std::string fmt{"7z"};
+    std::vector<std::string> xr;
 };
 
 enum class ErrorInfo {

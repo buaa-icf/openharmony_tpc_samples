@@ -1,3 +1,13 @@
+## v1.0.1
+
+fix bug
+
+- Fixed garbled text issue when unzipping macOS-compressed zip files on Openharmony.
+
+Implemented Feature
+
+- Supports compressing multiple paths and excluding specific files when compressing.
+
 ## v1.0.0
 
 Implemented Feature

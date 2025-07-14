@@ -27,26 +27,28 @@ class NapiHelp {
 public:
     explicit NapiHelp(napi_env env);
     ~NapiHelp();
-    napi_value CreateString(std::string str);
-    bool CheckHasproperty(napi_value value, std::string name);
-    napi_value GetObjectProperty(napi_value object, std::string& name);
+    napi_value CreateString(const std::string &str);
+    bool CheckHasproperty(napi_value value, const std::string &name);
+    napi_value GetObjectProperty(napi_value object, const std::string &name);
     std::string GetString(napi_value object);
-    std::string GetStringFromObject(napi_value object, std::string name);
+    std::string GetStringFromObject(napi_value object, const std::string &name);
+    std::vector<std::string> GetVecStringFromObject(napi_value object, const std::string &name);
     std::vector<napi_value> GetCallbackInfoArgs(napi_callback_info info);
     napi_value GetCallbackInfoJsObject(napi_callback_info info);
     napi_value CreateInt32(int32_t number);
     void *Unwrap(napi_value jsObject);
     void Wrap(napi_value jsObject, napi_finalize finalize_cb, void *finalize);
-    void DefineClass(std::string className, napi_callback callback, const napi_property_descriptor *des, size_t size,
+    void DefineClass(const std::string &className, napi_callback callback, const napi_property_descriptor *des, size_t size,
                      napi_value *result);
     napi_ref *CreateReference(napi_value value, size_t count);
-    void SetProportyWithName(napi_value object, std::string name, napi_value proporty);
+    void SetProportyWithName(napi_value object, const std::string &name, napi_value proporty);
     void CreatePromise(napi_deferred *deferred, napi_value *promise);
-    void CreateAsyncWorker(const std::string& name, napi_async_execute_callback execute, napi_async_complete_callback complete,
+    void CreateAsyncWorker(const std::string &name, napi_async_execute_callback execute, napi_async_complete_callback complete,
                            void *data, napi_async_work *result);
     void DeleteAsyncWorker(napi_async_work worker);
     void QueueAsyncWorker(napi_async_work work, napi_qos_t qos);
     void ResolveDeferred(napi_deferred deferred, napi_value resolution);
+    int GetInt(napi_value object);
 
 private:
     napi_env env_;
