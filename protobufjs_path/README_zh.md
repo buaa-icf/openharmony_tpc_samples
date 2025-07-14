@@ -69,6 +69,6 @@ import path from "@protobufjs/path"
 
 ## 开源协议
 
-本项目基于 [BSD License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/protobuf_path/LICENSE)
+本项目基于 [BSD License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/protobufjs_path/LICENSE)
 ，请自由地享受和参与开源。
 

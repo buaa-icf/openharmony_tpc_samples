@@ -68,4 +68,4 @@ If you find any problem when using the project, submit an [issue](https://gitcod
 
 ## License
 
-This project is licensed under [BSD License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/protobuf_path/LICENSE).
+This project is licensed under [BSD License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/protobufjs_path/LICENSE).
