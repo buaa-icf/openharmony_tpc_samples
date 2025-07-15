@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-import sanitize from 'sanitize-html';
-import prompt from '@ohos.prompt';
-
+import sanitize from '@ohos/sanitize-html';
+import hilog from '@ohos.hilog';
+import promptAction from '@ohos.promptAction';
 
 @Entry
 @Component
@@ -32,6 +32,14 @@ struct Allowed_schemes {
   private default_allows: string[] = sanitize.defaults.allowedSchemes;
   @State private schemes: string = '';
   @State private sanitizeResult: string = 'sanitizeResult: ';
+
+  showToast(options: promptAction.ShowToastOptions){
+    try {
+      this.getUIContext().getPromptAction().showToast(options);
+    }catch (e) {
+      hilog.error(0x0001, "[sanitize-html]", "showToast error, message %{private}d", JSON.stringify(e));
+    }
+  }
 
   build() {
     Row() {
@@ -49,7 +57,7 @@ struct Allowed_schemes {
           .height('5%')
           .onClick(() => {
             if (!this.schemes) {
-              prompt.showToast({ message: 'please input tag name' })
+              this.showToast({ message: 'please input tag name' })
               return;
             }
             let html = '<a href="' + this.schemes + '://www.baidu.com">inner text </a>';
@@ -60,7 +68,7 @@ struct Allowed_schemes {
           .height('5%')
           .onClick(() => {
             if (!this.schemes) {
-              prompt.showToast({ message: 'please input scheme' })
+              this.showToast({ message: 'please input scheme' })
               return;
             }
             sanitize.defaults.allowedSchemes = ['http1', 'https1', 'sms1'];
@@ -72,7 +80,7 @@ struct Allowed_schemes {
           .height('5%')
           .onClick(() => {
             if (!this.schemes) {
-              prompt.showToast({ message: 'please input scheme' })
+              this.showToast({ message: 'please input scheme' })
               return;
             }
             let html = '<a href="' + this.schemes + '://www.baidu.com">inner text </a>';
@@ -85,7 +93,7 @@ struct Allowed_schemes {
           .height('5%')
           .onClick(() => {
             if (!this.schemes) {
-              prompt.showToast({ message: 'please input scheme' })
+              this.showToast({ message: 'please input scheme' })
               return;
             }
             let schemesArray:ESObject = sanitize.defaults.allowedSchemes;
@@ -93,7 +101,7 @@ struct Allowed_schemes {
             if (index === -1) {
               schemesArray.push(this.schemes);
             } else {
-              prompt.showToast({ message: 'the scheme already exist' })
+              this.showToast({ message: 'the scheme already exist' })
               return;
             }
 

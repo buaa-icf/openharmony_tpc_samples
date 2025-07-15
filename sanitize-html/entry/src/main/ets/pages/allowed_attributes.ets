@@ -22,8 +22,9 @@
  * SOFTWARE.
  */
 
-import sanitize from 'sanitize-html';
-import prompt from '@ohos.prompt';
+import sanitize from '@ohos/sanitize-html';
+import hilog from '@ohos.hilog';
+import promptAction from '@ohos.promptAction';
 
 @Entry
 @Component
@@ -32,7 +33,12 @@ struct AllowedAttributes {
   @State private attributeName: string = '';
   @State private sanitizeResult: string = 'sanitizeResult: ';
 
-  aboutToAppear() {
+  showToast(options: promptAction.ShowToastOptions){
+    try {
+      this.getUIContext().getPromptAction().showToast(options);
+    }catch (e) {
+      hilog.error(0x0001, "[sanitize-html]", "showToast error, message %{private}d", JSON.stringify(e));
+    }
   }
 
   build() {
@@ -54,7 +60,7 @@ struct AllowedAttributes {
           .height('5%')
           .onClick(() => {
             if (!this.attributeName) {
-              prompt.showToast({ message: 'please input attribute name' })
+              this.showToast({ message: 'please input attribute name' })
               return;
             }
             let html = '<a ' + this.attributeName + '="test">inner text </' + this.attributeName + '>';
@@ -65,7 +71,7 @@ struct AllowedAttributes {
           .height('5%')
           .onClick(() => {
             if (!this.attributeName) {
-              prompt.showToast({ message: 'please input attribute name' })
+              this.showToast({ message: 'please input attribute name' })
               return;
             }
             sanitize.defaults.allowedAttributes = { a: [this.attributeName],img:[this.attributeName] };
@@ -77,7 +83,7 @@ struct AllowedAttributes {
           .height('5%')
           .onClick(() => {
             if (!this.attributeName) {
-              prompt.showToast({ message: 'please input attribute name' })
+              this.showToast({ message: 'please input attribute name' })
               return;
             }
             let html = '<a ' + this.attributeName + '="test">inner text </' + this.attributeName + '>';
@@ -90,14 +96,14 @@ struct AllowedAttributes {
           .height('5%')
           .onClick(() => {
             if (!this.attributeName) {
-              prompt.showToast({ message: 'please input attribute name' })
+              this.showToast({ message: 'please input attribute name' })
               return;
             }
             let defaultsCommonValue:ESObject = sanitize.defaults.allowedAttributes['*'];
             if (typeof defaultsCommonValue === 'object' && Array.isArray(defaultsCommonValue)) {
               let attrIndex = defaultsCommonValue.indexOf(this.attributeName);
               if (attrIndex != -1) {
-                prompt.showToast({ message: 'the attribute name already exist' })
+                this.showToast({ message: 'the attribute name already exist' })
                 return;
               }
               defaultsCommonValue.push(this.attributeName);
@@ -112,7 +118,7 @@ struct AllowedAttributes {
           .height('5%')
           .onClick(() => {
             if (!this.attributeName) {
-              prompt.showToast({ message: 'please input attribute name' })
+              this.showToast({ message: 'please input attribute name' })
               return;
             }
             let html = '<a ' + this.attributeName + '="test">inner text </' + this.attributeName + '>';
@@ -123,7 +129,7 @@ struct AllowedAttributes {
           .height('5%')
           .onClick(() => {
             if (!this.attributeName) {
-              prompt.showToast({ message: 'please input attribute name' })
+              this.showToast({ message: 'please input attribute name' })
               return;
             }
             let html = '<a ' + this.attributeName + '="test">inner text </' + this.attributeName + '>';

@@ -1,8 +1,8 @@
-# sanitize-html
+# @ohos/sanitize-html
 
 ## Introduction
 
-sanitize-html provides HTML sanitization APIs, with support for cleaning up HTML fragments. It allows for HTML sanitization based on default settings of built-in tags, attributes, and more. Additionally, it supports custom rules for specific sanitization requirements.
+@ohos/sanitize-html provides HTML sanitization APIs, with support for cleaning up HTML fragments. It allows for HTML sanitization based on default settings of built-in tags, attributes, and more. Additionally, it supports custom rules for specific sanitization requirements.
 
 ## How to Install
 
@@ -17,7 +17,7 @@ For details about the OpenHarmony ohpm environment configuration, see [Installin
 Import sanitizeHtml HTML to obtain different cleaning results based on various configuration rules.
 
 ```
-import sanitizeHtml from 'sanitize-html';
+import sanitizeHtml from '@ohos/sanitize-html';
 ```
 
 

@@ -22,8 +22,9 @@
  * SOFTWARE.
  */
 
-import sanitizeHtml from 'sanitize-html';
-import prompt from '@ohos.prompt';
+import sanitizeHtml from '@ohos/sanitize-html';
+import hilog from '@ohos.hilog';
+import promptAction from '@ohos.promptAction';
 
 @Entry
 @Component
@@ -33,6 +34,14 @@ struct Allowed_scheme_applied_to_attr {
   @State private schemeName: string = '';
   @State private sanitizeResult: string = 'sanitizeResult: ';
   private controller: TextInputController = new TextInputController();
+
+  showToast(options: promptAction.ShowToastOptions){
+    try {
+      this.getUIContext().getPromptAction().showToast(options);
+    }catch (e) {
+      hilog.error(0x0001, "[sanitize-html]", "showToast error, message %{private}d", JSON.stringify(e));
+    }
+  }
 
   build() {
     Row() {
@@ -55,7 +64,7 @@ struct Allowed_scheme_applied_to_attr {
           .height('5%')
           .onClick(() => {
             if (!this.attrName || !this.schemeName) {
-              prompt.showToast({ message: 'please input attribute or scheme name' })
+              this.showToast({ message: 'please input attribute or scheme name' })
               return;
             }
             let html = '<a ' + this.attrName + '="' + this.schemeName + '://www.baidu.com">inner text </a>';
@@ -66,7 +75,7 @@ struct Allowed_scheme_applied_to_attr {
           .height('5%')
           .onClick(() => {
             if (!this.attrName || !this.schemeName) {
-              prompt.showToast({ message: 'please input attribute or scheme name' })
+              this.showToast({ message: 'please input attribute or scheme name' })
               return;
             }
             sanitizeHtml.defaults.allowedSchemesAppliedToAttributes = [this.attrName];
@@ -82,7 +91,7 @@ struct Allowed_scheme_applied_to_attr {
           .height('5%')
           .onClick(() => {
             if (!this.attrName || !this.schemeName) {
-              prompt.showToast({ message: 'please input attribute or scheme name' })
+              this.showToast({ message: 'please input attribute or scheme name' })
               return;
             }
             let html = '<a ' + this.attrName + '="' + this.schemeName + '://www.baidu.com">inner text </a>';
@@ -98,7 +107,7 @@ struct Allowed_scheme_applied_to_attr {
           .height('5%')
           .onClick(() => {
             if (!this.attrName || !this.schemeName) {
-              prompt.showToast({ message: 'please input attribute or scheme name' })
+              this.showToast({ message: 'please input attribute or scheme name' })
               return;
             }
             let attributesArray:ESObject = sanitizeHtml.defaults.allowedSchemesAppliedToAttributes;
@@ -106,7 +115,7 @@ struct Allowed_scheme_applied_to_attr {
             if (attrIndex === -1) {
               attributesArray.push(this.attrName)
             } else {
-              prompt.showToast({ message: 'the attribute already exist' })
+              this.showToast({ message: 'the attribute already exist' })
               return;
             }
             let html = '<a ' + this.attrName + '="' + this.schemeName + '://www.baidu.com">inner text </a>';

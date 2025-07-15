@@ -23,11 +23,13 @@
  */
 
 import router from '@ohos.router';
+import { Router } from '@ohos.arkui.UIContext';
 
 @Entry
 @Component
 struct Index {
-  @State message: string = 'Hello World'
+  @State message: string = 'Hello World';
+  @State router: Router = this.getUIContext().getRouter();
 
   build() {
     Row() {
@@ -35,55 +37,55 @@ struct Index {
         Button('jump to allowed tag')
           .height('5%')
           .onClick(() => {
-            router.push({ url: 'pages/allowed_tags' })
+            this.router.pushUrl({ url: 'pages/allowed_tags' })
           })
 
         Button('jump to allowed attributes')
           .height('5%')
           .onClick(() => {
-            router.push({ url: 'pages/allowed_attributes' })
+            this.router.pushUrl({ url: 'pages/allowed_attributes' })
           })
 
         Button('jump to allowed schemes')
           .height('5%')
           .onClick(() => {
-            router.push({ url: 'pages/allowed_schemes' })
+            this.router.pushUrl({ url: 'pages/allowed_schemes' })
           })
 
         Button('jump to allowed schemes by tags')
           .height('5%')
           .onClick(() => {
-            router.push({ url: 'pages/allowed_schemes_by_tags' })
+            this.router.pushUrl({ url: 'pages/allowed_schemes_by_tags' })
           })
 
         Button('jump to allowed schemes applied to attr')
           .height('5%')
           .onClick(() => {
-            router.push({ url: 'pages/allowed_scheme_applied_to_attr' })
+            this.router.pushUrl({ url: 'pages/allowed_scheme_applied_to_attr' })
           })
 
         Button('jump to allowed self closing tags')
           .height('5%')
           .onClick(() => {
-            router.push({ url: 'pages/allowed_self_closing_tags' })
+            this.router.pushUrl({ url: 'pages/allowed_self_closing_tags' })
           })
 
         Button('jump to sanitize html page1')
           .height('5%')
           .onClick(() => {
-            router.push({ url: 'pages/sanitize_html_options1' })
+            this.router.pushUrl({ url: 'pages/sanitize_html_options1' })
           })
 
         Button('jump to sanitize html page2')
           .height('5%')
           .onClick(() => {
-            router.push({ url: 'pages/sanitize_html_options2' })
+            this.router.pushUrl({ url: 'pages/sanitize_html_options2' })
           })
 
         Button('jump to sanitize html page3')
           .height('5%')
           .onClick(() => {
-            router.push({ url: 'pages/sanitize_html_options3' })
+            this.router.pushUrl({ url: 'pages/sanitize_html_options3' })
           })
       }
       .width('100%')
