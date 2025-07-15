@@ -30,7 +30,7 @@
  */
 
 import { DateTimeFormatter, LocalDateTime, ZoneId, Clock ,ZoneRegion, ZonedDateTime} from '@js-joda/core';
-import router from '@ohos.router';
+import hilog from '@ohos.hilog';
 
 @Entry
 @Component
@@ -114,19 +114,29 @@ function testLocalDateTime(context: Context | undefined): string {
   console.info(mDateTime.toLocalDate().lengthOfMonth().toString());
   // 获取当前的总天数
   console.info(mDateTime.toLocalDate().lengthOfYear().toString());
-  return context?.resourceManager.getStringByNameSync("Get_date_and_time") + LocalDateTime.now().toString() + '\n' +
-    context?.resourceManager.getStringByNameSync("Obtain_domestic_city_date_and_time")+ LocalDateTime.now(ZoneId.systemDefault()).toString() + '\n' +
-    context?.resourceManager.getStringByNameSync("Build_date_and_time_based_on_given_data") + LocalDateTime.of(2016, 2, 29, 12, 55, 42, 9).toString() + '\n' +
-    context?.resourceManager.getStringByNameSync("Obtain_the_given_date_and_year")+ mDateTime.year().toString() + '\n' +
-    context?.resourceManager.getStringByNameSync("Get_the_given_date_month") + mDateTime.month().toString() + '\n' +
-    context?.resourceManager.getStringByNameSync("Get_the_value_of_the_given_date_and_month") + mDateTime.monthValue().toString() + '\n' +
-    context?.resourceManager.getStringByNameSync("Get_the_given_date_on_which_day_of_the_month") + mDateTime.dayOfMonth().toString() + '\n' +
-    context?.resourceManager.getStringByNameSync("Obtain_the_number_of_hours")+ mDateTime.hour().toString() + '\n' +
-    context?.resourceManager.getStringByNameSync("Get_minutes") + mDateTime.minute().toString() + '\n' +
-    context?.resourceManager.getStringByNameSync("Get_seconds") + mDateTime.second().toString() + '\n' +
-    context?.resourceManager.getStringByNameSync("Obtain_nanosecond_count") + mDateTime.nano().toString() + '\n' +
-    context?.resourceManager.getStringByNameSync("Obtain_the_day_of_the_week") + mDateTime.dayOfWeek().toString() + '\n' +
-    context?.resourceManager.getStringByNameSync("Obtain_dates_within_a_year") + mDateTime.dayOfYear().toString() + '\n' +
-    context?.resourceManager.getStringByNameSync("Get_the_total_number_of_days_in_a_given_month") + mDateTime.toLocalDate().lengthOfMonth().toString() + '\n' +
-    context?.resourceManager.getStringByNameSync("Obtain_the_total_number_of_days_in_a_given_year") + mDateTime.toLocalDate().lengthOfYear().toString();
+  return getStringByNameSync(context, "Get_date_and_time") + LocalDateTime.now().toString() + '\n' +
+    getStringByNameSync(context, "Obtain_domestic_city_date_and_time")+ LocalDateTime.now(ZoneId.systemDefault()).toString() + '\n' +
+    getStringByNameSync(context, "Build_date_and_time_based_on_given_data") + LocalDateTime.of(2016, 2, 29, 12, 55, 42, 9).toString() + '\n' +
+    getStringByNameSync(context, "Obtain_the_given_date_and_year")+ mDateTime.year().toString() + '\n' +
+    getStringByNameSync(context, "Get_the_given_date_month") + mDateTime.month().toString() + '\n' +
+    getStringByNameSync(context, "Get_the_value_of_the_given_date_and_month") + mDateTime.monthValue().toString() + '\n' +
+    getStringByNameSync(context, "Get_the_given_date_on_which_day_of_the_month") + mDateTime.dayOfMonth().toString() + '\n' +
+    getStringByNameSync(context, "Obtain_the_number_of_hours")+ mDateTime.hour().toString() + '\n' +
+    getStringByNameSync(context, "Get_minutes") + mDateTime.minute().toString() + '\n' +
+    getStringByNameSync(context, "Get_seconds") + mDateTime.second().toString() + '\n' +
+    getStringByNameSync(context, "Obtain_nanosecond_count") + mDateTime.nano().toString() + '\n' +
+    getStringByNameSync(context, "Obtain_the_day_of_the_week") + mDateTime.dayOfWeek().toString() + '\n' +
+    getStringByNameSync(context, "Obtain_dates_within_a_year") + mDateTime.dayOfYear().toString() + '\n' +
+    getStringByNameSync(context, "Get_the_total_number_of_days_in_a_given_month") + mDateTime.toLocalDate().lengthOfMonth().toString() + '\n' +
+    getStringByNameSync(context, "Obtain_the_total_number_of_days_in_a_given_year") + mDateTime.toLocalDate().lengthOfYear().toString();
+}
+
+// 获取指定资源名称对应的字符串
+function getStringByNameSync(context: Context | undefined, resName: string): string {
+  try {
+    return context?.resourceManager.getStringByNameSync(resName) || "";
+  }catch (e){
+    hilog.error(0x0001, "[js-joda]", "getStringByNameSync error, message %{private}d", JSON.stringify(e));
+    return "";
+  }
 }

@@ -30,7 +30,7 @@
  */
 
 import { Duration, LocalDateTime, Period } from '@js-joda/core';
-import router from '@ohos.router';
+import hilog from '@ohos.hilog';
 
 @Entry
 @Component
@@ -78,7 +78,17 @@ function testDurationTime(context: Context | undefined): string {
 
   console.info(mDateTime.plus(Duration.ofHours(10).plusMinutes(30)).toString());
 
-  return context?.resourceManager.getStringByNameSync("a_ten_hour_time_quantity_representation") + Duration.ofHours(10).toString() + '\n' +
-  context?.resourceManager.getStringByNameSync('a_10_year_and_45_day_time_quantity_representation') + Period.ofYears(10).plusDays(45).toString() + '\n' +
-  context?.resourceManager.getStringByNameSync('Given_time_plus_10_hours_and_30_minutes') + mDateTime.plus(Duration.ofHours(10).plusMinutes(30)).toString();
+  return getStringByNameSync(context, "a_ten_hour_time_quantity_representation") + Duration.ofHours(10).toString() + '\n' +
+  getStringByNameSync(context, 'a_10_year_and_45_day_time_quantity_representation') + Period.ofYears(10).plusDays(45).toString() + '\n' +
+  getStringByNameSync(context, 'Given_time_plus_10_hours_and_30_minutes') + mDateTime.plus(Duration.ofHours(10).plusMinutes(30)).toString();
+}
+
+// 获取指定资源名称对应的字符串
+function getStringByNameSync(context: Context | undefined, resName: string): string {
+  try {
+    return context?.resourceManager.getStringByNameSync(resName) || "";
+  }catch (e){
+    hilog.error(0x0001, "[js-joda]", "getStringByNameSync error, message %{private}d", JSON.stringify(e));
+    return "";
+  }
 }

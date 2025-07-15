@@ -45,7 +45,7 @@ import {
   ZoneId,
   ZoneOffset
 } from '@js-joda/core';
-import router from '@ohos.router';
+import hilog from '@ohos.hilog';
 
 @Entry
 @Component
@@ -149,24 +149,34 @@ function testLocalTime(context: Context | undefined): string {
   console.info(mTime1.until(mTime3, ChronoUnit.SECONDS).toString())
 
 
-  return context?.resourceManager.getStringByNameSync("Get_default_time") + LocalTime.now(ZoneOffset.UTC).toString() + '\n' +
-    context?.resourceManager.getStringByNameSync("Format_time_from_hours_minutes_and_seconds")  + LocalTime.of(23, 55, 42).toString() + '\n' +
-    context?.resourceManager.getStringByNameSync("Retrieve_time_from_the_provided_seconds")  + LocalTime.ofSecondOfDay(3666).toString() + '\n' +
-    context?.resourceManager.getStringByNameSync("Given_time_analysis")  + mTime.toString() + '\n' +
-    context?.resourceManager.getStringByNameSync("Time_formatting_truncated_to_seconds")  + mTime.truncatedTo(ChronoUnit.SECONDS).toString() + '\n' +
-    context?.resourceManager.getStringByNameSync("Get_the_given_time_hours")  + mTime.hour().toString() + '\n' +
-    context?.resourceManager.getStringByNameSync("Get_the_given_number_of_minutes_at_a_given_time") + mTime.minute().toString() + '\n' +
-    context?.resourceManager.getStringByNameSync("Get_the_given_time_in_seconds")  + mTime.second().toString() + '\n' +
-    context?.resourceManager.getStringByNameSync("Obtain_the_number_of_nanoseconds_at_a_given_time")  + mTime.nano().toString() + '\n' +
-    context?.resourceManager.getStringByNameSync("Given_the_number_of_seconds_in_a_day_at_a_given_time") + mTime.get(ChronoField.SECOND_OF_DAY).toString() + '\n' +
-    context?.resourceManager.getStringByNameSync("Test_time_in_AM_PM_hours")  + mTime.get(ChronoField.HOUR_OF_AMPM).toString() + '\n' +
-    context?.resourceManager.getStringByNameSync("Add_12_hours_to_the_given_time")  + mTime1.plusHours(12).toString() + '\n' +
-    context?.resourceManager.getStringByNameSync("Add_30_minutes_to_the_given_time")  + mTime1.plusMinutes(30).toString() + '\n' +
-    context?.resourceManager.getStringByNameSync("Add_30_seconds_to_the_given_time")  + mTime1.plusSeconds(30).toString() + '\n' +
-    context?.resourceManager.getStringByNameSync("Increase_the_given_time_by_1000000_nanoseconds")  + mTime1.plusNanos(1000000).toString() + '\n' +
-    context?.resourceManager.getStringByNameSync("Add_1_millisecond_to_the_given_time")  + mTime1.plus(1, ChronoUnit.MILLIS).toString() + '\n' +
-    context?.resourceManager.getStringByNameSync("Add_half_a_day_to_the_given_time") + mTime1.plus(1, ChronoUnit.HALF_DAYS).toString() + '\n' +
-    context?.resourceManager.getStringByNameSync("Set_the_hour_to_1")  + mTime1.withHour(1).toString() + '\n' +
-    context?.resourceManager.getStringByNameSync("Set_the_minute_to_1")  + mTime1.withMinute(1).toString() + '\n' +
-    context?.resourceManager.getStringByNameSync("Set_the_number_of_seconds_to_1")  + mTime1.withSecond(1).toString();
+  return getStringByNameSync(context, "Get_default_time") + LocalTime.now(ZoneOffset.UTC).toString() + '\n' +
+    getStringByNameSync(context, "Format_time_from_hours_minutes_and_seconds")  + LocalTime.of(23, 55, 42).toString() + '\n' +
+    getStringByNameSync(context, "Retrieve_time_from_the_provided_seconds")  + LocalTime.ofSecondOfDay(3666).toString() + '\n' +
+    getStringByNameSync(context, "Given_time_analysis")  + mTime.toString() + '\n' +
+    getStringByNameSync(context, "Time_formatting_truncated_to_seconds")  + mTime.truncatedTo(ChronoUnit.SECONDS).toString() + '\n' +
+    getStringByNameSync(context, "Get_the_given_time_hours")  + mTime.hour().toString() + '\n' +
+    getStringByNameSync(context, "Get_the_given_number_of_minutes_at_a_given_time") + mTime.minute().toString() + '\n' +
+    getStringByNameSync(context, "Get_the_given_time_in_seconds")  + mTime.second().toString() + '\n' +
+    getStringByNameSync(context, "Obtain_the_number_of_nanoseconds_at_a_given_time")  + mTime.nano().toString() + '\n' +
+    getStringByNameSync(context, "Given_the_number_of_seconds_in_a_day_at_a_given_time") + mTime.get(ChronoField.SECOND_OF_DAY).toString() + '\n' +
+    getStringByNameSync(context, "Test_time_in_AM_PM_hours")  + mTime.get(ChronoField.HOUR_OF_AMPM).toString() + '\n' +
+    getStringByNameSync(context, "Add_12_hours_to_the_given_time")  + mTime1.plusHours(12).toString() + '\n' +
+    getStringByNameSync(context, "Add_30_minutes_to_the_given_time")  + mTime1.plusMinutes(30).toString() + '\n' +
+    getStringByNameSync(context, "Add_30_seconds_to_the_given_time")  + mTime1.plusSeconds(30).toString() + '\n' +
+    getStringByNameSync(context, "Increase_the_given_time_by_1000000_nanoseconds")  + mTime1.plusNanos(1000000).toString() + '\n' +
+    getStringByNameSync(context, "Add_1_millisecond_to_the_given_time")  + mTime1.plus(1, ChronoUnit.MILLIS).toString() + '\n' +
+    getStringByNameSync(context, "Add_half_a_day_to_the_given_time") + mTime1.plus(1, ChronoUnit.HALF_DAYS).toString() + '\n' +
+    getStringByNameSync(context, "Set_the_hour_to_1")  + mTime1.withHour(1).toString() + '\n' +
+    getStringByNameSync(context, "Set_the_minute_to_1")  + mTime1.withMinute(1).toString() + '\n' +
+    getStringByNameSync(context, "Set_the_number_of_seconds_to_1")  + mTime1.withSecond(1).toString();
+}
+
+// 获取指定资源名称对应的字符串
+function getStringByNameSync(context: Context | undefined, resName: string): string {
+  try {
+    return context?.resourceManager.getStringByNameSync(resName) || "";
+  }catch (e){
+    hilog.error(0x0001, "[js-joda]", "getStringByNameSync error, message %{private}d", JSON.stringify(e));
+    return "";
+  }
 }
