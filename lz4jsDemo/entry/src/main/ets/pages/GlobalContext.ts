@@ -25,11 +25,11 @@ export class GlobalContext {
     return GlobalContext.instance;
   }
 
-  getfindex(value: string): Object | undefined {
+  getFIndex(value: string): Object | undefined {
     return this._objects.get(value);
   }
 
-  setfindex(key: string, objectClass: Object): void {
+  setFIndex(key: string, objectClass: Object): void {
     this._objects.set(key, objectClass);
   }
 

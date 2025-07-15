@@ -12,16 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import lz4 from "lz4js"
+import lz4 from "lz4js";
 import fs from '@ohos.file.fs';
-import {GlobalContext} from "./GlobalContext"
+import {GlobalContext} from "./GlobalContext";
 import common from '@ohos.app.ability.common';
+import promptAction from "@ohos.promptAction";
 
 interface  errs{
   message:string,
   code:number
 }
-let context = GlobalContext.getContext().getfindex('context' );
+let context = GlobalContext.getContext().getFIndex('context' );
 
 @Entry
 @Component
@@ -77,44 +78,64 @@ struct lz4jsDemo {
     }
   }
   creatTxt(){
-    const str:string = 'DevEco Studio V3.1 Canary1版本兼容性配套关系如下表所示';
-    let path = (context as common.UIAbilityContext).filesDir + '/test.txt';
-    let file = fs.openSync(path, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
-    fs.writeSync(file.fd, str);
-    this.getUIContext().getPromptAction().showToast({ message: $r("app.string.Txt_file_created"), duration: 4000 });
+    try{
+      const str:string = 'DevEco Studio V3.1 Canary1版本兼容性配套关系如下表所示';
+      let path = (context as common.UIAbilityContext).filesDir + '/test.txt';
+      let file = fs.openSync(path, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
+      fs.writeSync(file.fd, str);
+      this.showToast({ message: $r("app.string.Txt_file_created"), duration: 4000 });
+    }catch (err) {
+      console.error("create txt failed with error message: " + err.message + ", error code: " + err.code);
+    }
   }
   compressTxt(){
-    let path = (context as common.UIAbilityContext).filesDir+ '/test.txt';
-    fs.stat(path).then( (stat)=> {
-      let file = fs.openSync(path, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
-      let buf = new ArrayBuffer(stat.size);
-      fs.readSync(file.fd, buf);
-      let unitArray = new Uint8Array(buf);
-      let compressed :Uint8Array= lz4.compress(unitArray);
-      let path1 = (context as common.UIAbilityContext).filesDir + '/test.lz4';
-      let file1 = fs.openSync(path1, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
-      fs.writeSync(file1.fd, compressed.buffer);
-      this.getUIContext().getPromptAction().showToast({ message: $r("app.string.Txt_file_compressed_successfully"), duration: 4000 });
-    }).catch((err:errs)=> {
-      console.info("get file info failed with error message: " + err.message + ", error code: " + err.code);
-      this.getUIContext().getPromptAction().showToast({ message: $r("app.string.Failed_compress_txt_file"), duration: 4000 });
-    });
+    try {
+      let path = (context as common.UIAbilityContext).filesDir + '/test.txt';
+      fs.stat(path).then((stat) => {
+        let file = fs.openSync(path, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
+        let buf = new ArrayBuffer(stat.size);
+        fs.readSync(file.fd, buf);
+        let unitArray = new Uint8Array(buf);
+        let compressed: Uint8Array = lz4.compress(unitArray);
+        let path1 = (context as common.UIAbilityContext).filesDir + '/test.lz4';
+        let file1 = fs.openSync(path1, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
+        fs.writeSync(file1.fd, compressed.buffer);
+        this.showToast({ message: $r("app.string.Txt_file_compressed_successfully"), duration: 4000 });
+      }).catch((err: errs) => {
+        console.info("get file info failed with error message: " + err.message + ", error code: " + err.code);
+        this.showToast({ message: $r("app.string.Failed_compress_txt_file"), duration: 4000 });
+      });
+    }catch (err) {
+      console.error("compress txt failed with error message: " + err.message + ", error code: " + err.code);
+    }
   }
   deCompressTxt(){
-    let path = (context as common.UIAbilityContext).filesDir+ '/test.lz4';
-    fs.stat(path).then( (stat)=> {
-      let file = fs.openSync(path, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
-      let buf = new ArrayBuffer(stat.size);
-      fs.readSync(file.fd, buf);
-      let unitArray = new Uint8Array(buf);
-      let deCompressed :Uint8Array= lz4.decompress(unitArray);
-      let path1 = (context as common.UIAbilityContext).filesDir + '/test1.txt';
-      let file1 = fs.openSync(path1, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
-      fs.writeSync(file1.fd, deCompressed.buffer);
-      this.getUIContext().getPromptAction().showToast({ message: $r("app.string.Txt_file_successfully_extracted"), duration: 4000 });
-    }).catch( (err:errs)=> {
-      console.info("get file info failed with error message: " + err.message + ", error code: " + err.code);
-      this.getUIContext().getPromptAction().showToast({ message: $r("app.string.Failed_decompress_txt_file"), duration: 4000 });
-    });
+    try {
+      let path = (context as common.UIAbilityContext).filesDir + '/test.lz4';
+      fs.stat(path).then((stat) => {
+        let file = fs.openSync(path, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
+        let buf = new ArrayBuffer(stat.size);
+        fs.readSync(file.fd, buf);
+        let unitArray = new Uint8Array(buf);
+        let deCompressed: Uint8Array = lz4.decompress(unitArray);
+        let path1 = (context as common.UIAbilityContext).filesDir + '/test1.txt';
+        let file1 = fs.openSync(path1, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
+        fs.writeSync(file1.fd, deCompressed.buffer);
+        this.showToast({ message: $r("app.string.Txt_file_successfully_extracted"), duration: 4000 });
+      }).catch((err: errs) => {
+        console.info("get file info failed with error message: " + err.message + ", error code: " + err.code);
+        this.showToast({ message: $r("app.string.Failed_decompress_txt_file"), duration: 4000 });
+      });
+    }catch (err) {
+      console.error("deCompress txt failed with error message: " + err.message + ", error code: " + err.code);
+    }
+  }
+
+  showToast(options: promptAction.ShowToastOptions){
+    try {
+      this.getUIContext().getPromptAction().showToast(options);
+    }catch (err) {
+      console.error("showToast failed with error message: " + err.message + ", error code: " + err.code);
+    }
   }
 }
