@@ -30,7 +30,7 @@ import hilog from '@ohos.hilog';
 
 @Entry
 @Component
-struct Index {
+struct Demo1 {
   private getErr(str: string): string {
     let msg: string = '';
     try {
@@ -86,6 +86,31 @@ struct Index {
             hilog.info(0x0001, "expr-parser TEST:", "result1: %{public}d", res1);
             hilog.info(0x0001, "expr-parser TEST:", "result2: %{public}d", res2);
           })
+
+        Button($r('app.string.parseORFiled'),{ type: ButtonType.Normal, stateEffect: true })
+        .borderRadius(8)
+          .backgroundColor(0x317aff)
+          .width("60%")
+          .height("10%")
+          .margin({
+            left: "20%",
+            right: "20%",
+            top: "2%",
+            bottom: "2%"
+          }).onClick(() => {
+          let expr1 =
+            new Expression('sh_params.pageData.stepName == $stepName OR sh_params.pageData.stepName == $stepName2').parse()
+          let expr2 = new Expression('sh_params.pageData.stepName == AAA OR sh_params.pageData.stepName == AA').parse()
+          let result1: boolean = expr1({ sh_params: { pageData: { stepName: 'AAA' } }, args: { stepName: 'AAA' } })
+          let result2: boolean = expr1({ sh_params: { pageData: { stepName: 'AA' } }, args: { stepName2: 'AA' } })
+          let result3: string = expr2({ sh_params: { pageData: { stepName: 'AAA' } } })
+          let result4: string = expr2({ sh_params: { pageData: { stepName: 'AA' } } })
+          hilog.info(0x0001, "expr-parser TEST:", "result1: %{public}s", result1);
+          hilog.info(0x0001, "expr-parser TEST:", "result2: %{public}s", result2);
+          hilog.info(0x0001, "expr-parser TEST:", "result3: %{public}s", result3);
+          hilog.info(0x0001, "expr-parser TEST:", "result4: %{public}s", result4);
+        })
+
         Button($r('app.string.parseBool'), { type: ButtonType.Normal, stateEffect: true })
           .borderRadius(8)
           .backgroundColor(0x317aff)
@@ -98,10 +123,14 @@ struct Index {
             bottom: "2%"
           })
           .onClick(() => {
-            let expr: Function = new Expression('a % b == 1 && c % d == 2 && e % f != 1').parse();
-            let res: number = expr({ a: 21, b: 2, c: 8, d: 3, e: 3, f: 3 }); // true
-            hilog.info(0x0001, "expr-parser TEST:", "result: %{public}s", res);
+            let expr1: Function = new Expression('a % b == 1 && c % d == 2 && e % f != 1').parse();
+            let expr2 = new Expression('a % b == 1 AND c % d == 2 && e % f != 1').parse()
+            let res1: number = expr1({ a: 21, b: 2, c: 8, d: 3, e: 3, f: 3 }); // true
+            let res2: number = expr2({ a: 21, b: 2, c: 8, d: 3, e: 3, f: 3 });
+            hilog.info(0x0001, "expr-parser TEST:", "result1: %{public}s", res1);
+            hilog.info(0x0001, "expr-parser TEST:", "result2: %{public}s", res2);
           })
+
         Button($r('app.string.parseNomal'), { type: ButtonType.Normal, stateEffect: true })
           .borderRadius(8)
           .backgroundColor(0x317aff)

@@ -41,8 +41,8 @@ const exprCalc = new Expression('a.value + 12 - (2 * 14 / 4)').parse();
 
 expr-parser has been verified in the following version:
 
-- DevEco Studio Version: 5.0.1 Release, OpenHarmony SDK: API Version 13 Release (5.0.1.115)
-- DevEco Studio Version：DevEco Studio 5.1.0 Canary1(5.1.0.229)，OpenHarmony SDK:5.1.0.229 API16(5.1.0.46)
+- DevEco Studio Version: 5.0.1 Release, OpenHarmony SDK: API Version 13 Release (5.0.1.115).
+- DevEco Studio Version：DevEco Studio 5.1.0 Canary1(5.1.0.229)，OpenHarmony SDK:5.1.0.229 API16(5.1.0.46).
 
 ## Directory Structure
 ```
