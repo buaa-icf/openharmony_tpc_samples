@@ -89,7 +89,12 @@ struct Index {
   @State result: string = "";
   scroller: Scroller = new Scroller()
   getResourceString(res: Resource) {
-    return getContext().resourceManager.getStringSync(res.id)
+    try {
+      return this.getUIContext()?.getHostContext()?.resourceManager.getStringSync(res.id) || '';
+    } catch (e) {
+      console.error(`getResourceString error, message: ${e}}`);
+      return '';
+    }
   }
 
   build() {
@@ -189,7 +194,7 @@ struct Index {
                 let arr: Array<string> = new Array()
                 const handler1 = helper.getEventCollector((error, actual: ESObject) => {
                   if (error) {
-                    this.result = this.result + getContext().resourceManager.getStringByNameSync('Parse_fail') + "：" + JSON.stringify(error)
+                    this.result = this.result + this.getUIContext()?.getHostContext()?.resourceManager.getStringByNameSync('Parse_fail') + "：" + JSON.stringify(error)
                     return
                   }
 
