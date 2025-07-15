@@ -15,6 +15,7 @@
 
 import RuleEngine from "node-rules";
 import { Fact } from "./Type";
+import { getStringByNameSync, showToast } from "./Utils";
 
 @Entry
 @Component
@@ -24,11 +25,11 @@ struct MultipleRules {
   @State typeValue: string = "other";
   @State resultStr: string = "";
   controller: TextAreaController = new TextAreaController();
-  testResult: string = this.getUIContext().getHostContext()?.resourceManager.getStringByNameSync('text_result').toString() || "";
+  testResult: string = getStringByNameSync(this.getUIContext().getHostContext(), 'text_result').toString();
 
   ruleEngineExecute(): void {
     if (this.setValue === '' || Number.isNaN(Number(this.setValue))) {
-      this.getUIContext().getPromptAction().showToast({
+      showToast(this.getUIContext(), {
         message: 'Enter an integer value'
       })
       return
