@@ -17,11 +17,11 @@ This project is a complete port of the togeojson library, which originally ran i
 ```shell
 ohpm install @ohos/togeojson 
 ```
-For more details on setting up the OpenHarmony ohpm environment, please refer to [How to install OpenHarmony ohpm packages](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+For more details on setting up the OpenHarmony ohpm environment, please refer to [How to install OpenHarmony ohpm packages](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md).
 
 ## X86 Emulator Configuration
 
-[Using the Emulator to Run an App/Service](https://developer.huawei.com/consumer/cn/deveco-developer-suite/enabling/kit?currentPage=1&pageSize=100)
+[Using the Emulator to Run an App/Service](https://developer.huawei.com/consumer/cn/deveco-developer-suite/enabling/kit?currentPage=1&pageSize=100).
 
 ## Usage Example
 
