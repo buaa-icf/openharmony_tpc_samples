@@ -14,6 +14,8 @@
  */
 
 import pako, { constants } from 'pako';
+import hilog from '@ohos.hilog';
+import promptAction from '@ohos.promptAction';
 
 @Entry
 @Component
@@ -29,6 +31,7 @@ struct deflateDemo {
     try {
       return this.getUIContext().getHostContext()?.resourceManager.getStringSync(res.id) || "";
     }catch (e) {
+      hilog.error(0x0001, "[pako]", "getResourceString error, message %{private}d", JSON.stringify(e));
       return "";
     }
   }
@@ -169,7 +172,7 @@ struct deflateDemo {
     let deflateArray: Uint8Array | undefined = deflate.result
     this.Deflate1 = deflateArray?.toString()
     let err: string | number = deflate.err != constants.Z_OK ? deflate.msg : constants.Z_OK
-    this.getUIContext().getPromptAction().showToast({ message: "" + err, duration: 4000 })
+    this.showToast({ message: "" + err, duration: 4000 })
   }
 
   DeflateTest2() {
@@ -178,7 +181,7 @@ struct deflateDemo {
     let deflateArray: Uint8Array | undefined = pako.deflate(data)
     this.Deflate2 = deflateArray?.toString()
     let result: Boolean = (deflateArray?.toString() === array.toString())
-    this.getUIContext().getPromptAction().showToast({ message: result.toString(), duration: 4000 })
+    this.showToast({ message: result.toString(), duration: 4000 })
   }
 
   DeflateTest3() {
@@ -187,7 +190,7 @@ struct deflateDemo {
     let array = new Uint8Array([99, 100, 98, 102, 97, 101, 99, 231, 224, 4, 0])
     this.Deflate3 = deflateArray?.toString()
     let result: Boolean = (deflateArray?.toString() === array.toString())
-    this.getUIContext().getPromptAction().showToast({ message: result.toString(), duration: 4000 })
+    this.showToast({ message: result.toString(), duration: 4000 })
 
   }
 
@@ -201,7 +204,7 @@ struct deflateDemo {
 
     let err: string | number = inflate.err != constants.Z_OK ? inflate.msg : constants.Z_OK
     this.Inflate = inflate.result?.toString()
-    this.getUIContext().getPromptAction().showToast({ message: "" + err, duration: 4000 })
+    this.showToast({ message: "" + err, duration: 4000 })
   }
 
   InflateInflateRawTest() {
@@ -210,7 +213,7 @@ struct deflateDemo {
     this.Inflate2 = inflate?.toString()
     let array = new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9])
     let result: Boolean = (inflate?.toString() === array.toString())
-    this.getUIContext().getPromptAction().showToast({ message: result.toString(), duration: 4000 })
+    this.showToast({ message: result.toString(), duration: 4000 })
   }
 
   ungzipTest() {
@@ -220,6 +223,14 @@ struct deflateDemo {
     let ungzip: string | Uint8Array | undefined = pako.ungzip(gzip);
     this.ungzip1 = ungzip?.toString();
     let result: Boolean = (ungzip?.toString() === array.toString());
-    this.getUIContext().getPromptAction().showToast({ message: result.toString(), duration: 4000 });
+    this.showToast({ message: result.toString(), duration: 4000 });
+  }
+
+  showToast(options: promptAction.ShowToastOptions){
+    try {
+      this.getUIContext().getPromptAction().showToast(options);
+    }catch (err) {
+      hilog.error(0x0001, "[pako]", "showToast error, message %{private}d", JSON.stringify(err));
+    }
   }
 }
