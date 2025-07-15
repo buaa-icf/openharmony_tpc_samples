@@ -22,8 +22,9 @@
  * SOFTWARE.
  */
 
-import sanitize from 'sanitize-html';
-import prompt from '@ohos.prompt';
+import sanitize from '@ohos/sanitize-html';
+import hilog from '@ohos.hilog';
+import promptAction from '@ohos.promptAction';
 
 @Entry
 @Component
@@ -33,6 +34,14 @@ struct Allowed_schemes_by_tag {
   @State private schemeName: string = '';
   @State private sanitizeResult: string = 'sanitizeResult: ';
   private controller: TextInputController = new TextInputController();
+
+  showToast(options: promptAction.ShowToastOptions){
+    try {
+      this.getUIContext().getPromptAction().showToast(options);
+    }catch (e) {
+      hilog.error(0x0001, "[sanitize-html]", "showToast error, message %{private}d", JSON.stringify(e));
+    }
+  }
 
   build() {
     Row() {
@@ -55,7 +64,7 @@ struct Allowed_schemes_by_tag {
           .height('5%')
           .onClick(() => {
             if (!this.tagName || !this.schemeName) {
-              prompt.showToast({ message: 'please input scheme name' })
+              this.showToast({ message: 'please input scheme name' })
               return;
             }
             let html = '<' + this.tagName + ' href="' + this.schemeName + '://www.baidu.com">inner text </' + this.tagName + '>';
@@ -66,7 +75,7 @@ struct Allowed_schemes_by_tag {
           .height('5%')
           .onClick(() => {
             if (!this.tagName || !this.schemeName) {
-              prompt.showToast({ message: 'please input tag name' })
+              this.showToast({ message: 'please input tag name' })
               return;
             }
             sanitize.defaults.allowedSchemesByTag['a'] = ['sms', 'data'];
@@ -78,7 +87,7 @@ struct Allowed_schemes_by_tag {
           .height('5%')
           .onClick(() => {
             if (!this.tagName || !this.schemeName) {
-              prompt.showToast({ message: 'please input tag name' })
+              this.showToast({ message: 'please input tag name' })
               return;
             }
             let html = '<' + this.tagName + ' href="' + this.schemeName + '://www.baidu.com">inner text </' + this.tagName + '>';

@@ -22,8 +22,9 @@
  * SOFTWARE.
  */
 
-import sanitize from 'sanitize-html';
-import prompt from '@ohos.prompt';
+import sanitize from '@ohos/sanitize-html';
+import hilog from '@ohos.hilog';
+import promptAction from '@ohos.promptAction';
 
 @Entry
 @Component
@@ -32,7 +33,12 @@ struct AllowedTags {
   @State private tagName: string = '';
   @State private sanitizeResult: string = 'sanitizeResult: ';
 
-  aboutToAppear() {
+  showToast(options: promptAction.ShowToastOptions){
+    try {
+      this.getUIContext().getPromptAction().showToast(options);
+    }catch (e) {
+      hilog.error(0x0001, "[sanitize-html]", "showToast error, message %{private}d", JSON.stringify(e));
+    }
   }
 
   build() {
@@ -51,7 +57,7 @@ struct AllowedTags {
           .height('5%')
           .onClick(() => {
             if (!this.tagName) {
-              prompt.showToast({ message: 'please input tag name' })
+              this.showToast({ message: 'please input tag name' })
               return;
             }
             let html = '<' + this.tagName + '>inner text </' + this.tagName + '>';
@@ -62,7 +68,7 @@ struct AllowedTags {
           .height('5%')
           .onClick(() => {
             if (!this.tagName) {
-              prompt.showToast({ message: 'please input tag name' })
+              this.showToast({ message: 'please input tag name' })
               return;
             }
             sanitize.defaults.allowedTags = ['img', 'iframe'];
@@ -74,7 +80,7 @@ struct AllowedTags {
           .height('5%')
           .onClick(() => {
             if (!this.tagName) {
-              prompt.showToast({ message: 'please input tag name' })
+              this.showToast({ message: 'please input tag name' })
               return;
             }
             let html = '<' + this.tagName + '>inner text </' + this.tagName + '>';
@@ -87,12 +93,12 @@ struct AllowedTags {
           .height('5%')
           .onClick(() => {
             if (!this.tagName) {
-              prompt.showToast({ message: 'please input tag name' })
+              this.showToast({ message: 'please input tag name' })
               return;
             }
             let index:ESObject = sanitize.defaults.allowedTags.indexOf(this.tagName);
             if (index != -1) {
-              prompt.showToast({ message: 'the tag name already exist' })
+              this.showToast({ message: 'the tag name already exist' })
               return;
             }
             sanitize.defaults.allowedTags.push(this.tagName);
@@ -104,7 +110,7 @@ struct AllowedTags {
           .height('5%')
           .onClick(() => {
             if (!this.tagName) {
-              prompt.showToast({ message: 'please input tag name' })
+              this.showToast({ message: 'please input tag name' })
               return;
             }
             let html = '<' + this.tagName + '>inner text </' + this.tagName + '>';
@@ -115,7 +121,7 @@ struct AllowedTags {
           .height('5%')
           .onClick(() => {
             if (!this.tagName) {
-              prompt.showToast({ message: 'please input tag name' })
+              this.showToast({ message: 'please input tag name' })
               return;
             }
             let html = '<' + this.tagName + '>inner text </' + this.tagName + '>';

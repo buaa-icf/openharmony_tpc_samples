@@ -22,8 +22,9 @@
  * SOFTWARE.
  */
 
-import sanitize from 'sanitize-html';
-import prompt from '@ohos.prompt';
+import sanitize from '@ohos/sanitize-html';
+import promptAction from '@ohos.promptAction';
+import hilog from '@ohos.hilog';
 
 @Entry
 @Component
@@ -32,6 +33,14 @@ struct Self_closing_tags {
   private tags: string[] = sanitize.defaults.selfClosing;
   @State private tagName: string = '';
   @State private sanitizeResult: string = 'sanitizeResult: ';
+
+  showToast(options: promptAction.ShowToastOptions){
+    try {
+      this.getUIContext().getPromptAction().showToast(options);
+    }catch (e) {
+      hilog.error(0x0001, "[sanitize-html]", "showToast error, message %{private}d", JSON.stringify(e));
+    }
+  }
 
   build() {
     Row() {
@@ -49,7 +58,7 @@ struct Self_closing_tags {
           .height('5%')
           .onClick(() => {
             if (!this.tagName) {
-              prompt.showToast({ message: 'please input tag name' })
+              this.showToast({ message: 'please input tag name' })
               return;
             }
             let html = '<' + this.tagName + ' name="selfClosingTag">';
@@ -63,7 +72,7 @@ struct Self_closing_tags {
           .height('5%')
           .onClick(() => {
             if (!this.tagName) {
-              prompt.showToast({ message: 'please input tag name' })
+              this.showToast({ message: 'please input tag name' })
               return;
             }
             sanitize.defaults.selfClosing = [this.tagName];
@@ -78,7 +87,7 @@ struct Self_closing_tags {
           .height('5%')
           .onClick(() => {
             if (!this.tagName) {
-              prompt.showToast({ message: 'please input tag name' })
+              this.showToast({ message: 'please input tag name' })
               return;
             }
             let html = '<' + this.tagName + ' name="selfClosingTag">';
@@ -93,12 +102,12 @@ struct Self_closing_tags {
           .height('5%')
           .onClick(() => {
             if (!this.tagName) {
-              prompt.showToast({ message: 'please input tag name' })
+              this.showToast({ message: 'please input tag name' })
               return;
             }
             let index:ESObject = sanitize.defaults.selfClosing.indexOf(this.tagName);
             if (index != -1) {
-              prompt.showToast({ message: 'the tag name already exist' })
+              this.showToast({ message: 'the tag name already exist' })
               return;
             }
             sanitize.defaults.selfClosing.push(this.tagName);

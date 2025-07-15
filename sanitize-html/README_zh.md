@@ -1,8 +1,8 @@
-# sanitize-html
+# @ohos/sanitize-html
 
 ## 简介
 
-sanitize-html 提供了HTML清理API，支持HTML片段清理。内置默认的标签、属性等、可根据默认属性进行HTML清理，同时也可进行自行配置，根据用户需求进行自定义HTML清理规则。
+@ohos/sanitize-html 提供了HTML清理API，支持HTML片段清理。内置默认的标签、属性等、可根据默认属性进行HTML清理，同时也可进行自行配置，根据用户需求进行自定义HTML清理规则。
 
 ## 下载安装
 
@@ -17,7 +17,7 @@ ohpm 环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](h
 引入HTML清理接口，根据不同配置规则，获取不同的清理结果。
 
 ```
-import sanitizeHtml from 'sanitize-html';
+import sanitizeHtml from '@ohos/sanitize-html';
 ```
 
 

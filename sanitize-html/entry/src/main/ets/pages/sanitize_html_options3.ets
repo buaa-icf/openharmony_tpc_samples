@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-import sanitize from 'sanitize-html';
+import sanitize from '@ohos/sanitize-html';
 class filter {
   tagName: ESObject = 0
   attribs: ESObject = 0
