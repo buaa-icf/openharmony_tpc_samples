@@ -33,7 +33,7 @@ import {
   ZonedDateTime,
   ZoneId
 } from '@js-joda/core'
-import router from '@ohos.router';
+import hilog from '@ohos.hilog';
 
 @Entry
 @Component
@@ -81,6 +81,16 @@ function testZonedDateTime(context: Context | undefined) {
 
   console.info(ZonedDateTime.now(ZoneId.systemDefault()).toString());
 
-  return context?.resourceManager.getStringByNameSync("Get_date_and_time_with_time_zone") + ZonedDateTime.now().toString() + '\n' +
-  context?.resourceManager.getStringByNameSync("Obtain_domestic_Shanghai_date_and_time")+ ZonedDateTime.now(ZoneId.systemDefault()).toString() + '\n';
+  return getStringByNameSync(context, "Get_date_and_time_with_time_zone") + ZonedDateTime.now().toString() + '\n' +
+  getStringByNameSync(context, "Obtain_domestic_Shanghai_date_and_time")+ ZonedDateTime.now(ZoneId.systemDefault()).toString() + '\n';
+}
+
+// 获取指定资源名称对应的字符串
+function getStringByNameSync(context: Context | undefined, resName: string): string {
+  try {
+    return context?.resourceManager.getStringByNameSync(resName) || "";
+  }catch (e){
+    hilog.error(0x0001, "[js-joda]", "getStringByNameSync error, message %{private}d", JSON.stringify(e));
+    return "";
+  }
 }

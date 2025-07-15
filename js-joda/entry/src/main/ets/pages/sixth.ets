@@ -31,6 +31,7 @@
 
 import { DateTimeFormatter, LocalDateTime, ZonedDateTime } from '@js-joda/core';
 import { Locale } from '@ohos/localeenus';
+import hilog from '@ohos.hilog';
 
 @Entry
 @Component
@@ -75,8 +76,17 @@ function testFormatter(context: Context | undefined): string {
   const zoneDateTime = ZonedDateTime.parse('Tue, 05 Oct 2021 17:08:24 GMT', dateTimeFormatter);
   console.log(zoneDateTime.toString());
 
-  return context?.resourceManager.getStringByNameSync("Basic_date_formatting") + dateTime.format(DateTimeFormatter.ofPattern('M/d/yyyy')) + '\n' +
-    context?.resourceManager.getStringByNameSync("Time_Format") + dateTime.format(DateTimeFormatter.ofPattern('HH:mm')) + '\n' +
-    context?.resourceManager.getStringByNameSync("Format_given_date_and_time") + zoneDateTime.toString();
+  return getStringByNameSync(context, "Basic_date_formatting") + dateTime.format(DateTimeFormatter.ofPattern('M/d/yyyy')) + '\n' +
+    getStringByNameSync(context, "Time_Format") + dateTime.format(DateTimeFormatter.ofPattern('HH:mm')) + '\n' +
+    getStringByNameSync(context, "Format_given_date_and_time") + zoneDateTime.toString();
+}
 
+// 获取指定资源名称对应的字符串
+function getStringByNameSync(context: Context | undefined, resName: string): string {
+  try {
+    return context?.resourceManager.getStringByNameSync(resName) || "";
+  }catch (e){
+    hilog.error(0x0001, "[js-joda]", "getStringByNameSync error, message %{private}d", JSON.stringify(e));
+    return "";
+  }
 }
