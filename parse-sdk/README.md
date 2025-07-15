@@ -10,7 +10,7 @@ Parse JavaScript SDK 是一个功能强大的客户端库，用于与 Parse Serv
 ohpm install @ohos/parser-sdk
 ```
 
-OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony har包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony har包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)。
 
 ## 使用说明
 
@@ -401,7 +401,7 @@ client.on('error', (error) => {
 | close      | 无            | 无         | 关闭 LiveQueryServer       |
 
 ## 关于混淆
-- 代码混淆，请查看[代码混淆简介](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- 代码混淆，请查看[代码混淆简介](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)。
 - 如果希望net-snmp库在代码混淆过程中不会被混淆，需要在混淆规则配置文件obfuscation-rules.txt中添加相应的排除规则：
 
 ```
@@ -411,7 +411,7 @@ client.on('error', (error) => {
 
 ## 约束与限制
 
-- DevEco Studio 版本： 5.0.3.300SP2  OpenHarmony SDK:API12 (5.0.0.22)
+- DevEco Studio 版本： 5.0.3.300SP2  OpenHarmony SDK:API12 (5.0.0.22)。
 
 ## 目录结构
 
@@ -429,13 +429,13 @@ client.on('error', (error) => {
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎给发[PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls)共建 。
+使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎给发[PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls)共建。
 
 ## 遗留问题
 
-- [ ] push功能暂不支持(目前parse-server端不支持Harmony,需要集成HMS)
-- [ ] config功能不支持(config功能需要masterKey,源库中特别说明masterKey，只能在node环境中使用)
-- [ ] 删除文件功能不支持(删除文件功能需要masterKey,源库中特别说明masterKey，只能在node环境中使用)
+- [ ] push功能暂不支持(目前parse-server端不支持Harmony,需要集成HMS)。
+- [ ] config功能不支持(config功能需要masterKey,源库中特别说明masterKey，只能在node环境中使用)。
+- [ ] 删除文件功能不支持(删除文件功能需要masterKey,源库中特别说明masterKey，只能在node环境中使用)。
 
 
 ## 开源协议
