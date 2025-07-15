@@ -19,7 +19,7 @@ ohpm install @ohos/libssh
 
 如果想要在本地编译libssh，参考[libssh本地编译脚本](https://gitee.com/han_jin_fei/lycium/tree/master/main/libssh)。
 
-在cpp目录下新增thirdparty目录，并将编译生成的库拷贝到该目录下，如下图所示
+在cpp目录下新增thirdparty目录，并将编译生成的库拷贝到该目录下，如下图所示：
 
 ![image-20250611153322646](./dir.png)
 
@@ -174,7 +174,7 @@ let result = await this.ssh2Napi.getPublicKeyFingerprint(this.publicKeyPath);
 - 公私钥生成的规则以及各种算法要对齐。
 
 ## 关于混淆
-- 代码混淆，请查看[代码混淆简介](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- 代码混淆，请查看[代码混淆简介](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)。
 - 如果希望libssh库在代码混淆过程中不会被混淆，需要在混淆规则配置文件obfuscation-rules.txt中添加相应的排除规则：
 
 ```
@@ -185,7 +185,7 @@ let result = await this.ssh2Napi.getPublicKeyFingerprint(this.publicKeyPath);
 ## 约束与限制
 在下述版本验证通过：
 
-DevEco Studio: DevEco Studio 5.0.3 Beta2- 5.0.9.200, SDK: API12
+DevEco Studio: DevEco Studio 5.0.3 Beta2- 5.0.9.200, SDK: API12。
 
 ## 目录结构
 ````

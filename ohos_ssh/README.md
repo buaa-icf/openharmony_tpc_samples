@@ -8,7 +8,7 @@ A HarmonyOS third-party library that supports both SFTP servers and SSH clients,
 ```shell
 ohpm install @ohos/libssh
 ```
-- For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
+- For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) .
 
 ### How to Build
 
@@ -175,8 +175,8 @@ let result = await this.ssh2Napi.getPublicKeyFingerprint(this.publicKeyPath);
 - Public/private key generation rules and algorithm configurations must be aligned.
 
 ## About obfuscation
-- Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
-- If you want the libssh library not to be obfuscated during code obfuscation, you need to add corresponding exclusion rules in the obfuscation rule configuration file obfuscation-rules.txt：：
+- Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md).
+- If you want the libssh library not to be obfuscated during code obfuscation, you need to add corresponding exclusion rules in the obfuscation rule configuration file obfuscation-rules.txt:
 
 ```
 -keep
@@ -184,9 +184,9 @@ let result = await this.ssh2Napi.getPublicKeyFingerprint(this.publicKeyPath);
 ```
 
 ## Constraints
-This project has been verified in the following version:：
+This project has been verified in the following version:
 
-DevEco Studio: DevEco Studio 5.0.3 Beta2- 5.0.9.200, SDK: API12
+DevEco Studio: DevEco Studio 5.0.3 Beta2- 5.0.9.200, SDK: API12.
 
 ## Directory Structure
 ````
