@@ -1,10 +1,11 @@
 {
   "name": "@ohos/parser-sdk",
   "version": "1.0.0",
-  "description": "Please describe the basic information.",
+  "description": "a parse-sdk library,supported scenarios include data management user authentication, file storage, real-time queries and subscriptions, etc.",
   "main": "Index.ets",
-  "author": "",
+  "author": "ohos_tpc",
   "license": "Apache-2.0",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/parse-sdk",
   "dependencies": {
     "@babel/runtime": "7.22.6",
     "@ohos/node-polyfill": "^1.0.1",
