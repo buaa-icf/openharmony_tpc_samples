@@ -15,6 +15,7 @@
 
 
 import RuleEngine from "node-rules";
+import { getStringByNameSync } from "./Utils";
 
 @Entry
 @Component
@@ -23,7 +24,7 @@ struct MoreRulesAndFacts {
   @State resultStr: string = "";
   controller: TextAreaController = new TextAreaController();
   @State arrayStr: Array<string> = [];
-  testResult: string = this.getUIContext().getHostContext()?.resourceManager.getStringByNameSync('text_result').toString() || "";
+  testResult: string = getStringByNameSync(this.getUIContext().getHostContext(), 'text_result').toString();
 
   ruleEngineExecute(): void {
     let ruleEngine: ESObject = new RuleEngine();

@@ -15,6 +15,7 @@
 
 import RuleEngine from "node-rules";
 import { Fact } from "./Type";
+import { getStringByNameSync, showToast } from "./Utils";
 
 @Entry
 @Component
@@ -24,13 +25,13 @@ struct RecurssionWithRules {
   @State resultStr: string = "";
   @State arrayStr: Array<string> = [];
   controller: TextAreaController = new TextAreaController();
-  testResult: string = this.getUIContext().getHostContext()?.resourceManager.getStringByNameSync('text_result').toString() || "";
+  testResult: string = getStringByNameSync(this.getUIContext().getHostContext(), 'text_result').toString();
 
   ruleEngineExecute(): void {
     let value: number = Number(this.setValue)
 
     if (this.setValue === '' || Number.isNaN(value) || value >= 10 || value < 0) {
-      this.getUIContext().getPromptAction().showToast({
+      showToast(this.getUIContext(), {
         message: 'Enter a value within 10'
       })
       return
