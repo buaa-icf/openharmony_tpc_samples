@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import md2 from 'js-md2'
+import { md2 } from 'js-md2'
 
 @Entry
 @Component
@@ -50,7 +50,7 @@ struct Index {
   }
 
   showDialog(message: string) {
-    AlertDialog.show({
+    this.getUIContext()?.showAlertDialog({
       title: '',
       message: message,
       confirm: {
