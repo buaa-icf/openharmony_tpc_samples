@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 import SmartRefreshForStoreHouseSample from "./SmartRefreshForStoreHouseSample"
+import { LogUtil } from '../util/LogUtil'
 
 @ComponentV2
 export struct StoreHouse {
@@ -84,7 +85,7 @@ export struct StoreHouse {
       this.whiteIndexCommandStrOne = this.storeHouseModel.Arr[this.whiteIndex + 1]
       this.whiteIndexCommandStrTwo = this.storeHouseModel.Arr[this.whiteIndex + 2]
       this.whiteIndexCommandStrThree = this.storeHouseModel.Arr[this.whiteIndex + 3]
-      console.info("StoreHouse =======" + this.whiteIndex + "===this.whiteIndexCommandStr===" + this.whiteIndexCommandStr)
+      LogUtil.info("StoreHouse =======" + this.whiteIndex + "===this.whiteIndexCommandStr===" + this.whiteIndexCommandStr)
       this.refresh = !this.refresh;
       this.status = this.model.refreshState;
       this.init()

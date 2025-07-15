@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 import { LOCATION } from "./SmartRefreshEnum"
+import { LogUtil } from '../util/LogUtil'
 
 @ComponentV2
 struct SmartRefreshForFlyRefresh {
@@ -131,13 +132,17 @@ struct SmartRefreshForFlyRefresh {
               })
             }
           })
-          .onTouch((event: TouchEvent) => this.touchEventFunction(event))
+          .onTouch((event: TouchEvent) =>{
+            this.touchEventFunction(event)
+            LogUtil.info(`SmartRefreshForFlyRefresh onTouch, event: ${JSON.stringify(event)}`)
+          })
         }
       }
     }
   }
 
   scrollerInit() {
+    LogUtil.info('SmartRefreshForFlyRefresh scrollerInit')
     this.modelFly.initRefreshing = false
     this.headerIsVisibleLoadMore = true
     this.modelFly.headerHeight = this.modelFly.initHeaderHeight
@@ -158,6 +163,7 @@ struct SmartRefreshForFlyRefresh {
   }
 
   scrollerEventFunction() {
+    LogUtil.info('SmartRefreshForFlyRefresh scrollerInit')
     if (this.modelFly.scrollLocation == SmartRefreshForFlyRefresh.LOCATION.HEAD && this.needScroller) {
       this.closeHeaderRefresh()
       this.needScroller = false
@@ -173,6 +179,7 @@ struct SmartRefreshForFlyRefresh {
 
   //滚动结束，关闭刷新
   closeHeaderRefresh() {
+    LogUtil.info('SmartRefreshForFlyRefresh closeHeaderRefresh')
     this.modelFly.refreshHeaderCallbackState = true
     this.modelFly.refreshBottomCallbackState = false
     clearInterval(this.modelFly.headerRefreshId)
@@ -180,6 +187,7 @@ struct SmartRefreshForFlyRefresh {
   }
 
   closeFooterRefresh() {
+    LogUtil.info('SmartRefreshForFlyRefresh closeFooterRefresh')
     this.modelFly.refreshHeaderCallbackState = false
     this.modelFly.refreshBottomCallbackState = true
     clearInterval(this.modelFly.headerRefreshId)
