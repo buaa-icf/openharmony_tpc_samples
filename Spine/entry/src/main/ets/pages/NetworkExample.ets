@@ -184,7 +184,7 @@ struct NetWorkExample {
       expected: 60
     }
 
-    this._animator = animator.create(options);
+    this._animator = this.getUIContext().createAnimator(options);
     this._animator.setExpectedFrameRateRange(expectedFrameRate);
     let result: Delay = { time: lastFrameTime, isFinish: true };
     this._animator.onFrame = (value: number) => {

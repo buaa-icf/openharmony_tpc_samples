@@ -226,7 +226,7 @@ struct SingleExample {
     }
 
     // 创建并启动动画控制器
-    this._animator = animator.create(options);
+    this._animator = this.getUIContext().createAnimator(options);
     this._animator.setExpectedFrameRateRange(expectedFrameRate);
     let result: Delay = { time: lastFrameTime, isFinish: true };
     this._animator.onFrame = (value: number) => {

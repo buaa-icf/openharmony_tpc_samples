@@ -47,7 +47,7 @@ struct Example3 {
   private animations: Array<string> = ['death', 'aim', 'idle', 'jump', 'run', 'shoot', 'walk'];
   private currentIndex: number = 0;
   private animationName: string = '';
-  context = getContext(this) as common.UIAbilityContext;
+  context = this.getUIContext()?.getHostContext() as common.UIAbilityContext;
 
   aboutToDisappear() {
     this._animator?.finish();
@@ -162,7 +162,7 @@ struct Example3 {
     }
 
     // 创建动画器
-    this._animator = animator.create(options);
+    this._animator = this.getUIContext().createAnimator(options);
     this._animator.setExpectedFrameRateRange(expectedFrameRate);
 
     // 初始化渲染结果对象 创建延迟对象，包含初始时间和完成状态标志
