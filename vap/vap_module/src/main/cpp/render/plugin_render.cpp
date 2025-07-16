@@ -27,6 +27,7 @@
 
 #include "napi/n_func_arg.h"
 
+std::mutex g_mtx;
 std::unordered_map<std::string, std::shared_ptr<PluginRender>> PluginRender::m_instance;
 OH_NativeXComponent_Callback PluginRender::m_callback;
 
@@ -106,7 +107,10 @@ static void OnSurfaceDestroyedCB(OH_NativeXComponent *component, void *window)
         render->player_->NoticeDestroyed();
     }
     PluginRender::Release(id);
-    render->deleteRenderCallback_(id);
+    if (nullptr != render && nullptr != render->deleteRenderCallback_) {
+        render->deleteRenderCallback_(id);
+    }
+    std::unique_lock<std::mutex> lock(g_mtx);
     PluginRender::m_instance.erase(id);
 }
 
@@ -165,8 +169,17 @@ PluginRender::PluginRender(std::string &id)
     renderCallback->DispatchTouchEvent = DispatchTouchEventCB;
 }
 
+PluginRender::~PluginRender()
+{
+    LOGD("~PluginRender");
+    if (player_) {
+        player_->StartRelease();
+    }
+}
+
 std::shared_ptr<PluginRender> PluginRender::GetInstance(std::string &id, bool onlyFind)
 {
+    std::unique_lock<std::mutex> lock(g_mtx);
     if (onlyFind) {
         return m_instance.find(id) == m_instance.end() ? nullptr : m_instance[id];
     }

@@ -35,13 +35,7 @@ const std::string PROP_TEXT_ALIGN = "textAlign";
 class PluginRender {
 public:
     explicit PluginRender(std::string &id);
-    ~PluginRender()
-    {
-        if (player_) {
-            player_->StartRelease();
-        }
-        m_instance.clear();
-    }
+    ~PluginRender();
     static std::shared_ptr<PluginRender> GetInstance(std::string &id, bool onlyFind = true);
     static void Release(std::string &id);
     static std::string GetXComponentId(napi_env env, napi_callback_info info);

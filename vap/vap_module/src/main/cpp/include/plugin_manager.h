@@ -58,7 +58,7 @@ private:
 
 private:
     static PluginManager m_pluginManager;
-
+    std::mutex mtx_;
     std::unordered_map<std::string, std::shared_ptr<PluginRender>> m_pluginRenderMap;
 };
 #endif // VAP_PLUGIN_MANAGER_H
