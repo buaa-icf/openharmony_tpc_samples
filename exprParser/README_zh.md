@@ -1,7 +1,7 @@
 # expr-parser
 
 ##  简介
-一个方便好用的 js 表达式解析器
+一个方便好用的 js 表达式解析器。
 
 ## 下载安装
 ```shell
@@ -40,8 +40,8 @@ const exprCalc = new Expression('a.value + 12 - (2 * 14 / 4)').parse();
 
 在下述版本验证通过：
 
-- DevEco Studio 版本：5.0.1 Release，OpenHarmony SDK:API Version 13 Release (5.0.1.115)
-- DevEco Studio 版本：DevEco Studio 5.1.0 Canary1(5.1.0.229)，OpenHarmony SDK:5.1.0.229 API16(5.1.0.46)
+- DevEco Studio 版本：5.0.1 Release，OpenHarmony SDK:API Version 13 Release (5.0.1.115)。
+- DevEco Studio 版本：DevEco Studio 5.1.0 Canary1(5.1.0.229)，OpenHarmony SDK:5.1.0.229 API16(5.1.0.46)。
 
 ## 目录结构
 ```
