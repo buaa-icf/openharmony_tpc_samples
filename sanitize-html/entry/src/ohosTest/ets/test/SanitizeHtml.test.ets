@@ -21,8 +21,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
-import sanitizeHtml from 'sanitize-html'
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium';
+import sanitizeHtml from '@ohos/sanitize-html';
 
 export default function sanitizeHtmlTest() {
   describe('SanitizeHtmlTest', ()=> {

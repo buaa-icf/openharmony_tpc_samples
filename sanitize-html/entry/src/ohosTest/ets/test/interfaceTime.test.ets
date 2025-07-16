@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-import { describe, expect, it, TestType } from '@ohos/hypium'
-import sanitizeHtml from 'sanitize-html'
+import { describe, expect, it, TestType } from '@ohos/hypium';
+import sanitizeHtml from '@ohos/sanitize-html';
 
 export default function InterfaceTime() {
   describe("InterfaceTime", () => {
@@ -71,7 +71,7 @@ export default function InterfaceTime() {
       console.log("sanitize-html:" + endTime);
       let averageTime = ((endTime - startTime) * 1000) / BASE_COUNT
       console.log("sanitize-html:" + averageTime + "μs");
-      expect(averageTime < BASELINE_CREATEHTTP).assertFalse();
+      expect(averageTime < BASELINE_CREATEHTTP).assertTrue();
       done()
     });
   });
