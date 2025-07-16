@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 import { Context } from '@ohos.abilityAccessCtrl';
+import { LogUtil } from './LogUtil';
 
 export default class StorageUtils {
   private static INDIVIDUAL_DIR_NAME: string = "video-cache";
@@ -54,6 +55,7 @@ export default class StorageUtils {
 
     } catch (err) { // (sh)it happens
       appCacheDir = StorageUtils.DEFAULT_DIR
+      LogUtil.error('getCacheDirectory error: ' + JSON.stringify(err));
     }
     return appCacheDir;
   }

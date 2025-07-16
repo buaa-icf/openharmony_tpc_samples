@@ -22,6 +22,7 @@ import HttpUrlSource from './HttpUrlSource';
 import ProxyCache from './ProxyCache';
 import ProxyCacheUtils from './ProxyCacheUtils';
 import { DataBackListener } from './interfaces/DataBackListener';
+import { LogUtil } from './LogUtil';
 
 export default class HttpProxyCache extends ProxyCache {
   private NO_CACHE_BARRIER: number = 0.2;
@@ -45,6 +46,7 @@ export default class HttpProxyCache extends ProxyCache {
       await super.shutdown();
       await this.serverConnect?.close();
     } catch (err) {
+      LogUtil.error('shutdown error: ' + JSON.stringify(err));
     }
     return Promise.resolve()
   }
@@ -64,6 +66,7 @@ export default class HttpProxyCache extends ProxyCache {
         this.serverConnect.off('close')
         this.serverConnect.close()
       } catch (err) {
+        LogUtil.error('processRequest error: ' + JSON.stringify(err));
       }
       this.serverConnect = serverConnect;
     }
@@ -108,6 +111,7 @@ export default class HttpProxyCache extends ProxyCache {
         await serverConnect?.send(msg);
 
       } catch (err) {
+        LogUtil.error('responseWithCache error: ' + JSON.stringify(err));
         break;
       }
       offset += readBytes;
@@ -150,6 +154,7 @@ export default class HttpProxyCache extends ProxyCache {
         newSourceNoCache.setDataListener(new TempDataBackListener())
         newSourceNoCache.open(offset);
       } catch (err) {
+        LogUtil.error('responseWithoutCache error: ' + JSON.stringify(err));
         newSourceNoCache.close();
         reject(err)
       }

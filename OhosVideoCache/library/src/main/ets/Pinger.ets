@@ -24,6 +24,7 @@ import buffer from '@ohos.buffer';
 import { DataBackListener } from './interfaces/DataBackListener';
 import ProgressValue from './bean/ProgressValue';
 import { VideoCacheConstant } from './constant/VideoCacheConstant';
+import { LogUtil } from './LogUtil';
 
 async function pingCallable(pingUrl: string) {
   'use concurrent'
@@ -42,7 +43,7 @@ async function pingCallable(pingUrl: string) {
       onDataReceive(data: ArrayBuffer) {
         if (data && data.byteLength) {
           let response = buffer.from(data).toString('utf-8')
-          console.info("Ping response: `" + response + "`, pinged? " + pingResult);
+          LogUtil.info("Ping response: `" + response + "`, pinged? " + pingResult);
           pingResult = expectedResponse == response;
           let eventData: emitter.EventData = {
             data: {
@@ -61,7 +62,7 @@ async function pingCallable(pingUrl: string) {
     source.setDataListener(new TempDataBackListener())
    await source.open(0);
   } catch (err) {
-    console.error("Error reading ping response,reason is " + err.message);
+    LogUtil.error("Error reading ping response,reason is " + err.message);
     pingResult = false;
   } finally {
     if (source) {
@@ -114,6 +115,7 @@ export default class Pinger {
               emitter.off(VideoCacheConstant.PING_EVENT_ID)
               emitter.off(VideoCacheConstant.SHUT_DOWN_TASKPOOL)
             } catch (err) {
+              LogUtil.error('emitter.on error: ' + JSON.stringify(err));
             }
           })
 
@@ -122,8 +124,8 @@ export default class Pinger {
           break;
         }
       } catch (err) {
-        console.warn("Error pinging server (attempt: " + attempts + ", timeout: " + timeout + "). ");
-        console.error("Error pinging server due to unexpected error,reason is " + err.message)
+        LogUtil.warn("Error pinging server (attempt: " + attempts + ", timeout: " + timeout + "). ");
+        LogUtil.error("Error pinging server due to unexpected error,reason is " + err.message)
       }
       attempts++;
       timeout *= 2;
@@ -137,7 +139,7 @@ export default class Pinger {
       let error = `Error pinging server (attempts: ${attempts}, max timeout: ${timeout / 2}).
      If you see this message, please, report at https://github.com/danikula/AndroidVideoCache/issues/134.
      Default proxies are:${JSON.stringify(proxy)}`
-      console.error(error, new ProxyCacheException(error));
+      LogUtil.error('error: ' + new ProxyCacheException(error));
       return new Promise((resolve, reject) => {
        return resolve(false)
       })
