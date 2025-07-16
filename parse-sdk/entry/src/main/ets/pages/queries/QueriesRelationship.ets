@@ -31,7 +31,7 @@ struct Index {
 
   // 创建默认数据
   async createTestData() {
-    const SkillsData: ESObject = ParseObject.extend('Comment');
+    const SkillsData: ESObject = ParseObject.extend('CommentForIndex');
     const query = new ParseQuery(SkillsData);
 
     try {
@@ -39,14 +39,14 @@ struct Index {
       const count = await query.count();
       if (count === 0) {
         // 创建测试帖子
-        const Post: ESObject = ParseObject.extend('Post');
+        const Post: ESObject = ParseObject.extend('PostForIndex');
         const post: ESObject = new Post();
         post.set('title', 'HarmonyOS开发技巧');
         post.set('content', '分享一些开发技巧');
         await post.save();
 
         // 创建两条关联评论
-        const Comment: ESObject = ParseObject.extend('Comment');
+        const Comment: ESObject = ParseObject.extend('CommentForIndex');
 
         const comment1: ESObject = new Comment();
         comment1.set('content', '很有用的分享');
@@ -68,7 +68,7 @@ struct Index {
 
   // 加载普通数据
   async loadNormalData() {
-    const Comment:ESObject = ParseObject.extend('Comment');
+    const Comment:ESObject = ParseObject.extend('CommentForIndex');
     const query = new ParseQuery(Comment);
     this.comments = await query.find();
     this.status = `加载了 ${this.comments.length} 条普通评论`;
@@ -76,7 +76,7 @@ struct Index {
 
   // 加载关联数据
   async loadRelationData() {
-    const Comment:ESObject = ParseObject.extend('Comment');
+    const Comment:ESObject = ParseObject.extend('CommentForIndex');
     const query = new ParseQuery(Comment);
 
     // 关联的post数据

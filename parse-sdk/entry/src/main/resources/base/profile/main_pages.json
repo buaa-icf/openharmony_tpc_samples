@@ -11,15 +11,19 @@
     "pages/queries/QueriesRelationship",
     "pages/livequery/LiveQueryPage",
     "pages/User",
+    "pages/Email",
     "pages/Role",
     "pages/File",
     "pages/object/ObjectPage",
     "pages/object/SavingObjects",
     "pages/object/UpdatingObjects",
     "pages/object/DestroyingObjects",
+    "pages/object/RelationalData",
     "pages/MainPage",
     "pages/GeoPoint",
     "pages/LocalDatastore",
-    "pages/Session"
+    "pages/Session",
+    "pages/Analytics",
+    "pages/LinkUser"
   ]
 }

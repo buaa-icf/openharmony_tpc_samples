@@ -13,7 +13,7 @@
   * See the License for the specific language governing permissions and
   * limitations under the License.
   */
-import router from '@ohos.router'
+import router from '@ohos.router';
 
 @Entry
 @Component
@@ -29,6 +29,14 @@ struct Index {
         .width('100%')
         .onClick(async () => {
           router.pushUrl({ url: 'pages/User' })
+        })
+
+      Button('email')
+        .borderRadius(4)
+        .type(ButtonType.Normal)
+        .width('100%')
+        .onClick(async () => {
+          router.pushUrl({ url: 'pages/Email' })
         })
 
       Button('Role')
@@ -91,6 +99,22 @@ struct Index {
         .width('100%')
         .onClick(async () => {
           router.pushUrl({ url: 'pages/Session' })
+        })
+
+      Button('Analytics')
+        .borderRadius(4)
+        .type(ButtonType.Normal)
+        .width('100%')
+        .onClick(async () => {
+          router.pushUrl({ url: 'pages/Analytics' })
+        })
+
+      Button('LinkUser')
+        .borderRadius(4)
+        .type(ButtonType.Normal)
+        .width('100%')
+        .onClick(async () => {
+          router.pushUrl({ url: 'pages/LinkUser' })
         })
     }
     .width('100%')
