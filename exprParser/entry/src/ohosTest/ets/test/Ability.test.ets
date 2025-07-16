@@ -26,7 +26,7 @@
  */
 
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium';
-import Expression from "expr-parser";
+import Expression from "@ohos/expr-parser";
 
 export default function abilityTest() {
   describe('ActsAbilityTest', () => {
@@ -180,7 +180,7 @@ export default function abilityTest() {
       expect(expr({})).assertEqual(3);
     })
     it('error', 0, () => {
-      expect(getErr()).assertEqual('invalid expression');
+      expect(getErr('')).assertEqual('invalid expression');
       expect(getErr('{ ;a: 123 }')).assertEqual('parse expression error: { ;a: 123 }');
       expect(getErr(';')).assertEqual('parse expression error: ;');
       expect(getErr('\\')).assertEqual('invalid expression: \\');
@@ -193,7 +193,7 @@ export default function abilityTest() {
   })
 }
 
-function getErr(str?: string): string {
+function getErr(str: string): string {
   let catchErr: string = '';
   try {
     new Expression(str).parse();
