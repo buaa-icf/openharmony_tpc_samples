@@ -6,6 +6,8 @@ import * as AmqpConnection from '@ohos/amqplib/src/main/ets/lib/connection' ;
 import assignIn from 'lodash.assignin/'
 import { EventEmitter } from '@ohos/node-polyfill';
 import Exchange from './exchange'
+import { LogUtil } from './LogUtil';
+
 const Extend = assignIn;
 
 
@@ -45,7 +47,7 @@ const jackrabbit = (url, logger, options = {}) => {
     };
 
     const close = (callback) => {
-
+        LogUtil.info('jackrabbit.close start');
         if (!connection) {
             if (callback) {
                 callback();
@@ -59,7 +61,7 @@ const jackrabbit = (url, logger, options = {}) => {
             // TODO: figure out how to test whether or not amqplib will throw
             // (eg, how do they determine if closing is an illegal operation?)
             connection.close((err) => {
-
+                LogUtil.error(`connection.close error: ${JSON.stringify(err)}`);
                 if (callback) {
                     callback(err);
                 }
@@ -68,6 +70,7 @@ const jackrabbit = (url, logger, options = {}) => {
             });
         }
         catch (e) {
+            LogUtil.error(`connection.close catch error: ${JSON.stringify(e)}`);
             if (callback) {
                 callback(e);
             }
@@ -80,7 +83,7 @@ const jackrabbit = (url, logger, options = {}) => {
     };
 
     const createExchange = () => {
-
+        LogUtil.info('jackrabbit.createExchange start');
         return (type, name, exchangeOptions) => {
 
             const newExchange = Exchange(name, type, exchangeOptions);
@@ -100,7 +103,7 @@ const jackrabbit = (url, logger, options = {}) => {
     // private
 
     const bail = (err, newConnectionAttempt = false) => {
-
+        LogUtil.info('jackrabbit.bail start');
         // TODO close any connections or channels that remain open
         connection = undefined;
         if (!err) {
@@ -134,14 +137,14 @@ const jackrabbit = (url, logger, options = {}) => {
     };
 
     const tryReconnect = (err) => {
-
+        LogUtil.info('jackrabbit.tryReconnect start');
         if (connectionAttempts >= options.maxRetries) {
             err.meta = 'Error connecting to RabbitMQ';
             return false;
         }
 
         const doReconnect = () => {
-
+            LogUtil.info('jackrabbit.tryReconnect.doReconnect start');
             ++connectionAttempts;
             rabbit.emit('reconnecting');
             doLog('info', `Reconnecting to RabbitMQ (${connectionAttempts}/${options.maxRetries})...`);
@@ -161,6 +164,7 @@ const jackrabbit = (url, logger, options = {}) => {
     };
 
     const onConnection = (err, conn) => {
+        LogUtil.info('jackrabbit.onConnection start');
         if (err) {
             return bail(err, true);
         }
@@ -174,7 +178,7 @@ const jackrabbit = (url, logger, options = {}) => {
         connection.on('unblocked', () => rabbit.emit('unblocked'));
 
         const notifyReady = () => {
-
+            LogUtil.info('jackrabbit.notifyReady start');
             rabbit.emit(connectionAttempts > 0 ? 'reconnected' : 'connected');
 
             if (connectionAttempts > 0) {
