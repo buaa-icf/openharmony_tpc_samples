@@ -1,5 +1,12 @@
 # 版本记录
 
+## 1.1.4
+
+---
+
+1. Fixed the abnormal stop of multiple animations playing at the same time.
+2. Fix the crash problem when stop.
+
 ## 1.1.3
 
 ---

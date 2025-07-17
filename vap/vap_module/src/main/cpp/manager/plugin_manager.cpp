@@ -34,6 +34,7 @@ enum ContextType {
 PluginManager::~PluginManager()
 {
     LOGD("~PluginManager");
+    std::unique_lock<std::mutex> lock(mtx_);
     m_pluginRenderMap.clear();
 }
 
@@ -165,11 +166,13 @@ void PluginManager::Export(napi_env env, napi_value exports)
 
 void PluginManager::DeletePluginRender(const std::string& id)
 {
+    std::unique_lock<std::mutex> lock(mtx_);
     m_pluginRenderMap.erase(id);
 }
 
 std::shared_ptr<PluginRender> PluginManager::GetRender(std::string &id)
 {
+    std::unique_lock<std::mutex> lock(mtx_);
     if (m_pluginRenderMap.find(id) == m_pluginRenderMap.end()) {
         std::shared_ptr<PluginRender> instance = PluginRender::GetInstance(id, false);
         instance->deleteRenderCallback_ = std::bind(&PluginManager::DeletePluginRender, this, std::placeholders::_1);
