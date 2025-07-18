@@ -16,6 +16,7 @@
 import { BaseCenterMode } from '../model/BaseCenterModel'
 import { animateBeforeStartStatus,animateAfterStartStatus } from './positionAnimation'
 import { AnimateDialogOptions } from './AnimateDialogOptions'
+import { LogUtil } from '../util/LogUtil'
 
 @CustomDialog
 export struct PositionDialog {
@@ -157,6 +158,7 @@ export struct PositionDialog {
                   .height(this.model.btnHeight)
                   .border(this.model.btnBorder)
                   .onClick(() =>{
+                    LogUtil.info('PositionDialog cancelBtnTitle Button onClick');
                     this.closeDialog()
                     this.cancel()
                   })
@@ -168,6 +170,7 @@ export struct PositionDialog {
                   .width(this.model.btnWidth)
                   .height(this.model.btnHeight)
                   .onClick(() =>{
+                    LogUtil.info('PositionDialog confirmBtnTitle Button onClick');
                     this.closeDialog()
                     this.confirm()
                   })
@@ -226,6 +229,7 @@ export struct PositionDialog {
         )
       }.height('100%').width('100%')
       .onClick(() =>{
+        LogUtil.info('PositionDialog Stack onClick');
         this.closeDialog()
       })
 

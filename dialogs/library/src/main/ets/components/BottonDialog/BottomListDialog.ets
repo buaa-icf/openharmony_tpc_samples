@@ -14,6 +14,7 @@
  */
 
 import animator, { AnimatorOptions, AnimatorResult } from '@ohos.animator';
+import { LogUtil } from '../util/LogUtil'
 
 @CustomDialog
 struct BottomListDialogComponent {
@@ -59,6 +60,7 @@ struct BottomListDialogComponent {
       .textOverflow({ overflow: TextOverflow.Ellipsis })
       .maxLines(1)
       .onClick(() => {
+        LogUtil.info('BottomListDialogComponent buildPage Text onClick');
         if (this.isTouchEvent) {
           return;
         }
@@ -89,6 +91,7 @@ struct BottomListDialogComponent {
     .height(this.mItemHeight)
     .alignItems(VerticalAlign.Center)
     .onClick((event) => {
+      LogUtil.info('BottomListDialogComponent buildSelectPage Row onClick');
       if (this.isTouchEvent) {
         return;
       }
@@ -132,6 +135,7 @@ struct BottomListDialogComponent {
           .fontSize(this.mDialogCancelSize)
           .textAlign(TextAlign.Center)
           .onClick(() => {
+            LogUtil.info('BottomListDialogComponent mDialogCancelText onClick');
             if (this.isTouchEvent) {
               return;
             }
@@ -146,6 +150,7 @@ struct BottomListDialogComponent {
       .borderRadius({ topLeft: 20, topRight: 20 })
       .height(this.mDialogComponentHeight)
       .onTouch((event?: TouchEvent) => {
+        LogUtil.info('BottomListDialogComponent Column onTouch');
         if (event != undefined) {
           if ((event.type === TouchType.Down)) {
             if (!this.mDialogPrimitiveHeight) {
@@ -194,6 +199,7 @@ struct BottomListDialogComponent {
     .backgroundColor(this.mDialogComponentMastColor)
     .alignContent(Alignment.Bottom)
     .onClick(() => {
+      LogUtil.info('BottomListDialogComponent Stack onClick');
       if (this.isTouchEvent) {
         return;
       }

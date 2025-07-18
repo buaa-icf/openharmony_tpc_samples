@@ -14,6 +14,8 @@
  */
 
 import { BaseCenterMode } from '../model/BaseCenterModel'
+import { LogUtil } from '../util/LogUtil'
+
 @CustomDialog
 export struct RepeatDialog {
   @State model: BaseCenterMode = new BaseCenterMode();
@@ -63,6 +65,7 @@ export struct RepeatDialog {
               .height(this.model.btnHeight)
               .border(this.model.btnBorder)
               .onClick(() =>{
+                LogUtil.info('RepeatDialog cancelBtnTitle Button onClick');
                 if(this.controller != undefined) {
                   this.controller.close()
                 }
@@ -76,6 +79,7 @@ export struct RepeatDialog {
               .width(this.model.btnWidth)
               .height(this.model.btnHeight)
               .onClick(() =>{
+                LogUtil.info('RepeatDialog confirmBtnTitle Button onClick');
                 if(this.controller!= undefined) {
                   this.controller.close()
                 }
@@ -89,6 +93,7 @@ export struct RepeatDialog {
       }
     }
     .onClick(() => {
+      LogUtil.info('RepeatDialog Column onClick');
       return
     })
     .width(this.model.dialogWidth)

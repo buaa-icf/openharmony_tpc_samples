@@ -16,6 +16,7 @@
 import radio from '@ohos.telephony.radio'
 import { AnimateDialogOptions } from './AnimateDialogOptions'
 import { AnimateEffect } from './AnimateEffect'
+import { LogUtil } from '../util/LogUtil'
 
 @CustomDialog
 export struct AnimateInputDialog {
@@ -272,6 +273,7 @@ export struct AnimateInputDialog {
                     style: { top: BorderStyle.Solid }
                   })
                   .onClick(() => {
+                    LogUtil.info('AnimateInputDialog Text Cancel onClick');
                     this.closeDialog()
                     this.cancel()
                   })
@@ -282,6 +284,7 @@ export struct AnimateInputDialog {
                   .height('100%')
                   .lineHeight('100%')
                   .onClick(() => {
+                    LogUtil.info('AnimateInputDialog Text Ok onClick');
                     this.closeDialog();
                     this.confirm()
                   })
@@ -308,11 +311,13 @@ export struct AnimateInputDialog {
           }
         })
         .onClick(() =>{
+          LogUtil.info('AnimateInputDialog Column onClick');
           return
         })
 
     }
     .onClick(() =>{
+      LogUtil.info('AnimateInputDialog Stack onClick');
       this.closeDialog()
       // this.controller.close()
     })

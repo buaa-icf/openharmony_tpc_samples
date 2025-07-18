@@ -14,6 +14,7 @@
  */
 
 import { ButtonAttributeModel } from '../model/ButtonAttributeModel'
+import { LogUtil } from '../util/LogUtil'
 
 @Component
 export struct PopupButton {
@@ -61,6 +62,7 @@ export struct PopupButton {
       .height(this.model.buttonHeight)
       .onClick(() => {
         this.customPopup = true
+        LogUtil.info('PopupButton buttonText Button onClick');
       })
       .bindPopup(this.customPopup, {
         builder: this.popupBuilder,

@@ -14,6 +14,8 @@
  */
 
 import { listSelectModel } from '../model/listSelectModel'
+import { LogUtil } from '../util/LogUtil'
+
 class obj  {
   name: string =''
   id: number = 0
@@ -121,6 +123,7 @@ export struct ListSelectDialog {
               .height(this.model.btnHeight)
               .border(this.model.btnBorder)
               .onClick(() =>{
+                LogUtil.info('ListSelectDialog cancelBtnTitle Button onClick');
                 this.controller.close()
                 if(this.model.cancel != undefined) {
                   this.model.cancel()
@@ -134,6 +137,7 @@ export struct ListSelectDialog {
               .width(this.model.btnWidth)
               .height(this.model.btnHeight)
               .onClick(() =>{
+                LogUtil.info('ListSelectDialog confirmBtnTitle Button onClick');
                 this.controller.close()
                 if(this.model.confirm != undefined) {
                   this.model.confirm(this.changeData)

@@ -17,6 +17,7 @@ import { BaseMode } from '../model/BaseModel'
 import inspector from '@ohos.arkui.inspector'
 
 import componentUtils from '@ohos.arkui.componentUtils'
+import { LogUtil } from '../util/LogUtil'
 
 const TAG = 'BottomScrollDialog'
 @CustomDialog
@@ -65,6 +66,7 @@ export struct BottomScrollDialog {
   build() {
     Column(){
       Column().width('100%').height((100 - this.parentScrollHeight) + '%').onClick(() => {
+        LogUtil.info('BottomScrollDialog Column onClick');
         if(this.controller != undefined) {
           this.controller.close()
         }
@@ -73,6 +75,7 @@ export struct BottomScrollDialog {
         Column(){
           Column(){
           }.width('100%').height(this.scrollEmptyHeight + '%').backgroundColor(Color.Transparent).onClick(() => {
+            LogUtil.info('BottomScrollDialog Scroll Column onClick');
             if(this.controller != undefined) {
               this.controller.close()
             }
@@ -101,6 +104,7 @@ export struct BottomScrollDialog {
           if (this.dialogInput) {
             Column(){
               Text(this.inputTextPlaceholder).width('100%').fontSize(14).height('100%').backgroundColor(Color.White).padding(10).onClick(() => {
+                LogUtil.info('BottomScrollDialog dialogInput Text onClick');
                 this.dialogInput.open();
               }).margin({bottom:10})
             }.width('100%').height('12%').backgroundColor(Color.Green).padding(15)
@@ -146,6 +150,7 @@ export struct BottomScrollDialog {
     }.width('100%').height('100%')
     .backgroundColor(Color.Transparent)
     .onClick(() => {
+      LogUtil.info('build Column onClick');
       this.controller.close();
     })
   }
