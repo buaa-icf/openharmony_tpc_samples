@@ -71,6 +71,9 @@ import OlympusFocusInfoMakernoteDirectory from './makernotes/OlympusFocusInfoMak
 import OlympusImageProcessingMakernoteDirectory from './makernotes/OlympusImageProcessingMakernoteDirectory';
 import OlympusRawDevelopment2MakernoteDirectory from './makernotes/OlympusRawDevelopment2MakernoteDirectory';
 import OlympusRawDevelopmentMakernoteDirectory from './makernotes/OlympusRawDevelopmentMakernoteDirectory';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "ExifTiffHandler";
 
 class ExifTiffHandler extends DirectoryTiffHandler {
   constructor(metadata: Metadata, parentDirectory: Directory) {
@@ -79,6 +82,7 @@ class ExifTiffHandler extends DirectoryTiffHandler {
 
   public setTiffMarker(marker: number): void
   {
+    LogUtil.debug(TAG, `setTiffMarker start, marker: ${marker}`);
     let standardTiffMarker: number = 0x002A;
     let olympusRawTiffMarker: number = 0x4F52; // for ORF files
     let olympusRawTiffMarker2: number = 0x5352; // for ORF files
@@ -94,26 +98,31 @@ class ExifTiffHandler extends DirectoryTiffHandler {
         this.pushDirectory(new PanasonicRawIFD0Directory());
         break;
       default:
+        LogUtil.error(TAG, `Unexpected TIFF marker: 0x%X`.replace(/%X/, marker.toString()));
         throw new Error("Unexpected TIFF marker: 0x%X".replace(/%X/, marker.toString()));
     }
+    LogUtil.debug(TAG, `setTiffMarker end`);
   }
 
   public tryEnterSubIfd(tagId: number): boolean
   {
-
+    LogUtil.debug(TAG, `tryEnterSubIfd start, tagId: ${tagId}`);
     if (tagId == ExifDirectoryBase.TAG_SUB_IFD_OFFSET) {
       this.pushDirectory(new ExifSubIFDDirectory());
+      LogUtil.debug(TAG, `tryEnterSubIfd end, return true`);
       return true;
     }
 
     if (this._currentDirectory instanceof ExifIFD0Directory || this._currentDirectory instanceof PanasonicRawIFD0Directory) {
       if (tagId == ExifIFD0Directory.TAG_EXIF_SUB_IFD_OFFSET) {
         this.pushDirectory(new ExifSubIFDDirectory());
+        LogUtil.debug(TAG, `tryEnterSubIfd end, return true`);
         return true;
       }
 
       if (tagId == ExifIFD0Directory.TAG_GPS_INFO_OFFSET) {
         this.pushDirectory(new GpsDirectory());
+        LogUtil.debug(TAG, `tryEnterSubIfd end, return true`);
         return true;
       }
     }
@@ -121,6 +130,7 @@ class ExifTiffHandler extends DirectoryTiffHandler {
     if (this._currentDirectory instanceof ExifSubIFDDirectory) {
       if (tagId == ExifSubIFDDirectory.TAG_INTEROP_OFFSET) {
         this.pushDirectory(new ExifInteropDirectory());
+        LogUtil.debug(TAG, `tryEnterSubIfd end, return true`);
         return true;
       }
     }
@@ -128,6 +138,7 @@ class ExifTiffHandler extends DirectoryTiffHandler {
     if (this._currentDirectory instanceof OlympusMakernoteDirectory) {
       // Note: these also appear in customProcessTag because some are IFD pointers while others begin immediately
       // for the same directories
+      LogUtil.debug(TAG, `tryEnterSubIfd end, tagId: ${tagId}`);
       switch (tagId) {
         case OlympusMakernoteDirectory.TAG_EQUIPMENT:
           this.pushDirectory(new OlympusEquipmentMakernoteDirectory());
@@ -155,12 +166,13 @@ class ExifTiffHandler extends DirectoryTiffHandler {
           return true;
       }
     }
-
+    LogUtil.debug(TAG, `tryEnterSubIfd end, return false`);
     return false;
   }
   //
   public hasFollowerIfd(): boolean
   {
+    LogUtil.debug(TAG, `hasFollowerIfd start`);
     // In Exif, the only known 'follower' IFD is the thumbnail one, however this may not be the case.
     // UPDATE: In multipage TIFFs, the 'follower' IFD points to the next image in the set
     if (this._currentDirectory instanceof ExifIFD0Directory || this._currentDirectory instanceof ExifImageDirectory) {
@@ -170,27 +182,35 @@ class ExifTiffHandler extends DirectoryTiffHandler {
       this.pushDirectory(new ExifImageDirectory());
       else
       this.pushDirectory(new ExifThumbnailDirectory());
+      LogUtil.debug(TAG, `hasFollowerIfd end, return true`);
       return true;
     }
 
     // The Canon EOS 7D (CR2) has three chained/following thumbnail IFDs
-    if (this._currentDirectory instanceof ExifThumbnailDirectory)
-    return true;
+    if (this._currentDirectory instanceof ExifThumbnailDirectory) {
+      LogUtil.debug(TAG, `hasFollowerIfd end, The Canon EOS 7D (CR2) has three chained/following thumbnail IFDs`);
+      return true;
+    }
 
     // This should not happen, as Exif doesn't use follower IFDs apart from that above.
     // NOTE have seen the CanonMakernoteDirectory IFD have a follower pointer, but it points to invalid data.
+    LogUtil.debug(TAG, `hasFollowerIfd end, return false`);
     return false;
   }
 
   public tryCustomProcessFormat(tagId: number, formatCode: number, componentCount: number): number
   {
+    LogUtil.debug(TAG, `tryCustomProcessFormat start, tagId: ${tagId}, formatCode: ${formatCode}, componentCount: ${componentCount}`);
     if (formatCode == 13)
     return componentCount * 4;
 
     // an unknown (0) formatCode needs to be potentially handled later as a highly custom directory tag
-    if (formatCode == 0)
-    return 0;
+    if (formatCode == 0) {
+      LogUtil.debug(TAG, `tryCustomProcessFormat end, Unknown format code: ${formatCode} for tag ${tagId}`);
+      return 0;
+    }
 
+    LogUtil.debug(TAG, `tryCustomProcessFormat end`)
     return null;
   }
 
@@ -201,20 +221,25 @@ class ExifTiffHandler extends DirectoryTiffHandler {
                           tagId: number,
                           byteCount: number): boolean
   {
+    LogUtil.debug(TAG, `customProcessTag start, tagId: ${tagId}, byteCount: ${byteCount}`);
     // Some 0x0000 tags have a 0 byteCount. Determine whether it's bad.
     if (tagId == 0) {
       if (this._currentDirectory.containsTag(tagId)) {
         // Let it go through for now. Some directories handle it, some don't
+        LogUtil.error(TAG, `customProcessTag end, Ignoring tag with id 0 and non-zero byte count: ${tagId} (${byteCount})`);
         return false;
       }
 
       // Skip over 0x0000 tags that don't have any associated bytes. No idea what it contains in this case, if anything.
-      if (byteCount == 0)
-      return true;
+      if (byteCount == 0) {
+        LogUtil.debug(TAG, `customProcessTag end, Skipping tag with id 0 and zero byte count`);
+        return true;
+      }
     }
 
     // Custom processing for the Makernote tag
     if (tagId == ExifSubIFDDirectory.TAG_MAKERNOTE && this._currentDirectory instanceof ExifSubIFDDirectory) {
+      LogUtil.debug(TAG, `customProcessTag end, processing makernote`);
       return this.processMakernote(tagOffset, processedIfdOffsets, tiffHeaderOffset, reader);
     }
 
@@ -224,8 +249,10 @@ class ExifTiffHandler extends DirectoryTiffHandler {
       if (reader.getInt8(tagOffset) == 0x1c) {
         let iptcBytes: Int8Array = reader.getBytes(tagOffset, byteCount);
         new IptcReader().extract(new SequentialByteArrayReader(iptcBytes), this._metadata, iptcBytes.length, this._currentDirectory);
+        LogUtil.debug(TAG, `customProcessTag end, processing IPTC`);
         return true;
       }
+      LogUtil.debug(TAG, `customProcessTag end, ignoring IPTC data`);
       return false;
     }
 
@@ -233,6 +260,7 @@ class ExifTiffHandler extends DirectoryTiffHandler {
     if (tagId == ExifSubIFDDirectory.TAG_INTER_COLOR_PROFILE) {
       let iccBytes: Int8Array = reader.getBytes(tagOffset, byteCount);
       new IccReader().extract(new ByteArrayReader(iccBytes), this._metadata, this._currentDirectory);
+      LogUtil.debug(TAG, `customProcessTag end, processing ICC Profile`);
       return true;
     }
 
@@ -240,12 +268,14 @@ class ExifTiffHandler extends DirectoryTiffHandler {
     if (tagId == ExifSubIFDDirectory.TAG_PHOTOSHOP_SETTINGS && this._currentDirectory instanceof ExifIFD0Directory) {
       let photoshopBytes: Int8Array = reader.getBytes(tagOffset, byteCount);
       new PhotoshopReader().extract(new SequentialByteArrayReader(photoshopBytes), byteCount, this._metadata, this._currentDirectory);
+      LogUtil.debug(TAG, `customProcessTag end, processing Photoshop`);
       return true;
     }
 
     // Custom processing for embedded XMP data
     if (tagId == ExifSubIFDDirectory.TAG_APPLICATION_NOTES && (this._currentDirectory instanceof ExifIFD0Directory || this._currentDirectory instanceof ExifSubIFDDirectory)) {
       new XmpReader().extract(reader.getNullTerminatedBytes(tagOffset, byteCount), 0, 0, this._metadata, this._currentDirectory);
+      LogUtil.debug(TAG, `customProcessTag end, processing XMP`);
       return true;
     }
 
@@ -253,6 +283,7 @@ class ExifTiffHandler extends DirectoryTiffHandler {
     if (tagId == AppleMakernoteDirectory.TAG_RUN_TIME && this._currentDirectory instanceof AppleMakernoteDirectory) {
       let bytes: Int8Array = reader.getBytes(tagOffset, byteCount);
       new AppleRunTimeReader().extract(bytes, this._metadata, this._currentDirectory);
+      LogUtil.debug(TAG, `customProcessTag end, processing Apple RunTime`);
       return true;
     }
 
@@ -261,12 +292,14 @@ class ExifTiffHandler extends DirectoryTiffHandler {
       printIMDirectory.setParent(this._currentDirectory);
       this._metadata.addDirectory(printIMDirectory);
       ExifTiffHandler.processPrintIM(printIMDirectory, tagOffset, reader, byteCount);
+      LogUtil.debug(TAG, `customProcessTag end, processing PrintIM`);
       return true;
     }
 
     // Note: these also appear in tryEnterSubIfd because some are IFD pointers while others begin immediately
     // for the same directories
     if (this._currentDirectory instanceof OlympusMakernoteDirectory) {
+      LogUtil.debug(TAG, `customProcessTag end, processing Olympus makernote, tagId: ${tagId}`);
       switch (tagId) {
         case OlympusMakernoteDirectory.TAG_EQUIPMENT:
           this.pushDirectory(new OlympusEquipmentMakernoteDirectory());
@@ -306,6 +339,7 @@ class ExifTiffHandler extends DirectoryTiffHandler {
     if (this._currentDirectory instanceof PanasonicRawIFD0Directory) {
       // these contain binary data with specific offsets, and can't be processed as regular ifd's.
       // The binary data is broken into 'fake' tags and there is a pattern.
+      LogUtil.debug(TAG, `customProcessTag end, processing Panasonic RAW IFD0, tagId: ${tagId}`);
       switch (tagId) {
         case PanasonicRawIFD0Directory.TagWbInfo:
           let dirWbInfo: PanasonicRawWbInfoDirectory = new PanasonicRawWbInfoDirectory();
@@ -330,15 +364,18 @@ class ExifTiffHandler extends DirectoryTiffHandler {
 
     // Panasonic RAW sometimes contains an embedded version of the data as a JPG file.
     if (tagId == PanasonicRawIFD0Directory.TagJpgFromRaw && this._currentDirectory instanceof PanasonicRawIFD0Directory) {
+      LogUtil.debug(TAG, `customProcessTag end, processing Panasonic RAW embedded JPG`);
        return true;
     }
 
+    LogUtil.debug(TAG, `customProcessTag end, return false`);
     return false;
   }
 
   private static processBinary(directory: Directory, tagValueOffset: number, reader: RandomAccessReader, byteCount: number, isSigned: boolean, arrayLength: number) {
     // expects signed/unsigned int16 (for now)
     //int byteSize = isSigned ? sizeof(short) : sizeof(ushort);
+    LogUtil.debug(TAG, `processBinary start, tagValueOffset: ${tagValueOffset}, byteCount: ${byteCount}, isSigned: ${isSigned}, arrayLength: ${arrayLength}`);
     let byteSize: number = 2;
 
     // 'directory' is assumed to contain tags that correspond to the byte position unless it's a set of bytes
@@ -368,6 +405,7 @@ class ExifTiffHandler extends DirectoryTiffHandler {
         }
       }
     }
+    LogUtil.debug(TAG, `processBinary end`);
   }
 
   /** Read a given number of bytes from the stream
@@ -382,9 +420,11 @@ class ExifTiffHandler extends DirectoryTiffHandler {
    */
   private static getReaderString(reader: RandomAccessReader, makernoteOffset: number, bytesRequested: number): string
   {
+    LogUtil.debug(TAG, `getReaderString start, makernoteOffset: ${makernoteOffset}, bytesRequested: ${bytesRequested}`);
     try {
       return reader.getString(makernoteOffset, bytesRequested, 'UTF_8');
     } catch (e) {
+      LogUtil.error(TAG, `getReaderString error: ${JSON.stringify(e)}`);
       return "";
     }
   }
@@ -394,6 +434,7 @@ class ExifTiffHandler extends DirectoryTiffHandler {
                            tiffHeaderOffset: number,
                            reader: RandomAccessReader): boolean
   {
+    LogUtil.debug(TAG, `processMakernote start, makernoteOffset: ${makernoteOffset}`);
     // Determine the camera model and makernote format.
     let ifd0Directory: Directory = this._metadata.getFirstDirectoryOfType(new ExifIFD0Directory());
 
@@ -412,6 +453,10 @@ class ExifTiffHandler extends DirectoryTiffHandler {
 
     let byteOrderBefore: boolean = reader.isMotorolaByteOrder();
 
+    LogUtil.debug(TAG, `processMakernote, firstTwoChars: ${firstTwoChars}, firstThreeChars: ${firstThreeChars}, ` +
+        `firstFourChars: ${firstFourChars}, firstFiveChars: ${firstFiveChars}, firstSixChars: ${firstSixChars}, ` +
+        `firstSevenChars: ${firstSevenChars}, firstEightChars: ${firstEightChars}, firstNineChars: ${firstNineChars}, `+
+        `firstTenChars: ${firstTenChars}, firstTwelveChars: ${firstTwelveChars}`);
     if ("OLYMP\0" == firstSixChars || "EPSON" == firstFiveChars || "AGFA" == firstFourChars) {
       // Olympus Makernote
       // Epson and Agfa use Olympus makernote standard: http://www.ozhiker.com/electronics/pjmt/jpeg_info/
@@ -528,6 +573,7 @@ class ExifTiffHandler extends DirectoryTiffHandler {
         this.pushDirectory(new PanasonicMakernoteDirectory());
         TiffReader.processIfd(this, reader, processedIfdOffsets, makernoteOffset + 8, tiffHeaderOffset);
       } else {
+        LogUtil.error(TAG, `processMakernote end, unknown Leica camera make: ${cameraMake}`);
         return false;
       }
     } else if ("Panasonic\u0000\u0000\u0000" == firstTwelveChars) {
@@ -566,6 +612,7 @@ class ExifTiffHandler extends DirectoryTiffHandler {
         //   Rv0103;Rg1C;Bg18;Ll0;Ld0;Aj0000;Bn0473800;Fp2D05:������������������������������
         //   Rv0207;Sf6C84;Rg76;Bg60;Gg42;Ll0;Ld0;Aj0004;Bn0B02900;Fp10B8;Md6700;Ln116900086D27;Sv263:0000000000000000000000��
         // This format is currently unsupported
+        LogUtil.error(TAG, "processMakernote end, unsupported Ricoh makernote format");
         return false;
       } else if (firstFiveChars.toUpperCase() == "Ricoh") {
         // Always in Motorola byte order
@@ -599,17 +646,22 @@ class ExifTiffHandler extends DirectoryTiffHandler {
     } else {
       // The makernote is not comprehended by this library.
       // If you are reading this and believe a particular camera's image should be processed, get in touch.
+      LogUtil.error(TAG, `processMakernote end, unsupported makernote format for camera ${cameraMake}`);
       return false;
     }
 
     reader.setMotorolaByteOrder(byteOrderBefore);
+    LogUtil.debug(TAG, `processMakernote end`);
     return true;
   }
 
   private static handlePrintIM(directory: Directory, tagId: number): boolean
   {
-    if (tagId == ExifDirectoryBase.TAG_PRINT_IMAGE_MATCHING_INFO)
-    return true;
+    LogUtil.debug(TAG, `handlePrintIM start, tagId: ${tagId}`);
+    if (tagId == ExifDirectoryBase.TAG_PRINT_IMAGE_MATCHING_INFO) {
+      LogUtil.debug(TAG, `handlePrintIM end, PrintIM tag found`);
+      return true;
+    }
 
     if (tagId == 0x0E00) {
       // Tempting to say every tagid of 0x0E00 is a PIM tag, but can't be 100% sure
@@ -622,9 +674,11 @@ class ExifTiffHandler extends DirectoryTiffHandler {
       directory instanceof RicohMakernoteDirectory ||
       directory instanceof SanyoMakernoteDirectory ||
       directory instanceof SonyType1MakernoteDirectory)
+      LogUtil.debug(TAG, `handlePrintIM end, PIM tag found`);
       return true;
     }
 
+    LogUtil.debug(TAG, `handlePrintIM end, tagId not found`);
     return false;
   }
 
@@ -637,15 +691,18 @@ class ExifTiffHandler extends DirectoryTiffHandler {
    */
   private static processPrintIM(directory: PrintIMDirectory, tagValueOffset: number, reader: RandomAccessReader, byteCount: number): void
   {
+    LogUtil.debug(TAG, `processPrintIM start`);
     let resetByteOrder: boolean = null;
 
     if (byteCount == 0) {
       directory.addError("Empty PrintIM data");
+      LogUtil.error(TAG, `processPrintIM end, empty PrintIM data`);
       return;
     }
 
     if (byteCount <= 15) {
       directory.addError("Bad PrintIM data");
+      LogUtil.error(TAG, `processPrintIM end, bad PrintIM data`);
       return;
     }
 
@@ -653,6 +710,7 @@ class ExifTiffHandler extends DirectoryTiffHandler {
 
     if (!header.startsWith("PrintIM")) {
       directory.addError("Invalid PrintIM header");
+      LogUtil.error(TAG, `processPrintIM end, invalid PrintIM header`);
       return;
     }
 
@@ -666,6 +724,7 @@ class ExifTiffHandler extends DirectoryTiffHandler {
       num = reader.getUInt16(tagValueOffset + 14);
       if (byteCount < 16 + num * 6) {
         directory.addError("Bad PrintIM size");
+        LogUtil.error(TAG, `processPrintIM end, bad PrintIM size`);
         return;
       }
     }
@@ -682,10 +741,12 @@ class ExifTiffHandler extends DirectoryTiffHandler {
 
     if (resetByteOrder != null)
     reader.setMotorolaByteOrder(resetByteOrder);
+    LogUtil.debug(TAG, `processPrintIM end`);
   }
 
   private static processKodakMakernote(directory: KodakMakernoteDirectory, tagValueOffset: number, reader: RandomAccessReader): void
   {
+    LogUtil.debug(TAG, `processKodakMakernote start`);
     // Kodak's makernote is not in IFD format. It has values at fixed offsets.
     let dataOffset: number = tagValueOffset + 8;
     try {
@@ -716,12 +777,14 @@ class ExifTiffHandler extends DirectoryTiffHandler {
       directory.setInt(KodakMakernoteDirectory.TAG_DIGITAL_ZOOM, reader.getUInt16(dataOffset + 104));
       directory.setInt(KodakMakernoteDirectory.TAG_SHARPNESS, reader.getInt8(dataOffset + 107));
     } catch (ex) {
+      LogUtil.error(TAG, `processKodakMakernote end, error processing Kodak makernote data: ${JSON.stringify(ex)}`);
       directory.addError("Error processing Kodak makernote data: " + ex.getMessage());
     }
   }
 
   private static processReconyxHyperFireMakernote(directory: ReconyxHyperFireMakernoteDirectory, makernoteOffset: number, reader: RandomAccessReader): void
   {
+    LogUtil.debug(TAG, `processReconyxHyperFireMakernote start`);
     directory.setObject(ReconyxHyperFireMakernoteDirectory.TAG_MAKERNOTE_VERSION, reader.getUInt16(makernoteOffset));
 
     let major: number = reader.getUInt16(makernoteOffset + ReconyxHyperFireMakernoteDirectory.TAG_FIRMWARE_VERSION);
@@ -736,6 +799,7 @@ class ExifTiffHandler extends DirectoryTiffHandler {
     try {
       build = parseInt(buildYearAndDate);
     } catch (e) {
+      LogUtil.error(TAG, `processReconyxHyperFireMakernote end, error processing Reconyx HyperFire makernote data: ${JSON.stringify(e)}`);
       build = null;
     }
 
@@ -790,11 +854,12 @@ class ExifTiffHandler extends DirectoryTiffHandler {
     directory.setInt(ReconyxHyperFireMakernoteDirectory.TAG_MOTION_SENSITIVITY, reader.getUInt16(makernoteOffset + ReconyxHyperFireMakernoteDirectory.TAG_MOTION_SENSITIVITY));
     directory.setDouble(ReconyxHyperFireMakernoteDirectory.TAG_BATTERY_VOLTAGE, reader.getUInt16(makernoteOffset + ReconyxHyperFireMakernoteDirectory.TAG_BATTERY_VOLTAGE) / 1000.0);
     directory.setString(ReconyxHyperFireMakernoteDirectory.TAG_USER_LABEL, reader.getNullTerminatedString(makernoteOffset + ReconyxHyperFireMakernoteDirectory.TAG_USER_LABEL, 44, Charsets.UTF_8));
+    LogUtil.debug(TAG, `processReconyxHyperFireMakernote end`);
   }
 
   private static processReconyxHyperFire2Makernote(directory: ReconyxHyperFire2MakernoteDirectory, makernoteOffset: number, reader: RandomAccessReader): void
   {
-
+    LogUtil.debug(TAG, `processReconyxHyperFire2Makernote start`);
     let major: number = reader.getUInt16(makernoteOffset + ReconyxHyperFire2MakernoteDirectory.TAG_FIRMWARE_VERSION);
     let minor: number = reader.getUInt16(makernoteOffset + ReconyxHyperFire2MakernoteDirectory.TAG_FIRMWARE_VERSION + 2);
     let revision: number = reader.getUInt16(makernoteOffset + ReconyxHyperFireMakernoteDirectory.TAG_FIRMWARE_VERSION + 4);
@@ -807,6 +872,7 @@ class ExifTiffHandler extends DirectoryTiffHandler {
     try {
       build = parseInt(buildYearAndDate);
     } catch (e) {
+      LogUtil.error(TAG, `processReconyxHyperFire2Makernote end, error processing Reconyx HyperFire 2 makernote data: ${JSON.stringify(e)}`);
       build = null;
     }
 
@@ -863,6 +929,7 @@ class ExifTiffHandler extends DirectoryTiffHandler {
     directory.setString(ReconyxHyperFireMakernoteDirectory.TAG_USER_LABEL, reader.getNullTerminatedString(makernoteOffset + ReconyxHyperFireMakernoteDirectory.TAG_USER_LABEL, 44, Charsets.UTF_8));
     directory.setStringValue(ReconyxHyperFire2MakernoteDirectory.TAG_SERIAL_NUMBER, new StringValue(reader.getBytes(makernoteOffset + ReconyxHyperFire2MakernoteDirectory.TAG_SERIAL_NUMBER, 28), Charsets.UTF_16LE));
     // two unread bytes: the serial number's terminating null
+    LogUtil.debug(TAG, `processReconyxHyperFire2Makernote end`);
   }
 
   private static processReconyxUltraFireMakernote(directory: ReconyxUltraFireMakernoteDirectory, makernoteOffset: number, reader: RandomAccessReader): void

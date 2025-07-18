@@ -15,6 +15,9 @@ limitations under the License.
 
 import Directory from '../Directory';
 import GifControlDescriptor from './GifControlDescriptor';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "GifControlDirectory";
 
 class GifControlDirectory extends Directory {
   public static readonly TAG_DELAY: number = 1;
@@ -65,6 +68,7 @@ class GifControlDirectory extends Directory {
   }
 
   public static typeOf(value: number): InstanceType<typeof GifControlDirectory.DisposalMethod> {
+    LogUtil.debug(TAG, `typeOf start, value: ${value}`);
     switch (value) {
       case 0:
         return GifControlDirectory.DisposalMethod.NOT_SPECIFIED;
@@ -85,6 +89,7 @@ class GifControlDirectory extends Directory {
   }
 
   public toString(): string {
+    LogUtil.debug(TAG, `toString start`);
     switch (GifControlDirectory.DisposalMethod) {
       case GifControlDirectory.DisposalMethod.DO_NOT_DISPOSE:
         return "Don't Dispose";

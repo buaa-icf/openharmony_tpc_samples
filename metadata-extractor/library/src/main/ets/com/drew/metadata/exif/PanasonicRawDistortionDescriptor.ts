@@ -16,6 +16,9 @@ limitations under the License.
 import TagDescriptor from '../TagDescriptor';
 import Rational from '../../lang/Rational';
 import PanasonicRawDistortionDirectory from './PanasonicRawDistortionDirectory';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "PanasonicRawDistortionDescriptor";
 
 export default class PanasonicRawDistortionDescriptor extends TagDescriptor<PanasonicRawDistortionDirectory> {
   public constructor(directory: PanasonicRawDistortionDirectory) {
@@ -24,6 +27,7 @@ export default class PanasonicRawDistortionDescriptor extends TagDescriptor<Pana
 
   public getDescription(tagType: number): string
   {
+    LogUtil.debug(TAG, `getDescription start, tagType = ${tagType}`);
     switch (tagType) {
       case PanasonicRawDistortionDirectory.TagDistortionParam02:
         return this.getDistortionParam02Description();
@@ -46,40 +50,56 @@ export default class PanasonicRawDistortionDescriptor extends TagDescriptor<Pana
 
   public getDistortionParam02Description(): string
   {
+    LogUtil.debug(TAG, `getDistortionParam02Description start`);
     let value: Number = this._directory.getInteger(PanasonicRawDistortionDirectory.TagDistortionParam02);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getDistortionParam02Description end, value is null`);
+      return null;
+    }
 
+    LogUtil.debug(TAG, `getDistortionParam02Description end, value = ${value}`);
     return new Rational(value.valueOf(), 32678).toString();
   }
 
   public getDistortionParam04Description(): string
   {
+    LogUtil.debug(TAG, `getDistortionParam04Description start`);
     let value = this._directory.getInteger(PanasonicRawDistortionDirectory.TagDistortionParam04);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getDistortionParam04Description end, value is null`);
+      return null;
+    }
 
+    LogUtil.debug(TAG, `getDistortionParam04Description end, value = ${value}`);
     return new Rational(value, 32678).toString();
   }
 
   public getDistortionScaleDescription(): string
   {
+    LogUtil.debug(TAG, `getDistortionScaleDescription start`);
     let value = this._directory.getInteger(PanasonicRawDistortionDirectory.TagDistortionScale);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getDistortionScaleDescription end, value is null`);
+      return null;
+    }
 
     //return (1 / (1 + value / 32768)).toString();
+    LogUtil.debug(TAG, `getDistortionScaleDescription end, value = ${value}`);
     return String(1 / (1 + value / 32768));
   }
 
   public getDistortionCorrectionDescription(): string
   {
+    LogUtil.debug(TAG, `getDistortionCorrectionDescription start`);
     let value = this._directory.getInteger(PanasonicRawDistortionDirectory.TagDistortionCorrection);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getDistortionCorrectionDescription end, value is null`);
+      return null;
+    }
 
     // (have seen the upper 4 bits set for GF5 and GX1, giving a value of -4095 - PH)
     let mask = 0x000f;
+    LogUtil.debug(TAG, `getDistortionCorrectionDescription end, value = ${value}, mask = ${mask}`);
     switch (value & mask) {
       case 0:
         return "Off";
@@ -92,28 +112,40 @@ export default class PanasonicRawDistortionDescriptor extends TagDescriptor<Pana
 
   public getDistortionParam08Description(): string
   {
+    LogUtil.debug(TAG, `getDistortionParam08Description start`);
     let value = this._directory.getInteger(PanasonicRawDistortionDirectory.TagDistortionParam08);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getDistortionParam08Description end, value is null`);
+      return null;
+    }
 
+    LogUtil.debug(TAG, `getDistortionParam08Description end, value = ${value}`);
     return new Rational(value, 32678).toString();
   }
 
   public getDistortionParam09Description(): string
   {
+    LogUtil.debug(TAG, `getDistortionParam09Description start`);
     let value = this._directory.getInteger(PanasonicRawDistortionDirectory.TagDistortionParam09);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getDistortionParam09Description end, value is null`);
+      return null;
+    }
 
+    LogUtil.debug(TAG, `getDistortionParam09Description end, value = ${value}`);
     return new Rational(value, 32678).toString();
   }
 
   public getDistortionParam11Description(): string
   {
+    LogUtil.debug(TAG, `getDistortionParam11Description start`);
     let value = this._directory.getInteger(PanasonicRawDistortionDirectory.TagDistortionParam11);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getDistortionParam11Description end, value is null`);
+      return null;
+    }
 
+    LogUtil.debug(TAG, `getDistortionParam11Description end, value = ${value}`);
     return new Rational(value, 32678).toString();
   }
 }

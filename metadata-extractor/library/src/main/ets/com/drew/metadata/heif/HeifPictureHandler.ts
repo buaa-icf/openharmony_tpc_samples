@@ -33,6 +33,9 @@ import SequentialReader from '../../lang/SequentialReader';
 import SequentialByteArrayReader from '../../lang/SequentialByteArrayReader';
 import ExifReader from '../exif/ExifReader';
 import RandomAccessStreamReader from '../../lang/RandomAccessStreamReader';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "HeifPictureHandler";
 
 class HeifPictureHandler extends HeifHandler {
   private static readonly boxesCanProcess: Set<string> = new Set<string>()
@@ -69,6 +72,7 @@ class HeifPictureHandler extends HeifHandler {
   }
 
   public processBox(box: Box, payload: Int8Array): HeifHandler{
+    LogUtil.debug(TAG, `processBox start, box type: ${box.type}`);
     let reader: SequentialReader = new SequentialByteArrayReader(payload);
     if (box.type == HeifBoxTypes.BOX_ITEM_PROTECTION) {
       this.itemProtectionBox = new ItemProtectionBox(reader, box);
@@ -94,10 +98,12 @@ class HeifPictureHandler extends HeifHandler {
       let pixelInformationBox: PixelInformationBox = new PixelInformationBox(reader, box);
       pixelInformationBox.addMetadata(this.directory);
     }
+    LogUtil.debug(TAG, `processBox end`);
     return this;
   }
 
   public processContainer(box: Box, reader: SequentialReader): void {
+    LogUtil.debug(TAG, `processContainer start, box type: ${box.type}`);
     if (box.type == HeifContainerTypes.BOX_MEDIA_DATA && this.itemInfoBox != null && this.itemLocationBox != null) {
       // We've reached the media data box, this contains all the items referred to by the info/location boxes
       // Extents should already be sorted, this way we know we can traverse the one direction stream correctly
@@ -112,6 +118,7 @@ class HeifPictureHandler extends HeifHandler {
         }
       }
     }
+    LogUtil.debug(TAG, `processContainer end`);
   }
 
   private shouldHandleItem(infoEntry: InstanceType<typeof ItemInfoBox.ItemInfoEntry>): boolean {
@@ -119,6 +126,7 @@ class HeifPictureHandler extends HeifHandler {
   }
 
   private handleItem(entry: InstanceType<typeof ItemInfoBox.ItemInfoEntry>, payloadReader: SequentialByteArrayReader): void {
+    LogUtil.debug(TAG, `handleItem start, item type: ${entry.getItemType()}`);
     if (entry.getItemType() == HeifItemTypes.ITEM_EXIF) {
       // ISO/IEC 23008-12:2017 Annex A: First 4 bytes will ALWAYS be an offset to the Tiff header in the payload
       let tiffHeaderOffset: number = payloadReader.getUInt32();
@@ -130,6 +138,7 @@ class HeifPictureHandler extends HeifHandler {
       let tiffStream = payloadReader.getBytes(payloadReader.available()).toString();
       new ExifReader().extract(new RandomAccessStreamReader(tiffStream), this.metadata);
     }
+    LogUtil.debug(TAG, `handleItem end`);
   }
 
   public getDirectory(): HeifDirectory {

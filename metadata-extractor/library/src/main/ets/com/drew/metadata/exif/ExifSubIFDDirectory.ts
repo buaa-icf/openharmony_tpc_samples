@@ -17,6 +17,9 @@ import ExifIFD0Directory from './ExifIFD0Directory';
 import Directory from '../Directory';
 import ExifDirectoryBase from './ExifDirectoryBase';
 import ExifSubIFDDescriptor from './ExifSubIFDDescriptor';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "ExifSubIFDDirectory";
 
 class ExifSubIFDDirectory extends ExifDirectoryBase {
   /** This tag is a pointer to the Exif Interop IFD. */
@@ -68,15 +71,18 @@ class ExifSubIFDDirectory extends ExifDirectoryBase {
        */
   public getDateModified(timeZone?: number): Date
   {
+    LogUtil.debug(TAG, `getDateModified start`);
     if (timeZone == undefined) {
       timeZone = null
     }
     let parent: Directory = this.getParent();
     if (parent instanceof ExifIFD0Directory) {
       let timeZoneModified = this.getTimeZone(ExifDirectoryBase.TAG_TIME_ZONE);
+      LogUtil.debug(TAG, `getDateModified ned, timeZoneModified: ${timeZoneModified}`);
       return parent.getDate(ExifDirectoryBase.TAG_DATETIME, this.getString(ExifDirectoryBase.TAG_SUBSECOND_TIME),
           (timeZoneModified != null) ? timeZoneModified : timeZone);
     } else {
+      LogUtil.error(TAG, `getDateModified end, parent is not ExifIFD0Directory`);
       return null;
     }
   }
@@ -106,10 +112,12 @@ class ExifSubIFDDirectory extends ExifDirectoryBase {
        */
   public getDateOriginal(timeZone?: number): Date
   {
+    LogUtil.debug(TAG, `getDateOriginal start`);
     if (timeZone == undefined) {
       timeZone = null
     }
     let timeZoneOriginal = this.getTimeZone(ExifDirectoryBase.TAG_TIME_ZONE_ORIGINAL);
+    LogUtil.debug(TAG, `getDateOriginal end, timeZoneOriginal: ${timeZoneOriginal}`);
     return this.getDate(ExifDirectoryBase.TAG_DATETIME_ORIGINAL, this.getString(ExifDirectoryBase.TAG_SUBSECOND_TIME_ORIGINAL),
         (timeZoneOriginal != null) ? timeZoneOriginal : timeZone);
   }
@@ -139,10 +147,12 @@ class ExifSubIFDDirectory extends ExifDirectoryBase {
        */
   public getDateDigitized(timeZone?: number): Date
   {
+    LogUtil.debug(TAG, `getDateDigitized start`);
     if (timeZone == undefined) {
       timeZone = null
     }
     let timeZoneDigitized = this.getTimeZone(ExifDirectoryBase.TAG_TIME_ZONE_DIGITIZED);
+    LogUtil.debug(TAG, `getDateDigitized end, timeZoneDigitized: ${timeZoneDigitized}`);
     return this.getDate(ExifDirectoryBase.TAG_DATETIME_DIGITIZED, this.getString(ExifDirectoryBase.TAG_SUBSECOND_TIME_DIGITIZED),
         (timeZoneDigitized != null) ? timeZoneDigitized : timeZone);
   }

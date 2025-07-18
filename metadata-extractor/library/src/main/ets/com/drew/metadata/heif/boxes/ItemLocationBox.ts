@@ -16,6 +16,9 @@ limitations under the License.
 import FullBox from './FullBox';
 import Box from './Box';
 import SequentialReader from '../../../lang/SequentialReader';
+import LogUtil from '../../../tools/LogUtils';
+
+const TAG: string = "ItemLocationBox";
 
 class ItemLocationBox extends FullBox {
   public indexSize: number;
@@ -91,6 +94,7 @@ class ItemLocationBox extends FullBox {
   }
 
   public getIntFromUnknownByte(variable: number, reader: SequentialReader): number {
+    LogUtil.debug(TAG, `getIntFromUnknownByte start, variable: ${variable}`);
     switch (variable) {
       case (1):
         return reader.getUInt8();

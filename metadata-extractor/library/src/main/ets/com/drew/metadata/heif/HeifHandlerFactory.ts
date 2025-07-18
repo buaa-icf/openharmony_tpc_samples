@@ -17,6 +17,9 @@ import HeifPictureHandler from './HeifPictureHandler';
 import HandlerBox from './boxes/HandlerBox';
 import Metadata from '../Metadata';
 import HeifHandler from '../../imaging/heif/HeifHandler';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "HeifHandlerFactory";
 
 class HeifHandlerFactory {
   private static readonly HANDLER_PICTURE: string = "pict";
@@ -27,10 +30,13 @@ class HeifHandlerFactory {
   }
 
   public getHandler(box: HandlerBox, metadata: Metadata): HeifHandler {
+    LogUtil.debug(TAG, `getHandler start, box type: ${box.getHandlerType()}`);
     let type: string = box.getHandlerType();
     if (type == HeifHandlerFactory.HANDLER_PICTURE) {
+      LogUtil.debug(TAG, `getHandler end, return HeifPictureHandler`);
       return new HeifPictureHandler(metadata);
     }
+    LogUtil.debug(TAG, `getHandler end`);
     return this.caller;
   }
 }

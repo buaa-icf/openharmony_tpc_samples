@@ -15,6 +15,9 @@ limitations under the License.
 
 import TagDescriptor from '../TagDescriptor';
 import PrintIMDirectory from './PrintIMDirectory';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "PrintIMDescriptor";
 
 export default class PrintIMDescriptor extends TagDescriptor<PrintIMDirectory> {
   public constructor(directory: PrintIMDirectory) {
@@ -23,13 +26,16 @@ export default class PrintIMDescriptor extends TagDescriptor<PrintIMDirectory> {
 
   public getDescription(tagType: number): string
   {
+    LogUtil.debug(TAG, `getDescription start, tagType = ${tagType}`);
     switch (tagType) {
       case PrintIMDirectory.TagPrintImVersion:
         return super.getDescription(tagType);
       default:
         let value: number = this._directory.getInteger(tagType);
-        if (value == null)
-        return null;
+        if (value == null) {
+          LogUtil.error(TAG, `getDescription end, tagType = ${tagType} value is null`);
+          return null;
+        }
         return "0x" + value;
 
     }
