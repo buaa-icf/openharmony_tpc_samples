@@ -15,6 +15,9 @@ limitations under the License.
 
 import TagDescriptor from '../TagDescriptor';
 import WebpDirectory from './WebpDirectory'
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "WebpDescriptor";
 
 export default class WebpDescriptor extends TagDescriptor<WebpDirectory> {
   public constructor(directory: WebpDirectory) {
@@ -23,6 +26,7 @@ export default class WebpDescriptor extends TagDescriptor<WebpDirectory> {
 
   public getDescription(tagType: number): string
   {
+    LogUtil.debug(TAG, `getDescription start, tagType: ${tagType}`);
     switch (tagType) {
       case WebpDirectory.TAG_IMAGE_WIDTH:
         return this.getImageWidthDescription();

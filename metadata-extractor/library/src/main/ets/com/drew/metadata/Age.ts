@@ -13,6 +13,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import LogUtil from "../tools/LogUtils";
+
+const TAG: string = "Age";
 
 export default class Age {
   private readonly _years: number;
@@ -31,8 +34,11 @@ export default class Age {
    */
 
   public static fromPanasonicString(s: String): Age{
-    if (s.length != 19 || s.startsWith("9999:99:99"))
-    return null;
+    LogUtil.debug(TAG, `fromPanasonicString start, s = ${s}`);
+    if (s.length != 19 || s.startsWith("9999:99:99")) {
+      LogUtil.debug(TAG, `fromPanasonicString end, s = ${s}, return null`);
+      return null;
+    }
 
 
     let years = parseInt(s.substring(0, 4));
@@ -42,6 +48,7 @@ export default class Age {
     let minutes = parseInt(s.substring(14, 16));
     let seconds = parseInt(s.substring(17, 19));
 
+    LogUtil.debug(TAG, `fromPanasonicString end, s = ${s}, years = ${years}, months = ${months}, days = ${days}, hours = ${hours}, minutes = ${minutes}, seconds = ${seconds}`);
     return new Age(years, months, days, hours, minutes, seconds);
 
   }
@@ -105,12 +112,16 @@ export default class Age {
 
   private static appendAgePart(result: string, num: number, singularName: string): void
   {
-    if (num == 0)
-    return;
+    LogUtil.debug(TAG, `appendAgePart start, num = ${num}, singularName = ${singularName}`);
+    if (num == 0) {
+      LogUtil.error(TAG, `appendAgePart end,  num is 0, return`);
+      return;
+    }
     if (result.length != 0)
     result.concat(' ');
     result.concat(String(num)).concat(' ').concat(singularName);
     if (num != 1)
     result.concat('s');
+  LogUtil.debug(TAG, `appendAgePart end, result = ${result}`);
   }
 }

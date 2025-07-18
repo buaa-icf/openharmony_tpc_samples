@@ -15,6 +15,9 @@ limitations under the License.
 
 import QuickTimeDescriptor from '../QuickTimeDescriptor'
 import QuickTimeVideoDirectory from './QuickTimeVideoDirectory'
+import LogUtil from '../../../tools/LogUtils';
+
+const TAG: string = "QuickTimeVideoDescriptor"
 
 class QuickTimeVideoDescriptor extends QuickTimeDescriptor {
   public constructor(directory: QuickTimeVideoDirectory) {
@@ -22,6 +25,7 @@ class QuickTimeVideoDescriptor extends QuickTimeDescriptor {
   }
 
   public getDescription(tagType: number): string {
+    LogUtil.debug(TAG, `getDescription start, tagType: ${tagType}`);
     switch (tagType) {
       case QuickTimeVideoDirectory.TAG_HEIGHT:
       case QuickTimeVideoDirectory.TAG_WIDTH:
@@ -43,10 +47,14 @@ class QuickTimeVideoDescriptor extends QuickTimeDescriptor {
   }
 
   private getDepthDescription(tagType: number): string {
+    LogUtil.debug(TAG, `getDepthDescription start`);
     let value: number = this._directory.getInteger(tagType);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.debug(TAG, `getDepthDescription end, value is null`);
+      return null;
+    }
 
+    LogUtil.debug(TAG, `getDepthDescription end, value: ${value}`);
     switch (value) {
       case (1):
       case (2):
@@ -66,10 +74,14 @@ class QuickTimeVideoDescriptor extends QuickTimeDescriptor {
   }
 
   private getColorTableDescription(tagType: number): string {
+    LogUtil.debug(TAG, `getColorTableDescription start`);
     let value: number = this._directory.getInteger(tagType);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.debug(TAG, `getColorTableDescription end, value is null`);
+      return null;
+    }
 
+    LogUtil.debug(TAG, `getColorTableDescription end, value: ${value}`);
     switch (value) {
       case (-1):
         if (this._directory.getInteger(QuickTimeVideoDirectory.TAG_DEPTH) < 16) {
@@ -85,10 +97,14 @@ class QuickTimeVideoDescriptor extends QuickTimeDescriptor {
   }
 
   private getGraphicsModeDescription(): string {
+    LogUtil.debug(TAG, `getGraphicsModeDescription start`);
     let value: number = this._directory.getInteger(QuickTimeVideoDirectory.TAG_GRAPHICS_MODE);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.debug(TAG, `getGraphicsModeDescription end, value is null`);
+      return null;
+    }
 
+    LogUtil.debug(TAG, `getGraphicsModeDescription end, value: ${value}`);
     switch (value) {
       case (0x00):
         return "Copy";

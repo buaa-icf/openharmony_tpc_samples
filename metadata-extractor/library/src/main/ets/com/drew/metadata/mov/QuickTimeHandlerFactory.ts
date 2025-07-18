@@ -18,6 +18,9 @@ import QuickTimeContext from './QuickTimeContext'
 import QuickTimeDirectory from './QuickTimeDirectory'
 import QuickTimeDirectoryHandler from './metadata/QuickTimeDirectoryHandler'
 import QuickTimeHandler from '../../imaging/quicktime/QuickTimeHandler'
+import LogUtil from '../../tools/LogUtils'
+
+const TAG: string = "QuickTimeHandlerFactory";
 
 class QuickTimeHandlerFactory {
   private static readonly HANDLER_METADATA_DIRECTORY: string = "mdir";
@@ -35,10 +38,11 @@ class QuickTimeHandlerFactory {
   }
 
   public getHandler(type: string, metadata: Metadata, context: QuickTimeContext): QuickTimeHandler<QuickTimeDirectory> {
+    LogUtil.debug(TAG, `getHandler start, type: ${type}`);
     if (type == QuickTimeHandlerFactory.HANDLER_METADATA_DIRECTORY) {
       return new QuickTimeDirectoryHandler(metadata);
    }
-
+   LogUtil.debug(TAG, `getHandler end`);
     return this.caller;
   }
 }

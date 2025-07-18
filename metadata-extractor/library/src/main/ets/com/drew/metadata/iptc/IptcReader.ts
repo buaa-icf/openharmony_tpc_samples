@@ -22,6 +22,9 @@ import SequentialByteArrayReader from '../../lang/SequentialByteArrayReader';
 import Metadata from '../Metadata';
 import JpegSegmentType from '../../imaging/jpeg/JpegSegmentType';
 import JpegSegmentMetadataReader from '../../imaging/jpeg/JpegSegmentMetadataReader';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "IptcReader";
 
 export class IptcReader implements JpegSegmentMetadataReader {
   private static IptcMarkerByte = 0x1c
@@ -42,6 +45,7 @@ export class IptcReader implements JpegSegmentMetadataReader {
   }
 
   public extract(reader: SequentialReader, metadata: Metadata, length: number, parentDirectory?: Directory) {
+    LogUtil.debug(TAG, `extract start`);
     let directory = new IptcDirectory();
     metadata.addDirectory(directory);
 
@@ -59,6 +63,7 @@ export class IptcReader implements JpegSegmentMetadataReader {
         offset++;
       } catch (e) {
         directory.addError("Unable to read starting byte of IPTC tag");
+        LogUtil.error(TAG, `extract end, error: ${JSON.stringify(e)}`);
         return;
       }
 
@@ -73,6 +78,7 @@ export class IptcReader implements JpegSegmentMetadataReader {
       // we need at least four bytes left to read a tag
       if (offset + 4 > length) {
         directory.addError("Too few bytes remain for a valid IPTC tag");
+        LogUtil.error(TAG, `extract end, Too few bytes remain for a valid IPTC tag`);
         return;
       }
 
@@ -91,11 +97,13 @@ export class IptcReader implements JpegSegmentMetadataReader {
         offset += 4;
       } catch (e) {
         directory.addError("IPTC data segment ended mid-way through tag descriptor");
+        LogUtil.error(TAG, `extract end, error: ${JSON.stringify(e)}`);
         return;
       }
 
       if (offset + tagByteCount > length) {
         directory.addError("Data for tag extends beyond end of IPTC segment");
+        LogUtil.error(TAG, `extract end, Data for tag extends beyond end of IPTC segment`);
         return;
       }
 
@@ -103,23 +111,26 @@ export class IptcReader implements JpegSegmentMetadataReader {
         this.processTag(reader, directory, directoryType, tagType, tagByteCount);
       } catch (e) {
         directory.addError("Error processing IPTC tag");
+        LogUtil.error(TAG, `extract end, error: ${JSON.stringify(e)}`);
         return;
       }
 
       offset += tagByteCount;
     }
-
+    LogUtil.debug(TAG, `extract end`);
   }
 
   private processTag(reader: SequentialReader, directory: Directory, directoryType: number, tagType: number, tagByteCount: number) {
+    LogUtil.debug(TAG, `processTag start,  directoryType=${directoryType}, tagType=${tagType}, tagByteCount=${tagByteCount}`);
     let tagIdentifier = tagType | (directoryType << 8);
 
     if (tagByteCount == 0) {
       directory.setString(tagIdentifier, "");
+      LogUtil.error(TAG, `processTag end, tagByteCount is 0`);
       return;
     }
 
-
+    LogUtil.debug(TAG, `tagIdentifier is ${tagIdentifier}`);
     switch (tagIdentifier) {
       case IptcDirectory.TAG_CODED_CHARACTER_SET:
         let bytes = reader.getBytes(tagByteCount);
@@ -164,6 +175,7 @@ export class IptcReader implements JpegSegmentMetadataReader {
       if (charSetName != null)
       charset = charSetName
     } catch (ignored) {
+      LogUtil.error(TAG, `processTag end, error: ${JSON.stringify(ignored)}`);
     }
 
     let string;
@@ -198,10 +210,13 @@ export class IptcReader implements JpegSegmentMetadataReader {
     } else {
       directory.setStringValue(tagIdentifier, string);
     }
+    LogUtil.debug(TAG, `processTag end`);
   }
 
   private byteToString(byte): string {
+    LogUtil.debug(TAG, `byteToString start`);
     if (typeof byte === 'string') {
+      LogUtil.debug(TAG, `byteToString end, byte is string`);
       return byte;
     }
     var str = '',
@@ -221,6 +236,7 @@ export class IptcReader implements JpegSegmentMetadataReader {
         str += String.fromCharCode(_arr[i]);
       }
     }
+    LogUtil.debug(TAG, `byteToString end, str is ${str}`);
     return str;
   }
 }

@@ -16,6 +16,9 @@ limitations under the License.
 import QuickTimeDescriptor from '../QuickTimeDescriptor'
 import QuickTimeDirectory from '../QuickTimeDirectory'
 import QuickTimeMetadataDirectory from './QuickTimeMetadataDirectory'
+import LogUtil from '../../../tools/LogUtils'
+
+const TAG: string = "QuickTimeMetadataDescriptor";
 
 class QuickTimeMetadataDescriptor extends QuickTimeDescriptor {
   public constructor(directory: QuickTimeDirectory) {
@@ -23,6 +26,7 @@ class QuickTimeMetadataDescriptor extends QuickTimeDescriptor {
   }
 
   public getDescription(tagType: number): string {
+    LogUtil.debug(TAG, `getDescription start, tagType: ${tagType}`);
     switch (tagType) {
       case QuickTimeMetadataDirectory.TAG_ARTWORK:
         return this.getArtworkDescription();

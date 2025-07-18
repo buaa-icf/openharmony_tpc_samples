@@ -16,9 +16,13 @@ limitations under the License.
 import PcxDirectory from './PcxDirectory';
 import Metadata from '../Metadata';
 import SequentialReader from '../../lang/SequentialReader';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "PcxReader";
 
 class PcxReader {
   public extract(reader: SequentialReader, metadata: Metadata) {
+    LogUtil.debug(TAG, `extracting start`);
     reader.setMotorolaByteOrder(false);
 
     let directory = new PcxDirectory();
@@ -27,6 +31,7 @@ class PcxReader {
     try {
       let identifier = reader.getInt8();
       if (identifier != 0x0A) {
+        LogUtil.error(TAG, `extract end, Invalid PCX identifier byte: ${identifier}`);
         throw new Error("Invalid PCX identifier byte");
       }
 
@@ -34,6 +39,7 @@ class PcxReader {
 
       let encoding = reader.getInt8();
       if (encoding != 0x01) {
+        LogUtil.error(TAG, `extract end, Invalid PCX encoding byte: ${encoding}`);
         throw new Error("Invalid PCX encoding byte");
       }
 
@@ -65,8 +71,10 @@ class PcxReader {
       }
 
     } catch (e) {
-        directory.addError("Exception reading PCX file metadata: " + e.getMessage());
-      }
+      LogUtil.error(TAG, `extract end, ${JSON.stringify(e)}`);
+      directory.addError("Exception reading PCX file metadata: " + e.getMessage());
+    }
+    LogUtil.debug(TAG, `extracting end`);
   }
 }
 

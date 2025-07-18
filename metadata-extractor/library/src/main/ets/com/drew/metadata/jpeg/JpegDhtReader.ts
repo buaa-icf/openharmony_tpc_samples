@@ -21,6 +21,9 @@ import HuffmanTablesDirectory from './HuffmanTablesDirectory'
 import JpegSegmentMetadataReader from '../../imaging/jpeg/JpegSegmentMetadataReader';
 import JpegSegmentType from '../../imaging/jpeg/JpegSegmentType';
 import SequentialReader from '../../lang/SequentialReader';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "JpegDhtReader";
 
 class JpegDhtReader implements JpegSegmentMetadataReader {
   public getSegmentTypes(): Set<JpegSegmentType>
@@ -35,8 +38,10 @@ class JpegDhtReader implements JpegSegmentMetadataReader {
   }
 
   public extract(reader: SequentialReader, metadata: Metadata) {
+    LogUtil.debug(TAG, `extract start`);
     let directory: HuffmanTablesDirectory = <HuffmanTablesDirectory>metadata.getFirstDirectoryOfType(new HuffmanTablesDirectory());
     if (directory == null) {
+      LogUtil.warn(TAG, `No HuffmanTablesDirectory found, create a new one`);
       directory = new HuffmanTablesDirectory();
       metadata.addDirectory(directory);
     }
@@ -56,13 +61,16 @@ class JpegDhtReader implements JpegSegmentMetadataReader {
         directory.getTables().push(new HuffmanTable(tableClass, tableDestinationId, lBytes, vBytes));
       }
     } catch (ex) {
+      LogUtil.error(TAG, `extract end, ex: ${JSON.stringify(ex)}`);
       directory.addError('JpegDhtReader reader fail');
     }
 
     directory.setInt(HuffmanTablesDirectory.TAG_NUMBER_OF_TABLES, directory.getTables().length);
+    LogUtil.debug(TAG, `extract end`);
   }
 
   private getBytes(reader: SequentialReader, count: number): Int8Array {
+    LogUtil.debug(TAG, `getBytes start, count: ${count}`);
     let bytes: Int8Array = new Int8Array[count];
     for (let i = 0; i < count; i++) {
       let b: number = reader.getByte();
@@ -74,6 +82,7 @@ class JpegDhtReader implements JpegSegmentMetadataReader {
       }
       bytes[i] = b;
     }
+    LogUtil.debug(TAG, `getBytes end`);
     return bytes;
   }
 }

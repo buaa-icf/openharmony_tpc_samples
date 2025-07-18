@@ -22,6 +22,9 @@ import QuickTimeDirectory from './QuickTimeDirectory'
 import QuickTimeHandler from '../../imaging/quicktime/QuickTimeHandler'
 import QuickTimeMetadataDirectory from './metadata/QuickTimeMetadataDirectory'
 import SequentialByteArrayReader from '../../lang/SequentialByteArrayReader'
+import LogUtil from '../../tools/LogUtils'
+
+const TAG: string = "QuickTimeMetadataHandler";
 
 abstract class QuickTimeMetadataHandler extends QuickTimeHandler<QuickTimeDirectory> {
   public constructor(metadata: Metadata) {
@@ -33,16 +36,19 @@ abstract class QuickTimeMetadataHandler extends QuickTimeHandler<QuickTimeDirect
   }
 
   public shouldAcceptAtom(atom: Atom): boolean {
+    LogUtil.debug(TAG, `shouldAcceptAtom start, atom type: ${atom.type}`);
     return atom.type == QuickTimeAtomTypes.ATOM_HANDLER
     || atom.type == QuickTimeAtomTypes.ATOM_KEYS
     || atom.type == QuickTimeAtomTypes.ATOM_DATA;
   }
 
   public shouldAcceptContainer(atom: Atom): boolean {
+    LogUtil.debug(TAG, `shouldAcceptContainer start, atom type: ${atom.type}`);
     return atom.type == QuickTimeContainerTypes.ATOM_METADATA_LIST;
   }
 
   public processAtom(atom: Atom, payload: Int8Array, context: QuickTimeContext): QuickTimeHandler<QuickTimeDirectory> {
+    LogUtil.debug(TAG, `processAtom start, atom type: ${atom.type}`);
     if (payload != null) {
       let reader: SequentialByteArrayReader = new SequentialByteArrayReader(payload);
       if (atom.type == QuickTimeAtomTypes.ATOM_KEYS) {
@@ -51,6 +57,7 @@ abstract class QuickTimeMetadataHandler extends QuickTimeHandler<QuickTimeDirect
         this.processData(payload, reader);
       }
     }
+    LogUtil.debug(TAG, `processAtom end`);
     return this;
   }
 

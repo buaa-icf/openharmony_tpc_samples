@@ -15,6 +15,9 @@
 
 import JfxxDirectory from './JfxxDirectory';
 import TagDescriptor from '../TagDescriptor';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "JfxxDescriptor";
 
 /**
  * Provides human-readable string versions of the tags stored in a JfxxDirectory.
@@ -26,6 +29,7 @@ class JfxxDescriptor extends TagDescriptor<JfxxDirectory> {
 
   public getDescription(tagType: number): string
   {
+    LogUtil.debug(TAG, `getDescription start, tagType: ${tagType}`);
     switch (tagType) {
       case JfxxDirectory.TAG_EXTENSION_CODE:
         return this.getExtensionCodeDescription();
@@ -36,9 +40,13 @@ class JfxxDescriptor extends TagDescriptor<JfxxDirectory> {
 
   public getExtensionCodeDescription(): string
   {
+    LogUtil.debug(TAG, `getExtensionCodeDescription start`);
     let value: number = this._directory.getInteger(JfxxDirectory.TAG_EXTENSION_CODE);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getExtensionCodeDescription end, extension code is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getExtensionCodeDescription end, extension code: ${value}`);
     switch (value) {
       case 0x10:
         return "Thumbnail coded using JPEG";

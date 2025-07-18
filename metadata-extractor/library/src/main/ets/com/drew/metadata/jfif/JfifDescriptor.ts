@@ -16,6 +16,9 @@
 import JfifDirectory from './JfifDirectory';
 import TagDescriptor from '../TagDescriptor';
 import util from '@ohos.util';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "JfifDescriptor";
 
 /**
  * Provides human-readable string versions of the tags stored in a JfifDirectory.
@@ -27,6 +30,7 @@ class JfifDescriptor extends TagDescriptor<JfifDirectory> {
 
   public getDescription(tagType: number): string
   {
+    LogUtil.debug(TAG, `getDescription start, tagType: ${tagType}`);
     switch (tagType) {
       case JfifDirectory.TAG_RESX:
         return this.getImageResXDescription();
@@ -43,17 +47,25 @@ class JfifDescriptor extends TagDescriptor<JfifDirectory> {
 
   public getImageVersionDescription(): string
   {
+    LogUtil.debug(TAG, `getImageVersionDescription start`);
     let value: number = this._directory.getInteger(JfifDirectory.TAG_VERSION);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getImageVersionDescription end,value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getImageVersionDescription end`);
     return util.printf("%d.%d", (value & 0xFF00) >> 8, value & 0xFF);
   }
 
   public getImageResYDescription(): string
   {
+    LogUtil.debug(TAG, `getImageResYDescription start`);
     let value: number = this._directory.getInteger(JfifDirectory.TAG_RESY);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getImageResYDescription end,value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getImageResYDescription end`);
     return util.printf("%d dot%s",
       value,
         value == 1 ? "" : "s");
@@ -61,9 +73,13 @@ class JfifDescriptor extends TagDescriptor<JfifDirectory> {
 
   public getImageResXDescription(): string
   {
+    LogUtil.debug(TAG, `getImageResXDescription start`);
     let value: number = this._directory.getInteger(JfifDirectory.TAG_RESX);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getImageResXDescription end,value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getImageResXDescription end`);
     return util.printf("%d dot%s",
       value,
         value == 1 ? "" : "s");
@@ -71,9 +87,13 @@ class JfifDescriptor extends TagDescriptor<JfifDirectory> {
 
   public getImageResUnitsDescription(): string
   {
+    LogUtil.debug(TAG, `getImageResUnitsDescription start`);
     let value: number = this._directory.getInteger(JfifDirectory.TAG_UNITS);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getImageResUnitsDescription end,value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getImageResUnitsDescription end`);
     switch (value) {
       case 0:
         return "none";

@@ -16,6 +16,9 @@ limitations under the License.
 import StringUtil from '../../lang/StringUtil';
 import { IptcDirectory } from './IptcDirectory';
 import TagDescriptor from '../TagDescriptor';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "IptcDescriptor";
 
 export class IptcDescriptor extends TagDescriptor<IptcDirectory> {
   constructor(directory: IptcDirectory) {
@@ -23,6 +26,7 @@ export class IptcDescriptor extends TagDescriptor<IptcDirectory> {
   }
 
   public getDescription(tagType: number): string{
+    LogUtil.debug(TAG, `getDescription start, tagType: ${tagType}`);
     switch (tagType) {
       case IptcDirectory.TAG_DATE_CREATED:
         return this.getDateCreatedDescription();
@@ -56,27 +60,43 @@ export class IptcDescriptor extends TagDescriptor<IptcDirectory> {
   }
 
   public getDateDescription(tagType: number): string{
+    LogUtil.debug(TAG, `getDateDescription start, tagType: ${tagType}`);
     let s = this._directory.getString(tagType);
-    if (s == null)
-    return null;
-    if (s.length == 8)
-    return s.substring(0, 4) + ':' + s.substring(4, 6) + ':' + s.substring(6);
+    if (s == null) {
+      LogUtil.error(TAG, `getDateDescription end, s is null`);
+      return null;
+    }
+    if (s.length == 8) {
+      LogUtil.debug(TAG, `getDateDescription end, s length is 8`);
+      return s.substring(0, 4) + ':' + s.substring(4, 6) + ':' + s.substring(6);
+    }
+    LogUtil.debug(TAG, `getDateDescription end`);
     return s;
   }
 
   public getTimeDescription(tagType: number): string{
+    LogUtil.debug(TAG, `getTimeDescription start, tagType: ${tagType}`);
     let s = this._directory.getString(tagType);
-    if (s == null)
-    return null;
-    if (s.length == 6 || s.length == 11)
-    return s.substring(0, 2) + ':' + s.substring(2, 4) + ':' + s.substring(4);
+    if (s == null) {
+      LogUtil.error(TAG, `getTimeDescription end, s is null`);
+      return null;
+    }
+    if (s.length == 6 || s.length == 11) {
+      LogUtil.debug(TAG, `getTimeDescription end, s length is 6 or 11`);
+      return s.substring(0, 2) + ':' + s.substring(2, 4) + ':' + s.substring(4);
+    }
+    LogUtil.debug(TAG, `getTimeDescription end`);
     return s;
   }
 
   public getFileFormatDescription(): string{
+    LogUtil.debug(TAG, `getFileFormatDescription start`);
     let value = this._directory.getInteger(IptcDirectory.TAG_FILE_FORMAT);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getFileFormatDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getFileFormatDescription end, value: ${value}`);
     switch (value) {
       case 0:
         return "No ObjectData";
@@ -199,9 +219,13 @@ export class IptcDescriptor extends TagDescriptor<IptcDirectory> {
   }
 
   public getKeywordsDescription(): string{
+    LogUtil.debug(TAG, `getKeywordsDescription start`);
     let keywords = this._directory.getStringArray(IptcDirectory.TAG_KEYWORDS);
-    if (keywords == null)
-    return null;
+    if (keywords == null) {
+      LogUtil.error(TAG, `getKeywordsDescription end, keywords is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getKeywordsDescription end`);
     return StringUtil.join(keywords, ";");
   }
 

@@ -15,6 +15,9 @@ limitations under the License.
 
 import PsdHeaderDirectory from './PsdHeaderDirectory';
 import TagDescriptor from '../TagDescriptor';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "PsdHeaderDescriptor";
 
 class PsdHeaderDescriptor extends TagDescriptor<PsdHeaderDirectory> {
   constructor(directory: PsdHeaderDirectory) {
@@ -22,6 +25,7 @@ class PsdHeaderDescriptor extends TagDescriptor<PsdHeaderDirectory> {
   }
 
   public getDescription(tagType: number): string {
+    LogUtil.debug(TAG, `getDescription start, tagType: ${tagType}`);
     switch (tagType) {
       case PsdHeaderDirectory.TAG_CHANNEL_COUNT:
         return this.getChannelCountDescription();
@@ -39,24 +43,31 @@ class PsdHeaderDescriptor extends TagDescriptor<PsdHeaderDirectory> {
   }
 
   public getChannelCountDescription(): string {
+    LogUtil.debug(TAG, `getChannelCountDescription start`);
     // Supported range is 1 to 56.
     let value =this. _directory.getInteger(PsdHeaderDirectory.TAG_CHANNEL_COUNT);
     if (value == null) {
+      LogUtil.error(TAG, `getChannelCountDescription end, value is null`);
       return null;
     }
+    LogUtil.debug(TAG, `getChannelCountDescription end`);
     return value + " channel" + (value == 1 ? "" : "s");
   }
 
   public getBitsPerChannelDescription(): string {
+    LogUtil.debug(TAG, `getBitsPerChannelDescription start`);
     // Supported values are 1, 8, 16 and 32.
     let value = this._directory.getInteger(PsdHeaderDirectory.TAG_BITS_PER_CHANNEL);
     if (value == null) {
+      LogUtil.error(TAG, `getBitsPerChannelDescription end, value is null`);
       return null;
     }
+    LogUtil.debug(TAG, `getBitsPerChannelDescription end`);
     return value + " bit" + (value == 1 ? "" : "s") + " per channel";
   }
 
   public getColorModeDescription(): string {
+    LogUtil.debug(TAG, `getColorModeDescription start`);
     return this.getIndexedDescription(PsdHeaderDirectory.TAG_COLOR_MODE,
       "Bitmap",
       "Grayscale",
@@ -71,21 +82,28 @@ class PsdHeaderDescriptor extends TagDescriptor<PsdHeaderDirectory> {
   }
 
   public getImageHeightDescription(): string {
+    LogUtil.debug(TAG, `getImageHeightDescription start`);
     let value = this._directory.getInteger(PsdHeaderDirectory.TAG_IMAGE_HEIGHT);
     if (value == null) {
+      LogUtil.error(TAG, `getImageHeightDescription end, value is null`);
       return null;
     }
+    LogUtil.debug(TAG, `getImageHeightDescription end`);
     return value + " pixel" + (value == 1 ? "" : "s");
   }
 
   public getImageWidthDescription(): string {
+    LogUtil.debug(TAG, `getImageWidthDescription start`);
     try {
       let value = this._directory.getInteger(PsdHeaderDirectory.TAG_IMAGE_WIDTH);
       if (value == null) {
+        LogUtil.error(TAG, `getImageWidthDescription end, value is null`);
         return null;
       }
+      LogUtil.debug(TAG, `getImageWidthDescription end`);
       return value + " pixel" + (value == 1 ? "" : "s");
     } catch (e) {
+       LogUtil.error(TAG, `getImageWidthDescription end, error: ${JSON.stringify(e)}`);
        return null;
     }
   }

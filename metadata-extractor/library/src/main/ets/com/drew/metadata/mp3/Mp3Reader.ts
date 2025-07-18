@@ -16,9 +16,13 @@ limitations under the License.
 import Metadata from '../Metadata';
 import Mp3Directory from './Mp3Directory';
 import SequentialReader from '../../lang/SequentialReader';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "Mp3Reader";
 
 class Mp3Reader {
   public extract(reader: SequentialReader, metadata: Metadata): void {
+    LogUtil.debug(TAG, `extract start`);
     let directory: Mp3Directory = new Mp3Directory();
     metadata.addDirectory(directory);
 
@@ -29,6 +33,7 @@ class Mp3Reader {
       let id: number = 0;
       switch ((header & 0x000180000) >> 19) {
         case 0:
+          LogUtil.error(TAG, "extract failed, MPEG-2.5 not supported.");
           throw new Error("MPEG-2.5 not supported.");
         case 2:
           directory.setString(Mp3Directory.TAG_ID, "MPEG-2");
@@ -42,6 +47,7 @@ class Mp3Reader {
 
       // Layer Type: 1, 2, 3, or not defined
       let layer: number = ((header & 0x00060000) >> 17);
+      LogUtil.debug(TAG, `Layer type: ${layer}`);
       switch (layer) {
         case 0:
           directory.setString(Mp3Directory.TAG_LAYER, "Not defined");
@@ -70,6 +76,7 @@ class Mp3Reader {
       let frequencyMapping: number[][] = [[2], [3]];
       frequencyMapping[0] = [44100, 48000, 32000];
       frequencyMapping[1] = [22050, 24000, 16000];
+      LogUtil.debug(TAG, `id: ${id}, frequency: ${frequency}`);
       if (id == 2) {
         directory.setInt(Mp3Directory.TAG_FREQUENCY, frequencyMapping[1][frequency]);
         frequency = frequencyMapping[1][frequency];
@@ -82,6 +89,7 @@ class Mp3Reader {
 
       // Encoding type: Stereo, Joint Stereo, Dual Channel, or Mono
       let mode: number = ((header & 0x000000C0) >> 6);
+      LogUtil.debug(TAG, `Mode: ${mode}`);
       switch (mode) {
         case 0:
           directory.setString(Mp3Directory.TAG_MODE, "Stereo");
@@ -99,6 +107,7 @@ class Mp3Reader {
 
       // Copyright boolean
       let copyright: number = ((header & 0x00000008) >> 3);
+      LogUtil.debug(TAG, `Copyright: ${copyright}`);
       switch (copyright) {
         case 0:
           directory.setString(Mp3Directory.TAG_COPYRIGHT, "False");
@@ -109,6 +118,7 @@ class Mp3Reader {
       }
 
       let emphasis: number = (header & 0x00000003);
+      LogUtil.debug(TAG, `Emphasis: ${emphasis}`);
       switch (emphasis) {
         case 0:
           directory.setString(Mp3Directory.TAG_EMPHASIS, "none");
@@ -126,11 +136,14 @@ class Mp3Reader {
         directory.setString(Mp3Directory.TAG_FRAME_SIZE, frameSize + " bytes");
       }
     } catch (error) {
+      LogUtil.error(TAG, `extract failed, error: ${JSON.stringify(error)}`);
       directory.addError(error);
     }
+    LogUtil.debug(TAG, `extract end`);
   }
 
   private static setBitrate(bitrate: number, layer: number, id: number): number {
+    LogUtil.debug(TAG, `setBitrate start, bitrate: ${bitrate}, layer: ${layer}, id: ${id}`);
     let bitrateMapping: number[][] = [[14], [6]];
     bitrateMapping[0] = [32, 32, 32, 32, 32, 8];
     bitrateMapping[1] = [64, 48, 40, 64, 48, 16];
@@ -150,6 +163,7 @@ class Mp3Reader {
     let xPos: number = 0;
     let yPos: number = bitrate - 1;
 
+    LogUtil.debug(TAG, `xPos: ${xPos}, yPos: ${yPos}`);
     if (id == 2) {
       // MPEG-2
       switch (layer) {
@@ -178,6 +192,7 @@ class Mp3Reader {
       }
     }
 
+    LogUtil.debug(TAG, `setBitrate end`);
     return bitrateMapping[yPos][xPos];
   }
 

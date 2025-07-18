@@ -16,6 +16,10 @@ limitations under the License.
 import PropertyListResults from './PropertyListResults'
 import Trailer from './Trailer'
 import SequentialByteArrayReader from '../../lang/SequentialByteArrayReader'
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "BplistReader";
+
 export default class BplistReader{
   private static  readonly PLIST_DTD:string = "<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">";
 
@@ -26,7 +30,9 @@ export default class BplistReader{
      */
     public static  isValid(bplist:Int8Array):boolean
     {
+        LogUtil.debug(TAG, `isValid start`);
         if (bplist.length < BplistReader.BPLIST_HEADER.length) {
+            LogUtil.error(TAG, `isValid end, bplist length is less than BPLIST_HEADER length`);
             return false;
         }
 
@@ -37,13 +43,15 @@ export default class BplistReader{
                 break;
             }
         }
-
+        LogUtil.debug(TAG, `isValid end`);
         return valid;
     }
 
     public static  parse( bplist:Int8Array) :PropertyListResults
     {
+        LogUtil.debug(TAG, `parse start`);
         if (!BplistReader.isValid(bplist)) {
+            LogUtil.error(TAG, `parse end, bplist is not valid`);
             throw new Error("Input is not a bplist");
         }
 
@@ -81,16 +89,20 @@ export default class BplistReader{
                   BplistReader.handleInt(i, marker, reader, objects);
                     break;
                 default:
+                    LogUtil.warn(TAG, `parse end, un-handled objectFormat encountered`);
                     throw new Error("Un-handled objectFormat encountered");
             }
         }
 
+        LogUtil.debug(TAG, `parse end`);
         return new PropertyListResults(objects, trailer);
     }
 
     private static  handleInt( objectIndex:number,  marker:number,   reader:SequentialByteArrayReader,  objects:Array<Object>) :void
     {
+        LogUtil.debug(TAG, `handleInt start`);
         let objectSize:number = Math.pow(2, (marker & 0x0F));
+        LogUtil.debug(TAG, `handleInt objectSize: ${objectSize}`);
         if (objectSize == 1) {
             objects.push(objects.splice(objectIndex, 0,reader.getByte()));
         } else if (objectSize == 2) {
@@ -100,10 +112,12 @@ export default class BplistReader{
         } else if (objectSize == 8) {
             objects.push(objects.splice(objectIndex,0, reader.getInt64()));
         }
+        LogUtil.debug(TAG, `handleInt end`);
     }
 
     private static  handleDict( objectIndex:number, marker:number,   reader:SequentialByteArrayReader,objects:Array<Object>) :void
     {
+        LogUtil.debug(TAG, `handleDict start`);
         // Using linked map preserves the key order
         let map:Map<number,number> = new Map();
         let dictEntries:number = marker & 0x0F;
@@ -117,10 +131,12 @@ export default class BplistReader{
         }
 
         objects.push(objects.splice(objectIndex,0, map));
+        LogUtil.debug(TAG, `handleDict end`);
     }
 
     private static  handleData( objectIndex:number,  marker:number, reader:SequentialByteArrayReader, objects:Array<Object>) :void
     {
+        LogUtil.debug(TAG, `handleData start`);
         let byteCount = marker & 0x0F;
         if (byteCount == 0x0F) {
             let sizeMarker = reader.getByte();
@@ -137,6 +153,7 @@ export default class BplistReader{
         }
 
         objects.push(objects.splice(objectIndex, 0,reader.getBytes(byteCount)));
+        LogUtil.debug(TAG, `handleData end`);
     }
 
 
@@ -150,6 +167,7 @@ export default class BplistReader{
      */
     private static  readTrailer(bplist : Int8Array):Trailer
     {
+        LogUtil.debug(TAG, `readTrailer start`);
         let reader:SequentialByteArrayReader = new SequentialByteArrayReader(bplist, bplist.length - Trailer.STRUCT_SIZE);
         reader.skip(5);    // Skip the 5-byte _unused values
         reader.skip(1);    // Skip 1-byte sort version
@@ -161,6 +179,7 @@ export default class BplistReader{
         trailer.setTopObject(reader.getInt64());
         trailer.setOffsetTableOffset(reader.getInt64());
 
+        LogUtil.debug(TAG, `readTrailer end`);
         return trailer;
     }
 }

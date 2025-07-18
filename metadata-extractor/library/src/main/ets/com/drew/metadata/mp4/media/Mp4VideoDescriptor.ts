@@ -15,7 +15,9 @@ limitations under the License.
 
 import TagDescriptor from '../../TagDescriptor'
 import Mp4VideoDirectory from './Mp4VideoDirectory'
+import LogUtil from '../../../tools/LogUtils';
 
+const TAG: string = "Mp4VideoDescriptor"
 
 export default class Mp4VideoDescriptor extends TagDescriptor<Mp4VideoDirectory>{
    public constructor(  directory:Mp4VideoDirectory)
@@ -26,6 +28,7 @@ export default class Mp4VideoDescriptor extends TagDescriptor<Mp4VideoDirectory>
 
     public  getDescription( tagType:number):string
     {
+        LogUtil.debug(TAG, `getDescription start, tagType: ${tagType}`);
         switch (tagType) {
             case Mp4VideoDirectory.TAG_HEIGHT:
             case Mp4VideoDirectory.TAG_WIDTH:
@@ -49,9 +52,10 @@ export default class Mp4VideoDescriptor extends TagDescriptor<Mp4VideoDirectory>
 
     private  getDepthDescription():string
     {
+        LogUtil.debug(TAG, `getDepthDescription start`);
         let value:number = this._directory.getInteger(Mp4VideoDirectory.TAG_DEPTH);
 
-
+        LogUtil.debug(TAG, `getDepthDescription end, value: ${value}`);
         switch (value) {
             case (1):
             case (2):
@@ -72,9 +76,10 @@ export default class Mp4VideoDescriptor extends TagDescriptor<Mp4VideoDirectory>
 
     private  getColorTableDescription():string
     {
+        LogUtil.debug(TAG, `getColorTableDescription start`);
         let value:number = this._directory.getInteger(Mp4VideoDirectory.TAG_COLOR_TABLE);
 
-
+        LogUtil.debug(TAG, `getColorTableDescription end, value: ${value}`);
         switch (value) {
             case (-1):
                 let depth:Number = this._directory.getInteger(Mp4VideoDirectory.TAG_DEPTH);
@@ -95,10 +100,14 @@ export default class Mp4VideoDescriptor extends TagDescriptor<Mp4VideoDirectory>
 
     private  getGraphicsModeDescription():string
     {
+        LogUtil.debug(TAG, `getGraphicsModeDescription start`);
         let value:number = this._directory.getInteger(Mp4VideoDirectory.TAG_GRAPHICS_MODE);
-        if (value == null)
+        if (value == null) {
+            LogUtil.error(TAG, `getGraphicsModeDescription end, value is null`);
             return null;
+        }
 
+        LogUtil.debug(TAG, `getGraphicsModeDescription end, value: ${value}`);
         switch (value.valueOf()) {
             case (0x00):
                 return "Copy";

@@ -17,6 +17,9 @@ import Atom from './Atom'
 import FullAtom from './FullAtom'
 import QuickTimeTimecodeDirectory from '../media/QuickTimeTimecodeDirectory'
 import SequentialReader from '../../../lang/SequentialReader'
+import LogUtil from '../../../tools/LogUtils'
+
+const TAG: string = "TimecodeInformationMediaAtom";
 
 class TimecodeInformationMediaAtom extends FullAtom {
   textFont: number;
@@ -39,7 +42,9 @@ class TimecodeInformationMediaAtom extends FullAtom {
   }
 
   public addMetadata(directory: QuickTimeTimecodeDirectory): void {
+    LogUtil.debug(TAG, `addMetadata start`);
     directory.setInt(QuickTimeTimecodeDirectory.TAG_TEXT_FONT, this.textFont);
+    LogUtil.debug(TAG, `textFont: ${this.textFont}`);
     switch (this.textFace) {
       case (0x0001):
         directory.setString(QuickTimeTimecodeDirectory.TAG_TEXT_FACE, "Bold");
@@ -67,6 +72,7 @@ class TimecodeInformationMediaAtom extends FullAtom {
     directory.setIntArray(QuickTimeTimecodeDirectory.TAG_TEXT_COLOR, this.textColor);
     directory.setIntArray(QuickTimeTimecodeDirectory.TAG_BACKGROUND_COLOR, this.backgroundColor);
     directory.setString(QuickTimeTimecodeDirectory.TAG_FONT_NAME, this.fontName);
+    LogUtil.debug(TAG, `addMetadata end`);
   }
 }
 

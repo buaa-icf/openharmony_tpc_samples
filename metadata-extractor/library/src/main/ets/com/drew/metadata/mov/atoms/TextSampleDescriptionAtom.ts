@@ -18,6 +18,9 @@ import QuickTimeTextDirectory from '../media/QuickTimeTextDirectory'
 import SampleDescription from './SampleDescription'
 import SampleDescriptionAtom from './SampleDescriptionAtom'
 import SequentialReader from '../../../lang/SequentialReader'
+import LogUtil from '../../../tools/LogUtils'
+
+const TAG: string = "TextSampleDescriptionAtom";
 
 class TextSampleDescriptionAtom extends SampleDescriptionAtom<InstanceType<typeof TextSampleDescriptionAtom.TextSampleDescription>> {
   public constructor(reader: SequentialReader, atom: Atom) {
@@ -29,6 +32,7 @@ class TextSampleDescriptionAtom extends SampleDescriptionAtom<InstanceType<typeo
   }
 
   public addMetadata(directory: QuickTimeTextDirectory): void {
+    LogUtil.debug(TAG, `addMetadata start`);
     let description: InstanceType<typeof TextSampleDescriptionAtom.TextSampleDescription> = this.sampleDescriptions[0];
 
     directory.setBoolean(QuickTimeTextDirectory.TAG_AUTO_SCALE, (description.displayFlags & 0x0002) == 0x0002);
@@ -42,6 +46,7 @@ class TextSampleDescriptionAtom extends SampleDescriptionAtom<InstanceType<typeo
     directory.setBoolean(QuickTimeTextDirectory.TAG_ANTI_ALIAS, (description.displayFlags & 0x2000) == 0x2000);
     directory.setBoolean(QuickTimeTextDirectory.TAG_KEY_TEXT, (description.displayFlags & 0x4000) == 0x4000);
 
+    LogUtil.debug(TAG, `textJustification: ${description.textJustification}`);
     switch (description.textJustification) {
       case (0):
         directory.setString(QuickTimeTextDirectory.TAG_JUSTIFICATION, "Left");
@@ -57,6 +62,7 @@ class TextSampleDescriptionAtom extends SampleDescriptionAtom<InstanceType<typeo
     directory.setLong(QuickTimeTextDirectory.TAG_DEFAULT_TEXT_BOX, description.defaultTextBox);
     directory.setInt(QuickTimeTextDirectory.TAG_FONT_NUMBER, description.fontNumber);
 
+    LogUtil.debug(TAG, `fontFace: ${description.fontFace}`);
     switch (description.fontFace) {
       case (0x0001):
         directory.setString(QuickTimeTextDirectory.TAG_FONT_FACE, "Bold");
@@ -82,6 +88,7 @@ class TextSampleDescriptionAtom extends SampleDescriptionAtom<InstanceType<typeo
 
     directory.setIntArray(QuickTimeTextDirectory.TAG_FOREGROUND_COLOR, description.foregroundColor);
     directory.setString(QuickTimeTextDirectory.TAG_NAME, description.textName);
+    LogUtil.debug(TAG, `addMetadata end`);
   }
 
   static TextSampleDescription = class extends SampleDescription {

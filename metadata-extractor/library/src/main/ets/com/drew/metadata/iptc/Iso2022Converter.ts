@@ -13,6 +13,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "Iso2022Converter";
+
 export class Iso2022Converter {
   private static ISO_8859_1 = "ISO-8859-1";
   private static UTF_8 = "UTF-8";
@@ -24,27 +28,38 @@ export class Iso2022Converter {
   private static ESC = 0x1B;
 
   public static convertISO2022CharsetToJavaCharset(bytes: number[]): string{
-    if (bytes.length > 2 && bytes[0] == Iso2022Converter.ESC && bytes[1] == Iso2022Converter.PERCENT_SIGN && bytes[2] == Iso2022Converter.LATIN_CAPITAL_G)
-    return Iso2022Converter.UTF_8;
+    LogUtil.debug(TAG, `convertISO2022CharsetToJavaCharset start`);
+    if (bytes.length > 2 && bytes[0] == Iso2022Converter.ESC && bytes[1] == Iso2022Converter.PERCENT_SIGN && bytes[2] == Iso2022Converter.LATIN_CAPITAL_G) {
+      LogUtil.debug(TAG, `convertISO2022CharsetToJavaCharset end, return UTF_8`);
+      return Iso2022Converter.UTF_8;
+    }
 
-    if (bytes.length > 2 && bytes[0] == Iso2022Converter.ESC && bytes[1] == Iso2022Converter.DOT_SIGN && bytes[2] == Iso2022Converter.LATIN_CAPITAL_A)
-    return Iso2022Converter.ISO_8859_1;
+    if (bytes.length > 2 && bytes[0] == Iso2022Converter.ESC && bytes[1] == Iso2022Converter.DOT_SIGN && bytes[2] == Iso2022Converter.LATIN_CAPITAL_A) {
+      LogUtil.debug(TAG, `convertISO2022CharsetToJavaCharset end, return ISO_8859_1`);
+      return Iso2022Converter.ISO_8859_1;
+    }
 
-    if (bytes.length > 3 && bytes[0] == Iso2022Converter.ESC && (bytes[3] & 0xFF | ((bytes[2] & 0xFF) << 8) | ((bytes[1] & 0xFF) << 16)) == Iso2022Converter.DOT && bytes[4] == Iso2022Converter.LATIN_CAPITAL_A)
-    return Iso2022Converter.ISO_8859_1;
-
+    if (bytes.length > 3 && bytes[0] == Iso2022Converter.ESC && (bytes[3] & 0xFF | ((bytes[2] & 0xFF) << 8) | ((bytes[1] & 0xFF) << 16)) == Iso2022Converter.DOT && bytes[4] == Iso2022Converter.LATIN_CAPITAL_A) {
+      LogUtil.debug(TAG, `convertISO2022CharsetToJavaCharset end, return ISO_8859_1`);
+      return Iso2022Converter.ISO_8859_1;
+    }
+    LogUtil.error(TAG, `convertISO2022CharsetToJavaCharset end, return null`);
     return null;
   }
 
   static guessCharSet(bytes: number[]): string{
+    LogUtil.debug(TAG, `guessCharSet start`);
     let encodings = [Iso2022Converter.UTF_8, Iso2022Converter.ISO_8859_1];
     for (var index = 0; index < encodings.length; index++) {
       try {
+        LogUtil.debug(TAG, `guessCharSet end`);
         return this.byteToString(bytes);
       } catch (e) {
+        LogUtil.debug(TAG, `guessCharSet end, error: ${JSON.stringify(e)}`);
         // fall through...
       }
     }
+    LogUtil.error(TAG, `guessCharSet end, return null`);
     return null;
 
   }
@@ -53,7 +68,9 @@ export class Iso2022Converter {
   }
 
   static byteToString(arr) {
+    LogUtil.debug(TAG, `byteToString start`);
     if (typeof arr === 'string') {
+      LogUtil.debug(TAG, `byteToString end, arr is string`);
       return arr;
     }
     var str = '',
@@ -73,6 +90,7 @@ export class Iso2022Converter {
         str += String.fromCharCode(_arr[i]);
       }
     }
+    LogUtil.debug(TAG, `byteToString end, return ${str}`);
     return str;
   }
 }

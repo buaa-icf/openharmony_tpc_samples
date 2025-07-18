@@ -18,6 +18,9 @@ import FullAtom from './FullAtom'
 import Mp4Directory from '../../mp4/Mp4Directory'
 import QuickTimeDirectory from '../QuickTimeDirectory'
 import SequentialReader from '../../../lang/SequentialReader'
+import LogUtil from '../../../tools/LogUtils'
+
+const TAG: string = "TrackHeaderAtom";
 
 class TrackHeaderAtom extends FullAtom {
   matrix: Int32Array = new Int32Array(9);
@@ -27,6 +30,7 @@ class TrackHeaderAtom extends FullAtom {
   public constructor(reader: SequentialReader, atom: Atom) {
     super(reader, atom);
 
+    LogUtil.debug(TAG, `constructor start, version: ${this.version}`);
     if (this.version == 1) {
       reader.skip(48);
     } else {
@@ -38,6 +42,7 @@ class TrackHeaderAtom extends FullAtom {
     }
     this.width = reader.getInt32();
     this.height = reader.getInt32();
+    LogUtil.debug(TAG, `constructor end, width: ${this.width}, height: ${this.height}`);
   }
 
   public addMetadata(directory: QuickTimeDirectory): void {

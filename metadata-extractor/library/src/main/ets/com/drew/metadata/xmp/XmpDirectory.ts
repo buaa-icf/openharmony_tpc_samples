@@ -15,6 +15,9 @@ limitations under the License.
 
 import Directory from '../Directory';
 import XmpDescriptor from './XmpDescriptor';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "XmpDirectory";
 
 class XmpDirectory extends Directory {
   public static readonly TAG_XMP_VALUE_COUNT: number = 0xFFFF;
@@ -44,6 +47,7 @@ class XmpDirectory extends Directory {
    * uses integers for keys.
    */
   public getXmpProperties(): Map<string, string> {
+    LogUtil.debug(TAG, `getXmpProperties start`);
     let propertyValueByPath: Map<string, string> = new Map<string, string>();
 
     if (this._xmpMeta != null) {
@@ -59,13 +63,16 @@ class XmpDirectory extends Directory {
           }
         }*/
       } catch (error) {
+        LogUtil.error(TAG, `getXmpProperties error: ${JSON.stringify(error)}`);
         throw new Error(error);
       }
     }
+    LogUtil.debug(TAG, `getXmpProperties end`);
     return propertyValueByPath;
   }
 
   public setXMPMeta(xmpMeta: string): void {
+    LogUtil.debug(TAG, `setXMPMeta start`);
     this._xmpMeta = xmpMeta;
 
     try {
@@ -80,8 +87,10 @@ class XmpDirectory extends Directory {
       }
       this.setInt(XmpDirectory.TAG_XMP_VALUE_COUNT, valueCount);*/
     } catch (error) {
+      LogUtil.error(TAG, `setXMPMeta error: ${JSON.stringify(error)}`);
       throw new Error(error);
     }
+    LogUtil.debug(TAG, `setXMPMeta end`);
   }
 
   /**
@@ -89,9 +98,11 @@ class XmpDirectory extends Directory {
    * If one does not exist it will be created.
    */
   public getXMPMeta(): string {
+    LogUtil.debug(TAG, `getXMPMeta start`);
     if (this._xmpMeta == null) {
       //this._xmpMeta = new XMPMetaImpl();
     }
+    LogUtil.debug(TAG, `getXMPMeta end`);
     return this._xmpMeta;
   }
 }

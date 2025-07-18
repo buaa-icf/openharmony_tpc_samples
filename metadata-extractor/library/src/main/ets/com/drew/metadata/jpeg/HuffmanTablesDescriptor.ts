@@ -15,6 +15,9 @@ limitations under the License.
 
 import HuffmanTablesDirectory from './HuffmanTablesDirectory';
 import TagDescriptor from '../TagDescriptor';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "HuffmanTablesDescriptor";
 
 class HuffmanTablesDescriptor extends TagDescriptor<HuffmanTablesDirectory> {
   constructor(directory: HuffmanTablesDirectory) {
@@ -23,6 +26,7 @@ class HuffmanTablesDescriptor extends TagDescriptor<HuffmanTablesDirectory> {
 
   public getDescription(tagType: number): string
   {
+    LogUtil.debug(TAG, `typeOf start, tagType: ${tagType}`);
     switch (tagType) {
       case HuffmanTablesDirectory.TAG_NUMBER_OF_TABLES:
         return this.getNumberOfTablesDescription();
@@ -33,9 +37,13 @@ class HuffmanTablesDescriptor extends TagDescriptor<HuffmanTablesDirectory> {
 
   public getNumberOfTablesDescription(): string
   {
+    LogUtil.debug(TAG, `getNumberOfTablesDescription start`);
     let value: number = this._directory.getInteger(HuffmanTablesDirectory.TAG_NUMBER_OF_TABLES);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getNumberOfTablesDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getNumberOfTablesDescription end`);
     return value + (value == 1 ? " Huffman table" : " Huffman tables");
   }
 }

@@ -18,6 +18,9 @@ import QuickTimeSubtitleDirectory from '../media/QuickTimeSubtitleDirectory'
 import SampleDescription from './SampleDescription'
 import SampleDescriptionAtom from './SampleDescriptionAtom'
 import SequentialReader from '../../../lang/SequentialReader'
+import LogUtil from '../../../tools/LogUtils'
+
+const TAG: string = "SubtitleSampleDescriptionAtom"
 
 class SubtitleSampleDescriptionAtom extends SampleDescriptionAtom<InstanceType<typeof SubtitleSampleDescriptionAtom.SubtitleSampleDescription>> {
   public constructor(reader: SequentialReader, atom: Atom) {
@@ -53,6 +56,7 @@ class SubtitleSampleDescriptionAtom extends SampleDescriptionAtom<InstanceType<t
   }
 
   public addMetadata(directory: QuickTimeSubtitleDirectory): void {
+    LogUtil.debug(TAG, `addMetadata start`);
     let description: InstanceType<typeof SubtitleSampleDescriptionAtom.SubtitleSampleDescription> = this.sampleDescriptions[0];
 
     directory.setBoolean(QuickTimeSubtitleDirectory.TAG_VERTICAL_PLACEMENT, (description.displayFlags & 0x20000000) == 0x20000000);
@@ -61,6 +65,7 @@ class SubtitleSampleDescriptionAtom extends SampleDescriptionAtom<InstanceType<t
 
     directory.setLong(QuickTimeSubtitleDirectory.TAG_DEFAULT_TEXT_BOX, description.defaultTextBox);
     directory.setInt(QuickTimeSubtitleDirectory.TAG_FONT_IDENTIFIER, description.fontIdentifier);
+    LogUtil.debug(TAG, `fontFace: ${description.fontFace}`);
     switch (description.fontFace) {
       case (1):
         directory.setString(QuickTimeSubtitleDirectory.TAG_FONT_FACE, "Bold");
@@ -74,6 +79,7 @@ class SubtitleSampleDescriptionAtom extends SampleDescriptionAtom<InstanceType<t
     }
     directory.setInt(QuickTimeSubtitleDirectory.TAG_FONT_SIZE, description.fontSize);
     directory.setIntArray(QuickTimeSubtitleDirectory.TAG_FOREGROUND_COLOR, description.foregroundColor);
+    LogUtil.debug(TAG, `addMetadata end`);
   }
 }
 
