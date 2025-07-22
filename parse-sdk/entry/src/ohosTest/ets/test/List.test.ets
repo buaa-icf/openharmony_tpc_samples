@@ -50,5 +50,4 @@ export default function testsuite() {
   installationControllerTest();
   parseInstallationTest();
   offlineQueryTest();
-  offlineQueryTest();
 }

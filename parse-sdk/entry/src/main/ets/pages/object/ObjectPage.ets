@@ -47,6 +47,14 @@ struct Index {
         .onClick(async () => {
           router.pushUrl({ url: 'pages/object/UpdatingObjects' })
         })
+
+      Button('关系')
+        .borderRadius(4)
+        .type(ButtonType.Normal)
+        .width('100%')
+        .onClick(async () => {
+          router.pushUrl({ url: 'pages/object/RelationalData' })
+        })
     }
     .width('100%')
     .height('100%')

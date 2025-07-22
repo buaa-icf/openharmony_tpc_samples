@@ -1,5 +1,3 @@
-import { IndexedDBStorageController, Parse, ParseSession } from '@ohos/parser-sdk'
-
 /*
   * Copyright (c) 2025 Huawei Device Co., Ltd.
   *
@@ -16,6 +14,8 @@ import { IndexedDBStorageController, Parse, ParseSession } from '@ohos/parser-sd
   * limitations under the License.
   */
 
+import { IndexedDBStorageController, Parse, ParseSession } from '@ohos/parser-sdk'
+
 @Entry
 @Component
 struct Session {
@@ -25,6 +25,7 @@ struct Session {
   email: string = ''
   dbStorageController = new IndexedDBStorageController()
   @State message: string = ''
+  @State sessionList: Array<ESObject> = [];
   userId: string | undefined = ''
 
   handleParseError(err: ESObject) {
@@ -38,6 +39,9 @@ struct Session {
   build() {
     Scroll() {
       Column({ space: 20 }) {
+        Text(this.message)
+          .fontSize(16)
+
         TextInput({ placeholder: '请输入账号', text: 'admin' })
           .borderRadius(4)
           .onChange((val) => {
@@ -127,6 +131,45 @@ struct Session {
             }
           })
 
+        Button('查看我的设备')
+          .borderRadius(4)
+          .type(ButtonType.Normal)
+          .width('100%')
+          .onClick(async () => {
+            try {
+              this.sessionList = await new Parse.Query(Parse.Session).find();
+              this.message = `找到 ${this.sessionList.length} 个活跃设备`;
+            } catch (e) {
+              this.message = '查询失败: ' + e.message;
+            }
+          })
+
+        Button('踢出其他设备')
+          .borderRadius(4)
+          .type(ButtonType.Normal)
+          .width('100%')
+          .onClick(async () => {
+            try {
+              const current = await Parse.Session.current();
+              const others = await new Parse.Query(Parse.Session)
+                .notEqualTo('objectId', current.id)
+                .find();
+              await Parse.Object.destroyAll(others);
+              this.message = `已踢出 ${others.length} 个设备`;
+            } catch (e) {
+              this.message = '操作失败: ' + e.message;
+            }
+          })
+
+        Button('检查会话有效期')
+          .borderRadius(4)
+          .type(ButtonType.Normal)
+          .width('100%')
+          .onClick(async () => {
+            const session = await Parse.Session.current();
+            this.message = `会话到期时间: ${session.get('expiresAt')}`;
+          })
+
         Button('退出登陆')
           .borderRadius(4)
           .type(ButtonType.Normal)
@@ -140,9 +183,6 @@ struct Session {
               this.message = '退出登陆失败:' + JSON.stringify(e)
             }
           })
-
-        Text(this.message)
-          .fontSize(16)
       }
       .margin(10)
     }
