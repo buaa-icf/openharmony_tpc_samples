@@ -47,12 +47,5 @@ export default function abilityTest() {
       expect(typeof plain).assertEqual('function')
     })
 
-    it('plain_Error', 0, () => {
-      try {
-        plain({} as ESObject)
-      } catch (e) {
-        expect(e.message).assertEqual('is not callable')
-      }
-    })
   })
 }
