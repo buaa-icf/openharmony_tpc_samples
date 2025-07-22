@@ -1,4 +1,5 @@
 import _ohos from '@ohos.url';
+import { LogUtil } from './LogUtil';
 
 function createCommonjsModule$1(fn, module) {
 	return module = { exports: {} }, fn(module, module.exports), module.exports;
@@ -1131,6 +1132,7 @@ function typedArraySupport() {
     Object.setPrototypeOf(arr, proto);
     return arr.foo() === 42;
   } catch (e) {
+    LogUtil.error(`typedArraySupport error: ${JSON.stringify(e)}`);
     return false;
   }
 }
@@ -3193,6 +3195,7 @@ function boundsError(value, length, type) {
 const INVALID_BASE64_RE = /[^+/0-9A-Za-z-_]/g;
 
 function base64clean(str) {
+  LogUtil.info('base64clean start');
   // Node takes equal signs as end of the Base64 encoding
   str = str.split("=")[0];
   // Node strips out invalid characters like \n and \t from the string, base64-js does not
@@ -3294,6 +3297,7 @@ function asciiToBytes(str) {
 }
 
 function utf16leToBytes(str, units) {
+  LogUtil.info('utf16leToBytes start');
   let c, hi, lo;
   const byteArray = [];
   for (let i = 0; i < str.length; ++i) {
@@ -3736,7 +3740,8 @@ function unescapeBuffer(s, decodeSpaces) {
 function qsUnescape(s, decodeSpaces) {
   try {
     return decodeURIComponent(s);
-  } catch {
+  } catch (e) {
+    LogUtil.error(`qsUnescape error: ${JSON.stringify(e)}`);
     return QueryString.unescapeBuffer(s, decodeSpaces).toString();
   }
 }
@@ -4176,7 +4181,8 @@ function parse(qs, sep, eq, options) {
 function decodeStr(s, decoder) {
   try {
     return decoder(s);
-  } catch {
+  } catch (e) {
+    LogUtil.error(`decodeStr error: ${JSON.stringify(e)}`);
     return QueryString.unescape(s, true);
   }
 }
@@ -4826,6 +4832,7 @@ function extname(path) {
 const format = FunctionPrototypeBind(_format, null, "/");
 
 function parse(path) {
+  LogUtil.info('parse start');
   validateString$1(path, "path");
 
   const ret = { root: "", dir: "", base: "", ext: "", name: "" };
@@ -4969,6 +4976,7 @@ function encode_digit(d, flag) {
 }
 
 function adapt(delta, numpoints, firsttime) {
+    LogUtil.info('adapt start');
     var k;
     delta = firsttime ? Math.floor(delta / damp) : (delta >> 1);
     delta += Math.floor(delta / numpoints);
@@ -5233,6 +5241,7 @@ function domainToASCII$1(domain) {
     }
     return out.join(".");
   } catch (err) {
+    LogUtil.error(`domainToASCII$1 error: ${JSON.stringify(err)}`);
     return "";
   }
 }
@@ -5247,6 +5256,7 @@ function domainToUnicode$1(domain) {
     }
     return out.join(".");
   } catch (err) {
+    LogUtil.error(`domainToUnicode$1 error: ${JSON.stringify(err)}`);
     return "";
   }
 }
@@ -5280,6 +5290,7 @@ function urlToHttpOptions$1(url) {
 }
 
 function getPathFromURLPosix(url) {
+  LogUtil.info('getPathFromURLPosix start');
   if (url.hostname !== "") {
     throw new Error("");
   }
@@ -5796,6 +5807,7 @@ Url.prototype.parse = function parse(url, parseQueryString, slashesDenoteHost) {
 };
 
 function getHostname(self, rest, hostname) {
+  LogUtil.info('getHostname start');
   for (let i = 0; i < hostname.length; ++i) {
     const code = hostname.charCodeAt(i);
     const isValid =
@@ -5949,6 +5961,7 @@ const escapedCodes = [
 ];
 
 function autoEscapeStr(rest) {
+  LogUtil.info('autoEscapeStr start');
   let escaped = "";
   let lastEscapedPos = 0;
   for (let i = 0; i < rest.length; ++i) {
@@ -5972,6 +5985,7 @@ function autoEscapeStr(rest) {
 }
 
 function urlFormat(urlObject, options) {
+  LogUtil.info('urlFormat start');
   if (typeof urlObject === "string") {
     urlObject = urlParse(urlObject);
   } else if (typeof urlObject !== "object" || urlObject === null) {
@@ -6123,6 +6137,7 @@ const noEscapeAuth = new Int8Array$1([
 ]);
 
 Url.prototype.format = function format() {
+  LogUtil.info('format start');
   let auth = this.auth || "";
   if (auth) {
     auth = encodeStr(auth, noEscapeAuth, hexTable);
@@ -6783,6 +6798,7 @@ var FORMAT_REGEXPS = (exports.FORMAT_REGEXPS = {
     try {
       new RegExp(input);
     } catch (e) {
+      LogUtil.error(`regex error: ${JSON.stringify(e)}`);
       result = false;
     }
     return result;
@@ -6867,6 +6883,7 @@ exports.deepCompareStrict = function deepCompareStrict(a, b) {
 };
 
 function deepMerger(target, dst, e, i) {
+  LogUtil.info('deepMerger start');
   if (typeof e === "object") {
     dst[i] = deepMerge(target[i], e);
   } else {
@@ -6881,6 +6898,7 @@ function copyist(src, dst, key) {
 }
 
 function copyistWithDeepMerge(target, src, dst, key) {
+  LogUtil.info('copyistWithDeepMerge start');
   if (typeof src[key] !== "object" || !src[key]) {
     dst[key] = src[key];
   } else {
@@ -6952,6 +6970,7 @@ exports.encodePath = function encodePointer(a) {
  * @returns {number}
  */
 exports.getDecimalPlaces = function getDecimalPlaces(number) {
+  LogUtil.info('getDecimalPlaces start');
   var decimalPlaces = 0;
   if (isNaN(number)) return decimalPlaces;
 
@@ -7054,6 +7073,7 @@ validators.type = function validateType (instance, schema, options, ctx) {
 };
 
 function testSchemaNoThrow(instance, options, ctx, callback, schema){
+  LogUtil.info('testSchemaNoThrow start');
   var throwError = options.throwError;
   var throwAll = options.throwAll;
   options.throwError = false;
@@ -7332,6 +7352,7 @@ validators.patternProperties = function validatePatternProperties (instance, sch
       } catch(_e) {
         // In the event the stricter handling causes an error, fall back on the forgiving handling
         // DEPRECATED
+        LogUtil.error(`validatePatternProperties error: ${JSON.stringify(_e)}`);
         regexp = new RegExp(pattern);
       }
       if (!regexp.test(property)) {
@@ -7681,6 +7702,7 @@ validators.pattern = function validatePattern (instance, schema, options, ctx) {
   } catch(_e) {
     // In the event the stricter handling causes an error, fall back on the forgiving handling
     // DEPRECATED
+    LogUtil.error(`validatePattern error: ${JSON.stringify(_e)}`);
     regexp = new RegExp(pattern);
   }
   if (!instance.match(regexp)) {
