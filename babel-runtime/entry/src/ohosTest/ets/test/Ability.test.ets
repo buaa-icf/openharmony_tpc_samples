@@ -26,8 +26,8 @@ import identity from "@babel/runtime/helpers/esm/identity";
 import asyncIterator from "@babel/runtime/helpers/esm/asyncIterator";
 import _checkInRHS from "@babel/runtime/helpers/esm/checkInRHS";
 import _defineAccessor from "@babel/runtime/helpers/esm/defineAccessor";
+import _iterableToArray from "@babel/runtime/helpers/esm/iterableToArray";
 import _iterableToArrayLimit from "@babel/runtime/helpers/esm/iterableToArrayLimit";
-import _iterableToArrayLimitLoose from "@babel/runtime/helpers/esm/iterableToArrayLimitLoose";
 import _createRawReactElement from "@babel/runtime/helpers/esm/jsx";
 import _objectSpread2 from "@babel/runtime/helpers/esm/objectSpread2";
 import _using from "@babel/runtime/helpers/esm/using";
@@ -83,7 +83,7 @@ interface DefaultConfigBean {
 
   // random seed for seeded pseudo random number generation
   // null = randomly seed
-  randomSeed: Object
+  randomSeed: Object | null;
 }
 
 const DEFAULT_CONFIG: DefaultConfigBean = {
@@ -140,7 +140,7 @@ export default function abilityTest() {
         expect(e.message).assertEqual("right-hand side of 'in' should be an object, got string")
       }
     });
-    class NameTestBean{
+    interface NameTestBean{
       name: string
     }
     it('_checkInRHS_obj', 0, () => {
@@ -158,16 +158,16 @@ export default function abilityTest() {
       expect(_defineAccessor("string", a, "a", fun)).assertDeepEquals(a)
     });
 
+    it('_iterableToArray', 0, () => {
+      let arr: Array<string> = new Array()
+      arr.push('a', 'b', 'c', 'd', 'e')
+      expect(_iterableToArray(arr)).assertDeepEquals(["a", "b", "c", "d", "e"])
+    });
+
     it('_iterableToArrayLimit', 0, () => {
       let arr: Array<string> = new Array()
       arr.push('a', 'b', 'c', 'd', 'e')
       expect(_iterableToArrayLimit(arr, 2)).assertDeepEquals(["a", "b"])
-    });
-
-    it('_iterableToArrayLimitLoose', 0, () => {
-      let arr: Array<string> = new Array()
-      arr.push('a', 'b', 'c', 'd', 'e')
-      expect(_iterableToArrayLimitLoose(arr, 2)).assertDeepEquals([])
     });
 
     class prop {
@@ -207,7 +207,7 @@ export default function abilityTest() {
       try {
         _using([],'a')
       }catch (e){
-        expect(e.message).assertEqual('using declarations can only be used with objects, null, or undefined.')
+        expect(e.message).assertEqual('using declarations can only be used with objects, functions, null, or undefined.')
       }
     });
 
@@ -311,7 +311,7 @@ export default function abilityTest() {
       try {
         _classCheckPrivateStaticAccess(undefined, 'abc')
       } catch (e) {
-        expect(e.message).assertEqual('Private static access of wrong provenance')
+        expect(e.message).assertEqual('is not callable')
       }
     });
 

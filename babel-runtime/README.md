@@ -5,7 +5,7 @@
 
 ## How to Install
 ```shell
-ohpm install @babel/runtime@7.22.6
+ohpm install @babel/runtime@7.27.6
 ```
 For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
