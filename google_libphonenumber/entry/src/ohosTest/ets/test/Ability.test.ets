@@ -132,7 +132,7 @@ export default function abilityTest() {
       expect(phoneUtil.isPossibleNumberWithReason(phoneNumber)).assertEqual(PhoneNumberUtil.ValidationResult.TOO_SHORT);
     });
 
-    it('should format numbers as typed', 0, () => {
+    it('should_format_numbers_as_typed_', 0, () => {
       // Defines a test case. This API supports three parameters: test case name, filter parameter, and test case function.
       hilog.info(0x0000, 'testTag', '%{public}s', 'it begin');
       let a = 'abc';
