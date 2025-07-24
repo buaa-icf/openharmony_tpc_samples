@@ -1,6 +1,7 @@
 import { url, URL, buffer, util, events } from '@ohos/node-polyfill'
 
 import http from '@ohos.net.http'
+import { LogUtil } from './LogUtil'
 
 var parse = url.parse
 var httpsOptions = [
@@ -60,6 +61,7 @@ function EventSource(url, eventSourceInitDict) {
     var retryCurrentCount = 0
 
     function onConnectionClosed(message) {
+        LogUtil.info('EventSource.onConnectionClosed start');
         if (readyState === EventSource.CLOSED) return
         readyState = EventSource.CONNECTING
         _emit('error', new Event('error', { message: message }))
@@ -94,6 +96,7 @@ function EventSource(url, eventSourceInitDict) {
     var reconnectUrl = null
 
     function connect() {
+        LogUtil.info('EventSource.connect start');
         var options = parse(url)
         var isSecure = options.protocol === 'https:'
         options.headers = { 'Cache-Control': 'no-cache', 'Accept': 'text/event-stream' }
@@ -250,6 +253,7 @@ function EventSource(url, eventSourceInitDict) {
     }
 
     function parseEventStreamLine(buf, pos, fieldLength, lineLength) {
+        LogUtil.info('EventSource.parseEventStreamLine start');
         if (lineLength === 0) {
             if (data.length > 0) {
                 var type = eventName || 'message'
@@ -399,6 +403,7 @@ EventSource.prototype.onFailure = function onFailure(listener) {
  * @api private
  */
 export function Event(type, optionalProperties) {
+    LogUtil.info('Event start');
     Object.defineProperty(this, 'type', { writable: false, value: type, enumerable: true })
     if (optionalProperties) {
         for (var f in optionalProperties) {
@@ -416,6 +421,7 @@ export function Event(type, optionalProperties) {
  * @api private
  */
 function MessageEvent(type, eventInitDict) {
+    LogUtil.info('MessageEvent start');
     Object.defineProperty(this, 'type', { writable: false, value: type, enumerable: true })
     for (var f in eventInitDict) {
         if (eventInitDict.hasOwnProperty(f)) {
@@ -432,6 +438,7 @@ function MessageEvent(type, eventInitDict) {
  * @api private
  */
 function removeUnsafeHeaders(headers) {
+    LogUtil.info('removeUnsafeHeaders start');
     var safe = {}
     for (var key in headers) {
         if (reUnsafeHeader.test(key)) {
