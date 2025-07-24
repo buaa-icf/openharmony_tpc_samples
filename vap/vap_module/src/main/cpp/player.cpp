@@ -293,6 +293,7 @@ void Player::ResetControlSignal()
     isSetVideoMode_ = false;
     speed_ = 1.0;
     CallBackJS(VapState::DESTROY, CallbackType::STATE_CHANGE);
+    std::unique_lock<std::mutex> lock(callbackRefsMutex_);
     if (callbackRefs_.find(CallbackType::PLAY_DONE) != callbackRefs_.end() && callbackAll_) {
         CallbackContext *context = new CallbackContext;
         context->callbackRef = callbackRefs_[CallbackType::PLAY_DONE];
@@ -599,6 +600,7 @@ void Player::XComponentClick(int32_t eventX, int32_t eventY)
     if (eglCore_) {
         eglCore_->GetCurrentClickTxt(eventX, eventY, clickRes);
     }
+    std::unique_lock<std::mutex> lock(callbackRefsMutex_);
     if (callbackRefs_.find(CallbackType::CLICK) != callbackRefs_.end()) {
         CallbackContext *context = new CallbackContext();
         context->callbackRef = callbackRefs_[CallbackType::CLICK];
@@ -639,6 +641,7 @@ void Player::Stop()
 
 void Player::CallBackJS(VapState state, CallbackType type, int32_t err)
 {
+    std::unique_lock<std::mutex> lock(callbackRefsMutex_);
     if ((callbackRefs_.find(type) != callbackRefs_.end()) && callbackAll_ && isContainerDestroy_ == false) {
         CallbackContext *context = new CallbackContext;
         context->callbackRef = callbackRefs_[type];
@@ -656,6 +659,7 @@ void Player::SetCallback(CallbackType type, napi_ref callbackJS, void (*callback
     if (!callbackAll_ && callbackFn) { // c侧函数为同一个 js侧回收在上层
         callbackAll_ = callbackFn;
     }
+    std::unique_lock<std::mutex> lock(callbackRefsMutex_);
     auto it = callbackRefs_.find(type);
     if (it != callbackRefs_.end()) {
         napi_ref ref = callbackRefs_.at(type);
@@ -669,6 +673,7 @@ void Player::SetCallback(CallbackType type, napi_ref callbackJS, void (*callback
 
 void Player::ClearCallback(CallbackType type)
 {
+    std::unique_lock<std::mutex> lock(callbackRefsMutex_);
     auto it = callbackRefs_.find(type);
     if (it != callbackRefs_.end()) {
         napi_ref ref = callbackRefs_.at(type);
