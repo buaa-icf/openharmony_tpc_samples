@@ -16,6 +16,7 @@ import Protobuf from '@ohos/protobufjs'
 import hilog from '@ohos.hilog';
 import convert from '@ohos/xml_js'
 import Util from './Util'
+import { LogUtil } from './LogUtil'
 
 export default class ProtoBufFormat {
 
@@ -25,6 +26,7 @@ export default class ProtoBufFormat {
    * @returns message对象对应的json字符串
    */
   static messageToJson(message: Protobuf.Builder.Message): string {
+    LogUtil.info(`ProtoBufFormat, messageToJson start`);
     if (!(message && message instanceof Protobuf.Builder.Message)) {
       return null;
     }
@@ -35,7 +37,7 @@ export default class ProtoBufFormat {
       jsonResult += '}';
       return jsonResult;
     } catch (error) {
-      hilog.error(0x0000, 'ProtoBufFormat', 'messageToJson catch error： ' + error);
+      LogUtil.error(`ProtoBufFormat, messageToJson catch error: ${JSON.stringify(error)}`);
       return null;
     }
   }
@@ -48,6 +50,7 @@ export default class ProtoBufFormat {
    * @returns 返回message消息体
    */
   static jsonToMessage(builder: Protobuf.Builder, path: string, json: string | Object): Protobuf.Builder.Message {
+    LogUtil.info(`ProtoBufFormat, jsonToMessage start`);
     if (!(builder && builder instanceof Protobuf.Builder)) {
       return null;
     }
@@ -68,7 +71,7 @@ export default class ProtoBufFormat {
       let result = new Message(json);
       return result;
     } catch (error) {
-      hilog.error(0x0000, 'ProtoBufFormat', 'jsonToMessage catch error： ' + error);
+      LogUtil.error(`ProtoBufFormat, jsonToMessage catch error: ${JSON.stringify(error)}`);
       return null;
     }
   }
@@ -79,6 +82,7 @@ export default class ProtoBufFormat {
    * @returns message对象对应的xml字符串
    */
   static messageToXml(message: Protobuf.Builder.Message): string {
+    LogUtil.info(`ProtoBufFormat, messageToXml start`);
     if (!(message && message instanceof Protobuf.Builder.Message)) {
       return null;
     }
@@ -100,7 +104,7 @@ export default class ProtoBufFormat {
       let finalResult = '<' + rootName + '>' + result + '</' + rootName + '>'
       return finalResult;
     } catch (error) {
-      hilog.error(0x0000, 'ProtoBufFormat', 'messageToXml catch error： ' + error);
+      LogUtil.error(`ProtoBufFormat, messageToXml catch error: ${JSON.stringify(error)}`);
       return null;
     }
   }
@@ -113,6 +117,7 @@ export default class ProtoBufFormat {
    * @returns 返回message消息体
    */
   static xmlToMessage(builder: Protobuf.Builder, path: string, xml: string): Protobuf.Builder.Message {
+    LogUtil.info(`ProtoBufFormat, xmlToMessage start`);
     if (!(builder && builder instanceof Protobuf.Builder)) {
       return null;
     }
@@ -145,7 +150,7 @@ export default class ProtoBufFormat {
       let result = new Message(JSON.parse(JSON.stringify(strJsonObj)));
       return result;
     } catch (error) {
-      hilog.error(0x0000, 'ProtoBufFormat', 'xmlToMessage catch error： ' + error);
+      LogUtil.error(`ProtoBufFormat, xmlToMessage catch error: ${JSON.stringify(error)}`);
       return null;
     }
   }
@@ -156,6 +161,7 @@ export default class ProtoBufFormat {
    * @returns message对象对应的html字符串
    */
   static messageToHtml(message: Protobuf.Builder.Message): string {
+    LogUtil.info(`ProtoBufFormat, messageToHtml start`);
     if (!(message && message instanceof Protobuf.Builder.Message)) {
       return null;
     }
@@ -166,7 +172,7 @@ export default class ProtoBufFormat {
       html += '</body></html>';
       return html;
     } catch (error) {
-      hilog.error(0x0000, 'ProtoBufFormat', 'messageToHtml catch error： ' + error);
+      LogUtil.error(`ProtoBufFormat, messageToHtml catch error: ${JSON.stringify(error)}`);
       return null;
     }
   }
