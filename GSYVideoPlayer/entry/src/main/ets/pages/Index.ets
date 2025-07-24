@@ -19,8 +19,13 @@ import promptAction from '@ohos.promptAction';
 @Entry
 @Component
 struct Index {
-  getResourceString(res:Resource) {
-    return getContext().resourceManager.getStringSync(res.id)
+  uiContext = this.getUIContext();
+  getResourceString(res:Resource): string {
+    const hostContext = this.uiContext?.getHostContext();
+    if (hostContext) {
+      return hostContext.resourceManager.getStringSync(res.id);
+    }
+    return "";
   }
   build() {
     Row() {
@@ -32,22 +37,22 @@ struct Index {
             GlobalContext.getContext().setObject("playType", PlayerType.IJK_PLAYER);
           }
 
-          promptAction.showToast({
+          this.uiContext.getPromptAction().showToast({
             message: GlobalContext.getContext()
               .getObject("playType") == PlayerType.IJK_PLAYER ? this.getResourceString($r('app.string.ijkPlayer_player')) : this.getResourceString($r('app.string.avplayer_player'))
           })
         })
         Button($r('app.string.Simple_player')).margin(10).onClick(() => {
-          router.pushUrl({ url: "pages/SimpleDemo" });
+          this.getUIContext().getRouter().pushUrl({ url: "pages/SimpleDemo" });
         })
         Button($r('app.string.Cache_playing')).margin(10).onClick(() => {
-          router.pushUrl({ url: "pages/PlayWithCacheDemo" });
+          this.getUIContext().getRouter().pushUrl({ url: "pages/PlayWithCacheDemo" });
         })
         Button($r('app.string.Simple_list_function')).margin(10).onClick(() => {
-          router.pushUrl({ url: "pages/SimpleList" });
+          this.getUIContext().getRouter().pushUrl({ url: "pages/SimpleList" });
         })
         Button($r('app.string.Danmaku_player_function')).margin(10).onClick(() => {
-          router.pushUrl({ url: "pages/DanmakuVideoDemo" });
+          this.getUIContext().getRouter().pushUrl({ url: "pages/DanmakuVideoDemo" });
         })
       }.width('100%')
     }.height('100%')

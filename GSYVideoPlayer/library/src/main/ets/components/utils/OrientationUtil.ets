@@ -14,6 +14,7 @@
  */
 import Window from '@ohos.window';
 import { LogUtils } from './LogUtils';
+import { GlobalContext } from '../mainpage/GlobalContext';
 
 export class OrientationUtil {
   /**
@@ -47,12 +48,19 @@ export class OrientationUtil {
    */
 
   private static async setSystemBar(showUi: boolean) {
-    let windowClass = await Window.getLastWindow(getContext());
-    if (showUi) {
-      let names: Array<'status' | 'navigation'> = ['status'];
-      await windowClass.setWindowSystemBarEnable(names);
-    } else {
-      await windowClass.setWindowSystemBarEnable([]);
+    // 获取UIContext并从中获取hostContext
+    let uiContext = GlobalContext.getContext().getObject('uiContext') as UIContext;
+    if (uiContext) {
+      let hostContext = uiContext.getHostContext();
+      if (hostContext) {
+        let windowClass = await Window.getLastWindow(hostContext);
+        if (showUi) {
+          let names: Array<'status' | 'navigation'> = ['status'];
+          await windowClass.setWindowSystemBarEnable(names);
+        } else {
+          await windowClass.setWindowSystemBarEnable([]);
+        }
+      }
     }
   }
 }

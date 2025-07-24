@@ -14,6 +14,7 @@
  */
 import display from '@ohos.display';
 import window from '@ohos.window';
+import { AVVolumePanel } from '@kit.AudioKit';
 import { BusinessError } from '@ohos.base';
 import {
   AvVideoPlayer,
@@ -71,6 +72,7 @@ let touchStartY: number = 0;
 
 @Component
 export struct DanmakuVideoPlayer {
+  uiContext = this.getUIContext();
   mIVideoPlayer: IVideoPlayer | undefined = undefined;
   @Provide currentTime: string = "00:00";
   @Provide totalTime: string = "00:00";
@@ -96,6 +98,7 @@ export struct DanmakuVideoPlayer {
   @State showSeekProgressUi: boolean = false;
   // 当前音量 [0-20]
   @State mCurrentVolumeValue: number = 0;
+  @State volumeForPanel: number = 0;
   // 系统最大音量
   @State mMaxVolumeValue: number = 20;
   // 当前亮度 [0-255]
@@ -152,7 +155,7 @@ export struct DanmakuVideoPlayer {
       danmaku.isLive = isLive.valueOf();
       danmaku.setTime(this.model.getCurrentTime() + 1200);
       if (this.mParser) {
-        danmaku.textSize = 25 * (this.mParser.getDisplayer().getDensity() * 0.8);
+        danmaku.textSize = 25 * (this.mParser.getDisplayer()!.getDensity() * 0.8);
       }
       danmaku.textColor = 0xffff0000;
       danmaku.textShadowColor = 0xffffffff;
@@ -160,8 +163,12 @@ export struct DanmakuVideoPlayer {
       this.model.addDanmaku(danmaku);
     }
   }
-  getResourceString(res:Resource) {
-    return getContext().resourceManager.getStringSync(res.id)
+  getResourceString(res:Resource): string {
+    const hostContext = this.uiContext?.getHostContext();
+    if (hostContext) {
+      return hostContext.resourceManager.getStringSync(res.id);
+    }
+    return "";
   }
   @Builder
   topTitle() {
@@ -366,8 +373,8 @@ export struct DanmakuVideoPlayer {
               this.model.hide();
               this.danMuText = this.getResourceString($r('app.string.Open_barrage'));
             } else {
-              this.model.setWidth(vp2px(changeWidth));
-              this.model.setHeight(vp2px(changeHeight - 1));
+              this.model.setWidth(this.uiContext.vp2px(changeWidth));
+              this.model.setHeight(this.uiContext.vp2px(changeHeight - 1));
               this.model.hide();
               this.model.show();
               this.danMuText = this.getResourceString($r('app.string.Close_barrage'));
@@ -477,7 +484,7 @@ export struct DanmakuVideoPlayer {
           .height('100%')
           .visibility(this.coverVisible)
       }
-
+      AVVolumePanel({ volumeLevel: this.volumeForPanel }).width(0).height(0);
       Flex({ alignItems: ItemAlign.Center, justifyContent: FlexAlign.SpaceBetween }) {
         this.VolumeUi()
         this.SeekProgressUi()
@@ -560,14 +567,7 @@ export struct DanmakuVideoPlayer {
                 playerVolumeValue = this.mMaxVolumeValue;
               }
               this.mCurrentVolumeValue = playerVolumeValue;
-              if (this.mAudioManager) {
-                this.mAudioManager.setVolume(audio.AudioVolumeType.MEDIA, playerVolumeValue, (err: BusinessError) => {
-                  if (err) {
-                    LogUtils.getInstance().LOGI(`Failed to set the volume. ${err}`);
-                    return;
-                  }
-                })
-              }
+              this.volumeForPanel = playerVolumeValue;
             } else {
               this.showBrightnessUi = true;
 
@@ -718,8 +718,8 @@ export struct DanmakuVideoPlayer {
     )).onAreaChange((oldValue: Area, newValue: Area) => {
       changeWidth = newValue.width as number;
       changeHeight = newValue.height as number;
-      screenWidth = px2vp(display.getDefaultDisplaySync().width);
-      screenHeight = px2vp(display.getDefaultDisplaySync().height);
+      screenWidth = this.uiContext.px2vp(display.getDefaultDisplaySync().width);
+      screenHeight = this.uiContext.px2vp(display.getDefaultDisplaySync().height);
       this.mDirection = this.getDirection();
       this.screenIsFull = (screenHeight - changeHeight) < 50;
       // 如果用户不隐藏状态栏，全屏的时候组件高度与手机的高度差距小于50.就显示上方控制栏
@@ -727,8 +727,8 @@ export struct DanmakuVideoPlayer {
         this.fullShowTop = true;
         this.fullShowLock = true;
       }
-      this.model.setWidth(vp2px(changeWidth));
-      this.model.setHeight(vp2px(changeHeight));
+      this.model.setWidth(this.uiContext.vp2px(changeWidth));
+      this.model.setHeight(this.uiContext.vp2px(changeHeight));
       if (this.danMuShow) {
         this.model.hide();
         this.model.show();
@@ -827,9 +827,14 @@ export struct DanmakuVideoPlayer {
     LogUtils.getInstance().setLogSwitch(true);
     LogUtils.getInstance().LOGI('standardGSYVideoPlayer aboutToAppear');
     this.emitterInit();
+    const hostContext = this.uiContext?.getHostContext();
+    if (!hostContext) {
+      LogUtils.getInstance().LOGI('hostContext is not available in aboutToAppear');
+      return;
+    }
     this.mDirection = this.getDirection();
     try {
-      let promise = window.getLastWindow(getContext(this));
+      let promise = window.getLastWindow(hostContext);
       promise.then((data) => {
         windowClass = data;
       }).catch((error: BusinessError) => {
@@ -844,7 +849,8 @@ export struct DanmakuVideoPlayer {
     let audioVolumeGroupManager = volumeManager.getVolumeGroupManagerSync(groupid);
     this.mMaxVolumeValue = audioVolumeGroupManager.getMaxVolumeSync(audio.AudioVolumeType.MEDIA);
     this.mCurrentVolumeValue = audioVolumeGroupManager.getVolumeSync(audio.AudioVolumeType.MEDIA);
-    this.mCurrentBrightness = Number(settings.getValueSync(getContext(this), settings.display.SCREEN_BRIGHTNESS_STATUS, '10'));
+    this.volumeForPanel = this.mCurrentVolumeValue;
+    this.mCurrentBrightness = Number(settings.getValueSync(hostContext, settings.display.SCREEN_BRIGHTNESS_STATUS, '10'));
 
     setTimeout(() => {
       this.danmuInit()
@@ -892,7 +898,11 @@ export struct DanmakuVideoPlayer {
   }
 
   private getDirection(): number {
-    return getContext().getApplicationContext().resourceManager.getConfigurationSync().direction;
+    const hostContext = this.uiContext?.getHostContext();
+    if (hostContext) {
+      return hostContext.getApplicationContext().resourceManager.getConfigurationSync().direction;
+    }
+    return 0;
   }
 
   resumePlay() {
@@ -973,7 +983,7 @@ export struct DanmakuVideoPlayer {
     }
   }
 
-  private timeCountdown() {
+  public timeCountdown() {
     clearTimeout(uiTime);
     this.showPause = true;
     this.showBottomUi = true;
@@ -1010,9 +1020,9 @@ export struct DanmakuVideoPlayer {
 }
 
 class Call implements Callback {
-  private that: ESObject;
+  private that: DanmakuVideoPlayer;
 
-  constructor(that: ESObject) {
+  constructor(that: DanmakuVideoPlayer) {
     this.that = that
   }
 
@@ -1031,9 +1041,9 @@ class Call implements Callback {
 }
 
 class OnDanMu implements OnDanmakuClickListener {
-  private that: ESObject;
+  private that: DanmakuVideoPlayer;
 
-  constructor(that: ESObject) {
+  constructor(that: DanmakuVideoPlayer) {
     this.that = that
   }
 
@@ -1052,7 +1062,8 @@ class OnDanMu implements OnDanmakuClickListener {
   };
 
   onViewClick(view: IDanmakuView): boolean {
-    this.that.isVisible = true
+    // this.that.isVisible = true
+    this.that.timeCountdown();
     return false
   };
 }

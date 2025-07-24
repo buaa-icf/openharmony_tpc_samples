@@ -90,15 +90,15 @@ export class IjkPlayerControl extends BaseVideoPlayer {
     }
   }
 
-  setContext(context: object,id:string): void {
+  setContext(context: Context,id:string): void {
     super.setContext(context,id);
-    if (this.mIjkMediaPlayer) {
-      this.mIjkMediaPlayer.setContext(this.context,id);
+    if (this.mIjkMediaPlayer && this.context) {
+      this.mIjkMediaPlayer.setContext(this.context as Context,id);
     }
   }
 
   private initPlay() {
-    if (this.mIjkMediaPlayer) {
+    if (this.mIjkMediaPlayer && this.context) {
       this.playStatus = PlayStatus.PLAY;
 
       // 设置当前context，如果是放在list场景中，这个操作可以解决list错乱问题
@@ -143,6 +143,7 @@ export class IjkPlayerControl extends BaseVideoPlayer {
 
       // 屏幕常亮
       this.mIjkMediaPlayer.setScreenOnWhilePlaying(true);
+
 
       // 设置超时
       this.mIjkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "timeout", "10000000");

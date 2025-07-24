@@ -21,10 +21,10 @@ struct PlayWithCacheDemo {
     Row() {
       Column() {
         Button($r('app.string.Cache_playing')).margin(10).onClick(() => {
-          router.pushUrl({ url: 'pages/PlayNetWithCacheDemo' })
+          this.getUIContext().getRouter().pushUrl({ url: 'pages/PlayNetWithCacheDemo' })
         })
         Button($r('app.string.Play_without_caching')).margin(10).onClick(() => {
-          router.pushUrl({ url: 'pages/PlayNetWithNoCacheDemo' })
+          this.getUIContext().getRouter().pushUrl({ url: 'pages/PlayNetWithNoCacheDemo' })
         })
       }.width('100%')
     }.height('100%')
