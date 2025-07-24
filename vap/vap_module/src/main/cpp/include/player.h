@@ -71,6 +71,7 @@ public:
     napi_env env_ = nullptr;
 private:
     void (*callbackAll_)(void *context) = nullptr;
+    std::mutex callbackRefsMutex_;
     std::map<CallbackType, napi_ref> callbackRefs_;
     
     bool isContainerDestroy_ = false;

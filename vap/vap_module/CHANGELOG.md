@@ -1,5 +1,11 @@
 # 版本记录
 
+## 1.1.5-rc.1
+
+---
+
+1. Fix the crash problem when multiple animations play continuously at the same time.
+
 ## 1.1.4
 
 ---
