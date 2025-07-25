@@ -6,7 +6,7 @@
   "author": "ohos_tpc",
   "license": "MIT License",
   "dependencies": {
-    "google-libphonenumber": "^3.2.37",
+    "google-libphonenumber": "^3.2.42",
     "google-closure-library": "^20230802.0.0"
   }
 }
