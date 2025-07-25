@@ -34,6 +34,7 @@ import fs from '@ohos.file.fs';
 import PackageDocumentWriter from "./PackageDocumentWriter";
 import Zlib from "@ohos.zlib"
 import { GlobalContext } from '../util/GlobalContext'
+import { LogUtil } from '../util/LogUtil';
 
 class EpubWriter {
 
@@ -48,6 +49,7 @@ class EpubWriter {
     }
 
     public write(book: Book, fileName: string): void {
+        LogUtil.info('EpubWriter.ts, write start');
         this.book = book;
         if (fileName == "" || !fileName.toLowerCase().endsWith(".epub")) {
             return null;
@@ -71,6 +73,7 @@ class EpubWriter {
     }
 
     private generateEpub(dirPath: string) {
+        LogUtil.info('EpubWriter.ts, generateEpub start');
         var outFile = dirPath + ".zip";
         var options = {
             level: Zlib.CompressLevel.COMPRESS_LEVEL_DEFAULT_COMPRESSION,
@@ -96,6 +99,7 @@ class EpubWriter {
     }
 
     private initTOCResource(book: Book, rootPath: string): void {
+        LogUtil.info('EpubWriter.ts, initTOCResource start');
         let tocResource: EpubResource;
         try {
             tocResource = NCXDocument.createNCXResource(book, rootPath);
@@ -124,6 +128,7 @@ class EpubWriter {
        * @throws IOException
        */
     private writeResource(resource: EpubResource, rootPath: string): void{
+        LogUtil.info('EpubWriter.ts, writeResource start');
         if (resource == null) {
             return;
         }
@@ -150,6 +155,7 @@ class EpubWriter {
     }
 
     private writePackageDocument(book: Book, rootPath: string): void{
+        LogUtil.info('EpubWriter.ts, writePackageDocument start');
         let pathNew = rootPath + "/OEBPS";
         let filePath = pathNew + "/content.opf";
         let fd = fs.openSync(filePath, 0o100 | 0o2);
@@ -174,6 +180,7 @@ class EpubWriter {
        * @throws IOException
        */
     private writeContainer(rootPath: string): void{
+        LogUtil.info('EpubWriter.ts, writeContainer start');
         let out: string = "<?xml version=\"1.0\"?>\n";
         out = out.concat("<container version=\"1.0\" xmlns=\"urn:oasis:names:tc:opendocument:xmlns:container\">\n");
         out = out.concat("\t<rootfiles>\n");
@@ -207,6 +214,7 @@ class EpubWriter {
        * @throws IOException
        */
     private writeMimeType(rootPath: string): void{
+        LogUtil.info('EpubWriter.ts, writeMimeType start');
         let filePath = rootPath + "/mimetype";
         let fd = fs.openSync(filePath, 0o100 | 0o2);
         let num = fs.writeSync(fd.fd, MediatypeService.EPUB.getName());

@@ -28,6 +28,7 @@ import StringUtil from "../util/StringUtil"
 import Author from "./Author"
 import Identifier from "./Identifier"
 import Date from "./Date"
+import { LogUtil } from '../util/LogUtil';
 
 class Metadata {
     public static readonly DEFAULT_LANGUAGE: string = "en";
@@ -178,6 +179,7 @@ class Metadata {
 
     public addDescription(description: string): string {
         this.descriptions.push(description);
+        LogUtil.info('description: ', description);
         return description;
     }
 
