@@ -8,7 +8,7 @@
   "version": "1.0.0",
   "dependencies": {
     "@ohos/localeenus": "file:../library",
-    "@js-joda/timezone": "^2.15.0",
-    "@js-joda/core": "^5.4.2"
+    "@js-joda/timezone": "^2.22.0",
+    "@js-joda/core": "^5.6.5"
   }
 }
