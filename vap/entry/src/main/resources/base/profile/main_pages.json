@@ -3,6 +3,7 @@
     "pages/Index",
     "pages/GeneralAnimation",
     "pages/VAPXAnimation",
-    "pages/NewOn"
+    "pages/NewOn",
+    "pages/MultiAnimation"
   ]
 }

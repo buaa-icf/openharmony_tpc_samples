@@ -41,6 +41,13 @@ struct Index{
               router.pushUrl({ url: "pages/NewOn" });
             }).margin({ top: 15 })
         }.width('100%').height(60)
+
+        Flex({ direction: FlexDirection.Row, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
+          Button("测试多动画")
+            .onClick(() => {
+              router.pushUrl({ url: "pages/MultiAnimation" });
+            }).margin({ top: 15 })
+        }.width('100%').height(60)
       }.backgroundColor(Color.Pink)
       .margin(10)
       .padding(20)
