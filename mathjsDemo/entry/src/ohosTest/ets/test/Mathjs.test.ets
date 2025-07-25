@@ -979,12 +979,14 @@ export default function mathjsTest() {
     })
     it('cbrt_3', 0, () => {
       // cbrt
-      let result3: number = math.cbrt(2, false)
+      const complexNum = math.complex(2, 0);
+      let result3 = math.cbrt(complexNum, false)
       expect(JSON.stringify(result3)).assertEqual('{"mathjs":"Complex","re":1.2599210498948732,"im":0}')
     })
     it('cbrt_4', 0, () => {
       // cbrt
-      let result4 = math.cbrt(2, true)
+      const complexNum = math.complex(2, 0);
+      let result4 = math.cbrt(complexNum, true)
       expect(JSON.stringify(result4)).assertEqual('{"mathjs":"DenseMatrix","data":[{"mathjs":"Complex","re":1.2599210498948732,"im":0},{"mathjs":"Complex","re":-0.6299605249474363,"im":1.0911236359717216},{"mathjs":"Complex","re":-0.6299605249474363,"im":-1.0911236359717216}],"size":[3]}')
     })
     it('cbrt_5', 0, () => {
@@ -1670,15 +1672,16 @@ export default function mathjsTest() {
     })
     it('square_3', 0, () => {
       // square
-      let mFraction3 = math.fraction({s:3, n:6, d: 9});
+      let base = math.fraction(6,9);
+      let mFraction3 = math.multiply(3, base) as number;
       let result3 = math.square(mFraction3)
-      expect(JSON.stringify(result3)).assertEqual('{"mathjs":"Fraction","n":4,"d":1}')
+      expect(JSON.stringify(result3)).assertEqual('{"mathjs":"Fraction","n":"4","d":"1"}')
     })
     it('square_4', 0, () => {
       // square
       let mFraction4 = math.fraction(8);
       let result4 = math.square(mFraction4)
-      expect(JSON.stringify(result4)).assertEqual('{"mathjs":"Fraction","n":64,"d":1}')
+      expect(JSON.stringify(result4)).assertEqual('{"mathjs":"Fraction","n":"64","d":"1"}')
     })
     it('square_5', 0, () => {
       // square
@@ -1710,9 +1713,10 @@ export default function mathjsTest() {
     })
     it('subtract_5', 0, () => {
       // subtract
-      let mFraction3 = math.fraction({s:3, n:6, d: 9});
+      let base = math.fraction(6,9);
+      let mFraction3 = math.multiply(3, base) as number;
       let result5 = math.subtract(mFraction3, 2)
-      expect(JSON.stringify(result5)).assertEqual('{"mathjs":"Fraction","n":0,"d":1}')
+      expect(JSON.stringify(result5)).assertEqual('{"mathjs":"Fraction","n":"0","d":"1"}')
     })
 
     it('unaryMinus_1', 0, () => {
@@ -1737,9 +1741,10 @@ export default function mathjsTest() {
     })
     it('unaryMinus_5', 0, () => {
       // unaryMinus
-      let mFraction = math.fraction({s:3, n:6, d: 9});
+      let base = math.fraction(6,9);
+      let mFraction = math.multiply(3, base);
       let result5 = math.unaryMinus(mFraction)
-      expect(JSON.stringify(result5)).assertEqual('{"mathjs":"Fraction","n":-2,"d":1}')
+      expect(JSON.stringify(result5)).assertEqual('{"mathjs":"Fraction","n":"-2","d":"1"}')
     })
 
     it('unaryPlus_1', 0, () => {
@@ -1764,9 +1769,10 @@ export default function mathjsTest() {
     })
     it('unaryPlus_5', 0, () => {
       // unaryPlus
-      let mFraction = math.fraction({s:3, n:6, d: 9});
+      let base = math.fraction(6,9);
+      let mFraction = math.multiply(3, base);
       let result5 = math.unaryPlus(mFraction)
-      expect(JSON.stringify(result5)).assertEqual('{"mathjs":"Fraction","n":2,"d":1}')
+      expect(JSON.stringify(result5)).assertEqual('{"mathjs":"Fraction","n":"2","d":"1"}')
     })
 
     it('xgcd_1', 0, () => {
@@ -2485,7 +2491,7 @@ export default function mathjsTest() {
     it('filter_1', 0, () => {
       // filter
       let result1 = math.filter([3, 4], ( value: number[],
-                                          index: Number,
+                                          index: number[],
                                           matrix: math.Matrix | math.MathArray | string[]) => {
         return true;
       })
@@ -2494,7 +2500,7 @@ export default function mathjsTest() {
     it('filter_2', 0, () => {
       // filter
       let result2 = math.filter([3, 4], ( value: number[],
-                                          index: Number,
+                                          index: number[],
                                           matrix: math.Matrix | math.MathArray | string[]) => {
         return false;
       })
@@ -2503,7 +2509,7 @@ export default function mathjsTest() {
     it('filter_3', 0, () => {
       // filter
       let result3 = math.filter(math.matrix([3, 4]) , ( value: number[],
-                                                        index: Number,
+                                                        index: number[],
                                                         matrix: math.Matrix | math.MathArray | string[]) => {
         return false;
       })
@@ -2512,7 +2518,7 @@ export default function mathjsTest() {
     it('filter_4', 0, () => {
       // filter
       let result4 = math.filter(math.matrix([3, 4]), ( value: number[],
-                                                       index: Number,
+                                                       index: number[],
                                                        matrix: math.Matrix | math.MathArray | string[]) => {
         return true;
       })
@@ -2521,7 +2527,7 @@ export default function mathjsTest() {
     it('filter_5', 0, () => {
       // filter
       let result5 = math.filter([3, 4, 5, 6], ( value: number[],
-                                                index: Number,
+                                                index: number[],
                                                 matrix: math.Matrix | math.MathArray | string[]) => {
         return false;
       })
@@ -2556,8 +2562,8 @@ export default function mathjsTest() {
 
     it('forEach_1', 0, () => {
       // forEach
-      math.forEach([1, 2, 3], (value: number, index: number, matrix: number[]) => {
-        expect(value).assertEqual(matrix[index])
+      math.forEach([1, 2, 3], (value: number, index: number[], matrix: number[]) => {
+        expect(value).assertEqual(matrix[index[0]])
       });
     })
     it('forEach_2', 0, () => {
@@ -2568,20 +2574,20 @@ export default function mathjsTest() {
     })
     it('forEach_3', 0, () => {
       // forEach
-      math.forEach([1, 2], (value: number, index: number, matrix: number[]) => {
-        expect(value).assertEqual(matrix[index])
+      math.forEach([1, 2], (value: number, index: number[], matrix: number[]) => {
+        expect(value).assertEqual(matrix[index[0]])
       });
     })
     it('forEach_4', 0, () => {
       // forEach
-      math.forEach([1, 3], (value: number, index: number, matrix: number[]) => {
-        expect(value).assertEqual(matrix[index])
+      math.forEach([1, 3], (value: number, index: number[], matrix: number[]) => {
+        expect(value).assertEqual(matrix[index[0]])
       });
     })
     it('forEach_5', 0, () => {
       // forEach
-      math.forEach([1, 2, 3, 4], (value: number, index: number, matrix: number[]) => {
-        expect(value).assertEqual(matrix[index])
+      math.forEach([1, 2, 3, 4], (value: number, index: number[], matrix: number[]) => {
+        expect(value).assertEqual(matrix[index[0]])
       });
     })
 
@@ -2859,17 +2865,17 @@ export default function mathjsTest() {
     it('size_1', 0, () => {
       // size
       let result1 = math.size(false)
-      expect(JSON.stringify(result1)).assertEqual('{"mathjs":"DenseMatrix","data":[],"size":[0]}')
+      expect(JSON.stringify(result1)).assertEqual('{"mathjs":"DenseMatrix","data":[],"size":[0],"datatype":"number"}')
     })
     it('size_2', 0, () => {
       // size
       let result2 = math.size(1)
-      expect(JSON.stringify(result2)).assertEqual('{"mathjs":"DenseMatrix","data":[],"size":[0]}')
+      expect(JSON.stringify(result2)).assertEqual('{"mathjs":"DenseMatrix","data":[],"size":[0],"datatype":"number"}')
     })
     it('size_3', 0, () => {
       // size
       let result3 = math.size(true)
-      expect(JSON.stringify(result3)).assertEqual('{"mathjs":"DenseMatrix","data":[],"size":[0]}')
+      expect(JSON.stringify(result3)).assertEqual('{"mathjs":"DenseMatrix","data":[],"size":[0],"datatype":"number"}')
     })
     it('size_4', 0, () => {
       // size
@@ -2879,7 +2885,7 @@ export default function mathjsTest() {
     it('size_5', 0, () => {
       // size
       let result5 = math.size(math.matrix([[1, 2], [3, 4]]))
-      expect(JSON.stringify(result5)).assertEqual('{"mathjs":"DenseMatrix","data":[2,2],"size":[2]}')
+      expect(JSON.stringify(result5)).assertEqual('{"mathjs":"DenseMatrix","data":[2,2],"size":[2],"datatype":"number"}')
     })
 
     it('sort_1', 0, () => {
@@ -3320,7 +3326,7 @@ export default function mathjsTest() {
     it('random_3', 0, () => {
       // random
       let result3 = math.random([3, 5], 1, 4)
-      math.forEach(result3, (value: number, index: number, matrix: number[]) => {
+      math.forEach(result3, (value: number, index: number[], matrix: number[]) => {
         expect(value).assertLessOrEqual(4)
         expect(value).assertLargerOrEqual(1)
       })
@@ -3343,7 +3349,7 @@ export default function mathjsTest() {
     it('randomInt_1', 0, () => {
       // randomInt
       let result1 = math.randomInt(math.matrix([1, 2, 3, 4]))
-      expect(JSON.stringify(result1)).assertEqual('{"mathjs":"DenseMatrix","data":[[[[0,0,0,0],[0,0,0,0],[0,0,0,0]],[[0,0,0,0],[0,0,0,0],[0,0,0,0]]]],"size":[1,2,3,4]}')
+      expect(JSON.stringify(result1)).assertEqual('{"mathjs":"DenseMatrix","data":[[[[0,0,0,0],[0,0,0,0],[0,0,0,0]],[[0,0,0,0],[0,0,0,0],[0,0,0,0]]]],"size":[1,2,3,4],"datatype":"number"}')
     })
     it('randomInt_2', 0, () => {
       // randomInt
@@ -3361,12 +3367,12 @@ export default function mathjsTest() {
     it('randomInt_4', 0, () => {
       // randomInt
       let result4 = math.randomInt(math.matrix([1, 3, 4]), 1)
-      expect(JSON.stringify(result4)).assertEqual('{"mathjs":"DenseMatrix","data":[[[0,0,0,0],[0,0,0,0],[0,0,0,0]]],"size":[1,3,4]}')
+      expect(JSON.stringify(result4)).assertEqual('{"mathjs":"DenseMatrix","data":[[[0,0,0,0],[0,0,0,0],[0,0,0,0]]],"size":[1,3,4],"datatype":"number"}')
     })
     it('randomInt_5', 0, () => {
       // randomInt
       let result5 = math.randomInt([1, 2, 3, 4], 0, 4)
-      math.forEach(result5, (value: number, index: number, matrix: number[]) => {
+      math.forEach(result5, (value: number, index: number[], matrix: number[]) => {
         expect(value).assertLessOrEqual(4)
         expect(value).assertLargerOrEqual(0)
       })
