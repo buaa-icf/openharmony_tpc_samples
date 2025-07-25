@@ -5,7 +5,7 @@
 
 ## 下载安装
 ```shell
-ohpm install @babel/runtime@7.22.6
+ohpm install @babel/runtime@7.27.6
 ```
 OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
