@@ -19,9 +19,13 @@ import Metadata from '../../metadata/Metadata'
 import QuickTimeAtomHandler from '../../metadata/mov/QuickTimeAtomHandler'
 import QuickTimeReader from './QuickTimeReader'
 import StreamReader from '../../lang/StreamReader'
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "QuickTimeMetadataReader";
 
 class QuickTimeMetadataReader {
   public static readMetadata(filePath: string): Metadata {
+    LogUtil.debug(TAG, `readMetadata start`);
     let inputStream = fileio.createStreamSync(filePath, 'r+');
 
     let metadata: Metadata = new Metadata();
@@ -31,6 +35,7 @@ class QuickTimeMetadataReader {
       inputStream.close();
     }
     new FileSystemMetadataReader().read(filePath, metadata);
+    LogUtil.debug(TAG, `readMetadata end`);
     return metadata;
   }
 }

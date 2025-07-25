@@ -15,6 +15,9 @@ limitations under the License.
 
 import { KyoceraMakernoteDirectory } from './KyoceraMakernoteDirectory';
 import TagDescriptor from '../../TagDescriptor';
+import LogUtil from '../../../tools/LogUtils';
+
+const TAG = 'KyoceraMakernoteDescriptor';
 
 export class KyoceraMakernoteDescriptor extends TagDescriptor<KyoceraMakernoteDirectory> {
   constructor(directory: KyoceraMakernoteDirectory) {
@@ -22,6 +25,7 @@ export class KyoceraMakernoteDescriptor extends TagDescriptor<KyoceraMakernoteDi
   }
 
   public getDescription(tagType: number) {
+    LogUtil.debug(TAG, `getDescription enter, tagType: ${tagType}`);
     switch (tagType) {
       case KyoceraMakernoteDirectory.TAG_PROPRIETARY_THUMBNAIL:
         return this.getProprietaryThumbnailDataDescription();

@@ -18,6 +18,9 @@ import FileSystemMetadataReader from '../../metadata/file/FileSystemMetadataRead
 import PcxReader from '../../metadata/pcx/PcxReader';
 import Metadata from '../../metadata/Metadata'
 import StreamReader from '../../lang/StreamReader'
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "PcxMetadataReader";
 
 /**
  * Obtains metadata from PCX image files.
@@ -26,6 +29,7 @@ import StreamReader from '../../lang/StreamReader'
  */
 class PcxMetadataReader {
   public static readMetadata(filePath: string): Metadata  {
+    LogUtil.debug(TAG, `readMetadata start, filePath:${filePath}`);
     let inputStream = fileio.createStreamSync(filePath, 'r+');
     let metadata = new Metadata();
     try {
@@ -34,6 +38,7 @@ class PcxMetadataReader {
       inputStream.closeSync();
     }
     new FileSystemMetadataReader().read(filePath, metadata);
+    LogUtil.debug(TAG, `readMetadata end`);
     return metadata;
     }
 }

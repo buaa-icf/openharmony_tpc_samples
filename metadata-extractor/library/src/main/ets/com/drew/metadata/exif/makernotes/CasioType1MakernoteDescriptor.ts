@@ -16,6 +16,9 @@ limitations under the License.
 
 import TagDescriptor from '../../TagDescriptor';
 import CasioType1MakernoteDirectory from './CasioType1MakernoteDirectory';
+import LogUtil from '../../../tools/LogUtils';
+
+const TAG: string = "CasioType1MakernoteDescriptor";
 
 export default class CasioType1MakernoteDescriptor extends TagDescriptor<CasioType1MakernoteDirectory> {
   public constructor(directory: CasioType1MakernoteDirectory) {
@@ -24,6 +27,7 @@ export default class CasioType1MakernoteDescriptor extends TagDescriptor<CasioTy
 
   public getDescription(tagType: number): string
   {
+    LogUtil.debug(TAG, `getDescription start, tagType=${tagType}`);
     switch (tagType) {
       case CasioType1MakernoteDirectory.TAG_RECORDING_MODE:
         return this.getRecordingModeDescription();
@@ -56,7 +60,9 @@ export default class CasioType1MakernoteDescriptor extends TagDescriptor<CasioTy
 
   public getCcdSensitivityDescription(): string
   {
+    LogUtil.debug(TAG, `getCcdSensitivityDescription start`);
     let value = this._directory.getInteger(CasioType1MakernoteDirectory.TAG_CCD_SENSITIVITY);
+    LogUtil.debug(TAG, `getCcdSensitivityDescription end, value=${value}`);
     switch (value) {
     // these four for QV3000
       case 64:
@@ -94,8 +100,10 @@ export default class CasioType1MakernoteDescriptor extends TagDescriptor<CasioTy
 
   public getDigitalZoomDescription(): string
   {
+    LogUtil.debug(TAG, `getDigitalZoomDescription start`);
     let value = this._directory.getInteger(CasioType1MakernoteDirectory.TAG_DIGITAL_ZOOM);
 
+    LogUtil.debug(TAG, `getDigitalZoomDescription end, value=${value}`);
     switch (value) {
       case 0x10000:
         return "No digital zoom";
@@ -112,8 +120,10 @@ export default class CasioType1MakernoteDescriptor extends TagDescriptor<CasioTy
 
   public getWhiteBalanceDescription(): string
   {
+    LogUtil.debug(TAG, `getWhiteBalanceDescription start`);
     let value = this._directory.getInteger(CasioType1MakernoteDirectory.TAG_WHITE_BALANCE);
 
+    LogUtil.debug(TAG, `getWhiteBalanceDescription end, value=${value}`);
     switch (value) {
       case 1:
         return "Auto";
@@ -140,7 +150,9 @@ export default class CasioType1MakernoteDescriptor extends TagDescriptor<CasioTy
 
   public getFlashIntensityDescription(): string
   {
+    LogUtil.debug(TAG, `getFlashIntensityDescription start`);
     let value = this._directory.getInteger(CasioType1MakernoteDirectory.TAG_FLASH_INTENSITY);
+    LogUtil.debug(TAG, `getFlashIntensityDescription end, value=${value}`);
     switch (value) {
       case 11:
         return "Weak";

@@ -37,6 +37,9 @@ import TiffMetadataReader from './tiff/TiffMetadataReader'
 import HeifMetadataReader from './heif/HeifMetadataReader'
 
 import QuickTimeMetadataReader from './quicktime/QuickTimeMetadataReader'
+import LogUtil from '../tools/LogUtils';
+
+const TAG: string = "ImageMetadataReader";
 
 /**
  * Reads metadata from any supported file format.
@@ -85,12 +88,13 @@ class ImageMetadataReader {
        */
   public static readMetadata(filePath: string): Metadata
   {
-
+    LogUtil.debug(TAG, `readMetadata start, filePath: ${filePath}`);
     if(filePath==null || filePath == '' || filePath== undefined){
       throw  new Error("file path must available ")
     }
     let metadata = new Metadata();
     let fileType = FileTypeDetector.detectFileType(filePath);
+    LogUtil.debug(TAG, `readMetadata fileType: ${fileType}`);
     switch (fileType) {
       case FileType.Jpeg:
         metadata = JpegMetadataReader.readMetadata(filePath);
@@ -151,6 +155,7 @@ class ImageMetadataReader {
     }
     metadata.addDirectory(new FileTypeDirectory(fileType));
 
+    LogUtil.debug(TAG, `readMetadata end`);
     return metadata;
   }
 

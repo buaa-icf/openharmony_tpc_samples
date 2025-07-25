@@ -33,12 +33,16 @@ import DuckyReader from '../../metadata/photoshop/DuckyReader';
 import PhotoshopReader from '../../metadata/photoshop/PhotoshopReader';
 import JfxxReader from '../../metadata/jfxx/JfxxReader';
 import JfifReader from '../../metadata/jfif/JfifReader';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "JpegMetadataReader";
 
 /**
  * Obtains metadata from ICO (Windows Icon) files.
  */
 class JpegMetadataReader {
   private static getReaders(): Set<JpegSegmentMetadataReader> {
+    LogUtil.debug(TAG, `getReaders start`);
     let readers: Set<JpegSegmentMetadataReader> = new Set<JpegSegmentMetadataReader>();
     readers.add(new JpegReader())
     readers.add(new JpegCommentReader())
@@ -53,18 +57,23 @@ class JpegMetadataReader {
     readers.add(new AdobeJpegReader())
     readers.add(new JpegDhtReader())
     readers.add(new JpegDnlReader())
+    LogUtil.debug(TAG, `getReaders end`);
     return readers;
   }
 
   public static readMetadata(filePath: string, readers?: Set<JpegSegmentMetadataReader>): Metadata {
+    LogUtil.debug(TAG, `readMetadata start`);
     let metadata = new Metadata();
     JpegMetadataReader.process(metadata, filePath, readers);
     new FileSystemMetadataReader().read(filePath, metadata);
+    LogUtil.debug(TAG, `readMetadata end`);
     return metadata;
   }
 
   public static process(metadata?: Metadata, filePath?: string, readers?: Set<JpegSegmentMetadataReader>) {
+    LogUtil.debug(TAG, `process start`);
     if (readers == null) {
+      LogUtil.debug(TAG, `process: readers is null, get default readers`);
       readers = JpegMetadataReader.getReaders();
     }
 
@@ -76,14 +85,17 @@ class JpegMetadataReader {
     })
     let segmentData:JpegSegmentData = JpegSegmentReader.readSegments(filePath, new StreamReader(filePath), segmentTypes);
     JpegMetadataReader.processJpegSegmentData(metadata, readers, segmentData);
+    LogUtil.debug(TAG, `process end`);
   }
 
   public static processJpegSegmentData(metadata: Metadata, readers: Set<JpegSegmentMetadataReader>, segmentData: JpegSegmentData) {
+    LogUtil.debug(TAG, `processJpegSegmentData start`);
     for (let reader of  readers) {
       for (let segmentType of  reader.getSegmentTypes()) {
         reader.readJpegSegments(segmentData.getSegments(segmentType.byteValue), metadata, segmentType);
       }
     }
+    LogUtil.debug(TAG, `processJpegSegmentData end`);
   }
 
   constructor() {

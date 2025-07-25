@@ -15,6 +15,9 @@ limitations under the License.
 
 import { FujifilmMakernoteDirectory } from './FujifilmMakernoteDirectory';
 import TagDescriptor from '../../TagDescriptor';
+import LogUtil from '../../../tools/LogUtils';
+
+const TAG: string = "FujifilmMakernoteDescriptor"
 
 export class FujifilmMakernoteDescriptor extends TagDescriptor<FujifilmMakernoteDirectory> {
   constructor(directory: FujifilmMakernoteDirectory) {
@@ -22,6 +25,7 @@ export class FujifilmMakernoteDescriptor extends TagDescriptor<FujifilmMakernote
   }
 
   getDescription(tagType: number): string{
+    LogUtil.debug(TAG, `getDescription start, tagType=${tagType}`);
     switch (tagType) {
       case FujifilmMakernoteDirectory.TAG_MAKERNOTE_VERSION:
         return this.getMakernoteVersionDescription();
@@ -81,11 +85,14 @@ export class FujifilmMakernoteDescriptor extends TagDescriptor<FujifilmMakernote
   }
 
   public getSharpnessDescription(): string{
+    LogUtil.debug(TAG, `getSharpnessDescription start`);
     const value = this._directory.getInteger(FujifilmMakernoteDirectory.TAG_SHARPNESS);
     if (value == null) {
+      LogUtil.error(TAG, `getSharpnessDescription end, value is null`);
       return null;
     }
 
+    LogUtil.debug(TAG, `getSharpnessDescription end, value=${value}`);
     switch (value) {
       case 1:
         return "Softest";
@@ -111,9 +118,13 @@ export class FujifilmMakernoteDescriptor extends TagDescriptor<FujifilmMakernote
   }
 
   public getWhiteBalanceDescription(): string{
+    LogUtil.debug(TAG, `getWhiteBalanceDescription start`);
     const value = this._directory.getInteger(FujifilmMakernoteDirectory.TAG_WHITE_BALANCE);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getWhiteBalanceDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getWhiteBalanceDescription end, value=${value}`);
     switch (value) {
       case 0x000:
         return "Auto";
@@ -153,9 +164,13 @@ export class FujifilmMakernoteDescriptor extends TagDescriptor<FujifilmMakernote
   }
 
   public getColorSaturationDescription(): string{
+    LogUtil.debug(TAG, `getColorSaturationDescription start`);
     let value = this._directory.getInteger(FujifilmMakernoteDirectory.TAG_COLOR_SATURATION);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getColorSaturationDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getColorSaturationDescription end, value=${value}`);
     switch (value) {
       case 0x000:
         return "Normal";
@@ -185,9 +200,14 @@ export class FujifilmMakernoteDescriptor extends TagDescriptor<FujifilmMakernote
   }
 
   public getToneDescription(): string{
+    LogUtil.debug(TAG, `getToneDescription start`);
     const value = this._directory.getInteger(FujifilmMakernoteDirectory.TAG_TONE);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getToneDescription end, value is null`);
+      return null;
+    }
+
+    LogUtil.debug(TAG, `getToneDescription end, value=${value}`);
     switch (value) {
       case 0x000:
         return "Normal";
@@ -209,9 +229,14 @@ export class FujifilmMakernoteDescriptor extends TagDescriptor<FujifilmMakernote
   }
 
   public getContrastDescription(): string{
+    LogUtil.debug(TAG, `getContrastDescription start`);
     const value = this._directory.getInteger(FujifilmMakernoteDirectory.TAG_CONTRAST);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getContrastDescription end, value is null`);
+      return null;
+    }
+
+    LogUtil.debug(TAG, `getContrastDescription end, value=${value}`);
     switch (value) {
       case 0x000:
         return "Normal";
@@ -225,9 +250,14 @@ export class FujifilmMakernoteDescriptor extends TagDescriptor<FujifilmMakernote
   }
 
   public getNoiseReductionDescription(): string{
+    LogUtil.debug(TAG, `getNoiseReductionDescription start`);
     const value = this._directory.getInteger(FujifilmMakernoteDirectory.TAG_NOISE_REDUCTION);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getNoiseReductionDescription end, value is null`);
+      return null;
+    }
+
+    LogUtil.debug(TAG, `getNoiseReductionDescription end, value=${value}`);
     switch (value) {
       case 0x040:
         return "Low";
@@ -241,9 +271,14 @@ export class FujifilmMakernoteDescriptor extends TagDescriptor<FujifilmMakernote
   }
 
   public getHighIsoNoiseReductionDescription(): string{
+    LogUtil.debug(TAG, `getHighIsoNoiseReductionDescription start`);
     const value = this._directory.getInteger(FujifilmMakernoteDirectory.TAG_HIGH_ISO_NOISE_REDUCTION);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getHighIsoNoiseReductionDescription end, value is null`);
+      return null;
+    }
+
+    LogUtil.debug(TAG, `getHighIsoNoiseReductionDescription end, value=${value}`);
     switch (value) {
       case 0x000:
         return "Normal";
@@ -285,9 +320,14 @@ export class FujifilmMakernoteDescriptor extends TagDescriptor<FujifilmMakernote
   }
 
   public getPictureModeDescription(): string{
+    LogUtil.debug(TAG, `getPictureModeDescription start`);
     const value = this._directory.getInteger(FujifilmMakernoteDirectory.TAG_PICTURE_MODE);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getPictureModeDescription end, value is null`);
+      return null;
+    }
+
+    LogUtil.debug(TAG, `getPictureModeDescription end, value=${value}`);
     switch (value) {
       case 0x000:
         return "Auto";
@@ -361,9 +401,14 @@ export class FujifilmMakernoteDescriptor extends TagDescriptor<FujifilmMakernote
   }
 
   public getExrModeDescription(): string{
+    LogUtil.debug(TAG, `getExrModeDescription start`);
     const value = this._directory.getInteger(FujifilmMakernoteDirectory.TAG_EXR_MODE);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getExrModeDescription end, value is null`);
+      return null;
+    }
+
+    LogUtil.debug(TAG, `getExrModeDescription end, value=${value}`);
     switch (value) {
       case 0x100:
         return "HR (High Resolution)";
@@ -386,9 +431,14 @@ export class FujifilmMakernoteDescriptor extends TagDescriptor<FujifilmMakernote
   }
 
   public getFinePixColorDescription(): string{
+    LogUtil.debug(TAG, `getFinePixColorDescription start`);
     const value = this._directory.getInteger(FujifilmMakernoteDirectory.TAG_FINE_PIX_COLOR);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getFinePixColorDescription end, value is null`);
+      return null;
+    }
+
+    LogUtil.debug(TAG, `getFinePixColorDescription end, value=${value}`);
     switch (value) {
       case 0x00:
         return "Standard";
@@ -436,9 +486,14 @@ export class FujifilmMakernoteDescriptor extends TagDescriptor<FujifilmMakernote
   }
 
   public getFilmModeDescription(): string{
+    LogUtil.debug(TAG, `getFinePixColorDescription start`);
     const value = this._directory.getInteger(FujifilmMakernoteDirectory.TAG_FILM_MODE);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getFinePixColorDescription end, value is null`);
+      return null;
+    }
+
+    LogUtil.debug(TAG, `getFinePixColorDescription end, value=${value}`);
     switch (value) {
       case 0x000:
         return "F0/Standard (Provia) ";
@@ -466,9 +521,14 @@ export class FujifilmMakernoteDescriptor extends TagDescriptor<FujifilmMakernote
   }
 
   public getDynamicRangeSettingDescription(): string{
+    LogUtil.debug(TAG, `getDynamicRangeSettingDescription start`);
     const value = this._directory.getInteger(FujifilmMakernoteDirectory.TAG_DYNAMIC_RANGE_SETTING);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getDynamicRangeSettingDescription end, value is null`);
+      return null;
+    }
+
+    LogUtil.debug(TAG, `getDynamicRangeSettingDescription end, value=${value}`);
     switch (value) {
       case 0x000:
         return "Auto (100-400%)";

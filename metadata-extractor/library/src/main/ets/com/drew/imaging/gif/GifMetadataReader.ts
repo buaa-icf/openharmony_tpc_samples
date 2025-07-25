@@ -18,18 +18,24 @@ import Metadata from '../../metadata/Metadata';
 import FileSystemMetadataReader from '../../metadata/file/FileSystemMetadataReader';
 import StreamReader from '../../lang/StreamReader';
 import GifReader from '../../metadata/gif/GifReader';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "GifMetadataReader";
 
 class GifMetadataReader {
   public static readMetadata(filePath: string): Metadata {
+    LogUtil.debug(TAG, `readMetadata start`);
     let inputStream = fileio.createStreamSync(filePath, 'r+');
 
     let metadata = new Metadata();
     try {
+      LogUtil.debug(TAG, `readMetadata filePath:${filePath}`);
       new GifReader().extract(new StreamReader(filePath), metadata);
     } finally {
       inputStream.closeSync();
     }
     new FileSystemMetadataReader().read(filePath, metadata);
+    LogUtil.debug(TAG, `readMetadata end`);
     return metadata;
   }
 }

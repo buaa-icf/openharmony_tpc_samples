@@ -15,6 +15,9 @@ limitations under the License.
 
 import LeicaMakernoteDirectory from './LeicaMakernoteDirectory';
 import TagDescriptor from '../../TagDescriptor';
+import LogUtil from '../../../tools/LogUtils';
+
+const TAG = 'LeicaMakernoteDescriptor';
 
 class LeicaMakernoteDescriptor extends TagDescriptor<LeicaMakernoteDirectory> {
   constructor(directory: LeicaMakernoteDirectory) {
@@ -22,6 +25,7 @@ class LeicaMakernoteDescriptor extends TagDescriptor<LeicaMakernoteDirectory> {
   }
 
   public getDescription(tagType: number): string {
+    LogUtil.debug(TAG, `getDescription enter, tagType: ${tagType}`);
     switch (tagType) {
       case LeicaMakernoteDirectory.TAG_QUALITY:
         return this.getQualityDescription();

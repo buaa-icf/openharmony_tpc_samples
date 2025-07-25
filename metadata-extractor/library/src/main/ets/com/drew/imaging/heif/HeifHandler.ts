@@ -17,15 +17,20 @@ import Metadata from '../../metadata/Metadata';
 import HeifDirectory from '../../metadata/heif/HeifDirectory';
 import Box from '../../metadata/heif/boxes/Box';
 import SequentialReader from '../../lang/SequentialReader';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "HeifHandler";
 
 abstract class HeifHandler {
   public metadata: Metadata;
   protected directory: HeifDirectory;
 
   public constructor(metadata: Metadata) {
+    LogUtil.debug(TAG, `HeifHandler constructor start`);
     this.metadata = metadata;
     this.directory = this.getDirectory();
     metadata.addDirectory(this.directory);
+    LogUtil.debug(TAG, `HeifHandler constructor end`);
   }
 
   public abstract getDirectory(): HeifDirectory;

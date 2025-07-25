@@ -19,11 +19,15 @@ import Metadata from '../../metadata/Metadata'
 import StreamReader from '../../lang/StreamReader'
 import RiffReader from '../riff/RiffReader'
 import WebpRiffHandler from '../../metadata/webp/WebpRiffHandler'
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "WebpMetadataReader";
 
 export default class WebpMetadataReader{
 
     public static readMetadata(filePath: string): Metadata
   {
+    LogUtil.debug(TAG, `readMetadata start`);
     let inputStream = fileio.createStreamSync(filePath, 'r+');
 
     let metadata = new Metadata();
@@ -33,6 +37,7 @@ export default class WebpMetadataReader{
       inputStream.closeSync();
     }
     new FileSystemMetadataReader().read(filePath, metadata);
+    LogUtil.debug(TAG, `readMetadata end`);
     return metadata;
   }
 }

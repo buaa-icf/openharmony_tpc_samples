@@ -13,6 +13,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import LogUtil from '../../tools/LogUtils';
 import { BmpHeaderDirectory } from './BmpHeaderDirectory';
 
 export enum Compression {
@@ -55,6 +56,7 @@ export enum Compression {
 
 export namespace Compression {
   export function typeOf(value: number | BmpHeaderDirectory, headerSize?: number) {
+    LogUtil.debug("Compression", `typeOf start, value=${value}, headerSize=${headerSize}`);
     if (typeof value == "number") {
       switch (value) {
         case 0:
@@ -83,10 +85,12 @@ export namespace Compression {
     } else {
       let value1 = value.getInteger(BmpHeaderDirectory.TAG_COMPRESSION)
       if (value1 == null) {
+        LogUtil.error("Compression", `typeOf end, value1 is null`);
         return null;
       }
       let headerSize = value.getInteger(BmpHeaderDirectory.TAG_HEADER_SIZE)
       if (headerSize == null) {
+        LogUtil.error("Compression", `typeOf end, headerSize is null`);
         return null;
       }
       switch (value1) {
@@ -119,6 +123,7 @@ export namespace Compression {
   }
 
   export function toString(compression: Compression) {
+    LogUtil.debug("Compression", `toString start, compression=${compression}`);
     switch (compression) {
       case Compression.BI_RGB:
         return "None";
@@ -145,6 +150,7 @@ export namespace Compression {
       case Compression.BI_CMYKRLE4:
         return "CMYK RLE-4";
       default:
+        LogUtil.error("Compression", `toString error: Unimplemented compression type ${compression}`);
         throw new Error("Unimplemented compression type " + compression);
     }
   }

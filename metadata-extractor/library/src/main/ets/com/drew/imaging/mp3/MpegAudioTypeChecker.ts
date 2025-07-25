@@ -15,6 +15,9 @@ limitations under the License.
 
 import FileType from '../FileType';
 import TypeChecker from '../TypeChecker';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "MpegAudioTypeChecker";
 
 class MpegAudioTypeChecker implements TypeChecker {
   public getByteCount(): number {
@@ -22,29 +25,35 @@ class MpegAudioTypeChecker implements TypeChecker {
   }
 
   public checkType(bytes: Int8Array): FileType {
+    LogUtil.debug(TAG, `checkType start, bytes: ${bytes}`);
     // MPEG audio requires the first 11 bits to be set
     if (bytes[0] != -1 || (bytes[1] & 0xE0) != 0xE0) {
+      LogUtil.error(TAG, `MPEG audio requires the first 11 bits to be set, returning FileType.Unknown`);
       return FileType.Unknown;
     }
 
     // The MPEG Audio version ID value of 01 is reserved
     let version: number = (bytes[1] >> 3) & 3;
     if (version == 1) {
+      LogUtil.error(TAG, `The MPEG Audio version ID value of 01 is reserved, returning FileType.Unknown`);
       return FileType.Unknown;
     }
 
     // The layer description value of 00 is reserved
     let layerDescription: number = (bytes[1] >> 1) & 3;
     if (layerDescription == 0) {
+      LogUtil.error(TAG, `The layer description value of 00 is reserved, returning FileType.Unknown`);
       return FileType.Unknown;
     }
 
     // The bitrate index value of 1111 is disallowed
     let bitrateIndex = bytes[2] >> 4;
     if (bitrateIndex == 0x0F) {
+      LogUtil.error(TAG, `The bitrate index value of 1111 is disallowed, returning FileType.Unknown`);
       return FileType.Unknown;
     }
 
+    LogUtil.debug(TAG, `checkType end, returning FileType.Mp3`);
     return FileType.Mp3;
   }
 }

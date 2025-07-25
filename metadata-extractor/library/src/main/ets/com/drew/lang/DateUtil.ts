@@ -13,6 +13,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import LogUtil from '../tools/LogUtils';
+
+const TAG: string = "DateUtil";
+
 class DateUtil {
   private static _daysInMonth365: number[] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   /**
@@ -22,6 +26,7 @@ class DateUtil {
   private static readonly EPOCH_1_JAN_1904: number = -2082844800000;
 
   public static isValidDate(year: number, month: number, day: number): boolean {
+    LogUtil.debug(TAG, `isValidDate start, year: ${year}, month: ${month}, day: ${day}`);
     if (year < 1 || year > 9999 || month < 0 || month > 11) {
       return false;
     }
@@ -33,6 +38,7 @@ class DateUtil {
         daysInMonth++;
       }
 
+      LogUtil.debug(TAG, `isValidDate end, isLeapYear: ${isLeapYear}, daysInMonth: ${daysInMonth}`);
       return day >= 1 && day <= daysInMonth;
     }
   }

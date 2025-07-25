@@ -18,12 +18,16 @@ import StreamReader from '../../lang/StreamReader';
 import Mp4Handler from './Mp4Handler';
 import Mp4Context from '../../metadata/mp4/Mp4Context';
 import Box from '../../metadata/mp4/boxes/Box';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "Mp4Reader";
 
 class Mp4Reader {
   constructor(){
 
   }
   public static extract(filePath: string, handler: Mp4Handler<Mp4Directory>) {
+    LogUtil.debug(TAG, `extract start, filePath: ${filePath}`);
     let reader: StreamReader = new StreamReader(filePath);
 
     reader.setMotorolaByteOrder(true);
@@ -31,9 +35,11 @@ class Mp4Reader {
     let context: Mp4Context = new Mp4Context();
 
     Mp4Reader.processBoxes(reader, -1, handler, context);
+    LogUtil.debug(TAG, `extract end`);
   }
 
   private static processBoxes(reader: StreamReader, atomEnd: number, handler: Mp4Handler<Mp4Directory>, context: Mp4Context) {
+    LogUtil.debug(TAG, `processBoxes start, atomEnd: ${atomEnd}, position: ${reader.getPosition()}`);
     try {
       while (atomEnd == -1 || reader.getPosition() < atomEnd) {
 
@@ -56,8 +62,10 @@ class Mp4Reader {
         }
       }
     } catch (e) {
+      LogUtil.error(TAG, `processBoxes error: ${JSON.stringify(e)}`);
       handler.addError("Mp4Reader :"+JSON.stringify(e));
     }
+    LogUtil.debug(TAG, `processBoxes end, position: ${reader.getPosition()}`);
   }
 }
 

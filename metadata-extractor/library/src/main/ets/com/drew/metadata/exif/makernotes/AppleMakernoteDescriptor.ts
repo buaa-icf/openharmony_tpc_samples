@@ -15,7 +15,9 @@ limitations under the License.
 
 import TagDescriptor from '../../TagDescriptor';
 import AppleMakernoteDirectory from './AppleMakernoteDirectory'
+import LogUtil from '../../../tools/LogUtils';
 
+const TAG: string = "AppleMakernoteDescriptor";
 
 export default class AppleMakernoteDescriptor extends TagDescriptor<AppleMakernoteDirectory> {
   public constructor(directory: AppleMakernoteDirectory) {
@@ -24,6 +26,7 @@ export default class AppleMakernoteDescriptor extends TagDescriptor<AppleMakerno
 
   public getDescription(tagType: number): string
   {
+    LogUtil.debug(TAG, `getDescription start, tagType=${tagType}`);
     switch (tagType) {
       case AppleMakernoteDirectory.TAG_HDR_IMAGE_TYPE:
         return this.getHdrImageTypeDescription();
@@ -41,9 +44,13 @@ export default class AppleMakernoteDescriptor extends TagDescriptor<AppleMakerno
 
   public getAccelerationVectorDescription(): string
   {
+    LogUtil.debug(TAG, `getAccelerationVectorDescription start`);
     let values = this._directory.getRationalArray(AppleMakernoteDirectory.TAG_ACCELERATION_VECTOR);
-    if (values == null || values.length != 3)
-    return null;
+    if (values == null || values.length != 3) {
+      LogUtil.debug(TAG, `getAccelerationVectorDescription end, values is null or length is not 3`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getAccelerationVectorDescription end`);
     return values[0].getAbsolute().numberValue() + (values[0].isPositive() ? "left" : "right") +
     values[1].getAbsolute().numberValue() + (values[1].isPositive() ? "down" : "up") +
     values[2].getAbsolute().numberValue() + (values[2].isPositive() ? "forward" : "backward");

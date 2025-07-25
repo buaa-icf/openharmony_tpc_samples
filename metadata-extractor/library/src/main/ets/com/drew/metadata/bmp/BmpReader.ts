@@ -21,6 +21,9 @@ import ErrorDirectory from '../ErrorDirectory';
 import SequentialReader from '../../lang/SequentialReader';
 import Metadata from '../Metadata';
 import { ColorSpaceType } from './ColorSpaceType'
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "BmpReader";
 
 export class BmpReader {
   // Possible "magic bytes" indicating bitmap type:
@@ -55,16 +58,19 @@ export class BmpReader {
   }
 
   protected readFileHeader(reader: SequentialReader, metadata: Metadata, allowArray: boolean) {
+    LogUtil.debug(TAG, `readFileHeader start, allowArray=${allowArray}`);
     let magicNumber: number;
     try {
       magicNumber = reader.getUInt16();
     } catch (e) {
+      LogUtil.error(TAG, `readFileHeader error: ${JSON.stringify(e)}`);
       metadata.addDirectory(new ErrorDirectory("Couldn't determine bitmap type: " + e));
       return;
     }
     let directory: Directory = null;
 
     try {
+      LogUtil.debug(TAG, `magicNumber = ${magicNumber}`);
       switch (magicNumber) {
         case this.OS2_BITMAP_ARRAY:
           if (!allowArray) {
@@ -103,18 +109,19 @@ export class BmpReader {
           return;
       }
     } catch (e) {
-
+      LogUtil.error(TAG, `readFileHeader error: ${JSON.stringify(e)}`);
       if (directory == null) {
         this.addError("Unable to read BMP file header", metadata);
       } else {
         directory.addError("Unable to read BMP file header");
       }
     }
+    LogUtil.debug(TAG, `readFileHeader end`);
   }
 
   protected readBitmapHeader(reader: SequentialReader, directory: BmpHeaderDirectory, metadata: Metadata) {
 
-
+    LogUtil.debug(TAG, `readBitmapHeader start`);
     try {
       let bitmapType = directory.getInt(BmpHeaderDirectory.TAG_BITMAP_TYPE) as number;
       let headerOffset = reader.getPosition() as number;
@@ -136,6 +143,7 @@ export class BmpReader {
        *
        */
 
+      LogUtil.debug(TAG, `headerSize = ${headerSize}, bitmapType = ${bitmapType}, this.BITMAP = ${this.BITMAP}`);
       if (headerSize == 12 && bitmapType == this.BITMAP) { //BITMAPCOREHEADER
         /*
          * There's no way to tell BITMAPCOREHEADER and OS21XBITMAPHEADER
@@ -236,20 +244,27 @@ export class BmpReader {
           );
         }
       } else {
+        LogUtil.error(TAG, `Unexpected DIB header size: ${headerSize}`);
         directory.addError("Unexpected DIB header size: " + headerSize);
       }
     } catch (e) {
+      LogUtil.error(TAG, `readBitmapHeader error: ${JSON.stringify(e)}`);
       directory.addError("Unable to read BMP header");
     }
+    LogUtil.debug(TAG, `readBitmapHeader end`);
   }
 
   protected addError(errorMessage: string, metadata: Metadata) {
+    LogUtil.error(TAG, `addError start`);
     let directory = metadata.getFirstDirectoryOfType(new ErrorDirectory());
     if (directory == null) {
+      LogUtil.debug(TAG, `Creating new ErrorDirectory`);
       metadata.addDirectory(new ErrorDirectory(errorMessage));
     } else {
+      LogUtil.debug(TAG, `Adding error to existing ErrorDirectory`);
       directory.addError(errorMessage);
     }
+    LogUtil.debug(TAG, `addError end`);
   }
 }
 

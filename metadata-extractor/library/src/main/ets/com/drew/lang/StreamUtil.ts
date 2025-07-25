@@ -14,9 +14,13 @@ limitations under the License.
 */
 
 import fileio from '@ohos.fileio';
+import LogUtil from '../tools/LogUtils';
+
+const TAG: string = "StreamUtil";
 
 class StreamUtil {
   public static readAllBytes(filePath: string): Int8Array {
+    LogUtil.debug(TAG, `readAllBytes start, filePath: ${filePath}`);
     let fd = fileio.openSync(filePath, 0o2);
     let buf = new ArrayBuffer(1024);
     let writeNum;
@@ -30,6 +34,7 @@ class StreamUtil {
       writeNum = fileio.write(fd, buf, { length: bytesRead });
     }
 
+    LogUtil.debug(TAG, `readAllBytes end`);
     return writeNum;
   }
 }

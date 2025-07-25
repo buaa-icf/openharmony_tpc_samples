@@ -19,15 +19,19 @@ import AppleMakernoteDirectory from '../exif/makernotes/AppleMakernoteDirectory'
 import AppleRunTimeMakernoteDirectory from '../exif/makernotes/AppleRunTimeMakernoteDirectory'
 import BplistReader from '../plist/BplistReader'
 import PropertyListResults from '../plist/PropertyListResults'
+import LogUtil from '../../tools/LogUtils'
 
+const TAG: string = "AppleRunTimeReader";
 
 export default class AppleRunTimeReader {
 
  public  extract(bytes: Int8Array,   metadata:Metadata,   parentDirectory:Directory):void
     {
+        LogUtil.debug(TAG, `extract start`);
         parentDirectory.setByteArray(AppleMakernoteDirectory.TAG_RUN_TIME, bytes);
 
         if (!BplistReader.isValid(bytes)) {
+            LogUtil.error(TAG, `extract error: Input array is not a bplist`);
         	parentDirectory.addError("Input array is not a bplist");
         	return;
         }
@@ -42,9 +46,10 @@ export default class AppleRunTimeReader {
                 metadata.addDirectory(directory);
             }
         } catch (error) {
-
+            LogUtil.error(TAG, `extract error: ${JSON.stringify(error)}`);
             parentDirectory.addError("Error processing TAG_RUN_TIME: " + JSON.stringify(error));
         }
+        LogUtil.debug(TAG, `extract end`);
     }
 
     /**
@@ -57,6 +62,7 @@ export default class AppleRunTimeReader {
      */
     private static  processAppleRunTime(  directory:AppleRunTimeMakernoteDirectory, bplist:Int8Array): void
     {
+        LogUtil.debug(TAG, `processAppleRunTime start`);
         let  results:PropertyListResults = BplistReader.parse(bplist);
 
         let  entrySet:Set<Map<number,number>> = results.getEntrySet();
@@ -84,5 +90,6 @@ export default class AppleRunTimeReader {
                 directory.setLong(AppleRunTimeMakernoteDirectory.CMTimeValue, parseInt(values.get("value").toString()));
             }
         }
+        LogUtil.debug(TAG, `processAppleRunTime end`);
     }
 }

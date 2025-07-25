@@ -16,6 +16,9 @@ limitations under the License.
 import PngColorType from './PngColorType';
 import SequentialReader from '../../lang/SequentialReader';
 import SequentialByteArrayReader from '../../lang/SequentialByteArrayReader';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "PngHeader";
 
 class PngHeader {
   private readonly _imageWidth: number;
@@ -27,7 +30,9 @@ class PngHeader {
   private readonly _interlaceMethod: number;
 
   public constructor(bytes: Int8Array) {
+    LogUtil.debug(TAG, `constructor start, bytes length: ${bytes.length}`);
     if (bytes.length != 13) {
+      LogUtil.error(TAG, `constructor error: PNG header chunk must have 13 data bytes`);
       throw new Error("PNG header chunk must have 13 data bytes");
     }
 
@@ -42,8 +47,10 @@ class PngHeader {
       this._filterMethod = reader.getInt8();
       this._interlaceMethod = reader.getInt8();
     } catch (error) {
+      LogUtil.error(TAG, `constructor error: ${JSON.stringify(error)}`);
       throw new Error(error);
     }
+    LogUtil.debug(TAG, `constructor end`);
   }
 
   public getImageWidth(): number {

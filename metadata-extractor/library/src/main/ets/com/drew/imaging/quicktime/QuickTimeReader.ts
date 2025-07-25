@@ -18,21 +18,27 @@ import QuickTimeContext from '../../metadata/mov/QuickTimeContext'
 import QuickTimeDirectory from '../../metadata/mov/QuickTimeDirectory'
 import QuickTimeHandler from './QuickTimeHandler'
 import StreamReader from '../../lang/StreamReader'
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "QuickTimeReader";
 
 class QuickTimeReader {
   private constructor() {
   }
 
   public static extract(reader: StreamReader, handler: QuickTimeHandler<QuickTimeDirectory>): void {
+    LogUtil.debug(TAG, `extract start`);
     //    let reader: StreamReader = new StreamReader(inputStream);
     reader.setMotorolaByteOrder(true);
 
     let context: QuickTimeContext = new QuickTimeContext();
 
     QuickTimeReader.processAtoms(reader, -1, handler, context);
+    LogUtil.debug(TAG, `extract end`);
   }
 
   private static processAtoms(reader: StreamReader, atomEnd: number, handler: QuickTimeHandler<QuickTimeDirectory>, context: QuickTimeContext): void {
+    LogUtil.debug(TAG, `processAtoms start`);
     while (atomEnd == -1 || reader.getPosition() < atomEnd) {
 
       let atom: Atom = new Atom(reader);
@@ -50,6 +56,7 @@ class QuickTimeReader {
         break;
       }
     }
+    LogUtil.debug(TAG, `processAtoms end`);
   }
 }
 

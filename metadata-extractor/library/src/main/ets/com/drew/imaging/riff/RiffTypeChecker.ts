@@ -16,6 +16,9 @@ limitations under the License.
 import FileType from '../FileType'
 import StringValue from '../../metadata/StringValue'
 import TypeChecker from '../TypeChecker'
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "RiffTypeChecker";
 
 class RiffTypeChecker implements TypeChecker {
   public getByteCount(): number {
@@ -23,18 +26,28 @@ class RiffTypeChecker implements TypeChecker {
   }
 
   public checkType(bytes: Int8Array): FileType {
+    LogUtil.debug(TAG, `checkType start, bytes length: ${bytes.length}`);
     let firstFour: string = StringValue.Int8Array2String(bytes, 'utf-8', 0, 4);
-    if (firstFour != "RIFF")
-    return FileType.Unknown;
+    if (firstFour != "RIFF") {
+      LogUtil.debug(TAG, `checkType end, firstFour not RIFF: ${firstFour}`);
+      return FileType.Unknown;
+    }
 
     let fourCC: string = StringValue.Int8Array2String(bytes, 'utf-8', 8, 12);
-    if (fourCC == "WAVE")
-    return FileType.Wav;
-    if (fourCC == "AVI ")
-    return FileType.Avi;
-    if (fourCC == "WEBP")
-    return FileType.WebP;
+    if (fourCC == "WAVE") {
+      LogUtil.debug(TAG, `checkType end, found WAVE FourCC: ${fourCC}`);
+      return FileType.Wav;
+    }
+    if (fourCC == "AVI ") {
+      LogUtil.debug(TAG, `checkType end, found AVI FourCC: ${fourCC}`);
+      return FileType.Avi;
+    }
+    if (fourCC == "WEBP") {
+      LogUtil.debug(TAG, `checkType end, found WEBP FourCC: ${fourCC}`);
+      return FileType.WebP;
+    }
 
+    LogUtil.debug(TAG, `checkType end, found RIFF FourCC: ${fourCC}`);
     return FileType.Riff;
   }
 }

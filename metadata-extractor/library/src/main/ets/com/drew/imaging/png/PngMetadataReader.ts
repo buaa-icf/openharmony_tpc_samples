@@ -35,6 +35,9 @@ import SequentialByteArrayReader from '../../lang/SequentialByteArrayReader';
 import RandomAccessStreamReader from '../../lang/RandomAccessStreamReader';
 import TiffReader from '../tiff/TiffReader'
 import ByteArrayReader from '../../lang/ByteArrayReader'
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "PngMetadataReader";
 
 class PngMetadataReader {
   private static _latin1Encoding: string = "ISO_8859_1";
@@ -59,6 +62,7 @@ class PngMetadataReader {
 
   public static readMetadata(filePath: string): Metadata {
     // let stream= fileio.createStreamSync(filePath,"r+");
+    LogUtil.debug(TAG, `readMetadata start, filePath: ${filePath}`);
     let metadata = new Metadata();
     try{
       let chunks = new PngChunkReader().extract(new StreamReader(filePath), PngMetadataReader._desiredChunkTypes);
@@ -66,19 +70,23 @@ class PngMetadataReader {
         PngMetadataReader.processChunk(metadata, value);
       })
     }catch(error){
+      LogUtil.error(TAG, `readMetadata error: ${JSON.stringify(error)}`);
       console.info("PngMetadataReader processChunk error:"+error)
     }
     // finally{
     //   stream.closeSync()
     // }
     new FileSystemMetadataReader().read(filePath, metadata);
+    LogUtil.debug(TAG, `readMetadata end`);
     return metadata;
   }
 
   private static processChunk(metadata: Metadata, chunk: PngChunk): void {
+    LogUtil.debug(TAG, `processChunk start, chunk type: ${chunk.getType().getIdentifier()}`);
     let chunkType: PngChunkType = chunk.getType();
     let bytes: Int8Array = chunk.getBytes();
     if (chunkType.getIdentifier()== PngChunkType.IHDR.getIdentifier()) {
+      LogUtil.debug(TAG, `processChunk IHDR start`);
       let header: PngHeader = new PngHeader(bytes);
       let directory: PngDirectory = new PngDirectory(PngChunkType.IHDR);
       directory.setInt(PngDirectory.TAG_IMAGE_WIDTH, header.getImageWidth());
@@ -90,19 +98,23 @@ class PngMetadataReader {
       directory.setInt(PngDirectory.TAG_INTERLACE_METHOD, header.getInterlaceMethod());
       metadata.addDirectory(directory);
     } else if (chunkType.getIdentifier()==PngChunkType.PLTE.getIdentifier()) {
+      LogUtil.debug(TAG, `processChunk PLTE start`);
       let directory: PngDirectory = new PngDirectory(PngChunkType.PLTE);
       directory.setInt(PngDirectory.TAG_PALETTE_SIZE, bytes.length / 3);
       metadata.addDirectory(directory);
     } else if (chunkType.getIdentifier()==PngChunkType.tRNS.getIdentifier()) {
+      LogUtil.debug(TAG, `processChunk tRNS start`);
       let directory: PngDirectory = new PngDirectory(PngChunkType.tRNS);
       directory.setInt(PngDirectory.TAG_PALETTE_HAS_TRANSPARENCY, 1);
       metadata.addDirectory(directory);
     } else if (chunkType.getIdentifier()==PngChunkType.sRGB.getIdentifier()) {
+      LogUtil.debug(TAG, `processChunk sRGB start`);
       let srgbRenderingIntent: number = bytes[0];
       let directory: PngDirectory = new PngDirectory(PngChunkType.sRGB);
       directory.setInt(PngDirectory.TAG_SRGB_RENDERING_INTENT, srgbRenderingIntent);
       metadata.addDirectory(directory);
     } else if (chunkType.getIdentifier()==PngChunkType.cHRM.getIdentifier()) {
+      LogUtil.debug(TAG, `processChunk cHRM start`);
       let chromaticities: PngChromaticities = new PngChromaticities(bytes);
       let directory: PngChromaticitiesDirectory = new PngChromaticitiesDirectory();
       directory.setInt(PngChromaticitiesDirectory.TAG_WHITE_POINT_X, chromaticities.getWhitePointX());
@@ -115,12 +127,14 @@ class PngMetadataReader {
       directory.setInt(PngChromaticitiesDirectory.TAG_BLUE_Y, chromaticities.getBlueY());
       metadata.addDirectory(directory);
     } else if (chunkType.getIdentifier()==PngChunkType.gAMA.getIdentifier()) {
+      LogUtil.debug(TAG, `processChunk gAMA start`);
       let gammaInt: number = ByteConvert.toInt32BigEndian(bytes);
       new SequentialByteArrayReader(bytes).getInt32();
       let directory: PngDirectory = new PngDirectory(PngChunkType.gAMA);
       directory.setDouble(PngDirectory.TAG_GAMMA, gammaInt / 100000.0);
       metadata.addDirectory(directory);
     } else if (chunkType.getIdentifier()==PngChunkType.iCCP.getIdentifier()) {
+      LogUtil.debug(TAG, `processChunk iCCP start`);
       let reader: SequentialReader = new SequentialByteArrayReader(bytes);
 
       // Profile Name is 1-79 bytes, followed by the 1 byte null character
@@ -147,10 +161,12 @@ class PngMetadataReader {
       }
       metadata.addDirectory(directory);
     } else if (chunkType.getIdentifier()==PngChunkType.bKGD.getIdentifier()) {
+      LogUtil.debug(TAG, `processChunk bKGD start`);
       let directory: PngDirectory = new PngDirectory(PngChunkType.bKGD);
       directory.setByteArray(PngDirectory.TAG_BACKGROUND_COLOR, bytes);
       metadata.addDirectory(directory);
     } else if (chunkType.getIdentifier()==PngChunkType.tEXt.getIdentifier()) {
+      LogUtil.debug(TAG, `processChunk tEXt start`);
       let reader: SequentialReader = new SequentialByteArrayReader(bytes);
 
       // Keyword is 1-79 bytes, followed by the 1 byte null character
@@ -167,6 +183,7 @@ class PngMetadataReader {
       directory.setObject(PngDirectory.TAG_TEXTUAL_DATA, textPairs);
       metadata.addDirectory(directory);
     } else if (chunkType.getIdentifier()==PngChunkType.zTXt.getIdentifier()) {
+      LogUtil.debug(TAG, `processChunk zTXt start`);
       let reader: SequentialReader = new SequentialByteArrayReader(bytes);
 
       // Keyword is 1-79 bytes, followed by the 1 byte null character
@@ -187,6 +204,7 @@ class PngMetadataReader {
           metadata.addDirectory(directory);
         }
       } else {
+        LogUtil.error(TAG, `processChunk zTXt error: Invalid compression method value`);
         let directory: PngDirectory = new PngDirectory(PngChunkType.zTXt);
         directory.addError("Invalid compression method value");
         metadata.addDirectory(directory);
@@ -205,6 +223,7 @@ class PngMetadataReader {
         }
       }
     } else if (chunkType.getIdentifier()==PngChunkType.iTXt.getIdentifier()) {
+      LogUtil.debug(TAG, `processChunk iTXt start`);
       let reader: SequentialReader = new SequentialByteArrayReader(bytes);
 
       // Keyword is 1-79 bytes, followed by the 1 byte null character
@@ -231,6 +250,7 @@ class PngMetadataReader {
           try {
             //textBytes = StreamUtil.readAllBytes(new InflaterInputStream(new ByteArrayInputStream(bytes, bytes.length - bytesLeft, bytesLeft)));
           } catch (error) {
+            LogUtil.error(TAG, `processChunk iTXt error: Exception decompressing PNG iTXt chunk with keyword ${keyword}: ${JSON.stringify(error)}`);
             let directory: PngDirectory = new PngDirectory(PngChunkType.iTXt);
             directory.addError("Exception decompressing PNG iTXt chunk with keyword \"" + keyword + "\": " + error);
             metadata.addDirectory(directory);
@@ -259,6 +279,7 @@ class PngMetadataReader {
         }
       }
     } else if (chunkType.getIdentifier()==PngChunkType.tIME.getIdentifier()) {
+      LogUtil.debug(TAG, `processChunk tIME start`);
       let reader: SequentialByteArrayReader = new SequentialByteArrayReader(bytes);
       let year: number = reader.getUInt16();
       let month: number = reader.getUInt8();
@@ -277,6 +298,7 @@ class PngMetadataReader {
       }
       metadata.addDirectory(directory);
     } else if (chunkType.getIdentifier()==PngChunkType.pHYs.getIdentifier()) {
+      LogUtil.debug(TAG, `processChunk pHYs start`);
       let reader: SequentialByteArrayReader = new SequentialByteArrayReader(bytes);
       let pixelsPerUnitX: number = reader.getInt32();
       let pixelsPerUnitY: number = reader.getInt32();
@@ -287,15 +309,18 @@ class PngMetadataReader {
       directory.setInt(PngDirectory.TAG_UNIT_SPECIFIER, unitSpecifier);
       metadata.addDirectory(directory);
     } else if (chunkType.getIdentifier()==PngChunkType.sBIT.getIdentifier()) {
+      LogUtil.debug(TAG, `processChunk sBIT start`);
       let directory: PngDirectory = new PngDirectory(PngChunkType.sBIT);
       directory.setByteArray(PngDirectory.TAG_SIGNIFICANT_BITS, bytes);
       metadata.addDirectory(directory);
     } else if (chunkType.getIdentifier()==PngChunkType.eXIf.getIdentifier()) {
+      LogUtil.debug(TAG, `processChunk eXIf start`);
       try {
         let handler: ExifTiffHandler = new ExifTiffHandler(metadata, null);
         new TiffReader().processTiff(new ByteArrayReader(bytes), handler, 0);
       } catch (error) {
         let directory: PngDirectory = new PngDirectory(PngChunkType.eXIf);
+        LogUtil.error(TAG, `processChunk eXIf error: ${JSON.stringify(error)}`);
         directory.addError(error);
         metadata.addDirectory(directory);
       }

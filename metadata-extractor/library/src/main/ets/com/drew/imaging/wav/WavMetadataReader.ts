@@ -19,12 +19,16 @@ import StreamReader from '../../lang/StreamReader';
 import RiffReader from '../riff/RiffReader';
 import fileio from '@ohos.fileio';
 import Metadata from '../../metadata/Metadata';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "WavMetadataReader";
 
 /**
  * Obtains metadata from WAV files.
  */
 class WavMetadataReader {
   public static readMetadata(filePath: string): Metadata {
+    LogUtil.debug(TAG, `readMetadata start`);
     let inputStream = fileio.createStreamSync(filePath, 'r+');
     let metadata = new Metadata();
     try {
@@ -33,6 +37,7 @@ class WavMetadataReader {
       inputStream.close();
     }
     new FileSystemMetadataReader().read(filePath, metadata);
+    LogUtil.debug(TAG, `readMetadata end`);
     return metadata;
   }
 }

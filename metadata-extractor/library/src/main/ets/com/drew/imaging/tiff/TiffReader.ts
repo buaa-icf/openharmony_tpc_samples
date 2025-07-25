@@ -17,6 +17,9 @@ import RandomAccessReader from '../../lang/RandomAccessReader'
 import Rational from '../../lang/Rational'
 import TiffDataFormat from './TiffDataFormat'
 import TiffHandler from './TiffHandler'
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "TiffReader";
 
 class TiffReader {
   /**
@@ -32,14 +35,18 @@ class TiffReader {
   public processTiff(reader: RandomAccessReader,
                      handler: TiffHandler,
                      tiffHeaderOffset: number): void {
+    LogUtil.debug(TAG, `processTiff start, tiffHeaderOffset: ${tiffHeaderOffset}`);
     // This must be either "MM" or "II".
     let byteOrderIdentifier: number = reader.getInt16(tiffHeaderOffset);
 
     if (byteOrderIdentifier == 0x4d4d) { // "MM"
+      LogUtil.debug(TAG, `set Motorola byte order true`);
       reader.setMotorolaByteOrder(true);
     } else if (byteOrderIdentifier == 0x4949) { // "II"
+      LogUtil.debug(TAG, `set Motorola byte order false`);
       reader.setMotorolaByteOrder(false);
     } else {
+      LogUtil.error(TAG, `Unclear distinction between Motorola/Intel byte ordering: ${byteOrderIdentifier}`);
       throw new Error("Unclear distinction between Motorola/Intel byte ordering: " + byteOrderIdentifier);
     }
 
@@ -59,6 +66,7 @@ class TiffReader {
 
     let processedIfdOffsets: Set<number> = new Set<number>();
     TiffReader.processIfd(handler, reader, processedIfdOffsets, firstIfdOffset, tiffHeaderOffset);
+    LogUtil.debug(TAG, `processTiff end`);
   }
 
   /**
@@ -89,10 +97,12 @@ class TiffReader {
                            processedIfdOffsets: Set<number>,
                            ifdOffset: number,
                            tiffHeaderOffset: number): void {
+    LogUtil.debug(TAG, `processIfd start, ifdOffset: ${ifdOffset}, tiffHeaderOffset: ${tiffHeaderOffset}`);
     let resetByteOrder: boolean = null;
     try {
       // check for directories we've already visited to avoid stack overflows when recursive/cyclic directory structures exist
       if (processedIfdOffsets.has(ifdOffset)) {
+        LogUtil.debug(TAG, `processIfd end, already processed ifdOffset: ${ifdOffset}`);
         return;
       }
 
@@ -101,6 +111,7 @@ class TiffReader {
 
       if (ifdOffset >= reader.getLength() || ifdOffset < 0) {
         handler.error("Ignored IFD marked to start outside data segment");
+        LogUtil.debug(TAG, `processIfd end, ignored IFD marked to start outside data segment`);
         return;
       }
 
@@ -120,6 +131,7 @@ class TiffReader {
       let dirLength: number = (2 + (12 * dirTagCount) + 4);
       if (dirLength + ifdOffset > reader.getLength()) {
         handler.error("Illegally sized IFD");
+        LogUtil.debug(TAG, `processIfd end, illegally sized IFD`);
         return;
       }
 
@@ -231,6 +243,7 @@ class TiffReader {
       if (resetByteOrder != null)
       reader.setMotorolaByteOrder(resetByteOrder);
     }
+    LogUtil.debug(TAG, `processIfd end, ifdOffset: ${ifdOffset}, tiffHeaderOffset: ${tiffHeaderOffset}`);
   }
 
   private static processTag(handler: TiffHandler,
@@ -239,6 +252,8 @@ class TiffReader {
                             componentCount: number,
                             formatCode: number,
                             reader: RandomAccessReader): void {
+    LogUtil.debug(TAG, `processTag start, tagId: ${tagId}, tagValueOffset: ${tagValueOffset}, ` +
+                  `componentCount: ${componentCount}, formatCode: ${formatCode}`);
     switch (formatCode) {
       case TiffDataFormat.CODE_UNDEFINED:
       // this includes exif user comments
@@ -354,6 +369,7 @@ class TiffReader {
           .replace(/%d/, formatCode.toString())
           .replace(/%04X/, tagId.toString()));
     }
+    LogUtil.debug(TAG, `processTag end`);
   }
 
   /**

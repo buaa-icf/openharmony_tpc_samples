@@ -18,6 +18,9 @@ import ByteArrayReader from '../../lang/ByteArrayReader'
 import Metadata        from '../Metadata'
 import RiffHandler     from '../../imaging/riff/RiffHandler'
 import StringValue     from '../StringValue'
+import LogUtil         from '../../tools/LogUtils'
+
+const TAG: string = "AviRiffHandler";
 
 class AviRiffHandler implements RiffHandler {
   private readonly _directory: AviDirectory;
@@ -44,6 +47,7 @@ class AviRiffHandler implements RiffHandler {
   }
 
   public processChunk(fourCC: string, payload: Int8Array): void {
+    LogUtil.debug(TAG, `processChunk start, fourCC=${fourCC}`);
     if (fourCC == AviDirectory.CHUNK_STREAM_HEADER) {
       let reader: ByteArrayReader = new ByteArrayReader(payload);
       reader.setMotorolaByteOrder(false);
@@ -111,6 +115,7 @@ class AviRiffHandler implements RiffHandler {
       }
       this._directory.setString(AviDirectory.TAG_DATETIME_ORIGINAL, str);
     }
+    LogUtil.debug(TAG, `processChunk end`);
   }
 }
 

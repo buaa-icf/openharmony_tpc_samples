@@ -17,11 +17,16 @@ import Metadata from '../../metadata/Metadata';
 import HeifReader from './HeifReader';
 import HeifBoxHandler from '../../metadata/heif/HeifBoxHandler';
 import StreamReader from '../../lang/StreamReader';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "HeifMetadataReader";
 
 class HeifMetadataReader {
   public static readMetadata(filePath: string): Metadata {
+    LogUtil.debug(TAG, `readMetadata start, filePath:${filePath}`);
     let metadata: Metadata = new Metadata();
     new HeifReader().extract(new StreamReader(filePath), new HeifBoxHandler(metadata));
+    LogUtil.debug(TAG, `readMetadata end`);
     return metadata;
   }
 }

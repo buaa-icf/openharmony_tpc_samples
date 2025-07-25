@@ -14,6 +14,9 @@ limitations under the License.
 */
 
 import ByteTrieNode from './ByteTrieNode';
+import LogUtil from '../tools/LogUtils';
+
+const TAG: string = "ByteTrie";
 
 /**
  * Stores values using a prefix tree (aka 'trie', i.e. reTRIEval data structure).
@@ -44,6 +47,7 @@ class ByteTrie <T> {
    */
   public find(bytes: Int8Array, offset?: number, count?: number): T
   {
+    LogUtil.debug(TAG, `find start, bytes: ${bytes}, offset: ${offset}, count: ${count}`);
     if (offset == null) {
       offset = 0;
     }
@@ -66,12 +70,14 @@ class ByteTrie <T> {
       if (node._value != null)
       value = node._value;
     }
+    LogUtil.debug(TAG, `find end, value: ${value}`);
     return value;
   }
 
   /** Store the given value at the specified path. */
   public addPath(value: T, ...parts: Int8Array[]): ByteTrie<T>
   {
+    LogUtil.debug(TAG, `addPath start`);
     let depth = 0;
     let node: ByteTrieNode<T> = this._root;
     for (let part of parts) {
@@ -89,6 +95,7 @@ class ByteTrie <T> {
     throw new Error("Parts must contain at least one byte.");
     node.setValue(value);
     this._maxDepth = Math.max(this._maxDepth, depth);
+    LogUtil.debug(TAG, `addPath end`);
     return this;
   }
 

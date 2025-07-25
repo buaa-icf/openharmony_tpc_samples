@@ -20,9 +20,13 @@ import RandomAccessFileReader from '../../lang/RandomAccessFileReader'
 import RandomAccessReader from '../../lang/RandomAccessReader'
 import RandomAccessStreamReader from '../../lang/RandomAccessStreamReader'
 import TiffReader from './TiffReader'
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "TiffMetadataReader";
 
 class TiffMetadataReader {
   public static readMetadata(filePath: string): Metadata {
+    LogUtil.debug(TAG, `readMetadata start`);
     //    RandomAccessFile randomAccessFile = new RandomAccessFile(file, "r");
     let metadata: Metadata = new Metadata();
     //    try {
@@ -31,6 +35,7 @@ class TiffMetadataReader {
     //      randomAccessFile.close();
     //    }
     new FileSystemMetadataReader().read(filePath, metadata);
+    LogUtil.debug(TAG, `readMetadata end`);
     return metadata;
   }
 
@@ -39,13 +44,16 @@ class TiffMetadataReader {
     // InputStream does not support seeking backwards, so we wrap it with RandomAccessStreamReader, which
     // buffers data from the stream as we seek forward.
 
+    LogUtil.debug(TAG, `readMetadataWithStreamReader start, filePath: ${filePath}`);
     return TiffMetadataReader.readMetadataWithBaseReader(new RandomAccessStreamReader(filePath));
   }
 
   public static readMetadataWithBaseReader(reader: RandomAccessReader): Metadata {
+    LogUtil.debug(TAG, `readMetadataWithBaseReader start`);
     let metadata: Metadata = new Metadata();
     let handler: ExifTiffHandler = new ExifTiffHandler(metadata, null);
     new TiffReader().processTiff(reader, handler, 0);
+    LogUtil.debug(TAG, `readMetadataWithBaseReader end`);
     return metadata;
   }
 }

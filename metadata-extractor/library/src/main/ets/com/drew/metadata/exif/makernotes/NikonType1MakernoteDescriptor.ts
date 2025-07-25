@@ -15,6 +15,9 @@ limitations under the License.
 
 import NikonType1MakernoteDirectory from './NikonType1MakernoteDirectory';
 import TagDescriptor from '../../TagDescriptor';
+import LogUtil from '../../../tools/LogUtils';
+
+const TAG: string = 'NikonType1MakernoteDescriptor';
 
 /**
  * Provides human-readable string representations of tag values stored in a {@link NikonType1MakernoteDirectory}.
@@ -38,6 +41,7 @@ class NikonType1MakernoteDescriptor extends TagDescriptor<NikonType1MakernoteDir
   }
 
   public getDescription(tagType: number): string {
+    LogUtil.debug(TAG, `getDescription enter, tagType: ${tagType}`);
     switch (tagType) {
       case NikonType1MakernoteDirectory.TAG_QUALITY:
         return this.getQualityDescription();

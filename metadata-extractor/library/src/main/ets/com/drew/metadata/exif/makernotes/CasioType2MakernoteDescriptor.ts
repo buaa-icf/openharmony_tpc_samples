@@ -15,6 +15,9 @@ limitations under the License.
 
 import TagDescriptor from '../../TagDescriptor';
 import CasioType2MakernoteDirectory from './CasioType2MakernoteDirectory';
+import LogUtil from '../../../tools/LogUtils';
+
+const TAG: string = "CasioType2MakernoteDescriptor";
 
 export default class CasioType2MakernoteDescriptor extends TagDescriptor<CasioType2MakernoteDirectory>{
  public constructor(  directory:CasioType2MakernoteDirectory)
@@ -24,6 +27,7 @@ export default class CasioType2MakernoteDescriptor extends TagDescriptor<CasioTy
 
     public  getDescription( tagType:number):string
     {
+        LogUtil.debug(TAG, `getDescription start, tagType=${tagType}`);
         switch (tagType) {
             case CasioType2MakernoteDirectory.TAG_THUMBNAIL_DIMENSIONS:
                 return this.getThumbnailDimensionsDescription();
@@ -114,8 +118,10 @@ export default class CasioType2MakernoteDescriptor extends TagDescriptor<CasioTy
 
     public  getFocusMode2Description():string
     {
+        LogUtil.debug(TAG, `getFocusMode2Description start`);
         let value:number = this._directory.getInteger(CasioType2MakernoteDirectory.TAG_FOCUS_MODE_2);
 
+        LogUtil.debug(TAG, `getFocusMode2Description end, value=${value}`);
         switch (value) {
             case 1: return "Fixation";
             case 6: return "Multi-Area Focus";
@@ -159,8 +165,10 @@ export default class CasioType2MakernoteDescriptor extends TagDescriptor<CasioTy
 
     public  getWhiteBalance2Description():string
     {
+        LogUtil.debug(TAG, `getWhiteBalance2Description start`);
         let value:number = this._directory.getInteger(CasioType2MakernoteDirectory.TAG_WHITE_BALANCE_2);
 
+        LogUtil.debug(TAG, `getWhiteBalance2Description end, value=${value}`);
         switch (value) {
             case 0: return "Manual";
             case 1: return "Auto"; // unsure about this
@@ -180,9 +188,13 @@ export default class CasioType2MakernoteDescriptor extends TagDescriptor<CasioTy
 
     public  getCasioPreviewThumbnailDescription():string
     {
+        LogUtil.debug(TAG, `getCasioPreviewThumbnailDescription start`);
         let bytes:Int8Array = this._directory.getByteArray(CasioType2MakernoteDirectory.TAG_PREVIEW_THUMBNAIL);
-        if (bytes == null)
+        if (bytes == null) {
+            LogUtil.error(TAG, `getCasioPreviewThumbnailDescription end, bytes is null`);
             return null;
+        }
+        LogUtil.debug(TAG, `getCasioPreviewThumbnailDescription end, bytes.length=${bytes.length}`);
         return "<" + bytes.length + " bytes of image data>";
     }
 
@@ -225,7 +237,9 @@ export default class CasioType2MakernoteDescriptor extends TagDescriptor<CasioTy
 
     public  getIsoSensitivityDescription():string
     {
+        LogUtil.debug(TAG, `getIsoSensitivityDescription start`);
         let value:number = this._directory.getInteger(CasioType2MakernoteDirectory.TAG_ISO_SENSITIVITY);
+        LogUtil.debug(TAG, `getIsoSensitivityDescription end, value=${value}`);
         switch (value) {
             case 3: return "50";
             case 4: return "64";
@@ -244,7 +258,9 @@ export default class CasioType2MakernoteDescriptor extends TagDescriptor<CasioTy
 
     public  getImageSizeDescription():string
     {
+        LogUtil.debug(TAG, `getImageSizeDescription start`);
         let value:number = this._directory.getInteger(CasioType2MakernoteDirectory.TAG_IMAGE_SIZE);
+        LogUtil.debug(TAG, `getImageSizeDescription end, value=${value}`);
         switch (value) {
             case 0: return "640 x 480 pixels";
             case 4: return "1600 x 1200 pixels";

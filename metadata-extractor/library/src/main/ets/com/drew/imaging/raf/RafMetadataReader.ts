@@ -18,6 +18,9 @@ limitations under the License.
 import FileSystemMetadataReader from '../../metadata/file/FileSystemMetadataReader';
 import Metadata from '../../metadata/Metadata'
 import JpegMetadataReader from '../jpeg/JpegMetadataReader'
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "RafMetadataReader";
 
 
 export default class RafMetadataReader{
@@ -27,6 +30,7 @@ export default class RafMetadataReader{
 
     public static  readMetadata(filePath: string):Metadata
     {
+      LogUtil.debug(TAG, `readMetadata start, filePath: ${filePath}`);
 //      let inputStream = fileio.createStreamSync(filePath, 'r+');
 
       let metadata = new Metadata();
@@ -36,6 +40,7 @@ export default class RafMetadataReader{
 //            inputStream.close();
         }
         new FileSystemMetadataReader().read(filePath, metadata);
+        LogUtil.debug(TAG, `readMetadata end`);
         return metadata;
     }
 }

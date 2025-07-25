@@ -15,7 +15,9 @@
 
 import Directory from '../../Directory';
 import CanonMakernoteDescriptor from './CanonMakernoteDescriptor';
+import LogUtil from '../../../tools/LogUtils';
 
+const TAG: string = "CanonMakernoteDirectory";
 
   export class  CameraSettings{
     // These 'sub'-tag values have been created for consistency -- they don't exist within the exif segment
@@ -536,10 +538,11 @@ class CanonMakernoteDirectory extends Directory {
 
   public setObjectArray(tagType: number, array: Object): void
   {
-
+    LogUtil.debug(TAG, `setObjectArray start, tagType: ${tagType}`);
     if (Array.isArray(array) && array.length > 0 && !(array[0] instanceof Number)) {
       // no special handling...
       super.setObjectArray(tagType, array);
+      LogUtil.debug(TAG, `setObjectArray end, tagType: ${tagType}`);
       return;
     }
 
@@ -635,6 +638,7 @@ class CanonMakernoteDirectory extends Directory {
           break;
         }
     }
+    LogUtil.debug(TAG, `setObjectArray end`);
   }
 }
 

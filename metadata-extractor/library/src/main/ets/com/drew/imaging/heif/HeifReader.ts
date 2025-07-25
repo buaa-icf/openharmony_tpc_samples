@@ -20,6 +20,9 @@ import HeifContainerTypes from '../../metadata/heif/HeifContainerTypes';
 import HeifDirectory from '../../metadata/heif/HeifDirectory';
 import StreamReader from '../../lang/StreamReader';
 import SequentialReader from '../../lang/SequentialReader';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "HeifReader";
 
 class HeifReader {
   private static readonly ACCEPTABLE_PRE_META_BOX_TYPES: Set<string> = new Set<string>()
@@ -27,6 +30,7 @@ class HeifReader {
     .add(HeifContainerTypes.BOX_METADATA);
 
   public extract(reader: SequentialReader, handler: HeifHandler): void {
+    LogUtil.debug(TAG, `extract start`);
     // We need to read through the input stream to find the meta box which will tell us what handler to use
 
     // The meta box is not necessarily the first box, so we need to mark the input stream (if we can)
@@ -45,12 +49,14 @@ class HeifReader {
       this.processTopLevelBoxes(reader, -1, handler);
     } catch (error) {
       // Any errors should have been added to the directory
+      LogUtil.error(TAG, `Error processing HEIF metadata: ${JSON.stringify(error)}`);
     }
   }
 
   private processTopLevelBoxes(reader: SequentialReader,
                                atomEnd: number,
                                handler: HeifHandler): void {
+    LogUtil.debug(TAG, `processTopLevelBoxes start, atomEnd: ${atomEnd}`);
     let foundMetaBox: boolean = false;
     let needToReset: boolean = false;
     try {
@@ -71,6 +77,7 @@ class HeifReader {
       }
     } catch (error) {
       // Currently, reader relies on IOException to end
+      LogUtil.error(TAG, `Error processing HEIF metadata: ${JSON.stringify(error)}`);
     }
 
     if (needToReset) {
@@ -85,6 +92,7 @@ class HeifReader {
   }
 
   private processBoxes(reader: SequentialReader, atomEnd: number, handler: HeifHandler): HeifHandler {
+    LogUtil.debug(TAG, `processBoxes start`);
     try {
       while (atomEnd == -1 || reader.getPosition() < atomEnd) {
         let box: Box = new Box(reader);
@@ -92,19 +100,26 @@ class HeifReader {
       }
     } catch (Error) {
       // Currently, reader relies on IOException to end
+      LogUtil.error(TAG, `Error processing HEIF metadata: ${JSON.stringify(Error)}`);
     }
+    LogUtil.debug(TAG, `processBoxes end`);
     return handler;
   }
 
   private processBox(reader: SequentialReader, box: Box, handler: HeifHandler): HeifHandler {
+    LogUtil.debug(TAG, `processBox start`);
     if (handler.shouldAcceptContainer(box)) {
+      LogUtil.debug(TAG, `processBox: shouldAcceptContainer`);
       handler.processContainer(box, reader);
       handler = this.processBoxes(reader, box.size + reader.getPosition() - 8, handler);
     } else if (handler.shouldAcceptBox(box)) {
+      LogUtil.debug(TAG, `processBox: shouldAcceptBox`);
       handler = handler.processBox(box, reader.getBytes(box.size - 8));
     } else if (box.size > 1) {
+      LogUtil.debug(TAG, `processBox: skip box`);
       reader.skip(box.size - 8);
     }
+    LogUtil.debug(TAG, `processBox end`);
     return handler;
   }
 }

@@ -14,6 +14,9 @@ limitations under the License.
 */
 
 import SequentialReader from './SequentialReader'
+import LogUtil from '../tools/LogUtils';
+
+const TAG: string = "SequentialByteArrayReader";
 
 class SequentialByteArrayReader extends SequentialReader {
   private readonly _bytes: Int8Array;
@@ -24,6 +27,7 @@ class SequentialByteArrayReader extends SequentialReader {
   }
 
   public constructor(bytes: Int8Array, baseIndex?: number) {
+    LogUtil.debug(TAG, `constructor start, baseIndex: ${baseIndex}`);
     super()
     if (baseIndex == undefined || baseIndex == null)
     baseIndex = 0
@@ -32,10 +36,12 @@ class SequentialByteArrayReader extends SequentialReader {
 
     this._bytes = bytes;
     this._index = baseIndex;
+    LogUtil.debug(TAG, `constructor end`);
   }
 
   public getByte(): number {
     if (this._index >= this._bytes.length) {
+      LogUtil.error(TAG, `getByte error: End of data reached, _index: ${this._index}, _bytes.length: ${this._bytes.length}`);
       throw new Error("End of data reached.");
     }
     return this._bytes[this._index++];
@@ -43,46 +49,59 @@ class SequentialByteArrayReader extends SequentialReader {
 
 
   public getBytes(count: number, buffer?: Int8Array, offset?: number): Int8Array {
+    LogUtil.debug(TAG, `getBytes start, count: ${count}, buffer: ${buffer}, offset: ${offset}`);
     if (this._index + count > this._bytes.length) {
+      LogUtil.error(TAG, `getBytes error: End of data reached, _index: ${this._index}, _bytes.length: ${this._bytes.length}, count: ${count}`);
       throw new Error("End of data reached.");
     }
     let bytes: Int8Array = new Int8Array(count);
     if ((buffer == undefined || buffer == null) && (offset == undefined || offset == null)) {
+      LogUtil.debug(TAG, `getBytes no buffer provided, slicing _bytes`);
       bytes = this._bytes.slice(this._index, this._index + count);
     } else {
+      LogUtil.debug(TAG, `getBytes buffer provided, offset: ${offset}`);
       let tempSrc: Int8Array = this._bytes.slice(this._index, this._index + count)
       let tempBytes: Int8Array = buffer.slice(0, offset - 1)
       tempBytes.set(tempSrc, offset)
       buffer = tempBytes;
     }
     this._index += count;
+    LogUtil.debug(TAG, `getBytes end, bytes: ${bytes}`);
     return bytes;
   }
 
   public skip(n: number): void {
+    LogUtil.debug(TAG, `skip start, n: ${n}`);
     if (n < 0) {
+      LogUtil.error(TAG, `skip error: n must be zero or greater, n: ${n}`);
       throw new Error("n must be zero or greater.");
     }
 
     if (this._index + n > this._bytes.length) {
+      LogUtil.error(TAG, `skip error: End of data reached, _index: ${this._index}, _bytes.length: ${this._bytes.length}, n: ${n}`);
       throw new Error("End of data reached.");
     }
 
+    LogUtil.debug(TAG, `skip end, _index: ${this._index}, n: ${n}`);
     this._index += n;
   }
 
   public trySkip(n: number): boolean {
+    LogUtil.debug(TAG, `trySkip start, n: ${n}`);
     if (n < 0) {
+      LogUtil.error(TAG, `trySkip error: n must be zero or greater, n: ${n}`);
       throw new Error("n must be zero or greater.");
     }
 
     this._index += n;
 
     if (this._index > this._bytes.length) {
+      LogUtil.error(TAG, `trySkip error: End of data reached, _index: ${this._index}, _bytes.length: ${this._bytes.length}`);
       this._index = this._bytes.length;
       return false;
     }
 
+    LogUtil.debug(TAG, `trySkip end, _index: ${this._index}`);
     return true;
   }
 

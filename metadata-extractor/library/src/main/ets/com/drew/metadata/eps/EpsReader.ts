@@ -25,6 +25,9 @@ import ByteArrayReader from '../../lang/ByteArrayReader';
 import { EpsDirectory } from './EpsDirectory';
 import RandomAccessStreamReader from '../../lang/RandomAccessStreamReader';
 import Metadata from '../Metadata';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "EpsReader";
 
 export class EpsReader {
   private _previousTag: number
@@ -34,6 +37,7 @@ export class EpsReader {
    * @param metadata
    */
   public extract(filePath: string, metadata: Metadata): void{
+    LogUtil.debug(TAG, `extract start, filePath=${filePath}`);
     let reader = new RandomAccessStreamReader(filePath);
     let directory = new EpsDirectory();
     metadata.addDirectory(directory);
@@ -43,6 +47,7 @@ export class EpsReader {
      * 0x25215053 (%!PS) signifies an EPS File and leads straight into the PostScript
      */
     let type = reader.getInt32(0);
+    LogUtil.debug(TAG, `extract type=${type}`);
     switch (type) { //-976170042  -976894523
       case -976170042: //3318797254
         reader.setMotorolaByteOrder(false);
@@ -73,12 +78,14 @@ export class EpsReader {
         this.mExtract(directory, metadata, new StreamReader(filePath));
         break;
       default:
+        LogUtil.error(TAG, `extract error: File type not supported, type=${type}`);
         directory.addError("File type not supported.");
         break;
     }
   }
 
   private mExtract(directory: EpsDirectory, metadata: Metadata, reader: SequentialReader): void {
+    LogUtil.debug(TAG, `mExtract start`);
     let line: string = ''
     while (true) {
       if(line.length>1){
@@ -111,13 +118,17 @@ export class EpsReader {
       }
 
     }
-
+    LogUtil.debug(TAG, `mExtract end`);
   }
 
   private addToDirectory(directory: EpsDirectory, name: string, value: string) {
+    LogUtil.debug(TAG, `addToDirectory start, name=${name}, value=${value}`);
     let tag = EpsDirectory._tagIntegerMap.get(name)
-    if (tag == null || tag== undefined)
-    return
+    if (tag == null || tag== undefined) {
+      LogUtil.error(TAG, `addToDirectory error: Unknown tag name: ${name}`);
+      return;
+    }
+    LogUtil.debug(TAG, `addToDirectory tag=${tag}`);
     switch (tag) {
       case EpsDirectory.TAG_IMAGE_DATA:
         EpsReader.extractImageData(directory, value);
@@ -136,11 +147,12 @@ export class EpsReader {
     }
 
     this._previousTag = tag;
-
+    LogUtil.debug(TAG, `addToDirectory end`);
   }
 
   private static extractImageData(directory: EpsDirectory, imageData: string): void
   {
+    LogUtil.debug(TAG, `extractImageData start, imageData=${imageData}`);
     // %ImageData: 1000 1000 8 3 1 1000 7 "beginimage"
     directory.setString(EpsDirectory.TAG_IMAGE_DATA, imageData.trim());
 
@@ -170,6 +182,7 @@ export class EpsReader {
       if (bytesPerPixel != 0)
       directory.setInt(EpsDirectory.TAG_RAM_SIZE, bytesPerPixel * width * height);
     }
+    LogUtil.debug(TAG, `extractImageData end`);
   }
 
   private static extractPhotoshopData(medata: Metadata, reader: SequentialReader): void{
@@ -199,6 +212,7 @@ export class EpsReader {
    * The sentinel will be included in the returned bytes.
    */
   private static readUntil(reader: SequentialReader, sentinel: number[]) {
+    LogUtil.debug(TAG, `readUntil start, sentinel length=${sentinel.length}`);
     let bytes = new Int8Array();
     let length = sentinel.length;
     let depth = 0;
@@ -211,10 +225,12 @@ export class EpsReader {
       depth = 0;
       bytes.fill(b);
     }
+    LogUtil.debug(TAG, `readUntil end, bytes length=${bytes.length}`);
     return bytes;
   }
 
   private static decodeHexCommentBlock(reader: SequentialReader): Int8Array{
+    LogUtil.debug(TAG, `decodeHexCommentBlock start`);
     let bytes: Int8Array = new Int8Array();
 
     // Use a state machine to efficiently parse data in a single traversal
@@ -281,6 +297,7 @@ export class EpsReader {
       }
     }
 
+    LogUtil.debug(TAG, `decodeHexCommentBlock end`);
     return bytes;
 
   }
@@ -327,6 +344,7 @@ export class EpsReader {
   }
 
   public  byteBufferToString(bytes: number[]): string{
+    LogUtil.debug(TAG, `byteBufferToString start, bytes length=${bytes.length}`);
     try {
       if (bytes.length < 1) return "";
       let str = ''
@@ -335,6 +353,7 @@ export class EpsReader {
       }
       return str;
     } catch (error) {
+      LogUtil.error(TAG, `byteBufferToString error: ${JSON.stringify(error)}`);
       console.error("mp3agic BufferTools byteBufferToString:" + error)
       return '';
     }

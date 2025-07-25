@@ -14,6 +14,9 @@ limitations under the License.
 */
 
 import Rational from './Rational';
+import LogUtil from '../tools/LogUtils';
+
+const TAG: string = "GeoLocation";
 
 class GeoLocation {
   private readonly _latitude: number;
@@ -87,26 +90,42 @@ class GeoLocation {
    */
   public static degreesMinutesSecondsToDecimal(degs: Rational, mins: Rational, secs: Rational, isNegative: boolean): number
   {
+    LogUtil.debug(TAG, `degreesMinutesSecondsToDecimal start`);
     let decimal = Math.abs(degs.numberValue())
     + mins.numberValue() / 60.0
     + secs.numberValue() / 3600.0;
 
-    if (decimal == undefined)
-    return null;
+    if (decimal == undefined) {
+      LogUtil.error(TAG, `degreesMinutesSecondsToDecimal error: decimal is undefined`);
+      return null;
+    }
 
     if (isNegative)
     decimal *= -1;
 
+    LogUtil.debug(TAG, `degreesMinutesSecondsToDecimal end`);
     return decimal;
   }
 
   public equals(o: Object): boolean
   {
     if (this == o) return true;
-    if (o == null) return false;
-    if (!(o instanceof GeoLocation)) return false
-    if (o._latitude != this._latitude) return false;
-    if (o._longitude != this._longitude) return false;
+    if (o == null) {
+      LogUtil.error(TAG, `equals error: o is null`);
+      return false;
+    }
+    if (!(o instanceof GeoLocation)) {
+      LogUtil.error(TAG, `equals error: o is not an instance of GeoLocation`);
+      return false;
+    }
+    if (o._latitude != this._latitude) {
+      LogUtil.error(TAG, `equals error: latitude does not match`);
+      return false;
+    }
+    if (o._longitude != this._longitude) {
+      LogUtil.error(TAG, `equals error: longitude does not match`);
+      return false;
+    }
     return true;
   }
 

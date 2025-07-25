@@ -16,6 +16,9 @@ limitations under the License.
 import SequentialReader from '../../lang/SequentialReader';
 import PngChunk from './PngChunk';
 import PngChunkType from './PngChunkType';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "PngChunkReader";
 
 
 class PngChunkReader {
@@ -61,11 +64,14 @@ class PngChunkReader {
     // For empty chunk type list NO data is copied from source stream.
     // For null chunk type list ALL data is copied from source stream.
     //
+
+    LogUtil.debug(TAG, `extract start, desiredChunkTypes: ${desiredChunkTypes}`);
     reader.setMotorolaByteOrder(true); // network byte order
 
     var tem:Int8Array=reader.getBytes(PngChunkReader.PNG_SIGNATURE_BYTES.length);
     if (PngChunkReader.PNG_SIGNATURE_BYTES.toString() != tem
       .toString()) {
+      LogUtil.error(TAG, `PNG signature mismatch, expected: ${PngChunkReader.PNG_SIGNATURE_BYTES}, actual: ${tem}`);
       throw new Error("PNG signature mismatch");
     }
     let seenImageHeader: boolean = false;
@@ -110,13 +116,14 @@ class PngChunkReader {
             // Skip the CRC bytes at the end of the chunk
             reader.skip(4);
             if (willStoreChunk && seenChunkTypes.has(chunkType) && !chunkType.areMultipleAllowed()) {
+              LogUtil.error(TAG, `PngChunkReader Observed multiple instances of PNG chunk ${chunkType}, for which multiples are not allowed`);
               throw new Error("PngChunkReader Observed multiple instances of PNG chunk " + chunkType + ", for which multiples are not allowed");
             }
 
             if (chunkType.getIdentifier() == PngChunkType.IHDR.getIdentifier()) {
               seenImageHeader = true;
             } else if (!seenImageHeader) {
-
+              LogUtil.error(TAG, `PngChunkReader First chunk should be IHDR, but ${chunkType} was observed`);
               throw new Error("PngChunkReader First chunk should be " + PngChunkType.IHDR.toString() + ", but " + chunkType + " was observed");
             }
 
@@ -130,17 +137,19 @@ class PngChunkReader {
 
            seenChunkTypes.add(chunkType);
     }
-
+    LogUtil.debug(TAG, `extract end, chunks: ${chunks.length}, seenImageHeader: ${seenImageHeader}, seenImageTrailer: ${seenImageTrailer}`);
     return chunks;
   }
 
   public copyBuffer(bytes: number[], length: number): Int8Array {
+    LogUtil.debug(TAG, `copyBuffer start, bytes length: ${bytes.length}, length: ${length}`);
     let copy: Int8Array = new Int8Array(length)
     if (length > 0) {
       for (let i = 0; i < bytes.length; i++) {
         copy[i] = bytes[i];
       }
     }
+    LogUtil.debug(TAG, `copyBuffer end, copy length: ${copy.length}`);
     return copy;
   }
 }
