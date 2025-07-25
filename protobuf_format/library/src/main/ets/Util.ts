@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 import Protobuf from '@ohos/protobufjs'
+import { LogUtil } from './LogUtil'
 
 export default class util {
 
@@ -24,6 +25,7 @@ export default class util {
    * @returns 转换后的json字符串
    */
   static jsonPrint(message: Protobuf.Builder.Message): string {
+    LogUtil.info(`util, jsonPrint start`);
     // message 对应的json字段串结果
     let result = '';
 
@@ -61,6 +63,7 @@ export default class util {
    * @returns json字符串
    */
   private static jsonPrintSingleFiled(field: Protobuf.Builder.Message.Field, value: Object): string {
+    LogUtil.info(`util, jsonPrintSingleFiled start`);
     let isExtension = field.extensions ? field.extensions : field.parent.extensions;
     let isGroup = field.isGroup ? field.isGroup : field.parent.isGroup;
     let json = '';
@@ -105,6 +108,7 @@ export default class util {
    * @returns 对应格式的数据
    */
   private static jsonPrintFieldValue(field: Protobuf.Builder.Message.Field, fieldValue: Object): string {
+    LogUtil.info(`util, jsonPrintFieldValue start`);
     var value = '';
     switch (field.type.name) {
       case 'bool':
@@ -174,6 +178,7 @@ export default class util {
    * @returns
    */
   private static jsonEscapeText(input: string): string {
+    LogUtil.info(`util, jsonEscapeText start`);
     let text = '';
     for (let i = 0; i < input.length; i++) {
       let char = input.charAt(i);
@@ -230,6 +235,7 @@ export default class util {
    * @returns
    */
   private static jsonEscapeBytes(input: string): string {
+    LogUtil.info(`util, jsonEscapeBytes start`);
     let bytes = '';
     for (let i = 0; i < input.length; i++) {
       let b = input.charAt(i);
@@ -293,6 +299,7 @@ export default class util {
 
   /* -----------------------------------xmlToMessage Util start--------------------------------------------------------*/
   static resolveFieldType(fields: object = [], typeObj: object): void {
+    LogUtil.info(`util, resolveFieldType start`);
     let messageKeysArray = Object.keys(fields);
     messageKeysArray.forEach(index => {
       let fieldType = fields[index]['type']['name'];
@@ -308,6 +315,7 @@ export default class util {
   }
 
   static resolveResultWithType(data: Object, typeObj: Object): void {
+    LogUtil.info(`util, resolveResultWithType start`);
     for (const strJsonObjKey in data) {
       if (typeof data[strJsonObjKey] === 'object') {
         if (typeObj[strJsonObjKey] === undefined) {
@@ -324,7 +332,7 @@ export default class util {
 
   private static getValueWithType(value: string, type: string): any {
     let result;
-
+    LogUtil.info(`util, getValueWithType start`);
     switch (type) {
       case 'bool':
         if (typeof value === 'boolean') {
@@ -370,6 +378,7 @@ export default class util {
    * @returns 去除多余属性的json对象
    */
   static filterJson(json: string | Object): object {
+    LogUtil.info(`util, filterJson start`);
     if (typeof json == 'string') {
       json = JSON.parse(json);
     }
@@ -386,7 +395,7 @@ export default class util {
    * @param nodeName 当前处理的节点名称
    */
   private static rollObjData(result: Object, json: Object, nodeName: string): void {
-
+    LogUtil.info(`util, rollObjData start`);
     // 获取当前对象中的所有key,类型数组。
     let keysArray = Object.keys(json);
     keysArray.forEach(keyName => {
@@ -448,6 +457,7 @@ export default class util {
    * @returns 当前节点类型
    */
   private static getNextType(data: Object): string {
+    LogUtil.info(`util, getNextType start`);
     let keysArray = Object.keys(data);
     let type = 'text';
     keysArray.forEach(keyName => {
@@ -483,6 +493,7 @@ export default class util {
   }
 
   static print(message: Protobuf.Builder.Message): string {
+    LogUtil.info(`util, print start`);
     var result = '';
     let allFieldsArray = message.__proto__.$type._fields;
     allFieldsArray.forEach(item => {
@@ -492,6 +503,7 @@ export default class util {
   }
 
   private static printField(field: Protobuf.Builder.Message.Field, value: Object): string {
+    LogUtil.info(`util, printField start`);
     let fieldHtml = '';
     if (field.repeated) {
       for (const index in value) {
@@ -504,6 +516,7 @@ export default class util {
   }
 
   private static printSingleField(field: Protobuf.Builder.Message.Field, value: Object): string {
+    LogUtil.info(`util, printSingleField start`);
     let isExtension = field.extensions ? field.extensions : field.parent.extensions;
     let isGroup = field.isGroup ? field.isGroup : field.parent.isGroup;
     let html = '';
@@ -541,6 +554,7 @@ export default class util {
   }
 
   private static printFieldValue(field: Protobuf.Builder.Message.Field, value: Object): string {
+    LogUtil.info(`util, printFieldValue start`);
     var html = '';
     html += '<span style="';
     html += this.FIELD_VALUE_STYLE;
@@ -606,6 +620,7 @@ export default class util {
   }
 
   private static escapeBytes(input: string): string {
+    LogUtil.info(`util, escapeBytes start`);
     let length = input.length;
     let result = '';
     for (let i = 0; i < length; i++) {
