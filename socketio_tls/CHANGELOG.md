@@ -1,3 +1,7 @@
+## v1.0.2-rc.0
+
+- Fixed the issue where the dependent c++ static library caused conflicts with the dynamic libraries of other modules, leading to program crashes
+
 ## v1.0.1
 
 - Optimized the memory problem in the emit message processing process.

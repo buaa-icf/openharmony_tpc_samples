@@ -43,7 +43,7 @@ add_library(client_socket_c SHARED
         socketio_module_napi.cpp)
 
 if(USE_OPENSSL)
-    target_link_libraries(client_socket_c PUBLIC boundscheck sioclient sioclient_tls libace_napi.z.so libc++.a libhilog_ndk.z.so)
+    target_link_libraries(client_socket_c PUBLIC boundscheck sioclient sioclient_tls libace_napi.z.so libc++_shared.so libhilog_ndk.z.so)
 else ()
-    target_link_libraries(client_socket_c PUBLIC boundscheck sioclient libace_napi.z.so libc++.a libhilog_ndk.z.so)
+    target_link_libraries(client_socket_c PUBLIC boundscheck sioclient libace_napi.z.so libc++_shared.so libhilog_ndk.z.so)
 endif()
