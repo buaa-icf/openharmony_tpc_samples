@@ -39,4 +39,4 @@ add_library(client_socket_c SHARED
         native-bridge.cpp
         socketio_module_napi.cpp)
 
-target_link_libraries(client_socket_c PUBLIC boundscheck sioclient libace_napi.z.so libc++.a libhilog_ndk.z.so)
+target_link_libraries(client_socket_c PUBLIC boundscheck sioclient libace_napi.z.so libc++_shared.so libhilog_ndk.z.so)
