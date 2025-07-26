@@ -1,3 +1,7 @@
+## v1.0.4
+
+- Fixed the issue where the dependent c++ static library caused conflicts with the dynamic libraries of other modules, leading to program crashes
+
 ## v1.0.4-rc.0
 
 - Fix the problem that the client sends Uint8Array binary messages to the server and the data cannot be parsed

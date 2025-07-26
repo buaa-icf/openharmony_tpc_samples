@@ -1,4 +1,5 @@
 {
   "name": "libclient_socket_c.so",
-  "types": "./index.d.ts"
+  "types": "./index.d.ts",
+  "version": "1.0.4"
 }
