@@ -1,3 +1,7 @@
+## v2.1.3-rc.0
+
+- Fixed the issue where the dependent c++ static library caused conflicts with the dynamic libraries of other modules, leading to program crashes
+
 ## v2.1.2
 - Fix repository from gitee to gitcode in oh-packaage.json5
 - Release the official version
