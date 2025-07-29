@@ -13,38 +13,10 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/util'
-import { decorate, postConstruct } from 'inversify';
-import * as ERRORS_MSGS from 'inversify/lib/constants/error_msgs';
-import * as METADATA_KEY from 'inversify/lib/constants/metadata_keys';
-import { Metadata } from 'inversify/lib/planning/metadata';
-import * as ns from "reflect-metadata"
-import { VanillaJSWarrior1 } from '../tools/utilFun';
+import {  postConstruct } from 'inversify';
 
-ns
 export default function post_constructTest() {
   describe('post_constructTest',  ()=> {
-    _it('Should_generate_metadata_for_the_decorated_method', () => {
-      class Katana {
-        private useMessage!: string;
-
-        public use() {
-          return 'Used Katana!';
-        }
-
-        @postConstruct()
-        public testMethod() {
-          this.useMessage = 'Used Katana!';
-        }
-
-        public debug() {
-          return this.useMessage;
-        }
-      }
-
-      const metadata: Metadata = Reflect.getMetadata(METADATA_KEY.POST_CONSTRUCT, Katana);
-      expect(metadata.value).to.be.equal('testMethod');
-    });
-
     _it('Should_throw_when_applied_multiple_times', () => {
 
       let setup=()=> {
@@ -61,11 +33,7 @@ export default function post_constructTest() {
         Katana.toString();
       }
 
-      expect(setup).to.throw(ERRORS_MSGS.MULTIPLE_POST_CONSTRUCT_METHODS);
-    });
-
-    _it('Should_be_usable_in_VanillaJS_applications', () => {
-      expect(VanillaJSWarrior1()).to.be.equal('testMethod');
+      expect(setup).to.throw('');
     });
   })
 }

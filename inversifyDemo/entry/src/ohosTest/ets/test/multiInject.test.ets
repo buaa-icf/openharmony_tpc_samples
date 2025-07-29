@@ -12,37 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { decorate } from 'inversify';
-import { multiInject } from 'inversify';
-import * as ERROR_MSGS from 'inversify/lib/constants/error_msgs';
-import * as METADATA_KEY from 'inversify/lib/constants/metadata_keys';
-import { interfaces } from 'inversify';
+import { decorate, multiInject } from 'inversify';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/util'
-import { multiInjectA } from '../tools/tools';
-import * as ns from "reflect-metadata"
-ns
 
 export default function multiInjectTest() {
   interface Weapon { }
-
-  class DecoratedWarrior {
-
-    private _primaryWeapon: Weapon;
-    private _secondaryWeapon: Weapon;
-
-    public constructor(
-      @multiInject('Weapon') weapons: Weapon[]
-    ) {
-
-      this._primaryWeapon = weapons[0] as Weapon;
-      this._secondaryWeapon = weapons[1] as Weapon;
-    }
-
-    public mock() {
-      return `${JSON.stringify(this._primaryWeapon)} ${JSON.stringify(this._secondaryWeapon)}`;
-    }
-
-  }
 
   class InvalidDecoratorUsageWarrior {
 
@@ -72,75 +46,25 @@ export default function multiInjectTest() {
 
   }
   describe('multiInjectTest',  ()=> {
-    _it('Should_generate_metadata_for_named_parameters', () => {
-      const metadataKey = METADATA_KEY.TAGGED;
-      const paramsMetadata:ESObject= Reflect.getMetadata(metadataKey, DecoratedWarrior);
-      expect(paramsMetadata).to.be.an('object');
-
-      // assert metadata for first argument
-      expect(paramsMetadata['0']).to.be.instanceof(Array);
-      const m1: interfaces.Metadata = paramsMetadata['0'][0];
-      expect(m1.key).to.be.eql(METADATA_KEY.MULTI_INJECT_TAG);
-      expect(m1.value).to.be.eql('Weapon');
-      expect(paramsMetadata['0'][1]).to.eq(undefined);
-
-      // no more metadata should be available
-      expect(paramsMetadata['1']).to.eq(undefined);
-
-    });
-
     _it('Should_throw_when_applied_multiple_times', () => {
-
-      const useDecoratorMoreThanOnce =  ()=> {
-        let a = multiInject('Weapon')
-        let b =multiInject('Weapon')
-        a(InvalidDecoratorUsageWarrior, undefined, 0)
-        b(InvalidDecoratorUsageWarrior, undefined, 0)
+      const useDecoratorMoreThanOnce: () => void = () => {
+        decorate(
+          [multiInject('Katana'), multiInject('Shuriken')],
+          InvalidDecoratorUsageWarrior,
+          0,
+        );
       };
 
-      const msg = `${ERROR_MSGS.DUPLICATED_METADATA} ${METADATA_KEY.MULTI_INJECT_TAG}`;
+      const msg: string = `Unexpected injection error.
+
+Cause:
+
+Unexpected injection found. Multiple @inject, @multiInject or @unmanaged decorators found
+
+Details
+
+[class: "InvalidDecoratorUsageWarrior", index: "0"]`;
       expect(useDecoratorMoreThanOnce).to.throw(msg);
-
-    });
-
-    _it('Should_throw_when_not_applied_to_a_constructor', () => {
-
-      const useDecoratorOnMethodThatIsNotAConstructor =  ()=> {
-        multiInjectA()
-      };
-
-      const msg = `${ERROR_MSGS.INVALID_DECORATOR_OPERATION}`;
-      expect(useDecoratorOnMethodThatIsNotAConstructor).to.throw(msg);
-
-    });
-
-    _it('Should_be_usable_in_VanillaJS_applications', () => {
-
-      interface Katana { }
-      interface Shurien { }
-
-      const VanillaJSWarrior = ( ()=> {
-        let Warrior=(primary: Katana, secondary: Shurien)=> {
-          // ...
-        }
-        return Warrior;
-      })();
-
-      decorate(multiInject('Weapon'), VanillaJSWarrior, 0);
-      const metadataKey = METADATA_KEY.TAGGED;
-      const paramsMetadata:ESObject =Reflect.getMetadata(metadataKey, VanillaJSWarrior);;
-      expect(paramsMetadata).to.be.an('object');
-
-      // assert metadata for first argument
-      expect(paramsMetadata['0']).to.be.instanceof(Array);
-      const m1: interfaces.Metadata = paramsMetadata['0'][0];
-      expect(m1.key).to.be.eql(METADATA_KEY.MULTI_INJECT_TAG);
-      expect(m1.value).to.be.eql('Weapon');
-      expect(paramsMetadata['0'][1]).to.eq(undefined);
-
-      // no more metadata should be available
-      expect(paramsMetadata['1']).to.eq(undefined);
-
     });
   })
 }

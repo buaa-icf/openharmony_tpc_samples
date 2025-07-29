@@ -20,18 +20,10 @@ declare function __decorate(
 ): void;
 declare function __param(paramIndex: number, decorator: ParameterDecorator): ClassDecorator;
 
-import { Container, decorate, inject, injectable, interfaces,
-  METADATA_KEY,
-  multiInject,
-  named,
-  postConstruct, tagged,
-  targetName } from 'inversify';
-import { LazyServiceIdentifer, ServiceIdentifierOrFunc } from 'inversify/lib/annotation/lazy_service_identifier';
-import { resolve } from 'inversify/lib/resolution/resolver';
+import {  injectable, multiInject, named, tagged } from 'inversify';
 import { InvalidDecoratorUsageWarrior } from '../utils/stubs';
 import * as ns from "reflect-metadata"
 ns
-
 
 interface Weapon {
   use(): void;
@@ -48,19 +40,6 @@ export function weapon1(weapon:Weapon,a) {
     }
   };
   return  weapon.use = new Proxy(weapon.use, handler);
-}
-export function valueOrDefault<T>(provider: () => Promise<T>, defaultValue: T) {
-  return new Promise<T>((resolve, reject) => {
-    provider().then((value) => {
-      resolve(value);
-    }).catch(() => {
-      resolve(defaultValue);
-    });
-  });
-}
-
-export function resolveTyped<T>(context: interfaces.Context) {
-  return resolve(context) as T
 }
 
 export function taggedA() {
@@ -140,9 +119,6 @@ export function invertPrototype(a) {
   return aa
 }
 
-
-
-
 const shurikenId = 'Shuriken';
 const katanaFactoryId = 'KatanaFactory';
 
@@ -181,21 +157,6 @@ interface Shuriken1 {}
 @injectable()
 class Shuriken implements Shuriken1{
 }
-
-interface Warrior {
-  katanaFactory: KatanaFactory;
-  shuriken: Shuriken;
-}
-@injectable()
- export class Ninja1 implements Warrior {
-  public constructor(
-    @inject(katanaFactoryId) @targetName('katana') public katanaFactory: KatanaFactory,
-    @inject(shurikenId) @targetName('shuriken') public shuriken: Shuriken
-  ) {
-  }
-}
-
-
 
 
 

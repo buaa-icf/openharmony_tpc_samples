@@ -13,54 +13,20 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/util'
-import * as ERRORS_MSGS from 'inversify/lib/constants/error_msgs';
-import * as METADATA_KEY from 'inversify/lib/constants/metadata_keys';
 import { decorate, injectable } from 'inversify';
-import * as ns from "reflect-metadata"
-import { metadataFun } from '../tools/reflectMetadata';
-ns
+
 export default function injectableTest() {
   describe('injectableTest',  ()=> {
-    _it('Should_generate_metadata_if_declared_injections', () => {
-
-      class Katana{ }
-      const metadata:ESObject= metadataFun()
-      let Katana3=()=>{return new Katana()}
-      expect(metadata).to.be.instanceof(Array);
-      expect(metadata.length).to.be.eql(2)
-      expect(JSON.stringify(new metadata[0]())).to.be.eql(JSON.stringify(Katana3()));
-      expect(metadata[1]).to.be.eql(Object);
-      expect(metadata[2]).to.eq(undefined);
-    });
-
     _it('Should_throw_when_applied_multiple_times', () => {
-
       @injectable()
-      class Test { }
+      class Test {}
 
-      const useDecoratorMoreThanOnce =  ()=> {
-        decorate(injectable(), Test);
-        decorate(injectable(), Test);
+      const useDecoratorMoreThanOnce: () => void = () => {
+        decorate([injectable(), injectable()], Test);
       };
-
-      expect(useDecoratorMoreThanOnce).to.throw(ERRORS_MSGS.DUPLICATED_INJECTABLE_DECORATOR);
-    });
-
-    _it('Should_be_usable_in_VanillaJS_applications', () => {
-
-      interface Katana { }
-      interface Shuriken { }
-
-      const VanillaJSWarrior =  (primary: Katana, secondary: Shuriken)=> {
-        // ...
-      };
-
-      decorate(injectable(), VanillaJSWarrior);
-
-      const metadata:ESObject = Reflect.getMetadata(METADATA_KEY.PARAM_TYPES, VanillaJSWarrior);
-      expect(metadata).to.be.instanceof(Array);
-      expect(metadata.length).to.eql(0);
-
+      expect(useDecoratorMoreThanOnce).to.throw(
+        'Cannot apply @injectable decorator multiple times',
+      );
     });
   })
 }

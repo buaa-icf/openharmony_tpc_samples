@@ -15,11 +15,9 @@
 import { Container, inject, injectable, optional } from 'inversify';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/util'
 import * as ns from "reflect-metadata"
-ns
 
 export default function optionalTest() {
   describe('optionalTest',  ()=> {
-    // Defines a test suite. Two parameters are supported: test suite name and test suite function.
     _it('Should_allow_to_flag_dependencies_as_optional', () => {
 
       @injectable()
@@ -130,6 +128,51 @@ export default function optionalTest() {
       expect(ninja.katana.name).to.eql('Katana');
       expect(ninja.shuriken.name).to.eql('Shuriken');
 
+    });
+
+    _it('Should_allow_to_set_a_default_value_for_class_property_dependencies_flagged_as_optional', () => {
+      @injectable()
+      class Katana {
+        public name: string;
+        constructor() {
+          this.name = 'Katana';
+        }
+      }
+
+      @injectable()
+      class Shuriken {
+        public name: string;
+        constructor() {
+          this.name = 'Shuriken';
+        }
+      }
+
+      @injectable()
+      class Ninja {
+        @inject('Katana') public katana?: Katana;
+        @inject('Shuriken') @optional() public shuriken: Shuriken = {
+          name: 'DefaultShuriken',
+        };
+        public name: string = 'Ninja';
+      }
+
+      const container: Container = new Container();
+
+      container.bind<Katana>('Katana').to(Katana);
+      container.bind<Ninja>('Ninja').to(Ninja);
+
+      let ninja: Ninja = container.get('Ninja');
+
+      expect(ninja.name).to.eql('Ninja');
+      expect(ninja.katana?.name).to.eql('Katana');
+      expect(ninja.shuriken.name).to.eql('DefaultShuriken');
+
+      container.bind<Shuriken>('Shuriken').to(Shuriken);
+
+      ninja = container.get('Ninja');
+      expect(ninja.name).to.eql('Ninja');
+      expect(ninja.katana?.name).to.eql('Katana');
+      expect(ninja.shuriken.name).to.eql('Shuriken');
     });
   })
 }

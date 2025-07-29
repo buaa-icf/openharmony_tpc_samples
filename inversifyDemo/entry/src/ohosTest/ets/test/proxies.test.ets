@@ -13,11 +13,8 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/util'
-import { interfaces } from 'inversify';
-import { Container, inject, injectable } from 'inversify';
+import { Container, inject, injectable, ResolutionContext } from 'inversify';
 import {weapon1}from'../tools/tools'
-import * as ns from  "reflect-metadata"
-ns
 
 export default function proxiesTest() {
   describe('proxiesTest',  ()=> {
@@ -54,7 +51,7 @@ export default function proxiesTest() {
       container.bind<Warrior>(warriorId).to(Ninja);
       const log: string[] = [];
 
-      container.bind<Weapon>(weaponId).to(Katana).onActivation((context: interfaces.Context, weapon: Weapon) => {
+      container.bind<Weapon>(weaponId).to(Katana).onActivation((_context: ResolutionContext, weapon: Weapon) => {
         weapon1(weapon,log)
         return weapon;
       });

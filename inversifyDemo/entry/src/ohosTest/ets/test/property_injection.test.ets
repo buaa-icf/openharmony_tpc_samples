@@ -13,14 +13,8 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/util'
+import {Container, inject, injectable,injectFromBase,multiInject, named, optional,tagged, unmanaged } from "inversify";
 
-import {
-  Container, inject, injectable,
-  multiInject, named, optional,
-  tagged, unmanaged
-} from "inversify";
-import * as ns from "reflect-metadata"
-ns
 export default function property_injectionTest() {
   describe('property_injectionTest',  ()=> {
     _it("Should_be_able_to_inject_a_property", () => {
@@ -134,18 +128,17 @@ export default function property_injectionTest() {
         }
       }
 
-      const container = new Container();
+      const container: Container = new Container();
       container.bind<Warrior>(TYPES.Warrior).to(Samurai);
-      container.bind<Weapon>(TYPES.Weapon).to(Katana).whenTargetNamed(TAGS.Primary);
-      container.bind<Weapon>(TYPES.Weapon).to(Shuriken).whenTargetNamed(TAGS.Secondary);
+      container.bind<Weapon>(TYPES.Weapon).to(Katana).whenNamed(TAGS.Primary);
+      container.bind<Weapon>(TYPES.Weapon).to(Shuriken).whenNamed(TAGS.Secondary);
 
-      const warrior = container.get<Warrior>(TYPES.Warrior);
-      expect(warrior.name).to.eql("Samurai");
+      const warrior: Warrior = container.get<Warrior>(TYPES.Warrior);
+      expect(warrior.name).to.eql('Samurai');
       expect(warrior.primaryWeapon).not.to.eql(undefined);
-      expect(warrior.primaryWeapon.name).to.eql("Katana");
+      expect(warrior.primaryWeapon.name).to.eql('Katana');
       expect(warrior.secondaryWeapon).not.to.eql(undefined);
-      expect(warrior.secondaryWeapon.name).to.eql("Shuriken");
-
+      expect(warrior.secondaryWeapon.name).to.eql('Shuriken');
     });
 
     _it("Should_be_able_to_inject_a_named_property", () => {
@@ -211,18 +204,17 @@ export default function property_injectionTest() {
         }
       }
 
-      const container = new Container();
+      const container: Container = new Container();
       container.bind<Warrior>(TYPES.Warrior).to(Samurai);
-      container.bind<Weapon>(TYPES.Weapon).to(Katana).whenTargetNamed(TAGS.Primary);
-      container.bind<Weapon>(TYPES.Weapon).to(Shuriken).whenTargetNamed(TAGS.Secondary);
+      container.bind<Weapon>(TYPES.Weapon).to(Katana).whenNamed(TAGS.Primary);
+      container.bind<Weapon>(TYPES.Weapon).to(Shuriken).whenNamed(TAGS.Secondary);
 
-      const warrior = container.get<Warrior>(TYPES.Warrior);
-      expect(warrior.name).to.eql("Samurai");
+      const warrior: Warrior = container.get<Warrior>(TYPES.Warrior);
+      expect(warrior.name).to.eql('Samurai');
       expect(warrior.primaryWeapon).not.to.eql(undefined);
-      expect(warrior.primaryWeapon.name).to.eql("Katana");
+      expect(warrior.primaryWeapon.name).to.eql('Katana');
       expect(warrior.secondaryWeapon).not.to.eql(undefined);
-      expect(warrior.secondaryWeapon.name).to.eql("Shuriken");
-
+      expect(warrior.secondaryWeapon.name).to.eql('Shuriken');
     });
 
     _it("Should_be_able_to_inject_a_tagged_property", () => {
@@ -290,18 +282,17 @@ export default function property_injectionTest() {
         }
       }
 
-      const container = new Container();
+      const container: Container = new Container();
       container.bind<Warrior>(TYPES.Warrior).to(Samurai);
-      container.bind<Weapon>(TYPES.Weapon).to(Katana).whenTargetTagged(TAGS.Priority, TAGS.Primary);
-      container.bind<Weapon>(TYPES.Weapon).to(Shuriken).whenTargetTagged(TAGS.Priority, TAGS.Secondary);
+      container.bind<Weapon>(TYPES.Weapon).to(Katana).whenTagged(TAGS.Priority, TAGS.Primary);
+      container.bind<Weapon>(TYPES.Weapon).to(Shuriken).whenTagged(TAGS.Priority, TAGS.Secondary);
 
-      const warrior = container.get<Warrior>(TYPES.Warrior);
-      expect(warrior.name).to.eql("Samurai");
+      const warrior: Warrior = container.get<Warrior>(TYPES.Warrior);
+      expect(warrior.name).to.eql('Samurai');
       expect(warrior.primaryWeapon).not.to.eql(undefined);
-      expect(warrior.primaryWeapon.name).to.eql("Katana");
+      expect(warrior.primaryWeapon.name).to.eql('Katana');
       expect(warrior.secondaryWeapon).not.to.eql(undefined);
-      expect(warrior.secondaryWeapon.name).to.eql("Shuriken");
-
+      expect(warrior.secondaryWeapon.name).to.eql('Shuriken');
     });
 
     _it("Should_be_able_to_multi-inject_a_property", () => {
@@ -427,8 +418,11 @@ export default function property_injectionTest() {
       }
 
       @injectable()
+      @injectFromBase({
+        extendConstructorArguments: false,
+        extendProperties: true,
+      })
       class Samurai extends BaseWarrior {
-
         @inject(TYPES.Weapon)
         @tagged(TAGS.Priority, TAGS.Secondary)
         public secondaryWeapon!: Weapon;
@@ -438,18 +432,17 @@ export default function property_injectionTest() {
         }
       }
 
-      const container = new Container();
+      const container: Container = new Container();
       container.bind<Warrior>(TYPES.Warrior).to(Samurai);
-      container.bind<Weapon>(TYPES.Weapon).to(Katana).whenTargetTagged(TAGS.Priority, TAGS.Primary);
-      container.bind<Weapon>(TYPES.Weapon).to(Shuriken).whenTargetTagged(TAGS.Priority, TAGS.Secondary);
+      container.bind<Weapon>(TYPES.Weapon).to(Katana).whenTagged(TAGS.Priority, TAGS.Primary);
+      container.bind<Weapon>(TYPES.Weapon).to(Shuriken).whenTagged(TAGS.Priority, TAGS.Secondary);
 
-      const samurai = container.get<Samurai>(TYPES.Warrior);
-      expect(samurai.name).to.eql("Samurai");
+      const samurai: Samurai = container.get<Samurai>(TYPES.Warrior);
+      expect(samurai.name).to.eql('Samurai');
       expect(samurai.secondaryWeapon).not.to.eql(undefined);
-      expect(samurai.secondaryWeapon.name).to.eql("Shuriken");
+      expect(samurai.secondaryWeapon.name).to.eql('Shuriken');
       expect(samurai.primaryWeapon).not.to.eql(undefined);
-      expect(samurai.primaryWeapon.name).to.eql("Katana");
-
+      expect(samurai.primaryWeapon.name).to.eql('Katana');
     });
 
     _it("Should_be_able_to_flag_a_property_injection_as_optional", () => {
