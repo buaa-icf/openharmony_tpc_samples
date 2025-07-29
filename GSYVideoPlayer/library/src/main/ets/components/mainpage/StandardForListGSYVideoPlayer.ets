@@ -442,7 +442,11 @@ export struct StandardForListGSYVideoPlayer {
       })
     )).onAreaChange((oldValue: Area, newValue: Area) => {
       changeHeight = newValue.height as number;
-      screenHeight = px2vp(display.getDefaultDisplaySync().height);
+      // 获取UIContext并使用新的转换方法
+      let uiContext = GlobalContext.getContext().getObject('uiContext') as UIContext;
+      if (uiContext) {
+        screenHeight = uiContext.px2vp(display.getDefaultDisplaySync().height);
+      }
       this.mDirection = this.getDirection();
       this.screenIsFull = (screenHeight - changeHeight) < 50;
       // 如果用户不隐藏状态栏，全屏的时候组件高度与手机的高度差距小于50.就显示上方控制栏
@@ -553,7 +557,15 @@ export struct StandardForListGSYVideoPlayer {
   }
 
   private getDirection(): number {
-    return getContext().getApplicationContext().resourceManager.getConfigurationSync().direction;
+    // 获取UIContext并从中获取hostContext
+    let uiContext = GlobalContext.getContext().getObject('uiContext') as UIContext;
+    if (uiContext) {
+      let hostContext = uiContext.getHostContext();
+      if (hostContext) {
+        return hostContext.getApplicationContext().resourceManager.getConfigurationSync().direction;
+      }
+    }
+    return 0;
   }
 
   resumePlay() {

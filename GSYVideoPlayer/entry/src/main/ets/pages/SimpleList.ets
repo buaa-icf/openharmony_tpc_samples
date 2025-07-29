@@ -22,6 +22,7 @@ import {
 @Entry
 @Component
 struct SimpleList {
+  uiContext = this.getUIContext();
   @State screenHeight: string = '30%';
   private videoModels: Array<StandardGSYVideoModel> = [];
   private items: Array<string> = ['http://1251017968.vod2.myqcloud.com/3eb04eefvodtransgzp1251017968/8782b1285285890810009576163/v.f30.mp4', 'http://1251017968.vod2.myqcloud.com/3eb04eefvodtransgzp1251017968/8782b1285285890810009576163/v.f30.mp4',
@@ -42,8 +43,12 @@ struct SimpleList {
       })
     }
   }
-  getResourceString(res:Resource) {
-    return getContext().resourceManager.getStringSync(res.id)
+  getResourceString(res:Resource): string {
+    const hostContext = this.uiContext?.getHostContext();
+    if (hostContext) {
+      return hostContext.resourceManager.getStringSync(res.id);
+    }
+    return "";
   }
   async aboutToAppear() {
     for (let i = 0; i < this.items.length; i++) {

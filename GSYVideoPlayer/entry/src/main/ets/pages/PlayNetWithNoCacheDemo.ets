@@ -29,13 +29,14 @@ let screenWidth = 0;
 @Entry
 @Component
 struct PlayNetWithNoCacheDemo {
+  uiContext = this.getUIContext();
   @State screenHeight: string = '30%';
   videoModel: StandardGSYVideoModel = new StandardGSYVideoModel();
   backClickListener: () => void = () => {
     if (screenWidth < 1000 && mDirection == 1) {
       this.changeOrientation();
     }
-    router.back();
+    this.getUIContext().getRouter().back();
   }
   fullClickListener: () => void = () => {
     this.changeOrientation();
@@ -52,8 +53,12 @@ struct PlayNetWithNoCacheDemo {
       }.width('100%')
     }
   }
-  getResourceString(res:Resource) {
-    return getContext().resourceManager.getStringSync(res.id)
+  getResourceString(res:Resource): string {
+    const hostContext = this.uiContext?.getHostContext();
+    if (hostContext) {
+      return hostContext.resourceManager.getStringSync(res.id);
+    }
+    return "";
   }
 
   async aboutToAppear() {
@@ -63,7 +68,7 @@ struct PlayNetWithNoCacheDemo {
     this.videoModel.setFullClickListener(this.fullClickListener);
     this.videoModel.setCoverImage($r('app.media.app_icon'));
     mDirection = this.getDirection();
-    screenWidth = px2vp(display.getDefaultDisplaySync().width);
+    screenWidth = this.uiContext.px2vp(display.getDefaultDisplaySync().width);
   }
 
   aboutToDisappear() {
@@ -98,10 +103,19 @@ struct PlayNetWithNoCacheDemo {
   }
 
   private getDirection(): number {
-    return getContext().getApplicationContext().resourceManager.getConfigurationSync().direction;
+    const hostContext = this.uiContext?.getHostContext();
+    if (hostContext) {
+      return hostContext.getApplicationContext().resourceManager.getConfigurationSync().direction;
+    }
+    return 0;
   }
 
   private changeOrientation() {
+    const hostContext = this.uiContext?.getHostContext();
+    if (!hostContext) {
+      console.error("GSYVideoPlayer: hostContext is not available.");
+      return;
+    }
     if (screenWidth > 1000) {
       if (mDirection == 0) {
         this.screenHeight = '100%';
@@ -112,11 +126,11 @@ struct PlayNetWithNoCacheDemo {
       }
     } else {
       if (mDirection == 0) {
-        OrientationUtil.changeOrientation(getContext(), Window.Orientation.LANDSCAPE_INVERTED);
+        OrientationUtil.changeOrientation(hostContext, Window.Orientation.LANDSCAPE_INVERTED);
         this.screenHeight = '100%';
         mDirection = 1;
       } else {
-        OrientationUtil.changeOrientation(getContext(), Window.Orientation.PORTRAIT);
+        OrientationUtil.changeOrientation(hostContext, Window.Orientation.PORTRAIT);
         this.screenHeight = '30%';
         mDirection = 0;
       }

@@ -15,6 +15,12 @@
       {
         "name": "ohos.permission.INTERNET",
         "reason": "$string:NET_REQUEST_PERMISSION"
+      },
+      {
+        "name": "ohos.permission.GET_NETWORK_INFO"
+      },
+      {
+        "name": "ohos.permission.ACCESS_NOTIFICATION_POLICY"
       }
     ],
     "abilities": [

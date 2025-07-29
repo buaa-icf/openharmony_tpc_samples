@@ -15,6 +15,7 @@
 import display from '@ohos.display';
 import window from '@ohos.window';
 import { BusinessError } from '@ohos.base';
+import { AVVolumePanel } from '@kit.AudioKit';
 import { LogUtils } from '../utils/LogUtils';
 import { IjkVideoPlayer } from './IjkVideoPlayer';
 import { IVideoPlayer } from './IVideoPlayer';
@@ -78,6 +79,7 @@ export struct StandardGSYVideoPlayer {
   @State mCurrentVolumeValue: number = 0;
   // 系统最大音量
   @State mMaxVolumeValue: number = 20;
+  @State volumeForPanel: number = 0;
   // 当前亮度 [0-255]
   @State mCurrentBrightness: number = 10;
   // 拖拽的时间
@@ -404,7 +406,7 @@ export struct StandardGSYVideoPlayer {
           .height('100%')
           .visibility(this.coverVisible)
       }
-
+      AVVolumePanel({ volumeLevel: this.volumeForPanel }).width(0).height(0)
       Flex({ alignItems: ItemAlign.Center, justifyContent: FlexAlign.SpaceBetween }) {
         this.VolumeUi()
         this.SeekProgressUi()
@@ -486,14 +488,7 @@ export struct StandardGSYVideoPlayer {
                 playerVolumeValue = this.mMaxVolumeValue;
               }
               this.mCurrentVolumeValue = playerVolumeValue;
-              if (this.mAudioManager) {
-                this.mAudioManager.setVolume(audio.AudioVolumeType.MEDIA, playerVolumeValue, (err: BusinessError) => {
-                  if (err) {
-                    LogUtils.getInstance().LOGI(`Failed to set the volume. ${err}`);
-                    return;
-                  }
-                })
-              }
+              this.volumeForPanel = playerVolumeValue;
             } else {
               this.showBrightnessUi = true;
 
@@ -642,8 +637,12 @@ export struct StandardGSYVideoPlayer {
     )).onAreaChange((oldValue: Area, newValue: Area) => {
       changeWidth = newValue.width as number;
       changeHeight = newValue.height as number;
-      screenWidth = px2vp(display.getDefaultDisplaySync().width);
-      screenHeight = px2vp(display.getDefaultDisplaySync().height);
+      // 获取UIContext并使用新的转换方法
+      let uiContext = GlobalContext.getContext().getObject('uiContext') as UIContext;
+      if (uiContext) {
+        screenWidth = uiContext.px2vp(display.getDefaultDisplaySync().width);
+        screenHeight = uiContext.px2vp(display.getDefaultDisplaySync().height);
+      }
       this.mDirection = this.getDirection();
       this.screenIsFull = (screenHeight - changeHeight) < 50;
       // 如果用户不隐藏状态栏，全屏的时候组件高度与手机的高度差距小于50.就显示上方控制栏
@@ -740,12 +739,18 @@ export struct StandardGSYVideoPlayer {
     this.emitterInit();
     this.mDirection = this.getDirection();
     try {
-      let promise = window.getLastWindow(getContext(this));
-      promise.then((data) => {
-        windowClass = data;
-      }).catch((error: BusinessError) => {
-        LogUtils.getInstance().LOGI('Failed to obtain the top window. Cause: ' + JSON.stringify(error));
-      })
+      // 获取UIContext并从中获取hostContext
+      let uiContext = this.getUIContext();
+      GlobalContext.getContext().setObject('uiContext', uiContext);
+      let hostContext = uiContext.getHostContext();
+      if (hostContext) {
+        let promise = window.getLastWindow(hostContext);
+        promise.then((data) => {
+          windowClass = data;
+        }).catch((error: BusinessError) => {
+          LogUtils.getInstance().LOGI('Failed to obtain the top window. Cause: ' + JSON.stringify(error));
+        })
+      }
     } catch (exception) {
       LogUtils.getInstance().LOGI('Failed to obtain the top window. Cause: ' + JSON.stringify(exception));
     }
@@ -755,7 +760,12 @@ export struct StandardGSYVideoPlayer {
     let audioVolumeGroupManager = volumeManager.getVolumeGroupManagerSync(groupid);
     this.mMaxVolumeValue = audioVolumeGroupManager.getMaxVolumeSync(audio.AudioVolumeType.MEDIA);
     this.mCurrentVolumeValue = audioVolumeGroupManager.getVolumeSync(audio.AudioVolumeType.MEDIA);
-    this.mCurrentBrightness = Number(settings.getValueSync(getContext(this), settings.display.SCREEN_BRIGHTNESS_STATUS, '10'));
+    // 获取UIContext并从中获取hostContext
+    let uiContext = this.getUIContext();
+    let hostContext = uiContext.getHostContext();
+    if (hostContext) {
+      this.mCurrentBrightness = Number(settings.getValueSync(hostContext, settings.display.SCREEN_BRIGHTNESS_STATUS, '10'));
+    }
   }
 
   aboutToDisappear() {
@@ -771,7 +781,15 @@ export struct StandardGSYVideoPlayer {
   }
 
   private getDirection(): number {
-    return getContext().getApplicationContext().resourceManager.getConfigurationSync().direction;
+    // 获取UIContext并从中获取hostContext
+    let uiContext = GlobalContext.getContext().getObject('uiContext') as UIContext;
+    if (uiContext) {
+      let hostContext = uiContext.getHostContext();
+      if (hostContext) {
+        return hostContext.getApplicationContext().resourceManager.getConfigurationSync().direction;
+      }
+    }
+    return 0;
   }
 
   resumePlay() {

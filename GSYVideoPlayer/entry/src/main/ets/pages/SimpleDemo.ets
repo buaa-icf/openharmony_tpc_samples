@@ -31,6 +31,7 @@ let screenWidth = 0;
 @Entry
 @Component
 struct SimpleDemo {
+  uiContext = this.getUIContext();
   @State cropHint: string = this.getResourceString($r('app.string.Video_cropping'))
   @State screenHeight: string = '30%';
   videoModel: StandardGSYVideoModel = new StandardGSYVideoModel();
@@ -47,14 +48,18 @@ struct SimpleDemo {
     if (screenWidth < 1000 && mDirection == 1) {
       this.changeOrientation();
     }
-    router.back();
+    this.getUIContext().getRouter().back();
   }
   fullClickListener: () => void = () => {
     this.changeOrientation();
   }
   private videoUrl = "http://1251017968.vod2.myqcloud.com/3eb04eefvodtransgzp1251017968/8782b1285285890810009576163/v.f30.mp4"
-  getResourceString(res:Resource) {
-    return getContext().resourceManager.getStringSync(res.id)
+  getResourceString(res:Resource): string {
+    const hostContext = this.uiContext?.getHostContext();
+    if (hostContext) {
+      return hostContext.resourceManager.getStringSync(res.id);
+    }
+    return "";
   }
   build() {
     Row() {
@@ -66,28 +71,37 @@ struct SimpleDemo {
         Button($r('app.string.take_screenshot')).onClick(() => {
           let player = GlobalContext.getContext().getObject("currentPlayer") as BaseVideoPlayer;
           if (player) {
-            this.testSetFramePerformance();
-            let path = getContext(this).cacheDir + "/test.jpeg";
-            player.saveFrame(path, {
-              shotResult:(code: number)=> {
-                promptAction.showToast({
-                  message: code == 0 ? this.getResourceString($r('app.string.Screenshot_operation_successful')) : this.getResourceString($r('app.string.Screenshot_operation_failed'))
-                });
-              }
-            })
+            const hostContext = this.uiContext?.getHostContext();
+            if(hostContext) {
+              this.testSetFramePerformance();
+              let path = hostContext.cacheDir + "/test.jpeg";
+              player.saveFrame(path, {
+                shotResult: (code: number) => {
+                  this.uiContext.getPromptAction().showToast({
+                    message: code == 0 ? this.getResourceString($r('app.string.Screenshot_operation_successful')) :
+                    this.getResourceString($r('app.string.Screenshot_operation_failed'))
+                  });
+                }
+              })
+            }
           }
         })
 
         Button("startGif").onClick(() => {
           let player = GlobalContext.getContext().getObject("currentPlayer") as BaseVideoPlayer;
           if (player) {
-            let path = getContext(this).cacheDir + "/tempGif";
+            const hostContext = this.uiContext?.getHostContext();
+            if (!hostContext) {
+              console.error("GSYVideoPlayer: hostContext is not available for startGif.");
+              return;
+            }
+            let path = hostContext.cacheDir + "/tempGif";
             let sStartGifTime = systemDateTime.getTime(true) / 1000;
             player.startGif(path);
             let eStartGifTime = systemDateTime.getTime(true) / 1000;
             let aStartGifTime = eStartGifTime - sStartGifTime;
             LogUtils.getInstance().LOGI('startGifTime:' + aStartGifTime + 'us');
-            promptAction.showToast({
+            this.uiContext.getPromptAction().showToast({
               message: this.getResourceString($r('app.string.Start_gif_screenshot'))
             });
           }
@@ -97,13 +111,18 @@ struct SimpleDemo {
           let player = GlobalContext.getContext().getObject("currentPlayer") as BaseVideoPlayer;
           if (player) {
             this.dialogController.open();
-            let path = getContext(this).cacheDir + "/gifTest.gif";
+            const hostContext = this.uiContext?.getHostContext();
+            if (!hostContext) {
+              LogUtils.getInstance().LOGI('hostContext is not available for testSetFramePerformance');
+              return;
+            }
+            let path = hostContext.cacheDir + "/gifTest.gif";
             let that = this;
             let sStopGifTime = systemDateTime.getTime(true) / 1000;
             player.stopGif(path, {
               gifResult:(code: number)=> {
                 that.dialogController.close();
-                promptAction.showToast({
+                this.uiContext.getPromptAction().showToast({
                   message: code == 0 ? this.getResourceString($r('app.string.gif_screenshot_successful')) : this.getResourceString($r('app.string.gif_screenshot_failed'))
                 });
               }
@@ -126,13 +145,18 @@ struct SimpleDemo {
     this.videoModel.setFullClickListener(this.fullClickListener);
     this.videoModel.setCoverImage($r('app.media.app_icon'));
     mDirection = this.getDirection();
-    screenWidth = px2vp(display.getDefaultDisplaySync().width);
+    screenWidth = this.uiContext.px2vp(display.getDefaultDisplaySync().width);
   }
 
   private testSetFramePerformance() {
     let player = GlobalContext.getContext().getObject("currentPlayer") as BaseVideoPlayer;
     if (player) {
-      let path = getContext(this).cacheDir + "/test.jpeg";
+      const hostContext = this.uiContext?.getHostContext();
+      if (!hostContext) {
+        LogUtils.getInstance().LOGI('hostContext is not available for testSetFramePerformance');
+        return;
+      }
+      let path = hostContext.cacheDir + "/test.jpeg";
       let sFrameTime = systemDateTime.getTime(true) / 1000;
       for (let i = 0; i < 10; i++) {
         player.saveFrame(path, {
@@ -233,10 +257,20 @@ struct SimpleDemo {
   }
 
   private getDirection(): number {
-    return getContext().getApplicationContext().resourceManager.getConfigurationSync().direction;
+    const hostContext = this.uiContext?.getHostContext();
+    if (hostContext) {
+      // 使用 hostContext 获取方向
+      return hostContext.getApplicationContext().resourceManager.getConfigurationSync().direction;
+    }
+    return 0; // 如果获取失败，返回一个默认值
   }
 
   private changeOrientation() {
+    const hostContext = this.uiContext?.getHostContext();
+    if (!hostContext) {
+      console.error("GSYVideoPlayer: hostContext is not available.");
+      return;
+    }
     if (screenWidth > 1000) {
       if (mDirection == 0) {
         this.screenHeight = '100%';
@@ -247,11 +281,11 @@ struct SimpleDemo {
       }
     } else {
       if (mDirection == 0) {
-        OrientationUtil.changeOrientation(getContext(), Window.Orientation.LANDSCAPE_INVERTED);
+        OrientationUtil.changeOrientation(hostContext, Window.Orientation.LANDSCAPE_INVERTED);
         this.screenHeight = '100%';
         mDirection = 1;
       } else {
-        OrientationUtil.changeOrientation(getContext(), Window.Orientation.PORTRAIT);
+        OrientationUtil.changeOrientation(hostContext, Window.Orientation.PORTRAIT);
         this.screenHeight = '30%';
         mDirection = 0;
       }

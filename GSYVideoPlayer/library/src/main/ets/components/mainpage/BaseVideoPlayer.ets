@@ -35,7 +35,7 @@ export abstract class BaseVideoPlayer implements IVideoPlayer {
   surfaceID: string = '';
   firstOrSeek: boolean = true;
   playStatus = PlayStatus.INIT;
-  context: object | undefined = undefined;
+  context: Context | undefined = undefined;
   vId: string = 'vid';
   xComponentId: string = "xid";
   videoUrl: string = '';
@@ -98,8 +98,15 @@ export abstract class BaseVideoPlayer implements IVideoPlayer {
     // 开启边播边缓存
     if ((this.videoUrl.startsWith('http') || this.videoUrl.startsWith('https')) && this.cacheWithPlay) {
       LogUtils.getInstance().LOGI('play with cache');
-      let server = new HttpProxyCacheServerBuilder(getContext()).cacheDirectory(getContext().cacheDir).build();
-      this.videoUrl = await server.getProxyUrl(this.videoUrl);
+      // 获取UIContext并从中获取hostContext
+      let uiContext = GlobalContext.getContext().getObject('uiContext') as UIContext;
+      if (uiContext) {
+        let hostContext = uiContext.getHostContext();
+        if (hostContext) {
+          let server = new HttpProxyCacheServerBuilder(hostContext).cacheDirectory(hostContext.cacheDir).build();
+          this.videoUrl = await server.getProxyUrl(this.videoUrl);
+        }
+      }
     }
     LogUtils.getInstance().LOGI('setUp2: ' + this.videoUrl + '--------' + this.cacheWithPlay);
   }
@@ -132,7 +139,7 @@ export abstract class BaseVideoPlayer implements IVideoPlayer {
     return false;
   }
 
-  setContext(context: object,id?:string): void {
+  setContext(context: Context,id?:string): void {
     this.context = context;
     if (id) {
       this.xComponentId=id
@@ -152,32 +159,38 @@ export abstract class BaseVideoPlayer implements IVideoPlayer {
   }
 
   public saveFrame(fileSavePath: string, gsyVideoShotSaveListener: GSYVideoShotSaveListener | null) {
-    componentSnapshot.get(this.vId, (error: Error, pixmap: image.PixelMap) => {
-      if (error) {
-        console.log("error:" + JSON.stringify(error));
-        return;
-      }
-      const imagePackerApi = image.createImagePacker();
-      const packOptions: image.PackingOption = {
-        format: 'image/jpeg',
-        quality: 10
-      }
-      imagePackerApi.packing(pixmap, packOptions).then((res) => {
-        const imageFd = fs.openSync(fileSavePath, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
-        fs.writeSync(imageFd.fd, res);
-        fs.closeSync(imageFd);
-        if (gsyVideoShotSaveListener) {
-          gsyVideoShotSaveListener.shotResult(0);
+    let uiContext = GlobalContext.getContext().getObject('uiContext') as UIContext;
+    if (uiContext) {
+      let componentSnapshot = uiContext.getComponentSnapshot();
+      componentSnapshot.get(this.vId, (error: Error, pixmap: image.PixelMap) => {
+        if (error) {
+          if (gsyVideoShotSaveListener) {
+            gsyVideoShotSaveListener.shotResult(1);
+          }
+          return;
         }
-      }).catch((error: Error) => {
-        if (gsyVideoShotSaveListener) {
-          gsyVideoShotSaveListener.shotResult(1);
+        const imagePackerApi = image.createImagePacker();
+        const packOptions: image.PackingOption = {
+          format: 'image/jpeg',
+          quality: 10
         }
-      }).finally(() => {
-        imagePackerApi.release();
-        pixmap.release();
+        imagePackerApi.packing(pixmap, packOptions).then((res) => {
+          const imageFd = fs.openSync(fileSavePath, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
+          fs.writeSync(imageFd.fd, res);
+          fs.closeSync(imageFd);
+          if (gsyVideoShotSaveListener) {
+            gsyVideoShotSaveListener.shotResult(0);
+          }
+        }).catch((error: Error) => {
+          if (gsyVideoShotSaveListener) {
+            gsyVideoShotSaveListener.shotResult(1);
+          }
+        }).finally(() => {
+          imagePackerApi.release();
+          pixmap.release();
+        });
       });
-    })
+    }
   }
 
 
@@ -205,7 +218,17 @@ export abstract class BaseVideoPlayer implements IVideoPlayer {
           return;
         }
       } else {
-        tmpPicPath = getContext(this).cacheDir;
+        // 获取UIContext并从中获取hostContext
+        let uiContext = GlobalContext.getContext().getObject('uiContext') as UIContext;
+        if (uiContext) {
+          let hostContext = uiContext.getHostContext();
+          if (hostContext) {
+            tmpPicPath = hostContext.cacheDir;
+          }
+        }
+        if (!tmpPicPath) {
+          tmpPicPath = "/tmp"; // 默认路径
+        }
       }
       path = tmpPicPath + "/gifTemp" + count + ".jpeg";
       gifTempPath = tmpPicPath;

@@ -28,24 +28,23 @@ import {
 
 export class BiliDanmukuParser extends BaseDanmakuParser {
   private sourceDanmakus = []
-  protected mDispScaleX: number = 0;
+  protected mDispScaleX: number =0;
   protected mDispScaleY: number = 0;
 
-  parse(): IDanmakus | ESObject {
+  parse(): IDanmakus|ESObject{
     class danmakus {
       sortType: number = 0
       duplicateMergingEnabled: boolean = false
       baseComparator: ESObject
     }
-
-    if (this.mDataSource != null) {
-      let args: danmakus = { sortType: ST_BY_TIME,
+    if(this.mDataSource!=null){
+      let args:danmakus = { sortType: ST_BY_TIME,
         duplicateMergingEnabled: false,
-        baseComparator: this.mContext.getBaseComparator() }
+        baseComparator: this.mContext.getBaseComparator()}
       let result: Danmakus = new Danmakus((args) as ESObject)
 
-      this.mDataSource.data().forEach((sourceItem: ESObject) => {
-        let item: SpecialDanmaku = this.mContext.mDanmakuFactory.createDanmakuByContext(Number(sourceItem.DanmakuType), this.mContext)
+      this.mDataSource.data().forEach((sourceItem:ESObject) => {
+        let item:SpecialDanmaku = this.mContext.mDanmakuFactory.createDanmakuByContext(Number(sourceItem.DanmakuType), this.mContext)
         if (item != null) {
           item.setTime(Number.parseFloat(sourceItem.time))
           item.textSize = Number.parseFloat(sourceItem.textSize) * (this.mDispDensity * 0.8)
@@ -73,7 +72,7 @@ export class BiliDanmukuParser extends BaseDanmakuParser {
               Number(sourceItem.beginAlpha),
               Number(sourceItem.endAlpha),
               Number.parseFloat(sourceItem.alphaDuration));
-            (item as SpecialDanmaku).isQuadraticEaseOut = Boolean((sourceItem.isQuadraticEaseOut) as boolean)
+            (item as SpecialDanmaku).isQuadraticEaseOut = Boolean((sourceItem.isQuadraticEaseOut)as boolean)
 
           }
 
@@ -89,6 +88,7 @@ export class BiliDanmukuParser extends BaseDanmakuParser {
       })
       return result
     }
+
 
 
   }
