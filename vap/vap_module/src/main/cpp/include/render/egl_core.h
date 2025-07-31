@@ -73,6 +73,7 @@ public:
         LOGD("enter UpdateSize %{public}d * %{public}d ", width, height);
         m_width = width;
         m_height = height;
+        InitFitConfig();
     }
     
     std::shared_ptr<AnimConfig> m_animConfig;

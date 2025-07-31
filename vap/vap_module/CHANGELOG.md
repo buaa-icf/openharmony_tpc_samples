@@ -1,5 +1,11 @@
 # 版本记录
 
+## 1.1.5
+
+---
+
+1. Fix rendering error after screen rotation.
+
 ## 1.1.5-rc.1
 
 ---
